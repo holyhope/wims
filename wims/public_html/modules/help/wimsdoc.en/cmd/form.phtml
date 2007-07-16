@@ -1,0 +1,28 @@
+!! +exec+ +html+
+$lst_tit form$lst_titend$type_exec
+  $(lst_syntax)form $emph cmdvar$emphend</tt> <br>
+  $lst_mean Creates a html form pointing to the wims server. <br>
+  Whenever possible, this command should be used instead of a direct use of
+  html tag $emph&lt;form>$emphend. <br>
+  This command will create a &lt;form> tag pointing to the wims server, adding
+  &lt;input> fields to pass session number (and other reserved things in the
+  future). In lines which follow, other input (or select) fields may be
+  added to the form. A final &lt;/form> tag should also be added by the
+  programmer. <br>
+  $emph cmdvar$emphend is an optional parameter. Its value should be a valid
+  value for the variable $emph cmd$emphend. In this case the value $emph
+  cmdvar$emphend will be automatically submitted to the variable $emph cmd
+  $emphend. If this parameter is missing or is invalid, then the programmer 
+  should add a &lt;input type=hidden name=cmd value=...> tag before the 
+  final &lt;/form>. <p>
+  The target of the form can be controlled by the variable 
+  $emph wims_ref_target$emphend. It can also be defined via an optional word
+  $emph target=...$emphend. Note that in this case the target must start with 
+  $emph wims_$emphend.
+  <p>
+  The variable $emph wims_form_method $emphend which must be either `get' or
+  `post' controls the method of the form.
+  This method defaults to `post' for tool modules, and to `get' for all
+  other modules.
+
+

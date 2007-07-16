@@ -1,0 +1,116 @@
+!set var_lst=<li>The variable $emph
+
+<h4>Variables for general purposes by wims server</h4>
+<ul>
+ $var_lst wims_exec_error$emphend is used to store error messages
+  of the external program called by 
+  $(ref1)cmdlist_exec_&cmd_choose=all$(ref2)cmdlist_exec_>!exec</a>.
+  For this reason,
+  this variable will be overwritten each time a $emph!exec$emphend
+  command is executed.
+ $var_lst wims_module_log$emphend is used for individual
+  module's log files: if this variable is non-empty, wims.cgi will put its
+  content into the module's log file, at the end of the process of the
+  user request.
+ $var_lst wims_version$emphend has a value preset to the
+  current version of the wims server.
+ $var_lst wims_version_date$emphend has a value preset to the
+  last compile date of the server program.
+ $var_lst wims_site_manager$emphend contains the electronic address of the 
+  site manager, as defined in the configuration file
+  $emph wims.conf$emphend of the site. Modules should not modify this
+  variable.
+ $var_lst wims_print_precision$emphend defines the printing precision when a 
+  result of evaluation (via <tt>!eval</tt> or <tt>$[...]</tt>) is converted to
+  a character string. Default value: $emph$wims_print_precision$emphend
+  (may be modified in wims.conf).
+ $var_lst wims_warn_$emphend... is ...
+ $var_lst wims_compare_precision$emphend is used to define error tolerance
+  when wims compares two numerical values. Formula: <tt>!ifval a=b</tt> will
+  return TRUE if <center>
+  abs(a-b)*$$wims_compare_precision&lt;abs(a+b)+1/$$wims_compare_precision. </center>
+  Default value: $emph$wims_compare_precision$emphend (may be modified in wims.conf).
+ $var_lst wims_texsize$emphend can be used to modify TeX sizes for the
+  module. Default value is 0 (no change). Maybe 1,2,... (increase TeX size) or
+  -1,-2... (decrease TeX size).
+ $var_lst wims_homeref_parm$emphend is reserved for future use in the command
+  <tt>!homeref</tt>.
+ $var_list wims_homeref_bgcolor$emphend is...
+ $var_list wims_rawmath_functions$emphend is used to tell rawmath routine that
+  the words contained in the variable value should be treated as function names.
+  These words can be separated either by white space or by comma.
+ $var_list wims_rawmath_variables$emphend is used to tell rawmath routine that
+  the words contained in the variable value should be treated as math variable
+  names. These words can be separated either by white space or by comma.
+ $var_lst wims_ref_target$emphend defines the target of the command
+  <tt>!href, !homeref, !form</tt>. Its value is <b>not</b> automatically 
+  reset to empty after the commands. (Defaults to empty string, meaning that
+  the target is the current document.)
+ $var_lst wims_html_header$emphend is the standardised html header for all
+  its modules' html outputs. Its value is defined in the file
+  html/header.phtml. It is highly recommended that modules use this variable
+  to define their html headers.
+ $var_lst wims_expire$emphend is used to define expiration dates of the
+  pages sent to clients. Don't touch it if you don't know what this means.
+ $var_lst module_init_parm$emphend is...
+</ul>
+
+<hr><h4>Variables reserved for dynamic insertions</h4>
+!set resetyes=<br>This variable is reset to empty after a dynamic insertion.
+<ul>
+ $var_lst ins_align$emphend defines the manner in which the inline picture
+  is aligned with respect to the line. Possible values: bottom, middle or top.
+  Default is empty (which means bottom).
+ $var_lst ins_attr$emphend is used to define miscallaneous attributes of a 
+  dynamic insertion. Examples:
+  <pre>  ins_attr = align=middle</pre>
+  (aligns the middle of the image with the baseline for the current
+  textline), or
+  <pre>  ins_attr = ismap</pre>
+  (coordinates of the click will be passed back to the server; if the link
+  of the element is the wims server, the coordinates will be registered
+  under the variable $emph no_name$emphend.)
+  $resetyes
+ $var_lst ins_border$emphend is used to define border width of the html
+  element $emph IMG $emphend
+  resulted from the dynamic insertion. Its value should be a positive 
+  number.
+  $resetyes
+ $var_lst ins_density$emphend is used to define the density of the dynamic
+  insertions. Default value: $emph 100x100 $emphend.
+  <br>
+  <b><font color=red>Avoid using this variable!</font></b> We are planning to
+  suppress it. Will be replaced by a server-managed variable.
+ $var_lst ins_format$emphend can be used to determine the format of the
+  graphics file of the dynamic insertion: its value should be either $emph
+  gif$emphend or $emph jpg$emphend. The default value of this variable is
+  $emph gif$emphend (which can be changed by modifying the file $emph
+  wims.conf$emphend; but such change is not recommended). <br>
+  Some types of dynamic insertions may not be affected by this variable.
+ $var_lst ins_quality$emphend is used to define quality of the graphics
+  convertion used in dynamic insertions. Its value should be between 0 and
+  100. Affects only dynamic insertions whose graphics format is jpg.
+ $var_lst ins_tag$emphend is used for dynamic insertions within a form.
+  In this case define<br>
+  <tt>ins_tag=form </tt>$emph name$emphend<br>
+  where $emph name$emphend is the name of the html element $emph IMG $emphend
+  within the form (optional).
+  $resetyes
+  <p>
+ $var_lst insdraw_size$emphend is ...
+  <p>
+ $var_lst insplot_data$emphend is ...
+ $var_lst insplot_font$emphend is ...
+ $var_lst insplot_set $emphend is ...
+ $var_lst insplot_split$emphend is ...
+ $var_lst insplot_transparent$emphend is used to define transparent color
+  for insertions. Default is empty (no transparency). Usual value: 255,255,255
+  (white is transparent).
+</ul>
+
+!! module_about
+!! module_about_bgcolor
+!! ins_anim_loop
+!! ins_anim_delay
+!! ins_anim_frames
+

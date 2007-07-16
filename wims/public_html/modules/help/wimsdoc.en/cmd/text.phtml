@@ -1,0 +1,130 @@
+!! +exec+ +var+ +string+
+$lst_tit text $lst_titend$type_both
+  $(lst_syntax)text $emph operation $emphend $emph parameter $emphend</tt> <br>
+  $lst_mean This is intended to be a very powerful text manipulation tool,
+  allowing very sophisticated processing of long text strings with high speed. <br>
+  Many of the $emph operations$emphend accept masks. A mask is a string
+  composed of '0's and '1's. For operations
+  which accept a mask, only characters at positions whose corresponding
+  character in the mask is not a '0' are processed. (In this sense positions
+  corresponding to '0's are $emph masked$emphend.) Empty mask is considered
+  as of being entirely composed of '1's. <br>
+  A mask which is too short repeats itself, unless it terminates with a '+',
+  in which case it fills the rest with '1's, or with a '-', in which case
+  it fills the rest with '0's. <br>
+  For the time being, implemented $emph operations $emphend are as follows.
+  <ul>
+   <li><tt>!text common $emph text1$emphend and $emph text2$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Extracts characters in $emph text1$emphend one by one, for those identical
+    to the corresponding characters in $emph text2$emphend and whose
+    positions are not masked by $emph maskstring$emphend.
+   <li><tt>!text compare $emph text1$emphend and $emph text2$emphend
+    </tt> <br>
+    Compares the strings $emph text1 $emphend and $emph text2
+    $emphend character by character, and returns a mask string with '0's on
+    positions where the corresponding characters in $emph text1 $emphend
+    and $emph text2$emphend are equal, and '1's otherwise.
+   <li><tt>!text copy $emph text$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns non-masked characters in $emph text$emphend.
+   <li><tt>!text count $emph charlist$emphend in $emph text$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns the number of characters in $emph text$emphend whose positions
+    are not masked by $emph maskstring$emphend, and who appear in $emph
+    charlist$emphend.
+   <li><tt>!text diff $emph text1$emphend from $emph text2$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Extracts characters in $emph text1$emphend one by one, for those different
+    to the corresponding characters in $emph text2$emphend and whose
+    positions are not masked by $emph maskstring$emphend. <br>
+    (Synonyme of diff: differ).
+   <li><tt>!text expand $emph text$emphend using $emph maskstring$emphend
+    </tt> <br>
+    Produces a string, where positions corresponding to '0's in
+    $emph maskstring$emphend are filled by ' ' (the space character), 
+    and where positions corresponding to '1's in $emph maskstring
+    $emphend are filled by characters of $emph text$emphend. The
+    characters in $emph text$emphend are used one by one, and the
+    resulting string stops when all the characters in $emph text
+    $emphend are exhausted (or when the string reaches the length limit).
+   <li><tt>!text insert $emph text1$emphend into $emph text2$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns $emph text2$emphend with non-masked characters replaced by
+    characters $emph text1$emphend. Characters in $emph text1 $emphend
+    are used one by one (without taking into account the masking), and
+    the replacement stops when there is no character left in 
+    $emph text1$emphend.
+   <li><tt>!text interact $emph text1$emphend and $emph text2$emphend
+    table $emph itab$emphend [mask $emph maskstring$emphend]</tt> <br>
+    Returns a new text which is result of interactions of characters
+    in corresponding positions in $emph text1$emphend and
+    $emph text2$emphend. The rule of the interaction is defined in 
+    $emph itab$emphend. <br>
+    $emph itab$emphend contains n+1 lines, each of n characters.
+    The first line defines the characters corresponding to each position
+    in the following n lines which defines the multiplication table.
+    <br>
+    The multiplication table needs not to be symmetric. In this case, the
+    rows correspond to characters in $emph text1$emphend, and the columns
+    correspond to characters in $emph text2$emphend.
+    <br>
+    If $emph text1$emphend or $emph text2$emphend contains a character
+    not in the first line of $emph itab$emphend, the interaction at
+    the corresponding position is considered as empty. Also, masked
+    positions are ignored.
+    <br>
+    If $emph text1$emphend and $emph text2$emphend have different
+    lengths, the longer is cut to fit the shorter.
+   <li><tt>!text mark $emph charlist$emphend in $emph text$emphend
+    </tt> <br>
+    Returns a mask string with '1's on positions where the
+    corresponding character in $emph text$emphend appears in
+    $emph charlist$emphend, and with '0's on other positions.
+   <li><tt>!text max $emph text1$emphend and $emph text2$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns a string which at each position is the character with highest
+    ASCII code between corresponding characters in $emph text1$emphend
+    and $emph text2$emphend. The length of the result is that of the
+    longest of the two. Masked positions are skipped.
+   <li><tt>!text min $emph text1$emphend and $emph text2$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns a string which at each position is the character with lowest
+    ASCII code between corresponding characters in $emph text1$emphend
+    and $emph text2$emphend. The length of the result is that of the
+    shortest of the two. Masked positions are skipped.
+   <li><tt>!text occur $emph charlist$emphend in $emph text$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns characters in $emph charlist$emphend which occur in 
+    unmasked positions in $emph text$emphend. <br>
+    (Synonymes of occur: appear, occurrence).
+   <li><tt>!text remove $emph charlist$emphend in $emph text$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns $emph text$emphend in which masked characters and characters
+    appearing in $emph charlist$emphend are removed. <br>
+    (Synonymes of remove: drop, delete).
+   <li><tt>!text reorder $emph text$emphend by $emph orderlist$emphend
+    </tt> <br>
+    Returns a reordered $emph text$emphend using the order list 
+    $emph orderlist$emphend. Reordering is cyclic if $emph orderlist$emphend
+    is shorter than $emph text$emphend. <br>
+    $emph orderlist$emphend must be a list of n positive integers, which
+    is a permutation of the set {1,...,n}. If $emph orderlist$emphend contains
+    items other than integers within the bound, empty string is returned.
+    However, unicity check is not performed on items of $emph
+    orderlist$emphend.
+   <li><tt>!text repeat $emph text$emphend to $emph len$emphend
+    </tt> <br>
+    Repeat the string $emph text$emphend cyclicly, up to length
+    $emph len$emphend.
+   <li><tt>!text reverse $emph text$emphend</tt> <br>
+    Reverse the order of $emph text$emphend, with the last character coming
+    first, etc.
+   <li><tt>!text select $emph charlist$emphend in $emph text$emphend
+    [mask $emph maskstring$emphend]</tt> <br>
+    Returns $emph text$emphend in which masked characters and characters
+    not appearing in $emph charlist$emphend are removed. <br>
+    (Synonymes of select: pick, pickup).
+  </ul>
+
+

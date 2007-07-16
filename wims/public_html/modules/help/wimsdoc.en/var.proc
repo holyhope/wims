@@ -1,0 +1,104 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+!if robot isin $session
+ style=integral
+!endif
+
+tit=<li><font color=#A00000>
+titend=</font> <br>
+emph=<font color=#00A000><b>
+emphend=</font></b>
+
+!default lang=en
+!default style=indexed
+!default cmd_choose=all
+
+!if $style=integral
+ cmd_choose=all
+!endif
+
+!read Findex
+cmdfiles=$(cmdf_$cmd_choose)
+
+title_user      =General documentation
+title_devel	=Publish your pages under wims
+title_ref	=Wims modules: technical reference
+
+title_whatis    =What is wims?
+title_why       =Why wims?
+title_copyright =Copyright policies
+title_status    =Current status of development
+title_examples  =Examples of the capabilities of wims
+title_compare   =Comparing with other approaches
+title_features  =Current features of wims
+title_todo	=More features planned for future versions
+title_lightpub	=Light phtml page: the simplest way to use wims features
+title_lighthowto=How to publish a light phtml page
+title_migrate   =Upgrade a light phtml page into a module
+title_structure =Basic structure of wims
+title_remote_dev=Online development of activities
+title_module    =Structure of a wims module
+title_variables =Variables in a module
+title_varspecial=Variables with special meanings
+title_datastruct=Data structure
+title_cmdlist   =List of commands
+title_mathfn    =List of mathematical functions
+title_slib	=List of slib (library of scripts)
+title_mathfonts =List of inline mathematical symbols
+title_interface =Interfaces to external software packages
+title_class	=User registration and classes
+
+user_doc =whatis,examples,compare,features,remote_dev
+#devel_doc=features,lightpub,lighthowto,migrate,remote_dev
+ref_doc=structure,module,variables,varspecial,datastruct,cmdlist,mathfonts,slib,interface
+
+wims_module_log=$style $lang $subject
+
+!if $style=integral
+ ref1=<!
+ ref2=><a href=#
+!endif
+
+!if $style=indexed
+ ref1=<a href=$httpd_SCRIPT_NAME?cmd=resume&session=$session&subject=
+ ref2=#
+!endif
+
+!if $style=folding
+ ref1=<a href=$httpd_SCRIPT_NAME?cmd=resume&session=$session&op=open&subject=
+ ref2=#
+!endif
+
+!if $style=folding and $subject!=$empty
+
+ !if $op=close and ,$subject isin $expand
+   exp=
+   !for i in $expand
+    !if $i != $empty and .$subject notin .$i
+     exp=$exp,$i
+    !endif
+    expand=$exp
+   !next i
+ !endif
+ 
+ !if $op=open and ,$subject notin $expand
+   expand=$expand,$subject
+ !endif
+
+!endif
+
+cmd_choose_list=all,exec,var,string,file,datafile,ins,random,html,jump,loop,vardef
+
+choose_all   =all
+choose_exec  =execution
+choose_var   =variable
+choose_html  =html interface
+choose_jump  =process control
+choose_loop  =looping
+choose_string=string manipulation
+choose_datafile=datafile manipulation
+choose_vardef=variable definition
+choose_ins   =formula/graphics insertion
+choose_random=random data generation
+choose_file  =file manipulation

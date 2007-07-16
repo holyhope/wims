@@ -1,0 +1,145 @@
+<h4>Definition and substitution of variables</h4>
+
+Wims variables has only one type: they are all string variables. Numerical
+evaluation can be done on variables via the variable command 
+$(ref1)cmdlist_eval_&cmd_choose=all$(ref2)cmdlist_eval_>!eval</a>.
+<p>
+A variable may be defined or modified in a variable processing file, or by
+the commands 
+$(ref1)cmdlist_let_&cmd_choose=all$(ref2)cmdlist_let_>!let</a> and
+$(ref1)cmdlist_default_&cmd_choose=all$(ref2)cmdlist_default_>!default</a>.
+<p>
+Variable names can contain any alphanumeric character, as well as the
+underscore character $(emph)_$emphend. There is a limit to the length of
+variable names, and a limit to the length of values. (Limits depending on
+server configuration.)
+<p>
+Variable substitution can be done anywhere in a variable processing file or
+a phtml file (even in the name field of a variable definition
+line). A word preceeded by the character $emph$$$emphend
+is considered to be a variable name, and will be replaced by its value when
+the line containing it is processed.
+<p>
+Special rules of variable substitution:
+<ul>
+ <li>If the character $emph$$$emphend is followed by a space, it will be
+  discarded.
+ <li>The string $emph$$$$$emphend is replaced by a single $emph$$$emphend.
+ <li>If the character $emph$$$emphend is followed by the left parenthesis
+  $emph($emphend, the matching $emph)$emphend will be located, the content
+  of the pair of parentheses substituted. The result of the substitution
+  will then be used as the name of variable, and finally the whole thing
+  will be replaced by the value of the last variable. This allows nested
+  substitutions, as well as substitution of a variable which is followed
+  by an alphanumeric character.
+  <br>Example: if the variable $(emph)i$emphend has value $(emph)3$emphend
+  and the variable $(emph)alpha3beta$emphend has value $(emph)pi$emphend,
+  the string<pre>
+  3*$$(alpha$$(i)beta)*x</pre>will become<pre>
+  3*pi*x</pre>after substitution.
+  <p>
+  Array addressing: if the variable $(emph)l$emphend contains a
+  comma-separated list $(emph)a,b,c,d,e$emphend, then the string
+  <tt>$$(i[3])</tt> gives <tt>c</tt> after substitution, and
+  <tt>$$(i[2 to 4])</tt> tives <tt>b,c,d</tt>, etc.
+  <p>
+  Two-dimensional array addressing is also available: if
+  <p><center><tt>$$M=x,y,z;a,b,c</tt>
+  </center> <p>
+  (a 2x3 matrix), then
+  <p><center>
+  <tt> $$(M[1;3,2])=z,y </tt>
+  </center> <p>
+ <li>If the character $emph$$$emphend is followed by the left bracket
+  $emph[$emphend, the matching $emph]$emphend will be located, the content
+  of the pair of brackets substituted then evaluated to a real number value whose
+  precision depends on the value of $emph print_precision$emphend.
+  This value will replace the whole thing
+  together with the leading $emph$$$emphend. <br>
+  It can be used for array subscripts.
+  <br>Example: if the variable $(emph)i$emphend has value $(emph)3$emphend
+  and the variables <br>
+  $(emph)a1$emphend has value $(emph)3$emphend and <br>
+  $(emph)a2$emphend has value $(emph)pi$emphend, <br>
+  then the string<pre>
+  $$(a$$[$$i-1])*x+$$(a$$[$$i-2])</pre>will become<pre>
+  pi*x+3</pre>after substitution.
+ <li>If the value of a variable being substituted contains the character 
+  $emph$$$emphend, this value will again be substituted, until no more
+  substitution is needed. The server has a built-in limit of nested
+  substitutions; infinite nested substitions will violate this limit and
+  generate an error message.
+</ul>
+
+<hr><h4>Reserved variable names</h4>
+
+The following names are reserved for their special meanings. They should not be
+used for internal needs of any module.
+
+<ul>
+ <li>Do not use variables with names consisting only of numbers. They are
+  reserved for future enhancements of the language.
+ <li>Variables named
+  !for i in cmd,module,session,lang,special_parm,user,useropts,worksheet
+   $emph$i$emphend,
+  !next i
+  are reserved for special parameter passing by the user. A module's variable
+  processing files or phtml files can read but cannot set them. <br>
+  Refer to the section $emph$title_structure$emphend for the meaning of
+  these variables.
+ <li>The variable $emph no_name$emphend has a special use: <br>
+  Parameters in the user query string with no name (for example when the
+  coordinate of a mappable image is passed this way to the http server) will
+  be registered under this variable. For this reason, it should not be used
+  for other purposes.
+ <li>All variable names starting with $emph wims_$emphend will have special
+  meanings for wims server. A module should read or write them only for the
+  special meanings they are designed for.
+ <li>Variable names starting with $emph m_$emphend are reserved for inline
+  mathematical fonts. The module programmer may redefine them, but then their
+  original meaning will be lost.
+ <li>The variable $emph module_dir$emphend has a value preset to the directory
+  of the current module (with respect to the public home directory of the
+  server). This value is usually $emph $$module_dir=module/$$module $emphend
+  (but may vary with the config of the installation).
+ <li>Variable names starting with $emph module_$emphend will have special 
+  meanings: they are used to hold variables defined in the module's INDEX
+  file. Currently implemented variables:
+  <center><table border=0 cellspacing=10>
+   <tr><td>$emph module_title<td>title of the module
+   <tr><td>$emph module_description<td>short description of the module
+   <tr><td>$emph module_author<td>name(s) of author(s) of the module
+   <tr><td>$emph module_address<td>e-mail address of the (principal) author
+   <tr><td>$emph module_copyright<td>copyright notice of the module
+   <tr><td>$emph module_version<td>current version of the module
+   <tr><td>$emph module_wims_version<td>minimal wims version required<br>
+   	to run this module
+   <tr><td>$emph module_language<td>language of the module<br>(en, fr, de, or ...)
+   <tr><td>$emph module_category<td>category of the module<br>
+   	(exercise, tool, course, pedia, recreation, adm, other)
+   <tr><td>$emph module_level<td>level of the module
+   <tr><td>$emph module_domain<td>algebra, analysis, geometry, ...
+   <tr><td>$emph module_keywords<td>keywords, to be placed in the html header
+   <tr><td>$emph module_scoring<td>= yes if the module gives scores according
+   	to wims standard
+  </table></center>
+  Also, variables $emph module_has_intro$emphend, 
+  $emph module_has_help$emphend and
+  $emph module_has_about$emphend
+  have value "yes" if the module's directory contains the respective
+  .phtml file. These variables are used in the command <tt>!homeref</tt>.
+ <li>Certain environment variables setup by httpd are readable by wims
+  modules under names starting with $emph httpd_$emphend. For example, the
+  environment variable $emph REMOTE_HOST$emphend becomes 
+  $emph httpd_REMOTE_HOST$emphend under wims. <br>
+  Please refer to httpd protocol specifications for details of such variables.
+ <li>All variable names starting with $emph ins_$emphend, $emph
+  insplot_$emphend, $emph instex_$emphend will have special meanings for the
+  corresponding dynamic insertion engines. A module should read or write them
+  only for the special meanings they are designed for.
+ <li>If your module uses an external package (e.g. $emph pari$emphend),
+  variable names starting with the name of the interface to that external
+  package followed by $emph _$emphend will have special meanings for that
+  interface, and should be reserved for that purpose.
+</ul>
+

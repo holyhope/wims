@@ -1,0 +1,92 @@
+<HTML><HEAD>
+!!if $style != folding
+!if $style = $empty
+  wims_expire=
+!endif
+$wims_html_header
+
+</HEAD>
+<BODY $wims_htmlbody>
+!robottrap
+!headmenu
+
+<CENTER>
+<H1>
+!href cmd=renew&style=$style $module_title
+</H1>
+</CENTER> <p>
+This document is currently under $emph$style$emphend style.
+You may change it to
+!set already=
+!for s in integral,indexed,folding
+ !if $s != $style
+  !if $already != $empty
+   or
+  !endif
+  !href cmd=resume&style=$s $s
+  !set already=yes
+ !endif
+!next s
+ style. There is also
+ !href module=help/main.$lang a general help
+ and 
+<a href="http://wims.unice.fr/paper/wims/wims.html">a paper</a>
+on WIMS.
+<p>
+
+!if $style=integral or $style=indexed
+ <a name=index><center><h2>-------- Table of Contents --------</h2></center></a><ul>
+ !for set in user,ref
+  <li><H4>$(title_$set)</H4>
+  <ol>
+  !for i in $($(set)_doc)
+   <li>
+   <a name=toc_$i></a>
+   $(ref1)$i$(ref2)$i>$(title_$i)</a>
+  !next i
+  </ol> <P>
+  !next set
+ </ul>
+!else # folding
+ <p>Click on a title to expand or fold out its content.
+ !for set in user,ref
+  <p><hr><center><H2>$(title_$set)</h2></center>
+  !for i in $($(set)_doc)
+   <a name=$i></a>
+   !if ,$i isin $expand
+    <hr><h3>
+    !href cmd=resume&op=close&subject=$i#$i $(title_$i)
+    </h3>
+    !read $i.phtml
+    <p><hr>
+   !else
+    <h4>$(ref1)$i$(ref2)$i>$(title_$i)</a></h4>
+   !endif
+  !next i
+ !next set
+!endif integral or indexed versus folding
+
+!if $style=integral
+ !for i in $user_doc,$ref_doc
+  <a name=$i>
+  <hr><center><h3>$(title_$i)</h3></center>
+  </a>
+  !read $i.phtml
+  <p>
+  <a href=#index>Table of Contents</a>
+ !next i
+!endif
+
+!if $style=indexed
+ !for set in $user_doc,$ref_doc
+  !if $set isin $subject
+   <a name=$set></a>
+   <hr><center><h3>$(title_$set)</h3></center>
+   !read $set.phtml
+   <p>
+  !endif
+ !next set
+!endif
+
+!tail
+

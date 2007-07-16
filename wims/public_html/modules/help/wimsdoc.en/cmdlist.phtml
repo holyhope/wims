@@ -1,0 +1,58 @@
+!set lstyle=<i><font color=#800080>
+!set lstend=</i></font>:
+!set lst_tit=!char 5 to -1 of $tit
+!set lst_titend=$titend</a>
+!set lst_type=$lstyle Type$lstend
+!set type_exec=$lst_type execution command<br>
+!set type_pexec=$lst_type execution command (only valid for phtml files)<br>
+!set type_var =$lst_type variable command<br>
+!set type_both=$lst_type both execution and variable command<br>
+!set lst_syntax=$lstyle Syntax$lstend <tt>!
+!set lst_alias=$lstyle Aliases$lstend
+!set lst_mean =$lstyle Meaning$lstend
+
+Wims commands can be used in variable processing files and phtml files. A
+command is a word preceeded by the character $emph!$emphend.
+<p>
+Commands has two types:
+<ul>
+ <li>Execution commands, which are placed as the first word of a line.
+ <li>Variable commands, which are placed at the beginning of a definition of
+   a variable.
+</ul>
+Some commands can be used both as execution command and as variable command.
+<p>
+Commands may accept parameters which are words following it. Parameter
+fields are separated by white spaces or special words (depending on the command).
+<a name=cmdlist_list></a>
+<hr><h4>Here is the list of $emph$(choose_$cmd_choose)$emphend commands.</h4>
+
+!if $style!=integral
+ You may switch to the list of 
+ !for i in $cmd_choose_list
+  !if $i != $cmd_choose
+   !href cmd=resume&cmd_choose=$i#cmdlist_list $(choose_$i)
+   commands &nbsp;&nbsp;
+  !endif
+ !next i
+!endif
+
+<ul>
+!for c in $cmdfiles
+ <li><a name=cmdlist_$(c)_></a>
+ !if $style != folding
+  !read cmd/$c.phtml
+  <p>
+ !else
+  !if cmdlist_$(c)_ isin $expand
+   <a href=$httpd_SCRIPT_NAME?session=$session&cmd=resume&op=close&subject=cmdlist_$(c)_#cmdlist_$(c)_>
+   !read cmd/$c.phtml
+   <p>
+  !else
+   !href cmd=resume&op=open&subject=cmdlist_$(c)_#cmdlist_$(c)_ $c
+  !endif
+ !endif
+!next c
+
+</ul>
+

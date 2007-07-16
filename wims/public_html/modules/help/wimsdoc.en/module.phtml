@@ -1,0 +1,95 @@
+
+Each wims module has a private home directory in which go all the files
+of this module. <p>
+
+A module must have at least the following files:
+<UL>
+$tit A variable definition file $emph var.def$emphend. $titend
+ This file defines $emph external$emphend variables of the module. A parameter given by the
+ user must have a name declared in this file, except parameter names reserved by
+ wims (cmd, session, module, ...). And exactly variables declared in this
+ file will be saved in the session directory (to be recalled at the next
+ request from the same session).
+$tit A variable processing file $emph var.proc$emphend.$titend
+ This file is processed at EACH request of the module (except special
+ requests: when cmd=intro or getins).
+$tit A main phtml file $emph main.phtml$emphend.$titend
+ This file will be processed at avery request to the module, except under
+ special commands (when cmd=intro or getins)
+$tit An indexing file $emph INDEX$emphend, which defines the application's nature.$titend
+ This file will be used by wims database for searching available modules.
+</UL>
+
+<p>
+And it may often contain the following (optional) files too:
+<ul>
+$tit A variable initialisation file $emph var.init$emphend.$titend
+ This file has the same syntax as the file $emph var.proc$emphend, and is processed
+ exactly at requests with cmd=new or cmd=renew.
+$tit A introductory page $emph intro.phtml$emphend.$titend
+ This is a phtml file, which is processed when the module is
+ accessed with cmd=intro. It is usually used to introduce the content of the
+ module, and to let the user choose starting options.
+</ul>
+
+<p>There may be any number of other files, like a $emph README$emphend file, one or more
+help pages, an $emph about$emphend page, one or more graphics files, files called by one
+of the above mandatory or optional files, etc.
+
+<hr><h4>Variable processing files</h4>
+
+The files $emph var.init$emphend and $emph var.proc$emphend, 
+as well as any files called by these two
+files, are variable processing files. <p>
+
+A variable processing file is divided into lines, separated by 
+non-escaped new-line characters. A new-line character can be escaped by the
+character $emph \$emphend, in which case it does not separate the two lines
+before and after it.
+
+Every line of a variable processing file must be one of the following:
+<ol>
+ <li>A comment line, whose first non-space character is either the character
+  $emph #$emphend, or $emph!$emphend followed by another $emph!$emphend.
+ <li>A variable definition line, in the form of
+  $emph name$emphend=$(emph)value$emphend. The content of
+  $(emph)value$emphend may be a string (if this string contains a new-line
+  character, it must be escaped by the character $emph \$emphend), or a wims
+  variable command (which must then start with the character $emph!$emphend).
+ <li>A command line, whose first non-space character is the character 
+  $emph!$emphend, followed by the command name and optional parameters.
+  <br>If the command produces an output string, this output will be ignored.
+ <li>A label line, whose first non-space character is the character
+  $emph:$emphend, followed by the name of the label. Anything following the
+  label name will be considered as comment and ignored by the interpreter.
+  <br>Label is used in conjunction with the jumping command
+  $emph!goto$emphend.
+  <br>A label starting with the character '*' is catch-all, matching any  
+  $emph!goto$emphend label.
+ <li>Any line not fitting into one of the above 4 will generate a wims error
+  message.
+</ol>
+
+<hr><h4>Phtml files</h4>
+
+The files main.phtml and intro.phtml, as well as any files called by these
+two files, are phtml files (programmable html).
+<p>
+A phtml file is an ordinary html file, except for lines whose
+first non-space character is a $emph!$emphend or a $emph:$emphend.
+<p>
+Lines can be escaped by $emph\$emphend, just as in the case of a variable
+processing file.
+<p>
+A line starting with $emph:$emphend is a label line, as in the case of a
+variable processing file.
+<p>
+A line starting with $emph!$emphend is a command line, as in the case of a
+variable processing file. To the difference that if the command produces an
+output string, this output will be inserted into the html page, at the place
+of the line.
+<p>
+Lines not of the above two types will be sent to the http client, after
+substitution of variables.
+
+

@@ -1,0 +1,85 @@
+
+<ol>
+  $tit Write html pages with a programmability extension: substitution of
+      variables, conditional branching, etc.$titend
+      This wims programmability extension to html does not require any
+      addon or plugin at the browser side, as all the wims commands are treated
+      by the wims server before sending the result to the browser, which will
+      be a standard html page. <br>
+      For example, this allows you to define style macros which can be
+      dynamically changed. <br>
+      And this extension can cohabit with all the current (and hopefully
+      future) html standards, including java applets, javascripts, embedded
+      objects,
+      dhtml... This is because the wims extension follows a strict line
+      discipline (i.e. a wims command must start at the first word of a line),
+      while html standard is not line-oriented. <br>
+      This means that you can even embed wims extensions into javascripts, 
+      applets, dhtml...
+      
+  $tit Dynamic insertions of paints, plots and TeX formatted mathematical
+      formulas into html pages. $titend
+      For example, you may insert the following line into your wims-extended html 
+      page. At the browser side, the visitor will see a TeX formatted matrix 
+      whose content varies with the value of the variable $emph $$matrix$emphend:
+      <pre>
+     $ !instex $$$$ \left( $$matrix \right) $$$$</pre>
+      Moreover, this implementation of dynamic insertions makes future updates
+      possible without modification at module's level. (For example when a
+      better way to render mathematical formula is available, a simple
+      modification at server's level will immediately let all $emph!instex
+      $emphend lines take benefit of the new standard.)
+      
+  $tit Insplot is now animated!$titend
+      Exemple: the tool
+      !href module=tool/geometry/animtrace.$lang&cmd=intro Tracés Animés
+      .
+  
+  $tit Direct interfaces to powerful external software packages.$titend
+      For example, you may define a variable `factor' by the following line:
+      <pre>
+      factor=!exec pari print(factor($$number))</pre>
+      Upon execution of this line, the variable $number will be replaced by
+      its current value, then the software package `PARI' will be called
+      with the string `print(factor(&lt;value of $$number>))' as command to
+      execute. The output of the program, with the overheads stripped, will
+      be placed as the value of the variable `factor'. <br>
+      Interfaces provided in version $wims_version of wims: PARI, Maxima, MuPAD,
+      Coq, Povray, gnuplot, PostgreSQL, Fly (gif drawing), CALC (by Keith Matthew).
+
+  $tit Simple and versatile language.$titend
+      The language used for wims modules is an extension of the existing and
+      popular html language. This extension is designed to be simple, 
+      easy to use and close to natural language. Synonymes are accepted
+      whenever necessary. For example, to include the content of another
+      file, you don't have to remember whether the command is
+      $emph include$emphend as in C, or $emph input$emphend as in TeX, 
+      because both are valid.
+
+  $tit Convenient directives for string manipulations:$titend
+      replace with regular
+      expression capability, extraction of a subset from a list of items,
+      shuffle, evaluation of mathematical expressions, etc.
+
+  $tit Easy inline mathematical symbols:$titend
+      simply type <tt>$$m_pi</tt> for $m_pi, <tt>$$m_RR</tt> for
+      $m_RR, <tt>$$m_eufM</tt> for $m_eufM, <tt>$$m_le</tt> for 
+      $m_le, <tt>$$m_Rightarrow</tt> for $m_Rightarrow, etc.
+      
+  $tit Intelligent treatment of mathematical expressions:$titend
+      built-in translation routines to allow error-tolerant expressions
+      like <tt>2y</tt> (instead of <tt>2*y</tt>) or <tt>(x+1)(x-1)</tt>
+      (instead of <tt>(x+1)*(x-1)</tt>), and translations of raw mathematical
+      expressions into beautified html sources (<tt>x^3-3*x^2+1*x-5</tt>
+      will become $emph
+      !htmlmath x^3-3*x^2+1*x-5
+      $emphend,
+      etc.), or TeX sources, etc.
+      
+  $tit Powerful random capabilities:$titend
+      random permutation (shuffle), random
+      record from a datafile, random filename, etc.
+
+</ol>
+
+
