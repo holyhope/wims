@@ -1,0 +1,24 @@
+
+<ol type=I>
+!for i=1 to $chaptercnt
+ !set n=!linecnt $(chapter$i)
+ !set a=!line 1 of $(chapter$i)
+ <p><font size=+1><li>
+ !href module=$module&chapter=$i $a
+ </font><ol>
+ !if robot notin $session
+  !for j=2 to $n
+   !set l=!line $j of $(chapter$i)
+   !set t=!item 1 of $l
+   !set s=!item 2 to -1 of $l
+   <li>
+   !href module=$module&chapter=$i&open=$open,$(i)_$t#$t $s
+  !next j
+ !endif
+ </ol>
+!next i
+ <p><font size=+1><li>
+ !href module=help/wimsdoc.en Technical documentation for developers
+ </font>
+</ol>
+
