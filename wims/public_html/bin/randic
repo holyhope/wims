@@ -1,0 +1,21 @@
+#! /bin/sh
+# This script produces a random list of words, according to 
+# the numbers given in the input string.
+
+#Dictionary file directory
+lang=$w_module_language
+dicdir=bases/dic/$lang
+
+if [ ! -d $dicdir ]; then exit; fi
+cd $dicdir
+
+. .cnt.$lang
+for i in $wims_exec_parm
+do
+ count=`eval echo '$cnt'$i`
+ if [ ! -z "$count" ]; then 
+  n=$(( $RANDOM%$count+1 ))
+  head -$n $lang.$i | tail -1
+ fi
+done
+

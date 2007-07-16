@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# sysmask test
+../bin/true 2>/dev/null && {
+ echo Cannot execute python: security protection unavailable. >&2
+ exit
+}
+
+echo "$wims_exec_parm" | sed 's/\&#36;/\$/g' >$tmp_dir/python.src
+
+w_wims_priv_chroot=tmpdir
+export w_wims_priv_chroot
+ulimit -f 64
+bin/ch..root python ./python.src
+

@@ -1,0 +1,24 @@
+#! /bin/sh
+
+# You must modify this to suit your environment
+ODEDRAW=bin/draw..ode
+
+if [ "$wims_exec_parm" = "" ] || [ "$s2_dir" = "" ] || [ ! -d $s2_dir ] ; then exit ; fi
+
+tstamp=`date '+%s'`
+set $wims_exec_parm
+out_fname=$s2_dir/ode-$1.gif
+params=$2
+
+if [ "$wims_exec_parm" = "about" ] ; then
+    echo `$ODEDRAW -v 2>&1`
+    exit 0
+fi
+
+rm -f $out_fname
+$ODEDRAW -o $out_fname -f 2 -p $params > /dev/null 2>&1
+if [ -f $out_fname ] ; then
+    src="wims.cgi?session=$w_session&cmd=getins&special_parm=ode-$1.gif&modif=$tstamp"
+    echo "<img src=\"$src\" border=1 alt=\"ODE phase graph\">"
+fi
+

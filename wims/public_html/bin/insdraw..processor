@@ -1,0 +1,111 @@
+#! /bin/sh
+#
+# Mandatary parms: $1=plot number. $2=session number.
+# environment parms: ins_source.
+# reserved words: ins_border (border size).
+
+intermediate_format=gif
+flydraw=$w_wims_home/other/bin/flydraw
+
+CONVERT_DIS=2
+CONVERT_OPT="-quality 90 -dispose $CONVERT_DIS"
+
+# default size
+if [ -z "$w_insdraw_size" ]; then
+ w_insdraw_size=256,256
+fi
+
+if [ "$w_anim_format" != "mng" ]; then
+ w_anim_format=gif
+fi
+
+if [ -z "$2" ]; then exit; fi
+
+if [ ! -z "$w_insdraw_transparent" ]; then
+ draw_transp=transparent
+ convert_transp="-transparent $w_insdraw_transparent"
+else
+ convert_transp=
+fi
+
+# png transparency is not compatible with browsers
+if [ "$w_ins_format" = "png" ]; then
+ convert_transp="-transparent '#000000'"
+fi
+
+if [ -z "$w_ins_anim_loop" ]; then w_ins_anim_loop=0; fi
+
+rm -f $2/insert$w_wims_inssub-$1.* 2>/dev/null
+rm -f $2/insdraw.cmd 2>/dev/null
+
+draw_content=
+anim_list=
+i=0
+while [ $i -lt $ins_anim_frames ]; do
+draw_content="$draw_content
+ new $w_insdraw_size
+ animstep=$i
+ s=$i/$ins_anim_frames
+ wims_linecount 0
+ $ins_source
+ output $2/insert$w_wims_inssub-$1-$i.$intermediate_format
+"
+anim_list="$anim_list $2/insert$w_wims_inssub-$1-$i.$intermediate_format"
+i=`expr $i + 1`
+done
+
+if [ -z "$w_insdraw_filebase" ]; then
+ if [ "$trusted_module" = "yes" ]; then
+  flydraw_filebase="$module_dir/insdraw gifs"
+ else
+  flydraw_filebase="$module_dir gifs"
+ fi
+else
+ if [ "$trusted_module" = "yes" ]; then
+  flydraw_filebase="$w_insdraw_filebase"
+ else
+  flydraw_filebase=
+ fi
+ for b in $w_insdraw_filebase
+ do
+  case $b in
+   modules/data/*) flydraw_filebase="$flydraw_filebase $b"
+   ;;
+   *) flydraw_filebase="$flydraw_filebase $module_dir/$b"
+   ;;
+  esac
+ done
+ flydraw_filebase="$flydraw_filebase gifs"
+fi
+export flydraw_filebase
+
+$flydraw <<@
+$draw_content
+@
+echo "$draw_content" >>$2/insdraw.cmd
+
+alist=
+for i in $anim_list
+do
+ if [ -s $i ]; then alist="$alist $i"; fi
+done
+
+if [ $ins_anim_frames -lt 2 ]; then
+ if [ $w_ins_format = $intermediate_format ]; then
+  bin/ch..root mv $2/insert$w_wims_inssub-$1-0.$intermediate_format $2/insert$w_wims_inssub-$1.$w_ins_format
+ else
+  bin/ch..root convert $CONVERT_OPT $convert_transp -density $w_ins_density $2/insert$w_wims_inssub-$1-0.$intermediate_format $2/insert$w_wims_inssub-$1.$w_ins_format 2>$2/convert.err || bin/convert..switch $2/convert.err
+ fi
+else
+  w_ins_format=$w_anim_format
+  if [ "$intermediate_format" = "gif" ] && [ "w_ins_format"  = "gif" ]; then
+   whirlgif -disp prev -time $ins_anim_delay -loop $w_ins_anim_loop -o $2/insert$w_wims_inssub-$1.$w_ins_format $alist
+  else
+   bin/ch..root convert $CONVERT_OPT $convert_transp -delay $ins_anim_delay -loop $w_ins_anim_loop $alist $2/insert$w_wims_inssub-$1.$w_ins_format 2>$2/convert.err || bin/convert..switch $2/convert.err
+  fi
+fi
+
+# Remove zero-sized jpeg file, for otherwise netscape doesn't understand,
+# and waits forever trying to interprete it.
+if [ ! -s $2/insert$w_wims_inssub-$1.$w_ins_format ]; then rm -f $2/insert$w_wims_inssub-$1.$w_ins_format; fi
+

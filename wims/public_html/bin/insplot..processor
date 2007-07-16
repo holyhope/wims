@@ -1,0 +1,167 @@
+#! /bin/sh
+#
+# Mandatary parms: $1=plot number. $2=session number.
+# environment parms: ins_source.
+# reserved words: insplot_set (setup), insplot_data, ins_border (border size).
+
+if [ -z "$2" ]; then exit; fi
+
+CONVERT_DIS=2
+CONVERT_OPT="-quality 90 -dispose $CONVERT_DIS"
+
+GNUPLOT_HEADER='Pi=pi
+PI=pi
+e=exp(1)
+E=exp(1)
+sign(x) = sgn(x)
+ln(x) = log(x)
+lg(x) = log10(x)
+ch(x) = cosh(x)
+sh(x) = sinh(x)
+th(x) = tanh(x)
+arccos(x) = acos(x)
+arcsin(x) = asin(x)
+tg(x)	  = tan(x)
+arctan(x) = atan(x)
+arctg(x)  = atan(x)
+Argch(x)  = acosh(x)
+Argsh(x)  = asinh(x)
+Argth(x)  = atanh(x)
+argch(x)  = acosh(x)
+argsh(x)  = asinh(x)
+argth(x)  = atanh(x)
+cotan(x)  = (1/tan(x))
+cot(x)	  = (1/tan(x))
+ctg(x)    = (1/tan(x))
+sec(x)	  = (1/cos(x))
+csc(x)	  = (1/sin(x))
+max(x,y)  = (x>y? x : y)
+min(x,y)  = (x<y? x : y)
+round(x)  = floor(x+0.5)
+rint(x)	  = floor(x+0.5)
+set samples 400
+'
+
+plot_cmd_2D=plot
+plot_cmd_3D=splot
+insplot_cmd=
+if [ "$insplot_method" = "2D" ]; then insplot_cmd=$plot_cmd_2D; fi
+if [ "$insplot_method" = "3D" ]; then insplot_cmd=$plot_cmd_3D; fi
+if [ -z $insplot_cmd ]; then exit; fi
+
+rm -f $2/insert$w_wims_inssub-$1* 2>/dev/null
+
+# data file names
+plot_parm=`echo "$ins_source" | sed "s!insplot_data!$2/insplot_data!g"`
+insplot_parm=`echo "$insplot_source" | sed "s!insplot_data!$2/insplot_data!g"`
+
+if [ ! -z "$w_insplot_data" ]; then
+  cat >$2/insplot_data <<@
+$w_insplot_data
+@
+fi 
+if [ -z "$w_ins_anim_loop" ]; then w_ins_anim_loop=0; fi
+insplot_colors=`echo $w_insplot_colors | tr ';\12' '  '`
+
+if [ ! -z $w_insplot_transparent ]; then
+ gnuplot_transp=transparent
+# A bad fix for convert transparency incompatibility trouble
+# convert_transp="-transparent $w_insplot_transparent"
+ convert_transp="-transparent '#FFFFFF'"
+else
+ convert_transp=
+fi
+
+if [ "$w_anim_format" != "mng" ]; then
+ w_anim_format=gif
+fi
+
+if [ -z "$w_gnuplot_format" ] || [ "$w_gnuplot_format" = "default" ]; then
+ intermediate_format=$w_ins_format
+else
+ intermediate_format=$w_gnuplot_format
+fi
+insplot_termset="set terminal $intermediate_format $gnuplot_transp $w_insplot_font size 500,400 $insplot_colors"
+
+if [ ! -z "$multiplot" ]; then
+ plotcmd="set multiplot"
+ i=1
+ until [ $i -gt $multiplot ]; do
+  tt=`echo "$insplot_parm" | awk 'FNR=='$i' {print;exit}'`
+  t2=`echo "$w_insplot_split" \
+	| awk -F ';' 'FNR=='$i' {for(j=1;j<=NF;j++) print "set "$j;exit}'`
+  c1=`echo $tt | awk '{print $1}'`
+  c2=`echo $tt | awk '{print substr($0,3)}'`
+  if [ $c1 = "2D" ]; then 
+    cc="$plot_cmd_2D $c2"
+  else
+    if [ $c1 = "3D" ]; then
+      cc="$plot_cmd_3D $c2"
+    else
+      cc="$insplot_cmd $tt"
+    fi
+  fi
+  plotcmd="$plotcmd
+	$t2
+	$cc"
+  i=$(( $i+1 ))
+ done
+ plotcmd="$plotcmd
+	set nomultiplot"
+else
+ plotcmd="$insplot_cmd $plot_parm"
+fi
+
+plot_content=
+anim_list=
+i=0
+while [ $i -lt $ins_anim_frames ]; do
+plot_content="$plot_content
+ step=$i
+ animstep=$i
+ anim_step=$i
+ s=$i/$ins_anim_frames.0
+ $insplot_set
+ $insplot_termset
+ set output \"$2/insert$w_wims_inssub-$1-$i.$intermediate_format\"
+ $plotcmd
+"
+anim_list="$anim_list $2/insert$w_wims_inssub-$1-$i.$intermediate_format"
+i=$(( $i+1 ))
+done
+
+bin/ch..root gnuplot <<@
+$GNUPLOT_HEADER
+$plot_content
+@
+
+echo "$GNUPLOT_HEADER
+$plot_content" >$2/gnuplot.cmd
+
+alist=
+for i in $anim_list
+do
+ if [ -s $i ]; then alist="$alist $i"; fi
+done
+
+if [ $ins_anim_frames -lt 2 ]; then
+ if [ $w_ins_format = $intermediate_format ]; then
+  bin/ch..root mv $2/insert$w_wims_inssub-$1-0.$w_ins_format $2/insert$w_wims_inssub-$1.$w_ins_format
+ else
+  bin/ch..root convert $CONVERT_OPT $convert_transp -density $w_ins_density $2/insert$w_wims_inssub-$1-0.$intermediate_format $2/insert$w_wims_inssub-$1.$w_ins_format 2>$2/convert.err || bin/convert..switch $2/convert.err
+ fi
+else
+ w_ins_format=$w_anim_format
+ if [ "$intermediate_format" = "gif" ] && [ "$w_ins_format" = "gif" ]; then
+  whirlgif -disp prev -time $ins_anim_delay -loop $w_ins_anim_loop -o $2/insert$w_wims_inssub-$1.gif $alist
+ else
+  bin/ch..root convert $CONVERT_OPT $convert_transp -delay $ins_anim_delay -loop $w_ins_anim_loop $alist $2/insert$w_wims_inssub-$1.$w_ins_format 2>$2/convert.err || bin/convert..switch $2/convert.err
+ fi
+fi
+
+# Remove zero-sized jpeg file, for otherwise netscape doesn't understand,
+# and waits forever trying to interprete it.
+if [ ! -s $2/insert$w_wims_inssub-$1.$w_ins_format ]; then rm -f $2/insert$w_wims_inssub-$1.$w_ins_format; fi
+
+echo "$plot_content" >$2/insplot_cmd
+

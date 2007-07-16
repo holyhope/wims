@@ -1,0 +1,72 @@
+#! /bin/sh
+#
+# Name: this is file "coqweb"
+# Extension: shell script
+# Function: interface coqweb pour wims
+# Install: should be in ${w_wims_home}/public_html/bin
+#          to be executable by wims's phtml
+# usage for testing: ./coqweb_test
+#
+# usage from phtml:
+# !exec coqweb version debug_level
+# => wims calls : ${w_wims_home}/public_html/bin/coqweb
+# parms are in env's wims_exec_parm
+
+#
+# If debug on
+#
+if [ "$w_croq6_dbg_level" == "1" ];then
+ echo "[coqweb] called with $* ;;<br/>"
+ echo "<br/>env start <br/>"
+ env >/tmp/env$$
+ sed "s/$/<br\/>/" </tmp/env$$ >/tmp/sed$$
+ cat /tmp/sed$$
+ rm /tmp/env$$ /tmp/sed$$
+ echo "<br/>env end"
+ echo "<br/>coqweb start <br/>"
+fi
+#
+# The tuning
+#
+export TEMPS_LIMITE=50
+#
+# the basic coq parms
+#
+export COQWEBDIR=/var/lib/coqweb/coqweb2/
+export COQWEBCOQ=/usr/bin/coqtop
+export MODE=wims
+
+rm -f $tmp_dir/biblio*
+
+## bin/ch..root coqweb_wims2 <<@
+bin/ch..root cww <<@
+$wims_exec_parm
+@
+
+#
+# If debug on
+#
+if [ "$w_croq6_dbg_level" == "1" ];then
+ echo "<br/>coqweb end <br/>"
+fi
+
+if [ -f $tmp_dir/biblio_content ]; then
+ fname=`cat $tmp_dir/biblio_name | grep -v '\.\.'`
+ mv -f $tmp_dir/biblio_content $w_wims_home/chroot/var/lib/coqweb/coqweb2/bibliotheque/$fname
+fi
+
+if [ -f $tmp_dir/biblio_content2 ]; then
+ fname=`cat $tmp_dir/biblio_name2 | grep -v '\.\.'`
+ mv -f $tmp_dir/biblio_content2 $w_wims_home/chroot/var/lib/coqweb/coqweb2/bibliotheque/$fname
+fi
+
+if [ -f $tmp_dir/biblio_content3 ]; then
+ fname=`cat $tmp_dir/biblio_name3 | grep -v '\.\.'`
+ mv -f $tmp_dir/biblio_content3 $w_wims_home/chroot/var/lib/coqweb/coqweb2/bibliotheque/$fname
+fi
+
+if [ -f $tmp_dir/biblio_content4 ]; then
+ fname=`cat $tmp_dir/biblio_name4 | grep -v '\.\.'`
+ mv -f $tmp_dir/biblio_content4 $w_wims_home/chroot/var/lib/coqweb/coqweb2/bibliotheque/$fname
+fi
+

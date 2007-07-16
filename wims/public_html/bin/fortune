@@ -1,0 +1,21 @@
+#! /bin/sh
+
+#Fortune file directory
+fortunedir=./bases/fortune/$w_module_language
+PATH=$PATH:/usr/games
+
+parm=`echo "$wims_exec_parm" | awk '{print $1;exit}' | 
+  tr 'SHORTLNG' 'shortlng'`
+
+if [ "$parm" = "short" ]; then
+ parm=-s
+else
+ if [ "$parm" = "long" ]; then
+  parm=-l
+ else
+  exit
+ fi
+fi
+
+bin/ch..root fortune $parm $fortunedir 2>/dev/null | tr '\\/<' '   ' | sed 's!\$!\&#36;!g;'
+

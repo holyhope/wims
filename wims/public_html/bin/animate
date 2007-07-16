@@ -1,0 +1,24 @@
+#! /bin/sh
+
+if [ -z "$wims_exec_parm" ]; then exit; fi
+
+for i in $wims_exec_parm
+do
+ base=$s2_dir/insert$w_wims_inssub-$i
+ ss=`ls $base.gif $base.jpg $base.jpeg $base.png $base.pbm 2>/dev/null`
+ source="$source $ss"
+done
+source2=`echo "$source" | sed "s!$s2_dir/!$tmp_dir/!g"`
+
+if [ -z "$w_animate_delay" ]; then w_animate_delay=40; fi
+delay=$(( $w_animate_delay ))
+if [ -z "$w_animate_loop" ]; then w_animate_loop=0; fi
+loop=$(( $w_animate_loop ))
+date=`date '+%H%M%S'`
+
+rm -f $s2_dir/animate.gif 2>/dev/null
+cp -f $source $tmp_dir 2>/dev/null
+bin/ch..root convert -delay $delay -loop $loop $source2 $tmp_dir/animate.gif
+mv -f $tmp_dir/animate.gif $s2_dir 2>/dev/null
+echo "wims.cgi?cmd=getins&session=$w_session&special_parm=animate.gif&modif=$date"
+

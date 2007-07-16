@@ -1,0 +1,16 @@
+#! /bin/sh
+
+if [ -f ../chroot/usr/local/bin/chemeq ]; then
+ launcher=ch..root
+else
+ launcher=wrap..exec
+fi
+
+tmp=`echo "$wims_exec_parm" | bin/$launcher chemeq`
+echo "$tmp"
+
+if echo "$tmp" | grep ERROR >&/dev/null; then
+ today=`date '+%Y%m%d' 2>/dev/null`
+ echo "$today chemeq: $wims_exec_parm" >>../log/user_error.log 2>/dev/null
+fi
+

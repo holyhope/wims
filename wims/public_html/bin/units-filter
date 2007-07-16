@@ -1,0 +1,25 @@
+#! /bin/sh
+
+w_dictionary=bases/units/unitsdic.$w_module_language
+w_translator_unknown=leave
+w_translator_switch=nocase
+export w_dictionary w_translator_unknown w_translator_switch
+
+if [ -f ../chroot/usr/local/bin/chemeq ]; then
+ launcher=ch..root
+else
+ launcher=wrap..exec
+fi
+
+# This is a security measure. Do not shortcut!
+case "$w_units_option" in
+ o) uopt="-o";;
+ s) uopt="-s";;
+ *) uopt="";;
+esac
+
+tmp=`bin/translator | bin/$launcher units-filter $uopt`
+echo "$tmp"
+
+echo "$tmp" | grep ERROR >&2
+

@@ -1,0 +1,11 @@
+#! /bin/sh
+
+# Transforms output from Pari to be used by POVRay.
+# Except for the exponent format, everything should be dealt with by the Pari script.
+
+# use `&' to separate the lines
+
+pari_ray=yes
+export pari_ray
+bin/pari | tr 'K\n&' '_ \n' | sed -e 's/ E/e/g;s/E/e/g' >$tmp_dir/data.pov
+

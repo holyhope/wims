@@ -1,0 +1,69 @@
+#! /bin/sh
+
+if [ "$wims_exec_parm" = "" ] || [ "$s2_dir" = "" ] || [ ! -d "$s2_dir" ]; then exit; fi
+
+#if [ "$tmp_dir" = "" ] || [ ! -d "$tmp_dir" ]; then
+# tmp_dir=$s2_dir
+#else
+# if [ ! -f $tmp_dir/insplot_data ] && [ -f $s2_dir/insplot_data ]; then
+#  cp $s2_dir/insplot_data $tmp_dir >/dev/null
+# fi
+#fi
+
+CONVERT_DIS=2
+CONVERT_OPT="-quality 90 -dispose $CONVERT_DIS"
+
+# directory containing povray include files
+POVINC=/usr/lib/povray31/include
+tstamp=`date '+%s'`
+
+if [ "$wims_exec_parm" = "about" ]; then
+ dd=`bin/ch..root povray -v 2>&1 | head -1`
+ echo "<a href=http://www.povray.org>Povray</a> ($dd)"
+ exit
+fi
+
+if [ "$w_anim_format" != "mng" ]; then
+ w_anim_format=gif
+fi
+
+if [ ! -z $w_insplot_transparent ]; then
+ gnuplot_transp=transparent
+# convert_transp="-transparency $w_insplot_transparent"
+# fixup
+ convert_transp="-transparency '#FFFFFF'"
+else
+ convert_transp=
+fi
+
+if [ -z "$w_ins_anim_delay" ]; then w_ins_anim_delay=0; fi
+if [ -z "$w_povray_frames" ]; then w_ins_anim_frames=0; $w_povray_frames=1 ; fi
+if [ -z "$w_ins_anim_loop" ]; then w_ins_anim_loop=0; fi
+if [ -n "$w_povray_frames" ] && [ "$w_povray_frames" -gt 1 ]; then
+ format=$w_anim_format
+else
+ format=jpg
+fi
+if [ -z "$w_povray_quality" ]; then w_povray_quality=3; fi
+
+rm -f $s2_dir/povray* $tmp_dir/povray* 2>/dev/null
+parm="+fc -q$w_povray_quality -w$w_povray_width -h$w_povray_height -kfi1 -kff$w_povray_frames -ki$w_povray_clock0 -kf$w_povray_clock1 -j0"
+
+cat <<@ >$tmp_dir/tmp.pov
+$wims_exec_parm
+@
+
+if [ "$w_povray_has_data" = "yes" ]; then
+ cat $tmp_dir/data.pov >>$tmp_dir/tmp.pov
+fi
+
+bin/ch..root povray $parm -d -l$POVINC -i$tmp_dir/tmp.pov -o$tmp_dir/povray.tga 2>$tmp_dir/povray.out
+bin/ch..root convert $CONVERT_OPT $convert_transp -delay $w_ins_anim_delay -loop $w_ins_anim_loop $tmp_dir/povray*.tga $tmp_dir/povray.$format 2>$tmp_dir/convert.err || bin/convert..switch $tmp_dir/convert.err
+mv -f $tmp_dir/povray.$format $s2_dir
+
+if [ -f "$s2_dir/povray.$format" ]; then
+ src="wims.cgi?session=$w_session&cmd=getins&special_parm=povray.$format&modif=$tstamp"
+ echo "<img src=$src $w_povray_image_attr alt=\"Ray traced image\">"
+ echo $src
+fi
+

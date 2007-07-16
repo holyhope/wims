@@ -1,0 +1,11 @@
+#! /bin/sh
+
+if [ -f ../chroot/usr/local/bin/chemeq ]; then
+ launcher=ch..root
+else
+ launcher=wrap..exec
+fi
+
+tmp=`echo "$wims_exec_parm" | bin/$launcher chemeq -c | grep ERROR`
+echo "$tmp"
+
