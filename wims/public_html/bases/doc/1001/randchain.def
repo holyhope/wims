@@ -1,0 +1,41 @@
+!set titb=Chained randomization
+!set keyw=
+!set datm=20020203
+!set prev=
+!set next=
+!set upbl=varrandom
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p>
+One can use several random variables, with later randomizations depending on the values of earlier variables.
+<p>
+For example, in order to generate the random coefficients $m_a,$m_b of a quadratic polynomial 
+!insmath x^2+ax+b
+ who always has two real roots, one can first generate a random integer $m_a, say, between -10,10. Then generate a random integer $m_b, say, between 
+!insmath a^2/4-10
+ and 
+!insmath a^2/4-1
+. Under OEF format, this can be written as
+<pre>
+\integer{a=random(1..10)*random(-1,1)}
+\integer{b=floor(\a^2/4)-random(1..10)}
+</pre>
+<p>
+(where <tt>floor</tt> is the function returning the beggest integer $m_le its argument. Note also that here we have made a special randomization for $m_a in order to avoid the 
+!read primitives.phtml 1, link, degeneration, degenerating 
+ value 0.)
+<p>
+Another example is to generate 3 integers AB, BC, CA that DO NOT form the sides of a triangle. To do so, one can first generate two integers AB and BC, say, between 3 and 10. Then the third can be randomly taken beteen AB+BC+2 and AB+BC+10. Under OEF format, this is
+<pre>
+\integer{AB=random(3..10)}
+\integer{BC=random(3..10)}
+\integer{CA=random(2..10)+\AB+\BC}
+</pre>

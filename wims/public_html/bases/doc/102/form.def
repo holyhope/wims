@@ -1,0 +1,51 @@
+!set titb=La commande <tt>\form</tt> ou <tt>\docform</tt>
+!set keyw=
+!set datm=20020406
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+Créer un formulaire html vers un bloc&nbsp;&#58; jusqu'à 3 arguments. <ul>
+ <li>Argument 1&#58; le nom du bloc cité. Ceci peut être un bloc d'un autre
+ document, dans ce cas cet argument doit avoir la forme <tt>ser/bl</tt>, où
+ <tt>ser</tt> est le numéro de l'autre document, et <tt>bl</tt> le nom du
+ bloc. <br>
+ Si cet argument est vide ou égal à ',', il signifie le bloc actuel.
+ <li>Argument 2 (optionnel)&#58; la position à aller (anchor) du bloc cité.
+ <li>Argument 3&#58; contenu du formulaire, dans son format html habituel.
+</ul>
+<p>
+Le contenu du formulaire peut contenir jusqu'à 20 paramètres sous les 
+noms de <tt>parm1, parm2, ..., parm20</tt>. 
+Tout autre type de paramètres d'entrée doit être évité.
+<p><a name=expform>
+Par exemple, le formulaire ci-dessous permet la saisie d'une expression
+numérique arbitraire. Cette expression est ensuite évaluée dans le document.
+<p>
+
+!read primitives.phtml 1, form, ., expform, Entrez votre expression&nbsp;:	<input size=30 name=parm1 value="\parm1">	<input type=submit value=OK>	 
+
+
+!set m_value=$[$m_parm1]
+L'expression est évaluée à&nbsp;&#58; $m_value.
+<p>
+Les sources&nbsp;&#58;
+<p>
+<pre>
+\form{.}{expform}{
+Entrez votre expression&nbsp;&#58;
+&lt;input size=30 name=parm1 value="\parm1">
+&lt;input type=submit value=OK>
+}
+\def{real value=\parm1}L'expression est évaluée à&nbsp;&#58; \value.
+</pre>

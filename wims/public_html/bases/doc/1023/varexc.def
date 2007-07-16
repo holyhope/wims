@@ -1,0 +1,80 @@
+!set titb=Excentricité
+!set keyw=
+!set datm=20030903
+!set prev=ellhyppar
+!set next=
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+En cliquant sur 
+!read primitives.phtml 1, reload, <img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20"> 
+
+vous changerez les autres paramètres. 
+<p>
+
+!set tmp0=!randint 100, 10^3
+
+!set m_thet=$[$(tmp0)/1000]
+
+
+!set m_e=2*s 
+
+
+!set tmp0=!randint 1, 4
+
+!set m_h=$[rint($(tmp0))]
+
+
+!set tmp=!translate ";': to $     $ in 1+$m_e*(cos($m_thet)*cos(t)-sin($m_thet)*sin(t))
+
+!set tmp=!lower $tmp
+!set tmp0=!exec maxima fullratsimp($tmp);
+!set m_f=!rawmath $(tmp0) 
+ 
+La courbe d'équation
+<center>
+
+!insmath r=\e*\h/(1+\e*cos(t-\thet))= \e*\h/(\f)
+</center>
+<p>
+pour s variant de 0 à 1
+
+!set m_a=cos($m_thet)/($m_h) 
+
+
+!set m_b=-sin($m_thet)/($m_h) 
+
+
+!set m_c=1/($m_e*$m_h) 
+
+
+!set m_direct=plot navy , -($m_a)/($m_b)*x+1/($m_b) 
+
+<center>
+
+!read primitives.phtml 2, draw, 300,300, animate 25,0.3,6	 xrange   -10,10	 yrange  -10,10	 trange -pi, pi	 vline  0,0,black	 hline   0,0,black	 linewidth 2	 plot green, \e*\h*cos(t)/(\f),\e*\h*sin(t)/(\f)	 trange   -10,10	 \direct	 
+
+</center>
+Variation de la 
+!read primitives.phtml 3, link, varhaut, hauteur 
+ 
+!insmath h
+ ou 
+!read primitives.phtml 4, link, varang, l'angle 
+ 
+!insmath \theta_0
+ 
+	
+<p>
+	Si vous voulez faire vous-même vos variations, utiliser 
+	
+!read primitives.phtml 5, tool, module=tool/geometry/animtrace.fr,  
+

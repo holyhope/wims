@@ -1,0 +1,48 @@
+!set titb=The command <tt>\form</tt> or <tt>\docform</tt>
+!set keyw=
+!set datm=20020406
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+Create an html form pointing to a block&#58; up to 3 arguments. <ul>
+ <li>Argument 1&#58; the name of the cited block. This can be a block of another
+document, in this case this argument must be under the form <tt>ser/bl</tt>,
+where <tt>ser</tt> is the serial number of the other document, and <tt>bl</tt>
+the name of the block.<br>
+ If this argument is empty or equal to '.', it means the current   block.
+ <li>Argument 2 (optional)&#58; the position to go (anchor) in the cited block.
+ <li>Argument 3&#58; content of the form, in its usual html format.
+</ul>
+<p>
+The content of the form may contain up to 20 parameters under the names of <tt>parm1, parm2, ..., parm20</tt>. All other kinds of input parameters should be avoided.
+<p><a name=expform>
+For example, the following form allows the input of an arbitrary numerical expression. This expression is then evaluated in the document.
+<p>
+
+!read primitives.phtml 1, form, ., expform, Enter your expression:	<input size=30 name=parm1 value="\parm1">	<input type=submit value=OK>	 
+
+
+!set m_value=$[$m_parm1]
+The expression is evaluated to&#58; $m_value.
+<p>
+The source of the above&#58;
+<p>
+<pre>
+\form{.}{expform}{
+Enter your expression&#58;
+&lt;input size=30 name=parm1 value="\parm1">
+&lt;input type=hidden value=OK>
+}
+\def{real value=\parm1}The expression is evaluated to&#58; \value.
+</pre>

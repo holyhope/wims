@@ -1,0 +1,32 @@
+!set titb=Against the repeated request of a same exercise
+!set keyw=
+!set datm=20020120
+!set prev=
+!set next=
+!set upbl=scoreadmin
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+When a student sees exercises with variations for the first time, he is amazed. Then he will naturally try repeated requests, in an attempt to get a version that is either easier for him, or is the same as his neighbor's.
+<p>
+The most important thing to do here is 
+!read primitives.phtml 1, link, exovar, well-design 
+ your exercises. Basically, every exercise should have as many variations as possible, even if these variations may seem unnecessary from other points of view. And variations should lead to as small variation as possible in difficulty level.
+<p>
+Besides this, WIMS incorporates two internal mechanisms to dissuade repeated exercise requests.
+<p>
+The first is random lock of variations (which is active only when score registration is activated). At a random point, variations will be locked and subsequent requests to the exercise will always give the same version. The lock only lasts a few minutes, but this is enough to stop rapid-fire repeated requests.
+<p>
+The second is at score level&#58; if much more requests of the exercise is registered with respect to answers given to it, some of the requests will be counted as zero's. This brings down the average score, therefore the student gets penalty on such act.
+<p>
+In our 
+!read primitives.phtml 2, link, experience, teaching experiences 
+, we didn't bother explaining these mechanisms to students. As a result, a tiny minority get punished by the second mechanism, and ask teachers why they see a small score. Then individual explanations are given to them, and the problem disappears very rapidly.

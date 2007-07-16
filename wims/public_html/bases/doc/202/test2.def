@@ -1,0 +1,63 @@
+!set titb=Matrices
+!set keyw=
+!set datm=20011201
+!set prev=test1
+!set next=test3
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+Soient $m_m et $m_n deux entiers positifs. Une <em>matrice</em> $m_m&times;$m_n est un tableau de $m_m$m_n éléments rangés en $m_m lignes et $m_n colonnes. La matrice est <em>réelle</em> si les éléments sont des nombres réels, ou <em>complexe</em> si les éléments sont des nombres complexes, etc.
+<p>
+Par exemple, 
+!insmath [1,pi;e,-3]
+ est une matrice réelle 2&times;2, et 
+
+!insmath [1,i,3;4,5,pi-i;-i,-1,-1]
+ est une matrice complexe 3&times;3.
+<p>
+On peut écrire une matrice générale $m_m&times;$m_n par
+<p><center>
+
+!read primitives.phtml 1, embed, matmn, A&nbsp;=&nbsp; 
+
+</center><p>
+ou en abrégé ($m_a<sub>$m_i$m_j</sub>) . Les $m_a<sub>$m_i$m_j</sub> s'appellent les <em>coefficients</em> de A, et $m_m&times;$m_n est sa <em>dimension</em>.
+<p>
+Deux matrices A et B sont égales seulement si elles ont la même dimension, et ont le même coefficient à chaque position correspondante.
+<p>
+
+!read primitives.phtml 2, fold, matdefs 
+
+<p>
+Pour calculer une matrice, voici l'outil en ligne.
+
+!read primitives.phtml 3, calcform, alg/lin/matrix 
+
+<p>
+La 
+!read primitives.phtml 4, link, matdefs,trace,trace 
+ des matrices vérifie la formule
+<p><center>
+   trace(AB)=trace(BA)
+</center><p>
+quand AB et BA ont tous les deux un sens.
+<p>
+
+!read primitives.phtml 5, fold, Preuve_trace_comm 
+
+<p>
+Quelques exercices sur les matrices&nbsp;&#58;
+
+!read primitives.phtml 6, exercise, cmd=new&module=U1/algebra/oefmatrix.fr 
+&nbsp;
+
+!read primitives.phtml 7, exercise, cmd=new&session=robot&module=U1/algebra/dialmatrix.fr 
+

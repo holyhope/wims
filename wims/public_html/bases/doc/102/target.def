@@ -1,0 +1,45 @@
+!set titb=Appeler un module
+!set keyw=
+!set datm=20070529
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+Appeler un module WIMS (exercice, outil, doc ou administration)&nbsp;&#58; jusqu'à 2 arguments.<ul>
+  <li>Argument 1&#58; adresse du module (chaîne de caractères dans le URL après <tt>.../wims.cgi?</tt>&nbsp;; mais vous pouvez aussi copier l'adresse complète). Pour assurer le bon
+  fonctionnement du lien, évitez d'utiliser les adresses contenant une chaine
+  <tt>cmd=reply</tt> ou <tt>cmd=resume</tt>.
+  <li>Argument 2 (facultatif)&#58; le texte du lien. Par défaut, ce texte sera le titre du module en question.
+ </ul>
+ Le module appelé s'ouvrira dans une autre fenêtre du navigateur, sauf pour la commande <tt>\adm</tt>.
+<p>Par exemple, <tt>\exercise{module=U1/analysis/graphder}{ceci}</tt>
+ou
+<tt>\exercise{http&#58;//wims.cgi?module=U1/analysis/graphder}{ceci}</tt>
+donne 
+!read primitives.phtml 1, exercise, module=U1/analysis/graphder, ceci 
+. (Les deux formules sont bonnes.)
+<p>
+<tt>\tool{module=tool/algebra/factor}</tt>
+donne 
+!read primitives.phtml 2, tool, module=tool/algebra/factor 
+.
+<p>
+<tt>\help{module=help/main}{cette fenêtre d'aide}</tt>
+ouvre 
+!read primitives.phtml 3, help, module=help/main, cette fenêtre d'aide 
+.
+<p>
+<b>Remarque</b>. Pour un document dans une classe virtuelle, si vous écrivez <tt>\exercise{3/2}</tt>, c'est le second exercice de la feuille 3 qui sera donné, avec le système de notes de la feuille.
+<p>
+Néanmoins, ceci est limité aux exercices sans dépendance des scores, et vous devez vous assurer que l'exercice appelé est bel et bien accessible aux lecteurs.
+<p>

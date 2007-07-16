@@ -1,0 +1,43 @@
+!set titb=La commande <tt>\for</tt>
+!set keyw=
+!set datm=20020406
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p>
+Syntaxe&nbsp;&#58; <tt>\for{var=\m to \n}{contenu}</tt>, ou<br>
+<tt>\for{var in \list}{content}</tt><p>
+Où <tt>var</tt> peut être n'importe quel nom de variable, <tt>\m, \n</tt>
+tous entiers, et <tt>\list</tt> une liste d'objets séparés par des virgules.
+Le <tt>contenu</tt> peut utiliser <tt>var</tt>.
+<p>
+Par exemple,
+<p>
+<pre>\for{tt=1 to 10}{
+\def{integer square=\tt^2}
+&#92;(\tt^2) = \square<br>}</pre>
+<p>
+donne
+<p>
+ 
+!for m_tt=1 to 10 
+
+!set m_square=$[rint($m_tt^2)]
+
+!insmath \tt^2
+ = $m_square<br>
+!next
+
+<p>
+<p>
+

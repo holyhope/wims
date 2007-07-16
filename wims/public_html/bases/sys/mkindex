@@ -1,0 +1,13 @@
+#! /bin/sh
+
+for i in src/*.src
+do
+ j=`echo $i | sed 's!^src/!!g;s/\.src//g'`
+ if [ ! -e $j ] || [ $i -nt $j ]; then
+  ../../../bin/dicsort $i
+  mv $i.sorted $j
+#  cp $j $i
+ fi
+done
+
+

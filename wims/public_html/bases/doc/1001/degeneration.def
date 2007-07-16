@@ -1,0 +1,41 @@
+!set titb=Variation and degeneration
+!set keyw=
+!set datm=20020124
+!set prev=
+!set next=
+!set upbl=exovar
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+In an exercise with variations, degeneration occur when for some values (or combination of values) of random parameters, the behavior of the exercise takes important changes. Such changes may take the following forms. <ol>
+<p>
+<li>The computation of the good answer becomes wrong.
+<p>
+<li>The number of good answers radically changes, for instance zero or several instead of one expected.
+<p>
+<li>The difficulty level radically changes, the exercise becoming much easier or much harder than in the general case.
+<p>
+</ol>
+<p>
+Degenerations should be considered as bugs in the exercises, and care should be taken to avoid them. When scores are seriously activated, degenerations may severely frustrate students who get trapped.
+<p>
+The basic method to avoid degeneration is to carefully choose the range of variations of random parameters.
+<p>
+When a kind of degeneration is known to be rare, and if the syntax accepts loops (this is not the case of OEF; however, native WIMS exercises can have loops), one can also do the following.
+<p>
+Generate one exercise, then test for condition of degeneration. If the exercise is degenerate, jump back to the beginning and generate a new one. <b>Attention</b> if you don't make sure that the degeneration is ALWAYS rare, this may lead to occasional infinite loops in your exercise. And occasional infinite loops are harder to debug than always infinite loops.
+<p>
+Examples of degenerations&#58;<ol>
+<p>
+<li>Vanishing coefficient.
+<p>
+<li>Vanishing determinant.
+<p>
+</ol>

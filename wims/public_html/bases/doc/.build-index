@@ -1,0 +1,26 @@
+#! /bin/sh
+
+cd `dirname $0`
+
+docs=`ls -d [0-9]* | sort -n`
+
+rm -f .index
+for doc in $docs
+do
+ tit=`awk -F'=' '$1=="tit" {print $2; exit}' $doc/.def`
+ author=`awk -F'=' '$1=="author" {print $2; exit}' $doc/.def`
+ email=`awk -F'=' '$1=="email" {print $2; exit}' $doc/.def`
+ copyright=`awk -F'=' '$1=="copyright" {print $2; exit}' $doc/.def`
+ docopen=`awk -F'=' '$1=="docopen" {print $2; exit}' $doc/.def`
+ dlang=`awk -F'=' '$1=="dlang" {print $2; exit}' $doc/.def`
+ auth=`echo "$author" | tr '[A-Z]' '[a-z]'`
+ echo ":$doc
+$tit
+$author
+$email
+$copyright
+$docopen
+$dlang
+$auth" >>.index
+done
+

@@ -1,0 +1,61 @@
+#! /bin/sh
+#
+# This script regenerates *.def files.
+#
+
+cd `dirname $0`
+maindir=`pwd`
+cd ../../../bin
+bindir=`pwd`
+msg2wims=$bindir/msg2wims
+cd $maindir
+export w_msg2wims_primitives w_module wims_exec_parm
+w_msg2wims_primitives="reload fold ref link docform form resource calcform
+	embed exercise tool example help adm
+	def define comment draw if for"
+w_module=adm/doc.en
+deflist="titb keyw datm prev next upbl dat1 dat2"
+
+if [ ! -z "$1" ]; then
+ docs=$1
+else
+ docs=`ls -d [0-9]* | sort -n`
+fi
+
+for doc in $docs
+do
+ echo $doc:
+ cd $doc
+ for f in *.def
+ do
+  rm -f .tmp >/dev/null
+  f=`echo $f | sed 's/.def$//'`
+  if [ -f src/$f ]; then
+   for n in $deflist
+   do
+    awk '/^\!set '$n'=/ {print; exit}' $f.def >>.tmp
+   done
+   cat >>.tmp <<@
+
+!if \$wims_read_parm!=\$empty
+ !goto \$wims_read_parm
+!endif
+
+!exit
+
+:content
+@
+#   wims_exec_parm="src/$f .tmp2"
+   size=`$msg2wims src/$f .tmp2`
+   cat .tmp2 >>.tmp
+   mv .tmp $f.def
+  else
+   rm -f $f.def
+   size=0
+  fi
+  echo "	$f	$size"
+ done 
+ rm -f .tmp*
+ cd $maindir
+done
+

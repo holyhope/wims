@@ -1,0 +1,43 @@
+!set titb=La commande <tt>\fold</tt>
+!set keyw=
+!set datm=20070529
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+ Définition d'une partie pliable du document
+(pouvant être dépliée ou repliée à volonté par le lecteur)&nbsp;&#58;
+jusqu'à 3 arguments. <ul>
+ <li>Argument 1&#58; soit le nom d'un autre bloc du même document, soit vide.
+ <li>Argument 2&#58; un texte identifiant la partie pliable. Si l'argument 1 est un
+ autre bloc, cet argument peut être vide (dans ce cas ce texte sera le titre
+ du bloc cité).
+ <li>Argument 3&#58; uniquement utilisé quand l'argument 1 est vide, donnant le
+ contenu de la partie (quand elle est dépliée). Sinon le contenu de la partie
+ dépliée sera celui du bloc cité.
+</ul>
+<p>
+Cette partie même de la page est un exemple de <tt>\fold</tt>, dont la commande est <tt>\fold{fold}{&lt;tt>\\fold&lt;/tt>}</tt>.
+<p>
+Pour un exemple de partie pliable dans un même bloc, le texte suivant
+<p>
+<tt>\fold{}{Titre de la partie.}{Contenu de la partie une fois dépliée.}</tt>
+<p>
+donne
+
+!read primitives.phtml 1, fold, , Titre de la partie., Contenu de la partie une fois dépliée. 
+
+<p>
+<b>Attention</b>. Les parties pliables dans un même bloc ne permettent pas l'utilisation
+de style css, ni d'exécution de commandes.
+<p>

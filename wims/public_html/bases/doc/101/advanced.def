@@ -1,0 +1,61 @@
+!set titb=Utilisation of softwares
+!set keyw=
+!set datm=20021107
+!set prev=classdoc
+!set next=
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<h4> PARI/GP </h4>It is possible to use a program in Pari&#58; for that, put it between parenthesis&#58; for example, the lines
+
+!set tmp0=!randitem 0,1
+
+!set m_a=$(tmp0) 
+
+
+!set tmp0=!randint 10, 100
+
+!set m_b=$[rint($(tmp0))]
+
+
+!set t_=!replace internal \( by ( in (f(n)=local(m) ; m=if(n==0, n, factor($m_b)));print(f($m_a))
+!set tmp0=!exec pari $t_
+
+!set m_N=$(tmp0) 
+
+<p><tt> 
+<br>\def{text a=random(0,1)}
+<br>\def{integer b=randint(10..100)}
+<br>\def{text N=pari((f(n)=local(m) ; m=if(n==0, n, factor(\b)));print(f(\a)))}</tt>
+</p>
+Example&#58; output  the factorisation of  $m_b if some random number  a=$m_a equals 0 et 0 otherwise &#58; 
+N=$m_N (try 
+!read primitives.phtml 1, reload, <img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20"> 
+ 
+)
+<p>
+The Pari command <tt>random </tt> de Pari/GP is  incompatible with WIMS' one ; so write <tt> random&#92;(125) </tt> in Pari/GP. In this cases,<tt> random </tt> is sent to Pari/GP with no interpretation but "\" is taken away.
+<p>
+
+!set t_=!replace internal \( by ( in print(matrix(4,5,i,j,random\(257)))
+!set tmp0=!exec pari $t_
+
+!set m_A=$(tmp0) 
+
+ Example &#58; define a matrix of size 4,5 with random coefficients between  0 and 256 &#58; 
+<center> 
+!insmath A= [\A]
+</center>
+<p>
+ 
+<p><tt> \def{text A=pari(print(matrix(4,5,i,j,random&#92;(257))))} </tt>
+</p>
+

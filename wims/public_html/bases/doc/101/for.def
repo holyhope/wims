@@ -1,0 +1,43 @@
+!set titb=The command <tt>\for</tt>
+!set keyw=
+!set datm=20020406
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p>
+Syntax&#58; <tt>\for{var=\m to \n}{content}</tt>, or<br>
+<tt>\for{var in \list}{content}</tt><p>
+Where <tt>var</tt> can be any variable name, <tt>\m, \n</tt>
+can be any integer, and <tt>\list</tt> is a comma-separated list of items.
+The <tt>content</tt> can make use of <tt>var</tt>.
+<p>
+For example,
+<p>
+<pre>\for{tt=1 to 10}{
+\def{integer square=\tt^2}
+&#92;(\tt^2) = \square<br>}</pre>
+<p>
+gives
+<p>
+ 
+!for m_tt=1 to 10 
+
+!set m_square=$[rint($m_tt^2)]
+
+!insmath \tt^2
+ = $m_square<br>
+!next
+
+<p>
+<p>
+

@@ -1,0 +1,39 @@
+!set titb=La commande <tt>\reload</tt>
+!set keyw=
+!set datm=20070529
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+Recharger la page. Jusqu'à 2 arguments.<ul>
+<li>Argument 1&#58; le texte à afficher sur le lien.
+<li>Argument 2 (facultatif)&#58; la position à aller (anchor).
+</ul>
+<p>
+Le rechargement de la page est intéressant quand elle contient des 
+!read primitives.phtml 1, link, def, variables aléatoires 
+. Dans ce cas à chaque rechargement, la page rendue est différente.
+<p>
+
+!set tmp0=!randint 1, 1000
+
+!set m_nn=$[rint($(tmp0))]
+
+Par exemple, nous avons défini la variable <tt>\nn</tt> comme étant un entier aléatoire entre 1 et 1000, par la commande 
+<tt>\def{integer nn=random(1..1000)}</tt>. Voici sa valeur actuelle&nbsp;&#58;
+<p><center><tt>\nn</tt>=$m_nn.</center><p>
+Maintenant 
+
+!read primitives.phtml 2, reload, rechargez la page, reload 
+ (<tt>\reload{rechargez la page}</tt>) pour voir la valeur de <tt>\nn</tt> changer.
+<small>(Le bouton ``recharger'' du navigateur n'aura pas cet effet.)</small>
+<p>

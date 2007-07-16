@@ -1,0 +1,86 @@
+!set titb=Mathematical symbols and formulas
+!set keyw=
+!set datm=20020208
+!set prev=syntax
+!set next=draw
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+Documents on WIMS adopt a very convenient method to include
+mathematical formulas.
+<p>
+The server uses the character `<font color=blue>\</font>'
+to detect when you want it to interpret what you type as a mathematical
+symbol or formula. The rule is as follows.
+<p>
+If you want to write a <tt>\</tt> in your message and want to have it shown as a
+backslash, you should type it twice&#58; <tt>\\</tt>.
+<p>
+If you simply want to insert some mathematical symbols or greek letters into
+your document, you just need to type a <tt>\</tt> followed by the name of
+the symbol or greek letter. For example, <tt>\pi</tt> gives you $m_pi,
+<tt>\le</tt> gives $m_le, <tt>\pm</tt> gives $m_pm, <tt>\rightarrow</tt> gives
+$m_rightarrow, etc. The names of the symbols follow the standard TeX
+convention. Here is a
+
+!read primitives.phtml 1, help, module=help/wimsdoc.en&subject=mathfonts#mathfonts, liste 
+
+ (replace <tt>&#36;m_</tt> by <tt>\</tt> in the names).
+<p>
+More generally, to insert a whole mathematical formula into the document, you
+can type the formula in the usual way as if you enter it into any
+mathematical software or any computational tool under WIMS. In order to make
+the formula formatted and shown beautifully by the message board, you have
+only to enclose it in a pair of parentheses preceded by a backslash
+<tt>\</tt>. For
+example, <tt>&#92;(x^3-3x+cos(2pi*x)^5)</tt> gives you
+
+!insmath x^3-3*x+cos(2pi*x)^5
+, or <tt>&#92;(sqrt(x^2+y^2))</tt> gives you
+
+!insmath sqrt(x^2+y^2)
+. You can type <tt>&#92;(integrate(x^2+1)dx)</tt> for
+
+!insmath integrate(x^2+1)*dx
+, or <tt>&#92;(integrate(exp(x^2+1),x=1..infinity))</tt> for
+
+!insmath integrate(exp(x^2+1),x=1, infinity)
+. You can also write the sum
+
+!insmath sum(1/n^2,n=1, infinity)
+ using <tt>&#92;(sum(1/n^2,n=1..infinity)</tt>,
+or the product
+
+!insmath product(n/(n+1),n=1, infinity)
+
+ using <tt>&#92;(product(n/(n+1),n=1..infinity)</tt>.
+<p>
+More helps on how to enter mathematical expressions are in 
+
+!read primitives.phtml 2, help, module=help/main&chapter=1&open=1_math#math, this page 
+.
+<p>
+To show a matrix
+
+!insmath [1,2,3;4,5,6;7,8,9]
+,
+you should type <tt>&#92;([1,2,3;4,5,6;7,8,9])</tt>. Nested matrices are 
+accepted (and will be formatted correctly).
+<p>
+For experts in TeX or LaTeX, please notice that whenever your formula to be
+formatted contains characters `\' that do not precede defined variables or
+known commands, the entire formula will be interpreted as TeX source without
+transformation, and be directly fed to TeX for rendering. Thus you are allowed
+to write very sophisticated formulas if you know how to write them in TeX.
+<p>
+Finally, the preview button in the document editing page allows you to
+check whether the formula you entered will be shown correctly.
+

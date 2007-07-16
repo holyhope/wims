@@ -1,0 +1,49 @@
+!set titb=Call a module
+!set keyw=
+!set datm=20020622
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+Call a WIMS module (exercise, tool, doc, administration)&#58; up to 2 arguments.<ul>
+  <li>Argument 1&#58; adress of the module (character strings in the URL
+  after <tt>.../wims.cgi?</tt>&nbsp;; but you can also copy
+  the entire adress). To insure the correct working of the link, please avoid
+  using addresses containing a string
+  <tt>cmd=reply</tt> or <tt>cmd=resume</tt>.
+  <li>Argument 2 (optional)&#58; the text of the link. By default, this text will
+  be the title of the called module.
+ </ul>
+ The called module will be brought up in another window of the browser, except for the command <tt>\adm</tt>.
+<p>For example, <tt>\exercise{module=U1/analysis/graphder}{this}</tt>
+or
+<tt>\exercise{http&#58;//wims.cgi?module=U1/analysis/graphder}{this}</tt>
+gives 
+!read primitives.phtml 1, exercise, module=U1/analysis/graphder, this 
+. (Both formulas are OK.)
+<p>
+<tt>\tool{module=tool/algebra/factor}</tt>
+gives 
+!read primitives.phtml 2, tool, module=tool/algebra/factor 
+.
+<p>
+<tt>\help{module=help/main}{this help window}</tt>
+opens 
+!read primitives.phtml 3, help, module=help/main, this help window 
+.
+<p>
+<b>Remark</b>. For a document within a virtual class, if you write
+<tt>\exercise{3/2}</tt>, it is the second exercise of worksheet 3 that will popup, with the usual user scoring system.
+<p>
+However, this is limited to exercises without score dependencies, and you should make sure that the exercise you refer to is really accessible by the readers.
+<p>

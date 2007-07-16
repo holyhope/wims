@@ -1,0 +1,137 @@
+!set titb=Using Variables in a Document
+!set keyw=
+!set datm=20020407
+!set prev=draw
+!set next=classdoc
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p> 
+You can define variables in your documents, and call them later (within a
+same page), thus making your document more dynamic.
+<p>
+For example, the following line defines a variable under the name of
+<font color=blue><b>x1</b></font>, whose value will be a random integer
+between -10 and 10 (inclusive)&#58;
+<pre>
+\def{integer x1=random(-10..10)}
+</pre>
+This random parameter may then be called by the word
+<b><tt>\x1</tt></b>, in the rest of the block defining it.
+That is, each word <tt>\x1</tt> will be replace by the random value
+of the variable. This substitution will also take effect within definitions
+of other variables following it.
+<p>
+
+!set tmp0=!randint 10, 50
+
+!set m_x1=$[rint($(tmp0))]
+
+
+!set tmp0=!randint 10, 50
+
+!set m_y1=$[rint($(tmp0))]
+
+
+!set m_xy=$[rint($m_x1*$m_y1)]
+
+For example, in this page we have defined
+<pre>
+\def{integer x1=random(10..50)}
+\def{integer y1=random(10..50)}
+\def{integer xy=\x1*\y1}
+</pre>
+Consequently, the text <tt>\x1*\y1=\xy</tt> gives
+$m_x1*$m_y1=$m_xy. You may 
+!read primitives.phtml 1, reload, renew the page 
+ to see the values change.
+<p><center>Some other examples of variables
+
+!read primitives.phtml 2, help, module=adm/doc.en&job=help&help_subject=oefparm, [Complete list] 
+
+<table border=2 bgcolor=bisque>
+<tr><th>Definition<th>Effect
+<tr><td><tt>\def{real x=random(-5..5)}
+    <td>\x will be a random real number<br>between -5 and 5
+<tr><td><tt>\def{real a=random(-5,-3,0.3,4)}
+    <td>\a will be a real number taken randomly<br>among -5,-3,0.3 and 4
+<tr><td><tt>\def{complex z=(1+2*i)^3}
+    <td>\z will be the complex number z=
+!insmath (1+2*i)^3
+
+<tr><td><tt>\def{text sign=random(+,-)}
+    <td>\sign will be a random sign&#58; + ou -
+<tr><td><tt>\def{integer n=3*exp(\a)}
+    <td>\n will be the closest integer to 3*e<sup>\a</sup><br>(it
+    depends on the value of \a)
+<tr><td><tt>\def{function f=random<br>(x^2+1,sin(x),log(x))}
+    <td>\f will be a random function&#58; either 
+!insmath x^2+1
+,<br>or sin(x), or log(x)
+<tr><td><tt>\def{text s=shuffle(6)}
+    <td>$m_s will be a list of 6 integers 1,2,...,6, in random order.
+<tr><td><tt>\def{text s=shuffle(a,b,c,d,e)}
+    <td>$m_s will be the letters {a,b,c,d,e} in random order.
+<tr><td><tt>\def{real a=evalue(x^2+sin(y),x=3,y=4)}
+    <td>Evaluation of the function 
+!insmath x^2+sin(y)
+,<br>
+    for x=3, y=4
+<tr><td><tt>\def{real r=solve(x^3-3*x+1,x=0..1)}
+    <td>\r will the the simple root of 
+!insmath x^3-3x+1
+ between 0 and 1
+<tr><td><tt>\def{function h=simplify(x^5*y^3*x^2/y)}
+    <td>Simplified expression&#58; 
+!insmath x^7*y^2
+
+<tr><td><tt>\def{function g=diff(sin(x)+cos(y),x)}
+    <td>\g will the the derivative of sin(x)+cos(y) with respect to x
+<tr><td><tt>\def{function F=int(x^2+3*x+1,x)}
+    <td>\F will an antiderivative of 
+!insmath x^2+3*x+1
+,<br>
+     the constant term being not garanteed to be always the same
+
+!read primitives.phtml 3, comment, <tr><td><tt>\\def{function F=int(t^2+3*t+1,t=1..x)}	    <td>\\F will the antiderivative of \(x^2+3*x+1) such that F(1)=0 
+
+<tr><td><tt>\def{real a=int(t^2+3*t+1,t=0..1)}
+    <td>$m_a will the numerical integral of 
+!insmath x^2+3*x+1
+, from 0 to 1
+<tr><td><tt>\def{text f=htmlmath(2*x^2+3*x)}
+    <td>\f will be rendered in html as&#58; 
+!insmath 2x^2+3x
+
+<tr><td><tt>\def{text f=texmath(2*x^2+3*x)}
+    <td>\f will be the TeX source for the expression.
+<tr><td><tt>\def{matrix m=1,2,3<br>4,5,6<br>7,8,9}
+    <td>\m will be the matrix of 3 rows and 3 columns.
+<p>
+</table></center><p> 
+Conditional parameters&#58; You may write<p>
+<tt>\def{text ttt=_condition?_def1}</tt> or <br>
+<tt>\def{text ttt=_condition?_def1&#58;_def2}</tt>
+<p>
+In this case, <tt>\ttt</tt> will be set to <tt>_def1</tt> if
+<tt>_condition</tt> is true, or to <tt>_def2</tt> otherwise (in the second
+syntax).
+
+!read primitives.phtml 4, help, module=adm/doc&cmd=new&job=help&help_subject=if, List of conditions 
+
+<p>
+Finally, note that inserted blocks via
+
+!read primitives.phtml 5, link, fold, <tt>\fold</tt> 
+ or 
+!read primitives.phtml 6, link, embed, <tt>\embed</tt> 
+ inherit the
+definitions of variables before insertion.

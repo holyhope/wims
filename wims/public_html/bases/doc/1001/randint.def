@@ -1,0 +1,22 @@
+!set titb=Random integers
+!set keyw=
+!set datm=20020203
+!set prev=
+!set next=
+!set upbl=varrandom
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p>
+The point here is that you often will need to avoid some values within the random range. For example, if you generate a random quadratic polynomial 
+!insmath ax^2+bx+c
+, you don't want $m_a to be zero, for this is a degenerate case.
+<p>
+In this case, you can generate two random integers, one from 1 to $m_n, the other randomly takes 1 or -1. And the multiplication of the two gives a random integer in the range [-$m_n ; $m_n] that is always non-zero.

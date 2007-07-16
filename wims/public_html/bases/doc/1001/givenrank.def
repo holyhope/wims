@@ -1,0 +1,22 @@
+!set titb=Random matrix with given rank
+!set keyw=
+!set datm=20020123
+!set prev=
+!set next=
+!set upbl=varrandom
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p>
+It is easy to generate a matrix with maximal rank. As a random matrix has a very high probability of being of maximal rank, especially when the range of the coefficients is not too small, one can generate a matrix of given dimension, test the rank, then go back to generate another if the rank is small.
+<p>
+Or, if loop is not provided in the syntax, two triangular matrices of proper dimensions with non-zero elements on the diagonal can be generated first, then a multiplication of the two matrices with give a matrix of maximal rank.
+<p>
+In order to generate a random matrix of dimension m&times;n and of rank r such that r&lt;min(m,n), one can first generate two random matrices A,B of maximal ranks, of dimensions m&times;r and r&times;n respectively. Then the product AB will be a matrix meeting the requirements.

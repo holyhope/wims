@@ -1,0 +1,108 @@
+!set titb=Les commandes spécifiques à WIMS
+!set keyw=
+!set datm=20040530
+!set prev=edition
+!set next=vieux
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+Dans la partie 5 de l'<tt class = "fl">Aide</tt> &#58; <tt class="d">Syntaxe des commandes</tt>, vous trouverez toutes les commandes spécifiques de WIMS. 
+<h2>Commandes de mise en forme</h2>
+Vous avez déjà utilisé <tt class = "c">&#92;link</tt>.<p>
+<p>
+ 
+ La commande <tt class = "c">&#92;embed</tt> permet de mettre en plusieurs endroits le même contenu (par exemple l'énoncé d'un théorème) en éditant un seul bloc.
+<p>
+ <h2>Différents plis</h2>
+ 
+  Pour faire un pli, vous pouvez utiliser la commande <tt class = "c">&#92;fold</tt> de plusieurs façons.<br>
+Le contenu du pli  "remarque" dans  
+!read primitives.phtml 1, link, Latex 
+ est dans le même bloc &#58;
+<pre class = "ccc">
+   \fold{}{Remarque }{Contenu de la partie une fois dépliée.}
+</pre>
+ Dans ce cas, aucun autre fichier n'est créé, les styles css ne passent pas très bien...<br>
+<p>
+ 
+Le pli <font color="red">Attention &#33;</font>
+ apparaît plusieurs fois et est édité dans un autre bloc &#58;
+<p>
+ <pre class = "ccc">
+   \fold{nom}{Attention}
+   \fold{nom} </pre>
+Un nouveau fichier est créé qui s'appelle <tt class="e">nom</tt>. Avec la première ligne, son titre est "Attention", avec la seconde
+ son titre sera le même que le titre du bloc.<p>
+<p>
+ 
+
+!read primitives.phtml 2, fold, , Exercice, <b>Exercice :</b> Créez un bloc <tt class="e">pgcd</tt> à partir de la partie <span class="orange">Composer des formules mathématiques</span> dont le titre sera <span class="orange">Exercice sur le pgcd</span>. Son texte sera l'exercice sur le pgcd proposé un peu plus loin avec un pli pour présenter le code. 
+
+  
+<p>
+  
+ <h2>Insertion d'une image (jpeg,gif,png), d'un fichier PDF, d'un document audio ... </h2>
+ Pour insérer un fichier de ce style, allez dans <tt class = "fl">Autres blocs</tt>, cliquez sur <tt class = "fl">Dépot de fichier</tt>. Il ne 
+vous reste plus qu'à parcourir votre ordinateur à la recherche du fameux fichier. WIMS vous indique alors la commande à recopier dans la page (bloc) du document. Par exemple &#58; 
+<pre class="ccc">
+    &lt;a href=\filedir/jentilez.jpg>jentilez.jpg&lt;/a>
+    &lt;img src=\filedir/myfile.jpg> 
+</pre>
+La première formule est un lien vers le fichier <tt class="e">jentilez.jpg</tt>. La deuxième affiche l'image dans la page.
+<p>
+Pour tester, vous devez d'abord refermer le document, puis le rouvrir. <br>
+ De la même manière, vous pouvez insérer tout type de fichiers&#58; textes, images, musiques, etc. 
+<p>
+
+!read primitives.phtml 3, fold, , Image, <center><img src=\filedir/jentilez.jpg></center> 
+
+<p>
+
+!read primitives.phtml 4, fold, son, Un autre exemple 
+
+<p>
+<h2>Insertion d'exercices</h2>
+Dans un document, vous pouvez créer un lien vers un exercice de la distribution ou un outil. Essayez  &#58;
+<pre class="ccc">
+  &#92;exercise{module=U1/analysis/graphder.fr}{exercice}<br>
+  &#92;tool{module=tool/number/calcnum.fr}{outil}<br>
+  &#92;exercise{module=H3/stat/docstat.fr}{document}<br>
+</pre>
+<p>
+Vous pouvez insérer un exemple à données aléatoires &#58;
+<p>
+
+!set tmp0=!randint 1000, 200000
+
+!set m_n=$[rint($(tmp0))]
+
+
+!set tmp0=!randint 1000, 200000
+
+!set m_m=$[rint($(tmp0))]
+
+
+!set m_p=$[rint(gcd($m_n , $m_m))]
+
+<p>
+<span class="orange">Le pgcd des entiers $m_n et $m_m est égal à $m_p. <br>
+
+!read primitives.phtml 5, reload, Recommencez 
+</span>
+<p>
+grâce au code suivant &#58;
+<pre class="ccc">
+  &#92;def{integer n = randint(1000..200000)}<br>
+  &#92;def{integer m = randint(1000..200000)}<br>
+  &#92;def{integer p = gcd(&#92;n , &#92;m)}<br>
+  Le pgcd des entiers &#92;n et &#92;m est égal à &#92;p.<br>
+  &#92;reload{Recommencez} 
+</pre>

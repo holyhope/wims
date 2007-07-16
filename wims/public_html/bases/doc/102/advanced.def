@@ -1,0 +1,61 @@
+!set titb=Utilisation de logiciels
+!set keyw=
+!set datm=20021107
+!set prev=classdoc
+!set next=
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<h4> PARI/GP </h4>Il est possible d'entrer un programme à condition de le mettre entre parenthèses  &#58;
+par exemple,les lignes
+<p>
+!set tmp0=!randitem 0,1
+
+!set m_a=$(tmp0) 
+
+
+!set tmp0=!randint 10, 100
+
+!set m_b=$[rint($(tmp0))]
+
+
+!set t_=!replace internal \( by ( in (f(n)=local(m) ; m=if(n==0, n, factor($m_b)));print(f($m_a))
+!set tmp0=!exec pari $t_
+
+!set m_N=$(tmp0) 
+
+<tt> 
+\def{text a=random(0,1)}
+<br>\def{integer b=randint(10..100)}
+<br>\def{text N=pari((f(n)=local(m) ; m=if(n==0, n, factor(\b)));print(f(\a)))}</tt>
+</p>
+permettent de  renvoyer la factorisation de $m_b si un nombre pris au hasard a=$m_a  ne vaut pas 0 et 0 sinon &#58; 
+N=$m_N (pour essayer, 
+!read primitives.phtml 1, reload, <img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20"> 
+ 
+)
+<p>
+La commande <tt>random </tt> de Pari/GP étant incompatible avec celle de wims, on écrit <tt> random&#92;(125) </tt>. Dans ce cas, la commande <tt>random</tt> est envoyée à Pari/GP sans être interprétée mais  le "\" est retiré.
+<p>
+
+!set t_=!replace internal \( by ( in print(matrix(4,5,i,j,random\(257)))
+!set tmp0=!exec pari $t_
+
+!set m_A=$(tmp0) 
+
+ Exemple &#58; définir une matrice de taille 4,5  avec des coefficients aléatoires pris entre 0 et 256. 
+Voici la matrice 
+!insmath A= [\A]
+ 
+obtenue à partir de la ligne suivante 
+<p>
+<tt> \def{text A=pari(print(matrix(4,5,i,j,random&#92;(257))))} </tt>
+

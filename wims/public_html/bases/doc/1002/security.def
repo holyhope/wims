@@ -1,0 +1,33 @@
+!set titb=<b>A very rigorous security standard in its design</b>
+!set keyw=
+!set datm=20020410
+!set prev=classes
+!set next=
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p>
+Despite the fact that WIMS allows anonymous visitors to make online execution of various supportive softwares, or even native WIMS scripts (by writing them in documents and forum messages), the security risk is very low. During several years of the existence of the server with heavy duties, no successful attack has been registered.
+<p>
+The security of the system is based on two fundamental designs.<ol>
+<p>
+<li>All the supportive softwares are executed under a different uid, while sensitive data on the server are only accessible (read or write) to wims uid. Therefore accessing unauthorized data or damaging the installation via the execution of a supportive software cannot be easier than breaking the Linux uid barrier.
+<p>
+<li>In the scripting language of WIMS, commands and variables have associated access rights. It is impossible for untrusted codes to access unauthorized commands and variables.
+<p>
+</ol>
+<p>
+Another security aspect of the system is anti-cheating mechanisms in
+
+!read primitives.phtml 1, link, classes, virtual classes 
+. First of all, the random variation of 
+!read primitives.phtml 2, link, exercises, exercises 
+ makes it impossible to copy the result of the neighbor. Then the design principle of server-side interactivity  ensures that the good answer is always hidden in the server, and that there is no way for the student to get scores without submitting the good answer. Moreover, all the other cheating attempts (repeated query of a same exercise trying to get an easier version, simultaneous logins) will lead to appropriate penalties.

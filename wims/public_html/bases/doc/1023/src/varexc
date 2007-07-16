@@ -1,0 +1,37 @@
+En cliquant sur \reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20">}
+vous changerez les autres paramètres. 
+
+
+\def{real thet=randint(100..10^3)/1000}
+\def{text e=2*s}
+\def{integer h=random(1..4)}
+\def{function f=
+simplify(1+\e*(cos(\thet)*cos(t)-sin(\thet)*sin(t)))} 
+La courbe d'équation
+<center>
+\(r=\e*\h/(1+\e*cos(t-\thet))= \e*\h/(\f))</center>
+
+pour s variant de 0 à 1
+\def{text a= cos(\thet)/(\h)}
+\def{text b= -sin(\thet)/(\h)}
+\def{text c= 1/(\e*\h)}
+\def{text direct=plot navy , -(\a)/(\b)*x+1/(\b)}
+<center>
+\draw{300,300}{
+	animate 25,0.3,6
+	xrange   -10,10
+	yrange  -10,10
+	trange -pi, pi
+	vline  0,0,black
+	hline   0,0,black
+	linewidth 2
+	plot green, \e*\h*cos(t)/(\f),\e*\h*sin(t)/(\f)
+	trange   -10,10
+	\direct
+}
+</center>
+Variation de la \link{varhaut}{hauteur} \(h) ou \link{varang}{l'angle} \(\theta_0) 
+	
+
+	Si vous voulez faire vous-même vos variations, utiliser 
+	\tool{module=tool/geometry/animtrace.fr}{}
