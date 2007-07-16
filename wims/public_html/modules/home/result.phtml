@@ -1,0 +1,109 @@
+!nocache
+<A NAME="searchresult" id="searchresult"> </a>
+
+!if $s_category=L
+ !changeto result.L
+!endif
+
+!if $s_category=V
+ <p><small>$S_tip</small> <p>
+ !if $wims_user=$empty
+  !read ./wimshome/log/motd.phtml.$lang
+  <p>
+  !read ./front.phtml.$lang
+  <p>
+ !endif
+ !exit
+!endif
+
+!if $error!=$empty
+ <p>
+ $(ER_$error)
+!endif
+
+!set tt=<font color=brown><i>$(C_$s_category)</i></font>
+<p>
+!if $gottype=search
+ $RE_found.
+!else
+ !if $s_keywords!=$empty and $gotcnt1<1
+  $RE_nomatch.
+  !if $(rel_$s_category)!=$empty
+   $RE_try
+   !for i in $(rel_$s_category)
+    !href module=home&cmd=reply&search_category=$i&search_keywords=$s_keywords $(C_$i)
+    &nbsp;
+   !next i
+   !if $has_browse=yes
+    $N_or
+    !href module=adm/browse.$lang&$browse_parm $N_browsesite
+.
+   !endif
+  !endif
+  <p>
+ !endif
+ !if $s_category isin ADXOTR and $gotcnt1<1 and $gotcnt>0
+  !if $list_start>0
+   !href module=home&cmd=reply&list_start=$[$list_start-$list_batch] &lt;&lt;
+   &nbsp;
+   $RE_pop2.
+  !else
+   $RE_pop.
+  !endif
+  !if $list_start<$list_cc-$list_batch
+   &nbsp;
+   !href module=home&cmd=reply&list_start=$[$list_start+$list_batch] &gt;&gt;
+  !endif
+  !reset list_start
+ !endif
+!endif
+
+!if $s_category isin PLS
+ !changeto result.$s_category
+!endif
+
+!if $gottype=search or $gotcnt1=0
+ <ul>
+ !for i=1 to $gotcnt
+  !set m_=!line $i of $gotm
+  !set w_=!word $i of $gotw
+  !set l_=!line $i of $gotl
+  !set t_=!line $i of $gott
+  !set d_=!line $i of $gotd
+  !set a_=!line $i of $gota
+  <li>
+  !if $wims_ismanager=2
+   <small>$w_</small>
+  !endif
+  !if $l_!=$lang
+    <img src=gifs/$l_.gif alt=$l_.gif border=0>
+  !endif
+  !set L=
+  !if ../local/ isin ../$m_
+   !set L=<sup>local</sup>
+  !endif
+  !if ../com/ isin ../$m_
+   !set L=<sup>com</sup>
+  !endif
+  !if ../contrib/ isin ../$m_
+   !set L=<sup>contrib</sup>
+  !endif
+  !href module=$m_ $t_
+$L, $d_ 
+ !if $wims_show_author=yes
+  <small>($a_)</small>
+ !endif
+ !next i
+ </ul> <p>
+!endif
+
+!if $s_category isin AT and $gotcnt1>0
+ <p><hr width=50%> <p>
+ !exchange gotcnt,gotcnt1
+ !exchange gottype,gottype1
+ !exchange gotm,gotm1
+ !set tt=<font color=brown><i>$C_P</i></font>
+ $RE_found. <p>
+ !read result.P
+!endif
+

@@ -1,0 +1,73 @@
+!if robot isin $session
+ !exit
+!endif
+
+# search commands carried thru from internet search engines
+Swords=q p query search MT Keywords
+
+!if $old_session!=$empty and .. notin $old_session and \
+	/ notin $old_session and _ notin $session
+ classdef=!record 0 of wimshome/sessions/$old_session/var.class.prep
+ !if wims_ notin $classdef
+  !exit
+ !endif
+ wims_ismanager=!defof w_wims_ismanager in wimshome/sessions/$old_session/var
+ !setdef $classdef in wimshome/$wims_sesdir/var.stat
+ !writefile wimshome/sessions/$old_session/var.class.prep
+ n=!linecnt $classdef
+ classdef=!translate = to , in $classdef
+ !for i=1 to $n
+  l=!line $i of $classdef
+  n_=!item 1 of $l
+  v_=!item 2 to -1 of $l
+  $n_=$v_
+ !next i
+ !sh cd $wims_home\
+	mkdir -p log/classes/$wims_class/score $wims_sesdir/getfile\
+	rm -f $wims_sesdir/getfile/oefimages\
+	ln -s $wims_home/log/classes/$wims_class/src/images $wims_sesdir/getfile/oefimages
+!endif
+
+!if $user!=$empty and _ notin $session
+ !read ./adm/class/authchars
+ !distribute items $user into u_,c_,p_
+ c_=!text select $char_alnum/ in $c_
+ u_=!translate internal . to @ in $u_
+ u_=!text select $char_login in $u_
+ p_=!text select $char_passwd in $p_
+ !if $c_=$empty
+  !exit
+ !endif
+ !if $u_=supervisor
+  ut=supervisor
+ !else
+  ut=participant
+ !endif
+ sclass=!defof class_superclass in wimshome/log/classes/$c_/.def
+ !read ./adm/class/userdef logclasses,$c_,$u_
+ !if $sclass!=$empty and $sclass!=$class
+  upartic=!defof user_participate in $userdef
+  usuperv=!defof user_supervise in $userdef
+  !if $class notitemof $upartic and $u_!=supervisor
+   pass=
+  !endif
+ !endif
+ !if $p_!=$empty and $c_>0
+  pck=!defof user_password in $userdef
+  pck=!passcrypt $pck
+  pck=!word 1 of $pck
+ !endif
+ !read ./adm/class/authdelay
+ !if ? isin $auth_password
+  p_=$auth_password
+ !else
+  p_=!passcrypt $p_
+ !endif
+ !if $p_=$empty or $p_!=$pck
+  !writefile wimshome/$wims_sesdir/lastauth
+  !restart module=adm/class/classes&type=auth$ut&class=$c_&auth_user=$u_&changesession=no
+ !else
+  !read ./var.auth
+ !endif
+!endif
+

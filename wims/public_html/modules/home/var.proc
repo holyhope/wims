@@ -1,0 +1,128 @@
+# basic variable preparation.
+
+!if robot isin $session
+ !exit
+!endif
+
+wims_prefix=class user tmp cdt search m
+wims_writable=exolist titlelist exototal package lastsearch \
+	titb keyw datm prev next upbl dat1 dat2
+wims_readable=session wims_session wims_class wims_user lang module cmd
+
+!read ./tabletheme
+!read ./formcolors
+!read ./names.$lang
+!read ./languages
+module_language=$lang
+subclasscnt=0
+
+test=!record 0 of wimshome/public_html/modules/adm/browse.$lang/index
+!if $test!=$empty
+ has_browse=yes
+ browse_parm=job=$browse_job&parm=$browse_parm
+!endif
+
+!if $wims_user!=$empty
+ !readdef ./wimshome/log/classes/$wims_class/.def
+ !default class_typename=class
+!endif
+
+!if $wims_user=$empty or $wims_user=supervisor or _tool isin $wims_session
+ !read search.proc
+ s_category=$search_category
+ s_keywords=$search_keywords
+ !if $s_keywords!=$empty and $s_category!=V and $readback!=yes
+  c=$gotcnt
+  !if $gottype!=search
+   c=0
+  !endif
+  !read wimshome/$s2dir/home_lastsearch
+  !if $lang,$s_category,$s_keywords!=$lastsearch
+   wims_module_log=$(lang)_$s_category=$c: $s_keywords
+   !writefile wimshome/$s2dir/home_lastsearch lastsearch=$lang,$s_category,$s_keywords
+  !endif
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ doccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
+ sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+ votecnt=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+ !read wimshome/log/classes/$wims_class/Exindex
+ !read ./adm/du $wims_home/log/classes/$wims_class
+ quota_free=$[$wims_class_quota-$du]
+!endif
+
+!if $wims_user!=$empty
+ !if $wims_class_refcolor!=$empty
+  wims_ref_bgcolor=$wims_class_refcolor
+ !endif
+ !read ./var.msgcnt
+ !default class_type=0
+ !if $class_type=2
+  !exchange wims_institutionname, wims_classname
+ !endif
+ !if $class_type=1
+  parentcheck=!defof user_class in wimshome/log/classes/$wims_class/.users/$wims_user
+  !if $parentcheck!=$empty
+   class_parent=$wims_superclass/$parentcheck
+  !endif
+ !endif
+ !if $class_type>=2
+  !read adm/class/userdef logclasses,$wims_class,$wims_user
+  supervisable=!defof user_supervisable in $userdef
+  !if $class_type=4
+   subclasses=!record 0 of wimshome/log/classes/$wims_class/classes
+   subclasses=!column 1 of $subclasses
+   subclasses=!makelist $wims_class/x for x in $subclasses
+   subclasscnt=!itemcnt $subclasses
+   !if $wims_user=supervisor
+    subclasscnt=0
+   !endif
+   subclass1=$wims_participate
+  !endif
+  !if $class_type=3
+   subclasses=!record 0 of wimshome/log/classes/$wims_class/courses
+   split=!translate internal / to , in $wims_class
+   subclasset=!record 0 of wimshome/log/classes/$(split[1])/$(split[2])/icourses
+   subclasses=!append line $subclasset to $subclasses
+   subclasset=!record 0 of wimshome/log/classes/$(split[1])/icourses
+   subclasses=!append line $subclasset to $subclasses
+   subclasses=!column 1 of $subclasses
+   subclasses=!listuniq $subclasses
+   subclasses=!makelist $wims_superclass/x for x in $subclasses
+   subclasscnt=!itemcnt $subclasses
+   !if $wims_user=supervisor
+    subclasscnt=0
+   !endif
+   subclass1=$class_ocourses
+   subclass1=!makelist $wims_superclass/x for x in $subclass1
+   upart=!listcomplement $wims_class in $wims_participate
+   upart2=!defof user_courses in wimshome/log/classes/$wims_class/.users/$wims_user
+   !if $upart2!=$empty
+    upart2=!makelist $wims_superclass/x for x in $upart2
+    upart=!append item $upart2 to $upart
+   !endif
+   subclass1=!listunion $subclass1 and $upart
+  !endif
+  !if $class_type=2
+   subclasses=!sh cut -d, -f1 $wims_home/log/classes/$wims_class/.subclasses
+   subclasses=!replace internal : by $ in $subclasses
+   subclasses=!words2items $subclasses
+   subcnt=!recordcnt wimshome/log/classes/$wims_class/.subclasses
+   subclasscnt=!itemcnt $subclasses
+   subclass1=$wims_participate
+  !endif
+  subclass1=!sort items $subclass1
+  subclass2=!listcomplement $subclass1 in $subclasses
+  !if $class_type iswordof 4 2
+   subclass3=$wims_supervise
+  !endif
+  subclasscnt1=!itemcnt $subclass1
+  subclasscnt2=!itemcnt $subclass2
+  subclasscnt3=!itemcnt $subclass3
+ !endif
+ !readproc ./var.cdt
+!endif
+

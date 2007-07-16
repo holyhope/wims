@@ -1,0 +1,44 @@
+exist_cdt=no
+!if $lang notitemof fr,en
+ !exit
+!endif
+
+!if $wims_supertype!=0 and\
+ ($wims_supertype!=2 or $wims_typename!=class) and\
+ ($wims_supertype!=4 or $wims_typename notitemof class,course)
+ !exit
+!endif
+exist_cdt=yes
+!if $wims_user=supervisor or $wims_supertype=0 or ($wims_supertype=4 and $wims_typename=class)
+ tmp=!defof cdt_link in wimshome/log/classes/$wims_class/cdt/.def
+ !if $tmp!=$empty
+  U_cdt=$tmp 
+  ADD_cdt=$U_cdt
+ !endif
+!endif
+!exit
+
+!!if ($wims_supertype=4 and $wims_typename=class)
+!! lt_cdt=!record 0 of wimshome/log/classes/$wims_class/courses
+!! lt_cdt=!column 1 of $lt_cdt
+ !for k in $lt_cdt
+  tmp=!defof cdt_nbdate in wimshome/log/classes/$wims_superclass/$k/cdt/.def
+  !if $tmp>0
+   exist_cdt=yes
+   !exit
+  !endif
+ !next k
+ !exit   
+!endif
+!if $wims_supertype=0 or 
+ tmp=!defof cdt_nbdate\
+cdt_link in wimshome/log/classes/$wims_class/cdt/.def
+ !distribute line $tmp into tmp1,tmp2
+ !if $tmp1>0
+  exist_cdt=yes
+ !endif
+ !if $tmp2!=$empty
+  U_cdt=$tmp2
+  ADD_cdt=$U_cdt
+ !endif
+!endif

@@ -1,0 +1,51 @@
+
+forumtest=!defof mb_readpolicy in wimshome/log/classes/$wims_class/forum/.def
+!if $wims_user!=supervisor and $forumtest!=alluser
+ msgcnt=0
+ !exit
+!endif
+
+!if $wims_user=supervisor
+ deffile=wimshome/log/classes/$wims_class/supervisor
+!else
+ deffile=wimshome/log/classes/$wims_class/.users/$wims_user
+!endif
+
+newlim=10
+user_lastmsg=!getdef user_lastmsg in $deffile
+!default user_lastmsg=0
+
+msgs=!record 0 of wimshome/log/classes/$wims_class/forum/.newlist
+msgcnt=!linecnt $msgs
+
+#msgcnt=0
+
+!if $user_lastmsg=0
+ !if $msgcnt>$newlim
+  newmsgcnt=&gt; $newlim
+ !else
+  newmsgcnt=$msgcnt
+ !endif
+ !exit
+!endif
+
+user_lastmonth=!char 1 to 6 of $user_lastmsg
+!for n=$msgcnt to 1 step -1
+ l_=!line $n of $msgs
+ !distribute words $l_ into w_,t_
+ !if $w_<$user_lastmonth
+  !break
+ !endif
+ L_=!record $t_ of wimshome/log/classes/$wims_class/forum/$w_/.msglist
+ !distribute items $L_ into m_,d_,h_
+ h_=!char 1,2,4,5,7,8 of $h_
+ !if $user_lastmsg<=$w_$d_$h_
+  !if $newmsgcnt>$newlim
+   newmsgcnt=&gt; $newlim
+   !exit
+  !else
+   !advance newmsgcnt
+  !endif
+ !endif
+!next n
+

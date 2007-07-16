@@ -1,0 +1,87 @@
+
+wims_prefix=class user
+!default class_bgcolor=$wims_bgcolor
+!default class_bgimg=$wims_bgimg
+!default class_theme=$wims_theme
+!default class_css=$wims_css
+!defread wimshome/log/classes/$c_/.def
+!defread $userdef
+
+!if $class_type=4 and $u_!=supervisor and $user_supervisable!=yes\
+  and ($wims_class=$empty or ../$wims_superclass/ notin ../$wims_class/)
+ utest=!itemcnt $user_participate
+ !if $utest=1 and / isin $user_participate
+  c_=!item 1 of $user_participate
+  !defread wimshome/log/classes/$c_/.def
+ !endif
+!endif
+!if $class_type iswordof 1 3 and $u_=supervisor and $wims_user=$empty
+ !exit
+!endif
+
+!if $u_=supervisor
+ sech=$class_secure
+ sech=!trim $sech
+ !if $sech=$empty
+  t=0
+ !else
+  t=!checkhost $sech
+  !if $t<1
+   t=-1
+  !endif
+ !endif
+ sup_secure=$t
+!else
+ !read ./adm/class/raftest
+ !if $raftest>$lastallow
+  !exit
+ !endif
+ sup_secure=-1
+!endif
+
+wims_caller=
+!read ./adm/class/authprep $c_,$u_
+!writefile wimshome/$wims_sesdir/var.stat $classdef
+
+!writefile wimshome/$wims_sesdir/var REMOTE_ADDR=$httpd_REMOTE_ADDR\
+HTTP_REFERER=$httpd_HTTP_REFERER\
+QUERY_STRING=\
+HTTP_USER_AGENT=$httpd_HTTP_USER_AGENT\
+HTTP_COOKIE=$httpd_HTTP_COOKIE\
+w_cmd=new\
+w_lang=$class_lang\
+w_module=$module\
+w_session=$session\
+w_special_parm=\
+w_special_parm2=\
+w_useropts=$useropts\
+w_wims_session=$wims_session\
+w_wims_subsession=$wims_subsession\
+w_wims_window=$wims_window\
+w_worksheet=\
+w_wims_exo=\
+w_wims_isexam=\
+w_wims_ismanager=$wims_ismanager\
+w_wims_mode=$wims_mode\
+w_wims_module_start_time=\
+w_wims_protocol=$wims_protocol\
+w_wims_req_time=$wims_req_time\
+w_wims_scorereg=\
+w_wims_session_serial=$wims_session_serial\
+w_wims_session_start_time=$wims_session_start_time\
+w_wims_sheet=
+
+!if $class_lock = 7 and $u_!=supervisor
+ !usererror class_closed
+ !exit 
+!endif
+!if $class_lock iswordof 2 4 6
+ !set wims_protocol=https
+!endif
+!sh cd $wims_home\
+	rm -Rf $(wims_sesdir)_*\
+	mkdir -p log/classes/$c_/score $wims_sesdir/getfile\
+	rm -f $wims_sesdir/getfile/oefimages\
+	ln -s $wims_home/log/classes/$c_/src/images $wims_sesdir/getfile/oefimages
+!restart module=home&cmd=new&lang=$class_lang
+

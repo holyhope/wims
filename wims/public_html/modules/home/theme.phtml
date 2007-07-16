@@ -1,0 +1,13 @@
+
+!if $wims_askcookie=yes and $wims_class!=$empty
+ !changeto askcookie.phtml
+!endif
+
+!set home_theme=!text select 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/ in $wims_theme
+!default home_theme=default
+
+!read themes/$home_theme/$wims_read_parm.phtml
+!if $home_theme!=yes and $home_theme!=default
+ !read themes/default/$wims_read_parm.phtml
+!endif
+

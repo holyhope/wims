@@ -1,0 +1,21 @@
+dictionary=$module_dir/domaindic.$lang
+translator_unknown=leave
+!read writable/domains.$lang
+!if $domain_ready!=yes
+ domains=!record 1 of lists/list.domains
+ domains=!lines2items $domains
+ domains=!lower $domains
+ !read lists/domains.allow
+ domains=!listintersect $domains and $domains_allow
+ domains=!replace , by , $ in $domains
+ domprmp=!exec translator $domains
+ domprmp=!sort items of $domprmp
+ domains=!items $wims_sort_order of $domains
+ !writefile domains.$lang !set domains=$domains\
+!set domain_ready=yes
+!endif
+domains=!append item $domains to $search_domain
+domains=!listuniq $domains
+domains=!replace , by , $ in $domains
+domprmp=!exec translator $domains
+

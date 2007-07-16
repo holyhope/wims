@@ -1,0 +1,45 @@
+<html><head>
+   <meta http-equiv="content-Type" content="text/html; charset=$wims_main_font">
+   <meta name="GENERATOR" content="wims [$lang]">
+   <title>WWW interactive multipurpose server</title>
+   <meta name="description" content="$wims_site_description">
+   <meta name="keywords" content="$wims_site_keywords">
+   <meta name="Author" content="$module_author">
+   $wims_expire
+   <meta http-equiv="content-Style-Type" content="text/css">
+   $wims_CSS
+</head>
+!if robot isin $session
+ !set wims_htmlbody=
+!endif
+!if _tool isin $wims_session
+ <body $wims_htmlbody
+ onload=window.focus();window.resizeTo(800,650);window.moveTo(15,35);$wims_html_onload >
+!else
+ !if $wims_html_onload!=$empty
+  <body $wims_htmlbody onload=$wims_html_onload >
+ !else
+  <body $wims_htmlbody>
+ !endif
+!endif
+!robottrap
+
+!if robot isin $session
+ !changeto ./robot.phtml
+!endif
+
+!if $special_parm=logo
+ <div class=wimsbody>
+ !changeto ./logo/logo.phtml.$lang
+!endif
+
+!if $wims_user=$empty
+ !changeto theme.phtml visitor
+!endif
+
+!if $wims_user=supervisor and $style!=student
+ !changeto theme.phtml supervisor
+!else
+ !changeto theme.phtml user
+!endif
+

@@ -1,0 +1,222 @@
+# Processing search request.
+!nocache
+!if $wims_referer!=$empty and $wims_user=$empty and $wims_new_session=yes
+ refcut=!replace internal :// by $ $ in $wims_referer
+ refcut=!word 2 of $refcut
+ refcut=!translate internal /. to $ , in $refcut
+ !distribute words $refcut into refsite, refsearch
+ refdom=!item -2 of $refsite
+ refdom=!lower $refdom
+ reffields=!defof $refdom in searchengines
+ !if $reffields!=$empty
+  !distribute items $reffields into refs,refl
+  refsearch=!translate internal ?&= to ,, $ in $refsearch
+  !for rs in $refsearch
+   refw1=!word 1 of $rs
+   !if $refw1=$refs
+    refS=!word 2 to -1 of $rs
+    refS=!lower $refS
+    refS=!unhttp $refS
+    refS=!translate internal + to $ 4 in $refS
+    refS=!replace word wims by $ in $refS
+    refS=!trim $refS
+   !endif
+   !if $refw1=$refl
+    refL=!word 2 of $rs
+   !endif
+  !next rs
+  !if $refS!=$empty
+   search_category=A
+   search_keywords=$refS
+  !endif
+ !endif
+!endif
+
+s2dir=!replace internal sessions/ by s2/ in $wims_sesdir
+s2dir=!translate internal _ to $ $ in $s2dir
+s2dir=!word 1 of $s2dir
+!if $wims_accessright!=$empty and $wims_class!=$empty
+ !default search_package=!getdef package in wimshome/$s2dir/home_search
+ !bound search_package within $wims_accessright default bases/site
+!else
+ search_package=bases/site
+!endif
+!if $search_package=bases/site
+ search_package1=wimshome/public_html/$search_package
+ search_package2=$search_package
+!else
+ search_package1=wimshome/public_html/modules/$search_package/.index
+ search_package2=modules/$search_package/.index
+!endif
+
+# Limit of shown items
+gotlim=1000
+gotlim2=50
+list_batch=20
+
+rel_A=D,S
+rel_T=X,D,R
+rel_D=X,T,S,R
+rel_X=T,D,S,R
+rel_R=X,T,D,S
+rel_P=T,X,D
+rel_O=X,S,T,D,R
+rel_S=X,R,T,D
+
+slist=A D T X R P O S
+module_P=wimshome/public_html/modules/tool/popup
+wims_trustfile=$module_P.$lang/search.phtml $module_P.$lang/search.proc
+test=!record 0 of $module_P.$lang/.test
+!if yes notin $test
+ slist=!translate P to $ $ in $slist
+!endif
+cnt=!record 0 of wimshome/public_html/bases/sheet/index/count.$lang
+!if $cnt<=0
+ slist=!translate S to $ $ in $slist
+!endif
+slist=!words2items $slist
+plist=
+!for i in $slist
+ plist=!append item $(C_$i) to $plist
+!next i
+
+!if $wims_user=supervisor
+ !default search_level=$class_level
+!endif
+
+!if $list=clear
+ search_category=V
+ search_keywords=
+ list=
+ !writefile wimshome/$s2dir/home_search package=$search_package
+ gotcnt=0
+ !exit
+!endif
+
+!if _tool isin $wims_session
+ search_category=T
+!endif
+
+search_keywords=!trim $search_keywords
+search_keywords=!translate " to $ $ in $search_keywords
+!if $search_category$search_keywords=$empty
+ !read wimshome/$s2dir/home_search
+ readback=yes
+!else
+ search_level=!nospace $search_level
+ search_domain=!trim $search_domain
+ search_keywords=!trim $search_keywords
+!endif
+
+search_category=!replace exercise by X in $search_category
+search_category=!replace tool by T in $search_category
+search_category=!replace recreation by R in $search_category
+search_category=!trim $search_category
+search_category=!char 1 of $search_category
+!bound search_category within $slist default V
+!if $search_category=V
+ gotcnt=0
+ !exit
+!endif
+
+!if $search_keywords!=$empty
+ k_=!lower $search_keywords
+ k_=!deaccent $k_
+ l_=[
+ e_==
+ !if f isvarof $k_ or g isvarof $k_ or x isvarof $k_ or y isvarof $k_ or\
+	z isvarof $k_ or b isvarof $k_ or c isvarof $k_ or i isvarof $k_ or\
+	^ isin $k_ or / isin $k_ or $e_ isin $k_ or\
+	.0 isin $k_ or .1 isin $k_ or .2 isin $k_ or .3 isin $k_ or\
+	.4 isin $k_ or .5 isin $k_ or .6 isin $k_ or .7 isin $k_ or\
+	.8 isin $k_ or .9 isin $k_ or $l_ isin $k_
+   error=expression
+   gotcnt=0
+   !goto bailout
+ !endif
+ srch=!translate internal `'".+-_()[]{};: to $             $ in $search_keywords
+ srch=!replace , by , $ in $srch
+ srch=!deaccent $srch
+ srch=!lower $srch
+ dictionary=bases/sys/words.$lang
+ suffix_dictionary=bases/sys/suffix.$lang
+ translator_unknown=leave
+ srch=!exec translator $srch
+ srch=!trim $srch
+!endif
+!writefile wimshome/$s2dir/home_search search_level=$search_level\
+search_category=$search_category\
+search_domain=$search_domain\
+search_keywords=$search_keywords\
+package=$search_package\
+search_lang=$lang
+
+!if $search_category isin LPS
+ !changeto search.$search_category
+!endif
+
+!read search.ker
+:bailout
+
+translator_switch=leaveline
+!bound list_start between integer 0 and 10000 default 0
+list_start=$[$list_batch*floor($list_start/$list_batch)]
+!if $gotcnt=0
+ gottype=popular
+ # sp=!replace internal wimshome/public_html/ by $ in $search_package1
+ # gotM=!sh head -c 10000 $sp/pop/$search_category.$lang
+ gotM=!record 0 of $search_package1/pop/$search_category.$lang
+ gotM=!line 1 to $gotlim of $gotM
+ list_cc=!linecnt $gotM
+ !if $list_start>$list_cc
+  list_start=$[$list_batch*max(0,floor(($list_cc-1)/$list_batch))]
+ !endif
+ gotm=
+ !for i=1 to $list_batch
+  l_=!line $i+$list_start of $gotM
+  !distribute words $l_ into m_,w_
+  !default w_=0
+  gotm=$gotm $m_
+  gotw=$gotw $w_
+ !next i
+ gotcnt=!wordcnt $gotm
+ gotm=!words2lines $gotm
+ gotw=!words2lines $gotw
+!else
+ gottype=search
+!endif
+
+!if / isin $gotm
+ dictionary=$search_package2/serial
+ translator_unknown=leave
+ gotm=!exec translator $gotm
+!endif
+
+dictionary=$search_package2/title
+gott=!exec translator $gotm
+dictionary=$search_package2/description
+gotd=!exec translator $gotm
+dictionary=$search_package2/language
+gotl=!exec translator $gotm
+dictionary=$search_package2/author
+translator_unknown=?
+gota=!exec translator $gotm
+
+!if / notin $gotm and $gotcnt>0
+ dictionary=$search_package2/addr
+ gotm=!exec translator $gotm
+!endif 
+
+!if $search_category isin AT and $search_keywords!=$empty and\
+	P isin $slist and ($gotcnt<=8 or $gottype!=search)
+ gotm1=$gotm
+ gotcnt1=$gotcnt
+ gottype1=$gottype
+ !read search.P
+ !exchange gottype,gottype1
+ !exchange gotcnt,gotcnt1
+ !exchange gotm,gotm1
+!else
+ gotcnt1=0
+!endif
+

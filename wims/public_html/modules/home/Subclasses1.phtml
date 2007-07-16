@@ -1,0 +1,62 @@
+
+!set classes=!record 0 of wimshome/log/classes/$wims_class/classes
+!set classcnt=!linecnt $classes
+!if $classcnt>0
+ <p>
+ $(CL_Names[2]):
+ !for i=1 to $classcnt
+  !set l=!line $i of $classes
+  !distribute items $l into c_,s_,t_
+  !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+  &nbsp;
+ !next i
+!endif
+!set progs=!record 0 of wimshome/log/classes/$wims_class/programs
+!set progcnt=!linecnt $progs
+!if $progcnt>0
+ <p>
+ $(CL_Names[3]):
+ !for i=1 to $progcnt
+  !set l=!line $i of $progs
+  !distribute items $l into c_,s_,t_
+  !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+  &nbsp;
+ !next i
+!endif
+
+!if $classcnt+$progcnt<1
+ !set courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ !set coursecnt=!linecnt $courses
+ !if $coursecnt>0
+  <p>
+  $(CL_Names[4]):
+  !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into c_,s_,t_
+   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+   &nbsp;
+  !next i
+ !endif
+ !set courses=!record 0 of wimshome/log/classes/$wims_class/icourses
+ !set coursecnt=!linecnt $courses
+ !if $coursecnt>0
+  <p>
+  $(CL_Names[5]):
+  !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into c_,s_,t_
+   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
+   &nbsp;
+  !next i
+ !endif
+!endif
+
+!if $class_typename=program
+ !set test=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
+ !if $test=yes
+  <p>$CL_Test:
+  !href module=adm/class/classes&type=authsupervisor&class=$wims_class/0 $N_go
+&nbsp;
+  !href module=adm/class/config&job=neighbor&job2=import&nei=$wims_class/0 $N_import
+ !endif
+!endif

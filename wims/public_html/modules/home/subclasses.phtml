@@ -1,0 +1,51 @@
+!for cnt in 3,1
+ !if $(subclasscnt$cnt)>0 and $insc!=yes
+  !if $supervisable!=yes
+   $U_gotoclass
+  !else
+   $(U_gotoclass$cnt)
+  !endif
+  !for c in $(subclass$cnt)
+   !set name=!defof class_description in wimshome/log/classes/$c/.def
+   !if $cnt=3
+    !set t_=supervisor
+    !set u_=supervisor
+   !else
+    !set t_=participant
+    !set u_=$wims_user
+   !endif
+   !if $name!=$empty
+    !href module=adm/class/classes&type=auth$t_&class=$c&auth_user=$u_ $name
+    &nbsp;
+   !endif
+  !next c
+  <p>
+ !endif
+!next cnt
+
+!if $subclasscnt2>0
+ !if $insc!=yes
+  !href module=home&cmd=new&insc=yes $U_inscription2
+ !else
+  $U_inscription1 
+  !for c in $subclass2
+   !set name=!defof class_description in wimshome/log/classes/$c/.def
+   !href module=adm/class/reguser&class=$c $name
+   &nbsp;
+  !next c
+  <p>
+  !href module=home&cmd=new $U_Back
+ !endif
+ <p>
+!endif
+
+!if $supervisable=yes and \
+	($wims_user=supervisor or $wims_class=$wims_superclass)
+ !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_clickhere
+ $U_supervise
+&nbsp;
+ !ifval $class_type!=4
+  !href module=adm/class/regclass $U_creatclass
+ !endif
+ <p>
+!endif

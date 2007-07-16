@@ -1,0 +1,26 @@
+!set m_scores=!words2items $percents
+!distribute lines $wims_firstname\
+$wims_lastname\
+$newmsgcnt\
+into\
+m_firstname,m_lastname,m_newmsgcnt
+
+!set m_today=!char 1 to 8 of $wims_now
+!set m_sheets=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set m_exams=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!set m_user_login=$wims_user
+!set m_user_lastname=$wims_lastname
+!set m_user_firstname=$wims_firstname
+!set m_class_code=$wims_class
+
+!for i=1 to $m_sheets
+ !set l_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !distribute lines $l_ into m_status$i,m_expiration$i,m_title$i,m_desc$i
+ !next i
+!for i=1 to $m_exams
+ !set l_=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ !distribute lines $l_ into m_statusE$i,m_expirationE$i,m_titleE$i,m_descE$i
+!next i
+
+!read $deffile content
+

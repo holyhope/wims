@@ -1,0 +1,79 @@
+# This is the search kernel routine. To be replaced by a c program,
+# when the intermediate output risks to overflow.
+#
+# Input parameters:
+# srch, search_category, lang, gotlim, gotlim2
+#
+# Output variables:
+# gotm, gotw, gotcnt
+# gotw is only for debugging uses.
+!nocache
+
+!if $srch!=$empty
+ suffix_dictionary=
+ dictionary=$search_package2/$search_category.$lang
+ translator_unknown=
+ sout=!exec translator $srch
+ sout=!items2words $sout
+ sout=!words2lines $sout
+ sout=!translate ? to $ $ in $sout
+ sout=!sort lines $sout
+ sout=!nonempty lines $sout
+ scnt=!linecnt $sout
+!else
+ scnt=0
+!endif
+
+!distribute item 0,0,, into weight,gotcnt,gotm,gotw,lastmod
+
+!for i=1 to $scnt
+ l_=!line $i of $sout
+ t_=!wordcnt $l_
+ !if $t_=2
+  !distribute word $l_ into m_,w_
+  !if $m_=$lastmod
+   weight=$[$weight+$w_]
+  !else
+   !if $lastmod!=$empty
+    gotm=$gotm $lastmod
+    gotw=$gotw $weight
+    !advance gotcnt
+    !if $gotcnt>=$gotlim
+     !goto bailout
+    !endif
+   !endif
+   lastmod=$m_
+   weight=$w_
+  !endif
+ !endif
+!next i
+:bailout
+!if $lastmod!=$empty and $gotcnt<$gotlim
+ gotm=$gotm $lastmod
+ gotw=$gotw $weight
+ !advance gotcnt
+!endif
+
+!if $gotcnt>0
+ translator_switch=leavelines
+ translator_unknown=200
+ gotw=!words2lines $gotw
+ gotm=!words2lines $gotm
+ dictionary=$search_package2/weight.$lang
+ gotW=!exec translator $gotm
+ dictionary=$search_package2/popular.1
+ gotp=!exec translator $gotm
+ w_=
+ !for i=1 to $gotcnt
+  u_=!line $i of $gotw
+  v_=!line $i of $gotW
+  p_=!line $i of $gotp
+  !bound p_ between integer 0 and 1000000 default 0
+  w_=!append line $[round(100*($u_+1)*($p_+10)^0.4/($v_+1)^0.7)] to $w_
+ !next i
+ gotw=!sort reverse numeric lines $w_
+ gotm=!line $wims_sort_order of $gotm
+ gotm=!line 1 to $gotlim2 of $gotm
+ gotcnt=!linecnt $gotm
+!endif
+
