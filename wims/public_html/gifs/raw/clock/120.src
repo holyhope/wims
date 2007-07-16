@@ -1,0 +1,70 @@
+!set insdraw_size=120,120
+!set dia=118
+!set range=1.05
+!set border=40,80,40
+!set face=220,255,240
+!set tick=black
+
+!set tick=240,240,240
+!set face=black
+!set border=brown
+
+!for i=1 to 60
+ !set k1=$[sin($i*pi/30)]
+ !set k2=$[cos($i*pi/30)]
+ !set ticks=$ticks\
+  line $k1,$k2,0.95*$k1,0.95*$k2,$tick
+!next i
+
+!for i=1 to 12
+ !set k1=$[sin($i*pi/6)]
+ !set k2=$[cos($i*pi/6)]
+ !set j=$[(14-$i)%12+1]
+ !set Ticks=$Ticks\
+  line $k1,$k2,0.91*$k1,0.91*$k2,$tick\
+  text $tick,$k1*0.78-0.05,$k2*0.78+0.09,small,$i
+!next i
+
+!set h=!randint 1,12
+!set m=$[randint(12)*5]
+!set H=$[$h+$m/60]
+!set H1=$[sin($H*pi/6)]
+!set H2=$[cos($H*pi/6)]
+!set M1=$[sin($m*pi/30)]
+!set M2=$[cos($m*pi/30)]
+!set s=!randint 0,59
+!set S1=$[sin($s*pi/30)]
+!set S2=$[cos($s*pi/30)]
+!set hl=0.5
+!set hw=0.05
+!set hb=0.18
+!set ml=0.65
+!set mw=0.04
+!set mb=0.23
+!set sl=0.9
+!set sb=0.25
+
+!insdraw\
+transparent white\
+ xrange -$range,$range\
+ yrange -$range,$range\
+ circle 0,0,$dia,$border\
+ fill 0,0,$face\
+ linewidth 1\
+ $ticks\
+ linewidth 3\
+ $Ticks\
+ linewidth 4\
+ circle 0,0,$dia,$border\
+
+!!linewidth 1\
+ fpoly gold,$H1*$hl,$H2*$hl,-$H2*$hw,$H1*$hw,-$H1*$hb,-$H2*$hb,$H2*$hw,-$H1*$hw\
+ poly gold,$H1*$hl,$H2*$hl,-$H2*$hw,$H1*$hw,-$H1*$hb,-$H2*$hb,$H2*$hw,-$H1*$hw\
+ fpoly gold,$M1*$ml,$M2*$ml,-$M2*$mw,$M1*$mw,-$M1*$mb,-$M2*$mb,$M2*$mw,-$M1*$mw\
+ poly gold,$M1*$ml,$M2*$ml,-$M2*$mw,$M1*$mw,-$M1*$mb,-$M2*$mb,$M2*$mw,-$M1*$mw\
+ linewidth 12\
+ point 0,0,gold\
+ linewidth 2\
+ line -$S1*$sb,-$S2*$sb,$S1*$sl,$S2*$sl,red\
+ linewidth 7\
+ point 0,0,red

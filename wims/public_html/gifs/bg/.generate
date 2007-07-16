@@ -1,0 +1,112 @@
+#! /bin/sh
+#
+# This file only generates some of the image files in this directory!
+# Do not erase the directory before running this script.
+#
+
+cd `dirname $0`
+
+colors="grey yell blue white pink"
+
+grey=208,208,208
+yell=255,255,180
+blue=218,218,255
+white=255,255,255
+pink=255,204,224
+grey2=224,224,224
+yell2=255,255,212
+blue2=232,232,255
+export $colors
+
+draw=../../../other/bin/flydraw
+
+drawset='transparent 254,254,254
+fill 0,0,254,254,254
+xrange -1,1
+yrange -1,1
+trange -1,1
+linewidth 1
+'
+mosaic="transparent 254,254,254
+fill 0,0,254,254,254
+xrange -3,3
+yrange 0,6
+fpolygon $yell2,0,6,-1,5,0,4,2,4,3,5,2,6
+fpolygon $blue2,0,0,-1,1,0,2,2,2,3,1,2,0
+fpolygon $blue2,-3,5,-1,5,0,4,-1,3,-3,3
+fpolygon $blue2,3,5,2,4,3,3
+fpolygon $yell2,-3,3,-1,3,0,2,-1,1,-3,1
+fpolygon $yell2,3,3,2,2,3,1
+"
+
+$draw <<@ >mosaic.gif
+new 45,78
+$mosaic
+@
+$draw <<@ >Mosaic.gif
+new 90,156
+$mosaic
+@
+
+for color in $colors
+do
+ eval cc='$'$color
+ $draw <<@ >ball$color.gif
+ new 36,36
+ $drawset
+ disk 0,0,12,$cc
+@
+
+ $draw <<@ >Checker$color.gif
+ new 60,60
+ $drawset
+ frect 0,0,1,1,$cc
+ frect 0,0,-1,-1,$cc
+@
+
+ $draw <<@ >checker$color.gif
+ new 40,40
+ $drawset
+ frect 0,0,1,1,$cc
+ frect 0,0,-1,-1,$cc
+@
+
+ $draw <<@ >Cross$color.gif
+ new 40,40
+ $drawset
+ linewidth 2
+ line -1,-1,1,1,$cc
+ line -1,1,1,-1,$cc
+@
+
+ $draw <<@ >cross$color.gif
+ new 22,22
+ $drawset
+ linewidth 2
+ line -1,-1,1,1,$cc
+ line -1,1,1,-1,$cc
+@
+
+ $draw <<@ >Square$color.gif
+ new 30,30
+ $drawset
+ linewidth 2
+ line -1,0,1,0,$cc
+ line 0,-1,0,1,$cc
+@
+
+ $draw <<@ >square$color.gif
+ new 17,17
+ $drawset
+ line -1,0,1,0,$cc
+ line 0,-1,0,1,$cc
+@
+
+ $draw <<@ >wave$color.gif
+ new 30,16
+ $drawset
+ plot $cc,0.6*sin(pi*x)
+@
+
+done
+
