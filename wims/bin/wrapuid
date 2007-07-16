@@ -1,0 +1,43 @@
+#! /bin/sh
+#
+#	This small script is used to fix the uid of wrap..exec.
+#	It must be run as root.
+#
+
+if [ ! "$UID" = 0 ]; then
+ echo
+ echo Please run this script as root!
+ echo
+ echo
+ exit
+fi
+
+cd `dirname $0`/..
+
+distro=default
+[ -f /etc/debian_version ] && distro=debian
+
+case $distro in
+  debian) usergroup=nobody:nogroup
+  ;;
+  *) usergroup=nobody:nobody
+  ;;
+esac
+
+for f in public_html/bin/wrap..exec bin/wimsd
+do
+ if [ -f $f ]; then
+  chown $usergroup $f
+  chmod a+s $f
+ fi
+done
+
+chown root:root public_html/bin/ch..root
+chmod a+s public_html/bin/ch..root
+rm -f log/unsecure
+
+#if [ -d chroot/dev ] && [ ! -e chroot/dev/zero ]; then
+# cp -fR /dev/zero chroot/dev 2>/dev/null
+# cp -fR /dev/null chroot/dev 2>/dev/null
+#fi
+
