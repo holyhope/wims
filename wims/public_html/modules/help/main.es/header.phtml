@@ -1,0 +1,59 @@
+!set lan=en
+<HTML><HEAD>$wims_html_header
+</HEAD>
+!if $wims_window=new
+ !set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+!endif
+<BODY $wims_htmlbody $w_resize>
+!robottrap
+
+<DIV CLASS=wimsmenu>
+<CENTER><TABLE border=0 cellspacing=0 cellpadding=5 bgcolor=$wims_ref_bgcolor>
+<tr><td align=center>
+!if _ isin $wims_subsession
+ <a href=# onclick="window.close()">Cerrar la ventana de ayuda</a>
+!else
+ !href session=$wims_session.1 Página de inicio de WIMS
+!endif
+!if $style=print
+ &nbsp;
+ !href module=$module&chapter=0 Versión interactiva
+ !set chapter=-1
+ !goto tabend
+!endif
+!if $chapter>0
+ <td align=center>
+ !href module=$module&chapter=0 Índice de la ayuda
+&nbsp;
+!endif
+<td align=center>
+!href module=$module&style=print Versión imprimible
+&nbsp;
+!if $chapter>1
+ <td align=center>
+ !href module=$module&chapter=$[$chapter-1] Capítulo anterior
+!endif
+!if $chapter<$chaptercnt
+ <td align=center>
+ !href module=$module&chapter=$[$chapter+1] Capítulo siguiente
+!endif
+
+:tabend
+</TABLE></CENTER></DIV><DIV CLASS=wimsbody>
+
+!if $chapter>0
+ !set l=!line 1 of $(chapter$chapter)
+ !set ll=!word $chapter of I II III IV V VI VII IIIV IX X
+ !set l=Capítulo $ll. $l
+!else
+ !if $chapter<0
+  !set l=Versión imprimible
+ !else
+  !set l=Índice general
+ !endif
+!endif
+
+<P><CENTER><H1>Ayuda de WIMS<br>
+<font size=+1><b>---- $l ----</b></font>
+</H1></CENTER> <P>
+
