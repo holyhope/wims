@@ -1,0 +1,140 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS à $httpd_HTTP_HOST
+<p>
+Inscription de participation à un forum
+</h1></center> <p><hr width=50%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $forumcnt=0
+ Ce site ne contient aucun forum pour l'instant. Désolé, essayez plus 
+ tard!
+ !goto end
+!endif
+
+!set forumname=<b><font color=green>$title</font></b>
+
+!if $password!=$empty and $passverify=$empty and $mailverif=$empty
+ $forumname
+ est protégé par un mot de passe. Vous devez taper ce mot de passe
+ avant de pouvoir vous y inscrire.
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Mot de passe :
+ <input type=password name=forumpass>
+ <p>
+ <input type=submit value="Envoyer ce mot de passe">
+ </center></form> <p>
+ <b>Remarque</b>. Si le gérant ($supervisor) 
+ de ce forum vous autorise l'accès,
+ vous devriez pouvoir obtenir ce mot de passe auprès de lui.
+ (
+ !mailurl $smail Lui écrire
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ Pour vous inscrire en tant que participant à $forumname,
+ veuillez donner les renseignements suivants.
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>Votre nom <input size=20 name=lastn value="$lastn">
+  et prénom <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>Choisissez un nom de login :
+  <input size=16 name=login value="$login"> <br>
+  Ce sera le nom que vous utiliserez pour entre dans la classe 
+  ultérieurement. Veuillez choisir un mot contenant entre 4 et 16
+  caractères alphanumériques sans accent uniquement.
+  <p>
+ <li>Et un mot de passe :
+  <input type=password size=16 name=pass> <br>
+  Le mot de passe doit contenir entre 4 et 16 caractères alphanumériques
+  sans accent.
+  <p>
+  !if $mailverif=$empty
+   <li>Votre adresse électronique (facultative)&nbsp;:<br>
+  !else
+   <li>Votre adresse électronique&nbsp;:<br>
+  !endif
+  <input size=60 name=email value="$email">
+  <p>
+ <center><input type=submit value="Enregistrer"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Bonjour, $firstn $lastn!<p>
+ Vous êtes en train de vous inscrire dans
+ $forumname, avec le nom de login &nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  Vous n'avez pas donné d'adresse électronique valide. <p>
+ !else
+  Votre adresse électronique : <tt>$email</tt> <p>
+ !endif
+ Pour vérifier l'exactitude de votre mot de passe, veuillez le retaper
+ encore une fois :
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="Envoyer"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Bonjour, $firstn $lastn!<p>
+ !if $mailverif=yes
+  !set mailverif=next
+  $forumname ne permet pas d'inscription anonyme. Il utilise votre adresse
+  électronique pour garder votre identité (dans un but d'éviter les abus).
+  <p>
+  Afin de vérifier la validité de votre adresse électronique, le serveur vous
+  a envoyé un code secret par email. Veuillez lire ce mail, et copier ce code
+  ici&nbsp;:
+  !form reply
+  <input type=hidden name=step value=3>
+  <p><center><input size=10 name=vericode>
+  <input type=submit value=OK></form>
+  <p>
+  !href module=adm/forum/forum Abandonner l'opération
+  </center> <p>
+  !goto end1
+ !else
+  Bienvenue à $forumname.
+  Vous êtes maintenant un participant de ce forum, avec le nom de login
+ <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
+  Vous pouvez maintenant 
+  !href module=adm/forum/forum&forum=$forum&type=authuser login
+  dans ce forum.
+  !goto end
+ !endif
+!endif
+
+:end1
+<p>
+!href module=adm/forum/forum&type=list Liste de forums sur le site
+:end
+!tail
+
+!set step=
+

@@ -1,0 +1,27 @@
+
+!if $datacnt<1
+ No hay todavía módulos nuevos registrados en este servidor. El registro
+ se inicia con la introducción del sistema de puesta en común y
+ actualización de módulos en WIMS-3.37f.
+ !exit
+!endif
+
+$table_header
+<caption>Módulos nuevos instalados en el servidor</caption>
+$table_hdtr<th>Fecha<th>Idioma<th>Título<th>Descripción
+</tr>
+!for i=1 to $datacnt
+ !set l=!line $i of $data
+ !distribute words $l into d_,a_,v_
+ !set la=!char -2,-1 of $a_
+ !set tit=!module title $a_
+ $table_tr
+ <td align=center><small>
+ !char 1 to 8 of $d_
+ </small></td><td align=center>$la</td><td>
+ !href target=wims_test module=$a_ $tit
+ </td><td>
+ !module description $a_
+ </td></th>
+!next i
+$table_end

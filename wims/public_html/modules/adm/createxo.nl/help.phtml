@@ -1,0 +1,61 @@
+!if $realtest=yes
+ !changeto oef/help.phtml
+!endif
+
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if,symtext,model
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty and $s_ isitemof $helplist
+ !read help/$s_.phtml
+ <p><center>
+ !href cmd=help Andere help onderwerpen.
+ &nbsp;&nbsp;
+ !href cmd=resume Terug aan het werk
+.
+ </center>
+ !exit
+!endif
+
+Help onderwerpen:<ul>
+<p><li>
+!href cmd=help&special_parm=oef Uitleg over het OEF bestandsformaat.
+!!<p><li>
+!!href cmd=help&special_parm=examples Examples of exercises.
+<p><li>
+!href cmd=help&special_parm=format Beschrijving van het "statement"
+ van OEF.
+<p><li>
+!href cmd=help&special_parm=parameters Random parameters
+ in interactieve oefeningen.
+<p><li>
+!href cmd=help&special_parm=math Wiskundige formules
+ in oefeningen.
+<p><li>Het invoegen van
+!href cmd=help&special_parm=draw dynamische gegenereerde plaatjes
+ in de oefeningen.
+<p><li>Op welke manieren kan de gebruiker/leerling
+!href cmd=help&special_parm=reply antwoord geven op een 
+interactieve vraag?
+<p><li>Hoe geef ik interactieve
+!href cmd=help&special_parm=feedback feedbacks
+ op de antwoorden.
+<p><li>
+!href cmd=help&special_parm=oefadv speciale effecten
+.
+<p><li>Geef me
+!href cmd=help&special_parm=all alle 
+help paginas
+</ul>
+
+<center>
+!href cmd=resume Terug aan het werk.
+</center>
+

@@ -1,0 +1,29 @@
+
+!if $datacnt<1
+ Er staan geen module verbeteringen of veranderingen geregistreerd op deze server.<br>
+ Let op: dit systeem werkt alleen vanaf het in versie <b>WIMS-3.37f</b> geintroduceerde 
+ publicatie en updating-systeem
+ !exit
+!endif
+
+$table_header
+<caption>De laatste module wijzigingen op deze server</caption>
+$table_hdtr<th>Datum<th>Taal<th>Titel<th>Omschrijving
+<th>Nieuwe<br>versie
+</tr>
+!for i=1 to $datacnt
+ !set l=!line $i of $data
+ !distribute words $l into d_,a_,v_
+ !set la=!char -2,-1 of $a_
+ !set tit=!module title $a_
+ $table_tr
+ <td align=center><small>
+ !char 1 to 8 of $d_
+ </small></td><td align=center>$la</td><td>
+ !href target=wims_test module=$a_ $tit
+ </td><td>
+ !module description $a_
+ </td><td align=center>$v_
+ </td></th>
+!next i
+$table_end

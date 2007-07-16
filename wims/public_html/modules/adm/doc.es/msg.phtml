@@ -1,0 +1,138 @@
+!set wims_module_log=error: $error
+
+<b>Error</b>.
+
+!if $error = doc_not_exist
+ El documento que ha solicitado no (o ya no) existe.
+ !exit
+!endif
+
+!if $error = abuse
+ ¡Qué título más extraño para un documento! ¿Seguro que quiere crear un
+ documento serio?
+ <p>
+ ¡<b>Atención</b>! 
+ A los responsables de abusos contra el servidor se les cerrará el acceso.
+ !exit
+!endif
+
+!if $error = quota
+ Ya no puede modificar este documento porque su contenido ha superado
+ el espacio de disco permitido.
+ !exit
+!endif
+
+!if $error = quota_file
+ No puede subir el fichero porque no queda espacio de disco suficiente
+ para su documento.
+ !exit
+!endif
+
+!if $error = no_tit
+ Por favor póngale un título a su documento.
+ !exit
+!endif
+
+!if $error = no_author
+ No ha especificado el autor del documento.
+ !exit
+!endif
+
+!if $error = bad_email
+ ¡Su dirección de correo electrónico no parece válida! Por favor corríjala.
+ !exit
+!endif
+
+!if $error = bad_code
+ Lo sentimos pero la clave es incorrecta. No está autorizado a
+ leer/escribir el documento que ha solicitado.
+ <p>
+ Puede
+ !mailurl $wims_site_manager escribir al administrador del sitio\
+[wims] Olvido de clave de documento
+ si ha olvidado la clave secreta de su documento.
+ !exit
+!endif
+
+!if $error = unauthorized
+ No está autorizado a leer/escribir el documento que ha solicitado.
+ !exit
+!endif
+
+!if $error = bad_data
+ Alguno de los datos que ha proporcionado no son correctos.
+ Por favor corríjalos.
+ !exit
+!endif
+
+!if $error = class_no_right
+ Lo sentimos pero su petición ha sido rechazada. Por favor consulte al
+ profesor de la clase.
+ !exit
+!endif
+
+!if $error = small_code
+ La clave secreta es demasiado corta.
+ !exit
+!endif
+
+!if $error = big_code
+ La clave secreta es demasiado larga.
+ !exit
+!endif
+
+!if $error = code_discord
+ <b>Atención</b>. Ha tecleado dos claves secretas distintas en dos ocasiones.
+ Vuelva a intentarlo.
+ !exit
+!endif
+
+!if $error = bad_newcode
+ Su clave secreta contiene caracteres prohibidos. Por favor use sólo
+ caracteres alfanuméricos.
+ !exit
+!endif
+
+!if $error = bad_oldcode
+ No ha introducido la clase secreta antigua correcta. Por favor vuelva
+ a intentarlo.
+ !exit
+!endif
+
+!if $error = deposit_fail
+ Lo sentimos pero no se ha recibido ningún fichero suyo válido.
+ Compruebe el nombre del fichero.
+ !exit
+!endif
+
+!if $error = deposit_binary
+ ¡Ha enviado el fichero binario <tt>$wims_deposit</tt>!
+ No sé utilizarlo. Por favor envíe un fichero de texto.
+ !exit
+!endif
+
+!if $error = src_too_long
+ No se puede aceptar el bloque <tt>$block</tt> porque supera el límite
+ de tamaño ($max_blocklen bytes). Podría dividirlo en varios bloques.
+ !exit
+!endif
+
+!if $error = file_too_long
+ No se puede aceptar el fichero LaTeX porque supera el límite
+ de tamaño ($max_texlen bytes).
+ Sin embargo podría dividirlo en varias partes y enviarlas
+ una a una en diferentes bloques.
+
+ !exit
+!endif
+
+!if $error = no_latex2html
+ Lo sentimos pero no es posible el envío de ficheros LaTeX en este servidor,
+ porque no está instalado el software LaTeX2HTML.
+ Por favor intente ejecutar LaTeX2HTML en su ordenador local y después
+ envíe el fichero html resultante.
+ !exit
+!endif
+
+!msg $error
+

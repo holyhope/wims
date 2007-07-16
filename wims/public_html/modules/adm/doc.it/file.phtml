@@ -1,0 +1,68 @@
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ Il file <b>$erase</b> &egrave; stato cancellato.
+ <p>
+!endif
+
+!if $quota_free<1
+ Non &egrave; pi&ugrave; possibile inserire file in questo documento
+ perch&eacute; la sua dimensione sta per superare il limite consentito.
+ Spiacente!
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=deposit>
+ &Egrave; possibile inserire un file in questo documento:
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=OK>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>File disponibili in questo documento:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Cancella un file:
+ !formselect job2 list $flist
+ <input type=submit value=OK>
+ </form>
+ <p>
+ I file legati al documento possono essere resi visibili tramite la 
+ variabile <tt>\filedir</tt>. Per esempio il comando
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ inserisce un link al file <a href=$m_filedir/$f1>$f1</a>.
+ &Egrave; anche possibile scrivere
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+per inserire nella pagina l'immagine contenuta nel file <tt>myfile.jpg</tt>.
+ <p>
+ I file inseriti in questo documento sono visibili solo da chi 
+ pu&ograve; accedere al documento.
+!endif
+
+<p>
+Spazio totale disponibile sul disco: $quota_total Mega. Spazio libero: $quota_free Mega.
+
+<p><center>
+!href cmd=reply&job=prop Propriet&agrave; del documento
+&nbsp;&nbsp;
+!href cmd=reply&job=list Elenco dei blocchi
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main Blocco principale
+
+</center> <p>
+

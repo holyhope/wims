@@ -1,0 +1,99 @@
+
+!if $rep!=$empty
+ !if $status=ERROR
+  !read msgcl.phtml $rep2
+  <p><hr width=50%><p>
+ !else
+  <pre>$rep</pre>
+  <p>
+  !if $m1=local
+   Le module publié apparaîtra dans le moteur de recherche
+   du site d'ici quelques minutes.
+   <p>
+   Si c'est une erreur, veuillez
+   !mailurl $wims_site_manager demander au gestionnaire
+   du site</a> d'enlever manuellement le module que vous
+   avez publié.
+  !else
+   Vous allez recevoir un mail confirmant la réception de l'envoi.
+  !endif
+ !endif
+ !exit
+!endif
+
+!if $askcheat=yes
+ Ce module déclare qu'il se contente de WIMS-$Wver2,
+ alors qu'il a probablement été développé ou modifié sous
+ ce serveur qui est de version $wims_version. Vous devez
+ mettre à jour le fichier INDEX du module en modifiant 
+ la version de wims dans <tt>Propriétés</tt>.
+ <p><center>
+ !href cmd=help&special_parm=wimsversion Explication
+.
+ !href cmd=reply&vcheat=no D'accord, allez-y
+.
+ </center> <p>
+ Si vous êtes SUR de ce que vous faites, vous pouvez
+ !href cmd=reply&vcheat=yes tricher
+ pour faire croire aux serveurs que vous êtes sur un serveur
+ ancien (OPERATION TRES RISQUEE) !
+ !exit
+!endif
+
+!if $pubprep=yes
+ !if $local!=yes
+  !href cmd=help&special_parm=publish Lisez ceci d'abord !
+  Ce module a une adresse publique. Il doit donc être publié au
+  centre de publication <tt>$centralhost</tt>.
+  Veuillez entrer votre identification de publication.
+  !form reply
+  <input type=hidden name=confirm value=yes>
+  <input type=hidden name=vcheat value="$vcheat">
+  <p><center><table border=0 cellpadding=4>
+  <tr><td align=right>Nom de compte : </td>
+  <td><input type=text size=20 name=submitauth value="$submitauth">
+  </td></tr>
+  <tr><td align=right>Mot de passe : </td>
+  <td><input type=password size=20 name=submitpass value="$submitpass">
+  </td></tr>
+  <tr><td align=right>Type de publication : </td>
+  <td>
+  !set submittype=devel
+  !formselect submittype list devel,stable,new prompt \
+	version développement, \
+	version stable - modifier un module existant, \
+	version stable - ajouter un nouveau module
+  </td></tr>
+  <tr><td align=right>Est-ce une traduction <br>
+  d'un module existant <br>
+  créé par un autre auteur ?
+  </td><td>
+  !set istranslate=no
+  !formselect istranslate list yes,no prompt Oui,Non
+  </td></tr>
+  <tr><td align=right>Modificateurs autorisés :
+  </td><td>
+  <input size=40 name=modifiers value="$modifiers">
+  !href cmd=help&special_parm=modifiers <sup>aide</sup>
+  </td></tr>
+  <tr><td colspan=2 align=center><input type=submit value=OK>
+  </tr>$table_end <p>
+  Avez-vous incrémenté la version du module, si vous publiez une
+  nouvelle version d'un module existant ?
+  <p>
+  Sinon, personne ne mettra à jour à votre nouvelle version.
+ !else
+  Votre module a une adresse locale. Il ne peut être publié
+  que sur l'espace local de ce serveur. Voulez-vous continuer ?
+  <p><center>
+  !href cmd=reply&confirm=yes&vcheat=$vcheat Allons-y
+  &nbsp
+  !href cmd=reply&jobreq=flist Annuler
+  </center> <p>
+
+  Le principal avantage d'une publication dans l'espace local est 
+  de faire apparaitre le module dans le moteur de recherche du 
+  serveur local.
+ !endif
+!endif
+

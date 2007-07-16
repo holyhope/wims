@@ -1,0 +1,59 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Voti inseriti manualmente
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page del corso
+. <p>
+ !goto end
+!endif
+
+!form reply
+<input type=hidden name=method value=percent>
+<p>In questa pagina si possono attribuire manualmente voti agli studenti 
+(ogni singolo partecipante ha poi la possibilità di visionare i voti
+attribuitigli).
+
+<p>Il sistema calcola automaticamente punteggi medi: i voti assegnati
+manualmente contribuiscono per il 
+<input size=4 name=per value="$percent">%
+(<small><input type=submit name=reg value=cambia></small>)
+al punteggio medio globale dei partecipanti.
+!if $method!=list
+ !href cmd=reply&method=list Annulla le modifiche
+.
+!endif
+</form> <p>
+
+!read $method.phtml
+
+!if $method!=list
+ !href cmd=reply&method=list Annulla le modifiche
+.
+!endif
+
+<p>
+!href module=adm/class/userlist Gli altri voti
+.
+
+:end
+!tail
+
+!reset reg
+

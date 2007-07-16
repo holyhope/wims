@@ -1,0 +1,57 @@
+
+<center><h3>Opzioni studente</h3></center>
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!set inplen=40
+!form reply
+<input type=hidden name=job value=userprop>
+<input type=hidden name=getuser value=$getuser>
+<p>$table_header
+$table_tr<th>Login<td><tt>$getuser</tt>
+$table_tr<th>Password<td>
+	!href module=adm/class/passwd&job=part&part=$getuser Modifica password
+$table_tr<th>Cognome<td>
+	<input size=$inplen name=up_lastname value="$user_lastname">
+$table_tr<th>Nome<td>
+	<input size=$inplen name=up_firstname value="$user_firstname">
+$table_tr<th>Indirizzo email<td>
+	<input size=$inplen name=up_email value="$user_email">
+$table_tr<th>Matricola<td>
+	<input size=$inplen name=up_regnum value="$user_regnum">
+!if $wims_user=supervisor
+ $table_tr<th>Commenti<td>
+	<input size=$inplen name=up_comments value="$user_comments">
+ $table_tr<th>Variabili (tecniche)</th><td>
+	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars>$user_vars</textarea>
+!else
+ $table_tr<th>Password pubblica<td>
+	<input size=14 type=password name=passcheck> <br>
+	<small>Per effettuare le modifiche occorre inserire la password 
+        `pubblica', <br>cio&egrave; quella utilizzata per effettuare la prima
+         iscrizione a questo corso.</small>
+!endif
+$table_hdtr<td align=center colspan=2>
+<input type=submit name=reg value=Salva> &nbsp;
+<input type=submit name=abandon value=Annulla>
+</td></tr>
+$table_end <p>
+</form>
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=reply&job=getuser&getuser=$getuser Punteggi ottenuti
+ .
+ !href cmd=reply&job=getraw&getraw=$getuser Dati non elaborati
+ .
+ <p>
+ !href cmd=reply&job=delprep&delprep=$getuser Escludi questo studente
+ .
+ !href cmd=resume Elenco iscritti
+ .
+</center> <p>
+!endif
+
+!reset reg,abandon
+

@@ -1,0 +1,157 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+wims_prefix=class user tmp n sharing sharable
+!read adm/class/authchars
+max_addition=100
+wims_form_method=post
+wims_helper=chapter=3
+
+!if $wims_user!=supervisor
+ !bound job within user,none default none
+!else
+ !bound job within class,user,part,none default none
+!endif
+
+!defread wimshome/log/classes/$wims_class/.def
+!if $class_expiration=$empty
+ error=bad_class
+ !exit
+!endif
+
+part=!trim $part
+!if $part=$empty and $job=part
+ job=none
+!endif
+
+pw1=!items2words $pw1
+pw2=!items2words $pw2
+pw1=!trim $pw1
+pw2=!trim $pw2
+pw1=!singlespace $pw1
+pw2=!singlespace $pw2
+
+!if $job=none or ($old=$empty and $job notwordof class part) or\
+ ($pw1=$empty or $pw2=$empty)
+ !exit
+!endif
+
+!if $pw1!=$pw2
+ error=discord
+ !exit
+!endif
+
+pw=!char 1 of $pw1
+!if $pw=+ and $job=user
+ pw1=!char 2 to -1 of $pw1
+ pw1=!trim $pw1
+ once=true
+!endif
+t=!wordcnt $pw1
+!if $t>1 and $job!=user
+ error=bad_pass
+ !exit
+!endif
+
+n=!charcnt $pw1
+!if $n>$max_addition
+ error=too_long
+ !exit
+!endif
+!for i=1 to $t
+ pw=!word $i of $pw1
+ n=!charcnt $pw
+ !if $n>$passwd_max
+  error=too_long
+  !exit
+ !endif
+ !if $n>0 and $n<$passwd_min
+  error=too_short
+  !exit
+ !endif
+ !if $once!=true and $pw=$old
+  error=nothing_to_do
+  !exit
+ !endif
+ test=!text select $char_passwd in $pw
+ !if $test!=$pw
+   error=bad_pass
+   !exit
+ !endif
+!next i
+
+!if $job=part
+ !read adm/class/userdef classes,$wims_class,$part
+ !defread $userdef
+ !if $user_exists!=yes
+  error=bad_user
+  !exit
+ !endif
+ pw1=!passcrypt $pw1
+ !setdef !set user_password=$pw1 in $userdef
+ pass=!getdef user_password in $userdef
+ !if $pass=$pw1
+  error=success
+  wims_module_log=Change participant password: $part
+  wims_class_log=change password: $part
+ !else
+  error=fail
+ !endif
+ !exit
+!endif
+
+!if $job=user
+ !read adm/class/userdef classes,$wims_class,$wims_user
+ !if $wims_user=supervisor
+  !read var.auth
+  !if $error!=$empty
+   !exit
+  !endif
+ !endif
+ !read $userdef
+ anc=!word 1 of $user_password
+ anc=!passcrypt $anc
+ old=!passcrypt $old
+ !if $old!=$anc
+  error=bad_user_password
+  !exit
+ !endif
+ !if $once=true
+  pw1=$anc $pw1
+ !endif
+ pw1=!passcrypt $pw1
+ !setdef !set user_password=$pw1 in $userdef
+ pass=!getdef user_password in $userdef
+ !if $pass=$pw1
+  error=success
+  wims_module_log=Change user password: $wims_user
+  !if $wims_user=supervisor
+   wims_class_log=change password
+   !read mail.proc
+  !endif
+ !else
+  error=fail
+ !endif
+ !exit
+!endif
+
+!if $job=class
+ !if $wims_user!=supervisor
+  error=not_supervisor
+  !exit
+ !endif
+ !read var.auth
+ !if $error!=$empty
+  !exit
+ !endif
+ !setdef !set class_password=$pw1 in wimshome/log/classes/$wims_class/.def
+ class_pass=!getdef class_password in wimshome/log/classes/$wims_class/.def
+ !if $class_pass=$pw1
+  error=success
+  wims_module_log=Change class password.
+  wims_class_log=change class password
+ !else
+  error=fail
+ !endif
+!endif
+

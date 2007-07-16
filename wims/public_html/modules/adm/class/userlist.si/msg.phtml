@@ -1,0 +1,79 @@
+
+!set wims_module_log=error: $error
+
+<b>Napaka</b>.
+
+!if not_supervisor=$error
+ Sorry, but the operation of preparation / modification of a work sheet
+ is reserved to registered supervisor of a class.
+ !exit
+!endif
+
+!if not_superclass=$error
+ Operation not allowed because you are under a superclass. Only the
+ superclass manager can do this.
+ !exit
+!endif
+
+!if bad_class=$error
+ Strange, but I find that your class is not valid!
+ !exit
+!endif
+
+!if bad_classpass=$error
+ Sorry, but you didn't enter a correct password of the class. You are not
+ allowed to change the participant information.
+ !exit
+!endif
+
+!if no_login iswordof $error
+ Your uploaded data must contain a column corresponding to participant login
+ name.
+ !exit
+!endif
+
+!if bad_filename iswordof $error
+ Your file does not look like a spreadsheet data under text format. 
+ :csvformat
+ Please
+ save your data under a text format (comma-separated or tab-separated, with
+ the extension .csv, .tsv or .txt), before sending it to the class.
+ !exit
+!endif
+
+!if binary_upload iswordof $error
+ Your spreadsheet data is in binary format! This is not accepted, sorry.
+ <p>
+ !goto csvformat
+!endif
+
+!if no_manual iswordof $error
+ Please first
+ !href module=adm/class/grades create a manual grades column
+ before sending data into it.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ Spreadsheet data download and upload are only available from secure
+ connections. Please check the configuration of your class.
+ !exit
+!endif
+
+!if bad_user=$error
+ Calling error: participant <tt>$checkuser</tt> does not exist.
+ !exit
+!endif
+
+!if bad_exo=$error
+ Item to verify does not exist.
+ !exit
+!endif
+
+!if bad_op=$error
+ Bad operation. Please close the window.
+ !exit
+!endif
+
+!msg $error
+

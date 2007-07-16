@@ -1,0 +1,22 @@
+
+!if $doc isin $opensite
+ opensite=!replace word $doc by $ in $opensite
+!else
+ opensite=$opensite $doc
+!endif
+
+op=!words2items $opensite
+op=!listuniq $op
+opp=
+!for o in $op
+ test=!defof tit in doc/$o/.def
+ !if $test!=$empty
+  opp=$opp $o
+ !endif
+!next o
+opensite=!trim $opp
+!writefile $docdir/open.site $opensite
+
+job=home
+!read $job.proc
+

@@ -1,0 +1,77 @@
+!if $result=success
+ !set wims_class_log=Import $import from $nei
+!endif
+
+!distribute item mensaje del día,\
+	ejercicio,hoja de trabajo,examen,documento,participante\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+
+Importación a partir de la clase
+!href cmd=reply&job2=def $nei_description
+ de
+<em><font color=blue>$nei_institution</font></em>
+<p>
+
+!if $result=confirm
+ !if dep iswordof $cfm
+  !if $itype=sheet
+   <b>Atención</b>.
+   La hoja de trabajo que quiere importar puede utilizar ejercicios
+   definidos en la clase vecina.
+   <p>
+   Si los mismos ejercicios no existen en la suya, la hoja importada
+   no funcionará correctamente. Por favor verifique con cuidado que todos
+   los ejercicios de la clase vecina tiene su réplica en la suya.
+  !endif
+  !if $itype=exam
+   ¡¡¡<b>AVISO</b>!!! Las hojas de examen se basan en las hojas
+   de trabajo para constituir sus contenidos. <p>
+   Importar una hoja de examen no tiene sentido si no tiene exactamente las
+   mismas hojas de trabajo que la clase vecina y si estas hojas no están
+   dispuestas en el mismo orden en las dos clases.
+   <p>
+   De no ser así, con seguridad la hoja de examen importada tendrán 
+   comportamientos erráticos.
+  !endif 
+  <p>
+ !endif
+ !if replace iswordof $cfm
+  <b>Atención</b>. Está a punto de sustituir un(a) $(name_$itype)
+  present(e) en su clase por el recurso importado. No habrá ninguna
+  oportunidad de volver atrás tras esta operación.
+  <p>
+ !endif
+ <p><center><font size=+1>
+ !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes Confirmar la operación
+ &nbsp;
+ !href cmd=reply&job2=import Cancelar la operación
+ </font></center> <p>
+ !exit
+!endif
+
+!if $result=none
+ No se ha añadido a su clase ninguna cuenta de participante. Compruebe
+ si su clase está llena (y si queda espacio en el sitio web para añadir
+ nuevos participantes).
+ <p>
+ !exit
+!endif
+
+Transferido con éxito:
+!if $itype!=user
+ 1 $(name_$itype).
+ !if $itype iswordof sheet exam
+  (El(la) $(name_$itype) ha sido puesto(a) en estado inactivo para permitirle 
+  modificarlo si lo desea.)<p>
+ !endif
+!else
+ $importedcnt cuentas de participantes de la clase vecina:
+ <p><tt>
+ $imported
+ </tt> <p>
+!endif
+
+!href $verif Comprobar el resultado
+.&nbsp;
+!href cmd=reply&job2=import Importar otros recursos
+.

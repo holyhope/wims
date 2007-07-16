@@ -1,0 +1,64 @@
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ 文件 <b>$erase</b> 已经被删除.
+ <p>
+!endif
+
+!if $quota_free<1
+ 你不能再向此文件添加内容, 因为已经接近或超过容许的磁盘空间. 抱歉.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=存放>
+ 你可以存放一个文档到此文件内:
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=提交>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>本文件内可用的文档:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=删除>
+ 删除一个文档:
+ !formselect job2 list $flist
+ <input type=submit value=执行>
+ </form>
+ <p>
+ 文件内的文档可以利用变量 <tt>\filedir</tt> 来进入. 例如,
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ 给出了到文档 <a href=$m_filedir/$f1>$f1</a> 的链接.
+ 你也可以写入
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+以插入图像 <tt>myfile.jpg</tt>.
+ <p>
+ 只有有权阅读文件的人才能接触存放在这个文件里的文档.
+!endif
+
+<p>
+可用的磁盘空间总数: $quota_total Meg. 自由空间: $quota_free Meg.
+
+<p><center>
+!href cmd=reply&job=prop 文件性质
+&nbsp;&nbsp;
+!href cmd=reply&job=list 块表
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main 主块
+
+</center> <p>
+

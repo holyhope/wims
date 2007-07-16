@@ -1,0 +1,51 @@
+
+<center><h3>Grafische bestanden</h3></center>
+
+!if $quota=yes
+ <b>Fout</b>.<br>
+ Er is geen harde schijfruimte meer beschikbaar voor uw klas.
+ <p>
+ !goto sendend
+!endif
+
+!set wims_form_method=file
+!form reply
+Het plaatje voor deze oefening:
+<input type=file name=wims_deposit>
+<input type=submit value=OK>
+</form>
+
+:sendend
+!if $imglist=$empty
+    Deze oefening bevat geen grafische bestanden.
+!else
+Hier staat een lijst van grafische bestanden van deze oefening.
+ <p><center><table border=2>
+ <th>Bestandsnaam<th>thumbnail<th>-
+ !for i in $imglist
+  <tr><td valign=middle align=center>$i
+  <td valign=middle align=center>
+  <img src=$wims_ref_name?cmd=getfile&session=$wims_session&special_parm=oefimg/$i
+   height=40 width=50>
+  <td valign=middle align=center>
+  !href cmd=reply&delfile=$i Verwijderen
+ !next i
+ $table_end <p>
+ !set example=!item 1 of $imglist
+ Deze plaatjes kunnen worden ingebonden in het <em>statement</em> van de oefening door middel van de 
+ interne oef-parameter \imagedir. Bijvoorbeeld kunt u declareren:
+ <center><pre>
+ &lt;img src=\imagedir/$example&gt;
+ </pre></center> <p>
+ Of kortweg: <tt>\img{$example}</tt>, of 
+ <tt>\img{$example}{html options}</tt>. 
+ Het voordeel van deze methode is dat de echte bestandsnaam onzichbaar is voor de leerlingen.<br>
+ Gebruik deze methode alleen als het echt nodig is !
+!endif
+<p><center>
+!href cmd=resume&level=3&realtest=yes&retest=again Test 
+de oefening .&nbsp;
+!href cmd=reply&level=3 Terug 
+ naar het menu.
+</center>
+

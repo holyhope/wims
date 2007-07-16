@@ -1,0 +1,196 @@
+!if robot isin $session
+  !exit
+!endif
+!header
+
+<div $frame>
+!if $wims_developer=$empty
+<b>$module_title</b> permet de transformer un fichier latex en un document dans votre compte Modtool. 
+Vous pouvez y accéder à l'aide de votre login et mot de passe de développeur.
+
+<p>
+Pour obtenir un bon résultat, le fichier latex doit être préparé convenablement
+et être accompagné d'un fichier de style css. Pour cela, lisez attentivement
+la 
+!href cmd=help&special_parm=doc documentation
+ou 
+ !getfile latex2wimsdoc.pdf documentation en PDF
+ .
+
+
+<p>
+Pour obtenir un compte Modtool, veuillez
+!mailurl $wims_site_manager écrire au gestionnaire du site\
+WIMS new developer
+ afin d'obtenir une identification du développeur
+(login, mot de passe).
+
+
+ !form reply
+Veuillez donner votre identification de développeur de Modtool
+<p>
+<table align="center"> 
+<tr><td>Nom de login : </td><td><input type=login name=login></td></tr>
+<tr><td> Mot de passe :</td><td>
+  <input type=password name=passwd>
+</td></tr></table>
+ <center> <input type=submit value=OK></center>
+  </form>
+  !tail
+  !exit
+!endif
+
+!if $error!=$empty
+  !read msg.phtml
+!endif
+
+<p>
+<b>$module_title</b> permet de transformer un fichier latex en un document dans votre compte Modtool. 
+Pour obtenir un bon résultat, le fichier latex doit être préparé convenablement
+et être accompagné d'un fichier de style css. 
+Pour cela, lisez attentivement
+la 
+!href cmd=help&special_parm=doc documentation.
+  
+!set wims_form_method=file
+!default !set execut=0
+!form reply
+!if $execut!=3
+Pour commencer, vous pouvez récupérer les trois fichiers
+(fichier latex, fichier de style latex et css) 
+  !getfile fichier_test.tex fichier latex
+,
+  !getfile style.css fichier de style css
+, 
+  !getfile wims.sty fichier de style latex2wims
+, 
+  !getfile latex2wimsdoc.pdf documentation en PDF
+
+ !if $exemple!=1
+    Ils vous permettront de créer un document-exemple :
+      !formradio exemple list 1,2 prompt oui,non
+  !endif
+!endif 
+
+<p>
+!if $execut=0
+  $hh Etape 1</h2>
+  Transférez les fichiers sur le serveur :
+  <input type=file name=wims_deposit>
+  <p>
+!if $test!=$empty and ($execut=0 or $cnt_fichier=1)
+  Fichiers transférés :
+  <pre $pre>
+  !for i = 1 to $cnt_fichier
+    $(fichiers[$i]) ($(date[$i]))
+   !next
+   </pre>
+!endif
+  <p>
+  <ul>
+    <li>
+
+   !formradio execut list 0 prompt Transférer un nouveau fichier 
+   </li><li>
+   !formradio execut list 1 prompt Passer à l'étape suivante
+   </li>
+   </ul>
+!endif
+
+
+
+!if $execut=1
+
+$hh Etape 1</h2>
+!if $cnt_fichier >0 
+   Vous pouvez encore
+    !formcheckbox execut list 0 prompt transférer un nouveau fichier
+ !else
+   Vous devez
+   !default !set execut=0
+   !formradio execut list 0 prompt transférer au moins un fichier latex
+   
+   <center>
+<input type=submit value=Valider>
+</center>
+</form>
+   !exit
+ !endif
+$hh Etape 2</h2>
+  Sélectionnez le fichier principal du document latex
+  <ul>
+    !for i = 1 to $cnt_fichier
+      !set l=!item $i of $fichiers
+      <li>
+        !formradio principal list $i prompt $(fichiers[$i]) (transféré le $(date[$i]))
+      </li>
+   !next 
+  </ul>
+  Si vous avez mis des exercices , choisissez le numéro de la feuille
+  d'exercices correspondante : 
+  !formradio wksheet list 1,2,3,4,5,6,7,8,9
+ $hh Etape 3</h2>
+!set choix=Choisissez
+!if $list_module!=$empty
+   Indiquez le nom du document de votre compte:  
+           <p align=center>
+           !formselect document list $choix,$list_module    
+         </p>
+       ou créez-en un nouveau dans votre compte
+!else
+<i>Vous devez donner  d'abord créer un document dans votre compte </i>
+!endif
+     !href target=wims_test module=adm/modtool.$module_language&cmd=reply&jobreq=create Modtool
+
+!if $document notsametext $choix
+<p> <b>Attention</b> : les fichiers du document <tt $stylett>$document</tt>
+   seront effacés et remplacés par de nouveaux.
+!else
+<p> <b>Attention</b> : Vous devez sélectionner un vrai document.
+!endif
+  $hh Etape 4</h2>
+     !formradio execut list 2 prompt Lancer l'exécution
+  
+!endif
+
+!if $execut=3 
+  !if $confirm=
+   <p> <b>Attention</b> : les fichiers du document <tt $stylett>$document</tt>
+   seront effacés et remplacés par de nouveaux.
+   <p>Confirmez-vous : 
+   !formradio confirm list 0,1 prompt oui,non
+    <ul>
+  !else
+    !if $confirm=0
+ !reset confirm
+ <ul><li>
+     !href target=wims_internal module=devel/$login/$document Vérifier le résultat
+ (<i> vous pouvez aussi y accéder par l'outil de gestion de
+!href target=wims_internal module=adm/modtool.fr&+jobreq=flist&+modreq=$document Modtool
+</i>)
+  </li>
+   !endif
+  !endif
+   <li>
+    !formradio execut list 1 prompt Revenir aux étapes précédentes
+  </li>
+  <li>
+    !formradio execut list 0 prompt Transférer un fichier
+  </li>
+  </ul>
+!endif
+<center>
+<input type=submit value=Valider>
+</center>
+   
+</form>
+
+!if $wims_exec_error!=$empty
+ <font color=red><pre>$wims_exec_error</pre></font>
+!endif
+
+</div>
+!tail
+
+!reset wims_exec_error wims_deposit
+

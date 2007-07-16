@@ -1,0 +1,31 @@
+
+!set wims_form_method=post
+!form reply
+
+!if $vote_title=$empty
+ Maken
+!else
+ Modificeren
+!endif
+van een stemming of verkiezing
+<br>
+Titel: <input size=50 name=reg_title value="$vote_title"> <br>
+Mode:
+!set reg_status=$vote_status
+!set reg_option=$vote_option
+!set reg_show=$vote_show
+!formselect reg_option list anonymous,nominative prompt anoniem,niet anoniem
+Status:
+!formselect reg_status from 0 to 3 prompt inbewerking,open,gesloten,verborgen
+Resultaat van de stemming:
+!formselect reg_show list 1,0 prompt zichtbaar,onzichtbaar
+<br> Inhoud: <small>
+!href cmd=help [help]
+</small> <br>
+<textarea name=reg_src cols=60 rows=20>$src</textarea>
+<center>
+<input type=submit name=rEg value="OPSTUREN">
+<input type=submit name=abandon value="ANNULEREN">
+</center>
+
+!reset reg_option reg_status reg_show

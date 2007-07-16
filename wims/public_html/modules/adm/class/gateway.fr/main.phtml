@@ -1,0 +1,49 @@
+!header
+!readproc names
+!set name_prog=$name_program
+!if $addline$thiscode$thistitle!=$empty
+ <center><h3>
+ !set l=!linecnt $addline
+ !for i=1 to $l
+  !if $i>1
+   /
+  !endif
+  !set l_=!line $i of $addline
+  !set t_=!item $i of $addparms
+  !if $lv<=$i
+   !href cmd=reply&$t_ $l_
+  !else
+   $l_
+  !endif
+ !next i
+ !if $thiscode!=$empty
+  !if $addline=$empty
+   $class_institution
+  !endif
+  / $class_description ($thiscode)
+  !if $thiscode!=$wims_superclass and $wims_superclass/$thiscode!=$wims_class
+   <br>
+   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode login de gestion
+  !endif
+ !else
+  !if $(name_$job)!=$empty
+   ($wims_superclass) / $(name_$job)
+  !endif
+ !endif
+ </h3></center>
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr><p>
+!endif
+
+!read jobs/$job.phtml
+!if $job iswordof first level prog class course icourse
+ !read jobs/supervisors.phtml
+!endif
+!tail
+
+!reset confirm cancel del cparent more\
+	pass passs pass2 passs2
+

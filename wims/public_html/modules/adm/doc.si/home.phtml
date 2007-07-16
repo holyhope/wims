@@ -1,0 +1,63 @@
+<center><h1>$module_title</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $doccnt<1
+ !if $wims_class!=$empty and $wims_user!=supervisor
+  V tej uèilnici ni na razpolago nobenega dokumenta. Obrnite se na skrbnika.
+ !else
+  !if $authoring=$empty
+  V tej uèilnici noben dokument ni na voljo uporabnikom.
+  !else
+  V tej uèilnici ni nobenega dokumenta izbranega avtorja.
+  !endif
+ !endif
+!else
+ !if $ii>0
+  !read scripts/table.phtml
+ !else
+  !if $wims_class!=$empty
+   Tukaj so dokumenti va¹e uèilnice.
+  !else
+   Tukaj so dokumenti, do katerih lahko dostopate s te strani.
+  !endif
+  <ul>
+  !for t=1 to $doccnt
+   !set s_=!line $t of $slist
+   !set t_=!line $t of $tlist
+   !set a_=!line $t of $alist
+   !set t_=!trim $t_
+   !default t_=No title
+   <li>
+   !href module=$module&cmd=reply&job=read&doc=$s_&block=main $t_
+   !if $wims_ismanager=2
+    &nbsp;
+    !href cmd=reply&job=erase&doc=$s_ Erase
+&nbsp;
+   !endif
+   <small>avtor $a_</small>
+  !next t
+  </ul>
+ !endif
+!endif
+
+!if $wims_class=$empty and $wims_ismanager<2
+ !form reply
+ Za va¹e lastne dokumente, vpi¹ite ime avtorja.
+ <input size=20 name=authoring value="$authoring">
+ <input type=submit value=OK>
+ </form> <p>
+!endif
+
+!if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
+ !href cmd=reply&job=creat Ustvarite nov dokument
+ali
+ !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd pi¹ite v osnutek dokumenta
+. <p>
+!endif
+
+!tail
+

@@ -1,0 +1,26 @@
+!if $vote_status=$empty or \
+	($wims_user!=supervisor and $vote_status notwordof 1 2)
+ error=bad_vote
+ job=home
+ !changeto home.proc
+!endif
+
+wims_multiexec=pari maxima yacas
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+parmcnt=0
+!reset uvname, uvval, uvcnt
+!readdef $userfile
+!readdef $votedir/$vote.votes
+!default vcnt=0
+
+!if $wims_user=supervisor or $vote_show>0
+ !if $wims_user=supervisor
+  showres=2
+ !else
+  showres=1
+ !endif
+!else
+ showres=0
+!endif
+

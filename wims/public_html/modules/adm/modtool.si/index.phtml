@@ -1,0 +1,105 @@
+!set size=50
+
+!if $title=$empty or $modreq=.new
+ !set this=your new module
+!else
+ !set this=the current module under development
+!endif
+!form reply
+<input type=hidden name=jobreq value=flist>
+$table_header
+<caption>Properties of $this</caption>
+
+$table_tr<td align=right nowrap>Address
+ <td>
+ !if $title!=$empty and $modreq!=.new
+  <tt>$modreq</tt>&nbsp;
+  !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq rename
+&nbsp;
+  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq duplicate
+ !else
+  !set modreq=.new
+  !read scripts/addressform.phtml nook
+ !endif
+
+$table_tr<td align=right nowrap>Title
+ <td><input size=$size name=i_title value="$i_title">
+
+$table_tr<td align=right nowrap>Description
+ <td><input size=$size name=i_description value="$i_description">
+
+$table_tr<td align=right nowrap>Language
+ <td>
+ !default i_language=$module_language
+ !formselect i_language list $langlist prompt $langname
+
+$table_tr<td align=right nowrap>Type
+ <td nowrap>
+ !set wims_formselect_switch=multiple
+ !formcheckbox i_category list exercise,tool,document,recreation,oef,deductio
+
+$table_tr<td align=right nowrap>Domain
+ <td>
+ <input size=$size name=i_domain value="$i_domain">
+
+$table_tr<td align=right nowrap>Level(s)
+ <td>
+ !formcheckbox i_level list $levellist
+ <br><small>E: elementary school; H: high school; U: university;
+ <br>G: graduate study; R: research</small>
+
+$table_tr<td align=right nowrap>Scoring mechanism<br>
+ <small>(exercise / recreation)</small>
+ <td>
+ !default i_scoring=no
+ !formradio i_scoring list yes,no prompt Yes, No
+
+$table_tr<td align=right nowrap>Version
+ <td>
+ !default i_version=1.00
+ <input type=text size=6 name=i_version value="$i_version">
+ <small>Don't forget to increment it when you publish a new version!</small>
+
+$table_tr<td align=right nowrap>wims_version
+ <td>
+ !default i_wims_version=$wims_version
+ <input type=text size=6 name=i_wims_version value="$i_wims_version">&nbsp;
+ !href cmd=help&special_parm=wimsversion help
+
+$table_tr<td align=right nowrap>Author
+ <td>
+ !default i_author=$auth_name
+ <input type=text size=$size name=i_author value="$i_author">
+
+$table_tr<td align=right nowrap>Author's email
+ <td>
+ !default i_address=$auth_email
+ <input type=text size=$size name=i_address value="$i_address">
+
+$table_tr<td align=right nowrap>Translator
+ <td>
+ <input type=text size=$size name=i_translator value="$i_translator">
+
+$table_tr<td align=right nowrap>Translator's email
+ <td>
+ <input type=text size=$size name=i_translator_address value="$i_translator_address">
+
+$table_tr<td align=right nowrap>Support software<br>requirements
+ <td>
+ !formcheckbox i_require list $swlist prompt $swname
+
+$table_tr<td align=right nowrap>Keywords
+ <td><input size=$size name=i_keywords value="$i_keywords">
+
+$table_tr<td align=right nowrap>Copyright
+ <td>
+ !set wims_formselect_switch=
+ !formselect i_copyright list gnu prompt GNU General Public License
+
+$table_hdtr<td align=center nowrap colspan=2>
+<input type=submit name=inddef value="Register the changes">
+&nbsp;&nbsp;
+<input type=submit value="Cancel">
+$table_end
+</form>
+

@@ -1,0 +1,118 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+Helaas, maar het maken/modificeren van een digitale overhoring/tentamen
+is voorbehouden aan de <em>supervisor</em> van een klas. 
+ !exit
+!endif
+
+!if bad_class=$error
+Vreemd, maar ik zie nu dat Uw klas niet "geldig" is!
+
+ !exit
+!endif
+
+!if $error=no_sheet
+De inhoud van een tentamen of digitale overhoring kan alleen worden genomen
+uit een <em>actief</em> of <em>verlopen</em> <b>werkblad/worksheet</b>
+ <p>
+ <small>
+ Uw klas heeft echter geen werkbladen (actief of verlopen)
+ Dus eerst maakt U een werkblad van Uw oefeningen (oef of module)
+ onderaan een oefening/som staan de link <b>"toevoegen aan werkblad"</b> (insert into worksheet")
+ Daarna maakt U van deze actieve/verlopen werkbladen het echte
+ digitale tentamen of overhoring voor een echt cijfer
+ </small>
+ !exit
+!endif
+
+!if bad_exam=$error
+Uw tentamen nummer is helaas niet geldig...een bug in de software? 
+ !exit
+!endif
+
+!if already_registered=$error
+Je cijfer staat reeds genoteerd
+.
+ !exit
+!endif
+
+!if no_more_registration=$error
+Bij deze digitale overhoring mag je het maar $stries keer proberen.<br>
+Jij kunt het nu niet meer overdoen.
+ !exit
+!endif
+
+!if bad_source=$error
+
+ Het item nummer $bad_source in de broncode, die je net hebt opgestuurd, is ongeldig
+ !href cmd=reply&job=prep_putsource&source=$source Verbeter de broncode
+ .
+ !exit
+!endif
+
+!if no_title=$error
+U wit een tentamen registreren zonder een naam? niet verstandig. Fout of manipulatie?
+ 
+ !exit
+!endif
+
+!if prep_activate=$error
+U wilt het tentamen $exam activeren, en dus beschikbaar stellen aan Uw leerlingen. <p>
+Besef dat een digitale overhoring of tentamen eenmaal geactiveerd niet meer kan worden veranderd.
+
+Wilt U doorgaan?
+
+ <p><center>
+ !href cmd=reply&job=activate Jazeker; activeren
+ .&nbsp;&nbsp;
+ !href cmd=resume Nee; annuleren
+ .</center>
+ !exit
+!endif
+
+!if prep_erase=$error
+Wil U werkelijk het tentamen  #$exam ($title) verwijderen?
+ <p><center>
+ !href cmd=reply&job=erase Jazeker; weg ermee
+ .&nbsp;&nbsp;
+ !href cmd=resume Nee; annuleren
+ .</center>
+ !exit
+!endif
+ 
+!if prep_expire=$error
+Dit tentamen #$exam ($title) zou verlopen zijn op $expday
+ !item $expmon of $months
+ $expyear. wilt U het <b>nu</b> laten verlopen?
+ <p><center>
+ !href cmd=reply&job=expire Jazeker; laten verlopen
+ .&nbsp;&nbsp;
+ !href cmd=resume Nee; annuleren
+ . </center>
+ <p><b>Opmerking.</b> 
+ Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen tentamen.<br>
+Maar hun reeds behaalde cijfers voor dit tentamen worden wel bewaard.
+(en ook statistisch verwerkt, zodat U altijd deze resultaten nog kunt bestuderen) 
+
+ !exit
+!endif
+
+!if prep_putsource=$error
+Hebt U een broncode van een eerder -bewaard- tentamen, kunt U deze code 
+in het onderstaande venster kopieren en invoegen in het huidige tentamen...
+ en druk op de knop "VERSTUREN"
+ <p>
+ Anders,
+ !href cmd=resume Terug naar de Hoofdpagina van dit tentamen.
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="VERSTUREN">
+ </center></form>
+ <b>WAARSCHUWING</b>. 
+ Gebruik geen handmatig veranderde broncode's, 
+ U loopt het risico dat het gehele tentamen onbruikbaar wordt.
+ !exit
+!endif
+

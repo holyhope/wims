@@ -1,0 +1,65 @@
+
+!if +$error iswordof +no_send_right
+ !exit
+!endif
+
+!if $c_prec!=$empty
+新的跟帖 
+ !href cmd=reply&job=read <b>$m_subject</b>
+发自
+ !if $m_email!=$empty
+  <i><a href="mailto:$m_email">$m_from</a></i>
+ !else
+  <i>$m_from</i>
+ !endif
+ <p>
+!endif
+
+!form reply
+你的姓名:
+ !if $forumuser=$empty
+  <input size=15 name=c_sender value="$c_sender">
+ !else
+  <tt>$c_sender</tt>;
+ !endif
+ email: <input size=30 name=c_smail value="$c_smail"> <br>
+ !if $send_right<2
+  <b>警告.</b> 请给出有效的电邮地址, 否则你的信息将被拒绝. <br>
+ !endif
+主题:
+ <input size=55 name=c_subject value="$c_subject"> <br>
+信息主体:<br>
+ !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap>
+ !set msgsrc2=</textarea>
+ !if $c_quote>0 and $c_prec!=$empty
+  !mexec scripts/quote.sh
+ !endif
+ !if $c_quote=0
+  !mexec scripts/msgsrc.sh
+ !endif
+ !if $c_quote<0
+  $msgsrc1$msgsrc2
+ !endif
+ !set c_quote=0
+ $tag_escaper</table>
+ <p><center>
+ <input type=submit name=c_preview value="预览">
+ &nbsp;&nbsp;
+ <input type=submit name=c_send value="发送">
+ &nbsp;&nbsp;
+ <input type=submit name=c_list value="取消">
+ </center> <p>
+</form> <p>
+如何在信息板里输入数学公式的
+!href cmd=help 帮助
+.
+
+!if $c_prec!=$empty
+ <p><hr> <p>
+ !href cmd=reply&job=read 原始信息
+发自 <i>$m_from</i>:<p>
+ !read $forumdir/$c_prec html
+ $tag_escaper</table></form><font size=+0>
+ <p><hr> <p>
+!endif
+

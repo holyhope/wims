@@ -1,0 +1,44 @@
+
+!if $clcnt<=0
+ Na tem stre¾niku trenutno ni pripravljenih primerov virtualnih uèilnic.
+ !exit
+!endif
+
+!if $lacnt<=0
+ Na tem stre¾niku trenutno ni pripravljenih primerov virtualnih uèilnic v slovenskem jeziku.
+ <p>
+!endif
+
+Tukaj lahko v vlogi uporabnika (uèenca) preizkusite primere virtualnih uèilnic. 
+Za preizkus vloge skrbnika (uèitelja),
+morate
+!href module=adm/class/regclass ustvariti
+ svojo virtualno uèilnico.
+
+<p>$table_header
+$table_hdtr<th>Ime uèilnice<th>Stopnja izobra¾evanja<th>Tip povezave<th>Registracija
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into code,expire,inst,cl
+ !defread wimshome/log/classes/$code/.def
+ !distribute char $class_level into l_,y_
+ 
+ $table_tr<td align=center>$inst<br>$cl</td>
+ <td align=center>$(n_$l_)<br>Leto $y_</td>
+ <td align=center>
+ !href module=$module&type=authparticipant&class=$code Osebna prijava
+ &nbsp;
+ !href module=home&user=anonymous,$code,anonymous Anonimna prijava
+ </td><td align=center>
+ !href module=adm/class/reguser&class=$code Registracija
+ </td>
+!next i
+$table_end <p>
+ 
+<ul>
+<li>Kliknite na `Osebna prijava' za prijavo z lastnim uporabni¹kim imenom. 
+Pred tem morate opraviti postopek registracije (stre¾nik lahko obèasno tudi izbri¹e ¾e obstojeèe registracije v preizkusnih uèilnicah).
+<p><li>Kliknite na `Anonimna prijava' za anonimno prijavo v uèilnico, èe nimate ali si ne ¾elite uporabiti lastnega uporabni¹kega imena.
+<p><li>Kliknite na `Registracija' za pridobitev uporabni¹kega imena.
+</ul>
+

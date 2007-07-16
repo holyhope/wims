@@ -1,0 +1,24 @@
+<center><h1>Proprerty of the Document<br>
+--- $tit ---</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!read propform.phtml
+
+!if class != $doctype
+ !href cmd=reply&job=recode Change secret code
+.&nbsp;
+!endif
+
+!href cmd=reply&job=list List of blocks
+.
+!href cmd=reply&job=file File deposit
+.
+ <p>
+Document code: $doc.
+Total available disk space: $quota_total Meg. Free disk space: $quota_free Meg.
+<p>
+

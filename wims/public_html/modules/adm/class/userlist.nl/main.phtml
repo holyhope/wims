@@ -1,0 +1,221 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+!if $job!=$empty and $job!=sheets
+ !read $job.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>Leerlingen Lijst
+ </b><font size=-1>[
+!href cmd=reply&job=csv spreadsheet-data
+ ]
+</font>
+</h1></center>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Terug naar de homepagina van uw klas
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+Deze klas heeft nog geen leerlingen
+.
+ [
+ !href module=adm/class/reguser&step=1 voeg een leerling toe
+ ]
+!else
+ <center>
+ [
+ !href module=adm/class/reguser&step=1 voeg een leerling toe
+ ]
+ !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
+ !set deleted=!trim $deleted
+ !if $deleted!=$empty
+  &nbsp;[
+  !href cmd=reply&job=recover verwijderde leerlingen
+  ]
+ !endif
+ <p><table border=0 cellspacing=1 bgcolor=$table_bgcolor>
+ <caption>cijfers bereken over een maximum van $scoremax</caption>
+ !if $manual>0
+  <tr><td rowspan=2><th rowspan=2>Naam, Voornaam<td rowspan=2>
+  <th colspan=3>Gemiddelde<td rowspan=2>
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th rowspan=2><small>proefwerk/tentamen $k</small><td>
+   !else
+    <th rowspan=2><small>werkblad $j</small><td>
+   !endif
+  !next j
+  <tr><th><small>globaal<th><small>leraar<th><small>auto
+ !else
+  <tr><td><th>Naam, Voornaam<td>
+  <th>Gemiddelde<td>
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th><small>proefwerk/tentamen $k</small><td>
+   !else
+    <th><small>werkblad $j</small><td>
+   !endif
+  !next j
+ !endif
+ <tr>
+ !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
+ !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
+ !for i=1 to $usercnt
+  !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  !set UU=!hex $uu
+  !exchange table_color1,table_color2
+  <tr bgcolor=$table_color2><td><td>
+  !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
+  <td>
+  !read userscore
+  !if $manual>0
+   !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
+   <td align=center>$glob</td>
+   <td align=center>$(manual_$UU)</td>
+   <td align=center>$per<td>
+   !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
+   !if $glob>0
+    !advance cnt_glob
+    !if $(manual_$UU)>0
+     !advance cnt_tea
+    !endif
+    !if $per>0
+     !advance cnt_auto
+    !endif
+   !endif
+  !else
+   <td align=center>$per<td>
+   !if $per>0
+    !advance cnt_auto
+    !advance cnt_glob
+   !endif
+  !endif
+  !set mean_auto=$[$mean_auto+$per]
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    !set p_=$[rint(10*$scoremax*$(es_$k))/100]
+    <td align=center> $p_<td>
+   !else
+    !set p_=!line $j of $percents
+    !distribute words $p_ into p1,p2
+    !if $p2!=$empty
+     !distribute item $[$p1/100],$[$p2/10] into x_,y_
+     !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+    !else
+     !set p_=0
+    !endif
+    <td align=center>$p_<td>
+   !endif
+   !set per_$j=$[$(per_$j)+$p_]
+   !if $p_>0
+    !advance cnt_$j
+   !endif
+  !next j
+ !next i
+ !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
+	$[rint(100*$mean_tea/$usercnt)/100],\
+	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
+ <tr><tr><td><td align=center><b>Gemiddelde van de klas</b><td>
+ !if $manual>0
+  <td align=center>$m_glob</td>
+  <td align=center>$m_tea</td>
+  <td align=center>$m_auto<td>
+ !else
+  <td align=center>$m_auto<td>
+ !endif
+ !for j in $showsheet
+  <td align=center>$[rint(100*$(per_$j)/max(1,$usercnt))/100]<td>
+ !next j
+ !if $cnt_glob>0
+  !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
+	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
+	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
+  <tr><td><td align=center><b>Gemiddelde score</b><td>
+  !if $manual>0
+   <td align=center>$m_glob</td>
+   <td align=center>$m_tea</td>
+   <td align=center>$m_auto<td>
+  !else
+   <td align=center>$m_auto<td>
+  !endif
+  !for j in $showsheet
+   <td align=center>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]<td>
+  !next j
+ !endif
+ </table></center>
+ <p>Klik op de naam om gedetailleerd zijn/haar werk te bekijken
+
+ !href cmd=reply&job=formula&formula=prep Verander de moeilijkheidsgraad
+.
+ !href module=adm/class/grades Handmatig ingevoerde cijfers
+.
+ !href module=adm/class/stat Statistiek
+.
+ !if $activecnt>1
+  <p>
+  !form reply
+  <input type=hidden name=job value=sheets>
+  !set wims_formselect_switch=multiple size=$[min($activecnt+$eactivecnt,6)]
+  <table border=0>
+  <tr><td>kies een werkblad om de gemiddelden<br> per werkblad te laten zien:
+  <td>&nbsp;&nbsp;
+  !reset tmp
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !set ti=!item 3 of $sh
+   !set tmp=!append item $se: $ti to $tmp
+  !next i
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set tmp=!append item Exam $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  <td><input type=submit value="Show"></table>
+  </form>
+ !endif
+!endif (usercnt=0?)
+<p>
+!if $manual>0
+ <b>Verklaringen.</b> In de `Gemiddelde' kolommen, `auto' betekent het gemiddelde van
+ de cijfers berekend aan de hand van de scores behaald op werkbladen, `leraar' 
+ betekent gemiddelde van de door de leraar handmatig ingevoerde cijfer, en `globaal' 
+is berekend van de twee vorige gemiddelden volgens de formule
+ <p><center>
+  globaal = $[$manual/100]*leraar + $[1-$manual/100]*auto.
+ </center> <p>
+!endif
+
+:end
+!tail
+
+!reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,\
+	passcheck
+
+

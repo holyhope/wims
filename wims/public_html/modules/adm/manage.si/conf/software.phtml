@@ -1,0 +1,88 @@
+!if $save!=$empty and $changed>0
+ !href cmd=reply#check Click here
+ to check the effect of the new setup.
+ <p>
+ !exit
+!endif
+
+<p><hr> <p>
+<a name=check>
+Check computational softwares used by various
+WIMS modules (
+!href cmd=reply&confcat=5#check click here
+ to check graphics softwares.)
+
+<p>$table_header
+$table_hdtr
+<th>Name<th>command<th><small>importance</small><th>.<th>availability
+
+!distribute items PARI/GP,Maxima,MuPAD,GAP,Octave,\
+	Macaulay 2,Yacas\
+	into n_pari,n_maxima,n_mupad,n_gap,n_octave,\
+	n_m2,n_yacas
+!distribute items 100,80,0,10,0,\
+	5,20\
+	into i_pari,i_maxima,i_mupad,i_gap,i_octave,\
+	i_m2,i_yacas
+!distribute items 2^17-1,2^17-1;,2^17-1;,2^17-1;,2^17-1,\
+	2^17-1,2^17-1\
+	into t_pari,t_maxima,t_mupad,t_gap,t_octave,\
+	t_m2,t_yacas
+!set res=131071
+
+!for sw in pari,maxima,yacas,gap,m2,octave
+ 
+ $table_tr<td align=center>$(n_$sw)<td align=center>$sw
+ <td align=center>$(i_$sw)%
+ <td align=center><small>
+ !href cmd=help&help_subject=soft&help_conf=$sw help
+ !set av=!exec $sw about
+ !set av=!trim $av
+ !set r_=!exec $sw $(t_$sw)
+ !set r_=!trim $r_
+ !if $sw=m2
+  !set r_=!word 3 of $r_
+ !endif
+ <td>
+ !if $av!=$empty and $res=$r_
+  Yes: $av
+ !else
+  Unavailable.
+ !endif
+!next sw
+
+$table_end <p>
+
+!if $othermiss!=$empty
+ WIMS is unable to find the following programs which are used by some of its
+ modules. These programs are either not installed in the system (in which
+ case please install them), or are installed in a directory not included in
+ the searching path of WIMS (in which case you can add the directory to
+ the PATH parameter in
+ !href cmd=reply&job=conf&confcat=12 technical topics
+).
+ <p>$table_header
+ $table_hdtr<th>Name<th>Example of modules depending on it
+ !for other in $othermiss
+  
+  !set o=!replace internal units-filter by units in $other
+  $table_tr<td><tt>$other</tt>
+  <td>
+  !if $(mod_$o)!=$empty
+   !set mn=!module title $(mod_$o)
+   !if $mn!=$empty
+    !href module=$(mod_$o) $mn
+   !endif
+  !else
+   Lots of modules
+  !endif
+  !if $other iswordof chemeq units-filter
+   <small>This software is usually attached to WIMS distribution. Its
+   compilation may have failed, or you have deliberatedly excluded
+   the compilation of it.</small>
+  !endif
+  </td></tr>
+ !next other
+ $table_end <p>
+!endif
+

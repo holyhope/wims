@@ -1,0 +1,47 @@
+<center>$classname<p>
+
+<h3>Activity transfer for
+ !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ (<tt>$getuser</tt>)
+</h3> </center> <p>
+
+!if $error=no_reccourse
+ <b>Error</b>. The participant has no registration in a corresponding
+ course in the current class to receive the transfer from
+ !defof class_description in wimshome/log/classes/$transferclass/.def
+.
+ <p>
+!endif
+
+Here are the other courses in which the participant has activities. Click on
+an action to transfer to this
+!if $tr_typename=course
+ course.
+!else
+ class.
+!endif
+
+$table_header
+$table_hdtr<th>Course</th>
+<th>Action</th></tr>
+!for c in $tr_list
+ $table_tr
+ <td>
+ !defof class_description in wimshome/log/classes/$c/.def
+ <td>
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Merge
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Replace
+!next c
+$table_end
+
+<b>Remarks</b>. <ol>
+<li>"Merge" means putting together the activities in two courses.
+<li>"Replace" means that the activities in the other cours will replace
+that of this one. This will occur only if the former is not empty.
+<li>Exam records and non-scoring activities are always merged.
+<li>Registration of details of exercises or exams is not transfered.
+<li>After the action (merge or replace), the records of the participant
+in the other course will be cleaned.
+</ol>
+

@@ -1,0 +1,106 @@
+
+!set wims_form_method=post
+<center>$classname
+<h3>Datos de la clase para una hoja de cálculo
+<br></b><font size=-1>[
+!href cmd=reply lista y notas en directo
+ ]</font></h3>
+</center> <p>
+
+!if $error!=$empty
+ !read msg.phtml
+ !if $error iswordof not_secure not_superclass
+  !exit
+ !endif
+ <p><hr> <p>
+!endif
+
+!if $outfile!=$empty
+ Este es el fichero <tt>
+ !getfile $outfile $outfile
+ </tt> que puede descargar y abrir con su hoja de cálculo 
+ preferida.
+ <p><hr> <p>
+!endif
+
+!if $processed=yes and $error=$empty
+ !if $remark$change$added$missing$erased!=$empty or $manual=yes
+  El fichero de hoja de cálculo <tt>$wims_deposit</tt> ha sido reconocido correctamente.
+  <ul>
+  !if $change!=$empty
+   <li>Cambios en la información sobre los participantes: <tt>$change</tt>
+  !endif
+  !if $added!=$empty
+   <li>Nuevos participantes añadidos: <tt>$added</tt>
+  !endif
+  !if full iswordof $remark
+   <li>La incorporación de nuevos participantes será ignorada porque no queda espacio
+   libre.
+  !endif
+  !if noprop iswordof $remark
+   <li>La información sobre los participantes no se ha modificado porque se han enviado 
+   calificaciones.
+  !endif
+  !if noauto iswordof $remark
+   <li>Se han ignorado en sus datos las notas calculadas por el servidor (medias y 
+    puntuaciones de hojas de trabajo/exámenes) porque no pueden ser modificadas.
+  !endif
+  !if $erased!=$empty
+   <li>Datos ignorados relativos a los participantes borrados:
+   <tt>$erased</tt>
+  !endif
+  !if $missing!=$empty
+   <li>Los identificadores de usuario siguientes no existen y no pueden ser añadidos
+   a causa de errores o insuficiencia de información en los datos enviados:
+   <tt>$missing</tt>
+  !endif
+  !if $manual=yes
+   <li>Sólo se graban calificaciones manuales para las columnas existentes.
+   !href module=adm/class/grades Comprobar estas notas
+.
+  !endif
+  </ul>
+ !else
+  No se ha producido ningún cambio en los datos enviados con respecto a
+  los datos existentes en la clase.
+ !endif
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+Para <input type=submit value=descargar>
+los datos de la clase en la hoja de cálculo, especifique:<ul>
+<li>El formato
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats ayuda
+</small>
+<li>Columnas
+<input type=text size=45 name=csvdownload value="$csvdownload">
+<small>
+!href module=$module&cmd=help&special_parm=csvfields ayuda
+</small>
+</ul>
+</form>
+
+!if $classtype notin 13 or $typename iswordof class course
+<hr>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=upload>
+Para <input type=submit value=subir>
+los datos de su hoja de cálculo a la clase, especifique:
+<small>
+!href module=$module&cmd=help&special_parm=upload ayuda
+</small><ul>
+<li>El fichero de datos <input type=file size=30 name=wims_deposit> <br>
+ <small>Formatos aceptados: .csv, .tsv, .txt
+!href module=$module&cmd=help&special_parm=csvformats2 ayuda
+</small>
+</ul>
+</form>
+!endif
+

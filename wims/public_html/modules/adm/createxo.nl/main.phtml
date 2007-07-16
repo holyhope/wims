@@ -1,0 +1,55 @@
+!header
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ Hier staat de broncode van uw oefening
+ <font color=red><b>$oef_title</font></b>, in het OEF formaat (Open Exercice Format).
+ Om deze te bewaren, "knip" dan de text tussen de twee horizontale lijnen.<br>
+ En vervolgens "plak" de tekst in een bestand.
+ !href cmd=resume Terug
+  naar het menu.
+ <hr>
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr> <p>
+ <center>
+ !href cmd=resume Terug
+ naar het menu
+ </center>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <center>
+ Terug naar
+ !href cmd=resume&realtest=no  $module_title.
+ </center>
+ <p><hr> <p>
+ !changeto oef/$module_language/Main.phtml
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p>
+ !href cmd=reply Corrigeer 
+ de fout.
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+:end
+!tail
+
+!reset wims_deposit, delfile
+

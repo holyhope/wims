@@ -1,0 +1,63 @@
+<center><h1>$cdt_title</h1>
+<font size=+1>D&eacute;p&ocirc;t de fichier</font></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ Le fichier <b>$erase</b> a été effacé.
+ <p>
+!endif
+
+!if $quota_free<1
+ Vous ne pouvez plus déposer de fichier car son contenu est très proche, ou a dépassé, la limite d'espace disque autorisé. Désolé.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=deposit>
+ Vous pouvez déposer un fichier&nbsp;:
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=OK>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>Fichiers disponibles dans &nbsp;:
+ !for f in $flist
+  !getfile cdt/$wims_class/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Effacer un fichier&nbsp;:
+ !formselect job2 list $flist
+ <input type=submit value=OK>
+ </form>
+ <p>
+ Ces fichiers sont accessibles à l'aide de la variable
+ <tt>\filedir</tt>. Par exemple,
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ crée un lien vers le fichier <a href=$m_filedir/$f1>$f1</a>.
+ Vous pouvez aussi écrire
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+pour inclure un fichier d'image <tt>myfile.jpg</tt> dans la page.
+ <p>
+ Les fichiers déposés sont uniquement accessibles aux participants de la classe.
+!endif
+
+<p>
+Espace disque disponible au départ&nbsp;: $quota_total Meg.
+Espace libre&nbsp;: $quota_free Meg.
+
+<p><p>
+!href cmd=reply&job=home Retour
+.
+
+!reset erase,job2

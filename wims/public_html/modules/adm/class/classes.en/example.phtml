@@ -1,0 +1,48 @@
+
+!if $clcnt<=0
+ Sorry, no example class has been found on this site.
+ !exit
+!endif
+
+!if $lacnt<=0
+ There is no class of English language on this site.
+ <p>
+!endif
+
+There are $clcnt example classes in English on this site. 
+They are there to show you how virtual classes work under students' view.
+You should
+!href module=adm/class/regclass create
+ your own class to have a look of supervisor's view which is much more
+sophisticated.
+
+<p>$table_header
+$table_hdtr<th>Class name<th>Level<th>connection type<th>Register
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into code,expire,inst,cl
+ !defread wimshome/log/classes/$code/.def
+ !distribute char $class_level into l_,y_
+ 
+ $table_tr<td align=center>$inst<br>$cl</td>
+ <td align=center>$(n_$l_)<br>year $y_</td>
+ <td align=center>
+ !href module=home&user=anonymous,$code,anonymous anonymous
+ &nbsp;
+ !href module=$module&type=authparticipant&class=$code registered
+ </td><td align=center>
+ !href module=adm/class/reguser&class=$code Register
+ </td>
+!next i
+$table_end <p>
+ 
+<ul>
+<li>Click on `anonymous' to connect to the class as an anonymous visitor
+ (participant).
+<p><li>Click on `registered' to connect to the class with a
+ registered user name and password. (You must have registered yourself
+ earlier, and your registration may be regularly erased by the server because
+ these are example classes).
+<p><li>Click on `Register' to register yourself to the class.
+</ul>
+

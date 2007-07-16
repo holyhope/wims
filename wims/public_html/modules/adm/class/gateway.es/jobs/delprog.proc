@@ -1,0 +1,20 @@
+
+parent=level
+!if $cancel!=$empty or $del=$empty
+ job=level
+ !changeto jobs/$job.proc
+!endif
+
+!readdef $classdir1/$del/.def
+
+!if $confirm=$empty
+ !exit
+!endif
+
+!read adm/gateway/delprog $del
+!read adm/gateway/mkindex
+
+confirm=
+job=level
+!changeto jobs/$job.proc
+

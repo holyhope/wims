@@ -1,0 +1,56 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ 此文件的块<tt>$block</tt>尚未建立.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ 本页尚未向读者公开. 请以后再来!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ 本页已过期. 你不再能阅读. 抱歉!
+ <p>
+ !exit
+!endif
+
+<h3>$titb</h3>
+
+!if $sheetdata=$empty
+ <p>
+本页无练习.
+ <p>
+ !exit
+!endif
+
+本页练习是工作页的格式. 你可以用复制-粘贴的方式将其插入
+!if $wims_user=supervisor
+你的班级的一个选中的页.
+!else
+你负责的虚拟班的页内.
+!endif
+
+<pre>
+$sheetdata
+</pre>
+
+</div><div class=wimstail>
+<p><hr><p>
+
+<center>
+!href cmd=reply&job=read 返回文件
+</center> <p>
+

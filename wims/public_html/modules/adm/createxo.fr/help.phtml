@@ -1,0 +1,61 @@
+
+!if $realtest=yes
+ !changeto oef/help.phtml
+!endif
+
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if,symtext,model
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty and $s_ isitemof $helplist
+ !read help/$s_.phtml
+ <p><center>
+ !href cmd=help Autres sujets d'aide.
+ &nbsp;&nbsp;
+ !href cmd=resume Retour au travail.
+ </center>
+ !exit
+!endif
+
+Sujets d'aide&nbsp;:<ul>
+<p><li>
+!href cmd=help&special_parm=oef Explication sur le format OEF.
+!!<p><li>
+!!href cmd=help&special_parm=examples Exemples d'exercices.
+<p><li>
+!href cmd=help&special_parm=format Les formats de l'énoncé
+ de l'exercice.
+<p><li>
+!href cmd=help&special_parm=parameters Paramètres aléatoires
+ dans un exercice interactif.
+<p><li>
+!href cmd=help&special_parm=math Formules mathématiques
+ dans des exercices.
+<p><li>Inclure des
+!href cmd=help&special_parm=draw dessins dynamiques
+ dans les exercices.
+<p><li>
+Comment un utilisateur peut
+!href cmd=help&special_parm=reply répondre à un exercice
+ (types de réponses).
+<p><li>
+!href cmd=help&special_parm=feedback Messages ciblés
+ aux erreurs typiques dans les réponses.
+<p><li>
+!href cmd=help&special_parm=oefadv Advanced features
+.
+<p><li>
+!href cmd=help&special_parm=all La totalité de l'aide
+</ul>
+
+<center>
+!href cmd=resume Retour au travail.
+</center>
+

@@ -1,0 +1,52 @@
+!!! fichier d'initialisation pour l'exo de type 1 !!!
+
+!if $titre=$empty 
+  auteur=Joachim YAMEOGO
+  imel=yameogo@math.unice.fr
+  titre=test
+  enonceR=!record 1 of comsDir/enonces
+!endif
+
+rpmat=$propsrepList
+
+propsList=
+obsList=
+
+!if $obsrecord!=$empty
+  pn=!linecnt $obsrecord
+  !for i=1 to $pn
+    obsList=!append line ($(obsrecord[$i;])), to $obsList
+  !next i
+   obsList=!replace line number $pn by ($(obsrecord[$pn;])) in $obsList
+!endif
+
+!if $propsrecord!=$empty
+  pn=!linecnt $propsrecord
+  
+  pn=$[$pn-1]
+  !if $pn<2
+    exalert=$(alerts[6;])
+    !exit
+  !endif
+  
+  !for i=1 to $pn
+    propsList=!append line ($(propsrecord[$i;])), to $propsList
+  !next i
+  propsList=!replace line number $pn by ($(propsrecord[$pn;])) in $propsList
+!endif
+
+!if $demo=oui
+  obsList=!record 1 of demosDir/demo1data
+  propsList=!record 2 of demosDir/demo1data
+  propsrepList=!record 3 of demosDir/demo1data
+  propsrepList=!line 2 to 12 of $propsrepList
+  obsnb=!itemcnt $obsList
+  propsnb=!itemcnt $propsList
+  ckchnb=2
+  enonceR=!record 4 of demosDir/demo1data
+!endif
+ 
+chronobs=0
+etapesnb=6
+
+typvarcnt=13

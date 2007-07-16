@@ -1,0 +1,85 @@
+!set wims_module_log=error: $error
+
+!if has_empty=$error
+U hebt niet <b>alle</b> informatie verstrekt om Uw eigen message board of forum te kunnen oprichten.
+ Graag de informatie aanvullen en opsturen
+ !exit
+!endif
+
+!if too_short=$error
+ het invulveld ``$(name_$error_subject)'' lijkt me wat aan de korte kant...
+ !exit
+!endif
+
+!if bad_date=$error
+De vervaldatum is niet correct ingevuld.
+ !exit
+!endif
+
+!if bad_email=$error
+Uw emailadres is blijkbaar niet geldig.
+ <p>
+ Let op: een message board kan <b>alleen</b> worden opgericht
+ als U een geldig en werkend emailadres hebt ingevuld.
+ !exit
+!endif
+
+!if anti_date=$error.
+Uw message board is verlopen voor dat het kon worden opgericht!
+ !exit
+!endif
+
+!if existing=$error
+ Het message board $forumname bestaat reeds. 
+Het heeft geen zin twee keer hetzelfde forum op te richten.
+ !exit
+!endif
+
+!if pass_discord=$error
+Het wachtwoord dat U de tweede keer heeft ingetypt, is niet
+gelijk aan het eerste. Probeer het opnieuw.
+ !exit
+!endif
+
+!if apparent_password=$error
+ Uw wachtwoord komt voor in de titel/beschrijving/eigenaar-naam 
+ van Uw message board. 
+ Dit is bepaald geen veilig wachtwoord! Kies een ander wachtwoord.
+ !exit
+!endif
+
+!if bad_pass=$error
+ Uw wachtwoord $(name_$error_subject) bevat niet toegestane karakters <p>
+S.V.P. gebruik gewoon cijfers,letters, geen accenten en geen spaties!
+ !exit
+!endif
+
+!if bad_code=$error
+U hebt niet de juiste geheime code ingevoerd voor het message board.
+Hebt U wel een juist emailadres ingevoerd?
+ <p>
+ Als U wilt rommelen met deze server, besef dan goed dat <em>all Uw</em>
+ activiteiten worden gelogd!
+ !exit
+!endif
+
+!if define_fail=$error
+De server kon Uw bericht niet opnemen in de message board database.
+Dit is een interne fout van de software!
+ 
+ <p>
+ Meldt dit probleem bij de systeembeheerder deze
+ !mailurl $wims_site_manager si\
+user foutmelding bij versturen bericht
+. Bedankt!
+ !exit
+!endif
+
+!if duplicate=$error
+U hebt geprobeerd om een reeds bestaand message board/forum opnieuw op te richten
+Misschien heeft U per ongeluk de "reload" knop gedrukt van Uw browser.
+ In elk geval het forum $forumname bestaat reeds. 
+ En de tweede poging wordt dus genegeerd...
+ !exit
+!endif
+

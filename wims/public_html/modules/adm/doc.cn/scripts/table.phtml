@@ -1,0 +1,55 @@
+ $table_header
+ <caption>选择文件与动作:</caption>
+ $table_hdtr
+ <th>动作<th>标题
+ !if $wims_ismanager=2
+  <th>存取范围
+ !endif
+ <th>编号<th>作者
+ !for t=1 to $doccnt
+  !set s_=!line $t of $slist
+  !set t_=!line $t of $tlist
+  !set a_=!line $t of $alist
+  !set e_=!line $t of $elist
+  !set i_=!line $t of $ilist
+  !set t_=!trim $t_
+  !default t_=无标题
+  !set e_=!word 1 of $e_
+  $table_tr
+  <td nowrap align=center>
+  !if $wims_ismanager=2
+   !href cmd=reply&job=erase&doc=$s_ 删除
+&nbsp;
+  !endif
+  !href cmd=reply&job=read&doc=$s_&block=main&noedit=yes 阅读
+&nbsp;
+  !if $i_>0
+   !href cmd=reply&job=auth&doc=$s_&block=main&noedit=no 修改
+  !else
+   <strike>修改</strike>
+  !endif
+  <td>$t_</td>
+  !if $wims_ismanager=2
+   <td align=center>
+   !if $s_>65535
+    !if $s_ iswordof $opensite
+     !href cmd=reply&job=openclose&doc=$s_ 关闭
+    !else
+     !href cmd=reply&job=openclose&doc=$s_ 打开
+    !endif
+   !else
+    -
+   !endif
+   </td>
+  !endif
+  <td align=right><small>$s_</small></td>
+  !if $e_=$empty
+   <td>$a_</td>
+  !else
+   <td>
+   !mailurl $e_ $a_\
+WIMS文件 $s_ [$module_language]
+  </td>
+  !endif
+ !next doc
+ $table_end <p>

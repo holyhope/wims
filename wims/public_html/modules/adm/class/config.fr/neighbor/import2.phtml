@@ -1,0 +1,77 @@
+!if $result=success
+ !set wims_class_log=Import $import from $nei
+!endif
+
+!distribute item message du jour,\
+	exercice,feuille de travail,examen,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+
+Importation à partir de la classe
+!href cmd=reply&job2=def $nei_description
+ de
+<em><font color=blue>$nei_institution</font></em>
+<p>
+
+!if $result=confirm
+ !if dep iswordof $cfm
+  !if $itype=sheet
+   <b>Attention</b>.
+   La feuille de travail que vous voulez importer peut utiliser des exercices
+   définis dans la classe voisine.
+   <p>
+   Si les mêmes exercices n'existent pas dans la vôtre, la feuille importée
+   ne fonctionnera pas correctement. Veuillez vérifier soigneusement que tous
+   les exercices de la classe voisine ont un duplicata dans la vôtre.
+  !endif
+  !if $itype=exam
+   <b>AVERTISSEMENT</b>!!! Les feuilles d'examen sont basées sur les feuilles
+   de travail pour constituer leurs contenus. <p>
+   Importer une feuille d'examen n'a de sens que si vous avez exactement les
+   mêmes feuilles de travail que la classe voisine et si ces feuilles sont
+   rangées dans le même ordre dans les deux classes.
+   <p>
+   Si ce n'est pas le cas, la feuille d'examen importée ne pourra qu'avoir
+   des comportements erratiques.
+  !endif 
+  <p>
+ !endif
+ !if replace iswordof $cfm
+  <b>Attention</b>. Vous êtes sur le point de remplacer un(e) $(name_$itype)
+  existant(e) de votre classe par la ressource importée. Il n'y aura aucune
+  possibilité de retour en arrière après cette opération.
+  <p>
+ !endif
+ <p><center><font size=+1>
+ !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes Confirmer l'opération
+ &nbsp;
+ !href cmd=reply&job2=import Abandonner l'opération
+ </font></center> <p>
+ !exit
+!endif
+
+!if $result=none
+ Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
+ classe est pleine (et s'il y a encore de la place dans le site pour ajouter
+ de nouveaux participants).
+ <p>
+ !exit
+!endif
+
+Transféré avec succès&nbsp;:
+!if $itype!=user
+ 1 $(name_$itype).
+ !if $itype iswordof sheet exam
+  (Le(a) $(name_$itype) est mis(e) en état inactif pour vous permettre de le
+  modifier si vous le voulez.)<p>
+ !endif
+!else
+ $importedcnt comptes de participants de la classe voisine&nbsp;:
+ <p><tt>
+ $imported
+ </tt> <p>
+!endif
+
+!href $verif Vérifier le résultat
+.&nbsp;
+!href cmd=reply&job2=import Importer d'autres ressources
+.

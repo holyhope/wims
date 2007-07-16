@@ -1,0 +1,21 @@
+
+!if $code=$empty
+ code=!randint 10^8,10^9
+ sup_email=!defof class_email in wimshome/log/classes/$wims_class/.def
+ !if $sup_email=$empty
+  auth=no
+ !else
+  !read scripts/mail.phtml
+ !endif
+ wims_class_log=Config: one_time password generated
+!else
+ repcode=!word 1 of $repcode
+ !if $repcode!=$code
+  auth=no
+ !else
+  auth=yes
+ !endif
+ wims_class_log=Config: auth=$auth
+ !writefile wimshome/$wims_sesdir/auth.supervisor $auth
+!endif
+

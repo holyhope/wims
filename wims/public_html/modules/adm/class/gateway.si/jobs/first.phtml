@@ -1,0 +1,74 @@
+<center>
+!if $teachercnt=0
+ There is no teacher account yet.
+ !href cmd=reply&job=addteacher New teacher account
+. <p>
+!else
+ There are
+ !href cmd=reply&job=teacher $teachercnt teacher accounts
+.
+!endif
+
+!goto nopart
+!if $studentcnt=0
+ <p>
+ There is no participant account yet.
+ !href cmd=reply&job=addstudent New participant
+.
+!else
+ !href cmd=reply&job=student $studentcnt participant accounts
+.
+!endif
+:nopart
+</center>
+<p>
+!if $levelcnt=0
+  There is no teaching levels installed yet.
+  !href cmd=reply&job=addlevel Create a level
+.<sup>
+  !href cmd=help&special_parm=structure#level help
+</sup>
+!else
+ $table_header
+ <caption>Available teaching levels<sup>
+ !href cmd=help&special_parm=structure#level help
+ </sup><br><small>
+ !href cmd=reply&job=addlevel Add&nbsp;another&nbsp;level
+ &nbsp; 
+ !href cmd=reply&job=backstruct Backup&nbsp;the&nbsp;structure
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Classes</small></th>
+ <th><small>Programs</small></th>
+ </tr>
+ !for i=1 to $levelcnt
+   !set l=!line $i of $leveldata
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!positionof item $l_ in $classl
+   !set c=!itemcnt $c
+   !set p=!positionof item $l_ in $progl
+   !set p=!itemcnt $p
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=level&level=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=dellevel&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   </td><td align=center>$c
+   </td><td align=center>$p
+ !next i
+ $table_end
+!endif
+

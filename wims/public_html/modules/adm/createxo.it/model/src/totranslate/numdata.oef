@@ -1,0 +1,117 @@
+type=datalist
+textarea="data"
+
+:Questions à reply numérique incorporées dans un texte.
+
+Cet exercice présente des textes "à trous", chacun devant être rempli par un
+nombre.
+<p>
+Pour construire un exercice avec ce modèle, il suffit d'entrer les textes.
+Une syntaxe facile permet de spécifier les trous et le good nombre qu'il
+accepte.
+<p>
+Author of the model: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags! (The lines starting
+with a ':'.) Otherwise the exercise might not be taken back by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Questions numériques}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Main data.
+Définir une question par ligne, et séparer les lignes
+par un point-virgule. (Donc les textes eux-memes ne peuvent pas contenir
+des point-virgules.) <p>
+The donnée numérique à poser comme question doit être entre une paire de 
+double-point d'interrogation "??".
+On peut poser plusieurs questions dans une même phrase (jusqu'à 6).
+$embraced_randitem
+\text{data=
+The permis à points contient ??6?? points pour nouveau conducteur.;
+The permis à points aura ??12?? points au bout de ??3?? ans si le
+	nouveau conducteur ne s'est pas fait retirer de point pendant
+	cette période mais n'a pas suivi d'apprentissage anticipé.;
+The permis à points aura ??12?? points au bout de ??2?? ans si le
+	nouveau conducteur ne s'est pas fait retirer de point pendant
+	cette période et a suivi un apprentissage anticipé.;
+The permis à points "plein" contient ??12?? points.;
+L'oubli de la ceinture de sécurité coute ??1?? point(s) sur le permis à
+	points.;
+The chevauchement de la ligne continue au milieu de la route coute
+	??1?? point(s) sur le permis à points.;
+Si je ne boucle pas ma ceinture, ça me coutera ??1?? point(s) sur mon permis.;
+Si j'oublie le casque quand je conduis une moto, ça me coutera ??1?? point(s)
+	sur mon permis.;
+Si j'accélère alors que quelqu'un est en train de me dépasser, ça me coutera
+	??2?? point(s) sur mon permis.;
+{The circulation,The stationnement} sur le terre-plein central d'une autoroute
+	coute ??2?? point(s) sur le permis.;
+The franchissement de la ligne continue au milieu de la route coute
+	??3?? point(s) sur le permis à points.;
+The conduite avec un taux d'alcoolémie dans le sang compris entre 0.5 g/l et
+	moins de 0.8 g/l coute ??3?? point(s) sur le permis à points.;
+The conduite avec un taux d'alcoolémie dans le sang compris entre ??0.5?? g/l et
+	moins de ??0.8?? g/l coute 3 points sur le permis à points.;
+The dépassement dangereux coute ??3?? points sur le permis.;
+{L'arrêt,The stationnement} dangereux coute ??3?? point(s) sur le permis.;
+Si je {roule,circule} sur la bande d'arrêt d'urgence d'une autoroute, ça me coutera
+	??3?? points sur mon permis.;
+The non-respect de la distance de sécurité coute ??3?? point(s) sur le permis.;
+Un excès de vitesse de {5,8,10,15,20,25} km/h me coutera ??3?? point(s)
+	pendant la période de probation de 2 ans.;
+The non-respect d'un stop coute ??4?? point(s) sur le permis.;
+Si je grille un feux rouge, ça me coutera ??4?? point(s) sur mon permis.;
+The conduite avec un taux dans le sang d'alcoolémie de {0.8,0.9,1,1.2,1.3,1.5} g
+	pour mille coute ??6?? point(s) sur le permis à points.;
+The conduite avec un taux dans le sang d'alcoolémie supérieur ou égale à
+	??0.8?? g pour mille coute 6 point(s) sur le permis à points.;
+The circulation en sens interdit coute ??4?? point(s) sur le permis.;
+The non-respect de la priorité de passage coute ??4?? point(s) sur le permis.;
+{The marche arrière,The demi-tour} sur l'autoroute coute ??4?? point(s) sur le
+	permis.;
+The délit de fuite coute ??6?? point(s) sur le permis.;
+}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=floor(rows(\data)/2)}
+\text{len=}
+\for{i=1 to \qs}{
+ \text{d=wims(trim \data[2*\i;])}
+ \integer{l=wims(charcnt \d) + 2}
+ \text{len=\len \l,}
+}
+
+\text{qlist=wims(makelist reply x for x=1 to \qs)}
+\steps{\qlist}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+::You don't need to modify this in general.
+
+\statement{
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r \k,\len[\k]} \data[2*\k+1;]
+}
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{Champ 1}{\data[2;]}{type=number}
+\answer{Champ 2}{\data[4;]}{type=number}
+\answer{Champ 3}{\data[6;]}{type=number}
+\answer{Champ 4}{\data[8;]}{type=number}
+\answer{Champ 5}{\data[10;]}{type=number}
+\answer{Champ 6}{\data[12;]}{type=number}
+

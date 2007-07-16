@@ -1,0 +1,76 @@
+!if class = $doctype
+ !defread wimshome/log/classes/$wims_class/.def
+ !default author=$class_supervisor
+ !default email=$class_email
+!endif
+
+!set wims_form_method=post
+!form reply
+<center><table border=0>
+<tr><td align=right>Titolo:
+<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>Autore:
+<td><input type=text size=40 name=authorr value="$author">
+<tr><td align=right>Email:
+<td><input type=text size=40 name=emailr value="$email">
+<tr><td align=right>Intestazione:<br>
+<small>(css, js, etc.)</small>
+!set header=!translate internal $	$ to $\
+$ in $header
+!set hl=!linecnt $header
+!set hr=$[max(3,min($hl+2,10))]
+!set header=!reinput $header
+<td><textarea cols=40 rows=$hr name=headerr>$header</textarea>
+!reset headerr
+!set docopenr=$docopen
+!default docopenr=0
+!if class != $doctype
+ <tr><td align=right>Copyright:<td>
+ !set copyrightr=$copyright
+ !default copyrightr=gnu
+ !formselect copyrightr list gnu,opl,private prompt\
+	GNU Free Documentation License,\
+	Open Publication License,\
+	All Rights Reserved
+ <tr><td align=right>Visibile da tutti:<td>
+ !formselect docopenr list yes,no prompt SI, NO
+ <tr><td align=right>Lingua(e):<td>
+ !default dlang=all
+ <input size=14 name=dlangr value="$dlang"> <br><small>
+ Esempio: all en fr es it de cn</small>
+ !if $job=creat
+  <tr><td align=right>Codice di accesso:<td nowrap>
+  <input type=password size=$codemax maxlength=$codemax name=coder> di nuovo:
+  <input type=password size=$codemax maxlength=$codemax name=coder2>
+  <tr><td colspan=2><small>Il codice di accesso permette di modificare il documento (e va quindi tenuto segreto).
+  Deve essere formato da un minimo di $codemin ad un massimo di $codemax 
+  caratteri alfanumerici.
+  </small>
+ !endif
+!else
+ <tr><td align=right>Gli studenti possono <td>
+ !formselect docopenr list 0,1,2 prompt \
+	n&eacute; leggere n&eacute; modificare,\
+	leggere ma non modificare,\
+	leggere e modificare
+ questo documento.
+!endif
+
+</table>
+<p>
+ <input type=submit name=rEg value="Salva">&nbsp;
+ <input type=submit name=abandon value="Annulla">
+</center>
+</form>
+
+<p>
+!if class != $doctype
+ <b>NOTA</b>. &Egrave; necessario chiedere autorizzazione al 
+ !mailurl $wims_site_manager <em>Site manager</em>\ 
+Richiesta di pubblicare il documento WIMS $doc
+ per rendere il documento accessibile a tutti.
+ <p>
+!else
+ Questo documento &egrave; visibile solo per gli studenti del corso.
+!endif
+

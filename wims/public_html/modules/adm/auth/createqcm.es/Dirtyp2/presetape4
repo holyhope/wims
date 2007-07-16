@@ -1,0 +1,56 @@
+!!! fichier de présentation de l'étape 4 !!!
+<p>
+  <b><font color=darkcyan> Etape $etape </font></b>
+ </p>
+<center>
+<table width=75%>
+  <tr>
+    <td>
+      Dans cette étape, vous devez indiquer pour l'objet et la fonction 
+      ci-dessous, la valeur de la fonction appliquée à l'objet.
+    </td>
+  </tr>
+</table>
+</center>
+
+!set obtemp=!line $[$chronobs+1] of $obsrecord
+
+!set rf=!line $[($chronobs)*($foncsnb)+$chronfoncs+1] of $foncsrepList
+!set foncsrep=$rf
+
+!set fonc=!line $[$chronfoncs+1] of $foncsrecord
+
+<center>
+  <table border=3>
+    <tr>
+      <th align=center bgcolor=lightblue>
+       Objet
+      </th>
+      <th align=center bgcolor=wheat>
+       Fonction
+      </th>
+      </th>
+      <th align=center>
+       Valeur de la fonction
+      </th>
+    </tr>
+    <tr>
+      <td bgcolor=lightblue>
+        $obtemp
+      </td>
+      <td bgcolor=wheat>
+        $fonc
+      </td>
+      <td align=center nowrap>
+        !if $ftyp!=matrix
+          <input size=20 name=foncsrep value=$foncsrep>
+	 !else
+           <textarea rows=6 cols=10 name=foncsrep>$foncsrep</textarea> 
+	!endif
+	&nbsp; type du résultat: <font color=magenta><b>$typaf</b></font>
+      </td>
+    </tr>
+  </table>
+</center>
+
+!read comsDir/valideb

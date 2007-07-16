@@ -1,0 +1,206 @@
+!reset confirm
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+!if $job iswordof student
+ !changeto $job.phtml
+!endif
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Preparación de la hoja de trabajo $sheet
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Volver a la página principal
+. <p>
+ !goto end
+!endif
+
+!if $job=getsource
+ !read getsource.phtml
+ !goto end
+!endif
+
+!if $activetest>0
+ !form reply
+ <input type=hidden name=job value=text>
+ Esta hoja de trabajo está
+  !if $activetest=1
+  activa.
+  !href cmd=reply&job=expire Hacerla expirar ahora mismo
+  o
+  !href cmd=reply&job=deactivate desactivarla
+.
+ !else
+   !if $activetest=2
+   expirada pero aún visible para los participantes.
+   !href cmd=reply&job=hide Ocultarla a los participantes
+  !else
+   expirada e invisible para los participantes.
+   !href cmd=reply&job=expire Hacerla reaparecer
+  !endif
+  .
+  !href cmd=reply&job=reactivate Reactivarla
+  o
+  !href cmd=reply&job=deactivate Desactivarla
+  (para poderla modificar). <p>
+ !endif
+ <p><center><table border=2>
+ <tr><td align=right>Título:
+ <td><input size=40 name=title value="$title">
+ <td rowspan=3><input type=submit value=Modificar>
+ <tr><td align=right>Descripción:
+ <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <tr><td align=right>Página de presentación:
+ <td><input size=30 name=prpage value="$prpage"><small>
+ !href target=wims_mhelp cmd=help&special_parm=sheetpage ayuda
+ </small>
+ <tr><td align=right>Fecha de expiración:<td>
+ !distribute item $[$expday],$[$expmon] into expday,expmon
+ !formselect expday from 1 to 31
+ !formselect expmon from 1 to 12 prompt $months
+ !formselect expyear from $thisyear to $thisyear+1
+ </table></form></center> <p>
+ !goto end1
+!endif
+
+!form reply
+<input type=hidden name=job value=text>
+Título (limitado a $title_limit caracteres):<br>
+<input size=65 name=title value="$title"> <p>
+Y un texto explicativo (limitado a $desc_limit caracteres; 
+se permiten etiquetas y enlaces html):<br>
+<textarea rows=6 cols=65 name=desc>$desc</textarea>
+<br>
+O una página de presentación:
+<input size=30 name=prpage value="$prpage"><small>
+!href target=wims_mhelp cmd=help&special_parm=sheetpage ayuda
+</small> <p>
+<center><input type=submit value="Grabar los textos"></center>
+
+<p>Caducidad de la hoja de trabajo:
+!distribute item $[$expday],$[$expmon] into expday,expmon
+!formselect expday from 1 to 31
+!formselect expmon from 1 to 12 prompt $months
+!formselect expyear from $thisyear to $thisyear+1
+&nbsp; <input type=submit value="Grabar">
+
+!ifval $activetest=-1
+ <p>Esta hoja de trabajo no existe aún.
+ <input type=submit value="Pulse para crearla"> (Pero rellene el título primero).
+ </form>
+ !goto end
+!else
+ </form>
+ !if $exocnt>0
+  <p>Esta hoja no se ha activado aún.
+  !href cmd=reply&job=prep_activate Pulse aquí
+  para activarla
+  (los estudiantes sólo ven las hojas de trabajo activas; por otro lado,
+  no se puede modificar una hoja de trabajo una vez que se ha activado).
+ !endif
+!endif
+
+:end1
+<p>
+!if $exocnt=0
+ Esta hoja de trabajo no tiene aún contenido.
+!else
+ <a name=list>
+ Contenido de la hoja de trabajo: <small>[
+ !href module=adm/sheet&sh=$sheet&job=print Versión imprimible
+ ]</small>
+ <ol>
+ !for i=1 to $exocnt
+  <li>
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de
+  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
+, $re puntos con peso $we.
+  !if $activetest=0
+   &nbsp;(
+   !if $i>1
+    !href cmd=reply&job=moveup&moveup=$i#list Subir
+    &nbsp;
+   !endif
+   !href cmd=reply&job=prep_modify&modif=$i Modificar
+   &nbsp;
+   !href cmd=reply&job=delete&delete=$i#list Borrar
+   !if $dep!=$empty
+    &nbsp;
+    !href cmd=reply&job=prep_modify&modif=$i Dependencias
+   !endif
+   )
+  !endif
+ !next i
+ </ol>
+!endif
+
+!if $activetest=0
+ <p>Para añadir una tarea (ejercicio, curso, herramienta, etc.) a una
+ hoja de trabajo, vaya a
+ !href $ la página principal
+ de la clase, tome el elemento correspondiente de la lista de aplicaciones,
+ y decida su nivel de dificultad. Use entonces el enlace que se encuentra
+ al pie de la página del ejercicio para añadirlo a la hoja de trabajo.
+ !if $erasable=yes
+  <p>
+  Puede
+  !href cmd=reply&job=prep_putsource insertar un fichero fuente 
+  en esta hoja, o incluso
+  !href cmd=reply&job=prep_erase borrar la hoja
+.
+ !endif
+!endif
+
+!if $activetest>=0
+ <p>
+ !href module=adm/sheet&sh=$sheet Punto de vista de los participantes de la hoja de trabajo.
+ &nbsp;
+ !href cmd=reply&job=getsource Obtener el código fuente de la hoja.
+ <p>
+ !form reply
+ <input type=hidden name=allow value=yes>
+ El registro de puntuaciones está<br>
+ !formselect allowtype list all, none, select prompt abierto a todos, cerrado a todos, abierto para las siguientes estaciones de trabajo (y/o horas):
+ &nbsp; <input size=50 name=IPlist value="$IPlist"> <br>
+ <center><input type=submit value="Grabar los cambios"></center>
+ !set allowshare=0
+ !if $sharers!=$empty
+  (para todas las clases que comparten la hoja:
+  !formselect allowshare list 0,1 prompt no,sí
+  )
+ !else
+  <input type=hidden name=allowshare value=0>
+ !endif
+ </form>
+ <small><b>Sugerencia.</b> En el modo selectivo puede imponer una
+ restricción en el tiempo en el que se grabarán las puntuaciones añadiendo las 
+ palabras
+ <font color=blue><b>
+ <tt>&gt;aaaammdd.hh:mm</tt></b></font>
+ (inicio) y/o
+ <font color=blue><b>
+ <tt>&lt;aaaammdd.hh:mm</tt></b></font>
+ (fin). Las fechas y horas deben estar indicadas en tiempo local del SERVIDOR
+ y estas palabras deber ir separadas unas de otras por espacios.
+ </small>
+!endif
+:end
+!tail
+
+!distribute item ,, into job,source
+

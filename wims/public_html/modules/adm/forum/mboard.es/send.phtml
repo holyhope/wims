@@ -1,0 +1,26 @@
+
+!if $s_status=ask
+ Este foro de discusión no acepta mensajes anónimos. Utiliza la 
+ dirección de correo electrónico actual que usted ha proporcionado
+ para verificar su identidad, con objeto de evitar abusos.
+ <p>
+ Para verificar la validez de su dirección de correo, el servidor le ha
+ enviado una clave secreta por correo. Por favor lea ese e-mail,
+ y copie la clave aquí:
+ !form reply
+ <input type=hidden name=job value=send>
+ <p><center><input size=10 name=s_code>
+ <input type=submit value=OK></form>
+ <p>
+ !href cmd=reply&job=list Cancelar la operación
+ </center> <p>
+ !exit
+!endif
+
+!if $error=$empty
+ Su mensaje se ha añadido al foro.
+!endif
+
+<p><center>
+!href cmd=reply&job=list Lista de mensajes.
+</center> <p>

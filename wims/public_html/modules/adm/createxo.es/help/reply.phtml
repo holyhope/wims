@@ -1,0 +1,228 @@
+
+<center><h3>Respuestas de los usuarios a un ejercicio</h3></center> <p>
+
+Hay dos maneras básicas en las que un ejercicio OEF acepta respuestas
+del usuario: opciones múltiples y respuestas libres.
+La respuesta que dé el usuario será analizada según su tipo.
+También es posible añadir
+!href cmd=help&special_parm=feedback comentarios de retroalimentación
+ cuando la respuesta cumpla determinada condición (por ejemplo
+para advertir de un error típico).
+
+<p><h4>Opciones múltiples</h4> <p>
+Una opción múltiple se define dando una lista de opciones correctas
+(una o varias) y otra lista con todas las opciones (las opciones correctas
+se añaden de forma automática). <p>
+Se pueden pedir hasta $choicelim opciones múltiples simultáneas en un
+ejercicio, con la implementación actual. El número de opciones correctas
+y erróneas en una opción múltiple no tiene límite (excepto la limitación de
+la longitud del texto que impone WIMS).
+<p>
+Ver la
+!href cmd=help&special_parm=oef help ayuda sobre el formato OEF
+ acerca de la sintaxis para definir una opción múltiple.
+
+<a name=freestyle>
+<p><h4>Respuestas de estilo libre</h4> <p>
+Una respuesta de estilo libre es la que la tiene que escribir el usuario.
+Se pueden pedir hasta $answerlim respuestas libres simultáneamente en el 
+mismo ejercicio con la implementación actual. <p>
+La sintaxis es la siguiente:
+<tt>\answer{Texto}{\respuesta}{type=...}{option=...}{weight=...}</tt>
+<br>
+(Los 3 últimos campos son opcionales).
+<p>
+Cada respuesta libre puede tomar independientemente uno de los siguientes
+tipos:
+<ol>
+ <p><li>
+ <b>Auto.</b> (nombre: <tt>default</tt>)<br>
+ El programa puede determinar el tipo de la respuesta analizando la respuesta
+ correcta proporcionada. Esta capacidad de determinación automática es bastante
+ limitada y únicamente puede distinguir funciones numéricas/números/ecuaciones/textos,
+ por tanto en la medida en que sea posible es preferible precisar el tipo.
+
+ <p><li>
+ !read help/anstype/atext.phtml
+
+ <p><li>
+ !read help/anstype/clickfill.phtml
+
+ <p><li>
+ !read help/anstype/coord.phtml
+
+ <p><li>
+ !read help/anstype/compose.phtml
+
+ <p><li>
+ !read help/anstype/correspond.phtml
+
+ <p><li>
+ <b>Conjunto finito.</b> (nombre: <tt>set</tt>) <br>
+ Es una lista de elementos (textuales) separados por comas,
+ donde el orden no es importante.
+ No se hace ninguna evaluación de los elementos antes de la comparación
+ (por tanto 2 y 1+1 no son el mismo elemento).
+
+ <p><li>
+ <b>Conjunto formal.</b> (nombre: <tt>fset</tt>)<br>
+ Como el <em>conjunto finito</em>, pero los elementos son evaluados
+ como <em>expresiones formales</em>.
+
+ <p><li>
+ <b>Conjunto aproximativo.</b> (nombre: <tt>aset</tt>)<br>
+ Como el <em>conjunto finito</em>, pero los elementos son evaluados
+ como <em>expresiones aproximativas</em>.
+
+ <p><li>
+ <b>Conjunto de caracteres.</b> (nombre: <tt>chset</tt>) <br>
+ Se trata de una lista de caracteres alfanuméricos en los que el orden no
+ tiene importancia, ni si son mayúsculas o minúsculas. <p>
+ Se puede utilizar para crear respuestas para opciones múltiples, en las que
+ el número de opciones presentes debe ser fijo y en las que es posible que haya
+ varias respuestas correctas y el usuario deba encontrarlas todas.
+
+ <p><li>
+ <b>Expresión algebraica.</b> (nombre: <tt>algexp</tt>)<br>
+ Es una expresión algebraica formal con identificaciones limitadas
+ para la comparación. Por ejemplo, no se aceptará (x+1)(x-1) 
+ cuando la respuesta correcta es x^2-1. Y tampoco sin(x)^2+cos(x)^2 frente a 1.
+ Por contra, x-y*y y -y^2+x serán consideradas idénticas. <p>
+ Es útil para obligar a los estudiantes a realizar ellos mismos las
+ simplificaciones de las expresiones. <p>
+ Se pueden poner varias respuestas correctas separadas por comas.
+
+ <p><li>
+ <b>Expresión literal.</b> (nombre: <tt>litexp</tt>)<br>
+ Es una expresión matemática formal que se comparará literalmente
+ con la respuesta correcta dada, sin ninguna simplificación algebraica. Por
+ ejemplo, x+y no se reconocerá como idéntico a y+x, ni 3/2 a 6/4. Sin
+ embargo 2x y 2*x serán vistos como idénticos, 
+ y los espacios se eliminarán antes de la comparación. <p>
+ Es útil para obligar a los estudiantes a realizar ellos mismos las
+ simplificaciones de las expresiones. <p>
+ Se pueden poner varias respuestas correctas separadas por comas.
+
+ <p><li>
+ <b>Expresión formal.</b> (nombre: <tt>formal</tt>)<br>
+ Como las expresiones numéricas, pero no se permite la aproximación. <p>
+ Es posible poner varias respuestas correctas separándolas con comas.
+
+<p><li>
+ <b>Expresión numérica.</b> (nombre: <tt>function</tt>) <br>
+ La respuesta se evaluará como una función y la 
+ comparación se hace para los valores de las variables definidas en el 
+ intervalo definido por el autor, con la precisión
+ definida por él mismo. <p>
+
+ <p><li>
+ <b>Matriz.</b> (nombre: <tt>matrix</tt>)<br>
+ Como para las respuestas vectoriales, cada coeficiente es evaluado y comparado
+ con el coeficiente correspondiente de la respuesta correcta.
+
+ <p><li>
+ <b>Numérica.</b> (nombre: <tt>numeric</tt>)<br>
+ Comparación de números reales hasta la precisión definida por el autor.
+
+ <p><li>
+ <b>Numérica con intervalo.</b> (nombre: <tt>range</tt>)<br>
+ Comparación de números reales en un intervalo: la respuesta correcta está compuesta
+ por dos números, m y n, separados por una coma, siendo m&lt;n. Se aceptará
+ cualquier entrada comprendida entre m y n (inclusives).
+
+ <p><li>
+ <b>Numérica con unidad.</b> (nombre: <tt>units</tt>) <br>
+ Normalmente es una cantidad física vinculada a una unidad. La respuesta se evaluará
+ como tal, por lo tanto, por ejemplo, <tt>1.5 cm</tt> y <tt>15 mm</tt>
+ tendrán el mismo significado. El requerimiento de precisión es como para
+ la expresión numérica.
+
+ <p><li>
+ !read help/anstype/sigunits.phtml
+
+!! <p><li>
+!! !read help/anstype/reorder.phtml
+!!
+ <p><li>
+ !read help/anstype/text.phtml
+
+ <p><li>
+ <b>Vector.</b> (nombre: <tt>vector</tt>)<br>
+ Cada coeficiente se evalúa y compara con el coeficiente correspondiente
+ de la respuesta correcta. Por lo tanto, sólo se pueden usar vectores 
+ numéricos. La respuesta así como la respuesta correcta pueden tener o no
+ paréntesis que los rodeen.
+
+ <p><li>
+ !read help/anstype/wlist.phtml
+
+ <p><li><b>Opciones múltiples controlables por el autor</b>: <tt>checkbox</tt>,
+ <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt><br>.
+ Pueden utilizarse para sustituir a la entrada estándar de opción múltiple
+ (<tt>\choice</tt>), pues proporcionan mayor control sobre la presentación.
+ La respuesta correcta debe contener dos campos, separados por un punto y coma
+ ``<tt>;</tt>''. El segundo campo (tras el punto y coma) es la lista de textos
+ de la opción, mientras que el primero es una lista con los números de las opciones 
+ correctas. En el caso de la <tt>checkbox</tt>, el usuario debe escoger 
+ exactamente todas las opciones correctas. En los casos restantes bastará
+ escoger cualquier opción correcta.
+ <p>
+ En estos casos no se aplica ninguna permutación aleatoria automática,
+ y el número de opciones no está limitado.
+ <p>
+ <tt>click</tt> debe usarse únicamente en el caso de que no haya más 
+ respuestas u opciones.
+ <p>
+ <tt>mark</tt> funciona como <tt>checkbox</tt>, con la diferencia de que, en 
+ lugar de un botón, es el elemento elegido el que cambia de color para
+ indicar la elección. Por tanto es útil principalmente para el texto del
+ enunciado.
+</ol>
+
+<p><h4>Condiciones de comprobación</h4> <p>
+Bajo ciertas circunstancias, es deseable que las respuestas de estilo libre
+se corrijan según condiciones especiales (preguntas con múltiples respuestas
+correctas, ejercicios que pidan ejemplos, respuestas determinadas por 
+desigualdades, etc). Puede hacerse de la siguiente manera: 
+<p>
+Si la respuesta correcta a una pregunta libre es una variable indefinida
+hasta ahora,
+la respuesta a esta cuestión se asignará en esa variable. La variable
+puede usarse en adelante para implementar las condiciones de comprobación. La
+puntuación dada al ejercicio se determinará por el número de condiciones
+de comprobación que se satisfagan, en lugar del número de respuestas que 
+coincidan con la respuesta correcta.
+<p>
+Se pueden definir hasta $condlim condiciones simultáneas para un ejercicio,
+con la implementación actual. Únicamente las respuestas numéricas
+pueden ser corregidas así. La sintaxis es
+<p><tt>
+\condition{texto de la pregunta}{condiciones de comprobación}{weight=...}
+</tt>
+<br>
+(el último campo es optional).
+ <p>
+
+A continuación presentamos algunos ejemplos de condiciones de comprobación 
+(<tt>\ans1</tt> y <tt>\ans2</tt> son dos variables indefinidas que aparecen 
+en las  definiciones de las respuestas libres, como se describe antes).
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if Lista completa de las relaciones
+</small>
+<p>
+$table_header
+$table_hdtr<th>Condición<th>significado
+$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
+    <td>Correcta si <tt>ans1</tt> está en el intervalo [0,1].
+$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
+    <td>Correcta si <tt>ans1</tt> es 1, 3 o 5.
+$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
+    <td>Correcta si <tt>ans1</tt> y <tt>ans2</tt> son las dos 
+    raíces del polinomio x<sup>2</sup>-5x+6.
+$table_tr<td><tt>sin(\ans1)=0</tt>
+    <td>Correcta si <tt>ans1</tt> es un múltiplo de $m_pi.
+$table_end <p>
+Ver la
+!href cmd=help&special_parm=oef ayuda sobre el formato OEF
+ para ver la sintaxis de la definición de las respuestas.
+

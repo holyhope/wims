@@ -1,0 +1,62 @@
+
+Il server ha salvato l'esercizio con i seguenti parametri
+(per favore verificarli).
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Titre<td><td>$title
+<tr><td align=right>Numero di parametri definiti<td><td>$varcnt
+<tr><td align=right>Numero di risposte libere<td><td>$replycnt
+<tr><td align=right>Numero di risposte a scelta multipla<td><td>$choicecnt
+</table>
+<ul><li>
+&Egrave; ora possibile
+!href cmd=resume&realtest=yes&retest=again provare l'esercizio
+. 
+!if $mode!=file
+<p><li>
+Per modificarlo, 
+!href cmd=reply&level=2 puoi tornare al men&ugrave; precedente.
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ O modificare direttamente il file sorgente
+ <input type=submit value="invia di nuovo">:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ !href cmd=reply&level=1&mode=normal Torna al menù di partenza
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>&Egrave; anche possibile
+ !href cmd=reply&level=6 inserire un file immagine
+ nell'esercizio.
+!endif
+!if $wims_user!=$empty or $existing!=$empty
+ <p><li>
+ Una volta che tutto &egrave; corretto, &egrave; possibile
+ !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
+   inserire l'esercizio nella pagine del corso, sia
+   !href cmd=reply&level=4 sostituendo il vecchio esercizio
+,  che
+   !href cmd=reply&level=4&newone=1 creandone uno nuovo
+  !else
+   !href cmd=reply&level=4 inserirlo tra i moduli in preparazione
+  !endif
+ !else
+  !href cmd=reply&level=4 inserire l'esercizio nella pagine del corso
+ !endif
+.
+!endif
+!if $mode!=file
+ <p><li>
+ Come ultima cosa pu&ograve; essere utile 
+ !getfile submit.oef salvare il codice sorgente
+ dell'esercizio!
+!endif
+</ul>
+
+

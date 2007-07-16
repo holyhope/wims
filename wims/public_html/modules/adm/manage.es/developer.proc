@@ -1,0 +1,22 @@
+!bound job2 within first,mod1,mod2,del1,del2,pub\
+	default $
+
+devcnt=!recordcnt wimshome/log/.developers
+!for d=1 to $devcnt
+ drec$d=!record $d of wimshome/log/.developers
+ d_=!word 1 of $(drec$d)
+ devlist=$devlist $d_
+!next d
+!bound devno between integer 0 and $devcnt default 0
+
+!if $job2=pub
+ dp=!items2words $devpublisher
+ dp=!words2items $dp
+ !sh echo "$dp" >$wims_home/log/.devpublishers
+ job2=first
+!endif
+
+devpublisher=!record 0 of wimshome/log/.devpublishers
+
+!read developer/$job2.proc
+

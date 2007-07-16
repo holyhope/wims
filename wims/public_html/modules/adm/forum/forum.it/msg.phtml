@@ -1,0 +1,21 @@
+
+!set errorhead=<b>Error.</b>
+
+!if forum_not_exist = $error
+ $errorhead Il forum non esiste. Verificare 
+ la richiesta.
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_register = $error
+ $errorhead Non &egrave; possibile registrarsi per questo forum.
+ Contattare 
+ !mailurl $mb_email l'owner \
+$mb_title
+ per partecipare.
+ !exit
+!endif
+
+!msg $error
+

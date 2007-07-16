@@ -1,0 +1,78 @@
+
+!set wims_module_log=error: $error $wims_class
+
+<b>Erreur</b>.
+
+!if not_supervisor iswordof $error
+ Désolé, ce module est accessible uniquement à l'enseignant d'une classe
+ virtuelle.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ !if $code!=$empty
+  Code secret incorrect.
+ !else
+  Ce module est accessible uniquement à partir d'un poste sûr.
+ !endif
+ Accès refusé.
+ !exit
+!endif
+
+!if checkhost iswordof $error
+ Votre connection actuelle ne fait pas partie de la nouvelle définition
+ de postes sûrs. C'est probablement une erreur qui peut vous faire perdre
+ le contrôle de la classe. Donc, la définition de postes sûrs n'est pas
+ changée.
+ !exit
+!endif
+
+!if bad_file iswordof $error
+ Désolé mais je ne peux pas reconnaître <em>$wims_deposit</em> 
+ comme un fichier de sauvegarde d'une classe. Soit vous avez envoyé un mauvais
+ fichier, soit le fichier est endommagé.
+ !exit
+!endif
+
+!if empty_file iswordof $error
+ Aucune ressource de classes n'est trouvée dans votre fichier de sauvegarde
+ <tt>$wims_deposit</tt>.
+ !exit
+!endif
+
+!if no_upload iswordof $error
+ Les données envoyées sont périmées. Mauvaise manoeuvre. Veuillez réessayer.
+ !exit
+!endif
+
+!if remote_sharing iswordof $error
+ Votre classe voisine partage vos ressources. Avant qu'elle n'arrête le
+ partage de son côté, vous ne pouvez ni renier son droit de continuer le
+ partage, ni l'enlever de votre liste de voisins.
+ !exit
+!endif
+
+!if share_dep iswordof $error
+ Le partage de ressources doit respecter les dépendances&nbsp;: vous devez
+ partager d'abord les exercices avant de partager ses 
+ feuilles de travail et vous devez partager d'abord les feuilles de travail
+  avant de partager les feuilles d'examen.
+ !exit
+!endif
+
+!if not_neighbor iswordof $error
+ Vous avez essayé de mener une opération avec une classe qui n'est pas votre
+ voisin effectif.
+ <p>
+ Rappelez qu'une classe est votre voisin effectif seulement si les voisinages
+ mutuels sont déclarés A LA FOIS par vous et par l'autre classe.
+ !exit
+!endif
+
+!if localmirror iswordof $error
+ Miroiter une classe sur le même serveur n'a pas de sens.
+ !exit
+!endif
+
+!msg $error
+

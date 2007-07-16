@@ -1,0 +1,63 @@
+欢迎进入本页. 它以指导模式帮你建立你自己
+!if $wims_user!=supervisor
+!else
+班级<font color=blue> $wims_classname</font>, <font color=blue>($wims_institutionname)</font>
+!endif
+的交互式练习. 如果你已经是专家, 或者你有已被保存的练习的源文件,
+你可以转到
+!href cmd=reply&rawinp=yes 简洁模式
+或
+!href cmd=reply&mode=file 文件模式
+. 
+初学者也可以看一下
+!href cmd=help&special_parm=examples 范例
+.
+
+!form reply
+<input type=hidden name=level value=2>
+给出你要创建的练习的标题:<br>
+<input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
+叙述问题的格式:
+!formselect oef_format list tex,html
+ [
+ !href target=wims_mhelp cmd=help&special_parm=format 帮助
+ ]<p>
+这个练习的回答应该是
+!formselect oef_answercnt from 0 to 10
+自由格式的回答和
+!formselect oef_choicecnt from 0 to 10
+多重选择的回答.
+未经计算的数值回答 (例如<tt>3*5-sin(pi/3)</tt>)将被
+!formselect oef_computeanswer list yes,no prompt 接受,拒绝
+.
+!formselect oef_condcnt from 0 to $condlim
+将使用特殊的条件以测试(数值的)自由格式的回答.
+ [
+ !href target=wims_mhelp cmd=help&special_parm=reply 帮助
+ ]
+<p><table border=0><tr><td align=right>
+作者姓名:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+<tr><td align=right>
+电子邮件地址:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+</table>
+<p><center>
+<input type=submit value="进入练习的内容">
+</center>
+</form>
+
+也可参见
+!href module=adm/modtool 模块工具
+ 以了解在线开发具有全部功能的WIMS模块的方法.
+
+!if $wims_user=supervisor
+ !read wimshome/log/classes/$wims_class/Exindex
+ !if $exototal>0
+  <p>
+  !form new
+  <input type=hidden name=module value=$module>
+  修改以下班级的已有练习:
+  !formselect existing list $exolist prompt $titlelist
+  <input type=submit value=提交></form>
+ !endif
+!endif
+

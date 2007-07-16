@@ -1,0 +1,51 @@
+
+!if $clcnt<=0
+ Lo sentimos, no se han encontrado clases de ejemplo en este sitio.
+ !exit
+!endif
+
+!if $lacnt<=0
+ No hay clases en español en este sitio,
+ solamente $clcnt clase(s) de ejemplo en otros idiomas.
+!else
+ Hay $clcnt clase(s) de ejemplo en español en este sitio. 
+!endif
+
+Estas clases de ejemplo sirven para mostrarle cómo funcionan 
+las clases virtuales desde el punto de vista del estudiante.
+Debería
+!href module=adm/class/regclass crear
+ su propia clase para verla desde el punto de vista del profesor,
+ que es mucho más completo.
+
+<p>$table_header
+$table_hdtr
+<th>Nombre de la clase</th><th>Nivel</th><th>Tipo de conexión</th><th>Inscribirse</th>
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into code,expire,inst,cl
+ !defread wimshome/log/classes/$code/.def
+ !distribute char $class_level into l_,y_
+ 
+ $table_tr<td align=center>$inst<br>$cl</td>
+ <td align=center>$(n_$l_)<br>curso $y_</td>
+ <td align=center>
+ !href module=home&user=anonymous,$code,anonymous anónimo
+ &nbsp;
+ !href module=$module&type=authparticipant&class=$code inscrito
+ </td><td align=center>
+ !href module=adm/class/reguser&class=$code Inscribirse
+ </td>
+!next i
+</tr>$table_end <p>
+ 
+<ul>
+<li>Pulse en <tt class="d">anónimo</tt> para conectarse a una clase como 
+invitado anónimo.
+<p><li>Pulse en <tt class="d">inscrito</tt> para conectarse a la clase como usuario 
+ dado de alta con identificador y clave (debe haberse inscrito anteriormente, y
+ es probable que su registro se elimine regularmente del servidor, porque son clases de 
+ ejemplo).
+<p><li>Pulse en <tt class="d">Inscribirse</tt> para darse de alta en la clase.
+</ul>
+

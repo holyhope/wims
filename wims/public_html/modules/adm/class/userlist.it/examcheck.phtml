@@ -1,0 +1,48 @@
+
+<center>$classname
+<p>
+<h1>Dettagli degli esami di $user_firstname $user_lastname
+</h1></center>
+
+!if _check isin $session
+ !set error=bad_op
+ !goto msg
+!endif
+
+!if $error!=$empty
+ :msg
+ <p>
+ !read msg.phtml
+ <p>
+!else
+ !if $checksessions=$empty
+  Questo studente non ha ancora concluso alcun esame.
+  <p>
+ !else
+  Queste sono le sessioni d'esame di questo studente. Seleziona un esercizio
+  per verderne lo svolgimento.
+  <p>
+  $table_header
+  $table_hdtr<th>Sessione</th><th>Esame</th><th>Punteggio<small>/10</small></th>
+  <th>Esercizio</th><th>Svolto il</th></tr>
+  !for ses in $checksessions
+   !for x in $(exam$ses)
+    $table_tr<td><small>$ses</small></td>
+    <td align=center>$x</td>
+    <td align=center>$(score$(ses)$x)</td><td>
+    !for i in $(exo$(ses)$x)
+     &nbsp;
+     !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $i
+    !next i
+   !next x
+   </td><td><small>$(start$(ses)$x)</small></td>
+  !next t
+  $table_end <p>
+ !endif
+!endif
+
+<center>
+!href cmd=reply&job=getuser&getuser=$checkuser Altri punteggi
+&nbsp;
+!href cmd=resume Elenco studenti
+</center>

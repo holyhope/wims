@@ -1,0 +1,40 @@
+<center><h1>$tit</h1></center>
+
+!if $fcnt<1
+Dit document heeft nog geen inhoud.
+ !href cmd=reply&job=edit&block=main Maak het eerste blok.
+ <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>Lijst van blokken in dit document</caption>
+$table_hdtr
+<th>Naam<th>Titel<th>Actie
+!for i=1 to $fcnt
+ !set s_=!line $i of $slist
+ !set t_=!line $i of $tlist
+ !set t_=!trim $t_
+ !default t_=No title
+ $table_tr
+ <td><tt>$s_</tt></td>
+ <td>$t_</td>
+ <td align=center>
+ !href cmd=reply&job=read&block=$s_ LEZEN
+&nbsp;
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$s_ BEWERKEN
+ !endif
+</td>
+!next i
+$table_end <p>
+
+<center>
+Totaal beschikbare schijfruimte: $quota_total Meg. Beschikbare vrije ruimte: $quota_free Meg.
+<p>
+!href cmd=reply&job=file Bestand Invoegen
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main Hoofdpagina van dit document
+
+</center> <p>
+

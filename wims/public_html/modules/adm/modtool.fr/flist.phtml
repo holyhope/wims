@@ -1,0 +1,64 @@
+!if ~ notin $mod
+ <b>Attention</b>. L'adresse de ce module est une adresse simplifiée&nbsp;: "<tt>$mod</tt>".
+ Une
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod mise à jour de l'adresse
+ est recommandée.
+ <p>
+!endif
+
+!set doctest1=!module category devel/$auth_login/$mod
+
+Votre module
+<em><font color=blue>$title</em></font> ($description)
+<small>
+!href cmd=reply&jobreq=index $mod
+</small>
+contient les fichiers
+!if document isin $doctest1
+  suivants (<i>pour les fichiers du document, cliquez le lien <tt>Gestionnaire de
+   document</tt></i>)&nbsp;:
+!else
+  suivants&nbsp;:
+!endif
+!set table_cellpadding=1
+!set table_cellspacing=0
+!set table_center=left
+<p>$table_header
+$table_hdtr
+<th>Nom</th><th>Action</th><th>Explication
+ !for f in $files
+  $table_tr
+  <td align=left nowrap>$f
+  <td align=center nowrap>  
+  !href cmd=reply&jobreq=showfile&fname=$f voir
+  &nbsp;
+  !href cmd=reply&jobreq=edfile&fname=$f modifier
+  &nbsp;
+  !href cmd=reply&jobreq=delfile&fname=$f effacer
+  !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
+   !set f_=!translate internal / to , in $f
+   !set f_=!item -1 of $f_
+   !set f_=!replace internal .oef.. by in $f_..
+   &nbsp;
+   !href target=wims_test module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
+  !endif
+&nbsp;</td><td align=left>
+  !set t_=!translate . to _ in $f
+  !set t_=$($t_)
+  !default t_=--
+  $t_  
+ !next f
+$table_end
+
+!form reply
+<input type=hidden name=jobreq value=edfile>
+Ajouter un autre fichier&nbsp;:
+<input size=20 name=fname value=$lastfname>
+<input type=submit value=OK>
+!href cmd=reply&jobreq=binfile Fichiers binaires
+&nbsp;
+!href target=wims_test module=tool/directexec&cmd=new Testeur de script
+</form>
+
+!reset fname
+

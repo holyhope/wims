@@ -1,0 +1,121 @@
+
+<center><h1>$wims_classname, $wims_institutionname<br>
+$title</h1>
+!if $wims_user=supervisor
+ (应试者用)
+!endif
+</center> <p>
+$desc<p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 回主页
+. <p>
+ !exit
+!endif
+
+!if $registered<0 or ($registered>0 and $timeleft<=0)
+ !changeto score.phtml
+!endif
+
+!if $exocnt=0
+ 试卷是空的! 其中没有内容. 可能是你的指导老师的操作错误.
+!else
+ 为此次考试指定的练习:
+!! !href cmd=reply&job=student [更新本页]
+ !set activeexo=0
+ <p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti,de
+  !set de=!trim $de
+  <p><li>$i. 
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+   ($tryremain=0 and $registered!=$empty))
+   !if $(replied$i)>0
+    $ti (done).
+   !else
+    !if $de!=$empty
+     !set dt=!examdep $exam $de
+    !else
+     !set dt=yes
+    !endif
+    !if $dt=yes
+     !advance activeexo
+     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+.
+    !else
+     <b><font color=red>$ti</font></b> (要求
+     !href cmd=reply&job=student 其它练习取得成功
+.)
+    !endif
+   !endif
+  !else
+   $ti.
+  !endif
+ !next i
+ </ul>
+ !if $t_=no
+  本次考试已经关闭了与你的连结.
+  !href cmd=reply&job=student 更新本页.
+ !else
+  !if $stries=1
+   本考试只能做一次.
+  !else
+   你至多可以考 $stries 次.
+  !endif
+  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+   !if $trcut=0
+    你已经完成了 $tried 次考试, 
+   !else
+    你已经考了 $tried 次, 
+   !endif
+   因此你不能再改进你的得分.
+   !set exhausted=yes
+  !endif
+  !if $tryremain>0
+   你还可以试 $tryremain 次.
+  !endif
+  !if $registered=$empty and $exhausted!=yes
+   这次考试你还剩下 $sdure 分钟.
+   当你点击上面的练习时,
+   !if $allowtype!=simulation
+    就会开始倒数计时, 而且尝试次数也会增加 1.
+   !else
+    就开始倒数计时.
+   !endif
+  !else
+   !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+    这是你的最后一次尝试. 请注意!
+   !endif
+  !endif
+  <p>
+  !href cmd=reply&job=student 更新本页.
+&nbsp;
+  !href cmd=reply&job=score 我的得分.
+  !if $activeexo<1
+&nbsp;
+   !href cmd=reply&job=scorereg 结束
+   本次考试(因为已经没有练习可做).
+  !endif
+ !endif
+!endif
+
+!if $t_=yes
+ !if $allowtype=simulation
+  <p>这次考试是模拟状态, 它与真实的考试一样, 只是不能纪录分数, 而且不计考试的次数.
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume 返回主持教师的主页.
+ </center>
+!endif
+
+!tail
+
+!reset job
+

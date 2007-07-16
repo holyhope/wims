@@ -1,0 +1,48 @@
+
+!if $votecnt<1
+ !if $wims_user!=supervisor
+ Jouw klas heeft -nog- geen voorziening om te stemmen. <br>
+ Neem even kontact op met je leraar
+  !exit
+ !else
+ Jouw klas heeft nog geen voorziening om te stemmen.
+ !endif
+!else
+ !if $wims_user!=supervisor
+  !if $active<1
+  Er is geen actieve stemming.<br>
+  Neem hierover kontact op met je leraar.
+   !exit
+  !endif
+ !endif
+ Hier zijn de stemmingen / verkiezingen van jouw klas.
+ <ul>
+ !for t=1 to $votecnt
+   !set l_=!record $t of $votedir/.votes
+   !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show
+   !default vote_title=Zonder Titel
+   !set vcnt=!defof vcnt in $votedir/$t.votes
+   !default vcnt=0
+   !if $wims_user!=supervisor
+    !if $vote_status iswordof 1 2
+     <li>
+     !href cmd=reply&job=read&vote=$t $vote_title
+     !if $vote_show>0
+      ($(name_$vote_status), $(name_$vote_option), $vcnt votes)
+     !else
+      ($(name_$vote_status), $(name_$vote_option))
+     !endif
+    !endif
+   !else
+    <li>
+    $vote_title
+    <small>($(name_$vote_status), $(name_$vote_option), $vcnt votes)</small>
+    !href cmd=reply&job=read&vote=$t [LEZEN]
+&nbsp;
+    !href cmd=reply&job=edit&vote=$t [VERANDEREN]
+   !endif
+ !next t
+ </ul>
+ !href cmd=reply&job=creat Maak een nieuwe stemronde
+!endif
+

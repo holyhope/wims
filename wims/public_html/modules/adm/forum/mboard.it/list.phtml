@@ -1,0 +1,53 @@
+
+!read desc.phtml
+<p>
+!if $tot<=0
+ !if $mlist!=.newlist
+  Non ci sono messaggi corrispondenti alla richiesta.
+ !else
+  Non ci sono ancora messaggi nel forum.
+ !endif
+!else
+ !if $mlist=.newlist
+  Indice degli ultimi messaggi, i pi&ugrave;
+ !else
+  Indice dei messaggi nel periodo da
+  !item $lmon of $monthnames
+  $lyear, per primi i più
+ !endif
+ !item $l_order of recenti,vecchi
+. <small>
+ !href cmd=reply&l_order=$[$l_order%2+1] [Ordine inverso]
+ !if $send_right>0
+  &nbsp;
+  !href cmd=new&forum=$forum&job=compose [Nuovo messaggio]
+ !endif
+</small>
+ <ul>
+ !set lh=<li>
+ !if $l_order=1
+  !distribute item $tot,1,-1 into start,end,step
+ !else
+  !distribute item 1,$tot,1 into start,end,step
+ !endif
+ !for i=$start to $end step $step
+  !if $mlist=.newlist
+   !set l_=!line $i of $mnew
+   !distribute word $l_ into a_,b_
+   !set l_=!record $b_ of $forumdir/$a_/.msglist
+  !else
+   !set l_=!record $i of $forumdir/$mlist/.msglist
+  !endif
+  !read listone.phtml $l_
+ !next i
+ </ul>
+!endif
+
+<p>
+!if $mlist!=.newlist
+ !href cmd=reply&job=list&mlist=.newlist Messaggi pi&ugrave; recenti.
+ &nbsp;
+!endif
+
+!read listarch.phtml
+

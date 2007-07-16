@@ -1,0 +1,10 @@
+
+!if $doctype=doc
+  !read adm/du bases/doc/$doc
+  quota_total=$wims_doc_quota
+!else
+  !read adm/du $wims_home/log/classes/$wims_class
+  quota_total=$wims_class_quota
+!endif
+
+quota_free=$[$quota_total-$du]

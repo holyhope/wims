@@ -1,0 +1,54 @@
+<center>$classname<p><h1>$cdt_title.</h1>
+ <font size=+1><b>Travail &agrave; faire 
+ !if $jour_begin!=$jour_end
+  entre le <font color=green>$jday/$jmonth/$jyear</font> et le <font color=green>$jday2/$jmonth2/$jyear2</font>
+ !else
+  pour le <font color=green>$jday/$jmonth/$jyear</font>
+ !endif
+</b></font>
+</center> 
+<p><p>
+
+!if $nbligne=0
+ Il n'y a pas de travail &agrave; faire pour le $jday/$jmonth/$jyear.
+ <p>
+ !goto end
+!endif
+ <center>
+ !let $table_border=1
+ $table_header
+ $table_hdtr 
+  <th>Pour le</th>
+  !if no isin $cdt_supervise
+   <th>Mati&egrave;res</th>
+  !endif
+  <th>Travail</th><th>Donn&eacute; le</th>
+ </tr>
+ !for i=1 to $nbligne
+  $table_tr
+   !let don=!line $i of $list
+   !distribute item $don into todo,date,dir,matiere
+   !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$dir
+   !read wimshome/log/classes/$dir/cdt/def/$date 
+   !let no=!positionof item $todo in $date_todo
+   <td>
+    !read proc/date.phtml $todo 
+   </td>
+   !if no isin $cdt_supervise
+    <td>$matiere</td>
+   !endif
+   <td valign=top>
+    !read wimshome/log/classes/$dir/cdt/def/$date todo$no
+   </td>
+   <td>
+    !read proc/date.phtml $date
+   </td>
+  </tr>
+ !next i
+ $table_end
+:end
+<p><p><p>
+<a href="javascript:window.print()">Imprimer la page</a> &nbsp; 
+ !href cmd=close Fermer la fen&ecirc;tre
+ </center>
+

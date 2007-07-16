@@ -1,0 +1,35 @@
+<center><h1>$tit</h1></center>
+
+L'autore del documento &egrave;
+!if $email!=$empty
+ !mailurl $email $author
+.
+!else
+ $author.
+!endif
+!if $readauth=yes
+ Questo documento non &egrave; leggibile al pubblico. Per accedervi
+ &egrave; necessario inserire il codice di accesso.
+!else
+ Per modificare questo documento &egrave; necessario inserire il
+ codice di accesso.
+!endif
+<p>
+!form reply
+<input type=hidden name=job value=auth2>
+!if $readauth=yes
+ <input type=hidden name=noedit value=yes>
+!endif
+<center>
+Codice di accesso: <input type=password size=16 name=coder>
+<input type=submit value=OK>
+</center></form>
+<p>
+!if $readauth=yes
+ Se sei l'autore del documento, ricorda che &egrave; necessario chiedere
+ autorizzazione al 
+ !mailurl $wims_site_manager <em>Site manager</em>
+Richiesta di pubblicare il documento WIMS $doc
+ per rendere il documento accessibile a tutti.
+ <p>
+!endif

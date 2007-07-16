@@ -1,0 +1,63 @@
+<center><h1>$module_title</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $doccnt<1
+ !if $wims_class!=$empty and $wims_user!=supervisor
+  对不起, 你的班级还没有文件. 请与主持教师联系.
+ !else
+  !if $authoring=$empty
+   对不起, 没有对公众开放的文件.
+  !else
+   对不起, 没有这个作者的文件.
+  !endif
+ !endif
+!else
+ !if $ii>0
+  !read scripts/table.phtml
+ !else
+  !if $wims_class!=$empty
+   这是你的班级的文件.
+  !else
+   这是你可以看到的本网站的文件.
+  !endif
+  <ul>
+  !for t=1 to $doccnt
+   !set s_=!line $t of $slist
+   !set t_=!line $t of $tlist
+   !set a_=!line $t of $alist
+   !set t_=!trim $t_
+   !default t_=无标题
+   <li>
+   !href module=$module&cmd=reply&job=read&doc=$s_&block=main $t_ 
+   !if $wims_ismanager=2
+    &nbsp;
+    !href cmd=reply&job=erase&doc=$s_ 删除
+&nbsp;
+   !endif
+   <small>作者是 $a_</small>
+  !next t
+  </ul>
+ !endif
+!endif
+
+!if $wims_class=$empty and $wims_ismanager<2
+ !form reply
+ 对于你自己的文件, 给出作者名字:
+ <input size=20 name=authoring value="$authoring">
+ <input type=submit value=提交>
+ </form> <p>
+!endif
+
+!if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
+ !href cmd=reply&job=creat 创建新文件
+, 或
+ !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd 写入草稿文件
+. <p>
+!endif
+
+!tail
+

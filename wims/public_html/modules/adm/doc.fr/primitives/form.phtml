@@ -1,0 +1,38 @@
+!if $printable=yes
+ !exit
+!endif
+!set parm1=!text select /$namechars in $parm1
+!set parm1=!char 1 to $namelim*2 of $parm1
+!if / isin $parm1
+ !set p_=!translate / to , in $parm1
+ !distribute items $p_ into pdoc,parm1
+!else
+ !set pdoc=$doc
+!endif
+!if $parm1=$empty or $parm1=.
+ !set parm1=$block
+ !set pdoc=$doc
+!endif
+
+!set parm2=!word 1 of $parm2
+!if $parm2!=$empty
+ !set wims_ref_anchor=#$parm2
+!endif
+
+!set pp=!item 3 to -1 of $parms
+!set pp=!replace internal $	$ by $\
+$ in $pp
+!set pp=!slashsubst $pp
+
+!if $printable=yes
+ $pp
+ !exit
+!endif
+!set wims_form_method=post
+!form reply
+<input type=hidden name=job value=read>
+<input type=hidden name=doc value=$doc>
+<input type=hidden name=block value=$parm1>
+$pp
+</form>
+

@@ -1,0 +1,62 @@
+
+The software have successfully recognized your exercise, with the following
+informations. (Please verify with what you have defined.)
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Title<td><td>$title
+<tr><td align=right>Number of parameters<td><td>$varcnt
+<tr><td align=right>Number of freestyle replies<td><td>$replycnt
+<tr><td align=right>Number of multiple choices<td><td>$choicecnt
+</table>
+<ul><li>
+Now you can
+!href cmd=resume&realtest=yes&retest=again test your exercise
+.
+!if $mode!=file
+<p><li>
+If you want to modify it,
+!href cmd=reply&level=2 go back to menu
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ Or modify the source file then
+ <input type=submit value="send again">:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ !href cmd=reply&level=1&mode=normal Back to the starting menu
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>You can also
+ !href cmd=reply&level=6 send an image file
+ to the exercise.
+!endif
+!if $wims_user!=$empty or $existing!=$empty
+ <p><li>
+ Once everything is correct, you can
+ !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
+   put this exercise into your class, either
+   !href cmd=reply&level=4 to replace the old one
+   or
+   !href cmd=reply&level=4&newone=1 as a new exercise
+  !else
+   !href cmd=reply&level=4 put it to the development module
+  !endif
+ !else
+  !href cmd=reply&level=4 put this exercise into your class
+ !endif
+.
+!endif
+!if $mode!=file
+ <p><li>
+ Finally, don't forget to 
+ !getfile submit.oef save the source
+ of the exercise!
+!endif
+</ul>
+
+

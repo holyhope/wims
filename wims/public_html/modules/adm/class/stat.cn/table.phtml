@@ -1,0 +1,170 @@
+!distribute items Exam, Sheet, exams/.exam, sheets/.sheet, 4, 3, 3, 5\
+    into name_E, name_S, file_E, file_S, line_E, line_S, linei_E, linei_S
+
+!for ss in $listsh
+ !distribute items 0,0,0,0,0,0,0,0,0,0 into\
+    sreq, sweight, scid, snewcnt, ssccnt, sscsum, sdursum, sdur
+ !set sn=!char 2 to -1 of $ss
+ !set st=!char 1 of $ss
+ !set l_=!record $sn of wimshome/log/classes/$wims_class/$(file_$st)s
+ !set shtit=!line $(line_$st) of $l_
+ <p>$table_header
+ $table_hdtr<th rowspan=$hdrow>Exercise</th>
+ !if req isitemof $show and $st=S
+  <th rowspan=$hdrow><small>要求的<br>得分</small></th>
+ !endif
+ !if weight isitemof $show
+  <th rowspan=$hdrow><small>权重</small></th>
+ !endif
+ !if cid isitemof $show
+  <th rowspan=$hdrow><small>难度<br>指数</small></th>
+ !endif
+ !if tot isitemof $show
+  <th colspan=4>总计</th>
+ !endif
+ !if scoremean isitemof $show
+  <th colspan=2><small>按得分平均</small></th>
+ !endif
+ !if partmean isitemof $show
+  <th colspan=4><small>按参加者平均</small></th>
+ !endif
+ !if minmax isitemof $show
+  <th colspan=2>极小</th>
+  <th colspan=2>极大</th>
+ !endif
+ !if deviat isitemof $show
+  <th colspan=2><small>标准偏差</small></th>
+ !endif
+ !if $hdrow>1
+  $table_hdtr
+  !if tot isitemof $show
+   <th><small>new</small></th><th><small>score</small></th>
+   <th><small>points</small></th><th><small>duration</small></th>
+  !endif
+  !if scoremean isitemof $show
+   <th><small>points</small></th><th><small>duration</small></th>
+  !endif
+  !if partmean isitemof $show
+   <th><small>new</small></th><th><small>score</small></th>
+   <th><small>points</small></th><th><small>duration</small></th>
+  !endif
+  !if minmax isitemof $show
+   <th><small>points</small></th><th><small>duration</small></th>
+   <th><small>points</small></th><th><small>duration</small></th>
+  !endif
+  !if deviat isitemof $show
+   <th><small>points</small></th><th><small>duration</small></th>
+  !endif
+ !endif
+ !for i=$(start$st$sn) to $(end$st$sn)
+  !set l_=!record $i of wimshome/log/classes/$wims_class/exostat
+  !distribute words $l_ into $fields
+  !set l_=!record $exo of wimshome/log/classes/$wims_class/$(file_$st)$sn
+  !if $l_=$empty
+   !goto next
+  !endif
+  !distribute lines $l_ into 1_,2_,3_,4_,5_,6_
+  !set t_=$($(linei_$st)_)
+  !if $scavg>0 and $st=S
+   !set sdur=$[$sdur+$duravg*$3_/$scavg]
+  !endif
+  $table_tr<td><small>$exo.
+  !if $st=S
+   !href target=wims_exo module=$1_&cmd=new&worksheet=$sn&$2_ $t_
+  !else
+   $t_
+  !endif
+  </small>
+  !if req isitemof $show and $st=S
+   <td align=center>$3_</td>
+   !set sreq=$[$sreq+$3_]
+  !endif
+  !if weight isitemof $show
+   !if $st=S
+    <td align=center>$4_</td>
+    !set sweight=$[$sweight+$4_]
+   !else
+    <td align=center>$1_</td>
+   !endif
+  !endif
+  !if cid isitemof $show
+   <td align=center>$cid</td>
+   !set scid=$[$scid+$cid*($3_/10)]
+  !endif
+  !distribute item $[$snewcnt+$newcnt],$[$ssccnt+$sccnt],\
+     $[$sscsum+$scsum],$[$sdursum+$dursum] into\
+     snewcnt,ssccnt,sscsum,sdursum
+  !if tot isitemof $show
+   <td align=right>$newcnt</td>
+   <td align=right>$sccnt</td>
+   <td align=right>$scsum</td>
+   <td align=right>$dursum</td>
+  !endif
+  !if scoremean isitemof $show
+   <td align=center>$[rint(10*$scavg)/10]</td>
+   <td align=center>$[rint(10*$duravg)/10]</td>
+  !endif
+  !if partmean isitemof $show
+   <td align=center>$[rint(10*$newcnt/$usercnt)/10]</td>
+   <td align=center>$[rint(10*$sccnt/$usercnt)/10]</td>
+   <td align=center>$[rint(10*$scsum/$usercnt)/10]</td>
+   <td align=center>$[rint(10*$dursum/$usercnt)/10]</td>
+  !endif
+  !if minmax isitemof $show
+   <td align=right>$scmin</td>
+   <td align=right>$durmin</td>
+   <td align=right>$scmax</td>
+   <td align=right>$durmax</td>
+  !endif
+  !if deviat isitemof $show
+   <td align=right>$scdev</td>
+   <td align=right>$durdev</td>
+  !endif
+  :next
+ !next i
+ !set test=!listintersect $show and req,weight,cid,tot,scoremean,partmean
+ !if $st=S and $(start$st$sn)<$(end$st$sn) and $test!=$empty
+  $table_hdtr<th>和</th>
+  !if req isitemof $show
+   <td align=center>$sreq</td>
+  !endif
+  !if weight isitemof $show
+   <td align=center>$sweight</td>
+  !endif
+  !if cid isitemof $show
+   <td align=center>$scid</td>
+  !endif
+  !if tot isitemof $show
+   <td align=right>$snewcnt</td>
+   <td align=right>$ssccnt</td>
+   <td align=right>$sscsum</td>
+   <td align=right>$sdursum</td>
+  !endif
+  !if scoremean isitemof $show
+   <td align=center>-</td>
+   <td align=center>-</td>
+  !endif
+  !if partmean isitemof $show
+   <td align=center>$[rint(10*$snewcnt/$usercnt)/10]</td>
+   <td align=center>$[rint(10*$ssccnt/$usercnt)/10]</td>
+   <td align=center>$[rint(10*$sscsum/$usercnt)/10]</td>
+   <td align=center>$[rint(10*$sdursum/$usercnt)/10]</td>
+  !endif
+  !if minmax isitemof $show
+   <td align=center>-</td>
+   <td align=center>-</td>
+   <td align=center>-</td>
+   <td align=center>-</td>
+  !endif
+  !if deviat isitemof $show
+   <td align=center>-</td>
+   <td align=center>-</td>
+  !endif
+ !endif
+ <caption>
+ <b>$(name_$st) $sn.</b> $shtit
+ <small>(理论持续时间 $[rint($sdur)] 分.)</small>
+ </caption>
+ $table_end <p>
+!next ss
+

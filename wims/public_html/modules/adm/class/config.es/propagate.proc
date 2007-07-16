@@ -1,0 +1,38 @@
+!if $class_type notwordof 2 3 4
+ error=bad_context
+ !exit
+!endif
+
+propall=secure,colors,css,logo,theme
+propagate=!listintersect $propagate and $propall
+
+!if $propagate=$empty or $confirm=$empty
+ !exit
+!endif
+subclasses=!sh cd $wims_home/log/classes/$wims_class\
+	find . -type d -name '[0-9]*'
+!if $subclasses=$empty
+ !exit
+!endif
+
+propag=!replace item colors by bgcolor,bgimg,refcolor in $propagate
+propag=!replace item logo by logo,logoside in $propag
+
+!defread wimshome/log/classes/$wims_class/.def
+setup=
+!for s in $propag
+ setup=!append line !set class_$s=$(class_$s) to $setup
+!next s
+
+subclasses=!words2items $subclasses
+css=!record 0 of wimshome/log/classes/$wims_class/css
+!for s in $subclasses
+ test=!defof class_defined in wimshome/log/classes/$wims_class/$s/.def
+ !if $test=yes
+  !setdef $setup in wimshome/log/classes/$wims_class/$s/.def
+  !if css isitemof $propagate
+   !writefile wimshome/log/classes/$wims_class/$s/css $css
+  !endif
+ !endif
+!next s
+

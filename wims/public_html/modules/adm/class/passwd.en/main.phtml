@@ -1,0 +1,68 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>Change password
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Back to home page
+. <p>
+ !goto end
+!endif
+
+!form reply
+
+!if $wims_user=supervisor
+ Choose the type of the password: <ul>
+ !default job=user
+ !set ch_$job=checked
+ <li><input type=radio name=job $ch_user value=user> Your personal login
+  password.
+ !if $part!=$empty and $job=part
+  <li><input type=radio name=job $ch_part value=part> Password of the
+   participant <tt>$part</tt>. (You don't need to type the old password
+   in this case.)
+ !endif
+ <li><input type=radio name=job $ch_class value=class> Password of the class
+  (that is, the one used by participants to register themselves; you don't
+  need to type the old password).
+ </ul>
+!else
+ <input type=hidden name=job value=user>
+!endif
+<table>
+<tr><td align=right>Type the old password:
+	<td><input type=password size=16 name=old>
+<tr><td align=right>Now the new password:
+	<td><input type=password size=42 name=pw1>
+<tr><td align=right>New password once again:
+	<td><input type=password size=42 name=pw2>
+</table>
+<input type=submit value="Register the change">
+<small>For personal passwords: precede the new password with the sign `+'
+if you want to add one-time passwords.
+!href target=wims_mhelp cmd=help Detail.
+</small>
+</form>
+The password should be composed exclusively of alphanumeric characters, 
+of length between 4 and 16. 
+!if $wims_user=supervisor
+ (Empty class password is accepted by the software, but the site manager
+ may not allow unauthorized classes without class password.)
+!endif
+
+!endif
+:end
+!tail
+
+!distribute item $ into job,pw1,pw2,old
+

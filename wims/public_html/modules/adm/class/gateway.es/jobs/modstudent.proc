@@ -1,0 +1,33 @@
+!exit
+login=$student
+test=!defof user_exists in $classdir1/.users/$login
+!if $test!=yes
+ error=bad_user
+ !exit
+!endif
+
+data=!defof user_firstname,user_lastname,user_email,user_password in \
+ $classdir1/.users/$login
+
+!if $cancel!=$empty
+ !distribute items $data into firstname, lastname, email
+ !reset cancel
+ job=first
+ !changeto jobs/$job.proc
+!endif
+
+!if $confirm=$empty
+ !distribute items $data into firstname, lastname, email
+ !exit
+!endif
+
+up_supervisable=no
+new_user=no
+
+!read scripts/adduser.proc
+!read adm/gateway/mkteacherlist
+
+!if $error!=$empty
+ !exit
+!endif
+

@@ -1,0 +1,30 @@
+
+!form reply
+
+!if $vote_title=$empty
+ Ustvarjanje
+!else
+ Spreminjanje
+!endif
+anketnega vpra¹alnika.
+<br>
+Naslov: <input size=50 name=reg_title value="$vote_title"> <br>
+Naèin:
+!set reg_status=$vote_status
+!set reg_option=$vote_option
+!set reg_show=$vote_show
+!formselect reg_option list anonymous,nominative prompt anonimna,poimenska
+Status:
+!formselect reg_status from 0 to 3 prompt v pripravi, odprta, zakljuèena, skrita
+Rezultat glasovanja:
+!formselect reg_show list 1,0 prompt javen, skrit
+<br> Vsebina: <small>
+!href cmd=help [help]
+</small> <br>
+<textarea name=reg_src cols=60 rows=20>$src</textarea>
+<center>
+<input type=submit name=rEg value="Po¹lji">
+<input type=submit name=abandon value="Preklic">
+</center>
+
+!reset reg_option reg_status reg_show

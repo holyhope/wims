@@ -1,0 +1,13 @@
+
+!if $abandon!=$empty
+ job=list
+ !exit
+!endif
+
+!if $save!=$empty
+ !writefile wimshome/log/wims.conf.access $accessdef
+!endif
+
+accessdef=!record 0 of wimshome/log/wims.conf.access
+accessdef=!replace internal < by &lt; in $accessdef
+accessdef=!replace internal > by &gt; in $accessdef

@@ -1,0 +1,27 @@
+
+test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test<2 || ($test=1 and $allowtype=simulation)
+ job=score
+ !exit
+!endif
+
+!if $activeexo>0 and $replycnt<$exocnt and $confirm_end!=yes and $timeleft>100
+ !exit
+!endif
+!reset confirm_end
+
+now=!char 1 to 14 of $wims_now
+nowtime=$wims_nowseconds
+!if $allowtype!=simulation and $wims_user!=supervisor
+ !appendfile wimshome/log/classes/$wims_class/score/$wims_user.exam $exam -- 0 $nowtime 0 0 0 0
+!endif
+!sh rm -f $wims_home/log/classes/$wims_class/.parmreg/$wims_user.exam\
+ rm -fr $wims_home/$wims_sesdir*
+#!if $wims_user=supervisor
+# !readdef wimshome/log/classes/$wims_class/supervisor
+#!else
+# !readdef wimshome/log/classes/$wims_class/.users/$wims_user
+#!endif
+cutclass=!translate / to , in $wims_class
+!restart module=home&user=$wims_user,$(cutclass[1])
+

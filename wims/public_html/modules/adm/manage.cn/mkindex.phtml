@@ -1,0 +1,29 @@
+
+<center><h3>重建资源索引</h3></center>
+
+!if $atdate!=$empty
+ 资源索引重建已经列入计划任务. 
+ 你将收到包含重建结果的邮件.
+ !goto end
+!endif
+
+<b><font color=red>警告!</font></b> 重建资源索引会占用服务器资源,
+应该在服务器空闲时执行.
+<p>
+!if $lastdate!=$empty
+ :result
+最新资源索引重建的结果保存在$lastdate:
+ <p><pre>
+ $output
+ </pre>
+ <p>
+ !href cmd=reply&job2=run 点击这里
+ 开始资源索引重建 (你不能做).
+!else
+<p>
+ !href cmd=reply&job2=run 点击这里
+ 开始资源索引重建.
+!endif
+:end
+!reset job2
+

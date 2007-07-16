@@ -1,0 +1,108 @@
+
+!set wims_form_method=post
+<center>$classname
+<h3>Class data for spreadsheet
+<br></b><font size=-1>[
+!href cmd=reply direct score listing
+ ]</font></h3>
+</center> <p>
+
+!if $error!=$empty
+ !read msg.phtml
+ !if $error iswordof not_secure not_superclass
+  !exit
+ !endif
+ <p><hr> <p>
+!endif
+
+!if $outfile!=$empty
+ Here is the file <tt>
+ !getfile $outfile $outfile
+ </tt> that you can download and open with your favorite spreadsheet program.
+ <p><hr> <p>
+!endif
+
+!if $processed=yes and $error=$empty
+ !if $remark$change$added$missing$erased!=$empty or $manual=yes
+  Spreadsheet file <tt>$wims_deposit</tt> successfully processed. <ul>
+  !if $change!=$empty
+   <li>Participant informations changed: <tt>$change</tt>
+  !endif
+  !if $added!=$empty
+   <li>Added new participants: <tt>$added</tt>
+  !endif
+  !if full iswordof $remark
+   <li>Addition of new participants ignored because there is no more
+   available space.
+  !endif
+  !if noprop iswordof $remark
+   <li>Participant informations are not changed because grades are uploaded.
+  !endif
+  !if noauto iswordof $remark
+   <li>Server-computed scores (averages and worksheet/exam scores) are ignored
+   in your data because they cannot be changed.
+  !endif
+  !if $erased!=$empty
+   <li>Ignored data about erased participants:
+   <tt>$erased</tt>
+  !endif
+  !if $missing!=$empty
+   <li>The following login names do not exist in the class and cannot be
+   !if full notwordof $remark
+    added, because of unsufficient/incorrect information in the data:
+   !else
+    added (bad data, or no more space):
+   !endif
+   <tt>$missing</tt>
+  !endif
+  !if $manual=yes
+   <li>Manual grades are registered only for existing columns.
+   !href module=adm/class/grades Check manual grades
+.
+  !endif
+  </ul>
+ !else
+  No change has been found in your spreadsheet data with respect to the
+  class record.
+ !endif
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+To <input type=submit value=download>
+class data for your spreadsheet, please specify: <ul>
+<li>Format
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats help
+</small>
+<li>Columns
+<input type=text size=45 name=csvdownload value="$csvdownload">
+<small>
+!href module=$module&cmd=help&special_parm=csvfields help
+</small>
+</ul>
+</form>
+
+!if $classtype notin 13 or $typename iswordof class course
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ To <input type=submit value=upload>
+ your spreadsheet data to the class, please specify:
+ <small>
+ !href module=$module&cmd=help&special_parm=upload help
+ </small><ul>
+ <li>Data file <input type=file size=30 name=wims_deposit> <br>
+  <small>Accepted formats: .csv, .tsv, .txt
+ !href module=$module&cmd=help&special_parm=csvformats2 help
+ </small>
+ </ul>
+ </form>
+!endif
+
+

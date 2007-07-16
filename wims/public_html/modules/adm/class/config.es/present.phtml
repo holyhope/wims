@@ -1,0 +1,71 @@
+
+Configuración de la apariencia de la clase.
+
+!form reply
+<input type=hidden name=up_job value=present>
+<p>$table_header
+$table_tr<td align=right>Logo de la clase
+<small>
+!href cmd=help&special_parm=config&special_parm2=logo ayuda
+ </small>
+<td><input size=45 name=pr_logo value="$class_logo">
+$table_tr<td align=right>Posición del logo
+<small>
+!href cmd=help&special_parm=config&special_parm2=logo ayuda
+ </small>
+<td>
+!set pr_logoside=$class_logoside
+!formselect pr_logoside list left,right prompt arriba a la izquierda, arriba a la derecha
+ de las páginas iniciales.
+$table_tr<td align=right>Página inicial de los participantes
+<small>
+!href cmd=help&special_parm=config&special_parm2=homepage ayuda
+ </small>
+<td><input size=45 name=pr_homepage value="$class_homepage">
+$table_tr<td align=right>Color de fondo de las páginas
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgcolor ayuda
+ </small>
+<td><input size=10 name=pr_bgcolor value="$class_bgcolor">
+$table_tr<td align=right>Color de fondo de los menúes
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgcolor ayuda
+ </small>
+<td><input size=10 name=pr_refcolor value="$class_refcolor">
+$table_tr<td align=right>Imagen de fondo de las páginas
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgimg ayuda
+ </small>
+<td><input size=45 name=pr_bgimg value="$class_bgimg">
+$table_tr<td align=right>Tema de estilo de la clase
+<small>
+!href cmd=help&special_parm=config&special_parm2=theme ayuda
+ </small>
+<td>
+!set pr_theme=$class_theme
+!formselect pr_theme list $themelist
+$table_tr<td align=right>Hoja de estilo (css) de las páginas
+<small>
+!href cmd=help&special_parm=config&special_parm2=css ayuda
+ </small>
+<td>
+!set pr_css=$class_css
+!formselect pr_css list $csslist
+$table_tr<td align=right valign=middle>Puede definir aquí la
+hoja de estilo de la clase:
+<small>
+!href cmd=help&special_parm=config&special_parm2=css ayuda
+</small>
+<td valign=middle>
+<textarea rows=6 cols=45 name=pr_cssfile>$cssfile</textarea>
+$table_hdtr<td align=center colspan=2>
+<input type=submit name=save value=Guardar>
+&nbsp;
+<input type=submit name=abandon value=Cancelar los cambios>
+$table_end <p>
+</form>
+
+
+!reset pr_logo, pr_logoside, pr_bgcolor,\
+	pr_refcolor, pr_bgimg, pr_theme, pr_css, pr_homepage, pr_cssfile
+

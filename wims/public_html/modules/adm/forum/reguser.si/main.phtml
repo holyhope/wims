@@ -1,0 +1,131 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>
+Registracija uporabnika deske sporoèil
+</h1></center> <p><hr width=50%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $forumcnt=0
+ Na tej strani trenutno ni nobene deske sporoèil.
+ !goto end
+!endif
+
+!set forumname=<b><font color=green>$title</font></b>
+
+!if $password!=$empty and $passverify=$empty and $mailverif=$empty
+ $forumname
+ je za¹èiten forum. Registracija je mo¾na le z ustreznim geslom.
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Geslo:
+ <input type=password name=forumpass>
+ <p>
+ <input type=submit value="Po¹lji">
+ </center></form> <p>
+ <b>Opomba</b>. Geslo vam bi moral posredovati skrbnik ($supervisor) te deske sporoèil.
+ (
+ !mailurl $smail Pi¹i skrbniku
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ Da bi se registrirali za uporabo foruma $forumname,
+ vnesite zahtevane podatke.
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>Priimek <input size=20 name=lastn value="$lastn">
+  in ime <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>Uporabni¹ko ime:
+  <input size=16 name=login value="$login"> <br>
+  S tem imenom se boste prijavljali na forum.
+  Ime naj vsebuje od 4 do 16 znakov
+  (èrke ali ¹tevke).
+  <p>
+ <li>Osebno geslo:
+  <input type=password size=16 name=pass> <br>
+  geslo naj vsebuje od 4 do 16 ¹tevk ali èrk (brez ¹umnikov).
+  <p>
+ !if $mailverif=$empty
+  <li>Va¹ e-naslov (neobvezno):<br>
+ !else
+  <li>a¹ e-naslov:<br>
+ !endif
+  <input size=60 name=email value="$email">
+  <p>
+ <center><input type=submit value="Registriraj"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Pozdravljeni, $firstn $lastn!<p>
+ Ste v postopku registracije za uporabnika foruma
+ $forumname.
+ Izbrali ste si uporabni¹ko ime &nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  Va¹ e-naslov ni veljaven. <p>
+ !else
+  Va¹ e-naslov: <tt>$email</tt> <p>
+ !endif
+ Da bi preverili pravilnost osebnega gesla, ga vnesite ponovno.
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="Po¹lji geslo"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Pozdravljeni, $firstn $lastn!<p>
+ !if $mailverif=yes
+  !set mailverif=next
+  $forumname ne dovoljuje anonimne registracije, temveè zahteva identifikacijo uporabnika s pomoèjo e-naslova.
+  <p>
+  Na e-naslov, ki ste ga vnesli, je bilo poslano elektronsko sporoèilo z geslom. Odprite svojo po¹to in vpi¹ite to geslo:
+  !form reply
+  <input type=hidden name=step value=3>
+  <p><center><input size=10 name=vericode>
+  <input type=submit value=OK></form>
+  <p>
+  !href module=adm/forum/forum Prekini postopek prijave
+  </center> <p>
+  !goto end1
+ !else
+  Zdaj ste uporabnik foruma $forumname z uporabni¹kim imenom
+  ``<b><font color=green>$login</font></b>''. <p>
+  Za branje sporoèil se
+  !href module=adm/forum/forum&forum=$forum&type=authuser prijavite
+  s svojim uporabni¹kim imenom in osebnim geslom.
+  !goto end
+ !endif
+!endif
+
+:end1
+<p>
+!href module=adm/forum/forum&type=list Seznam forumov
+:end
+!tail
+
+!set step=
+

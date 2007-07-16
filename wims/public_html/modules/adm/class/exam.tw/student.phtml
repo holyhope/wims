@@ -1,0 +1,95 @@
+
+<center><h1>$wims_classname, $wims_institutionname<br>
+$title</h1>
+!if $wims_user=supervisor
+ (Presentation for participants)
+!endif
+</center> <p>
+$desc<p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Back to home page
+. <p>
+ !exit
+!endif
+
+!if $registered<0 or ($registered>0 and $timeleft<=0)
+ !changeto score.phtml
+!endif
+
+!if $exocnt=0
+ The exam is empty! Nothing is assigned in it. Possibly an 
+ error in the manipulation by your supervisor.
+!else
+ !set t_=!getscorestatus sheet=$exam exam=yes
+ Assigned works in this exam:<p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+  <p><li>$i. 
+  !if $t_=yes
+   !if $(replied$i)>0
+    $ti (done).
+   !else
+    !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+.
+   !endif
+  !else
+   $ti.
+  !endif
+ !next i
+ </ul>
+ !if $t_=no
+  This exam is actually closed for your connection.
+  !href cmd=reply&job=student Refresh this page.
+ !else
+  !if $stries=1
+   You can register score only once on this exam.
+  !else
+   You can register up to $stries scores on this exam, each registration
+   erasint the preceding ones.
+  !endif
+  !if $tryremain<=0
+   You have already made $tried score registrations, and can no longer
+   register any more score.
+  !else
+   And you can still make $tryremain registrations.
+  !endif
+  !if $registered=$empty
+   You have $sdure minutes to work on this exam. The count down will start
+   when you click on an exercise above.
+  !else
+   (Quit the class and reenter with your password if you want to abandon
+   this exam session and get a new one.)
+  !endif
+  <p>
+  !href cmd=reply&job=student Refresh this page.
+&nbsp;
+  !href cmd=reply&job=score My score.
+ !endif
+!endif
+
+!if $t_=yes
+ !if $allowtype!=simulation
+  <p><b>Warning.</b> We suggest that you temporarily put this page into your
+  bookmark, so that in the case of a browser crash during the exam, you can
+  recover your work.
+ !else
+  <p>This exam is in simulation mode. It works exactly as in a true exam, 
+  except that you cannot register the score.
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Back to the page for supervisor.
+ </center>
+!endif
+
+!tail
+
+!reset job
+

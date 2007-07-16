@@ -1,0 +1,79 @@
+!!INDEX
+!let module_author	=XIAO, Gang
+!let module_address	=xiao@unice.fr
+!let module_title   =設定  WIMS 的偏好
+!let module_description	=define preferences for wims
+!let module_version	=1.00
+!let module_wims_version=0.13
+!let module_language	=tw
+!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_category	=adm
+!let module_level	=
+!let module_domain	=adm
+!let module_keywords	=wims
+!!INDEXEND
+
+!let texsize=!char 1 of $useropts
+!let texalign=!char 2 of $useropts
+!default texsize=$[$wims_texbasesize-1]
+!default texalign=$talign
+!let useropt2=!char 3 to -1 of $useropts
+!if $useropts!=$empty and $wims_realuser!=$empty
+ !readproc adm/class/userdef classes,$wims_class,$wims_realuser
+ !setdef !set user_opts=$useropts in $userdef
+ !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
+!endif
+
+!header
+本頁讓您改變在 WIMS 伺服器上工作時的偏好設定。
+<p>
+設定偏好：
+<ul>
+ <li>內定的語言。
+  !for l=1 to 3
+   !let la=!item $l of tw,en,fr
+   !let lb=!item $l of 中文(Big 5碼),英文,法文
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src=gifs/$la.gif border=1> $lb
+   &nbsp;&nbsp;
+  !next l
+ <p><li>改變數學符號及公式的大小：利用下一行比較符號與上下文的大小。<p>
+  希臘字母 $m_alpha ，$m_pi。數學式
+  !let ins_align=middle
+  !instex $$x^3\sin(x)+{\sqrt{x^2+1}\over105}-123.45$$ 。
+  不等式
+  <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45 。</center>
+  <p>
+  您可以
+  !let ts1=!eval $texsize-1
+  !let ts2=!eval $texsize+1
+  !if $ts1<1
+	!let ts1=1
+  !endif
+  !if $ts2>9
+	!let ts2=9
+  !endif
+  !href cmd=resume&useropts=$ts1$texalign$useropt2 縮小
+  或
+  !href cmd=resume&useropts=$ts2$texalign$useropt2 放大
+  數學符號的大小以配合上下文。
+  If the expression
+  !insmath (x+y)/(x^2+y^2)
+  is
+  !if $texalign=1
+   too high with respect to the text line,
+   !href cmd=resume&useropts=$(texsize)0$useropt2 click here
+   to lower it.
+  !else
+   too low with respect to the text line,
+   !href cmd=resume&useropts=$(texsize)1$useropt2 click here
+   to raise it.
+  !endif
+
+</ul>
+當符號與文字的大小對應達到您的需求時，請將這個
+<a href="$wims_ref_name?lang=$lang&useropts=$texsize$texalign$useropt2"
+ title="WIMS">連結</a>
+放在書簽中以便在未來的連線中保持這些偏好。
+
+:end
+!tail

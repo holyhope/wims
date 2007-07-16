@@ -1,0 +1,131 @@
+
+<center><h1>$wims_classname, $wims_institutionname<br>
+$title</h1>
+!if $wims_user=supervisor
+  (Pagina pubblica del tema d'esame)
+!endif
+</center> <p>
+$desc<p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page
+. <p>
+ !exit
+!endif
+
+!if $registered<0 or ($registered>0 and $timeleft<=0)
+ !changeto score.phtml
+!endif
+
+!if $exocnt=0
+ Questo tema d'esame &egrave; vuoto! Si tratta probabilmente di un
+ errore del docente.
+!else
+ Questo tema d'esame contiene i seguenti esercizi:
+!! !href cmd=reply&job=student [ricarica la pagina]
+ !set activeexo=0
+ <p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti,de,op
+  !set de=!trim $de
+  <p><li>$i. 
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+   ($tryremain=0 and $registered!=$empty))
+   !if $(replied$i)>0
+    $ti (completato).
+   !else
+    !if $de!=$empty
+     !set dt=!examdep $exam $de
+   !else
+     !set dt=yes
+    !endif
+    !if $dt=yes
+     !advance activeexo
+    !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+.
+     !if autogen iswordof $op and $wims_exam_remain!=$empty
+      !set ss=$(wims_session)_examt$(exam)t$i
+      !set test=!defof w_cmd in wimshome/sessions/$ss/var
+      !if $test=$empty
+       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+       <img src="$test" height=1 width=1 border=0>
+      !endif
+     !endif
+    !else
+     <b><font color=red>$ti</font></b> (&Egrave; necessario
+     !href cmd=reply&job=student aver svolto con successo altri esercizi
+.)
+    !endif
+   !endif
+  !else
+   $ti.
+  !endif
+ !next i
+ </ul>
+ !if $t_=no
+  Accesso negato.
+  !href cmd=reply&job=student Riprova.
+ !else
+  !if $stries=1
+   Puoi sostenere l'esame (una sola volta).
+  !else
+   Hai un massimo di $stries possibilità per questo esame. 
+  !endif
+  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+   !if $trcut=0
+    Hai già terminato il tuo esame, con $tried tentativi.
+   !else
+    Hai gi&agrave; esaurito le tue $tried possibilità.
+   !endif
+    Non puoi pi&ugrave; migliorare il punteggio fin qui ottenuto.
+   !set exhausted=yes
+  !endif
+  !if $tryremain>0
+   Hai ancora $tryremain possibilità.
+  !endif
+  !if $registered=$empty and $exhausted!=yes
+   Hai $sdure minuti per completare questo esame. 
+   !if $allowtype!=simulation
+    Il conteggio comincia nel momento in cui selezioni uno degli esercizi
+    e il tentativo sar&agrave; conteggiato
+   !else
+    Il conteggio comincia nel momento in cui selezioni uno degli esercizi.
+   !endif
+  !else
+    !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+      ATTENZIONE: questo &egrave; l'ultimo tentativo a disposizione.
+   !endif
+  !endif
+  <p>
+  !href cmd=reply&job=student Rivisualizza la pagina.
+&nbsp;
+  !href cmd=reply&job=score Punteggio ottenuto.
+  !if $activeexo<1
+&nbsp;
+   !href cmd=reply&job=scorereg Termina
+   questa sessione d'esame (non ci sono più esercizi da svolgere).
+  !endif
+ !endif
+!endif
+
+!if $t_=yes
+ !if $allowtype=simulation
+  <p>Questa &egrave; la simulazione di un esame. A differenza del <em>vero</em>
+  esame il server non terr&agrave; alcun conto del tentativo.
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Torna alla home page del docente
+ </center>
+!endif
+
+!tail
+
+!reset job
+

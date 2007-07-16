@@ -1,0 +1,51 @@
+
+!if ~ notin $mod
+ <b>Attentie</b>. Deze module heeft een "oud type" naam :<tt>$mod</tt>".
+ Een
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod opwaardering
+ wordt aanbevolen.
+ <p>
+!endif
+
+Uw module 
+<em><font color=blue>$title</em></font> ($description)
+<small>
+!href cmd=reply&jobreq=index $mod
+</small>
+bevat de onderstaande bestanden.
+
+!set table_cellpadding=1
+!set table_cellspacing=0
+!set table_center=left
+<p>$table_header
+$table_hdtr
+<th>Naam<th>Actie</th><th>Uitleg
+ !for f in $files
+  $table_tr
+  <td align=left nowrap>$f
+  <td align=center nowrap>  
+  !href cmd=reply&jobreq=showfile&fname=$f bekijken
+  &nbsp;
+  !href cmd=reply&jobreq=edfile&fname=$f bewerken
+  &nbsp;
+  !href cmd=reply&jobreq=delfile&fname=$f verwijderen
+&nbsp;</td><td align=left>
+  !set t_=!translate . to _ in $f
+  !set t_=$($t_)
+  !default t_=--
+  $t_  
+ !next f
+$table_end
+
+!form reply
+<input type=hidden name=jobreq value=edfile>
+Voeg een nieuw bestand toe:
+<input size=20 name=fname value=$lastfname>
+<input type=submit value=OK>
+!href cmd=reply&jobreq=binfile Binaire bestanden
+&nbsp;
+!href target=wims_test module=tool/directexec&cmd=new Script tester
+</form>
+
+!reset fname
+

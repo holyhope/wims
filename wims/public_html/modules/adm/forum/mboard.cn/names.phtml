@@ -1,0 +1,25 @@
+
+!set monthnames=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月 
+!set name_wroteon=写于
+
+!distribute item <i>主题:</i> <b>,</b> into subj1,subj2
+!distribute item <hr>,<hr> into body1,body2
+
+!distribute line 按日期的信息表\
+    按线索的信息表\
+    阅读信息\
+    写新信息\
+    预览信息\
+    张贴信息\
+    配置信息板\
+    into n_list,n_thread,n_read,n_compose,n_preview,n_send,n_config
+
+!if $job=compose and $c_prec!=$empty
+ !set n_compose=写跟帖
+!endif
+
+!if $job notwordof read list
+ !set nextline=</b> <br><font size=+0>--- $(n_$job) ---</font>
+!endif
+
+!set module_title=$module_title$nextline

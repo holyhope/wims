@@ -1,0 +1,87 @@
+
+Neighboring relations with class <em><font color=blue>
+$nei_description</font></em> of
+<em><font color=blue>$nei_institution</font></em>.
+(Supervisor:
+<a href="mailto:$nei_email?subject=Class neighboring
+relations">$nei_supervisor</a>) This class
+!if $wims_class notitemof $nei_sup,$nei_part
+ has not declared yours as its neighbor.
+!else
+ accepts yours as its neighbor,
+ !if $wims_class isitemof $nei_sup and $wims_class isitemof $nei_part
+  for both supervisor and participants.
+ !else
+  !if $wims_class isitemof $nei_sup
+   for the supervisor.
+  !else
+   for participants.
+  !endif
+ !endif
+!endif
+<p>
+!form reply
+Do you accept this class as your neighbor?
+!formselect nlevel from 0 to 3 prompt No, For supervisor,\
+	For participants, For supervisor and participants
+<input type=submit value=Save> <small>[
+!href cmd=help&special_parm=neibordecl Help
+ ]</small>
+</form> <p>
+
+!if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
+   all isitemof $nei_sup,$nei_part
+ You can
+ !href cmd=reply&job2=import import resources
+ from this class.
+ <small>
+ !href cmd=help&special_parm=import Help
+ </small>
+ <p>
+!endif
+
+!if $nei isitemof $n_sup and $sharablelist!=$empty
+ !form reply
+ <input type=hidden name=changeshare value=yes>
+ Select the resources that this class is allowed to share from you:
+ !set sh=!nospace $sharablelist
+ !set sh=!replace , by , $$name_ in $$name_$sharablelist
+ !formcheckbox mksharable list $sharablelist prompt $sh
+ <input type=submit value=Change>
+ <small>[
+ !href cmd=help&special_parm=sharable help
+ ]</small>
+ </form> <p>
+!endif
+
+!if $wims_class isitemof $nei_sup and $nei isitemof $n_sup
+ !if $nsharable=$empty
+  No new sharable resources are found on this class.
+ !else
+  This class allows you to share its
+  !set names=!replace , by , $$name_ in $$name_$nsharable
+  <em>$names</em>.
+  !href cmd=reply&job2=addshare Detail
+. <small>
+  !href cmd=help&special_parm=share Help
+  </small>
+ !endif
+ <p>
+!endif
+
+!if $nei isitemof $sharing_all
+ You are sharing the following resources originating from this class:<ul>
+ !for r in $sharelist
+  !if $(sharing_$r)=$nei
+   <li><b><em>$(name_$r)</em></b>. 
+   !href cmd=reply&job2=stopshare&stoprec=$r Stop this sharing
+. <small>
+   !href cmd=help&special_parm=stopshare Help
+   </small>
+  !endif
+ !next r 
+ </ul>
+ <p>
+!endif
+
+!reset stoprec

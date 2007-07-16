@@ -1,0 +1,36 @@
+!set name_secure=Varni dostop
+!set name_colors=Barvna shema
+!set name_css=CSS stilna shema
+!set name_logo=Logo
+!set name_theme=Tema stila
+!if $wims_supertype=2
+ !set name_thisclass=portal
+ !set name_subclasses=subclasses
+!else
+ !set name_thisclass=trenutno podroèje
+ !set name_subclasses=podpodroèja
+!endif
+
+!if $confirm!=$empty and $propagate!=$empty
+ Nastavitve uspe¹no uveljavljene v $name_subclasses: <p><b>
+ !for s in $propagate
+  $(name_$s).
+ !next s
+ </b>
+!else
+ !form reply
+ Naslednje nastavitve uèilnice $name_thisclass lahko uveljavite tudi v vseh $name_subclasses: <p>
+
+ !for s in $propall
+  <input type="checkbox" name="propagate" value="$s">$(name_$s)&nbsp;
+ !next s
+ <p>
+ <input type="submit" name="confirm" value="Po¹lji">
+ </form>
+!endif
+<p>
+Please note that
+$name_subclasses will not automatically share later changes of the setups of 
+$name_thisclass. You must send the changes each time you want them to be
+effective in $name_subclasses.
+

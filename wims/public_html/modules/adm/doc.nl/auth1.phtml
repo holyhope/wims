@@ -1,0 +1,34 @@
+<center><h1>$tit</h1></center>
+
+Schrijver van dit document is
+!if $email!=$empty
+ !mailurl $email $author
+.
+!else
+ $author.
+!endif
+!if $readauth=yes
+Dit document is niet openbaar. Om het te mogen lezen, moet U eerst
+de geheime code invoeren.
+!else
+Om dit document te kunnen modificeren, moet U eerst de geheime code invoeren.
+!endif
+<p>
+!form reply
+<input type=hidden name=job value=auth2>
+!if $readauth=yes
+ <input type=hidden name=noedit value=yes>
+!endif
+<center>
+Geheime code: <input type=password size=16 name=coder>
+<input type=submit value=OK>
+</center></form>
+<p>
+!if $readauth=yes
+Als U de schrijver bent van dit document, onthoud dan goed dat U de goedkeuring
+ van de
+ !mailurl $wims_site_manager site manager\
+Maak $doc publiek toegankelijk
+ nodig hebt om het document op de server publiek te maken.
+ <p>
+!endif

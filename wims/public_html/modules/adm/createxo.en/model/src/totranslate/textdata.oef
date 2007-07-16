@@ -1,0 +1,118 @@
+type=datalist
+textarea="data words"
+
+:Questions à replys textuelles tolérantes incorporées dans un texte.
+
+Cet exercice présente des textes "à trous", chacun devant être rempli par un
+mot (voire une très courte phrase).
+<p>
+Pour construire un exercice avec ce modèle, il suffit d'entrer les textes.
+Une syntaxe facile permet de spécifier les trous et le good mot qu'il
+accepte.
+<p>
+L'analyseur de reply sait ignorer les "petites" différences dans la
+reply : absence ou ajout d'un article, majuscule/minuscule, accents,
+pluriel/singulier. Il peut aussi ne pas compter des erreurs de frappe comme
+une fausse reply. Des synonymes peuvent aussi être déclarés.
+<p>
+Author of the model: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags! (The lines starting
+with a ':'.) Otherwise the exercise might not be taken back by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Questions textuelles}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Longueur des cases à taper. Il faut prévoir les replys les plus longues.
+\integer{len=20}
+
+:Main data.
+Définir une question par ligne, et séparer les lignes
+par un point-virgule. (Donc les textes eux-memes ne peuvent pas contenir
+des point-virgules.) <p>
+The question à poser doit être mise entre une paire de 
+double-point d'interrogation "??".
+On peut poser plusieurs questions dans une même phrase (jusqu'à 6).
+Si une question accepte plusieurs replys correctes possibles, mettre
+toutes les bonnes replys (synonymes) séparées par un trait vertical '|'.
+<p>
+L'analyseur ne tient pas compte des petites différences dans la reply :
+absence ou ajout d'un article, majuscule/minuscule, accents,
+pluriel/singulier.
+$embraced_randitem
+\text{data=
+l'unité de base pour mesurer l'intensité est ??ampère??.;
+l'unité de base pour mesurer la tension est ??volt??.;
+l'unité de base pour mesurer la résistance est ??ohm??.;
+l'unité de base pour mesurer la capacité d'un condensateur est ??farad??.;
+l'unité de base pour mesurer l'inductance d'un solénoïde est ??henri??.;
+l'unité de base pour mesurer la puissance dissipée sur une composante est ??watt??.;
+l'unité de base pour mesurer la fréquence est ??hertz??.;
+
+ampère est une unité de mesure pour ??l'intensité??.;
+volt est une unité de mesure pour ??la tension|la charge??.;
+ohm est une unité de mesure pour ??la résistance??.;
+watt est une unité de mesure pour ??la puissance??.;
+
+}
+
+:Liste de mots reconnus.
+Mettez les mots reconnus dans la liste. Toute reply contenant un mot
+en dehors de cette liste sera considérée comme une erreur de frappe et
+renvoyée pour retaper. <p>
+Si ce champ est vide, toute reply non-reconnue est jugée fausse.
+\text{words=
+electricite electrique circuit composante intensite courant tension charge
+resistor resistance diode transistor condensateur capacite solenoide
+inductance puissance frequence hertz
+}
+
+:Texte affiché avant la question. Balises html admises. Peut être vide.
+$embraced_randitem
+\text{pre=En électricité,}
+
+:Texte affiché après la question. Balises html admises. Peut être vide.
+$embraced_randitem
+\text{post=}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=floor(rows(\data)/2)}
+\text{words=wims(trim \words)}
+
+\text{pre=wims(embraced randitem \pre)}
+\text{post=wims(embraced randitem \post)}
+\text{qlist=wims(makelist reply x for x=1 to \qs)}
+\steps{\qlist}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+::You don't need to modify this in general.
+
+\statement{\pre
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r \k,\len} \data[2*\k+1;]
+}
+\post
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{Champ 1}{\data[2;];\words}{type=atext}
+\answer{Champ 2}{\data[4;];\words}{type=atext}
+\answer{Champ 3}{\data[6;];\words}{type=atext}
+\answer{Champ 4}{\data[8;];\words}{type=atext}
+\answer{Champ 5}{\data[10;];\words}{type=atext}
+\answer{Champ 6}{\data[12;];\words}{type=atext}
+

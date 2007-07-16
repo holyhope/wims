@@ -1,0 +1,42 @@
+!if $wims_developer!=$empty and ..devel/ isin ..$catmodule
+ !if $reg1=success
+  L'esercizio <tt>$existing.oef</tt> del modulo
+  <tt>$catmodule</tt> è stato salvato con successo.
+ !else
+  Non è stato possibile modificare <tt>$existing</tt> del module
+  <tt>$catmodule</tt>.
+  <pre>$wims_exec_error</pre>
+ !endif
+ <p>
+ !href cmd=reply&level=3 Torna al passo precedente.
+ !exit
+!endif
+
+!if $wims_user=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+  L'esercizio &egrave; stato salvato con successo.
+ !else
+  C'e&egrave; gi&agrave; un esercizio uguale nel corso. La seconda
+  registrazione &egrave; ignorata. <p>
+ !endif
+ L'esercizio sar&agrave; visibile solo dagli studenti del corso, e solo
+ nel momento in cui verr&agrave; inserito in una 
+ verifica.
+ <p>
+ !if $wims_user!=supervisor
+  A questo punto potete
+  !href module=classes/$lang&special_parm=.nocache. Consultare l'elenco degli esercizi del corso.
+ !else
+ A questo punto potete:
+ <ul>
+ <p><li>
+ !href module=classes/$lang&special_parm=.nocache. Consultare l'elenco degli esercizi.
+ (Ed eventualmente inserirli in una verifica.)
+ <p><li>
+ !href cmd=reply&level=3 Torna al punto precedente.
+ </ul>
+ !endif
+!endif
+

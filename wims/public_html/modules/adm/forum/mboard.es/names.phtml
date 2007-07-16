@@ -1,0 +1,25 @@
+
+!set monthnames=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
+!set name_wroteon=wroteon
+
+!distribute item <i>tema:</i> <b>,</b> into subj1,subj2
+!distribute item <hr>,<hr> into body1,body2
+
+!distribute line Lista de mensajes por fecha\
+	Lista de mensajes por hilos\
+	Leer un mensaje\
+	Componer un nuevo mensaje\
+	Vista previa de su mensaje\
+	Enviar un mensaje\
+	Configurar el foro\
+	into n_list,n_thread,n_read,n_compose,n_preview,n_send,n_config
+
+!if $job=compose and $c_prec!=$empty
+ !set n_compose=Componer una contestación
+!endif
+
+!if $job notwordof read list
+ !set nextline=</b> <br><font size=+0>--- $(n_$job) ---</font>
+!endif
+
+!set module_title=$module_title$nextline

@@ -1,0 +1,171 @@
+
+!if $error!=$empty
+ !exit
+!endif
+
+!if $no_selection!=$empty
+ <b>Atención</b>. No ha seleccionado nada que recuperar.
+ <p>
+!endif
+
+!if $serial!=$wims_class and $old_testcnt>0
+ !set test=bad
+!endif
+!if $test=bad
+ <blink><font color=red><b>¡¡¡AVISO!!!</b></font></blink>
+ Ha enviado unos recursos guardados a partir de otra clase.
+ Si usted recupera recursos incompatibles en su clase, quedará inutilizable.
+ !href cmd=help&special_parm=dependencies ¿Por qué?
+ <p>
+ !href cmd=reply&job=list Deténgase
+ si no está completamente seguro de lo que está haciendo (en todo caso, 
+ guarde una copia del estado actual antes de continuar).
+ 
+ <p><hr> <p> 
+!endif
+
+!set no_restore=Imposible hacer la recuperación porque usted comparte las de otra\
+	clase. Sólo la clase que originó la participación puede efectuar la recuperación.
+
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=restore>
+Su copia de seguridad <tt>$wims_deposit</tt> contiene los recursos
+siguientes. Marque lo que quiera recuperar en su clase.
+<ul>
+ <li><input type=checkbox name=selection value=all>
+ Recuperar todo salvo la configuración de la clase y la cuenta del profesor.
+!if $new_defcnt>0
+ <li><input type=checkbox name=selection value=def>
+ Configuración de la clase.
+ <font color=red>¡Peligro!</font> <small>Ver más abajo.</small>
+!endif
+!if $new_supcnt>0
+ <li>
+ !if $sharing_sup=$empty
+  <input type=checkbox name=selection value=sup>
+ !endif
+ Cuenta del profesor (incluida su contraseña).
+ !if $sharing_sup!=$empty
+  $no_restore
+ !else
+  <font color=red>¡Peligro!</font> <small>Ver más abajo.</small>
+ !endif
+!endif
+!if $new_usercnt>0
+ <li>
+ !if $sharing_user=$empty
+  <input type=checkbox name=selection value=user>
+ !endif
+ $new_usercnt cuentas de los participantes.
+ !if $sharing_user!=$empty
+  $no_restore
+ !else
+  <small>(Cuentas existentes: $old_usercnt.)</small>
+ !endif
+!endif
+!if $new_doccnt>0
+ <li>
+ !if $sharing_doc=$empty
+  <input type=checkbox name=selection value=doc>
+ !endif
+ $new_doccnt documentos. 
+ !if $sharing_doc!=$empty
+  $no_restore
+ !else
+  <small>(Documentos existentes: $old_doccnt.)</small>
+ !endif
+!endif
+!if $new_exocnt>0
+ <li>
+ !if $sharing_exo=$empty
+  <input type=checkbox name=selection value=exo>
+ !endif
+ $new_exocnt ejercicios.
+ !if $sharing_exo!=$empty
+  $no_restore
+ !else
+  <small>(Ejercicios existentes: $old_exocnt.)</small>
+ !endif
+!endif
+!if $new_sheetcnt>0
+ <li>
+ !if $sharing_sheet=$empty
+  <input type=checkbox name=selection value=sheet>
+ !endif
+ $new_sheetcnt hojas de trabajo.
+ !if $sharing_sheet!=$empty
+  $no_restore
+ !else
+  Implica la recuperación de los ejercicios.
+  <small>(Hojas existentes: $old_sheetcnt.)</small>
+ !endif
+!endif
+!if $new_examcnt>0
+ <li>
+ !if $sharing_exam=$empty
+  <input type=checkbox name=selection value=exam>
+ !endif
+ $new_examcnt hojas de examen.
+ !if $sharing_exam!=$empty
+  $no_restore
+ !else
+  Implica la recuperación de hojas de trabajo y de ejercicios.
+  <small>(Exámenes existentes: $old_examcnt.)</small>
+ !endif
+!endif
+!if $new_forumcnt>0
+ <li>
+ !if $sharing_forum=$empty
+  <input type=checkbox name=selection value=forum>
+ !endif
+ $new_forumcnt mensajes de discusión.
+ !if $sharing_forum!=$empty
+  $no_restore
+ !else
+  <small>(Mensajes existentes: $old_forumcnt.)</small>
+ !endif
+!endif
+!if $new_scorecnt>0
+ <li><input type=checkbox name=selection value=score>
+ Registro de las actividades de los participantes y puntuaciones automáticas. Implica la
+ recuperación de cuentas de participantes.
+!endif
+!if $new_manualcnt>0
+ <li><input type=checkbox name=selection value=manual>
+ $new_manualcnt Notas introducidas por el profesor. <small>(Notas existentes:
+ $old_manualcnt.)</small>
+!endif
+</ul>
+Método de recuperación:<ul>
+<li><input type=radio name=restore value=replace checked>
+ Sustitución: sustituir los recursos existentes por los recursos recuperados.
+<li><input type=radio name=restore value=merge>
+ Fusión: sustituir los recursos existentes excepto las cuentas de los
+ participantes y los ejercicios de la clase. Para estos últimos, los que tienen 
+ los mismos nombres serán sustituidos por los datos recuperados y los restantes 
+ se mantendrán.
+</ul>
+<input type=submit value="Recuperar los recursos seleccionados">
+!href cmd=reply&job=list Suspender la recuperación
+.
+</form>
+
+<p><b>IMPORTANTE</b>. 
+1. No hay verificación de los datos que ha enviado y el sistema no
+autoriza la modificación manual de los archivos de copia de seguridad.
+Los errores introducidos por una modificación manual de los archivos
+puede ocasionar comportamientos imprevisibles en su clase.
+<p>
+2. Salvo en caso de absoluta necesidad, evite recuperar
+<font color=red>la configuración de la clase</font> y
+<font color=red>la cuenta del profesor</font>.
+Los errores en los datos enviados para estos dos campos pueden hacer
+perder por completo el control de su clase.
+<p>
+3. Puede utilizar la copia de seguridad de una clase para instalar una
+nueva. En este caso, evite recuperar los registros de la actividades y las
+notas y puntuaciones (manuales y automáticas). Estos dos tipos de recursos 
+no pueden borrarse una vez instalados (medida de seguridad). Y muchas 
+operaciones de mantenimiento de la clase son imposibles cuando la clase 
+contiene calificaciones.

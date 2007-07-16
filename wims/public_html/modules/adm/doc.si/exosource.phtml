@@ -1,0 +1,56 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ Blok <tt>$block</tt> ¹e ni ustvarjen.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Ta stran ¹e ni odprta za branje. Vrnite se kasneje.
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Ta stran je potekla in branje ni veè mogoèe.
+ <p>
+ !exit
+!endif
+
+<h3>$titb</h3>
+
+!if $sheetdata=$empty
+ <p>
+ Ta stran ne vsebuje podatkov o vaji.
+ <p>
+ !exit
+!endif
+
+Tukaj so vaje te strani v formatu za delovne liste. Lahko jih prepi¹ete in vstavite 
+!if $wims_user=supervisor
+ v izbrani delovni list izbrane uèilnice.
+!else
+ v delovni list virtualne uèilnice, za katero skrbite.
+!endif
+
+<pre>
+$sheetdata
+</pre>
+
+</div><div class=wimstail>
+<p><hr><p>
+
+<center>
+!href cmd=reply&job=read Nazaj na dokument
+</center> <p>
+

@@ -1,0 +1,82 @@
+!form reply
+<input type=hidden name=job value=$job>
+$table_header
+<caption>
+!if $form_caption!=$tmpty
+ $form_caption
+!endif
+<small>
+!if $passhow=yes
+ !href cmd=reply&passhow=no hide&nbsp;passwords
+!else
+ !href cmd=reply&passhow=yes show&nbsp;passwords
+!endif
+</small></caption>
+$table_tr<td align=right>
+$form_titlename:
+<td><input size=30 name=title value="$title">
+!if $form_level=yes
+ $table_tr<td align=right>
+ Academic level:
+ <td>
+ !set alevel=$class_level
+ !formselect alevel list $levellist prompt $levelnames
+!endif
+$table_tr<td align=right>
+Supervisor of the $form_classname<sup>
+!href cmd=help&special_parm=supervisor help
+</sup>:
+<td>
+!readproc scripts/teacherlist.proc
+!formselect sup list $tlist1 prompt $tlist2
+!if $form_prog=yes
+ $table_tr<td align=right>
+ Style of the program<sup>
+ !href cmd=help&special_parm=progopt help
+ </sup>:
+ <td>
+ !formselect progstyle1 list mandatory,optional prompt\
+	mandatory, optional
+ $table_tr<td align=right>
+ Automatic installation of courses<sup>
+ !href cmd=help&special_parm=progopt help
+</sup>:
+ <br><small>to all classes in the level</small>
+ <td>
+ !formselect progstyle2 list all,select prompt yes,no
+!endif
+!if $form_pass=yes
+ $table_tr<td align=right>
+ Registration password<sup>
+ !href cmd=help&special_parm=pass help
+</sup>:
+ !if $passhow=yes
+  <td><input type=text size=30 name=pass value="$pass">
+ !else
+  <td><input type=password size=30 name=pass value="">
+  $table_tr<td align=right>
+  Repeat registration password:
+  <td><input type=password size=30 name=pass2 value="">
+ !endif
+!endif
+$table_tr<td align=right>
+Supervisor's password<sup>
+!href cmd=help&special_parm=passs help
+</sup>:
+!if $passhow=yes
+ <td><input type=text size=30 name=passs value="$passs">
+!else
+ <td><input type=password size=30 name=passs value="">
+ $table_tr<td align=right>
+ Repeat supervisor's password:
+ <td><input type=password size=30 name=passs2 value="">
+!endif
+$table_tr<td align=center colspan=2>
+<input type=submit name=confirm value="$form_OK">
+!if $form_cancel!=$empty
+ &nbsp;
+ <input type=submit name=cancel value=$form_cancel>
+!endif
+$table_end
+</form>
+

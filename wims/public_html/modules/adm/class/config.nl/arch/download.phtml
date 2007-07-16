@@ -1,0 +1,41 @@
+
+!if $fsize=$empty
+Helaas, ik kon geen backup-archief maken van Uw klas
+ 
+ !exit
+!endif
+
+Hier is de backup file van Uw klas:
+!getfile $fname.$format $fname.$format
+ ($fsize K).
+<p>
+
+!if $fsize<50 and all isitemof $selection
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=$job2>
+!if $fsize<200
+U kunt ook een
+!else
+Deze backup-file is veel te groot om terug te sturen naar de server 
+(deze limiet is wel instelbaar door de sitemanager).
+Om de backup file grootte te reduceren kunt U ook een
+
+!endif
+
+<input type=submit value="selectieve backup maken">:
+<p>
+!set selection=$select
+!formcheckbox selection list $reclist prompt $tot
+<p>
+<b>Opmerking</b>. 
+Afhankelijk van de klas activiteiten, is het vaak erg handig
+om meerdere selectieve backups te maken van bijvoorbeeld documenten,
+forum berichten, cijfers enz.
+
+</form>
+
+

@@ -1,0 +1,174 @@
+!set wims_module_log=error: $error
+
+!if bad_secure=$error
+ Your current host does not fit your definition of secure access
+ (<tt>$secure</tt>)! This is probably an error which would make you unable
+ to control your class.
+ <p>
+ Please read attentively the documentation below. If you still don't
+ understand, leave this field empty (you will be sent temporary secret codes
+ for sensitive operations), or put the word <tt>all</tt> to disable this
+ security measure.
+ <p><hr><p>
+ !read help/hosts.phtml
+ !reset secure
+ !exit
+!endif
+
+!if no_subclass iswordof $error
+ Onder de huidige instellingen heeft U niet de bevoegdheden om <b>sub-klassen</b>
+ op te richten
+  !set restart=no
+ !exit
+!endif
+
+!if no_right iswordof $error
+Helaas, U heeft niet de rechten om virtuele klassen op te richten op deze WIMS-server.<br>
+Neem
+ !mailurl $wims_site_manager contact op met de site-manager\
+voor meer details over het oprichten van virtuele klassen
+op deze server.
+ !set restart=no
+ !exit
+!endif
+
+!if not_manager iswordof $error
+ Helaas, maar alleen systeem-beheerder (site-manager) heeft de bevoegdheden
+ om een institutionele portaal (een "digischool") op te richten.
+ !exit
+!endif
+
+!if getpass iswordof $error
+ !if $regpass!=$empty
+ Helaas, Uw wachtwoord is niet juist. Probeer het nog maar eens.
+ !else
+  !set cname=!item $cltype+1 of virtuele klassen,,een groep virtuele klassen,,\
+    een institutionele portaal	
+ Het oprichten van $cname op deze server is beschermd met een wachtwoord.
+  Vul hieronder het wachtwoord in.
+ !endif
+ <p>
+ !form reply
+  <input type=hidden name=step value=0>
+  Geef het wachtwoord: <input size=16 name=regpass type=password>
+ </form> <p>
+ Opmerking. Het wachtwoord voor het oprichten van virtuele klassen kan worden verkregen bij
+ de 
+ !mailurl $wims_site_manager systeem-beheerder\
+ van deze WIMS server.
+ !set restart=no
+ !exit
+!endif
+
+!if getid iswordof $error
+ !if $regpass$regid!=$empty
+ Helaas, uw wachtwoord is niet correct. Probeer het nog een keer.
+ !else
+ Het oprichten van virtuele klassen op deze server wordt geregeld door een
+ wachtwoord beschermd aanmeldings-systeem.
+ !endif
+ <p>
+ !form reply
+  <p><table border=0 cellspacing=5>
+  <tr><td align=right>
+ Geef de naam van uw account:</td><td><input size=20 name=regid></td>
+  </tr><tr><td align=right>
+  en het bijhorende wachtwoord:</td><td><input size=16 name=regpass type=password>
+  <input type=submit value=OK></td>
+  </tr></table>
+ </form> <p>
+ Opmerking: Schrijf naar de systeembeheerder of
+ !mailurl $wims_site_manager site-manager\
+ voor een account
+ als U virtuele klassen op deze server wilt oprichten.
+ (dus Uw klassen of zelfs uw hele school wilt laten "hosten" op deze server). 
+ !set restart=no
+ !exit
+!endif
+
+!if class_quota=$error
+ U had het recht om $r_quota1 klassen op deze server te laten hosten.
+ Het quotum is nu bereikt: er is geen plek meer voor nog een extra klas.
+ !set restart=no
+ !exit
+!endif
+
+!if has_empty=$error
+  U hebt voor het oprichten van een virtuele klas niet alle vereiste informatie ingevuld.
+  Graag aanvullen.
+ !exit
+!endif
+
+!if too_short=$error
+ Het veld ``$(name_$error_subject)'' lijkt wat te kort.
+ !exit
+!endif
+
+!if bad_date=$error
+ De vervaldatum is niet correct.
+ !exit
+!endif
+
+!if bad_email=$error
+ Uw ingevulde email adres is blijkbaar niet valide.
+ <p>
+ Denk eraan dat het oprichten van virtuele klassen op deze server alleen kan
+ slagen bij een <b>echt werkend email adres<b>.
+ !exit
+!endif
+
+!if bad_level=$error
+ Een onjuiste niveau waarde.
+ !exit
+!endif
+
+!if anti_date=$error
+ De verloopdatum van Uw klas ligt voor vandaag...uw klas is dus verlopen <b>voor</b> dat 
+  "hij" is opgericht ;-) 
+ !exit
+!endif
+
+!if existing=$error
+ De virtuele klas $classname bestaat volgens mij al op deze server...
+ !exit
+!endif
+
+!if pass_discord=$error
+ Het tweede wachtwoord komt niet overeen met het eerste wachtwoord.
+ Probeer het nog eens.
+ !exit
+!endif
+
+!if bad_pass=$error
+ Uw $(name_$error_subject) bevat niet toegestane karakters. <p>
+  Gebruik een woord met alleen cijfers en/of letters zonder accenten en zonder spaties.
+ !exit
+!endif
+
+!if bad_code=$error
+ U hebt niet de juiste toegangscode ingevuld.<br>
+ Hebt U een correct werkend email adres ingevuld?<p>
+ Dit voorval wordt opgenomen in de logfiles van deze server.
+ !exit
+!endif
+
+!if define_fail=$error or abuse=$error
+ De server was niet in staat Uw nieuwe klas op te nemen in de database.
+ Dit is -helaas- een interne fout van de software.
+ <p>
+ Gaarne dit voorval melden bij de
+ !mailurl $wims_site_manager systeem beheerder\
+Interne serverfout (oprichten van een klas)
+ Alvast bedankt!
+ !exit
+!endif
+
+!if duplicate=$error
+ U probeert een bestaande klas opnieuw op te richten...<br>
+ Hebt U op de <b>Reload</b>-knop van uw browser geklikt?
+ In elk geval: Uw klas $classname bestaat gewoon op deze server, 
+ en deze poging wordt dus genegeerd.
+ !read links.phtml
+ !exit
+!endif
+

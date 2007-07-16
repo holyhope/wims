@@ -1,0 +1,49 @@
+
+!if $votecnt<1
+ !if $wims_user!=supervisor
+  Your class has no vote yet, Please verify with your supervisor.
+  !exit
+ !else
+  Your class has no vote yet.
+ !endif
+!else
+ !if $wims_user!=supervisor
+  !if $active<1
+   There is no active vote. Please verify with your supervisor.
+   !exit
+  !endif
+ !endif
+ Here are the votes / registrations of your class.
+ <ul>
+ !for t=1 to $votecnt
+   !set l_=!record $t of $votedir/.votes
+   !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show
+   !default vote_title=No title
+   !set vcnt=!defof vcnt in $votedir/$t.votes
+   !default vcnt=0
+   !if $wims_user!=supervisor
+    !if $vote_status iswordof 1 2
+     <li>
+     !href cmd=reply&job=read&vote=$t $vote_title
+     !if $vote_show>0
+      ($(name_$vote_status), $(name_$vote_option), $vcnt votes)
+     !else
+      ($(name_$vote_status), $(name_$vote_option))
+     !endif
+    !endif
+   !else
+    <li>
+    $vote_title
+    <small>($(name_$vote_status), $(name_$vote_option), $vcnt votes)</small>
+    !href cmd=reply&job=read&vote=$t [read]
+&nbsp;
+    !href cmd=reply&job=edit&vote=$t [modify]
+   !endif
+ !next t
+ </ul>
+!endif
+
+!if $wims_user=supervisor
+ !href cmd=reply&job=creat Create a new vote / registration.
+!endif
+

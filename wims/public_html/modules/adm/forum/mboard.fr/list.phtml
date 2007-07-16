@@ -1,0 +1,53 @@
+
+!read desc.phtml
+<p>
+!if $tot<=0
+ !if $mlist!=.newlist
+  Aucun message accessible correspondant à votre requête. Désolé.
+ !else
+  Ce forum est encore vide.
+ !endif
+!else
+ !if $mlist=.newlist
+  Liste des messages récents, le plus
+ !else
+  Liste de messages pendant le mois de
+  !item $lmon of $monthnames
+  $lyear, le plus
+ !endif
+ !item $l_order of récent en premier,ancien en premier
+. <small>
+ !href cmd=reply&l_order=$[$l_order%2+1] [Renverser l'ordre]
+ !if $send_right>0
+  &nbsp;
+  !href cmd=new&forum=$forum&job=compose [Nouveau message]
+ !endif
+</small>
+ <ul>
+ !set lh=<li>
+ !if $l_order=1
+  !distribute item $tot,1,-1 into start,end,step
+ !else
+  !distribute item 1,$tot,1 into start,end,step
+ !endif
+ !for i=$start to $end step $step
+  !if $mlist=.newlist
+   !set l_=!line $i of $mnew
+   !distribute word $l_ into a_,b_
+   !set l_=!record $b_ of $forumdir/$a_/.msglist
+  !else
+   !set l_=!record $i of $forumdir/$mlist/.msglist
+  !endif
+  !read listone.phtml $l_
+ !next i
+ </ul>
+!endif
+
+<p>
+!if $mlist!=.newlist
+ !href cmd=reply&job=list&mlist=.newlist Message récents.
+ &nbsp;
+!endif
+
+!read listarch.phtml
+

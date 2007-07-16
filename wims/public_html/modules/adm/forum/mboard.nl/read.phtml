@@ -1,0 +1,59 @@
+
+!if $error!=$empty
+ <p>
+ !exit
+!endif
+
+ <center>
+ !read readref.phtml
+ !if $erased=yes
+  </center> <p>
+  Verwijderde bericht.
+  !exit
+ !endif
+ <br>Schrijf een reactie:
+ !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 quoted
+ or
+ !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 unquoted
+ </center> <p>
+ <i>
+ !if $m_email!=$empty
+  !mailurl $m_email $m_from
+  </i>
+ !else
+  $m_from</i>
+ !endif
+ !set y_=!char 1 to 4 of $m_date
+ !set m_=!char 5,6 of $m_date
+ !set d_=!char 7,8 of $m_date
+ <small>on $m_-$d_-$y_, $m_time</small>:
+ <b>$m_subject</b><small>
+
+!if $readtype=html
+ !href cmd=reply&readtype=source [ongeformateerd]
+!else
+ !href cmd=reply&readtype=html [geformateerd]
+!endif
+!if $forumuser=supervisor
+ &nbsp;
+ !href cmd=reply&job=erase [verwijderen]
+!endif
+
+ </small><hr>
+ !read $msg $readtype
+ $tag_escaper</table><font size=+0>
+
+<hr></ul></ol></dl></form> <p><center>
+!if $readtype=html
+ !href cmd=reply&readtype=source Ongeformateerd bericht
+!else
+ !href cmd=reply&readtype=html Geformateerd bericht
+!endif
+&nbsp;
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 Quoted followup
+&nbsp;
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 Unquoted followup
+<p>
+!read readref.phtml
+</center> <p>
+

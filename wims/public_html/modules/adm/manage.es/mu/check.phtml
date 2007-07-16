@@ -1,0 +1,52 @@
+!if $modifcnt+$newcnt<=0
+  <p>
+  No se ha hallado ningún anuncio de módulo que se corresponda con 
+  su búsqueda.
+  !exit
+!endif
+
+Pulse en la dirección de un módulo para comprobar/instalar/actualizarlo.
+<p>
+!if $modifcnt>0
+ $table_header
+ <caption>Se han hallado versiones nuevas&nbsp;
+ !href cmd=reply&job2=all&muauto=update actualizar todo
+ </caption>
+ $table_hdtr<th>Dirección
+ <th><small>actualizado<br>por</small>
+ <th><small>Nueva<br>versión</small>
+ <th><small>Versión del<br>servidor</small>
+ !for i=1 to $modifcnt
+  
+  !set l=!line $i of $modif
+  !distribute items $l into w_,a_,v_,t_
+  $table_tr<td>
+  !href cmd=reply&job2=one&muauto=check&mupack=$w_~$a_ $a_
+  <td align=center>$t_<td align=center>$v_
+  <td align=center>
+  !module version $a_
+  </tr>
+ !next i
+ $table_end <p>
+!endif
+
+!if $newcnt>0
+ $table_header
+ <caption>Hallados módulos nuevos &nbsp;
+ !href cmd=reply&job2=all&muauto=install instalar todos
+ </caption>
+ $table_hdtr<th>Dirección
+ <th><small>hecho público<br>por</small>
+ <th><small>Versión</small>
+ !for i=1 to $newcnt
+  
+  !set l=!line $i of $new
+  !distribute items $l into w_,a_,v_,t_
+  $table_tr<td>
+  !href cmd=reply&job2=one&muauto=check&mupack=$w_~$a_ $a_
+  <td align=center>$t_<td align=center>$v_
+  </tr>
+ !next i
+ $table_end <p>
+!endif
+

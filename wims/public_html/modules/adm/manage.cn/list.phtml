@@ -1,0 +1,57 @@
+!if yes isin $sectest
+ <b><blink><font color=red>警告!</font> 经编译后应采取安全措施.
+请以root执行bin/wrapuid!
+ </blink></b>
+ <p>
+!endif
+
+这里是可以在线执行的任务表.<ul>
+<p><li>配置:
+!set catcnt=!recordcnt conf/cat
+!for i=1 to $catcnt
+ !set l=!record $i of conf/cat
+ !distribute lines $l into x_,y_
+ !href cmd=reply&job=conf&confcat=$i $y_
+&nbsp;&nbsp;
+!next i
+
+<p><li>系统检查表:
+用于
+!href cmd=reply&job=conf&confcat=5#check 图形
+ 以及
+!href cmd=reply&job=conf&confcat=11#check 计算
+,
+!href cmd=reply&job=attrib 文件准入
+,
+!href cmd=reply&job=activ 当前服务器活动
+的支持软件.
+
+<p><li>检查/维护
+!href cmd=reply&job=class&job2=first 虚拟班级
+,
+<u>论坛</u>(规划中)
+,
+!href module=adm/doc 文件
+,
+!href cmd=reply&job=developer&job2=first 模块开发者
+及
+<u>每日信息</u>(规划中)
+.
+<p><li>
+!href cmd=reply&job=backup&job2=first 备份
+管理.
+!href cmd=reply&job=modules&job2=first 模块
+管理.
+!href cmd=reply&job=upload 上传
+资源到服务器.
+!href cmd=reply&job=update&job2=first 更新服务器软件
+.
+<p><li>
+!href cmd=reply&job=mkindex 重建资源索引
+, 在向服务器加入新资源(模块, 页面)后再执行.
+<p><li>
+!href cmd=reply&job=fs&job2= 直接管理文件
+, 保留给专家.
+</ul>
+
+!reset fsdir

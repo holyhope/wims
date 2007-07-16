@@ -1,0 +1,19 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+option=!item 1 of $option
+!if $option=$empty
+ error=missing file name
+ !exit
+!endif
+
+badchars=!text select ?*#~!@ in $option
+!if .. isin $option or $badchars!=$empty
+ error=illegal file name
+ !exit
+!endif
+
+fname=log/classes/$qclass/$option
+

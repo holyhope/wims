@@ -1,0 +1,56 @@
+!set wims_module_log=error: $error
+
+!if no_pick=$error
+ &Egrave; necessario 
+ !href cmd=resume selezionare una verifica
+ prima di cliccare su ``Salva''.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Spiacente, ma solo il docente pu&ograve; modificare una
+ verifica.
+ !exit
+!endif
+
+!if bad_class=$error
+ Strano, il corso selezionato non &egrave; valido!
+ !exit
+!endif
+
+!if no_sheet=$error
+ Questo corso interattivo contiene solo verifiche in corso in cui non 
+ &egrave;  possibile inserire un nuovo modulo modulo.
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] Creare una nuova verifica
+?
+ !exit
+!endif
+!if bad_sheet=$error
+ Il numero inserito &egrave; errato.
+ !exit
+!endif
+
+!if insert_fail=$error
+ Il server non ha potuto salvare la verifica. Verificare i 
+ dati inseriti.
+ !exit
+!endif
+
+!if too_many_exos=$error
+ La verifica $picksheet contiene gi&agrave; il massimo numero ($max_exo) di 
+ moduli possibile. Se si vuole inserire anche questo, occorre cancellarne qualcuno.
+ !exit
+!endif
+
+!if already_exist=$error
+ La verifica $test contiene gi&agrave; il modulo che volete inserire.
+ Se si vuole inserire un esercizio simile &egrave; necessario cambiare 
+ i parametri iniziali (non &egrave; possibile inserire in una
+ verifica lo stesso esercizio con gli stessi parametri 
+ iniziali. <p>
+ Se si vuole che lo stesso esercizio venga ripetuto, &egrave; sufficiente
+ aumentare punteggio richiesto.
+ !exit
+!endif
+ 
+ 

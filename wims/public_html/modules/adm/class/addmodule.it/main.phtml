@@ -1,0 +1,72 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Inserire un modulo in una verifica
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page del corso
+. <p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+ Stai per inserire l'esercizio <tt>$dir</tt>
+ !if $initparm!=$empty
+  con parametri di configurazione <tt>$iniparm</tt>
+ !endif
+. <p>
+
+ !form reply
+ Selezionare la verifica in cui si vuole inserire il modulo:
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>Verifica numero $se: $ti
+ !next i
+ </select>
+ <p>&Egrave; possibile modificare il titolo e/o la descrizione. <p>
+ !set title=!trim $title
+ !default title=Exercice
+ Titolo: <input size=50 name=title value="$title"> <p>
+ Descrizione: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>Punteggio richiesto per superare questa verifica:
+  <input size=4 name=require value="$require"> <small>(un esercizio
+  completato correttamente assegna 10 punti; se si richiedono pi&ugrave; di 
+  10 punti si fa ripetere l'esercizio.)</small> <p>
+  Peso dei punti ottenuti per questa verifica (per il calcolo della media):
+  <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="Salva"></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ Il modulo ``<tt>$title</tt>'' &egrave; stato inserito nella verifica numero
+ $picksheet del corso virtuale. &Egrave; possibile
+ !href module=adm/class/sheet&sheet=$picksheet provarla
+.
+!endif
+
+:end
+!tail
+
+!set job=
+

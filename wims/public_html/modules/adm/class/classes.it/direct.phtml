@@ -1,0 +1,29 @@
+
+!if $directcnt>0
+ Puoi passare direttamente a:<ul>
+ !for cl in $directlist
+  !distribute words $cl into c_,u_
+  !set n_=!defof class_institution, class_description in\
+	wimshome/log/classes/$c_/.def
+  <li>
+  !if $u_=supervisor
+   !set t_=supervisor
+  !else
+   !set t_=$type
+  !endif
+  !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
+  (<tt>$u_</tt>)
+ !next cl
+ </ul>
+ <p><hr> <p>
+ !if $wims_user=supervisor
+  O scegli $name_level_else $sousclasses_else nella tabella.
+ !endif
+!else
+ !if $wims_user=supervisor
+  Puoi passare direttamente a $name_level_else $sousclasses_else nella tabella seguente
+ !else
+  Non puoi accedere a nessun altro corso.
+ !endif
+!endif
+

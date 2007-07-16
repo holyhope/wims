@@ -1,0 +1,22 @@
+
+!if $send_right>0
+ !href cmd=new&forum=$forum&job=compose 写新信息
+.
+!endif
+!if $is_owner=yes
+ &nbsp;
+ !href cmd=reply&job=config 配置信息板
+!endif
+
+!if $archlist=$empty or $mlist=$archlist
+ !exit
+!endif
+
+<p>每月存档:
+
+!for i in $archlist
+ !href cmd=reply&job=list&mlist=$i $i
+ &nbsp;
+!next i
+<p>
+

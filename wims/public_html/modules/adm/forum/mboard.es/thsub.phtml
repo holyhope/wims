@@ -1,0 +1,20 @@
+
+!set start_$level=$wims_read_parm
+!set f_$level=$(F_$(start_$level))
+
+<ul>
+!for i_ in $(f_$level)
+ !set l_=!line $i_ of $thcomp
+ !distribute word $l_ into a_,b_
+ !set l_=!record $b_ of $forumdir/$a_/.msglist
+ !read listone.phtml $l_
+ !if $(F_$i_)!=$empty
+  !set i_$level=$i_
+  !advance $level
+  !read thsub.phtml $i_
+  !set level=$[$level-1]
+  !set i_=$(i_$level)
+ !endif
+!next i_$level
+</ul>
+

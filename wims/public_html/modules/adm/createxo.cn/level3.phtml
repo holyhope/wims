@@ -1,0 +1,52 @@
+
+软件已经成功地记录下你的练习, 其有关信息如下: (请注意核对)
+<table bgcolor=#d0d0d0>
+<tr><td align=right>标题<td><td>$title
+<tr><td align=right>已定义的参数个数<td><td>$varcnt
+<tr><td align=right>自由格式回答数<td><td>$replycnt
+<tr><td align=right>多重选择数<td><td>$choicecnt
+</table>
+<ul><li>
+现在你可以
+!href cmd=resume&realtest=yes&retest=again 测试你的练习
+. <p><li>
+如果你要修改它,
+!href cmd=reply&level=2 返回菜单
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+或修改源文件, 那么
+ <input type=submit value="再次发送">:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ !href cmd=reply&level=1&mode=normal 返回初始菜单
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>你也可以
+ !href cmd=reply&level=6 发送一个图形文件
+到练习.
+!endif
+!if $wims_user!=$empty
+ <p><li>
+ 如果正确无误, 你可以
+ !if $existing!=$empty
+  将此练习放入班级,
+  !href cmd=reply&level=4 替换旧练习
+  或者
+  !href cmd=reply&level=4&newone=1 作为新练习
+ !else
+  !href cmd=reply&level=4 将此练习放入你的班级
+ !endif
+.
+!endif
+!if $mode!=file
+ <p><li>
+ 最后请别忘记
+ !getfile submit.oef 保存练习的源码!
+!endif
+</ul>

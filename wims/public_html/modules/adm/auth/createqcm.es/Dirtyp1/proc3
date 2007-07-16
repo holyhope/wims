@@ -1,0 +1,47 @@
+!!! fichier de traitement des données de l'exo de type 1 !!!
+
+## l'étape 3
+!if $navig!=$etape
+  etape=$navig
+  !exit
+!endif
+
+!if $propsrep=$empty
+  exalert=$(alerts[1;])
+  !exit
+!endif
+
+errnp=!itemcnt $propsrep  
+
+!if ($[$propsnb+1] isitemof $propsrep) and $errnp>1
+  exalert=$(alerts[5;])
+   propsrep=
+   !exit
+!endif
+
+propsrep=!sort numeric item $propsrep
+chronobs=$[$chronobs+1]
+rpmat=!append line $propsrep to $rpmat
+  
+!if $propsrepList!=$empty
+  propsrepList=!replace line number $chronobs by $propsrep in $propsrepList
+!endif
+  
+!if $chronobs=$obsnb
+  etape=$[$etape+1]
+  propsrepList=$rpmat
+  rpmat=
+  
+  !if $foncsrecord!=$empty
+    foncsList=
+    pn=!linecnt $foncsrecord
+    !for i=1 to $pn
+      foncsList=!append line ($(foncsrecord[$i;])), to $foncsList
+    !next i
+    foncsList=!replace line number $pn by ($(foncsrecord[$pn;])) in $foncsList
+  !endif 
+!endif
+  
+propsrep=
+!exit
+

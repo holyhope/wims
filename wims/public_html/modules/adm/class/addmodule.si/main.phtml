@@ -1,0 +1,67 @@
+<html><head> $wims_html_header </head> <body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Vstavite modul v delovni list
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Vrnitev na domaèo stran
+. <p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+ ®elite vstaviti element <tt>$dir</tt>
+ !if $initparm!=$empty
+  z zaèetnimi parametri <tt>$iniparm</tt>
+ !endif
+. <p>
+
+ !form reply
+ Izberite delovni list, v katerega ¾elite vstaviti izbrani element:
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>Delovni list $se: $ti
+ !next i
+ </select>
+ <p>Spremenite lahko tudi ime in opis elementa. <p>
+ !set title=!trim $title
+ !default title=Vaja
+ Ime: <input size=50 name=title value="$title"> <p>
+ Opis: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>©tevilo toèk, ki jih zahtevate od uporabnika pri tej vaji:
+  <input size=4 name=require value="$require"> <small>(popolnoma pravilna re¹itev prinese 10 toèk, zato zahtevajte veè kot 10 toèk, èe ¾elite, da uporabnik vajo veèkrat ponovi).</small> <p>
+  Ute¾ za toèke, pridobljene pri tej vaji (za izraèun povpreèij):
+  <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="Insert"></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ Element ``<tt>$title</tt>'' je bil uspe¹no vstavljen v delovni list $picksheet va¹e uèilnice.
+ !href module=adm/class/sheet&sheet=$picksheet Preglej delovni list
+.
+!endif
+
+:end
+!tail
+
+!set job=
+

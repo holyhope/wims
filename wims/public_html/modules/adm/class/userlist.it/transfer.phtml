@@ -1,0 +1,74 @@
+<center>$classname<p>
+
+<h3>Trasferisci l'attività di
+ !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ (<tt>$getuser</tt>)
+</h3> </center> <p>
+
+!if $error=no_reccourse
+ <b>Errore</b>. Questo studente non è registrato in altri corsi coordinati e
+ non è possibile trasferire i dati
+ !defof class_description in wimshome/log/classes/$transferclass/.def
+.
+ <p>
+ !exit
+!endif
+
+!if $ttype=show
+ !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
+ !if $transferclass notitemof $tr_list or $i=$empty
+  <b>Errore</b> di codice corso. Wrong manoeuvre or bug of the
+  software?
+  !exit
+ !else
+  Dettaglio dell'attività in $i (massimo 1000 righe).
+  <p><hr>
+  <small><pre>
+  !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
+  </pre></small><hr><p><center>
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass Unisci
+&nbsp;
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass Sostituisci
+&nbsp;
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser Annulla
+  </center>
+  !goto endd
+ !endif
+!endif
+
+Questi sono i corsi in cui lo studente ha svolto attività. Clicca su
+una opzione per trasferirla a questo
+!if $tr_typename=course
+ corso coordinato.
+!else
+ corso.
+!endif
+
+$table_header
+$table_hdtr<th>Corso</th>
+<th>Azione</th></tr>
+!for c in $tr_list
+ $table_tr
+ <td>
+ !defof class_description in wimshome/log/classes/$c/.def
+ <td>
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Unisci
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Sostituisci
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c Verifica
+!next c
+$table_end
+
+<b>Note</b>. <ol>
+<li>"Unisci" significa che sono unite le attività dei due corsi.
+<li>"Sostituisci" significa che le attività dell'altro corso sostiuiscono 
+quelle registrate per questo (questo è possibile sole se le prime non sono
+vuote).
+<li>I punteggi d'esame e le attività che non danno luogo a punteggio sono 
+sempre unite.
+<li>La registrazione di dettagli degli esercizi non sono trasferiti.
+<li>Dopo aver effettuato il trasferimento (sia come "Unisci" che come 
+"Sostituisci"), i dati dello studente nell'altro corso sono azzerati.
+</ol>
+

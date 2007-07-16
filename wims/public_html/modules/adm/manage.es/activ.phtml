@@ -1,0 +1,64 @@
+
+<center><h3>Actividades actuales del servidor</h3></center>
+
+<p>Hora del servidor: $nowtime.
+!if $load15!=$empty
+ Media de carga: $load1% (último minuto), $load5% (últimos 5 minutos),
+ $load15% (últimos 15 minutos).
+!endif
+<p>$table_header
+<caption>Número de peticiones</caption>
+$table_hdtr
+<th>últimos 10 min</th>
+<th>últimos 30 min</th>
+<th>última hora</th>
+<th>últimas 3 horas</th></tr>
+$table_tr
+<td align=center>$access10m</td>
+<td align=center>$access30m</td>
+<td align=center>$access1h</td>
+<td align=center>$access3h</td></tr>
+$table_end
+
+<p><a name=sessions>
+$table_header
+<caption>Sesiones activas en los últimos 10 minutos
+<small>[
+!href cmd=reply#sessions refrescar
+ ]</small>
+</caption>
+$table_hdtr<th>#</th>
+<th>Sesión</th><th>IP del cliente</th>
+<th>Peticiones</th>
+<th>Módulo</th><th>Clase</th></tr>
+!set n=!linecnt $ses
+!set k=1
+!for i=1 to $n
+ !set l=!line $i of $ses
+ !distribute words $l into r_,s_,i_,m_,c_
+ !if o notin $s_ and - notin $s_
+  $table_tr
+  <td align=right>$k</td>
+  <td><small><tt>
+  !set v_=!charcnt $s_
+  !if $v_>6
+   !href cmd=reply&job=sess&checkses=$s_ $s_
+  !else
+   $s_
+  !endif
+</tt></small></td>
+  <td><tt>$i_</tt></td>
+  <td align=center>$r_</td>
+  <td>$m_</td>
+  !if , isin $c_
+   <td>$c_</td>
+  !else
+   <td>--</td>
+  !endif
+  </tr>
+  !advance k
+ !endif
+!next i
+$table_end <p>
+
+

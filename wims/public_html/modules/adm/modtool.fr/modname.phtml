@@ -1,0 +1,57 @@
+
+<p>
+!if $totalcnt>0
+ !if $totalcnt>=$sellist
+  Vous avez $totalcnt modules en développement.
+  !href cmd=reply&jobreq=prop <small>Propriétés de mon compte</small>
+  <p>
+  !form reply
+  Ne montrer que les modules dont l'adresse contient
+  <input type=text size=30 name=selectshow value="$selectshow">
+  <input type=submit value=OK>
+  !href cmd=help&special_parm=regex <sup>aide</sup>
+  </form> <p>
+ !endif
+ $table_header
+ <caption>Cliquez sur le titre d'un module pour y travailler.
+ !if $totalcnt>=$maxlist and $existcnt>=$maxlist
+  <br>(liste limitée à $maxlist modules)
+ !endif
+ </caption>
+ $table_hdtr<th>Adresse<th>Titre<th>Action<th>Description
+ </tr>
+ !for n in $existing
+  !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
+  $table_tr<td><small>
+  !replace internal ~ by ~ $ in $n $
+  !if ~ notin $n
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [renommer]
+  !endif
+  </small></td><td>
+  !href cmd=reply&jobreq=flist&modreq=$n $title
+  <td align=center><small>
+  !href cmd=reply&jobreq=index&modreq=$n propriétés
+
+  !href cmd=reply&jobreq=del&modreq=$n effacer
+  </small></td><td><small>$description</small></td>
+  </td></tr>
+ !next n
+ $table_end <p>
+ !href cmd=reply&jobreq=create Créer un nouveau module
+.&nbsp;
+ !href cmd=reply&jobreq=restore Restaurer un fichier de sauvegarde
+.&nbsp;
+ !href cmd=new&module=adm/quicktool Utiliser Quicktool
+.&nbsp;
+!href cmd=new&module=adm/latex2wims Utiliser Latex2wims
+.
+!else
+ Vous n'avez pas encore de module en développement. Veuillez
+ !href cmd=reply&jobreq=create cliquer ici
+ pour en créer un, ou
+ !href cmd=reply&jobreq=restore restaurer un fichier de sauvegarde
+.
+!endif
+
+!reset target target1 target2 target3 target4 selectshow
+

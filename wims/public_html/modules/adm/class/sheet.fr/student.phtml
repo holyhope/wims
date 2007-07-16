@@ -1,0 +1,37 @@
+
+<hr width=1>
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Feuille de travail numéro $sheet<br>$title</h1>
+(Présentation pour participants)
+</center> <p>
+$desc<p>
+
+!if $exocnt=0
+ Cette feuille est vide! Il n'y a rien  pour vous dedans. Peut-être
+ une erreur de manipulation de votre enseignant.
+!else
+ Devoir dans cette feuille :<p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $re>0
+   <small>0 des $[$re] points obtenus, qualité
+   0/10. </small>
+  !endif
+ !next i
+ </ul>
+!endif
+<p>
+!homeref
+<p><hr> <p>
+<center>
+!href cmd=resume Retourner à la page pour enseignant.
+</center>
+
+</body></html>
+
+!set job=
+

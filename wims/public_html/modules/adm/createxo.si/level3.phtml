@@ -1,0 +1,57 @@
+
+Stre¾nik je sprejel va¹o vajo, v kateri je razpoznal naslednje podatke: (preverite, èe se ujemajo z naèrtovanimi)
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Naslov<td><td>$title
+<tr><td align=right>©tevilo parametrov<td><td>$varcnt
+<tr><td align=right>©tevilo prostih odgovorov<td><td>$replycnt
+<tr><td align=right>©tevilo odgovorov izbirnega tipa<td><td>$choicecnt
+</table>
+<ul><li>
+Zdaj lahko
+!href cmd=resume&realtest=yes&retest=again preizkusite vajo
+.
+!if $mode!=file
+<p><li>
+Èe jo ¾elite spremeniti, pojdite
+!href cmd=reply&level=2 nazaj v meni
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ ali pa spremenite datoteko s kodo in jo ponovno
+ <input type=submit value="po¹ljite">:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ !href cmd=reply&level=1&mode=normal Nazaj na zaèetni meni
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>Vajo lahko opremite tudi s
+ !href cmd=reply&level=6 slikovno datoteko
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>
+ Èe je vaja brezhibno pripravljena, jo lahko
+ !if $existing!=$empty
+  namestite v svoji uèilnici, tako da 
+  !href cmd=reply&level=4 nadomestite staro
+  ali pa kot
+  !href cmd=reply&level=4&newone=1 novo vajo
+ !else
+  !href cmd=reply&level=4 namestite v svoji uèilnici
+ !endif
+.
+!endif
+!if $mode!=file
+ <p><li>
+ Ne pozabite si
+ !getfile submit.oef shraniti kode
+ pravkar ustvarjene vaje!
+!endif
+</ul>
+
+

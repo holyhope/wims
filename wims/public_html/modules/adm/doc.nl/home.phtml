@@ -1,0 +1,64 @@
+<center><h1>$module_title</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $doccnt<1
+ !if $wims_class!=$empty and $wims_user!=supervisor
+Helaas, je klas heeft nog geen documenten.
+ !else
+  !if $authoring=$empty
+  Helaas, er is geen publiek document op deze server beschikbaar.
+  !else
+  Helaas, er zijn geen documenten bekend van deze schrijver.
+  !endif
+ !endif
+!else
+ !if $ii>0
+  !read scripts/table.phtml
+ !else
+  !if $wims_class!=$empty
+  Hier zijn de WIMS documenten van je klas
+  !else
+  Hier zijn de voor jou beschikbare documenten op deze server.
+ 
+  !endif
+  <ul>
+  !for t=1 to $doccnt
+   !set s_=!line $t of $slist
+   !set t_=!line $t of $tlist
+   !set a_=!line $t of $alist
+   !set t_=!trim $t_
+   !default t_=No title
+   <li>
+   !href cmd=reply&job=read&doc=$s_&block=main $t_
+   !if $wims_ismanager=2
+    &nbsp;
+    !href cmd=reply&job=erase&doc=$s_ Wissen
+&nbsp;
+   !endif
+   <small>by $a_</small>
+  !next t
+  </ul>
+ !endif
+!endif
+
+!if $wims_class=$empty and $wims_ismanager<2
+ !form reply
+ Voor Uw eigen documenten, geef de naam van de schrijver:
+ <input size=20 name=authoring value="$authoring">
+ <input type=submit value=OK>
+ </form> <p>
+!endif
+
+!if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
+ !href cmd=reply&job=creat Maak een nieuw document
+, or
+ !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd bewerk een draft document
+. <p>
+!endif
+
+!tail
+

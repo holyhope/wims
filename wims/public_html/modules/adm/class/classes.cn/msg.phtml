@@ -1,0 +1,24 @@
+!set wims_module_log=ERROR $error
+
+<b>错误</b>.
+
+!if $error=bad_password
+ 密码不被认可. 请过几秒后再试一次.
+ <form action=# name=chrono>
+ <b><blink>注意</blink></b>! 不到 5 秒钟内输入的任何密码均不予考虑!
+ <input size=1 name=clock> </form>
+ !exit
+!endif
+
+!if $error=in_exam
+ 你在参加考试时不能改变班级.
+ !exit
+!endif
+
+!if $error=recent_rafale
+ 由于不正常的活动, 此帐号将闭锁 10 分钟.
+ !exit
+!endif
+
+!msg $error
+

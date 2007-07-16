@@ -1,0 +1,216 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+!if $job!=$empty and $job!=sheets
+ !read $job.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>Lista de los participantes
+ </b><font size=-1>[
+!href cmd=reply&job=csv datos de hoja de cálculo
+ ]</font>
+</h1></center>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Volver a la página principal
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+ Esta clase no tiene ningún participante aún.
+ [
+ !href module=adm/class/reguser&step=1 Añadir un participante
+ ]
+!else
+ <center>
+ !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
+ !set deleted=!trim $deleted
+ [
+ !href module=adm/class/reguser&step=1 Añadir un participante
+ ]
+ !if $deleted!=$empty
+  &nbsp;[
+  !href cmd=reply&job=recover Participantes dados de baja
+  ]
+ !endif
+ </center>
+ <p>$table_header
+ <caption>Notas calculadas sobre un máximo de $scoremax</caption>
+ !if $manual>0
+  $table_hdtr<th rowspan=2>Apellidos, nombre</th>
+  <th colspan=3>Media</th>
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th rowspan=2><small>examen $k</small></th>
+   !else
+    <th rowspan=2><small>hoja de trabajo $j</small></th>
+   !endif
+  !next j
+  $table_hdtr<th><small>global<th><small>prof.<th><small>auto
+ !else
+  $table_hdtr<th>Apellidos, nombre</th>
+  <th>Media</th>
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th><small>examen $k</small></th>
+   !else
+    <th><small>hoja de trabajo $j</small></th>
+   !endif
+  !next j
+ !endif
+ !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
+ !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
+ !for i=1 to $usercnt
+  !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  !set UU=!hex $uu
+  $table_tr<td>
+  !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
+  !read userscore
+  !if $manual>0
+   !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
+   <td align=center>$glob</td>
+   <td align=center>$(manual_$UU)</td>
+   <td align=center>$per</td>
+   !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
+   !if $glob>0
+    !advance cnt_glob
+    !if $(manual_$UU)>0
+     !advance cnt_tea
+    !endif
+    !if $per>0
+     !advance cnt_auto
+    !endif
+   !endif
+  !else
+   <td align=center>$per</td>
+   !if $per>0
+    !advance cnt_auto
+    !advance cnt_glob
+   !endif
+  !endif
+  !set mean_auto=$[$mean_auto+$per]
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    !set p_=$[rint(10*$scoremax*$(es_$k))/100]
+    <td align=center> $p_</td>
+   !else
+    !set p_=!line $j of $percents
+    !distribute words $p_ into p1,p2
+    !if $p2!=$empty
+     !distribute item $[$p1/100],$[$p2/10] into x_,y_
+     !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+    !else
+     !set p_=0
+    !endif
+    <td align=center>$p_</td>
+   !endif
+   !set per_$j=$[$(per_$j)+$p_]
+   !if $p_>0
+    !advance cnt_$j
+   !endif
+  !next j
+ !next i
+ !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
+	$[rint(100*$mean_tea/$usercnt)/100],\
+	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
+ $table_hdtr<td align=center><b>Media de la clase</b></td>
+ !if $manual>0
+  <td align=center>$m_glob</td>
+  <td align=center>$m_tea</td>
+  <td align=center>$m_auto</td>
+ !else
+  <td align=center>$m_auto</td>
+ !endif
+ !for j in $showsheet
+  <td align=center>$[rint(100*$(per_$j)/max(1,$usercnt))/100]</td>
+ !next j
+ !if $cnt_glob>0
+  !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
+	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
+	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
+  $table_hdtr<td align=center><b>Media de las notas positivas</b></td>
+  !if $manual>0
+   <td align=center>$m_glob</td>
+   <td align=center>$m_tea</td>
+   <td align=center>$m_auto</td>
+  !else
+   <td align=center>$m_auto</td>
+  !endif
+  !for j in $showsheet
+   <td align=center>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]</td>
+  !next j
+ !endif
+ $table_end
+ <p>Pulse sobre un nombre para ver los detalles de su trabajo.
+ !href cmd=reply&job=formula&formula=prep Cambiar los niveles de severidad
+.
+ !href module=adm/class/grades Notas asignadas manualmente
+.
+ !href module=adm/class/stat Estadísticas de actividad
+.
+ !if $activecnt>1
+  <p>
+  !form reply
+  <input type=hidden name=job value=sheets>
+  !set wims_formselect_switch=multiple size=$[min($activecnt,6)]
+  <table border=0>
+  <tr><td>Seleccione las hojas de las que<br>
+  mostrar las medias por hoja:
+  <td>&nbsp;&nbsp;
+  !reset tmp
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !set ti=!item 3 of $sh
+   !set tmp=!append item $se: $ti to $tmp
+  !next i
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set tmp=!append item Examen $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  <td><input type=submit value="Mostrar"></table>
+  </form>
+ !endif
+!endif (usercnt=0?)
+!if $manual>0
+ <b>Explicaciones.</b> En las columnas de `media', `auto' se refiere a la media
+ de las notas calculadas a partir de las puntuaciones obtenidas en las hojas de
+ trabajo; `prof.' se refiere a la media de las notas asignadas manualmente por
+ el profesor, y la media `global' se calcula a partir de las otras dos, mediante
+ la fórmula
+ <p><center>
+  global = $[$manual/100]*prof. + $[1-$manual/100]*auto.
+ </center> <p>
+!endif
+
+:end
+!tail
+
+!reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,\
+	passcheck
+

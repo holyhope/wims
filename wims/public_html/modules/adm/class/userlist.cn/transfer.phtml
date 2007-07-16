@@ -1,0 +1,68 @@
+<center>$classname<p>
+
+<h3>
+ !href cmd=reply&job=getuser&getuser=$getuser $lastname $firstname
+的活动转移 (<tt>$getuser</tt>)
+</h3> </center> <p>
+
+!if $error=no_reccourse
+ <b>错误</b>. 参加者没有在当前班级里注册过要从
+ !defof class_description in wimshome/log/classes/$transferclass/.def
+转移的课程.
+ <p>
+ !exit
+!endif
+
+!if $ttype=show
+ !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
+ !if $transferclass notitemof $tr_list or $i=$empty
+  <b>错误</b> 班级名称错. 操作错误或软件漏洞?
+  !exit
+ !else
+第 $i 行的活动详情 (限1000行).
+  <p><hr>
+  <small><pre>
+  !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
+  </pre></small><hr><p><center>
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass 合并
+&nbsp;
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass 替换
+&nbsp;
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser 取消
+  </center>
+  !goto endd
+ !endif
+!endif
+
+这里是参加者有活动的其它课程. 点击一个动作以转移到此
+!if $tr_typename=course
+课程.
+!else
+班级.
+!endif
+
+$table_header
+$table_hdtr<th>Course</th>
+<th>动作</th></tr>
+!for c in $tr_list
+ $table_tr
+ <td>
+ !defof class_description in wimshome/log/classes/$c/.def
+ <td>
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c 合并
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c 替换
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c 检查
+!next c
+$table_end
+
+:endd
+<b>说明</b>. <ol>
+<li>"合并"意为把两个课程的活动放在一起.
+<li>"替换"意为其它课程的活动将替代此课程的活动. 仅当前者非空时才发生.
+<li>考试记录以及不计分的活动总是被合并的.
+<li>练习或考试的详情记录不被转移.
+<li>在合并或替换后, 参加者在其它课程的记录将被清除.
+</ol>
+

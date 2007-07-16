@@ -1,0 +1,251 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS 位于 $httpd_HTTP_HOST
+<p>
+创建$name_classess
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ !if $restart!=no
+ <p>
+ !href module=$module&cmd=reply&step=0 重新操作.
+ !endif
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=pre
+ 选择你要创建的虚拟班级的类型.
+ <p>
+ !href cmd=reply&step=0&cltype=0 独立班级
+ 以管理一群学生的工作.
+ <p>
+ !if $regpolicy=file
+  !set noright=(你没有权限做这件事.)
+ !else
+  !set noright=(只有网站管理员才能做这件事.)
+ !endif
+ !if 2 isitemof $alltypes
+一组班级的
+ !href cmd=reply&step=0&cltype=2 入口
+.
+ !else
+一组班级的
+ <font color=blue><strike>入口</strike></font>
+. $noright
+ !endif
+ <p>
+ !if 4 isitemof $alltypes
+一个学校的
+  !href cmd=reply&step=0&cltype=4 入口
+.
+ !else
+一个学校的
+ <font color=blue><strike>入口</strike></font>
+. $noright
+ !endif
+ <p>
+ <b>帮助</b>. 具有同一入口的一组班级使得教师可以交换或共享教材,
+学生也可从一个班跳到另一个班, 不需重新输入密码.
+ <p>
+学校是一个多层次的虚拟班级系统, 它能满足整个学校的需求:
+师生数据库, 不同的年级, 教学计划和课程, 学生班级, 负责教师等等.
+ !goto end
+!endif
+
+!if $step=0
+ !if $Cltype<2
+   <font color="blue">班级</font>
+ 的创建是由<font color="blue">教师</font>操作的. 
+ !else
+    <font color="blue">$name_classe</font>
+的创建是由<font color="blue">主持教师</font>操作的. 
+ !endif
+你需要有一个有效的电子邮件地址才能完成此操作.
+ 在你创建了你的$name_classe后, 你应该负起维护的责任. <p>
+ 为了创建你的$name_classe, 请提供以下信息.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>学校名称 (至多$instlim个字符):
+ !if $Cltype isin 13
+  !default institution=$wims_institutionname
+ !endif
+  <input size=$instlim name=institution value="$institution"> <p>
+ <li>$name_classesss名 (至多$desclim个字符):
+  <input size=$desclim name=description value="$description"> <p>
+ !if $Cltype notin 24
+ <li>$name_classesss的程度:<br>
+  <center><table border=1>
+  <tr><th>年级
+  !for j=1 to 6
+   <td align=center>$j</td>
+  !next j
+  </tr>
+  !for i in E,H,U
+   <tr><td align=center>$(lev_$i)</td>
+   !for j=1 to 6
+    !if $i!=U or $j<6
+     <td><input type=radio name=level
+     !if $level=$i$j
+      checked
+     !endif
+     value=$i$j></td>
+    !else
+     <td>.</td>
+    !endif
+   !next j
+  !next i
+  </tr></table></center> <p>
+ !endif
+ <li>$name_classesss的$name_sup的全名 (就是你自己):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>电邮地址:
+  <input size=$emaillim name=email value="$email">
+  !if $regpolicy=email
+   <br>(只有你的电邮地址现在就有效, $name_classesss的创建工作才能成功.)
+  !endif
+  <p>
+ <li>选择$name_sup的密码:
+  <input size=16 type=password name=passsup> <br>
+  (4 至 16 个字符, 可以是数字或字母). <br>
+  <small>此密码使你能作为它的$name_sup进入$name_classe.
+  只有你一个人能知道此密码.</small> <p>
+ <li>选择$name_classesss的密码 (可选的):
+  <input size=16 type=password name=password> <br>
+  (4 至 16 个字符, 可以是数字或字母). <br>
+  <small>$name_classesss的密码是用于注册
+    !if $Cltype<2
+班级的参加者的; 因此可以分发给你的学生.
+    !else
+$name_classesss的教师的; 你不能告诉你的学生.
+ !endif
+ <br>
+  任何人都能进入没有密码的$name_classe, 而网站管理员是不允许这样做的.</small> <p>
+ <li>失效日期
+  <select name=exp_day>
+  !for i=1 to 31
+   <option value=$i
+   !ifval $i=$exp_day
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <select name=exp_month>
+  !for i=1 to 12
+   <option value=$i
+   !ifval $i=$exp_month
+    selected
+   !endif
+   >
+   !item $i of $months
+  !next i
+  </select> <select name=exp_year>
+  !for i=$thisyear to $thisyear+1
+   <option value=$i
+   !ifval $i=$exp_year
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <p>
+ <li>$name_classe参加者人数上限:
+  <input size=3 name=limit value="$limit">
+  (最多$wims_class_user_limit.) <p>
+ <li>$name_sup的安全进入:
+  <input size=30 name=secure value="$secure"> <br>
+  <small>你对$name_classe施行敏感操作的主机名.
+  !if $Cltype<3
+    可选的.
+  !endif 
+  </small> <p>
+ </ul>
+ <center><input type=submit value="继续"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ 你好, $supervisor!<p>
+你正在 WIMS 网站$httpd_HTTP_HOST上创建$name_classe $classname,
+ !if $Cltype iswordof 0 1
+程度是 
+ ``<b><font color=green>$name_level</font></b>'',
+ !endif
+ 限制$ilimit个参加者. 注册到此班级
+ !if $pword!=$empty
+受到$name_classesss的密码保护.
+ !else
+对互联网上所有人开放 (你肯定吗? 请注意网站管理员将拒绝并清除公开的班级!).
+ !endif
+此班级将于$exp_year-$exp_month-$exp_day到期. <p>
+如果你发现上述信息中的错误, 请
+ !href module=$module&cmd=reply&step=0 纠正它.
+ <p>否则, 为了测试你的密码的正确性,
+请再输入一次. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+主持教师密码:
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+$name_classesss的密码:
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="继续"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+你好, $supervisor!<p>
+为了在 WIMS 网站$http_HTTP_HOST上结束创建新班级的操作, 你需要输入一个密码.<p>
+此密码已经送到你的电邮地址``<tt>$email</tt>''. 
+请去打开你的电邮信箱(也许要稍等一会), 阅读信息.
+取出密码, 并输入到下面
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>班级密码: <input size=12 name=typecode>
+ <p><input type=submit value="继续"></center>
+ </form>
+ <b>注意</b> 此密码只用一次. 不能用于连接$name_classe!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+你好, $supervisor!<p>
+你的$name_classe $classname已经建立. 祝贺你!<p>
+参加者人数限制为$ilimit(包括你自己)
+  !if $Cltype iswordof 0 1
+  , 程度为<font color=green>$name_level</font>.
+ !endif
+ <p>
+ !read links.phtml
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 回到操作的起始.
+:end
+!tail
+
+!set step=
+

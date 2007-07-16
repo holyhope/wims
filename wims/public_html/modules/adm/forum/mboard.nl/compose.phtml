@@ -1,0 +1,66 @@
+
+!if +$error iswordof +no_send_right
+ !exit
+!endif
+
+!if $c_prec!=$empty
+ Nieuwe reactie op 
+ !href cmd=reply&job=read <b>$m_subject</b>
+ door
+ !if $m_email!=$empty
+  <i><a href="mailto:$m_email">$m_from</a></i>
+ !else
+  <i>$m_from</i>
+ !endif
+ <p>
+!endif
+
+!form reply
+ Uw naam:
+ !if $forumuser=$empty
+  <input size=15 name=c_sender value="$c_sender">
+ !else
+  <tt>$c_sender</tt>;
+ !endif
+ email: <input size=30 name=c_smail value="$c_smail"> <br>
+ !if $send_right<2
+  <b>Waarschuwing.</b>Uw bericht wordt niet geaccepteerd, tenzij U een
+  <b>geldig email-adres</b> invoerd!
+    <br>
+ !endif
+ Onderwerp:
+ <input size=55 name=c_subject value="$c_subject"> <br>
+ Uw bericht:<br>
+ !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap>
+ !set msgsrc2=</textarea>
+ !if $c_quote>0 and $c_prec!=$empty
+  !mexec scripts/quote.sh
+ !endif
+ !if $c_quote=0
+  !mexec scripts/msgsrc.sh
+ !endif
+ !if $c_quote<0
+  $msgsrc1$msgsrc2
+ !endif
+ !set c_quote=0
+ $tag_escaper</table>
+ <p><center>
+ <input type=submit name=c_preview value="bekijken">
+ &nbsp;&nbsp;
+ <input type=submit name=c_send value="versturen">
+ &nbsp;&nbsp;
+ <input type=submit name=c_list value="annuleren">
+ </center> <p>
+</form> <p>
+!href cmd=help Help
+over hoe wiskundige formules op te nemen in Uw berichten.
+
+!if $c_prec!=$empty
+ <p><hr> <p>
+ !href cmd=reply&job=read Origineel bericht
+  by <i>$m_from</i>:<p>
+ !read $forumdir/$c_prec html
+ $tag_escaper</table></form><font size=+0>
+ <p><hr> <p>
+!endif
+

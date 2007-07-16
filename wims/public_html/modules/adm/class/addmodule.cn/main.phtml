@@ -1,0 +1,68 @@
+<html><head> $wims_html_header </head> <body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>插入一个模块到页面
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 返回主页
+. <p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+你想要插入一个作业题 <tt>$dir</tt>
+ !if $initparm!=$empty
+其初始参数为 <tt>$iniparm</tt>
+ !endif
+. <p>
+
+ !form reply
+选择你想要插入作业题的页:
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>Sheet $se: $ti
+ !next i
+ </select>
+ <p>你也能改变标题及其描述. <p>
+ !set title=!trim $title
+ !default title=Exercise
+ 题目: <input size=50 name=title value="$title"> <p>
+ 描述: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>你要求每个参加者在这个作业中得到的分数是:
+  <input size=4 name=require value="$require"> <small>(一个练习的满分是 10 分;
+因此若你想要参加者重复练习, 得分必须设定在 10 以上.)</small> <p>
+这个作业的权重(用于计算平均值):
+  <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="插入"></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ 练习 ``<tt>$title</tt>'' 已被成功地插入你的班级的页面 $picksheet 中.
+ !href module=adm/class/sheet&sheet=$picksheet 验证页面
+.
+!endif
+
+:end
+!tail
+
+!set job=
+

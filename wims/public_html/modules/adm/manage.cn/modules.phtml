@@ -1,0 +1,45 @@
+
+!if $job2=one
+ !read mu/one.phtml
+ !reset auto muauto
+ !exit
+!endif
+
+!if $job2=all
+ 你的$auto是列入计划执行的. 结果会用电邮发给你.
+ <p>
+ 在执行完成前请勿重复此命令.
+ <p> <hr width=70%> <p>
+ !set job2=first
+ !reset auto muauto
+!endif
+
+!form reply
+<input type=hidden name=muauto value=检查>
+<center>
+<table border=0>
+<tr><td align=right>
+<input type=submit value=搜寻>模块发布网站:
+<td><input size=40 name=musite value="$musite">
+<tr><td align=right>模块的范围:
+<td><input size=40 name=muzone value="$muzone">
+<tr><td align=right>领域:
+<td><input size=40 name=mucat value="$mucat">
+<tr><td align=right>最近改动:
+<td><input size=4 name=mudelay value="$mudelay">天前
+$table_end
+</form>
+
+<p> <hr width=70%> <p>
+
+你需要在模块更新后
+!href cmd=reply&job=mkindex 重建模块索引
+.
+!href cmd=reply&job=conf&confcat=6 点击这里
+配置每天的自动模块更新.
+
+!if $auto=check
+ !read mu/$auto.phtml
+!endif
+
+!reset muauto

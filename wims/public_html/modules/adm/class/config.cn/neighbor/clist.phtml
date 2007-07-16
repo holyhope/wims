@@ -1,0 +1,72 @@
+
+$table_hdtr<th rowspan=2>班级名
+<th colspan=2>相邻关系<br>声明</b><small>
+!href cmd=help&special_parm=neibordecl 帮助
+</small>
+<th rowspan=2>资源共享</b><small>
+!href cmd=help&special_parm=share 帮助
+</small>
+<th rowspan=2>主持教师
+<th rowspan=2>语言
+$table_hdtr<td align=center><small>被你</small>
+<td align=center><small>被他人</small>
+!for i in $clst
+ !set D_=!defof class_institution\
+class_description\
+class_lang\
+class_supervisor in wimshome/log/classes/$i/.def
+ !distribute lines $D_ into i_,d_,l_,s_
+ !set t_=0
+ !if $i isitemof $n_sup
+  !advance t_
+ !endif
+ !if $i isitemof $n_part
+  !set t_=$[$t_+2]
+ !endif
+ $table_tr<td align=center>
+ !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
+ <td align=center>$(n_n$t_)
+ !set t_=0
+ !set D_=!defof n_sup\
+n_part\
+sharable_all\
+sharing_all in wimshome/log/classes/$i/neighbors
+ !distribute line $D_ into sup,part,nsharable,nsharing
+ !if $wims_class isitemof $sup or all isitemof $sup
+  !advance t_
+ !endif
+ !if $wims_class isitemof $part or all isitemof $part
+  !set t_=$[$t_+2]
+ !endif
+ <td align=center>$(n_n$t_)
+ !if $i notitemof $sharable_all,$sharing_all and\
+    $wims_class notitemof $nsharable,$nsharing
+  <td align=center>---
+ !else
+  <td>
+  !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
+   !if $i isitemof $sharing_all and $wims_class isitemof $nsharing
+激活互相共享.
+   !else
+    !if $i isitemof $sharing_all
+你正在共享它的资源.
+    !else
+共享你的资源.
+    !endif
+   !endif
+  !else
+   !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
+互相允许共享.
+   !else
+    !if $i isitemof $sharable_all
+允许共享你的资源.
+    !else
+允许你共享它的资源.
+    !endif
+   !endif
+  !endif
+ !endif
+ <td align=center><small>$s_</small>
+ <td align=center>$l_
+!next i
+

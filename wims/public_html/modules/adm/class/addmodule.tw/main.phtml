@@ -1,0 +1,74 @@
+<html><head> $wims_html_header </head> <body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>加入模組到作業清單
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+[
+ !href module=home 回首頁
+ ]
+<p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+ 您想要
+
+ !if $initparm!=$empty
+  以原來的參數 <tt>$iniparm</tt>
+ !endif
+ 加入作業項目。 <tt>$dir</tt>
+ <p>
+
+ !form reply
+ 選擇欲加入作業項目的清單：
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>清單 $se: $ti
+ !next i
+ </select>
+ <p>您也可以修改標題及說明內容。<p>
+ 標題： <input size=50 name=title value="$title"> <p>
+ 說明： <textarea name=new_desc rows=5 cols=50>
+ $desc
+ </textarea>
+ !if $scoring=yes
+  <p>在這個作業中您要求每位參與者所要獲得的點數為 <input size=4 name=require value="$require">
+   點。<br>
+  <small>(每次完全答對習題給 10 點，如果您要參與者重覆練習習題的話，應在這裏提高
+  點數超過 10 點)</small> <p>
+  在計算平均時，這個作業所獲點數的加權權值為
+  <input size=6 name=weight value="$weight">。
+ !endif
+ <p><center><input type=submit value=" 加入 "></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ 本應用程式 "<tt>$title</tt>" 已成功地加入到您課程的清單 $picksheet 中了。
+[
+ !href module=adm/class/sheet&sheet=$picksheet 確認清單
+ ]
+!endif
+
+:end
+!tail
+
+!set job=
+

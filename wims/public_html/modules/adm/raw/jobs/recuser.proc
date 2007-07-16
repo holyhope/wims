@@ -1,0 +1,31 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+quser=!word 1 of $quser
+quser=!translate internal . to @ in $quser
+quser=!text select $char_login in $quser
+l=!charcnt $quser
+!if $quser=supervisor or $l<$login_min or $l>$login_max
+ error=bad login name
+ !exit
+!endif 
+
+userdir=wimshome/log/classes/$qclass/.users
+test=!defof user_exists in $userdir/$quser
+!if $test!=$empty
+ error=undeleted user exists
+ !exit
+!endif
+
+test=!defof user_exists in $userdir/.$quser
+!if $test=$empty
+ error=no deleted user found
+ !exit
+!endif
+
+!sh cd $wims_home/log/classes/$wims_class/.users; mv .$quser $quser >/dev/null
+!read adm/class/mkuserlist $qclass
+
+

@@ -1,0 +1,53 @@
+
+<p>
+!if $totalcnt>0
+ !if $totalcnt>=$sellist
+  You have $totalcnt modules under development.
+  !href cmd=reply&jobreq=prop <small>Properties of my account</small>
+  <p>
+  !form reply
+  Show only modules with address containing 
+  <input type=text size=30 name=selectshow value="$selectshow">
+  <input type=submit value=OK>
+  !href cmd=help&special_parm=regex <sup>help</sup>
+  </form> <p>
+ !endif
+ $table_header
+ <caption>Click on the title of a module to work on it.
+ !if $totalcnt>=$maxlist and $existcnt>=$maxlist
+  <br>(list limited to $maxlist items)
+ !endif
+ </caption>
+ $table_hdtr<th>Address<th>Title<th>Action<th>Description
+ </tr>
+ !for n in $existing
+  !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
+  $table_tr<td><small>
+  !replace internal ~ by ~ $ in $n $
+  !if ~ notin $n
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [rename]
+  !endif
+  </small></td><td>
+  !href cmd=reply&jobreq=flist&modreq=$n $title
+  <td align=center><small>
+  !href cmd=reply&jobreq=index&modreq=$n properties
+
+  !href cmd=reply&jobreq=del&modreq=$n delete
+  </small></td><td><small>$description</small></td>
+  </td></tr>
+ !next n
+ $table_end <p>
+ !href cmd=reply&jobreq=create Create a new module
+.&nbsp;
+ !href cmd=reply&jobreq=restore Restore a backup file
+.
+!else
+ You have no module under development yet. Please
+ !href cmd=reply&jobreq=create click here
+ to create one, or
+ !href cmd=reply&jobreq=restore restore a backup file
+.
+!endif
+
+!reset target target1 target2 target3 target4 selectshow
+

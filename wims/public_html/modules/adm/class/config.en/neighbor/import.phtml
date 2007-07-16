@@ -1,0 +1,82 @@
+
+!distribute item message of the day,\
+	exercise,work sheet,exam,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!set code1=None
+!set code2=Yes but different
+!set code3=Yes, active and different
+
+The class
+!href cmd=reply&job2=def $nei_description
+ of
+<em><font color=blue>$nei_institution</font></em>
+!if $newcnt1+$newcnt2<1
+ has no importable resources for you.
+ !href cmd=reply&job2=def Back
+.
+ !exit
+!endif
+has the following importable resources.
+<small>
+!href cmd=help&special_parm=import Help
+</small>
+
+!if $newcnt1>0
+ <p>$table_header
+ <caption>Teaching resources</caption>
+ $table_hdtr<th>Type<th>Title<th><small>Name</small>
+ <th><small>Content</small>
+ <th>Same title in your class<th>Import
+ !for i=1 to $newcnt1
+  !set l=!line $i of $newrec
+  !set ll=!words2items $l
+  $table_tr
+  <td align=center>$(name_$(rtype$i))
+  <td align=center>$(rname$i)
+  <td align=center><small>$(rName$i)</small>
+  <td align=center>$(rcnt$i)
+  <td align=center>$(code$(rcode$i))
+  <td align=center>
+  !if $(rstat$i)=0 or $(rcnt$i)=0
+   !if $(rcnt$i)=0
+    Empty
+   !else
+    <small>under preparation</small>
+   !endif
+  !else
+   !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
+    !href cmd=reply&job2=import2&import=$ll&impmethod=add Add
+   !endif
+   !if $(rcode$i)=2
+    &nbsp;
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) Replace
+   !endif
+  !endif
+ !next i
+ $table_end
+!endif
+
+!if $newcnt2>0
+ <p>$table_header
+ <caption>Participant accounts
+ !if $newcnt2>2
+  !href cmd=reply&job2=import2&import=user,-all- [import&nbsp;everybody]
+ !endif
+ </caption>
+ $table_hdtr<th>login<th>Last name<th>First name<th>Import
+ !for i=1 to $newcnt2
+  $table_tr<td>$(ulogin$i)
+  <td>$(uname2$i)<td>$(uname1$i)<td align=center>
+  !if $(ucode$i)=1
+   !href cmd=reply&job2=import2&import=user,$(ulogin$i) Add
+  !else
+   !if $(ucode$i)=2
+    Login name is in use in your class
+   !else
+    Erased user exists in your class
+   !endif
+  !endif
+ !next i
+ $table_end
+!endif
+

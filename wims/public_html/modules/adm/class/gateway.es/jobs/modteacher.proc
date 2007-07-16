@@ -1,0 +1,41 @@
+login=$teacher
+test=!defof user_exists in $classdir1/.users/$login
+!if $test!=yes
+ error=bad_user
+ !exit
+!endif
+
+data=!defof user_firstname,user_lastname,user_email,user_password in \
+ $classdir1/.users/$login
+supervise=!defof user_supervise in $classdir1/.users/$login
+
+!if $del!=$empty
+ sup2=!listcomplement $del in $supervise
+ !if $sup2!=$supervise
+  !setdef !set user_supervise=$sup2 in $classdir1/.users/$login
+ !endif
+ !exit
+!endif
+
+!if $cancel!=$empty
+ !distribute items $data into firstname, lastname, email
+ !reset cancel
+ job=teacher
+ !changeto jobs/$job.proc
+!endif
+
+!if $confirm=$empty
+ !distribute items $data into firstname, lastname, email
+ !exit
+!endif
+
+up_supervisable=yes
+new_user=no
+
+!read scripts/adduser.proc
+!read adm/gateway/mkteacherlist
+
+!if $error!=$empty
+ !exit
+!endif
+

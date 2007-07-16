@@ -1,0 +1,72 @@
+
+$table_hdtr<th rowspan=2>Nombre de la clase
+<th colspan=2>Declaración<br>vecindad</b><small>
+!href cmd=help&special_parm=neibordecl ayuda
+</small>
+<th rowspan=2>Compartir un recurso</b><small>
+!href cmd=help&special_parm=share ayuda
+</small>
+<th rowspan=2>Profesor
+<th rowspan=2>Idioma
+$table_hdtr<td align=center><small>por usted</small>
+<td align=center><small>por otro</small>
+!for i in $clst
+ !set D_=!defof class_institution\
+class_description\
+class_lang\
+class_supervisor in wimshome/log/classes/$i/.def
+ !distribute lines $D_ into i_,d_,l_,s_
+ !set t_=0
+ !if $i isitemof $n_sup
+  !advance t_
+ !endif
+ !if $i isitemof $n_part
+  !set t_=$[$t_+2]
+ !endif
+ $table_tr<td align=center>
+ !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
+ <td align=center>$(n_n$t_)
+ !set t_=0
+ !set D_=!defof n_sup\
+n_part\
+sharable_all\
+sharing_all in wimshome/log/classes/$i/neighbors
+ !distribute line $D_ into sup,part,nsharable,nsharing
+ !if $wims_class isitemof $sup or all isitemof $sup
+  !advance t_
+ !endif
+ !if $wims_class isitemof $part or all isitemof $part
+  !set t_=$[$t_+2]
+ !endif
+ <td align=center>$(n_n$t_)
+ !if $i notitemof $sharable_all,$sharing_all and\
+	$wims_class notitemof $nsharable,$nsharing
+  <td align=center>---
+ !else
+  <td>
+  !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
+   !if $i isitemof $sharing_all and $wims_class isitemof $nsharing
+    Relaciones mutuas de compartir activas.
+   !else
+    !if $i isitemof $sharing_all
+     Usted comparte sus recursos.
+    !else
+     Comparte sus recursos.
+    !endif
+   !endif
+  !else
+   !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
+    Permisos mutuos para compartir.
+   !else
+    !if $i isitemof $sharable_all
+     Tiene permiso para compartir sus recursos.
+    !else
+     Le permite compartir sus recursos.
+    !endif
+   !endif
+  !endif
+ !endif
+ <td align=center><small>$s_</small>
+ <td align=center>$l_
+!next i
+

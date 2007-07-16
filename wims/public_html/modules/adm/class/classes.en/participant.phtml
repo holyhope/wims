@@ -1,0 +1,141 @@
+
+!read search.phtml
+!if $overflow=yes
+ !exit
+!endif
+
+!if $clcnt+$sccnt+$directcnt<1
+ !if $keyword=$empty
+  There is no English language classes on this site. Perhaps you are looking
+  for a class of 
+  !href module=home&list=0 another language
+?
+ !else
+  No class found corresponding to your search.
+ !endif
+ !exit
+!endif
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $superclass=$empty
+  !exit
+ !endif
+!else
+ Click on the name of a class to enter.
+!endif
+
+!if $sccnt>0
+ <p>$table_header
+ <caption>Institutions and class groups</caption>
+ $table_hdtr
+ <th>Name<th>Administrator<th>Status<th>Register
+ !for i=1 to $sccnt
+  !set l=!line $i of $sclasses
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !if $superclass=$empty
+   !set show=$inst
+  !else
+   !set show=$cl
+  !endif
+  !set supv=!item 9 to -1 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  
+  $table_tr<td align=center>
+  !href module=$module&type=authparticipant&class=$code $show
+  </td> <td align=center>
+  $supv
+  </td> <td align=center>
+  !if $pswd=$empty
+   open
+  !else
+   protected
+  !endif
+  <td align=center>
+  !href module=adm/class/reguser&class=$code&subclass=yes Register
+  </td>
+ !next i
+ $table_end <p>
+!endif
+
+!if $clcnt>0
+ <p>$table_header
+ !if $superclass=$empty
+  <caption>Independent classes</caption>
+  $table_hdtr<th>Class name<th>Teacher<th>Level<th>Status<th>Register
+ !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   <caption>$Name_levels in $inst 
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent Up
+   !endif
+   </caption>
+   $table_hdtr<th>Class name<th>Teacher<th>Level<th>Status<th>Register
+   !if $superclass!=$empty and $stype=4
+    <th>More
+   !endif
+ !endif
+ !for i=1 to $clcnt
+  !set l=!line $i of $classes
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !set supv=!item 9 to -1 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set lv=$class_level
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  !distribute char $lv into l_,y_
+  
+  !if $superclass=$empty
+   !set show=$inst <br>$cl
+  !else
+   !set show=$cl
+  !endif
+  $table_tr<td align=center>
+  !href module=$module&type=authparticipant&class=$code $show
+  </td><td align=center>
+  $supv
+  </td><td align=center>$(n_$l_)<br>year $y_</td>
+  <td align=center>
+  !if $pswd=$empty
+   open
+  !else
+   protected
+  !endif
+  </td><td align=center>
+  !if $splevel=$empty or $splevel=2
+   !href module=adm/class/reguser?class=$code Register
+  !else
+   <font color=grey>Register</font>
+  !endif
+  </td>
+   !if $superclass!=$empty and $stype=4
+    <td>
+    !if $ty!=1
+     !href cmd=reply&type=$type&superclass2=$code subclasses
+    !else
+    -
+    !endif
+   !endif
+ !next i
+ $table_end <p>
+!endif
+
+Click on the name of the class to go to work in it (if you are
+registered participant of that class).
+<p>
+Click on the word `Register' to register to the class (you will
+need a class password for protected classes,
+which should be obtained from your teacher).
+

@@ -1,0 +1,32 @@
+  Pour la démo, on utilise la liste des propriétés suivantes, pouvant &ecirc;tre 
+  éventuellement vérifiées par les objets précédemment saisis.
+  !if $nonprop isitemof $propsList
+    !set propsnb=$[$propsnb-1]
+  !endif
+  !set rnb=$[floor($propsnb/2)]
+  !set exrow=$[$propsnb%2]
+  <center>
+  <table border=2 bgcolor=lightblue>
+      !for i=1 to $rnb
+        !set c1=!item $i of $propsList
+	!set c2=!item $[($i+$rnb)] of $propsList
+	<tr>
+	  <td>
+	    $c1
+	  </td>
+	  <td>
+	    $c2
+	  </td>
+	</tr>
+      !next i
+      !if $exrow!=0
+        !set c3=!item $propsnb of $propsList
+	!set c3=!char 2 to -2 of $c3
+	<tr>
+	  <td align=center colspan=2>
+	    $c3
+	  </td>
+	</tr>
+      !endif
+  </table>
+  </center>

@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage{amsthm,amsfonts}
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{pslatex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{comment}
+\excludecomment{wimsonly}
+\includecomment{latexonly}
+\usepackage{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\wimsentre#1{}
+\def\wimsinclude#1{}
+% permet le contrôle de la navigation dans le document :%le premier argument peut être prev, next,upbl,titb,keyw,datm
+\def\wimsnavig#1#2{}
+%%%%%% avec le package hyperref, fait apparaitre les liens sur les exercices à 
+%partir du fichier pdf. changer l'adresse
+\def\exercise#1#2{\href{http://127.0.0.1/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+\def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+%%%si nécessaire
+\def\email#1{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\wimsinclude{wims.sty}%pour inclure des fichiers non lus par latex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%ou
+%\input wims.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{thm}{Théorème}[section]
+\newtheorem{theo}[thm]{Théorème}
+\newtheorem{prop}[thm]{Proposition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{defn}{Définition}[section] 
+\newtheorem{ex}{Exemple}
+\newtheorem{exo}{Exercice}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\RR{\mathbb R}
+\def\NN{\mathbb N}
+\def\ZZ{\mathbb Z}
+\def\CC{\mathbb C}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%% indispensable
+\title{Mon document}
+\author{Bernadette Perrin-Riou}
+\email{bpr@math.u-psud.fr}
+\section{utilisation des environnements}
+  \begin{thm}
+    Voici un théorème
+  \end{thm}
+  \begin{proof}
+    Voici la démonstration.
+  \end{proof}
+  \begin{defn} 
+    Voici une définition
+  \end{defn}
+\section{Insertion d'un exercice}
+Pour insérer un exercice, prendre les deux premières lignes
+dans le fichier source d'une feuille d'exercice et les coller
+par un \&. 
+\begin{exo}
+Faites l'exercice d'application\index{exercice1}
+\exercise{module=H6/analysis/oefcourbe.fr&exo=courb1&scoredelay=&confparm1=A&confparm1=B}{Courbes}
+\end{exo}
+\section{Insertion d'un exemple}
+Un exemple de dessin non vu dans le fichier pdf \index{exemple}
+ \begin{wimsonly}
+  \begin{wims}
+    \def{matrix A = -6,28,21
+      4,-15,-12
+     -8,a,25}
+    \def{text P = pari(charpoly( [\A], x))}
+    \def{text color=blue,purple,red,orange,yellow}
+    \def{text dessin = xrange -1,4
+      yrange -10,10
+      hline 0,0,black
+      vline 0,0, black
+    }
+    \def{text liste = 31.8,31.9,32,32.1,32.2}
+    \def{integer cnt = items(\liste)}
+    \for{i = 1 to \cnt}{
+      \def{text p = evalue(\P,a = \liste[\i])}
+      \def{text dessin = \dessin
+        plot \color[\i], \p
+      }
+     }
+  \end{wims}
+  Voici le graphe des polynômes caractéristiques des matrices \([\A]) pour les valeurs 
+  de \(a) suivantes : \liste.
+    <p align="center"> \draw{300,300}{\dessin} </p>
+  Que remarquez-vous ? 
+\end{wimsonly}
+\section{Les listes}
+  Voici une liste avec pli (fold)
+  \begin{description}
+    \item[Graphe] voici la définition
+    \item[Coloriage] Colorier un graphe, c'est ...
+  \end{description}
+\end{document}

@@ -1,0 +1,45 @@
+!if $activetest>0
+ Sorry, this exam is activated, hence non-modifiable. No exercise in it can 
+ be changed.
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=exo>
+<input type=hidden name=exo value=$exo>
+<p>Exercise $exo : weight=<input size=5 name=eweight value="$eweight">,
+title=<input size=20 name=ename value="$ename">
+<p>
+This exercise can be (randomly) taken from a list of existing exercises in
+worksheets. Please mark the worksheet exercises in the following list, which
+you want to be candidate of this exam exercise.
+<p>
+!for i in $asheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $r into r1,r2,r3,r4,r5,r6
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $echoose
+   checked
+  !endif
+  > $i.$j <b>$r5</b> <small>$r6</small> <br>
+ !next j
+!next i
+<p>
+Score dependencies: <input size=40 name=edep value="$edep"> <br>
+<input type=submit value="Register">
+</form>
+<p>
+!href cmd=reply Main page of the exam
+. <p><small>
+<b>Help</b>. Score dependencies means that a participant must get
+  required scores in other exercises of the sheet before he/she can do
+  this one. For example, 
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  means that the
+  participant must get 50% success on exercise 1, 30% success on exercise 2,
+  and an average of 60% success on exercises 3,4,5.
+</small>
+
+

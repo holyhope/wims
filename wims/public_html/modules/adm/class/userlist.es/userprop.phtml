@@ -1,0 +1,54 @@
+
+<center><h3>Propiedades de la cuenta de participante</h3></center>
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!set inplen=40
+!form reply
+<input type=hidden name=job value=userprop>
+<input type=hidden name=getuser value=$getuser>
+<p>$table_header
+$table_tr<th>Identificador de usuario (login)<td><tt>$getuser</tt>
+$table_tr<th>Contraseña<td>
+	!href module=adm/class/passwd&job=part&part=$getuser Cambiar
+$table_tr<th>Apellidos<td>
+	<input size=$inplen name=up_lastname value="$user_lastname">
+$table_tr<th>Nombre<td>
+	<input size=$inplen name=up_firstname value="$user_firstname">
+$table_tr<th>correo electrónico<td>
+	<input size=$inplen name=up_email value="$user_email">
+$table_tr<th>Número de inscripción<td>
+	<input size=$inplen name=up_regnum value="$user_regnum">
+!if $wims_user=supervisor
+ $table_tr<th>Comentarios<td>
+	<input size=$inplen name=up_comments value="$user_comments">
+ $table_tr<th>Variables (técnicas)</th><td>
+	<textarea cols=$[$inplen-1] rows=4 name=up_vars>$user_vars</textarea>
+!else
+ $table_tr<th>Contraseña de la clase<td>
+	<input size=14 type=password name=passcheck> <br>
+	<small>Introduzca la contraseña para la inscripción de participantes</small>
+!endif
+$table_hdtr<td align=center colspan=2>
+<input type=submit name=reg value=Guardar> &nbsp;
+<input type=submit name=abandon value=Cancelar>
+$table_end
+</form>
+!if $wims_user=supervisor
+ <p> <center>
+ !href cmd=reply&job=getuser&getuser=$getuser Puntuaciones del participante
+.
+ !href cmd=reply&job=getraw&getraw=$getuser Detalles de su trabajo
+.
+ <p>
+ !href cmd=reply&job=delprep&delprep=$getuser Dar de baja al participante
+.
+ !href cmd=resume Lista de los participantes
+.
+ </center> <p>
+!endif
+
+!reset reg,abandon
+

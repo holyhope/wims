@@ -1,0 +1,201 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ Spiacente ma la preparazione / modifica degli esercizi di verifica &egrave; 
+ limitata ai docenti registrati.
+ !exit
+!endif
+
+!if bad_class=$error
+ Il corso non esiste!
+ !exit
+!endif
+
+!if bad_sheet=$error
+ Il numero della verifica non &egrave; valido. Errore del software?
+ !exit
+!endif
+
+!if bad_source=$error
+ L'elemento $bad_source nei comandi inseriti non &egrave;
+ valido.
+ !href cmd=reply&job=prep_putsource&source=$source Correggere
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ Per registrare un corso &egrave; necessario inserire il titolo. 
+ Correggere.
+ !exit
+!endif
+
+!if prep_activate=$error
+ Si &egrave; richiesto di dare innizio alla verifica $sheet, cio&egrave; di renderla
+ accessibile agli studenti. <p>
+ Ricordiamo che una verifica in corso non &egrave; pi&ugrave; modificabile, ma
+ occorre prima disattivarla (in questo caso tutti i punteggi acquisiti dagli
+ studenti saranno cancellati). <br>
+ Continuare?
+ <p><center>
+ !href cmd=reply&job=activate Si, attivare
+ .&nbsp;&nbsp;
+ !href cmd=resume No, annulla
+ . </center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Sicuri di voler eliminare la verifica numero #$sheet ($title)?
+ <p><center>
+ !href cmd=reply&job=erase si; eliminare
+ .&nbsp;&nbsp;
+ !href cmd=resume No, annulla
+ . </center>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Questa verifica numero $sheet ($title) dovrebbe durare fino al $expday
+ !item $expmon of $months
+ $expyear. Concluderla ora?
+ <p><center>
+ !href cmd=reply&job=expire Si, concludi
+ .&nbsp;&nbsp;
+ !href cmd=resume No, annulla
+ . </center>
+ <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su una verifica
+ terminata. I voti fin qui acquisiti vengono conservati (e le statistiche
+ ne tengono conto) e possono essere consultati dal 
+ docente in qualsiasi momento.
+ !exit
+!endif
+
+!if prep_putsource=$error
+ Se si &egrave; provveduto in precedenza a salvare su file
+ le istruzioni Wims, &egrave; possibile inserire i comandi
+ e salvarli cliccando su `Salva'. &Egrave; anche possibile inserire 
+ il sorgente i una verifica pubblica mediante taglia e incolla.
+ <p>
+ Altrimenti,
+ !href cmd=resume Torna alla Home page del corso
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="Salva">
+ </center></form>
+ <b>Attenzione</b>. Non inserire file di istruzioni modificate. Potrebbero
+ essere inutilizzabili dal server.
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+  La richiesta non &egrave; valida.
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
+  !set orgtit=!module title $directory
+  <p><center><h3>Modifica l'elemento $modif</h3></center>
+  !form reply
+  <input type=hidden name=modif value=$modif>
+  <input type=hidden name=job value=modify>
+  <ul>
+  <li>Titolo&nbsp;: <small>(Il titolo originale &egrave; <em>$orgtit</em>)
+  </small> <br>
+  <input size=50 name=mod_title value="$title">
+  <li>Description:<br>
+  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
+  <li>Numero di punti richiesti&nbsp;:
+  <input size=4 name=mod_require value="$require">,
+  di peso
+  <input size=4 name=mod_weight value="$weight">,
+  <li>Punteggi con dipendenza:
+  <input size=40 name=mod_dep value="$dep">.
+  !reset mod_dep
+  </ul>
+  <p><center><input type=submit value="Salva le modifiche"></form>
+  </center> <p>
+  !href cmd=resume Annulla le modifiche.
+  <p><small>
+  <b>Suggerimento</b>. Punteggi con dipendenza significa che uno studente
+  deve ottenere un dato punteggio su un esercizio prima di poter svolgere
+  questo esercizio. Per esempio
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  significa che lo studente deve ottenere un punteggio minimo del 50% 
+  nell'esercizio 1, 30% nell'esercizio 2, e una media del 60% negli esercizi 
+  3,4,5.
+  </small>
+ !endif
+!endif
+
+!if $error=not_secure
+ Questa operazione è effettuabile solo da un IP sicuro.
+ !if $sec=$empty
+  Non sono stati definiti IP sicuri, accesso non consentito. Consulta
+  il manager del sito.
+ !else
+  Accesso non consentito.
+ !endif
+ !exit
+!endif
+
+!if $error=sharing_sheet
+ <font color=red><b><blink>Pericolo!!!</font></b></blink>
+ Queste verifiche sono condivise con altri corsi!
+ !if $wims_ismanager<2
+  Solo il site manager li può disattivare la verifica.
+  !exit
+ !endif
+ Disattivandole puoi danneggiare anche le configurazioni delle classi
+ che le condividono. Si <b>sconsiglia vivamente</b> di disattivare verifiche
+ condivise. 
+ <p>
+ Sei sicuro di voler continuare?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes Si; continua
+ .&nbsp;&nbsp;
+ !href cmd=resume No; abbandona
+ . </center>
+ <p>
+ <b>Prima di continuare, è per lo meno consigliabile di chiedere ai docenti
+ delle classi che le condividono di salvare la propria configurazione!</b>
+ !exit
+!endif
+
+!if $error=sheet_in_exam
+ Non è possibile disattivare questa verifica, in quanto alcuni esami
+ ne utilizzano i contenuti.
+ !exit
+!endif
+
+!if $error=non_empty_activities
+ Stai per disattivare la verifica $sheet, mentre alcuni studenti hanno 
+ già cominciato a lavorarci!
+ <p>
+ !if share iswordof $confirmed
+  Inoltre, la verifica è condivisa con altri corsi, dove pure gli 
+  studenti potrebbero aver già cominciato a lavorare. Pertanto
+  non è possibile disattivarlo.
+  !exit
+ !endif
+ Tutti i punteggi ottenuti per questa verifica saranno perduti se la 
+ verifica viene disattivata. Vuoi veramente continuare?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes Si, disattiva
+ .&nbsp;&nbsp;
+ !href cmd=resume No, abbandona
+ . </center> <p>
+ Elenco degli studenti che hanno già cominciato a lavorare su questa
+ verifica:
+ <p>
+ <tt>$worktest</tt>
+ <p>
+ <b>Nota</b>. Questa operazione è vivamente sconsigliata a meno che questo
+ non sia un corso di prova. Si consiglia di fermarsi ora se si sta 
+ parlando di un corso con studenti <em>veri</em>.
+ !exit
+!endif
+
+!msg $error

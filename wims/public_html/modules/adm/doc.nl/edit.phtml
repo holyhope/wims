@@ -1,0 +1,68 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $edtype=file
+ !set wims_form_method=file
+!else
+ !set wims_form_method=post
+!endif
+!form reply
+
+!if $titb=$empty
+ Maken
+!else
+ Modificeren
+!endif
+van het blok <tt>$block</tt>.
+!if $edtype=file
+ !href cmd=reply&edtype=textarea [Online schrijven]
+!else
+ !href cmd=reply&edtype=file [Voeg een bestand toe]
+!endif
+<br>
+
+!set titb=!reinput $titb
+Title: <input size=50 name=Titb value="$titb"> <br>
+!if $edtype=file
+ Voeg een bestand toe aan : <input type=file size=35 name=wims_deposit>
+ !if $titb!=$empty
+  <br>Dit bestand zal de reeds bestaande inhoud
+  !formselect addtype list replace,append,prepend prompt\
+	vervangen, aanhangen, vooraf gaan
+  .
+ !endif
+ <br>
+!else
+ !mexec scripts/textarea.sh
+!endif
+<center>
+<input type=submit name=preview value="Bekijken">
+<input type=submit name=rEg value="Registeren">
+<input type=submit name=abandon value="Annuleren">
+</center> <br>
+!! Key words: <input size=50 name=Keyw value="$keyw"> <br>
+!if $block!=main
+ vorige blok: <input size=12 name=Prev value="$prev">
+ volgende: <input size=12 name=Next value="$next">
+ parent: <input size=12 name=Upbl value="$upbl">
+ <br>
+!endif
+Geldigheids data <small>aaaammjj</small> : van
+<input size=8 name=Dat1 value="$dat1"> tot
+<input size=8 name=Dat2 value="$dat2">
+</form>
+!if $edtype=file
+ <p><b>Opmerking</b>. Geaccepteerde bestandsformaten:
+
+ WIMS document broncode, html file of LaTeX code. 
+ Ook gedeelten van deze files kunnen worden geaccepteerd, mits netjes "verknipt" . 
+ Dus niet in met midden van html-tags, een wiskundige formule of matrix enz.
+!endif
+<p><hr> <p>
+
+

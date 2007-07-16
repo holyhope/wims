@@ -1,0 +1,21 @@
+!if $n<=0
+ !exit
+!endif
+
+!readdef wimshome/log/classes/$wims_class/.def
+!if $wims_superclass!=$empty
+ class_expiration=!defof class_expiration in wimshome/log/classes/$wims_superclass/.def
+!endif
+
+!appendfile wimshome/log/classes/$wims_class/sheets/.sheets \
+:0\
+$class_expiration\
+$sheet_title\
+$sheet_desc
+
+snum=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+Data=!replace internal ../wimshome/ by $wims_home/ in ../$data
+!sh cp $Data $wims_home/log/classes/$wims_class/sheets/.sheet$snum
+
+!restart module=adm/class/sheet&sheet=$snum
+

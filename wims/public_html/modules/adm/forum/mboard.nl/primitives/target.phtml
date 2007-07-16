@@ -1,0 +1,45 @@
+
+!set add=$parm1
+!if ? isin $add
+  !set add=!translate internal ? to , in $add
+  !set add=!item 2 of $add
+!endif
+!set add=!translate internal & to $ $ in $add
+!set n=!wordcnt $add
+!reset nadd,lmod,lses,lcmd
+!for i=1 to $n
+ !set l=!word $i of $add
+ !set ll=!translate = to , in $l
+ !distribute items $ll into l1,l2
+ !if $l1=cmd and $l2 iswordof intro help
+    !set lcmd=$l2
+   !endif
+ !endif
+ !if $l1=module
+   !set lmod=$l2
+ !endif
+ !if $l1 notwordof module cmd session
+   !set nadd=$nadd $l
+ !endif
+!next i
+!default lmod=home
+!default lcmd=new
+!set nadd=!translate internal $ $ to & in $nadd
+!set prompt=!item 2 to -1 of $parms
+!default prompt=!module title $lmod
+
+!default prompt=Onbekende activiteit
+
+!if $prim=exercise
+ !href target=wims_exo module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=tool
+ !href target=wims_tool module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=example
+ !href target=wims_example module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=help
+ !href target=wims_help module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+

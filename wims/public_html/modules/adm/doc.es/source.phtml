@@ -1,0 +1,61 @@
+
+<center><h1>$tit
+</h1></center>
+
+!if $titb=$empty
+ <p>
+ El bloque <tt>$titb</tt> de este documento no ha sido creado aún.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Este bloque todavía no se puede leer. ¡Vuelva más adelante!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Este bloque ha expirado, ya no es posible leerlo. ¡Lo sentimos!
+ <p>
+ !exit
+!endif
+
+<h3>$titb (Fuente del documento)
+</b><font size=-1>
+ [
+ !href cmd=reply&job=read Formateada
+ ]</font>
+</h3>
+
+<pre wrap>
+!mexec scripts/cat.sh $wims_home/$Docdir/$doc/src/$block
+</pre>
+
+<p><hr>
+!if $wims_class!=$empty and $wims_user!=supervisor
+ !exit
+!endif
+<table width=100% border=0>
+<tr><td align=left><small>
+!href cmd=reply&job=read Formateado
+&nbsp; por
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+!if help notin $wims_session
+ <td align=right><small>
+ !href module=home WIMS
+  @
+ <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+!endif
+<tr><td align=left colspan=2 nowrap>
+<small>Última modificación $datm
+</table>
+
+

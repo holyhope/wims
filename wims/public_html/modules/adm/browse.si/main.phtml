@@ -1,0 +1,29 @@
+!if robot isin $session
+ <html><body $wims_htmlbody>
+ Ta stran ni dostopna robotom.
+ </body></html>
+ !exit
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody onload=window.focus();>
+!headmenu
+<center><h1>
+<font color=red>W</font>WW
+<font color=red>I</font>nteraktivni
+<font color=red>M</font>nogonamenski
+<font color=red>S</font>tre¾nik<br>
+<font size=-1>na <a href=/>$httpd_HTTP_HOST</a></font>
+</h1></center>
+
+!read $job.phtml
+
+!if $job!=home
+ <p>
+ !href module=$module&cmd=new&job=home Druge metode brskanja
+.
+!endif
+
+!tail
+

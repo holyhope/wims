@@ -1,0 +1,76 @@
+!goto $job
+
+:addclass
+ !shortout $cd
+!exit
+
+:getclass
+!shortout queryclass=$qclass\
+
+!for d in $option
+ !shortout $d=$(class_$d)\
+
+!next d
+!exit
+
+:getclassmodif
+!shortout $modif
+!exit
+
+:getuser
+!shortout queryclass=$qclass\
+queryuser=$quser\
+
+!for d in $option
+ !shortout $d=$(user_$d)\
+
+!next d
+!exit
+
+:getscore
+!for v in examscore, weights, requires, persheet, gotdetail, meandetail
+ $v=!trim $($v)
+ $v=!replace internal $\
+$ by \\
+$ in $($v)
+!next v
+
+!shortout queryclass=$qclass\
+queryuser=$quser\
+scoremax=$scoremax\
+\
+examscores=$examscore\
+\
+weights=$weights\
+\
+requirepoints=$requires\
+\
+sheetsummaries=$persheet\
+\
+gotpoints=$gotdetail\
+\
+scoreaverages=$meandetail\
+
+!exit
+
+:getlog
+
+!if $option=score or $option=noscore
+ !sh cd $wims_home/log/classes/$qclass\
+	cat $option/$quser 2>/dev/null
+!else
+ !sh cd $wims_home/log/classes/$qclass\
+	cat score/$quser noscore/$quser 2>/dev/null | sort
+!endif
+!exit
+
+:gettime
+ !shortout $now_year$now_month$now_day.$now_hour:$now_min:$now_sec
+!exit
+
+:authuser
+ !shortout $wims_session
+# !shortout $wims_ref_name?session=$wims_session.1&module=home
+
+!exit
+

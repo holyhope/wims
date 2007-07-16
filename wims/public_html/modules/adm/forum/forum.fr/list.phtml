@@ -1,0 +1,53 @@
+
+!if $ccnt<1
+ Aucun forum de discussion n'est trouvé sur ce site. <p>
+ !href module=home Page d'accueil WIMS
+ !exit
+!endif
+
+Nous hébergeons $ccnt forums de discussion sur ce site.
+Repérez celui qui vous intéresse dans le tableau ci-dessous.
+
+<p>$table_header
+$table_hdtr<th>Titre<th>Connection<th>Langue<th>Description
+!for i=1 to $ccnt
+ !set l=!record $i of $indf
+ !distribute items $l into code,la
+ !defread wimshome/log/forums/$code/.def
+ $table_tr<td align=center>$mb_title
+ <td align=center>
+ !reset user_exists
+ !read wimshome/$wims_sesdir/mb_user.$code
+ !if $user_exists=$empty
+  !if $mb_readpolicy=open
+   !href module=adm/forum/mboard.$la&forum=$code visiteur
+   &nbsp;
+  !endif
+  !href cmd=reply&type=authuser&forum=$code participant
+  &nbsp;
+  !href cmd=reply&type=authowner&forum=$code gérant
+  !if * notin $mb_password
+   &nbsp;
+   !href module=adm/forum/reguser.$la&forum=$code s'inscrire
+  !endif
+ !else
+  !if $forumuser!=supervisor
+   !href module=adm/forum/mboard.$la&forum=$code participant
+   &nbsp;
+   !href cmd=reply&type=authowner&forum=$code gérant
+  !else
+   !href cmd=reply&type=authuser&forum=$code participant
+   &nbsp;
+   !href module=adm/forum/mboard.$la&forum=$code gérant
+  !endif
+ !endif
+ </td><td align=center><img src=gifs/$la.gif></td>
+ <td>$mb_description</td>
+!next i
+$table_end <p>
+
+Cliquez sur le type de connection pour entrer dans le forum, ou
+cliquez sur le mot `s'inscrire' pour vous y inscrire. Vous pouvez aussi
+!href module=adm/forum/regforum créer votre forum
+ sur ce site.
+

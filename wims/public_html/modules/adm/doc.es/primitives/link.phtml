@@ -1,0 +1,57 @@
+!set parm1=!text select /$namechars in $parm1
+!set parm1=!char 1 to $namelim*2 of $parm1
+!if \ isin $parm2$parm3$parm4
+ !for p in 2,3,4
+  !set parm$p=!slashsubst $(parm$p)
+ !next p
+!endif
+!if / isin $parm1
+ !set p_=!translate / to , in $parm1
+ !distribute items $p_ into pdoc,parm1
+!else
+ !set pdoc=$doc
+!endif
+!if $parm1=$empty or $parm1=.
+ !set parm1=$block
+ !set pdoc=$doc
+!endif
+!set pname=$parm2
+!reset titb
+!if c isin $pdoc and $wims_class!=$empty
+ !set dd=wimshome/log/classes/$wims_class/doc
+!else
+ !if $pdoc=1 and $doc=1 and $wims_developer!=$empty
+  !set dd=$wims_priv_docdir
+ !else
+  !set dd=wimshome/public_html/bases/doc
+ !endif
+!endif
+!read $dd/$pdoc/$parm1.def
+!default pname=$titb
+!default pname=$parm1
+!set parm3=!word 1 of $parm3
+!if $parm3!=$empty
+ !set anchor=#$parm3
+!else
+ !reset anchor
+!endif
+!set parm4=!word 1 of $parm4
+!if $parm4!=$empty
+ !set mparms=&$parm4
+!else
+ !reset mparms
+!endif
+!if $titb=$empty
+ !if $editable=yes and $pdoc=$doc
+  !href cmd=reply&job=edit&doc=$pdoc&block=$parm1 $pname (Crear)
+ !else
+  $pname
+ !endif
+!else
+ !if $printable=yes and $pdoc=$doc
+  <a href=#$parm1>$pname</a>
+  !readproc printlink.proc $parm1
+ !else
+  !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms$anchor $pname
+ !endif
+!endif

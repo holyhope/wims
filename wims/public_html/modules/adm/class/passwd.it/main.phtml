@@ -1,0 +1,70 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>Modifica password
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Ritorna alla home page del corso
+. <p>
+ !goto end
+!endif
+
+!form reply
+
+!if $wims_user=supervisor
+ Selezionare il tipo di password: <ul>
+ !default job=user
+ !set ch_$job=checked
+ <li><input type=radio name=job $ch_user value=user> Password di
+ amministrazione  
+  (per modificare i contenuti delle pagine del corso interattivo)
+ !if $part!=$empty and $job=part
+  <li><input type=radio name=job $ch_part value=part> Password dello
+   studente <tt>$part</tt>. (Non &egrave; necessario conoscere la
+   vecchia password).
+ !endif
+ <li><input type=radio name=job $ch_class value=class> Password
+ `pubblica' del corso (quella necessaria per accedere alle pagine
+ pubbliche del corso).
+ </ul>
+!else
+ <input type=hidden name=job value=user>
+!endif
+<table>
+<tr><td align=right>Inserire la password attuale (vecchia password)
+	<td><input type=password size=16 name=old>
+<tr><td align=right>Inserire la nuova password
+	<td><input type=password size=42 name=pw1>
+<tr><td align=right>Inserire nuovamente la nuova password
+	<td><input type=password size=42 name=pw2>
+</table>
+<input type=submit value="Cambia password">
+<small>Per password "personali": se si mette un segno `+' davanti alla 
+password si crea una password valida una sola volta.
+!href target=wims_mhelp cmd=help Dettagli.
+</small>
+</form>
+La password deve essere composta da 4 a 16 di caratteri alfanumerici
+(escluse le lettere accentate).
+!if $wims_user=supervisor
+ (Su alcuni server &egrave; possibile creare un corso senza
+ password, verificare con il gestore del server se questa funzione
+ è abilitata.)
+!endif
+
+!endif
+:end
+!tail
+
+!distribute item $ into job,pw1,pw2,old
+

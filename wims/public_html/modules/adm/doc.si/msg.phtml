@@ -1,0 +1,120 @@
+!set wims_module_log=error: $error
+
+<b>Napaka</b>.
+
+!if $error = doc_not_exist
+ Dokument, ki ga i¹èete, ne obstaja (veè).
+ !exit
+!endif
+
+!if $error = abuse
+ Va¹ dokument ima èuden naslov. Ali res ¾elite ustvariti tak¹en dokument.
+ <p>
+ <b>Opozorilo!</b> Ob poskusu zlorabe vam bo stre¾nik blokiral dostop.
+ !exit
+!endif
+
+!if $error = quota
+ Tega dokumenta ne morete veè spreminjati, saj ste z njegovo vsebino presegli dovoljeno kvoto na disku.
+ !exit
+!endif
+
+!if $error = quota_file
+ Dodajanje datotek je zavrnjeno, ker na disku ni veè dovolj prostora za va¹ dokument.
+ !exit
+!endif
+
+!if $error = no_tit
+ Svojemu dokumentu morate izbrati naslov.
+ !exit
+!endif
+
+!if $error = no_author
+ Pozabili ste vpisati avtorja dokumenta.
+ !exit
+!endif
+
+!if $error = bad_email
+ Va¹ e-naslov je videti neveljaven. Popravite ga.
+ !exit
+!endif
+
+!if $error = bad_code
+ Vneseno geslo je napaèno. Dostop do dokumenta je zavrnjen.
+ <p>
+ Prosim,
+ !mailurl $wims_site_manager pi¹ite skrbniku\
+Forgotten document code
+ èe ste pozabili za¹èitno geslo dokumenta.
+ !exit
+!endif
+
+!if $error = unauthorized
+ Nimate pravice dostopati do tega dokumenta.
+ !exit
+!endif
+
+!if $error = bad_data
+ Nekatere podatki niso ustrezni. Prosim, da jih popravite.
+ !exit
+!endif
+
+!if $error = class_no_right
+ Ta zahteva ni dovoljena. Posvetujte se s skrbnikom uèilnice.
+ !exit
+!endif
+
+!if $error = small_code
+ Za¹èitno geslo je prekratko.
+ !exit
+!endif
+
+!if $error = big_code
+ Za¹èitno geslo je predolgo.
+ !exit
+!endif
+
+!if $error = code_discord
+ <b>Opozorilo</b>. V dveh poskusih ste vnesli dve razlièni za¹èitni gesli. Poskusite ¹e enkrat.
+ !exit
+!endif
+
+!if $error = bad_newcode
+ Va¹e za¹èitno geslo vsebuje nedovoljene znake. Prosim za drugo geslo.
+ !exit
+!endif
+
+!if $error = bad_oldcode
+ Staro geslo je napaèno. Poskusite znova.
+ !exit
+!endif
+
+!if $error = deposit_fail
+ ®al ne najdem ustrezne datoteke. Preverite ime va¹e datoteke. 
+ !exit
+!endif
+
+!if $error = deposit_binary
+ Dodali ste binarno datoteko <tt>$wims_deposit</tt>,
+ ki je ne morem uporabiti. Po¹ljite smiselno besedilno datoteko.
+ !exit
+!endif
+
+!if $error = src_too_long
+ Va¹ blok <tt>$block</tt> ni sprejet, saj presega dovoljeno dol¾ino ($max_blocklen bytov). Lahko ga razdelite v veè manj¹ih blokov.
+ !exit
+!endif
+
+!if $error = file_too_long
+ Va¹a LaTeX datoteka ni sprejeta, saj presega dovoljeno dol¾ino ($max_texlen bytov).
+ Poskusite jo razdeliti na veè delov in jih vnesti kot razliène bloke.
+ !exit
+!endif
+
+!if $error = no_latex2html
+ Dodajanje LaTeX datotek na tem stre¾niku ni mogoèe, ker programska oprema LaTeX2HTML ni name¹èena. Poskusite pognati LaTeX2HTML na va¹em raèunalniku in dodati nastalo html datoteko.
+ !exit
+!endif
+
+!msg $error
+

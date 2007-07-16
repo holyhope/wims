@@ -1,0 +1,70 @@
+<html><head> $wims_html_header </head> <body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Insertar un módulo en una hoja de trabajo
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Volver a la página principal de la clase
+. <p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+ Quiere insertar el elemento de trabajo <tt>$dir</tt>
+ !if $initparm!=$empty
+  con los parámetros de inicialización <tt>$iniparm</tt>
+ !endif
+. <p>
+
+ !form reply
+ Elija la hoja en la cual quiere insertar el elemento de trabajo:
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>Hoja $se: $ti
+ !next i
+ </select>
+ <p>También puede modificar el título y el texto de la descripción. <p>
+ !set title=!trim $title
+ !default title=Ejercicio
+ Título: <input size=50 name=title value="$title"> <p>
+ Descripción: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>Número de puntos que obtendrá cada participante en este trabajo:
+  <input size=4 name=require value="$require"> <small>(cada respuesta correcta
+  en el ejercicio da 10 puntos; ponga más de 10 puntos aquí si quiere que
+  el participante repita el ejercicio).</small> <p>
+  Baremo de los puntos obtenidos en este trabajo (para el cálculo de las
+  medias): <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="Insertar"></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ La aplicación ``<tt>$title</tt>'' se ha añadido con éxito a la hoja de 
+ trabajo $picksheet de su clase.
+ !href module=adm/class/sheet&sheet=$picksheet Compruebe la hoja de trabajo
+.
+!endif
+
+:end
+!tail
+
+!set job=
+

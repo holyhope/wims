@@ -1,0 +1,23 @@
+
+<center><h3>停止共享
+</b><small>
+!href cmd=help&special_parm=stopshare 帮助
+</small>
+</h3></center>
+
+!if $stoprec!=$empty and $(sharing_$stoprec)=$nei and \
+    $(me_$(stoprec)cnt)>0 and $me_testcnt>0 and confirm!=yes and \
+    $stoprec isitemof $nosharelist
+ <b>注意</b>. 你的班级有激活的分数记录, 而且共享的资源非空.
+如果你现在中断共享, 以后不能恢复共享.
+ <p>
+你肯定要停止此共享吗?
+ <p><center><font size=+1> 
+ !href cmd=reply&stoprec=$stoprec&confirm=yes 对, 停止
+ &nbsp;&nbsp;
+ !href cmd=reply&job2=def 不; 维持原状.
+ </font></center> <p>
+!else
+操作错误: 你不应该来到这里.
+!endif
+

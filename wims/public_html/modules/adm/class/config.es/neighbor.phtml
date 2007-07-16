@@ -1,0 +1,58 @@
+
+!if $classcnt1+$classcnt2<1
+ No puede definir clases vecinas porque no hay ninguna otra clase en
+ este sitio.
+ !exit
+!endif
+
+!if $job2!=first
+ !distribute items ejercicios,hojas de trabajo,exámenes,documentos,encuestas,\
+	cuentas de los participantes,cuenta del profesor,mensajes de un foro de discusión,mensaje del día\
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,\
+	name_user,name_sup,name_forum,name_motd
+ !read neighbor/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first Lista de otras clases
+ !if $job2!=sharelist
+  &nbsp;
+  !href cmd=reply&job2=sharelist Info recursos compartidos
+ !endif
+ </center>
+ !exit
+!endif
+
+!distribute items ---,<small>profesor</small>,\
+	<small>participantes</small>,\
+	<small>profesor y participantes</small> into n_n0, n_n1, n_n2, n_n3
+
+Las relaciones de vecindad entre dos clases virtuales permiten el intercambio de
+recursos y/o el desplazamiento entre las clases.
+<small>[&nbsp;
+!href cmd=help&special_parm=neighbor Ayuda
+&nbsp;
+!href cmd=help&special_parm=neiexample Ejemplos
+&nbsp;]</small>
+Pulse sobre el nombre de una clase para cambiar sus relaciones de vecindad
+con ella.
+
+<p>
+!if $classcnt1>0
+ !set clst=$clist1
+ $table_header
+ <caption>Clases en el mismo idioma que la suya</caption>
+ !read neighbor/clist.phtml
+ $table_end
+!endif
+
+!if $classcnt2>0
+ <p>
+ !set clst=$clist2
+ $table_header
+ <caption>Clases en otro idioma</caption>
+ !read neighbor/clist.phtml
+ $table_end
+ <p><center>
+ !href cmd=reply&job2=sharelist Información sobre recursos compartidos
+ </center>
+!endif
+

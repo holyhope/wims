@@ -1,0 +1,58 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ Il blocco <tt>$block</tt> non è ancora stato creato.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ 
+ Questa pagina non è ancora disponibile in lettura. Riprova più tardi!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Questa pagina non è più disponibile in lettura. Spiacenti!
+ <p>
+ !exit
+!endif
+
+<h3>$titb</h3>
+
+!if $sheetdata=$empty
+ <p>
+ Non ci sono esercizi in questa pagina.
+ <p>
+ !exit
+!endif
+
+Questi soo gli esercizi contenuti in questa pagina in formato WIMS. 
+Con un taglia e incolla puoi inserirli
+!if $wims_user=supervisor
+ in una verifica del tuo corso.
+!else
+ in una verifica di un gruppo di corsi coordinati.
+!endif
+
+<pre>
+$sheetdata
+</pre>
+
+</div><div class=wimstail>
+<p><hr><p>
+
+<center>
+!href cmd=reply&job=read Torna indietro
+</center> <p>
+

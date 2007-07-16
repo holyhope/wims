@@ -1,0 +1,10 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!sh cd $wims_home/log/classes\
+  tar -czf ../$qclass.tgz $qclass\
+  rm -Rf $qclass\
+  ./.build-index
+

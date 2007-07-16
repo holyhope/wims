@@ -1,0 +1,16 @@
+# Unused
+!exit
+
+llimit=30
+#list=!mexec getnew.sh
+n=!linecnt $list
+!if $n<=0
+ !exit
+!endif
+!for i=1 to $n
+ l_=!line $i of $list
+ a_=!word -2 of $l_
+ a_=!char 2 to -2 of $a_
+ addresses=!append item $a_ to $addresses
+!next i
+

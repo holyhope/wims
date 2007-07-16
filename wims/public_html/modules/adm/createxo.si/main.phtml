@@ -1,0 +1,50 @@
+!header
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ Tukaj je koda va¹e vaje za naslovom
+ <font color=red><b>$oef_title</font></b> v OEF formatu (Open Exercise Format).
+ Èe ¾elite, lahko besedilo med èrtama prenesete v svoj najljub¹i urejevalnik in ga shranite na disk ali drug medij.
+ !href cmd=resume Nazaj na meni.
+ <hr>
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr> <p>
+ <center>
+ !href cmd=resume Nazaj na meni.
+ </center>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <center>Tak¹na bo izvedba va¹e vaje:
+ !href cmd=resume&realtest=no Nazaj na $module_title.
+ </center>
+ <p><hr> <p>
+ !changeto oef/$module_language/Main.phtml
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p>
+ !href cmd=reply Popravi napako.
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+:end
+!tail
+
+!reset wims_deposit, delfile
+

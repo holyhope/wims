@@ -1,0 +1,25 @@
+
+!default jobsave=read
+!default block=main
+
+coder=!text select $namechars in $coder
+secret=!record 0 of $docdir/$doc/.code
+secret=!word 1 of $secret
+!if $secret!=$coder
+ job=home
+ error=bad_code
+ coder=
+ !read home.proc
+ !exit
+!endif
+
+coder=
+job=$jobsave
+!if $noedit!=yes
+ editable=yes
+!endif
+eddoc=!record 0 of wimshome/$wims_sesdir/doc.$module_language.editable
+eddoc=$eddoc $doc
+!writefile wimshome/$wims_sesdir/doc.$module_language.editable $eddoc
+!read $job.proc
+

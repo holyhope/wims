@@ -1,0 +1,68 @@
+Welcome to this page which allows you to create your own interactive
+!if $wims_user!=supervisor
+ exercises,
+!else
+ exercises for the class <font color=blue>
+ $wims_classname</font> of <font color=blue>$wims_institutionname</font>,
+!endif
+under a guided mode. There are
+!href cmd=reply&mode=model prepared models
+<img src=gifs/new.gif>.
+If you are
+expert or if you have a saved source file of exercise, you may also change to
+!href cmd=reply&rawinp=yes raw mode
+ or
+!href cmd=reply&mode=file file mode
+.
+Beginners may also start by
+!href cmd=help&special_parm=examples some prepared examples
+.
+
+!form reply
+<input type=hidden name=level value=2>
+Give a title to the exercise you want to create:<br>
+<input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
+Format of the statement of the problem:
+!formselect oef_format list tex,html
+ [
+ !href target=wims_mhelp cmd=help&special_parm=format help
+ ]<p>
+This exercise will ask for
+!formselect oef_answercnt from 0 to 10
+freestyle replies and
+!formselect oef_choicecnt from 0 to 10
+multiple-choice replies.
+Non-computed numerical replies (such as <tt>3*5-sin(pi/3)</tt>) will be
+!formselect oef_computeanswer list yes,no prompt accepted,refused
+.
+!formselect oef_condcnt from 0 to $condlim
+conditions will be used to test freestyle replies.
+ [
+ !href target=wims_mhelp cmd=help&special_parm=reply help
+ ]
+<p><table border=0><tr><td align=right>
+Name of the author:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+<tr><td align=right>
+Email address:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+</table>
+<p><center>
+<input type=submit value="Continue to the content of the exercise">
+</center>
+</form>
+
+See also
+!href module=adm/modtool Modtool
+ for online development of full-power WIMS modules.
+
+!if $wims_user=supervisor
+ !read wimshome/log/classes/$wims_class/Exindex
+ !if $exototal>0
+  <p>
+  !form new
+  <input type=hidden name=module value=$module>
+  Modify an existing exercise of the class:
+  !formselect existing list $exolist prompt $titlelist
+  <input type=submit value=OK></form>
+ !endif
+!endif
+

@@ -1,0 +1,194 @@
+!set wims_name_examremain=Resterende tijd voor dit tentamen : $
+!read js/examclock.phtml
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody onload=$wims_html_onload>
+!headmenu
+
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!if $job iswordof student score scorereg
+ !changeto $job.phtml
+!endif
+
+<center>$classname
+<p>
+<h1>Het samenstellen van tentamen $exam
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Terug naar de homepagina
+. <p>
+ !goto end
+!endif
+
+!if $job=exo
+ !read $job.phtml
+ !goto end
+!endif
+
+!if $activetest>0
+ !form reply
+ <input type=hidden name=job value=text>
+ Dit tentamen is
+ !if $activetest=1
+  geactiveerd
+  !href cmd=reply&job=expire Laat het verlopen
+.
+ !else
+  !if $activetest=2
+  is verlopen maar nog wel zichtbaar voor uw leerlingen.
+   !href cmd=reply&job=hide Maak het onzichtbaar.
+  !else
+   is verlopen en onzichtbaar voor uw leerlingen.
+   !href cmd=reply&job=expire Maak het tentamen weer zichtbaar.
+  !endif
+  .
+  !href cmd=reply&job=reactivate Reactiveer het tentamen
+. <p>
+ !endif
+ <p><center><table border=2>
+ <tr><td align=right>Titel:
+ <td><input size=40 name=title value="$title">
+ <td rowspan=3><input type=submit value=Modify>
+ <tr><td align=right>Omschrijving:
+ <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <tr><td align=right>Verloop datum:<td>
+ !distribute item $[$expday],$[$expmon] into expday,expmon
+ !formselect expday from 1 to 31
+ !formselect expmon from 1 to 12 prompt $months
+ !formselect expyear from $thisyear to $thisyear+1
+ </table></form></center> <p>
+ !goto end1
+!endif
+
+!form reply
+<input type=hidden name=job value=text>
+Titel (maximaal $title_limit karacters):<br>
+<input size=65 name=title value="$title"> <p>
+en een verklarende tekst (beperkt tot $desc_limit karacters; html
+tags en hyperlinks zijn toegestaan):<br>
+<textarea rows=6 cols=65 name=desc>$desc</textarea>
+
+<center><input type=submit value="OK en stuur de tekst op"></center>
+
+<p>Dit tentamen verloopt op
+!distribute item $[$expday],$[$expmon] into expday,expmon
+!formselect expday from 1 to 31
+!formselect expmon from 1 to 12 prompt $months
+!formselect expyear from $thisyear to $thisyear+1
+. 
+Een enkele tentamensessie kan
+<input size=5 name=duration value="$duration">
+minuten duren
+<br>
+Elke deelnemer mag dit tentamen tot
+!default stries=3
+<input size=3 name=tries value="$stries"> keer overdoen.
+<input type=submit value="OK en versturen">
+
+!ifval $activetest=-1
+ <p>
+ Dit tentamen bestaat nog niet.
+ <input type=submit value="Klik hier om een tentamen te maken"> 
+ Maar geef dit tentamen eerst even een titel.
+ </form>
+ !goto end
+!else
+ </form>
+ !if $exocnt>0
+  <p>
+  Dit tentamen is <b>nog niet</b> geactiveerd.
+  !href cmd=reply&job=prep_activate klik hier 
+  om dit tentamen te activeren.
+  Studenten, leerlingen zien alleen de actieve tentamens.<br>
+  Echter: een tentamen eenmaal geactiveerd , kan <b>niet</b> meer inhoudelijk worden veranderd. 
+  
+ !endif
+!endif
+
+:end1
+<p>
+!if $exocnt=0
+ Dit tentamen bevat nog <b>geen</b> opdrachten.
+ !href cmd=reply&job=exo&exo=1 Voeg een opgave toe
+.
+!else
+ <a name=list>
+ De opgaven in dit tentamen:</a><ol>
+ !for i=1 to $exocnt
+  <li>
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,ch,ti
+  $ti, gewicht $we.
+  !if $activetest=0
+   &nbsp;(
+   !if $i>1
+    !href cmd=reply&job=moveup&moveup=$i#list Verplaats&nbsp;naar&nbsp;boven
+    &nbsp;
+   !endif
+   !href cmd=reply&job=exo&exo=$i Veranderen
+   &nbsp;
+   !href cmd=reply&job=delete&delete=$i#list Verwijderen
+   )
+  !endif
+ !next i
+ </ol>
+ !if $activetest=0
+  !href cmd=reply&job=exo&exo=$[$exocnt+1] Voeg nog een opgave toe
+.
+ !endif
+!endif
+
+<p>
+!if $activetest=0 and $erasable=yes
+  U kunt dit tentamen nog steeds
+  !href cmd=reply&job=prep_erase wissen
+.
+!endif
+
+!if $activetest>=0
+Zo zien Uw <b>leerlingen</b>
+ !href cmd=reply&job=student  deze pagina.
+ <p>
+ !form reply
+ <input type=hidden name=allow value=yes>
+ Dit tentamen is
+ !formselect allowtype list all, simulation, none, select prompt\
+	open voor iedereen, open voor simulatie,\
+	gesloten voor iedereen, open voor de volgende netwerk adressen (en/of tijdstippen):
+ <br><input size=50 name=IPlist value="$IPlist"> <br>
+ Cut times:
+ <input size=50 name=cutt value="$cutt"> <br>
+ <input type=submit value="Registreer de veranderingen">
+ </form>
+ <small><b>Hint.</b> In the selective open mode, you can make time
+ restrictions for score registrations, by adding words 
+ <font color=blue><b>
+ <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
+ (starting time) and/or
+ <font color=blue><b>
+ <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
+ (ending time). These must be in the
+ SERVER's local time, and must be separated from other words by white spaces.
+ <p>
+ Cut times are used to let people take the exam in different sessions. A
+ participant having worked on the exam before a cut time will have no access
+ after the cut time.
+ <p>
+ Format of cut times: <tt>yyyymmdd.hh:mm</tt> (separate several cut times
+ by white spaces).
+ </small>
+!endif
+:end
+!tail
+
+!reset job,echoose,eweight,ename,edep,eopt,source

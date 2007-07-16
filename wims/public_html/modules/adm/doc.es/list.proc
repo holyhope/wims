@@ -1,0 +1,15 @@
+
+fcnt=!recordcnt $docdir/$doc/.index
+fcnt=$[min($fcnt,$blocklim)]
+
+!for i=1 to $fcnt
+ l=!record $i of $docdir/$doc/.index
+ !distribute lines $l into s_,t_
+ t_=!detag $t_
+ slist=!append line $s_ to $slist
+ tlist=!append line $ $t_ to $tlist
+!next i
+
+slist=!sort nocase lines $slist
+tlist=!line $wims_sort_order of $tlist
+!read quota.proc

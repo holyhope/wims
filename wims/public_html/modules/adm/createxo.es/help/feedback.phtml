@@ -1,0 +1,53 @@
+
+<center><h3>Comentarios dependientes de las respuestas</h3></center> <p>
+
+Puede definir condiciones (dependientes de las respuestas proporcionadas por
+los usuarios) bajo las que pueden imprimirse comentarios en la página de
+resultados de un ejercicio. Una utilidad común de esta posibilidad será dar
+una explicación cuando se detecta un error típico en la respuesta.
+<p>
+Se puede añadir un número arbitrario de comentarios vinculados a cualquier tipo
+de respuesta (libres o de opción múltiple). La sintaxis es la siguiente:
+<p><tt>
+\feedback{CONDICIÓN}{MENSAJE}
+</tt> <p>
+Se puede poner una línea como esta en el campo de los parámetros (en modo
+guiado) o en cualquier lugar del código fuente (en el modo en bruto).
+<p>
+Cuando se cumple la <tt>CONDICIÓN</tt>,
+se le mostrará el <tt>MENSAJE</tt> al usuario en la página de resultados. Se
+pueden utilizar los valores de las respuestas del usuario en los dos
+campos (CONDICIÓN y MENSAJE) por medio de las variables <tt>\reply1</tt>,
+<tt>\reply2</tt>... (para las respuestas libres), <tt>\choice1</tt>, 
+<tt>\choice2</tt>... (para las opciones múltiples). El orden de estas variables
+es el mismo que el orden en el que aparecen en el código fuente (o 
+en el formulario en el modo guiado).
+<p>
+El <tt>MENSAJE</tt> es un texto libre, que acepta las etiquetas html y los símbolos
+matemáticos.
+<p>$table_header
+<caption>Ejemplos de condiciones
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if Lista completa
+</small>
+</caption>
+$table_hdtr<th>condición<th>cuando se cumpla que
+$table_tr<td><tt>\reply1=5<td>la primera respuesta libre es exactamente igual a 5
+$table_tr<td><tt>\reply1&gt;\reply2+2<td>la primera respuesta libre es &gt; la segunda más 2
+$table_tr<td><tt>\choice1=Sí and \choice2=No
+  <td>la primera opción múltiple es Sí, y la segunda es No (<b>Atención</b> 
+¡la comparación en las opciones múltiples es sensible a la diferencia
+minúsculas-mayúsculas!)
+$table_tr<td><tt>\reply1&lt;5 or \reply1&gt;8
+  <td>la primera respuesta se sale del intervalo [5,8].
+$table_tr<td><tt>3 isitemof \reply1
+  <td>la primera respuesta, del tipo "set" o "vector", 
+  contiene una componente "3".
+
+$table_end
+<p>
+<b>Fallo conocido</b>. Debe evitar usar conjuntamente <tt>\reply</tt> y
+<tt>\choice</tt> en una misma condición. De lo contrario el resultado 
+será imprevisible.
+
+

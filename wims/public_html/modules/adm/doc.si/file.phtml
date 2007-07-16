@@ -1,0 +1,65 @@
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ Datoteka <b>$erase</b> je bila izbrisana.
+ <p>
+!endif
+
+!if $quota_free<1
+ V ta dokument ne morete veè dodajati datotek, saj ste dosegli mejo dovoljenega prostora na stre¾niku.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=deposit>
+ V ta dokument lahko dodate datoteko:
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=OK>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>V tem dokumentu so na voljo naslednje datoteke:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Izbri¹ite datoteko:
+ !formselect job2 list $flist
+ <input type=submit value=OK>
+ </form>
+ <p>
+ Na datoteke v dokumentu se lahko sklicujete z uporabo spremenljivke <tt>\filedir</tt>
+v dokumentu. Primer: 
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ ustvari povezavo na datoteko <a href=$m_filedir/$f1>$f1</a>.
+ Zapi¹ete lahko tudi
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+in tako na stran dodate slikovno datoteko <tt>myfile.jpg</tt>.
+ <p>
+ Datoteke, ki jih dodate dokumentu, so dosegljive le uporabnikom s pravico do branja tega dokumenta.
+!endif
+
+<p>
+Razpolo¾ljiv prostor na disku: $quota_total Mb. Prosti prostor na disku: $quota_free Mb.
+
+<p><center>
+!href cmd=reply&job=prop Lastnosti dokumenta
+&nbsp;&nbsp;
+!href cmd=reply&job=list Seznam blokov
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main Glavni blok
+
+</center> <p>
+

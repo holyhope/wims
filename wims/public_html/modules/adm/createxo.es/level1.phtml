@@ -1,0 +1,65 @@
+Bienvenido/a a esta página que le permitirá crear sus propios
+!if $wims_user!=supervisor
+ ejercicios interactivos,
+!else
+ ejercicios interactivos para la clase <font color=blue>
+ $wims_classname</font> de <font color=blue>$wims_institutionname</font>,
+!endif
+en modo guiado. Si es un experto o si tiene ya el código fuente de un ejercicio
+preparado, puede cambiar al 
+!href cmd=reply&rawinp=yes modo en bruto
+ o al
+!href cmd=reply&mode=file modo fichero
+. Los principiantes pueden comenzar con
+!href cmd=help&special_parm=examples algunos ejemplos preparados
+.
+
+!form reply
+<input type=hidden name=level value=2>
+Dele un título al ejercicio que quiere crear:<br>
+<input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
+Formato del enunciado del problema:
+!formselect oef_format list tex,html
+ [
+ !href target=wims_mhelp cmd=help&special_parm=format ayuda
+ ]<p>
+Este ejercicio pedirá
+!formselect oef_answercnt from 0 to 10
+respuestas libres y 
+!formselect oef_choicecnt from 0 to 10
+respuestas de opciones múltiples.
+Las respuestas numéricas no calculadas (como <tt>3*5-sin(pi/3)</tt>) serán
+!formselect oef_computeanswer list yes,no prompt aceptadas,rechazadas
+.
+Se usarán
+!formselect oef_condcnt from 0 to $condlim
+condiciones especiales para corregir las respuestas libres.
+ [
+ !href target=wims_mhelp cmd=help&special_parm=reply ayuda
+ ]
+<p><table border=0><tr><td align=right>
+Nombre del autor:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+<tr><td align=right>
+Dirección de correo electrónico:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+</table>
+<p><center>
+<input type=submit value="Continuar al contenido del ejercicio">
+</center>
+</form>
+
+Vea también
+!href module=adm/modtool Modtool
+ para desarrollar en línea módulos WIMS a toda potencia.
+
+!if $wims_user=supervisor
+ !read wimshome/log/classes/$wims_class/Exindex
+ !if $exototal>0
+  <p>
+  !form new
+  <input type=hidden name=module value=$module>
+  Modificar un ejercicio existente de la clase:
+  !formselect existing list $exolist prompt $titlelist
+  <input type=submit value=OK></form>
+ !endif
+!endif
+

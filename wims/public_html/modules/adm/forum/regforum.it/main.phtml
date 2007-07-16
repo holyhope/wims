@@ -1,0 +1,127 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS @ $httpd_HTTP_HOST
+<p>
+Creazione di un forum di discussione
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=$module&cmd=reply&step=0 Ricomincia da capo
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+ Creando un forum di discussione su questo sito WIMS
+ ce ne si assume la responsabilit&agrave; di gestione. <p>
+ Per procedere alla creazione del forum, inserire i seguenti dati:
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>Nome del forum (al pi&ugrave; $titlelim caratteri):
+  <input size=$titlelim name=title value="$title"> <p>
+ <li>Descrizione (al pi&ugrave; $desclim caratteri):
+  <textarea cols=65 rows=5 name=description>$description</textarea> <p>
+ <li>Nome e cognome dell'<em>owner</em> (cio&egrave; il vostro):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>Indirizzo di posta elettronica:
+  <input size=$emaillim name=email value="$email"> <br>
+  (&Egrave; necessario un indirizzo di posta elettronica
+  funzionante fin da ora.)<p>
+ <li>Scegliere una password per la gestione (password di owner):
+  <input size=16 type=password name=passsup> <br>
+  (da 4 a 16 caratteri, scelti tra numeri o lettere non accentate). <br>
+  Questa password permette di accedere alla gestione del forum.
+  Non va resa nota ad altri. <p>
+ <li>Scegliere una password di accesso al forum:
+  <input size=16 type=password name=password> <br>
+  (da 4 a 16 caratteri, scelti tra numeri o lettere non accentate). <br>
+  Questa password &egrave; necessaria per la registrazione. Va comunicata a
+  tutte le persone che si intende far accedere al forum di 
+  discussione. <p>
+ </ul>
+ <center><input type=submit value="Continua"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ Cara/o, $supervisor!<p>
+ State creando il forum di discussione `$forumname' sul sito
+ WIMS @
+ $httpd_HTTP_HOST.
+ <p>
+ Se i dati sono errati, &egrave; possibile tornare 
+ !href module=$module&cmd=reply&step=0 a correggerli.
+ <p>Se i dati sono corretti, inserire di nuovo le password
+ per una ulteriore verifica. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Password di gestione (owner password):
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Password di accesso (utente):
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="Continua"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Cara/o, $supervisor!<p>
+ Per completare la creazione del forum di discussione su WIMS presso 
+ $http_HTTP_HOST, &egrave; necessario inserire il codice di attivazione. <p>
+ Il codice &egrave; stato inviato all'indirizzo 
+ ``<tt>$email</tt>''. Verificate di aver ricevuto il messaggio (questo
+ potrebbe richiedere un po' di tempo), e copiate il codice
+ l&igrave; riportato in questo form.
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Codice di attivazione: <input size=16 name=typecode>
+ <p><input type=submit value="Continua"></center>
+ </form>
+ <b>Attenzione</b> Questo codice può essere utilizzato solo qui. 
+ Non serve per accedere al forum di discussione!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Cara/o, $supervisor!<p>
+ Il forum di discussione `$forumname' &egrave; stato creato. Congratulazioni,
+ e buon lavoro!<p>
+ &Egrave; possibile accedere al forum a partire da 
+ !href module=adm/forum/forum questa pagina
+.
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Ricomincia da capo.
+:end
+!tail
+
+!set step=
+

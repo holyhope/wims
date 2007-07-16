@@ -1,0 +1,103 @@
+
+!if $send_right<2
+ !if $s_hidecode=$empty
+  !if $c_smail=$empty
+   error=email_required
+   !exit
+  !endif
+  !if @ notin $c_smail or . notin $c_smail or , isin $c_smail
+   error=bad_email
+   !exit
+  !endif
+  s_hidecode=!randint 10^5,10^8-1
+  !read scripts/mail.proc
+  s_status=ask
+  !exit
+ !else
+  s_code=!nospace $s_code
+  !if $s_code!=$s_hidecode
+   s_hidecode=
+   error=bad_sendcode
+   !exit
+  !endif
+  s_hidecode=
+ !endif
+!endif
+
+c_subject=!trim $c_subject
+!if $c_subject=$empty
+ error=no_subject
+ job=compose
+ !exit
+!endif
+
+ now=!date +%Y%m%d%H%M%S
+ month=!char 1 to 6 of $now
+ day=!char 7,8 of $now
+ hour=!char 9,10 of $now
+ min=!char 11,12 of $now
+ sec=!char 13,14 of $now
+ time=$hour:$min:$sec
+ !default c_sender=Anonymous
+ !if @ notin $c_smail or . notin $c_smail or , isin $c_smail
+  c_smail=
+ !endif
+ !for n in sender,subject
+  c_$n=!replace internal ! by &#33; in $(c_$n)
+ !next n
+ t=!recordcnt $forumdir/$month/.msglist
+ ident=$[$t+1]
+ !if $c_prec!=$empty
+  :recheck
+  o_=!translate / to _ in $c_orig
+  t_=!record 0 of $forumdir/.threads/$o_
+  n_=!linecnt $t_
+  !if $n_>$thread_lim 
+   !if $c_prec!=$c_orig
+    c_orig=$c_prec
+    !goto recheck
+   !else
+    !if $n_>1.5*$thread_lim
+     c_orig=
+    !endif
+   !endif
+  !endif
+  !if $c_orig=$empty
+   !goto new
+  !endif
+  !appendfile $forumdir/.threads/$o_ $month/$ident $c_prec
+  prec=$c_prec
+  orig=$c_orig
+  c_prec=$(c_prec)O$c_orig
+ !else
+  :new
+  c_prec=O$month/$ident
+  prec=$c_prec
+  orig=$c_prec
+ !endif
+
+ 
+ content=$month,$day,$time,$ident,$c_prec,$c_sender,$c_smail,$c_subject
+ n_=!charcnt $content
+ !if $n_>130
+  c_=!char 1 to 129 of $content
+  content=$c_...
+ !endif
+ !mexec scripts/send.sh
+ !appendfile $forumdir/$month/.msglist : $content
+ !appendfile $forumdir/.msglist :$month $ident $prec $orig
+ new=!record 0 of $forumdir/.newlist
+ n_=!linecnt $new
+ !if $n_>=$list_lim
+  new=!line $n_-($list_lim)+2 to -1 of $new
+ !endif
+ new=!append line $month $ident to $new
+ !writefile $forumdir/.newlist $new
+ !if $month notitemof $archlist
+  arch=!items2lines $archlist
+  arch=!append line $month to $arch
+  arch=!sort line $arch
+  !writefile $forumdir/.archives $arch
+ !endif
+ 
+

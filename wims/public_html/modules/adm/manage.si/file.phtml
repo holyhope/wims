@@ -1,0 +1,81 @@
+!set MAX=102400
+
+!if $download=yes
+ Here is the file for download ($flen bytes):
+ <p><center>
+ !getfile $fname $file
+ <p>
+ !goto end2
+!endif
+
+!if $erase=ask
+ Do you really want to erase the file
+ <tt><font color=green>$file</font></tt>? <br>
+ <small>($flen bytes, $facc, last modified $fdat)</small>
+ <p> <center> <font size=+2>
+ !href cmd=reply&job=$job&job2=eraseconfirm Yes
+ &nbsp;&nbsp;
+ !href cmd=reply&job=fs No
+ </font> <p> <hr>
+ !goto end2
+!endif
+
+!if $ftype=image
+ <tt><font color=green>$file</font></tt> is an image. ($flen bytes,
+ $facc, last modified $fdat)
+ !if $pubimg!=$empty
+  <p><center>
+  <img border=2 src=$pubimg>
+  </center>
+ !endif
+ !goto end
+!endif
+
+!if $ftype=binary
+ <tt><font color=green>$file</font></tt> is a binary file. ($flen bytes,
+ $facc, last modified $fdat)
+ !goto end
+!endif
+
+!if $flen>$MAX
+ <tt><font color=green>$file</font></tt> is too long ($flen bytes) 
+ to be shown or edited.
+ !goto end
+!endif
+ 
+!set wims_form_method=post
+!form reply
+<input type=hidden name=job value=file>
+<input type=hidden name=job2 value=first>
+<center>
+ Content of <tt><font color=green>$file</font></tt> <br>
+ <small>($flen bytes, $facc, last modif. $fdat)</small> <br>
+ !if $modifok!=yes
+  This file belongs to the distribution, it should not be modified. <br>
+  !set textarea_ro=readonly
+ !endif
+ !mexec scripts/textarea.sh
+<br>
+!if $modifok=yes
+ <input type=submit name=save value=Save>
+ <input type=submit name=abandon value=Cancel>
+!endif
+</center>
+</form>
+
+:end
+
+<p> <center>
+!href cmd=reply&job=file&job2=download Download the file
+. &nbsp;
+!if $modifok=yes
+ !href cmd=reply&job=file&job2=erase Erase it
+. &nbsp;
+!endif
+
+:end2
+!href cmd=reply&job=fs Back to directory
+.
+
+</center>
+

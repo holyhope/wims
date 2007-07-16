@@ -1,0 +1,154 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>
+參與課程的註冊
+</h1></center> <p><hr width=50%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ [
+ !href module=$module&cmd=new 重新註冊
+ ]
+ <p>
+ !goto end
+!endif
+
+!if $classcnt=0
+ 抱歉，本網站現在沒有任何課程，請稍候再試！
+ !goto end
+!endif
+
+!if $class=$empty
+ 請選擇您要參與的課程(點選課程名稱)。<p>
+ <center><table border=1 bgcolor=bisque>
+ <tr><th>課程名稱<th>管理者<th>課程等級<th>語言</th>
+ <th>課程剩餘名額<th>狀態
+ !for i=1 to $classcnt
+  !set cl=!record $i of wimshome/log/classes/.index
+  !set cl=!item 1 of $cl
+  !distribute item ,,,,,,,,,,,,,,,,, into class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
+  !defread wimshome/log/classes/$cl/.def
+  !distribute char $class_level into l1,l2
+  !set part=!recordcnt wimshome/log/classes/$cl/.userlist
+  <tr><td align=center>
+  !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
+  <td align=center>
+  !mailurl $class_email $class_supervisor
+  </td> <td align=center>$(level$l1) $l2 年級
+  <td align=center>$(lang_$class_lang)</td>
+  <td align=right>
+  !if $class_limit-$part>$site_dispo
+   $site_dispo
+  !else
+   $[$class_limit-$part]
+  !endif
+  !if $class_password=$empty
+   <td align=center>開放參觀</td>
+  !else
+   <td align=center>密碼保護</td>
+  !endif
+ !next i
+ $table_end <p>
+ <b>備註：</b>您可以自由地向任何開放的課程註冊。相反地，保密的課程需要密碼來註冊
+ (密碼應該得自於課程的管理者)。
+ !goto end
+!endif class=empty
+
+ <b><font color=green>$institution</font></b>
+的
+!set classname=<b><font color=green>$description</font></b>\
+  課程
+!if $password!=$empty and $passverify=$empty
+
+ $classname 設有密碼保護，在您註冊參與課程之前必需輸入密碼。
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Password:
+ <input type=password name=classpass>
+ <p>
+ <input type=submit value=" 送出密碼 ">
+ </center></form> <p>
+ <b>備註：</b>如果課程的管理者($supervisor) 允許您存取課程，則您應該可以從他(或她)那裏
+ 獲知密碼。
+ (
+ !mailurl $smail 給管理者
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ 為了能自行註冊參與 $classname 課程，請填寫下列資料。
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>您的姓氏： <input size=20 name=firstn value="$firstn">
+	 您的名： <input size=20 name=lastn value="$lastn">
+  <p>
+ <li>選擇簽入帳號：
+  <input size=16 name=login value="$login"> <br>
+  稍後您將可以用這個帳號簽入課程(請選擇 4 到 16 個數字或字母當帳號)。
+  <p>
+ <li>簽入密碼：
+  <input type=password size=16 name=pass> <br>
+  密碼必須包含 4 到 16 個沒有意義的數字或字母。
+  <p>
+ <li>電子信箱 (可不填):<br>
+  <input size=60 name=email value="$email">
+  <p>
+ <center><input type=submit value=" 註冊 "></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ $firstn $lastn 您好！<p>
+ 您正以帳號&nbsp; "<tt><b><font color=green>$login</font></b></tt>"
+ 自行註冊參與 $classname 課程。<p>
+ !if $email=$empty
+  您沒輸入有效的電子信箱！<p>
+ !else
+  您的電子信箱為： <tt>$email</tt> <p>
+ !endif
+ 為了確認，請再次輸入密碼：
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value=" 送出密碼 "></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ $firstn $lastn 您好！<p>
+ 歡迎光臨 $classname 課程。您正以帳號 "<b><font color=green>$login</font></b>"
+ 參與本課程。<p>
+ 現在您可以
+ <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+ 繼續本課程內容</a>。 (可以考將這個連結放到書簽中。)
+ !goto end
+!endif
+
+:end1
+<p>
+[
+!href module=$module&cmd=new 回操作首頁
+ ]
+:end
+<p><hr width=30%> <p>
+!homeref
+</body></html>
+
+!set step=
+

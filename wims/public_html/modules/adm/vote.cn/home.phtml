@@ -1,0 +1,50 @@
+
+!if $votecnt<1
+ !if $wims_user!=supervisor
+  你的班级还没有投票议题, 请与主持教师联系.
+  !exit
+ !else
+  你的班级还没有投票议题.
+ !endif
+!else
+ !if $wims_user!=supervisor
+  !if $active<1
+   没有已激活的投票. 请与主持教师联系.
+   !exit
+  !endif
+ !endif
+ 这是你的班级的 投票/记录.
+ <ul>
+ !for t=1 to $votecnt
+   !set l_=!record $t of $votedir/.votes
+   !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show
+   !default vote_title=无标题
+   !set vcnt=!defof vcnt in $votedir/$t.votes
+   !default vcnt=0
+   !if $wims_user!=supervisor
+    !if $vote_status iswordof 1 2
+     <li>
+     !href cmd=reply&job=read&vote=$t $vote_title
+     !if $vote_show>0
+      ($(name_$vote_status), $(name_$vote_option), $vcnt 票)
+     !else
+      ($(name_$vote_status), $(name_$vote_option))
+     !endif
+    !endif
+   !else
+    <li>
+    $vote_title
+    <small>($(name_$vote_status), $(name_$vote_option), $vcnt 票)</small>
+    !href cmd=reply&job=read&vote=$t [阅读]
+&nbsp;
+    !href cmd=reply&job=edit&vote=$t [修改]
+   !endif
+ !next t
+ </ul>
+!endif
+
+!if $wims_user=supervisor
+ !href cmd=reply&job=creat 创建新的投票/登记.
+!endif
+
+

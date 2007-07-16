@@ -1,0 +1,25 @@
+!if $wims_user!=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+你的练习已被成功地建立.
+ !else
+在你的班级里发现了一个完全相同的练习. 重复纪录已被忽略. <p>
+ !endif
+仅当你将此练习放入作业页后, 你班级的参加者(也只有他们)才能接触此练习. 
+ <p>
+ !if $wims_user!=supervisor
+现在你可以:
+  !href module=classes/$lang&special_parm=.nocache. 查看班级的练习.
+ !else
+现在你可以:
+ <ul>
+ <p><li>
+ !href module=classes/$lang&special_parm=.nocache. 查看你班级的练习.
+ (或将它们放入作业页.)
+ <p><li>
+ !href cmd=reply&level=3 回到上一阶段.
+  </ul>
+ !endif
+!endif
+

@@ -1,0 +1,94 @@
+Bienvenue à cette page qui vous permet de créer vos propres
+!if $wims_user!=supervisor
+ exercices interactifs,
+!else
+ exercices interactifs pour la classe <font color=blue>
+ $wims_classname</font> de <font color=blue>$wims_institutionname</font>,
+!endif
+en mode guidé. Il y a des
+!href cmd=reply&mode=model modèles préparés
+<img src=gifs/new.gif>.
+Si vous êtes expert ou si vous
+avez un fichier source d'exercice sauvé auparavant, vous pouvez aussi passer
+en
+!href cmd=reply&rawinp=yes mode brut
+ ou
+!href cmd=reply&mode=file mode fichier
+.
+
+!form reply
+<input type=hidden name=level value=2>
+Donnez un titre à l'exercice que vous voulez créer&nbsp;:<br>
+<input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
+Format de l'énoncé du problème&nbsp;:
+!formselect oef_format list tex,html
+ [
+ !href target=wims_mhelp cmd=help&special_parm=format aide
+ ]<p>
+Cet exercice demandera
+!formselect oef_answercnt from 0 to 10
+réponses libres et
+!formselect oef_choicecnt from 0 to 10
+réponses en choix multiples.
+Les réponses numériques non calculées (telle <tt>3*5-sin(pi/3)</tt>)
+!formselect oef_computeanswer list yes,no prompt sont, ne sont pas
+admises.
+!formselect oef_condcnt from 0 to $condlim
+conditions seront utilisées pour tester les réponses libres.
+ [
+ !href target=wims_mhelp cmd=help&special_parm=reply aide
+ ]
+<p><table border=0><tr><td align=right>
+Nom de l'auteur&nbsp;:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+<tr><td align=right>
+Adresse électronique&nbsp;:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+</table>
+<p><center>
+<input type=submit value="Continuer pour le contenu de l'exercice">
+</center>
+</form>
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+<table bgcolor=#d0c080>
+  <tr>
+    <td rowspan=4>
+      Voir aussi
+    </td>
+   <td bgcolor=lemonchiffon>
+      !href module=adm/modtool Modtool
+       pour développer en ligne des modules WIMS à pleine puissance,
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor=lemonchiffon>
+      !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code>
+       ou 
+       !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
+        pour une confection interactive de qcm simples.
+    </td>
+  </tr>
+  <tr>
+  <td bgcolor=lemonchiffon>
+      !href module=adm/quicktool Quicktool
+       pour développer  des exercices de langues,
+    </td>
+    <tr>
+    <td bgcolor=lemonchiffon>
+      !href module=adm/latex2wims Latex2wims
+       pour fabriquer des documents à partir de textes en latex.
+    </td>
+    </tr>
+  </tr>
+</table>
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+!if $wims_user=supervisor
+ !read wimshome/log/classes/$wims_class/Exindex
+ !if $exototal>0
+  <p>
+  !form new
+  <input type=hidden name=module value=$module>
+  Modifier un exercice existant de la classe :
+  !formselect existing list $exolist prompt $titlelist
+  <input type=submit value=OK></form>
+ !endif
+!endif
+

@@ -1,0 +1,25 @@
+<center>$classname<p>
+
+<h3>Participantes dados de baja</h3> <p>
+
+!if $delcnt<1
+ No se ha dado de baja a ningún participante de esta clase.
+ <p>
+!else
+ Pulse sobre un identificador de usuario (login)
+ para volver a incluir al participante en la clase.
+ $table_header
+ $table_hdtr<th>login<th>nombre
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ $table_end <p>
+!endif
+
+ !href cmd=resume Lista de los participantes
+ .
+</center> <p>
+

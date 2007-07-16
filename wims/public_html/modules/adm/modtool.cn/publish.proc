@@ -1,0 +1,115 @@
+
+i_title=!module title devel/$auth_login/$mod
+mname=!translate internal ~ to , in $mod
+mname=!nonempty items $mname
+mcnt=!itemcnt $mname
+!distribute items $mname into m1,m2,m3
+mdir=$m1/$m2
+mname=$m3
+!if $m1=local
+ local=yes
+!endif
+
+!if $mcnt!=3 or $m1 notitemof $levellist,tool,local,data
+ rep=ERROR unpublishable $mod
+ !goto end
+!endif
+
+!if $mod=$empty
+ job=modname
+ !changeto $job.proc
+!endif
+
+wver1=!text select 0123456789abcdefghijklmnopqrstuvwxyz. in $wims_version
+wver1=!translate internal abcdefghijklmnopqrstuvwxyz to \
+			  12345678999999999999999999 in $wver1
+Wver2=!module wims_version devel/$auth_login/$mod
+wver2=!text select 0123456789abcdefghijklmnopqrstuvwxyz. in $Wver2
+wver2=!translate internal abcdefghijklmnopqrstuvwxyz to \
+			  12345678999999999999999999 in $wver2
+!bound vcheat within yes,no default $
+!if $wver2<$wver1
+ !if $vcheat=$empty
+  askcheat=yes
+  !exit
+ !else
+  !if $vcheat=yes
+   cheatversion=$Wver2
+  !else
+   !setdef wims_version=$wims_version in wimshome/public_html/modules/devel/$auth_login/$mod/INDEX
+  !endif
+ !endif
+!else
+ !if $wver2>$wver1
+  rep=ERROR antiwversion $Wver2
+  !goto end
+ !endif
+!endif
+
+!if $confirm!=yes
+ pubprep=yes
+ !exit
+!endif
+
+target=!translate internal ~ to / in $mod
+thisver=!module version devel/$auth_login/$mod
+oldver=!module version $target
+!if $oldver!=$empty and $thisver <= $oldver and \
+	($submittype != devel or $m1 = local)
+ rep=ERROR please-update-module-version
+ !goto end
+!endif
+
+!default cheatversion=$wims_version
+!if $m1=local
+ nopublish=!items2words $wims_busyhours
+ nopublish=!singlespace $nopublish
+ nopublish=!text select 0123456789 $ in $nopublish
+ thishour=!char 10,11 of $wims_now
+ !if $nopublish != $empty and $thishour iswordof $nopublish
+  rep=ERROR badhour
+  !goto end
+ !endif
+ publishers=!sh cat $wims_home/log/.devpublishers
+ !if $auth_login notitemof $publishers
+  rep=ERROR nolocalright
+  !goto end
+ !endif
+ today=!char 1 to 8 of $wims_now
+ !if $oldver=$empty
+  !appendfile wimshome/modules/Changelog.new $today: $target $thisver
+ !else
+  !if $thisver>$oldver
+   !appendfile wimshome/modules/Changelog.modif $today: $target $thisver
+  !endif
+ !endif
+ !sh cd modules\
+  rm -fR $target\
+  mkdir -p `dirname $target`\
+  cp -pR devel/$auth_login/$mod $target\
+  find $target ! \( -type f -o -type d \) -exec rm -f '{}' \;\
+  cd $wims_home\
+  [ -d /wsys/wims ] && touch log/newmodules\
+  date '+%Y-%m-%d.%H:%M:%S' >tmp/mkindex.log\
+  echo "Building module index..." >>tmp/mkindex.log\
+  bin/mkindex >>tmp/mkindex.log
+ rep=OK copied to $target
+!else
+ !if $submitauth=$empty or $submitpass=$empty
+  pubprep=yes
+  !exit
+ !endif
+ !read scripts/publish
+!endif
+
+:end
+status=!word 1 of $rep
+!if $status notwordof OK ERROR
+ rep=ERROR noreply
+ !goto end
+!endif
+rep=!trim $rep
+sl=!charcnt $status
+rep2=!char $sl+1 to -1 of $rep
+
+wims_module_log=publish $submitauth/$mod $submittype $status

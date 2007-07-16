@@ -1,0 +1,116 @@
+!!INDEX
+!let module_author	=XIAO Gang
+!let module_address	=xiao@unice.fr
+!let module_title	=Delovni listi
+!let module_description	=Prikaz delovnih listov
+!let module_version	=2.00
+!let module_wims_version=2.00
+!let module_language	=en
+!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_category	=adm
+!let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
+
+!! e.g. algebra, analysis, geometry, etc.
+!let module_domain	=
+
+!! For search engines; anything you like.
+!let module_keywords	=
+
+!!INDEXEND
+
+!if $parm5=suspend
+ !set wims_scorereg=suspend
+!endif
+!if $parm5=reopen
+ !set wims_scorereg=
+!endif
+
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+
+!set sheet=!record $parm1 of wimshome/log/classes/$wims_class/sheets/.sheets
+!distribute lines $sheet into sheet_active,sheet_expiration,sheet_title,sheet_desc
+!if $wims_user != supervisor and $sheet_active<1
+ !distribute items $ into sheet_active,sheet_expiration,sheet_title,sheet_desc
+!endif
+!set requires=!getscorerequire sheet=$parm1
+!set scores=!getscore sheet=$parm1
+!set means=!getscoremean sheet=$parm1
+
+<hr width=1>
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Delovni list #$parm1<br>$sheet_title</h1></center> <p>
+$sheet_desc<p>
+
+!if $sheet_expiration!=$empty and $sheet_active=1
+ !set expday=!char 7,8 of $sheet_expiration
+ !set expmon=!char 5,6 of $sheet_expiration
+ !set expyear=!char 1 to 4 of $sheet_expiration
+ !set months=Jan,Feb,Mar,Apr,Maj,Jun,Jul,Avg,Sep,Okt,Nov,Dec
+ !set expmon=!item $expmon of $months
+ Datum zakljuèka lista: $expday. $expmon $expyear.
+ <p>
+!endif
+
+!if $sheet_active=2
+ <blink><b><font color=red>Opozorilo.</font></b></blink>
+ Ta list je ¾e zakljuèen. ©e vedno lahko dostopate do njegove vsebine in re¹ujete naloge, toda dose¾eni rezultati ne bodo veè upo¹tevani.
+ <p>
+!endif
+
+!if $sheet_active=$empty
+ !set n=0
+!else
+ !set n=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$parm1
+!endif
+
+!if $n=0
+ !if $sheet_active=$empty
+  Trenutno nimate pravice dostopati do vsebine tega delovnega lista. Obrnite se na skrbnika.
+ !else
+  Ta delovni list je trenutno prazen. Morda gre za napako skrbnika.
+ !endif
+!else
+ Predpisane naloge: (Bele¾enje rezultatov je
+ !set dd=!getscorestatus sheet=$parm1
+ !if $dd=yes
+  !if $wims_scorereg!=suspend
+   vkljuèeno, toda lahko ga
+   !href cmd=resume&parm5=suspend izkljuèite
+.)
+  !else
+   izkljuèeno na va¹o zahtevo.
+   !href cmd=resume&parm5=reopen Ponoven vklop
+.)
+  !endif
+ !else
+  onemogoèeno za va¹o povezavo.)
+ !endif
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$parm1
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $require>0
+   <small>$[$got] toèk (zahtevanih $[$require]), kvaliteta
+   $[$mean]/10.</small>
+  !endif
+ !next i
+ </ul>
+!endif
+
+!if $wims_user=supervisor
+<p>
+!href module=adm/class/sheet&sheet=$parm1 Urejanje lista
+ (za skrbnika).
+!endif
+<p>
+!tail
+

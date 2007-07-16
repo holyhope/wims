@@ -1,0 +1,67 @@
+De software heeft uw oefening zonder problemen gecompileerd.<br>
+Hieronder staat een samenvatting (s.v.p. controleren)
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Tilel<td><td>$title
+<tr><td align=right>Aantal parameters<td><td>$varcnt
+<tr><td align=right>Aantal open antwoorden<td><td>$replycnt
+<tr><td align=right>Aantal meerkeuzevragen<td><td>$choicecnt
+</table>
+<ul><li>
+Klik 
+!href cmd=resume&realtest=yes&retest=again hier
+ om deze oefening uit te testen.
+!if $mode!=file
+<p><li>
+Als u deze oefening nog wilt veranderen, ga dan 
+!href cmd=reply&level=2 ga terug 
+ naar het menu.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ Of verander de de broncode en stuur deze
+ <input type=submit value="opnieuw naar de server">:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ Terug naar het
+ !href cmd=reply&level=1&mode=normal startmenu
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>
+ Het is natuurlijk ook mogelijk een 
+ !href cmd=reply&level=6 plaatje
+ in te binden.
+!endif
+!if $wims_user!=$empty or $existing!=$empty
+ <p><li>
+ Wanneer alles inorde is, kunt u
+ !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
+   deze oefening toevoegen aan uw klas, of als 
+   !href cmd=reply&level=4 vervanging
+   van een reeds bestaande oefening,<br>
+   of als een
+   !href cmd=reply&level=4&newone=1 nieuwe oefening
+  !else
+  deze module toevoegen aan uw "werk in uitvoering" 
+   !href cmd=reply&level=4 modules
+  !endif
+ !else
+    deze module 
+  !href cmd=reply&level=4 toevoegen
+   aan uw klas
+ !endif
+.
+!endif
+!if $mode!=file
+ <p><li>
+ Als laatste: vergeet niet de
+ !getfile submit.oef broncode
+ van deze oefening te bewaren op uw eigen computer !
+!endif
+</ul>
+
+

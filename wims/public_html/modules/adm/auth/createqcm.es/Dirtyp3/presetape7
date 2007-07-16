@@ -1,0 +1,121 @@
+!!! fichier de présentation de l'étape 7 !!!
+<p>
+  <b><font color=darkcyan> Etape 7</font></b>
+ </p>
+<center>
+<table width=75%>
+  <tr>
+    <td>
+      Dans cette étape, vous devez <b>confectionner</b> l'énoncé de votre 
+      exercice.
+      <br>
+      Il s'agit de modifier l'énoncé type suivant pour 
+      l'adapter à votre exercice.
+    </td>
+  </tr>
+</table>
+    
+<p>
+<table bgcolor=azure border=2 width=70%>
+ <tr>
+   <td>
+     N'oubliez pas de préciser au passage le nombre de possibilités de choix à afficher 
+     avec l'énoncé. 
+     <b>Par défaut ce nombre est $propsnb</b> (toutes les possibilités).
+   </td>
+ </tr>
+</table>
+ </p>
+<br>
+<hr>
+<b>Enoncé type:</b>
+<table bgcolor=lightblue border=3>
+  <tr>
+    <td>
+      $enonceR
+    </td>
+  </tr>
+</table>
+</center>
+
+<p>
+Le code source de cet énoncé type se trouve ci-dessous.
+Modifiez le pour l'adapter à votre exercice. 
+Il convient de noter que votre énoncé doit 
+invoquer <b>l'objet</b> et <b>la fonction</b> prenant cet objet en argument.
+<br> 
+Dans le fichier source, 
+<ul>
+<li>
+<b>le nom (ou la desciption de l'objet) est stocké dans la variabe</b> <em>obj</em> 
+<b>et est invoqué en entrant la commande</b> <tt>\obj</tt>. 
+<li>
+<b>le nom (ou la desciption de la fonction) est stocké dans la variabe</b> 
+<em>fonc</em> <b>et est invoqué en entrant la commande</b> <tt>\fonc</tt>.
+</ul>
+ </p>
+<hr>
+
+<center>
+<table border=2>
+  <tr>
+    <th align=center>
+      Texte à modifier
+    </th>
+  </tr>
+  <tr>
+    <td align=center>
+!set wims_backslash_insmath=no
+<textarea name=enonceR rows=20 cols=70>
+$enonceR
+</textarea>
+    </td>
+  </tr> 
+</table>
+
+<table border=2>
+  <tr>
+    <th align=center bgcolor=lightblue colspan=2>
+      Nombre de possibilités de choix
+    </th>
+  </tr>
+  <tr>
+    <td bgcolor=wheat>
+      <input type="radio" name=ckchnb value=0
+      !if $ckchnb=0 
+        checked
+      !endif
+      > Toutes
+    </td>
+    <td bgcolor=turquoise>
+      <input type="radio" name=ckchnb value=1
+        !if $ckchnb=1
+	  checked
+	!endif
+       >
+        Afficher <input size=5 name=fixchnb value=$fixchnb> possibilités (au moins 2).
+     </td>
+   </tr>
+   <tr>
+     <td bgcolor=azure>
+       <input type="radio" name=ckchnb value=2
+         !if $ckchnb=2
+	  checked
+	!endif
+	>
+         Nombre aléatoire compris entre 2 et $propsnb
+     </td>
+     <td bgcolor=wheat>
+       <input type="radio" name=ckchnb value=3
+         !if $ckchnb=3
+	  checked
+	!endif
+	>
+         Nombre aléatoire compris entre <input size=5 name=borng value=$borng> et 
+	 <input size=5 name=bornd value=$bornd>
+     </td>
+   </tr>
+</table>
+</center>
+
+!read comsDir/valideb

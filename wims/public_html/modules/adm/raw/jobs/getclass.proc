@@ -1,0 +1,17 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+supp=connections
+!readdef $classdeffile
+
+userlist=!sh cd $wims_home/log/classes/$qclass/.users; ls | sort
+class_userlist=!singlespace $userlist
+class_usercount=!wordcnt $class_userlist
+
+option=!listintersect $option and $classdefs,$supp
+!if $option=$empty
+ option=$classdefs,$supp
+!endif
+

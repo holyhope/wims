@@ -1,0 +1,53 @@
+
+!if $ccnt<1
+ No message board has been found on this site. <p>
+ !href module=home WIMS home
+ !exit
+!endif
+
+We host $ccnt message boards on this site.
+Find the message board which interests you in the following table.
+
+<p>$table_header
+$table_hdtr<th>Title<th>Connection<th>Language<th>Description
+!for i=1 to $ccnt
+ !set l=!record $i of $indf
+ !distribute items $l into code,la
+ !defread wimshome/log/forums/$code/.def
+ $table_tr<td align=center>$mb_title
+ <td align=center>
+ !reset user_exists
+ !read wimshome/$wims_sesdir/mb_user.$code
+ !if $user_exists=$empty
+  !if $mb_readpolicy=open
+   !href module=adm/forum/mboard.$la&forum=$code visitor
+   &nbsp;
+  !endif
+  !href cmd=reply&type=authuser&forum=$code user
+  &nbsp;
+  !href cmd=reply&type=authowner&forum=$code owner
+  !if * notin $mb_password
+   &nbsp;
+   !href module=adm/forum/reguser&forum=$code register
+  !endif
+ !else
+  !if $forumuser!=supervisor
+   !href module=adm/forum/mboard.$la&forum=$code user
+   &nbsp;
+   !href cmd=reply&type=authowner&forum=$code owner
+  !else
+   !href cmd=reply&type=authuser&forum=$code user
+   &nbsp;
+   !href module=adm/forum/mboard.$la&forum=$code owner
+  !endif
+ !endif
+ </td><td align=center><img src=gifs/$la.gif></td>
+ <td>$mb_description</td>
+!next i
+$table_end <p>
+
+Click on the type of the connection to enter the message board, or
+click on the word `Register' to register to it. You may also
+!href module=adm/forum/regforum create your message board
+ on this site.
+

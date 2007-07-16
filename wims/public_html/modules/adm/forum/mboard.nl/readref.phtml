@@ -1,0 +1,40 @@
+ <small>
+ !if $dcnt>1
+  [
+  !if $dlast!=$empty
+   !href cmd=reply&job=read&r_msg=$dlast &lt;&lt;
+   &nbsp;
+  !endif
+  !href cmd=reply&job=list Op datum
+  !if $dnext!=$empty
+   &nbsp;
+   !href cmd=reply&job=read&r_msg=$dnext &gt;&gt;
+  !endif
+  ]
+ !endif
+ !if $r_prec!=$empty
+  &nbsp;
+  !set t_=!translate / to , in $r_prec
+  !href cmd=reply&job=read&r_msg=$r_prec Vorige
+ !endif
+ !if $repcnt>0
+  &nbsp;
+  !href cmd=reply&job=read&r_msg=$r_rep1 Eerst volgende
+  &nbsp;
+  !href cmd=reply&job=thread&th_orig=$l_thread&th_start=$r_msg Alle volgende
+ !endif
+ !if $thtcnt>1
+  &nbsp;&nbsp;[
+  !if $tlast!=$empty
+   !href cmd=reply&job=read&r_msg=$tlast &lt;&lt;
+   &nbsp;
+  !endif
+  !href cmd=reply&job=thread&th_orig=$l_thread&th_start=$l_thread thread
+  !if $tnext!=$empty
+   &nbsp;
+   !href cmd=reply&job=read&r_msg=$tnext &gt;&gt;
+  !endif
+  ]
+ !endif
+ </small>
+ 

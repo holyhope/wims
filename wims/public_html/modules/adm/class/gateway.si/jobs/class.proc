@@ -1,0 +1,50 @@
+
+parent=level
+thiscode=$class
+!if $cancel!=$empty or $class=$empty
+ job=first
+ !changeto jobs/$job.proc
+!endif
+
+classhome=$classdir1/$class
+!readdef $classhome/.def
+!if $class_defined!=yes
+ !goto back
+!endif
+
+!if $confirm=$empty
+ :normal
+ courses=!record 0 of $classhome/courses
+ courses=!nonempty lines $courses
+ coursecnt=!linecnt $courses
+ pass=$class_password
+ passs=!defof user_password in $classhome/supervisor
+ !exit
+!endif
+
+title=!trim $title
+title=!replace internal , by &#44; in $title
+!if $title=$empty
+ error=empty_data
+ !exit
+!endif
+
+modclass_list=description,supervisor,Supervisor,password,secure
+cadd_description=$title
+cadd_Supervisor=$sup
+modclass_slist=password
+sadd_password=$passs
+cadd_password=$pass
+cadd_secure=$sechost
+
+!read adm/gateway/modclass $class
+
+!if $error!=$empty
+ !exit
+!endif
+
+!read adm/gateway/mkindex
+!reset confirm,title,sup,passs,pass
+!readdef $classhome/.def
+!goto normal
+

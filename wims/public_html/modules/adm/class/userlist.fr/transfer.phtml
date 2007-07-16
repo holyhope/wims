@@ -1,0 +1,73 @@
+<center>$classname<p>
+
+<h3>Transfert d'activités pour
+ !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ (<tt>$getuser</tt>)
+</h3> </center> <p>
+
+!if $error=no_reccourse
+ <b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant
+ dans la classe actuelle pour recevoir le transfert depuis
+ !defof class_description in wimshome/log/classes/$transferclass/.def
+.
+ <p>
+ !exit
+!endif
+
+!if $ttype=show
+ !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
+ !if $transferclass notitemof $tr_list or $i=$empty
+  <b>Erreur</b> d'identifiant des classes. Fausse manoeuvre ou bogue du
+  logiciel ?
+  !exit
+ !else
+  Détail des activités dans $i (limité à 1000 lignes).
+  <p><hr>
+  <small><pre>
+  !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
+  </pre></small><hr><p><center>
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass Joindre
+&nbsp;
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass Remplacer
+&nbsp;
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser Annuler
+  </center>
+  !goto endd
+ !endif
+!endif
+
+Voici les autres cours dans lesquels le participant a eu des activités.
+Cliquez sur une action pour transférer dans
+!if $tr_typename=course
+ ce cours.
+!else
+ cette classe.
+!endif
+
+$table_header
+$table_hdtr<th>Cours</th>
+<th>Action</th></tr>
+!for c in $tr_list
+ $table_tr
+ <td>
+ !defof class_description in wimshome/log/classes/$c/.def
+ <td>
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Joindre
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Remplacer
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c Examiner
+!next c
+$table_end
+
+:endd
+<b>Remarques</b>. <ol>
+<li>"Joindre" veut dire mettre ensemble les activités dans les deux cours.
+<li>"Remplacer" veut dire que les activités de l'autre cours vont écraser
+celles ici. Le remplacement n'aura pas lieu si le premier est vide.
+<li>Les scores des examens et des activités non-comptées sont toujours joints.
+<li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.
+<li>Après l'action (joindre ou remplacer), les registres d'activités du participant dans
+l'autre cours seront effacés.
+</ol>
+

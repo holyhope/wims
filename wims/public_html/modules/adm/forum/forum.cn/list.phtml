@@ -1,0 +1,52 @@
+
+!if $ccnt<1
+本站没有信息板. <p>
+ !href module=home WIMS主页
+ !exit
+!endif
+
+本站有 $ccnt 个信息板.
+请在下表找寻感兴趣的信息板.
+
+<p>$table_header
+$table_hdtr<th>标题<th>连接<th>语言<th>描述
+!for i=1 to $ccnt
+ !set l=!record $i of $indf
+ !distribute items $l into code,la
+ !defread wimshome/log/forums/$code/.def
+ $table_tr<td align=center>$mb_title
+ <td align=center>
+ !reset user_exists
+ !read wimshome/$wims_sesdir/mb_user.$code
+ !if $user_exists=$empty
+  !if $mb_readpolicy=open
+   !href module=adm/forum/mboard.$la&forum=$code 访问者
+   &nbsp;
+  !endif
+  !href cmd=reply&type=authuser&forum=$code 用户
+  &nbsp;
+  !href cmd=reply&type=authowner&forum=$code 板主
+  !if * notin $mb_password
+   &nbsp;
+   !href module=adm/forum/reguser&forum=$code 注册
+  !endif
+ !else
+  !if $forumuser!=supervisor
+   !href module=adm/forum/mboard.$la&forum=$code 用户
+   &nbsp;
+   !href cmd=reply&type=authowner&forum=$code 板主
+  !else
+   !href cmd=reply&type=authuser&forum=$code 用户
+   &nbsp;
+   !href module=adm/forum/mboard.$la&forum=$code 板主
+  !endif
+ !endif
+ </td><td align=center><img src=gifs/$la.gif></td>
+ <td>$mb_description</td>
+!next i
+$table_end <p>
+
+点击连接类型以进入信息板, 或点击`注册'进入. 你也可以在本站
+!href module=adm/forum/regforum 创建你的信息板
+.
+

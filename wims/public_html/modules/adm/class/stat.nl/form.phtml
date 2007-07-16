@@ -1,0 +1,24 @@
+!form reply
+<input type=hidden name=show value=yes>
+<table border=0>
+<tr><td align=right>Statistische gegevens van:<td>
+!set wims_formselect_switch=multiple size=8
+!formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
+	prompt\
+	vereiste punten, gewicht,\
+	moeilijkheids graad, totalen,\
+	gemiddelde per score, gemiddelde per leerling,\
+	minimum en maximum, standaardafwijking
+<tr><td align=right>Type data:<td>
+!set wims_formselect_switch=
+!formselect types list 1,2,3 prompt \
+	registreerde activiteiten, niet-registreerde activiteiten, alle activiteiten
+!if $sharer!=$empty
+ <tr><td align=right>Tel de activiteiten van de klas<br>
+ gedeelde werkbladen met uw klas:
+ <td>
+ !formradio share list yes,no prompt Ja, Nee
+!endif
+<tr><td colspan=2 align=center><input type=submit value="Laat zien">
+</table></form>
+

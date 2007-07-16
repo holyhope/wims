@@ -1,0 +1,52 @@
+#--------------------------
+# accelerateur d'execution |
+#--------------------------
+wims_multiexec= maxima pari yacas
+
+
+################## debut d'initialisation ##################
+status=waiting
+wims_module_log=$cmd
+
+#------------------------------
+# initialisation de constantes |
+#------------------------------
+etape=1
+navig=1
+ckchnb=0
+
+#------------------------
+# vidange de code source |
+#------------------------
+!mexec rmdepot.sh
+
+#---------------------
+# lecture des alertes |
+#---------------------
+!read comsDir/alerts
+
+#-------------------------
+# lecture des cosmétiques |
+#-------------------------
+!read comsDir/formats
+!read comsDir/exosDescription
+
+version=v0.6
+
+warning=!record 1 of comsDir/warning
+warning=!trim $warning
+
+
+#------------------------------------------
+# redirection vers le répertoire approprié |
+#------------------------------------------
+!if $exo>3
+  demo=oui
+  exo=$[$exo-3]
+!endif
+
+prefixdir=Dirtyp$(exo)
+!read $prefixdir/init
+
+
+

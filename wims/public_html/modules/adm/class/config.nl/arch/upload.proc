@@ -1,0 +1,58 @@
+!if $job2=restore
+ !goto next
+!endif
+wims_deposit=!word 1 of $wims_deposit
+selection=
+gotlist=
+
+!if . notin $wims_deposit or / isin $wims_deposit or .. isin $wims_deposit
+ error=bad_file
+ !exit
+!endif
+
+t=!translate . to $ $ in $wims_deposit
+format=!word 2 to -1 of $t
+format=!translate $ $ to . in $format
+!if $format notwordof tgz tar.gz zip
+ error=bad_file
+ !exit
+!endif
+
+!mexec arch/decompress.sh
+:next
+new=$wims_sesdir/upload/class
+old=log/classes/$wims_class
+v=!record 0 of wimshome/$new/version
+v=!trim $v
+!if $v=$empty or $v notwordof 4
+ error=bad_file
+ !exit
+!endif
+
+!for type in new,old
+ !read scripts/reccnt.proc $type $($type)
+ t=!defof class_defined in $($type)/.def
+ !if $t=yes
+  $(type)_defcnt=1
+ !else
+  $(type)_defcnt=0
+ !endif
+!next type
+new_reccnt=$[$new_reccnt+$new_defcnt+$new_supcnt]
+
+!for rec in $reclist
+ !if $(new_$(rec)cnt)>0
+  gotlist=!append item $rec to $gotlist
+ !endif
+!next rec
+
+!if $gotlist=$empty
+ error=empty_file
+ !exit
+!endif
+
+serial=!record 0 of $new/serial
+serial=!word 1 of $serial
+
+!readdef wimshome/log/classes/$wims_class/neighbors
+

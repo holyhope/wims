@@ -1,0 +1,76 @@
+<html><head> $wims_html_header </head> <body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Insert a module to a sheet
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Back to home page
+. <p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+ You want to insert the work item <tt>$dir</tt>
+ !if $initparm!=$empty
+  with initiation parameters <tt>$iniparm</tt>
+ !endif
+. <p>
+
+ !form reply
+ Choose the sheet into which you want to insert the work item:
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>Sheet $se: $ti
+ !next i
+ </select>
+ <p>You can also modify the title and description text. <p>
+ !set title=!trim $title
+ !default title=Exercise
+ Title: <input size=50 name=title value="$title"> <p>
+ Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>Number of points which you ask each participant to obtain on this work:
+  <input size=4 name=require value="$require"> <small>(each complete success
+  on the exercise gives 10 points; so put more than 10 points here if you
+  want the participant to repeat the exercise.)</small> <p>
+  Weight of points obtained on this work (for the computation of averages):
+  <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="Insert"></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ The application ``<tt>$title</tt>'' has been successfully inserted into the 
+ sheet $picksheet of your class.
+ <ul>
+  <li>
+   !href module=adm/class/sheet&sheet=$picksheet Verify the sheet
+.</li>
+  <li>
+   !href module=$dir back to module
+.</li>
+ </ul>
+!endif
+
+:end
+!tail
+
+!set job=
+

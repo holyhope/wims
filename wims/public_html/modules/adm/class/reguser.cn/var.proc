@@ -1,0 +1,292 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+wims_form_method=post
+wims_prefix=class user tmp n sharing sharable
+wims_helper=chapter=3
+
+!default class=$wims_class
+!read tabletheme
+
+!if $site_total=$empty
+ !read adm/class/stat
+ site_total=$usercnt
+ !default site_total=0
+ site_dispo=$[$wims_user_limit-$site_total]
+ !if NaN isin $site_dispo
+  error=internal_total
+  !exit
+ !endif
+ !if $site_dispo<1
+  error=site_complete
+  !exit
+ !endif
+!endif
+
+!if $class!=$empty and $subclass=yes
+ ctype=!defof class_type in wimshome/log/classes/$class/.def
+ classlist=
+ !if $ctype=2
+  classcnt=!recordcnt wimshome/log/classes/$class/.subclasses
+  !for i=1 to $classcnt
+   l=!record $i of wimshome/log/classes/$class/.subclasses
+   classlist=!append item $(l[1]) to $classlist
+  !next i
+ !endif
+ !if $ctype=4
+  classlist=!record 0 of wimshome/log/classes/$class/classes
+  classlist=!column 1 of $classlist
+  classlist=!nonempty items $classlist
+  classlist=!makelist $class/xx for xx in $classlist
+ !endif
+ !if $classlist!=$empty
+  classcnt=!itemcnt $classlist
+  institution_name=!defof class_institution in wimshome/log/classes/$class/.def
+  !reset class, subclass
+  !exit
+ !endif
+!endif
+
+!if $class!=$empty and $subclass!=yes and $wims_user=supervisor
+ ctype=!defof class_typename in wimshome/log/classes/$class/.def
+ !if $ctype=course
+  ctest=!sh readlink $wims_home/log/classes/$class/.userlist
+  cl=!defof n_part in wimshome/log/classes/$class/neighbors
+  ctype=!defof class_typename in wimshome/log/classes/$cl/.def
+  !if $ctest=../.userlist and $ctype=class
+   class=$cl
+   classpass=!defof class_password in wimshome/log/classes/$cl/.def
+   fromcourse=yes
+  !endif
+ !endif
+!endif
+
+!if $class=$empty
+ classcnt=!recordcnt wimshome/log/classes/.index
+ !bound classcnt between integer 0 and 500
+ classe=
+ classlist=
+ ctype=0
+ !for i=1 to $classcnt
+  l=!record $i of wimshome/log/classes/.index
+  classlist=!append item $(l[1]) to $classlist
+ !next i
+ !exit
+!endif
+
+!if $classe=$empty
+ !defread wimshome/log/classes/$class/.def
+ !if $class_defined!=yes
+  error=no_class
+  !exit
+ !endif
+ !if $class_typename iswordof level program or \
+	$wims_user=supervisor and $class_typename iswordof course
+  error=bad_classtype
+  !exit
+ !endif
+ !if $class_typename=course
+  test=!defof class_ocourses in wimshome/log/classes/$class_parent/.def
+  test=!makelist $class_superclass/x for x in $test
+  !if $class isitemof $test
+   error=bad_classtype
+   !exit
+  !endif
+ !endif
+ participants=!recordcnt wimshome/log/classes/$class/.userlist
+ classe=$class_limit\
+$participants\
+$class_password\
+$class_institution\
+$class_description\
+$class_supervisor\
+$class_email\
+$class_type
+ passverify=
+ !if $participants>=$class_limit
+  error=complete
+  !exit
+ !endif
+!endif
+!distribute lines $classe into limit,participants,password,institution,description,supervisor,smail,cltype
+
+# class password verification.
+!if $step=1 or ($step=$empty and (wims_user=supervisor or $classpass=$password))
+ !if ($class=$wims_class and $wims_user=supervisor) or $classpass=$password
+  superclass=!defof class_superclass in wimshome/log/classes/$class/.def
+  passverify=ok
+  search=!translate internal '",\:;$$&@*=+?/|^()[]{} to \
+	................................... in $search
+  search=!word -1 of $search
+  !if $class!=$superclass and $superclass!=$empty and $wims_user=supervisor \
+	and $search!=$empty
+   found=!sh cd $wims_home/log/classes\
+    comm -23 $superclass/.userlist $class/.userlist | \\
+	grep -i "$search" | sed 's/^://' | head -100
+   foundcnt=!linecnt $found
+   !exit
+  !endif
+  !if $superclass!=$empty and ../$superclass/ isin ../$wims_class/ \
+	and $wims_user!=supervisor
+    !read adm/class/userdef classes,$wims_class,$wims_user
+    scl=!defof user_participate in $userdef
+    cl2=!defof user_class in wimshome/log/classes/$class/.users/$wims_user
+    !if $class notitemof $scl and $cl2=$empty
+     adduser_replace=none
+     up_class=$class
+     !read adm/class/adduser $wims_user
+     adduser_replace=
+     !readdef $userdef
+     login=$wims_user
+     wims_otherclass=!append item $class $wims_user to $wims_otherclass
+     mses=!translate internal _ to $ $ in $wims_sesdir
+     mses=!word 1 of $mses
+     !setdef wims_participate=$user_participate in wimshome/$mses/var.stat
+     !setdef wims_otherclass=$wims_otherclass in wimshome/$mses/var.stat
+     wims_module_log=Addclass $class by $wims_class/$wims_user
+     !read adm/class/mkuserlist $class
+     date=!translate : to . in $wims_now
+     !appendfile wimshome/log/classes/$class/.log $date $httpd_REMOTE_ADDR	User $login added: $lastn, $firstn
+    !endif
+    step=3
+    !exit
+  !endif
+ !else
+  error=bad_classpass
+ !endif
+ !exit
+!endif
+
+!if $step=2
+ !read adm/class/authchars
+ n=!charcnt $login
+ !if $n<$login_min or $n>$login_max
+  error=login_size
+  !exit
+ !endif
+ ltest=!text select .$char_login in $login
+ !if $login!=$ltest
+  error=bad_login
+  !exit
+ !endif
+ Login=!translate internal . to @ in $login
+ user_exists=
+ !read adm/class/userdef classes,$class,$Login
+ test_exists=!defof user_exists in $userdef
+ !if $wims_user=supervisor and $Login!=$empty and $Login!=supervisor \
+	and $test_exists=yes
+  !readdef $userdef
+  pass=$user_password
+  ptest=$pass
+  !goto existing
+ !endif
+ !for i in lastn,firstn
+  $i=!replace , by &#44; in $($i)
+  $i=!translate internal !$$<" to $    $ in $($i)
+  $i=!trim $($i)
+  $i=!singlespace $($i)
+  $i=!char 1 to 40 of $($i)
+ !next i
+ !if $lastn=$empty or $firstn=$empty
+  error=no_real
+  !exit
+ !endif
+ email=!translate internal "<>',|!$$ to $         $ in $email
+ email=!word -1 of $email
+ email=!char 1 to 60 of $email
+ !if $email!=$empty and (@ notin $email or . notin $email)
+  email=
+ !endif
+ n=!charcnt $pass
+ !if $n<$login_min or $n>$login_max
+  error=pass_size
+  !exit
+ !endif
+ ltest=!text select $char_passwd in $pass
+ !if $pass!=$ltest
+  error=bad_pass
+  !exit
+ !endif
+ !read adm/class/userdef classes,$class,$Login
+ userdef2=!replace users/ by users/. in $userdef
+ work=!filelist $wims_home/log/classes/$class/{score,noscore}/$Login
+ work=!trim $work
+ exist1=!defof user_exists in $userdef
+ exist2=!defof user_exists in $userdef2
+ stest=!defof class_superclass in wimshome/log/classes/$class/.def
+ !if $exist1!=$empty and $stest!=$empty
+  :existing
+  ptest=!defof user_password in $userdef
+  ctest=!defof user_participate in $userdef
+  ptest1=!passcrypt $ptest
+  ptest2=!passcrypt $pass
+  !if $ptest2 iswordof $ptest1
+   ctest=!append item $class to $ctest
+   ctest=!listuniq $ctest
+   !setdef !set user_participate=$ctest in $userdef
+   step=3
+   !goto endreg
+  !endif
+ !endif
+ !if $exist1$exist2!=$empty or $work!=$empty or \
+	$login iswordof supervisor visitor
+  error=login_double
+  !exit
+ !endif
+ login_bak=$login,$pass
+ !exit
+!endif
+
+!if $step=3
+ !if $pass!=$pass2 or $login_bak!=$login,$pass
+  error=pass_error
+  !exit
+ !endif
+ Login=!translate internal . to @ in $login
+ !read adm/class/userdef classes,$class,$Login
+ userdef2=!replace internal users/ by users/. in $userdef
+ !defread $userdef
+ user_exists=
+ !defread $userdef2
+ work=!filelist $wims_home/log/classes/$class/{score,noscore}/$Login
+ !if $user_exists=yes or $work!=$empty
+  error=login_double
+  !exit
+ !endif
+ up_firstname=$firstn
+ up_lastname=$lastn
+ up_email=$email
+ up_password=$pass
+ up_class=$class
+ !if ($cltype iswordof 2 4 and $wims_user=$empty) or\
+  ($wims_user=supervisor and $utype iswordof 1 3)
+  up_supervisable=yes
+ !else
+  up_supervisable=no
+ !endif
+ !read adm/class/adduser $login
+ user_exists=
+ !defread $userdef
+ !if $user_exists!=yes
+  error=insert_fail
+  !exit
+ !endif
+ :endreg
+ !read adm/class/mkuserlist $class
+ !if $up_supervisable=yes
+  superclass=!defof class_superclass in wimshome/log/classes/$class/.def
+  !if $superclass!=$empty
+   ctype=!defof class_type in wimshome/log/classes/$superclass/.def
+  !else
+   superclass=$class
+   ctype=$class_type
+  !endif
+  !ifval $ctype=4
+   !read adm/gateway/mkteacherlist $superclass
+  !endif
+ !endif
+ wims_module_log=registered $login in $class
+ date=!translate : to . in $wims_now
+ !appendfile wimshome/log/classes/$class/.log $date $httpd_REMOTE_ADDR	User $login created: $lastn, $firstn
+ !exit
+!endif
+

@@ -1,0 +1,53 @@
+
+<p>
+!if $totalcnt>0
+ !if $totalcnt>=$sellist
+  Hai $totalcnt moduli in lavorazione.
+  !href cmd=reply&jobreq=prop <small>Modifica opzioni dell'account</small>
+  <p>
+  !form reply
+  Mostra solo i moduli il cui indirizzo contiene
+  <input type=text size=30 name=selectshow value="$selectshow">
+  <input type=submit value=OK>
+  !href cmd=help&special_parm=regex <sup>help</sup>
+  </form> <p>
+ !endif
+ $table_header
+ <caption>Clicca sul titolo del modulo per modificarlo.
+ !if $totalcnt>=$maxlist and $existcnt>=$maxlist
+  <br>(la lista è limitata a $maxlist elementi)
+ !endif
+ </caption>
+ $table_hdtr<th>Indirizzo<th>Titolo<th>Azione<th>Descrizione
+ </tr>
+ !for n in $existing
+  !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
+  $table_tr<td><small>
+  !replace internal ~ by ~ $ in $n $
+  !if ~ notin $n
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [rename]
+  !endif
+  </small></td><td>
+  !href cmd=reply&jobreq=flist&modreq=$n $title
+  <td align=center><small>
+  !href cmd=reply&jobreq=index&modreq=$n proprietà
+
+  !href cmd=reply&jobreq=del&modreq=$n cancella
+  </small></td><td><small>$description</small></td>
+  </td></tr>
+ !next n
+ $table_end <p>
+ !href cmd=reply&jobreq=create Crea un nuovo modulo
+.&nbsp;
+ !href cmd=reply&jobreq=restore Ripristina un file di backup
+.
+!else
+ Non ci sono moduli in lavorazione. &Egrave; possibile
+ !href cmd=reply&jobreq=create crearne 
+ uno nuovo, oppure 
+ !href cmd=reply&jobreq=restore ripristinare un file di backup
+.
+!endif
+
+!reset target target1 target2 target3 target4 selectshow
+

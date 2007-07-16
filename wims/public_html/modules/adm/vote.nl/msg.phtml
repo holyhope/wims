@@ -1,0 +1,43 @@
+!set wims_module_log=error: $error
+
+<b>Fout</b>.
+
+!if $error = not_user
+Het stemsysteem is alleen beschikbaar voor virtuele klassen
+ !exit
+!endif
+
+!if $error = bad_vote
+ De stemming/registratie waar je om vroeg, bestaat niet.
+ !exit
+!endif
+
+!if $error = already_voted
+ Je hebt al eens een stem uitgebracht. 
+ !exit
+!endif
+
+!if $error = too_many_votes
+ Er zijn te veel stemmen / registraties uitgebracht in Uw klas 
+ <p>
+ Waarom heeft U er zoveel nodig?
+ !exit
+!endif
+
+!if $error = no_content
+ U hebt de inhoud van het stemformulier / verkiezingsformulier nog niet ingevuld
+ !exit
+!endif
+
+!if $error = no_title
+ S.V.P. Geef de titel/naam van Uw stemmingsronde.
+ !exit
+!endif
+
+!if $error = bad_data
+ Enkele van Uw definities zijn ongeldig, graag corrigeren.
+ !exit
+!endif
+
+!msg $error
+

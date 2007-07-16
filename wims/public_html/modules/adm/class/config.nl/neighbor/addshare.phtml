@@ -1,0 +1,58 @@
+
+Het delen van materiaal tussen de klassen
+!href cmd=reply&job2=def $nei_description
+ van
+<em><font color=blue>$nei_institution</font></em>.
+(Supervisor:
+<a href="mailto:$nei_email?subject=Delen van materiaal tussen onze klassen
+relations">$nei_supervisor</a>)
+<p>
+Deze klas biedt je het volgende materiaal aan;
+<small>
+!href cmd=help&special_parm=share Help
+</small>
+<ul>
+!for r in $nsharable
+ <p><li><em>$(name_$r)</em> ($(it_$(r)cnt) beschikbaar).
+ !if $r isitemof $sharing or $(sharable_$r)!=$empty
+  !if $r isitemof $sharing
+   !if $(sharing_$r)=$nei
+    U bent reeds aan het lenen/delen met hen.
+    !href cmd=reply&job2=stopshare&stoprec=$r Stoppen met delen
+. <small>
+    !href cmd=help&special_parm=stopshare Help
+    </small>
+   !else
+   U kunt dit niet delen, omdat dit materiaal niet van Uw eigen klas is.
+   !endif
+  !else
+  U kunt dit niet delen,
+  omdat dit reeds in deling is gegeven.
+    Cascaded sharing is not supported. So you must stop allowing these
+   shares before you can share from others.
+  !endif
+ !else
+  !if $(me_$(r)cnt)>0 and $r isitemof $nosharelist
+   Dit kunt U niet delen omdat uw eigen $(name_$r) niet leeg zijn.
+   Voor dat er gedeeld kan worden, moet u eerst uw eigen materiaal
+   !href cmd=reply&job=clean opschonen
+   (indien mogelijk).
+  !else
+   !href cmd=reply&addshare=$r Delen
+.
+   !if $(me_$(r)cnt)>0
+    <b><font color=red>WAARSCHUWING</font></b>.
+    !if $r=sup
+     Het delen van een supervisor account is NIET verstandig ! 
+     !href cmd=help&special_parm=supshare Meer Info.
+    !else
+     Dit zal uw eigen $(name_$r) kompleet wissen! En het zal voorgoed verloren zijn 
+     als u geen backup heeft gemaakt
+
+    !endif
+   !endif
+  !endif
+ !endif
+!next r
+</ul>
+

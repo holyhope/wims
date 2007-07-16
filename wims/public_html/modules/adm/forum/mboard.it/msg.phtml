@@ -1,0 +1,105 @@
+!! This file contains error messages. It will be processed
+!! whenever the variable `error' is not empty.
+
+!set errorhead=<b>Errore.</b>
+
+!if forum_not_exist = $error
+ $errorhead Il forum di discussione non esistse. Spiacente.
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_read_right = $error
+ $errorhead Non siete abilitati per accedere a questo forum.
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_subject = $error
+ $errorhead Manca la `Subject:' del messaggio.
+ !exit
+!endif
+
+!if translation_fail = $error
+ $errorhead Errore interno: il server non &egrave; in grado di 
+ interpretare il mesagio
+ !if $wims_exec_error!=$empty
+  <p>
+  Tipo d'errore: <tt>$wims_exec_error</tt>
+ !endif
+ !exit
+!endif
+
+!if open_tag = $error
+ <b>Nota.</b>
+ Il messaggio sembra contenere codice html non valido (un tag non
+ si chiude). Verificare!<p>
+ Si tenga presente che il messaggio viene interpretato come codice html, 
+ quindi se si scrivono diseguaglianze &egrave; necessario far seguire
+ uno spazio ad ogni segno `&lt;', o inserire le diseguaglianze come formule
+ matematiche (delimitate da coppie di \( e \) ).
+ !exit
+!endif
+
+!if bad_message = $error
+ $errorhead Il messaggio richiesto non esiste. 
+ Verificare il comando.
+ !exit
+!endif
+
+!if erased_message = $error
+ $errorhead The message you wanted to read has been erased.
+ !exit
+!endif
+
+!if $error=no_send_right
+ $errorhead Non siete abilitati a scrivere in questo forum.
+ Spiacente.
+ <p>
+ !href cmd=reply&job=list&mlist=.newlist Indice dei messaggi
+ !exit
+!endif
+
+!if $error=email_required
+ $errorhead Per scrivere in questo forum &egrave; necessario un indirizzo
+ di posta elettronica.
+ <br>
+ <b>ATTENZIONE.</b> Il server effettuer&agrave; una verifica. &Egrave; 
+ perfettamente inutile dare un indirizzo falso o non funzionante.
+ !set job=compose
+ !exit
+!endif
+
+!if $error=bad_email
+ $errorhead L'indirizzo di posta elettronica dato non &egrave; valido.
+ Per favore verificare e correggere.
+ !set job=compose
+ !exit
+!endif
+
+!if $error=bad_sendcode
+ $error_head Il messaggio non &egrave; stato accettato perch&eacute; il
+ codice di acesso inserito &egrave; sbagliato.
+ <p>
+ Verificare l'indirizzo di posta elettronica, selezionare di nuovo
+ `invio' e attendere l'invio per e-mail di un NUOVO codice
+ di accesso.
+ !set job=compose
+ !exit
+!endif
+
+!if $error=not_owner
+ $error_head Solo l'owner del forum pu&ograve; modificare le opzioni.
+ <p>
+ !set job=list
+ !exit
+!endif
+
+!if auth_failure = $error
+ $errorhead Errore nell'accesso. <p>
+ !set fatal=yes
+ !exit
+!endif
+
+!msg $error
+

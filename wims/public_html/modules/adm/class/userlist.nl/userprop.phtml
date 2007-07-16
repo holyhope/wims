@@ -1,0 +1,53 @@
+
+<center><h3>Eigenschappen Leerling account</h3></center>
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!set inplen=40
+!form reply
+<input type=hidden name=job value=userprop>
+<input type=hidden name=getuser value=$getuser>
+<p><center><table border=2 bgcolor=$table_bgcolor>
+<tr><th>Login naam<td><tt>$getuser</tt>
+<tr><th>Wachtwoord<td>
+	!href module=adm/class/passwd&job=part&part=$getuser Verander
+<tr><th>Achternaam<td>
+	<input size=$inplen name=up_lastname value="$user_lastname">
+<tr><th>Voornaam<td>
+	<input size=$inplen name=up_firstname value="$user_firstname">
+<tr><th>email adres<td>
+	<input size=$inplen name=up_email value="$user_email">
+<tr><th>Registratie nummer<td>
+	<input size=$inplen name=up_regnum value="$user_regnum">
+!if $wims_user=supervisor
+ <tr><th>Opmerkingen<td>
+	<input size=$inplen name=up_comments value="$user_comments">
+ <tr><th>Variabelen (technisch)</th><td>
+	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars>$user_vars</textarea>
+!else
+ <tr><th>klasse wachtwoord<td>
+	<input size=14 type=password name=passcheck> <br>
+	<small>Voer het wachtwoord in voor de leerlingen registratie</small>
+!endif
+</table> <p>
+<input type=submit name=reg value=Bewaren>
+<input type=submit name=abandon value=Annuleren>
+</form>
+!if $wims_user=supervisor
+ <p>
+ !href cmd=reply&job=getuser&getuser=$getuser de cijfers van deze leerling
+ .
+ !href cmd=reply&job=getraw&getraw=$getuser details van het werk
+ .
+ <p>
+ !href cmd=reply&job=delprep&delprep=$getuser Verwijder deze leerling
+ .
+ !href cmd=resume Lijst van alle leerlingen
+ .
+!endif
+</center> <p>
+
+!reset reg,abandon
+

@@ -1,0 +1,110 @@
+
+!set wims_form_method=post
+<center>$classname
+<h3>Données de classe pour tableur
+<br></b><font size=-1>[
+!href cmd=reply liste et notes en direct
+ ]</font></h3>
+</center> <p>
+
+!if $error!=$empty
+ !read msg.phtml
+ !if $error iswordof not_secure not_superclass
+  !exit
+ !endif
+ <p><hr> <p>
+!endif
+
+!if $outfile!=$empty
+ Voici le fichier <tt>
+ !getfile $outfile $outfile
+ </tt> que vous pouvez télécharger et ouvrir dans votre logiciel 
+ tableur préféré.
+ <p><hr> <p>
+!endif
+
+!if $processed=yes and $error=$empty
+ !if $remark$change$added$missing$erased!=$empty or $manual=yes
+  Le fichier de tableur <tt>$wims_deposit</tt> est reconnu avec succès.<ul>
+  !if $change!=$empty
+   <li>Informations de participants changées&nbsp;: <tt>$change</tt>
+  !endif
+  !if $added!=$empty
+   <li>Nouveaux participants ajoutés&nbsp;: <tt>$added</tt>
+  !endif
+  !if full iswordof $remark
+   <li>L'addition de nouveaux participants est ignorée car il n'y a plus de place
+   disponible.
+  !endif
+  !if noprop iswordof $remark
+   <li>Informations de participants inchangées car des notes sont reçues.
+  !endif
+  !if noauto iswordof $remark
+   <li>Les notes calculées par le serveur (moyennes et notes de feuilles/examens)
+  sont ignorées dans vos données car elles ne peuvent pas être changées.
+  !endif
+  !if $erased!=$empty
+   <li>Données ignorées concernant des participants effacés&nbsp;:
+   <tt>$erased</tt>
+  !endif
+  !if $missing!=$empty
+   <li>Les noms de login suivants sont inexistants et ne peuvent pas être
+   !if full notwordof $remark
+    ajoutés, à cause d'information insuffisante/incorrecte dans les données
+    envoyées&nbsp;:
+   !else
+    ajoutés (mauvaises données ou classe pleine)&nbsp;:
+   !endif
+   <tt>$missing</tt>
+  !endif
+  !if $manual=yes
+   <li>Les notes manuelles sont enregistrées seulement pour des colonnes
+   existantes.
+   !href module=adm/class/grades Vérifier ces notes
+.
+  !endif
+  </ul>
+ !else
+  Aucune différence  entre les données envoyées et les données
+  existant dans la classe.
+ !endif
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+Pour <input type=submit value=télécharger>
+les données de la classe dans votre tableur, veuillez préciser&nbsp;:<ul>
+<li>Format
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats aides
+</small>
+<li>Colonnes
+<input type=text size=45 name=csvdownload value="$csvdownload">
+<small>
+!href module=$module&cmd=help&special_parm=csvfields aides
+</small>
+</ul>
+</form>
+
+!if $classtype notin 13 or $typename iswordof class course
+<hr>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=upload>
+Pour <input type=submit value=envoyer>
+des données de votre tableur à la classe, veuillez préciser&nbsp;:
+<small>
+!href module=$module&cmd=help&special_parm=upload aides
+</small><ul>
+<li>Fichier de données <input type=file size=30 name=wims_deposit> <br>
+ <small>Formats acceptés&nbsp;: .csv, .tsv, .txt
+!href module=$module&cmd=help&special_parm=csvformats2 aides
+</small>
+</ul>
+</form>
+!endif
+

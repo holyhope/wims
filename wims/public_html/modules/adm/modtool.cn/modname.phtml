@@ -1,0 +1,53 @@
+
+<p>
+!if $totalcnt>0
+ !if $totalcnt>=$sellist
+你有$totalcnt个模块在开发中.
+  !href cmd=reply&jobreq=prop <small>我的帐户的属性</small>
+  <p>
+  !form reply
+只显示地址中含有以下字符串的模块
+  <input type=text size=30 name=selectshow value="$selectshow">
+  <input type=submit value=提交>
+  !href cmd=help&special_parm=regex <sup>帮助</sup>
+  </form> <p>
+ !endif
+ $table_header
+ <caption>在模块名称上点击以开始工作.
+ !if $totalcnt>=$maxlist and $existcnt>=$maxlist
+  <br>(list limited to $maxlist items)
+ !endif
+ </caption>
+ $table_hdtr<th>地址<th>名称<th>活动<th>描述
+ </tr>
+ !for n in $existing
+  !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
+  $table_tr<td><small>
+  !replace internal ~ by ~ $ in $n $
+  !if ~ notin $n
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [改名]
+  !endif
+  </small></td><td>
+  !href cmd=reply&jobreq=flist&modreq=$n $title
+  <td align=center><small>
+  !href cmd=reply&jobreq=index&modreq=$n 属性
+
+  !href cmd=reply&jobreq=del&modreq=$n 删除
+  </small></td><td><small>$description</small></td>
+  </td></tr>
+ !next n
+ $table_end <p>
+ !href cmd=reply&jobreq=create 创建新模块
+.&nbsp;
+ !href cmd=reply&jobreq=restore 从备份文件恢复
+.
+!else
+你没有开发中的模块. 请
+ !href cmd=reply&jobreq=create 点击这里
+以创建, 或
+ !href cmd=reply&jobreq=restore 从备份文件恢复
+.
+!endif
+
+!reset target target1 target2 target3 target4 selectshow
+

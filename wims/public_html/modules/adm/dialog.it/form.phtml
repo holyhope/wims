@@ -1,0 +1,40 @@
+
+!if $remcnt>0
+ !set wims_ref_anchor=#infogot
+ !form reply
+ !if $gotcnt<1
+  <p>Per risolvere il problema puoi
+  <input type=submit value="fare domande">
+ !else
+  <p>
+  <input type=submit value="Fare altre domande">
+ !endif
+ a proposito di $objname:
+ !formselect ask list 0,$remlist prompt ?? Scegli la domanda ??,$prompts
+ !if $comment!=$empty
+  <p>$comment
+ !endif
+ <p></form>
+ <small><b>Attenzione</b>. Il voto finale dipende dal numero di domande
+ fatte. Ti verranno tolti punti se farai domande irrilevanti o
+ inutili.</small> <p>
+ <hr width=50%> <p>
+!endif
+
+!if $gotcnt<1
+ !exit
+!endif
+
+!set wims_ref_anchor=#ans
+!form reply
+ !if $remcnt>0
+  Quando pensi di avere abbastanza informazioni per risolvere il problema
+  puoi
+ !else
+  &Egrave; il momento di
+ !endif
+ <input type=submit value="dare la risposta">&nbsp;:<p>
+ !read $deffile form
+</center>
+</form>
+

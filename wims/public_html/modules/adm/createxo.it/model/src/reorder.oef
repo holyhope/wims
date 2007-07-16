@@ -1,0 +1,100 @@
+type=first
+textarea="data explain"
+
+:Ordina gli oggetti dati, seleziona&trascina.
+
+Viene presentata una lista di oggetti che lo studente deve ordinare in
+una determinata maniera selezionandoli con il mouse e trascinandoli in
+un riquadro.
+<p>
+Per costruire un esercizio di questo tipo è sufficiente fornire la lista
+di oggetti da ordinare e modificare i testi.
+<p>
+<p>
+Con una piccola modifica, questo modello può essere adattato per accettare
+oggetti costituiti da immagini.
+<p>
+Autore del modello: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Ordinamenti}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Numero degli oggetti da riordinare in ogni esercizio. Massimo 20.
+Se questo numero è minore del numero di oggetti disponibili, il testo
+proporrà un sottoinsieme degli oggetti effettivamente disponibili. <p>
+Se questo numero è maggiore del numero di oggetti disponibili, il testo
+proporrà solo gli oggetti effettivamente disponibili.
+\integer{tot=6}
+
+:Dimensioni dei riquadri da trascinare con il mouse, in pixel, x per y.
+Occorre tener presente che gli utenti possono cambiare le dimensioni delle
+fonti nel browser e quindi bisogna evitare di disegnare riquadri troppo
+piccoli.
+\text{size=80x40}
+
+:Elenco degli oggetti da riordinare
+Gli oggetti vanno scritti nell'ordine esatto, separati da virgole.
+\text{data=Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune}
+
+:Testo che spiega cosa deve essere fatto.
+\text{explain=
+Ordina i seguenti pianeti del sistema solare dal più vicino al più 
+lontano dal sole.
+}
+
+:%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+
+\integer{datacnt=items(\data)}
+\integer{tot=min(20,min(\tot,\datacnt))}
+\if{\tot<\datacnt}{
+ \text{sh=shuffle(\datacnt)}
+ \text{sh=wims(sort numeric items \sh[1..\tot])}
+ \text{data=item(\sh,\data)}
+}
+
+\text{st=wims(makelist r x for x=1 to \tot)}
+\steps{\st}
+
+:%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
+
+::In questa parte non dovrebbe esserci nulla da modificare.
+
+\statement{\explain
+<p><table border=0><tr>
+\for{k=1 to \tot}{<td>\embed{r\k,\size}</td>}
+</tr></table>
+}
+
+:%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%5
+
+\answer{1}{\data[1]}{type=dragfill}
+\answer{2}{\data[2]}{type=dragfill}
+\answer{3}{\data[3]}{type=dragfill}
+\answer{4}{\data[4]}{type=dragfill}
+\answer{5}{\data[5]}{type=dragfill}
+\answer{6}{\data[6]}{type=dragfill}
+\answer{7}{\data[7]}{type=dragfill}
+\answer{8}{\data[8]}{type=dragfill}
+\answer{9}{\data[9]}{type=dragfill}
+\answer{10}{\data[10]}{type=dragfill}
+\answer{11}{\data[11]}{type=dragfill}
+\answer{12}{\data[12]}{type=dragfill}
+\answer{13}{\data[13]}{type=dragfill}
+\answer{14}{\data[14]}{type=dragfill}
+\answer{15}{\data[15]}{type=dragfill}
+\answer{16}{\data[16]}{type=dragfill}
+\answer{17}{\data[17]}{type=dragfill}
+\answer{18}{\data[18]}{type=dragfill}
+\answer{19}{\data[19]}{type=dragfill}
+\answer{20}{\data[20]}{type=dragfill}
+

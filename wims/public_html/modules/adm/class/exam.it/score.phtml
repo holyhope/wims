@@ -1,0 +1,83 @@
+
+!if $job=score
+ <center><h1>$wims_classname, $wims_institutionname<br>$title</h1>
+ !if $wims_user=supervisor
+  (Pagina pubblica del tema d'esame)
+ !endif
+ </center> <p>$desc<p>
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page del tema d'esame
+. <p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ Questo tema d'esame &egrave; vuoto. Non ci sono esercizi da svolgere.
+ Si tratta probabilmente di un errore del docente.
+!else
+ <p><center><table border=1 bgcolor=bisque>
+ <caption>Punteggio ottenuto</caption>
+ <tr><th>Esercizio<th>Titolo<th>Peso<th>Punteggio
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+  <tr><td align=center>$i
+  <td align=center>$ti
+  <td align=center>$we<td align=center>
+  !if $(replied$i)>0
+   $(got$i)
+  !else
+   <small>provvisorio</small>
+  !endif
+ !next i
+ <tr><td align=center colspan=4>
+ !default score=$sprime
+ Punteggio globale ottenuto: <b>$score</b> <small>su 10</small>.
+ $table_end
+!endif
+<p>
+
+!if $registered=$empty
+ Non hai ancora cominciato a lavorare sul tema d'esame.
+ !href cmd=reply&job=student Comincia.
+!else
+  !if $timeleft<=0
+   Il tempo &egrave; scaduto!<p>
+   Hai utilizzato tutti i $sdure minuti disponibili.
+   <p>
+ !endif
+ !if $allowtype=simulation
+  Il punteggio ottenuto non &egrave; stato preso in considerazione,
+  perch&eacute; si trattava di una sessione di prova.
+  !if $lastscore>0
+   (Il punteggio reale ottenuto &egrave; $lastscore.)
+  !endif
+ !else
+  Il punteggio per questo esame migliore &egrave; $lastscore. 
+  (Si terr&agrave; conto solo del punteggio migliore.)
+ !endif
+ <p>
+!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test>=2
+ !href cmd=reply&job=scorereg Termina la sessione d'esame.
+&nbsp;&nbsp;
+!endif
+ !href cmd=reply&job=student Torna a lavorare sull'esame.
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Tema d'esame (pagina del docente).
+ </center>
+!endif
+
+:end
+!tail
+
+!reset job
+

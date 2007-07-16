@@ -1,0 +1,74 @@
+!if $abandon!=$empty
+ abandon=
+ job=flist
+ !changeto $job.proc
+!endif
+
+!read scripts/getindex $mod
+!if $title=$empty
+ job=modname
+ !changeto modname.proc
+!endif
+
+allowchar=/.-_$alnum
+fname=!word 1 of $fname
+fname=!text select $allowchar in $fname
+c=!char 1 of $fname
+!if $c=. or $c=/
+ !goto badname
+!endif
+!read files
+!if $fname notitemof $files
+ !if / notin $fname and .. notin $fname
+  test=!filelist $devdir/$mod/$fname
+  !if $test!=$empty
+   :badname
+   error=bad_fname
+   lastfname=$fname
+   job=flist
+   !changeto flist.proc
+  !endif
+ !else
+  !if (..help/ notin ..$fname and ..src/ notin ..$fname) \
+	or .. isin $fname
+   !goto badname
+  !endif
+ !endif
+!endif
+
+!if $fname=$empty
+ job=flist
+ !changeto $job.proc
+!endif
+
+!if $job=edfile and $register!=$empty
+ !if $register=file_mode
+  test=!exec ftype $wims_home/$wims_sesdir/user-deposit
+  !if $test iswordof binary
+   error=binary_file
+   !exit
+  !endif
+ !endif
+ register=
+ !if $fname=filedesc
+  test=!sh grep '!' $wims_home/$wims_sesdir/user-deposit
+  !if ! isin $fcontent
+   error=illegal_filedesc
+   !exit
+  !endif
+ !endif
+ makeout=!sh module=$devdir/$mod\
+  test=`echo $fname | grep -E '^(src/|help/)'`\
+  if [ ! -z "$$test" ]; then mkdir -p $$module/`dirname $fname`; fi\
+  cat $wims_home/$wims_sesdir/user-deposit >$$module/$fname\
+  if [ ! -z "$$test" ]; then\
+   cd $$module; src2def\
+  fi
+ !if ERROR isin $makeout
+  makeerror=$makeout
+ !endif
+ wims_module_log=edit $mod/$fname
+!endif
+
+content=!mexec scripts/fileread
+

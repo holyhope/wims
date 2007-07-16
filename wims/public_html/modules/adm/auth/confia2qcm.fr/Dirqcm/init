@@ -1,0 +1,59 @@
+!!! fichier d'initialisation !!!
+
+!if $titre=$empty 
+  auteur=Joachim YAMEOGO
+  imel=yameogo@math.unice.fr
+  titre=test
+  enonceR=!record 4 of demosDir/demodata
+!endif
+
+rpmat=$propsrepList
+
+propsList=
+obsList=
+
+!if $obsrecord!=$empty
+  obsnb=!linecnt $obsrecord
+  !for i=1 to $obsnb
+    obsList=!append line $(obsrecord[$i;]), to $obsList
+  !next i
+   obsList=!replace line number $obsnb by $(obsrecord[$obsnb;]) in $obsList
+!endif
+
+!if $propsrecord!=$empty
+  pn=!linecnt $propsrecord
+  pn=$[$pn-1]
+  propsnb=$pn  
+  !for i=1 to $pn
+    prop=$(propsrecord[$i;])
+    prop=!trim $prop
+    !if ; isin $prop
+      propsList=!append line $prop, to $propsList
+     !else
+      propsList=!append line ($prop), to $propsList
+    !endif
+  !next i
+  prop=!char 1 to -2 of $(propsList[$pn;])
+  propsList=!replace line number $pn by $prop in $propsList   
+!endif
+
+!if $demo=oui
+  obsList=!record 1 of demosDir/demodata
+  propsList=!record 2 of demosDir/demodata
+  propsrepList=!record 3 of demosDir/demodata
+  obsnb=!itemcnt $obsList
+  propsnb=!itemcnt $propsList
+  ckchnb=2
+  enonceR=!record 4 of demosDir/demodata
+  !!dessin=<img src="http://www.ac-nancy-metz.fr/enseign/maths/apmep/jeux/expo/images/pythagore.gif"
+  !!alt="dessin"/>
+  !!dessin=<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Pythagorean.svg/250px-Pythagorean.svg.png"
+  !!alt="dessin"/>
+  dessin=<img width="250" src="http://math.unice.fr/~yameogo/ensgmt/e_wims/demo_fig.gif" alt="dessin"/>
+  indicList=!record 5 of demosDir/demodata
+!endif
+ 
+chronobs=0
+etapesnb=6
+
+typvarcnt=15

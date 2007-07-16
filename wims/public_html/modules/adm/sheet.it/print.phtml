@@ -1,0 +1,63 @@
+
+$wims_html_header
+<body $wims_htmlbody>
+
+<p><center><h3>$sheet_title<br>
+<font size=-1>$sheet_desc</font></h3></center> <p>
+<div class=wimsbody>
+
+!if $error!=$empty
+ !changeto msg.phtml
+!endif
+
+!for i=1 to $n
+ <p>
+ <b>Esercizio</b> $i.
+ !if $(question_$i)=$empty
+  (<em>Non è disponibile una versione stampabile</em>: $(title_$i))
+ !else
+  !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
+   !set e_=$(e_$i)
+   !set m_=$(module_$i)
+   !readproc imagedir.proc
+   !for k=1 to $(varcnt_$i)+5
+    !set val$k=!line $k of $(var_$i)
+   !next k
+   !set wims_prefix=
+   !read $(class_header)def/$(e_$i).def question
+   !set wims_prefix=$wims_prefix2
+  !else
+   $(question_$i)
+  !endif
+  </a></tt></font></center>
+  </h1></h2></h3></h4></b></i></em>
+  $(chce_$i)
+ !endif
+!next i
+
+!if $public!=P and $wims_user!=supervisor
+ !goto noans
+!endif
+
+<p><hr> <p>
+<center><h3>Soluzioni</h3></center> <p>
+!for i=1 to $n
+ !set t=!linecnt $(ans_$i)
+ !if $t>0
+  <p><b>Risposta all'esercizio $i.</b><ul>
+  !for k=1 to $t
+   <li>
+   !line $k of $(ans_$i)
+  !next k
+  </ul>
+ !endif
+!next i
+
+:noans
+</div> <p><hr> <p>
+<center>
+!href cmd=reply Un'altra versione
+&nbsp;&nbsp;
+!href cmd=reply&job=read Torna alla versione interattiva
+</center>
+

@@ -1,0 +1,78 @@
+!!! fichier d'initialisation de l'exo de type 2 !!!
+
+!if $titre=$empty 
+  auteur=Joachim YAMEOGO
+  imel=yameogo@math.unice.fr
+  titre=test
+  enonceR=!record 2 of comsDir/enonces
+!endif
+
+rfmat=$foncsrepList
+obsList=
+foncsList=
+
+!if $obsrecord!=$empty
+  pn=!linecnt $obsrecord
+  !for i=1 to $pn
+    obsList=!append line ($(obsrecord[$i;])), to $obsList
+  !next i
+   obsList=!replace line number $pn by ($(obsrecord[$pn;])) in $obsList
+!endif
+
+!if $foncsrecord!=$empty
+  pn=!linecnt $foncsrecord
+  !for i=1 to $pn
+    foncsList=!append line ($(foncsrecord[$i;])), to $foncsList
+  !next i
+  foncsList=!replace line number $pn by ($(foncsrecord[$pn;])) in $foncsList
+!endif
+
+!if $demo=oui
+  obsList=!record 1 of demosDir/demo2data
+  foncsList=!record 2 of demosDir/demo2data
+  obsnb=!itemcnt $obsList
+  foncsnb=!itemcnt $foncsList
+  enonceR=!record 3 of demosDir/demo2data
+  typnb=2  
+!endif
+
+chronobs=0
+chronfoncs=0
+
+af1=nombre&nbsp;entier
+af2=nombre&nbsp;réel
+af3=nombre&nbsp;complexe
+af4=texte
+af5=ensemble&nbsp;fini
+af6=ensemble&nbsp;formel
+af7=vecteur
+af8=fonction
+af9=expression&nbsp;algébrique
+af10=expression&nbsp;formelle
+af11=matrice
+
+typ1=default
+typ2=default
+typ3=default
+typ4=default
+typ5=set
+typ6=fset
+typ7=vector
+typ8=function
+typ9=algexp
+typ10=formal
+typ11=matrix
+
+typafList=
+ftypList=
+!for i=1 to 11
+  typafList=!append line $(af$(i)) to $typafList
+  ftypList=!append line $(typ$(i)) to $ftypList
+!next i
+
+
+Nbtyp=11
+
+etapesnb=7
+
+typvarcnt=10

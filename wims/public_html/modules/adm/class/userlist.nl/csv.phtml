@@ -1,0 +1,100 @@
+
+!set wims_form_method=post
+<center>$classname
+<h3>Gegevens voor het spreadsheet
+<br></b><font size=-1>[
+!href cmd=reply directe cijfer lijst
+ ]</font></h3>
+</center> <p>
+
+!if $error!=$empty
+ !read msg.phtml
+ !if $error iswordof not_secure not_superclass
+  !exit
+ !endif
+ <p><hr> <p>
+!endif
+
+!if $outfile!=$empty
+ Hier is de file <tt>
+ !getfile $outfile $outfile
+ </tt> die U kunt openen met Uw favoriete spreadsheet programma.
+ <p><hr> <p>
+!endif
+
+!if $processed=yes and $error=$empty
+ !if $remark$change$added$missing$erased!=$empty or $manual=yes
+  Spreadsheet file <tt>$wims_deposit</tt> met succes verwerkt. <ul>
+  !if $change!=$empty
+   <li>Leerlingt info veranderd: <tt>$change</tt>
+  !endif
+  !if $added!=$empty
+   <li>toegevoegde nieuwe leerlingen: <tt>$added</tt>
+  !endif
+  !if full iswordof $remark
+   <li>Toevoegen van nieuwe leerlingen is geweigerd omdat er niet genoeg ruimte meer is.
+  !endif
+  !if noprop iswordof $remark
+   <li>De leerling informatie is niet veranderd, omdat de cijfers zijn "geupload".
+  !endif
+  !if noauto iswordof $remark
+   <li>Server-berekende scores (gemiddelden en werkblad/tentamen scores) zijn genegeerd
+   omdat deze niet kunnen worden gewijzigd.
+  !endif
+  !if $erased!=$empty
+   <li>Genegeerde data over gewiste leerlingen:
+   <tt>$erased</tt>
+  !endif
+  !if $missing!=$empty
+   <li>De volgende loginnamen bestaan niet in Uw klas en kunnen niet worden toegevoegd
+   omdat er informatie ontbreekt:   <tt>$missing</tt>
+  !endif
+  !if $manual=yes
+   <li>Handmatig ingevoerde cijfers alleen voor bestaande kolommen.
+   !href module=adm/class/grades Kontroleer de handmatig ingevoerde cijfers.
+.
+  !endif
+  </ul>
+ !else
+ Er is geen verschil gevonden tussen Uw spreadsheet-data en de klasse-data.
+ !endif
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+naar <input type=submit value=download>
+klasse data voor Uw spreadsheet, specificeren het gewenste type: <ul>
+<li>Formaat
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats help
+</small>
+<li>Kolommen
+<input type=text size=45 name=csvdownload value="$csvdownload">
+<small>
+!href module=$module&cmd=help&special_parm=csvfields help
+</small>
+</ul>
+</form>
+
+!if $classtype notin 13 or $typename iswordof class course
+<hr>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=upload>
+naar <input type=submit value=upload>
+klasse data voor Uw spreadsheet, specificeren het gewenste type: <ul>
+<small>
+!href module=$module&cmd=help&special_parm=upload help
+</small><ul>
+<li>Data file <input type=file size=30 name=wims_deposit> <br>
+ <small>Geaccepteerde formaten: .csv, .tsv, .txt
+!href module=$module&cmd=help&special_parm=csvformats2 help
+</small>
+</ul>
+</form>
+!endif
+

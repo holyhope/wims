@@ -1,0 +1,24 @@
+
+!if $overflow=yes
+ !if $keyword = $empty
+  Ci sono molti corsi virtuali su questo sito. Per trovare il corso
+  che ti interessa inserisci una chiave di ricerca.
+ !else
+  Ci sono troppi corsi che corrispondono alla chiave di ricerca inserita.
+  Prova con una chiave più precisa.
+ !endif
+ <p><center>
+ !form reply
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form></center> <p>
+!else
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+  !form reply
+  Cerca il tuo corso:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form>
+ !endif
+!endif
+

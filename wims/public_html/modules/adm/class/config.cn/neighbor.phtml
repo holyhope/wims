@@ -1,0 +1,54 @@
+
+!if $classcnt1+$classcnt2<1
+你不能定义相邻班, 因为服务器上没有其它班级.
+ !exit
+!endif
+
+!if $job2!=first
+ !distribute items exercises,work sheets,exams,documents,votes,\
+    participant accounts,supervisor account,forum messages,message of the day\
+    into name_exo,name_sheet,name_exam,name_doc,name_vote,\
+    name_user,name_sup,name_forum,name_motd
+ !read neighbor/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first 其它班级表
+ !if $job2!=sharelist
+  &nbsp;
+  !href cmd=reply&job2=sharelist 资源共享信息
+ !endif
+ </center>
+ !exit
+!endif
+
+!distribute items ---,<small>主持教师</small>,\
+    <small>参加者</small>,\
+    <small>所有人</small> into n_n0, n_n1, n_n2, n_n3
+
+虚拟班间的相邻关系允许资源交换以及跨班漫游. <small>[&nbsp;
+!href cmd=help&special_parm=neighbor 帮助
+&nbsp;
+!href cmd=help&special_parm=neiexample 例
+&nbsp;]</small>
+点击班名以改变你与这个班的相邻关系.
+
+<p>
+!if $classcnt1>0
+ !set clst=$clist1
+ $table_header
+ <caption>与你同语种的班级</caption>
+ !read neighbor/clist.phtml
+ $table_end
+!endif
+
+!if $classcnt2>0
+ <p>
+ !set clst=$clist2
+ $table_header
+ <caption>其它语种的班级</caption>
+ !read neighbor/clist.phtml
+ $table_end
+ <p><center>
+ !href cmd=reply&job2=sharelist 你的班级的资源共享信息
+ </center>
+!endif
+

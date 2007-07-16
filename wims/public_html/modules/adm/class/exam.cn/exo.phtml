@@ -1,0 +1,41 @@
+!if $activetest>0
+对不起, 本试卷已被激活, 不能再改动. 
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=exo>
+<input type=hidden name=exo value=$exo>
+<p>练习 $exo : 权重=<input size=5 name=eweight value="$eweight">,
+标题=<input size=20 name=ename value="$ename">
+<p>
+本试卷可以从作业页里已有的练习清单中(随机地)选取. 请在以下清单的练习
+前面加上标记, 使它们成为考试题的候选者.
+<p>
+!for i in $asheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $r into r1,r2,r3,r4,r5,r6
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $echoose
+   checked
+  !endif
+  > $i.$j <b>$r5</b> <small>$r6</small> <br>
+ !next j
+!next i
+<p>
+得分相关性: <input size=40 name=edep value="$edep"> <br>
+<input type=submit value="纪录">
+</form>
+<p>
+!href cmd=reply 考试的主页
+. <p><small>
+<b>帮助</b>. 得分相关性是指参加者必须在其它练习页得到所要求的分数,
+才能做本练习. 例如
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  意指参加者必须在练习 1 取得 50% 的分数, 练习 2 得到 30% 的分数,
+练习 3，4，5 的平均分应该是 60% 以上.
+</small>
+
+

@@ -1,0 +1,39 @@
+!set name_institution=nom de l'établissement
+!set name_description=nom de la classe
+!set name_supervisor=nom de l'enseignant
+!set name_email=adresse électronique
+!set name_password=mot de passe de la classe
+!set name_passsup=mot de passe d'enseignant
+!set lev_E=école primaire
+!set lev_H=école secondaire
+!set lev_U=universitaire
+!set lv1=!char 1 of $ilevel
+!set lv2=!char 2 of $ilevel
+!set name_level=$(lev_$lv1), année $lv2
+
+!set classname=<b><font color=green>$description</font></b>\
+ de <b><font color=green>$institution</font></b>
+
+!set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
+
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=groupement de classes
+    !set name_sup=de l'enseignant-administrateur
+   !else
+    !set name_classe=portail d'établissement
+    !set name_sup=de l'administrateur
+   !endif
+     !set name_classes= le $name_classe
+     !set name_classess= un $name_classe
+     !set name_classesss= du $name_classe
+     !set name_classessss= Le $name_classe
+ !else
+   !set name_classe=classe
+   !set name_classes=la $name_classe
+   !set name_classess=une $name_classe
+   !set name_classesss= de la $name_classe
+   !set name_classessss= La $name_classe
+   !set name_sup=de l'enseignant
+ !endif
+

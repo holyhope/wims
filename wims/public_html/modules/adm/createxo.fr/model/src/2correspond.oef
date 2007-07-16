@@ -1,0 +1,96 @@
+type=datalist
+textarea="data explain"
+
+:Etablir la correspondance entre paires d'objets.
+
+On présente des paires d'objets dans un tableau à deux colonnes. Il faut
+rétablir la bonne correspondance dans les paires en modifiant la colonne à
+droite, par glisser-déposer avec la souris.
+<p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste de
+paires d'objets.
+<p>
+Avec une légère modification, une variante de cet exercice peut accepter des
+objets en image.
+<p>
+Auteur du modèle : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'entete ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Correspondance}
+:\author{Gang Xiao}
+:\email{xiao@unice.fr}
+
+:Nombre de (paires) d'objets à faire correspondre.
+\integer{tot=6}
+
+:La taille verticale des cases en pixels.
+Pensez aux gens qui augmentent la taille de polices de leurs navigateurs !
+Ne mettez pas les cases trop petites.
+\integer{sizev=50}
+
+:La taille horizontale des cases à gauche en pixels.
+\integer{sizel=250}
+
+:La taille horizontale des cases à droite en pixels.
+\integer{sizer=250}
+
+:Données principales.
+Définir une paire d'objets correspondants par ligne, séparés par une virgule.
+\matrix{data=
+L'Allemagne,		Berlin
+L'Australie,		Canberra
+Le Canada,		Ottawa
+La Chine,		Beijing
+L'Espagne,		Madrid
+Les Etats-Unis,		Washington
+La France,		Paris
+La Grande Bretagne,	Londres
+L'Inde,			New Delhi
+L'Indonésie,		Jakarta
+L'Italie,		Rome
+Le Japon,		Tokyo
+La Russie,		Moscou
+}
+
+:Le texte qui explique ce qu'il faut faire.
+$embraced_randitem
+\text{explain=Etablissez la correspondance entre les pays et leurs capitales.}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\integer{datacnt=rows(\data)}
+\integer{tot=\tot>\datacnt?\datacnt}
+
+\text{shuf=item(1..\tot,shuffle(\datacnt))}
+\text{data=row(\shuf,\data)}
+\text{datal=column(1,\data)}
+\text{datar=column(2,\data)}
+\text{size=\sizev[]x\sizel[]x\sizer}
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+La commande pour afficher le tableau de correspondance,
+c'est \embed{reply 1,\size}
+
+\statement{\explain
+
+<p><center>
+\embed{reply 1,\size}
+</center>
+
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+
+\answer{La réponse}{\datal;\datar}{type=correspond}
+

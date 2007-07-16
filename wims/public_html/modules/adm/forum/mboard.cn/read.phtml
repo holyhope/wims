@@ -1,0 +1,59 @@
+
+!if $error!=$empty
+ <p>
+ !exit
+!endif
+
+ <center>
+ !read readref.phtml
+ !if $erased=yes and $forumuser!=supervisor
+  </center> <p>
+已删除的信息.
+  !exit
+ !endif
+ <br>写跟帖:
+ !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 加引用
+或
+ !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 不加引用
+ </center> <p>
+ <i>
+ !if $m_email!=$empty
+  !mailurl $m_email $m_from
+  </i>
+ !else
+  $m_from</i>
+ !endif
+ !set y_=!char 1 to 4 of $m_date
+ !set m_=!char 5,6 of $m_date
+ !set d_=!char 7,8 of $m_date
+ <small>on $m_-$d_-$y_, $m_time</small>:
+ <b>$m_subject</b><small>
+
+!if $readtype=html
+ !href cmd=reply&readtype=source [源码]
+!else
+ !href cmd=reply&readtype=html [网页格式]
+!endif
+!if $forumuser=supervisor
+ &nbsp;
+ !href cmd=reply&job=erase [删除]
+!endif
+
+ </small><hr>
+ !read $msg $readtype
+ $tag_escaper</table><font size=+0>
+
+<hr></ul></ol></dl></form> <p><center>
+!if $readtype=html
+ !href cmd=reply&readtype=source 源码
+!else
+ !href cmd=reply&readtype=html 网页格式
+!endif
+&nbsp;
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 带引用的跟帖
+&nbsp;
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 不带引用的跟帖
+<p>
+!read readref.phtml
+</center> <p>
+

@@ -1,0 +1,69 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>Cambio de la contraseña
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Vuelta a la página principal de la clase
+. <p>
+ !goto end
+!endif
+
+!form reply
+
+!if $wims_user=supervisor
+ Elija el tipo de contraseña: <ul>
+ !default job=user
+ !set ch_$job=checked
+ <li><input type=radio name=job $ch_user value=user> Su contraseña
+  personal (para entrar en la clase como profesor)<br>
+ !if $part!=$empty and $job=part
+  <li><input type=radio name=job $ch_part value=part> Contraseña de los
+   participantes <tt>$part</tt> (no necesita introducir la contraseña actual
+   en este caso).
+ !endif
+ <li><input type=radio name=job $ch_class value=class> Contraseña de la clase
+  (utilizada por los participantes para inscribirse; no necesita introducir
+  la contraseña anterior).
+ </ul>
+!else
+ <input type=hidden name=job value=user>
+!endif
+<table>
+<tr><td align=right>Introduzca la contraseña actual:
+	<td><input type=password size=16 name=old>
+<tr><td align=right>Ahora la contraseña nueva:
+	<td><input type=password size=42 name=pw1>
+<tr><td align=right>Vuelva a teclear la nueva contraseña:
+	<td><input type=password size=42 name=pw2>
+</table>
+<input type=submit value="Grabar el cambio"> <p>
+<small>Para las contraseñas personales: preceda la contraseña nueva
+con el signo <tt class="d">+</tt> si desea añadir contraseñas
+de un solo uso.
+!href target=wims_mhelp cmd=help Detalle.
+</small>
+</form>
+La contraseña debe estar compuesta únicamente de entre 4 y 16
+caracteres alfanuméricos.
+!if $wims_user=supervisor
+ (el programa acepta la contraseña vacía, pero es posible que el 
+ administrador del sitio prohiba las clases sin contraseña).
+!endif
+
+!endif
+:end
+!tail
+
+!distribute item $ into job,pw1,pw2,old
+

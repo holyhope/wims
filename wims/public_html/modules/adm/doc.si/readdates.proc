@@ -1,0 +1,13 @@
+!default dat1=19000101
+!default dat2=24000101
+
+datetest=0
+!if $editable!=yes and ($dat1>20000101 or $dat2<21000101)
+ today=!char 1 to 8 of $wims_now
+ !if $today<$dat1
+  datetest=-1
+ !endif
+ !if $today>$dat2
+  datetest=1
+ !endif
+!endif

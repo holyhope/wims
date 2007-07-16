@@ -1,0 +1,86 @@
+!set wims_module_log=error: $error
+
+!if has_empty=$error
+ Non sono state date sufficienti informazioni. Completare 
+ il form e reinviare i dati.
+ !exit
+!endif
+
+!if too_short=$error
+ Il campo ``$(name_$error_subject)'' &egrave; troppo corto.
+ !exit
+!endif
+
+!if bad_date=$error
+ La data di scadenza del forum non &egrave; corretta.
+ !exit
+!endif
+
+!if bad_email=$error
+ L'indirizzo di posta elettronica non &egrave; valido. 
+ <p>
+ Per creare un forum &egrave; necessario possedere un indirizzo di
+ posta elettronica funzionante fin da ora.
+ !exit
+!endif
+
+!if anti_date=$error
+ La data di scadenza del forum &egrave; gi&agrave; passata. Il forum di
+ discussione non pu&ograve; essere creato.
+ !exit
+!endif
+
+!if existing=$error
+ Esiste gi&agrave; un forum dal nome `$forumname'. Non &egrave; possibile
+ utilizzare due volte lo stesso nome.
+ !exit
+!endif
+
+!if pass_discord=$error
+ La password &egrave; errata (non corrisponde a quella inserita in 
+ precedenza). &Egrave; necessario ricominciare
+ da capo.
+ !exit
+!endif
+
+!if apparent_password=$error
+ La password pu&ograve; essere intuita da nome del forum/descrizione 
+ del forum/nome del creatore del forum!
+ Scegliere una password meno ovvia.
+ !exit
+!endif
+
+!if bad_pass=$error
+ La $(name_$error_subject) contiene caratteri non ammessi. <p>
+ Utilizzare solo numeri o lettere non accentate. 
+ Non utilizzare spazi.
+ !exit
+!endif
+
+!if bad_code=$error
+ Il codice di attivazione inserito &egrave; errato. Occorre inserire 
+ un indirizzo di posta elettronica corretto e verificare la posta in
+ arrivo. (Si ricorda che tutti i tentativi di acceso a questo sito sono
+ registrati.) 
+ !exit
+!endif
+
+!if define_fail=$error
+ Non &egrave; stato possibile creare il forum (database!). Si tratta
+ di un errore del server.
+ <p>
+ Si prega di riportare il problema al 
+ !mailurl $wims_site_manager site manager\
+user registration failure
+. Grazie!
+ !exit
+!endif
+
+!if duplicate=$error
+ Il forum `$forumname' esiste gi&agrave;, e quindi la richiesta &egrave;
+ ignorata. Il tentativo di ricreare lo stesso forum pu&ograve; essere 
+ dovuto ad un `reload' di una pagina; in generale l'uso del tasto
+ `reload' pu&ograve; creare errori nelle pagine WIMS.
+ !exit
+!endif
+

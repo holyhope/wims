@@ -1,0 +1,74 @@
+
+!default precision=10000
+wims_prefix=class user tmp
+
+!read Exindex
+exocnt=!itemcnt $exolist
+!bound qnum between integer 1 and $exocnt default 1
+!bound qcmlevel between integer 1 and 8 default 3
+!bound random within 0,1 default 1
+wims_form_method=post
+
+!if $cmd=reply and $status!=waiting
+ error=double_reply
+ !exit
+!endif
+
+!if $status=$empty
+ !read proc/exo.init
+!endif
+
+!if $status!=waiting
+ !distribute item $ into solution,hint
+!endif
+
+nn=!itemcnt $shufflelist
+thisexo=!item ($reply_cnt)%$nn+1 of $shufflelist
+imagedir=$module_dir/images/$thisexo
+deffile=def/$thisexo.def
+!if $nn>1 and $status!=waiting
+ wims_module_log=$wims_module_log got $thisexo
+!endif
+
+!if $status!=waiting
+ !reset asklist promptlist storename storeval
+ !read $deffile init
+ !read proc/var.prep
+!else
+ !distribute line $storeval into $storename
+!endif
+
+!read $deffile info
+
+!if $cmd=reply and $status=waiting
+ !if $ask!=$empty
+  !read proc/var.proc.ask
+  !if $badask!=yes
+   !goto end
+  !endif
+ !else
+  !read proc/var.proc.ans
+  !if $partial=yes
+   !goto end
+  !endif
+ !endif
+ !advance reply_cnt
+ !advance score_should
+ score_got=$[$score_got+$thisscore]
+ status=done
+ !if $reply_cnt>=$qnum
+  !ifval $score_should=0
+   score_should=1
+  !endif
+  score=$[max(0,min(10,rint(100*$score_got/$score_should)/10))]
+  module_score=$score
+  wims_module_log=score $module_score/10
+  status=
+ !endif
+!endif
+
+:end
+prompts=!items $remlist of $promptlist
+remcnt=!itemcnt $remlist
+gotcnt=!itemcnt $gotlist
+

@@ -1,0 +1,19 @@
+
+!readdef wimshome/public_html/modules/$devdir/$mod/INDEX
+pubmod=!translate internal ~ to / in $mod
+m1=!translate internal ~ to , in $mod
+m1=!item 1 of $m1
+pubtest=!module title $pubmod
+diff=!sh cd modules\
+ diff -r --new-file $pubmod devel/$auth_login/$mod | sed 's/\&/\&amp;/g;s/</\&lt;/g;s/\$$/\&#36;/g' | tail -c 15000
+diffcnt=!charcnt $diff
+!if $diffcnt>14500
+ diff=MANY
+!endif
+
+!if $pubtest=$empty or $m1 notitemof $zonelist or \
+  $m1=test
+ job=flist
+ !changeto $job.proc
+!endif
+

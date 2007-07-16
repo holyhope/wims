@@ -1,0 +1,35 @@
+<center><h1>$tit</h1></center>
+
+El autor de este documento es
+!if $email!=$empty
+ !mailurl $email $author
+.
+!else
+ $author.
+!endif
+!if $readauth=yes
+ Este documento no está abierto al público. Para leerlo debe introducir
+ primero su clave secreta.
+!else
+ Para modificar este documento debe primero introducir su clave secreta.
+!endif
+<p>
+!form reply
+<input type=hidden name=job value=auth2>
+!if $readauth=yes
+ <input type=hidden name=noedit value=yes>
+!endif
+<center>
+Clave secreta: <input type=password size=16 name=coder>
+<input type=submit value=OK>
+</center></form>
+<p>
+!if $readauth=yes
+ Si es usted el autor del documento, recuerde por favor que necesita
+ la autorización del
+ !mailurl $wims_site_manager administrador del sitio\
+Solicitud de apertura del documento WIMS $doc
+ para hacer que el público pueda leer el documento.
+ <p>
+!endif
+

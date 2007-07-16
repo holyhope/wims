@@ -1,0 +1,24 @@
+
+<h3><center>新近加入服务器的项目</center></h3>
+
+<p><center><table border=0 bgcolor=$table_bgcolor>
+<tr><th>创立时间<th>名称<th>描述
+
+!for i=1 to $n
+ !set li=!line $i of $list
+ !set year	=!char 1 to 4 of $li
+ !set month	=!char 6,7 of $li
+ !set day	=!char 9,10 of $li
+ !set version	=!word -1 of $li
+ !set address   =!item $i of $addresses
+ !set name=!module title $address
+ !set desc=!module description $address
+ !default name=??
+ !default desc=??
+ 
+ $table_tr<td>$month-$day-$year<td>
+ !href module=$address $name
+ <td>$desc
+!next i
+$table_end <p>
+

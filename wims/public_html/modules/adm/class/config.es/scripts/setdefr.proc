@@ -1,0 +1,31 @@
+
+!for ttt in homepage, bgcolor, bgimg, refcolor, logo, logoside
+ pr_$ttt=!word 1 of $(pr_$ttt)
+!next ttt
+
+!setdef !set class_logo=$pr_logo\
+!set class_logoside=$pr_logoside\
+!set class_homepage=$pr_homepage\
+!set class_bgcolor=$pr_bgcolor\
+!set class_refcolor=$pr_refcolor\
+!set class_bgimg=$pr_bgimg\
+!set class_theme=$pr_theme\
+!set class_css=$pr_css\
+in wimshome/log/classes/$wims_class/.def
+pr_cssfile=!trim $pr_cssfile
+!writefile wimshome/log/classes/$wims_class/css $pr_cssfile
+
+!for ttt in bgcolor, css, bgimg, theme
+!if $(pr_$ttt)!=$(wims_$ttt)
+ wims_$ttt=$(pr_$ttt)
+ !setdef wims_$ttt=$(pr_$ttt) in wimshome/$wims_sesdir/var.stat
+!endif
+!next ttt
+
+!if $pr_refcolor!=$wims_class_refcolor
+ !if $pr_refcolor!=$empty
+  wims_ref_bgcolor=$pr_refcolor
+ !endif
+ !setdef wims_class_refcolor=$pr_refcolor in wimshome/$wims_sesdir/var.stat
+!endif
+

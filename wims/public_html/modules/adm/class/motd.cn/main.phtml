@@ -1,0 +1,44 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>每日信息
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 回到班级主页
+. <p>
+ !goto end
+!endif
+
+本页允许你写入或修改面向班级的所有参加者的每日信息, 这些信息将出现在班级的
+!href style=student 面向参加者的主页
+.
+<p>
+写入你给班级的信息(允许使用 html 的连接及 tag):
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value="纪录信息"></center>
+</form>
+
+
+:end
+!tail
+
+!set job=
+!set showsheet=

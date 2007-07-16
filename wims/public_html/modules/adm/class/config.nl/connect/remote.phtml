@@ -1,0 +1,23 @@
+De andere wims-server: 
+<font color=blue>$connident</font>
+($ident_desc) op
+<a href=http://$site>$site</a>, van het type
+<font color=blue>$ident_type</font>.
+
+!if $cn_status!=OK
+ <p><b>Fout</b>.
+ !if $cn_status=$empty
+De andere server reageert niet. Meldt dit aan de
+  !mailurl $wims_site_manager site manager
+.
+ !else
+ De verbinding is door de andere server geweigerd. 
+ Fout melding:
+<pre>
+$cn_data
+</pre>
+ !endif
+ !set error=yes
+ !exit
+!endif
+

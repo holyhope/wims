@@ -1,0 +1,82 @@
+!set wims_module_log=error: $error
+!set level=$[$level-1]
+
+<center><h3>错误</h3></center> <p>
+
+!if no_title iswordof $error
+ 请为你准备中的文件给一个标题.
+ !exit
+!endif
+
+!if empty_title iswordof $error
+ 软件无法找到你的练习的标题. 你能定义它吗?
+ !exit
+!endif
+
+!if no_answer iswordof $error
+你的练习至少应该要求一个回答(自由格式或多重选择).
+ !exit
+!endif
+
+!if no_statement iswordof $error
+你的练习的内容不完整. 你没有确定练习的陈述.
+ !exit
+!endif
+
+!if no_reply2 iswordof $error
+你的练习的内容不完整: 没有对回答的有效要求. (仅当所有区域都被填满后, 对回答的要求才是有效的.)
+ !exit
+!endif
+
+!if def_fail iswordof $error
+根据你提交的材料, 软件不能生成有效的练习. 你的定义有错误.
+ <p><pre>$oef2wims_out</pre> <p>
+ !if $mode!=$empty
+  !set level=1
+ !else
+  !set level=2
+ !endif
+ !exit
+!endif
+
+!if name_exhaust iswordof $error
+ 你的班级里已经有练习使用你要创建的练习的标题. 如果这些练习不同,
+ 请为你目前的练习取一个新标题, 然后再提交.
+ !exit
+!endif
+
+!if name_exhaustpub iswordof $error
+已经有几个提交的练习使用你要创建的练习的标题. 如果你不是再次提交同样的练习,
+ 请为你目前的练习取一个新标题, 然后再提交.
+ !exit
+!endif
+
+!if unknown iswordof $error
+你的练习的提交由于不明的原因而失败. 抱歉.
+ !exit
+!endif
+
+!if already iswordof $error
+你要提交的练习已经在位了.
+ !exit
+!endif
+
+!if not_class iswordof $error
+你的请求是非法的.
+ !exit
+!endif
+
+!if not_supervisor iswordof $error
+ 只有主持教师才能删除班级的练习! 
+ <p>你的请求被拒绝.
+ !exit
+!endif
+
+!if not_exist iswordof $error
+ !if $catmodule!=$empty
+你想引入的<tt>$catmodule</tt>的练习<tt>$del</tt>不存在或不允许你引入.
+ !else
+你的班级里不存在你想要修改或删除的练习<tt>$del</tt>.
+ !endif
+ !exit
+!endif

@@ -1,0 +1,15 @@
+
+!bound l_order within 1,2 default 1
+!if $mlist>0
+ tot=!recordcnt $forumdir/$mlist/.msglist
+ !if $tot>0
+  lyear=!char 1 to 4 of $mlist
+  lmon=!char 5,6 of $mlist
+  !exit
+ !endif
+!endif
+
+mlist=.newlist
+mnew=!record 0 of $forumdir/.newlist
+tot=!linecnt $mnew
+

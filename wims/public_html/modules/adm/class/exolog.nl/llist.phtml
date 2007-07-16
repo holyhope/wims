@@ -1,0 +1,38 @@
+
+!if $prelogcnt<1
+U heeft nog geen oefeningen.
+ !exit
+!endif
+
+Oefeningen van werkblad $logsheet die kunnen worden geregistreerd:
+
+!read tabletheme
+
+<p>$table_header
+$table_hdtr
+<th><small>Aantal</small></th>
+<th><small>Stappen</small></th>
+<th>Resultaat</th>
+<th></th>
+<th>Titel</th></tr>
+!for i=1 to $prelogcnt
+ !set l=!word $i of $prelog3
+ !set e=!item -1 of $l
+ !set c=!recordcnt wimshome/$wims_sesdir/exolog.$logsheet.$e
+ !set s=!getdef w_module_score in wimshome/$wims_sesdir/exolog.$logsheet.$e
+ !default s=-
+ !set V_=!record $e of wimshome/log/classes/$wims_class/sheets/.sheet$logsheet
+ !distribute lines $V_ into a,a,a,a,T_,D_
+ 
+ $table_tr<td align=center>$e</td>
+ <td align=center>$c</td>
+ <td align=center>$s</td>
+ <td><small>
+ !href cmd=reply&job=log&logsheet=$logsheet&logexo=$e&checkuser=$wims_user Registeren
+ </small></td>
+ <td>$T_ <small>$D_</small></td>
+ </tr>
+!next i
+$table_end
+<p>
+

@@ -1,0 +1,36 @@
+
+<hr width=1>
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Delovni list #$sheet<br>$title</h1>
+(Prikaz za uporabnike)
+</center> <p>
+$desc<p>
+
+!if $exocnt=0
+ Ta delovni list je prazen. Morda gre za napako skrbnika.
+!else
+ Zahtevane naloge na tem listu:<p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $re>0
+   <small>0 toèk (zahtevanih $[$re]), kvaliteta
+   0/10. </small>
+  !endif
+ !next i
+ </ul>
+!endif
+<p>
+!homeref
+<p><hr> <p>
+<center>
+!href cmd=resume Nazaj na skrbni¹ke strani.
+</center>
+
+</body></html>
+
+!set job=
+

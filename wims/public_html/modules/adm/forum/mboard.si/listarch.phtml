@@ -1,0 +1,22 @@
+
+!if $send_right>0
+ !href cmd=new&forum=$forum&job=compose Pisanje novega sporoèila
+.
+!endif
+!if $is_owner=yes
+ &nbsp;
+ !href cmd=reply&job=config Nastavitve deske sporoèil
+!endif
+
+!if $archlist=$empty or $mlist=$archlist
+ !exit
+!endif
+
+<p>Meseèni arhivi:
+
+!for i in $archlist
+ !href cmd=reply&job=list&mlist=$i $i
+ &nbsp;
+!next i
+<p>
+

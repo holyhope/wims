@@ -1,0 +1,67 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>Verander hier Uw Wachtwoord
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Terug naar de hoofdpagina
+. <p>
+ !goto end
+!endif
+
+!form reply
+
+!if $wims_user=supervisor
+ Welk type Wachtwoord: <ul>
+ !default job=user
+ !set ch_$job=checked
+ <li><input type=radio name=job $ch_user value=user> Uw persoonlijke login wachtwoord
+ !if $part!=$empty and $job=part
+  <li><input type=radio name=job $ch_part value=part> Een wachtwoord voor een leerling
+  <tt>$part</tt>. (in dit geval hoeft U <b>niet</b> het oude wachtwoord in te typen)
+ !endif
+ <li><input type=radio name=job $ch_class value=class>Het klasse wachtwoord
+ <small>(dit is dus het wachtwoord dat leerlingen moeten kennen om zichzelf aan te mogen 
+ melden in Uw besloten klas, ook hier hoeft U het oude wachtwoord niet te weten)</small>
+ </ul>
+!else
+ <input type=hidden name=job value=user>
+!endif
+<table>
+<tr><td align=right>geef het oude wachtwoord:
+	<td><input type=password size=16 name=old>
+<tr><td align=right>geef nu het nieuwe wachtwoord:
+	<td><input type=password size=42 name=pw1>
+<tr><td align=right>het nieuwe wachtwoord nog een keer:
+	<td><input type=password size=42 name=pw2>
+</table>
+<input type=submit value="OK en VERSTUREN">
+<small>
+    Voor persoonlijke wachtwoorden: voor wachtwoorden met een eenmalig gebruik 
+    geef een "<b>+</b>"-teken voorafgaand aan het nieuwe wachtwoord  
+!href target=wims_mhelp cmd=help Detail.
+</small>
+</form>
+De wachtwoorden moeten worden opgebouwd uit uitsluitend alfanumerieke karakters,
+met een lengte tussen de 4 en 16 tekens
+!if $wims_user=supervisor
+(Een leeg wachtwoord wordt wel geaccepteerd door de software, maar de systeembeheerder
+zou dit wel eens kunnen afkeuren)
+!endif
+
+!endif
+:end
+!tail
+
+!distribute item $ into job,pw1,pw2,old
+

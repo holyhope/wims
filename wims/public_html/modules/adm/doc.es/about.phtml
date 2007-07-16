@@ -1,0 +1,24 @@
+
+<center><table border=1 bgcolor=$wims_ref_bgcolor>
+<caption>Documento <b>$doc</b></caption>
+<tr><th>Título<td>$tit
+<tr><th>Autor<td>$author
+!if @ isin $email
+ <tr><th>correo electrónico<td>
+ !mailurl $email
+!endif
+!if class != $doctype
+ <tr><th>Copyright<td>
+ !if $copyright iswordof gnu opl
+  !if $copyright=gnu
+   <a href=fdl.txt>GNU Free Documentation License</a>
+  !endif
+  !if $copyright=opl
+   <a href=opl.html>Open Publication License</a>
+  !endif
+ !else
+  Todos los derechos reservados por el autor
+ !endif
+!endif
+$table_end</div>
+

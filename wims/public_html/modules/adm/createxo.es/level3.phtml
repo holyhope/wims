@@ -1,0 +1,58 @@
+	
+El software ha reconocido su ejercicio como válido, con la siguiente información
+(por favor, compruébela con lo que ha definido).
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Título<td><td>$title
+<tr><td align=right>Número de parámetros<td><td>$varcnt
+<tr><td align=right>Número de respuestas libres<td><td>$replycnt
+<tr><td align=right>Número de opciones múltiples<td><td>$choicecnt
+</table>
+<ul><li>
+Ahora puede
+!href cmd=resume&realtest=yes&retest=again probar su ejercicio
+.
+!if $mode!=file 
+ <p><li>
+ Si quiere modificarlo, deberá
+ !href cmd=reply&level=2 volver al menú
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ O modificar el fichero fuente y después
+ <input type=submit value="reenviarlo">&nbsp;:
+ <input type=file name=wims_deposit>
+ </form>
+ <p><li>
+ !href cmd=reply&level=1&mode=normal Volver al menú principal
+.
+!endif
+
+!if $wims_user!=$empty
+ <p><li>También puede
+ !href cmd=reply&level=6 enviar un fichero de imagen
+ para utilizar en el ejercicio.
+!endif
+!if $wims_user!=$empty
+ <p><li>
+ Una vez que todo esté correcto puede
+ !if $existing!=$empty
+  añadir este ejercicio a su clase, bien
+  !href cmd=reply&level=4 para sustituir al antiguo
+,  bien
+  !href cmd=reply&level=4&newone=1 para hacer de él uno nuevo
+ !else
+  !href cmd=reply&level=4 añadir este ejercicio a su clase
+ !endif
+.
+!endif
+!if $mode!=file
+ <p><li>
+ ¡Finalmente no se olvide de
+ !getfile submit.oef hacer una copia de seguridad del código fuente
+ del ejercicio!
+!endif
+</ul>
+

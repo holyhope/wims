@@ -1,0 +1,49 @@
+
+!if $votecnt<1
+ !if $wims_user!=supervisor
+  V tej uèilnici ni na voljo nobene ankete. Posvetujte se s skrbnikom.
+  !exit
+ !else
+  V tej uèilnici ni na voljo nobene ankete. 
+!endif
+!else
+ !if $wims_user!=supervisor
+  !if $active<1
+  V tej uèilnici trenutno ni nobene odprte ankete. Posvetujte se s skrbnikom.
+   !exit
+  !endif
+ !endif
+ To so ankete va¹e uèilnice.
+ <ul>
+ !for t=1 to $votecnt
+   !set l_=!record $t of $votedir/.votes
+   !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show
+   !default vote_title=No title
+   !set vcnt=!defof vcnt in $votedir/$t.votes
+   !default vcnt=0
+   !if $wims_user!=supervisor
+    !if $vote_status iswordof 1 2
+     <li>
+     !href cmd=reply&job=read&vote=$t $vote_title
+     !if $vote_show>0
+      ($(name_$vote_status), $(name_$vote_option), $vcnt votes)
+     !else
+      ($(name_$vote_status), $(name_$vote_option))
+     !endif
+    !endif
+   !else
+    <li>
+    $vote_title
+    <small>($(name_$vote_status), $(name_$vote_option), $vcnt votes)</small>
+    !href cmd=reply&job=read&vote=$t [read]
+&nbsp;
+    !href cmd=reply&job=edit&vote=$t [modify]
+   !endif
+ !next t
+ </ul>
+!endif
+
+!if $wims_user=supervisor
+ !href cmd=reply&job=creat Ustvari novo anketo.
+!endif
+

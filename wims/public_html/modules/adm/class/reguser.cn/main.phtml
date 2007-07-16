@@ -1,0 +1,266 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>$httpd_HTTP_HOST WIMS 网站
+<br>
+班级 $name_classess 参加者的注册
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $classcnt=0
+本网站目前没有设立班级. 请你以后再试.
+ !goto end
+!endif
+
+!if $class=$empty
+请选择你想参加的班级 (点击它的名字). <p>
+ $table_header
+ !if $ctype=0
+  $table_hdtr
+  <th>姓名<th>主持教师<th>程度<th>语言</th>
+  <th>可容人数<br>地方<th>状态
+ !else
+  <caption>$institution_name</caption>
+  $table_hdtr
+  <th>姓名<th>主持教师<th>程度
+  <th>状态
+ !endif
+ !for cl in $classlist
+  !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
+  !defread wimshome/log/classes/$cl/.def
+  !distribute char $class_level into l1,l2
+  !set part=!recordcnt wimshome/log/classes/$cl/.userlist
+  $table_tr<td align=center>
+  !if $ctype=0
+   !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
+  !else
+   !href module=$module&cmd=reply&class=$cl $class_description
+  !endif
+  <td align=center>
+  !mailurl $class_email $class_supervisor
+  </td>
+    </td>
+  !if $class_level=$empty
+   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    <td align=center>$pname</td>
+  !else
+  <td align=center>$(level$l1)<br>year $l2</td>
+  !endif
+  !if $ctype=0
+   <td align=center>$(lang_$class_lang)</td>
+   <td align=right>
+   !if $class_limit-$part>$site_dispo
+    $site_dispo
+   !else
+    $[$class_limit-$part]
+   !endif
+  !endif
+  !if $class_password=$empty
+   <td align=center>开放</td>
+  !else
+   <td align=center>保护</td>
+  !endif
+ !next cl
+ $table_end <p>
+<b>说明.</b> 　你可以自由地注册到任何开放的班级. 反之, 被保护的班级
+则需要密码才能注册(密码可从主持教师那里得到).
+ !goto end1
+!endif class=empty
+
+!set classname=<b><font color=green>$description</font></b>\
+ <b><font color=green>($institution)</font></b>
+
+!if $password!=$empty and $passverify=$empty
+  $name_classessss
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+ of <b><font color=green>$institution</font></b>
+ !if $cltype iswordof 4 2
+  受密码保护, 直接注册是保留给<b>教师</b>的.
+  !if $classcnt>0 
+ 如果你是学生, 你应该直接注册到一个
+  !href cmd=new&module=$module&class=$class&subclass=yes 附属班级
+  !endif
+ !else
+ 受密码保护.
+  !endif
+ <p> 在把你注册为
+  !if $cltype iswordof 2 4
+  <b>教师</b>
+ !else
+  参加者
+ !endif
+以前, 必须先输入密码.
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>密码:
+ <input type=password name=classpass>
+ <p>
+ <input type=submit value="发送此密码">
+ </center></form> <p>
+ !if $cltype iswordof 2 4
+  <b>注意</b>. 只有教师才能直接注册到学校入口. 学生应该直接注册到
+  !href cmd=new&module=$module&class=$class&subclass=yes 附属班级
+.
+  <p>
+  <b>附注</b>. 如果入口的管理者($supervisor)
+ !else
+  <b>附注</b>. 如果此班级的主持教师($supervisor)
+ !endif
+ 允许你进入, 你应该能从他那里得到密码.
+ (
+ !mailurl $smail 发电邮给教师
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
+  !form reply
+  <input type=hidden name=step value=1>
+ 为把一个已经注册的参加者放入$name_classes,
+ 请给出他的名字或登录名:
+  <input size=20 name=search value="$search">
+  <input type=submit value=提交>
+  </form> <p>
+  !default foundcnt=0
+  !if $foundcnt>0
+   $table_header
+   <caption>在名字上点击以放入班级.</caption>
+   $table_hdtr<th>姓名</th><th>登录名</th></tr>
+   !for i=1 to $foundcnt
+    !set l=!line $i of $found
+    !distribute item $l into l_,f_,L_
+    $table_tr<td>
+    !href cmd=reply&step=2&login=$L_ $l_, $f_
+    </td>
+    <td>$L_</td></tr>
+   !next i
+   $table_end
+   !goto end1
+  !endif
+  !if $search!=$empty and $foundcnt=0
+   (在参加者的名字或登录名里没有发现<tt>$search</tt>.) <p>
+  !endif
+  请填写新参加者的信息
+  $classname.
+  !set name_Your=
+  !set name_you=参加者
+ !else
+ 为把你作为参加者登录入班级$classname,
+ 请填写以下信息.
+  !set name_Your=你的
+  !set name_you=你
+ !endif
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>$name_Your 姓<input size=20 name=lastn value="$lastn">
+  名 <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>选取登录名:
+  <input size=16 name=login value="$login"> <br>
+  这是$name_you以后用来登录$classname的名字.
+  请选择一个含4至16个字符的串(数字或英文字母).
+  <p>
+ <li>密码:
+  <input type=password size=16 name=pass> <br>
+  密码必须是含4至16个字符的串(数字或英文字母).
+  <p>
+ <li>$name_Your电邮地址(可选):<br>
+  <input size=60 name=email value="$email">
+  <p>
+ !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
+  <li>帐户类型:
+  !default utype=0
+  !formradio utype list 0,1 prompt 学生, 教师
+ !endif
+ <center><input type=submit value="注册"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Hello, $firstn $lastn!<p>
+你作为参加者登录$name_classesss $classname,
+登录名为&nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+ 你没有给出有效的电邮地址. <p>
+ !else
+ 你的电邮地址: <tt>$email</tt> <p>
+ !endif
+为验证你的密码, 请再输入一次:
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="发送密码"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ !if $wims_user=supervisor
+ 参加者$lastn $firstn 已加入$name_classe.
+  !if $wims_supertype=4
+   !readproc adm/gateway/transfer $login test
+   !if $transfer_test>0
+    <p>
+   此参加者在另一班有活动.
+    !href module=adm/class/userlist&job=transfer&getuser=$login 将活动转移
+ 至此班级.
+    <p>
+   !endif
+  !endif
+  !href module=adm/class/userlist 参加者表
+.&nbsp;
+  !href module=$module&step=1 加入另一个参加者
+.
+  !goto end
+ !endif
+ 你好, $lastn$firstn!<p>
+欢迎来到班级$classname.
+你是此班级的新参加者, 登录名为
+ ``<b><font color=green>$login</font></b>''. <p>
+你现在可以
+ !if $wims_class!=$empty
+  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
+开始工作
+.
+ !else
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+  进入班级工作</a>. (可把此链接放到你的书签中.)
+ !endif
+ !goto end
+!endif
+
+:end1
+!if $wims_user=supervisor
+ !goto end
+!endif
+<p>
+!if $cltype iswordof 2 4
+ !href module=adm/class/classes&type=supervisor 班级表
+.
+!else
+ !href module=adm/class/classes&type=participant 班级表
+.
+!endif
+:end
+!tail
+
+!reset step, subclass
+

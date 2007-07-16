@@ -1,0 +1,132 @@
+
+<center><h1>$wims_classname, $wims_institutionname<br>
+$title</h1>
+!if $wims_user=supervisor
+ (zo zien leerlingen dit tentamen)
+!endif
+</center> <p>
+$desc<p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Terug naar de homepagina
+. <p>
+ !exit
+!endif
+
+!if $registered<0 or ($registered>0 and $timeleft<=0)
+ !changeto score.phtml
+!endif
+
+!if $exocnt=0
+ Dit tentamen is leeg !<br>
+ Er staan geen opdrachten in. Waarschijnlijk een foutje van je docent.
+!else
+ De opgaven van dit tentamen:
+!! !href cmd=reply&job=student [vernieuw deze pagina]
+ !set activeexo=0
+ <p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti,de
+  !set de=!trim $de
+  <p><li>$i. 
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+   ($tryremain=0 and $registered!=$empty))
+   !if $(replied$i)>0
+    $ti (klaar).
+   !else
+    !if $de!=$empty
+     !set dt=!examdep $exam $de
+    !else
+     !set dt=yes
+    !endif
+    !if $dt=yes
+     !advance activeexo
+     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+.
+     !if autogen iswordof $op and $wims_exam_remain!=$empty
+      !set ss=$(wims_session)_examt$(exam)t$i
+      !set test=!defof w_cmd in wimshome/sessions/$ss/var
+      !if $test=$empty
+       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+       <img src="$test" height=1 width=1 border=0>
+      !endif
+     !endif
+    !else
+     <b><font color=red>$ti</font></b> (Vereist
+     !href cmd=reply&job=student een positief resultaat 
+     voor de andere opgaven.)
+    !endif
+   !endif
+  !else
+   $ti.
+  !endif
+ !next i
+ </ul>
+ !if $t_=no
+  Dit tentamen mag je niet maken van af jouw computer (dus vanaf je ip-adres).
+  !href cmd=reply&job=student Vernieuw deze pagina.
+ !else
+  !if $stries=1
+   Je kunt dit tentamen slechts &eacute;&eacute;n keer maken.
+  !else
+   Je mag dit tentamen $stries keer maken. (en de beste score telt)
+  !endif
+  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+   !if $trcut=0
+    Je hebt dit tentamen al $tried keer volledig gemaakt ,
+   !else
+    Je hebt dit tentamen al $tried keer geprobeerd, 
+   !endif
+    dus je kunt je score niet meer verbeteren.
+   !set exhausted=yes
+  !endif
+  !if $tryremain>0
+  En je hebt dus nog $tryremain pogingen over.
+  !endif
+  !if $registered=$empty and $exhausted!=yes
+   Je hebt $sdure minuten om aan dit tentamen te werken.
+   Wanneer je op een opgave klikt
+   !if $allowtype!=simulation
+    begint de klok te lopen. (en het aantal tentamenpogingen neemt met &eacute;&eacute;n af)
+   !else
+  begint de klok te lopen.    
+   !endif
+  !else
+   !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+   Dit is je laatste tentamenpoging !!    
+   !endif
+  !endif
+  <p>
+  !href cmd=reply&job=student Vernieuw deze pagina.
+&nbsp;
+  !href cmd=reply&job=score Mijn cijfers.
+  !if $activeexo<1
+&nbsp;
+   !href cmd=reply&job=scorereg Beeindig
+   deze tentamensessie (omdat alle opgaven klaar zijn).
+  !endif
+ !endif
+!endif
+
+!if $t_=yes
+ !if $allowtype=simulation
+  <p>
+  Dit tentamen loopt in simulatie mode. Het werkt precies als het echte tentamen,
+  behalve dan dat de cijfers en tentamen-pogingen niet worden geregistreerd.
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Terug naar de supervisor pagina.
+ </center>
+!endif
+
+!tail
+
+!reset job
+

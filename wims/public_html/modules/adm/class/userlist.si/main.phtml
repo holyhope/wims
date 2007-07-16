@@ -1,0 +1,217 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+!if $job!=$empty and $job!=sheets
+ !read $job.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>Seznam uporabnikov
+ </b><font size=-1>[
+!href cmd=reply&job=csv spreadsheet data
+ ]
+</font>
+</h1></center>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Nazaj na domaèo stran
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+ Ta uèilnica ¹e nima nobenega uporabnika.
+ [
+ !href module=adm/class/reguser&step=1 Dodaj uporabnika
+ ]
+!else
+ <center>
+ [
+ !href module=adm/class/reguser&step=1 Dodaj uporabnika
+ ]
+ !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
+ !set deleted=!trim $deleted
+ !if $deleted!=$empty
+  &nbsp;[
+  !href cmd=reply&job=recover Izbrisani uporabniki
+  ]
+ !endif
+ </center> <p>$table_header
+ <caption>Ocene (maksimum $scoremax)</caption>
+ !if $manual>0
+  $table_hdtr<th rowspan=2>Priimek, ime
+  <th colspan=3>Povpreèje
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th rowspan=2><small>izpit $k</small>
+   !else
+    <th rowspan=2><small>list $j</small>
+   !endif
+  !next j
+  $table_hdtr<th><small>global<th><small>uèitelj<th><small>auto
+ !else
+  $table_hdtr<th>Priimek, ime
+  <th>Povpreèje
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th><small>izpit $k</small>
+   !else
+    <th><small>list $j</small>
+   !endif
+  !next j
+ !endif
+ !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
+ !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
+ !for i=1 to $usercnt
+  !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  !set UU=!hex $uu
+  $table_tr<td>
+  !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
+  !read userscore
+  !if $manual>0
+   !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
+   <td align=center>$glob</td>
+   <td align=center>$(manual_$UU)</td>
+   <td align=center>$per</td>
+   !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
+   !if $glob>0
+    !advance cnt_glob
+    !if $(manual_$UU)>0
+     !advance cnt_tea
+    !endif
+    !if $per>0
+     !advance cnt_auto
+    !endif
+   !endif
+  !else
+   <td align=center>$per</td>
+   !if $per>0
+    !advance cnt_auto
+    !advance cnt_glob
+   !endif
+  !endif
+  !set mean_auto=$[$mean_auto+$per]
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    !set p_=$[rint(10*$scoremax*$(es_$k))/100]
+    <td align=center>$p_</td>
+   !else
+    !set p_=!line $j of $percents
+    !distribute words $p_ into p1,p2
+    !if $p2!=$empty
+     !distribute item $[$p1/100],$[$p2/10] into x_,y_
+     !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+    !else
+     !set p_=0
+    !endif
+    <td align=center>$p_</td>
+   !endif
+   !set per_$j=$[$(per_$j)+$p_]
+   !if $p_>0
+    !advance cnt_$j
+   !endif
+  !next j
+ !next i
+ !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
+	$[rint(100*$mean_tea/$usercnt)/100],\
+	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
+ $table_hdtr<td align=center><b>Povpreèje uèilnice</b>
+ !if $manual>0
+  <td align=center>$m_glob</td>
+  <td align=center>$m_tea</td>
+  <td align=center>$m_auto</td>
+ !else
+  <td align=center>$m_auto</td>
+ !endif
+ !for j in $showsheet
+  <td align=center>$[rint(100*$(per_$j)/max(1,$usercnt))/100]</td>
+ !next j
+ !if $cnt_glob>0
+  !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
+	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
+	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
+  $table_hdtr<td align=center><b>Povpreèje pozitivnih rezultatov</b>
+  !if $manual>0
+   <td align=center>$m_glob</td>
+   <td align=center>$m_tea</td>
+   <td align=center>$m_auto</td>
+  !else
+   <td align=center>$m_auto</td>
+  !endif
+  !for j in $showsheet
+   <td align=center>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]</td>
+  !next j
+ !endif
+ $table_end
+ <p>Kliknite na ime posameznika za podrobnosti o njegovem delu.
+ !href cmd=reply&job=formula&formula=prep Spremeni nivo resnosti
+.
+ !href module=adm/class/grades Roèno vne¹ene ocene
+.
+ !href module=adm/class/stat Statistika aktivnosti
+.
+ !if $activecnt>1
+  <p>
+  !form reply
+  <input type=hidden name=job value=sheets>
+  !set wims_formselect_switch=multiple size=$[min($activecnt+$eactivecnt,6)]
+  <table border=0>
+  <tr><td>Izberite liste za izpis<br>povpreènih rezultatov posameznih listov:
+  <td>&nbsp;&nbsp;
+  !reset tmp
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !set ti=!item 3 of $sh
+   !set tmp=!append item $se: $ti to $tmp
+  !next i
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set tmp=!append item Exam $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  <td><input type=submit value="Show"></table>
+  </form>
+ !endif
+!endif (usercnt=0?)
+<p>
+!if $manual>0
+ <b>Explanations.</b> In the `Average' columns, `auto' means average of
+ grades computed from scores obtained in work sheets, `teacher' means 
+ average of grades attributed
+ manually by the supervisor, and `global' is computed from the two other
+ averages, by the formula
+ <p><center>
+  global = $[$manual/100]*teacher + $[1-$manual/100]*auto.
+ </center> <p>
+!endif
+
+:end
+!tail
+
+!reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,\
+	passcheck
+
+

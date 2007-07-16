@@ -1,0 +1,74 @@
+<center>
+!if $teachercnt=0
+ Il n'y a pas encore de compte d'enseignants.
+ !href cmd=reply&job=addteacher Nouveau compte d'enseignant
+. <p>
+!else
+ Il y a
+ !href cmd=reply&job=teacher $teachercnt comptes d'enseignant
+.
+!endif
+
+!goto nopart
+!if $studentcnt=0
+ <p>
+ Il n'y a pas encore de compte d'élèves.
+ !href cmd=reply&job=addstudent Nouveau compte d'élève
+.
+!else
+ !href cmd=reply&job=student $studentcnt comptes d'élève
+.
+!endif
+:nopart
+</center>
+<p>
+!if $levelcnt=0
+  Aucun niveau d'enseignement n'est encore installé.
+  !href cmd=reply&job=addlevel Créer un niveau
+.<sup>
+  !href cmd=help&special_parm=structure#level aide
+</sup>
+!else
+ $table_header
+ <caption>Niveaux d'enseignement disponibles<sup>
+ !href cmd=help&special_parm=structure#level aide
+ </sup><br><small>
+ !href cmd=reply&job=addlevel Ajouter&nbsp;un&nbsp;autre&nbsp;niveau
+ &nbsp; 
+ !href cmd=reply&job=backstruct Sauvegarder&nbsp;la&nbsp;structure
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
+ <th><small>Classes</small></th>
+ <th><small>Programmes</small></th>
+ </tr>
+ !for i=1 to $levelcnt
+   !set l=!line $i of $leveldata
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!positionof item $l_ in $classl
+   !set c=!itemcnt $c
+   !set p=!positionof item $l_ in $progl
+   !set p=!itemcnt $p
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=level&level=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=dellevel&del=$l_ effacer
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non disponible
+   !endif
+   </td><td align=center>$c
+   </td><td align=center>$p
+ !next i
+ $table_end
+!endif
+

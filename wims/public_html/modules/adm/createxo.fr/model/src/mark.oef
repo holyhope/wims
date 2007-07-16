@@ -1,0 +1,146 @@
+type=datalist
+textarea="data"
+
+:Questions à marquer des mots dans un texte.
+
+L'exercice présente un texte où certains mots sont "marquables". Il faut
+marquer ceux qui doivent l'être selon la demande de l'exercice.
+<p>
+Pour construire un exercice avec ce modèle, il suffit d'entrer les textes.
+<p>
+Auteur du modèle : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'entete ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Marquer un texte}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Minimum de cases qu'on doit marquer à chaque exercice. Au moins 1.
+\integer{minmark=1}
+
+:Maximum de cases qu'on doit marquer à chaque exercice.
+\integer{maxmark=8}
+
+:Données principales.
+Définir une question par ligne, et séparer les lignes
+par un point-virgule. (Donc les textes eux-memes ne peuvent pas contenir
+des point-virgules.) <p>
+Les champs à marquer doivent être mis entre une paire de double-point
+d'interrogation "??". Chaque champs contient une liste de mots séparés
+par des virgules. Ces mots seront tirés au hasard avant l'affichage de
+la phrase. Si c'est le premier mot (quand il n'est pas vide), il est à
+marquer. Sinon on ne doit pas le marquer.
+<p>
+Jusqu'à une centaine de points de marquage
+peuvent être posés dans chaque phrase.
+$embraced_randitem
+
+\text{data=
+{Jack,Jean,Louis,Michel,Pierre} ??et,est?? forain, il 
+??{tien,tiens},tient?? ??un,une?? baraque de tir ??a,à?? la noix de coco.
+??Ont,On?? ??trouvent,trouve?? des ??Baraque,Baraques?? Noix de Coco dans 
+??tous,toutes?? les foires. Les ??,gens?? ??arrive,arrivent??,
+??donne,donnent?? des ??,sous??
+??est,et?? ??envoie,envoient?? des ??,boules?? sur une noix de coco 
+??{poser,posé},posée?? en haut d'une ??,colonne??.
+Ceux qui ??fait,font??
+??{dégringolé,dégringolée},dégringoler?? une noix de coco 
+??{peu,peut,peux},peuvent?? ??{le,les},la??
+??{gardée,gardé},garder??.
+;
+
+??{Quel,Quels,Quelles},Quelle??
+idée ??est-je,ai-je??
+??{d'acheté,d'achetée,d'achetés},d'acheter?? ??{cept,cette,ces,ce},cet??
+oiseau ? L'oiselier me dit : "??{S'est,Cet},C'est?? un ??{mal,malle},mâle??.
+??Attender,Attendez?? une ??,semaine?? qu'il 
+??{s'abitue,s'abituent,s'habituent},s'habitue??, ??est,et?? il chantera".
+??Hors,Or??, l'oiseau ??sobstine,s'obstine?? ??a,à?? ??ce,se?? 
+??tait,taire?? et il ??fais,fait?? ??tous,tout?? de ??{traver,travert},travers??.
+;
+
+Les ??désert,déserts?? de ??sables,sable?? ??occupe,occupent?? de
+??large,larges?? parties {de la planète,du monde,de la Terre}.
+Il n'y ??{pleu,pleus,pleuvent},pleut??
+presque ??,pas??. Très ??peut,peu?? de plantes et ??,d'animaux?? y
+??vit,vivent??. Les ??,dunes?? ??son,sont?? des collines de
+??,sable?? que le vent ??à,a??
+??{construit,construits,construite},construites??. Les 
+??grains,graines?? de ??{certain,certaine,certains},certaines??
+plantes ??reste,restent?? sous le ??sole,sol?? du désert pendant
+des années. ??{Ils,Elle},Elles?? ??ce,se?? ??met,mettent??
+??a,à?? ??{poussées,poussée,poussés},pousser?? dès qu'il y a
+??une,un?? orage.
+;
+
+}
+
+:Texte affiché avant la question. Balises html admises. Peut être vide.
+$embraced_randitem
+\text{pre=
+Marquez les fautes d'orthographe dans la phrase ci-dessous. <p>
+}
+
+:Texte affiché après la question. Balises html admises. Peut être vide.
+\text{post=}
+
+:Mots d'option.
+Ajoutez le mot "split" à la définition si vous voulez donner une note
+partielle pour des réponses partiellement correctes.
+\text{option=split}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=floor(rows(\data)/2)}
+\text{list=}
+\text{ind=}
+\for{i=1 to \qs}{
+ \text{d=\data[2*\i;]}
+ \text{list=\list \d;}
+ \if{\d[1] issametext }{\text{ind=\ind[]2,}}{\text{ind=\ind[]1,}}
+}
+
+\text{can=positionof(1,\ind)}
+\text{cancnt=items(\can)}
+\integer{tomark=randint(min(\minmark,\cancnt)..min(\maxmark,\cancnt))}
+\text{can=\cancnt>1?shuffle(\can)}
+\text{good=item(1..\tomark,\can)}
+\text{good=wims(sort numeric items \good)}
+
+\text{show=}
+\for{i=1 to \qs}{
+ \text{d=\i isitemof \good?\list[\i;1]:\list[\i;2]}
+ \text{show=\show[]\d,}
+}
+
+\text{pre=wims(embraced randitem \pre)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+\statement{\pre
+
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r1,\k} \data[2*\k+1;]
+}
+\post
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%
+
+\answer{Champ 1}{\good;\show}{type=mark}{option=\option}
+

@@ -1,0 +1,90 @@
+!!INDEX
+!let module_author	=XIAO, Gang
+!let module_address	=xiao@unice.fr
+!let module_title	=Setup your preferences for WIMS
+!let module_description	=define preferences for wims
+!let module_version	=1.00
+!let module_wims_version=0.13
+!let module_language	=en
+!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_category	=adm
+!let module_level	=
+!let module_domain	=adm
+!let module_keywords	=wims
+!!INDEXEND
+
+!let texsize=!char 1 of $useropts
+!let texalign=!char 2 of $useropts
+!default texsize=$[$wims_texbasesize-1]
+!default texalign=$talign
+!let useropt2=!char 3 to -1 of $useropts
+!if $useropts!=$empty and $wims_realuser!=$empty
+ !readproc adm/class/userdef classes,$wims_class,$wims_realuser
+ !setdef !set user_opts=$useropts in $userdef
+ !setdef wims_useropts=$useropts in wimshome/$wims_sesdir/var.stat
+!endif
+
+!header
+
+This page allows you to change your preferences for your working sessions
+on WIMS.
+<p>
+These preferences actually include:
+<ul>
+!if $wims_user=$empty
+ <p><li>The default language.
+  !for l=1 to $wims_language_cnt
+   !let la=!word $l of $wims_site_languages
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src=gifs/$la.gif border=1>$(lang_name_$la)
+   &nbsp;&nbsp;
+  !next l
+!endif
+ <p><li>The size of mathematical symbols and formulas. Use the following line
+  to compare the sizes of symbols and texts.
+  <p>
+  Greek Lettres $m_alpha,$m_pi. Mathematical expression 
+  !let ins_align=middle
+  !instex $$x^3\sin(x)+{\sqrt{x^2+1}\over105}-123.45$$.
+  A mixed inequality
+  <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
+  <p>
+  You may
+  !let ts1=!eval $texsize-1
+  !let ts2=!eval $texsize+1
+  !if $ts1<1
+    !let ts1=1
+  !endif
+  !if $ts2>9
+    !let ts2=9
+  !endif
+  !href cmd=resume&useropts=$ts1$texalign$useropt2 decrease
+  or
+  !href cmd=resume&useropts=$ts2$texalign$useropt2 increase
+  the size of mathematical symbols, to make them correspond to that of the 
+  text.
+  If the expression
+  !insmath (x+y)/(x^2+y^2)
+  is
+  !if $texalign=1
+   too high with respect to the text line,
+   !href cmd=resume&useropts=$(texsize)0$useropt2 click here
+   to lower it.
+  !else
+   too low with respect to the text line,
+   !href cmd=resume&useropts=$(texsize)1$useropt2 click here
+   to raise it.
+  !endif
+</ul>
+
+!if $wims_user=$empty
+ When everything corresponds exactly to what you want, put
+ <a href="$wims_ref_name?lang=$lang&useropts=$texsize$texalign$useropt2"
+ title="WIMS">this link</a>
+ into your bookmark, to keep these preferences for your future connections.
+!else
+ Your preferences will be preserved in your future logins in this class.
+!endif
+
+:end
+!tail
+

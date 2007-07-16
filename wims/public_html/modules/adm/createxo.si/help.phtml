@@ -1,0 +1,54 @@
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty and $s_ isitemof $helplist
+ !read help/$s_.phtml
+ <p><center>
+ !href cmd=help Druge teme pomoèi.
+ &nbsp;&nbsp;
+ !href cmd=resume Nazaj k delu.
+ </center>
+ !exit
+!endif
+
+Teme pomoèi:<ul>
+<p><li>
+!href cmd=help&special_parm=oef Razlaga formata OEF.
+<p><li>
+!href cmd=help&special_parm=examples Primeri vaj.
+<p><li>
+!href cmd=help&special_parm=format Oblikovanje trditev
+ posamezne vaje.
+<p><li>
+!href cmd=help&special_parm=parameters Nakljuèni parametri
+ v interaktivni vaji.
+<p><li>
+!href cmd=help&special_parm=math Matematiène formule
+ v vajah.
+<p><li>Vkljuèevanje
+!href cmd=help&special_parm=draw dinamiènih risb
+ v vaje.
+<p><li>Mo¾ne oblike 
+!href cmd=help&special_parm=reply odgovorov na vpra¹anja.
+<p><li>
+!href cmd=help&special_parm=feedback Komentar
+ uporabnikovih odgovorov.
+<p><li>
+!href cmd=help&special_parm=oefadv Napredne mo¾nosti
+.
+<p><li>
+!href cmd=help&special_parm=all Celotna pomoè
+</ul>
+
+<center>
+!href cmd=resume Nazaj k delu.
+</center>
+

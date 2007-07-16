@@ -1,0 +1,107 @@
+!set sizex=65
+!set types=!sort nocase lines \
+auto,			default\
+algebraische uitdrukking,	algexp\
+tekst met kernwoorden,	atext\
+hoofdletter ongevoelige tekst,	nocase\
+hoofdletter gevoelige tekst,	case\
+ruwe tekst,		raw\
+charakter sets, 		chset\
+vergelijking,		equation\
+beperkte set,		set\
+formele uitdrukking,	formal\
+letterlijke uitdrukking,	litexp\
+matrix,			matrix\
+getal,			numeric\
+getal binnen een bereik,	range\
+getal met eenheden,	units\
+numerieke functie,	function\
+vector,			vector\
+woorden in een lijst,	wlist
+
+!set types=!nonempty lines $types
+!set typelist=!column 2 of $types
+!set typenames=!column 1 of $types
+Geef nu de inhoud van uw oefening
+<font color=red><b>$oef_title</b></font>.
+!href cmd=reply&level=1 Terug 
+ naar het start menu. <p>
+
+!form reply
+<input type=hidden name=level value=3>
+U kunt random parameters definieren: [
+!href target=wims_mhelp cmd=help&special_parm=parameters uitleg
+ ]<br>
+!set o_parms=!reinput $oef_parms
+<textarea wrap="off" rows=6 cols=$sizex name=oef_parms>$o_parms</textarea>
+<p>
+Het statement van de oefening ($oef_format formaat): [
+!href target=wims_mhelp cmd=help&special_parm=format uitleg
+ ]<br>
+!set o_statement=!reinput $oef_statement
+<textarea wrap="off" rows=6 cols=$sizex name=oef_statement>$o_statement</textarea>
+<p>
+!if $oef_answercnt>0
+ <table border=1>
+ <caption>Open antwoorden
+ <tr><th>Naam<th>Correcte oplossing<th>Type</b><small>
+ !href target=wims_mhelp cmd=help&special_parm=reply#freestyle [help]
+ !for i=1 to $oef_answercnt
+  !default anstype$i=default
+  !set p_=!reinput $(ansprompt$i)
+  <tr><td> <input size=$[$promptlim-3] maxlength=$promptlim name=ansprompt$i value="$p_">
+  !set p_=!reinput $(ansgood$i)
+  <td> <input size=30 name=ansgood$i value="$p_">
+  <td><small>
+  !formselect anstype$i list $typelist prompt $typenames
+ !next i
+ </table> <p>
+ Vereiste precisie van getalsmatige antwoorden:
+ !formselect oef_precision list 100,1000,10000,100000,1000000 prompt 1/100,1/1000,1/10 000,1/100 000,1/1 000 000
+ <br>(Numerieke) functies worden gecontroleerd in het interval
+ (&nbsp;<input size=6 name=oef_rangel value="$oef_rangel">,<input size=6 name=oef_ranger value="$oef_ranger">&nbsp;).
+ <p>
+!endif
+
+!if $oef_condcnt>0
+ <table border=1>
+ <caption>Voorwaarden voor het analyseren van getalsmatige antwoorden.
+ <tr><th>Voorwaarde<th>Definitie van de voorwaarde
+ !for i=1 to $oef_condcnt
+  !set p_=!reinput $(Condname$i)
+  <tr><td><input size=$promptlim maxlength=$promptlim name=Condname$i value="$p_">
+  !set p_=!reinput $(Condtest$i)
+  <td> <input size=40 name=Condtest$i value="$p_">
+ !next i
+ </table> <p>
+!endif
+
+!if $oef_choicecnt>0
+ <table border=1>
+ <caption>Meerkeuze antwoorden (multiple choice)
+ <tr><th>Naam<th><font color=green>goede</font> antwoorden<th><fontcolor=red>Foute</font> antwoorden
+ !for i=1 to $oef_choicecnt
+  !set p_=!reinput $(choiprompt$i)
+  <tr><td> <input size=$promptlim maxlength=$promptlim name=choiprompt$i value="$p_">
+  !set p_=!reinput $(choigood$i)
+  <td> <input size=10 name=choigood$i value="$p_">
+  !set p_=!reinput $(choibad$i)
+  <td> <input size=30 name=choibad$i value="$p_">
+ !next i
+ </table> <p>
+!endif
+
+<p><center>
+<input type=submit value="Configuratie is OK">
+</center> <p>
+Hier kunt u als extra ook een <em>hint</em> en/of een <em>uitgewerkte oplossing</em> definieren:
+<table border=0>
+<tr><td>Hint<br>(html formaat)
+!set pp=!reinput $oef_hint
+<td><textarea wrap="off" rows=3 cols=$[$sizex-10] name=oef_hint>$pp</textarea>
+<tr><td>Oplossing<br>(html formaat)
+!set pp=!reinput $oef_solution
+<td><textarea wrap="off" rows=3 cols=$[$sizex-10] name=oef_solution>$pp</textarea>
+</table>
+</form>
+

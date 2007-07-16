@@ -1,0 +1,160 @@
+!if $supertype=4 and $classdepth<=3
+<p><center>
+ !href module=adm/class/gateway 结构管理
+</center>
+!endif
+
+!form reply
+<input type=hidden name=up_job value=list>
+$table_header
+$table_tr<td align=right>学校名
+<td colspan=3>
+!if $supertype notin 24 or $classdepth=1
+ <input size=50 name=up_institution value="$class_institution">
+!else
+ $class_institution
+!endif
+$table_tr<td align=right>班级名
+<td colspan=3>
+<input size=50 name=up_description value="$class_description">
+$table_tr<td align=right>安全主机
+<small>
+!href cmd=help&special_parm=config&special_parm2=secure 帮助
+ </small>
+<td colspan=3>
+<input size=50 name=up_secure value="$class_secure">
+$table_tr<td align=right>主持教师名
+<small>
+!href cmd=help&special_parm=config&special_parm2=supervisor 帮助
+ </small>
+<td colspan=3>
+<input size=40 name=up_supervisor value="$class_supervisor">
+$table_tr<td align=right>主持教师电邮
+<small>
+!href cmd=help&special_parm=config&special_parm2=email 帮助
+ </small>
+<td colspan=3>
+<input size=40 name=up_email value="$class_email">
+$table_tr<td align=right>选项词
+<small>
+!href cmd=help&special_parm=config&special_parm2=option 帮助
+ </small>
+<td colspan=3>
+<input size=40 name=up_option value="$class_option">
+$table_tr<td align=right colspan=2>连接锁定等级
+<small>
+!href cmd=help&special_parm=config&special_parm2=lock 帮助
+</small>
+</td><td colspan=2>
+!set up_lock=$class_lock
+!default up_lock=0
+!formselect up_lock from 0 to 7
+</td>
+$table_tr<td align=right>班级语言
+<small>
+!href cmd=help&special_parm=config&special_parm2=lang 帮助
+ </small>
+<td>
+!set up_lang=$class_lang
+!set langs=!words2items $wims_site_languages
+!formselect up_lang list $langs
+<td align=right>
+程度
+<small>
+!href cmd=help&special_parm=config&special_parm2=level 帮助
+ </small>
+<td>
+!set up_level=$class_level
+!formselect up_level list $levellist
+$table_tr<td align=right>参加者人数限制
+<small>
+!href cmd=help&special_parm=config&special_parm2=limit 帮助
+ </small>
+<td><input size=5 name=up_limit value="$class_limit">
+<td align=right>有效期
+<small><b>yyyymmdd</b></small>
+<small>
+!href cmd=help&special_parm=config&special_parm2=expiration 帮助
+ </small>
+<td>
+!if $class_type notin 13
+ <input size=8 maxlength=8 name=up_expiration value="$class_expiration">
+!else
+ <tt>$class_expiration</tt>
+!endif
+$table_tr<td align=right>练习记录限制
+<small>
+!href cmd=help&special_parm=config&special_parm2=exolog 帮助
+ </small>
+!default class_exolog=0
+<td><input size=3 name=up_exolog value="$class_exolog">
+<td align=right>考试记录限制
+<small>
+!href cmd=help&special_parm=config&special_parm2=examlog 帮助
+ </small>
+!default class_examlog=$wims_examlog_limit
+<td><input size=3 name=up_examlog value="$class_examlog">
+$table_hdtr<td align=center colspan=4>
+<input type=submit name=save value=保存>
+&nbsp;
+<input type=submit name=abandon value=恢复>
+$table_end <p>
+</form>
+
+其它配置:
+!href cmd=reply&job=present 外观
+.
+!href cmd=reply&job=neighbor&job2=first 相邻班
+.
+!href cmd=reply&job=connect&job2=first 其它服务器
+.
+!href module=adm/class/passwd 密码
+.
+!href module=adm/forum/mboard&job=config 信息板
+.
+!href module=adm/doc 文件
+.
+!href module=adm/class/motd 每日信息
+.
+!href cmd=reply&job=access 资源限制
+.
+!if $class_type iswordof 2 3 4
+ !href cmd=reply&job=propagate 传送配置到分班
+.
+!endif
+<p>
+!href cmd=reply&job=security 安全管理
+.
+!href cmd=reply&job=arch&job2=first 备份与恢复
+.
+!href cmd=reply&job=clean 选择性清除
+.
+<br>
+重建索引<sup>
+!href cmd=help&special_parm=index 帮助
+</sup>:
+!if $class_type=4
+!href cmd=reply&job=index&job2=structure 分班
+,
+!endif
+!if $class_type=4 or $class_type=2
+!href cmd=reply&job=index&job2=teacherlist 教师
+,
+!endif
+!href cmd=reply&job=index&job2=userlist 参加者
+,
+!href cmd=reply&job=index&job2=oef 练习
+,
+!href cmd=reply&job=index&job2=doc 文件
+.
+<p>
+!href module=adm/light&phtml=useropts.phtml.$lang 我的个人喜好
+.
+<p>
+班级目前使用的盘空间: $du megabytes. (分配值为 $wims_class_quota.)
+
+!reset up_institution, up_description, up_supervisor, up_email, \
+    up_lang, up_level, up_limit, up_expiration, up_secure, up_lock, \
+    up_option,up_exolog,up_examlog,\
+    pr_homepage, pr_bgcolor, pr_refcolor, pr_bgimg, pr_css, pr_theme
+

@@ -1,0 +1,69 @@
+通常一個本站的網頁將很多參觀者送到其他參觀者所感興趣的地方。因此，如果您正在
+尋找關於本站的網頁資源時，這類網頁的列表正是您所需要的。<p>
+<p>
+另一方面，如果您是連結到本站的網頁作者，這個網頁列表允許您測量連結的效率。對於您的連結
+這也是我們對於您連結到本站的禮遇。
+<p>
+我們的往回連結是根據您在下列選單中所選定的參數動態生成的。
+
+!form reply
+ !set s_day=day(s)
+ !set s_week=week(s)
+ !set s_month=month(s)
+ !set s_year=year(s)
+ !set s_beginning=開始日期： $start_month-$start_day-$start_year
+ 列表期間：從
+ <select name=cnt>
+ !for i=1 to 15
+  <option value=$i
+  !if $i=$cnt
+   selected
+  !endif
+  >$i
+ !next i
+ </select><select name=style>
+ !for i in day,week,month,year,beginning
+  <option value=$i
+  !if $i=$style or ($i=month and $style=$empty)
+   selected
+  !endif
+  >$(s_$i)
+ !next i
+ </select>開始。<p>
+ 本連結可以按網頁的
+ !set i_site=網站名稱，
+ !set i_stem=站台目錄，或
+ !set i_uniq=絕對位址
+ !for i in site,stem,uniq
+  <input type=radio name=type value=$i
+  !if $type=$i
+   checked
+  !endif
+  > $(i_$i)
+ !next i
+ 的順序，並列出前 <select name=reflim>
+ !for i in 10,20,30,50,70,100,150,200
+  <option value=$i
+  !if $i=$reflim
+   selected
+  !endif
+  >$i
+ !next i
+ </select> 個位置。
+ 搜尋引擎
+ <input type=radio name=search value=yes
+ !if $search=yes
+  checked
+ !endif
+ > (包含)  <input type=radio name=search value=no
+ !if $search=no
+  checked
+ !endif
+ > (不包含)在列表中
+ <p>您也可以選擇性地限制列出綱站/綱頁所包含的關鍵字：
+ <input size=15 name=key value="$key">
+ <p><center><input type=submit value=" 顯示列表 "></center>
+</form>
+
+!set key=
+

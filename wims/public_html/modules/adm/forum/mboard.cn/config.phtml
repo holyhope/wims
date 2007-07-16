@@ -1,0 +1,35 @@
+
+这里是你可以修改的信息板参数.
+
+!form reply
+<input type=hidden name=job value=config>
+<input type=hidden name=cf_set value=yes>
+<ul>
+ <p><li>信息板标题:<br>
+  <input size=60 name=cf_title value="$cf_title">
+ <p><li>描述:<br>
+  <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
+ <p><li>谁能阅读此信息?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_readpolicy list alluser,owner prompt \
+    每个参加者, 只有你自己
+ !else
+  !formselect cf_readpolicy list open,alluser,owner prompt \
+    任何人, 只对注册用户, 只有你自己
+ !endif
+ <p><li>谁能发送信息进来?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
+    每个参加者, 检验电邮地址后的参加者, 只有你自己
+ !else
+  !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
+    有电邮地址的访问者及用户,\
+    只对注册用户, 检验电邮地址后的用户,\
+    只有你自己
+ !endif
+
+</ul>
+<p><center><input type=submit name=cf_set value="记录修改">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="取消">
+</center> <p></form>
+

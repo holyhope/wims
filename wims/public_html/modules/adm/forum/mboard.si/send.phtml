@@ -1,0 +1,23 @@
+
+!if $s_status=ask
+ Ta deska sporoèil ne dovoljuje anonimnih sporoèil. Uporabniki se morajo podpisati
+z veljavnim e-naslovom.
+ <p>
+ Na ta naslov boste v naslednjih minutah prejeli skrivno kodo, ki jo morate vpisati v okence:
+ !form reply
+ <input type=hidden name=job value=send>
+ <p><center><input size=10 name=s_code>
+ <input type=submit value=OK></form>
+ <p>
+ !href cmd=reply&job=list Opusti postopek
+ </center> <p>
+ !exit
+!endif
+
+!if $error=$empty
+ Va¹e sporoèilo je bilo dodano na desko sporoèil.
+!endif
+
+<p><center>
+!href cmd=reply&job=list Seznam sporoèil
+</center> <p>

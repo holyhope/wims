@@ -1,0 +1,28 @@
+<p><center><h3>管理链接的班级</h3></center> <p>
+
+!read connect/remote.phtml
+
+<p>
+远程班级: $connclass.
+
+!if $error=$empty
+ (<font color=blue>$institution</font> 的
+<font color=blue>$description</font>)
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=sync>
+同步(与另一个)
+ !formselect connclasstype list local,remote prompt\
+    本地班, 远程班
+  关于
+ !formselect connsync list def,user,avg,score,rec prompt\
+    班级定义, 用户表, 平均分, 分数详情,\
+    除班级设置外的所有
+ <input type=submit value=提交>
+ </form> <p>
+!else
+
+
+!endif
+
+

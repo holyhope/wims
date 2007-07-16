@@ -1,0 +1,52 @@
+
+!read desc.phtml
+<p>
+!if $tot<=0
+ !if $mlist!=.newlist
+没有发现你请求的信息. 抱歉.
+ !else
+本论坛无信息.
+ !endif
+!else
+ !if $mlist=.newlist
+最近信息表, 
+ !else
+  !item $lmon of $monthnames
+  $lyear 期间的信息表,
+ !endif
+ !item $l_order of 新的在前,新的在后
+. <small>
+ !href cmd=reply&l_order=$[$l_order%2+1] [换个顺序]
+ !if $send_right>0
+  &nbsp;
+  !href cmd=new&forum=$forum&job=compose [新信息]
+ !endif
+</small>
+ <ul>
+ !set lh=<li>
+ !if $l_order=1
+  !distribute item $tot,1,-1 into start,end,step
+ !else
+  !distribute item 1,$tot,1 into start,end,step
+ !endif
+ !for i=$start to $end step $step
+  !if $mlist=.newlist
+   !set l_=!line $i of $mnew
+   !distribute word $l_ into a_,b_
+   !set l_=!record $b_ of $forumdir/$a_/.msglist
+  !else
+   !set l_=!record $i of $forumdir/$mlist/.msglist
+  !endif
+  !read listone.phtml $l_
+ !next i
+ </ul>
+!endif
+
+<p>
+!if $mlist!=.newlist
+ !href cmd=reply&job=list&mlist=.newlist 最新信息.
+ &nbsp;
+!endif
+
+!read listarch.phtml
+

@@ -1,0 +1,39 @@
+
+!if $fsize=$empty
+ Désolé, l'archivage de votre classe n'a pas abouti. Erreur interne.
+ !exit
+!endif
+
+Voici le fichier de sauvegarde de votre classe :
+!getfile $fname.$format $fname.$format
+ ($fsize K).
+<p>
+
+!if $fsize<50 and all isitemof $selection
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=$job2>
+!if $fsize<200
+ Vous pouvez aussi faire une
+!else
+ Ce fichier de sauvegarde a une taille qui peut dépasser la limite autorisée
+ pour envoi au serveur. Pour réduire la taille du fichier, vous pouvez faire
+ une
+!endif
+
+<input type=submit value="Sauvegarde sélective">:
+<p>
+!set selection=$select
+!formcheckbox selection list $reclist prompt $tot
+<p>
+<b>Remarque</b>. Selon les activités de la classe, ce sont d'habitude les
+registres d'activités de participants, messages de discussion et les
+documents de la classe qui forment la majorité de la taille. Vous pouvez
+aussi envisagrer la possibilité de faire plusieurs sauvegardes sélectives
+pour les différentes ressources.
+</form>
+
+

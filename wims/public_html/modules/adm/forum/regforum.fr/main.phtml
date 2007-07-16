@@ -1,0 +1,128 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS à $httpd_HTTP_HOST
+<p>
+Création d'un forum de discussion
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=$module&cmd=reply&step=0 Recommencer l'opération.
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+ Si vous créez un forum de discussion sur ce site WIMS, 
+ vous devez assumer la responsabilité de sa maintenance. <p>
+ Pour créer votre forum, veuillez remplir les renseignements suivants.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>Nom du forum (au plus $titlelim caractères) :
+  <input size=$titlelim name=title value="$title"> <p>
+ <li>Description (au plus $desclim caractères) :
+  <textarea cols=65 rows=5 name=description>$description</textarea> <p>
+ <li>Nom et prénom du gérant du forum (c'est-à-dire vous)&nbsp;:
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>Adresse électronique&nbsp;:
+  <input size=$emaillim name=email value="$email"> <br>
+  (Votre forum ne sera créé  que si vous fournissez
+  une adresse électronique qui fonctionne en ce moment même.)<p>
+ <li>Choisissez un mot de passe du gérant :
+  <input size=16 type=password name=passsup> <br>
+  (entre 4 et 16 caractères, chiffres ou lettres sans accent). <br>
+  Ce mot de passe vous permettra d'accéder à la classe en tant
+  que gérant. Vous devez être le seul à le connaître. <p>
+ <li>Choisissez un mot de passe du forum :
+  <input size=16 type=password name=password> <br>
+  (entre 4 et 16 caractères, chiffres ou lettres sans accent). <br>
+  Le mot de passe du forum sera exigé pour les inscriptions des 
+  utilisateurs du forum ; vous pouvez donc le diffuser auprès
+  de tous ceux que vous autorisez à participer aux discussions. <p>
+ </ul>
+ <center><input type=submit value="Continuer"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ Bonjour, $supervisor!<p>
+ Vous êtes en train de créer un forum de discussion $forumname sur le site
+ WIMS à
+ $httpd_HTTP_HOST.
+ <p>
+ Si vous décelez une erreur dans les renseignements ci-dessus, veuillez
+ !href module=$module&cmd=reply&step=0 la corriger.
+ <p>Sinon, afin de vérifier l'exactitude de vos mots de passe,
+ veuillez les retaper encore une fois. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Mot de passe du gérant :
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Mot de passe du forum :
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="Continuer"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Bonjour, $supervisor!<p>
+ Maintenant, vous avez besoin d'un code pour terminer l'opération de création
+ d'un nouveau forum de discussion sous WIMS sur le site $http_HTTP_HOST. <p>
+ Ce code vient d'être envoyé à votre adresse électronique
+ ``<tt>$email</tt>''. Veuillez vérifier votre boîte à lettre
+ électronique (attendez quelques instants si nécessaire) et lire le message
+ qui vous a été envoyé.
+ Relevez le code qui se trouve dans le message et copiez-le ci-dessous.
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Code pour le forum : <input size=16 name=typecode>
+ <p><input type=submit value="Continuer"></center>
+ </form>
+ <b>Attention</b> Ce code ne sert qu'une seule fois ici. Il ne peut pas 
+ être utilisé pour vous connecter au forum&nbsp;!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Bonjour, $supervisor!<p>
+ Votre forum de discussion $forumname est maintenant en place. Félicitations
+ et amusez-vous&nbsp;!<p>
+ Vous pouvez accéder à votre forum 
+ !href module=adm/forum/forum à partir d'ici
+.
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Retourner au début de l'opération.
+:end
+!tail
+
+!set step=
+

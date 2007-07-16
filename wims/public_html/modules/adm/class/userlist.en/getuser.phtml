@@ -1,0 +1,150 @@
+<center>$classname<p>
+
+<h3>Detail of the work of 
+ !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
+<br><font size=-1>Login name: <tt>$getuser</tt>
+!if $user_email!=$empty
+ &nbsp;Address: <a href="mailto:$user_email">$user_email</a>
+!endif
+</font></h3>
+!if $eremain>0
+ <p>
+ This participant has an active exam session:
+ !href cmd=reply&job=userexam&getuser=$getuser $esession
+!else
+ !if $wims_user=supervisor and $wims_supertype=4
+  !readproc adm/gateway/transfer $getuser test
+  !if $transfer_test>0
+   !href cmd=reply&job=transfer&getuser=$getuser Transfer his/her activities from other classes
+  !endif
+ !endif
+!endif
+</center> <p>
+
+!if $manual>0 and $gcnt>0 and $teacher!=$empty
+ $table_header$table_hdtr<th>Name<th>Percentage<th>Quality
+ $table_tr<td>Teacher-attributed grades
+     <td align=center>$manual%<td align=center>$mav
+ $table_tr<td>Server-registered grades
+     <td align=center>$[100-$manual]%<td align=center>$per
+ $table_tr<td><b>Global average</b> (over $scoremax)
+     <td align=center>100%<th>$globalav
+ $table_end <p>
+ $table_header$table_hdtr<th colspan=3>Teacher attributed grades</th>
+ $table_hdtr<th>title<th>weight<th>grade</th>
+ !set v_=0
+ !for i=1 to $gcnt
+  !set t_=!item $i+2 of $titles
+  $table_tr<td>$t_<td align=center>$(w$i)<td align=center>$(g_$i)</td>
+ !next i
+ $table_hdtr<th colspan=2>Average<td align=center>$mav</td>
+ $table_end <p>
+!else
+ Global average: <b>$per</b> over $scoremax.
+ !if $min_glob<$scoremax
+  <br><small>min/mean/max of the class:
+  $min_glob/$mean_glob/$max_glob</small>
+ !endif
+ <p>
+!endif
+
+!if $eactivecnt>0
+ $table_header$table_hdtr<th colspan=4>Examination scores
+!! !if $wims_user=supervisor
+  </b><small>
+  !href cmd=reply&job=examcheck&checkuser=$getuser [detail]
+  </small>
+!! !endif
+ $table_hdtr<th>serial<th>Title<th>Score/$scoremax
+ !for i in $activexams
+  !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !set t=!line 4 of $l
+  
+  $table_tr<td align=right>$i
+  <td align=center>$t
+  <td align=center>$[rint(10*$(es_$i)*$scoremax)/100]
+ !next i
+ $table_end <p>
+!endif
+
+!for i=1 to $activecnt
+ !set l_=!line $i of $activesheets
+ !distribute items $l_ into n_,e_
+ !set L_=!line $n_ of $defaultformula
+ !default L_=1 2
+ !distribute word $L_ into A_,B_
+ !set t_=!item 3 to -1 of $l_
+ !set t_=!char 1 to $title_limit of $t_
+ !set v_=!getscorerequire sheet=$n_ user=$getuser
+ !set w_=!wordcnt $v_
+ !set S_=0
+ !for k=1 to $w_
+  !set a_=!word $k of $v_
+  !set S_=$[$S_+$a_]
+ !next k
+ !if $S_<=0
+  !goto next
+ !endif
+ $table_header$table_hdtr<th colspan=7>Sheet $i&nbsp;: $t_
+ </b><small>weight $A_, severity $B_<br>
+ !set A_=!line $n_ of $percents
+ !distribute words $A_ into p1,p2
+ !if $p2!=$empty
+  !distribute item $[$p1/100],$[$p2/10] into x_,y_
+  !set p_=$[rint(100*$scoremax*$(f_$i))/100]
+  Done $p1%, quality $p2/10, equiv. <b>$p_</b> over $scoremax.
+  !if $(min_$i)<$scoremax
+   <br>min/mean/max of the class: $(min_$i)/$(mean_$i)/$(max_$i)
+  !endif
+ !endif
+ </small>
+ $table_hdtr<th>No<th>title<th>points<br>required<th>weight
+     <th>points<br>got<th>%<th>quality
+ !for j=1 to $e_
+  
+  $table_tr<td align=right>$j
+  <td>$(title_$(n_)_$j)
+  <td align=right>
+  !set v_=$(req_$(n_)_$j)
+  $v_
+  <td align=center>$(weight_$(n_)_$j)
+  <td align=right>
+  !set d_=!getscore user=$getuser sheet=$n_ work=$j
+  !default d_=0
+  $d_
+  <td align=right>
+  !if $v_>0
+   $[round(100*$d_/$v_)]%
+  !else
+   ---
+  !endif
+  <td align=right>
+  !set d_=!getscoremean user=$getuser sheet=$n_ work=$j
+  !default d_=0
+  $d_
+ !next j
+ $table_end <p>
+ :next
+!next i
+
+<center>
+!if $exologs!=$empty
+ <p>
+ !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser List of registered exercises
+!endif
+<p>
+!if $wims_user=supervisor
+ !href cmd=reply&job=getraw&getraw=$getuser Raw data
+ .
+ !href cmd=resume List of all participants
+ .
+ <p>
+ !href cmd=reply&job=delprep&delprep=$getuser Delete this participant
+, or
+ !href module=adm/class/passwd&job=part&part=$getuser change his/her password
+.
+!else
+ !href module=home Home of the class
+!endif
+</center> <p>
+

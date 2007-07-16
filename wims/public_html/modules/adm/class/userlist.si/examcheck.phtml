@@ -1,0 +1,49 @@
+
+<center>$classname
+<p>
+<h1>Podrobnosti izpita uporabnika $user_lastname, $user_firstname
+</font>
+</h1></center>
+
+!if _check isin $session
+ !set error=bad_op
+ !goto msg
+!endif
+
+!if $error!=$empty
+ :msg
+ <p>
+ !read msg.phtml
+ <p>
+!else
+ !if $checksessions=$empty
+  Ta uporabnik ¹e ni opravljal nobenega izpita.
+  <p>
+ !else
+  Tu je seznam izpitov, ki jih je opravljal ta uporabnik. Kliknite na ime vaje za podrobnosti.
+  <p>
+  $table_header
+  $table_hdtr<th>Seansa</th><th>Izpit</th><th>Rezultat<small>/10</small></th>
+  <th>Vaja</th><th>Zaèetek</th></tr>
+  !for ses in $checksessions
+   !for x in $(exam$ses)
+    $table_tr<td><small>$ses</small></td>
+    <td align=center>$x</td>
+    <td align=center>$(score$(ses)$x)</td><td>
+    !for i in $(exo$(ses)$x)
+     &nbsp;
+     !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $i
+    !next i
+   !next x
+   </td><td><small>$(start$(ses)$x)</small></td>
+  !next t
+  $table_end <p>
+ !endif
+!endif
+
+<center>
+!href cmd=reply&job=getuser&getuser=$checkuser Drugi rezultati
+&nbsp;
+!href cmd=resume Seznam uporabnikov
+</center>
+

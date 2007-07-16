@@ -1,0 +1,44 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Sporoèilo dneva
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Nazaj na domaèo stran
+. <p>
+ !goto end
+!endif
+
+Tukaj lahko doloèite sporoèilo dneva, ki ga bodo vsi uporabniki videli na
+!href style=student domaèi strani za uporabnike uèilnice
+.
+<p>
+Vnesite svoje sporoèilo dneva (html ukazi so dovoljeni):
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value="Registriraj sporoèilo"></center>
+</form>
+
+
+:end
+!tail
+
+!set job=
+!set showsheet=

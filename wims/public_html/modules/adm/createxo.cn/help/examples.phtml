@@ -1,0 +1,67 @@
+
+<center><h3>OEF格式下交互式练习的例</h3></center> <p>
+
+以下是可利用Createxo创建的交互式练习的例子. 
+<ol>
+<p><hr width=50%> <p>
+<li> <b>2维向量的长度</b>, 平面内向量的长度的简单计算.
+下面是这个练习的完整源代码.
+<p><pre>
+\title{2维向量的范数}
+\language{cn}
+\computeanswer{no}
+\format{html}
+
+\integer{x=random(-10..10)}
+\integer{y=random(-10..10)}
+\real{norm=sqrt((\x)^2+(\y)^2)}
+\statement{R<sup>2</sup>中向量(\x,\y)的长度是什么?}
+
+\hint{向量(x,y)的长度等于sqrt(x^2+y^2).}
+\answer{长度}{\norm}
+</pre> <p>
+
+在这个练习中, 定义了两个随机整数x与y, 它们是向量的坐标.
+第三个参数是实数, 由长度公式所确定. 本练习采取自由格式的回答, 
+其名称是``长度'', 其正确回答应该是第三个参数``范数''的值.
+本练习准备了一个提示, 它复习了长度公式. <p>
+你可以
+!set parm=oef_answercnt=1&oef_choicecnt=0&oef_title=2维向量的范数&oef_format=html&oef_computeanswer=no&level=2&oef_parms=%5Cinteger%7Bx%3Drandom%28-10..10%29%7D%0D%0A%5Cinteger%7By%3Drandom%28-10..10%29%7D%0D%0A%5Creal%7Bnorm%3Dsqrt%28%28%5Cx%29%5E2%2B%28%5Cy%29%5E2%29%7D&oef_statement=R%3Csup%3E2%3C%2Fsup%3E中向量%28%5Cx%2C%5Cy%29的长度是什么&ansprompt1=长度&ansgood1=%5Cnorm&oef_hint=向量%28x%2Cy%29的长度f等于%0D%0Asqrt%28x%5E2%2By%5E2%29.&oef_solution= $
+!href cmd=reply&mode=guided&$parm 将此例子读入菜单
+以测试它. (你也可以在简洁模式下把源代码复制入菜单.)
+
+<p><hr width=50%> <p>
+<li> <b>2x2矩阵的迹</b>, 计算矩阵的迹. 为了更好地显示矩阵,
+使用了TeX格式(可惜目前在TeX格式的陈述里还不能使用中文). 下面是练习的完整源代码.
+<p><pre>
+\title{2x2矩阵的迹}
+\language{en}
+\computeanswer{yes}
+\format{tex}
+
+\integer{range=20}
+\integer{a=random(-\range..\range)}
+\integer{b=random(-\range..\range)}
+\integer{c=random(-\range..\range)}
+\integer{d=random(-\range..\range)}
+\integer{trace=(\a)+(\d)}
+\statement{Compute the trace of the matrix
+$$\pmatrix{\a&\b\cr \c&\d}$$.}
+
+\answer{迹}{\trace} 
+</pre> <p>
+我们首先定义了整数``range''用作矩阵元素a,b,c,d的随机数值的界.
+矩阵的迹当然定义为对角线元素之和. 请注意定义
+<tt>trace=(\a)+(\d)</tt>: 其中括号对是必要的, 因为替换是按字面意义执行的.
+如果你定义<tt>trace=\a+\d</tt>, 而且a和b分别取值3与-15,
+你将得到<tt>trace=3+-15</tt>, 这是一个错误的数学表达式. <p>
+请注意在这个练习里允许未经计算的回答
+(例如2+15或3*105). <p>
+你可以
+!set parm=oef_answercnt=1&oef_choicecnt=0&oef_title=2x2矩阵的迹&oef_format=tex&oef_computeanswer=yes&level=2&oef_parms=%5Cinteger%7Brange%3D20%7D%0D%0A%5Cinteger%7Ba%3Drandom%28-%5Crange..%5Crange%29%7D%0D%0A%5Cinteger%7Bb%3Drandom%28-%5Crange..%5Crange%29%7D%0D%0A%5Cinteger%7Bc%3Drandom%28-%5Crange..%5Crange%29%7D%0D%0A%5Cinteger%7Bd%3Drandom%28-%5Crange..%5Crange%29%7D%0D%0A%5Cinteger%7Btrace%3D%28%5Ca%29%2B%28%5Cd%29%7D&oef_statement=Compute the trace of the matrix%0D%0A%24%5Cpmatrix%7B%5Ca%26%5Cb%5Ccr %5Cc%26%5Cd%7D%24.&ansprompt1=迹&ansgood1=%5Ctrace&oef_hint= &oef_solution= $ 
+!href cmd=reply&mode=guided&$parm 将此例子读入菜单
+ 以测试它. (你也可以在简洁模式中把源代码复制入菜单.)
+
+
+</ol>
+

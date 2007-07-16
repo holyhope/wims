@@ -1,0 +1,41 @@
+<center><h1>$tit</h1></center>
+
+!if $fcnt<1
+ Ta dokument ¹e nima vsebine.
+ !href cmd=reply&job=edit&block=main Ustvarite prvo stran
+.
+ <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>Seznam blokov v tem dokumentu</caption>
+$table_hdtr
+<th>Ime<th>Naslov<th>Dejanje
+!for i=1 to $fcnt
+ !set s_=!line $i of $slist
+ !set t_=!line $i of $tlist
+ !set t_=!trim $t_
+ !default t_=Brez naslova
+ $table_tr
+ <td><tt>$s_</tt></td>
+ <td>$t_</td>
+ <td align=center>
+ !href cmd=reply&job=read&block=$s_ Branje
+&nbsp;
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$s_ Urejanje
+ !endif
+</td>
+!next i
+$table_end <p>
+
+<center>
+Razpolo¾ljiv prostor na disku: $quota_total Mb. Prosti prostor na disku: $quota_free Mb.
+<p>
+!href cmd=reply&job=file Dodajanje datotek
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main Vhodna stran dokumenta
+
+</center> <p>
+

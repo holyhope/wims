@@ -1,0 +1,66 @@
+
+!for e=1 to $exocnt
+ got$e=0
+ replied$e=0
+!next e
+
+p=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+reg=!record 0 of wimshome/$wims_sesdir/examreg.$exam
+
+replycnt=0
+!for i=1 to $p
+ l=!record $i of wimshome/$wims_sesdir/examscore.$exam
+ !distribute words $l into a_,b_,c_,d_,e_,f_,g_,i_
+ !if $c_=score and $(replied$b_)=0
+  got$b_=$d_
+  replied$b_=1
+  !advance replycnt
+ !endif
+!next i
+
+totgot=0
+totweight=0
+!for e=1 to $exocnt
+ l=!record $e of wimshome/log/classes/$wims_class/exams/.exam$exam
+ w=!word 1 of $l
+ weight$e=$w
+ totweight=$[$totweight+$w]
+ totgot=$[$totgot+$w*$(got$e)]
+ dd=!append line $w $totgot to $dd
+!next e
+
+!if $totweight>0
+ score=$[rint((100-10*$sprime)*$totgot/$totweight+100*$sprime)/100]
+!else
+ score=$sprime
+!endif
+
+!writefile wimshome/$wims_sesdir/examdata.$exam $sdure $sprime
+registered=!record 0 of wimshome/$wims_sesdir/examreg.$exam
+now=$wims_nowseconds
+!if $registered>0
+ timeleft=$[60*$sdure-($now-$registered)]
+!endif
+!if $timeleft<0
+ timeleft=0
+!endif
+wims_exam_remain=$timeleft
+rm=$[floor($timeleft/60)]
+rs=!char 2,3 of $[$timeleft%60+100]
+remaintext=$rm:$rs
+
+l=!examscore
+lastscore=!word $exam of $l
+!default lastscore=0
+tr=!line $exam+1 of $l
+!distribute words $tr into tr1, tried, trcut
+!if $tried=0
+ trcut=1
+!endif
+tryremain=$[$stries-$tried]
+!if $trcut=0
+ tryremain=0
+!endif
+
+t_=!getscorestatus sheet=$exam exam=yes
+

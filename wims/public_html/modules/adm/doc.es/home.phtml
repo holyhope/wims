@@ -1,0 +1,63 @@
+<center><h1>$module_title</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $doccnt<1
+ !if $wims_class!=$empty and $wims_user!=supervisor
+  Lo sentimos, su clase no tiene documentos aún. Consulte a su profesor.
+ !else
+  !if $authoring=$empty
+   Lo sentimos, todavía no hay ningún documento disponible para el público.
+  !else
+   Lo sentimos, no hay ningún documento de este autor.
+  !endif
+ !endif
+!else
+ !if $ii>0
+  !read scripts/table.phtml
+ !else
+  !if $wims_class!=$empty
+   Estos son los documentos de su clase:
+  !else
+   Estos son los documentos de este sitio a los que usted puede acceder:
+  !endif
+  <ul>
+  !for t=1 to $doccnt
+   !set s_=!line $t of $slist
+   !set t_=!line $t of $tlist
+   !set a_=!line $t of $alist
+   !set t_=!trim $t_
+   !default t_=Sin título
+   <li>
+   !href module=$module&cmd=reply&job=read&doc=$s_&block=main $t_
+   !if $wims_ismanager=2
+    &nbsp;
+    !href cmd=reply&job=erase&doc=$s_ Borrar
+&nbsp;
+   !endif
+   <small>por $a_</small>
+  !next t
+  </ul>
+ !endif
+!endif
+
+!if $wims_class=$empty and $wims_ismanager<2
+ !form reply
+ Para sus propios documentos, escriba el nombre del autor:
+ <input size=20 name=authoring value="$authoring">
+ <input type=submit value=OK>
+ </form> <p>
+!endif
+
+!if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
+ !href cmd=reply&job=creat Crear un documento nuevo
+, o
+ !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd trabajar en un borrador de documento
+. <p>
+!endif
+
+!tail
+

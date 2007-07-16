@@ -1,0 +1,152 @@
+
+!set form_OK=Send the modified properties
+!set form_titlename=Title
+!set form_caption=Properties of the program
+!set title=$class_description
+!set sup=$class_Supervisor
+!read scripts/progform.phtml
+<p><center>
+!if $hastest=yes
+ Test zone<sup>
+ !href cmd=help&special_parm=structure#test help
+ </sup>:
+ !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 visit
+. 
+ !href cmd=reply&job=deltest delete
+.
+!else
+ This program has no test zone<sup>
+ !href cmd=help&special_parm=structure#test help
+ </sup>.
+ !href cmd=reply&job=addtest Install one
+.
+!endif
+</center> <p>
+!if $coursecnt=0
+ This program has no courses yet.
+ !href cmd=reply&cparent=prog&job=addcourse Add&nbsp;a&nbsp;course
+.<sup>
+ !href cmd=help&special_parm=structure#course help
+ </sup>
+!else
+ $table_header
+ <caption>Installed courses<sup>
+ !href cmd=help&special_parm=structure#course help
+ </sup> in this program
+ !href cmd=reply&cparent=prog&job=addcourse Add&nbsp;another&nbsp;course
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Participants</small></th>
+ </tr>
+ !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=course&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+<p>
+
+!if $icoursecnt=0
+ This program has no interclass courses.
+ !href cmd=reply&cparent=prog&job=addicourse Create
+.<sup>
+ !href cmd=help&special_parm=structure#icourse help
+ </sup>
+!else
+ $table_header
+ <caption>Interclass courses<sup>
+ !href cmd=help&special_parm=structure#icourse help
+ </sup> in this program
+ !href cmd=reply&cparent=prog&job=addicourse Add&nbsp;more
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Participants</small></th>
+ </tr>
+ !for i=1 to $icoursecnt
+   !set l=!line $i of $icourses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+
+!if $recsharable!=$empty
+ <p>
+ $table_header
+ <caption>Share resources of another program: (<b>experimental</b>)</caption>
+ $table_hdtr
+ <th>Code</th>
+ <th>Level</th>
+ <th>Program</th>
+ </tr>
+ !set n=!linecnt $recsharable
+ !for i=1 to $n
+  $table_tr
+  !set l=!line $i of $recsharable
+  !distribute items $l into add,name
+  !set l_=!translate / to , in $add
+  !set l_=!item 1 of $l_
+  !set l_=!defof class_description in $classdir1/$l_/.def
+  <td align=center><tt>$add</tt></td>
+  <td align=center>$l_</td>
+  <td align=left>
+  !href cmd=reply&job=progshare&prog=$prog&shareprog=$add $name
+  </td></tr>
+ !next i
+ $table_end
+!endif
+
+!if $class_recshare!=$empty
+ <p>
+ !if $class_recshare=main
+  The resources of this program is shared by some other programs.
+ !else
+  !set l_=!translate / to , in $class_recshare
+  !set shareprog=!defof class_description in $classdir1/$class_recshare/.def
+  !set sharelevel=!defof class_description in $classdir1/$(l_[1])/.def
+  This program is sharing teaching resources of the program
+  <em>$shareprog</em> in level <em>$sharelevel</em>.
+ !endif
+!endif
+
+!reset title
+

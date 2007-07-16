@@ -1,0 +1,75 @@
+!form reply
+<input type=hidden name=job value=$job>
+$table_header
+<caption>
+!if $form_caption!=$tmpty
+ $form_caption
+!endif
+<small>
+!if $passhow=yes
+ !href cmd=reply&passhow=no ocultar&nbsp;las&nbsp;contraseñas
+!else
+ !href cmd=reply&passhow=yes mostrar&nbsp;las&nbsp;contraseñas
+!endif
+</small></caption>
+$table_tr<td align=right>
+$form_titlename:
+<td><input size=30 name=title value="$title">
+$table_tr<td align=right>
+Responsable $form_classname<sup>
+!href cmd=help&special_parm=supervisor ayuda
+</sup>:
+<td>
+!readproc scripts/teacherlist.proc
+!formselect sup list $tlist1 prompt $tlist2
+!if $form_prog=yes
+ $table_tr<td align=right>
+ Estilo del programa<sup>
+ !href cmd=help&special_parm=progopt ayuda
+ </sup>:
+ <td>
+ !formselect progstyle1 list mandatory,optional prompt\
+	obligatorio, optativo
+ $table_tr<td align=right>
+ Instalación automática de los cursos<sup>
+ !href cmd=help&special_parm=progopt ayuda
+ </sup>:
+ <br><small>en todas las clases del nivel</small>
+ <td>
+ !formselect progstyle2 list all,select prompt sí,no
+!endif
+!if $form_pass=yes
+ $table_tr<td align=right>
+ Contraseña de inscripción<sup>
+ !href cmd=help&special_parm=pass ayuda
+</sup>:
+ !if $passhow=yes
+  <td><input type=text size=30 name=pass value="$pass">
+ !else
+  <td><input type=password size=30 name=pass value="">
+  $table_tr<td align=right>
+  Repita la contraseña de inscripción:
+  <td><input type=password size=30 name=pass2 value="">
+ !endif
+!endif
+$table_tr<td align=right>
+Contraseña del responsable<sup>
+!href cmd=help&special_parm=passs ayuda
+</sup>:
+!if $passhow=yes
+ <td><input type=text size=30 name=passs value="$passs">
+!else
+ <td><input type=password size=30 name=passs value="">
+ $table_tr<td align=right>
+ Repita la contraseña del responsable:
+ <td><input type=password size=30 name=passs2 value="">
+!endif
+$table_tr<td align=center colspan=2>
+<input type=submit name=confirm value="$form_OK">
+!if $form_cancel!=$empty
+ &nbsp;
+ <input type=submit name=cancel value=$form_cancel>
+!endif
+$table_end
+</form>
+

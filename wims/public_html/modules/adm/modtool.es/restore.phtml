@@ -1,0 +1,67 @@
+!reset wims_deposit
+
+!if $mode=bad_fname
+ Your file doesn't look like a module backup file!
+ <p>
+ You can only restore a file downloaded earlier from Modtool.
+ Try again.
+ <p>
+!endif
+
+!if $mode=bad_arch
+ I cannot recognize your file as a module backup. Error in the file!
+ <p>
+!endif
+
+!if $mode=illegal
+ Your archives contains files of illegal type! It cannot be restored.
+ <p>
+ Is it an old-versioned backup? Now you have to copy the files one by one.
+ <p>
+!endif
+
+!if $mode=diffcheck
+ !if $diff=$empty
+  No difference found between the existing module (in your development space) and
+  the backup archives.
+ !else
+  !if $diff=MANY
+   Too many differences exist between the existing module (in your development space) and
+   the backup archives.
+  !else
+   Differences between the existing module (in your development space) and
+   the backup archives:
+   <pre>$diff</pre>
+  !endif
+ !endif
+ !exit
+!endif
+
+!if $mode!=$empty and $mode iswordof prep bad_fname bad_arch illegal
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=jobreq value=restore>
+ Please give the backup file to restore:
+ <input type=file name=wims_deposit size=40>
+ <input type=submit value=OK>
+ <p>
+ <small>Only backups saved earlier from Modtool or downloaded
+ from the publication center <a href=$downloadsite>$downloadsite</a>
+ will be accepted. No manual modification of the backup file should be
+ made.
+ </small>
+ <p>
+ <b>WARNING</b>. Restoration of a backup module now completely replaces
+ the existing module at the same address, with no possibility of recovery.
+ But you can 
+ <input type=checkbox name=confirm value=diffcheck>
+ only check differences with the existing module.
+ </form>
+!else
+ Module restored: <b>$ftest</b>, <small>$ftest2</small>
+ <br>Address: <tt>$restored</tt>.
+ <p>
+ !href cmd=reply&jobreq=flist&modreq=$restored Go to work on the module
+.
+!endif
+

@@ -1,0 +1,68 @@
+!if $job=print
+ !changeto print.phtml
+!endif
+
+!if $public!=P
+ !changeto class.phtml
+!endif
+
+!header
+
+!if $error!=$empty
+ !read msg.phtml
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor and $job=raw
+ Voici le fichier source de cette feuille. Vous pouvez l'importer dans votre classe
+ en utilisant un copier-coller.
+ <p><hr><pre>
+ !sh awk 'BEGIN {a=0};\
+	/^:/ {a=1};\
+	a==1 {print}' bases/sheet/$sh.def
+ </pre><hr>
+ <p>
+ !href cmd=resume&job=read Retourner à la vue normale de la feuille.
+ !tail
+ !exit
+!endif
+
+<p><center><h3>$sheet_title<br>
+<font size=-1>$sheet_desc</font></h3></center> <p>
+
+$sheet_remark
+<p>
+
+!if $n=0
+ La feuille est vide&nbsp;! Il y a probablement une erreur.
+!else
+ Devoirs dans cette feuille&nbsp;:
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of $data
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+, $de
+!!  !if $require>0
+!!   <small>$[$got] des $[$require] points obtenus, qualité
+!!   $[$mean]/10.</small>
+!!  !endif
+ !next i
+ </ul>
+ !if $wims_user=supervisor
+  !href cmd=reply&job=import Importer
+  cette feuille dans votre classe, ou
+  !href cmd=reply&job=raw afficher le source
+  de la feuille.
+  <p>
+ !endif
+!endif
+!href cmd=reply&job=print Version imprimable
+.
+
+!tail
+

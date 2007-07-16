@@ -1,0 +1,57 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+option=!items2words $option
+option=!trim $option
+!if $option=$empty
+ error=nothing done
+ !exit
+!endif
+
+method=!word 1 of $option
+parms=!word 2 to -1 of $option
+
+!if $method notwordof class user users file files score scores or\
+	$method iswordof file files score and $ident_type!=wims
+ error=bad method
+ !exit
+!endif
+
+!if $method iswordof user score
+ !read scripts/check.user
+ !if $error!=$empty
+  !exit
+ !endif
+!endif
+
+cn_sync=yes
+!reset cn_option cn_data1 cn_data2
+
+!if $method=users
+ cn_option=login,lastname,firstname,password,email
+!endif
+!if $method=scores
+ cn_option=login,manuals
+!endif
+!if $method=file
+ cn_option=$parms
+!endif
+
+parm_$method=empty
+parm_class=getclass
+parm_user=getuser
+parm_users=getcsv
+parm_scores=getcsv
+parm_file=getclassfile
+parm_files=getclasstgz
+
+!readproc adm/connect/main.proc $(parm_$method) $ident $rclass $quser
+
+!if $cn_status!=OK
+ :backerror
+ error=back calling error: $cn_data
+ !exit
+!endif
+

@@ -1,0 +1,53 @@
+
+!if $ccnt<1
+Geen "message board" berichten gevonden op deze site. <p>
+ !href module=home WIMS home
+ !exit
+!endif
+
+We hebben $ccnt "message board" berichten op deze site.
+Zoek in de volgende tabel:
+
+<p>$table_header
+$table_hdtr<th>Titel<th>Verbinding<th>Taal<th>Beschrijving
+!for i=1 to $ccnt
+ !set l=!record $i of $indf
+ !distribute items $l into code,la
+ !defread wimshome/log/forums/$code/.def
+ $table_tr<td align=center>$mb_title
+ <td align=center>
+ !reset user_exists
+ !read wimshome/$wims_sesdir/mb_user.$code
+ !if $user_exists=$empty
+  !if $mb_readpolicy=open
+   !href module=adm/forum/mboard.$la&forum=$code bezoeker
+   &nbsp;
+  !endif
+  !href cmd=reply&type=authuser&forum=$code gebruiker
+  &nbsp;
+  !href cmd=reply&type=authowner&forum=$code Beheerder
+  !if * notin $mb_password
+   &nbsp;
+   !href module=adm/forum/reguser&forum=$code Registreren
+  !endif
+ !else
+  !if $forumuser!=supervisor
+   !href module=adm/forum/mboard.$la&forum=$code gebruiker
+   &nbsp;
+   !href cmd=reply&type=authowner&forum=$code Beheerder
+  !else
+   !href cmd=reply&type=authuser&forum=$code gebruiker
+   &nbsp;
+   !href module=adm/forum/mboard.$la&forum=$code Beheerder
+  !endif
+ !endif
+ </td><td align=center><img src=gifs/$la.gif></td>
+ <td>$mb_description</td>
+!next i
+$table_end <p>
+Klik op het type verbinding om het "message board" binnen te gaan,
+of klik op "Registreren" om je aan te melden. 
+Je kunt ook
+!href module=adm/forum/regforum je eigen  "message board" op deze wiskunde site maken...
+
+

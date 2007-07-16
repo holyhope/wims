@@ -1,0 +1,111 @@
+!header
+
+!read comsDir/exosDescription
+
+<center>
+ <table  bgcolor=lavender border=4 width=75%>
+   <tr>
+     <th>
+       Este módulo tiene como objetivo ayudar a la confección del fichero fuente de un
+       ejercicio sencillo en el formato OEF en WIMS. Puede encontrar una descripción de la arquitectura 
+       de un ejercicio OEF en 
+       <br>
+       <a target="_ " href="http://wims.unice.fr/wims.cgi?lang=fr&+module=adm%2Fdoc.fr&+job=read&+doc=1027&+block=main">Structure et confection 
+       d'exercice au format OEF</a>
+     </th>
+   </tr>
+ </table>
+ <br>
+ <br>
+ <table>
+   <tr>
+     <td>
+       Este módulo trata de la confección de ejercicios OEF de tres tipos:
+     </td>
+   </tr>
+   <tr>
+     <td bgcolor=lightblue>
+       <b>1.</b> OEF de tipo QCM  con una lista de botones para seleccionar
+     </td>
+   </tr>
+   <tr>
+     <td bgcolor=wheat>
+       <b>2.</b> OEF con respuesta libre que deberá dar el usuario
+     </td>
+   </tr>
+   <tr>
+     <td bgcolor=lightblue>
+       <b>3.</b> OEF combinación de los dos tipos precedentes
+     </td>
+   </tr>
+ </table>
+</center>
+<hr>
+<p>
+Es importante hacer notar que este módulo no ayuda a crear más que ejercicios muy elementales. Está destinado más bien a ser un complemento del documento 
+<a target="_ " href="http://wims.unice.fr/wims.cgi?lang=fr&+module=adm%2Fdoc.fr&+job=read&+doc=1027&+block=main">Structure et
+ confection d'exercice au format OEF</a>
+ en el cuadro del aprendizaje del desarrollo de ejercicios en el formato OEF.
+ </p>
+<hr>
+
+!form new
+<input type=hidden name=module value=$module>
+
+<center>
+<table bgcolor="bisque" align="center"  border=4>
+  <tr>
+    <td align=center>
+      <input type="radio" name=chexo value=1 checked>
+    </td>
+    <td>
+      <p>
+      Puede seleccionar un tipo de ejercicio o una demostración
+      <font color=darkcyan>
+      <select name=exo>
+        !for i=1 to 6
+          <option value=$i
+          !if $i=1
+            selected
+          !endif
+          >$(exosdesc[$i;])
+        !next i
+      </select>
+      </font>
+      <br>
+      y probar paso a paso a confeccionar un ejercicio.
+       </p>
+    </td>
+    <td align="center" rowspan=3>
+      <input type=submit value="Al trabajo">
+    </td>
+  </tr>
+  <tr>
+    <td align=center>
+      <input type="radio" name=chexo value=2>
+    </td>
+    <td>
+      <p>
+        o modificar en <b>modo bruto</b> un código fuente (<b> en el formato createqcm</b>) 
+       </p>
+    </td>
+  </tr> 
+  <tr>
+    <td align=center>
+      <input type="radio" name=chexo value=3>
+    </td>
+    <td >
+      <p>
+        o incluso introducir un fichero (<b> en formato createqcm</b>) existente
+       </p>
+    </td>
+  </tr> 
+</table>
+</center>
+</form>
+<p><hr> </p>
+
+!!href cmd=new&module=$module Al trabajo
+!!.
+
+!tail

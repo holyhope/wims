@@ -1,0 +1,87 @@
+!!! fichier de présentation de l'étape 3 !!!
+<p>
+  <b><font color=darkcyan> Etape $etape </font></b>
+ </p>
+<center>
+<table width=75%>
+  <tr>
+    <td>
+      Dans cette étape, vous devez indiquer pour l'objet ci-dessous, la liste des propriétés
+      vérifiées par cet objet (ou la liste des objets en relation avec celui-ci), en 
+      cochant les bonnes cases.
+    </td>
+  </tr>
+</table>
+</center>
+
+!set obtemp=!line $[$chronobs+1] of $obsrecord
+
+!set L=!line $[$chronobs+1] of $propsrepList
+!for i=1 to $[$propsnb+1]
+  !set p$(i)=!line $i of $propsrecord
+!next i
+
+<center>
+  <table border=3>
+    <tr>
+      <th align=center bgcolor=lightblue>
+       Objet
+      </th>
+      <th align=center bgcolor=wheat>
+       Propriétés
+      </th>
+    </tr>
+    <tr>
+      <td bgcolor=lightblue>
+        $obtemp
+      </td>
+      <td bgcolor=darkcyan>
+        <table>
+	 !for i=1 to $rowsnb
+	 !set bg$(i)=$(coulors[$[((2*$i-1)%3)+1];])
+         !set bg2$(i)=$(coulors[$[((2*$i)%3)+1];])
+	  <tr>
+	    <td bgcolor=$(bg$(i))>
+	      <input type="checkbox" name=propsrep value=$i
+	        !if $i isitemof $L
+		  checked
+		!endif
+	      >
+	    </td>
+	    <td bgcolor=$(bg$(i))>
+	      $(p$(i))
+	    </td>
+	    <td>
+	      &nbsp;
+	    </td>
+	    <td bgcolor=$(bg2$(i)) >
+	      <input type="checkbox" name=propsrep value=$[$i+$rowsnb]
+	        !if $[$i+$rowsnb] isitemof $L
+		  checked
+		!endif
+	      >
+	    </td>
+	    <td bgcolor=$(bg2$(i))>
+	      $(p$[$i+$rowsnb])
+	    </td>
+	  </tr>
+	 !next i
+	 !if $extrarow!=0
+	  <tr>
+	    <td align=center bgcolor=$(coulors[$[($propsnb+1)%3+1];]) colspan=5>
+	      <input type="checkbox" name=propsrep value=$[$propsnb+1]
+	        !if [$propsnb+1] isitemof $L
+		  checked
+		!endif
+	      >
+		  &nbsp; $(p$[$propsnb+1])
+	    </td>
+	  </tr>
+	 !endif
+	</table>
+      </td>
+    </tr>
+  </table>
+</center>
+
+!read comsDir/valideb

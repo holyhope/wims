@@ -1,0 +1,36 @@
+
+<hr width=1>
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>作業清單 #$sheet<br>$title</h1>
+(展示給參與者)
+</center> <p>
+$desc<p>
+
+!if $exocnt=0
+ 清單為空白！您無法在清單中作指定。可能是管理者在處理時的錯誤。
+!else
+在清單中指定作業：<p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de
+  <p><li>$i.
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $re>0
+   <small>獲得總點數 $[$re] 點中的 0 點，平均分數為
+   0/10。 </small>
+  !endif
+ !next i
+ </ul>
+!endif
+<p>
+!homeref
+<p><hr> <p>
+<center>
+!href cmd=resume 回管理者首頁
+</center>
+
+</body></html>
+
+!set job=
+

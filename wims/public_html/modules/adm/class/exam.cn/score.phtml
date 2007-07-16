@@ -1,0 +1,79 @@
+
+!if $job=score
+ <center><h1>$wims_classname, $wims_institutionname<br>$title</h1>
+ !if $wims_user=supervisor
+  (应试者用)
+ !endif
+ </center> <p>$desc<p>
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 回主页
+. <p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ 试卷是空的! 其中没有内容. 可能是你的主持老师的操作错误.
+!else
+ <p><center><table border=1 bgcolor=bisque>
+ <caption>目前得分
+ <tr><th>练习<th>标题<th>权重<th>分数
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+  <tr><td align=center>$i
+  <td align=center>$ti
+  <td align=center>$we<td align=center>
+  !if $(replied$i)>0
+   $(got$i)
+  !else
+   <small>还不能算出</small>
+  !endif
+ !next i
+ <tr><td align=center colspan=4>
+ !default score=$sprime
+ 这场考试总得分: <b>$score</b><small>/10</small>.
+ $table_end
+!endif
+<p>
+
+!if $registered=$empty
+ 你还没有开始答题.
+ !href cmd=reply&job=student 开始答题.
+!else
+ !if $timeleft<=0
+   时间已到!<p>
+   你已经用完了分配给这次考试的 $sdure 分钟时间.
+   <p>
+ !endif
+ !if $allowtype=simulation
+   你的得分不被纪录, 因为这是模拟状态.
+  !if $lastscore>0
+   (本试卷你的实际得分是 $lastscore.)
+  !endif
+ !else
+  本试卷你的最佳得分是 $lastscore. (这是被登录下来的最好成绩.)
+ !endif
+ <p>
+!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test>=2
+ !href cmd=reply&job=scorereg 结束本次考试.
+&nbsp;&nbsp;
+!endif
+ !href cmd=reply&job=student 返回答题状态.
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume 主持教师所见的试卷.
+!endif
+
+:end
+!tail
+
+!reset job
+

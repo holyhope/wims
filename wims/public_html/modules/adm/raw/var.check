@@ -1,0 +1,47 @@
+!if robot isin $session
+ error=robot
+ !exit
+!endif
+
+!if $job=$empty
+ error=wrong request: bad job
+ !exit
+!endif
+
+code=!word 1 of $code
+!if $code=$empty
+ error=random code not defined
+ !exit
+!endif
+
+ident=!word 1 of $ident
+ident=!text select -_$char_alnum in $ident
+!if $ident=$empty
+ error=identification failure
+ !exit
+!endif
+
+!readdef wimshome/log/classes/.connections/$ident
+ident_agent=!translate internal ./,; to $          $ in $ident_agent
+ident_agent=!word 1 of $ident_agent
+ident_site=!items2words $ident_site
+passwd=!text select $char_alnum in $passwd
+agent=!translate internal ./,; to $          $ in $httpd_HTTP_USER_AGENT
+agent=!word 1 of $agent
+protocol=!translate internal : to $ $ in $wims_ref_name
+protocol=!word 1 of $protocol
+
+!if ($ident_allow!=$empty and $job notwordof $ident_allow) or \
+	($ident_deny!=$empty and $job iswordof $ident_deny)
+ error=illegal job
+ !exit
+!endif
+
+!if $ident_type=$empty or $passwd != $ident_password or\
+	$httpd_REMOTE_ADDR notwordof $ident_site or\
+	($ident_agent!=$empty and $agent != $ident_agent) or\
+	($ident_protocol=https and $protocol != https)
+ error=identification failure
+ !exit
+!endif
+

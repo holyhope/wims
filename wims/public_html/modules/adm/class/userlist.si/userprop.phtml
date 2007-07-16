@@ -1,0 +1,55 @@
+
+<center><h3>Lastnosti uporabni¹kega raèuna</h3></center>
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!set inplen=40
+!form reply
+<input type=hidden name=job value=userprop>
+<input type=hidden name=getuser value=$getuser>
+<p>$table_header
+$table_tr<th>Uporabni¹ko ime<td><tt>$getuser</tt>
+$table_tr<th>Geslo<td>
+	!href module=adm/class/passwd&job=part&part=$getuser Spremeni
+$table_tr<th>Priimek<td>
+	<input size=$inplen name=up_lastname value="$user_lastname">
+$table_tr<th>Ime<td>
+	<input size=$inplen name=up_firstname value="$user_firstname">
+$table_tr<th>E-naslov<td>
+	<input size=$inplen name=up_email value="$user_email">
+$table_tr<th>©tevilka registracije<td>
+	<input size=$inplen name=up_regnum value="$user_regnum">
+!if $wims_user=supervisor
+ $table_tr<th>Opombe<td>
+	<input size=$inplen name=up_comments value="$user_comments">
+ $table_tr<th>Spremenljivke (tehniène)</th><td>
+	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars>$user_vars</textarea>
+!else
+ $table_tr<th>Geslo uèilnice<td>
+	<input size=14 type=password name=passcheck> <br>
+	<small>Vpi¹ite geslo, ki bo zahtevano za registracijo novih uporabnikov.</small>
+!endif
+$table_hdtr<td align=center colspan=2>
+<input type=submit name=reg value=Shrani> &nbsp;
+<input type=submit name=abandon value=Preklièi>
+</td></tr>
+$table_end <p>
+</form>
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=reply&job=getuser&getuser=$getuser Rezultati uporabnika
+ .
+ !href cmd=reply&job=getraw&getraw=$getuser Podrobnosti (surovi podatki)
+ .
+ <p>
+ !href cmd=reply&job=delprep&delprep=$getuser Zbri¹i uporabnika
+ .
+ !href cmd=resume Seznam vseh uporabnikov
+ .
+ </center> <p>
+!endif
+
+!reset reg,abandon
+

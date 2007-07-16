@@ -1,0 +1,27 @@
+
+!if $datacnt<1
+ Na tem stre¾niku ni bilo ¹e nobenih nadgradenj modulov (avtomatsko bele¾enje nadgradenj deluje ¹ele od razlièice WIMS-3.37f).
+ !exit
+!endif
+
+$table_header
+<caption>Zadnje dopolnitve modulov tega stre¾nika:</caption>
+$table_hdtr<th>Datum<th>Jezik<th>Naslov<th>Opis
+<th>Nova<br>razlièica
+</tr>
+!for i=1 to $datacnt
+ !set l=!line $i of $data
+ !distribute words $l into d_,a_,v_
+ !set la=!char -2,-1 of $a_
+ !set tit=!module title $a_
+ $table_tr
+ <td align=center><small>
+ !char 1 to 8 of $d_
+ </small></td><td align=center>$la</td><td>
+ !href target=wims_test module=$a_ $tit
+ </td><td>
+ !module description $a_
+ </td><td align=center>$v_
+ </td></th>
+!next i
+$table_end

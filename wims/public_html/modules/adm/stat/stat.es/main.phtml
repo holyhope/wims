@@ -1,0 +1,47 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+
+!if $cmd=help and $special_parm=about
+ !read about.phtml
+ !goto end
+!endif
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+<center><h1>WIMS en $httpd_HTTP_HOST
+<p>Estadísticas de visitas</h1></center>
+<p><hr> <p>
+
+!if $sitestart=$empty
+ El seguimiento de visitas no está activado en este sitio. No hay estadísticas
+ disponibles. Lo sentimos. <p>
+ !goto end
+!endif
+
+!if $show=yes and $total_site>0 and $laps>0
+!!if $show=yes
+ !href cmd=resume Volver al menú
+ <p>
+ !read answer.phtml
+ !href cmd=resume Volver al menú
+ <p>
+!else
+ !if $usercnt>0
+  Hay $classcnt portales y clases individuales en este servidor, con
+  $usercnt cuentas de usuario en total.
+  <p>
+ !endif
+ !read menu.phtml
+!endif
+:end
+!homeref
+</body></html>
+
+!set stat_module=
+

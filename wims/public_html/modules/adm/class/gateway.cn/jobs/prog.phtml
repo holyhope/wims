@@ -1,0 +1,151 @@
+
+!set form_OK=发送修改后属性
+!set form_titlename=名称
+!set form_caption=计划的属性
+!set title=$class_description
+!set sup=$class_Supervisor
+!read scripts/progform.phtml
+<p><center>
+!if $hastest=yes
+测试区域<sup>
+ !href cmd=help&special_parm=structure#test 帮助
+ </sup>:
+ !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 访问
+. 
+ !href cmd=reply&job=deltest 删除
+.
+!else
+本计划无测试区域<sup>
+ !href cmd=help&special_parm=structure#test 帮助
+ </sup>.
+ !href cmd=reply&job=addtest 建立
+.
+!endif
+</center> <p>
+!if $coursecnt=0
+本计划还没有课程.
+ !href cmd=reply&cparent=prog&job=addcourse 添加课程
+.<sup>
+ !href cmd=help&special_parm=structure#course 帮助
+ </sup>
+!else
+ $table_header
+ <caption>本计划已有的课程<sup>
+ !href cmd=help&special_parm=structure#course 帮助
+ </sup> 
+ !href cmd=reply&cparent=prog&job=addcourse 添加别的课程
+ </small></caption>
+ $table_hdtr
+ <th>代码<th>名称</th><th>-</th><th>负责人</th>
+ <th><small>参加者</small></th>
+ </tr>
+ !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=course&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ 删除
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+   不可用
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+<p>
+
+!if $icoursecnt=0
+此计划还没有跨班课程.
+ !href cmd=reply&cparent=prog&job=addicourse 创建
+.<sup>
+ !href cmd=help&special_parm=structure#icourse 帮助
+ </sup>
+!else
+ $table_header
+ <caption>本计划内的跨班课程<sup>
+ !href cmd=help&special_parm=structure#icourse 帮助
+ </sup> 
+ !href cmd=reply&cparent=prog&job=addicourse 添加
+ </small></caption>
+ $table_hdtr
+ <th>代码<th>名称</th><th>-</th><th>负责人</th>
+ <th><small>参加者</small></th>
+ </tr>
+ !for i=1 to $icoursecnt
+   !set l=!line $i of $icourses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ 删除
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    不可用
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+
+!if $recsharable!=$empty
+ <p>
+ $table_header
+ <caption>其它计划的共享资源: (<b>experimental</b>)</caption>
+ $table_hdtr
+ <th>代码</th>
+ <th>年级</th>
+ <th>计划</th>
+ </tr>
+ !set n=!linecnt $recsharable
+ !for i=1 to $n
+  $table_tr
+  !set l=!line $i of $recsharable
+  !distribute items $l into add,name
+  !set l_=!translate / to , in $add
+  !set l_=!item 1 of $l_
+  !set l_=!defof class_description in $classdir1/$l_/.def
+  <td align=center><tt>$add</tt></td>
+  <td align=center>$l_</td>
+  <td align=left>
+  !href cmd=reply&job=progshare&prog=$prog&shareprog=$add $name
+  </td></tr>
+ !next i
+ $table_end
+!endif
+
+!if $class_recshare!=$empty
+ <p>
+ !if $class_recshare=main
+本计划的资源被其它计划共享.
+ !else
+  !set l_=!translate / to , in $class_recshare
+  !set shareprog=!defof class_description in $classdir1/$class_recshare/.def
+  !set sharelevel=!defof class_description in $classdir1/$(l_[1])/.def
+本计划共享其它计划: 年级 <em>$sharelevel</em> 的 <em>$shareprog</em> 的教学资源.
+ !endif
+!endif
+
+!reset title
+

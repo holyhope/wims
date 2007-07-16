@@ -1,0 +1,69 @@
+
+download=!system cat ../download/downloadsite
+download=!word 1 of $download
+lockcheck=!sh find ../log -maxdepth 1 -name update.lock -mmin +60 -exec rm '{}' \;\
+cat ../log/update.lock 2>/dev/null
+lockcheck=!word 1 of $lockcheck
+logcheck=!sh head -10 ../log/update.log 2>/dev/null
+!if $lockcheck!=$empty
+ !exit
+!endif
+
+!if (wdev isin $httpd_PWD and wims notin $httpd_PWD) or localhost isin $download
+ !sh mkdir -p ../testing
+!endif
+testing=!sh if [ -d ../testing ]; then echo true; fi
+
+thisversion=!translate abcdefghi to 123456789 in $wims_version
+pubversion=!exec webget $download/wims/version
+check=!wordcnt $pubversion
+!if $check>2
+ pubversion=
+!endif
+pubversion=!word 1 of $pubversion
+recentversion=!translate abcdefghi to 123456789 in $pubversion
+
+!if $recentversion<=$thisversion
+ !exit
+!endif
+!if $job2!=confirm
+ !exit
+!endif
+
+type=tgz
+atdate=!date -d '70 seconds' '+%H:%M'
+
+!sh cat >../log/update.log <<@\
+$wims_now: System update will start on $atdate:00 via "at".\
+@
+
+!sh cd ..\
+rm -f update.sh\
+echo at >log/update.lock\
+at $atdate <<V\
+echo download >log/update.lock\
+loadversion=$pubversion\
+loadtype=tgz\
+unset QUERY_STRING\
+export loadversion loadtype\
+date=\`date '+%H:%M:%S'\`\
+echo \$$date: Downloading wims-$pubversion packages from $download. >>log/update.log\
+download/wimsget 2>&1 >>log/update.log\
+date=\`date '+%H:%M:%S'\`\
+rm -f log/update.lock\
+if [ ! -f update.sh ]; then\
+ echo \$$date: Download failed. >>log/update.log\
+ exit\
+fi\
+echo \$$date: End of file download. >>log/update.log\
+cat tmp/webget.log >log/update2.log\
+rm -f tmp/webget.log\
+chmod u+x update.sh\
+echo update.sh >log/update.lock\
+echo Executing update.sh. >>log/update.log\
+./update.sh >>log/update.log 2>&1\
+rm -f log/update.lock\
+[ -d /wsys ] && touch /wsys/wims/timestamp
+
+lockcheck=at
+

@@ -1,0 +1,23 @@
+!exit
+$table_header
+<caption>Cuentas de participantes
+!href cmd=reply&job=addstudent Añadir&nbsp;un&nbsp;participante
+</caption>
+$table_hdtr
+<th>Cuenta</th>
+<th>Nombre</th>
+<th>-</th>
+!for i=1 to $studentcnt
+ !set l=!record $i of $classdir1/.studentlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td><tt>$c_</tt></td>
+ <td>
+ !href cmd=reply&job=modstudent&student=$c_ $l_, $f_
+ </td>
+ <td>
+ !href cmd=reply&job=delstudent&student=$c_ borrar
+ </td>
+!next i
+$table_end
+

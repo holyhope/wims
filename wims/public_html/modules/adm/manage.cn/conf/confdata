@@ -1,0 +1,559 @@
+# Format:
+# Line 1. type name_in_wims_conf variable_name
+# Line 2. prompt
+# Line 3. variable type
+# Line 4. selection range; prompts
+# Line 5 and up. help
+
+:tech PATH
+PATH
+free
+
+二进制可执行文件的搜索路径. 让其保持默认值是安全的,
+除非你的操作系统非常特别.
+
+:tech aliased_cgi
+cgi对html的地址化名
+choice
+yes,no; 是,否
+如果你要互联网搜索引擎把WIMS的某些内容看成网页, 你可设为`是'.
+使得本网站及其内容能为更多人所知. 不过你需要Apache 1.3及以上版本才能正确工作.
+<p>
+如果你刚好更新了Apache httpd而且当你激活此功能时遇到未知地址的问题, 
+请执行脚本文件<tt>bin/apache-config</tt>.
+
+:tech aliased_getfile
+获得文件时重命名
+choice
+yes,no; 是,否
+此功能激活后能使你在下载WIMS生成的文件时: 备份档案, 虚拟班的学生数据, 某些图形文件等,
+能得到正确的文件名. 否则下载的文件都被命名为"wims.cgi", 需要手工改名.
+<p>
+如果你的Apache httpd配置不正确, 就会产生问题. 这是你可改选`否'.
+
+:housekeep backup_hour
+执行每日备份的时刻
+choice
+-1,1,2,3,4,5,6,7,8,9,11,13,15,17,18,19,20,21,22; 无,1,2,3,4,5,6,7,8,9,11,13,15,17,18,19,20,21,22
+这是每日数据备份执行的时刻(单位: 时). 请选择服务器空闲的时间. 选择`无'(-1)表示不做每日备份.
+
+:resources busyhours wims_busyhours
+服务器的繁忙时段
+free
+
+你可以在这里列举服务器最忙的时间段.
+有些活动例如本地模块的公布等可以避开这个时段.
+请给出由两个数字组成的表, 例如:
+<p>"08 09 13 14".
+
+:graphics default_anim_format ins_format
+动画格式*
+choice
+gif, mng
+动画的格式. 只有两个可能性: gif 或 mng. 
+请你注意目前使用的浏览器大多不能显示内嵌的mng动画.
+
+:graphics default_texposition
+默认的公式位置 / MathML
+choice
+0,1,2; 低,高,MathML
+TeX格式是小的图形文件, 它们相对于文字是居中对齐的. <p>
+早期的Netscape也有中间对齐的毛病, 它把图形的中线与文字的基线对齐.
+这当然会使公式显得太低. 作为补救, WIMS把公式略为抬高.<p>
+不过新近的浏览器已经纠正了这个毛病. 因此对这些浏览器而言,
+我们的补救措施使得公式相对于文字显得太高.
+本参数允许你选择是否激活这个补救措施.<p>
+本参数也可用于激活MathML转换, 不过目前尚不可用.<p>
+不过你在选取此值时一定要考虑到你的大多数用户使用的浏览器.
+
+:tech cgi_name
+cgi主程序的名称!
+free
+
+只有在你的httpd配置文件里有正确的化名内容, 你才能改变这里的名称.
+例如, 如果你已经执行了 <tt>bin/apache-config</tt>里的脚本程序,
+你可以使用名称<tt>index.html</tt>或<tt>wims.html</tt>.
+<p>
+如果你没有把握, 请不要改变此设置. 如果你弄错了, 那就只能手工恢复你的设置.
+
+:class class_limit wims_class_limit
+虚拟班级数的上限
+int
+0,1000
+
+:class class_regpass wims_class_regpass
+虚拟班级创建权
+free
+
+本参数定义了你的网站对创建虚拟班级的准入权. 它包含3个用逗号分隔的值域,
+分别指定对创建个别班级, 班级群以及所属教育单位的准入权.
+对每个值域, 可有下列几种取值:
+<dl>
+<dt><tt>all</tt><dd>人人都能创建班级.
+<dt><tt>deny</tt><dd>任何人都不能创建班级.
+<dt><tt>email</tt><dd>人人都能创建班级, 条件是必须提供有效的电邮地址.
+服务站会检查地址是否有效.
+<dt><tt>passwd ******</tt><dd>用户必须输入密码才能创建班级.
+其中星号部分`<tt>******</tt>'应该用你设定的密码代替.
+然后再把密码告诉创建班级的人.
+<dt>主机名或IP地址<dd>
+只有这里指定的主机才能创建班级.
+$sitehelp
+</dl>
+当然网站管理员(也就是你自己)总是有权创建班级的.
+
+:class class_quota wims_class_quota
+虚拟班级占用盘空间的限制(单位: M)
+int
+1,1000
+这是服务器上每个虚拟班级可占用硬盘空间的上限.
+如果一个虚拟班级占用的硬盘空间达到或超过了上限, 主导教师的主页将被锁住.
+
+:class class_user_limit wims_class_user_limit
+每个班级的参加人数
+int
+0,2000
+
+:graphics default_ins_format ins_format
+动态图形的格式*
+choice
+gif, jpeg, png
+gif是相容性最好的格式, 尤其当你安装了能生成gif压缩文件的软件.
+第二个选择是jpeg. png仍然会遇到相容性问题.<p>
+请注意, 动画格式不受此设置的影响.
+
+:security,misc devel_modules
+开发中模块的准入原则
+choice
+open,close; 开,关
+如果设置为关, 则未经准许不能进入开发中的模块.
+<p>
+建议你选择<tt>关</tt>, 以避免将来可能遇到的问题.
+我们鼓励模块开发者在局部范围内公开他们的模块, 使这些模块能被他人使用.
+
+:class examlog_limit
+每个参加者考试记录的上限
+int
+0,100
+这是整个网站的限制, 具体班级的设置不能超过这个上限.
+由于考试细节的记录会占用大量空间, 如果设限过高, 非常活跃的班级很快就会出现分配空间被用完的情形.
+<p>
+如果你设为0或负数, 那么任何虚拟班级的考试细节都不会记录.
+
+:tech tmp_debug wims_tmp_debug
+调试模式
+choice
+yes,no; 是,否
+转为调试模式后, 如果询问是从localhost发出的, 就可以在大多数页面的下方显示一些基本信息, 
+同时临时会话目录(位于tmp/sessions/下面)会保留备查.
+用于开发或安装时查错.
+
+:graphics default_insplot_font insplot_font
+动态描图的文字大小
+choice
+small,medium,large; 小,中,大
+文字大小会影响gnuplot生成的动态描图. 具体的模块可以改变这一设定.
+
+:doc doc_quota wims_class_quota
+一个文件占用盘空间的上限(单位: M)
+int
+1,1000
+这是服务器上每个互动式文件占用硬盘空间的上限. 如果一个文件占用的盘空间达到或超过此限,
+就不再允许对此文件作修改.
+
+:forum forum_limit wims_forum_limit
+论坛个数上限
+int
+0,1000
+
+:software gap_command
+GAP的命令
+free
+
+GAP是WIMS使用的群伦计算器. 如果你安装在软件指示的目录里, 
+并在通常的路径里能找到可执行的gap.sh, 你就不必改动此参数.
+
+:log general_log_limit
+主log文件的长度上限 (以字节为单位)
+int
+0,102400000
+一般log文件 (access.log, post.log, session.log) 的长度上限.
+
+:graphics gnuplot_format
+gnuplot的内部图形格式*
+choice
+gif,jpeg,png
+选择一个你的gnuplot知道的格式.
+gnuplot用于生成动态描图.
+在大部分新近发布的版本里, gnuplot不编译gif格式.
+
+:appearances home_module
+主页(默认)模块!
+free
+
+本模块是网站的入口. 你不应改动, 除非你设计了自己的主页模块.
+
+:tech idle_time
+终止空闲的班级对话前的等待时间
+choice
+600,1200,1800,2400,3600,5400,7200,10800,14400,18000;10分钟,20分钟, 30分钟, 40分钟,1小时,1.5小时,2小时,3小时,4小时,5小时
+缩短这里的时间会提高机器的效率, 但是动作迟钝的访问者会发现他们的会话被取消了.
+通常一个活动的用户至少每10分钟会启动一下会话, 除非他是在做非常难的练习(非常罕见).
+在遇到后一种情形时, 突然中断会话是极其令人沮丧的. 因此要十分小心.
+<p>
+如果用这个机器举行考试, 那么这个等待时间应该超过试卷上的规定时间.
+
+:tech idle_time2
+终止空闲的匿名对话前的等待时间
+choice
+600,900,1200,1800,2400,3600,5400,7200,10800,14400,18000;10分钟,15分钟,20分钟,30分钟,40分钟,1小时,1.5小时,2小时,3小时,4小时,5小时
+缩短这里的时间会提高机器的效率, 但是动作迟钝的访问者会发现他们的会话被取消了.
+通常一个活动的用户至少每10分钟会启动一下会话, 除非他是在做非常难的练习(非常罕见).
+在遇到后一种情形时, 突然中断会话是极其令人沮丧的. 不过当这不是虚拟班级时, 
+影响会小些.
+<p>
+这个等待时间只用于未经查证身份的会话, 它不应该超过班级活动的等待时间.
+
+:tech idle_time3
+终止空闲的新创建对话前的等待时间
+choice
+300,360,480,600,720,900,1200,1800,2400,3600,7200;5分钟,6分钟,8分钟,10分钟,12分钟,15分钟,20分钟,30分钟,40分钟,1小时,2小时,2小时
+如果创建了一个会话而在指定时间里没有重复使用它, 就关闭这个会话.
+<p>
+这个等待时间仅适用于未经身份验证的会话. 创建一个会话而不重复使用通常是互联网搜索引擎的行为.
+<p>
+这个时间不应超过匿名对话的等待时间.
+
+:security manager_https
+网站维护必须使用https连接*
+choice
+0,1; 否(0),是(1)
+在可能情况下应选择https连接以增加安全性.
+以管理员身份侵入你的服务器是非常危险的!
+<p>WIMS与https相容. 你需要做的就是配置你的httpd使得它能接受https请求.
+
+:security manager_site
+网站维护的连接必须来自下列IP*!
+free
+
+你可以输入几个IP地址. 部分地址例如 134.59.10. 也是容许的，
+不过请注意允许的机器越多, 风险也越大. 最安全的主机是 127.0.0.1(localhost).
+请选择你能信任的主机. 以管理员身份侵入你的服务器!
+<p>
+如果你在这里输入 `*', 那么下一次你就不能使用这个在线维护工具了(而且谁都不能使用它).
+
+:software maxima_command
+Maxima的命令
+free
+
+如果Maxima是按通常方式安装的, 并且启动执行文件位于PATH内, 你就不必修改此设置.
+
+:log module_log
+纪录各模块的信息
+choice
+1,0; 是(1),否(0)
+许多WIMS模块有它自己的纪录. 如果你需要看这些模块的信息, 你可以激活它们(参见模块纪录文件长度的定义).
+请注意这些纪录文件会占用大量硬盘空间, 因为总共有几百个模块.
+
+:log module_log_limit
+模块纪录文件的长度限制(以字节为单位)
+int
+0,102400000
+模块纪录文件的长度限制. 有几个次要的记录文件也使用这个限制, 因此即使不使用模块记录文件,
+这里的值仍然有作用.
+
+:housekeep mu_auto
+模块更新方式
+choice
+none,check,install,update,all; 无,检查,安装,更新,全部
+自动每日模块更新的方式. <dl>
+<dt><tt>无</tt>
+   <dd>不做每日模块更新.
+<dt><tt>检查</tt>
+   <dd>检查哪些需要更新, 然后发电邮给网站管理员(就是你自己). 并不做任何安装或更新工作.
+<dt><tt>安装</tt>
+   <dd>安装新模块, 但不更新已有模块.
+<dt><tt>更新</tt>
+   <dd>更新已有模块, 但不安装新模块. <br>
+   这使你能纠正模块中的毛病, 但得不到新的模块.
+<dt><tt>全部</tt>
+   <dd>安装新模块并更新已有模块.
+</dl>
+
+:housekeep mu_site
+模块更新的下载网站
+free
+
+为模块更新选择一个下载网站. 已知的镜像站有:
+<pre>
+$mu_sitesw
+</pre> <p>
+如果你选择在很短的间隔里(0或1天)作自动更新, 则应选取主镜像站 <tt>$(mu_sites[1])</tt>.
+
+:housekeep mu_delay
+自动模块更新的延迟时间
+choice
+0,1,2,4,7,10,15,20,30,50,100
+从模块的公布至本网站更新之间相隔的天数.
+<p>
+选择一个大的数值会减少遇到模块毛病的风险, 因为在这段等待时间里, 会发现并纠正这些毛病.
+<p>
+如果你选择很短的时间(0或1), 你应该把下载网站设置为 <tt>$(mu_sites[1])</tt>.
+<p>
+Mac OS-X上不能使用本功能, 因为没有相应的命令.
+
+:housekeep mu_zone
+自动模块更新的范围
+free
+
+把自动模块更新限制在指定范围. "all"意指全部.
+<p>
+可供选择的范围: <dl>
+<dt><tt>E</tt>
+    <dd>小学(可以细分为 E1 E2 E3 E4 E5 E6)
+<dt><tt>H</tt>
+    <dd>中学(可以细分为 H1 H2 H3 H4 H5 H6)
+<dt><tt>U</tt>
+    <dd>大学(可以细分为 U1 U2 U3 U4 U5)
+<dt><tt>Lang</tt>
+    <dd>外语学习材料
+<dt><tt>tool</tt>
+    <dd>在线工具与帮助.
+</dl>
+<p>
+你可以选择几个范围, 相互用空格分开.
+
+:housekeep mu_cat
+自动模块更新的领域
+free
+
+把自动模块更新限制在指定范畴. "all"意指全部.
+<p>
+对领域的选择(并不完整): <dl>
+<dt><tt>math</tt>, <tt>physics chemistry language</tt>等.
+    <dd>相应的领域.
+<dt><tt>cs</tt>
+    <dd>计算机科学.
+</dl>
+<p>
+你可以选择几个领域, 相互用空格分开.
+
+:software mupad_command
+MuPAD的命令
+free
+
+参看MuPAD的安装参考文件以确定其可执行文件的确切位置.
+(WIMS很快会去除MuPAD的界面.)
+<p>
+本命令及路径应该与MuPAD安装的位置精确对应.
+
+:log old_log_files
+过时记录文件的个数*
+int
+0,20
+这是滚动存储过时记录文件的个数. 增大次数会记忆更多历史信息, 但是也增加了硬盘空间的占用.
+
+:software pari_command
+PARI/GP的命令
+free
+
+PARI/GP是被许多WIMS模块使用的数论计算器. 如果你按指示安装, 并把二进执行文件放在通常的PATH内,
+你不需作修改.
+
+:resources priority
+优先连接的网站
+free
+
+从不拒绝与这些网站的连接. $sitehelp
+
+:appearances page_bgcolor wims_bgcolor
+页面背景色
+free
+
+大部分WIMS页面的背景色. 使用色彩的英文名或16进制码 #rrggbb (详情请参看html的标准).
+
+:appearances page_bgimg wims_bgimg
+页面背景图像文件
+free
+
+大部分WIMS页面使用的背景图. 你可使用任何有效的URL.
+也可参看目录public_html/gifs/bg, 其中包含一些预定义的背景文件.
+若使用这些文件, 只需输入它们的文件名即可, 不必加上路径.
+<p>
+下面是此目录内可用作背景图像的文件表:
+<p><tt>$bgimgs</tt>
+
+:tech,misc rafale_level
+反连续请求的严厉度
+int
+0,100
+对练习的快速连续请求, 而又不是认真地解题, 会导致出错.
+这是系统的反作弊措施在起作用. 严厉度愈高, 允许进入新练习的时间间隔愈长.
+选取0或负数将关闭此措施.
+
+:appearances ref_bgcolor wims_ref_bgcolor
+表格背景色
+free
+
+出现在头部菜单以及许多WIMS管理模块中的背景色.
+使用色彩的英文名或16进制码 #rrggbb (详情请参看html的标准).
+
+:appearances css wims_css
+格式页(css)
+choice
+$csslist
+格式页会影响本站几乎所有的网页.
+<p>
+可用的格式页(css)文件位于<tt>public_html/html/css/</tt>. 
+如果你需要更多格式页, 可将新的css文件加入此目录.
+<p>
+如果你选择css=<tt>-theme-</tt>, 则会使用当前主题的格式页.
+若css=<tt>----</tt>, 则不使用任何格式页.
+
+:resources rlimit_cpu
+容许处理时间(秒)*
+int
+1,10000
+如果处理一个用户的请求所需的时间超过这里的限制, 将会中止运算并显示出错信息.
+这个数字设得太大是没有意义的, 因为正常情况下互联网用户没有耐心花几十秒时间等待一个页面.
+<p>
+这也是抵御`拒绝服务'攻击的安全措施.
+
+:appearances show_author wims_show_author
+在搜索结果中显示作者名
+choice
+yes,no; 是,否
+你是否想要作者名显示在搜索结果的每个模块后面?
+
+:appearances show_stat wims_show_stat
+显示网站使用统计
+choice
+yes,no; 是,否
+在显示统计前必须先激活记录计数活动.
+<p>
+为此你应该在每天清晨执行log/account.sh, 你可把这条命令列入crontab.
+
+:housekeep site_accounting
+每日活动计数
+choice
+0,1; 关(0),开(1)
+开启或关闭每日活动计数. 对于网站活动以及虚拟班级连接时间的统计是必要的.
+
+:misc site_description wims_site_description
+网站描述
+free
+
+本描述将被放在本服务器生成的每个网页的头部. 其主要目的是给互联网搜索引擎提供正确信息.
+<p>
+在模块中通过变量$$wims_site_description也能获得此文本.
+
+:misc site_keywords site_keywords wims_site_keywords
+网站关键词
+free
+
+这是关键词表, 将被放在本服务器生成的每个网页的头部, 并附加在模块关键词表的后面.
+其主要目的是使得互联网自动器(从而搜索引擎)能更好了解本网站.
+<p>
+在模块中通过变量$$wims_site_keywords也能获得此文本.
+
+:appearances site_languages wims_site_languages
+语言支持*
+free
+
+可用的语言: 
+cn (简体中文),
+en (英语),
+es (西班牙语),
+fr (法语), 
+it (意大利语),
+nl (荷兰语),
+用空格把它们分开.
+<p>
+次序是重要的: 第一位的语言有更高优先权.
+
+:appearances site_manager wims_site_manager
+你的电邮地址*
+free
+
+这里给出网站管理员的电邮地址. 这用于让访问者及用户报告遇到的严重问题.
+<p>
+如果你不看发到$DF_site_manager的信件的话, 应该把默认值$DF_site_manager改为你的电邮地址.
+<p>
+模块中通过变量$$wims_site_manager也能得到这个地址.
+
+:graphics texbasesize
+默认TeX字体大小等级*
+choice
+0,1,2,3,4,5,6,7,8,9,10
+这是TeX生成的数学公式图形里默认的字体大小.
+默认大小应该和大多数访问者的浏览器里使用的文字字体大小相匹配.
+访问者当然可以自己改变浏览器里的字体大小以达到匹配,
+但是换一个新页时又变回去了, 只有虚拟班级的情形才能保持.
+<p>
+不要只按照你自己的浏览器调整字体大小! 要顾及其他使用者, 他们的浏览器可能使用与你不同大小的字体.
+<p>
+每个等级在字体高度上递增(减)9%.
+
+:appearances theme wims_theme
+显示的主题
+choice
+$themelist
+你可在这里选取显示的主题.
+
+:resources threshold1
+第一载入阈值
+int
+10,500
+如果服务器的平均载入(报告为`w', `uptime'或`top')超过此值的0.01倍,
+则虚拟班级以外的访问者将被拒绝进入.
+<p>
+当服务器的载入接近此值时, 每个请求的时间容许值也会减少.
+
+:resources threshold2
+第二载入阈值
+int
+10,500
+如果服务器的平均载入(报告为`w', `uptime'或`top')超过此值的0.01倍,
+则优先网站以外的访问者将被拒绝进入.
+<p>
+正常情况下此值应该大于第一载入阈值。
+
+:security trusted_modules
+可信任模块表
+free
+
+可信任模块能够使用其它模块禁止使用的管理命令.
+这些命令使得这些模块能够修改或阅读服务器的不对外公开的信息.
+为安全起见, 只有管理模块和由可信任的作者开发的模块才能使用这些命令.
+<p>
+管理模块(位于子目录adm/内)以及home模块是自动受信任的.
+如果你要加入其它模块, 请把它们的地址(在http请求字串中位于`module='后面的部分)加到空格内,
+并用空格分隔.
+<p>
+除非你确有把握, 请尽量避免定义可信任模块.
+
+:class user_limit wims_user_limit
+所有班级用户总数的上限
+int
+10,100000
+每当注册一个新参加者, 都会计算所有班级现有参加者的总数. 
+一旦超过此限, 注册就会失败.
+
+:resources workfile_limit
+数据文件的长度上限
+int
+10000,100000000
+此值适用于许多文件, 包括模块中的脚本文件以及参加者工作时的数据文件.
+因此不能取得太小.
+
+:misc usecookie wims_usecookie
+向匿名访问者发cookie
+choice
+yes,no; 是,否
+如果你选`是', 服务器将向匿名访问者发cookie, 它能帮助你追踪用户.
+<p>
+请注意cookie并不是必需的: 即使用户关掉了cookie, 他仍然能在WIMS正常工作.
+主要差别在于cookie能让人知道用户的个人喜好, 从而改善服务器的表现并减少不必要的会话.
+<p>
+虚拟班级的cookie的使用不受此参数影响.
+

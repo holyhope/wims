@@ -1,0 +1,64 @@
+!set parm1=!text select /$namechars in $parm1
+!set parm1=!char 1 to $namelim of $parm1
+
+!if $parm1=$block or $parm1=$empty
+ !default parm2=??
+ !set parm2=!slashsubst $parm2
+ !set pp=!item 3 to -1 of $parms
+ !set pp=!slashsubst $pp
+ <a name=primi$serial>
+ !if $doc/$block.$serial notitemof $foldlist and $printable!=yes
+  !href cmd=reply&job=read&foldin=$block.$serial#primi$serial $parm2
+ !else
+  $pp
+  !if $printable!=yes
+   <small>[
+   !href cmd=reply&job=read&foldout=$block.$serial#primi$serial Foldout
+   ]</small>
+  !endif
+ !endif
+ !exit
+!endif
+
+!reset titb
+!read $wims_priv_thisdoc/$parm1.def
+!set prompt=!item 2 to -1 of $parms
+!default prompt=$titb
+!if $titb=$empty
+ !default prompt=<tt>$parm1</tt>
+ $prompt
+ !if $editable=yes
+  <small>[
+  !href cmd=reply&job=edit&block=$parm1 Create
+  ]</small>
+ !else
+  <small>[non-available]</small>
+ !endif
+!else
+ <a name=primi$serial>
+ $prompt
+ !if $printable=yes
+  !goto alwaysin
+ !endif
+ <small>[
+ !if $doc/$block.$serial notitemof $foldlist and robot notin $session
+  !href cmd=reply&job=read&foldin=$block.$serial#primi$serial Detail
+  ]</small>
+ !else
+  !href cmd=reply&job=read&foldout=$block.$serial#primi$serial Foldout
+  ]
+  !if $editable=yes
+   [
+   !href cmd=reply&job=edit&doc=$doc&block=$parm1 Edit
+   ]
+  !endif
+  </small>
+  :alwaysin
+  !set blocksave=$blocksave $block
+  !set block=$parm1
+  !read $wims_priv_thisdoc/$parm1.def content
+  !set block=!word -1 of $blocksave
+  !set blocksave=!word 1 to -2 of $blocksave
+  !set gotblock=!append item $parm1 to $gotblock
+ !endif
+!endif

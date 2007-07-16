@@ -1,0 +1,60 @@
+<p><hr width=35%>
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+ 抱歉, 目前此模块尚无可用的练习. 以后再返回!
+ !exit
+!endif
+!if $exocnt=1
+ 目前本模块仅含一个练习, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo 试试看.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+<td align=center>选择练习:<td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+<tr><td align=center>每一轮将有<td>
+!set qnum=1
+!formselect qnum from 1 to $qcnt
+个练习.
+<tr><td align=center>难度水平<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 8
+!read introhook.phtml
+</table> <p>
+<input type=submit value="开始工作">
+</center>
+</form>
+<b>注解</b>. 练习将从你选中的列表中随机选取.
+如果你没有选取什么, 就从所有可用的练习中选取.
+
+!if * isin $titlelist
+ <p>打星号 * 的是较难的练习.
+!endif
+

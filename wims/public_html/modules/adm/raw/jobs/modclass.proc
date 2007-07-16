@@ -1,0 +1,29 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+data1=!nonempty lines $data1
+n=!linecnt $data1
+set=0
+
+!for i=1 to $n
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ n_=!word 1 of $n_
+ v_=!trim $v_
+ !if $n_ isitemof $classdefs
+  !setdef !set class_$n_=$v_ in $classdeffile
+  !advance set
+ !endif
+!next i
+
+!if $set<1
+ error=nothing done
+ !exit
+!endif
+
+!sh cd $wims_home/log/classes; ./.build-index
+

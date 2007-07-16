@@ -1,0 +1,50 @@
+!!!--- Ce fichier présente la question à résoudre. ---!!!
+
+!!!--- si le type de l'exo est vide, on retourne à l'introduction ---!!!
+!if $exo=$empty
+  !changeto intro.phtml
+  !exit
+!endif
+
+!!!--- présentation du module en mode récupération de fichier ---!!!
+!if $chexo>1
+  !read present$(chexo)
+!endif
+
+!!!--- présentation classique du module en mode création assistée ---!!!
+!if $chexo=1
+
+!if $etape=$etapesnb
+  !set wims_backslash_insmath=no
+ !else
+  !set wims_backslash_insmath=yes
+!endif
+
+<hr align="center" size="5" width="75%">
+<center>
+  <table bgcolor="wheat" border=4>
+    <tr><th align="center">
+       $(exosdesc[$exo;])
+    </tr> 
+  </table>
+</center>
+<hr align="center" size="5" width="80%">
+
+!form reply
+  !read $prefixdir/presetape$(etape)
+  !read comsDir/progress
+</form>
+
+!!!!!!!!!!!!!!!!! aide a la saisie !!!!!!!!!!!!!!!!
+!!<hr align="center" size="5" width="50%">
+!!<center>
+!!  <table bgcolor="aqua" border=4>
+!!    <tr><th align="center">
+!!       !href target=wims_mhelp cmd=help&special_parm=saisie <b>Ayuda en la toma de datos</b>
+!!    </tr> 
+!!  </table>
+!!</center>
+
+!!!!TESTS
+
+!endif

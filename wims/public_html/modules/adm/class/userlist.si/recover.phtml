@@ -1,0 +1,26 @@
+<center>$classname<p>
+
+<h3>Zbrisani uporabniki</h3> <p>
+
+</center>
+!if $delcnt<1
+ V tej uèilnici ni zbrisanih uporabnikov.
+ <p>
+!else
+ Kliknite na uporabni¹ko ime za obnovo.
+ $table_header
+  $table_hdtr<th>login<th>name
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ $table_end <p>
+!endif
+
+<center>
+ !href cmd=resume Seznam vseh uporabnikov
+.
+</center> <p>
+

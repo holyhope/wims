@@ -1,0 +1,60 @@
+
+<center><font size=+1><b>Compartir los recursos de la clase
+!href cmd=reply&job2=def $nei_description
+ de
+<em><font color=blue>$nei_institution</font></em></b></font></center><center>
+(Profesor:
+<a href="mailto:$nei_email?subject=Vecindad de clases
+relations">$nei_supervisor</a>)
+</center>
+<p>
+La clase <em><font color=blue>$nei_description</font></em></b> 
+le permite compartir sus recursos siguientes.
+<small>
+!href cmd=help&special_parm=share Ayuda
+</small>
+<ul>
+!for r in $nsharable
+ <p><li><em>$(name_$r)</em> ($(it_$(r)cnt) disponible).
+ !if $r isitemof $sharing or $(sharable_$r)!=$empty
+  !if $r isitemof $sharing
+   !if $(sharing_$r)=$nei
+    Ya está compartiendo.
+    !href cmd=reply&job2=stopshare&stoprec=$r Detener la relación de compartir.
+. <small>
+    !href cmd=help&special_parm=stopshare Ayuda
+    </small>
+   !else
+    No puede compartirlos porque ya comparte los de otra clase.
+   !endif
+  !else
+   No puede compartirlos porque ha permitido a otras clases compartir
+   SUS recursos del mismo tipo. No está autorizado compartir en cascada.
+   Por tanto debe primero poner fin a los permisos para compartir por
+   parte de la otra clase antes de poder compartir los de la clase
+   <em><font color=blue>$nei_description</font></em>.
+  !endif
+ !else
+  !if $(me_$(r)cnt)>0 and $r isitemof $nosharelist
+   No puede compartirlos porque sus propios $(name_$r) no están vacíos.
+   Antes de compartir, debe primero
+   !href cmd=reply&job=clean limpiar
+   sus propios recursos (si es posible).
+  !else
+   !href cmd=reply&addshare=$r Compartir
+.
+   !if $(me_$(r)cnt)>0
+    <b><font color=red>AVISO</font></b>.
+    !if $r=sup
+     ¡Es muy peligroso compartir la cuenta del profesor!
+     !href cmd=help&special_parm=supshare Detalle.
+    !else
+     ¡Al compartir va a BORRAR sus $(name_$r) existentes!
+     Se perderán definitivamente si no tiene una copia de seguridad.
+    !endif
+   !endif
+  !endif
+ !endif
+!next r
+</ul>
+

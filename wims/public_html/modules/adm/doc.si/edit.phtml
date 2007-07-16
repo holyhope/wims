@@ -1,0 +1,68 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $edtype=file
+ !set wims_form_method=file
+!else
+ !set wims_form_method=post
+!endif
+!form reply
+<input type=hidden name=doc value=$doc>
+<input type=hidden name=block value=$block>
+
+!if $titb=$empty
+ Ustvarjanje
+!else
+ Spreminjanje
+!endif
+bloka <tt>$block</tt>.
+!if $edtype=file
+ !href cmd=reply&edtype=textarea [Neposredno sestavljanje]
+!else
+ !href cmd=reply&edtype=file [Vstavljanje datoteke]
+!endif
+<br>
+
+!set titb=!reinput $titb
+Naslov: <input size=50 name=Titb value="$titb"> <br>
+!if $edtype=file
+ Vstavite datoteko kot vsebino: <input type=file size=35 name=wims_deposit>
+ !if $titb!=$empty
+  <br>Ta datoteka naj bo
+  !formselect addtype list replace,append,prepend prompt\
+	nadomestilo, dodana pred, dodana za
+  obstojeèo vsebino.
+ !endif
+ <br>
+!else
+ !mexec scripts/textarea.sh
+!endif
+<center>
+<input type=submit name=preview value="Predogled">
+<input type=submit name=rEg value="Potrditev">
+<input type=submit name=abandon value="Preklic">
+</center> <br>
+!! Kljuène besede: <input size=50 name=Keyw value="$keyw"> <br>
+!if $block!=main
+ Predhodni blok: <input size=12 name=Prev value="$prev">
+ naslednji blok: <input size=12 name=Next value="$next">
+ Star¹: <input size=12 name=Upbl value="$upbl">
+ <br>
+!endif
+Datum veljavnosti <small>llllmmdd</small> : od
+<input size=8 name=Dat1 value="$dat1"> do
+<input size=8 name=Dat2 value="$dat2">
+</form>
+!if $edtype=file
+ <p><b>Opomba</b>. Dovoljene oblike datotek so:
+ WIMS, html ali LaTeX datoteka. Deli datotek so dovoljeni, èe so pravilno razrezani
+ (torej niso prerezani med dvema html znaèkama ali na sredi matematiène formule ipd.).
+!endif
+<p><hr> <p>
+
+

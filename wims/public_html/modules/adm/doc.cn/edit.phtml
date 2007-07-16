@@ -1,0 +1,68 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $edtype=file
+ !set wims_form_method=file
+!else
+ !set wims_form_method=post
+!endif
+!form reply
+<input type=hidden name=doc value=$doc>
+<input type=hidden name=block value=$block>
+
+!if $titb=$empty
+ 创建
+!else
+ 修改
+!endif
+一个块 <tt>$block</tt>.
+!if $edtype=file
+ !href cmd=reply&edtype=textarea [在线编辑]
+!else
+ !href cmd=reply&edtype=file [插入文件]
+!endif
+<br>
+
+!set titb=!reinput $titb
+标题: <input size=50 name=Titb value="$titb"> <br>
+!if $edtype=file
+ 插入文件到内容中: <input type=file size=35 name=wims_deposit>
+ !if $titb!=$empty
+  <br>这个文件将
+  !formselect addtype list replace,append,prepend prompt\
+	替代, 附加在已有文件之后, 附加在已有文件之前
+.
+ !endif
+ <br>
+!else
+ !mexec scripts/textarea.sh
+!endif
+<center>
+<input type=submit name=preview value="预览">
+<input type=submit name=rEg value="纪录">
+<input type=submit name=abandon value="取消">
+</center> <br>
+!! Key words: <input size=50 name=Keyw value="$keyw"> <br>
+!if $block!=main
+ 上一个块: <input size=12 name=Prev value="$prev">
+ 下一个块: <input size=12 name=Next value="$next">
+ 上面一层: <input size=12 name=Upbl value="$upbl">
+ <br>
+!endif
+有效日期 <small>yyyymmjj</small> : 从
+<input size=8 name=Dat1 value="$dat1"> 至
+<input size=8 name=Dat2 value="$dat2">
+</form>
+!if $edtype=file
+ <p><b>附注</b>. 可接受的文件格式:
+ WIMS 文件, html 文件或 LaTeX 源文件. 不完整的源文件
+也能接受, 只要它们被正确地分割 (例如, 不要在 html tag 或数学公式的内部分割).
+!endif
+<p><hr> <p>
+
+

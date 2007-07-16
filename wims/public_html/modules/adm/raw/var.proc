@@ -1,0 +1,57 @@
+
+wims_prefix=class user tmp n sharing sharable ident
+!if $job=help
+ wims_module_log=help
+ !exit
+!endif
+
+header=Content-Type: text/plain\
+
+
+job=!lower $job
+!bound job within checkclass, addclass, modclass, delclass,\
+	checkuser, adduser, moduser, deluser, recuser,\
+	getclass, getuser, getscore, getlog, getcsv, putcsv,\
+	getclassmodif, getclassfile, getclasstgz,\
+	checkident, update, authuser,\
+	gettime\
+	default $
+option=!items2words $option
+option=!words2items $option
+code=!word 1 of $code
+
+!read defs
+!read adm/class/authchars
+!read var.check
+
+!if $error=$empty
+ !read jobs/$job.proc
+!endif
+
+!if $error!=$empty
+ !changeto error.proc $error
+!endif
+
+!if $code=$empty
+ ok=OK
+!else
+ ok=OK $code
+!endif
+
+!shortout $header\
+$ok\
+
+!if $job iswordof addclass getclass getuser getscore getlog \
+	authuser getclassmodif gettime
+ !read types/$ident_type
+!endif
+
+!if $job iswordof getcsv getclassfile getclasstgz
+ !sh cat $wims_home/$fname
+!endif
+
+!if $job notwordof authuser
+ wims_mode=popup
+!endif
+wims_module_log=$job $ident -> $qclass $quser
+

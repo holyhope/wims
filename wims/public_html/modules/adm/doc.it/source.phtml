@@ -1,0 +1,61 @@
+
+<center><h1>$tit
+</h1></center>
+
+!if $titb=$empty
+ <p>
+ Il blocco <tt>$titb</tt> non &egrave; ancora stato creato.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Il blocco non &egrave; ancora leggibile. Torna pi&ugrave; tardi!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Il blocco non &egrave; pi&ugrave; leggible. Spiacenti!
+ <p>
+ !exit
+!endif
+
+<h3>$titb (Codice sorgente)
+</b><font size=-1>
+ [
+!href cmd=reply&job=read Versione formattata
+ ]</font>
+</h3>
+
+<pre wrap>
+!mexec scripts/cat.sh $wims_home/$Docdir/$doc/src/$block
+</pre>
+
+<p><hr>
+!if $wims_class!=$empty and $wims_user!=supervisor
+ !exit
+!endif
+<table width=100% border=0>
+<tr><td align=left><small>
+!href cmd=reply&job=read Versione formattata
+&nbsp; a cura di
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+!if help notin $wims_session
+ <td align=right><small>
+ !href module=home WIMS
+  @
+ <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+!endif
+<tr><td align=left colspan=2 nowrap>
+<small>Last modified $datm
+</table>
+
+

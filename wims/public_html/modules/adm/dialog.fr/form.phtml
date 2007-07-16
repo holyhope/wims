@@ -1,0 +1,40 @@
+
+!if $remcnt>0
+ !set wims_ref_anchor=#infogot
+ !form reply
+ !if $gotcnt<1
+  <p>Pour résoudre le problème, vous pouvez
+  <input type=submit value="poser des questions">
+ !else
+  <p>Maintenant vous pouvez continuer à
+  <input type=submit value="poser des questions">
+ !endif
+ sur $objname:
+ !formselect ask list 0,$remlist prompt ?? Choisissez la question ??,$prompts
+ !if $comment!=$empty
+  <p>$comment
+ !endif
+ <p></form>
+ <small><b>Attention</b>. Votre note dépend du nombre de questions que vous
+ posez. Une pénalité sera appliquée si vous demandez des informations
+ inutiles.</small> <p>
+ <hr width=50%> <p>
+!endif
+
+!if $gotcnt<1
+ !exit
+!endif
+
+!set wims_ref_anchor=#ans
+!form reply
+ !if $remcnt>0
+  Quand vous pensez que vous avez suffisamment d'information pour résoudre
+  le problème, vous pouvez
+ !else
+  Maintenant veuillez
+ !endif
+ <input type=submit value="donner votre réponse">&nbsp;:<p>
+ !read $deffile form
+</center>
+</form>
+

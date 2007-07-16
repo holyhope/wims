@@ -1,0 +1,125 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>
+Creation of a message board
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=$module&cmd=reply&step=0 Restart the operation.
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+ If you create a message board on this WIMS site,
+ you should assume the responsibility of its maintenance. <p>
+ To create your message board, please fill in the following informations.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>Name of the message board (at most $titlelim characters):
+  <input size=$titlelim name=title value="$title"> <p>
+ <li>Description (at most $desclim characters):
+  <textarea cols=65 rows=5 name=description>$description</textarea> <p>
+ <li>Complete name of its owner (that is, you):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>Email address:
+  <input size=$emaillim name=email value="$email"> <br>
+  (Your message board won't be created unless you give
+  your email address which works right now.)<p>
+ <li>Choose a owner's password:
+  <input size=16 type=password name=passsup> <br>
+  (between 4 and 16 characters, digits or letters without accent). <br>
+  This password will allow you to access the message board as its owner.
+  You should be the only person to know it. <p>
+ <li>Choose a password of the message board:
+  <input size=16 type=password name=password> <br>
+  (between 4 and 16 characters, digits or letters without accent). <br>
+  This password will be required for the register of users of the message
+  board; you can therefore diffuse it to anybody whom you allow to participate
+  in the discussions. <p>
+ </ul>
+ <center><input type=submit value="Continue"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ Hello, $supervisor!<p>
+ You are creating a message board $forumname on the WIMS site
+ $httpd_HTTP_HOST.
+ <p>
+ If you find an error in the above informations, please
+ !href module=$module&cmd=reply&step=0 correct it.
+ <p>Otherwise, in order to verify the exactness of your passwords,
+ please type them again. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Owner's password:
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Password of the message board:
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="Continue"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Hello, $supervisor!<p>
+ Now you need a code to finish the operation of creation of a new message
+ board under WIMS at the site $http_HTTP_HOST. <p>
+ This code has just been sent to your email address
+ ``<tt>$email</tt>''. Please go to verify your email box (wait a little bit
+ if necessary), and read this message.
+ Pick up the code in the message, and copy it below.
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Code of the message board: <input size=16 name=typecode>
+ <p><input type=submit value="Continue"></center>
+ </form>
+ <b>Attention</b> This code is only used once here. It cannot be used to
+ connect to the message board!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Hello, $supervisor!<p>
+ Your message board $forumname is now created. Congratulations, and enjoy!<p>
+ You can access your message board
+ !href module=adm/forum/forum from here
+.
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Back to the beginning of the operation.
+:end
+!tail
+
+!set step=
+

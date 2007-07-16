@@ -1,0 +1,31 @@
+!if $modreq!=$empty
+modreq=!word 1 of $modreq
+!if / isin $modreq or .. isin $modreq
+ modreq=
+!endif
+mtest=!filelist $devdir/$modreq
+!if $mtest=$empty and ($modreq!=.new or $inddef=$empty)
+ modreq=
+!endif
+!if $modreq=$empty
+ job=modname
+ !changeto $job.proc
+!endif
+
+!read scripts/getindex $modreq
+!if $title=$empty and $inddef=$empty
+ job=modname
+ modreq=
+ !changeto $job.proc
+!endif
+
+mod=$modreq
+!endif
+
+!read scripts/getindex $mod
+
+!if $title!=$empty
+ !for i in $deflist
+  i_$i=$($i)
+ !next i
+!endif

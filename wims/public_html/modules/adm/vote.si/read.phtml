@@ -1,0 +1,65 @@
+
+!if $vote_option=anonymous
+ Glasovanje je anonimno.
+!else
+ Glasovanje je poimensko.
+!endif
+!if $vote_status=2
+ Glasovanje je zakljuèeno.
+!endif
+
+!if $wims_user=supervisor
+ ($vcnt votes)
+ !href cmd=reply&job=edit Spremeni
+<p>
+!endif
+
+!if $vote_status=2
+ !changeto $votedir/$vote.def
+!endif
+
+!if $(user_vote_$Vote)!=$empty
+ !if $vote_option=anonymous
+  Svoj glas ste ¾e oddali. <p>
+ !else
+  Svoj glas ste ¾e oddali, a svojo izbiro lahko ¹e spremenite.
+  <p>
+  !goto form
+ !endif
+!else
+ Oznaèite svojo izbiro: <p>
+ :form
+ !form reply
+ <input type=hidden name=job value=vote>
+ !set m_formed=yes
+!endif
+
+!read $votedir/$vote.def
+
+!if $m_formed=yes
+ <p><center>
+ <input type=submit value="Po¹lji">
+ </center></form>
+!endif
+
+!if $wims_user=supervisor and $vote_option=nominative
+ <p> Podrobnosti registracije.
+ !for i=1 to $parmcnt
+  !for c=1 to $(choices$i)
+   !if /supervisor/ notin $c/
+    <p>
+    !item $c of $(chlist$i)
+ <br> <tt>
+    !for u in $(votes_$(i)_$c)
+     !set U=!translate internal / to , in $u
+     !readproc adm/class/userdef classes,$U
+     !defof user_lastname, user_firstname in $userdef
+     ($u)
+     <br>
+    !endif
+   !next u
+   </tt>
+  !next c
+ !next i
+!endif
+

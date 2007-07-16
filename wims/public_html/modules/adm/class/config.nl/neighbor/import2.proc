@@ -1,0 +1,146 @@
+
+!if ($wims_class notitemof $nei_sup,$nei_part or\
+	$nei notitemof $n_sup,$n_part) and \
+    all notitemof $nei_sup,$nei_part
+ error=not_neighbor
+ job2=first
+ !exit
+!endif
+
+!read scripts/reccnt.proc me log/classes/$wims_class
+!read scripts/reccnt.proc it log/classes/$nei
+import=!trim $import
+!if $import=$empty
+ :noimp
+ job2=import
+ !changeto neighbor/import.proc
+!endif
+
+!bound impmethod within add,replace default add
+!distribute items $import into itype,iname
+imported=1
+!if $itype notitemof motd,exo,sheet,exam,doc,user
+ !goto noimp
+!endif
+
+!if ($wims_class notitemof $nei_sup or $nei notitemof $n_sup) and \
+  all notitemof $nei_sup
+ !if $itype!=user
+  !goto noimp
+ !endif
+!endif
+
+!if $itype=motd
+ result=!mexec neighbor/import2.sh
+ verif=module=adm/class/motd
+ !exit
+!endif
+
+!if $itype=exo
+ result=!mexec neighbor/import2.sh
+ verif=module=classes/$lang
+ !exit
+!endif
+
+!if $itype=sheet
+ !if $confirm!=yes
+  !if $it_exocnt>0
+   result=confirm
+   cfm=$cfm dep
+   !exit
+  !endif
+  !if $impmethod=replace
+   test=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$replace
+   !if $test>0
+    result=confirm
+    cfm=$cfm replace
+    !exit
+   !endif
+  !endif
+ !endif
+ header=!record $iname of wimshome/log/classes/$nei/sheets/.sheets
+ header=!line 2 to -1 of $header
+ !if $impmethod=add
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :0\
+$header
+  replace=$[$me_sheetcnt+1]
+ !endif
+ result=!mexec neighbor/import2.sh
+ verif=module=adm/class/sheet&sheet=$replace
+ !exit
+!endif
+
+!if $itype=exam
+ !if $confirm!=yes
+  result=confirm
+  cfm=$cfm dep
+  !if $impmethod=replace
+   test=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$replace
+   !if $test>0
+    result=confirm
+    cfm=$cfm replace
+    !exit
+   !endif
+  !endif
+  !exit
+ !endif
+ header=!record $iname of wimshome/log/classes/$nei/exams/.exams
+ header=!line 2 to -1 of $header
+ !if $impmethod=add
+  !appendfile wimshome/log/classes/$wims_class/exams/.exams :0\
+$header
+  replace=$[$me_examcnt+1]
+ !endif
+ result=!mexec neighbor/import2.sh
+ verif=module=adm/class/exam&exam=$replace
+ !exit
+!endif
+
+!if $itype=doc
+ !if $confirm!=yes
+  !if $impmethod=replace
+   result=confirm
+   cfm=$cfm replace
+   !exit
+  !endif
+ !endif
+ !if $impmethod=add
+  replace=$[$me_doccnt+1]
+ !endif
+ result=!mexec neighbor/import2.sh
+ Docdir=log/classes/$wims_class/doc
+ docdir=wimshome/$Docdir
+ !read adm/docindex.proc
+ verif=module=adm/doc&job=read&doc=c$replace
+ !exit
+!endif
+
+!if $itype=user
+ imported=
+ !read adm/class/userremain.proc
+ !for i=1 to $it_usercnt
+  t=!record $i of wimshome/log/classes/$nei/.userlist
+  u=!item 3 of $t
+  !if $u isitemof $iname or $iname=-all-
+   test1=!defof user_exists in wimshome/log/classes/$wims_class/.users/$u
+   !default test1=!defof user_exists in wimshome/log/classes/$wims_class/.users/.$u
+   !if $test1=$empty
+    !if $dispo>0
+     ud=!record 0 of wimshome/log/classes/$nei/.users/$u
+     !writefile wimshome/log/classes/$wims_class/.users/$u $ud
+     imported=!append item $u to $imported
+    !endif
+   !endif
+  !endif 
+ !next i
+ !if $imported!=$empty
+  !read adm/class/mkuserlist
+  result=success
+  importedcnt=!itemcnt $imported
+ !else
+  result=none
+ !endif
+ verif=module=adm/class/userlist
+ !exit
+!endif
+

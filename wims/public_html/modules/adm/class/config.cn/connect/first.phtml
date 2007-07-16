@@ -1,0 +1,66 @@
+!set job2=first
+
+服务器/平台链接使得你的班级直接与另一个WIMS服务器或e-学习平台上的班级建立通信.
+参加者可以在连接的班级间自由漫游.
+<p>
+你可以在远程WIMS服务器上建一个镜像班级,
+如果这个服务器一时不能工作时将可在镜像班里继续工作.
+镜像班的得分可以合并进来.
+<p>
+!if $ccnt<1
+本WIMS服务器没有声明过可连接的远程服务器.
+为了使用此链接功能,
+ <a href="mailto:$wims_site_manager?subject=server connection">网站管理员</a>
+必须声明这样的远程服务器, 而远程服务器也要声明本WIMS服务器是可链接的.
+ !set basedir=!sh cd ..; pwd
+ (网站管理员可参看文件
+ <tt>$basedir/log/classes/.connections/myself</tt>以了解声明网站链接的详情.)
+ !exit
+!endif
+
+目前本WIMS服务器有下列可连接的服务器.
+<p>$table_header
+$table_hdtr<th>名称
+<th>描述<th>地址<th>类型<th>动作
+!for s in $Clist
+ 
+ $table_tr
+ <td>$s
+ <td align=center>$(desc_$s)
+ <td align=center><a href=$(url_$s)>$(site_$s)</a>
+ <td align=center>$(type_$s)
+ <td align=center nowrap><small>
+ !href cmd=reply&job2=testserver&connident=$s 测试
+ &nbsp;
+ !href cmd=reply&job2=add1&connident=$s 增加连接
+ </small>
+!next s
+$table_end <p>
+
+!if $clcnt<1
+此班级没有到其它服务器的链接.
+ !exit
+!endif
+
+你已经声明下列到其它服务器的链接.
+<p>
+!distribute items yes,no into io1,io0
+$table_header
+$table_hdtr<th>服务器<th>班级
+<th>-<th>-<th>-<th>-
+!for clc in $cllist
+ !distribute words $clc into n_,c_,o_,i_
+ 
+ $table_tr
+ <td>$n_<td align=center>$c_
+ <td>
+ !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ 测试
+ <td>
+ !href cmd=reply&job2=mod1&connident=$n_&connclass=$c_ 管理
+ <td>
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ 删除
+ <td>
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy 删除远程班
+!next clc
+$table_end <p>
+

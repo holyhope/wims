@@ -1,0 +1,277 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+!if $job!=$empty and $job!=sheets
+ !read $job.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>Elenco degli iscritti
+<font size=-1>[
+!href cmd=reply&job=csv formato csv
+ ]
+</font>
+</h1></center>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page del corso
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+ Non ci sono ancora studenti.
+ [
+ !href module=adm/class/reguser&step=1 Inserisci uno studente
+ ]
+!else
+ <center>
+ [
+ !href module=adm/class/reguser&step=1 inserisci uno studente
+ ]
+ !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
+ !set deleted=!trim $deleted
+ !if $deleted!=$empty
+  &nbsp;[
+  !href cmd=reply&job=recover Studenti esclusi
+  ]
+ !endif
+ </center><p>$table_header
+!bound job_affi within notes,points,qualite default notes
+ !if $job_affi=notes
+ <caption>Voti calcolati su un massimo di $scoremax</caption>
+ !else
+  !if $job_affi=qualite
+   <caption>Qualità calcolata su un massimo di 10</caption>
+  !else
+  !let tmp=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+  !let tmp=!values v for v=1 to $tmp
+  !let showsheet=!listintersect $showsheet and $tmp
+   <caption>Percentuale di lavoro portato a termine.</caption>
+  !endif
+ !endif
+ !if $manual>0 and $job_affi=notes
+  $table_hdtr<th rowspan=2>Nome e cognome
+  <th colspan=3>Media
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th rowspan=2><small>esame $k</small>
+   !else
+    <th rowspan=2><small>verifica $j</small>
+   !endif
+  !next j
+  $table_hdtr<th><small>globale<th><small>docente.<th><small>auto
+ !else
+  $table_hdtr<th>Nome e cognome
+ !if $job_affi=notes 
+  <th>Media
+ !endif
+    !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th><small>esame $k</small>
+   !else
+    <th><small>verifica $j</small>
+   !endif
+  !next j
+ !endif
+ !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
+ !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
+ !for i=1 to $usercnt
+  !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  !set UU=!hex in $uu
+  $table_tr<td>
+  !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
+  !read userscore
+  !if $manual>0 and $job_affi=notes
+   !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
+   <td align=center>$glob</td>
+   <td align=center>$(manual_$UU)</td>
+   <td align=center>$per</td>
+   !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
+   !if $glob>0
+    !advance cnt_glob
+    !if $(manual_$UU)>0
+     !advance cnt_tea
+    !endif
+    !if $per>0
+     !advance cnt_auto
+    !endif
+   !endif
+  !else
+   !if $job_affi=notes
+   <td align=center>$per</td>
+   !if $per>0
+    !advance cnt_auto
+    !advance cnt_glob
+   !endif
+  !endif
+  !endif
+  !set mean_auto=$[$mean_auto+$per]
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    !set p_=$[rint(10*$scoremax*$(es_$k))/100]
+    !if NaN isin $p_
+     !set p_=0
+    !endif
+    <td align=center>$p_</td>
+   !else
+    !set p_=!line $j of $percents
+    !distribute words $p_ into p1,p2
+    !if $job_affi=notes
+    !if $p2!=$empty
+     !distribute item $[$p1/100],$[$p2/10] into x_,y_
+     !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+    !else
+     !set p_=0
+    !endif
+    <td align=center>$p_</td>
+    !else
+     !if qualite iswordof $job_affi
+      !set p_=$p2
+      <td align=center>$p_</td>
+     !else
+      !set p_=$p1
+      <td align=center>$p_ %</td>
+     !endif
+     !if $p2=$empty
+      !set $p_=0
+     !endif
+   !endif
+   !set per_$j=$[$(per_$j)+$p_]
+   !if $p_>0
+    !advance cnt_$j
+   !endif
+  !next j
+ !next i
+ !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
+	$[rint(100*$mean_tea/$usercnt)/100],\
+	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
+ $table_hdtr<td align=center><b>Media del<br>corso</b>
+ !if $job_affi=notes
+ !if $manual>0
+  <td align=center>$m_glob</td>
+  <td align=center>$m_tea</td>
+  <td align=center>$m_auto</td>
+ !else
+  <td align=center>$m_auto</td>
+ !endif
+ !endif
+ !for j in $showsheet
+  <td align=center>$[rint(100*$(per_$j)/max(1,$usercnt))/100]</td>
+ !next j
+ !if $cnt_glob>0
+  !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
+	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
+	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
+  $table_hdtr<td align=center><b>Media dei punteggi positivi</b>
+  !if $manual>0
+   <td align=center>$m_glob</td>
+   <td align=center>$m_tea</td>
+   <td align=center>$m_auto</td>
+  !else
+   <td align=center>$m_auto</td>
+  !endif
+  !for j in $showsheet
+   <td align=center>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]</td>
+  !next j
+ !endif
+ $table_end
+ <p>Selezionare un nome per visualizzare i dettagli.
+ <p>&Egrave; possibile
+ !href cmd=reply&job=formula&formula=prep modificare il livello di severit&agrave;
+ o 
+ !href module=adm/class/grades assegnare i voti manualmente
+.
+ !href module=adm/class/stat Statistiche dell'attivit&agrave; svolta
+.
+<p>
+   Mostra
+   !if $job_affi=notes
+    !href cmd=reply&job_affi=qualite qualità
+    o
+    !href cmd=reply&job_affi=points lavoro portato a termine
+   !else
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=notes voti
+     o
+     !href cmd=reply&job_affi=points lavoro portato a termine
+    !else
+     !href cmd=reply&job_affi=notes voti
+     o
+     !href cmd=reply&job_affi=qualite qualità
+    !endif
+   !endif
+   nelle verifiche.
+ !if $activecnt>1
+  <p>
+  !form reply
+  <input type=hidden name=job value=sheets>
+  !set wims_formselect_switch=multiple size=$[min($activecnt+$eactivecnt,6)]
+  <table border=0>
+  <tr><td>Seleziona una verifica per<br>
+  visulizzarne i punteggi medi&nbsp;:
+  <td>&nbsp;&nbsp;
+  !reset tmp
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !set ti=!item 3 of $sh
+   !set tmp=!append item $se: $ti to $tmp
+  !next i
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set tmp=!append item Esame $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  <td><input type=submit value="Visualizza"></table>
+  </form>
+ !endif
+!endif (usercnt=0?)
+<p>
+!if $manual>0
+ <blockquote>
+ <b>Spiegazione.</b> Nelle colonne `media'
+ <dl><dt> `auto' <dd>indica i voti assegnati
+ automaticamente dal sistema; <dt>`docente' <dd>indica i voti assegnati
+ manualmente dal docente<dt>`globale' <dd>&egrave; calcolato a partire
+ dai dati `auto' e `docente' attraverso la  
+ formula<br> <br>
+ <center>
+  globale = $[$manual/100]*docente. + $[1-$manual/100]*auto.
+ </center> <br>
+ (il coefficiente $[$manual/100] è modificabile nella pagina
+ !href module=adm/class/grades di inserimento dei voti
+).</dl>
+ </blockquote>
+ <p>
+!endif
+
+:end
+!tail
+
+!reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,\
+	passcheck
+
+

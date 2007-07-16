@@ -1,0 +1,134 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS op $httpd_HTTP_HOST
+<p>
+Oprichten van een message board of forum
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=$module&cmd=reply&step=0 Herstart de procedure.
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+ Wanneer u een message board opricht op deze WIMS server,
+ bent U ook verantwoordelijk voor het onderhoud ervan.
+  <p>
+ Om een eigen message board/forum op te richten, vul dan het onderstaande
+ formulier in.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>Naam van het message board (maximaal $titlelim karakters):
+  <input size=$titlelim name=title value="$title"> <p>
+ <li>Beschrijving (maximaal $desclim karacters):
+  <textarea cols=65 rows=5 name=description>$description</textarea> <p>
+ <li>Volledige naam van de eigenaar (U dus):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>Emailadres:
+  <input size=$emaillim name=email value="$email"> <br>
+  (Uw message board kan alleen worden opgezet wanneer U een
+  werkend emailadres invult.)
+  <p>
+ <li>Wachtwoord van de eigenaar:
+  <input size=16 type=password name=passsup> <br>
+  (tussen 4 en 16 karakters, cijfers of letters zonder accenten). <br>
+  Dit wachtwoord geeft toegang als eigenaar van het message board,
+  U bent dus de enige die het wachtwoord mag kennen.
+   <p>
+ <li>Kies het gebruikers wachtwoord voor het message board:
+  <input size=16 type=password name=password> <br>
+  (tussen 4 en 16 karakters, cijfers of letters zonder accenten).
+ Dit wachtwoord kunt U bekend maken aan alle deelnemers van dit message board.
+  <p>
+ </ul>
+ <center><input type=submit value="OK en Versturen"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ Hallo, $supervisor!<p>
+ U bent bezig met het oprichten van een message board $forumname op de WIMS site
+ $httpd_HTTP_HOST.
+ <p>
+ Is er iets niet helemaal juist aan bovenstaande informatie, dan s.v.p.
+ !href module=$module&cmd=reply&step=0 corrigeren.
+ 
+ <p>Om de juistheid van de wachtwoorden te controleren, 
+ graag hieronder nog een keer intypen:
+  <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Wachtwoord van de Eigenaar:
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Wachtwoord voor deelnemers:
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="OK en Versturen"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Hallo, $supervisor!<p>
+ U hebt nu alleen nog de geheime code nodig om het oprichten van
+ uw eigen message board op (WIMS $http_HTTP_HOST) af te kunnen ronden.
+ <p>
+Deze code is zojuist verstuurd naar het door U opgegeven emailadres:
+ ``<tt>$email</tt>''. 
+ Haal nu deze email op -het kan natuurlijk wel even duren-
+  en kopieer de geheime code in het onderstaande veld
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Geheime code van mijn message board: <input size=16 name=typecode>
+ <p><input type=submit value="OK en Versturen"></center>
+ </form>
+ <b>Attentie</b> 
+ Deze code is eenmalig en alleen bedoelt voor het oprichten van een message board.
+ En kan dus <em>niet gebruikt worden</em> om in te loggen in uw message board
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Hallo, $supervisor!<p>
+ 
+ Uw message board $forumname is aangemaakt.
+ Gefeliciteerd en veel plezier ermee!<p>
+ U kunt uw forum/message board altijd
+ !href module=adm/forum/forum hier bereiken
+.
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Terug naar het begin van de procedure.
+:end
+!tail
+
+!set step=
+

@@ -1,0 +1,26 @@
+<center>$classname<p>
+
+<h3>被删的参加者</h3> <p>
+
+</center>
+!if $delcnt<1
+这个班级里没有被删的参加者.
+ <p>
+!else
+在登录名上点击以恢复此用户.
+ $table_header
+  $table_hdtr<th>登录名<th>姓名
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ $table_end <p>
+!endif
+
+<center>
+ !href cmd=resume 所有参加者名单
+ .
+</center> <p>
+

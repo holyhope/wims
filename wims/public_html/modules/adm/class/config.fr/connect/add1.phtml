@@ -1,0 +1,30 @@
+
+<p><h3><center>Add a server connection</center></h3> <p>
+
+!read connect/remote.phtml
+
+!if $error!=$empty
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job2 value=add2>
+To connect to a class on the above server, please specify:
+<p>
+Identifier of the remote class:
+<input size=20 name=addclass>
+<br><small>If the remote class is empty, the server will create
+a new class on the remote server, duplicating the properties of this one.
+</small>
+<p>
+Automatically update the remote class for changes made on this one:
+!formselect connupd1 list 0,1 prompt no,yes
+<br>
+Allow the remote class to modify this one:
+!formselect connupd2 list 0,1 prompt no,yes
+
+<p><center><input type=submit value=OK></center>
+</form>
+
+!reset addclass
+

@@ -1,0 +1,27 @@
+!if $wims_user=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+  Su ejercicio se ha instalado con éxito.
+ !else
+  Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros 
+  dobles. <p>
+ !endif
+ Este ejercicio será accesible únicamente a los participantes de su clase, y
+ solamente si lo pone en una hoja de trabajo.
+ <p>
+ !if $wims_user!=supervisor
+  Ahora puede
+  !href module=classes/$lang&special_parm=.nocache. Consultar los ejercicios de clase.
+ !else
+  Ahora puede:
+ <ul>
+  <p><li>
+  !href module=classes/$lang&special_parm=.nocache. Consultar los ejercicios de su clase
+   (y eventualmente añadirlos a las hojas de trabajo).
+  <p><li>
+   !href cmd=reply&level=3 Volver a la etapa anterior.
+  </ul>
+ !endif
+!endif
+

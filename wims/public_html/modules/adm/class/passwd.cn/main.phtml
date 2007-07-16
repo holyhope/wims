@@ -1,0 +1,62 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>改变密码
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 返回主页
+. <p>
+ !goto end
+!endif
+
+!form reply
+
+!if $wims_user=supervisor
+选择密码类型: <ul>
+ !default job=user
+ !set ch_$job=checked
+ <li><input type=radio name=job $ch_user value=user> 你的个人登录密码.
+ !if $part!=$empty and $job=part
+  <li><input type=radio name=job $ch_part value=part> 学生 <tt>$part</tt>
+  的密码. (这种情形你不必录入原密码.)
+ !endif
+ <li><input type=radio name=job $ch_class value=class> 
+班级密码(即参加者注册时使用的密码, 你不必录入原密码).
+ </ul>
+!else
+ <input type=hidden name=job value=user>
+!endif
+<table>
+<tr><td align=right>原有密码:
+    <td><input type=password size=16 name=old>
+<tr><td align=right>新密码:
+    <td><input type=password size=16 name=pw1>
+<tr><td align=right>再输入一次新密码:
+    <td><input type=password size=16 name=pw2>
+</table>
+<input type=submit value="纪录">
+<small>对于个人密码: 如果你要添加一次性密码, 只要在新密码前加上符号 `+'.
+!href target=wims_mhelp cmd=help 见详情.
+</small>
+</form>
+密码必须由 4 至 16 个英文字母组成.
+!if $wims_user=supervisor
+ (软件能接受空的密码, 但是网站管理员可能不允许没有班级密码的未经授权的班.)
+!endif
+
+!endif
+:end
+!tail
+
+!distribute item $ into job,pw1,pw2,old
+

@@ -1,0 +1,66 @@
+!if $job=print
+ !changeto print.phtml
+!endif
+
+!if $public!=P
+ !changeto class.phtml
+!endif
+
+!header
+
+!if $error!=$empty
+ !read msg.phtml
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor and $job=raw
+这是页面的源代码, 你可以用选中与粘贴的方法把它们插入你的班级. 
+ <p><hr><pre>
+ !sh awk 'BEGIN {a=0};\
+	/^:/ {a=1};\
+	a==1 {print}' bases/sheet/$sh.def
+ </pre><hr>
+ <p>
+ !href cmd=resume&job=read 恢复页面的正常外观.
+ !tail
+ !exit
+!endif
+
+<p><center><h3>$sheet_title<br>
+<font size=-1>$sheet_desc</font></h3></center> <p>
+
+$sheet_remark
+<p>
+
+!if $n=0
+ 本页是空的! 可能有错误.
+!else
+ 为本页指定作业:
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of $data
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+, $de
+!!  !if $require>0
+!!   <small>得到了 $[$require] 分中的 $[$got] 分, 平均
+!!   $[$mean]/10.</small>
+!!  !endif
+ !next i
+ </ul>
+ !if $wims_user=supervisor
+  !href cmd=resly&job=import 引入
+  本页到你的班级, 或者
+  !href cmd=reply&job=raw 显示本页源码.
+  <p>
+ !endif
+!endif
+!href cmd=reply&job=print 供打印的版本
+.
+
+!tail
+

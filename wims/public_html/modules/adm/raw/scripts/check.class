@@ -1,0 +1,34 @@
+qclass=!translate internal ./,;?* to $             $ in $qclass
+!if $ $ isin $qclass
+ qclass=
+!endif
+
+!if $qclass=$empty or $rclass=$empty
+ :badclass
+ error=bad class
+ !exit
+!endif
+
+classdeffile=wimshome/log/classes/$qclass/.def
+test=!defof class_defined in $classdeffile
+!if $test!=yes
+ !goto badclass
+!endif
+test=!defof class_connections in $classdeffile
+test=!items2words $test
+test1=!translate internal +,; to $   $ in $test
+!if $ident/$rclass notwordof $test1
+ error=connection refused by requested class
+ !exit
+!endif
+
+!if $job iswordof modclass delclass adduser moduser deluser recuser \
+	putcsv update and\
+	($ident/$rclass+ notwordof $test and +$ident/$rclass+ notwordof $test)
+ error=modification of class not allowed
+ !exit
+!endif
+
+wims_class=$qclass
+wims_user=supervisor
+

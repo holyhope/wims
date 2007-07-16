@@ -1,0 +1,37 @@
+
+<hr width=1>
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Hoja de trabajo número $sheet<br>$title</h1>
+(presentación para los participantes)
+</center> <p>
+$desc<p>
+
+!if $exocnt=0
+ ¡La hoja está vacía! No se le ha asignado nada todavía. Posiblemente
+ se trate de un error de su profesor.
+!else
+ Tareas asignadas en esta hoja:<p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $re>0
+   <small>0 de $[$re] puntos obtenidos, calidad
+   0/10. </small>
+  !endif
+ !next i
+ </ul>
+!endif
+<p>
+!homeref
+<p><hr> <p>
+<center>
+!href cmd=resume Volver a la página del profesor.
+</center>
+
+</body></html>
+
+!set job=
+

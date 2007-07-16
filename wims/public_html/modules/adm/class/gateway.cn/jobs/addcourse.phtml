@@ -1,0 +1,42 @@
+
+!if $ccnt=0
+ !if $parent=class
+没有可给此班级添加课程的教学计划.
+ !else
+没有可添加此教学计划的课程的班级.
+ !endif
+ !href cmd=reply&job=$parent 返回
+.
+ !exit
+!endif
+
+!if $parent=class
+这里是允许给你的班级添加课程的教学计划. 点击其标题以添加.
+ $table_header
+ $table_hdtr<th>标题<th>评论
+ !for p in $clist
+  !set i_=!defof class_description in wimshome/log/classes/$p/.def
+  $table_tr
+  <td>
+  !href cmd=reply&confirm=yes&courseclass=$class&courseprog=$p $i_
+  <td>-
+ !next p
+ $table_end
+ !exit
+!endif
+
+!if $parent=prog
+这里是允许此教学计划的课程添加进去的班级. 点击其名称以添加.
+ $table_header
+ $table_hdtr<th>名称<th>评论
+ !for c in $clist
+  !set i_=!defof class_description in wimshome/log/classes/$c/.def
+  $table_tr
+  <td>
+  !href cmd=reply&confirm=yes&courseclass=$c&courseprog=$prog $i_
+  <td>-
+ !next c
+ $table_end
+ !exit
+!endif
+

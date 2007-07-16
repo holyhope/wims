@@ -1,0 +1,276 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS @ $httpd_HTTP_HOST
+<p>
+Inserimento in $name_classess
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $classcnt=0
+ Spiacente, non sono ancora stati creati corsi interattivi. Riprovate 
+ pi&ugrave; tardi
+ !goto end
+!endif
+
+!if $class=$empty
+ Selezionare il corso interattivo cui si vuole partecipare
+ (cliccare sul nome). <p>
+ $table_header
+ !if $ctype=0
+  $table_hdtr
+ <th>Nome del corso<th>docente<th>livello<th>lingua</th>
+ <th>posti<br>disponibili<th>stato
+ !else
+  <caption>$institution_name</caption>
+  $table_hdtr
+  <th>Nome<th>docente<th>livello
+  <th>stato
+ !endif
+ !for cl in $classlist
+  !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
+  !defread wimshome/log/classes/$cl/.def
+  !distribute char $class_level into l1,l2
+  !set part=!recordcnt wimshome/log/classes/$cl/.userlist
+  $table_tr<td align=center>
+  !if $ctype=0
+  !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
+  !else
+   !href module=$module&cmd=reply&class=$cl $class_description
+  !endif
+  <td align=center>
+  !mailurl $class_email $class_supervisor
+  </td>
+    </td>
+  !if $class_level=$empty
+   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    <td align=center>$pname</td>
+  !else
+  <td align=center>$(level$l1)<br>anno $l2</td>
+  !endif
+  !if $ctype=0
+  <td align=center>$(lang_$class_lang)</td>
+  <td align=right>
+  !if $class_limit-$part>$site_dispo
+   $site_dispo
+  !else
+   $[$class_limit-$part]
+  !endif
+  !endif
+  !if $class_password=$empty
+   <td align=center>aperto</td>
+  !else
+   <td align=center>riservato</td>
+  !endif
+ !next cl
+ $table_end <p>
+ <b>Nota.</b> &Egrave; sempre possibile registrarsi per un corso `aperto',
+ mentre per iscriversi ad un corso `riservato' &egrave; necessario conoscere
+ la password apposita (comunicata dal docente del corso).
+ !goto end1
+!endif class=empty
+
+!set classname=<b><font color=green>$description</font></b>\
+ presso <b><font color=green>$institution</font></b>
+
+!if $password!=$empty and $passverify=$empty
+  $name_classessss
+ !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+ presso <b><font color=green>$institution</font></b>
+
+
+ !if $cltype iswordof 4 2
+  è `riservato' (per la registrazione è necessario conoscerne 
+  la password di accesso) e solo i <b>docenti</b> possono iscriversi.
+  !if $classcnt>0 
+.  Se sei uno studente, devi invece iscriverti a uno dei 
+  !href cmd=new&module=$module&class=$class&subclass=yes corsi collegati
+  !endif
+ !else
+ è `riservato' e per la registrazione è necessario conoscerne 
+ la password di accesso.
+  !endif
+ <p> Occorre inserire la password di accesso per potersi
+  !if $cltype iswordof 2 4
+  registrare come <b>docente</b>.
+ !else
+  iscriversi come studente.
+ !endif
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Password :
+ <input type=password name=classpass>
+ <p>
+ <input type=submit value="Procedi con la registrazione">
+ </center></form> <p>
+ !if $cltype iswordof 2 4
+  <b>ATTENZIONE</b>. La registrazione ad un coordinamento di corsi con 
+  risorse condivise è riservata ai docenti. Gli studenti devono iscriversi
+  !href cmd=new&module=$module&class=$class&subclass=yes ad uno dei corsi collegati
+.
+  <p>
+  <b>Nota</b>. Contatta il cordinatore ($supervisor) del portale di sede
+ !else
+  <b>Nota</b>. Contatta il docente ($supervisor) del corso
+ !endif
+ per ottenere la password di accesso  necessaria per la registrazione
+ (
+ !mailurl $smail Scrivi al docente
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
+  !form reply
+  <input type=hidden name=step value=1>
+  Per includere uno studente già iscritto a $name_classess,
+  ricerca per nome e/o login:
+  <input size=20 name=search value="$search">
+  <input type=submit value=OK>
+  </form> <p>
+  !default foundcnt=0
+  !if $foundcnt>0
+   $table_header
+   <caption>Clicca sul nome per inserirlo nel corso.</caption>
+   $table_hdtr<th>Nome</th><th>login</th></tr>
+   !for i=1 to $foundcnt
+    !set l=!line $i of $found
+    !distribute item $l into l_,f_,L_
+    $table_tr<td>
+    !href cmd=reply&step=2&login=$L_ $l_, $f_
+    </td>
+    <td>$L_</td></tr>
+   !next i
+   $table_end
+   !goto end1
+  !endif
+  !if $search!=$empty and $foundcnt=0
+   (Non è stato trovato alcuno studente corrispondete a <tt>$search</tt> nel nome o nel login.) <p>
+  !endif
+  Inserisci i dati del nuovo studente al $name_classe
+  $classname.
+  !set name_Your=Il
+  !set name_you=lo studente
+ !else
+ Per completare l'iscrizione al corso interattivo $classname,
+ inserire i propri dati.
+  !set name_Your=Il tuo
+  !set name_you=tu
+ !endif
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>Cognome: <input size=20 name=lastn value="$lastn">
+  Nome: <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>Scegliere un login di accesso :
+  <input size=16 name=login value="$login"> <br>
+  Questo `login' in futuro permetter&agrave; di accedere al $classname.
+  Scegliere un nome di almeno 4 e non pi&ugrave; di 16 caratteri
+  alfanumerici (usare solo numeri e/o lettere non accentate).
+  <p>
+ <li>Scegliere una password :
+  <input type=password size=16 name=pass> <br>
+  La password deve essere costituita da almeno 4 e non pi&ugrave; 16 
+  caratteri alfanumerici (usare solo numeri e/o lettere non accentate).
+  <p>
+ <li>$name_Your indirizzo di posta elettronica (facoltativo) :<br>
+  <input size=60 name=email value="$email">
+  <p>
+ !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
+  <li>Tipo di utente:
+  !default utype=0
+  !formradio utype list 0,1 prompt studente, docente
+ !endif
+ <center><input type=submit value="Procedi con la registrazione"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Cara/o, $firstn $lastn!<p>
+ Ti sei registrato per partecipare al $name_classesss $classname, 
+ con login &nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  Non hai dato un indirizzo di posta elettronica. <p>
+ !else
+  Indirizzo di posta elettronica : <tt>$email</tt> <p>
+ !endif
+ Per verificare l'esattezza della password, inseriscila 
+ ancora una volta:
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="Invia"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ !if $wims_user=supervisor
+  Lo studente $firstn $lastn è stato aggiunto al $name_classe.
+  !if $wims_supertype=4
+   !readproc adm/gateway/transfer $login test
+   !if $transfer_test>0
+    <p>
+    Questo studente potrebbe aver già svolto attività in altri corsi.
+    !href module=adm/class/userlist&job=transfer&getuser=$login Tieni conto dell'attività pregressa anche per questo corso.
+    <p>
+   !endif
+  !endif
+  !href module=adm/class/userlist Elenco dei partecipanti
+.&nbsp;
+  !href module=$module&step=1 Aggiungi un altro studente
+.
+  !goto end
+ !endif
+ Cara/o, $firstn $lastn!<p>
+ Benvenuta/o nel corso $classname.
+ Sei in grado di partecipare al corso utilizzando il login 
+ ``<b><font color=green>$login</font></b>''. <p>
+ A questo punto puoi
+ !if $wims_class!=$empty
+  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
+	cominciare a lavorare
+.
+ !else
+ <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+ cominciare a lavorare</a>. (Pu&ograve; essere utile salvare questo
+ indirizzo nei &ldquo;Preferiti&rdquo;.)
+ !endif
+ !goto end
+!endif
+
+:end1
+!if $wims_user=supervisor
+ !goto end
+!endif
+<p>
+!if $cltype iswordof 2 4
+ !href module=adm/class/classes&type=supervisor Elenco di tutti i corsi
+.
+!else
+!href module=adm/class/classes&type=participant Elenco di tutti i corsi
+.
+!endif
+:end
+!tail
+
+!reset step, subclass
+

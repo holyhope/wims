@@ -1,0 +1,53 @@
+<p><hr> <p>
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+ Sorry, this module has no available exercise for the time being. Come back
+ later!
+ !exit
+!endif
+!if $exocnt=1
+ This module contains actually only one exercise, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Try it.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+<td align=center>Choose the scenarios:<td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+ <tr><td align=center>Style of the exercise:<td>
+ !formselect style list 1,2,3,4 prompt \
+ 	find the first bad step,\
+	find all the bad steps,\
+	step by step w/o giving reason,\
+	step by step with reason
+ <tr><td align=center>Level of severity:<td>
+ !default level=2
+ !formselect level from 1 to 5
+ </table>
+ <p><center><input type=submit value="Go to work">
+ </center> <p>

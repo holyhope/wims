@@ -1,0 +1,80 @@
+
+files=!record 1 of scenarios/$thisexo.def/.files
+files=!words2items $files
+file=!randitem $files
+
+deffile=scenarios/$thisexo.def/$file
+allcnt=!recordcnt $deffile
+header=!record 1 of $deffile
+header=!trim $header
+hcnt=!linecnt $header
+cc=1
+!for i=7 to $hcnt
+ l=!line $i of $header
+ !if @ notin $l
+  r$cc=!randitem $l
+  !advance cc
+ !else
+  l=!translate @ to $\
+$ in $l
+  l=!trim $l
+  l1=!line 1 of $l
+  c1=!itemcnt $l1
+  s=!randint 1,$c1
+  lc=!linecnt $l
+  !for j=1 to $lc
+   lj=!line $j of $l
+   r$cc=!item $s of $lj
+   !advance cc
+  !next j
+ !endif
+!next i
+
+presentation=!record 2 of $deffile
+good=!record 3 of $deffile
+traps=!record 4 of $deffile
+remarks=!record 5 of $deffile
+reserved=!record 6 of $deffile
+good=!trim $good
+!distribute lines $header into title,author,amail,translator,tmail,format
+!distribute items $ into bad_1,bad_2,bad_3,bad_4,bad_5,bad_6,bad_7,bad_8,bad_9,bad_10,bad_11,bad_12
+scorecnt=0
+
+!for i=7 to $allcnt
+ t=!record $i of $deffile
+ s=!item 1 of $t
+ bad_$s=!append item $i to $(bad_$s)
+!next i
+
+!if $sstyle=1
+ r=!random 0,1
+ !distribute item $ into bad_steps, bad_reasons
+ !if $r<0.75
+  t=!randint 7, $allcnt
+  t=!record $t of $deffile
+  !distribute lines $t into l,bad_reason
+  s=!item 1 of $l
+  tt=!line 3 to -1 of $t
+  picked=!line 1 to $s-1 of $good
+  picked=!append line $tt to $picked
+  n=!itemcnt $l
+  !for i=1 to $n/2
+   s1=!item 2*$i-1 of $l
+   s2=!item 2*$i of $l
+   bad_steps=!append item $s1 to $bad_steps
+   bad_reasons=!append item $s2 to $bad_reasons
+  !next i
+ !else
+  picked=$good
+ !endif
+ stepcnt=!linecnt $picked
+ step=$stepcnt
+!else
+ step=1
+ stepcnt=!linecnt $good
+ !read proc/var.step
+!endif
+
+status=waiting
+substep=0
+

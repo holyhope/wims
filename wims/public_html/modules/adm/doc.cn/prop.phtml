@@ -1,0 +1,24 @@
+<center><h1>文件性质<br>
+--- $tit ---</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!read propform.phtml
+
+!if class != $doctype
+ !href cmd=reply&job=recode 改变密码
+.&nbsp;
+!endif
+
+!href cmd=reply&job=list 块表
+.
+!href cmd=reply&job=file 文档存放
+.
+ <p>
+文件编码: $doc.
+可用磁盘空间总数: $quota_total Meg. 自由空间: $quota_free Meg.
+<p>
+

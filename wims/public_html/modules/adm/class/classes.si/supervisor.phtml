@@ -1,0 +1,105 @@
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $supervisable!=yes
+  !exit
+ !endif
+ <p>
+!else
+ Stre¾nik WIMS omogoèa uèiteljem, da si v okviru virtualne uèilnice pripravijo in uredijo 
+elektronska uèna gradiva, tako tista, ki jih ponuja stre¾nik, kot tista, ki so jih ustvarili sami. Kot skrbniki svoje virtualne uèilnice lahko nato usmerjajo svoje uèence k uporabi gradiva in nadzirajo njihovo delo.
+ <p>
+Èe ¹e nimate svoje lastne uèilnice, jo lahko ustvarite
+ !href module=adm/class/regclass tukaj
+. Pred tem natanèno preuèite 
+ !href target=wims_help module=help/main&chapter=3 strani s pomoèjo
+ in si oglejte
+ !href module=$module&type=example pripravljene primere virtualnih uèilnic
+. <p>
+!endif
+
+!if $clcnt+$sccnt>0
+ !if $wims_user=empty
+  V nasprotnem primeru pa na seznamu izberite svojo uèilnico in se prijavite kot skrbnik.
+ !endif
+ !if $sccnt>0
+  <p>
+  $table_header
+  <caption>Ustanove in skupine uèilnic</caption>
+  $table_hdtr<th>Ime</th><th>Skrbnik</th>
+  <th>-</th>
+  </tr>
+  !for i=1 to $sccnt
+   !set l=!line $i of $sclasses
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   <td align=center>
+   !href module=$module&type=authparticipant&class=$code $in
+   </td>
+   </td><td align=center>$supv</td>
+   <td align=center>
+   !href module=adm/class/reguser&class=$code Registracija
+&nbsp;
+   !href module=$module&type=authsupervisor&class=$code Skrbnik
+   </td>
+  !next i  
+  $table_end
+ !endif
+ !if $clcnt>0
+  <p>
+  $table_header
+  !if $superclass=$empty
+   <caption>Samostojne uèilnice</caption>
+   $table_hdtr<th>Ustanova<th>Uèilnica<th>Skrbnik
+  !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   <caption>$Name_levels in $inst 
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent Gor
+   !endif
+   </caption>
+   $table_hdtr<th>$Name_level<th>Skrbnik
+   !if $superclass!=$empty and $stype=4
+    <th>More
+   !endif
+  !endif
+  !for i=1 to $clcnt
+   !set l=!line $i of $classes
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   !if $superclass=$empty
+    <td align=center>$in</td>
+   !endif
+   <td align=center>
+   !href module=$module&type=authsupervisor&class=$code $cl
+   </td><td align=center>$supv</td>
+   !if $superclass!=$empty and $stype=4
+    <td>
+    !if $ty!=1
+     !href cmd=reply&type=$type&superclass2=$code subclasses
+    !else
+    -
+    !endif
+   !endif
+  !next i
+ !endif
+ $table_end
+!else
+ !if $class_type=$empty and $superclass=$empty
+  (Na tem stre¾niku trenutno ni nobene virtualne uèilnice v slovenskem jeziku.)
+ !else
+  (Na tem stre¾niku trenutno ni nobene virtualne uèilnice.)
+ !endif
+!endif
+<p>
+

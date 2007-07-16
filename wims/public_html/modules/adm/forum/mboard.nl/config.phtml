@@ -1,0 +1,34 @@
+
+Hier zijn de instel parameters van Uw message board:
+!form reply
+<input type=hidden name=job value=config>
+<input type=hidden name=cf_set value=yes>
+<ul>
+ <p><li>Titel van het message board:<br>
+  <input size=60 name=cf_title value="$cf_title">
+ <p><li>Omschrijving:<br>
+  <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
+ <p><li>Wie mag deze berichten lezen?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_readpolicy list alluser,owner prompt \
+	elke deelnemer, alleen ikzelf
+ !else
+  !formselect cf_readpolicy list open,alluser,owner prompt \
+ 	iedereen, alleen geregistreerde gebruikers, niemand behalve ikzelf
+ !endif
+ <p><li>Wie mag berichten opsturen??
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
+	elke deelnemer, deelnemers met een valide emailadres, alleen ikzelf
+ !else
+  !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
+	bezoekers met een emailadres en gebruikers,\
+	alleen geregistreerde gebruikers , gebruikers met valide emailadres,\
+	niemand behalve ikzelf
+ !endif
+
+</ul>
+<p><center><input type=submit name=cf_set value="OK en OPSTUREN">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="ANNULEREN">
+</center> <p></form>
+

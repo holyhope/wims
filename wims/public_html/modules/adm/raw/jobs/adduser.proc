@@ -1,0 +1,49 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+quser=!word 1 of $quser
+quser=!translate internal . to @ in $quser
+quser=!text select $char_login in $quser
+l=!charcnt $quser
+!if $quser=supervisor or $l<$login_min or $l>$login_max
+ error=bad login name
+ !exit
+!endif 
+
+userdeffile=wimshome/log/classes/$qclass/.users/$quser
+test=!defof user_exists in $userdeffile
+!if $test!=$empty
+ error=user exists
+ !exit
+!endif
+
+data1=!nonempty lines $data1
+n=!linecnt $data1
+!for i=1 to $n
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ !if $n_ isitemof $userdefs
+  user_$n_=$v_
+ !endif
+!next i
+
+!if $user_password=$empty or $user_lastname=$empty
+ error=missing data
+ !exit
+!endif
+
+!writefile $userdeffile
+!for d in $userdefs
+ !appendfile $userdeffile !set user_$d=$(user_$d)
+!next d
+!appendfile $userdeffile !set user_exists=yes
+
+!sh cd $wims_home/log/classes/$qclass\
+ rm -f score/$quser score/$quser.exam noscore/$quser >/dev/null
+
+!read adm/class/mkuserlist $qclass
+

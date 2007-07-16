@@ -1,0 +1,109 @@
+!set wims_module_log=error: $error
+
+!if bad_classtype=$error
+ 参加者不能在这里注册.
+ !exit
+!endif
+
+!if no_class=$error
+你选取的班级似乎并不存在! 如果这不是由于软件的漏洞所引起, 
+那么这个班级一定是已经过期了, 或者你是在故意作弄服务器 
+(请记住: 你的所有活动都是有记录的).
+ !exit
+!endif
+
+!if complete=$error
+你选取的班级已经满员. 很抱歉, 已经没有你的位置了.
+ !exit
+!endif
+
+!if no_real=$error
+你没有给出姓名.
+ !exit
+!endif
+
+!if bad_login=$error
+你的登录名含有非法字符. <p>
+登录名只能由数字与英文字符组成, 而且中间不能有空格.
+ !exit
+!endif
+
+!if bad_pass=$error
+你的密码中含有非法字符. <p>
+密码只能由数字与英文字符组成, 而且中间不能有空格.
+ !exit
+!endif
+
+!if login_size=$error
+你的登录名太
+ !if $n<4
+短.
+ !else
+长.
+ !endif
+它必须包含 4 至 16 个字符.
+ !exit
+!endif
+
+!if pass_size=$error
+你的密码太
+ !if $n<4
+短.
+ !else
+长.
+ !endif
+它必须包含 4 至 16 个字符.
+ !exit
+!endif
+
+!if bad_classpass=$error
+你进入班级 
+ <b><font color=green>$description</font></b> 
+ <b><font color=green>($institution)</font></b>
+的密码不正确. 所以你无权注册进入这个班级. 抱歉.
+ !exit
+!endif
+
+!if login_double=$error
+ 登录名 ``<b><font color=green>$login</font></b>''
+ 已经在班级
+ <p><center>
+ <b><font color=green>$description</font></b> 
+ <b><font color=green>($institution)</font></b>
+ </center> <p>
+ 中出现, 请验证你是否已经注册过; 否则请选择别的登录名.
+ !exit
+!endif
+
+!if pass_error=$error
+你重输的密码与原始密码不符. 因此你的注册无效; 请重试一次.
+ !exit
+!endif
+
+!if insert_fail=$error
+本软件无法将你的注册插入数据库. 这是一个内部错误.
+ <p>
+请将此问题报告
+ !mailurl $wims_site_manager 网站管理员\
+用户注册失败
+. 谢谢!
+ !exit
+!endif
+
+!if site_complete=$error
+注册用户的数字已达到本网站的极限
+($wims_user_limit). 注册服务已被关闭. 抱歉. <p>
+ 你可报告
+ !mailurl $wims_site_manager 网站管理员,\
+网站用户限制
+ 请他放宽限制, 或者
+ !href $ 作为访问者进入 WIMS
+. <p>
+ !exit
+!endif
+
+!if internal_total=$error
+软件内部错误: 不能确定已注册用户的数字.
+ !exit
+!endif
+

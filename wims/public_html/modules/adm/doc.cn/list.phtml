@@ -1,0 +1,41 @@
+<center><h1>$tit</h1></center>
+
+!if $fcnt<1
+ 本文件尚无内容.
+ !href cmd=reply&job=edit&block=main 创建第一页
+.
+ <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>文件的块的列表</caption>
+$table_hdtr
+<th>姓名<th>标题<th>动作
+!for i=1 to $fcnt
+ !set s_=!line $i of $slist
+ !set t_=!line $i of $tlist
+ !set t_=!trim $t_
+ !default t_=无标题
+ $table_tr
+ <td><tt>$s_</tt></td>
+ <td>$t_</td>
+ <td align=center>
+ !href cmd=reply&job=read&block=$s_ 阅读
+&nbsp;
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$s_ 编辑
+ !endif
+</td>
+!next i
+$table_end <p>
+
+<center>
+可用磁盘空间总数: $quota_total Meg. 自由空间: $quota_free Meg.
+<p>
+!href cmd=reply&job=file 文档存放
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main 进入文件
+
+</center> <p>
+

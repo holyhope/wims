@@ -1,0 +1,115 @@
+<center><h3>Paramètres aléatoires dans un exercice interactif</h3></center> <p>
+
+L'utilisation de paramètres aléatoires rendra votre exercice beaucoup
+plus intéressant, car ce sera un exercice différent chaque fois qu'il est
+redemandé.
+<p>
+Par exemple, la ligne suivante définit un paramètre sous le nom de
+<font color=blue><b>x1</b></font>, dont la valeur sera un entier aléatoire entre
+-10 et 10 (inclusif)&nbsp;:
+<pre>
+\integer{x1=random(-10..10)}
+</pre>
+Ce paramètre aléatoire peut ensuite être évoqué par le mot
+<b><tt>\x1</tt></b>, dans l'énoncé, les réponses, l'indication et la solution.
+C'est-à-dire, chaque mot <tt>\x1</tt> dans ces textes 
+sera remplacé par la valeur aléatoire
+du paramètre. Cette substitution prend aussi effet dans les définitions
+d'autres paramètres qui suivent celle de x1.
+<p>
+Supposons maintenant que vous avez entré
+<pre>
+\integer{x1=random(-10..10)}
+\integer{y1=\x1+3}
+</pre>
+dans le champ de la définition de paramètre, et la question
+<pre>
+Calculez la multiplication de \x1 par \y1.
+</pre>
+dans l'énoncé de l'exercice. Supposons que sur une demande de l'exercice,
+une valeur aléatoire <font color=red>-7</font> est attribuée à \x1. Alors
+le paramètre suivant \y1 prendra la valeur -4, et l'énoncé de l'exercice
+sera présenté sous la forme<p>
+<center>Calculez la multiplication de -7 par -4.
+</center> <p>
+Vous pouvez ensuite définir une réponse numérique au nom de <tt>Le
+produit</tt>, ayant pour bonne solution <tt>(\x1)*(\y1)</tt>. (Remarquez
+qu'ici les parenthèses sont nécessaires car la substitution se fera de façon
+littérale.)
+<a name=list>
+!if oefparm isitemof $special_parm
+ !changeto help/oefparm.phtml
+!endif
+<p>$table_header
+<caption>Quelques autres exemples de paramètres
+!href cmd=help&special_parm=$special_parm,oefparm#list [liste complète]
+</caption>
+$table_hdtr<th>Définition<th>Effet
+$table_tr<td><tt>\real{x=random(-5..5)}
+    <td>\x sera un nombre réel aléatoire<br>entre -5 et 5
+$table_tr<td><tt>\real{a=random(-5,-3,0.3,4)}
+    <td>\a sera un nombre réel pris aléatoirement<br>parmi -5,-3,0.3 et 4
+$table_tr<td><tt>\complex{z=(1+2*i)^3}
+    <td>\z sera le nombre complexe z=(1+2*i)^3
+$table_tr<td><tt>\text{sign=random(+,-)}
+    <td>\sign sera un signe aléatoire: + ou -
+$table_tr<td><tt>\integer{n=3*exp(\a)}
+    <td>\n sera l'entier le plus proche de 3*e<sup>\a</sup> <br>(il dépend de la
+    valeur de \a)
+$table_tr<td><tt>\function{f=random<br>(x^2+1,sin(x),log(x))}
+    <td>\f sera une fonction aléatoire: soit x^2+1,<br>soit sin(x), soit
+    log(x)
+$table_tr<td><tt>\real{a=evalue(x^2+sin(y),x=3,y=4)}
+    <td>Evaluation de la fonction x^2+sin(y),<br>
+    pour x=3, y=4
+$table_tr<td><tt>\real{r=solve(x^3-3*x+1,x=0..1)}
+    <td>\r sera la racine simple de x^3-3x+1 entre 0 et 1
+$table_tr<td><tt>\function{h=simplify(x^5*y^3*x^2/y)}
+    <td>Expression simplifiée : x<sup>7</sup>y<sup>2</sup>
+$table_tr<td><tt>\function{g=diff(sin(x)+cos(y),x)}
+    <td>\g sera la dérivée de sin(x)+cos(y) par rapport à x
+$table_tr<td><tt>\function{F=int(x^2+3*x+1,x)}
+    <td>\F sera une primitive de x^2+3*x+1,<br>
+     le terme constant n'étant pas garanti d'être toujours le même
+!!$table_tr<td><tt>\function{F=int(t^2+3*t+1,t=1..x)}
+!!    <td>\F sera la primitive x^2+3*x+1 telle que g(1)=0
+$table_tr<td><tt>\real{a=int(t^2+3*t+1,t=0..1)}
+    <td>\a sera l'intégrale numérique de x^2+3*x+1, de 0 à 1
+$table_tr<td><tt>\text{f=htmlmath(2*x^2+3*x)}
+    <td>\f sera rendu en html comme: 2x<sup>2</sup>+3x
+$table_tr<td><tt>\text{f=texmath(2*x^2+3*x)}
+    <td>\f sera le source TeX de l'expression.
+$table_tr<td><tt>\integer{n=items(a,b,c,d,e,f)}
+    <td>\n sera le nombre d'articles (ici c'est 6) dans la liste
+     {a,b,c,d,e,f}
+$table_tr<td><tt>\text{i=item(3,a,b,c,d,e,f)}
+    <td>\i sera l'article numéro 3 de la liste
+     {a,b,c,d,e,f} (donc c).
+$table_tr<td><tt>\text{s=shuffle(6)}
+    <td>\s sera la liste des 6 entiers 1,2,...,6, dans un ordre aléatoire.
+$table_tr<td><tt>\text{s=shuffle(a,b,c,d,e)}
+    <td>\s sera les lettres {a,b,c,d,e} dans un ordre aléatoire.
+$table_tr<td><tt>\matrix{m=1,2,3<br>4,5,6<br>7,8,9}
+    <td>\m sera la matrice de 3 lignes et 3 colonnes.
+$table_tr<td><tt>\text{t=asis(Comme ça va ? matrix(1,2,3))}
+    <td>La chaine comme il est écrite, sans transformation ni conditionalité.
+
+$table_end <p>
+
+Paramètres conditionnels&nbsp;: vous pouvez écrire<p>
+<tt>\text{ttt=_condition?_def1}</tt> ou <br>
+<tt>\text{ttt=_condition?_def1:_def2}</tt>
+<p>
+Dans ce cas, <tt>ttt</tt> aura la valeur <tt>_def1</tt> si
+<tt>_condition</tt> s'avère vraie, ou <tt>_def2</tt> sinon (dans la seconde
+syntaxe).
+!href target=wims_mhelp cmd=help&special_parm=if Liste de conditions
+<p>
+La position relative d'une définition par rapport à l'énoncé est
+importante&nbsp;: si une variable est définie APRES l'énoncé, l'évaluation
+de la variable aura lieu uniquement APRES que l'utilisateur ait répondu à
+la question. Dans ce cas, la définition peut utiliser les réponses données
+par l'utilisateur, via <tt>\reply1</tt>, <tt>\reply2</tt>, etc. Et la
+variable ainsi définie peut être utilisée dans la solution, les conditions
+de test, ou les feedbacks.
+

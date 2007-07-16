@@ -1,0 +1,72 @@
+
+Le logiciel a reconnu votre exercice avec succès, avec les informations
+suivantes. (Vérifiez avec ce que vous avez défini.)
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Titre<td><td>$title
+<tr><td align=right>Nombre de paramètres<td><td>$varcnt
+<tr><td align=right>Nombre de réponses libres<td><td>$replycnt
+<tr><td align=right>Nombre de choix multiples<td><td>$choicecnt
+</table>
+<ul><li>
+Maintenant vous pouvez
+!href cmd=resume&realtest=yes&retest=again tester votre exercice
+. 
+!if $mode!=file
+ <p><li>
+ Si vous voulez le modifier,
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+ !if $to_ia_qcm=-1
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 retourner à confia2qcm
+ !endif
+ !if $to_ia_qcm=-2
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 retourner à createqcm
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+   !href cmd=reply&level=2 retournez au menu
+ !endif
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ Ou modifier le fichier source puis
+ <input type=submit value="le réenvoyer">&nbsp;:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ !href cmd=reply&level=1&mode=normal Retourner au menu de départ
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>Vous pouvez aussi
+ !href cmd=reply&level=6 envoyer un fichier d'image
+ dans l'exercice.
+!endif
+!if $wims_user!=$empty or $existing!=$empty
+ <p><li>
+ Une fois que tout est correct, vous pouvez
+ !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
+   mettre cet exercice dans votre classe, soit
+   !href cmd=reply&level=4 pour remplacer l'ancien
+,  soit
+   !href cmd=reply&level=4&newone=1 pour en faire un nouveau
+  !else
+   !href cmd=reply&level=4 le mettre dans le module de développement
+  !endif
+ !else
+  !href cmd=reply&level=4 mettre cet exercice dans votre classe
+ !endif
+. 
+!endif
+!if $mode!=file
+ <p><li>
+ Enfin, n'oubliez pas de
+ !getfile submit.oef sauvegarder le source
+ de l'exercice!
+!endif
+</ul>
+
+

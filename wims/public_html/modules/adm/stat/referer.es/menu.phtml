@@ -1,0 +1,73 @@
+En general una página web que nos envíe muchos invitados será un lugar
+interesante para el resto de nuestros visitantes. Es lógico, si busca recursos
+web relacionados con este servidor, lo que necesita es una lista de tales
+páginas.
+<p>
+Por otro lado, si es usted el autor de una página con enlace(s) a nosotros,
+esta lista le permitirá medir la eficacia de su vínculo. Es también nuestra
+manera de agradecerle el enlace.
+<p>
+Nuestra lista de enlaces inversos se genera dinámicamente, según los parámetros que
+puede elegir en el siguiente menú.
+
+!form reply
+ !set s_day=día(s)
+ !set s_week=semana(s)
+ !set s_month=mes(es)
+ !set s_year=año(s)
+ !set s_beginning=el inicio $start_day-$start_month-$start_year
+ Periodo del listado: a partir de 
+ <select name=cnt>
+ !for i=1 to 15
+  <option value=$i
+  !if $i=$cnt
+   selected
+  !endif
+  >$i
+ !next i
+ </select><select name=style>
+ !for i in day,week,month,year,beginning
+  <option value=$i
+  !if $i=$style or ($i=month and $style=$empty)
+   selected
+  !endif
+  >$(s_$i)
+ !next i
+ </select>. <p>
+ Los enlaces se pueden listar por
+ !set i_site=nombre del sitio,
+ !set i_stem=directorio base, o 
+ !set i_uniq=dirección completa
+ !for i in site,stem,uniq
+  <input type=radio name=type value=$i
+  !if $type=$i
+   checked
+  !endif
+  > $(i_$i)
+ !next i
+ de la página web, y la lista limitarse a las <select name=reflim>
+ !for i in 10,20,30,50,70,100,150,200
+  <option value=$i
+  !if $i=$reflim
+   selected
+  !endif
+  >$i
+ !next i
+ </select> direcciones primeras. Las direcciones de los motores de búsqueda pueden ser
+ <input type=radio name=search value=yes
+ !if $search=yes
+  checked
+ !endif
+ > incluidas o <input type=radio name=search value=no
+ !if $search=no
+  checked
+ !endif
+ > excluidas de la lista.
+ <p>Opcionalmente, puede restringir la lista a los sitios/páginas 
+   que contengan el término:
+ <input size=15 name=key value="$key">
+ <p><center><input type=submit value="Mostrar la lista"></center>
+</form>
+
+!set key=
+

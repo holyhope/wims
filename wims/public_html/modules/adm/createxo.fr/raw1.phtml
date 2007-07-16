@@ -1,0 +1,56 @@
+!form reply name=replyform id=replyform
+<input type=hidden name=level value=3>
+
+!if $existing=$empty
+ Vous êtes en mode brut de création d'exercice.
+ !if $modeltest=yes
+  Puisque cet exercice est basé sur un modèle standard, essayez le
+  !href cmd=reply&mode=model&level=2 mode guidé
+.
+  !href cmd=reply&mode=none&level=1 Abandonner
+.
+ !else
+  Ce mode est réservé aux experts, ou pour enregistrer
+  un exercice dont vous avez le fichier source. Utilisez
+  plutôt le
+  !href cmd=reply&mode=normal&level=1 mode guidé
+  pour une première création d'exercice.
+ <p>
+  Entrez le source entier (
+  !href target=wims_mhelp cmd=help&special_parm=oef format OEF
+  ) de votre exercice&nbsp;:
+  (pour enregistrer un fichier source existant, copiez le fichier dans 
+  la fenêtre.)
+  !href target=wims_test module=tool/directexec&cmd=new Testeur de script
+.
+ !endif
+!else
+ Voici le source d'un exercice
+ !if $catmodule=$empty
+  existant de votre classe.
+  Vous pouvez le modifier dans la fenêtre ci-dessous.
+ !else
+  public que vous voulez importer.
+  Vous pouvez le modifier dans la fenêtre ci-dessous, avant de le mettre
+  dans la classe.
+ !endif
+ !if $modeltest=yes
+  Puisque cet exercice est basé sur un modèle standard, essayez aussi le
+  !href cmd=reply&mode=model&level=2 mode guidé
+.
+  !href cmd=reply&mode=none&level=1 Abandonner
+.
+ !endif
+!endif
+
+<a name=textarea>
+<a href=#
+onclick=document.forms["replyform"].wims_deposit.value="">[Vider]</a>.
+!href cmd=resume [Réinitier]
+.
+
+<p><center>
+!mexec textarea.sh
+<p><input type=submit value="Envoyer le source"></center>
+</form>
+

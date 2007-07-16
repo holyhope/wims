@@ -1,0 +1,80 @@
+
+!if \ isin $parm1
+ !for p in 1
+  !set parm$p=!slashsubst $(parm$p)
+ !next p
+!endif
+!set add=$parm1
+!if ? isin $add
+  !set add=!translate internal ? to , in $add
+  !set add=!item 2 of $add
+!endif
+!set eq==
+!if $eq notin $add and $wims_class>0 and / isin $add \
+	and $prim iswordof exercise tool
+ !set add=!translate internal / to $ $ in $add
+ !distribute words $add into sh,ex
+ !set l_=!record $ex of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+ !distribute lines $l_ into m_,p_,a_,b_,t_,d_
+ !set m_exotitle=$t_
+ !set m_exodescription=$d_
+ !set prompt=!item 2 to -1 of $parms
+ !default prompt=$t_
+ !href target=wims_exo cmd=new&module=$m_&worksheet=$sh&$p_ $prompt
+ !exit
+!endif
+!set add=!translate internal & to $ $ in $add
+!set n=!wordcnt $add
+!reset nadd,lmod,lses,lcmd
+!for i=1 to $n
+ !set l=!word $i of $add
+ !set ll=!translate = to , in $l
+ !distribute items $ll into l1,l2
+ !if $l1=cmd and $l2 iswordof intro help close
+   !set lcmd=$l2
+ !endif
+ !if $l1=module
+   !set lmod=$l2
+ !endif
+ !if $l1 notwordof module cmd session lang
+   !set nadd=$nadd $l
+ !endif
+!next i
+!default lmod=home
+!default lcmd=new
+!set nadd=!translate internal $ $ to & in $nadd
+!set prompt=!item 2 to -1 of $parms
+!default prompt=!module title $lmod
+
+!default prompt=Actividad desconocida
+
+!if $prim=exercise
+ !href target=wims_exo module=$lmod&cmd=$lcmd$nadd $prompt
+ !if $lcmd=new
+  !set nadd=!replace internal &+ by & in $nadd
+  !set nadd=!char 2 to -1 of $nadd
+  !set sheetdata=$sheetdata\
+:$lmod\
+$nadd\
+10\
+1\
+$prompt\
+
+ !endif
+!endif
+!if $prim=tool
+ !href target=wims_tool module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=doc
+ !href target=wims_doc module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=example
+ !href target=wims_example module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=help
+ !href target=wims_help module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+!if $prim=adm
+ !href module=$lmod&cmd=$lcmd$nadd $prompt
+!endif
+

@@ -1,0 +1,47 @@
+<center>$classname<p>
+
+<h3>Transferencia de las actividades de
+ !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ (<tt>$getuser</tt>)
+</h3> </center> <p>
+
+!if $error=no_reccourse
+ <b>Error</b>. El participante no está inscrito en ningún curso que corresponda
+ a la clase actual y que pueda recibir la transferencia desde
+ !defof class_description in wimshome/log/classes/$transferclass/.def
+.
+ <p>
+!endif
+
+Estos son los otros cursos en los que ha realizado actividades el participante.
+Pulse sobre una acción para hacer la transferencia a
+!if $tr_typename=course
+ este curso.
+!else
+ esta clase.
+!endif
+
+$table_header
+$table_hdtr<th>Curso</th>
+<th>Acción</th></tr>
+!for c in $tr_list
+ $table_tr
+ <td>
+ !defof class_description in wimshome/log/classes/$c/.def
+ <td>
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Unir
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Sustituir
+!next c
+$table_end
+
+<b>Notas</b>. <ol>
+<li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.
+<li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar 
+completamente las de este. La sustitución no se realizará si el primero está vacío.
+<li>Las puntuaciones de los exámenes y las actividades no puntuadas siempre se unifican.
+<li>El registro de los detalles de los ejercicios o de los exámenes no se transfiere.
+<li>Después de la operación (de unir o sustituir), se borrarán los registros de las
+actividades del participante en el otro curso.
+</ol>
+

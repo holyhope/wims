@@ -1,0 +1,49 @@
+
+!if $votecnt<1
+ !if $wims_user!=supervisor
+  Su clase no tiene aún ninguna encuesta. Pregunte a su profesor.
+  !exit
+ !else
+  Su clase no tiene aún ninguna encuesta.
+ !endif
+!else
+ !if $wims_user!=supervisor
+  !if $active<1
+   No hay ninguna encuesta activa. Pregunte a su profesor.
+   !exit
+  !endif
+ !endif
+ Lista de encuestas / votaciones de su clase.
+ <ul>
+ !for t=1 to $votecnt
+   !set l_=!record $t of $votedir/.votes
+   !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show
+   !default vote_title=Sin título
+   !set vcnt=!defof vcnt in $votedir/$t.votes
+   !default vcnt=0
+   !if $wims_user!=supervisor
+    !if $vote_status iswordof 1 2
+     <li>
+     !href cmd=reply&job=read&vote=$t $vote_title
+     !if $vote_show>0
+      ($(name_$vote_status), $(name_$vote_option), $vcnt votes)
+     !else
+      ($(name_$vote_status), $(name_$vote_option))
+     !endif
+    !endif
+   !else
+    <li>
+    $vote_title
+    <small>($(name_$vote_status), $(name_$vote_option), $vcnt votes)</small>
+    !href cmd=reply&job=read&vote=$t [leer]
+&nbsp;
+    !href cmd=reply&job=edit&vote=$t [modificar]
+   !endif
+ !next t
+ </ul>
+!endif
+
+!if $wims_user=supervisor
+ !href cmd=reply&job=creat Crear una nueva encuesta / votación.
+!endif
+

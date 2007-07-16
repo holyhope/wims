@@ -1,0 +1,193 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+wims_prefix=mb user
+!read adm/class/authchars
+titlelim=30
+desclim=512
+suplim=60
+emaillim=60
+max_title=$titlelim
+max_description=$desclim
+max_supervisor=$suplim
+max_email=$emaillim
+max_passsup=$passwd_max
+max_password=$passwd_max
+min_title=4
+min_description=4
+min_supervisor=6
+min_email=8
+min_passsup=$passwd_min
+min_password=$passwd_min
+wims_form_method=post
+wims_helper=chapter=3&open=3_creat#creat
+
+!if $toomany=$empty
+ n=!recordcnt wimshome/log/forums/.index
+ !if $n>=$wims_forum_limit
+  toomany=yes
+  !exit
+ !endif
+ toomany=no
+!endif
+
+today=!char 1 to 8 of $wims_now
+thisyear=!char 1 to 4 of $today
+thismonth=!char 5,6 of $today
+thisday=!char 7,8 of $today
+!default exp_day=15
+!default exp_month=08
+!if $thismonth>7
+ !default exp_year=$[$thisyear+1]
+!else
+ !default exp_year=$thisyear
+!endif
+
+!if $step=$empty or $step=0
+ code=
+ password=
+ passsup=
+!endif
+
+!if $step=1
+ code=
+ !for i in title,description,supervisor,email,password,passsup
+  $i=!translate internal ,"!$$<> to $        $ in $($i)
+  $i=!singlespace $($i)
+  $i=!trim $($i)
+  !if $($i)=$empty
+   error=has_empty
+   !exit
+  !endif
+  n=!charcnt $($i)
+  !if $n<$(min_$i)
+   error=too_short
+   error_subject=$i
+   !exit
+  !endif
+  !if $n>$(max_$i)
+   $i=!char 1 to $(max_$i) of $($i)
+   warn=too_long
+   warn_subject=$i
+  !endif
+ !next i
+ !for i in password,passsup
+  test=!text select $char_passwd in $($i)
+  !if $test!=$($i)
+    error=bad_pass
+    error_subject=$i
+    !exit
+  !endif
+ !next i
+ temoin=!tolower $title
+ existing=!recordcnt wimshome/log/forums/.index
+ !for i=1 to $existing
+  test=!record $i of wimshome/log/forums/.index
+  test=!item 3 to -1 of $test
+  test=!replace , $ by , in $test
+  test=!tolower $test
+  !if $test=$temoin
+   error=existing
+   !exit
+  !endif
+ !next i
+ !if $password isin $title $description $supervisor or\
+     $passsup isin $title $description $supervisor
+  error=apparent_password
+  !exit
+ !endif
+ exp_day=!char 2,3 of $[100+abs(floor($exp_day))]
+ exp_month=!char 2,3 of $[100+abs(floor($exp_month))]
+ exp_year=!char 1 to 4 of $[abs(floor($exp_year))]
+ !if N isin $exp_day$exp_month$exp_year or \
+	$exp_day<1 or $exp_month<1 or $exp_year<$thisyear or \
+	$exp_day>31 or $exp_month>12 or $exp_year>$thisyear+1
+  error=bad_date
+  !exit
+ !endif
+ expiration=$exp_year$exp_month$exp_day
+ !if $expiration<=$today
+  error=anti_date
+  !exit
+ !endif
+ email=!word -1 of $email
+ email=!translate internal !$$"<>,;% to $         $ in $email
+ !if @ notin $email
+  error=bad_email
+  !exit
+ !endif
+ mailtest=!translate @ to $\
+$ in $email
+ mailtest=!line 2 of $mailtest
+ !if . notin $mailtest
+  error=bad_email
+  !exit
+ !endif
+ pword=$password
+ psup=$passsup
+ password=
+ passsup=
+ !exit
+!endif
+
+!if $step=2
+ !if $password!=$pword or $passsup!=$psup
+  error=pass_discord
+  !exit
+ !endif
+ :newcode
+ code=!randint 11111,10^7-1
+ mb_defined=
+ !defread wimshome/log/forums/$code/.def
+ !if $mb_defined=yes
+  !goto newcode
+ !endif
+ !read mail.proc
+ typecode=
+ !exit
+!endif
+
+!if $step=3
+ !if $code=$empty or $code!=$typecode
+  error=bad_code
+  !exit
+ !endif
+ mb_defined=
+ !defread wimshome/log/forums/$code/.def
+ !if $mb_defined=yes
+  error=duplicate
+  !exit
+ !endif
+ lastname=!word -1 of $supervisor
+ firstname=!word 1 to -2 of $supervisor
+ lastname=!char 1 to 30 of $lastname
+ firstname=!char 1 to 50 of $firstname
+ !mexec mkforum
+ !writefile wimshome/log/forums/$code/.def !set mb_password=$pword\
+!set mb_supervisor=$supervisor\
+!set mb_title=$title\
+!set mb_description=$description\
+!set mb_email=$email\
+!set mb_lang=$lang\
+!set mb_readpolicy=user\
+!set mb_sendpolicy=user\
+!set mb_creation=$today\
+!set mb_defined=yes
+ psup=!passcrypt $psup
+ !writefile wimshome/log/forums/$code/.users/supervisor !set user_lastname=$lastname\
+!set user_firstname=$firstname\
+!set user_password=$psup\
+!set user_email=$email\
+!set user_exists=yes
+ !writefile wimshome/log/forums/$code/.userlist
+ mb_defined=
+ !defread wimshome/log/forums/$code/.def
+ !if $mb_defined!=yes
+  error=define_fail
+  !exit
+ !endif
+ !appendfile wimshome/log/forums/.index :$code,$lang,$title
+ wims_module_log=created $code by $email
+ !exit
+!endif
+

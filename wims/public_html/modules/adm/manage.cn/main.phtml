@@ -1,0 +1,23 @@
+!if $cmd=help and $help_subject iswordof conf soft and $wims_ismanager=2
+ !changeto conf/help-$help_subject.phtml
+!endif
+
+!header
+
+!if $wims_ismanager iswordof -1 1
+ 本工具允许网站管理员在线维护WIMS的安装.
+ 其准入权限由配置文件<tt>log/wims.conf</tt>严格控制. <p>
+!endif
+
+!if $job!=$empty
+ !read $job.phtml
+!endif
+!if $wims_ismanager=2 and $job!=list
+ <p><center>
+ !href cmd=reply&job=list 其它维护任务
+ </center> <p>
+!endif
+
+!tail
+
+!reset auth,save,abandon

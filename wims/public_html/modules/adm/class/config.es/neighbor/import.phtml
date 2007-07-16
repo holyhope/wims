@@ -1,0 +1,82 @@
+
+!distribute item mensaje del día,\
+	ejercicio,hoja de trabajo,examen,documento,participante\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!set code1=Ninguno
+!set code2=Sí pero distinto
+!set code3=Sí, activo y diferente
+
+La clase
+!href cmd=reply&job2=def $nei_description
+ de
+<em><font color=blue>$nei_institution</font></em>
+!if $newcnt1+$newcnt2<1
+ no tiene recursos que usted pueda importar.
+ !href cmd=reply&job2=def Volver atrás
+.
+ !exit
+!endif
+tiene los siguientes recursos importables.
+<small>
+!href cmd=help&special_parm=import Ayuda
+</small>
+
+!if $newcnt1>0
+ <p>$table_header
+ <caption>Recursos pedagógicos</caption>
+ $table_hdtr<th>Tipo<th>Título<th><small>Nombre</small>
+ <th><small>Contenido</small>
+ <th>Mismo título en la clase destino<th>Importar
+ !for i=1 to $newcnt1
+  !set l=!line $i of $newrec
+  !set ll=!words2items $l
+  $table_tr
+  <td align=center>$(name_$(rtype$i))
+  <td align=center>$(rname$i)
+  <td align=center><small>$(rName$i)</small>
+  <td align=center>$(rcnt$i)
+  <td align=center>$(code$(rcode$i))
+  <td align=center>
+  !if $(rstat$i)=0 or $(rcnt$i)=0
+   !if $(rcnt$i)=0
+    Vacía
+   !else
+    <small>en preparación</small>
+   !endif
+  !else
+   !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
+    !href cmd=reply&job2=import2&import=$ll&impmethod=add Añadir
+   !endif
+   !if $(rcode$i)=2
+    &nbsp;
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) Sustituir
+   !endif
+  !endif
+ !next i
+ $table_end
+!endif
+
+!if $newcnt2>0
+ <p>$table_header
+ <caption>Cuentas de participantes
+ !if $newcnt2>2
+  !href cmd=reply&job2=import2&import=user,-all- [import&nbsp;everybody]
+ !endif
+ </caption>
+ $table_hdtr<th>login<th>Apellido<th>Nombre<th>Importar
+ !for i=1 to $newcnt2
+  $table_tr<td>$(ulogin$i)
+  <td>$(uname2$i)<td>$(uname1$i)<td align=center>
+  !if $(ucode$i)=1
+   !href cmd=reply&job2=import2&import=user,$(ulogin$i) Añadir
+  !else
+   !if $(ucode$i)=2
+    Este login ya se está usando en su clase
+   !else
+    Un participante borrado sigue existiendo en su clase
+   !endif
+  !endif
+ !next i
+ $table_end
+!endif
+

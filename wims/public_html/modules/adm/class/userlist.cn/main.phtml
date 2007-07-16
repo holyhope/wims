@@ -1,0 +1,102 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!for j in delprep,getuser,getraw,formula
+ !if $($j)!=$empty
+  !read $j.phtml
+  !goto end
+ !endif
+!next j
+
+<center>$classname
+<p>
+<h1>参加者名单
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 回主页
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+本班尚无参加者.
+!else
+ <center><table border=0 cellspacing=1 bgcolor=$table_bgcolor>
+ <tr><td><th rowspan=2>姓名<td><th colspan=2>总平均<td>
+ !for j in $showsheet
+  <th colspan=2>第 $j 页<td>
+ !next j
+ <tr><td><td>
+ !for j=1 to $sheetcnt+1
+  <th>已完成作业<th>平均分<td>
+ !next j
+ <tr>
+ !for i=1 to $usercnt
+  !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  <tr><td><td>
+  !href cmd=reply&getuser=$uu $lastname $firstname
+  <td>
+  !read userscore
+  <td align=right>$per%<td align=right>$av/10<td>
+  !set mean_per=$[$mean_per+$per]
+  !set mean_av=$[$mean_av+$av]
+  !for j in $showsheet
+    !set pp=!line $j of $percents
+    !distribute words $pp into p1,p2
+    <td align=right>$p1%<td align=right>$p2/10<td>
+    !set per_$j=$[$(per_$j)+$p1]
+    !set av_$j=$[$(av_$j)+$p2]
+  !next j
+ !next i
+ !set mean_per=$[rint($mean_per/$usercnt)]
+ !set mean_av=$[rint(100*$mean_av/$usercnt)/100]
+ <tr><tr><td><td align=center><b>班级平均</b><td>
+ <td align=right>$mean_per%<td align=right>$mean_av/10<td>
+ !for j in $showsheet
+  !set per_$j=$[rint($(per_$j)/$usercnt)]
+  !set av_$j =$[rint(100*$(av_$j)/$usercnt)/100]
+  <td align=right>$(per_$j)%<td align=right>$(av_$j)/10<td>
+ !next j
+ </table></center>
+ <p>点击名字以查看他的作业, 或
+ !href cmd=reply&formula=prep 用你自己的公式计算分数
+.
+ !if $activecnt>1
+  <p>
+  !form reply
+你也可选择作业页的号码以查看每页的平均值:<p>
+  <input type=hidden name=job value=sheets>
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !set ti=!item 3 to -1 of $sh
+   <input type=checkbox name=showsheet value=$se
+   !if $se iswordof $show
+    checked
+   !endif
+   > 第 $i 页: $ti. <br>
+  !next i
+  <p><center><input type=submit value="显示"></center>
+  </form>
+ !endif
+!endif (usercnt=0?)
+
+:end
+!tail
+
+!distribute items ,,,,,, into job,showsheet,getuser,getraw,delprep,deluser,saveformula
+

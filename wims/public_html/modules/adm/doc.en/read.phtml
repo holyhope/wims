@@ -1,0 +1,102 @@
+
+<center><h1>$tit
+!if $editable=yes
+ </b><font size=-1>[
+ !if $block=main
+  !href cmd=reply&job=prop Properties
+  ] [
+  !href cmd=reply&job=erase Erase
+ !else
+  !href cmd=reply&job=list Other blocks
+ !endif
+ ]</font>
+!endif
+</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ The block <tt>$block</tt> is not yet created.
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$block Create it
+.
+ !endif
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ This page is not yet open to reading. Come back later!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ This page is expired. You can no longer read it. Sorry!
+ <p>
+ !exit
+!endif
+
+<h3>$titb
+!if $editable=yes
+ </b><font size=-1>[
+ !href cmd=reply&job=edit&doc=$doc&block=$block Edit
+ ]</font>
+!endif
+</h3>
+
+!read $docdir/$doc/$block.def content
+
+</div><div class=wimstail>
+<p><hr>
+!if ($wims_class!=$empty and $wims_user!=supervisor)
+ !exit
+!endif
+!if help isin $wims_session
+ <small>
+ !href cmd=reply&job=source Source
+ &nbsp; by
+ !if $email=$empty
+  $author
+ !else
+  !mailurl $email $author
+ !endif
+ Last modified $datm</small>
+ !exit
+!endif
+<table width=100% border=0 cellspan=0 cellpadding=1>
+<tr><td align=left nowrap><small>
+!if $editable=yes
+ !href cmd=reply&job=prop Properties
+&nbsp;
+!endif
+!href cmd=reply&job=source Source
+&nbsp; by
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+<td align=right><small>
+!href module=home WIMS
+ @
+<a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+!if $wims_user=supervisor and $sheetdata!=$empty
+ <tr><td align=left nowrap>
+ <small>Last modified $datm
+ <td align=right><small>
+ !href cmd=reply&job=exosource Source of exercises in the page
+ </small>
+!else
+ <tr><td align=left colspan=2 nowrap>
+ <small>Last modified $datm
+!endif
+</table>
+

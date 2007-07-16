@@ -1,0 +1,119 @@
+!!INDEX
+!! Erase the above line to hide your page from wims search engine.
+!! Line starting with double exclamations are comment lines.
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!
+!! Indexing definitions. You should modify them according to your case.
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!! Put every definition in ONE LINE!!
+!let module_author	=XIAO, Gang
+!let module_address	=xiao@unice.fr
+!let module_title	=Réplicas públicas
+!let module_description	=lista de sitios WIMS accesibles al público.
+!let module_version	=2.08
+!let module_wims_version=2.08
+
+!! This is the Spanish template file
+!let module_language	=es
+
+!!Your copyright policy.
+!!Your page will be included in wims distribution if the word `GNU'
+!! appears in the following definition.
+!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+
+!! Possible categories: exercise, tool, dictionary, course, recreation.
+!let module_category	=adm
+
+!! En: elementary school. Hn: high school. Un: undergrad. 
+!! G: graduate. R: research.
+!! E1,...,E6; H1...,H6; U1,...,U4; G; R
+!let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
+
+!! e.g. algebra, analysis, geometry, etc.
+!let module_domain	=
+
+!! For search engines; anything you like.
+!let module_keywords	=
+
+!let module_translator	=Juan Rafael Fernández García
+!let module_translator_address=juanrafael.fernandez@hispalinux.es
+
+!!INDEXEND
+
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+<center><h1>
+<font color=red>W</font>WW
+<font color=red>M</font>ultipurpose<br>
+<font color=red>I</font>nteractive
+<font color=red>S</font>erver
+<font size=-1>en <a href=/>$httpd_HTTP_HOST</a></font> <p>
+$module_title</h1></center> <p>
+
+!set mir=wimshome/public_html/html/mirrors.es
+!set thissite=!tolower $httpd_SERVER_NAME
+!set n=!recordcnt $mir
+!set c=
+!for i_=1 to $n
+ !set m_=!record $i_ of $mir
+ !set l_=!line 1 of $m_
+ !set l_=!trim $l_
+ !set l_=!translate / to $\
+$ in $l_
+ !set l_=!line 1 of $l_
+ !set l_=!lower $l_
+ !if $l_!=$thissite
+  !set c=!append item $i_ to $c
+ !endif
+!next i_
+!set n=!itemcnt $c
+!if $n<1
+ Este sitio WIMS no parece mantener una lista de réplicas. Lo sentimos.
+ <p>
+!else
+ Aquí están los otros sitios WIMS que se sabe que están abiertos al
+ público general. Si usa normalmente WIMS en su trabajo, le sugerimos
+ que añada a sus Favoritos al menos una de estas direcciones.
+ <p>$table_header
+ $table_hdtr<th>Sitio<th>Localización<th>País<th>Idiomas<br>en que funciona<th>Comentarios
+ !for i_=1 to $n
+  !set j_=!item $i_ of $c
+  !set l_=!record $j_ of $mir
+  !distribute lines $l_ into u_,t_,C_,l_,m_,e_,r_
+  !readproc mirror.proc
+  $table_tr<td align=center>
+  <a href="$u_">$U_</a>
+  <td align=center>$t_
+  <td align=center>$C_
+  <td align=center>
+  !for L_ in $l_
+   <img src=gifs/$L_.gif height=16>
+  !next L_
+!!  <td align=center>!mailurl n$e_ $m_\nWIMS site
+  <td>$r_&nbsp;
+ !next i_
+ $table_end <p>
+!endif
+
+:end
+Si tiene una instalación WIMS y quiere que aparezca en este listado,
+por favor
+!mailurl xiao@unice.fr escríbame\
+wims mirror
+.
+<p>
+WIMS se puede 
+<a href="http://wims.unice.fr/download/wims/">descargar</a>
+gratuitamente,
+y puede instalarse sobre sistemas operativos Linux.
+Por favor, lea el archivo README que se encuentra en el directorio 
+download/ para obtener más información sobre cómo instalar WIMS.
+
+!tail
+

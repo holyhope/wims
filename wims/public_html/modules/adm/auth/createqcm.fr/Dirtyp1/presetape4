@@ -1,0 +1,141 @@
+!!! fichier de présentation de l'étape 4 !!!
+<center>
+  <b><font color=darkcyan size=+1> Etape $etape: <u>rédaction de l'énoncé</u> </font></b>
+  <br>
+<table>
+  <tr>
+    <td>
+      <p style="background-color:lightblue">
+        Modifiez l'énoncé type suivant pour l'adapter à votre exercice. 
+      </p>
+    </td>
+  </tr>
+  !if ($propsnb>2 and $ckchnb=0)
+    !set ckchnb=2
+    !set par_defaut=<code>Par défaut: un nombre aléatoire compris entre 2 et $propsnb</code>.
+  <tr>
+    <td>
+      <div style="background-color:darkseagreen">
+          N'oubliez pas de préciser au passage le nombre de 
+	  possibilités de choix à afficher avec l'énoncé. &nbsp;
+	  <font style="background-color:white">$par_defaut </font>
+      </div>
+    </td>
+  </tr>
+  !endif
+</table>
+</center>
+<br>
+<hr>
+<b>Enoncé type:</b>
+<br>
+$enonceR
+<br>
+<hr>
+<div style="background-color:burlywood">
+  Modifiez le code source ci-dessous pour l'adapter à votre exercice. 
+<hr>
+<b>Note</b>: dans le fichier source, la question est stockée dans 
+la variabe <em><font color=red>obj</font></em> et est invoquée en entrant la 
+<b>commande</b> <code><font color=red>\obj</font></code>.
+ </div>
+<hr>
+
+!set wims_backslash_insmath=no
+!set enonceR=!reinput $enonceR
+
+<center>
+<table border=2>
+  <tr>
+    <th align=center>
+      Texte à modifier
+    </th>
+  </tr>
+  <tr>
+    <td align=center>
+!set wims_backslash_insmath=no
+<textarea name=enonceR rows=20 cols=70>
+$enonceR
+</textarea>
+    </td>
+  </tr> 
+</table>
+
+!if $propsnb>2
+<table border=2>
+  <tr>
+    <th align=center bgcolor=lightblue colspan=2>
+      Nombre de possibilités de choix
+    </th>
+  </tr>
+  <tr>
+    <td bgcolor=wheat>
+      <input type="radio" name=ckchnb value=0
+      !if $ckchnb=0 
+        checked
+      !endif
+      > Toutes
+    </td>
+    <td bgcolor=turquoise nowrap>
+      <input type="radio" name=ckchnb value=1
+        !if $ckchnb=1
+	  checked
+	!endif
+       >
+        Afficher <input size=5 name=fixchnb value=$fixchnb> possibilités (au moins 2).
+     </td>
+   </tr>
+   <tr>
+     <td bgcolor=azure nowrap>
+       <input type="radio" name=ckchnb value=2
+         !if $ckchnb=2
+	  checked
+	!endif
+	>
+         Nombre aléatoire compris entre 2 et $propsnb
+     </td>
+     <td bgcolor=wheat nowrap>
+       <input type="radio" name=ckchnb value=3
+         !if $ckchnb=3
+	  checked
+	!endif
+	>
+         Nombre aléatoire compris entre <input size=5 name=borng value=$borng> et 
+	 <input size=5 name=bornd value=$bornd>
+     </td>
+   </tr>
+</table>
+!endif
+
+<br>
+!if $multirep=1
+  <div style="text-align:justify;background-color:lightblue;width:65%">
+    Certaines de vos questions comportent plusieurs réponses. 
+    <br>
+    Veuillez donc préciser:
+    <ul>
+      <li>
+        <b>Option 1</b>: <tt>on ne peut cocher qu'une réponse</tt> 
+	<input type="radio" name=chbox_u_radio value=radio 
+	!if $chbox_u_radio!=checkbox 
+	  checked
+	!endif
+	>
+      </li>
+      <li>
+        <b>Option 2</b>: <tt>on doit cocher toutes les bonnes réponses</tt> 
+	<input type="radio" name=chbox_u_radio value=checkbox 
+	!if $chbox_u_radio=checkbox 
+	  checked
+	!endif
+	>
+      </li>
+    </ul>
+  </div>
+ !else
+   !set chbox_u_radio=radio
+!endif
+
+</center>
+
+!read comsDir/valideb

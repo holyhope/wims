@@ -1,0 +1,49 @@
+
+wims_writable=title description category version language author address \
+	translator translator_address require
+package=!translate internal ~/ to /~ in $mupack
+mm=!translate internal ~/ to ,, in $mupack
+mname=!item -1 of $mm
+addr=!translate internal ~ to , in $mupack
+addr=!item 2 of $addr
+vtest=!module version $addr
+
+!if $muauto=check
+ webget_output=module.tgz
+ !exec webget $mu_site/$package.tgz
+ wcode=!word 5 of $wims_exec_error
+
+ !sh cd $wims_home/$wims_sesdir\
+  mkdir -p mu\
+  cd mu || exit\
+  rm -fR *\
+  tar -xzf ../module.tgz
+ !readdef wimshome/$wims_sesdir/mu/$mname/INDEX
+ news=!sh grep -v '^[[:space:]]*#' $wims_home/$wims_sesdir/mu/$mname/NEWS | head -16
+ !exit
+!endif
+
+!if $muauto iswordof update install and $addr!=$empty
+ !readdef wimshome/$wims_sesdir/mu/$mname/INDEX
+ !if $title=$empty or $version=$empty
+  output=fail
+  !exit
+ !endif
+ installdir=public_html/modules/$addr
+ !sh cd $wims_home\
+  rm -fR $installdir\
+  target=`dirname $installdir`\
+  mkdir -p $$target\
+  mv -f $wims_sesdir/mu/$mname $$target
+ !if $muauto=update
+  type=modif
+ !else
+  type=new
+ !endif
+ today=!char 1 to 8 of $wims_now
+ !appendfile wimshome/log/modupdate $addr
+ !sh echo "$today: $addr $version" >>modules/Changelog.$type
+ output=ok
+ !exit
+!endif
+

@@ -1,0 +1,67 @@
+
+!if $clcnt+$sccnt+$directcnt<1
+ No hay clases en español en este sitio. ¿Quizás esté buscando 
+ una clase en
+ !href module=home&list=0 otro idioma
+?
+ !exit
+!endif
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor
+  !exit
+ !endif
+!else
+Elija la línea correspondiente a la clase o al centro educativo
+que le corresponda. 
+ <p>
+Si aún no se ha inscrito, pulse en <tt>Inscribirse</tt> 
+(si la clase tiene el status de <tt>protegida</tt>, necesita que el profesor 
+o el administrador le proporcione la contraseña).
+
+ <p>De lo contrario pulse en el nombre de la izquierda para entrar. 
+!endif
+
+!if $sccnt>0
+ <p>$table_header
+ <caption>Centros educativos y agrupamientos de clases</caption>
+ $table_hdtr
+ <th>Nombre<th>Administrador<th>Status<th>Darse de alta
+ !for i=1 to $clcnt
+  !set l=!line $i of $classes
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !set supv=!item 9 to -1 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set lv=$class_level
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  !distribute char $lv into l_,y_
+  
+  !if $superclass=$empty
+   !set show=$inst <br>$cl
+  !else
+   !set show=$cl
+  !endif
+  $table_tr<td align=center>
+  !href module=$module&type=authparticipant&class=$code $show
+  </td><td align=center>
+  $supv
+  </td><td align=center>$(n_$l_)<br>curso $y_</td>
+  <td align=center>
+  !if $pswd=$empty
+   abierta
+  !else
+   protegida
+  !endif
+  </td><td align=center>
+  !href module=adm/class/reguser&class=$code Darse de alta
+  </td>
+ !next i
+ $table_end <p>
+!endif
+
+

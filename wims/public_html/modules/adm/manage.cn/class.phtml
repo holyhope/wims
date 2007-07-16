@@ -1,0 +1,55 @@
+
+!if $classcnt<1
+ 本服务器没有虚拟班级. 因此此刻没有什么需维护的.
+ <p>
+ !exit
+!endif
+
+!if $job2!=first
+ !changeto class/$job2.phtml
+!endif
+<p>
+!href cmd=reply&job=conf&confcat=2 点击这里
+以配置虚拟班级的服务器准入原则.
+
+<p>$table_header
+<caption>本服务器的班级表</caption>
+$table_hdtr
+<th>名称<th>活动<th><small>语言</small><th>指导教师
+<th>创建于<br><small>yyyymmdd</small>
+<th>到期<br><small>yyyymmdd</small>
+!if $actives=yes
+ <th>使用<sup>[1]</sup></th>
+!endif
+!for i=1 to $classcnt
+ !set l=!record $i of wimshome/log/classes/.index
+ !distribute items $l into c_,e_,t_,d_
+ !set l=!defof class_lang\
+class_supervisor\
+class_email\
+class_creation in wimshome/log/classes/$c_/.def
+ !distribute lines $l into l_,s_,m_,f_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ 删除
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ 修改
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager 访问
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=你的WIMS虚拟班级">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ !if $actives=yes
+  !default activ_$c_=-
+  <td align=center>$(activ_$c_)</td>
+ !endif
+!next i
+$table_end
+!if $actives=yes 
+ <p> <center>
+ <small><b>[1]</b>. ``<em>使用</em>'' 意指一个月来累计连接的小时数.</small>
+ </center> <p>
+!endif

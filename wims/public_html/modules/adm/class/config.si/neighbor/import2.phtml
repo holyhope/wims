@@ -1,0 +1,79 @@
+!if $result=success
+ !set wims_class_log=Import $import from $nei
+!endif
+
+!distribute item message of the day,\
+	exercise,work sheet,exam,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+
+Importation from the class
+!href cmd=reply&job2=def $nei_description
+ of
+<em><font color=blue>$nei_institution</font></em>
+<p>
+
+!if $result=confirm
+ !if dep iswordof $cfm
+  !if $itype=sheet
+   <b>Warning</b>.
+   The work sheet you want to import may use exercises defined in the
+   neighboring class.
+   <p>
+   If the same exercises do not exist in your class, the imported worksheet
+   won't work correctly. Please verify carefully whether all the class
+   exercises in the neighbor are duplicated in your class.
+  !endif
+  !if $itype=exam
+   <b>WARNING</b>!!! Exam sheets are based on work sheets to make up their
+   contents. <p>
+   Importing an exam sheet makes sense only if you have exactly the same 
+   active work sheets as your neighbor, and only if these sheets are in the
+   same order within the two classes.
+   <p>
+   If this is not the case, the imported exam sheet will almost certainly
+   behave erratically.
+  !endif 
+  <p>
+ !endif
+ !if replace iswordof $cfm
+  <b>Warning</b>. You are about to replace an existing $(name_$itype)
+  in your class by
+  the imported resource. No recovery will be possible after this
+  operation, and your existing $(name_$itype), which is different from the
+  imported one, will be definitely lost.
+  <p>
+ !endif
+ <p><center><font size=+1>
+ !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes Confirm the operation
+ &nbsp;
+ !href cmd=reply&job2=import Abandon the operation
+ </font></center> <p>
+ !exit
+!endif
+
+!if $result=none
+ No participant account has been added to your class. Verify if your class
+ is full (and if there is still space in the site for adding new
+ participants).
+ <p>
+ !exit
+!endif
+
+Successfully transfered
+!if $itype!=user
+ one $(name_$itype).
+ !if $itype iswordof sheet exam
+  (The imported $(name_$itype) is put to inactive status, so that you can
+  modify it if you wish.)<p>
+ !endif
+!else
+ $importedcnt participant accounts from the neighbor:
+ <p><tt>
+ $imported
+ </tt> <p>
+!endif
+
+!href $verif Verify the result
+.&nbsp;
+!href cmd=reply&job2=import Import other resources
+.

@@ -1,0 +1,36 @@
+<center>--- $title ---</center>
+<p>
+
+!set wims_form_method=file
+!form reply
+<input type=hidden name=bin_job value=deposit>
+存储二进制文件:
+!formselect bin_dir list $dir
+ / <input type=file name=wims_deposit size=30>
+<input type=submit value=发送>
+</form> <p>
+
+!if $bcnt>0
+ $table_header
+ <caption>已有二进制文件</caption>
+ $table_hdtr<th>名称</th><th>&nbsp;</th><th>&nbsp;&nbsp;大小&nbsp;&nbsp;</th></tr>
+ !for i=1 to $bcnt
+  !set l=!line $i of $bfiles
+  !distribute items $l into n_,s_
+  $table_tr
+  <td><tt>$n_</tt></td> <td>&nbsp;<small>
+  <a target=wims_extern href="$devdir/$mod/$n_">参见</a>&nbsp;
+  !href cmd=reply&bin_job=erase&fname=$n_ 删除
+  </small>&nbsp;</td>
+  <td align=center>$s_</td>
+  </tr>
+ !next i
+ $table_end
+!else
+ 本模块中无二进制文件.
+!endif
+
+<p>
+
+!reset bin_job
+

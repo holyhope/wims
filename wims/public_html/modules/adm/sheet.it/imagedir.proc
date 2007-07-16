@@ -1,0 +1,11 @@
+
+!if ..classes/ isin ..$m_ and $wims_user!=$empty
+ imagedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=oefimages/$e_
+ Imagedir=oefimages/$e_
+ class_header=wimshome/log/classes/$wims_class/
+!else
+ imagedir=modules/$m_/images/$e_
+ Imagedir=$httpd_PWD/$imagedir
+ class_header=wimshome/public_html/modules/$m_/
+!endif
+Class_header=!replace internal ../wimshome/ by $wims_home/ in ../$class_header

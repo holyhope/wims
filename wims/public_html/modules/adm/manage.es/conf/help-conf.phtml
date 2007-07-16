@@ -1,0 +1,32 @@
+!if NaN isin $[$help_conf]
+ !set r=!recordcnt conf/confdata
+ !for i=1 to $r
+  !set t=!record $i of conf/confdata
+  !set n=!word 2 of $t
+  !if $n=$help_conf
+   !goto out
+  !endif
+ !next i
+ :out
+!else
+ !set t=!record $help_conf of conf/confdata
+!endif
+!set tt=!line 2 of $t
+!set sitehelp=!record 0 of conf/sitehelp.phtml
+!set bgimgs=!filelist gifs/bg
+
+<h3><center>Configuración: $tt</center></h3>
+
+<p>
+!line 5 to -1 of $t
+<p>
+!set n_=!word 2 of $t
+!set d_=$(DF_$n_)
+!default d_=[empty]
+Valor por defecto: <tt>$d_</tt>
+<p>
+<center>
+<a href=# onclick=window.close()>Cerrar esta ventana de ayuda</a>
+</center>
+</body></html>
+

@@ -1,0 +1,74 @@
+!set wims_module_log=error: $error
+
+!if has_empty=$error
+你没有给出为创建信息板所需的所有信息.
+请在提交前填满你的数据.
+ !exit
+!endif
+
+!if too_short=$error
+ 数据字段 ``$(name_$error_subject)'' 太短.
+ !exit
+!endif
+
+!if bad_date=$error
+你的有效期不正确.
+ !exit
+!endif
+
+!if bad_email=$error
+你的电邮地址显然不对.
+ <p>
+请注意, 除非你提供你自己的真实电邮地址, 否则信息板是无法创立的.
+ !exit
+!endif
+
+!if anti_date=$error
+你的信息板的有效期早于今天. 没有创建已经过期了!
+ !exit
+!endif
+
+!if existing=$error
+信息板$forumname已经存在. 你不能重复创立同一个信息板.
+ !exit
+!endif
+
+!if pass_discord=$error
+你重复的密码不同于第一次输入的. 你需要再试一次.
+ !exit
+!endif
+
+!if apparent_password=$error
+你的密码看来是信息板的标题描述/板主名! 请另选一个.
+ !exit
+!endif
+
+!if bad_pass=$error
+你的$(name_$error_subject)含有非法字符. <p>
+请使用一个由数字和英文字母组成的、不含空格的字符串.
+ !exit
+!endif
+
+!if bad_code=$error
+输入的信息板密码不对. 你的电邮地址正确吗?<p>
+这次失败已被记录.
+ !exit
+!endif
+
+!if define_fail=$error
+由于软件的内部错误, 服务器没能把你的信息板放到数据库里.
+ <p>
+请把此问题报告
+ !mailurl $wims_site_manager 网站管理员\
+user registration failure
+. 谢谢!
+ !exit
+!endif
+
+!if duplicate=$error
+你试图创建一个已存在的信息板. 也许是你误击了`刷新'按钮?
+不管怎样, 你的信息板 $forumname 已经有了,
+不能再次创建.
+ !exit
+!endif
+

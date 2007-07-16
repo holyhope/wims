@@ -1,0 +1,65 @@
+!if $gcnt<=0
+你的班级里还没有手工输入的评分.
+ !href cmd=reply&method=column&cc=1 添加
+.
+ !exit
+!endif
+
+$table_header
+$table_hdtr<th>名字<th><small>平均</small>
+!for g=1 to $gcnt
+ <th><small>
+ !set t_=!item $g of $titles
+ !if $ucnt<=$maxuser
+  !href cmd=reply&method=column&cc=$g $t_
+ !else
+  $t_
+ !endif
+ </small>
+!next g
+$table_hdtr<th>权重<td align=center>--</th>
+!for g=1 to $gcnt
+ !set w_=!item $g of $weights
+ !default w_=1
+ <td align=center>$w_
+!next g
+!for u=1 to $ucnt
+ !set n_=!item $u of $ulist
+ !set f_=!item $u of $flist
+ !set l_=!item $u of $llist
+ $table_tr<td align=center>
+ !href cmd=reply&method=user&un=$n_ $l_, $f_
+ !set t_=!positionof item $n_ in $uulist
+ !set v_=!record $t_+1 of wimshome/log/classes/$wims_class/.grades
+ !set a_=0
+ !for g=1 to $gcnt
+  !set G$g=!item $g+2 of $v_
+  !default G$g=0
+  !set w_=!item $g of $weights
+  !set a_=$[$a_+($w_)*$(G$g)]
+ !next g
+ !set a_=$[rint(100*$a_/$wtot)/100]
+ <td align=center>$a_
+ !for g=1 to $gcnt
+  <td align=center>$(G$g)
+ !next g
+!next u
+$table_end
+
+<p>点击栏目或参加者的名字以
+!if $gcnt<$maxcol
+修改评分, 或
+ !href cmd=reply&method=column&cc=$[$gcnt+1] 添加另一个栏目
+.
+!else
+修改评分.
+!endif
+!if $gcnt>0
+<p>
+你也可以直接
+!href cmd=reply&method=raw 修改
+评分的源码, 或者与你的电子表格
+ !href module=adm/class/userlist&cmd=new&job=csv 交换评分
+.
+!endif
+

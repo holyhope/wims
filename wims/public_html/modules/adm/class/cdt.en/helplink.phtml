@@ -1,0 +1,32 @@
+<html><head>
+$wims_html_header
+</head>
+<body>
+
+<script language='javascript'>
+  function addsheet(num,msg){
+       ta1=window.opener.document.forms[0].elements['$cible'];
+       ta1.value=ta1.value+' sheet n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fsheet&+sh='+num+'}{'+msg+'}';
+  }
+  function addfile(msg){
+     ta1=window.opener.document.forms[0].elements['$cible'];
+     ta1.value=ta1.value+'<a href=\\filedir/'+msg+'>'+msg+'</a>';
+  }
+</script>
+
+!if $nbsheets > 0
+  Add sheet:<br>
+  !for i=1 to $nbsheets
+   <a href="javascript:addsheet($(sheet_nums[$i]),'$(sheet_titles[$i])');">$(sheet_titles[$i])</a> ; &nbsp; 
+  !next i
+!endif
+
+!if $nbfile > 0
+ <p>
+  Add file :<br>
+  !for i=1 to $nbfile
+   <a href="javascript:addfile('$(file_titles[$i])');">$(file_titles[$i])</a> ; &nbsp; 
+  !next i
+!endif
+
+</html>

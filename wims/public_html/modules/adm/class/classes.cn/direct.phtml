@@ -1,0 +1,29 @@
+
+!if $directcnt>0
+ 你可以直接进入以下班级:<ul>
+ !for cl in $directlist
+  !distribute words $cl into c_,u_
+  !set n_=!defof class_institution, class_description in\
+    wimshome/log/classes/$c_/.def
+  <li>
+  !if $u_=supervisor
+   !set t_=supervisor
+  !else
+   !set t_=$type
+  !endif
+  !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
+  (<tt>$u_</tt>)
+ !next cl
+ </ul>
+ <p><hr> <p>
+ !if $wims_user=supervisor
+  或在下表中选择$name_level_else $sousclasses_else 的名称.
+ !endif
+!else
+ !if $wims_user=supervisor
+  为了进入其它$name_level_else $sousclasses_else, 请在下表中选择它的名称.
+ !else
+  你没有其它班级的账号.
+ !endif
+!endif
+

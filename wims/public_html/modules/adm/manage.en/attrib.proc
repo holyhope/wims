@@ -1,0 +1,34 @@
+
+noread=bin sessions s2 src log log/classes log/forums log/.developers\
+ backup tmp/log\
+ public_html/bin public_html/msg\
+ public_html/bases/dic public_html/bases/sheet\
+ public_html/bases/site public_html/bases/sys\
+ public_html/bases/doc\
+ public_html/scripts/adm\
+ public_html/modules/home public_html/modules/adm
+nowrite=public_html README README_rpm HEADER.html download other\
+ compile localwims chroot/bin chroot/usr chroot/etc chroot/sbin chroot/lib
+nowrite2=tmp tmp/sessions chroot chroot/tmp/sessions
+noexec=public_html/modules
+users=bin public_html chroot/*
+wexec=other other/lib other/share tmp tmp/forall tmp/sessions -maxdepth 0
+wexec2=other/bin
+
+bad=!mexec scripts/attrib.sh $noread
+writable=!mexec scripts/attrib2.sh $nowrite
+writcnt=!wordcnt $writable
+execable=!mexec scripts/attrib3.sh $noexec
+execnt=!wordcnt $execable
+baduser=!mexec scripts/attrib4.sh $users
+noexec=!mexec scripts/attrib5.sh $wexec
+!if public_html/bin/ch..root notwordof $baduser or \
+	public_html/bin/wrap..exec notwordof $baduser or \
+	bin/wimsd notwordof $baduser
+ bad_wrapper=true
+!endif
+baduser=!replace word public_html/bin/ch..root by $ in $baduser
+baduser=!replace word public_html/bin/wrap..exec by $ in $baduser
+baduser=!replace word bin/wimsd by $ in $baduser
+usercnt=!wordcnt $baduser
+

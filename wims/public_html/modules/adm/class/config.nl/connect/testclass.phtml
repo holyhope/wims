@@ -1,0 +1,22 @@
+<p><center><h3>Test een netwerk-verbonden klas <br>
+op een andere wims-server</h3></center> <p>
+
+!read connect/remote.phtml
+<p>
+
+De klas op de andere server: $connclass.
+!if $error!=$empty
+ !href cmd=reply&job2=del1 [Verwijder deze connectie]
+ !exit
+!endif
+
+<p>
+De verbinding is tot stand gebracht. 
+De klasse data teruggestuurd door de andere server:
+!href cmd=reply&job2=mod1 [Eigenschappen]
+&nbsp;
+!href cmd=reply&job2=del1 [Verwijderen]
+<pre>
+$cn_data
+</pre>
+

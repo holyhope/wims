@@ -1,0 +1,103 @@
+
+<center><h1>$tit
+!if $editable=yes
+ </b><font size=-1>[
+ !if $block=main
+  !href cmd=reply&job=prop Propiedades
+  ] [
+  !href cmd=reply&job=erase Borrar
+ !else
+  !href cmd=reply&job=list Otros bloques
+ !endif
+ ]</font>
+!endif
+</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ El bloque <tt>$block</tt> no ha sido creado aún.
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$block Crearlo
+.
+ !endif
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Esta página todavía no está abierta para su lectura. ¡Vuelva más adelante!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Esta página ha expirado, ya no es posible leerla. ¡Lo sentimos!
+ <p>
+ !exit
+!endif
+
+<h3>$titb
+!if $editable=yes
+ </b><font size=-1>[
+ !href cmd=reply&job=edit&doc=$doc&block=$block Editar
+ ]</font>
+!endif
+</h3></div>
+
+!!detrust
+!read $docdir/$doc/$block.def content
+
+</div><div class=wimstail>
+<p><hr>
+!if ($wims_class!=$empty and $wims_user!=supervisor)
+ !exit
+!endif
+!if help isin $wims_session
+ <small>
+ !href cmd=reply&job=source Fuente
+ &nbsp; por
+ !if $email=$empty
+  $author
+ !else
+  !mailurl $email $author
+ !endif
+ Última modificación $datm</small>
+ !exit
+!endif
+<table width=100% border=0 cellspan=0 cellpadding=1>
+<tr><td align=left nowrap><small>
+!if $editable=yes
+ !href cmd=reply&job=prop Propiedades
+&nbsp;
+!endif
+!href cmd=reply&job=source Fuente
+&nbsp; por
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+<td align=right><small>
+!href module=home WIMS
+ @
+<a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+!if $wims_user=supervisor and $sheetdata!=$empty
+ <tr><td align=left nowrap>
+ <small>Última modificación $datm
+ <td align=right><small>
+ !href cmd=reply&job=exosource Fuente de los ejercicios de la página
+ </small>
+!else
+ <tr><td align=left colspan=2 nowrap>
+ <small>Última modificación $datm
+!endif
+</table>
+

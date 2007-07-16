@@ -1,0 +1,25 @@
+
+!read scripts/check.user
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $userdeffile
+!if $qpasswd != $empty and $qpasswd != $user_password
+ error=user authentification failure
+ !exit
+!endif
+
+wims_mode=
+!readdef $classdeffile
+
+!writefile wimshome/$wims_sesdir/var.stat wims_class=$qclass\
+wims_user=$quser\
+wims_firstname=$user_firstname\
+wims_lastname=$user_lastname\
+wims_email=$user_email\
+wims_classname=$class_description\
+wims_institutionname=$class_institution\
+wims_supervisor=$class_supervisor\
+wims_supervisormail=$class_email
+

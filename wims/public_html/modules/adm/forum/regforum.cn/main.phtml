@@ -1,0 +1,116 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS 位于 $httpd_HTTP_HOST
+<p>
+创建信息板
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=$module&cmd=reply&step=0 重新开始.
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+如果你在本WIMS站建立一个信息板,
+你应该负起维护的责任. <p>
+为了创建你的信息板, 请填写以下信息.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>信息板名称 (最多$titlelim个字符):
+  <input size=$titlelim name=title value="$title"> <p>
+ <li>描述 (最多$desclim个字符):
+  <textarea cols=65 rows=5 name=description>$description</textarea> <p>
+ <li>板主的全名 (就是你自己):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>电邮地址:
+  <input size=$emaillim name=email value="$email"> <br>
+  (只有提供有效的电邮地址才能建立信息板.)<p>
+ <li>选取板主密码:
+  <input size=16 type=password name=passsup> <br>
+  (4至16个字符, 只能是数字或英文字母). <br>
+此密码使你能以板主身份进入信息板. 
+应该只有你才知道密码.<p>
+ <li>选取信息板的密码:
+  <input size=16 type=password name=password> <br>
+  (4至16个字符, 只能是数字或英文字母). <br>
+此密码供信息板用户注册之用. 你可以把它分发给允许参加讨论的人. <p>
+ </ul>
+ <center><input type=submit value="继续"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+你好, $supervisor!<p>
+你正在$httpd_HTTP_HOST的WIMS服务站上创建一个信息板$forumname.
+ <p>
+如果你发现上述信息有错, 请
+ !href module=$module&cmd=reply&step=0 纠正它.
+ <p>否则, 为了验证你的密码的正确性, 请再输入一遍. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+板主密码:
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+信息板密码:
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="继续"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+你好, $supervisor!<p>
+现在你还需要一个密码才能完成在$http_HTTP_HOST的WIMS网站上建立新信息板的操作. <p>
+这个密码已经发到你的电邮地址 ``<tt>$email</tt>''. 
+请打开你的邮箱并阅读其信息. 取出密码后输入下面.
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>信息板密码: <input size=16 name=typecode>
+ <p><input type=submit value="继续"></center>
+ </form>
+ <b>注意</b> 此密码仅在这里使用一次. 不能用来连接到信息板!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+你好, $supervisor!<p>
+你的信息板$forumname已经建立. 祝贺你!<p>
+你可以
+ !href module=adm/forum/forum 从这里
+进入信息板.
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 返回操作的开端.
+:end
+!tail
+
+!set step=
+

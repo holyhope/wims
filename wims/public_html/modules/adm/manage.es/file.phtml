@@ -1,0 +1,81 @@
+!set MAX=102400
+
+!if $download=yes
+ Este es el fichero que va a descargar ($flen bytes):
+ <p><center>
+ !getfile $fname $file
+ <p>
+ !goto end2
+!endif
+
+!if $erase=ask
+ ¿De verdad quiere borrar el fichero
+ <tt><font color=green>$file</font></tt>? <br>
+ <small>($flen bytes, $facc, modificado por última vez $fdat)</small>
+ <p> <center> <font size=+2>
+ !href cmd=reply&job=$job&job2=eraseconfirm Sí
+ &nbsp;&nbsp;
+ !href cmd=reply&job=fs No
+ </font> <p> <hr>
+ !goto end2
+!endif
+
+!if $ftype=image
+ <tt><font color=green>$file</font></tt> es una imagen ($flen bytes,
+ $facc, modificada por última vez $fdat).
+ !if $pubimg!=$empty
+  <p><center>
+  <img border=2 src=$pubimg>
+  </center>
+ !endif
+ !goto end
+!endif
+
+!if $ftype=binary
+ <tt><font color=green>$file</font></tt> es un fichero binario ($flen bytes,
+ $facc, modificado por última vez $fdat).
+ !goto end
+!endif
+
+!if $flen>$MAX
+ <tt><font color=green>$file</font></tt> es demasiado largo ($flen bytes) 
+ para poder mostrarlo o editarlo.
+ !goto end
+!endif
+ 
+!set wims_form_method=post
+!form reply
+<input type=hidden name=job value=file>
+<input type=hidden name=job2 value=first>
+<center>
+ Contenido de <tt><font color=green>$file</font></tt> <br>
+ <small>($flen bytes, $facc, modif. $fdat)</small> <br>
+ !if $modifok!=yes
+  Este fichero pertenece a la distribución, no debería ser modificado. <br>
+  !set textarea_ro=readonly
+ !endif
+ !mexec scripts/textarea.sh
+<br>
+!if $modifok=yes
+ <input type=submit name=save value=Guardar>
+ <input type=submit name=abandon value=Cancelar>
+!endif
+</center>
+</form>
+
+:end
+
+<p> <center>
+!href cmd=reply&job=file&job2=download Descargar el fichero
+. &nbsp;
+!if $modifok=yes
+ !href cmd=reply&job=file&job2=erase Borrarlo
+. &nbsp;
+!endif
+
+:end2
+!href cmd=reply&job=fs Volver al directorio
+.
+
+</center>
+

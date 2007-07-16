@@ -1,0 +1,54 @@
+
+!read model/cut.proc
+output=wimshome/sessions/$ses/submit2.oef
+
+cnt=!recordcnt $input
+
+all=$parms,$sps,$statementrec
+
+!writefile $output $model_def
+
+!for i=1 to $cnt
+ !default reply$i=$(val$i)
+ !if $i notitemof $all
+  r=!record $i of $input
+  !appendfile $output :$r\
+
+  !goto loopend
+ !endif
+ reply$i=!replace internal $\
+: by $\
+ : in $(reply$i)
+ !if $i isitemof $sps
+  !appendfile $output :\$(name$i){$(reply$i)}
+  !goto loopend
+ !endif
+ !if $i isitemof $parms
+  !if $(menu$i)=$empty
+   !appendfile $output :$(title$i)\
+$(help$i)\
+\$(type$i){$(name$i)=$(reply$i)}\
+
+  !else
+   t_=!itemcnt $(menu$i)
+   !bound reply$i between integer 1 and $t_ default 1
+   !appendfile $output :$(title$i)\
+$(help$i)\
+\$(type$i){$(name$i)=item($(reply$i),$(menu$i))}\
+
+  !endif
+  !goto loopend
+ !endif
+ !if $i=$statementrec
+  !appendfile $output :$helpst\
+\statement{$statement}\
+
+  !goto loopend
+ !endif
+ :loopend
+!next i
+
+!sh cd $wims_home/sessions/$ses; mv -f submit2.oef submit.oef\
+	cp -f submit.oef user-deposit
+
+

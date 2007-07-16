@@ -1,0 +1,199 @@
+!reset confirm
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+!if $job iswordof student
+ !changeto $job.phtml
+!endif
+
+!if $cmd=help
+ !read help/$special_parm.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>准备页 $sheet
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 返回主页
+. <p>
+ !goto end
+!endif
+
+!if $job=getsource
+ !read getsource.phtml
+ !goto end
+!endif
+
+!if $activetest>0
+ !form reply
+ <input type=hidden name=job value=text>
+ 本页已
+ !if $activetest=1
+ 被激活.
+  !href cmd=reply&job=expire 现在使它失效
+  或
+  !href cmd=reply&job=deactivate 取消激活
+.
+ !else
+  !if $activetest=2
+ 已失效但参加者仍能看到.
+   !href cmd=reply&job=hide 隐藏
+  !else
+已失效且对参加者隐藏.
+   !href cmd=reply&job=expire 让其重现
+  !endif
+  .
+  !href cmd=reply&job=reactivate 重新激活
+  或
+  !href cmd=reply&job=deactivate 取消激活
+  (使你能修改). <p>
+. <p>
+ !endif
+ <p><center><table border=2>
+ <tr><td align=right>标题:
+ <td><input size=40 name=title value="$title">
+ <td rowspan=3><input type=submit value=修改>
+ <tr><td align=right>描述:
+ <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <tr><td align=right>展示页:
+ <td><input size=30 name=prpage value="$prpage"><small>
+ !href target=wims_mhelp cmd=help&special_parm=sheetpage 帮助
+ </small>
+ <tr><td align=right>失效日期:<td>
+ !distribute item $[$expday],$[$expmon] into expday,expmon
+ !formselect expday from 1 to 31
+ !formselect expmon from 1 to 12 prompt $months
+ !formselect expyear from $thisyear to $thisyear+1
+ </table></form></center> <p>
+ !goto end1
+!endif
+
+!form reply
+<input type=hidden name=job value=text>
+标题(至多$title_limit个字符):<br>
+<input size=65 name=title value="$title"> <p>
+解释(至多$desc_limit个字符; 允许使用html tag及链接):<br>
+<textarea rows=6 cols=65 name=desc>$desc</textarea> <p>
+或展示页:
+<input size=30 name=prpage value="$prpage"><small>
+!href target=wims_mhelp cmd=help&special_parm=sheetpage 帮助
+</small> <p>
+<center><input type=submit value="记录文本"></center>
+
+<p>页面的失效日期:
+!distribute item $[$expday],$[$expmon] into expday,expmon
+!formselect expday from 1 to 31
+!formselect expmon from 1 to 12 prompt $months
+!formselect expyear from $thisyear to $thisyear+1
+&nbsp; <input type=submit value="记录">
+
+!ifval $activetest=-1
+ <p>本页不存在.
+ <input type=submit value="点击以创建"> (请先填入标题).
+ </form>
+ !goto end
+!else
+ </form>
+ !if $exocnt>0
+  <p>本页尚未激活.
+  !href cmd=reply&job=prep_activate 点击这里
+  以激活之.
+  (学生只能见到已激活的页; 另一方面, 一旦被激活, 你就不能再修改了.)
+ !endif
+!endif
+
+:end1
+<p>
+!if $exocnt=0
+ 本页无内容.
+!else
+ <a name=list>
+ 页面内容: <small>[
+ !href module=adm/sheet&sh=$sheet&job=print 可打印版本
+ ]</small>
+ <ol>
+ !for i=1 to $exocnt
+  <li>
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  !set dep=!trim $dep
+  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
+, $re分, 权$we.
+  !if $activetest=0
+   &nbsp;(
+   !if $i>1
+    !href cmd=reply&job=moveup&moveup=$i#list 上移
+    &nbsp;
+   !endif
+   !href cmd=reply&job=prep_modify&modif=$i 修改
+   &nbsp;
+   !href cmd=reply&job=delete&delete=$i#list 删除
+   !if $dep!=$empty
+    &nbsp;
+    !href cmd=reply&job=prep_modify&modif=$i 关联
+   !endif
+   )
+  !endif
+ !next i
+ </ol>
+!endif
+
+!if $activetest=0
+ <p>为向页面加入作业 (练习, 教程, 工具等), 请进入
+ !href $ 班级的主页
+, 取出内容列表中的相应主题, 并选择难度等级. 然后利用此练习末尾的链接以将其加入页面.
+ !if $erasable=yes
+  <p>
+ 你可以
+  !href cmd=reply&job=prep_putsource 插入一个源文件
+  到此页中, 或甚至
+  !href cmd=reply&job=prep_erase 删除此页
+.
+ !endif
+!endif
+
+!if $activetest>=0
+ <p>
+ !href module=adm/sheet&sh=$sheet 参加者看到的页面.
+ &nbsp;
+ !href cmd=reply&job=getsource 页的源码.
+ <p>
+ !form reply
+ <input type=hidden name=allow value=yes>
+ 分数纪录
+ !formselect allowtype list all, none, select prompt 向所有人公开, 向所有人关闭, 仅对以下主机开放:
+ <br><input size=50 name=IPlist value="$IPlist"> <br>
+ <input type=submit value="纪录所作修改">
+ !set allowshare=0
+ !if $sharers!=$empty
+  (对所有共享的班级:
+  !formselect allowshare list 0,1 prompt 否,是
+  )
+ !else
+  <input type=hidden name=allowshare value=0>
+ !endif
+ </form>
+ <small><b>提示.</b> 对于所选取的开放模式, 可对成绩的记录加上时间限制, 只要添加
+ <font color=blue><b>
+ <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
+ (开始时间) 以及/或
+ <font color=blue><b>
+ <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
+ (结束时间). 必须是服务站的当地时间, 中间用空格分开.
+ </small>
+!endif
+:end
+!tail
+
+!distribute item ,, into job,source,title,desc,prpage
+

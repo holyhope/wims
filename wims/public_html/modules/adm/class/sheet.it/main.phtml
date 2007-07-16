@@ -1,0 +1,208 @@
+!reset confirm
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+!if $job iswordof student
+ !changeto $job.phtml
+!endif
+
+!if $cmd=help
+ !read help/$special_parm.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>Preparazione della verifica $sheet
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page
+. <p>
+ !goto end
+!endif
+
+!if $job=getsource
+ !read getsource.phtml
+ !goto end
+!endif
+
+!if $activetest>0
+ !form reply
+ <input type=hidden name=job value=text>
+ Questa verifica &egrave;
+ !if $activetest=1
+  in corso, quindi non più modificabile.
+  !href cmd=reply&job=expire Terminala ORA
+  or
+  !href cmd=reply&job=deactivate disattivala
+(per poterla modificare).
+ !else
+  !if $activetest=2
+   terminata, ma ancora visibile per gli studenti.
+   !href cmd=reply&job=hide Nascondilo
+  !else
+   terminata e non visibile agli studenti.
+   !href cmd=reply&job=expire Renderlo visibile
+  !endif
+  .
+  !href cmd=reply&job=reactivate Riattivarlo
+  o
+  !href cmd=reply&job=deactivate disattivarlo
+  (in modo da poterlo modificare). <p>
+. <p>
+ !endif
+ <p><center><table border=2>
+ <tr><td align=right>Titolo:
+ <td><input size=40 name=title value="$title">
+ <td rowspan=3><input type=submit value=Modifica>
+ <tr><td align=right>Descrizione:
+ <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <tr><td align=right>Presentazione:
+ <td><input size=30 name=prpage value="$prpage"><small>
+ !href target=wims_mhelp cmd=help&special_parm=sheetpage help
+ </small>
+ <tr><td align=right>Termine per il completamento:<td>
+ !distribute item $[$expday],$[$expmon] into expday,expmon
+ !formselect expday from 1 to 31
+ !formselect expmon from 1 to 12 prompt $months
+ !formselect expyear from $thisyear to $thisyear+1
+ </table></form></center> <p>
+ !goto end1
+!endif
+
+!form reply
+<input type=hidden name=job value=text>
+Titolo (massimo $title_limit caratteri) :<br>
+<input size=65 name=title value="$title"> <p>
+Descrizione (massimo $desc_limit caratteri, sono ammesse
+tag html):<br>
+<textarea rows=6 cols=65 name=desc>$desc</textarea> <p>
+O una presentazione:
+<input size=30 name=prpage value="$prpage"><small>
+!href target=wims_mhelp cmd=help&special_parm=sheetpage help
+</small> <p>
+<center><input type=submit value="Salva"></center>
+
+<p>Termine per il completamento della verifica:
+!distribute item $[$expday],$[$expmon] into expday,expmon
+!formselect expday from 1 to 31
+!formselect expmon from 1 to 12 prompt $months
+!formselect expyear from $thisyear to $thisyear+1
+&nbsp; <input type=submit value="Salva">
+
+!ifval $activetest=-1
+ <p>La verifica non esiste ancora.
+ <input type=submit value="Crea"> (occorre aver inserito il 
+ titolo).
+ </form>
+ !goto end
+!else
+ </form>
+ !if $exocnt>0
+  <p>La verifica non &egrave; ancora cominciata.
+  !href cmd=reply&job=prep_activate Cominciare
+  . (Solo le verifiche in corso
+  sono visibili per gli studenti; una verifica in corso non pu&ograve; 
+  pi&ugrave; essere modificata.)
+ !endif
+!endif
+
+:end1
+<p>
+!if $exocnt=0
+ La verifica non contiene ancora alcun esercizio.
+!else
+ <a name=list>
+ Contenuto della verifica:<small>[
+ !href module=adm/sheet&sh=$sheet&job=print Versione stampabile
+ ]</small>
+ <ol>
+ !for i=1 to $exocnt
+  <li>
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  !set dep=!trim $dep
+  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
+, $re punti di peso $we.
+  !if $activetest=0
+   &nbsp;(
+   !if $i>1
+    !href cmd=reply&job=moveup&moveup=$i#list Spostare&nbsp;su
+    &nbsp;
+   !endif
+   !href cmd=reply&job=prep_modify&modif=$i Modificare
+   &nbsp;
+   !href cmd=reply&job=delete&delete=$i#list Eliminare
+   !if $dep!=$empty
+    &nbsp;
+    !href cmd=reply&job=prep_modify&modif=$i Dipendenze
+   !endif
+   )
+  !endif
+ !next i
+ </ol>
+!endif
+
+!if $activetest=0
+ <p>Per inserire un esercizio in una verifica
+ tornare alla 
+ !href $ home page del corso
+ , visualizzare la lista degli esercizi. Una volta selezionato e configurato 
+ l'esercizio, un link alla base della pagina 
+ ne permetter&agrave; l'inserimento nella verifica.
+ !if $erasable=yes
+  <p>
+  &Egrave; anche possibile inserire
+  !href cmd=reply&job=prep_putsource i comandi da un file sorgente
+ !if $erasable=yes
+  o anche 
+  !href cmd=reply&job=prep_erase eliminare la verifica
+ !endif
+.
+!endif
+
+!if $activetest>=0
+ <p>
+ !href module=adm/sheet&sh=$sheet Pagina pubblica della verifica.
+ &nbsp;
+ !href cmd=reply&job=getsource Codice sorgente della verifica.
+ <p>
+ !form reply
+ <input type=hidden name=allow value=yes>
+ La registrazione dei voti &egrave; 
+ !formselect allowtype list all, none, select prompt attiva per tutti, disattivata, limitata ai seguenti IP (e/o periodi):
+ <br><input size=60 name=IPlist value="$IPlist"> <br>
+ <input type=submit value="Salva le modifiche">
+ !set allowshare=0
+ !if $sharers!=$empty
+ (per tutti i corsi collegati:
+  !formselect allowshare list 0,1 prompt no,si
+  )
+ !else
+  <input type=hidden name=allowshare value=0>
+ !endif
+ </form>
+ <small><b>Suggerimento.</b> &Egrave; possibile dare un accesso limitato
+ anche aggiungendo le date
+ <font color=blue><b>
+ <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
+ (data di inizio) e/o
+ <font color=blue><b>
+ <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
+ (data di fine). Queste date devono essere espresse nel fuso orario del
+ SERVER, e devono essere separate l'una dall'altra da spazi.
+ </small>
+!endif
+:end
+!tail
+
+!distribute item ,, into job,source,title,desc,prpage
+

@@ -1,0 +1,74 @@
+
+<center><h3>OEF 格式</h3></center> <p>
+
+OEF意为``在线练习格式'', 是计算机辅助教学的数学练习的一种格式.
+创建这个格式的目的是为了便于不同系统间交换练习的内容.
+因此这个格式仅包含练习的数学信息.
+<p>
+OEF格式的优点是易于创建. 不过用$module_title建立的练习绝对无法
+与WIMS系统本身的练习相比较. 很难想象如何能把WIMS中的数学拚图,
+拟合练习或打靶练习转换成OEF格式. 
+<p>
+为了对OEF文件的结构有个概念, 请参考
+!href cmd=help&special_parm=examples 范例
+. <p>
+<h4>基本语法</h4> <p>
+OEF文件的格式非常类似于LaTeX. 它由一个指令后接几个参数构成. 
+指令就是以字符<tt><b><font color=green>\</font></b></tt>开头的一个词,
+参数则被放在花括号内. 例如在以下语句里,
+<pre>
+   \choice{答案是}{是}{否}
+</pre>
+有一条名为<tt>choice</tt>的指令, 
+它带有3个参数: ``答案是'', ``是'', ``否''.
+<p><h4>指令表</h4> <p>
+以下是WIMS的OEF管理器认识的指令的简表. 关于定义参数的语法参见
+!href cmd=help&special_parm=parameters 关于参数的帮助.
+<p>$table_header
+$table_hdtr<th>指令<th>参数个数<th>说明
+$table_tr<td>title<td align=center>1<td>定义练习的标题
+$table_tr<td>language<td align=center>1<td>练习的语言, 例如<tt>en</tt>或<tt>cn</tt>
+$table_tr<td>author<td align=center>1<td>定义练习的作者
+$table_tr<td>email<td align=center>1<td>定义电子邮件的地址
+$table_tr<td>format<td align=center>1<td>陈述的格式: 参看
+!href cmd=help&special_parm=format 关于格式的帮助
+.
+$table_tr<td>precision<td align=center>1<td>把用户的回答与正确解比较时使用的精度.
+应是一个正整数n: 比较的精度是1/n.
+$table_tr<td>range<td align=center>1<td>对用户所提供的函数赋值时, 变量的取值范围.
+使用的格式是<tt>n1..n2</tt>, 其中n1是起点, n2是终点.
+<tr>
+$table_tr<td>statement<td align=center>1<td>参数是练习的陈述.
+$table_tr<td>plot<td align=center>?<td>动态描点. (尚在构造中.)
+<tr>
+$table_tr<td>answer<td align=center>2-5<td>定义一个自由格式的回答.
+第一个参数提示用户如何回答, 第二个参数是正确答案.
+答案可以有各种不同的类型: 数, 函数, 文字等.
+!href module=$module&cmd=help&special_parm=reply 详情
+.
+<p>
+可选参数: <tt>type</tt>, <tt>option</tt>, <tt>weight</tt>.
+$table_tr<td>choice<td align=center>3-5<td>定义多重选择. 第一个参数提示用户如何回答,
+第二个参数是正确的选择, 第三个参数是其他选择. 后两个参数可以是用逗号分隔的表.
+允许有不止一个正确的选择. 如果一个选择同时出现在正确与错误的表中,
+就认为它是正确的.
+<p>
+可选参数: <tt>option</tt>, <tt>weight</tt>.
+$table_tr<td>condition<td align=center>2-4<td>定义自由格式回答的评价的特殊条件.
+详情参见
+!href cmd=help&special_parm=reply 关于回答的帮助.
+<p>
+可选参数: <tt>option</tt>, <tt>weight</tt>.
+<tr>
+$table_tr<td>solution<td align=center>1<td>给出带有解释的练习的解.
+OEF管理者将根据用户对难度等级的设置决定是否把这个解释显示给用户.
+$table_tr<td>hint<td align=center>1<td>给出练习的提示.
+OEF管理者将根据用户对难度等级的设置决定是否把这个提示显示给用户.
+$table_tr<td>help<td align=center>1<td>给出练习的帮助. 
+用户总可在一个弹出窗口里看到这些帮助. 当答案需要特定条件时,
+$table_tr<td>feedback<td align=center>2<td>会反馈给用户一个警告.
+这通常是针对典型错误的.
+!href cmd=help&special_parm=feedback 详情
+.
+</table>
+

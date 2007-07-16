@@ -1,0 +1,85 @@
+!if $wims_deposit=$empty
+ mode=prep
+ !exit
+!endif
+
+wims_deposit=!word 1 of $wims_deposit
+deptest=!text select -.~_$alnum in $wims_deposit
+!if / isin $wims_deposit or .. isin $wims_deposit or \
+    ~~ isin $wims_deposit or \
+    $wims_deposit!=$deptest or \
+    .tgz/ notin $wims_deposit/
+ mode=bad_fname
+ !exit
+!endif
+
+!if ../modtool- isin ../$wims_deposit
+ nameverif=!replace internal ../modtool- by in ../$wims_deposit
+ restored=$nameverif
+!else
+ nameverif=!translate internal ~ to , in $wims_deposit
+ vcnt=!itemcnt $nameverif
+ !distribute items $nameverif into t1,t2,nameverif
+ !if $vcnt!=3 or $t1 notitemof $zonelist
+  mode=bad_fname
+  !exit
+ !endif
+ restored=$wims_deposit
+!endif
+nameverif=!replace internal .tgz/ by in $nameverif/
+restored=!replace internal .tgz/ by in $restored/
+
+ftest=!sh cd $wims_home/$wims_sesdir\
+rm -fR deptest\
+mkdir -p deptest\
+mv -f user-deposit deptest/$wims_deposit\
+cd deptest\
+if [ -f $wims_deposit ]; then\
+ tar -xzf $wims_deposit\
+ rm -fR $wims_deposit\
+ ls \
+fi
+
+ftest=!word 1 of $ftest
+ftcnt=!charcnt $ftest
+!if $ftcnt<1 or $ftcnt>40 or $ftest!=$nameverif
+ mode=bad_arch
+ !exit
+!endif
+
+ftest2=!getdef description in wimshome/$wims_sesdir/deptest/$ftest/INDEX
+ftest=!getdef title in wimshome/$wims_sesdir/deptest/$ftest/INDEX
+
+!if $ftest=$empty
+ mode=bad_arch
+ !exit
+!endif
+
+test=!sh cd $wims_home/$wims_sesdir/deptest\
+rm -f mkindex src/Makefile src/cpp/Makefile\
+chmod -R og-w *\
+find . -type f -exec chmod og-x '{}' \;\
+find . ! \( -type f -o -type d \) -print
+
+!if $test!=$empty
+ !sh rm -fR $wims_home/$wims_sesdir/deptest/$nameverif
+ mode=illegal
+ !exit
+!endif
+
+!if $confirm=diffcheck
+ mode=diffcheck
+ diff=!sh cd $wims_home\
+  diff -r --new-file $wims_sesdir/deptest/$nameverif public_html/modules/devel/$auth_login/$restored | sed 's/\&/\&amp;/g;s/</\&lt;/g;s/\$$/\&#36;/g' | tail -c 15000
+ diffcnt=!charcnt $diff
+ !if $diffcnt>14500
+  diff=MANY
+ !endif
+ !exit
+!endif
+
+!sh rm -fR $devdir/$restored\
+ mkdir -p $devdir\
+ mv -f $wims_home/$wims_sesdir/deptest/$nameverif $devdir/$restored\
+ cd $devdir/$restored; src2def
+

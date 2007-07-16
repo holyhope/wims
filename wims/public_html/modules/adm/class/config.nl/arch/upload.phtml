@@ -1,0 +1,170 @@
+
+!if $error!=$empty
+ !exit
+!endif
+
+!if $no_selection!=$empty
+ <b>Attentie</b>. Er is niets geselecteerd voor een herstelprocedure
+ <p>
+!endif
+
+!if $serial!=$wims_class and $old_testcnt>0
+ !set test=bad
+!endif
+!if $test=bad
+ <blink><font color=red><b>WAARSCHUWING!!!</b></font></blink>
+ U hebt materiaaal van een andere klas opgestuurd voor herstel.
+ Wanneer U foutief materiaal opstuurd, wordt Uw virtuele klas "vernietigd".
+ !href cmd=help&special_parm=dependencies Hoezo?
+ <p>
+ !href cmd=reply&job=list Stop
+  nu als U niet helemaal zeker bent van Uw zaak...in elk geval 
+ verdient het aanbeveling <b>nu</b> eerst een komplete backup te maken van de huidige situatie
+ zodat bij een eventuele fout, de zaak weer hersteld kan worden...
+ 
+ <p><hr> <p> 
+!endif
+
+!set no_restore=Kan niet worden hersteld omdat u materiaal deelt van een andere klas.\ 
+Het herstel kan alleen plaatsvinden vanuit de klas waar het geleende materiaal vandaan komt.
+
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=restore>
+Uw backup file <tt>$wims_deposit</tt> bevat het volgende materiaal.
+<br><small>(Kontroleer eerst voor dat U dit materiaal terugzet in de klas.)</small>
+<ul>
+ <li><input type=checkbox name=selection value=all>
+ Alles terug zetten, behalve de klas-specifieke configuratie en het supervisor account
+!if $new_defcnt>0
+ <li><input type=checkbox name=selection value=def>
+ klas configuratie setup.
+ <font color=red>Gevaarlijk!</font> <small>zie opmerkingen.</small>
+!endif
+!if $new_supcnt>0
+ <li>
+ !if $sharing_sup=$empty
+  <input type=checkbox name=selection value=sup>
+ !endif
+ Supervisor account (met Uw wachtwoord).
+ !if $sharing_sup!=$empty
+  $no_restore
+ !else
+  <font color=red>Gevaarlijk!</font> <small>zie opmerkingen.</small>
+ !endif
+!endif
+!if $new_usercnt>0
+ <li>
+ !if $sharing_user=$empty
+  <input type=checkbox name=selection value=user>
+ !endif
+ $new_usercnt leerling accounts. 
+ !if $sharing_user!=$empty
+  $no_restore
+ !else
+  <small>(bestaande accounts: $old_usercnt.)</small>
+ !endif
+!endif
+!if $new_doccnt>0
+ <li>
+ !if $sharing_doc=$empty
+  <input type=checkbox name=selection value=doc>
+ !endif
+ $new_doccnt documenten. 
+ !if $sharing_doc!=$empty
+  $no_restore
+ !else
+  <small>(bestaande documents: $old_doccnt.)</small>
+ !endif
+!endif
+!if $new_exocnt>0
+ <li>
+ !if $sharing_exo=$empty
+  <input type=checkbox name=selection value=exo>
+ !endif
+ $new_exocnt oefeningen.
+ !if $sharing_exo!=$empty
+  $no_restore
+ !else
+  <small>(bestaande oefeningen: $old_exocnt.)</small>
+ !endif
+!endif
+!if $new_sheetcnt>0
+ <li>
+ !if $sharing_sheet=$empty
+  <input type=checkbox name=selection value=sheet>
+ !endif
+ $new_sheetcnt werkbladen. 
+ !if $sharing_sheet!=$empty
+  $no_restore
+ !else
+ dus het terugzetten van alle oefeningen uit Uw klas
+  <small>(bestaande werkbladen: $old_sheetcnt.)</small>
+ !endif
+!endif
+!if $new_examcnt>0
+ <li>
+ !if $sharing_exam=$empty
+  <input type=checkbox name=selection value=exam>
+ !endif
+ $new_examcnt tentamen materiaal.
+ !if $sharing_exam!=$empty
+  $no_restore
+ !else
+  dus het terugzetten van alle werkbladen en oefeningen 
+  <small>(aantal bestaande overhoringen/tentamens: $old_examcnt.)</small>
+ !endif
+!endif
+!if $new_forumcnt>0
+ <li>
+ !if $sharing_forum=$empty
+  <input type=checkbox name=selection value=forum>
+ !endif
+ $new_forumcnt forum berichten. 
+ !if $sharing_forum!=$empty
+  $no_restore
+ !else
+  <small>(aantal bestaande forum berichten: $old_forumcnt.)</small>
+ !endif
+!endif
+!if $new_scorecnt>0
+ <li><input type=checkbox name=selection value=score>
+ leerlingen activiteiten logfiles en de cijferregistratie,
+ dus ook het terugzetten van de complete leerlingen administratie.
+!endif
+!if $new_manualcnt>0
+ <li><input type=checkbox name=selection value=manual>
+ $new_manualcnt handmatig ingevoerde cijfers. <small>(bestaande cijfers:
+ $old_manualcnt.)</small>
+!endif
+</ul>
+Herstel methode:<ul>
+<li><input type=radio name=restore value=replace checked> 
+Replacement: replace existing corresponding resources by restored ones.
+<li><input type=radio name=restore value=merge>
+ Merge: replace existing corresponding resources except participant accounts and
+ class exercises; for the latter, those with the same name will be replaced by
+ restored data, while the others will remain.
+</ul>
+<input type=submit value="vervang het geselecteerde ">
+!href cmd=reply&job=list Verlaat de Herstelprocedure
+.
+</form>
+
+<p><b>BELANGRIJK</b>. 
+1. Er wordt geen controle op de kwaliteit van de opgestuurde gegeven uitgevoerd.
+Dus fouten in de backup archieven zullen leiden tot onvoorspelbaar gedrag van virtuele klassen.
+<p>
+2.
+Wanneer het enigszins mogelijk is, voorkom  bij deze noodprocedure fouten in
+<font color=red>klasse configuratie</font> en
+<font color=red>supervisor account</font>.
+Fouten in deze opgestuurde gegevens geven zeker een onbestuurbaar geheel...
+<p>
+3.
+ You can use the backup of a class to install a new one. In this case,
+avoid restoring scores and grades (server-computed and manual). These two
+resources cannot be erased once they are installed (security measure).
+And many class maintenance operations will be unavailable if there are
+non-empty score data.
+

@@ -1,0 +1,102 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!if $sheet_docpage!=$empty
+ !changeto docpage.phtml
+!endif
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Werkblad #$sh<br>$sheet_title</h1></center> <p>
+$sheet_desc <p>
+
+!if $sheet_expiration!=$empty and $sheet_active=1
+ !set expday=!char 7,8 of $sheet_expiration
+ !set expmon=!char 5,6 of $sheet_expiration
+ !set expyear=!char 1 to 4 of $sheet_expiration
+ !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
+ !set expmon=!item $expmon of $months
+ Je kunt aan dit werkblad werken <b>tot</b> $expday $expmon $expyear.
+!endif
+
+!if $sheet_active=2
+ <blink><b><font color=red>Waarschuwing</font></b></blink>
+ Dit werkblad is <b>verlopen</b>.<br>
+ Je kunt er nog wel met werken, maar de cijfers worden niet langer bewaard.
+ <p>
+!endif
+
+!if $n=0
+ !if $sheet_active=$empty
+ Je hebt -nog- niet de rechten om dit werkblad te raadplegen; raadpleeg je supervisor
+ !else
+ Dit werkblad is leeg. Er is dus voorlopig voor jou hier niks te doen ;-)<br> 
+ Mogelijk een foutje van je leraar.
+ !endif
+!else
+De opdrachten in dit werkblad: (cijfer registratie is
+ !set scorestat=!getscorestatus sheet=$sh
+ !if $scorestat=yes
+  !if $wims_scorereg!=suspend
+   open, maar je kunt het
+   !href cmd=resume&job=suspend opschorten
+.)
+  !else
+   !set scorestat=no
+   door jezelf opgeschort.
+   !href cmd=resume&job=reopen reactiveren
+.)
+  !endif
+ !else
+  geloten voor jou.)
+ !endif
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  !set dep=!row $i of $deps
+  !set dep=!trim $dep
+  <p><li>$i.
+  !if $dep=$empty or $scorestat!=yes
+   !href module=$di&cmd=new&worksheet=$sh&$pa $ti
+, $de
+   !if $require>0
+    <small>$[$got] uit $[$require] punten behaald, gemiddelde score van
+    $[$mean]/10.</small>
+   !endif
+  !else
+   <font color=red><b>$ti</b></font>, $de 
+   !if $require>0
+    <small>($[$require] benodigde punten.)</small>
+   !endif
+  !endif
+  !if $dep!=$empty
+   <small>je moet dit verbeteren; <br>
+   !if , isin $dep
+    jouw cijfers voor deze oefeningen $dep
+   !else
+    je cijfer voor deze oefening $dep
+   !endif
+   </small>
+  !endif
+ !next i
+ </ul>
+!endif
+
+:contentend
+!if $wims_user=supervisor
+<p>
+!href module=adm/class/sheet&sheet=$sh Werkblad aanmaak-pagina
+ (voor docenten ).&nbsp;
+!endif
+!href cmd=reply&job=print Printbare versie.
+!if $exolog!=$empty
+ !href module=adm/class/exolog&job=llist&logsheet=$sh Registreer de details van deze oefening
+.
+!endif
+<p>
+
+!tail
+

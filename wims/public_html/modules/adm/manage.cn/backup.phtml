@@ -1,0 +1,31 @@
+
+!if $test=$empty or $nlist=$empty
+ 本服务器没有激活数据备份. 
+ !href cmd=reply&job=conf&confcat=6 点击这里
+ 以设立每日自动数据备份.
+ !goto end
+!endif
+
+最新数据备份: $test.
+下载备份文件: <p>
+!for f in $nlist
+ !getfile $f $f
+ <br>
+!next f
+
+:end
+<p>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=restore>
+<input type=hidden name=job2 value=restore>
+为恢复旧的备份文件, 请给出文件名 (必须是*.tgz文件): <br>
+<input type=file name=wims_deposit size=50>
+<input type=submit value=提交>
+</form>
+<p>
+<small>如果上传的文件太大, 则你需要有一个高速连接.</small>
+<p>
+
+!reset job2
+

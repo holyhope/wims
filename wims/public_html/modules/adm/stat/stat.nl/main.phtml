@@ -1,0 +1,46 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+
+!if $cmd=help and $special_parm=about
+ !read about.phtml
+ !goto end
+!endif
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+<center><h1>WIMS op $httpd_HTTP_HOST
+<p>Server Statistieken</h1></center>
+<p><hr> <p>
+
+!if $sitestart=$empty
+    Helaas, op deze server zijn de statistieken niet openbaar. <p>
+ !goto end
+!endif
+
+!if $show=yes and $total_site>0 and $laps>0
+!!if $show=yes
+ !href cmd=resume Terug
+ </a> naar het menu
+ <p>
+ !read answer.phtml
+ !href cmd=resume Terug 
+ </a> naar het menu
+ <p>
+!else
+ !if $usercnt>0
+    Er zijn op deze server in't totaal $usercnt gebruikers , verdeeld over $classcnt klassen.
+  <p>
+ !endif
+ !read menu.phtml
+!endif
+:end
+!homeref
+</body></html>
+
+!set stat_module=

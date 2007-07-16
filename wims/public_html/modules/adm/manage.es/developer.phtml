@@ -1,0 +1,40 @@
+
+!if $job2 iswordof mod1 mod2 del1
+ !read developer/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first Lista de cuentas de desarrolladores
+ </center> <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>Desarrolladores de módulos registrados en este servidor</caption>
+$table_hdtr
+<th>Login<th>Nombre<th>Acción
+!for d=1 to $devcnt
+ !distribute lines $(drec$d) into login,passwd,name,email
+ $table_tr
+ <td align=center>$login
+ <td align=center>
+ <a href="mailto:$email">$name</a>
+ <td nowrap><small>
+ !href cmd=reply&job2=del1&devno=$d Borrar
+&nbsp;
+ !href cmd=reply&job2=mod1&devno=$d Propiedades
+&nbsp;
+ !href module=adm/modtool&login=$login&passwd=$passwd&jobreq=modname Visitar
+!next d
+$table_end <p><center>
+!href cmd=reply&job2=mod1&devno=0 Añadir una nueva cuenta de desarrollador
+</center> <p>
+
+!form reply
+<input type=hidden name=job2 value=pub>
+Desarrolladores a los que se les permite instalar módulos en el subdirectorio
+local del sitio (escriba sus identificadores de usuario): <br>
+<input size=50 name=devpublisher value="$devpublisher">
+<input type=submit value=OK>
+</form>
+
+!reset job2,devno,devlogin,devpasswd,devname,devemail,devpublisher
+

@@ -1,0 +1,52 @@
+
+<center><h3>Fichiers d'image pour l'exercice</h3></center>
+
+!if $quota=yes
+ <b>Erreur</b>. Vous ne pouvez plus mettre des fichiers dans votre classe, car
+ son contenu a atteint ou dépassé la quantité d'espace disque autorisée.
+ Désolé.
+ <p>
+ !goto sendend
+!endif
+
+!set wims_form_method=file
+!form reply
+Fichier d'image à envoyer dans l'exercice&nbsp;:
+<input type=file name=wims_deposit>
+<input type=submit value=OK>
+</form>
+
+:sendend
+!if $imglist=$empty
+ Cet exercice n'a pas encore de fichier d'image.
+!else
+ Voici la liste des fichiers d'image dans l'exercice.
+ <p><center><table border=2>
+ <th>Nom du fichier<th>Aperçu<th>-
+ !for i in $imglist
+  <tr><td valign=middle align=center>$i
+  <td valign=middle align=center>
+  <img src=$wims_ref_name?cmd=getfile&session=$wims_session&special_parm=oefimg/$i
+   height=40 width=50>
+  <td valign=middle align=center>
+  !href cmd=reply&delfile=$i Effacer
+ !next i
+ $table_end <p>
+ !set example=!item 1 of $imglist
+ On peut accéder à ces fichiers d'images dans l'énoncé de l'exercice via
+ le paramètre interne \imagedir. Par exemple, vous pouvez écrire
+ <center><pre>
+ &lt;img src=\imagedir/$example&gt;
+ </pre></center>
+ Vous pouvez aussi écrire simplement <tt>\img{$example}</tt>, ou
+ <tt>\img{$example}{html options}</tt>. L'avantage de cette dernière méthode
+ est que les étudiants ne verront pas le nom du fichier. A cause de son coût
+ en performance, utilisez cette méthode uniquement quand c'est nécessaire.
+!endif
+<p><center>
+!href cmd=resume&level=3&realtest=yes&retest=again Tester l'exercice
+.&nbsp;
+!href cmd=reply&level=3 Retour au menu
+.
+</center>
+

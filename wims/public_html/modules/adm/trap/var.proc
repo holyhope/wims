@@ -1,0 +1,29 @@
+trapcheck=wimshome/tmp/log/trap.check
+
+!if robot isin $session
+ !exit
+!endif
+
+s2dir=!replace internal sessions/ by s2/ in $wims_sesdir
+!writefile wimshome/$s2dir/.trap trapped for $httpd_HTTP_USER_AGENT
+!if $wims_session_expired!=$empty
+ now=$wims_nowseconds
+ future=!date -d '20 minutes' '+%s'
+ n=!recordcnt $trapcheck
+ !if $n>100
+  n=100
+ !endif
+ !for i=1 to $n
+  f$i=!record $i of $trapcheck
+ !next i
+ !writefile $trapcheck
+ !for i=1 to $n
+  !distribute items $(f$i) into ses,add,tim
+  !if $tim>$now and $ses,$add!=$wims_session_expired,$httpd_REMOTE_ADDR
+   !appendfile $trapcheck :$(f$i)
+  !endif
+ !next i
+ !appendfile $trapcheck :$wims_session_expired,$httpd_REMOTE_ADDR,$future
+!endif
+!usererror trapped $httpd_HTTP_USER_AGENT
+

@@ -1,0 +1,51 @@
+!header
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ Aquí está el código fuente de su ejercicio
+ <font color=red><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).
+ Para guardarlo, corte el texto situado entre las dos líneas horizontales, y 
+ péguelo en un archivo.
+ !href cmd=resume Volver al menú.
+ <hr>
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr> <p>
+ <center>
+ !href cmd=resume Volver al menú.
+ </center>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <center>La realización de su ejercicio será como sigue.
+ !href cmd=resume&realtest=no Volver a $module_title.
+ </center>
+ <p><hr> <p>
+ !changeto oef/$module_language/Main.phtml
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p>
+ !href cmd=reply Corregir el error.
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+:end
+!tail
+
+!reset wims_deposit, delfile
+

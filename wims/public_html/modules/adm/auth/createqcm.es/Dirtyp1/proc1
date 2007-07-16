@@ -1,0 +1,56 @@
+!!! fichier de traitement des données de l'exo de type 1 !!!
+
+## l'étape 1 ##  
+!if $navig!=$etape
+  !if $obsrecord!=$empty
+    obsList=
+    pn=!linecnt $obsrecord
+    !for i=1 to $pn
+      obsList=!append line ($(obsrecord[$i;])), to $obsList
+    !next i
+     obsList=!replace line number $pn by ($(obsrecord[$pn;])) in $obsList
+  !endif
+  etape=$navig
+  !exit
+!endif
+
+!if $obsList=$empty
+  exalert=$(alerts[1;])
+  !exit
+!endif
+  
+obsnb=!itemcnt $obsList
+obsrecord=
+!for i=1 to $obsnb
+  ob=!item $i of $obsList
+  ob=!char 2 to -2 of $ob
+  obsrecord=!append line $ob to $obsrecord
+!next i
+
+!if $propsrecord!=$empty
+  propsList=
+  pn=!linecnt $propsrecord
+  pn=$[$pn-1]
+  !if $pn>1
+    !for i=1 to $pn
+      propsList=!append line ($(propsrecord[$i;])), to $propsList
+    !next i
+    propsList=!replace line number $pn by ($(propsrecord[$pn;])) in $propsList
+   !else
+     exalert=$(alerts[7;])
+  !endif
+!endif
+
+!if $foncsrecord!=$empty
+  foncsList=
+  pn=!linecnt $foncsrecord
+  !for i=1 to $pn
+    foncsList=!append line ($(foncsrecord[$i;])), to $foncsList
+  !next i
+  foncsList=!replace line number $pn by ($(foncsrecord[$pn;])) in $foncsList
+!endif 
+
+obsList=
+etape=$[$etape+1]
+!exit
+

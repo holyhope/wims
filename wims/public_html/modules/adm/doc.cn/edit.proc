@@ -1,0 +1,13 @@
+
+!if $currcont!=yes
+ src=$wims_home/$Docdir/$doc/src/$block
+ dest=$wims_home/$wims_sesdir/doc.src
+ !mexec scripts/copy.sh
+ addtype=replace
+!else
+ !distribute lines $saveb into titb,keyw,prev,next,upbl,dat1,dat2
+ !bound addtype within replace,append,prepend default replace
+!endif
+
+!default dat1=19000101
+!default dat2=24000101

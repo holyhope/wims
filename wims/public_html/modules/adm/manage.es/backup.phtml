@@ -1,0 +1,33 @@
+
+!if $test=$empty or $nlist=$empty
+ La realización de copias de seguridad de los datos no está activada en este servidor.
+ !href cmd=reply&job=conf&confcat=6 Pulse aquí
+ para configurar la salvaguardia diaria automática de los datos.
+ !goto end
+!endif
+
+Última salvaguardia de los datos: $test.
+Descargar las copias de seguridad: <p>
+!for f in $nlist
+ !getfile $f $f
+ <br>
+!next f
+
+:end
+<p>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=restore>
+<input type=hidden name=job2 value=restore>
+Para recuperar una copia de seguridad vieja, escriba el nombre del
+fichero (debe ser un archivo *.tgz): <br>
+<input type=file name=wims_deposit size=50>
+<input type=submit value=OK>
+</form>
+<p>
+<small>Necesitará una conexión rápida si el fichero que quiere descargar 
+es grande.</small>
+<p>
+
+!reset job2
+

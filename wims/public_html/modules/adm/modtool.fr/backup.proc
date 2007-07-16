@@ -1,0 +1,16 @@
+
+!read scripts/getindex $mod
+!if $title=$empty and $inddef=$empty
+ job=modname
+ modreq=
+ !changeto $job.proc
+!endif
+
+fname=modtool-$mod.tgz
+fresult=!sh mkdir -p $wims_home/$wims_sesdir/getfile\
+cd $devdir\
+tar -czf $wims_home/$wims_sesdir/getfile/$fname $mod\
+if [ -f  $wims_home/$wims_sesdir/getfile/$fname ]; then\
+ echo $fname\
+fi
+

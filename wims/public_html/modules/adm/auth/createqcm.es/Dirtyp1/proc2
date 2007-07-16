@@ -1,0 +1,51 @@
+!!! fichier de traitement des données de l'exo de type 1 !!!
+
+## l'étape 2
+!if $navig!=$etape
+  !if $propsrecord!=$empty
+    propsList=
+    pn=!linecnt $propsrecord
+    pn=$[$pn-1]
+    !if $pn>1
+      !for i=1 to $pn
+        propsList=!append line ($(propsrecord[$i;])), to $propsList
+      !next i
+      propsList=!replace line number $pn by ($(propsrecord[$pn;])) in $propsList
+     !else
+      exalert=$(alerts[7;])
+    !endif
+  !endif
+  etape=$navig
+  !exit
+!endif
+
+!if $propsList=$empty
+  exalert=$(alerts[1;])
+  !exit
+!endif
+
+propsnb=!itemcnt $propsList
+!if $propsnb<2
+  exalert=$(alerts[2;])
+  !exit
+!endif
+!if $propsnb>100
+  exalert=$(alerts[3;])
+  !exit
+!endif
+
+propsrecord=
+!for i=1 to $propsnb
+  prop=!item $i of $propsList
+  prop=!char 2 to -2 of $prop
+  propsrecord=!append line $prop to $propsrecord
+!next i
+propsrecord=!append line $nonprop to $propsrecord
+  
+rowsnb=$[floor(($propsnb+1)/2)]
+extrarow=$[($propsnb+1)%2]
+
+rpmat=
+propsList= 
+etape=$[$etape+1]
+!exit

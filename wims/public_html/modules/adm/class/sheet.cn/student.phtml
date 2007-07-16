@@ -1,0 +1,35 @@
+
+<hr width=1>
+<center><h3>$wims_classname ($wims_institutionname)</h3>
+<hr> <p><h1>作业页 #$sheet<br>$title</h1>
+(学生用)
+</center> <p>
+$desc<p>
+
+!if $exocnt=0
+ 本页是空的! 没有为您指定任何作业. 可能是您的主持教师的失误. 
+!else
+ 本页所指定的作业:<p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $re>0
+   <small> $[$re] 分中得 0 分, 平均分 0/10. </small>
+  !endif
+ !next i
+ </ul>
+!endif
+<p>
+!homeref
+<p><hr> <p>
+<center>
+!href cmd=resume 回到主持教师的页面.
+</center>
+
+</body></html>
+
+!set job=
+

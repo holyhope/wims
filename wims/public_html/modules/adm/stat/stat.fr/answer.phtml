@@ -1,0 +1,150 @@
+!set week_min=3
+!set month_min=20
+!set year_min=200
+!set title_2=Requêtes
+!set title_3=Séances
+!set title_4=Sites visiteurs
+
+Nombre de visites de $day1/$month1/$year1 à $day2/$month2/$year2
+(somme sur $laps jours).
+ !set wims_print_precision=4
+ $table_header
+ $table_hdtr<th>Nombre<th>total<th>moyenne<br>par jour
+ !if $laps>$week_min
+  <th>moyenne<br>par semaine
+  !if $laps>$month_min
+   <th>moyenne<br>par mois
+   !if $laps>$year_min
+    <th>moyenne<br>par année
+   !endif
+  !endif
+ !endif
+ <th>moyenne<br>par site
+ $table_tr<th bgcolor=$table_bgcolor>Requêtes
+   !htmlmath <td align=right>$[$total_click]
+   !htmlmath <td align=right>$[rint($total_click/$laps)] 
+   !if $laps>$week_min
+    !htmlmath <td align=right>$[rint($total_click*7/$laps)] 
+    !if $laps>$month_min
+     !htmlmath <td align=right>$[rint($total_click*30.4/$laps)] 
+     !if $laps>$year_min
+      !htmlmath <td align=right>$[rint($total_click*365.25/$laps)] 
+     !endif
+    !endif
+   !endif
+   !htmlmath <td align=right>$[$total_click/$total_site] 
+ $table_tr<th bgcolor=$table_bgcolor>Séances
+   !htmlmath <td align=right>$[$total_session]
+   !htmlmath <td align=right>$[rint($total_session/$laps)] 
+   !if $laps>$week_min
+    !htmlmath <td align=right>$[rint($total_session*7/$laps)] 
+    !if $laps>$month_min
+     !htmlmath <td align=right>$[rint($total_session*30.4/$laps)] 
+     !if $laps>$year_min
+      !htmlmath <td align=right>$[rint($total_session*365.25/$laps)] 
+     !endif
+    !endif
+   !endif
+   !htmlmath <td align=right>$[$total_session/$total_site] 
+ $table_tr<th bgcolor=$table_bgcolor>sites
+   !htmlmath <td align=right>$[$total_site]
+   !htmlmath <td align=right>$[rint($total_site/$laps)] 
+   !if $laps>$week_min
+    !htmlmath <td align=right>$[rint($total_site*7/$laps)] 
+    !if $laps>$month_min
+     !htmlmath <td align=right>$[rint($total_site*30.4/$laps)] 
+     !if $laps>$year_min
+      !htmlmath <td align=right>$[rint($total_site*365.25/$laps)] 
+     !endif
+    !endif
+   !endif
+   <td align=right>1
+ $table_end
+<p>
+Explication.<ul>
+<li>Le nombre de requêtes compte uniquement les requêtes pour pages.
+ Les requêtes pour les modules en développement ne sont pas comptées.
+<li>Le nombre de sites visiteurs est compté par jour.
+<li>Le nombre de visiteurs se situe entre le nombre de sites et le nombre de séances.
+</ul>
+!if $laps >= 3
+ <center>
+ <font color=red>$(title_$plot_type) par jour</font> <br>
+ !insplot "insplot_data" using 1:2 smooth csplines notitle with lines
+ </center>
+!endif
+
+!if $modules=yes and $modulecnt>0
+ !set langcnt=!wordcnt $wims_site_languages
+ !distribute item 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 into tot,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16
+ $table_header
+ <caption>Détails par module
+  (de $day1/$month1/$year1 à $day2/$month2/$year2)</caption>
+ $table_hdtr<th>Nom<th>
+ !item $module_type of requêtes<br>totales,requêtes<br>par site,sites<br>totaux
+ !if $module_type!=2
+  !for i=1 to $langcnt
+   !set l=!word $i of $wims_site_languages
+   <th><img src=gifs/$l.gif>
+  !next i
+  <th>installé le
+  <th>moyenne<br>hebdo
+ !endif
+ !for i=1 to $modulecnt
+  !set l=!line $i+1 of $stat_out
+  !set c=!word 1 of $l
+  !ifval $c=0
+   !goto cont
+  !endif
+  !set t=$[$t+$c]
+  $table_tr<td>
+  !set n=!word 3 of $l
+  !set n=!char -40 to -1 of $n
+  !set n=!translate @ to / in $n
+  !href module=$n $n
+  <td align=right nowrap>
+  !if $module_type=2
+   $[$c/100]
+   !goto cont
+  !endif
+  !htmlmath $[$c]
+  !for j=1 to $langcnt
+   <td align=right nowrap>
+   !set tt=!word $j+3 of $l
+   !set t$j=$[$(t$j)+$tt]
+   !htmlmath $[$tt]
+  !next j
+  <td>
+  !set d=!word 2 of $l
+  !set dy=!char 1,2,3,4 of $d
+  !set dm=!char 5,6 of $d
+  !set dd=!char 7,8 of $d
+  $dd/$dm/$dy
+  !if $d<=$date1
+   !set lps=$laps
+  !else
+   !set d_d=!date -d $d '+%j'
+   !set lps=!eval ($year2-$dy)*365+$date_2-$d_d+1
+   !ifval floor($dy/4)<floor($year2/4) and floor($dy/100)=floor($year2/100)
+    !set lps=!eval $lps+1
+   !endif
+  !endif
+  <td align=right>$[rint($c*7/$lps)]
+  :cont
+ !next i
+ !if $module_type!=2
+  $table_hdtr<td>Sous-total<td align=right nowrap>
+  !htmlmath $t
+  !for i=1 to $langcnt
+   <td align=right nowrap>
+   !htmlmath $(t$i)
+  !next i
+  <td align=center>-<td align=right>-
+ !endif
+$table_end <p>
+!else
+ <p>
+ !href cmd=reply&modules=yes Détails par module
+ &nbsp;&nbsp;
+!endif modules=yes
+

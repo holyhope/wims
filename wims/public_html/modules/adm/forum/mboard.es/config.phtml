@@ -1,0 +1,39 @@
+
+Parámetros del foro de discusión que puede cambiar:
+
+!form reply
+<input type=hidden name=job value=config>
+<input type=hidden name=cf_set value=yes>
+<ul>
+ <p><li>Título del foro:<br>
+  <input size=60 name=cf_title value="$cf_title">
+ <p><li>Descripción:<br>
+  <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
+ <p><li>¿Quién puede leer los mensajes?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_readpolicy list alluser,owner prompt \
+	todos los participantes, sólo usted
+ !else
+  !formselect cf_readpolicy list open,alluser,owner prompt \
+ 	todos (inscritos o no), usuarios inscritos solamente, \
+        nadie excepto usted
+ !endif
+ <p><li>¿Quién puede enviar mensajes?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
+	todos los participantes,\
+	participantes con comprobación del correo electrónico,\
+        solamente usted
+ !else
+  !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
+	visitantes con dirección de correo electrónico o inscritos,\
+	sólo los usuarios inscritos,\
+	usuarios con comprobación del correo electrónico,\
+	nadie excepto usted
+ !endif
+
+</ul>
+<p><center><input type=submit name=cf_set value="Grabar los cambios">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="Cancelar">
+</center> <p></form>
+

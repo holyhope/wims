@@ -1,0 +1,113 @@
+
+!set form_OK=Send the modified properties
+!set form_titlename=Title
+!set form_caption=Properties of the program
+!set title=$class_description
+!set sup=$class_Supervisor
+!read scripts/progform.phtml
+<p><center>
+!if $hastest=yes
+ Test zone<sup>
+ !href cmd=help&special_parm=test help
+ </sup>:
+ !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 visit
+. 
+ !href cmd=reply&job=deltest delete
+.
+!else
+ This program has no test zone<sup>
+ !href cmd=help&special_parm=test help
+ </sup>.
+ !href cmd=reply&job=addtest Install one
+.
+!endif
+</center> <p>
+!if $coursecnt=0
+ This program has no courses yet.
+ !href cmd=reply&cparent=prog&job=addcourse Add&nbsp;a&nbsp;course
+.<sup>
+ !href cmd=help&special_parm=course help
+ </sup>
+!else
+ $table_header
+ <caption>Installed courses<sup>
+ !href cmd=help&special_parm=course help
+ </sup> in this program
+ !href cmd=reply&cparent=prog&job=addcourse Add&nbsp;another&nbsp;course
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Participants</small></th>
+ </tr>
+ !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=course&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+<p>
+
+!if $icoursecnt=0
+ This program has no interclass courses.
+ !href cmd=reply&cparent=prog&job=addicourse Create
+.<sup>
+ !href cmd=help&special_parm=icourse help
+ </sup>
+!else
+ $table_header
+ <caption>Interclass courses<sup>
+ !href cmd=help&special_parm=icourse help
+ </sup> in this program
+ !href cmd=reply&cparent=prog&job=addicourse Add&nbsp;more
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Participants</small></th>
+ </tr>
+ !for i=1 to $icoursecnt
+   !set l=!line $i of $icourses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+
+!reset title
+

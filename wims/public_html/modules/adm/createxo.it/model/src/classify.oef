@@ -1,0 +1,231 @@
+type=datalist
+textarea="data"
+
+:Classificare oggetti in base alle loro proprietà, seleziona&trascina.
+
+L'esercizio presenta una lista di oggetti i cui è necessario selezionare
+quelli che hanno una certa proprietà e trascinarli con il mouse nella
+casella corrispondente.
+<p>
+Per costruire un esercizio utilizzando questo modello è sufficiente
+inserire la lista di oggetti e le loro proprietà.
+<p>
+Con una piccola modifica, questo modello può essere adattato per accettare
+oggetti costituiti da immagini.
+<p>
+Autore del modello: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Classifica in base a una proprietà}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Numero di oggetti da classificare. Massimo 20.
+\integer{tot=8}
+
+: Massimo numero di oggetti presentati con la stessa proprietà.
+Questo numero deve essere maggiore di 1.
+\integer{max1=4}
+
+:Dimensioni dei riquadri da trascinare con il mouse, in pixel, x per y.
+Occorre tener presente che gli utenti possono cambiare le dimensioni delle
+fonti nel browser e quindi bisogna evitare di disegnare riquadri troppo
+piccoli.
+\text{size1=100x40}
+
+:Elenco delle categorie. Fino a 10, separate da virgole.
+\text{prop=insetti,uccelli,mammiferi}
+
+:Contenuto effettivo dell'esercizio.
+Inserire un oggeto per riga, indicando prima il nome e quindi la categoria,
+separati da una virgola. <p>
+&Egrave; utile inserire dati in abbondanza per ogni categoria. <p>
+Attenzione a non commettere errori nello scrivere le proprietà! Questo 
+potrebbe impedire completamente il funzionamento dell'esercizio.
+\matrix{data=
+aquila,uccelli
+albatross,uccelli
+ragno,insetti
+anitra, uccelli
+gatto, mammiferi
+cavallo,mammiferi
+cane,mammiferi
+maiale,mammiferi
+corbel,uccelli
+locusta,insetti
+elefante,mammiferi
+falco,uccelli
+gabbiano,uccelli
+gueppe,insetti
+ape,insetti
+leone,mammiferi
+sparrow,uccelli
+mosca,insetti
+zanzara,insetti
+pecora,mammiferi
+oca,uccelli
+farfalla,insetti
+piccione,uccelli
+volpe,mammiferi
+nightingale,uccelli
+scorpione,insetti
+scimmia,mammiferi
+tigre,mammiferi
+mucca,mammiferi
+}
+
+:Opzioni dell'esercizio.
+L'opzione "shuffle" permette di cambiare l'ordine in cui le categorie sono elencate.
+\text{option=}
+
+:Testo che precede la tabella. Sono permessi comandi html.
+\text{pre=Ordina i seguenti animali a seconda del loro genere. <p>}
+
+:Testo che segue la tabella. Sono permessi comandi html.
+\text{post=}
+
+:Verbo e articolo che nelle risposte appaiono prima della categoria.
+\text{estun=appartiene ai/agli}
+
+:Il testo che dice che un oggetto non appartiene a nessuna categoria.
+\text{noclass=non è in nessuno dei generi elencati}
+
+:%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
+
+\integer{pcnt=items(\prop)}
+\integer{datacnt=rows(\data)}
+\integer{max2=\max1+1}
+\integer{tot=\tot<\pcnt?\pcnt}
+\text{prop=\pcnt>1 and shuffle iswordof \option?shuffle(\prop)}
+
+\text{first=}
+\text{firsti=}
+\text{second=}
+\text{secondi=}
+\for{i=1 to \pcnt}{
+ \text{t=shuffle(column(1,wims(select \data where column 2 issametext \prop[\i])))}
+ \integer{s=min(\max1,items(\t))}
+ \text{first=wims(append item \t[1] to \first)}
+ \text{firsti=wims(append item \i to \firsti)}
+ \if{\s > 1}{
+  \text{second=wims(append item \t[2..\s] to \second)}
+  \text{secondi=wims(append item wims(makelist \i for x=2 to \s) to \secondi)}
+ }
+}
+
+\if{\tot>\pcnt}{
+ \integer{scnt=items(\second)}
+ \integer{secnt=min(\tot-\pcnt,\scnt)}
+ \integer{tot=\pcnt+\secnt}
+ \text{sh2=shuffle(\scnt)}
+ \text{sh2=\sh2[1..\secnt]}
+ \text{second=item(\sh2,\second)}
+ \text{secondi=item(\sh2,\secondi)}
+ \text{all=\first,\second}
+ \text{alli=\firsti,\secondi}
+}{
+ \text{all=\first}
+ \text{alli=\firsti}
+}
+\integer{acnt=items(\all)}
+\text{sh=shuffle(\acnt)}
+\text{all=item(\sh,\all)}
+\text{alli=item(\sh,\alli)}
+
+\text{props=wims(tolower \prop)}
+\text{alls=wims(tolower \all)}
+
+\text{size=\size1 x \max2}
+\text{rep=item(1..\pcnt,wims(makelist r x for x=1 to 10))}
+\steps{\rep}
+\conditions{wims(makelist x for x=1 to \tot)}
+
+:%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
+
+::The command to show the field of reply number 3 for example, is
+\embed{reply 3,\size} <p>
+And the name of the property number 4, is \prop[4] with the first letter
+in upper case, or \props[4] in lower case.
+
+\statement{\pre
+
+<table border=0>
+\for{k=1 to \pcnt}{
+ <tr><td align=right>\prop[\k]</td>
+ <td>\embed{reply \k, \size}
+ </td></tr>
+}
+</table>
+\post
+}
+
+:%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%
+
+\answer{\prop[1]}{\r1;\all}{type=dragfill}
+\answer{\prop[2]}{\r2}{type=dragfill}
+\answer{\prop[3]}{\r3}{type=dragfill}
+\answer{\prop[4]}{\r4}{type=dragfill}
+\answer{\prop[5]}{\r5}{type=dragfill}
+\answer{\prop[6]}{\r6}{type=dragfill}
+\answer{\prop[7]}{\r7}{type=dragfill}
+\answer{\prop[8]}{\r8}{type=dragfill}
+\answer{\prop[9]}{\r9}{type=dragfill}
+\answer{\prop[10]}{\r10}{type=dragfill}
+
+\text{totans=item(1..\pcnt,
+	wims(items2words \r1),
+	wims(items2words \r2),
+	wims(items2words \r3),
+	wims(items2words \r4),
+	wims(items2words \r5),
+	wims(items2words \r6),
+	wims(items2words \r7),
+	wims(items2words \r8),
+	wims(items2words \r9),
+	wims(items2words \r10))}
+text{totans=wims(replace internal &#39; to ' in \totans)}
+\text{clean=}
+\text{check=}
+\for{t=1 to \tot}{
+ \integer{cat=0}
+ \for{r=1 to \pcnt}{
+  \integer{cat=\all[\t] iswordof \totans[\r]?\r}
+ }
+ \if{\cat > 0}{
+  \text{clean=\clean \estun \props[\cat],}
+  \text{check=\alli[\t]=\cat?\check 1,:\check 0,}
+ }{
+  \text{clean=\clean \noclass,}
+  \text{check=\check 0,}
+ }
+}
+
+\condition{\all[1] \clean[1]}{\check[1]=1}
+\condition{\all[2] \clean[2]}{\check[2]=1}
+\condition{\all[3] \clean[3]}{\check[3]=1}
+\condition{\all[4] \clean[4]}{\check[4]=1}
+\condition{\all[5] \clean[5]}{\check[5]=1}
+\condition{\all[6] \clean[6]}{\check[6]=1}
+\condition{\all[7] \clean[7]}{\check[7]=1}
+\condition{\all[8] \clean[8]}{\check[8]=1}
+\condition{\all[9] \clean[9]}{\check[9]=1}
+\condition{\all[10] \clean[10]}{\check[10]=1}
+\condition{\all[11] \clean[11]}{\check[11]=1}
+\condition{\all[12] \clean[12]}{\check[12]=1}
+\condition{\all[13] \clean[13]}{\check[13]=1}
+\condition{\all[14] \clean[14]}{\check[14]=1}
+\condition{\all[15] \clean[15]}{\check[15]=1}
+\condition{\all[16] \clean[16]}{\check[16]=1}
+\condition{\all[17] \clean[17]}{\check[17]=1}
+\condition{\all[18] \clean[18]}{\check[18]=1}
+\condition{\all[19] \clean[19]}{\check[19]=1}
+\condition{\all[20] \clean[20]}{\check[20]=1}
+

@@ -1,0 +1,61 @@
+wims_exolog_limit=40
+wims_prefix=class user tmp n sharing sharable
+wims_pfback=$wims_prefix
+wims_writable=allow except
+wims_nw=today empty nonew creatdays backdays warn
+
+!if $wims_user!=supervisor and $wims_ismanager<2
+ error=not_supervisor
+ job=
+ !exit
+!endif
+
+!read adm/class/config.auth
+!if $error!=$empty or $jobt=auth
+ job=$jobt
+ !exit
+!endif
+
+!bound job within list,arch,clean,security,grestrict,log,neighbor,\
+	connect,present,access,propagate,index\
+	default list
+levellist=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R
+wims_helper=chapter=3
+sharelist=user,doc,exo,sheet,exam,forum,sup,motd,vote,cdt
+nosharelist=user,exo,sheet,exam
+!read adm/class/limits
+class_bgcolor=$wims_bgcolor
+class_bgimg=$wims_bgimg
+class_theme=$wims_theme
+class_css=$wims_css
+today=!char 1 to 8 of $wims_now
+!defread wimshome/log/classes/$wims_class/.def
+!read tabletheme
+
+!if $nonew=$empty
+ creation=$class_creation
+ !bound creation between integer 20010101 and $today default 20010101
+ lastback=$class_backup
+ !default lastback=$creation
+ !bound lastback between integer 20010101 and $today default 20010101
+ warn=
+ csec=!date -d '$creation' '+%s'
+ creatdays=$[floor(($wims_nowseconds-$csec)/(3600*24))]
+ !if $creatdays>340
+  warn=$warn creation
+ !endif
+ lsec=!date -d '$lastback' '+%s'
+ backdays=$[floor(($wims_nowseconds-$lsec)/(3600*24))]
+ !bound backdays between integer 0 and 101
+ !if $backdays>30
+  warn=$warn backup
+ !endif
+ !if $backdays>7 or $warn!=$empty
+  job=new
+ !endif
+ nonew=yes
+!endif
+
+wims_module_log=$job $job2 $wims_class
+!read $job.proc
+

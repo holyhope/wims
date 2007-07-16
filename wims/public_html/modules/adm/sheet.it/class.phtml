@@ -1,0 +1,107 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!if $sheet_docpage!=$empty
+ !changeto docpage.phtml
+!endif
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>verifica #$sh<br>$sheet_title</h1></center> <p>
+$sheet_desc <p>
+
+!if $sheet_expiration!=$empty and $sheet_active=1
+ !set expday=!char 7,8 of $sheet_expiration
+ !set expmon=!char 5,6 of $sheet_expiration
+ !set expyear=!char 1 to 4 of $sheet_expiration
+ !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+ !set expmon=!item $expmon of $months
+ Devi completare questa verifica entro il $expday $expmon $expyear.
+!endif
+
+!if $sheet_active=2
+ <blink><b><font color=red>Warning</font></b></blink>
+ Questa verifica doveva già essere completata. Puoi ancora lavorarci,
+ ma i punteggi ottenuti non saranno più tenuti in considerazione.
+ <p>
+!endif
+
+!if $n=0
+ !if $sheet_active=$empty
+  Non sei ancora autorizzato a consultare i contenuti di questa verifica.
+  Contatta il docente.
+ !else
+  La verifica è vuota! Potrebbe trattarsi di un errore da parte
+  del docente.
+ !endif
+!else
+ Contenuti della verifica: (la registrazione dei punteggi è
+ !set scorestat=!getscorestatus sheet=$sh
+ !if $scorestat=yes
+  !if $wims_scorereg!=suspend
+   attiva, ma puoi
+   !href cmd=resume&job=suspend sospenderla
+.)
+  !else
+   !set scorestat=no
+   stata da te sospesa.
+   !href cmd=resume&job=reopen Riattivala
+.)
+  !endif
+ !else
+  disattivata per questo tipo di connessione.)
+ !endif
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  !set dep=!row $i of $deps
+  !set dep=!trim $dep
+  <p><li>$i.
+  !if $dep=$empty or $scorestat!=yes
+   !href module=$di&cmd=new&worksheet=$sh&$pa $ti
+, $de
+   !if $require>0
+    <small>hai ottenuto $[$got] punti su $[$require], con media
+    $[$mean]/10.</small>
+   !endif
+  !else
+   <font color=red><b>$ti</b></font>, $de 
+   !if $require>0
+    <small>(sono richiesti $[$require] punti.)</small>
+   !endif
+  !endif
+  !if $dep!=$empty
+   <small>Devi migliorare
+   !if , isin $dep
+    i tuoi punteggi negli esercizi $dep
+   !else
+    il tuo punteggio nell'esercizio $dep
+   !endif
+   prima di cominciare a lavorare su questo.
+   </small>
+  !endif
+ !next i
+ </ul>
+!endif
+
+:contentend
+!if $wims_user=supervisor
+<p>
+!href module=adm/class/sheet&sheet=$sh Pagina di gestione delle verifiche
+ (per i docenti).&nbsp;
+!endif
+!if $n>0
+ !href cmd=reply&job=print Versione stampabile
+.
+ !if $exolog!=$empty
+  !href module=adm/class/exolog&job=llist&logsheet=$sh Salva la risoluzione di un esercizio
+.
+ !endif
+!endif
+<p>
+
+!tail
+

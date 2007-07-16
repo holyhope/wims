@@ -1,0 +1,271 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>wims @ $httpd_HTTP_HOST
+<p>
+ Creazione di $name_classess
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ !if $restart!=no
+  <p>
+  !href module=$module&cmd=reply&step=0 Ricomincia da capo
+ !endif
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=pre
+ Scegli il tipo di corso che vuoi creare.
+ <p>
+ !href cmd=reply&step=0&cltype=0 Corso singolo
+  per gestire il lavoro degli studenti, senza un coordinamento dei corsi
+ a livello di sede.
+ <p>
+ !if $regpolicy=file
+  !set noright=(Non hai i privilegi per farlo.)
+ !else
+  !set noright=(Solo il <em>site manager</em> può farlo.)
+ !endif
+ !if 2 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=2 Coordinamento
+  di un gruppo di corsi coordinati.
+ !else
+  <font color=blue><strike>Coordinamento</strike></font>
+  di un gruppo di corsi coordinati. $noright
+ !endif
+ <p>
+ !if 4 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=4 Portale
+ di sede. (Per utenti esperti.)
+ !else
+  <font color=blue><strike>Portale</strike></font>
+  di sede. $noright
+ !endif
+ <p>
+ <b>NOTA</b>. Un gruppo di corsi coordinati permette ai docenti
+ di condividere materiale, e permette agli studenti di passare da un corso
+ all'altro senza reimmettere la password.
+ <p>
+ Un portale di sede è un sistema multilivello che permette di gestire 
+ globalmente i bisogni di una intera scuola: database degli studenti e
+ dei docenti, diversi livelli di insegnamento, programmi e materie, classi,
+ responsabilità dei docenti, ecc.
+ <p>
+ !goto end
+!endif
+
+!if $step=0
+ La creazione di 
+ !if $Cltype<2
+   <font color="blue">un corso</font>
+   &egrave; una operazione riservata ai <font color="blue">docenti</font>. 
+ !else
+    <font color="blue">$name_classe</font>
+ &egrave; una operazione riservata a un <font color="blue">$name_sup</font>.
+ !endif
+ Sar&agrave; necessario possedere un indirizzo di posta elettronica
+ funzionante. Dopo la creazione, la gestione del corso &egrave; 
+ responsabilit&agrave; di chi lo ha creato. <p>
+ Per creare il $name_classe, inserire i seguenti dati.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>Nome dell'istituzione (al pi&ugrave; $instlim caratteri) :
+ !if $Cltype isin 13
+  !default institution=$wims_institutionname
+ !endif
+  <input size=$instlim name=institution value="$institution"> <p>
+ <li>Nome $name_classesss (al pi&ugrave; $desclim caratteri) :
+  <input size=$desclim name=description value="$description"> <p>
+ !if $Cltype notin 24
+ <li>Livello $name_classesss:<br>
+  <center><table border=1>
+  <tr><th>anno
+  !for j=1 to 6
+   <td align=center>$j</td>
+  !next j
+  </tr>
+  !for i in E,H,U
+   <tr><td align=center>$(lev_$i)</td>
+   !for j=1 to 6
+    !if $i!=U or $j<6
+     <td><input type=radio name=level
+     !if $level=$i$j
+      checked
+     !endif
+     value=$i$j></td>
+    !else
+     <td>.</td>
+    !endif
+   !next j
+  !next i
+  </tr></table></center> <p>
+ !endif
+ <li>Nome completo del $name_sup $name_classesss (cio&egrave; voi):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>Indirizzo di posta elettronica:
+  <input size=$emaillim name=email value="$email"> 
+  !if $regpolicy=email
+  <br>
+  (La creazione $name_classesss pu&ograve; essere completata solo se si
+  dispone di un indirizzo di posta elettronica funzionante.)<p>
+  !endif
+ <p>
+ <li>Scegliere una password di gestione ($name_sup):
+  <input size=16 type=password name=passsup> <br>
+  (almeno 4 e non pi&ugrave; di 16 caratteri, numeri o lettere non accentate). <br>
+  Questa passowrd permette di accedere alla gestione del $name_classe come $name_sup.
+  Non va resa nota ad altri. <p>
+ <li>Scegliere la password $name_classesss:
+  <input size=16 type=password name=password> <br>
+  (da 4 a 16 caratteri, scelti tra numeri o lettere non accentate). <br>
+  La password $name_classesss &egrave; necessaria per la registrazione. 
+    !if $Cltype<2
+  Va comunicata a
+  tutti gli studenti che devono accedere 
+  al corso. 
+    !else
+Va comunicata ai docenti $name_classesss ;
+ ma non agli studenti.
+ !endif
+<br>
+  Un corso senza password sar&agrave; accessibile da chiunque (ovunque
+  su Internet), ed non &egrave; consentito senza l'autorizzazione esplicita
+  del manager del sito. <p>
+ <li>Data di termine del corso:
+  <select name=exp_day>
+  !for i=1 to 31
+   <option value=$i
+   !ifval $i=$exp_day
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <select name=exp_month>
+  !for i=1 to 12
+   <option value=$i
+   !ifval $i=$exp_month
+    selected
+   !endif
+   >
+   !item $i of $months
+  !next i
+  </select> <select name=exp_year>
+  !for i=$thisyear to $thisyear+1
+   <option value=$i
+   !ifval $i=$exp_year
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <p>
+ <li>Numero limite di partecipanti al $name_classe:
+  <input size=3 name=limit value="$limit">
+  (Questo server impone un massimo di $wims_class_user_limit.)<p>
+ <li>Accesso da IP sicuro per il $name_sup:
+  !default secure=all
+  <input size=30 name=secure value="$secure"> <br>
+  !reset secure
+  <small>Nome (o IP) dei pc da cui si effettueranno operazioni di gestione
+  del $name_classe. 
+  !if $Cltype<3
+    Opzionale.
+  !endif 
+  </small> <p>
+ </ul>
+ <center><input type=submit value="Continua"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ Cara/o,  $supervisor!<p>
+ Stai creando il  $name_classe $classname sul server WIMS @ $httpd_HTTP_HOST.
+ Il corso è
+  !if $Cltype iswordof 0 1
+  di livello
+  ``<b><font color=green>$name_level</font></b>'',
+ !endif
+ limitato a $ilimit partecipanti.
+ !if $pword!=$empty
+  Per accedere a questo $name_classesss è necessario conoscerne la password.
+ !else
+  Hai richiesto che l'iscrizione a questo corso sia aperta a tutta Internet.
+  Questo potrebbe creare un sovraccarico del server e, in caso di problemi,
+  l'amministratore potrebbe dover sospendere o rimuovere il corso.
+ !endif
+ Il corso terminer&agrave; il $exp_day/$exp_month/$exp_year. <p>
+ Ti preghiamo di
+ !href module=$module&cmd=reply&step=0 correggere
+ le informazioni errate. <p>Se &egrave; tutto corretto, inserisci di nuovo 
+ le password per una ulteriore verifica. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Password del docente:
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Password $name_classesss:
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="Continua"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Cara/o, $supervisor!<p>
+ Occorre ora inserire il codice di attivazione per il corso interattivo
+ WIMS sul server $http_HTTP_HOST. <p>
+ Il codice ti &egrave; stato spedito all'indirizzo 
+ ``<tt>$email</tt>''. Verifica la casella di posta elettronica
+ (potrebbe essere necessario un po' di tempo perch&eacute; il messaggio
+ arrivi a destinazione) e inserisci il codice di attivazione in questo spazio. <p>
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Codice di attivazione: <input size=12 name=typecode>
+ <p><input type=submit value="Continua"></center>
+ </form>
+ <b>Nota:</b> Questo codice serve solo in questa occasione.
+ Non pu&ograve; essere utilizzato per accedere al $name_classe!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Cara/o, $supervisor!<p>
+ Il $name_classe $classname &egrave; ora attivo. Congratulazioni e
+ buon lavoro!<p>
+ Il corso &egrave; limitato a $ilimit participants (te incluso). 
+  !if $Cltype iswordof 0 1
+Il livello del corso &egrave; <font color=green>$name_level</font>.
+ !endif
+ <p>
+ !read links.phtml
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Ricomincia da capo
+:end
+!tail
+
+!set step=
+

@@ -1,0 +1,80 @@
+
+!distribute item message of the day,\
+    exercise,work sheet,exam,document,participant\
+    into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!set code1=没有
+!set code2=是, 但不同
+!set code3=是, 活动且不同
+
+<em><font color=blue>$nei_institution</font></em> 的班级
+!href cmd=reply&job2=def $nei_description
+!if $newcnt1+$newcnt2<1
+没有你能输入的资源.
+ !href cmd=reply&job2=def 返回
+.
+ !exit
+!endif
+有以下可输入资源.
+<small>
+!href cmd=help&special_parm=import 帮助
+</small>
+
+!if $newcnt1>0
+ <p>$table_header
+ <caption>教学资源</caption>
+ $table_hdtr<th>类型<th>标题<th><small>名字</small>
+ <th><small>内容</small>
+ <th>你班级内同样标题<th>输入
+ !for i=1 to $newcnt1
+  !set l=!line $i of $newrec
+  !set ll=!words2items $l
+  $table_tr
+  <td align=center>$(name_$(rtype$i))
+  <td align=center>$(rname$i)
+  <td align=center><small>$(rName$i)</small>
+  <td align=center>$(rcnt$i)
+  <td align=center>$(code$(rcode$i))
+  <td align=center>
+  !if $(rstat$i)=0 or $(rcnt$i)=0
+   !if $(rcnt$i)=0
+    空的
+   !else
+    <small>准备中</small>
+   !endif
+  !else
+   !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
+    !href cmd=reply&job2=import2&import=$ll&impmethod=add 增加
+   !endif
+   !if $(rcode$i)=2
+    &nbsp;
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) 替换
+   !endif
+  !endif
+ !next i
+ $table_end
+!endif
+
+!if $newcnt2>0
+ <p>$table_header
+ <caption>参加者帐户
+ !if $newcnt2>2
+  !href cmd=reply&job2=import2&import=user,-all- [输入所有人]
+ !endif
+ </caption>
+ $table_hdtr<th>登录名<th>姓<th>名<th>输入
+ !for i=1 to $newcnt2
+  $table_tr<td>$(ulogin$i)
+  <td>$(uname2$i)<td>$(uname1$i)<td align=center>
+  !if $(ucode$i)=1
+   !href cmd=reply&job2=import2&import=user,$(ulogin$i) 增加
+  !else
+   !if $(ucode$i)=2
+你班级里使用的登录名
+   !else
+被删除的用户在你班级里
+   !endif
+  !endif
+ !next i
+ $table_end
+!endif
+

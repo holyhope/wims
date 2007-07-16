@@ -1,0 +1,65 @@
+To je vodeni naèin za urejanje va¹ih lastnih interaktivnih
+!if $wims_user!=supervisor
+ vaj.
+!else
+ vaj za virtualno uèilnico <font color=blue>
+ $wims_classname</font> ustanove <font color=blue>$wims_institutionname</font>.
+!endif
+Èe ste izku¹eni uporabnik ali pa imate ¾e pripravljeno kodo kak¹ne vaje,
+vam bo morda bolj ustrezal
+!href cmd=reply&rawinp=yes neposredni naèin
+ ali pa
+!href cmd=reply&mode=file datoteèni naèin
+ urejanja.
+Za zaèetnike so na voljo tudi 
+!href cmd=help&special_parm=examples pripravljeni primeri
+.
+
+!form reply
+<input type=hidden name=level value=2>
+Vpi¹ite naslov vaje, ki jo ¾elite ustvariti:<br>
+<input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
+Izberite naèin oblikovanja:
+!formselect oef_format list tex,html
+ [
+ !href target=wims_mhelp cmd=help&special_parm=format pomoè
+ ]<p>
+©tevilo prostih odgovorov, ki jih zahteva vaja, naj bo
+!formselect oef_answercnt from 0 to 10
+, ¹tevilo odgovorov izbirnega tipa pa
+!formselect oef_choicecnt from 0 to 10
+.
+Nepoenostavljeni numerièni odgovori (npr. <tt>3*5-sin(pi/3)</tt>) bodo
+!formselect oef_computeanswer list yes,no prompt sprejeti,zavrnjeni
+. <br>©tevilo pogojev za preverjanje prostih odgovorov:
+!formselect oef_condcnt from 0 to $condlim
+.
+ [
+ !href target=wims_mhelp cmd=help&special_parm=reply pomoè
+ ]
+<p><table border=0><tr><td align=right>
+Ime avtorja:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+<tr><td align=right>
+E-naslov avtorja:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+</table>
+<p><center>
+<input type=submit value="Naprej na vsebino vaje">
+</center>
+</form>
+
+Oglejte si tudi
+!href module=adm/modtool Modtool
+ za online razvoj celotnih WIMS modulov.
+
+!if $wims_user=supervisor
+ !read wimshome/log/classes/$wims_class/Exindex
+ !if $exototal>0
+  <p>
+  !form new
+  <input type=hidden name=module value=$module>
+  Za spreminjanje ¾e obstojeèe vaje jo izberite s seznama:
+  !formselect existing list $exolist prompt $titlelist
+  <input type=submit value=Potrdi></form>
+ !endif
+!endif
+

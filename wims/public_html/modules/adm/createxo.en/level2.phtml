@@ -1,0 +1,108 @@
+!set sizex=65
+!set types=!sort nocase lines \
+auto,			default\
+algebraic expression,	algexp\
+approximative text,	atext\
+case-nonsensitive text,	nocase\
+case-sensitive text,	case\
+raw text,		raw\
+character set, 		chset\
+equation,		equation\
+finite set,		set\
+formal expression,	formal\
+literal expression,	litexp\
+matrix,			matrix\
+number,			numeric\
+number with range,	range\
+number with units,	units\
+numerical function,	function\
+vector,			vector\
+words in a list,	wlist
+
+!set types=!nonempty lines $types
+!set typelist=!column 2 of $types
+!set typenames=!column 1 of $types
+
+Now please enter the content of your exercise
+<font color=red><b>$oef_title</b></font>.
+!href cmd=reply&level=1 Back to the starting menu
+. <p>
+
+!form reply
+<input type=hidden name=level value=3>
+You may define random parameters here: [
+!href target=wims_mhelp cmd=help&special_parm=parameters explanations
+ ]<br>
+!set o_parms=!reinput $oef_parms
+<textarea wrap="off" rows=6 cols=$sizex name=oef_parms>$o_parms</textarea>
+<p>
+The statement of the exercise ($oef_format format): [
+!href target=wims_mhelp cmd=help&special_parm=format explanations
+ ]<br>
+!set o_statement=!reinput $oef_statement
+<textarea wrap="off" rows=6 cols=$sizex name=oef_statement>$o_statement</textarea>
+<p>
+!if $oef_answercnt>0
+ <table border=1>
+ <caption>Freestyle replies
+ <tr><th>Name<th>Good solution<th>Type</b><small>
+ !href target=wims_mhelp cmd=help&special_parm=reply#freestyle [help]
+ !for i=1 to $oef_answercnt
+  !default anstype$i=default
+  !set p_=!reinput $(ansprompt$i)
+  <tr><td> <input size=$[$promptlim-3] maxlength=$promptlim name=ansprompt$i value="$p_">
+  !set p_=!reinput $(ansgood$i)
+  <td> <input size=30 name=ansgood$i value="$p_">
+  <td><small>
+  !formselect anstype$i list $typelist prompt $typenames
+ !next i
+ </table> <p>
+ Required precision of numerical replies:
+ !formselect oef_precision list 100,1000,10000,100000,1000000 prompt 1/100,1/1000,1/10 000,1/100 000,1/1 000 000
+ <br>(Numerical) functions will be compared in the interval
+ (&nbsp;<input size=6 name=oef_rangel value="$oef_rangel">,<input size=6 name=oef_ranger value="$oef_ranger">&nbsp;).
+ <p>
+!endif
+
+!if $oef_condcnt>0
+ <table border=1>
+ <caption>Conditions for analysis of (numerical) replies
+ <tr><th>Name of the condition<th>Definition of the condition
+ !for i=1 to $oef_condcnt
+  !set p_=!reinput $(Condname$i)
+  <tr><td><input size=$promptlim maxlength=$promptlim name=Condname$i value="$p_">
+  !set p_=!reinput $(Condtest$i)
+  <td> <input size=40 name=Condtest$i value="$p_">
+ !next i
+ </table> <p>
+!endif
+
+!if $oef_choicecnt>0
+ <table border=1>
+ <caption>Multiple choices
+ <tr><th>Name<th>Good choices<th>Bad choices
+ !for i=1 to $oef_choicecnt
+  !set p_=!reinput $(choiprompt$i)
+  <tr><td> <input size=$promptlim maxlength=$promptlim name=choiprompt$i value="$p_">
+  !set p_=!reinput $(choigood$i)
+  <td> <input size=10 name=choigood$i value="$p_">
+  !set p_=!reinput $(choibad$i)
+  <td> <input size=30 name=choibad$i value="$p_">
+ !next i
+ </table> <p>
+!endif
+
+<p><center>
+<input type=submit value="Register the content">
+</center> <p>
+You may optionally give a hint and/or a solution:
+<table border=0>
+<tr><td>Hint<br>(html format)
+!set pp=!reinput $oef_hint
+<td><textarea wrap="off" rows=3 cols=$[$sizex-10] name=oef_hint>$pp</textarea>
+<tr><td>Solution<br>(html format)
+!set pp=!reinput $oef_solution
+<td><textarea wrap="off" rows=3 cols=$[$sizex-10] name=oef_solution>$pp</textarea>
+</table>
+</form>
+

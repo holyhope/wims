@@ -1,0 +1,75 @@
+!if class = $doctype
+ !defread wimshome/log/classes/$wims_class/.def
+ !default author=$class_supervisor
+ !default email=$class_email
+!endif
+
+!set wims_form_method=post
+!form reply
+<center><table border=0>
+<tr><td align=right>Título:
+<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>Autor:
+<td><input type=text size=40 name=authorr value="$author">
+<tr><td align=right>Correo electrónico:
+<td><input type=text size=40 name=emailr value="$email">
+<tr><td align=right>Cabecera:<br>
+<small>(css, js, etc.)</small>
+!set header=!translate internal $	$ to $\
+$ in $header
+!set hl=!linecnt $header
+!set hr=$[max(3,min($hl+2,10))]
+!set header=!reinput $header
+<td><textarea cols=40 rows=$hr name=headerr>$header</textarea>
+!reset headerr
+!set docopenr=$docopen
+!default docopenr=0
+!if class != $doctype
+ <tr><td align=right>Copyright:<td>
+ !set copyrightr=$copyright
+ !default copyrightr=gnu
+ !formselect copyrightr list gnu,opl,private prompt\
+	GNU Free Documentation License,\
+	Open Publication License,\
+	All Rights Reserved
+ <tr><td align=right>Abierto al público:<td>
+ !formselect docopenr list yes,no prompt Sí, No
+ <tr><td align=right>Idioma(s):<td>
+ !default dlang=all
+ <input size=14 name=dlangr value="$dlang"> <br><small>
+ Examples: all en fr es it de cn</small>
+ !if $job=creat
+  <tr><td align=right>Clave secreta:<td nowrap>
+  <input type=password size=$codemax maxlength=$codemax name=coder> repítala:
+  <input type=password size=$codemax maxlength=$codemax name=coder2>
+  <tr><td colspan=2><small>La clave secreta autoriza a modificar el documento.
+  Debe estar compuesta por entre $codemin y $codemax caracteres alfanuméricos.
+  </small>
+ !endif
+!else
+ <tr><td align=right> Los participantes pueden <td>
+ !formselect docopenr list 0,1,2 prompt \
+	ni leer ni escribir en,\
+	leer pero no escribir en,\
+	leer y escribir en
+ este documento.
+!endif
+
+</table>
+<p>
+ <input type=submit name=rEg value="Grabar">&nbsp;
+ <input type=submit name=abandon value="Cancelar">
+</center>
+</form>
+
+<p>
+!if class != $doctype
+ <b>Nota</b>. Necesita la aprobación del
+ !mailurl $wims_site_manager administrador del sitio\
+Ask to open WIMS document $doc
+ para permitir que el público pueda acceder al documento.
+ <p>
+!else
+ Este documento sólo es visible dentro de su clase virtual.
+!endif
+

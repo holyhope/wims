@@ -1,0 +1,298 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+<center><h1>WIMS op $httpd_HTTP_HOST
+<br>
+Aanmelden bij  $name_classess
+!if $cltype iswordof 2 4 and $classcnt>0
+ <br> (alleen voor docenten)
+!endif
+
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $classcnt=0
+    Helaas , er is geen klas op deze server waarin U zich kunt aanmelden..
+    Probeer het later nog eens...
+    !goto end
+!endif
+
+
+!if $class=$empty
+    Kies een klas waarby U zich wilt aanmelden
+ (klik op de naam). <p>
+ $table_header
+ !if $ctype=0
+  $table_hdtr
+  <th>Naam<th>Docent<th>Niveau<th>taal</th>
+  <th>Beschikbare <br>plaatsen<th>Status
+ !else
+  <caption>$institution_name</caption>
+  $table_hdtr
+  <th>Naam<th>Docent<th>Niveau
+  <th>Status
+ !endif
+ !for cl in $classlist
+  !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
+  !defread wimshome/log/classes/$cl/.def
+  !distribute char $class_level into l1,l2
+  !set part=!recordcnt wimshome/log/classes/$cl/.userlist
+  $table_tr<td align=center>
+  !if $ctype=0
+   !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
+  !else
+   !href module=$module&cmd=reply&class=$cl $class_description
+  !endif
+  <td align=center>
+  !mailurl $class_email $class_supervisor
+  </td>
+  !if $class_level=$empty
+  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    <td align=center>$pname</td>
+ !else
+    <td align=center>$(level$l1)<br>leerjaar $l2</td>
+  !endif
+  !if $ctype=0
+   <td align=center>$(lang_$class_lang)</td>
+   <td align=right>
+   !if $class_limit-$part>$site_dispo
+    $site_dispo
+   !else
+    $[$class_limit-$part]
+   !endif
+  !endif
+  !if $class_password=$empty
+   <td align=center>open</td>
+  !else
+   <td align=center>besloten</td>
+  !endif
+ !next cl
+ $table_end <p>
+ <b>Opmerking.</b> U kunt zich altijd inschrijven bij de open klassen.<br>
+ Vor de aanmelding bij besloten klassen is een klasse wachtwoord vereist.<br>
+ Dit wachtwoord is verkrijgbaar bij de docent.
+ !goto end1
+!endif class=empty
+
+!set classname=<b><font color=green>$description</font></b>\
+ van <b><font color=green>$institution</font></b>
+
+!if $password!=$empty and $passverify=$empty
+ !if $cltype iswordof 2 4
+  Een
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>portaal</b>
+ !else
+  een klas
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+ !endif
+ van <b><font color=green>$institution</font></b>
+ !if $cltype iswordof 4 2
+  is beschermd door een wachtwoord en de directe aanmelding is voorbehouden voor 
+  <b>docenten</b>.
+  !if $classcnt>0 
+  Als U een leerling bent, kunt U zich inschrijven
+  !href cmd=new&module=$module&class=$class&subclass=yes bij Uw eigen
+  groep
+  !endif
+ !else
+ en is beschermd door een wachtwoord.
+  !endif
+ <p>
+ Geef hier het aanmeldings wachtwoord
+ !if $cltype iswordof 2 4
+  voor <b>docenten</b>.
+ !else
+  voor <b>leerlingen</b>.
+ !endif
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Wachtwoord :
+ <input type=password name=classpass>
+ <p>
+ <input type=submit value="OPSTUREN">
+ </center></form> <p>
+ !if $cltype iswordof 2 4
+  <b>Opmerking</b>.
+  De Supervisor ($supervisor)
+ !else
+  <b>Opmerking</b>. 
+  De Docent ($supervisor)
+ !endif
+ moet U het aanmeldings wachtwoord geven. 
+ (
+ !if $cltype iswordof 2 4
+  !mailurl $smail Schrijf naar de supervisor
+ !else
+  !mailurl $smail Schrijf naar de docent
+ !endif
+ )
+ !if $cltype iswordof 2 4
+  <p><b>OPGELET</b>. De directe aanmelding bij $name_classe is alleen voor docenten ! <br>
+  Bent U een leerling, schrijf U dan in bij
+  !href cmd=new&module=$module&class=$class&subclass=yes &eacute;&eacute;n 
+  van de beschikbare klassen
+.
+  <p>
+  !endif
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
+  !form reply
+  <input type=hidden name=step value=1>
+  Zoekt U een leerling van klas $name_classes, 
+  voer hier dan de naam of een gedeelte van een naam in
+  (echte naam of loginnaam)&nbsp;
+  <input size=20 name=search value="$search">
+  <input type=submit value=OK>
+  </form> <p>
+  !default foundcnt=0
+  !if $foundcnt>0
+   $table_header
+   <caption>
+   Klik op de naam van een klas waarin U zich wilt aanmelden.
+  </caption>
+   $table_hdtr<th>Naam</th><th>login</th></tr>
+   !for i=1 to $foundcnt
+    !set l=!line $i of $found
+    !distribute item $l into l_,f_,L_
+    $table_tr<td>
+    !href cmd=reply&step=2&login=$L_ $l_, $f_
+    </td>
+    <td>$L_</td></tr>
+   !next i
+   $table_end
+   !goto end1
+  !endif
+  !if $search!=$empty and $foundcnt=0
+   (niets onder de zoekopdracht``<tt>$search</tt>`` gevonden op deze server)
+  <p>
+  !endif
+  Vul de volgende informatie in over de nieuwe deelnemer van $classname.
+  !set name_Your=De
+  !set name_you=de deelnemer
+  !set utilisera=de deelnemer gebruikt
+ !else
+  Om jezelf aan te melden als deelnemer
+  !if  $cltype iswordof 2 4
+  - docent
+  !endif
+ van $name_classes $classname,
+ geef de volgende informatie
+  !set name_Your=Uw
+  !set name_you=uw
+  !set utilisera=u gebruikt
+ !endif
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>$name_Your achternaam <input size=20 name=lastn value="$lastn">
+  en voornaam <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>Kies een loginnaam :
+  <input size=16 name=login value="$login"> <br>
+  Dat is de naam die $utilisera om in te loggen by $classname
+    <small> zonder accenten, punten, komma's en spaties</small>
+  <p>
+ <li>En een wachtwoord :
+  <input type=password size=16 name=pass> <br>
+    Dit wachtwoord mag tussen de 4 en 16 letters en nummers lang zijn<br>
+  <p>
+ <li>$name_Your email adres (optioneel) :<br>
+  <input size=60 name=email value="$email">
+  <p>
+ !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
+  <li>Soort account :
+  !default utype=0
+  !formradio utype list 0,1 prompt leerling,docent
+ !endif
+ <center><input type=submit value="Aanmelden"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Hallo, $firstn $lastn!<p>
+ U bent bezig met de aanmelding en inschrijving als deelnemer
+ !if $Cltype iswordof 2 4
+ - docent
+ !endif
+ van $name_classesss $classname, met als loginnaam &nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+ U heeft geen geldig emailadres opgegeven.
+  <p>
+ !else
+  Het opgegeven emailadres : <tt>$email</tt> <p>
+ !endif
+ Om het opgegeven wachtwoord te kontroleren, voer het hier nog een keer in:
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="OK en OPSTUREN"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ !if $wims_user=supervisor
+  De deelnemer <tt>$firstn $lastn </tt> is toegevoegd aan de klas ``<tt>$name_classe</tt>``.
+  !if $wims_supertype=4
+   !readproc adm/gateway/transfer $login test
+   !if $transfer_test>0
+    <p>
+    Deze deelnemer heeft misschien al gewerkt in een andere klas.
+    !href module=adm/class/userlist&job=transfer&getuser=$login Zet de activiteiten
+    over naar deze klas.
+    <p>
+   !endif
+  !endif
+  !href module=adm/class/userlist Lijst van deelnemers
+.&nbsp;
+  !href module=$module&step=1 Voeg nog een deelnemer toe
+.
+  !goto end
+ !endif
+ Hallo, $firstn $lastn!<p>
+ Welkom op <tt> $name_classes $classname </tt>.
+ U bent nu een deelnemer, met als loginnaam
+ <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
+ U kunt nu
+ !if $wims_class!=$empty
+  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
+	aan het werk in de klas
+.
+ !else
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+  aan het werk</a>. (vergeet geen bookmark te maken van deze link.)
+ !endif
+ !goto end
+!endif
+
+:end1
+!if $wims_user=supervisor
+ !goto end
+!endif
+<p>
+!if $cltype iswordof 2 4
+ !href module=adm/class/classes&type=supervisor Lijst van klassen en scholen of instituten 
+.
+!else
+ !href module=adm/class/classes&type=participant Lijst van klassen
+.
+!endif
+:end
+!tail
+
+!reset step, subclass
+

@@ -1,0 +1,43 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Bericht van de dag
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Terug naar de hoofdpagina van uw klas
+. <p>
+ !goto end
+!endif
+Op deze pagina kunt U het "bericht van de dag" schrijven of wijzigen.
+Dit bericht van de dag is altijd te lezen door uw leerlingen op hun 
+!href style=student home pagina 
+<p>
+Schijf uw "Bericht van de dag" (html-links en html-tags zijn toegestaan):
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value="Verstuur het Bericht van de dag"></center>
+</form>
+
+
+:end
+!tail
+
+!set job=
+!set showsheet=

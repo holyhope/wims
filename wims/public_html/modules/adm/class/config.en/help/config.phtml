@@ -1,0 +1,229 @@
+
+!set sp2=$special_parm2
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
+	bgcolor,homepage,bgimg,theme,css,logo,lock,exolog,examlog\
+	default $
+
+!if $sp2=$empty
+ !exit
+!endif
+
+!goto $sp2
+
+:secure
+<b>Secure hosts</b>.
+Consider the possibility under which there is a leak of your supervisor
+password: when you connect to the class as supervisor within a class room, a
+student may look over your shoulder, or even install a keyboard scanning
+software to register what you type (including the password). Believe me: if
+you keep real scores in your class, the supervisor password becomes a very
+coveted object.
+<p>
+The consequence of such a leak may be catastrophic to the class: data may
+be damaged, grades may be modified, or even you may lose your supervisor
+access if the student changes your password.
+<p>
+Definition of secure hosts puts an extra security layer: sensitive
+manipulations such as class configuration, password change or score
+modificatoin can only be
+made from pre-defined <em>secure hosts</em>, when you are sure that students
+have no access to these hosts. So even if a student steals your password,
+there is not much (s)he can do to the class.
+<p>
+!read help/hosts.phtml
+<p>
+By the way, if you have to type your password in a very hostile environment
+(such as in the middle of student computers), you should also consider using
+one-time passwords (see the password page).
+!exit
+
+:supervisor
+ <b>Supervisor name</b>. Enter here your name, in the way you like.
+!exit
+
+:email
+ <b>Supervisor email</b>.
+ Important notifications (secret codes, expiration notice, etc.) will be sent
+ to this address. This is also where student will send you messages. So you
+ MUST give your active email address, otherwise you may even lose control of
+ your class.
+!exit
+
+:option
+ <b>Option words of the class</b>. The following words can be used here:
+ <ul>
+ <li><tt>showshexpire</tt>. Show the expiration date of worksheets in the
+  home page of participants.
+ <li><tt>showexexpire</tt>. Show the expiration date of exam sheets in the
+  home page of participants.
+ </ul> 
+!exit
+
+:lang
+ Supported languages: <ul>
+ <li>cn (Chinese gb)
+ <li>en (English)
+ <li>es (Spanish)
+ <li>fr (French)
+ <li>it (Italian)
+ <li>tw (Chinese big5)
+</ul>
+!exit
+
+:level
+ Meanings of the levels: <ul>
+ <li>E1 - E6: Elementary school, year 1 to 6.
+ <li>H1 - H6: Secondary school, year 1 to 6.
+ <li>U1 - U5: University, year 1 to 5.
+ <li>G: University, Graduate study.
+ <li>R: Research.
+</ul>
+!exit
+
+:limit
+ <b>Participant number limit</b>. Registration of new participants will be
+refused if this limit is reached. This site has defined a hard limit
+($wims_class_user_limit) that cannot be exceeded.
+!exit
+
+:expiration
+ <b>Expiration date</b>. The class will be closed when it reaches the
+expiration date. You may extend this date at any moment, but extensions
+exceeding one year from the actual date will be refused.
+<p>
+ If you want to extend this date to more than one year, you may do it
+ in several times at regular intervals, or
+ <a href="mailto:$wims_site_manager?subject=Virtual class extension
+ demand">ask the site manager</a> to do it for you.
+ <p>
+ This date must be entered in 8-digit form (yyyymmdd).
+ Example: 20120523 means May 23, 2012.
+!exit
+
+:bgcolor
+ <b>Page background color and menu color</b>. These two colors can help you
+ quickly recognize pages within your virtual class. The values of these
+ fields must be valid html color names.
+ <p>
+ Default value: background color = white, menu color = #D0C080
+!exit
+
+:homepage
+ <b>Participant homepage</b>. You may put the address of a document block
+ (such as <tt>c1/main</tt>) to be the home page of the class for participants.
+ The document itself need not be readable by participants.
+ <p>
+ Leave this field blanck if you want to use the standard home page.
+ <p>
+ All the links in the block should be defined using the command <tt>\adm</tt>.
+ You can use the following pre-defined variables:<ul>
+ <li><tt>\firstname</tt> Participant's first name
+ <li><tt>\lastname</tt> Participant's last name
+ <li><tt>\scores</tt> Participants's score information. This is a list of
+numbers. Each pair of numbers corresponds to one sheet: percentage of points
+and score quality.
+ <li><tt>\newmsgcnt</tt> Unread messages in the class forum.
+ <li><tt>\today</tt> Date of today, yyyymmdd.
+ <li><tt>\sheets</tt> Number of work sheets.
+ <li><tt>\exams</tt> Number of exam sheets.
+ <li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
+ Expiration date of sheet 1, sheet 2, exam 1, ..., yyyymmdd.
+ <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
+ Status of sheet 1, sheet 2, exam 1, ... This is a non-negative integer; 0
+ = under preparation, 1 = active, 2 = expired, 3 = hidden.
+ </ul>
+!exit
+
+:bgimg
+ Background image file (tile) for pages in the class. You may use any valid URL.
+ There are also prepared background image files which you can use without
+ adding any address prefix:<p>
+ <tt>$bgimgs</tt>
+!exit
+
+:theme
+The style theme of your class.
+!exit
+
+:css
+The style sheet affects almost all pages of your class.
+<p>
+Choose `<tt>----</tt>' to disable style sheets.
+<p>
+Choose `<tt>-theme-</tt>' to take style sheets corresponding to your choice
+of the theme.
+<p>
+Choose `<tt>class</tt>' to use the style sheet (css) defined by yourself.
+Please refer to css documents for the syntax. <b>Remark</b>. If you define
+your own css, please test it with ALL possible browsers used by your
+students, for possible incompatibilities!
+<p>
+The other choices correspond to pre-defined styles on this WIMS site.
+!exit
+
+:logo
+The logo of the class is a graphics file that will be shown on the top 
+of the homepage of the class, both for supervisor and for participants.
+This logo can be put either on the top left or the top right corner.
+<p>
+Choose `<tt>none</tt>' if you don't want a logo to be shown.
+<p>
+If you choose empty string or `<tt>wims</tt>', the WIMS logo will be used.
+<p>
+Otherwise, you may put the URL of any valid graphics file here.
+!exit
+
+:lock
+Connection lock helps to track users, and can help anti-cheating. There are
+8 lock levels. <ul>
+<p><li>0: No connection lock is used.
+
+<p><li>1: Cookie-tracking is activated. Connections without correct return
+ cookie will be refused.
+
+<p><li>2: Secured (https) connection is required. Connections using usual
+http request will be refused. You must check first whether the web server
+on this WIMS site accepts https connections.
+
+<p><li>3: Host address lock is activated. Participants will have no right to
+change his/her host address within one session. There will be difficulties
+when connections are made from dynamically allocated IP numbers.
+
+<p><li>4: Cookie-tracking + https.
+<p><li>5: Cookie-tracking + Host lock.
+<p><li>6: All the above methods are activated.
+<p><li>7: The class is closed. No participant connection accepted.
+</ul> <p>
+!exit
+
+:exolog
+Number of exercise registrations (limited to $wims_exolog_limit)
+<p>
+This is the maximal number of exercises for which each participant can 
+register the details.
+<p>
+These details allow participants and supervisor to review the action of
+the exercise, and eventually make discussions.
+<p>
+The detail of an exercise is registered only if the participant gives the
+order. When the maximal number is exceeded, the most ancient registrations
+are erased.
+!goto logs
+
+:examlog
+Number of exam registrations (limited to $wims_examlog_limit)
+<p>
+This is the maximal number of exam sessions whose details can be registered
+for each participant.
+<p>
+These details allow participants and supervisor to review the action of the
+exam, exercise by exercise.
+<p>
+The registration of exam sessions is automatic. When the maximal number is
+exceeded, the most ancient registrations will be erased.
+:logs
+<p>
+Put this number to 0 if you want to disable this registration.
+<b>ATTENTION</b> the registration of exercises and exams may take a lot of
+space! If you put these numbers too big, you class risks disk quota overflow.
+

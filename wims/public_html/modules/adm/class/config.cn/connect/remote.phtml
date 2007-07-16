@@ -1,0 +1,22 @@
+远程服务器: 
+<font color=blue>$connident</font>
+($ident_desc)位于
+<a href=http://$site>$site</a>, 类型为
+<font color=blue>$ident_type</font>.
+
+!if $cn_status!=OK
+ <p><b>错误</b>.
+ !if $cn_status=$empty
+远程服务器没有回应. 请报告
+  !mailurl $wims_site_manager 网站管理员
+.
+ !else
+连接被远程服务器拒绝. 出错信息为:
+<pre>
+$cn_data
+</pre>
+ !endif
+ !set error=yes
+ !exit
+!endif
+

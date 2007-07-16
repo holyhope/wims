@@ -1,0 +1,26 @@
+<center>$classname<p>
+
+<h3>Deleted participants</h3> <p>
+
+</center>
+!if $delcnt<1
+ There is no deleted participant in this class.
+ <p>
+!else
+ Click on a login name to recover the user.
+ $table_header
+  $table_hdtr<th>login<th>name
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ $table_end <p>
+!endif
+
+<center>
+ !href cmd=resume List of all participants
+ .
+</center> <p>
+

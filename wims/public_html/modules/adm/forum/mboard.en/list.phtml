@@ -1,0 +1,53 @@
+
+!read desc.phtml
+<p>
+!if $tot<=0
+ !if $mlist!=.newlist
+  No accessible message is found corresponding to your request. Sorry.
+ !else
+  There is no message in this forum.
+ !endif
+!else
+ !if $mlist=.newlist
+  List of latest messages, most
+ !else
+  List of messages during
+  !item $lmon of $monthnames
+  $lyear, most
+ !endif
+ !item $l_order of recent first,ancient first
+. <small>
+ !href cmd=reply&l_order=$[$l_order%2+1] [Reverse the order]
+ !if $send_right>0
+  &nbsp;
+  !href cmd=new&forum=$forum&job=compose [New message]
+ !endif
+</small>
+ <ul>
+ !set lh=<li>
+ !if $l_order=1
+  !distribute item $tot,1,-1 into start,end,step
+ !else
+  !distribute item 1,$tot,1 into start,end,step
+ !endif
+ !for i=$start to $end step $step
+  !if $mlist=.newlist
+   !set l_=!line $i of $mnew
+   !distribute word $l_ into a_,b_
+   !set l_=!record $b_ of $forumdir/$a_/.msglist
+  !else
+   !set l_=!record $i of $forumdir/$mlist/.msglist
+  !endif
+  !read listone.phtml $l_
+ !next i
+ </ul>
+!endif
+
+<p>
+!if $mlist!=.newlist
+ !href cmd=reply&job=list&mlist=.newlist Latest messages.
+ &nbsp;
+!endif
+
+!read listarch.phtml
+

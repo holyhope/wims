@@ -1,0 +1,63 @@
+<center><h1>$cdt_title</h1>
+<font size=+1>File deposit</font></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ The file <b>$erase</b> has been deleted.
+ <p>
+!endif
+
+!if $quota_free<1
+ You can no longer deposit files because the content of the class is very close to, or exceeded, the limit of disk space allowance. Sorry.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=deposit>
+ You can deposit a file :
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=OK>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>Available files &nbsp;:
+ !for f in $flist
+  !getfile cdt/$wims_class/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Erase a file &nbsp;:
+ !formselect job2 list $flist
+ <input type=submit value=OK
+ </form>
+ <p>
+ Files can be accessed using the variable
+ <tt>\filedir</tt>. for example,
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ gives a link to the file <a href=$m_filedir/$f1>$f1</a>.
+ Also you can write 
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+to include an image file <tt>myfile.jpg</tt> to the page.
+ <p>
+ Files deposit are only accessible by participant of the class.
+!endif
+
+<p>
+Total available disk space &nbsp;: $quota_total Meg.
+Free disk space &nbsp;: $quota_free Meg.
+
+<p><p>
+!href cmd=reply&job=home Back
+.
+
+!reset erase,job2

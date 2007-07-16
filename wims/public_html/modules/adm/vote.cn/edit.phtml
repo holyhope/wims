@@ -1,0 +1,31 @@
+
+!set wims_form_method=post
+!form reply
+
+投票或记录的
+!if $vote_title=$empty
+ 创建
+!else
+ 修改
+!endif
+<br>
+标题: <input size=50 name=reg_title value="$vote_title"> <br>
+模式:
+!set reg_status=$vote_status
+!set reg_option=$vote_option
+!set reg_show=$vote_show
+!formselect reg_option list anonymous,nominative prompt 匿名,记名
+状态:
+!formselect reg_status from 0 to 3 prompt 预备,开放,关闭,隐藏
+投票结果:
+!formselect reg_show list 1,0 prompt 公开,隐藏
+<br> 内容: <small>
+!href cmd=help [帮助]
+</small> <br>
+<textarea name=reg_src cols=60 rows=20>$src</textarea>
+<center>
+<input type=submit name=rEg value="发送">
+<input type=submit name=abandon value="取消">
+</center>
+
+!reset reg_option reg_status reg_show

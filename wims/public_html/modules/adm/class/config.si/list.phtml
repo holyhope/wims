@@ -1,0 +1,143 @@
+!if $supertype=4 and $classdepth<=3
+<p><center>
+ !href module=adm/class/gateway Urejanje strukture
+</center>
+!endif
+
+!form reply
+<input type=hidden name=up_job value=list>
+$table_header
+$table_tr<td align=right>Ime ustanove
+<td colspan=3>
+!if $supertype notin 24 or $classdepth=1
+ <input size=50 name=up_institution value="$class_institution">
+!else
+ $class_institution
+!endif
+$table_tr<td align=right>Ime uèilnice
+<td colspan=3>
+<input size=50 name=up_description value="$class_description">
+$table_tr<td align=right>Varne povezave
+<small>
+!href cmd=help&special_parm=config&special_parm2=secure help
+ </small>
+<td colspan=3>
+<input size=50 name=up_secure value="$class_secure">
+$table_tr<td align=right>Ime skrbnika
+<small>
+!href cmd=help&special_parm=config&special_parm2=supervisor help
+ </small>
+<td colspan=3>
+<input size=40 name=up_supervisor value="$class_supervisor">
+$table_tr<td align=right>E-naslov skrbnika
+<small>
+!href cmd=help&special_parm=config&special_parm2=email help
+ </small>
+<td colspan=3>
+<input size=40 name=up_email value="$class_email">
+$table_tr<td align=right>Option words
+<small>
+!href cmd=help&special_parm=config&special_parm2=option help
+ </small>
+<td colspan=3>
+<input size=40 name=up_option value="$class_option">
+$table_tr<td align=right colspan=2>Stopnja zaklepa povezave
+<small>
+!href cmd=help&special_parm=config&special_parm2=lock help
+</small>
+</td><td colspan=2>
+!set up_lock=$class_lock
+!default up_lock=0
+!formselect up_lock from 0 to 6
+</td>
+$table_tr<td align=right>Jezik uèilnice
+<small>
+!href cmd=help&special_parm=config&special_parm2=lang help
+ </small>
+<td>
+!set up_lang=$class_lang
+!set langs=!words2items $wims_site_languages
+!formselect up_lang list $langs
+<td align=right>
+Akademska stopnja
+<small>
+!href cmd=help&special_parm=config&special_parm2=level help
+ </small>
+<td>
+!set up_level=$class_level
+!formselect up_level list $levellist
+$table_tr<td align=right>Maks. ¹tevilo uporabnikov
+<small>
+!href cmd=help&special_parm=config&special_parm2=limit help
+ </small>
+<td><input size=5 name=up_limit value="$class_limit">
+<td align=right>Datum zakljuèka
+<small><b>llllmmdd</b></small>
+<small>
+!href cmd=help&special_parm=config&special_parm2=expiration help
+ </small>
+<td>
+!if $class_type notin 13
+ <input size=8 maxlength=8 name=up_expiration value="$class_expiration">
+!else
+ <tt>$class_expiration</tt>
+!endif
+$table_tr<td align=right>Registracija vaj
+<small>
+!href cmd=help&special_parm=config&special_parm2=exolog help
+ </small>
+!default class_exolog=0
+<td><input size=3 name=up_exolog value="$class_exolog">
+<td align=right>Registracija izpitov
+<small>
+!href cmd=help&special_parm=config&special_parm2=examlog help
+ </small>
+!default class_examlog=$wims_examlog_limit
+<td><input size=3 name=up_examlog value="$class_examlog">
+$table_hdtr<td align=center colspan=4>
+<input type=submit name=save value=Shrani>
+&nbsp;
+<input type=submit name=abandon value=Povrni>
+$table_end <p>
+</form>
+
+Other configurations:
+!href cmd=reply&job=present Podoba
+.
+!href cmd=reply&job=neighbor&job2=first Sosednje uèilnice
+.
+!href cmd=reply&job=connect&job2=first Drugi stre¾niki
+.
+!href module=adm/class/passwd Gesla
+.
+!href module=adm/forum/mboard&job=config Deska za sporoèila
+.
+!href module=adm/doc Dokumenti
+.
+!href module=adm/class/motd Sporoèilo dneva
+.
+!href cmd=reply&job=access Omejitve virov
+.
+!if $class_type iswordof 2 3 4
+ !href cmd=reply&job=propagate Send setups to subclasses
+.
+!endif
+<p>
+!href cmd=reply&job=security Nastavitve varnosti
+.
+!href cmd=reply&job=arch&job2=first Shranjevanje in obnova
+.
+!href cmd=reply&job=clean Selektivno èi¹èenje
+.
+<p>
+!href module=adm/light&phtml=useropts.phtml.$lang Osebne nastavitve
+.
+<p>
+Trenutna porabljen prostor v uèilnici: $du megabytes. (The allowance is
+$wims_class_quota.)
+
+!reset up_institution, up_description, up_supervisor, up_email, \
+	up_lang, up_level, up_limit, up_expiration, up_secure, up_lock, \
+	up_option,up_exolog,up_examlog,\
+	pr_homepage, pr_bgcolor, pr_refcolor, pr_bgimg, pr_css, pr_theme
+

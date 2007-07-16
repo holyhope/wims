@@ -1,0 +1,107 @@
+!set form_OK=Verstuur de veranderingen
+!set form_titlename=Titel
+!set form_caption=Eigenschappen van dit niveau
+!set title=$class_description
+!set sup=$class_Supervisor
+!set alevel=$class_level
+!read scripts/levelform.phtml
+
+<p>
+!if $classcnt=0
+    Dit niveau heeft nog geen klassen.
+ !href cmd=reply&job=addclass Maak klassen
+.<sup>
+ !href cmd=help&special_parm=structure#class help
+</sup>
+!else
+ $table_header
+ <caption>Beschikbare klassen<sup>
+ !href cmd=help&special_parm=structure#class help
+ </sup>in this level <small>
+ !href cmd=reply&job=addclass Voeg&nbsp;nog&nbsp;een&nbsp;klas&nbsp;toe
+ </small></caption>
+ $table_hdtr
+ <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>
+ <th><small>cursussen</small></th>
+ <th><small>Deelnemers</small></th>
+ </tr>
+ !for i=1 to $classcnt
+   !set l=!line $i of $classes
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!record 0 of $classdir1/$l_/courses
+   !set c=!nonempty lines $c
+   !set c=!linecnt $c
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=class&class=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delclass&del=$l_ verwijder
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $s_
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Niet beschikbaar
+   !endif
+   </td><td align=center>$c</td>
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   <td align=center>$c</td>
+ !next i
+ $table_end
+
+!endif
+
+<p>
+!if $progcnt=0
+ Dit niveau heeft nog geen lesprogramma's.
+ !href cmd=reply&job=addprog Maak een lesprogramma
+.<sup>
+ !href cmd=help&special_parm=structure#program help
+ </sup>
+!else
+ $table_header
+ <caption>Beschikbare lesprogramma's<sup>
+ !href cmd=help&special_parm=structure#program help
+ </sup>in dit niveau<small>
+ !href cmd=reply&job=addprog Voeg&nbsp;meer&nbsp;programma's&nbsp;toe
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Naam</th><th>-</th><th>Verantwoordelijke</th>
+ <th><small>cursussen</small></th>
+ </tr>
+ !for i=1 to $progcnt
+   !set l=!line $i of $programs
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!record 0 of $classdir1/$l_/courses
+   !set c=!nonempty lines $c
+   !set c=!linecnt $c
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=prog&prog=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delprog&del=$l_ verwijder
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $s_
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Niet beschikbaar
+   !endif
+   </td><td align=center>$c
+ !next i
+ $table_end
+
+!endif
+
+!reset title
+

@@ -1,0 +1,80 @@
+!if $qclass!=$empty
+ qclass=$[$qclass]
+ !if NaN isin $qclass or $qclass<11111 or $qclass>10^9
+  error=bad class
+  !exit
+ !endif
+!endif
+
+!if $qclass=$empty
+ :recode
+ cd=!randint 10^6,10^7-1
+ test=!defof class_defined in wimshome/log/classes/$cd/.def
+ !if $test=yes
+  !goto recode
+ !endif
+!else
+ cd=$qclass
+ test=!defof class_defined in wimshome/log/classes/$cd/.def
+ !if $test=yes
+  error=class exists
+  !exit
+ !endif
+!endif
+
+data1=!nonempty lines $data1
+data2=!nonempty lines $data2
+n1=!linecnt $data1
+n2=!linecnt $data2
+!for i=1 to $n1
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ cl_$n_=$v_
+!next i
+!for i=1 to $n2
+ l=!line $i of $data2
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ su_$n_=$v_
+!next i
+
+!for t in cl_description, cl_institution, cl_supervisor, cl_email, cl_password,\
+	su_lastname, su_password
+ !if $($t) = $empty
+  error=incomplete data $t
+  !exit
+ !endif
+!next t
+
+!sh cd $wims_home/log/classes\
+	mkdir -p $cd\
+	cd $cd\
+	mkdir -p .users sheets exams score noscore\
+	echo 3 >version
+
+cl_creation=!char 1 to 8 of $wims_now
+!default cl_expiration=$[$now+10000]
+!bound cl_limit between integer 1 and 500 default 30
+langs=!words2items $wims_site_languages
+!bound cl_lang within $langs default en
+!default cl_level=H4
+
+!writefile wimshome/log/classes/$cd/.def !set class_connections=$ident/$rclass+\
+!set class_defined=yes
+!for t in supervisor,email,password,description,institution,lang,creation,\
+	expiration,limit,level,\
+	homepage,bgcolor,refcolor,bgimg,css
+ !appendfile wimshome/log/classes/$cd/.def !set class_$t=$(cl_$t)
+!next t
+
+!writefile wimshome/log/classes/$cd/supervisor !set user_lastname=$su_lastname\
+!set user_firstname=$su_firstname\
+!set user_password=$su_password\
+!set user_email=$cl_email\
+!set user_exists=yes
+
+!sh cd $wims_home/log/classes; ./.build-index
+

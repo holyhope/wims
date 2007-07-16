@@ -1,0 +1,97 @@
+
+<center><h1>$tit
+!if $editable=yes
+ </b><font size=-1>[
+ !if $block=main
+  !href cmd=reply&job=prop Eigenschappen
+  ] [
+  !href cmd=reply&job=erase Wissen
+ !else
+  !href cmd=reply&job=list lijst van andere blokken
+ !endif
+ ]</font>
+!endif
+</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ Het blok <tt>$block</tt> is nog niet aangemaakt.
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$block Maak dit blok
+.
+ !endif
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Deze pagina is nog niet voor publiek toegankelijk. Kom later maar eens terug!
+
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Deze pagina is helaas verlopen.
+ U kunt deze pagina dus niet langer raadplegen.
+ <p>
+ !exit
+!endif
+
+<h3>$titb
+!if $editable=yes
+ </b><font size=-1>[
+ !href cmd=reply&job=edit&doc=$doc&block=$block Bewerken
+ ]</font>
+!endif
+</h3>
+
+!!detrust
+!read $docdir/$doc/$block.def content
+
+</div><div class=wimstail>
+<p><hr>
+!if ($wims_class!=$empty and $wims_user!=supervisor)
+ !exit
+!endif
+!if help isin $wims_session
+ <small>
+ !href cmd=reply&job=source Bron Code
+ &nbsp; by
+ !if $email=$empty
+  $author
+ !else
+  !mailurl $email $author
+ !endif
+ Laatste verandering $datm</small>
+ !exit
+!endif
+<table width=100% border=0 cellspan=0 cellpadding=1>
+<tr><td align=left nowrap><small>
+!if $editable=yes
+ !href cmd=reply&job=prop Eigenschappen
+&nbsp;
+!endif
+!href cmd=reply&job=source Bron Code
+&nbsp; by
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+<td align=right><small>
+!href module=home WIMS
+ @
+<a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+<tr><td align=left colspan=2 nowrap>
+<small>Laatste modificatie $datm
+</table>
+

@@ -1,0 +1,82 @@
+
+!if $job=score
+ <center><h1>$wims_classname, $wims_institutionname<br>$title</h1>
+ !if $wims_user=supervisor
+  (Presentación a los participantes)
+ !endif
+ </center> <p>$desc<p>
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Vuelta a la página principal
+. <p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ ¡Este examen está vacío! No se le ha asignado nada. Posiblemente
+ un error de manipulación de su supervisor.
+!else
+ <p><center><table border=1 bgcolor=bisque>
+ <caption>Detalle de la puntuación actual
+ <tr><th>Ejercicio<th>Título<th>Coeficiente<th>Puntuación
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+  <tr><td align=center>$i
+  <td align=center>$ti
+  <td align=center>$we<td align=center>
+  !if $(replied$i)>0
+   $(got$i)
+  !else
+   <small>pendiente</small>
+  !endif
+ !next i
+ <tr><td align=center colspan=4>
+ !default score=$sprime
+ Puntuación de esta sesión del examen: <b>$score</b> <small>sobre 10</small>.
+ $table_end
+!endif
+<p>
+
+!if $registered=$empty
+ Todavía no ha comenzado a trabajar en este examen.
+ !href cmd=reply&job=student Comenzar a trabajar.
+!else
+ !if $timeleft<=0
+   ¡Se acabó el tiempo!<p>
+   Ya ha usado los $sdure minutos permitidos para este examen.
+   <p>
+ !endif
+ !if $allowtype=simulation
+  La puntuación actual no se tomará en cuenta, porque el examen está en modo
+  simulación.
+  !if $lastscore>0
+   (Su puntuación real para esta hoja de examen es $lastscore).
+  !endif
+ !else
+  Su mejor puntuación para este examen es $lastscore (la mejor
+  puntuación es la que se tomará en cuenta).
+ !endif
+ <p>
+!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test>=2
+ !href cmd=reply&job=scorereg Terminar esta sesión de examen.
+&nbsp;&nbsp;
+!endif
+ !href cmd=reply&job=student Volver a trabajar en el examen.
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Punto de vista del profesor sobre el examen.
+ </center>
+!endif
+
+:end
+!tail
+
+!reset job

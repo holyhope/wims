@@ -1,0 +1,53 @@
+
+!if $ccnt<1
+ Su questo sito non ci sono forum di discussione. <p>
+ !href module=home [home]
+ !exit
+!endif
+
+Su questo sito sono presenti $ccnt forum di discussione.
+Selezionare quello di interesse nella tabella seguente.
+
+<p>$table_header
+$table_hdtr<th>Titolo<th>Accesso<th>Lingua<th>Descrizione
+!for i=1 to $ccnt
+ !set l=!record $i of $indf
+ !distribute items $l into code,la
+ !defread wimshome/log/forums/$code/.def
+ $table_tr<td align=center>$mb_title
+ <td align=center>
+ !reset user_exists
+ !read wimshome/$wims_sesdir/mb_user.$code
+ !if $user_exists=$empty
+  !if $mb_readpolicy=open
+   !href module=adm/forum/mboard.$la&forum=$code visitatore
+   &nbsp;
+  !endif
+  !href cmd=reply&type=authuser&forum=$code utente
+  &nbsp;
+  !href cmd=reply&type=authowner&forum=$code owner
+  !if * notin $mb_password
+   &nbsp;
+   !href module=adm/forum/reguser&forum=$code registrazione
+  !endif
+ !else
+  !if $forumuser!=supervisor
+   !href module=adm/forum/mboard.$la&forum=$code utente
+   &nbsp;
+   !href cmd=reply&type=authowner&forum=$code owner
+  !else
+   !href cmd=reply&type=authuser&forum=$code utente
+   &nbsp;
+   !href module=adm/forum/mboard.$la&forum=$code owner
+  !endif
+ !endif
+ </td><td align=center><img src=gifs/$la.gif></td>
+ <td>$mb_description</td>
+!next i
+$table_end <p>
+
+Selezionare il modo di accesso al forum o procedere alla `registrazione'
+seguendo il link apposito. &Egrave; anche possibile
+!href module=adm/forum/regforum creare 
+ un nuovo forum di discussione.
+

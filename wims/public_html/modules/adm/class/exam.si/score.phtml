@@ -1,0 +1,80 @@
+
+!if $job=score
+ <center><h1>$wims_classname, $wims_institutionname<br>$title</h1>
+ !if $wims_user=supervisor
+  (Predstavitev za uporabnike)
+ !endif
+ </center> <p>$desc<p>
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Nazaj na domaèo stran
+. <p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ Ta izpit ne vsebuje nobene naloge. Morda gre za napako skrbnika uèilnice.
+!else
+ <p><center><table border=1 bgcolor=bisque>
+ <caption>Trenutni rezultat - podrobnosti
+ <tr><th>Vaja<th>Naslov<th>Ute¾<th>Rezultat
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+  <tr><td align=center>$i
+  <td align=center>$ti
+  <td align=center>$we<td align=center>
+  !if $(replied$i)>0
+   $(got$i)
+  !else
+   <small>pending</small>
+  !endif
+ !next i
+ <tr><td align=center colspan=4>
+ !default score=$sprime
+ Rezultat tega izpitnega poskusa: <b>$score</b> <small>od 10</small>.
+ $table_end
+!endif
+<p>
+
+!if $registered=$empty
+ Niste ¹e zaèeli z re¹evanjem izpita.
+ !href cmd=reply&job=student Zaèni z re¹evanjem.
+!else
+ !if $timeleft<=0
+   Èas je potekel!
+   Porabili ste vseh $sdure minut, predvidenih za pisanje tega izpita.
+   <p>
+ !endif
+ !if $allowtype=simulation
+  Trenutni rezultat ne bo ¹tel, ker je izpit v poskusnem naèinu.
+  !if $lastscore>0
+   (Va¹ dejanski rezultat na tem izpitu je $lastscore.)
+  !endif
+ !else
+  Va¹ najbolj¹i rezultat na tem izpitu je $lastscore. (To je najbolj¹i rezultat, ki ¹teje za izpit.)
+ !endif
+ <p>
+!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test>=2
+ !href cmd=reply&job=scorereg Zakljuèi ta izpit.
+&nbsp;&nbsp;
+!endif
+ !href cmd=reply&job=student Nazaj k re¹evanju izpita.
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Skrbnikov pogled izpita.
+ </center>
+!endif
+
+:end
+!tail
+
+!reset job
+

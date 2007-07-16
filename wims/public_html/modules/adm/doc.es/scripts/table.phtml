@@ -1,0 +1,55 @@
+ $table_header
+ <caption>Escoja el documento y la acción:</caption>
+ $table_hdtr
+ <th>Acción<th>Título
+ !if $wims_ismanager=2
+  <th>Acceso
+ !endif
+ <th>Número<th>Autor
+ !for t=1 to $doccnt
+  !set s_=!line $t of $slist
+  !set t_=!line $t of $tlist
+  !set a_=!line $t of $alist
+  !set e_=!line $t of $elist
+  !set i_=!line $t of $ilist
+  !set t_=!trim $t_
+  !default t_=Sin título
+  !set e_=!word 1 of $e_
+  $table_tr
+  <td nowrap align=center>
+  !if $wims_ismanager=2
+   !href cmd=reply&job=erase&doc=$s_ Borrar
+&nbsp;
+  !endif
+  !href cmd=reply&job=read&doc=$s_&block=main&noedit=yes Leer
+&nbsp;
+  !if $i_>0
+   !href cmd=reply&job=auth&doc=$s_&block=main&noedit=no Modificar
+  !else
+   <strike>Modificar</strike>
+  !endif
+  <td>$t_</td>
+  !if $wims_ismanager=2
+   <td align=center>
+   !if $s_>65535
+    !if $s_ iswordof $opensite
+     !href cmd=reply&job=openclose&doc=$s_ cerrar
+    !else
+     !href cmd=reply&job=openclose&doc=$s_ abrir
+    !endif
+   !else
+    -
+   !endif
+   </td>
+  !endif
+  <td align=right><small>$s_</small></td>
+  !if $e_=$empty
+   <td>$a_</td>
+  !else
+   <td>
+   !mailurl $e_ $a_\
+documento WIMS $s_ [$module_language]
+   </td>
+  !endif
+ !next doc
+ $table_end <p>

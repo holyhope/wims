@@ -1,0 +1,54 @@
+
+!form reply name=replyform id=replyform
+<input type=hidden name=level value=3>
+
+!if $existing=$empty
+ U bent nu in de "raw mode" voor het maken van OEF oefeningen.
+ !if $modeltest=yes
+ Als deze oefening is gebaseerd op een standaard model, probeer eerst de
+  !href cmd=reply&mode=model&level=2 normale begeleidde modus
+.
+  !href cmd=reply&mode=none&level=1 Annuleer
+.
+ !else
+ Deze mode is bedoeld voor experten of voor het registreren van een OEF broncode.
+ Bent u onervaren in het maken van interactie oefeningen, probeer dan de
+  !href cmd=reply&mode=normal&level=1 normale begeleidde modus
+.
+  <p>
+  Geef de broncode (
+  !href target=wims_mhelp cmd=help&special_parm=oef OEF formaat
+  ) van uw oefening:
+  (voor een bestaande oefening, kopieer deze in het venster.)
+  !href target=wims_test module=tool/directexec&cmd=new Script tester
+ !endif
+!else
+ Hier is de broncode
+ !if $catmodule=$empty
+  van een oefening uit uw klas. U kunt deze bewerken in het onderstaande venster.
+ !else
+    van uw geimpoerteerde publieke oefening.
+    U kun deze bewerken en aanpassen in het onderstaande venster, voor dat u deze oefening ter 
+    beschikking stelt van uw klas.
+ !endif
+ !if $modeltest=yes
+ Deze oefening is gebaseerd op een standaard model oefening, 
+ beginners kunnen beter eerst de normale
+  !href cmd=reply&mode=model&level=2  begeleidde modus
+  proberen.
+  !href cmd=reply&mode=none&level=1 Annuleer
+.
+ !endif
+!endif
+
+<a name=textarea>
+<a href=#
+onclick=document.forms["replyform"].wims_deposit.value="">[Wissen]</a>.
+!href cmd=resume [Opnieuw]
+.
+
+<p><center>
+!mexec textarea.sh
+<p><input type=submit value="Registeer de code"></center>
+</form>
+

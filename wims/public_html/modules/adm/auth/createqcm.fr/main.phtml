@@ -1,0 +1,31 @@
+!header
+
+!! La présentation de l'exercice.
+!read present.phtml
+
+<p><hr> <p>
+
+!if $status=waiting
+ !if $error!=$empty
+  !read msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !! La forme de réponse
+ !!!read form.phtml
+ <p>
+!else
+ !if $error!=$empty
+  !read msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read answer.phtml
+ <p>
+ !if $worksheet=$empty
+  !href exo_Intro
+.
+ !endif
+!endif
+
+:end
+!tail
+

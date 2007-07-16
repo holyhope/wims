@@ -1,0 +1,31 @@
+
+!set wims_form_method=post
+!form reply
+
+!if $vote_title=$empty
+ Creation
+!else
+ Modification
+!endif
+of a vote or registration.
+<br>
+Title: <input size=50 name=reg_title value="$vote_title"> <br>
+Mode:
+!set reg_status=$vote_status
+!set reg_option=$vote_option
+!set reg_show=$vote_show
+!formselect reg_option list anonymous,nominative prompt anonyme,nominatif
+Status:
+!formselect reg_status from 0 to 3 prompt prep,open,closed,hidden
+Result of the vote:
+!formselect reg_show list 1,0 prompt publish,hide
+<br> Content: <small>
+!href cmd=help [help]
+</small> <br>
+<textarea name=reg_src cols=60 rows=20>$src</textarea>
+<center>
+<input type=submit name=rEg value="Send">
+<input type=submit name=abandon value="Cancel">
+</center>
+
+!reset reg_option reg_status reg_show

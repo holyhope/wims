@@ -1,0 +1,35 @@
+
+!read $docdef content
+<p><center>
+L'enregistrement de notes est
+ !set dd=!getscorestatus sheet=$sh
+ !if $dd=yes
+  !if $wims_scorereg!=suspend
+   ouvert, mais vous pouvez
+   !href cmd=resume&job=suspend le suspendre
+.
+  !else
+   suspendu par vous-même.
+   !href cmd=resume&job=reopen Le réactiver
+.
+  !endif
+ !else
+  fermé pour votre connexion.
+ !endif
+
+!if $wims_user=supervisor
+<p>
+!href module=adm/class/sheet&sheet=$sh Page de gestion de la feuille
+.&nbsp;
+.&nbsp;
+ !set d_=!translate / to , in $sheet_docpage
+ !distribute items $d_ into d_,b_
+ !href target=wims_doc module=adm/doc.fr&job=edit&doc=$d_&block=$b_ Editer cette page
+.&nbsp;
+ !href cmd=resume Réactualiser
+.
+!endif
+</center>
+
+!tail
+

@@ -1,0 +1,162 @@
+
+<center><h3>用户对练习的回答</h3></center> <p>
+
+OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
+用户的回答根据其类型被分析. 当答案需要特定条件时, 有可能显示一个
+!href cmd=help&special_parm=feedback 反馈信息
+(通常是对典型错误的警告).
+
+<p><h4>多重选择</h4> <p>
+多重选择用一个正确选择表(含一个或几个元素)与一个错误选择表来定义. <p>
+目前一个练习中最多可以同时提出$choicelim个多重选择问题.
+一个多重选择题中的正确与错误选择的个数只受到WIMS中字符串长度的限制.
+<p>
+至于定义多重选择的语法可参看 
+!href cmd=help&special_parm=oef 关于OEF格式的帮助.
+
+<p><h4>自由格式的回答</h4> <p>
+自由格式的回答就是用户自己键入的回答.
+目前一个练习中最多可以同时提出$answerlim个自由回答的问题. <p>
+其语法如下:
+<tt>\answer{名称}{答案表达式}{type=...}{option=...}{weight=...}</tt>
+<br>
+(后面3栏是可选的.)
+<p>
+
+<a name=freestyle>
+每个自由格式的回答可以互相独立地取下列类型之一.<ol>
+ <p><li>
+ <b>自动.</b> (名称: <tt>default</tt>)<br>
+ 根据给出的答案确定回答的类型. 自动判定的能力是极其有限的,
+ 它只能区分数值函数/数/方程/文字. 因此在可能情况下最好能给出精确的类型.
+
+<p><li>
+ <b>代数表达式.</b> (名称: <tt>algexp</tt>) <br>
+ 这是形式的代数表达式, 其互化能力及其有限.
+例如, (x+1)(x-1)不能认为等同于x^2-1. sin(x)^2+cos(x)^2也不能等同于1.
+但是x-y*y与-y^2+x却被认为相同.<p>
+因此最好要求学生完成表达式约化. <p>
+可以设置几个正确的答案, 相互用逗号分隔.
+
+ <p><li>
+ !read help/anstype/atext.phtml
+ 
+<p><li>
+ <b>字符集合.</b> (名称: <tt>chset</tt>) <br>
+这是字母-数字的表, 不考虑次序.
+ 不区分大小写. <p>
+ 这被用于多重选择题的回答, 选择的个数被取定, 可以有几个正确答案, 用户必须找出全部.
+
+ <p><li>
+ !read help/anstype/clickfill.phtml
+
+ <p><li>
+ !read help/anstype/coord.phtml
+
+ <p><li>
+ !read help/anstype/compose.phtml
+
+ <p><li>
+ !read help/anstype/correspond.phtml
+
+ <p><li>
+ <b>有限集合.</b> (名称: <tt>set</tt>) <br>
+ 这是一列以逗号相隔的字符表, 其次序无关紧要. 对元素只进行
+ 字符比较而无求值过程(因此2和1+1不代表同一元素).
+
+ <p><li>
+ <b>有限形式集.</b> (名称: <tt>fset</tt>)<br>
+如同<em>有限集合</em>, 只是其中元素被看作<em>形式表达式</em>予以求值.
+
+ <p><li>
+ <b>有限近似集.</b> (名称: <tt>aset</tt>)<br>
+如同<em>有限集合</em>, 只是其中元素被看作<em>近似表达式</em>予以求值.
+
+ <p><li>
+ <b>形式表达式.</b> (名称: <tt>formal</tt>)<br>
+ 同数值函数, 只是不能取近似值.<p>
+可以放几个正确答案, 用逗号分隔.
+ 
+ <p><li>
+ <b>文字表达式.</b> (名称: <tt>litexp</tt>)<br>
+ 这是形式数学表达式, 逐字与标准答案比较, 不作任何代数约化.
+例如, x+y不等于y+x, 3/2也不等于6/4. 只是2x与2*x认为相等.
+空格也不参加比较. <p>
+因此最好要求学生完成表达式约化. <p>
+可以设置几个正确的答案, 相互用逗号分隔.
+
+ <p><li>
+ <b>矩阵.</b> (名称: <tt>matrix</tt>)<br>
+ 和向量回答一样, 每个系数将求值后与标准答案的对应系数比较.
+
+ <p><li>
+ <b>数.</b> (名称: <tt>numeric</tt>)<br>
+实数间的比较精确到作者设定的精度.
+ 
+ <p><li>
+ <b>区间内的数.</b> (名称: <tt>range</tt>)<br>
+区间内实数的比较. 标准答案应该有两个数m与n, 用逗号分隔, 满足m&lt;n. 
+任何在此区间内的数(包括两端)都认为正确.
+ 
+ <p><li>
+ <b>带单位的数.</b> (名称: <tt>units</tt>)<br>
+这通常是一个带有单位的物理量. 这样的回答将与其单位同时求值. 例如,
+<tt>1.5 cm</tt>和<tt>15 mm</tt>相等. 对回答精度的要求与数值表达式相同.
+ 
+ <p><li>
+ !read help/anstype/sigunits.phtml
+
+ <p><li>
+ <b>数值函数.</b> (名称: <tt>function</tt>)<br>
+ 在作者规定的变量范围内将解答与标准答案比较, 比较精度由作者规定.
+
+!! <p><li>
+!! !read help/anstype/reorder.phtml
+!! 
+ <p><li>
+ !read help/anstype/text.phtml
+ 
+ <p><li>
+ <b>向量.</b> (名称: <tt>vector</tt>)<br>
+ 每个系数将被求值然后与标准答案的对应系数比较. 因此这里只能使用数值向量.
+ 答案与标准答案可以用一对括号括起来, 也可以不用.
+ 
+ <p><li>
+ !read help/anstype/wlist.phtml
+ 
+ <p>
+!read help/anstype/multiple.phtml
+</ol>
+
+<p><h4>测试条件</h4> <p>
+在目前情况下, 希望自由回答能利用特殊的条件(如具有多重正确答案的问题,
+要求举例的练习, 由不等式确定的答案等等)被判定. 这可用以下方式来实现. <p>
+如果自由格式问题的正确答案是一个未经定义的变量, 那么这个问题的答案
+就被赋予这个变量. 后者可被用作测试条件. 练习的评分是由被满足的测试条件
+的个数所确定的, 这比计算正确答案的个数好.
+<p>
+目前对于一个练习最多可定义$condlim个条件. 其语法如下.
+<p><tt>
+\condition{提示文字}{测试条件}{weight=...}
+</tt>
+(最后一栏是可选的.)
+<p>
+这里是一些测试条件的例. (<tt>\ans1</tt>和<tt>\ans2</tt>是出现在自由格式解答中的未定义变量.)
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if 全部关系式表
+</small>
+<p>
+$table_header
+$table_hdtr<th>条件<th>意义
+$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
+    <td>正确, 如果<tt>ans1</tt>位于区间[0,1]内.
+$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
+    <td>正确, 如果<tt>ans1</tt>是1, 3或5.
+$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
+    <td>正确, 如果<tt>ans1</tt>与<tt>ans2</tt>是多项式
+    x<sup>2</sup>-5x+6的两个根.
+$table_tr<td><tt>sin(\ans1)=0</tt>
+    <td>正确, 如果<tt>ans1</tt>是$m_pi的倍数.
+$table_end <p>
+关于定义回答的语法请参看
+!href cmd=help&special_parm=oef 关于OEF格式的帮助.

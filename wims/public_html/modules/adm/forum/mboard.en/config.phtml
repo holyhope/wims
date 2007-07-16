@@ -1,0 +1,35 @@
+
+Here are the parameters of this message board which you can change.
+
+!form reply
+<input type=hidden name=job value=config>
+<input type=hidden name=cf_set value=yes>
+<ul>
+ <p><li>Title of the message board:<br>
+  <input size=60 name=cf_title value="$cf_title">
+ <p><li>Description:<br>
+  <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
+ <p><li>Who can read the messages?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_readpolicy list alluser,owner prompt \
+	every participant, only yourself
+ !else
+  !formselect cf_readpolicy list open,alluser,owner prompt \
+ 	everybody (user or not), registered users only, nobody except yourself
+ !endif
+ <p><li>Who can send messages to it?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
+	every participant, participants with email check, only yourself
+ !else
+  !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
+	visitors with email address and users,\
+	registered users only, users with email check,\
+	nobody except yourself
+ !endif
+
+</ul>
+<p><center><input type=submit name=cf_set value="Register the changes">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="Cancel">
+</center> <p></form>
+

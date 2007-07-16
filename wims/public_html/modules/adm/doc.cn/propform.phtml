@@ -1,0 +1,75 @@
+!if class = $doctype
+ !defread wimshome/log/classes/$wims_class/.def
+ !default author=$class_supervisor
+ !default email=$class_email
+!endif
+
+!set wims_form_method=post
+!form reply
+<center><table border=0>
+<tr><td align=right>标题:
+<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>作者:
+<td><input type=text size=40 name=authorr value="$author">
+<tr><td align=right>Email:
+<td><input type=text size=40 name=emailr value="$email">
+<tr><td align=right>头文件:<br>
+<small>(css, js, etc.)</small>
+!set header=!translate internal $   $ to $\
+$ in $header
+!set hl=!linecnt $header
+!set hr=$[max(3,min($hl+2,10))]
+!set header=!reinput $header
+<td><textarea cols=40 rows=$hr name=headerr>$header</textarea>
+!reset headerr
+!set docopenr=$docopen
+!default docopenr=0
+!if class != $doctype
+ <tr><td align=right>版权:<td>
+ !set copyrightr=$copyright
+ !default copyrightr=gnu
+ !formselect copyrightr list gnu,opl,private prompt\
+    GNU自由文件许可(GNU Free Documentation License),\
+    公开发布许可(Open Publication License),\
+    保留一切版权
+ <tr><td align=right>对公众开放:<td>
+ !formselect docopenr list yes,no prompt 是, 否
+ <tr><td align=right>语言:<td>
+ !default dlang=all
+ <input size=14 name=dlangr value="$dlang"> <br><small>
+ 例: all en fr es it de cn</small>
+ !if $job=creat
+  <tr><td align=right>密码:<td nowrap>
+  <input type=password size=$codemax maxlength=$codemax name=coder> 重复一遍:
+  <input type=password size=$codemax maxlength=$codemax name=coder2>
+  <tr><td colspan=2><small>密码给你修改文件的权力,
+  它必须由 $codemin 至 $codemax 个字母或数字组成.
+  </small>
+ !endif
+!else
+ <tr><td align=right> 参加者<td>
+ !formselect docopenr list 0,1,2 prompt \
+    既不能读也不能写,\
+    能读不能写,\
+    能读能写
+ 本文件.
+!endif
+
+</table>
+<p>
+ <input type=submit name=rEg value="纪录">&nbsp;
+ <input type=submit name=abandon value="取消">
+</center>
+</form>
+
+<p>
+!if class != $doctype
+ <b>附言</b>. 你必须征得
+ !mailurl $wims_site_manager 网站管理员\
+要求开放 WIMS 文件 $doc
+ 的同意才能使文件被公众看到.
+ <p>
+!else
+ 本文件仅能在你的虚拟班内部被看到.
+!endif
+

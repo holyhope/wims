@@ -1,0 +1,77 @@
+
+!bound job2 within first,erase,erase2,modify default first
+!if $jobclass=$empty
+ job2=first
+!endif
+
+classcnt=!recordcnt wimshome/log/classes/.index
+
+!if $job2=first
+ old=!date -d '1 month ago' '+%Y%m%d'
+ oldy=!char 1 to 4 of $old
+ oldm=!char 5,6 of $old
+ oldd=!char 7,8 of $old
+ nowy=!char 1 to 4 of $wims_now
+ nowm=!char 5,6 of $wims_now
+ dir=../log/ccaccount/bydate
+ test=!sh if [ ! -d $dir ]; then exit; fi\
+  f1=`cat $dir/$nowy/$nowm 2>/dev/null`\
+  f2=`awk '$$1>=$oldm$oldy {print}' $dir/$oldy/$oldm 2>/dev/null`\
+  ff=`echo "$$f1\
+$$f2" | sort -k2 -n | grep . | awk 'BEGIN {a=0;b=0};\
+  b==$$2 {a+=$$3};\
+  b!=$$2 {if(a>0) {print b","a}; b=$$2; a=0;};\
+  END {if(a>0) print b","a};'`\
+  echo "$$ff"
+  n=!linecnt $test
+  !for i=1 to $n
+   l=!line $i of $test
+   !distribute item $l into c,t
+   t=$[floor(($t+30)/60)]
+   activ_$c=$t
+  !next i
+  !if $n>0
+   actives=yes
+  !endif
+!endif
+
+!if $job2!=first
+ !defread wimshome/log/classes/$jobclass/.def
+!endif
+
+!if $job2=erase2
+ year=!char 1 to 4 of $wims_now
+ !sh cd $wims_home/log/classes\
+  if [ -d $wims_home/log/ccaccount/$jobclass ]; then\
+   tar -cf $jobclass/account.tar -C $wims_home/log ccaccount/$jobclass 2>/dev/null\
+  fi\
+  mkdir -p $wims_home/backup/oldclasses/$year\
+  tar -czf $wims_home/backup/oldclasses/$year/$jobclass.tgz $jobclass\
+  rm -Rf $jobclass $wims_home/log/ccaccount/$jobclass\
+  ./.build-index
+  classcnt=!recordcnt wimshome/log/classes/.index
+  job2=first
+!endif
+
+!if $job2=modify
+ !if $abandon!=$empty
+  job2=first
+  !exit
+ !endif
+ !if $save!=$empty
+  !bound clexp between integer 19000101 and 24000101
+  clpass2=!word 1 of $clpass2
+  !setdef !set class_password=$clpass2\
+!set class_expiration=$clexp\
+!set class_secure=$clsecure in wimshome/log/classes/$jobclass/.def
+  clpass=!trim $clpass
+  !if $clpass!=$empty
+   !setdef !set user_password=$clpass in wimshome/log/classes/$jobclass/supervisor
+  !endif
+  class_password=$clpass2
+  class_expiration=$clexp
+  class_secure=$clsecure
+  !reset clexp clsecure clpass clpass2
+ !endif
+!endif
+

@@ -1,0 +1,48 @@
+
+<center><h3>练习的图形文件</h3></center>
+
+!if $quota=yes
+ <b>错误</b>. 你不再能放文件到你的班级里, 因为它的内容已经达到或超出硬盘空间的限制. 抱歉.
+ <p>
+ !goto sendend
+!endif
+
+!set wims_form_method=file
+!form reply
+图形文件发送到练习:
+<input type=file name=wims_deposit>
+<input type=submit value=发送>
+</form>
+
+:sendend
+!if $imglist=$empty
+ 此练习尚无图形文件.
+!else
+ 这里是本练习的图形文件表.
+ <p><center><table border=2>
+ <th>文件名<th>略图<th>-
+ !for i in $imglist
+  <tr><td valign=middle align=center>$i
+  <td valign=middle align=center>
+  <img src=$wims_ref_name?cmd=getfile&session=$wims_session&special_parm=oefimg/$i
+   height=40 width=50>
+  <td valign=middle align=center>
+  !href cmd=reply&delfile=$i 删除
+ !next i
+ $table_end <p>
+ !set example=!item 1 of $imglist
+在练习陈述中使用内部参数 \imagedir 可以引用这些图形. 例如, 你可以写
+ <center><pre>
+ &lt;img src=\imagedir/$example&gt;
+ </pre></center> <p>
+你也可以简单地使用 <tt>\img{$example}</tt>, 或
+ <tt>\img{$example}{html选项}</tt>. 这个方法的好处是学生看不到文件名.
+ 由于这样做的代价较大, 请仅在必要时才使用.
+!endif
+<p><center>
+!href cmd=resume&level=3&realtest=yes&retest=again 测试此练习
+.&nbsp;
+!href cmd=reply&level=3 返回菜单
+.
+</center>
+

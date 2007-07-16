@@ -1,0 +1,37 @@
+!if $cmd=help
+ !header
+ !changeto help.phtml
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>活动统计
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home 返回主页
+. <p>
+ !goto end
+!endif
+
+!read table.phtml
+
+<hr>
+
+!read form.phtml
+
+:end
+!tail
+
+!reset show
+

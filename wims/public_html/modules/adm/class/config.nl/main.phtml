@@ -1,0 +1,38 @@
+!read names.phtml
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+<center>$classname
+<p>
+<h1>$title
+</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ !if $wims_user!=supervisor or not_secure iswordof $error
+  !goto end
+ !endif
+ <p><hr> <p>
+!endif
+
+!read $job.phtml
+
+!if $job notwordof list new
+ <p><center>
+ !href cmd=renew&job=list Hoofdpagina voor het Onderhoud
+ </center> <p>
+!endif
+
+:end
+!tail
+
+!reset save, abandon, confirm, clean, allow, except,\
+	changeshare, mksharable, stoprec, import
+

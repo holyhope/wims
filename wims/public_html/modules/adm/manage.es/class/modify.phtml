@@ -1,0 +1,38 @@
+
+Propiedades importantes de la clase virtual 
+<font color=blue><em>$class_description</em></font>
+de
+<font color=blue><em>$class_institution</em></font> (número de serie $jobclass).
+!if $jobclass<10000
+ Esta clase viene con la distribución de WIMS.
+!endif
+
+!form reply
+<table border=0>
+<tr><td align=right>Contraseña del profesor:<td>
+<input type=password size=20 name=clpass>
+<tr><td align=right>Contraseña para la inscripción de participantes:<td>
+<input type=password size=20 name=clpass2 value="$class_password">
+<br><small>Borrar esta contraseña hace que todo el mundo
+pueda acceder a la clase.</small>
+<tr><td align=right>Estaciones de trabajo seguras:<td>
+<input size=50 name=clsecure value="$class_secure">
+<tr><td align=right>Fecha de expiración:<td>
+<input size=10 name=clexp value="$class_expiration">
+<tr><td><td>
+<input type=submit name=save value="Guardar">&nbsp;&nbsp;
+<input type=submit name=abandon value="Cancelar">
+$table_end <p>
+
+</form>
+
+<p><b>Nota</b>. Los cambios en estos campos sólo tienen sentido si es el 
+profesor responsable de la clase el que los solicita (y ha perdido el 
+control de la clase). Usted probablemente debería
+<a href="mailto:$class_email?subject=modificación de clase WIMS">notificar al
+supervisor</a> de la clase acerca de sus cambios.
+<p>
+<center>
+!href cmd=reply&job2=first Otras clases
+</center> <p>
+

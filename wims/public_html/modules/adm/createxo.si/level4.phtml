@@ -1,0 +1,26 @@
+!if $wims_user=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+  Va¹a vaja je bila uspe¹no name¹èena.
+ !else
+  V va¹i uèilnici ¾e obstaja povsem enaka vaja, zato (ponovna) namestitev ni bila izvedena.<p>
+ !endif
+ Ta vaja bo dostopna le uporabnikom va¹e uèilnice in to le v primeru, èe jo boste objavili na katerem od delovnih listov.
+ <p>
+ !if $wims_user!=supervisor
+  Zdaj se lahko vrnete na
+  !href module=classes/$lang&special_parm=.nocache. vaje va¹e uèilnice.
+ !else
+  Zdaj se lahko vrnete na:
+  <ul>
+  <p><li>
+  !href module=classes/$lang&special_parm=.nocache. vaje va¹e uèilnice
+  in jih razporedite na delovne liste.
+  <p><li>
+  !href cmd=reply&level=3 prej¹nji korak
+.
+  </ul>
+ !endif
+!endif
+

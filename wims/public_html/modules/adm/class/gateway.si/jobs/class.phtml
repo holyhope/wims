@@ -1,0 +1,52 @@
+
+!set form_OK=Send the modified properties
+!set form_titlename=Title
+!set form_caption=Properties of the class
+!set title=$class_description
+!set sup=$class_Supervisor
+!read scripts/classform.phtml
+
+<p>
+!if $coursecnt=0
+ This class has no courses yet.
+ !href cmd=reply&cparent=class&job=addcourse Add a course
+.<sup>
+ !href cmd=help&special_parm=course help
+</sup>
+!else
+ $table_header
+ <caption>Existing courses<sup>
+ !href cmd=help&special_parm=course help
+ </sup> in this class
+ !href cmd=reply&cparent=class&job=addcourse Add&nbsp;another&nbsp;course
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ </tr>
+ !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=course&cparent=class&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=class&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $s_
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+ !next i
+ $table_end
+
+!endif
+
+!reset title
+

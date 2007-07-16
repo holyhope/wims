@@ -1,0 +1,38 @@
+
+!if $remcnt>0
+ !set wims_ref_anchor=#infogot
+ !form reply
+ !if $gotcnt<1
+  <p>为解决此问题, 你可以 
+  <input type=submit value="提问题">
+ !else
+  <p>现在你可以继续
+  <input type=submit value="提问题">
+ !endif
+ about $objname:
+ !formselect ask list 0,$remlist prompt ?? 选择你的问题 ??,$prompts
+ !if $comment!=$empty
+  <p>$comment
+ !endif
+ <p></form>
+ <small><b>注意</b>. 你的得分与你提出的问题个数有关.
+ 如果你提了无关或无用的问题, 会被扣分.</small> <p>
+ <hr width=50%> <p>
+!endif
+
+!if $gotcnt<1
+ !exit
+!endif
+
+!set wims_ref_anchor=#ans
+!form reply
+ !if $remcnt>0
+  当你觉得已经有了足够的信息解决此问题,
+ !else
+  就请
+ !endif
+ <input type=submit value="给出你的答案">&nbsp;:<p>
+ !read $deffile form
+</center>
+</form>
+

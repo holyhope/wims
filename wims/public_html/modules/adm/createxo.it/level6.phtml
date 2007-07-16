@@ -1,0 +1,52 @@
+
+<center><h3>Immagine da inserire nell'esercizio</h3></center>
+
+!if $quota=yes
+ <b>Errore</b>. Spiacenti: non è più possibile inserire file relativi 
+ al corso, avendo ormai saturato lo spazio disponibile.
+ <p>
+ !goto sendend
+!endif
+
+!set wims_form_method=file
+!form reply
+Nome del file immagine da inserire nell'esercizio:
+<input type=file name=wims_deposit>
+<input type=submit value=OK>
+</form>
+
+:sendend
+!if $imglist=$empty
+ In questo esrcizio non sono ancora state inserite immagini.
+!else
+ Elenco dei file inseriti nell'esercizio.
+ <p><center><table border=2>
+ <th>Nome del file<th>glimps<th>-
+ !for i in $imglist
+  <tr><td valign=middle align=center>$i
+  <td valign=middle align=center>
+  <img src=$wims_ref_name?cmd=getfile&session=$wims_session&special_parm=oefimg/$i
+   height=40 width=50>
+  <td valign=middle align=center>
+  !href cmd=reply&delfile=$i Elimina
+ !next i
+ $table_end <p>
+ !set example=!item 1 of $imglist
+ Queste immagini possono essere inserite nell'enunciato dell'esercizio
+ utilizzando il parametro \imagedir. Per esempio scrivendo
+ <center><pre>
+ &lt;img src=\imagedir/$example&gt;
+ </pre></center> <p>
+ Si può anche semplicemente scrivere <tt>\img{$example}</tt>, oppure
+ <tt>\img{$example}{opzioni html}</tt>. Il vantaggio di questo approccio 
+ è che il nome del file non sarà visibile agli studenti. &Egrave; però
+ un metodo <em>costoso</em> e il suo uso va pertanto limitato a quando
+ effettivamente necessario.
+!endif
+<p><center>
+!href cmd=resume&level=3&realtest=yes&retest=again Prova l'esercizio
+.&nbsp;
+!href cmd=reply&level=3 Torna al menù
+.
+</center>
+

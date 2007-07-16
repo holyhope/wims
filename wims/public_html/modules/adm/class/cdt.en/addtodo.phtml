@@ -1,0 +1,77 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+<center>$classname
+<h1>$cdt_title</h1>
+<font size=+1>Add homework assignments</font></center> 
+
+<p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+!endif
+
+!form reply
+<input type=hidden name=job value=addtodo>
+<input type=hidden name=job2 value=save>
+<p>S&eacute;ance du  :
+!if $jyear=$empty
+ !let jyear=!char 1 to 4 of $wims_now
+ !let jmonth=!char 5 to 6 of $wims_now
+ !let jday=!char 7 to 8 of $wims_now
+!endif
+!let expyear=!char 1 to 4 of $class_expiration
+!let creyear=!char 1 to 4 of $class_creation
+!distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
+!formselect jyear from $creyear to $expyear
+!formselect jmonth from 1 to 12 prompt $months
+!formselect jday from 1 to 31
+<p>
+Nombre de dates &agrave; afficher : 
+<select  name="nbredevoir" onchange=submit()>
+!for i=1 to $max_todo
+ !if $i=$nbredevoir
+  <option value=$i selected="">$i</option>
+ !else
+  <option value=$i>$i</option>
+ !endif
+!next i
+</select>
+<br>
+<table>
+ !for i=1 to $nbredevoir
+ <tr>
+  <td>Work to do for the :
+   !if $(dday$i)=$empty
+    !let dday$i=$jday
+    !let dyear$i=$jyear
+    !let dmonth$i=$jmonth
+   !endif
+   !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
+   !formselect dyear$i from $creyear to $expyear
+   !formselect dmonth$i from 1 to 12 prompt $months
+   !formselect dday$i from 1 to 31
+   [
+    !href target=wims_help cmd=renew&job=helplink&cible=ddesc$i Help 
+   ]
+   <br><textarea rows=3 cols=65 name=ddesc$i>
+    !replace internal \( by &#92;( in $(ddesc$i)
+   </textarea></td>
+  <td>
+  <td>
+  </td>
+ </tr>
+ !next i
+</table> 
+<center><hr width=30%>
+<p><input type=submit value="Save">
+</center>
+</form>
+
+<p><p>
+!href cmd=new&job=home back
+
+!tail

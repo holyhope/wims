@@ -1,0 +1,41 @@
+
+Modifica file 
+<font color=blue><em>$fname</em></font>
+nel modulo
+<font color=blue><em>$title</em></font>:
+
+!if $makeerror!=$empty
+<hr>
+<pre>
+$makeerror
+</pre>
+<hr>
+!endif
+
+!form reply
+<input type=hidden name=fname value=$fname>
+
+<center>
+!sh content=`cat $devdir/$mod/$fname | sed 's/\&/\&amp;/g;s/</\&lt;/g'`\
+ cat <<@\
+<textarea rows=20 cols=70 wrap="off" name=wims_deposit>$$content\
+</textarea>\
+@
+<p>
+<input type=submit name=register value="Salva le modifiche">
+&nbsp;
+<input type=submit name=abandon value="Annulla">
+</center>
+</form>
+</form>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=fname value=$fname>
+<input type=hidden name=register value="file_mode">
+<input type=submit value="Invia">
+un file per sostituilo:
+<input type=file name=wims_deposit>
+</form>
+
+!href cmd=reply&jobreq=flist Torna all'elenco dei file
+.

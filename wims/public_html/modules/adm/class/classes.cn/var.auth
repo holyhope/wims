@@ -1,0 +1,183 @@
+!if $auth_password=*wims_site_manager
+ !if $wims_ismanager<2
+  auth_password=
+ !else
+  !goto auth_ok
+ !endif
+!endif
+
+!read adm/class/authchars
+auth_user=!word 1 of $auth_user
+auth_password=!word 1 of $auth_password
+auth_user=!translate internal . to @ in $auth_user
+auth_user=!text select $char_login in $auth_user
+auth_password=!text select $char_passwd in $auth_password
+now=$wims_now
+logfile=wimshome/log/classes/$class/.log.auth
+logfiles=wimshome/log/classes/$class/.log
+logline=$now $auth_user  	$$passwd	$httpd_REMOTE_ADDR
+
+!read adm/class/userdef classes,$class,$auth_user
+
+pass=!defof user_password in $userdef
+sclass=!defof class_superclass in wimshome/log/classes/$class/.def
+!if $sclass!=$empty and $sclass!=$class
+ upartic=!defof user_participate in $userdef
+ usuperv=!defof user_supervise in $userdef
+ pclass=!defof class_parent in wimshome/log/classes/$class/.def
+ !if / isin $pclass and ../$pclass/ isin ../$class
+  ss=!defof class_ocourses in wimshome/log/classes/$pclass/.def
+  !if $ss!=$empty
+   ss=!makelist $wims_superclass/xx for xx in $ss
+   upartic=!append item $ss to $upartic
+  !endif
+ !endif
+ coursecheck=!defof user_class in wimshome/log/classes/$class/.users/$auth_user
+ !if $coursecheck!=$empty
+  upartic=!append item $class to $upartic
+ !endif
+ !if $auth_user=supervisor and $wims_user=supervisor
+  ctype=!defof class_typename in wimshome/log/classes/$class/.def
+  prog=!defof sharing_exam in wimshome/log/classes/$class/neighbors
+  !if $ctype iswordof course icourse and $prog=$wims_class
+   pass=$current_pass
+  !endif
+ !endif
+ !if $class notitemof $upartic and $auth_user!=supervisor and $wims_user!=$supervisor
+  pass=
+ !endif
+# These lines should be opened later to close this possibility.
+# !if $auth_user=supervisor and $wims_user=$empty
+#  pass=
+# !endif
+!endif
+pass=!passcrypt $pass
+!if $pass=$empty
+ passwd=????
+ !appendfile $logfile $logline
+ error=bad_password
+ !exit
+!endif
+
+!if $wims_superclass!=$empty and $wims_user!=supervisor and $auth_user!=$wims_user
+ supervisable=!defof user_supervisable in wimshome/log/classes/$wims_superclass/.users/$wims_user
+ !if $supervisable!=yes
+  current_pass=
+ !endif
+!endif
+
+cps=!passcrypt $current_pass
+!if ($auth_user!=$empty and $class $auth_user isitemof $wims_otherclass) or \
+	($current_pass!=$empty and $cps iswordof $pass) or \
+	($auth_user=$wims_user and $class isitemof $wims_participate) or \
+	($auth_user=supervisor and $wims_user=supervisor and \
+		(../$wims_class/ isin ../$class/ or $sclass=$wims_class)) or \
+	($auth_user=supervisor and $class isitemof $wims_supervise)
+ !goto auth_ok
+!endif
+
+!if $auth_password=$empty
+ !exit
+!endif
+
+!read adm/class/authdelay
+!if $auth_password notwordof $pass
+ passwd=??????
+ !appendfile $logfile $logline
+ error=bad_password
+ !exit
+!endif
+
+:auth_ok
+!if $auth_user=supervisor and $wims_user!=$empty and $wims_user!=supervisor and \
+	$class notitemof $wims_supervise
+ userdef_save=$userdef
+ !read adm/class/userdef classes,$wims_class,$wims_user
+ !exchange userdef_save,userdef
+ spv=!defof user_supervisable in $userdef_save
+ !if $spv=yes
+  wims_supervise=!append item $class to $wims_supervise
+  !setdef !set user_supervise=$wims_supervise in $userdef_save
+ !endif
+!endif
+n=!positionof word $auth_password in $pass
+n=!item 1 of $n
+!if $n!=$empty
+ passwd=OK$n   $
+!else
+ passwd=$wims_class
+!endif
+# one-time password
+!if $n!=$empty and $n>1
+ pass=!replace word $auth_password by $ in $pass
+ pass=!singlespace $pass
+ pass=!trim $pass
+ !setdef !set user_password=$pass in $userdef
+!endif
+
+!defread $userdef
+ctype=!defof class_type in wimshome/log/classes/$class/.def
+!if $ctype=4 and $auth_user!=supervisor and $user_supervisable!=yes\
+  and (/ notin $wims_class or ../$wims_superclass/ notin ../$wims_class/)
+ utest=!itemcnt $user_participate
+ !if $utest=1 and / isin $user_participate
+  class=!item 1 of $user_participate
+  !defread wimshome/log/classes/$class/.def
+ !endif
+!endif
+clang=!defof class_lang in wimshome/log/classes/$class/.def
+
+!if $auth_user=supervisor
+ sech=!defof class_secure in wimshome/log/classes/$class/.def
+ sech=!trim $sech
+ !if $sech=$empty
+  t=0
+ !else
+  t=!checkhost $sech
+  !if $t<1
+   t=-1
+  !endif
+ !endif
+ sup_secure=$t
+!else
+ !read adm/class/raftest
+ !if $raftest>$lastallow
+  error=recent_rafale
+  !exit
+ !endif
+ sup_secure=-1
+!endif
+
+!read adm/class/authprep $class,$auth_user
+
+!if $logfile!=$empty
+ !if $auth_user=supervisor
+  !appendfile $logfiles $now $httpd_REMOTE_ADDR   	supervisor login
+ !else
+  !appendfile $logfile $logline
+ !endif
+!endif
+
+!if $class_lock=7 and $auth_user!=supervisor
+ !usererror class_closed
+ !exit
+!endif
+
+!if $class_lock iswordof 2 4 6
+ !set wims_protocol=https
+!endif
+!if $wims_user=$empty and $changesession!=no
+ !writefile wimshome/$wims_sesdir/var.class.prep $classdef
+ random=!randint 10^5,10^9
+ !restart session=new.$random&lang=$clang&old_session=$wims_session&module=home
+!else
+ !setdef $classdef in wimshome/$wims_sesdir/var.stat
+ !sh cd $wims_home\
+ 	rm -Rf $(wims_sesdir)_*\
+	mkdir -p log/classes/$class/score $wims_sesdir/getfile\
+	rm -f $wims_sesdir/exam*\
+	rm -f $wims_sesdir/getfile/oefimages\
+	ln -s $wims_home/log/classes/$class/src/images $wims_sesdir/getfile/oefimages
+ !restart lang=$clang&module=home
+!endif
+

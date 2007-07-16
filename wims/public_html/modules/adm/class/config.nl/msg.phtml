@@ -1,0 +1,76 @@
+
+!set wims_module_log=error: $error $wims_class
+
+<b>Fout</b>.
+
+!if not_supervisor iswordof $error
+Helaas, maar deze module is alleen voor de supervisor van een virtuele klas bedoeld.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ !if $code!=$empty
+  Incorrecte beveilingings code.
+ !else
+ Deze module is alleen bereikbaar voor een secure host.
+ !endif
+Toegang Geweigerd !
+
+ !exit
+!endif
+
+!if checkhost iswordof $error
+Je huidige ip-adres staat niet in je nieuwe lijst van "secure hosts".
+Waarschijnlijk is dit een klein foutje.
+Ik zal dus de "secure host" definitie lijst niet bijwerken.
+ !exit
+!endif
+
+!if bad_file iswordof $error
+Helaas, maar ik kan de <em>$wims_deposit</em> file niet als een klas backup-file identificeren
+Of je hebt een verkeerde file gestuurd of de archief-file zelf is corrupt
+ 
+ !exit
+!endif
+
+!if empty_file iswordof $error
+Er zijn geen klas bestanden aangetroffen in je backup-file <tt>$wims_deposit</tt>.
+ !exit
+!endif
+
+!if no_upload iswordof $error
+De gestuurde data zijn verlopen !
+Dat gaat niet goed zo, probeer het nog maar eens
+ !exit
+!endif
+
+!if remote_sharing iswordof $error
+Een "buurt-klas" deelt enkele bronnen uit jouw klas.
+Je kunt alleen wijzigingen aanbrengen in materiaal dat niet gedeelt wordt...
+Of je moet voor beide klassen de deling van materiaal beeindigen.
+ !exit
+!endif
+
+!if share_dep iswordof $error
+Bij het delen van bronnen met een "buurt-klas" moet je wel de afhankelijkheden
+van het WIMS systeem respecteren:
+Je moet oefeningen delen om werkbladen te kunnen delen (werkbladen zijn opgebouwd uit oefeningen)
+Je moet werkbladen delen om overhoringen/tentamens te kunnen delen (overhoringen/tentamens
+zijn opgebouwd uit actieve of verlopen werkbladen) 
+ !exit
+!endif
+
+!if not_neighbor iswordof $error
+Je probeert dingen te doen met een klas die alleen weggelegd zijn voor echte geregistreerde  "buurt-klassen" 
+ <p>
+ Onthoud goed dat een klas pas echt een "buurt-klas" als dit door <b>beide</b> klassen wordt erkend !
+ !exit
+!endif
+
+!if localmirror iswordof $error
+Het spiegelen/kopieren van een klas op de zelfde server heeft geen nut! 
+ !exit
+!endif
+
+!msg $error
+

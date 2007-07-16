@@ -1,0 +1,23 @@
+
+$table_header
+<caption>教师帐户
+!href cmd=reply&job=addteacher 添加教师
+</caption>
+$table_hdtr
+<th>帐户</th>
+<th>名字</th>
+<th>-</th>
+!for i=1 to $teachercnt
+ !set l=!line $i of $teacherlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td><tt>$c_</tt></td>
+ <td>
+ !href cmd=reply&job=modteacher&teacher=$c_ $l_, $f_
+ </td>
+ <td>
+ !href cmd=reply&job=delteacher&del=$c_ 删除
+ </td>
+!next i
+$table_end
+

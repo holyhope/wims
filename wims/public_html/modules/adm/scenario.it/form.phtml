@@ -1,0 +1,70 @@
+
+!if $sstyle=1
+ !if $substep=0
+  !if $all_steps=0
+   !form reply
+   Qual &egrave; il <em>primo</em> termine errato in questa serie?
+   !formselect badstep from 0 to $stepcnt
+   (La risposta 0 significa che tutto &egrave; corretto.)
+   <p><center><input type=submit value="Invia la risposta"></center>
+  !else
+   Selezionare <em>tutti</em> i passaggi spagliati e
+   <input type=submit value="cliccare qui">.
+  !endif
+  </form>
+ !else
+  !if $all_steps=0
+   !if $badstep=0
+    Effettivamente tutti i passaggi sono corretti.
+   !else
+    Effettivamente il primo passaggio errato &egrave; il numero $badstep.
+   !endif
+  !endif
+  Punteggio ottenuto: $module_score/10.
+  !if $expstep!=$empty
+   <p>Alcune spiegazioni.<ul>
+   !for i in $expstep
+    <p><li> Il passaggio $i
+    !if $i isitemof $badstep
+     &egrave; corretto.
+     !line $i of $remarks
+    !else
+     !set j=!positionof item $i in $bad_steps
+     !set e=!item $j of $bad_reasons
+     non &egrave; corretto.
+     !read reasons/$e.det
+    !endif
+   !next i   
+   </ul>
+  !endif
+ !endif
+!else
+ !if $substep=0
+  !form reply
+  Cosa ne pensi dell'<em>ultimo</em> passaggio?
+  !formselect ans list --,OK,$bad_reasons prompt Non lo so,\
+  	S&igrave;: il passaggio &egrave; corretto,$bad_rnames
+  <input type=submit value="Invia">
+  </form>
+ !endif
+ 
+ !if $substep=2
+  Hai ragione:
+  !if $step_reason=OK
+   l'ultimo passaggio &egrave; corretto.
+  !else
+   l'ultimo passaggio non &egrave; corretto.
+   Il passaggio corretto sar&agrave;<p><center>
+   <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+   !line $step of $good
+   </table> </center>
+  !endif
+  <p>
+  !if $step<$stepcnt
+   !href cmd=reply&ans=next Passaggio successivo.
+  !else
+   L'esercizio &egrave; terminato. Punteggio ottenuto: $module_score/10.
+  !endif
+ !endif
+!endif
+

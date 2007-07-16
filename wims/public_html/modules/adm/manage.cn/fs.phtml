@@ -1,0 +1,53 @@
+
+当前目录: <tt>
+!href cmd=reply&fsdir=/ $base
+!set t=
+!for d in $dd
+ !set t=$t/$d
+/
+ !href cmd=reply&fsdir=$t $d
+!next d
+</tt>
+
+!if $modifok=yes
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=$job>
+ <input type=hidden name=job2 value=add>
+ 加入一个新文件:
+ <input type=file name=wims_deposit size=40>
+ <input type=submit value=是>
+ </form>
+!endif
+<p>
+
+!if $dirs!=$empty
+ 子目录 (点击即进入): <tt>
+ !for f in $dirs
+  !if / notin $f
+   !href cmd=reply&fsdir=$fsdir/$f $f
+   &nbsp;
+  !endif
+ !next f
+ </tt>
+!endif
+
+!if $links!=$empty
+<p>符号链接:
+ !for f in $links
+  $f
+ !next f
+!endif
+
+!if $files!=$empty
+ <p>文件: <br>
+ <tt>
+ !for f in $files
+  !href cmd=reply&job=file&job2=first&file=$fsdir/$f $f
+  &nbsp;
+ !next f
+ </tt>
+!else
+ <p>本目录内没有正常的文件.
+!endif
+

@@ -1,0 +1,82 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+<center>$classname
+<h1>$cdt_title</h1>
+<font size=+1>Add/Modify date</font></center> 
+
+<p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+!endif
+
+!form reply
+<input type=hidden name=job value=adddate>
+<input type=hidden name=job2 value=save>
+<p>Session  :
+!if $jyear=$empty
+ !let jyear=!char 1 to 4 of $wims_now
+ !let jmonth=!char 5 to 6 of $wims_now
+ !let jday=!char 7 to 8 of $wims_now
+!endif
+!let expyear=!char 1 to 4 of $class_expiration
+!let creyear=!char 1 to 4 of $class_creation
+!distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
+!formselect jyear from $creyear to $expyear
+!formselect jmonth from 1 to 12 prompt $months
+!formselect jday from 1 to 31
+<p>
+Work (limit to $desc_limit chars) : [ 
+!href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc Help
+ ] 
+<br>
+<textarea rows=10 cols=65 name=jdesc wrap>
+!replace internal \( by &#92;( in $jdesc
+</textarea>
+<p>
+<center><hr width=30%><b>Work to do</b></center>
+<br>
+Number of dates to be displayed : 
+<select  name="nbredevoir" onchange=submit()>
+!for i=0 to $max_todo
+ !if $i=$nbredevoir
+  <option value=$i selected="">$i</option>
+ !else
+  <option value=$i>$i</option>
+ !endif
+!next i
+</select>
+
+ !for i=1 to $nbredevoir
+  <br>Work to do for the 
+   !if $(dday$i)=$empty
+    !let dday$i=$jday
+    !let dyear$i=$jyear
+    !let dmonth$i=$jmonth
+   !endif
+   !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
+   !formselect dyear$i from $creyear to $expyear
+   !formselect dmonth$i from 1 to 12 prompt $months
+   !formselect dday$i from 1 to 31
+   &#58;
+   [ 
+   !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i Help
+    ]
+<br><textarea rows=3 cols=65 name=ddesc$i>
+!replace internal \( by &#92;( in $(ddesc$i)
+</textarea></td>
+ !next i
+<center><hr width=30%>
+<p><input type=submit value="Save">
+</center>
+</form>
+
+<p><p>
+!href cmd=reply&job=home Back
+.
+
+!tail

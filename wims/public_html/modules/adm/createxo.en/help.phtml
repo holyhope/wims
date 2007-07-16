@@ -1,0 +1,59 @@
+!if $realtest=yes
+ !changeto oef/help.phtml
+!endif
+
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if,symtext,model
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty and $s_ isitemof $helplist
+ !read help/$s_.phtml
+ <p><center>
+ !href cmd=help Other help subjects.
+ &nbsp;&nbsp;
+ !href cmd=resume Back to work.
+ </center>
+ !exit
+!endif
+
+Help subjects:<ul>
+<p><li>
+!href cmd=help&special_parm=oef Explanation on the format OEF.
+!!<p><li>
+!!href cmd=help&special_parm=examples Examples of exercises.
+<p><li>
+!href cmd=help&special_parm=format The formats of the statement
+ of the exercise.
+<p><li>
+!href cmd=help&special_parm=parameters Random parameters
+ in an interactive exercise.
+<p><li>
+!href cmd=help&special_parm=math Mathematical formulas
+ in the exercises.
+<p><li>Include
+!href cmd=help&special_parm=draw dynamic drawings
+ into the exercises.
+<p><li>How the user can
+!href cmd=help&special_parm=reply reply to an exercise
+.
+<p><li>
+!href cmd=help&special_parm=feedback Feedbacks
+ to user replies.
+<p><li>
+!href cmd=help&special_parm=oefadv Advanced features
+.
+<p><li>
+!href cmd=help&special_parm=all Everything in the help
+</ul>
+
+<center>
+!href cmd=resume Back to work.
+</center>
+

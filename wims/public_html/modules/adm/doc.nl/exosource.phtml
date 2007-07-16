@@ -1,0 +1,56 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ Dit blok <tt>$block</tt> is nog niet aangemaakt.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Deze pagina is nog niet beschikbaar. Kom later maar eens terug !
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Deze pagina is verlopen, en is helaas niet meer beschikbaar.
+ <p>
+ !exit
+!endif
+
+<h3>$titb</h3>
+
+!if $sheetdata=$empty
+ <p>
+ Er staan geen oefeningen in deze pagina.
+ <p>
+ !exit
+!endif
+Hier staan de oefeningen van deze pagina onder "werkblad formaat".
+U kunt ze met "cut & past" invoegen
+!if $wims_user=supervisor
+ in een werkblad naar keuze.
+!else
+    in een werkblad van Uw virtuele klas.
+!endif
+
+<pre>
+$sheetdata
+</pre>
+
+</div><div class=wimstail>
+<p><hr><p>
+
+<center>
+!href cmd=reply&job=read Terug naar Doc
+</center> <p>
+

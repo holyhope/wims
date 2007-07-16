@@ -1,0 +1,43 @@
+!set name_secure=安全主机
+!set name_colors=页面颜色
+!set name_css=格式页
+!set name_logo=图标
+!set name_theme=格式主题
+!set name_level=程度
+!set name_security=允许取得分数的主机
+!set name_password=参加者注册密码
+!set name_supass=主持教师密码
+!set name_exolog=练习与考试的记录限制
+!if $wims_supertype=2
+ !set name_thisclass=入口
+ !set name_subclasses=分班
+!else
+ !set name_thisclass=当前区域
+ !set name_subclasses=子区域
+!endif
+
+!if $confirm!=$empty and $propagate!=$empty
+配置已成功地发送到 $name_subclasses: <p><b>
+ !for s in $propagate
+  $(name_$s).
+ !next s
+ </b>
+!else
+ !form reply
+你可以选择发送 $name_thisclass 的下列配置到所有的 $name_subclasses: <p>
+
+ !for s in $propall
+  !if $(name_$s)!=$empty
+   !set name_=!replace internal $ $ by &nbsp; in $(name_$s)
+   <input type="checkbox" name="propagate" value="$s">$name_&nbsp;
+  !endif
+ !next s
+ <p>
+ <input type="submit" name="confirm" value="发送">
+ </form>
+!endif
+<p>
+请注意
+$name_subclasses 不会自动共享 $name_thisclass 以后对设置的修改.
+如果你要 $name_subclasses 作同样修改, 你必须发送过去. 
+

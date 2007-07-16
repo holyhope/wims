@@ -1,0 +1,13 @@
+
+connclass=!word 1 of $connclass
+!if $connclass=$empty
+ job2=first
+ !exit
+!endif
+
+cn_sync=
+cn_option=description,institution,supervisor,email,userlist,usercount,lang,expiration
+!read adm/connect/main.proc getclass $connident $connclass
+
+!bound cn_status within OK,ERROR default $
+

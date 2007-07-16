@@ -1,0 +1,68 @@
+!if $job=print
+ !changeto print.phtml
+!endif
+
+!if $public!=P
+ !changeto class.phtml
+!endif
+
+!header
+
+!if $error!=$empty
+ !read msg.phtml
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor and $job=raw
+ Questo è il sorgente della verifica. Puoi copiarlo per inserirlo in
+ un altro corso.
+ <p><hr><pre>
+ !sh awk 'BEGIN {a=0};\
+	/^:/ {a=1};\
+	a==1 {print}' bases/sheet/$sh.def
+ </pre><hr>
+ <p>
+ !href cmd=resume&job=read Torna alla versione formattata della verifica.
+ !tail
+ !exit
+!endif
+
+<p><center><h3>$sheet_title<br>
+<font size=-1>$sheet_desc</font></h3></center> <p>
+
+$sheet_remark
+<p>
+
+!if $n=0
+ La verifica è vuota! Si tratta probabilmente di un errore.
+!else
+ Contenuti della verifica:
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of $data
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+, $de
+!!  !if $require>0
+!!   <small>$[$got] out of $[$require] points obtained, average score
+!!   $[$mean]/10.</small>
+!!  !endif
+ !next i
+ </ul>
+ !if $wims_user=supervisor
+  &Egrave; possibile
+  !href cmd=resly&job=import Importare
+  questa verifica nelle pagine del corso, o vedere
+  !href cmd=reply&job=raw comandi sorgente della verifica
+  della verifica (per poi copiarli in un altro corso).
+ !endif
+!endif
+!href cmd=reply&job=print Versione stampabile
+.
+
+!tail
+

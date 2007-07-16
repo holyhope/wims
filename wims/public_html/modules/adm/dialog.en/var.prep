@@ -1,0 +1,20 @@
+
+!for i=1 to $parmcnt
+ asklist=$asklist $i
+ p=!line 2 of $(parm$i)
+ p=!translate , to ; in $p
+ promptlist=!append item $p? to $promptlist
+ parm$i=!replace ?? by $(val$i) in $(parm$i)
+!next i
+
+!for i in $storename
+ storeval=!append line $($i) to $storeval
+!next i
+
+remlist=!words2items $asklist
+!reset gotlist ans1 ans2 ans3 ans4 ans5 ans6 ans7 ans8 ans9 ans10
+!bound precision between integer 20 and 100000000 default 10000
+wims_compare_precision=$precision
+thisscore=0
+status=waiting
+

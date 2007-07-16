@@ -1,0 +1,75 @@
+!if class = $doctype
+ !defread wimshome/log/classes/$wims_class/.def
+ !default author=$class_supervisor
+ !default email=$class_email
+!endif
+
+!set wims_form_method=post
+!form reply
+<center><table border=0>
+<tr><td align=right>Title:
+<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>Author:
+<td><input type=text size=40 name=authorr value="$author">
+<tr><td align=right>Email:
+<td><input type=text size=40 name=emailr value="$email">
+<tr><td align=right>Header:<br>
+<small>(css, js, etc.)</small>
+!set header=!translate internal $	$ to $\
+$ in $header
+!set hl=!linecnt $header
+!set hr=$[max(3,min($hl+2,10))]
+!set header=!reinput $header
+<td><textarea cols=40 rows=$hr name=headerr>$header</textarea>
+!reset headerr
+!set docopenr=$docopen
+!default docopenr=0
+!if class != $doctype
+ <tr><td align=right>Copyright:<td>
+ !set copyrightr=$copyright
+ !default copyrightr=gnu
+ !formselect copyrightr list gnu,opl,private prompt\
+	GNU Free Documentation License,\
+	Open Publication License,\
+	All Rights Reserved
+ <tr><td align=right>Open to the public:<td>
+ !formselect docopenr list yes,no prompt Yes, No
+ <tr><td align=right>Language(s):<td>
+ !default dlang=all
+ <input size=14 name=dlangr value="$dlang"> <br><small>
+ Examples: all en fr es it de cn</small>
+ !if $job=creat
+  <tr><td align=right>Secret code:<td nowrap>
+  <input type=password size=$codemax maxlength=$codemax name=coder> repeat it:
+  <input type=password size=$codemax maxlength=$codemax name=coder2>
+  <tr><td colspan=2><small>The secret code gives right to modifying the document.
+  It must be composed of between $codemin and $codemax alpha-numeric letters.
+  </small>
+ !endif
+!else
+ <tr><td align=right> Participants may <td>
+ !formselect docopenr list 0,1,2 prompt \
+	neither read nor write,\
+	read but not write,\
+	read and write
+ this document.
+!endif
+
+</table>
+<p>
+ <input type=submit name=rEg value="Register">&nbsp;
+ <input type=submit name=abandon value="Cancel">
+</center>
+</form>
+
+<p>
+!if class != $doctype
+ <b>Remark</b>. You must ask the approval of the
+ !mailurl $wims_site_manager site manager\
+Ask to open WIMS document $doc
+ to make the document accessible by le public.
+ <p>
+!else
+ This document is only visible inside your virtual class.
+!endif
+

@@ -1,0 +1,32 @@
+
+<center><h3>Reconstrucción del índice de recursos</h3></center>
+
+!if $atdate!=$empty
+ Se ha planificado la reconstrucción del índice de recursos.
+ Recibirá un correo electrónico con el resultado
+ de la reconstrucción.
+ 
+ !goto end
+!endif
+
+<b><font color=red>¡AVISO!</font></b> 
+La reconstrucción del índice de recursos ocupa muchos recursos del servidor,
+y debe ser evitada cuando el servidor se encuentre muy ocupado.
+<p>
+!if $lastdate!=$empty
+ :result
+ Resultado de la última reconstrucción del índice de recursos, el $lastdate:
+ <p><pre>
+ $output
+ </pre>
+ <p>
+ !href cmd=reply&job2=run Pulse aquí
+ para reiniciar una reconstrucción del índice de recursos (no debería).
+!else
+<p>
+ !href cmd=reply&job2=run Pulse aquí
+ para iniciar la reconstrucción del índice de recursos.
+!endif
+:end
+!reset job2
+

@@ -1,0 +1,22 @@
+
+!if $send_right>0
+ !href cmd=new&forum=$forum&job=compose Composer un nouveau message
+.
+!endif
+!if $is_owner=yes
+ &nbsp;
+ !href cmd=reply&job=config Configurer le forum
+!endif
+
+!if $archlist=$empty or $mlist=$archlist
+ !exit
+!endif
+
+<p>Archives mensuelles&nbsp;:
+
+!for i in $archlist
+ !href cmd=reply&job=list&mlist=$i $i
+ &nbsp;
+!next i
+<p>
+

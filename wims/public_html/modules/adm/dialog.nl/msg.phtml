@@ -1,0 +1,57 @@
+
+!set wims_module_error=error: $error
+
+<b>FOUT</b>
+
+!if empty_data iswordof $error
+Je hebt een onvolledig ingevuld formulier opgestuurd. <br>
+Volledig invullen s.v.p. !!! 
+ !exit
+!endif
+
+!if bad_data iswordof $error
+Het is me niet gelukt iets zinnigs van de opgestuurde waarden te maken.<br>
+Een typfout misschien? 
+
+ !exit
+!endif
+
+!if double_reply iswordof $error
+Je hebt reeds eerder een antwoord gegeven op deze vraag.<br>
+Dat antwoord is inmiddels geanalyseerd en beoordeeld. Herhaalde antwoorden
+worden bij deze opgaven niet toegestaan...
+(Gebruik nooit de "terug-knop" van je browser !!!) 
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ Je opgestuurde antwoord <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if nocompute isin $test
+ is niet toegestaan, en dus afgekeurd.<br>
+ Voer zelf je berekeningen uit en vul dan de resultaten in!
+ 
+ !else
+  is volslagen onbegrijpelijk en niet terzake.<br>
+  Corrigeer je antwoord en stuur het nog maar een keer op.
+ !endif
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+Door een fout in deze oefening (het goede antwoord voor <b>$(replyname$i)</b>
+ is ongeldig ),is het voor mij onmogelijke de juistheid van je antwoord te controleren.
+ De enige optie voor jou is van opgave te wisselen: excuses hiervoor.
+ 
+<p>
+ S.V.P. 
+ !if $email!=$empty
+  !mailurl $email maak melding de fout
+ !else
+  schrijf naar de leraar of producent
+ !endif
+ van deze oefening.
+ !exit
+!endif
+
+$error

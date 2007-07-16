@@ -1,0 +1,60 @@
+!if yes isin $sectest
+ <b><blink><font color=red>¡AVISO!</font> 
+ Tras la compilación es necesario configurar la seguridad
+ de la instalación. ¡Por favor ejecute bin/wrapuid como root!
+ </blink></b>
+ <p>
+!endif
+
+Lista de tareas que puede realizar en línea:<ul>
+<p><li>Configuración:
+!set catcnt=!recordcnt conf/cat
+!for i=1 to $catcnt
+ !set l=!record $i of conf/cat
+ !distribute lines $l into x_,y_
+ !href cmd=reply&job=conf&confcat=$i $y_
+&nbsp;&nbsp;
+!next i
+
+<p><li>Chequeo del sistema:
+programas utilizados internamente por 
+!href cmd=reply&job=conf&confcat=5#check los gráficos
+ y
+!href cmd=reply&job=conf&confcat=11#check los cálculos
+,
+!href cmd=reply&job=attrib permisos de los ficheros
+,
+!href cmd=reply&job=activ actividades actuales del servidor
+.
+
+<p><li>Gestión y mantenimiento:
+!href cmd=reply&job=class&job2=first clases virtuales
+,
+<u>foros</u> (planeado)
+,
+!href module=adm/doc documentos
+,
+!href cmd=reply&job=developer&job2=first cuentas de desarrolladores de módulos
+ y
+<u>mensaje del día</u> (planeado)
+.
+<p><li>
+Gestión del sistema de 
+!href cmd=reply&job=backup&job2=first copias de seguridad
+.
+Administración de los 
+!href cmd=reply&job=modules&job2=first Módulos
+.
+!href cmd=reply&job=upload Subida
+ de recursos al servidor.
+!href cmd=reply&job=update&job2=first Actualización del software del servidor
+.
+<p><li>
+!href cmd=reply&job=mkindex Reconstrucción del índice de recursos
+  tras la adición de nuevos recursos (módulos, hojas de trabajo) al servidor.
+<p><li>
+!href cmd=reply&job=fs&job2= Gestión directa de ficheros
+, reservada a los expertos.
+</ul>
+
+!reset fsdir

@@ -1,0 +1,27 @@
+!set tab=<table border=0 cellspacing=3 bgcolor=$table_bgcolor>
+<center>$classname<p>
+
+<h3>Tentamen sessie van 
+ !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
+<br><font size=-1>Loginnaam: <tt>$getuser</tt>
+!if $user_email!=$empty
+ &nbsp;Email adres: <a href="mailto:$user_email">$user_email</a>
+!endif
+</font></h3> <p>
+
+ $tab<tr><td align=right>Sessie naam:</td>
+ <td><tt>$esession</tt></td></tr>
+ <tr><td align=right>verbindings adres:</td>
+ <td><tt>$ehost</tt></td></tr>
+ <tr><td align=right>Resterende tijd:</td>
+ <td>$eremain minuten</td></tr>
+ </table> <p>
+
+!href cmd=reply&job=userexamclose&getuser=$getuser Sluit deze tentamen sessie
+ van $lastname,$firstname.
+ <p>
+!href cmd=reply&job=getuser&getuser=$getuser Cijfers van de leerling.
+ .
+!href cmd=resume Lijst van alle leerlingen
+ .
+</center>

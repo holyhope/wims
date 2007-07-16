@@ -1,0 +1,53 @@
+!if $activetest>0
+ Spiacente, questo esame &egrave; attivo, quindi non &egrave; pi&ugrave; 
+ modificabile. Non &egrave; possibile cambiare gli esercizi.
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=exo>
+<input type=hidden name=exo value=$exo>
+<p>Esercizio $exo: peso=<input size=5 name=eweight value="$eweight">,
+titolo=<input size=20 name=ename value="$ename">
+<p>
+Questo esercizio sar&agrave; scelto (casualmente) in una lista di esercizi
+contenuti nei test periodici. Selezionare nella lista che segue i test da 
+cui estrarre gli esercizi da 
+inserire in questo tema d'esame.
+<p>
+!for i in $asheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $r into r1,r2,r3,r4,r5,r6
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $echoose
+   checked
+  !endif
+  > $i.$j <b>$r5</b> <small>$r6</small> <br>
+ !next j
+!next i
+<p>
+Punteggi "con dipendenza": <input size=40 name=edep value="$edep"> <br>
+Opzioni:
+!formcheckbox eopt list $optionlist
+<br>
+<input type=submit value="Salva">
+</form>
+<p>
+!href cmd=reply Home page del tema d'esame
+.<p><small>
+<b>Suggerimento</b>. Punteggi "con dipendenza" significa che un candidato deve
+  ottenere un determinato punteggio in altri esercizi dell'esame prima di 
+  poter affrontare questo. Per esempio,
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  significa che il candidato deve ottenere un 50% nell'esercizio 1, un 30%
+  nell'esercizio 2, e una media del 60% negli esercizi 3,4,5.
+  Opzioni: <ul>
+  <li><em>autogen</em> significa che l'esercizio viene generato automaticamente
+  anche se l'untente non ci clicca sopra. In questo modo può consultare 
+  l'esercizio anche a sessione chiusa.
+  </ul>
+</small>
+
+

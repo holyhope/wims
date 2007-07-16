@@ -1,0 +1,111 @@
+
+<center><h3>Comprobación de los permisos de los ficheros</h3></center>
+
+!if $bad$writable$execable$baduser$bad_wrapper$noexec=$empty
+ Todos los permisos de acceso de esta instalación de WIMS están en modo seguro.
+ !sh rm -f $wims_home/log/unsecure
+!else
+ <b><blink>¡Aviso!</blink></b>
+ !if $bad!=$empty
+  Los siguientes archivos/directorios pueden ser leídos
+  por otros y no deberían:
+<pre>
+!words2lines $bad
+</pre> <p>
+ !endif
+ !if $writable!=$empty
+  !if $writcnt>=50
+   Hay un número muy grande de ficheros y directorios legibles por otros,
+   lo que no debería de ocurrir. <p>
+   El problema sólo se ha corregido de forma parcial. Por favor
+   !href cmd=reply repita el proceso
+   de nuevo (hasta que no queden ficheros/directorios con permisos
+   incorrectos).
+   <p>Lista de los permisos corregidos esta vez:
+<pre>
+!words2lines $writable
+
+......
+</pre>
+  !else
+   Los siguientes archivos/directorios tienen el permiso de escritura abierto 
+   a otros, lo que no debería de ocurrir:
+
+<pre>
+!words2lines $writable
+</pre>
+  !endif
+  <p>
+ !endif
+ !if $execable!=$empty
+  !if $execnt>=50
+   Hay un gran número de ficheros/directorios que tienen el permiso de
+   ejecución abierto a otros, lo que no debería de ocurrir. <p>
+   El probelam sólo se ha resuelto de forma parcial. Por favor
+   !href cmd=reply repita el proceso
+   de nuevo (hasta que no queden ficheros/directorios con permisos
+   incorrectos).
+   <p>Lista de los permisos corregidos esta vez:
+<pre>
+!words2lines $execable
+
+......
+</pre>
+  !else
+   Hay un gran número de ficheros/directorios que tienen el permiso de
+   ejecución abierto a otros, lo que no debería de ocurrir:
+<pre>
+!words2lines $execable
+</pre>
+  !endif
+  <p>
+ !endif
+ !if $baduser!=$empty
+  !if $usercnt>=50
+   Hay un gran número de ficheros/directorios que no pertenecen a WIMS.
+   <p>Sigue una lista parcial 
+<pre>
+!words2lines $baduser
+
+......
+</pre>
+  !else
+   El dueño de los siguientes ficheros/directorios no es WIMS.
+<pre>
+!words2lines $baduser
+</pre>
+  !endif
+  <p>
+  Los directorios de WIMS no deben contener ficheros que pertenezcan
+  a otros. DEBE comprobar manualmente el origen de estos ficheros,
+  y o bien borrarlos o bien cambiar su dueño.
+  <p>
+ !endif
+ !if $bad_wrapper=true
+  Importante recomendación de seguridad: por favor compruebe
+  el dueño de los ficheros <tt>public_html/bin/ch..root</tt>,
+  <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.
+  Esto es crucial para la seguridad de su instalación. Para ello
+  debe ejecutar el guión bin/wrapuid como root.
+  <p>
+  !writefile wimshome/log/unsecure yes
+ !else
+  !sh rm -f $wims_home/log/unsecure
+ !endif
+ !if $noexec!=$empty
+  Los siguientes directorios/ficheros deben tener el permiso de ejecución
+  abierto a todo el mundo, y no lo tienen.
+  <pre>
+!words2lines $noexec
+</pre>
+  <p>
+ !endif
+ !if $writcnt<50 and $execnt<50 and $usercnt<1 and $bad_wrapper=$empty
+  Estos permisos erróneos constituyen un riesgo de seguridad para su instalación.
+  El problema acaba de ser corregido, pero debe estar alerta y comprobar
+  los permisos de acceso con más frecuencia. Si reaparece el mismo problema,
+  debe plantearse la posibilidad de una intrusión en su sistema, y los datos
+  de este servidor pueden estar en peligro.
+ !endif
+!endif
+

@@ -1,0 +1,79 @@
+!if $wims_module_log=$empty
+ !set wims_module_log=error: $error
+!endif
+
+!if not_supervisor=$error
+ Spiacente: solo il docente pu&ograve; modificare la password 
+ del corso.
+ !exit
+!endif
+
+!if not_secure=$error
+ Spiacenti, è possibile modificare la password solo da un IP `fidato'.
+ &Egrave; possibile registrare un IP come `fidato' 
+ !href module=adm/class/config modificando la configurazione del corso
+, e quindi procedere al cambio della password.
+ !exit
+!endif
+
+!if bad_class=$error
+ C'&egrave; un problema: il corso non risulta valido!
+ !exit
+!endif
+
+!if discord iswordof $error
+ La nuova password e la password di verifica sono diverse. 
+ Riprovare.
+ !exit
+!endif
+
+!if bad_pass=$error
+ La password scelta contiene caratteri non utilizzabili. <p>
+ Si prega di utilizzare solo numeri e lettere non accentate, e di non 
+ utilizzare spazi.
+ !exit
+!endif
+
+!if bad_class_password iswordof $error
+ La password inserita &egrave; errata!<p>
+ Sei veramente il docente del corso?
+ !exit
+!endif
+
+!if bad_user iswordof $error
+ Errore: non esiste alcun <tt>$part</tt>
+ in questo corso
+ !exit
+!endif
+
+!if bad_user_password iswordof $error
+ La password inserita non &egrave; corretta!
+ Ripetere l'operazione.
+ !exit
+!endif
+
+!if success iswordof $error
+ La password &egrave; stata modificata.
+ !exit
+!endif
+
+!if fail iswordof $error
+ Il sistema non &egrave; stato in grado di modificare la password. 
+ Si prega di contattare il gestore del sito.
+ !exit
+!endif
+
+!if too_long iswordof $error
+ Errore: la nuova password &egrave; troppo lunga.
+ !exit
+!endif
+
+!if too_short iswordof $error
+ Errore: la nuova password &egrave; troppo corta.
+ !exit
+!endif
+
+!if nothing_to_do iswordof $error
+ Modifica password non eseguita perch&eacute; vecchia e nuova password coincidono.
+ !exit
+!endif

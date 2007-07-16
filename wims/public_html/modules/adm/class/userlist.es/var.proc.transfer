@@ -1,0 +1,16 @@
+
+!if $transfertype iswordof merge replace
+ !read adm/gateway/transfer $getuser $transfertype $transferclass
+!endif
+
+transfertype=
+!if $error=$empty
+ !read adm/gateway/transfer $getuser test
+!else
+ !exit
+!endif
+
+!if $transfer_test<1
+ job=getuser
+ !changeto var.proc.$job
+!endif

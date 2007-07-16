@@ -1,0 +1,30 @@
+!header
+
+!read proc/present.phtml
+
+<p><hr> <p>
+
+!if $error!=$empty
+ !read proc/msg.phtml
+ <p><hr width=50%> <p>
+!else
+ !read proc/form.phtml
+!endif
+<p>
+!if $status=waiting
+ !href exo_Renew
+.
+!else
+ !href exo_Again
+.
+ !if $worksheet=$empty
+  !href exo_Intro
+.
+ !endif
+!endif
+
+!read endhook.phtml
+!tail
+
+!set ans=
+

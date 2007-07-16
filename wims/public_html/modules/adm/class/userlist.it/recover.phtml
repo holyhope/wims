@@ -1,0 +1,26 @@
+<center>$classname<p>
+
+<h3>Studenti esclusi</h3> <p>
+
+</center>
+!if $delcnt<1
+ Non &egrave; stato escluso alcuno studente.
+ <p>
+!else
+ Selezionare il login dello studente da reinserire.
+ $table_header
+ $table_hdtr<th>login<th>nome
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ $table_end <p>
+!endif
+
+<center>
+ !href cmd=resume Elenco dei partecipanti al corso
+ .
+</center> <p>
+

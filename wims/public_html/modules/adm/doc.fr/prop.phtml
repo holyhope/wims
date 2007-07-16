@@ -1,0 +1,23 @@
+<center><h1>Propriétés du Document<br>
+--- $tit ---</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!read propform.phtml
+
+!if class != $doctype
+ !href cmd=reply&job=recode Changer le code secret
+.&nbsp;
+!endif
+
+!href cmd=reply&job=list Liste des blocs du document
+.
+<p>
+Code du document&nbsp;: $doc.
+Espace disque disponible au départ&nbsp;: $quota_total Meg.
+Espace libre&nbsp;: $quota_free Meg.
+<p>
+

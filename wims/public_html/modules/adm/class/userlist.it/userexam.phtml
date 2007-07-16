@@ -1,0 +1,28 @@
+<center>$classname<p>
+
+<h3>Sessione d'esame di 
+ !href cmd=reply&job=userprop&getuser=$getuser $firstname $lastname
+<br><font size=-1>Login: <tt>$getuser</tt>
+!if $user_email!=$empty
+ &nbsp;e-mail: <a href="mailto:$user_email">$user_email</a>
+!endif
+</font></h3> <p>
+</center>
+
+ $table_header$table_tr<td align=right>Nome della sessione:</td>
+ <td><tt>$esession</tt></td></tr>
+ $table_tr<td align=right>IP:</td>
+ <td><tt>$ehost</tt></td></tr>
+ $table_tr<td align=right>Tempo rimanente:</td>
+ <td>$eremain minutes</td></tr>
+ $table_end <p>
+
+<center>
+!href cmd=reply&job=userexamclose&getuser=$getuser Termina questa sessione 
+ di $firstname $lastname.
+ <p>
+!href cmd=reply&job=getuser&getuser=$getuser Punteggi dello studente.
+ .
+!href cmd=resume Elenco studenti
+ .
+</center>

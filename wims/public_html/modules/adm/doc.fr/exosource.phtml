@@ -1,0 +1,57 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $titb=$empty
+ <p>
+ Le bloc <tt>$block</tt> de ce document n'est pas encore créé.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Cette page n'est pas encore ouverte à la lecture. Revenez plus tard !
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Cette page est périmée. Vous ne pouvez plus la lire. Désolé !
+ <p>
+ !exit
+!endif
+
+<h3>$titb</h3>
+
+!if $sheetdata=$empty
+ <p>
+ Pas de donnée d'exercice dans cette page.
+ <p>
+ !exit
+!endif
+
+Voici les exercices de cette page sous format de feuille de travail.
+Vous pouvez utiliser un copier-coller pour les insérer
+!if $wims_user=supervisor
+ dans une feuille de votre choix de votre classe.
+!else
+ dans une feuille d'une classe virtuelle sous votre responsabilité.
+!endif
+
+<pre>
+$sheetdata
+</pre>
+
+</div><div class=wimstail>
+<p><hr><p>
+
+<center>
+!href cmd=reply&job=read Retour au doc
+</center> <p>
+

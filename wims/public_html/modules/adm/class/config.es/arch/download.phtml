@@ -1,0 +1,39 @@
+
+!if $fsize=$empty
+ Lo sentimos, no se ha podido guardar su clase. Error interno.
+ !exit
+!endif
+
+Este es el fichero en el que ha guardado su clase:
+!getfile $wims_class.$format $wims_class.$format
+ ($fsize K).
+<p>
+
+!if $fsize<50 and all isitemof $selection
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=$job2>
+!if $fsize<200
+ También puede hacer una
+!else
+ El tamaño de este fichero de seguridad puede superar el límite autorizado
+ para su envío al servidor. Para reducir el tamaño del fichero, puede hacer 
+ una
+!endif
+
+<input type=submit value="Copia selectiva de seguridad">:
+<p>
+!set selection=$select
+!formcheckbox selection list $reclist prompt $tot
+<p>
+<b>Nota</b>. Según las actividades de la clase, normalmente son los 
+registros de las actividades de los participantes, los mensajes de 
+discusión y los documentos de la clase los que componen la mayor parte 
+del tamaño. Puede plantearse la posibilidad de hacer varias copias 
+selectivas de seguridad para los diferentes recursos.
+</form>
+
+

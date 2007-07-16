@@ -1,0 +1,53 @@
+
+!set wims_form_method=post
+<center>$classname
+<h3>Livello di severit&agrave; della verifica</h3>
+</center> <p>
+
+!form reply
+<input type=hidden name=job value=formula>
+&Egrave; possibile definire il livello di severit&agrave; e il
+`peso' delle verifiche nella tabella che segue. 
+
+<p>I voti saranno calcolati 
+con massimo=
+<input size=5 name=maxscore value="$scoremax">.
+<p>$table_header
+$table_hdtr<th>Numero. progr.<th>Titolo<th>Stato<th>Peso<th>Livello
+!for i=1 to $totsheets
+ !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !set k_=!line $i of $defaultformula
+ !distribute word $k_ into w$i,s$i
+ !default w$i=1
+ !default s$i=2
+ !distribute line $t_ into a_,b_,c_,d_
+ !set a_=!char 1 of $a_
+ !set S_=!item $a_+1 of prep,in corso,terminato,nascosto
+ $table_tr<td align=right>$i</td>
+ <td>$c_</td><td align=center>$S_</td>
+ <td align=center><input size=5 name=w$i value=$(w$i)></td>
+ <td align=center>
+ !formselect s$i from 0 to 6
+ </td>
+!next i
+!for i=1 to $totexams
+ !set ew$i=!line $i of $examweights
+ !default ew$i=1
+ !set t_=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ !set a_=!word 1 of $t_
+ !set c_=!line 4 of $t_
+ !set S_=!item $a_+1 of prep,in corso,terminato,nascosto
+
+ $table_tr<td align=right>Esame $i</td>
+ <td>$c_</td><td align=center>$S_</td>
+ <td align=center><input size=5 name=ew$i value=$(ew$i)></td>
+ <td align=center>--</td>
+!next i
+$table_hdtr<td align=center colspan=5>
+<input type=submit name=formula value="Salva le modifiche">
+&nbsp;<input type=submit value="Annulla">
+$table_end <p>
+</form>
+
+!reset formula
+

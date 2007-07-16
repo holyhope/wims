@@ -1,0 +1,59 @@
+
+!if $title=$empty
+ Error en la descarga del módulo <tt><b>$addr</b></tt>.
+ !href cmd=reply&job2=first Volver atrás
+.
+ !exit
+!endif
+
+!if $muauto iswordof update install
+ !if $output!=ok
+  Error al instalar/actualizar <tt><b>$addr</b></tt>.
+ !else
+  Instalación/actualización de <tt><b>$addr</b></tt>: éxito.
+  !href target=wims_test module=$addr probarlo
+.
+  Deberá
+  !href cmd=reply&job=mkindex reconstruir el índice de módulos
+.
+ !endif
+ !href cmd=reply&job2=first Volver a la página de administración de módulos
+.
+ !reset muauto
+ !exit
+!endif
+
+$table_header
+<caption>
+!if $vtest=$empty
+ Módulo nuevo <tt><b>$addr</b></tt> <br>
+ !href cmd=reply&job2=one&muauto=install Instalar
+!else
+ Nueva versión de <tt><b>$addr</b></tt> <br>
+ !href cmd=reply&job2=one&muauto=update Actualizar
+!endif
+&nbsp;&nbsp;&nbsp;
+!href cmd=reply&job2=first Cancelar
+</caption>
+$table_tr<th align=right bgcolor=$table_bgcolor>Título:<td>$title
+$table_tr<th align=right bgcolor=$table_bgcolor>Descripción:<td>$description
+$table_tr<th align=right bgcolor=$table_bgcolor>Tipo:<td>$category
+$table_tr<th align=right bgcolor=$table_bgcolor>Versión:<td>$version
+!if $vtest!=$empty
+ (contra $vtest)
+!endif
+$table_tr<th align=right bgcolor=$table_bgcolor>Idioma:<td>$language
+$table_tr<th align=right bgcolor=$table_bgcolor>Autor:<td>
+  <a href="mailto:$address">$author</a>
+!if $translator!=$empty
+ $table_tr<th align=right bgcolor=$table_bgcolor>Traductor:<td>
+  <a href="mailto:$translator_address">$translator</a>
+ 
+!endif
+$table_tr<th align=right bgcolor=$table_bgcolor>Requiere:<td>$require
+!if $news!=$empty
+ $table_tr<th align=right bgcolor=$table_bgcolor>Cambios:<td>
+ <small><pre>$news</pre></small>
+!endif
+$table_end <p>
+

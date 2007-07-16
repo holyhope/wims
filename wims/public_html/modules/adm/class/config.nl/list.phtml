@@ -1,0 +1,116 @@
+!if $supertype=4 and $classdepth<=3
+<p><center>
+ !href module=adm/class/gateway Configuratie van de sub-klas structuur
+</center>
+!endif
+
+!form reply
+<input type=hidden name=up_job value=list>
+<center><table border=2 bgcolor=$wims_ref_bgcolor>
+<tr><td align=right>Naam van de School
+<td colspan=3>
+<input size=50 name=up_institution value="$class_institution">
+<tr><td align=right>Naam van de Klas
+<td colspan=3>
+<input size=50 name=up_description value="$class_description">
+<tr><td align=right>Secure hosts
+<small>
+!href cmd=help&special_parm=config&special_parm2=secure help
+ </small>
+<td colspan=3>
+<input size=50 name=up_secure value="$class_secure">
+<tr><td align=right>Supervisor naam
+<small>
+!href cmd=help&special_parm=config&special_parm2=supervisor help
+ </small>
+<td colspan=3>
+<input size=40 name=up_supervisor value="$class_supervisor">
+<tr><td align=right>Supervisor email
+<small>
+!href cmd=help&special_parm=config&special_parm2=email help
+ </small>
+<td colspan=3>
+<input size=40 name=up_email value="$class_email">
+<tr><td align=right colspan=2>Connection lock level
+<small>
+!href cmd=help&special_parm=config&special_parm2=lock help
+</small>
+</td><td colspan=2>
+!set up_lock=$class_lock
+!default up_lock=0
+!formselect up_lock from 0 to 7
+</td>
+<tr><td align=right>Taal van de KLas
+<small>
+!href cmd=help&special_parm=config&special_parm2=lang help
+ </small>
+<td>
+!set up_lang=$class_lang
+!set langs=!words2items $wims_site_languages
+!formselect up_lang list $langs
+<td align=right>
+Academisch niveau
+<small>
+!href cmd=help&special_parm=config&special_parm2=level help
+ </small>
+<td>
+!set up_level=$class_level
+!formselect up_level list $levellist
+<tr><td align=right>Maximaal aantal deelnemers/leerlingen
+<small>
+!href cmd=help&special_parm=config&special_parm2=limit help
+ </small>
+<td><input size=5 name=up_limit value="$class_limit">
+<td align=right>Verloop datum 
+<small><b>yyyymmdd</b></small>
+<small>
+!href cmd=help&special_parm=config&special_parm2=expiration help
+ </small>
+<td>
+!if $class_type notin 13
+ <input size=8 maxlength=8 name=up_expiration value="$class_expiration">
+!else
+ <tt>$class_expiration</tt>
+!endif
+<tr><td align=center colspan=4>
+<input type=submit name=save value=Opslaan>
+&nbsp;
+<input type=submit name=abandon value=Herstel>
+$table_end <p>
+</form>
+Andere configuraties:
+
+!href cmd=reply&job=present Uiterlijk van de Klas
+.
+!href cmd=reply&job=neighbor&job2=first Buurt klassen 
+.
+!href cmd=reply&job=connect&job2=first Andere servers
+.
+!href module=adm/class/passwd Wachtwoorden
+.
+!href module=adm/forum/mboard&job=config  Berichten forum
+.
+!href module=adm/doc Documenten
+.
+!href module=adm/class/motd Bericht van de dag
+.
+!href cmd=reply&job=access Toegangsbeleid
+.
+
+<p>
+!href cmd=reply&job=security Beveiliging
+.
+!href cmd=reply&job=arch&job2=first Backup en Herstel
+.
+!href cmd=reply&job=clean Selectieve opschoning
+.
+<p>
+!href module=adm/light&phtml=useropts.phtml.$lang Mijn Instelingen 
+.
+<p>
+Huidige hardschijf gebruik van je klas: $du megabyte. (het ingestelde maximum is $wims_class_quota mb.)
+
+!reset up_institution, up_description, up_supervisor, up_email, \
+	up_lang, up_level, up_limit, up_expiration, up_secure, up_lock, \
+	pr_homepage, pr_bgcolor, pr_refcolor, pr_bgimg, pr_css, pr_theme
+

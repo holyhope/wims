@@ -1,0 +1,42 @@
+!if $wims_developer=$empty
+     login=!word 1 of $login
+     passwd=!word 1 of $passwd
+    !if $login=$empty or $passwd=$empty
+      !if $login$passwd!=$empty
+        error=bad_auth
+      !endif
+      login=
+      !exit
+    !endif
+    wims_developer=$login
+    !read adm/getdeveloper
+    !if $dv_tit=
+      login=
+      wims_developer=
+      passwd=
+      !exit
+    !else
+      passwc=!passcrypt $passwd
+      pp=!passcrypt $dv_ps
+      !if $pp=$passwc
+        auth_login=$dv_tit
+        auth_passwd=$pp
+        auth_name=$dv_name
+        auth_email=$dv_email
+        wims_module_log=auth $login
+        sesdir=!translate internal _ to $ $ in $wims_sesdir
+        sesdir=!word 1 of $sesdir
+        !setdef wims_developer=$login in wimshome/$sesdir/var.stat
+        !if $wims_class!=$empty and $wims_user!=$empty
+          !setdef !set wims_developer=$login,$pp in $userdef 
+        !endif
+        devdir=modules/devel/$auth_login
+        savedpasswd=$pp
+        savedlogin=$auth_login
+        !default execut=0
+      !else
+        wims_developer=
+      !endif
+   !endif
+!endif
+

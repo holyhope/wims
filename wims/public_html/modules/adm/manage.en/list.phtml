@@ -1,0 +1,58 @@
+!if yes isin $sectest
+ <b><blink><font color=red>WARNING!</font> Security setup should be
+ established after compilation. Please execute bin/wrapuid by root!
+ </blink></b>
+ <p>
+!endif
+
+Here is the list of tasks you may perform online.<ul>
+<p><li>Configuration:
+!set catcnt=!recordcnt conf/cat
+!for i=1 to $catcnt
+ !set l=!record $i of conf/cat
+ !distribute lines $l into x_,y_
+ !href cmd=reply&job=conf&confcat=$i $y_
+&nbsp;&nbsp;
+!next i
+
+<p><li>System checklist:
+support softwares for
+!href cmd=reply&job=conf&confcat=5#check graphics
+ and
+!href cmd=reply&job=conf&confcat=11#check computation
+,
+!href cmd=reply&job=attrib file permissions
+,
+!href cmd=reply&job=activ current server activities
+.
+
+<p><li>Check/maintain
+!href cmd=reply&job=class&job2=first virtual classes
+,
+<u>forums</u> (planned)
+,
+!href module=adm/doc documents
+,
+!href cmd=reply&job=developer&job2=first module developer accounts
+ and
+<u>message of the day</u> (planned)
+.
+<p><li>
+!href cmd=reply&job=backup&job2=first Backup
+ management.
+!href cmd=reply&job=modules&job2=first Modules
+ management.
+!href cmd=reply&job=upload Upload
+ resources to the server.
+!href cmd=reply&job=update&job2=first Server software update
+.
+<p><li>
+!href cmd=reply&job=mkindex Rebuild resource index
+, to be run after each addition of new resources (modules, sheets) to the
+server.
+<p><li>
+!href cmd=reply&job=fs&job2= Direct file management
+, reserved to experts.
+</ul>
+
+!reset fsdir

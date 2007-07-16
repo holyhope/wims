@@ -1,0 +1,44 @@
+
+!if $ccnt=0
+ !if $parent=class
+  No hay ningún programa con cursos que añadir en esta clase.
+ !else
+  No hay ninguna clase en la que este programa pueda instalar cursos.
+ !endif
+ !href cmd=reply&job=$parent Volver atrás
+.
+ !exit
+!endif
+
+!if $parent=class
+ Estos son los programas que le permiten a su clase añadir cursos. Pulse
+ sobre el título para añadir un curso.
+ $table_header
+ $table_hdtr<th>Título<th>Comentario
+ !for p in $clist
+  !set i_=!defof class_description in wimshome/log/classes/$p/.def
+  $table_tr
+  <td>
+  !href cmd=reply&confirm=yes&courseclass=$class&courseprog=$p $i_
+  <td>-
+ !next p
+ $table_end
+ !exit
+!endif
+
+!if $parent=prog
+ Estas son las clases donde este programa puede instalar más cursos.
+ Pulse en el título para instalar un curso.
+ $table_header
+ $table_hdtr<th>Título<th>Comentario
+ !for c in $clist
+  !set i_=!defof class_description in wimshome/log/classes/$c/.def
+  $table_tr
+  <td>
+  !href cmd=reply&confirm=yes&courseclass=$c&courseprog=$prog $i_
+  <td>-
+ !next c
+ $table_end
+ !exit
+!endif
+

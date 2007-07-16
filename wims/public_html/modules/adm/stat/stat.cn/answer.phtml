@@ -1,0 +1,150 @@
+!set week_min=3
+!set month_min=20
+!set year_min=200
+!set title_2=请求
+!set title_3=会话
+!set title_4=访问站点
+
+从 $month1-$day1-$year1 至 $month2-$day2-$year2 的访问次数
+(共 $laps 天总和).
+ !set wims_print_precision=4
+ $table_header
+ $table_hdtr<th>次数<th>总数<th>日平均
+ !if $laps>$week_min
+  <th>周平均
+  !if $laps>$month_min
+   <th>月平均
+   !if $laps>$year_min
+    <th>年平均
+   !endif
+  !endif
+ !endif
+ <th>按站平均
+ $table_tr<th bgcolor=$table_bgcolor>请求
+   !htmlmath <td align=right>$[$total_click]
+   !htmlmath <td align=right>$[rint($total_click/$laps)] 
+   !if $laps>$week_min
+    !htmlmath <td align=right>$[rint($total_click*7/$laps)] 
+    !if $laps>$month_min
+     !htmlmath <td align=right>$[rint($total_click*30.4/$laps)] 
+     !if $laps>$year_min
+      !htmlmath <td align=right>$[rint($total_click*365.25/$laps)] 
+     !endif
+    !endif
+   !endif
+   !htmlmath <td align=right>$[$total_click/$total_site] 
+ $table_tr<th bgcolor=$table_bgcolor>会话
+   !htmlmath <td align=right>$[$total_session]
+   !htmlmath <td align=right>$[rint($total_session/$laps)] 
+   !if $laps>$week_min
+    !htmlmath <td align=right>$[rint($total_session*7/$laps)] 
+    !if $laps>$month_min
+     !htmlmath <td align=right>$[rint($total_session*30.4/$laps)] 
+     !if $laps>$year_min
+      !htmlmath <td align=right>$[rint($total_session*365.25/$laps)] 
+     !endif
+    !endif
+   !endif
+   !htmlmath <td align=right>$[$total_session/$total_site] 
+ $table_tr<th bgcolor=$table_bgcolor>站点
+   !htmlmath <td align=right>$[$total_site]
+   !htmlmath <td align=right>$[rint($total_site/$laps)] 
+   !if $laps>$week_min
+    !htmlmath <td align=right>$[rint($total_site*7/$laps)] 
+    !if $laps>$month_min
+     !htmlmath <td align=right>$[rint($total_site*30.4/$laps)] 
+     !if $laps>$year_min
+      !htmlmath <td align=right>$[rint($total_site*365.25/$laps)] 
+     !endif
+    !endif
+   !endif
+   <td align=right>1
+ $table_end
+<p>
+解释.<ul>
+<li>请求数只计算`主动'请求, 即直接来自用户点击的请求.
+由此而展开的对模块的请求不计在内.
+<li>访问的站点数是按日计数的.
+<li>每天的访问人数应介于站点数与会话数之间.
+</ul>
+!if $laps >= 3
+ <center>
+ <font color=red>每日 $(title_$plot_type)</font> <br>
+ !insplot "insplot_data" using 1:2 smooth csplines notitle with lines
+ </center>
+!endif
+
+!if $modules=yes and $modulecnt>0
+ !set langcnt=!wordcnt $wims_site_languages
+ !distribute item 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 into tot,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16
+ $table_header
+ <caption>按模块细分
+  (从 $month1-$day1-$year1 至 $month2-$day2-$year2)</caption>
+ $table_hdtr<th>名称<th>
+ !item $module_type of total<br>requests,requests<br>per site,total<br>sites
+ !if $module_type!=2
+  !for i=1 to $langcnt
+   !set l=!word $i of $wims_site_languages
+   <th><img src=gifs/$l.gif>
+  !next i
+  <th>建立日期
+  <th>周平均
+ !endif
+ !for i=1 to $modulecnt
+  !set l=!line $i+1 of $stat_out
+  !set c=!word 1 of $l
+  !ifval $c=0
+   !goto cont
+  !endif
+  !set t=$[$t+$c]
+  $table_tr<td>
+  !set nn=!word 3 of $l
+  !set n=!char -40 to -1 of $nn
+  !set n=!translate @ to / in $n
+  !href module=$n $n
+  <td align=right nowrap>
+  !if $module_type=2
+   $[$c/100]
+   !goto cont
+  !endif
+  !htmlmath $[$c]
+  !for j=1 to $langcnt
+   <td align=right nowrap>
+   !set tt=!word $j+3 of $l
+   !set t$j=$[$(t$j)+$tt]
+   !htmlmath $[$tt]
+  !next j
+  <td>
+  !set d=!word 2 of $l
+  !set dy=!char 1,2,3,4 of $d
+  !set dm=!char 5,6 of $d
+  !set dd=!char 7,8 of $d
+  $dm-$dd-$dy
+  !if $d<=$date1
+   !set lps=$laps
+  !else
+   !set d_d=!date -d $d '+%j'
+   !set lps=!eval ($year2-$dy)*365+$date_2-$d_d+1
+   !ifval floor($dy/4)<floor($year2/4) and floor($dy/100)=floor($year2/100)
+    !set lps=!eval $lps+1
+   !endif
+  !endif
+  <td align=right>$[rint($c*7/$lps)]
+  :cont
+ !next i
+ !if $module_type!=2
+  $table_hdtr<td>Sub-total<td align=right nowrap>
+  !htmlmath $t
+  !for i=1 to $langcnt
+   <td align=right nowrap>
+   !htmlmath $(t$i)
+  !next i
+  <td align=center>-<td align=right>-
+ !endif
+$table_end <p>
+!else
+ <p>
+ !href cmd=reply&modules=yes 按模块细分
+ &nbsp;&nbsp;
+!endif modules=yes
+

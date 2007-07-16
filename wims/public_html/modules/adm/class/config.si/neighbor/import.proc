@@ -1,0 +1,137 @@
+
+!if ($wims_class notitemof $nei_sup,$nei_part or\
+	$nei notitemof $n_sup,$n_part) and \
+    all notitemof $nei_sup,$nei_part
+ error=not_neighbor
+ job2=first
+ !exit
+!endif
+
+!read scripts/reccnt.proc me log/classes/$wims_class
+!read scripts/reccnt.proc it log/classes/$nei
+
+!if ($wims_class notitemof $nei_sup or $nei notitemof $n_sup) and \
+  all notitemof $nei_sup
+ newcnt1=0
+ !goto user
+!endif
+
+newrec=!mexec neighbor/newrec.sh
+newcnt1=!linecnt $newrec
+
+!reset doctit,sheettit,examtit
+!for i=1 to $me_doccnt
+ l=!record $i of wimshome/log/classes/$wims_class/doc/.index
+ l=!line 2 of $l
+ doctit=!append line $l to $doctit
+!next i
+!for i=1 to $me_sheetcnt
+ l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ l=!line 3 of $l
+ sheettit=!append line $l to $sheettit
+!next i
+!for i=1 to $me_examcnt
+ l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ l=!line 4 of $l
+ examtit=!append line $l to $examtit
+!next i
+
+!for i=1 to $newcnt1
+ l=!line $i of $newrec
+ !distribute words $l into t_,n_,c_
+ rtype$i=$t_
+ rcode$i=$c_
+ rstat$i=1
+ rcnt$i=1
+ !if $t_=motd
+  rName$i=---
+  rname$i=---
+ !endif
+ !if $t_=exo
+  N_=!char 1 to -5 of $n_
+  rName$i=$N_
+  rname$i=!defof title in wimshome/log/classes/$nei/def/$N_.def
+ !endif
+ !if $t_=doc
+  rName$i=c$n_
+  rname$i=!defof tit in wimshome/log/classes/$nei/doc/c$n_/.def
+  rcnt$i=!recordcnt wimshome/log/classes/$nei/doc/c$n_/.index
+  test=!positionof line $(rname$i) in $doctit
+  !if $test!=$empty
+   test=!item 1 of $test
+   rmine$i=$test
+   rcode$i=2
+  !else
+   rcode$i=1
+  !endif
+ !endif
+ !if $t_=sheet
+  l=!record $n_ of wimshome/log/classes/$nei/sheets/.sheets
+  rName$i=$n_
+  rname$i=!line 3 of $l
+  rstat$i=!word 1 of $l
+  rcnt$i=!recordcnt wimshome/log/classes/$nei/sheets/.sheet$n_
+  test=!positionof line $(rname$i) in $sheettit
+  !if $test!=$empty
+   test=!item 1 of $test
+   rmine$i=$test
+   rcode$i=2
+   l=!record $test of wimshome/log/classes/$wims_class/sheets/.sheets
+   test=!word 1 of $l
+   !if $test>0
+    rcode$i=3
+   !endif
+  !else
+   rcode$i=1
+  !endif
+ !endif
+ !if $t_=exam
+  rName$i=$n_
+  l=!record $n_ of wimshome/log/classes/$nei/exams/.exams
+  rname$i=!line 4 of $l
+  rstat$i=!word 1 of $l
+  rcnt$i=!recordcnt wimshome/log/classes/$nei/exams/.exam$n_
+  test=!positionof line $(rname$i) in $examtit
+  !if $test!=$empty
+   test=!item 1 of $test
+   rmine$i=$test
+   rcode$i=2
+   l=!record $test of wimshome/log/classes/$wims_class/exams/.exams
+   test=!word 1 of $l
+   !if $test>0
+    rcode$i=3
+   !endif
+  !else
+   rcode$i=1
+  !endif
+ !endif
+!next l
+
+:user
+nusercnt=!recordcnt wimshome/log/classes/$nei/.userlist
+newcnt2=0
+!if $nei_sup=all
+ !exit
+!endif
+!for i=1 to $nusercnt
+ l=!record $i of wimshome/log/classes/$nei/.userlist
+ u=!item 3 of $l
+ p1=!defof user_password in wimshome/log/classes/$nei/.users/$u
+ p2=!defof user_password in wimshome/log/classes/$wims_class/.users/$u
+ !if $p1!=$empty and $p1!=$p2
+  !advance newcnt2
+  j=$newcnt2
+  ulogin$j=$u
+  uname1$j=!defof user_lastname in wimshome/log/classes/$nei/.users/$u
+  uname2$j=!defof user_firstname in wimshome/log/classes/$nei/.users/$u
+  ucode$j=2
+  !if $p2=$empty
+   t=!record 0 of wimshome/log/classes/$wims_class/.users/.$u
+   !if $t=$empty
+    ucode$j=1
+   !else
+    ucode$j=3
+   !endif
+  !endif
+ !endif
+!next i

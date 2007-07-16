@@ -1,0 +1,86 @@
+
+!if dontknow iswordof $error
+ Effettivamente l'ultimo passaggio
+ !if $step_reason=OK
+  &egrave; corretto. $step_remark
+ !else
+  non &egrave; corretto. $step_remark 
+  <p>
+  !read reasons/$step_reason.det
+  <p>
+  Una versione corretta dell'ultimo passaggio potrebbe essere<p><center>
+  <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+  !line $step of $good
+  </table> </center>
+ !endif
+ <p>&Egrave; un peccato che tu non te ne sia accorto.
+ !goto gnext
+!endif
+
+<b>Errore.</b>
+
+!if step_error iswordof $error
+ !if $step_reason=OK
+  Ma questo passaggio &Egrave; corretto!
+  $step_remark
+ !else
+  !if $ask_reason>0 and $step_reason!=$ans
+   L'ultimo passaggio non &egrave; corretto, ma non per la ragione che tu pensi.
+  !else
+   No, c'&egrave; un errore nell'ultimo passaggio.
+  !endif
+  $step_remark
+  <p>
+  !read reasons/$step_reason.det
+  <p>
+  Una versione corretta dell'ultimo passaggio potrebbe essere<p><center>
+  <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+  !line $step of $good
+  </table> </center> <p>
+ !endif
+ :gnext
+ <p>
+ !if $step<$stepcnt
+  !href cmd=reply&ans=next Passaggio successivo
+ !else
+  L'esercizio &egrave; terminato. Punteggio ottenuto: $module_score/10.
+ !endif
+ !exit
+!endif
+
+!if bad_step iswordof $error
+ !if $badstep=0
+  Tu pensi che tutti i passaggi siano corretti.
+ !else
+  Tu pensi che il primo passaggio errato sia il numero $badstep.
+ !endif
+ !if $bad_steps=$empty
+  Hai torto: tutti i passaggi sono corretti.
+  <p>
+  !line $badstep of $remarks
+ !else
+  No, il <em>primo</em> passaggio errato &egrave; il numero $sss. <p>
+  !if $badstep>0
+   !if $badstep isitemof $bad_steps
+    Il passaggio numero $badstep &egrave; effettivamente errato, ma non
+    &egrave; il primo passaggio errato.
+   !else
+    Al contrario, il passaggio numero $badstep &egrave; corretto.
+   !endif
+  !else
+   $bad_reason <p>
+   !set rrr=!item 1 of $bad_reasons
+   !read reasons/$rrr.det
+  !endif
+ !endif
+ <p>Punteggio ottenuto: $module_score/10.
+ !exit
+!endif
+
+!if double_reply=$error
+ Hai gi&agrave; dato una risposta a questa domanda e ottenuto un
+ punteggio. Le ripetizioni sono ignorate (&egrave; inutile utilizzare
+ il tasto `reload' del browser per correggere la risposta!)
+ !exit
+!endif
+

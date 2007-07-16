@@ -1,0 +1,68 @@
+!if $job=print
+ !changeto print.phtml
+!endif
+
+!if $public!=P
+ !changeto class.phtml
+!endif
+
+!header
+
+!if $error!=$empty
+ !read msg.phtml
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor and $job=raw
+ Este es el fichero fuente de la hoja. Puede importarlo a su clase simplemente
+ mediante el sistema de recortar y pegar.
+ <p><hr><pre>
+ !sh awk 'BEGIN {a=0};\
+	/^:/ {a=1};\
+	a==1 {print}' bases/sheet/$sh.def
+ </pre><hr>
+ <p>
+ !href cmd=resume&job=read Volver a la vista normal de la hoja
+ !tail
+ !exit
+!endif
+
+<p><center><h3>$sheet_title<br>
+<font size=-1>$sheet_desc</font></h3></center> <p>
+
+$sheet_remark
+<p>
+
+!if $n=0
+ ¡Esta hoja está en blanco! Se trata probablemente de un error.
+!else
+ Tareas asignadas en esta hoja:
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of $data
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+, $de
+!!  !if $require>0
+!!   <small>$[$got] de $[$require] puntos obtenidos, calidad
+!!   $[$mean]/10.</small>
+!!  !endif
+ !next i
+ </ul>
+ !if $wims_user=supervisor
+  !href cmd=resly&job=import Importar
+  esta hoja en su clase, o
+  !href cmd=reply&job=raw mostrar el fichero fuente
+  de la hoja.
+  <p>
+ !endif
+!endif
+!href cmd=reply&job=print Versión imprimible
+.
+
+!tail
+

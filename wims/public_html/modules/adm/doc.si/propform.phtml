@@ -1,0 +1,75 @@
+!if class = $doctype
+ !defread wimshome/log/classes/$wims_class/.def
+ !default author=$class_supervisor
+ !default email=$class_email
+!endif
+
+!set wims_form_method=post
+!form reply
+<center><table border=0>
+<tr><td align=right>Naslov:
+<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>Avtor:
+<td><input type=text size=40 name=authorr value="$author">
+<tr><td align=right>E-po¹ta:
+<td><input type=text size=40 name=emailr value="$email">
+<tr><td align=right>Glava:<br>
+<small>(css, js,...)</small>
+!set header=!translate internal $	$ to $\
+$ in $header
+!set hl=!linecnt $header
+!set hr=$[max(3,min($hl+2,10))]
+!set header=!reinput $header
+<td><textarea cols=40 rows=$hr name=headerr>$header</textarea>
+!reset headerr
+!set docopenr=$docopen
+!default docopenr=0
+!if class != $doctype
+ <tr><td align=right>Avtorske pravice:<td>
+ !set copyrightr=$copyright
+ !default copyrightr=gnu
+ !formselect copyrightr list gnu,opl,private prompt\
+	GNU Free Documentation License,\
+	Open Publication License,\
+	All Rights Reserved
+ <tr><td align=right>Odprt za uporabnike:<td>
+ !formselect docopenr list yes,no prompt Da, Ne
+ <tr><td align=right>Jezik(i):<td>
+ !default dlang=all
+ <input size=14 name=dlangr value="$dlang"> <br><small>
+ Primeri: all si en fr es it de cn</small>
+ !if $job=creat
+  <tr><td align=right>Za¹èitno geslo:<td nowrap>
+  <input type=password size=$codemax maxlength=$codemax name=coder> ponovite vnos:
+  <input type=password size=$codemax maxlength=$codemax name=coder2>
+  <tr><td colspan=2><small>Za¹èitno geslo omogoèa spreminjanje vsebine dokumenta.
+  Vsebovati mora najmanj $codemin in najveè $codemax alfanumeriènih znakov.
+  </small>
+ !endif
+!else
+ <tr><td align=right> Dovoljenja za uporabnike:<td> 
+ !formselect docopenr list 0,1,2 prompt \
+	ne branje ne spreminjanje,\
+	branje brez spreminjanja,\
+	branje in spreminjanje
+ dokumenta.
+!endif
+
+</table>
+<p>
+ <input type=submit name=rEg value="Potrditev">&nbsp;
+ <input type=submit name=abandon value="Preklic">
+</center>
+</form>
+
+<p>
+!if class != $doctype
+ <b>Opomba</b>. Pridobiti morate dovoljenje
+ !mailurl $wims_site_manager skrbnika stre¾nika,\
+da lahko naredite WIMS dokument $doc
+dostopen zunanjim uporabnikom.
+ <p>
+!else
+ Ta dokument bo viden samo znotraj va¹e uèilnice.
+!endif
+

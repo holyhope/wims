@@ -1,0 +1,24 @@
+
+!if $overflow=yes
+ !if $keyword = $empty
+  There are many virtual classes on this site. To find your class, please type
+  a search keyword.
+ !else
+  There are still too many classes corresponding to your search word. Please
+  give a more precise word.
+ !endif
+ <p><center>
+ !form reply
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form></center> <p>
+!else
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+  !form reply
+  Search for your class:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form>
+ !endif
+!endif
+

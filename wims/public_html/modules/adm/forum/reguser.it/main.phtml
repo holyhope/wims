@@ -1,0 +1,139 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS @ $httpd_HTTP_HOST
+<p>
+Registrazione
+</h1></center> <p><hr width=50%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $forumcnt=0
+ Spiacente: non ci sono forum di discussione. 
+ Riprovare pi&ugrave; tardi!
+ !goto end
+!endif
+
+!set forumname=<b><font color=green>$title</font></b>
+
+!if $password!=$empty and $passverify=$empty and $mailverif=$empty
+ $forumname
+ &egrave; protetto da una password che &egrave; necessario conoscere
+ per procedere alla registrazione.
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Password :
+ <input type=password name=forumpass>
+ <p>
+ <input type=submit value="Inviare la password">
+ </center></form> <p>
+ <b>Nota</b>. La password va richiesta al gestore ($supervisor) 
+ di questo forum. 
+ &Egrave; possibile 
+ !mailurl $smail contattarlo
+.
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ Per registrarsi e accedere a `$forumname',
+ inserire i dati seguenti.
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>Nome <input size=20 name=lastn value="$firstn">
+  e cognome <input size=20 name=firstn value="$lastn">
+  <p>
+ <li>Scegliere un login di accesso :
+  <input size=16 name=login value="$login"> <br>
+  Questo sar&agrave; il nome da utilizzare per accedere al forum.
+  Scegliere una parola composta da almeno 4 e non pi&ugrave; di 16 caratteri
+  (numeri o lettere non accentate).
+  <p>
+ <li>e una password :
+  <input type=password size=16 name=pass> <br>
+  La password deve essere una parola composta da almeno 4 e non pi&ugrave; 
+  di 16 caratteri (numeri o lettere non accentate).
+  <p>
+  !if $mailverif=$empty
+   <li>Indirizzo di posta elettronica (opzionale):<br>
+  !else
+   <li>Indirizzo di posta elettronica:<br>
+  !endif
+  <input size=60 name=email value="$email">
+  <p>
+ <center><input type=submit value="Invia"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Cara/o, $firstn $lastn!<p>
+ Vi state registrando per accedere al forum 
+ $forumname, con login &nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  Non avete dato un indirizzo di posta elettronica. <p>
+ !else
+  Il vostro indirizzo di posta elettronica &egrave; : <tt>$email</tt> <p>
+ !endif
+ Inserire di nuovo la password per una ulteriore
+ verifica :
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="Invio"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Cara/o, $firstn $lastn!<p>
+ !if $mailverif=yes
+  !set mailverif=next
+  $forumname non permette accesso anonimo. Utilizza l'indirizzo di posta
+  elettronica per garantire l'identit&agrave; di chi scrive (e prevenire abusi).
+  <p>
+  Al fine di verificare l'esattezza dell'indirizzo di posta elettronica, il
+  server invier&agrave; per e-mail un codice di attivazione che dovr&agrave;
+  poi essere inserito qui:
+  !form reply
+  <input type=hidden name=step value=3>
+  <p><center><input size=10 name=vericode>
+  <input type=submit value=OK></form>
+  <p>
+  !href module=adm/forum/forum Annulla la registrazione
+  </center> <p>
+  !goto end1
+ !else
+  Benvenuta(o) in $forumname.
+  Puoi ora accedere al forum utilizzando il login 
+  ``<b><font color=green>$login</font></b>''. <p>
+  &Egrave; possibile 
+  !href module=adm/forum/forum&forum=$forum&type=authuser entrare
+  nel forum di discussione.
+  !goto end
+ !endif
+!endif
+
+:end1
+<p>
+!href module=adm/forum/forum&type=list Indice dei forum attivi sul sito
+:end
+!tail
+
+!set step=
+

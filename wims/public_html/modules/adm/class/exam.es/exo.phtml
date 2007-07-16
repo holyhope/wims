@@ -1,0 +1,44 @@
+!if $activetest>0
+ Lo sentimos, este examen está activado, y por tanto no es modificable.
+ Ya no se puede cambiar ningún ejercicio.
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=exo>
+<input type=hidden name=exo value=$exo>
+<p>Ejercicio $exo : baremo=<input size=5 name=eweight value="$eweight">,
+título=<input size=20 name=ename value="$ename">
+<p>
+Este ejercicio se puede elegir (aleatoriamente) de una lista de ejercicios
+existentes en las hojas de trabajo. Por favor, marque los ejercicios de la
+hoja de trabajo de la siguiente lista, los cuales serán candidatos 
+a ejercicio de este examen.
+<p>
+!for i in $asheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $r into r1,r2,r3,r4,r5,r6
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $echoose
+   checked
+  !endif
+  > $i.$j <b>$r5</b> <small>$r6</small> <br>
+ !next j
+!next i
+<p><input type=submit value="Grabar">
+</form>
+<p>
+!href cmd=reply Página principal del examen
+. <p><small>
+<b>Ayuda</b>. La expresión ``dependencias de puntuaciones'' 
+  se refiere a que un participante debe primero lograr puntos
+  en otros ejercicios de la hoja, antes de poder trabajar en este.
+  Por ejemplo,
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  significa que el participante debe tener un éxito de 50% en el ejercicio 1,
+  30% en el ejercicio 2, y una media de éxito del 60% en los ejercicios
+  3, 4, 5.
+</small>
+

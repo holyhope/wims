@@ -1,0 +1,30 @@
+!read scripts/check.class
+
+!if $error!=$empty
+ !exit
+!endif
+
+quser=!translate internal ./;,?* to $         $ in $quser
+!if $ $ isin $quser
+ quser=
+!endif
+
+!if $quser=$empty
+ :baduser
+ error=bad user
+ !exit
+!endif
+
+!if $quser=supervisor
+ deffile=supervisor
+!else
+ deffile=.users/$quser
+!endif
+
+userdeffile=wimshome/log/classes/$qclass/$deffile
+
+test=!defof user_exists in $userdeffile
+!if $test!=yes
+ !goto baduser
+!endif
+

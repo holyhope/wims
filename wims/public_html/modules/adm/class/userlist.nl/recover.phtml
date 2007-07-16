@@ -1,0 +1,25 @@
+!set tab=<table border=0 cellspacing=3 bgcolor=$table_bgcolor>
+<center>$classname<p>
+
+<h3>Verwijderde Leerlingen</h3> <p>
+
+!if $delcnt<1
+Er zijn geen verwijderde leerlingen in uw klas
+ <p>
+!else
+Klik op de login-naam op deze leerling weer in uw klas te brengen
+ $tab
+ <tr><th>login<th>naam
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  <tr><td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ </table> <p>
+!endif
+
+ !href cmd=resume Lijst van alle leerlingen
+ .
+</center> <p>
+

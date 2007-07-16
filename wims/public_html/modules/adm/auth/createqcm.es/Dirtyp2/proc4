@@ -1,0 +1,55 @@
+!!! fichier de traitement des données de l'exo de type 2 !!!
+
+## l'étape 4
+!if $navig!=$etape
+  chronobs=0
+  chronfoncs=0
+  etape=$navig
+  !exit
+!endif
+
+!if $foncsrep=$empty
+  exalert=$(alerts[1;])
+  !exit
+!endif
+  
+!if $ftyp=matrix
+  foncsrep=!rawmatrix $foncsrep
+  ligne1=!line 1 of $foncsrep
+  colns=!itemcnt $ligne1
+  ligns=!linecnt $foncsrep
+  errnb=0
+  !for i=1 to $ligns
+    L=!line $i of $foncsrep
+    n=!itemcnt $L
+    !if $n!=$colns
+      errnb=$[$errnb+1]
+    !endif
+  !next i
+  !if $errnb!=0
+    exalert=$(alerts[4;])
+    !exit
+  !endif
+!endif
+    
+chronfoncs=$[$chronfoncs+1]
+rfmat=!append line $foncsrep to $rfmat
+ind=$[($chronobs)*($foncsnb)+$chronfoncs]
+
+!if $foncsrepList!=$empty
+  foncsrepList=!replace line number $ind by $foncsrep in $foncsrepList
+!endif
+  
+!if $chronfoncs=$foncsnb
+  chronfoncs=0
+  chronobs=$[$chronobs+1]
+  !if $chronobs=$obsnb
+    etape=$[$etape+1]
+    foncsrepList=$rfmat
+    chronobs=0
+    rfmat=
+  !endif
+  foncsrep=
+!endif
+
+!exit

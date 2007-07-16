@@ -1,0 +1,68 @@
+
+<center><h1>$tit</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $edtype=file
+ !set wims_form_method=file
+!else
+ !set wims_form_method=post
+!endif
+!form reply
+<input type=hidden name=doc value=$doc>
+<input type=hidden name=block value=$block>
+
+!if $titb=$empty
+ Création
+!else
+ Edition
+!endif
+du bloc <tt>$block</tt>.
+!if $edtype=file
+ !href cmd=reply&edtype=textarea [Composition en ligne]
+!else
+ !href cmd=reply&edtype=file [Insérer un fichier]
+!endif
+<br>
+
+!set titb=!reinput $titb
+Titre : <input size=50 name=Titb value="$titb"> <br>
+!if $edtype=file
+ Insérer un fichier au contenu : <input type=file size=35 name=wims_deposit>
+ !if $titb!=$empty
+  <br>Ce fichier va
+  !formselect addtype list replace,append,prepend prompt\
+	remplacer le, s'ajouter à la fin du, s'ajouter au début du
+  contenu existant.
+ !endif
+ <br>
+!else
+ !mexec scripts/textarea.sh
+!endif
+<center>
+<input type=submit name=preview value="Aperçu">
+<input type=submit name=rEg value="Enregistrer">
+<input type=submit name=abandon value="Abandonner">
+</center> <br>
+!! Mots clés : <input size=50 name=Keyw value="$keyw"> <br>
+!if $block!=main
+ Bloc précédent : <input size=12 name=Prev value="$prev">
+ suivant : <input size=12 name=Next value="$next">
+ parent : <input size=12 name=Upbl value="$upbl">
+ <br>
+!endif
+Dates de validité <small>aaaammjj</small> : de
+<input size=8 name=Dat1 value="$dat1"> à
+<input size=8 name=Dat2 value="$dat2">
+</form>
+!if $edtype=file
+ <p><b>Remarque</b>. Formats acceptés&nbsp;: source de document WIMS,
+ fichier html ou source LaTeX. Des fichiers partiels peuvent être 
+ soumis, à condition qu'ils soient bien coupés (c'est-à-dire que les coupures
+ ne soient pas au milieu d'une balise html ou une formule mathématique, etc).
+!endif
+<p><hr> <p>
+

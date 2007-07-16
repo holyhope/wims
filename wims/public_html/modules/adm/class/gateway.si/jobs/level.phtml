@@ -1,0 +1,107 @@
+
+!set form_OK=Send the modified properties
+!set form_titlename=Title
+!set form_caption=Properties of the level
+!set title=$class_description
+!set sup=$class_Supervisor
+!set alevel=$class_level
+!read scripts/levelform.phtml
+<p>
+!if $classcnt=0
+ This level has no classes yet.
+ !href cmd=reply&job=addclass Create classes
+.<sup>
+ !href cmd=help&special_parm=structure#class help
+</sup>
+!else
+ $table_header
+ <caption>Available classes<sup>
+ !href cmd=help&special_parm=structure#class help
+ </sup>in this level <small>
+ !href cmd=reply&job=addclass Add&nbsp;more&nbsp;classes
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Courses</small></th>
+ <th><small>Participants</small></th>
+ </tr>
+ !for i=1 to $classcnt
+   !set l=!line $i of $classes
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!record 0 of $classdir1/$l_/courses
+   !set c=!nonempty lines $c
+   !set c=!linecnt $c
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=class&class=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delclass&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+      $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   </td><td align=center>$c</td>
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   <td align=center>$c</td>
+ !next i
+ $table_end
+
+!endif
+
+<p>
+!if $progcnt=0
+ This level has no teaching programs yet.
+ !href cmd=reply&job=addprog Create programs
+.<sup>
+ !href cmd=help&special_parm=structure#program help
+ </sup>
+!else
+ $table_header
+ <caption>Available teaching programs<sup>
+ !href cmd=help&special_parm=structure#program help
+ </sup>in this level <small>
+ !href cmd=reply&job=addprog Add&nbsp;more&nbsp;programs
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th><small>Courses</small></th>
+ </tr>
+ !for i=1 to $progcnt
+   !set l=!line $i of $programs
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!record 0 of $classdir1/$l_/courses
+   !set c=!nonempty lines $c
+   !set c=!linecnt $c
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=prog&prog=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delprog&del=$l_ delete
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+      $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Non-available
+   !endif
+   </td><td align=center>$c
+ !next i
+ $table_end
+
+!endif
+
+!reset title
+

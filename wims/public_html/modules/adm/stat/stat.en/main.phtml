@@ -1,0 +1,46 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+
+!if $cmd=help and $special_parm=about
+ !read about.phtml
+ !goto end
+!endif
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>Usage statistics</h1></center>
+<p><hr> <p>
+
+!if $sitestart=$empty
+ The usage accounting is not active on this site. No statistics is available.
+ Sorry. <p>
+ !goto end
+!endif
+
+!if $show=yes and $total_site>0 and $laps>0
+!!if $show=yes
+ !href cmd=resume Back to menu
+ <p>
+ !read answer.phtml
+ !href cmd=resume Back to menu
+ <p>
+!else
+ !if $usercnt>0
+  There are $classcnt portals and individual classes on this server, with
+  $usercnt total user accounts.
+  <p>
+ !endif
+ !read menu.phtml
+!endif
+:end
+!homeref
+</body></html>
+
+!set stat_module=

@@ -1,0 +1,94 @@
+
+!if $rep!=$empty
+ !if $status=ERROR
+  !read msgcl.phtml $rep2
+  <p><hr width=50%><p>
+ !else
+  <pre>$rep</pre>
+  <p>
+  !if $m1=local
+   The published module will appear in the site's search
+   engin within a few minutes.
+   <p>
+   If this is an error, please
+   !mailurl $wims_site_manager ask the site manager
+   to remove your published module by hand.
+  !else
+   You will receive a mail confirming the submission.
+  !endif
+ !endif
+ !exit
+!endif
+
+!if $askcheat=yes
+ This module declares that it only needs WIMS-$Wver2 to run,
+ while it has probably modified on this server of version
+ $wims_version. You should update the module's INDEX file
+ to make this correct.
+ <p><center>
+ !href cmd=help&special_parm=wimsversion Explanation
+.
+ !href cmd=reply&vcheat=no OK, go ahead
+.
+ </center> <p>
+ If you are SURE of what you are doing, you can
+ !href cmd=reply&vcheat=yes cheat the servers
+ into thinking that you are on an older server 
+ (a VERY RISKY OPERATION)!
+ !exit
+!endif
+
+!if $pubprep=yes
+ !if $local!=yes
+  !href cmd=help&special_parm=publish Read me first!
+  This is a public-address module that should be published to the
+  publication center <tt>$centralhost</tt>.
+  please enter your publication identifier.
+  !form reply
+  <input type=hidden name=confirm value=yes>
+  <input type=hidden name=vcheat value="$vcheat">
+  <p><center><table border=0 cellpadding=4>
+  <tr><td align=right>Submission id: </td>
+  <td><input type=text size=20 name=submitauth value="$submitauth">
+  </td></tr>
+  <tr><td align=right>Submission password: </td>
+  <td><input type=password size=20 name=submitpass value="$submitpass">
+  </td></tr>
+  <tr><td align=right>Type of publication: </td>
+  <td>
+  !set submittype=devel
+  !formselect submittype list devel,stable,new prompt \
+	development version, \
+	stable version - modify an existing module, \
+	stable version - add a new module
+  </td></tr>
+  <tr><td align=right>Is this module a translation <br>
+  from another language?
+  </td><td>
+  !set istranslate=no
+  !formselect istranslate list yes,no prompt Yes,No
+  </td></tr>
+  <tr><td align=right>Authorized modifiers:
+  </td><td>
+  <input size=40 name=modifiers value="$modifiers">
+  !href cmd=help&special_parm=modifiers <sup>help</sup>
+  </td></tr>
+  <tr><td colspan=2 align=center><input type=submit value=OK>
+  </tr>$table_end <p>
+  Have you incremented the version number of the module, if you are publishing
+  a new version of an existing module?
+  <p>
+  If you haven't, nobody will be upgrading to your new version.
+ !else
+  Your module has a local address. It can only be published on the
+  local space of this server. Do you want to continue?
+  <p><center>
+  !href cmd=reply&confirm=yes&vcheat=$vcheat Go ahead
+  &nbsp
+  !href cmd=reply&jobreq=flist Cancel
+  </center> <p>
+  The main advantage of a publication in the local space is to make
+  the module visible by the search engine of the local server.
+ !endif
+!endif
+

@@ -1,0 +1,74 @@
+<center>
+!if $teachercnt=0
+这里还没有教师帐户.
+ !href cmd=reply&job=addteacher 新教师帐户
+. <p>
+!else
+这里有
+ !href cmd=reply&job=teacher $teachercnt个教师帐户
+.
+!endif
+
+!goto nopart
+!if $studentcnt=0
+ <p>
+这里还没有参加者帐户.
+ !href cmd=reply&job=addstudent 新参加者
+.
+!else
+ !href cmd=reply&job=student $studentcnt个参加者帐户
+.
+!endif
+:nopart
+</center>
+<p>
+!if $levelcnt=0
+这里还没有建立年级.
+  !href cmd=reply&job=addlevel 创建年级
+.<sup>
+  !href cmd=help&special_parm=structure#level 帮助
+</sup>
+!else
+ $table_header
+ <caption>可用年级<sup>
+ !href cmd=help&special_parm=structure#level 帮助
+ </sup><br><small>
+ !href cmd=reply&job=addlevel 添加别的年级
+ &nbsp; 
+ !href cmd=reply&job=backstruct 备份结构
+ </small></caption>
+ $table_hdtr
+ <th>代码<th>名称</th><th>-</th><th>负责人</th>
+ <th><small>班级</small></th>
+ <th><small>计划</small></th>
+ </tr>
+ !for i=1 to $levelcnt
+   !set l=!line $i of $leveldata
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!positionof item $l_ in $classl
+   !set c=!itemcnt $c
+   !set p=!positionof item $l_ in $progl
+   !set p=!itemcnt $p
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=level&level=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=dellevel&del=$l_ 删除
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+   不可用
+   !endif
+   </td><td align=center>$c
+   </td><td align=center>$p
+ !next i
+ $table_end
+!endif
+

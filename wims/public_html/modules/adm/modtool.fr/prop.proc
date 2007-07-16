@@ -1,0 +1,73 @@
+n=!recordcnt wimshome/log/.developers
+!for i=1 to $n
+  r=!record $i of wimshome/log/.developers
+  !distribute lines $r into ll,pp,nn,ee
+  !if $ll=$auth_login
+   a_passwd=$pp
+   auth_name=$nn
+   auth_email=$ee
+   !break
+  !endif
+ !endif
+!next i
+
+!if $confirm=$empty
+ !exit
+!endif
+
+p_name=!trim $p_name
+p_email=!trim $p_email
+p_pass1=!trim $p_pass1
+p_pass2=!trim $p_pass2
+
+!if $p_name=$empty or @ notin $p_email
+ !exit
+!endif
+
+!if $p_pass1!=$empty
+ passcheck=!text select $alnum in $p_pass1
+ passcnt=!charcnt $passcheck
+ !if $passcheck!=$p_pass1 or $p_pass1!=$p_pass2 or \
+	passcnt<4 or $passcnt>16
+  error=bad_pass
+  !exit
+ !endif
+ passchange=yes
+ p_passwd=$p_pass1
+!else
+ p_passwd=$a_passwd
+!endif
+
+!if $p_name=$auth_name and $p_email=$auth_email and $passchange!=yes
+ !exit
+!endif
+
+content=$p_passwd\n$p_name\n$p_email
+
+!sh cd $wims_home/log\
+ awk 'BEGIN {a=0}; \
+	/^:/ {a=0}; \
+	/^:$auth_login$$/ {a=1}; \
+	a==0 {print}; \
+	a==1 {print; print "$content"; a=2}; \
+' .developers >.dev \
+ mv -f .dev .developers
+  
+
+n=!recordcnt wimshome/log/.developers
+!for i=1 to $n
+  r=!record $i of wimshome/log/.developers
+  !distribute lines $r into ll,pp,nn,ee
+  !if $ll=$auth_login
+   auth_name=$nn
+   auth_email=$ee
+   !break
+  !endif
+ !endif
+!next i
+
+!if $passchange=yes
+ wims_module_log $auth_login change password.
+!else
+ wims_module_log $auth_login change properties.
+!endif

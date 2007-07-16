@@ -1,0 +1,43 @@
+!if robot isin $session or _ isin $session
+ !exit
+!endif
+!if $error issametext bad_password
+ !read js/chrono.js 5
+!endif
+
+!read names.phtml
+!header
+!distribute line Teachers' area\
+	Students' area\
+	Example classes\
+	Supervisor authentification\
+	Participant authentification\
+	elementary school\
+	secondary school\
+	university\
+	into n_supervisor,n_participant,n_example,\
+	n_authsupervisor,n_authparticipant,n_E,n_H,n_U
+
+<center><h3>--- $(n_$type) ---</h3></center>
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!read $type.phtml
+!if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
+ <p><center>
+ !for t in participant,supervisor,example
+  !if $t!=$type or $superclass!=$empty
+   !href module=$module&type=$t&keyword=$keyword $(n_$t)
+&nbsp;&nbsp;
+  !endif
+ !next t
+ !href target=wims_help module=help/main&chapter=3 Explanations
+ </center>
+!endif
+
+!tail
+
+!reset auth_user,auth_password,superclass,keyword
+

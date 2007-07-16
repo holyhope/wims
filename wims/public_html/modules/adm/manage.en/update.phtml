@@ -1,0 +1,91 @@
+
+<center><h3>WIMS server software update</h3></center>
+
+!if $error!=$empty
+ !if $error=no_script
+  Sorry, we have failed to download the new WIMS version from
+  <tt>$download</tt>. Please try again later.
+ !endif
+ 
+ !goto end
+!endif
+
+!if true iswordof $testing
+<font color=red><em>Testing mode.
+Will only write to the testing directory.</font></em>
+<p>
+!endif
+
+!if $lockcheck != $empty
+ WIMS system update is under way. Here is the current script output summary.
+ <small><pre>
+ !sh cat ../log/update.log
+ </pre></small>
+ <a name=updateend>
+ !href cmd=resume#updateend Refresh the output
+.
+ !goto end
+!endif
+
+!if $job2=check
+ Summary of the last update:
+ (Please send it to $wims_maintainer in case of error.)
+ <small><pre>
+ !sh cat ../log/update.log
+ </pre></small>
+ !goto check
+!endif
+
+!if $job2=check2
+ Detailed output of the last update: 
+ (Please send it to $wims_maintainer in case of error.)
+ <small><pre>
+ !mexec scripts/cat_update2.sh
+ </pre></small>
+ !goto check
+!endif
+
+!if $pubversion=$empty
+ Sorry, the WIMS download site <tt>$download</tt> is unreachable.
+ !goto end
+!endif
+
+This WIMS site is currently under version $wims_version.
+
+!if $pubversion=$wims_version
+ It is the most recent public version of the software. You don't need to
+ update.
+ !goto check
+!endif
+
+The most recent public version is $pubversion.
+!if $recentversion<$thisversion
+ You are more recent than the public version! Nothing to update to.
+ !goto check
+!endif
+
+<p>
+!href cmd=reply&job=update&job2=confirm Click here
+ to download WIMS $pubversion from <tt>$download</tt> and update the
+server. <b><font color=red>WARNING!</font></b> This will create
+momentary unavailabilities of the server.
+<em>Don't update when the server is busy.</em>
+<p>
+<b>Note</b>. Updating the server will not disturb your local resources on it
+(classes, exercises, documents, modules under development).
+<p>
+<b><font color=red>IMPORTANT</font></b> You must make a file permissions
+check after the software update!
+
+:check
+!if $logcheck!=$empty
+<p>
+ Output of last update:
+ !href cmd=resume&job2=check summary
+,
+ !href cmd=resume&job2=check2 detail
+.
+!endif
+:end
+!reset job2
+

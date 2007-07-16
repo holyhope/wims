@@ -1,0 +1,48 @@
+
+nowtime=$wims_now
+start10=!date -d '10 minutes ago' '+%Y%m%d.%H:%M:%S'
+start30=!date -d '30 minutes ago' '+%Y%m%d.%H:%M:%S'
+start1h=!date -d '1 hours ago' '+%Y%m%d.%H:%M:%S'
+start3h=!date -d '3 hours ago' '+%Y%m%d.%H:%M:%S'
+
+ses=!sh cat $wims_home/log/access.log.old1 $wims_home/log/access.log 2>/dev/null |\
+ awk '$$1 >= "$start10" && ! /_error/ {print substr($$2,1,4)" "$$3" "$$1" "$$5" "$$6}' |\
+ sort -r | uniq -w4 -c | sort -k3 -n |\
+ awk '{print $$1" "$$2" "$$3" "$$5" "$$6}'
+load=!sh uptime
+load=!word -3 to -1 of $load
+load=!translate , to $ $ in $load
+!distribute words $load into load1,load5,load15
+!if $load15!=$empty
+ load1=$[$load1*100]
+ load5=$[$load5*100]
+ load15=$[$load15*100]
+ !if NaN isin $load1 $load5 $load15
+  !reset load1,load5,load15
+ !endif
+!endif
+
+sessions=!sh ls $wims_home/sessions | grep -v '\-' | grep -v '[a-z]'
+sessions=!words2items $sessions
+sss=
+!for s in $sessions
+ S=!char -4 to -1 of $s
+ sss=!append line $S:$s to $sss
+!next s
+!writefile wimshome/$wims_sesdir/lastses $sss
+!sh $wims_home/bin/dicsort $wims_home/$wims_sesdir/lastses
+dictionary=$wims_home/$wims_sesdir/lastses.sorted
+translator_unknown=leave
+translator_switch=leavelines
+ses=!exec translator $ses
+
+accesscnt=!sh cat $wims_home/log/access.log.old1 $wims_home/log/access.log 2>/dev/null |\
+ awk 'BEGIN {a1=0; a2=0; a3=0; a4=0;};\
+	$$1 >= "$start10" {a1++};\
+	$$1 >= "$start30" {a2++};\
+	$$1 >= "$start1h" {a3++};\
+	$$1 >= "$start3h" {a4++};\
+	END {print a1" "a2" "a3" "a4};'
+
+!distribute words $accesscnt into access10m, access30m, access1h, access3h
+

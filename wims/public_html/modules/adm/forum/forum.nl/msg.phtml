@@ -1,0 +1,21 @@
+
+!set errorhead=<b>Fout.</b>
+
+!if forum_not_exist = $error
+ $errorhead Je hebt om een niet bestaand "message board" verzocht...verbeter je verzoek
+
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_register = $error
+ $errorhead Dit "message board" laat geen <em>online registratie</em> toe.
+ Dus 
+ !mailurl $mb_email Vraag de beheerder\
+$mb_title
+ als je lid wilt worden
+ !exit
+!endif
+
+!msg $error
+

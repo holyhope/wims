@@ -1,0 +1,178 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>
+$module_title
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+[
+ !href module=$module&cmd=reply&step=0 重新開課
+ ]
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+ 這個開課計劃是預留給教師來經營。您需要填上電子信箱以便運作，課程開出來後，您將賦予維護的責任。<p>
+ 為了開設您的課程，請填寫下列資料。
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>服務單位 (至多 $instlim 字元)：
+  <input size=$instlim name=institution value="$institution"> <p>
+ <li>課程名稱 (至多 $desclim 字元)：
+  <input size=$desclim name=description value="$description"> <p>
+ <li>課程等級：<br>
+  <center><table border=1>
+  <tr><th>年級
+  !for j=1 to 6
+   <td align=center>$j
+  !next j
+  !for i in E,H,U
+   <tr><td align=center>$(lev_$i)
+   !for j=1 to 6
+	!if $i!=U or $j<6
+	 <td><input type=radio name=level
+	 !if $level=$i$j
+	  checked
+	 !endif
+	 value=$i$j>
+	!else
+	 <td>.
+	!endif
+   !next j
+  !next i
+  </table></center> <p>
+ <li>課程管理者(就是您)的全名：
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>電子信箱：
+  <input size=$emaillim name=email value="$email"> <br>
+  (除非您確實填寫電子信箱否則開課計劃的操作無法成功。)<p>
+ <li>選填管理者密碼：
+  <input size=16 type=password name=passsup> <br>
+  (4 至 16 個無意義的數字或字母)。<br>
+  這個密碼將讓您以管理者身份存取課程，應該只有您一個人知道。<p>
+ <li>課程密碼 (可不填)：
+  <input size=16 type=password name=password> <br>
+  (4 至 16 個無意義的數字或字母)。<br>
+  學生登錄課程將會用到這個密碼；您應該公佈給學生知道。<br>
+  沒有密碼的課程將可被(全世界)任何人自由存取，這不是明智的作法。<p>
+ <li>課程期滿日期：
+  <select name=exp_day>
+  !for i=1 to 31
+   <option value=$i
+   !ifval $i=$exp_day
+	selected
+   !endif
+   >$i
+  !next i
+  </select> <select name=exp_month>
+  !for i=1 to 12
+   <option value=$i
+   !ifval $i=$exp_month
+	selected
+   !endif
+   >
+   !item $i of $months
+  !next i
+  </select> <select name=exp_year>
+  !for i=$thisyear to $thisyear+1
+   <option value=$i
+   !ifval $i=$exp_year
+	selected
+   !endif
+   >$i
+  !next i
+  </select> <p>
+ <li>課程中學生人數上限：
+  <input size=3 name=limit value="$limit">
+  (最高上限為 $wims_class_user_limit 人)<p>
+ </ul>
+ <center><input type=submit value=" 繼續 "></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+  $supervisor 您好！<p>
+  您正在 $httpd_HTTP_HOST 的  WIMS 伺服器上為  開設適用於
+  <b><font color=green>$name_level</font></b> 的  $classname 課程，參與人數限制為  $ilimit
+  人。本課程的註冊程序已
+ !if $pword!=$empty
+  被課程的密碼所保護。
+ !else
+  開放給網路上的任何人(您確定碼？)。
+ !endif
+ 本課程將會於  $exp_month-$exp_day-$exp_year 到期。<p>
+ 如果您發現上述資訊有任何錯誤，請修正
+ !href module=$module&cmd=reply&step=0 開課計劃
+ 。
+ <p>
+ 為了確保您的密碼正確無誤，請再輸入一次。<p>
+ !form reply
+ <input type=hidden name=step value=2>
+ 管理者密碼：
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+ 課程密碼：
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value=" 繼續 "></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+  $supervisor 您好！<p>
+現在您需要一組密碼來完成 $http_HTTP_HOST 上 WIMS 新課程的開設。<p>
+這組密碼剛已送到您的電子信箱 "<tt>$email</tt>" 。
+請到您的電子信箱(可能需要一點時間送信)中讀取信件。找到信件中的密碼並複製到下一欄。
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>課程密碼： <input size=12 name=typecode>
+ <p><input type=submit value=" 繼續 "></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=3
+ $supervisor 您好！<p>
+ 恭禧，您的 $classname 課程已開設完成，請盡情享用！<p>
+ <font color=green>$name_level</font> 課程參與人數(包含您自己)限制為  $ilimit 人。
+ !read links.phtml
+ !goto end
+!endif
+
+:end1
+<p>
+[
+!href module=$module&cmd=reply&step=0 回開課計劃
+ ]
+:end
+<p><hr width=30%> <p>
+!homeref
+</body></html>
+
+!set step=
+

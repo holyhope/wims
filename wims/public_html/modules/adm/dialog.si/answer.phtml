@@ -1,0 +1,33 @@
+
+<a name=ans>
+!if $badask=yes
+ !if $comment!=$empty
+  Va¹ zahtevek za $badname ni dovoljen:
+  $comment 
+ !else
+  Va¹ zahtevek za $badname ni dovoljen, ker ta podatek ni smiseln.
+ !endif
+ <p>Va¹e delo na tej vaji je ukinjeno zaradi nedovoljenega vpra¹anja.
+ !exit
+!endif
+
+!if $speculate=yes
+ Zbrali ste premalo podatkov, da bi lahko do re¹itve problema pri¹li s pravilnim sklepanjem. Va¹ odgovor je zato neveljaven in ¹teje kot napaèen.
+ !exit
+!else
+ !read $deffile ans
+!endif
+
+!if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $thisscore<0.7))
+ <p><b>Re¹itev.</b> $solution
+!endif
+
+<p>
+!if $gotcnt>$minask
+ Minimalno ¹tevilo vpra¹anj, s katerimi bi lahko re¹ili ta problem, je $minask.
+!endif
+
+!if $uselesscnt>0
+ Naslednji podatki so nepotrebni: <b>$useless</b>.
+!endif
+

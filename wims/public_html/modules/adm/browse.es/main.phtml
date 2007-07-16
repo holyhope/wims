@@ -1,0 +1,29 @@
+!if robot isin $session
+ <html><body $wims_htmlbody>
+ Los robots no pueden acceder a esta página.
+ </body></html>
+ !exit
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody onload=window.focus();>
+!headmenu
+<center><h1>
+<font color=red>S</font>ervidor
+<font color=red>I</font>nteractivo
+<font color=red>M</font>ultipropósito
+<font color=red>WIMS</font><br>
+<font size=-1>en <a href=/>$httpd_HTTP_HOST</a></font>
+</h1></center>
+
+!read $job.phtml
+
+!if $job!=home
+ <p>
+ !href module=$module&cmd=new&job=home Otros métodos de exploración
+.
+!endif
+
+!tail
+

@@ -1,0 +1,79 @@
+
+!if $vote_option=anonymous
+ This is an anonymous vote.
+!else
+ This is a nominative registration.
+!endif
+!if $vote_status=2
+ It is closed.
+!endif
+
+!if $wims_user=supervisor
+ ($vcnt votes)
+ !href cmd=reply&job=edit Modify
+<p>
+!endif
+
+!if $vote_status=2
+ !changeto $votedir/$vote.def
+!endif
+
+!if $(user_vote_$Vote)!=$empty
+ !if $vote_option=anonymous
+  Vous have already voted. <p>
+ !else
+  You have already expressed your choice, but you can still change your mind.
+  <p>
+  !goto form
+ !endif
+!else
+ Express your choice: <p>
+ :form
+ !form reply
+ <input type=hidden name=job value=vote>
+ !set m_formed=yes
+!endif
+
+!read $votedir/$vote.def
+
+!if $m_formed=yes
+ <p><center>
+ <input type=submit value="Send">
+ </center></form>
+!endif
+!readdef $votedir/$vote.comments 
+!if $wims_user=supervisor and $test_comment=1 and $vote_option=anonymous
+<p><b>Textes des commentaires</b> : 
+</p><p> 
+!for i=1 to $parmcnt
+ !if $(type_comment$i)=yes
+  !set comment_$i = !replace internal --- by $\
+ $<br> in $(comment_$i)
+
+ $i : $(comment_$i)
+</p><p>
+ !endif
+ </p>
+!next
+!endif
+!if $wims_user=supervisor and $vote_option=nominative
+ <p> Detail of the registrations.
+ !for i=1 to $parmcnt
+  !for c=1 to $(choices$i)
+   !if /supervisor/ notin $c/
+    <p>
+    !item $c of $(chlist$i)
+ <br> <tt>
+    !for u in $(votes_$(i)_$c)
+     !set U=!translate internal / to , in $u
+     !readproc adm/class/userdef classes,$U
+     !defof user_lastname, user_firstname in $userdef
+     ($u)
+     <br>
+    !endif
+   !next u
+   </tt>
+  !next c
+ !next i
+!endif
+

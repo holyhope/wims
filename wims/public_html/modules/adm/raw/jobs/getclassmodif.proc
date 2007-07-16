@@ -1,0 +1,14 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+data1=!trim $data1
+!default data1=1 day ago
+start=!date -d '$data1' '+%Y%m%d%H%M'
+
+modif=!sh cd $wims_home/log/classes/$qclass\
+	touch -t $start .tstamp\
+	find . -follow -type f -newer .tstamp | sed 's!^./!!g'\
+	rm -f .tstamp
+

@@ -1,0 +1,71 @@
+!reset wims_deposit
+
+!if $mode=bad_fname
+ Votre fichier n'a pas l'air d'un fichier de sauvegarde d'un module&nbsp;!
+ <p>
+ Vous ne pouvez restaurer un fichier que s'il a été téléchargé auparavant à partir de Modtool.
+ Réessayez.
+ <p>
+!endif
+
+!if $mode=bad_arch
+ Je n'ai pas pu reconnaître votre fichier comme une sauvegarde de module.
+ Erreur dans le fichier&nbsp;!
+ <p>
+!endif
+
+!if $mode=illegal
+ Votre sauvegarde contient des fichiers de types illégaux ! Restauration
+ impossible.
+ <p>
+ Est-ce une sauvegarde d'une ancienne version ? Maintenant vous devez copier 
+ les fichiers un par un.
+ <p>
+!endif
+
+!if $mode=diffcheck
+ !if $diff=$empty
+  Aucune différence n'est trouvée entre le module existant (dans votre espace
+  de développement) et la sauvegarde.
+ !else
+  !if $diff=MANY
+   Trop de différence existe entre le module existant (dans votre espace
+   de développement) et la sauvegarde.
+  !else
+   Differences entre le module existant (dans votre espace de développement) et
+   la sauvegarde&nbsp;:
+   <pre>$diff</pre>
+  !endif
+ !endif
+ !exit
+!endif
+
+!if $mode!=$empty and $mode iswordof prep bad_fname bad_arch illegal
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=jobreq value=restore>
+ Donnez le fichier de sauvegarde à restaurer&nbsp;:
+ <input type=file name=wims_deposit size=40>
+ <input type=submit value=OK>
+ <p>
+ <small>Seules les sauvegardes depuis Modtool ou les fichiers téléchargés
+ depuis le centre de publication <a href=$downloadsite>$downloadsite</a>
+ sont acceptés. Aucune modification manuelle du fichier d'archives 
+ n'est autorisée.
+ </small>
+ <p>
+ <b>AVERTISSEMENT</b>. <tt>Restauration d'une sauvegarde</tt>
+  va remplacer complètement
+ le module existant à la même adresse, sans possibilité de retour.
+ Mais vous pouvez
+ <input type=checkbox name=confirm value=diffcheck>
+ faire montrer les différences entre les modules d'abord.
+</form>
+!else
+ Module restauré&nbsp;: <b>$ftest</b>, <small>$ftest2</small>
+ <br>Address: <tt>$restored</tt>.
+ <p>
+ !href cmd=reply&jobreq=flist&modreq=$restored Aller travailler sur le module
+.
+!endif
+

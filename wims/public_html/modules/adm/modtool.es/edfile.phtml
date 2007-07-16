@@ -1,0 +1,32 @@
+
+Edit file 
+<font color=blue><em>$fname</em></font>
+in the module
+<font color=blue><em>$title</em></font>:
+
+!if $makeerror!=$empty
+<hr>
+<pre>
+$makeerror
+</pre>
+<hr>
+!endif
+
+!form reply
+<input type=hidden name=fname value=$fname>
+
+<center>
+!sh content=`cat $devdir/$mod/$fname | sed 's/\&/\&amp;/g;s/</\&lt;/g'`\
+ cat <<@\
+<textarea rows=20 cols=70 wrap="off" style="{white-space: pre}" name=wims_deposit>$$content\
+</textarea>\
+@
+<p>
+<input type=submit name=register value="Register the changes">
+&nbsp;
+<input type=submit name=abandon value="Cancel">
+</center>
+</form>
+
+!href cmd=reply&jobreq=flist Back to file list
+.

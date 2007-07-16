@@ -1,0 +1,33 @@
+ !if $parm1=$empty
+  !exit
+ !endif
+!if \ isin $parm1$parm2$parm3$parm4
+ !for p in 1,2,3,4
+  !set parm$p=!slashsubst $(parm$p)
+ !next p
+!endif
+ !reset titb
+ !read $wims_priv_thisdoc/$parm1.def
+ !set prompt=!item 2 to -1 of $parms
+ !default prompt=$titb
+ !if $titb=$empty
+  !default prompt=<tt>$parm1</tt>
+  $prompt
+  !if $editable=yes
+   <small>[
+   !href cmd=reply&job=edit&block=$parm1 Create
+   ]
+  !else
+   <small>[non-available]</small>
+  !endif
+ !else
+  <a name=$parm1>
+  $prompt
+  !if $editable=yes
+   <small>[
+   !href cmd=reply&job=edit&doc=$doc&block=$parm1 Edit
+   ]</small>
+  !endif
+  !read $wims_priv_thisdoc/$parm1.def content
+  !set gotblock=!append item $parm1 to $gotblock
+ !endif

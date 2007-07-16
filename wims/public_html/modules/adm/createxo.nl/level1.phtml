@@ -1,0 +1,69 @@
+Welkom.<br>
+Dit is de het onderdeel waar interactieve 
+!if $wims_user!=supervisor
+ oefeningen
+!else
+ oefeningen voor uw klas<font color=blue>
+ $wims_classname</font> van <font color=blue>$wims_institutionname</font>,
+!endif
+kunnen worden gemaakt in de begeleidde modus.<br>
+Hier staan enkele uitgewerkte
+!href cmd=reply&mode=model voorbeelden
+<img src=gifs/new.gif>.<br>
+Hebt u al vaker gewerkt met Createxo of het OEF formaat, kunt u in
+!href cmd=reply&rawinp=yes expert mode
+ online uw broncode bewerken en uittesten, of 
+!href cmd=reply&mode=file in file mode
+ voor het opsturen van OEF bestanden naar de server.<br>
+Nieuwkomers kunnen ook werken aan enkele simpele 
+!href cmd=help&special_parm=examples voorbeelden
+.
+
+!form reply
+<input type=hidden name=level value=2>
+De titel van de nieuwe oefening:<br>
+<input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
+Het statement wordt geschreven in:
+!formselect oef_format list tex,html
+ [
+ !href target=wims_mhelp cmd=help&special_parm=format help
+ ]<p>
+ Deze oefening heeft
+!formselect oef_answercnt from 0 to 10
+<em>open antwoorden</em> en
+!formselect oef_choicecnt from 0 to 10
+<em>multiple-choice</em> antwoorden.
+Antwoorden zoals <tt>3*5-sin(pi/3)</tt> worden
+!formselect oef_computeanswer list yes,no prompt geaccepteerd,niet geaccepteerd
+.&nbsp;&nbsp;
+!formselect oef_condcnt from 0 to $condlim
+ testcondities worden gebruikt voor het beoordelen van de <em>open antwoorden</em>.
+ [
+ !href target=wims_mhelp cmd=help&special_parm=reply help
+ ]
+<p><table border=0><tr><td align=right>
+Naam van de auteur:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+<tr><td align=right>
+Emailadres:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+</table>
+<p><center>
+<input type=submit value="OK en ga verder">
+</center>
+</form>
+
+Er is ook
+!href module=adm/modtool Modtool
+ voor het online ontwikkelen van <em>full-power</em> WIMS modules.
+
+!if $wims_user=supervisor
+ !read wimshome/log/classes/$wims_class/Exindex
+ !if $exototal>0
+  <p>
+  !form new
+  <input type=hidden name=module value=$module>
+  Verander een bestaande oefening uit mijn klas:
+  !formselect existing list $exolist prompt $titlelist
+  <input type=submit value=OK></form>
+ !endif
+!endif
+

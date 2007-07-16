@@ -1,0 +1,105 @@
+<center>$classname<p><h1>$cdt_title.</h1>
+ <b><font size=+1>
+ !if $jour_begin!=$empty
+  between <font color=green>$jyear/$jmonth/$jday</font>
+  !if $jour_begin!=$jour_end
+   and <font color=green>$jyear2/$jmonth2/$jday2</font>
+  !endif
+ !endif
+ </font></b>
+</center> 
+
+!if $cdt_description!=$empty
+ <br>$cdt_description
+!endif
+<p><p>
+
+!if $cdt_nbdate=0
+ no information.
+ !goto end
+!else
+ !if $nbligne=0
+  !if $jour_begin=$jour_end
+   no information for this day.
+  !else
+   no information for this period.
+  !endif
+  !goto end
+ !endif
+!endif
+
+<center>
+ $table_header
+ $table_hdtr 
+  <th>Day</th>
+  !if no isin $cdt_supervise
+   <th>Discipline</th>
+  !endif
+  <th>In class</th><th>Work to do</th><th width=30>for</th>
+  !if $wims_user=supervisor and yes isin $cdt_supervise
+   <th>Action</th>
+  !endif
+ </tr>
+ !for i=1 to $nbligne
+  !let mem_tr=$table_tr
+  !let don=!line $i of $list
+  !distribute item $don into jour,file,matiere
+  !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$file
+  !let file=wimshome/log/classes/$file/cdt/def/$jour
+  !read $file
+  !let nbtodo=!itemcnt $date_todo
+  $mem_tr
+   <td rowspan=$nbtodo>
+    !read proc/date.phtml $jour
+   </td>
+   !if no isin $cdt_supervise
+    <td rowspan=$nbtodo>$matiere</td>
+   !endif
+   <td rowspan=$nbtodo valign=top>
+    !read $file content
+   </td>
+   !if $nbtodo>0
+    <td valign=top>
+    !read $file todo1
+    </td>
+    <td>
+     !read proc/date.phtml $date_todo
+    </td>
+   !else
+    <td>&nbsp;</td><td>&nbsp;</td>
+   !endif
+   !if $wims_user=supervisor and yes isin $cdt_supervise
+    <td rowspan=$nbtodo>
+    !href cmd=new&job=adddate&filename=$jour Modify
+    &nbsp;
+    !href cmd=new&job=del&filename=$jour Delete
+   !endif
+  </tr>
+   !if $nbtodo>1
+    !let bgcolor=!positionof char # in $mem_tr
+    !let bgcolor=!char $bgcolor to $[$bgcolor+6] of $mem_tr
+    !for j=2 to $nbtodo
+     <tr bgcolor=$bgcolor>
+      <td valign=top>
+       !read $file todo$j
+      </td>
+      <td>
+       !let tmp=!item $j of $date_todo
+       !read proc/date.phtml $tmp
+      </td>
+     </tr>
+    !next j
+   !endif 
+ !next i
+ $table_end
+!if $nbligne>0
+ <p>
+ !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 Print
+!endif
+ </center>
+
+
+:end
+<p><hr width=40%> <p>
+!read form.phtml 
+!tail

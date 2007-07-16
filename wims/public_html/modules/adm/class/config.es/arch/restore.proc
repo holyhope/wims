@@ -1,0 +1,101 @@
+!bound restore within replace,merge default merge
+
+v=!record 0 of wimshome/$wims_sesdir/upload/class/version
+v=!word 1 of $v
+!if $v=$empty or $v notwordof 4
+ error=no_upload
+ !exit
+!endif
+serial=!record 0 of wimshome/$wims_sesdir/upload/class/serial
+serial=!word 1 of $serial
+!readdef wimshome/log/classes/$wims_class/neighbors
+
+sharing=
+!for r in $sharelist
+ !if $(sharing_$r)!=$empty
+  sharing=!append item $r to $sharing
+ !endif
+!endif
+sharing=!append item log,neighbor to $sharing
+
+safe=!listcomplement def,sup in $reclist
+selection=!replace item all by $safe in $selection
+sel=!listintersect $selection and $reclist
+sel=!listcomplement $sharing in $sel
+!if $sel=$empty
+ no_selection=yes
+ !read arch/upload.proc
+ job2=upload
+ !exit
+!endif
+selw=!items2words $sel
+dictionary=$module_dir/arch/recdep
+dep=!exec translator $selw
+copy=!words2items $selw $dep
+copy=!listuniq $copy
+
+!if user isitemof $copy
+ n=!recordcnt wimshome/$wims_sesdir/upload/class/.userlist
+ !if $restore=merge
+  m=!recordcnt wimshome/log/classes/$wims_class/.userlist
+ !else
+  m=0
+ !endif
+ !read adm/class/userremain.proc
+ !if $n>$dispo
+  user_bad=refused
+  copy=!listcomplement user,score in $copy
+ !endif
+!endif
+
+!if $restore=replace
+ erase=$copy
+!else
+ erase=!listcomplement user,exo in $copy
+!endif
+copyw=!items2words $copy
+erasew=!items2words $erase
+dictionary=$module_dir/arch/recdir
+copylist=!exec translator $copyw
+eraselist=!exec translator $erasew
+c=!replace , by , $ in $copy
+dictionary=$module_dir/arch/recnames
+restored=!exec translator $c
+
+!distribute words y y y y y y y y y y y y y y y y y y y y y y y into $copy
+
+!if def isitemof $copy
+ creat=!defof class_creation in wimshome/log/classes/$wims_class/.def
+!endif
+
+!mexec arch/restore.sh
+wims_class_log=Restore $copy from $wims_deposit
+selection=
+
+!if user isitemof $copy
+ !read adm/class/mkuserlist
+!endif
+
+!if def isitemof $copy
+ !setdef !set class_creation=$creat in wimshome/log/classes/$wims_class/.def
+ exp=!defof class_expiration in wimshome/log/classes/$wims_class/.def
+ today=!char 1 to 8 of $wims_now
+ later=!date -d '2 months' '+%Y%m%d'
+ !if NaN isin $[$exp]
+  exp_bad=bad
+  exp=$later
+ !endif
+ !if $exp<$later
+  exp=$later
+  exp_bad=early
+ !endif
+ !if $exp>$today+10000
+  exp=$[$today+10000]
+  exp_bad=late
+ !endif
+ !if $exp_bad!=$empty
+  !setdef !set class_expiration=$exp in wimshome/log/classes/$wims_class/.def
+ !endif
+ !mexec scripts/classlist.sh
+!endif
+

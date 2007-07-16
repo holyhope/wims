@@ -1,0 +1,12 @@
+!if $deluser!=$empty
+ !defread wimshome/log/classes/$wims_class/.users/$deluser
+ !if $user_exists=yes
+  !mexec deluser.sh
+  usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+  wims_module_log=Delete $deluser
+  wims_class_log=delete user $deluser
+ !endif
+!else
+ job=
+!endif
+

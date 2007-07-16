@@ -1,0 +1,97 @@
+
+!if $job=score
+ <center><h1>$wims_classname, $wims_institutionname<br>$title</h1>
+ !if $wims_user=supervisor
+  (Presentation for participants)
+ !endif
+ </center> <p>$desc<p>
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Back to home page
+. <p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ The exam is empty! Nothing is assigned in it. Possibly an 
+ error in the manipulation by your supervisor.
+!else
+ <p><center><table border=1 bgcolor=bisque>
+ <caption>Current score
+ <tr><th>Exercise<th>Title<th>Weight<th>Score
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+  <tr><td align=center>$i
+  <td align=center>$ti
+  <td align=center>$we<td align=center>
+  !if $(replied$i)>0
+   $(got$i)
+  !else
+   <small>pending</small>
+  !endif
+ !next i
+ <tr><td align=center colspan=4>
+ !default score=$sprime
+ Global score of the exam: <b>$score</b> <small>over 10</small>.
+ $table_end
+!endif
+<p>
+
+!if $registered=$empty
+ You have not yet started your work on the exam.
+ !href cmd=reply&job=student Go to start the work.
+!else
+ !if $registered>0
+  !if $timeleft<=0
+   Time is up!<p>
+   You have used up the $sdure minutes allocated for this exam.
+   !if $score>$lastscore
+    Now you should
+    !href cmd=reply&job=scorereg register your score
+    in order for it to take effect.
+   !else
+    Your score ($score) being no better than your last registered score
+    ($lastscore), the former will be ignored.
+   !endif
+  !else
+   !if $score>$lastscore
+    Your score will not be effective until you
+    !href cmd=reply&job=scorereg register it
+. And the registration of score terminates this examination session.
+    !if $allowtype=simulation
+     (Simulation mode.)
+    !endif
+   !else
+    Your current score ($score) is no better than your last registered score
+    ($lastscore).
+   !endif
+  !endif
+  <p>
+  !href cmd=reply&job=student Back to work on the exam.
+ !else
+  This exam session is terminated.
+  !if $allowtype=simulation
+   But your score is not taken into account because this exam is in 
+   simulation mode.
+  !endif
+  (Quit the class and reenter with your password if you want to
+  start a new session of exam.)
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Supervisor's view of the exam.
+ </center>
+!endif
+
+:end
+!tail
+
+!reset job
+

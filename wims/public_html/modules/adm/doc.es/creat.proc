@@ -1,0 +1,78 @@
+
+!if $abandon!=$empty
+ job=home
+ !changeto home.proc
+!endif
+
+!if $wims_class!=$empty
+ !if $wims_user=supervisor
+  Docdir=log/classes/$wims_class/doc
+  docdir=wimshome/$Docdir
+  doctype=class
+ !else
+  job=home
+  !exit
+ !endif
+!endif
+
+tit=$titr
+author=$authorr
+email=$emailr
+!if $tit=$empty
+ !exit
+!endif
+
+!if class != $doctype
+ coder=!trim $coder
+ coder2=!trim $coder2
+ m1=!charcnt $coder
+ m2=!charcnt $coder2
+ coder=!text select $namechars in $coder
+ coder2=!text select $namechars in $coder2
+ n1=!charcnt $coder
+ n2=!charcnt $coder2
+ !if $m1!=$n1 or $m2!=$n2
+  error=bad_newcode
+  !exit
+ !endif
+ !if $coder!=$coder2
+  error=code_discord
+  !exit
+ !endif
+ n=!charcnt $coder
+ !if $n<$codemin
+  error=small_code
+  !exit
+ !endif
+ !if $n>$codemax
+  error=big_code
+  !exit
+ !endif
+!endif
+
+serial=1
+:redo
+!if class = $doctype
+ doc=c$serial
+!else
+ doc=!randint 10^6,10^8
+!endif
+test=!record 0 of $docdir/$doc/.def
+!if $test!=$empty
+ !advance serial
+ !goto redo
+!endif
+
+!read propreg.proc
+!if $error!=$empty
+ !exit
+!endif
+
+editable=yes
+eddoc=!record 0 of wimshome/$wims_sesdir/doc.$module_language.editable
+eddoc=$eddoc $doc
+!writefile wimshome/$wims_sesdir/doc.$module_language.editable $eddoc
+!mexec scripts/setcode.sh
+!read adm/docindex.proc
+job=creat2
+

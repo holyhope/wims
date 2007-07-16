@@ -1,0 +1,93 @@
+!set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
+!set module_title=$module_title: $title
+
+!header
+
+!if $title=$empty
+ 本模块包含一批练习. 你在选取时没有指明是其中的哪一个练习.
+ 这可能是因为你选了一个错误的链接, 或者是出于软件错误.
+ <p><center>
+ !href module=$module 重做你的操作
+ , or
+ !href $ abandon
+ . </center>
+ !goto end
+!endif
+
+:tester
+!read proc/present.phtml
+
+<p><hr width=50%> <p>
+
+!if $cmd=hint
+ !read proc/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read proc/msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read proc/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint Hint
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink 更新练习
+.
+ !else
+  这是一轮含有$qnum个练习中的第$[$reply_cnt+1]个练习.
+  !href $renewlink 放弃本轮练习
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read proc/msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read proc/answer.phtml
+ <p>
+ !if $status!=$empty
+  这是一轮含有$qnum个练习中的第$[$reply_cnt+1]个练习.<p>
+  !href cmd=next 继续做本轮的下一个练习
+, 或者
+  !href $renewlink 放弃本轮练习, 开始新的一轮
+. (如果你想要分数, 则必须做完完整的一轮.)
+ !else
+  !if $qnum>1
+   你已经完成了一轮全部$qnum个练习, 得分是
+   $score 满分10.
+   !ifval $score>9.8
+    祝贺你!
+   !endif
+   <p>
+   !href $renewlink 换一轮
+.
+   !if $wims_sheet=$empty
+    !href module=$module&cmd=intro&special_parm=$wims_intro_parm 改变难度
+.
+   !endif
+  !else
+   你的得分是$score, 满分10.
+   !ifval $score>9.8
+    祝贺你!
+   !endif
+   <p>
+   !href $renewlink 再来一次
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!read endhook.phtml
+:end
+
+!tail
+

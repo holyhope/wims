@@ -1,0 +1,32 @@
+
+!if $directcnt>0
+ Vous pouvez directement aller dans&nbsp;:<ul>
+ !for cl in $directlist
+  !distribute words $cl into c_,u_
+  !set n_=!defof class_institution, class_description in\
+	wimshome/log/classes/$c_/.def
+  <li>
+  !if $u_=supervisor
+   !set t_=supervisor
+  !else
+   !set t_=$type
+  !endif
+  !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
+  (<tt>$u_</tt>)
+ !next cl
+ </ul>
+ <p><hr> <p>
+ !if $wims_user=supervisor
+  ou choisir $name_level_else $sousclasses_else
+  dans le tableau suivant.
+ !endif
+!else
+ !if $wims_user=supervisor
+  Pour aller dans  $name_level_else $sousclasses_else, choisissez 
+  son nom dans le tableau
+  suivant.
+ !else
+  Vous n'avez pas de compte dans d'autres classes.
+ !endif
+!endif
+

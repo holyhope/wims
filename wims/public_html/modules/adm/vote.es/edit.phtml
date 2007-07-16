@@ -1,0 +1,30 @@
+
+!form reply
+
+!if $vote_title=$empty
+ Creación
+!else
+ Edición
+!endif
+de una encuesta o una votación.
+<br>
+Título: <input size=50 name=reg_title value="$vote_title"> <br>
+Modo:
+!set reg_status=$vote_status
+!set reg_option=$vote_option
+!set reg_show=$vote_show
+!formselect reg_option list anonymous,nominative prompt anónima,nominativa
+Estado:
+!formselect reg_status from 0 to 3 prompt preparac.,abierta,cerrada,oculta
+Resultado de la encuesta:
+!formselect reg_show list 1,0 prompt publicado,oculto
+<br> Contenido: <small>
+!href cmd=help [ayuda]
+</small> <br>
+<textarea name=reg_src cols=60 rows=20>$src</textarea>
+<center>
+<input type=submit name=rEg value="Grabar">
+<input type=submit name=abandon value="Cancelar">
+</center>
+
+!reset reg_option reg_status reg_show

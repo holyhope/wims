@@ -1,0 +1,44 @@
+!if $exologcnt<1
+这里有$wims_firstname $wims_lastname未记录的练习.
+ !exit
+!endif
+
+这里有$wims_firstname $wims_lastname已记录的练习.
+点击日期以回放.
+!read tabletheme
+
+<p>$table_header
+$table_hdtr
+<th><small>记录日期</small></th>
+<th><small>页</small></th>
+<th><small>练习</small></th>
+<th><small>步骤</small></th>
+<th><small>成绩</small></th>
+<th>Title</th>
+!for i=1 to $exologcnt
+ !set l=!line $i of $exolog2
+ !set l_=!line $i of $exologs
+ !distribute item $l into d_,s_,n_
+ !set n_=!translate . to , in $n_
+ !distribute item $n_ into S_,E_
+ !set s_=!getdef w_module_score in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !default s_=-
+ !set p_=!recordcnt wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !set V_=!record $E_ of wimshome/log/classes/$wims_class/sheets/.sheet$S_
+ !distribute lines $V_ into a,a,a,a,T_,D_
+ !if $D_!=$empty
+  $table_tr<td align=center>
+  !href target=wims_check module=$module&job=check&checkuser=$checkuser&logcheck=$l_&checkstep=1 $d_
+  </td>
+  <td align=center>$S_</td><td align=center>$E_</td>
+  <td align=center>$p_</td>
+  <td align=center>$s_</td>
+  <td>$T_ <small>$D_
+  !if $wims_user=supervisor
+   !getfile exolog/$l_ source
+  !endif
+  </small></td></tr>
+ !endif
+!next i
+$table_end
+

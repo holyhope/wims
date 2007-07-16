@@ -1,0 +1,30 @@
+
+<hr>
+!form reply
+<p>
+<table border=0 cellspacing=0 cellpadding=0>
+<caption>Inserire i voti (su $maxscore): </caption>
+!set t_=!item $cc of $titles
+!set w_=!item $cc of $weights
+!default w_=1
+<tr><td align=right>Titolo=<td><input size=15 name=title value="$t_">
+peso=<input size=3 name=weight value="$w_">
+!for u=1 to $ucnt
+ !set n_=!item $u of $ulist
+ !set u_=!positionof item $n_ in $uulist
+ !if $u_>0
+  !set s_=!record $u_+1 of wimshome/log/classes/$wims_class/.grades
+  !set c_=!item $cc+2 of $s_
+ !else
+  !set c_=
+ !endif
+ !set f_=!item $u of $flist
+ !set l_=!item $u of $llist
+ <tr><td><small>$l_, $f_
+ <td><input size=6 name=c$u value="$c_">
+!next u
+</table> <p>
+<input type=submit name=reg value=Salva le modifiche>
+</center> <p></form>
+
+

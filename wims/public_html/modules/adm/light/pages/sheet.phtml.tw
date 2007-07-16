@@ -1,0 +1,93 @@
+!!INDEX
+!let module_author	=XIAO Gang
+!let module_address	=xiao@unice.fr
+!let module_title	=SHEETS
+!let module_description	=為學生準備作業清單
+!let module_version	=2.00
+!let module_wims_version=2.00
+!let module_language	=tw
+!let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
+!let module_category	=adm
+!let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
+
+!! e.g. algebra, analysis, geometry, etc.
+!let module_domain	=
+
+!! For search engines; anything you like.
+!let module_keywords	=
+
+
+!!INDEXEND
+
+<html><head>
+$wims_html_header
+</head>
+
+<body $wims_htmlbody>
+
+!set sheet=!record $parm1 of wimshome/log/classes/$wims_class/sheets/.sheets
+!distribute lines $sheet into sheet_active,sheet_expiration,sheet_title,sheet_desc
+!if $wims_user != supervisor and $sheet_active<1
+ !distribute items $ into sheet_active,sheet_expiration,sheet_title,sheet_desc
+!endif
+!set requires=!getscorerequire sheet=$parm1
+!set scores=!getscore sheet=$parm1
+!set means=!getscoremean sheet=$parm1
+
+<hr width=1>
+<center><h3>$wims_institutionname 的 $wims_classname 課程 </h3>
+<hr> <p><h1>作業清單 #$parm1<br>$sheet_title</h1></center> <p>
+$sheet_desc<p>
+
+!if $sheet_expiration!=$empty and $sheet_active=1
+ !set expday=!char 7,8 of $sheet_expiration
+ !set expmon=!char 5,6 of $sheet_expiration
+ !set expyear=!char 1 to 4 of $sheet_expiration
+ !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
+ !set expmon=!item $expmon of $months
+ 本作業清單至 $expday $expmon $expyear 到期。
+ <p>
+!endif
+
+!if $sheet_active=2
+ <blink><b><font color=red>注意！</font></b></blink>
+ 這個清單已過期！您仍然可以在清單中運作，但您所獲得的分數將不再列入計算。
+ <p>
+!endif
+
+!if $sheet_active=$empty
+ !set n=0
+!else
+ !set n=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$parm1
+!endif
+
+!if $n=0
+ 這個清單是空的！在清單中您沒有作任何指定，可能是管理者在處理時的錯誤。
+!else
+ 從下列清單中指定作業：<p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$parm1
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $require>0
+   <small>已獲得總點為 $[$require] 中的 $[$got] 點，平均分數為
+   $[$mean]/10。</small>
+  !endif
+ !next i
+ </ul>
+!endif
+
+!if $wims_user=supervisor
+<p>
+
+!href module=adm/class/sheet&sheet=$parm1 清單管理網頁
+ (給管理者使用)
+!endif
+<p>
+!homeref
+</body></html>
+

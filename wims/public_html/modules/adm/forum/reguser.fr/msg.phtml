@@ -1,0 +1,123 @@
+!set wims_module_log=error: $error
+
+!if no_forum=$error
+ Vous n'avez pas précisé dans quel forum vous voulez vous inscrire.
+ <p>
+ !href module=adm/forum/forum Liste de forums
+.
+ !exit
+!endif
+
+!if bad_forum=$error
+ Le forum que vous avez choisi ne semble pas exister! Si ce n'est pas un bug 
+ du logiciel, alors le forum est périmé, ou vous êtes en train de jouer avec
+ le site (dans ce cas, sachez que toutes vos activités sont enregistrées).
+ !exit
+!endif
+
+!if no_register=$error
+ Le forum <em>$em_title</em> n'autorise pas d'inscription en ligne.
+ Veuillez
+ !mailurl $mb_email contacter son gérant
+ si vous voulez y participer.
+ !exit
+!endif
+
+!if no_real=$error
+ Vous n'avez pas donné votre nom et prénom.
+ !exit
+!endif
+
+!if no_email=$error
+ Pour vous inscrire dans ce forum, il est obligatoire que vous donniez votre
+ vraie adresse électronique. (Le serveur va vérifier l'adresse avant de
+ valider votre inscription&nbsp;!)
+ !exit
+!endif
+
+!if bad_login=$error
+ Votre nom de login contient des caractères illégaux. <p>
+ Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
+ sans accent, et sans espace entre eux.
+ !exit
+!endif
+
+!if auth_fail=$error
+ Le code secret que vous avez tapé n'est pas le bon. Votre inscription n'a
+ pas abouti.
+ !exit
+!endif
+
+!if bad_pass=$error
+ Votre mot de passe contient des caractères illégaux. <p>
+ Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
+ sans accent, et sans espace entre eux.
+ !exit
+!endif
+
+!if login_size=$error
+ votre nom de login est trop
+ !if $n<4
+  court.
+ !else
+  long.
+ !endif
+ Il doit contenir entre 4 et 16 caractères.
+ !exit
+!endif
+
+!if pass_size=$error
+ votre mot de passe est trop
+ !if $n<4
+  court.
+ !else
+  long.
+ !endif
+ Il doit contenir entre 4 et 16 caractères.
+ !exit
+!endif
+
+!if bad_forumpass=$error
+ Votre mot de passe pour
+ <b><font color=green>$title</font></b>
+ n'est pas correct. Vous n'avez donc pas le droit de vous inscrire dans
+ ce forum. Désolé.
+ !exit
+!endif
+
+!if login_double=$error
+ Le nom de login ``<b><font color=green>$login</font></b>''
+ est déjà en utilisation dans
+ <p><center>
+ <b><font color=green>$titledescription</font></b>.
+ </center> <p>
+ Veuillez vérifier que vous ne vous êtes pas déjà inscrit&nbsp;; sinon, choisissez un autre nom de login.
+ !exit
+!endif
+
+!if pass_error=$error
+ Le mot de passe que vous avez retapé ne correspond pas au premier. Votre
+inscription n'est donc pas prise en compte; vous pouvez réessayer encore
+ une fois.
+ !exit
+!endif
+
+!if insert_fail=$error
+ Le logiciel n'a pas réussi à insérer votre inscription dans la base de
+ donnée. Il y a une erreur interne du logiciel. Désolé.
+ !exit
+!endif
+
+!if site_complete=$error
+ Le nombre d'utilisateurs inscrits a atteint la limite autorisée pour ce
+ forum ($user_limit). Le service d'inscription est donc fermé,
+ désolé. <p>
+ !exit
+!endif
+
+!if internal_total=$error
+ Erreur interne du logiciel: échec déterminant le nombre d'utilisateurs
+ inscrits.
+ !exit
+!endif
+

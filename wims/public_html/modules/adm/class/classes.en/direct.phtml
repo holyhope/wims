@@ -1,0 +1,29 @@
+
+!if $directcnt>0
+ You can directly change to:<ul>
+ !for cl in $directlist
+  !distribute words $cl into c_,u_
+  !set n_=!defof class_institution, class_description in\
+	wimshome/log/classes/$c_/.def
+  <li>
+  !if $u_=supervisor
+   !set t_=supervisor
+  !else
+   !set t_=$type
+  !endif
+  !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
+  (<tt>$u_</tt>)
+ !next cl
+ </ul>
+ <p><hr> <p>
+ !if $wims_user=supervisor
+  Or choose $name_level_else $sousclasses_else name in the table below.
+ !endif
+!else
+ !if $wims_user=supervisor
+  To go to another $name_level_else $sousclasses_else, choose its name in the table below.
+ !else
+  You have no account in other classes.
+ !endif
+!endif
+

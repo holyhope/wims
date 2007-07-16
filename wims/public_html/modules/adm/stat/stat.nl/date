@@ -1,0 +1,22 @@
+
+format1=%m%d
+format2=%m%d
+format3=%m%y
+
+cnt=$[$cnt]
+!if $cnt=$empty or $cnt=NaN or $cnt<1 or $cnt>100
+ cnt=1
+!endif
+
+!if $style iswordof day week month year
+ date1=!date -d "$cnt $(style)s ago" '+%Y%m%d'
+ date2=!date -d "1 day ago" '+%Y%m%d'
+ !exit
+!endif
+
+!if $style=beginning
+ date1=$start_year$start_month$start_day
+ date2=!date -d "1 day ago" '+%Y%m%d'
+ !exit
+!endif
+

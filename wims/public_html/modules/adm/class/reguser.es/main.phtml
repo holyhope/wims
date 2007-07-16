@@ -1,0 +1,301 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS en $httpd_HTTP_HOST
+<br>
+Inscripción a $name_classess
+!if $cltype iswordof 2 4 and $classcnt>0
+ <br> (reservada a los profesores)
+!endif
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $classcnt=0
+ Ninguna clase le permite inscribirse o se ha abierto aún.
+ ¡Lo sentimos, inténtelo más adelante!
+ !goto end
+!endif
+
+!if $class=$empty
+ Por favor escoja la clase a la que desea inscribirse
+ (pulse sobre su nombre). <p>
+ $table_header
+ !if $ctype=0
+  $table_hdtr
+  <th>Nombre<th>profesor<th>nivel<th>idioma</th>
+  <th>plazas<br>disponibles<th>estado
+ !else
+  <caption>$institution_name</caption>
+  $table_hdtr
+  <th>Nombre<th>profesor<th>nivel
+  <th>estado
+ !endif
+ !for cl in $classlist
+  !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
+  !defread wimshome/log/classes/$cl/.def
+  !distribute char $class_level into l1,l2
+  !set part=!recordcnt wimshome/log/classes/$cl/.userlist
+  $table_tr<td align=center>
+  !if $ctype=0
+   !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
+  !else
+   !href module=$module&cmd=reply&class=$cl $class_description
+  !endif
+  <td align=center>
+  !mailurl $class_email $class_supervisor
+  </td>
+  !if $class_level=$empty
+  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    <td align=center>$pname</td>
+ !else
+    <td align=center>$(level$l1)<br>año $l2</td>
+  !endif
+  !if $ctype=0
+   <td align=center>$(lang_$class_lang)</td>
+   <td align=right>
+   !if $class_limit-$part>$site_dispo
+    $site_dispo
+   !else
+    $[$class_limit-$part]
+   !endif
+  !endif
+  !if $class_password=$empty
+   <td align=center>abierta</td>
+  !else
+   <td align=center>protegida</td>
+  !endif
+ !next cl
+ $table_end <p>
+ <b>Nota.</b> Puede inscribirse libremente en las clases
+ abiertas. Por contra una clase protegida necesita una contraseña
+ que debe ser proporcionada por el profesor de la clase.
+ !goto end1
+!endif class=empty
+
+!set classname=<b><font color=green>$description</font></b>\
+ de <b><font color=green>$institution</font></b>
+
+!if $password!=$empty and $passverify=$empty
+ !if $cltype iswordof 2 4
+  El
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>portal</b>
+ !else
+  La clase
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+ !endif
+ de <b><font color=green>$institution</font></b>
+ !if $cltype iswordof 4 2
+  está protegida por una contraseña y la inscripción directa está reservada a los 
+  <b>profesores</b>.
+  !if $classcnt>0 
+  Si es usted alumno, por favor inscríbase
+  !href cmd=new&module=$module&class=$class&subclass=yes en la clase
+  que le corresponda
+  !endif
+ !else
+  está protegida por una contraseña.
+  !endif
+ <p> Introduzca la contraseña para poder inscribirse
+ !if $cltype iswordof 2 4
+  como <b>profesor</b>.
+ !else
+  como <b>participante</b>.
+ !endif
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Contraseña:
+ <input type=password name=classpass>
+ <p>
+ <input type=submit value="Enviar esta contraseña">
+ </center></form> <p>
+ !if $cltype iswordof 2 4
+  <b>Nota</b>.
+  Si el administrador ($supervisor)
+ !else
+  <b>Nota</b>. 
+  Si el profesor ($supervisor)
+ !endif
+ le autoriza a acceder,
+ le proporcionará esta contraseña.
+ (
+ !if $cltype iswordof 2 4
+  !mailurl $smail Escribir al administrador
+ !else
+  !mailurl $smail Escribir al profesor
+ !endif
+ )
+ !if $cltype iswordof 2 4
+  <p><b>ATENCIÓN</b>. La inscripción directa en $name_classe está reservada a los
+  profesores. Si es usted alumno, por favor inscríbase
+  !href cmd=new&module=$module&class=$class&subclass=yes en la clase
+  que le corresponda
+.
+  <p>
+  !endif
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
+  !form reply
+  <input type=hidden name=step value=1>
+  Para buscar a un participante ya inscrito en $name_classes, 
+  escriba una de las partes de su nombre completo o del
+  login:
+  <input size=20 name=search value="$search">
+  <input type=submit value=OK>
+  </form> <p>
+  !default foundcnt=0
+  !if $foundcnt>0
+   $table_header
+   <caption>Pulse sobre un nombre para inscribirle en la clase.</caption>
+   $table_hdtr<th>Nombre</th><th>login</th></tr>
+   !for i=1 to $foundcnt
+    !set l=!line $i of $found
+    !distribute item $l into l_,f_,L_
+    $table_tr<td>
+    !href cmd=reply&step=2&login=$L_ $l_, $f_
+    </td>
+    <td>$L_</td></tr>
+   !next i
+   $table_end
+   !goto end1
+  !endif
+  !if $search!=$empty and $foundcnt=0
+   (con la búsqueda <tt>$search</tt> en los nombres o login no se ha hallado
+   ninguna cuenta de participante). <p>
+  !endif
+  Por favor proporcione las siguientes informaciones relativas al nuevo
+  participante en $classname:
+  !set name_Your=Su
+  !set name_you=el participante
+  !set utilisera=el participante utilizará
+ !else
+  Para inscribirse como participante
+  !if  $cltype iswordof 2 4
+  - profesor
+  !endif
+  en $name_classes $classname,
+  por favor proporcione las informaciones siguientes:
+  !set name_Your=Su
+  !set name_you=usted
+  !set utilisera=usted utilizará
+ !endif
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>$name_Your apellido <input size=20 name=lastn value="$lastn">
+  y nombre <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>Elija un identificador de usuario (login):
+  <input size=16 name=login value="$login"> <br>
+  Será el nombre que $utilisera para entrar en $classname
+  posteriormente. Por favor escoja una palabra de entre 4 y 16
+  caracteres alfanuméricos sin acentos únicamente.
+  <p>
+ <li>Y una contraseña:
+  <input type=password size=16 name=pass> <br>
+  La contraseña debe contener entre 4 y 16 caracteres alfanuméricos
+  sin acentos.
+  <p>
+ <li>$name_Your dirección de correo electrónico (opcional):<br>
+  <input size=60 name=email value="$email">
+  <p>
+ !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
+  <li>Tipo de cuenta:
+  !default utype=0
+  !formradio utype list 0,1 prompt alumno,profesor
+ !endif
+ <center><input type=submit value="Grabar"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ ¡Bienvenido/a, $firstn $lastn!<p>
+ Se está inscribiendo como participante
+ !if $Cltype iswordof 2 4
+ - profesor
+ !endif
+ $name_classesss $classname, con el identificador de usuario&nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  No ha proporcionado una dirección de correo válida. <p>
+ !else
+  Su dirección de correo electrónico: <tt>$email</tt> <p>
+ !endif
+ Para verificar la exactitud de su contraseña, por favor vuelva a teclearla:
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="Enviar"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ !if $wims_user=supervisor
+  El participante $firstn $lastn ha sido añadido a su $name_classe.
+  !if $wims_supertype=4
+   !readproc adm/gateway/transfer $login prueba
+   !if $transfer_test>0
+    <p>
+    Quizás este participante haya realizado ya actividades en otra clase.
+    !href module=adm/class/userlist&job=transfer&getuser=$login Transferir sus actividades
+    a esta clase.
+    <p>
+   !endif
+  !endif
+  !href module=adm/class/userlist Lista de los participantes
+.&nbsp;
+  !href module=$module&step=1 Añadir otro participante
+.
+  !goto end
+ !endif
+ ¡Bienvenido, $firstn $lastn!<p>
+ Le damos la bienvenida a $name_classes $classname.
+ Ya está inscrito(a), con el identificador de usuario
+ <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
+ Ahora puede 
+ !if $wims_class!=$empty
+  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
+	entrar en la clase
+.
+ !else
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+  empezar a trabajar</a>. (Piense también en guardar este enlace entre sus favoritos).
+ !endif
+ !goto end
+!endif
+
+:end1
+!if $wims_user=supervisor
+ !goto end
+!endif
+<p>
+!if $cltype iswordof 2 4
+ !href module=adm/class/classes&type=supervisor Lista de clases y portales
+.
+!else
+ !href module=adm/class/classes&type=participant Lista de clases
+.
+!endif
+:end
+!tail
+
+!reset step, subclass
+

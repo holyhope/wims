@@ -1,0 +1,12 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!sh basedir=`pwd`\
+	cd $wims_home/log/classes\
+	tar -hczf $qclass.tgz $qclass\
+	mv $qclass.tgz $$basedir/$wims_home/$wims_sesdir
+
+fname=$wims_sesdir/$qclass.tgz
+

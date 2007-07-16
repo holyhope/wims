@@ -1,0 +1,47 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>課程訊息
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ [
+ !href module=home 回課程首頁
+  ] <p>
+ !goto end
+!endif
+本頁讓您寫入或修改給所有課程參與者的訊息，這些訊息將會出現在
+[
+!href style=student 課程參與者首頁
+ ] 中。
+<p>
+寫人您課程的訊息(允許 html 連結及標記)：
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value=" 登錄訊息 "></center>
+</form>
+
+
+:end
+<p><hr width=30%> <p>
+!homeref
+</body></html>
+
+!set job=
+!set showsheet=

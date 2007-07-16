@@ -1,0 +1,20 @@
+!read scripts/check.user
+!if $error!=$empty
+ !exit
+!endif
+
+persheet=!getscorepercent user=$quser class=$qclass
+gotdetail=!getscore user=$quser class=$qclass
+meandetail=!getscoremean user=$quser class=$qclass
+examscore=!examscore user=$quser class=$qclass
+weights=!getscoreweight class=$qclass
+requires=!getscorerequire class=$qclass
+
+m=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
+scoremax=!word 1 of $m
+
+option=!listintersect $option and $userdefs
+!if $option=$empty
+ option=$userdefs
+!endif
+

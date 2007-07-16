@@ -1,0 +1,30 @@
+!if robot isin $session
+ <html><body $wims_htmlbody>
+ 本页不能用自动方式进入.
+ </body></html>
+ !exit
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody onload=window.focus();>
+!headmenu
+<center><h1>
+<font color=red>W</font>WW
+<font color=red>I</font>nteractive
+<font color=red>M</font>ultipurpose
+<font color=red>S</font>erver<br>
+<font size=-1>设于 <a href=/>$httpd_HTTP_HOST</a></font><BR>
+网上互动式多功能服务站
+</h1></center>
+
+!read $job.phtml
+
+!if $job!=home
+ <p>
+ !href module=$module&cmd=new&job=home 其它浏览方式
+.
+!endif
+
+!tail
+

@@ -1,0 +1,56 @@
+!if $activetest>0
+Helaas, deze digitale overhoring/tentamen is reeds geactiveerd,
+ en kan dus niet meer gemodificeerd worden.<br>
+Geen enkele som kan meer worden veranderd !  
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=exo>
+<input type=hidden name=exo value=$exo>
+<p>Oefening  $exo : weight=<input size=5 name=eweight value="$eweight">,
+titel = <input size=20 name=ename value="$ename">
+<p>
+Een oefening kan willekeurig worden genomen uit de lijst van bestaande oefeningen
+uit Uw werkbladen.<br>
+Vink de werkbladen aan in de onderstaande lijst als kandidaten voor deze digitale overhoring/tentamen. 
+<p>
+!for i in $asheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $r into r1,r2,r3,r4,r5,r6
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $echoose
+   checked
+  !endif
+  > $i.$j <b>$r5</b> <small>$r6</small> <br>
+ !next j
+!next i
+<p>
+Score dependencies: <input size=40 name=edep value="$edep"> <br>
+Optie:
+!formcheckbox eopt list $optionlist
+<br>
+<input type=submit value="OK en VERSTUREN">
+</form>
+<p>
+!href cmd=reply hoofdpagina van het tentamen
+. <p><small>
+<b>Help</b>. Score dependencies means that a participant must get
+  required scores in other exercises of the sheet before he/she can do
+  this one. For example, 
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  means that the
+  participant must get 50% success on exercise 1, 30% success on exercise 2,
+  and an average of 60% success on exercises 3,4,5.
+  <p>
+  Optie: <ul>
+  <li><em>autogen</em>  wil zeggen dat de oefening automatisch wordt gegenereerd,
+  zelfs als de gebruiker er niet op klikt.
+  </ul>
+</small>
+
+
+
+

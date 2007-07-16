@@ -1,0 +1,45 @@
+!if $demo=oui
+  <p>
+  Pour la démo, on entre une liste de 
+  !if $exo=1
+    suites 
+   !else
+    fonctions
+  !endif
+  réelles sur lesquelles on veut poser des questions:
+  </p>
+!endif
+!if $obsList!=$empty
+  !set rowsnb=$[floor($obsnb/2)]
+  !set extrarow=$[$obsnb%2]
+  <center>
+  <table border=1 bgcolor=moccasin>
+      !for i=1 to $rowsnb
+        !set c1=!item $i of $obsList
+	!set c1=!trim $c1
+	!set c2=!item $[($i+$rowsnb)] of $obsList
+	!set c2=!trim $c2
+	!set c1=!char 2 to -2 of $c1
+	!set c2=!char 2 to -2 of $c2
+	<tr>
+	  <td bgcolor=azure>
+	    $c1
+	  </td>
+	  <td bgcolor=azure>
+	    $c2
+	  </td>
+	</tr>
+      !next i
+      !if $extrarow!=0
+        !set c3=!item $obsnb of $obsList
+	!set c3=!trim $c3
+	!set c3=!char 2 to -2 of $c3
+	<tr>
+	  <td align=center colspan=2 bgcolor=azure>
+	    $c3
+	  </td>
+	</tr>
+      !endif
+  </table>
+  </center>
+!endif

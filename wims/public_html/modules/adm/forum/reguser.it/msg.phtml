@@ -1,0 +1,124 @@
+!set wims_module_log=error: $error
+
+!if no_forum=$error
+ Manca il nome del forum per cui ci si vuole registrare.
+ <p>
+ !href module=adm/forum/forum Indice dei forum di discussione
+.
+ !exit
+!endif
+
+!if bad_forum=$error
+ Il forum scelto non esiste! Si pu&ograve; trattare di un errore del sistema, 
+ oppure il forum &egrave; terminato, oppure di un tentativo di accesso improprio 
+ al sito (in questo caso si ricorda che tutti i tentativi di accesso sono revistrati).
+ !exit
+!endif
+
+!if no_register=$error
+ Il forum di discussione <em>$em_title</em> non accetta registrazioni
+ automatiche. &Egrave; necessario 
+ !mailurl $mb_email contattare l'owner
+ per essere autorizzati all'accesso.
+ !exit
+!endif
+
+!if no_real=$error
+ Manca il nome.
+ !exit
+!endif
+
+!if no_email=$error
+ Per la registrazione a questo forum &egrave; necessario dare
+ un undirizzo di posta elettronica funzionante (il server verificher&agrave;
+ la validit&agrave; dell'indirizzo).
+ !exit
+!endif
+
+!if auth_fail=$error
+ Il codice di accesso inserito non &egrave; valido.
+ La registrazione non ha avuto buon fine.
+ !exit
+!endif
+
+!if bad_login=$error
+ Il login contiene caratteri non accettati dal server. <p>
+ Utilizzare solo lettere non accentate e numeri. Non
+ utilizzare spazi.
+ !exit
+!endif
+
+!if bad_pass=$error
+ La password contiene caratteri non accettati dal server. <p>
+ Utilizzare solo lettere non accentate e numeri. Non
+ utilizzare spazi.
+ !exit
+!endif
+
+!if login_size=$error
+ il login scelto &egrave; troppo 
+ !if $n<4
+  corto.
+ !else
+  lungo.
+ !endif
+ Deve contenere almeno 4 e non pi&ugrave; di 16 caratteri.
+ !exit
+!endif
+
+!if pass_size=$error
+ la password scelta &egrave; troppo
+ !if $n<4
+  corta.
+ !else
+  lunga.
+ !endif
+ Deve contenere almeno 4 e non pi&ugrave; di 16 caratteri.
+ !exit
+!endif
+
+!if bad_forumpass=$error
+ La password inserita per il forum 
+ <b><font color=green>$title</font></b>
+ non &egrave; corretta. Non &egrave; possibile procedere
+ con la registrazione.
+ !exit
+!endif
+
+!if login_double=$error
+ Il login ``<b><font color=green>$login</font></b>''
+ &egrave; gi&agrave; in uso nel forum
+ <p><center>
+ <b><font color=green>$title</font></b>.
+ </center> <p>
+ Verificate di non esservi gi&agrave; registrati, altrimenti 
+ scegliere un altro login.
+ !exit
+!endif
+
+!if pass_error=$error
+ La password inserita non corriponde con quella inserita in precedenza. 
+ &Egrave; necessario ricominciare la registrazione da 
+ capo.
+ !exit
+!endif
+
+!if insert_fail=$error
+ Il server non &egrave; stato in grado di completare la registrazione.
+ Si tratta di un errore interno. Spiacenti!
+ !exit
+!endif
+
+!if site_complete=$error
+ Il numero di utenti registrati ha raggiunto il limite 
+ ($user_limit). Non &egrave; pi&ugrave; possibile
+ registrarsi. <p>
+ !exit
+!endif
+
+!if internal_total=$error
+ Errore interno del server: failed to determine the number of 
+ registered users.
+ !exit
+!endif
+

@@ -1,0 +1,144 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>
+Forum / Message board gebruikers registratie
+
+</h1></center> <p><hr width=50%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !goto end1
+!endif
+
+!if $forumcnt=0
+Helaas, deze site bevat geen forum berichten op dit moment.
+Probeer het later nog maar eens!
+ !goto end
+!endif
+
+!set forumname=<b><font color=green>$title</font></b>
+
+!if $password!=$empty and $passverify=$empty and $mailverif=$empty
+ $forumname
+is beschermd door een wachtwoord.
+U moet dit wachtwoord hier invullen voor de aanmelding
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>Wachtwoord:
+ <input type=password name=forumpass>
+ <p>
+ <input type=submit value="Verstuur het Wachtwoord">
+ </center></form> <p>
+ <b>Opmerking</b>. 
+ Als de eigenaar/houder ($supervisor) van dit forum/message board U toestaat
+ zich aan te melden, kunt u van hem/haar het bijhorende wachtwoord
+ vernemen
+ (
+ !mailurl $smail Schrijf naar de eigenaar/houder
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+ Om deel te nemen aan $forumname,
+ vul dan de volgende informatievelden in
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>Uw achternaam <input size=20 name=lastn value="$lastn">
+  en  voornaam <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>Kies een login naam:
+  <input size=16 name=login value="$login"> <br>
+  Deze login naam gebruikt U later om in te loggen in het message board
+ Kies hiertoe een woord tussen de 4 en 16 karakters
+ (cijfers en letters zonder accenten of spaties)
+  <p>
+ <li>En een persoonlijk wachtwoord:
+  <input type=password size=16 name=pass> <br>
+ Kies hiertoe een woord tussen de 4 en 16 karakters
+ (cijfers en letters zonder accenten of spaties)
+   <p>
+ !if $mailverif=$empty
+  <li>Uw emailadres (niet verplicht):<br>
+ !else
+  <li>Uw emailadres:<br>
+ !endif
+  <input size=60 name=email value="$email">
+  <p>
+ <center><input type=submit value="Registeren"></center>
+ </form></ul>
+ !goto end1
+!endif
+
+!if $step=2
+ Hallo, $firstn $lastn!<p>
+ U bent zich nu aan het aanmelden voor 
+ $forumname,
+ met de login naam &nbsp;
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  U hebt geen geldig emailadres ingevuld. <p>
+ !else
+  Uw emailadres: <tt>$email</tt> <p>
+ !endif
+ Om de juistheid van Uw wachtwoord te kontroleren,
+ graag nog een keer invullen:
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="Verstuur het Wachtwoord"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Hallo, $firstn $lastn!<p>
+ !if $mailverif=yes
+  !set mailverif=next
+  $forumname staat geen anonieme deelnemers toe.
+  Uw emailadres wordt gebruikt voor Uw identiteit
+  (om misbruik tegen te gaan)
+  <p>
+ Om het opgegeven emailadres te controleren,stuurt de server op dit moment
+ een (eenmalige) geheime code naar het door U vermelde emailadres.
+ Haal deze mail nu op, en vul de de geheime code hieronder in: 
+  !form reply
+  <input type=hidden name=step value=3>
+  <p><center><input size=10 name=vericode>
+  <input type=submit value=OK></form>
+  <p>
+  !href module=adm/forum/forum Verlaat deze procedure
+  </center> <p>
+  !goto end1
+ !else
+  Welkom op  $forumname.
+  U bent nu een deelnemer aan dit forum / message board, met de login naam
+  ``<b><font color=green>$login</font></b>''. <p>
+  U kunt nu
+  !href module=adm/forum/forum&forum=$forum&type=authuser inloggen
+  in het message board
+  !goto end
+ !endif
+!endif
+
+:end1
+<p>
+!href module=adm/forum/forum&type=list Lijst van message boards
+:end
+!tail
+
+!set step=
+

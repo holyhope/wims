@@ -1,0 +1,49 @@
+!if ($m_formed!=yes and $showres=1) or $showres=2
+ vshow=1
+!else
+ vshow=0
+!endif
+
+!advance parmcnt
+!if $parmcnt>64
+ !reset $wims_read_parm
+ !exit
+!endif
+!reset limits new
+l_=$($wims_read_parm)
+n_=!itemcnt $l_
+chlist$parmcnt=$l_
+choices$parmcnt=$n_
+!if $(user_vote_$Vote)!=yes
+ parm$parmcnt=!item $parmcnt of $(user_vote_$Vote)
+!endif
+
+!for i_=1 to $n_
+ t_=!item $i_ of $l_
+ !if : notin $t_
+  limits=!append item 0 to $limits
+  !if $vshow=1 and $ismenu=yes and $(vcnt_$(parmcnt)_$i_)!=$empty
+   t_=$t_ ($(vcnt_$(parmcnt)_$i_))
+  !endif
+  new=!append item $t_ to $new
+ !else
+  v_=!translate internal : to , in $t_
+  k_=!item 1 of $v_
+  k_=$[round($k_)]
+  j_=!item 2 to -1 of $v_
+  j_=!translate internal , to : in $j_
+  !if $vshow=1 and $ismenu=yes and $(vcnt_$(parmcnt)_$i_)!=$empty
+   j_=$j_ ($(vcnt_$(parmcnt)_$i_))
+  !endif
+  !if NaN notin $k_ and Inf notin $k_ and $k_>0
+   limits=!append item $k_ to $limits
+   new=!append item $j_ to $new
+  !else
+   limits=!append item 0 to $limits
+   new=!append item $t_ to $new
+  !endif
+ !endif
+!next i_
+
+$wims_read_parm=$new
+

@@ -1,0 +1,34 @@
+!if $teachercnt>0
+<p><center>
+Télécharger les données pour tableur&nbsp;: format
+!getfile teachers.csv csv
+ ou
+!getfile teachers.tsv tsv
+.
+!href module=adm/class/userlist&job=csv Installer des données csv
+.
+</center> <p>
+!endif
+
+$table_header
+<caption>Comptes d'enseignants
+!href cmd=reply&job=addteacher En&nbsp;ajouter&nbsp;un
+</caption>
+$table_hdtr
+<th>Compte</th>
+<th>Nom</th>
+<th>-</th>
+!for i=1 to $teachercnt
+ !set l=!line $i of $teacherlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td><tt>$c_</tt></td>
+ <td>
+ !href cmd=reply&job=modteacher&teacher=$c_ $l_, $f_
+ </td>
+ <td>
+ !href cmd=reply&job=delteacher&del=$c_ effacer
+ </td>
+!next i
+$table_end
+

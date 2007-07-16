@@ -1,0 +1,102 @@
+
+<center><h3>El formato OEF</h3></center> <p>
+
+OEF significa ``online exercise format'' (formato de ejercicios en línea),
+un formato para ejercicios matemáticos destinados a sistemas de enseñanza
+asistida por ordenador. El objetivo de la creación de este formato es 
+ayudar al intercambio de contenidos entre diferentes sistemas. Así
+este formato contiene únicamente información matemática del ejercicio.
+<p>
+La ventaja del formato OEF es que con este formato es muy fácil crear 
+ejercicios.
+Pero hay que saber que estos ejercicios, en particular aquellos creados por
+$module_title, no son tan potentes como los ejercicios propios de un sistema como
+WIMS. Es difícil imaginar, en el momento actual, ejercicios de WIMS como
+Q-Puzzle, las series Coincidencia o la serie Tiro transformados al
+formato OEF.
+<p>
+Por favor, consulte también 
+!href cmd=help&special_parm=examples los ejemplos
+ para tener una idea de la estructura de un archivo OEF. 
+<p>
+<h4>Sintaxis básica</h4> <p>
+El formato de un archivo OEF es muy similar al de LaTeX. Se compone de 
+directivas seguidas por uno o más parámetros. Una directiva es una 
+palabra precedida por el caracter <tt><b><font color=green>\</font></b></tt>,
+y los parámetros están encerrados entre llaves.
+Por ejemplo, en la siguiente orden
+<pre>
+   \choice{La respuesta es}{sí}{no}
+</pre>
+hay una directiva llamada <tt>choice</tt>, 
+la cual tiene tres parámetros, <tt>La respuesta es</tt>, <tt>sí</tt>
+y <tt>no</tt>.
+<p>
+<h4>Lista de directivas</h4> 
+<p>
+Aquí presentamos una breve lista de las directivas reconocidas por el
+gestor OEF de WIMS.
+Consulte también la
+!href cmd=help&special_parm=parameters ayuda sobre los parámetros
+ para ver la sintaxis para definir los parámetros.
+<p>
+$table_header
+$table_hdtr<th>directiva<th>número de<br>parámetros<th>descripción
+$table_tr<td>title<td align=center>1<td>define el título de un ejercicio
+$table_tr<td>language<td align=center>1<td>el idioma del ejercicio, tal como 
+<tt>en</tt>, <tt>es</tt> o <tt>fr</tt>
+$table_tr<td>author<td align=center>1<td>define el autor del ejercicio
+$table_tr<td>email<td align=center>1<td>define la dirección de correo electrónico del autor
+$table_tr<td>format<td align=center>1<td>formato del enunciado: ver la
+!href cmd=help&special_parm=format ayuda acerca de los formatos
+.
+$table_tr<td>precision<td align=center>1<td>precisión al comparar la respuesta del
+usuario con la solución. Escriba un entero positivo n aquí: la comparación se hará
+con precisión de 1/n.
+$table_tr<td>range<td align=center>1<td>rango de variables cuando se evalúa
+una función proporcionada por el usuario. Debe escribirse de la forma
+ <tt>n1..n2</tt>, donde n1 es el punto inicial, y n2 es el punto final.
+<tr>
+$table_tr<td>statement<td align=center>1<td>El parámetro es el enunciado del 
+ejercicio
+$table_tr<td>plot<td align=center>?<td>una imagen de traza dinámica (en construcción).
+<tr>
+$table_tr<td>answer<td align=center>2-5<td>define una respuesta libre. El primer
+parámetro es el texto de la pregunta, y el segundo, la respuesta correcta.
+El tipo de respuesta (numérica, funcional, textual, etc.) se determinará 
+automáticamente de acuerdo a la respuesta correcta.
+!href cmd=help&special_parm=reply Detalles
+.
+<p>
+Parámetros opcionales: <tt>type</tt>, <tt>option</tt>, <tt>weight</tt>.
+$table_tr<td>choice<td align=center>3-5<td>define una elección múltiple. El primer 
+parámetro es el texto que presenta las opciones, el segundo, la(s) opción(es) 
+correcta(s), y el tercero la(s) opción(es) equivocada(s). Los últimos dos
+parámetros son listas de objetos separados por comas. Se permiten múltiples
+opciones correctas. Si una opción aparece en la lista de opciones
+correctas y erróneas, se tomará como buena.
+<p>
+Parámetros opcionales: <tt>option</tt>, <tt>weight</tt>.
+$table_tr<td>condition<td align=center>2-4<td>define una condición especial para
+la evaluación de las respuestas libres. Ver la
+!href cmd=help&special_parm=reply ayuda acerca de las respuestas
+ para conocer más detalles.
+<p>
+Parámetros opcionales: <tt>option</tt>, <tt>weight</tt>.
+<tr>
+$table_tr<td>solution<td align=center>1<td> da la solución del ejercicio con
+la explicación. El gestor OEF puede decidir si mostrar esta explicación al
+usuario, de acuerdo con el nivel de dificultad asignado.
+$table_tr<td>hint<td align=center>1<td> da una pista sobre cómo se hace el ejercicio. 
+El gestor de OEF puede decidir mostrar o no esta pista, según el nivel de dificultad.
+$table_tr<td>help<td align=center>1<td>proporciona una ayuda para la realización del
+ejercicio. El usuario podrá siempre acceder a esta ayuda, que se presentará en una
+ventana emergente.
+$table_tr<td>feedback<td align=center>2<td>añadir un comentario
+cuando la respuesta cumpla determinada condición. Normalmente
+se utiliza para advertir de un error típico.
+!href cmd=help&special_parm=feedback Détail
+.
+$table_end
+
+

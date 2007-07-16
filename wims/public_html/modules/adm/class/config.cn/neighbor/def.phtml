@@ -1,0 +1,87 @@
+
+与<em><font color=blue>$nei_institution</font></em>的班级
+<em><font color=blue>$nei_description</font></em>
+的相邻关系.
+(主持教师:
+<a href="mailto:$nei_email?subject=Class neighboring
+relations">$nei_supervisor</a>) 此班级
+!if $wims_class notitemof $nei_sup,$nei_part
+没有声明你的班是他们的相邻班.
+!else
+已接受你的班作为相邻班,
+ !if $wims_class isitemof $nei_sup and $wims_class isitemof $nei_part
+同时对于主持教师与参加者.
+ !else
+  !if $wims_class isitemof $nei_sup
+仅对于主持教师.
+  !else
+仅对于参加者.
+  !endif
+ !endif
+!endif
+<p>
+!form reply
+你是否接受这个班作为相邻班?
+!formselect nlevel from 0 to 3 prompt 不, 仅对主持教师,\
+  仅对参加者, 同时对主持教师与参加者
+<input type=submit value=保存> <small>[
+!href cmd=help&special_parm=neibordecl 帮助
+ ]</small>
+</form> <p>
+
+!if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
+   all isitemof $nei_sup,$nei_part
+你可以从此班
+ !href cmd=reply&job2=import 输入资源
+.
+ <small>
+ !href cmd=help&special_parm=import 帮助
+ </small>
+ <p>
+!endif
+
+!if $nei isitemof $n_sup and $sharablelist!=$empty
+ !form reply
+ <input type=hidden name=changeshare value=yes>
+选取此班允许与你共享的资源:
+ !set sh=!nospace $sharablelist
+ !set sh=!replace , by , $$name_ in $$name_$sharablelist
+ !formcheckbox mksharable list $sharablelist prompt $sh
+ <input type=submit value=改变>
+ <small>[
+ !href cmd=help&special_parm=sharable 帮助
+ ]</small>
+ </form> <p>
+!endif
+
+!if $wims_class isitemof $nei_sup and $nei isitemof $n_sup
+ !if $nsharable=$empty
+此班没有新的可共享资源.
+ !else
+此班允许你共享
+  !set names=!replace , by , $$name_ in $$name_$nsharable
+  <em>$names</em>.
+  !href cmd=reply&job2=addshare 详情
+. <small>
+  !href cmd=help&special_parm=share 帮助
+  </small>
+ !endif
+ <p>
+!endif
+
+!if $nei isitemof $sharing_all
+你正在共享源自此班的下列资源:<ul>
+ !for r in $sharelist
+  !if $(sharing_$r)=$nei
+   <li><b><em>$(name_$r)</em></b>. 
+   !href cmd=reply&job2=stopshare&stoprec=$r 停止此共享
+. <small>
+   !href cmd=help&special_parm=stopshare 帮助
+   </small>
+  !endif
+ !next r 
+ </ul>
+ <p>
+!endif
+
+!reset stoprec

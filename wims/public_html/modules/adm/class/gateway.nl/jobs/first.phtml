@@ -1,0 +1,74 @@
+<center>
+!if $teachercnt=0
+    Er zijn nog geen leraar accounts.
+ !href cmd=reply&job=addteacher Een&nbsp;nieuw&nbsp;leraar&nbsp;account
+. <p>
+!else
+ Er zijn
+ !href cmd=reply&job=teacher $teachercnt leraar&nbsp;accounts
+.
+!endif
+
+!goto nopart
+!if $studentcnt=0
+ <p>
+ Er zijn geen studenten of leerlingen.
+ !href cmd=reply&job=addstudent Voeg&nbsp;een&nbsp;nieuwe&nbsp;leerling&nbsp;toe
+.
+!else
+ !href cmd=reply&job=student $studentcnt studenten&nbsp;accounts
+.
+!endif
+:nopart
+</center>
+<p>
+!if $levelcnt=0
+    Er zijn geen leer-niveaus geinstalleerd.
+  !href cmd=reply&job=addlevel Maak&nbsp;een&nbsp;nieuw&nbsp;niveau
+.<sup>
+  !href cmd=help&special_parm=structure#level help
+</sup>
+!else
+ $table_header
+ <caption>Beschikbare les niveaus<sup>
+ !href cmd=help&special_parm=structure#level help
+ </sup><br><small>
+ !href cmd=reply&job=addlevel Voeg&nbsp;een&nbsp;ander&nbsp;niveau&nbsp;toe
+ &nbsp; 
+ !href cmd=reply&job=backstruct Maak&nbsp;een&nbsp;Backup&nbsp;van&nbsp;de&nbsp;structuur
+ </small></caption>
+ $table_hdtr
+ <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>
+ <th><small>Klassen</small></th>
+ <th><small>Programma's</small></th>
+ </tr>
+ !for i=1 to $levelcnt
+   !set l=!line $i of $leveldata
+   !distribute items $l into l_,s_,t_,n_
+   !set c=!positionof item $l_ in $classl
+   !set c=!itemcnt $c
+   !set p=!positionof item $l_ in $progl
+   !set p=!itemcnt $p
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=level&level=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=dellevel&del=$l_ verwijder
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $s_
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Niet beschikbaar
+   !endif
+   </td><td align=center>$c
+   </td><td align=center>$p
+ !next i
+ $table_end
+!endif
+

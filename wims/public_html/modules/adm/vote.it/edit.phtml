@@ -1,0 +1,31 @@
+
+!set wims_form_method=post
+!form reply
+
+!if $vote_title=$empty
+ Crea
+!else
+ Modifica
+!endif
+un questionario.
+<br>
+Titolo: <input size=50 name=reg_title value="$vote_title"> <br>
+Modo:
+!set reg_status=$vote_status
+!set reg_option=$vote_option
+!set reg_show=$vote_show
+!formselect reg_option list anonymous,nominative prompt anonimo,nominale
+Stato:
+!formselect reg_status from 0 to 3 prompt in prepar.,aperto,chiuso,nascosto
+Risultato del questionario:
+!formselect reg_show list 1,0 prompt pubblico,nascosto
+<br> Testo: <small>
+!href cmd=help [help on line]
+</small> <br>
+<textarea name=reg_src cols=60 rows=20>$src</textarea>
+<center>
+<input type=submit name=rEg value="Salva">
+<input type=submit name=abandon value="Annulla">
+</center>
+
+!reset reg_option reg_status reg_show

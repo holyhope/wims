@@ -1,0 +1,54 @@
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+        feedback,math,draw,draw_example,oefadv,if
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty and $s_ isitemof $helplist
+ !read help/$s_.phtml
+ <p><center>
+ !href cmd=help Otros temas de ayuda.
+ &nbsp;&nbsp;
+ !href cmd=resume Volver al trabajo.
+ </center>
+ !exit
+!endif
+
+Temas de ayuda:<ul>
+<p><li>
+!href cmd=help&special_parm=oef Explicación del formato OEF.
+<p><li>
+!href cmd=help&special_parm=examples Ejercicios de ejemplo.
+<p><li>
+!href cmd=help&special_parm=format Los formatos del enunciado del ejercicio.
+<p><li>
+!href cmd=help&special_parm=parameters Parámetros aleatorios 
+ en un ejercicio interactivo.
+<p><li>
+!href cmd=help&special_parm=math Fórmulas matemáticas
+ en los ejercicios.
+<p><li>Inclusión de
+!href cmd=help&special_parm=draw imágenes dinámicas
+ en los ejercicios.
+<p><li>Cómo puede el usuario
+!href cmd=help&special_parm=reply responder a un ejercicio
+ (tipos de respuestas).
+<p><li>
+!href cmd=help&special_parm=feedback Comentarios de retroalimentación
+ sobre los errores típicos en las respuestas.
+<p><li>
+!href cmd=help&special_parm=oefadv Características avanzadas
+.
+<p><li>
+!href cmd=help&special_parm=all La totalidad de la ayuda
+</ul>
+
+<center>
+!href cmd=resume Volver al trabajo.
+</center>
+

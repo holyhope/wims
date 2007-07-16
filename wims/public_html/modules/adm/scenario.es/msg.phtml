@@ -1,0 +1,87 @@
+!! This file contains error messages. It will be processed
+!! whenever the variable `error' is not empty.
+
+!if dontknow iswordof $error
+ Efectivamente, el último paso es
+ !if $step_reason=OK
+  correcto. $step_remark
+ !else
+  erróneo. $step_remark 
+  <p>
+  !read reasons/$step_reason.det
+  <p>
+  Una versión correcta del último paso sería <p><center>
+  <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+  !line $step of $good
+  </table> </center>
+ !endif
+ <p>Es una lástima que no lo viera.
+ !goto gnext
+!endif
+
+<b>Error.</b>
+
+!if step_error iswordof $error
+ !if $step_reason=OK
+  ¡Pero si este paso es totalmente correcto!
+  $step_remark
+ !else
+  !if $ask_reason>0 and $step_reason!=$ans
+   No, el último paso está totalmente equivocado, pero no por lo que piensa.
+  !else
+   Pues no, hay un error en el último paso.
+  !endif
+  $step_remark
+  <p>
+  !read reasons/$step_reason.det
+  <p>
+  Una versión correcta del último paso sería<p><center>
+  <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+  !line $step of $good
+  </table> </center> <p>
+ !endif
+ :gnext
+ <p>
+ !if $step<$stepcnt
+  !href cmd=reply&ans=next Pasar al siguiente paso.
+ !else
+  Este es el final del ejercicio. Su puntuación: $module_score/10.
+ !endif
+ !exit
+!endif
+
+!if bad_step iswordof $error
+ !if $badstep=0
+  Cree que todos los pasos son correctos.
+ !else
+  Cree que el primer paso erróneo es el número $badstep.
+ !endif
+ !if $bad_steps=$empty
+  Está equivocado: todos los pasos son correctos.
+  <p>
+  !line $badstep of $remarks
+ !else
+  No, el <em>primer</em> paso erróneo es el número $sss. <p>
+  !if $badstep>0
+   !if $badstep isitemof $bad_steps
+    El paso número $badstep es de hecho erróneo, pero no es el primero equivocado.
+   !else
+    Por el contrario, el paso $badstep es perfectamente correcto.
+   !endif
+  !else
+   $bad_reason <p>
+   !set rrr=!item 1 of $bad_reasons
+   !read reasons/$rrr.det
+  !endif
+ !endif
+ <p>Su puntuación: $module_score/10.
+ !exit
+!endif
+
+!if double_reply=$error
+ Ya ha enviado una respuesta a este problema, la cual ha sido analizada
+ y puntuada. Las respuestas repetitivas se ignoran (¡no use el botón
+ `Actualizar' de su navegador para reenviar las respuestas!).
+ !exit
+!endif
+

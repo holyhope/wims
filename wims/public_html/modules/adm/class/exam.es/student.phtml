@@ -1,0 +1,123 @@
+
+<center><h1>$wims_classname, $wims_institutionname<br>
+$title</h1>
+!if $wims_user=supervisor
+ (Presentación a los participantes)
+!endif
+</center> <p>
+$desc<p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Volver a la página principal
+. <p>
+ !exit
+!endif
+
+!if $registered<0 or ($registered>0 and $timeleft<=0)
+ !changeto score.phtml
+!endif
+
+!if $exocnt=0
+ ¡El examen está vacío! No se le ha asignado nada. Posiblemente un
+  error del profesor en su manipulación.
+!else
+ Contenido del examen:
+!! !href cmd=reply&job=student [refrescar la página]
+ !set activeexo=0
+ <p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti,de
+  !set de=!trim $de
+  <p><li>$i. 
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+   ($tryremain=0 and $registered!=$empty))
+   !if $(replied$i)>0
+    $ti (hecho).
+   !else
+    !if $de!=$empty
+     !set dt=!examdep $exam $de
+    !else
+     !set dt=yes
+    !endif
+    !if $dt=yes
+     !advance activeexo
+     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+.
+    !else
+     <b><font color=red>$ti</font></b> (requiere
+     !href cmd=reply&job=student haber superado otros ejercicios
+.)
+     !endif
+   !endif
+  !else
+   $ti.
+  !endif
+ !next i
+ </ul>
+ !if $t_=no
+  Actualmente, este examen está cerrado a su conexión.
+  !href cmd=reply&job=student Actualizar esta página.
+ !else
+  !if $stries=1
+   Solo puede realizar una vez este examen.
+  !else
+   Puede registrar hasta $stries puntuaciones en este examen.
+  !endif
+  !if $tryremain<=0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+   !if $trcut=0
+     Ya ha terminado su sesión de examen con $tried ensayos,
+   !else
+     Ya lo ha intentado $tried veces,
+   !endif
+   por lo tanto no puede mejorar su puntuación.
+   !set exhausted=yes
+  !endif
+  !if $tryremain>0
+   Y todavía puede hacer $tryremain nuevos intentos.
+  !endif
+  !if $registered=$empty and $exhausted!=yes
+     Tiene $sdure minutos para trabajar en el examen.
+     Cuando pulse en un ejercicio de los anteriores,
+     !if $allowtype!=simulation
+       la cuenta atrás comenzará, y se incrementará en 1 el número de intentos.
+     !else
+       la cuenta atrás comenzará.
+     !endif
+  !else
+     !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+       Es su último intento disponible. ¡Preste atención!
+     !endif
+  !endif
+  <p>
+  !href cmd=reply&job=student Actualizar esta página.
+&nbsp;
+  !href cmd=reply&job=score Mi puntuación.
+  !if $activeexo<1
+&nbsp;
+   !href cmd=reply&job=scorereg Terminar
+   esta sesión de examen (puesto que no queda nada que hacer).
+  !endif
+ !endif
+!endif
+
+!if $t_=yes
+ !if $allowtype=simulation
+  <p>Este examen está en modo simulación. Funciona exactamente igual que el examen verdadero  
+  pero no se puede guardar la puntuación y el intento no se tendrá en cuenta.
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Volver a la página del supervisor.
+ </center>
+!endif
+
+!tail
+
+!reset job
+

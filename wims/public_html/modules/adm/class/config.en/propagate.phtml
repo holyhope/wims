@@ -1,0 +1,45 @@
+!set name_secure=Secure hosts
+!set name_colors=Page colors
+!set name_css=Style sheet
+!set name_logo=Logo
+!set name_theme=Style theme
+!set name_level=Academic level
+!set name_security=Hosts allowed for scores
+!set name_password=Password for participant registration
+!set name_supass=Supervisor password
+!set name_exolog=Registration limits of exercises and exams
+!if $wims_supertype=2
+ !set name_thisclass=the portal
+ !set name_subclasses=subclasses
+!else
+ !set name_thisclass=the current zone
+ !set name_subclasses=child zones
+!endif
+
+!if $confirm!=$empty and $propagate!=$empty
+ Setups successfully sent to $name_subclasses: <p><b>
+ !for s in $propagate
+  $(name_$s).
+ !next s
+ </b>
+!else
+ !form reply
+ You can choose to send the following setups of the $name_thisclass to all
+ its $name_subclasses: <p>
+
+ !for s in $propall
+  !if $(name_$s)!=$empty
+   !set name_=!replace internal $ $ by &nbsp; in $(name_$s)
+   <input type="checkbox" name="propagate" value="$s">$name_&nbsp;
+  !endif
+ !next s
+ <p>
+ <input type="submit" name="confirm" value="Send">
+ </form>
+!endif
+<p>
+Please note that
+$name_subclasses will not automatically share later changes of the setups of 
+$name_thisclass. You must send the changes each time you want them to be
+effective in $name_subclasses.
+

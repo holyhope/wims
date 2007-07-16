@@ -1,0 +1,161 @@
+
+!if $error!=$empty
+ !exit
+!endif
+
+!if $no_selection!=$empty
+ <b>注意</b>. 没有选定备份的内容.
+ <p>
+!endif
+
+!if $serial!=$wims_class and $old_testcnt>0
+ !set test=bad
+!endif
+!if $test=bad
+ <blink><font color=red><b>警告!!!</b></font></blink>
+你已经上传了从其它班级备份的资源.
+如果你恢复了与你班级不相容的资源, 你的班级将会被破坏.
+ !href cmd=help&special_parm=dependencies 为什么?
+ <p>
+ !href cmd=reply&job=list 停止
+如果你不太清楚你在做什么. 
+(无论如何, 在继续进行前请把当前的状态做个备份.)
+ <p><hr> <p> 
+!endif
+
+!set no_restore=由于你共享其它班级的资源, 不能恢复.\
+ 只有提供共享资源的班级才能恢复.
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=restore>
+你的备份文件 <tt>$wims_deposit</tt> 含有以下资源.
+请检验你准备恢复到你班级里的资源.
+<ul>
+ <li><input type=checkbox name=selection value=all>
+除了班级配置和主持教师帐户以外都恢复.
+!if $new_defcnt>0
+ <li><input type=checkbox name=selection value=def>
+班级配置.
+ <font color=red>危险!</font> <small>参见以下说明.</small>
+!endif
+!if $new_supcnt>0
+ <li>
+ !if $sharing_sup=$empty
+  <input type=checkbox name=selection value=sup>
+ !endif
+主持教师帐户(包括你的密码).
+ !if $sharing_sup!=$empty
+  $no_restore
+ !else
+  <font color=red>危险!</font> <small>参见以下说明.</small>
+ !endif
+!endif
+!if $new_usercnt>0
+ <li>
+ !if $sharing_user=$empty
+  <input type=checkbox name=selection value=user>
+ !endif
+ 参加者帐户 $new_usercnt.
+ !if $sharing_user!=$empty
+  $no_restore
+ !else
+  <small>(现存帐户: $old_usercnt.)</small>
+ !endif
+!endif
+!if $new_doccnt>0
+ <li>
+ !if $sharing_doc=$empty
+  <input type=checkbox name=selection value=doc>
+ !endif
+ 文件 $new_doccnt. 
+ !if $sharing_doc!=$empty
+  $no_restore
+ !else
+  <small>(已有文件: $old_doccnt.)</small>
+ !endif
+!endif
+!if $new_exocnt>0
+ <li>
+ !if $sharing_exo=$empty
+  <input type=checkbox name=selection value=exo>
+ !endif
+ 练习 $new_exocnt.
+ !if $sharing_exo!=$empty
+  $no_restore
+ !else
+  <small>(已有练习: $old_exocnt.)</small>
+ !endif
+!endif
+!if $new_sheetcnt>0
+ <li>
+ !if $sharing_sheet=$empty
+  <input type=checkbox name=selection value=sheet>
+ !endif
+ 作业页 $new_sheetcnt. 
+ !if $sharing_sheet!=$empty
+  $no_restore
+ !else
+蕴含恢复班级练习.
+  <small>(已有作业页: $old_sheetcnt.)</small>
+ !endif
+!endif
+!if $new_examcnt>0
+ <li>
+ !if $sharing_exam=$empty
+  <input type=checkbox name=selection value=exam>
+ !endif
+考试页 $new_examcnt.
+ !if $sharing_exam!=$empty
+  $no_restore
+ !else
+蕴含恢复作业页与练习.
+  <small>(已有考试: $old_examcnt.)</small>
+ !endif
+!endif
+!if $new_forumcnt>0
+ <li>
+ !if $sharing_forum=$empty
+  <input type=checkbox name=selection value=forum>
+ !endif
+论坛信息 $new_forumcnt. 
+ !if $sharing_forum!=$empty
+  $no_restore
+ !else
+  <small>(已有信息: $old_forumcnt.)</small>
+ !endif
+!endif
+!if $new_scorecnt>0
+ <li><input type=checkbox name=selection value=score>
+参加者活动纪录以及服务器计算的分数. 蕴含恢复参加者帐户.
+!endif
+!if $new_manualcnt>0
+ <li><input type=checkbox name=selection value=manual>
+教师确定的分数 $new_manualcnt. <small>(已有分数:
+ $old_manualcnt.)</small>
+!endif
+</ul>
+恢复方法:<ul>
+<li><input type=radio name=restore value=replace checked>
+替换: 用恢复的资源替代已有的资源.
+<li><input type=radio name=restore value=merge>
+混合: 除参加者帐号及班级练习外, 都用恢复的资源替代已有的资源.
+其余部分如果是有相同名称的内容加以替换, 否则维持原状.
+</ul>
+<input type=submit value="恢复选取的资源">
+!href cmd=reply&job=list 放弃恢复
+.
+</form>
+
+<p><b>重要提示</b>. 1. 不会检查上传数据的完好性,
+系统也不支持对备份档案的手工修改. 
+由于你的手工修改而产生的错误会给你的班级带来不可预测的后果.
+<p>
+2. 尽可能避免恢复
+<font color=red>班级配置</font> 及
+<font color=red>主持教师帐户</font>.
+这两栏的上传数据若出错, 将会使你失去对班级的控制.
+<p>
+3. 你可以利用班级的备份建立新班级. 在这种情形应避免恢复分数.
+因为这些资源建立后就不能删除(安全措施).
+而且如果有非空的得分数据的话, 许多维护操作都不能进行.
+

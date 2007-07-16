@@ -1,0 +1,25 @@
+
+!if $job2=deposit and $wims_deposit!=$empty \
+	and / notin $wims_deposit and .. notin $wims_deposit
+ !sh mkdir -p $wims_home/log/classes/$wims_class/cdt/files\
+  mv $wims_home/$wims_sesdir/user-deposit $wims_home/log/classes/$wims_class/cdt/files/$wims_deposit
+ !read adm/du $wims_home/log/classes/$wims_class
+ quota_total=$wims_class_quota
+ quota_free=$[$quota_total-$du]
+ !if $quota_free<0
+  !sh rm -f $wims_home/log/classes/$wims_class/cdt/files/$wims_deposit
+  error=quota_file
+ !endif
+!endif
+
+!if erase isin $job2 and .. notin $job2
+ erase=!item 2 of $job2
+ !sh rm -f $wims_home/log/classes/$wims_class/cdt/files/$erase
+!endif
+
+flist=!filelist $wims_home/log/classes/$wims_class/cdt/files
+flist=!words2items $flist
+f1=!item 1 of $flist
+!read adm/du $wims_home/log/classes/$wims_class
+quota_total=$wims_class_quota
+quota_free=$[$quota_total-$du]

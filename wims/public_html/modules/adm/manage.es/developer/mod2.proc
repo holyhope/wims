@@ -1,0 +1,58 @@
+allow=-_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+
+devname=!trim $devname
+devemail=!nospace $devemail
+devlogin=!nospace $devlogin
+devpasswd=!nospace $devpasswd
+ltest=!text select $allow in $devlogin
+ptest=!text select $allow in $devpasswd
+login=$devlogin
+name=$devname
+email=$devemail
+
+!if $ltest!=$devlogin or $devlogin=$empty
+ badfield=login
+ !exit
+!endif
+!if $ptest!=$devpasswd
+ badfield=password
+ !exit
+!endif
+!if $devname=$empty
+ badfield=name
+ !exit
+!endif
+!if @ notin $devemail
+ badfield=email
+ !exit
+!endif
+
+!if $devno=0
+ !if $ptest=$empty
+  badfield=password
+  !exit
+ !endif
+ !if $devlogin iswordof $devlist
+  badfield=exist
+  !exit
+ !endif
+ !appendfile wimshome/log/.developers :$devlogin\
+$devpasswd\
+$devname\
+$devemail
+!else
+ oldpasswd=!line 2 of $(drec$devno)
+ !default devpasswd=$oldpasswd
+ drec$devno=$devlogin\
+$devpasswd\
+$devname\
+$devemail
+ !read developer/devheader.proc
+ !for d=1 to $devcnt
+  !appendfile wimshome/log/.developers :$(drec$d)
+ !next d
+!endif
+
+job2=first
+!read developer.proc
+

@@ -1,0 +1,84 @@
+!set wims_module_log=error: $error
+
+!if has_empty=$error
+ You haven't given all the necessary informations for the creation of a 
+ message board. Please complete your data before submitting them.
+ !exit
+!endif
+
+!if too_short=$error
+ The data field ``$(name_$error_subject)'' seems to be too short.
+ !exit
+!endif
+
+!if bad_date=$error
+ Your expiration date is not correct.
+ !exit
+!endif
+
+!if bad_email=$error
+ Your email address is apparently not valid.
+ <p>
+ Please be aware that your creation of message board will not succeed, unless
+ you submit a REAL email address of YOUR OWN.
+ !exit
+!endif
+
+!if anti_date=$error
+ Your message board has an expiration date before today. It would be expired before
+ being created!
+ !exit
+!endif
+
+!if existing=$error
+ The message board $forumname seems already exist. You should not recreate the
+ same message board.
+ !exit
+!endif
+
+!if pass_discord=$error
+ The password you retyped does not correspond to the first one. Your
+ creation of message board is therefore not taken into account; you may try it
+ again.
+ !exit
+!endif
+
+!if apparent_password=$error
+ Your password appears in the title/description/owner name
+ of the message board!
+ Please choose another password.
+ !exit
+!endif
+
+!if bad_pass=$error
+ Your $(name_$error_subject) contains illegal characters. <p>
+ Please use a word containing only digits or letters without accent, and
+ without space between them.
+ !exit
+!endif
+
+!if bad_code=$error
+ You didn't enter the right code for the message board. Have you given your 
+ email address correctly?<p>
+ This failure has been logged.
+ !exit
+!endif
+
+!if define_fail=$error
+ The server has failed to insert your message board into the database. This is
+ an internal error of the software.
+ <p>
+ Please report the problem to the
+ !mailurl $wims_site_manager site manager\
+user registration failure
+. Thanks!
+ !exit
+!endif
+
+!if duplicate=$error
+ You have tried to recreate an existing message board. Perhaps because you clicked
+ on the button `reload'? In any case, your message board $forumname is already
+ there, and the second tentative of creation is ignored.
+ !exit
+!endif
+

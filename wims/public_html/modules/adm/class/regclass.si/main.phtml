@@ -1,0 +1,252 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!read names.phtml
+<center><h1>WIMS at $httpd_HTTP_HOST
+<p>
+ Ustvarjanje uèilnice $name_classess
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!read names.phtml
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ !if $restart!=no
+  <p>
+  !href module=$module&cmd=reply&step=0 Restart the operation.
+ !endif
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=pre
+ Izberite tip uèilnice, ki vam ustreza:
+ <p>
+ !href cmd=reply&step=0&cltype=0 Posamezna uèilnica
+ za delo z zakljuèeno skupino uporabnikov (uèencev).
+ <p>
+ !if $regpolicy=file
+  !set noright=(You don't have the right to do so.)
+ !else
+  !set noright=(Only the site manager can do it.)
+ !endif
+ !if 2 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=2 Vhodna toèka
+  za skupino uèilnic.
+ !else
+  <font color=blue><strike>Vhodna toèka</strike></font>
+  za skupino uèilnic. $noright
+ !endif
+ <p>
+ !if 4 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=4 Portal
+  za celotno ustanovo.
+ !else
+  <font color=blue><strike>Portal</strike></font>
+  za celotno ustanovo. $noright
+ !endif
+ <p>
+ <b>Help</b>. A group of classes with a same entrance point allows teachers to
+ exchange or share teaching materials, and students to jump from one class to
+ another without retyping the password.
+ <p>
+ An institution structure is a multi-level system of virtual classes
+ capable of taking care
+ of the need of a whole school: database of students and teachers,
+ different teaching levels,
+ programs and subjects, student classes, teacher responsabilities, etc.
+ !goto end
+!endif
+
+!if $step=0
+ The creation of class is an operation reserved to teachers. You will need
+ a working email address for the operation. After your class is created,
+ you should assume the responsibility of its maintenance. <p>
+ To create your class, please fill in the following informations.
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>Name of the institution (at most $instlim characters):
+ !if $Cltype isin 13
+  !default institution=$wims_institutionname
+ !endif
+  <input size=$instlim name=institution value="$institution"> <p>
+ <li>Name $name_classesss (at most $desclim characters):
+  <input size=$desclim name=description value="$description"> <p>
+ !if $Cltype notin 24
+ <li>Level $name_classesss:<br>
+  <center><table border=1>
+  <tr><th>year
+  !for j=1 to 6
+   <td align=center>$j</td>
+  !next j
+  </tr>
+  !for i in E,H,U
+   <tr><td align=center>$(lev_$i)</td>
+   !for j=1 to 6
+    !if $i!=U or $j<6
+     <td><input type=radio name=level
+     !if $level=$i$j
+      checked
+     !endif
+     value=$i$j></td>
+    !else
+     <td>.</td>
+    !endif
+   !next j
+  !next i
+  </tr></table></center> <p>
+ !endif
+ <li>Complete name of the supervisor $name_classesss (that is, you):
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>Email address:
+  <input size=$emaillim name=email value="$email">
+  !if $regpolicy=email
+   <br>(The operation of creation $name_classesss will not succeed unless you give
+   your email address which works right now.)
+  !endif
+  <p>
+ <li>Choose a supervisor's password:
+  <input size=16 type=password name=passsup> <br>
+  (between 4 and 16 characters, digits or letters without accent). <br>
+  <small>This password will allow you to access the class as its supervisor.
+  You should be the only person to know it.</small> <p>
+ <li>Choose a password of the class (optional):
+  <input size=16 type=password name=password> <br>
+  (between 4 and 16 characters, digits or letters without accent). <br>
+  <small>The password of the class will be required for the register of
+    !if $Cltype<2
+  participants of the class; you can therefore diffuse it to your
+  students. 
+    !else
+teachers $name_classesss ;
+ you must not diffuse it to your students. 
+ !endif
+ <br>
+  A class without password will be of free access to everybody,
+  which is not allowed without the authorization of the site manager.</small> <p>
+ <li>Expiration date of the class:
+  <select name=exp_day>
+  !for i=1 to 31
+   <option value=$i
+   !ifval $i=$exp_day
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <select name=exp_month>
+  !for i=1 to 12
+   <option value=$i
+   !ifval $i=$exp_month
+    selected
+   !endif
+   >
+   !item $i of $months
+  !next i
+  </select> <select name=exp_year>
+  !for i=$thisyear to $thisyear+1
+   <option value=$i
+   !ifval $i=$exp_year
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <p>
+ <li>Limit of the number of participants of the $name_classe:
+  <input size=3 name=limit value="$limit">
+  (The maximum is $wims_class_user_limit.) <p>
+ <li>Supervisor's secured access:
+  <input size=30 name=secure value="$secure"> <br>
+  <small>Names of hosts from which you will perform sensitive operations on
+  the $name_classe. Optional.</small> <p>
+ </ul>
+ <center><input type=submit value="Continue"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ Hello, $supervisor!<p>
+ You are creating a  $name_classe $classname on the WIMS site $httpd_HTTP_HOST,
+ of level 
+  !if $Cltype=1
+ ``<b><font color=green>$name_level</font></b>'',
+ !endif
+ limited to $ilimit participants. Registration to this class is
+ !if $pword!=$empty
+  protected by the password $name_classesss.
+ !else
+  open to everybody on the internet (are you sure? Please notice that
+  the site manager may refuse and destroy unauthorized open classes!).
+ !endif
+ This class will expire on $exp_month-$exp_day-$exp_year. <p>
+ If you find an error in the above informations, please
+ !href module=$module&cmd=reply&step=0 correct it.
+ <p>Otherwise, in order to verify the exactness of your passwords,
+ please type them again. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Supervisor's password:
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Password of the class:
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="Continue"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Hello, $supervisor!<p>
+ Now you need a code to finish the operation of creation of a new class
+ under WIMS at the site $http_HTTP_HOST. <p>
+ This code has just been sent to your email address
+ ``<tt>$email</tt>''. Please go to verify your email box (wait a little bit
+ if necessary), and read this message.
+ Pick up the code in the message, and copy it below.
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Code of the class: <input size=12 name=typecode>
+ <p><input type=submit value="Continue"></center>
+ </form>
+ <b>Attention</b> This code is only used once here. It cannot be used to
+ connect to the class!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Hello, $supervisor!<p>
+ Your class $classname is now created. Congratulations, and enjoy!<p>
+ Your class is limited to $ilimit participants (including you)
+  !if $Cltype=1
+  , of
+ level <font color=green>$name_level</font>.
+ !endif
+ <p>
+ !read links.phtml
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Back to the beginning of the operation.
+:end
+!tail
+
+!set step=
+

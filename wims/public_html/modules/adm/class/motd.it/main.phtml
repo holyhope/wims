@@ -1,0 +1,45 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Avviso
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Torna alla home page del corso
+. <p>
+ !goto end
+!endif
+
+Questa pagina permette di scrivere o modificare l'avviso quotidiano
+per gli studenti del corso, avviso che compare nella 
+!href style=student home page degli studenti
+ del corso.
+<p>
+Scrivere il mesaggio (sono accettati link e tag html):
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value="Salva"></center>
+</form>
+
+
+:end
+!tail
+
+!set job=
+!set showsheet=

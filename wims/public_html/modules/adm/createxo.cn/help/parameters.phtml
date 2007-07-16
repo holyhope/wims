@@ -1,0 +1,95 @@
+<center><h3>交互式练习中的随机参数</h3></center> <p>
+
+使用随机参数可以使您的练习更加吸引人,
+因为每次出来的都是不同的练习.
+<p>
+例如以下一行命令定义了名为<font color=blue><b>x1</b></font>的参数,
+它的值是-10与10间的参数(包括-10与10):
+<pre>
+\integer{x1=random(-10..10)}
+</pre>
+以后在陈述, 回答, 提示与解中都可以用<b><tt>\x1</tt></b>来调用此随机参数.
+也就是说文本中的<tt>\x1</tt>每次都被不同的随机值所取代. 
+这种取代也发生在依赖于x1的其他参数的定义中.
+<p>
+现在假设您在参数定义的栏目中输入了
+<pre>
+\integer{x1=random(-10..10)}
+\integer{y1=\x1+3}
+</pre>
+练习的陈述为
+<pre>
+计算\x1与\y1的乘积.
+</pre>
+假定在练习的某个请求中\x1被分配一个随机值<font color=red>-7</font>.
+后一个参数\y1将取值-4, 而且此练习将具有形式<p>
+<center>计算-7与-4 乘积.
+</center> <p>
+您然后可以定义名为<b>乘积</b>的数值回答的正确解是 
+<tt>(\x1)*(\y1)</tt>. (注意这里的括号是必要的, 因为替代完全是按字面意义执行的.)
+<a name=list>
+!if oefparm isitemof $special_parm
+ !changeto help/oefparm.phtml
+!endif
+<p>$table_header
+<caption>参数的一些别的例子
+!href cmd=help&special_parm=$special_parm,oefparm#list [完整表格]
+</caption>
+$table_hdtr<th>定义<th>的效果
+$table_tr<td><tt>\real{x=random(-5..5)}
+    <td>\x是-5与5间的随机实数
+$table_tr<td><tt>\real{a=random(-5,-3,0.3,4)}
+    <td>\a是在-5,-3,0.3,4之中随机选取的实数
+$table_tr<td><tt>\complex{z=(1+2*i)^3}
+    <td>\z是复数(1+2*i)^3
+$table_tr<td><tt>\text{sign=random(+,-)}
+    <td>\sign是随机符号: +或-
+$table_tr<td><tt>\integer{n=3*exp(\a)}
+    <td>\n是与3*e<sup>\a</sup>最接近的整数(它依赖于\a的值)
+$table_tr<td><tt>\function{f=random<br> (x^2+1,sin(x),log(x))}
+    <td>\f是随机的函数: x^2+1, sin(x), 或log(x)
+$table_tr<td><tt>\real{a=evalue(x^2+sin(y),x=3,y=4)}
+    <td>函数x^2+sin(y)对x=3, y=4赋值
+$table_tr<td><tt>\real{r=solve(x^3-3*x+1,x=0..1)}
+    <td>\r是x^3-3x+1在0与1之间的单根
+$table_tr<td><tt>\function{g=diff(sin(x)+cos(y),x)}
+    <td>\g是sin(x)+cos(y)关于x的导数
+$table_tr<td><tt>\function{F=int(x^2+3*x+1,x)}
+    <td>\F是x^2+3*x+1的不定积分,<br>
+     不保证常数项始终相同
+!!$table_tr<td><tt>\function{F=int(t^2+3*t+1,t=1..x)}
+!!    <td>\F是x^2+3*x+1满足g(1)=0的原函数
+$table_tr<td><tt>\real{a=int(t^2+3*t+1,t=0..1)}
+    <td>\a是x^2+3*x+1从0到1的数值积分
+$table_tr<td><tt>\text{f=htmlmath(2*x^2+3*x)}
+    <td>\f表示成html格式, 如: 2x<sup>2</sup>+3x
+$table_tr<td><tt>\text{f=texmath(2*x^2+3*x)}
+    <td>\f表示成TeX格式.
+$table_tr<td><tt>\integer{n=items(a,b,c,d,e,f)}
+    <td>\n是表{a,b,c,d,e,f}中的元素个数(这里是6)     
+$table_tr<td><tt>\text{i=item(3,a,b,c,d,e,f)}
+    <td>\i是表{a,b,c,d,e,f}中第3个元素(这里是c).
+$table_tr<td><tt>\text{s=shuffle(6)}
+    <td>\s是6个整数1,2,...,6的表, 次序是随机的.
+$table_tr<td><tt>\text{s=shuffle(a,b,c,d,e)}
+    <td>\s是字母{a,b,c,d,e}, 次序是随机的.
+$table_tr<td><tt>\matrix{m=1,2,3<br>4,5,6<br>7,8,9}
+    <td>\m是3行3列的矩阵.
+
+$table_end <p>
+
+条件参数: 您可以写<p>
+<tt>\text{ttt=_condition?_def1}</tt>或<br>
+<tt>\text{ttt=_condition?_def1:_def2}</tt>
+<p>
+在这个情形, 当条件<tt>_condition</tt>为真时, <tt>ttt</tt>取值<tt>_def1</tt>.
+如果是第二句, 否则取 <tt>_def2</tt>.
+!href target=wims_mhelp cmd=help&special_parm=if 条件表
+<p>
+定义与陈述的相对位置是很重要的:
+如果变量定义在陈述之后, 那么仅当用户回答了问题后才会给变量赋值.
+在这种情形, 定义中可以通过<tt>\reply1</tt>, 
+<tt>\reply2</tt>等引用用户的答案. 此变量可用于解答中, 以测试条件或反馈.
+
+
+

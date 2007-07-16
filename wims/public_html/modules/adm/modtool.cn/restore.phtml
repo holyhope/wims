@@ -1,0 +1,61 @@
+!reset wims_deposit
+
+!if $mode=bad_fname
+你的文件不像是模块备份文件!
+ <p>
+你只能恢复以前从模块创建工具下载的文件. 请再试.
+ <p>
+!endif
+
+!if $mode=bad_arch
+你的文件不像是模块备份文件, 文件有错!
+ <p>
+!endif
+
+!if $mode=illegal
+你的档案含有非法类型的文件! 不能恢复.
+ <p>
+是旧版的备份吗? 你只能一个一个文件复制.
+ <p>
+!endif
+
+!if $mode=diffcheck
+ !if $diff=$empty
+在(开发空间里的)已有模块与备份档案间没有差别.
+ !else
+  !if $diff=MANY
+(开发空间里的)已有模块与备份档案间差别很大.
+  !else
+(开发空间里的)已有模块与备份档案间的差别如下:
+   <pre>$diff</pre>
+  !endif
+ !endif
+ !exit
+!endif
+
+!if $mode!=$empty and $mode iswordof prep bad_fname bad_arch illegal
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=jobreq value=restore>
+请给出备份文件以恢复:
+ <input type=file name=wims_deposit size=40>
+ <input type=submit value=发送>
+ <p>
+ <small>只能接受以前用创建模块工具备份的文件或从发布中心
+<a href=$downloadsite>$downloadsite</a>
+下载的文件. 备份文件不能作手工修改.
+ </small>
+ <p>
+ <b>警告</b>. 备份模块的恢复将完全取代同一地址的已有模块, 不能再复原.
+不过你可以
+ <input type=checkbox name=confirm value=diffcheck>
+只检查与现有模块的区别.
+ </form>
+!else
+恢复的模块: <b>$ftest</b>, <small>$ftest2</small>
+ <br>地址: <tt>$restored</tt>.
+ <p>
+ !href cmd=reply&jobreq=flist&modreq=$restored 返回模块继续工作
+.
+!endif
+

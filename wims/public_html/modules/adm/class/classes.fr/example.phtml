@@ -1,0 +1,48 @@
+
+!if $clcnt<=0
+ Désolé, nous n'avons pas de classe d'exemple sur ce site.
+ !exit
+!endif
+
+!if $lacnt<=0
+ Il n'y a pas de classe d'exemple en langue française sur ce site, 
+ mais seulement $clcnt classes d'exemple en anglais.
+!else
+ Il y a $clcnt classes d'exemple en langue française sur ce site.
+!endif
+
+Elles vous montrent le fonctionnement d'une classe virtuelle du point de vue
+d'un élève. Vous devez 
+!href module=adm/class/regclass créer
+ votre propre classe pour avoir le point de vue d'un enseignant qui est bien plus sophistiqué.
+
+<p>$table_header
+$table_hdtr
+<th>Nom de classe</th><th>Niveau</th><th>type de connection</th><th>S'inscrire</th></tr>
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into code,expire,inst,cl
+ !defread wimshome/log/classes/$code/.def
+ !distribute char $class_level into l_,y_
+ 
+ $table_tr<td align=center>$inst<br>$cl</td>
+ <td align=center>$(n_$l_)<br>année $y_</td>
+ <td align=center>
+ !href module=home&user=anonymous,$code,anonymous anonyme
+ &nbsp;
+ !href module=$module&type=authparticipant&class=$code inscrit
+ </td><td align=center>
+ !href module=adm/class/reguser&class=$code S'inscrire
+ </td>
+!next i
+</tr>$table_end <p>
+ 
+<ul>
+<li>Cliquez sur <tt class="d">anonyme</tt> pour entrer dans la classe en tant que visiteur anonyme (participant).
+<p><li>Cliquez sur <tt class="d">inscrit</tt> pour entrer dans la classe avec un nom de login
+et mot de passe personnel. (Vous devez être inscrit dans la classe auparavant,
+et votre inscription dans une classe d'exemple peut être régulièrement
+effacée par le serveur).
+<p><li>Cliquez sur <tt class="d">S'inscrire</tt> pour vous inscrire dans la classe.
+</ul>
+

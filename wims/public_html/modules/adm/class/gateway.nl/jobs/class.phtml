@@ -1,0 +1,52 @@
+
+!set form_OK=Verstuur de veranderde eigenschappen
+!set form_titlename=Titel
+!set form_caption=Eigenschappen van deze klas
+!set title=$class_description
+!set sup=$class_Supervisor
+!read scripts/classform.phtml
+
+<p>
+!if $coursecnt=0
+    Deze klas heeft nog geen cursussen.
+ !href cmd=reply&cparent=class&job=addcourse Voeg&nbsp;een&nbsp;cursus&nbsp;toe
+.<sup>
+ !href cmd=help&special_parm=structure#course help
+</sup>
+!else
+ $table_header
+ <caption>Bestaande cursussen<sup>
+ !href cmd=help&special_parm=structure#course help
+ </sup> in deze klas
+ !href cmd=reply&cparent=class&job=addcourse Voeg&nbsp;een&nbsp;andere&nbsp;cursus&nbsp;toe
+ </small></caption>
+ $table_hdtr
+ <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>
+ </tr>
+ !for i=1 to $coursecnt
+   !set l=!line $i of $courses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=course&cparent=class&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=class&del=$l_ verwijderen
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
+     $s_
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Niet beschikbaar
+   !endif
+ !next i
+ $table_end
+
+!endif
+
+!reset title
+

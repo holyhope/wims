@@ -1,0 +1,61 @@
+<center><h3>Configuración de $cattit</h3></center>
+
+!if $save!=$empty
+ !if $changed<1
+  La configuración no ha cambiado porque no ha hecho modificaciones.
+ !else
+  El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar 
+  la información de configuración antigua en <tt>$backdir/wims.conf.old</tt>.
+ !endif
+ <p>
+!endif
+
+!form reply
+$table_header
+!for i=1 to $confcnt
+ !set r_=!record $i of conf/confdata
+ !set t_=!word 1 of $r_
+ !if $catname isitemof $t_
+  !distribute lines $r_ into a_,b_,c_,e_
+  !distribute words $a_ into t_,n_,N_
+  !set D_=$($n_)
+  $table_tr
+  <td>$b_<td align=center><small>
+  !href cmd=help&help_subject=conf&help_conf=$i ayuda
+  !if $c_ iswordof free int
+   <br>
+   <a href=# onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">por defecto</a>
+  !endif
+  </small>
+  <td nowrap>
+  !if $c_=free
+   <input size=40 name=conf_$i value="$D_">
+  !endif
+  !if $c_=int
+   <input size=10 name=conf_$i value="$D_">
+  !endif
+  !if $c_=choice
+   !set conf_$i=$D_
+   !set e_=!translate ; to $\
+$ in $e_
+   !distribute lines $e_ into x_,y_
+   !formselect conf_$i list $x_ prompt $y_
+  !endif
+  !set g_=!trim $g_
+ !endif
+!next i
+$table_end <p><center>
+<input type=submit name=save value=Guardar>
+<input type=submit name=abandon value=Cancelar>
+</center>
+</form>
+<p><b>Nota</b>. Los parámetros con un asterisco `*' en su título son importantes.
+Los que tienen un signo de peligro `!' pueden dañar la instalación si
+comete algún error.
+<br>
+De todas formas recuerde que si borra el fichero <tt>log/wims.conf</tt>
+volverá a empezar con una configuración por defecto. También puede recuperar
+las configuraciones guardadas en el directorio log.
+<p>
+!read conf/$catname.phtml
+

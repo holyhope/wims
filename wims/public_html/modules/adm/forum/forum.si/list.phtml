@@ -1,0 +1,51 @@
+
+!if $ccnt<1
+ Na teh straneh ni nobene deske sporoèil. <p>
+ !href module=home WIMS home
+ !exit
+!endif
+
+Na teh straneh najdete naslednje deske sporoèil:
+
+<p>$table_header
+$table_hdtr<th>Naslov<th>Priklop<th>Jezik<th>Opis
+!for i=1 to $ccnt
+ !set l=!record $i of $indf
+ !distribute items $l into code,la
+ !defread wimshome/log/forums/$code/.def
+ $table_tr<td align=center>$mb_title
+ <td align=center>
+ !reset user_exists
+ !read wimshome/$wims_sesdir/mb_user.$code
+ !if $user_exists=$empty
+  !if $mb_readpolicy=open
+   !href module=adm/forum/mboard.$la&forum=$code obiskovalec
+   &nbsp;
+  !endif
+  !href cmd=reply&type=authuser&forum=$code uporabnik
+  &nbsp;
+  !href cmd=reply&type=authowner&forum=$code skrbnik
+  !if * notin $mb_password
+   &nbsp;
+   !href module=adm/forum/reguser&forum=$code registracija
+  !endif
+ !else
+  !if $forumuser!=supervisor
+   !href module=adm/forum/mboard.$la&forum=$code uporabnik
+   &nbsp;
+   !href cmd=reply&type=authowner&forum=$code lastnik
+  !else
+   !href cmd=reply&type=authuser&forum=$code uporabnik
+   &nbsp;
+   !href module=adm/forum/mboard.$la&forum=$code lastnik
+  !endif
+ !endif
+ </td><td align=center><img src=gifs/$la.gif></td>
+ <td>$mb_description</td>
+!next i
+$table_end <p>
+
+Za vstop na desko sporoèil kliknite na ¾eljeni naèin priklopa ali pa se registrirajte kot nov uporabnik. Ustvarite lahko tudi
+!href module=adm/forum/regforum svojo lastno desko sporoèil
+.
+

@@ -1,0 +1,17 @@
+
+wims_prefix=class user tmp n sharing sharable
+phtml=!trim $phtml
+talign=$wims_texalign
+point=!char -3 of $phtml
+ltest=!char -2,-1 of $phtml
+!if $point=. and $ltest iswordof $wims_site_languages
+ module_language=$ltest
+!endif
+
+!read wimshome/modules/home/languages
+!read tabletheme
+
+!if $phtml!=$empty
+ wims_module_log=call $phtml
+!endif
+

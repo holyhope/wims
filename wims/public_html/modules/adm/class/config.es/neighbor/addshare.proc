@@ -1,0 +1,29 @@
+
+!read scripts/reccnt.proc me log/classes/$wims_class
+!read scripts/reccnt.proc it log/classes/$nei
+
+addshare=!items2words $addshare
+addshare=!word 1 of $addshare
+addshare=!listintersect $addshare and $sharelist
+!if $addshare!=$empty and $addshare notitemof $sharing\
+	and $(sharable_$addshare)=$empty\
+	and ($(me_$(addshare)cnt)<1 or $addshare notitemof $nosharelist)\
+	and $addshare isitemof $nsharable
+ otherlang=!defof class_lang in wimshome/log/classes/$nei/.def
+ !if $addshare=sheet and $sharing_exo!=$nei or \
+	$addshare=exam and $sharing_sheet!=$nei
+  error=share_dep
+  !exit
+ !endif
+ !read adm/class/addshare $nei $wims_class\
+	$addshare
+# !mexec neighbor/addshare.sh
+ wims_class_log=share $addshare of $nei
+# sharing_$addshare=$nei
+# sharing_all=!listunion $nei and $sharing_all
+# !read neighbor/writeneighbor.proc
+ sharing=!append item $addshare to $sharing
+!endif
+
+addshare=
+

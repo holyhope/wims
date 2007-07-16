@@ -1,0 +1,45 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Mensaje del día
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Volver a la página principal de la clase.
+. <p>
+ !goto end
+!endif
+
+Esta página le permite escribir o modificar un mensaje destinado a todos los 
+participantes de la clase, que se mostrará en
+!href style=student la página principal de los participantes
+ de la clase.
+<p>
+Escriba su mensaje del día (se permiten enlaces y marcas html):
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value="Grabar el mensaje"></center>
+</form>
+
+
+:end
+!tail
+
+!set job=
+!set showsheet=

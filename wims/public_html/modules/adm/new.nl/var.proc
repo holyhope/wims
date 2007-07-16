@@ -1,0 +1,17 @@
+
+wims_prefix=class user tmp
+!if robot isin $session
+ job=
+ !exit
+!endif
+
+limit=50
+syslimit=250
+joblist=new,modif,sys
+!bound job within $joblist default new
+!read tabletheme
+!read $job.proc
+
+module_title=$module_title<br><font size=+0>$httpd_HTTP_HOST</font>
+wims_module_log=$cmd: $job
+

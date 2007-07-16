@@ -1,0 +1,26 @@
+
+!set monthnames=jan,fév,mars,avril,mai,juin,juil,août,sep,oct,nov,déc
+!set name_wroteon=wrote on
+
+!distribute item <i>sujet&nbsp;:</i> <b>,</b> into subj1,subj2
+!distribute item <hr>,<hr> into body1,body2
+
+!distribute line Liste de message par date\
+	Liste de message par fil\
+	Lire un message\
+	Composer un nouveau message\
+	Aperçu de votre message\
+	Envoyer un message\
+	Configurer le forum\
+	into n_list,n_thread,n_read,n_compose,n_preview,n_send,n_config
+
+!if $job=compose and $c_prec!=$empty
+ !set n_compose=Composer une suite
+!endif
+
+!if $job notwordof read list
+ !set nextline=</b> <br><font size=+0>--- $(n_$job) ---</font>
+!endif
+
+!set module_title=$module_title$nextline
+

@@ -1,0 +1,55 @@
+!set wims_module_log=error: $error
+
+!if no_pick=$error
+ Please
+ !href cmd=resume pick up a sheet
+ before clicking on the button ``insert''.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Sorry, but the operation of modifying a work sheet
+ is reserved to registered supervisor of a class.
+ !exit
+!endif
+
+!if bad_class=$error
+ Strange, but I find that your class is not valid!
+ !exit
+!endif
+
+!if no_sheet=$error
+ Your class has no non-active work sheets. A work must be inserted into
+ a non-active work sheet. 
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] Create one
+?
+ !exit
+!endif
+!if bad_sheet=$error
+ Bad sheet number.
+ !exit
+!endif
+
+!if insert_fail=$error
+ The software has failed to insert your work into the database. Please
+ check your data.
+ !exit
+!endif
+
+!if too_many_exos=$error
+ The work sheet $picksheet already contains the maximum of $max_exo
+ items. Delete someone before inserting any more into it.
+ !exit
+!endif
+
+!if already_exist=$error
+ The work which you want to insert already exists in the sheet $test.
+ You should not reference the same exercise with the
+ same initial parameters, two times in the same sheet. <p>
+ Please change your parameters of the exercise before inserting it
+ in a sheet. <p>
+ If you want your students to repeat their work on the exercise, you
+ may increase the required number of points for it.
+ !exit
+!endif
+

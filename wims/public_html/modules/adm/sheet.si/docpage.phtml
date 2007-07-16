@@ -1,0 +1,34 @@
+
+!read $docdef content
+<p><center>
+Bele¾enje rezultatov je 
+ !set dd=!getscorestatus sheet=$sh
+ !if $dd=yes
+  !if $wims_scorereg!=suspend
+   vkljuèeno, a ga lahko
+   !href cmd=resume&job=suspend izkljuèite
+.
+  !else
+   izklopljeno na va¹o zahtevo.
+   !href cmd=resume&job=reopen Ponoven vklop
+.
+  !endif
+ !else
+  onemogoèeno za va¹o povezavo.
+ !endif
+
+!if $wims_user=supervisor
+ <p>
+ !href module=adm/class/sheet&sheet=$sh Urejanje delovnega lista
+.&nbsp;
+ !set d_=!translate / to , in $sheet_docpage
+ !distribute items $d_ into d_,b_
+ !href target=wims_doc module=adm/doc.en&job=edit&doc=$d_&block=$b_ Uredi to stran
+.&nbsp;
+ !href cmd=resume Ponovno nalo¾i
+.
+!endif
+</center>
+
+!tail
+

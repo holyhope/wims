@@ -1,0 +1,76 @@
+
+!if $getuser!=$empty
+ sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ !for sh=1 to $sheetcnt
+  s=!record $sh of wimshome/log/classes/$wims_class/sheets/.sheets
+  a=!line 1 of $s
+  !if $a>0
+   exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sh
+   !for ex=1 to $exocnt
+    e=!record $ex of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+    !distribute lines $e into b_,b_,req_$(sh)_$ex,weight_$(sh)_$ex,title_$(sh)_$ex
+   !next ex
+  !endif
+ !next sh
+ m=!record 1 of wimshome/log/classes/$wims_class/.grades
+ !distribute lines $m into manual,titles,weights
+ gcnt=!itemcnt $titles
+ gcnt=$[$gcnt-2]
+ !if $gcnt<1
+  manual=0
+ !else
+  mwtot=0
+  !for g=1 to $gcnt
+   w$g=!item $g+2 of $weights
+   mwtot=$[$mwtot+$(w$g)]
+  !next g
+ !endif
+ !if $manual>0
+  uucnt=!recordcnt wimshome/log/classes/$wims_class/.grades
+  !for u=2 to $uucnt
+   l_=!record $u of wimshome/log/classes/$wims_class/.grades
+   n_=!item 1 of $l_
+   !if $n_=$getuser
+    teacher=!item 3 to -1 of $l_
+    !break
+   !endif
+  !next u
+  mav=0
+  !for i=1 to $gcnt
+   g_$i=!item $i of $teacher
+   mav=$[$mav+($(g_$i))*($(w$i))]
+  !next i
+  mav=$[rint(100*$mav/$mwtot)/100]
+ !else
+  mav=0
+ !endif
+ t=!translate = to , in $wims_req_time
+ t=!item -1 of $t
+ means=!record 0 of wimshome/log/classes/$wims_class/scoreavg
+ ot=!line 1 of $means
+ !if $ot=$empty or $ot<$t-300
+  !read var.avg
+ !endif
+ l=!line 2 of $means
+ !distribute words $l into\
+	min_auto,mean_auto,max_auto,\
+	min_tea,mean_tea,max_tea,\
+	min_glob,mean_glob,max_glob
+ c=!linecnt $means
+ !for i=3 to $c
+  l=!line $i of $means
+  s=!word 1 of $l
+  !distribute words $l into x_,min_$s,mean_$s,max_$s
+ !next i
+ uu=$getuser
+ !read userscore
+ globalav=$[rint($manual*$mav+((100-$manual)*$per))/100]
+ exologs=!filelist $wims_home/log/classes/$wims_class/exolog/$getuser
+!else
+ job=
+!endif
+
+!if $wims_user=supervisor
+ !read var.proc.userexam
+!endif
+

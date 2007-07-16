@@ -1,0 +1,24 @@
+
+!if +$error iswordof +no_send_right
+ !exit
+!endif
+
+!if $srclen=$empty or $srclen=0 or $msglen=$empty or $msglen=0
+ ¡Su mensaje está vacío!
+ !goto end
+!endif
+
+$subj1 $c_subject $subj2 $body1
+!read wimshome/$wims_sesdir/message.wims
+$body2
+$tag_escaper</table></ul></ol></dl></form><font size=+0>
+
+:end
+<p><center>
+!href cmd=reply&job=compose Volver a editarlo
+&nbsp;&nbsp;
+!href cmd=reply&job=send Enviar el mensaje
+&nbsp;&nbsp;
+!href cmd=reply&job=list Cancelarlo
+</center> <p>
+

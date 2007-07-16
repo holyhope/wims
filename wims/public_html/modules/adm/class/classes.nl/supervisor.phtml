@@ -1,0 +1,130 @@
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $supervisable!=yes
+  !exit
+ !endif
+ <p>
+!else
+ Virtuele klassen geven docenten de mogelijkheid om
+  <em>cijfers en vorderingen</em> van hun studenten te volgen,
+ <em>les en oefenmateriaal</em> op deze WIMS server voor studenten te organiseren. 
+<br>
+<small>
+Waaronder het produceren van interactieve lesdocumenten, het samenstellen
+van werkbladen en het maken van proefwerken of tentamens 
+(uit alle beschikbare lesmateriaal van deze server). 
+<br>En later eventueel zelf interactief lesmateriaal (met behulp van de diverse WIMS-tools) te produceren !
+</small>
+<p>
+ <p>
+ 
+ Hier kunt U een 
+ !href module=adm/class/regclass nieuwe virtuele klas
+  oprichten, bijvoorkeur na het lezen van
+ !href target=wims_help module=help/main&chapter=3 deze
+ help pagina's , of U kunt een blik werpen in &eacute;&eacute;n van de
+ !href module=$module&type=example demonstratie klassen
+. <p>
+!endif
+
+!if $clcnt+$sccnt>0
+ !if $wims_user=$empty
+ Klik op de klas (of school of instituut) van Uw keuze.<br>
+ <small>
+ Als U op <tt>Inloggen</tt> klikt, bent U reeds aangemeld als docent of supervisor.
+ <br>
+ Klik op <tt>Aanmelden</tt> als U docent wilt worden in een school of instituut.
+ <br>
+ Deze aanmelding is dus <b>alleen</b> voor <tt>docenten</tt>.
+ !endif
+ !if $sccnt>0
+  <p>
+  $table_header
+  <caption>Instituten of scholen</caption>
+  $table_hdtr<th>Naam</th> <th colspan=2>Docent</th>
+  <th colspan=2>Administrator</th> </tr>
+  !for i=1 to $sccnt
+   !set l=!line $i of $sclasses
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   <td align="center">
+   $in
+   </td>
+   <td align=center>
+   !href module=$module&type=authparticipant&class=$code Inloggen
+   </td> <td align=center> 
+   !href module=adm/class/reguser&class=$code Aanmelden
+   </td>
+   <td align=center>$supv</td>
+   <td align=center>
+   !href module=$module&type=authsupervisor&class=$code Inloggen
+  </td>
+  !next i  
+  $table_end
+ !endif
+ !if $clcnt>0
+  <p>
+  $table_header
+  !if $superclass=$empty
+   <caption>Onafhankelijke klassen</caption>
+   $table_hdtr<th>Naam</th><th colspan=2>Docent-administrator</th>
+  !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   <caption>$Name_levels van $inst
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent Up
+   !endif
+   <caption>
+   $table_hdtr<th>$Name_level</th><th>Docent</th>
+   !if $superclass!=$empty and $stype=4
+    <th>+</th>
+   !endif
+  !endif
+  !for i=1 to $clcnt
+   !set l=!line $i of $classes
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   !if $superclass=$empty
+    <td align="center">$in<br>$cl</td>
+!else
+   <td align="center">
+   !href module=$module&type=authsupervisor&class=$code $cl
+   </td>
+ !endif
+   <td align="center">$supv</td>
+   !if $superclass!=$empty and $stype=4
+    <td>
+    !if $ty!=1
+     !href cmd=reply&type=$type&superclass2=$code $sousclasses
+    !else
+    -
+    !endif
+   !endif
+   !if $superclass=$empty
+      <td align=center>
+   !href module=$module&type=authsupervisor&class=$code Inloggen
+   </td>
+   !endif   
+  !next i
+ !endif
+ $table_end
+!else
+ !if $class_type=$empty and $superclass=$empty
+ (Deze server heeft geen nederlandstalige klassen of scholen.) 
+ !else
+  (Geen enkele klas aanwezig.)
+ !endif
+!endif
+<p>
+

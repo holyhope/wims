@@ -1,0 +1,43 @@
+!if $wims_developer!=$empty and ..devel/ isin ..$catmodule
+ !if $reg1=success
+  De oefening <tt>$existing.oef</tt> horende bij  
+  <tt>$catmodule</tt> is met succes geinstalleerd.
+ !else
+  De oefening <tt>$existing</tt> kon niet worden opgenomen in
+  <tt>$catmodule</tt>.
+  <pre>$wims_exec_error</pre>
+ !endif
+ <p>
+ !href cmd=reply&level=3 Terug naar het vorige menu.
+ !exit
+!endif
+
+!if $wims_user=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+    Uw modules is met succes geinstalleerd.
+ !else
+    Er staat een identieke module in uw klas. Deze installatie wordt dus afgebroken.
+  <p>
+ !endif
+ Deze oefening is alleen bereikbaar voor deelnemers aan uw klas<br> 
+ en alleen als U deze module inbrengt in een werkblad.
+ <p>
+ !if $wims_user!=supervisor
+  U kunt nu de oefeningen 
+  !href module=classes/$lang&special_parm=.nocache. bekijken.
+ !else
+  U kunt nu:
+  <ul>
+  <p><li>
+  de oefeningen van uw klas 
+  !href module=classes/$lang&special_parm=.nocache. bekijken.
+  (en ze eventueel verwerken in werkbladen.)
+  <p><li>
+  terug gaan naar het
+  !href cmd=reply&level=3 vorige menu.
+  </ul>
+ !endif
+!endif
+

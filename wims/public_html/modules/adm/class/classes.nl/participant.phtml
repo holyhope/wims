@@ -1,0 +1,141 @@
+
+!if $clcnt+$sccnt+$directcnt<1
+    Er is geen nederlandstalige klas op deze server.<br>
+    Zoekt U misschien een klas in een andere
+ !href module=home&list=0 taal
+ ?
+ !exit
+!endif
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $superclass=$empty
+  !exit
+ !endif
+!else
+Kies Uw klas of school uit de onderstaande lijst.
+ <p>
+ Bent U nog niet aangemeld, klik dan op <tt>aanmelden</tt> 
+<br>Als de status <tt>besloten</tt> is, hebt U een aanmeldings wachtwoord nodig.
+(verkrijgbaar bij de docent van de klas of supervisor van de school/instituut)
+ <p>Anders , klik op <tt>Inloggen</tt>. 
+!endif
+
+!if $sccnt>0
+ <p>$table_header
+ <caption>
+ Scholen of Instituten
+ </caption>
+ $table_hdtr
+ <th>Naam<th colspan=2>Leerling</th><th>Administrator</th><th>Status</th>
+ !for i=1 to $sccnt
+  !set l=!line $i of $sclasses
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !if $superclass=$empty
+   !set show=$inst
+  !else
+   !set show=$cl
+  !endif
+  !set supv=!item 9 to -1 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  
+  $table_tr<td align=center>
+  !!!href module=$module&type=authparticipant&class=$code 
+  $show
+  </td> <td align=center>
+  !href module=$module&type=authparticipant&class=$code Inloggen
+  </td> <td align=center>
+  !href module=adm/class/reguser&class=$code&subclass=yes Aanmelden
+  </td> <td align=center>
+  $supv
+  </td> <td align=center>
+  !if $pswd=$empty
+   open
+  !else
+   besloten
+  !endif
+ !next i
+ $table_end <p>
+!endif
+
+!if $clcnt>0
+ <p>$table_header
+ !if $superclass=$empty
+  <caption>Onafhankelijke klassen</caption>
+  $table_hdtr
+  <th>Naam van de klas</th><th colspan=2>Leerling</th>
+  <th>Docent</th><th>Niveau</th><th>Status</th>
+ !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   <caption>$Name_levels van $inst
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent Terug
+   !endif
+   <caption>
+   $table_hdtr
+   <th>Naam van de klas</th><th colspan=2>leerling</th>
+   <th>Leraar</th><th>Niveau</th><th>Status</th>
+   !if $superclass!=$empty and $stype=4
+    <th>+</th>
+   !endif
+ !endif
+ !for i=1 to $clcnt
+  !set l=!line $i of $classes
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !set supv=!item 9 to -1 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set lv=$class_level
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  !distribute char $lv into l_,y_
+  
+  !if $superclass=$empty
+   !set show=$inst <br>$cl
+  !else
+   !set show=$cl
+  !endif
+  $table_tr<td align=center>
+    $show
+  </td><td align=center> 
+  !href module=$module&type=authparticipant&class=$code Inloggen
+  </td> <td align=center> 
+  !if $splevel=$empty or $splevel=2
+   !href module=adm/class/reguser&class=$code Aanmelden
+  !else
+   <font color=grey>Aanmelden</font>
+  !endif
+  </td><td align=center>
+  $supv
+  </td><td align=center>$(n_$l_)<br>leerjaar $y_</td>
+  <td align=center>
+  !if $pswd=$empty
+   open
+  !else
+   besloten
+  !endif
+  </td>
+   !if $superclass!=$empty and $stype=4
+    <td>
+    !if $ty!=1
+     !href cmd=reply&type=$type&superclass2=$code $sousclasses
+    !else
+    -
+    !endif
+   !endif
+ !next i
+ $table_end <p>
+!endif
+
+

@@ -1,0 +1,54 @@
+!set wims_module_log=error: $error
+
+<b>错误</b>.
+
+!if bad_auth iswordof $error
+身份验证错. 请重试.
+ !exit
+!endif
+
+!if bad_pass iswordof $error
+不好的密码: 它只能由数字或英文字母组成, 含4至16个字符.
+重复的密码必须与第一个相同! 请再试.
+ !exit
+!endif
+
+!if empty_data iswordof $error
+请填写你的模块的
+ <b><em><font color=red>$(name_$empty_data)</font></em></b>
+的定义.
+ !exit
+!endif
+
+!if bad_fname iswordof $error
+非法文件名. 请为文件另取一个名字.
+ !exit
+!endif
+
+!if illegal_filedesc iswordof $error
+这里只能给出filedesc的定义, 不能放别的东西.
+ !exit
+!endif
+
+!if badoriginal iswordof $error
+此模块不能复制.
+ !exit
+!endif
+
+!if clash iswordof $error
+目标模块已存在.
+ !exit
+!endif
+
+!if badtarget iswordof $error
+目标模块地址不合要求: 太长, 太短, 不完整或非法字符.
+ !exit
+!endif
+
+!if symlink iswordof $error
+源模块不能复制, 因为它包含符号链接.
+ !exit
+!endif
+
+!msg $error
+

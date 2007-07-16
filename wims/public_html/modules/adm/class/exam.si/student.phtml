@@ -1,0 +1,121 @@
+
+<center><h1>$wims_classname, $wims_institutionname<br>
+$title</h1>
+!if $wims_user=supervisor
+ (Predstavitev za uporabnike)
+!endif
+</center> <p>
+$desc<p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Nazaj na domaèo stran
+. <p>
+ !exit
+!endif
+
+!if $registered<0 or ($registered>0 and $timeleft<=0)
+ !changeto score.phtml
+!endif
+
+!if $exocnt=0
+ Izpit ne vsebuje nobene naloge. Morda gre za napako skrbnika uèilnice.
+!else
+ Predpisane naloge v tem izpitu:
+!! !href cmd=reply&job=student [obnovi to stran]
+ !set activeexo=0
+ <p><ul>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti,de
+  !set de=!trim $de
+  <p><li>$i. 
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+   ($tryremain=0 and $registered!=$empty))
+   !if $(replied$i)>0
+    $ti (done).
+   !else
+    !if $de!=$empty
+     !set dt=!examdep $exam $de
+    !else
+     !set dt=yes
+    !endif
+    !if $dt=yes
+     !advance activeexo
+     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+.
+    !else
+     <b><font color=red>$ti</font></b> (Requires
+     !href cmd=reply&job=student uspeh pri drugih vajah
+.)
+    !endif
+   !endif
+  !else
+   $ti.
+  !endif
+ !next i
+ </ul>
+ !if $t_=no
+  Z va¹e povezave re¹evanje izpita ni dovoljeno.
+  !href cmd=reply&job=student Osve¾i to stran.
+ !else
+  !if $stries=1
+  Ta izpit lahko re¹ujete le enkrat.
+  !else
+  ©tevilo dovoljenih ponovitev tega izpita je $stries.
+  !endif
+  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+   !if $trcut=0
+   Pisanje izpita ste ¾e zakljuèili, na voljo ste imeli $tried poskusov,
+   !else
+   Izkoristili ste ¾e $tried dovoljenih poskusov, 
+   !endif
+   zato rezultata zdaj ne morete veè izbolj¹evati.
+   !set exhausted=yes
+  !endif
+  !if $tryremain>0
+   Na voljo vam je ¹e $tryremain poskusov.
+  !endif
+  !if $registered=$empty and $exhausted!=yes
+   Za re¹evanje izpita imate na voljo $sdure minut.
+   S klikom na zgornjo nalogo 
+   !if $allowtype!=simulation
+    boste spro¾ili od¹tevanje èasa in poveèali ¹tevec porabljenih poskusov za ena.
+   !else
+   boste spro¾ili od¹tevanje èasa.
+   !endif
+  !else
+   !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+   To je va¹ zadnji dovoljeni poskus. Bodite uspe¹ni!
+   !endif
+  !endif
+  <p>
+  !href cmd=reply&job=student Osve¾i to stran
+&nbsp;
+  !href cmd=reply&job=score Moj rezultat.
+  !if $activeexo<1
+&nbsp;
+   !href cmd=reply&job=scorereg Konèaj
+   ta izpit (ker ni veè nere¹enih vaj).
+  !endif
+ !endif
+!endif
+
+!if $t_=yes
+ !if $allowtype=simulation
+  <p>Ta izpit deluje v poskusnem naèinu, ki je enak obièajnemu, le da se vam poskusi ne ¹tejejo in registracija rezultata ni mo¾na.
+ !endif
+!endif
+
+!if $wims_user=supervisor
+ <p><center>
+ !href cmd=resume Nazaj na skrbni¹ke strani.
+ </center>
+!endif
+
+!tail
+
+!reset job
+

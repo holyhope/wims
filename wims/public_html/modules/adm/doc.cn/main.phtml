@@ -1,0 +1,40 @@
+<html><head>
+$wims_html_header
+!if $job iswordof read print
+ $header
+!endif
+</head>
+!if $job=help
+ !changeto help.phtml
+!endif
+
+!if help isin $wims_session and $doc!=$helpd
+ <body $wims_htmlbody onload=window.close();>
+ 现在你可以关闭这个帮助窗口.
+ </body></html>
+ !exit
+!endif
+<body $wims_htmlbody><div class=wimsmenu>
+
+!if $cmd=help and $special_parm=about
+ !changeto about.phtml
+!endif
+
+!if $job notwordof home
+ !read menu.phtml
+!else
+ !headmenu
+!endif
+</div><div class=wimsbody>
+!read $job.phtml
+
+!reset rEg,preview,abandon,Titb,Keyw,Next,Prev,Upbl,currcont,\
+       titr,authorr,emailr,coder,coder1,coder2,copyrightr,docopenr,dlangr,\
+       foldin,foldout,readcntadv,job2
+
+!for i=1 to 20
+ !reset parm$i
+!next i
+
+</div>
+

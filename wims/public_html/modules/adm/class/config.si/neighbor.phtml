@@ -1,0 +1,56 @@
+
+!if $classcnt1+$classcnt2<1
+ You cannot define class neighbors because there is no other class on this
+ site.
+ !exit
+!endif
+
+!if $job2!=first
+ !distribute items exercises,work sheets,exams,documents,votes,\
+	participant accounts,supervisor account,forum messages,message of the day\
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,\
+	name_user,name_sup,name_forum,name_motd
+ !read neighbor/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first List of other classes
+ !if $job2!=sharelist
+  &nbsp;
+  !href cmd=reply&job2=sharelist Resource sharing info
+ !endif
+ </center>
+ !exit
+!endif
+
+!distribute items ---,<small>supervisor</small>,\
+	<small>participants</small>,\
+	<small>everybody</small> into n_n0, n_n1, n_n2, n_n3
+
+Neighboring relations between virtual classes allow resource exchange and/or
+inter-class travel. <small>[&nbsp;
+!href cmd=help&special_parm=neighbor Help
+&nbsp;
+!href cmd=help&special_parm=neiexample Examples
+&nbsp;]</small>
+Click on a class name to change your neighboring properties with it.
+
+<p>
+!if $classcnt1>0
+ !set clst=$clist1
+ $table_header
+ <caption>Classes in the same language as yours</caption>
+ !read neighbor/clist.phtml
+ $table_end
+!endif
+
+!if $classcnt2>0
+ <p>
+ !set clst=$clist2
+ $table_header
+ <caption>Classes in other languages</caption>
+ !read neighbor/clist.phtml
+ $table_end
+ <p><center>
+ !href cmd=reply&job2=sharelist Resource sharing information of your class
+ </center>
+!endif
+

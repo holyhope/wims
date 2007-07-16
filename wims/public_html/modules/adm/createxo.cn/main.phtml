@@ -1,0 +1,49 @@
+!header
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ 这是你的练习<font color=red><b>$oef_title</font></b>的源文件, 格式为OEF(开放练习格式 Open Exercice Format).
+ 为保存它, 请截取两条水平线中间的文本, 然后将它粘贴在一个文件里.
+ !href cmd=resume 返回菜单.
+ <hr>
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr> <p>
+ <center>
+ !href cmd=resume 返回菜单.
+ </center>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <center>你的练习将如下实现.
+ !href cmd=resume&realtest=no 返回$module_title.
+ </center>
+ <p><hr> <p>
+ !changeto oef/$module_language/Main.phtml
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p>
+ !href cmd=reply 改正错误.
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+:end
+!tail
+
+!reset wims_deposit, delfile
+

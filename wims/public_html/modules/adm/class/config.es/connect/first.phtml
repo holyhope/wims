@@ -1,0 +1,71 @@
+!set job2=first
+
+La conexión a servidores/plataformas permite que su clase se comunique directamente con
+una clase en otro servidor WIMS u otra plataforma web de e-learning. Los participantes
+pueden navegar de forma transparente entre las clases conectadas.
+<p>
+En particular, puede crear una réplica de esta clase en un servidor WIMS remoto,
+de forma que si el servidor local queda inutilizable momentáneamente, el trabajo
+puede continuar en la clase espejo. Las puntuaciones logradas en la réplica 
+pueden fusionarse más tarde.
+<p>
+!if $ccnt<1
+ Este servidor WIMS no ha declarado ningún servidor remoto que admita 
+ conexiones. Para utilizar esta capacidad de conexión, el
+ <a href="mailto:$wims_site_manager?subject=conexión a servidor">administrador
+ del sitio</a> debe declarar el servidor remoto, y el servidor remoto debe también
+ declarar que este servidor WIMS tiene permiso de conexión.
+ !set basedir=!sh cd ..; pwd
+ (El administrador del sitio puede consultar el fichero
+ <tt>$basedir/log/classes/.connections/myself</tt> en busca de detalles de
+ cómo declarar conexiones a sitios).
+ !exit
+!endif
+
+En estos momentos, este servidor WIMS permite conexiones desde los siguientes servidores.
+<p><center>
+<table border=0 bgcolor=$table_bgcolor cellspacing=1>
+<tr><th>Nombre
+<th>Descripción<th>Dirección<th>Type<th>Acción
+!for s in $Clist
+ !exchange table_color1,table_color2
+ <tr bgcolor=$table_color2>
+ <td>$s
+ <td align=center>$(desc_$s)
+ <td align=center><a href=$(url_$s)>$(site_$s)</a>
+ <td align=center>$(type_$s)
+ <td align=center nowrap><small>
+ !href cmd=reply&job2=testserver&connident=$s Test
+ &nbsp;
+ !href cmd=reply&job2=add1&connident=$s Añadir una conexión
+ </small>
+!next s
+</table></center> <p>
+
+!if $clcnt<1
+ Esta clase no tiene conexiones a otros servidores.
+ !exit
+!endif
+
+Ha declarado las siguientes conexiones a otros servidores.
+<p><center>
+!distribute items yes,no into io1,io0
+<table border=0 bgcolor=$table_bgcolor cellspacing=1>
+<tr><th>Servidor<th>Clase
+<th>-<th>-<th>-<th>-
+!for clc in $cllist
+ !distribute words $clc into n_,c_,o_,i_
+ !exchange table_color1,table_color2
+ <tr bgcolor=$table_color2>
+ <td>$n_<td align=center>$c_
+ <td>
+ !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ Test
+ <td>
+ !href cmd=reply&job2=mod1&connident=$n_&connclass=$c_ Administrar
+ <td>
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ Borrar
+ <td>
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy Eliminar la clase remota
+!next clc
+</table></center> <p>
+

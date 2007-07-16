@@ -1,0 +1,28 @@
+
+!readproc primitives/getlimit.proc parms
+
+<ol>
+!for i=1 to $(choices$parmcnt)
+ <li>
+ !reset checked
+ !if $i iswordof $(parm$parmcnt)
+  !set checked=checked
+ !endif
+ !set i_1=<input type=radio name=parm$parmcnt value=$i $checked>
+ !set i_2=$emph1 $(parms[$i]) $emph2
+ !set ll=!item $i of $limits
+ !set remain=$[max(0,$ll-0$(vcnt_$(parmcnt)_$i))]
+ !if $ll>0
+  !if $remain>0
+   $i_1
+  !endif
+  $i_2 ($remain overgebleven plekken).
+ !else
+  $i_1 $i_2
+  !if $(vcnt_$(parmcnt)_$i)!=$empty and $vshow=1
+   ($(vcnt_$(parmcnt)_$i)).
+  !endif
+ !endif
+!next i
+</ol>
+

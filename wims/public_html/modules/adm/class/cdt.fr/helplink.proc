@@ -1,0 +1,17 @@
+!!!!!!!!!!! build data about sheets in the variables $sheet* !!!!!!!!!!!!!!
+nbsheets= !recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+sheet_nums=
+sheet_deaths=
+sheet_titles=
+!for i = 1 to $nbsheets
+  rec_sheet= !record  $i of  wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute line $rec_sheet into n, d, t
+  sheet_nums=$sheet_nums $i,
+  sheet_deaths=$sheet_deaths $d,
+  sheet_titles=$sheet_titles $t,
+!next i
+
+file_titles=!filelist $wims_home/log/classes/$wims_class/cdt/files/
+file_titles=!lines2items $file_titles
+nbfile=!itemcnt $file_titles
+!bound cible within ddesc1,ddesc2,ddesc3,ddesc4,ddesc5,jdesc default ddesc1

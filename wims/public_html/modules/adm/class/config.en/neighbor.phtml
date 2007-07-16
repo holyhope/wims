@@ -1,0 +1,88 @@
+
+!if $classcnt1+$classcnt2<1 and $kw = $empty
+ You cannot define class neighbors because there is no other class on this
+ site.
+ !exit
+!endif
+
+!if $job2!=first
+ !distribute items exercises,work sheets,exams,documents,votes,agenda,\
+	participant accounts,supervisor account,forum messages,message of the day\
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
+	name_user,name_sup,name_forum,name_motd
+ !read neighbor/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first List of other classes
+ !if $job2!=sharelist
+  &nbsp;
+  !href cmd=reply&job2=sharelist Resource sharing info
+ !endif
+ </center>
+ !exit
+!endif
+
+!if $toomany = yes
+ !form reply
+ !if $kw=$empty
+  There are too many virtual classes on this site. Please give a keyword
+  to search for classes that you want:
+ !else
+  There are stoo too many classes corresponding to your search. Please
+  give a more precise keyword.
+ !endif
+ <p><center>
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form> </center> <p>
+!else
+ !if $kw != $empty or $classcnt1 + $classcnt2 > 20
+  !form reply
+  Search for a class:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form> <p>
+ !endif
+!endif
+!if $classcnt1 + $classcnt2 < 1
+ No class is found for your search. Try again.
+ !exit
+!endif
+
+!distribute items ---,<small>supervisor</small>,\
+	<small>participants</small>,\
+	<small>everybody</small> into n_n0, n_n1, n_n2, n_n3
+
+Neighboring relations between virtual classes allow resource exchange and/or
+inter-class travel. <small>[&nbsp;
+!href cmd=help&special_parm=neighbor Help
+&nbsp;
+!href cmd=help&special_parm=neiexample Examples
+&nbsp;]</small>
+
+!if $toomany=yes
+ !exit
+!endif
+
+Click on a class name to change your neighboring properties with it.
+
+<p>
+!if $classcnt1>0
+ !set clst=$clist1
+ $table_header
+ <caption>Classes in the same language as yours</caption>
+ !read neighbor/clist.phtml
+ $table_end
+!endif
+
+!if $classcnt2>0
+ <p>
+ !set clst=$clist2
+ $table_header
+ <caption>Classes in other languages</caption>
+ !read neighbor/clist.phtml
+ $table_end
+ <p><center>
+ !href cmd=reply&job2=sharelist Resource sharing information of your class
+ </center>
+!endif
+

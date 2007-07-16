@@ -1,0 +1,38 @@
+!!! fichier générateur de sources OEF - type3 !!!
+
+toefsource=$module_dir/$prefixdir/template.oef
+fichname=qcm.oef
+toefoutput=user-deposit
+toef_varcnt=$typvarcnt
+
+toef_var1=$titre
+toef_var2=$auteur
+toef_var3=$imel
+toef_var4=$exo
+toef_var5=$obsrecord
+toef_var6=$propsrecord
+toef_var7=$propsrepList
+toef_var8=$ckchnb
+toef_var9=$fixchnb
+toef_var10=$borng
+toef_var11=$bornd
+toef_var12=$chnb
+toef_var13=$foncsrecord
+toef_var14=$foncsrepList
+toef_var15=$typnb
+toef_var16=$enonceR
+toef_var17=$ftyp
+
+toef_keyword1=!randint 10^9,10^10-1
+toef_keyword2=!randint 10^9,10^10-1
+toef_keyword=$toef_keyword1$toef_keyword2
+
+!read exodata
+
+!mexec maketoef.sh
+
+!reset toef_varcnt
+!for i=1 to $typvarcnt
+  !reset toef_var$(i)
+!next i
+

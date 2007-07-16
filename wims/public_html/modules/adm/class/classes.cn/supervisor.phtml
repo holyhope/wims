@@ -1,0 +1,106 @@
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $supervisable!=yes
+  !exit
+ !endif
+ <p>
+!else
+ 虚拟班可使教师将本 WIMS 服务站的资源 (以及他自己在此创建的练习) 组织起来提供
+ 给他的学生们, 并且可使其随时检查学生的进度.
+ <p>
+ 如果你还没有自己的虚拟班: 你可以
+在查阅了
+ !href target=wims_help module=help/main&chapter=3 说明
+后
+ !href module=adm/class/regclass 在此单击
+ 以建立你的班, 或访问一个
+ !href module=$module&type=example 实例班
+. <p>
+!endif
+
+!if $clcnt+$sccnt>0
+ !if $wims_user=empty
+  否则, 你可以在下表中找到你的班, 然后在班名上单击后以主持教师身份进入该班.
+ !endif
+ !if $sccnt>0
+ <p>
+  $table_header
+  <caption>学校与班级组</caption>
+  $table_hdtr<th>名称</th><th>主持教师</th>
+  <th>-</th>
+  </tr>
+  !for i=1 to $sccnt
+   !set l=!line $i of $sclasses
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   <td align=center>
+   !href module=$module&type=authparticipant&class=$code $in
+   </td>
+   </td><td align=center>$supv</td>
+   <td align=center>
+   !href module=adm/class/reguser&class=$code 注册
+&nbsp;
+   !href module=$module&type=authsupervisor&class=$code 管理
+   </td>
+  !next i  
+  $table_end
+ !endif
+ !if $clcnt>0
+  <p>
+  $table_header
+  !if $superclass=$empty
+   <caption>独立班级</caption>
+   $table_hdtr<th>学校<th>班级<th>主持教师
+  !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   <caption>$Name_levels in $inst 
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent 向上
+   !endif
+   </caption>
+   $table_hdtr<th>$Name_level<th>主持教师
+   !if $superclass!=$empty and $stype=4
+    <th>更多
+   !endif
+  !endif
+  !for i=1 to $clcnt
+   !set l=!line $i of $classes
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   !if $superclass=$empty
+    <td align=center>$in</td>
+   !endif
+   <td align=center>
+   !href module=$module&type=authsupervisor&class=$code $cl
+   </td><td align=center>$supv</td>
+   !if $superclass!=$empty and $stype=4
+    <td>
+    !if $ty!=1
+     !href cmd=reply&type=$type&superclass2=$code 分班
+    !else
+    -
+    !endif
+   !endif
+  !next i
+ !endif
+ $table_end
+!else
+ !if $class_type=$empty and $superclass=$empty
+ (本站尚无中文版的虚拟班.)
+ !else
+  (没有可用班级.)
+ !endif
+!endif
+<p>
+

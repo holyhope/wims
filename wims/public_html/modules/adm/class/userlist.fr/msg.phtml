@@ -1,0 +1,79 @@
+!set wims_module_log=error: $error
+
+<b>Erreur</b>.
+
+!if not_supervisor=$error
+ Désolé, mais l'opération de préparation / modification d'une feuille de
+ travail est réservée aux enseignants enregistrés d'une classe.
+ !exit
+!endif
+
+!if not_superclass=$error
+ Opération interdite car vous faites partie d'un groupement de classes. Seul le
+gestionnaire du groupement peut faire cela.
+ !exit
+!endif
+
+!if bad_class=$error
+ Etrange, mais je trouve que votre classe n'est pas valide!
+ !exit
+!endif
+
+!if bad_classpass=$error
+ Désolé mais vous n'avez pas fourni le bon mot de passe de la classe. Vous
+ n'avez pas le droit de changer les informations sur les participants.
+ !exit
+!endif
+
+!if no_login iswordof $error
+ Vos données envoyées doivent obligatoirement avoir une colonne correspondant
+ aux noms de login des participants.
+ !exit
+!endif
+
+!if bad_filename iswordof $error
+ Votre fichier ne semble pas être un fichier de tableur sous format texte.
+ :csvformat
+ Veuillez sauvez vos données sous un format texte (séparateur virgule ou tab,
+ avec des extensions .csv, .tsv ou .txt), avant de l'envoyer à la classe.
+ !exit
+!endif
+
+!if binary_upload iswordof $error
+ Vos données de tableur sont dans un format binaire&nbsp;! Ceci n'est pas
+ reconnu, désolé.
+ <p>
+ !goto csvformat
+!endif
+
+!if no_manual iswordof $error
+ Veuillez d'abord
+ !href module=adm/class/grades créer une colonne de notes manuelles
+ avant d'envoyer des données dedans.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ La communication de données de tableurs est disponible uniquement pour
+ des connections à partir de postes sûrs. Veuillez vérifier la configuration
+ de votre classe.
+ !exit
+!endif
+
+!if bad_user=$error
+ Erreur d'appel : le participant <tt>$checkuser</tt> n'existe pas.
+ !exit
+!endif
+
+!if bad_exo=$error
+ Article à vérifier non-existant.
+ !exit
+!endif
+
+!if bad_op=$error
+ Mauvaise opération. Fermez la fenêtre.
+ !exit
+!endif
+
+!msg $error
+

@@ -1,0 +1,24 @@
+<center><h1>Opzioni del documento<br>
+--- $tit ---</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!read propform.phtml
+
+!if class != $doctype
+ !href cmd=reply&job=recode Modifica il codice di accesso
+.&nbsp;
+!endif
+
+!href cmd=reply&job=list Elenco dei blocchi
+.
+!href cmd=reply&job=file Allega un file
+.
+ <p>
+Codice di accesso: $doc.
+Spazio totale disponibile sul disco: $quota_total Mega. Spazio libero: $quota_free Mega.
+<p>
+

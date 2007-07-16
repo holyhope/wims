@@ -1,0 +1,23 @@
+!exit
+$table_header
+<caption>学生帐户
+!href cmd=reply&job=addstudent 添加学生
+</caption>
+$table_hdtr
+<th>帐户</th>
+<th>名字</th>
+<th>-</th>
+!for i=1 to $studentcnt
+ !set l=!record $i of $classdir1/.studentlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td><tt>$c_</tt></td>
+ <td>
+ !href cmd=reply&job=modstudent&student=$c_ $l_, $f_
+ </td>
+ <td>
+ !href cmd=reply&job=delstudent&student=$c_ 删除
+ </td>
+!next i
+$table_end
+

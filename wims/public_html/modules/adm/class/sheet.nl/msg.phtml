@@ -1,0 +1,138 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+Helaas, maar het maken en/of veranderen van een werkblad is voorbehouden
+aan de supervisor van een klas  
+ !exit
+!endif
+
+!if bad_class=$error
+Vreemd, maar ik zie hier nu dat Uw klas niet geldig is!
+
+ !exit
+!endif
+
+!if bad_sheet=$error
+Uw werkblad nummer is niet geldig. Een bug in de software?
+
+ !exit
+!endif
+
+!if bad_source=$error
+ Het item nummer $bad_source in de code die U zojuist invoerde is ongeldig.
+ !href cmd=reply&job=prep_putsource&source=$source Verbeter deze code
+ .
+ !exit
+!endif
+
+!if no_title=$error
+U wilt een werkblad registreren zonder titel, dat is niet handig
+Foutje of misbruik?
+ !exit
+!endif
+
+!if prep_activate=$error
+U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken. <p>
+Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
+
+Wilt U doorgaan?
+ <p><center>
+ !href cmd=reply&job=activate Ja, activeren
+ .&nbsp;&nbsp;
+ !href cmd=resume Nee ; Annuleren
+ .</center>
+ !exit
+!endif
+
+!if prep_erase=$error
+Weet U zeker dat U het werkblad #$sheet ($title) wilt verwijderen?
+
+ <p><center>
+ !href cmd=reply&job=erase Ja ,weg ermee
+ .&nbsp;&nbsp;
+ !href cmd=resume Nee; Annuleren
+ .</center>
+ !exit
+!endif
+ 
+!if prep_expire=$error
+Dit werkblad #$sheet ($title) was normaal verlopen op $expday
+ !item $expmon of $months
+ $expyear. 
+ U wilt het <b>nu</b> laten verlopen?
+
+ <p><center>
+ !href cmd=reply&job=expire Ja, laat maar verlopen
+ .&nbsp;&nbsp;
+ !href cmd=resume Nee; Annuleren
+ . </center>
+ <p><b>Opmerking.</b> 
+ Uw leerlingen kunnen niet doorgaan met werken aan een verlopen werkblad.
+ Maar hun reeds behaalde cijfers worden uiteraard bewaard (en worden dus ook
+ verwerkt in de statistieken) en U kunt ze altijd later nog bestuderen. 
+ !exit
+!endif
+
+!if prep_putsource=$error
+Hebt U een broncode van een reeds eerder gemaakt werkblad, kunt U deze
+in het onderstaande venster invoeren. Daarna klikken op "VERSTUREN".
+Uiteraard kunt U met "cut-and-paste" werken
+ <p>
+ anders,
+ !href cmd=resume Terug naar de hoofdpagina van het Werkblad
+ 
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="VERSTUREN">
+ </center></form>
+ <b>WAARSCHUWING</b>. 
+ Voer geen "corrupte code" handmatig in, U loopt het risico
+ dat uw werkblad onbruikbaar wordt.
+
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+ U hebt een illegaal verzoek aan de server gericht... 
+ Genegeerd. 
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
+  !set orgtit=!module title $directory
+  <p><center><h3>Verandering van item $modif</h3></center>
+  !form reply
+  <input type=hidden name=modif value=$modif>
+  <input type=hidden name=job value=modify>
+  <ul>
+  <li>Titel: <small>(De originele titel is <em>$orgtit</em>)
+  </small> <br>
+  <input size=50 name=mod_title value="$title">
+  <li>Omschrijving:<br>
+  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
+  <li>Aantal vereiste punten: 
+  <input size=4 name=mod_require value="$require">,
+  met een weging: 
+  <input size=4 name=mod_weight value="$weight">,
+  <li>Cijfer afhankelijkheden:
+  <input size=40 name=mod_dep value="$dep">.
+  !reset mod_dep
+  </ul>
+  <p><center><input type=submit value="OK en VERANDER"></form>
+  </center> <p>
+  !href cmd=resume Annuleer de Verandering
+  <p><small>
+  <b>Help</b>. Score dependencies means that a participant must get
+  required scores in other exercises of the sheet before he/she can do
+  this one. For example, 
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  means that the
+  participant must get 50% success on exercise 1, 30% success on exercise 2,
+  and an average of 60% success on exercises 3,4,5.
+  </small>
+ !endif
+!endif
+
+!msg $error

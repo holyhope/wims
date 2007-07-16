@@ -1,0 +1,54 @@
+
+<em><font color=blue>$nei_institution</font></em> 的班级
+!href cmd=reply&job2=def $nei_description
+里的共享资源.
+(主持教师:
+<a href="mailto:$nei_email?subject=Class neighboring
+relations">$nei_supervisor</a>)
+<p>
+此班级允许你共享以下资源.
+<small>
+!href cmd=help&special_parm=share 帮助
+</small>
+<ul>
+!for r in $nsharable
+ <p><li><em>$(name_$r)</em> ($(it_$(r)cnt) 可用).
+ !if $r isitemof $sharing or $(sharable_$r)!=$empty
+  !if $r isitemof $sharing
+   !if $(sharing_$r)=$nei
+你正在共享它们.
+    !href cmd=reply&job2=stopshare&stoprec=$r 中断此共享
+. <small>
+    !href cmd=help&special_parm=stopshare 帮助
+    </small>
+   !else
+你不能共享它们, 因为你已经与其它班共享了.
+   !endif
+  !else
+你不能共享它们, 因为你允许其它班从你这里共享此资源. 
+接力式共享不受支持. 因此你必须停止允许这些共享,
+然后才能从其它班级得到共享.
+  !endif
+ !else
+  !if $(me_$(r)cnt)>0 and $r isitemof $nosharelist
+你不能共享它们, 因为你自己的 $(name_$r) 非空.
+在建立共享前你应该先
+   !href cmd=reply&job=clean 清除
+你自己的资源(如果可能的话).
+  !else
+   !href cmd=reply&addshare=$r 共享
+.
+   !if $(me_$(r)cnt)>0
+    <b><font color=red>警告</font></b>.
+    !if $r=sup
+共享主持教师帐户是十分危险的!
+     !href cmd=help&special_parm=supshare 更多.
+    !else
+这将删除你自己的 $(name_$r)! 如果你没有做过备份, 他们将彻底消失.
+    !endif
+   !endif
+  !endif
+ !endif
+!next r
+</ul>
+

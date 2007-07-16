@@ -1,0 +1,40 @@
+!set name_institution=ime ustanove
+!set name_description=ime uèilneice
+!set name_supervisor=ime skrbnika
+!set name_email=e-naslov
+!set name_password=geslo uèilnice
+!set name_passsup=geslo skrbnika
+!set lev_E=osnovna ¹ola
+!set lev_H=srednja ¹ola
+!set lev_U=univerza / visoka ¹ola
+!set lv1=!char 1 of $ilevel
+!set lv2=!char 2 of $ilevel
+!set name_level=$(lev_$lv1), year $lv2
+
+!set classname=<b><font color=green>$description</font></b>\
+ of <b><font color=green>$institution</font></b>
+
+!set months=Jan,Feb,Mar,Apr,Maj,Jun,Jul,Avg,Sep,Okt,Nov,Dec
+
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=skupina uèilnic
+    !set name_sup=uèitelja-skrbnika
+   !else
+    !set name_classe=ustanova
+    !set name_sup=skrbnika
+   !endif
+     !set name_classes= the $name_classe
+     !set name_classess= a $name_classe
+     !set name_classesss= of the $name_classe
+     !set name_classessss= The $name_classe
+ !else
+   !set name_classe=uèilnica
+   !set name_classes=the $name_classe
+   !set name_classess=a $name_classe
+   !set name_classesss= of the $name_classe
+   !set name_classessss= The $name_classe
+   !set name_sup=uèitelja
+ !endif
+
+

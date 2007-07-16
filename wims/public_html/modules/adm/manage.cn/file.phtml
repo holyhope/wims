@@ -1,0 +1,81 @@
+!set MAX=102400
+
+!if $download=yes
+ 这是供下载的文件 ($flen 字节):
+ <p><center>
+ !getfile $fname $file
+ <p>
+ !goto end2
+!endif
+
+!if $erase=ask
+ 你确实要删除文件
+ <tt><font color=green>$file</font></tt>? <br>
+ <small>($flen 字节, $facc, 最近修改时间 $fdat)</small>
+ <p> <center> <font size=+2>
+ !href cmd=reply&job=$job&job2=eraseconfirm 是
+ &nbsp;&nbsp;
+ !href cmd=reply&job=fs 否
+ </font> <p> <hr>
+ !goto end2
+!endif
+
+!if $ftype=image
+ <tt><font color=green>$file</font></tt>是一个图像. ($flen 字节,
+ $facc, 最近修改时间 $fdat)
+ !if $pubimg!=$empty
+  <p><center>
+  <img border=2 src=$pubimg>
+  </center>
+ !endif
+ !goto end
+!endif
+
+!if $ftype=binary
+ <tt><font color=green>$file</font></tt>是一个二进制文件. ($flen 字节,
+ $facc, 最近修改时间 $fdat)
+ !goto end
+!endif
+
+!if $flen>$MAX
+ <tt><font color=green>$file</font></tt>太长 ($flen 字节) 
+ 不能显示或编辑.
+ !goto end
+!endif
+ 
+!set wims_form_method=post
+!form reply
+<input type=hidden name=job value=file>
+<input type=hidden name=job2 value=first>
+<center>
+ <tt><font color=green>$file</font></tt>的内容 <br>
+ <small>($flen 字节, $facc, 最近修改时间 $fdat)</small> <br>
+ !if $modifok!=yes
+  此文件是被发布的, 不应修改. <br>
+  !set textarea_ro=readonly
+ !endif
+ !mexec scripts/textarea.sh
+<br>
+!if $modifok=yes
+ <input type=submit name=save value=保存>
+ <input type=submit name=abandon value=取消>
+!endif
+</center>
+</form>
+
+:end
+
+<p> <center>
+!href cmd=reply&job=file&job2=download 下载文件
+. &nbsp;
+!if $modifok=yes
+ !href cmd=reply&job=file&job2=erase 删除
+. &nbsp;
+!endif
+
+:end2
+!href cmd=reply&job=fs 返回目录
+.
+
+</center>
+
