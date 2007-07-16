@@ -1,0 +1,26 @@
+# El cálculo de variables se llevaría a cabo en este archivo.
+# WIMS lo lee e interpreta para cada llamada válida a este módulo.
+
+!if $cmd=reply and $status!=waiting
+ error=double_reply
+ !exit
+!endif
+
+!if $cmd=reply and $status=waiting
+
+
+
+
+ status=done
+ !if $bad_item!=$empty
+  !if $bad_level<30*$tolerance
+    module_score=$[rint(1000*($bad_item-0.5)/$rorder)/100]
+  !else
+    module_score=$[rint(1000*($bad_item-1)/$rorder)/100]
+  !endif
+ !else
+  module_score=10
+ !endif
+ wims_module_log=score $module_score/10
+!endif
+
