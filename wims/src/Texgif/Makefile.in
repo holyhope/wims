@@ -1,0 +1,29 @@
+# @configure_input@
+
+wims_home=../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+defines=@DEFINES@
+STRIP=@STRIP@
+
+all: texgif
+
+clean::
+	rm -f texgif
+	rm -fR test/texg* test/[0-9]*
+
+distclean: clean
+	rm -f $(wims_home)/public_html/bin/tex..gif
+	rm -f Makefile
+
+texgif: *.c colors.c *.h ../Flydraw/gd/libgd.a
+	$(cc) $(cflags) $(defines) texgif.c -L../Flydraw/gd -lgd -lm -o texgif
+	$(STRIP) texgif
+	cp texgif $(wims_home)/public_html/bin/tex..gif
+
+../Flydraw/gd/libgd.a:
+	cd ../Flydraw/gd; make libgd.a
+
+colors.c: ../Flydraw/colors colors.sh
+	./colors.sh
+

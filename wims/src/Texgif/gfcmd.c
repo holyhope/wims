@@ -1,0 +1,24 @@
+#define gf_paint_0	0
+#define gf_paint1	64
+#define gf_paint2	65
+#define gf_paint3	66
+#define gf_boc		67
+#define gf_boc1		68
+#define gf_eoc		69
+#define gf_skip0	70
+#define gf_skip1	71
+#define gf_skip2	72
+#define gf_skip3	73
+#define gf_new_row_0	74
+#define gf_xxx1		239
+#define gf_xxx2		240
+#define gf_xxx3		241
+#define gf_xxx4		242
+#define gf_yyy		243
+#define gf_no_op	244
+#define gf_char_loc	245
+#define gf_char_loc0	246
+#define gf_pre		247
+#define gf_post		248
+#define gf_post_post	249
+

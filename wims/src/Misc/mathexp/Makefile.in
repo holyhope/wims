@@ -1,0 +1,24 @@
+# @configure_input@
+
+wims_home=../../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall @STATIC_LIB@
+defines=@DEFINES@
+STRIP=@STRIP@
+lopt=-lm
+
+all:: mathexp
+
+clean::
+	rm -f mathexp
+
+distclean:
+	rm -f mathexp
+	cd $(wims_home)/public_html/bin; rm -f mathexp 2>/dev/null; cd ../../src/Misc/mathexp
+	rm -f Makefile
+
+mathexp: *.c
+	$(cc) $(cflags) mathexp.c $(lopt) -o mathexp
+	$(STRIP) $@
+	cp $@ $(wims_home)/public_html/bin
+

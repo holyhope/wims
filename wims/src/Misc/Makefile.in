@@ -1,0 +1,181 @@
+# @configure_input@
+
+wims_home=../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+defines=@DEFINES@
+STRIP=@STRIP@
+rpath=
+libtype=static
+NETLIBS=@NETLIBS@
+lopt=-L$(wims_home)/lib -lm -lwims $(rpath)
+
+publicbin=curvecomp cyclicode ftype oncechar shortpath webget
+Publicbin=$(publicbin) Plouffe clickzone html2msg huffman translator wrap chroot voronoi
+Publicbin2=$(Publicbin) test cryptarith
+namechange=wrap..exec ch..root
+Homebin=exostat dicsort modind modstat ccsum phtmltext
+progs=$(Publicbin) $(Homebin)
+progs2=$(Publicbin2) $(Homebin)
+units=@BUILD_UNITS@
+chemeq=@BUILD_CHEMEQ@
+Otherbin=$(units) $(chemeq) passcrypt whirlgif
+
+OTHERDIR=$(wims_home)/other/bin
+PUBDIR=$(wims_home)/public_html/bin
+BINDIR=$(wims_home)/bin
+
+all:: $(progs) mathexp $(Otherbin)
+
+chemeq units-filter::
+	-(cd $@/src; make && $(STRIP) $@)
+	-cp $@/src/$@ $(OTHERDIR)
+
+voronoi::
+	cd voronoiW; make && $(STRIP) voronoi
+	cp voronoiW/voronoi $(PUBDIR)
+
+whirlgif::
+	cd whirlgif; make && $(STRIP) whirlgif
+	cp whirlgif/whirlgif $(OTHERDIR)
+
+mathexp::
+	cd mathexp; make mathexp
+
+clean:
+	rm -f $(progs2)
+	cd mathexp; make clean
+	cd units-filter/src; make clean
+	cd chemeq/src; make clean
+	cd voronoiW; make clean
+	cd whirlgif; make clean
+
+distclean:
+	rm -f $(progs2)
+	cd mathexp; make distclean
+	cd voronoiW; make distclean
+	cd whirlgif; make distclean
+	cd units-filter/src; make clean
+	cd chemeq/src; make clean
+	cd $(OTHERDIR); rm -f $(Otherbin)
+	cd $(BINDIR); rm -f $(Homebin)
+	cd $(PUBDIR); rm -f $(Publicbin2) $(namechange)
+	rm -f Makefile
+
+#################################################
+webget: webget.c
+	$(cc) $(cflags) webget.c $(NETLIBS) -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+
+test: test.c
+	$(cc) $(cflags) test.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+shortpath: shortpath.c
+	$(cc) $(cflags) shortpath.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+oncechar: oncechar.c
+	$(cc) $(cflags) oncechar.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+cryptarith: cryptarith.c
+	$(cc) $(cflags) cryptarith.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+ftype: ftype.c
+	$(cc) $(cflags) ftype.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+cyclicode: cyclicode.c
+	$(cc) $(cflags) cyclicode.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+curvecomp: curvecomp.c
+	$(cc) $(cflags) curvecomp.c -lm -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+
+Plouffe: Plouffe.c
+	$(cc) $(cflags) Plouffe.c -lm -o $@
+	$(STRIP) $@
+	rm -f $(PUBDIR)/$@; cp $@ $(PUBDIR)
+	case "$$defines" in \
+	  *CASE_INSENSITIVE*) ;;\
+	  *) cd $(PUBDIR); rm -f plouffe; ln -s Plouffe plouffe;;\
+	esac
+
+translator: translator.c suffix.c
+	$(cc) $(cflags) translator.c @STATIC_LIB@ -o translator
+	$(STRIP) translator
+	cp translator $(PUBDIR)
+
+html2msg: html2msg.c ../hmname.c
+	$(cc) $(cflags) html2msg.c -o html2msg
+	$(STRIP) html2msg
+	cp html2msg $(PUBDIR)
+
+huffman : huffman.c
+	$(cc) $(cflags) huffman.c $(lopt) -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+
+insplot: insplot.c
+	$(cc) $(cflags) insplot.c -lm -o insplot
+	$(STRIP) insplot
+#	cp insplot $(PUBDIR)/insplot..processor
+
+wrap: wrap.c
+	$(cc) $(cflags) wrap.c @STATIC_LIB@ -o wrap
+	$(STRIP) wrap
+	cp -f wrap $(PUBDIR)/wrap..exec
+	echo yes >$(wims_home)/log/unsecure
+
+chroot: chroot.c
+	$(cc) $(cflags) chroot.c @STATIC_LIB@ -o chroot
+	$(STRIP) chroot
+	cp -f chroot $(PUBDIR)/ch..root
+	echo yes >$(wims_home)/log/unsecure
+
+#################################################
+
+dicsort: dicsort.c
+	$(cc) $(cflags) dicsort.c -o $@
+	$(STRIP) $@
+	cp $@ $(BINDIR)
+modind: modind.c
+	$(cc) $(cflags) modind.c -o $@
+	$(STRIP) $@
+	cp $@ $(BINDIR)
+modstat: modstat.c
+	$(cc) $(cflags) modstat.c -o $@
+	$(STRIP) $@
+	cp $@ $(BINDIR)
+ccsum: ccsum.c
+	$(cc) $(cflags) ccsum.c -o $@
+	$(STRIP) $@
+	cp $@ $(BINDIR)
+
+exostat: exostat.c
+	$(cc) $(cflags) exostat.c $(lopt) -o $@
+	$(STRIP) $@
+	cp $@ $(BINDIR)
+
+passcrypt: passcrypt.c
+	$(cc) $(cflags) passcrypt.c $(lopt) @CRYPTLIB@ -o $@
+	$(STRIP) $@
+	cp $@ $(OTHERDIR)
+
+phtmltext: phtmltext.c
+	$(cc) $(cflags) phtmltext.c $(lopt) -o $@
+	$(STRIP) $@
+	cp $@ $(BINDIR)
+
+clickzone: clickzone.c ../Flydraw/gd/libgd.a
+	$(cc) $(cflags) clickzone.c $(lopt) -L../Flydraw/gd -lgd -o $@
+	$(STRIP) $@
+	cp $@ $(PUBDIR)
+
+../Flydraw/gd/libgd.a::
+	cd ../Flydraw/gd; make libgd.a

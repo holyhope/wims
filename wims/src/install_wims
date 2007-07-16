@@ -1,0 +1,13 @@
+#! /bin/sh
+
+./wims defaults >defaults.conf
+cp wims ../public_html/
+cp Changelog ../public_html/html
+chmod a+s ../public_html/wims
+rm -f ../public_html/wims.cgi ../tmp/log/wimslogd.pid ../sessions/.wimslogd
+ln -s wims ../public_html/wims.cgi
+../bin/update
+cd ..
+chmod a+rx public_html .
+exit 0
+

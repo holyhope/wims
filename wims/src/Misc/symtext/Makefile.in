@@ -1,0 +1,27 @@
+# @configure_input@
+
+wims_home=../../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+defines=@DEFINES@
+rpath=@RPATH@
+STRIP=@STRIP@
+lopt=$(rpath)
+
+all:: symtext
+
+clean::
+	rm -f symtext
+
+distclean:
+	rm -f symtext
+	cd $(wims_home)/public_html/bin; rm -f symtext 2>/dev/null; cd ../../src/Misc/symtext
+	rm -f Makefile
+
+symtext: *.c *.h
+	$(cc) $(cflags) $(lopt) -o symtext symtext.c
+	./symtext -t
+	$(STRIP) $@
+	cp $@ $(wims_home)/public_html/bin
+
+

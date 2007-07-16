@@ -1,0 +1,118 @@
+# @configure_input@
+
+# Building option reminders.
+# withunits=@with_units@
+# withchemeq=@with_chemeq@
+# withwimsd=@with_wimsd@
+
+wims_home=..
+PACKAGE_BUGREPORT=@PACKAGE_BUGREPORT@
+PACKAGE_NAME=@PACKAGE_NAME@
+PACKAGE_VERSION=@PACKAGE_VERSION@
+PACKAGE_STRING=@PACKAGE_STRING@
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+cpp=@CPP@
+defines=@DEFINES@
+STRIP=@STRIP@
+rpath=
+libtype=static
+
+defs=$(defines) @D_CASE_INSENSITIVE_FS@
+NETLIBS=@NETLIBS@
+CRYPTLIB=@CRYPTLIB@
+lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
+
+wimsd=@BUILD_WIMSD@
+
+all:: confcheck lib$(libtype) progs checklist
+
+progs:: flydraw texgif interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims
+
+confcheck:
+	$(cpp) confcheck.c | grep -v '^ *$$'
+
+distconfig: configure.in
+	autoconf configure.in > configure
+	autoheader configure.in
+
+clean::
+	rm -f wims wims.o Common/*.o 2>/dev/null
+	rm -f Common/*.o
+	cd Wimsd; make clean
+	cd Wimslogd; make clean
+	cd Lib; make clean
+	cd Interfaces; make clean
+	cd Misc; make clean
+	cd Oef2wims; make clean
+	cd Msg2wims; make clean
+	cd Flydraw; make clean
+	cd Texgif; make clean
+	cd Module; make clean
+	
+# preserves some generated files in log/, sessions/ and tmp/. Intended.
+distclean::
+	rm -f wims wims.o Common/*.o $(wims_home)/public_html/wims 2>/dev/null
+	cd Wimsd; make distclean
+	cd Wimslogd; make distclean
+	cd Lib; make distclean
+	cd Interfaces; make distclean
+	cd Misc; make distclean
+	cd Oef2wims; make distclean
+	cd Msg2wims; make distclean
+	cd Flydraw; make distclean
+	cd Texgif; make distclean
+	cd Module; make distclean
+	$(wims_home)/public_html/mathfonts/clean
+	rm -rf autom4te.cache 
+	rm -f config.h config.log config.status defaults.conf Makefile
+
+wims.o: *.c *.h
+	$(cc) $(cflags) $(defs) -c wims.c
+
+wims: wims.o Lib/libwims.o
+	$(cc) -o wims Lib/libwims.o wims.o $(lopt)
+	$(STRIP) wims
+	./wims table
+	./install_wims
+
+wimslogd::
+	cd Wimslogd; make all
+
+wimsd::
+	-cd Wimsd; make all
+
+oef2wims::
+	cd Oef2wims; make all
+
+msg2wims::
+	cd Msg2wims; make all
+
+interfaces::
+	cd Interfaces; make all
+
+misc::
+	cd Misc; make all
+
+module::
+	cd Module; make all
+
+flydraw::
+	cd Flydraw; make all
+
+texgif::
+	cd Texgif; make all
+
+libstatic::
+	rm -f $(wims_home)/lib/libwims.so 2>/dev/null
+	cd Lib; make static
+
+checklist::
+	$(wims_home)/bin/nongnu
+	./mkmathfonts
+	$(wims_home)/public_html/modules/H3/algebra/spuzzle/makepieces
+	$(wims_home)/public_html/modules/U2/algebra/qpuzzle/makepieces
+
+install::
+	$(wims_home)/bin/wrapuid
+

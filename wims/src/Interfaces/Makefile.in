@@ -1,0 +1,51 @@
+# @configure_input@
+
+wims_home=../..
+PUBDIR=$(wims_home)/public_html/bin
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+defines=@DEFINES@
+static=
+SETENV_OBJS=@SETENV_OBJS@
+STRIP=@STRIP@
+
+progstatic=pari yacas maxima scilab
+progdynamic=gap mup octave m2
+progs=$(progstatic) $(progdynamic)
+
+all: $(progs) install
+
+clean:
+	rm -f $(progs) *.o
+
+distclean: clean
+	cd $(PUBDIR); rm -f $(progs)
+	rm -f Makefile
+
+%.o: %.c common.h common.c
+	$(cc) -o $@ $(cflags) $(defines) -c $<
+
+install: $(progs)
+	$(STRIP) $(progs)
+	cp $(progs) $(PUBDIR)
+
+mup: mup.o $(SETENV_OBJS)
+	$(cc) $(cflags) mup.o $(SETENV_OBJS) -lm -o $@
+m2: m2.o $(SETENV_OBJS)
+	$(cc) $(cflags) m2.o $(SETENV_OBJS) -lm -o $@
+octave: octave.o $(SETENV_OBJS)
+	$(cc) $(cflags) octave.o $(SETENV_OBJS) -lm -o $@
+gap: gap.o $(SETENV_OBJS)
+	$(cc) $(cflags) gap.o $(SETENV_OBJS) -lm -o $@
+
+pari: pari.o $(SETENV_OBJS)
+	$(cc) $(cflags) $(static) pari.o $(SETENV_OBJS) -lm -o $@
+maxima: maxima.o $(SETENV_OBJS)
+	$(cc) $(cflags) $(static) maxima.o $(SETENV_OBJS) -lm -o $@
+scilab: scilab.o $(SETENV_OBJS)
+	$(cc) $(cflags) $(static) scilab.o $(SETENV_OBJS) -lm -o $@
+
+yacasheader.c: yacasheader.tab yacasheader.sh
+	./yacasheader.sh
+yacas: yacas.o yacasheader.c $(SETENV_OBJS)
+	$(cc) $(cflags) $(static) yacas.o $(SETENV_OBJS) -lm -o yacas

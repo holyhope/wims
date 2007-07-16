@@ -1,0 +1,38 @@
+# @configure_input@
+
+wims_home=../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+STRIP=@STRIP@
+libpath=-L$(wims_home)/lib -L./gd
+libs=-lm -lgd -lwims
+defines=@DEFINES@
+rpath=
+libtype=static
+lopt=$(libpath) $(libs)
+
+all: flydraw
+
+clean:
+	rm -f flydraw
+	cd gd; make clean
+
+distclean:
+	rm -f flydraw $(wims_home)/other/bin/flydraw
+	cd gd; make clean; cd ..
+	rm -f Makefile
+
+flydraw: *.c *.h gd/libgd.a htmldoc.sh commands ../Lib/libwims.*
+	$(cc) $(cflags) $(defines) flydraw.c $(lopt) -o flydraw
+	$(STRIP) flydraw
+	./flydraw table
+	cp flydraw ../../other/bin/flydraw
+	chmod a+x ../../other/bin/flydraw
+	./htmldoc.sh >../../public_html/scripts/help/flydraw.phtml
+
+nametab.c: nametab.sh colors
+	./nametab.sh
+
+gd/libgd.a::
+	cd gd; make libgd.a
+

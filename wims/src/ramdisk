@@ -1,0 +1,106 @@
+!nocache
+stepdiag=bad
+!for i=1 to $replycnt
+ !if r$i isitemof $gotsteps
+  !if r$i isitemof $thisstep
+   saverep$i=$(reply$i)
+  !else
+   reply$i=$(saverep$i)
+  !endif
+  r_=!trim $(reply$i)
+  !if $(replytype$i)!=code
+   reply$i=$r_
+  !endif
+  !if $r_=$empty and $(replytype$i)!=coord || \
+    $click_x$click_y=$empty and $(replytype$i)=coord || \
+    ($(reply$i)=?????? and $(replytype$i) iswordof menu)
+   error=empty_data
+   !exit
+  !endif
+  m_reply$i=$(reply$i)
+  !default replytype$i=default
+  tt=!word 1 of $(replygood$i)
+  	# analyzed reply
+  !if $tt=?analyze
+   t_=!rows2lines $(replygood$i)
+   t_=!word 2 of $t_
+   !read oef/ans.proc $i nocompare
+   !if $error!=$empty
+    !exit
+   !endif
+   !default m_reply$i=$(reply$i)
+   val$t_=$(reply$i)
+   !if NaN isin $test
+    !goto badans
+   !endif
+   !goto cont
+  !endif
+  !read oef/ans.proc $i
+  !default m_reply$i=$(reply$i)
+  !if bad isin $Test
+   error=bad_exo
+   !advance reply_cnt
+   status=
+   !exit
+  !endif
+  !if NaN isin $test
+   :badans
+   error=bad_answer
+   bad_name=$(replyname$i)
+   bad_value=$(reply$i)
+   !exit
+  !endif
+  !if $(diareply$i)!=good
+   !exit
+  !endif
+  :cont
+ !endif
+!next i
+
+!for i=1 to $choicecnt
+ !if c$i isitemof $gotsteps
+  !if c$i isitemof $thisstep
+   savech$i=$(choice$i)
+  !else
+   choice$i=$(savech$i)
+  !endif
+  !default choice$i=0
+  choic=$[rint($(choice$i))]
+  !if $choic=0 and ($oefsteps=$empty or c$i isitemof $gotsteps)
+   error=empty_data
+   !exit
+  !endif
+  !if NaN isin $choic or $choic<1 or $choic>$(choiceitems$i)+2
+   error=bad_answer
+   bad_name=$(choicename$i)
+   bad_value=$(choice$i)
+   !exit
+  !else
+   choice$i=$choic
+  !endif
+  ch=!item $choic of $(choicelist$i)
+  m_choice$i=$ch
+  !if $qcmgood<1 and $choic=$[$(choiceitems$i)+2]
+   !if $(choicegood$i)=$empty
+    chh=good
+   !else
+    chh=bad
+   !endif
+  !endif
+  !if ($choic>$(choiceitems$i) or $ch notitemof $(choicegood$i)) and $chh!=good
+   !exit
+  !endif
+ !endif
+!next i
+
+!advance oefstep
+m_step=$oefstep
+!if $dynsteps=yes
+ !read oef/nextstep.proc
+!endif
+
+stepdiag=ok
+thisstep=!line $oefstep of $oefsteps
+gotsteps=!line 1 to $oefstep of $oefsteps
+gotsteps=!lines2items $gotsteps
+

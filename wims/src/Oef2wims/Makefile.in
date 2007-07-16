@@ -1,0 +1,28 @@
+# @configure_input@
+
+wims_home=../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+defines=@DEFINES@
+STRIP=@STRIP@
+rpath=
+libtype=static
+lopt=-L../../lib -lm -lwims $(rpath)
+
+all: oef2wims
+
+clean:
+	rm -f oef2wims 2>/dev/null
+
+distclean:
+	rm -f oef2wims $(wims_home)/bin/oef2wims 2>/dev/null
+	rm -f Makefile
+
+oef2wims: *.c ../Lib/libwims.*
+	$(cc) $(cflags) $(defines) oef2wims.c $(lopt) -o oef2wims
+	$(STRIP) oef2wims
+	chmod og-x oef2wims
+	./oef2wims table
+	cp oef2wims $(wims_home)/bin
+
+

@@ -1,0 +1,27 @@
+INSTALL=install
+DESTDIR =
+BIN     = $(DESTDIR)/usr/bin
+MAN1    = $(DESTDIR)/usr/share/man/man1
+
+all : 
+	(cd src; ${MAKE})
+
+demo : all
+	(cd src; chemreport)
+
+test : all
+	(cd src; chemtest)
+
+install : all
+	${INSTALL} -d $(BIN) $(MAN1)
+	${INSTALL} --strip src/chemeq $(BIN)
+	gzip -c -9 chemeq.1 > chemeq.1.gz
+	${INSTALL} -m644 chemeq.1.gz $(MAN1)
+
+uninstall :
+	rm $(BIN)/chemeq
+	rm $(MAN1)/chemeq.1.gz
+
+clean :
+	rm -f *~ *.gz
+	(cd src; ${MAKE} clean)

@@ -1,0 +1,157 @@
+chemeq (1.12) unstable; urgency=low
+
+  * modified the behaviour with -C : now the charge count is displaied
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Sun, 11 Mar 2007 12:49:31 +0100
+
+chemeq (1.11) unstable; urgency=low
+
+  * fixed an error for the option -C with atom groups; for example
+    B(OH)3 yelded something like B(OH)3|B:1*1 (O:1*1 H:1*1)3 which
+    has little sense. Now it yelds B(OH)3|B:1*1 O:1*3 H:1*3, which
+    would be the same than parsing BO3H3.
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Sat, 10 Mar 2007 22:00:17 +0100
+
+chemeq (1.10) unstable; urgency=low
+
+  * fixed two stupid errors in operators '&' and '-' for the Membre object:
+    their return value were undefined!
+    Now there is no more segmentation error when the normalisation is done.
+  * added a new feature, bound to the option -C (detailed count) :
+    it prints a detailed count of molecules and atoms in each member
+    of the equation. This count can be used by other programs.
+  * added similar features (options -e and -s), which are simpler than
+    the option -C: they just print respectively the electric charges,
+    and the chemical species.
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Fri, 23 Feb 2007 11:54:22 +0100
+
+chemeq (1.9) unstable; urgency=low
+
+  * recompiled with a new version of flex (see 
+    http://www.debian.org/security/2006/dsa-1020)
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Sun,  2 Apr 2006 16:45:22 +0200
+
+chemeq (1.8) unstable; urgency=low
+
+  * added a feature: the normalised output (chemeq -n) makes simplifications
+    by substracting equivalent amounts of chemicals in both members of an
+    equation.
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Thu, 16 Feb 2006 23:37:38 +0100
+
+chemeq (1.7) unstable; urgency=low
+
+  * added the environment variables prefixed with w_ to comply with Gang
+    Xiao's WIMS server.
+  * updated the manpage
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Sat, 28 Jan 2006 23:37:03 +0100
+
+chemeq (1.6) unstable; urgency=low
+
+  * fixed issues about the environment variable chemeq_input
+  * updated the manpage
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Sat, 28 Jan 2006 20:04:22 +0100
+
+chemeq (1.5) unstable; urgency=low
+
+  * recompilation to be consistent with the new libstdc++
+  * dropped the reference to g++-3.0
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Thu, 22 Dec 2005 20:38:40 +0100
+
+chemeq (1.4) unstable; urgency=low
+
+  * chemeq takes in account another environment variable, chemeq_input, which
+    may contain the input string for chemeq.
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sun, 27 Feb 2005 23:55:33 +0100
+
+chemeq (1.3) unstable; urgency=low
+
+  * now chemeq takes in account a parameter chemeq_option, which can be used
+    to pass the options "mMlcwnh"
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Wed, 26 Jan 2005 13:36:12 +0100
+
+chemeq (1.2-1) unstable; urgency=low
+
+  * added the -M switch; features molecular weights calculation
+  * corrected the references to endl (using std::endl instead)
+    closes: Bug#188906
+    other incorrect references to cin, cout and cerr are due to a bad
+    behavior of flex when used in c++ mode.
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Mon, 14 Apr 2003 12:04:35 +0200
+
+chemeq (1.1.0.3-8) unstable; urgency=low
+
+  * Rewritten the "closes"  assertion correctly
+    closes: Bug#176265
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sun,  2 Feb 2003 22:09:56 +0100
+
+chemeq (1.1.0.3-7) unstable; urgency=low
+
+  * modified the type of the "ch" varaible which is used to get the result
+    of the getopt() function, to int. So the condition -1 == ch can be
+    reached on every architecture.
+    Closes: #176265
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sat, 11 Jan 2003 18:45:29 +0100
+
+chemeq (1.1.0.3-6) unstable; urgency=low
+
+  * some fixes to comply with g++-3.2, thanks to Jeroen T. Vermeulen
+    Closes: #174962
+
+ -- Georges Khaznadar <georgesk@gk.homelinux.org>  Sun,  5 Jan 2003 00:15:16 +0100
+
+chemeq (1.1.0.3-5) unstable; urgency=low
+
+  * chemeq is now compliant with g++-v3 and should build on all archs.
+    Closes: #146530
+
+ -- Georges Khaznadar <georgesk@gk.homelinux.org>  Sun, 10 Nov 2002 22:00:10 +0100
+
+chemeq (1.1.0.3-4) unstable; urgency=low
+
+  * corrected build-depends according to last post about Bug#146552
+    gcc and g++ are no more in buid-depends.
+    Closes: #146530, #146552
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sun, 27 Oct 2002 11:22:05 +0100
+
+chemeq (1.1.0.3-3) unstable; urgency=low
+
+  * corrected a missing parenthesis in chemreport.pl (test suite)
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sun, 12 May 2002 15:53:36 +0200
+
+chemeq (1.1.0.3-2) unstable; urgency=low
+
+  * added build-depends : flex, bison, gcc, g++
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sat, 11 May 2002 19:06:01 +0200
+
+chemeq (1.1.0.3-1) unstable; urgency=low
+
+  * Integrated test suite
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Sun, 05 May 2002 10:12:49 +0200
+
+chemeq (1.1.0.2-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Georges Khaznadar <gekhajofour@netinfo.fr>  Thu, 28 Apr 2002 22:50:45 +0200
+
+
+Local variables:
+ mode: debian-changelog
+End:
+

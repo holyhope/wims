@@ -1,0 +1,74 @@
+.\" Chemeq - Chemical Equation Analyzer
+.TH chemeq 1 "4 june 2000" "" ""
+.SH NAME
+Chemeq - Chemical Equation Analyzer
+.SH SYNOPSIS
+\fBchemeq\fP [options]
+.SH DESCRIPTION
+\fBChemeq\fP is a chemical equation analyzer. It is a fast lexical and
+syntaxic analyser which helps to find out chemical informations embedded
+in source chemical equations. Data can be output in various sophisticated
+formats, depending on options. 'chemeq' defaults to 'chemeq -mlcwn'.
+.SH OPTIONS
+Options are active only if chemeq parses an equation of chemical
+reaction. If chemeq parses the formula of a simple chemical,
+no option is taken in account, the output is just a straightforward
+TeX string representing the simple chemical.
+.IP "\fB-h"
+Displays Help.
+.IP "\fb-M"
+Outputs al list of space separated molecular weights.
+.IP "\fB-m"
+Outputs a \fBM\fPinimal output. It allows chemeq to be idempotent,
+i.e. the command 'chemeq | chemeq' is equivalent to 'chemeq'.
+.IP "\fB-l"
+Outputs a \fBL\fPaTeX string representing the chemical equation.
+.IP "\fB-c"
+Outputs a message giving informations about the \fBC\fPonservation of
+elements and charges in the equation. 'OK' means that both elements
+and electric charges are balanced.
+.IP "\fB-w"
+Outputs the LaTeX string representing the Gulder-\fBW\fPaage equation
+related to the input chemical equation, or the Nernst equation,
+if the input equation is a redox semi-equation.
+.IP "\fB-n"
+Outputs a \fBN\fPormalized string accounting for the input equation.
+Two chemical equations having the same normalized string are chemically
+equivalent, even if the molecules are scrambled around and the 
+coefficient are not equal but proportionnal.
+.SH EXAMPLES
+.TP
+echo "1/2 Cu^2+ + OH- ->  1/2Cu(OH)2s" | chemeq
+will display informations about the reaction of hydroxyde and Cu II ions.
+.TP
+echo "MnO4^- + 8H3O^+ + 5e- --> Mn^2+ + 12 H2O" | chemeq
+will display informations about the reaction of reduction of permanganate
+ions in an acid environment.
+.TP
+echo "MnO4^- + 8H3O^+ + 5e- --> Mn^2+ + 12 H2O" | chemeq -w
+will display the LaTeX format for the Nernst law related to the reduction
+of permanganate ions in an acid environment.
+.TP
+echo "MnO4^- + 8H3O^+ + 5e- --> Mn^2+ + 8 H2O" | chemeq -c
+will highlight the lack of conservation of elements H and O
+(water molecules are not well balanced).
+.SH NOTE: syntax of ions
+allthough in some cases, shorter expressions are sucessfully parsed,
+it is safer to consider that an "up arrow" (^) must be put before the
+charge symbols of an ion.
+Examples : H3O^+, Fe(CN)6^4-, OH^-
+
+.SH AUTHORS
+.br
+.nf
+Georges Khaznadar, 
+  <\fBgeorgesk@boltz.univ-littoral.fr\fP>
+.fi
+.El
+.SH KNOWN BUGS
+When not specified, chemical entities coming from the standard input are
+believed to be in aqueous solutions. Water is considered by default as the
+main solvent. Only one liquid (aqueous) phase is currently taken in account.
+All solid chemical entities are considered as parts of separated phases.
+Suffixes _s, _g and _aq can be used to enforce the type of some chemical
+entities.
