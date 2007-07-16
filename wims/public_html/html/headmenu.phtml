@@ -1,0 +1,66 @@
+
+!if robot isin $session or $wims_mode=popup or _check isin $session
+ !exit
+!endif
+
+!read name.phtml.$module_language
+!default wims_name_bgcolor=$wims_ref_bgcolor
+!if $wims_hm!=$empty
+ !goto defend
+!endif
+
+!reset 1_
+!if _ isin $wims_subsession
+ !set 1_=!append line back,3,window.close() to $1_
+!else
+ !set 1_=!append line home,1,session=$wims_session.1 to $1_
+!endif
+!if $httpd_HTTP_REFERER!=$empty
+ !set 1_=!append line exit,2,$httpd_HTTP_REFERER to $1_
+!endif
+!if $cmd=intro
+ !set 1_=!append line work,1,module=$module&cmd=new to $1_
+!endif
+!if $wims_sheet>0 or P isin $wims_sheet
+ !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+!endif
+!if $module_has_intro=yes and $cmd notwordof intro help
+ !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$wims_intro_parm to $1_
+!endif
+!if _ notin $wims_session and adm/ notin $module \
+	and $cmd notwordof help ref
+ !set 1_=!append line ref,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!endif
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=$empty or $module_help=popup
+  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+!if $cmd=help or $cmd=hint
+ !set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+!if $module_has_about=yes and $cmd notwordof help intro
+ !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+!endif
+!set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+!if $wims_ref_otherlangs=yes and $wims_otherlangs!=$empty
+ !if $wims_light_module=yes
+  !set wims_name_pagebase=!char 1 to -4 of $phtml
+  !for i_ in $wims_headmenu_languages
+   !set 1_=!append line $i_,0,<a href=wims.cgi?session=$session&lang=$i_&useropts=$useropts&module=$module&phtml=$wims_name_pagebase.$i_&parm1=$parm1&parm2=$parm2&parm3=$parm3&parm4=$parm4&parm5=$parm5><img src=gifs/$i_.gif border=1></a> to $1_
+  !next i_
+ !else
+  !set wims_name_mbase=!char 1 to -4 of $module
+  !for i_ in $wims_otherlangs
+   !set 1_=!append line $i_,0,<a href=wims.cgi?session=$session&lang=$i_&useropts=$useropts&module=$wims_name_mbase><img src=gifs/$i_.gif border=1></a> to $1_
+  !next i_
+ !endif
+!endif
+
+!set wims_hm=$1_
+:defend
+!set wims_hm_cnt=!linecnt $wims_hm
+!read themes.phtml header
+<div class=wimsbody>

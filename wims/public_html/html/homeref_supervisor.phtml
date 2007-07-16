@@ -1,0 +1,104 @@
+
+!if _check isin $session or $wims_mode=popup
+ !exit
+!endif
+
+!if _test isin $session and $wims_hacked_variables!=$empty
+ <p><b>WIMS WARNING</b>. The following variables of your module could be hacked
+ by students using manually modified http addresses! You might want to put more
+ strict permissions to them in var.def, in order to build a secure exercise module.
+ <p><tt><b>$wims_hacked_variables</b></tt>
+ <p>
+!endif
+
+!read name.phtml.$module_language
+!default wims_homeref_bgcolor=$wims_ref_bgcolor
+!if exam isin $wims_session
+ !set wims_hr_r=$[max(0,$wims_exam_remain)]
+ !set wims_hr_rm=$[floor($wims_hr_r/60)]
+ !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
+ !set wims_homeref_special=$wims_name_examremain $wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
+ !goto rmend
+!endif
+
+!if $wims_rm_1!=$empty
+ !goto rm2
+!endif
+!reset 1_
+!if _ isin $wims_subsession
+ !set 1_=!append line back2,3,window.close() to $1_
+!else
+ !set 1_=!append line home,1,session=$wims_session.1 to $1_
+!endif
+!if $wims_sheet>0 or P isin $wims_sheet
+ !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+!endif
+!if $cmd=help or $cmd=hint
+ !set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+!if $module_has_intro=yes and $cmd notwordof intro help and\
+        $wims_sheet=$empty and exam notin $wims_session
+ !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$wims_intro_parm to $1_
+!endif
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=$empty or $module_help=popup
+  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+!if $module_has_about=yes and $cmd notwordof help intro
+ !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+!endif
+!set wims_rm_1=$1_
+
+:rm2
+!if $wims_rm_2!=$empty
+ !goto rmend
+!endif
+!reset 2_
+!if $module_author!=$empty and @ isin $module_address
+ !set wims_homeref_author_num=!itemcnt $module_author
+ !if $wims_homeref_author_num>1
+  !set 3_=$wims_name_authors:
+ !else
+  !set 3_=$wims_name_author:
+ !endif
+ !set 4_=!mailurl $module_address $module_author\
+WIMS $module_title [$module_language]
+ !set 2_=!append line author,0,$3_ $4_ to $2_
+!endif
+!if $module_translator!=$empty and $module_translator_address!=$empty
+ !set 3_=!mailurl $module_translator_address $module_translator\
+WIMS $module_title [$module_language]
+ !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_
+!endif
+!set 2_=!append line syou,0,$wims_name_syou to $2_
+!set 2_=!append line class,0,$wims_classname ($wims_institutionname) to $2_
+!if $cmd!=intro and $cmd!=help and $module!=home and \
+	../adm/ notin ../$module and \
+	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
+ !set wims_homeref_parm=!replace % by %25 in $module_init_parm
+ !set wims_homeref_parm=!replace + by %2B in $module_init_parm
+ !set wims_homeref_parm=!replace & by %26 in $module_init_parm
+ !set 2_=!append line add,1,module=adm/class/addmodule&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $2_
+!endif
+!if $wims_developer!=$empty and COPYING isin $module_copyright and ../classes/ notin ../$module
+ !set V_=!char 1 of $module
+ !set M_=!translate internal / to , in $module
+ !set M_=!item 1 of $M_
+ !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
+  !set 2_=!append line modify,1,module=adm/modtool&original=$module to $2_
+ !endif
+!endif
+!set 2_=!append line time,0,Server time: $wims_now to $2_
+!set wims_rm_2=$2_
+
+:rmend
+!set wims_homeref_n1=!linecnt $wims_rm_1
+!set wims_homeref_n2=!linecnt $wims_rm_2
+</p></div>
+
+!read themes.phtml tail
+!robottrap
+

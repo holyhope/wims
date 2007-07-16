@@ -1,0 +1,23 @@
+<html><head>
+!set m_title=$module_title
+!set module_title=HELP: $module_title
+$wims_html_header
+!set module_title=$m_title
+</head>
+<body $wims_htmlbody
+onload="window.focus();window.moveTo(150,120);window.resizeTo(600,400);"
+>
+!read name.phtml.$module_language
+
+!if $special_parm=about
+ !set wname_h=$wims_name_about
+!else
+ !set wname_h=$wims_name_help
+!endif
+
+<div class=wimsbody>
+<center><font size=+3><b>$module_title</b></font><br>
+----- $wname_h <small>
+[<a href=# onclick=window.close();>$wims_name_back2</a>]</small> -----
+</center><P>
+

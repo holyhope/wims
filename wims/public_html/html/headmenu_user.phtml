@@ -1,0 +1,89 @@
+
+!set module_language=!trim $module_language
+!if $module_language=$empty or $module_language notwordof $wims_site_languages
+ !set module_language=en
+!endif
+
+!read name.phtml.$module_language
+!default wims_name_bgcolor=$wims_ref_bgcolor
+
+!if $wims_hm!=$empty
+ !goto defend
+!endif
+
+!reset 1_
+!if _ isin $wims_session
+ !if _exam isin $wims_session
+  !set wims_pses=!translate _ to , in $wims_session
+  !set wims_pses=!item 1 of $wims_pses
+  !set wims_pser=!randint 1,99999
+  !set wims_href_opener=window.opener.location='$wims_ref_name?session=$wims_pses.1&cmd=reply&job=student&randomizer=$wims_pser';
+ !endif
+ !set 1_=!append line back,3,window.close();$wims_href_opener to $1_
+!else
+ !set 1_=!append line home,1,session=$wims_session.1\
+  visitor,1,cmd=close&module=home&lang=$lang to $1_
+!endif
+!if _check isin $wims_session
+ !set ckstep=$special_parm
+ !distribute item $wims_check into ckmodule,ckuser,cksession,ckexo,cksteps,score
+ !set qstr=module=$ckmodule&cmd=new&job=examcheck&checkuser=$ckuser&checksession=$cksession&checkexo=$ckexo
+ !set 2_=&nbsp;
+ !if $ckstep>1
+  !set 2_=$2_<a href=$wims_ref_name?session=$session&$qstr&checkstep=1>||</a>&nbsp;<a href=$wims_ref_name?session=$session&$qstr&checkstep=$[$ckstep-1]>&lt;&lt;</a>&nbsp;
+ !endif
+ !if $ckstep<$cksteps
+  !set 2_=$2_<a href=$wims_ref_name?session=$session&$qstr&checkstep=$[$ckstep+1]>&gt;&gt;</a>&nbsp;<a href=$wims_ref_name?session=$session&$qstr&checkstep=$cksteps>||</a>
+ !endif
+ !set 1_=!append line nav,0,$2_ to $1_
+ !set 3_=!translate internal - to , in $ckexo
+ !set 3_=!item -1 of $3_
+ !set 2_=<small>$ckuser: $3_=$module. $cksteps steps, $score/10.</small>
+ !set wims_hm=!append line score,0,$2_ to $1_
+ !goto defend
+!endif
+!if adm/forum notin $module and _ notin $wims_session \
+	and $wims_sheet=$empty
+ !set 1_=!append line forum,1,module=adm/forum/mboard to $1_
+!endif
+!if $cmd=intro
+ !set 1_=!append line work,1,module=$module&cmd=new to $1_
+!endif
+!if $wims_sheet!=$empty or _exam isin $wims_session
+ !set 1_=!append line tools,4,module=home,tool to $1_
+!endif
+!if _ notin $wims_session and adm/ notin $module \
+	and $cmd notwordof help ref
+ !set 1_=!append line ref,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!endif
+!if $wims_sheet>0 or P isin $wims_sheet
+ !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+!endif
+!if $cmd=help or $cmd=hint
+ !set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+!if $module_has_intro=yes and $cmd notwordof intro help and \
+	$wims_sheet=$empty and exam notin $wims_session 
+ !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$wims_intro_parm to $1_
+!endif
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=$empty or $module_help=popup
+  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+!if $module_has_about=yes and $cmd notwordof help intro
+ !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+!endif
+!if _ notin $wims_session
+ !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+!endif
+
+!set wims_hm=$1_
+:defend
+!set wims_hm_cnt=!linecnt $wims_hm
+
+!read themes.phtml header
+
+<div class=wimsbody>

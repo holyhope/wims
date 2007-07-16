@@ -1,0 +1,13 @@
+
+!default wims_theme=default
+
+!if $wims_read_parm=header and $wims_headertype=doc
+ !set 1_=docheader
+!else
+ !set 1_=$wims_read_parm
+!endif
+!read ./themes/$wims_theme/$1_.phtml
+!if $(wims_theme_$1_)!=yes and $wims_theme!=default
+ !read ./themes/default/$1_.phtml
+!endif
+

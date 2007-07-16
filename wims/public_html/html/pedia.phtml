@@ -1,0 +1,11 @@
+!set pedia_lookup=!item 1 of $wims_pedia_parm
+!set pedia_search=!translate $ $ to + in $pedia_lookup
+!set pedia_name=!item 2 of $wims_pedia_parm
+!default pedia_name=$pedia_lookup
+!if _ref isin $wims_session
+<a href="http://$module_language.wikipedia.org/wiki/$pedia_search">$pedia_name</a>
+!else
+<a target=wims_pedia
+href="http://$module_language.wikipedia.org/wiki/$pedia_search">$pedia_name</a>
+!endif
+

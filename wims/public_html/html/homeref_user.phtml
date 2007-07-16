@@ -1,0 +1,83 @@
+!if _check isin $session
+ !exit
+!endif
+
+!read name.phtml.$module_language
+!default wims_homeref_bgcolor=$wims_ref_bgcolor
+!if exam isin $wims_session
+ !set wims_hr_r=$[max(0,$wims_exam_remain)]
+ !set wims_hr_rm=$[floor($wims_hr_r/60)]
+ !set wims_hr_rs=!char 2,3 of $[$wims_hr_r%60+100]
+ !set wims_homeref_special=$wims_name_examremain $wims_hr_rm:$wims_hr_rs ($wims_name_whenloaded)
+ !goto rmend
+!endif
+
+!if $wims_rm_1!=$empty
+ !goto rm2
+!endif
+!reset 1_
+!if _ isin $wims_subsession
+ !set 1_=!append line back2,3,window.close() to $1_
+!else
+ !set 1_=!append line home,1,session=$wims_session.1 to $1_
+!endif
+!if $wims_sheet>0 or P isin $wims_sheet
+ !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+!endif
+!if $cmd=help or $cmd=hint
+ !set 1_=!append line resume,1,cmd=resume to $1_
+!endif
+!if $module_has_intro=yes and $cmd notwordof intro help and\
+        $wims_sheet=$empty and exam notin $wims_session
+ !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$wims_intro_parm to $1_
+!endif
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=$empty or $module_help=popup
+  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+ !else
+  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+ !endif
+!endif
+!if $module_has_about=yes and $cmd notwordof help intro
+ !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+!endif
+!set wims_rm_1=$1_
+
+:rm2
+!if $wims_rm_2!=$empty
+ !goto rmend
+!endif
+
+!set 3_=!mailurl $wims_supervisormail $wims_name_wsup\
+$module_title
+!set 2_=you,0,$wims_name_you\
+ class,0,$wims_classname ($wims_institutionname)\
+ wsup,0,$3_
+!if $wims_sheet>0
+ !set wims_homeref_scorestat=!getscorestatus sheet=$wims_sheet
+ !if $wims_homeref_scorestat=yes and $wims_exodep!=pending
+  !if $wims_scorereg!=suspend
+   !set wims_homeref_req=!getscorerequire sheet=$wims_sheet work=$wims_exo
+   !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
+   !set wims_homeref_mean=!getscoremean sheet=$wims_sheet work=$wims_exo
+   !set wims_name_score=!singlespace $wims_name_score
+   !set 2_=!append line score,0,$wims_name_score to $2_
+  !else
+   !set 2_=!append line score,0,$wims_name_scoresuspend to $2_
+  !endif
+ !else
+  !set 2_=!append line score,0,$wims_name_scoreclose to $2_
+ !endif
+ !if $module_score!=$empty and $wims_class_exolog>0 and E notin $wims_sheet
+  !set 2_=!append line exolog,1,module=adm/class/exolog&cmd=new&job=log&logsheet=$wims_sheet&logexo=$wims_exo to $2_
+ !endif
+!endif
+!set wims_rm_2=$2_
+
+:rmend
+!set wims_homeref_n1=!linecnt $wims_rm_1
+!set wims_homeref_n2=!linecnt $wims_rm_2
+</p></div>
+!read themes.phtml tail
+!robottrap
+

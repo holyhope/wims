@@ -1,0 +1,21 @@
+!distribute items $wims_read_parm into 1_,2_,3_,4_
+!goto $2_
+:0
+ $(wims_read_parm[3..-1])
+ !exit
+:1
+ !set 3_=!item 3 to -1 of $wims_read_parm
+ !set 3_=!nospace $3_
+ !href $3_ $(wims_name_$1_)
+ !exit
+:2
+ <a href="$3_">$(wims_name_$1_)</a>
+ !exit
+:3
+ <a href=# onclick="$3_">$(wims_name_$1_)</a>
+ !exit
+:4
+ !href target=wims_$4_ $3_ $(wims_name_$1_)
+ !exit
+:*
+

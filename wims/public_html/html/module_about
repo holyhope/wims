@@ -1,0 +1,155 @@
+
+!default module_about_bgcolor=$wims_ref_bgcolor
+!set module_language=!trim $module_language
+!set module_au=!mailurl $module_address $module_author\
+WIMS $module_title [$module_language]
+!set module_tr=!mailurl $module_translator_address $module_translator\
+WIMS $module_title [$module_language]
+
+!if $module_language notwordof cn fr it tw si es
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Translator</td><td>$module_tr</a></td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>This is a module under the WWW Interactive Multipurpose Server.\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Name</td>      <td>$module_title</td></tr>\
+   <tr><td>Address</td>   <td>$module</td></tr>\
+   <tr><td>Link for bookmark</td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Description</td><td>$module_description</td></tr>\
+   <tr><td>Version</td>    <td>$module_version</td></tr>\
+   <tr><td>Required <br>WIMS version</td>    <td>$m_ge $module_wims_version</td></tr>\
+   <tr><td>Language</td>   <td>English</td></tr>\
+   <tr><td>Author</td>    <td>$module_au</a></td></tr>\
+   $module_about_tr\
+   <tr><td>Copyright</td> <td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+!if $module_language=si
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Prevajalec</td><td>$module_tr</a></td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>To je modul, ki pripada sistemu WIMS.\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Ime</td>      <td>$module_title</td></tr>\
+   <tr><td>Naslov</td>   <td>$module</td></tr>\
+   <tr><td>Povezava</td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Opis</td><td>$module_description</td></tr>\
+   <tr><td>Verzija</td>    <td>$module_version</td></tr>\
+   <tr><td>Jezik</td>   <td>slovenski</td></tr>\
+   <tr><td>Avtor</td>    <td>$module_au</a></td></tr>\
+   $module_about_tr\
+   <tr><td>Avtorske pravice</td> <td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+
+!if $module_language=cn
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>翻译者</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>这是网上互动式多功能服务站的一个模块.\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>标题   </td><td>$module_title</td></tr>\
+   <tr><td>地址   </td><td>$module</td></tr>\
+   <tr><td>Link</td>    <td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>说明</td><td>$module_description</td></tr>\
+   <tr><td>版本号    </td><td>$module_version</td></tr>\
+   <tr><td>语言   </td><td>中文</td></tr>\
+   <tr><td>作者    </td><td>$module_au</td></tr>\
+   $module_about_tr\
+   <tr><td>版权 </td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+!if $module_language=fr
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Traducteur</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>Ceci est un module du Serveur Interactif Multifonctions sur le Web (WIMS).\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Nom       </td><td>$module_title</td></tr>\
+   <tr><td>Adresse   </td><td>$module</td></tr>\
+   <tr><td>Lien pour bookmark</td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Description</td><td>$module_description</td></tr>\
+   <tr><td>Version   </td><td>$module_version</td></tr>\
+   <tr><td>Version WIMS <br>requise</td>    <td>$m_ge $module_wims_version</td></tr>\
+   <tr><td>Langue    </td><td>fran鏰ise</td></tr>\
+   <tr><td>Auteur    </td><td>$module_au</td></tr>\
+   $module_about_tr\
+   <tr><td>Droit d'auteur</td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+!if $module_language=it
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Traduzione di</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>Questo &egrave; un modulo WIMS: WWW Interactive Multipurpose Server.\
+   <br><br>\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Nome       </td><td>$module_title</td></tr>\
+   <tr><td>Indirizzo  </td><td>$module</td></tr>\
+   <tr><td>Link</td>    <td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Descrizione</td><td>$module_description</td></tr>\
+   <tr><td>Versione   </td><td>$module_version</td></tr>\
+   <tr><td>Lingua     </td><td>italiano</td></tr>\
+   <tr><td>Autore     </td><td>$module_au</td></tr>\
+   $module_about_tr\
+   <tr><td>Copyright  </td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+!if $module_language=es
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Traductor</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>Este es un m骴ulo del Servidor Interactivo Multiprop髎ito WIMS.\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Nombre     </td><td>$module_title</td></tr>\
+   <tr><td>Direcci髇  </td><td>$module</td></tr>\
+   <tr><td>Enlace url </td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Descripci髇</td><td>$module_description</td></tr>\
+   <tr><td>Versi髇    </td><td>$module_version</td></tr>\
+   <tr><td>Idioma     </td><td>castellano</td></tr>\
+   <tr><td>Autor      </td><td>$module_au</a></td></tr>\
+   $module_about_tr\
+   <tr><td>Licencia elegida por el autor</td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+!if $module_language=tw
+  !set module_about=$module_about \
+   <center>硂琌 WWW Interactive Mathematics 狝竟家舱\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>嘿      </td><td>$module_title</td></tr>\
+   <tr><td>竚   </td><td>$module</td></tr>\
+   <tr><td>Link</td>    <td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>弧</td><td>$module_description</td></tr>\
+   <tr><td>セ    </td><td>$module_version</td></tr>\
+   <tr><td>粂ē   </td><td>いゅ(Big5 絏)</td></tr>\
+   <tr><td>    </td><td>$module_au</td></tr>\
+   <tr><td>舦 </td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+

@@ -1,0 +1,52 @@
+!if $wims_name_home!=$empty
+ !exit
+!endif
+
+!distribute items Cerca,\
+		Al lavoro,Torna al lavoro,\
+		[Home WIMS],Modifica opzioni,Help on line,Informazioni,\
+ 		Introduzione,\
+		Chiudi questa finestra,Indietro,\
+		Site manager,Autore della pagina,Autori della pagina,\
+		Traduzione di,Esci,\
+		Help su WIMS,Materiale bibliografico,\
+		Messaggi,Gruppi di discussione,\
+		Verifiche periodiche,Strumenti,\
+		Copia in Modtool\
+	into wims_name_search,\
+	wims_name_work,wims_name_resume,\
+	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
+	wims_name_titleintro,\
+	wims_name_back,wims_name_back2,\
+	wims_name_manager,wims_name_author,wims_name_authors,\
+	wims_name_translatedby,wims_name_exit,\
+	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
+	wims_name_sheet,wims_name_tools,\
+	wims_name_modify
+
+!if $wims_class!=$empty
+ !distribute items Home page del corso,Inserire nella verifica,\
+		Scrivi al docente,Esci (logout),\
+		La registrazione dei punteggi &egrave; chiusa,\
+		Hai sospeso la registrazione dei punteggi.,\
+		Sei il docente del corso,\
+		Salva i dettagli di questo esercizio\
+	into wims_name_home,wims_name_add,\
+	wims_name_wsup,wims_name_visitor,\
+	wims_name_scoreclose,\
+	wims_name_scoresuspend,\
+	wims_name_syou,\
+	wims_name_exolog
+ !set wims_name_score=!nosubst Hai ottenuto $[$wims_homeref_got] su \
+	$[$wims_homeref_req] punti per questa verifica. Punteggio medio \
+	$[$wims_homeref_mean]/10.
+ !set wims_name_you=Sei <b>$wims_firstname $wims_lastname</b>, nel corso
+ !if _exam isin $session
+  !distribute items Torna al tema d'esame,\
+	Tempo restante per completare il tema d'esame:,\
+	terminato il caricamento della pagina\
+	into wims_name_back,wims_name_examremain,wims_name_whenloaded
+ !endif
+!endif
+
+
