@@ -1,0 +1,19 @@
+<ol>
+ !set n=!linecnt $(chapter$chapter)
+ !for i=2 to $n
+  !set l=!line $i of $(chapter$chapter)
+  !set t=!item 1 of $l
+  !set s=!item 2 to -1 of $l
+  <p><li><a name=$t>
+  !if $(chapter)_$t iswordof $open
+   !set o=!replace word $(chapter)_$t by $ in $open
+   <H3>$s <font size=-1>
+   !href module=$module&chapter=$chapter&open=$o sluiten
+   </font></H3> <p>
+   !read $chapter/$t.phtml
+  !else
+   !href module=$module&chapter=$chapter&open=$open,$(chapter)_$t#$t $s
+ !endif
+ !next i
+ </ol>
+

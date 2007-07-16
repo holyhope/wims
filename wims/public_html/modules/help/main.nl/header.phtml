@@ -1,0 +1,46 @@
+!set lan=nl
+<HTML><HEAD>$wims_html_header
+</HEAD>
+!if $wims_window=new
+ !set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+!endif
+<BODY $wims_htmlbody $w_resize>
+!robottrap
+
+<DIV CLASS=wimsmenu>
+<CENTER><TABLE border=0 cellspacing=0 cellpadding=5 bgcolor=$wims_ref_bgcolor
+>
+<tr><td align=center>
+!if _ isin $wims_subsession
+ <a href=# onclick="window.close()">Sluit dit help venster</a>
+!else
+ !href session=$wims_session.1 WIMS home
+!endif
+!if $chapter>0
+ <td align=center>
+ !href module=$module&chapter=0 Help index
+&nbsp;
+!endif
+!if $chapter>1
+ <td align=center>
+ !href module=$module&chapter=$[$chapter-1] Vorige Hoofdstuk
+!endif
+!if $chapter<$chaptercnt
+ <td align=center>
+ !href module=$module&chapter=$[$chapter+1] volgende Hoofdstuk
+!endif
+
+</TABLE></CENTER></DIV><DIV CLASS=wimsbody>
+
+!if $chapter>0
+ !set l=!line 1 of $(chapter$chapter)
+ !set ll=!word $chapter of I II III IV V VI VII IIIV IX X
+ !set l=Chapter $ll. $l
+!else
+ !set l=General index
+!endif
+
+<P><CENTER><H1>WIMS help<br><font size=+1><b>
+---- $l ----</b></font>
+</H1></CENTER> <P>
+
