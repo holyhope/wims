@@ -1,0 +1,77 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=Colorful math formulas
+!set m_date=20020414
+!set m_time=08:51:44
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200204/3
+!set m_exists=yes
+!exit
+:source
+<pre>
+Now you can use colors in your mathematics formulas inserted using TeX:
+
+In the message forum, document or OEF exercises, changing color can only be done via the TeX &lt;tt>\\special{}&lt;/tt> command. For example,
+&lt;tt>\\(\\special{color=blue} \\sqrt{x^2+y^2} )&lt;/tt> gives
+\(\special{color=blue} \sqrt{x^2+y^2} ). Note that this supposes that you use native TeX syntax for the formula. However, you can produce TeX formula syntax by using the &lt;tt>texmath&lt;/tt> function in a parameter definition, to transform your formula.
+
+For example, you can get complex colorful math
+&lt;p>&lt;center>
+\def{text  fa=texmath(1/(1-x^2))}
+\def{text fb=texmath(1/(2*(1-x)))}
+\def{text fc=texmath(1/(2*(1+x)))}
+\( \special{color=blue} \fa
+\special{color=black} =
+\special{color=red} \fb
+\special{color=black} +
+\special{color=green} \fc
+)
+&lt;/center>&lt;p>
+
+Color definition can be a common color name (red, orange, magenta, ...), or 3 integers between 0 and 255 indicating the values of red, green, blue. For example, &lt;tt>color=255,0,0&lt;/tt> is equivalent to saying &lt;tt>color=red&lt;/tt>.
+
+In native WIMS modules, you can also use the variable &lt;tt>$instex_color&lt;/tt> to define the TeX color.</pre>
+!exit
+:html
+Now you can use colors in your mathematics formulas inserted using TeX&#58;
+<p>
+In the message forum, document or OEF exercises, changing color can only be done via the TeX <tt>\special{}</tt> command. For example,
+<tt>\(\special{color=blue} \sqrt{x^2+y^2} )</tt> gives
+
+!insmath \special{color=blue} \sqrt{x^2+y^2} 
+. Note that this supposes that you use native TeX syntax for the formula. However, you can produce TeX formula syntax by using the <tt>texmath</tt> function in a parameter definition, to transform your formula.
+<p>
+For example, you can get complex colorful math
+<p><center>
+
+!set tmp0=!texmath 1/(1-x^2)
+
+!set m_fa=$(tmp0) 
+
+
+!set tmp0=!texmath 1/(2*(1-x))
+
+!set m_fb=$(tmp0) 
+
+
+!set tmp0=!texmath 1/(2*(1+x))
+
+!set m_fc=$(tmp0) 
+
+
+!insmath  \special{color=blue} \fa \special{color=black} = \special{color=red} \fb \special{color=black} + \special{color=green} \fc 
+
+</center><p>
+<p>
+Color definition can be a common color name (red, orange, magenta, ...), or 3 integers between 0 and 255 indicating the values of red, green, blue. For example, <tt>color=255,0,0</tt> is equivalent to saying <tt>color=red</tt>.
+<p>
+In native WIMS modules, you can also use the variable <tt>&#36;instex_color</tt> to define the TeX color.

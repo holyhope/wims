@@ -1,0 +1,87 @@
+!set titb=-- 
+!set keyw=
+!set datm=20050119
+!set prev=
+!set next=
+!set upbl=
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<p class="p1">Le développement limité obtenu par le théorème de Young ou formule de Taylor-Young ne donne  que des renseignements locaux sur la fonction, c'est-à-dire au voisinage du point. C'est la formule de Taylor-Lagrange qui permet d'encadrer la fonction sur un intervalle.</p>
+ 
+<h2>Cas particulier &#58; Le théorème des accroissements finis</h2>
+<div class="thm"><b>Théorème</b> &#58; Soit 
+!insmath f
+ une fonction continue sur [a,b], dérivable 
+sur ]a,b[. Il existe 
+!insmath c
+ dans  ]a,b[ tel que &#58;
+<center>
+!insmath f(b)-f(a)=f'(c)(b-a)
+</center></div>
+<p>
+Ce théorème nous renseigne sur le comportement de 
+!insmath f
+ sur 
+l'intervalle [a,b]  ; en particulier, si nous savons majorer, en valeur 
+absolue, la dérivée de 
+!insmath f
+ sur cet intervalle, nous connaissons une 
+estimation de l'erreur faite en remplaçant 
+!insmath f(b)
+ par 
+!insmath f(a)
+ &#58;
+<center>
+!insmath (\exists k \in \RR, \quad \forall x \in [a,b], \qquad |f'(x)|\leq k) \quad \Rightarrow \quad |f(b)-f(a)|\leq k (b-a)
+</center>
+<p>
+<h2>Cas général &#58; La formule de Taylor-Lagrange</h2>
+<div class="thm"><b>Théorème</b> &#58; Soit 
+!insmath f
+ une fonction de classe 
+!insmath C^n
+ sur 
+[a,b] telle que la dérivée 
+!insmath f^{(n+1)}
+ existe 
+sur ]a,b[. Il existe 
+!insmath c
+ dans  ]a,b[ tel que &#58;
+<center>
+!insmath f(b)=f(a) +  f'(a)(b-a)+f^{(2)}(a)\frac{(b-a)^2}{2}+\dots+f^{(n)}(a)\frac{(b-a)^n}{n!}
+
+!insmath +f^{(n+1)}(c)\frac{(b-a)^{n+1}}{(n+1)!}
+</center></div>
+<p>
+<p>
+La formule de Taylor-Lagrange permet d'approcher une fonction par un 
+polynôme sur un intervalle donné avec une estimation de l'erreur.
+S'il existe 
+!insmath k
+ tel que pour tout 
+!insmath x
+ de [a,b], on ait 
+l'inégalité &#58; 
+!insmath |f^{(n+1)}(x)|\leq k
+, alors l'erreur faite 
+en remplaçant, pour 
+!insmath x
+ dans [a,b], 
+!insmath f(x)
+ par 
+!insmath f(a) +  f'(a)(x-a)+f^{(2)}(a)\frac{(x-a)^2}{2}+\dots+f^{(n)}(a)\frac{(x-a)^n}{n!}
+ 
+est estimée par l'inégalité &#58;
+<center>
+!insmath |f(x)-f(a)-  f'(a)(x-a)-f^{(2)}(a)\frac{(x-a)^2}{2}+\dots-f^{(n)}(a)\frac{(x-a)^n}{n!}|=
+
+!insmath |f^{(n+1)}(c)\frac{(x-a)^{n+1}}{(n+1)!}|\leq k\frac{(b-a)^{n+1}}{(n+1)!}
+</center>.

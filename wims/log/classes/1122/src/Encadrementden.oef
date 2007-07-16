@@ -1,0 +1,111 @@
+\title{Encadrement de nombres réels}
+\language{fr}
+\range{-5..5}
+\author{Bernadette PERRIN-RIOU}
+\email{bpr@math.u-psud.fr}
+\computeanswer{yes}
+\format{html}
+\precision{10000}
+\real{a=randint(0..9)*random(-1,1)}
+\real{b=randint(\a+1..10)}
+\real{c=randint(0..9)*random(-1,1)}
+\real{d=randint(\c+1..10)}
+\real{ac=\a*\c}
+\real{bd=\b*\d}
+\real{ad=\a*\d}
+\real{bc=\b*\c}
+\real{res1=min(min(\ac,\bc),min(\ad,\bd))}
+\real{res2=max(max(\ac,\bc),max(\ad,\bd))}
+\real{res3= \a-\d}
+\real{res4=\b-\c}
+
+\real{res5=max(abs(\a),abs(\b))}
+\real{res6=min(abs(\a),abs(\b))}
+\real{res6=\a < 0 and \b>0 ? 0}
+
+\real{d1= -(\d)}
+\statement{Soient \(x) et \(y) deux réels vérifiant \a < \(x) < \b et \c < \(y) < \d. 
+Trouver le meilleur encadrement de \(x - y), de \(xy) et de la racine carrée de \(x^2).}
+\answer{\(x - y) est supérieur à}{\res3}{type=numeric}
+\answer{\(x - y) est inférieur à}{\res4}{type=numeric}
+\answer{\(xy) est supérieur à}{\res1}{type=numeric}
+\answer{\(xy) est inférieur à}{\res2}{type=numeric}
+\answer{la racine carrée de \(x^2) est > }{\res6}{type=numeric}
+\answer{la racine carrée de \(x^2) est < }{\res5}{type=numeric}
+\answer{la racine carrée de \(x^2) est < }{\res5}{type=numeric}
+
+\feedback{\reply1<>\res3 and \reply2<>\res4}{
+La règle de compatibilité de l'addition avec les inéquations 
+(structure d'ordre de \RR) est la suivante : 
+<p align="center"><font color="green">si \(x), \(y) et \(a) sont des réels 
+et si \(x < y) alors \(x + a < y + a)
+</font></p>
+Ainsi, pour minorer \(x - y), il faut se ramener d'une manière ou d'une autre 
+à cette règle en utilisant la règle 
+<p align="center"><font color="green">si \(x < y), alors \(-y < -x)</font>.</p>
+Ainsi, \(\a < x) donc \(\a - y < x - y ) ; \(y < \d) donc \(-\d < -y) donc \(\a - \d < \a - y). 
+Finalement, \( \res3 = \a - \d < \a - y < x - y )</p>}
+
+\feedback{\reply1<>\res3 and \reply2=\res4}{
+La règle de compatibilité de l'addition avec les inéquations 
+(structure d'ordre de \RR) est la suivante : 
+<p align="center"><font color="green">si \(x), \(y) et \(a) sont des réels et si \(x < y), alors 
+ \(x + a < y + a)
+</font></p>
+Ainsi, pour minorer \(x - y), il faut se ramener d'une manière ou d'une autre 
+à cette règle en utilisant la règle 
+<p align="center"><font color="green">si \(x < y), alors \(-y < -x)</font></p>
+Ainsi, \(\a < x) donc \(\a - y < x - y) ; \(y < \d) donc \(-\d < -y)
+et \(\a - \d < \a - y)
+Finalement, \(\res3 < \a - y < x - y)</p>}
+
+\feedback{\reply1=\res3 and \reply2<>\res4}{
+La règle de compatibilité de l'addition avec les inéquations 
+(structure d'ordre de \RR) est la suivante : 
+<p align="center"><font color="green">
+si \(x), \(y) et \(a) sont des réels et si \(x < y) alors \(x +a < y + a)
+</font></p>
+Ainsi, pour majorer \(x - y), il faut se ramener d'une manière ou d'une autre 
+à cette règle en utilisant la règle 
+<p align="center"><font color="green">
+ si \(x < y), alors \(-y < -x)</font></p>
+Ainsi,\(x < \b) donc \(x - y < \b - y) ; \(\c < y) donc \(-y < -\c) donc 
+\(\b - y<\b - (\c)).
+Finalement, \(x-y < \b-y < \res4) </p>}
+
+\feedback{(\reply3<>\res1 or \reply4<>\res2 ) and 0<\c and \a>0 and \b>0}{
+La règle de compatibilité de la multiplication avec les inéquations 
+(structure d'ordre de
+\RR) est la suivante : 
+<p align="center"><font color="green">
+si \(x), \(y) sont des réels et si \(a) est un réel strictement positif, 
+si \(x < y) alors \(xa < ya).
+ </font></p>
+ Pour majorer et minorer xy : 
+ comme \(0 < \c < y < \d) et \( \a < x < \b ) , on a \( \a y < xy < \b y ).
+ 	Comme \(0 < \a) et \(\c < y), \(\res1 < \a y < xy) ; enfin comme 
+ 	\(y < \d), \(xy < \b y < \res2)}
+
+\feedback{(\reply3<>\res1 or \reply4<>\res2 ) and 0<\c and \a<0 and \b>0}{
+La règle de compatibilité de la multiplication avec les inéquations 
+(structure d'ordre de \RR) est la suivante : 
+<p align="center"><font color="green">
+si \(x), \(y) sont des réels et si \(a) est un réel strictement positif, 
+si \(x < y), alors \(xa < ya)
+</font></p>
+ Pour majorer et minorer \(xy) : 
+ comme \(0 < \c < y < \d) et \( \a < x < \b ) , on a \( \a y < xy < \b y ).
+ Comme \(0 > \a) et \(y < \d ),\(\res1 < \a y < xy) ;
+ comme \(\b > 0), \(\b y < \res2), donc \(xy < \res2)}
+ 
+ \feedback{(\reply3<>\res1 or \reply4<>\res2 ) and 0<\c and \a<0 and \b<0}{
+La règle de compatibilité de la multiplication avec les inéquations 
+(structure d'ordre de \RR) est la suivante : 
+<p align="center"><font color="green">
+si \(x), \(y) sont des réels et si \(a) est un réel strictement positif, 
+si \(x < y) alors \(xa < ya).
+ </font></p>
+ Pour majorer et minorer \(xy) : 
+ comme \(0 < \c < y < \d) et \( \a < x < \b ) , on a \( \a y < xy < \b y ).
+ Comme \(0>\a) et \(y < \d ),\(\res1 < \a y < xy) ;
+ comme \(\b < 0), \(\b y < \b *\c), donc \(xy < \res2)}

@@ -1,0 +1,13 @@
+#! /bin/sh
+
+rm -f .IND
+for cls in [0-9]*
+do
+# expr=`awk -F'=' '$1=="!set mb_expiration" {print $2; exit}' $cls/.def`
+ titl=`awk -F'=' '$1=="!set mb_title" {print $2; exit}' $cls/.def`
+ lang=`awk -F'=' '$1=="!set mb_lang" {print $2; exit}' $cls/.def`
+ echo ":$cls,$lang,$titl" >>.IND
+done
+sort -t ',' -f -k 3 .IND >.index
+rm -f .IND
+

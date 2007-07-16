@@ -1,0 +1,88 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=WIMS 3.22
+!set m_date=20021001
+!set m_time=20:40:24
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200210/1
+!set m_exists=yes
+!exit
+:source
+<pre>
+This version brings about an important acceleration of the server, due to
+the rewriting of some kernel codes. However, it was not that slow, so the
+benefit of this acceleration is felt mainly when there are a big number of
+simultaneous connections (more than a few dozens).
+&lt;p>
+Here are the results of some tests run on a 1GHz Athlon station.
+&lt;p>
+&lt;center>&lt;table border=2>
+&lt;tr>&lt;th rowspan=2>Job&lt;th colspan=2>Timing
+&lt;tr>&lt;th>Before&lt;th>3.22
+&lt;tr>&lt;td>Dynamic TeX formula&lt;td>90 ms&lt;td>55 ms
+&lt;tr>&lt;td>Multiple calls to PARI/GP&lt;br>(starting from the second call)
+&lt;td>65 ms&lt;td>3 ms
+&lt;tr>&lt;td>Read a variable&lt;td>3.5 \(mu)s&lt;td>0.8 \(mu)s
+&lt;tr>&lt;td>Write a variable&lt;td>20 \(mu)s&lt;td>2 \(mu)s
+&lt;/table>&lt;/center>
+&lt;p>
+There are still potentials of performance improvement, especially on
+the dynamic generation of graphics and animations. These will be realised in
+a future version.
+&lt;p>
+For a preliminary estimation, a WIMS server of the new version run on a
+recent PC with sufficient memory (256MB or up) will be able to serve up to
+a few hundreds of simultaneous connections, as long as there is no intensive
+use of dynamic animations.
+&lt;p>
+This version also features the beginning of the use of site configuration.
+And the package is reported to work on Mac OS-X.
+</pre>
+!exit
+:html
+This version brings about an important acceleration of the server, due to
+the rewriting of some kernel codes. However, it was not that slow, so the
+benefit of this acceleration is felt mainly when there are a big number of
+simultaneous connections (more than a few dozens).
+<p>
+Here are the results of some tests run on a 1GHz Athlon station.
+<p>
+<center><table border=2>
+<tr><th rowspan=2>Job<th colspan=2>Timing
+<tr><th>Before<th>3.22
+<tr><td>Dynamic TeX formula<td>90 ms<td>55 ms
+<tr><td>Multiple calls to PARI/GP<br>(starting from the second call)
+<td>65 ms<td>3 ms
+<tr><td>Read a variable<td>3.5 
+!insmath mu
+s<td>0.8 
+!insmath mu
+s
+<tr><td>Write a variable<td>20 
+!insmath mu
+s<td>2 
+!insmath mu
+s
+</table></center>
+<p>
+There are still potentials of performance improvement, especially on
+the dynamic generation of graphics and animations. These will be realised in
+a future version.
+<p>
+For a preliminary estimation, a WIMS server of the new version run on a
+recent PC with sufficient memory (256MB or up) will be able to serve up to
+a few hundreds of simultaneous connections, as long as there is no intensive
+use of dynamic animations.
+<p>
+This version also features the beginning of the use of site configuration.
+And the package is reported to work on Mac OS-X.
+

@@ -1,0 +1,58 @@
+#! /bin/sh
+
+cd `dirname $0`
+rm -f .IND 2>/dev/null
+rm -f [0-9]*/.subclasses 2>/dev/null
+clist=`ls -d [0-9]* 2>/dev/null`
+for cls in $clist
+do
+ expr=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $cls/.def`
+ inst=`awk -F'=' '$1=="!set class_institution" {print $2; exit}' $cls/.def`
+ desc=`awk -F'=' '$1=="!set class_description" {print $2; exit}' $cls/.def`
+ lang=`awk -F'=' '$1=="!set class_lang" {print $2; exit}' $cls/.def`
+ lvl=`awk -F'=' '$1=="!set class_level" {print $2; exit}' $cls/.def`
+ pswd=`awk -F'=' '$1=="!set class_password" {print substr($2,2,3); exit}' $cls/.def`
+ supv=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' $cls/.def`
+ type=`awk -F'=' '$1=="!set class_type" {print $2; exit}' $cls/.def`
+ if [ -n "$desc" ]; then
+  [ -z "$type" ] && type=0
+  case $type in
+   0|2|4)
+    echo ":$cls,$expr,$inst,$desc,$lang,$type,$lvl,$pswd,$supv" >>.IND
+    if [ "$type" = "2" ]; then
+     slist=`ls -d $cls/[0-9]* 2>/dev/null`
+     for scs in $slist; do
+      expr=`awk -F'=' '$1=="!set class_expiration" {print $2; exit}' $scs/.def`
+      inst=`awk -F'=' '$1=="!set class_institution" {print $2; exit}' $scs/.def`
+      desc=`awk -F'=' '$1=="!set class_description" {print $2; exit}' $scs/.def`
+      lang=`awk -F'=' '$1=="!set class_lang" {print $2; exit}' $scs/.def`
+      lvl=`awk -F'=' '$1=="!set class_level" {print $2; exit}' $scs/.def`
+      pswd=`awk -F'=' '$1=="!set class_password" {print substr($2,2,3); exit}' $scs/.def`
+      supv=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' $scs/.def`
+      echo ":$scs,$expr,$inst,$desc,$lang,1,$lvl,$pswd,$supv" >>$cls/.subclasses
+     done
+    fi
+    ;;
+   *)
+    sup=`awk -F'=' '$1=="!set class_superclass" {print $2; exit}' $cls/.def | cut -d, -f1`
+    [ -n "$sup" ] && [ "$sup" -gt 10000 ] && echo ":$cls,$expr,$inst,$desc,$lang,$type,$lvl,$pswd,$supv" >>$sup/.subclasses 2>/dev/null
+    ;;
+  esac
+ fi
+done
+sort -t ',' -f -k 2 <.IND >.index
+rm -f .IND
+
+for cls in 1???
+do
+ if [ -d "$cls/.users.bak" ]; then
+  dd=`ls $cls/.users | grep -c .`
+  if [ "$dd" -gt 50 ]; then
+   rm -rf $cls/.users
+   cp -R $cls/.users.bak $cls/.users
+   cp $cls/.userlist.bak $cls/.userlist
+   rm -rf $cls/score/* $cls/noscore/*
+  fi
+ fi
+done
+

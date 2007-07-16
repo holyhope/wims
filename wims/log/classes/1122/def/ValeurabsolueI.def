@@ -1,0 +1,105 @@
+!set title=Valeur absolue I
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+language=fr
+leftrange=-5.000000
+rightrange=5.000000
+author=Michel Gosse
+email=michel.gosse@ac-poitiers.fr
+computeanswer=no
+precision=10000
+
+ansorder=c
+varcnt=15
+prevarcnt=14
+postvarcnt=0
+replycnt=0
+choicecnt=1
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint -10, 10
+
+val6=$[rint($(tmp0))]
+tmp0=!randint 1, 10
+
+val7=$[rint($(tmp0))]
+t_=!replace internal \( by ( in x-$val6;
+tmp0=!exec maxima $t_
+
+val8=$(tmp0)
+val9=$[rint($val6+$val7)]
+val10=$[rint($val6-$val7)]
+val11=$[rint($val7+$val6)]
+val12=$[rint($val7-$val6)]
+tmp0=!randint 1, 2
+
+val13=$[rint($(tmp0))]
+tmp0=!item $val13 of \le,=
+
+val14=$(tmp0)
+val15=[$val10,$val9]
+val16={$val10,$val9}
+tmp0=!item $val13 of $val15,$val16
+
+val17=$(tmp0)
+val18=[$val12,$val11]
+val19={$val12,$val11}
+choicename1=S=
+choicegood1=$val17
+choicebad1=$val15,$val16,$val18,$val19
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()L'ensemble des réels <i>x</i> qui vérifient l'équation <br>	<center>	
+!insmath |$val8| $val14 $val7
+$()	</center>	est égal à :
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=7,8,14
+embedcnt=0

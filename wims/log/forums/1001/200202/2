@@ -1,0 +1,44 @@
+!set p_=!word 1 of $wims_read_parm
+!bound p_ within none,header,source,html default none
+!goto $p_
+:none
+!exit
+:header
+!set m_subject=Direct TeX to image driver is now available.
+!set m_date=20020223
+!set m_time=16:42:27
+!set m_from=Gang XIAO
+!set m_sender_ip=127.0.0.1
+!set m_sender_id=
+!set m_sender_class=
+!set m_email=xiao@unice.fr
+!set m_to=
+!set m_prec=O200202/2
+!set m_exists=yes
+!exit
+:source
+<pre>
+WIMS uses TeX to render mathematical symbols and formulas, and in a dynamic way:
+
+Each time WIMS encounters a formula to be rendered beautifully, it translates the formula into TeX input, calls TeX to translate it into a .dvi file, then translate the latter into a graphics file (gif).
+
+Up to now, the last step uses dvips to translate the dvi file into postscript image, then calls ImageMagick to translate the image into a browser-recognized graphics format. ImageMagick calls in turn Ghostscript to interpret the postscript file. All these steps take a huge amount of time, sensibly slowing down the server, create many compatibility problems, and the result is not always satisfactory.
+
+Now, a direct dvi to gif driver program is incorporated into WIMS, that directly translates dvi into a gif file. You should immediately feel the speed up of the server when several formulas are rendered in the page. And compatibility problems should no longer exist.
+
+Moreover, this driver is ready to take more features, such as colored fonts in TeX formulas. It can also be used as a standalone program, outside WIMS. However, documentation for this purpose is not written yet.
+
+On the other hand, you should also remark the difference in the appearances of the fonts. They are now sharper, but anti-aliasing is gone. This is because current version does not make size-reduction. In fact, whether anti-aliasing is better is quite subject to individual appreciation. Therefore, even if size-reduction and anti-aliasing is very easy to add to the driver, these will not take place unless there is a strong preference from the users' side. So write me if you want them!</pre>
+!exit
+:html
+WIMS uses TeX to render mathematical symbols and formulas, and in a dynamic way&#58;
+<p>
+Each time WIMS encounters a formula to be rendered beautifully, it translates the formula into TeX input, calls TeX to translate it into a .dvi file, then translate the latter into a graphics file (gif).
+<p>
+Up to now, the last step uses dvips to translate the dvi file into postscript image, then calls ImageMagick to translate the image into a browser-recognized graphics format. ImageMagick calls in turn Ghostscript to interpret the postscript file. All these steps take a huge amount of time, sensibly slowing down the server, create many compatibility problems, and the result is not always satisfactory.
+<p>
+Now, a direct dvi to gif driver program is incorporated into WIMS, that directly translates dvi into a gif file. You should immediately feel the speed up of the server when several formulas are rendered in the page. And compatibility problems should no longer exist.
+<p>
+Moreover, this driver is ready to take more features, such as colored fonts in TeX formulas. It can also be used as a standalone program, outside WIMS. However, documentation for this purpose is not written yet.
+<p>
+On the other hand, you should also remark the difference in the appearances of the fonts. They are now sharper, but anti-aliasing is gone. This is because current version does not make size-reduction. In fact, whether anti-aliasing is better is quite subject to individual appreciation. Therefore, even if size-reduction and anti-aliasing is very easy to add to the driver, these will not take place unless there is a strong preference from the users' side. So write me if you want them!
