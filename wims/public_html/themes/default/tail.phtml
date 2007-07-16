@@ -1,0 +1,35 @@
+!! Tail menu theme.
+!nocache
+!set wims_theme_tail=yes
+
+<div class=wimstail>
+<center><hr width=35%>
+!if $wims_homeref_special!=$empty
+ <small>$wims_homeref_special</small>
+ </center>
+ !exit
+!endif
+
+<table align=center border=0 cellspacing=0 cellpadding=2
+bgcolor=$wims_homeref_bgcolor
+class=wimstail>
+<tr>
+!for i_=1 to $wims_homeref_n1
+ <td align=center><small>
+ !set 1_=!line $i_ of $wims_rm_1
+ !read oneitem.phtml $1_
+ </small></td>
+!next i_
+
+</tr>
+<tr><td align=center colspan=$wims_homeref_n1> </td></tr>
+
+!for i_=1 to $wims_homeref_n2
+ <tr><td align=center colspan=$wims_homeref_n1><small>
+ !set 1_=!line $i_ of $wims_rm_2
+ !read oneitem.phtml $1_
+ </small></td></tr>
+!next i_
+
+</table></center>
+</div>

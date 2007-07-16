@@ -1,0 +1,18 @@
+!! Adm table theme definition.
+
+!distribute item #A08060,#CCCCFF,#FCFCF0,#DCDCDC, \
+	0,1,3\
+	into\
+	table_scolor,table_bgcolor,table_color1,table_color2,\
+	table_border,table_cellspacing,table_cellpadding
+
+wims_incremental=1
+table_center=center
+table_header=!nosubst <$table_center><table border="$table_border" bgcolor="$table_scolor"\
+	class="wimstable"\
+	cellspacing="$table_cellspacing" cellpadding="$table_cellpadding">
+table_end=!nosubst </table></$table_center>
+table_hdtr=!nosubst <tr bgcolor="$table_bgcolor">
+table_colors=$table_color1,$table_color2
+table_tr=!nosubst <tr bgcolor="$(table_colors[$wims_incremental%2+1])">
+

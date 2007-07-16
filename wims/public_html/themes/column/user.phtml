@@ -1,0 +1,263 @@
+!! Class participant page theme.
+!nocache
+!if $module!=home
+ !exit
+!endif
+
+!set home_theme=yes
+!set percents=!getscorepercent
+!set class_homepage=!getdef class_homepage in wimshome/log/classes/$wims_class/.def
+!set etest=!record 0 of wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
+!set n_=!wordcnt $etest
+
+!if / isin $class_homepage and _tool notin $wims_session
+ !set deffile=wimshome/log/classes/$wims_class/doc/$class_homepage.def
+ !set t_=!getdef titb in $deffile
+ !if $t_=$empty or $n_>=4
+  !goto normal
+ !endif
+ !read ./userhome.phtml
+ !goto end
+!endif
+
+:normal
+
+!if $n_>=4
+ !distribute words $etest into h_,s_,t_,n_
+ !set r_=!record 0 of wimshome/sessions/$s_/examreg.$n_
+ !set now=$wims_nowseconds
+ !set ws=!translate _ to $ $ in $wims_session
+ !set ws=!word 1 of $ws
+ !set sm=!record 0 of wimshome/log/classes/$wims_class/.E$n_
+ !if $r_!=$empty and $s_!=$ws and $t_>$now and $sm!=#
+  !read classlogo.phtml
+  <center> <br> <br>
+  <b><font size=+2>$wims_classname</font></b>
+  <br>
+  !if $wims_superclass=$empty or $wims_superclass=$wims_class
+   $wims_institutionname
+  !else
+   !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
+   !if / isin $class_parent and $class_type=1
+    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    / 
+    !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user $pname
+   !endif
+  !endif
+  </center>
+  <br clear=all> <br>
+  $U_examworking
+  !if $h_=$httpd_REMOTE_ADDR
+   !href session=$s_&module=adm/class/exam.$lang&job=student&exam=$n_ $U_examcont
+  !else
+   $U_examdouble
+   !sh rm -f ../sessions/$ws/var.stat >/dev/null
+  !endif
+  !goto end
+ !endif
+ !if $t_<$now or $r_=$empty
+  !writefile wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
+ !endif
+!endif
+
+!if _tool isin $wims_session
+  <center> <br> <br>
+  <b><font size=+2>$wims_classname</font></b>
+  <br>
+  !if $wims_superclass=$empty or $wims_superclass=$wims_class
+  $wims_institutionname
+  !else
+   !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
+   !if / isin $class_parent and $class_type=1
+    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+    / 
+    !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user $pname
+   !endif
+  !endif
+  </center>
+  <br clear=all> <br>
+ !read ./tools.phtml
+ !goto end
+!endif
+
+<table border=0 width=100% cellpadding=0 cellspacing=0>
+<tr><td width=12% bgcolor=$wims_ref_bgcolor align=center valign=top>
+<div class=wimsmenu>
+<small>
+&nbsp;<p>
+!href module=adm/class/classes&type=participant $U_oclass
+<p>
+!href cmd=close&module=home $V_Quit
+<p>
+!href module=adm/forum/mboard $N_Mboard
+<p>
+!mailurl $wims_supervisormail $V_Wsup
+<p>
+!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
+<p>
+!href module=adm/class/passwd $V_Chpass
+
+</p></div></td><td valign=top>
+<div class=wimsbody>
+
+!read classlogo.phtml
+<center> <br> <br>
+<b><font size=+2>$wims_classname</font></b>
+<br>
+!if $wims_superclass=$empty or $wims_superclass=$wims_class
+ $wims_institutionname
+!else
+ !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
+ !if / isin $class_parent and $class_type=1
+  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+  / 
+  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user $pname
+ !endif
+!endif
+</center>
+<br clear=all> <br>
+
+!set supmail=!mailurl $wims_supervisormail $wims_supervisor
+
+$U_greet
+<small>
+!if $class_type isin 234
+ !href module=adm/class/userlist&job=userprop $U_account
+ &nbsp;
+!endif
+!href target=wims_help module=help/main&chapter=3 $N_help
+</small>
+
+!if & isin $newmsgcnt or $newmsgcnt>0
+ <br>
+ !href module=adm/forum/mboard $U_newmsg
+!endif
+
+<p>
+!read ./wimshome/log/classes/$wims_class/.motd
+<p>
+!if $class_type>=2
+ !read ./subclasses.phtml
+ !set is_interclass=yes
+!endif
+
+!set dcnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
+!for i=1 to $dcnt
+ !set d_=!record $i of wimshome/log/classes/$wims_class/doc/.index
+ !distribute lines $d_ into s_,t_,a_,e_,c_,o_
+ !if $o_>0
+  !set ds_list=!append line $s_ to $ds_list
+  !set dt_list=!append line $t_ to $dt_list
+ !endif
+!next i
+!set dcnt=!linecnt $ds_list
+!set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set aclist=
+!for i=1 to $t
+ !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ !set a_=!line 1 of $(s_$i)
+ !if $a_>=1 and $a_<=2
+  !set aclist=!append item $i to $aclist
+ !endif
+!next i
+!set n=!itemcnt $aclist
+!set t=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!set aelist=
+!for i=1 to $t
+ !set e_$i=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+ !set a_=!line 1 of $(e_$i)
+ !if $a_>=1 and $a_<=2
+  !set aelist=!append item $i to $aelist
+ !endif
+!next i
+!set m=!itemcnt $aelist
+!set t=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+!set avlist=
+!for i=1 to $t
+ !set v_$i=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+ !set a_=!line 1 of $(v_$i)
+ !if $a_>=1 and $a_<=2
+  !set avlist=!append item $i to $avlist
+ !endif
+!next i
+!set v=!itemcnt $avlist
+
+!ifval $dcnt+$n+$m+$v=0
+ !if $is_interclass!=yes
+ $U_nosheet
+ !endif
+!else
+ !if $is_interclass!=yes
+ $U_assign
+ !href module=adm/class/userlist.$lang $U_myscore
+. <br>
+ !endif
+ <table border=0>
+ !if $exist_cdt=yes
+  <tr><td>&nbsp;&nbsp;<td colspan=2>
+   !href module=adm/class/cdt $U_cdt
+  </td></tr>
+ !endif
+ !for i=1 to $dcnt
+  !set s_=!line $i of $ds_list
+  !set t_=!line $i of $dt_list
+  <tr><td>&nbsp;&nbsp;<td>$U_Doc<td>
+  !href module=adm/doc.$lang?job=read&doc=$s_&block=main $t_
+ !next i
+ !for i=1 to $n
+  !set se=!item $i of $aclist
+  !distribute lines $(s_$se) into ac,t_,ti,de
+  <tr><td>&nbsp;&nbsp;<td>$U_Sheet $se. <td>
+  !href module=adm/sheet&sh=$se $ti
+  !if $ac>=2
+   ($U_expired)
+  !else
+   !if showshexpire iswordof $class_option
+    !read misc/expire.phtml.$lang $t_
+   !endif
+  !endif
+  !set pe=!line $se of $percents
+  !set p1=!word 1 of $pe
+  !set p2=!word 2 of $pe
+  !if $p1!=$empty
+   ($p1% $U_done, $U_average $[$p2]/10)
+  !endif
+ !next i
+ !for i=1 to $m
+  !set se=!item $i of $aelist
+  !distribute lines $(e_$se) into ac,t_,s_,ti,de
+  <tr><td>&nbsp;&nbsp;<td>$U_Exam $se. <td>
+  !href module=adm/class/exam&job=student&exam=$se $ti
+  !if $ac>=2
+   ($U_expired)
+  !else
+   !if showexexpire iswordof $class_option
+    !read misc/expire.phtml.$lang $t_
+   !endif
+  !endif
+ !next i
+ !for i=1 to $v
+  !set sv=!item $i of $avlist
+  !distribute lines $(v_$sv) into ac,ti
+  <tr><td>&nbsp;&nbsp;<td>$U_Vote <td>
+  !href module=adm/vote&job=read&vote=$sv $ti
+  !if $ac>=2
+   ($U_expired)
+  !endif
+ !next i
+ </table> <p>
+!endif
+
+:endbar
+</p></div></td></tr></table>
+:end
+<div class=wimstail>
+<p align=right><small>WIMS-$wims_version@$httpd_HTTP_HOST</small></p>
+!if $wims_user=supervisor
+ <p><center>
+ !href $ $SU_Bhome
+ </center>
+!endif
+</DIV></BODY>
+</HTML>
+

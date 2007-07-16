@@ -1,0 +1,27 @@
+!nocache
+!! Header menu bar definition.
+
+!if $wims_printable=yes
+ !exit
+!endif
+
+!set wims_theme_header=yes
+!if $wims_class=$empty
+ !set wims_name_home=<IMG SRC=gifs/logo.gif border=0 width=60 alt="WIMS logo">
+!endif
+!!set instex_color=64,64,32
+
+<table border=0 width=100% cellpadding=0 cellspacing=0>
+<tr><td width=12% valign=top bgcolor=$wims_name_bgcolor>
+<div class=wimsmenu>
+<br>
+<center><small>
+!for i_=1 to $wims_hm_cnt
+ !set 1_=!line $i_ of $wims_hm
+ !read oneitem.phtml $1_
+ <p>
+!next i_
+</center>
+<p></div>
+
+</td><td bgcolor=#E0E8F0>
