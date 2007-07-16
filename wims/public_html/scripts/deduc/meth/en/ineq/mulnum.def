@@ -1,0 +1,58 @@
+!set methtit2=Multiply an inequality by a non-zero number
+!set methtit=Multiply an inequality by a number
+!set methenv=ZZ QQ RR
+!set methparmtype=number,parm inequality
+!set methhelp=This method transforms an inequality like \(A > B) to\
+ the equivalent inequality \(A*n > B*n) (or \(A*n < B*n)), where \(n) is a number\
+ that must be non-zero in order to guarantee the equivalence between the\
+ original inequality and the transformed one.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Multiply the inequality
+ !read deduc/methparm.phtml 2
+ by the number
+ !read deduc/methparm.phtml 1,10
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ !if $methparm1=0
+  error=Multiply an inequality by 0 makes you lose information, and is therefore\
+   prohibited.
+  !advance penalty
+  !exit
+ !endif
+ methexp=Multiply \($left $sign $right) by \($methparm1)
+
+ !read deduc/sub/simplify ($left) * ($methparm1)\
+	($right) * ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $methparm1<0
+  newsign=!translate internal <> to >< in $sign
+ !else
+  newsign=$sign
+ !endif
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Onlywhen the multiplier is non-zero,\
+	$ct_Onlywhen the multiplier is positive,\
+	$ct_Onlywhen the two sides are positive,\
+	$ct_Onlywhen the two sides are of the same sign,\
+	$ct_Onlywhen the inequality is strict
+ 
+ badsign=!translate internal <> to >< in $newsign
+ resultlist=$newobject2,\
+	$newright $newsign $newleft,\
+	$newleft $badsign $newright
+!exit
+

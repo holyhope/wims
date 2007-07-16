@@ -1,0 +1,28 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Probability density function of Cauchy law 
+slib_parms=3\
+,[data]\
+5,lambda\
+0.5,sigma
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=Values of probability density function of Cauchy law of parameters lambda and sigma 
+slib_comment=data can be a list of reals 
+slib_example= [2,3,4],5,0.5
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_l,slib_s
+
+!default slib_n= 5
+!default slib_p=0.5
+
+slib_data=!declosing $slib_data
+slib_cnt= !itemcnt $slib_data
+slib_cst= $[(pi*$slib_s)^(-1)]
+slib_out=!values $slib_cst/(1+((x-$slib_l)/$slib_s)^2)  for x in $slib_data
+
+slib_out=!trim $slib_out

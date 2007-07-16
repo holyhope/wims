@@ -1,0 +1,65 @@
+!set methtit=Rewrite an integral
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, function
+!set methhelp=You can rewrite the kernel of an integral in an equivalent form.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !reset methparm3
+ !set N=!linecnt $mtobj1
+ !if $N=1
+  !set l=!item 2 to -1 of $mtobj1
+  !set l=!mathsubst integrate= in $l
+  !set l=!declosing $l
+  !set v=!item 2 of $l
+ !endif
+ Rewrite the integration
+ !read deduc/methparm.phtml 1
+ in
+ <p><center><table border=0>
+ <tr><td nowrap>
+ \(integrate())
+ !read deduc/methparm.phtml 2,40
+ !if $N=1
+  d$v
+ !else 
+  d<input size=4 name=methparm3>
+ !endif
+ </td></tr></table></center>
+!exit
+:check
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=Fail
+  !exit
+ !endif
+
+ methparm3=!word 1 of $methparm3
+ !if $methparm3!=$empty and $methparm3!=$ivar
+  error=You cannot change the variable name here. Please correct.
+  !exit
+ !endif
+ !read deduc/sub/checkzero ($iker)-($methparm2)
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $out!=yes
+  error=Bad rewriting. Please correct.
+  !exit
+ !endif
+ 
+ newobject1=integrate($methparm2,$ivar)
+ oldobject=1
+ methexp=rewriting
+!exit
+

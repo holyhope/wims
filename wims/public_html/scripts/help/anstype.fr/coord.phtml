@@ -1,0 +1,61 @@
+
+<b>Clic sur une image.</b>
+(nom : <tt>coord</tt>)
+<br>
+Ce type de réponse permet à l'utilisateur de cliquer sur une image,
+et peut analyser la position du clic suivant divers critères de zone.
+<p>
+La bonne réponse doit être donnée sous la forme d'une matrice (le
+séparateur de lignes est le point-virgule `;'). La première ligne est
+l'URL de l'image.
+</p><p>
+La seconde ligne est la position des critères permettant de
+considérer les coordonnées du clic comme correctes.  Et à partir de la
+troisième ligne éventuelle, chacune peut contenir des critères
+(mauvaises positions).
+</p><p>
+La réponse de l'utilisateur est considérée comme bonne lorsque les
+conditions de la deuxième ligne sont remplies. Sinon, si les critères
+de mauvaises positions existent (à partir de la 3ème ligne), la
+réponse est mauvaise si l'une de ces mauvaises conditions est remplie, et
+ambigue si aucune condition n'est remplie (dans ce dernier cas,
+l'utilisateur devra réessayer de répondre). S'il n'y a pas de critère
+de mauvaise position, toute réponse ne remplissant pas les conditions
+de la deuxième ligne sera jugée mauvaise.
+</p><p>
+Le numéro de la première des lignes en accord avec la réponse de
+l'utilisateur, diminué de 1, est stocké dans une variable
+<tt>\result</tt><em>n</em>, où <em>n</em> est le numéro du champ de
+réponse, et peut être utilisé dans un \feedback.
+</p><p>
+Liste des conditions disponibles pour tester le clic de l'utilisateur :
+<ul>
+<li><tt>point,x,y</tt> Point en (x,y). C'est un point ``épais'', de largeur
+fixe.</li>
+<li><tt>rectangle,x1,y1,x2,y2</tt> L'intérieur d'un rectangle
+de diagonale (x1,y1)---(x2,y2).</li>
+<li><tt>circle,x,y,d</tt> L'intérieur d'un cercle de centre (x,y)
+et diamètre d.</li>
+<li><tt>ellipse,x,y,w,h</tt> L'intérieur d'une ellipse de centre
+(x,y), largeur w, et hauteur h.</li>
+<li><tt>polygon,x1,y1,x2,y2,x3,y3,...</tt> L'intérieur d'un polygone
+engendré par les points (x1,y1), (x2,y2), (x3,y3), ...</li>
+<li><tt>bound,NOMFIC,x,y</tt> zone définie dans le fichier image
+NOMFIC, qui doit être de la même taille que l'image cliquée (mais peut
+être une image différente). La condition est remplie si (x,y) est dans
+la même zone de remplissage que le clic de l'utilisateur.</li>
+<li><tt>bound,NOMFIC</tt> comme ci-dessus, mais la condition est remplie si 
+le clic de l'utilisateur a une couleur DIFFERENTE du 
+pixel du coin en haut à gauche de NOMFIC.</li>
+</ul>
+</p><p>
+Plusieurs conditions peuvent être combinées dans la même ligne, en
+utilisant les connecteurs logiques
+`&' (intersection), `|' (union), `^' (complémentaire), ainsi que les
+parenthèses.
+</p><p>
+Il est recommandé d'insérer ce champ de réponse dans l'énoncé. Il ne
+peut pas coexister avec d'autres champs de réponse, pour la raison
+évidente que tout clic de l'utilisateur sur une image enverra le
+formulaire de réponse.
+</p>

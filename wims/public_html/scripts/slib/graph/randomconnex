@@ -1,0 +1,59 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=random connex graph
+slib_parms=2\
+,n number of vertex\
+,m minimum number of edges
+slib_author=Bernadette PERRIN-RIOU
+slib_out=adjacence matrix 
+slib_comment=
+slib_example=6,3\
+6,8\
+6
+
+!exit
+
+:proc
+!reset slib_m
+!distribute item $wims_read_parm into slib_n, slib_m
+
+!default slib_m =!randint $slib_n, $[min(floor(5*$slib_n/2), $slib_n*($slib_n-1)/2)]
+
+slib_liste = !values 1 for x=1 to $slib_m
+slib_liste0=!values 0 for x=1 to $slib_n*($slib_n-1)/2 -$slib_m
+slib_liste =!shuffle $slib_liste,$slib_liste0
+slib_G= !exec pari slib_n =$slib_n;slib_ liste =[$slib_liste];\
+slib_M=matrix(slib_n,slib_n,slib_i,slib_j, if(slib_i < slib_j, slib_liste[slib_n*(slib_n-1)/2-(slib_n-slib_i+1)*(slib_n-slib_i)/2 +slib_j-slib_i]));\
+matrix(slib_n,slib_n,slib_i,slib_j,  if(slib_i<slib_j,slib_M[slib_i,slib_j],slib_M[slib_j,slib_i]))
+
+!!On rend le graphe connexe
+slib_debut=1
+
+:debut
+
+!read slib/graph/distance [$slib_G]
+slib_D=$slib_out
+
+!if -1 notin $slib_D
+	!goto end
+!endif
+slib_D=!translate internal  ; to $\
+$  in $slib_D
+!for slib_c=$slib_debut to $slib_n
+	slib_ligne=!line $slib_c of $slib_D
+	!if -1 isin $slib_ligne
+		slib_J=!positionof item -1 in $slib_ligne
+		!for slib_JJ in $slib_J
+			slib_G=!exec pari slib_N=Mat([$slib_G]);slib_N[$slib_c,$slib_JJ]=1;slib_N[$slib_JJ,$slib_c]=1;slib_N
+		!next slib_JJ
+		slib_debut=$[$slib_c+1]
+		!goto debut
+	!endif
+!next slib_c
+	
+:end
+
+slib_out=$slib_G
+
+					

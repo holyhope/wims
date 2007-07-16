@@ -1,0 +1,70 @@
+
+ <b>Klik in een plaatje (hotspot).</b>
+ (naam: <tt>coord</tt>)
+ <br>
+ Bij dit antwoordtype wordt het antwoord gelezen als de positie van een muisklik in een plaatje.
+ <p>
+ Het goede antwoord moet worden gedefinieerd als een matrix (rij-scheidingsteken een ';')
+ De eerste rij is de URL van het plaatje.
+ <p>
+    De tweede rij van deze matrix bevat de kriteria voor de goede klik co&ouml;rdinaten.
+Van af de derde rij kunnen allerlei foute-posities worden opgenomen.
+ <p>
+ Het antwoord van de leerling wordt goed gerekend als deze voldoet aan de kriteria 
+ zoals opgenomen in de tweede rij van de 'antwoordmatrix'
+Als er kriteria voor foute antwoorden zijn gedefinieerd (van af de derde rij)
+en het antwoord komt hiermee overeen, is de som fout. 
+In dit geval wordt bij een antwoord dat niet overeenkomt met een goed of
+ een fout antwoord, de vraag ter correctie geretourneerd. 
+ <br>
+Als er geen kriteria voor foute antwoorden zijn gedefinieerd, wordt een antwoord dat niet 
+voorkomt in de tweede matrixrij, fout gerekend.
+ <p>
+ Het "nummer minus 1" van de rij dat overeenkomt met het antwoord van de leerling, 
+ wordt bewaard in de variabele <tt>\result</tt><em>n</em> waarbij <em>n</em>
+ het nummer is van het input-veld zelf is. De variabele kan eventueel worden opgeroepen in een \feedback.
+ <p>
+Beschikbare condities voor het testen van de antwoord-klik:
+<ul>
+    <li>
+	<tt>point,x,y</tt> De co&ouml;rdinaten (x,y). Dit is een 'puntvormig' gebiedje met een standaard 'dikte'
+    </li>
+    <li>
+	<tt>rectangle,x1,y1,x2,y2</tt> 
+	Een gebied begrensd door een vierkant met twee hoeken (x1,y1) an (x2,y2).
+    </li>
+    <li>
+	<tt>circle,x,y,d</tt>
+	Het gebied begrensd door een cirkel met middelpunt (x,y) en diameter d.
+    </li>
+    <li>
+	<tt>ellipse,x,y,w,h</tt> 
+	Het gebied bepaald door een elips met middelpunt (x,y) breedte w, en hoogte h.
+    </li>
+    <li>
+	<tt>polygon,x1,y1,x2,y2,x3,y3,...</tt> 
+	Het gebied binnen een polygoon , bepaald door de punten (x1,y1), (x2,y2), (x3,y3), ...
+    </li>
+    <li>
+	<tt>bound,FNAME,x,y</tt> 
+	grenzen bepaald door een plaatje FNAME,
+	welke gelijke afmetingen dient te bezitten als het aangeklikte plaatje.
+	(het mag wel een ander plaatje zijn)
+	Aan de conditie wordt voldaan als (x,y) in het zelfde gebiedje ligt als de 'leerling-klik'
+     </li>
+    <li>
+	<tt>bound,FNAME</tt>
+	als hierboven ,maar met de conditie dat de leerling kilk een ANDERE KLEUR heeft 
+	als de linker-boven hoek van FNAME
+     </li>
+ </ul>
+ <p>
+ Meerder testcondities kunnen worden gecombineerd in een zelfde rij, onder gebruikmaking van: 
+ '&' (intersectie) <br>
+ '|' (union)<br>
+  '^' (complementair) of haakjes.
+ <p>
+Het wordt aanbevolen het 'input-field' via \embed{} op te nemen in het \statement{}.
+Dit antwoordtype n.l. is niet-compatible met andere invulvelden; 
+omdat elke gebruiker muisklik wordt opgestuurd naar de server als antwoord.
+

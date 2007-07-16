@@ -1,0 +1,93 @@
+!! This file contains error messages. It will be processed
+!! whenever the variable `error' is not empty.
+!set wims_module_error=error: $error
+
+<b>Erreur.</b>
+
+!if empty_out iswordof $error
+ Votre code n'a pas donné de résultat. Veuillez le corriger.
+ !if $m_reply_err!=$empty
+  <pre><font color=red>$m_reply_err</font></pre>
+ !endif
+ !exit
+!endif
+
+!if empty_data iswordof $error
+ Vous avez envoyé une réponse incomplète. Veuillez la compléter.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Vous avez déjà soumis une réponse à ce problème qui a été analysée et notée.
+ Les réponses répétitives sont ignorées. (N'utilisez pas le bouton
+ `recharger' de votre navigateur pour reposter les réponses!)
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  Votre code contient un mot non autorisé <tt>$illegal_name</tt>. Veuillez corriger.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+  Votre code a dépassé la limite de longueur. Veuillez le réécrire.
+  !exit
+ !endif
+ Votre réponse <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  n'est pas compréhensible&nbsp;:
+  le mot <font color=red>$w</font>
+  n'a pas de rapport avec ce problème ou n'est pas autorisé.
+  Veuillez corriger ou choisir une phrase plus simple.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  n'est pas permise&nbsp;: veuillez faire le calcul vous-même et 
+  soumettre la valeur qui en résulte.
+  !exit
+ !endif
+ !if badform iswordof $test
+  !if noreduced iswordof $test
+   n'est pas une &eacute;criture irr&eacute;ductible. Veuillez r&eacute;duire la fraction.
+   !exit
+  !endif
+  n'est pas écrite comme il faut. Veuillez la réécrire correctement.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  n'est qu'un nombre&nbsp;:
+  veuillez préciser l'unité dans votre réponse.
+  !exit
+ !endif
+ n'est pas compréhensible. Veuillez corriger l'erreur et resoumettre la réponse.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ A cause d'une erreur dans cet exercice (la bonne réponse pour
+ <b>$(replyname$i)</b> n'est pas valable), il est impossible d'analyser
+ votre réponse. La seule solution pour vous est de changer d'exercice&nbsp;;
+ toutes nos excuses.
+ <p>
+ Veuillez
+ !if $email!=$empty
+  !mailurl $email contacter l'auteur
+ !else
+  contacter l'auteur
+ !endif
+ de l'exercice si vous voulez signaler cette erreur.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Vos requêtes pour la version imprimable sont excessives.
+ !exit
+!endif
+

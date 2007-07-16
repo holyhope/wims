@@ -1,0 +1,59 @@
+
+<b>Draw a line, a polygon, points, a segment, a vector, a rectangle.</b>
+(name : <tt>javacurve</tt>)
+<br>
+This reply type allows the user to draw a line, a polygon, a segment, a
+vector,  a rectangle or several points on a drawing.
+<p>
+The good answer is givent as a matrix (row separator:
+ semi-colon `;'). The first row is the image URL.
+The second row is the condition for testing the user drawing in the following
+list:
+<ul>
+<li><tt>points,x1,y1,x2,y2,...</tt> Points in (x1,y1), (x2,y2), .... 
+ It is a ``fat'' point, with
+ fixed width.</li>
+<li><tt>line,x1,y1,x2,y2</tt> Line between (x1,y1), (x2,y2).</li>
+<li><tt>sline,x1,y1,x2,y2</tt> Semi-line from (x1,y1) to (x2,y2).</li>
+<li><tt>polygon,x1,y1,x2,y2,...</tt> Polygon of vertices (x1,y1), (x2,y2), ... .</li>
+<li><tt>rectangle,x1,y1,x2,y2</tt> Rectangle from (x1,y1) to (x2,y2).</li>
+<li><tt>rectangle,x1,y1,x2,y2,x3,y3,x4,y4</tt> Rectangle contained in the rectangle 
+from (x1,y1) to (x2,y2) and containing the rectangle from (x3,y3) to (x4,y4).</li>
+<li><tt>segment,x1,y1,x2,y2</tt> Segment  (x1,y1), (x2,y2).</li>
+<li><tt>vector,x1,y1,x2,y2</tt> Vector from (x1,y1) to (x2,y2).</li>
+<li><tt>circle,x1,y1,r</tt> Circle of center (x1,y1), radius r.</li>
+</ul>
+</p><p>
+It is recommended that this input field be embedded in the statement. It
+ cannot coexist with other input fields, for the obvious reason that any user
+ click on the image will send the form.
+
+</p>
+En général, the variable
+<tt>\reply</tt><em>n</em>, where <em>n</em> is the number
+ of the input field, which can be used in a \feedback is 
+ the click replies (x1,...)
+ except in the following cases : 
+<ul><li>
+In case of <tt>points</tt>,
+ the first line is the list of click coordinates in pixels, 
+ the second line is <tt>n1,n2,n3</tt> with
+<tt>n1</tt> number of correct points, <tt>n2</tt> number of missing points,
+<tt>n3</tt> number of incorrect points.The third line is the list
+of numbers of correctly found points. 
+</li><li>
+in case of <tt>cercle</tt>, the first line is the list
+of click coordinates and radius in pixels, the second line
+is <tt>n1,n2</tt> with 
+<tt>n1</tt> 1 if the center is correct, else 0 and
+<tt>n2</tt> 1 if the radius is correct, else 0.
+</li>
+<li>
+in case of <tt>sline</tt>, the first line is the list
+of click coordinates in pixels, the second line
+is <tt>n1,n2,n3</tt> with
+<tt>n1</tt> 1 if the origin is correct, else 0,
+<tt>n2</tt> 1 if the direction is correct, else 0,
+<tt>n3</tt>1 if the orientation is correct, else 0.
+</li>
+</ul>

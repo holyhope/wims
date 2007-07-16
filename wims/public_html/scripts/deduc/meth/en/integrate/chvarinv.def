@@ -1,0 +1,111 @@
+!set methtit=Reverse change of variable
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, function, function
+!set methhelp=This method applies the reverse change of variable for an\
+indefinite integral.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !set N=!linecnt $mtobj1
+ !if $N>1 and $methsubstep=1
+  :first
+  !set methsubstep=2
+  Apply a reverse change of variable for: <p>
+  !read deduc/methparm.phtml 1
+ !else
+  !bound methparm1 between integer 0 and $N default 1
+  !if $methparm1=0 or $error!=$empty
+   !goto first
+  !endif
+  <input type=hidden name=methparm1 value=$methparm1>
+  !set methsubstep=1
+  !set l=!line $methparm1 of $mtobj1
+  !set l=!item 2 to -1 of $l
+  !set k=!mathsubst integrate= in $l
+  !set k=!declosing $k
+  !set v=!item 2 of $k
+  !set nvar=!item 1 of $newvariables
+  Reverse change of variable for \($l): putting <br>
+  \($nvar = h($v) = )
+  !read deduc/methparm.phtml 2,18
+, one has
+  <p><center>
+ 	\($l = integrate(f(h($v))h'($v)d$v) = integrate(f($nvar)d$nvar)) ,
+  </center> <p>
+  where
+  \(f($nvar) = )
+  !read deduc/methparm.phtml 3,36
+.
+ !endif
+!exit
+:check
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=Fail
+  !exit
+ !endif
+
+ newvar=!item 1 of $newvariables
+ vv=!varlist nofn $methparm2
+ vtest=!listcomplement $ivar,e,pi,euler in $vv
+ !if $vtest!=$empty
+  error=\(h($ivar)) must be a function of \($ivar) only.
+  !exit
+ !endif
+ hprime=!exec maxima diff($methparm2,$ivar);
+ !if $hprime=$empty
+  :bad_data
+  error=bad_data
+  !exit
+ !endif
+ vv=!varlist nofn $methparm3
+ vtest=!listcomplement $newvar,e,pi,euler in $vv
+ !if $vtest!=$empty
+  error=\(f($newvar)) must be a function of \($newvar) only.
+  !exit
+ !endif
+ substed=!mathsubst $newvar=($methparm2) in $methparm3
+ !read deduc/sub/checkzero ($substed)*($hprime)-($iker)\
+	diff($methparm3,$newvar)
+ !distribute lines $out into ztest,difftest
+ !if $ztest=$empty or $difftest=$empty
+  !goto bad_data
+ !endif
+ !if $ztest!=yes
+  error=Bad formula for the change of variable!
+  !advance penalty
+  !exit
+ !endif
+ 
+ !read deduc/sub/simplify $methparm3\
+	($methparm3)*($newvar)
+ !distribute lines $out into newker,res
+ !if $newker=$empty or $res=$empty
+  !goto bad_data
+ !endif
+ !if strictintegrate iswordof $m_options and $difftest=yes
+  error=You don't have the right to put a constant for \(f($newvar)). \
+	Please change the method.
+  !exit
+ !endif
+
+ !if $difftest=yes
+  newobject1=($res)
+ !else
+  newobject1=integrate($newker,$newvar)
+ !endif
+ oldobject=0,1
+ newobject0=$newvar=$methparm2
+ methexp=\($newvar=$methparm2)
+ variables=$variables,$newvar 
+!exit
+

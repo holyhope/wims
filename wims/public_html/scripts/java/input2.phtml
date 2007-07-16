@@ -1,0 +1,63 @@
+!default java_inptype=!word 1 of $wims_read_parm
+!set java_inptype=!lower $java_inptype
+!bound java_inptype within\
+	curve,rect,rectangle,circle,line,lines,sline,segment,seg,poly,polygon,\
+	points,vector\
+	default curve
+!default java_width=300
+!default java_height=300
+!! java_bgcolor must use rgb coding. Color names bring security violations.
+!default java_bgcolor=#FFFFFF
+!if $module_language=fr
+ !default nojava=Pour utiliser cette activité, vous devez activer java dans\
+   votre navigateur.
+ !default java_retry=Effacer
+ !default java_prompt=Envoyer
+ !goto prend
+!endif
+
+!if $module_language=nl
+ !default nojava=Om dit te kunnen gebruiken moet je java ondersteuning in je browser hebben 
+ !default java_retry=Wissen
+ !default java_prompt=Opsturen
+ !goto prend
+!endif
+
+
+!if $module_language=es
+ !default nojava=Para utilizar esta actividad, debe activar java en\
+   su navigador.
+ !default java_retry=Borrar
+ !default java_prompt=Enviar
+ !goto prend
+!endif
+
+!if $module_language=cn
+ !default nojava=ÎªÁËÊ¹ÓÃÕâ¸ö¹¦ÄÜ, Çë¼¤»îÄãµÄä¯ÀÀÆ÷µÄ java.
+ !default java_retry=ÖØ»­
+ !default java_prompt=·¢ËÍ
+ !goto prend
+!endif
+!default nojava=You must enable java in your browser in order to use this activity.
+!default java_retry=Erase
+!default java_prompt=Send
+:prend
+
+<applet codebase=java code=input.class archive=input.jar
+width=$java_width height=$[$java_height+25]>
+!if $java_background!=$empty
+ <param name=background value="$java_background">
+!endif
+<param name=bgcolor value="$java_bgcolor">
+<param name=type value="$java_inptype">
+<param name=retry value="$java_retry">
+<param name=prompt value="$java_prompt">
+<param name=replyurl
+value=$wims_ref_name?session=$wims_session.$[$wims_session_serial+1]&$java_reply>
+
+<blink><b>$nojava</b></blink>
+</applet>
+ </center><p>
+ 
+!reset java_inptype, java_background, java_bgcolor, java_retry, java_prompt, java_reply
+

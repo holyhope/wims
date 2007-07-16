@@ -1,0 +1,17 @@
+!nocache
+
+!if $status=waiting
+ !exit
+!endif
+
+df_data=!record 0 of Dataindex
+df_names=!column 1 of $df_data
+df_titles=!column 2 of $df_data
+
+df_ask=!listintersect $(confparm$wims_read_parm) and $df_names
+!default df_ask=$df_names
+df_ask=!randitem $df_ask
+oefenv_datafile=src/data/$df_ask.data
+df_namecnt=!positionof item $df_ask in $df_names
+df_title=!item $df_namecnt of $df_titles
+

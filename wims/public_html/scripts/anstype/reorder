@@ -1,0 +1,66 @@
+# Similar to `imgcomp', except that there is no height item.
+
+good=$(replygood$i)
+good=!rows2lines $good
+!distribute lines $good into good,conn
+good=!nonempty lines $good
+good=!line 1 of $good
+goodlen=!itemcnt $good
+good=!replace , by $, $ in $good
+good=!singlespace $good
+good=!trim $good
+
+replen=!itemcnt $(reply$i)
+dd=!replace , by $, $ in $(reply$i)
+dd=!singlespace $dd
+dd=!trim $dd
+
+reply$i=$dd
+good=!translate | to $\
+$ in $good
+good=!nonempty lines $good
+gg=!line 1 of $good
+!if $conn=$empty
+ !if $good!=$empty and , notin $good
+  dd=!items2words $dd
+  gg=!items2words $gg
+ !endif
+!else
+ reply$i=!replace , by $conn in $(reply$i)
+ gg=!replace , by $conn in $gg
+!endif
+m_reply$i=$(reply$i)
+reply_$i=$dd
+replyGood$i=$gg
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+diag=
+t_=!linecnt $good
+
+!if $replen<$goodlen
+ error=empty_data
+ !exit
+!endif
+
+!for n=1 to $t_
+ g=!line $n of $good
+ !if $dd issametext $g
+  diag=yes
+ !endif
+!next g
+
+!if $diag=yes
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

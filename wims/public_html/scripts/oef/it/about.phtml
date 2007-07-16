@@ -1,0 +1,41 @@
+!set email=!trim $email
+!set author=!trim $author
+
+!if $author!=$empty
+ Autore dell'esercizio:
+ !if $email!=$empty
+  !mailurl $email $author
+.
+ !else
+ $author.
+!endif
+!endif
+!if $solution!=$empty and $hint!=$empty
+ &Egrave; disponibile sia un suggerimento che la souluzione completa dell'esercizio.
+!endif
+!if $solution!=$empty and $hint=$empty
+ &Egrave; disponibile la soluzione dell'esercizio.
+!endif
+!if $solution=$empty and $hint!=$empty
+ &egrave; disponibile un suggerimento per l'esercizio (ma non la soluzione).
+!endif
+!if $solution$hint=$empty
+ Non sono disponibili n&eacute; suggerimenti, n&eacute; soluzioni.
+!endif
+Link per questo esercizio: <br>
+!set exolink=$wims_ref_name?module=$module&cmd=new&exo=$thisexo
+<a href=$exolink>$exolink</a> <br>
+Link per questo esercizio con queste opzioni: <br>
+!if $module_init_parm!=$empty
+ !set exolink=$wims_ref_name?module=$module&cmd=new&$module_init_parm
+!else
+ !set exolink=$wims_ref_name?module=$module&cmd=new
+!endif
+<a href=$exolink>$exolink</a>
+<p>
+Informazioni su questa collezione di esercizi. <p>
+$module_about
+<p>
+Il copyright degli esercizi appartiene ai rispettivi autori. 
+
+!changeto NEWS.phtml

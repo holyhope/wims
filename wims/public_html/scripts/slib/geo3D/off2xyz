@@ -1,0 +1,67 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Format off to xyz
+slib_parms=1\
+,file at format off
+slib_author=Bernadette PERRIN-RIOU
+slib_out=translate format "off" in "xyz" extended (as in LatticeViewer)
+slib_comment=
+
+!exit
+
+:proc
+slib_data = $wims_read_parm
+
+slib_option= !item -1 of  $wims_read_parm
+
+slib_out=
+
+
+!!********** Lecture des données off
+
+slib_off=$slib_data
+slib_H=1
+slib_u=!line 1 of $slib_off
+slib_nom=!replace internal # by $empty in $slib_u
+!while # isin $slib_u
+!advance slib_H
+slib_u=!line $slib_H of $slib_off
+!endwhile
+
+!distribute word $slib_u into slib_S_cnt, slib_F_cnt, slib_A_cnt
+
+slib_sommet=!line $[$slib_H+1] to $[$slib_H+$slib_S_cnt] of $slib_off
+slib_sommet=!nonempty lines $slib_sommet
+
+
+slib_arete=!line $[$slib_H+$slib_S_cnt+$slib_F_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt+$slib_A_cnt] of $slib_off
+slib_arete=!nonempty line $slib_arete
+slib_face=!line $[$slib_H+$slib_S_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt] of $slib_off
+slib_face=!nonempty line $slib_face
+
+
+!!********** code de dessin des sommets
+
+slib_out=
+slib_Sommet=
+!for slib_na=1 to $slib_S_cnt
+  slib_coord=!line $slib_na of $slib_sommet
+  slib_out=!append line X$slib_na $slib_coord to $slib_out
+  slib_Sommet=!append line ATOM X$slib_na 255 0 0 0 to $slib_Sommet
+!next slib_na
+
+!!********** code de dessin des arêtes
+
+!for slib_nb=1 to $slib_A_cnt
+   slib_r=!line $slib_nb of $slib_arete
+   slib_cnt_r=!itemcnt $slib_r
+   slib_lien1=!word 1 of $slib_r 
+   slib_lien2=!word 2 to -1 of $slib_r   
+   slib_r1=!line $[1+$slib_lien1] of $slib_out
+   slib_r1=$slib_r1 $[1+$slib_lien1] $[1+$slib_lien2]
+   slib_out=!replace internal line number $[1+$slib_lien1] by $slib_r1 in $slib_out
+!next slib_nb
+slib_out=$slib_Sommet\
+$slib_out
+

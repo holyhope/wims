@@ -1,0 +1,27 @@
+!set anstype=yes
+!set anstyle=dprompt
+!if $wims_read_parm=def
+ !exit
+!endif
+!set input_rg=!rows2lines $(replygood$i)
+!set input_img=!line 1 of $input_rg
+!set input_rg=!line 2 to -1 of $input_rg
+!set input_icnt=!itemcnt $input_rg
+!if $input_icnt<1
+ !exit
+!endif
+!set input_type=!item 1 of $input_rg
+
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+
+!set inputsize=!translate internal x to $ $ in $inputsize
+!distribute words $inputsize into java_width, java_height
+!set java_background=$input_img
+!set java_reply=+cmd=reply&+reply$i=
+!read java/input.phtml $input_type
+
+!reset inputsize
+!set oef_formnosubmit=yes
+

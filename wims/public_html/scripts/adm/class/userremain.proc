@@ -1,0 +1,33 @@
+class_total=!recordcnt wimshome/log/classes/.index
+site_total=!defof usercnt in wimshome/log/classes/.stat
+!if $site_total=$empty
+ site_total=0
+ !for c=1 to $class_total
+  l=!record $c of wimshome/log/classes/.index
+  l=!item 1 of $l
+  l=!recordcnt wimshome/log/classes/$l/.userlist
+  site_total=$[$site_total+$l]
+ !next c
+!endif
+site_dispo=$[$wims_user_limit-$site_total]
+!if NaN isin $site_dispo
+ site_dispo=0
+!endif
+
+ur_c=!translate internal / to , in $wims_class
+ur_cnt=!itemcnt $ur_c
+ur_dispo=$site_dispo
+!for i=1 to $ur_cnt
+ ur_t=!item 1 to $i of $ur_c
+ ur_t=!translate internal , to / in $ur_t
+ ur_t=!nospace $ur_t
+ ur_total=!recordcnt wimshome/log/classes/$ur_t/.userlist
+ ur_limit=!defof class_limit in wimshome/log/classes/$ur_t/.def
+ !default ur_limit=$wims_class_user_limit
+# ur_limit=$[min($ur_limit,$wims_class_user_limit)]
+ ur_dispo=$[min($ur_dispo,$ur_limit-$ur_total)]
+!next i
+
+userremain=$[max(0,min($site_dispo,$ur_dispo))]
+dispo=$userremain
+

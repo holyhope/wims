@@ -1,0 +1,59 @@
+!distribute items Available references,\
+	Références disponibles\
+	into\
+	tit_en,tit_fr
+!default tit_$module_language=$tit_en
+
+<center><h1>$(tit_$module_language)</h1>
+ <b>---- $module_title ----</b>
+</center> <p>
+
+!set list=!exec reflist
+!set list=!sort nocase items $list
+!set list=!listuniq $list
+!set list=!replace internal , by , $ in $list
+!set lcnt=!itemcnt $list
+!if $lcnt=0
+ !if $module_language=fr
+  Aucune référence pour les mots dans cette pages. Désolé.
+  !exit
+ !endif
+ !if $module_language=es
+  No se encuentra ninguna referencia para las palabras de esta página. Lo sentimos.
+  !exit
+ !endif
+ 
+ No reference found for words in this page. Sorry.
+ !exit
+!endif
+
+:list
+!set dictionary=bases/sys/dummydic
+!set suffix_dictionary=bases/sys/suffix.$module_language
+!set translator_unknown=leave
+!set list2=!deaccent $list
+!set list2=!lower $list2
+!set list2=!translate internal ()_-' to $           $ in $list2
+!set list2=!exec translator $list2
+!set dictionary=bases/sys/words.$module_language
+!set list3=!exec translator $list2
+!set dictionary=bases/wikipedia/rep.$module_language
+!set suffix_dictionary=
+!set translator_unknown=
+!set list3=!exec translator $list3
+!set list3=!singlespace $list3
+
+!reset list4,list5
+!set par=(
+!for t=1 to $lcnt
+ !set ref=$(list[$t])
+ !set ref2=$(list2[$t])
+ !set ref3=$(list3[$t])
+ !if $ref2 notitemof $list4 and \
+	($par notin $ref or $ref3 notitemof $list5)
+  !set list4=!append item $ref2 to $list4
+  !set list5=!append item $ref3 to $list5
+  !pedia $ref
+  &nbsp;
+ !endif
+!next ref

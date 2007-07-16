@@ -1,0 +1,40 @@
+!set methtit=Substitution in an expression
+!set methtit2=Substitution in an algebraic expression global or partial
+!set methenv=ZZ QQ RR CC
+!set methparmtype=parm algexp nocomma nonesting, parm equation >, choice 2
+!set methhelp=Substitution in an expression according to an existing equation.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Apply the
+ !formselect methparm3 list 1,2 prompt substitution, reverse substitution
+ !read deduc/methparm.phtml 2
+ in the expression <br>
+ !read deduc/methparm.phtml 1
+!exit
+:check
+ !distribute items $methparmobj2 into hd,left,eq,right
+ eqt==
+ !if $eq!=$eqt
+  error=Bad justification of substitution.
+  !exit
+ !endif
+ !if $methparm3=2
+  !exchange left,right
+ !endif
+ !distribute items $methparmobj1 into hd2,exp2
+ !read deduc/sub/simplify ratsubst($right,$left,$exp2)
+ !if $out=$empty
+  error=Fail
+  !exit
+ !endif
+
+ newobject1=$out
+ oldobject=1
+ methexp=Substitution \($left = $right).
+!exit
+

@@ -1,0 +1,65 @@
+
+good=!rawmath $(replygood$i)
+replyGood$i=!item 1 of $good
+good=!row 1 of $good
+vars=!varlist nofn $good
+wims_rawmath_variables=$vars
+dd=!rawmath $(reply$i)
+dd=!mathsubst I=i in $dd
+
+primetrans=
+!if ' isin $good$dd
+ good=!replace internal ' by djkz in $good
+ dd=!replace internal ' by djkz in $dd
+ primetrans=yes
+!endif
+goodcnt=!itemcnt $good
+!if $goodcnt>1
+ test=
+ !for t=1 to $goodcnt
+  test=$test($(good[$t])-($dd))
+ !next t
+ test=!rawmath $test
+ good1=[$good]
+!else
+ test=$good-($dd)
+ good1=$good
+!endif
+mres=!exec maxima print($good1);\
+	print($dd);\
+	print(ratsimp($test));
+!if $primetrans=yes
+ mres=!replace internal djkz by ' in $mres
+!endif
+!distribute lines $mres into t1,t2,t3
+t1=!declosing $t1
+
+m_reply$i=$t2
+!if $wims_read_parm=nocompare
+ !if $t2=$empty or $t3=$empty
+  test=NaN
+ !endif
+ !exit
+!endif
+
+!if $t1=$empty
+ Test=bad $i
+ !exit
+!endif
+!if $t2=$empty or $t3=$empty
+ test=NaN
+ !exit
+!endif
+
+!if $t3=0 or $t3=0.0
+ !if $t2 isitemof $t1
+  diareply$i=good
+  !advance freegot
+ !else
+  test=NaN badform
+  !exit
+ !endif
+!else
+ diareply$i=bad
+!endif
+

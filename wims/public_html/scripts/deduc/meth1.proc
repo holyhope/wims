@@ -1,0 +1,58 @@
+
+!if $method=$empty or $method=-
+ error=empty_data
+ !exit
+!endif
+
+!if $method notitemof $mthlist,prf/cleanhyp
+ error=illegal_method
+ !advance penalty
+ !exit
+!endif
+
+meth=$method
+!reset methtit
+!read deduc/meth/$module_language/$meth.def
+!if $methtit=$empty
+ error=bad_method
+ !exit
+!endif
+!if $methenv!=$empty and $m_environ notwordof $methenv
+ error=bad_env
+ !exit
+!endif
+!if $error1!=$empty
+ error=$error1
+ !if $penalty1>0
+  penalty=$[$penalty+$penalty1]
+ !endif
+ !read deduc/methreset erase
+ !exit
+!endif
+
+methparmcnt=!itemcnt $methparmtype
+!for i=1 to $methparmcnt
+ l=!item $i of $methparmtype
+ a=!word 1 of $l
+ b=!word 2 to -1 of $l
+ !if $a=parm
+  mtobj$i=!exec mathexp extract $b\
+$objects
+  !if ERROR isin $(mtobj$i)
+   badmeth=$methtit
+   error=Fail
+   !read deduc/methreset erase
+   !exit
+  !endif
+  !if $objects=$empty or ($(mtobj$i)=$empty and $i notitemof $methparmrelax)
+   badmeth=$methtit
+   error=no_object
+   !read deduc/methreset erase
+   !advance penalty
+   !exit
+  !endif
+ !else
+  mtobj$i=
+ !endif
+!next i
+

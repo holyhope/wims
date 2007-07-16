@@ -1,0 +1,58 @@
+!set methtit2=Multiplier une inégalité par un nombre non-nul
+!set methtit=Multiplier une inégalité par un nombre
+!set methenv=ZZ QQ RR
+!set methparmtype=number,parm inequality
+!set methhelp=Cette méthode transforme une inégalité du style \(A > B)\
+ en l'inégalité équivalente \(A*n > B*n) (ou \(A*n < B*n)), où \(n) est un nombre\
+ qui doit être non-nul pour guarantir l'équivalence entre l'inégalité\
+ de départ et celle transformée.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Multiplier l'inégalité
+ !read deduc/methparm.phtml 2
+ par le nombre
+ !read deduc/methparm.phtml 1,10
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ !if $methparm1=0
+  error=Multiplier une inégalité par 0 vous fait perdre de l'information, et \
+   est donc interdit.
+  !advance penalty
+  !exit
+ !endif
+ methexp=Multiplier \($left $sign $right) par \($methparm1)
+
+ !read deduc/sub/simplify ($left) * ($methparm1)\
+	($right) * ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $methparm1<0
+  newsign=!translate internal <> to >< in $sign
+ !else
+  newsign=$sign
+ !endif
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Onlywhen on multiplie par un nombre non-nul,\
+	$ct_Onlywhen on multiplie par un nombre positif,\
+	$ct_Onlywhen les deux côtés sont positifs,\
+	$ct_Onlywhen les deux côtés sont de même signe,\
+	$ct_Onlywhen l'inégalité est stricte
+ 
+ badsign=!translate internal <> to >< in $newsign
+ resultlist=$newobject2,\
+	$newright $newsign $newleft,\
+	$newleft $badsign $newright
+!exit
+

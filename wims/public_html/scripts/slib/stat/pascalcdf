@@ -1,0 +1,36 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=cumulative distribution function of Binomial law
+slib_parms=3\
+,[data]\
+5,n\
+0.5,p
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=Cumulative distribution binomial law of parameters n and p (0&lt;p&lt;1)
+slib_comment=data can be a list of integers
+slib_example=[3,5,6],10,0.6
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_n,slib_p
+
+!default slib_n= 5
+!default slib_p=0.5
+
+
+!if $slib_p>=1 or $slib_p<=0 
+	slib_out=0
+	!exit
+!endif
+slib_out=
+slib_data=!declosing $slib_data
+
+slib_cnt= !itemcnt $slib_data
+
+slib_out=!exec octave pascal_cdf([$slib_data], $slib_n, $slib_p)
+
+slib_out=!words2items $slib_out
+slib_out=!trim $slib_out

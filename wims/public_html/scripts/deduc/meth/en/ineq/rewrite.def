@@ -1,0 +1,64 @@
+!set methtit=Rewrite an inequality
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality, function, choice 5, function
+!set methhelp=You can use this method to transform an existing (in)equation\
+ into an equivalent one, by a mixture of addition of terms, exchange of sides\
+ and multiplication by a non-zero constant.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Rewrite the inequality
+ !read deduc/methparm.phtml 1
+ to <br>
+ <input size=15 name=methparm2 value="$methparm2">
+ !formselect methparm3 from 1 to 5 prompt =,<,>,<=,>=
+ <input size=15 name=methparm4 value="$methparm4">
+ !set methremark=Your new inequality must be equivalent to the original one.
+!exit
+:check
+ !distribute items $methparmobj1 into data,left1,sign1,right1
+ sign2=!item $methparm3 of =,<,>,<=,>=
+ sign3=!item $methparm3 of =,>,<,>=,<=
+ !if $sign2 notsametext $sign1 and $sign3 notsametext $sign1
+  :badequiv
+  error=Your new inequality is not equivalent to the original one!
+  !advance penalty
+  !exit
+ !endif
+ 
+ check1=($left1) - ($right1)
+ !if $sign2 issametext $sign1
+  check2=($methparm2) - ($methparm4)
+ !else
+  check2=($methparm4) - ($methparm2)
+ !endif
+  
+ !read deduc/sub/checkzero $check1\
+	$check2
+ !distribute line $out into out1, out2
+ !read deduc/sub/Simplify ($check1) / ($check2)
+ out3=$out
+ !if $out1=yes or $out2=yes
+  !if $out1!=yes or $out2!=yes
+   !goto badequiv
+  !endif
+ !else
+  out3=$[$out3]
+  !if NaN isin $out3 or Inf isin $out3
+   !goto badequiv
+  !endif
+  !if $out3<=0 and $sign2 notsametext $sign3
+   !goto badequiv
+  !endif
+ !endif
+ methexp=Rewriting of \($left1 $sign1 $right1)
+
+ newobject1=$methparm2 $sign2 $methparm4
+ oldobject=1
+
+!exit
+

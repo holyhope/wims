@@ -1,0 +1,17 @@
+
+fname=!word 1 of $cn_option
+c=!char 1 of $fname
+d=!char -1 of $fname
+!if .. isin $fname or $fname=$empty or $c=/ or $d=/
+ !exit
+!endif
+
+!if / isin $fname
+ n_=!translate / to $ $ in $fname
+ dir=!word 1 to -2 of $n_
+ dir=!translate $ $ to / in $dir
+ !sh mkdir -p $wims_home/log/classes/$wims_class/$dir
+!endif
+
+!sh cd $wims_home; mv -f $wims_sesdir/webget.data log/classes/$wims_class/$fname >/dev/null
+

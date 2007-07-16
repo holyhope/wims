@@ -1,0 +1,46 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Connex components of a simple graph
+slib_parms=1\
+,matrix (which represents a simple graph)
+slib_author=Bernadette PERRIN-RIOU
+slib_out=number of  connex components of a simple graph,lists of connex components
+slib_comment=the matrix must be between brackets. If the graph is oriented, \
+connexity of the associated non oriented graph is computed. The connex components \
+are given as the lists of vertex separated by ;  
+slib_example=[0,1,0,0;1,0,0,0;0,0,0,1;0,0,1,0]
+ 
+!exit
+
+:proc
+
+slib_G= $wims_read_parm
+slib_G=!declosing $slib_G
+slib_G=!translate internal  $\
+$   to ; in $slib_G 
+
+slib_n=!exec pari slib_N=Mat([$slib_G]);matsize(slib_N)[1]
+
+slib_G= !exec pari  slib_N=Mat([$slib_G]); matrix($slib_n,$slib_n,i,j, max(slib_N[i,j],slib_N[j,i]))
+
+slib_cnt=0
+slib_liste=
+slib_matrix=
+slib_out=
+!for slib_i=1 to $slib_n
+	!if $slib_i notitemof $slib_liste
+		!readproc slib/graph/connexcomponent [$slib_G],$slib_i
+		slib_liste=!append item $slib_out to $slib_liste
+		!advance slib_cnt
+		slib_matrix=!append line  $slib_out to $slib_matrix
+		slib_out=
+	!endif
+!next slib_i	
+
+slib_matrix=!translate internal $\
+$   to ; in $slib_matrix
+
+slib_out= $slib_cnt,[$slib_matrix]
+
+

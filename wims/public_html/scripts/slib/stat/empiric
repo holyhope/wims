@@ -1,0 +1,55 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Generation of random numbers with a discrete law
+slib_parms=3\
+  1,m\
+  ,[p1,p2,..pj]\
+  ,[v1,v2,..vj]
+slib_author=S. Lemaire and Bernadette Perrin-Riou
+slib_out=random  data of m numbers following the law [p_1,p_2,..p_j]\
+on the values [v_1,v_2,..v_j] (p_i are positive reals of sum 1)
+
+
+slib_comment= P(X=v_i)=p_i
+
+slib_example= 5,[0.5,0.5],[3,7]\
+5,[1/3,1/3,1/3],[pile,face,tranche]
+
+!exit
+
+:proc
+
+!distribute item $wims_read_parm into slib_m, slib_p,slib_v
+
+slib_out=$empty
+!default slib_m=1
+slib_p=!declosing $slib_p
+slib_v=!declosing $slib_v
+slib_t=!itemcnt $slib_p
+slib_s=!item 1 of $slib_p
+slib_q=$slib_s
+
+!for slib_i=2 to $[$slib_t -1]
+  slib_a = !item $slib_i of $slib_p
+  slib_s=$[$slib_s + $slib_a]
+  slib_q=!append item $slib_s to $slib_q
+!next slib_i
+slib_q=!append item 1 to $slib_q
+slib_U=!random 0,1 repeat $slib_m
+
+!for slib_i=1 to $slib_m
+ slib_pr=!item $slib_i of $slib_U
+ slib_j=1
+:debut
+ slib_a=!item $slib_j  of $slib_q
+ !if $slib_pr >= $slib_a
+  !advance slib_j
+  !goto debut
+ !endif
+ 
+slib_r= !item $slib_j of $slib_v
+slib_out=!append item $slib_r to $slib_out
+!next slib_i
+
+slib_out =!trim $slib_out

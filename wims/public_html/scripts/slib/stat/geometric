@@ -1,0 +1,29 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Generation of random data with geometric law on N
+slib_parms=2\
+,m\
+,p
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=random data of m reals following a geometric law of parameter p on N. If m is a list [r,s], it returns an r by  s matrice. 
+slib_comment=
+slib_example= 20,0.3\
+[10,5],0.3
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a,slib_b
+slib_data=!declosing $slib_data
+slib_cnt=!itemcnt slib_data
+!if $slib_cnt=1
+	slib_data=1,$slib_data
+!endif	
+slib_out=!exec octave geometric_rnd($slib_a,$slib_data)
+
+slib_out=!words2items $slib_out
+
+slib_out=!trim $slib_out

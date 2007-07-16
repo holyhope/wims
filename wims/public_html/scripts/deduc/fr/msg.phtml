@@ -1,0 +1,137 @@
+!set wims_module_error=error: $error
+!if $oldpenalty<$penalty
+ !set penaltymsg=Vous obtenez une pénalité pour cette erreur grave.
+ !set oldpenalty=$penalty
+!endif
+
+<b>Erreur.</b>
+
+!set n=!wordcnt $error
+!if $n>1
+ $error
+ !exit
+!endif
+
+!if $error iswordof empty_data bad_data bad_reply double_reply\
+    bad_answer bad_exo nofloat unjustified check_fail no_object\
+    bad_step illegal_method bad_method bad_env fixedgoal msg\
+    unknown_variable
+ !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:empty_data
+ Vous avez envoyé une réponse incomplète. Veuillez la compléter.
+ !exit
+
+:bad_data
+ Vous avez entré une donnée incompréhensible ou hors contexte.
+ Erreur de frappe&nbsp;?
+ !exit
+
+:bad_reply
+ Non ! Votre réponse est erronée. Veuillez réessayer.
+ !exit
+
+:double_reply
+ Cet exercice est déjà terminé et noté. Vous ne pouvez plus continuer à
+ y répondre. (N'utilisez pas le bouton
+ `recharger' de votre navigateur pour reposter les réponses!)
+ !exit
+
+:unknown_variable
+ La variable <b><em>$unknown</em></b> n'est pas définie ici.
+ !exit
+
+:nofloat
+ Les nombres sous forme décimale ne sont pas admis dans cet exercice. Ecrivez 1/3
+ au lieu de 0.33333, et 1/4 au lieu de 0.25 !
+ !exit
+
+:unjustified
+ Désolé, mais cette méthode n'accepte pas votre entrée sans
+ justification supplémentaire. Vous devez faire autrement.
+ !exit
+
+:check_fail
+ Erreur du logiciel : veuillez rapporter le bogue.
+ !exit
+
+:no_object
+ Vous n'avez rien en ce moment pour appliquer la méthode <font color=red>
+ <em>$badmeth</em></font>.
+ !exit
+
+:bad_step
+ Vous avez voulu aller à une étape non-valable. Mauvaise manipulation de votre
+ part&nbsp;?
+ !exit
+
+:illegal_method
+ Vous avez voulu utiliser une méthode non-autorisée.
+ Tentative de fraude&nbsp;?
+ !exit
+
+:bad_method
+ La méthode n'existe pas. C'est probablement une erreur de l'exercice.
+ Il faut contacter son auteur pour la faire corriger.
+ !exit
+
+:bad_env
+ Cette méthode est incompatible avec l'environnement de l'exercice.
+ !exit
+
+:fixedgoal
+ Cet exercice ne vous autorise pas de modifier le but.
+ Vous ne pouvez donc pas appliquer cette méthode.
+ !exit
+
+:msg
+ $msg
+ !exit
+
+:bad_answer
+ Votre réponse <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  n'est pas compréhensible&nbsp;:
+  le mot <font color=red>$w</font>
+  dans la réponse n'a pas de rapport avec ce problème. Veuillez corriger.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  n'est pas permise&nbsp;: veuillez faire le calcul vous-même, et 
+  soumettre la valeur qui en résulte.
+  !exit
+ !endif
+ !if badform iswordof $test
+  n'est pas écrite comme il faut. Veuillez la réécrire correctement.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  n'est qu'un nombre&nbsp;:
+  veuillez préciser l'unité dans votre réponse.
+  !exit
+ !endif
+ n'est pas compréhensible. Veuillez corriger l'erreur et resoumettre la réponse.
+ !exit
+
+:bad_exo
+ A cause d'une erreur dans cet exercice, il est impossible d'analyser
+ votre réponse. La seule solution pour vous est de changer d'exercice&nbsp;;
+ toutes nos excuses.
+ <p>
+ Veuillez
+ !if $email!=$empty
+  !mailurl $email contacter l'auteur
+ !else
+  contacter l'auteur
+ !endif
+ de l'exercice si vous voulez signaler cette erreur.
+ !exit
+
+
+

@@ -1,0 +1,34 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantiles of laplace law
+slib_parms=1\
+,[data]
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values  at data
+slib_comment=data can be a list of reals in brackets; 
+slib_eslib_xample=[0.2,0.4,0.7]
+!eslib_xit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data
+
+slib_data=!declosing $slib_data
+slib_out=$empty
+!for slib_x in $slib_data
+	!if $slib_x<0.5 and $slib_x>0
+		slib_out=!append  item $[log (2 * $slib_x)] to $slib_out
+	!endif
+	!if $slib_x>=0.5	 and $slib_x<1
+		slib_out=!append  item $[log (2 * (1-$slib_x))] to $slib_out
+	!endif
+	!if $slib_x<0 or $slib_x>1
+		slib_out=!append  item NaN  to $slib_out
+	!endif	
+!next slib_x
+	
+slib_out=!trim $slib_out
+

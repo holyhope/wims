@@ -1,0 +1,134 @@
+!set wims_module_error=error: $error
+!if $oldpenalty<$penalty
+ !set penaltymsg=You got a penalty for this serious error.
+ !set oldpenalty=$penalty
+!endif
+
+<b>Error.</b>
+
+!set n=!wordcnt $error
+!if $n>1
+ $error
+ !exit
+!endif
+
+!if $error iswordof empty_data bad_data bad_reply double_reply\
+    bad_answer bad_exo nofloat unjustified check_fail no_object\
+    bad_step illegal_method bad_method bad_env fixedgoal msg\
+    unknown_variable
+ !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:empty_data
+ You have sent an incomplete reply. Please complete it.
+ !exit
+
+:bad_data
+ Your data are uncomprehensible or out of context. A typo?
+ !exit
+
+:bad_reply
+ No! Your reply is wrong. Please try again.
+ !exit
+
+:double_reply
+ This exercise is already terminated and scored. You cannot continue to 
+ reply to it. (Please do not use the `reload' button of your browser to
+ repost replies!)
+ !exit
+
+:unknown_variable
+ The variable <b><em>$unknown</em></b> is not defined here.
+ !exit
+
+:nofloat
+ Decimal numbers are not allowed in this exercise. Write 1/3 instead of
+ 0.33333, and 1/4 instead of 0.25!
+ !exit
+
+:unjustified
+ Sorry, but this method does not accept your input without further
+ justification. You should try other means.
+ !exit
+
+:check_fail
+ Software error: please report the bug.
+ !exit
+
+:no_object
+ You have nothing at this stage to apply the method <font color=red>
+ <em>$badmeth</em></font>.
+ !exit
+
+:bad_step
+ You have tried to go to a non-valid step. Bad manipulation?
+ !exit
+
+:illegal_method
+ You have tried to use a non-allowed method. Attempt to cheat?
+ !exit
+
+:bad_method
+ The method does not exist. This is probably an error of the exercise.
+ Please contact its author in order to fix it.
+ !exit
+
+:bad_env
+ This method is incompatible with the environment of the exercise.
+ !exit
+
+:fixedgoal
+ This exercise does not allow you to modify the goal. Therefore you
+ cannot use this method.
+ !exit
+
+:msg
+ $msg
+ !exit
+
+:bad_answer
+ Your reply <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  is not understandable: the word <font color=red>$w</font>
+  in the answer is unrelated to this problem. Please correct.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  is not allowed: please carry out the computation yourself, and
+  submit the resulting value.
+  !exit
+ !endif
+ !if badform iswordof $test
+  is not written as required. Please rewrite it in the correct form.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  is only a number: please precise the unit in your answer.
+  !exit
+ !endif
+ is not understandable. 
+ Please correct the error and resubmit your reply.
+ !exit
+
+:bad_exo
+ Due to an error in this exercise (the good answer for <b>$(replyname$i)</b>
+ is invalid), it is impossible to test the
+ correctness of your answer. The only solution for you is to change the
+ exercise; sorry.
+ <p>
+ Please 
+ !if $email!=$empty
+  !mailurl $email contact the author
+ !else
+  contact the author
+ !endif
+ of the exercise if you want to report the error.
+ !exit
+
+
+

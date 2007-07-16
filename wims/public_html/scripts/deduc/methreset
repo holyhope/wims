@@ -1,0 +1,85 @@
+
+!if $wims_read_parm=erase
+ !goto erase
+!endif
+
+!if $opt notwordof newstep
+ !read deduc/objects.put $currstep
+ statusline=!item 1 to $currstep of $statusline
+ statusline=!append item ($newobject) to $statusline
+ statusLine=!item 1 to $currstep of $statusLine
+ statusLine=!append item ($newObject) to $statusLine
+ stepcases=!item 1 to $currstep-1 of $stepcases
+ stepcases=!append item $thiscase to $stepcases
+ stepcounting=!char 1 to $currstep-1 of $stepcounting            $
+ !if $stepnocount!=yes
+  stepcounting=$(stepcounting)1
+ !else
+  stepcounting=$(stepcounting)0
+ !endif
+
+ methods=!line 1 to $currstep-1 of $methods\
+\
+\
+\
+
+ !default methexp=???
+ methods=!append line $methexp to $methods
+ laststep=!itemcnt $statusline
+ laststep=$[$laststep-1]
+!else
+ newobject=!item $currstep of $statusline
+ newobject=!char 2 to -2 of $newobject
+ newObject=!item $currstep of $statusLine
+ newObject=!char 2 to -2 of $newObject
+ !read deduc/objects.get $currstep-1
+!endif
+
+:erase
+!for i=1 to $methparmcnt
+ methparm$i=
+!next i
+
+!reset method, methparmtype, resultlist, contextlist,methparmrelax,\
+	m_context, m_equivalence,\
+	shcontext, shresult, listcontext, listresult,\
+	goodcontext, goodresult, repcontext, represult,\
+	casesplit, splitobj, stepnocount
+
+!if fixedgoal notwordof $m_options
+ !reset m_goal
+!endif
+
+t=!char 1 of $newobject
+!distribute item <,>,= into lt,gt,eq
+!if $t iswordof $lt $gt
+ no=!char 3 to -1 of $newobject
+!else
+ no=$newobject
+!endif
+m_newobject=!translate internal $\
+$ to $	$ in $no
+!distribute items 1,1 into methstep,methsubstep
+methlist=$mthlist
+titlist=$mtitles
+
+n=!linecnt $objects
+!for i=1 to $n
+ l=!line $i of $objects
+ w=!word 1 of $l
+ m=!word 2 to -1 of $l
+ imp=>
+ gl=<
+ !if $w=$imp
+  m_context=!append line $m to $m_context
+ !else
+  !if $w=$gl
+   !if fixedgoal notwordof $m_options
+    m_goal=!append line $m to $m_goal
+   !endif
+  !else
+   m_equivalence=!append line $l to $m_equivalence
+  !endif
+ !endif
+!next i
+

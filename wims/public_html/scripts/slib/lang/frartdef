@@ -1,0 +1,50 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Transform a French noun into definit form
+slib_parms=1\
+,the noun phrase
+slib_author=Gang Xiao
+slib_out=the transformed phrase
+slib_example= un avion \
+une\
+des
+ !exit
+
+:proc
+slib_inp=!word 1 of $wims_read_parm
+slib_out=
+!if $slib_inp=$empty
+ !exit
+!endif
+slib_1=!word 1 of $slib_inp
+!if $slib_1 notwordof de des du un une
+ slib_out=$slib_inp
+ !exit
+!endif
+
+slib_2=!word 2 of $slib_inp
+slib_c=!char 1 of $slib_2
+slib_2c=!word 2 to -1 of $slib_inp
+slib_3c=!word 3 to -1 of $slib_inp
+
+!if $slib_1=de
+ slib_out=$slib_2c
+ !exit
+!endif
+
+!if $slib_1=des
+ slib_out=les $slib_2c
+ !exit
+!endif
+
+!if $slib_1 iswordof du un
+ !read slib/lang/frapostrophe le $slib_2c
+ !exit
+!endif
+
+!if $slib_1=une
+ !read slib/lang/frapostrophe la $slib_2c
+ !exit
+!endif
+

@@ -1,0 +1,41 @@
+# first item must be font height (pixels).
+# Image files must be in \imagedir.
+# Bad images can be put after a semicolon `;'.
+# In case of several good solutions, they can be separated using `|'.
+#
+# This version only works under Netscape 4! Avoid using it!!
+
+good=!rows2lines $(replygood$i)
+good=!nonempty lines $good
+badwords=!line 2 to -1 of $good
+good=!line 1 of $good
+good=!item 2 to -1 of $good
+good=!words2items $good
+good=!nonempty items $good
+good=!nospace $good
+
+rep=!nospace $(reply$i)
+m_reply$i=rep
+reply$i=!replace , by ><img src=$imagedir/ in <img src=$imagedir/$rep>
+
+diag=
+good=!translate | to $\
+$ in $good
+good=!nonempty lines $good
+rgood=!line 1 of $good
+replyGood$i=!replace , by ><img src=$imagedir/ in <img src=$imagedir/$rgood>
+t_=!linecnt $good
+!for n=1 to $t_
+ g=!line $n of $good
+ !if $rep=$g
+  diag=yes
+ !endif
+!next g
+
+!if $diag=yes
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

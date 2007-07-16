@@ -1,0 +1,12 @@
+# delay 5 minutes after wrong auth password.
+
+currentauth=$wims_nowseconds
+lastauth=!record 0 of wimshome/$wims_sesdir/lastauth
+lastauth=!word 1 of $lastauth
+!writefile wimshome/$wims_sesdir/lastauth $currentauth
+!if $lastauth!=$empty and $lastauth>=$currentauth-5
+ auth_password=?$[$currentauth-$lastauth]????
+!else
+ auth_password=!passcrypt $auth_password
+!endif
+ 

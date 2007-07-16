@@ -1,0 +1,23 @@
+!distribute words $wims_read_parm into ans_1, ans_2
+
+ans_type=$(replytype$ans_1)
+!if symtext iswordof $(replyoption$ans_1)
+ ans_style=!defof anstyle in anstype/$ans_type.input
+ !if symtext iswordof $ans_style
+  ans_type=symtext
+ !endif
+!endif
+
+ans_w=$[$(replyweight$ans_1)]
+!if $ans_w!=$empty and NaN notin $ans_w and Inf notin $ans_w and \
+	$ans_w>0 and $ans_w!=1 and nocompare notwordof $ans_2
+ ans_got=$freegot
+ weightadjust=$[$weightadjust+$ans_w-1]
+ !read anstype/$ans_type $ans_2
+ ans_this=$[$freegot-$ans_got]
+ gotadjust=$[$gotadjust+$ans_this*($ans_w-1)]
+!else
+ !read anstype/$ans_type $ans_2
+!endif
+
+

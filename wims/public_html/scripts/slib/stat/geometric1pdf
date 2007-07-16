@@ -1,0 +1,36 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Probability density function of Geometric law on N*
+slib_parms=2\
+,[data]\
+0.5,p
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values of probability density function of the geometric distribution on N* of parameter p.
+slib_comment=data can be a list of reals
+slib_example=[2,4,7],0.5
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_p
+!default slib_p=0.5
+!if  $slib_p<=0  or $slib_p>=1
+	slib_out=0
+	!exit
+!endif
+slib_out=
+slib_data=!declosing $slib_data
+slib_p1=$[1-$slib_p]
+slib_out=!values  $slib_p*$slib_p1^(x-1) for x in $slib_data
+
+slib_cnt=!itemcnt $slib_data
+!for slib_i=1 to $slib_cnt
+	slib_tmp=!item $slib_i of $slib_data
+	!if $[rint($slib_tmp)-$slib_tmp]<>0 or $slib_tmp <= 0
+		slib_out=!replace internal item number $slib_i by 0 in $slib_out
+	!endif
+!next slib_i
+
+slib_out=!trim $slib_out

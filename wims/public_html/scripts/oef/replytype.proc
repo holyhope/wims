@@ -1,0 +1,33 @@
+rt_names=auto, coordinate, coordinates, corresp, correspondance,\
+	expalg, link, number, ranges, select, \
+	sigunit, text, unit, wordcomp
+rt_types=default, coord, coord, correspond, correspond,\
+	algexp, click, numeric, range, menu, \
+	sigunits, case, units, textcomp
+
+# These are old types. New types need not be declared here:
+# just put a line "!set anstype=yes" in the input file.
+
+rt_all=algexp aset atext case checkbox chemeq chset click clickfill code compose\
+coord correspond default dragfill equation formal fset function imgcomp\
+javacurve litexp mark matrix menu nocase numeric numexp radio range raw\
+reorder set sigunits textcomp units vector wlist
+
+rt_1=!positionof item $(replytype$i) in $rt_names
+!if $rt_1 != $empty and $rt_1 > 0
+ replytype$i=!item $rt_1 of $rt_types
+!endif
+
+!default replytype$i=default
+replytype$i=!word 1 of $(replytype$i)
+!reset anstype anstyle
+!if $(replytype$i) notwordof $rt_all
+ replytype$i=!text select abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 in $(replytype$i)
+ !readproc anstype/$(replytype$i).input def
+ !if $anstype!=yes
+  replytype$i=default
+ !endif
+!endif
+
+!readproc anstype/$(replytype$i).input def
+

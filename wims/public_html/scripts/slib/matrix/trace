@@ -1,0 +1,19 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=The trace of a square matrix
+slib_parms=1\
+,the input matrix
+slib_author=Gang Xiao
+slib_out=the trace (empty if error)
+slib_example=1,2,3;3,2,1;0,0,1
+!exit
+
+:proc
+slib_mat=!declosing $wims_read_parm
+!if $slib_mat=$empty
+ slib_out=
+!else
+ slib_out=!exec pari print(trace([$slib_mat]))
+!endif
+

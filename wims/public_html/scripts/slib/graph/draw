@@ -1,0 +1,117 @@
+!if  $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Graph draw
+slib_parms=5\
+,matrix with 0 and 1\
+blue,edge color\
+blue,vertex color\
+[1,2,..],vertex names\
+,  paths to draw with a different color, optional\
+slib_author=Bernadette PERRIN-RIOU
+slib_out=code for draw of the graph to be used with draw
+slib_comment=the matrix must be between brackets, if color are three numbers between 0 and 255,\
+ put them in brackets
+ slib_example=[0,0,1;0,0,1;1,1,0],red,blue, [A,B,C],[1,3,green;3,2,purple]\
+ [0,0,1,1;0,0,1,1;1,1,0,1;1,1,1,0],red,blue,,[1,3,2,green]
+ 
+!exit
+
+:proc
+slib_color1=
+slib_color2=
+slib_names = 
+!distribute item $wims_read_parm into slib_G,slib_color1, slib_color2,slib_names
+slib_path=!item 5 of $wims_read_parm
+slib_path=!declosing $slib_path
+slib_path = !translate internal  ;  to $\
+$ in $slib_path
+slib_cnt_path=!linecnt $slib_path
+!for slib_i =1 to $slib_cnt_path
+	slib_path_prov= !line $slib_i of $slib_path
+	slib_path_color$slib_i= !item -1 of $slib_path_prov
+	slib_path_color$slib_i= !declosing $(slib_path_color$slib_i)
+	slib_path$slib_i=!item 1 to -2 of $slib_path_prov
+	slib_path$slib_i = !nospace $(slib_path$slib_i)
+!next slib_i		
+slib_G=!declosing $slib_G
+
+slib_G=!translate internal  ;  to  $\
+$  in $slib_G
+
+slib_GG=!translate internal  $\
+$  to ; in $slib_G
+
+
+slib_or=!exec pari Mat([$slib_GG])==Mat([$slib_GG])~ 
+
+slib_names=!declosing $slib_names
+slib_color1=!declosing $slib_color1
+slib_color2=!declosing $slib_color2
+slib_n=!line 1 of $slib_G
+slib_n=!itemcnt $slib_n
+!default slib_color1=blue
+!default slib_color2=blue
+!default slib_names=!values slib_i for slib_i=1  to $slib_n
+
+!for slib_i =1 to $slib_n
+	slib_COS$slib_i=$[cos(2*pi*$slib_i/$slib_n)]
+	slib_SIN$slib_i=$[sin(2*pi*$slib_i/$slib_n)]
+!next slib_i
+slib_dessin = xrange -1.5,1.5\
+yrange -1.5,1.5
+!for slib_i=1 to $slib_n 
+	slib_name =!item $slib_i of $slib_names
+	slib_dessin=$slib_dessin\
+	disk $(slib_COS$slib_i),$(slib_SIN$slib_i), 6,$slib_color1\
+	text black, $[1.3*$(slib_COS$slib_i)],$[1.3*$(slib_SIN$slib_i)], medium ,$slib_name
+	!if $slib_or=1
+		!for slib_j=1 to $slib_i
+			slib_r=!line $slib_i of $slib_G
+			slib_u=!item $slib_j of $slib_r
+			!if $slib_u=1
+				slib_couleur=$slib_color2	
+				!for slib_k=1 to $slib_cnt_path
+					!if $slib_i,$slib_j isin $(slib_path$slib_k) or $slib_j,$slib_i isin $(slib_path$slib_k)
+						slib_couleur=$(slib_path_color$slib_k)						
+						!break 
+					!endif		
+				!next slib_k		
+				!if $slib_i<>$slib_j
+					slib_dessin=$slib_dessin\
+line $(slib_COS$slib_i),$(slib_SIN$slib_i),$(slib_COS$slib_j),$(slib_SIN$slib_j),$slib_couleur
+				!else
+					slib_dessin=$slib_dessin\
+ellipse $[$(slib_COS$slib_i)*1.25],$[$(slib_SIN$slib_i)*1.25], 0.5,0.5,$slib_couleur
+				!endif
+			!endif
+		!next slib_j	
+	!else
+		!for slib_j=1 to $slib_n
+			slib_r=!line $slib_i of $slib_G
+			slib_u=!item $slib_j of $slib_r
+			!if $slib_u=1
+				slib_couleur=$slib_color2
+				!for slib_k=1 to $slib_cnt_path
+					!if $slib_i,$slib_j isin $(slib_path$slib_k) or $slib_j,$slib_i isin $(slib_path$slib_k)
+						slib_couleur=$(slib_path_color$slib_k)
+						!break
+					!endif
+				!next slib_k	
+				!if $slib_i<>$slib_j
+					slib_dessin=$slib_dessin\
+arrow $(slib_COS$slib_i),$(slib_SIN$slib_i), $[($(slib_COS$slib_i)-$(slib_COS$slib_j))/2+$(slib_COS$slib_j)],$[($(slib_SIN$slib_i)-$(slib_SIN$slib_j))/2+$(slib_SIN$slib_j)],10,$slib_color2\
+line $(slib_COS$slib_i),$(slib_SIN$slib_i),$[$(slib_COS$slib_j)],$(slib_SIN$slib_j),$slib_couleur
+				!else
+					slib_dessin=$slib_dessin\
+ellipse $[$(slib_COS$slib_i)*1.25],$[$(slib_SIN$slib_i)*1.25], 0.5,0.5,$slib_couleur
+				!endif
+			!endif
+		!next slib_j	
+	!endif
+!next slib_i	
+					
+
+slib_out= $slib_dessin
+
+

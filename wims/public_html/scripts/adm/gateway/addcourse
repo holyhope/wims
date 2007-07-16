@@ -1,0 +1,123 @@
+
+!if $wims_superclass=$empty or $wims_user!=supervisor or $wims_read_parm=$empty
+ !exit
+!endif
+
+!distribute item $wims_read_parm into ac_prog, ac_class
+!if $ac_prog= or $ac_class= or \
+	$wims_class/ notin $wims_superclass/$ac_prog/ $wims_superclass/$ac_class/
+ !exit
+!endif
+ac_Level=$wims_superclass
+ac_Level_=wimshome/log/classes/$ac_Level
+ac_course=!translate internal / to , in $ac_prog
+ac_course=!item -1 of $ac_course
+userdir=wimshome/log/classes/$wims_superclass/.users
+course_sup=!defof class_Supervisor in $ac_Level_/$ac_prog/.def
+suptest=
+!if $course_sup!=supervisor and $course_sup!=$empty
+ suptest=!defof user_exists in wimshome/log/classes/$wims_superclass/.users/$course_sup
+!endif
+!if $suptest!=yes
+ course_sup=supervisor
+!endif
+sup_=$course_sup
+course_sup=
+
+ac_tt=
+test=!defof class_defined in $ac_Level_/$ac_class/$ac_course/.def
+ac_style=!defof class_progstyle in $ac_Level_/$ac_prog/.def
+!if $test=yes
+ test=!defof class_ocourses in $ac_Level_/$ac_class/.def
+ !if $ac_class/$ac_course notin $test and mandatory notwordof $ac_style
+  !for ac_tt in b,c,d,e,f,g,h,i,j
+   test=!defof class_defined in $ac_Level_/$ac_class/$ac_course$ac_tt/.def
+   !if $test!=yes
+    ac_course=$ac_course$ac_tt
+    !goto recourse
+   !endif
+  !next ac_tt
+  error=course_full
+  !exit
+ !endif
+ error=addcourse_already
+ !exit
+!endif
+:recourse
+
+1=!defof user_exists in $userdir/$sup_
+!if $1!=yes
+ s_=supervisor
+!else
+ 1=!defof user_supervisable in $userdir/$sup_
+ !if $1!=yes
+  name=$sup_
+  error=not_supervisable
+  !exit
+ !endif
+ slist=!defof user_supervise in $userdir/$sup_
+ slist=!listunion $slist and $ac_Level/$ac_class/$ac_course
+ !setdef !set user_supervise=$slist in $userdir/$sup_
+!endif
+
+!readdef $ac_Level_/$ac_prog/.def
+cadd_dc=!defof class_description in $ac_Level_/$ac_class/.def
+cadd_dc=!word 1 of $cadd_dc
+!for t in supervisor Supervisor, email, password, expiration, level
+ cadd_$t=$(class_$t)
+!next t
+cadd_secure=$sechost
+!default cadd_secure=$class_secure
+cadd_description=$cadd_dc-$class_description
+!if $ac_tt!=$empty
+ cadd_description=$cadd_description-$ac_tt
+!endif
+class_password=
+cadd_password=
+cadd_superclass=$wims_superclass
+cadd_parent=$wims_superclass/$ac_class
+cadd_type=1
+cadd_typename=course
+!readdef $ac_Level_/$ac_prog/supervisor
+!for t in lastname, firstname, password, email
+ sadd_$t=$(user_$t)
+!next t
+
+!if $passs!=$empty
+ passs=!text select *$char_passwd in $passs
+ passlen=!charcnt $passs
+ !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
+  error=bad_password
+  !exit
+ !endif
+ sadd_password=$passs
+!endif
+
+!read adm/class/addclass $ac_Level/$ac_class/$ac_course
+
+!setdef n_part=$ac_Level/$ac_class\
+n_sup=$ac_Level/$ac_class,$ac_Level/$ac_prog in $ac_Level_/$ac_class/$ac_course/neighbors
+ac_n=!defof n_part\
+n_sup in $ac_Level_/$ac_class/neighbors
+!distribute lines $ac_n into n_part, n_sup
+n_part=!listunion $n_part and $ac_Level/$ac_class/$ac_course
+n_sup =!listunion $n_sup  and $ac_Level/$ac_class/$ac_course
+!setdef n_part=$n_part\
+n_sup=$n_sup in $ac_Level_/$ac_class/neighbors
+
+n_sup=!defof n_sup in $ac_Level_/$ac_prog/neighbors
+n_sup=!listunion $n_sup and $ac_Level/$ac_class/$ac_course
+!setdef n_sup=$n_sup in $ac_Level_/$ac_prog/neighbors
+!read adm/class/addshare $ac_Level/$ac_prog, $ac_Level/$ac_class/$ac_course\
+	exo,sheet,exam,doc,vote
+
+ac_style=!defof class_progstyle in $ac_Level_/$ac_prog/.def
+!if mandatory iswordof $ac_style
+ ocourses=!defof class_ocourses in $ac_Level_/$ac_class/.def
+ ocourses=!listunion $ocourses and $ac_class/$ac_course
+ !setdef !set class_ocourses=$ocourses in $ac_Level_/$ac_class/.def
+ !sh cd $wims_home/log/classes/$ac_Level/$ac_class/$ac_course\
+	rm -f .userlist\
+	ln -s ../.userlist .
+!endif
+

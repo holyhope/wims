@@ -1,0 +1,20 @@
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set tt=!itemcnt $(replygood$i)
+  !ifval $tt%2=1
+   !default reply$i=$(replygood$i[-1])
+  !else
+   !default reply$i=$[($(replygood$i[1])+$(replygood$i[2]))/2]
+  !endif
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)&nbsp;=<td>
+!endif
+!bound inputsize between integer 1 and 100 default 20
+<input size=$inputsize name=reply$i value="$(reply$i)">
+!reset inputsize

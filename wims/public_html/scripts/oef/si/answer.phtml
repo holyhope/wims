@@ -1,0 +1,49 @@
+!nocache
+!if bad_exo iswordof $error
+ !exit
+!endif
+
+!set indgood=<font color=green><b>pravilen odgovor</b></font>
+!set indbad =<font color=red><b>napaèen odgovor</b></font>
+!set indprec=<font color=red><b>premajhna natanènost</b></font>
+!set condgood=<font color=green><b>DA</b></font>
+!set condbad =<font color=red><b>NE</b></font>
+!set indsee =<small>preberi spodnje besedilo</small>
+
+<table border=0>
+<tr><th colspan=3>Analiza va¹ega odgovora.
+!distribute item 1,1 into cntr,cntc
+!for t in $ansorder
+ !set i=$(cnt$t)
+ !if $oefsteps=$empty or $t$i isitemof $gotsteps
+  !read oef/answer$t.phtml
+ !endif
+ !advance cnt$t
+!next t
+
+!if $conditioncnt>0
+ !if $embedded_bracket!=$empty
+  <tr><td align=left colspan=2 nowrap><small>$embedded_bracket</small></td></tr>
+ !endif
+ <tr></tr><tr></tr>
+!endif
+!for i in $condlist
+ <tr><td colspan=2><b>$(condname$i)</b>:<td>
+ !item $(condtest$i)+1 of $condbad,$condgood
+!next i
+
+</table>
+
+!if $feedbackcnt>0
+ !read $deffile feedback
+!endif
+
+!if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $score<10))
+ <p><b>Solution.</b>
+ !if $solution!=$executed_str or $oef2wims_version<3.10
+  $solution
+ !else
+  !read $deffile solution
+ !endif
+!endif
+

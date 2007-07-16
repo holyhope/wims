@@ -1,0 +1,137 @@
+condtest1=0
+
+goal=!trim $m_goal
+!if $goal=$empty
+ goal=!trim $m_equivalence
+ eqgoal=yes
+!endif
+
+!if $goal=$empty
+ condtest1=1
+ !exit
+!endif
+
+context=
+cont=!nonempty lines $m_context
+gt=>
+lt=<
+eq==
+!if $gt isin $cont
+ ff=!exec mathexp extract inequality\
+$cont
+ nn=!linecnt $ff
+ !for n=1 to $nn
+  l=!line $n of $ff
+  !if $gt isin $l
+   !distribute item $l into data,left,sign,right
+   !distribute words $data into l_,s_,e_
+   !if $sign iswordof $gt $gt$eq
+    ss=!translate internal > to < in $sign
+    new=$right $ss $left
+    L=!line $l_ of $cont
+    !reset l1,l2
+    !if $s_>0
+     l1=!char 1 to $s_ of $L
+    !endif
+    v_=!charcnt $L
+    !if $e_<$v_
+     l2=!char $e_+1 to -1 of $L
+    !endif
+    cont=!replace line number $l_ by $l1$new$l2 in $cont
+   !endif
+  !endif
+ !next n 
+!endif
+n=!linecnt $cont
+!if $n<1
+ !if contradiction iswordof $m_goal
+  condtest1=-1
+ !endif
+ !exit
+!endif
+!for i=1 to $n
+ l=!line $i of $cont
+ !if $i=1
+  context=($l)
+ !else
+  context=$context And ($l)
+ !endif
+!next i
+
+!if $context=$empty
+# error=check_fail
+ !exit
+!endif
+
+!if $gt isin $goal
+ ff=!exec mathexp extract inequality\
+$goal
+ nn=!linecnt $ff
+ !for n=1 to $nn
+  l=!line $n of $ff
+  !if $gt isin $l
+   !distribute item $l into data,left,sign,right
+   !distribute words $data into l_,s_,e_
+   !if $sign iswordof $gt $gt$eq
+    ss=!translate internal > to < in $sign
+    new=$right $ss $left
+    L=!line $l_ of $goal
+    !reset l1,l2
+    !if $s_>0
+     l1=!char 1 to $s_ of $L
+    !endif
+    v_=!charcnt $L
+    !if $e_<$v_
+     l2=!char $e_+1 to -1 of $L
+    !endif
+    goal=!replace line number $l_ by $l1$new$l2 in $goal
+   !endif
+  !endif
+ !next n 
+!endif
+goalcnt=!linecnt $goal
+yinp=
+!for i=1 to $goalcnt
+ l=!line $i of $goal
+ yinp=!append line CanProve(($context) => ($l)); to $yinp
+!next i
+
+yinp=!replace internal = by == in $yinp
+yinp=!replace internal <== by <= in $yinp
+yinp=!replace internal >== by >= in $yinp
+yinp=!replace internal ==> by => in $yinp
+out=!exec yacas $yinp
+
+!if true notlineof $out and false notlineof $out
+ !exit
+!endif
+
+!for i=1 to $goalcnt
+ l=!line $i of $out
+ !if $l issametext false
+  condtest1=-1
+  !exit
+ !endif
+ !if $l issametext true
+  goal=!replace line number $i by $ in $goal
+ !endif
+!next i
+goal=!nonempty lines $goal
+goal=!trim $goal
+
+!if $goal=$empty
+ condtest1=1
+ !exit
+!endif
+
+!if $eqgoal=yes
+ m_equivalence=$goal
+ m_goal=
+!else
+ m_goal=$goal
+ m_equivalence=
+!endif
+
+!read deduc/objects.combine
+!read deduc/objects.put $[$currstep-1]
+

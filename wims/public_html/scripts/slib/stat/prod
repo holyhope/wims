@@ -1,0 +1,32 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Product of data
+slib_parms=1\
+ ,[data] or [data],[weight]
+slib_author=Adeline Grelot
+slib_out=data product 
+slib_comment=Data and weight can be recognized under many formats, \
+ in particular as a matrix (with data before weight).
+slib_example=[2,-7,6]\
+[2,7,6;1,1,4]\
+[2,1;7,1;6,4]\
+[2,7,6],[1,1,4]
+
+!exit
+
+:proc
+
+!readproc slib/stat/dataproc $wims_read_parm
+
+!if $slib_cnt=0
+	slib_out=1
+!else
+	!if $slib_weight =$empty
+	slib_out=!product x for x in $slib_data
+	!else
+	slib_cnt=!itemcnt $slib_data
+		slib_out=!exec pari print(prod(x=1,$slib_cnt,[$slib_data][x]^[$slib_weight][x]))
+	!endif weight
+!endif
+slib_out =!trim $slib_out

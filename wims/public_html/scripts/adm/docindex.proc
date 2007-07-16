@@ -1,0 +1,33 @@
+#Make documents index.
+
+!writefile $docdir/.index
+dlist=!filelist $wims_home/$Docdir
+dlist=!words2items $dlist
+!for d in $dlist
+ !if . notin $d
+  defs=!defof tit\
+author\
+email\
+copyright\
+docopen\
+dlang in $docdir/$d/.def
+  t_=!line 1 of $defs
+  t_=!trim $t_
+  !if $t_!=$empty
+   a_=!defof author in $docdir/$d/.def
+   a_=!items2words $a_
+   a_=!singlespace $a_
+   a_=!deaccent $a_
+   a_=!lower $a_
+   n=!linecnt $defs
+   !if $n<6
+    defs=$defs\
+all
+   !endif
+   !appendfile $docdir/.index :$d\
+$defs\
+$a_
+  !endif
+ !endif
+!next d
+

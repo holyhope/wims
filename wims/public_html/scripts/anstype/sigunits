@@ -1,0 +1,58 @@
+
+dd=!deaccent $(reply$i)
+units_option=s
+dd=!exec units-filter $dd
+units_option=
+
+!! the value
+dt=!word 1 of $dd
+d1=$[$dt]
+!! the unit and number of digits
+d2=!word 2 to 8 of $dd
+!! the number of digits
+d3=!word 9 of $dd
+
+m_reply$i=$(reply$i)
+!if $wims_read_parm=nocompare
+ !if NaN isin $d1 or Inf isin $d1 or ERROR isin $d1 or $dt=$empty
+  test=NaN 
+ !endif
+ !exit
+!endif
+
+gg=!deaccent $(replygood$i)
+units_option=o
+replyGood$i=!exec units-filter $(replygood$i)
+units_option=s
+gg=!exec units-filter $(replyGood$i)
+units_option=
+
+!! the value
+good=!word 1 of $gg
+good1=$[$good]
+!! the units and number of digits
+good2=!word 2 to 8 of $gg
+!! the number of digits
+good3=!word 9 of $gg
+
+!if NaN isin $good or Inf isin $good or ERROR isin $good or $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if NaN isin $d1 or Inf isin $d1 or ERROR isin $d1 or $dt=$empty
+ test=NaN 
+ !exit
+!endif
+
+emptyunit=0 0 0 0 0 0 0
+!if $good2!=$emptyunit and $d2=$emptyunit
+ test=NaN notunit
+ !exit
+!endif
+
+!if $good1=$d1 and $good2=$d2 and $d3=$good3
+ diareply$i=good
+ !advance freegot
+!endif
+

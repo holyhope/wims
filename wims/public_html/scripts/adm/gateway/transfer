@@ -1,0 +1,131 @@
+
+transfer_test=0
+!distribute words $wims_read_parm into transfer_user, transfer_cmd, transfer_other
+!if $wims_supertype!=4 or $wims_user!=supervisor
+ !exit
+!endif
+tr_list=
+tr_typename=!defof class_typename in wimshome/log/classes/$wims_class/.def
+tr_l1=!defof user_participate in \
+	wimshome/log/classes/$wims_superclass/.users/$transfer_user
+!if $tr_typename=course
+ tr_program=!defof sharing_exam in wimshome/log/classes/$wims_class/neighbors
+ tr_class=!defof user_class in wimshome/log/classes/$wims_class/.users/$transfer_user
+ !if $tr_class=$empty
+  tr_parent=!defof class_parent in wimshome/log/classes/$wims_class/.def
+  !if $tr_parent!=$empty and $tr_parent isitemof $tr_l1
+   tr_class=$tr_parent
+  !endif
+ !else
+  tr_class=$wims_superclass/$tr_class
+ !endif
+ !if $tr_program!=$empty and $tr_class!=$empty
+  tr_l2=!record 0 of wimshome/log/classes/$tr_program/courses
+  tr_l3=!record 0 of wimshome/log/classes/$tr_program/icourses
+  tr_l2=!append line $tr_l3 to $tr_l2
+  tr_l2=!column 1 of $tr_l2
+  tr_l2=!nonempty items $tr_l2
+  tr_l2=!makelist $wims_superclass/x for x in $tr_l2
+  tr_l2=!listcomplement $wims_class in $tr_l2
+  tr_list=
+  !for c_ in $tr_l2
+   tr_test1=!defof user_class in \
+	wimshome/log/classes/$c_/.users/$transfer_user
+   tr_test2=!defof sharing_exam in wimshome/log/classes/$c_/neighbors
+   !if $wims_superclass/$tr_test1=$tr_class or \
+	$tr_test2=$tr_program
+    tr_list=!append item $c_ to $tr_list
+   !endif
+  !next c_
+ !endif
+!else
+ !if $wims_class notitemof $tr_l1
+  !exit
+ !endif
+ tr_l1=!listcomplement $wims_class in $tr_l1
+ !for c_ in $tr_l1
+  tr_l2=!defof class_ocourses in wimshome/log/classes/$c_/.def
+  tr_l3=!defof user_courses in wimshome/log/classes/$c_/.users/$transfer_user
+  tr_l2=!append item $tr_l3 to $tr_l2
+  tr_l2=!nonempty items $tr_l2
+  !if $tr_l2!=$empty
+   tr_l2=!makelist $wims_superclass/x for x in $tr_l2
+   tr_list=!append item $tr_l2 to $tr_list
+  !endif
+ !next c_
+!endif
+
+!if $tr_list!=$empty
+ tr_l1=!makelist x/score for x in $tr_list
+ tr_l2=!makelist x/noscore for x in $tr_list
+ tr_l1=!items2words $tr_l1
+ tr_l2=!items2words $tr_l2
+ tr_score=!sh cd $wims_home/log/classes\
+	find $tr_l1 -name $transfer_user -o -name $transfer_user.exam | sed 's!/score/.*$$!!'
+ tr_noscore=!sh cd $wims_home/log/classes\
+	find $tr_l2 -name $transfer_user | sed 's!/noscore/.*$$!!'
+ tr_score=!words2items $tr_score
+ tr_noscore=!words2items $tr_noscore
+ tr_list=!listunion $tr_score and $tr_noscore
+ tr_list=!nonempty items $tr_list
+!endif
+
+transfer_test=!itemcnt $tr_list
+!if $transfer_test<1 or $transfer_cmd=test or\
+	$transfer_other notitemof $tr_list
+ !exit
+!endif
+
+!default tr_program=!defof sharing_exam in wimshome/log/classes/$transfer_other/neighbors
+!if $tr_typename!=course
+ tr_l1=!defof class_ocourses in wimshome/log/classes/$wims_class/.def
+ tr_l2=!defof user_courses in wimshome/log/classes/$wims_class/.users/$transfer_user
+ tr_l1=!append item $tr_l2 to $tr_l1
+ tr_l1=!nonempty items $tr_l1
+ tr_l1=!makelist $wims_superclass/x for x in $tr_l1
+ !for c in $tr_l1
+  tr_pr=!defof sharing_exam in wimshome/log/classes/$c/neighbors
+  !if $tr_pr=$tr_program
+   tr_this=$c
+   !break
+  !endif
+ !next c
+ !if $tr_this=$empty
+  error=no_reccourse
+  !exit
+ !endif
+!else
+ tr_this=$wims_class
+!endif
+
+tr_c1=log/classes/$transfer_other
+tr_c2=log/classes/$tr_this
+!if $transfer_cmd=replace
+ mline=cp $tr_c1/score/$transfer_user $tr_c2/score
+!else
+ mline=cat $tr_c1/score/$transfer_user $tr_c2/score/$transfer_user 2>/dev/null >$wims_sesdir/transfer\
+  sort <$wims_sesdir/transfer >$tr_c2/score/$transfer_user
+!endif
+
+!sh cd $wims_home\
+ if [ -f $tr_c1/score/$transfer_user ]; then\
+  $mline\
+ fi\
+ if [ -f $tr_c1/noscore/$transfer_user ]; then\
+  cat $tr_c1/noscore/$transfer_user $tr_c2/noscore/$transfer_user 2>/dev/null >$wims_sesdir/transfer\
+  sort <$wims_sesdir/transfer >$tr_c2/noscore/$transfer_user\
+ fi\
+ if [ -f $tr_c1/score/$transfer_user.exam ]; then\
+  cat $tr_c1/score/$transfer_user.exam >>$tr_c2/score/$transfer_user.exam\
+ fi\
+ if [ -d $tr_c1/examlog/$transfer_user ]; then\
+  mkdir -p $tr_c2/examlog\
+  mv -f $tr_c1/examlog/$transfer_user $tr_c2/examlog\
+ fi\
+ if [ -d $tr_c1/exolog/$transfer_user ]; then\
+  mkdir -p $tr_c2/exolog\
+  mv -f $tr_c1/exolog/$transfer_user $tr_c2/exolog\
+ fi\
+ cd $tr_c1\
+ rm -f noscore/$transfer_user score/$transfer_user score/$transfer_user.* 2>/dev/null
+

@@ -1,0 +1,48 @@
+!set i=$wims_read_parm
+!if c$i isitemof $embedded
+ !exit
+!endif
+ !set C_=$(choice$i)
+ !if debug iswordof $m_oefenv
+  !set replydefaulted=yes
+  !if $oef_default=yes
+   !set T_=!positionof item $(choicegood$i[1]) in $(choicelist$i)
+   !default choice$i=$(T_[1])
+  !endif
+ !endif
+ !if $choicecnt<=1 and $replycnt<1
+  !for jj=1 to $choiceitems1
+   <tr><td><input type=radio name=choice1 value=$jj
+   !if $jj=$(choice$i)
+    checked
+   !endif
+   >
+   !item $jj of $choicelist1
+  !next jj
+  !if $idontknow>0 and noidontknow notwordof $(choiceoption$i)
+   <tr><td><input type=radio name=choice1 value=$[$choiceitems1+1]> $ch_noidea
+  !endif
+  !if $qcmgood<=0
+   <tr><td><input type=radio name=choice1 value=$[$choiceitems1+2]> $ch_none
+  !endif
+ !else
+  <tr><td align=right>$(choicename$i)<td> :
+  !set p_=$ch_choose,$(choicelist$i)
+  !if $idontknow>0 and noidontknow notwordof $(choiceoption$i)
+   !set p_=$p_,$ch_noidea
+  !endif
+  !if $qcmgood<1
+   !set p_=$p_,$ch_none
+  !endif
+  !set N_=!itemcnt $p_
+  !if debug iswordof $m_oefenv
+   !set replydefaulted=yes
+   !if $oef_default=yes
+    !set T_=!positionof item $(choicegood$i[1]) in $(choicelist$i)
+    !default choice$i=$(T_[1])
+   !endif
+  !endif
+  !formselect choice$i from 0 to $[$N_-1] prompt $p_
+ !endif
+ !set choice$i=$C_
+

@@ -1,0 +1,63 @@
+
+!set wims_module_error=error: $error
+
+<b>Napaka.</b>
+
+!if empty_data iswordof $error
+ Va¹ odgovor je nepopoln. Prosim, dopolnite ga.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ Vrednosti, ki ste jih poslali, nisem uspel preveriti. Ste morda naredili napako pri vnosu?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Na to vpra¹anje ste ¾e odgovorili in va¹ odgovor je ¾e bil toèkovan. Ponovni odgovori niso veè upo¹tevani. (Ne uporabljajte gumba 'ponovno nalo¾i' (reload), da bi veèkrat odgovarjali na isto vpra¹anje!)
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ Va¹ odgovor <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  ni razumljiv: beseda <font color=red>$w</font>
+  v odgovoru ni videti povezana s problemom. Prosim, da vnesete popravek.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  ni dovoljen: izraz je treba izraèunati oziroma poenostaviti. Vnesete lahko le konèen rezultat.
+  !exit
+ !endif
+ !if badform iswordof $test
+  ni zapisan v zahtevani obliki. Prosim, da ga zapi¹ete na ustrezen naèin.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  je zgolj ¹tevilo. Prosim, da v odgovoru oznaèite tudi enoto.
+  !exit
+ !endif
+ ni razumljiv. Prosim, popravite napako.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ Napaka v vaji. Pravilni odgovor za <b>$(replyname$i)</b>
+ je neveljaven, zato je ni mogoèe preveriti pravilnosti va¹ega odgovora. 
+ Poskusite raje s kak¹no drugo vajo in
+ !if $email!=$empty
+  !mailurl $email obvestite avtorja
+ !else
+  obvestite avtorja
+ !endif
+ te vaje o napaki.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Va¹i zahtevni po razlièicah za tiskanje so prepogosti.
+ !exit
+!endif
+

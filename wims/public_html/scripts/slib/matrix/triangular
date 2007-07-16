@@ -1,0 +1,42 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Generates a random triangular matrix
+slib_parms=5\
+2,number of rows\
+2,number of columns\
+2,coefficient range\
+random,u (upper) or d (down)\
+Z,coefficient ring: Z for the time being,Q,R,C,G (Gauss ring), n (n is an integer for Z/nZ)
+slib_author=Gang Xiao
+slib_out=the generated matrix
+slib_example=4,2,5,random\
+4,2,5,u\
+4,2,5,d
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_rows,slib_cols,slib_range,slib_o,slib_ring
+slib_o=!lower $slib_o
+slib_o=!nospace $slib_o
+slib_o=!char 1 of $slib_o
+slib_r=!randitem u,d
+!bound slib_o within d,u default $slib_r
+!default slib_ring=Z
+!bound slib_rows between integer 1 and 30 default 2
+!bound slib_cols between integer 1 and 30 default 2
+!bound slib_range between integer 1 and 1000000 default 2
+
+!if $slib_ring=Z
+ slib_ran1=(random(2*$slib_range+1)-$slib_range)
+!endif
+
+!if $slib_o=u
+ slib_comp=x>y
+!else
+ slib_comp=x<y
+!endif
+
+slib_coef=if($slib_comp,0,$slib_ran1)
+slib_out=!exec pari print(matrix($slib_rows,$slib_cols,x,y,$slib_coef))
+

@@ -1,0 +1,75 @@
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+glist=!nonempty items $glist
+m=!itemcnt $glist
+n=!itemcnt $rlist
+
+!if $n<1
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $m<1
+ Test=bad $i
+ !exit
+!endif
+
+Bon1=0
+correct=
+!for si = 1 to $[$m/2]
+  bon=0
+  !for sj = 1 to $[$n/2]
+    ecart= $[sqrt(($(glist[2*$si-1]) - ($(rlist[2*$sj-1])))^2 + ($(glist[2*$si]) - ($(rlist[2*$sj])))^2)]
+    !if $ecart < 15
+      bon = 1
+      correct = !append item $si to $correct
+    !endif
+  !next
+  Bon1 = $[$Bon1 + $bon]
+!next
+correct= !listuniq $correct
+trop1 = $[$n/2 -$Bon1]
+trop = $[($n -2*$Bon1)/$m]
+manque1 = $[$m/2 - $Bon1]
+manque= $[1 - 2*$Bon1/$m]
+Bon = $[2*$Bon1/$m]
+
+
+primitive1=linewidth 1
+
+!for si = 1 to $[$n/2]
+  primitive1=$primitive1\
+line $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])+6], black\
+line $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])+6], black
+!next 
+  copy $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])-6],-1,-1,-1,-1,arrows/cross.gif
+primitive2=linewidth 8\
+points $color2,$glist
+
+
+!if NaN isin $Bon or Inf isin $Bon
+ !goto badrep
+!endif
+
+:diag
+
+!if $trop=0 and $manque=0
+  diareply$i=good
+  !advance freegot
+!else
+  freegot=$[max(0,$freegot + $Bon - $trop)]
+  !ifval $Bon > $trop + $manque
+   partialgood$i=yes
+   diareply$i=good
+  !else
+   diareply$i=bad
+  !endif
+!endif
+##coordonnées des points cliqués en pixels
+##nombre de bons points, nombre de points oubliés, nombre de points en trop, 
+##numéro des points corrects
+m_reply$i =$rlist;$Bon1,$manque1,$trop1;$correct
+
+:end

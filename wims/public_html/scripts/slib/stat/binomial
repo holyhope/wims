@@ -1,0 +1,32 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Generation of binomial random data
+slib_parms=3\
+ ,m\
+ ,n\
+ ,p
+slib_author=Adeline Grelot
+slib_out=random data of m integers following a binomial law of parameters  n and p (n is an integer and p a real between 0 and 1)
+slib_comment= P(X=k)=binomial(n,k)*p^k*(1-p)^(n-k)
+slib_example=15,10,0.5
+:proc
+slib_out=
+
+!distribute item $wims_read_parm into slib_m, slib_n, slib_p
+slib_u=!random 0,1 repeat $slib_m
+slib_C=!values x for x=0 to $[$slib_n]
+
+slib_out=!exec pari {slib_g(p,x,m)=local(L,u,q,i,k) ;L=listcreate(m);\
+for(k=1,m,u=[$slib_u][k];q=p[1];i=1;\
+if(u<q,listput(L,x[1]),while(u>=q,i=i+1;q+=p[i]);listput(L,x[i])));L}\
+{slib_bino(n,p,m)=local(q,b,prob);b=listcreate(n+1);\
+q=p/(1-p);prob=(1-p)^n;listput(b,prob);\
+for(i=1,n,prob=prob*(n-i+1)/i*q;listput(b,prob));\
+print(Vec(slib_g(b,[$slib_C],m)))}\
+print(slib_bino($slib_n,$slib_p,$slib_m));
+
+slib_out =!word 1 to -2 of $slib_out
+slib_out=!declosing $slib_out
+slib_out=!trim $slib_out
+

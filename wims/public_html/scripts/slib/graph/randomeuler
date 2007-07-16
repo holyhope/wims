@@ -1,0 +1,75 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=random eulerian graph
+slib_parms=2\
+,n number of edges
+,m approximative number of vertex
+slib_author=Bernadette PERRIN-RIOU
+slib_out=[adjacence matrix],[eulerian cycle]
+slib_comment=
+slib_example=6\
+6,7
+
+!exit
+
+:proc
+!reset slib_m, slib_n
+!distribute  item $wims_read_parm into  slib_n, slib_m
+!default slib_m =!randint $[floor(1.5*$slib_n)], $[2*$slib_n]
+slib_sommet=!values x for x=1 to $slib_n
+slib_u=!exec pari matrix($slib_n,$slib_n,slib_i,slib_j,if(slib_j ==slib_i,slib_i))
+
+slib_u=!translate internal  ; to $\
+$  in $slib_u
+slib_S=1
+slib_euler=$slib_S
+!for slib_k=2 to $slib_m
+	slib_s=!line $slib_S of $slib_u
+		slib_bonsom=!listcomplement $slib_s in $slib_sommet
+		!if $slib_bonsom <> $empty
+			 slib_a = !randitem  $slib_bonsom
+		!else
+			!goto end	 
+		!endif
+		slib_u=!translate internal  $\
+$ to ; in $slib_u
+		slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ;  slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
+		slib_u=!translate internal  ; to $\
+$  in $slib_u
+		slib_euler=$slib_euler, $slib_a	
+		slib_S=$slib_a
+!next slib_k
+
+slib_manquant=!listcomplement $slib_euler in $slib_sommet
+!if $slib_manquant <> $empty
+	 !for slib_a in $slib_manquant
+	 	slib_u=!translate internal  $\
+$ to ; in $slib_u
+		slib_u=!exec pari {slib_M=Mat([$slib_u]); slib_M[$slib_a,$slib_S]=$slib_S ;  slib_M[$slib_S,$slib_a]=$slib_a;print(slib_M)}
+		slib_euler=$slib_euler, $slib_a
+		slib_S=$slib_a
+	!next slib_a	
+!endif	
+:end
+
+	
+slib_m=!itemcnt $slib_euler
+
+slib_u = !nonempty lines $slib_u
+slib_u=!translate internal  $\
+$  to ; in $slib_u
+
+
+slib_p = !shuffle $slib_n
+slib_pp =!item  $slib_p of $slib_sommet
+slib_euler1=
+!for slib_i in $slib_euler
+	slib_pos=!positionof item $slib_i in $slib_p
+	slib_euler1=!append item $slib_pos to $slib_euler1
+!next slib_i
+slib_euler=$slib_euler1
+slib_G=!exec pari slib_p = [$slib_p]; slib_M=Mat([$slib_u]); slib_M=matrix($slib_n,$slib_n,slib_i,slib_j,if(slib_i !=slib_j && slib_M[slib_i,slib_j] != 0,1)) ;\
+matrix($slib_n,$slib_n,slib_i,slib_j,slib_M[slib_p[slib_i],slib_p[slib_j]])
+
+slib_out=[$slib_G],[$slib_euler]

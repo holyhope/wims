@@ -1,0 +1,99 @@
+#! /bin/sh
+
+thisdir=`pwd`
+lastdir=$thisdir
+if [ -z "$wims_home" ]; then wims_home=$w_wims_home; fi
+
+while [ -z "$wims_home" ] && [ "$lastdir" != "/" ]
+do
+ wims_home=`cat $lastdir/.wimshome 2>/dev/null`
+ lastdir=`dirname $lastdir`
+done
+if [ -z "$wims_home" ]; then
+ echo WIMS home directory not found.
+ exit;
+fi
+
+w_msg2wims_primitives="reload fold ref link docform form resource calcform embed
+	exercise tool doc example help adm
+	def define comment draw if for while"
+export w_msg2wims_primitives
+
+test=
+if [ ! -z "$w_wims_class" ]; then
+ test=`echo $thisdir | grep '/classes/..$'`
+fi
+if [ ! -z "$test" ] && [ -d $wims_home/log/classes/$w_wims_class ]; then
+ class_header=$wims_home/log/classes/$w_wims_class
+ ntest=`awk -F'=' '$1=="sharing_doc" {print $2}' $class_header/neighbors`
+ if [ ! -z "$ntest" ] && [ -d "$wims_home/log/classes/$ntest/src" ]; then
+  class_header=$wims_home/log/classes/$ntest
+ fi
+ def=$class_header/def
+ src=$class_header/src
+ mkdir -p $def
+else
+ class_header=
+ def=doc/1
+ src=$def/src
+fi
+
+if [ ! -d $def ]; then 
+ echo Directory $def not found.
+ exit;
+fi
+if [ ! -d $src ]; then
+ echo Directory $src not found.
+ exit;
+fi
+
+deff=`cd $def; ls *.def 2>/dev/null`
+for i in $deff
+do
+ dd=${i%.def}
+ if [ ! -f $src/$dd ]; then 
+  echo Removing $def/$i.
+  rm -f $def/$i >/dev/null;
+ fi
+done
+
+srcf=`cd $src; ls 2>/dev/null | grep -v '.hd$'`
+for i in $srcf
+do
+ dd=$i.def
+ dh=$i.hd
+ if [ ! -f $src/$dh ]; then
+  awk '/^!if/ {exit}; {print}' $def/$dd >$src/$dh 2>/dev/null
+ fi
+ if [ ! -f $def/$dd ] || [ $src/$i -nt $def/$dd ]; then 
+  # echo $dd
+  rm -f $def/$dd 2>/dev/null
+  $wims_home/bin/msg2wims $src/$i tmp
+  cat $src/$dh >$def/$dd 2>/dev/null
+  cat <<@ >>$def/$dd
+
+!if \$wims_read_parm!=\$empty
+ !goto \$wims_read_parm
+!endif
+!exit
+
+:content
+@
+ cat tmp >>$def/$dd
+ fi
+done
+rm -f tmp
+
+cd $def
+filelist=`ls *.def 2>/dev/null`
+echo >.index
+for f in $filelist
+do
+ fs=${f%.def}
+ tit=`awk -F= '/titb.*=/ {print $2; exit}' $f`
+ if [ -n "$tit" ]; then
+  echo ":$fs
+$tit" >>.index
+ fi
+done
+

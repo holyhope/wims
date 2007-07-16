@@ -1,0 +1,60 @@
+# Delete a course.
+# Calling parameter: course address.
+
+thiscourse=!translate internal / to , in $wims_read_parm
+thislevel=$(thiscourse[1])
+
+!if $wims_superclass=$empty or $thislevel=$empty or $wims_user!=supervisor
+ !exit
+!endif
+
+classdir=wimshome/log/classes/$wims_superclass
+cls_=$wims_read_parm
+cls__=$classdir/$cls_
+!if $wims_class/ notin $wims_superclass/$wims_read_parm
+ progtest=!defof sharing_exam in $classdir/ls_/neighbors
+ !if $wims_class/ notin $progtest/
+  !exit
+ !endif
+!endif
+test=!defof class_defined in $cls__/.def
+!if $test!=yes
+ error=del_not_exist
+ !exit
+!endif
+
+sharelist=!defof sharing_all in $cls__/neighbors
+!for dp_C in $sharelist
+  !read adm/class/stopshare $dp_C,$wims_superclass/$cls_\
+	all
+  error=
+!next dp_C
+
+cls=!translate / to , in $cls_
+cls=!item 1 to -2 of $cls
+cls=!translate , to / in $cls
+cls=!nospace $cls
+ocourses=!defof class_ocourses in $classdir/$cls/.def
+!if $cls_ isitemof $ocourses
+ ocourses=!listcomplement $cls_ in $ocourses
+ !setdef !set class_ocourses=$ocourses in $classdir/$cls/.def
+!else
+ n=!recordcnt $classdir/$cls_/.userlist
+ !for i=1 to $n
+  l=!record $i of $classdir/$cls_/.userlist
+  u=!item 3 of $l
+  s=!defof user_class in $classdir/$cls_/.users/$u
+  !if $s!=$empty
+   l=!defof user_courses in $classdir/$s/.users/$u
+   !if $cls_ isitemof $l
+    l=!listcomplement $cls_ in $l
+    !setdef !set user_courses=$l in $classdir/$s/.users/$u
+   !endif
+  !endif
+ !next i
+!endif
+
+!read adm/gateway/delsup $cls_
+!sh cd $wims_home/log/classes/$wims_superclass\
+ rm -Rf $cls_
+

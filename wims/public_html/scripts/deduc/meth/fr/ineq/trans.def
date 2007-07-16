@@ -1,0 +1,60 @@
+!set methtit2=Appliquer la transitivité des inégalités
+!set methtit=Transitivité des inégalités
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality >,parm inequality >
+!set methhelp=Cette méthode applique la transitivité sur deux inégalités\
+ du style \(a > b) et \(b > c), pour déduire une troisième \(a > c) qu'elle\
+ mettra dans les hypothèses. Les deux inégalités de départ peuvent être\
+ données sous forme \(a > b) et \(c < b) par exemple.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Appliquer la transitivité sur les inégalités
+ !read deduc/methparm.phtml 1
+ et
+ !read deduc/methparm.phtml 2
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left1,sign1,right1
+ !distribute items $methparmobj2 into data,left2,sign2,right2
+ methexp=Transitivité sur \($left1 $sign1 $right1) et \($left2 $sign2 $right2)
+ 
+ gt=>
+ lt=<
+ !if ($gt isin $sign1 and $lt isin $sign2) or\
+	($lt isin $sign1 and $gt isin $sign2)
+  !exchange left2,right2
+ !endif
+ !read deduc/sub/simplify ($right1) - ($left2)\
+	($right2) - ($left1)
+ !distribute lines $out into test1,test2
+ !if $test1!=0
+  !if $test2!=0
+   error=La transitivité ne s'applique pas sur vos inégalités.
+   !advance penalty
+   !exit
+  !else
+   !exchange right1,right2
+   !exchange left1,left2
+  !endif
+ !endif
+
+ !if $gt isin $sign1
+  s_=>
+ !else
+  s_=<
+ !endif
+ eq=$empty=
+ !if $eq isin $sign1 and $eq isin $sign2
+  s_=$s_=
+ !endif
+ newobject0=$left1 $s_ $right2
+ oldobject=0
+
+!exit
+

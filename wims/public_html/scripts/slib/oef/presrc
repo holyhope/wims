@@ -1,0 +1,17 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=OEF code input prepender
+slib_parms=1\
+,code
+slib_author=Gang Xiao
+slib_out=The unprocessed source input.
+slib_comment=Code is limited to 16K. This slib should be called to register \
+the header for OEF code input.
+!exit
+
+:proc
+slib_out=!replace \/\*.*\*\/ by $ in $wims_read_parm
+slib_i=!replace internal /**/ by $ in $wims_read_parm
+oef_presrc=!translate $	$ to $\
+$ in $slib_i

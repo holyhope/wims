@@ -1,0 +1,28 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Output random words in the dictionary
+slib_parms=2\
+,word lengths (as items or as words)\
+,language (optional, defauts to the module's language)
+slib_author=Gang Xiao
+slib_out=the random words according to specified word lengths, separated by spaces.
+slib_example= 3,4,8,fr\
+ 3,4,8,en\
+  3,4,8,es
+!exit
+
+:proc
+slib_lang=!item -1 of $wims_read_parm
+slib_lang_save=$module_language
+!if $slib_lang iswordof $wims_site_languages
+ slib_lens=!item 1 to -2 of $wims_read_parm
+ module_language=$slib_lang
+!else
+ slib_lens=$wims_read_parm
+!endif
+slib_lens=!items2words $slib_lens
+slib_out=!exec randic $slib_lens
+slib_out=!singlespace $slib_out
+module_language=$slib_lang_save
+

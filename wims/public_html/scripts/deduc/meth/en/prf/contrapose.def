@@ -1,0 +1,72 @@
+!set methtit=Contrapose
+!set methparmtype=parm predicate nocomma >
+!set methparmrelax=1
+!set methhelp=Contrapose a hypothesis and a goal:\
+rewrite A \(=>) B to not(A) \(=>) not(B)).\
+<p>\
+One can also use this method to make a proof by contradiction.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if fixedgoal iswordof $m_options
+ !set error1=fixedgoal
+ !exit
+!endif
+
+!set n_=!linecnt $m_goal
+!if $n_>1
+ !set error1=You have several goals in the current situation!\
+ The contraposition can only be done with a unique goal. Please first\
+ separate the goals.
+ !exit
+!endif
+!if $n_<1
+ !set error1=You have no object to contrapose.
+ !exit
+!endif
+
+!exit
+:form
+ !set i_=!linecnt $mtobj1
+ !if $i_>0
+  Contrapose the hypothesis
+  !set ch_optional=None
+  !read deduc/methparm.phtml 1 
+  and the goal \($m_goal).
+  !set methremark=Choose "hypothesis=None" to make a reasoning by contradiction.
+ !else
+  Contrapose the goal \($m_goal)&nbsp;: raisonning by contradiction.
+ !endif
+!exit
+:check
+ !if contradiction notwordof $m_goal
+  newobject0=!exec mathexp not\
+$m_goal
+  oldobject=0
+ !else
+  !reset newobject, newobject0
+ !endif
+ !if $methparm1=$empty or $methparm1<1
+  !if contradiction iswordof $m_goal
+   error=Contrapose a contradiction without hypotheses does not make sense!
+   !exit
+  !endif
+  newgoal=contradiction
+  methexp=Contrapose
+ !else
+  obj=!line $methparm1 of $mtobj1
+  d=!item 1 of $obj
+  l=!word 1 of $d
+  obj=!item 2 to -1 of $obj
+  m_context=!replace line number $l by $ in $m_context
+  m_context=!nonempty lines $m_context
+  newgoal=!exec mathexp not\
+$obj
+  methexp=Contrapose with \($obj)
+ !endif
+ m_goal=$newgoal
+ !read deduc/objects.combine
+!exit
+

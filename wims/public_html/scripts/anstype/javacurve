@@ -1,0 +1,55 @@
+
+good=!rows2lines $(replygood$i)
+image=!line 1 of $good
+tester=!line 2 of $good
+rlist=$(reply$i)
+m_reply$i=$rlist
+reply__$i=&nbsp;
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+type=!item 1 of $tester
+glist=!item 2 to -1 of $tester
+color1=black
+color2=180,180,255
+
+!if $type notwordof points
+ !if $(reply$i)=$empty
+  error=empty_data
+  !exit
+ !endif
+!endif
+
+!if $type iswordof line poly polygon points segment vector rectangle sline circle
+ !read anstype/javacurve.$type
+ !if $Test!=$empty or NaN isin $test
+  !exit
+ !endif
+!endif
+
+ifile=$image
+!if $imagedir isin $image
+ ifile=!translate internal / to $ $ in $ifile
+ ifile=!word -1 of $ifile
+!else
+ !if getfile isin $image
+  ifile=!translate internal =/ to $  $ in $ifile
+  ifile=!word -1 of $ifile
+ !else
+  !if getins isin $image
+   ifile=!replace internal &modif= by $ $ in $ifile
+   ifile=!replace internal special_parm= by $ $ in $ifile
+   ifile=!word 2 of $ifile
+  !endif
+ !endif
+!endif
+
+!insdraw existing $ifile\
+linewidth 3\
+$primitive2\
+linewidth 1\
+$primitive1
+
+reply_$i=<img src=$ins_url>
+

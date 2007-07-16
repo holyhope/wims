@@ -1,0 +1,27 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantile of exponential law
+slib_parms=2\
+,[data]\
+1,p
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=quantile at data
+slib_comment=data can be a list of reals
+slib_example=[0.1,0.2,0.3],7
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_p
+
+!if  $slib_p<=0
+slib_out=0
+!exit
+!endif
+
+slib_data=!declosing $slib_data
+slib_out=!values  -log(1-x)/$slib_p for x in $slib_data
+
+slib_out=!trim $slib_out

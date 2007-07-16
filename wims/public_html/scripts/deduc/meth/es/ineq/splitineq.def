@@ -1,0 +1,30 @@
+!set methtit=Séparer les cas selon une inégalité
+!set methenv=ZZ QQ RR
+!set methparmtype=function, choice 4, function
+!set methhelp=Cette méthode sépare la situation en deux cas, selon la\
+ vérité d'une inégalité. L'inégalité et son réciproque seront rajoutées\
+ dans les hypothèses des deux cas respectivement.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Séparer les cas suivant la vérité de l'inégalité <br>
+ !read deduc/methparm.phtml 1,10
+ !formselect methparm2 from 1 to 4 prompt <,>,<=,>=
+ !read deduc/methparm.phtml 3,10
+!exit
+:check
+ sign1=!item $methparm2 of <,>,<=,>=
+ sign2=!item $methparm2 of >=,<=,>,<
+
+ casesplit=$methparm1 $sign1 $methparm3\
+$methparm1 $sign2 $methparm3
+ mt1=$methparm1 $sign1 $methparm3
+ mt2=$methparm1 $sign2 $methparm3
+ methexp=Séparer les cas \($mt1) et \($mt2)
+
+!exit
+

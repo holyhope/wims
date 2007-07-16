@@ -1,0 +1,32 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=cumulative distribution function of Poisson law
+slib_parms=2\
+,[data]\  
+
+
+1,p       
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values on data of the cumulative distribution function of the Poisson law of parameter p
+slib_comment=data can be a list of reals
+slib_example=[2,4,7],6.1
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_p
+
+!default slib_N=1000
+!if  $slib_p<=0
+slib_out=0
+!exit
+!endif
+
+slib_data=!declosing $slib_data
+slib_cnt=!itemcnt $slib_data
+slib_out=!exec pari slib_data=[$slib_data];\
+print(vector($slib_cnt, x,if(slib_data[x] >= 0, incgam(floor(slib_data[x])+1,$slib_p)/gamma(floor(slib_data[x])+1))))
+
+slib_out=!trim $slib_out

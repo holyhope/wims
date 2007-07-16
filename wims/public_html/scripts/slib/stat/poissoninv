@@ -1,0 +1,42 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantile of Poisson law
+slib_parms=3\
+,[data]\
+1,p\
+1000,N
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=quantile at data of the Poisson law of parameter p
+slib_comment=data can be a list of reals,the result should be less than N 
+slib_example=[0.2,0.4,0.7],6.1
+!exit
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_p,slib_N
+
+!default slib_N=1000
+!if  $slib_p<=0
+slib_out=0
+!exit
+!endif
+slib_out=
+slib_data=!declosing $slib_data
+
+slib_cnt= !itemcnt $slib_data
+!for slib_i =1 to $slib_cnt
+slib_di=!item $slib_i of $slib_data
+slib_P=0
+slib_a=$[exp(-$slib_p)]
+!for slib_k=0 to $slib_N
+slib_P=$[$slib_P+$slib_a]
+!if $slib_P>= $slib_di
+slib_out=!append item  $slib_k to $slib_out
+!break
+!endif
+slib_a=$[$slib_p*$slib_a/($slib_k+1)]
+!next slib_k
+!next slib_i
+
+slib_out=!trim $slib_out

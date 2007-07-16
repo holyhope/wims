@@ -1,0 +1,114 @@
+!if  $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Graph draw with one colored connex component 
+slib_parms=4\
+,matrix (which represents a non oriented graph with no cycles)\
+[blue,red,green, magenta, brown, purple,gold], component colors\
+[1,2,..],vertex name\
+,list of points
+slib_author=Bernadette PERRIN-RIOU
+slib_out=code for draw of the graph
+slib_comment=the matrix must be between brackets, if color are three numbers, put them in brackets ; if there are points,\
+connex components of these points are taken first.
+ slib_example= [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],2\
+ [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],1,2\
+
+ 
+!exit
+
+:proc
+
+!reset slib_color, slib_names, slib_point
+
+slib_parm=!item 1 to 3 of $wims_read_parm
+!distribute item $slib_parm into slib_H, slib_color,slib_names
+slib_point=!item 4 to -1 of $wims_read_parm
+slib_H=!declosing $slib_H
+slib_H=!translate internal  ;  to  $\
+$  in $slib_H
+slib_HH=!translate internal  $\
+$  to ; in $slib_H
+
+slib_point=!declosing $slib_point
+slib_color=!declosing $slib_color
+!default slib_color=blue,red,green, magenta, brown, purple,gold
+!distribute items $slib_color  into slib_color1, slib_color2, slib_color3, slib_color4, slib_color5, slib_color6,slib_color7
+
+slib_or=!exec pari Mat([$slib_HH])==Mat([$slib_HH])~ 
+slib_names=!declosing $slib_names
+slib_n=!line 1 of $slib_H
+slib_n=!itemcnt $slib_n
+!default slib_names=!values slib_i for slib_i=1  to $slib_n
+slib_vertex= !values x for x=1 to $slib_n
+!default slib_point= $slib_vertex
+slib_liste = 
+slib_cnt = 0
+slib_matrix=
+slib_out=
+!for slib_i  in $slib_point
+	!if $slib_i notin $slib_liste
+		!read slib/graph/connexcomponent  [$slib_HH], $slib_i
+		slib_liste = !append item $slib_out to $slib_liste
+		slib_matrix = !append line $slib_out to $slib_matrix
+		!advance slib_cnt
+		slib_out=
+	!endif
+!next slib_i
+slib_point2 = !listcomplement of $slib_liste in $slib_vertex
+
+!for slib_i  in $slib_point2
+	!if $slib_i notin $slib_liste
+		!read slib/graph/connexcomponent  [$slib_HH], $slib_i
+		slib_liste = !append item $slib_out to $slib_liste
+		slib_matrix = !append line $slib_out to $slib_matrix
+		!advance slib_cnt
+	!endif
+!next slib_i
+
+
+slib_dessin = xrange -1.5,1.5\
+yrange -1.5,1.5
+!for slib_i=1 to $slib_cnt
+	slib_color$slib_i= !declosing $(slib_color$slib_i)
+	slib_h=!line $slib_i of $slib_matrix
+	!for slib_k in $slib_h
+		slib_name =!item $slib_k of $slib_names
+		slib_dessin=$slib_dessin\
+		disk cos(2*pi*$slib_k/$slib_n ),sin(2*pi*$slib_k/$slib_n ), 6,$(slib_color$slib_i)\
+	text black, 1.3*cos(2*pi*$slib_k/$slib_n ),1.3*sin(2*pi*$slib_k/$slib_n ), medium ,$slib_name
+	slib_r=!line $slib_k of $slib_H
+		!if $slib_or=1
+			!for slib_j   in $slib_h				
+				slib_u=!item $slib_j of $slib_r
+				!if $slib_u=1
+					!if $slib_k<>$slib_j
+						slib_dessin=$slib_dessin\
+line cos(2*pi*$slib_k/$slib_n),sin(2*pi*$slib_k/$slib_n), cos(2*pi*$slib_j/$slib_n ),sin(2*pi*$slib_j/$slib_n ),$(slib_color$slib_i)
+					!else
+						slib_dessin=$slib_dessin\
+ellipse cos(2*pi*$slib_i/$slib_n )*1.25,sin(2*pi*$slib_i/$slib_n )*1.25, 0.5,0.5,$(slib_color$slib_i)
+					!endif
+				!endif
+			!next slib_j	
+		!else
+			!for slib_j=1 to $slib_n
+				slib_r=!line $slib_k of $slib_H
+				slib_u=!item $slib_j of $slib_r
+				!if $slib_u=1
+					!if $slib_k<>$slib_j
+						slib_dessin=$slib_dessin\
+arrow $[cos(2*pi*$slib_k/$slib_n )],$[sin(2*pi*$slib_k/$slib_n)], $[(cos(2*pi*$slib_k/$slib_n )-cos(2*pi*$slib_j/$slib_n ))/2+cos(2*pi*$slib_j/$slib_n )],$[(sin(2*pi*$slib_k/$slib_n )-sin(2*pi*$slib_j/$slib_n ))/2+sin(2*pi*$slib_j/$slib_n )],10,$(slib_color$slib_i)\
+line cos(2*pi*$slib_k/$slib_n ),sin(2*pi*$slib_k/$slib_n ),cos(2*pi*$slib_j/$slib_n ),sin(2*pi*$slib_j/$slib_n ),$(slib_color$slib_i)
+					!else
+						slib_dessin=$slib_dessin\
+ellipse cos(2*pi*$slib_k/$slib_n )*1.25,sin(2*pi*$slib_k/$slib_n )*1.25, 0.5,0.5,$(slib_color$slib_i)
+					!endif
+				!endif
+			!next slib_j	
+		!endif	
+	!next slib_k	
+!next slib_i		
+
+			
+slib_out= $slib_dessin

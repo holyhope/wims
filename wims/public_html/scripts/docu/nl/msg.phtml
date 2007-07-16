@@ -1,0 +1,139 @@
+!set wims_module_log=error: $error
+
+<b>Fout</b>.
+
+!if $error = doc_not_exist
+Het aangevraagde document bestaat niet (meer) op deze server. 
+ !exit
+!endif
+
+!if $error = abuse
+Uw document heeft een wat vreemde titel... 
+ <p>
+ <b>Waarschuwing</b> ! personen die deze server "misbruiken"
+ zal de toegang worden ontzegd. 
+ !exit
+!endif
+
+!if $error = quota
+U kunt dit document niet lager modificeren, omdat de inhoud
+reeds boven het gestelde maximum is.
+ !exit
+!endif
+
+!if $error = quota_file
+De file-upload kon niet worden geaccepteerd , omdat er niet
+genoeg schijfruimte over is voor Uw document.
+ !exit
+!endif
+
+!if $error = no_tit
+Geef een titel aan Uw document.
+ !exit
+!endif
+
+!if $error = no_author
+U hebt nog geen auteur's naam voor document aangegeven.
+ !exit
+!endif
+
+!if $error = bad_email
+Uw emailadres kan niet juist zijn. Graag corrigeren!
+ !exit
+!endif
+
+!if $error = bad_code
+Helaas, maar de ingevoerde geheime code klopt niet. 
+U hebt dus geen toestemming dit document te lezen
+ <p>
+ !mailurl $wims_site_manager schrijf naar de site_manager\
+Vergeten document code
+ als U de geheime code van dit document kwijt bent.
+ !exit
+!endif
+
+!if $error = unauthorized
+U hebt geen toestemming het opgevraagde document te lezen
+
+ !exit
+!endif
+
+!if $error = bad_data
+Enkele van Uw definities zijn onjuist. Graag corrigeren.
+ !exit
+!endif
+
+!if $error = class_no_right
+Helaas, maar je verzoek is niet toegestaan.
+Neem dit op met je leraar.
+ !exit
+!endif
+
+!if $error = small_code
+ De geheime code is te kort
+ !exit
+!endif
+
+!if $error = big_code
+De geheime code is te lang
+ !exit
+!endif
+
+!if $error = code_discord
+ <b>Attentie</b>.U hebt twee keer een verschillende geheime code
+ ingevoerd. Probeer het opnieuw
+ !exit
+!endif
+
+!if $error = bad_newcode
+Uw geheime code bevat verboden karakters.
+Gebruik alleen alfa-numerieke karakters, zonder accenten of spaties
+ !exit
+!endif
+
+!if $error = bad_oldcode
+U hebt geen geldige oude geheime code ingevoerd.
+Probeer het nog eens
+ !exit
+!endif
+
+!if $error = deposit_fail
+Helaas, ik heb geen geldige file gekregen van U.
+Controleer de filenaam.
+ !exit
+!endif
+
+!if $error = deposit_binary
+U hebt een binaire file <tt>$wims_deposit</tt> opgestuurd!
+Daar heb ik helemaal niets aan. Stuur een geldige tekt file. 
+ !exit
+!endif
+
+!if $error = src_too_long
+ Uw blokken <tt>$block</tt> kunnen niet worden geaccepteerd, omdat ze de
+ limiet ($max_blocklen bytes) overschrijden
+ U kunt ze natuurlijk altijd in kleinere stukken knippen.
+
+ !exit
+!endif
+
+!if $error = file_too_long
+ Uw LaTeX file kon niet worden geaccepteerd om dat ze de
+ limiet  van ($max_texlen bytes) overschrijden.
+ Maar U kunt ze natuurlijk wel in kleinere stukjes knippen en in 
+ verschillende document-blokken verwerken
+ !exit
+!endif
+
+!if $error = no_latex2html
+Helaas, maar LaTeX files kan ik niet verwerken, omdat de software
+ "LaTeX2HTML" niet is geinstalleerd op deze server.
+Probeer het op Uw eigen computer met LaTeX2HTML en geef mij de
+resulterende HTML-file. 
+<small>LaTeX2HTML is een perl-script dat ook
+onder Windows draait (vermits er een perl-compiler is geinstalleerd)</small>
+ !exit
+!endif
+
+!msg $error
+

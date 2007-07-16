@@ -1,0 +1,25 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantile of cumulative gamma distribution
+slib_parms=3\
+,[data]\
+,a\
+,b
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=quantile at data
+slib_comment=data can be a list of reals; density is b*exp(-b*x)*(b*x)^(a-1)/gamma(a) for x>=0
+slib_example=[0.2,0.4,0.7],4,5
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a,slib_b
+
+slib_out= !exec octave gamma_inv($slib_data,$slib_a,$slib_b)
+slib_out= !words2items $slib_out
+
+slib_out=!line -1 of $slib_out
+slib_out=!trim $slib_out

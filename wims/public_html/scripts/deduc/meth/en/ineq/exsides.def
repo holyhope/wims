@@ -1,0 +1,34 @@
+!set methtit=Exchange the two sides of an inequality
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality
+!set methhelp=This method rewrites the inequality \(A < B) to \(B > A),\
+ or vice versa.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Exchange the two sides of the inequality
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left,sign,right
+ methexp=Exchange two sides of \($left $sign $right)
+
+ newsign=!translate internal <> to >< in $sign
+ newobject1=$right $newsign $left
+ oldobject=1
+
+ contextlist=$ct_Always,\
+	$ct_Onlywhen the two sides are positive,\
+	$ct_Onlywhen the two sides are of the same sign,\
+	$ct_Onlywhen the inequality is strict
+
+ resultlist=$newobject1,\
+  $right $sign $left
+
+!exit
+

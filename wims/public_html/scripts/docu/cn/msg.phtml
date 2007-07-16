@@ -1,0 +1,121 @@
+!set wims_module_log=error: $error
+
+<b>错误</b>.
+
+!if $error = doc_not_exist
+ 你请求的文件不(或不再)存在.
+ !exit
+!endif
+
+!if $error = abuse
+ 你的文件有一个奇怪的标题! 你能肯定要创建一个认真的文件吗?
+ <p>
+ <b>注意</b>! 滥用服务器的人将被禁止进入.
+ !exit
+!endif
+
+!if $error = quota
+ 你不再能修改此文件, 因为它的内容超过了硬盘空间的限制.
+ !exit
+!endif
+
+!if $error = quota_file
+ 不能接受文件的储存, 因为没有足够的硬盘空间.
+ !exit
+!endif
+
+!if $error = no_tit
+ 请给出你的文件的标题.
+ !exit
+!endif
+
+!if $error = no_author
+ 你没有给出文件的作者.
+ !exit
+!endif
+
+!if $error = bad_email
+ 你的电子邮件地址有问题, 请改正.
+ !exit
+!endif
+
+!if $error = bad_code
+ 对不起, 密码不符. 你无权读/写你请求的文件.
+ <p>
+ 如果你忘记了你的文件的密码, 请写信给
+!mailurl $wims_site_manager 网站管理员\
+Forgotten document code
+ !exit
+!endif
+
+!if $error = unauthorized
+ 你无权读/写你请求的文件.
+ !exit
+!endif
+
+!if $error = bad_data
+ 你的某些定义不正确, 请改正.
+ !exit
+!endif
+
+!if $error = class_no_right
+ 对不起, 你的请求被拒绝. 请与班级主持教师核对.
+ !exit
+!endif
+
+!if $error = small_code
+ 密码太短.
+ !exit
+!endif
+
+!if $error = big_code
+ 密码太长.
+ !exit
+!endif
+
+!if $error = code_discord
+ <b>注意</b>. 你两次输入两个不同的密码. 请重试.
+ !exit
+!endif
+
+!if $error = bad_newcode
+ 你的密码含有违禁字符. 请只使用字母或数字.
+ !exit
+!endif
+
+!if $error = bad_oldcode
+ 你没有给出正确的旧密码. 请再试一次.
+ !exit
+!endif
+
+!if $error = deposit_fail
+ 对不起, 我没有得到你的有效文件. 核对你的文件名.
+ !exit
+!endif
+
+!if $error = deposit_binary
+ 你递交了一个二进制文件 <tt>$wims_deposit</tt>!
+ 我不能使用它. 请发送一个好的文本文件.
+ !exit
+!endif
+
+!if $error = src_too_long
+ 你的块 <tt>$block</tt> 不被接受, 因为它超过了长度极限
+($max_blocklen 字节). 你可以将它分割成几块.
+ !exit
+!endif
+
+!if $error = file_too_long
+ 你的 LaTeX 不被接受, 因为它超过了长度极限 ($max_texlen 字节).
+ 不过, 你可以把它分割成几块, 然后一一递交到不同的块里.
+ !exit
+!endif
+
+!if $error = no_latex2html
+ 对不起, 本服务器不能接受 LaTeX 文件, 因为没有安装 LaTeX2HTML 软件.
+ 请在你的本地机器上运行 LaTeX2HTML, 再递交得到的 html 文件.
+ !exit
+!endif
+
+!msg $error
+

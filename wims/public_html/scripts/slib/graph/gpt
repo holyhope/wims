@@ -1,0 +1,122 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Oriented graph without circuit
+slib_parms=5\
+,n\
+,s maximum of successors\
+,text for the names of vertex\
+,color of edges\
+,color of vertex
+slib_author=Bernadette PERRIN-RIOU
+slib_out=generation of a graph without circuit to be used with draw: draw source, \
+matrix, matrix of ranks, matrix of positions of the vertex\
+position of points
+slib_comment=s can be replaced by a matrix corresponding to such a graph (no check is done). \
+In such case only 4 parameters are asked
+slib_example=5,2,[a,b,c,d],blue,red
+
+!exit
+
+:proc
+
+!distribute item $wims_read_parm into slib_n,slib_s,slib_text,slib_color1,slib_color2
+
+!default slib_s=2
+slib_color1=!declosing $slib_color1
+slib_color2=!declosing $slib_color2
+!default slib_color1=blue
+!default slib_color2=green
+!!default slib_text= !values x for x=1 to $slib_n
+
+slib_text=!declosing $slib_text
+!if [ isin $slib_s
+ slib_G=!declosing $slib_s
+!else
+
+slib_liste=
+!for slib_i = 1 to $slib_n
+	slib_liste1 =!values 1 for x=1 to $slib_s
+	slib_liste0=!values 0 for x=1 to $[$slib_n-$slib_i-$slib_s]
+	slib_liste2 =!shuffle $slib_liste1,$slib_liste0
+	slib_liste2=1,$slib_liste2
+	slib_liste2=!item 1 to $[$slib_n-$slib_i+1] of $slib_liste2
+	slib_liste=!append item $slib_liste2 to $slib_liste
+!next slib_i
+slib_liste=!nonempty items $slib_liste
+slib_G= !exec pari slib_n =$slib_n;slib_ liste =[$slib_liste];slib_M=matrix(slib_n,slib_n,slib_i,slib_j, if(slib_i < slib_j,slib_liste[slib_n*(slib_n-1)/2-(slib_n-slib_i+1)*(slib_n-slib_i)/2 +slib_j-slib_i]));for(slib_i = 2,slib_n-1,if(slib_M[,slib_i]==0,slib_M[1,slib_i]=1);if(slib_M[slib_i,]==0,slib_M[slib_i,slib_n]=1));slib_M[1,slib_n]=0; slib_M
+
+!endif
+slib_GG=!translate internal ; to $\
+$ in $slib_G
+
+
+##########################
+slib_niveau=!exec pari slib_n=$slib_n;slib_M=Mat([$slib_G]);slib_niveau=matrix(slib_n,slib_n);slib_niveau[1,1]=1;slib_degp=vector(slib_n,i,sum(x=1,slib_n,slib_M[x,i]));for(slib_k=1,slib_n-1,for(slib_i=1,slib_n,if(slib_niveau[slib_k,slib_i]!=0,for(slib_j=1,slib_n,if(slib_M[slib_i,slib_j]!=0,slib_degp[slib_j]-=1;	if(slib_degp[slib_j]==0,slib_niveau[slib_k+1,slib_j]=1)););););)	;slib_niveau
+slib_height=!exec pari slib_n=$slib_n;slib_niveau=Mat([$slib_niveau]);slib_k=slib_n;for(slib_i=1,slib_n,if(slib_niveau[slib_i,]==0,slib_k=slib_i-1;break));print(slib_k);
+
+slib_width =!exec pari slib_niveau=Mat([$slib_niveau]); vecmax(vector($slib_height,i, sum(j=1,$slib_n, slib_niveau[i,j])))
+
+#hauteur des paraboles sur lesquelles sont mis les points
+slib_listeb= !values ($slib_width/2+1-x)*0.98111111/$slib_width for x= 1 to $[ceil($slib_width/2)] 
+slib_listeb =!makelist x,-x for x in $slib_listeb
+slib_niveau =!exec pari slib_niveau=Mat([$slib_niveau]); matrix($slib_height,$slib_n,i,j,slib_niveau[i,j])
+slib_position= !exec pari matrix($slib_n,2)
+slib_position=!translate internal ; to $\
+$ in $slib_position
+slib_niveau1=!translate internal ; to $\
+$ in $slib_niveau
+slib_sign=1
+!for slib_i=1 to $slib_height
+	slib_eps1=!item $slib_i of $slib_eps
+	slib_ligne= !line $slib_i of $slib_niveau1
+	slib_test=0
+	slib_total =!replace internal , by + in $slib_ligne
+	slib_total=$[$slib_total]
+		!if $slib_total=1
+					slib_sign=$[-$slib_sign]
+		!endif	
+
+	slib_dist= $[round($slib_width/$slib_total)]
+	!for slib_j = 1 to $slib_n
+		slib_pt=!item $slib_j of $slib_ligne
+		!if $slib_pt <>0
+			!advance slib_test		
+			slib_bb=!item $[($slib_test)*$slib_dist] of $slib_listeb
+			slib_position=!replace internal line number $slib_j by $[$slib_i-1], $[$slib_sign*$slib_bb*$slib_i*($slib_height -$slib_i)] in $slib_position
+		!endif
+	!next slib_j
+!next slib_i
+#dessin
+####################
+slib_yrange1= $[-$slib_height^2/8-0.5]
+slib_yrange2=$[$slib_height^2/8+0.5]
+slib_dessin = xrange -0.5, $[$slib_height]\
+yrange $slib_yrange1, $slib_yrange2\
+parallel -0.5,$slib_yrange1,-0.5,$slib_yrange2,1,0, $[$slib_height+2],yellow
+####################
+
+!for slib_i = 0 to $[floor($slib_height/2+2)]
+	slib_dessin=!append line pointfill 2*$slib_i,0,3,3,yellow to $slib_dessin
+!next slib_i
+# laisser en premier les lignes correspondant aux sommets
+!for slib_i = 1 to $slib_n
+	slib_point=!line $slib_i of $slib_position
+	slib_dessin =!append line disk $slib_point, 6, $slib_color2 to $slib_dessin
+	!for slib_j = $slib_i to $slib_n
+		slib_ligne=!line $slib_i of $slib_GG
+		slib_test=!item $slib_j of $slib_ligne
+		!if $slib_test <> 0
+			slib_point1=!line $slib_j of $slib_position
+			slib_interm= !exec pari ([$slib_point]+2*[$slib_point1])/3
+			slib_dessin = !append line line $slib_point, $slib_point1, $slib_color1 to $slib_dessin
+			slib_dessin = !append line arrow $slib_point, $slib_interm, 10, $slib_color1 to $slib_dessin
+		!endif
+	!next slib_j
+	!if $slib_text<>$empty
+		slib_texti=!item $slib_i of $slib_text
+		slib_dessin=!append line text black,$slib_point, medium, $slib_texti to $slib_dessin
+	!endif
+!next slib_i
+
+slib_out=$slib_dessin,[$slib_G],[$slib_niveau], [$slib_position]

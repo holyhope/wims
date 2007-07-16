@@ -1,0 +1,42 @@
+!set methtit2=Le carré d'un nombre réel est positif ou nul
+!set methtit=Positivité d'un carré
+!set methenv=ZZ QQ RR
+!set methparmtype=function
+!set methhelp=Cette méthode ajoute une condition du type \(U^2 >= 0) dans\
+ les hypothèses, où \(U) est une expression algébrique de votre choix.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ On applique \(U^2 >= 0), où \(U) =
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !if / isin $methparm1
+  error=La division n'est pas autorisée dans cette méthode !
+  !exit
+ !endif
+ !read deduc/sub/simplify ($methparm1)^2
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ sqr=$out
+ oldobject=0
+ newobject0=$sqr >= 0
+ methexp=Positivité du carré de \($methparm1)
+ 
+ contextlist=$ct_Onlywhen $m_U représente un nombre réel,\
+	$ct_Always,\
+	$ct_Onlywhen $m_U est positif ou nul,\
+	$ct_Onlywhen $m_U est un entier
+
+ resultlist=$newobject0,\
+  $sqr > 0
+
+!exit
+

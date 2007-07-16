@@ -1,0 +1,29 @@
+
+!if $wims_read_parm=nocompare
+ !changeto anstype/function nocompare
+!endif
+
+eq==
+!if $eq isin $(replygood$i) and $wims_read_parm!=sub
+ !changeto anstype/equation
+!endif
+replygood$i=!rawmath $(replygood$i)
+nn=$[$(replygood$i)]
+!if NaN notin $nn
+ !changeto anstype/numeric
+!endif
+!if $wims_read_parm=sub
+ !changeto anstype/function
+!endif
+vars=!varlist nofn $(replygood$i)
+varlen=0
+!for v in $vars
+ n=!charcnt $v
+ varlen=$[max($n,$varlen)]
+!next v
+!if $varlen<=3
+ !changeto anstype/function
+!endif
+
+!changeto anstype/atext
+

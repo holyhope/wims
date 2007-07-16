@@ -1,0 +1,74 @@
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+m=!itemcnt $glist
+n=!itemcnt $rlist
+!if $n<2
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+
+!if $m=4
+  glist=$glist,$glist
+!endif
+!if $m<4
+ Test=bad $i
+ !exit
+!endif
+
+!!!ifval $n!=$m
+!! mean=1000
+!! !goto diag
+!!!endif
+
+xs1=$[min($(rlist[1]),$(rlist[3]))]
+xs2=$[max($(rlist[1]),$(rlist[3]))]
+xv1=$[min($(glist[1]),$(glist[3]))]
+xv2=$[max($(glist[1]),$(glist[3]))]
+xv3=$[min($(glist[5]),$(glist[7]))]
+xv4=$[max($(glist[5]),$(glist[7]))]
+ys1=$[min($(rlist[2]),$(rlist[4]))]
+ys2=$[max($(rlist[2]),$(rlist[4]))]
+yv1=$[min($(glist[2]),$(glist[4]))]
+yv2=$[max($(glist[2]),$(glist[4]))]
+yv3=$[min($(glist[6]),$(glist[8]))]
+yv4=$[max($(glist[6]),$(glist[8]))]
+
+tolerance=4
+xdiff=$[max(abs($xv1-($xs1)),abs($xv2-($xs2)))]
+ydiff=$[max(abs($yv1-($ys1)),abs($yv2-($ys2)))]
+
+!if  $[$xv1 - $tolerance- $xs1] < 0  and $[$yv1 - $tolerance- $ys1] < 0 \
+     and $[$xv2 + $tolerance- $xs2] > 0  and $[$yv2 + $tolerance- $ys2] > 0 
+  test1 = 1
+!else 
+  test1 = 0
+!endif
+
+!if  $[$xs1 - $tolerance- $xv3] < 0  and $[$ys1 - $tolerance- $yv3] < 0 \
+     and $[$xs2 + $tolerance- $xv4] > 0  and $[$ys2 + $tolerance- $yv4] > 0 
+  test2 = 1
+!else 
+  test2 = 0
+!endif     
+
+mean=$[min($test1,$test2)]
+
+primitive1=polygon $color1,$xs1,$ys1,$xs2,$ys1,$xs2,$ys2,$xs1,$ys2
+primitive2=polygon $color2,$xv1,$yv1,$xv2,$yv1,$xv2,$yv2,$xv1,$yv2\
+polygon $color2,$xv3,$yv3,$xv4,$yv3,$xv4,$yv4,$xv3,$yv4
+
+!if NaN isin $mean or Inf isin $mean
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+!if $mean=1
+  diareply$i=good
+  !advance freegot
+!else
+  diareply$i=bad
+!endif

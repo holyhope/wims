@@ -1,0 +1,24 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Probability cumulative density function of logistic law
+slib_parms=1\
+,[data]
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values  at data
+slib_comment=data can be a list of reals in brackets; 
+slib_example=[2,4,7]
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data
+
+slib_data=!declosing $slib_data
+
+slib_out=!values 1/(1+exp(-x)) for x in $slib_data
+
+slib_out=!trim $slib_out
+

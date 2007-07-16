@@ -1,0 +1,61 @@
+!distribute items $wims_read_parm into n_,1_,2_,3_,4_,5_
+!if NaN isin $[$n_] or $n_<1 or $n_>$methparmcnt
+ !exit
+!endif
+
+!set t_=!item $n_ of $methparmtype
+!distribute words $t_ into t_,p_
+!if $t_ iswordof number parm function text choice
+ !goto $t_
+!else
+ !goto text
+!endif
+
+:number
+ !default 1_=10
+ :input
+ <input size=$1_ name=methparm$n_ value="$(methparm$n_)">
+!exit
+
+:function
+ !default 1_=22
+ !goto input
+
+:text
+ !default 1_=30
+ !goto input
+
+:choice
+ !formselect methparm$n_ from 1 to $p_ prompt $methchoiceprompt
+!exit
+
+:parm
+ !set N_=!linecnt $(mtobj$n_)
+ !reset P_
+ !if $N_>1 or ($N_=1 and $n_ isitemof $methparmrelax)
+  !for i=1 to $N_
+   !set l=!line $i of $(mtobj$n_)
+   !set l=!item 2 to -1 of $l
+   !set l=!items2words $l
+   !set P_=!append item $l to $P_
+  !next i
+  !set P_=!replace internal < by &lt; in $P_
+  !set P_=!replace internal > by &gt; in $P_
+  !if $n_ isitemof $methparmrelax
+   !set p0=$ch_optional
+  !else
+   !set p0=$ch_choose
+  !endif
+  !formselect methparm$n_ from 0 to $N_ prompt $p0,$P_
+ !else
+  !if $N_=1
+   <input type=hidden name=methparm$n_ value=1>
+   !set l=!item 2 to -1 of $(mtobj$n_)
+   !set l=!items2words $l
+   !insmath $l
+  !else
+   <tt>$ch_optional</tt>
+  !endif
+ !endif
+!exit
+

@@ -1,0 +1,90 @@
+!if wimshome/ notin $logfile
+ logfile=wimshome/log/$logfile
+!endif
+!bound checkexo within $exos default $
+ !if $checkexo=$empty
+  error=bad_exo
+  !exit
+ !endif
+ checkexo=!item -1 of $checkexo
+ cexo=!translate . to , in $checkexo
+ !distribute item $cexo into exam,exo
+ score=!getdef w_module_score in $logfile
+ !if exam isin $logfile
+  !default score=!sh awk '/^E/ && $$2=="$checksession" && $$3==$exam && $$4==$exo && $$5=="score" {print $$6}' $wims_home/log/classes/$wims_class/noscore/$checkuser
+ !endif
+ !default score=00.0
+ !writefile wimshome/$wims_sesdir/restart.time
+ session1=!translate _ to $ $ in $wims_session
+ session1=!word 1 of $session1
+ steps=!recordcnt $logfile
+ !bound checkstep between integer 1 and $steps default 1
+ vars=!record $checkstep of $logfile
+ vars=!trim $vars
+ !distribute lines $vars into checkqstr,checkmodule,checkcmd
+ vars=!line 4 to -1 of $vars
+ loggedsessiondcl=session=$checksession
+ wimssessiondcl=session=$wims_session
+ !if $loggedsessiondcl isin $vars
+  vars=!replace $loggedsessiondcl[\._a-z0-9]* by $wimssessiondcl in $vars
+ !endif
+ checkmodule=!replace w_module= by $ in $checkmodule
+ checkqstr=!replace QUERY_STRING= by $ in $checkqstr
+ checkcmd=!replace w_cmd= by $ in $checkcmd
+ !writefile wimshome/$wims_sesdir/var REMOTE_ADDR=$httpd_REMOTE_ADDR\
+HTTP_REFERER=$httpd_HTTP_REFERER\
+QUERY_STRING=\
+HTTP_USER_AGENT=$httpd_HTTP_USER_AGENT\
+HTTP_COOKIE=$httpd_HTTP_COOKIE\
+w_cmd=new\
+w_lang=$class_lang\
+w_module=$checkmodule\
+w_session=$session\
+w_special_parm=$checkstep\
+w_special_parm2=\
+w_useropts=$useropts\
+w_wims_session=$wims_session\
+w_wims_subsession=$wims_subsession\
+w_wims_window=$wims_window\
+w_wims_mode=$wims_mode\
+w_wims_module_start_time=\
+w_wims_protocol=$wims_protocol\
+w_wims_req_time=$wims_req_time\
+w_wims_session_serial=$wims_session_serial\
+w_wims_session_start_time=$wims_session_start_time\
+
+ !if $checkcmd iswordof new renew next
+  !appendfile wimshome/$wims_sesdir/var $vars
+  !setdef wims_check=$module,$checkuser,$checksession,$checkexo,$steps,$score in wimshome/sessions/$session1/var.stat
+  !restart module=$checkmodule&special_parm=$checkstep&cmd=resume
+ !else
+  vars=!record $checkstep-1 of $logfile
+  vars=!trim $vars
+  vars=!line 4 to -1 of $vars
+  loggedsessiondcl=session=$checksession
+  wimssessiondcl=session=$wims_session
+  !if $loggedsessiondcl isin $vars
+   vars=!replace $loggedsessiondcl[\._a-z0-9]* by $wimssessiondcl in $vars
+  !endif
+  !appendfile wimshome/$wims_sesdir/var $vars
+  checkqstr=!replace &+ by & in $checkqstr
+  checkqstr=!translate & to $\
+ $ in $checkqstr
+  checkqstr=!trim $checkqstr
+  cnt=!linecnt $checkqstr
+  qstr=
+  !for i=1 to $cnt
+   l=!line $i of $checkqstr
+   eq==
+   !if &&module$eq notin &&$l and \
+	&&session$eq notin &&$l and \
+	&&cmd$eq notin &&$l and \
+	&&wims_window$eq notin &&$l and \
+	&&worksheet$eq notin &&$l
+    qstr=!append line $l to $qstr
+   !endif
+  !next i
+  qstr=!translate $\
+$ to & in $qstr
+  !restart module=$checkmodule&cmd=reply&special_parm=$checkstep&$qstr
+ !endif

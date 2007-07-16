@@ -1,0 +1,35 @@
+!set anstype=yes
+!set anstyle=mc
+!if $wims_read_parm=def
+ !exit
+!endif
+!set input_rg=!rows2lines $(replygood$i)
+!set input_rg=!line 2 to -1 of $input_rg
+!set input_icnt=!itemcnt $input_rg
+!if $input_icnt<2
+ !exit
+!endif
+
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+
+!bound inputsize between integer 1 and 100 default $
+!if $inputsize!=$empty and $inputsize<=$input_icnt
+ !set menuitem=!item $inputsize of $input_rg
+ !default prompt_=$menuitem
+ !set prompt_=!imgrename $prompt_
+ !href cmd=reply&reply$i=~$inputsize $prompt_
+!else
+ !for i_=1 to $input_icnt
+  !set l_=!item $i_ of $input_rg
+  !set l_=!imgrename $l_
+  !href cmd=reply&reply$i=~$i_ $l_
+  !if $i_<$input_icnt
+   ,
+  !endif
+ !next i_
+!endif
+!reset inputsize
+!set oef_formnosubmit=yes
+

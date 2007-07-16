@@ -1,0 +1,51 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=For use with type mark in OEF
+slib_parms=1\
+,the input word (embedding delimiter: `??')
+slib_author=Bernadette PERRIN-RIOU
+slib_out= position of characters which was inside ?? in the word output;\
+Text output with comas ; number of characters
+slib_comment=<b>Preliminary version subject to further change, user with care!</b>\
+for use directly in answer with type=mark
+slib_example= ??bi??cycle\
+bi??cycle??
+!exit
+
+:proc
+
+slib_texte=!lines2words $wims_read_parm
+slib_texte= !embraced randitem $slib_texte
+slib_texte=!rows2lines $slib_texte
+slib_texte=!replace internal $\
+$ by &#59; in $slib_texte
+slib_texte=!replace internal ?? by ; in $slib_texte
+slib_cntrow=!rowcnt $slib_texte
+slib_TEXTE=
+slib_rep=
+slib_cnt=0
+slib_texte=!replace internal , by &#44; in $slib_texte
+
+!for slib_i= 1 to $slib_cntrow
+  slib_H = !row $slib_i of $slib_texte
+  slib_cnt_w=!wordcnt $slib_H
+  slib_cnt_c=!charcnt $slib_H
+  slib_k=$[$slib_i%2]
+  !if $slib_k = 0
+    slib_rep1 = !values $slib_cnt + x for x=1 to $slib_cnt_c
+    slib_rep  = !append item $slib_rep1 to $slib_rep
+  !endif
+  slib_cnt = $[$slib_cnt+$slib_cnt_c]
+  slib_HH = 
+  !for slib_j = 1 to $slib_cnt_c
+    slib_char = !char $slib_j of $slib_H
+    slib_HH = !append item $slib_char to $slib_HH
+   !next slib_j
+  slib_TEXTE = !append item $slib_HH to $slib_TEXTE
+!next slib_i
+
+slib_TEXTE = !nonempty items $slib_TEXTE
+
+slib_out= $slib_rep;$slib_TEXTE;$slib_cnt
+

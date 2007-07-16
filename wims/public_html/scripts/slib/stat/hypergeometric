@@ -1,0 +1,26 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Generation of Hypergeometric random data
+slib_parms=4\
+,m\
+,N\
+,K\
+,n
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=random data of m integers following an hypergeometric law of parameters a and b, c
+slib_comment=
+slib_example= 20,16,4,6\
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a,slib_b,slib_c
+slib_data=!declosing $slib_data
+
+slib_out=!exec octave hypergeometric_rnd($slib_data,$slib_b,$slib_a,$slib_c)
+slib_out=!words2items $slib_out
+
+slib_out=!trim $slib_out

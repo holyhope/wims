@@ -1,0 +1,35 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Probability density function of gamma law
+slib_parms=3\
+,[data]\
+,a\
+,b
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values of probability density function of gamma law on data
+slib_comment=data can be a list of reals in brackets; density is b*exp(-b*x)*(b*x)^(a-1)/gamma(a) for x>=0
+slib_example=[2,4,7],0.5,4
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a, slib_b
+
+slib_data=!declosing $slib_data
+slib_n=!itemcnt $slib_data
+slib_u=!exec pari gamma($slib_a)^(-1)
+
+slib_out=!values $slib_b*exp(-$slib_b*x)*($slib_b*x)^($slib_a-1)*$slib_u for x in $slib_data
+
+!for slib_r =1 to $slib_n
+ slib_s = !item $slib_r of $slib_data
+  !if $slib_s  <= 0
+   slib_out=!replace internal item number $slib_r by 0 in $slib_out
+ !endif
+!next slib_r
+
+slib_out=!trim $slib_out
+

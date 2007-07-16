@@ -1,0 +1,87 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Trace un rep&egrave;re
+slib_parms=11\
+400,taille horizontale du dessin \
+400,taille verticale du dessin\
+20,la marge autour du rep&egrave;re\
+-5,abscisse minimale\
+5,abscisse maximale\
+-5,ordonn&eacute;e minimale\
+5,ordonn&eacute;e maximale\
+1,finesse de la graduation des abscisses\
+1,finesse de la graduation des ordonn&eacute;es\
+black,couleur des axes\
+grey,couleur de la grille de graduation
+
+slib_author=Fabrice Guerimand 
+slib_out=plusieurs lignes <ol><li>Les coordonn&eacute;es de l'origine du rep&egrave;re dans le dessin</li><li>L'&eacute;chelle en abscisse et en ordonn&eacute;e</li><li>troisi&egrave;me et les suivantes : les donn&eacute;es pour insdraw</li></ol>
+!exit
+
+
+:proc
+slib_input=$wims_read_parm
+
+!distribute items $slib_input into xsize,ysize,marge,xmin,xmax,ymin,ymax,xgd,ygd,colora,colorg
+slib_out=$slib_input
+
+!default xsize=400
+!default ysize=400
+!default marge=20
+!default xmin=-5
+!default xmax=5
+!default ymin=-5
+!default ymax=5
+!default xgd=1
+!default ygd=1
+!default colora=black
+!default colorg=grey
+
+
+ex=$[($xsize-2*$marge)/($xmax-$xmin)]
+ey=$[($ysize-2*$marge)/($ymax-$ymin)]
+x0=$[$marge-$ex*$xmin]
+y0=$[$marge+$ey*$ymax]
+
+
+!ifval $xmax*($xmin)<0
+ xcor=1
+!else
+ xcor=0
+!endif
+!ifval $ymax*($ymin)<0
+ ycor=1
+!else
+ ycor=0
+!endif
+
+xcor=1
+ycor=1
+
+repere=parallel $x0+($xmin)*($ex),$y0-($ymax)*($ey),$x0+($xmin)*($ex),$y0-($ymin)*$ey,$ex*($xgd),0,($xmax-($xmin))/$xgd+$xcor,$colorg\
+parallel $x0+($xmin)*($ex),$y0-($ymax)*($ey),$x0+($xmax)*($ex),$y0-($ymax)*$ey,0,$ey*($ygd),($ymax-($ymin))/$ygd+$ycor,$colorg\
+linewidth 2
+
+!if $xgd<1
+ repere=$repere\
+parallel $x0+($xmin)*($ex),$y0-($ymax)*($ey),$x0+($xmin)*($ex),$y0-($ymin)*$ey,$ex,0,$xmax-($xmin)+$xcor,$colorg
+!endif
+!if $ygd<1
+ repere=$repere\
+parallel $x0+($xmin)*($ex),$y0-($ymax)*($ey),$x0+($xmax)*($ex),$y0-($ymax)*$ey,0,$ey,$ymax-($ymin)+$ycor,$colorg
+!endif
+repere=$repere\
+arrow 0,$y0,$xsize,$y0,20,$colora\
+arrow $x0,$ysize,$x0,0,20,$colora\
+parallel $x0+($xmin)*($ex),$y0-3,$x0+($xmin)*($ex),$y0+3,$ex,0,$xmax-($xmin)+$xcor,$colora\
+parallel $x0+3,$y0-($ymax)*($ey),$x0-3,$y0-($ymax)*$ey,0,$ey,$ymax-($ymin)+$ycor,$colora\
+linewidth 1
+
+
+
+slib_out=$x0,$y0\
+$ex,$[-($ey)]\
+$repere
+
+

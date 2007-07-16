@@ -1,0 +1,138 @@
+
+!if $slib_wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Polyedron in flydraw
+slib_parms=5
+,name of polyedre\
+,phi\
+,theta\
+,size\
+,coordonnates of the center
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=code for draw of drawing a polyhedron using the projection given par the spherical/
+coordonnates phi and theta
+slib_comment=
+
+!exit
+
+:proc
+
+
+!distribute item $wims_read_parm into slib_polyedre,slib_phi,slib_theta,slib_size,slib_G,slib_option
+slib_G=!declosing $slib_G
+
+!if d isin $slib_option
+	slib_line=dlines
+!else
+	slib_line=lines
+!endif
+
+slib_polyedre=!record  0 of data/polyedre_off/$slib_polyedre.off
+slib_H=1
+slib_u=!line 1 of $slib_polyedre
+slib_nom=!replace internal # by $empty in $slib_u
+!while # isin $slib_u
+!advance slib_H
+slib_u=!line $slib_H of $slib_polyedre
+!endwhile
+
+!distribute word $slib_u into slib_S_cnt, slib_F_cnt, slib_A_cnt
+
+slib_sommet=!line $[$slib_H+1] to $[$slib_H+$slib_S_cnt] of $slib_polyedre
+
+
+slib_sommet=!nonempty lines $slib_sommet
+
+slib_arete=!line $[$slib_H+$slib_S_cnt+$slib_F_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt+$slib_A_cnt] of $slib_polyedre
+slib_arete=!nonempty line $slib_arete
+slib_arete=!nonempty line $slib_arete
+
+slib_sommet=!nonempty lines $slib_sommet
+slib_sommet=!replace internal $\
+$ by ; in $slib_sommet
+slib_sommet=!singlespace $slib_sommet
+
+slib_sommet=!words2items $slib_sommet
+slib_sommet =!replace internal ;, by ; in $slib_sommet
+
+slib_Sommet=!exec pari $slib_size*Mat([$slib_sommet]~)
+
+slib_SommetP=!exec pari slib_G=Vec([$slib_G]);M = Mat([$slib_Sommet]);\
+T=matrix(3,$slib_S_cnt,i,j,slib_G[i]+0.5);\
+slib_a=cos($slib_phi); slib_b=sin($slib_phi); slib_c=cos($slib_theta); slib_d=sin($slib_theta);\
+P = Mat([slib_a*slib_c,-slib_d,-slib_b*slib_c;slib_a*slib_d,slib_c,-slib_b*slib_d;slib_b,0,slib_a]);\
+vecextract(mattranspose(P^(-1)*M+T),[2,3])
+
+slib_axe=!exec pari vecextract(mattranspose( $slib_size*P^(-1)+matrix(3,3,i,j,slib_G[i]+0.5)),[2,3])
+
+
+
+slib_axe=!translate internal ; to $\
+$ in $slib_axe
+!distribute line $slib_axe into slib_ox, slib_oy, slib_oz
+
+
+slib_SommetP =!translate internal ; to $\
+$ in $slib_SommetP
+slib_SommetP=!nonempty items $slib_SommetP
+
+slib_S=!column 1 of $slib_SommetP
+slib_S=!nonempty items $slib_S
+slib_S=!sort numeric item $slib_S
+slib_maxx=!item -1 of $slib_S
+slib_minx=!item 1 of $slib_S
+slib_rangex=$[$slib_maxx-($slib_minx)]
+slib_S=!column 2 of $slib_SommetP
+slib_S=!nonempty items $slib_S
+slib_S=!sort numeric item $slib_S
+slib_S=!sort numeric item $slib_S
+slib_maxy=!item -1 of $slib_S
+slib_miny=!item 1 of $slib_S
+slib_rangey=$[$slib_maxy-($slib_miny)]
+
+slib_range=$[max($slib_rangex,$slib_rangey)*0.7]
+slib_rangex1=$[($slib_maxx+($slib_minx))/2 - $slib_range]
+slib_rangex2=$[($slib_maxx+($slib_minx))/2 + $slib_range]
+slib_rangey1=$[($slib_maxy+($slib_miny))/2 - $slib_range]
+slib_rangey2=$[($slib_maxy+($slib_miny))/2 + $slib_range]
+
+!if 0 isin $slib_option
+  slib_out=xrange $slib_rangex1,$slib_rangex2\
+yrange $slib_rangey1,$slib_rangey2
+!else
+  slib_out = $slib_rangex1,$slib_rangex2,$slib_rangey1,$slib_rangey2
+!endif
+
+slib_out=$slib_out\
+arrow 0,0,$slib_ox,8,black\
+text black,$slib_ox,medium,x\
+arrow 0,0,$slib_oy,8,black\
+text black,$slib_oy,medium,y\
+arrow 0,0,$slib_oz,8,black\
+text black,$slib_oz,medium,z
+
+!for slib_j = 1 to $slib_S_cnt
+  slib_S=!line $slib_j of $slib_SommetP
+  slib_out=$slib_out\
+  disk  $slib_S, 8,red
+!next slib_j
+
+!for slib_j = 1 to $slib_A_cnt
+  slib_S1 = !line $slib_j  of $slib_arete
+  slib_S2= !word 2 of $slib_S1
+  slib_S1= !word 1 of $slib_S1
+  slib_S1=$[$slib_S1+1]
+  slib_S2=$[$slib_S2+1]
+  slib_S1=!line $slib_S1 of $slib_SommetP
+  slib_S2=!line $slib_S2 of $slib_SommetP
+ 
+  slib_out=$slib_out\
+  $slib_line red, $slib_S1, $slib_S2
+!next slib_j
+
+
+slib_out =!nonempty line $slib_out
+
+slib_out=[$slib_out],[$slib_SommetP]

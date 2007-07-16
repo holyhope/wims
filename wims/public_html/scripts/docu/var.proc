@@ -1,0 +1,53 @@
+!nocache
+doc=1
+
+wims_multiexec=pari maxima yacas octave
+module_title2=!detag $module_title
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+!read docu/$module_language/names
+!if $cmd=help
+ !exit
+!endif
+
+!bound job within read,print,list,exosource default read
+!if robot isin $session
+ job=print
+!endif
+
+!read tabletheme
+!for i=1 to 20
+ m_parm$i=$(parm$i)
+ parm$i=
+!next i
+
+namechars=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_
+namelim=32
+codemin=4
+codemax=16
+titlim=256
+blocklim=512
+max_blocklen=65536
+max_texlen=32768
+insmath_slashsubst=yes
+block=!text select $namechars in $block
+docdir=doc
+Docdir=$module_dir/$docdir
+readable=yes
+editable=no
+!default readcnt=0
+
+m_filedir=$Docdir/$doc/files
+!readdef $docdir/$doc/.def
+!if $tit!=$empty
+  !default block=main
+  block=!char 1 to $namelim of $block
+  !read $docdir/$doc/$block.def
+!else
+  error=doc_not_exist
+!endif
+
+!set wims_module_log=$job $doc $block
+
+!read docu/$job.proc
+

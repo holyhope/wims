@@ -1,0 +1,24 @@
+superclass=$wims_read_parm
+!default superclass=$wims_superclass
+!if $superclass=$empty
+ !exit
+!endif
+!if $wims_superclass!=$empty and $superclass!=$wims_superclass and $wims_ismanager<2
+ !exit
+!endif
+
+basedir=wimshome/log/classes/$superclass
+basedir2=$wims_home/log/classes/$superclass
+tlist=!sh cd $basedir2/.users\
+	grep -l user_supervisable=yes *
+tlist=!words2items $tlist
+
+!writefile $basedir/.teacherlist.1
+!for t in $tlist
+ U_=!defof user_lastname,user_firstname in $basedir/.users/$t
+ !appendfile $basedir/.teacherlist.1 $U_,$t
+!next t
+
+!sh sort -f $basedir2/.teacherlist.1 | grep . >$basedir2/.teacherlist\
+  rm -f $basedir2/.teacherlist.1 >/dev/null
+

@@ -1,0 +1,174 @@
+!set special_list=imagefill,expandlines,rename,help
+
+<p><center><h2>Advanced features of OEF</h2></center>
+
+<h3>Hiding image names</h3>
+If your exercise requires recognition of a randomly picked picture, the file
+name of the picture might give clue to the exercise. In order to hide this
+file name, you can write
+
+<pre>\img{\imagedir/picture.jpg align=middle alt="picture"}</pre>
+
+Then on the browser, the student will see
+
+<pre>&lt;img src="a_random_unrelated_file_name" align=middle alt="picture"&gt;</pre>
+
+The true file name is thus hidden to the student.
+
+<p><b>Note</b>. Don't use directly the WIMS command <em>rename</em> to
+process the file name, or the exercise won't work correctly under saved
+environment.
+
+<h3>Multi-step exercises</h3>
+Multi-step exercises can be defined via the command <tt>\steps</tt>. For
+example, if you define (among parameters)
+
+<pre>\steps{choice 1, reply 1
+choice 2, reply 2, reply 3
+choice 3
+}</pre>
+
+the exercise will be presented with 3 steps, the first asks for a multiple
+choice (choice 1) and a freestyle reply (reply 1), the second a multiple
+choice and two freestyle replies, etc.
+<p>
+The content of <tt>\steps</tt> accepts (earlier-defined) parameters as well as
+conditional definitions, in the same way as the definition of parameters.
+This allows you to selectively present response
+fields (according to random variations of parameters), even in the case
+where there is only one step.
+<p>
+It is to be noted that if a user makes a mistake in
+an early step, subsequent steps will not be presented (and will be
+considered all wrong).
+<p>
+The current step number is available to the statement of the exercise,
+via the variable
+<tt>\step</tt> which takes successively the values of 1,2,... when the user
+advances in his/her answering.
+<p>
+To make dynamic multi-step exercises (steps varying with student answers), you
+can use the command <tt>\nextstep{...}</tt>. The content of
+<tt>\nextstep</tt> is the similar to <tt>\steps</tt> but only the first line
+is effective. It is useful only when the content is given by a variable
+which is changed by post-reply parameter definitions. The exercise stops when
+the content of <tt>\nextstep</tt> is empty at some step.
+<p>
+In any case, at most one declaration <tt>\steps</tt> or <tt>\nextstep</tt>
+should appear in an OEF source.
+
+<h3>Conditional branching and loops</h3>
+
+Available commands:
+
+<pre>
+\if{condition}{if_content}
+\if{condition}{if_content}{otherwise_content}
+\for{var=n1 to n2}{loop_content}
+\while{condition}{loop_content}     (main environment only)
+</pre>
+
+These commands can be used either within statement, hint, solution or
+feedback, or in the main environment. In the latter case, the conditional
+execution only affects parameter definitions.
+
+<a name=special>
+<h3>Special methods</h3></a>
+
+With the command <tt>\special{...}</tt> in the statement of an exercise, the
+following special methods are available:
+<p>
+!if $special_parm=all
+ !for sp in $special_list
+  <p><center><h4>The special method <tt>$sp</tt></h4></center> <p>
+  General syntax: <tt>\special{$sp <i>parameters</i>}</tt> <p>
+
+  !read oef/special/$sp.phtml help
+ !next sp
+!else
+ !for sp in $special_list
+  !href cmd=help&special_parm=oefadv&special_parm2=$sp#special $sp
+  &nbsp;
+ !next sp
+!endif
+
+!if $special_parm2 isitemof $special_list
+<p><center><h4>The special method <tt>$special_parm2</tt></h4></center> <p>
+General syntax: <tt>\special{$special_parm2 <i>parameters</i>}</tt> <p>
+
+!read oef/special/$special_parm2.phtml help
+!endif
+
+<h3>Preprocessed sources</h3>
+
+This feature is not available for Createxo. You can use it if you write OEF
+(and Deductio) exercises under Modtool.
+<p>
+It allows you to include common portions of codes into several oef files.
+You can also use it to make batch generation of several oefs from one
+pre-source, each differing from the others by some macro definitions.
+<p>
+To use this feature, a subdirectory cpp/ should be created under src. Put
+into it pre-source files with extension .cpp. In these files, you can add
+cpp directives like <tt>#include</tt> or <tt>#if</tt>. (Please refer to cpp
+manual and c specification for details of the syntax.)
+<p>
+The first line of the cpp file must define a list of targets, in the format
+<pre>
+target=targ1 targ2 targ3 ...
+</pre>
+This line means that this cpp file should generate targ1.oef, targ2.org, etc.
+(the extension .oef will be
+appended to the output names). When generating the target file <em>targ1</em>, the
+predicate <tt>#TARGET</tt> will be defined as <em>targ1</em>. (And a macro
+<em>TARGET_targ1</em> is also defined.)
+Therefore in the cpp source file, you can add lines like
+<pre>
+#if #TARGET (targ1)
+ \title{Exercise 1}
+ \integer{v1=3}
+ \text{t1=this is target 1}
+#endif
+#if #TARGET (targ2)
+ \title{Exercise 2}
+ \integer{v1=5}
+ \text{t1=this is target 2}
+#endif
+</pre>
+in order to make the contents target-dependent.
+<p>
+Include files should also be put into the src/cpp directory, with extension
+.inc. And a line
+<pre>
+#include "common.inc"
+</pre>
+will insert the content of common.inc into the generated oef file.
+Please note that for security reasons, it is prohibited to specify
+directories of include files.
+<p>
+A special remark: cpp gets confused when your file contains single or double
+quotes in the text that are not closed. In this case, you can protect the
+commands containing such texts by c comments (<tt>/* ... */</tt>).
+
+<h3>Exercise environment</h3>
+A special variable <tt>\oefenv</tt> can be used to test the environment of
+an exercise (if it is not redefined within the exercise).
+<p>
+For the time being, the only testable content of the variable is the word
+``debug''. This word appears within <tt>\oefenv</tt> in the following
+situations: <ol>
+<li>When it is executed within Createxo.
+<li>When it is under test in Modtool, by the developer himself.
+<li>When it is a class exercise and is executed by the supervisor.
+</ol>
+Note that in these cases, the good reply will appear as default in the input
+fields of many types, allowing you to see what the exercise expects without
+typing into the fields.
+<p>
+You may add debugging informations into your exercise using things like
+<pre>
+\if{debug iswordof \oefenv}{debugging informations to add into}
+</pre>
+These debugging informations will be automatically shown when the exercise
+is under test, and automatically hidden when students work on it.
+

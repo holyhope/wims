@@ -1,0 +1,50 @@
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+m=!itemcnt $glist
+n=!itemcnt $rlist
+!if $n<2
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $m<2
+ Test=bad $i
+ !exit
+!endif
+
+!ifval $n!=$m
+ mean=1000
+ !goto diag
+!endif
+
+curvecomp_xrange=0,1000
+curvecomp_yrange=0,1000
+curvecomp_option=discrete1 discrete2
+curvecomp_1=$glist
+curvecomp_2=$rlist
+curvecomp_tolerance=15
+
+tt=!exec curvecomp
+!distribute words $tt into mean1, mean2
+mean=$[max($mean1,$mean2)/2]
+primitive1=line $rlist,$color1
+primitive2=line $glist,$color2
+
+!if NaN isin $mean or Inf isin $mean or $mean1=$empty
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+!if $mean<6
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $mean<12
+   precreply$i=yes
+   !advance precgood
+  !endif
+  diareply$i=bad
+ !endif

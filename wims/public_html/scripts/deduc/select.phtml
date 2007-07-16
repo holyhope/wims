@@ -1,0 +1,40 @@
+!set exo=$special_parm
+!if $exo!=$empty
+ !if $special_parm2=select
+!!  !set oldparm=$exo
+  !set test=!lower $exo
+  !set test=!deaccent $test
+  !set test=!text select abcdefghijklmnopqrstuvwxyz1234567890 $ in $test
+  !set test=!singlespace $test
+  !set test=!trim $test
+  !reset elist,vlist
+  !set tlist=!lower $titlelist
+  !set tlist=!deaccent $tlist
+  !set tlist=!text select abcdefghijklmnopqrstuvwxyz1234567890 , in $tlist
+  !set tlist=!singlespace $tlist
+  !for i=0 to $exocnt
+   !set n_=!item $i of $exolist
+   !set t_=!item $i of $tlist
+   !if $test isin $t_
+    !set elist=!append item $n_ to $elist
+    !set t_=!item $i of $titlelist
+    !set vlist=!append item $t_ to $vlist
+   !endif
+  !next i
+  !if $elist!=$empty
+   !set exolist=$elist
+   !set titlelist=$vlist
+   <input type=hidden name=defaultlist value="$elist">
+  !endif
+ !else
+  !set exolist=!listuniq $exo,$exolist
+  !set exolist=!replace , by , $ in $exolist
+  !set dictionary=$module_dir/Extitles
+  !set translator_unknown=leave
+  !set titlelist=!exec translator $exolist
+ !endif
+!endif
+!set ecnt=!itemcnt $exolist
+!set wims_formselect_switch=multiple size=$[min(6,$ecnt)]
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=

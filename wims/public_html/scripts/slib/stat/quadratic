@@ -1,0 +1,33 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quadratic mean
+slib_parms=1\
+ ,[data] or [data],[weight]
+slib_author=Adeline Grelot and Bernadette PERRIN-RIOU
+slib_out=standard quadratic mean of data x_1,..,x_n = sum(x_i^2)/n
+slib_comment=Data and weight can be recognized under many formats, \
+ in particular as a matrix (with data before weight).
+slib_example=[2,-7,6]\
+[2,1;-7,1;6,4]\
+[2,-7,6],[1,1,4]\
+[2,-7,6;1,1,4]
+!exit
+
+:proc
+
+!readproc slib/stat/dataproc $wims_read_parm
+!if $slib_cnt=0
+slib_out=0
+!else
+!if $slib_weight =$empty
+slib_out=!sum x^2 for x in $slib_data
+slib_out=$[sqrt($slib_out/$slib_cnt)]
+!else
+slib_cnt=!itemcnt $slib_data
+slib_out=!exec pari print(sqrt(sum(x=1,$slib_cnt,[$slib_weight][x]*([$slib_data][x])^2)/$slib_tw))
+
+!endif weight
+!endif
+
+slib_out=!trim $slib_out

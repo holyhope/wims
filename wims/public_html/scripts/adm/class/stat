@@ -1,0 +1,23 @@
+!if obot isin $wims_session
+ !exit
+!endif
+
+!if seconds notwordof $wims_writable
+ wims_writable=$wims_writable classcnt usercnt time seconds
+!endif
+!reset seconds
+!readdef wimshome/log/classes/.stat
+# Only checks total users every 15 min.
+!if $seconds=$empty or $seconds<$wims_nowseconds-900
+  st_total=!sh cd $wims_home/log/classes\
+	cl=`awk -F, 'NF>2 {print substr($$1,2) "/.userlist"}' .index`\
+	cat $$cl | grep -c '^:'
+  !bound st_total between integer 0 and 100000000 default 0
+  st_ctotal=!recordcnt wimshome/log/classes/.index
+  !writefile wimshome/log/classes/.stat classcnt=$st_ctotal\
+usercnt=$st_total\
+time=$wims_now\
+seconds=$wims_nowseconds
+ classcnt=$st_ctotal
+ usercnt=$st_total
+!endif

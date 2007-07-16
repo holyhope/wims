@@ -1,0 +1,41 @@
+!set email=!trim $email
+!set author=!trim $author
+
+!if $author!=$empty
+ Avtor te vaje:
+ !if $email!=$empty
+  !mailurl $email $author
+.
+ !else
+  $author.
+ !endif
+!endif
+!if $solution!=$empty and $hint!=$empty
+ Ta vaja vsebuje namig in celotno re¹itev.
+!endif
+!if $solution!=$empty and $hint=$empty
+ Ta vaja vsebuje celotno re¹itev.
+!endif
+!if $solution=$empty and $hint!=$empty
+ Ta vaja vsebuje namig.
+!endif
+!if $solution$hint=$empty
+ Ta vaja ne vsebuje niti celotne re¹itve niti namiga.
+!endif
+Povezava za to vajo: <br>
+!set exolink=$wims_ref_name?module=$module&cmd=new&exo=$thisexo
+<a href=$exolink>$exolink</a> <br>
+Povezava za trenutno nastavitev: <br>
+!if $module_init_parm!=$empty
+ !set exolink=$wims_ref_name?module=$module&cmd=new&$module_init_parm
+!else
+ !set exolink=$wims_ref_name?module=$module&cmd=new
+!endif
+<a href=$exolink>$exolink</a>
+<p>
+Podatki o tej zbirki vaj. <p>
+$module_about
+<p>
+Avtorske pravice za vaje so last njihovih avtorjev.
+
+!changeto NEWS.phtml

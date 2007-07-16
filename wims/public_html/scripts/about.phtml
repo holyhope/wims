@@ -1,0 +1,44 @@
+$module_about
+
+!if $module_require=$empty
+ !goto end
+!endif
+
+!set wims_multiexec=
+!if $module_language notwordof cn fr it nl si es
+ !set prompt=Softwares used in this module:
+!else
+ !if $module_language=fr
+  !set prompt=Logiciels utilis閟 dans ce module&nbsp;:
+ !endif
+ !if $module_language=si
+  !set prompt=Programska oprema, ki jo uporablja ta modul:
+ !endif
+ !if $module_language=it
+  !set prompt=Software utilizzato in questo modulo:
+ !endif
+ !if $module_language=cn
+  !set prompt=本模块调用软件:
+ !endif
+ !if $module_language=nl
+  !set prompt=Software door deze module gebruikt&nbsp;:
+ !endif
+ !if $module_language=es
+  !set prompt=Software utilizado en este m骴ulo:
+ !endif
+ 
+!endif
+
+<p>
+$prompt<ul>
+!for s in $module_require
+ !if $s iswordof pari mupad maxima povray m2 octave coq
+  <li>
+  !exec $s about
+.
+ !endif
+!next s
+</ul>
+:end
+!changeto NEWS.phtml
+

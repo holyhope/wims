@@ -1,0 +1,120 @@
+<p><center><h2>Complete list of parameter functions</h2></center>
+
+<p>$table_header
+<caption>Randomization</caption>
+$table_tr<th>Function<th>Effect
+$table_tr<td><tt>random(-5..5)
+    <td>a random number between -5 and 5
+$table_tr<td><tt>randint(-5..5)
+    <td>a random integer between -5 and 5 (inclusive)
+$table_tr<td><tt>random(1,2,3,a,b,c)
+    <td>a random item within {1,2,3,a,b,c}
+$table_tr<td><tt>shuffle(6)
+    <td>a list of 6 integers 1,2,...,6, in a random order.
+$table_tr<td><tt>shuffle(a,b,c,d,e)
+    <td>the list of letters {a,b,c,d,e}, in a random order.
+$table_tr<td><tt>randomitem(\list)
+    <td>a random item of (comma-separated) \list.
+$table_tr<td><tt>randomrow(\mat)
+    <td>a random row of the matrix \mat.
+$table_end
+<p>$table_header
+<caption>Data and list manipulation</caption>
+$table_tr<td><tt>items(a,b,c,d,e,f)
+    <td>the number of items (here it's 6) in the list
+     {a,b,c,d,e,f}
+$table_tr<td><tt>item(3,a,b,c,d,e,f)
+    <td>item number 3 of the list {a,b,c,d,e,f} (hence c)
+$table_tr<td><tt>item(3,\ll)
+    <td>item number 3 of the list \ll (same as <tt>\ll[3]</tt>)
+$table_tr<td><tt>item(2..5,a,b,c,d,e,f)
+    <td>items number 2 to 5 of the list {a,b,c,d,e,f} (hence b,c,d,e)
+$table_tr<td><tt>item([2,4],\ll)
+    <td>items number 2 and 4 of the list \ll (same as
+    <tt>\ll[2,4]</tt>)
+$table_tr<td><tt>position(make,do,go,make,take)
+    <td>number of position of the item `make' in the list
+    {do,go,make,take} (hence 3)
+$table_tr<td><tt>rows(\m)
+    <td>the number of rows in the matrix \m
+$table_tr<td><tt>row(2,\m)
+    <td>row number 2 of the matrix \m (same as <tt>\m[2;]</tt>)
+$table_tr<td><tt>row(2..5,\m)
+    <td>the submatrix of \m consisting of rows number 2 to 5
+    (same as <tt>\m[2..5;]</tt>)
+$table_tr<td><tt>row([1,3],1,2,3<br>3,4,5<br>5,6,7)
+    <td>the submatrix of the 3&times;3 matrix consisting of the first 
+    and the last rows
+$table_tr<td><tt>row(column 1 > 1 and column 2 = good,\mat)
+    <td>the submatrix of \mat consisting of rows where column 1 is > 1 and
+    column 2 is the word `good'
+$table_tr<td><tt>randomitem(\list)
+    <td>a random item of (comma-separated) \list.
+$table_tr<td><tt>randomrow(\mat)
+    <td>a random row of the matrix \mat.
+$table_tr<td><tt>column(2,\m)
+    <td>items of column number 2 of the matrix \m,
+    as a comma-separated list (same as <tt>\m[;2]</tt>)
+$table_tr<td><tt>column(2..5,\m)
+    <td>the submatrix of \m consisting of columns number 2 to 5
+    (same as <tt>\m[;2..5]</tt>)
+$table_tr<td><tt>column([1,3],1,2,3<br>3,4,5<br>5,6,7)
+    <td>the submatrix of the 3&times;3 matrix consisting of the first 
+    and the last columns
+$table_tr<td><tt>asis(How do you do? item(1,2,3))
+    <td>the string as it is, protected from transformations and conditionality.
+
+$table_end<p>$table_header
+<caption>Mathematical functions</caption>
+$table_tr<td><tt>evalue(x^2+sin(y),x=3,y=4)
+    <td>evaluation of the function x^2+sin(y),<br>
+    for x=3, y=4
+$table_tr<td><tt>solve(x^3-3*x+1,x=0..1)
+    <td>the simple root of x^3-3x+1 between 0 and 1
+$table_tr<td><tt>simplify(x^5*y^3*x^2/y)
+    <td>simplified expression: x<sup>7</sup>y<sup>2</sup>
+$table_tr<td><tt>diff(sin(x)+cos(y),x)
+    <td>the derivative of sin(x)+cos(y) with respect to x
+$table_tr<td><tt>int(x^2+3*x+1,x)
+    <td>anti-derivative of x^2+3*x+1,<br>
+     the constant term being undertermined
+!!$table_tr<td><tt>int(t^2+3*t+1,t=1..x)
+!!    <td>the anti-derivative g of x^2+3*x+1 such that g(1)=0
+$table_tr<td><tt>int(t^2+3*t+1,t=0..1)
+    <td>the numerical integration of x^2+3*x+1, from 0 to 1
+$table_tr<td><tt>det(\mat)
+    <td>determinant of the matrix \mat
+$table_tr<td><tt>htmlmath(2*x^2+3*x)
+    <td>the best possible way to render the expression<br>
+    in html way: 2x<sup>2</sup>+3x
+$table_tr<td><tt>texmath(2*x^2+3*x)
+    <td>the TeX source of the expression
+
+$table_end<p>$table_header
+<caption>Advanced facilities</caption>
+$table_tr<td><tt>pari(factor(2^101-1))
+    <td>call PARI/GP: here to factor an integer
+$table_tr<td><tt>maxima(integrate(x^2+1,x);)
+    <td>call Maxima: here to integrate a function
+$table_tr<td><tt>yacas(Taylor(x,0,10) cos(x^2+x+1))
+    <td>call Yacas: here to compute a Taylor expansion
+$table_tr<td><tt>wims(sort items \list)
+    <td>use wims !sort command to sort items in the list \list
+$table_tr<td><tt>wims(listintersect \list1 and \list2)
+    <td>use wims !listintersect command to get the common items of
+    \list1 and \list2
+$table_tr<td><tt>draw(draw source ...)
+    <td>draw a picture, the source is the same as in <tt>\draw</tt>,
+    with the image size as the first line.
+    The output is an image URL.
+$table_tr<td><tt>slib(matrix/invertible 3,5)
+    <td>Read 
+    !href module=help/wimsdoc&subject=slib#slib WIMS slib
+    matrix/invertible to generate an invertible 3x3
+    matrix of range 5.
+$table_end
+
+<p>
+Available types of parameters: integer, real, complex, function, text, matrix.
+<p>
+

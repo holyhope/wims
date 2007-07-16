@@ -1,0 +1,61 @@
+!nocache
+<center><h1>$tit
+</h1></center>
+
+!if $titb=$empty
+ <p>
+ 本文件的块 <tt>$titb</tt> 还没有创建.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ 这个块还不能阅读. 请以后再来!
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ 这个块已经过期, 不能阅读. 抱歉!
+ <p>
+ !exit
+!endif
+
+<h3>$titb (源文件)
+</b><font size=-1>
+ [
+ !href cmd=reply&job=read 格式化
+ ]</font>
+</h3>
+
+<pre wrap>
+!mexec scripts/cat.sh $module_dir/$docdir/$doc/src/$block
+</pre>
+
+<p><hr>
+!if $wims_class!=$empty and $wims_user!=supervisor
+ !exit
+!endif
+<table width=100% border=0>
+<tr><td align=left><small>
+!href cmd=reply&job=read 格式化
+&nbsp; 作者
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+!if help notin $wims_session
+ <td align=right><small>
+ !href module=home WIMS
+  @
+ <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+!endif
+<tr><td align=left colspan=2 nowrap>
+<small>最后修改日期 $datm
+</table>
+
+

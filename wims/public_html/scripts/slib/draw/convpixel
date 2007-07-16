@@ -1,0 +1,33 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Conversion pixels
+slib_parms=10\
+,x\
+,y\
+,x-size of the image (pixels)\
+,y-size of the image (pixels)\
+,x-range of the image (min)\
+,x-range of the image (max)\
+,y-range of the image (min)\
+,y-range of the image (max)\
+,border\
+,pixels for conversion in pixels, nothing else
+slib_author=Bernadette PERRIN-RIOU
+slib_out=
+slib_comment=
+slib_example=
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_x,slib_y,slib_sizex,slib_sizey,slib_rangex1,slib_rangex2,slib_rangey1,slib_rangey2,slib_border,slib_pixels
+
+!if $slib_pixels=$empty
+  slib_out = $[($slib_rangex2-($slib_rangex1))/($slib_sizex)*($slib_x+($slib_border))+($slib_rangex1)],$[-($slib_rangey2-($slib_rangey1))/($slib_sizey)*($slib_y+($slib_border))+($slib_rangey2)]
+!else
+ slib_out = $[round(($slib_sizex)*($slib_x-($slib_rangex1))/($slib_rangex2-($slib_rangex1))-($slib_border))],$[round(($slib_sizey)*(-($slib_y)+($slib_rangey2))/($slib_rangey2-($slib_rangey1)) - ($slib_border))]
+!endif
+
+slib_out = !trim $slib_out

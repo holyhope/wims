@@ -1,0 +1,19 @@
+
+casecnt=!linecnt $allcases
+!bound gotocase between integer 1 and $casecnt-1 default 0
+!if $gotocase=0
+ !exit
+!endif
+!reset newobject newObject
+caseline=!line 1 of $allcases
+caseline=!translate internal $	$ to $\
+$ in $caseline
+caseline=!replace line number 1 by $gotocase in $caseline
+caseline=!translate internal $\
+$ to $	$ in $caseline
+cases=!line 2 to -1 of $allcases
+allcases=$caseline\
+$cases
+!read deduc/objects.get
+!read deduc/methreset erase
+

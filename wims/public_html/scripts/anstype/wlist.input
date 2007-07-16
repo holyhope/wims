@@ -1,0 +1,18 @@
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set r_=!row 1 of $(replygood$i)
+  !set r_=!translate | to $\
+$ in $r_
+  !default reply$i=!line 1 of $r_
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+!bound inputsize between integer 1 and 100 default 40
+<input size=$inputsize name=reply$i value="$(reply$i)">
+!reset inputsize

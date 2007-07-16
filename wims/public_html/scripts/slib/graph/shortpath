@@ -1,0 +1,115 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Shortest path of a graph
+slib_parms=3\
+, A matrix of size n by n\
+, s first vertex\
+, t second vertex
+slib_author=Bernadette PERRIN-RIOU
+slib_out=list of vertices in a minimal path from s to t  
+slib_comment=
+slib_example= [1,0,1,0;0,1,1,0;0,2,4,1;0,1,1,1],1,3
+
+!exit
+
+:proc
+
+!distribute item $wims_read_parm into slib_GM,slib_s,slib_t
+slib_GM= !declosing $slib_GM
+slib_GM=!replace internal ; by $\
+$ in $slib_GM
+slib_n = !linecnt $slib_GM
+slib_bp=100
+slib_S=$slib_s
+
+slib_precedent=!values $slib_s for x = 1 to $slib_n
+
+!for slib_j=1 to $slib_n
+   slib_L=!line $slib_s of $slib_GM
+   !if $slib_j != $slib_s
+     slib_u=!item $slib_j of $slib_L
+     !if $slib_u=0
+        slib_pi = $slib_pi,\infty
+     !else
+        slib_pi = $slib_pi,$slib_u
+     !endif
+   !else
+     slib_pi = $slib_pi,0
+   !endif
+!next slib_j
+ slib_cor = ($slib_S), ($slib_pi)
+ slib_pi = !nonempty items $slib_pi
+
+!for slib_i = 1 to $slib_n
+  !if $slib_i != $slib_s 
+# 1. On trouve un sommet satisfaisant
+    !distribute items $[($slib_bp+1)*$slib_n],0,0 into slib_x,slib_y,slib_z
+    !for slib_j = 1 to $slib_n
+       slib_u = !item $slib_j of $slib_pi
+       !if $slib_u notsametext \infty
+         !if ($slib_j notitemof $slib_S) and ($slib_u < $slib_x)
+           slib_x = $slib_u
+           slib_y = $slib_j
+         !endif
+       !else
+         !if ($slib_j notitemof $slib_S) and ($slib_z=0)
+           slib_z = $slib_j
+         !endif
+       !endif
+    !next slib_j
+    !if $slib_y != 0
+        slib_sommet = $slib_y
+    !else
+        slib_sommet = $slib_z
+    !endif
+ 
+    slib_S = $slib_S,$slib_sommet
+# 2. On modifie le vecteur pi
+   !for slib_j = 1 to $slib_n
+    !if $slib_j != $slib_s
+     slib_u = !item $slib_j of $slib_pi
+     slib_v = !item $slib_sommet of $slib_pi
+     slib_L = !line $slib_sommet of $slib_GM
+     slib_w = !item $slib_j of $slib_L
+     slib_y = 0
+     !if $slib_v notsametext \infty
+        !if $slib_u notsametext \infty
+          slib_x = $[min($slib_u,$[$slib_v+$slib_w])]
+          !if ($slib_w != 0) and ($slib_j notitemof $slib_S)
+            slib_y = 1
+            !if $slib_x = $[$slib_v+$slib_w] 
+              slib_precedent =  !replace item number $slib_j by $slib_sommet in $slib_precedent
+            !endif
+          !endif       
+        !else
+          slib_x = $[$slib_v+$slib_w]
+          !if ($slib_w != 0) and ($slib_j notitemof $slib_S)
+            slib_y = 1
+            slib_precedent =  !replace item number $slib_j by $slib_sommet in $slib_precedent
+          !endif
+        !endif
+        !if $slib_y=1
+          slib_pi = !replace item number $slib_j by $slib_x in $slib_pi
+        !endif
+     !endif
+     !endif s
+   !next slib_j
+   slib_cor = $slib_cor, ($slib_S), ($slib_pi)
+ !endif s
+!next slib_i
+
+path from s to t
+ slib_liste = $slib_t
+ slib_pit =  !item $slib_t of $slib_pi
+!if $slib_pit notsametext \infty
+  slib_prec = $slib_t
+  !for slib_k = 1 to $slib_pit
+    slib_prec = !item $slib_prec of $slib_precedent
+    slib_liste =  $slib_prec,$slib_liste
+  !next slib_k
+!endif
+
+slib_out=$slib_liste
+
+

@@ -1,0 +1,17 @@
+
+!if $wims_developer=
+ !exit
+!endif
+
+dv_def=wimshome/log/.developers
+dv_cnt=!recordcnt $dv_def
+
+!for i=1 to $dv_cnt
+ dv_r=!record $i of $dv_def
+ !distribute lines $dv_r into dv_tit, dv_ps, dv_name,dv_email
+ !if $dv_tit=$wims_developer
+  !break
+ !endif
+ !reset dv_tit, dv_ps, dv_name, dv_email
+!next i
+

@@ -1,0 +1,58 @@
+!set methtit2=Diviser une inégalité par un nombre non-nul
+!set methtit=Diviser une inégalité par un nombre
+!set methenv=ZZ QQ RR
+!set methparmtype=number,parm inequality
+!set methhelp=Cette méthode transforme une inégalité du style \(A > B)\
+ en l'inégalité équivalente \(A/n > B/n) (ou \(A/n < B/n)), où \(n) est un nombre\
+ non-nul.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Diviser l'inégalité
+ !read deduc/methparm.phtml 2
+ par un nombre
+ !read deduc/methparm.phtml 1,10
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ !ifval $methparm1=0
+  error=Division par zéro !
+  !advance penalty
+  !exit
+ !endif
+ methexp=Diviser \($left $sign $right) par \($methparm1)
+
+ !read deduc/sub/simplify ($left) / ($methparm1)\
+	($right) / ($methparm1)
+ !distribute lines $out into newleft, newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $methparm1<0
+  newsign=!translate internal <> to >< in $sign
+ !else
+  newsign=$sign
+ !endif
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Onlywhen le diviseur est non-nul,\
+	$ct_Onlywhen le diviseur est positif,\
+	$ct_Always,\
+	$ct_Onlywhen les deux côtés sont positifs,\
+	$ct_Onlywhen les deux côtés sont de même signe,\
+	$ct_Onlywhen l'inégalité est stricte
+ 
+ badsign=!translate internal <> to >< in $newsign
+ resultlist=$newobject2,\
+	$newright $newsign $newleft,\
+	$newleft $badsign $newright
+
+!exit
+

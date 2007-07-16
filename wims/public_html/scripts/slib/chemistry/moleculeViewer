@@ -1,0 +1,165 @@
+
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Java Molecule Viewer
+slib_parms=2\
+,molecule name or data\
+,option (for example : <tt>label=true bond="ffffff"</tt>)
+slib_author=Bernadette PERRIN-RIOU
+slib_out=applet code for visualizing molecule. The java applet used is \
+LatticeViewer. Extract from the source :\
+<pre>\
+ LatticeViewer.java\
+ Date :       18th Feb 1998	\
+ Adapted by : Simon P.A.Gill\
+ http://www.le.ac.uk/engineering/spg3/lattice/\
+ The following java code is an adaptation of the Molecule Viewer XYZApp.java\
+ freely distributed by Sun Microsystems. The conditions stated below apply\
+ to this code. S.P.A. Gill takes no responsibility for this code. \
+ Requires class Matrix3D.java (also from Sun at\
+ http://www.javasoft.com:80/applets/js-applets.html)
+ </pre>
+slib_index=!record 0 of data/molecule_pdb/index
+slib_comment=the first parameter can be the name of a molecule\
+of the (small) database (see later)\
+or the content of a pdb file or an xyz file. \
+<br>Allowed options are the followings:\
+<br><tt>label</tt> can be <tt>true</tt> or <tt>false</tt>, if <tt>true</tt>, the points are labelled\
+by a number\
+<br><tt>box</tt> can be </tt>true </tt> or <tt>false</tt> if true, \
+bonds between atoms of radius 0 are displayed\
+<br><tt>scale</tt>\
+<br><tt>format</tt> can be <tt>pdb </tt> or <tt>xyz</tt>\
+<br><tt>width</tt> in pixels\
+<br><tt>height</tt> in pixels\
+<br><tt>bgcolor</tt> as "ffffff" : background color\
+<br><tt>bondcolor</tt> as "ffffff" : color of the bonds \
+<br>Defaults are: <tt>label=false bgcolor="000000" bondcolor="9966CC" \
+box=true bonds=true scale=0.8 format=pdb width=300 height=300</tt>\
+<br> An example of a xyz-file is\
+<pre>ATOM C 255 0 0 1.0\
+ATOM X 0 0 0 0.0\
+c 0 0 0 2\
+c 0.985977 0.985977 0.985977 3 7\
+c 0 1.97195 1.97195 4\
+c 0.985977 2.95792 2.95792 9 12\
+c 1.97195 0 1.97195 2 6\
+c 2.95792 0.985977 2.95792 10 13\
+c 1.97195 1.97195 0 8\
+c 2.95792 2.95792 0.985977 9 11\
+c 1.97195 3.94389 1.97195\
+c 3.94389 1.97195 1.97195 8\
+c 3.94389 3.94389 0\
+c 0 3.94389 3.94389\
+c 1.97195 1.97195 3.94389 4\
+c 3.94389 0 3.94389 6\
+x 0 0 3.94389\
+x 3.94389 0 0\
+x 0 3.94389 0\
+x 3.94389 3.94389 3.94389\
+</pre>\
+<br> Index of database (pdb format): <pre>$slib_index </pre>
+slib_example=c2h2f2,label=false scale=0.8 height=300 width=300\
+cl2o,label=true scale=1 height=300 width=300
+!exit
+
+:proc
+
+slib_data = !item 1 of $wims_read_parm
+slib_option= !item -1 of  $wims_read_parm
+
+slib_atom=
+!default slib_cnt=0
+slib_cnt= $[$slib_cnt +1]
+
+Préliminaires : mettre dans un fichier la correspondance 
+atome couleur, rayon. 
+!for slib_a in label,scale,box,bonds,bgcolor,bondcolor,format,width,height
+  slib_$slib_a=!getopt $slib_a in $slib_option
+!next slib_a
+
+!default slib_label=false
+!default slib_bgcolor="000000"
+!default slib_bondcolor="9966CC"
+!default slib_box=false
+!default slib_bonds=true
+!default slib_scale=0.8
+!default slib_format=pdb
+!default slib_width=300
+!default slib_height=300
+
+slib_out=
+slib_cnt_word=!wordcnt $slib_data
+!if $slib_cnt_word=1
+  slib_data=!record 0 of data/molecule_pdb/$slib_data.pdb
+!endif
+!if $slib_format issametext pdb
+slib_nr=!linecnt $slib_data
+slib_atomes=
+slib_liens=
+slib_Atom=
+slib_data= !replace internal , by . in $slib_data
+!for slib_i=1 to $slib_nr
+   slib_l=!line $slib_i of $slib_data
+   slib_n=!charcnt $slib_l
+   slib_nom=!char 1 to 6 of $slib_l
+   slib_nom = !nospace $slib_nom
+   !if $slib_nom iswordof HETATM ATOM  
+     slib_atom=!char 13 to 14 of $slib_l
+     slib_L =!char 32 to 54 of $slib_l
+     slib_L = $slib_atom $slib_L
+     slib_atomes=!append line $slib_L to $slib_atomes
+     slib_atom=!trim $slib_atom
+     slib_atom1=!lookup $slib_atom in slib/chemistry/atom
+     !if $slib_atom1!=$empty
+       slib_atom2=!item 4,3 of $slib_atom1
+       slib_atom2 = !items2words $slib_atom2
+       slib_Atom=!append line ATOM $slib_atom $slib_atom2  to $slib_Atom
+     !endif
+   !endif
+   !if $slib_nom issametext COMPND
+     slib_nommolecule=!words 2 of $slib_l
+   !endif
+   !if $slib_nom issametext CONECT
+     slib_L = !char 10 to -1 of $slib_l
+     slib_L = !words2items $slib_L
+     slib_liens=!append line $slib_L to $slib_liens
+   !endif
+!next i
+slib_nbatomes=!linecnt $slib_atomes
+slib_nbliens=!linecnt $slib_liens
+
+!for slib_nb=1 to $slib_nbliens
+   slib_r=!line $slib_nb of $slib_liens
+   slib_cnt_r=!itemcnt $slib_r
+   slib_lien1=!item 1 of $slib_r 
+   slib_lien2=!item 2 to -1 of $slib_r
+   slib_lien2=!items2words $slib_lien2
+   slib_r1=!line $slib_lien1 of $slib_atomes
+   slib_r1=$slib_r1 $slib_lien2
+   slib_atomes=!replace internal line number $slib_lien1 by $slib_r1 in $slib_atomes
+!next slib_nb
+!else
+slib_atomes=$slib_data
+!endif
+slib_atomes=!translate $	$ to $\
+$ in $slib_atomes
+
+slib_fichier=fichier.$slib_cnt
+!readproc oef/togetfile.proc $slib_fichier new\
+$slib_Atom\
+$slib_atomes
+
+slib_out=$wims_ref_name?session=$session&cmd=getfile&special_parm=$slib_fichier
+
+slib_out=<applet codebase=java/Lattice code=LatticeViewer.class width=$slib_width height=$slib_height>\
+<param name=model value=$slib_out>\
+<param name=label    value=$slib_label>\
+<param name=scale    value=$slib_scale>\
+<param name=box      value=$slib_box>\
+<param name=bonds    value=$slib_bonds>\
+<param name=bgcolor  value=$slib_bgcolor>\
+<param name=bondcolor value=$slib_bondcolor></applet>
+
+

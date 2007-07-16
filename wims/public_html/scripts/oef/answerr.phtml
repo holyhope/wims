@@ -1,0 +1,46 @@
+ !set tt=!word 1 of $(replygood$i)
+ !if $tt=$empty
+  !exit
+ !endif
+ !set style=!defof anstyle in anstype/$(replytype$i).input
+  !default reply_$i=$(reply$i)
+  !if $(noshow$i)=yes
+   !set reply_$i=
+  !endif
+  !if $i isitemof $embedded_analyze
+   !exit
+  !endif
+  !if r$i notitemof $embedded and numeric iswordof $style
+   !set eq=&nbsp;=
+  !else
+   !reset eq
+  !endif
+  <tr><td align=right nowrap>
+  !imgrename <b>$(replyname$i)</b>$eq<td><tt>$(reply_$i)</tt>&nbsp;: <td>
+  !if $tt!=?analyze
+   !if $(diareply$i)=good
+    !if $(partialgood$i) = yes and $indpartial != $empty
+     !set thisind=$indpartial
+    !else
+     !set thisind=$indgood
+    !endif
+   !else
+    !if $(precreply$i)=yes
+     !set thisind=$indprec
+    !else
+     !set thisind=$indbad
+    !endif
+   !endif
+   !if ($(diareply$i)=bad or $(partialgood$i) = yes) and $presentgood>0 and \
+	nogood notwordof $style and dprompt notwordof $style
+    !default replyGood$i=$(replygood$i)
+    !imgrename $thisind, $ch_good1 <tt>$(replyGood$i)</tt>.
+   !else
+    !imgrename $thisind.
+   !endif
+   !if $(badsize$i)=true
+    $name_badsize
+   !endif
+  !else
+   $indsee.
+  !endif

@@ -1,0 +1,26 @@
+parms=!items2words $wims_read_parm
+!distribute words $parms into cn_method, cn_ident, cn_class, cn_user
+
+!if $cn_ident=$empty
+ !debug missing_ident
+!endif
+
+ident_type=
+!readdef wimshome/log/classes/.connections/$cn_ident
+!if $ident_type=$empty
+ !debug bad ident: $cn_ident
+!endif
+
+!read adm/connect/$ident_type
+
+!if $cn_status notsametext OK
+ connect_error=$cn_data
+ !exit
+!endif
+
+cn_data=!nonempty lines $cn_data
+datacnt=!linecnt $cn_data
+!if $cn_sync=yes and $wims_class>0 and $wims_user=supervisor
+ !read adm/connect/.sync/$cn_method
+!endif
+

@@ -1,0 +1,137 @@
+!set methtit2=Multiplier deux inégalités positives
+!set methtit=Multiplier deux inégalités
+!set methenv=ZZ QQ RR
+!set methparmrelax=3,4
+!set methparmtype=parm inequality >,\
+	parm inequality >,\
+	parm inequality >,\
+	parm inequality >
+!set methhelp=Cette méthode applique la propriété suivante. <p>\
+ <center><em>Si \(A <= B) et \(C <= D) avec \(B >= 0) et \(C >= 0), alors\
+ \(AC <= BD).\
+ </em></center> <p>\
+ Le résultat (\(AC <= BD)) sera rajouté dans les hypotheses.\
+ <p>\
+ Dans les cas où certaines inégalités de départ sont strictes, la méthode\
+ sait aussi quand on peut avoir \(AC < BD).
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ On applique la propriété suivante. <p>
+ <center><em>Si \(A <= B) et \(C <= D) avec \(B >= 0) et \(C >= 0), alors
+ \(AC <= BD).
+ </em></center>
+ <p>
+ !set ch_optional=c'est évident
+ Pour \(A <= B) : l'inégalité
+ !read deduc/methparm.phtml 1
+ où \(B >= 0) parce que
+ !read deduc/methparm.phtml 3
+ <br>
+ Pour \(C <= D) : l'inégalité
+ !read deduc/methparm.phtml 2
+ où \(C >= 0) parce que
+ !read deduc/methparm.phtml 4
+
+!exit
+:check
+ gt=>
+ lt=<
+ eq=$empty=
+ !for i=1 to 4
+  !distribute items $(methparmobj$i) into data,left$i,sign$i,right$i
+  mt$i=$(left$i) $(sign$i) $(right$i)
+  !if $lt isin $(sign$i)
+   !exchange left$i,right$i
+  !endif
+ !next i
+ methexp=Multiplier \($mt1) et \($mt2)
+
+ !read deduc/sub/checkineq ($right1),>=,0\
+	($left1),>=,0\
+	($right2),>=,0\
+	($right1),>,0\
+	($left1),>,0
+ !distribute lines $out into t1,t2,t3,t4,t5
+ !if $t2=false
+  error=Votre première inégalité ne remplit pas la condition&nbsp;!
+  !advance penalty
+  !exit
+ !endif
+ !if $t1=true or $t2=true
+  !if $t2=true
+   sign3=$sign1=
+   mt2=$t5
+  !else
+   sign3=$sign1
+   mt2=$t4
+  !endif
+  !goto ok1
+ !endif
+ !ifval $methparm3=0
+  !goto bad1
+ !endif
+ !read deduc/sub/checkineq ($left1) - ($left3) + ($right3),>=,0\
+	($left1) - ($left3) + ($right3),>,0
+ !distribute lines $out into mt1,mt2
+ !if $mt1!=true
+   :bad1
+   error=Je ne vois pas pourquoi la première inégalité remplit la condition.
+   !advance penalty
+   !exit
+ !endif
+ :ok1
+ !read deduc/sub/checkineq ($right2),>=,0\
+	($right2),>,0
+ !distribute lines $out into mt3,mt4
+ !if $mt3=true
+  sign4=$sign2=
+  !goto ok2
+ !endif
+ !if $out=false
+  error=Votre deuxième inégalité ne remplit pas la condition&nbsp;!
+  !advance penalty
+  !exit
+ !endif
+ !if $[$methparm4]=0
+  !goto bad2
+ !endif
+ !read deduc/sub/checkineq ($right2) - ($left4) + ($right4),>=,0
+	($right2) - ($left4) + ($right4),>,0
+ !distribute lines $out into mt3,mt4
+ !if $mt3!=true
+   :bad2
+   error=Je ne vois pas pourquoi la deuxième inégalité est positive.
+   !exit
+ !endif
+ :ok2
+
+ !read deduc/sub/simplify ($left1) * ($left2)\
+	($right1) * ($right2)
+ !distribute lines $out into newright, newleft
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+
+ s_=<
+ !reset eq1,eq2
+ !if $eq isin $sign3 and $mt2!=true
+  eq1=true
+ !endif
+ !if $eq isin $sign4 and $mt4!=true
+  eq2=true
+ !endif
+ !if ($eq isin $sign1 and $eq isin $sign2) or\
+	($eq1=true and $eq2=true) or\
+	($eq isin $sign1 and $eq1=true) or ($eq isin $sign2 and $eq2=true)
+  s_=$s_=
+ !endif
+ newobject0=$newleft $s_ $newright
+ oldobject=0
+
+!exit

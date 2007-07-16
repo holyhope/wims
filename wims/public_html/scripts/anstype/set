@@ -1,0 +1,39 @@
+
+dd=!declosing $(reply$i)
+!if ; isin $dd
+ test=NaN
+ !exit
+!endif
+!if , notin $dd
+ dd=!words2items $dd
+!endif
+dd=!listuniq $dd
+reply$i={$dd}
+
+m_reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+good=!declosing $(replygood$i)
+!if , notin $good
+ good=!words2items $good
+!endif
+good=!listuniq $good
+replyGood$i={$good}
+dt=!listintersect $good and $dd
+n1=!itemcnt $good
+n2=!itemcnt $dd
+n3=!itemcnt $dt
+
+!if $n1!=$n2
+ badsize$i=true
+!endif
+
+!if $n1=$n2 and $n2=$n3
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

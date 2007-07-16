@@ -1,0 +1,69 @@
+badchars=-+/*='"`.;,!|{}*@#$$%^&()[]?<>\~
+repchars=$                                     $
+rtest=!translate internal $badchars to $repchars in $(reply$i)
+dd=!singlespace $rtest
+dd=!deaccent $dd
+dd=!lower $dd
+dd=!trim $dd
+
+m_reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+gd=!translate | to $\
+$ in $(replygood$i)
+gd=!rows2lines $gd
+gd=!nonempty lines $gd
+replyGood$i=!line 1 of $gd
+
+good=!singlespace $(replygood$i)
+good=!deaccent $good
+good=!lower $good
+good=!rows2lines $good
+good=!nonempty lines $good
+badwords=!line 2 to -1 of $good
+good=!line 1 of $good
+good=!trim $good
+badwords=!translate internal $badchars to $repchars in $badwords
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+diag=
+good=!translate | to $\
+$ in $good
+gtest=!translate internal $badchars to $repchars in $good
+good=!nonempty lines $good
+replyGood$i=!line 1 of $good
+gtest=!translate | to $\
+$ in $gtest
+gtest=!nonempty lines $gtest
+t_=!linecnt $gtest
+!for n=1 to $t_
+ g=!line $n of $good
+ g=!trim $g
+ !if $dd=$g
+  diag=yes
+ !endif
+!next g
+
+!if $diag=yes
+ diareply$i=good
+ !advance freegot
+!else
+ bn=!wordcnt $badwords
+ !if $bn>0
+  dt=!words2items $rtest
+  !for w in $dt
+   !if $w notwordof $gtest $badwords
+    test=NaN unknownword $w
+    !exit
+   !endif
+  !next w
+ !endif
+ diareply$i=bad
+!endif
+

@@ -1,0 +1,69 @@
+uu=$wims_read_parm
+!default delu_class=$wims_class
+!if $uu=$empty
+ !exit
+!endif
+
+!read adm/class/userdef classes,$delu_class,$uu
+
+deleted=
+!if $wims_superclass=$empty
+ Userdef=!replace wimshome/ by $wims_home/ in $userdef
+ test=!defof user_exists in $userdef
+ !if $user_exists=yes
+  erased=!replace internal .users/ by .users/. in $Userdef
+  !sh mv -f $Userdef $erased 2>/dev/null
+  deleted=yes
+ !endif
+!else
+ typename=!defof class_typename in wimshome/log/classes/$delu_class/.def
+ !if $typename iswordof course
+  delu_test=!sh readlink $wims_home/log/classes/$delu_class/.userlist
+  delu_up=!defof n_part in wimshome/log/classes/$delu_class/neighbors
+  !if $delu_up!=$empty and $delu_test=../.userlist
+   delu_test=!sh find $wims_home/log/classes/$delu_up/2*/score -name '$uu' -size +1 | sed 's!^$wims_home/log/classes/!!;s!/score/.*$$!!'
+   delu_test=!wordstoitems $delu_test
+   delu_test=!listcomplement $delu_class in $delu_test
+   delu_test=!nonempty items $delu_test
+   !if $delu_test=$empty
+    delu_class=$delu_up
+    !goto del_class
+   !endif
+  !endif
+  user_class=!defof user_class in wimshome/log/classes/$delu_class/.users/$uu
+  !if $user_class!=$empty
+   !sh rm -f $wims_home/log/classes/$delu_class/.users/$uu
+   user_courses=!defof user_courses in wimshome/log/classes/$wims_superclass/$user_class/.users/$uu
+   delu_course=!replace internal ../$wims_superclass/ by in ../$delu_class
+   user_courses=!listcomplement $delu_course in $user_courses
+   !setdef !set user_courses=$user_courses in wimshome/log/classes/$wims_superclass/$user_class/.users/$uu
+   deleted=yes
+  !endif
+ !else
+  :del_class
+  test=!defof user_participate in $userdef
+  !if $delu_class isitemof $test
+   shclass=!defof sharing_user in wimshome/log/classes/$delu_class/neighbors
+   !default shclass=$delu_class
+   sharing=!defof sharable_user in wimshome/log/classes/$shclass/neighbors
+   sharing=!append item $shclass to $sharing
+   part=!listcomplement $sharing in $test
+   !setdef !set user_participate=$part in $userdef
+   courses=!defof user_courses in wimshome/log/classes/$delu_class/.users/$uu
+   !for delu_c in $courses
+    !sh rm -f $wims_home/log/classes/$wims_superclass/$delu_c/.users/$uu
+    !read adm/class/mkuserlist $wims_superclass/$delu_c
+   !next delu_c
+   !sh rm -f $wims_home/log/classes/$delu_class/.users/$uu
+   deleted=yes
+  !endif
+ !endif
+!endif
+
+!if $deleted=yes
+ !read adm/class/mkuserlist $delu_class
+ usercnt=!recordcnt wimshome/log/classes/$delu_class/.userlist
+ wims_module_log=Delete $deluser
+ wims_class_log=delete user $deluser
+!endif
+

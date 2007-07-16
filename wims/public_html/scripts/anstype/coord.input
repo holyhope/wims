@@ -1,0 +1,24 @@
+!set anstype=yes
+!set anstyle=dprompt
+!if $wims_read_parm=def
+ !exit
+!endif
+!set input_rg=!rows2lines $(replygood$i)
+!set input_img=!line 1 of $input_rg
+!set input_rg=!line 2 to -1 of $input_rg
+!set input_icnt=!itemcnt $input_rg
+!if $input_icnt<1
+ !exit
+!endif
+
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+
+<input type=image name=click src="$input_img" align=middle border=0
+vspace=5 hspace=5>
+
+!reset inputsize
+!set oef_formnosubmit=yes
+
+!reset click_x,click_y

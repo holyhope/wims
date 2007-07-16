@@ -1,0 +1,47 @@
+!set p_=!trim $wims_read_parm
+!if $p_=$empty or ($wims_user!=$empty and $wims_user!=supervisor)
+ !exit
+!endif
+
+!if $module_language notwordof cn fr nl si es
+ !distribute items exercises,tools,recreations into\
+	name_exercise,name_tool,name_recreation
+ !set prompt=!nosubst Other $(name_$c) on:
+!else
+ !if $module_language=si
+  !distribute items vaje,orodja,uganke into\
+	name_exercise,name_tool,name_recreation
+  !set prompt=!nosubst D'autres $(name_$c) sur&nbsp;:
+ !endif
+ !if $module_language=fr
+  !distribute items exercices,outils,r閏r閍tions into\
+	name_exercise,name_tool,name_recreation
+  !set prompt=!nosubst D'autres $(name_$c) sur&nbsp;:
+ !endif
+ !if $module_language=cn
+  !distribute items 练习,工具,娱乐 into\
+	name_exercise,name_tool,name_recreation
+  !set prompt=!nosubst 别的类似$(name_$c):
+ !endif
+ !if $module_language=nl
+  !distribute items oefeningen,hulpmateriaal,ontspanning into\
+	name_exercise,name_tool,name_recreation
+  !set prompt=!nosubst D'autres $(name_$c) sur&nbsp;:
+ !endif
+ !if $module_language=es
+  !distribute items ejercicios,utilidades,actividades recreativas into\
+	name_exercise,name_tool,name_recreation
+  !set prompt=!nosubst Otros $(name_$c) sobre&nbsp;:
+ !endif
+!endif
+
+!set cat_=!listintersect $module_category and exercise,tool,recreation
+!for c in $cat_
+ <p>$prompt
+ !for t in $p_
+  !href module=home&search_category=$c&search_keywords=$t $t
+  &nbsp;
+ !next t
+!next c
+<p>
+

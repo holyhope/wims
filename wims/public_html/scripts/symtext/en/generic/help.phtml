@@ -1,0 +1,57 @@
+!set style=en/generic
+
+<center><h2>The <tt>generic</tt> style of symtext (default)</h2></center>
+
+This is the style applied by 
+!href cmd=help&special_parm=symtext symtext
+ where there is no style declaration in the options. The text comparison
+does not take into account the differences in lower- and upper-cases, nor
+letters with or without accent, nor singular or plural forms of common
+nouns, nor the present singular third-person form of common verbs.
+<p>
+
+!set n=!recordcnt symtext/$style/macros.help
+!if $n>0
+
+Definitions of positional macros: (recall that to replace a word
+(a, b, c, etc.) by a group of several words, one has to enclose the latter
+by a pair of brackets.)
+
+!readproc tabletheme
+
+$table_header
+$table_hdtr<th>Syntax</th><th>Recognition</th></tr>
+
+!for i=1 to $n
+ !set l=!record $i of symtext/$style/macros.help
+ !distribute lines $l into s1, s2
+ $table_tr<td><tt>$s1</tt></td>
+ <td>$s2</td>
+!next i
+$table_end
+
+!endif
+<p>
+
+antonym, synonym and type dictionaries are planned.
+
+!exit
+
+Il y a trois dictionnaires : anto (antonymes), syno (synonymes), type (type
+de mot). Ils peuvent s'utiliser par la règle <tt>[Dic:...]</tt> ou les
+macros <tt>[anto:...]</tt>, <tt>[syno:...]</tt> ou <tt>[type:...]</tt>.
+<b>Attention</b> les dictionnaires ne sont pas encore complets.
+<p>
+
+Pour le dictionnaire <tt>type</tt> (chaque mot peut avoir plusieurs types) : <ul>
+<li><tt>a</tt> désigne adjectif.
+<li><tt>ad</tt> désigne adverbe.
+<li><tt>inf</tt> désigne verbe en forme infinitif.
+<li><tt>n</tt> désigne nom.
+<li><tt>nf</tt> désigne nom féminin.
+<li><tt>nm</tt> désigne nom masculin.
+<li><tt>v</tt> désigne verbe.
+<li><tt>va</tt> désigne verbe auxiliaire.
+<li><tt>vi</tt> désigne verbe intransitif.
+<li><tt>vt</tt> désigne verbe transitif.
+</ul>

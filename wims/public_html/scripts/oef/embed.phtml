@@ -1,0 +1,135 @@
+!set parm=!replace internal \ by $$m_ in $wims_read_parm
+!distribute items $parm into t_,inputsize,prompt_
+
+!if $printing=yes or $cmd=hint
+ !if $inputsize>0 and mc iswordof $(replystyle$i)
+  !if $prompt_=$empty
+   !set g_=!rows2lines $(replygood$i)
+   !set g_=!line 2 of $g_
+   !set prompt_=!item $inputsize of $g_
+  !endif
+  !imgrename <u>$prompt_</u>
+ !else
+  ___________
+ !endif
+ !exit
+!endif
+
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!set n_=!char 2 to -1 of $t_
+!set t_=!char 1 of $t_
+!set t_=!lower $t_
+!set t_=!translate a to r in $t_
+!set n_=!text select 0123456789()+-* in $n_
+!set n_=$[$n_]
+!bound n_ between integer 1 and 100 default $
+!if $t_ notitemof r,c or $n_=$empty
+ !exit
+!endif
+
+!if $t_=c and $(choicelist$n_)=$empty or\
+	$t_=r and $(replygood$n_)=$empty
+ !exit
+!endif
+
+!if $t_$n_ notitemof $embedded
+ !set embedded=!append item $t_$n_ to $embedded
+ !set embcnt=!itemcnt $embedded
+!endif
+!set i=$n_
+
+!if $q_form=yes
+ !if $t_=c
+  !set p_=$ch_choose,$(choicelist$i)
+  !if $idontknow>0 and noidontknow notwordof $(choiceoption$i)
+   !set p_=$p_,$ch_noidea
+  !endif
+  !if $qcmgood<1
+   !set p_=$p_,$ch_none
+  !endif
+  !set N_=!itemcnt $p_
+  !set C_=$(choice$i)
+  !if debug iswordof $m_oefenv
+   !set replydefaulted=yes
+   !if $oef_default=yes
+    !set T_=!positionof item $(choicegood$i[1]) in $(choicelist$i)
+    !default choice$i=$(T_[1])
+   !endif
+  !endif
+  !formselect choice$i from 0 to $[$N_-1] prompt $p_
+  !set choice$i=$C_
+ !else
+  !read anstype/$(replytype$i).input noprompt
+ !endif
+!else
+ !distribute item green,red,blue into colorr_good,colorr_bad,colorr_forget
+ !set cl=blue
+ !if $t_=c
+  !set cl=$(colorr_$(diachoice$i))
+  !set p_=!item $(choice$i) of $(choicelist$i),$ch_noidea,$ch_none
+  !set choicename$i=[$embcnt]
+ !else
+  !default reply_$i=$(reply$i)
+  !set p_=$(reply_$i)
+  !if dprompt iswordof $(replystyle$i)
+   !set reply_$i=$(reply__$i)
+  !endif
+  !if mc iswordof $(replystyle$i) and $inputsize!=$empty and $inputsize >= 1 and $inputsize <= 1000
+   !set tt=!rows2lines $(replygood$i)
+   !distribute lines $tt into ts,tt
+   !default prompt_=!item $inputsize of $tt
+   !set p_=$prompt_
+   !reset tv
+   !if $(replytype$i)  iswordof mark
+     !set tv=$(reply$i)
+   !else
+    !for r_ in $(reply$i)
+     !set tu=!positionof item $r_ in $tt
+     !set tv=!append item $tu to $tv
+    !next r_
+   !endif
+   !if $inputsize notitemof $tv
+    !if $inputsize isitemof $ts and $(replytype$i) iswordof mark
+     !set cl = $colorr_forget
+     !imgrename <b><tt><u><font color=$cl>$p_</font></u></tt></b>
+    !else
+     !imgrename <b><tt><u>$p_</u></tt></b>
+    !endif
+    !exit
+   !endif
+  !endif
+  !if $(replytype$i) iswordof code
+   !set p_=!replace internal & by &amp; in $p_
+   !set p_=!replace internal &amp;#36; by &#36; in $p_
+   !set p_=!replace internal < by &lt; in $p_
+   !set p_=<pre>$p_</pre>
+  !endif
+  !set tt=!word 1 of $(replygood$i)
+  !if $tt!=?analyze
+   !set cl=$(colorr_$(diareply$i))
+   !if $(replytype$i) iswordof mark
+     !if $inputsize isitemof $ts
+     !set cl = $colorr_good
+     !else
+     !set cl = $colorr_bad
+     !endif
+    !endif
+  !else
+   !set embedded_analyze=!append item $i to $embedded_analyze
+   !set embedded_bracket=$embedded_bracket [$embcnt]
+  !endif
+  !set replyname$i=[$embcnt]
+ !endif
+ !if $(replytype$i) notwordof correspond
+  !set instex_color=$cl
+ !endif
+ !imgrename <b><tt><font color=$cl>$p_</font></tt></b><sup><small>[$embcnt]</small></sup> 
+ !set instex_color=black
+ !if $(replytype$i) iswordof correspond
+  !set noshow$i=yes
+ !endif
+!endif
+

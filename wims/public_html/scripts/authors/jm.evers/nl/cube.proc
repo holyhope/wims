@@ -1,0 +1,49 @@
+#########################################################################
+#	variabelen	:RIB side-value
+#		 	:ANGLE  perspective angle
+#			:XSIZE,YSIZE pixels,image size
+#	wordt gebruikt met AUTOTRACE
+#########################################################################
+
+    x=$[$RIB-$RIB*sin($ANGLE*pi/180)]
+    y=$[$RIB-$RIB*cos($ANGLE*pi/180)]
+    X=$[$RIB-sin($ANGLE*pi/180)]
+    Y=$[$RIB-cos($ANGLE*pi/180)]
+
+!if $XSIZE= or $YSIZE=
+    XSIZE=360
+    YSIZE=360
+!endif
+	    
+      
+      cube$n=$XSIZE,$YSIZE\
+      xrange $[-1*$RIB],$[2*$RIB]\
+      yrange $[-1*$RIB],$[2*$RIB]\
+      linewidth 3\
+      lines black,0,0,0,$RIB,$RIB,$RIB,$RIB,0,0,0\
+      dline $x,$y,$x,$[$y+$RIB],black \
+      dline $x,$y,$[$x+$RIB],$y,black \
+      dline 0,0,$x,$y,black\
+      line  0,$RIB,$x,$[$y+$RIB],black\
+      line  $x,$[$y+$RIB],$[$x+$RIB],$[$y+$RIB],black\
+      line  $[$x+$RIB],$[$y+$RIB],$RIB,$RIB,black\
+      line  $RIB,0,$[$x+$RIB],$y,black\
+      line  $[$x+$RIB],$y,$[$x+$RIB],$[$y+$RIB],black\
+      linewidth 14\
+      point 0,0,red \
+      point $RIB,0,red\
+      point 0,$RIB,red\
+      point $RIB,$RIB,red\
+      point $x,$y,red\
+      point $x,$[$y+$RIB],red\
+      point $[$x+$RIB],$[$y+$RIB],red\
+      point $[$x+$RIB],$y,red\
+      text black,0,0,huge,A\
+      text black,$RIB,0,huge,B\
+      text black,0,$RIB,huge,E\
+      text black,$RIB,$RIB,huge,F\
+      text black,$x,$y,huge,D\
+      text black,$x,$[$y+$RIB],huge,H\
+      text black,$[$x+$RIB],$[$y+$RIB],huge,G\
+      text black,$[$x+$RIB],$y,huge,C\
+      

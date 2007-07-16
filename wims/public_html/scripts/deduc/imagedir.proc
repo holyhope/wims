@@ -1,0 +1,15 @@
+!if $oef_test=yes
+ imagedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=oefimg
+ Imagedir=oefimg
+ insdraw_filebase=$wims_sesdir/getfile/oefimg
+!else
+ insdraw_filebase=images/$thisexo
+ !if +/classes/ isin +/$module
+  imagedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=oefimages/$thisexo
+  Imagedir=oefimages/$thisexo
+ !else
+  imagedir=$module_dir/images/$thisexo
+  Imagedir=$httpd_PWD/$imagedir
+ !endif
+!endif
+

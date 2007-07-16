@@ -1,0 +1,42 @@
+!set methtit=Add an equation to an inequality
+!set methenv=ZZ QQ RR
+!set methparmtype=function, parm equation >,parm inequality
+!set methhelp=This method applies the following property on inequalities,\
+ to deduce a new inequality:\
+<p><center>\
+ If \(a = b), then \(c > b <=> f*a+c > f*b+d) for whatever \(f).\
+</center>
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Add
+ !default methparm1=1
+ !read deduc/methparm.phtml 1,10
+ times the equation
+ !read deduc/methparm.phtml 2
+ to the inequality
+ !read deduc/methparm.phtml 3
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left1,sign1,right1
+ !distribute items $methparmobj3 into data,left2,sign2,right2
+ methexp=Add \(($methparm1)*($left1 $sign1 $right1)) to \($left2 $sign2 $right2)
+ 
+ !read deduc/sub/simplify ($methparm1)*($left1) + ($left2)\
+	($methparm1)*($right1) + ($right2)
+ !distribute lines $out into newleft, newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+
+ newobject3=$newleft $sign2 $newright
+ oldobject=3
+
+!exit
+

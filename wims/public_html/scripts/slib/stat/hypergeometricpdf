@@ -1,0 +1,46 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Probability density function of Hypergeometric law 
+slib_parms=4\
+,[data]\
+,N\
+,K\
+,n
+slib_example=[2,4,7],12,4,3
+slib_author=Bernadette PERRIN-RIOU
+slib_out=Values of probability density function of Hypergeometric
+slib_comment=data can be a list of reals
+P(X=i)=binomial(K,i)*binomial(N-K,n-i)/binomial(N,n)
+
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_N,slib_K,slib_n
+
+slib_b= $[binomial($slib_N,$slib_n)^(-1)]
+
+slib_min= $[max(0,$slib_n+$slib_K-$slib_N)]
+slib_max= $[min($slib_n,$slib_N)]
+!if $slib_max<$slib_min
+	slib_out=0
+	!exit
+!endif
+
+slib_data=!declosing $slib_data
+slib_data1=!values rint(x)  for x in $slib_data
+slib_cnt=!itemcnt $slib_data
+slib_out= !exec pari slib_data=[$slib_data1]; vector($slib_cnt,x,1.*binomial($slib_K,slib_data[x])*binomial($slib_N-$slib_K,$slib_n-slib_data[x])*$slib_b)
+
+slib_out=!trim $slib_out
+
+!for slib_i=1 to $slib_cnt
+	slib_tmp=!item $slib_i of $slib_data
+	!if $[rint($slib_tmp)-$slib_tmp]<>0 or $slib_tmp < 0
+		slib_out=!replace internal item number $slib_i by 0 in $slib_out
+	!endif
+!next slib_i
+
+slib_out=!trim $slib_out
+

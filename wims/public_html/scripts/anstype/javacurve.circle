@@ -1,0 +1,59 @@
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+m=!itemcnt $glist
+n=!itemcnt $rlist
+!if $n<2
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $m<2
+ Test=bad $i
+ !exit
+!endif
+
+!ifval $n!=$m
+ mean=1000
+ !goto diag
+!endif
+
+ecart1= $[sqrt(($(glist[1]) - ($(rlist[1])))^2 + ($(glist[2]) - ($(rlist[2])))^2)]
+ecart2= $[abs($(glist[3]) - ($(rlist[3])))]
+
+mean=$[max($ecart1,$ecart2)]
+!if $ecart1 < 6
+  centre=1
+!else
+  centre=0
+!endif
+!if $ecart2 < 6
+  rayon=1
+!else
+  rayon=0
+!endif
+primitive1=circle $(rlist[1..2]),$[2*$(rlist[3])],$color1
+primitive2=circle $(glist[1..2]),$[2*$(glist[3])],$color2
+
+!if NaN isin $mean or Inf isin $mean
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+!if $mean<6
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $mean<12
+   precreply$i=yes
+   !advance precgood
+  !endif
+  diareply$i=bad
+ !endif
+
+##coordonnées du centre, rayon en pixels
+## test sur le centre, test sur le rayon (0 ou 1)
+m_reply$i =$rlist;$centre,$rayon
+

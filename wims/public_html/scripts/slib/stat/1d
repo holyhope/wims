@@ -1,0 +1,85 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Computes 1-dimensional statistical data
+slib_parms=2\
+ ,name of computation\
+ ,data (any recognizable format)
+slib_author=Adeline Grelot
+slib_out=result of computation
+slib_comment=Computations include arithmetic or geometric mean,\
+ standard deviation, product, median, etc.\
+ The name of computation accepts usual synonymes.\
+ Weight may be associated with data.\
+ Recognizes data under matrix format (among others).
+!exit
+
+:proc
+!reset slib_out,slib_weight
+slib_parm= !item 1 of $wims_read_parm
+slib_data= !item 2 to -1 of $wims_read_parm
+
+# Name of computation must not contain digits et al.
+slib_test=!text select 0123456789.-+*_/()[] in $slib_parm
+!if $slib_test!=$empty or $slib_parm=$empty or $slib_data=$empty
+ !exit
+!endif
+slib_parm=!singlespace $slib_parm
+slib_parm=!trim $slib_parm
+slib_parm=!lower $slib_parm
+slib_parm=!deaccent $slib_parm
+
+!if $slib_parm isitemof average,arithmetic mean,mean,\
+moyenne, moyenne arithmetique, arithmean
+ !readproc slib/stat/arithmean $slib_data
+ !exit
+!endif
+
+!if $slib_parm isitemof deviation, standard deviation
+ !readproc slib/stat/deviation $slib_data
+ !exit
+!endif
+
+!if $slib_parm isitemof median, mediane
+ !readproc slib/stat/median $slib_data
+ !exit
+!endif median
+
+!if $slib_parm isitemof geometric mean, geometric average, moyenne geometrique, geomean
+!readproc slib/stat/geomean $slib_data
+ !exit
+!endif geomean
+
+
+
+
+!if $slib_parm isitemof harmonic, harmonic mean, harmonic average, moyenne harmonique
+!readproc slib/stat/harmonic $slib_data
+!exit
+!endif harmonic
+
+!if $slib_parm isitemof  prod, produit, product, data product
+!readproc slib/stat/prod $slib_data
+!exit
+!endif prod
+
+!if $slib_parm isitemof  sum, somme, data sum
+!readproc slib/stat/range $slib_data
+!exit
+!endif sum
+
+
+!if $slib_parm isitemof  variance
+!readproc slib/stat/variance $slib_data
+!exit
+!endif 
+
+!if $slib_parm isitemof quadratic, quadratic mean, moyenne quadratique
+!readproc slib/stat/quadratic $slib_data
+!exit
+!endif 
+
+!if $slib_parm isitemof range, data range, etendue, etendu
+!readproc slib/stat/range $slib_data
+!exit
+!endif range

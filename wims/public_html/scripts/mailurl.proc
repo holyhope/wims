@@ -1,0 +1,32 @@
+!distribute lines $wims_read_parm into mailurl_1,mailurl_3
+mailurl_2=!word 2 to -1 of $mailurl_1
+mailurl_1=!word 1 of $mailurl_1
+!default mailurl_2=$mailurl_1
+!if @ notin $mailurl_1 or robot isin $session
+ !exit
+!endif
+!if $wims_user!=$empty
+ mailurl_=<a href="mailto:$mailurl_1?subject=$mailurl_3">$mailurl_2</a>
+ !exit
+!endif
+
+mailurl_=
+!read themes/$wims_theme/mailurl.proc
+!if $mailurl_!=$empty
+ !exit
+!endif
+
+mailurl_2=!replace internal @ by <img border="0" src="gifs/aa.gif"> in $mailurl_2
+
+#mailurl_=<a target=wims_sendmail href="$wims_ref_name?session=$(wims_session)_sendmail&module=adm/sendmail&cmd=new&job=new&subject=$mailurl_3">$mailurl_2</a>
+#!exit
+
+mailurl_c=!randitem a,b,c,l,m,n,x,y,z,A,B,C,L,M,N,X,Y,Z
+mailurl_c=$mailurl_c$[randint(10)]
+mailurl_1=!translate internal @ to , in $mailurl_1
+!if $mailurl_3 != $empty
+ mailurl_s=+'?'+$mailurl_c[1]+'=$mailurl_3'
+!else
+ mailurl_s=
+!endif
+mailurl_=<a href="email:..." onClick="$mailurl_c=new Array('$(mailurl_1[2])','subject','$(mailurl_1[1])','mail'); window.location=$mailurl_c[3]+'to'+':'+$mailurl_c[2]+'&#64;'+$mailurl_c[0]$mailurl_s;">$mailurl_2</a>

@@ -1,0 +1,35 @@
+
+!set email=!trim $email
+!set author=!trim $author
+
+!if $author!=$empty
+ Auteur de cet exercice&nbsp;:
+ !if $email!=$empty
+  !href $email $author
+.
+ !else
+  $author.
+ !endif
+!endif
+!if $solution!=$empty and $hint!=$empty
+ Cet exercice contient à la fois une solution expliquée et une indication.
+!endif
+!if $solution!=$empty and $hint=$empty
+ Cet exercice contient une solution expliquée mais pas d'indication.
+!endif
+!if $solution=$empty and $hint!=$empty
+ Cet exercice contient une indication mais pas de solution expliquée.
+!endif
+!if $solution$hint=$empty
+ Cet exercice ne contient ni solution expliquée ni indication.
+!endif
+<p>
+Information concernant cette collection d'exercices. <p>
+$module_about
+<p>
+Les droits d'auteur des exercices appartiennent à leurs auteurs respectifs.
+Toute installation des sources des exercices sur un 
+serveur nécessite l'autorisation expresse des auteurs.
+
+!tail
+

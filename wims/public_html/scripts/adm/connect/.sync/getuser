@@ -1,0 +1,28 @@
+!if $datacnt<1
+ !exit
+!endif
+
+!if $cn_user=supervisor
+ deffile=supervisor
+!else
+ deffile=.users/$cn_user
+!endif               
+deffile=classes/$wims_class/$deffile
+
+!if user notwordof $wims_prefix
+ wims_prefix=$wims_prefix user
+!endif
+
+!readdef $deffile
+
+!for i=1 to $datacnt
+ l_=!line $i of $cn_data
+ l_=!translate = to $\
+$ in $l_
+ !distribute lines $l_ into n_,v_
+ !if $n_ iswordof lastname firstname password email comments regnum\
+	and $v_!=$(user_$n_)
+  !setdef !set user_$n_=$v_ in $deffile
+ !endif
+!next i
+

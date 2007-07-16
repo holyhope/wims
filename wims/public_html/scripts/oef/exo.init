@@ -1,0 +1,60 @@
+!nocache
+exo=!listintersect $exo and $exolist
+!default exo=$defaultlist
+wims_intro_parm=$exo
+!default exo=$exolist
+nn=!itemcnt $exo
+
+shlist=
+!ifval $random=0
+ shufflelist=$exo
+!else
+ shuffle=!shuffle $nn
+ shufflelist=!item $shuffle of $exo
+!endif
+
+!if $intro_expert=yes
+   !distribute items 0,0,0,0 into qcmgood,penalty,presentgood,givehint
+   !bound intro_qcmpresent between 2 and 8 default 3
+   qcmpresent=$intro_qcmpresent
+   !if 1 isitemof $intro_check
+      qcmgood=1
+   !endif
+   !if 2 isitemof $intro_check
+      penalty=1
+   !endif
+   !if 3 isitemof $intro_check
+      presentgood=1
+   !endif
+   !bound intro_presentsol between 0 and 2 default 1
+   presentsol=$intro_presentsol
+   !if 4 isitemof $intro_check
+      givehint=1
+   !endif
+!else
+   qcmpresent =!item $qcmlevel of 2,3,4,5,5,6,7,8,8
+   qcmgood    =!item $qcmlevel of 1,1,1,1,0,0,0,0,0
+   penalty    =!item $qcmlevel of 0,0,0,0,0,1,1,1,1
+   presentgood=!item $qcmlevel of 1,1,1,1,1,1,0,0,0
+   presentsol =!item $qcmlevel of 2,2,1,0,0,0,0,0,0
+   givehint   =!item $qcmlevel of 1,1,1,1,1,0,0,0,0
+!endif
+
+precweight =!item $qcmlevel of 0.9,0.8,0.7,0.55,0.4,0.25,0.1,0,0
+qcmpower   =!item $qcmlevel of 1,1.1,1.2,1.3,1.5,2,2.5,3,4
+scorepower =!item $qcmlevel of 1,1,1,1.1,1.3,1.5,1.7,2,2.6
+
+!if $allchoices>0
+ qcmpresent=8
+!endif
+
+!distribute item 0,0,0 into reply_cnt,score_should,score_got
+!if $oef_test!=yes
+ !if $nn>4
+  loglist=$nn
+ !else
+  loglist=$shufflelist
+ !endif
+ wims_module_log=$cmd: $qnum exos on $loglist level=$qcmlevel
+!endif
+

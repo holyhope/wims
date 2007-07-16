@@ -1,0 +1,43 @@
+# Delete a program and all its courses.
+# Calling parameter: program address.
+
+thisclass=!translate internal / to , in $wims_read_parm
+thislevel=$(thisclass[1])
+
+!if $wims_superclass=$empty or $thislevel=$empty or $wims_user!=supervisor
+ !exit
+!endif
+
+cls_=$wims_read_parm
+cls__=wimshome/log/classes/$wims_superclass/$cls_
+!if $cls_= or $wims_class/ notin $wims_superclass/$cls_
+ !exit
+!endif
+test=!defof class_defined in $cls__/.def
+!if $test!=yes
+ error=del_not_exist
+ !exit
+!endif
+
+courses=!record 0 of $cls__/courses
+courses=!column 1 of $courses
+courses=!nonempty items $courses
+
+prog_=$wims_superclass/$cls_
+!for dp_c in $courses
+ sharelist=!defof sharing_all in wimshome/log/classes/$wims_superclass/$dp_c/neighbors
+ !for dp_C in $sharelist
+  !if $dp_C != $prog_
+   !read adm/class/stopshare $dp_C,$wims_superclass/$dp_c\
+	all
+  !endif
+ !next dp_C
+ error=
+ !read adm/gateway/delsup $dp_c
+!next dp_c
+
+!read adm/gateway/delsup $cls_
+courses=!items2words $courses
+!sh cd $wims_home/log/classes/$wims_superclass\
+ rm -Rf $cls_ $courses
+

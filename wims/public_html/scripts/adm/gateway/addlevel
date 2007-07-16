@@ -1,0 +1,78 @@
+# Add a level under the current superclass.
+# Calling parameter: supervisor_account,title,...
+
+!if $wims_superclass=$empty or $wims_user!=supervisor or \
+	$wims_class!=$wims_superclass
+ !exit
+!endif
+
+s_=!item 1 of $wims_read_parm
+titles=!item 2 to -1 of $wims_read_parm
+userdir=wimshome/log/classes/$wims_superclass/.users
+L=!record 0 of wimshome/log/classes/$wims_superclass/levels
+L=!column 1 of $L
+A=!values x for x=1 to 99
+N=!listcomplement $L in $A
+newlevels=!sort numeric items $N
+avcnt=!itemcnt $newlevels
+newcnt=!itemcnt $titles
+
+!if $newlevels=$empty or $avcnt<$newcnt
+ error=level_full
+ !exit
+!endif
+
+!if $passs!=$empty
+ passs=!text select $char_passwd in $passs
+ passlen=!charcnt $passs
+ !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
+  error=bad_password
+  !exit
+ !endif
+!else
+ passs=!defof user_password in wimshome/log/classes/$wims_superclass/supervisor
+!endif
+
+1=!defof user_exists in $userdir/$s_
+ac_su_list=
+sup_save=$s_
+!if $1!=yes
+ s_=supervisor
+ ac_su_level=
+!else
+ 1=!defof user_supervisable in $userdir/$s_
+ !if $1!=yes
+  name=$s_
+  error=not_supervisable
+  !exit
+ !endif
+ ac_su_level=yes
+!endif
+!read adm/class/userdef classes,$wims_superclass,$s_
+cadd_Supervisor=$s_
+sadd_firstname=!defof user_firstname in $userdef
+sadd_lastname=!defof user_lastname in $userdef
+sadd_email=!defof user_email in $userdef
+cadd_email=$sadd_email
+cadd_level=$alevel
+cadd_password=
+sadd_password=$passs
+cadd_secure=$sechost
+cadd_superclass=$wims_superclass
+cadd_parent=$wims_superclass
+cadd_type=3
+cadd_typename=level
+
+!for i=1 to $newcnt
+ cadd_description=!item $i of $titles
+ newlevel=!item $i of $newlevels
+ ac_su_list=!listunion $ac_su_list and $wims_superclass/$newlevel
+ !read adm/class/addclass $wims_superclass/$newlevel
+!next i
+
+!if $ac_su_level=yes
+ ac_su_list2=!defof user_supervise in $userdir/$sup_save
+ ac_su_list=!listunion $ac_su_list and $ac_su_list2
+ !setdef !set user_supervise=$ac_su_list in $userdir/$sup_save
+!endif
+

@@ -1,0 +1,12 @@
+!if $wims_read_parm=def
+ !exit
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)&nbsp;=<td>
+!endif
+
+!set prompt=!rows2lines $(replygood$i)
+!set prompt=!line 2 of $prompt
+!bound inputsize between 1 and 100 default 50
+<input size=$inputsize name=reply$i value="$prompt">
+!reset inputsize

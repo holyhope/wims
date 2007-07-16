@@ -1,0 +1,96 @@
+# Add a class under the current level.
+# Calling parameter: supervisor_account,title,...
+
+!if $wims_superclass=$empty or $wims_user!=supervisor or \
+	$level=$empty or $wims_class/ notin $wims_superclass/$level/
+ !exit
+!endif
+
+Level_=$wims_superclass/$level
+Level__=wimshome/log/classes/$Level_
+userdir=wimshome/log/classes/$wims_superclass/.users
+s_=!item 1 of $wims_read_parm
+titles=!item 2 to -1 of $wims_read_parm
+L=!record 0 of $Level__/programs
+L=!translate internal / to , in $L
+L=!column 2 of $L
+A=!values x for x=201 to 299
+N=!listcomplement $L in $A
+newclasses=!sort numeric items $N
+avcnt=!itemcnt $newclasses
+newcnt=!itemcnt $titles
+!if $newcnt<1
+ !exit
+!endif
+classes=!record 0 of $Level__/classes
+classes=!column 1 of $classes
+classes=!nonempty items $classes
+
+!if $newclasses=$empty or $avcnt<$newcnt
+ error=prog_full
+ !exit
+!endif
+
+!if $passs!=$empty
+ passs=!text select $char_passwd in $passs
+ passlen=!charcnt $passs
+ !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
+  error=bad_password
+  !exit
+ !endif
+!else
+ passs=!defof user_password in $Level__/supervisor
+!endif
+
+1=!defof user_exists in $userdir/$s_
+!if $1!=yes
+ s_=supervisor
+!else
+ 1=!defof user_supervisable in $userdir/$s_
+ !if $1!=yes
+  name=$s_
+  error=not_supervisable
+  !exit
+ !endif
+ ac_su_list=!defof user_supervise in $userdir/$s_
+ ac_su_list2=!item 1 to $newcnt of $newclasses
+ ac_su_list2=!makelist $Level_/x for x in $ac_su_list2
+ ac_su_list=!listunion $ac_su_list and $ac_su_list2
+ !setdef !set user_supervise=$ac_su_list in $userdir/$s_
+!endif
+
+!read adm/class/userdef classes,$wims_superclass,$s_
+sup_save=$s_
+save_Supervisor=$s_
+save_firstname=!defof user_firstname in $userdef
+save_lastname=!defof user_lastname in $userdef
+save_email=!defof user_email in $userdef
+save_pass=*
+save_passs=$passs
+!for i=1 to $newcnt
+ cadd_Supervisor=$save_Supervisor
+ sadd_firstname=$save_firstname
+ sadd_lastname=$save_lastname
+ sadd_email=$save_email
+ cadd_email=$save_email
+ cadd_password=$save_pass
+ sadd_password=$save_passs
+ cadd_secure=$sechost
+ cadd_superclass=$wims_superclass
+ cadd_parent=$Level_
+ cadd_type=3
+ cadd_typename=program
+ cadd_description=!item $i of $titles
+ new_class=!item $i of $newclasses
+ !read adm/class/addclass $Level_/$new_class
+ !setdef !set class_progstyle=$progstyle1 $progstyle2 in\
+	$Level__/$new_class/.def
+ !if $progstyle2=all
+  !for C in $classes
+   passs2=$passs
+   !read adm/gateway/addcourse $level/$new_class, $C
+  !next C
+ !endif
+!next i
+
+

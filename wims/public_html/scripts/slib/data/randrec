@@ -1,0 +1,25 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Take a random field of a record file
+slib_parms=1\
+,name of the record file in the module
+slib_author=Gang Xiao
+slib_out=the random field (empty if error)
+slib_comment=The length of the record file can grow very big.
+!exit
+
+:proc
+!if (...adm/ isin ...$module and / isin $wims_read_parm) \
+	or .. isin $wims_read_parm or $wims_read_parm=$empty
+ !exit
+!endif
+slib_fname=!items2words $wims_read_parm
+slib_fname=!word 1 of $slib_fname
+slib_n=!recordcnt $slib_fname
+!if $slib_n<1
+ slib_out=
+ !exit
+!endif
+slib_n=!randint 1,$slib_n
+slib_out=!record $slib_n of $slib_fname

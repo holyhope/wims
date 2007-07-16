@@ -1,0 +1,28 @@
+!default uu=$wims_read_parm
+
+percents=!getscorepercent user=$uu
+percnt=!linecnt $percents
+per=0
+av=0
+
+!for i=1 to $percnt
+ perc=!line $i of $percents
+ !distribute words $perc into p1,p2
+ !if $p2!=$empty and $(w_$i)!=$empty
+  !distribute item $[$p1/100],$[$p2/10] into x_,y_
+  per=$[$per+($(w_$i))*$(f_$i)]
+ !endif
+!next i
+
+examout=!examscore user=$uu
+!for i in $activexams
+ es_$i=!word $i of $examout
+ per=$[$per+$(ew_$i)*$(es_$i)/10]
+!next i
+
+!if $totweight>0
+ per=$[rint($scoremax*100*$per/$totweight)/100]
+!else
+ per=0
+!endif
+

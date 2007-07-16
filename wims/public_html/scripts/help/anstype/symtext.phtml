@@ -1,0 +1,66 @@
+<b>Symtext.</b> (nom: <tt>symtext</tt>)
+<p>
+
+This type is activated either by the definition of the type or by the
+declaration of the option <tt>symtext</tt> in some other reply types. In the
+first case, the reply field is a <tt>textarea</tt> allowing to enter several
+lines of text. In the second case, the reply field stays the same as for the
+original type.
+<p>
+
+The good reply is a sentence under
+!href cmd=help&special_parm=symtext symtext syntax
+ (it is often enough to know the 
+!href cmd=help&special_parm=symtext,generic generic
+ style). Example (<tt>generic</tt> style):
+<ul>
+ <p><li><tt>a _or b</tt> recognizes "a or b", "b or a", "either a
+ or b", "either b or a".
+ <p><li><tt>Bill _and [my friend]</tt> recognizes "Bill and my friend",
+ "my friend and Bill", "Bill as well as my friend", "my friend as well as
+ Bill".
+ <p><li><tt>x _equals y</tt> recognizes "x equals y", "y is equal to x",
+ "x and y are equal", etc.
+
+</ul> <p>
+
+It is recommended to put a first alternative in pure text. For example,
+if the good reply is "A and B" with no order between the two, it is better
+to put the good reply in <tt>A and B|A _and B</tt> instead of simply
+<tt>A _and B</tt>. In this case, it is the first alternative which will be
+shown as good reply to students, instead of the symtext syntax itself. The
+latter may often confuse students.
+<p>
+
+If only one line is present in the declaration of the good reply, anything
+not matching this line will be considered as false. On the other hand, if
+the given good reply contains several lines (separated by the semi-colon
+'<b><tt>;</tt></b>'), any reply matching a supplementary line will be false,
+and any reply containing a word not appearing in one of the lines  will be
+considered as incomprehensible and sent back for retyping. Finally, a reply
+not matching any of the lines but with all the words recognized will be false.
+<p>
+
+Generally it is enough to put the list of words that one wants to recognize
+in the line 2, as for the types <tt>case</tt>, <tt>nocase</tt> or
+<tt>atext</tt>.
+<p>
+
+There is also the possibility to declare partially correct answers. One has
+only to put partially correct answers into line 2 and up, then declare
+<tt>goodlim=n</tt> in the option, where <tt>n</tt> should be an integer
+greater than 1. In this case, a reply matching a line between 2 and
+<tt>n</tt> will be partially correct, with a decreasing score according to
+the line number.
+<p>
+
+All the symtext options are recognized in the option field.
+<p>
+
+The output of the symtext program is available via the variable
+<tt>\result<i>n</i></tt>, where <i>n</i> is the number of the reply field.
+It can be used in a <tt>\feedback</tt>.
+
+<p>
+!href cmd=help&special_parm=symtext Details of symtex syntax
+.

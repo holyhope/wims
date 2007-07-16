@@ -1,0 +1,28 @@
+!set anstype=yes
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set r_=!line 1 of $(replygood$i)
+  !set r_=!row 1 of $r_
+  !set r_=!translate | to $\
+$ in $r_
+  !set r_=!line 1 of $r_
+  !set r_=!trim $r_
+  !default reply$i=!singlespace $r_
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+
+!set inputsize=!translate x to , in $inputsize
+!set inputsize=!items2words $inputsize
+!distribute words $inputsize into sizer,sizec
+!bound sizer between integer 1 and 15 default 4
+!bound sizec between integer 1 and 200 default 40
+
+<textarea name=reply$i rows=$sizer cols=$sizec>$(reply$i)</textarea>
+

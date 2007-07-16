@@ -1,0 +1,62 @@
+
+!if equalities iswordof $m_options or $laststep<1
+ !exit
+!endif
+
+!readproc tabletheme
+<p>$table_header
+<caption>Historique des étapes</caption>
+$table_hdtr<th>Etape</th>
+!if $casecnt>1
+ <th>Cas</th>
+!endif
+<th>Résultat</th><th></th>
+<th>Méthode</th>
+<th>Remarques</th></tr>
+!reset light1,light2
+!set hstart=$[max(1,$currstep-10)]
+!set hstop=$[min($laststep,$currstep+8)]
+!for i=$hstart to $hstop
+ !if $i=$currstep
+  !distribute item <font color=#9090C0>,</font> into light1,light2
+ !endif
+ $table_tr<td align=center nowrap>$light1
+ $i
+ !if $status=waiting
+  <small>
+  !if $i<$currstep
+   !href cmd=reply&opt=newstep&gotostep=$i défaire
+  !else
+   !href cmd=reply&opt=newstep&gotostep=$[$i+1] refaire
+  !endif
+  </small>
+ !endif
+$light2</td>
+ !if $casecnt>1
+ !set c_=!item $i of $stepcases
+  <td align=center>$light1 \($c_) $light2</td>
+ !endif
+ <td align=center>$light1
+ !read deduc/putobject.phtml $i
+$light2</td><td></td><td>$light1
+ !line $i of $methods
+$light2</td>
+<td>$light1
+!reset R_
+!if $objisgoal=yes
+ Changement du but.
+!endif
+!set t_=!char $i of $stepcounting
+!if $t_=0
+ Non-comptée pour score.
+ !set R_=1
+!endif
+!if $R_!=1
+ &nbsp;
+!endif
+$light2</td>
+</tr>
+!next i
+$table_end<a name=last>
+<p>
+

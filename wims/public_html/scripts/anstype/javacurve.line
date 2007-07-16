@@ -1,0 +1,49 @@
+ ga=$[$(glist[2])-$(glist[4])]
+ gb=$[$(glist[3])-$(glist[1])]
+ gc=$[$(glist[2])*($(glist[3]))-($(glist[1]))*($(glist[4]))]
+ gm=$[max(abs($ga),abs($gb))]
+ ra=$[$(rlist[2])-$(rlist[4])]
+ rb=$[$(rlist[3])-$(rlist[1])]
+ rc=$[$(rlist[2])*($(rlist[3]))-($(rlist[1]))*($(rlist[4]))]
+ rm=$[max(abs($ra),abs($rb))]
+ !if NaN isin $ga$gb$gc or $gm<5
+  Test=bad $i
+  !exit
+ !endif
+ !if NaN isin $ra$rb$rc or $rm<5
+  reply$i=
+  test=NaN
+  !exit
+ !endif
+ rr=$[ceil(1000/$rm)+2]
+ rp=$[$rr+1]
+ rx1=$[$(rlist[1])*$rp-($(rlist[3]))*$rr]
+ rx2=$[$(rlist[3])*$rp-($(rlist[1]))*$rr]
+ ry1=$[$(rlist[2])*$rp-($(rlist[4]))*$rr]
+ ry2=$[$(rlist[4])*$rp-($(rlist[2]))*$rr]
+ primitive1=line $rx1,$ry1,$rx2,$ry2,$color1
+ gr=$[ceil(1000/$gm)+2]
+ gp=$[$gr+1]
+ gx1=$[$(glist[1])*$gp-($(glist[3]))*$gr]
+ gx2=$[$(glist[3])*$gp-($(glist[1]))*$gr]
+ gy1=$[$(glist[2])*$gp-($(glist[4]))*$gr]
+ gy2=$[$(glist[4])*$gp-($(glist[2]))*$gr]
+ primitive2=line $gx1,$gy1,$gx2,$gy2,$color2
+ t1=$[($ga*($rb)-($gb)*($ra))/$gm]
+ !if abs($ga) > abs($gb)
+  t2=$[$ga*($rc)-($gc)*($ra)]
+ !else
+  t2=$[$gb*($rc)-($gc)*($rb)]
+ !endif
+ t2=$[$t2/($gm^2)]
+ test=$[max(abs($t1),abs($t2))]
+ !if $test<5
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $test<11
+   precreply$i=yes
+   !advance precgood
+  !endif
+  diareply$i=bad
+ !endif

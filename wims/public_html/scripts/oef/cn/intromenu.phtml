@@ -1,0 +1,65 @@
+!set proc=oef
+<p><center><hr width=35%></center> <p>
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,8)]
+!if $exocnt<1
+ !if $wims_user=supervisor and #classes/ isin #$module
+ !else
+抱歉, 本模块目前尚无可用的练习. 请以后再来看看!
+ !endif
+ !exit
+!endif
+!if $exocnt=1
+目前本模块只含一个练习, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo 试试看.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+<td align=center>选择练习&nbsp;:<td>
+!read oef/select.phtml
+<tr><td align=center>一次练习包含<td>
+!set qnum=1
+!formselect qnum from 1 to 9
+道习题.
+<tr><td align=center>难度<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+!read introhook.phtml
+</table> <p>
+<input type=submit value="开始工作">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value=$module>
+ 选择包含以下单词的练习
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=确定>
+ </form>
+!endif
+
+<b>说明</b>. 习题将在你选择的表单中随机挑选.
+如果你选取的表单是空的, 那么所有的习题都有可能被选中.
+
+!if * isin $titlelist
+ <p>带星号 * 的习题一般来说比其它的具有更高的难度.
+!endif
+

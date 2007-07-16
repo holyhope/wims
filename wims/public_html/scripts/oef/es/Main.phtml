@@ -1,0 +1,171 @@
+!nocache
+!if $oef_test=yes
+ !set renewlink=cmd=next&retest=again
+ $header_js
+ !goto tester
+!else
+ !set init_parm=!translate + to $ $ in $module_init_parm
+ !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
+!endif
+
+!if $printing=yes
+ !changeto oef/print.phtml
+!endif
+
+!if $title!=$empty
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+!endif
+
+!if 0$delay2>0 and $status!=$empty
+ !set now_=$wims_nowseconds
+ !read js/chrono.js $[max(0,$delay1-($now_-$starttime))]
+!endif
+$header_js
+!header
+
+!if $module_checkdata!=yes
+ !read oef/es/nodata.phtml
+ !goto end
+!endif
+
+!if $title=$empty
+ Este módulo es una agrupación de ejercicios. Aparentemente lo ha
+ abierto sin precisar un ejercicio válido que quiera hacer. Esto puede
+ ocurrir porque ha seguido un enlace erróneo, o tratarse de un error del
+ programa.
+ <p><center>
+ !href module=$module Pruebe a comenzar de nuevo
+, o
+ !href $ cancelar
+ . </center>
+ !goto end
+!endif
+
+!if 0$delay1>0 and $status!=$empty
+ <p><form target=# name=chrono><center>
+ <table border=2 bgcolor=$wims_ref_bgcolor><tr><td>
+ &nbsp;<b><font color=red>¡Atención!</font></b>
+ !if $qnum>1
+  Esta serie tiene límite de tiempo.
+ !else
+  Ete ejercicio tiene límite de tiempo.
+ !endif
+ <input size=4 name=clock readonly onFocus=this.blur();>
+ </table>
+ </center></form> <p>
+!endif
+
+:tester
+!read oef/present.phtml
+
+<center><hr width=50%></center>
+
+!if $cmd=hint
+ !read oef/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read oef/msg.phtml
+  <center><hr width=50%></center>
+ !endif
+ !read oef/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint Pista
+.
+ !endif
+ !if $help!=$empty
+  !href cmd=help Ayuda
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink Reiniciar el ejercicio
+.
+ !else
+  Este es el ejercicio número $[$reply_cnt+1] de una serie con $qnum 
+  ejercicios.
+  !href $renewlink Abandonar la serie
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read oef/msg.phtml
+  <center><hr width=50%></center>
+ !endif
+ !read oef/answer.phtml
+ <p>
+ !if $status!=$empty
+  Este es el ejercicio número $reply_cnt de una serie de $qnum exercicios. <p>
+  !href cmd=next Continuar la serie con el siguiente ejercicio
+, o
+  !href $renewlink abandonar la serie y solicitar una nueva
+ (debe seguir hasta el final de la serie si quiere recibir puntuación).
+ !else
+  !if $qnum>1
+   Ha terminado una serie de $qnum ejercicios, con una puntuación de
+   $module_score sobre 10.
+   !ifval $module_score>9.8
+    ¡Felicidades!
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    (Ha sido penalizado por superar el límite de tiempo permitido).
+   !endif
+   <p>
+   !href $renewlink Una vez más
+.
+   !if $wims_sheet=$empty
+    !href exo_Intro
+.
+   !endif
+  !else
+   Ha obtenido una puntuación de $module_score sobre 10.
+   !ifval $module_score>9.8
+    ¡Felicidades!
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    (Ha sido penalizado por superar el límite de tiempo permitido).
+   !endif
+
+   <p>
+   !href $renewlink Una vez más
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!if $replydefaulted=yes
+ <p> <small>
+ Modo de desarrollo:
+ !if $oef_default=yes
+  las respuestas correctas se insertan en los campos 
+  de respuesta de forma predeterminada.
+  !else
+   !href cmd=config&oef_default=yes insertar las respuestas correctas
+   en los campos de respuesta.
+ !endif
+ </small>
+!endif
+
+!read endhook.phtml
+!if $wims_user=supervisor and exam notin $session and \
+	..classes/ notin ..$module and ..adm/ notin ..$module and \
+	..devel/ notin ..$module and \
+	GNU isin $module_copyright and \
+	_check notin $session and \
+	$class_importation!=no
+ <p>
+ !href module=adm/createxo&existing=$thisexo&catmodule=$module Importar
+ este ejercicio a su clase (donde podrá modificarlo).
+!endif
+:end
+
+!tail
+

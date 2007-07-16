@@ -1,0 +1,43 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Matrix of diameter of a graph
+slib_parms=1\
+,matrix (which represents a non oriented graph with no cycles)
+slib_author=Bernadette PERRIN-RIOU
+slib_out=matrix of distances
+slib_comment=
+slib_example=0,1,1;1,0,1;1,1,0\
+[0,0,1;0,0,1;1,1,0]
+!exit
+
+:proc
+slib_G= !declosing $wims_read_parm
+slib_G=!translate internal  $\
+$  to ; in $slib_G
+slib_n=!exec pari slib_N=Mat([$slib_G]);matsize(slib_N)[1]
+
+
+slib_P=!exec pari {slib_N=Mat([$slib_G]);slib_n=matsize(slib_N)[1];\
+slib_P=matrix(slib_n,slib_n,slib_i,slib_j,-1);\
+slib_mod=0;\
+for(slib_k=1,slib_n,slib_P[slib_k,slib_k]=0;\
+  slib_mod=1;\
+  while(slib_mod, slib_mod=0;\
+    for(slib_i=1,slib_n,\
+      for(slib_j=1,slib_n,\
+        if(slib_N[slib_i,slib_j]*(slib_P[slib_k,slib_i]+1),\
+          if((slib_P[slib_k,slib_j]+1),\
+            if(slib_P[slib_k,slib_j]>slib_P[slib_k,slib_i]+1, slib_P[slib_k,slib_j]=slib_P[slib_k,slib_i]+1;\
+            slib_mod=1),\
+            slib_P[slib_k,slib_j]=slib_P[slib_k,slib_i]+1; slib_mod=1)\
+        );\
+      );\
+    );\
+  );\
+);\
+print(slib_P);\
+}
+
+slib_out=!trim $slib_P
+

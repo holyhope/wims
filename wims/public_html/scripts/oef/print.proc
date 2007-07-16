@@ -1,0 +1,107 @@
+!advance prcnt
+!if $prcnt>6 and $wims_user!=supervisor
+ error=too_many_print
+ printing=yes
+ !exit
+!endif
+
+printmax=40
+!reset savedrawcnt print
+printing=yes
+exo=!listintersect $exo and $exolist
+!default exo=$defaultlist
+wims_intro_parm=$exo
+!default exo=$exolist
+exo=!item 1 to $printmax of $exo
+n=!itemcnt $exo
+
+!if $n<1
+ !exit
+!endif
+
+M=0
+m_step=1
+!for i=1 to $n
+ question_$i=
+ e_=!item $i of $exo
+ name_$i=$e_
+ title_$i=!defof title in $(class_header)def/$e_.def
+ !reset question testcondition format
+ thisexo=$e_
+ !readproc oef/imagedir.proc
+ varcnt=!defof varcnt in $(class_header)def/$e_.def
+ !default varcnt=0
+ !for v=2 to $varcnt+5
+  val$v=
+ !next v
+ status=prep
+ !read $(class_header)def/$e_.def
+ !if $format=html
+  question_$i=$question
+  !if __EXECUTED_ isin $question
+   varcnt_$i=$varcnt
+   var_$i=$val1
+   !for v=2 to $varcnt+5
+    v_=!translate internal $\
+$ to $	$ in $(val$v)
+    var_$i=$(var_$i)\
+$v_
+   !next v
+  !endif
+  !ifval $replycnt=0 and $choicecnt=1
+   rep=!item 1 to 6 of $choicebad1
+   rep=!append item $choicegood1 to $rep
+   rep=!listuniq $rep
+   rep=!sort items $rep
+   rep=!replace , by <li> in <ul type=square><li>$rep</ul>
+   chce_$i=$rep
+  !else
+   chce_$i=
+  !endif
+  rep=
+  !for k=1 to $choicecnt
+   rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
+  !next k
+  !if $conditioncnt<1
+   !for k=1 to $replycnt
+    rg_=$(replygood$k)
+    !if $(replytype$k) iswordof checkbox mark click menu radio
+     rg_=!translate internal ; to $\
+$ in $rg_
+     rg1_=!line 1 of $rg_
+     rg2_=!line 2 to -1 of $rg_
+     rg2_=!translate internal $\
+$ to ; in $rg2_
+     rg_=!item $rg1_ of $rg2_
+    !endif
+    !if $(replytype$k) iswordof atext wlist nocase case
+     rg_=!translate internal ;| to $\
+\
+$ in $rg_
+     rg_=!line 1 of $rg_
+    !endif
+    !if $(replytype$k) iswordof function default equation
+     rg_=!item 1 of $rg_
+    !endif
+    !if $(replytype$k) iswordof imgcomp textcomp compose reorder \
+	dragfill clickfill
+     rg_=!translate internal | to $\
+$ in $rg_
+     rg_=!rows2lines $rg_
+     rg_=!line 1 of $rg_
+     !if $(replytype$k)=imgcomp
+      rg_=!item 2 to -1 of $rg_
+      rg_=!nospace $rg_
+      rg_=!replace , by ><img src=$imagedir/ in <img src=$imagedir/$rg_>
+     !else
+      rg_=!translate , to $ $ in $rg_
+     !endif
+    !endif
+    rep=!append line <em>$(replyname$k)</em> = <tt>$rg_</tt> to $rep
+   !next k
+  !endif
+  rep=!imgrename $rep
+  ans_$i=!trim $rep
+ !endif
+!next i
+

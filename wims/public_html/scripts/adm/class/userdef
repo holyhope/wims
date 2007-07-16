@@ -1,0 +1,22 @@
+# find user definition file location.
+# Calling parameter: directory,class,user.
+# directory is deplicated, but its place must be held for compatibility.
+
+!distribute items $wims_read_parm into d_,c_,u_
+d_=wimshome/log/classes
+D_=$wims_home/log/classes
+
+!if $u_=supervisor
+ userdef=$d_/$c_/supervisor
+ !exit
+!else
+ f_=.users/$u_
+!endif
+
+scl_=!defof class_superclass in $d_/$c_/.def
+scl_=!item -1 of $scl_
+!default scl_=$c_
+
+userdef=$d_/$scl_/$f_
+Userdef=$D_/$scl_/$f_
+

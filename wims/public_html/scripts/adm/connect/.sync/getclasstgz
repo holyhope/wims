@@ -1,0 +1,25 @@
+class_lang=!defof class_lang in wimshome/log/classes/$wims_class/.def
+class_lang=!word 1 of $class_lang
+!default class_lang=en
+
+!sh cd $wims_home/$wims_sesdir\
+ tar -xzf webget.data\
+ if [ ! -d $cn_class ]; then exit; fi\
+ cd $cn_class\
+ for i in score/*.exam\
+ do\
+  cat $i $wims_home/log/classes/$wims_class/$i 2>/dev/null | sort -n -k 4 | uniq >$wims_home/tmp\
+  mv -f $wims_home/tmp $wims_home/log/classes/$wims_class/$i >/dev/null\
+  rm -f $i >/dev/null\
+ done\
+ for i in score/* noscore/*\
+ do\
+  cat $i $wims_home/log/classes/$wims_class/$i 2>/dev/null | sort | uniq >$wims_home/tmp\
+  mv -f $wims_home/tmp $wims_home/log/classes/$wims_class/$i >/dev/null\
+ done\
+ rm -Rf score noscore .[0-9]* .E[0-9]* .parmreg .security .log .log.auth .def neighbors scoreavg exostat >/dev/null\
+ . $wims_home/bin/dircptest\
+ $$dircp -u . $wims_home/log/classes/$wims_class\
+ cd $wims_home/$wims_sesdir\
+ rm -Rf webget.* $cn_class
+

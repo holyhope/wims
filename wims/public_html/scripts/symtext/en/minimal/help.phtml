@@ -1,0 +1,35 @@
+!set style=en/minimal
+
+<center><h2>Le <tt>minimal</tt> style of symtext</h2></center>
+
+This is the style that contains only the minimal set of identifications.
+It is especially useful for linguistic applications. Called without option,
+it detects any difference between the words. Only multiple spaces are
+compacted. But one can use options to do some identifications (upper- and
+lower-cases, letters with or without accent, etc.).
+<p>
+No dictionary is defined for this style for the time being.
+
+!set n=!recordcnt symtext/$style/macros.help
+!if $n>0
+
+Definitions of positional macros: (recall that to replace a word
+(a, b, c, etc.) by a group of several words, one has to enclose the latter
+by a pair of brackets.)
+
+!readproc tabletheme
+
+$table_header
+$table_hdtr<th>Syntax</th><th>Recognition</th></tr>
+
+!for i=1 to $n
+ !set l=!record $i of symtext/$style/macros.help
+ !distribute lines $l into s1, s2
+ $table_tr<td><tt>$s1</tt></td>
+ <td>$s2</td>
+!next i
+$table_end
+
+!endif
+<p>
+

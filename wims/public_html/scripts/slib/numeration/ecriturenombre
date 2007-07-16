@@ -1,0 +1,51 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Ecriture d'un nombre avec regroupement des chiffres par trois.
+slib_parms=1\
+Le nombre en question
+
+slib_author=Fabrice Guerimand 
+slib_out=Le nombre &eacute;crit avec des espaces.
+!exit
+
+:proc
+slib_input=$wims_read_parm
+
+test=$[$slib_input]
+!if NaN isin $test
+ slib_out=NaN
+ !exit
+!endif
+
+!if e isin $slib_input
+ slib_out=$slib_input
+ !exit
+!endif
+
+decomp=!replace internal . by , in $slib_input
+part=!item 1 of $decomp
+nbchi=!charcnt $part
+nbgrp=$[floor($nbchi/3)]
+slib_out=$empty
+!ifval $nbgrp*3!=$nbchi
+ slib_out=!char 1 to $[$nbchi-3*$nbgrp] of $part
+!endif
+!for i=0 to $nbgrp-1 
+ tmp=!char $[$nbchi-3*($nbgrp-$i)+1] to $[$nbchi-3*($nbgrp-$i-1)] of $part
+ slib_out=$slib_out $tmp
+!next i
+
+tst=!itemcnt $decomp
+!if $tst=1
+ !exit
+!endif
+part=!item 2 of $decomp
+nbchi=!charcnt $part
+nbgrp=$[ceil($nbchi/3)]
+tmp=!char 1 to 3 of $part
+slib_out=$(slib_out).$tmp
+!for i=1 to $nbgrp 
+ tmp=!char $[1+3*($i)] to $[3+3*$i] of $part
+ slib_out=$slib_out $tmp 
+!next i

@@ -1,0 +1,56 @@
+!set parm1=!text select /$namechars in $parm1
+!set parm1=!char 1 to $namelim*2 of $parm1
+
+!if \ isin $parm2$parm3$parm4
+ !for p in 2,3,4
+  !set parm$p=!slashsubst $(parm$p)
+ !next p
+!endif
+!if / isin $parm1
+ !set p_=!translate / to $ $ in $parm1
+ parm1=!word -1 of $p_
+ pdoc=!word 1 to -2 of $p_
+ pdoc=!translate $ $ to / in $pdoc
+!else
+ !set pdoc=$doc
+!endif
+!if $parm1=$empty or $parm1=.
+ !set parm1=$block
+ !set pdoc=$doc
+!endif
+!set pname=$parm2
+!reset titb
+!if c isin $pdoc and $wims_class!=$empty
+ !set dd=classes/$wims_class/doc
+!else
+ !set dd=doc
+!endif
+!read $dd/$pdoc/$parm1.def
+!default pname=$titb
+!default pname=$parm1
+!set parm3=!word 1 of $parm3
+!if $parm3!=$empty
+ !set anchor=#$parm3
+!else
+ !reset anchor
+!endif
+!set parm4=!word 1 of $parm4
+!if $parm4!=$empty
+ !set mparms=&$parm4
+!else
+ !reset mparms
+!endif
+!if $titb=$empty and $pdoc=$doc
+ $pname
+!else
+ !if $printable=yes and $pdoc=$doc
+  <a href=#$parm1>$pname</a>
+  !readproc docu/printlink.proc $parm1
+ !else
+  !if $pdoc=$doc
+   !href module=$module&cmd=reply&job=read&doc=$pdoc&block=$parm1$mparms$anchor $pname
+  !else
+   !href module=$pdoc&cmd=new&job=read&block=$parm1$mparms$anchor $pname  
+  !endif
+ !endif
+!endif

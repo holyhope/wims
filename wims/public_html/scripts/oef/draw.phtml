@@ -1,0 +1,35 @@
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!if $savedrawcnt>0
+ !set savedraw$savedrawcnt=$wims_read_parm
+ !increase savedrawcnt
+!endif
+
+!set pp=!trim $wims_read_parm
+!set pp=!replace internal \\ by ///?/?/?/// in $pp
+!set pp=!replace internal \ by $$m_ in $pp
+!set pp=!replace internal ///?/?/?/// by \\ in $pp
+!set s_=!line 1 of $pp
+!set pp=!line 2 to -1 of $pp
+!set pp=!translate internal $	$ to $\
+$ in $pp
+!set pp=!trim $pp
+
+!set a_=!word 1 of $pp
+!if $a_=animate
+ !set a_=!line 1 of $pp
+ !set a_=!word 2 to -1 of $a_
+ !set pp=!line 2 to -1 of $pp
+ !set ins_anim_frames=!item 1 of $a_
+ !set ins_anim_delay =!item 2 of $a_
+ !set ins_anim_loop  =!item 3 of $a_
+!endif
+
+!default insdraw_filebase=non_existent_subdirectory
+!set insdraw_size=$s_
+!set ins_align=middle
+!insdraw $pp
+
+

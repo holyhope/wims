@@ -1,0 +1,646 @@
+
+!set p2=!item 2 of $special_parm
+!if $p2!=$empty
+ !if $p2=list
+  !read help/symtext/list.phtml
+  !if $stylecnt > 0
+   !exit
+  !endif
+ !endif
+ !set test=!defof style_exists in symtext/$module_language/$p2/def
+ !if $test=yes
+  !changeto symtext/$module_language/$p2/help.phtml
+ !endif
+!endif
+
+<center><h2>Symtext documentation</h2></center>
+
+!href cmd=help&special_parm=symtext,list List of symtext styles
+. <p>
+
+Symtext is a natural language parsing syntax. It is designed to make it
+easier to identify different ways to say the same thing in natural language,
+and its main purpose is for the recognition of freely typed or composed
+short text answers to exercises.
+<p>
+
+Recognition of free text answers is difficult due to the following facts.
+<ul>
+
+<li>Different context requires different tolerance and precision. A language
+exercise cannot tolerate spelling or grammar error, which may not be the
+case for a mathematical exercise.
+
+<li>Natural language often allows many different ways to say the same thing,
+between "A or B" and "B or A", "Paul is older than Bill" and "Bill is
+younger than Paul", "x and y are similar" and "x is similar to y", or even
+"this costs too much" and "it is too expensive".
+
+<li>Typing errors are common in freely typed text. In many cases, typing
+errors should be tolerated. But before an unknown word, it is difficult for
+the software to tell whether it is a typing error or a bad answer.
+
+</ul>
+
+In view of the above, the design of symtext has incorporated the following
+features.
+
+<ul>
+<li>A nestable syntax allowing the identification of various language
+alternatives (different ways to say the same thing).
+
+<li>Macro dictionaries can be defined to help improve the human readability
+of the matching rules.
+
+<li>User-definable multiple dictionaries that can be used for various text
+analysis purposes.
+
+<li>Designated portions of the text can be output for further processing.
+
+<li>It is based on user-definable styles, with different styles defining
+different dictionaries and macros. So they can be used to deal with
+different context.
+
+<li>Language scope can be delimited by declaring the list of allowed words.
+Text containing words not in the list can be considered to be out-scope and
+be sent back for rephrasing, instead of being rejected as bad answer. A
+correct use of this feature can solve most of the problems related to typing
+errors and unexpected answers.
+
+</ul>
+
+<p><hr><h3>How it works</h3>
+
+Symtext deals with the problem of comparing two sentences. The first is the
+<em>sample</em> which is typically the answer given to an exercise. It is
+compared to the second sentence, the <em>tester</em>, which is typically the
+good answer as declared by the author of the exercise.
+<p>
+
+The sample must be plain text in natural language, while the tester may
+contain <em>symtext rules</em> allowing it to <em>match</em> various samples
+that are considered to have the same meaning. Such various ways to say the
+same thing are alternatives in the natural language. The scope of the
+acceptable alternatives depends on the context of the exercise, therefore
+must be precisely defined by the author. Symtext is designed to allow
+authors to make such definitions.
+<p>
+
+Symtext rules are word based, that is, it only compares words. A word is a
+chain of alphabetic characters or digits delimited by spaces or special
+symbols (parentheses, quotes, punctuations etc.). Any special symbol is
+considered as a word by itself. And symtext doesn't count the number of
+space characters between two words: any chain of consecutive space
+characters will be reduced to one space.
+<p>
+
+A set of basic <em>builtin rules</em> are defined in the symtext syntax. For
+example, the rule <tt>[Iperm:x,and,y]</tt> matches both samples "x and y"
+and "y and x". Rules can be nested: 
+<pre>neither [Aperm:[Alt:I,me,we,us],nor,our teacher]</pre>
+mathes the following 8 cases.
+<p>
+
+"neither I nor our teacher", "neither our teacher nor I", "neither me nor
+our teacher", "neither our teacher nor me", "neither we nor our teacher",
+"neither our teacher nor we", "neither us nor our teacher", "neither our
+teacher nor us".
+<p>
+
+In general applications, a context <em>style</em> can be declared before
+making the comparison. A style is a set of dictionaries and options. These
+include pre-transformation dictionaries that can be used for example to
+identify singular and plural words before comparison, a macro dictionary
+that can simplify the writing of tester rules and make it more readable, and
+user-definable dictionaries for various other purposes.
+!href cmd=help&special_parm=symtext,list List of styles
+.
+<p>
+
+For example, a <em>positional macro</em> <tt>_divides</tt> can be defined in
+the macro dictionary, so that the tester <tt>x _divides [y + z]</tt> will
+match the following samples.
+<p>
+
+"x divides y + z", "x is a factor of y + z", "y + z is divisible by x", "y +
+z is a multiple of x".
+<p>
+
+Note here that such a macro is positional, so that the string "y + z" must
+be enclosed in a pair of brackets to make them look as one word for the
+macro. Otherwise it will rather match things like "y is a multiple of x +
+z", which clearly is wrong.
+<p>
+
+This example shows that the final power of the syntax depends primarily on the
+construction of the macro dictionary (which will vary from style to style).
+<p>
+
+The tester is a text string containing ordinary words, matching rules and
+positional macros. An ordinary word is simply compared with the word at the
+corresponding position in the sample, while matching rules and macros can
+match multiple possibilities in the sample.
+<p>
+
+Before comparison takes place, words in both the sample and the tester may
+first be transformed in order to identify small differences that one wants
+to ignore, such as upper and lower cases, singular and plural nouns etc.
+<p>
+
+Unlike regular expression, symtext match occurs only if the tester matches
+the whole sample. Match does not occur if the tester only matches a part of
+the sample. However, wildcard rules can be included in the tester if part of
+the sample needs to be ignored.
+<p>
+
+<p><hr><h3>Details of the syntax</h3>
+
+<b>Definitions</b>. <ul>
+<li>A <em>tstring</em> is a succession of <em>atoms</em>.
+<li>An <em>atom</em> is either a <em>word</em>, a <em>brakcet block</em> or
+a positional macro name.
+<li>A <em>word</em> is either a list of consecutive alphanumerical
+characters or a single special character. In the first case, the word is
+delimited by either spaces or non-alphanumerical characters.
+<li>A <em>bracket block</em> is a substring enclosed by a pair of brackets.
+It can be either a tstring, or a <em>matching rule</em>.
+<li>A <em>positional macro</em> is a word (macro name) preceded by the
+underline character. The macro name must be defined in the macro dictionary,
+otherwise the whole atom will be treated as an ordinary word.
+</ul>
+
+A <em>matching rule</em> may be either builtin or defined in the style macro
+dictionary. It must be enclosed by a pair of brackets, and the first
+character must be alphabetic. If the first character is upper-case, it is
+builtin. otherwise it is a macro.
+<p>
+
+Syntax of the matching rule: <tt>[rule_name:parameters]</tt>.
+<em>rule_name</em> must start with the first character of the block, it must
+be a valid rule name, and the colon must immediately follow the name (no
+spaces inserted). Otherwise the block will be treated as a normal tstring
+rather than a rule. <p>
+
+<em>Parameters</em> is a comma-separated list of strings. Each parameter can
+be a tstring itself (hence can contain nested subrules), except in some
+special cases of builtin rules where some of the parameter has a special
+meaning, e.g. the first parameter of the rule <em>Pick</em> must be a
+positive integer.
+<p>
+
+There are also two special bracket blocks that are in fact simplifications
+of builtin matching rules:
+<ul>
+
+<p><li><tt>[A|B|C]</tt> is equivalent to <tt>[Alt:A,B,C]</tt>. For this
+reason, the character <tt>|</tt> is reserved. To have it matched, write
+<tt>[|]</tt> (or <tt>[Alt:|]</tt>).
+
+<p><li><tt>[**]</tt> is equivalent to <tt>[Wild:**]</tt>, <tt>[* *]</tt> is
+equivalent to <tt>[Wild:* *]</tt>, etc. A block falls into this category if
+the first character is a '<tt>*</tt>'.
+
+</ul>
+
+<p><hr><h3>Builtin rules</h3>
+
+A builtin rule is a matching rule where the first character of the name is 
+upper-case. <p>
+
+Any parameter may include the comma character, as long as it is enclosed by
+a pair of parentheses or brackets. <p>
+
+
+
+!read tabletheme
+!set wims_backslash_insmath=yes
+$table_header
+$table_hdtr
+<th>name</th>
+<th><small>Number of<br>parameters</small></th>
+<th>Effect</th>
+<th>Detail</th>
+
+$table_tr
+<td>Alt
+<td align=middle>\(>= 1)
+<td>Matches any one of the parameters.
+<td><tt>[Alt:a,b,c d]</tt> matches "a", "b" or "c d".
+
+$table_tr
+<td>Aperm
+<td align=middle>\(>= 3)
+<td>"And" styled permutation.
+<td><tt>[Aperm:[,],and,A,B,C]</tt> matches "A, B and C", "B, A and C", etc.
+The order of parameter 3 and up is arbitrary, and the first two parameters
+are used to insert between them: parameter 1 is inserted except for the
+last insertion where parameter 2 is inserted.
+
+$table_tr
+<td>Apick
+<td align=middle>\(>= 4)
+<td>"And" styled arbitrary selection.
+<td><tt>[Apick:3,[,],and,A,B,C,D,E]</tt> matches "B, E and A", "C, A and E",
+etc. Parameter 1 must be an integer and gives the number of items to pick.
+
+$table_tr
+<td>Dic
+<td align=middle>\(1)
+<td>Dictionary check
+<td><tt>[Dic:wordtype transitive verb]</tt> matches any word or group of
+words that is defined in the dictionary "wordtype", with a definition that
+contains an item "transitive verb". <p>
+
+Note. No word transformation is performed on the parameter of this rule.
+
+$table_tr
+<td>Dperm
+<td align=middle>\(4)
+<td>Dependent permutation: parameters to match depend on the sample.
+<td><tt>[Dperm:a,b,c,d]</tt> matches either "a b c" or "c d a", but nothing
+else. For example, <br>
+<tt>[Dperm:x,beats,y,is beaten by]</tt> matches either "x beats y" or "y is
+beaten by x". Or in French,
+<br>
+<tt>il [Dperm:,y,est allé,à Paris]</tt> matches either "il y est allé" or
+"il est allé à Paris".
+
+
+$table_tr
+<td>Ins
+<td align=middle>\(>= 3)
+<td>Arbitrary insertion of parameter 1.
+<td><tt>[Ins:A,B,C,D,E]</tt> matches "B A C D E", "B C A D E", "B C D A E".
+Parameter 2 and up must be matched in the given order, while parameter 1 may
+find its place anywhere between them. <p>
+
+To match "A B C D", "B A C D", "B C A D" and "B C D A", put two empty
+parameters: <tt>[Ins:A,,B,C,D,]</tt>.
+
+$table_tr
+<td>Iperm
+<td align=middle>\(3)
+<td>Inter-permutation.
+<td><tt>[Iperm:Bill,and,Alice]</tt> matches "Bill and Alice" and "Alice and
+Bill". But not the three words in any other order.
+
+$table_tr
+<td>M
+<td align=middle>\(1)
+<td>Shared macro.
+<td>The content (any tstring) of the macro can be shared with other calls (with
+the same content). This is mainly designed for the macros file, with the aim of
+reducing the size of compiled ruleset. Moreover, Shared macros can be self-nested
+(while non-shared ones cannot).
+
+$table_tr
+<td>Neg
+<td align=middle>\(1)
+<td>Logical match negation.
+<td>This rule returns match if the sample does not match its parameter, and
+vice versa. <p>
+In the first case, the rule matches the empty string in the sample.
+
+$table_tr
+<td>Nomatch
+<td align=middle>\(0)
+<td>This is a synonym of <tt>None</tt>.
+<td>
+
+$table_tr
+<td>None
+<td align=middle>\(0)
+<td>Matches nothing.
+<td><tt>[None:]</tt> always returns no match.
+
+$table_tr
+<td>Not
+<td align=middle>\(1)
+<td>This is a synonym of <tt>Neg</tt>.
+<td>
+
+$table_tr
+<td>Opick
+<td align=middle>\(>= 2)
+<td>Matches an ordered subset of given number of parameters.
+<td>This rule is as <tt>Pick</tt>, except that it only matches subsets that
+are in the same order as that given in the parameters.
+
+$table_tr
+<td>Out
+<td align=middle>\(2)
+<td>Match plus output
+<td>The first parameter is a variable name, and the second parameter can be
+any combination of words, subrules and macros. If match occurs for the
+second parameter, the matching text will be put as a value of the variable
+and output. <p>
+
+Example. <tt>[Out:myvar,[*]]</tt> matches any single word, and if the
+matched word is "myword" (in the sample), the match output contains a string
+"myvar=myword" that can be parsed to know what word the user has entered in
+this location.
+
+$table_tr
+<td>Perm
+<td align=middle>\(>= 2)
+<td>Matches all the parameters in arbitrary order.
+<td><tt>[Perm:x,y,z]</tt> matches "x y z", "y x z", "z x y" etc.
+
+$table_tr
+<td>Pick
+<td align=middle>\(>= 2)
+<td>Matches a subset of given number of parameters in any order.
+<td>The first parameter must be a positive integer n. The rule matches any
+subset of n parameters within the rest, in any order. <br>
+Example: <tt>[Pick:2,a,b,c,d]</tt> matches "a b", "d b", "c a" etc. <br>
+<tt>[Pick:3,x,y,z]</tt> is equivalent to <tt>[Perm:x,y,z]</tt>. <br>
+<tt>[Pick:1,a,b,c,d]</tt> is equivalent to <tt>[Alt:a,b,c,d]</tt>.
+
+<p>
+Extensions: <tt>[Pick:+2,...]</tt> matches any subset of at least 2
+parameters. <br>
+<tt>[Pick:-3,...]</tt> matches any subset of at most 3 parameters (including
+the empty subset).
+
+<p>
+Known bug: repetition of the same parameter is not recognized.
+<tt>[Pick:2,a,b,c,d]</tt> does not match "a c c".
+
+$table_tr
+<td>Rep
+<td align=middle>\(>= 1)
+<td>Matches an arbitrary number (at least one) of parameters in any order and
+with any repetition.
+<td><tt>[Rep:0,1]</tt> matches "0 1", "1", "0 1 0 0 1 1 0", etc.
+
+$table_tr
+<td>W
+<td align=middle>\(0 or 1)
+<td>Matches words in a list.
+<td>This rule matches the next word if it appears somewhere in the tester or
+if it is a word given in the parameter. <p>
+
+If this rule is put in the last tester line, words in all the tester lines
+will count.
+
+$table_tr
+<td>Wild
+<td align=middle>\(1)
+<td>Wildcard word match.
+<td>The unique parameter must be composed of words "*", "**", and/or "**n"
+where n is a positive number. The first matches any single word, the second
+matches 0 or any number of words, and the third matches from 0 to n
+arbitrary words. For example, <br>
+<tt>[Wild:* * **3]</tt> matches between 2 to 5 words (inclusive).
+
+$table_end
+
+<p><hr><h3>Construction of styles</h3>
+
+A style corresponds to a directory and its contents. Under WIMS, the style
+can either be shared among all modules in the public_html/scripts/symtext
+directory, or be special to one module, in the module's directory.
+<p>
+
+The style must contain an index file, named <tt>def</tt>. It defines the
+basic configuration choices of the style. Every line of the file is a
+definition under the format <tt>name=value</tt>. <p>
+
+The <tt>def</tt> file must contain a definition <tt>style_exists=yes</tt>,
+otherwise the existence of the style will not be recognized. All the rest is
+optional.<p>
+
+It may contain a definition of <em>option</em>, that lists option words that
+will always be activated for the style. <p>
+
+It can also define general dictionaries using the name
+<em>dictionaries</em>. The value must be a list of words, each corresponding
+to a dictionary file in the style. The number of general dictionaries is
+limited.
+<p>
+
+For each general dictionary, a variable NAME_unknown can be defined (where
+NAME should be replaced by the dictionary name), which tells how a word
+should be treated if it is not found in the dictionary (unknown). The value
+may be <tt>delete</tt> (default) which means the unknown word should be
+replaced by an empty string; <tt>leave</tt> which will return the unknown
+word unchanged; or anything else. In the last case, the value will be used
+to replace the unknown word.
+<p>
+
+There may also be three dictionary files with reserved names:
+<tt>suffix</tt>, <tt>trans</tt> and <tt>macros</tt>. All dictionaries are
+line dictionaries, with each line in the format <tt>name:definition</tt>. Names
+must be sorted (using the special program <tt>dicsort</tt> in the WIMS
+package). All of the dictionaries are optional.
+<p>
+
+Both name and definition may contain space characters. However, except macro
+definitions there is no transformation after the dictionary is read, so only
+single space characters should be used. The name field should start and end
+with non-space characters. Multiple definitions with a same name will give
+unpredictable result.
+<p>
+
+The <em>suffix</em> dictionary is a very special one, that is used to
+transform word suffixes before any other transformation. It is easy to
+understand except that in the name field, the suffixes are defined in
+reverse order.
+<p>
+
+The <em>trans</em> dictionary is used for word replacements after suffix
+transformation. Both dictionaries will be consulted before any string
+comparison takes place. For example, if we want to identify nouns under
+singular and plural forms, we can first use the <em>suffix</em> dictionary
+to transform plural nouns into singular suffix if they obey a general suffix
+rule; then for nouns with special plural forms, the <em>trans</em>
+dictionary can be used to transform them.
+<p>
+
+Both the <em>suffix</em> and <em>trans</em> dictionaries must be constructed
+to be <em>order 1 stable</em>, that is, if an already transformed string is
+resubmitted to the dictionary, no further transformation will take place.
+<p>
+
+The <em>macros</em> dictionary contains both definitions for positional
+macros and macro rules. The former have names starting with the underline
+character, while the latter starts with lower case letters.
+<p>
+
+The definition of a macro is a tstring that will be used to replace the
+macro. Macros can be nested, that is, the definition of a macro may contain
+calls to other macros, in any order. However, infinite nesting loops will
+result in an error.
+<p>
+
+In order to preserve consistency for positional macros, the definition of
+any macro must be composed of exactly one atom.
+<p>
+
+Macro definitions may contain parameters. For this purpose, the character
+<tt>@</tt> has a special meaning in a macro definition. When invoked, it
+must be followe by an integer. And the character together with the following
+integer will be replaced by a macro parameter during macro expansion.
+<p>
+
+For a rule macro, <tt>@1</tt> means the first parameter, <tt>@2</tt> means
+the second parameter, etc. It is an error if the macro is invoked in a
+tstring without giving enough parameters.
+<p>
+
+For a positional macro, <tt>@1</tt> designates the first atom following the
+macro, while <tt>@-1</tt> designates the first atom preceding the macro, etc.
+It is also an error if a positional macro is inserted in a tstring without
+enough atoms before or after it as required by its definition.
+<p>
+
+Care must be taken to the point that a macro parameter may result in several
+atoms after expansion. This is not a problem unless the macro definition
+contains a positional macro. In case where it is necessary to ensure the
+position of parameters, one can enclose the parameter by a pair of brackets,
+such as <tt>[@1]</tt>.
+<p>
+
+A general dictionary has the same syntax as the reserved ones. In this case,
+the definition field can be a comma-separated list of items. These
+dictionaries are used via the <tt>Dic</tt> builtin rule, which gives a match
+if one of the items in the definition is equal to the value given in the
+parameter of the rule.
+<p>
+
+
+<p><hr><h3>The command line program</h3>
+
+The command line program <em>symtext</em> is spcially built for WIMS, so that
+all the input data are sent through environment variables. It can also be
+used as a standalone program, but in this case it is better that a wrapper
+script be used to put the input-output into a more *nix flavor. <p>
+
+$table_header
+<caption>List of environment parameters</caption>
+$table_hdtr<th>Name</th>
+<th>Value</th>
+<th>Comments</th>
+</tr>
+$table_tr
+<td>wims_exec_parm</td>
+<td>The main data input</td>
+<td>A multi-line string. <ul>
+<li>Line 1: command followed by options. Valid commands: <ul>
+  <li><tt>match</tt> check matching.
+  <li><tt>debug</tt> check matching with debug information.
+  </ul>
+<li>Line 2: The sample.
+<li>Line 3 and up: Each line is a tester.
+</ul>
+Lines can also be delimited by the semi-colon. For this reason, semi-colons
+must be protected by parentheses in both the sample and the tester.
+<p>
+Options have the same syntax as in the style option definition. With one
+more possible definition here: <tt>style=[the_name_of_style]</tt>.
+</td></tr>
+
+$table_tr
+<td>module_dir</td>
+<td>Directory to current module</td>
+<td>Automatically defined if called by WIMS. If this variable is undefined, 
+then w_symtext must give the complete path of the style.
+</td></tr>
+
+$table_tr
+<td>w_module_language</td>
+<td>Language</td>
+<td>Only used when called by WIMS. Can be overrun by the "language=" option.
+</td></tr>
+
+$table_end
+<p>
+
+Options have two origins: either from the environment variable
+<em>w_symtext_option</em> or from the <em>def</em> file of the style. The two
+have the same syntax.
+<p>
+
+!set option_data=!trim \
+alnumly,word,Transform everything non-alphabetic and non-digit into space.\
+alphaonly,word,Transform everything non-alphabetic into space.\
+deaccent,word,Remove accents from letters before comparison.\
+debug,word,Output debug information to stderr.\
+language,value,A two-letter language code.\
+matchall,word,Match every line of the tester&#44; instead of stopping after the first match.\
+nocase,word,Fold both texts to lower case before comparison.\
+nocs,word,Replace computer-oriented characters by spaces (<tt>_&$#\\@~</tt>)\
+nomath,word,Replace mathematical operators by spaces (<tt>+-*/=|%<>()_</tt>)\
+noparentheses,word,Replace parentheses by spaces (<tt>()[]{}</tt>)\
+nopunct,word,Replace puncuation characters by spaces (<tt>.,;:?!"</tt>) except the dot as a decimal point.\
+noquote,word,Replace quoting characters by spaces (<tt>`'"</tt>)\
+reaccent,word,Allow composition of accented letters using special characters.\
+style,value,The style&#44, only valid in the environment parameter.\
+
+
+$table_header
+<caption>List of options</caption>
+$table_hdtr
+<th>Name</th>
+<th>Nature</th>
+<th>Meaning</th>
+</tr>
+
+!set n=!linecnt $option_data
+!for i=1 to $n
+ !set l=!line $i of $option_data
+ !distribute item $l into name,nature,meaning
+ $table_tr
+ <td>$name</td>
+ <td align=center>$nature</td>
+ <td>$meaning
+!next i
+
+$table_end
+<p>
+
+<b>Program output</b>. The output is empty if no match is found.
+<p>
+
+!set error_data=!nonempty lines \
+bad_command,Invalid command in the input.\
+bad_dictionary,Non-existing dictionary specified.\
+bad_macro,Bad macro name.\
+bad_macro_position,Positional macro placed in the tester where pre- or post-parameters cannot be found.\
+bad_pickcnt,Invalid first parameter for Pick.\
+block_overflow,Too many rules and parameters defined in the tester (before or after macro expansion).\
+duplication_in_dictionary,A name is defined twice in the indicated dictionary (in the style).\
+file_too_long,File size exceeded limit.\
+level_overflow,Too much nesting; probably an internal bug.\
+list_overflow,A rule contains too many parameters.\
+macro_level_overflow,Too many recursive macro definitions. Usually it is an infinite loop in the macro dictionary.\
+name_too_long,Macro or variable name exceeded length limit.\
+string_too_long,String length limit exceeded.\
+style_not_found,Inexisting style specified.\
+syntax_error,Syntax error in a macro or rule.\
+tag_overflow,Tester expansion is too complicated.\
+too_many_dictionaries,The number of dictionaries declared in the style has exceeded limit.\
+unknown_cmd,Unknown matching rule name.\
+unmatched_parentheses,Unmatched parentheses or brackets.\
+unsorted_dictionary,The indicated dictionary (in the style) is in bad order.\
+wrong_parmcnt,A matching rule has a number of parameters that does not meet its definition.\
+
+
+$table_header
+<caption>Error messages</caption>
+$table_hdtr
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+
+!set n=!linecnt $error_data
+!for i=1 to $n
+ !set l=!line $i of $error_data
+ !distribute items $l into msg,mean
+ $table_tr
+ <td><tt>$msg</tt></td>
+ <td>$mean</td>
+ </tr>
+!next i
+$table_end
+

@@ -1,0 +1,90 @@
+
+!set wims_module_error=error: $error
+
+<b>Errore.</b>
+
+!if empty_out iswordof $error
+ Il codice inserito non ha prodotto output. Correggere.
+ !if $m_reply_err!=$empty
+  <pre><font color=red>$m_reply_err</font></pre>
+ !endif
+ !exit
+!endif
+
+!if empty_data iswordof $error
+ La risposta &egrave; incompleta.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ Il server non &egrave; stato in grado di interpretare la risposta. 
+ Errore di battitura?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Hai gi&agrave; dato una risposta a questa domanda e ottenuto un
+ punteggio. Le ripetizioni sono ignorate (&egrave; inutile utilizzare
+ il tasto `reload' del browser per correggere la risposta!)
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  Il codice inserito contiene la parola <tt>$illegal_name</tt> che non è 
+  accettata. Correggere.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+  Il codice inserito supera la lunghezza massima inseribile. &Egrave;
+  necessario riscriverlo.
+  !exit
+ !endif
+ La risposta <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  non &egrave; comprensibile: la parola <font color=red>$w</font>
+  contenuta nella risposta data non ha nulla a che fare con il questo
+  problema. Correggere e riproporre la risposta.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  non &egrave; accettata: occorre svolgere i conti e 
+  dare solo il risultato finale.
+  !exit
+ !endif
+ !if badform iswordof $test
+  non &egrave; scritta come richiesto. Riscriverla nella forma corretta.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  &egrave; solo un numero: occorre specificare l'unit&agrave; di misura.
+  !exit
+ !endif
+  non &egrave; comprensibile. Correggere e riproporre la risposta.
+ !endif
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ A causa di un errore in questo esercizio (la risposta esatta per 
+ <b>$(replyname$i)</b> non &egrave; valida), &egrave; impossibile analizzare
+ l'esattezza della risposta data. Spiacente, ma &egrave; necessario cambiare
+ esercizio.
+ <p>
+ Per segnalare l'errore &egrave; necessario
+ !if $email!=$empty
+  !mailurl $email contattare direttamente l'autore
+ !else
+  contattare l'autore
+ !endif
+ dell'esercizio.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Your requests for printable versions are excessive.
+ !exit
+!endif
+

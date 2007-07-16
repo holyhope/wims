@@ -1,0 +1,36 @@
+dd=!singlespace $(reply$i)
+dd=!deaccent $dd
+dd=!lower $dd
+chars=0123456789abcdefghijklmnopqrstuvwxyz
+dd=!text select $chars in $dd
+!if norepeat iswordof $(replyoption$i)
+ dd=!text occur $chars in $dd
+!endif
+dd=!sort char $dd
+
+m_reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+good=!singlespace $(replygood$i)
+good=!deaccent $good
+good=!lower $good
+good=!text select $chars in $good
+!if norepeat iswordof $(replyoption$i)
+ good=!text occur $chars in $good
+!endif
+good=!sort char $good
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if $dd=$good
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

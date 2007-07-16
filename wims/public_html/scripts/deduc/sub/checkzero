@@ -1,0 +1,25 @@
+# Standardized zero (equation) checker. No approximation is allowed.
+# Input are lines.
+# Output are lines, in $out.
+
+I__=!nonempty lines $wims_read_parm
+tvars__=!varlist $I__
+tvars__=!lower $tvars__
+tvars__=!listintersect $tvars__ and \
+	cos,sin,tan,tg,ctan,ctg,sec,csc,cosh,sinh,tanh,ch,sh,th
+!if $tvars__!=$empty
+ I__=!replace internal $\
+$ by ))\
+trigreduce(trigsimp( in trigreduce(trigsimp($I__))
+!endif
+
+n__=!linecnt $I__
+!reset out,p__
+!for i__=1 to $n__
+ l__=!line $i__ of $I__
+ p__=!append line if $maximasimp($l__)=0 then "yes" else "no"; to $p__
+!next i__
+
+out=!exec maxima $p__
+out=!replace internal " by $ in $out
+

@@ -1,0 +1,119 @@
+!set proc=oef
+<p><center><hr width=35%></center> <p>
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,8)]
+!if $exocnt<1
+ !if $wims_user=supervisor and #classes/ isin #$module
+  !href module=adm/createxo Pulse aqu&iacute;
+  para crear sus ejercicios.
+ !else
+  Lo sentimos, este m&oacute;dulo no tiene ejercicios disponibles por ahora. ¡Vuelva m&aacute;s 
+  adelante!  
+ !endif
+ !exit
+!endif
+!if $exocnt=1
+ Este m&oacute;dulo contiene en estos momentos solamente un ejercicio, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Pruébelo.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if select iswordof $special_parm2 and $special_parm!=$empty
+ <td align=center>Ejercicios que contienen<br>
+ <em><font color=blue> $special_parm </font></em>&nbsp;:<td>
+!else
+ <td align=center>Elija los ejercicios:<td>
+!endif
+!read oef/select.phtml
+<tr><td align=center>Una serie tendr&aacute;<td>
+!set qnum=1
+!formselect qnum from 1 to 9
+ejercicios.
+<tr><td align=center>Nivel de severidad<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>Tiempo límite <td>
+<input size=7 name=scoredelay value="$scoredelay"> segundos.
+!read introhook.phtml
+!if expert iswordof $special_parm2
+   </td></tr>
+   <tr><td align=center>
+   N&uacute;mero de &iacute;tems mostrados en los ejercicios de opciones m&uacute;ltiples: </td> <td>
+   !default intro_qcmpresent=4
+   !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+   </td></tr>
+   <tr><td align=center>Dar una soluci&oacute;n (si est&aacute; disposible)</td> <td>
+   !default intro_presentsol=1
+   !formselect intro_presentsol list 0,1,2 prompt nunca,si la nota no es m&aacute;xima,siempre
+   </td></tr>
+   <tr><td rowspan=4>&nbsp;</td><td>
+   !default intro_check=1,2,3,4
+   !formcheckbox intro_check list 1 prompt Siempre añadir una respuesta
+   correcta en los ejercicios con opciones m&uacute;ltiples.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox intro_check list 2 prompt Penalizaci&oacute;n por respuestas incorrectas en
+   los ejercicios de opciones m&uacute;ltiples.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox  intro_check list 3 prompt Mostrar la respuesta correcta.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox intro_check list 4 prompt Permitir las pistas (cuando existan).
+   !let tmp=!replace word expert by $ in $special_parm2
+   </td></tr>
+   <tr><td colspan=2 align=center>
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Configuraci&oacute; simplificada
+   <input type=hidden name=intro_expert value=yes>
+!else
+   </td></tr>
+   <tr><td colspan=2 align=center>
+   !let tmp=$special_parm2 expert
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Configuraci&oacute; experta
+!endif
+</table></center> <p><center>
+<input type=submit value="Al trabajo">&nbsp;
+<input type=submit name=print value="Versi&oacute;n imprimible">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value=$module>
+ Seleccionar t&iacute;tulos que contengan el t&eacute;rmino
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=OK>
+ </form>
+!endif
+
+<b>Notas</b>.  Los ejercicios se tomarán aleatoriamente de la lista generada
+por sus opciones.
+Si su elección está vacía, se utilizarán todos los ejercicios disponibles.
+!if * isin $titlelist
+ <p>Los ejercicios marcados con un asterisco `*' son en general más difíciles que 
+los demás.
+!endif
+
+<p><small>Puede poner dos números en el campo del límite de tiempo, un número 
+seguido de otro más grande. En este 
+caso, el primer límite señala el momento de comenzar la reducción de la 
+calificación, hasta llegar a 0 cuando se alcance el segundo límite.
+</small>

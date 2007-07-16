@@ -1,0 +1,8 @@
+#archivering
+!if $wims_site_name=SCHAERSVOORDE or $wims_site_name=DIBBETS and $wims_class!=
+    !if exam notin $session and $wims_firstname !=
+	datum=!date +%d-%m-%Y
+	archief=op $datum heeft $wims_firstname $wims_lastname de module $module_title gemaakt met een $module_score als resultaat
+	!fileappend $wims_class/oefenscore/$wims_firstname.$wims_lastname $archief
+    !endif
+!endif

@@ -1,0 +1,156 @@
+!! Add sharing between two classes.
+!! Calling parameters: 2 lines.
+!! Line 1: initiating class, destination class
+!! Line 2: list of resources to share.
+
+as_1=!translate internal , to $ $ in $wims_read_parm
+!distribute lines $as_1 into as_1,as_l
+!distribute words $as_1 into as_1,as_2
+as_l=!words2items $as_l
+
+as_t_exo=src def Exindex Extitles
+as_t_sheet=sheets
+as_t_exam=exams
+as_t_doc=doc
+as_t_vote=vote
+as_t_cdt=cdt
+as_t_forum=forum
+as_t_user=.users .userlist
+as_t_motd=.motd
+as_t_sup=supervisor
+as_list=doc,exo,sheet,exam,vote,cdt,forum,user,motd,sup
+!if sharing notwordof $wims_prefix
+ wims_prefix=$wims_prefix n sharing sharable
+!endif
+
+!if all isitemof $as_l
+ as_l=$as_list
+!else
+ !if exam isitemof $as_l
+  as_l=!listunion $as_l and sheet
+ !endif
+ !if sheet iswordof $as_l
+  as_l=!listunion $as_l and exo
+ !endif
+!endif
+
+L_=
+!for t in $as_list
+ !if $t isitemof $as_l
+  L_=$L_ $(as_t_$t)
+ !endif
+!next t
+!if $L_=$empty
+ !exit
+!endif
+as_n1=!defof n_sup\
+n_part in wimshome/log/classes/$as_1/neighbors
+as_n2=!defof n_sup\
+n_part in wimshome/log/classes/$as_2/neighbors
+!distribute lines $as_n1 into as_nsup1,as_npart1
+!distribute lines $as_n2 into as_nsup2,as_npart2
+as_test=!listcomplement user in $as_l
+!if ($as_test!=$empty and \
+	($as_2 notitemof $as_nsup1 or $as_1 notitemof $as_nsup2)) or \
+    (user isitemof $as_l and \
+	($as_2 notitemof $as_npart1 or $as_1 notitemof $as_npart2))
+ error=addshare_noright
+ !exit
+!endif
+
+1_=!translate internal / to , in $as_1
+2_=!translate internal / to , in $as_2
+1=!itemcnt $1_
+2=!itemcnt $2_
+3=$[min($1,$2)]
+
+!for i=1 to $3+1
+ !if $(1_[$i]) != $(2_[$i])
+  !break
+ !endif
+!next i
+
+1_=!item $i to -1 of $1_
+!if $i<=$2
+ 4_=!makelist .. for x=$i to $2
+ 1_=$4_,$1_
+!endif
+1_=!nonempty items $1_
+1_=!nospace $1_
+1_=!translate internal , to / in $1_
+
+!for t in $as_list
+ !reset sharing_$t
+!next t
+!readdef wimshome/log/classes/$as_1/neighbors
+!for t in $as_l
+ !if $(sharing_$t) != $empty
+  error=addshare_conflict
+  !exit
+ !endif
+!next t
+!for t in $as_list
+ !reset sharable_$t
+!next t
+!readdef wimshome/log/classes/$as_2/neighbors
+as_already=
+!for t in $as_l
+ !if $(sharable_$t) != $empty
+  error=addshare_conflict
+  !exit
+ !endif
+ !if $(sharing_$t) != $empty
+  !if $(sharing_$t) = $as_1
+   as_already=!append item $t to $as_already
+  !else
+   error=addshare_conflict
+   !exit
+  !endif
+ !endif
+!next t
+!if $as_already!=$empty
+ as_l=!listcomplement $as_already in $as_l
+!endif
+!for t in $as_list
+ !reset sharable_$t
+!next t
+!readdef wimshome/log/classes/$as_1/neighbors
+as_=
+!for t in $as_l,all
+ sharable_$t=!listunion $(sharable_$t) and $as_2
+ as_=$as_\
+sharable_$t=$(sharable_$t)
+!next t
+!setdef $as_ in wimshome/log/classes/$as_1/neighbors
+!for t in $as_list
+ !reset sharing_$t
+!next t
+!readdef wimshome/log/classes/$as_2/neighbors
+as_=
+!for t in $as_l
+ as_=$as_\
+sharing_$t=$as_1
+!next t
+sharing_all=!listunion $sharing_all and $as_1
+as_=$as_\
+sharing_all=$sharing_all
+!setdef $as_ in wimshome/log/classes/$as_2/neighbors
+
+as_copy=
+!if sheet isitemof $as_l
+ as_copy=$1_/.[0-9]*
+!endif
+!if exam isitemof $as_l
+ as_copy=$as_copy $1_/.E[0-9]*
+!endif
+!if $as_copy!=$empty
+ as_copy=cp -f $as_copy . 2>/dev/null
+!endif
+
+!sh cd $wims_home/log/classes/$as_2\
+ rm -Rf $L_\
+ for f in $L_; do\
+  ln -s $1_/$$f .\
+ done\
+ $as_copy
+

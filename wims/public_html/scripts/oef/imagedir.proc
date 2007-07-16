@@ -1,0 +1,29 @@
+!nocache
+!if $oef_test=yes
+ imagedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=oefimg
+ Imagedir=oefimg
+ insdraw_filebase=$wims_sesdir/getfile/oefimg
+!else
+ !if +/classes/ isin +/$module
+  insdraw_filebase=$wims_home/log/classes/$wims_class/src/images/$thisexo
+  session_base=!translate _ to , in $wims_session
+  session_base=!item 1 of $session_base
+  imagedir=$wims_ref_name?session=$session_base&cmd=getfile&special_parm=oefimages/$thisexo
+  Imagedir=oefimages/$thisexo
+ !else
+  !if $common_images=yes
+   insdraw_filebase=images
+   imagedir=$module_dir/images
+  !else
+   !if ../datamodule/ isin ../$common_images
+    insdraw_filebase=images/$thisexo $common_images
+    imagedir=!replace internal datamodule/ by modules/data/ in $common_images
+   !else
+    insdraw_filebase=images/$thisexo
+    imagedir=$module_dir/images/$thisexo
+   !endif
+  !endif
+  Imagedir=$httpd_PWD/$imagedir
+ !endif
+!endif
+

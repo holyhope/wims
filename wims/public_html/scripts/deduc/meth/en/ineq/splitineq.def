@@ -1,0 +1,30 @@
+!set methtit=Separate cases according to an inequality
+!set methenv=ZZ QQ RR
+!set methparmtype=function, choice 4, function
+!set methhelp=This method separates the situation into two cases, according \
+ to the truth of an inequality. The inequality and its inverse will be added\
+ to the hypotheses of the two cases respectively.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Separate the cases according to the truth of the inequality <br>
+ !read deduc/methparm.phtml 1,10
+ !formselect methparm2 from 1 to 4 prompt <,>,<=,>=
+ !read deduc/methparm.phtml 3,10
+!exit
+:check
+ sign1=!item $methparm2 of <,>,<=,>=
+ sign2=!item $methparm2 of >=,<=,>,<
+
+ casesplit=$methparm1 $sign1 $methparm3\
+$methparm1 $sign2 $methparm3
+ mt1=$methparm1 $sign1 $methparm3
+ mt2=$methparm1 $sign2 $methparm3
+ methexp=Separate the cases \($mt1) and \($mt2)
+
+!exit
+

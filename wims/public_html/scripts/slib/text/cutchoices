@@ -1,0 +1,33 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Cut out embedded choices for OEF
+slib_parms=1\
+,the input text (embedding delimiter: `??')
+slib_author=Gang Xiao
+slib_out=Text output with each choice in isolated lines
+slib_comment=<b>This version is deprecated. Please use text/cutchoice2\
+for new applications.</b>\
+<p>For example, on the input text\
+<p><tt>The class has ??3,5,6,7?? pupils with average score of ??20,30,40??\
+</tt><p>\
+will be transformed to\
+<pre>\
+The class has\
+3,5,6,7\
+pupils with average score of\
+20,30,40\
+</pre>\
+The lines of even numbers may then be singled out for creating embedded\
+choices.
+!exit
+
+:proc
+slib_out=!lines2words $wims_read_parm
+slib_out=!replace internal ?? by $\
+$ in $slib_out
+slib_out=!nonempty lines $slib_out
+slib_out=!translate internal $\
+$ to ; in $slib_out
+
+

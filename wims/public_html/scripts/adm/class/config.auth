@@ -1,0 +1,30 @@
+!if $wims_ismanager>1
+ !exit
+!endif
+auth=!record 0 of wimshome/$wims_sesdir/auth.supervisor
+auth=!trim $auth
+!if $auth!=yes
+ sec=!defof class_secure in wimshome/log/classes/$wims_class/.def
+ sec=!trim $sec
+ htest=!checkhost $sec
+ !if $wims_sup_secure<0 or ($sec!=$empty and $htest<1) or\
+	($sec=$empty and $auth=no)
+  error=not_secure
+  !exit
+ !endif
+ !if $sec=$empty and $auth=$empty
+  jobt=auth
+  !read auth.proc
+  !if $auth=yes
+   jobt=list
+  !endif
+  !if $auth=no
+   error=not_secure
+   !exit
+  !endif
+  !if $auth=$empty
+   !exit
+  !endif
+ !endif
+!endif
+

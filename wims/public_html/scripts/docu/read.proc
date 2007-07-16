@@ -1,0 +1,52 @@
+!nocache
+!if $block=main
+ module_title=$tit
+!else
+ module_title=$tit / $titb
+!endif
+!if robot isin $session
+ !exit
+!endif
+
+sheetdata=
+
+!if $foldin!=$empty
+ foldin=!word 1 of $foldin
+ foldin=!char 1 to 50 of $foldin
+ foldlist=!item 1 to 200 of $foldlist
+ foldlist=!listunion $foldlist and $doc/$foldin
+!endif
+
+!if $foldout!=$empty
+ foldlist=!listcomplement $doc/$foldout in $foldlist
+!endif
+
+!bound readcntadv between integer -1 and 1 default 0
+readcnt=$[max(0,$readcnt+($readcntadv))]
+!if $readcnt>0
+ rlast=!line $readcnt of $readhist
+!endif
+!distribute item $rlast into doclast,blocklast
+
+!if $doc,$block!=$doclast,$blocklast
+ readhist=!line 1 to $readcnt of $readhist
+ !advance readcnt
+ readhist=!append line $doc,$block to $readhist
+ !if $readcnt>50
+  readhist=!line -50 to -1 of $readhist
+  readcnt=!linecnt $readhist
+ !endif
+!else
+ rlast=!line $readcnt-1 of $readhist
+ !distribute item $rlast into doclast,blocklast
+!endif
+
+histtot=!linecnt $readhist
+!if $readcnt<$histtot
+ rnext=!line $readcnt+1 of $readhist
+ !distribute item $rnext into docnext,blocknext
+!endif
+
+!read docu/popup.proc
+!read docu/readdates.proc
+

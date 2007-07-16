@@ -1,0 +1,41 @@
+
+!distribute item $wims_read_parm into D_,C_,U_
+
+!if $user_participate$user_supervise!=$empty
+ this_institution=$class_institution
+ !default CC_=$C_
+ uplist=
+ !if $class_type isin 13 and $class_superclass!=$empty
+  uplist=!makelist superclass_x_t $U_ for superclass_x_t in $class_superclass
+ !endif
+ !if $wims_otherclass=$empty
+  wims_otherclass=$uplist
+  !if / notin $user_participate$user_supervise
+   subclasses=!sh cut -d, -f1 $wims_home/log/classes/$CC_/.subclasses
+   subclasses=!replace internal : by $ in $subclasses
+   subclasses=!words2items $subclasses
+   user_participate=!listintersect $user_participate and $subclasses
+   user_supervise=!listintersect $user_supervise and $subclasses
+  !else
+   !for c in $user_participate,$user_supervise
+    !if $c!=$empty and ../$class_superclass/ notin ../$c and $class_type notin 24
+     !reset user_participate user_supervise
+     !break
+    !endif
+   !next c
+  !endif
+  !for C_ in $user_participate
+   wims_otherclass=$wims_otherclass,$C_ $U_
+  !next C_
+  !for C_ in $user_supervise
+   wims_otherclass=$wims_otherclass,$C_ supervisor
+  !next C_
+ !endif
+!endif
+
+wims_otherclass=$wims_class $wims_user,$wims_otherclass
+wims_otherclass=!nonempty items $wims_otherclass
+wims_otherclass=!listuniq $wims_otherclass
+wims_otherclass=!item 1 to 20 of $wims_otherclass
+!default wims_caller=$wims_session
+

@@ -1,0 +1,52 @@
+!set methtit=Erase useless hypotheses
+!set methparmtype=special
+!set methparmrelax=1
+!set stepnocount=yes
+!set methhelp=You can use this method to erase useless hypotheses,\
+ in order to clean the situation. But <b>attention</b>! If you\
+ erase indispensable hypotheses, you will no longer be able to\
+ finish your proof!\
+ <p>\
+ You can apply this method any time you want without being punished in your\
+ score, because it does not advance the step counter for the score.
+!set N_=!linecnt $m_context
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if $N_<1
+ !set error1=There is no longer any hypothese in the current situation!
+!endif
+
+!exit
+:form
+ $methhelp
+ <p>
+ Here are the current hypotheses. Mark the one(s) you want to erase. <ul>
+ !for i=1 to $N_
+  !set l=!line $i of $m_context
+  <li> <input type=checkbox name=methparm1 value=$i> \($l)
+ !next i
+ </ul>
+!exit
+:check
+ !reset newobject,oldobject
+ n_=!itemcnt $methparm1
+ !if $n_=0
+  methexp=Empty step
+  !exit
+ !endif
+ nc=
+ !for i=1 to $N_
+  !if $i notitemof $methparm1
+   l=!line $i of $m_context
+   nc=!append line $l to $nc
+  !endif
+ !next i
+ m_context=$nc
+ !read deduc/objects.combine
+ methexp=Erase $n_ hypotheses
+ 
+!exit
+

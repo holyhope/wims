@@ -1,0 +1,32 @@
+!readproc symtext/list.proc
+
+!if $stylecnt<1
+ !exit
+!endif
+
+!set tit1=English styles of
+!set tit2=
+
+!if $module_language=fr
+ !set tit1=Styles français de
+ !set tit2=
+!endif
+
+!if $module_language=es
+ !set tit1=Estilos en español de
+ !set tit2=
+!endif
+
+<center><h2>$tit1
+!href cmd=help&special_parm=symtext symtext
+$tit2</h2></center>
+
+!for s in $stylelist
+ !set desc=!defof desc in symtext/$module_language/$s/def
+ !if $desc!=$empty
+  <p>
+  !href cmd=help&special_parm=symtext,$s $s
+, $desc.  
+ !endif
+!next s
+

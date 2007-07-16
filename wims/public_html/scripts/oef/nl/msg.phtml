@@ -1,0 +1,92 @@
+
+!set wims_module_error=error: $error
+
+<b>Fout.</b>
+
+!if empty_out iswordof $error
+    Je moet je antwoord even veranderen: je opgestuurde code geeft geen output.
+ !if $m_reply_err!=$empty
+  <pre><font color=red>$m_reply_err</font></pre>
+ !endif
+ !exit
+!endif
+
+!if empty_data iswordof $error
+Je hebt een onvolledig antwoord ingevuld. Gaarne compleet ingevuld inleveren 
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ Ik ben er niet in geslaagd je opgestuurde antwoord te controleren.<br>
+ Misschien een typefoutje?
+ 
+ !exit
+!endif
+
+!if double_reply iswordof $error
+Je hebt al eens een antwoord ingeleverd op deze vraag !<br> 
+<small>Herhalingen van antwoorden worden niet beoordeeld.<br>
+(En in elk geval <b>niet</b> de terug-knop van je browser gebruiken)</small>
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  Je opgestuurde code bevat de term: <tt>$illegal_name</tt> en deze is niet toegestaan.<br>
+  Corrigeer dit even.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+    De code die je hebt opgestuurd is langer dan is toegestaan.<br>
+    Dit moet je herschrijven.
+  !exit
+ !endif
+ jou antwoord  <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  is onbegrijpelijk: het woord <font color=red>$w</font>
+  staat in geen enkele relatie met het gestelde probleem.Graag corrigeren
+  !exit
+ !endif
+ !if nocompute iswordof $test
+ is niet toegestaan; de berekeningen moet jezelf uitvoeren, en de uitkomst daarvan moet je opsturen.
+  !exit
+ !endif
+ !if badform iswordof $test
+ Is helaas niet genoteerd zoals voorgeschreven was.
+ Verbeter de schrijfwijze en stuur dan opnieuw op.
+  !exit
+ !endif
+ !if notunit iswordof $test
+ dat is alleen een getal, ik verwacht eigenlijk ook de passende eenheid.
+ 
+  !exit
+ !endif
+ onbegrijpelijk...<br>
+    corrigeer de fout en stuurje antwoord dan nog een keer op.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord voor vraag <b>$(replyname$i)</b>
+ is ongeldig...).
+ Dus het is onmogelijk om te testen of jou antwoord goed is...en voor jou betekend dit niets
+ anders dan een andere opdracht uit te kiezen. Waarvoor mijn excuses.
+ <p>
+ S.V.P.
+ !if $email!=$empty
+  !mailurl $email schrijf naar de maker van deze oefening
+ !else
+  schrijf naar de maker van deze oefening
+ !endif
+ als je deze bug wilt melden
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+Je hebt te veel verzoeken tot printbare versies ingediend  
+
+ !exit
+!endif
+

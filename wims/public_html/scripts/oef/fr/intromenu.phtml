@@ -1,0 +1,117 @@
+!set proc=oef
+<p><center><hr width=35%></center> <p>
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,8)]
+!if $exocnt<1
+ !if $wims_user=supervisor and #classes/ isin #$module
+  !href module=adm/createxo Cliquez ici
+  pour créer vos exercices.
+ !else
+  Désolé, aucun exercice n'est disponible sous ce module pour l'instant. 
+  Revenez plus tard!
+ !endif
+ !exit
+!endif
+!if $exocnt=1
+ Ce module contient en ce moment un seul exercice, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Essayez-le.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if select iswordof $special_parm2 and $special_parm!=$empty
+ <td align=center>Exercices contenant<br>
+ <em><font color=blue> $special_parm </font></em>&nbsp;:<td>
+!else
+ <td align=center>Choisissez les exercices&nbsp;:<td>
+!endif
+!read oef/select.phtml
+<tr><td align=center>Une série aura<td>
+!set qnum=1
+!formselect qnum from 1 to 9
+exercices.
+<tr><td align=center>Niveau de sévérité<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>Chronomètre <td>
+<input size=7 name=scoredelay value="$scoredelay"> secondes.
+!read introhook.phtml
+!if expert iswordof $special_parm2
+   </td></tr>
+   <tr><td align=center>
+   Nombre de r&eacute;ponses affich&eacute;es dans les QCM: </td><td>
+   !default intro_qcmpresent=4
+   !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+   </td></tr>
+   <tr><td align=center>Donner une solution (si disponible) ? </td><td>
+   !default intro_presentsol=1
+   !formselect intro_presentsol list 0,1,2 prompt jamais,si la note est non maximale,toujours
+   </td></tr>
+   <tr><td rowspan=4>&nbsp;</td><td>
+   !default intro_check=1,2,3,4
+   !formcheckbox intro_check list 1 prompt Toujours afficher
+   une bonne réponse dans les QCM.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox intro_check list 2 prompt P&eacute;nalit&eacute; pour mauvaise r&eacute;ponse dans les QCM.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox  intro_check list 3 prompt Afficher la bonne réponse.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox intro_check list 4 prompt Permettre les indications (si disponibles).
+   !let tmp=!replace word expert by $ in $special_parm2
+   </td></tr>
+   <tr><td colspan=2 align=center>
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Param&eacute;trage simplifi&eacute;
+   <input type=hidden name=intro_expert value=yes>
+!else
+   </td></tr>
+   <tr><td colspan=2 align=center>
+   !let tmp=$special_parm2 expert
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Param&eacute;trage expert
+!endif
+</table></center> <p><center>
+<input type=submit value="Au travail">&nbsp;
+<input type=submit name=print value="Version imprimable">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value=$module>
+ Sélectionner les titres avec le mot
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=OK>
+ </form>
+!endif
+
+<b>Remarques</b>. Les exercices proposés seront pris aléatoirement parmi
+vos choix (ou parmi tous les exercices disponibles si votre choix est vide).
+!if * isin $titlelist
+ <p>Les exercices marqués par un * sont en général plus difficiles que les
+ autres.
+!endif
+
+<small><p>Vous pouvez mettre deux nombres dans le chronomètre, une petite
+limite suivie d'une plus grande. Dans ce cas, la première limite déclenche 
+la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+</small>
+

@@ -1,0 +1,35 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Probability density function of Weibull law
+slib_parms=3\
+,[data]\
+,a\
+,b
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values of probability density function of Weibull law on data
+slib_comment=data can be a list of reals in brackets; density is a*b*exp(-b*x^a)*x^(a-1) for x>=0
+slib_example=[0.2,0.4,0.7],6,8
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a, slib_b
+
+slib_data=!declosing $slib_data
+
+
+slib_out=
+!for slib_x in $slib_data
+ !if $slib_x<=0 
+   slib_out=!append item 0 to $slib_out
+ !else
+   slib_out=!append item  $[$slib_a*$slib_b*exp(-$slib_b*$slib_x^($slib_a))*$slib_x^($slib_a-1)] to $slib_out
+ !endif
+!next slib_x
+
+slib_out=!trim $slib_out
+slib_data=$empty
+

@@ -1,0 +1,73 @@
+#variabelen 
+#XRANGE=0,10 of -10,10 of pi,2*pi
+#YRANGE=0,10 of -10,10 of pi,2*pi
+#SCHAAL default 1
+#XSCHAAL of YSCHAAL
+#XYkleur= kleur xy-askleur 
+
+X_Min=!item 1 of $XRANGE
+X_Max=!item 2 of $XRANGE
+
+Y_Min=!item 1 of $YRANGE
+Y_Max=!item 2 of $YRANGE
+
+!if $SCHAAL!=
+    XSCHAAL=$SCHAAL
+    YSCHAAL=$SCHAAL
+!endif
+
+VHOOGTE=$[0.05*$Y_MAX]
+HHOOGTE=$[0.01*$X_MAX]
+vhoogte=$[0.08*$Y_MAX]
+hhoogte=$[0.05*$X_MAX]
+
+!if pi isin $XSCHAAL
+    empty=
+    counter=!replace internal *pi by $empty in $X_Min
+    stapgrootte=!replace internal *pi by $empty in $XSCHAAL
+    !for nnn=$X_Min to $X_Max step $XSCHAAL
+	V=vline $nnn,0,blue
+        T=text red,$nnn,$VHOOGTE,normal,$counter pi
+        VLINE=!append line $V to $VLINE
+        VTEXT=!append line $T to $VTEXT
+	counter= $[$counter + $stapgrootte]
+    !next nnn
+!else
+    !for nnn=$X_Min to $X_Max step $XSCHAAL
+        V=vline $nnn,0,blue
+        T=text red,$nnn,$VHOOGTE,normal,$nnn
+	VLINE=!append line $V to $VLINE
+        VTEXT=!append line $T to $VTEXT
+    !next nnn
+!endif
+!for nnn=$Y_Min to $Y_Max step $YSCHAAL
+    V=hline 0,$nnn,blue
+    T=text blue,$HHOOGTE,$nnn,normal,$nnn
+    HLINE=!append line $V to $HLINE
+    HTEXT=!append line $T to $HTEXT
+!next
+
+!if $transparent=
+transparent= transparent white
+!else
+transparent=
+!endif
+
+insdraw_size=400,400
+ruitjespapier=400,400\
+$transparent \
+xrange=$XRANGE \
+yrange=$YRANGE \
+$HTEXT \
+$VTEXT \
+linewidth=1 \
+$HLINE \
+$VLINE \
+linewidth 6 \
+rect $X_Min,$Y_Min,$X_Max,$Y_Max,black\
+linewidth 3\
+hline 0,0,blue \
+vline 0,0,blue \
+text blue,$X_Max,$vhoogte,large,$XTEXT\
+textup red,$vhoogte,$Y_Max,large,$YTEXT
+

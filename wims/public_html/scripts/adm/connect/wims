@@ -1,0 +1,39 @@
+
+wims_print_precision=15
+a_=!randint 10^8,10^10
+b_=!randint 10^8,10^10
+cn_code=$a_$b_
+
+url=$back_url?module=adm/raw&ident=$back_ident&passwd=$back_password&code=$cn_code&qclass=$cn_class&rclass=$wims_class&quser=$cn_user
+!for p in option,data1,data2,format
+ CN_$p=!httpquery $(cn_$p)
+!next p
+URL=$url&job=$cn_method&format=$CN_format&option=$CN_option&data1=$CN_data1&data2=$CN_data2
+
+!if $cn_method notwordof getlog getcsv getclassfile getclasstgz
+ cn_data=!exec webget $URL
+ cn_status=!line 1 of $cn_data
+ cn_data=!line 2 to -1 of $cn_data
+ cn_status=!trim $cn_status
+ cn_status=!upper $cn_status
+ !distribute words $cn_status into cn_status,cnr_code
+ !if $cn_status=OK and $cn_method iswordof authuser addclass
+  cn_data=!word 1 of $cn_data
+ !endif
+!else
+ webget_output=webget.out
+ cn_data=!exec webget $URL
+ cn_status=!sh cd ../$wims_sesdir >/dev/null\
+	head -1 webget.out\
+	tail +2 webget.out >webget.data 2>/dev/null
+ !distribute words $cn_status into cn_status,cnr_code
+ !if $cn_status issametext ERROR
+  cn_data=!record 0 of wimshome/$wims_sesdir/webget.data
+ !endif
+!endif
+
+!if $cn_status=OK and $cn_code!=$cnr_code
+ cn_status=ERROR
+ cn_data=return code discord
+!endif
+

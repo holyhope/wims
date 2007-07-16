@@ -1,0 +1,87 @@
+!set methtit=Addition d'inégalités avec coefficients
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality >,parm inequality >,\
+	number, number
+!set methhelp=Cette méthode accepte deux inégalités existantes dans\
+	l'hypothèse, pour en déduire une troisième, qui est\
+	la somme avec coefficients des deux premières.\
+	La nouvelle inégalité sera rajoutée dans les hypothèses.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Introduire une nouvelle inégalité qui est <br>
+ !default methparm3=1
+ !default methparm4=1
+ !read deduc/methparm.phtml 3,5
+ fois l'inégalité
+ !read deduc/methparm.phtml 1
+ <br> plus
+ !read deduc/methparm.phtml 4,5
+ fois l'inégalité
+ !read deduc/methparm.phtml 2
+
+!exit
+:check
+ !ifval $methparm3=0 and $methparm4=0
+  error=Les coefficients sont nuls !
+  !exit
+ !endif
+ !distribute items $methparmobj1 into data1,left1,sign1,right1
+ !distribute items $methparmobj2 into data2,left2,sign2,right2
+ !if $data1 issametext $data2
+  error=Cette méthode interdit la combinaison linéaire d'une inégalité avec\
+   elle-même.
+  !exit
+ !endif
+ methexp=\(($methparm3)*($left1 $sign1 $right1) + ($methparm4)*($left2 $sign2 $right2))
+ !if $methparm3<0
+  methparm3=-($methparm3)
+  sign1=!translate internal <> to >< in $sign1
+  left1=-($left1)
+  right1=-($right1)
+ !endif
+ !if $methparm4<0
+  methparm4=-($methparm4)
+  sign2=!translate internal <> to >< in $sign2
+  left2=-($left2)
+  right2=-($right2)
+ !endif
+ 
+ gt=>
+ lt=<
+ !if ($gt isin $sign1 and $lt isin $sign2) or\
+	($lt isin $sign1 and $gt isin $sign2)
+  !exchange left2,right2
+ !endif
+ !read deduc/sub/simplify ($methparm3)*($left1) + ($methparm4)*($left2)\
+	($methparm3)*($right1) + ($methparm4)*($right2)
+ !distribute lines $out into newleft, newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+
+ !if $gt isin $sign1
+  s_=>
+ !else
+  s_=<
+ !endif
+ eq=$empty=
+ !if ($eq isin $sign1 or $[$methparm3]=0) \
+	and ($eq isin $sign2 or $[$methparm4]=0)
+  s_=$s_=
+ !endif
+ newobject0=$newleft $s_ $newright
+ oldobject=0
+
+ contextlist=$ct_Always,\
+	$ct_Onlywhen les deux coefficients sont non-nuls,\
+	$ct_Onlywhen les deux inégalités sont positives,\
+	$ct_Onlywhen l'une des deux inégalités est positive,\
+	$ct_Onlywhen l'une des deux inégalités est de même signe
+
+!exit

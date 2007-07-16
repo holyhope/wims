@@ -1,0 +1,60 @@
+
+<b>Dessiner une droite, un polygone, des points, un segment, un vecteur, un rectangle.</b>
+(nom : <tt>javacurve</tt>)
+<br>
+Ce type de réponse permet à l'utilisateur de dessiner une droite, un polygone,
+un rectangle ou plusieurs points dans un dessin.
+<p>
+La bonne réponse doit être donnée sous la forme d'une matrice (le
+séparateur de lignes est le point-virgule `;'). La première ligne est
+l'URL de l'image. La deuxième ligne est formée d'une condition parmi 
+la liste suivante 
+
+<ul>
+<li><tt>points,x1,y1,x2,y2,...</tt> Points en (x1,y1), (x2,y2), .... 
+C'est un point ``épais'', de largeur fixe.</li>
+<li><tt>line,x1,y1,x2,y2</tt> Droite passant par (x1,y1), (x2,y2).</li>
+<li><tt>sline,x1,y1,x2,y2</tt> Demi-droite passant par (x1,y1), (x2,y2), d'origine (x1,y1).</li>
+<li><tt>polygon,x1,y1,x2,y2,...</tt> Polygone de sommets (x1,y1), (x2,y2), ... .</li>
+<li><tt>segment,x1,y1,x2,y2</tt> Segment d'extrémités  (x1,y1), (x2,y2).</li>
+<li><tt>vector,x1,y1,x2,y2</tt> Vecteur de (x1,y1) vers (x2,y2).</li>
+<li><tt>rectangle,x1,y1,x2,y2</tt> Rectangle de diagonale (x1,y1), (x2,y2) .</li>
+<li><tt>rectangle,x1,y1,x2,y2,x3,y3,x4,y4</tt> Rectangle contenu dans la différence du rectangle
+de diagonale (x1,y1), (x2,y2) et du rectangle de diagonale (x3,y3), (x4,y4).</li>
+<li><tt>circle,x1,y1,r</tt> Cercle de centre (x1,y1), rayon r.</li>
+</ul>
+</p><p>
+</p><p>
+Il est recommandé d'insérer ce champ de réponse dans l'énoncé.
+</p>
+
+En général, la variable <tt>\reply</tt><em>n</em>, où <em>n</em> est le numéro du champ de
+réponse peut être utilisée dans un \feedback contient
+les variables correspondant à ce qui est rentré (x1,y1 ...) sauf dans les cas
+particuliers suivants : 
+<ul><li>
+dans le cas de la condition <tt>points</tt>, la première ligne est la 
+liste des coordonnées des points cliqués en pixels, la deuxième ligne
+est <tt>n1,n2,n3</tt> avec 
+<tt>n1</tt> le nombre de points corrects, <tt>n2</tt> le nombre de points manquants,
+<tt>n3</tt> le nombre de points en trop. La troisième ligne est formée de la 
+liste des numéros des points correctement trouvés. 
+</li>
+<li>
+dans le cas de la condition <tt>cercle</tt>, la première ligne est la 
+liste des coordonnées des points cliqués en pixels et du rayon, la deuxième ligne
+est <tt>n1,n2</tt> avec 
+<tt>n1</tt> égal à 1 si le centre est correct, à 0 sinon et
+<tt>n2</tt> égal à 1 si le rayon est correct, à 0 sinon.
+</li>
+<li>
+dans le cas de la condition <tt>sline</tt>, la première ligne est la 
+liste des coordonnées des points cliqués en pixels et du rayon, la deuxième ligne
+est <tt>n1,n2,n3</tt> avec 
+<tt>n1</tt> égal à 1 si l'origine est correcte, à 0 sinon,
+<tt>n2</tt> égal à 1 si la pente est correcte, à 0 sinon,
+<tt>n3</tt> égal à 1 si le sens est correct, à 0 sinon.
+</li>
+</ul>
+</p><p>
+

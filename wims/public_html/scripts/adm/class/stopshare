@@ -1,0 +1,132 @@
+!! Stop sharing between two classes.
+!! Calling parameters: 2 lines.
+!! Line 1: initiating class, destination class
+!! Line 2: list of resources to share.
+
+as_1=!translate internal , to $ $ in $wims_read_parm
+!distribute lines $as_1 into as_1,as_l
+!distribute words $as_1 into as_1,as_2
+as_l=!words2items $as_l
+
+as_t_exo=src def Exindex Extitles
+as_t_sheet=sheets
+as_t_exam=exams
+as_t_vote=vote
+as_t_doc=doc
+as_t_forum=forum
+as_t_user=.users .userlist
+as_t_motd=.motd
+as_t_sup=supervisor
+as_list=exo,sheet,exam,vote,doc,forum,user,motd,sup
+!if sharing notwordof $wims_prefix
+ wims_prefix=$wims_prefix n sharing sharable
+!endif
+
+!if all isitemof $as_l
+ as_l=$as_list
+!else
+ !if exo isitemof $as_l
+  as_l=!listunion $as_l and sheet
+ !endif
+ !if sheet iswordof $as_l
+  as_l=!listunion $as_l and exam
+ !endif
+!endif
+
+1_=!translate internal / to , in $as_1
+2_=!translate internal / to , in $as_2
+1=!itemcnt $1_
+2=!itemcnt $2_
+3=$[min($1,$2)]
+
+!for i=1 to $3+1
+ !if $(1_[$i]) != $(2_[$i])
+  !break
+ !endif
+!next i
+
+1_=!item $i to -1 of $1_
+!if $i<=$2
+ 4_=!makelist .. for x=$i to $2
+ 1_=$4_,$1_
+!endif
+1_=!nonempty items $1_
+1_=!nospace $1_
+1_=!translate internal , to / in $1_
+
+!for t in $as_list
+ !reset sharing_$t
+!next t
+!readdef wimshome/log/classes/$as_2/neighbors
+as_l1=
+!for t in $as_l
+ !if $(sharing_$t) = $as_1
+  as_l1=!append item $t to $as_l1
+ !endif
+!next t
+as_l=$as_l1
+!if $as_l=$empty
+ error=stopshare_notsharing
+ !exit
+!endif
+
+L_=
+!for t in $as_list
+ !if $t isitemof $as_l
+  L_=$L_ $(as_t_$t)
+ !endif
+!next t
+!if $L_=$empty
+ !exit
+!endif
+
+!goto skip_sharable
+!for t in $as_list
+ !reset sharable_$t
+!next t
+!readdef wimshome/log/classes/$as_1/neighbors
+as_=
+!for t in $as_l
+ sharable_$t=!listcomplement $as_2 in $(sharable_$t)
+ as_=$as_\
+sharable_$t=$(sharable_$t)
+!next t
+as_all=
+!for t in $as_list
+ as_all=$as_all,$(sharing_$t)
+!next t
+!if $as_2 notitemof $as_all
+ sharable_all=!listcomplement $as_2 in $sharable_all
+ as_=$as_\
+sharable_all=$sharable_all
+!endif
+!setdef $as_ in wimshome/log/classes/$as_1/neighbors
+:skip_sharable
+
+!for t in $as_list
+ !reset sharing_$t
+!next t
+!readdef wimshome/log/classes/$as_2/neighbors
+as_=
+!for t in $as_l
+ sharing_$t=
+ as_=$as_\
+sharing_$t=
+!next t
+as_all=
+!for t in $as_list
+ as_all=$as_all,$(sharing_$t)
+!next t
+!if $as_1 notitemof $as_all
+ sharing_all=!listcomplement $as_1 in $sharing_all
+ as_=$as_\
+sharing_all=$sharing_all
+!endif
+!setdef $as_ in wimshome/log/classes/$as_2/neighbors
+
+!sh cd $wims_home/log/classes/$as_2\
+ rm -Rf $L_\
+ for f in $L_; do\
+  cp -R $1_/$$f . 2>/dev/null\
+ done
+

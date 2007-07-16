@@ -1,0 +1,66 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=cumulative distribution function of hypergeometric law  
+slib_parms=4\
+,[data]\
+,N\
+,K\
+,n
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=Values on data
+slib_comment=data can be a list of reals
+P(X=i)=binomial(K,i)*binomial(N-K,n-i)/binomial(N,n)
+slib_example=[2,4,7],10,5,7
+!exit
+
+:proc
+
+slib_out=$empty
+!distribute  item $wims_read_parm into slib_data,slib_N,slib_K,slib_n
+
+slib_b= $[binomial($slib_N,$slib_n)^(-1)]
+slib_min= $[max(0,$slib_n+$slib_K-$slib_N)]
+slib_max= $[min($slib_n,$slib_N)]
+!if $slib_max<$slib_min
+	slib_out=0
+	!exit
+!endif
+
+slib_data=!declosing $slib_data
+
+slib_cnt=!itemcnt $slib_data
+slib_minmax=!sort numeric item $slib_data
+slib_mind=!item 1 of $slib_minmax
+slib_maxd= !item -1 of $slib_minmax
+
+!if $slib_maxd <$slib_min
+	slib_out=!values 0 for x=1 to $slib_cnt
+	!exit
+!endif
+!if $slib_mind >=$slib_max
+	slib_out=!values 1 for x=1 to $slib_cnt
+	!exit
+!endif
+
+slib_valeur=!exec pari vector(ceil($slib_maxd)-$slib_min+1,x,1.*binomial($slib_K,x+$slib_min-1)*binomial($slib_N-$slib_K,$slib_n-x-$slib_min+1)*$slib_b) 
+
+
+!for slib_x in $slib_data
+	!if $slib_x<$slib_min
+		slib_out=!append item 0 to $slib_out
+	!endif
+
+	!if $slib_x>$slib_max
+		slib_out=!append item 1 to $slib_out
+	!endif
+	!if $slib_x<=$slib_max and $slib_x>=$slib_min
+		slib_outx=!item 1 to $[$slib_x-$slib_min+1] of $slib_valeur
+		slib_outx=!replace internal , by + in $slib_outx
+		slib_out=!append item $[$slib_outx] to $slib_out
+	!endif
+!next slib_x
+
+
+slib_out=!trim $slib_out

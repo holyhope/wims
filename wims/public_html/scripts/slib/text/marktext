@@ -1,0 +1,46 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Texte for use with type mark for OEF (word)
+slib_parms=1\
+,the input text (embedding delimiter: `??')
+slib_author=Bernadette PERRIN-RIOU
+slib_out= position of words which was inside ?? ; Text output with comas ; number of words
+slib_comment=<b>Preliminary version subject to further change, user with care!</b>\
+for use directly in answer with type=mark
+slib_example= The ball is ??red?? and ??green??.\
+??The ball?? is red and green.
+!exit
+
+:proc
+
+slib_texte=!lines2words $wims_read_parm
+slib_texte= !embraced randitem $slib_texte
+slib_texte=!rows2lines $slib_texte
+slib_texte=!replace internal $\
+$ by &#59; in $slib_texte
+slib_texte=!replace internal ?? by ; in $slib_texte
+slib_cntrow=!rowcnt $slib_texte
+slib_TEXTE=
+slib_rep=
+slib_cnt=0
+slib_texte=!replace internal , by &#44; in $slib_texte
+!for slib_i= 1 to $slib_cntrow
+  slib_H = !row $slib_i of $slib_texte
+  slib_cnt_w=!wordcnt $slib_H
+  slib_k=$[$slib_i%2]
+  !if $slib_k = 0
+    slib_rep1 = !values $slib_cnt + x for x=1 to $slib_cnt_w
+    slib_rep  = !append item $slib_rep1 to $slib_rep
+  !endif
+  slib_cnt= $[$slib_cnt+$slib_cnt_w]
+  slib_HH = !words2items $slib_H
+  slib_TEXTE = !append item $slib_HH to $slib_TEXTE
+!next slib_i
+slib_rep=!nonempty items $slib_rep
+
+slib_TEXTE = !nonempty items $slib_TEXTE
+
+slib_out= $slib_rep;$slib_TEXTE;$slib_cnt
+
+

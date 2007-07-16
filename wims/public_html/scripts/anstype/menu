@@ -1,0 +1,54 @@
+select_multiple_check=!getopt multiple in $(replyoption$i)
+!if $(replytype$i)=menu and $select_multiple_check!=
+ !changeto anstype/checkbox
+!endif
+
+good=!rows2lines $(replygood$i)
+menulist=!line 2 to -1 of $good
+menulist=!translate internal $\
+$ to ; in $menulist
+good=!line 1 of $good
+replyGood$i=!item $good of $menulist
+replyGood$i=!replace internal \\( by \( in $(replyGood$i)
+
+menucnt=!itemcnt $menulist
+reply$i=!replace internal \\( by \( in $(reply$i)
+m_reply$i=$(reply$i)
+c_=!char 1 of $(reply$i)
+!if $c_=~ and $(replytype$i)=click
+ c_=!char 2 to -1 of $(reply$i)
+ c_=!item $c_ of $menulist
+ !if $c_!=$empty
+  reply$i=$c_
+ !endif
+!endif
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $(replyGood$i)=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if &#39; isin $menulist
+ reply$i=!replace internal ' by &#39; in $(reply$i)
+!endif
+!if &#44; isin $menulist
+ reply$i=!replace internal , by &#44; in $(reply$i)
+!endif
+menupos=!positionof item $(reply$i) in $menulist
+!if $menupos=$empty
+ test=NaN
+ !exit
+!endif
+
+menupos=!item 1 of $menupos
+!if $menupos isitemof $good
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

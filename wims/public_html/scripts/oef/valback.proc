@@ -1,0 +1,15 @@
+!nocache
+!for i=1 to $replycnt
+ !for n in name,type,option,weight,style
+  reply$n$i=!line $i of $(reply$(n)s)
+ !next n
+!next i
+!for i=1 to $choicecnt
+ !for n in name,good,bad,list,items,option,weight
+  choice$n$i=!line $i of $(choice$(n)s)
+ !next n
+!next i
+
+vslist_=!replace internal , by ,val in val$vsavelist
+!distribute lines $vsave into $vslist_
+

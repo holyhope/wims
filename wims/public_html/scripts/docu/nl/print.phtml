@@ -1,0 +1,73 @@
+!nocache
+!if $error!=$empty
+ !read docu/$en/msg.phtml
+ <p>
+ !exit
+!endif
+
+<center><h1>$tit</h1></center>
+
+!if $titb=$empty
+ <p>
+ Het blok <tt>$block</tt> is nog niet gemaakt.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Deze pagina is nog niet publiek beschikbaar. Kom later maar eens terug !
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Deze pagina is verlopen, en dus helaas niet meer schikbaar.
+ <p>
+ !exit
+!endif
+
+:newblock
+<a name=$block>
+<h3>$titb</h3>
+
+!read $docdir/$doc/$block.def content
+
+!if $waitblock$(waitblock_$block)!=$empty
+ !set waitblock=$(waitblock_$block),$waitblock
+ !set waitblock=!nonempty items $waitblock
+ !set block=!item 1 of $waitblock
+ !set gotblock=!append item $block to $gotblock
+ !set waitblock=!item 2 to -1 of $waitblock
+ !read $docdir/$block.def
+ <p>
+ !goto newblock
+!endif
+
+</div><div class=wimstail>
+<p><hr>
+<table width=100% border=0 cellspan=0 cellpadding=1>
+<tr><td align=left nowrap><small>
+By
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+<td align=right><small>
+!href cmd=reply&job=read&doc=$doc&block=$startblock Interactieve versie
+!if $wims_user=supervisor and $sheetdata!=$empty
+ <tr><td align=left nowrap>
+ <small>Laaste modificatie op: $datm
+ <td align=right><small>
+ !href cmd=reply&job=exosource&block=$startblock Broncode van de oefeningen 
+ uit deze pagina.
+ </small>
+!else
+ <tr><td align=left colspan=2 nowrap>
+ <small>Laatste modificatie op: $datm
+!endif
+</table>
+

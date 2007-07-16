@@ -1,0 +1,33 @@
+
+!if $wims_superclass=$empty or $wims_user!=supervisor or $wims_read_parm=$empty
+ !exit
+!endif
+
+ac_prog=$wims_read_parm
+ac_Prog=$wims_superclass/$ac_prog
+ac_Prog_=wimshome/log/classes/$ac_Prog
+
+!readdef $ac_Prog_/.def
+!readdef $ac_Prog_/supervisor
+cadd_description=$class_description - test
+cadd_superclass=$wims_superclass
+cadd_secure=$sechost
+cadd_parent=$wims_superclass/$ac_prog
+cadd_type=1
+cadd_typename=course
+
+!read adm/class/addclass $ac_Prog/0
+
+!setdef n_part=$ac_Prog\
+n_sup=$ac_Prog in $ac_Prog_/0/neighbors
+ac_n=!defof n_part\
+n_sup in $ac_Prog_/neighbors
+!distribute lines $ac_n into n_part, n_sup
+n_part=!listunion $n_part and $ac_Prog/0
+n_sup =!listunion $n_sup  and $ac_Prog/0
+!setdef n_part=$n_part\
+n_sup=$n_sup in $ac_Prog_/neighbors
+
+!read adm/class/addshare $ac_Prog, $ac_Prog/0\
+	sup
+

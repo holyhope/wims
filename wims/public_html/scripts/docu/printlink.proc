@@ -1,0 +1,18 @@
+!if $wims_read_parm=$empty or \
+	$wims_read_parm isitemof $gotblock,$waitblock,$(waitblock_$block)
+ !exit
+!endif
+
+!reset titb,upbl,prev,next,dat1,dat2,datm
+!readproc $docdir/$doc/$wims_read_parm.def
+!default dat1=19000101
+!default dat2=24000101
+!if $titb=$empty or $today<$dat1 or $today>$dat2 or $upbl!=$block
+ !exit
+!endif
+!if $datm!=$empty and $datm>$Datm
+ Datm=$datm
+!endif
+
+waitblock_$block=!append item $wims_read_parm to $(waitblock_$block)
+

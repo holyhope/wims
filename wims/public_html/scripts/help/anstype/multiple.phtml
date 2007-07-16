@@ -1,0 +1,51 @@
+<li><b>Author-controlable multiple choices</b>: <tt>checkbox</tt>,
+ <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt><br>
+ These can be used to replace the standard multiple choice input, giving
+ you more control on its appearance. The good answer should contain two
+ fields, separated by a semi-colon ``<tt>;</tt>''. The second field (after
+ the semi-colon) is the list of choice texts, and the first field is a list
+ of numbers of the good choices. In the case of <tt>checkbox</tt>, the user
+ must check exactly all the good choices. For all the
+ other cases, any good choice will be enough.
+ <p>
+ For types <tt>checkbox</tt>, <tt>menu</tt> and <tt>radio</tt>, an option
+ called <tt>shuffle</tt> can be specified, that has the 
+ effect of randomly shuffling the order of items in the multiple choice 
+ presented to students.
+ <p>
+ Automatic shuffle is not applied without the option <tt>shuffle</tt>,
+ and the number of choice items is not automatically cut.
+ <p>
+ And for an opposite effect, the option word <tt>sort</tt> makes the items
+ always presented in alphabetic order.
+ <p>
+ <tt>click</tt> should be used only in the case where there is no other
+ replies or choices.
+ <p>
+ The type <tt>menu</tt> accepts an option <tt>multiple</tt> with value. The
+ value of this option gives the maximal size (by default 8) of the choice
+ window. For example, <tt>multiple=5</tt> gives a multiple menu window up
+ to 5 lines.
+ <p>
+ <tt>mark</tt> works similarly as <tt>checkbox</tt>, with the difference
+ that instead of a button, the chosen item itself will change color. It is
+ therefore principally for inline use.
+ <p>
+ For types where several choices can be entered (<tt>checkbox</tt>,
+ <tt>mark</tt>, as well as <tt>menu</tt> with option <tt>multiple</tt>),
+ by default the student will be zero score whenever the answer is different
+ from the given good answer. If you want to give partial score for partially
+ good answers, you can add the option word <tt>split</tt> (synonym:
+ <tt>partialscore</tt>. In this case, the partial score will be computed 
+ according to the proportion of good answers picked by the student. On the
+ other hand, if bad answers are picked, every bad answer will compensate
+ two good answers until the score reaches 0. Such a policy is necessary,
+ among others, for dissuading people from taking all the available choices
+ in case there are many good ones.
+ <p>
+ While such a formula should fit most of the situations, you can add an
+ option word <tt>eqweight</tt> if this is not your case. This word forces
+ the computation to be of equal weight both positively and negatively,
+ that is, every bad answer compensates only one good answer. But you are
+ warned that this seemingly just policy may lead to weird effects!
+

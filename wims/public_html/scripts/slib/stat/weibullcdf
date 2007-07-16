@@ -1,0 +1,32 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=cumulative distribution function of Weibull law
+slib_parms=3\
+,[data]\
+,a\
+,b
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values at data
+slib_comment=data can be a list of reals in brackets; density is a*b*exp(-b*x^a)*x^(a-1) for x>=0
+slib_example=[0.2,0.4,0.7],0.6,0.8
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_a, slib_b
+
+slib_data=!declosing $slib_data
+slib_c=$[$slib_b^(-$slib_a)]
+slib_out=!exec octave weibull_cdf([$slib_data], $slib_a,$slib_c)
+
+slib_out=!words2items $slib_out
+
+slib_out=!trim $slib_out
+
+slib_data=$empty
+slib_c=$empty
+slib_a=$empty
+slib_b=$empty

@@ -1,0 +1,35 @@
+!set style=fr/minimal
+
+<center><h2>Le style <tt>minimal</tt> de symtext</h2></center>
+
+C'est le style qui ne contient que le minimum d'identification. Il est utile
+surtout pour les applications linguistiques. Appelé sans option, il détecte
+toute différence entre les mots. Seuls les espaces multiples sont compactés.
+Mais on peut utiliser les options pour faire un certain nombre
+d'identifications (minuscule/majuscule, lettres avec ou sans accent, etc.).
+<p>
+Aucun dictionnaire n'est défini dans ce style pour l'instant.
+
+!set n=!recordcnt symtext/$style/macros.help
+!if $n>0
+
+Définitions de macros positionnels : (on rappelle que si on doit remplacer
+un mot (a, b, c, etc.) par un groupe de plusieurs mots, il faut entourer ce
+dernier par une paire de crochets.)
+
+!readproc tabletheme
+
+$table_header
+$table_hdtr<th>Syntaxe</th><th>Reconnaissance</th></tr>
+
+!for i=1 to $n
+ !set l=!record $i of symtext/$style/macros.help
+ !distribute lines $l into s1, s2
+ $table_tr<td><tt>$s1</tt></td>
+ <td>$s2</td>
+!next i
+$table_end
+
+!endif
+<p>
+

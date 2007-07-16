@@ -1,0 +1,29 @@
+!set methtit=Separate the cases according to an (in)equation
+!set methenv=ZZ QQ RR
+!set methparmtype=function, choice 6, function
+!set methhelp=This method separates the situation into two cases, according \
+ to the truth of an equation or inequality. The equation/inequality and \
+ its inverse will be added to the hypotheses in the two respective\
+ cases.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Separate the cases according to the truth of the (in)équation <br>
+ <input size=10 name=methparm1 value="$methparm1">
+ !formselect methparm2 from 1 to 6 prompt =,!=,<,>,<=,>=
+ <input size=10 name=methparm3 value="$methparm3">
+!exit
+:check
+ sign1=!item $methparm2 of =,!=,<,>,<=,>=
+ sign2=!item $methparm2 of !=,=,>=,<=,>,<
+
+ casesplit=$methparm1 $sign1 $methparm3\
+$methparm1 $sign2 $methparm3
+ methexp=Separate the cases \($methparm1 $sign1 $methparm3) and \($methparm1 $sign2 $methparm3)
+
+!exit
+

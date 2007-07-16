@@ -1,0 +1,29 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Size and range information of a circuit type.
+slib_parms=1\
+,the type of circuit
+slib_author=Gang Xiao
+slib_out=Comma-separated list of items.
+slib_example=9/br3close
+slib_comment=Check the\
+<a href=$wims_ref_name?module=tool/elec/circdraw>circuit draw tool</a>\
+for details of available circuit and component types. <p>\
+Output of the script:<p>\
+Item 1 = x range (from 0 to) <br>\
+item 2 = y range (from 0 to) <br>\
+item 3 = number of fillable components <br>\
+item 4 = list of paired components (numbers of the first in the pair)
+!exit
+
+:proc
+slib_type=!item 1 of $wims_read_parm
+slib_c=!char 1 of $slib_type
+!if $slib_c isin 123456789
+ slib_prefix=data/circuits
+!else
+ slib_prefix=
+!endif
+slib_rec=$slib_prefix/$slib_type.data
+slib_out=!record 2 of $slib_rec

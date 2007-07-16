@@ -1,0 +1,45 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Indefinite or definite integration of a function of one variable
+slib_parms=4\
+,the function\
+x,the variable name\
+,starting bound, optional\
+,ending bound, optional
+,option words in case of definite integral: numeric, fast
+slib_author=Gang Xiao
+slib_out=The value (empty if error)
+slib_comment=This script uses Maxima. If one of the bounds is missing,\
+ then indefinite integration (formal method) is tried. Otherwise \
+ definite integration. It first tries the formal method.\
+ If this fails, then a numerical method is tried.
+slib_example=sin(x),x,0,5,numeric\
+sin(x),x,0,5,fast\
+sin(x),x
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_fn,slib_var,slib_x1,slib_x2,slib_opt
+slib_fn=!rawmath $slib_fn
+slib_var=!varlist $slib_var
+slib_var=!item 1 of $slib_var
+!default slib_var=x
+slib_out=
+!if $slib_x1=$slib_empty or $slib_x2=$slib_empty
+ slib_out=!exec maxima integrate($slib_fn,$slib_var);
+ !exit
+!endif
+slib_test=$[($slib_x1)+($slib_x2)]
+!if numeric notin $slib_opt
+ slib_out=!exec maxima integrate($slib_fn,$slib_var,$slib_x1,$slib_x2);
+!endif
+!if ($slib_out=$empty or integrate isin $slib_out or i isvarof $slib_out) \
+  and NaN notin $slib_test
+ !if fast isin $slib_opt
+  slib_out=!exec pari intnum($slib_var=$slib_x1,$slib_x2,$slib_fn)
+ !else
+  slib_out=!exec pari intnum($slib_var=$slib_x1,$slib_x2,$slib_fn,3)
+ !endif
+!endif
+

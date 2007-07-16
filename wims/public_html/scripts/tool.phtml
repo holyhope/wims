@@ -1,0 +1,54 @@
+!set p_=!trim $wims_read_parm
+!if $p_=$empty
+ !exit
+!endif
+!set p_=!items2words $p_
+!set p_=!words2items $p_
+
+!if $module_language notwordof cn fr nl si es
+ !set prompt1=Useful online tools:
+ !set prompt2=(available in another window of your browser)
+!else
+ !if $module_language=si
+  !set prompt1=Uporabna spletna orodja:
+  !set prompt2=(na razpolago v novem oknu brskalnika)
+ !endif
+ !if $module_language=fr
+  !set prompt1=Outils en ligne utiles&nbsp;:
+  !set prompt2=(disponible dans une autre fen阾re de votre navigateur)
+ !endif
+ !if $module_language=cn
+  !set prompt1=可以使用的工具:
+  !set prompt2=(会在你的浏览器里另开一个窗口)
+ !endif
+ !if $module_language=nl
+  !set prompt1=Handige online tools&nbsp;:
+  !set prompt2=(verschijnt in een separaat browser venster)
+ !endif
+ !if $module_language=es
+  !set prompt1=Herramientas en l韓ea 鷗iles:
+  !set prompt2=(disponibles en otra ventana de su navegador)
+ !endif
+ 
+!endif
+
+!reset T_
+!for t in $p_
+  !set tit=!module title tool/$t
+  !if $tit!=$empty and $tit!=$module_title
+   !set T_=!append line $t,$tit to $T_
+  !endif
+!next t
+!if $T_!=$empty
+ !set n_=!linecnt $T_
+ <p>$prompt1
+ !for i=1 to $n_
+   !set l_=!line $i of $T_
+   !set t_=!item 1 of $l_
+   !set n_=!item 2 to -1 of $l_
+   !href target=wims_tool module=tool/$t_ $n_
+   &nbsp;
+ !next i
+ <small>$prompt2</small> <p>
+!endif
+

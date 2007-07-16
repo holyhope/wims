@@ -1,0 +1,70 @@
+
+good=!items2words $(replygood$i)
+good=!deaccent $good
+dd=!deaccent $(reply$i)
+n=!word 1 of $good
+n=$[$n]
+!if $n>0
+ good=!word 2 to -1 of $good
+ replyGood$i=!words2items $good
+!else
+ n=1
+!endif
+good=!rows2lines $good
+good=!nonempty lines $good
+replyGood$i=$good
+badwords=!line 2 to -1 of $good
+good=!line 1 of $good
+suffix_dictionary=bases/sys/suffix.$module_language
+dictionary=scripts/oef/atext.dic
+!for d in good,dd,badwords
+ dt=!lower $($d)
+ dt=!deaccent $dt
+ dt=!translate internal -+/*='"`.,;:!|@#$$%^&*()[]{}?<>\~ to\
+		$                                       $ in $dt
+ translator_unknown=leave
+ dt=!exec translator $dt
+ dt=!singlespace $dt
+ dt=!trim $dt
+ $d=!words2items $dt
+!next d
+
+dd=!listuniq $dd
+m_reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+gd=0
+!for w in $dd
+ !if $w isitemof $good
+  !advance gd
+ !endif
+!next w
+
+tt=!itemcnt $dd
+!ifval $gd=$tt and $gd>=$n
+ diareply$i=good
+ !advance freegot
+!else
+ bn=!wordcnt $badwords
+ !if $bn>0
+  !for w in $dt
+   !if $w notitemof $good,$badwords
+    test=NaN unknownword $w
+    !exit
+   !endif
+  !next w
+ !endif
+ !if $gd>=$[ceil($tt/2)] and $gd>=$n
+  !advance precgood
+  precreply$i=yes
+ !endif
+ diareply$i=bad
+!endif
+

@@ -1,0 +1,131 @@
+
+L_=c,fortran77,lisp,pascal,perl,python,scheme,sh,tcl
+l_=!words2items $(replyoption$i)
+L_=!listintersect $l_ and $L_
+L_=!item 1 of $L_
+!default L_=c
+
+!if $L_=c
+ code_reserved_=int,float,double,unsigned,signed,long,short,char,void,struct,\
+	static,volatile,const,union,switch,case,goto,default,\
+	return,if,else,for,while,do,break,continue,sizeof,typedef,\
+	public,void,extern,enum
+!endif
+
+!if $L_=fortran77
+ code_reserved_=program,do,write,return,end,stop,subroutine,function,\
+ 	integer,real,character,logical,dimension,continue,read,parameter,\
+	if,then,endif,elseif,while,enddo,until,exit,\
+	data,block
+!endif
+
+!if $L_=pascal
+ code_reserved_=begin,end,procedure,function,program,\
+	intrinsic,return,and,or,not,repeat,until,to,case,true,false,\
+	if,then,else,for,do,while,break,continue,type,var,record,\
+	var,type,packed,array,of,integer,real,char,mod,div,\
+	write,writeln,label,record,goto,boolean,true,false,with
+!endif
+
+!if $L_=perl
+ code_reserved_=sub,if,else,elsif,for,local,print,foreach,while,until
+!endif
+
+good=!replace internal , by , $ in $(replygood$i)
+good=!singlespace $good
+good=!trim $good
+wims_exec_error=
+
+!distribute item $oef_codelim into codelim_1,codelim_2
+!default codelim_1=1000000
+!default codelim_2=$codelim_1
+codelen=!nospace $(reply$i)
+codelen=!replace internal &#36; by t in $codelen
+codelen=!charcnt $codelen
+
+!if $codelen > $codelim_2
+ test=NaN lengthoverflow
+ !exit
+!endif
+
+!if $code_allow_$code_deny_ != $empty
+ illegal_name=
+ names_=!varlist $(reply$i)
+ !if $code_allow_!=$empty
+  names_=!listcomplement $names_ and $code_allow_,$code_reserved_
+  !for n_ in $names_
+   l_=!charcnt $n_
+   !if $l_>1
+    illegal_name=$n_
+    !break
+   !endif
+  !next n_
+ !else
+  names_=!listintersect $names_ and $code_deny_
+  illegal_name=!item 1 of $names_
+ !endif
+ !if $illegal_name!=$empty
+  test=NaN illegalname
+  !exit
+ !endif
+!endif
+
+!if $L_ notwordof perl sh
+ m_reply_out=!exec $L_ $oef_presrc\
+$(reply$i)\
+$oef_postsrc
+!else
+ r_=!replace internal &#36; by $$$$ in $oef_presrc\
+$(reply$i)\
+$oef_postsrc
+ !if $L_=sh
+  m_reply_out=!sh $r_
+ !endif
+ !if $L_=perl
+  m_reply_out=!perl $r_
+ !endif
+!endif
+
+m_reply_err=!trim $wims_exec_error
+tmpdir=../chroot/tmp/sessions/$wims_session
+tmpdir=!translate internal _ to $ $ in $tmpdir
+tmpdir=!word 1 of $tmpdir
+m_reply_err=!replace internal $tmpdir/ by $ in $m_reply_err
+wims_exec_error=
+dd=!replace internal , by , $ in $m_reply_out
+dd=!singlespace $dd
+dd=!trim $dd
+
+m_reply$i=$dd
+
+!if $dd=$empty and nonempty iswordof $(replyoption$i)
+ error=empty_out
+ !exit
+!endif
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+diag=
+replyGood$i=
+!if $dd issametext $good and $codelen <= $codelim_2
+ diag=yes
+!endif
+
+!if $diag=yes
+ diareply$i=good
+ !if $codelen <= $codelim_1
+  !advance freegot
+ !else
+  freegot=$[$freegot+($codelim_2-$codelen+1)/($codelim_2-$codelim_1+1)]
+ !endif
+!else
+ diareply$i=bad
+!endif
+

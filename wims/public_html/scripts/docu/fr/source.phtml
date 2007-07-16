@@ -1,0 +1,61 @@
+!nocache
+<center><h1>$tit
+</h1></center>
+
+!if $titb=$empty
+ <p>
+ Le bloc <tt>$titb</tt> de ce document n'est pas encore créé.
+ <p>
+ !exit
+!endif
+
+!if $datetest<0
+ <p>
+ Ce bloc n'est pas encore lisible. Revenez plus tard !
+ <p>
+ !exit
+!endif
+
+!if $datetest>0
+ <p>
+ Ce bloc est périmé. Il n'est plus lisible. Désolé !
+ <p>
+ !exit
+!endif
+
+<h3>$titb (Document source)
+</b><font size=-1>
+ [
+ !href cmd=reply&job=read Formaté
+ ]</font>
+</h3>
+
+<pre wrap>
+!mexec scripts/cat.sh $module_dir/$docdir/$doc/src/$block
+</pre>
+
+<p><hr>
+!if $wims_class!=$empty and $wims_user!=supervisor
+ !exit
+!endif
+<table width=100% border=0>
+<tr><td align=left><small>
+!href cmd=reply&job=read Formaté
+&nbsp; par
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+!if help notin $wims_session
+ <td align=right><small>
+ !href module=home WIMS
+  @
+ <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+!endif
+<tr><td align=left colspan=2 nowrap>
+<small>Dernière modif. $datm
+</table>
+
+

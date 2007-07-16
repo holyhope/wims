@@ -1,0 +1,176 @@
+!set methtit=Simple déduction d'inégalité
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality >,\
+	parm inequality <,choice 3,\
+	function,choice 4,function
+!set methparmrelax=1,2,3
+!set methhelp=Cette méthode permet d'établir une implication entre deux\
+ inégalités. Cette implication peut se déduire par une composition\
+ d'addition de termes, de \
+ transitivité avec une inégalité évidente, de déduction entre inégalités\
+ strictes et non-strictes, et de multiplication\
+ des deux côtés d'une inégalité par une constante.\
+ <p>\
+ Par exemple, elle reconnait <p><center>\
+   \( 2*x > -2 => -4*x < 10 - x ) .\
+ </center> <p>\
+ Vous pouvez utiliser cette méthode soit pour affaiblir une inégalité dans\
+ les hypothèses, soit pour renforcer une inégalité dans le but.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!set obj=!exec mathexp extract inequality\
+$objects
+!if $obj=$empty
+ !set error1=no_object
+ !set penalty1=1
+ !exit
+!endif
+ 
+!exit
+:form
+ !set n1=!linecnt $mtobj1
+ !set n2=!linecnt $mtobj2
+ !if $methsubstep=1
+  !if $n1<1
+   !set methparm3=2
+   !goto goal
+  !endif
+  !if $n2<1
+   !set methparm3=1
+   !goto ctx
+  !endif
+  :opt
+  <b>$methtit.</b>
+  $methhelp
+  <p>
+  Vous voulez&nbsp;:
+  !formselect methparm3 list 0,1,2,3 prompt $ch_choose,\
+	affaiblir une inégalité dans l'hypothèse,\
+	renforcer une inégalité du but,\
+	une hypothèse implique un but
+  !set methsubstep=2
+ !else
+  !bound methparm3 between integer 0 and 3 default 0
+  !if $methparm3=0
+   !goto opt
+  !endif
+  !if $methparm3 iswordof 1 3
+   :ctx
+   !set methparmrelax=2,3
+   L'inégalité
+   !read deduc/methparm.phtml 1
+   implique
+  !else
+   :goal
+   !set methparmrelax=1,3
+   Pour montrer
+   !read deduc/methparm.phtml 2
+   , il suffit de montrer
+  !endif 
+  <br> 
+  !if $methparm3<3
+   <input size=14 name=methparm4 value="$methparm4">
+   !formselect methparm5 from 1 to 4 prompt <,>,<=,>=
+   <input size=14 name=methparm6 value="$methparm6">
+  !else
+   !set methparmrelax=3,4,5,6
+   !read deduc/methparm.phtml 2
+  !endif
+  !set methsubstep=1
+ !endif
+!exit
+:check
+ !bound $methparm3 between integer 0 and 2 default 0
+ !if $methparm3=0
+  error=empty_data
+  !exit
+ !endif
+ pm3=$methparm3
+ !if $methparm3=3
+  pm3=1
+  !distribute item $methparmobj2 into data,left2,sign2,right2
+ !endif
+ n=!linecnt $(mtobj$pm3)
+ !if $(methparm$pm3)=0
+  error=empty_data
+  !exit
+ !endif
+ !distribute item $(methparmobj$pm3) into data,left1,sign1,right1
+ oldineq=$left1 $sign1 $right1
+ !distribute item >,<,= into gt,lt,eq
+ !if $gt isin $sign1
+  sign1=!translate internal $gt to $lt in $sign1
+  !exchange left1,right1
+ !endif
+ !if $methparm3!=3
+  left2=$methparm4
+  sign2=!item $methparm5 of <,>,<=,>=
+  right2=$methparm6
+ !endif
+ !read deduc/sub/simplify $left2 $sign2 $right2
+ newineq=$out
+ !if $gt isin $sign2
+  sign2=!translate internal $gt to $lt in $sign2
+  !exchange left2,right2
+ !endif
+ !if $pm3=2
+  !exchange sign1,sign2
+  !exchange left1,left2
+  !exchange right1,right2
+ !endif
+ tester=($right1)-($left1)-($right2)+($left2)
+ !if $eq isin $sign1 and $eq notin $sign2
+  sign=<
+ !else
+  sign=<=
+ !endif
+ !read deduc/sub/checkineq $tester,$sign,0
+ test=!word 1 of $out
+ !if $test notwordof true false
+  out=!exec maxima negsumdispflag:false;\
+	expand($maximasimp(($right1)-($left1)));\
+	expand($maximasimp(($right2)-($left2)));\
+	negsumdispflag:true;
+  !distribute lines $out into none,i1,i2
+  out=!exec mathexp cut addition\
+$i1\
+$i2
+  !distribute lines $out into t1,t2
+  !distribute item $t1 into a1,a2,a3
+  !distribute item $t2 into b1,b2,b3
+  !if $a1=$empty
+   a1=$a2 $a3
+  !endif
+  !if $b1=$empty
+   b1=$b2 $b3
+  !endif
+  !read deduc/sub/checknumber ($a1)/($b1)
+  !if $out notsametext true
+   test=bad
+  !else
+   tester=($right1)-($left1)-(($a1)/($b1))*(($right2)-($left2))
+   !read deduc/sub/checkineq $tester,$sign,0
+   test=!word 1 of $out
+  !endif
+ !endif
+ !if $test notwordof true false
+  error=unjustified
+  !if $methparm3=3
+   !advance penalty
+  !endif
+  !exit
+ !endif
+ !if $test=false
+  error=Votre implication n'est pas vraie !
+  !advance penalty
+  !exit
+ !endif
+ oldobject=$pm3
+ newobject$pm3=$newineq
+ methexp=!item $pm3 of Parce que \($oldineq),\
+	Implique \($oldineq)
+!exit
+

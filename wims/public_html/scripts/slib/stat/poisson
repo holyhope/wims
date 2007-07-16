@@ -1,0 +1,61 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Generation of random numbers with Poisson law 
+slib_parms=2\
+  1,m\
+  1,lambda
+slib_author=S. Lemaire and Bernadette Perrin-Riou
+slib_out=random  data of m numbers following the Poisson law \
+of parameter lambda (positive number)
+
+
+slib_comment= for any nonnegative integer,  P(X=i)=exp(-lambda)*(lambda^i)/i!
+
+slib_example= 5,2.5
+
+
+!exit
+
+:proc
+
+!distribute item $wims_read_parm into slib_data, slib_lambda
+
+slib_out=$empty
+!default slib_m=1
+!default slib_lambda=1
+
+!!slib_ex=$[exp(-$slib_lambda)]
+!!slib_q=$slib_ex
+!!
+!!
+!!slib_U=!random 0,1 repeat $slib_m
+!!
+!!!for slib_i=1 to $slib_m
+!! slib_V=!item $slib_i of $slib_U
+!! slib_q=$slib_ex
+!! slib_p=$slib_ex
+!! slib_j=0
+!!
+!!!while $slib_V >= $slib_q
+!!  !advance slib_j
+!!  slib_p=$[$slib_p*$slib_a/$slib_j]
+!!  slib_q=$[$slib_q+$slib_p]
+!!!endwhile
+!!  
+!!slib_out=!append item $slib_j to $slib_out
+!!!next slib_i
+
+
+slib_data=!declosing $slib_data
+slib_cnt=!itemcnt slib_data
+!if $slib_cnt=1
+	slib_data=1,$slib_data
+!endif	
+slib_out=!exec octave poisson_rnd($slib_lambda,$slib_data)
+
+slib_out=!words2items $slib_out
+
+
+slib_out =!trim $slib_out
+

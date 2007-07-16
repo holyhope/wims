@@ -1,0 +1,41 @@
+!set email=!trim $email
+!set author=!trim $author
+
+!if $author!=$empty
+ Author of this exercise:
+ !if $email!=$empty
+  !mailurl $email $author
+.
+ !else
+  $author.
+ !endif
+!endif
+!if $solution!=$empty and $hint!=$empty
+ This exercise contains both an explained solution and a hint.
+!endif
+!if $solution!=$empty and $hint=$empty
+ This exercise has an explained solution but no hint.
+!endif
+!if $solution=$empty and $hint!=$empty
+ This exercise contains a hint but no explained solution.
+!endif
+!if $solution$hint=$empty
+ This exercise has neither explained solution nor hint.
+!endif
+Link for this exercise: <br>
+!set exolink=$wims_ref_name?module=$module&cmd=new&exo=$thisexo
+<a href=$exolink>$exolink</a> <br>
+Link for the current setup: <br>
+!if $module_init_parm!=$empty
+ !set exolink=$wims_ref_name?module=$module&cmd=new&$module_init_parm
+!else
+ !set exolink=$wims_ref_name?module=$module&cmd=new
+!endif
+<a href=$exolink>$exolink</a>
+<p>
+Information about this collection of exercises. <p>
+$module_about
+<p>
+The copyright of the exercises belong to their respective authors.
+
+!changeto NEWS.phtml

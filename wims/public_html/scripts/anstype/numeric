@@ -1,0 +1,55 @@
+
+reply$i=!rawmath $(reply$i)
+reply$i=!trim $(reply$i)
+parleft=(
+dd=$(reply$i)
+c=!char 1 of $dd
+!if $c=+ or $c=-
+ dd=!char 2 to -1 of $dd
+!endif
+!if $computeanswer!=yes and \
+	( + isin $dd or - isin $dd or * isin $dd or ^ isin $dd \
+	or $parleft isin $dd or ( . isin $dd and / isin $dd ) )
+ test=NaN nocompute
+ !exit
+!else
+ test=$[$(reply$i)]
+!endif
+
+m_reply$i=$(reply$i)
+!if $wims_read_parm=nocompare
+ !if NaN isin $test
+  !exit
+ !endif
+ !exit
+!endif
+
+good=$[$(replygood$i)]
+!if NaN isin $good or Inf isin $good
+ Test=bad $i
+ !exit
+!endif
+
+!if NaN isin $test
+ !exit
+!endif
+
+!default precision=0.1
+tot=$[max(abs($test)+abs($good),1/$precision)]
+diff=$[abs($test-($good))]
+!if NaN isin $tot $diff or Inf isin $tot $diff
+ test=NaN
+ !exit
+!endif
+
+!if $precision*$diff<=$tot
+ diareply$i=good
+ !advance freegot
+!else
+ !if sqrt($precision)*$diff<=$tot
+  !advance precgood
+  precreply$i=yes
+ !endif
+ diareply$i=bad
+!endif
+

@@ -1,0 +1,70 @@
+<b>Symtext.</b> (nom: <tt>symtext</tt>)
+<p>
+
+Ce type est activé soit par la définition du type soit par la déclaration de
+l'option <tt>symtext</tt> dans d'autres types de réponse. Dans le premier
+cas, le champ de réponse est un <tt>textarea</tt> permettant d'entrer
+plusieurs lignes de teste. Dans le deuxième cas, le champ de réponse reste
+le meme que pour le type de départ.
+<p>
+
+La bonne réponse est une phrase sous 
+!href cmd=help&special_parm=symtext syntaxe symtext
+ (on pourrait souvent se contenter du style
+!href cmd=help&special_parm=symtext,generic generic
+). Exemples (style <tt>generic</tt>) :
+<ul>
+ <p><li><tt>a _ou b</tt> permet de reconnaitre "a ou b", "b ou a", "soit a
+ soit b", "soit b soit a", "a ou bien b", "b ou bien a".
+ <p><li><tt>André _et [mon prof]</tt> permet de reconnaitre "André et mon prof",
+ "mon prof et André", "André ainsi que mon prof", "mon prof ainsi qu'André".
+ <p><li><tt>_je _etre _plus grand que [mon pere]</tt> permet de reconnaitre
+ "je suis plus grand que mon père", "je suis moins petite que mon père",
+ "mon père est plus petit que moi", "mon père est moins grand que moi".
+ <p><li><tt>x _egale y</tt> permet de reconnaitre "x égale y", "y est égal à
+ x", "x et y sont égaux", "y et x sont en égalité", etc.
+
+</ul> <p>
+
+Il est recommandé de mettre un premier alternatif en texte pur. Par exemple,
+si la bonne réponse est "A et B" sans tenir compte de l'ordre, il vaux mieux
+mettre la bonne réponse en <tt>A et B|A _et B</tt> au lieu de
+<tt>A _et B</tt> seulement. Dans ce cas, c'est le premier alternatif qui
+sera affiché comme bonne réponse aux élèves, au lieu de la syntaxe symtext
+elle-même, cette dernière pouvant troubler les élèves.
+<p>
+
+Si une seule ligne est présente dans la déclaration de la bonne réponse,
+tout ce qui ne s'identifie pas à cette ligne sera considéré comme mauvaise
+réponse. Par contre si la bonne réponse donnée contient plusieurs lignes
+(séparées par le point-virgule '<b><tt>;</tt></b>'), toute réponse qui
+s'identifie à une ligne ultérieure sera considérée comme fausse, et toute
+réponse contenant un mot qui n'apparait dans aucune des lignes sera
+considérée comme incompréhensible et renvoyée pour retaper. Enfin, une
+réponse contenant que des mots compréhensibles mais qui ne
+s'identifie par aucune des lignes sera fausse.
+<p>
+
+Normalement, il suffit de mettre la liste de mots qu'on veut reconnaitre
+dans la ligne 2, comme pour les types <tt>case</tt>, <tt>nocase</tt> ou
+<tt>atext</tt>.
+<p>
+
+Il y a aussi la possibilité de déclarer des réponses partiellement correctes.
+Il suffit pour cela de déclarer ces réponses partiellement correctes à
+partir de la ligne 2, puis déclarer <tt>goodlim=n</tt> dans l'option, où
+<tt>n</tt> doit être un entier plus grand que 1. Dans ce cas, une réponse
+qui s'identifie à une ligne entre 2 et <tt>n</tt> sera partiellement
+correcte, avec une notation qui diminue avec le nombre de la ligne.
+<p>
+
+Toutes les options de symtext sont reconnues dans le champ d'option.
+<p>
+
+La sortie du programme symtext est disponible par la variable
+<tt>\result<i>n</i></tt>, où <i>n</i> est le numéro du champ de réponse, et
+peut être utilisée dans un <tt>\feedback</tt>.
+
+<p>
+!href cmd=help&special_parm=symtext Détail de la syntaxe symtext
+.

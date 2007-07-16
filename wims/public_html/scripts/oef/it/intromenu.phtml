@@ -1,0 +1,111 @@
+!set proc=oef
+<p><center><hr width=35%></center> <p>
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,8)]
+!if $exocnt<1
+ !if $wims_user=supervisor and #classes/ isin #$module
+  !href module=adm/createxo Crea
+  nuovi esercizi.
+ !else
+  Spiacente, questo modulo non contiene ancora esercizi. 
+  Riprovate pi&ugrave; tardi.
+ !endif
+ !exit
+!endif
+!if $exocnt=1
+ Questo modulo contiene un solo esercizio, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Provatelo
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if select iswordof $special_parm2 and $special_parm!=$empty
+ <td align=center>Esercizi che contengono<br>
+ <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+!else
+<td align=center>Selezionare l'esercizio:<td>
+!endif
+!read oef/select.phtml
+<tr><td align=center>Una sessione contiene<td>
+!set qnum=1
+!formselect qnum from 1 to 9
+ esercizi.
+<tr><td align=center>Livello di difficolt&agrave;<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>Limite di tempo <td>
+<input size=7 name=scoredelay value="$scoredelay"> secondi.
+!read introhook.phtml
+!if expert iswordof $special_parm2
+   <tr><td align=center>
+   Numero di risposte multiple da cui scegliere: <td>
+   !default intro_qcmpresent=4
+   !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+   <tr><td align=center>Dare la soluzione (se disponibile)? <td>
+   !default intro_presentsol=1
+   !formselect intro_presentsol list 0,1,2 prompt mai,se il punteggio non è massimo,sempre
+   <tr><td align=right>
+   !default intro_check=1,2,3,4
+   Scelte multiple</td><td>
+   !formcheckbox intro_check list 1 prompt Contengono sempre
+   la risposta giusta.
+   <tr><td rowspan=3>&nbsp;</td><td align=left>
+   !formcheckbox intro_check list 2 prompt Le risposte sbagliate nelle scelte multiple sono penalizzate.
+   <tr><td align=left>
+   !formcheckbox  intro_check list 3 prompt Mostra la risposta giusta.
+   <tr><td align=left>
+   !formcheckbox intro_check list 4 prompt Mostra suggerimenti (se disponibili).
+   !let tmp=!replace word expert by $ in $special_parm2
+   <tr><td colspan=2 align=center>
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Menù semplice
+   <input type=hidden name=intro_expert value=yes>
+!else
+   <tr><td colspan=2 align=center>
+   !let tmp=$special_parm2 expert
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Menù esperti
+!endif
+</table></center> <p><center>
+<input type=submit value="Al lavoro">&nbsp;
+<input type=submit name=print value="Versione stampabile">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value=$module>
+ Scegli titoli che contengono la parola
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=OK>
+ </form>
+!endif
+
+<b>Nota</b>. Gli esercizi verranno scelti casualmente tra quelli selezionati
+nella lista. Se non si &egrave; selezionato alcun esercizio, la
+scelta varier&agrave; tra tutti gli esercizi disponibili.
+!if * isin $titlelist
+ <p>Gli esercizi contrassegnati da * sono in generale un po' pi&ugrave; 
+ difficili degli altri.
+!endif
+
+<p><small>Come limite di tempo si possono inserire due valori, uno più
+piccolo seguito da uno più grande. In questo caso, quando si raggiunge
+il primo limite il punteggio viene ridotto mentre quando si raggiunge 
+il secondo limite, il punteggio viene azzerato.
+</small>

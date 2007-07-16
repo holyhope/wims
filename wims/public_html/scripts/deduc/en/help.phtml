@@ -1,0 +1,38 @@
+
+!if $help_subject iswordof methall status
+ !read deduc/$module_language/help/$help_subject.phtml
+ <p><center>
+ !href cmd=help Other help subjects
+ </center><p>
+ !reset help_subject
+ !exit
+!endif
+
+!if $help_subject=meth and $method!=$empty
+ !read deduc/meth/$module_language/$method.def
+ !default methhelp=There is no further help fo this method.
+ <p>
+ <b>Method: <em><font color=blue>$methtit</font></em></b>
+ <p> 
+ $methhelp
+ !reset help_subject
+ !exit
+!endif
+
+!if help iswordof $exo_has
+ !read $deffile help
+!else
+ This exercise has no particular help.
+!endif
+<p>
+!set random1=!randint 1,10^6
+!set random2=!randint 1,10^6
+!set random=$random1.$random2
+Help subjects:
+!href cmd=help&help_subject=methall&special_parm=$thisexo the methods
+,
+!href cmd=help&help_subject=status&special_parm=$random status of the exercise
+.
+
+!reset help_subject
+

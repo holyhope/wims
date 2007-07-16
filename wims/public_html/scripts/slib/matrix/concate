@@ -1,0 +1,44 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=concatenation
+slib_parms=1\
+,list of square matrices under matrix format\
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=block diagonal matrix with input matrices on the diagonal
+slib_comment=
+slib_example=[1,2;3,4], [1,2;3,4],[1]
+!exit
+
+:proc
+slib_cnt=!itemcnt $wims_read_parm
+!for slib_i=1 to $slib_cnt
+  slib_mat$slib_i = !item $slib_i of $wims_read_parm
+!next 
+
+slib_out=
+
+slib_wm=
+slib_wn=
+!!inutile ? 
+slib_data=
+
+!for slib_i=1 to $slib_cnt
+slib_N=!declosing $(slib_mat$slib_i)
+slib_N = !translate internal ; to $\
+$ in $slib_N
+slib_N= !translate internal $\
+$ to ; in $slib_N
+slib_data=!append item [$slib_N] to $slib_data
+!next slib_i
+
+slib_out=!exec pari {slib_D=[$slib_data]; slib_R=Mat(slib_D[1]);\
+slib_a=matsize(slib_R)[1];\
+for(slib_i=2,$slib_cnt, slib_C= Mat(slib_D[slib_i]); slib_b=matsize(slib_C)[1];\
+slib_R=mattranspose(concat(slib_R, matrix(slib_a,slib_b)));\
+slib_S= mattranspose(concat(matrix(slib_b,slib_a), slib_C));\
+slib_R=concat(slib_R,slib_S)~ ; slib_a=slib_a+slib_b);\
+print(slib_R)}
+
+slib_out=!trim $slib_out

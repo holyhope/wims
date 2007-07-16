@@ -1,0 +1,57 @@
+!set methtit=Rewrite an equation
+!set methenv=ZZ QQ RR CC
+!set methparmtype=parm equation, function, choice, function
+!set methhelp=You can use this method to transform an existing equation\
+ into an equivalent one, by a composition of addition of terms,\
+ exchange of sides and multiplication by a non-zero constant.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Rewrite the equation
+ !read deduc/methparm.phtml 1
+ to <br>
+ <input size=15 name=methparm2 value="$methparm2">
+ =
+ <input size=15 name=methparm4 value="$methparm4">
+ !set methremark=Your new equation must be equivalent to the original one.
+!exit
+:check
+ !distribute items $methparmobj1 into data,left1,sign1,right1
+ sign2==
+ sign3==
+ !if $sign2 notsametext $sign1 and $sign3 notsametext $sign1
+  :badequiv
+  error=Your new equation is not equivalent to the original one!
+  !advance penalty
+  !exit
+ !endif
+ 
+ check1=($left1) - ($right1)
+ check2=($methparm2) - ($methparm4)
+  
+ !read deduc/sub/checkzero $check1\
+	$check2
+ !distribute line $out into out1, out2
+ !read deduc/sub/Simplify ($check1) / ($check2)
+ out3=$out
+ !if $out1=yes or $out2=yes
+  !if $out1!=yes or $out2!=yes
+   !goto badequiv
+  !endif
+ !else
+  out3=$[$out3]
+  !if NaN isin $out3 or Inf isin $out3
+   !goto badequiv
+  !endif
+ !endif
+ methexp=Rewriting of \($left1 = $right1)
+
+ newobject1=$methparm2 = $methparm4
+ oldobject=1
+
+!exit
+

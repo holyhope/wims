@@ -1,0 +1,57 @@
+!nocache
+!if $oefsteps!=$empty
+ !set fieldtot=!itemcnt $thisstep
+!else
+ !set fieldtot=$[$choicecnt+$replycnt]
+!endif
+
+!if $fieldtot<1
+ !changeto oef/noreply.phtml
+!endif
+
+!set N_=!itemcnt $embedded
+!if $fieldtot<=$N_
+ !goto send 
+!endif
+
+!if $hasembedding!=yes
+ <a name=oefform id=oefform> </a>
+ !form reply name=replyform onsubmit="return formcheck();"
+!endif
+
+!if $error=$empty
+输入你的回答&nbsp;:
+!else
+ <b>订正</b>你的回答&nbsp;:
+!endif
+!if $oefsteps!=$empty and $oefstepcnt>1
+ !if $dynsteps=yes
+  (step $oefstep)
+ !else
+  (step $oefstep/$oefstepcnt)
+ !endif
+!endif
+<br><table border=0>
+!distribute item 1,1 into cntr,cntc
+!for t in $ansorder
+ !read oef/form$t.phtml $(cnt$t)
+ !advance cnt$t
+!next t
+</table>
+:send
+!if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
+ !read anstype/$wims_fill_type.after
+!endif
+!if $oef_formnosubmit!=yes
+ <center>
+ <input type=submit value="发送回答">
+ </center>
+!endif
+</form>
+
+!if $qcmgood<1 and $choicecnt>0
+ <small><b>说明.</b> 如果你觉得被列举的选择没有一个是合适的, 
+你可选``都不对''.</small> <p>
+!endif
+
+

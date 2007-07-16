@@ -1,0 +1,19 @@
+!set anstype=yes
+!set anstyle=numeric
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !default reply$i=$(replygood$i)
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)&nbsp;=<td>
+!endif
+!bound inputsize between integer 1 and 100 default 30
+!default vector_left_=(
+!default vector_right_=)
+$vector_left_<input size=$inputsize name=reply$i value="$(reply$i)">$vector_right_
+!reset inputsize

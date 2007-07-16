@@ -1,0 +1,25 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantile of cumulative chi2 distribution
+slib_parms=2\
+,[data]\
+1,degree
+
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=quantile at data
+slib_comment=data can be a list of reals
+slib_example=  [0.2,0.4,0.7] ,5
+!exit
+
+:proc
+slib_out=
+!distribute  item $wims_read_parm into slib_data,slib_degree
+
+!default slib_degree=1
+slib_data=!declosing $slib_data
+
+slib_out=!exec octave chisquare_inv([$slib_data], $slib_degree)
+slib_out=!words2items $slib_out
+slib_out=!trim $slib_out

@@ -1,0 +1,72 @@
+# Add a subclass under the current superclass.
+# Calling parameter: subclass address under the superclass.
+
+!if $wims_superclass=$empty or $wims_user!=supervisor or $wims_read_parm=$empty
+ !exit
+!endif
+
+classdir=wimshome/log/classes/$wims_superclass
+userdir=$classdir/.users
+s_=$sup
+
+!if $pass!=$empty
+ pass=!text select $char_passwd in $pass
+ passlen=!charcnt $pass
+ !if $passlen<$passwd_min or $passlen>$passwd_max or $pass != $pass2
+  error=bad_password
+  !exit
+ !endif
+!else
+ pass=!defof class_password in $classdir/$wims_read_parm/.def
+!endif
+
+!if $passs!=$empty
+ passs=!text select $char_passwd in $passs
+ passlen=!charcnt $passs
+ !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
+  error=bad_password
+  !exit
+ !endif
+!else
+ passs=!defof user_password in $classdir/$wims_read_parm/supervisor
+!endif
+
+1=!defof user_exists in $userdir/$s_
+2=!defof class_defined in $classdir/$wims_read_parm/.def
+!if $2!=yes
+ error=mod_not_exist
+ !exit
+!endif
+!if $1!=yes
+ s_=supervisor
+!else
+ 1=!defof user_supervisable in $userdir/$s_
+ !if $1!=yes
+  name=$s_
+  error=not_supervisable
+  !exit
+ !endif
+!endif
+!read adm/class/userdef classes,$wims_superclass,$s_
+cadd_Supervisor=$s_
+sadd_firstname=!defof user_firstname in $userdef
+sadd_lastname=!defof user_lastname in $userdef
+sadd_email=!defof user_email in $userdef
+cadd_email=$sadd_email
+cadd_password=$pass
+sadd_password=$passs
+modclass_slist=!listunion firstname,lastname,email and $modclass_slist
+
+!read adm/gateway/delsup $wims_read_parm
+!if $s_!=supervisor
+ suplist=!defof user_supervise in $userdir/$s_
+ suplist=!listunion $suplist and $wims_superclass/$wims_read_parm
+ !setdef !set user_supervise=$suplist in $userdir/$s_
+!endif
+
+!read adm/class/modclass $wims_superclass/$wims_read_parm
+
+!if $error!=$empty
+ !exit
+!endif
+

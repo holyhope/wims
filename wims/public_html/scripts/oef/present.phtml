@@ -1,0 +1,40 @@
+!nocache
+!if $status=waiting and $cmd!=hint and $hasembedding=yes
+ <a name=oefform id=oefform> </a>
+ !form reply name=replyform onsubmit="return formcheck();"
+ !set q_form=yes
+!else
+ !set m_status=end
+!endif
+
+<div class=oefstatement>
+!if $format=tex
+ <center>
+ !if $question_url=$empty or $cmd=resume
+  !set quest_=!replace &#36; by $$$$ in $question
+  !set wims_texsize=1
+  !instex \narrower\narrower {\bf $name_exo} $quest_
+  !set wims_texsize=0
+  !set question_url=$ins_url
+ !else
+  <img src="$question_url">
+ !endif
+ </center>
+!endif
+
+!if $format=html or $format=
+ <b>$name_exo</b>
+ !if $executed_str!=$question or $oef2wims_version<3.10
+  $question
+ !else
+  !read $deffile question
+ !endif
+!endif
+
+!if $plot_fn!=$empty
+ <p><center>
+ !insplot $plot_fn notitle
+ </center>
+!endif
+</div>
+

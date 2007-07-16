@@ -1,0 +1,148 @@
+!if $wims_read_parm=def
+ !exit
+!endif
+!bound inputsize between integer 1 and 40 default 10
+!if $inputsize<=5
+ !distribute item "<center>" +,+ "</center>" into ct1,ct2
+!else
+ !reset ct1,ct2
+!endif
+!set inputsize=$[$inputsize*10]
+!set lenlimit=40
+!set imgs=$(replygood$i)
+!set imgs=!rows2lines $imgs
+!distribute lines $imgs into imgs,conn
+!set icnt=!itemcnt $imgs
+!if $icnt<2
+ !set imgs=!words2items $imgs
+ !set comma=
+!else
+ !set comma=,
+!endif
+!if $conn!=$empty
+ !set comma=$conn
+!endif
+!set imgs=!translate internal | to , in $imgs
+!set imgs=!singlespace $imgs
+!set imgs=!nonempty items $imgs
+!set imgs=!listuniq $imgs
+!set imgs=!shuffle odd $imgs
+!set imgcnt=!itemcnt $imgs
+!set imgl=!items2lines $imgs
+!set imgarr=!replace internal $\
+$ by "," in "$imgl"
+!set Imgarr=!replace internal \ by \\ in $imgarr
+!set wims_ins_alt=none
+!set z=r$i
+
+!read js/dynapi3.phtml
+<script language=javascript>
+
+ var $(z)_imgcnt=0;
+ $(z)_imgs=new Array($imgarr);
+ $(z)_Imgs=new Array($Imgarr);
+ $(z)_strs=new Array($lenlimit+1);
+ $(z)_Strs=new Array($lenlimit+1);
+ $(z)_used=new Array($imgcnt);
+ $(z)_use=new Array($lenlimit+1);
+ $(z)_strs[0]="";
+ $(z)_Strs[0]="";
+ var lyr$i;
+ 
+dynapi.onLoad(function() {
+
+	var i;
+	lyr$i=new DynLayer();
+	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:'90%',stretchV:$inputsize});
+	lyr$i.setBgColor('#c0c0c0');
+	lyr$i.setHTML("");
+	dynapi.document.addChild(lyr$i);
+	for(i=0;i<$imgcnt;i++) $(z)_used[i]=0;
+});
+
+ function $(z)_addone(t) {
+  if(t<0 || $(z)_imgcnt>=$lenlimit || $(z)_used[t]!=0) return;
+  if($(z)_imgcnt>0) {
+    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+"$comma "+$(z)_imgs[t];
+    $(z)_Strs[$(z)_imgcnt+1]=$(z)_Strs[$(z)_imgcnt]+","+$(z)_Imgs[t];
+  }
+  else {
+    $(z)_strs[$(z)_imgcnt+1]=$(z)_imgs[t];
+    $(z)_Strs[$(z)_imgcnt+1]=$(z)_Imgs[t];
+  }
+  $(z)_imgcnt++; $(z)_use[$(z)_imgcnt]=t; $(z)_used[t]=1;
+  $(z)_lockdata();
+ }
+ 
+ function $(z)_lockdata() {
+  var t;
+  lyr$i.setHTML($ct1 $(z)_strs[$(z)_imgcnt] $ct2);
+  document.forms['replyform'].reply$i.value="";
+  for(t=0;t<$imgcnt;t++) if($(z)_used[t]==0) return;
+  document.forms['replyform'].reply$i.value=$(z)_Strs[$(z)_imgcnt];
+ }
+
+ function $(z)_backone() {
+  if($(z)_imgcnt<1) return;
+  $(z)_used[$(z)_use[$(z)_imgcnt]]=0;
+  $(z)_imgcnt--; $(z)_lockdata();
+ }
+ 
+ function $(z)_cleanall() {
+  var t;
+  if($(z)_imgcnt<1) return;
+  for(t=0;t<$imgcnt;t++) $(z)_used[t]=0;
+  $(z)_imgcnt=0; $(z)_lockdata();
+ }
+
+</script>
+!reset wims_ins_alt
+
+!if $wims_read_parm!=noprompt
+ </table>
+ !if $module_language=fr
+  Donnez votre ordre en cliquant sur les objets successivement.
+  !goto cont
+ !endif
+ !if $module_language=nl
+ Geef de volgorde door op de verschillende objecten te klikken
+  !goto cont
+ !endif
+
+ Give your order by clicking on the objects successively.
+ :cont
+ <p>
+!endif
+!set instex_color=blue
+!for i_=1 to $imgcnt
+ !set src=!item $i_ of $imgs
+ <a href=# onClick=$(z)_addone($i_-1)>$src</a>&nbsp;
+!next i_
+
+!set instex_color=black
+<sup>
+<a href=# onClick=$(z)_backone()><img height=20 border=1 align=middle
+ src=gifs/arrows/left3.32.gif></a>
+<a href=# onClick=$(z)_cleanall()><img height=20 border=1 align=middle
+ src=gifs/reset.gif></a>
+</sup>
+
+!if $wims_read_parm!=noprompt
+ <p>$(replyname$i)
+!else
+ <br>&nbsp;
+!endif
+
+<p><center>
+<a name=tarea$i id=tarea$i>
+<img height=2 width=90% src=gifs/transparent.gif align=middle>
+</a> <br>
+<img height=$[$inputsize-10] width=90% src=gifs/transparent.gif align=middle>
+</center> <p>
+
+<input type=hidden name=reply$i value="">
+
+!if $wims_read_parm!=noprompt
+ <table border=0>
+!endif
+

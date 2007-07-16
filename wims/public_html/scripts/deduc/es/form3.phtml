@@ -1,0 +1,28 @@
+
+!form reply
+Etape $currstep&nbsp;: $methexp.
+<p>
+!if $shcontext!=$empty
+ Quelle est la condition d'application de cette méthode ?
+ !set n=!itemcnt $shcontext
+ !formselect repcontext from 0 to $n prompt $ch_choose,$listcontext
+ <p>
+!endif
+!if $shresult!=$empty
+ Qu'est ce que la méthode donne ? <ul>
+ !set n=!itemcnt $shresult
+ !for i=1 to $n
+  !set b=!item $i of $listresult
+  <li><input type=radio name=represult value=$i
+  !if $i=$represult
+   checked
+  !endif
+  >
+  !insmath $b
+ !next i
+ </ul><p>
+!endif
+
+<center><input type=submit value=Envoyer>
+</center></form>
+

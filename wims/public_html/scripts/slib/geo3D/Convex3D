@@ -1,0 +1,88 @@
+
+!if $slib_wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Polyhedron applet with Convex3D
+slib_parms=1
+,name of the polyhedron (see index)
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=code for draw of drawing a polyhedron with the applet Convex3D
+slib_comment=
+
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_polyedre,slib_options
+slib_prgm=
+!reset slib_points, slib_faces, slib_aretes
+!!********** Traitement des options
+
+slib_optcnt=!itemcnt $slib_options
+!for slib_no=1 to $slib_optcnt
+  slib_option=!item $slib_no of $slib_options
+  slib_option=!declosing $slib_option
+ slib_optionname=!item 1 of $slib_option
+ slib_optionvalue=!items 2 to -1 of $slib_option
+ !if $slib_optionname issametext faces
+  slib_faces=$slib_optionvalue
+ !endif
+ !if $slib_optionname issametext aretes
+  slib_aretes=$slib_optionvalue
+ !endif
+ !if $slib_optionname issametext points
+  slib_points=$slib_optionvalue
+ !endif
+!next slib_no
+!default slib_faces=0
+!default slib_aretes=0
+!default slib_points=0
+
+!!********** Lecture des données polyedre
+
+slib_polyedre=!record  0 of data/polyedre_off/$slib_polyedre.off
+slib_H=1
+slib_u=!line 1 of $slib_polyedre
+slib_nom=!replace internal # by $empty in $slib_u
+!while # isin $slib_u
+!advance slib_H
+slib_u=!line $slib_H of $slib_polyedre
+!endwhile
+
+
+!distribute word $slib_u into slib_S_cnt, slib_F_cnt, slib_A_cnt
+
+slib_sommet=!line $[$slib_H+1] to $[$slib_H+$slib_S_cnt] of $slib_polyedre
+slib_sommet=!nonempty lines $slib_sommet
+
+slib_arete=!line $[$slib_H+$slib_S_cnt+$slib_F_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt+$slib_A_cnt] of $slib_polyedre
+slib_arete=!nonempty line $slib_arete
+
+slib_face=!line $[$slib_H+$slib_S_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt] of $slib_polyedre
+slib_face=!nonempty line $slib_face
+
+!!********** code de mise en scene
+
+slib_prelim=
+slib_fin=
+!!********** code de dessin des sommets
+
+ slib_out_sommet=
+
+  !for slib_na=1 to $slib_S_cnt
+    slib_coord=!line $slib_na of $slib_sommet
+    slib_out_sommet=$slib_out_sommet,$slib_coord
+  !next slib_na
+slib_out_sommet=!nonempty items $slib_out_sommet
+slib_out_sommet=!singlespace $slib_out_sommet
+!!********** code de dessin des faces 
+slib_out_face=
+!for slib_nc=1 to $slib_F_cnt
+   slib_r=!line $slib_nc of $slib_face
+   slib_r=!word 2 to -1 of $slib_r
+   slib_out_face=$slib_out_face $slib_r -1
+ !next slib_nc
+slib_out_face=!singlespace $slib_out_face
+
+slib_out=$slib_S_cnt $slib_F_cnt;$slib_out_sommet;$slib_out_face

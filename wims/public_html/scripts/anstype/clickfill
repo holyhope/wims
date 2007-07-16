@@ -1,0 +1,72 @@
+
+good=!singlespace $(replygood$i)
+good=!trim $good
+good=!rows2lines $good
+good=!line 1 of $good
+good=!translate | to $\
+$ in $good
+good=!nonempty lines $good
+replyGood$i=!line 1 of $good
+replyGood$i=!items2words $(replyGood$i)
+dd=$(reply$i)
+
+!if r$i notitemof $thisstep
+ !goto nocheck
+!endif
+
+!if $i notitemof $fill_checked
+ fill_checked=!append item $i to $fill_checked
+ dd2=
+ !for d_ in $dd
+  !if $d_ isitemof $fill_check
+   dd2=!append item $d_ to $dd2
+   !if $(replytype$i)=dragfill
+    pos=!positionof item $d_ in $fill_check
+    pos=!item 1 of $pos
+    !if $pos!=$empty
+     fill_check=!replace item number $pos by $ in $fill_check
+    !endif
+   !endif
+  !else
+   dd2=!append item ?????? to $dd2
+  !endif
+ !next d_
+ dd=$dd2
+ !if $(replytype$i)=dragfill
+  fill_check=!nonempty items $fill_check
+ !endif
+!endif
+
+:nocheck
+reply$i=$dd
+m_reply$i=$dd
+reply_$i=!items2words $dd
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+diag=
+t_=!linecnt $good
+good=!replace internal , $ by , in $good
+dd=!replace internal , $ by , in $dd
+!for n=1 to $t_
+ g=!line $n of $good
+ g=!trim $g
+ !if $dd issametext $g
+  diag=yes
+ !endif
+!next n
+
+!if $diag=yes
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

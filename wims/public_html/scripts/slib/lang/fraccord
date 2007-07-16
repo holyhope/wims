@@ -1,0 +1,43 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Accord of French adjectives and names
+slib_parms=1\
+,the word (singular masculine, no composite word)
+slib_author=Gang Xiao
+slib_out=the list of different forms: singular masculine,\
+ singular feminine, plural masculine, plural feminine,\
+ adverbial form (virtual). ATTENTION. This slib does not \
+ known invariable adjectives!
+slib_example=actif
+!exit
+
+:proc
+slib_word=!word 1 of $wims_read_parm
+slib_out=
+!if $slib_word=$empty
+ !exit
+!endif
+
+slib_i=!text reverse $slib_word
+slib_t=!char 1 of $slib_i
+slib_i=!text expand $slib_i using 10
+translator_unknown=leave
+dictionary=bases/dic/fr/accord
+slib_t=!exec translator $slib_t$slib_i aa
+!if | notin $slib_t
+ slib_out=$slib_word,$(slib_word)e,$(slib_word)s,$(slib_word)es,$(slib_word)ement
+ !exit
+!endif
+
+slib_t=!translate internal | to $\
+$ in $slib_t
+
+slib_i=!line 2 of $slib_t
+slib_t=!line 1 of $slib_t
+slib_t=!translate internal . to | in $slib_t
+slib_i=!word 1 to -2 of $slib_i
+slib_i=!nospace $slib_i
+slib_i=!text reverse $slib_i
+slib_out=$slib_i$(slib_t[1]),$slib_i$(slib_t[2]),$slib_i$(slib_t[3]),$slib_i$(slib_t[4]),$slib_i$(slib_t[5])
+

@@ -1,0 +1,51 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantile of hypergeometric law inverse
+slib_parms=4\
+,[data]\
+,N\
+,K\
+,n
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=quantile at data
+slib_comment=data can be a list of reals
+P(X=i)=binomial(K,i)*binomial(N-K,i)/binomial(N,n)
+slib_example=[0.2,0.4,0.7],10,5,7
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_N,slib_K,slib_n
+
+slib_out=
+slib_data=!declosing $slib_data
+
+slib_cnt= !itemcnt $slib_data
+slib_b= $[binomial($slib_N,$slib_n)^(-1)]
+slib_min= $[max(0,$slib_n+$slib_K-$slib_N)]
+slib_max= $[min($slib_n,$slib_K)]
+!if $slib_max<$slib_min
+	slib_out=0
+	!exit
+!endif
+slib_out=
+slib_PP=!values binomial($slib_K,x)*binomial($slib_N-$slib_K,$slib_n-x)*$slib_b for x = $slib_min to $slib_max
+!for slib_i in $slib_data
+  !if $slib_i =1 
+   slib_out=!append item  $[$slib_max -$slib_min+1] to $slib_out
+  !else
+	 slib_P=0
+	 !for slib_k= 1 to $[$slib_max -$slib_min+1]
+		slib_a=!item $slib_k of $slib_PP
+		slib_P=$[$slib_P+$slib_a]
+		!if $slib_P>= $slib_i
+			slib_out=!append item  $[$slib_k-1] to $slib_out
+			!break
+		!endif
+	!next slib_k
+ !endif
+!next slib_i
+
+slib_out=!trim $slib_out

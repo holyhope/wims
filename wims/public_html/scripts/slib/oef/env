@@ -1,0 +1,16 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Get an OEF environment variable
+slib_parms=1\
+,variable name (without prefix)
+slib_author=Gang Xiao
+slib_out=The variable content.
+slib_comment=Only WIMS variables with prefix "oefenv_" can be obtained\
+via this slib.
+!exit
+
+:proc
+slib_out=!word 1 of $wims_read_parm
+slib_out=$(oefenv_$slib_out)
+

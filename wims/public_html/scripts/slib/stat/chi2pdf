@@ -1,0 +1,31 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title= Probability density function of chi2 
+slib_parms= 2\
+,[data]\
+1,degree
+slib_author= Bernadette PERRIN-RIOU
+slib_out= values of probability density function of chi2  on data
+slib_comment= data can be a list of reals in brackets
+slib_example=[2,3,5],5
+!exit
+
+:proc
+slib_out= 
+
+!distribute  item $wims_read_parm into slib_data,slib_degree
+!default slib_degree= 1
+slib_data= !declosing $slib_data
+slib_n= !itemcnt $slib_data
+slib_u= !exec pari gamma($slib_degree*0.5)^(-1)
+!for slib_i in $slib_data
+	!if $slib_i > 0
+	 	slib_val=$[0.5*exp(-0.5*$slib_i)*(0.5*$slib_i)^( $slib_degree/2-1)*$slib_u]
+	!else 
+		slib_val=0
+	!endif
+	slib_out=!append item $slib_val to $slib_out
+!next i
+slib_out=!nonempty items $slib_out
+slib_out= !trim $slib_out

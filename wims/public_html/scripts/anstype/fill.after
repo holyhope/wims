@@ -1,0 +1,296 @@
+
+!set list=!singlespace $wims_fill_list
+!set list=!nonempty items $list
+!if $wims_fill_type=dragfill
+ !if keeporder notwordof $wims_fill_option
+  !set t_=!itemcnt $list
+  !ifval $t_<=$filltotal or $t_<=12
+   !set list=!shuffle $list
+  !else
+   !set list=!sort items $list
+  !endif
+ !endif
+!else
+ !set list=!listuniq $list
+ !if keeporder notwordof $wims_fill_option
+  !set list=!sort items $list
+ !endif
+!endif
+!if shuffle iswordof $wims_fill_option
+ !set list=!shuffle $list
+!endif
+!if sort iswordof $wims_fill_option
+ !set list=!sort items $list
+!endif
+!set fill_check=$list
+!set list=!singlespace $list
+!set objcnt=!itemcnt $list
+!set list=!items2lines $list
+!set objs=!replace internal " by \" in $list
+!set objs=!replace internal $\
+$ by "," in "$objs"
+!set Objs=!replace internal \ by \\ in $list
+!set Objs=!replace internal " by \" in $Objs
+!set Objs=!replace internal $\
+$ by "," in "$Objs"
+!set leftcolor="#ffd080"
+!set leftcolor2="#c0c0c0"
+!set rightcolor="#87ceeb"
+!set crcolor="#6060ff"
+!set clcolor="#C0A060"
+!set align_option=!getopt align in $wims_fill_option
+!set align_option=!tolower $align_option
+!bound align_option within left,right,center default center
+!set crleft="<table border=0 cellpadding=0 cellspacing=0 width=100% height=$fill_sy><tr><td align=$align_option>"
+!set crright="</td></tr></table>"
+!set wims_ins_alt=none
+!set tolx=$[round($fill_sx*2/3)]
+!set toly=$[round($fill_sy*2/3)]
+!reset formfields
+!for t=1 to $fillcnt
+ !set t_=!item $t of $dynapi_fill_fields
+ !set formfields=!append item document.forms['replyform'].reply$t_ to $formfields
+!next t
+!if $wims_fill_type=dragfill
+ !set objcnt2=$objcnt
+!else
+ !set objcnt2=$[$objcnt+1]
+!endif
+
+!read js/dynapi3.phtml
+<script language=javascript>
+!if $fill_reposition=yes
+ !reset reposition_x,reposition_y
+ !for i=1 to $fillcnt
+  !distribute item $(reposition_$i) into rx,ry
+  !default rx=0
+  !default ry=0
+  !set reposition_x=!append item $rx to $reposition_x
+  !set reposition_y=!append item $ry to $reposition_y
+ !next i
+ f_reposition_x=new Array($reposition_x,0)
+ f_reposition_y=new Array($reposition_y,0)
+!endif
+
+ f_objs=new Array($objs,"?");
+ f_Objs=new Array($Objs,"?");
+ f_starts=new Array($fillstarts,$filltotal);
+ f_cut=new Array($fillcutpoints,0);
+ f_curr=new Array($fillstarts);
+ f_fillnames=new Array($fill_namelist,0);
+ f_major=new Array($filltotal);
+ f_minor=new Array($filltotal);
+ f_det=new Array($filltotal);
+ f_lyr=new Array($filltotal);
+ f_lbis=new Array($objcnt2);
+ f_fields=new Array($formfields);
+ f_xrel=new Array($filltotal);
+ f_yrel=new Array($filltotal);
+ var f_dstartx, f_dstarty;
+ f_rcolor=new Array($objcnt2);
+ var f_cll=-1;
+ var f_clr=-1;
+
+dynapi.onLoad(function() {
+
+	var i,j;
+	var mev={};
+	$fillafter_js
+	mev.onclick = function(e) {
+		var clicked=e.getSource();
+		var i;
+		for(i=0;i<$filltotal;i++) {
+			if(clicked==f_lyr[i]) {f_cleft(i); return;}
+		}
+	}
+	var mev2={};
+	mev2.ondragstart = function(e) {
+		var r=e.getSource();
+		var i;
+		for(i=0;i<$objcnt2 && r!=f_lbis[i];i++);
+		if(f_clr>=0 && i!=f_clr) f_lbis[f_clr].setBgColor(f_rcolor[f_clr]);
+		r.setZIndex(1000); r.setBgColor($crcolor);
+		f_dstartx=r.getPageX(); f_dstarty=r.getPageY();
+	}
+	mev2.ondragend = function(e) {
+		var l=e.getSource();
+		var i;
+		for(i=0;i<$objcnt2;i++) {
+			if(l==f_lbis[i]) {f_cright(i); return;}
+		}
+	}
+	for(i=0;i<$fillcnt;i++) for(j=f_starts[i];j<f_starts[i+1];j++) {
+		f_major[j]=i; f_minor[j]=j-f_starts[i]; f_det[j]=-1;
+	}
+	for(i=0;i<$filltotal;i++) {
+		var xx,yy;
+		xx=0; yy=0;
+		if(f_minor[i]>0) {
+			xx+=(f_minor[i]%f_cut[f_major[i]])*$fill_sx;
+			yy+=Math.floor(f_minor[i]/f_cut[f_major[i]])*$fill_sy;
+		}
+!if $fill_reposition=yes
+		xx+=f_reposition_x[f_major[i]];
+		yy+=f_reposition_y[f_major[i]];
+!endif
+		f_xrel[i]=xx;f_yrel[i]=yy;
+		f_lyr[i]=new DynLayer();
+		f_toleft(f_lyr[i],i);
+		f_lyr[i].setBgColor($leftcolor);
+		f_lyr[i].addEventListener(mev);
+		dynapi.document.addChild(f_lyr[i]);
+		if(f_minor[i]==0) f_lyr[i].setHTML($crleft+"?"+$crright);
+	}
+	for(i=0;i<$objcnt2;i++) {
+		f_lbis[i]=new DynLayer();
+		f_toright(f_lbis[i],i);
+		DragEvent.enableDragEvents(f_lbis[i]);
+		f_lbis[i].addEventListener(mev2);
+		dynapi.document.addChild(f_lbis[i]);
+		if(i<$objcnt) f_rcolor[i]=$rightcolor;
+		else f_rcolor[i]=$leftcolor;
+		f_lbis[i].setBgColor(f_rcolor[i]);
+		f_lbis[i].setHTML($crleft+f_objs[i]+$crright);
+	}
+!if $fillcnt=1
+	f_cll=0; f_lyr[0].setBgColor($clcolor);
+!endif
+});
+
+function f_toleft(l,n) {
+	l.setAnchor({topA:"fill"+f_fillnames[f_major[n]],
+		leftA:"fill"+f_fillnames[f_major[n]],
+		left:f_xrel[n],top:f_yrel[n],
+		stretchH:$fill_sx,stretchV:$fill_sy});
+}
+
+function f_toright(l,n) {
+	l.setAnchor({topA:"fillobj"+(n+1),
+		leftA:"fillobj"+(n+1),left:-$fill_sx,
+		stretchH:$fill_sx,stretchV:$fill_sy});
+}
+
+function f_putval(l) {
+	var vv,i,j;
+	for(i=f_starts[l];i<f_curr[l];i++) if(f_det[i]<0) {
+		for(j=i;j<f_curr[l]-1;j++) {
+		    if(f_det[j+1]>=0) {
+!if $wims_fill_type=dragfill
+			f_toleft(f_lbis[f_det[j+1]],j);
+!else
+			f_lyr[j].setHTML(f_lyr[j+1].getHTML());
+!endif
+			f_lyr[j].setBgColor(f_lyr[j+1].getBgColor());
+		    }
+		    f_det[j]=f_det[j+1];
+		}
+		f_det[j]=-1; f_curr[l]--;
+!!		f_lyr[j].setBgColor($leftcolor);
+!if $wims_fill_type!=dragfill
+		f_lyr[j].setHTML("");
+		if(j==f_starts[l]) f_lyr[j].setHTML($crleft+"?"+$crright);
+!endif
+	}
+	if(f_curr[l]<=f_starts[l]) vv="";
+	else {
+		vv=f_Objs[f_det[f_starts[l]]];
+		for(i=f_starts[l]+1;i<f_curr[l];i++) vv=vv+","+f_Objs[f_det[i]];
+	}
+	f_fields[l].value=vv;
+!if $wims_fill_type=dragfill
+	if(f_curr[l]>f_starts[l]) f_lyr[f_curr[l]-1].setBgColor($leftcolor);
+!endif
+	if(f_curr[l]<f_starts[l+1]) {
+		f_cll=f_curr[l];
+		f_lyr[f_curr[l]].setBgColor($clcolor);
+	}
+}
+
+function f_corr(l,r) {
+	f_lbis[r].setBgColor(f_rcolor[r]);
+	if(r>=$objcnt) {
+		f_toright(f_lbis[r],r);
+		f_cll=-1;f_clr=-1;
+		f_det[l]=-1; f_putval(f_major[l]);
+		return;
+	}
+!if $wims_fill_type=dragfill
+	f_toleft(f_lbis[r],l);
+	if(f_det[l]>=0 && f_det[l]!=r)
+		f_toright(f_lbis[f_det[l]],f_det[l]);
+!else
+	f_toright(f_lbis[r],r);
+	f_lyr[l].setHTML($crleft+f_objs[r]+$crright);
+	f_lyr[l].setBgColor($leftcolor2);
+!endif
+	if(f_curr[f_major[l]]<=l) f_curr[f_major[l]]=l+1;
+	if(f_clr>=0) f_lbis[f_clr].setBgColor(f_rcolor[f_clr]);
+	f_det[l]=r; f_cll=-1;f_clr=-1;
+	f_putval(f_major[l]);
+}
+
+function f_stickleft(n) {
+	var i=f_curr[f_major[n]];
+	if(n<=i) return n; else return i;
+}
+
+function f_cleft(n) {
+	n=f_stickleft(n);
+	if(f_clr==-1) {
+		f_lyr[n].setBgColor($clcolor);
+		if(f_cll>=0) {
+			if(f_det[f_cll]<0) f_lyr[f_cll].setBgColor($leftcolor);
+			else f_lyr[f_cll].setBgColor($leftcolor2);
+		}
+		if(f_cll==n) f_cll=-1; else f_cll=n;
+		return;
+	}
+	else {f_corr(n,f_clr);}
+}
+
+function f_cright(n) {
+	var l,xx,yy,t;
+	xx=f_lbis[n].getPageX(); yy=f_lbis[n].getPageY();
+	if(Math.abs(xx-f_dstartx)+Math.abs(yy-f_dstarty)>8) {
+		if(f_cll>=0) f_lyr[f_cll].setBgColor($leftcolor);
+		for(l=0;l<$filltotal && 
+		    (Math.abs(xx-f_lyr[l].getPageX())>$tolx ||
+		     Math.abs(yy-f_lyr[l].getPageY())>$toly);l++);
+		if(l<$filltotal) f_cll=f_stickleft(l);
+		else {f_cll=-1;f_clr=n;}
+	}
+	else if(n>=$objcnt && f_cll>=0 && f_det[f_cll]<0) {
+		f_lyr[f_cll].setBgColor($leftcolor); f_cll=-1;
+	}
+!if $wims_fill_type=dragfill
+	for(t=0;t<$filltotal && f_det[t]!=n;t++);
+	if(t<$filltotal && t!=f_cll) {
+		var cllsave=f_cll;
+		f_det[t]=-1; f_putval(f_major[t]);
+		if(f_cll>=0) f_lyr[f_cll].setBgColor($leftcolor);
+		f_cll=cllsave;
+	}
+!endif
+	if(f_cll==-1) {
+		f_lbis[n].setBgColor($crcolor);
+		if(f_clr>=0) f_lbis[f_clr].setBgColor(f_rcolor[f_clr]);
+		if(f_clr==n) f_clr=-1; else f_clr=n;
+		f_toright(f_lbis[n],n);
+	}
+	else {f_corr(f_cll,n);}
+	f_lbis[n].setZIndex(100);
+}
+
+</script>
+!reset wims_ins_alt
+
+<p style="text-align: left">
+!for i_=1 to $objcnt2
+ !set l_=!item $i_ of $wims_fill_list
+ <sup><img width=$fill_sx height=$[$fill_sy+10] src=gifs/transparent.gif
+ border=0 align=top><a name=fillobj$i_ id=fillobj$i_><img
+ width=1 height=1 src=gifs/transparent.gif
+ border=0 align=top></a></sup>
+!next i_
+</p><p>
+

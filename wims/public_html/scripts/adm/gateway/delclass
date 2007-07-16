@@ -1,0 +1,57 @@
+# Delete a class and all its courses.
+# Calling parameter: class address.
+
+thisclass=!translate internal / to , in $wims_read_parm
+thislevel=$(thisclass[1])
+
+!if $wims_superclass=$empty or $thislevel=$empty or $wims_user!=supervisor
+ !exit
+!endif
+
+cls_=$wims_read_parm
+classdir=wimshome/log/classes/$wims_superclass
+cls__=$classdir/$cls_
+!if $cls_= or $wims_class/ notin $wims_superclass/$cls_
+ !exit
+!endif
+test=!defof class_defined in $cls__/.def
+!if $test!=yes
+ error=del_not_exist
+ !exit
+!endif
+
+courses=!record 0 of $cls__/courses
+courses=!column 1 of $courses
+courses=!nonempty items $courses
+
+class_=$wims_superclass/$cls_
+!for dp_c in $courses
+ sharelist=!defof sharing_all in $classdir/$dp_c/neighbors
+ !for dp_C in $sharelist
+  !if $dp_C != $class_
+   !read adm/class/stopshare $dp_C,$wims_superclass/$dp_c\
+	all
+  !endif
+ !next dp_C
+ error=
+ !read adm/gateway/delsup $dp_c
+!next dp_c
+
+n=!recordcnt $classdir/$cls_/.userlist
+!for i=1 to $n
+ l=!record $i of $classdir/$cls_/.userlist
+ u=!item 3 of $l
+ s=!defof user_participate in $classdir/.users/$u
+ !if $class_ isitemof $s
+  s=!listcomplement $class_ in $s
+  !setdef !set user_participate=$s in $classdir/.users/$u
+ !endif
+!next i
+
+!read adm/gateway/delsup $cls_
+
+courses=!items2words $courses
+!sh cd $wims_home/log/classes/$wims_superclass\
+ rm -Rf $cls_ $courses
+
+

@@ -1,0 +1,26 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Take a random line of a data file
+slib_parms=1\
+,name of the data file in the module
+slib_author=Gang Xiao
+slib_out=the random line (empty if error)
+slib_comment=The length of the data file is limited.
+!exit
+
+:proc
+!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
+ !exit
+!endif
+slib_fname=!items2words $wims_read_parm
+slib_fname=!word 1 of $slib_fname
+slib_out=!record 0 of $slib_fname
+!if $slib_out=$empty
+ !exit
+!endif
+slib_out=!nonempty lines $slib_out
+slib_n=!linecnt $slib_out
+slib_n=!randint 1,$slib_n
+slib_out=!line $slib_n of $slib_out
+

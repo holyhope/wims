@@ -1,0 +1,21 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Register OEF code reply name allow/deny
+slib_parms=2\
+,"allow" or "deny"\
+,names separated by either spaces or commas. 
+slib_author=Gang Xiao
+slib_out=Returns the names as list.
+!exit
+
+:proc
+slib_type=!item 1 of $wims_read_parm
+!if $slib_type notwordof deny allow
+ !exit
+!endif
+slib_out=!item 2 to -1 of $wims_read_parm
+slib_out=!items2words $slib_out
+slib_out=!words2items $slib_out
+code_$(slib_type)_=$slib_out
+

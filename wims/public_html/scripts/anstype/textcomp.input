@@ -1,0 +1,94 @@
+!set anstype=yes
+!set anstyle=symtext
+!if $wims_read_parm=def
+ !exit
+!endif
+!set lenlimit=40
+!set imgs=$(replygood$i)
+!set imgs=!translate internal | to , in $imgs
+!set imgs=!rows2lines $imgs
+!set atest=!line 1 of $imgs
+!if ?analyze iswordof $atest
+ !set imgs=!line 2 to -1 of $imgs
+!endif
+!set imgs=!lines2items $imgs
+!set imgs=!singlespace $imgs
+!set imgs=!nonempty items $imgs
+!set imgs=!listuniq $imgs
+!set imgs=!sort nocase items $imgs
+!set imgcnt=!itemcnt $imgs
+!set imgarr=!replace internal , by "," in "$imgs"
+!set imgarr=!replace internal \ by \\ in $imgarr
+!set wims_ins_alt=none
+!set backslash_back=$wims_backslash_insmath
+!set wims_backslash_insmath=
+
+<script language=javascript>
+// <!--
+ var imgcnt=0;
+ imgs=new Array($imgarr);
+ strs=new Array($lenlimit+1);
+ strs[0]="";
+ 
+ function addone(t) {
+  if(t<0 || imgcnt>=$lenlimit) return;
+  if(imgcnt>0) strs[imgcnt+1]=strs[imgcnt]+" "+imgs[t];
+  else strs[imgcnt+1]=imgs[t];
+  imgcnt++;
+  document.forms['replyform'].reply$i.value=strs[imgcnt];
+ }
+ 
+ function lockdata() {
+  document.forms['replyform'].reply$i.value=strs[imgcnt];
+ }
+
+ function backone() {
+  if(imgcnt<1) return;
+  imgcnt--;
+  document.forms['replyform'].reply$i.value=strs[imgcnt];
+ }
+ 
+ function cleanall() {
+  if(imgcnt<1) return;
+  document.forms['replyform'].reply$i.value="";
+  imgcnt=0;
+ }
+
+// -->
+</script>
+!set wims_backslash_insmath=$backslash_back
+
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+!bound inputsize between integer 1 and 100 default 50
+<textarea rows=3 cols=$inputsize name=reply$i readonly
+wrap onChange=lockdata(); onFocus=this.blur();></textarea>
+!reset inputsize
+
+!if $wims_read_parm!=noprompt
+ <tr><td colspan=2>
+!else
+ <p>
+!endif
+!if $module_language=fr
+ Composez votre réponse en cliquant sur les mots ci-dessous.
+ !goto cont
+!endif
+Compose your reply by clicking on the words below.
+:cont
+<br>
+!set instex_color=blue
+!for i_=1 to $imgcnt
+ !set src=!item $i_ of $imgs
+ <a href=# onClick=addone($i_-1)>$src</a>&nbsp;
+!next i_
+!set instex_color=black
+<sup>
+<a href=# onClick=backone()><img height=20 border=1 align=middle
+ src=gifs/arrows/left3.32.gif></a>
+<a href=# onClick=cleanall()><img height=20 border=1 align=middle
+ src=gifs/reset.gif></a>
+</sup>
+
+

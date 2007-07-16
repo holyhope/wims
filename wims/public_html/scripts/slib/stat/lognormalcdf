@@ -1,0 +1,33 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Cumulative distribution function of log-normal law 
+slib_parms=3\
+,[data]\
+0,mean\
+1,sigma
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=values of cumulative distribution function of log-normal law   on data
+slib_comment=data can be a list of reals in brackets
+ slib_example=[2,4,7] ,3,4
+ !exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data,slib_mean,slib_var
+!default slib_mean=0
+!default slib_var=1
+slib_data=!declosing $slib_data
+
+slib_out=
+!for slib_x in $slib_data
+ !if $slib_x <= 0 
+    slib_out =!append item 0 to $slib_out
+  !else
+    slib_out = !append item  $[(1+erf((log($slib_x)-$slib_mean)/(sqrt(2)*$slib_var)))*0.5] to $slib_out
+  !endif
+!next slib_x
+
+slib_out=!trim $slib_out

@@ -1,0 +1,47 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Draw the fixed circuit wiring of a given circuit type.
+slib_parms=5\
+,the type of circuit\
+1,line width\
+7,dot width\
+black,color name\
+large,text size (tiny,small,medium,large or huge)
+slib_author=Gang Xiao
+slib_out=drawing commands for flydraw.
+slib_example=5/br2out,2,6,blue,medium
+slib_comment=Check the\
+<a href=$wims_ref_name?module=tool/elec/circdraw>circuit draw tool</a>\
+for details of available circuit and component types.
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_type,slib_lwid,slib_dwid,slib_color,slib_textsize
+slib_c=!char 1 of $slib_type
+!if $slib_c isin 123456789
+ slib_prefix=data/circuits
+!else
+ slib_prefix=
+!endif
+slib_out=
+!default slib_color=black
+!bound slib_lwid between integer 1 and 10 default 1
+!bound slib_dwid between integer 2 and 20 default 7
+!bound slib_textsize within tiny,small,medium,large,huge default large
+
+slib_rec=$slib_prefix/$slib_type.data
+slib_wiring=!record 4 of $slib_rec
+slib_dots=!record 5 of $slib_rec
+!if $slib_wiring=
+ !exit
+!endif
+slib_range=!record 2 of $slib_rec
+slib_wiring=!replace internal _dot_ by $slib_dwid in $slib_wiring
+
+slib_out=!replace internal _color_ by $slib_color in \
+linewidth=$slib_dwid\
+points _color_,$slib_dots\
+linewidth=$slib_lwid\
+$slib_wiring
+

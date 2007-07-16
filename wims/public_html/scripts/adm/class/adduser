@@ -1,0 +1,185 @@
+
+uu=$wims_read_parm
+!if user notwordof $wims_prefix
+ wims_prefix=$wims_prefix user class
+!endif
+!default up_class=$wims_class
+class_type=!defof class_type in wimshome/log/classes/$up_class/.def
+!default class_type=0
+!read adm/class/authchars
+l=!text select $char_login in $uu
+t=!char 1 of $uu
+n=!charcnt $l
+!if $l!=$uu or $t isin $char_punct or $n<$login_min or $n>$login_max
+ !exit
+!endif
+uu=!translate internal . to @ in $uu
+
+!reset user_lastname,user_firstname,user_password,user_email,user_comments,\
+	user_exists,user_participate,user_supervise,user_supervisable
+!read adm/class/userdef classes,$up_class,$uu
+!defread $userdef
+
+!if $class_type isin 24 and $user_exists=yes and \
+	(($user_supervisable!=yes and $up_supervisable=yes) or \
+	 ($user_supervisable=yes and $up_supervisable!=yes and supervisable \
+	 isitemof $replacelist))
+ bad=!append item $uu to $bad
+ !exit
+!endif
+
+!if $class_type isin 13
+ replacelist=!listcomplement supervise,participate,supervisable in $replacelist
+ !if $wims_user=supervisor and yes isin $user_supervisable $up_supervisable
+  bad=!append item $uu to $bad
+  !exit
+ !endif
+ !if $adduser_replace iswordof none nopass and $user_password!=$empty
+  !if $wims_user iswordof supervisor $uu
+   !default up_password=$user_password
+  !endif
+  p1=!word 1 of $user_password
+  p1=!passcrypt $p1
+  p2=!word 1 of $up_password
+  p2=!passcrypt $p2
+  !if $p1!=$p2
+   bad=!append item $uu to $bad
+   !exit
+  !endif
+ !endif
+!endif
+
+up_exists=yes
+!default up_supervisable=$user_supervisable
+replace_=
+!if $adduser_replace=none
+ !goto next
+!endif
+!for n in lastname,firstname,email,regnum,comments,exists,supervisable
+ !if $n isitemof $replacelist,lastname,firstname,email,exists,supervisable
+  !if $(up_$n)!=$(user_$n)
+   l_=!singlespace $(up_$n)
+   l_=!replace , by &#44; in $l_
+   l_=!replace < by &lt; in $l_
+   l_=!translate internal "#*!$$ to $.....$ in $l_
+   !if $n!=comments
+    l_=!char 1 to 40 of $l_
+   !else
+    l_=!char 1 to 5000 of $l_
+   !endif
+   replace_=!append line !set user_$n=$l_ to $replace_
+  !endif
+ !endif
+!next n
+
+!if $user_exists!=yes and \
+	($up_password=$empty or $up_lastname=$empty or $up_firstname=$empty)
+ bad=!append item $uu to $bad
+ !exit
+!endif
+
+:next
+!if $class_type isin 13 and $up_class notitemof $user_participate
+ typename=!defof class_typename in wimshome/log/classes/$up_class/.def
+ !if $typename != $empty and $typename notwordof class course
+  bad=!append item $uu to $bad
+  !exit
+ !endif
+ !if $typename issametext course
+  typename=!defof class_typename in wimshome/log/classes/$wims_class/.def
+  !if $wims_class!=$empty and $typename issametext course and \
+	$wims_class=$up_class and $wims_user=supervisor
+   au_1=!translate internal / to , in $wims_class
+   au_1=!translate internal , to / in $(au_1[1..-2])
+   au_1=!nospace $au_1
+   up_class=$au_1
+   typename=!defof class_typename in wimshome/log/classes/$au_1/.def
+  !endif
+  !if $wims_class=$empty or $typename!=class or \
+	../$wims_superclass/ notin ../$up_class
+   !exit
+  !endif
+  user_class=!replace internal ../$wims_superclass/ by in ../$wims_class
+  user_course=!replace internal ../$wims_superclass/ by in ../$up_class
+  au_test=!defof user_class in wimshome/log/classes/$up_class/.users/$uu
+  !if $au_test!=$empty
+   au_test=$wims_superclass/$au_test
+   user_courses=!getdef user_courses in wimshome/log/classes/$au_test/.users/$uu
+   user_courses=!listcomplement $user_course in $user_courses
+   !setdef !set user_courses=$user_courses in wimshome/log/classes/$au_test/.users/$uu
+  !endif
+  !setdef !set user_class=$user_class in wimshome/log/classes/$up_class/.users/$uu
+  user_courses=!getdef user_courses in wimshome/log/classes/$wims_class/.users/$uu
+  user_courses=!listunion $user_courses and $user_course
+  !setdef !set user_courses=$user_courses in wimshome/log/classes/$wims_class/.users/$uu
+  change=!listunion $change and $uu
+ !else
+  up_participate=!listunion $user_participate and $up_class
+  shclass=!defof sharing_user in wimshome/log/classes/$up_class/neighbors
+  !default shclass=$up_class
+  sharing=!defof sharable_user in wimshome/log/classes/$shclass/neighbors
+  sharing=!append item $shclass to $sharing
+  sharing=!listcomplement $up_participate in $sharing
+  !if $sharing!=$empty
+   !for sh in $sharing
+    test=!defof class_superclass in wimshome/log/classes/$sh/.def
+    !if $test!=$empty and $test=$wims_superclass
+     up_participate=!append item $sh to $up_participate
+    !endif
+   !next sh
+  !endif
+  !if $user_exists=yes
+   !setdef !set user_participate=$up_participate in $userdef
+   change=!listunion $change and $uu
+  !else
+   replace_=!append line !set user_participate=$up_participate to $replace_
+  !endif
+ !endif
+!endif
+
+!if $adduser_replace=none
+ !exit
+!endif
+
+!if $up_password!=$empty and $up_password!=$user_password
+ c=!char 1 of $up_password
+ !if $c=* and $wims_priv_cryptpass=allow
+  p=!text select */$char_passwd in $up_password
+ !else
+  p=!text select $char_passwd in $up_password
+ !endif
+ n=!charcnt $p
+ !if $p!=$up_password or $n<$passwd_min or $n>$passwd_max
+  bad=!append item $uu to $bad
+  !exit
+ !endif
+ up_password=!passcrypt $up_password
+ replace_=!append line !set user_password=$up_password to $replace_
+!endif
+
+!if $up_vars!=$empty
+  up_vars=!nonempty lines $up_vars
+  up_vars=!replace internal ! by &#33; in $up_vars
+  n=!linecnt $up_vars
+  !for i=1 to $n
+   l=!line $i of $up_vars
+   l=!trim $l
+   eq==
+   !if $eq isin $l
+    replace_=!append line !set user__$l to $replace_
+   !endif
+  !next i
+!endif
+
+!if $replace_=$empty
+ !exit
+!endif
+
+change=!listunion $change and $uu
+
+!setdef $replace_ in $userdef
+
+!if $up_class=$wims_class
+ wims_class_log=User info $uu
+!endif
+

@@ -1,0 +1,61 @@
+<b>Choix multiples contrôlables par l'auteur</b>: <tt>checkbox</tt>,
+ <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt><br>
+ Ils peuvent être utilisés pour remplacer l'entrée standard de choix multiple
+ (<tt>\choice</tt>), vous donnant plus de contrôle de son apparence. La bonne
+ réponse doit contenir deux champs, séparés par un point-virgule
+ ``<tt>;</tt>''. Le second champ (après le point-virgule) est la liste de
+ textes dans le choix, tandis que le premier est une liste de numéros de bons
+ choix. Dans le cas de <tt>checkbox</tt>, l'utilisateur doit choisir
+ exactement tous les bons choix. Dans les autres cas, le choix de n'importe
+ quel bon choix suffira.
+ <p>
+ Pour les types <tt>checkbox</tt>, <tt>menu</tt> et <tt>radio</tt>, une option
+ <tt>shuffle</tt> peut être ajoutée, qui a pour effet de permuter
+ aléatoirement l'ordre des items dans les choix multiples
+ proposés aux élèves.
+ <p>
+ La permutation aléatoire automatique n'est pas appliquée en l'absence de l'option
+ <tt>shuffle</tt>, et le nombre de choix n'est pas limité.
+ <p>
+ Et pour un effet contraire, le mot d'option <tt>sort</tt> rend les choix
+ toujours dans l'ordre alphabétique.
+ <p>
+ <tt>click</tt> doit être utilisé uniquement dans le cas où il n'y a pas
+ d'autres réponses ou choix.
+ <p>
+ Le type <tt>menu</tt> accepte une option <tt>multiple</tt> avec valeur. La
+ valeur de cette option donne la taille maximale (par défaut 8) de la fenêtre
+ de choix. Par exemple, <tt>multiple=5</tt> donne une fenêtre de menu multiple
+ jusqu'à 5 lignes.
+ <p>
+ Dans le cas de <tt>mark</tt>, l'utilisateur doit choisir
+ tous les bons choix  comme <tt>checkbox</tt>, avec la différence qu'au
+ lieu d'un bouton, c'est l'article choisi qui change la couleur pour indiquer
+ le choix. Il est principalement destiné à une utilisation dans le texte de 
+ l'énoncé. Ainsi, un même choix peut intervenir plusieurs fois et 
+ il est alors tenu compte de sa position dans le texte. Lors de l'analyse de
+ la réponse,  les bonnes réponses sont coloriées en vert, 
+ les mauvaises en rouge et les réponses oubliées en bleu. 
+ Un exemple d'utilisation possible : cliquez sur tous les articles 
+ définis de la phrase suivante ... 
+ <p>
+ Pour des types qui acceptent la saisie de plusieurs choix (<tt>checkbox</tt>,
+ <tt>mark</tt>, ainsi que <tt>menu</tt> avec l'option <tt>multiple</tt>),
+ Par défaut l'élève aura un zéro dès que sa réponse ne s'accorde pas
+ exactement à la bonne réponse donnée. Si vous voulez donner une note
+ partielle à une réponse partiellement correcte, ajoutez le mot d'option
+ <tt>split</tt> (synonyme&nbsp;: <tt>partialscore</tt>). Dans ce cas, 
+ la note partielle sera calculée selon la proportion des bons choix
+ repérés par l'élève. Par contre, si de mauvais choix sont aussi
+ pris, chaque mauvais répons compense deux bons choix jusqu'à ce que
+ la note atteint 0. Une telle politique est nécessaire, entre autres,
+ pour dissuader des gens de prendre tous les choix disponibles dans
+ le cas où beaucoup en sont bons.
+ <p>
+ Alors que cette formule doit bien fonctionner dans la plupart des situations,
+ vous pouvez quand même ajouter un mot d'option <tt>eqweight</tt> si ce
+ n'est pas votre cas. Ce mot force le calcul de prendre le même poids
+ positivement et négativement, c'est-à-dire, tout mauvais choix compense
+ seulement un bon choix. Mais vous êtes averti que cette politique en
+ apparence juste peut conduire à des effets pervers&nbsp;!
+

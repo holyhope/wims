@@ -1,0 +1,45 @@
+#! /bin/sh
+
+thisdir=`pwd`
+
+lang=`awk -F'=' '/language=/ {print $2}' INDEX 2>/dev/null`
+
+if [ ! -d images ] || [ -z "$lang" ]; then exit; fi
+
+ilist=`find images -name .index.$lang | sed 's!^images/!!;s!/\.index\...!!' | sort`
+keys=`cat keys`
+echo $ilist | tr ' ' , >all
+
+rm -f index.names index.imgs index.keys index.comments names key.* 2>/dev/null
+[ -z "$ilist" ] && exit
+for o in $ilist
+do
+ ind=`cat images/$o/.index.$lang`
+ imgs=`cd images/$o; ls *.jpg *.JPG *.gif *.GIF *.png *.PNG 2>/dev/null`
+ echo $o:$imgs | tr ' ' , >>index.imgs
+ name=`echo "$ind" | head -1`
+ echo $o:$name >>index.names
+ echo $name >>names
+ key=`echo "$ind" | tail +2 | head -1`
+ for k in $keys
+ do
+  case $key in *$k*) echo $o >>key.$k;; esac
+ done
+ comm=`echo "$ind" | tail +3`
+ if [ -n "$comm" ]; then
+  echo $o:$comm >>index.comments
+ fi
+done
+
+all=`cat all`
+all=`echo $all | tr ' ' ,`
+echo all:$all >index.keys
+for k in $keys
+do
+ kk=`cat key.$k`
+ kk=`echo $kk | tr ' ' ,`
+ echo $k:$kk >>index.keys
+done
+
+rm -f all key.* 2>/dev/null
+

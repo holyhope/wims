@@ -1,0 +1,70 @@
+# Add a new class.
+# wims_read_parm: class address. Parent must already exist.
+# cadd_...: class data. Defaults to class_...
+# sadd_...: supervisor data. Defaults to user_...
+
+newclass=!item 1 of $wims_read_parm
+!if $newclass=$empty
+ !exit
+!endif
+
+clist=password,Supervisor,supervisor,description,institution,\
+	lang,email,creation,expiration,limit,superclass,type,level,parent,\
+	secure,typename,\
+	bgcolor,bgimg,css,logo,logoside,refcolor,theme
+ulist=firstname,lastname,email,password
+D_=wimshome/log/classes
+E_=$wims_home/log/classes
+
+csetlist=
+usetlist=
+!for t in $ulist
+ sadd_$t=!replace internal ! by in $(sadd_$t)
+ !default sadd_$t=$(user_$t)
+ usetlist=!append line !set user_$t=$(sadd_$t) to $usetlist
+ sadd2_$t=$(sadd_$t)
+ !reset sadd_$t
+!next t
+
+!if ($class_lang!=$empty and $class_lang iswordof cn) or \
+    ($cadd_lang!=$empty and $cadd_lang iswordof cn)
+  cadd_supervisor=$sadd2_lastname$sadd2_firstname
+!else
+  cadd_supervisor=$sadd2_firstname $sadd2_lastname
+!endif
+
+!if $cadd_type=2
+ cadd_typename=group
+!endif
+!if $cadd_type=4
+ cadd_typename=portal
+!endif
+
+!for t in $clist
+ cadd_$t=!replace internal ! by in $(cadd_$t)
+ !if $t=level
+  !bound cadd_$t within E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R default $
+ !endif
+ !default cadd_$t=$(class_$t)
+ !if $t=creation
+  !default cadd_creation=!char 1 to 8 of $wims_now
+ !endif
+ csetlist=!append line !set class_$t=$(cadd_$t) to $csetlist
+ !reset cadd_$t
+!next t
+
+!sh cd $wims_home/log/classes\
+  rm -Rf $newclass\
+  mkdir $newclass\
+  cd $newclass\
+  mkdir .users sheets exams doc score noscore vote cdt src def\
+  touch .userlist Exindex Extitles\
+  echo 4 >version
+
+!setdef $csetlist\
+!set class_creator=$httpd_REMOTE_ADDR\
+!set class_defined=yes in $D_/$newclass/.def
+
+!setdef $usetlist\
+!set user_exists=yes in $D_/$newclass/supervisor
+

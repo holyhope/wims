@@ -1,0 +1,26 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Generation of logistic random data
+slib_parms=1\
+,m
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=random data of m integers following an logistic law. If m is a list [r,s], it returns an r by  s matrice. 
+slib_comment=
+slib_example= 20\
+[10,5]
+!exit
+
+:proc
+slib_out=
+
+!distribute  item $wims_read_parm into slib_data
+slib_data=!declosing $slib_data
+slib_cnt=!itemcnt slib_data
+!if $slib_cnt=1
+	slib_data=1,$slib_data
+!endif	
+slib_out=!exec octave logistic_rnd($slib_data)
+slib_out=!words2items $slib_out
+slib_out=!trim $slib_out

@@ -1,0 +1,71 @@
+!set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
+!set option=$opt
+!reset opt
+
+!if $title!=$empty
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+!endif
+
+!header
+
+!if $title=$empty
+ This module is a groupment of exercises. You have apparently requested it
+ without precising which valid exercise you want to do. It is either because
+ you clicked on a wrong link, or because of a software bug.
+ <p><center>
+ !href module=$module Try to restart your operation
+ , or
+ !href $ give up
+ . </center>
+ !goto end
+!endif
+
+!read deduc/$module_language/present.phtml
+<p><center><hr width=50%></center> <p>
+
+!if $cmd=hint
+ !read deduc/$module_language/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read deduc/$module_language/msg.phtml
+  <p>$penaltymsg
+ !endif
+ !if nostatus notwordof $m_options and $methstep!=3
+  !read deduc/$module_language/status.phtml
+ !endif
+!! !set wims_ref_anchor=#last
+ !read deduc/$module_language/form$methstep.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint Hint
+.
+ !endif
+ !if $help!=$empty
+  !href cmd=help Help of the exercise
+.
+ !endif
+ !href exo_Renew
+.
+!else
+ !if $error!=$empty
+  !read deduc/$module_language/msg.phtml
+  <p><center><hr width=50%></center> <p>
+ !endif
+ !read deduc/$module_language/answer.phtml
+ !href exo_Again
+.
+!endif
+!if $wims_sheet=$empty
+ !href exo_Intro
+.
+!endif
+!read endhook.phtml
+!read deduc/$module_language/hist.phtml
+:end
+!tail
+

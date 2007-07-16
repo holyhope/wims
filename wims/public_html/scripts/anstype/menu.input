@@ -1,0 +1,45 @@
+!set anstype=yes
+!set anstyle=mc
+!if $wims_read_parm=def
+ !exit
+!endif
+!set input_rg=!rows2lines $(replygood$i)
+!set input_1=!line 1 of $input_rg
+!set input_rg=!line 2 to -1 of $input_rg
+!set input_icnt=!itemcnt $input_rg
+!if $input_icnt<2
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i) \
+	and $(reply$i)=$empty
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !default reply$i=!item $input_1 of $input_rg
+ !endif
+!endif
+!if shuffle iswordof $(replyoption$i)
+ !default anstype_shuffle_$i=!shuffle $input_icnt
+ !set input_rg=!item $(anstype_shuffle_$i) of $input_rg
+!endif
+!if sort iswordof $(replyoption$i)
+ !set input_rg=!sort items $input_rg
+!endif
+
+!set input_rg2=!replace internal &# by &amp;# in $input_rg
+!if $replydefaulted=yes and $oef_default=yes
+ !set reply$i=!replace internal &# by &amp;# in $(reply$i)
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+
+!set select_multiple_check=!getopt multiple in $(replyoption$i)
+!if $select_multiple_check !=
+ !set formselect_switch_back=$wims_formselect_switch
+ !bound select_multiple_check between integer 4 and 20 default 8
+ !set wims_formselect_switch=multiple size=$[min($input_icnt,$select_multiple_check)]
+ !formselect reply$i list $input_rg2 prompt $input_rg
+ !set wims_formselect_switch=$formselect_switch_back
+!else
+ !formselect reply$i list ??????,$input_rg2 prompt $ch_choose,$input_rg
+!endif

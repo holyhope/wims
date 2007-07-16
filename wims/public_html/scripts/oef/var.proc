@@ -1,0 +1,412 @@
+!nocache
+
+#if you change these limits, you have to modify var.def!
+limit_var=2048
+limit_reply=100
+limit_choice=30
+testnum=10
+savedrawcnt=1
+proc=oef
+!if $cmd=new and $allow_missing_data != yes
+ module_checkdata=!checkdata
+ !if $module_checkdata!=yes
+  wims_module_log=Missing datamodule $module_checkdata
+  !exit
+ !endif
+!else
+ module_checkdata=yes
+!endif
+wims_noexport=$wims_noexport reply choice score oef hint fill val vsave \
+	deffile tmp thisexo ch_ exolist titlelist shufflelist \
+	name_ parm exo posvar sp_ slib_
+wims_multiexec=pari maxima yacas octave gap
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+!read ./oef/$module_language/names
+# Limit Pari precision, for otherwise many computations will fail.
+proc_oef=yes
+!default precision=10000
+!default pari_precision=18
+!default print_precision=8
+!default maxima_precision=$print_precision
+wims_print_precision=$print_precision
+maxima_header=expon:0; expop:0; factlim:6; prederror: false;\
+	maxnegex:20; maxposex:20; ratfac:true; keepfloat:true;
+executed_str=__EXECUTED_1692754_EXERCISE__
+
+m_oefenv=!replace word debug by $ in $m_oefenv
+!if ($wims_developer!=$empty and ../devel/$wims_developer isin ../$module \
+		and _test isin $wims_session) or \
+    ../adm/createxo isin ../$module or \
+    (../classes	isin ../$module and $wims_user=supervisor and $wims_isexam<1 and _check notin $wims_session)
+ !default oef_default=no
+ m_oefenv=!singlespace $m_oefenv debug
+!endif
+!if $cmd=help
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+ nn=!itemcnt $shufflelist
+ thisexo=!item ($reply_cnt)%$nn+1 of $shufflelist
+ !readproc oef/valback.proc
+ !readproc oef/imagedir.proc
+ val1=$imagedir
+ m_step=$oefstep
+ !exit
+!endif
+
+!if $cmd=new or $cmd=renew
+ starttime=$wims_nowseconds
+!endif
+
+!default insplot_set=size 0.6,0.6
+!default idontknow=1
+!default allchoices=0
+
+!if $oef_test=yes
+ print=
+ qnum=1
+ qcmlevel=2
+ random=0
+ exocnt=1
+ !if $retest=again
+  !reset status retest oef_default
+ !endif
+!else
+ !read $(class_header)Exindex
+ exocnt=!itemcnt $exolist
+ !bound qnum between integer 1 and 9 default 1
+ !bound qcmlevel between integer 1 and 9 default 3
+ !bound random within 0,1 default 1
+ !if $scoredelay!=$empty and $scoredelay!=0
+  d_=!items2words $scoredelay
+  !distribute words $d_ into delay1,delay2
+  !bound delay1 between integer 0 and 2000 default 0
+  !bound delay2 between integer $delay1 and 2000
+ !endif
+ !reset scoredelay
+!endif
+!default format=html
+
+!if $print!=$empty
+ !changeto oef/print.proc
+!endif
+
+!if $cmd=reply and $status!=waiting
+ error=double_reply
+ !exit
+!endif
+
+!if $status=$empty
+ !read oef/exo.init
+!endif
+
+!if $status!=waiting
+ !for i=1 to $limit_reply
+  !reset replygood$i
+ !next i
+ !reset solution,hint, help, oefsteps, oefstepcnt
+ !for i=1 to 16
+  savedraw$i=
+ !next i
+!endif
+
+!if $oef_test=yes
+ deffile=wimshome/$wims_sesdir/submit.def
+!else
+ nn=!itemcnt $shufflelist
+ thisexo=!item ($reply_cnt)%$nn+1 of $shufflelist
+ deffile=$(class_header)def/$thisexo.def
+ !if $nn>1 and $status!=waiting
+  wims_module_log=$wims_module_log got $thisexo
+ !endif
+!endif
+!readproc oef/imagedir.proc
+
+!distribute items 0,0,0,0,0,0 into \
+	varcnt,postvarcnt,replycnt,choicecnt,conditioncnt,feedbackcnt
+!if $status!=waiting
+ !reset ansorder,oefstep,oefsteps,oefstepcnt,nextstep,dynsteps,\
+	cchoicecnt, creplycnt, embedcnt, vsavelist, leftrange, rightrange
+ !read $deffile
+ !read oef/var.prep
+!else
+ !read $deffile
+ !if $savedraw1!=$empty
+  savedrawcnt=0
+  !for i=1 to 16
+   !if $(savedraw$i)!=$empty
+    !read oef/draw.phtml $(savedraw$i)
+   !endif
+  !next i
+ !endif
+ !readproc oef/valback.proc
+ !if $oefsteps!=$empty
+  !readproc oef/steps.proc
+ !endif
+!endif
+!if $embedcnt>0 or $embedcnt=$empty
+ hasembedding=yes
+!endif
+!if $oefsteps!=$empty
+ thisstep=!line $oefstep of $oefsteps
+ gotsteps=!line 1 to $oefstep of $oefsteps
+ gotsteps=!lines2items $gotsteps
+ m_step=$oefstep
+!else
+ cchoicecnt=$choicecnt
+ creplycnt=$replycnt
+!endif
+
+!if $cmd=reply and $status=waiting
+ !if ($oefsteps!=$empty and $oefstep<$oefstepcnt) or \
+	($dynsteps=yes and $oefstep=$oefstepcnt)
+  !readproc oef/step.proc
+  !if $dynsteps=yes and $oefstep>$oefstepcnt
+   oefstep=$[$oefstep-1]
+   !goto ana
+  !endif
+  !if $stepdiag=ok or $error!=$empty
+   !goto end
+  !endif
+ !else
+  !if $oefsteps!=$empty and $oefstep=$oefstepcnt
+   !for i=1 to $replycnt
+    !if r$i isitemof $gotsteps and r$i notitemof $thisstep
+      reply$i=$(saverep$i)
+    !endif
+   !next i
+   !for i=1 to $choicecnt
+    !if c$i isitemof $gotsteps and c$i notitemof $thisstep
+      choice$i=$(savech$i)
+    !endif
+   !next i
+  !endif
+ !endif
+ :ana
+ !distribute item 0,0,0,0,0,0,0,0,0 into \
+	conditionned, freegot, condgot, qcmgot, \
+	precgood, weightadjust, gotadjust, cweightadjust, cgotadjust
+ !for i=1 to $replycnt
+  !if $oefsteps!=$empty and r$i notitemof $gotsteps
+   !goto cont
+  !endif
+  !if $(replygood$i)=$empty
+   !advance freegot
+   !goto cont
+  !endif
+  !if $(replytype$i)=coord and $(reply$i)=$empty
+   reply$i=$click_x,$click_y
+   reply$i=!nonempty item $(reply$i)
+   !if $(reply$i)!=$empty
+    reply$i=($(reply$i))
+   !endif
+  !endif
+  r_=!trim $(reply$i)
+  !if $(replytype$i)!=code
+   reply$i=$r_
+  !endif
+  default_$i=!getopt default in $(replyoption$i)
+  !if $(default_$i)!=$empty and $r_=$empty
+   reply$i=$(default_$i)
+   r_=$(default_$i)
+  !endif
+  !if $r_=$empty or \
+	($(reply$i)=?????? and $(replytype$i) iswordof menu)
+   !if $oefsteps=$empty or r$i isitemof $gotsteps
+    error=empty_data
+    !goto end
+   !else
+    reply$i=????
+    diareply$i=bad
+    !goto cont
+   !endif
+  !endif
+  m_reply$i=$(reply$i)
+  !default replytype$i=default
+  tt=!word 1 of $(replygood$i)
+  	# analyzed reply
+  !if $tt=?analyze
+   g_=!rows2lines $(replygood$i)
+   g_=!line 1 of $g_
+   tt=!word 2 of $g_
+   !read oef/ans.proc $i nocompare
+   !if $error!=$empty
+    !goto end
+   !endif
+   !default m_reply$i=$(reply$i)
+   val$tt=$(m_reply$i)
+   !if NaN isin $test
+    !goto badans
+   !endif
+   !advance conditionned
+   !goto cont
+  !endif
+  !read oef/ans.proc $i
+  !if $error!=$empty
+   !goto end
+  !endif
+  !default m_reply$i=$(reply$i)
+  
+  !if $(diareply$i)=bad and $(precreply$i)!=yes
+   !default m_sc_reply$i=0
+  !else
+    !if $(precreply$i)=yes
+      !default m_sc_reply$i=0.5
+    !else
+      !default m_sc_reply$i=1
+    !endif
+  !endif
+      
+  !if bad isin $Test
+   error=bad_exo
+   !advance reply_cnt
+   status=
+   !goto end
+  !endif
+  !if NaN isin $test
+   :badans
+   error=bad_answer
+   bad_name=$(replyname$i)
+   bad_value=$(reply$i)
+   !goto end
+  !endif
+  :cont
+ !next i
+ !for i=1 to $choicecnt
+  !if $oefsteps!=$empty and c$i notitemof $gotsteps
+   !goto contc
+  !endif
+  !default choice$i=0
+  choic=$[rint($(choice$i))]
+  !if $choic=0 and ($oefsteps=$empty or c$i isitemof $gotsteps)
+   error=empty_data
+   !goto end
+  !endif
+  !if NaN isin $choic or $choic<1 or $choic>$(choiceitems$i)+2
+   error=bad_answer
+   bad_name=$(choicename$i)
+   bad_value=$(choice$i)
+   !goto end
+  !else
+   choice$i=$choic
+  !endif
+  ch=!item $choic of $(choicelist$i)
+  m_choice$i=$ch
+  !if $qcmgood<1 and $choic=$[$(choiceitems$i)+2]
+   !if $(choicegood$i)=$empty
+    chh=good
+   !else
+    chh=bad
+   !endif
+  !endif
+  !if ($choic<=$(choiceitems$i) and $ch isitemof $(choicegood$i)) or $chh=good
+   diachoice$i=good
+   !advance qcmgot
+  !else
+   diachoice$i=bad
+   !if $penalty>0 and $choic!=$[$(choiceitems$i)+1]
+    cc=!itemcnt $(choicegood$i)
+    !if $cc>=$(choiceitems$i)
+     cc=$[$(choiceitems$i)-1]
+    !endif
+    qcmgot=$[$qcmgot-$cc/($(choiceitems$i)-$cc)]
+   !endif
+  !endif
+  :contc
+ !next i
+ !if $postvarcnt>0 and $thisstep_postdef!=done
+  !read $deffile postdef
+ !endif
+ !if $conditioncnt>0
+  testcondition=yes
+  condlist=all
+  !read $deffile test
+  testcondition=
+  !if $condlist issametext all
+   condlist=!values x for x=1 to $conditioncnt
+  !else
+   condlist=!words2items $condlist
+  !endif
+  conditioncnt=!itemcnt $condlist
+  !for i in $condlist
+   !default condweight$i=1
+   weightadjust=$[$weightadjust+$(condweight$i)-1]
+   !if $(condtest$i)>0
+    condgot=$[$condgot+$(condweight$i)]
+   !endif
+  !next i
+ !endif
+ !advance reply_cnt
+ freetot=$[$creplycnt+$conditioncnt-$conditionned+$weightadjust]
+ !if $freetot>0
+  freegot=$[$condgot+$freegot+$gotadjust+$precweight*$precgood]
+  !if $freegot >= 0
+   freegot=$[(($freegot/$freetot)^(($qcmlevel+1)/2))*$freetot*2]
+  !else
+   freegot=$[2*$freegot]
+  !endif
+ !else
+  freegot=0
+ !endif
+ !if $cchoicecnt>1 and $qcmgot>0
+  qcmgot=$[$cchoicecnt*($qcmgot/$cchoicecnt)^$qcmpower]
+ !endif
+ score_got=$[$score_got+$freegot+$qcmgot]
+ score_should=$[$score_should+2*$freetot+1*$cchoicecnt]
+ status=done
+ !if $reply_cnt>=$qnum
+  !bound score_got between 0 and $score_should
+  score=$[min(10,rint(100*($score_got/max(1,$score_should))^$scorepower)/10)]
+  module_score=$score
+  !if 0$delay2>0 and $starttime>0
+   n_=$wims_nowseconds
+   last=$[$n_-$starttime-4]
+   !if $last>0$delay1
+    toolate=$  $[$last-$delay1]-$[$last-$delay2]
+    !if $last>0$delay2 or $module_score<=0
+     module_score=0
+    !else
+     module_score=$[rint(10*$module_score*($delay2-$last)/($delay2-$delay1))/10]
+    !endif
+   !endif
+  !endif
+  !if $oef_test!=yes
+   wims_module_log=score $module_score/10$toolate
+  !endif
+  status=
+ !endif
+!endif
+
+:end
+
+!if $status=waiting
+ !distribute item 1,1 into cntr,cntc
+ form_=document.forms['replyform']
+ !for t in $ansorder
+  !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
+   !if $t=r
+    defaultest=!getopt default in $(replyoption$(cnt$t))
+    !if $defaultest=$empty
+     wims_form_lock=!append line if($form_.reply$(cnt$t).value.length==0) return emptyfield(); to $wims_form_lock
+    !endif
+   !else
+!!    wims_form_lock=!append line if($form_.choice$(cnt$t).value=="0") return emptyfield(); to $wims_form_lock
+   !endif
+  !endif
+  !advance cnt$t
+ !next t
+ header_js=<script language=Javascript>\
+function emptyfield() {\
+ alert("$name_empty"); return false;\
+}\
+function formcheck() {\
+ $wims_form_lock\
+ return true;\
+}\
+</script>
+
+!endif
+
+savedrawcnt=0
+

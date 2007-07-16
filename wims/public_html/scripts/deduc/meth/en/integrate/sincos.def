@@ -1,0 +1,27 @@
+!set methtit=Integration formula of sin/cos/sh/ch
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, choice
+
+!set basic=a*cos(t),a*sin(t),a*ch(t),a*sh(t)
+!set basiccnt=!itemcnt $basic
+!set basicp=!replace internal , by ), \( in \($basic)
+!set methhelp=This method recognizes the integrals of the following functions.
+ <p>$basicp
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ The integration
+ !read deduc/methparm.phtml 1
+ is well-known, because it is of the form
+ <p><center>
+ \(integrate())
+ !formselect methparm2 from 1 to $basiccnt prompt $basic
+ \(dt), </center><p> where \(a) is a constant.
+!exit
+:check
+!changeto deduc/meth/$module_language/integrate/basicheck
+

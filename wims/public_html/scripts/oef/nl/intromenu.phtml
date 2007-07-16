@@ -1,0 +1,110 @@
+!set proc=oef
+<p><center><hr width=35%></center> <p>
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,8)]
+!if $exocnt<1
+ !if $wims_user=supervisor and #classes/ isin #$module
+  !href module=adm/createxo Klik hier 
+ om createxo oefeningen te maken.
+ !else
+ Helaas, deze module heeft nog geen oefeningen op dit moment.<br>
+ kom later maar eens terug ! 
+ !endif
+ !exit
+!endif
+!if $exocnt=1
+ Deze module heeft slechts 1 oefening, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Probeer maar.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if select iswordof $special_parm2 and $special_parm!=$empty
+ <td align=center>Oefeningen over<br>
+ <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+!else
+ <td align=center>Kies een oefening:<td>
+!endif
+!read oef/select.phtml
+<tr><td align=center>Een sessie heeft:<td>
+!set qnum=1
+!formselect qnum from 1 to 9
+oefeningen.
+<tr><td align=center>Moeilijkheidsgraad <td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>Tijd limiet <td>
+<input size=7 name=scoredelay value="$scoredelay"> seconden.
+!read introhook.phtml
+!if expert iswordof $special_parm2
+   <tr><td align=center>
+   Aantal items voor de multiplechoice vraag: <td>
+   !default intro_qcmpresent=4
+   !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+   <tr><td align=center>Geef de goede oplossing (mits aanwezig)? <td>
+   !default intro_presentsol=1
+   !formselect intro_presentsol list 0,1,2 prompt nooit,als de score niet maximaal is,altijd
+   <tr><td align=right>
+   !default intro_check=1,2,3,4
+   Multiple choices</td><td>
+   !formcheckbox intro_check list 1 prompt Bevat altijd
+   het goede antwoord.
+   <tr><td rowspan=3>&nbsp;</td><td align=left>
+   !formcheckbox intro_check list 2 prompt straf voor foute antwoorden in multiplechoice vragen.
+   <tr><td align=left>
+   !formcheckbox  intro_check list 3 prompt Laat het goede antwoord zien.
+   <tr><td align=left>
+   !formcheckbox intro_check list 4 prompt Staat een hint toe (mits aanwezig).
+   !let tmp=!replace word expert by $ in $special_parm2
+   <tr><td colspan=2 align=center>
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Simpel menu
+   <input type=hidden name=intro_expert value=yes>
+!else
+   <tr><td colspan=2 align=center>
+   !let tmp=$special_parm2 expert
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Expert menu
+!endif
+</table></center> <p><center>
+<input type=submit value="OK aan hetwerk">&nbsp;
+<input type=submit name=print value="Printbare version">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value=$module>
+Selecteer op titels met daarin het woord
+
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=OK>
+ </form>
+!endif
+
+<b>Opmerking</b>.De oefeningen worden willekeurig gekozen uit je selectie.
+ <br>(of uit al je oefeningen als je geen keuzelijst hebt aangegeven). 
+
+!if * isin $titlelist
+ <p>Oefeningen met een * zijn in't algemeen wat lastiger.
+!endif
+
+<p><small>Je kunt twee getallen aangeven in de tijdslimiet; een kleinere
+limiet gevolgd door een wat grotere. In dat geval is eerste getal de score
+reductie, die loopt tot 0 als de tweede limiet bereikt is.
+</small>

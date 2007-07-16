@@ -1,0 +1,117 @@
+
+!if $methsubstep>1
+ !exit
+!endif
+
+!distribute item integerp,ratnump,constantp,constantp into C_ZZ,C_QQ,C_RR,C_CC
+
+!for i=1 to $methparmcnt
+ typ=!item $i of $methparmtype
+ !distribute words $typ into typ,typ2
+ p_=!singlespace $(methparm$i)
+ p_=!trim $p_
+ n_=!itemcnt $p_
+ !if $typ!=$empty and $p_=$empty
+  :empty
+  !if $i isitemof $methparmrelax
+   !goto cont
+  !else
+   error=empty_data
+   !exit
+  !endif
+ !endif
+ !if $typ=choice and $typ2!=$empty and $typ2>0
+  !if $i isitemof $methparmrelax
+   start_=0
+  !else
+   start_=1
+  !endif
+  !bound methparm$i between integer $start_ and $typ2 default $
+  !if $(methparm$i)=$empty
+   error=bad_data
+   !exit
+  !endif
+  !goto cont
+ !endif
+ !if $typ iswordof number function equation
+  badtest=!text select <>[] in $p_
+  badteste=!text select = in $p_
+  !if $badtest!=$empty or $n_!=1 or ($type!=equation and $badteste!=$empty)
+   error=bad_data
+   !exit
+  !endif
+  !if nofloat iswordof $m_options and . isin $p_
+   error=nofloat
+   !exit
+  !endif
+  vars=!append item $newvariables to $variables
+  wims_rawmath_variables=$vars
+  p_=!rawmath $p_
+  v=!varlist $p_
+  !if $v!=$empty
+   v=!listcomplement $vars in $v
+   !if $v!=$empty
+    error=unknown_variable
+    unknown=!item 1 of $v
+    !exit
+   !endif
+  !endif
+  !if $typ=number
+   ptest=$[$p_]
+   !if NaN isin $ptest or Inf isin $ptest
+    error=bad_data
+    !exit
+   !endif
+   !if $m_environ iswordof ZZ QQ RR
+    !if $m_environ iswordof ZZ QQ
+     p_=!singlespace $p_
+     !distribute item ^(,^ ( into t1_,t2_
+     !if $t1_ isin $p_ or $t2_ isin $p_
+      error=bad_data
+      !exit
+     !endif
+    !endif
+    test=!exec maxima $(C_$m_environ)($p_);
+    !if $test notsametext true
+     error=bad_data
+     !exit
+    !endif
+   !endif
+  !endif
+  !goto cont
+ !endif
+ !if $typ=parm
+  p_=$[rint($p_)]
+  !if $p_<=0
+   !goto empty
+  !endif
+  N=!linecnt $(mtobj$i)
+  !if NaN isin $p_ or $p_>$N
+   error=bad_data
+   !exit
+  !endif
+  methparmobj$i=!line $p_ of $(mtobj$i)
+  N=!itemcnt $(methparmobj$i)
+  !if $N<2
+   error=bad_data
+   !exit
+  !endif
+ !endif
+ :cont
+ methparm$i=$p_
+!next i
+
+!readproc deduc/meth/$module_language/$meth.def check
+!if $error!=$empty
+ !exit
+!endif
+!readproc deduc/newobj.proc
+
+m_objects=!translate internal $\
+$ to $	$ in $objects
+
+!if ($askcontext>1 and $contextlist!=$empty) or \
+	($askresult>1 and $resultlist!=$empty)
+ !read deduc/meth2b.proc
+!endif
+

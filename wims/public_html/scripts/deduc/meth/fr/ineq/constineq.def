@@ -1,0 +1,36 @@
+!set methtit=Introduire une inégalité constante
+!set methenv=ZZ QQ RR
+!set methparmtype=number, choice 4, number
+!set methhelp=Cette méthode permet d'entrer une inégalité constante\
+ (numérique) dans les hypothèses.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ Introduire une inégalité constante
+ <input size=12 name=methparm1 value="$methparm1">
+ !formselect methparm2 from 1 to 4 prompt <,>,<=,>=
+ <input size=12 name=methparm3 value="$methparm3">
+!exit
+:check
+ sign=!item $methparm2 of <,>,<=,>=
+ !read deduc/sub/checkineq $methparm1,$sign,$methparm3
+ !if $out!=true
+  !if $out=false
+   error=Votre inégalité n'est pas vraie !
+   !advance penalty
+  !else
+   error=unjustified
+  !endif
+  !exit
+ !endif
+
+ newobject0=$methparm1 $sign $methparm3
+ oldobject=0
+ methexp=Inégalité constante
+
+!exit
+

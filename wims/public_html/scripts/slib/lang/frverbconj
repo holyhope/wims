@@ -1,0 +1,130 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=The conjugation of a French verb
+slib_parms=1\
+,the verb (infinitif)
+slib_author=Gang Xiao
+slib_out=the conjugations: multi-line format. \
+ présent, imparfait, futur, conditionnel, impératif, \
+ passé simple, subjonctif, subjonctif imparfait, \
+ participe passé, participe présent.
+slib_example= mordre
+!exit
+
+:proc
+slib_inf=!word 1 of $wims_read_parm
+slib_out=
+!if $slib_inf=$empty
+ !exit
+!endif
+
+slib_i=!text reverse $slib_inf
+slib_t=!char 1 of $slib_i
+slib_n=!charcnt $slib_i
+slib_i=!text expand $slib_i using 10
+slib_i=$slib_t$slib_i
+dictionary=bases/dic/fr/conj
+slib_t=!exec translator $slib_i aa
+!if | notin $slib_t
+ !exit
+!endif
+slib_t=!translate internal | to $\
+$ in $slib_t
+slib_t=!line 1 of $slib_t
+slib_t=!nospace $slib_t
+slib_t=!translate internal ; to $\
+$ in $slib_t
+!distribute lines $slib_t into slib_1,slib_2,slib_3,slib_4,slib_5,slib_6,slib_7,slib_8,slib_9,slib_10
+slib_m=!charcnt $slib_1
+slib_r=!char 1 to $slib_n-$slib_m of $slib_inf
+!if , notin $slib_5
+ !distribute item $slib_5 into slib_5a,slib_5b,slib_5c
+ !default slib_5a=!item 2 of $slib_2
+ !default slib_5b=!item 4 of $slib_2
+ !default slib_5c=!item 5 of $slib_2
+ slib_5=$slib_5a,$slib_5b,$slib_5c
+!endif
+!for slib_k=2 to 10
+ slib_$slib_k=!replace internal , by ,$slib_r in $slib_r$(slib_$slib_k)
+!next slib_k
+slib_s3=ais,ais,ait,ions,iez,aient
+slib_s4=rai,ras,ra,rons,rez,ront
+slib_s5=rais,rais,rait,rions,riez,raient
+slib_s7=e,es,e,ions,iez,ent
+slib_s8=sse,sses,t,ssions,ssiez,ssent
+!if , notin $slib_4
+ slib_4b=!replace internal , by ,$slib_4 in $slib_4$slib_s5
+!endif
+!for slib_k in 3,4,7
+ !if , notin $(slib_$slib_k)
+  slib_$slib_k=!replace internal , by ,$(slib_$slib_k) in $(slib_$slib_k)$(slib_s$slib_k)
+ !endif
+!next slib_k
+!if , notin $slib_6
+ slib_c=!char -1 of $slib_6
+ slib_c=!translate internal aieou to âîêôû in $slib_c
+ slib_c=!replace char number -1 by $slib_c in $slib_6
+ slib_6=$(slib_6)s,$(slib_6)s,$(slib_6)t,$(slib_c)mes,$(slib_c)tes,$(slib_6)rent
+!endif
+!if , notin $slib_8
+ slib_c=!char -1 of $slib_8
+ slib_c=!translate internal aieou to âîêôû in $slib_c
+ slib_c=!replace char number -1 by $slib_c in $slib_8
+ slib_8=$(slib_8)sse,$(slib_8)sses,$(slib_c)t,$(slib_8)ssions,$(slib_8)ssiez,$(slib_8)ssent
+!endif
+!if , notin $slib_9
+ slib_c=!char -1 of $slib_9
+ !if $slib_c notin s
+  slib_9=$slib_9,$(slib_9)e,$(slib_9)s,$(slib_9)es
+ !else
+  slib_9=$slib_9,$(slib_9)e,$slib_9,$(slib_9)es
+ !endif
+!endif
+
+slib_out=$slib_2\
+$slib_3\
+$slib_4\
+$slib_4b\
+$slib_5\
+$slib_6\
+$slib_7\
+$slib_8\
+$slib_9\
+$slib_10
+
+!if $slib_1=er
+ slib_c1=!char -1 of $slib_r
+ slib_c2=!char -2 of $slib_r
+ slib_c3=!char -3 of $slib_r
+ slib_c4=!char -2,-1 of $slib_r
+ !if $slib_c3 isin eé and $slib_c4 iswordof br ch cr gl gn gr gu qu tr vr
+  slib_ra=!replace char number -3 by è in $slib_r
+  slib_c2=$slib_c3
+  !goto repl
+ !endif
+ !if ($slib_c2 isin eé and $slib_c1 isin bcdfghjklmnpqrstvwxz) or \
+	($slib_c2=é and $slib_c1=y)
+  slib_ra=!replace char number -2 by è in $slib_r
+  :repl
+  slib_out=!replace internal $(slib_r)e, by $(slib_ra)e, in $slib_out
+  slib_out=!replace internal $(slib_r)en by $(slib_ra)en in $slib_out
+  slib_out=!replace internal $(slib_r)es by $(slib_ra)es in $slib_out
+  !if $slib_c2=e and ($slib_c1 isin lmnstv or $slib_c4=vr)
+   slib_out=!replace internal $(slib_r)er by $(slib_ra)er in $slib_out
+  !endif
+ !endif
+ !if $slib_c1=c
+  slib_ra=!replace char number -1 by ç in $slib_r
+  !for slib_c in a,o,â
+   slib_out=!replace internal $(slib_r)$slib_c by $(slib_ra)$slib_c in $slib_out
+  !next slib_c
+ !endif
+ !if $slib_c1=g
+  slib_ra=$(slib_r)e
+  !for slib_c in a,o,â
+   slib_out=!replace internal $(slib_r)$slib_c by $(slib_ra)$slib_c in $slib_out
+  !next slib_c
+ !endif
+!endif
+

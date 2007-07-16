@@ -1,0 +1,32 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Generates a random unimodular matrix
+slib_parms=3\
+2,matrix size\
+2,coefficient range\
+Z,coefficient ring: Z for the time being, or G (Gauss ring)
+slib_author=Gang Xiao
+slib_out=the generated matrix
+slib_example=3, 5
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_size,slib_range,slib_ring
+!default slib_ring=Z
+!bound slib_size between integer 2 and 20 default 2
+!bound slib_range between integer 1 and 1000000 default 2
+
+!if $slib_ring=Z
+ slib_sh1=!shuffle $slib_size
+ slib_sh2=!shuffle $slib_size
+ slib_ran1=(random($slib_range)*(2*random(2)-1))
+ slib_ran2=(2*random(2)-1)
+ slib_coefu=if(x==y,$slib_ran2,if(x>y,0,$slib_ran1))
+ slib_coefd=if(x==y,$slib_ran2,if(x<y,0,$slib_ran1))
+ slib_triu=matrix($slib_size,$slib_size,x,y,$slib_coefu)
+ slib_trid=vecextract(matrix($slib_size,$slib_size,x,y,$slib_coefd),[$slib_sh1],[$slib_sh2])
+ slib_out=!exec pari print($slib_triu*$slib_trid)
+ !exit
+!endif
+

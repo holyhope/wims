@@ -1,0 +1,211 @@
+!set anstype=yes
+!set anstyle=dprompt
+!if $wims_read_parm=def
+ !exit
+!endif
+!set inputsize=!translate x to , in $inputsize
+!set inputsize=!items2words $inputsize
+!distribute words $inputsize into sizev,sizeh1,sizeh2
+!bound sizev between integer 10 and 300 default 40
+!bound sizeh1 between integer 10 and 500 default 200
+!bound sizeh2 between integer 10 and 500 default $sizeh1
+!set sizehm=100
+!set clon=500
+!set cloff=200
+!set pad=3
+!set imgs=!singlespace $(replygood$i)
+!set imgs=!rows2lines $imgs
+!distribute lines $imgs into lefts,rights
+!set lefts=!imgrename $lefts
+!set rights=!imgrename $rights
+!set lefts=!nonempty items $lefts
+!set rights=!nonempty items $rights
+!set imgcnt=!itemcnt $lefts
+!set checkcnt=!itemcnt $rights
+!if $imgcnt<3 or $checkcnt!=$imgcnt
+ !exit
+!endif
+!set Sizeh=$[$sizeh1+$sizehm+$sizeh2+$pad*4]
+!set Sizev=$[($sizev+$pad)*$imgcnt+$pad]
+!set left2=$[$sizeh1+$sizehm+$pad*3]
+!set rights=!shuffle $rights
+!set leftl=!items2lines $lefts
+!set rightl=!items2lines $rights
+!set leftarr=!replace internal " by \" in $leftl
+!set leftarr=!replace internal $\
+$ by "," in "$leftarr"
+!set rightarr=!replace internal " by \" in $rightl
+!set rightarr=!replace internal $\
+$ by "," in "$rightarr"
+!set Rightarr=!replace internal \ by \\ in $rightl
+!set Rightarr=!replace internal " by \" in $Rightarr
+!set Rightarr=!replace internal $\
+$ by "," in "$Rightarr"
+!set bgc1="#c0c0c0"
+!set bgc2="#c0c0c0"
+!set bgc3="bisque"
+!set bgc4="#8080ff"
+!set gify=$[min(40,$sizev)]
+!set lgif="<img src=gifs/arrows/corrleft.gif width=$sizehm height=$gify vspace=0 hspace=0>"
+!set rgif="<img src=gifs/arrows/corrright.gif width=$sizehm height=$gify vspace=0 hspace=0>"
+!set lrgif="<img src=gifs/arrows/corrlr.gif width=$sizehm height=$gify vspace=0 hspace=0>"
+!set wims_ins_alt=none
+!set z=c$i
+
+!read js/dynapi3.phtml
+<script language=javascript>
+
+ var $(z)_lefts=new Array($leftarr);
+ var $(z)_rights=new Array($rightarr);
+ var $(z)_Rights=new Array($Rightarr);
+ var $(z)_det=new Array($imgcnt);
+ var $(z)_lleft=new Array($imgcnt);
+ var $(z)_lright=new Array($imgcnt);
+ var $(z)_lmid=new Array($imgcnt);
+ var $(z)_yleft=new Array($imgcnt);
+ var $(z)_ys=new Array($imgcnt);
+ var $(z)_clx=-1;
+ var $(z)_cly=-1;
+ var lyr$i;
+ var himg1,himg2,himg3;
+
+dynapi.onLoad(function() {
+
+ var tstrl="<table border=0 cellpadding=0 cellspacing=0 width=$sizeh1 height=$sizev><tr><td align=center>";
+ var tstrr="<table border=0 cellpadding=0 cellspacing=0 width=$sizeh2 height=$sizev><tr><td align=center>";
+ var tstr2="</td></tr></table>";
+	himg1=new Image(); himg1.src="gifs/arrows/corrleft.gif";
+	himg2=new Image(); himg2.src="gifs/arrows/corrright.gif";
+	himg3=new Image(); himg3.src="gifs/arrows/corrlr.gif";
+	lyr$i = new DynLayer();
+	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:$Sizeh,stretchV:$Sizev});
+	lyr$i.setBgColor("white");
+	for(var i=0;i<$imgcnt;i++) $(z)_det[i]=0;
+	var mev={};
+	mev.ondragstart = function(e) {
+		var ly=e.getSource();
+		ly.setZIndex(1000);
+		ly.setBgColor($bgc4);
+	
+	}
+	mev.ondragend = function(e) {
+		var ly=e.getSource();
+		var i;
+		for(i=0;i<$imgcnt;i++) {
+			if(ly==$(z)_lleft[i]) {$(z)_cleft(i);break;}
+			if(ly==$(z)_lright[$(z)_ys[i]]) {$(z)_cright(i);break;}
+		}
+		ly.setZIndex(0);
+	}
+	dynapi.document.addChild(lyr$i);
+	for(i=0;i<$imgcnt;i++) {
+		$(z)_yleft[i]=$pad+i*($pad+$sizev); $(z)_ys[i]=i;
+		$(z)_lmid[i]=new DynLayer(null,2*$pad+$sizeh1,$(z)_yleft[i],$sizehm,$sizev,"white");
+		lyr$i.addChild($(z)_lmid[i]);
+		$(z)_lmid[i].setHTML("");
+		$(z)_lleft[i]=new DynLayer(null,$pad,$(z)_yleft[i],$sizeh1,$sizev,$bgc1);
+		$(z)_putlayer($(z)_lleft[i],mev);
+		$(z)_lleft[i].setHTML(tstrl+$(z)_lefts[i]+tstr2);
+		$(z)_lright[i]=new DynLayer(null,$left2,$(z)_yleft[i],$sizeh2,$sizev,$bgc3);
+		$(z)_putlayer($(z)_lright[i],mev);
+		$(z)_lright[i].setHTML(tstrr+$(z)_rights[i]+tstr2);
+	}
+});
+
+function $(z)_putlayer(l,mev) {
+	l.addEventListener(mev);
+	lyr$i.addChild(l);
+	DragEvent.enableDragEvents(l);
+	DragEvent.setDragBoundary(l, {left:$pad, right:$pad, top:$pad, bottom:$pad});
+}
+
+function $(z)_update() {
+ var tstr="";
+ var detot=0;
+ var i;
+ for(i=0;i<$imgcnt;i++) {
+ 	var lc,rc,mstr;
+ 	lc=$bgc1;
+ 	if($(z)_det[i]>0) {detot++; rc=$bgc2; mstr=$lrgif;}
+	else {rc=$bgc3; mstr="";}
+ 	if($(z)_cly==i) {
+		if($(z)_clx==1) {lc=$bgc4; mstr=$lgif;}
+		if($(z)_clx==2) {rc=$bgc4; mstr=$rgif;}
+	}
+	$(z)_lleft[i].setBgColor(lc);
+	$(z)_lright[$(z)_ys[i]].setBgColor(rc);
+	$(z)_lmid[i].setHTML(mstr);
+ }
+ if(detot>=$imgcnt-1) {
+	for(i=0;i<$imgcnt;i++) {
+		if(i>0) tstr=tstr+",";
+		tstr=tstr+$(z)_Rights[$(z)_ys[i]];
+	}
+ }
+ document.forms['replyform'].reply$i.value=tstr;
+}
+
+function $(z)_cleft(i) {
+	var xx,yy,cy;
+	xx=$(z)_lleft[i].getX(); yy=$(z)_lleft[i].getY();
+	if(Math.abs(xx-$pad)+Math.abs(yy-$(z)_yleft[i])>5) {
+		for(cy=0;cy<$imgcnt && Math.abs(yy-$(z)_yleft[cy])>=$sizev/2;cy++);
+		if(cy<$imgcnt && xx+$sizeh1>=$Sizeh-$pad-Math.max($sizeh2/2,$sizeh2-$sizeh1/2)) {
+			$(z)_clx=2; $(z)_cly=cy;
+		}
+		else {$(z)_clx=1; $(z)_cly=i;}
+	}
+	if($(z)_clx==2) {
+		if($(z)_cly!=i) $(z)_exchange($(z)_cly,i);
+		$(z)_det[i]=1; $(z)_clx=$(z)_cly=-1;
+	}
+	else {
+		if($(z)_clx==1 && $(z)_cly==i) $(z)_clx=$(z)_cly=-1;
+		else {$(z)_clx=1; $(z)_cly=i;}
+	}
+	$(z)_lleft[i].setLocation($pad,$(z)_yleft[i]);
+	$(z)_lleft[i].setBgColor($bgc1);
+	$(z)_update();
+}
+
+function $(z)_cright(i) {
+	var xx,yy;
+	xx=$(z)_lright[$(z)_ys[i]].getX(); yy=$(z)_lright[$(z)_ys[i]].getY();
+	$(z)_lright[$(z)_ys[i]].setLocation($left2,$(z)_yleft[i]);
+	if(Math.abs(xx-$left2)+Math.abs(yy-$(z)_yleft[i])>5) {
+		for(cy=0;cy<$imgcnt && Math.abs(yy-$(z)_yleft[cy])>=$sizev/2;cy++);
+		if(cy<$imgcnt && xx<=$pad+Math.max($sizeh1/2,$sizeh1-$sizeh2/2)) {
+			$(z)_clx=1; $(z)_cly=cy;
+		}
+		else {$(z)_clx=2; $(z)_cly=i;}
+	}
+	if($(z)_clx==1) {
+		if($(z)_cly!=i) $(z)_exchange($(z)_cly,i);
+		$(z)_det[$(z)_cly]=1; $(z)_clx=$(z)_cly=-1;
+	}
+	else {
+		if($(z)_clx==2 && $(z)_cly==i) $(z)_clx=$(z)_cly=-1;
+		else {$(z)_clx=2; $(z)_cly=i;}
+	}
+	$(z)_update();
+}
+
+function $(z)_exchange(y1,y2) {
+	var yy;
+	var i;
+	yy=$(z)_ys[y1]; $(z)_ys[y1]=$(z)_ys[y2]; $(z)_ys[y2]=yy;
+	$(z)_lright[$(z)_ys[y1]].setY($(z)_yleft[y1]);
+	$(z)_lright[$(z)_ys[y2]].setY($(z)_yleft[y2]);
+	$(z)_det[y1]=$(z)_det[y2]=0;
+}
+
+</script>
+!reset wims_ins_alt
+
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)&nbsp;<td>
+!endif
+<a name=tarea$i id=tarea$i><img
+height=$[$Sizev+10] width=$Sizeh src=gifs/transparent.gif align=top></a>
+<input type=hidden name=reply$i value="">
+

@@ -1,0 +1,55 @@
+rg1=!item 1 of $(replygood$i)
+rg2=!item 2 to -1 of $(replygood$i)
+replyGood$i=!rawmath $rg1
+vars=!varlist nofn $rg1
+!if $rg2 != $empty
+ vars=!append item $rg2 to $vars
+ vars=!listuniq $vars
+!endif
+n=!itemcnt $vars
+wims_rawmath_variables=$vars
+reply$i=!rawmath $(reply$i)
+reply$i=!mathsubst I=i in $(reply$i)
+
+m_reply$i=$(reply$i)
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+tf=$(reply$i)-($rg1)
+gf=$rg1
+test=0
+!for t=1 to $testnum
+ tt=$tf
+ gt=$gf
+ !for j=1 to $n
+  vt=!random $leftrange,$rightrange
+  v=!item $j of $vars
+  !if $v notitemof e,E,pi,Pi,PI,Euler,EULER,euler,NaN,Inf
+   tt=!mathsubst $v=($vt) in $tt
+   gt=!mathsubst $v=($vt) in $gt
+  !endif
+ !next j
+ gt=$[$gt]
+ !if NaN isin $gt or Inf isin $gt
+  Test=bad $i
+  !exit
+ !endif
+ test=$[$test+abs($tt)]
+!next t
+test=$[$test/$testnum]
+
+!if NaN notin $test
+ !if $test<1/$precision
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $test<1/sqrt($precision)
+   !advance precgood
+   precreply$i=yes
+  !endif
+  diareply$i=bad
+ !endif
+!endif
+
+

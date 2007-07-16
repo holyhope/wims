@@ -1,0 +1,36 @@
+
+# Input variables: authdef=def file.
+# Parameters: auth_user, auth_password.
+
+ldap_find=!sh which ldapsearch
+!if $ldap_find issametext $empty
+ auth_test=ERROR no_ldap
+ !exit
+!endif
+
+ldap_host=!defof class_ldap_host in $authdef
+ldap_port=!defof class_ldap_port in $authdef
+!default ldap_port=389
+ldap_version=!defof class_ldap_version in $authdef
+!default ldap_version=3
+ldap_base=!defof class_ldap_base in $authdef
+ldap_branch=!defof class_ldap_branch in $authdef
+!default ldap_branch=ou=people
+ldap_uid=!defof class_ldap_uid in $authdef
+!default ldap_uid=uid
+
+ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1]),$ldap_branch,$ldap_base
+
+ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_id" -D "$ldap_id" -w "$(wims_read_parm[2])"
+
+ldap_cnt=!linecnt $ldap_search
+!for i=1 to $ldap_cnt
+ l=!line $i of $ldap_search
+ !if $l issametext result: 0 Success
+  auth_test=OK
+ !endif
+!next i
+
+auth_error=$wims_exec_error
+wims_exec_error=
+

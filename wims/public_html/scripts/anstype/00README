@@ -1,0 +1,70 @@
+
+How to add a new anstype:
+
+Each anstype contains two files, "_name.input" is the input form element, and
+"_name" is the answer processing file.
+
+Specific anstypes need not be put into this directory. One can create a
+subdirectory "anstype" in the module, then put the files there. Any name
+will do, but we recommend that module-specific anstypes use a specific
+prefix for its names, like "mynumeric", "myfunction", ..., in order to avoid
+possible confusions.
+
+The input file should contain the following two definitions.
+
+1. define "anstype=yes". Otherwise the OEF manager will not recognize the
+existence of the anstype.
+
+2. define the form style using the variable "anstyle". Here are the possible
+words to declare in this variable.
+
+	mc		multiple choice style.
+      	symtext 	allows symtext processing.
+      	numeric		the data is numeric.
+      	dprompt		good answer prompt given under double-underlined
+			variable (internal).
+	nogood		never present good answer (because there cannot be).
+
+These scripts accept the following input variables.
+
+	i		The number of the reply field.
+	replyname$i	The prompt of the form element.
+	reply$i		The answer given by the student.
+	replygood$i	The good answer given by the author.
+	replyoption$i	Option words. Anstypes are more or less free to
+			define their own recognized option words.
+	inputsize	The size of the form element. Its format
+			depends on the type of the reply.
+
+Moreover, if no comparison is wanted, the answer processing file can have a
+calling parameter "nocompare".
+
+Output variables of the answer processing file:
+
+	Test		Put "bad $i" if the good answer given by the author
+			is not understandable.
+	test		Put "NaN" followed possibly by an error indicator,
+			if the answer given by the student is not understandable.
+	diareply$i	Diagnostics result. Possible values: "good", "bad".
+	precreply$i	If the answer misses the good result just by a
+			problem of precision, put "yes" to this variable and put
+			"bad" to diareply$i.
+	partialgood$i	If the answer should be considered as partially good,
+			put "yes" to this variable and put "good" to
+			diareply$i.
+	freegot		This is a numerical variable. Its content is incremented
+			by 1 if the answer is 100% OK, none if it is false,
+			or anything between 0 and 1 for partially good answer.
+			It is not recommended to decrement this value, nor to 
+			increment it more than 1.
+	
+There are also some optional output variables (they can be left empty).
+
+	replyGood$i	This variable can be defined for the good answer
+			shown to the students after replying to the exercise,
+			if it should be different than the real replygood$i.
+	m_reply$i	This variable can be defined for the answer shown back
+			to the students, if it should be different than the
+			real answer typed in.
+	reply__$i	A special prompt to show when dprompt is declared in anstyle.
+

@@ -1,0 +1,14 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Extract comment from a c source code.
+slib_parms=1\
+,code
+slib_author=Gang Xiao
+slib_out=The resulting source
+slib_comment=Only comments within one line will be extracted.
+!exit
+
+:proc
+slib_out=!replace \/\*.*\*\/ by $ in $wims_read_parm
+

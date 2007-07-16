@@ -1,0 +1,52 @@
+!set methtit=Effacer des hypothèses inutiles
+!set methparmtype=special
+!set methparmrelax=1
+!set stepnocount=yes
+!set methhelp=Vous pouvez utiliser cette méthode pour enlever les hypothèses\
+ inutiles, afin de clarifier la situation. Mais <b>attention</b> ! Si vous\
+ enlevez une hypothèse indispensable, vous ne pourrez plus aboutir&nbsp;!\
+ <p>\
+ Vous pouvez appliquer cette méthode autant de fois que vous voulez sans être\
+ pénalisé dans votre score, car elle n'avance pas le compteur d'étape pour le\
+ score.
+!set N_=!linecnt $m_context
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if $N_<1
+ !set error1=Il n'y a plus d'hypothèse dans l'état actuel&nbsp;!
+!endif
+
+!exit
+:form
+ $methhelp
+ <p>
+ Voici les hypothèses actuelles. Marquez celles que vous voulez enlever. <ul>
+ !for i=1 to $N_
+  !set l=!line $i of $m_context
+  <li> <input type=checkbox name=methparm1 value=$i> \($l)
+ !next i
+ </ul>
+!exit
+:check
+ !reset newobject,oldobject
+ n_=!itemcnt $methparm1
+ !if $n_=0
+  methexp=Etape vide
+  !exit
+ !endif
+ nc=
+ !for i=1 to $N_
+  !if $i notitemof $methparm1
+   l=!line $i of $m_context
+   nc=!append line $l to $nc
+  !endif
+ !next i
+ m_context=$nc
+ !read deduc/objects.combine
+ methexp=Effacer $n_ hypothèses
+ 
+!exit
+

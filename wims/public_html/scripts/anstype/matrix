@@ -1,0 +1,57 @@
+
+dd=!rawmatrix $(reply$i)
+!if $wims_warn_rawmatrix!=$empty
+ test=NaN
+ !exit
+!endif
+
+m_reply$i=$dd
+reply_$i=!lines2rows $dd
+reply_$i=\([$(reply_$i)])
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+good=!trim $(replygood$i)
+good=!rawmatrix $good
+!if $wims_warn_rawmatrix!=$empty
+ Test=bad $i
+ !exit
+!endif
+replyGood$i=!lines2rows $good
+replyGood$i=\([$(replyGood$i)])
+
+n1=!linecnt $good
+n2=!linecnt $dd
+l1=!line 1 of $good
+l2=!line 1 of $dd
+m1=!itemcnt $l1
+m2=!itemcnt $l2
+
+ok=yes
+!if $n1!=$n2 or $m1!=$m2
+ badsize$i=true
+ ok=
+!else
+ !for j=1 to $n1
+  l1=!line $j of $good
+  l2=!line $j of $dd
+  !for k=1 to $m1
+   x_=!item $k of $l1
+   y_=!item $k of $l2
+   !ifval $x_!=$y_
+    ok=
+    !goto bailout
+   !endif
+  !next k
+ !next j
+!endif
+
+:bailout
+!if $ok=yes
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

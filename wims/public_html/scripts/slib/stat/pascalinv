@@ -1,0 +1,39 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Quantile of Negative Binomial law
+slib_parms=3\
+,[data]\
+5,n\
+0.5,p
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=quantile of binomial law of parameters n and p ((0&lt;p&lt;1)) at data
+slib_comment=data can be a list of reals
+slib_example=[0.2,0.4,0.6],5,0.5
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_n,slib_p
+!default slib_n= 5
+!default slib_p=0.5
+!if $slib_p>=1 or $slib_p<=0 
+	slib_out=0
+	!exit
+!endif
+slib_out=
+slib_data=!declosing $slib_data
+slib_p1=$[1-$slib_p]
+slib_r=$[$slib_p/$slib_p1]
+slib_a=$[$slib_p1^($slib_n)]
+slib_cnt= !itemcnt $slib_data
+!for slib_i =1 to $slib_cnt
+	slib_di=!item $slib_i of $slib_data
+	slib_k=!exec pari {slib_P=0;slib_x=$slib_n;\
+	 while(slib_P< $slib_di, slib_x=slib_x+1;\
+ 	 slib_P = slib_P + binomial(slib_x-1,$slib_n-1) * 	$slib_p^$slib_n * $slib_p1^(slib_x-$slib_n));\
+		print(slib_x)}
+	slib_out=!append item  $slib_k to $slib_out
+!next slib_i
+slib_out=!trim $slib_out

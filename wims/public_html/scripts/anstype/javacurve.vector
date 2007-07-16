@@ -1,0 +1,45 @@
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+m=!itemcnt $glist
+n=!itemcnt $rlist
+!if $n<2
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $m<2
+ Test=bad $i
+ !exit
+!endif
+
+!ifval $n!=$m
+ mean=1000
+ !goto diag
+!endif
+
+ecart1= $[sqrt(($(glist[1]) - ($(rlist[1])))^2 + ($(glist[2]) - ($(rlist[2])))^2)]
+ecart2= $[sqrt(($(glist[3]) - ($(rlist[3])))^2 + ($(glist[4]) - ($(rlist[4])))^2)]
+
+mean=$[max($ecart1,$ecart2)]
+
+primitive1=arrow $rlist,8,$color1
+primitive2=arrow $glist,8,$color2
+
+!if NaN isin $mean or Inf isin $mean
+ !goto badrep
+!endif
+
+:diag
+test=$mean
+!if $mean<6
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $mean<12
+   precreply$i=yes
+   !advance precgood
+  !endif
+  diareply$i=bad
+ !endif

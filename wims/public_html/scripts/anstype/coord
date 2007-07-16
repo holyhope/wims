@@ -1,0 +1,106 @@
+
+good=!rows2lines $(replygood$i)
+image=!line 1 of $good
+tester=!line 2 to -1 of $good
+!if $(saverep$i)=$empty
+ reply$i=($click_x,$click_y)
+ saverep$i=$(reply$i)
+ m_reply$i=$(reply$i)
+!endif
+replyGood$i=...
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+tmp=!declosing $(reply$i)
+tmp=!nonempty item $tmp
+!if $tmp=$empty
+ error=empty_data
+ !exit
+!endif
+
+ifile=$image
+!if $imagedir isin $image
+ ifile=!translate internal / to $ $ in $ifile
+ ifile=!word -1 of $ifile
+!else
+ !if getfile isin $image
+  ifile=!translate internal =/ to $  $ in $ifile
+  ifile=!word -1 of $ifile
+ !else
+  !if getins isin $image
+   ifile=!replace internal &modif= by $ $ in $ifile
+   ifile=!replace internal special_parm= by $ $ in $ifile
+   ifile=!word 2 of $ifile
+  !endif
+ !endif
+!endif
+
+tmp=!declosing $(reply$i)
+x=!item 1 of $tmp
+y=!item 2 of $tmp
+
+x=$[round($x)]
+y=$[round($y)]
+!if NaN isin $x$y
+ test=NaN
+ !exit
+!endif
+
+error_back=$wims_exec_error
+wims_exec_error=
+
+tester=!nonempty lines $tester
+tcnt=!linecnt $tester
+test=!exec clickzone $x,$y\
+$tester
+
+m_clickzone_error=!trim $wims_exec_error
+m_clickzone_error=!line 2 to -1 of $m_clickzone_error
+wims_exec_error=$error_back
+
+test1=!line 1 of $test
+test2=!line 2 to -1 of $test
+!distribute words $test1 into i_,prec
+
+!if $i_=1
+ ball=greenball
+!else
+ ball=redball
+!endif
+
+!insdraw existing $ifile\
+copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
+$test2
+
+!if analysenofig notitemof $(replyoption$i)
+ reply_$i=<img src=$ins_url align=middle vspace=5 hspace=5 border=0>
+!else
+ reply_$i=&nbsp;
+!endif
+reply__$i=<img src=gifs/$ball.gif>
+m_result$i=$i_
+
+!if $test=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if $tcnt>1 and $i_=-1
+ test=NaN
+ saverep$i=
+ !exit
+!endif
+
+!if $i_=1 and $prec=0
+ diareply$i=good
+ !advance freegot
+!else
+ !if $i_=1
+  !advance precgood
+  precreply$i=yes
+ !endif
+ diareply$i=bad
+!endif
+

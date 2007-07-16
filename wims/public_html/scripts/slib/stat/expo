@@ -1,0 +1,21 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Generation of exponential random numbers
+slib_parms=2\
+ ,m\
+ ,lambda
+slib_author=Adeline Grelot and Bernadette PERRIN-RIOU
+slib_out=random data of m numbers following an exponential law of parameter lambda
+slib_comment= \lambda*exp(-\lambda*x)
+!exit
+
+:proc
+slib_out=
+!distribute item $wims_read_parm into slib_m, slib_lambda
+slib_out=!random 0,1 repeat $slib_m
+slib_out=!values -log(x)/$slib_lambda for x in $slib_out
+
+slib_out=!trim $slib_out
+
+

@@ -1,0 +1,75 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=A random first name
+slib_parms=1\
+,option words ([language], girl, boy)
+slib_author=Gang Xiao
+slib_out=the random first name
+slib_example=fr,boy\
+en,girl\
+es boy
+!exit
+
+:proc
+
+slib_opt=!items2words $wims_read_parm
+!reset slib_boy, slib_girl
+slib_langs=!words2items $wims_site_languages
+slib_lang=$module_language
+!for slib_l in $slib_langs
+ !if $slib_l iswordof $slib_opt
+  slib_lang=$slib_l
+ !endif
+!next slib_l
+
+!if $slib_lang=fr
+ slib_boy=!randitem Alain, André, Bernard, Bertrand, \
+  Carlos, Charles, Christophe, Claude, \
+  Didier, Fabrice, François, Frédéric, Georges, \
+  Gérard, Guillaume, Jacques, Jean, Joseph, \
+  Laurent, Louis, Luc, Marc, \
+  Matthieu, Michel, Olivier, Patrick, Paul, Philippe, Pierre, \
+  Richard, Robert, Thierry, Xavier
+ slib_girl=!randitem Alice, Anne, Bernadette, \
+  Caroline, Catherine, Céline, Claire, Cloé, Denise, \
+  Emmanuelle, Frédérique, Jeanne, Jeannine, Joséphine, Julie,\
+  Laeticia, Laure, Lucie, Marie, Marion, Mireille, \
+  Patricia, Rose, Sophie, Sylvie
+!endif
+
+!if $slib_lang=nl
+
+ slib_boy=!randitem Jan,Piet,Klaas,Gerard,Jonny,Sjonnie,Wim,Henk,\
+ willem,Willem-Jan,Koos,Paul,Robin,Bart,Dani,Edgar,Jacob,Willem,\
+ Mohammed,Ali,Joost,Johan,Karel,Martin,Hans,Frederik,Bennie,Benno,\
+ Freddy,Jelmer,Rinus,Marinus,Roderick,Simon,Anton,Ton,Tom,Nico
+
+ slib_girl=!randitem Marlies,Marloes,Anna,Hanna,Johanna,Aaltje,Mariska,\
+ Roelie,Joke,Ellie,Elli,Evelien,Vera,Kristel,Christel,Chantal,\
+ Loeki,Aafke,Marijke,Petra,Olga,Sien,Jo,Karlijn,Katinka,Bonnie,Carolien,\
+ Anita,Hedwig,Karen,Karin,Koosje,Rosa,Lidwina,Astrid,Lenie,Lena,Maria,Eva,Marijke,\
+ Anneke,Alie
+!endif
+
+!default slib_boy=!randitem Andrew, Bill, Charles, David, \
+ Edwin, George, Harry, Henry, Jack, James, John, \
+ Mark, Michael, Peter, \
+ Richard, Robert, Ronald, Thomas, William
+
+!default slib_girl=!randitem Alice, Anna, Catherine, \
+ Diana, Elisabeth, Jane, Linda, \
+ Marguerite, Marilyn, Mary, Nancy, \
+ Rose, \
+ Victoria, Virginia
+
+!if girl iswordof $slib_opt
+ slib_out=$slib_girl
+ !exit
+!endif
+!if boy iswordof $slib_opt
+ slib_out=$slib_boy
+ !exit
+!endif
+slib_out=!randitem $slib_girl,$slib_boy
+

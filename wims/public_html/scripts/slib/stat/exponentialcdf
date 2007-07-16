@@ -1,0 +1,34 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=cumulative distribution function of exponential law 
+slib_parms=2\
+,[data]\
+1,p
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=Values of cumulative distribution function of exponential distribution on data
+slib_comment=data can be a list of reals
+slib_example=[1,2,3],7
+!exit
+
+:proc
+
+!distribute  item $wims_read_parm into slib_data,slib_p
+
+!if  $slib_p<=0
+slib_out=0
+!exit
+!endif
+
+slib_data=!declosing $slib_data
+slib_out=
+!for slib_x in $slib_data
+ !if $slib_x<0 
+   slib_out=!append item 0 to $slib_out
+ !else
+   slib_out=!append item  $[1-exp(-$slib_p*$slib_x)] to $slib_out
+ !endif
+!next slib_x
+
+slib_out=!trim $slib_out

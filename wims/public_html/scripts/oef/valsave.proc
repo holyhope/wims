@@ -1,0 +1,42 @@
+!nocache
+!reset replynames, replytypes, replyoptions, replystyles, replyweights,\
+	choicenames, choicegoods, choicebads, choicelists, choiceitemss
+
+!for i=1 to $replycnt
+ !read oef/replytype.proc
+ replystyle$i=$anstyle
+ replynames=$replynames$(replyname$i)\
+
+ replytypes=$replytypes$(replytype$i)\
+
+ replystyles=$replystyles$anstyle\
+
+ ro=!items2words $ro
+ ro=!singlespace $(replyoption$i)
+ replyoptions=$replyoptions$ro\
+
+ replyweights=$replyweights$(replyweight$i)\
+
+!next i
+
+!for i=1 to $choicecnt
+ !for n in name,good,bad,list,items,option,weight
+  choice$(n)s=$(choice$(n)s)$(choice$n$i)\
+
+ !next n
+!next i
+
+!if $vsavelist=$empty
+ !for i=1 to $varcnt+1
+  vsavelist=!append item $i to $vsavelist
+ !next i
+!endif
+vsavelist=!nospace $vsavelist
+vsave=
+!for v in $vsavelist
+ vv=!translate internal $\
+$ to $	$ in $(val$v)
+ vsave=$vsave$(vv)\
+
+!next v
+

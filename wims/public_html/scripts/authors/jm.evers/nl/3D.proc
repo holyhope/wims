@@ -1,0 +1,162 @@
+# gebruikt bij Autotrace
+#########################################################################
+#	variabelen	
+#	grid$n plaatje	:3d_points (alle coordinaten (x1:y1:z1),(x2;y2:z2)....(x10;y10;z10) enz)
+#			:line_list (lijnen tussen punt1,punt2,...,punt10 enz punt1=eerste punt in 3d_points)
+#			:dline_list (stippel lijnen tussen punt1,punt2,...,punt10 enz)
+#	good$n plaatje  :3D_POINTS (alle coordinaten (x1:y1),(x2;y2)....(x10;y10) enz)
+#			:LINE_LIST (lijnen tussen punt1,punt2,...,punt10 enz punt1=eerste punt in 3d_points)
+#			:DLINE_LIST (stippel lijnen tussen punt1,punt2,...,punt10 enz)
+#		 	:ANGLE  perspective angle
+#			:XSIZE,YSIZE pixels,image size
+# grid$n klein geschreven , good$n groot geschreven
+#########################################################################
+
+
+angle=$[pi*$ANGLE/180]
+#HET GRID-PLAATJE: grid$n
+aantal_punten=!itemcnt $3d_points
+LETTERS=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P
+!for p=1 to $aantal_punten
+    punt$p=!item $p of $3d_points
+    punt$p=!replace [\(\)] by  in $(punt$p)
+    punt$p=!replace [\;\:] by , in $(punt$p)
+    test=!itemcnt $(punt$p)
+	!if $test!=3
+	    error="voor 3D niet genoeg of te veel coordinaten"
+	    !goto NIKS
+	!endif
+    x3d=!item 1 of $(punt$p)
+    y3d=!item 2 of $(punt$p)
+    z3d=!item 3 of $(punt$p)
+
+    x2d$p=$[$y3d - ($x3d*cos($angle))/1.5]
+    y2d$p=$[$z3d - ($x3d*sin($angle))/1.5]
+    point$p=$(x2d$p),$(y2d$p)
+    letter=!item $p of $LETTERS
+    text=!append line text black,$(x2d$p),$(y2d$p),large, $letter ($x3d,$y3d,$z3d)  to $text
+    points=!append line point $(x2d$p),$(y2d$p),red to $points
+!next
+
+!if $line_list !=
+    aantal_lijnen=!itemcnt $line_list
+    !for p=1 to $aantal_lijnen
+        lijn=!item $p of $line_list
+        lijn=!replace [\;\:] by , in $lijn
+        p1=!item 1 of $lijn
+        p2=!item 2 of $lijn
+        P1=$(point$p1)
+        P2=$(point$p2)
+        line=!append line line $P1,$P2,red to $line
+    !next
+!endif
+
+!if $dline_list !=
+    aantal_lijnen=!itemcnt $dline_list
+    !for p=1 to $aantal_lijnen
+	lijn=!item $p of $dline_list
+        lijn=!replace [\;\:] by , in $lijn
+        p1=!item 1 of $lijn
+        p2=!item 2 of $lijn
+        P1=$(point$p1) 
+        P2=$(point$p2) 
+        line=!append line dline $P1,$P2,red to $line
+    !next
+!endif
+
+
+##### HET GOEDE PLAATJE good$n
+AANTAL_PUNTEN=!itemcnt $3D_POINTS
+!for p=1 to $AANTAL_PUNTEN
+    PUNT$p=!item $p of $3D_POINTS
+    PUNT$p=!replace [\(\)] by  in $(PUNT$p)
+    PUNT$p=!replace [\;\:] by , in $(PUNT$p)
+    test=!itemcnt $(PUNT$p)
+	!if $test!=3
+	    error="voor 3D niet genoeg of te veel coordinaten"
+	    !goto NIKS
+	!endif
+    x3d=!item 1 of $(PUNT$p)
+    y3d=!item 2 of $(PUNT$p)
+    z3d=!item 3 of $(PUNT$p)
+
+    x2d$p=$[$y3d - ($x3d*cos($angle))/1.5]
+    y2d$p=$[$z3d - ($x3d*sin($angle))/1.5]
+    POINT$p=$(x2d$p),$(y2d$p)
+    TEXT=!append line text black,$(x2d$p),$(y2d$p),normal,($x3d,$y3d,$z3d)  to $TEXT
+    POINTS=!append line point $(x2d$p),$(y2d$p),red to $POINTS
+!next
+
+!if $line_list !=
+    aantal_lijnen=!itemcnt $LINE_LIST
+    !for p=1 to $aantal_lijnen
+        lijn=!item $p of $LINE_LIST
+        lijn=!replace [\;\:] by , in $lijn
+        p1=!item 1 of $lijn
+        p2=!item 2 of $lijn
+        P1=$(point$p1)
+        P2=$(point$p2)
+        LINE=!append line line $P1,$P2,red to $LINE
+    !next
+!endif
+
+!if $dline_list !=
+    aantal_lijnen=!itemcnt $DLINE_LIST
+    !for p=1 to $aantal_lijnen
+	lijn=!item $p of $DLINE_LIST
+        lijn=!replace [\;\:] by , in $lijn
+        p1=!item 1 of $lijn
+        p2=!item 2 of $lijn
+        P1=$(point$p1) 
+        P2=$(point$p2) 
+        LINE=!append line dline $P1,$P2,red to $LINE
+    !next
+!endif
+
+
+
+!if $XSIZE= or $YSIZE=
+    XSIZE=600
+    YSIZE=600
+!endif
+	    
+XMIN=!item 1 of $XRANGE
+XMAX=!item 2 of $XRANGE
+YMIN=!item 1 of $YRANGE
+YMAX=!item 2 of $YRANGE
+
+##DE PLAATJES ZELF:      
+      grid$n=$XSIZE,$YSIZE\
+      xrange $XRANGE\
+      yrange $YRANGE\
+      linewidth 2\
+      vline 0,0,blue\
+      hline 0,0,blue\
+      curve blue,x*tan($angle)\
+      text black,$[0.9*$XMAX],$[-0.02*$YMAX],large,y-as\
+      text black,$[0.8*$XMIN*tan($angle)],$[0.8*$YMIN],large,x-as\
+      text black,$[0.02*$XMAX],$[0.9*$YMIN],large,z-as\
+      linewidth 14\
+      $points \
+      $text \
+      linewidth 3\
+      $line
+
+      good$n=$XSIZE,$YSIZE\
+      xrange $XRANGE\
+      yrange $YRANGE\
+      linewidth 2\
+      vline 0,0,blue\
+      hline 0,0,blue\
+      curve blue,x*tan($angle)\
+      text black,$[0.9*$XMAX],$[-0.02*$YMAX],large,y-as\
+      text black,$[0.8*$XMIN*tan($angle)],$[0.8*$YMIN],large,x-as\
+      text black,$[0.02*$XMAX],$[0.9*$YMIN],large,z-as\
+      linewidth 14\
+      $POINTS \
+      $TEXT \
+      linewidth 3\
+      $LINE
+          
+
+:NIKS

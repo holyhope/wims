@@ -1,0 +1,98 @@
+rg1=!item 1 of $(replygood$i)
+rg2=!item 2 to -1 of $(replygood$i)
+rg1=!singlespace $rg1
+rg1=!rawmath $rg1
+replyGood$i=$rg1
+rg1=!mathsubst I=i in $rg1
+vars=!varlist nofn $rg1
+!if $rg2 != $empty
+ vars=!append item $rg2 to $vars
+ vars=!listuniq $vars
+!endif
+wims_rawmath_variables=$vars
+
+max=$[-(10^100)]
+min=$[10^100]
+t=!singlespace $(reply$i)
+t=!rawmath $t
+t=!mathsubst I=i in $t
+reply$i=$t
+t=!translate internal = to $\
+$ in $t
+!distribute lines $t into t,t2
+t2=!trim $t2
+!if $t2!=$empty
+ t=$t-($t2)
+!else
+ reply$i=$t = 0
+!endif
+
+m_reply$i=$(reply$i)
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+rg1=!translate internal = to $\
+$ in $rg1
+!distribute lines $rg1 into s,s2
+s2=!trim $s2
+!if $s2!=$empty
+ s=$s-($s2)
+!endif
+n=!itemcnt $vars
+!if $n<1
+ Test=bad $i
+ !exit
+!endif
+test=0
+tn=0
+!for N=1 to 5*$testnum
+ tt=($t)/($s)
+ gt=$s
+ !for j=1 to $n
+  vt=!random $leftrange,$rightrange
+  v=!item $j of $vars
+  !if $v notitemof e,E,pi,Pi,PI,Euler,EULER,euler,NaN,Inf
+   tt=!mathsubst $v=($vt) in $tt
+   gt=!mathsubst $v=($vt) in $gt
+  !endif
+ !next j
+ gt=$[$gt]
+ !if NaN isin $gt or Inf isin $gt
+  Test=bad $i
+  !exit
+ !endif
+ !if abs($gt)>10/$precision
+  test=$[$tt]
+  !advance tn
+ !endif
+ max=$[max($max,$test)]
+ min=$[min($min,$test)]
+ !if $tn>=$testnum
+  !break
+ !endif
+!next N
+!if $tn<$testnum
+ Error=bad
+ !exit
+!endif
+abs=$[max(abs($min),abs($max))]
+!if $abs<1/$precision or ($max)*($min)<0
+ test=100
+!else
+ test=$[abs($max-($min))/$abs]
+!endif
+
+!if NaN notin $test
+ !if $test<1/$precision
+  diareply$i=good
+  !advance freegot
+ !else
+  !if $test<1/sqrt($precision)
+   !advance precgood
+   precreply$i=yes
+  !endif
+  diareply$i=bad
+ !endif
+!endif
+

@@ -1,0 +1,45 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+!!slib_title=Path of a graph
+slib_parms=3\
+, A matrix of size n by n\
+, s first vertex\
+, t second vertex
+slib_author=Bernadette PERRIN-RIOU
+slib_out=list of the paths from s to t  
+slib_comment=
+ slib_example=
+
+!exit
+
+:proc
+
+!distribute item $wims_read_parm into slib_A,slib_s,slib_t
+slib_A= !declosing $slib_A
+slib_A=!replace internal ; by $\
+$ in $slib_A
+slib_n = !linecnt $slib_A
+
+slib_chemin=$slib_t
+!for slib_i=1 to $slib_n
+ !for slib_k=1 to $slib_n
+  !for slib_j=1 to $slib_n
+   slib_r=!line $slib_k of $slib_A
+   slib_r=!item $slib_j of $slib_r
+   !if $slib_r != 0
+    slib_cnt=!linecnt $slib_chemin
+    !for slib_u = 1 to $slib_cnt
+     slib_che=!line $slib_u of $slib_chemin
+     slib_che1=!item 1 of $slib_che
+     !if $slib_che1 = $slib_j
+      slib_chemin=$slib_chemin\
+$slib_k,$slib_che
+     !endif
+    !next slib_u
+   !endif
+  !next slib_j
+ !next slib_k
+!next slib_i
+
+slib_out=$slib_chemin

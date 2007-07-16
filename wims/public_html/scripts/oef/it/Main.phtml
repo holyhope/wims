@@ -1,0 +1,165 @@
+!nocache
+!if $oef_test=yes
+ !set renewlink=cmd=next&retest=again
+ $header_js
+ !goto tester
+!else
+ !set init_parm=!translate + to $ $ in $module_init_parm
+ !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
+!endif
+
+!if $printing=yes
+ !changeto oef/print.phtml
+!endif
+
+!if $title!=$empty
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+!endif
+
+!if 0$delay2>0 and $status!=$empty
+ !set now_=$wims_nowseconds
+ !read js/chrono.js $[max(0,$delay1-($now_-$starttime))]
+!endif
+$header_js
+!header
+
+!if $module_checkdata!=yes
+ !read oef/en/nodata.phtml
+ !goto end
+!endif
+
+!if $title=$empty
+ Questo modulo contiene un gruppo di esercizi. Apparentemete non &egrave;
+ stato specificato quale esercizio svolgere. O si &egrave; cliccato
+ su un link errato o si tratta di un bug nel sistema.
+ <p><center>
+ !href module=$module Riprovare
+ , o
+ !href $ annullare
+ . </center>
+ !goto end
+!endif
+
+!if 0$delay1>0 and $status!=$empty
+ <p><form target=# name=chrono><center>
+ <table border=2 bgcolor=$wims_ref_bgcolor><tr><td>
+ &nbsp;<b><font color=red>Attenzione!</font></b>
+ !if $qnum>1
+  Questa sessione ha un limite di tempo.
+ !else
+  Questo esercizio ha un limite di tempo.
+ !endif
+ <input size=4 name=clock readonly onFocus=this.blur();>
+ </table>
+ </center></form> <p>
+!endif
+
+:tester
+!read oef/present.phtml
+<center><hr width=50%></center>
+
+!if $cmd=hint
+ !read oef/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read oef/msg.phtml
+  <center><hr width=50%></center>
+ !endif
+ !read oef/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint Suggerimento
+.
+ !endif
+ !if $help!=$empty
+  !href cmd=help Help on line
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink Un nuovo esercizio
+.
+ !else
+  Questo &egrave; l'esercizio numero $[$reply_cnt+1] di una sessione di $qnum esercizi.
+  !href $renewlink Terminare la sessione
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read oef/msg.phtml
+  <center><hr width=50%></center>
+ !endif
+ !read oef/answer.phtml
+ <p>
+ !if $status!=$empty
+  Questo &egrave; l'esercizio $reply_cnt in una serie di $qnum. <p>
+  !href cmd=next Passare all'esercizio successivo
+, o
+  !href $renewlink abbandonare la sessione e cominciarne un'altra
+. (&Egrave; necessario terminare una sessione per ottenere un punteggio.)
+ !else
+  !if $qnum>1
+   Avete terminato una sessione di $qnum esercizi, ottenendo un punteggio di
+   $module_score su 10.
+   !ifval $module_score>9.8
+    Congratulazioni
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    (Sei stato punito per non aver terminato l'esercizio nel tempo stabilito.)
+   !endif
+   <p>
+   !href $renewlink Un'altra sessione
+.
+   !if $wims_sheet=$empty
+    !href exo_Intro
+.
+   !endif
+  !else
+   Avete ottenuto un punteggio di $module_score su 10.
+   !ifval $module_score>9.8
+    Congratulazioni!
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    (Sei stato punito per non aver terminato l'esercizio nel tempo stabilito.)
+   !endif
+   <p>
+   !href $renewlink Un'altra sessione
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!if $replydefaulted=yes
+ <p> <small>Debug: 
+ !if $oef_default=yes
+  le risposte esatte sono inserite come risposte di default.
+ !else
+  !href cmd=config&oef_default=yes le risposte corrette
+  vanno inserite nei campi delle risposte.
+ !endif
+ </small>
+!endif
+
+!read ./endhook.phtml
+!if $wims_user=supervisor and exam notin $session and \
+	..classes/ notin ..$module and ..adm/ notin ..$module and \
+	..devel/ notin ..$module and \
+	GNU isin $module_copyright and \
+	_check notin $session and \
+	$class_importation!=no
+ <p>
+ !href module=adm/createxo&existing=$thisexo&catmodule=$module Importa
+ questo esercizio nel tuo corso (dove puoi modificarlo).
+!endif
+:end
+
+!tail
+

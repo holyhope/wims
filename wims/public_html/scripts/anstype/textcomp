@@ -1,0 +1,45 @@
+# Similar to `imgcomp', except that there is no height item.
+
+good=!rows2lines $(replygood$i)
+good=!nonempty lines $good
+good=!line 1 of $good
+good=!items2words $good
+good=!singlespace $good
+good=!trim $good
+
+dd=!items2words $(reply$i)
+dd=!singlespace $dd
+dd=!trim $dd
+
+m_reply$i=$dd
+reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+diag=
+good=!translate | to $\
+$ in $good
+good=!nonempty lines $good
+replyGood$i=!line 1 of $good
+t_=!linecnt $good
+!for n=1 to $t_
+ g=!line $n of $good
+ g=!trim $g
+ !if $dd=$g
+  diag=yes
+ !endif
+!next g
+
+!if $diag=yes
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

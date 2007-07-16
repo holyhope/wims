@@ -1,0 +1,62 @@
+
+dd=!declosing $(reply$i)
+!if ; isin $dd
+ test=NaN
+ !exit
+!endif
+dd=!rawmath $dd
+!if , notin $dd
+ dd=!words2items $dd
+!endif
+dd=!listuniq $dd
+reply$i={$dd}
+
+m_reply$i=$dd
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+good=!declosing $(replygood$i)
+!if , notin $good
+ good=!words2items $good
+!endif
+good=!rawmath $good
+good=!listuniq $good
+replyGood$i={$good}
+n1=!itemcnt $good
+n2=!itemcnt $dd
+
+!if $n1!=$n2
+ badsize$i=true
+ diareply$i=bad
+ !exit
+!endif
+
+tt=0
+:rett
+!if J$tt isvarof $good and $tt<99
+ !advance tt
+ !goto rett
+!endif
+
+!reset G_,R_
+!for i_=1 to $n1
+ g_=!item $i_ of $good
+ r_=!item $i_ of $dd
+ G_=!append item (J$tt-($g_)) to $G_
+ R_=!append item (J$tt-($r_)) to $R_
+!next i
+
+Rg_=$(replygood$i)
+RG_=$(replyGood$i)
+RE_=$(reply$i)
+MR_=$(m_reply$i)
+
+replygood$i=!translate internal , to * in $G_
+reply$i=!translate internal , to * in $R_
+!read anstype/function
+
+replygood$i=$Rg_
+replyGood$i=$RG_
+reply$i=$RE_
+m_reply$i=$MR_

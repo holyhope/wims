@@ -1,0 +1,111 @@
+
+#if you change these limits, you have to modify var.def!
+limit_var=2048
+maxstep=100
+
+wims_multiexec=pari maxima
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+htmlmath_gtlt=yes
+proc_oef=yes
+!read deduc/$module_language/names
+!read deduc/var.headers
+# Limit Pari precision, for otherwise many computations will fail.
+!default pari_precision=18
+!default precision=10000
+!default print_precision=8
+wims_print_precision=$print_precision
+maxima_precision=$print_precision
+!default insplot_set=size 0.6,0.6
+
+!if $cmd=help
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+ !exit
+!endif
+
+!read Exindex
+exocnt=!itemcnt $exolist
+!bound qnum between integer 1 and $exocnt default 1
+!bound qcmlevel between integer 1 and 9 default 3
+!bound random within 0,1 default 1
+!default format=html
+
+!if $cmd notwordof new renew and $status!=waiting
+ !readproc oef/valback.proc
+ error=double_reply
+ !exit
+!endif
+
+!readproc deduc/imagedir.proc
+!distribute items 0,0,0 into postvarcnt,conditioncnt,feedbackcnt
+
+!if $status!=waiting
+ !read deduc/exo.init
+!else
+ !read $deffile
+ !readproc oef/valback.proc
+!endif
+
+m_step=$currstep
+!if $cmd=reply and $status=waiting
+ !if $opt iswordof newstep newcase gotocase
+  !changeto deduc/var.$opt
+ !endif
+ !readproc deduc/meth$methstep.proc
+ !if $error!=$empty or $methsubstep>1
+  !exit
+ !endif
+ !advance methstep
+ !if $methstep<=3 and \
+    ($methstep<=2 or \
+	(($askcontext>0 and $contextlist!=$empty) or \
+	 ($askresult>0 and $resultlist!=$empty)))
+  !exit
+ !endif
+ methstep=1
+ thisstepnocount=$stepnocounting
+ !read deduc/methreset
+ !if $postvarcnt>0
+  !read $deffile postdef
+ !endif
+ ctstep=!char 1 to $currstep of $stepcounting
+ ctstep=!text select 1 in $ctstep
+ ctstep=!charcnt $ctstep
+ !if $earlyscore=$empty
+  cstep=$[max($m_minsteps,$ctstep-$tolerance)]
+  vstep=$[min($ctstep,$cstep)]
+  uustep=$[max(0,$ustep-$ctstep-max(0,$m_minsteps+$tolerance-$ctstep))]
+  wstep=$[max(1,$vstep)+$ecoeff*$uustep+$pcoeff*$penalty]
+  wscore=$[max(0,(($m_minsteps/$wstep)^$scorepower-$scoremin)/(1-$scoremin))]
+  scoretest=$[min(10,rint(100*$wscore)/10)]
+  !if $scoretest<=0
+   earlyscore=0
+   module_score=0
+   wims_module_log=score $module_score/10
+  !endif
+ !else
+  scoretest=$earlyscore
+ !endif
+ !if $thisstepnocount!=yes
+  !advance ustep
+ !endif
+ !advance currstep
+ m_step=$currstep
+ !if $currstep>$cutstep
+  scoretest=0
+  cutstop=yes
+  !changeto deduc/var.finish
+ !endif
+
+ !if $conditioncnt>0
+  !read $deffile test
+ !else
+  !read deduc/var.checkgoal
+ !endif
+ !if $condtest1=1 or $condtest1=-1
+  !read deduc/var.finish
+ !endif
+!endif
+

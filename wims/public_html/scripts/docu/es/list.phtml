@@ -1,0 +1,41 @@
+<center><h1>$tit</h1></center>
+
+!if $fcnt<1
+ Este documento no tiene ningún contenido todavía.
+ !href cmd=reply&job=edit&block=main Crear la primera página
+.
+ <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>Lista de bloques del documento</caption>
+$table_hdtr
+<th>Nombre<th>Título<th>Acción
+!for i=1 to $fcnt
+ !set s_=!line $i of $slist
+ !set t_=!line $i of $tlist
+ !set t_=!trim $t_
+ !default t_=Sin título
+ $table_tr
+ <td><tt>$s_</tt></td>
+ <td>$t_</td>
+ <td align=center>
+ !href cmd=reply&job=read&block=$s_ Read
+&nbsp;
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$s_ Edit
+ !endif
+</td>
+!next i
+$table_end <p>
+
+<center>
+Espacio total de disco disponible: $quota_total Meg. Espacio de disco libre: $quota_free Meg.
+<p>
+!href cmd=reply&job=file Depósito de archivos
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main Página de entrada del documento
+
+</center> <p>
+

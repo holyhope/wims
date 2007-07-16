@@ -1,0 +1,44 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Comparing chemical equations
+slib_parms=4\
+ , the student's equation \
+ , a correct equation \
+good , message if OK \
+bad , message if not OK
+slib_author=Georges Khaznadar
+slib_license=GPL
+slib_out= a message (which defaults to "good" or "bad").
+slib_comment=Enter chemical equations as accepted by the command chemeq
+slib_example= H2 + O2 -> H2O, 2H2 + O2 -> 2H2O \
+2H2 + O2 -> 2H2O, 2H2 + O2 -> 2H2O \
+H2 + 1/2 O2 -> H2O, 2H2 + O2 -> 2H2O \
+Fe + Cu^2+ -> Fe^2+ + Cu, Fe + Cu^2+ -> Fe^2+ + Cu \
+Ag^+ + 1/2 SO4^2- -> 1/2 Ag2(SO4), 2Ag^+ + SO4^2- -> Ag2(SO4)
+
+!exit
+
+:proc
+
+!reset slib_parm, slib_student_eq, slib_correct_eq, slib_ok_reply, slib_ko_reply, slib_st_eq, slib_co_eq
+
+slib_parm=!item 1 to 4 of $wims_read_parm
+!distribute item $slib_parm into slib_student_eq, slib_correct_eq, slib_ok_reply, slib_ko_reply
+
+!default slib_ok_reply=good
+!default slib_ko_reply=bad
+
+chemeq_option=n
+
+slib_st_eq=!exec chemeq $slib_student_eq
+slib_co_eq=!exec chemeq $slib_correct_eq
+
+!if $slib_st_eq = $slib_co_eq
+  slib_out=$slib_ok_reply
+!else
+  slib_out=$slib_ko_reply
+!endif
+
+!reset chemeq_option
+
