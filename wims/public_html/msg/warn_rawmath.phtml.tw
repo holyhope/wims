@@ -1,0 +1,48 @@
+
+!set wims_warn_header=<p><font color=red><blink><b>Warning.</b></blink></font>
+
+!if ambiguous iswordof $wims_warn_rawmath
+ $wims_warn_header
+ You have entered an ambiguous formula, whose interpretation
+ by wims may differ from what you meant. Please check the formula.
+ <p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if unknown iswordof $wims_warn_rawmath
+ $wims_warn_header
+ Wims has detected an unrecognized variable or function name 
+ <font color=red><b><tt>$wims_warn_rawmath_parm</tt></b></font>
+ in your formula. A typo?
+ <p>
+ !set wims_warn_rmremark=yes
+!endif
+
+!if flatpower iswordof $wims_warn_rawmath
+ <p><font color=red><b>Hint.</font></b>
+ Want to enter <font color=green>x<sup>2</sup></font>? Type
+ <tt>x^2</tt> or <tt>x**2</tt>.
+ <p>
+!endif
+
+!if badprec iswordof $wims_warn_rawmath
+ $wims_warn_header
+ ``<tt>x^1/2</tt>'' means <font color=green>x/2</font>! Please type
+ ``<tt>x^(1/2)</tt>'' for <font color=green>x<sup>1/2</sup></font>.
+ <p>
+!endif
+
+!if unmatched_parentheses iswordof $wims_warn_rawmath
+ $wims_warn_header
+ We have detected unmatched parentheses in your formula. Please verify it.
+ <p>
+!endif
+
+!if $wims_warn_rmremark=yes
+ Please always use ``<tt>*</tt>'' for multiplication, and
+ always enclose function arguments in parentheses.
+ <small>For experts. If you don't want wims to interprete your expression, 
+ start it with the string ``<tt>1-1+</tt>''.</small>
+ <p>
+!endif
+
