@@ -2,6 +2,10 @@ wims_prefix=class user tmp
 !if robot isin $session
   !exit
 !endif
+!sh cd $wims_home/$wims_sesdir ; mkdir -p latex2wims
+!sh mkdir -p $wims_home/$wims_sesdir/getfile/ ; cp modules/$module/latex2wimsdoc.pdf $wims_home/$wims_sesdir/getfile/
+
+
 !if $wims_developer!=$empty
    !goto debut
 !endif
@@ -15,8 +19,6 @@ wims_prefix=class user tmp
 !if  / isin $wims_deposit or .. isin $wims_deposit
   !exit
 !endif
-!sh cd $wims_home/$wims_sesdir ; mkdir -p latex2wims
-!sh cp modules/$module/latex2wimsdoc.pdf $wims_home/$wims_sesdir/getfile/
 	  style=!record 0 of style.css
     wims =!record 0 of wims.sty
     fichier_test=!record 0 of fichier_test.tex
@@ -102,7 +104,7 @@ Document dans le compte Modtool
       auth_name1=!word 2 of $auth_name
       fichier_p=!item $principal of $fichiers
       !!!mexec dos2unix $fichier_p
-      docdir=$wims_home/public_html/modules/devel/$login/$document
+      docdir=$wims_home/public_html/modules/devel/$wims_developer/$document
       !sh rm -r $docdir/doc/1/* ; mkdir -p $docdir/doc/1/src
       dir=$wims_home/$wims_sesdir/latex2wims/
       !mexec latex2wims.pl --dir=$dir --docdir=$docdir --author=$auth_name1 --email=$auth_email --worksheet=$wksheet --verbose=1 $fichier_p
