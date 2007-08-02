@@ -30,7 +30,7 @@ $wims_html_header
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -113,6 +113,8 @@ minutes. Each participant can take the exam up to
 !if $exocnt=0
  This exam has no content yet.
  !href cmd=reply&job=exo&exo=1 Add an exercise
+, or
+ !href cmd=reply&job=cpsheet add a series of exercises
 .
 !else
  <a name=list>
@@ -137,6 +139,8 @@ minutes. Each participant can take the exam up to
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Add another exercise
+, or
+ !href cmd=reply&job=cpsheet add a series of exercises
 .
  !endif
 !endif

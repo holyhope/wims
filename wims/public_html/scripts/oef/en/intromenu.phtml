@@ -5,6 +5,16 @@
  !changeto content.html
 !endif
 
+!if $wims_class!=$empty and $wims_user=supervisor
+ !distribute line $wims_oefdefault_qnum\
+$wims_oefdefault_qcmlevel\
+$wims_oefdefault_scoredelay\
+$wims_oefdefault_qcmpresent\
+$wims_oefdefault_presentsol\
+$wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check
+ !let special_parm2=expert
+!endif
+
 !if ////classes/ isin ////$module
  !set class_header=wimshome/log/classes/$wims_class/
 !endif
@@ -43,11 +53,11 @@
 !endif
 !read oef/select.phtml
 <tr><td align=center>One series will have<td>
-!set qnum=1
+!default qnum=1
 !formselect qnum from 1 to 9
 exercises.
 <tr><td align=center>Level of severity <td>
-!set qcmlevel=3
+!default qcmlevel=3
 !formselect qcmlevel from 1 to 9
 <tr><td align=center>Time limit <td>
 <input size=7 name=scoredelay value="$scoredelay"> seconds.

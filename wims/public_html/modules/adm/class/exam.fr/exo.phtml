@@ -15,7 +15,27 @@ existants dans des feuilles de travail. Veuillez marquer parmi les exercices de
 feuilles dans la liste suivante, ceux que vous voulez prendre comme candidats
 à cet exercice d'examen.
 <p>
-!for i in $asheets
+Afficher seulement les exercices de la feuille 
+ <select name="ltsheets" onchange=submit() value="$ltsheets">
+  !if $ltsheets=$asheets
+   <option value="$asheets" selected="">Toutes</option>
+  !else
+   <option value="$asheets">Toutes</option>  
+  !endif
+  !for k in $asheets
+   !if $ltsheets=$k
+    <option value="$k" selected="">
+   !else
+    <option value="$k">   
+   !endif
+    !let t=!record $k of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $k :
+    !line 3 of $t
+   </option>
+  !next k
+ </select>
+<p>
+!for i in $ltsheets
  !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  !for j=1 to $t
   !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i

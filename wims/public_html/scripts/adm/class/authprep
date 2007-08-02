@@ -63,3 +63,11 @@ wims_theme=$class_theme\
 wims_class_refcolor=$class_refcolor\
 wims_robotcheck=manual
 
+!if $authprep_user=supervisor
+ !for k in qnum,qcmlevel,scoredelay,qcmpresent,presentsol,check
+  !if $(user_$k)!=$empty
+   classdef=$classdef\
+wims_oefdefault_$k=$(user_$k)
+  !endif
+ !next k
+!endif

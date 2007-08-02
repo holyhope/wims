@@ -21,6 +21,13 @@ m_firstname,m_lastname,m_newmsgcnt
  !set l_=!record $i of wimshome/log/classes/$wims_class/exams/.exams
  !distribute lines $l_ into m_statusE$i,m_expirationE$i,m_titleE$i,m_descE$i
 !next i
-
+!let save_trustfile=$wims_trustfile
+!let save_writable=$wims_writable
+!let save_readable=$wims_readable
+!let wims_trustfile=$wims_trustfile primitives/target.phtml primitives.phtml
+!let wims_writable=$wims_writable serial prim parm1 parm2 parm3 parm4 parms anchor w gotcnt gotm p add eq sh_ ex_ l_ m_ p_ a_ b_ t_ d_ prompt n i nadd lmod lses lcmd l ll l1 l2
+!let wims_readable=$wims_readable wims_read_parm serial prim parm1 parm2 parm3 parm4 parms anchor w gotcnt gotm p add eq sh_ ex_ l_ m_ p_ a_ b_ t_ d_ prompt n i nadd lmod lses lcmd l ll l1 l2
 !read $deffile content
-
+!let wims_trustfile=$save_trustfile
+!let wims_writable=$save_writable
+!let wims_readable=$save_readable
