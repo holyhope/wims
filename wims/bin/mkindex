@@ -19,6 +19,7 @@ BASES=$WIMS_HOME/public_html/bases
 MODULES=$WIMS_HOME/public_html/modules
 translator=$WIMS_HOME/public_html/bin/translator
 dicsort=$WIMS_HOME/bin/dicsort
+SLIB=$WIMS_HOME/public_html/scripts/slib
 # MAX_LINELEN
 linelen=15000
 
@@ -170,6 +171,10 @@ do
   $dicsort $f >>mkindex.log
   mv $f.sorted $f
 done
+
+#slib
+cd $SLIB
+./mkindex >>mkindex.log 
 
 $BASES/doc/.build-index
 $MODULES/H3/algebra/spuzzle/makepieces
