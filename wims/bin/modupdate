@@ -114,7 +114,7 @@ wv1=`echo $w_wims_version | tr -d '[a-zA-Z]'`
 
 public_html/bin/webget 2>/dev/null >$tmpdir/index.gz
 gunzip -f $tmpdir/index.gz
-egrep -v '(\~)|(\.\.)|(\<adm/)|(\<home)|(\<template/)|(\<help/)|(\<devel/)|(\<com/)' $tmpdir/index | \
+egrep -v '(\~)|(\.\.)|(\<adm/)|(\<home)|(\<template/)|(\<devel/)|(\<com/)' $tmpdir/index | \
 	awk 'NF==6 && ($5 < "'$wv1'" || ($5 == "'$wv1'" && substr($1,18) <= "'$wva'" )) '"$start"' {print $2" "$4" "$6" "$3" "$5}' | \
 	sort -r -k3,5 | \
 	awk 'BEGIN {a1=a2=a3=a4=a5="";};
