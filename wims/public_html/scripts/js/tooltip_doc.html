@@ -1,0 +1,567 @@
+
+<style type="text/css">
+<!--
+.tt {
+  font-size:12px;
+}
+
+#T2tDirect {
+  border:2px solid red;
+  background:yellow;
+  padding:3px;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function FixCalcXY(el)
+{
+    if(typeof(el.offsetParent) == "undefined")
+        return [70, 4000];
+	var a = new Array(0, -70);
+	while(el)
+	{
+		a[0] += el.offsetLeft || 0;
+		a[1] += el.offsetTop || 0;
+		el = el.offsetParent || null;
+	}
+	return a;
+}
+//-->
+</script>
+
+    <table>
+      <tbody><tr>
+        <td width="50"><br></td>
+        <td>
+          <table bgcolor="#000099" border="0" cellpadding="0" cellspacing="0">
+            <tbody><tr>
+              <td>
+                <table border="0" cellpadding="6" cellspacing="1" width="100%">
+                  <tbody><tr bgcolor="#eeeeee">
+                    <th align="left">Command</th>
+                    <th align="left">Description</th>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Tooltip positioned above mouse pointer', ABOVE, true);">ABOVE</a></tt>
+                    </td>
+                    <td>
+                      Positions the tooltip above the mousepointer.
+                      Value: true or false.
+                      <br>&nbsp;<br>
+                      Combine with
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('These commands have been applied:<br>ABOVE, true, OFFSETY, 50', ABOVE,true,OFFSETY,50);">OFFSETY</a></tt>
+                      to adjust the vertical distance from the mousepointer,
+                      or with
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('These commands have been applied:<br>ABOVE, true, CENTERMOUSE, true', ABOVE, true, CENTERMOUSE, true, OFFSETX, 0);">CENTERMOUSE</a></tt>
+                      to center the tooltip horizontally above the mousepointer.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Changed background color', BGCOLOR,'#f3e0f3');">BGCOLOR</a></tt>
+                    </td>
+                    <td>
+                      Background color of the tooltip.
+                      Value: HTML color, in single quotes, e.g. '#D3E3F6' or 'DarkCyan',
+                      or empty string <tt>''</tt> for
+                      <tt><a class="nodeco" href="javascript:void(0)" onmouseover="Tip('This tooltip has neither a background<br>nor a border', BORDERWIDTH, 0, BGCOLOR, '', FONTWEIGHT, 'bold', FONTCOLOR, '#00AA00')">no background</a></tt>.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', BGCOLOR, '#D3E3F6')"</font></tt>
+                      <br>or<br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', BGCOLOR, '')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Tooltip with background image', BGIMG, '../images/tooltip/tt_bg.jpg', PADDING, 10, WIDTH, 180);">BGIMG</a></tt>
+                    </td>
+                    <td>
+                      Background image.
+                      Value: Path to image, in single quotes.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', BGIMG, '../images/tipbackground.gif')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Altered border color', BORDERCOLOR, '#dd00aa');">BORDERCOLOR</a></tt>
+                    </td>
+                    <td>
+                      Border color.
+                      Value: HTML color, in single quotes, e.g. '#dd00aa'.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Dashed border style', BORDERSTYLE, 'dashed', PADDING, 8);">BORDERSTYLE</a></tt>
+                    </td>
+                    <td>
+                      Border style.
+                      Value: CSS border style, in single quotes.
+                      Recommend are 'solid' (default), 'dashed' or 'dotted', others may not work in all browsers.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Width of tooltip border', BORDERWIDTH, 5);">BORDERWIDTH</a></tt>
+                    </td>
+                    <td>
+                      Width of tooltip border.
+                      Value: Integer&nbsp;&#8805;&nbsp;0. Default is 1. Use 0 for no border.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', BORDERWIDTH, 2)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td align="right">
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Centered beneath the mouse', CENTERMOUSE, true, OFFSETX, 0, OFFSETY, 22);">CENTERMOUSE</a></tt>
+                    </td>
+                    <td>
+                      Centers the tooltip horizontally beneath (or above) the mousepointer.
+                      Value: true or false.
+                      Consider that the tooltip is offset from the center by the value globally set in wz_tooltip.js (<tt>config.&nbsp;OffsetX</tt>), or as specified by the OFFSETX command.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', CENTERMOUSE, true, OFFSETX, 0)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('This tooltip is &quot;sticky&quot;, but it can be closed by clicking into the tooltip or document, since the command CLICKCLOSE, true has been applied.', CLICKCLOSE, true, STICKY, true, WIDTH, 300);">CLICKCLOSE</a></tt>
+                    </td>
+                    <td>
+                      Closes the tooltip once the user clicks somewhere inside the tooltip or into the document.
+                      Value: true, false.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Closebutton in the titlebar', CLOSEBTN, true, STICKY, true);">CLOSEBTN</a></tt>
+                    </td>
+                    <td>
+                      Displays a closebutton in the titlebar.
+                      Value: true, false.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Altered closebutton colors', CLOSEBTN, true, STICKY, true, CLOSEBTNCOLORS, ['#7799cc', '#ffaaaa', '#ffffff', '#ff0000']);">CLOSEBTNCOLORS</a></tt>
+                    </td>
+                    <td>
+                      Colors used for the closebutton.
+                      <br>&nbsp;<br>
+Value must be a comma-separated array of 4 color values. Each color in
+single quotes. The entire array must be enclosed with a pair of square
+brackets, see example below, since it's actually a single parameter.
+The 4 colors have the following meanings: <br>
+                      1. Background color
+                      <br>
+                      2. Text color
+                      <br>
+                      3. Highlighted background, while the button is being hovered
+                      <br>
+                      4. Hilighted text color, while the button is being hovered
+                      <br>
+                      For each of these colors, you can also specify an empty string <tt>''</tt>,
+                      in which case the title background, or title text color, respectively, is used for that button state.
+                      <br>&nbsp;<br>
+                      Example:<br>
+                      <tt><font class="tt" size="2">Tip('Text', CLOSEBTN, true, CLOSEBTNCOLORS, ['', '#66ff66', 'white', '#00cc00'], STICKY, true)</font></tt>
+                      <br>
+                      In this example, the first color value (background color) is an empty string.
+                      Therefore the closebutton inherits the titlebar background.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Altered closebutton text', CLOSEBTN, true, STICKY, true, CLOSEBTNTEXT, 'Click Me');">CLOSEBTNTEXT</a></tt>
+                    </td>
+                    <td>
+                      Text in the closebutton.
+                      Value must be enclosed with single quotes.
+                      Example:
+                      <br>
+                      <tt><font class="tt" size="2">Tip('Tooltip text', CLOSEBTN, true, CLOSEBTNTEXT, 'Click Me', STICKY, true)</font></tt>
+                      <br>
+Globally preset in wz_tooltip.js is '&amp;nbsp;X&amp;nbsp;' - the
+whitespace entities '&amp;nbsp;' add some horizontal padding to the
+button. </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="TagToTip('T2tDirect', COPYCONTENT, false, PADDING, 0, BORDERWIDTH, 0, WIDTH, 280);">COPYCONTENT</a></tt>
+                      <div style="display: none;" id="T2tDirect">
+Actually, this DIV was embedded right into the HTML of the document,
+but it has been temporarily converted to a tooltip. </div>
+                    </td>
+                    <td>
+                      COPYCONTENT has only effect on tooltips created with <tt>TagToTip()</tt>, that is, if an HTML element is to be converted to a tooltip.
+                      <br>
+                      Value: true, false.
+                      <br>
+If true (this is the default behaviour preset in wz_tooltip.js), just a
+copy of the text (or inner HTML) of the HTML element is inserted into
+the tooltip. If false, the entire HTML element (its DOM node) by itself
+is temporarily converted to a tooltip, which may be useful in the
+following aspects: <br> 1.) If the HTML element converted to a
+tooltip contains a form with inputs, their current user input will be
+maintained even while the tooltip is not displayed. <br>
+                      2.) The tooltip inherits the style properties of the HTML element.
+                      <br>
+                      Example how to convert an HTML element entirely to a tooltip, by applying COPYCONTENT with the value <tt>false</tt>:
+                      <br>
+                      <tt><font class="tt" size="2">TagToTip('SomeID', COPYCONTENT, false, BORDERWIDTH, 0, PADDING, 0)</font></tt>
+                      <br>
+Moreover, this example turns off the native tooltip border
+(BORDERWIDTH,&nbsp;0), and sets the native tooltip padding to zero, so
+only the padding and border defined for the HTML element itself are
+displayed. </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Delay of 1000 ms until the tooltip shows up.<br> <br>A small delay of 400 ms is preset in wz_tooltip.js (in the section &quot;GLOBAL TOOLTIP CONFIGURATION&quot;) and can be changed there. Note, however, that values much shorter or longer than 500 ms might be perceived as irritating.', DELAY, 1000, WIDTH, 360);">DELAY</a></tt>
+                    </td>
+                    <td>
+                      Tooltip shows up after the specified timeout, in milliseconds.
+                      A behavior similar to OS based tooltips.
+                      <br>
+                      Value:
+                      Integer&nbsp;&#8805;&nbsp;0. Use 0 for no delay.
+                      In wz_tooltip.js preset and recommended is 400.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', DELAY, 1000)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Lifetime of this tip has been limited to 2500 milliseconds', DURATION, 2500);">DURATION</a></tt>
+                    </td>
+                    <td>
+                      Time span, in milliseconds, until the tooltip will be hidden,
+                      even if the <tt>STICKY</tt> command has been applied,
+                      or even if the mouse is still on the HTML element that has triggered the tooltip.
+                      <br>
+                      Value:
+                      Integer&nbsp;&#8805;&nbsp;0.
+                      Use 0 for no limitation (this is the default)
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover=" Tip('Fade-in animation', FADEIN, 1000, PADDING, 10);">FADEIN</a></tt>
+                    </td>
+                    <td>
+                      Fade-in animation.
+                      The value (integer&nbsp;&#8805;&nbsp;0) specifies the duration of the animation, in milliseconds.
+                      0 for no animation.
+                      <br>&nbsp;<br>
+                      Not supported in Opera prior to v.9.0, old versions of Safari, some versions of Konqueror.
+                      These fall back to normal, non-animated behaviour.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover=" Tip('Fade-out animation', FADEOUT, 1000, PADDING, 10);">FADEOUT</a></tt>
+                    </td>
+                    <td>
+                      Fade-out animation.
+                      The value (integer&nbsp;&#8805;&nbsp;0) specifies the duration of the animation, in milliseconds.
+                      0 for no animation.
+                      <br>&nbsp;<br>
+                      Recommended: combine with
+                      <tt><a class="nodeco" href="javascript:void(0)" onmouseover="Tip('On another fast trip in Bavaria<br><img src=\'../images/ko5obersoech.jpg\' width=\'180\' height=\'115\' \/>', FADEIN, 800, FADEOUT, 800, TEXTALIGN, 'center', BGCOLOR, '#ffffff')">FADEIN</a></tt>.
+                      <br>&nbsp;<br>
+                      Not supported in Opera prior to v.9.0, old versions of Safari, some versions of Konqueror.
+                      These fall back to normal, non-animated behaviour.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover=" Tip('Tooltip at fixed position', FIX, FixCalcXY(this));">FIX</a></tt>
+                    </td>
+                    <td>
+                      Shows the tooltip at the fixed coordinates [x, y].
+                      Value: Square-bracketed array of two integers.
+                      Example:<br>
+                      <tt>onmouseover="Tip('Some text', FIX, [230, 874])"</tt>
+                      <br>
+                      You can also call function(s) defined elsewhere that calculate the coordinates dynamically:
+                      <br>
+                      <tt>onmouseover="Tip('Text', FIX, [CalcFixX(), CalcFixY()], BORDERWIDTH, 2)"</tt>
+                      <br>
+                      or
+                      <br>
+                      <tt>onmouseover="Tip('Text', FIX, CalcFixXY(), ABOVE, true)"</tt>
+                      <br>
+                      In the latter example, the function CalcFixXY() must return an array containing the two numbers.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('This tooltip doesn\'t follow the movements of the mouse since we\'ve applied the FOLLOWMOUSE command with the value false', FOLLOWMOUSE, false, WIDTH, 300);">FOLLOWMOUSE</a></tt>
+                    </td>
+                    <td>
+                      The tooltip follows the movements of the mouse.
+                      Value: true, false. Default: true.
+                      <br>&nbsp;<br>
+                      When turning this off by applying the value false,
+                      the tooltip behaves like OS-based tooltips which don't follow the mouse.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Altered font color', FONTCOLOR, '#ff0000');">FONTCOLOR</a></tt>
+                    </td>
+                    <td>
+                      Font color.
+                      Value: HTML color, in single quotes, e.g. '#990099'
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Changed font face', FONTFACE, 'Courier New, Courier, mono');">FONTFACE</a></tt>
+                    </td>
+                    <td>
+                      Font face (font family).
+                      <br>
+                      Value:
+                      As you'd specify it in HTML or CSS, enclosed with single quotes, e.g.
+                      <tt>Tip('Some text', FONTFACE, 'Arial, Helvetica, sans-serif', FONTSIZE, '12pt')</tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Oops...', FONTSIZE, '72pt');">FONTSIZE</a></tt>
+                    </td>
+                    <td>
+                      Font size.
+                      Value: Size with unit, in single quotes.
+                      Unit ('px', 'pt', 'em' etc.) is mandatory.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('FONTWEIGHT, \'bold\'', FONTWEIGHT, 'bold');">FONTWEIGHT</a></tt>
+                    </td>
+                    <td>
+                      Font weight.
+                      Value: 'normal' or 'bold', in single quotes.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td align="right">
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('On the other side', LEFT, true);">LEFT</a></tt>
+                    </td>
+                    <td>
+                      Tooltip positioned on the left side of the mousepointer.
+                      Value: true, false.
+                      <br>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('LEFT and ABOVE combined...', LEFT, true, ABOVE, true);">LEFT and ABOVE commands combined</a></tt>.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', LEFT, true, ABOVE, true)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Increased horizontal offset from the mouse', OFFSETX, 150);">OFFSETX</a></tt>
+                    </td>
+                    <td>
+                      Horizontal offset from mouse-pointer.
+                      Value: Any integer. May also be negative.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Increased vertical distance from the mouse', OFFSETY, 70);">OFFSETY</a></tt>
+                    </td>
+                    <td>
+                      Vertical offset from the mouse-pointer.
+                      Value: Any integer. May also be negative.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('A semi-transparent Tooltip', OPACITY, 70, PADDING, 14);">OPACITY</a></tt>
+                    </td>
+                    <td>
+                      Transparency of tooltip.
+                      Value: Integer between 0 (fully transparent) and 100 (opaque, no transparency).
+                      <br>&nbsp;<br>
+                      Opacity is the opposite of transparency, i.e.<br>
+                      opacity&nbsp;=&nbsp;100&nbsp;-&nbsp;transparency&nbsp;(in&nbsp;percent).<br>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('<img src=../images/dragdrop/fateba_fi.jpg width=130 height=103><br>Tooltip with image, shadow, background image and fade-in/fade-out animation.', WIDTH, 180, OPACITY, 80, TEXTALIGN, 'center', TITLEALIGN, 'center', SHADOW, true, TITLE, 'Nifty', BGIMG, '../images/tooltip/tt_bg.jpg', FADEIN, 700, FADEOUT, 700);">Another example</a></tt>
+with image (taken on my 9000-km / 5500-miles recumbent bicycle trip
+Hamburg-Northcape-Munich), shadow via SHADOW command, content centered
+using TEXTALIGN, background image via BGIMG and animation via FADEIN
+and FADEOUT commands. <br>&nbsp;<br>
+                      Not supported in Opera prior to v.9.0, old versions of Safari and some versions of Konqueror.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Tip with plenty of padding around its content', PADDING, 30);">PADDING</a></tt>
+                    </td>
+                    <td>
+                      Inner spacing of tooltip, between border and content.
+                      Value: Integer &#8805; 0.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('SHADOW, true', SHADOW, true);">SHADOW</a></tt>
+                    </td>
+                    <td>
+                      Tooltip drops a shadow.
+                      Value: true, false
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('This one drops a shadow (SHADOW command),<br>and its shadow color has been changed (SHADOWCOLOR command)', PADDING, 8, SHADOW, true, SHADOWCOLOR, '#dd99aa');">SHADOWCOLOR</a></tt>
+                      <!--br>
+
+                      <form> &nbsp; &nbsp; <select><option>aaa</option><option>bbb</option><option>ccc</option></select></form-->
+                    </td>
+                    <td>
+                      Shadow color.
+                      Value: HTML color, in single quotes.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', SHADOW, true, SHADOWCOLOR, '#dd99aa')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('Increased shadow width', SHADOW, true, SHADOWWIDTH, 10, PADDING, 8);">SHADOWWIDTH</a></tt>
+                    </td>
+                    <td>
+                      Shadow width (offset).
+                      Value: Integer&nbsp;&#8805;&nbsp;0.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', SHADOW, true, SHADOWWIDTH, 7)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('STICKY, true<ul><li style=\'font-family:Verdana,Geneva,sans-serif;font-size:8pt;\'><a href=#top>Top of page<\/a><\/li><li style=\'font-family:Verdana,Geneva,sans-serif;font-size:8pt;\'><a href=\'#docu\'>Begin of documentation<\/a><\/li><\/ul>', STICKY, true, CLICKCLOSE, true, PADDING, 6);">STICKY</a></tt>
+                    </td>
+                    <td>
+                      The tooltip stays fixed at its initial position until another tooltip pops up.
+                      Value: true, false.
+                      <br>&nbsp;<br>
+                      With
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('STICKY, true, DURATION, 2500<br>This tip is sticky, but its lifetime has been limited to 2.5 seconds.', STICKY, true, CLICKCLOSE, true, DURATION, 2500, WIDTH, 280)">DURATION</a></tt>
+                      you can enforce the tooltip to disappear after a certain time span.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('The TEXTALIGN command takes as values either \'right\', \'center\', \'justify\' or \'left\', the latter being unnecessary since it is the default value.', WIDTH, 200, TITLE, 'Right-Aligned Text', TEXTALIGN, 'right');">TEXTALIGN</a></tt>
+                    </td>
+                    <td>
+                      Aligns the text in the body of the tooltip.
+                      Value: 'right', 'center',
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('<img align=\'right\' src=\'..\/images\/dragdrop\/muckl.jpg\' width=\'100\' height=\'130\'>This is some quite lengthy text which demonstrates the justification effect which can be achieved by sending the TEXTALIGN command with the \'justify\' value. Note that text justification is not recommended for text that consists of relatively short lines - as is also the case in this tooltip, in particular with the text alongside the Muckl image above.', TITLE, 'Justified text with Muckl', TEXTALIGN, 'justify', WIDTH, 250);">'justify'</a></tt>
+                      or 'left'.
+                      <br>Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', TEXTALIGN, 'right')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLE, \'Some title\'', TITLE, 'Some title');">TITLE</a></tt>
+                    </td>
+                    <td>
+                      Display a titlebar.
+                      Value: Text to display, in single quotes.
+                      May even contain HTML, which gives you additional freedom in fashioning the titlebar.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('The TITLEALIGN command takes as values either \'right\', \'justify\' or \'left\', the latter being unnecessary since it is the default value.', WIDTH, 240, TITLE, 'Right-Aligned Title', TITLEALIGN, 'right');">TITLEALIGN</a></tt>
+                    </td>
+                    <td>
+                      Aligns the text in the titlebar.
+                      Value: 'right', 'center', 'justify' or 'left'
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEBGCOLOR, \'#990099\'', TITLE, 'Title background', TITLEBGCOLOR, '#990099');">TITLEBGCOLOR</a></tt>
+                    </td>
+                    <td>
+                      Backgroundcolor of the titlebar.
+                      Value: HTML color, in single quotes.
+                      If it's an empty string <tt>''</tt>,
+                      the border color (see also BORDERCOLOR command) is used (this is the default).
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEFONTCOLOR, \'#ff6666\'', TITLE, 'Red title',  TITLEFONTCOLOR, '#ff6666');">TITLEFONTCOLOR</a></tt>
+                    </td>
+                    <td>
+                      Color of title text.
+                      Value: HTML color, in single quotes.
+                      If it's an empty string <tt>''</tt>, the backgroundcolor of the tooltip body (see also BGCOLOR command) is used (this is the default).
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEFONTFACE, \'Courier New, Courier, mono\'', TITLE, 'Changed Title Font',  TITLEFONTFACE, 'Courier New, Courier, mono');">TITLEFONTFACE</a></tt>
+                    </td>
+                    <td>
+                      Font face for title text.
+                      Value: Like in HTML or CSS. Enclosed with single quotes.
+                      If the value is an empty string <tt>''</tt>, the tooltip body font, in boldified form, is used (this is the default).
+                      <br>
+                      Example:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('Some text', TITLE, 'Some Title', TITLEFONTFACE, 'Verdana,sans-serif')"</font></tt>
+                      <br>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEFONTSIZE, \'18pt\'', TITLE, 'Big Title',  TITLEFONTSIZE, '18pt');">TITLEFONTSIZE</a></tt>
+                    </td>
+                    <td>
+                      Font size of title text.
+                      Value: Size with unit, in single quotes.
+                      Unit ('px', 'pt', 'em' etc.) is mandatory.
+                      If the value is an empty string <tt>''</tt>, the fontsize of the tooltip body is applied.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('WIDTH, 200', WIDTH, 200);">WIDTH</a></tt>
+                    </td>
+                    <td>
+                      Width of tooltip.
+                      Value: Integer&nbsp;&#8805;&nbsp;0.
+                      If 0 (the default), the width is automatically adapted to the content of the tooltip.
+                      <br>&nbsp;<br>
+                      Note that the tooltips follow the W3C box model,
+                      which means that the specified width applies to the actual content of the tooltip,
+                      excluding padding (see PADDING command), border and shadow.
+                    </td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+        </td>
+        <td width="50"><br></td>
+      </tr>
+    </tbody></table>
+

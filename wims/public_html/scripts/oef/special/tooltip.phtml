@@ -1,0 +1,48 @@
+!if $wims_read_parm=help
+<script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+create a tooltip :  the first parameter is the text of the 
+link, the second is the text which appears in the tooltip. 
+You can put some option after the first parameter in the form :
+option=[...] 
+Inside brackets, you must put option as in the wz_tooltip.js documentation. 
+Default is : option=[FONTSIZE, '14pt', ABOVE, 'true']
+<p><b>Example</b> \special{tooltip click here, the word has 5 letters}
+or 
+\special{tooltip click here,option=[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters}
+\special{tooltip click here,option=[TITLE, 'Some Title', PADDING, 9]</center>
+!readproc slib/utilities/tooltip click here,option=[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters
+<p>The possible options for tooltips are  (from www.walterzorn.com)
+ <embed>
+!read js/tooltip_doc.html
+</embed>
+!exit
+!endif
+
+!set text=!item 2 to -1 of $wims_read_parm
+!set option=$(wims_read_parm[2])
+
+!if option isin $option and [ isin $option
+  !set option=!getopt option in $option
+  !set option=!declosing $option
+  !set text=!item 3 to -1 of $wims_read_parm
+!else
+  !set option=$empty
+  !set text=!item 2 to -1 of $wims_read_parm
+!endif
+
+!if $option=$empty
+  !set option=FONTSIZE, '14pt', ABOVE, 'true'
+!endif
+
+!set prompt=$(wims_read_parm[1])
+!if $prompt != $empty
+ !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+!set text=!replace internal $\
+$ by  $ in  $text
+!set special_out=$special_out\
+<a onmouseover="Tip('$text', $option)">$(wims_read_parm[1])</a>
+$special_out
+ !! <a onmouseover="return escape('$(wims_read_parm[1])')">$prompt</a>
+ !! <script type="text/javascript" src="scripts/js/wz_tooltipold.js"></script>
+!endif
+

@@ -1,0 +1,23 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Tooltip containing an html text which appears when the mouse points on a word.
+slib_parms=3\
+,word on which the mouse should point\
+option=[DURATION, 4000, FONTSIZE, '14pt', ABOVE, 'true'],option\
+,text
+slib_author=Bernadette Perrin-Riou
+slib_out= code for tooltip
+slib_comment=use javascript  wz_tooltip.js (http://www.walterzorn.com).\
+
+slib_example= rouge,option=[], une couleur\
+mouse here, option=[DURATION, 1000,TITLE,'First clue'], the word has 5 letters\
+mouse here, option=[FONTSIZE, '25pt'], .....\
+mouse here, option=[TITLE, 'Some Title', PADDING, 9],another example
+!exit
+
+:proc
+
+!read oef/special/tooltip.phtml $wims_read_parm
+
+slib_out= $special_out
