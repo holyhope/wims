@@ -6,8 +6,7 @@
 # Make distribution tgz packages
 #on execute le script dans le dossier wims
 
-#On écrit le numéro de la version dans le fichier src/configure.in à la main
-#plus tard on récupérera ce numéro dans version ?
+#ligne à changer
 version=3.63a
 
 #on mettra la version intermédiaire dans $target
@@ -22,13 +21,25 @@ rm -Rf $target/*
 echo export svn in  $target/wims
 svn export . $target/wims
 
+#on met le numéro de version où il faut
 ed $target/wims/README.template <<@
  ,s/WIMS_VERSION/$version/
 w
 @
+
 mv $target/wims/README.template $target/wims/README
 
-cd $target/wims/src ; autoconf configure.in > configure ; chmod a+x configure
+ed $target/wims/src/configure.in <<@
+ ,s/WIMS_VERSION/$version/
+w
+@
+#j'enlève le fichier configure.in de la distribution car il ne sert pas
+#sert à générer par autoconf configure qui lui reste
+#il reste bien sûr dans le svn. Sinon, il va y avoir une confusion avec la version 
+#svn ; sinon faire un template comme pour le README ?
+
+cd $target/wims/src ; autoconf configure.in > configure ; chmod a+x configure ;
+rm $target/wims/src/configure.in
 
 echo enlève les fichiers générés par autoconf
 rm -Rf *.cache *.log 2>/dev/null
@@ -41,10 +52,13 @@ find $target/wims -name .DS_Store -exec rm '{}' \;
 
 echo on crée le fichier version 
 echo $version >$target/wims/version
- 
+# problème avec forall, je l'ai enlevé du svn
+mkdir -m 777 $target/dist/tmp/forall
+
 echo Archiving WIMS package...
 cd $target/wims ; tar -czf ../wims-$version.tgz --exclude=CVS .
 
+######FIN DU FICHIER, le reste est l'ancien script que Xiao nous a donné
 
 #je ne comprends pas trop si la suite est utile. Il me semble que non
 # export whome=/home/wdev
