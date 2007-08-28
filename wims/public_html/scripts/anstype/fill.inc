@@ -42,7 +42,17 @@ $ in $input_rg
  !!set input_rg=!listuniq $g_
  !set input_rg=$g_
 !else
- !set input_rg=!lines2items $input_rg 
+ !if keeporder notwordof $wims_fill_option
+   !set input_rg=!lines2items $input_rg 
+ !else
+ !!on vérifie que la bonne réponse est bien dans la liste, si non on la rajoute
+   !set input_rg2=!lines2items $input_rg
+   !set input_rg=!line 2 to -1  of $input_rg 
+   !set l_=!listcomplement $input_rg in $input_rg2
+   !if $l_!=$empty
+     !set input_rg=$l_,$input_rg
+   !endif
+ !endif
 !endif
 !set wims_fill_list=!append item $input_rg to $wims_fill_list
 !set dynapi_fill_fields=!append item $i to $dynapi_fill_fields
