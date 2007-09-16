@@ -4,7 +4,7 @@
 !endif
 
 !if $no_selection!=$empty
- <b>Attention</b>. Rien n'est sélectionné pour être restauré.
+ <b>Attention</b>. Aucune ressource à restaurer n'est sélectionnée.
  <p>
 !endif
 
@@ -14,7 +14,7 @@
 !if $test=bad
  <blink><font color=red><b>AVERTISSEMENT!!!</b></font></blink>
  Vous avez envoyé des ressources sauvegardées à partir d'une autre classe.
- Si vous restaurez des ressources incompatibles sur votre classe, elle va
+ Si vous restaurez des ressources incompatibles avec votre classe, elle va
  être simplement détruite.
  !href cmd=help&special_parm=dependencies Pourquoi&nbsp;?
  <p>
@@ -24,8 +24,8 @@
  <p><hr> <p> 
 !endif
 
-!set no_restore=Impossible de restaurer car vous partagez celles d'une autre\
-	classe. La restauration ne peut être faire que par la classe maître du partage.
+!set no_restore=Impossible de restaurer car vous partagez les ressources d'une autre\
+	classe. La restauration ne peut être faite que par la classe maître du partage.
 !form reply
 <input type=hidden name=job value=$job>
 <input type=hidden name=job2 value=restore>
@@ -62,6 +62,7 @@ suivantes. Marquez ce que vous voulez restaurer dans votre classe.
  !else
   <small>(Comptes existants&nbsp;: $old_usercnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_doccnt>0
  <li>
@@ -74,6 +75,7 @@ suivantes. Marquez ce que vous voulez restaurer dans votre classe.
  !else
   <small>(Documents existants&nbsp;: $old_doccnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_exocnt>0
  <li>
@@ -86,6 +88,7 @@ suivantes. Marquez ce que vous voulez restaurer dans votre classe.
  !else
   <small>(Exercices existants: $old_exocnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_sheetcnt>0
  <li>
@@ -99,6 +102,7 @@ suivantes. Marquez ce que vous voulez restaurer dans votre classe.
   Implique la restauration des exercices.
   <small>(Feuilles existantes: $old_sheetcnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_examcnt>0
  <li>
@@ -112,6 +116,7 @@ suivantes. Marquez ce que vous voulez restaurer dans votre classe.
   Implique la restauration de feuilles de travail et d'exercices.
   <small>(Examens existants: $old_examcnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_forumcnt>0
  <li>
@@ -124,26 +129,29 @@ suivantes. Marquez ce que vous voulez restaurer dans votre classe.
  !else
   <small>(Messages existants: $old_forumcnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_scorecnt>0
  <li><input type=checkbox name=selection value=score>
  Registre d'activités de participants et scores automatiques. Implique la
  restauration de comptes de participants.
+ </li>
 !endif
 !if $new_manualcnt>0
  <li><input type=checkbox name=selection value=manual>
  $new_manualcnt Notes entrées par l'enseignant. <small>(Notes existantes&nbsp;:
  $old_manualcnt.)</small>
+ </li>
 !endif
 </ul>
 Méthode de restauration&nbsp;:<ul>
 <li><input type=radio name=restore value=replace checked>
- Remplacement&nbsp;: remplacer les ressources existantes par les ressources restaurées.
+ Remplacement&nbsp;: remplacer les ressources existantes par les ressources restaurées.</li>
 <li><input type=radio name=restore value=merge>
  Fusion&nbsp;: remplacer les ressources existantes excepté les comptes de
- participants et les exercices de la classe. Pour les derniers, ceux ayant les 
- mêmes noms seront remplacés par les données restaurées et les autres vont
- rester.
+ participants et les exercices de la classe. Pour ces derniers, ceux ayant
+ mêmes noms seront remplacés par les données restaurées et les autres seront
+ garder.</li>
 </ul>
 <input type=submit value="Restaurer les ressources sélectionnées">
 !href cmd=reply&job=list Abandonner la restauration
