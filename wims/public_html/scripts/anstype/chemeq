@@ -1,19 +1,15 @@
 
 dd=!deaccent $(reply$i)
-chemeq_option=n
-ddn=!exec chemeq $dd
-chemeq_option=
 
 m_reply$i=$dd
 
 gg=!deaccent $(replygood$i)
 gg=!rows2lines $gg
 gg=!line 1 of $gg
-chemeq_option=n
-ggn=!exec chemeq $gg
-chemeq_option=
 
-!if $ggn = $ddn
+!readproc slib/chemistry/chemeq_compare $dd,$gg
+
+!if $slib_out=good
  diareply$i=good
  !advance freegot
 !else

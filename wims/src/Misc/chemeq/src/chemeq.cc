@@ -684,7 +684,7 @@ void Chemeq::coeff1(){
   gauche->coeff(mult);
   droit->coeff(mult);
   simplifie();
-  if (!redox()){
+  if (!redox() && valdefined()){
     val = val*mult.i/mult.d;
   }
 }
@@ -694,7 +694,7 @@ void Chemeq::multiply(int num, int den){
   gauche->coeff(mult);
   droit->coeff(mult);
   simplifie();
-  if (!redox()){
+  if (!redox() && valdefined()){
     val = val*mult.i/mult.d;
   }
 }

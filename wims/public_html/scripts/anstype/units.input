@@ -1,7 +1,16 @@
 !set anstype=yes
-!set anstyle=numeric
+!set anstyle=text
 !if $wims_read_parm=def
  !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set tt=!row 1 of $(replygood$i)
+  !set units_option=o
+  !default reply$i=!exec units-filter $tt
+  !reset units_option
+ !endif
 !endif
 !if $wims_read_parm!=noprompt
  <tr><td align=right>$(replyname$i)&nbsp;=<td>
