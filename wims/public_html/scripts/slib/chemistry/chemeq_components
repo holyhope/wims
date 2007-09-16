@@ -1,0 +1,24 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Chemical components
+slib_parms=1\
+ , chemical equation
+slib_author=Georges Khaznadar
+slib_license=GPL
+slib_out= a matrix of the reactives in the first line, and the products in \
+the second line
+slib_comment=use the syntax accepted by the command chemeq
+slib_example= MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O
+
+!exit
+
+:proc
+
+
+chemeq_option=C
+slib_out=!exec chemeq $wims_read_parm
+slib_out=!replace |[^,;]* by $empy in $slib_out
+slib_out=!replace [0-9]\+[ ] by $empy in $slib_out
+!reset chemeq_option
+

@@ -12,7 +12,7 @@ slib_license=GPL
 slib_out= a message (which defaults to "good" or "bad").
 slib_comment=Enter chemical equations as accepted by the command chemeq
 slib_example= H2 + O2 -> H2O, 2H2 + O2 -> 2H2O \
-2H2 + O2 -> 2H2O, 2H2 + O2 -> 2H2O \
+2H2 + O2 -> 2H2O, 2H2_g + O2_g -> 2H2O \
 H2 + 1/2 O2 -> H2O, 2H2 + O2 -> 2H2O \
 Fe + Cu^2+ -> Fe^2+ + Cu, Fe + Cu^2+ -> Fe^2+ + Cu \
 Ag^+ + 1/2 SO4^2- -> 1/2 Ag2(SO4), 2Ag^+ + SO4^2- -> Ag2(SO4)
@@ -33,6 +33,11 @@ chemeq_option=n
 
 slib_st_eq=!exec chemeq $slib_student_eq
 slib_co_eq=!exec chemeq $slib_correct_eq
+
+!for slib_del in _aq, _s, _g
+  slib_st_eq=!replace internal $slib_del by $empty in $slib_st_eq
+  slib_co_eq=!replace internal $slib_del by $empty in $slib_co_eq
+!next slib_del
 
 !if $slib_st_eq = $slib_co_eq
   slib_out=$slib_ok_reply
