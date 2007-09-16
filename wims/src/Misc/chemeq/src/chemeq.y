@@ -1,5 +1,6 @@
+// -*- coding: utf-8 -*-
 %{
-/* inclusions, définition */
+/* inclusions, dÃ©finition */
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,6 +40,7 @@ typedef struct{
 %token SpcPlus
 %token Plus
 %token Moins
+%token Mul
 %token Fleche
 %token Int
 %token Charge
@@ -55,14 +57,14 @@ typedef struct{
 %token Gas
 %token Aqueous
 %token Egal
+%token Compose
+%token AntiCompose
 
 %%
 
-/* les règles */
-but : chemeq cste{
+/* les rÃ¨gles */
+but : chcompose { 
   result=$1;
-  result.cq->constante($2.s);
-  result.cq->valeur($2.r);
   isequation=1;
 }
 | molec {
@@ -71,7 +73,31 @@ but : chemeq cste{
 }
 ;
 
-cste : /* rien */ {$$.s = ""; $$.r = -1.0; /* valeur négative : non défini */}
+chcompose : chc {$$=$1}
+| chcompose spc01 Compose spc01 chc {
+  $1.cq->addChemeq($5.cq);
+  $$=$1;
+}
+| chcompose spc01 AntiCompose spc01 chc { 
+  $1.cq->subChemeq($5.cq);
+  $$=$1;
+}
+;
+
+chc : chemeq cste{
+  $$=$1;
+  $$.cq->constante($2.s);
+  $$.cq->valeur($2.r);
+}
+| Frac spc01 Mul spc01 chc {
+  $$.cq = $5.cq; $$.cq->multiply($1.i,$1.d);
+}
+| Int spc01 Mul spc01 chc {
+  $$.cq = $5.cq; $$.cq->multiply($1.i,1);
+}
+;
+
+cste : /* rien */ {$$.s = ""; $$.r = MINVAL; /* valeur nÃ©gative : non dÃ©fini */}
 | SpcLpar cste1 Rpar {$$ = $2;}
 ;
 
@@ -100,7 +126,7 @@ chemeq : membre Spc Fleche spc01 membre{
 ;
 
 membre : membre SpcPlus spc01 molecs {
-  $$.mb->push_back($4.m);
+  $$.mb->addMol($4.m);
 }
 | molecs {
   $$.mb = new Membre;
@@ -161,7 +187,7 @@ atome_general : groupe {
 }
 | Atome{
   char buffer[25];
-  if ($1.i==-2) { /* ce n'est pas un atome recensé */
+  if ($1.i==-2) { /* ce n'est pas un atome recensÃ© */
     sprintf(buffer,"nonexistent atom : %s", $1.symb);
     yyerror(buffer);
   }
@@ -198,7 +224,7 @@ int yylex(){
   return thelexer->yylex();
 }
 
-/* le programme lui-même */
+/* le programme lui-mÃªme */
 
 inline int yyerror(char * msg){
   fprintf(stderr, "ERROR %s at %d\n ", msg, position);
@@ -222,14 +248,12 @@ void printHelp(){
 
 #define maxoption 16
 
-void optionadd(char* b, char* allowed, char c);
-void optionadd(char* b, char* allowed, char c){
-  int l = strlen(b);
-/*   if (strchr(allowed,c)==NULL || strchr(b,c)!=NULL || l >= maxoption){  */
-/*     return;                 */
-/*   } */
-  // assert (strchr(allowed,c)!=NULL && strchr(b,c)==NULL && strlen(b)<maxoption);
-  b[l]=c; b[l+1]=0;
+void optionadd(char* b, char* allowed, int c);
+void optionadd(char* b, char* allowed, int c){
+  if (strchr(allowed,c) && !strchr(b,c) && strlen(b) < maxoption+1){
+    int l = strlen(b);
+    b[l]=c; b[l+1]=0;
+  }
   return;
 }
 
@@ -305,7 +329,7 @@ int main(int argc, char * argv[]){
       result.cq->printnorm(std::cout); std::cout << std::endl;
     }
   }
-  else { /* ce n'est pas une équation */
+  else { /* ce n'est pas une Ã©quation */
     for(i=0; i<strlen(asked); i++){
       switch(asked[i]){
       case 'M': nooption=0;

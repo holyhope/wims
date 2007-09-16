@@ -1,6 +1,8 @@
+// -*- coding: utf-8 -*-
 #include "chemeq.h"
 #include <math.h>
 #include <sstream>
+#include <stdlib.h>
 
 atome lesatomes[] ={
 {-1, "e"},
@@ -141,9 +143,8 @@ std::ostream & operator << (std::ostream & o, const Compteur & c){
 double AtomeListe::weight(fraction mult)const{
   const AtomeListe * al;
   double w=0.0;
-  if(Zed!=0 && Zed!=-1 ){ /* cas où ce n'est pas un groupe ou un électron */
+  if(Zed!=0 && Zed!=-1 ){ /* cas oÃ¹ ce n'est pas un groupe ou un Ã©lectron */
     w=mendelweight(symb)*nb*mult.i/mult.d;
-    //debug(); std::cout << std::endl;
   }
   else if (Zed==0){ /* cas d'un groupe */
     if (group) w+=group->weight(mult*nb);
@@ -154,7 +155,7 @@ double AtomeListe::weight(fraction mult)const{
 
 void AtomeListe::compte(Compteur &c, fraction mult)const{
   const AtomeListe * al;
-  if(Zed!=0 && Zed!=-1 ){ /* cas où ce n'est pas un groupe ou un électron */
+  if(Zed!=0 && Zed!=-1 ){ /* cas oÃ¹ ce n'est pas un groupe ou un Ã©lectron */
     std::string key(symb);
     c[key] +=1.0*nb*mult.i/mult.d;
   }
@@ -165,7 +166,7 @@ void AtomeListe::compte(Compteur &c, fraction mult)const{
 }
 
 void AtomeListe::numerote(int n){
-  if(Zed!=0){ /* cas où ce n'est pas un groupe */
+  if(Zed!=0){ /* cas oÃ¹ ce n'est pas un groupe */
     no = n;
   }
   else if (Zed==0){ /* cas d'un groupe */
@@ -177,7 +178,7 @@ void AtomeListe::numerote(int n){
 
 AtomeListe * AtomeListe::triage(AtomeListe * al){
   AtomeListe * al1;
-  if(al->Z()!=0){ /* cas où ce n'est pas un groupe */
+  if(al->Z()!=0){ /* cas oÃ¹ ce n'est pas un groupe */
     if (al->suiv){
       al->suiv = triage(al->suiv);
     }
@@ -196,11 +197,11 @@ bool operator == (const AtomeListe & a1, const AtomeListe & a2){
   std::stringstream s1, s2;
   a1.printnorm(s1);
   a2.printnorm(s2);
-  return s1 == s2;
+  return s1.str() == s2.str();
 }
 
 void AtomeListe::printcount(std::ostream & o, const fraction& n, int multiple=1) const{
-  if(Zed!=0){ /* cas où ce n'est pas un groupe */
+  if(Zed!=0){ /* cas oÃ¹ ce n'est pas un groupe */
     o << symb;
     o << ':' << n << '*' << multiple*nb;
   }
@@ -212,7 +213,7 @@ void AtomeListe::printcount(std::ostream & o, const fraction& n, int multiple=1)
 
 void AtomeListe::printnorm(std::ostream & o) const{
   if (sqbr) o << "[";
-  if(Zed!=0){ /* cas où ce n'est pas un groupe */
+  if(Zed!=0){ /* cas oÃ¹ ce n'est pas un groupe */
     o << symb;
     if (nb!=1) o << nb;
   }
@@ -232,10 +233,10 @@ std::ostream & operator << (std::ostream & o, const AtomeListe & l){
   if(l.Z()>0 || l.Z()<-1){
     o << l.symbole();
   }
-  else if (l.Z()==-1){ // cas de l'électron
+  else if (l.Z()==-1){ // cas de l'Ã©lectron
     o << "e";
   }
-  else{                // cas des groupes parenthésés
+  else{                // cas des groupes parenthÃ©sÃ©s
     o << "(";
     if((al=l.groupe())) o << *al;
     o << ")";
@@ -246,7 +247,7 @@ std::ostream & operator << (std::ostream & o, const AtomeListe & l){
   return o;
 }
 
-char* moltypeStr[] = { "aq", "g", "s" };
+const char* moltypeStr[] = { "aq", "g", "s" };
 
 bool operator == (const Molec & m1, const Molec & m2){
   return *(m1.al) == *(m2.al) && m1.ch == m2.ch;
@@ -306,7 +307,7 @@ void Molec::coeff( fraction f){
   nb.simplifie();
 }
 
-bool Molec::printNernst(std::ostream & o, char * prefix){
+bool Molec::printNernst(std::ostream & o, const char * prefix){
   switch(t){
   case sol : return 0;
   case aqueous :
@@ -352,6 +353,14 @@ fraction Molec::nbelectron()const{
   else return fraction(0);
 }
 
+void Molec::add(fraction f){
+  nb = nb+f;
+}
+
+void Molec::sub(fraction f){
+  nb = nb-f;
+}
+
 void Molec::printNombre(std::ostream & o)const{
   if (nb.d==1){
     o << nb.i << "\\,";
@@ -371,6 +380,39 @@ std::ostream & operator << (std::ostream & o, const Molec & m){
   }
   if (m.typage() != aqueous) o << "_{" << moltypeStr[m.typage()] << "}";
   return o;
+}
+
+int Membre::findMol(const Molec * m){
+  // returns the index of a molecule with the same atomlist if any
+  // else returns -1.
+  int result=-1;
+  for(int i=0; i<size(); i++){
+    if ((*this)[i]->eqMol(m)) result=i;
+  }
+  return result;
+}
+
+void Membre::addMol(const Molec * m){
+  int i = findMol(m);
+  if (i < 0){
+    push_back(new Molec(*m));
+  } else {
+    (*this)[i]->add(m->nombre());
+  }
+}
+
+void Membre::addMembre(const Membre * m){
+  for(int i=0; i<m->size(); i++){
+    addMol((*m)[i]);
+  }
+}
+
+void Membre::eraseNull(){
+  Membre m(*this);
+  clear();
+  for(int i=0; i < m.size();i++){
+    if (m[i]->nombre().i>0) push_back(m[i]);
+  }
 }
 
 void Membre::compte(Compteur & c)const{
@@ -453,7 +495,7 @@ int Membre::printableNernst(){
 
 bool Membre::redox()const{
   for (int i=0; i<size(); i++){
-    if ((*this)[i]->iselectron()) /* c'est un électron */ return 1;
+    if ((*this)[i]->iselectron()) /* c'est un Ã©lectron */ return 1;
   }
   return 0;
 }
@@ -467,7 +509,7 @@ fraction  Membre::nbelectron()const{
 
 void Membre::printNernst(std::ostream & o){
   bool printed = 0; 
-  char * prefix="";
+  const char * prefix="";
   for (int i=0; i<size(); i++) {
     if (i>0) prefix="\\,";
     if (operator[](i)->printNernst(o, prefix)){
@@ -487,6 +529,7 @@ std::ostream & operator << (std::ostream & o, const Membre & m){
 
 Membre operator & (Membre & m1, Membre & m2){
   Membre result;
+  result.printnorm(std::cout);
   fraction min(1);
   for(Membre::iterator i = m1.begin(); i < m1.end(); i++){
     for(Membre::iterator j = m2.begin(); j < m2.end(); j++){
@@ -521,11 +564,78 @@ Membre operator - (Membre & m1, Membre & m2){
   return result;
 }
 
+bool Chemeq::valdefined()const{
+  return val > MINVAL;
+}
+
+void Chemeq::addChemeq(const Chemeq * c){
+  if (valdefined() && c->valdefined()){
+    long double e1=enthalpy(), e2=c->enthalpy();
+    fraction n1=nbelectron(), n2=c->nbelectron();
+    long double e = e1+e2;
+    fraction n=n1+n2;
+    if (n.i==0) val=expl(-e/R/T0);
+    else val=-e*n.d/n.i/Faraday;
+  } else {
+    val=MINVAL;
+  }
+  gauche->addMembre(c->gauche);
+  droit->addMembre(c->droit);
+  simplifie(true);
+}
+
+void Chemeq::subChemeq(const Chemeq * c){
+  if (valdefined() && c->valdefined()){
+    long double e1=enthalpy(), e2=c->enthalpy();
+    fraction n1=nbelectron(), n2=c->nbelectron();
+    long double e = e1-e2;
+    fraction n=n1-n2;
+    if (n.i==0) {
+      val=expl(-e/R/T0);
+    } else{
+      val=-e*n.d/n.i/Faraday;
+    }
+  } else {
+    val=MINVAL;
+  }
+  gauche->addMembre(c->droit);
+  droit->addMembre(c->gauche);
+  simplifie(true);
+}
+
+long double Chemeq::enthalpy() const{
+  fraction n=nbelectron();
+  if (redox()){
+    return -val*n.i/n.d*Faraday;
+  } else {
+    return -R*T0*logl(val);
+  }
+}
+
+void Chemeq::simplifie(bool tri=false){
+  Membre communs(*gauche & *droit);
+  if (communs.size()>0){
+    Membre * g, *d;
+    g= new Membre(*gauche - communs);
+    d= new Membre(*droit  - communs);
+    delete gauche;
+    delete droit;
+    gauche=g;
+    droit =d;
+  }
+  gauche->eraseNull();
+  droit->eraseNull();
+  if (tri){
+    numerote(); 
+    triage();
+  }
+}
+
 void Chemeq::printnorm(std::ostream & o){
   gauche->printnorm(o);
   o << " -> ";
   droit->printnorm(o);
-  if (val>=0){
+  if (val>MINVAL){
     o << " (";
     if (cste!=std::string("")) o << cste << " = ";
     o << val;
@@ -573,16 +683,17 @@ void Chemeq::coeff1(){
   mult.inverse();
   gauche->coeff(mult);
   droit->coeff(mult);
-  Membre communs(*gauche & *droit);
-  if (communs.size()>0){
-    Membre * g, *d;
-    g= new Membre(*gauche - communs);
-    d= new Membre(*droit  - communs);
-    delete gauche;
-    delete droit;
-    gauche=g;
-    droit =d;
+  simplifie();
+  if (!redox()){
+    val = val*mult.i/mult.d;
   }
+}
+
+void Chemeq::multiply(int num, int den){
+  fraction mult(num,den);
+  gauche->coeff(mult);
+  droit->coeff(mult);
+  simplifie();
   if (!redox()){
     val = val*mult.i/mult.d;
   }
@@ -605,18 +716,18 @@ void Chemeq::printNernst(std::ostream & o){
     else {
       droit->printNernst(o);
     }
-    if (val >=0) {
+    if (val > MINVAL) {
       o << "\\,=\\,";
       if (cste!=std::string("")) o << cste << "\\,=\\,";
-      o << val;
+      o << valeur_latex();
     }
     else{
       o << "\\,=\\,K";
     }
   }
-  else{ /* c'est une réaction redox */
+  else{ /* c'est une rÃ©action redox */
     o << "E\\,=\\,";
-    if (val >=0) {
+    if (val > MINVAL) {
       o << val;
     }
     else{
@@ -625,7 +736,7 @@ void Chemeq::printNernst(std::ostream & o){
     o << "\\,+\\,\\frac{R\\,T}{";
     o << gauche->nbelectron()+droit->nbelectron() << "\\,F}";
     o << "\\log";
-    if (gauche->redox()){ /* c'est une réduction */
+    if (gauche->redox()){ /* c'est une rÃ©duction */
       ga=gauche; dr=droit;
     }
     else{ /* c'est une oxydation */
@@ -646,12 +757,25 @@ void Chemeq::printNernst(std::ostream & o){
   }
 }
 
+std::string Chemeq::valeur_latex()const{
+  std::ostringstream so;
+  so << val;
+  std::string s(so.str());
+  std::string::size_type epos=s.find('e',0);
+  if (epos!=std::string::npos){
+    s.erase(epos,1);
+    s.insert(epos,"\\times 10^{");
+    s=s+"}";
+  }
+  return (std::string) s;
+}
+
 std::ostream & operator << (std::ostream & o, const Chemeq & c){
   o << *c.membregauche() << "\\,\\rightarrow\\," << *c.membredroit();
-  if (c.valeur() >=0) {
+  if (c.valeur() > MINVAL) {
     o << "\\,(";
     if (c.constante()!=std::string("")) o << c.constante() << "\\,=\\,";
-    o << c.valeur();
+    o << c.valeur_latex();
     if (c.redox()) o << " V";
     o << ")";
   }
@@ -693,6 +817,11 @@ fraction operator - (fraction f, fraction g){
   fraction result = fraction(f.i*g.d-g.i*f.d, f.d*g.d);
   result.simplifie();
   return result;
+}
+
+const fraction & minFraction(const fraction& f1, const fraction &f2){
+  if (f1.i*f2.d > f2.i*f1.d) return f1;
+  else return f2;
 }
 
 void fraction::simplifie(){

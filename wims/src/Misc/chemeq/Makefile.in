@@ -1,6 +1,6 @@
 
 all : 
-	(cd src; make all)
+	(cd src; make chemeq)
 
 clean :
 	rm -f *~ *.gz

@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 //file mendeleiev.c
 
 #include "chemeq.h"

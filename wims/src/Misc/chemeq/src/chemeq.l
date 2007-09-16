@@ -1,3 +1,4 @@
+/* -*- coding: utf-8 -*- */
 %option noyywrap
 %option c++
      
@@ -15,23 +16,23 @@ spc            [ \t]+
 int            {digits}+
 frac           {int}{spc}?[/]{spc}?{int}
 mantisse       {digits}+
-real           {int}([.]{mantisse})?([Ee][+-]?{int})?
+real           -?{int}([.]{mantisse})?([Ee][+-]?{int})?
 eol            \n.*
 
-/* la flèche */
+/* la flÃ¨che */
 fleche         [-]+>
 
 %%
- /* les règles */
+ /* les rÃ¨gles */
 
  /* pour les atomes */
-Uu[a-z]|[A-Z][a-z]? { /* éléments Uux : transuraniens après le N° 109
-                           les autres sont les éléments ordinaires */
+Uu[a-z]|[A-Z][a-z]? { /* Ã©lÃ©ments Uux : transuraniens aprÃ¨s le N° 109
+                           les autres sont les Ã©lÃ©ments ordinaires */
     int i = 0;
     position += strlen(yytext);
     while (lesatomes[i].Zed != 0 && strcmp(yytext, lesatomes[i].symb)) i++;
     if (lesatomes[i].Zed == 0){
-      yylval.i=-2;      /* -2 est le n° pour les éléments non définis */
+      yylval.i=-2;      /* -2 est le nÂ° pour les Ã©lÃ©ments non dÃ©finis */
       strncpy(yylval.symb, yytext,3);
     }
     else {
@@ -69,21 +70,21 @@ e      {position++; yylval.i=-1; strcpy(yylval.symb, "e");return Atome;}
 {int}\+  { position += strlen(yytext); yytext[strlen(yytext)]=0; 
            yylval.i = atoi(yytext); return Charge;
          }
-\-{int}  { position += strlen(yytext); yylval.i = -atoi(yytext+1); 
-           return Charge;
-         }
 {int}\-  { position += strlen(yytext); yytext[strlen(yytext)]=0; 
            yylval.i = -atoi(yytext); return Charge;
          }
 {spc}+\+ {position += strlen(yytext); return SpcPlus;}
-\-     {position += strlen(yytext); return Moins;}
-\+       { position ++; return Plus;} 
+\-       {position += strlen(yytext); return Moins;}
+\+       {position ++; return Plus;} 
+\*       {position ++; return Mul;}
 {fleche} {position += strlen(yytext); return Fleche;}
-{spc}  {position += strlen(yytext); return Spc;}
-\^     {position ++; return Haut;}
-_s|s   {position += strlen(yytext); return Sol;}
-_g|g   {position += strlen(yytext); return Gas;}
-_ag|aq {position += strlen(yytext); return Aqueous;}
-=      {position ++; return Egal;}
-{eol}  {/* rien c'est la fin des entrées */}
-.|\n   {position += strlen(yytext); /* rien */}
+{spc}    {position += strlen(yytext); return Spc;}
+\^       {position ++; return Haut;}
+_s|s     {position += strlen(yytext); return Sol;}
+_g|g     {position += strlen(yytext); return Gas;}
+_ag|aq   {position += strlen(yytext); return Aqueous;}
+=        {position ++; return Egal;}
+#        {position ++; return Compose;}
+~        {position+=2; return AntiCompose;}
+{eol}    {/* rien c'est la fin des entrÃ©es */}
+.|\n     {position += strlen(yytext); /* rien */}

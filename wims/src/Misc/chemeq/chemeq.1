@@ -8,7 +8,7 @@ Chemeq - Chemical Equation Analyzer
 \fBChemeq\fP is a chemical equation analyzer. It is a fast lexical and
 syntaxic analyser which helps to find out chemical informations embedded
 in source chemical equations. Data can be output in various sophisticated
-formats, depending on options. 'chemeq' defaults to 'chemeq -mlcwn'.
+formats, depending on options. 'chemeq' defaults to 'chemeq -mlcwCn'.
 .SH OPTIONS
 Options are active only if chemeq parses an equation of chemical
 reaction. If chemeq parses the formula of a simple chemical,
@@ -16,7 +16,9 @@ no option is taken in account, the output is just a straightforward
 TeX string representing the simple chemical.
 .IP "\fB-h"
 Displays Help.
-.IP "\fb-M"
+.IP "\fB-v"
+Displays the Version number
+.IP "\fB-M"
 Outputs al list of space separated molecular weights.
 .IP "\fB-m"
 Outputs a \fBM\fPinimal output. It allows chemeq to be idempotent,
@@ -31,11 +33,30 @@ and electric charges are balanced.
 Outputs the LaTeX string representing the Gulder-\fBW\fPaage equation
 related to the input chemical equation, or the Nernst equation,
 if the input equation is a redox semi-equation.
+.IP "\fB-C"
+Outputs a detailed  \fBC\fPount of the molecules and atoms contained in each
+member of the chemical equation. For example for the equation
+"H2_g + 1/2 O2_g --> H2O" it outputs: 
+"H2_g|H:1*2, 1/2 O2_g|O:1/2*2; H2O|H:1*2 O:1*1"
+.IP "\fB-e"
+Outputs a detailed count of the \fBE\fPlectrical charges.
+.IP "\fB-s"
+Outputs a list of the chemical \fBS\fPpecies.
 .IP "\fB-n"
 Outputs a \fBN\fPormalized string accounting for the input equation.
 Two chemical equations having the same normalized string are chemically
 equivalent, even if the molecules are scrambled around and the 
 coefficient are not equal but proportionnal.
+.SH ENVIRONMENT VARIABLES
+.IP "\fBchemeq_input" 
+if set, this variables's value overrides the standard  input. If this 
+variable is not set, the variable w_chemeq_input is taken in account
+(useful for the WIMS server).
+.IP "\fBchemeq_option" 
+if set, this variable's value overrides the options.If this 
+variable is not set, the variable w_chemeq_option is taken in account
+(useful for the WIMS server).
+
 .SH EXAMPLES
 .TP
 echo "1/2 Cu^2+ + OH- ->  1/2Cu(OH)2s" | chemeq
@@ -58,11 +79,41 @@ it is safer to consider that an "up arrow" (^) must be put before the
 charge symbols of an ion.
 Examples : H3O^+, Fe(CN)6^4-, OH^-
 
+.SH Composing chemical equations.
+Two operators are defined, \fB#\fP as an additive oprator and \fB~\fP
+(tilde) as a substractive operator: they allow to compose several chemical
+equations
+
+.TP
+echo "MnO4^- + 8H3O^+ + 5e- --> Mn^2+ + 8 H2O ~ 5Fe^3+ + 5e- -> 5Fe^2+" | chemeq
+will display the pure redox equation from the first equation, minus the
+second one. Electrons are simplified. So it will be equivalent to:
+.TP
+echo "MnO4^- + 8H3O^+ + 5Fe^2+--> Mn^2+ + 8 H2O + 5Fe^3+" | chemeq
+which is their combination.
+
+.SH Mutiplying a chemical equation by one coefficient.
+The operator * permits to multiply a whole equation by one coefficient
+which may be a fraction. Here is an example:
+.TP
+echo "5 * Fe^3+ + e- -> Fe^2+" | chemeq
+will be equivalent to
+.TP
+echo "5Fe^3+ + 5e- -> 5Fe^2+" | chemeq
+
+.SH Combining chemical equations, with coefficients.
+The two previous techniques can be used at the same time, which enables
+you to make more comlicated combinations, like this one:
+.TP
+echo "Fe^3+ + e^- -> Fe^2+ (0.77 V) # Fe^2+ + 6CN^- -> Fe(CN)6^4- (Kfa=1e24) ~ Fe^3+ + 6CN^- -> Fe(CN)6^3- (Kfb=1e31)" | chemeq
+which will work as expected, and yeld a good value for the standard potential
+of the redox couple of hexacyanoferrate II and III ions.
+
 .SH AUTHORS
 .br
 .nf
 Georges Khaznadar, 
-  <\fBgeorgesk@boltz.univ-littoral.fr\fP>
+  <\fBgeorgesk@ofset.org\fP>
 .fi
 .El
 .SH KNOWN BUGS
@@ -72,3 +123,8 @@ main solvent. Only one liquid (aqueous) phase is currently taken in account.
 All solid chemical entities are considered as parts of separated phases.
 Suffixes _s, _g and _aq can be used to enforce the type of some chemical
 entities.
+
+There may be problemes when you write a standard potential with no decimal 
+dot. For example, the entry \fBMn^2+ + 2e^- -> Mn_s (-1 V)\fP would trigger an
+error. Then write \fBMn^2+ + 2e^- -> Mn_s (-1.0 V)\fP or the more accurate
+value \fBMn^2+ + 2e^- -> Mn_s (-1.18 V)\fP and there will be no error.

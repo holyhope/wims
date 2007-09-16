@@ -1,14 +1,37 @@
+// -*- coding: utf-8 -*-
 #ifndef CHEMEQ_H
 #define CHEMEQ_H
 
-//#include <string.h>
+#include <string.h>
 #include <sstream>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <map>
 
-#define VERSION "1.12"
+#define VERSION "2.2"
+
+/* Constante d'Avogadro, recommandée par CODATA, 2006 */
+#define Avogadro 6.022141e+23
+
+/* Charge élémentaire, voir wikipedia, 2007 */
+#define Electron 1.602176e-19
+
+/* Constante de Boltzmann, voir Wikipedia, 2007 */
+#define Kb 1.3806e-23
+
+/* D'où la constante de Faraday */
+#define Faraday (Avogadro * Electron)
+
+/* D'où la constante des Gaz parfaits 8.314 J.K^-1.mol^-1 */
+#define R (Kb * Avogadro)
+
+/* Température de référence pour les réactions chimiques, 25�C */
+#define T0 (273.15+25)
+
+/* MINVAL est une valeur impossible tant pour un potentiel standard */
+/* que pour une constante d'équilibre                               */
+#define MINVAL -999
 
 typedef struct {
   int Zed;
@@ -36,6 +59,8 @@ public:
   void inverse(){int n=i; i=d; d=n;};
   void simplifie();
 };
+
+const fraction & minFraction(const fraction&, const fraction &);
 
 std::ostream & operator << (std::ostream & o, fraction f);
 
@@ -96,7 +121,7 @@ bool operator == (const AtomeListe & a1, const AtomeListe & a2);
 
 typedef enum { aqueous, gas, sol } moltype;
 
-extern char* moltypeStr[]; /* les cha�nes aq, g,s */
+extern const char* moltypeStr[]; /* les chaînes aq, g,s */
 
 class Membre;
 
@@ -109,10 +134,17 @@ class Molec{
  public:
   Molec(AtomeListe * a, int c = 0, int n=1, int d=1): 
     al(a), ch(c), nb(n,d), t(aqueous){};
+  Molec(const Molec & m):
+    al(m.al), ch(m.ch), nb(m.nb.i,m.nb.d), t(m.t) {}
   AtomeListe & liste()const{return *al;};
   int charge()const{return ch;};
+  bool eqMol(const Molec * m) const {
+    return (al == m->al) && (ch== m->ch);
+  }
   void nombre(int n, int d=1){nb=fraction(n,d);};
   fraction nombre()const{return nb;};
+  void add(fraction f);
+  void sub(fraction f);
   moltype typage()const{return t;};
   void typage(moltype at){t=at;};
   void numero(int n){no=n;};
@@ -128,7 +160,7 @@ class Molec{
   void printnorm(std::ostream & o)const;
   void printweigh(std::ostream & o)const;
   void coeff( fraction f);
-  bool printNernst(std::ostream & o, char * prefix ="");
+  bool printNernst(std::ostream & o, const char * prefix ="");
   bool iswater()const;
   bool iselectron()const;
   fraction  nbelectron()const;
@@ -151,6 +183,10 @@ std::ostream & operator << (std::ostream & o, const Molec & m);
 
 class Membre : public std::vector<Molec *>{
 public:
+  int findMol(const Molec *);
+  void addMol(const Molec *);
+  void addMembre(const Membre *);
+  void eraseNull();
   void compte(Compteur & c)const;
   void numerote();
   void triage();
@@ -185,15 +221,23 @@ std::ostream & operator << (std::ostream & o, const Membre & m);
 class Chemeq{
   Membre * gauche, * droit;
   std::string cste;
-  double val;
+  long double val;
 public:
-  Chemeq(Membre * g, Membre * d) : gauche (g), droit(d){};
+  Chemeq(Membre * g, Membre * d) : gauche (g), droit(d), val(MINVAL){};
   const Membre * membredroit()const{return droit;};
   const Membre * membregauche()const{return gauche;};
+  void addChemeq(const Chemeq *);
+  void subChemeq(const Chemeq *);
+  void simplifie(bool tri);
   void numerote(){gauche->numerote(); droit->numerote();};
   void triage(){gauche->triage(); droit->triage();};
-  /* ajuste le coefficient pour qu'il y ait 1 mol du premier r�actif */
+  /* ajuste le coefficient pour qu'il y ait 1 mol du premier réactif */
   void coeff1();
+  /* mutiplie par la fraction num/den */
+  void multiply(int num, int den);
+  fraction nbelectron()const{return gauche->nbelectron()-droit->nbelectron();};
+  /* renvoie val ou nbelectron()*Faraday*val */
+  long double enthalpy() const;
   void normalise(){numerote(); triage(); coeff1();};
   void printnorm(std::ostream & o);
   void printcount(std::ostream & o) const;
@@ -205,7 +249,9 @@ public:
   bool redox()const;
   const std::string constante()const{ return cste;};
   void constante (const std::string s) { cste = s;};
+  bool valdefined()const;
   double valeur()const{return val;};
+  std::string valeur_latex()const;
   void valeur(double r){val=r;};
 };
 
@@ -220,7 +266,7 @@ enum info_types {
 };
 
 struct table_entry {
-  char *info[MAX_INFO_NR];
+  const char *info[MAX_INFO_NR];
 };
 
 extern struct table_entry table[];
