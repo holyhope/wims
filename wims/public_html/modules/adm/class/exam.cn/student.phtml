@@ -29,7 +29,7 @@ $desc<p>
  <p><ul>
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti,de
+  !distribute lines $ex into we,li,ti,de,op
   !set de=!trim $de
   <p><li>$i. 
   !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
@@ -46,6 +46,14 @@ $desc<p>
      !advance activeexo
      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
 .
+     !if autogen iswordof $op and $wims_exam_remain!=$empty
+      !set ss=$(wims_session)_examt$(exam)t$i
+      !set test=!defof w_cmd in wimshome/sessions/$ss/var
+      !if $test=$empty
+       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+       <img src="$test" height=1 width=1 border=0>
+      !endif
+     !endif
     !else
      <b><font color=red>$ti</font></b> (要求
      !href cmd=reply&job=student 其它练习取得成功
