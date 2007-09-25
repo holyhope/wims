@@ -1,9 +1,17 @@
 
-!form reply
+!form reply name=replyform id=replyform
 <input type=hidden name=level value=3>
 
 !if $existing=$empty
-你处于创建练习的简洁模式. 这个模式是供专家或当已存有练习的源码时用的.
+你处于创建练习的简洁模式. 
+ !if $modeltest=yes
+  由于这个练习是以标准模型为基础的, 请试试
+  !href cmd=reply&mode=model&level=2 指导模式
+.
+  !href cmd=reply&mode=none&level=1 放弃
+.
+ !else
+这个模式是供专家或当已存有练习的源码时用的.
 对于初次创建练习的人, 建议使用
  !href cmd=reply&mode=normal 指导模式
 .
@@ -13,15 +21,31 @@
  ):
 (为纪录一个已经存在的源码文件, 把这个文件复制到文本窗口内.)
  !href target=wims_test module=tool/directexec&cmd=new 脚本测试
+ !endif
 !else
  !if $catmodule=$empty
 这里是你的班级已有练习的源码. 你可在以下窗口里修改它.
  !else
 这里是你已经引入的公开练习的源码. 在把它放到班级里之前, 你可在以下窗口里修改它.
+!endif
+ !if $modeltest=yes
+  由于这个练习是以标准模型为基础的, 请试试
+  !href cmd=reply&mode=model&level=2 指导模式
+.
+  !href cmd=reply&mode=none&level=1 放弃
+.
  !endif
 !endif
+
+<a name=textarea>
+<a href=#
+onclick=document.forms["replyform"].wims_deposit.value="">[Clear]</a>.
+!href cmd=resume [重新初始化]
+.
 
 <p><center>
 !mexec textarea.sh
 <p><input type=submit value="记录源码"></center>
 </form>
+
+

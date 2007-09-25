@@ -9,7 +9,9 @@
 <ul><li>
 现在你可以
 !href cmd=resume&realtest=yes&retest=again 测试你的练习
-. <p><li>
+.
+!if $mode!=file
+<p><li>
 如果你要修改它,
 !href cmd=reply&level=2 返回菜单
 .
@@ -31,14 +33,18 @@
  !href cmd=reply&level=6 发送一个图形文件
 到练习.
 !endif
-!if $wims_user!=$empty
+!if $wims_user!=$empty or $existing!=$empty
  <p><li>
  如果正确无误, 你可以
  !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
   将此练习放入班级,
   !href cmd=reply&level=4 替换旧练习
   或者
   !href cmd=reply&level=4&newone=1 作为新练习
+ !else
+   !href cmd=reply&level=4 放入开发中模块
+  !endif
  !else
   !href cmd=reply&level=4 将此练习放入你的班级
  !endif

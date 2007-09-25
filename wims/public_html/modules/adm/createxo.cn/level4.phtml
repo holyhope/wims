@@ -1,4 +1,18 @@
-!if $wims_user!=$empty
+!if $wims_developer!=$empty and ..devel/ isin ..$catmodule
+ !if $reg1=success
+  模块 <tt>$catmodule</tt> 中的练习 <tt>$existing.oef</tt>  
+  已被成功更新.
+ !else
+  模块 <tt>$catmodule</tt> 中的练习 <tt>$existing.oef</tt>  
+  更新失败.
+  <pre>$wims_exec_error</pre>
+ !endif
+ <p>
+ !href cmd=reply&level=3 回到上一阶段.
+ !exit
+!endif
+
+!if $wims_user=$empty
  !read level5.phtml
 !else
  !if $already!=yes
