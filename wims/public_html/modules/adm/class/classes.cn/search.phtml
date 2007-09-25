@@ -1,0 +1,22 @@
+
+!if $overflow=yes
+ !if $keyword = $empty
+ 本网站中有许多虚拟班级. 为了找到你的班级, 请输入一个搜索关键词.
+ !else
+ 仍然有许多班级对应于你的关键词. 请给一个更精确的词.
+ !endif
+ <p><center>
+ !form reply
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=提交>
+ </form></center> <p>
+!else
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+  !form reply
+  搜寻你的班级:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=提交>
+  </form>
+ !endif
+!endif
+

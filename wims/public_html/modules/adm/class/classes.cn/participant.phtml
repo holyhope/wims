@@ -1,8 +1,16 @@
+!read search.phtml
+!if $overflow=yes
+ !exit
+!endif
 
-!if $clcnt<1
+!if $clcnt+$sccnt+$directcnt<1
+ !if $keyword=$empty
  本站尚无中文版虚拟班. 可能你想找一个
  !href module=home&list=0 其他文版
 的班级?
+ !else
+  没有班级与你的关键词对应.
+ !endif
  !exit
 !endif
 
