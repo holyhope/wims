@@ -1,0 +1,58 @@
+<b>符号化文字.</b> (名称: <tt>symtext</tt>)
+<p>
+显然本选项不能用于中文.
+
+<p>
+
+本类型可在类型定义或在其它回答类型中声明选项 <tt>symtext</tt> 而被激活.
+在第一种情形, 回答栏是一个 <tt>textarea</tt>, 允许输入几行文字.
+在第二种情形, 回答栏保持原始类型. 
+<p>
+
+正确答案是满足
+!href cmd=help&special_parm=symtext symtext句法
+的一个句子 (只要知道
+!href cmd=help&special_parm=symtext,generic generic
+格式就够了). 例如 (<tt>generic</tt> 格式):
+<ul>
+ <p><li><tt>a _or b</tt> 可以理解为 "a or b", "b or a", "either a
+ or b", "either b or a".
+ <p><li><tt>Bill _and [my friend]</tt> 可以理解为 "Bill and my friend",
+ "my friend and Bill", "Bill as well as my friend", "my friend as well as
+ Bill".
+ <p><li><tt>x _equals y</tt> 可以理解为 "x equals y", "y is equal to x",
+ "x and y are equal", 等.
+
+</ul> <p>
+
+建议用纯文字的形式给出首选的回答. 例如若正确答案是 "A and B" 且两者不分先后,
+那么标准答案最好采用 <tt>A and B|A _and B</tt> 而不是 <tt>A _and B</tt>.  
+这样在向学生显示正确答案时, 不会出现让学生摸不到头脑的 "A _and B".
+<p>
+
+如果在正确答案中只有一行, 那么不与此行匹配的回答都是错的.
+反之, 如果正确答案包含几行 (用分号 '<b><tt>;</tt></b>' 分隔),
+那么与补充行匹配的回答都是错的, 而当回答中出现正确答案中找不到的词时,
+都被认为是不完整的, 且被退回重新输入.
+此外尽管所有的词都包含在正确答案中, 但不与任何一行匹配的回答都判为错误.
+<p>
+
+通常可把要识别的词放在第 2 行, 加上类型 <tt>case</tt>, <tt>nocase</tt> 或
+<tt>atext</tt>.
+<p>
+
+也可以给出部分正确的答案, 只需在选项中声明 <tt>goodlim=n</tt>, 其中 <tt>n</tt> 
+是一个大于 1 的整数, 这样凡是与第 2 至 <tt>n</tt> 行匹配的回答都认为是部分正确的,
+其得分按行的先后次序递减.
+<p>
+
+选项域中出现的 symtext 的选项都能被识别.
+<p>
+
+symtext 的输出可从变量 <tt>\result<i>n</i></tt> 得到,
+其中 <i>n</i> 是回答栏的序号.
+这可被用于 <tt>\feedback</tt>.
+
+<p>
+!href cmd=help&special_parm=symtext symtex句法详述
+.
