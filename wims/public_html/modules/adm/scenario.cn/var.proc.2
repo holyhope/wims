@@ -1,0 +1,36 @@
+# step by step
+
+!ifval $substep=0
+ substep=2
+ !if $step>=$stepcnt
+  done=yes
+ !endif
+ !if $ans=--
+  error=dontknow
+  !exit
+ !endif
+ !if ($ask_reason>0 and $ans!=$step_reason) or\
+	($ask_reason=0 and $ans!=$step_test)
+  error=step_error
+  !if $ask_reason=0
+   scorecnt=$[$scorecnt-10]
+  !else
+   scorecnt=$[$scorecnt-2]
+  !endif
+ !else
+  scorecnt=$[$scorecnt+10]
+ !endif
+ !exit
+!endif
+
+!ifval $substep=1
+ !exit
+!endif
+
+!if $[$substep]=2 and $ans=next and $step<$stepcnt
+ !advance step
+ !read proc/var.step 
+ substep=0
+ !exit
+!endif
+
