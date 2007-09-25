@@ -1,0 +1,60 @@
+!set lan=cn
+<HTML><HEAD>$wims_html_header
+</HEAD>
+!if $wims_window=new
+ !set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+!endif
+<BODY $wims_htmlbody $w_resize>
+!robottrap
+
+<DIV CLASS=wimsmenu>
+<CENTER><TABLE border=0 cellspacing=0 cellpadding=5 bgcolor=$wims_ref_bgcolor
+>
+<tr><td align=center>
+!if _ isin $wims_subsession
+ <a href=# onclick="window.close()">关闭帮助窗口</a>
+!else
+ !href session=$wims_session.1 WIMS主页
+!endif
+!if $style=print
+ &nbsp;
+ !href module=$module&chapter=0 互动版
+ !set chapter=-1
+ !goto tabend
+!endif
+!if $chapter>0
+ <td align=center>
+ !href module=$module&chapter=0 帮助索引
+&nbsp;
+!endif
+<td align=center>
+!href module=$module&style=print 打印版
+&nbsp;
+!if $chapter>1
+ <td align=center>
+ !href module=$module&chapter=$[$chapter-1] 前一章
+!endif
+!if $chapter<$chaptercnt
+ <td align=center>
+ !href module=$module&chapter=$[$chapter+1] 后一章
+!endif
+
+:tabend
+</TABLE></CENTER></DIV><DIV CLASS=wimsbody>
+
+!if $chapter>0
+ !set l=!line 1 of $(chapter$chapter)
+ !set ll=!word $chapter of I II III IV V VI VII IIIV IX X
+ !set l=第 $ll 章 $l
+!else
+ !if $chapter<0
+  !set l=打印版
+ !else
+  !set l=总索引
+ !endif
+!endif
+
+<P><CENTER><H1>WIMS帮助<br><font size=+1><b>
+---- $l ----</b></font>
+</H1></CENTER> <P>
+
