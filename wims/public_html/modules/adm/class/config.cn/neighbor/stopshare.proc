@@ -1,0 +1,32 @@
+
+!read scripts/reccnt.proc me log/classes/$wims_class
+!read scripts/reccnt.proc it log/classes/$nei
+
+stoprec=!items2words $stoprec
+stoprec=!word 1 of $stoprec
+stoprec=!listintersect $stoprec and $sharelist
+!if $stoprec!=$empty and $(sharing_$stoprec)=$nei and \
+	($(me_$(stoprec)cnt)=0 or $me_testcnt<1 or \
+	$stoprec notitemof $nosharelist or $confirm=yes)
+ !if $stoprec=exo and $sharing_sheet!=$empty or \
+	$stoprec=sheet and $sharing_exam!=$empty
+  error=share_dep
+  job2=def
+  !exit
+ !endif
+ !read adm/class/stopshare $nei $wims_class\
+	$stoprec
+# !mexec neighbor/stopshare.sh
+ wims_class_log=Stop sharing $stoprec of $nei
+ sharing_$stoprec=
+ sh=
+ !for r in $sharelist
+  sh=!append item $(sharing_$r) to $sh
+ !next r
+ sharing_all=!listuniq $sh
+# !read neighbor/writeneighbor.proc
+ sharing=!listcomplement $stoprec in $sharing
+ !read neighbor/def.proc
+ job2=def
+!endif
+

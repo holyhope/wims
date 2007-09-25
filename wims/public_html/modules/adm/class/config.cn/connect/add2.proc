@@ -1,0 +1,58 @@
+
+!read connect/add1.proc
+
+!if $cn_status!=OK
+ !exit
+!endif
+
+!reset i_,o_
+!if $connupd1>0
+ o_=+
+!endif
+!if $connupd2>0
+ i_=+
+!endif
+
+addclass=!word 1 of $addclass
+!if $addclass=$empty
+ !if $connident=myself
+  error=localmirror
+  job2=first
+  !read connect/first.proc
+  !exit
+ !endif
+ cn_data1=description=$class_description\
+institution=$class_institution\
+supervisor=$class_supervisor\
+password=$class_password\
+email=$class_email\
+lang=$class_lang\
+expiration=$class_expiration\
+limit=$class_limit\
+secure=$class_secure
+ 
+ !readdef wimshome/log/classes/$wims_class/supervisor
+ cn_data2=lastname=$user_lastname\
+firstname=$user_firstname\
+password=$user_password\
+email=$user_email
+
+ !read adm/connect/main.proc addclass $connident
+ !if $cn_status=OK
+  addclass=!word 1 of $cn_data
+ !endif
+!else
+ !read adm/connect/main.proc checkclass $connident $addclass
+!endif
+
+!if $addclass!=$empty
+ conn=!trim $class_connections $o_$connident/$addclass$i_
+ !setdef !set class_connections=$conn in wimshome/log/classes/$wims_class/.def
+ class_connections=$conn
+!endif
+
+status2=$cn_status
+cn_status=OK
+
+!read connect/data.proc
+
