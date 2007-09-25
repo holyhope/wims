@@ -1,5 +1,5 @@
 
-<center><h3>Properties of participant account</h3></center>
+<center><h3>参加者帐户的性质</h3></center>
 !if $error!=$empty
  !read msg.phtml
  <p><hr> <p>
@@ -10,43 +10,43 @@
 <input type=hidden name=job value=userprop>
 <input type=hidden name=getuser value=$getuser>
 <p>$table_header
-$table_tr<th>Login name<td><tt>$getuser</tt>
-$table_tr<th>Password<td>
-	!href module=adm/class/passwd&job=part&part=$getuser Change
-$table_tr<th>Last name<td>
-	<input size=$inplen name=up_lastname value="$user_lastname">
-$table_tr<th>First name<td>
-	<input size=$inplen name=up_firstname value="$user_firstname">
-$table_tr<th>email<td>
-	<input size=$inplen name=up_email value="$user_email">
-$table_tr<th>Registration number<td>
-	<input size=$inplen name=up_regnum value="$user_regnum">
+$table_tr<th>登录名<td><tt>$getuser</tt>
+$table_tr<th>口令<td>
+    !href module=adm/class/passwd&job=part&part=$getuser 修改
+$table_tr<th>姓<td>
+    <input size=$inplen name=up_lastname value="$user_lastname">
+$table_tr<th>名<td>
+    <input size=$inplen name=up_firstname value="$user_firstname">
+$table_tr<th>电邮<td>
+    <input size=$inplen name=up_email value="$user_email">
+$table_tr<th>注册号<td>
+    <input size=$inplen name=up_regnum value="$user_regnum">
 !if $wims_user=supervisor
- $table_tr<th>Comments<td>
-	<input size=$inplen name=up_comments value="$user_comments">
- $table_tr<th>Variables (technical)</th><td>
-	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars>$user_vars</textarea>
+ $table_tr<th>注解<td>
+    <input size=$inplen name=up_comments value="$user_comments">
+ $table_tr<th>变量 (技术的)</th><td>
+    <textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars>$user_vars</textarea>
 !else
- $table_tr<th>Class password<td>
-	<input size=14 type=password name=passcheck> <br>
-	<small>Enter the password for participant registration</small>
+ $table_tr<th>班级口令<td>
+    <input size=14 type=password name=passcheck> <br>
+    <small>输入参加者注册的口令</small>
 !endif
 $table_hdtr<td align=center colspan=2>
-<input type=submit name=reg value=Save> &nbsp;
-<input type=submit name=abandon value=Cancel>
+<input type=submit name=reg value=保存> &nbsp;
+<input type=submit name=abandon value=取消>
 </td></tr>
 $table_end <p>
 </form>
 !if $wims_user=supervisor
  <p><center>
- !href cmd=reply&job=getuser&getuser=$getuser Scores of this participant
+ !href cmd=reply&job=getuser&getuser=$getuser 本参加者答分
  .
- !href cmd=reply&job=getraw&getraw=$getuser Raw work detail
+ !href cmd=reply&job=getraw&getraw=$getuser 原始工作详情
  .
  <p>
- !href cmd=reply&job=delprep&delprep=$getuser Delete this participant
+ !href cmd=reply&job=delprep&delprep=$getuser 删除本参加者
  .
- !href cmd=resume List of all participants
+ !href cmd=resume 所有参加者名单
  .
  </center> <p>
 !endif

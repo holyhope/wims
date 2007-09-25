@@ -46,7 +46,12 @@
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>班级内没有以下的登录名, 而且不能添加, 因为数据内有不充分/不正确的信息:
+   <li>班级内没有以下的登录名, 而且不能添加, 
+   !if full notwordof $remark
+   这是因为数据内有不充分/不正确的信息:
+   !else
+   这是因为数据损坏或没有空间了:
+   !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes

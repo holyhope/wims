@@ -5,22 +5,24 @@ $wims_html_header
 !headmenu
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
 
-!for j in delprep,getuser,getraw,formula
- !if $($j)!=$empty
-  !read $j.phtml
-  !goto end
- !endif
-!next j
+!if $job!=$empty and $job!=sheets
+ !read $job.phtml
+ !goto end
+!endif
 
 <center>$classname
 <p>
 <h1>参加者名单
-</h1></center> <p><hr width=40%> <p>
+ </b><font size=-1>[
+!href cmd=reply&job=csv 电子表格数据
+ ]
+</font>
+</h1></center>
 
 !if $error!=$empty
  <p>
@@ -33,70 +35,236 @@ $wims_html_header
 
 !if $usercnt==0
 本班尚无参加者.
+ [
+ !href module=adm/class/reguser&step=1 添加参加者
+ ]
 !else
- <center><table border=0 cellspacing=1 bgcolor=$table_bgcolor>
- <tr><td><th rowspan=2>姓名<td><th colspan=2>总平均<td>
- !for j in $showsheet
-  <th colspan=2>第 $j 页<td>
- !next j
- <tr><td><td>
- !for j=1 to $sheetcnt+1
-  <th>已完成作业<th>平均分<td>
- !next j
- <tr>
+ <center>
+ [
+ !href module=adm/class/reguser&step=1 添加参加者
+ ]
+ !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
+ !set deleted=!trim $deleted
+ !if $deleted!=$empty
+  &nbsp;[
+  !href cmd=reply&job=recover 删除参加者
+  ]
+ !endif
+ </center> <p>$table_header
+!bound job_affi within notes,points,qualite default notes
+ !if $job_affi=notes
+  <caption>以 $scoremax 为极大值的教师评分</caption>
+ !else
+  !if $job_affi=qualite
+   <caption>以 10 为极大值的质量分</caption>
+  !else
+  !let tmp=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+  !let tmp=!values v for v=1 to $tmp
+  !let showsheet=!listintersect $showsheet and $tmp
+   <caption>已完成工作的百分比.</caption>
+  !endif
+ !endif
+ !if $manual>0 and $job_affi=notes
+  $table_hdtr<th rowspan=2>姓, 名
+  <th colspan=3>平均
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th rowspan=2><small>第$k次考试</small>
+   !else
+    <th rowspan=2><small>
+     !href cmd=reply&+job=showsheet&+numshowsheet=$j sheet $j
+   !endif
+  !next j
+  $table_hdtr<th><small>总共<th><small>教师<th><small>auto
+ !else
+  $table_hdtr<th>姓, 名
+ !if $job_affi=notes 
+ <th>平均
+ !endif
+  !for j in $showsheet
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    <th><small>第$k次考试</small>
+   !else
+    <th><small>
+     !href cmd=reply&+job=showsheet&+numshowsheet=$j 第 $j 页
+    </small>
+   !endif
+  !next j
+ !endif
+ !distribute item 0,0,0 into mean_tea,mean_auto,mean_glob
+ !distribute item 0,0,0 into cnt_tea,cnt_auto,cnt_glob
  !for i=1 to $usercnt
   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
-  <tr><td><td>
-  !href cmd=reply&getuser=$uu $lastname $firstname
-  <td>
+  !set UU=!hex $uu
+  $table_tr<td>
+  !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
   !read userscore
-  <td align=right>$per%<td align=right>$av/10<td>
-  !set mean_per=$[$mean_per+$per]
-  !set mean_av=$[$mean_av+$av]
+  !if $manual>0 and $job_affi=notes
+   !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
+   <td align=center>$glob</td>
+   <td align=center>$(manual_$UU)</td>
+   <td align=center>$per</td>
+   !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
+   !if $glob>0
+    !advance cnt_glob
+    !if $(manual_$UU)>0
+     !advance cnt_tea
+    !endif
+    !if $per>0
+     !advance cnt_auto
+    !endif
+   !endif
+  !else
+   !if $job_affi=notes
+    <td align=center>$per</td>
+    !if $per>0
+     !advance cnt_auto
+     !advance cnt_glob
+    !endif
+   !endif
+  !endif
+  !set mean_auto=$[$mean_auto+$per]
   !for j in $showsheet
-    !set pp=!line $j of $percents
-    !distribute words $pp into p1,p2
-    <td align=right>$p1%<td align=right>$p2/10<td>
-    !set per_$j=$[$(per_$j)+$p1]
-    !set av_$j=$[$(av_$j)+$p2]
+   !if E isin $j
+    !set k=!char 2 to -1 of $j
+    !set p_=$[rint(10*$scoremax*$(es_$k))/100]
+    !if NaN isin $p_
+     !set p_=0
+    !endif
+    <td align=center>$p_</td>
+   !else
+    !set p_=!line $j of $percents
+    !distribute words $p_ into p1,p2
+    !if $job_affi=notes
+     !if $p2!=$empty
+      !distribute item $[$p1/100],$[$p2/10] into x_,y_ 
+      !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+     !else
+      !set p_=0
+     !endif
+     <td align=center>$p_</td>
+    !else
+     !if qualite iswordof $job_affi
+      !set p_=$p2
+      <td align=center>$p_</td>
+     !else
+      !set p_=$p1
+      <td align=center>$p_ %</td>
+     !endif
+     !if $p2=$empty
+      !set $p_=0
+     !endif
+    !endif
+   !set per_$j=$[$(per_$j)+$p_]
+   !if $p_>0
+    !advance cnt_$j
+   !endif
   !next j
  !next i
- !set mean_per=$[rint($mean_per/$usercnt)]
- !set mean_av=$[rint(100*$mean_av/$usercnt)/100]
- <tr><tr><td><td align=center><b>班级平均</b><td>
- <td align=right>$mean_per%<td align=right>$mean_av/10<td>
+ !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
+    $[rint(100*$mean_tea/$usercnt)/100],\
+    $[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
+ $table_hdtr<td align=center><b>班级平均</b>
+ !if $job_affi=notes
+ !if $manual>0
+  <td align=center>$m_glob</td>
+  <td align=center>$m_tea</td>
+  <td align=center>$m_auto</td>
+ !else
+  <td align=center>$m_auto</td>
+ !endif
+ !endif
  !for j in $showsheet
-  !set per_$j=$[rint($(per_$j)/$usercnt)]
-  !set av_$j =$[rint(100*$(av_$j)/$usercnt)/100]
-  <td align=right>$(per_$j)%<td align=right>$(av_$j)/10<td>
+  <td align=center>$[rint(100*$(per_$j)/max(1,$usercnt))/100]</td>
  !next j
- </table></center>
- <p>点击名字以查看他的作业, 或
- !href cmd=reply&formula=prep 用你自己的公式计算分数
+ !if $cnt_glob>0
+  !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
+    $[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
+    $[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
+  $table_hdtr<td align=center><b>Average of positive scores</b>
+  !if $manual>0
+   <td align=center>$m_glob</td>
+   <td align=center>$m_tea</td>
+   <td align=center>$m_auto</td>
+  !else
+   <td align=center>$m_auto</td>
+  !endif
+  !for j in $showsheet
+   <td align=center>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]</td>
+  !next j
+ !endif
+ $table_end
+ <p>点击一个名字以了解他的作业详情.
+ !href cmd=reply&job=formula&formula=prep 改变严厉度
 .
+ !href module=adm/class/grades 手工输入评分
+.
+ !href module=adm/class/stat w活动情况或统计
+.
+<p>
+   公布作业页的
+   !if $job_affi=notes
+    !href cmd=reply&job_affi=qualite 质量
+    或
+    !href cmd=reply&job_affi=points 已做的作业
+   !else
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=notes 教师评分
+     或
+     !href cmd=reply&job_affi=points 已做的作业
+    !else
+     !href cmd=reply&job_affi=notes 教师评分
+     或
+     !href cmd=reply&job_affi=qualite 质量
+    !endif
+   !endif
+.  
  !if $activecnt>1
   <p>
   !form reply
-你也可选择作业页的号码以查看每页的平均值:<p>
   <input type=hidden name=job value=sheets>
+  !set wims_formselect_switch=multiple size=$[min($activecnt+$eactivecnt,6)]
+  <table border=0>
+  <tr><td>挑出欲显示的页<br>页平均分:
+  <td>&nbsp;&nbsp;
+  !reset tmp
   !for i=1 to $activecnt
    !set sh=!line $i of $activesheets
    !set se=!item 1 of $sh
-   !set ti=!item 3 to -1 of $sh
-   <input type=checkbox name=showsheet value=$se
-   !if $se iswordof $show
-    checked
-   !endif
-   > 第 $i 页: $ti. <br>
+   !set ti=!item 3 of $sh
+   !set tmp=!append item $se: $ti to $tmp
   !next i
-  <p><center><input type=submit value="显示"></center>
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set tmp=!append item Exam $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  <td><input type=submit value="显示"></table>
   </form>
  !endif
 !endif (usercnt=0?)
+<p>
+!if $manual>0
+ <b>说明.</b> 在 `Average' (平均)栏里, `auto' 是指作业页分数的平均,
+ `teacher' 是主持教师手工评分的平均, `global' 是根据这两个平均用以下公式算出来的:
+ <p><center>
+  global = $[$manual/100]*teacher + $[1-$manual/100]*auto.
+ </center> <p>
+!endif
 
 :end
 !tail
 
-!distribute items ,,,,,, into job,showsheet,getuser,getraw,delprep,deluser,saveformula
+!reset job,showsheet,getuser,getraw,delprep,deluser,formula,abandon,reg,\
+    passcheck
+
+
+
 

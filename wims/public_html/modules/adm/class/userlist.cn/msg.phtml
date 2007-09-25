@@ -5,8 +5,70 @@
  !exit
 !endif
 
+!if not_superclass=$error
+ 不允许此操作, 因为这是超级班级, 
+只有超级班级管理者才能做此操作.
+ !exit
+!endif
+
 !if bad_class=$error
 奇怪, 我发现你的班级是无效的!
  !exit
 !endif
+
+!if bad_classpass=$error
+ 抱歉, 你没有输入班级的正确口令. 
+你不能修改参加者信息.
+ !exit
+!endif
+
+!if no_login iswordof $error
+你上传的数据必须包含参加者登录名的栏目.
+ !exit
+!endif
+
+!if bad_filename iswordof $error
+你的文件不像是电子表格数据的文本格式.
+ :csvformat
+请在上传到班级之前把你的数据保存成文本格式
+(用逗号或制表符分隔, 后缀是 .csv, .tsv 或 .txt).
+ !exit
+!endif
+
+!if binary_upload iswordof $error
+你的电子表格数据是二进制格式的, 不能接受! 抱歉.
+ <p>
+ !goto csvformat
+!endif
+
+!if no_manual iswordof $error
+请先
+ !href module=adm/class/grades 创建手工评分栏
+, 然后再传送数据进去.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+只能从安全连接下载或上传电子表格数据.
+请检查你的班级配置.
+ !exit
+!endif
+
+!if bad_user=$error
+错误: 参加者 <tt>$checkuser</tt> 不存在.
+ !exit
+!endif
+
+!if bad_exo=$error
+欲验证的项目不存在.
+ !exit
+!endif
+
+!if bad_op=$error
+错误操作. 请关闭窗口.
+ !exit
+!endif
+
+!msg $error
+
 
