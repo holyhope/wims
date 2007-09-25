@@ -1,0 +1,20 @@
+
+parent=gateway
+!if $cancel!=$empty or $del=$empty
+ job=first
+ !changeto jobs/$job.proc
+!endif
+
+!readdef $classdir1/$del/.def
+
+!if $confirm=$empty
+ !exit
+!endif
+
+!read adm/gateway/dellevel $wims_superclass/$del
+!read adm/gateway/mkindex
+
+confirm=
+job=first
+!changeto jobs/$job.proc
+
