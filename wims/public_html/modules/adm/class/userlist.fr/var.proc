@@ -48,12 +48,6 @@ mean_av=0
 !next i
 sheetcnt=!itemcnt $showsheet
 
-!if $job=showsheet
- !changeto var.proc.showsheet
-!endif
-
-
-
 !if $activesheets=$empty
  s=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
  scoremax=!line 1 of $s
@@ -86,6 +80,14 @@ sheetcnt=!itemcnt $showsheet
 !endif
 activecnt=!linecnt $activesheets
 eactivecnt=!itemcnt $activexams
+
+!bound job_affi within notes,points,qualite default notes
+!if $showsheet=$empty and $job_affi!=notes
+ showsheet=$activesh
+ !for i in $showsheet
+  !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
+ !next i
+!endif
 
 !read var.proc.weights
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
