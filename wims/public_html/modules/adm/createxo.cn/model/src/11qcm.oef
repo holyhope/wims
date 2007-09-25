@@ -1,0 +1,133 @@
+type=first
+textarea="datatrue datafalse explain"
+
+:A multiple choice with random permutation.
+
+Classical multiple choice, with a good choice not depending on the text.
+But the choices as well as their order may be randomized.
+<p>
+Author of the model: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags! (The lines starting
+with a ':'.) Otherwise the exercise might not be taken back by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Multiple choice}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Number of choices to present. At most 10.
+You must define enough choices, otherwise the exercise will only show
+what is available.
+\integer{tot=5}
+
+:The number of good choices in each exercise. Must not exceed the total.
+\integer{givetrue=2}
+
+:Number of "mandatory" bad choices.
+For example if this number is 2, the first two bad choices in the list will
+always be presented in the generated exercise.
+<p> If doubtful, put 0.
+\integer{minfalse=0}
+
+:Text that explains what should be done.
+$embraced_randitem
+\text{explain=
+Here is a model of multiple choice question. The order of choices is random,
+as well as the choices if more than strictly necessary are defined.
+Change the text, and you will have your own multiple choice question.
+<p>
+Pick the good choice.
+When there are several good choices, it is OK to pick any of them.
+}
+
+:The good choices, one per line.
+You can put several here (one per line) for random pickup.
+Avoid too long sentences! No semi-colons in the sentence.
+$embraced_randitem
+\matrix{datatrue=
+The good choice 1.
+The good choice 2.
+The good choice 3.
+The good choice 4.
+}
+
+:The  bad choices, one per line.
+You can put several here (one per line) for random pickup.
+Avoid too long sentences! No semi-colons in the sentence.
+$embraced_randitem
+\matrix{datafalse=
+The bad choice 1.
+The bad choice 2.
+The bad choice 3.
+The bad choice 4.
+The bad choice 5.
+The bad choice 6.
+The bad choice 7.
+The bad choice 8.
+}
+
+:Option words: "checkbox", "split".
+Add the word "checkbox" if there are several good choices and if the student
+must choose all of them (instead of just one). In this case, put also the
+word "split" if you allow a partial score when only part of the good choices
+are chosen.
+\text{option=}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+
+\text{datatrue=wims(nonempty rows \datatrue)}
+\text{datafalse=wims(nonempty rows \datafalse)}
+\integer{truecnt=rows(\datatrue)}
+\integer{falsecnt=rows(\datafalse)}
+\integer{givetrue=\givetrue<1?1}
+\integer{givetrue=\givetrue>\truecnt?\truecnt}
+\integer{tot=\tot > \falsecnt+\givetrue?\falsecnt+\givetrue}
+\integer{givetrue=\givetrue>\tot-1?\tot-1}
+\integer{minfalse=\minfalse>\tot-\givetrue?\tot-\givetrue}
+\text{tsh=shuffle(\truecnt)}
+\text{true=row(\tsh,\datatrue)}
+\if{\minfalse>0}{
+ \text{false1=row(1..\minfalse,\datafalse);}
+ \text{false2=row(\minfalse+1..\falsecnt,\datafalse)}
+}{
+ \integer{minfalse=0}
+ \text{false1=}
+ \text{false2=\datafalse}
+}
+\text{fsh=shuffle(\falsecnt)}
+\text{false2=row(\fsh,\false2)}
+\text{pick=row(1..\givetrue,\true);\false1 row(1..\tot-\givetrue-\minfalse,\false2)}
+\text{ind=wims(makelist 1 for x=1 to \givetrue),wims(makelist 0 for x=1 to \tot-\givetrue)}
+
+\text{sh=shuffle(\tot)}
+\text{ind=item(\sh,\ind)}
+\text{pick=row(\sh,\pick)}
+\text{pick=wims(embraced randitem \pick)}
+\text{explain=wims(embraced randitem \explain)}
+\text{ans=positionof(1,\ind)}
+\text{list=item(1..\tot,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z)}
+\text{anstype=checkbox iswordof \option?checkbox:radio}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+::You don't need to modify this in general.
+
+\statement{\explain
+<p>
+
+<p><center><table border=0 cellspacing=4>
+\for{i=1 to \tot}{
+ <tr><td nowrap>\embed{reply 1,\i}.</td>
+ <td>\pick[\i;]</td></tr>
+}
+</table></center>
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{The reply}{\ans;\list}{type=\anstype}{option=\option}
+

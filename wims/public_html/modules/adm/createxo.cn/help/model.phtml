@@ -1,0 +1,62 @@
+
+!set field=!item 2 of $special_parm
+
+!if $field=$empty
+ !exit
+!endif
+
+!set embraced_randitem=<p> \
+本栏接受用圆括号括起来的随机化.\
+<p>\
+如果在括号里放入一些用逗号分隔的词(或词组),\
+当这段文字向学生显示时, 将会从中随机选取一个词.\
+这样就会给这段文字加上随机性. <p>\
+举例来说, 如果你输入以下文字<p>\
+<font color=blue><tt>{明天, 下星期}我将去{巴黎, 纽约, 伦敦}\
+</tt></font>,\
+<p>将会随机地得到下列句子:\
+<pre>\
+明天我将去巴黎\
+明天我将去纽约\
+明天我将去伦敦\
+下星期我将去巴黎\
+下星期我将去纽约\
+下星期我将去伦敦\
+</pre>
+
+!if $(special_parm[3])!=$empty
+ !readproc model/cut.proc model/src/$(special_parm[3]).oef
+ !set title$field=$model_title
+!else
+ !readproc model/cut.proc
+ !set title1=$model_title
+!endif
+
+<center><h2>$(title$field)</h2></center>
+
+!if $field=1
+ <center><b>$desc</b></center> <p>
+!endif
+
+$(help$field)
+
+!if $(name$field) iswordof $model_random
+ <p>
+随机生成参数的例: <ul>
+ <li>10 与 100 间的整数 (包括端点):
+     <tt>randint(10..100)</tt>
+ <li>10 与 1000 间的 10 的倍数 (包括端点):
+    <tt>randint(1..100)*10</tt>
+ <li> 0 与 2 之间的十进小数:
+    <tt>random(0..2)</tt>
+ <li>表中的随机项:
+    <tt>randitem(a,b,c,10,100,word,a phrase)</tt>
+ </ul> <p>
+!endif
+
+!if $(name$field) iswordof $model_computed $model_random
+ <p>
+ !href cmd=help&special_parm=parameters 点击这里
+以了解参数计算的更多详情.
+!endif
+

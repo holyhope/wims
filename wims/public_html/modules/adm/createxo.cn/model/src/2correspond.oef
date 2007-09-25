@@ -1,0 +1,100 @@
+type=datalist
+textarea="data explain"
+
+:Establish the correspondance between pairs of objects.
+
+We present pairs of objects in a table of two columns. You should
+re-establish the good correspondance in horizontal pairs, by modifying the
+right column using drag-and-drop with the mouse.
+<p>
+To construct an exercise with this model, it is enough to type the list of
+pairs of objects.
+<p>
+With a slight modification, a variant of this exercise can accept image
+objects.
+<p>
+Author of the model: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags! (The lines starting
+with a ':'.) Otherwise the exercise might not be taken back by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Correspondance}
+:\author{Gang Xiao}
+:\email{xiao@unice.fr}
+
+:Number of (pair of) objects to correspond.
+\integer{tot=6}
+
+:The vertical size of boxes in pixels.
+Think of people who increase the font size of their browsers! Don't put the
+boxes too small.
+\integer{sizev=50}
+
+:The horizontal size of left boxes in pixels.
+Think of people who increase the font size of their browsers! Don't put the
+boxes too small.
+\integer{sizel=250}
+
+:The horizontal size of right boxes in pixels.
+Think of people who increase the font size of their browsers! Don't put the
+boxes too small.
+\integer{sizer=250}
+
+:Main data.
+Define one pair of corresponding objects per line, separated by a comma.
+\matrix{data=
+Germany,		Berlin
+Australia,		Canberra
+Canada,			Ottawa
+China,			Beijing
+Spain,			Madrid
+United States,		Washington
+France,			Paris
+Great Britain,		London
+India,			New Delhi
+Indonesia,		Jacarta
+Italy,			Rome
+Japon,			Tokyo
+Russia,			Moscow
+}
+
+:Text that explains what should be done.
+$embraced_randitem
+\text{explain=Establish the correspondance between the countries and their
+capitals.}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+
+\integer{datacnt=rows(\data)}
+\integer{tot=\tot>\datacnt?\datacnt}
+
+\text{shuf=item(1..\tot,shuffle(\datacnt))}
+\text{data=row(\shuf,\data)}
+\text{datal=column(1,\data)}
+\text{datar=column(2,\data)}
+\text{size=\sizev[]x\sizel[]x\sizer}
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+
+::You don't need to modify this in general.
+
+The command to show the correspondance table, it is
+\embed{reply 1,\size}
+
+\statement{\explain
+
+<p><center>
+\embed{reply 1,\size}
+</center>
+
+}
+
+:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+
+\answer{The reply}{\datal;\datar}{type=correspond}
+
