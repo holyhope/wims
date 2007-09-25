@@ -1,10 +1,10 @@
 !nocache
 !if $oef_test=yes
  !set renewlink=cmd=next&retest=again
- $header_js
  !goto tester
 !else
- !set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
+ !set init_parm=!translate + to $ $ in $module_init_parm
+ !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
 !endif
 
 !if $printing=yes
@@ -24,9 +24,14 @@
 $header_js
 !header
 
+!if $module_checkdata!=yes
+ !read oef/cn/nodata.phtml
+ !goto end
+!endif
+
 !if $title=$empty
 本模块是一组练习. 你想做练习, 但又没有指出你想做哪个练习.
-可能是由于你点击了一个错误的连接, 也可能是软件的错误.
+可能是由于你点击了一个错误的链接, 也可能是软件的错误.
  <p><center>
  !href module=$module 重新操作
  , 或
@@ -44,7 +49,7 @@ $header_js
  !else
   本练习有时间限制.
  !endif
- <input size=4 name=clock>
+ <input size=4 name=clock readonly onFocus=this.blur();>
  </table>
  </center></form> <p>
 !endif
@@ -70,12 +75,16 @@ $header_js
   !href cmd=hint 提示
 .
  !endif
+ !if $help!=$empty
+  !href cmd=help 帮助
+.
+ !endif
  !if $qnum<=1
   !href $renewlink 换一个练习
 .
  !else
-这是本次 $qnum 个习题中的第 $[$reply_cnt+1] 个习题.
-  !href $renewlink 放弃本次练习
+这是本组 $qnum 个习题中的第 $[$reply_cnt+1] 个习题.
+  !href $renewlink 放弃本组练习
 .
  !endif
 !else
@@ -86,34 +95,42 @@ $header_js
  !read oef/answer.phtml
  <p>
  !if $status!=$empty
-这是本次 $qnum 个习题中的第 $reply_cnt 个习题. <p>
+这是本组 $qnum 个习题中的第 $reply_cnt 个习题. <p>
   !href cmd=next 继续下一个习题
 , 或
-  !href $renewlink 放弃本次练习, 要求一次新的练习
-. (如果你需要成绩的话, 你必须做完本次练习的所有习题.)
+  !href $renewlink 放弃本组练习, 要求一组新的练习
+. (如果你需要成绩的话, 你必须做完本组练习的所有习题.)
  !else
   !if $qnum>1
-你已做完了一次 $qnum 个习题, 成绩是
+你已做完了一组 $qnum 个习题, 成绩是
    $module_score/10.
    !ifval $module_score>9.8
     祝贺你!
    !endif
+   !if $toolate!=$empty and $score>$module_score
+    (你已因超时而被扣分.)
+   !endif
    <p>
-   !href exo_Again
+   !href $renewlink 再来一次
 .
    !if $wims_sheet=$empty
     !href exo_Intro
+.
    !endif
   !else
 你的成绩是 $module_score/10.
    !ifval $module_score>9.8
     祝贺你!
    !endif
+   !if $toolate!=$empty and $score>$module_score
+    (你已因超时而被扣分.)
+   !endif
    <p>
-   !href exo_Again
+   !href $renewlink 再来一次
 .
    !if $wims_sheet=$empty and $oef_test!=yes
     !href exo_Intro
+.
    !endif
   !endif
  !endif
@@ -121,17 +138,17 @@ $header_js
 
 !if $replydefaulted=yes
  <p> <small>
- Development mode: good replies inserted into reply fields as default.
+开发模式: 默认情形下正确答案被插入选择区域内.
  </small>
 !endif
 
 !read ./endhook.phtml
 !if $wims_user=supervisor and exam notin $session and \
-	..classes/ notin ..$module and ..adm/ notin ..$module and \
-	..devel/ notin ..$module and \
-	GNU isin $module_copyright and \
-	_check notin $session and \
-	$class_importation!=no
+    ..classes/ notin ..$module and ..adm/ notin ..$module and \
+    ..devel/ notin ..$module and \
+    GNU isin $module_copyright and \
+    _check notin $session and \
+    $class_importation!=no
  <p>
  !href module=adm/createxo&existing=$thisexo&catmodule=$module 插入
 本练习到你的班级 (你可以在那里修改它).
