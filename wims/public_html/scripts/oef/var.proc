@@ -235,6 +235,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
     !goto end
    !endif
    !default m_reply$i=$(reply$i)
+   !read oef/screply.proc
    val$tt=$(m_reply$i)
    !if NaN isin $test
     !goto badans
@@ -247,16 +248,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
    !goto end
   !endif
   !default m_reply$i=$(reply$i)
-  
-  !if $(diareply$i)=bad and $(precreply$i)!=yes
-   !default m_sc_reply$i=0
-  !else
-    !if $(precreply$i)=yes
-      !default m_sc_reply$i=0.5
-    !else
-      !default m_sc_reply$i=1
-    !endif
-  !endif
+  !read oef/screply.proc
       
   !if bad isin $Test
    error=bad_exo
