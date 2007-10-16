@@ -56,7 +56,7 @@ E_comp		=gecompileerd op
 E_manager	=Site manager:
 
 RE_found	=!nosubst Gezocht en gevonden $gotcnt $tt
-RE_nomatch	=!nosubst Ik kon op deze server niets passends vinden
+RE_nomatch	=!nosubst Er is op deze server niets passends te vinden.
 RE_pop		=!nosubst Hier zijn de $gotcnt meest populaire $tt
 RE_pop2		=!nosubst $gotcnt $tt op volgorde van populariteit\
 (number $[$list_start+1] - $[$list_start+$gotcnt])
@@ -67,7 +67,7 @@ $wims_classname van  $supmail.
 U_newmsg	=Er zijn $$newmsgcnt nieuwe bericht(en) in het message board.
 U_nosheet	=Deze klas heeft -op dit moment-  nog geen werkbladen\
 Probeer het later nog eens, als je leraar voor jullie wat werk heeft samengesteld.
-U_assign	=Hier staan de werkstukken voor jullie klas
+U_assign	=Hier staan de werkstukken van jullie klas
 U_expired	=verlopen
 U_done		=klaar
 U_average	=gemiddeld

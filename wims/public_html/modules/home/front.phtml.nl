@@ -11,14 +11,12 @@ Op deze website, vind je
 !href module=$module&cmd=new&search_category=X Interactieve oefeningen
  van verschillende stijl en moeilijkheidsgraad.
 <li>
-!href module=$module&cmd=new&search_category=R Wiskundige Ontspanning
+!href module=$module&cmd=new&search_category=R Wiskundige ontspanning
 &nbsp;: puzzels en spelletjes.
 <li>
-!href module=adm/class/classes Virtuele Klaslokalen,waar
-leerlingen kunnen oefenen en worden beoordeeld.
+!href module=adm/class/classes Virtuele Klaslokalen.
 <li>
-!href module=adm/doc Interactieve Documenten (Lesmateriaal, uitwerkingen enz)
- (voorlopige versie).
+!href module=adm/doc Interactieve Documenten.
 </ul>
 
 !!exit
