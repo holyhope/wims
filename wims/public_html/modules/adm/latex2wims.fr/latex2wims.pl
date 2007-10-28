@@ -468,6 +468,7 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
   $TEXT =~ s/\s*$//; # strip trailing whitespace
  #0 ul et li sans rien
  #1 avec style
+ $TEXT =~ s/\\(begin|end)\s*{wimsonly}/\n/g;
  for my $rubrique (keys %{$ref_env->{list}}) {
      $TEXT = traite_list ($TEXT, $ref, $ref_env, $Id, $rubrique,1);
  }
@@ -476,8 +477,13 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
      $TEXT = traite_list ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
  }
 
+ for my $rubrique (@liste_env_spec) {
+    if ($TEXT =~ /\\begin{$rubrique(\*)?}/) {
+      $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique, 1);
+    }
+  }
 #le 1 et 0 servent à initialiser le compteur dans le cas ou on doit créer de nouveaux blocs dans la même page
-  $TEXT =~ s/\\(begin|end)\s*{wimsonly}/\n/g;
+  
   for my  $rubrique (keys %{$ref_env->{titre}}) {
     if ($TEXT =~ /\\begin{$rubrique}/) {
       $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,1);
@@ -487,11 +493,7 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
      $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
      $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique . '_item',0);
   }
-  for my $rubrique (@liste_env_spec) {
-    if ($TEXT =~ /\\begin{$rubrique(\*)?}/) {
-      $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique, 1);
-    }
-  }
+ 
   if ($TEXT =~ /\\begin\{\s*(\w*)\s*\}/g) {
      warn " ATTENTION : environnement non répertorié : $1" if $1 ne 'matrix';
   }
@@ -653,7 +655,7 @@ sub encadrement {  my ($TEXT, $rubrique, $ref_env) = @_;
   $d;
 }
 
-sub tabular { my ( $b ) = @_;
+sub tabular { my ( $b ) = @_; 
   my @v = extract_bracketed ($b, '{}');
   $b =  '<table border=1 align="center" class="tableau"><tr><td>' . $v[1] . '</table>';
   $b =~ s|\&|&nbsp;</td><td>&nbsp;|g;
@@ -887,7 +889,7 @@ sub out { my ($bloc, $text) = @_;
 
 sub out1 { my ($bloc, $text) = @_;
   warn "Écrase $bloc" if ($outagain{$bloc});
-  $outagain{$bloc} = 1;print $doc_DIR ; 
+  $outagain{$bloc} = 1;
   open  (OUT, ">$doc_DIR$bloc") || die "ne peut pas créer $doc_DIR/$bloc";
   print OUT $text ; close OUT;
 }
@@ -1022,6 +1024,7 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\\\^\s*{i}/î/g;
   $TEXT =~ s/\\\`\s*{i}/ì/g;
   $TEXT =~ s/\\\"\s*{i}/ï/g;
+  $TEXT =~ s/\\\"\s*{\\i}/ï/g;
   $TEXT =~ s/\\\^\s*{o}/ô/g;
   $TEXT =~ s/\\\"\s*{o}/ö/g;
   $TEXT =~ s/\\\`\s*{o}/ò/g;
@@ -1081,8 +1084,9 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT;
 }
 
-sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_ ; 
-   $SHEET .= "$ad1\n$ad2&worksheet=$worksheet\n$titre\n\n" ;
+sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_ ;
+   $ad2 =~ s/worksheet=(\d)+//g ; 
+   $SHEET .= ":$ad1\n$ad2\n$titre\n\n" ;
    "\\exercise\{module=$ad1\&$ad2\&worksheet=$worksheet\}\{$titre\}" ; 
  }
  
@@ -1277,8 +1281,9 @@ sub sortuniq {
 
 
 sub isotime {
-    my ($sec,$min,$hour,$mday,$mon,$year) = localtime();
+    my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
     $year += 1900;
+    $mon += 1 ; $mday += 1 ;
     $mday = sprintf("%02d", $mday);
     $mon  = sprintf("%02d", $mon);
     "$year-$mon-$mday $hour:$min:$sec";
