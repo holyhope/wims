@@ -1,0 +1,137 @@
+!set wims_module_log=error: $error
+
+<b>Erreur</b>.
+
+!if $error = doc_not_exist
+ Le document que vous avez demandé n'existe pas (plus).
+ !exit
+!endif
+
+!if $error = abuse
+ Votre document a un titre bizarre ! Etes-vous sûr que vous voulez créer un
+ document sérieux&nbsp;?
+ <p>
+ <b>Attention</b> ! Les auteurs d'abus du serveur se verront refuser l'accès.
+ !exit
+!endif
+
+!if $error = quota
+ Vous ne pouvez plus modifier ce document, car son contenu a dépassé la limite
+ d'espace disque autorisé.
+ !exit
+!endif
+
+!if $error = quota_file
+ Dépot de fichier refusé car il n'y a pas assez d'espace disque libre pour
+ votre document.
+ !exit
+!endif
+
+!if $error = no_tit
+ Il faut donner un titre à votre document.
+ !exit
+!endif
+
+!if $error = no_author
+ Vous n'avez pas défini l'auteur du document.
+ !exit
+!endif
+
+!if $error = bad_email
+ Votre adresse électronique ne semble pas être correcte ! Veuillez la
+ vérifier.
+ !exit
+!endif
+
+!if $error = bad_code
+ Désolé, mais le code secret ne correspond pas. Vous n'avez donc pas le
+ droit de lire/modifier le document demandé.
+ <p>
+ Veuillez
+ !mailurl $wims_site_manager écrire au gestionnaire du site\
+ Code document oublié
+ si vous avez oublié le code secret de votre
+ document.
+ !exit
+!endif
+
+!if $error = unauthorized
+ Vous n'avez pas le droit de lire/modifier le document demandé.
+ !exit
+!endif
+
+!if $error = bad_data
+ Certaines de vos définitions ne sont pas correctes. Veuillez corriger.
+ !exit
+!endif
+
+!if $error = class_no_right
+ Désolé mais votre demande n'est pas autorisée. Veuillez vérifier avec
+ l'enseignant de cette classe.
+ !exit
+!endif
+
+!if $error = small_code
+ Le code secret est trop court.
+ !exit
+!endif
+
+!if $error = big_code
+ Le code secret est trop long.
+ !exit
+!endif
+
+!if $error = code_discord
+ <b>Attention</b>. Vous avez tapé deux fois deux codes secrets distincts.
+ Essayez encore une fois.
+ !exit
+!endif
+
+!if $error = bad_newcode
+ Votre code secret contient des caractères interdits. Veuillez utiliser
+ uniquement des lettres alpha-numériques.
+ !exit
+!endif
+
+!if $error = bad_oldcode
+ Vous n'avez pas donné le bon code secret actuel. Veuillez réessayer.
+ !exit
+!endif
+
+!if $error = deposit_fail
+ Désolé mais je n'ai pas pu recevoir un fichier valide de votre part. Vérifiez
+ le nom de votre fichier.
+ !exit
+!endif
+
+!if $error = deposit_binary
+ Vous avez soumis un fichier binaire <tt>$wims_deposit</tt>&nbsp;!
+ Je ne peux pas l'utiliser. Veuillez envoyer un fichier de texte.
+ !exit
+!endif
+
+!if $error = src_too_long
+ Votre bloc <tt>$block</tt> ne peut pas être accepté car sa longueur a dépassé
+ la limite ($max_blocklen octets). Vous pouvez le couper
+ en plusieurs blocs.
+ !exit
+!endif
+
+!if $error = file_too_long
+ Votre fichier LaTeX ne peut pas être accepté car il a dépassé
+ la limite de longueur ($max_texlen octets).
+ Mais vous pouvez le couper
+ en parties, et les soumettre une par une dans de différents blocs.
+ !exit
+!endif
+
+!if $error = no_latex2html
+ Désolé, mais l'envoi des fichiers LaTeX ne peut pas se faire sur ce serveur,
+ car le logiciel LaTeX2HTML n'est pas installé sur le serveur.
+ Veuillez tourner LaTeX2HTML sur votre ordinateur local, puis
+ soumettre le fichier html qui en résulte.
+ !exit
+!endif
+
+!msg $error
+
