@@ -1,0 +1,188 @@
+!set title=Lettres (échecs visibles dans l'analyse)
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r,r,r,r,r
+varcnt=16
+prevarcnt=7
+postvarcnt=8
+replycnt=6
+choicecnt=0
+conditioncnt=6
+feedbackcnt=2
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+tmp0=!randint 1, 20
+
+val7=$[rint($(tmp0))]
+val8=Première lettre après $(val6[$val7]), Deuxième lettre après $(val6[$val7]),	  Première lettre après $(val6[$val7]), Deuxième lettre après $(val6[$val7]),	  Première lettre après $(val6[$val7]), Deuxième lettre après $(val6[$val7])
+val9=r1,r2
+val10=$[rint(0)]
+val11=
+val12=1,2
+dynsteps=yes
+oefsteps=$val9 
+nextstep=!nosubst $val9 
+!readproc oef/steps.proc
+replytype1=raw
+replyname1=1-1
+replygood1=?analyze 13
+replytype2=raw
+replyname2=1-2
+replygood2=?analyze 14
+replytype3=raw
+replyname3=2-1
+replygood3=?analyze 15
+replytype4=raw
+replyname4=2-2
+replygood4=?analyze 16
+replytype5=raw
+replyname5=3-1
+replygood5=?analyze 17
+replytype6=raw
+replyname6=3-2
+replygood6=?analyze 18
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()	Ecrire dans l'ordre les deux lettres de l'alphabet	qui suivent la lettre <font size=+2>$(val6[$val7])</font> : 	<ul>	  
+!for m_a = 1 to 6 
+$()	     
+!if  r$m_a isitemof $val9 
+$()	      <li>	      
+!if $m_step>1 
+$()Votre réponse précédente 	       <font color=red>$(val11[$m_a-2])</font> est fausse, recommencez : 
+!endif
+$() 	     $(val8[$m_a]) :  
+!read oef/embed.phtml r\a,5 
+$()	     </li>	    
+!endif
+$()     	  
+!next
+$()	</ul>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:postdef
+val11=$val13,$val14,$val15,$val16,$val17,$val18
+val9=
+!for val19  = 1 to 2 
+val20=$[rint(2*($m_step-1) + $val19)]
+val21=$[rint(2*($m_step-2) + $val19)]
+!if $(val11[$val21]) != $(val6[$val7 + $val19]) 
+
+!ifval $val10 < 2 
+tmp0=!append item r$val20 to $val9
+
+val9= $(tmp0)
+!endif
+
+!ifval $val10 < 2 
+tmp0=!append item $val20 to $val12
+
+val12= $(tmp0)
+!endif
+!endif
+!next
+val10=$[rint($val10 + 1)]
+
+!exit
+
+:feedback
+!ifval $val10 > 1
+ <p>Vous avez eu besoin de $val10 essais. 
+$()
+!endif
+!ifval 1 = 1
+ <p>	  <div style="background:#FF33FF; margin:0% 20%;">Les deux lettres qui suivent 	     <font size=+2>$(val6[$val7])</font> sont 	     <font size=+2>$(val6[$val7 + 1])</font>  et	     <font size=+2>$(val6[$val7 + 2])</font>.	     </div>	 
+$()
+!endif
+
+!exit
+
+:test
+
+condlist=$val12
+
+!ifval $val13 issametext $(val6[$val7 + 1])
+ condtest1=1
+!else
+ condtest1=0
+!endif
+condname1=Premier essai lettre 1
+
+!ifval $val14 issametext $(val6[$val7 + 2])
+ condtest2=1
+!else
+ condtest2=0
+!endif
+condname2=Premier essai lettre 2
+
+!ifval $val15 issametext $(val6[$val7 + 1])
+ condtest3=1
+!else
+ condtest3=0
+!endif
+condname3=Deuxième essai lettre 1
+
+!ifval $val16 issametext $(val6[$val7 + 2])
+ condtest4=1
+!else
+ condtest4=0
+!endif
+condname4=Deuxième essai lettre 2
+
+!ifval $val17 issametext $(val6[$val7 + 1])
+ condtest5=1
+!else
+ condtest5=0
+!endif
+condname5=Troisième essai lettre 1
+
+!ifval $val18 issametext $(val6[$val7 + 2])
+ condtest6=1
+!else
+ condtest6=0
+!endif
+condname6=Troisième essai lettre 2
+
+!exit
+
+:stat
+vsavelist=6,7,8,9,10,11,12,13,14,15,16,17,18
+embedcnt=1

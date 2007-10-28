@@ -1,0 +1,92 @@
+!set title=Schémas du cycle cellulaire(feedback)
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r
+varcnt=7
+prevarcnt=4
+postvarcnt=2
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=1
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=l'interphase,la prophase,la prométaphase,	la métaphase,l'anaphase,la télophase,la cytodiérèse
+tmp0=!randint 1, 7
+
+val7=$[rint($(tmp0))]
+val8=interphase.jpg,prophase.jpg, 	prometaphase.jpg, metaphase.jpg,anaphase.jpg,	telophase.jpg,cytodierese.jpg
+val9=$(val8[$val7])
+replytype1=radio
+replyoption1=sort 
+replyname1=
+replygood1=$val7;$val6
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Le schéma suivant 	<center>  
+!read oef/img.phtml $val1/$val9  
+$() </center>	décrit une cellule animale dans une des phases du 	cycle cellulaire. Laquelle ?	<p><center> 
+!read oef/embed.phtml reply1 
+$()</center></p>	<i> NB : les choix sont présentés dans l'ordre 	alphabétique</i>
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:postdef
+tmp0=!positionof item $m_reply1 in $val6
+
+val10=$[rint($(tmp0))]
+val11=$(val8[$val10])
+
+!exit
+
+:feedback
+!ifval $val10<>$val7
+ <p><font color=red> Attention ! Le schéma correspondant à $(val6[$val10]) est :	</font> <center> <img src=$val1/$val11></center>
+$()
+!endif
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=1,6,7,8,9
+embedcnt=1

@@ -1,0 +1,69 @@
+\
+
+
+\title{Lettres (échecs visibles dans l'analyse)}
+\text{alphabet = a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+\integer{n = randint(1..20)}
+\text{texte = Première lettre après \alphabet[\n], Deuxième lettre après \alphabet[\n],
+  Première lettre après \alphabet[\n], Deuxième lettre après \alphabet[\n],
+  Première lettre après \alphabet[\n], Deuxième lettre après \alphabet[\n]}
+
+\text{NSTEP = r1,r2}
+\nextstep{\NSTEP}
+\integer{try = 0}
+\text{REP = }
+\text{COND = 1,2}
+\conditions{\COND}
+
+\statement{
+Ecrire dans l'ordre les deux lettres de l'alphabet
+qui suivent la lettre <font size=+2>\alphabet[\n]</font> : 
+<ul>
+ \for{a = 1 to 6}{
+    \if{ r\a isitemof \NSTEP}{
+      <li>
+     \if{\step>1}{Votre réponse précédente 
+       <font color=red>\REP[\a-2]</font> est fausse, recommencez :} 
+     \texte[\a] : \embed{r\a,5}
+     </li>
+   }     
+ }
+</ul>
+}
+
+\answer{1-1}{\A1}{type=raw}
+\answer{1-2}{\B1}{type=raw}
+\answer{2-1}{\A2}{type=raw}
+\answer{2-2}{\B2}{type=raw}
+\answer{3-1}{\A3}{type=raw}
+\answer{3-2}{\B3}{type=raw}
+\condition{Premier essai lettre 1}{\A1 issametext \alphabet[\n + 1]}
+\condition{Premier essai lettre 2}{\B1 issametext \alphabet[\n + 2]}
+\condition{Deuxième essai lettre 1}{\A2 issametext \alphabet[\n + 1]}
+\condition{Deuxième essai lettre 2}{\B2 issametext \alphabet[\n + 2]}
+\condition{Troisième essai lettre 1}{\A3 issametext \alphabet[\n + 1]}
+\condition{Troisième essai lettre 2}{\B3 issametext \alphabet[\n + 2]}
+
+\text{REP = \A1,\B1,\A2,\B2,\A3,\B3}
+
+\text{NSTEP=}
+\for{b = 1 to 2}{ 
+    \integer{u = 2*(\step-1) + \b}
+    \integer{v = 2*(\step-2) + \b}
+    \if{\REP[\v] != \alphabet[\n + \b]}{
+       \text{NSTEP = \try < 2 ? wims(append item r\u to \NSTEP)}
+       \text{COND = \try < 2 ? wims(append item \u to \COND)}
+    }
+}
+
+\feedback{\try > 1}{Vous avez eu besoin de \try essais. }
+\feedback{1 = 1}{
+  <div style="background:#FF33FF; margin:0% 20%;">Les deux lettres qui suivent 
+     <font size=+2>\alphabet[\n]</font> sont 
+     <font size=+2>\alphabet[\n + 1]</font>  et
+     <font size=+2>\alphabet[\n + 2]</font>.
+     </div>
+ }
+\integer{try = \try + 1}
+
+

@@ -1,0 +1,44 @@
+\
+
+\index{slib!\ttt{matrix/random}}
+
+\title{Quel est le nombre écrit dans la cellule ...}
+\text{nb = 8,6}
+\matrix{A = slib(matrix/random \nb,100)}
+\matrix{A = pari(abs([\A]))}
+\integer{x = randint(1..\nb[2])}
+\integer{y = randint(1..\nb[1])}
+\text{liste = A,B,C,D,E,F}
+\text{a = \liste[\x]}
+\integer{rep = \A[\y;\x]}
+\text{Size = 563,341}
+largeur et hauteur d'une case
+\text{lx = 80}
+\text{ly = 17}
+abscisse de la première cellule
+\text{premier = 111,206}
+\text{coord_x = wims(values \premier[1] + x * \lx for x = 0 to \nb[2]-1)}
+\text{coord_y = wims(values \Size[2] - \premier[2] - y*\ly 
+                                        for y = 0 to \nb[1]-1)}
+\text{dessinprelim=
+  xrange 0,\Size[1]
+  yrange 0,\Size[2]
+  copy 0,\Size[2],-1,-1,-1,-1,tableur.jpg}
+\text{dessin=}
+\for{j = 1 to \nb[2]}{
+ \for{i = 1 to \nb[1]}{  
+   \text{dessin = \dessin
+     text black,\coord_x[\j],\coord_y[\i],,\A[\i;\j]}
+ }
+}
+\text{tableau = draw(\Size
+\dessinprelim
+\dessin)}
+\statement{Voici une image de page de <b>tableur</b>.
+  Quel est le nombre écrit dans la cellule \a\y ? 
+  <p align="center"> \embed{r1,5} </p>
+}
+
+\answer{Case \a\y}{\rep}
+
+

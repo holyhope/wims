@@ -1,0 +1,91 @@
+!set title=Cellule
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r
+varcnt=8
+prevarcnt=7
+postvarcnt=0
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=625,320
+tmp=!trim 245,102,1,-1,un reticulum endoplasmique	  50,107,1,1,un filament d'actine	  120,107,-1,-1,une mitochondrie	  70,180,-1,1,la membrane plasmique	  238,159,1,-1,des nucléoles	  298,139,1,-1,l'enveloppe nucléaire	  358,190,1,1,l'appareil de Golgi	  354,225,-1,1,une microtubule	  542,207,-1,1,une vésicule	  160,100,0,-1,le cytoplasme	
+val7=!translate internal $	\
+$ to ;; in $tmp
+tmp=!translate internal $	$ to ; in $val7
+
+tmp0=!rowcnt $tmp
+val8=$[rint($(tmp0))]
+tmp0=!randint 1, $val8
+
+val8=$[rint($(tmp0))]
+t_=!replace internal \( by ( in [$(val7[$val8;1])+20*($(val7[$val8;3])),$(val7[$val8;2])+20*$(val7[$val8;4]),	     $(val7[$val8;1]),$(val7[$val8;2])]
+tmp0=!exec pari $t_
+
+val9=$(tmp0)
+val10=xrange 0,$(val6[1])	  yrange 0,$(val6[2])	  copy 0,$(val6[2]),-1,-1,-1,-1,cellule.jpg	  arrow $val9,10,blue
+!readproc oef/draw.phtml $val6 \
+  $val10 
+tmp0=$ins_url
+val11=$(tmp0)	
+replytype1=dragfill
+replyname1=
+replygood1=$(val7[$val8;5]);$(val7[;5])
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Le schéma ci-dessous représente une cellule eucaryote. 	  <p><center>	<img src="$val11"> 	 </center> </p>	Cliquer sur le nom de l'organite désigné par la flèche bleue : 	<p><center> 
+!read oef/embed.phtml reply1,100x40x1 
+$()</center></p>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=11
+embedcnt=1

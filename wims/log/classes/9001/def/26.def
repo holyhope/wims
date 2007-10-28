@@ -1,0 +1,112 @@
+!set title=Carrés
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r,r,r,r,r
+varcnt=6
+prevarcnt=5
+postvarcnt=0
+replycnt=6
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint 4, 6
+
+val6=$[rint($(tmp0))]
+tmp0=!randint 3, 4
+
+val7=$[rint($(tmp0))]
+tmp0=!values x^2 for x = $val7 to $val6 + $val7
+
+val8=$(tmp0)
+tmp0=!makelist \(x^2) for x = $val7 to $val6 + $val7 - 1
+
+val9=$(tmp0)
+tmp0=!makelist r x for x = 1 to $val6
+
+val10=$(tmp0)
+oefsteps=$val10 
+nextstep=!nosubst $val10 
+!readproc oef/steps.proc
+replytype1=numeric
+replyname1=$(val9[1])
+replygood1=$[$(val8[1])]
+replytype2=numeric
+replyname2=$(val9[2])
+replygood2=$[$(val8[2])]
+replytype3=numeric
+replyname3=$(val9[3])
+replygood3=$[$(val8[3])]
+replytype4=numeric
+replyname4=$(val9[4])
+replygood4=$[$(val8[4])]
+replytype5=numeric
+replyname5=$(val9[5])
+replygood5=$[$(val8[5])]
+replytype6=numeric
+replyname6=$(val9[6])
+replygood6=$[$(val8[6])]
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Calculer les carrés des entiers à partir de $val7 : 	<table border=1 align="center">	  <tr>  
+!for m_u = 1 to $val6 
+$() <th>$(val9[$m_u])</td> 
+!next
+$() </tr>	  <tr>  
+!for m_u = 1 to $val6 
+$() <td> 
+!read oef/embed.phtml r \u, 5 
+$() </td> 
+!next
+$() </tr>	</table>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=6,7,9
+embedcnt=1

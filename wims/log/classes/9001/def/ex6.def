@@ -1,0 +1,91 @@
+!set title=Fée ou sorcière
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+varcnt=6
+prevarcnt=5
+postvarcnt=0
+replycnt=0
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randitem 1,2
+
+val6=$[rint($(tmp0))]
+val7=Carabistouille,Mélusine
+val7=$(val7[$val6])
+val8=cara,melu
+val8=$(val8[$val6])
+question=__EXECUTED_1692754_EXERCISE__
+help=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$() Connaissez-vous   
+!read oef/special.phtml help $val8,$val7 
+$() 
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()	   
+!if  $m_help_subject issametext cara 
+$() 	  Carabistouille est ma  
+!read oef/special.phtml help sorc, sorcière 
+$()  préférée. 
+!endif
+$()	   
+!if  $m_help_subject issametext melu 
+$() 	  Mélusine est ma  
+!read oef/special.phtml help fee, fée 
+$() préférée. 
+!endif
+$() 	   
+!if $m_help_subject iswordof fee sorc 
+$()Et la vôtre, comment s'appelle-t-elle ? 
+!endif
+$()	
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=7,8
+embedcnt=3

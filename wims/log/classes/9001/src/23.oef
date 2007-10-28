@@ -1,0 +1,42 @@
+\
+
+
+\title{Réfraction par le dessin}
+\author{Julien M}
+\computeanswer{no}
+\precision{1000}
+\integer{i1 = randint(10..50)}
+\integer{n1 = 1}
+\real{n2 = randint(110..170)/100 }
+\integer{i2 = (asin(\n1/\n2*sin(\i1*pi/180)))*180/pi}
+\text{rangex = -2,2}
+\text{rangey = -2,2}
+\text{SIZE = 501,501}
+
+\text{dessin = 
+  xrange \rangex
+  yrange \rangey
+  hline 0, 0, black
+  vline 0, 0, black
+  line 0,0, \rangey[1]*tan(\i1*pi/180), \rangey[2], red
+  dline 0,0,\rangey[2]*tan(\i1*pi/180), \rangey[1], red
+  text black,1.5,1,giant,n1
+  text black,1.5,-1,giant,n2
+  arc 0,0, 2*\n1, 2*\n1, 180,360, black
+  arc 0,0, 2*\n2, 2*\n2, 180,360, black
+}
+\text{origine = slib(draw/convpixel 0, 0, \SIZE, \rangex, \rangey, 0, pixels)}
+\text{sol = \rangey[2]*tan(\i2*pi/180),\rangey[1], \SIZE, \rangex, \rangey}
+\text{sol = slib(draw/convpixel \sol, 0, pixels)}
+\text{url = draw(\SIZE
+\dessin)}
+
+\statement{Dessiner le rayon réfracté, connaissant l'angle d'incidence 
+\(i_1) = \i1°, et les indices de réfraction \(n_1) = \n1 et \(n_2) = \n2.
+     <p align="center">\embed{reply1,\SIZE[1] x \SIZE[2]}</p>
+
+}
+
+\answer{}{\url;sline,\origine[1],\origine[2],\sol[1],\sol[2]}{type=javacurve}
+
+

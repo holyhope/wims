@@ -1,0 +1,44 @@
+\
+
+
+\title{Deux lettres de l'alphabet (plusieurs essais)}
+\text{alphabet = a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+\integer{n = randint(1..20)}
+
+\text{NSTEP = r1,r2}
+\nextstep{\NSTEP}
+\integer{try = 1}
+\text{ordinal = Premier essai : , Deuxième essai : , Troisième essai : }
+\text{REP=}
+\statement{Ecrire les deux lettres de l'alphabet suivant la lettre \alphabet[\n] : 
+<p>
+\ordinal[\try] 
+<table align=center><tr><td> \alphabet[\n]</td>
+ \for{a = 1 to 2}{
+   <td>
+     \if{ r\a isitemof \NSTEP}{
+        \embed{r\a,5} <font color=red>\REP[\a]</font>
+      }{ 
+      <font color=green>\alphabet[\n + \a]</font>
+     }
+    </td>
+ }
+</table>
+}
+
+\answer{suivant de \alphabet[\n]}{\A}{type=raw}
+\answer{suivant de \alphabet[\n+1]}{\B}{type=raw}
+\condition{Le suivant de \alphabet[\n] est \A ? }{\A issametext \alphabet[\n + 1]}
+\condition{Il y a ensuite \B}{\B issametext \alphabet[\n + 2]}
+
+\text{REP = \reply1,\reply2}
+\text{NSTEP = }
+\for{b = 1 to 2}{ 
+  \text{NSTEP = \REP[\b] notsametext \alphabet[\n+\b] and \try < 3 ?
+      wims(append item r\b to \NSTEP)}
+}
+\integer{try1 = \try -1}
+\feedback{\try1 > 1}{Vous avez fait \try1 essais}
+\integer{try = \try + 1}
+
+

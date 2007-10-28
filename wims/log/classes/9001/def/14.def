@@ -1,0 +1,113 @@
+!set title=Propriétés d'un test sanguin 2
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r,r,r
+varcnt=8
+prevarcnt=7
+postvarcnt=0
+replycnt=4
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint 10, 100
+
+val6=$[rint($(tmp0))]
+tmp0=!randint 5, ($val6-1)
+
+val7=$[rint($(tmp0))]
+val8=$[rint($val6-$val7)]
+tmp0=!randint 1, $val7
+
+val9=$[rint($(tmp0))]
+tmp0=!randint 1, $val8
+
+val10=$[rint($(tmp0))]
+val11=$[rint($val7-$val9)]
+val12=$[rint($val8-$val10)]
+replytype1=numexp
+replyname1=
+replygood1=$val9
+replytype2=numexp
+replyname2=
+replygood2=$val12
+replytype3=numexp
+replyname3=
+replygood3=$val11
+replytype4=numexp
+replyname4=
+replygood4=$val10
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()On a fait un test sur  $val6 échantillons de sang dont $val7 contenaient 	une substance interdite X.  Le test s'est révélé positif pour 	$val9  
+!if $val9 = 1 
+$()échantillon 
+!else
+$() échantillons 
+!endif
+$()	contenant la substance X et le test s'est révélé négatif pour $val10 	 
+!if $val10 = 1 
+$()échantillon 
+!else
+$() échantillons 
+!endif
+$() 	ne contenant pas la substance X. Compléter le tableau  des effectifs :<p>	<center> <table align="center" border=1 width="30%" bgcolor="antiquewhite">	   <tr align="center">	     <td></td><th>Avec X</th>	     <th>Sans X</th>	   </tr>	   <tr align="center">	     <th>Test positif</th>	     <td> 
+!read oef/embed.phtml reply1,5 
+$()</td>	     <td> 
+!read oef/embed.phtml reply2,5 
+$()</td>	   </tr> 	   <tr align="center">	     <th>Test négatif</th>	     <td> 
+!read oef/embed.phtml reply3,5 
+$()</td>	     <td> 
+!read oef/embed.phtml reply4,5 
+$()</td>	   </tr> 	 </table></center></p>
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=6,7,9,10
+embedcnt=4

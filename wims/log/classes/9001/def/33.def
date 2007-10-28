@@ -1,0 +1,234 @@
+!set title=Le compte est bon
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r,r,r,r,r
+varcnt=28
+prevarcnt=15
+postvarcnt=12
+replycnt=6
+choicecnt=0
+conditioncnt=3
+feedbackcnt=4
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=$[rint(3)]
+tmp0=!makelist x for x = 2 to 10
+
+val7=$(tmp0)
+!readproc slib/data/random $val6,item,$val7 
+tmp0=$slib_out
+val8=$(tmp0)
+val9=+,*
+tmp0=!randitem 1,2
+
+val10=$[rint($(tmp0))]
+tmp0=!randitem $val9
+
+val11=$(tmp0)
+!readproc slib/data/random 3,item,$val8 
+tmp0=$slib_out
+val12=$(tmp0)
+!if $val10 = 1 
+val13=$[rint($(val12[1])$val11$(val12[2]))]
+!else
+tmp0=!randitem $val9
+
+val14=$(tmp0)
+val13=$[rint(($(val12[1])$val11$(val12[2]))$val14$(val12[3]))]
+!endif
+!if $val13 isitemof $val8 
+val11=*
+val14=*
+val13=$[rint(($(val12[1])$val11$(val12[2]))$val14$(val12[3]))]
+!endif
+val15=r1
+val16=1
+dynsteps=yes
+oefsteps=$val15 
+nextstep=!nosubst $val15 
+!readproc oef/steps.proc
+replytype1=numeric
+replyname1=
+replygood1=?analyze 17
+replytype2=numeric
+replyname2=
+replygood2=?analyze 18
+replytype3=menu
+replyname3=
+replygood3=?analyze 19;$val9
+replytype4=numeric
+replyname4=
+replygood4=?analyze 20
+replytype5=menu
+replyname5=
+replygood5=?analyze 21;$val9
+replytype6=numeric
+replyname6=
+replygood6=?analyze 22
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()	  En additionnant ou en multipliant certains de ces chiffres	       <center><b>$val8</b></center> 	  vous devez obtenir <b>$val13</b>. 	  Chaque chiffre ne pourra être utilisé qu'une fois.<br>	   
+!if $m_step = 1 
+$()De combien d'opérations aurez-vous besoin ?  
+!read oef/embed.phtml r1,2 
+$() 
+!else
+$() 	      
+!if $val15!= 
+$() Entrez votre formule  : 	          
+!if $val17 = 1 
+$() ( 
+!read oef/embed.phtml r2,2 
+$()  
+!read oef/embed.phtml r3 
+$()  
+!read oef/embed.phtml r4,2 
+$())  
+!else
+$()	           ( 
+!read oef/embed.phtml r2,2 
+$()  
+!read oef/embed.phtml r3 
+$()  
+!read oef/embed.phtml r4,2 
+$())  
+!read oef/embed.phtml r5 
+$() 
+!read oef/embed.phtml r6,2 
+$()  
+!endif
+$()	          
+!endif
+$()	     
+!endif
+$()	 
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:postdef
+!if $m_step = 2 
+!if $val17 = 1 
+val15=r2,r3,r4
+val16=2,3
+!else
+!if $val17 = 2 
+val15=r2,r3,r4,r5,r6
+val16=2,3
+!else
+val15=
+!endif
+!endif
+!else
+val15=
+!endif
+
+!ifval $val17 = 1 
+val23=$[rint($val18 $val19 $val20 )]
+!else
+val23=$[rint( ($val18 $val19 $val20)$val21 $val22)]
+!endif
+val24=$val18,$val20
+
+!ifval $val17 = 2 
+val24= $val24,$val22
+!endif
+tmp0=!listuniq $val24
+
+val24=$(tmp0)
+tmp0=!listcomplement $val8 in $val24
+
+val25=$(tmp0)
+tmp0=!itemcnt $val24
+
+val26=$[rint($(tmp0) - 1)]
+
+!exit
+
+:feedback
+!ifval $val17 > 2
+ <p>Vous n'avez pas à faire plus de deux opérations
+$()
+!endif
+!ifval $m_step = 3 and $val26!=$val17
+ <p>Vous n'avez pas respecté la consigne : 	    vous avez utilisé plusieurs fois le même chiffre.
+$()
+!endif
+!ifval $m_step = 3 and $val25!=
+ <p>Vous n'avez pas respecté la consigne : 	    vous avez utilisé un chiffre qui n'était pas proposé
+$()
+!endif
+!ifval $m_step = 3 and $val23!=$val13
+ <p>Votre calcul donne $val23 et non $val13
+$()
+!endif
+
+!exit
+
+:test
+
+condlist=$val16
+condoption1=hide 
+
+!ifval $val17 = 1 or $val17 = 2
+ condtest1=1
+!else
+ condtest1=0
+!endif
+condname1=nb d'opérations
+
+!ifval $val23 = $val13
+ condtest2=1
+!else
+ condtest2=0
+!endif
+condname2=opération correcte ?
+condweight3=2 
+
+!ifval $val26 = $val17 and $val25=
+ condtest3=1
+!else
+ condtest3=0
+!endif
+condname3=Vous avez respecté la consigne
+
+!exit
+
+:stat
+vsavelist=8,13,15,16,17,18,19,20,21,22
+embedcnt=9

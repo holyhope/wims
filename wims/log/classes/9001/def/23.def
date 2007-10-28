@@ -1,0 +1,103 @@
+!set title=Réfraction par le dessin
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+author=Julien M
+computeanswer=no
+precision=1000
+
+ansorder=r
+varcnt=13
+prevarcnt=12
+postvarcnt=0
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint 10, 50
+
+val6=$[rint($(tmp0))]
+val7=$[rint(1)]
+tmp0=!randint 110, 170
+
+val8=$[$(tmp0)/100 ]
+val9=$[rint((asin($val7/$val8*sin($val6*pi/180)))*180/pi)]
+val10=-2,2
+val11=-2,2
+val12=501,501
+val13=xrange $val10	  yrange $val11	  hline 0, 0, black	  vline 0, 0, black	  line 0,0, $(val11[1])*tan($val6*pi/180), $(val11[2]), red	  dline 0,0,$(val11[2])*tan($val6*pi/180), $(val11[1]), red	  text black,1.5,1,giant,n1	  text black,1.5,-1,giant,n2	  arc 0,0, 2*$val7, 2*$val7, 180,360, black	  arc 0,0, 2*$val8, 2*$val8, 180,360, black	
+!readproc slib/draw/convpixel 0, 0, $val12, $val10, $val11, 0, pixels 
+tmp0=$slib_out
+val14=$(tmp0)
+val15=$(val11[2])*tan($val9*pi/180),$(val11[1]), $val12, $val10, $val11
+!readproc slib/draw/convpixel $val15, 0, pixels 
+tmp0=$slib_out
+val15=$(tmp0)
+!readproc oef/draw.phtml $val12 \
+$val13 
+tmp0=$ins_url
+val16=$(tmp0)
+replytype1=javacurve
+replyname1=
+replygood1=$val16;sline,$(val14[1]),$(val14[2]),$(val15[1]),$(val15[2])
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Dessiner le rayon réfracté, connaissant l'angle d'incidence 	
+!insmath i_1
+$() = $val6°, et les indices de réfraction 
+!insmath n_1
+$() = $val7 et 
+!insmath n_2
+$() = $val8.	     <p align="center"> 
+!read oef/embed.phtml reply1,$(val12[1]) x $(val12[2]) 
+$()</p>		
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=6,7,8,12
+embedcnt=1

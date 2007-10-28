@@ -1,0 +1,31 @@
+
+
+
+\title{Lettre de l'alphabet}
+\text{alphabet = a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+\integer{n = randint(1..20)}
+\integer{try = 0}
+\text{REP=}
+\text{NSTEP = r1}
+\nextstep{\NSTEP}
+
+\statement{Ecrire la lettre de l'alphabet qui suit  la lettre \alphabet[\n] : 
+<p align="center">
+     \if{ r1 isitemof \NSTEP}{
+        \embed{r1,5} <font color=red>\REP</font>
+      }{ 
+      <font color=green>\alphabet[\n + 1]</font>
+     }
+ </p>
+}
+
+\answer{lettre suivant \alphabet[\n]}{\A}{type=nocase}
+\condition{}{\A issametext \alphabet[\n + 1]}
+\text{REP = \reply1}
+\text{NSTEP=}
+\text{NSTEP = \reply1 notsametext \alphabet[\n + 1] and \try < 3 ? r1}
+
+\feedback{\try > 1}{Vous avez fait \try essais}
+\integer{try = \try + 1}
+
+

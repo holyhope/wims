@@ -1,0 +1,112 @@
+!set title=Quel est le nombre écrit dans la cellule
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r
+varcnt=21
+prevarcnt=20
+postvarcnt=0
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=8,6
+!readproc slib/matrix/random $val6,100 
+tmp0=$slib_out
+tmp=!trim $(tmp0)
+val7=!translate internal $	\
+$ to ;; in $tmp
+t_=!replace internal \( by ( in abs([$val7])
+tmp0=!exec pari $t_
+
+tmp=!trim $(tmp0)
+val7=!translate internal $	\
+$ to ;; in $tmp
+tmp0=!randint 1, $(val6[2])
+
+val8=$[rint($(tmp0))]
+tmp0=!randint 1, $(val6[1])
+
+val9=$[rint($(tmp0))]
+val10=A,B,C,D,E,F
+val11=$(val10[$val8])
+val12=$[rint($(val7[$val9;$val8]))]
+val13=563,341
+val14=80
+val15=17
+val16=111,206
+tmp0=!values $(val16[1]) + x * $val14 for x = 0 to $(val6[2])-1
+
+val17=$(tmp0)
+tmp0=!values $(val13[2]) - $(val16[2]) - y*$val15 	                                        for y = 0 to $(val6[1])-1
+
+val18=$(tmp0)
+val19=xrange 0,$(val13[1])	  yrange 0,$(val13[2])	  copy 0,$(val13[2]),-1,-1,-1,-1,tableur.jpg
+val20=
+!for val21  = 1 to $(val6[2]) 
+!for val22  = 1 to $(val6[1]) 
+val20=$val20	     text black,$(val17[$val21]),$(val18[$val22]),,$(val7[$val22;$val21])
+!next
+!next
+!readproc oef/draw.phtml $val13 \
+$val19	$val20 
+tmp0=$ins_url
+val23=$(tmp0)
+replyname1=Case $val11$val9
+replygood1=$val12
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Voici une image de page de <b>tableur</b>.	  Quel est le nombre écrit dans la cellule $val11$val9 ? 	  <p align="center">  
+!read oef/embed.phtml r1,5 
+$() </p>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=9,11
+embedcnt=1

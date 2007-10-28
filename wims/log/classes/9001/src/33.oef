@@ -1,0 +1,73 @@
+\
+
+\index{slib!\ttt{data/random}}
+
+\title{Le compte est bon}
+\integer{n = 3} Nombre de chiffres choisis
+\text{chiffres = wims(makelist x for x = 2 to 10)}
+\text{list = slib(data/random \n,item,\chiffres)}
+\text{op=+,*}
+\integer{c = random(1,2)}
+\text{opc1 = wims(randitem \op)}
+\text{nb = slib(data/random 3,item,\list)}
+\if{\c = 1}
+   {\integer{val = \nb[1]\opc1\nb[2]}}
+   {\text{opc2 = wims(randitem \op)}
+    \integer{val = (\nb[1]\opc1\nb[2])\opc2\nb[3]}
+   }
+\if{\val isitemof \list}{\text{opc1=*}\text{opc2=*}
+    \integer{val = (\nb[1]\opc1\nb[2])\opc2\nb[3]}
+   }
+
+\text{NSTEP = r1}
+\nextstep{\NSTEP}
+\text{COND = 1}
+\conditions{\COND}
+\statement{
+  En additionnant ou en multipliant certains de ces chiffres
+       <center><b>\list</b></center> 
+  vous devez obtenir <b>\val</b>. 
+  Chaque chiffre ne pourra être utilisé qu'une fois.<br>
+  \if{\step = 1}{De combien d'opérations aurez-vous besoin ? \embed{r1,2}} 
+    {\if{\NSTEP!=}
+         { Entrez votre formule  : 
+         \if{\nop = 1}{ (\embed{r2,2} \embed{r3} \embed{r4,2}) }
+         { (\embed{r2,2} \embed{r3} \embed{r4,2}) \embed{r5}\embed{r6,2} }
+         }
+    }
+ }
+\answer{}{\nop}{type=numeric}
+\answer{}{\ch1}{type=numeric}
+\answer{}{\oper1;\op}{type=menu}
+\answer{}{\ch2}{type=numeric}
+\answer{}{\oper2;\op}{type=menu}
+\answer{}{\ch3}{type=numeric}
+
+\condition{nb d'opérations}{\nop = 1 or \nop = 2}{option=hide}
+
+\if{\step = 2}
+   {\if{\nop = 1}{\text{NSTEP = r2,r3,r4}
+                 \text{COND = 2,3}}
+                {\if{\nop = 2}{\text{NSTEP = r2,r3,r4,r5,r6}
+                             \text{COND = 2,3}}
+                            {\text{NSTEP = }}           
+                }
+   }
+   {\text{NSTEP = }}   
+\integer{res = \nop = 1 ?\ch1 \oper1 \ch2 : (\ch1 \oper1 \ch2)\oper2 \ch3}
+\text{rep = \ch1,\ch2}
+\text{rep = \nop = 2 ? \rep,\ch3}
+\text{rep = wims(listuniq \rep)}
+\text{repcomp = wims(listcomplement \list in \rep)}
+\integer{uniq = items(\rep) - 1}
+\condition{opération correcte ?}{\res = \val}
+\condition{Vous avez respecté la consigne}{\uniq = \nop and \repcomp=}{weight=2}
+
+\feedback{\nop > 2}{Vous n'avez pas à faire plus de deux opérations}
+\feedback{\step = 3 and \uniq!=\nop}{Vous n'avez pas respecté la consigne : 
+    vous avez utilisé plusieurs fois le même chiffre.}
+\feedback{\step = 3 and \repcomp!=}{Vous n'avez pas respecté la consigne : 
+    vous avez utilisé un chiffre qui n'était pas proposé}
+\feedback{\step = 3 and \res!=\val}{Votre calcul donne \res et non \val}
+
+

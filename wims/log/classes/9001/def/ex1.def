@@ -1,0 +1,109 @@
+!set title=Mutiplication par une matrice 2x2
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+precision=10000
+
+ansorder=r
+varcnt=12
+prevarcnt=11
+postvarcnt=0
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint -5, 5
+
+val6=$[rint($(tmp0))]
+tmp0=!randint -5, 5
+
+val7=$[rint($(tmp0))]
+tmp0=!randint -5, 5
+
+val8=$[rint($(tmp0))]
+tmp0=!randint -5, 5
+
+val9=$[rint($(tmp0))]
+tmp0=!randint -5, 5
+
+val10=$[rint($(tmp0))]
+tmp0=!randint -5, 5
+
+val11=$[rint($(tmp0))]
+tmp=!trim $val6,$val7	$val8,$val9
+val12=!translate internal $	\
+$ to ;; in $tmp
+tmp=!trim $val10	$val11
+val13=!translate internal $	\
+$ to ;; in $tmp
+val14=$[rint($val6*$val10+$val7*$val11)]
+val15=$[rint($val8*$val10+$val9*$val11)]
+tmp=!trim $val14	$val15
+val16=!translate internal $	\
+$ to ;; in $tmp
+replytype1=matrix
+replyname1=\(AB\)
+replygood1=$val16 
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Calculer le produit 
+!insmath AB
+$() avec  
+!insmath A
+$() = 
+!insmath [$val12]
+$()  et   	
+!insmath B
+$() = 
+!insmath [$val13]
+$()
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=12,13
+embedcnt=0

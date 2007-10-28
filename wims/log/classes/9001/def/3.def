@@ -1,0 +1,87 @@
+!set title=Un pré bis
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+language=fr
+computeanswer=no
+precision=10000
+
+ansorder=r,r
+varcnt=5
+prevarcnt=4
+postvarcnt=0
+replycnt=2
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint 1, 10
+
+val6=$[rint(10*$(tmp0))]
+tmp0=!randint 1, 10
+
+val7=$[rint(10*$(tmp0))]
+val8=$[rint(2*($val6+$val7))]
+val9=$[rint($val6*$val7)]
+replytype1=units
+replyname1=périmètre
+replygood1=$val8 m
+replytype2=units
+replyname2=superficie
+replygood2=$val9 m^2
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Un pré rectangulaire de longueur $val6 m et de largeur $val7 m 	a une bordure de  
+!read oef/embed.phtml reply1,8 
+$() et une superficie de  
+!read oef/embed.phtml reply2,8 
+$().	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=6,7
+embedcnt=2

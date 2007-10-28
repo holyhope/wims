@@ -1,0 +1,114 @@
+!set title=Tangente (function)
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r
+varcnt=10
+prevarcnt=9
+postvarcnt=0
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randitem -1,1
+
+tmp1=!randint 1, 30
+
+val6=$[$(tmp0)*$(tmp1)/10]
+tmp0=!randint -20, 20
+
+val7=$[$(tmp0)/10]
+tmp0=!randint -20, 20
+
+val8=$[$(tmp0)/10]
+tmp=!translate ";': to $     $ in $val7*x
+
+tmp=!lower $tmp
+tmp0=!exec maxima fullratsimp($tmp);
+val9=!rawmath $val6*x^2+$(tmp0)+$val8
+tmp0=!randint -40, 40
+
+val10=$[$(tmp0)/10]
+evaltmp=$val9
+
+evaltmp=!mathsubst x=( $val10) in $evaltmp
+tmp0=($evaltmp)
+val11=$[$(tmp0)]
+tmp=!translate ;";': to $     $ in $val9,x
+
+tmp=!lower $tmp
+tmp0=!exec maxima diff($tmp);
+val12=!rawmath $(tmp0)
+evaltmp=$val12
+
+evaltmp=!mathsubst x=( $val10) in $evaltmp
+tmp0=($evaltmp)
+val13=$[$(tmp0)]
+tmp=!translate ";': to $     $ in $val13*$val10-$val11
+
+tmp=!lower $tmp
+tmp0=!exec maxima fullratsimp($tmp);
+val14=!rawmath $val13*x-$(tmp0)
+replytype1=function
+replyname1=y
+replygood1=!rawmath $val14,x
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$() Donner l'équation de la tangente à la courbe d'équation  	
+!insmath y = $val9
+$() au point ($val10, $val11).	       <p align="center"> 
+!insmath  y = 
+$()  
+!read oef/embed.phtml reply1 
+$() </p>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=9,10,11
+embedcnt=1

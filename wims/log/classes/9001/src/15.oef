@@ -1,0 +1,41 @@
+
+
+
+\title{Maladies infectieuses}
+\language{fr}
+\format{html}
+
+\matrix{liste = Tuberculose,bactéries  
+  Tétanos,bactéries         
+  Typhoïde,bactéries       
+  Lèpre,bactéries              
+  Rage,virus               
+  Poliomyélite,virus  
+  Rougeole,virus 	
+  Hépatite,virus 	
+  Grippe,virus 		
+  Bronchiolite,virus     
+  Paludisme,parasites	
+  Toxoplasmose,parasites}
+\text{nom = random(bactéries,virus,parasites)}
+\text{mix = shuffle(rows(\liste))}
+\text{listchoix = \liste[\mix[1..6];]}
+\text{choix = \listchoix[;1],ces maladies ne sont pas dues à des \nom}
+\text{rep = position(\nom,\listchoix[;2])}
+\if{\rep=}{\text{rep = 7}}
+
+\statement{Les maladies infectieuses peuvent être dues à des virus,
+  des bactéries ou des parasites qui se multiplient dans l'organisme.
+<p> Parmi les maladies suivantes, sélectionner toutes les maladies 
+    qui sont dues à des \nom :
+<ul>
+  \for{h = 1 to 6}{
+    <li> \embed{reply1,\h}</li>
+  }
+</ul>
+ \embed{reply1,7}
+}
+
+\answer{}{\rep;\choix}{type=checkbox}{option=split}
+
+

@@ -1,0 +1,28 @@
+
+\label{eg:carre2}
+\
+
+\title{ Le carré d'un entier avec 2 essais }
+\computeanswer{ no } 
+\integer{ n = randint(-5..5) } 
+\integer{ N = (\n)^2 } 
+\text{COND = 1}
+\text{STEP = r1}
+\nextstep{\STEP}
+\conditions{1}
+
+\statement{ Calculer le carré de \n.<br>
+}
+\answer{ Carré de \n }{ \var1 }{ type=numeric } 
+\answer{ Carré de \n (2ème essai) }{ \N }{ type=numeric } 
+
+\condition{Votre première réponse est-elle correcte ?}{\var1 = \N}
+\text{STEP=}
+\if{\step = 2 and \var1!=\N}{\text{STEP = r2}}
+\feedback{ \reply1 < 0 }{ Le carré d'un entier est toujours positif. }
+\feedback{\var1!=\N and \reply2 = \N}{
+    Vous avez répondu correctement au 2ème essai.
+}
+\feedback{\var1!=\N and \reply2!=\N}{Vos deux réponses sont incorrectes.}
+
+

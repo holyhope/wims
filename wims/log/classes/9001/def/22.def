@@ -1,0 +1,147 @@
+!set title=Tangente 3
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r
+varcnt=27
+prevarcnt=25
+postvarcnt=1
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randitem -1,1
+
+tmp1=!randint 1, 30
+
+val6=$[$(tmp0)*$(tmp1)/10]
+tmp0=!randint -20, 20
+
+val7=$[$(tmp0)/10]
+tmp0=!randint -20, 20
+
+val8=$[$(tmp0)/10]
+tmp=!translate ";': to $     $ in $val7*x
+
+tmp=!lower $tmp
+tmp0=!exec maxima fullratsimp($tmp);
+val9=!rawmath $val6*x^2+$(tmp0) + $val8
+tmp0=!randint -40, 40
+
+val10=$[$(tmp0)/10]
+evaltmp=$val9
+
+evaltmp=!mathsubst x=( $val10) in $evaltmp
+tmp0=($evaltmp)
+val11=$[$(tmp0)]
+tmp=!translate ;";': to $     $ in $val9,x
+
+tmp=!lower $tmp
+tmp0=!exec maxima diff($tmp);
+val12=!rawmath $(tmp0)
+evaltmp=$val12
+
+evaltmp=!mathsubst x=( $val10) in $evaltmp
+tmp0=($evaltmp)
+val13=$[$(tmp0)]
+tmp=!translate ";': to $     $ in $val13*$val10 - $val11
+
+tmp=!lower $tmp
+tmp0=!exec maxima fullratsimp($tmp);
+val14=!rawmath $val13*x - $(tmp0)
+val15=$[rint(min(-3, $val10 - 2))]
+val16=$[rint(max(3, $val10 + 2))]
+!readproc slib/function/bounds $val9, x,$val15,$val16 
+tmp0=$slib_out
+val17=$(tmp0)
+val18=$[rint(min(-3, $(val17[1]) - 2))]
+val19=$[rint(max(3, $(val17[2]) + 2))]
+val20=$val15, $val16
+val21=$val18, $val19
+val22=rangex $val20	  rangey $val21	  arrow $val15,0,$val16,0,10, black	  arrow 0,$val18,0,$val19,10, black	  plot navy,$val9	  circle $val10,$val11,5, red	  text black,0,0,roman,0	
+!readproc oef/draw.phtml 200,200 \
+  $val22 
+tmp0=$ins_url
+val23=$(tmp0)
+val24=$val22	 plot green,$val14	
+!readproc oef/draw.phtml 200,200 \
+  $val24 
+tmp0=$ins_url
+val25=$(tmp0)
+val26=$[$val10+1]
+val27=$[$val13*$val26 - $val13*$val10 + $val11]
+!readproc slib/draw/convpixel $val10,$val11,200,200,$val20,$val21,0,pixels 
+tmp0=$slib_out
+val28=$(tmp0)
+!readproc slib/draw/convpixel $val26,$val27,200,200,$val20,$val21,0,pixels 
+tmp0=$slib_out
+val29=$(tmp0)
+val30=$val23;line,$(val28[1]),$(val28[2]),$(val29[1]),$(val29[2])
+replytype1=javacurve
+replyname1=
+replygood1=$val30
+question=__EXECUTED_1692754_EXERCISE__
+solution=!nosubst La droite tangente au point d'abscisse $val10 est dessinée en vert : <center><img src="$val25"></center> 
+
+
+!goto stat
+
+!exit
+
+:question
+$()En utilisant la souris, positionner la  tangente à la courbe d'équation  	
+!insmath y = $val9
+$() au point  d'abscisse $val10.<br>	NB : <i> le tracé  sera	obtenu en définissant deux points appartenant à cette tangente</i>	<center> 
+!read oef/embed.phtml reply1,200x200 
+$()</center></p>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()La droite tangente au point d'abscisse $val10 est dessinée en vert : <center><img src="$val25"></center> 
+$()
+!exit
+
+:postdef
+val24=$val22	 plot green,$val14	
+
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=9,10,14,22,25
+embedcnt=1

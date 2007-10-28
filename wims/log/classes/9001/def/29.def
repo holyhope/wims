@@ -1,0 +1,130 @@
+!set title=Deux lettres de l'alphabet (plusieurs es
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r
+varcnt=13
+prevarcnt=6
+postvarcnt=6
+replycnt=2
+choicecnt=0
+conditioncnt=2
+feedbackcnt=1
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+tmp0=!randint 1, 20
+
+val7=$[rint($(tmp0))]
+val8=r1,r2
+val9=$[rint(1)]
+val10=Premier essai : , Deuxième essai : , Troisième essai : 
+val11=
+dynsteps=yes
+oefsteps=$val8 
+nextstep=!nosubst $val8 
+!readproc oef/steps.proc
+replytype1=raw
+replyname1=suivant de $(val6[$val7])
+replygood1=?analyze 12
+replytype2=raw
+replyname2=suivant de $(val6[$val7+1])
+replygood2=?analyze 13
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Ecrire les deux lettres de l'alphabet suivant la lettre $(val6[$val7]) : 	<p>	$(val10[$val9]) 	<table align=center><tr><td> $(val6[$val7])</td>	  
+!for m_a = 1 to 2 
+$()	   <td>	      
+!if  r$m_a isitemof $val8 
+$()	         
+!read oef/embed.phtml r\a,5 
+$() <font color=red>$(val11[$m_a])</font>	       
+!else
+$()  	      <font color=green>$(val6[$val7 + $m_a])</font>	      
+!endif
+$()	    </td>	  
+!next
+$()	</table>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:postdef
+val11=$m_reply1,$m_reply2
+val8=
+!for val14  = 1 to 2 
+
+!ifval $(val11[$val14]) notsametext $(val6[$val7+$val14]) and $val9 < 3 
+tmp0=!append item r$val14 to $val8
+
+val8=	      $(tmp0)
+!endif
+!next
+val15=$[rint($val9 -1)]
+val9=$[rint($val9 + 1)]
+
+!exit
+
+:feedback
+!ifval $val15 > 1
+ <p>Vous avez fait $val15 essais
+$()
+!endif
+
+!exit
+
+:test
+
+!ifval $val12 issametext $(val6[$val7 + 1])
+ condtest1=1
+!else
+ condtest1=0
+!endif
+condname1=Le suivant de $(val6[$val7]) est $val12 ? 
+
+!ifval $val13 issametext $(val6[$val7 + 2])
+ condtest2=1
+!else
+ condtest2=0
+!endif
+condname2=Il y a ensuite $val13
+
+!exit
+
+:stat
+vsavelist=6,7,8,9,10,11,12,13
+embedcnt=1

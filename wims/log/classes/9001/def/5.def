@@ -1,0 +1,84 @@
+!set title=Unités du système SI (correspond)
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r
+varcnt=4
+prevarcnt=3
+postvarcnt=0
+replycnt=1
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp=!trim Longueur,mètre	  Masse,kilogramme	  Temps,seconde	  Intensité de courant électrique, ampère	  Température, kelvin	  Intensité lumineuse, candela	  Quantité de matière, mole	  Angle plan, radian	  Angle solide, stéradian
+val6=!translate internal $	\
+$ to ;; in $tmp
+tmp=!translate internal $	$ to ; in $val6
+
+tmp0=!rowcnt $tmp
+tmp1=!shuffle $(tmp0)
+
+val7=$(tmp1)
+tmp=!trim $(val6[$(val7[1..4]);])
+val8=!translate internal $	\
+$ to ;; in $tmp
+replytype1=correspond
+replyoption1=split 
+replyname1=
+replygood1=$(val8[;1]);$(val8[;2])
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Mettre en correspondance les unités du système international :<p>	   <center> 
+!read oef/embed.phtml reply1 
+$()</center></p>	
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=
+embedcnt=1

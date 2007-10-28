@@ -1,0 +1,41 @@
+
+
+
+\title{Carrés (nonstop)}
+\integer{n = 3}
+\integer{m = randint(3..4)}
+\text{question = wims(values x for x = \m to \n + \m)}
+\text{rep = wims(values x^2 for x = \m to \n + \m)}
+\text{th = wims(makelist \(x^2) for x = \m to \n + \m - 1)}
+\text{STEP = r1}
+\text{cnt_r = 1}
+\nextstep{\STEP}
+
+\statement{
+ \if{\step = 1}{Calculer le carré de \question[1] : 
+   <p align="center"> \embed{r 1, 5} </p>
+ }
+ \if{\step = 2}{Calculer le carré de \question[2]
+   <p align="center"> \embed{r \STEP[1], 5} </p>
+   \if{\cnt_r = 2}{ 
+      et le carré de \question[3]
+     <p align="center"> \embed{r \STEP[2], 5} </p>
+   }
+  }
+}
+
+\answer{\th[1]}{\rep[1]}{type=numeric}{option=nonstop}
+\answer{\th[2]}{\rep[2]}{type=numeric}{option=nonstop}
+\answer{\th[3]}{\rep[3]}{type=numeric}{option=nonstop}
+
+\if{\step = 2}{
+  \text{STEP = \rep[1] = \reply1 ? r2 : r2,r3}
+}{
+  \text{STEP=}
+}
+
+\feedback{1=1}{\rep[1] = \reply1}
+
+\integer{cnt_r = items(\STEP)}
+
+

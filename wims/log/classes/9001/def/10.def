@@ -1,0 +1,102 @@
+!set title=Disque 2
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+language=fr
+computeanswer=no
+precision=1000
+
+ansorder=r
+varcnt=5
+prevarcnt=2
+postvarcnt=2
+replycnt=1
+choicecnt=0
+conditioncnt=1
+feedbackcnt=3
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+tmp0=!randint 100, 500
+
+val6=$[$(tmp0)/100]
+val7=$[2*pi*$val6]
+replytype1=numeric
+replyname1=Circonférence
+replygood1=?analyze 8
+question=__EXECUTED_1692754_EXERCISE__
+
+!goto stat
+
+!exit
+
+:question
+$()Déterminer la circonférence d'un disque de rayon $val6.
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:postdef
+val9=$[(1 + 0.001)*$val7]
+val10=$[(1 - 0.001)*$val7]
+
+!exit
+
+:feedback
+!ifval 1 = 1
+ <p>$m_reply1
+$()
+!endif
+!ifval $val8 < $val10
+ <p>Vous avez donné la circonférence d'un disque dont	  le rayon est plus petit que $val6. 
+$()
+!endif
+!ifval $val8 > $val9
+ <p>Vous avez donné la circonférence d'un disque dont	  le rayon est plus grand que $val6. 
+$()
+!endif
+
+!exit
+
+:test
+condoption1=hide 
+
+!ifval $val8 <= $val9 and $val8 >= $val10 
+ condtest1=1
+!else
+ condtest1=0
+!endif
+condname1=Bonne précision
+
+!exit
+
+:stat
+vsavelist=6,7,8
+embedcnt=0

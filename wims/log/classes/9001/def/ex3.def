@@ -1,0 +1,83 @@
+!set title=Ex de styles css
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+
+ansorder=r,r
+varcnt=6
+prevarcnt=5
+postvarcnt=0
+replycnt=2
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+val6=background-color: #FFFFCC;	  color: navy;	  margin: 2% 5%;	  padding: 1%; 
+val7=border-style:none;  	  border-width:10px; 
+val8=border-style:solid;	  width:30%;   	  border-width:1px; 	  border-color:red;  
+val9=color:green;	   font-size:100%;	   font-weight: bold;  
+val10=<style type="text/css">	                .consigne {$val6}	                .cadre {$val7}	                .red {$val8}	                .sol {$val9}     	              </style> 
+replytype1=numexp
+replyname1=x
+replygood1=0.5
+replytype2=numexp
+replyname2=y
+replygood2=-1
+question=__EXECUTED_1692754_EXERCISE__
+solution=!nosubst <p class="sol"> 2x - 1 = 0 a pour solution x = 0.5 et 4y + 3 = y a pour solution y = -1</p>
+
+
+!goto stat
+
+!exit
+
+:question
+$() $val10	   <div class="consigne"> Résoudre les deux équations suivantes :</div>	   <center><table class="cadre"><tr align="center">	     <td class="red"> 2x - 1 = 0 </td>	     <td> a pour solution x =  
+!read oef/embed.phtml reply1,10 
+$() </td></tr>	     <tr align="center"><td class="red"> 4y + 3 = y </td>	     <td> a pour solution y =  
+!read oef/embed.phtml reply2,10 
+$() </td></tr>	   </table></center>  
+$()
+!exit
+
+:hint
+$()
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()<p class="sol"> 2x - 1 = 0 a pour solution x = 0.5 et 4y + 3 = y a pour solution y = -1</p>
+$()
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=10
+embedcnt=2

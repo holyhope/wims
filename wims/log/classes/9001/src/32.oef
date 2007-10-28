@@ -1,0 +1,58 @@
+
+
+
+\title{Cellule 2}
+\text{Size = 625,320}
+\matrix{coord = 245,102,1,-1,un reticulum endoplasmique
+50,107,1,1,un filament d'actine
+120,107,-1,-1,une mitochondrie
+70,180,-1,1,la membrane plasmique
+238,159,1,-1,des nucléoles
+298,139,1,-1,l'enveloppe nucléaire
+358,190,1,1,l'appareil de Golgi
+354,225,-1,1,une microtubule
+542,207,-1,1,une vésicule
+160,100,0,-1,le cytoplasme
+}
+\integer{k = randint(1..10)}
+\text{co = pari([\coord[\k;1]+20*(\coord[\k;3]),\coord[\k;2]+20*\coord[\k;4],
+  \coord[\k;1],\coord[\k;2]])}
+\text{dessinprelim=
+xrange 0,\Size[1]
+yrange 0,\Size[2]
+copy 0,\Size[2],-1,-1,-1,-1,cellule.jpg
+arrow \co,10,blue}
+\text{figure = draw(\Size
+\dessinprelim)}
+\text{NSTEP = r1}
+\nextstep{\NSTEP}
+\text{verif=}
+\statement{Le schéma ci-dessous représente une cellule eucaryote. 
+\if{\step = 1}{ 
+  <p><center>
+    <img src="\figure"> 
+  </center></p>
+}
+{<p><center><img src="\verif"></center></p>}
+Cliquer sur le nom de l'organite désigné par la flèche bleue :
+<p><center>\embed{reply1,100x40x1}</center></p>
+}
+
+\answer{}{\var;\coord[;5]}{type=dragfill}
+\text{NSTEP=}
+\integer{r = position(\reply1,\coord[;5])}
+\condition{}{\r = \k}{option=hide}
+\text{coul = \r==\k ? blue : red}
+\text{co = \coord[\r;1]+20*(\coord[\r;3]),\coord[\r;2]+20*\coord[\r;4],
+   \coord[\r;1],\coord[\r;2]}
+\text{verif = draw(\Size
+\dessinprelim
+arrow \co,10,\coul)}
+ 
+\feedback{\r!=\k }{<font color=red> Erreur ! La flèche bleue n'indique  
+  pas \reply1, mais \coord[\k;5]. Sur le dessin ci-dessus, 
+  la flèche rouge vous montre \reply1. 
+</font>}
+
+
+
