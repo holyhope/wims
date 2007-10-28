@@ -55,7 +55,7 @@ sclass=!defof class_superclass in wimshome/log/classes/$class/.def
 !default sclass=$class
 auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
 exist_check=!defof user_exists in $userdef
-!if $auth_user notsametext supervisor $exist_check issametext yes \
+!if $auth_user notsametext supervisor and $exist_check issametext yes \
 	and $auth_method iswordof ldap
  authdef=wimshome/log/classes/$sclass/.def
  !readproc adm/class/auth-$auth_method $auth_user,$auth_password
