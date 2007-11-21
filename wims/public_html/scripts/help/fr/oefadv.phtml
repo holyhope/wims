@@ -1,0 +1,181 @@
+!set special_list=imagefill,expandlines,rename,help,tooltip
+
+<p><center><h2>Possibilités avancées de OEF</h2></center>
+
+<h3>Cacher le nom d'images</h3>
+Si l'exercice demande de reconnaître une image prise au hasard, le nom de l'image peut donner
+une indication à l'exercice. Pour cacher ce nom d'image, vous pouvez écrire
+
+<pre>\img{\imagedir/picture.jpg align=middle alt="picture"}</pre>
+
+Ainsi dans le source de la page htmp, l'étudiant pourra voir
+
+<pre>&lt;img src="a_random_unrelated_file_name" align=middle alt="picture"&gt;</pre>
+
+Le vrai nom de l'image est ainsi caché.
+
+<p><b>Note</b>. Don't use directly the WIMS command <em>rename</em> to
+process the file name, or the exercise won't work correctly under saved
+environment.
+
+<h3>Exercises à plusieurs étapes</h3>
+Des exercices à plusieurs étapes peuvent être conçus grâce à la commande
+ <tt>\steps</tt>. Par exemple, si vous définissez (parmi d'autres paramètres)
+
+<pre>\steps{choice 1, reply 1
+choice 2, reply 2, reply 3
+choice 3
+}</pre>
+
+l'exercice sera présenté en trois étapes, la première proposant 
+un choix multiple (choice 1) et une réponse de type <tt>reply</tt>  (reply 1), 
+la seconde proposant un choix multiple et deux réponses de type <tt>reply</tt>, etc.
+<p>
+
+L'argument de <tt>\steps</tt> accepte des paramètres définis auparavant aussi bien que des définitions
+conditionnelles de la même manière que pour la définition de paramètres. Cela permet
+de présenter des champs de réponses sélectivement selon des variations alétaoires de
+paramètres, même dans le cas où il n'y a qu'une seule étape.
+<p>
+Il faut noter que si une erreur est faite à une étape, les étapes suivantes ne sont pas
+proposées et sont donc considérées comme fausses.
+<p>
+Le numéro de l'étape en cours est accessible dans le champ <tt>statement</tt>
+dans la variable
+<tt>\step</tt> qui prend donc successivement les valeurs 
+ 1,2,... à mesure que l'utilisateur avances dans ses réponses.
+<p>
+
+Pour faire des exercices dynamiques à plusieurs étapes 
+(étapes variant selon les réponses de l'étudiant), vous pouvez utiliser
+la commande <tt>\nextstep{...}</tt>. L'argument de 
+<tt>\nextstep</tt> est semblable à celui de <tt>\steps</tt> mais seule la première
+ligne est effective. Elle n'est utile que si cet argument est une variable qui change
+après avec les définitions de paramètres après soumission. 
+L'exercice s'arrête quand le contenu de <tt>\nextstep</tt>  est vide
+<p>
+Dans tous les cas, une seule déclaration parmi <tt>\steps</tt> or <tt>\nextstep</tt>
+doit apparaître dans un source OEF.
+
+<h3>Branchements conditionnels et boucles</h3>
+
+Commandes disponibles:
+
+<pre>
+\if{condition}{contenu conditionnel}
+\if{condition}{contenu_conditionnel}{autre_contenu_conditionnel}
+\for{var=n1 to n2}{contenu_de_la_boucle}
+\while{condition}{ontenu_de_la_boucle}  (uniquement dans l'environnement principal)
+</pre>
+
+Les commandes de branchements conditionnels et de boucles peuvent être utilisées  
+dans l'environnement principal ou (sauf pour <tt>while</tt>)
+à l'intérieur de l'énoncé (<tt>statement</tt>, d'une aide (<tt>hint</tt>), 
+d'une solution (<tt>solution</tt>), d'un feedback (<tt>feedback</tt>) 
+feedback.  Lorsque ces commandes sont dans l'environnement principal, elles n'affectent
+que la définition de paramètres.
+
+<a name=special>
+<h3>Méthodes spéciales</h3></a>
+
+La commande <tt>\special{...}</tt> dans le corps d'un exercice (<tt>statement</tt>
+permet de faire les méthodes suivantes :
+<p>
+!if $special_parm=all
+ !for sp in $special_list
+  <p><center><h4>La méthode spéciale <tt>$sp</tt></h4></center> <p>
+  Syntaxe générale: <tt>\special{$sp <i>paramètres</i>}</tt> <p>
+
+  !read oef/special/$sp.phtml help
+ !next sp
+!else
+ !for sp in $special_list
+  !href cmd=help&special_parm=oefadv&special_parm2=$sp#special $sp
+  &nbsp;
+ !next sp
+!endif
+
+!if $special_parm2 isitemof $special_list
+<p><center><h4>The special method <tt>$special_parm2</tt></h4></center> <p>
+General syntax: <tt>\special{$special_parm2 <i>parameters</i>}</tt> <p>
+
+!read oef/special/$special_parm2.phtml help
+!endif
+
+<h3>Preprocessed sources</h3>
+
+This feature is not available for Createxo. You can use it if you write OEF
+(and Deductio) exercises under Modtool.
+<p>
+It allows you to include common portions of codes into several oef files.
+You can also use it to make batch generation of several oefs from one
+pre-source, each differing from the others by some macro definitions.
+<p>
+To use this feature, a subdirectory cpp/ should be created under src. Put
+into it pre-source files with extension .cpp. In these files, you can add
+cpp directives like <tt>#include</tt> or <tt>#if</tt>. (Please refer to cpp
+manual and c specification for details of the syntax.)
+<p>
+The first line of the cpp file must define a list of targets, in the format
+<pre>
+target=targ1 targ2 targ3 ...
+</pre>
+This line means that this cpp file should generate targ1.oef, targ2.org, etc.
+(the extension .oef will be
+appended to the output names). When generating the target file <em>targ1</em>, the
+predicate <tt>#TARGET</tt> will be defined as <em>targ1</em>. (And a macro
+<em>TARGET_targ1</em> is also defined.)
+Therefore in the cpp source file, you can add lines like
+<pre>
+#if #TARGET (targ1)
+ \title{Exercise 1}
+ \integer{v1=3}
+ \text{t1=this is target 1}
+#endif
+#if #TARGET (targ2)
+ \title{Exercise 2}
+ \integer{v1=5}
+ \text{t1=this is target 2}
+#endif
+</pre>
+in order to make the contents target-dependent.
+<p>
+Include files should also be put into the src/cpp directory, with extension
+.inc. And a line
+<pre>
+#include "common.inc"
+</pre>
+will insert the content of common.inc into the generated oef file.
+Please note that for security reasons, it is prohibited to specify
+directories of include files.
+<p>
+A special remark: cpp gets confused when your file contains single or double
+quotes in the text that are not closed. In this case, you can protect the
+commands containing such texts by c comments (<tt>/* ... */</tt>).
+
+<h3>Environnement dans un exercice</h3>
+La variable spéciale  <tt>\oefenv</tt> est utiliser pour tester un exercice
+(si elle n'est pas redéfinie dans l'exercice).
+<p>
+Pour l'instant, le seul contenu possible de cette variable est le mot
+``debug''. Ce mot apparaît à l'intérieur de <tt>\oefenv</tt> dans les situations 
+suivantes :
+<ol>
+<li>quand elle est exécutée à l'intérieur de Createxo ;</li>
+<li>quand elle est sous test dans Modtool par le développeur lui-même</li>
+<li>quand l'exercice est dans une classe et exécutée par l'administrateur de la classe.
+</li>
+</ol>
+Dans ces cas, la bonne réponse apparaît par défaut dans les champ de réponse
+si vous le demandez, vous permettant de voir ce que l'exercice attend comme 
+réponse sans avoir besoin de remplir vous-même les champs.
+<p>
+Vous pouvez ajouter des informations de débogage à l'intérieur de votre exercice
+en utilisant des conditions comme 
+<pre>
+\if{debug iswordof \oefenv}{informations de débogage à ajouter ici}
+</pre>
+Ces informations sont alors automatiquement montrer quand l'exercice
+est sous test et automatiquement caché quand les étudiants y travaillent.
+
+

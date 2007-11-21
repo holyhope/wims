@@ -1,0 +1,49 @@
+ 
+<center>限制进入的定义</center>
+<p>
+
+这是逐行执行的多行数据. 
+其限制仅对资源模块有效, 不影响管理模块.
+以 `<tt>#</tt>' 起首的行是注解.
+<p>
+每一行的格式是 <tt>[进入条件]:[主机条件]</tt>.
+<p>
+进入条件是可用 AND 连接的一串词. 可用的词见下表, 每个词均可添加前缀
+<tt>non</tt> 表示否定.
+<p><center><table border=2>
+<tr><th>词<th>意义
+<tr><td>class<td>连接限于虚拟班内.
+<tr><td>com<td>被请求的模块位于 com/ 子树下.
+<tr><td>document<td>被请求的模块是文件. (目前尚不可用)
+<tr><td>exercise<td>被请求的模块是练习.
+<tr><td>hint<td>请求目的是为了提示.
+<tr><td>local<td>被请求的模块位于 local/ 子树下.
+<tr><td>recreation<td>被请求的模块是游戏.
+<tr><td>tool<td>被请求的模块是工具.
+</table></center> <p>
+
+主机条件可以是各种形式的主机定义,必要时可以加上时间限制.
+如果主机条件的第一个字符是 ``<tt>!</tt>'', 
+那么满足条件的主机/时间均被拒绝进入(满足进入条件的资源).
+否则那些主机就有权进入, 而以后的各行均被忽略不计.
+
+<p><hr> <p>
+
+!read help/hosts.phtml
+
+<p><hr> <p>
+
+一些例子.
+<p>
+# 不允许来自 134.59.102.* 的机器进入工具.
+<br><tt>tool:! 134.59.102.</tt>
+<p>
+# 不允许 localhost 请求提示.
+<br><tt>hint:! 127.0.0.1</tt>
+<p>
+# 来自 wanadoo.fr 不能匿名进入游戏.
+<br><tt>recreation nonclass:! .wanadoo.fr</tt>
+<p>
+#  localhost 不能在2004新年进入虚拟班.
+<br><tt>class: ! 127.0.0.1 >20040101.00:00 <20040101.23:59</tt>
+<p>
