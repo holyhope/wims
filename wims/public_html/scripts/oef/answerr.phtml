@@ -16,7 +16,12 @@
    !reset eq
   !endif
   <tr><td align=right nowrap>
-  !imgrename <b>$(replyname$i)</b>$eq<td><tt>$(reply_$i)</tt>&nbsp;: <td>
+  !if noanalyzeprint notwordof $(replyoption$i)
+   !imgrename <b>$(replyname$i)</b>$eq<td><tt>$(reply_$i)</tt>&nbsp;: 
+  !else
+   !imgrename <b>$(replyname$i)
+  !endif
+  <td>
   !if $tt!=?analyze
    !if $(diareply$i)=good
     !if $(partialgood$i) = yes and $indpartial != $empty
@@ -32,7 +37,7 @@
     !endif
    !endif
    !if ($(diareply$i)=bad or $(partialgood$i) = yes) and $presentgood>0 and \
-	nogood notwordof $style and dprompt notwordof $style
+	nogood notwordof $style and dprompt notwordof $style and noanalyzeprint notwordof $(replyoption$i)
     !default replyGood$i=$(replygood$i)
     !imgrename $thisind, $ch_good1 <tt>$(replyGood$i)</tt>.
    !else
