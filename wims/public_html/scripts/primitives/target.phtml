@@ -1,4 +1,3 @@
-
 !if \ isin $parm1
  !for p in 1
   !set parm$p=!slashsubst $(parm$p)
@@ -14,13 +13,16 @@
 	and $prim iswordof exercise tool
  !set add=!translate internal / to $ $ in $add
  !distribute words $add into sh_,ex_
- !set l_=!record $ex_ of wimshome/log/classes/$wims_class/sheets/.sheet$sh_
- !distribute lines $l_ into m_,p_,a_,b_,t_,d_
- !set m_exotitle=$t_
- !set m_exodescription=$d_
+!! ------------------------------------ ces 4 lignes sont à supprimées lorsqu-il est certain qu'elle ne sont plus indispensable lors des accès à primitive.phtml) le 23/11/2007 FG
+!! !set l_=!record $ex_ of wimshome/log/classes/$wims_class/sheets/.sheet$sh_
+!! !distribute lines $l_ into m_,p_,a_,b_,t_,d_
+!! !set m_exotitle=$t_
+!! !set m_exodescription=$d_
+!! ------------------------------------------------
+ !distribute lines $(m_infoexo$ex_) into m_,p_,a_,b_,t_,d_
  !set prompt=!item 2 to -1 of $parms
  !default prompt=$t_
- !href cmd=new&module=$m_&worksheet=$sh_&$p_ $prompt
+ !href session=$wims_session&cmd=new&module=$m_&worksheet=$sh_&$p_ $prompt
  !exit
 !endif
 !set add=!translate internal & to $ $ in $add
