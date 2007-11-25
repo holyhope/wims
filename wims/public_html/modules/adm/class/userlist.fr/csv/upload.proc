@@ -37,12 +37,20 @@ n=!recordcnt $file
 !endif
 
 loglist=
+logtest=
 !for i=1 to $n
  l=!record $i of $file
  !if $gotlogin!=$empty
   ltest=!item $gotlogin of $l
   ll=!wordcnt $ltest
   !if $ll=1 and # notin $ltest
+   logtest=!append item $ltest to $logtest
+   !if @ isin $ltest
+    ltest=!replace internal @ by _____ in _$ltest
+    !!!!modification necessaire car les noms de variables ne peuvent pas 
+    !!!!contenir @ ; aucun login commencant par _ ne peut avoir été accepté, 
+    !!!!donc il n'y a pas de confusion possible    
+   !endif
    dep_$ltest=$l
    loglist=!append item $ltest to $loglist
   !endif
@@ -93,9 +101,12 @@ gradecnt=0
 !reset missing erased bad added change
 processed=yes
 
-!for l in $loglist
+loglist_cnt=!itemcnt $loglist
+!for i = 1 to $loglist_cnt
+  l__=$(loglist[$i])
+  l=$(logtest[$i])
   !reset up_firstname,up_lastname,up_email,up_password,up_comments,up_regnum,up_vars
-  !distribute items $(dep_$l) into $types
+  !distribute items $(dep_$l__) into $types
   !for m = 1 to $types_cnt
     typ=$(types[$m])
     !if Aup_var_ isin A$typ
