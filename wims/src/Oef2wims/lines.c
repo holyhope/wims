@@ -123,6 +123,10 @@ void repsubst(char *p)
 	if(p1>p && *(p1-1)=='\\') continue;
 	string_modify(p,p1,p1+strlen("\\step"),"$m_step");
     }
+    for(p1=strstr(p,"\\sc_reply"); p1!=NULL; p1=strstr(p1+1,"\\sc_reply")) {
+	if(p1>p && *(p1-1)=='\\') continue;
+	string_modify(p,p1,p1+strlen("\\sc_reply"),"$m_sc_reply");
+    }
 }
 
 	/* find matching parenthesis.
