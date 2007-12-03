@@ -12,7 +12,7 @@ number of words
 slib_comment=<b>Preliminary version subject to further change, user with care!</b>\
 for use in answer with type=mark ; \
 one line by answer (see markword if all the words must be treated in one question)
-slib_example= The ball is ??red magenta|rouge?? and ??light green|vert??.\
+slib_example= The ball is ??red magenta|rouge||rose?? and ??light green|vert??.\
 ??red magenta|rouge?? is the ??balle|ball.\
 The ball is ??red magenta?? and ??light green|vert??.
 !exit
@@ -39,7 +39,9 @@ slib_texte=!replace internal ) by &#41; in $slib_texte
   slib_cnt_w=!wordcnt $slib_H
   slib_k=$[$slib_i%2]
   !if $slib_k = 0
-    slib_faux=!replace internal | by , in $slib_H
+    slib_faux=!replace internal || by _\/_ in $slib_H
+    slib_faux=!replace internal | by , in $slib_faux
+    slib_faux=!replace internal _\/_ by | in $slib_faux
     !distribute items $slib_faux into slib_H,slib_juste
     !if $slib_juste=
       slib_JUSTE = !append item slib_ZZZZZ to $slib_JUSTE
