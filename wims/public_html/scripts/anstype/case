@@ -5,7 +5,9 @@ good=!nonempty lines $good
 badwords=!line 2 to -1 of $good
 good=!line 1 of $good
 good=!trim $good
-reply$i=!reaccent $(reply$i)
+!if noreaccent notwordof $(replyoption$i)
+ reply$i=!reaccent $(reply$i)
+!endif
 badchars=-+/*='"`.;,!|{}*@#$$%^&()[]?<>\~
 repchars=$                                     $
 badwords=!translate internal $badchars to $repchars in $badwords
