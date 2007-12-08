@@ -1,7 +1,6 @@
 
 !set wims_form_method=post
 !form reply
-
 !if $vote_title=$empty
  Création
 !else
@@ -14,11 +13,11 @@ Mode :
 !set reg_status=$vote_status
 !set reg_option=$vote_option
 !set reg_show=$vote_show
-!formselect reg_option list anonymous,nominative prompt anonyme,nominatif
+!formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
 Etat :
-!formselect reg_status from 0 to 3 prompt prépa,ouvert,fermé,caché
+!formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
 Résultat du questionnaire :
-!formselect reg_show list 1,0 prompt publié,caché
+!formselect reg_show list 1,0 prompt $name_publish,$name_hide
 <br> Contenu : <small>
 !href cmd=help [aide]
 </small> <br>
