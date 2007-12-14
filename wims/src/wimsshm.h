@@ -35,6 +35,7 @@ typedef struct shm_struct {
     char *cf_cgi_name;
     int   cf_class_limit;
     int   cf_class_quota;
+    int   cf_superclass_quota;
     char *cf_class_regpass;
     int   cf_class_user_limit;
     char *cf_css;

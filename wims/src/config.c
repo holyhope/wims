@@ -165,6 +165,7 @@ char *site_description="interactive exercises, online calculators and plotters, 
 
   /* class and document authorization */
 int class_quota=100;
+int superclass_quota=100;
 int doc_quota=32;
 char *class_regpass="email,email,deny";
 char *doc_regpass="";
@@ -248,6 +249,7 @@ CONFIG_DATA main_config[]={
       {"site_keywords",		0, &site_keywords},
       {"site_languages",	0, &site_languages},
       {"site_manager",		0, &site_manager},
+      {"superclass_quota",	1, &superclass_quota},
       {"texbasesize",		1, &texbasesize},
       {"theme",			0, &theme},
       {"threshold1",		1, &threshold1},
@@ -496,7 +498,8 @@ struct {
       {"wims_theme",		0, &theme},
       {"wims_tmp_debug",	0, &tmp_debug},
       {"wims_usecookie",	0, &usecookie},
-      {"wims_user_limit",	1, &user_limit}
+      {"wims_user_limit",	1, &user_limit},
+      {"wims_superclass_quota", 1, &superclass_quota}
 };
 #define MODULE_DEFAULT_NO (sizeof(module_default)/sizeof(module_default[0]))
 

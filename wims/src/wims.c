@@ -294,6 +294,7 @@ struct {
       {"sheet",		0},	/* sheet number */
       {"sup_secure",	1},	/* secure level of supervisor */
       {"superclass",	1},	/* superclass code */
+      {"superclass_quota",	1},
       {"supertype",	1},	/* superclass type */
       {"supervise",	1},	/* superclass definition */
       {"supervisor",	1},	/* real name of the supervisor */

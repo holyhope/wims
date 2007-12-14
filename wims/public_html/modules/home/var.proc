@@ -51,7 +51,11 @@ test=!record 0 of wimshome/public_html/modules/adm/browse.$lang/index
  votecnt=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
  !read wimshome/log/classes/$wims_class/Exindex
  !read ./adm/du $wims_home/log/classes/$wims_class
- quota_free=$[$wims_class_quota-$du]
+ !if $class_type=4 and $wims_superclass_quota!=$empty
+  quota_free=$[$wims_superclass_quota-$du] 
+ !else
+  quota_free=$[$wims_class_quota-$du]
+ !endif
 !endif
 
 !if $wims_user!=$empty
