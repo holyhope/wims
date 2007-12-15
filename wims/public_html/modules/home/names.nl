@@ -82,6 +82,8 @@ U_examcont	=Doorgaan.
 U_oclass	=Andere klassen
 U_Back		=	Terug
 U_account	=	My account
+U_teatcher	=supervisor
+
 
 U_gotoclass1	=Ga naar een klas als leerling:
 U_gotoclass3	=Ga naar een klas als supervisor:

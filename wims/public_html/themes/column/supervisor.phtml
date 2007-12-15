@@ -104,6 +104,33 @@ $SU_greet.
  !goto end
 !endif
 
+!if $class_type=2
+ !if $subclasscnt>0
+  $table_header
+  $table_hdtr<th>$SU_shno</th><th>$SU_shti</th><th>$U_teatcher</th>
+  !for i=1 to $subclasscnt
+   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+   !let f_aff=!item 4 of $f_class
+   !let f_name=!item 1 of $f_class
+   $table_tr
+    <td align=center>$ADD_class $i</td>
+    <td>
+    !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+    </td>
+    <td align=center>
+     !item 9 of $f_class
+    </td>
+   </tr>
+  !next i
+  $table_end
+  <p><p>
+ !endif
+ <center>
+ !href module=adm/class/regclass $ADD_3 $ADD_class
+ </center>
+ !goto end
+!endif
+
 !set ac_0=<small>$SU_Uprep</small>
 !set ac_1=$SU_Ac
 !set ac_2=$SU_Ex
