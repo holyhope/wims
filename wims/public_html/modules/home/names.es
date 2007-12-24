@@ -83,7 +83,7 @@ U_examcont	=Continuar el examen.
 U_oclass	=Zonas de trabajo
 U_back=		=Atrás
 U_account	=Mi cuenta
-U_teatcher	=profesor
+U_teacher	=profesor
 
 U_gotoclass1	=Entrar como participante:
 U_gotoclass3	=Entrar como profesor:
