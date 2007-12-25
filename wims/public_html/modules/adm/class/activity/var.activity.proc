@@ -1,0 +1,9 @@
+sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!bound numshowsheet between 1 and $sheetcnt default 1
+sh_title=!line 3 of $tmp
+nbexototal=0
+!for j = 1 to $sheetcnt
+  nbexo$j=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$j
+  nbexototal=$[$nbexototal + $(nbexo$j)]
+!next
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist

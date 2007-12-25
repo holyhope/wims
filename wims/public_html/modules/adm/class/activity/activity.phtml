@@ -1,0 +1,55 @@
+
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+</h1></center>
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home $name_homeback 
+. <p>
+ !goto end
+!endif
+!readproc var.activity.proc
+!if $usercnt==0
+$name_noparticipant
+!else
+ <p>$table_header
+ $table_hdtr<th>$name_lastname, $name_firstname</th>
+ <th>$name_lastconnexion</th><th>$name_nbsessions</th><th><small>$name_cnt_exo 
+ <br> ($nbexototal $name_exo)</small></th><th>$name_total</th>
+ !for j=1 to $sheetcnt
+  <th colspan=2><small>$name_sheet $j <br>($(nbexo$j) $name_exo)</small></th>
+ !next j
+ </tr>
+ $table_hdtr
+ <th></th><th></th><th></th><th></th><th></th>
+ !for j=1 to $sheetcnt
+  <th><small>$name_cnt_exo</small></th><th><small>$name_time</small></th>
+ !next j
+  </tr>
+ !for m=1 to $usercnt
+  !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  !set getraw=$uu
+  !readproc raw.proc
+  $table_tr
+  <td>
+   !href module=adm/class/userlist&job=getuser&getuser=$uu $lastname, $firstname
+  </td>
+  !for h = 1 to 2*$sheetcnt + 4
+  <td align="center">$(data[$h])</td>
+  !next
+  </tr>
+!next
+$table_end
+ <p>$name_click
+ !href cmd=reply $name_refresh
+ <p>
+ !href module=adm/class/userlist&job_affi=notes $name_notes
+.
+:end
+!tail

@@ -1,0 +1,32 @@
+!if $cmd=help
+ !header
+ !changeto help.phtml
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+<center><b><font color=green>$wims_classname</font></b>\
+-  <b><font color=green>$wims_institutionname</font></b>
+<p>
+<h1>$name_title
+</h1></center> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home $name_homeback
+. <p>
+ !goto end
+!endif
+
+!read activity.phtml
+
+:end
+!tail
+
+!reset show
+
