@@ -5,31 +5,35 @@
    !href cmd=reply&job=read&r_msg=$dlast &lt;&lt;
    &nbsp;
   !endif
-  !href cmd=reply&job=list Par date
+  !href cmd=reply&job=list $n_bydate
   !if $dnext!=$empty
    &nbsp;
    !href cmd=reply&job=read&r_msg=$dnext &gt;&gt;
   !endif
   ]
  !endif
- !if $r_prec!=$empty
-  &nbsp;
-  !set t_=!translate / to , in $r_prec
-  !href cmd=reply&job=read&r_msg=$r_prec Précédent
- !endif
- !if $repcnt>0
-  &nbsp;
-  !href cmd=reply&job=read&r_msg=$r_rep1 1er suite
-  &nbsp;
-  !href cmd=reply&job=thread&th_orig=$l_thread&th_start=$r_msg Toutes les suites
- !endif
- !if $thtcnt>1
+ [
+ !href cmd=reply&job=threadlist $n_bysubject
+ ]
+ !!if $r_prec!=$empty
+ !! &nbsp;
+ !! !set t_=!translate / to , in $r_prec
+ !! !href cmd=reply&job=read&r_msg=$r_prec $n_prec
+ !!!endif
+ !!if $repcnt>0
+ !! &nbsp;
+  !!!href cmd=reply&job=read&r_msg=$r_rep1 $n_first
+ !! &nbsp;
+ !!!href cmd=reply&job=thread&th_orig=$l_thread&th_start=$r_msg $n_allfollowing
+ !!!endif
+
+!if $thtcnt>1 or $r_prec!=$empty or $repcnt>0
   &nbsp;&nbsp;[
   !if $tlast!=$empty
    !href cmd=reply&job=read&r_msg=$tlast &lt;&lt;
    &nbsp;
   !endif
-  !href cmd=reply&job=thread&th_orig=$l_thread&th_start=$l_thread Fil
+  !href cmd=reply&job=thread&th_orig=$l_thread&th_start=$l_thread $n_thread
   !if $tnext!=$empty
    &nbsp;
    !href cmd=reply&job=read&r_msg=$tnext &gt;&gt;

@@ -3,24 +3,26 @@
 <p>
 !if $tot<=0
  !if $mlist!=.newlist
-  Aucun message accessible correspondant à votre requête. Désolé.
+  $n_nomessage
  !else
-  Ce forum est encore vide.
+  $n_emptyforum
  !endif
 !else
  !if $mlist=.newlist
-  Liste des messages récents, le plus
+  $n_list, $n_most
  !else
-  Liste de messages pendant le mois de
+  $n_list_month
   !item $lmon of $monthnames
-  $lyear, le plus
+  $lyear, $n_most
  !endif
- !item $l_order of récent en premier,ancien en premier
+ !item $l_order of $n_old
 . <small>
- !href cmd=reply&l_order=$[$l_order%2+1] [Renverser l'ordre]
+ !href cmd=reply&l_order=$[$l_order%2+1] [$n_reverse]
+  &nbsp;
+!href cmd=reply&job=threadlist& [$n_subjectlist]
  !if $send_right>0
   &nbsp;
-  !href cmd=new&forum=$forum&job=compose [Nouveau message]
+  !href cmd=new&forum=$forum&job=compose [$n_new]
  !endif
 </small>
  <ul>
@@ -45,7 +47,7 @@
 
 <p>
 !if $mlist!=.newlist
- !href cmd=reply&job=list&mlist=.newlist Message récents.
+ !href cmd=reply&job=list&mlist=.newlist $n_recent.
  &nbsp;
 !endif
 

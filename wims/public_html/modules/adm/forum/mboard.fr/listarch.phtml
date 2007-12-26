@@ -1,22 +1,23 @@
 
 !if $send_right>0
- !href cmd=new&forum=$forum&job=compose Composer un nouveau message
+ !href cmd=new&forum=$forum&job=compose $n_compose
 .
 !endif
 !if $is_owner=yes
  &nbsp;
- !href cmd=reply&job=config Configurer le forum
+ !href cmd=reply&job=config $n_config
 !endif
 
 !if $archlist=$empty or $mlist=$archlist
  !exit
 !endif
 
-<p>Archives mensuelles&nbsp;:
+<p>$n_archives&nbsp;:
 
 !for i in $archlist
  !href cmd=reply&job=list&mlist=$i $i
  &nbsp;
 !next i
+</p>
 <p>
 

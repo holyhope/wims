@@ -1,0 +1,33 @@
+!read desc.phtml
+<p>
+
+!if $mlist=.newlist
+ $n_subjectlist
+!else
+ $n_list_subject_month
+  !item $lmon of $monthnames
+  $lyear
+!endif
+[
+!href cmd=reply&job=list $n_recent
+]
+!set lh=<li>
+<ul>
+!for p = 1 to $tot_t
+  !set i = $(threadlist[$p]) 
+  !if $mlist=.newlist
+   !set l_=!line $i of $mnew
+   !distribute word $l_ into a_,b_
+   !set l_=!record $b_ of $forumdir/$a_/.msglist
+  !else
+   !set l_=!record $i of $forumdir/$mlist/.msglist
+  !endif
+$lh
+!read listone.phtml $l_
+</li>
+!next
+</ul>
+
+.
+!read listarch.phtml
+
