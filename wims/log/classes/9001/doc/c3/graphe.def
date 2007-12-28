@@ -1,0 +1,88 @@
+!set titb=Interprétation graphique
+!set keyw=
+!set datm=20071119
+!set prev=exemples
+!set next=signe
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+Nous allons donner une interprétation graphique du 
+!read primitives.phtml 1, link, thm, théorème 
+.
+<p>
+
+!set tmp0=!randint 1, 4
+
+!set m_e=$[rint($(tmp0))]
+
+
+!set tmp0=!randint -2, 5
+
+!set m_f=$[rint($(tmp0))]
+
+
+!set t_=!replace internal \( by ( in -($m_e+$m_f)
+!set tmp0=!exec maxima $t_
+
+!set m_b=$[rint($(tmp0))]
+
+
+!set m_c=$[rint($m_e*$m_f)]
+
+
+!set t_=!replace internal \( by ( in ($m_b)^2-4*$m_c
+!set tmp0=!exec maxima $t_
+
+!set m_d=$[rint($(tmp0))]
+
+
+!set t_=!replace internal \( by ( in x^2+$m_b*x+$m_c
+!set tmp0=!exec maxima $t_
+
+!set m_E=$(tmp0)
+
+
+
+!set m_s1=$[-$m_b/2]
+
+
+!set m_s2=$[-$m_d/4]
+
+<p>
+Voici la parabole d'équation 
+!insmath y=\E
+ &#58;
+<p>
+
+!read primitives.phtml 2, draw, 300,300, xrange -10.2,10.2	   yrange -10.2,10.2	   parallel -10,-10,10,-10,0,1,21, grey	   parallel -10,-10,-10,10,1,0,21, grey	   hline 0,0,black	   arrow 0,0,1,0,8, black	   arrow 0,0,0,1,8, black	   vline 0,0,black	   plot blue , \E	fcircle \e,0,6,red	fcircle \f,0,6,red 	fcircle \s1,\s2,6,green 
+
+<p>
+Les points rouges ont pour abcisse les solutions 
+!insmath \e
+ et 
+!insmath \f
+ de l'équation 
+!insmath \E = 0
+. 
+<p>
+Le point vert est le sommet de la parabole. Ses coordonnées sont 
+!insmath (-\frac{b}{2},-\frac{\Delta}{4})
+, soit dans notre exemple 
+!insmath (\s1, \s2)
+.
+<p>
+
+!read primitives.phtml 3, reload, Autre dessin 
+
+<p>
+Exercice &#58; 
+!read primitives.phtml 4, exercise, cmd=new&module=H5/algebra/oefsecdeg.fr&cmd=new&exo=allureprb&qnum=1&qcmlevel=3&scoredelay=, Allure d'une parabole 
+

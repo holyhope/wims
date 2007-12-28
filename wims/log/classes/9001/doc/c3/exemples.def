@@ -1,0 +1,82 @@
+!set titb=Applications
+!set keyw=
+!set datm=20071228
+!set prev=cours
+!set next=graphe
+!set upbl=main
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+
+!read primitives.phtml 1, fold, thm, Rappel du théorème : 
+
+<p>
+<h2>Exemples</h2>
+
+!set tmp0=!randint 1, 4
+
+!set m_e=$[rint($(tmp0))]
+
+
+!set tmp0=!randint -2, 5
+
+!set m_f=$[rint($(tmp0))]
+
+
+!set m_b=$[rint(-($m_e + ($m_f)))]
+
+
+!set m_c=$[rint($m_e*$m_f)]
+
+
+!set m_d=$[rint(($m_b)^2-4*($m_c))]
+
+
+!set t_=!replace internal \( by ( in x^2+$m_b*x+$m_c
+!set tmp0=!exec maxima $t_
+
+!set m_E=$(tmp0)
+
+
+<p>
+Résoudre l'équation 
+!insmath \E = 0
+. 
+<p>
+Le discriminant vaut 
+!insmath \d
+.
+ 
+!if $m_d = 0 
+L'équation a une seule solution &#58; 
+!insmath \alpha = \e
+.
+!else
+
+     L'équation a  deux solutions &#58; 
+!insmath \alpha = \e
+ et 
+!insmath \beta = \f
+.
+!endif
+
+<p>
+
+!read primitives.phtml 2, reload, Renouveler l'exemple 
+
+<p>
+<h2>Exercices</h2>
+<ol><li>
+!read primitives.phtml 3, exercise, cmd=new&module=H5/algebra/oefsecdeg.fr&cmd=new&exo=Racinesdunpoly2, Résolution d'une équation du second degré 
+</li>
+<li>
+!read primitives.phtml 4, exercise, cmd=new&module=H5/algebra/oefsecdeg.fr&cmd=new&exo=Factorisationd, Factorisation 
+</li>
+</ol>
