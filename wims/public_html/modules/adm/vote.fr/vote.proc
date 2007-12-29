@@ -23,10 +23,10 @@
 quote="
 !for t=1 to $parmcnt
   !if $vote_option!=nominative and $(type_comment$t)=yes
-    tt = !char 1 to 300 of $(parm$t)
     tt = !singlespace $(parm$t)
-    tt = !append item ---$quote$tt$quote to $(comment_$t)
-    tt = !char 1 to 12000 of $tt
+    tt = !char 1 to 600 of $tt
+    tt = !append item ---$quote($tt)$quote to $(comment_$t)
+    tt = !char 1 to 24000 of $tt
     !setdef comment_$t=$tt in $votedir/$vote.comments
   !endif
 !next t
