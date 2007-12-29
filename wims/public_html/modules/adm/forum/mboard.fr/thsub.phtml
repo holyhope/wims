@@ -8,12 +8,12 @@
  !distribute word $l_ into a_,b_
  !set l_=!record $b_ of $forumdir/$a_/.msglist
  !read listone.phtml $l_
- !if $(F_$i_)!=$empty
-  !set i_$level=$i_
-  !advance $level
+ !if $(F_$i_) notsametext
+  !!set i_$level=$i_
+  !advance level
   !read thsub.phtml $i_
   !set level=$[$level-1]
-  !set i_=$(i_$level)
+  !!set i_=$(i_$level)
  !endif
 !next i_$level
 </ul>
