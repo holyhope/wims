@@ -546,9 +546,13 @@ void exec_header(char *p)
     if(wsbuf2[0]) ol=" onload="; else ol="";
 /*    output("<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>%s\n\
 </head><body %s %s%s %s>\n", */
-    output("<html>\n\
+/*    output("<html>\n\
 <head>%s\n\
 </head><body %s %s%s %s>\n",
+	   hbuf,s2,ol,wsbuf2,bo);*/
+	    output("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\
+	    \n<html><head>%s\n\
+     </head>\n<body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);
     exec_headmenu(p);
     exec_title(p);
@@ -655,6 +659,7 @@ void exec_restart(char *p)
 	else goto usual;
     }
     printf("Location: %s\r\n\r\n\
+<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\
 <html><body><a href=\"%s\">%s</a></body></html>",buf2,buf2,buf2);
     close_working_file(&m_file,0); write_logs();
     snprintf(buf,sizeof(buf),"%ld",nowtime);
