@@ -10,19 +10,23 @@ $desc<p>
  Cette feuille est vide! Il n'y a rien  pour vous dedans. Peut-être
  une erreur de manipulation de votre enseignant.
 !else
- Devoir dans cette feuille :<p><ul>
+ Devoirs dans cette feuille :
+ <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
-  <p><li>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
    <small>0 des $[$re] points obtenus, qualité
    0/10. </small>
   !endif
+  </p>
+  </li>
  !next i
  </ul>
+ </div>
 !endif
 <p>
 !homeref

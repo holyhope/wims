@@ -53,7 +53,8 @@ $sheet_desc <p>
  !else
   fermé pour votre connexion.)
  !endif
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -61,7 +62,7 @@ $sheet_desc <p>
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <p><li>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
@@ -86,8 +87,10 @@ $sheet_desc <p>
    avant d'avoir des notes sur celui-ci.
    </small>
   !endif
+ </li>
  !next i
  </ul>
+ </div>
 !endif
 
 !if $wims_user=supervisor
