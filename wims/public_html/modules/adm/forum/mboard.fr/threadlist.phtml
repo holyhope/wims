@@ -11,8 +11,8 @@
 [
 !href cmd=reply&job=list $n_recent
 ]
-!set lh=<li>
-<ul>
+!set lh=<li class="wims_forum_list">
+<ul class="wims_forum_list">
 !for p = 1 to $tot_t
   !set i = $(threadlist[$p]) 
   !if $mlist=.newlist
@@ -22,12 +22,10 @@
   !else
    !set l_=!record $i of $forumdir/$mlist/.msglist
   !endif
-$lh
 !read listone.phtml $l_
 </li>
 !next
 </ul>
 
-.
 !read listarch.phtml
 
