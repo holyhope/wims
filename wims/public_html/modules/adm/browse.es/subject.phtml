@@ -2,9 +2,10 @@
 <center><h3>Explorar por temas</h3></center>
 
 !if $parm=$empty
- Por favor elija alguno de los siguientes campos temáticos para su exploración. <ul>
+ Por favor elija alguno de los siguientes campos temáticos para su exploración. 
+ <ul class="wims_browse_subject_list">
  !for d in $tot_dom
-  <p><li>
+  <li class="wims_browse_subject_list">
    !set l_=$(dom_$d)
     !href module=$module&cmd=new&job=$job&parm=$d <b>$(name_$d)</b>
    !if $l_=$empty
@@ -16,6 +17,7 @@
      &nbsp;
     !next v
    !endif
+   </li>
  !next d
  </ul>
 !else
@@ -26,7 +28,7 @@
  <p><table border=0 cellpadding=2 cellspacing=1>
  !for t in $list
   <tr>
-  <td align=left nowrap><b>$t</b>
+  <td align=left nowrap><b>$t</b></td>
   !if $has_enc=yes
    <td nowrap><small>
    !href target=wims_ref module=adm/enc.en&dom=math&job=search&search=$t $name_L
@@ -37,7 +39,7 @@
    !set cat=$i
    <td nowrap><small>
    !href $search_addr $(name_$i)
-   </small</td>
+   </small></td>
   !next i
   !next t
  </table> <p>
