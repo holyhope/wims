@@ -2,23 +2,77 @@
  !goto proc
 !endif
 slib_title=Chemical components
-slib_parms=1\
- , chemical equation
+slib_parms=4\
+ , chemical equation\
+ , [optional] words separated by spaces, to be added to the html buttons\
+ , [optional] the word 'htmlbuttons' followed by a space and a number\
+ , [optional] the word 'shuffle'
 slib_author=Georges Khaznadar
 slib_license=GPL
-slib_out= a matrix of the reactives in the first line, and the products in \
-the second line
+slib_out= Outputs a matrix of the reactives in the first line, and the products in \
+the second line. <p>If the parameter 'htmlbuttons' is specified, the output \
+is some code to make clickable buttons; then, the number refers to a reply \
+field which will receive the results of the buttons' events. <p>If the \
+parameter 'shuffle' is specified, the buttons are shuffled. <p>These buttons \
+can be made active if the following javascript code is added in the page: \
+<pre style="color:green;">\
+&lt;script type="text/javascript"&gt;\
+function getInput(n){\
+  f=window.document.forms[0];\
+  for(i=0; i&lt;f.elements.length; i=i+1){\
+    if (f.elements[i].name=="reply"+n) { \
+      return f.elements[i];\
+    }\
+  }\
+  return null;\
+}\
+function appendToInput(n,msg){\
+  var i=getInput(n);\
+  i.value=i.value+msg;\
+}\
+&lt;/script&gt;\
+</pre>
+
 slib_comment=use the syntax accepted by the command chemeq
-slib_example= MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O
+slib_example= MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O \
+MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O,, htmlbuttons 3 \
+MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O, + ->, htmlbuttons 2, shuffle
 
 !exit
 
 :proc
 
+!distribute items $wims_read_parm into slib_chem, slib_others, slib_html, slib_shuffle
+!if htmlbuttons isin $slib_html
+  !distribute words $slib_html into slib_html slib_n
+!endif
+!if void$slib_others!=void
+  slib_others=!words2items $slib_others
+!endif
 
 chemeq_option=C
-slib_out=!exec chemeq $wims_read_parm
-slib_out=!replace |[^,;]* by $empy in $slib_out
-slib_out=!replace [0-9]\+[ ] by $empy in $slib_out
+slib_c=!exec chemeq $slib_chem
 !reset chemeq_option
+
+slib_c=!replace |[^,;]* by $empy in $slib_c
+slib_c=!replace [0-9]\+[ ] by $empy in $slib_c
+
+!if $slib_html=htmlbuttons
+  slib_c=!replace ; by , in $slib_c
+  !if void$slib_others!=void
+    slib_c=$slib_c, $slib_others
+  !endif
+  slib_c=!listuniq $slib_c
+  !if $slib_shuffle=shuffle
+    slib_c=!shuffle $slib_c
+  !endif
+  slib_buttons=
+  !for slib_component in $slib_c
+    slib_buttons=$slib_buttons<input type='button' value='$slib_component' onClick='appendToInput($slib_n," $slib_component ")'>
+  !next slib_component
+  slib_out=$slib_buttons
+!else
+  slib_out=$slib_c
+!endif
+
 
