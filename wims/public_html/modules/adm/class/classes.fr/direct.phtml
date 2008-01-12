@@ -1,11 +1,12 @@
 
 !if $directcnt>0
- Vous pouvez directement aller dans&nbsp;:<ul>
+ Vous pouvez directement aller dans&nbsp;:
+ <ul class="wims_classes_direct">
  !for cl in $directlist
   !distribute words $cl into c_,u_
   !set n_=!defof class_institution, class_description in\
 	wimshome/log/classes/$c_/.def
-  <li>
+  <li class="wims_classes_direct">
   !if $u_=supervisor
    !set t_=supervisor
   !else
@@ -13,6 +14,7 @@
   !endif
   !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
   (<tt>$u_</tt>)
+  </li>
  !next cl
  </ul>
  <p><hr> <p>
