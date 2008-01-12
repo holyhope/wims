@@ -1,5 +1,6 @@
 
 !bound job2 within first,erase,erase2,modify default first
+
 !if $jobclass=$empty
  job2=first
 !endif
@@ -7,32 +8,38 @@
 classcnt=!recordcnt wimshome/log/classes/.index
 
 !if $job2=first
- old=!date -d '1 month ago' '+%Y%m%d'
+ !bound type_load within 1,2,3 default 3
+ type=!item $type_load of 2 day ago,7 day ago,1 month ago
+ file=!item $type_load of day,week,month
+ old=!date -d '$type' '+%Y%m%d'
  oldy=!char 1 to 4 of $old
  oldm=!char 5,6 of $old
  oldd=!char 7,8 of $old
  nowy=!char 1 to 4 of $wims_now
  nowm=!char 5,6 of $wims_now
- dir=../log/ccaccount/bydate
- test=!sh if [ ! -d $dir ]; then exit; fi\
-  f1=`cat $dir/$nowy/$nowm 2>/dev/null`\
-  f2=`awk '$$1>=$oldm$oldy {print}' $dir/$oldy/$oldm 2>/dev/null`\
+ dir=$wims_home/log/ccaccount/bydate
+ !sh if [ -e $wims_home/s2/$wims_session/$file ]; then exit; fi;\
+  if [ ! -d $dir ]; then exit; fi; \
+  if [ "$nowy/$nowm" != "$oldy/$oldm" ]; then f1=`cat $dir/$nowy/$nowm 2>/dev/null`; else f1=""; fi;\
+  f2=`awk '$$1>=$oldm$oldd {print}' $dir/$oldy/$oldm 2>/dev/null`\
   ff=`echo "$$f1\
 $$f2" | sort -k2 -n | grep . | awk 'BEGIN {a=0;b=0};\
   b==$$2 {a+=$$3};\
-  b!=$$2 {if(a>0) {print b","a}; b=$$2; a=0;};\
+  b!=$$2 {if(a>0) {print b","a}; b=$$2; a=$$3;};\
   END {if(a>0) print b","a};'`\
-  echo "$$ff"
-  n=!linecnt $test
-  !for i=1 to $n
-   l=!line $i of $test
-   !distribute item $l into c,t
-   t=$[floor(($t+30)/60)]
-   activ_$c=$t
-  !next i
-  !if $n>0
-   actives=yes
-  !endif
+  echo "$$ff" > $wims_home/s2/$wims_session/$file;
+ test=!record 0 of  wimshome/s2/$wims_session/$file
+ n=!linecnt $test
+ !for i=1 to $n
+  l=!line $i of $test
+  !distribute item $l into c,t
+  t=$[floor(($t+30)/60)]
+  activ_$c=$t
+ !next i
+ !if $n>0
+  actives=yes
+ !endif
+ !readproc class/search.proc
 !endif
 
 !if $job2!=first
