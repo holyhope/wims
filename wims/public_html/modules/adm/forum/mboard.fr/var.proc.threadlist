@@ -1,4 +1,4 @@
-
+mlist=.newlist
 !bound l_order within 1,2 default 1
 
 !if $mlist>0
@@ -30,7 +30,7 @@ threadlist=
   test_=!replace internal O by , in $test_
   !if $(test_[1])=$empty
     c_=!item 4 of $l_
-    threadlist= !append item $c_ to $threadlist
+    threadlist= !append item $(test_[2]) to $threadlist
   !endif
 !next
 tot_t=!itemcnt $threadlist

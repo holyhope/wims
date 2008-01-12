@@ -15,12 +15,18 @@
 <ul class="wims_forum_list">
 !for p = 1 to $tot_t
   !set i = $(threadlist[$p]) 
+  !set i_=!replace internal / by , in $i
+  !if $(i_[1])=
+    !set mlist=.newlist
+  !else
+    !set mlist=$(i_[1])
+  !endif
   !if $mlist=.newlist
    !set l_=!line $i of $mnew
    !distribute word $l_ into a_,b_
    !set l_=!record $b_ of $forumdir/$a_/.msglist
   !else
-   !set l_=!record $i of $forumdir/$mlist/.msglist
+   !set l_=!record $(i_[2]) of $forumdir/$mlist/.msglist
   !endif
 !read listone.phtml $l_
 </li>
