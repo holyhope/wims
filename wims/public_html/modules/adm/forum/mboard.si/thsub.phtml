@@ -1,20 +1,48 @@
+!! Max nb of displayed messages in a thread.
+!set max_messages=50
 
-!set start_$level=$wims_read_parm
-!set f_$level=$(F_$(start_$level))
+!! Make list of parent nodes P$j
+!for i = 0 to $max_messages 
+  !set t=$(F_$i)
+  !for j in $t
+    !set P$j=$i
+  !next j
+!next i
+  
+!set i=0
+!set vu0=1
 
-<ul>
-!for i_ in $(f_$level)
- !set l_=!line $i_ of $thcomp
- !distribute word $l_ into a_,b_
- !set l_=!record $b_ of $forumdir/$a_/.msglist
- !read listone.phtml $l_
- !if $(F_$i_)!=$empty
-  !set i_$level=$i_
-  !advance level
-  !read thsub.phtml $i_
-  !set level=$[$level-1]
-  !set i_=$(i_$level)
- !endif
-!next i_$level
+!! search and cut in tree : 
+!! when a branch is completely visited, cut it and go to parent.
+
+!set k=0
+!while $k < $max_messages 
+  !advance k
+  !if $(vu$i) issametext
+    !set l_=!line $i of $thcomp
+    !distribute word $l_ into a_,b_
+    !set l_=!record $b_ of $forumdir/$a_/.msglist
+    !read listone.phtml $l_
+    !! mark node i as visited once
+    !set vu$i=1
+  !endif
+  !if  $(F_$i) notsametext
+    !set i=!item 1 of $(F_$i)
+    <ul class="wims_forum_list">
+    !goto finished
+  !endif
+  !while $(F_$i) issametext
+    !if $i=0
+      !set k=$max_messages
+      !break
+    !endif
+    !set i=$(P$i)
 </ul>
+    !set F_$i=!item 2 to -1 of $(F_$i)
+  !endwhile
+:finished
+!endwhile
 
+
+!! useless ? : 
+</ul>
