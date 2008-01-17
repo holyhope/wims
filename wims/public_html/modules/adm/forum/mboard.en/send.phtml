@@ -1,25 +1,20 @@
 
 !if $s_status=ask
- This message board does not accept anonymous posting. It is using your
- current email address to keep your identity, in order to prevent abuse.
- <p>
- In order to verify the effectiveness of your email address, the server is
- sending a secret code to you via email. Please read this mail, and copy this
- code here:
+ $n_statusask
  !form reply
  <input type=hidden name=job value=send>
  <p><center><input size=10 name=s_code>
  <input type=submit value=OK></form>
  <p>
- !href cmd=reply&job=list Abandon the operation
+ !href cmd=reply&job=list $n_giveup
  </center> <p>
  !exit
 !endif
 
 !if $error=$empty
- Your message has been added to this message board.
+ $n_add
 !endif
 
 <p><center>
-!href cmd=reply&job=list List of messages
+!href cmd=reply&job=list $n_list
 </center> <p>

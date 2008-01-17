@@ -3,28 +3,30 @@
 <p>
 !if $tot<=0
  !if $mlist!=.newlist
-  No accessible message is found corresponding to your request. Sorry.
+  $n_nomessage
  !else
-  There is no message in this forum.
+  $n_emptyforum
  !endif
 !else
  !if $mlist=.newlist
-  List of latest messages, most
+  $n_list, $n_most
  !else
-  List of messages during
+  $n_list_month
   !item $lmon of $monthnames
-  $lyear, most
+  $lyear, $n_most
  !endif
- !item $l_order of recent first,ancient first
+ !item $l_order of $n_old
 . <small>
- !href cmd=reply&l_order=$[$l_order%2+1] [Reverse the order]
+ !href cmd=reply&l_order=$[$l_order%2+1] [$n_reverse]
+  &nbsp;
+!href cmd=reply&job=threadlist& [$n_subjectlist]
  !if $send_right>0
   &nbsp;
-  !href cmd=new&forum=$forum&job=compose [New message]
+  !href cmd=new&forum=$forum&job=compose [$n_new]
  !endif
 </small>
- <ul>
- !set lh=<li>
+ <ul class="wims_forum_list">
+ !set lh=<li class="wims_forum_list">
  !if $l_order=1
   !distribute item $tot,1,-1 into start,end,step
  !else
@@ -45,7 +47,7 @@
 
 <p>
 !if $mlist!=.newlist
- !href cmd=reply&job=list&mlist=.newlist Latest messages.
+ !href cmd=reply&job=list&mlist=.newlist $n_recent.
  &nbsp;
 !endif
 
