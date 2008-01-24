@@ -11,7 +11,7 @@ $wims_html_header
 
 <center>$classname
 <p>
-<h1>Inserire un modulo in una verifica
+<h1>Inserire un modulo in un test di autovalutazione
 </h1></center> <p><hr width=40%> <p>
 
 !if $error!=$empty
@@ -31,13 +31,13 @@ $wims_html_header
 . <p>
 
  !form reply
- Selezionare la verifica in cui si vuole inserire il modulo:
+ Selezionare il test di autovalutazione in cui si vuole inserire il modulo:
  <select name=picksheet>
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>Verifica numero $se: $ti
+  <option value=$se>Test numero $se: $ti
  !next i
  </select>
  <p>&Egrave; possibile modificare il titolo e/o la descrizione. <p>
@@ -46,11 +46,11 @@ $wims_html_header
  Titolo: <input size=50 name=title value="$title"> <p>
  Descrizione: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
-  <p>Punteggio richiesto per superare questa verifica:
+  <p>Punteggio richiesto per completare questo test di autovalutazione:
   <input size=4 name=require value="$require"> <small>(un esercizio
   completato correttamente assegna 10 punti; se si richiedono pi&ugrave; di 
   10 punti si fa ripetere l'esercizio.)</small> <p>
-  Peso dei punti ottenuti per questa verifica (per il calcolo della media):
+  Peso dei punti ottenuti per questo test (per il calcolo della media):
   <input size=6 name=weight value="$weight">.
  !endif
  <p><center><input type=submit value="Salva"></center>
@@ -59,10 +59,14 @@ $wims_html_header
 !endif
 
 !if $cmd=reply
- Il modulo ``<tt>$title</tt>'' &egrave; stato inserito nella verifica numero
+ Il modulo ``<tt>$title</tt>'' &egrave; stato inserito nel test di autovalutazione numero
  $picksheet del corso virtuale. &Egrave; possibile
  !href module=adm/class/sheet&sheet=$picksheet provarla
-.
+.</li>
+  <li>
+   !href module=$dir torna al modulo
+.</li>
+ </ul>
 !endif
 
 :end
