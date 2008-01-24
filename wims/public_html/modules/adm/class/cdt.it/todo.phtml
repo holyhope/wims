@@ -1,0 +1,61 @@
+<center>$classname<p><h1>$cdt_title.</h1>
+ <font size=+1><b>Da svolgere
+ !if $jour_begin!=$jour_end
+  da <font color=green>$jyear/$jmonth/$jday</font> a <font color=green>$jyear2/$jmonth2/$jday2</font>
+ !else
+  for <font color=green>$jyear/$jmonth/$jday</font>
+ !endif
+</b></font>
+</center> 
+<p><p>
+
+!if $cdt_description!=$empty
+ <br>$cdt_description<br>
+!endif
+
+!if $nbligne=0
+ there is no work to do for $jyear/$jmonth/$jday.
+ <p>
+ !goto end
+!endif
+ <center>
+ $table_header
+ $table_hdtr 
+  <th>Entro il</th>
+  !if no isin $cdt_supervise
+   <th>Materia</th>
+  !endif
+  <th>Compito</th><th>Assegnato il</th>
+ </tr>
+ !for i=1 to $nbligne
+  $table_tr
+   !let don=!line $i of $list
+   !distribute item $don into todo,date,dir,matiere
+   !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$dir
+   !read wimshome/log/classes/$dir/cdt/def/$date 
+   !let no=!positionof item $todo in $date_todo
+   <td valign=top>
+    !read proc/date.phtml $todo 
+   </td>
+   !if no isin $cdt_supervise
+    <td>$matiere</td>
+   !endif
+   <td>
+    !read wimshome/log/classes/$dir/cdt/def/$date todo$no
+   </td>
+   <td>
+    !read proc/date.phtml $date
+   </td>
+  </tr>
+ !next i
+ $table_end
+<p>
+ !href target=wims_new cmd=new&module=$module&job=todo&job2=print&jday=$jday&jyear=$jyear&jmonth=$jmonth&jday2=$jday2&jyear2=$jyear2&jmonth2=$jmonth2 Stampa
+</center>
+
+:end
+<p><hr width=40%> <p>
+!read form.phtml 
+
+!tail
+

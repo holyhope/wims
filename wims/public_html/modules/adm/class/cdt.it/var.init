@@ -1,0 +1,97 @@
+max_todo=5
+max_defaffi=10
+
+!if ($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)
+ cdt_supervise=yes
+ tmp=!defof cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link in wimshome/log/classes/$wims_class/cdt/.def
+ !distribute item $tmp into cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link
+ !if $cdt_defined!=yes
+  !sh mkdir -p $wims_home/log/classes/$wims_class/cdt/def;\
+   mkdir -p $wims_home/log/classes/$wims_class/cdt/src;\
+   mkdir -p $wims_home/log/classes/$wims_class/cdt/files;
+  !filewrite wimshome/log/classes/$wims_class/cdt/.def !set cdt_title=Cahier de texte\
+!set cdt_description=$empty\
+!set cdt_defined=yes\
+!set cdt_nbdate=0\
+!set cdt_ltmonth=$empty
+  !set cdt_title=Agenda
+  !set cdt_description=$empty
+  !set cdt_defined=yes
+  !set cdt_nbdate=0
+  !set cdt_ltmonth=$empty
+ !endif
+ !if / isin $wims_class
+  part1=!replace internal / by , in $wims_class
+  part2=!item -1 of $part1
+  part1=!item 1 to -2 of $part1
+  part1=!replace internal , by / in $part1
+  part1=!nospace $part1 
+  !sh cd $wims_home/$wims_sesdir;\
+   mkdir -p getfile;\
+   cd getfile;\
+   rm -rf cdt;\
+   mkdir -p cdt/$part1;\
+   cd cdt/$part1;\
+   ln -s $wims_home/log/classes/$wims_class/cdt/files $part2;
+ !else
+  !sh cd $wims_home/$wims_sesdir\
+   mkdir -p getfile\
+   cd getfile\
+   rm -rf cdt\
+   mkdir -p cdt\
+   cd cdt\
+   ln -s $wims_home/log/classes/$wims_class/cdt/files $wims_class
+ !endif
+!else
+ cdt_supervise=no
+ courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ courses=!column 1 of $courses
+ nbmonth=0
+ nbdate=0
+ !for prog in $courses 
+  prog=!text select 0123456789/ in $prog
+  tmp=!defof cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link in wimshome/log/classes/$wims_superclass/$prog/cdt/.def
+  !distribute item $tmp into cdt_title,cdt_description,cdt_defined,cdt_nbdate,cdt_ltmonth,cdt_link
+  !if $cdt_defined!=yes
+   !sh mkdir -p $wims_home/log/classes/$wims_superclass/$prog/cdt/def;\
+    mkdir -p $wims_home/log/classes/$wims_superclass/$prog/cdt/src;\
+    mkdir -p $wims_home/log/classes/$wims_superclass/$prog/cdt/files;
+   !filewrite wimshome/log/classes/$wims_superclass/$prog/cdt/.def !set cdt_title=Cahier de texte\
+!set cdt_description=$empty\
+!set cdt_defined=yes\
+!set cdt_nbdate=0\
+!set cdt_ltmonth=$empty
+   !set cdt_title=Agenda
+   !set cdt_description=$empty
+   !set cdt_defined=yes
+   !set cdt_nbdate=0
+   !set cdt_ltmonth=$empty
+  !endif
+  nbdate=$[$cdt_nbdate+$nbdate]
+  nbmonth=!listunion $nbmonth and $cdt_ltmonth
+ !next prog
+ cdt_nbdate=$nbdate
+ cdt_nbmonth=$nbmonth
+ ltcourses=$empty
+ !for cl in $courses
+  tmp=!replace internal / by , in $cl
+  tmp=!item -1 of $tmp
+  ltcourses=!append word $tmp to $ltcourses
+ !next cl
+ !sh cd $wims_home/$wims_sesdir;\
+  mkdir -p getfile\
+  cd getfile\
+  rm -rf cdt\
+  mkdir -p cdt/$wims_class/\
+  cd cdt/$wims_class\
+  for m in $ltcourses; do\
+   ln -s $wims_home/log/classes/$wims_class/$$m/cdt/files $$m;\
+  done;
+!endif
+cdt_nbmonth=!itemcnt $cdt_ltmonth
+
+test=!record 0 of wimshome/s2/$wims_session/cdt
+!if $test=$empty
+ !appendfile wimshome/log/classes/$wims_class/cdt/connect.log $wims_now $httpd_REMOTE_ADDR connect $wims_user
+ !writefile wimshome/s2/$wims_session/cdt $wims_session
+!endif

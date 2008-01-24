@@ -1,0 +1,63 @@
+<center><h1>$cdt_title</h1>
+<font size=+1>Carica file</font></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ Il file <b>$erase</b> è stato cancellato.
+ <p>
+!endif
+
+!if $quota_free<1
+ Non è possibile inserire un nuovo file perché si è raggiunto il limite di spazio disponibile. Spiacenti.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=deposit>
+ &Egrave; possibile caricare un file:
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=OK>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>File disponibili:
+ !for f in $flist
+  !getfile cdt/$wims_class/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Elimina un file:
+ !formselect job2 list $flist
+ <input type=submit value=OK
+ </form>
+ <p>
+ I file possono essere indicati utilizzando la variabile
+ <tt>\filedir</tt>. Per esempio,
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ inserisce un link al file <a href=$m_filedir/$f1>$f1</a>.
+ &Egrave; anche possibile scrivere
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+per inserire nella pagina un file immagine <tt>myfile.jpg</tt>.
+ <p>
+ Solo gli utenti registrati possono inserire un file.
+!endif
+
+<p>
+Spazio disco totale: $quota_total Mega.
+Spazio disco disponibile: $quota_free Mega.
+
+<p><p>
+!href cmd=reply&job=home Indietro
+.
+
+!reset erase,job2

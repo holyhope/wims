@@ -1,0 +1,45 @@
+
+!form reply
+  <input type=submit value=Mostra>
+  !reset job
+  !formselect job list work,todo prompt compiti svolti,compiti da svolgere
+  a partire da
+  !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
+  !let v=!values v for v=1 to 31
+  !formselect jday list 0,$v prompt ---,$v
+  !formselect jmonth from 1 to 12 prompt $months
+  !let creyear=!char 1 to 4 of $class_creation
+  !let expyear=!char 1 to 4 of $class_expiration
+  !formselect jyear from $creyear to $expyear
+  fino a
+  !if $jyear2=$empty or $jyear2=0 
+   !let jyear2=!char 1 to 4 of $wims_now
+   !let jmonth2=!char 5 to 6 of $wims_now
+   !let jday2=!char 7 to 8 of $wims_now
+   !endif
+  !distribute item 0,0,0 into jyear2,jday2,jmonth2
+  !let v=!values v for v=1 to 31  
+  !formselect jday2 list 0,$v prompt ---,$v
+  !formselect jmonth2 from 0 to 12 prompt ---,$months
+  !let v=!values v for v=$creyear to $expyear
+  !formselect jyear2 list 0,$v prompt ---,$v
+   <small> (si può omettere la seconda data).</small>
+ </form>
+<p>
+!if $wims_user=supervisor and $cdt_supervise=yes 
+ <p>
+ !href cmd=new&job=adddate Inserisci una data
+ &nbsp;
+ !href cmd=reply&job=file Inserisci un file
+ &nbsp;
+ !href cmd=new&job=addtodo Inserisci un compito da svolgere
+ &nbsp;
+ !href cmd=reply&job=config Configurazione
+ .
+!endif
+
+!if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
+<p>
+ !href cmd=new&job=home Indietro
+.
+!endif

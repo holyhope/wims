@@ -1,0 +1,58 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+!if $class_expiration=$empty 
+ !defread wimshome/log/classes/$wims_class/.def
+!endif
+!if $class_expiration=$empty
+ error=bad_class
+ !exit
+!endif
+
+jmonth=!char 2,3 of $[abs(floor($jmonth))+100]
+!if $[$jday]=0
+ tst=1
+ jday=01
+!else
+ tst=0
+ jday=!char 2,3 of $[abs(floor($jday))+100]
+!endif
+jyear=!char -4 to -1 of $[abs(floor($jyear))+100000]
+!if $jday>=1 and $jday<=31 and $jmonth>=1 and $jmonth<=12 \
+	and N notin $jmonth$jday$jyear
+ jour_begin=$jyear$jmonth$jday
+!else
+ error=day_dontexist
+ job=home
+ !exit
+!endif
+
+!bound jmonth2 within 1,2,3,4,5,6,7,8,9,10,11,12 default $jmonth
+jmonth2=!char 2,3 of $[abs(floor($jmonth2))+100]
+jday2=!char 2,3 of $[abs(floor($jday2))+100]
+!if $tst=1 and $[$jday2]=0
+ jday2=31
+!endif
+jyear2=!char -4 to -1 of $[abs(floor($jyear2))+100000]
+!if $[$jyear2]=0
+ jyear2=$jyear
+!endif
+!if $jday2>=1 and $jday2<=31 and $jmonth2>=1 and $jmonth2<=12 \
+	and N notin $jmonth2$jday2$jyear2 and $jyear2$jmonth2$jday2>=$jour_begin
+ jour_end=$jyear2$jmonth2$jday2
+!else 
+ jour_end=$jour_begin
+!endif
+
+!if $cdt_supervise!=yes
+ class_parent=!text select 0123456789/ in $class_parent
+ courses=!record 0 of wimshome/log/classes/$wims_class/courses
+ courses=!column 1 of $courses 
+ courses=!items2lines $courses
+ courses=!replace internal / by , in $courses
+ courses=!columns 3 of $courses
+ courses=!text select 0123456789, in $courses
+ courses=!items2lines $courses
+!endif
+list=!mexec proc/mk$job.sh
+nbligne=!linecnt $list
