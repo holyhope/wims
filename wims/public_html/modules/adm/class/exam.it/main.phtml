@@ -30,7 +30,7 @@ $wims_html_header
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -115,6 +115,8 @@ minuti. Ogni studente pu&ograve; ripetere l'esame al pi&ugrave;
 !if $exocnt=0
  Questo tema d'esame non contine ancora nulla.
  !href cmd=reply&job=exo&exo=1 Inserire un esercizio
+, or
+ !href cmd=reply&job=cpsheet inserisci un gruppo di esercizi
 .
 !else
  <a name=list>
@@ -139,6 +141,8 @@ minuti. Ogni studente pu&ograve; ripetere l'esame al pi&ugrave;
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Inserisci un altro esercizio
+, or
+ !href cmd=reply&job=cpsheet inserisci un gruppo di esercizi
 .
  !endif
 !endif

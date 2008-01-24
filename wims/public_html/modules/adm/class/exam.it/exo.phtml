@@ -1,6 +1,6 @@
 !if $activetest>0
- Spiacente, questo esame &egrave; attivo, quindi non &egrave; pi&ugrave; 
- modificabile. Non &egrave; possibile cambiare gli esercizi.
+ Spiacente, questo esame è attivo, quindi non è pi&ugrave; 
+ modificabile. Non è possibile cambiare gli esercizi.
  !exit
 !endif
 
@@ -11,11 +11,31 @@
 titolo=<input size=20 name=ename value="$ename">
 <p>
 Questo esercizio sar&agrave; scelto (casualmente) in una lista di esercizi
-contenuti nei test periodici. Selezionare nella lista che segue i test da 
-cui estrarre gli esercizi da 
-inserire in questo tema d'esame.
+contenuti nei test periodici. Selezionare nella lista che segue i test di
+autovalutazione da cui estrarre gli esercizi da inserire in questo tema 
+d'esame.
 <p>
-!for i in $asheets
+mostra solo esercizi del test
+ <select name="ltsheets" onchange=submit() value="$ltsheets">
+  !if $ltsheets=$asheets
+   <option value="$asheets" selected="">All</option>
+  !else
+   <option value="$asheets">All</option>  
+  !endif
+  !for k in $asheets
+   !if $ltsheets=$k
+    <option value="$k" selected="">
+   !else
+    <option value="$k">   
+   !endif
+    !let t=!record $k of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $k :
+    !line 3 of $t
+   </option>
+  !next k
+ </select>
+<p>
+!for i in $ltsheets
  !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  !for j=1 to $t
   !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
@@ -46,7 +66,9 @@ Opzioni:
   Opzioni: <ul>
   <li><em>autogen</em> significa che l'esercizio viene generato automaticamente
   anche se l'untente non ci clicca sopra. In questo modo può consultare 
-  l'esercizio anche a sessione chiusa.
+  l'esercizio anche a sessione chiusa. Non raccomandato se non per gli esercizi
+  che prevedono una valutazione da parte del docente (cioè che <b>non</b>
+  prevedono una valutazione automatica).
   </ul>
 </small>
 
