@@ -2,9 +2,9 @@
 !let module_author	=XIAO Gang
 !let module_address	=xiao@unice.fr
 !let module_translator=Marina Cazzola
-!let module_translator_address=marina.cazzola@unimib.it
-!let module_title	=Verifica (worksheet)
-!let module_description	=visualizzazione delle verifiche per gli studenti
+!let module_translator_address=marina@matapp.unimib.it
+!let module_title	=Test di autovalutazione (worksheet)
+!let module_description	=visualizzazione dei test di autovalutazione per gli studenti
 !let module_version	=2.00
 !let module_wims_version=2.00
 !let module_language	=it
@@ -44,7 +44,7 @@ $wims_html_header
 
 <hr width=1>
 <center><h3>$wims_classname, $wims_institutionname</h3>
-<hr> <p><h1>Verifica numero $parm1<br>$sheet_title</h1></center> <p>
+<hr> <p><h1>Test di autovalutazione numero $parm1<br>$sheet_title</h1></center> <p>
 $sheet_desc<p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -53,15 +53,16 @@ $sheet_desc<p>
  !set expyear=!char 1 to 4 of $sheet_expiration
  !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
  !set expmon=!item $expmon of $months
- Il termine per completare questa verifica &egrave;
+ Il termine per completare questo test di autovalutazione &egrave;
  $expday $expmon $expyear.
  <p>
 !endif
 
 !if $sheet_active=2
  <blink><b><font color=red>Attenzione</font></b></blink>
- Questa verifica &egrave; terminata. &Egrave; ancora possibile
- svolgere gli esercizi, ma non verr&agrave; pi&ugrave; attribuito alcun punteggio.
+ Questo test di autovalutazione &egrave; terminato. &Egrave; ancora possibile
+ svolgere gli esercizi, ma non verr&agrave; pi&ugrave; attribuito alcun
+ punteggio.
  <p>
 !endif
 
@@ -73,9 +74,9 @@ $sheet_desc<p>
 
 !if $n=0
  !if $sheet_active=$empty
-  Non hai permesso di accesso a questa verifica. Contatta il docente.
+  Non hai permesso di accesso a questo test. Contatta il docente.
  !else
- La verifica &egrave; vuota! Probabilmente si tratta di un errore
+ Il test di autovalutazione &egrave; vuoto! Probabilmente si tratta di un errore
  del docente.
  !endif
 !else

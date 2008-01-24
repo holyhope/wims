@@ -4,7 +4,7 @@ raw,raw text,control of comparison by options\
 numeric,Number, with tolerance of precision\
 function,Numerical function, function with numerical tests\
 exp,Mathematical expression, with formal comparison\
-text,Text, words or sentences\
+text,Text, parole o frasi\
 multiple,Controlable multiple choices,buttons or menus\
 
 
@@ -14,6 +14,7 @@ chemeq,Chemical equation, with balance analysis\
 clickfill,Drag-and-drop objets,text and image\
 compose,Compose, using given components\
 coord,Click on image, recognition of coordinates and various regions\
+javacurve,Java draw,\
 correspond,Correspondance, establish the correspondance between pairs of objects\
 chset,Set of characters,\
 matrix,Matrix, mathematical\
@@ -141,4 +142,44 @@ $table_end <p>
 See
 !href cmd=help&special_parm=oef help on oef format
  for the syntax for defining replies.
+
+<h4>The optional parameter <tt>weight</tt></h4>
+<a name=weight> It is possible to give a weight to answers.
+<p>
+Example : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+</p>
+
+
+One can put variables in <tt>weight</tt>. 
+<p>
+Example :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+</p>
+
+<h4>The optional parameter <tt>option</tt></h4>
+ <a name=option>
+The allowed options for <tt>\answer</tt>
+or <tt>\condition</tt> are
+<ul>
+<li>
+<tt>option=split</tt> : In case of type = <tt>correspond</tt>, <tt>checkbox</tt> or <tt>mark</tt>,
+there will be partial score. 
+</li>
+<li>
+<tt>option=nonstop</tt> : In case of step exercises,
+following questions are asked even if the answer is false.
+</li>
+<li>Following <tt>condition</tt> : 
+<tt>option=hide</tt> : The condition is used to analyze the
+answer but will not be printed.
+</li>
+
+</ul>
 
