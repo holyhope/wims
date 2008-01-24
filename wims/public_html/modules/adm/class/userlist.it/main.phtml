@@ -72,7 +72,9 @@ $wims_html_header
     !set k=!char 2 to -1 of $j
     <th rowspan=2><small>esame $k</small>
    !else
-    <th rowspan=2><small>verifica $j</small>
+    <th rowspan=2><small>
+     !href cmd=reply&+job=showsheet&+numshowsheet=$j test $j
+</small>
    !endif
   !next j
   $table_hdtr<th><small>globale<th><small>docente.<th><small>auto
@@ -86,7 +88,9 @@ $wims_html_header
     !set k=!char 2 to -1 of $j
     <th><small>esame $k</small>
    !else
-    <th><small>verifica $j</small>
+    <th><small>
+     !href cmd=reply&+job=showsheet&+numshowsheet=$j test $j
+    </small>
    !endif
   !next j
  !endif
@@ -95,7 +99,7 @@ $wims_html_header
  !for i=1 to $usercnt
   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
-  !set UU=!hex in $uu
+  !set UU=!hex $uu
   $table_tr<td>
   !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
   !read userscore
@@ -181,7 +185,7 @@ $wims_html_header
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
 	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
 	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
-  $table_hdtr<td align=center><b>Media dei punteggi positivi</b>
+  $table_hdtr<td align=center><b>Media dei punteggi effettivi</b>
   !if $manual>0
    <td align=center>$m_glob</td>
    <td align=center>$m_tea</td>
@@ -202,6 +206,8 @@ $wims_html_header
 .
  !href module=adm/class/stat Statistiche dell'attivit&agrave; svolta
 .
+!href module=adm/class/activity Attività globali degli iscritti
+.
 <p>
    Mostra
    !if $job_affi=notes
@@ -219,14 +225,14 @@ $wims_html_header
      !href cmd=reply&job_affi=qualite qualità
     !endif
    !endif
-   nelle verifiche.
+   nei test di autovalutazione.
  !if $activecnt>1
   <p>
   !form reply
   <input type=hidden name=job value=sheets>
   !set wims_formselect_switch=multiple size=$[min($activecnt+$eactivecnt,6)]
   <table border=0>
-  <tr><td>Seleziona una verifica per<br>
+  <tr><td>Seleziona un test di autovalutazione per<br>
   visulizzarne i punteggi medi&nbsp;:
   <td>&nbsp;&nbsp;
   !reset tmp
