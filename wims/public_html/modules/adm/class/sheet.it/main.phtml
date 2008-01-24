@@ -17,7 +17,7 @@ $wims_html_header
 
 <center>$classname
 <p>
-<h1>Preparazione della verifica $sheet
+<h1>Preparazione del test di autovalutazione $sheet
 </h1></center> <p><hr width=40%> <p>
 
 !if $error!=$empty
@@ -37,7 +37,7 @@ $wims_html_header
 !if $activetest>0
  !form reply
  <input type=hidden name=job value=text>
- Questa verifica &egrave;
+ Questo test &egrave;
  !if $activetest=1
   in corso, quindi non più modificabile.
   !href cmd=reply&job=expire Terminala ORA
@@ -91,7 +91,7 @@ O una presentazione:
 </small> <p>
 <center><input type=submit value="Salva"></center>
 
-<p>Termine per il completamento della verifica:
+<p>Termine per il completamento del test di autovalutazione:
 !distribute item $[$expday],$[$expmon] into expday,expmon
 !formselect expday from 1 to 31
 !formselect expmon from 1 to 12 prompt $months
@@ -99,7 +99,7 @@ O una presentazione:
 &nbsp; <input type=submit value="Salva">
 
 !ifval $activetest=-1
- <p>La verifica non esiste ancora.
+ <p>Il test non esiste ancora.
  <input type=submit value="Crea"> (occorre aver inserito il 
  titolo).
  </form>
@@ -107,21 +107,21 @@ O una presentazione:
 !else
  </form>
  !if $exocnt>0
-  <p>La verifica non &egrave; ancora cominciata.
+  <p>Il test non &egrave; ancora cominciata.
   !href cmd=reply&job=prep_activate Cominciare
-  . (Solo le verifiche in corso
-  sono visibili per gli studenti; una verifica in corso non pu&ograve; 
-  pi&ugrave; essere modificata.)
+  . (Solo i test in corso
+  sono visibili per gli studenti; un test di autovalutazione in corso
+  non pu&ograve; pi&ugrave; essere modificato.)
  !endif
 !endif
 
 :end1
 <p>
 !if $exocnt=0
- La verifica non contiene ancora alcun esercizio.
+ Il test non contiene ancora alcun esercizio.
 !else
  <a name=list>
- Contenuto della verifica:<small>[
+ Contenuto del test di autovalutazione:<small>[
  !href module=adm/sheet&sh=$sheet&job=print Versione stampabile
  ]</small>
  <ol>
@@ -152,28 +152,28 @@ O una presentazione:
 !endif
 
 !if $activetest=0
- <p>Per inserire un esercizio in una verifica
+ <p>Per inserire un esercizio in un test di autovalutazione
  tornare alla 
  !href $ home page del corso
  , visualizzare la lista degli esercizi. Una volta selezionato e configurato 
  l'esercizio, un link alla base della pagina 
- ne permetter&agrave; l'inserimento nella verifica.
+ ne permetter&agrave; l'inserimento nel test.
  !if $erasable=yes
   <p>
   &Egrave; anche possibile inserire
   !href cmd=reply&job=prep_putsource i comandi da un file sorgente
  !if $erasable=yes
   o anche 
-  !href cmd=reply&job=prep_erase eliminare la verifica
+  !href cmd=reply&job=prep_erase eliminare il test
  !endif
 .
 !endif
 
 !if $activetest>=0
  <p>
- !href module=adm/sheet&sh=$sheet Pagina pubblica della verifica.
+ !href module=adm/sheet&sh=$sheet Pagina pubblica del test di autovalutazione.
  &nbsp;
- !href cmd=reply&job=getsource Codice sorgente della verifica.
+ !href cmd=reply&job=getsource Codice sorgente del test di autovalutazione.
  <p>
  !form reply
  <input type=hidden name=allow value=yes>

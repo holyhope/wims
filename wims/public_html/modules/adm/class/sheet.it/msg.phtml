@@ -1,8 +1,7 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
- Spiacente ma la preparazione / modifica degli esercizi di verifica &egrave; 
- limitata ai docenti registrati.
+ Spiacente ma la preparazione / modifica degli esercizi dei test di autovalutazione &egrave; limitata ai docenti registrati.
  !exit
 !endif
 
@@ -12,7 +11,7 @@
 !endif
 
 !if bad_sheet=$error
- Il numero della verifica non &egrave; valido. Errore del software?
+ Il numero del test di autovalutazione non &egrave; valido. Errore del software?
  !exit
 !endif
 
@@ -31,9 +30,9 @@
 !endif
 
 !if prep_activate=$error
- Si &egrave; richiesto di dare innizio alla verifica $sheet, cio&egrave; di renderla
+ Si &egrave; richiesto di dare inizio al test di autovalutazione $sheet, cio&egrave; di renderla
  accessibile agli studenti. <p>
- Ricordiamo che una verifica in corso non &egrave; pi&ugrave; modificabile, ma
+ Ricordiamo che un test in corso non &egrave; pi&ugrave; modificabile, ma
  occorre prima disattivarla (in questo caso tutti i punteggi acquisiti dagli
  studenti saranno cancellati). <br>
  Continuare?
@@ -46,7 +45,7 @@
 !endif
 
 !if prep_erase=$error
- Sicuri di voler eliminare la verifica numero #$sheet ($title)?
+ Sicuri di voler eliminare il test numero #$sheet ($title)?
  <p><center>
  !href cmd=reply&job=erase si; eliminare
  .&nbsp;&nbsp;
@@ -56,7 +55,8 @@
 !endif
 
 !if prep_expire=$error
- Questa verifica numero $sheet ($title) dovrebbe durare fino al $expday
+ Il test di autovalutazione numero $sheet ($title) dovrebbe durare fino
+ al $expday
  !item $expmon of $months
  $expyear. Concluderla ora?
  <p><center>
@@ -64,8 +64,8 @@
  .&nbsp;&nbsp;
  !href cmd=resume No, annulla
  . </center>
- <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su una verifica
- terminata. I voti fin qui acquisiti vengono conservati (e le statistiche
+ <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su un test
+ terminato. I voti fin qui acquisiti vengono conservati (e le statistiche
  ne tengono conto) e possono essere consultati dal 
  docente in qualsiasi momento.
  !exit
@@ -75,7 +75,7 @@
  Se si &egrave; provveduto in precedenza a salvare su file
  le istruzioni Wims, &egrave; possibile inserire i comandi
  e salvarli cliccando su `Salva'. &Egrave; anche possibile inserire 
- il sorgente i una verifica pubblica mediante taglia e incolla.
+ il sorgente di un test pubblico mediante taglia e incolla.
  <p>
  Altrimenti,
  !href cmd=resume Torna alla Home page del corso
@@ -143,14 +143,14 @@
 
 !if $error=sharing_sheet
  <font color=red><b><blink>Pericolo!!!</font></b></blink>
- Queste verifiche sono condivise con altri corsi!
+ Questi test sono condivisi con altri corsi!
  !if $wims_ismanager<2
-  Solo il site manager li può disattivare la verifica.
+  Solo il site manager li può disattivare il test.
   !exit
  !endif
  Disattivandole puoi danneggiare anche le configurazioni delle classi
- che le condividono. Si <b>sconsiglia vivamente</b> di disattivare verifiche
- condivise. 
+ che le condividono. Si <b>sconsiglia vivamente</b> di disattivare test
+ di autovalutazione condivisi. 
  <p>
  Sei sicuro di voler continuare?
  <p><center>
@@ -165,30 +165,30 @@
 !endif
 
 !if $error=sheet_in_exam
- Non è possibile disattivare questa verifica, in quanto alcuni esami
+ Non è possibile disattivare questo test, in quanto alcuni esami
  ne utilizzano i contenuti.
  !exit
 !endif
 
 !if $error=non_empty_activities
- Stai per disattivare la verifica $sheet, mentre alcuni studenti hanno 
+ Stai per disattivare il test $sheet, mentre alcuni studenti hanno 
  già cominciato a lavorarci!
  <p>
  !if share iswordof $confirmed
-  Inoltre, la verifica è condivisa con altri corsi, dove pure gli 
+  Inoltre, il test è condiviso con altri corsi, dove pure gli 
   studenti potrebbero aver già cominciato a lavorare. Pertanto
   non è possibile disattivarlo.
   !exit
  !endif
- Tutti i punteggi ottenuti per questa verifica saranno perduti se la 
- verifica viene disattivata. Vuoi veramente continuare?
+ Tutti i punteggi ottenuti per questo test di autovalutazione saranno perduti
+ se il test viene disattivato. Vuoi veramente continuare?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes Si, disattiva
  .&nbsp;&nbsp;
  !href cmd=resume No, abbandona
  . </center> <p>
- Elenco degli studenti che hanno già cominciato a lavorare su questa
- verifica:
+ Elenco degli studenti che hanno già cominciato a lavorare su questo
+ test di autovalutazione:
  <p>
  <tt>$worktest</tt>
  <p>
