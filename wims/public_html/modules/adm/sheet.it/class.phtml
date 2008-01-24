@@ -7,7 +7,7 @@ $wims_html_header
  !changeto docpage.phtml
 !endif
 <center><h3>$wims_classname, $wims_institutionname</h3>
-<hr> <p><h1>verifica #$sh<br>$sheet_title</h1></center> <p>
+<hr> <p><h1>test #$sh<br>$sheet_title</h1></center> <p>
 <div class="wims_sheet_desc">$sheet_desc</div> <p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -16,26 +16,27 @@ $wims_html_header
  !set expyear=!char 1 to 4 of $sheet_expiration
  !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
  !set expmon=!item $expmon of $months
- Devi completare questa verifica entro il $expday $expmon $expyear.
+ Devi completare questo test di autovalutazione entro il $expday $expmon $expyear.
 !endif
 
 !if $sheet_active=2
  <blink><b><font color=red>Warning</font></b></blink>
- Questa verifica doveva già essere completata. Puoi ancora lavorarci,
+ Avresti dovuto aver gi&agrave; completato questo test di autovalutazione.
+ Puoi ancora lavorarci,
  ma i punteggi ottenuti non saranno più tenuti in considerazione.
  <p>
 !endif
 
 !if $n=0
  !if $sheet_active=$empty
-  Non sei ancora autorizzato a consultare i contenuti di questa verifica.
+  Questo test di autovalutazione non &egrave; ancora disponibile. 
   Contatta il docente.
  !else
-  La verifica è vuota! Potrebbe trattarsi di un errore da parte
+  Il test di autovalutazione è vuoto! Potrebbe trattarsi di un errore da parte
   del docente.
  !endif
 !else
- Contenuti della verifica: (la registrazione dei punteggi è
+ Contenuti del test: (la registrazione dei punteggi è
  !set scorestat=!getscorestatus sheet=$sh
  !if $scorestat=yes
   !if $wims_scorereg!=suspend
@@ -90,7 +91,7 @@ $wims_html_header
 :contentend
 !if $wims_user=supervisor
 <p>
-!href module=adm/class/sheet&sheet=$sh Pagina di gestione delle verifiche
+!href module=adm/class/sheet&sheet=$sh Pagina di gestione dei test di autovalutazione
  (per i docenti).&nbsp;
 !endif
 !if $n>0
