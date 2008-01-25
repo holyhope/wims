@@ -4,9 +4,9 @@
 !endif
 
 !if $c_prec!=$empty
- Nuova risposta a 
+ $n_newfollow
  !href cmd=reply&job=read <b>$m_subject</b>
- di
+ $n_by 
  !if $m_email!=$empty
   <i><a href="mailto:$m_email">$m_from</a></i>
  !else
@@ -16,20 +16,19 @@
 !endif
 
 !form reply
- Nome
+$n_yourname:
  !if $forumuser=$empty
   <input size=15 name=c_sender value="$c_sender">
  !else
   <tt>$c_sender</tt>;
  !endif
- email: <input size=30 name=c_smail value="$c_smail"> <br>
+ $n_email&nbsp;: <input size=30 name=c_smail value="$c_smail"> <br>
  !if $send_right<2
-  <center><b>Attenzione.</b> Il messaggio non sar&agrave; accettato senza 
-  un <b>VALIDO</b> indirizzo di posta elettronica. <br></center>
+  $n_cautious<br>
  !endif
- Subject:
+ $n_subject:
  <input size=55 name=c_subject value="$c_subject"> <br>
- Testo del messaggio:<br>
+ $n_content:<br>
  !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap>
  !set msgsrc2=</textarea>
  !if $c_quote>0 and $c_prec!=$empty
@@ -44,22 +43,25 @@
  !set c_quote=0
  $tag_escaper</table>
  <p><center>
- <input type=submit name=c_preview value="Preview">
+ <input type=submit name=c_preview value="$n_preview">
  &nbsp;&nbsp;
- <input type=submit name=c_send value="Invia">
+ <input type=submit name=c_send value="$n_send0">
  &nbsp;&nbsp;
- <input type=submit name=c_list value="Annulla">
+ <input type=submit name=c_list value="$n_giveup">
  </center> <p>
 </form> <p>
-!href cmd=help Istruzioni
- su come inserire formule matematiche nel messaggio.
+!href cmd=help $n_help
+ $n_mathhelp
 
 !if $c_prec!=$empty
- <p><hr> <p>
- !href cmd=reply&job=read Messaggio originale
-  di <i>$m_from</i>:<p>
+ <p><hr> 
+ <div class="wims_forum_intro">
+ !href cmd=reply&job=read $n_origin
+  $n_by <i>$m_from</i>:
+  </div>
+  <div class="wims_forum_msg">
  !read $forumdir/$c_prec html
- $tag_escaper</table></form><font size=+0>
+ $tag_escaper </div></table></form><font size=+0>
  <p><hr> <p>
 !endif
 

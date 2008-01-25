@@ -3,28 +3,30 @@
 <p>
 !if $tot<=0
  !if $mlist!=.newlist
-  Non ci sono messaggi corrispondenti alla richiesta.
+  $n_nomessage
  !else
-  Non ci sono ancora messaggi nel forum.
+  $n_emptyforum
  !endif
 !else
  !if $mlist=.newlist
-  Indice degli ultimi messaggi, i pi&ugrave;
+  $n_list, $n_most
  !else
-  Indice dei messaggi nel periodo da
+  $n_list_month
   !item $lmon of $monthnames
-  $lyear, per primi i più
+  $lyear, $n_most
  !endif
- !item $l_order of recenti,vecchi
+ !item $l_order of $n_old
 . <small>
- !href cmd=reply&l_order=$[$l_order%2+1] [Ordine inverso]
+ !href cmd=reply&l_order=$[$l_order%2+1] [$n_reverse]
+  &nbsp;
+!href cmd=reply&job=threadlist& [$n_subjectlist]
  !if $send_right>0
   &nbsp;
-  !href cmd=new&forum=$forum&job=compose [Nuovo messaggio]
+  !href cmd=new&forum=$forum&job=compose [$n_new]
  !endif
 </small>
- <ul>
- !set lh=<li>
+ <ul class="wims_forum_list">
+ !set lh=<li class="wims_forum_list">
  !if $l_order=1
   !distribute item $tot,1,-1 into start,end,step
  !else
@@ -45,7 +47,7 @@
 
 <p>
 !if $mlist!=.newlist
- !href cmd=reply&job=list&mlist=.newlist Messaggi pi&ugrave; recenti.
+ !href cmd=reply&job=list&mlist=.newlist $n_recent.
  &nbsp;
 !endif
 
