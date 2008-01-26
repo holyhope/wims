@@ -1,0 +1,143 @@
+
+sec=!defof class_secure in wimshome/log/classes/$wims_class/.def
+sec=!trim $sec
+htest=!checkhost $sec
+!if $wims_sup_secure<0 or ($sec!=$empty and $htest<1)
+ error=not_secure
+ !exit
+!endif
+
+!!typename=!defof class_typename in wimshome/log/classes/$wims_class/.def
+!!classtype=!defof class_type in wimshome/log/classes/$wims_class/.def
+
+!bound csvformat within xls,csv,tsv default xls
+!if $csvtype!=download
+ !exit
+!endif
+!if $vote>0
+  parmcnt=0
+  !read $votedir/$vote.def
+ quote="
+ sep_csv=;
+ sep_xls=;
+ sep_tsv=$	$
+ sep=$(sep_$csvformat)
+ !default sep=$(sep_xls)
+ fbase=data-$wims_class-vote-$vote
+ fbase=!translate internal / to _ in $fbase
+ fname=wimshome/$wims_sesdir/spreadsheet.$csvformat
+ 
+ tit="$title_vote $vote"
+ !writefile $fname $tit\
+ 
+ !readdef $votedir/$vote.votes
+ !readdef $votedir/$vote.comments
+
+ !if $vote_option=anonymous or $csvoption=global
+### en ligne les questions, en colonne le nombre de votants pour chaque réponse
+  tableau=
+  maxchoice=1
+  !for t = 1 to $parmcnt
+    maxchoice=$[max($maxchoice, $(choices$t))]
+    line=Q.$t _
+    !if $(type_comment$t)!=yes
+     !for r = 0 to $[$(choices$t)]
+      line=!append item _ $(vcnt_$(t)_$(r)) _ to $line
+     !next
+    !endif
+    tableau =!append line $line to $tableau
+    prel=!makelist _ $name_choice x _ for x = 0 to $maxchoice
+  !next
+  tableau=_,$prel\
+$tableau
+  !goto end
+!endif 
+!if $vote_option=trace
+ tableau=!makelist x for x = 1 to $vcnt
+ tableau=!replace internal , by ; in $tableau
+ tableau=!rows2lines $tableau
+ line=!makelist _0_ for x=1 to $parmcnt
+ !for u = 1 to $vcnt
+    tableau=!replace line number $u by "$u"_,_$line in $tableau
+ !next
+ !for t = 1 to $parmcnt
+  !if $(type_comment$t)!=yes
+   !for l = 0 to $[$(choices$t)]
+     v=$(votes_$(t)_$l)
+     v1=!itemcnt $v
+     !if $v1>0
+      !for h = 1 to $v1
+       line=!line $(v[$h]) of $tableau 
+       line=!replace item number $[$t+1] by _$(l)_ in $line
+       tableau=!replace internal line number $(v[$h]) by $line in $tableau
+      !next
+     !endif
+   !next
+  !else
+    !for u = 1 to $vcnt
+       line=!line $u of $tableau
+       c=!declosing $(comment_$(t)[$u])
+       line=!replace item number $[$t+1] by _$c _ in $line
+       tableau=!replace internal line number $u by $line in $tableau
+    !next
+  !endif
+ !next
+ entete= !makelist _ Q.x _ for x=1 to $parmcnt
+ tableau=_,$entete\
+ $tableau
+!endif
+
+!if $vote_option=nominative
+ tableau=!makelist x for x = 1 to $vcnt
+ tableau=!replace internal , by ; in $tableau
+ tableau=!rows2lines $tableau
+ line=!makelist _0_ for x=1 to $parmcnt
+ !for u = 1 to $vcnt
+  tableau=!replace line number $u by "$u"_,_$line in $tableau
+ !next
+ cmp=0
+ !for t = 1 to $parmcnt
+  !if $(type_comment$t)!=yes
+   !for l = 0 to $[$(choices$t)]
+    v=$(votes_$(t)_$l)
+    v1=!itemcnt $v
+    !if $v1>0
+     !for h = 1 to $v1
+      !if supervisor/ notin $(v[$h])/
+       u=!replace internal / by _ in $(v[$h])
+       u=!replace internal @ by ___ in $u
+       !if $(cnt_$u)=
+        cmp=$[$cmp+1]
+        cnt_$u=$cmp
+        item1=$u
+       !endif
+       line=!line $(cnt_$u) of $tableau 
+       line=!replace item number 1 by $(v[$h])_ in $line
+       line=!replace item number $[$t+1] by _$(l)_ in $line
+       tableau=!replace internal line number $(cnt_$u) by $line in $tableau
+      !endif
+     !next
+    !endif
+   !next
+ !endif
+!next
+entete= !makelist _ Q.x _ for x=1 to $parmcnt
+ tableau=_,$entete\
+ $tableau
+ !goto end
+!endif
+ 
+:end
+tableau=!replace internal _,_ by $sep in $tableau
+tableau=!replace internal _ by  in $tableau
+tableau=!replace internal --- by  in $tableau
+ 
+!appendfile $fname $tableau
+
+infile=spreadsheet.$csvformat
+outfile=$fbase.$csvformat
+!mexec csv/getprep.sh
+!endif
+
+!reset csvtype
+

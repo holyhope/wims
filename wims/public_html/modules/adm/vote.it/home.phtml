@@ -26,7 +26,7 @@
      <li>
      !href cmd=reply&job=read&vote=$t $vote_title
      !if $vote_show>0
-      ($(name_$vote_status), $(name_$vote_option), $vcnt votes)
+      ($(name_$vote_status), $(name_$vote_option), $vcnt risposte)
      !else
       ($(name_$vote_status), $(name_$vote_option))
      !endif
@@ -34,10 +34,12 @@
    !else
     <li>
     $vote_title
-    <small>($(name_$vote_status), $(name_$vote_option), $vcnt votes)</small>
+    <small>($(name_$vote_status), $(name_$vote_option), $vcnt risposte)</small>
     !href cmd=reply&job=read&vote=$t [leggi]
 &nbsp;
     !href cmd=reply&job=edit&vote=$t [modifica]
+&nbsp;
+    !href cmd=reply&job=csv&vote=$t [esporta]
    !endif
  !next t
  </ul>

@@ -1,0 +1,42 @@
+
+!set wims_form_method=post
+!if $error iswordof not_secure not_superclass
+  !exit
+!endif
+<h3>$title_data</h3>
+</center> <p>
+ <p><hr> <p>
+
+!if $outfile!=$empty
+ Questo è il file <tt>
+ !getfile $outfile $outfile
+ </tt> che una volta salvato può essere aperto con un qualsiasi 
+  foglio eletronico (tipo <em>excel</em>).
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+State per salvare i dati del questionario
+numero $vote : <font color=green>$vote_title</font>
+<ul><li>
+Formato:
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats $name_help
+</small>
+</li>
+!if $vote_option!=anonymous
+<li> $name_data:
+!formradio csvoption list global,detail prompt $name_global,$name_detail
+<small>
+!href module=$module&cmd=help&special_parm=csvvotes $name_help
+</small>
+</li>
+</ul>
+!endif
+<center><input type=submit value=Salva></center>
+
+!readproc csv.proc
+</form>

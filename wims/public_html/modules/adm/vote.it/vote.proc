@@ -5,18 +5,14 @@
 !endif
 
 !readdef $userfile
-
-##pour la periode transitoire de changement (etablissement)
-## ensuite dans aucun etablissement ne sera créé user_vote_1
-####ne corrige donc pas le bogue pour les établissements actuels 
-####  mais pour les nouveaux votes, mais cela semble plus propre
-
 !if $(user_vote_$Vote)=$empty and $(user_vote_$vote)!=$empty
     user_vote_$Vote=$(user_vote_$vote)
 !endif
 
+# pour un questionnaire tracé ou anonyme on interdit de 
+# modifier son vote.
 
-!if $vote_option=anonymous and $(user_vote_$Vote)!=$empty
+!if $vote_option!=nominative and $(user_vote_$Vote)!=$empty
  error=already_voted
  !exit
 !endif
@@ -24,12 +20,13 @@
 !readdef $votedir/$vote.votes
 
 !readdef $votedir/$vote.comments
+quote="
 !for t=1 to $parmcnt
-  !if $vote_option=anonymous and $(type_comment$t)=yes
-    tt = !char 1 to 500 of $(parm$t)
+  !if $vote_option!=nominative and $(type_comment$t)=yes
     tt = !singlespace $(parm$t)
-    tt = !append item ---- $tt to $(comment_$t)
-    tt = !char 1 to 12000 of $tt
+    tt = !char 1 to 600 of $tt
+    tt = !append item ---$quote($tt)$quote to $(comment_$t)
+    tt = !char 1 to 24000 of $tt
     !setdef comment_$t=$tt in $votedir/$vote.comments
   !endif
 !next t
@@ -38,6 +35,10 @@ voteset=
  !advance vcnt
  voteset=vcnt=$vcnt
 !endif
+
+# on récupère le nombre de votes déjà exprimés
+nbvotes=$vcnt
+
 !for t=1 to $parmcnt
  !for k=0 to $(choices$t)
   vc_$k=$(vcnt_$(t)_$k)
@@ -57,23 +58,54 @@ voteset=
  !next k
 !next t
 
+
+# paramcnt: nombre de questions
+
+
 !if $vote_option=anonymous
  user_vote_$Vote=yes
 !else
+  # nouvelle option pour le tracage des reponses.
+  # on ne garde pas le nom du votant mais on lui donne un numéro qui
+  # est égal au nombre de votes exprimés.
+  # 
+  # comme on est dans le ELSE du anonymous, on n'a plus que 2 choix possibles:
+  #   nominatif ou tracage
+  # d'où le IF/ELSE simple
+  # si un autre cas devait être intégré il faudrait faire un test un peu plus poussé
+  
+  # la partie du fichier obtenu est de la forme vote
+  option=$empty
+
+  !if $vote_option iswordof nominative
+    option=$wims_class/$wims_user
+  !else
+    option=$nbvotes
+  !endif
+
  tt=
  !for t=1 to $parmcnt
-  old=!item $t of $(user_vote_$Vote)
-  !for v in $old
-   vv=!replace item $wims_class/$wims_user by $ in $(votes_$(t)_$v)
-   vv=!nonempty items $vv
-   voteset=!append line votes_$(t)_$v=$vv to $voteset
-   votes_$(t)_$v=$vv
-  !next v
-  tt=!append item $(parm$t) to $tt
-  vv=!append item $wims_class/$wims_user to $(votes_$(t)_$(parm$t))
-  voteset=!append line votes_$(t)_$(parm$t)=$vv to $voteset
+  !if $(type_comment$t)!=yes
+   old=!item $t of $(user_vote_$Vote)
+    !for v in $old
+     vv=!replace item $wims_class/$wims_user by $ in $(votes_$(t)_$v)
+     vv=!nonempty items $vv
+     voteset=!append line votes_$(t)_$v=$vv to $voteset
+     votes_$(t)_$v=$vv
+   !next v
+   tt=!append item $(parm$t) to $tt
+
+#  vv=!append item $wims_class/$wims_user to $(votes_$(t)_$(parm$t))
+   vv=!append item $option to $(votes_$(t)_$(parm$t))
+
+   voteset=!append line votes_$(t)_$(parm$t)=$vv to $voteset
+  !endif
  !next t
- user_vote_$Vote=$tt
+ !if $vote_option=trace
+  user_vote_$Vote=yes
+ !else
+  user_vote_$Vote=$tt
+ !endif
 !endif
 
 !setdef !set user_vote_$Vote=$(user_vote_$Vote) in $userfile

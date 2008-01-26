@@ -1,16 +1,22 @@
 
 !if $vote_option=anonymous
- Questo è un questionario anonimo.
+ Questo è un questionario $name_anonymous.
 !else
- Questo è un questionario nominale.
+ !if $vote_option=trace
+   Ce questionnaire est $name_trace.
+ !else
+   Questo è un questionario $name_nominative.
+ !endif
 !endif
 !if $vote_status=2
- &Egrave; chiuso.
+ &Egrave; $name_2.
 !endif
 
 !if $wims_user=supervisor
- ($vcnt votes)
+ ($vcnt risposte)
  !href cmd=reply&job=edit Modifica
+ 
+ !href cmd=reply&job=csv Esporta i dati
 <p>
 !endif
 
@@ -19,7 +25,7 @@
 !endif
 
 !if $(user_vote_$Vote)!=$empty
- !if $vote_option=anonymous
+ !if $vote_option!=nominative
   Hai già risposto al questionario.<p>
  !else
   Hai già risposto al questionario, ma puoi modificare le tue risposte.
@@ -42,37 +48,44 @@
  </center></form>
 !endif
 !readdef $votedir/$vote.comments 
-!if $wims_user=supervisor and $test_comment=1 and $vote_option=anonymous
+!if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
 <p><b>Commenti</b> : 
 </p><p> 
 !for i=1 to $parmcnt
  !if $(type_comment$i)=yes
   !set comment_$i = !replace internal --- by $\
- $<br> in $(comment_$i)
+ $<br>- in $(comment_$i)
 
- $i : $(comment_$i)
+<pre>
+ $i : 
+ $(comment_$i)
+ </pre>
 </p><p>
  !endif
  </p>
 !next
 !endif
-!if $wims_user=supervisor and $vote_option=nominative
+!if $wims_user=supervisor and $vote_option!=anonymous
  <p> Dettagli delle risposte.
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/
-    <p>
+    <p>$i-
     !item $c of $(chlist$i)
  <br> <tt>
     !for u in $(votes_$(i)_$c)
+     !if $vote_option=nominative
      !set U=!translate internal / to , in $u
      !readproc adm/class/userdef classes,$U
      !defof user_lastname, user_firstname in $userdef
      ($u)
      <br>
+      !else 
+       ($u) 
     !endif
    !next u
    </tt>
+   !endif
   !next c
  !next i
 !endif
