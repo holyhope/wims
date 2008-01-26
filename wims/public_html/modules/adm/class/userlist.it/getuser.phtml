@@ -22,12 +22,16 @@
 </center> <p>
 
 !if $manual>0 and $gcnt>0 and $teacher!=$empty
- $table_header$table_hdtr<th>Nome<th>Percentuale<th>Media
- $table_tr<td>Voti assegnati dal docente
+ $table_header
+ <caption><small>
+ min/media/max del corso:
+ $min_glob/$mean_glob/$max_glob</small></caption>
+ $table_hdtr<th>Nome<th>Percentuale<th>Media
+ $table_hdtr<td>Voti assegnati dal docente
      <td align=center>$manual%<td align=center>$mav
- $table_tr<td>Voti registrati dal server
+ $table_hdtr<td>Voti registrati dal server
      <td align=center>$[100-$manual]%<td align=center>$per
- $table_tr<td><b>Media globale</b> (su $scoremax)
+ $table_hdtr<td><b>Media globale</b> (su $scoremax)
      <td align=center>100%<th>$globalav
  $table_end<p>
  $table_header$table_hdtr<th colspan=3>Voti assegnati dal docente</th>
@@ -40,12 +44,13 @@
  $table_hdtr<th colspan=2>Media<td align=center>$mav</td>
  $table_end <p>
 !else
+ <center>
  Media globale: <b>$per</b> su $scoremax. 
  !if $min_glob<$scoremax
   <br><small>min/media/max del corso:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
-<p>
+ </center> <p>
 !endif
 
 !if $eactivecnt>0
@@ -71,7 +76,6 @@
  !set l_=!line $i of $activesheets
  !distribute items $l_ into n_,e_
  !set L_=!line $n_ of $defaultformula
- !default L_=1 2
  !distribute word $L_ into A_,B_
  !set t_=!item 3 to -1 of $l_
  !set t_=!char 1 to $title_limit of $t_

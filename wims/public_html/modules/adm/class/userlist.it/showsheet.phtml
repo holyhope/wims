@@ -40,7 +40,6 @@ $sh_title</b></font>
  $table_hdtr<th>Nome e cognome</th>
  <th>Media</th>
  !let tot_0=0
- !let nonzero=0
  !let nonzero_0=0
  !for j=1 to $nbexo
   <th><small>esercizio $j</small></th>
@@ -142,19 +141,19 @@ $sh_title</b></font>
   !next j
   </tr>
  !endif
-</table>
+$table_end
  <p>Selezionare il nome di uno studente per i dettagli.
- !href cmd=reply&job=showsheet&showsheet=$numshowsheet Aggiorna la pagina
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet Aggiorna la pagina
 &nbsp;.&nbsp;
    Mostra
     !if $job_affi=qualite
-     !href cmd=reply&job_affi=points&job=showsheet&showsheet=$numshowsheet il lavoro portato a termine
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet il lavoro portato a termine
     !else
-     !href cmd=reply&job_affi=qualite&job=showsheet&showsheet=$numshowsheet la qualità del lavoro
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet la qualità del lavoro
     !endif
    relativa al test di autovalutazione.     
 <p>
- !href cmd=new Elenco iscritti
+ !href cmd=reply&job_affi=notes Elenco iscritti
 .
 :end
 !tail
