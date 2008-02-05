@@ -41,6 +41,7 @@ see http://www.gnu.org/copyleft/lesser.html
 var config = new Object();
 
 
+
 //===================  GLOBAL TOOPTIP CONFIGURATION  =========================//
 var  tt_Debug	= true		// false or true - recommended: false once you release your page to the public
 var  tt_Enabled	= true		// Allows to (temporarily) suppress tooltips, e.g. by providing the user with a button that sets this global variable to false
