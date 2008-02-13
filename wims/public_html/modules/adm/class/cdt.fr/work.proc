@@ -19,7 +19,7 @@ jmonth=!char 2,3 of $[abs(floor($jmonth))+100]
 !endif
 jyear=!char -4 to -1 of $[abs(floor($jyear))+100000]
 !if $jday>=1 and $jday<=31 and $jmonth>=1 and $jmonth<=12 \
-	and N notin $jmonth$jday$jyear
+	and NaN notin $jmonth$jday$jyear
  jour_begin=$jyear$jmonth$jday
 !else
  error=day_dontexist
@@ -27,6 +27,7 @@ jyear=!char -4 to -1 of $[abs(floor($jyear))+100000]
  !exit
 !endif
 
+jmonth2=$[$jmonth2]
 !bound jmonth2 within 1,2,3,4,5,6,7,8,9,10,11,12 default $jmonth
 jmonth2=!char 2,3 of $[abs(floor($jmonth2))+100]
 jday2=!char 2,3 of $[abs(floor($jday2))+100]
