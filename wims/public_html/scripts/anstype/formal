@@ -24,6 +24,14 @@ goodcnt=!itemcnt $good
  test=$good-($dd)
  good1=$good
 !endif
+
+!if $wims_read_parm=nocompare
+ !if NaN isin $test
+  !exit
+ !endif
+ !exit
+!endif
+
 mres=!exec maxima print($good1);\
 	print($dd);\
 	print(ratsimp(trigreduce(trigsimp($test))));
