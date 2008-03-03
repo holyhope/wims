@@ -1,5 +1,4 @@
 package rene.zirkel;
-
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,7 +6,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.zip.*;
-
 import rene.dialogs.Warning;
 import rene.gui.*;
 import rene.util.*;
@@ -1267,37 +1265,255 @@ public class ZirkelApplet extends Applet
 	/*
 	* jm.evers 28/12/2007
 	* test to retreive data from the applet without using XML-javascript methods ...
+	* javascript-functions must be of type: function getDrawing(type,name); 
+	* example: getDrawing("line","line1,line2,line3");
+	* array's as argument give trouble only in InternetExplorer
+	* example: getDrawing("line1","line2","line3"); will not do !
 	*/
-	private String getthispoint(String name){
-	    String result="";double x;double y;
-	    Construction C=ZC.getConstruction();Enumeration r=C.elements();
-	    while (r.hasMoreElements()){
-		try {PointObject c=(PointObject)r.nextElement();
-		    if (c.getName().equals(name)){
-			try
-			{
-			    x=c.getX();
-			    y=c.getY();
-			    result=name+","+"x="+x+",y="+y+"\n";
-			}
-			catch (Exception e) {result=result+name+" point has no value ?? \n";}
-		    }
-		    System.out.println( result);                                                                                                     
-		}
-		catch  (Exception e){System.out.println(r+": this is no point...\n");}
-	    }
-	    return result;
-	}
-	
-	public String getPoints(String[] name){
-	    int i=name.length;int p;String Name;
-	    String endresult="";
-	    for(p=0;p<i;p++){
-		Name=name[p];
-		endresult=endresult+getthispoint(Name);
-	    }
-	    return endresult;
-	}
+    public static String[] StringToArray(String str)
+    {
+        StringTokenizer t = new StringTokenizer(str, ",");
+        String array[] = new String[t.countTokens()];
+        for(int i = 0; t.hasMoreTokens(); i++)
+            array[i] = t.nextToken();
+
+        return array;
+    }
+
+    public String ConvertLineNotation(String parameter)
+    {
+        int i = parameter.indexOf("x=");
+        if(i != -1)
+            return parameter + ",perpendicular";
+        i = parameter.indexOf("x");
+        if(i == -1)
+            return parameter + ",horizontal";
+        i = parameter.indexOf("=");
+        System.out.println("parameter" + parameter + "i=" + i);
+        if(i != -1)
+        {
+            int t = parameter.length();
+            String links = parameter.substring(0, i);
+            String c = parameter.substring(i + 1, t);
+            t = links.length();
+            i = links.indexOf("x");
+            String mx = links.substring(0, i);
+            if(mx.length() == 0)
+                mx = "1";
+            String by = links.substring(i + 1, t);
+            by = by.replace("y", "");
+            by = by.replace("*", "");
+            by = by.replace("+", "");
+            if(by.length() == 0)
+                by = "1";
+            mx = mx.replace("*", "");
+            return "rc=-1*(" + mx + ")/(" + by + "),constant=" + "(" + c + ")/(" + by + "),affine";
+        } else
+        {
+            return "error: line not correct";
+        }
+    }
+
+    private String getthispoint(String name)
+    {
+        String result = "";
+        int check = 0;
+        Construction C = ZC.getConstruction();
+        for(Enumeration r = C.elements(); r.hasMoreElements();)
+            try
+            {
+                PointObject c = (PointObject)r.nextElement();
+                if(c.getName().equalsIgnoreCase(name))
+                    try
+                    {
+                        double x = c.getX();
+                        double y = c.getY();
+                        result = "point=" + name + "," + "x=" + x + ",y=" + y + "\n";
+                        check++;
+                    }
+                    catch(Exception e)
+                    {
+                        result = "point=" + name + " no value error \n";
+                    }
+            }
+            catch(Exception exception) { }
+
+        if(check == 0)
+            result = "point=" + name + ",not present error\n";
+        return result;
+    }
+
+    private String getthissegment(String name)
+    {
+        String result = "";
+        int check = 0;
+        Construction C = ZC.getConstruction();
+        for(Enumeration s = C.elements(); s.hasMoreElements();)
+            try
+            {
+                SegmentObject c = (SegmentObject)s.nextElement();
+                if(c.getName().equalsIgnoreCase(name))
+                    try
+                    {
+                        result = c.getEquation();
+                        result = ConvertLineNotation(result);
+                        result = "segment=" + name + "," + result;
+                        check++;
+                    }
+                    catch(Exception e)
+                    {
+                        result = "segment=" + name + " no value error";
+                    }
+            }
+            catch(Exception exception) { }
+
+        if(check == 0)
+            result = "segment=" + name + ",not present error";
+        return result;
+    }
+
+    private String getthisline(String name)
+    {
+        String result = "";
+        int check = 0;
+        Construction C = ZC.getConstruction();
+        for(Enumeration l = C.elements(); l.hasMoreElements();)
+            try
+            {
+                LineObject c = (LineObject)l.nextElement();
+                if(c.getName().equalsIgnoreCase(name))
+                    try
+                    {
+                        check++;
+                        result = c.getEquation();
+                        result = ConvertLineNotation(result);
+                        result = "line=" + name + "," + result;
+                    }
+                    catch(Exception e)
+                    {
+                        result = "line=" + name + " no value error";
+                    }
+            }
+            catch(Exception exception) { }
+
+        if(check == 0)
+            result = "line=" + name + ",not present error";
+        return result;
+    }
+
+    private String getthiscircle(String name)
+    {
+        String result = "";
+        int check = 0;
+        Construction C = ZC.getConstruction();
+        for(Enumeration z = C.elements(); z.hasMoreElements();)
+            try
+            {
+                CircleObject c = (CircleObject)z.nextElement();
+                if(c.getName().equalsIgnoreCase(name))
+                    try
+                    {
+                        double x = c.getX();
+                        double y = c.getY();
+                        double radius = c.getR();
+                        result = "circle=" + name + "," + "x=" + x + ",y=" + y + ",r=" + radius;
+                        check++;
+                    }
+                    catch(Exception e)
+                    {
+                        result = "circle=" + name + " no value error";
+                    }
+            }
+            catch(Exception exception) { }
+
+        if(check == 0)
+            result = "circle=" + name + ",not present error";
+        return result;
+    }
+
+    private String getthisangle(String name)
+    {
+        String result = "";
+        int check = 0;
+        Construction C = ZC.getConstruction();
+        for(Enumeration a = C.elements(); a.hasMoreElements();)
+            try
+            {
+                AngleObject c = (AngleObject)a.nextElement();
+                if(c.getName().equalsIgnoreCase(name))
+                    try
+                    {
+                        result = c.getE();
+                        check++;
+                    }
+                    catch(Exception e)
+                    {
+                        result = "angle=" + name + " no value error";
+                    }
+            }
+            catch(Exception exception) { }
+
+        if(check == 0)
+            result = "angle=" + name + ",not present error";
+        return result;
+    }
+
+    public String getDrawing(String type, String names)
+    {
+        String name[] = StringToArray(names);
+        int i = name.length;
+        String endresult = "";
+        if(type.equalsIgnoreCase("line"))
+        {
+            for(int p = 0; p < i; p++)
+            {
+                String Name = name[p];
+                endresult = endresult + getthisline(Name) + "\n";
+            }
+
+        } else
+        if(type.equalsIgnoreCase("circle"))
+        {
+            for(int p = 0; p < i; p++)
+            {
+                String Name = name[p];
+                endresult = endresult + getthiscircle(Name) + "\n";
+            }
+
+        } else
+        if(type.equalsIgnoreCase("point"))
+        {
+            for(int p = 0; p < i; p++)
+            {
+                String Name = name[p];
+                endresult = endresult + getthispoint(Name) + "\n";
+            }
+
+        } else
+        if(type.equalsIgnoreCase("segment"))
+        {
+            for(int p = 0; p < i; p++)
+            {
+                String Name = name[p];
+                endresult = endresult + getthissegment(Name) + "\n";
+            }
+
+        } else
+        if(type.equalsIgnoreCase("angle"))
+        {
+            for(int p = 0; p < i; p++)
+            {
+                String Name = name[p];
+                endresult = endresult + getthisangle(Name) + "\n";
+            }
+
+        }
+        return endresult;
+    }
+
+
+
+
 	
 	/*
 	* end jm.evers test
