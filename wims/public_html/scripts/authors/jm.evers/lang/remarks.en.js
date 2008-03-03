@@ -18,7 +18,7 @@ var r17="this is ofcourse :\n log(a)/log(a) = 1\n I would not send this ...";
 var r18="Try to formulate your answer more precise:\nsomething like \"sqrt(5++5)\" or \"log(5--5)\" could be written much simpler...";
 var r19="Your drawing misses a few vital objects\nSee below:\n\n";
 var r20="Your answer is unreadable and should be rewritten\n\n";
-var r21="I'd expected something like:\n x>123 \n 12 < x <= 14 \n Try again...";
+var r21="I\'d expected something like:\n x>123 \n 12 < x <= 14 \n Try again...";
 var r22="You\'ve forgotten to fill in the final answer...";
 var r23="These nice long divisions all end with the number zero (0)";
 var r24="I can not remove more pieces of the \"tail\"...";

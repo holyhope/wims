@@ -1,20 +1,20 @@
 var r0="Voulez vous envoyer la réponse ?\n";
-var r1="Vous n'avez pas répondu à la question ";
+var r1="Vous n\'avez pas répondu à la question ";
 var r2="votre réponse est trop longue...\nJe ne la vérifie pas.";
-var r3="J'ai réécrit la syntaxe sqrt[a](b) pour la racine \nen une syntaxe b^(1/a)"; 
+var r3="J\'ai réécrit la syntaxe sqrt[a](b) pour la racine \nen une syntaxe b^(1/a)"; 
 var r4="Votre réponse contient une virgule\nUtiliser la notation avec un point décimal pour les nombres réels...\n Si vous voulez donner plusieurs réponses, utilisez des mots comme \"and\" \"or\" "
 var r5="vous devriez remplacer le caractère \"o\" par le nombre \"0\"";
 var r6="vous essayez de me raconter une histoire\n Mais formulez plutôt votre réponse plus sérieusement...";
 var r7="Vous utilisez la lettre  \"x\" comme symbole de multiplication\nUtilisez plutôt un symbole normal comme \"*\" pour cela...\nOu en cas de réponses multiples, écrivez quelque chose comme:\n x1=123 et x2=456";
 var r9="Ecrivez une fonction avec des parenthèses \nAinsi, écrivez: sqrt() sin() etc()";
-var r10="Vous n'avez pas utilisé la bonne notation scientifique...\n 5*10^2 == 5e+2\n 5*10^-6 == 5e-6\nPas d'exposants \"broken\"...";
+var r10="Vous n\'avez pas utilisé la bonne notation scientifique...\n 5*10^2 == 5e+2\n 5*10^-6 == 5e-6\nPas d\'exposants \"broken\"...";
 var r11="Une syntaxe spéciale doit être utilisée pour les racines supérieures:\nsqrt[3](11) = \u221B(17) \n sqrt[4](23) = \u221C(23)";
-var r12="J'ai réécrit votre  log[a](b) avec le log en base 10:\n log(b)/log(a)";
+var r12="J\'ai réécrit votre  log[a](b) avec le log en base 10:\n log(b)/log(a)";
 var r13="Je ne peux pas traiter des crochets pour un autre usage que sqrt[] et log[]...[?]\nEssayez de réécrire votre réponse ";
 var r14="Vous devriez réécrire log[10](a) comme log(a)\nJe vais interpréter log(a) comme un logarithme en base 10";
 var r15="Vous devriez réécrire log[e](a) comme ln(a)\nJe vais interpréter ln(a) comme un logarithme en base e";
-var r16="votre réponse n'a pas de sens..\net n'est pas acceptée.";
-var r17="c'est bien sûr :\n log(a)/log(a) = 1\n Je ne l'envoie pas...";
+var r16="votre réponse n\'a pas de sens..\net n\'est pas acceptée.";
+var r17="c\'est bien sûr :\n log(a)/log(a) = 1\n Je ne l\'envoie pas...";
 
 
 function check_s(t){
