@@ -7,21 +7,34 @@ If -somewhere this summer- "all" old modules are transformed into the "new autho
 I will adjust the params in scripts/jm.evers/proc/init.proc 
 
 
-To be precise, in scripts/jm.evers/proc/init.proc
+To be precise
 
-# used for wims read/readproc                                                                                                              
-authordir=jm.evers                                                                                                                         
-# used for html/apache                                                                                                                     
+1) in scripts/jm.evers/proc/init.proc
+
+# used for wims read/readproc
+authordir=jm.evers 
+# used for html/apache 
 AUTHORDIR=$module_dir/jm.evers 
 
 should become:
 
-# used for wims read/readproc                                                                                                              
-authordir=authors/jm.evers                                                                                                                         
-# used for html/apache                                                                                                                     
+# used for wims read/readproc
+authordir=authors/jm.evers 
+# used for html/apache 
 AUTHORDIR=scripts/authors/jm.evers
 
 
+2) $authordir/lang/intro.$lang.phtml should be edited: 
+
+!set phtmldir=jm.evers/phtml 
+!set jsdir=$module_dir/jm.evers/js 
+!set gifdir=$module_dir/jm.evers/gifs
+
+should become:
+
+!set phtmldir=authors/jm.evers/phtml 
+!set jsdir=scripts/authors/jm.evers/js 
+!set gifdir=scripts/authors/jm.evers/gifs
 
 3/3/2008
 J.M. Evers 
