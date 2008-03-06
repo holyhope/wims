@@ -1,0 +1,50 @@
+
+sizemin=20
+sizemax=1024
+
+!if $wims_deposit!=$empty and $fname=$empty
+ fname=!text select abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_ in $wims_deposit
+ fnamet=$fname
+ id=!sh cd $$session_dir\
+	mkdir -p getfile\
+	mv user-deposit getfile/$fname\
+	cd $wims_home/public_html\
+	cp $$session_dir/getfile/$fname $$tmp_dir\
+	w_wims_priv_chroot=tmpdir\
+	export w_wims_priv_chroot\
+	bin/ch..root identify $fname
+ test=!word 1 of $id
+ !if $test=$fname
+  ftype=!word 2 of $id
+  ftype=!lower $ftype
+  fsize=!word 3 of $id
+  !if x notin $fsize
+:badimage
+   error=bad_image
+   fname=
+   !exit
+  !endif
+  !default size=$fsize
+  fsize=!translate internal x to , in $size
+  fx=$(fsize[1])
+  fy=$(fsize[2])
+  !if NaN isin $[$fx]$[$fy]
+   error=unknown_size
+   fname=
+   !exit
+  !endif
+  !if min($fx,$fy)<$sizemin or max($fx,$fy)>$sizemax
+   error=bad_size
+   fname=
+   !exit
+  !endif
+ !else
+  error=file_error
+  fname=
+ !endif
+!endif
+
+!if $fname!=$empty
+ imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$fname
+!endif
+

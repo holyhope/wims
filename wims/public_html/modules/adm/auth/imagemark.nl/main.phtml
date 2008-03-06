@@ -1,0 +1,31 @@
+!header
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr><p>
+!endif
+
+!if $fname=$empty
+
+!set wims_form_method=file
+!form reply
+<input type=file name=wims_deposit>
+<input type=submit value="OK">
+<p>
+Grootte (e.g. 640x480, optioneel) :
+<input name=size size=12>
+</form>
+
+!else
+ <p><center>
+ <img width=$fx height=$fy src=$imgsrc>
+ </center>
+ !href cmd=new&module=$module Verander het plaatje.
+!endif
+
+
+<p>
+:end
+!tail
+
+!reset wims_deposit
+
