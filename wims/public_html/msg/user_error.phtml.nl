@@ -24,7 +24,7 @@ padding-left: 3%; padding-right: 3%;}
  <H1 align=center>We zijn te druk</H1>
  <hr width=50%><p>
  Deze WIMS server <font color=blue>$httpd_HTTP_HOST</font> 
- is op dit moment overbelast door een zeer groot aantal aanvragen,
+ is op dit moment belast door een zeer groot aantal aanvragen,
  en neemt voor dit moment geen nieuwe opdrachten meer aan.
  Kom later terug, of maak gebruik van een WIMS mirror site 
  <p>We hopen U spoedig  weer van dienst te kunnen zijn. 
@@ -36,7 +36,7 @@ padding-left: 3%; padding-right: 3%;}
 !if overload iswordof $wims_user_error
  <hr width=1>
  <H1 align=center>SORRY</H1>
- Your request is blocked by this WIMS server: connection quota exceeded.
+ Uw verzoek is geblokkeerd door deze WIMS server: maximum aantal verbindingen is bereikt.
  </body></html>
  !exit
 !endif
@@ -49,11 +49,11 @@ padding-left: 3%; padding-right: 3%;}
  !set miss=!upper $missing_software
  <b><font color=red>$miss</font></b>
  nodig om aan Uw verzoek te voldoen, helaas is dit pakket niet 
- beschikbaar (of niet zichtbaar voor WIMS)  op deze server
+ beschikbaar (of niet zichtbaar voor WIMS)  op deze server.
  <p>
  U kunt een email sturen naar de
  <a href="mailto:$wims_site_manager?subject=$missing_software niet beschikbaar op WIMS">
- website beheerder</a> om hem/haar te informeren over dit probleem, of een
+ website beheerder</a> om deze te informeren over dit probleem, of een
  mirror site kiezen uit de onderstaande tabel.
  <a href=wims.cgi>WIMS homepage</a>.
  !read mirror.phtml.en
@@ -171,7 +171,7 @@ Dit is niet toegestaan in Uw virtuele klas.
 
 !if cmd_output_too_long iswordof $wims_user_error
 Het resultaat van de door U verzocht berekening heeft het ingestelde maximum
-ruim overtreden.
+ruim overtreden.<br>
 U hebt vermoedelijk een irrealistisch gecompliceerde berekening opgedragen.
 Vereenvoudig Uw verzoek, s.v.p.
  
@@ -179,15 +179,13 @@ Vereenvoudig Uw verzoek, s.v.p.
 !endif
 
 !if double_click iswordof $wims_user_error
-De server is nog steeds bezig met Uw <b>vorige opdrachtr</b>.  
+De server is nog steeds bezig met Uw <b>vorige opdracht</b>.  
 <p>
-Hebt U per ongeluk  <b>dubbel geklikt ?</b>, wacht dan  
+Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan  
  <font color=red><b>$wims_cpu_limit seconden</b></font>
  tot de vorige opdracht is afgehandeld, en dan
  !href cmd=resume klik hier
  om terug te gaan naar uw werk.
- (en in het vervolg iets meer geduld betrachten bij ingewikkelde
- berekeningen...)
  <p>
  Mocht U deze website gewoon willen verlaten, negeer dan deze mededelingen en
    ga door met het klikken van de `Terug' knop.
@@ -201,18 +199,18 @@ Hebt U per ongeluk  <b>dubbel geklikt ?</b>, wacht dan
 !endif
 
 !if name_conflict iswordof $wims_user_error
-  ``$wims_error_data'' is een  gereserveerde naam van wims.
+  ``$wims_error_data'' is een  gereserveerde naam van WIMS.
   !goto end
 !endif
 
 !if no_command iswordof $wims_user_error
-  Er is geen opdracht
+  Er is geen opdracht...
   !goto end
 !endif
 
 !if no_insnum iswordof $wims_user_error
  !if $cmd=getfile
- U hebt een file aangevraag zonder passende filenaam 
+ U hebt een file aangevraag zonder passende filenaam.
  !else
  U hebt een "dynamische invoeging" verzocht zonder een passend nummer hiervoor.
   
@@ -232,23 +230,23 @@ Het sessienummer is niet aanwezig.
 !endif
 
 !if parm_too_long iswordof $wims_user_error
-Uw opdracht regel overschrijdt een bepaald maximum.
-Dit is helaas om beveiligings redenen niet toegestaan.
+Uw opdracht regel is veel te groot...<br>
+Dit is -om beveiligings redenen- niet toegestaan.
   !goto end
 !endif
 
 !if string_too_long iswordof $wims_user_error
-De definitie van deze variable overschrijdt het toegestane maximum.
+De definitie van deze variabele val buiten het toegestane maximum.
   !goto end
 !endif
 
 !if too_many_variables iswordof $wims_user_error
-Het aantal parameters overschrijdt het op deze WIMS site toegestane limiet
+Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
   !goto end
 !endif
 
 !if unmatched_parentheses iswordof $wims_user_error
- We hebben een missend haakje ontdekt in Uw verzoek.
+ We hebben een missend haakje ontdekt :
  U kunt deze fout hier herstellen:
   !form $cmd
   $(name$bad_parentheses) =
@@ -284,7 +282,7 @@ Het aantal parameters overschrijdt het op deze WIMS site toegestane limiet
   en vervolgens
   <input type=submit value="verstuur de gecorrigeerde text.">
   </form><p><hr><p><center>
-  !href cmd=resume Vergeet het maar
+  !href cmd=resume Laat maar zitten
 , or
   !href $ wims home
 .</center>
@@ -292,7 +290,8 @@ Het aantal parameters overschrijdt het op deze WIMS site toegestane limiet
 !endif
   
 !if wrong_module iswordof $wims_user_error
- De verzochte module ``$module'' bestaat niet op deze WIMS site
+ De verzochte module ``$module'' bestaat niet op deze WIMS site.
+ <br><small><em>kontroleer regelmatig of de links op uw web-pagina / ELO nog up-to-date zijn.</em></small>
   !goto end
 !endif
 
@@ -317,15 +316,14 @@ Niet spelen met de oefeningen !
 :examerr
 
 !if exam_dep iswordof $wims_user_error
-Deze oefening is alleen beschikbaar wanneer je met goed gevolg het gemaakt
+Deze oefening is alleen beschikbaar wanneer je met goed gevolg hebt 
 
   !if , isin $dep_list
-   exercises $dep_list.
+   de opdrachten  $dep_list.
   !else
-   exercise $dep_list.
+   de opdracht $dep_list.
   !endif
- s.v.p. probeer eerst de vorige.
- 
+  hebt afgerond.
   !goto examend
 !endif
 
@@ -336,13 +334,13 @@ Je hebt een illegaal verzoek gedaan binnen een examen sessie.
 
 !if exam_exo_finished iswordof $wims_user_error
 Je hebt deze oefening reeds afgerond met een $wims_exo_lastscore als resultaat. 
- Je kunt dit niet nog eens overdoen omdat dit een examen is.
+ Je kunt dit niet nog eens overdoen: dit is een examen ...
  
   !goto examend
 !endif
 
 !if expired_exam iswordof $wims_user_error
-Je hebt geen tijd meer over om het examen af te maken. 
+Je hebt geen tijd meer over om het examen af te maken.
   :examend
   <p><center>
   <a href=# onclick=window.close();>Sluit dit venster</a>.
@@ -351,8 +349,9 @@ Je hebt geen tijd meer over om het examen af te maken.
 !endif
 
 !if exam_closed iswordof $wims_user_error
-Dit examen is op dit moment niet bereikbaar voor Uw ipadres.
-Doe eventueel navraag bij je supervisor.
+Dit "examen" is op dit moment niet meer bereikbaar voor Uw ipadres.<br>
+Log opnieuw in, en start een nieuw "examen" <br>
+Doe eventueel even navraag bij je docent.
  !goto examend
 !endif
 
@@ -367,16 +366,16 @@ Probeer je een andermans sessie te benaderen?
 !endif
 
 !if no_access iswordof $wims_user_error
-  Door het toegangsbeleid op deze site kan Uw verzoek niet in worden behandeld.
-  Excuses hiervoor.
+  Door het toegangsbeleid op deze site kan Uw verzoek niet worden behandeld.<br>
+  Onze excuses.
   !goto end
 !endif
      
 !if class_closed iswordof $wims_user_error
   Sorry.
   <p>
-  Access to this virtual class is temporarily closed by its supervisor.
-  Come back later!
+  Je docent heeft deze virtuele klas is eventjes gesloten.<br>
+  Kom later terug, of vraag aan je docent de klas weer te openen...
   <p><center>
   !href cmd=close&module=home WIMS
   </center>
@@ -395,7 +394,7 @@ met een gedetailleerde beschrijving van het geconstateerde ongemak
 :end2
 <hr><p>
 <center>
-!href module=home&cmd=new WIMS homepagina
+!href module=home&cmd=new WIMS start pagina
 </center>
 
 </body></html>

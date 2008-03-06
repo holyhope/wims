@@ -1,7 +1,7 @@
 
 C_A		=WIMS activiteiten
-C_X		=Interactieve Oefeningen
-C_T		=Online Rekenmachines
+C_X		=Interactieve oefeningen
+C_T		=Online rekenmachines
 C_R		=Wiskundige "Ontspanning"
 C_O		=Geklassificeerde Oefeningen (OEF)
 C_S		=Werkbladen
@@ -33,16 +33,16 @@ N_Mboard	=Message board
 #gives you the list of most popular resources.
 
 V_title		=WWW Interactieve Mathematica Server
-V_cls		=Virtuele Klaslokalen
-V_stu		=studenten bereik
-V_sup		=leraren bereik
-V_ex		=demonstratie klassen
+V_cls		=Virtuele klaslokalen
+V_stu		=Studenten bereik
+V_sup		=Leraren bereik
+V_ex		=Demonstratie klassen
 V_Quit		=Weg uit de klas
 V_Wsup		=Schrijf naar de supervisor
 V_Chpref	=Verander de voorkeurs instellingen 
 V_Chpass	=Verander het wachtwoord
-V_sh		=werkblad
-V_exam		=overhoring
+V_sh		=Werkblad
+V_exam		=Overhoring
 
 CR_1		=maak je eigen
 CR_OEF		=simpele interactieve oefeningen
@@ -66,17 +66,17 @@ U_greet		=!nosubst Hallo, $wims_firstname $wims_lastname! Welkom in \
 $wims_classname van  $supmail.
 U_newmsg	=Er zijn $$newmsgcnt nieuwe bericht(en) in het message board.
 U_nosheet	=Deze klas heeft -op dit moment-  nog geen werkbladen\
-Probeer het later nog eens, als je leraar voor jullie wat werk heeft samengesteld.
+Probeer het later nog eens, als je docent wat werk heeft samengesteld.
 U_assign	=Hier staan de werkstukken van jullie klas
 U_expired	=verlopen
 U_done		=klaar
 U_average	=gemiddeld
 U_Doc		=Document
-U_Sheet		=werkblad
+U_Sheet		=Werkblad
 U_Exam		=Overhoring
-U_Vote		=stemmen
+U_Vote		=Stemmen
 U_myscore	=Mijn Cijfers
-U_examworking	=<b><blink>LET OP.</blink></b>Je bent nu met een overhoring voor een cijfer bezig
+U_examworking	=<b><blink>LET OP.</blink></b>Je bent nu met een overhoring voor een cijfer bezig.
 U_examdouble	=In dit geval kan je niet inloggen via deze netwerk-verbinding (ip-adres)
 U_examcont	=Doorgaan.
 U_oclass	=Andere klassen
@@ -104,16 +104,16 @@ SU_Ac		=Actief
 SU_Ex		=Verlopen
 SU_Hi		=Verlopen+Onzichtbaar
 SU_nosheet	=Uw klas heeft nog geen lesmateriaal ter beschikking
-SU_shlist	=Lesmaterial van de klas
+SU_shlist	=Lesmateriaal van de klas
 SU_shno		=Nummer
 SU_shti		=Titel
 SU_shst		=Status
 SU_Howsh	=Hoe voeg ik lesmateriaal toe aan een werkblad? 
-SU_classexo	=Oefenmateriaal van de klas (dus jouw creaties)
+SU_classexo	=Oefenmateriaal van de klas (<small>dus uw eigen wims-modules</small>)
 SU_Gateway	=	Structuur management
 
 SE_list		=Leerlingen en Cijfers 
-SE_part		=Zo zien Leerlingen deze pagina
+SE_part		=Zo zien leerlingen deze pagina
 SE_mod		=Bericht van de dag
 SE_config	=Configuratie/Onderhoud
 SE_secu		=Security management
@@ -128,7 +128,7 @@ ADD_class	=klas
 ADD_2		=
 ADD_3=		=$ADD_1
 
-CL_Names	=Niveaus,Klassen,Programma's,cursussen,Interklas cursussen
+CL_Names	=Niveaus ,Klassen ,Programma's ,cursussen ,Interklas cursussen
 CL_Test		=Test zone
 
 ER_expression	=<b>Waarschuwing.</b> Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch 

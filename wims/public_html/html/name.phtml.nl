@@ -5,15 +5,15 @@
 
 !distribute items Zoeken,\
 		Werk,Terug naar het Werk,\
-		WIMS Home,Intro/Config,Help,wat is dit,\
+		WIMS Home,Intro/Config,Help,Wat is dit,\
 		Introductie,\
-		Sluit dit Venster,Terug,\
+		Sluit dit venster,Terug,\
 		Website manager,Auteur van deze pagina,Auteurs van deze pagina's,\
 		Vertaald door,Exit,\
 		WIMS Help,Referentie,\
-		Boodschappen,Forums,\
+		Message board,Forums,\
 		Werkblad,Hulpmiddelen,\
-		Copy to Modtool\
+		Kopieer naar Modtool\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -31,7 +31,7 @@
 		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
 		Je hebt het behalen van cijfers opgeschort,\
 		Jij bent de leraar van deze klas,\
-		Register the details of this exercise\
+		Bewaar de details van deze oefening\
 	into wims_name_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\

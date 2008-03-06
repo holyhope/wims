@@ -1,0 +1,61 @@
+
+<b>Teken een lijn, een veelhoek [polygon] ,  punten ,  een segment, een vector, een rechthoek .</b>
+(naam : <tt>javacurve</tt>)
+<br>
+Dit antwoord type geeft de leering de mogelijkheid lijnen,veelhoeken,segmenten,vectoren,rechthoeken, meerdere punten als
+antwoord op de vraag in te leveren.
+<p>
+Het correcte antwoord is gegeven als een matrix, met als rij-scheidingsteken een punt komma ";"
+<br>
+De eerste rij van het goede antwoord is de URL van het [achtergrond] plaatje.
+De volgende rij is de test-conditie voor de leerling-tekening, zoals:
+
+<ul>
+<li><tt>points,x1,y1,x2,y2,...</tt> Punten  (x1,y1), (x2,y2), .... 
+ Een "vette"  punt met vastgestelde grootte.</li>
+<li><tt>line,x1,y1,x2,y2</tt> Rechte lijn door (x1,y1), (x2,y2).</li>
+<li><tt>sline,x1,y1,x2,y2</tt> Halve-line van (x1,y1) door (x2,y2).</li>
+<li><tt>polygon,x1,y1,x2,y2,...</tt> Veelhoek met hoekpunten (x1,y1), (x2,y2), ... .</li>
+<li><tt>rectangle,x1,y1,x2,y2</tt> Rechthoek van linksonder (x1,y1) naar rechtsboven (x2,y2).</li>
+<li><tt>rectangle,x1,y1,x2,y2,x3,y3,x4,y4</tt> Rechthoek  
+van (x1,y1) naar (x2,y2) naar (x3,y3) naar (x4,y4).</li>
+<li><tt>segment,x1,y1,x2,y2</tt> Segment tussen (x1,y1) en (x2,y2).</li>
+<li><tt>vector,x1,y1,x2,y2</tt> Vector van punt (x1,y1) naar (x2,y2).</li>
+<li><tt>circle,x1,y1,r</tt> Cirkel met als centrum (x1,y1) en straal r.</li>
+</ul>
+</p><p>
+Het is verstandig dit invoerveld te "embedden" in het "statement" .
+Dit antwoordtyp is incompatible met andere antwoord invoervelden.
+
+</p>
+In't algemeen, de variabele
+<tt>\reply</tt><em>n</em>, waarbij  <em>n</em> 
+het nummer van het input-veld voorsteld, kan worden gebruikt 
+bij het definieren van \feedback.<br>
+Behalve in de onderstaande gevallen:
+ 
+<ul><li>
+In het geval <tt>points</tt>,
+de eerste regel van de <tt>\reply</tt> is de lijst met coordinaten in pixels,
+de tweede regel van de <tt>\reply</tt> is <tt>n1,n2,n3</tt> met
+<tt>n1</tt> als aantal correcte punten (x,y), 
+<tt>n2</tt> is het aantal ontbrekende punten in de leerling tekening.
+<tt>n3</tt> is het aantal foutieve getekende punten.<br>
+De derde lijn is de lijst van correct getekende punten.
+
+</li><li>
+In het geval van <tt>cirkel</tt>,
+is de eerste lijn van <tt>\reply</tt> zijn de coordinaten en radius uit gegedrukt in pixels.
+De tweede lijn is <tt>n1,n2</tt> met daarin
+<tt>n1</tt> 1 als het middelpunt correct is getekend, anders 0 <br>
+<tt>n2</tt> 1 als de straal correct is, anders 0.
+</li>
+<li>
+In het geval <tt>sline</tt>, 
+is de eerste lijn van <tt>\reply</tt> de lijst met coordinaten in pixels.<br>
+de tweede lijn is <tt>n1,n2,n3</tt> met daarin
+<tt>n1</tt> 1 als de oorsprong correct is getekend, anders 0,
+<tt>n2</tt> 1 als de richting correct is getekend, anders 0,
+<tt>n3</tt>1 als de orientatie correct is , anders 0.
+</li>
+</ul>

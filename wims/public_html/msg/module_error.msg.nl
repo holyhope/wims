@@ -13,9 +13,9 @@ at the beginning of the file (or after a fictive tag).
 
 :antidated_version
  Deze module vereist minimaal versie WIMS-$module_wims_version, maar deze
- server is van versie $wims_version.
+ server heeft versie $wims_version geinstalleerd.
  <p>
-  Dit is dus een verkeerd geinstalleerde module.
+  Dit is dus een incorrect geinstalleerde module.
 
 :append_syntax
   Syntax fout voor `append'.
@@ -141,7 +141,7 @@ $debug
   Syntax fout voor `translate'.
 
 :unmatched_parentheses
-  Syntax fout. Unmatched parentheses.Missende haakjes
+  Syntax fout. <tt>Unmatched parentheses</tt> Missende haakjes
 
 :workfile_too_long
   De module bevat een file die de ingestelde lengte limiet overschrijdt.
