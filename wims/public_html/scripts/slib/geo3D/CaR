@@ -2,12 +2,12 @@
 !if $slib_wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=Polyhedre draw in C.a.R
+slib_title=Polyhedra applet in C.a.R
 slib_parms=2
-,nom du polyèdre dans la liste
+,polyhedra name
 
 slib_author=Bernadette PERRIN-RIOU
-slib_out=code for draw of drawing a polyhedra for C.a.R
+slib_out=applet code for drawing a polyhedra by its name with C.a.R
 slib_comment=NE PAS UTILISER SAUF EN TEST
 !exit
 
@@ -25,27 +25,30 @@ slib_f=33
 slib_Z0=-1 
 slib_Z1=-1000
 
-slib_show=false
-
-slib_option_face=!getopt face in $slib_options
-slib_option_edge=!getopt edge in $slib_options
 
 slib_name_vertex=!getopt name_vertex in $slib_options
-
 slib_name_face=!getopt name_face in $slib_options
 slib_name_edge=!getopt name_edge in $slib_options
-slib_name_vertex=[A,B,3]
-slib_name_face=[a,,b,c]
-slib_name_edge=[s1,,s3,s4]
+
 
 slib_angle=!getopt angle in $slib_options
 slib_angle=!declosing $slib_angle
 slib_angle=!text select uvw, in $slib_angle
 
-!default slib_face=1	
-!default slib_edge=0
-!default slib_vertex=1
+slib_option_face=!getopt face in $slib_options
+slib_option_edge=!getopt edge in $slib_options
+
+!default slib_option_face=1	
+!default slib_option_edge=0
+!default slib_option_vertex=1
 !default slib_angle=u v w
+
+slib_tool=!getopt tool in $slib_options
+slib_tool=!declosing $slib_tool
+
+!default slib_tool=
+
+### option pour les couleurs des faces ? 
 
  slib_fichier=$wims_nowseconds.zir
 
@@ -184,10 +187,6 @@ slib_polyedre_vertex=
   !for slib_na=1 to $slib_vertex_cnt
     slib_coord=!line $slib_na of $slib_vertex
     slib_coord=!words2items $slib_coord
-    slib_maxx=$[max($(slib_coord[1]),$slib_maxx)]
-    slib_maxy=$[max($(slib_coord[2]),$slib_maxy)]
-    slib_minx=$[min($(slib_coord[1]),$slib_minx)]
-    slib_miny=$[min($(slib_coord[2]),$slib_miny)]
     slib_liste=u,v,w
     slib_xyz=!exec pari print(round(100*[$slib_coord]*$slib_M)/100.)
 
@@ -269,12 +268,12 @@ $slib_fin
  
 slib_out=$wims_ref_name?session=$session&cmd=getfile&special_parm=$slib_fichier
 
-slib_out=<applet id="CaR" codebase="scripts/authors/jm.evers/applets" archive="zirkel.jar" code="rene.zirkel.ZirkelApplet.class" WIDTH="420" HEIGHT="420" ALIGN="CENTER">\
+slib_out=<applet id="CaR" codebase="scripts/authors/jm.evers/applets" archive="my_zirkel.jar" code="rene.zirkel.ZirkelApplet.class" width="420" height="420">\
 <param name="file" value="$slib_out">\
 <param name="color" value="244,244,242">\
+<param name="tools" value="move $slib_tool">\
+-<param name="options" value="">\
 <param name="style" value="full">\
-<param name="tools" value="move undo point midpoint msegment line">\
-<param name="options" value="">\
 <param name="editdigits" value="6">\
 <param name="displaydigits" value="2">\
  Votre navigateur ne supporte pas JAVA</applet>\
