@@ -68,13 +68,13 @@
 : Je kunt beter geen 5<font color=red><b>x</b></font>10^12 schrijven.<br>Geef bijvoorkeur 5*10^5
 : Deze pagina maakt gebruik van "verschuifbare" elementen.<br>Tekst en plaatjes kunnen onafhankelijk van elkaar gepositioneerd worden.<br>De layout is dus "geheel" vrij.<br>Verder kunnen (met een klein beetje geduld, d'r zit nogal wat rekenwerk voor je browser aanvast)<br> met de "shiftknop" en de muis, de elementen van grootte veranderd worden<br>Zie je <em>geen</em> plaatjes of wiskundige formules<br>geef dan een browser <b>RELOAD</b> op deze pagina 
 : Terug
-:nul,nil,zero,zip,nop,niks,niet,nada,geen,niente
+:nul,nil,zero,zip,nop,niks,niet,nada,geen,niente,pas,rien,aucun,nothing,nada,rien,pas
 : er zijn geen snijpunten
 : Je hebt de vraag letterlijk over getikt<br>De bedoeling was dat je de uitdrukking anders zou opschrijven.
 : Je kunt het antwoord $testvar nog verder vereenvoudigen.<br>of anders wel eenvoudiger -wiskundiger- opschrijven :)
 : formules controleren
 : WISKUNDE INVOER JAVA APPLET<p><small>Typ je wiskundige antwoord in<br> Je krijgt de wiskundige formule te zien zoals WIMS deze interpreteerd.<br>Je kunt dit antwoord dan gelijk opsturen naar de server</small>
-: De variabele <b>$testvar</b> komt niet meer voor in het goede antwoord...
+: De variabele <b>$testvar</b> komt niet (meer ?) voor in het goede antwoord...
 : Tim,Jantje,Pietje,Klaasje,Henkie,Djing,Jack,Tjerk,Amer,Hubic,Willem,Halil,Topal,Karel,Sjors,Herman,Fernando,Jan,Piet,Klaas,Jack,Wim,Roderick,Alex,Erkan,Alexander,Gerrit,Henk,Karel,Johan,Sjonnie,Jens,Ali,Pim,Achmed,Mohammed,Arkan,Arjan,Xiao,Jelmer,Otto
 : Lien,Lina,Marjolijn,Rashna,Tara,Marietje,Anna,Annabel,Meltem,Jantien,Els,Elsje,Leila,Marieke,Joke,Rita,Jose,Fatima,Doortje,Carolien,Addy,Elly,Ellie,Ellen,Roosje,Raquel,Barbara,Vanity,Maria,Marie,Cherry,Carry,Shelly,Jose,Jo,Jootje,Johanna
 : Vul hier je antwoord in:

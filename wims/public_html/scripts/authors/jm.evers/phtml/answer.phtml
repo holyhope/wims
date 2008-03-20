@@ -33,16 +33,16 @@
 			$youranswer
 			!if $(reply$n) != $empty
 			    <p>
-			    !if $multiimage=1
-				!if $plot=1
+			    !ifval $multiimage=1
+				!ifval $plot=1
 				    !insplot $(reply$n)
 				!else
-				    !if $draw=1
+				    !ifval $draw=1
 					!insdraw $(reply$n)
 				    !endif
 				!endif
 			    !else	
-				!if $math=1
+				!ifval $math=1
 				    !insmath $(reply$n)
 				!else
 				    $(reply$n)
@@ -83,12 +83,11 @@
 	    <td  valign="top">
 		<p align="center">
 		    !if $(image$n) != $empty
-			!if $plot=1
+			!ifval $plot=1
 			    !set insplot_set=$(image_settings$n) ; size 0.5,0.5;
 			    !insplot $(image$n)
 			!endif
-			!if $draw=1
-			    !set insdraw_size
+			!ifval $draw=1
 			    !insdraw $(image$n)
 			!endif
 		    !endif
@@ -99,17 +98,16 @@
 		    $youranswer
 		    !if $(reply$n) != $empty
 			<p>
-			!if $multiimage=1
-			    !if $plot=1
+			!ifval $multiimage=1
+			    !ifval $plot=1
 				!set insplot_set=$(image_settings$n) ; size 0.5,0.5;
 				!insplot $(reply$n)
-			    !else
-				!if $draw=1
-				    !insdraw $(reply$n)
-				!endif
+			    !endif
+			    !ifval $draw=1
+				!insdraw $(reply$n)
 			    !endif
 			!else	
-			    !if $math=1
+			    !ifval $math=1
 				!insmath $(reply$n)
 			    !else
 				$(reply$n)
@@ -117,7 +115,7 @@
 			!endif
 			<hr>
 		    !endif
-		    !if $goodbadsign>0	
+		    !ifval $goodbadsign>0	
 			<em>
 			    $(remark$n)
 			</em>
