@@ -4,6 +4,16 @@
 !endif
 
 n=$counter
+# for consistency in the exercise...this is not a good solution !!!
+test=!defof title_$lang in INDEX
+!if $test!= $empty
+    module_title=$test
+    module_language=$lang
+    taal=$lang
+!else
+    taal=en
+!endif
+
 !if $status=waiting and $cmd=reply
     !readproc $checkfile
 	

@@ -21,3 +21,5 @@ var r21="J\'espérais quelque chose comme:\n x>123 \n 12 < x <= 14 \n Essayez enc
 var r22="Vous avez oublié de remplir la réponse...";
 var r23="Ces divisions longues finissent toutes par le nombre (0).";
 var r24="Je ne peux pas en enlever plus...";
+var r25="Question :";
+var r26=" Vous devriez refaire vos calculs...";
