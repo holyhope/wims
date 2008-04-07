@@ -1820,6 +1820,7 @@ void calc_rename(char *p)
     }
     if(strncmp(p,module_dir,strlen(module_dir))!=0 &&
        strncmp(p,"modules/data/",strlen("modules/data/"))!=0 &&
+       strncmp(p,"scripts/data/",strlen("scripts/data/"))!=0 &&
        strncmp(p,"gifs",strlen("gifs"))!=0) goto badfile;
     mkfname(buf1,"%s/getfile",session_prefix); mkdirs(buf1);
     mkfname(buf1,"%s/.rename",session_prefix);
