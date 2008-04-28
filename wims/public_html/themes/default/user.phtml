@@ -139,20 +139,23 @@ $U_greet
 !else
  !if $is_interclass!=yes
  $U_assign
+ <span class="wims_user_myscore">
  !href module=adm/class/userlist.$lang $U_myscore
-. <br>
+</span> 
+ <br>
  !endif
- <table border=0>
+ <table border=0 class="wims_user_table">
  !for i=1 to $dcnt
   !set s_=!line $i of $ds_list
   !set t_=!line $i of $dt_list
-  <tr><td>&nbsp;&nbsp;<td>$U_Doc<td>
+  <tr><td>&nbsp;&nbsp;</td><td>$U_Doc</td><td colspan=3>
   !href module=adm/doc.$lang?job=read&doc=$s_&block=main $t_
+  </td> </tr>
  !next i
  !for i=1 to $n
   !set se=!item $i of $aclist
   !distribute lines $(s_$se) into ac,t_,ti,de
-  <tr><td>&nbsp;&nbsp;<td>$U_Sheet $se. <td>
+  <tr><td>&nbsp;&nbsp;</td><td>$U_Sheet $se. </td><td>
   !href module=adm/sheet&sh=$se $ti
   !if $ac>=2
    ($U_expired)
@@ -161,34 +164,47 @@ $U_greet
     !read misc/expire.phtml.$lang $t_
    !endif
   !endif
+  </td>
   !set pe=!line $se of $percents
   !set p1=!word 1 of $pe
   !set p2=!word 2 of $pe
+  <td>
   !if $p1!=$empty
    ($p1% $U_done, $U_average $[$p2]/10)
+  !else
+   &nbsp;
   !endif
+  </td></tr>
  !next i
  !for i=1 to $m
   !set se=!item $i of $aelist
   !distribute lines $(e_$se) into ac,t_,s_,ti,de
-  <tr><td>&nbsp;&nbsp;<td>$U_Exam $se. <td>
+  <tr><td>&nbsp;&nbsp;</td><td>$U_Exam $se. </td><td>
   !href module=adm/class/exam&job=student&exam=$se $ti
+  </td><td>
   !if $ac>=2
    ($U_expired)
   !else
    !if showexexpire iswordof $class_option
     !read misc/expire.phtml.$lang $t_
+   !else
+    &nbsp;
    !endif
   !endif
+  </td></tr>
  !next i
  !for i=1 to $v
   !set sv=!item $i of $avlist
   !distribute lines $(v_$sv) into ac,ti
-  <tr><td>&nbsp;&nbsp;<td>$U_Vote <td>
+  <tr><td>&nbsp;&nbsp;</td><td>$U_Vote</td><td>
   !href module=adm/vote&job=read&vote=$sv $ti
+  </td><td>
   !if $ac>=2
    ($U_expired)
+  !else
+   &nbsp;
   !endif
+  </td>
  !next i
  </table> <p>
 !endif
