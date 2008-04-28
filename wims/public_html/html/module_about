@@ -6,7 +6,7 @@ WIMS $module_title [$module_language]
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]
 
-!if $module_language notwordof cn fr it tw si es
+!if $module_language notwordof cn fr it tw si es ca
   !if $module_translator!=$empty and $module_translator_address!=$empty
    !set module_about_tr=<tr><td>Translator</td><td>$module_tr</a></td></tr>
   !endif
@@ -132,6 +132,27 @@ WIMS $module_title [$module_language]
    <tr><td>Autor      </td><td>$module_au</a></td></tr>\
    $module_about_tr\
    <tr><td>Licencia elegida por el autor</td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
+!if $module_language=ca
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Traductor</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>Aquest és un mòdul del Servidor Web Interactiu de Matemàtiques (WIMS).\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Nom     </td><td>$module_title</td></tr>\
+   <tr><td>Adreça  </td><td>$module</td></tr>\
+   <tr><td>Enllaç url </td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Descripció</td><td>$module_description</td></tr>\
+   <tr><td>Versió    </td><td>$module_version</td></tr>\
+   <tr><td>Llengua     </td><td>català</td></tr>\
+   <tr><td>Autor      </td><td>$module_au</a></td></tr>\
+   $module_about_tr\
+   <tr><td>Copyright</td><td>$module_copyright</td></tr>\
    </table></center><p>
    !exit
 !endif
