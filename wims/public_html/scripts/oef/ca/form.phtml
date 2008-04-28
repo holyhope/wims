@@ -1,0 +1,54 @@
+!nocache
+!if $oefsteps!=$empty
+ !set fieldtot=!itemcnt $thisstep
+!else
+ !set fieldtot=$[$choicecnt+$replycnt]
+!endif
+
+!if $fieldtot<1
+ !changeto oef/noreply.phtml
+!endif
+
+!set N_=!itemcnt $embedded
+!if $fieldtot<=$N_
+ !goto send 
+!endif
+
+!if $hasembedding!=yes
+ <a name=oefform id=oefform> </a>
+ !form reply name=replyform onsubmit="return formcheck();"
+!endif
+
+!if $error=$empty
+ Entra la teva resposta:
+!else
+ <b>Corregeix</b> la teva resposta:
+!endif
+!if $oefsteps!=$empty and $oefstepcnt>1
+ (pas $oefstep/$oefstepcnt)
+!endif
+<br><table border=0>
+!distribute item 1,1 into cntr,cntc
+!for t in $ansorder
+ !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
+  !read oef/form$t.phtml $(cnt$t)
+ !endif
+ !advance cnt$t
+!next t
+</table>
+:send
+!if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
+ !read anstype/$wims_fill_type.after
+!endif
+!if $oef_formnosubmit!=yes
+ <center>
+ <input type=submit value="Envia la resposta">
+ </center>
+!endif
+</form>
+
+!if $qcmgood<1 and $choicecnt>0
+ <small><b>Nota.</b> Tria '$ch_none', si penses que entre les respostes
+ presentades no n'hi ha cap de correcta.</small> <p>
+!endif
+

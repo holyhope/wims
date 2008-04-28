@@ -1,0 +1,38 @@
+
+!if $remcnt>0
+ !set wims_ref_anchor=#infogot
+ !form reply
+ !if $gotcnt<1
+  <p>Per tal de resoldre el problema, pots 
+  <input type=submit value="demanar qüestions">
+ !else
+  <p>Ara pots continuar a
+  <input type=submit value="demanar qüestions">
+ !endif
+ about $objname:
+ !formselect ask list 0,$remlist prompt ?? Choose your question ??,$prompts
+ !if $comment!=$empty
+  <p>$comment
+ !endif
+ <p></form>
+ <small><b>Atenció</b>. La nota depén del número de qüestions que demanis.
+ S'aplicarà una penalització si demanes informacions irrellevants o inútils.</small> <p>
+ <hr width=50%> <p>
+!endif
+
+!if $gotcnt<1
+ !exit
+!endif
+
+!set wims_ref_anchor=#ans
+!form reply
+ !if $remcnt>0
+  Quan pensis que tens prou informació per resoldre el problema,
+ !else
+  Ara sisplau
+ !endif
+ <input type=submit value="dóna la resposta">&nbsp;:<p>
+ !read $deffile form
+</center>
+</form>
+

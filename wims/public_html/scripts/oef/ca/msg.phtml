@@ -1,0 +1,86 @@
+
+!set wims_module_error=error: $error
+
+<b>Error.</b>
+
+!if empty_out iswordof $error
+ Your code did not give any output. Please correct it.
+ !if $m_reply_err!=$empty
+  <pre><font color=red>$m_reply_err</font></pre>
+ !endif
+ !exit
+!endif
+
+!if empty_data iswordof $error
+ You have submitted an incomplete reply. Please complete it.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ I have failed to evaluate the values you submitted. A typo?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ You have already submitted a reply to this problem, which has been 
+ analysed and scored. Repetitive replies are ignored. (Don't use the 
+ `reload' button of your browser to repost replies!)
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ !if illegalname iswordof $test
+  Your code contains illegal name <tt>$illegal_name</tt>. Please correct.
+  !exit
+ !endif
+ !if lengthoverflow iswordof $test
+  Your code has exceeded the length limit. Please rewrite it.
+  !exit
+ !endif
+ Your reply <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  is not understandable: the word <font color=red>$w</font>
+  in the answer is unrelated to this problem. Please correct.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  is not allowed: please carry out the computation yourself, and
+  submit the resulting value.
+  !exit
+ !endif
+ !if badform iswordof $test
+  is not written as required. Please rewrite it in the correct form.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  is only a number: please precise the unit in your answer.
+  !exit
+ !endif
+ is not understandable. 
+ Please correct the error and resubmit your reply.
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ Due to an error in this exercise (the good answer for <b>$(replyname$i)</b>
+ is invalid), it is impossible to test the
+ correctness of your answer. The only solution for you is to change the
+ exercise; sorry.
+ <p>
+ Please 
+ !if $email!=$empty
+  !mailurl $email contact the author
+ !else
+  contact the author
+ !endif
+ of the exercise if you want to report the error.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Your requests for printable versions are excessive.
+ !exit
+!endif
+

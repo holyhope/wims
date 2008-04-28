@@ -1,0 +1,16 @@
+wims_nw=class_header empty wims_module_log realtest vsave deffile \
+	wims_noexport
+wims_nr=wims_sesrandom
+wims_trustfile=oef/embed.phtml oef/special.phtml oef/togetfile.proc
+
+!if $wims_class=$empty
+ !exit
+!endif
+
+class_header=wimshome/log/classes/$wims_class/
+!read oef/var.proc
+
+!if $wims_module_log!=$empty
+ wims_module_log=$wims_module_log $wims_class
+!endif
+

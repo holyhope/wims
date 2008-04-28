@@ -1,0 +1,110 @@
+!if robot isin $wims_session
+ error=bad_sheet
+ !exit
+!endif
+
+wims_trustfile=primitives/target.phtml
+!default prcnt=0
+!if $job=suspend
+ wims_scorereg=suspend
+!endif
+!if $job=reopen
+ wims_scorereg=
+!endif
+
+!bound job within read,raw,import,print default read
+
+c=!char 1 of $sh
+!if $c=P or $wims_class=$empty or / isin $sh
+ public=P
+ !if $c=P
+  sh=!char 2 to -1 of $sh
+ !endif
+!endif
+
+!if $job iswordof raw import and ($public!=P or $wims_user!=supervisor)
+ job=read
+!endif
+
+!if $public!=P
+ !bound sh between integer 1 and 1024 default 0
+ !if $sh=0
+  :badsheet
+  error=bad_sheet
+  !exit
+ !endif
+ data=wimshome/log/classes/$wims_class/sheets/.sheet$sh
+ sheet=!record $sh of wimshome/log/classes/$wims_class/sheets/.sheets
+ !distribute lines $sheet into sheet_active,sheet_expiration,sheet_title,sheet_desc,sheet_docpage
+ !if $wims_user != supervisor and $sheet_active<1
+  !distribute items $ into sheet_active,sheet_expiration,sheet_title,sheet_desc,sheet_docpage
+ !endif
+ sheet_docpage=!word 1 of $sheet_docpage
+ !if $sheet_docpage!=$empty
+  docdef=wimshome/log/classes/$wims_class/doc/$sheet_docpage.def
+  doctit=!getdef titb in $docdef
+  !if $doctit=$empty
+   !reset docdef sheet_docpage
+  !endif
+ !endif
+ requires=!getscorerequire sheet=$sh
+ scores=!getscore sheet=$sh
+ means=!getscoremean sheet=$sh
+ m_user_login=$wims_user
+ m_user_lastname=$wims_lastname
+ m_user_firstname=$wims_firstname
+ m_class_code=$wims_class
+ m_scorerequire=!words2items $requires
+ m_title=$sheet_title
+ m_desc=$sheet_desc
+ m_scoregot=!words2items $scores
+ m_scoremean=!words2items $means
+ m_expiration=$sheet_expiration
+ m_today=!char 1 to 8 of $wims_now
+ !if $sheet_active=$empty
+  n=0
+ !else
+  n=!recordcnt $data
+ !endif
+ !if $job=read and $n>0
+  !read mkdep.proc $sh
+ !endif
+ exolog=!filelist $wims_home/$wims_sesdir/exolog.$sh.*
+!else
+ dd=!record 0 of wimshome/$wims_sesdir/.sheets
+ !if / isin $sh
+  test=!positionof line $sh in $dd
+  !if $test=$empty
+   !appendfile wimshome/$wims_sesdir/.sheets $sh
+   shn=!linecnt $dd
+   !advance shn
+  !else
+   shn=!item 1 of $test
+  !endif
+ !else
+  !bound sh between integer 1 and 1024 default 0
+  !if $sh=0
+   !goto badsheet
+  !endif
+  shn=$sh
+  sh=!line $shn of $dd
+  sh=!trim $sh
+  !if $sh=$empty
+   !goto badsheet
+  !endif
+ !endif
+ data=wimshome/public_html/bases/sheet/$sh.def
+ sheet=!record 0 of $data
+ sheet=!trim $sheet
+ !distribute lines $sheet into sheet_title, sheet_desc, sheet_duration,\
+	sheet_severity, sheet_level, sheet_domain, sheet_keywords
+ sheet_remark=!lines 10 to -1 of $sheet
+ !distribute words $sheet_duration into sheet_duration,sheet_year
+ sheet_active=1
+ n=!recordcnt $data
+!endif
+
+!if $job iswordof print import
+ !read $job.proc
+!endif
+

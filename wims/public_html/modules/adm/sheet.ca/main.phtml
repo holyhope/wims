@@ -1,0 +1,68 @@
+!if $job=print
+ !changeto print.phtml
+!endif
+
+!if $public!=P
+ !changeto class.phtml
+!endif
+
+!header
+
+!if $error!=$empty
+ !read msg.phtml
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor and $job=raw
+ Aquest és el codi font del full. Pots importar-lo a la teua classe
+ tallant-i-enganxant.
+ <p><hr><pre>
+ !sh awk 'BEGIN {a=0};\
+	/^:/ {a=1};\
+	a==1 {print}' bases/sheet/$sh.def
+ </pre><hr>
+ <p>
+ !href cmd=resume&job=read Tornar a la vista normal del full.
+ !tail
+ !exit
+!endif
+
+<p><center><h3>$sheet_title<br>
+<font size=-1>$sheet_desc</font></h3></center> <p>
+
+$sheet_remark
+<p>
+
+!if $n=0
+ El full està buit! Probablement és un error.
+!else
+ Treballs assignats en aquest full:
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of $data
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  <p><li>$i. 
+  !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
+, $de
+!!  !if $require>0
+!!   <small>$[$got] de $[$require] punts obtinguts, qualitat
+!!   $[$mean]/10.</small>
+!!  !endif
+ !next i
+ </ul>
+ !if $wims_user=supervisor
+  !href cmd=resly&job=import Importar
+  aquest full a la teua classe, o
+  !href cmd=reply&job=raw veure el codi font
+  del full.
+  <p>
+ !endif
+!endif
+!href cmd=reply&job=print Versió imprimible
+.
+
+!tail
+

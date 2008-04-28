@@ -1,0 +1,104 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!if $sheet_docpage!=$empty
+ !changeto docpage.phtml
+!endif
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Full de treball #$sh<br>$sheet_title</h1></center> <p>
+$sheet_desc <p>
+
+!if $sheet_expiration!=$empty and $sheet_active=1
+ !set expday=!char 7,8 of $sheet_expiration
+ !set expmon=!char 5,6 of $sheet_expiration
+ !set expyear=!char 1 to 4 of $sheet_expiration
+ !set months=Gen,Feb,Mar,Abr,Mai,Jun,Jul,Ago,Set,Oct,Nov,Des
+ !set expmon=!item $expmon of $months
+ Pots treballar en aquest full fins el $expday $expmon $expyear.
+!endif
+
+!if $sheet_active=2
+ <blink><b><font color=red>Avís</font></b></blink>
+ Aquest full ha caducat. Encara pots treballar-hi, però les teues notes no seran tingudes en conte.
+ <p>
+!endif
+
+!if $n=0
+ !if $sheet_active=$empty
+  No tens permís per consultar el contingut d'aquest full ara.
+  Sisplau contacta amb el teu supervisor.
+ !else
+  El full està buit! No tens res assignat. Possiblement és una 
+  errada en la gestió per part del teu supervisor.
+ !endif
+!else
+ Feines assignades en aquest full: (El registre de puntuacions està
+ !set scorestat=!getscorestatus sheet=$sh
+ !if $scorestat=yes
+  !if $wims_scorereg!=suspend
+   actiu, però pots
+   !href cmd=resume&job=suspend suspendre'l
+.)
+  !else
+   !set scorestat=no
+   suspés per tu mateix.
+   !href cmd=resume&job=reopen Reactivar-lo
+.)
+  !endif
+ !else
+  tancat per a la teva connexió.)
+ !endif
+ <p><ul>
+ !for i=1 to $n
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !set got=!word $i of $scores
+  !set mean=!word $i of $means
+  !set dep=!row $i of $deps
+  !set dep=!trim $dep
+  <p><li>$i.
+  !if $dep=$empty or $scorestat!=yes
+   !href module=$di&cmd=new&worksheet=$sh&$pa $ti
+, $de
+   !if $require>0
+    <small>$[$got] de $[$require] punts obtinguts, qualitat
+    $[$mean]/10.</small>
+   !endif
+  !else
+   <font color=red><b>$ti</b></font>, $de 
+   !if $require>0
+    <small>($[$require] punts requerits.)</small>
+   !endif
+  !endif
+  !if $dep!=$empty
+   <small>Has de millorar
+   !if , isin $dep
+    les teues notes als exercicis $dep
+   !else
+    la teua nota a l'exercici $dep
+   !endif
+   abans de començar a treballar.
+   </small>
+  !endif
+ !next i
+ </ul>
+!endif
+
+:contentend
+!if $wims_user=supervisor
+<p>
+!href module=adm/class/sheet&sheet=$sh Pàgina de gestió del full
+ (for supervisor).&nbsp;
+!endif
+!href cmd=reply&job=print Versió imprimible
+.
+!if $exolog!=$empty
+ !href module=adm/class/exolog&job=llist&logsheet=$sh Registrar detalls d'un exercici
+.
+!endif
+<p>
+
+!tail
+

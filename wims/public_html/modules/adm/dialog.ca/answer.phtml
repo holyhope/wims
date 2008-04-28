@@ -1,0 +1,39 @@
+
+<a name=ans>
+!if $badask=yes
+ !if $comment!=$empty
+  La teua sol·licitud de $badname és il·legal:
+  $comment 
+ !else
+  La teua sol·licitud de $badname és il·legal, aquesta informació no té sentit.
+ !endif
+ <p>No pots continuar treballant en aquest exercici per aquesta qüestió il·legal.
+ !exit
+!endif
+
+!if $speculate=yes
+ No tens prou informació per resoldre el problema! La teua resposta és, per
+ tant, no vàlida, i serà considerada com a falsa.
+ !exit
+!else
+ !read $deffile ans
+!endif
+
+!if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $thisscore<0.7))
+ <p><b>Solució.</b> $solution
+!endif
+
+<p>
+!if $gotcnt>$minask
+ Podries haver resolt el problema demanat només $minask
+ !if $minask>1
+  qüestions.
+ !else
+  qüestió.
+ !endif
+!endif
+
+!if $uselesscnt>0
+ Les següents informacions són inútils: <b>$useless</b>.
+!endif
+

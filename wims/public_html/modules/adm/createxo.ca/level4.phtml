@@ -1,0 +1,27 @@
+!if $wims_user=$empty
+ !read level5.phtml
+!else
+ !if $already!=yes
+  El teu exercici ha estat instal·lat satisfactòriament.
+ !else
+  S'ha trobat un exercici idèntic a la teva classe. El doble registre
+  s'ha ignorat. <p>
+ !endif
+ Aquest exercici serà accessible únicament pels participants de la teva classe, i
+ només si tu el poses a un full de treball.
+ <p>
+ !if $wims_user!=supervisor
+  Ara pots
+  !href module=classes/$lang&special_parm=.nocache. Consultar els exercicis de la classe.
+ !else
+  Ara pots:
+  <ul>
+  <p><li>
+  !href module=classes/$lang&special_parm=.nocache. Consultar els exercicis de la classe.
+  (I eventualment posar-lo al teu full de treball.)
+  <p><li>
+  !href cmd=reply&level=3 Tornar a l'estat anterior.
+  </ul>
+ !endif
+!endif
+
