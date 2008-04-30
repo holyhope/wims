@@ -1,0 +1,40 @@
+#Suppression de la feuille qsheet
+
+!read scripts/check.sheet
+!if $error!=$empty
+ !exit
+!endif
+
+sheet_state=!line 1 of $sheet_properties
+
+#ici on verifie que la feuille n'est pas active
+#POUR RAPPEL :
+#0 = FEUILLE EN PREPARATION
+#1 = FEUILLE ACTIVE
+#2 = FEUILLE EXPIREE
+#3 = FEUILLE CACHEE
+
+!if $sheet_state!=0
+ error=sheet #$qsheet is active.
+ !exit
+!endif
+
+dir=$wims_home/log/classes/$qclass/sheets
+
+!sh cd $dir\
+rm .sheet$qsheet
+
+n=$[$qsheet+1]
+
+# On decale ensuite en cascade les autres feuilles
+!while $n <= $sheetcnt
+ !sh mv $dir/.sheet$n $dir/.sheet$[$n-1]
+ !increase n
+!endwhile
+
+# Le fichier est supprime, reste a corriger le contenu du fichier .sheets
+
+update_field=0
+
+!read scripts/update.sheet
+

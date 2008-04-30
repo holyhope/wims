@@ -1,0 +1,35 @@
+# wims_class is the current class
+# wims_sheet is the current sheet
+# update_field is number of field to update
+# If update_field=0, the sheet $qsheet is deleted.
+# update_content is the new content.
+
+scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+
+#on commence par remplir les valeurs sheet_x par l'enregistrement correspondant dans l'index
+!for s=1 to $scnt
+ sheet_$s=!record $s of $sheetsfile
+ sheet_$s=!line 1 to 7 of $(sheet_$s)\
+\
+\
+\
+\
+\
+\
+
+!next s
+
+!if $update_field!=0
+ sheet_$wims_sheet=!replace line number $update_field by $update_content in $(sheet_$wims_sheet)
+!endif
+
+#on peut alors reconstruire le fichier d'index des feuilles
+!writefile wimshome/log/classes/$wims_class/sheets/.sheets
+!for s=1 to $scnt
+ !if $update_field!=0 or $s!=$wims_sheet
+  sf=!line 1 to 5 of $(sheet_$s)
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :$sf\
+
+ !endif
+!next s
+

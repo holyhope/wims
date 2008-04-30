@@ -1,0 +1,65 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#### RAPPEL : ################
+## FORMAT of the /sheets/.sheets INDEX file : 
+#:SHEET STATUS
+#EXPIRATION DATE
+#SHEET TITLE
+#SHEET DESCRIPTION
+#######################
+## FORMAT of a /sheets/.sheetN file :
+#:MODULE (classes/$lang if it is an exercice of the class)
+#PARAMS
+#EXO REQUIRED POINTS
+#EXO WEIGHT
+#EXO TITLE
+#EXO DESCRIPTION
+#################################
+
+list1=.,..,.sheets,.require,.weight
+list2=!listfile -a $wims_home/log/classes/$qclass/sheets
+list2=!lines2items  $list2
+
+list2=!listcomplement $list1 in $list2
+
+n=!itemcnt $list2
+!increase n
+
+data1=!nonempty lines $data1
+n1=!linecnt $data1
+!for i=1 to $n1
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ sh_$n_=$v_
+!next i
+
+sh_creation=!char 1 to 8 of $wims_now
+sh_creation=!eval $sh_creation
+## Ici par defaut je place la date d'expiration de la feuille a creation+1an.
+## On pourrait aussi mettre simplement la meme date d'expiration que la classe
+!default sh_expiration=$[$sh_creation+10000]
+!default sh_title=Feuille d'exercices #$n
+!default sh_description=Feuille d'exercices #$n
+
+!appendfile wimshome/log/classes/$qclass/sheets/.sheets \
+:0\
+$sh_expiration\
+$sh_title\
+$sh_description\
+
+sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+
+!if $sheetcnt!=$n
+ error= error in sheet count
+ !exit
+!endif
+
+!writefile wimshome/log/classes/$qclass/sheets/.sheet$sheetcnt
+
+
+wims_sheet=$n

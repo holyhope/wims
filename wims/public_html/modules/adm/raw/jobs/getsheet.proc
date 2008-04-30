@@ -1,0 +1,30 @@
+!read scripts/check.sheet
+!if $error!=$empty
+ !exit
+!endif
+
+sheet_properties=!lines2items $sheet_properties
+exocnt=!recordcnt $sheet_file
+
+!for i=1 to $exocnt
+ exo=!record $i of $sheet_file
+ exo_module=!line 1 of $exo
+ exo_params=!line 2 of $exo
+ exo_points=!line 3 of $exo
+ exo_weight=!line 4 of $exo
+ exo_title=!line 5 of $exo
+ exo_description=!line 6 of $exo
+ 
+ !if $exolist!=$empty
+  exolist=$exolist,$exo_module
+  exotitlelist=$exotitlelist,$exo_module:$exo_params:$exo_title
+ !else 
+  exolist=$exo_module
+  exotitlelist=$exo_module:$exo_params:$exo_title
+ !endif
+!next i
+
+option=!listintersect $option and $sheetdefs
+!if $option=$empty
+ option=$sheetdefs
+!endif
