@@ -56,7 +56,10 @@ $ in $l
 	echo 3 >version
 
 cl_creation=!char 1 to 8 of $wims_now
-!default cl_expiration=$[$now+10000]
+cl_creation=!eval $cl_creation
+
+!default cl_expiration=$[$cl_creation+10000]
+
 !bound cl_limit between integer 1 and 500 default 30
 langs=!words2items $wims_site_languages
 !bound cl_lang within $langs default en
@@ -66,7 +69,7 @@ langs=!words2items $wims_site_languages
 !set class_defined=yes
 !for t in supervisor,email,password,description,institution,lang,creation,\
 	expiration,limit,level,\
-	homepage,bgcolor,refcolor,bgimg,css
+	homepage,bgcolor,refcolor,bgimg,css,secure,theme
  !appendfile wimshome/log/classes/$cd/.def !set class_$t=$(cl_$t)
 !next t
 
@@ -76,5 +79,12 @@ langs=!words2items $wims_site_languages
 !set user_email=$cl_email\
 !set user_exists=yes
 
-!sh cd $wims_home/log/classes; ./.build-index
+!if $cssfile!=$empty
+  !writefile wimshome/log/classes/$cd/css $cssfile
+!endif
 
+!if $logofile!=$empty
+  !writefile wimshome/log/classes/$cd/logo $logofile
+!endif
+
+!sh cd $wims_home/log/classes; ./.build-index

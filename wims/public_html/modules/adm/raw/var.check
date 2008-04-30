@@ -4,7 +4,7 @@
 !endif
 
 !if $job=$empty
- error=wrong request: bad job
+ error=wrong request: no job
  !exit
 !endif
 
@@ -37,11 +37,23 @@ protocol=!word 1 of $protocol
  !exit
 !endif
 
-!if $ident_type=$empty or $passwd != $ident_password or\
-	$httpd_REMOTE_ADDR notwordof $ident_site or\
-	($ident_agent!=$empty and $agent != $ident_agent) or\
-	($ident_protocol=https and $protocol != https)
- error=identification failure
+
+!if $ident_type=$empty or $passwd != $ident_password 
+error=Identification Failure : bad login/pwd
  !exit
 !endif
 
+!if $httpd_REMOTE_ADDR notwordof $ident_site
+error=Identification Failure : bad IP ($httpd_REMOTE_ADDR is not $ident_site)
+ !exit
+!endif
+
+!if ($ident_agent!=$empty and $agent != $ident_agent)
+error=Identification Failure : $agent is a bad Agent
+ !exit
+!endif
+
+!if ($ident_protocol=https and $protocol != https)
+error=Identification Failure : bad Protocol
+ !exit
+!endif

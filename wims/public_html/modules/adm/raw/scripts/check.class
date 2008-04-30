@@ -10,6 +10,8 @@ qclass=!translate internal ./,;?* to $             $ in $qclass
 !endif
 
 classdeffile=wimshome/log/classes/$qclass/.def
+classexofile=wimshome/log/classes/$qclass/.defs
+
 test=!defof class_defined in $classdeffile
 !if $test!=yes
  !goto badclass
@@ -22,13 +24,17 @@ test1=!translate internal +,; to $   $ in $test
  !exit
 !endif
 
-!if $job iswordof modclass delclass adduser moduser deluser recuser \
-	putcsv update and\
-	($ident/$rclass+ notwordof $test and +$ident/$rclass+ notwordof $test)
- error=modification of class not allowed
- !exit
-!endif
+# La partie qui suit me semble redondante, puisqu'on vient de verifier les connexions de la classe.
+#A quoi servent les "+" ?
+#le double plus (+$ident/$rclass+) accorde-t-il des droits supplémentaires ?
+# d'autre part, si la ligne contient "$ident/$rclass+", elle contient forcement "+$ident/$rclass+"
+
+#!if $job iswordof modclass delclass adduser moduser deluser recuser \
+#	putcsv update and\
+#	($ident/$rclass+ notwordof $test and +$ident/$rclass+ notwordof $test)
+# error=modification of class not allowed
+# !exit
+#!endif
 
 wims_class=$qclass
 wims_user=supervisor
-

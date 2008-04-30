@@ -3,17 +3,14 @@
  !exit
 !endif
 
-option=!item 1 of $option
+!read scripts/check.option
+!if $error!=$empty
+ !exit
+!endif
+
 !if $option=$empty
  error=missing file name
  !exit
 !endif
 
-badchars=!text select ?*#~!@ in $option
-!if .. isin $option or $badchars!=$empty
- error=illegal file name
- !exit
-!endif
-
 fname=log/classes/$qclass/$option
-

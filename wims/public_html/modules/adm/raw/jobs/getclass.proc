@@ -5,13 +5,19 @@
 
 supp=connections
 !readdef $classdeffile
+!readdef $classexofile
 
 userlist=!sh cd $wims_home/log/classes/$qclass/.users; ls | sort
 class_userlist=!singlespace $userlist
 class_usercount=!wordcnt $class_userlist
+class_userlist= !words2items $class_userlist
+
+# Pour compter les exos, on utilise le fichier Extitles de la classe
+class_exotitlelist=!sh cat $wims_home/log/classes/$qclass/Extitles
+class_exotitlelist=!lines2items $class_exotitlelist
+class_exocount=!itemcnt $class_exotitlelist
 
 option=!listintersect $option and $classdefs,$supp
 !if $option=$empty
  option=$classdefs,$supp
 !endif
-

@@ -3,10 +3,21 @@
  !exit
 !endif
 
-!sh basedir=`pwd`\
-	cd $wims_home/log/classes\
-	tar -hczf $qclass.tgz $qclass\
-	mv $qclass.tgz $$basedir/$wims_home/$wims_sesdir
+#explication des options TAR utilisée :
+# c : create archive
+# z : GZIP the archive
+# f : in the file F
+# h : --dereference : don't dump symlinks; dump the files they point to
+# X : eXclude files
+
+header=Content-Type: application/x-gzip\
+
+# l'ancien code ne semblait pas fonctionner. je le remplace ici :
+# j'en profite pour exclure tous les fichiers ".DS_Store" eventuellement ajoutes par le systeme MacOs
+
+!sh cd $wims_home/log/classes\
+    tar -hczf $qclass.tgz --exclude '.DS_Store' $qclass\
+    mv $qclass.tgz $wims_home/$wims_sesdir
+
 
 fname=$wims_sesdir/$qclass.tgz
-

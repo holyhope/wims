@@ -16,7 +16,16 @@ Outgoing requests sent by WIMS can be formatted according to the
 specification of the receiving software, while the result of the request
 should be formatted according to the need of WIMS, as described below.
 
-________________________________________________________________________
+-----------------------------------------------------------------------------
+New features and modifications in the 3.21 version (03/2008) :
+
+	-ALL outputs can be formatted according to the desire of the querying software.
+	-few bugs corrected (i.e., a wrong expiration date on job addclass)
+	-File jobs (getcsv, getclassfile, getclasstgz) aren't sending an "Ok status" anymore, 
+		they just send directly the file
+	-New jobs added : checksheet,addsheet,delsheet,getsheet,listsheets
+
+_____________________________________________________________________________
 
 			Request format
 
@@ -50,6 +59,8 @@ qclass		identifier of the class on the receiving server.
 		It should be an integer.
 quser		user identifier in the receiving server (when the request
 		concerns a particular user).
+qsheet		sheet identifier in the receiving server (when the request
+		concerns a particular sheet).
 rclass		identifier of the class on the sending server.
 format		Format of the data.
 option		Different meaning according to request.
@@ -97,6 +108,9 @@ job=checkclass	Check whether the class accepts connection. No output except
 		the status line.
 
 job=checkuser	Check whether the user exists. No output except the status
+		line.
+
+job=checksheet	Check whether the sheet exists. No output except the status
 		line.
 
 job=addclass	Add a class on the receiving server. For this request,
@@ -160,20 +174,37 @@ job=recuser	Recover a deleted user.
 		There is no output data except the status line.
 
 job=getclass	Get the properties of a class.
-		The output next to the status line can be formatted
-		according to the need of the querying software.
+
 		Optionally, the query parameter 'option' may contain
 		the names of fields queried. In this case, only the
 		queried properties are returned.
-		The output can be formatted according to the desire
-		of the querying software. If the latter is WIMS,
-		it is a multi-line text, each line corresponding
+		If the output type is WIMS,
+		it outputs a multi-line text, each line corresponding
 		to one definition in the format 'name=value', as
 		for the input format for 'addclass'.
+		
+job=getsheet	Get the properties of a sheet (of a class).
 
+		Optionally, the query parameter 'option' may contain
+		the names of fields queried. In this case, only the
+		queried properties are returned.
+	 	If the output type is WIMS, output is a multi-line text, each line corresponding
+		to one definition in the format 'name=value', with these names : 
+	queryclass : the requested class
+	querysheet : the requested sheet
+	sheet_properties : list of properties of the requested sheet (sheet status,expiration date,title,description)
+	exocnt : numer of exercices included
+	exotitlelist= list of the exercices included (mudule:params)
+
+job=listsheets	list all the sheets of a class.
+	 	If the output type is WIMS, output is a multi-line text, each line corresponding
+		to one definition in the format 'name=value', with these names : 
+	queryclass : the requested class
+	nbsheet : number of sheets in this class
+	sheettitlelist=list of the sheets with the format "sheet_id:title"
+	
 job=getuser	Get the properties of a user (of a class).
-		The output next to the status line can be formatted
-		according to the need of the querying software.
+
 		Optionally, the query parameter 'option' may contain
 		the names of fields queried. In this case, only the
 		queried properties are returned.
@@ -256,5 +287,16 @@ job=authuser	Get an authentification for a user. The password of
 		authentification (format for WIMS), or a complete
 		URL to connect as authentified.
 
-</pre>
+job=addsheet 	Add an empty sheet to the specified class. 'data1' may be defined as a
+		multi-line text defining the sheet defs
+		The following names may be present in the definitions:
+	title	= name of the sheet (optional, defaults to "sheet n#")
+	description	= description of the sheet (optional, defaults to "sheet n#")
+	expiration	= class expiration date (yyyymmdd) (optional, defaults to one year later)
+	 	If the output type is WIMS, output is a multi-line text, each line corresponding
+		to one definition in the format 'name=value', with these names : 
+	queryclass : the requested class
+	sheet_id : id of the new created sheet
 
+
+</pre>

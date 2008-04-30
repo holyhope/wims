@@ -5,22 +5,16 @@ wims_prefix=class user tmp n sharing sharable ident
  !exit
 !endif
 
-header=Content-Type: text/plain\
-
+!read defs
 
 job=!lower $job
-!bound job within checkclass, addclass, modclass, delclass,\
-	checkuser, adduser, moduser, deluser, recuser,\
-	getclass, getuser, getscore, getlog, getcsv, putcsv,\
-	getclassmodif, getclassfile, getclasstgz,\
-	checkident, update, authuser,\
-	gettime\
-	default $
+!bound job within $allowed_actions_jobs,$allowed_file_jobs default $
 option=!items2words $option
 option=!words2items $option
 code=!word 1 of $code
 
-!read defs
+# le script autchars permet de definir les listes de caracteres alphanumeriques et de ponctuation
+# il definit egalement la fourchette de longueur autorise des login/mdp
 !read adm/class/authchars
 !read var.check
 
@@ -28,6 +22,7 @@ code=!word 1 of $code
  !read jobs/$job.proc
 !endif
 
+#Lorsque l'on sort de la procedure "job", il ne doit tjs pas y avoir d'erreur.
 !if $error!=$empty
  !changeto error.proc $error
 !endif
@@ -39,19 +34,20 @@ code=!word 1 of $code
 !endif
 
 !shortout $header\
-$ok\
 
-!if $job iswordof addclass getclass getuser getscore getlog \
-	authuser getclassmodif gettime
+
+!if $job isitemof $allowed_actions_jobs
+ !shortout $ok\
+
  !read types/$ident_type
 !endif
 
-!if $job iswordof getcsv getclassfile getclasstgz
+!if $job isitemof $allowed_file_jobs
  !sh cat $wims_home/$fname
 !endif
 
 !if $job notwordof authuser
  wims_mode=popup
 !endif
-wims_module_log=$job $ident -> $qclass $quser
 
+wims_module_log=$job $ident -> $qclass $quser
