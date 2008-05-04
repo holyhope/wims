@@ -23,3 +23,5 @@ var r23="Ces divisions longues finissent toutes par le nombre (0).";
 var r24="Je ne peux pas en enlever plus...";
 var r25="Question :";
 var r26=" Vous devriez refaire vos calculs...";
+var r27="Dans cet exercice, le pourcentage ne peut être supérieur à 100% ..."
+var r28="Dans cet exercice, le pourcentage ne peut être inférieur à 0% ..."

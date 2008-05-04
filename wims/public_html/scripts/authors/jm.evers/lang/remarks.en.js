@@ -24,3 +24,5 @@ var r23="These nice long divisions all end with the number zero (0)";
 var r24="I can not remove more pieces of the \"tail\"...";
 var r25="Question number :";
 var r26="You have some unfinished calculations...";
+var r27="In this exercise the percentage can not be more than 100 % ..."
+var r28="In this exercise the percentage can not be less than 0 % ..."

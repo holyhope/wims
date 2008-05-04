@@ -30,7 +30,7 @@ A=0
 test=!singlespace $test
 !for check in $nothing
     !if $A=0
-	!if $check iswordof $test
+	!if $check isin $test
 	    A=1
 	!endif
     !endif
@@ -243,6 +243,14 @@ AAA=!replace internal ** by ^ in $AAA
 !endif
 
 :READY1
+
+!if e^ isin $AAA
+    AAA=!replace internal e^ by E^ in $AAA
+!endif
+
+!if pi isin $AAA
+    AAA=!replace internal pi by PI in $AAA
+!endif
 
 !for p in +,-,*,^,/,|
     stupid=!nospace , $p , 
@@ -522,6 +530,7 @@ A2=$empty
     maxscore=$[$P3*$maxscore]
     goback=1
     errortext=!record 26 of $remarkdir/commonremarks.$taal
+    !exit
 !endif
 
 parivraag0=$empty
@@ -560,10 +569,12 @@ omgedraaid=0
 	    a0=!item $s of $A0
 	    a1=!item $s of $A1
 	    a2=!item $s of $A2
-	    !ifval ( $[-1*$a1] = $g1 ) and ( $[-1*$g1] notitemof $G1 )
-		!increase omgedraaid
-	    !endif
-    	    parivraag0=!append line if( abs(($g0) - ($a0))<10^-15 ,1,0) to $parivraag0
+	    !ifval $a1 != 0
+		!ifval ( $[-1*$a1] = $g1 ) and ( $[-1*$g1] notitemof $G1 )
+		    !increase omgedraaid
+		!endif
+    	    !endif
+	    parivraag0=!append line if( abs(($g0) - ($a0))<10^-15 ,1,0) to $parivraag0
 	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1) ,1,0) to $parivraag1
 	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2) ,1,0) to $parivraag2
 	!next s
@@ -604,6 +615,17 @@ tussenscore2=0
     
 !if $rounding < 1
     tussenscore=$tussenscore0
+    ## 11/4/2008 ivm Logaritmen
+    !if $tussenscore1>$tussenscore0 
+	ex1=!record 66 of $remarkdir/commonremarks.$taal
+	ex2=!record 29 of $remarkdir/commonremarks.$taal
+	extra=!append line <br>$ex1<br>$ex2 to $extra
+    !else
+	!if $tussenscore2>$tussenscore1 
+	    ex=!record 66 of $remarkdir/commonremarks.$taal
+	    extra=!append line <br>$ex to $extra
+	!endif
+    !endif
 !else	
     !if $tussenscore2>$tussenscore1
 	ex=!record 29 of $remarkdir/commonremarks.$taal

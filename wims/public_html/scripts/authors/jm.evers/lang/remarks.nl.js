@@ -1,6 +1,6 @@
 var r0="Zal ik dit antwoord opsturen ?\n";
 var r1="Je hebt helemaal niets zinnigs ingevuld bij vraag nummer ";
-var r2="dit antwoord is onrealistisch lang...\nga ik niet nakijk(en)";
+var r2="dit antwoord is onrealistisch...\nga ik niet nakijk(en)";
 var r3="Ik heb je wortel-notatie sqrt[a](b)\nomgewerkt naar een machtnotatie b^(1/a)"
 var r4="Je antwoord heeft een komma\nGebruik voor gebroken getallen een punt...\nWil je meerdere antwoorden noteren, gebruik dan\n spaties ,of woorden als \"en\" \"of\"\nBij een paar coordinaten graag (x:y) of (x;y)";
 var r5="Je moet even de letter \"o\" vervangen door het cijfer nul \"0\"";
@@ -22,3 +22,7 @@ var r21="Ik verwacht een hier eindantwoord als: \nx >= 123\nx > 123\nx <= 123 \n
 var r22="Je bent vergeten het eindantwoord in te vullen..."
 var r23="deze mooie staartdeling eindigt altijd op nul 0 \n en niet op ";
 var r24="ik kan geen stukje staart meer verwijderen...";
+var r25="Het antwoord nummer: ";
+var r26="heb je nog wat berekeningen te doen, schat ik...";
+var r27="Bij deze som kan het antwoord niet meer zijn dan 100%..."
+var r28="Bij deze som kan het antwoord niet kleiner zijn dan 0%..."

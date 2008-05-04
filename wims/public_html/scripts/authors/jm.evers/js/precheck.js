@@ -1,15 +1,15 @@
-// 31/01/2008 version 0.01
+// 3/05/2008 version 0.02 [added item 10]
 
-// 1 check_s(t)		checks scientiffic notation 4e+4 --> 4*10^4	: returns modified t
-// 2 check_o(t)		checks letter o instead of number 0		: returns 0 or 1		
-// 3 check_f(t)		checks parenthesis usage in functions sin()	: returns 0 or 1	
-// 4 check_x(t)		checks usage of x as multiplication *		: returns 0 or 1
-// 5 specialroot(t)	converts sqrt[a](b) to b^(1/a)			: returns modified t
-// 6 speciallog(t)	converts log[a](b) to log(b)/(log(a))		: returns modified t
-// 7 nthroot(t)		converts root(b,a) to b^(1/a)			: returns modified t
-// 8 check_log_NaN(t)	checks negative numbers in log			: returns 0 or 1
-// 9 check_sqrt_NaN(t)	checks negative numbers in sqrt			: returns 0 or 1
-
+//  1 check_s(t)		checks scientiffic notation 4e+4 --> 4*10^4	: returns modified t
+//  2 check_o(t)		checks letter o instead of number 0		: returns 0 or 1		
+//  3 check_f(t)		checks parenthesis usage in functions sin()	: returns 0 or 1	
+//  4 check_x(t)		checks usage of x as multiplication *		: returns 0 or 1
+//  5 specialroot(t)		converts sqrt[a](b) to b^(1/a)			: returns modified t
+//  6 speciallog(t)		converts log[a](b) to log(b)/(log(a))		: returns modified t
+//  7 nthroot(t)		converts root(b,a) to b^(1/a)			: returns modified t
+//  8 check_log_NaN(t)		checks negative numbers in log			: returns 0 or 1
+//  9 check_sqrt_NaN(t)		checks negative numbers in sqrt			: returns 0 or 1
+// 10 normalize(t)		converts accents to letters without...		: reurns modified t
 
 
 function check_s(t){
@@ -264,4 +264,120 @@ function nthroot(t){
     t=t.replace(/\%/g,'(');
     t=t.replace(/#/g,')');
     return t;
-}    
+}
+
+function normalize(t){
+    var org=t;
+    // we can't use lower.case() because of F(x)= x^123 + C :(
+    var accent_H = ['Æ','Ã','À','Ä','Â','É','È','Ë','Ê','Ã','Ì','Ã','Î','Ó','Ò','Ö','Ô','Ú','Ù','Ü','Û','Ç','²','³','¼','½','¾','ß'];
+    var normal_H = ['AE','A','A','A','A','E','E','E','E','A','I','I','I','O','O','O','O','U','U','U','U','C','^2','^3','0.25','0.5','0.75','S'];
+    var accent_L = ['ò','ó','ô','õ','ö','ø','ù','ú','û','ü','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ñ','æ'];
+    var normal_L = ['o','o','o','o','o','o','u','u','u','u','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','n','ae'];
+    var char_t;var p;var str_a;var str_n;var trouble=0;
+    for(p=0;p<accent_H.length;p++){
+	str_a=accent_H[p];
+	str_n=normal_H[p];
+	while(t.indexOf(str_a)!=-1){
+	    t=t.replace(str_a,str_n);
+	    trouble++;if(trouble>200){alert(r20);return org;}
+	}
+    }
+    trouble=0;
+    for(p=0;p<accent_L.length;p++){
+	str_a=accent_L[p];
+	str_n=normal_L[p];
+	while(t.indexOf(str_a)!=-1){
+	    t=t.replace(str_a,str_n);
+	    trouble++;if(trouble>200){alert(r20);return org;}
+	}
+    }
+    return t; 
+}
+ 
+//  Ñ N mit Tilde &Ntilde; &#209;
+//  Ò O mit accent grave (Gravis) &Ograve; &#210;
+//  Ó O mit accent aigu (Akut) &Oacute; &#211; 
+//  Ô O mit Zirkumflex &Ocirc; &#212;
+//  Õ O mit Tilde &Otilde; &#213;
+//  Ö O Umlaut &Ouml; &#214; 
+//  × Mal-Zeichen &times; &#215; 
+//  Ø O mit Schrägstrich &Oslash; &#216; 
+//  Ù U mit accent grave (Gravis) &Ugrave; &#217;
+//  Ú U mit accent aigu (Akut) &Uacute; &#218; 
+//  Û U mit Zirkumflex &Ucirc; &#219;
+//  Ü U Umlaut &Uuml; &#220; 
+//  Ý Y mit accent aigu (Akut) &Yacute; &#221; 
+//  Þ großes Thorn (isländisch) &THORN; &#222; 
+//  ß scharfes S &szlig; &#223;
+//  à a mit accent grave (Gravis) &agrave; &#224;
+//  á a mit accent aigu (Akut) &aacute; &#225; 
+//  â a mit Zirkumflex &acirc; &#226;
+//  ã a mit Tilde &atilde; &#227;
+//  ä a Umlaut &auml; &#228; 
+//  å a mit Ring &aring; &#229;
+//  æ a mit legiertem e &aelig; &#230; 
+//  ç c mit Häkchen &ccedil; &#231;
+//  è e mit accent grave (Gravis) &egrave; &#232;
+//  é e mit accent aigu (Akut) &eacute; &#233; 
+//  ê e mit Zirkumflex &ecirc; &#234;
+//  ë e Umlaut &euml; &#235; 
+//  ì i mit accent grave (Gravis) &igrave; &#236;
+//  í i mit accent aigu (Akut) &iacute; &#237; 
+//  î i mit Zirkumflex &icirc; &#238;
+//  ï i Umlaut &iuml; &#239; 
+//  ð kleines Eth (isländisch) &eth; &#240;
+//  ñ n mit Tilde &ntilde; &#241;
+
+//  ò o mit accent grave (Gravis) &ograve; &#242;
+//  ó o mit accent aigu (Akut) &oacute; &#243; 
+//  ô o mit Zirkumflex &ocirc; &#244;
+//  õ o mit Tilde &otilde; &#245;
+//  ö o Umlaut &ouml; &#246; 
+//  ÷ Divisions-Zeichen &divide; &#247;
+//  ø o mit Schrägstrich &oslash; &#248;
+ 
+//  ù u mit accent grave (Gravis) &ugrave; &#249;
+//  ú u mit accent aigu (Akut) &uacute; &#250; 
+//  û u mit Zirkumflex &ucirc; &#251;
+//  ü u Umlaut &uuml; &#252; 
+//  ý y mit accent aigu (Akut) &yacute; &#253; 
+//  þ kleines Thorn (isländisch) &thorn; &#254;
+//  ÿ 
+//  ¡ umgekehrtes Ausrufezeichen &iexcl; &#161;
+//  ¢ Cent-Zeichen &cent; &#162; 
+//  £ Pfund-Zeichen &pound; &#163; 
+//  ¤ Währungszeichen &curren; &#164;
+//  ¥ Yen-Zeichen &yen; &#165; 
+//  ¦ durchbrochener Strich &brvbar; &#166;
+//  § Paragraph-Zeichen &sect; &#167;
+//  ¨ Pünktchen oben &uml; &#168;
+//  © Copyright-Zeichen &copy; &#169;
+//  ª Ordinal-Zeichen weiblich &ordf; &#170; 
+//  « angewinkelte Anführungszeichen links &laquo; &#171;
+//  ¬ Verneinungs-Zeichen &not; &#172; 
+//  ­ bedingter Trennstrich &shy; &#173; 
+//  ® Registriermarke-Zeichen &reg; &#174; 
+//  ¯ Überstrich &macr; &#175; 
+//  ° Grad-Zeichen &deg; &#176;
+//  ± Plusminus-Zeichen &plusmn; &#177;
+//  ² Hoch-2-Zeichen &sup2; &#178; 
+//  ³ Hoch-3-Zeichen &sup3; &#179; 
+//  ´ Akut-Zeichen &acute; &#180;
+//  µ Mikro-Zeichen &micro; &#181; 
+//  ¶ Absatz-Zeichen &para; &#182; 
+//  · Mittelpunkt &middot; &#183;
+//  ¸ Häkchen unten &cedil; &#184; 
+//  ¹ Hoch-1-Zeichen &sup1; &#185; 
+//  º Ordinal-Zeichen männlich &ordm; &#186; 
+//  » angewinkelte Anführungszeichen rechts &raquo; &#187; 
+//  ¼ ein Viertel &frac14; &#188;
+//  ½ ein Halb &frac12; &#189; 
+//  ¾ drei Viertel &frac34; &#190; 
+//  ¿ umgekehrtes Fragezeichen &iquest; &#191; 
+//  À A mit accent grave (Gravis) &Agrave; &#192;
+//  Á A mit accent aigu (Akut) &Aacute; &#193; 
+//  Â A mit Zirkumflex &Acirc; &#194;
+//  Ã A mit Tilde &Atilde; &#195;
+//  Ä A Umlaut &Auml; &#196; 
+//  Å A
+ 

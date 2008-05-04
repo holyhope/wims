@@ -6,7 +6,6 @@
 
 !header
 !form new
-!set taal=$lang
 !set s=0
 !for p=1 to 100
     !set competence=!record $[-1*$p] of lang/remarks.$taal
@@ -14,10 +13,6 @@
 	!goto READY
     !else    
 	!increase s
-	!if # isin $competence
-	    !set competence=!replace internal # by $empty in $competence
-	    !set selecttext=!append line <option value="$s"></option> to $selecttext
-	!endif
 	!set sum=!append word <li>$competence</li> to $sum
 	!set selecttext=!append line <option value="$s">$competence</option> to $selecttext
     !endif
@@ -38,6 +33,23 @@
     <p align="center">
 	<table bgcolor=$bgcolor2>
 	    <td>
+		<p align="left">
+		!if $translated=0
+		!! my languages are defined in the actual module (intro.phtml)
+		<a onmouseover="return escape('Sorry<br>No support for $lang')">
+		    <small>
+			<em>
+			    <font color="red">
+				Sorry,<br>
+				but the supported languages of this module are: <b>$talen</b><br>
+				And at this moment there is no support for <b>$lang</b><br>
+				The module is native to Dutch, but will default to English
+			    </font>
+			</em>
+		    </small>
+		</a>
+		</p>
+		!endif
 		<p align="left">
 		     <a onmouseover="return escape('<ol>$sum</ol><br>Deze module heeft op dit moment $s verschillende onderdelen<br>elk onderdeel heeft normaal 4 moeilijkheidsgraden')">
 	    		Welk <font color="blue">onderwerp</font> ?:
