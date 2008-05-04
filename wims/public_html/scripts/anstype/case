@@ -7,9 +7,12 @@ good=!line 1 of $good
 good=!trim $good
 !if noreaccent notwordof $(replyoption$i)
  reply$i=!reaccent $(reply$i)
+ badchars=-+/*='"`.;,!|{}*@#$$%^&()[]?<>\~
+ repchars=$                                     $
+!else
+ badchars=-+/*="`.;,!|{}*@#$$%^&()[]?<>\~
+ repchars=$                                    $
 !endif
-badchars=-+/*='"`.;,!|{}*@#$$%^&()[]?<>\~
-repchars=$                                     $
 badwords=!translate internal $badchars to $repchars in $badwords
 rtest=!translate internal $badchars to $repchars in $(reply$i)
 dd=!singlespace $rtest
