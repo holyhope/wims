@@ -1,0 +1,34 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Replace white spaces
+slib_parms=2\
+,subst\
+,joker
+,text
+slib_author=Bernadette PERRIN-RIOU
+slib_out= text where white spaces are replaced by subst
+
+slib_comment=the double white spaces are first suppressed with one whitespace\
+before and after the joker. Are also suppressed the white spaces before or after\
+the tag < or >
+slib_example= ??@__??,??_??,Je mange ??_?? une pomme
+
+!exit
+
+:proc
+slib_out= !item 3 to -1 of $wims_read_parm
+!distribute items $wims_read_parm into slib_subst,slib_joker
+
+
+slib_out=!singlespace $slib_out
+slib_out=!trim $slib_out
+slib_out=!replace internal ,$ $ by ,&nbsp; in $slib_out
+slib_out=!replace internal >$ $ by > in $slib_out
+slib_out=!replace internal $ $< by < in $slib_out
+slib_out=!replace internal .$ $ by .&nbsp; in $slib_out
+slib_out=!replace internal $ $slib_joker by $slib_joker in $slib_out
+slib_out=!replace internal $slib_joker$ $ by $slib_joker in $slib_out
+slib_out=!replace internal $slib_joker$ $  by $slib_joker in $slib_out
+slib_out=!replace internal $ $slib_joker by $slib_joker in $slib_out
+slib_out=!replace internal $ $ by $slib_subst in $slib_out
