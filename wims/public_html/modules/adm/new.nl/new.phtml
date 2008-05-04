@@ -8,20 +8,26 @@
 
 $table_header
 <caption>Nieuwe modules geinstalleerd op deze server</caption>
-$table_hdtr<th>Datum<th>Taal<th>Titel<th>Omschrijving
+$table_hdtr<th>Datum</th><th>Taal</th><th>Titel</th><th>Omschrijving</th>
 </tr>
 !for i=1 to $datacnt
  !set l=!line $i of $data
  !distribute words $l into d_,a_,v_
- !set la=!char -2,-1 of $a_
- !set tit=!module title $a_
+ !set la=!module language $a_
+ !set tit=!module title_$lang $a_ 
+ !set desc=!module description_$lang $a_ 
+ !if $tit=
+  !set tit=!module title $a_
+ !endif
+ !if $desc=
+  !set desc=!module description $a_ 
+ !endif
  $table_tr
  <td align=center><small>
  !char 1 to 8 of $d_
  </small></td><td align=center>$la</td><td>
  !href target=wims_test module=$a_ $tit
- </td><td>
- !module description $a_
- </td></th>
+ </td><td>$desc</td></tr>
+ !reset desc tit
 !next i
 $table_end

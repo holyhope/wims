@@ -74,10 +74,20 @@
   <li  class="wims_home_result_list">
   !if $wims_ismanager=2
    <small>$w_</small>
-  !endif
+  !endif 
   !if $l_!=$lang
     <img src=gifs/$l_.gif alt=$l_.gif border=0>
+    !set tit_=!module title_$lang $m_
+    !set desc_=!module description_$lang $m_ 
+    !set t_=$tit_
+    !set d_=$desc_
   !endif
+  !if $t_=
+   !set t_=!module title $m_ 
+  !endif
+ !if $d_=
+  !set d_=!module description $a_ 
+ !endif
   !set L=
   !if ../local/ isin ../$m_
    !set L=<sup>local</sup>
@@ -94,6 +104,7 @@ $L, $d_
   <small>($a_)</small>
  !endif
  </li>
+ !reset d_ t_
  !next i
  </ul> <p>
 !endif

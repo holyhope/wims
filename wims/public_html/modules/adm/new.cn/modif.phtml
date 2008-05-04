@@ -7,22 +7,29 @@
 
 $table_header
 <caption>服务器的最近模块更新</caption>
-$table_hdtr<th>日期<th>语言<th>标题<th>描述
-<th>新版本
+$table_hdtr<th>日期</th><th>语言</th><th>标题</th><th>描述</th>
+<th>新版本</th>
 </tr>
 !for i=1 to $datacnt
  !set l=!line $i of $data
  !distribute words $l into d_,a_,v_
- !set la=!char -2,-1 of $a_
- !set tit=!module title $a_
+ !set la=!module language $a_
+ !set tit=!module title_$lang $a_
+ !set desc=!module description_$lang $a_ 
+ !if $tit=
+  !set tit=!module title $a_
+ !endif
+ !if $desc=
+  !set desc=!module description $a_ 
+ !endif
  $table_tr
  <td align=center><small>
  !char 1 to 8 of $d_
  </small></td><td align=center>$la</td><td>
  !href target=wims_test module=$a_ $tit
  </td><td>
- !module description $a_
- </td><td align=center>$v_
- </td></th>
+ $desc
+ </td><td align=center>$v_</td></tr>
+ !reset desc tit
 !next i
 $table_end
