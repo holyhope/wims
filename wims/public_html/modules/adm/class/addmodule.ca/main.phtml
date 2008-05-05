@@ -1,0 +1,76 @@
+<html><head> $wims_html_header </head> <body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Inserir un mòdul a un full de treball
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Tornar a la pàgina principal de la classe
+. <p>
+ !goto end
+!endif
+
+!if $cmd=new or $cmd=resume
+ Vols inserir el treball <tt>$dir</tt>
+ !if $initparm!=$empty
+  amb els paràmetres inicials <tt>$iniparm</tt>
+ !endif
+. <p>
+
+ !form reply
+ Tria el full on vols inserir el treball:
+ <select name=picksheet>
+ !for i=1 to $sheetcnt
+  !set sh=!line $i of $sheets
+  !set se=!item 1 of $sh
+  !set ti=!item 2 to -1 of $sh
+  <option value=$se>Sheet $se: $ti
+ !next i
+ </select>
+ <p>També pots modificar el títol i la descripció. <p>
+ !set title=!trim $title
+ !default title=Exercici
+ Títol: <input size=50 name=title value="$title"> <p>
+ Descripció: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>Nombre de punts que cada participant ha d'obtenir en aquest treball:
+  <input size=4 name=require value="$require"> <small>(cada resposta correcta
+  a l'exercici dóna 10 punts; així que has de posar aquí mes de 10 punts si vols
+  que l'usuari repeteixi l'exercici.)</small> <p>
+  Pes dels punts obtinguts en aquest treball (per al càlcul de mitjanes):
+  <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="Inserir"></center>
+ </form>
+ !goto end
+!endif
+
+!if $cmd=reply
+ L'aplicació ``<tt>$title</tt>'' s'ha afegit satisfactoriament al 
+ full $picksheet de la teua classe.
+ <ul>
+  <li>
+   !href module=adm/class/sheet&sheet=$picksheet Comprova el full
+.</li>
+  <li>
+   !href module=$dir tornar al mòdul
+.</li>
+ </ul>
+!endif
+
+:end
+!tail
+
+!set job=
+
