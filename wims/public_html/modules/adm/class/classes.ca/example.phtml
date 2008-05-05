@@ -1,0 +1,49 @@
+
+!if $clcnt<=0
+ Ho sento, no s'han trobat classes d'exemple en aquest lloc.
+ !exit
+!endif
+
+!if $lacnt<=0
+ Ho sento, no hi ha classes d'exemple en Català en aquest lloc.
+ <p>
+!endif
+
+Hi ha $clcnt classes d'exemple en Anglès. 
+El seu objectiu és mostrar-te com funcionen les classes virtuals sota el punt
+de vista de l'estudiant.
+Hauríeu de
+!href module=adm/class/regclass crear
+ la vostra classe per veure-la sota el punt de vista del supervisor que és
+ molt més sofisticat.
+
+<p>$table_header
+$table_hdtr<th>Nom de la classe<th>Nivell<th>Tipus de connexió<th>Registrar
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into code,expire,inst,cl
+ !defread wimshome/log/classes/$code/.def
+ !distribute char $class_level into l_,y_
+ 
+ $table_tr<td align=center>$inst<br>$cl</td>
+ <td align=center>$(n_$l_)<br>curs $y_</td>
+ <td align=center>
+ !href module=home&user=anonymous,$code,anonymous anònim
+ &nbsp;
+ !href module=$module&type=authparticipant&class=$code registrat
+ </td><td align=center>
+ !href module=adm/class/reguser&class=$code Registrar
+ </td>
+!next i
+$table_end <p>
+ 
+<ul>
+<li>Clica a `anònim' per connectar-te a la classe com un visitant anònim
+ (participant).
+<p><li>Clica a `registrat' per connectar-te a la classe com a usuari
+registrat amb nom i contrasenya. (Has hagut de registrar-te prèviament, i el
+teu registre serà regularment eliminat del servidor perque es tracta de
+classes d'exemple).
+<p><li>Clica a `Registrar' per registrar-te a la classe.
+</ul>
+
