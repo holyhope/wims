@@ -1,58 +1,7 @@
 
-!if $module_language iswordof cn
- !read help/module_language/accessconf.phtml
+!if $module_language iswordof cn en
+ !read help/$module_language/accessconf.phtml
 !exit
 !endif
 
-<center>Access restriction definition</center>
-<p>
-
-This is multi-line data, executed line by line in their list orders. The
-restrictions only affect resource modules, but not administration modules.
-Lines starting with a `<tt>#</tt>' are comments.
-<p>
-Each line is of the format <tt>[access conditions]:[host conditions]</tt>.
-<p>
-The access conditions is a list of words, which will be ANDed. The available
-words are listed in the following table. Each word can be prefixed with
-<tt>non</tt> to reverse its logical meaning.
-<p><center><table border=2>
-<tr><th>word<th>meaning
-<tr><td>class<td>The connection is within a virtual class.
-<tr><td>com<td>The requested module is under the com/ subtree.
-<tr><td>document<td>The requested module is a document. (not yet available)
-<tr><td>exercise<td>The requested module is an exercise.
-<tr><td>hint<td>The request is for hint.
-<tr><td>local<td>The requested module is under the local/ subtree.
-<tr><td>recreation<td>The requested module is a recreation.
-<tr><td>tool<td>The requested module is a tool.
-</table></center> <p>
-
-The host conditions can be any host definition, eventually plus time
-definition as for any worksheets. If the first character of the host
-conditions is ``<tt>!</tt>'', then the host/time meeting the conditions will
-be refused access (for the resources meeting the access conditions).
-Otherwise they will be granted access, and subsequent lines in the
-restriction definition will be ignored for those meeting the conditions.
-
-<p><hr> <p>
-
-!read help/hosts.phtml
-
-<p><hr> <p>
-
-Some starting examples.
-<p>
-# Disallow the use of tools from 134.59.102.*
-<br><tt>tool:! 134.59.102.</tt>
-<p>
-# Disallow calls for hint from localhost.
-<br><tt>hint:! 127.0.0.1</tt>
-<p>
-# People from wanadoo.fr cannot have anonymous accesses for recreations.
-<br><tt>recreation nonclass:! .wanadoo.fr</tt>
-<p>
-# Work in virtual classes prohibited from localhost on New Year's Day of 2004.
-<br><tt>class: ! 127.0.0.1 >20040101.00:00 <20040101.23:59</tt>
-<p>
-
+!read help/en/accessconf.phtml
