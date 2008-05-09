@@ -130,6 +130,7 @@ ADD_3=		=$ADD_1
 
 CL_Names	=Niveaus ,Klassen ,Programma's ,cursussen ,Interklas cursussen
 CL_Test		=Test zone
+CL_otherNames=Other $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) of the class
 
 ER_expression	=<b>Waarschuwing.</b> Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch 
 

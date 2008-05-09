@@ -1,22 +1,28 @@
 
 !if $directcnt>0
  Vous pouvez directement aller dans&nbsp;:
- <ul class="wims_classes_direct">
+ <table class="wims_classes_direct">
  !for cl in $directlist
   !distribute words $cl into c_,u_
   !set n_=!defof class_institution, class_description in\
 	wimshome/log/classes/$c_/.def
-  <li class="wims_classes_direct">
+	!set ntype_=!defof class_typename in\
+	wimshome/log/classes/$c_/.def
+	!set ntype_ = !replace internal program by $(CL_Name[3]) in $ntype_
+	!set ntype_ = !replace internal portal by $(CL_Name[1])  in $ntype_
+	!set ntype_ = !replace internal class by $(CL_Name[2])  in $ntype_
+	!set ntype_ = !replace internal course by $(CL_Name[4]) in $ntype_
   !if $u_=supervisor
    !set t_=supervisor
   !else
    !set t_=$type
   !endif
+  <tr><td class="wims_classes_direct">$ntype_</td><td>
   !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
-  (<tt>$u_</tt>)
-  </li>
+  </td><td><tt>$u_</tt></td>
+  </tr>
  !next cl
- </ul>
+ </table>
  <p><hr> <p>
  !if $wims_user=supervisor
   ou choisir $name_level_else $sousclasses_else

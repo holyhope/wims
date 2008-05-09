@@ -93,17 +93,24 @@ lacnt=0
     !if $splevel=2
      classes1=!record 0 of wimshome/log/classes/$superclass2/classes
      classes2=!record 0 of wimshome/log/classes/$superclass2/programs
-     classes1=!append line $classes2 to $classes1
+     !!classes1=!append line $classes2 to $classes1
     !endif
     !if $splevel=3
      classes1=!record 0 of wimshome/log/classes/$superclass2/courses
     !endif
     clcnt=!linecnt $classes1
+    clcnt_pr=!linecnt $classes2
     classes=
+    classes_pr=
     !for i=1 to $clcnt
      l=!line $i of $classes1
      !distribute items $l into code,Sup,name,sup
      classes=!append line $wims_superclass/$code,,,$name to $classes
+    !next i
+    !for i=1 to $clcnt_pr
+     l=!line $i of $classes2
+     !distribute items $l into code,Sup,name,sup
+     classes_pr=!append line $wims_superclass/$code,,,$name to $classes_pr
     !next i
     !exit
    !endif

@@ -132,6 +132,7 @@ ADD_3=		=cuaderno de texto
 
 CL_Names	=Niveles,Clases,Programas,Cursos,Cursos interclase
 CL_Test		=Zona de pruebas
+CL_otherNames=Other $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) of the class
 
 ER_expression	=<b>Advertencia.</b> ¿Busca usted una expresión\
 matemática? Aquí no tiene sentido.

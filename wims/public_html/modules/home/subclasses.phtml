@@ -5,8 +5,14 @@
   !else
    $(U_gotoclass$cnt)
   !endif
+  !set liste_class=
+  !set liste_program=
+  !set liste_course=
+  <p>
   !for c in $(subclass$cnt)
    !set name=!defof class_description in wimshome/log/classes/$c/.def
+   !set type=!defof class_type in wimshome/log/classes/$c/.def
+   !set type_name=!defof class_typename in wimshome/log/classes/$c/.def
    !if $cnt=3
     !set t_=supervisor
     !set u_=supervisor
@@ -14,15 +20,36 @@
     !set t_=participant
     !set u_=$wims_user
    !endif
+   !set list_class=class,program,course
    !if $name!=$empty
-    !href module=adm/class/classes&type=auth$t_&class=$c&auth_user=$u_ $name
-    &nbsp;
+   !for  tt in $list_class 
+    !if $type_name=$tt
+      !set liste_$tt=!append line $name,$t_,$c,$u_ to $(liste_$tt)
+    !endif
+   !next
    !endif
   !next c
-  <p>
+  !if $cnt=1
+    !set word_class=$CL_otherNames
+  !endif
+  !default word_class=$(CL_Names[2..-1])
+
+   <ul class="wims_subclasses">
+  !for tt = 1 to 3
+    !set liste=!sort line $(liste_$(list_class[$tt]))
+    !set liste_cnt=!linecnt $liste
+    !if $liste_cnt > 0 
+       <li> $(word_class[$tt]):
+     !for j = 1 to $liste_cnt
+      !href module=adm/class/classes&type=auth$(liste[$j;2])&class=$(liste[$j;3])&auth_user=$(liste[$j;4]) $(liste[$j;1])
+     &nbsp;
+     !next j 
+       </li>
+   !endif
+  !next tt
  !endif
 !next cnt
-
+</ul>
 !if $subclasscnt2>0
  !if $insc!=yes
   !href module=home&cmd=new&insc=yes $U_inscription2
