@@ -9,7 +9,7 @@ Default is : option=[FONTSIZE, '14pt', ABOVE, 'true']
 <p><b>Example</b> \special{tooltip click here, the word has 5 letters}
 or 
 \special{tooltip click here,option=[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters}
-\special{tooltip click here,option=[TITLE, 'Some Title', PADDING, 9]</center>
+\special{tooltip click here,option=[TITLE, 'Some Title', PADDING, 9],un texte}
 !readproc slib/utilities/tooltip click here,option=[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters
 <p>The possible options for tooltips are  (from www.walterzorn.com)
  <embed>
@@ -29,7 +29,6 @@ or
   !set option=$empty
   !set text=!item 2 to -1 of $wims_read_parm
 !endif
-
 !if $option=$empty
   !set option=FONTSIZE, '14pt', ABOVE, 'true'
 !endif
@@ -37,6 +36,7 @@ or
 !set prompt=$(wims_read_parm[1])
 !if $prompt != $empty
  !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+ !set text=!replace internal ' by \' in $text
 !set text=!replace internal $\
 $ by  $ in  $text
 !set special_out=$special_out\
