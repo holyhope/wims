@@ -1,0 +1,246 @@
+!!la liste des types d'objets reconnus pas wims se trouve dans "list_of_things"
+!!à la sortie du fichier, la liste des objets et celle des 'cond' sont dans le même ordre 
+!!que celui de la construction...
+
+!set anstype=yes
+!set anstyle=dprompt
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!!! faut-il faire un petit fichier - une très faible partie est utile ici
+!read anstype/geogebra.fr
+!set oef_applet_option=!replace internal $	$ by $\
+$ in $inputsize
+!set oef_applet_option=!replace internal ; by $\
+$ in $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set Inputsize=!replace internal x by , in $Inputsize
+!set oef_applet_option=!line 2 to -1 of $oef_applet_option
+!set oef_applet_option=width=$(Inputsize[1])\
+height=$(Inputsize[2])\
+$oef_applet_option 
+
+!readproc slib/geo2D/geogebra3 $oef_applet_option
+!set out_applet=$slib_out
+
+!readproc slib/geo2D/geogebracommand
+!set oef_applet_command=$slib_out
+!readproc slib/geo2D/geogebra3 $oef_applet_option
+!readproc slib/geo2D/geogebraoption
+!set oef_applet_option=$slib_out
+
+!for a in showToolBar,showResetIcon,showToolBarHelp,enableRightClick
+ !set test=!getopt $a in $oef_applet_option
+ !if $test issametext
+   !set oef_applet_option=!append line $a=true to $oef_applet_option
+ !endif
+!next
+!for a in showMenuBar,showAlgebraInput
+ !set test=!getopt $a in $oef_applet_option
+ !if $test=
+   !set oef_applet_option=!append line $a=false to $oef_applet_option
+ !endif
+!next
+
+!set replyoption$i=!replace internal true by yes in $(replyoption$i)
+!set noclue=!getopt idontknow in $(replyoption$i)
+
+!set maxobjects=!getopt max in $(replyoption$i)
+!if $maxobjects=$empty
+  !set maxobjects=10
+!endif
+!set precision=!getopt precision in $(replyoption$i)
+!default  precision=18
+
+<script type="text/javascript">                                                                                                  
+
+function dontknow()
+{
+    var q="?";
+    q=encodeURIComponent(q);
+    var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$i='+q ;
+    document.location.href = URL;
+}                                                                                                                                          
+
+function geogebra2wims() {
+	
+    var tot='';
+    var cond='';
+    var test,test2,nbre;
+    var a,b,c,d,e,f,g,h,n,x,y,p,max,r,s,t,i,it,whatisit,thing,listcnt,def,name,prec;
+    var list_of_things = new Array();
+    var debug=0;
+    
+    !!!!!!! WIMS !!!!!!!
+		prec=$precision;
+
+	ch=new String(document.applets[0].getXML());
+	arr1=new String("<decimals val=\""+prec+"\"/>");
+	for ( i=0 ; i < 18 ; i++){
+	dep1=new String("<decimals val=\""+i+"\"/>");
+	ch=ch.replace(dep1,arr1);}
+	document.applets[0].setXML(ch);
+
+    var data = new Array();
+    var grec = new Array();
+	
+	!if $list_of_things=$empty
+    !! look for all possible object names
+	list_of_things=['point','line','ray','circle','segment','function','polynomial','conic','ellipse','hyperbola','parabola','vector','angle','conicpart','numeric','text','polygon','triangle','quadrilateral','pentagon','hexagon'];
+    !endif
+	listcnt=list_of_things.length;
+
+	grec=['alpha','beta','gamma','delta','epsilon','zeta','eta','theta',\
+	'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigmaf',\
+	'sigma','tau','upsilon','phi','khi','psi','omega'];
+    
+	var totalobject_count = 0;
+
+  nbre=document.applets[0].getObjectNumber();
+	for ( i=0 ; i < nbre ; i++){
+	thing=document.applets[0].getObjectName(i);
+	whatisit=document.applets[0].getObjectType(thing);
+	def=document.applets[0].getCommandString(thing);
+	if (def=="") {def=whatisit;}
+
+	!!replace the greek names of the angles
+	test=thing;
+	name=thing.charCodeAt(0);
+	if (name>944)
+		{
+		name=name-945;
+		test=grec[name];
+		}	
+
+	for ( p=0 ; p < listcnt ; p++)
+	    {
+		!! walk trough the selection of objects we are interested in
+		!! defined in Wimsvariable $list_of_things='point','circle','polygon'
+	 
+		it=list_of_things[p];
+		
+		if (whatisit==it)
+		    {
+		    data=document.applets[0].getValueString(thing);
+		    data=encodeURIComponent(data);
+		    data=data.replace(/%C2%B/g,'^');
+			
+		    data= decodeURIComponent(data);
+		    !! back to normal...
+
+		    if (data.indexOf("_") != 2 )
+			!! check e.g. no special tags like My_A My_B used to mask a *.ggb objects
+			{
+			totalobject_count=totalobject_count + 1;
+			if (it=="point"||it=="vector")
+				{
+				x=document.applets[0].getXcoord(thing);
+				x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
+				y=document.applets[0].getYcoord(thing);
+				y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
+				data=thing+'='+it+','+x+','+y;
+				}  
+    	else if (it=="circle"||it=="line"||it=="polynomial"||it=="conic"||it=="parabola"||it=="ellipse"||it=="hyperbola"||it=="ray")
+			    !! c:(x - 5.73)^2 + (y - 1.53)^2 = 16,
+			{
+				t=data.length;
+				c=data.indexOf(':');
+				d=data.indexOf('=');
+				e=data.substring(c+1,d-1);		
+				f=data.substring(d+1,t);		
+				data=thing+'='+it+','+e+'-(('+f+'))';
+				}
+			 else if (it=="angle")
+			 {
+				!!  on enleve le "degre" ("^0")
+				data=encodeURIComponent(data);
+				data=data.replace(/%5E0/g,'');
+				data=decodeURIComponent(data);
+				!!on ecrit le nom en toutes lettres
+				name=data.charCodeAt(0);
+				name=name-945;
+				name=grec[name];
+
+				data=data.split("=");
+				data=data[1];
+				data=name+'='+it+','+data;
+			}
+				else if (it=="text"||it=="numeric"||it=="segment"||it=="function"||it=="conicpart")
+				{
+				data=data.split("=");
+				name=data[0];
+				data=data[1];
+				data=name+'='+it+','+data;
+			}
+				else if (it=="polygon"||it=="triangle"||it=="quadrilateral"||it=="pentagon"||it=="hexagon")
+			{
+				data=data.split("=");
+				name=data[0];
+				data=data[1];
+				data=name+'=polygon,'+data;
+			}
+			
+		    !! here we produce the URL string 'tot'		    
+			    
+			    tot=tot + data + '&&' ;
+			    cond=cond+test+'='+def+'&&'; 
+			}
+			
+		    }
+	    }
+    }
+	t=tot.length;
+	tot=tot.substr(0,t-2);
+	t=cond.length;
+	cond=cond.substr(0,t-2);	
+    tot=tot+";"+cond;
+!! use encoding on math '+' signs
+    tot=tot.replace(/undefined/g, '');
+!!    tot= encodeURIComponent( tot );
+!! replace the strange unicode for ^2
+    tot=tot.replace(/%C2%B/g,'^');
+ 
+    if (totalobject_count == 0)
+    {
+    }
+    else
+    if ( totalobject_count > $maxobjects )
+    {
+	alert("$inp0 "+ $maxobjects +" $inp1");	
+	}
+    else
+    {
+    if (debug=='1') {alert("You are about to send a reply:"+tot);}
+	document.getElementById('geog').value = tot;
+	}
+}
+
+function algebraview() {
+ var ch=new String(document.applets[0].getXML());
+ var alg1=new String("<show algebraView=\"true\" auxiliaryObjects=\"false\" algebraInput=\"true\" cmdList=\"true\"/>");
+ var alg2=new String("<show algebraView=\"false\" auxiliaryObjects=\"false\" algebraInput=\"false\" cmdList=\"false\"/>");
+ ch=ch.replace(alg1,alg2);
+ document.applets[0].setXML(ch);
+}
+</script>
+<input type=hidden name="reply$i" id="geog" value=>
+$out_applet
+!! cela a l'air de fonctionner un peu ...
+!!<script type="text/javascript">                                                                                                  
+!! algebraview() 
+!! </script>
+
+!form reply
+<p align=center>                                                                                                                                     
+		<input type="submit" style="" onclick="javascript:geogebra2wims();" name="button1" value="$inp2">    
+!if $noclue = yes                                                                                                                               
+    	<input type="button" style="" onclick="javascript:dontknow();" name="button2" value="$inp3" >  
+!endif                                                                                                                                  
+</p>
+
+</form>
+
+!set oef_formnosubmit=yes
+
