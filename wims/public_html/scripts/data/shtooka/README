@@ -1,10 +1,25 @@
 Il est prévu de mettre ici les collections audio qui seront utiles du 
-projet shtooka. 
+projet shtooka : http://shtooka.net/project
 
-http://shtooka.net/project
+La structure qui peut être mise aussi (avec ou sans des fichiers mp3),
+et c'est cela l'intérêt
+de mettre le dossier shtooka dans srcipts/data 
+est la suivante :
 
-Je ne sais pas encore quel fichier je mets dans la version distribuée :
-peut-être les index des packages qui sont déjà utilisés ? 
+1 - un dossier par packages audio du projet shtooka
+
+2- Dans le répertoire shtooka, des fichiers d'index par language 
+(distribution) ou correspondant à certains packages (dans les modules d'exercices)
+
+3- Dans chaque package, des fichiers d'index. 
+
+Ces fichiers peuvent être générés par le script swac.pl . qui se
+trouvera dans wims/bin/ 
+Ils reprennent le nom des tags swacs (pour l'instant à partir du fichier 
+index.tags.txt, mais par d'autres méthodes éventuellement.)
+
+Dans le répertoire shtooka, un fichier version indiquera la liste des packages
+pour lesquels les audio sont à chercher sur le serveur (et leur version ?) 
 
 L'administrateur du site peut récupérer les bases de la manière suivante
 (projet)
@@ -12,6 +27,7 @@ L'administrateur du site peut récupérer les bases de la manière suivante
 package=eng-wcp-us eng-balm-verbs\
 fra-balm-voc fra-balm-conjug
 
+langage=fra eng
 for i in $package ; do
  wget http://packs.shtooka.net/$i/ogg/version;\
  mv version $i_version
@@ -19,10 +35,9 @@ for i in $package ; do
 done;
  
  [le fichier version n'existe pas encore !]
-
-for i in $package ; do
- wget http://packs.shtooka.net/$i/$i.mp3.tar;\
- tar xf $i.tar;\
+package=fra-vocf ;\
+for i in $package ; do\
+ tar xf $i.mp3.tar;\
  mkdir -p $i;\
  rm -r $i/mp3;\
  mv home/www/packs/$i/mp3 $i/mp3;\
@@ -31,6 +46,16 @@ for i in $package ; do
  cd $i;\
  wget http://packs.shtooka.net/$i/ogg/index.tags.txt ;\
 done ;
+il faudrait changer pour obtenir de l'isolatin ...
+cd  shtooka ; 
+for i in $langage ; do\
+  swac.pl --lang=$i ;\
+done ; 
+for i in $package ; do\
+  cd $i ; swac.pl --dir=. ;\
+  cd .. ; 
+done ; 
+ 
 
 
 ### perl -pi -e 's,".ogg]",".mp3]",;' index.tags.txt
