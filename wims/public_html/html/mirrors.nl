@@ -109,6 +109,6 @@ jrfern@gmail.com
 :http://iesbaixpenedes.xtec.cat/wims
 IES Baix Penedès. El Vendrell
 Spain
-en fr es it nl
+ca en fr es it nl
 Manel Querol
 mquerol@xtec.cat
