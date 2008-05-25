@@ -20,6 +20,7 @@ MODULES=$WIMS_HOME/public_html/modules
 translator=$WIMS_HOME/public_html/bin/translator
 dicsort=$WIMS_HOME/bin/dicsort
 SLIB=$WIMS_HOME/public_html/scripts/slib
+SHTOOKA=$WIMS_HOME/public_html/scripts/data/shtooka
 # MAX_LINELEN
 linelen=15000
 
@@ -172,9 +173,14 @@ do
   mv $f.sorted $f
 done
 
-#slib
+#slib index
 cd $SLIB
 ./mkindex >>mkindex.log 
+
+#shtooka index
+cd $SHTOOKA
+rm -f index.log 
+./mkindex >>index.log 
 
 $BASES/doc/.build-index
 $MODULES/H3/algebra/spuzzle/makepieces
