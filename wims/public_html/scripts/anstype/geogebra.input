@@ -22,6 +22,20 @@ $ in $oef_applet_option
 height=$(Inputsize[2])\
 $oef_applet_option 
 
+!for a in showToolBar,showResetIcon,showToolBarHelp
+ !set test=!getopt $a in $oef_applet_option
+ !if $test issametext
+   !set oef_applet_option=!append line $a=true to $oef_applet_option
+ !endif
+!next
+
+!for a in showMenuBar,showAlgebraInput,enableRightClick
+ !set test=!getopt $a in $oef_applet_option
+ !if $test=
+   !set oef_applet_option=!append line $a=false to $oef_applet_option
+ !endif
+!next
+
 !readproc slib/geo2D/geogebra3 $oef_applet_option
 !set out_applet=$slib_out
 
@@ -30,19 +44,6 @@ $oef_applet_option
 !readproc slib/geo2D/geogebra3 $oef_applet_option
 !readproc slib/geo2D/geogebraoption
 !set oef_applet_option=$slib_out
-
-!for a in showToolBar,showResetIcon,showToolBarHelp,enableRightClick
- !set test=!getopt $a in $oef_applet_option
- !if $test issametext
-   !set oef_applet_option=!append line $a=true to $oef_applet_option
- !endif
-!next
-!for a in showMenuBar,showAlgebraInput
- !set test=!getopt $a in $oef_applet_option
- !if $test=
-   !set oef_applet_option=!append line $a=false to $oef_applet_option
- !endif
-!next
 
 !set replyoption$i=!replace internal true by yes in $(replyoption$i)
 !set noclue=!getopt idontknow in $(replyoption$i)
@@ -227,7 +228,8 @@ function algebraview() {
 </script>
 <input type=hidden name="reply$i" id="geog" value=>
 $out_applet
-!! cela a l'air de fonctionner un peu ...
+!! cela a l'air de fonctionner un peu mais c'est très très lent. Donc je laisse uniquement 
+!! pour voir mémoire....
 !!<script type="text/javascript">                                                                                                  
 !! algebraview() 
 !! </script>
