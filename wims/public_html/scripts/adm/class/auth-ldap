@@ -2,6 +2,10 @@
 # Input variables: authdef=def file.
 # Parameters: auth_user, auth_password.
 
+auth_test=ERROR
+auth_real_login=ERROR
+
+
 ldap_find=!sh which ldapsearch
 !if $ldap_find issametext $empty
  auth_test=ERROR no_ldap
@@ -9,28 +13,83 @@ ldap_find=!sh which ldapsearch
 !endif
 
 ldap_host=!defof class_ldap_host in $authdef
+!!default ldap_host=ldap.u-psud.fr
+
 ldap_port=!defof class_ldap_port in $authdef
 !default ldap_port=389
+
 ldap_version=!defof class_ldap_version in $authdef
 !default ldap_version=3
+
 ldap_base=!defof class_ldap_base in $authdef
+!!default ldap_base=ou=people,dc=u-psud,dc=fr
+
 ldap_branch=!defof class_ldap_branch in $authdef
-!default ldap_branch=ou=people
+!!default ldap_branch=ou=people,dc=u-psud,dc=fr
+
 ldap_uid=!defof class_ldap_uid in $authdef
-!default ldap_uid=uid
+!!default ldap_uid=uid
 
-ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1]),$ldap_branch,$ldap_base
+#ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1]),$ldap_branch,$ldap_base
+ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1])
 
-ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_id" -D "$ldap_id" -w "$(wims_read_parm[2])"
+ldap_login=!defof class_ldap_login in $authdef
+!default ldap_login=supannAliasLogin
+
+!if $ldap_login=$empty or $ldap_uid=$empty or $ldap_base=$empty \
+       or $ldap_branch=$empty  or $ldap_host=$empty 
+   auth_test=ERROR no_ldap_config
+   !exit
+!endif
+
+##sleep 600
+##kill -9 `pidof monprog`
+ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
 
 ldap_cnt=!linecnt $ldap_search
 !for i=1 to $ldap_cnt
  l=!line $i of $ldap_search
- !if $l issametext result: 0 Success
-  auth_test=OK
+ field=!word 1 of $l	
+
+ !if $field iswordof $ldap_login:
+  auth_real_login=!word 2 of $l
  !endif
+
+ !if $l issametext result: 0 Success
+  auth_test=$auth_real_login
+ !endif
+
 !next i
+!if $auth_test=OK
+  auth_test= $auth_real_login
+!endif
+
+!!debug $auth_real_login  $auth_test \
+!!ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'\
+!!$ldap_search
 
 auth_error=$wims_exec_error
 wims_exec_error=
 
+
+!!!for i=1 to $ldap_cnt
+!! l=!line $i of $ldap_search
+!! field=!word 1 of $l	
+!! !if $field iswordof supannAliasLogin:
+!!  auth_real_login=!word 2 of $l
+!! !endif
+!! !if $l issametext result: 0 Success
+!!  auth_test=OK
+!! !endif
+!!!next i
+!!!if $auth_real_login=$empty and $auth_test=OK
+!! ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id'
+!! ldap_cnt=!linecnt $ldap_search
+!! !for i=1 to $ldap_cnt
+!!  l=!line $i of $ldap_search
+!!  field=!word 1 of $l	 
+!!  !if $field iswordof supannAliasLogin:
+!!   auth_real_login=!word 2 of $l
+!!  !endif
+!! !next i
+!!!endif
