@@ -106,10 +106,10 @@ yourlist_name2=$yourlist_name
        coord=!replace item number $u by [$c] in $coord
       !endif
     !next u
-    coord=!nospace $coord
+    coord= !nospace $coord
     coord= !replace internal &&&&, by ( in $coord
     coord= !replace internal ,%%%% by ) in $coord         
-    coord=!exec pari $Name=$Fonction($coord
+    coord= !exec pari $Name=$Fonction($coord
     !if $coord!=
       your_coord=!replace line number $p by $coord in $your_coord
       yourlist_name2=!replace line number $p by $(formal[1])=$type,$coord in $yourlist_name2
@@ -312,9 +312,13 @@ js_fix=
    ob = !line $p of $yourlist_name
    ob=!replace internal function, by in $ob
   !endif
+  !if $type=line
+   ob = !replace internal = by , in $ob
+   ob=$(ob[1]):$(ob[2])=$(ob[3])
+  !endif
   yourggb=!append line $ob to $yourggb
 !next p
-
+!!debug $yourggb
 yourggb1=$yourggb
 ###traitement verbeux des données
 ##on enlève les lignes en trop pour les polygones : segment avec 3 arguments
@@ -682,6 +686,7 @@ displaylist1=
 $ in $yobj1
     yoblinecnt=!linecnt $yobj1
     !for li = 1 to $yoblinecnt
+	 !if $klaar=0
       yobj=!line $li of $yobj1
       !if $(yobj[1]) iswordof $type $type2
         yobj=!item 2 to -1 of $yobj
@@ -698,23 +703,25 @@ $ in $yobj1
            result=$result ($yobj2)
           !endif 
           mscr2=1
-        !endif
-        !for r = 1 to $ycnt  
-         !if $klaar=0
-           ob=!word $r of $obj
-           !if $ob isin $yobj
-             klaar=1
-             !increase formal_cond_score
-             !increase name_score
-             result=$display2 <font color="green">$w_yes</font>
-             !if $output=coord
-               result=$result  ($yobj2)
-             !endif 
-             mscr2=1
-           !endif
-          !endif
-        !next r
+        !else
+	        !for r = 1 to $ycnt  
+	         !if $klaar=0
+	           ob=!word $r of $obj
+	           !if $ob isin $yobj
+	             klaar=1
+	             !increase formal_cond_score
+	             !increase name_score
+	             result=$display2 <font color="green">$w_yes</font>
+	             !if $output=coord
+	               result=$result  ($yobj2)
+	             !endif 
+	             mscr2=1
+	           !endif
+	          !endif
+	        !next r
+		!endif
       !endif
+	 !endif
     !next li
   !endif
 ##si  on n'a rien obtenu avec les conditions formelles et le nom,
@@ -888,13 +895,11 @@ displaylist2=
   !if eq_ isin $cond
     cond=0==1
   !endif
-  deb=$deb $cond ++
   ### remplacer les égalités par des conditions numériques sans demander à l'utilisateur de la faire ?? 
   #### il faudrait remplacer les && (et les ||) par des lignes (commencant par &&), remplacer les lignes où il y a ==
   ### par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
 
   check=!exec pari ($cond)
-  deb=$deb $check
   !if $check=$empty
     check=0
   !endif
@@ -970,9 +975,9 @@ Mscr=$mscr;$Mscr
 msg=<font color="red"><b>
 
 !if $extra!=yes
-  !if $total_formal_cond < $yourlist_cnt
-    score=$[$score*$total_formal_cond/$yourlist_cnt]
-    scorenoname=$[$scorenoname*$total_formal_cond/$yourlist_cnt]
+  !if $total_formal_cond < $ynamecnt
+    score=$[$score*$total_formal_cond/$ynamecnt]
+    scorenoname=$[$scorenoname*$total_formal_cond/$ynamecnt]
     msg=$msg $w34<br>
   !endif
 !endif
