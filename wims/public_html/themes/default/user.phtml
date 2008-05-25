@@ -141,22 +141,22 @@ $U_greet
  $U_assign
  <span class="wims_user_myscore">
  !href module=adm/class/userlist.$lang $U_myscore
-</span> 
- <br>
+</span><p>
  !endif
  <table border=0 class="wims_user_table">
  !for i=1 to $dcnt
   !set s_=!line $i of $ds_list
   !set t_=!line $i of $dt_list
-  <tr><td>&nbsp;&nbsp;</td><td>$U_Doc</td><td colspan=3>
+  <tr><td>&nbsp;&nbsp;</td><td class="wims_user_table_type">$U_Doc</td><td colspan=3>
   !href module=adm/doc.$lang?job=read&doc=$s_&block=main $t_
-  </td> </tr>
+  </td></tr>
  !next i
  !for i=1 to $n
   !set se=!item $i of $aclist
   !distribute lines $(s_$se) into ac,t_,ti,de
-  <tr><td>&nbsp;&nbsp;</td><td>$U_Sheet $se. </td><td>
+  <tr><td>&nbsp;&nbsp;<td class="wims_user_table_type">$U_Sheet $se. <td>
   !href module=adm/sheet&sh=$se $ti
+  </td><td class="wims_user_table_expire">
   !if $ac>=2
    ($U_expired)
   !else
@@ -170,7 +170,7 @@ $U_greet
   !set p2=!word 2 of $pe
   <td>
   !if $p1!=$empty
-   ($p1% $U_done, $U_average $[$p2]/10)
+   $p1% $U_done, $U_average $[$p2]/10
   !else
    &nbsp;
   !endif
@@ -179,9 +179,9 @@ $U_greet
  !for i=1 to $m
   !set se=!item $i of $aelist
   !distribute lines $(e_$se) into ac,t_,s_,ti,de
-  <tr><td>&nbsp;&nbsp;</td><td>$U_Exam $se. </td><td>
+  <tr><td>&nbsp;&nbsp;</td><td class="wims_user_table_type">$U_Exam $se. </td><td>
   !href module=adm/class/exam&job=student&exam=$se $ti
-  </td><td>
+  </td><td class="wims_user_table_expire">
   !if $ac>=2
    ($U_expired)
   !else
@@ -198,7 +198,7 @@ $U_greet
   !distribute lines $(v_$sv) into ac,ti
   <tr><td>&nbsp;&nbsp;</td><td>$U_Vote</td><td>
   !href module=adm/vote&job=read&vote=$sv $ti
-  </td><td>
+  </td><td class="wims_user_table_expire">
   !if $ac>=2
    ($U_expired)
   !else
@@ -206,7 +206,7 @@ $U_greet
   !endif
   </td>
  !next i
- </table> <p>
+ </table><p>
 !endif
 
 :endbar
