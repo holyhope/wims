@@ -1,0 +1,27 @@
+#! /bin/sh
+#
+#	This script indexes shtooka resources which are in data/shtooka directories
+#	It should be run each time a shtooka package is added or modified.
+# for the moment use index.tags.txt , should perhaps use index.tags.xml in the future
+# Bernadette Perrin-Riou
+cd `dirname $0`
+
+rm -f version ; 
+list=`ls -d */index.tags.txt | sed 's/\/index\.tags\.txt$//' | sort` ;
+for i in $list ; do 
+   echo "reading $i" ;
+   cd $i ; ../swac.pl ;
+   if [ -d mp3 ]; then 
+    echo "$i" >> ../version ; 
+   else
+    echo "no mp3 for $i"
+#   echo "$i=" >> ../version ;
+   fi ; 
+   cd .. ; 
+done;
+list_index=`ls -d */index.tags.txt` ;
+list_lang=`grep --no-filename SWAC_LANG=* $list_index | sed 's/SWAC_LANG=//' | sort -u`; 
+for j in $list_lang ; do 
+   echo "index $j" ; 
+   ./swac.pl --lang=$j;
+done;

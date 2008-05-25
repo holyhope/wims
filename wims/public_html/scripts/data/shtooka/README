@@ -1,28 +1,27 @@
 Il est prévu de mettre ici les collections audio qui seront utiles du 
 projet shtooka : http://shtooka.net/project
 
-La structure qui peut être mise aussi (avec ou sans des fichiers mp3),
-et c'est cela l'intérêt
-de mettre le dossier shtooka dans srcipts/data 
-est la suivante :
+La structure qui est mise en suivante est la suivante :
 
-1 - un dossier par packages audio du projet shtooka
+1 - un dossier par packages audio du projet shtooka avec le fichier index.tags.txt
+ainsi que  index.tags.xml ultérieurement
 
 2- Dans le répertoire shtooka, des fichiers d'index par language 
 (distribution) ou correspondant à certains packages (dans les modules d'exercices)
+qui peuvent être produits par le script swac.pl et qui commencent 
+par le préfixe du langage. 
 
-3- Dans chaque package, des fichiers d'index. 
+3- Dans chaque package, des fichiers d'index qui commencent par sw_ 
+Ces fichiers peuvent être générés par le script swac.pl 
+Ils reprennent le nom des tags swacs. 
+Ces fichiers sont  aussi créés lors de la compilation, ou lorsqu'on lance le script 
+(wims/)bin/mkindex, 
 
-Ces fichiers peuvent être générés par le script swac.pl . qui se
-trouvera dans wims/bin/ 
-Ils reprennent le nom des tags swacs (pour l'instant à partir du fichier 
-index.tags.txt, mais par d'autres méthodes éventuellement.)
-
-Dans le répertoire shtooka, un fichier version indiquera la liste des packages
-pour lesquels les audio sont à chercher sur le serveur (et leur version ?) 
+Dans le répertoire shtooka, le fichier version contient la liste des packages
+pour lesquels les audio sont à chercher sur le serveur
 
 L'administrateur du site peut récupérer les bases de la manière suivante
-(projet)
+(projet à faire)
 
 package=eng-wcp-us eng-balm-verbs\
 fra-balm-voc fra-balm-conjug
@@ -35,16 +34,21 @@ for i in $package ; do
 done;
  
  [le fichier version n'existe pas encore !]
-package=fra-vocf ;\
+ http://packs.shtooka.net//
+ 
+ 
+package=deu-balm-alexandra ;\
 for i in $package ; do\
+ wget http://packs.shtooka.net/$i/$i.mp3.tar;\
  tar xf $i.mp3.tar;\
  mkdir -p $i;\
  rm -r $i/mp3;\
  mv home/www/packs/$i/mp3 $i/mp3;\
  rm -r home;\
- rm $i.tar ;\
+ rm $i.mp3.tar ;\
  cd $i;\
  wget http://packs.shtooka.net/$i/ogg/index.tags.txt ;\
+ cd .. ;\
 done ;
 il faudrait changer pour obtenir de l'isolatin ...
 cd  shtooka ; 
@@ -56,10 +60,3 @@ for i in $package ; do\
   cd .. ; 
 done ; 
  
-
-
-### perl -pi -e 's,".ogg]",".mp3]",;' index.tags.txt
-
-Les fichiers _keys sont produits par un script donc ne devraient pas
-être dans la distribution. 
-version peut aussi être généré automatiquement.
