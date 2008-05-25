@@ -15,12 +15,18 @@
 !set sitehelp=!record 0 of conf/sitehelp.phtml
 !set bgimgs=!filelist gifs/bg
 
+
 <h3><center>Config: $tt</center></h3>
 
 <p>
 !line 5 to -1 of $t
 <p>
 !set n_=!word 2 of $t
+!if $n_ issametext css
+  <pre>
+  !record 0 of  wimshome/public_html/bases/sys/css_classes
+  </pre>
+!endif
 !set d_=$(DF_$n_)
 !default d_=[empty]
 Default value: <tt>$d_</tt>
