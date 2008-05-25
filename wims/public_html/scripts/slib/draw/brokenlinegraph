@@ -1,0 +1,81 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_title=Trace une fonction affine par morceau continue en connaissant les points de changement de pente
+slib_parms=10\
+400,taille horizontale du dessin \
+400,taille verticale du dessin\
+20,la marge autour du rep&egrave;re\
+[[0,0];[20,20]],les coordonnées du point inférieur gauche et du point supérieur droit du repère\
+,Les coordonnées des points de changement de pente [[x1,y1],[x2,y2],...]\
+black,couleur des axes\
+grey,couleur des pointillés\
+black,couleur de la ligne\
+x,Légende de l'axe des abscisses\
+y,Légende de l'axe des ordonnées
+
+slib_author=Fabrice Guerimand 
+slib_out=Les donn&eacute;es pour insdraw</li></ol>
+!exit
+
+
+:proc
+slib_input=$wims_read_parm
+
+!distribute items $slib_input into xsize,ysize,marge,cadrage,point,colora,colorg,colorl,legendex,legendey
+slib_out=$slib_input
+
+!default xsize=400
+!default ysize=400
+!default marge=20
+!default cadrage=[[0,0],[20,20]]
+!default colora=black
+!default colorl=black
+!default colorg=grey
+!default legendex=x
+!default legendey=y
+
+cadrage=!declosing $cadrage
+!distribute item $cadrage into X,Y
+X=!declosing $X
+Y=!declosing $Y
+!distribute item $X into xmin,ymin
+!distribute item $Y into xmax,ymax
+
+ex=$[($xsize-2*$marge)/($xmax-$xmin)]
+ey=$[-($ysize-2*$marge)/($ymax-$ymin)]
+x0=$[$marge]
+y0=$[$ysize-$marge]
+
+point=!declosing $point
+repere=$empty
+coordpt=$empty
+nb=!itemcnt $point
+!for k=1 to $nb
+ coord=!item $k of $point
+ coord=!declosing $coord
+ !distribute item $coord into x,y
+ nbx=!charcnt $x
+ nby=!charcnt $y
+ nbx=$[$nbx*8]
+ nby=$[$nby*8+4]
+ y2=$[($y-$ymin)*$ey]
+ x2=$[($x-$xmin)*$ex]
+ coordpt=!append item $x0+$x2,$y0+$y2 to $coordpt
+ repere=$repere\
+dlines $colorg,$x0,$y0+$y2,$x0+$x2,$y0+$y2,$x0+$x2,$y0\
+text $colora,$x0-$nby,$y0+$y2-5,medium,$y\
+text $colora,$x0+$x2-$nbx/2+4,$y0+10,medium,$x
+!next k
+dec=!charcnt $legendex
+dec=$[$dec*8+4]
+repere=$repere\
+linewidth 2\
+arrow $x0,$y0,$xsize,$y0,20,$colora\
+arrow $x0,$y0,$x0,0,20,$colora\
+lines $colorl,$coordpt\
+text $colora,$xsize-$dec,$ysize-$marge-20,medium,$legendex\
+text $colora,$marge+15,10,medium,$legendey
+
+slib_out=$repere
