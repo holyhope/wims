@@ -24,4 +24,6 @@ typedef struct{
 
 extern double val_real;
 
+double atof1(char* s);
+
 #endif

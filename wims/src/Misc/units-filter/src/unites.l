@@ -1,4 +1,5 @@
 %option noyywrap
+/* coding: iso-8859-1 */
      
    #include <stdlib.h>
    #include "unites.h"
@@ -10,13 +11,16 @@ spc            [ \t]+
 digits         [0-9]
 int            [+-]?{digits}+
 mantisse       {digits}+
-real           {int}([.]{mantisse})?([Ee]{int})?
+real           {int}([.]{mantisse})?{spc}*([Ee]{spc}*{int})?
 signif         {spc}*\#{digits}+{spc}*
+plusminpc      {spc}*~{digits}{digits}?{spc}*
+plusminpcbis   {spc}*\+\-{spc}*{digits}{digits}?%{spc}*
 
 /*quelques séparateurs particuliers*/
 point          {spc}*\.{spc}*
 barre          {spc}*\/{spc}*
 puis           {spc}*^{spc}*
+colon          {spc}*:{spc}*
 
 /* les unités de temps hors système */
 heure_ou_hecto h
@@ -79,7 +83,7 @@ cube           ³
 %%
 
 
-{real}              { val_real = atof(yytext); yylval.v=strdup(yytext); pos+=yyleng; return REAL;}
+{real}              { val_real = atof1(yytext); yylval.v=strdup(yytext); pos+=yyleng; return REAL;}
 {heure_ou_hecto}    { pos+=yyleng; return Uh;}
 {minute}            { pos+=yyleng; return Umin;}
 {milli_ou_metre}    { pos+=yyleng; return Um;}
@@ -128,6 +132,9 @@ cube           ³
 {uam}               {pos+=yyleng; return Uuam;}
 {spc}               { pos+=yyleng; return SPC;}
 {signif}            {pos+=yyleng; val_int=atoi(strchr(yytext,'#')+1); return Signif;}
+{plusminpc}         {pos+=yyleng; val_int=atoi(strchr(yytext,'~')+1); return PlusminPC;}
+{plusminpcbis}      {pos+=yyleng; val_int=atoi(strchr(yytext,'+')+2); return PlusminPC;}
+{colon}             {pos+=yyleng; return COLON;}
 
 .                    pos+=yyleng;
 \n                   pos+=yyleng;

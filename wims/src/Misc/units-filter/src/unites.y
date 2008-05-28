@@ -10,12 +10,13 @@
 
   typedef struct{
     int i;
-    double multip, maxmultip;
+    double multip, maxmultip, wanted_multip;
     uniteSI unite;
     int base[BU_LAST];
-    char * s, * v;
+    char * s, * v, * wanted_unit;
     double val;
     int signif;
+    int pcent; /* percent tolerance */
   } yystype;
   
 #define YYSTYPE yystype 
@@ -71,10 +72,10 @@ unite_data unites[TU_LAST] ={
 /*TUbarn*/ {"b", "barn", 1e-28,          { 2, 0, 0, 0, 0, 0, 0}},
 /*TUare*/  {"a", "are", 1e2,             { 2, 0, 0, 0, 0, 0, 0}},
 /*TUl*/    {"L", "litre", 1e-3,          { 3, 0, 0, 0, 0, 0, 0}},
-/*TUt*/    {"t", "tonne", 1e3,              { 0, 1, 0, 0, 0, 0, 0}},
-/*TUbar*/  {"bar", "bar", 1e5,            {-1, 1,-2, 0, 0, 0, 0}},
-/*TUeV*/   {"eV", "eV", 1.60218e-19,       { 0, 0, 1, 1, 0, 0, 0}},
-/*TUuam*/  {"uma", "uma", 1.66054e-27,    { 0, 1, 0, 0, 0, 0, 0}}
+/*TUt*/    {"t", "tonne", 1e3,           { 0, 1, 0, 0, 0, 0, 0}},
+/*TUbar*/  {"bar", "bar", 1e5,           {-1, 1,-2, 0, 0, 0, 0}},
+/*TUeV*/   {"eV", "eV", 1.60218e-19,     { 2, 1,-2, 0, 0, 0, 0}},
+/*TUuam*/  {"uma", "uma", 1.66054e-27,   { 0, 1, 0, 0, 0, 0, 0}}
 };
 
 unite_data pref_units[] ={
@@ -127,6 +128,7 @@ int significative(char* text){
 
 %token REAL
 %token SPC
+%token COLON
 %token Uh
 %token Umin
 %token Um
@@ -172,6 +174,7 @@ int significative(char* text){
 %token UeV
 %token Uuam
 %token Signif
+%token PlusminPC
 
 %%
 
@@ -189,14 +192,31 @@ valeur_mixte : valeur spc valeur_mixte {
   if ($1.multip <= $3.maxmultip) yyerror ("incorrect mutiple units ordering");
   $$.val=$1.val*$1.multip+$3.val*$3.multip;
   $$.multip=1; $$.maxmultip = $1.multip;
+  $$.wanted_unit="";
 }
-| valeur {$$=$1; $$.maxmultip=$1.multip;}
+| valeur {$$=$1; $$.maxmultip=$1.multip;$$.wanted_unit="";}
+| valeur COLON style {
+  int i;
+  $$=$1; $$.maxmultip=$1.multip;
+  for(i=0; i < BU_LAST; i++){
+    if ($1.base[i] != $3.base[i]) yyerror ("wanted unit not homogeneous");
+  }  
+  $$.wanted_multip=$3.multip;
+  $$.wanted_unit=$3.s;
+}
 ;
 
-valeur : REAL spc unite {$$=$3; $$.val=val_real; $$.signif=0;}
+style : unite {$$=$1;}
+;
+
+valeur : REAL spc unite {$$=$3; $$.val=val_real; $$.signif=0; $$.pcent=0;}
 | REAL spc unite Signif {
   $$=$3; $$.val=val_real; 
-  $$.signif=val_int;
+  $$.signif=val_int; $$.pcent=0;
+}
+| REAL spc unite PlusminPC {
+  $$=$3; $$.val=val_real; 
+  $$.pcent=val_int; $$.signif=0;
 }
 ;
 
@@ -206,7 +226,8 @@ sans_unite :REAL {
   $$.val=val_real; 
   for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
   $$.multip=1.0; 
-  $$.signif=0;
+  $$.signif=0; $$.pcent=0;
+  $$.wanted_unit=0;
 }
 | REAL Signif {
   int i;
@@ -214,7 +235,15 @@ sans_unite :REAL {
   $$.val=val_real; 
   for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
   $$.multip=1.0; 
-  $$.signif=val_int;
+  $$.signif=val_int; $$.pcent=0;
+}
+| REAL PlusminPC {
+  int i;
+  $$=$1;
+  $$.val=val_real; 
+  for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
+  $$.multip=1.0; 
+  $$.signif=0; $$.pcent=val_int;
 }
 ;
  
@@ -226,7 +255,7 @@ unite : unite suiv_unit{
   int index;
   $$.unite = TU_LAST; /* unité non renseignée */
   strncpy(buffer,$1.s,MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($2.s)); 
+  strncat(buffer,$2.s,MAXBUF-strlen($1.s)); 
   free($1.s); free($2.s);
   $$.s=strdup(buffer);
   for(index=0; index< BU_LAST; index++){
@@ -239,7 +268,7 @@ unite : unite suiv_unit{
 
 suiv_unit : point prim_unit{
   $$=$2; strncpy(buffer,".",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($2.s)); 
+  strncat(buffer,$2.s,MAXBUF-1); 
   free($2.s);
   $$.s=strdup(buffer);
 }
@@ -248,7 +277,7 @@ suiv_unit : point prim_unit{
   $$=$2; 
   $$.multip = 1/ $$.multip;
   strncpy(buffer,"/",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($2.s)); 
+  strncat(buffer,$2.s,MAXBUF-1); 
   free($2.s);
   $$.s=strdup(buffer);
   for(index=0; index< BU_LAST; index++){
@@ -264,28 +293,28 @@ prim_unit1 :
 Um base_unite {
   $$=$2;
   strncpy(buffer,"m",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($2.s)); 
+  strncat(buffer,$2.s,MAXBUF-1); 
   free($2.s);
   $$.s = strdup(buffer); $$.multip*=1e-3; 
 }
 | UT base_unite {
   $$=$2;
   strncpy(buffer,"T",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($2.s)); 
+  strncat(buffer,$2.s,MAXBUF-1); 
   free($2.s);
   $$.s = strdup(buffer); $$.multip*=1e12;
 }
 | Uh base_unite {
   $$=$2;
   strncpy(buffer,"h",MAXBUF); 
-  strncat(buffer,$2.s,MAXBUF-strlen($2.s)); 
+  strncat(buffer,$2.s,MAXBUF-1); 
   free($2.s);
   $$.s = strdup(buffer); $$.multip*=1e2;
 }
 |  prefixe base_unite {
   $$=$2;
   strncpy(buffer, $1.s,MAXBUF); 
-  strncat(buffer, $2.s, MAXBUF-strlen($2.s));
+  strncat(buffer, $2.s, MAXBUF-strlen($1.s));
   free($1.s); free($2.s);$$.s=strdup(buffer); 
   $$.multip*=$1.multip;
   }
@@ -301,7 +330,7 @@ prim_unit : prim_unit1 puissance01 {
   $$.i=$2.i;
   strncpy(buffer, $1.s,MAXBUF);
   if ($2.i!=1){
-    strncat(buffer, "^{%d}",MAXBUF-strlen( "^{%d}")); 
+    strncat(buffer, "^%d",MAXBUF-strlen($1.s)); 
     sprintf(buffer2, buffer, $2.i);
   }
   else strncpy(buffer2,buffer,MAXBUF);
@@ -309,8 +338,14 @@ prim_unit : prim_unit1 puissance01 {
   for(index=0; index< BU_LAST; index++){
     $$.base[index] = unites[$1.unite].base[index]*$2.i;
   }
-  for(index=0, r=1; index<$2.i ; index++){
-    r*= $$.multip;
+  if ($2.i>0){
+    for(index=0, r=1; index<$2.i ; index++){
+      r*= $$.multip;
+    }
+  } else {
+    for(index=0, r=1; index>$2.i ; index--){
+      r /= $$.multip;
+    }
   }
   $$.multip=r;
 }
@@ -346,7 +381,7 @@ PP {$$.s = strdup(yytext); $$.multip=1.0;
 ;
 
 base_unite :  
-Uh {$$.unite=TUh; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
+Uh {$$.unite=TUh; $$.s = strdup("h"); $$.multip=unites[$$.unite].multiplicateur;}
 | Umin {$$.unite=TUmin; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
 | Um {$$.unite=TUm; $$.s = strdup("m"); $$.multip=unites[$$.unite].multiplicateur;}
 | Ug {$$.unite=TUg; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
@@ -393,7 +428,17 @@ Uh {$$.unite=TUh; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicate
 %%
 
 #include "lex.yy.c"
+#include <stdio.h>
+#include <stdbool.h>
+#include <recode.h>
+#include <regex.h>
+
+const char *program_name;
+char *isUTF8;
+
 /* le programme lui-même */
+
+typedef enum {option_default, option_s, option_o, option_l} optiontype;
 
 inline int yyerror(char * msg){
   printf("ERROR at %ld : %s\n", pos, msg);
@@ -440,9 +485,9 @@ void sortie_normalisee(){
   /* puissance en unité de quantité de matière (mol) */
   /* puissance en unité de inutensité lumineuse (cd) */
   /* nombre de chiffres significatifs                */
-  /* un zéro pour des extensions futures             */
+  /* tolérance (en pourcentage)                      */
   /***************************************************/
-  int i,s=0;
+  int i,s=0,pc=0;
 
   yyparse();
   printf("%g", result.multip*result.val );
@@ -453,26 +498,116 @@ void sortie_normalisee(){
       s=result.signif;
     }
   }
+  pc=result.pcent;
   for (i=0; i<BU_LAST; i++){
     printf(" %3d", result.base[i]);
   }
-  printf("    %d    0\n",s);
+  printf("    %d    %d\n",s,pc);
 }
 
-void sortie_texte(){
+void printUnit(optiontype option, char * unit, int tolerance){
+  char * indexohm;
+  char buffer[128];
+  char *codedunit;
+
+
+  if(isUTF8) {
+    RECODE_OUTER outer = recode_new_outer (true);
+    RECODE_REQUEST request = recode_new_request (outer);
+    recode_scan_request (request, "latin1..utf8"); 
+    codedunit=strdup(recode_string(request,unit));
+  } else {
+    codedunit=strdup(unit);
+  }
+
+  if (option==option_l){
+    strncpy(buffer, codedunit,sizeof(buffer));
+    indexohm=strstr(buffer,"ohm");
+    if (indexohm){
+      strncpy(indexohm, "\\Omega", sizeof(buffer)-strlen("\\Omega")+strlen("ohm"));
+    }
+    printf(" %s",buffer);
+  } else {
+    printf(" %s",codedunit);
+  }
+  if (tolerance){
+    if (option==option_l){
+      printf(" \\pm %d\\,\\%%",tolerance);
+    } else{
+      printf(" +-%d%%",tolerance);
+    }
+  }
+  printf("\n");
+  free(codedunit);
+}
+
+void printValue(optiontype option, yystype result, int s){
+  char buffer[128], val[128],exp[128], *i, *j, *indexE;
+  regex_t regex;
+  regmatch_t matches[3];
+  int success,l;
+  int vallen;
+  if (s<=1){ 
+    snprintf(buffer,sizeof(buffer),"%1.0e", result.multip*result.val );
+  } else {
+    snprintf(buffer,sizeof(buffer),"%1.*e", s-1,result.multip*result.val );
+  }
+  // simplifications
+  regcomp(&regex, "^(.*)(e[+-][0-9]+)$", REG_EXTENDED);
+  regexec(&regex,buffer, 3, matches,0);
+  if (strcmp(buffer+matches[2].rm_so,"e+00")==0) {
+    // removing e+00
+    *(buffer+matches[2].rm_so)=0;
+  }
+  l=strlen(buffer);
+  if (*(buffer+matches[2].rm_so+1)=='+'){
+    j=buffer+matches[2].rm_so+2;
+    while (*j=='0') j++;
+    for(i=buffer+matches[2].rm_so+1; j<=buffer+l; i++,j++){
+      // erasing +0* after e
+      *i=*j;
+    }
+  }
+  if (*(buffer+matches[2].rm_so+1)=='-'){
+    j=buffer+matches[2].rm_so+2;
+    while (*j=='0') j++;
+    for(i=buffer+matches[2].rm_so+2; j<=buffer+l; i++,j++){
+      // erasing 0* after e-
+      *i=*j;
+    }
+  }
+  if (option==option_l){
+    indexE=strstr(buffer,"e");
+    if (indexE){
+      vallen=indexE-buffer;
+      strncpy(val,buffer,vallen);
+      val[vallen]=0;
+      strncpy(exp,indexE+1,sizeof(exp));
+      printf("%s\\times 10^{%s}\\,",val,exp);
+    } else{
+      printf("%s\\,",buffer);
+    }
+  } else {
+    printf(buffer);
+  }
+}
+
+void sortie_texte(optiontype option){
   /***************************************************/
   /* le format des données en sortie est :           */
   /* double string                                   */
   /* et signifie  dans l'ordre                       */
   /***************************************************/
-  /* valeur  (compte tenu des ciffres significatifs) */
-  /* unité   (SI)                                    */
+  /* valeur (compte tenu des chiffres significatifs) */
+  /* unité   (SI)  +- pcent %                        */
   /***************************************************/
   int i,j,
-    s=0,
+    s=0,pc=0,
     notfirst=0,
     trouve=0,
     nb_pref=sizeof(pref_units)/sizeof(pref_units[0]);
+  double val,powten;
+  int puisdix;
 
   yyparse();
   if (!result.signif) {
@@ -480,56 +615,129 @@ void sortie_texte(){
   } else {
     s=result.signif;
   }
-  // affiche la valeur
-  if (s<=1){
-    printf("%1.0e", result.multip*result.val );
-  } else {
-    printf("%1.*e", s-1,result.multip*result.val );
+  pc=result.pcent;
+  // arrondit en tenant compte du nombre de chiffres significatifs
+  val=result.multip*result.val;
+  puisdix=trunc(log(abs(val))/log(10));
+  powten=pow(10,puisdix+1-s);
+  val=round(val/powten)*powten;
+  //affiche la valeur
+  if (result.wanted_unit && strlen(result.wanted_unit)>0){
+    result.multip /= result.wanted_multip;
+  }else{ // met le multiplicateur à 1 si l'unité d'entrée a été repérée
+    if (result.s && strlen(result.s)>0){
+      result.multip = 1.0;
+    }
   }
-  //affiche l'unité SI.
-  //recherche s'il y a une unité préférentielle
+  printValue(option, result, s);
+  // affiche l'unité SI.
+  // renvoie l'unité demandée si elle existe
+  if (result.wanted_unit && strlen(result.wanted_unit)>0){
+    printUnit(option, result.wanted_unit, pc);
+    return;
+  }
+  // affiche l'unité donnée à l'entrée par défaut
+  if (result.s && strlen(result.s)>0){
+    printUnit(option, result.s, pc);
+    return;
+  }
+  // recherche s'il y a une unité préférentielle
   for (i=0; i<nb_pref; i++){
     trouve=(result.base[0]==pref_units[i].base[0]);
     for (j=1; j<BU_LAST; j++){
       trouve &= (result.base[j]==pref_units[i].base[j]);
     }
     if (trouve){
-      printf("%s\n",pref_units[i].sym);
+      printUnit(option, pref_units[i].sym, pc);
       return;
     }
   }
   for (i=0; i<BU_LAST; i++){
     if (result.base[i]!=0){
-      if (notfirst) printf(".");
+      if (notfirst) printf("."); else printf(" ");
       printf("%s",unit_names[i]);
       notfirst=1;
       if (result.base[i]!=1){
-	printf("^%d",result.base[i]);
+	if (option==option_l){
+	  printf("^{%d}",result.base[i]);
+	} else {
+	  printf("^%d",result.base[i]);
+	}
       }
     }
   }
-  printf("\n");
+  printUnit(option, "", pc);
 }
 
 int main(int argc, char * argv[]){
-  char * optstr = "os";
+  char * optstr = "osl";
+  char * envoption=getenv("units_option");
+  // environmental option take precedence on command-line options
+
+  optiontype option=option_default;
+  
   int ch;
   while (-1 != (ch=getopt(argc,argv,optstr))){
     switch(ch){
     case 's': 
-      count_signif=1;
-      sortie_normalisee();
-      return 0;
+      option=option_s;
       break;
     case 'o':
-      sortie_texte();
-      return 0;
+      option=option_o;
+      break;
+    case 'l':
+      option=option_l;
       break;
     default: 
       break;
     }
   }
+  if (envoption && strncmp(envoption, "s", 2)==0) option=option_s;
+  if (envoption && strncmp(envoption, "o", 2)==0) option=option_o;
+  if (envoption && strncmp(envoption, "l", 2)==0) option=option_l;
+  // check if we are in a UTF8 environment
+  char *lc_all=getenv("LC_ALL");
+  isUTF8 = (lc_all!=NULL && strstr(lc_all,"UTF-8"));
+  program_name = argv[0];
+
+  // environmental option take precedence on command-line options
+  switch(option){
+  case option_s: 
+    count_signif=1;
+    sortie_normalisee();
+    return 0;
+    break;
+  case option_o:
+  case option_l:
+    sortie_texte(option);
+    return 0;
+    break;
+  default: 
+    break;
+  }
   /*test_verbeux();*/
   sortie_normalisee();
   return 0;
+}
+
+double atof1(char* s){
+  /* like function atof, but spaces or tabs are eliminated */
+  /* from the input string */
+  char* s1=strdup(s);
+  int i,j,l;
+  double result;
+
+  l=strlen(s1);
+  for(i=0;i<l;i++){
+    while (i<l && (s1[i]==' ' || s1[i]=='\t')){
+      for(j=i+1; j<l; j++){
+	s1[j-1]=s1[j];
+      }
+      l--;
+      s1[l]=0;
+    }
+  }
+  result=atof(s1);
+  free(s1);
+  return result;
 }
