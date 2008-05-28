@@ -1,8 +1,7 @@
 // -*- coding: utf-8 -*-
 #include "chemeq.h"
-#include <math.h>
-#include <sstream>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 
 atome lesatomes[] ={
 {-1, "e"},
@@ -337,6 +336,74 @@ bool Molec::printNernst(std::ostream & o, const char * prefix){
   }
 }
 
+bool Molec::printNernstWIMS(std::ostream & o, bool wantedlatex){
+  if (iswater() || iselectron()) {
+    return false;
+  }
+  switch(t){
+  case sol : {
+    return false;
+  }
+  case aqueous :
+    if(wantedlatex){
+      o <<  "[" << *al;
+    }else{
+      o << "["; al->printnorm(o);
+    }
+    if (ch){
+      if(wantedlatex){
+	o << "^{";
+      }else{
+	o << "^";
+      }
+      if(fabs(1.0*ch)!=1) o << fabs(1.0*ch);
+      if(wantedlatex){
+	if(ch>0) o << "+}"; else o << "-}";
+      }else{
+	if(ch>0) o << "+"; else o << "-";
+      }
+    }
+    o  <<"]";
+    if (nb!=1) {
+      if(wantedlatex){
+	o << "^{";
+	if (nb.d==1){
+	  o << nb.i ;
+	}
+	else {
+	  o << "\\frac{" << nb.i << "}{" << nb.d << "}";
+	}
+	o << "}";
+      }else{
+	o << "^" << nb; 
+      }
+    }
+    return true;
+  case gas :
+    if(wantedlatex){
+      o << "P_{" << *al << "}";
+    }else{
+      o << "P_"; al->printnorm(o);
+    }
+    if (nb!=1) {
+      if(wantedlatex){
+	o << "^{";
+	if (nb.d==1){
+	  o << nb.i ;
+	}
+	else {
+	  o << "\\frac{" << nb.i << "}{" << nb.d << "}";
+	}
+	o << "}";
+      }else{
+	o << "^" << nb; 
+      }
+    }
+    return true;
+  }
+  return false;
+}
+
 bool Molec::iswater()const{
   if (t != aqueous) return 0;
   if (signature()==std::string("H_{2}O") || 
@@ -519,6 +586,23 @@ void Membre::printNernst(std::ostream & o){
   if (!printed) o << "1";
 }
 
+void Membre::printNernstWIMS(std::ostream & o, bool wantedlatex){
+  bool printed = false; 
+  bool addcomma = false;
+  for (int i=0; i<size(); i++) {
+    std::ostringstream w;
+    if (operator[](i)->printNernstWIMS(w,wantedlatex)){
+      if (addcomma) o << ", ";
+      o << w.str();
+      printed = true; 
+      addcomma = true;
+    } else {
+      addcomma = false;
+    }
+  }
+  if (!printed) o << "1";
+}
+
 std::ostream & operator << (std::ostream & o, const Membre & m){
   for(int i=0; i < m.size()-1; i++){
     o << *m[i] << "\\,+\\,";
@@ -574,7 +658,7 @@ void Chemeq::addChemeq(const Chemeq * c){
     fraction n1=nbelectron(), n2=c->nbelectron();
     long double e = e1+e2;
     fraction n=n1+n2;
-    if (n.i==0) val=expl(-e/R/T0);
+    if (n.i==0) val=exp(-e/R/T0);
     else val=-e*n.d/n.i/Faraday;
   } else {
     val=MINVAL;
@@ -591,7 +675,7 @@ void Chemeq::subChemeq(const Chemeq * c){
     long double e = e1-e2;
     fraction n=n1-n2;
     if (n.i==0) {
-      val=expl(-e/R/T0);
+    val=exp(-e/R/T0);
     } else{
       val=-e*n.d/n.i/Faraday;
     }
@@ -608,7 +692,7 @@ long double Chemeq::enthalpy() const{
   if (redox()){
     return -val*n.i/n.d*Faraday;
   } else {
-    return -R*T0*logl(val);
+    return -R*T0*log(val);
   }
 }
 
@@ -703,7 +787,9 @@ bool Chemeq::redox()const{
   return gauche->redox() || droit->redox();
 }
 
-void Chemeq::printNernst(std::ostream & o){
+void Chemeq::printNernst(std::ostream & o, 
+			 std::ostream & w, 
+			 bool wantedlatex){
   Membre * ga, * dr;
   if (!redox()){
     if (gauche->printableNernst()){
@@ -716,26 +802,47 @@ void Chemeq::printNernst(std::ostream & o){
     else {
       droit->printNernst(o);
     }
+    droit->printNernstWIMS(w,wantedlatex);
+    w << "; ";
+    gauche->printNernstWIMS(w,wantedlatex);
     if (val > MINVAL) {
       o << "\\,=\\,";
       if (cste!=std::string("")) o << cste << "\\,=\\,";
       o << valeur_latex();
+      if(wantedlatex){
+	w << "; " << valeur_latex();
+      }else{
+	w << "; " << val;
+      }
     }
     else{
       o << "\\,=\\,K";
+      w << "; K";
     }
   }
-  else{ /* c'est une réaction redox */
+  else{ /* c'est une réaction redox  */
     o << "E\\,=\\,";
+    if(wantedlatex){
+      w << "E\\,=\\,";
+    }else{
+      w << "E=";
+    }
     if (val > MINVAL) {
       o << val;
+      w << val << ";";
     }
     else{
       o << "E_{0}";
+      if(wantedlatex){
+	w << "E_{0};";
+      }else{
+	w << "E0;";
+      }
     }
     o << "\\,+\\,\\frac{R\\,T}{";
     o << gauche->nbelectron()+droit->nbelectron() << "\\,F}";
     o << "\\log";
+    w << gauche->nbelectron()+droit->nbelectron() << ";";
     if (gauche->redox()){ /* c'est une réduction */
       ga=gauche; dr=droit;
     }
@@ -743,17 +850,21 @@ void Chemeq::printNernst(std::ostream & o){
       ga=droit; dr=gauche;
     }
     if (dr->printableNernst()){
-	o << "\\frac{";
-	ga->printNernst(o);
-	o << "}{";
-	dr->printNernst(o);
-	o << "}";
-      }
-      else {
-	o << "(";
-	ga->printNernst(o);
-	o << ")";
-      }
+      o << "\\frac{";
+      ga->printNernst(o);
+      o << "}{";
+      dr->printNernst(o);
+      o << "}";
+    }
+    else {
+      o << "(";
+      ga->printNernst(o);
+      o << ")";
+    }
+    // implanter la sortie pour Wims ici.
+    dr->printNernstWIMS(w,wantedlatex);
+    w << "; ";
+    ga->printNernstWIMS(w,wantedlatex);
   }
 }
 

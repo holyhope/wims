@@ -114,7 +114,7 @@ nombre : Real {$$.r=$1.r;}
 ;
 
 volt : /* rien */
-| spc01 Atome {if ($2.s != std::string("V")) yyerror ("only 'V' allowed as unit"); }
+| spc01 Atome {if ($2.s.compare("V")!=0) yyerror ("only 'V' allowed as unit"); }
 ;
 
 id : Atome {/* $$.s contient le nom */}
@@ -266,6 +266,7 @@ int main(int argc, char * argv[]){
   char asked[maxoption+1]="";
   int i,ch;
   bool nooption=1;
+  std::ostringstream w;
 
   while (-1 != (ch=getopt(argc,argv,optstr))){
     optionadd(asked,optstr,ch);
@@ -285,6 +286,7 @@ int main(int argc, char * argv[]){
   } 
   yyparse();
 
+  bool wantedlatex=(strchr(asked,'l')!=NULL);
   if (isequation) {
     for(i=0; i<strlen(asked); i++){
       switch(asked[i]){
@@ -302,7 +304,8 @@ int main(int argc, char * argv[]){
 	std::cout << result.cq->equilibre() << std::endl;
 	break;
       case 'w': nooption=0;
-	result.cq->printNernst(std::cout); std::cout << std::endl;
+	result.cq->printNernst(std::cout,w,wantedlatex); std::cout << std::endl;
+	std::cout << w.str() << std::endl;
 	break;
       case 'n': nooption=0;
 	result.cq->normalise();
@@ -323,7 +326,7 @@ int main(int argc, char * argv[]){
       result.cq->printnorm(std::cout); std::cout << std::endl;
       std::cout << *result.cq << std::endl;
       std::cout << result.cq->equilibre() << std::endl;
-      result.cq->printNernst(std::cout); std::cout << std::endl;
+      result.cq->printNernst(std::cout,w); std::cout << std::endl;
       result.cq->printcount(std::cout); std::cout << std::endl;
       result.cq->normalise();
       result.cq->printnorm(std::cout); std::cout << std::endl;

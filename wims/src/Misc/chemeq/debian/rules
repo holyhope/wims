@@ -16,6 +16,9 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
+	version=$$(basename $$(pwd)| sed 's/chemeq-//'); \
+	sed "s/VERSION.*/VERSION \"$${version}\"/" src/chemeq.h > src/chemeq.h.tmp && \
+	mv src/chemeq.h.tmp src/chemeq.h
 
 	touch configure-stamp
 

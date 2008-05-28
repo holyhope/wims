@@ -2,14 +2,14 @@
 #ifndef CHEMEQ_H
 #define CHEMEQ_H
 
-#include <string.h>
+#include <cstring>
 #include <sstream>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <map>
 
-#define VERSION "2.2"
+#define VERSION "2.8"
 
 /* Constante d'Avogadro, recommandée par CODATA, 2006 */
 #define Avogadro 6.022141e+23
@@ -161,6 +161,7 @@ class Molec{
   void printweigh(std::ostream & o)const;
   void coeff( fraction f);
   bool printNernst(std::ostream & o, const char * prefix ="");
+  bool printNernstWIMS(std::ostream & o, bool wantedlatex);
   bool iswater()const;
   bool iselectron()const;
   fraction  nbelectron()const;
@@ -197,6 +198,7 @@ public:
   void printweight(std::ostream & o) const;
   void coeff( fraction f);
   void printNernst(std::ostream & o);
+  void printNernstWIMS(std::ostream & o, bool wantedlatex);
   int printableNernst();
   bool redox()const;
   fraction  nbelectron()const;
@@ -244,7 +246,7 @@ public:
   void printelec(std::ostream & o) const;
   void printspecies(std::ostream & o) const;
   void printweight(std::ostream & o) const;
-  void printNernst(std::ostream & o);
+  void printNernst(std::ostream & o, std::ostream & w, bool wantedlatex=false);
   std::string equilibre();
   bool redox()const;
   const std::string constante()const{ return cste;};
