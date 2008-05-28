@@ -12,7 +12,7 @@ slib_parms=12\
 [240,233,255],background color \
 [255,220,180],lines color \
 [10,10,10],dots color \
-void, function f(x) to be plotted \
+void, function f(x) or [x(t), y(t)] to be plotted \
 [], list of dots enclosed in brackets (the correct plot)\
 void,list of dots (an even count of coordinates : x1,y1,x2,y2,etc.)
 slib_author=Georges KHAZNADAR
@@ -21,7 +21,8 @@ slib_comment=if color are three numbers, \
 put them in brackets ; there may be no dots.<br>\
 See the other syntaxes in the slib graphpaper/millimetre
 slib_example= ,,,,,,,,,sin(x),[],0,0,1.2,1.5,2.4,3.2\
-12,8,0,0,1 max t (ms),1 max U (V),blue,red,[255,128,128],sin(x),[0,0,1.3,1.4,2.5,3],0,0,1.2,1.5,2.4,3.2 
+12,8,0,0,1 max t (ms),1 max U (V),blue,red,[255,128,128],sin(x),[0,0,1.3,1.4,2.5,3],0,0,1.2,1.5,2.4,3.2 \
+,,,,,,,,,[cos(6.28*t),sin(6.28*t)],[],0,0,1.2,1.5,2.4,3.2
 
  
 !exit
@@ -43,6 +44,8 @@ slib_point=!item 12 to -1 of $wims_read_parm
 !default slib_xs=1
 !default slib_ys=1
 !default slib_correct=[]
+
+slib_f = !declosing $slib_f
 
 slib_labx=!word 2 to -1 of $slib_xs
 slib_laby=!word 2 to -1 of $slib_ys
@@ -199,8 +202,18 @@ n1=!itemcnt $slib_correct
 !next i
 
 !! the function : blue thin curve
-slib_f = !replace internal x by ($slib_xs/10*(x-10*$slib_xo)) in $slib_f
-slib_f = 10*($slib_f)/$slib_ys+10*$slib_yo
+slib_n = !itemcnt $slib_f
+!if $slib_n = 1
+  slib_f = !replace internal x by ($slib_xs/10*(x-10*$slib_xo)) in $slib_f
+  slib_f = 10*($slib_f)/$slib_ys+10*$slib_yo
+!else
+  slib_x = !item 1 of $slib_f
+  slib_y = !item 2 of $slib_f
+  slib_x = 10*($slib_x/$slib_xs+$slib_xo)
+  slib_y = 10*($slib_y/$slib_ys+$slib_yo)
+  slib_f = $slib_x, $slib_y
+!endif
+
 slib_dessin=$slib_dessin\
 plot blue, $slib_f
 

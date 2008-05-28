@@ -4,16 +4,16 @@
 slib_title=Chemical components
 slib_parms=4\
  , chemical equation\
- , [optional] words separated by spaces, to be added to the html buttons\
- , [optional] the word 'htmlbuttons' followed by a space and a number\
- , [optional] the word 'shuffle'
+ , [optional] the word 'htmlbuttons' followed by a space and one number\
+ , [optional] the word 'shuffle'\
+ , [optional] a list of words to be appended, enclosed in brackets. Some words are magical: 'extra' expands to '+,->' ; 'redox_extra' expands to 'H^+_aq,OH^-_aq,H2O,e^-'.
 slib_author=Georges Khaznadar
 slib_license=GPL
 slib_out= Outputs a matrix of the reactives in the first line, and the products in \
-the second line. <p>If the parameter 'htmlbuttons' is specified, the output \
+the second line. <br>If the parameter 'htmlbuttons' is specified, the output \
 is some code to make clickable buttons; then, the number refers to a reply \
-field which will receive the results of the buttons' events. <p>If the \
-parameter 'shuffle' is specified, the buttons are shuffled. <p>These buttons \
+field which will receive the results of the buttons' events. <br>If the \
+parameter 'shuffle' is specified, the buttons are shuffled. <br>These buttons \
 can be made active if the following javascript code is added in the page: \
 <pre style="color:green;">\
 &lt;script type="text/javascript"&gt;\
@@ -28,26 +28,47 @@ function getInput(n){\
 }\
 function appendToInput(n,msg){\
   var i=getInput(n);\
-  i.value=i.value+msg;\
+  i.value=i.value+msg+' ';\
+  i.focus();\
 }\
 &lt;/script&gt;\
 </pre>
 
 slib_comment=use the syntax accepted by the command chemeq
 slib_example= MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O \
-MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O,, htmlbuttons 3 \
-MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O, + ->, htmlbuttons 2, shuffle
+MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O, htmlbuttons 3 \
+MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O, htmlbuttons 3,,[extra,redox_extra] \
+MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O, htmlbuttons 2, shuffle,[extra]
 
 !exit
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! TODO : find a way to accept the experimental "tex" feature
+!! this example should work but it does not:
+!! MnO4^- + 5 e^- + 8H^+ -> Mn^2+ + 4H2O, htmlbuttons 2, tex
+!! it should make nice graphic buttons with TeX rendered formulas
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 :proc
 
-!distribute items $wims_read_parm into slib_chem, slib_others, slib_html, slib_shuffle
+!distribute items $wims_read_parm into slib_chem, slib_html, slib_opt, slib_add
+
+slib_add=!declosing $slib_add
+
 !if htmlbuttons isin $slib_html
   !distribute words $slib_html into slib_html slib_n
 !endif
-!if void$slib_others!=void
-  slib_others=!words2items $slib_others
+
+!if shuffle isin $slib_opt
+  slib_shuffle=shuffle
+!else
+  slib_shuffle=
+!endif
+
+!if tex isin $slib_opt
+  slib_tex=tex
+!else
+  slib_tex=
 !endif
 
 chemeq_option=C
@@ -57,19 +78,45 @@ slib_c=!exec chemeq $slib_chem
 slib_c=!replace |[^,;]* by $empy in $slib_c
 slib_c=!replace [0-9]\+[ ] by $empy in $slib_c
 
+slib_add=!replace redox_extra by H^+_aq,OH^-_aq,H2O,e^- in $slib_add
+
+!if $slib_tex=tex
+  slib_c=!replace ; by , in $slib_c
+  slib_c1=
+  !for slib_component in $slib_c
+     chemeq_option=l
+     slib_component_tex=!exec chemeq $slib_component
+     slib_c1=!append item $slib_component_tex to $slib_c1
+  !next
+  slib_c=$slib_c1
+!endif
+
+slib_add=!replace extra by +,-> in $slib_add
+
+!if $slib_add != $empty
+  slib_c=$slib_c, $slib_add
+!endif
+
+
 !if $slib_html=htmlbuttons
   slib_c=!replace ; by , in $slib_c
-  !if void$slib_others!=void
-    slib_c=$slib_c, $slib_others
-  !endif
   slib_c=!listuniq $slib_c
   !if $slib_shuffle=shuffle
     slib_c=!shuffle $slib_c
   !endif
   slib_buttons=
-  !for slib_component in $slib_c
-    slib_buttons=$slib_buttons<input type='button' value='$slib_component' onClick='appendToInput($slib_n," $slib_component ")'>
-  !next slib_component
+  !if $slib_tex=tex
+    !!!!!!!!!!!!!! this feature should work but it does not !!!!!!!!!!!!!!!!!!
+    !for slib_component in $slib_c
+      slib_buttons=$slib_buttons<input type='button' value='\
+!instex $slib_component\
+' onClick='appendToInput($slib_n," $slib_component ")'>
+    !next slib_component
+  !else
+    !for slib_component in $slib_c
+      slib_buttons=$slib_buttons<input type='button' value='$slib_component' onClick='appendToInput($slib_n," $slib_component ")'>
+    !next slib_component
+  !endif
   slib_out=$slib_buttons
 !else
   slib_out=$slib_c
