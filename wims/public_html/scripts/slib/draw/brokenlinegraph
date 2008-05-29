@@ -23,59 +23,56 @@ slib_out=Les donn&eacute;es pour insdraw</li></ol>
 :proc
 slib_input=$wims_read_parm
 
-!distribute items $slib_input into xsize,ysize,marge,cadrage,point,colora,colorg,colorl,legendex,legendey
-slib_out=$slib_input
+!distribute items $slib_input into slib_xsize,slib_ysize,slib_marge,slib_cadrage,slib_point,slib_colora,slib_colorg,slib_colorl,slib_legendex,slib_legendey
 
-!default xsize=400
-!default ysize=400
-!default marge=20
-!default cadrage=[[0,0],[20,20]]
-!default colora=black
-!default colorl=black
-!default colorg=grey
-!default legendex=x
-!default legendey=y
+!default slib_xsize=400
+!default slib_ysize=400
+!default slib_marge=20
+!default slib_cadrage=[[0,0],[20,20]]
+!default slib_colora=black
+!default slib_colorl=black
+!default slib_colorg=grey
+!default slib_legendex=x
+!default slib_legendey=y
 
-cadrage=!declosing $cadrage
-!distribute item $cadrage into X,Y
-X=!declosing $X
-Y=!declosing $Y
-!distribute item $X into xmin,ymin
-!distribute item $Y into xmax,ymax
+slib_cadrage=!declosing $slib_cadrage
+!distribute item $slib_cadrage into slib_X,slib_Y
+slib_X=!declosing $slib_X
+slib_Y=!declosing $slib_Y
+!distribute item $slib_X into slib_xmin,slib_ymin
+!distribute item $slib_Y into slib_xmax,slib_ymax
 
-ex=$[($xsize-2*$marge)/($xmax-$xmin)]
-ey=$[-($ysize-2*$marge)/($ymax-$ymin)]
-x0=$[$marge]
-y0=$[$ysize-$marge]
+slib_ex=$[($slib_xsize-2*$slib_marge)/($slib_xmax-$slib_xmin)]
+slib_ey=$[-($slib_ysize-2*$slib_marge)/($slib_ymax-$slib_ymin)]
+slib_x0=$[$slib_marge]
+slib_y0=$[$slib_ysize-$slib_marge]
 
-point=!declosing $point
-repere=$empty
-coordpt=$empty
-nb=!itemcnt $point
-!for k=1 to $nb
- coord=!item $k of $point
- coord=!declosing $coord
- !distribute item $coord into x,y
- nbx=!charcnt $x
- nby=!charcnt $y
- nbx=$[$nbx*8]
- nby=$[$nby*8+4]
- y2=$[($y-$ymin)*$ey]
- x2=$[($x-$xmin)*$ex]
- coordpt=!append item $x0+$x2,$y0+$y2 to $coordpt
- repere=$repere\
-dlines $colorg,$x0,$y0+$y2,$x0+$x2,$y0+$y2,$x0+$x2,$y0\
-text $colora,$x0-$nby,$y0+$y2-5,medium,$y\
-text $colora,$x0+$x2-$nbx/2+4,$y0+10,medium,$x
-!next k
-dec=!charcnt $legendex
-dec=$[$dec*8+4]
-repere=$repere\
+slib_point=!declosing $slib_point
+slib_out=$empty
+slib_coordpt=$empty
+slib_nb=!itemcnt $slib_point
+!for slib_k=1 to $slib_nb
+ slib_coord=!item $slib_k of $slib_point
+ slib_coord=!declosing $slib_coord
+ !distribute item $slib_coord into slib_x,slib_y
+ slib_nbx=!charcnt $slib_x
+ slib_nby=!charcnt $slib_y
+ slib_nbx=$[$slib_nbx*8]
+ slib_nby=$[$slib_nby*8+4]
+ slib_y2=$[($slib_y-$slib_ymin)*$slib_ey]
+ slib_x2=$[($slib_x-$slib_xmin)*$slib_ex]
+ slib_coordpt=!append item $slib_x0+$slib_x2,$slib_y0+$slib_y2 to $slib_coordpt
+ slib_out=$slib_out\
+dlines $slib_colorg,$slib_x0,$slib_y0+$slib_y2,$slib_x0+$slib_x2,$slib_y0+$slib_y2,$slib_x0+$slib_x2,$slib_y0\
+text $slib_colora,$slib_x0-$slib_nby,$slib_y0+$slib_y2-5,medium,$slib_y\
+text $slib_colora,$slib_x0+$slib_x2-$slib_nbx/2+4,$slib_y0+10,medium,$slib_x
+!next slib_k
+slib_dec=!charcnt $slib_legendex
+slib_dec=$[$slib_dec*8+4]
+slib_out=$slib_out\
 linewidth 2\
-arrow $x0,$y0,$xsize,$y0,20,$colora\
-arrow $x0,$y0,$x0,0,20,$colora\
-lines $colorl,$coordpt\
-text $colora,$xsize-$dec,$ysize-$marge-20,medium,$legendex\
-text $colora,$marge+15,10,medium,$legendey
-
-slib_out=$repere
+arrow $slib_x0,$slib_y0,$slib_xsize,$slib_y0,20,$slib_colora\
+arrow $slib_x0,$slib_y0,$slib_x0,0,20,$slib_colora\
+lines $slib_colorl,$slib_coordpt\
+text $slib_colora,$slib_xsize-$slib_dec,$slib_ysize-$slib_marge-20,medium,$slib_legendex\
+text $slib_colora,$slib_marge+15,10,medium,$slib_legendey
