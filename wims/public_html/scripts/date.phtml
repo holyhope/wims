@@ -1,0 +1,15 @@
+!distribute item $wims_read_parm into slib_don,slib_option
+!default slib_don=$wims_now
+!let slib_day=!char 7 to 8 of $slib_don
+!let slib_month=!char 5 to 6 of $slib_don
+!let slib_year=!char 1 to 4 of $slib_don
+!let slib_hour=!char 10 to 17 of $slib_don
+!if $module_language=fr
+ !let slib_out=$slib_day/$slib_month/$slib_year
+!else
+ !let slib_out=$slib_year/$slib_month/$slib_day
+!endif
+!if notime notin $slib_option
+ !let slib_out=$slib_out - $slib_hour
+!endif
+$slib_out

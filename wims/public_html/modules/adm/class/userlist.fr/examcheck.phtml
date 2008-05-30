@@ -24,19 +24,21 @@ par $user_lastname, $user_firstname
   Voici les sessions d'examen effectuées par ce participant. Cliquez sur un
   exercice pour voir son contenu.
   <p>$table_header
-  $table_hdtr<th>Session</th><th>Examen</th><th>Score<small>/10</small></th>
+  $table_hdtr<th>Session</th><th>Examen</th><th>Score<small>/$scoremax</small></th>
   <th>Exercice</th><th>Début</th></tr>
   !for ses in $checksessions
    !for x in $(exam$ses)
     $table_tr<td><small>$ses</small></td>
     <td align=center>$x</td>
-    <td align=center>$(score$(ses)$x)</td><td>
+    <td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td><td>
     !for i in $(exo$(ses)$x)
      &nbsp;
      !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $i
     !next i
    !next x
-   </td><td><small>$(start$(ses)$x)</small></td>
+   </td><td><small>
+    !read date.phtml $(start$(ses)$x)
+   </small></td>
   !next t
   $table_end <p>
  !endif
