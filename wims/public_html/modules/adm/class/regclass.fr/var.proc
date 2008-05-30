@@ -4,7 +4,7 @@
 wims_prefix=class user tmp n sharing sharable
 !read adm/class/limits
 wims_helper=chapter=3&open=3_creat#creat
-
+!readproc names.phtml
 !if $wims_user=$empty
  !bound cltype within 0,2,4 default 0
  !distribute items $wims_class_regpass into regpass0,regpass2,regpass4
@@ -168,9 +168,7 @@ thisday=!char 7,8 of $today
 
 !if $step=1
  code=
- !if $Cltype notin 24
-  checklist=level,
- !else
+ !if $Cltype isin 24
   !reset level,checklist
  !endif
  !for i in $(checklist)institution,description,supervisor,email,password,passsup
@@ -202,7 +200,7 @@ thisday=!char 7,8 of $today
   !endif
  !endif
  ilevel=!char 1,2 of $level
- !if $Cltype notin 24 and $ilevel notwordof E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 U5 G R
+ !if $Cltype notin 24 and $ilevel notitemof $levelid
   error=bad_level
   !exit
  !endif
