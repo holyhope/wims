@@ -27,13 +27,25 @@ $desc<p>
  Contenu de l'examen&nbsp;:
 !! !href cmd=reply&job=student [rafraîchir cette page]
  !set activeexo=0
- <p><ul>
- !for i=1 to $exocnt
-  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti,de,op
-  !set de=!trim $de
-  <p><li>$i. 
-  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),3)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+  <center>
+ !endif
+ <table border=0 >
+  !for lig=1 to $maxlig
+   <tr>
+    !for col=1 to $maxcol
+     !let i=$[$col*$maxlig+$lig-$maxlig]
+     <td>
+      !if $i<=$exocnt
+!! --------------------------------------  debut de la ligne correspondant Ã  un exercice de l'examen
+ !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+ !distribute lines $ex into we,li,ti,de,op
+ !set de=!trim $de
+ <p><b>$i.</b> 
+ !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
     $ti (fait).
@@ -64,8 +76,19 @@ $desc<p>
   !else
    $ti.
   !endif
- !next i
- </ul>
+!! -------------------------------------------------------- fin d'affichage de la ligne correspondant Ã  un exercice
+      !else
+       &nbsp;
+      !endif
+     </td>
+     <td width="20">&nbsp;</td>
+    !next col
+   </tr>
+  !next lig
+ </table>
+ !if $maxcol>1
+  </center>
+ !endif
  !if $t_=no
   Cet examen est actuellement fermé pour votre connexion.
   !href cmd=reply&job=student Rafraichir cette page.
@@ -127,4 +150,5 @@ $desc<p>
 !tail
 
 !reset job
+
 
