@@ -1,58 +1,25 @@
-Il est prévu de mettre ici les collections audio qui seront utiles du 
-projet shtooka : http://shtooka.net/project
+Il est prévu de mettre ici les collections audio du 
+projet shtooka : http://shtooka.net/project  qui seront utiles 
 
-La structure qui est mise en suivante est la suivante :
+La structure mise en place est la suivante :
 
 1 - un dossier par packages audio du projet shtooka avec le fichier index.tags.txt
-ainsi que  index.tags.xml ultérieurement
+(ou ultérieurement le fichier index.xml).
 
-2- Dans le répertoire shtooka, des fichiers d'index par language 
-(distribution) ou correspondant à certains packages (dans les modules d'exercices)
-qui peuvent être produits par le script swac.pl et qui commencent 
-par le préfixe du langage. 
+2- des fichiers d'index par langage dans le dossier shtooka
+obtenus grâce au script swac.pl dont le nom commence par le
+préfixe du langage et reprenant le nom des tags swacs. 
 
-3- Dans chaque package, des fichiers d'index qui commencent par sw_ 
+
+3- Dans chaque sous-dossier (correspondant à un package),
+des fichiers d'index qui commencent par sw_ 
 Ces fichiers peuvent être générés par le script swac.pl 
-Ils reprennent le nom des tags swacs. 
-Ces fichiers sont  aussi créés lors de la compilation, ou lorsqu'on lance le script 
-(wims/)bin/mkindex, 
 
-Dans le répertoire shtooka, le fichier version contient la liste des packages
-pour lesquels les audio sont à chercher sur le serveur
+language=fra deu dut eng
+package=
 
-L'administrateur du site peut récupérer les bases de la manière suivante
-(projet à faire)
-
-package=eng-wcp-us eng-balm-verbs\
-fra-balm-voc fra-balm-conjug
-
-langage=fra eng
-for i in $package ; do
- wget http://packs.shtooka.net/$i/ogg/version;\
- mv version $i_version
- on compare à la version du serveur qui se trouve dans $i/version
-done;
- 
- [le fichier version n'existe pas encore !]
- http://packs.shtooka.net//
- 
- 
-package=deu-balm-alexandra ;\
-for i in $package ; do\
- wget http://packs.shtooka.net/$i/$i.mp3.tar;\
- tar xf $i.mp3.tar;\
- mkdir -p $i;\
- rm -r $i/mp3;\
- mv home/www/packs/$i/mp3 $i/mp3;\
- rm -r home;\
- rm $i.mp3.tar ;\
- cd $i;\
- wget http://packs.shtooka.net/$i/ogg/index.tags.txt ;\
- cd .. ;\
-done ;
-il faudrait changer pour obtenir de l'isolatin ...
 cd  shtooka ; 
-for i in $langage ; do\
+for i in $language ; do\
   swac.pl --lang=$i ;\
 done ; 
 for i in $package ; do\
@@ -60,3 +27,12 @@ for i in $package ; do\
   cd .. ; 
 done ; 
  
+ 
+Ces fichiers sont aussi créés lors de la compilation ou au lancement du script 
+(wims/)bin/mkindex.
+
+Dans le répertoire shtooka, le fichier version contient la liste des packages
+pour lesquels les mp3 ont été chargés (voir l'outil de maintenance du site).
+La mise à jour automatique n'est pas prévue pour l'instant.
+L'administrateur du site peut récupérer les bases de la manière suivante
+[voir le script manage.en/shtooka/shtooka.pl]

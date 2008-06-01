@@ -53,6 +53,7 @@ while ($_ = shift(@ARGV)) {
   elsif (/^--file=(.*)$/)    {  $file=$1;   }
   elsif (/^--lang=(.*)$/)    {  $lang=$1;   }
   elsif (/^--mode=(.*)$/)    {  $MODE=$1;   }
+  elsif (/^--modeout=(.*)$/) {  $MODE1=$1;  }
   else { 
     print STDERR "unknown option: $_\n" if (!/^--help$/);
     usage(); # includes --help !
@@ -214,8 +215,8 @@ sub sortuniq {
 sub out { my ($text, $file) = @_ ; 
   open( OUT, ">$file") ; 
   ## fichier ouvert en utf8 mais il y a toujours les problèmes d'encodage
-  if ($MODE eq 'utf8') {binmode OUT ,":utf8";}
-  print OUT $text ; 
+  if ($MODE1 eq 'utf8') {binmode OUT ,":utf8";} else {binmode OUT ,":iso-8859-1"};
+  print OUT $text ;
   close OUT ; 
 }
 
