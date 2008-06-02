@@ -2,7 +2,7 @@ cc=@CC@
 CFLAGS=@CFLAGS@
 
 units-filter : unites.o
-	$(cc) $(CFLAGS) -o units-filter unites.o -lfl
+	$(cc) $(CFLAGS) -o units-filter unites.o -lfl -lm -lrecode
 
 unites.o : unites.c
 	$(cc) $(CFLAGS) -c unites.c
@@ -12,4 +12,4 @@ unites.c : unites.l unites.y unites.h
 	bison  --verbose -o unites.c unites.y
 
 clean :
-	rm -f *~ *.o *.output units-filter
+	rm -f *~ unites.c *.o lex.yy.c *.output units-filter
