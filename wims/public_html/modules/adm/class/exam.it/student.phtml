@@ -1,3 +1,4 @@
+!set done=completato
 
 <center><h1>$wims_classname, $wims_institutionname<br>
 $title</h1>
@@ -27,16 +28,27 @@ $desc<p>
  Questo tema d'esame contiene i seguenti esercizi:
 !! !href cmd=reply&job=student [ricarica la pagina]
  !set activeexo=0
- <p><ul>
- !for i=1 to $exocnt
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),3)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+  <center>
+ !endif
+ <table border=0 class="wims_exam">
+  !for lig=1 to $maxlig
+   <tr>
+    !for col=1 to $maxcol
+     !let i=$[$col*$maxlig+$lig-$maxlig]
+      !if $i<=$exocnt
+!! -------------------------- debut de la ligne correspondant р un exercice de l'examen
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti,de,op
   !set de=!trim $de
-  <p><li>$i. 
+ <td>$i.</td> 
   !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    $ti (completato).
+    <td>$ti </td><td>$done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -45,10 +57,11 @@ $desc<p>
     !endif
     !if $dt=yes
      !advance activeexo
+     <td>
     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-.
+</td><td class="empty">&nbsp;</td>
      !if autogen iswordof $op and $wims_exam_remain!=$empty
-      !set ss=$(wims_session)_examt$(exam)t$i
+      !set ss=$(wims_session)t$(exam)t$i
       !set test=!defof w_cmd in wimshome/sessions/$ss/var
       !if $test=$empty
        !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
@@ -56,16 +69,23 @@ $desc<p>
       !endif
      !endif
     !else
-     <b><font color=red>$ti</font></b> (&Egrave; necessario
+     <td><b><font color=red>$ti</font></b> </td><td>&Egrave; necessario
      !href cmd=reply&job=student aver svolto con successo altri esercizi
-.)
+.</td>
     !endif
    !endif
   !else
-   $ti.
+   <td>$ti.</td><td class="empty"></td>
   !endif
- !next i
- </ul>
+!! ------------------------------fin d'affichage de la ligne correspondant ра un exercice
+      !endif
+    !next col
+   </tr>
+  !next lig
+ </table>
+ !if $maxcol>1
+  </center>
+  !endif
  !if $t_=no
   Accesso negato.
   !href cmd=reply&job=student Riprova.

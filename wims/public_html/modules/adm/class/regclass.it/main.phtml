@@ -51,11 +51,13 @@ $wims_html_header
  !endif
  <p>
  !if 4 isitemof $alltypes
-  !href cmd=reply&step=0&cltype=4 Portale
- di sede. (Per utenti esperti.)
+ Portale di
+  !href cmd=reply&step=0&cltype=4 sede
+. (Per utenti esperti.)
  !else
-  <font color=blue><strike>Portale</strike></font>
-  di sede. $noright
+Portale di
+  <font color=blue><strike>sede</strike></font>.
+  $noright
  !endif
  <p>
  <b>NOTA</b>. Un gruppo di corsi coordinati permette ai docenti
@@ -66,7 +68,6 @@ $wims_html_header
  globalmente i bisogni di una intera scuola: database degli studenti e
  dei docenti, diversi livelli di insegnamento, programmi e materie, classi,
  responsabilità dei docenti, ecc.
- <p>
  !goto end
 !endif
 
@@ -90,48 +91,44 @@ $wims_html_header
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
-  <input size=$instlim name=institution value="$institution"> <p>
+  <input size=$instlim name=institution value="$institution"><br>
+ </li>
  <li>Nome $name_classesss (al pi&ugrave; $desclim caratteri) :
-  <input size=$desclim name=description value="$description"> <p>
+  <input size=$desclim name=description value="$description"> <br>
+ </li>
+ 
  !if $Cltype notin 24
- <li>Livello $name_classesss:<br>
-  <center><table border=1>
-  <tr><th>anno
-  !for j=1 to 6
-   <td align=center>$j</td>
-  !next j
-  </tr>
-  !for i in E,H,U
-   <tr><td align=center>$(lev_$i)</td>
-   !for j=1 to 6
-    !if $i!=U or $j<6
-     <td><input type=radio name=level
-     !if $level=$i$j
-      checked
-     !endif
-     value=$i$j></td>
+ <li>Livello $name_classesss : 
+  <select name=level>
+   !for k=1 to $nblevel
+    !if $(levelid[$k])=$level
+     <option selected="" value=$(levelid[$k])>$(leveldesc[$k])</option>
     !else
-     <td>.</td>
+     <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
     !endif
-   !next j
-  !next i
-  </tr></table></center> <p>
+   !next k
+  </select>
+ </li>
  !endif
  <li>Nome completo del $name_sup $name_classesss (cio&egrave; voi):
-  <input size=$suplim name=supervisor value="$supervisor"> <p>
+  <input size=$suplim name=supervisor value="$supervisor"> <br>
+ </li>
  <li>Indirizzo di posta elettronica:
   <input size=$emaillim name=email value="$email"> 
   !if $regpolicy=email
   <br>
   (La creazione $name_classesss pu&ograve; essere completata solo se si
-  dispone di un indirizzo di posta elettronica funzionante.)<p>
+  dispone di un indirizzo di posta elettronica funzionante.)
   !endif
- <p>
+ <br>
+ </li>
+
  <li>Scegliere una password di gestione ($name_sup):
   <input size=16 type=password name=passsup> <br>
   (almeno 4 e non pi&ugrave; di 16 caratteri, numeri o lettere non accentate). <br>
   Questa passowrd permette di accedere alla gestione del $name_classe come $name_sup.
-  Non va resa nota ad altri. <p>
+  Non va resa nota ad altri. <br>
+ </li>
  <li>Scegliere la password $name_classesss:
   <input size=16 type=password name=password> <br>
   (da 4 a 16 caratteri, scelti tra numeri o lettere non accentate). <br>
@@ -147,7 +144,9 @@ Va comunicata ai docenti $name_classesss ;
 <br>
   Un corso senza password sar&agrave; accessibile da chiunque (ovunque
   su Internet), ed non &egrave; consentito senza l'autorizzazione esplicita
-  del manager del sito. <p>
+  del manager del sito. <br>
+ </li>
+
  <li>Data di termine del corso:
   <select name=exp_day>
   !for i=1 to 31
@@ -174,10 +173,13 @@ Va comunicata ai docenti $name_classesss ;
    !endif
    >$i
   !next i
-  </select> <p>
+  </select> <small>Cioè la data in cui il corso sarà automaticamente chiuso e archiviato.</small><br>
+ </li>
  <li>Numero limite di partecipanti al $name_classe:
   <input size=3 name=limit value="$limit">
-  (Questo server impone un massimo di $wims_class_user_limit.)<p>
+  <small>(Questo server impone un massimo di $wims_class_user_limit.)</small><br>
+</li>
+
  <li>Accesso da IP sicuro per il $name_sup:
   !default secure=all
   <input size=30 name=secure value="$secure"> <br>
@@ -187,7 +189,8 @@ Va comunicata ai docenti $name_classesss ;
   !if $Cltype<3
     Opzionale.
   !endif 
-  </small> <p>
+  </small> <br>
+ </li>
  </ul>
  <center><input type=submit value="Continua"></center>
  </form>
@@ -200,9 +203,10 @@ Va comunicata ai docenti $name_classesss ;
  Stai creando il  $name_classe $classname sul server WIMS @ $httpd_HTTP_HOST.
  Il corso è
   !if $Cltype iswordof 0 1
-  di livello
-  ``<b><font color=green>$name_level</font></b>'',
+  !let tmp=!positionof item $ilevel in $levelid
+  di livello ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
  !endif
+ attivo fino al $exp_day/$exp_month/$exp_year e 
  limitato a $ilimit partecipanti.
  !if $pword!=$empty
   Per accedere a questo $name_classesss è necessario conoscerne la password.
@@ -211,7 +215,7 @@ Va comunicata ai docenti $name_classesss ;
   Questo potrebbe creare un sovraccarico del server e, in caso di problemi,
   l'amministratore potrebbe dover sospendere o rimuovere il corso.
  !endif
- Il corso terminer&agrave; il $exp_day/$exp_month/$exp_year. <p>
+ <p>
  Ti preghiamo di
  !href module=$module&cmd=reply&step=0 correggere
  le informazioni errate. <p>Se &egrave; tutto corretto, inserisci di nuovo 
@@ -252,9 +256,9 @@ Va comunicata ai docenti $name_classesss ;
  Cara/o, $supervisor!<p>
  Il $name_classe $classname &egrave; ora attivo. Congratulazioni e
  buon lavoro!<p>
- Il corso &egrave; limitato a $ilimit participants (te incluso). 
+ Il corso &egrave; limitato a $ilimit utenti (te incluso). 
   !if $Cltype iswordof 0 1
-Il livello del corso &egrave; <font color=green>$name_level</font>.
+Il livello del corso &egrave; <font color=green>$(leveldesc[$tmp])</font>.
  !endif
  <p>
  !read links.phtml
