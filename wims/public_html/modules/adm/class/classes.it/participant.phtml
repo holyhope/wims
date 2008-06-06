@@ -29,7 +29,7 @@
 <p>$table_header
  <caption>Sedi e gruppi di corsi coordinati</caption>
  $table_hdtr
- <th>Nome<th>Gestore<th>Tipo di accesso<th>Registrazione
+ <th>Nome</th><th colspan=2>Studente</th><th>Gestore</th><th>Tipo di accesso</th>
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
@@ -47,7 +47,12 @@
   !endif
   
   $table_tr<td align=center>
-  !href module=$module&type=authparticipant&class=$code $show
+  !!!href module=$module&type=authparticipant&class=$code 
+  $show
+  </td> <td align=center>
+  !href module=$module&type=authparticipant&class=$code Accedi
+  </td> <td align=center>
+  !href module=adm/class/reguser&class=$code&subclass=yes Registrazione
   </td>  <td align=center>
   $supv
   </td> <td align=center>
@@ -56,9 +61,6 @@
  !else
   riservato
  !endif
- <td align=center>
- !href module=adm/class/reguser&class=$code&subclass=yes Registrazione
- </td>
 !next i
  $table_end <p>
 !endif
@@ -67,7 +69,8 @@
 <p>$table_header
  !if $superclass=$empty
   <caption>Corsi autonomi</caption>
- $table_hdtr<th>Nome corso<th>Docente<th>Livello<th>Tipo di accesso<th>Registrazione
+ $table_hdtr<th>Nome corso</th><th colspan=2>Studente</th>
+ <th>Docente</th><th>Livello</th><th>Tipo di accesso</th>
  !else
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
@@ -79,9 +82,11 @@
     !href cmd=reply&type=$type&superclass2=$sparent Torna su
    !endif
    </caption>
- $table_hdtr<th>Nome corso<th>Docente<th>Livello<th>Tipo di accesso<th>Registrazione
+   $table_hdtr
+   <th>Nome corso</th><th colspan=2>Studente</th>
+   <th>Docente</th><th>Livello</th><th>Tipo di accesso</th>
    !if $superclass!=$empty and $stype=4
-    <th>More
+    <th>Continua</th>
    !endif
  !endif
 !for i=1 to $clcnt
@@ -103,7 +108,15 @@
    !set show=$cl
   !endif
   $table_tr<td align=center>
-  !href module=$module&type=authparticipant&class=$code $show
+    $show
+  </td><td align=center> 
+  !href module=$module&type=authparticipant&class=$code Accedi
+  </td> <td align=center> 
+  !if $splevel=$empty or $splevel=2
+   !href module=adm/class/reguser&class=$code Registrazione
+  !else
+   <font color=grey>Registrazione</font>
+  !endif
   </td><td align=center>
   $supv
   </td><td align=center>$(n_$l_)<br>anno $y_</td>
@@ -111,19 +124,13 @@
   !if $pswd=$empty
    open
  !else
-  riservato
- !endif
- </td><td align=center>
-  !if $splevel=$empty or $splevel=2
-  !href module=adm/class/reguser?class=$code Registrazione
-  !else
-   <font color=grey>Registrazione</font>
+   riservato
   !endif
  </td>
    !if $superclass!=$empty and $stype=4
     <td>
     !if $ty!=1
-     !href cmd=reply&type=$type&superclass2=$code sottocorso
+     !href cmd=reply&type=$type&superclass2=$code $sousclasses
     !else
     -
     !endif

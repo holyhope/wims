@@ -1,11 +1,17 @@
 
 !if $directcnt>0
- Puoi passare direttamente a:<ul>
+ Puoi passare direttamente a:
+ <table class="wims_classes_direct">
  !for cl in $directlist
   !distribute words $cl into c_,u_
   !set n_=!defof class_institution, class_description in\
 	wimshome/log/classes/$c_/.def
-  <li>
+	!set ntype_=!defof class_typename in\
+	wimshome/log/classes/$c_/.def
+	!set ntype_ = !replace internal program by $(CL_Name[3]) in $ntype_
+	!set ntype_ = !replace internal portal by $(CL_Name[1])  in $ntype_
+	!set ntype_ = !replace internal class by $(CL_Name[2])  in $ntype_
+	!set ntype_ = !replace internal course by $(CL_Name[4]) in $ntype_
   !if $u_=supervisor
    !set t_=supervisor
   !else
