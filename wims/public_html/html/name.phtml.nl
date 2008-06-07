@@ -48,6 +48,9 @@
 	zo gauw deze pagina is geladen\
 	into wims_name_back,wims_name_examremain,wims_name_whenloaded
  !endif
+ !if _check isin $session
+  !let wims_page_name=Page
+ !endif
 !endif
 
 
