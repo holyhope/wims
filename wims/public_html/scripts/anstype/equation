@@ -1,3 +1,5 @@
+eqsign=!getopt eqsign in $(replyoption$i)
+
 rg1=!item 1 of $(replygood$i)
 rg2=!item 2 to -1 of $(replygood$i)
 rg1=!singlespace $rg1
@@ -24,7 +26,12 @@ t2=!trim $t2
 !if $t2!=$empty
  t=$t-($t2)
 !else
- reply$i=$t = 0
+  !if $eqsign=yes
+    test=NaN badform
+    !exit
+  !else
+   reply$i=$t = 0
+  !endif
 !endif
 
 m_reply$i=$(reply$i)
