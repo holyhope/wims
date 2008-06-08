@@ -1,0 +1,73 @@
+# Variable initialisation file.
+# This file is read by wims for new sessions.
+
+!read data/qpuzzle/photindex
+
+# check value of q
+q=!eval floor($q)
+!if $q = NaN or $q < 2 or $q > 11 or $q = 6 or $q = 10
+ q=
+!endif
+
+reply_cnt=0
+!default q=3
+# Reset reply values.
+r11=1
+r12=0
+r21=0
+r22=1
+xr=0
+yr=0
+
+xt=!randint 0,$q-1
+yt=!randint 0,$q-1
+
+:randmatrix
+!for x=1 to 2
+ !for y=1 to 2
+  a$x$y=!randint 0,$q-1
+ !next y
+!next x
+
+# If matrix is non invertible: redo random
+!if $q=4 or $q=8 or $q=9
+ !read data/qpuzzle/table.F$q
+ s=!item $a11+1 of $(mul$a22)
+ t=!item $a21+1 of $(mul$a12)
+ !ifval $s = $t
+  !goto randmatrix
+ !endif
+!else
+ det=!eval ($a11*$a22-$a21*$a12)%$q
+ !if $det = 0
+  !goto randmatrix
+ !endif
+!endif
+
+# Identity matrix is too trivial.
+!if $a11=1 and $a22=1 and $a12=0 and $a21=0
+  !goto randmatrix
+!endif
+
+# choose photo
+n=!itemcnt $photolist
+!if $model = $empty or $model = random
+ i=!randint 1,$n
+ photoname=!item $i of $photolist
+ photoright=!item $i of $photorights 
+!else
+ model=!word 1 of $model
+ photoname=$model
+ !for i=1 to $n
+  na=!item $i of $photolist
+  !if $na=$model
+   photoright=!item $i of $photorights 
+   !break
+  !endif
+ !next i
+!endif
+
+wims_module_log=$cmd: $photoname F$q
+status=waiting
+found=no
+

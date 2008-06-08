@@ -1,0 +1,44 @@
+
+<table border=3 align=left>
+<tr><th colspan=$[$q+2]>$addtable</th>
+<tr align=center><td $opcolor>+</td>
+<td align=center rowspan=$[$q+2]>
+!for j=0 to $q-1
+ <td $hdcolor>$(el$j)</td>
+!next j
+<tr><td colspan=$[$q+1]></tr>
+!for i=0 to $q-1
+ <tr align=center><td $hdcolor>$(el$i)
+ !for j=0 to $q-1
+  !if $field=prime
+   !set t=!eval ($i+$j)%$q
+  !else
+   !set t=!item $i+1 of $(add$j)
+  !endif
+  <td align=center>$(el$t)</td>
+ !next j
+!next i
+</table>
+
+<table border=3>
+<tr><th colspan=$[$q+2]>$multable</th>
+<tr align=center><td $opcolor>*</td>
+<td rowspan=$[$q+2]>
+!for j=0 to $q-1
+ <td $hdcolor>$(el$j)
+!next j
+<tr><td colspan=$[$q+1]></tr>
+!for i=0 to $q-1
+ <tr align=center><td $hdcolor>$(el$i)
+ !for j=0 to $q-1
+  <td align=center>
+  !if $field=prime
+   !set t=!eval ($i*$j)%$q
+  !else
+   !set t=!item $i+1 of $(mul$j)
+  !endif
+  $(el$t)
+ !next j
+!next i
+</table> <p> <p>
+

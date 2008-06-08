@@ -1,0 +1,103 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+F=F
+Z=Z
+r=<i>r</i>
+
+!if $cmd=reply and $status=waiting
+ reply_cnt=$[$reply_cnt+1]
+!endif
+try_cnt=$[$reply_cnt+1]
+
+# Computation of the locations of pieces
+
+!if $q=4 or $q=8 or $q=9
+
+ field=notprime
+ !read data/qpuzzle/table.F$q
+ !for x = 0 to $q-1
+  !if $x<=1
+   el$x=$x
+  !else
+   el$x=$r<sup>$[$x-1]</sup>
+  !endif
+  !for y = 0 to $q-1
+   s=!item $a11+1 of $(mul$x)
+   t=!item $a12+1 of $(mul$y)
+   x1=!item $s+1 of $(add$t)
+   x1=!item $x1+1 of $(add$xt)
+
+   s=!item $a21+1 of $(mul$x)
+   t=!item $a22+1 of $(mul$y)
+   y1=!item $s+1 of $(add$t)
+   y1=!item $y1+1 of $(add$yt)
+
+   s=!item $r11+1 of $(mul$x1)
+   t=!item $r12+1 of $(mul$y1)
+   xx=!item $s+1 of $(add$t)
+   xx=!item $xx+1 of $(add$xr)
+
+   s=!item $r21+1 of $(mul$x1)
+   t=!item $r22+1 of $(mul$y1)
+   yy=!item $s+1 of $(add$t)
+   yy=!item $yy+1 of $(add$yr)
+
+   n$(xx)_$yy=$x.$y
+  !next y
+ !next x
+
+ s=!item $r11+1 of $(mul$r22)
+ t=!item $r21+1 of $(mul$r12)
+ !for i = 1 to $q
+  j=!item $i of $(add$t)
+  !if $j = $s
+    det=!eval $i-1
+    break
+  !endif
+ !next i
+
+!else q=p
+
+ field=prime
+ !for x = 0 to $q-1
+ el$x=$x
+  !for y = 0 to $q-1
+   x1=($a11*$x+$a12*$y+$xt)%$q
+   y1=($a21*$x+$a22*$y+$yt)%$q
+   xx=!eval ($r11*$x1+$r12*$y1+$xr)%$q
+   yy=!eval ($r21*$x1+$r22*$y1+$yr)%$q
+   n$(xx)_$yy=$x.$y
+  !next y
+ !next x
+ det=!eval ($r11*$r22-$r21*$r12)%$q
+
+!endif q or p
+
+!if $det = 0
+ !for x = 0 to $q-1
+  !for y = 0 to $q-1
+   !if $(n$(x)_$y) = $empty
+    n$(x)_$y = bad
+   !endif
+  !next y
+ !next x
+!endif
+
+!if $n0_0=0.0 and $n1_0=1.0 and $n0_1=0.1 and $status=waiting and $reply_cnt>0
+ found=yes
+ wims_module_log=success after $reply_cnt tries from $httpd_REMOTE_HOST
+ wims_print_precision=4
+ module_score=$[10*($q-1)/$reply_cnt]
+ !if $module_score>10
+  module_score=10
+ !endif
+ status=found
+!endif
+
+!if $cmd=help
+ hdcolor=bgcolor=#D0D060
+ opcolor=bgcolor=#A0A0A0
+!endif
+
+

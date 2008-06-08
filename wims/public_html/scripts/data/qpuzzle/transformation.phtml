@@ -1,0 +1,73 @@
+
+!if $found = yes
+<center><table cellspacing=0 cellpadding=0 border=0>
+!set leftp=<font size=+3> (&nbsp;</font>
+!set rightp=<font size=+3>) </font>
+!for i = 1 to 2
+ <tr>
+ !if $i = 1
+  <td rowspan=2>
+  !instex $$$$ {x\choose y}\longmapsto\bigg( $$$$
+ !endif
+ !for j = 1 to 2
+  <td>&nbsp;$(el$(r$i$j)) &nbsp; </td>
+ !next j
+ !if $i = 1
+  <td rowspan=2>
+  !instex $$$$ \bigg)\cdot{x\choose y}+\bigg( $$$$
+ !endif
+ <td>
+ !set t=!word $i of $xr $yr
+ $(el$t)
+ </td>
+ !if $i = 1
+  <td rowspan=2>
+  !instex $$$$ \bigg) $$$$
+ !endif
+!next i
+</table></center>
+
+!else found != yes
+
+<center><table cellspacing=0 cellpadding=0 border=0>
+!set leftp=<font size=+3> (&nbsp;</font>
+!set rightp=<font size=+3>) </font>
+!for i = 1 to 2
+ <tr>
+ !if $i = 1
+  <td rowspan=2>
+  !instex $$$$ {x\choose y}\longmapsto\bigg( $$$$
+ !endif
+ !for j = 1 to 2
+  <td><select name=r$i$j>
+   !for s = 0 to $q-1
+    <option value=$s
+    !ifval $s=$(r$i$j)
+     selected
+    !endif
+    >&nbsp;$(el$s)&nbsp;
+   !next s
+  </select></td>
+ !next j
+ !if $i = 1
+  <td rowspan=2>
+  !instex $$$$ \bigg)\cdot{x\choose y}+\bigg( $$$$
+ !endif
+ !set j = !word $i of xr yr
+ <td><select name=$j>
+  !for s = 0 to $q-1
+   <option value=$s
+   !ifval $s=$($j)
+    selected
+   !endif
+   >&nbsp;$(el$s)&nbsp;
+  !next s
+  </select></td>
+ !if $i = 1
+  <td rowspan=2>
+  !instex $$$$ \bigg) $$$$
+ !endif
+!next i
+</table></center>
+
+!endif found =? yes

@@ -1,0 +1,61 @@
+#! /bin/sh
+# This is a script to break a gif photo into pieces.
+
+cd `dirname $0`
+flydraw=../../../../other/bin/flydraw
+
+list=`cd photos; ls *.gif | sed 's/.gif$//'`
+
+for name in $list
+do
+if [ "$name" = "small" ]; then continue; fi
+if [ -f pieces/$name/2/p.0.0.gif ]; then continue; fi
+
+photo=photos/$name.gif
+siz=`(identify -verbose '%x:%y' $photo | grep -i 'geometry:' \
+     | grep -iv page | awk '{print $2}') 2>/dev/null`
+if [ -z "$siz" ]; then
+ echo ImageMagick missing in your system. Impossible to cut photos.
+ echo Program aborted.
+ exit
+fi
+sizex=`echo $siz | awk -F x '{print $1}'`
+sizey=`echo $siz | awk -F x '{print $2}'`
+echo Cutting photo $name: $sizex x $sizey
+
+mkdir -pm 755 pieces/$name
+
+for q in 2 3 4 5 7 8 9 11
+do
+ if [ ! -d pieces/$name/$q ]; then mkdir -m 755 pieces/$name/$q; fi
+ xp=`expr $sizex / $q`
+ yp=`expr $sizey / $q`
+ xpp=`expr $xp - 1`
+ ypp=`expr $yp - 1`
+ x=0
+ while [ $x -lt $q ]; do
+  xstart=`expr $xp \* $x`
+  xend=`expr $xstart + $xp - 2`
+  y=0
+  while [ $y -lt $q ]; do
+   ystart=`expr $yp \* \( $q - $y - 1 \)`
+   yend=`expr $ystart + $yp - 2`
+   $flydraw pieces/$name/$q/p.$x.$y.gif <<@ >/dev/null
+new
+size $xpp,$ypp
+copy 0,0,$xstart,$ystart,$xend,$yend,$photo
+@
+   y=`expr $y + 1`
+  done
+  x=`expr $x + 1`
+ done
+ $flydraw pieces/$name/$q/p.bad.gif <<@ >/dev/null
+new
+size $xp,$yp
+fill 0,0,0,0,0
+@
+ chmod a+r pieces/$name/$q/*.gif
+done
+
+done
+
