@@ -10,9 +10,21 @@
   !default reply$i=!item 1 of $tt
  !endif
 !endif
+
+!set inputoption=!replace internal $	$ by $\
+$ in $inputsize
+!set inputsize=!line 1 of $inputoption
+!set inputoption=!line 2 to -1 of $inputoption
+!set option=!line 1 of $inputoption
+!if $option issametext default
+  !set option=class="wims_oef_input"
+  !set inputoption=!line 2 to -1 of $inputoption
+!endif
+!set inputoption=$option $inputoption
+
 !if $wims_read_parm!=noprompt
  <tr><td align=right>$(replyname$i)&nbsp;=<td>
 !endif
 !bound inputsize between integer 1 and 100 default 20
-<input size=$inputsize name=reply$i value="$(reply$i)">
-!reset inputsize
+<input size=$inputsize name=reply$i value="$(reply$i)" $inputoption>
+!reset inputsize inputoption option
