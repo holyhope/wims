@@ -14,6 +14,9 @@
 
 extra=!getopt extra in $(replyoption$i)
 output=!getopt output in $(replyoption$i)
+!if $output notwordof coord nocoord formal nothing
+  output=
+!endif
 replyoption$i=!replace internal weights by weight in $(replyoption$i)
 weight=!getopt weight in $(replyoption$i)
 weight=!replace internal & by , in $weight
@@ -174,13 +177,14 @@ $ in $yourlistformal
 
 ##liste des objets avec commentaires (fichier coord) on le place ici pour pouvoir
 ## analyser les polygones
-yourlistcoord=
+!if $output iswordof coord nocoord
+yourlist$output=
 !for a = 1 to $ynamecnt
    ob=!line $a of $yourlist_name
    M_objet=!replace internal = by , in $ob
    M_objet=!replace internal -(( by = in $M_objet
    M_objet=!replace internal )) by in $M_objet
-   type=!nospace $(M_objet[2])coord
+   type=!nospace $(M_objet[2]) $output
    ob1=$ob
    ob=$($type)
    !if $(M_objet[2]) issametext segment   
@@ -189,9 +193,10 @@ yourlistcoord=
        ob=     
      !endif 
    !endif
-   yourlistcoord = !append line $ob to $yourlistcoord
+   yourlist$output = !append line $ob to $(yourlist$output)
    !reset type M_objet
 !next
+!endif
 
 yourlist1=!replace internal [ by , in $yourlistformal
 yourlist1=!replace internal ] by  in $yourlist1
@@ -470,6 +475,11 @@ mylist2_cnt=!linecnt $mylist2
 mylist2orig=$mylist2
 ###inachevé, à completer
 ### transforme certaines conditions formelles en conditions numériques
+!if $precision>12
+   pr=13
+!else
+   pr=$precision
+!endif
 !for p= 1 to $mylist2_cnt
   ligne=!line $p of $mylist2
   ligne=!replace internal = by , in $ligne
@@ -502,6 +512,14 @@ mylist2orig=$mylist2
   !endif
   !if $(ligne[2]) iswordof $w_middle
     ligne_num=$(ligne[1])=x_$(ligne[3])+x_$(ligne[4])/2)),(y_$(ligne[3])+y_$(ligne[4])/2)
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $(ligne[1]) iswordof $w_angle
+	ligne_num=abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[2])+i*(y_$(ligne[3])-y_$(ligne[2]))))*180/pi-$(ligne[7]))<10^(-$pr)
+    mylist2=!replace line number $p by $ligne_num in $mylist2
+  !endif
+  !if $(ligne[1]) iswordof $w_anglegeom 
+	ligne_num=abs(abs(arg((x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3])))/(x_$(ligne[2])-x_$(ligne[3])+i*(y_$(ligne[2])-y_$(ligne[3])))))*180/pi-abs($(ligne[6])))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $(ligne[2]) iswordof $w_bissector
@@ -898,7 +916,6 @@ displaylist2=
   ### remplacer les égalités par des conditions numériques sans demander à l'utilisateur de la faire ?? 
   #### il faudrait remplacer les && (et les ||) par des lignes (commencant par &&), remplacer les lignes où il y a ==
   ### par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
-
   check=!exec pari ($cond)
   !if $check=$empty
     check=0
