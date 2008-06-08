@@ -11,7 +11,7 @@ Chaque ligne contient des instructions d'une des formes suivantes
 <pre>
 n,"condition numérique", texte
 f,"condition formelle",texte
-n,"condition numérique-formelle",texte
+n,"condition numérique avec syntaxe formelle",texte
 </pre>
 Le texte est un texte qui apparaît dans l'analyse de réponse. 
 Si aucun texte n'est mis, un texte par défaut est construit à partir 
@@ -64,17 +64,21 @@ obligatoire.) Dans le cas d'égalité, utiliser le test <tt>==</tt>. Il est recomm
 de faire des tests d'inégalité plutôt que des égalités :<tt> abs(x_c-1.2)<10^(-6)</tt>
 par exemple, plutôt que <tt>x_c==1.2</tt>. 
 </li>
-<li><tt>"condition numérique-formelle"</tt>La syntaxe est la même que pour les
-conditions formelles mais l'analyse est faite numériquement avec une 
+<li><tt>"condition numérique avec syntaxe formelle"</tt>La syntaxe est similaire à celle des conditions formelles mais l'analyse est faite numériquement avec une 
 très grande précision (par défaut 10^(-18)). Les noms des objets à 
-l'intérieur des commandes doivent être donnés.
+l'intérieur des commandes doivent tous être donnés.
 Le remplacement numérique est fait à l'aide des données numériques 
 de la réponse de l'utilisateur.
+Seules quelques commandes sont disponibles (voir liste ci-dessous).
 <p>
 Exemple :
 <pre>
 n,a=Droite[A,B] -> a doit être la droite passant par A et B (vérification numérique)
 </pre>
+Commandes disponibles :
+<pre>a=Droite[A,B] -> a doit être la droite passant par A et B</pre>
+<pre>AngleOriente[A,B,A,C]=-30 -> l'angle orienté (AB,AC) doit mesurer -30°</pre>
+<pre>Angle[A,B,C]=30 -> l'angle géométrique ABC doit mesurer 30°</pre>
 </li>
 </ul>
 
@@ -103,7 +107,7 @@ showToolBar (default : true)
 showMenuBar (default : false)
 showResetIcon(default : true)
 showToolBarHelp(default : true)
-enableRightClick(default : true)
+enableRightClick(default : false)
 showAlgebraInput(default : false)
 customToolBar
 file
@@ -146,6 +150,7 @@ l'auteur de l'exercice.)
 La différence se trouve dans la manière dont les objets construits par l'utilisateur
 sont réaffichés dans l'analyse de la réponse :
 <ul><li><tt>coord</tt> : les coordonnées des objets sont affichés</li>
+<li><tt>nocoord</tt> : seuls les noms des objets construits sont affichés</li>
 <li><tt>formal</tt> : les relations formelles sont affichées si elles existent</li>
 <li><tt>nothing</tt> : aucun affichage</li>
 </ul>
