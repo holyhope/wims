@@ -1,0 +1,29 @@
+!goto $wims_read_parm
+
+:def
+title=Etendue des données avec poids
+synonyme=etendue statistique avec poids, poids etendue
+input=data2d
+!exit
+
+:proc
+f=
+!for i=1 to $cnt
+ t=!line $i of $fml
+ t=!item 1 of $t
+ f=!append item $[$t] to $f
+!next i
+fml=!sort numeric item $f
+min=!item 1 of $f
+max=!item -1 of $f
+result=$[$max-($min)]
+!exit
+
+:output
+<center>
+Etendue = $result
+(max = $max, min = $min)
+</center> <p>
+Données : $cnt nombre avec poids { $fml3 }
+!exit
+

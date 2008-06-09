@@ -1,0 +1,31 @@
+!goto $wims_read_parm
+
+:def
+title=Data range
+synonyme=statistic range, range of data, range of 1d data
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+fml=
+!for i=1 to $cnt
+ t=!item $i of $formula
+ fml=!append item $[$t] to $fml
+!next i
+fml=!sort numeric item $fml
+min=!item 1 of $fml
+max=!item -1 of $fml
+result=$[$max-($min)]
+!exit
+
+:output
+
+<center>
+Range = $result
+(max = $max, min = $min)
+</center> <p>
+Data: $cnt numbers { $formula }
+!exit
+

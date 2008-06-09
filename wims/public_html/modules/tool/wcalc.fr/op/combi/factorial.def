@@ -1,0 +1,26 @@
+!goto $wims_read_parm
+
+:def
+title=Factorielle
+input=integer
+!exit
+
+:proc
+result=!exec pari print(($formula)!);
+test=!varlist $formula
+!exit
+
+:output
+
+La factorielle :
+!if + isin $formula or - isin $formula or * isin $formula or / isin $formula or \
+	^ isin $formula or $test!=$empty
+ !htmlmath ($formula)!
+!else
+ !htmlmath $formula!
+!endif
+ =
+!insmath $result
+ .
+!exit
+

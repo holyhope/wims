@@ -1,0 +1,30 @@
+
+!goto $wims_read_parm
+
+:def
+title=Integration
+synonyme=antiderivative, anti-derivative,indefinite integral
+input=function
+!exit
+
+:proc
+x=!word 1 of $variable
+!if $x=$empty
+ t=!varlist nofn $formula
+ t=!sort reverse nocase item $t
+ x=!item 1 of $t
+!endif
+!default x=x
+
+result=!exec maxima integrate($formula,$x);
+!if integrate isin $result
+ result=
+!endif
+fn=!texmath $formula
+rs=!texmath $result
+!exit
+
+:output
+!instex $$$$ \int \left($fn\right)d$x = $rs + C $$$$
+!exit
+

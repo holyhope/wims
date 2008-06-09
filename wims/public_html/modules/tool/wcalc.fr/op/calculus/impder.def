@@ -1,0 +1,69 @@
+
+!goto $wims_read_parm
+
+:def
+title=Dérivée implicite
+synonyme=differentiation de fonction implicite, derivee de fonction implicite
+input=equation
+!exit
+
+:proc
+
+formula=!item 1 of $formula
+t=!varlist nofn $formula
+t=!listintersect $t and p,q,r,s,t,u,v,w,x,y,z,P,Q,R,S,T,U,V,W,X,Y,Z
+t=!sort nocase item $t
+vcnt=!itemcnt $t
+!if $vcnt<2
+ error=bad_formula
+ !exit
+!endif
+eq==
+!if $eq isin $formula
+ fml=!translate $eq to , in $formula
+ !distribute items $fml into f1, f2
+ !if $f2=$empty
+  error=bad_formula
+  !exit
+ !endif
+ fml=$f1 - ($f2)
+!else
+ fml=$formula
+ formula=$formula = 0
+!endif
+
+variable=!items2words $variable
+x=!word 1 of $variable
+!if $x=$empty
+ x=!item 1 of $t
+!endif
+remain=!listcomplement $x in $t
+maxima_header=f:$fml;dx:diff(f,$x,1);
+
+msrc=
+!for i in $remain
+ msrc=!append line -dx/diff(f,$i,1); to $msrc
+!next i
+result=!exec maxima $msrc
+!exit
+
+:output
+Dérivée de la fonction implicite
+!htmlmath $formula
+ par rapport à $x:
+<p><center>
+!for i=1 to $vcnt-1
+ !set v=!item $i of $remain
+ !set q=!line $i of $result
+ !if $q!=$empty
+  !if $vcnt<=2
+   <p>d$v/d$x =
+  !else
+   <p>$m_partial$v/$m_partial$x =
+  !endif
+  !htmlmath $q
+ !endif
+!next i
+</center> <p>
+!exit
+

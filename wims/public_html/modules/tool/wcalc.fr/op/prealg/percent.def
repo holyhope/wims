@@ -1,0 +1,38 @@
+!goto $wims_read_parm
+
+:def
+title=Pourcentage
+synonyme=percents
+input=function
+!exit
+
+:proc
+
+formula=!rawmath $formula
+formula2=!rawmath $formula2
+formula2=!trim $formula2
+!if abs($formula2)<=0
+ formula2=
+!endif
+
+wims_print_precision=$[min(5,$precision)]
+!if $formula2!=$empty
+ result=$[100*($formula)/($formula2)]
+!else
+ result=$[($formula)*100]
+!endif
+
+!exit
+
+:output
+!if $formula2!=$empty
+ !htmlmath $formula
+ est $result% de
+ !htmlmath $formula2
+ .
+!else
+ !htmlmath $formula
+ = $result%.
+!endif
+!exit
+

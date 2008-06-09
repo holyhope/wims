@@ -1,0 +1,46 @@
+!goto $wims_read_parm
+
+:def
+title=Résoudre un système linéaire
+synonyme=solution de systeme, systeme lineaire
+input=equations
+!exit
+
+:proc
+
+fml=!lines2items $formula
+fml=!replace , by , $ in $fml
+eqcnt=!itemcnt $fml
+fml=!rawmath $fml
+vars=!varlist $fml
+
+result=!exec maxima print(linsolve([$fml],[$vars]));
+
+result=!declosing $result
+result=!replace , by , $ in $result
+result=!trim $result
+!if $result=$empty
+ error=solve_fail
+!endif
+
+!exit
+
+:output
+Solution(s) de
+!if $eqcnt>1
+ {
+ !htmlmath $fml
+ }
+!else
+ !htmlmath $fml
+!endif
+&nbsp;:
+<p><center>
+!insmath $result
+</center> <p>
+!if r1 isvarof $result
+ Où r<sub>1</sub>, r<sub>2</sub>, ... sont des paramètres arbitraires.
+!endif
+
+!exit
+

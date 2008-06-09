@@ -1,0 +1,33 @@
+!header
+
+!if $wims_mode=popup
+ !changeto popup.phtml
+!endif
+
+!if $operation=$empty
+ Ce module est une calculatrice mono-étape, qui peut faire beaucoup de types
+ de calculs.
+ <p>
+ Vous pouvez utiliser le formulaire d'entrée ci-dessous pour envoyer
+ directement votre requête de calcul, mais ce module est principalement conçu 
+ pour servir de calculatrice popup, via la 
+ !href module=tool/popup base de données des formulaires popup
+.
+ !goto form
+!endif
+
+<p>
+!if $error!=$empty
+ !read msg.phtml
+!else
+ !read op/$opr.def output
+!endif
+
+:form
+<p><hr> <p>
+!read form.phtml
+!href cmd=renew Rafraichir
+.
+
+!tail
+

@@ -1,0 +1,56 @@
+!goto $wims_read_parm
+
+:def
+title=Tracé de données 2D
+synonyme=2D tracee de donnees, donnees 2d tracee, 2d donnees tracee,\
+	tracées du nuage de points, nuage de points
+input=data2d
+!exit
+
+:proc
+
+cnt=!linecnt $fml
+l1=!line 1 of $fml
+!distribute item $l1 into x1,y1
+xmin=$[$x1]
+xmax=$[$x1]
+ymin=$[$y1]
+ymax=$[$y1]
+insplot_data=$[$x1] $[$y1]
+!for i=2 to $cnt
+ l=!line $i of $fml
+ !distribute item $l into x_,y_
+ xmin=$[min($xmin,$x_)]
+ xmax=$[max($xmax,$x_)]
+ ymin=$[min($ymin,$y_)]
+ ymax=$[max($ymax,$y_)]
+ insplot_data=!append line $[$x_] $[$y_] to $insplot_data
+!next i
+
+xrange=$[max((abs($xmin)+abs($xmax))/10000,0.000000001)]
+yrange=$[max((abs($ymin)+abs($ymax))/10000,0.000000001)]
+xdiff=$[max($xrange,0.1*($xmax-($xmin)))]
+x1=$[$xmin-$xdiff]
+x2=$[$xmax+$xdiff]
+ydiff=$[max($yrange,0.1*($ymax-($ymin)))]
+y1=$[$ymin-$ydiff]
+y2=$[$ymax+$ydiff]
+
+insplot_set=size $[$picx/500], $[$picy/400]
+!insplot [$x1:$x2] [$y1:$y2] 'insplot_data' notitle with points pt 4
+result=$ins_out
+!if getins notin $result
+ result=
+!endif
+
+!exit
+
+:output
+
+<center>
+$result
+</center> <p>
+Données tracées : $cnt couples { $fml3 }
+<p>
+!exit
+

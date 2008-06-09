@@ -1,0 +1,62 @@
+!goto $wims_read_parm
+
+:def
+title=Triangle with given sides
+synonyme=triangle with sides
+input=triangsides
+!exit
+
+:proc
+!distribute item $[-0.1*$s3],$[1.1*$s3],$[-0.2*$s3],$s3\
+	into X1, X2, Y1, Y2
+pari_precision=20
+result=!exec pari s1=$S1;s2=$S2;s3=$S3; x=0.5*(s3^2+s2^2-s1^2)/s3;print(x);\
+	y=sqrt(s2^2-x^2);print(y);\
+	area=0.5*s3*y;print(area);\
+	r1=atan(y/x);print(r1);\
+	r2=atan(y/(s3-x));print(r2);\
+	r3=pi-r1-r2;print(r3);\
+	d1=r1*180/pi;print(d1);\
+	d2=r2*180/pi;print(d2);\
+	d3=r3*180/pi;print(d3);\
+	h1=area/s1*2;print(h1);\
+	h2=area/s2*2;print(h2);\
+	h3=area/s3*2;print(h3);\
+	ri=2*area/(s1+s2+s3);print(ri);\
+	rc=(s1*s2*s3)/(4*area);print(rc);
+!distribute lines $result into x,y,area,r1,r2,r3,d1,d2,d3,h1,h2,h3,ri,rc
+result=$x,$y
+insdraw_size=200,200
+!exit
+
+:output
+Triangle with 3 sides
+!htmlmath $formula
+&nbsp;:
+<br><center>
+!insdraw xrange $X1,$X2\
+yrange $Y1,$Y2\
+linewidth 2\
+polygon blue,0,0,$s3,0,$x,$y\
+fcircle 0,0,6,red\
+fcircle $s3,0,6,red\
+fcircle $x,$y,6,red\
+text black,$s3*0.4,-0.05*$s3,small,$s3\
+text black,0.55*$x,0.5*$y,small,$s2\
+text black,0.53*($s3+$x),0.6*$y,small,$s1\
+text red,-0.08*$s3,0,small,A\
+text red,1.05*$s3,0,small,C\
+text red,$x+0.05*$s3,$y+0.08*$s3,small,B
+
+</center> <br>
+Area = $[$area]<br>
+Angle A = $[$d1]&deg; = $[$r1] radians<br>
+Angle B = $[$d3]&deg; = $[$r3] radians<br>
+Angle C = $[$d2]&deg; = $[$r2] radians<br>
+Altitude to side AB = $[$h2]<br>
+Altitude to side BC = $[$h1]<br>
+Altitude to side AC = $[$h3]<br>
+Incircle radius = $[$ri]<br>
+Circumcircle radius = $[$rc]
+!exit
+

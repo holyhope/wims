@@ -1,0 +1,26 @@
+!goto $wims_read_parm
+
+:def
+title=Somme des données
+synonyme=donnees somme
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!sum x for x in $formula
+!else
+ result=0
+!endif
+
+!exit
+
+:output
+
+!replace , by $ + $ in $formula
+<br> = 
+!htmlmath $result
+!exit
+

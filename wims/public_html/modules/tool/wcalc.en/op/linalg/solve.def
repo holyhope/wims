@@ -1,0 +1,46 @@
+!goto $wims_read_parm
+
+:def
+title=Solve linear system
+synonyme=linear solve, system solve, solve system
+input=equations
+!exit
+
+:proc
+
+fml=!lines2items $formula
+fml=!replace , by , $ in $fml
+eqcnt=!itemcnt $fml
+fml=!rawmath $fml
+vars=!varlist $fml
+
+result=!exec maxima print(linsolve([$fml],[$vars]));
+
+result=!declosing $result
+result=!replace , by , $ in $result
+result=!trim $result
+!if $result=$empty
+ error=solve_fail
+!endif
+
+!exit
+
+:output
+Solution(s) of
+!if $eqcnt>1
+ {
+ !htmlmath $fml
+ }
+!else
+ !htmlmath $fml
+!endif
+&nbsp;:
+<p><center>
+!insmath $result
+</center> <p>
+!if r1 isvarof $result
+ Where r<sub>1</sub>, r<sub>2</sub>, ... are arbitrary parameters.
+!endif
+
+!exit
+

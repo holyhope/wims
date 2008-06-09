@@ -1,0 +1,45 @@
+#! /bin/sh
+
+dicsort_separator=':'
+w_dictionary=dic/syno
+w_suffix_dictionary=dic/suffix
+w_translator_unknown=leave
+export dicsort_separator w_dictionary w_suffix_dictionary w_translator_unknown
+export wims_exec_parm
+#dic/dicsort dic/syno
+#mv dic/syno.sorted dic/syno
+mkdir -p ind
+
+cat >dic/cmd <<@
+1d:
+2d:
+3d:
+4d:
+@
+
+cnt=0
+for i in `find op -name '*.def'`
+do
+ base=`echo $i | sed 's/\.def$//;s!^op/!!'`
+ index=`echo $base | tr / @`
+ if [ ! -f ind/$index ] || [ ind/$index -ot $i ]; then
+  get=`awk -F'=' '$1=="title" || $1=="synonyme" {print $2};
+ 	$1=="!exit" {exit}' $i |
+	tr 'çéèêëúùûüáàâäãóòôöõíìïîñýÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑÝ' 'ceeeeuuuuaaaaaoooooiiiinyCEEEEUUUUAAAAAOOOOOIIIINY' |
+	tr "[A-Z]\-\012\'" '[a-z] , ' | sed 's/,/, /g' | tr -s '[:blank:]' ' '`
+  wims_exec_parm="$get"
+  got=`exec dic/translator | tr , '\012' | sed 's/^ //' | sort | uniq`
+  echo "$got" | awk '{print $0":'$base'"}' >ind/$index
+ fi
+ cat ind/$index >>dic/cmd
+ echo $base
+ cnt=$(($cnt+1))
+done
+echo $cnt commands.
+
+dic/dicsort dic/cmd
+mv dic/cmd.sorted dic/cmd
+rm -fR ind 2>/dev/null
+
+
+

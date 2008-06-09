@@ -1,0 +1,43 @@
+!goto $wims_read_parm
+
+:def
+title=Approximation rationnelle
+synonyme=approximation par un nombre rationnel
+input=function
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>1
+ error=bad_formula
+ !exit
+!endif
+
+range=!rawmath $range
+range=!trim $range
+!if $range=$empty
+ error=empty_data
+ !exit
+!endif
+range=$[floor($range)]
+!if NaN isin $range or Inf isin $range or $range<2
+ error=bad_formula
+ !exit
+!endif
+
+result=!exec pari bestappr($formula,$range)
+
+!exit
+
+:output
+
+La meilleurs approximation par un nombre rationnel
+avec dénominateur au plus $range&nbsp;:
+<p><center>
+!htmlmath $formula
+ $m_approx $result
+</center>
+
+!exit
+

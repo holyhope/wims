@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Moyenne géométrique
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!product x for x in $formula
+ result=$[($result)^(1/$cnt)]
+!else
+ result=1
+!endif
+
+!exit
+
+:output
+
+<center>
+Moyenne géométrique =
+!htmlmath $result
+</center> <p>
+Données : $cnt nombres { $formula }
+<p>
+<b>Rappel.</b>
+La <em>moyenne géométrique</em> de {<i>x</i><sub>1</sub>,
+<i>x</i><sub>2</sub>, ..., <i>x<sub>n</sub></i>} est égale à
+!set ins_align=middle
+!instex $$$$ \left(\prod_{i=1}^n x_i\right)^{1/n} $$$$
+.
+!exit
+

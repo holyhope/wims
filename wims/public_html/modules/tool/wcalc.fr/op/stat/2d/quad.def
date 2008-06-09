@@ -1,0 +1,75 @@
+!goto $wims_read_parm
+
+:def
+title=Regression quadratique 2D
+synonyme=regression quadratique
+input=data2d
+!exit
+
+:proc
+cnt=!linecnt $fml
+pari_header=data=[$fml2];x1=sum(t=1,$cnt,data[t,1]);\
+	x2=sum(t=1,$cnt,data[t,1]^2);\
+	x3=sum(t=1,$cnt,data[t,1]^3);\
+	x4=sum(t=1,$cnt,data[t,1]^4);\
+	y0=sum(t=1,$cnt,data[t,2]);\
+	y1=sum(t=1,$cnt,data[t,1]*data[t,2]);\
+	y2=sum(t=1,$cnt,data[t,1]^2*data[t,2]);\
+	sol=matsolve([x4,x3,x2;x3,x2,x1;x2,x1,$cnt],[y2;y1;y0]);
+result=!exec pari print(sol[1,1])\
+	print(sol[2,1])\
+	print(sol[3,1])
+
+test=!linecnt $result
+!if $test<3
+ result=
+ !exit
+!endif
+!distribute lines $result into a,b,c
+result=!rawmath $a*x^2 + $b*x + $c
+
+l1=!line 1 of $fml
+!distribute item $l1 into x1,y1
+xmin=$[$x1]
+xmax=$[$x1]
+ymin=$[$y1]
+ymax=$[$y1]
+insplot_data=$[$x1] $[$y1]
+!for i=2 to $cnt
+ l=!line $i of $fml
+ !distribute item $l into x_,y_
+ xmin=$[min($xmin,$x_)]
+ xmax=$[max($xmax,$x_)]
+ ymin=$[min($ymin,$y_)]
+ ymax=$[max($ymax,$y_)]
+ insplot_data=!append line $[$x_] $[$y_] to $insplot_data
+!next i
+
+xrange=$[max((abs($xmin)+abs($xmax))/10000,0.000000001)]
+yrange=$[max((abs($ymin)+abs($ymax))/10000,0.000000001)]
+xdiff=$[max($xrange,0.1*($xmax-($xmin)))]
+x1=$[$xmin-$xdiff]
+x2=$[$xmax+$xdiff]
+ydiff=$[max($yrange,0.1*($ymax-($ymin)))]
+y1=$[$ymin-$ydiff]
+y2=$[$ymax+$ydiff]
+
+insplot_set=size $[$picx/500], $[$picy/400]
+!insplot [$x1:$x2] [$y1:$y2] 'insplot_data' notitle with points pt 4, $result notitle
+ins=$ins_out
+!if getins notin $ins
+ result=
+!endif
+
+!exit
+
+:output
+Equation quadratique :
+!htmlmath y = $result
+<p><center>
+$ins
+</center> <p>
+Données tracées : $cnt couples { $fml3 }
+<p>
+!exit
+

@@ -1,0 +1,68 @@
+
+!goto $wims_read_parm
+
+:def
+title=Intégrale définie
+input=function
+!exit
+
+:proc
+formula=!singlespace $formula
+formula=!item 1 of $formula
+formula=!rawmath $formula
+x=!word 1 of $variable
+!if $x=$empty
+ t=!varlist nofn $formula
+ t=!sort reverse item $t
+ x=!item 1 of $t
+!endif
+!default x=x
+range1=!trim $range1
+range2=!trim $range2
+!if $range1=$empty or $range2=$empty
+ error=empty_data
+ !exit
+!endif
+range1=!rawmath $range1
+range2=!rawmath $range2
+range1=!nospace $range1
+range2=!nospace $range2
+range1=!lower $range1
+range2=!lower $range2
+range1=!mathsubst infinity=inf in $range1
+range1=!mathsubst infini=inf in $range1
+range1=!mathsubst -inf=minf in $range1
+range2=!mathsubst infinity=inf in $range2
+range2=!mathsubst infini=inf in $range2
+range2=!mathsubst -inf=minf in $range2
+
+!if inf notvarof $formula and minf notvarof $formula
+ result=!exec pari print(intnum($x=$range1,$range2,$formula,3));
+!endif
+!if (. isin $result and . notin $formula$range1$range2) or $result=$empty
+ res2=!exec maxima integrate($formula,$x,$range1,$range2);
+ res2=!lower $res2
+ !if $res2!=$empty and . notin $res2 and integrate notin $res2
+  t1=!char -2,-1 of $result
+  t2=!char 1 to -3 of $result
+  !if ($t1=.0 and $t2=$res2) or $result=$empty
+   result=$res2
+  !else
+   result=$result = $res2
+  !endif
+ !endif
+!endif
+fn=!texmath $formula
+range1=!mathsubst inf=infinity in $range1
+range1=!mathsubst minf=-infinity in $range1
+range2=!mathsubst inf=infinity in $range2
+range2=!mathsubst minf=-infinity in $range2
+r1=!texmath $range1
+r2=!texmath $range2
+rs=!texmath $result
+!exit
+
+:output
+!instex $$$$ \int_{$r1}^{$r2}\left($fn\right)d$x = $rs $$$$
+!exit
+

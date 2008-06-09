@@ -1,0 +1,63 @@
+!header
+
+!if $compute=yes
+ !if $swout=$empty
+  Your code did not give any output from <em>$SW</em>.
+ !else
+  Answer by <em>$SW</em> :
+  !if $sw=draw
+   <img align=middle src=$swout>
+   !goto after
+  !endif
+  !if $sw=povray
+   <img align=middle src=$swout>
+   !goto after
+  !endif
+<pre>
+$swout
+</pre>
+ !endif
+!else
+ This tool allows you to run most WIMS-interfaced software or
+ computer languages directly online. Just type in your code and get the
+ result!
+ !href cmd=help Click here
+ for software documentations.
+ <p>
+ WIMS developers can also use this as a testing tool, to check the behavior of
+ various software under WIMS.
+ <p>
+ For security reasons, code length is limited to 16K, and access to system
+ resources is strictly controled. Note also that some software may be missing on
+ a given server. Please check with the webmaster.
+!endif
+
+:after
+!if $msg!=$empty
+ <p><hr> <p>
+ Error message from <em>$SW</em> :
+<font color=red><small><pre>
+$msg
+</pre></small></font>
+!endif
+
+<p><hr> <p>
+!form reply
+<input type=submit value=Execute>
+the following lines by
+!default sw=sh
+!formselect sw list $swlist prompt $swname
+$ : <small>[ 
+!href cmd=renew Clean up
+ ] [ 
+!href cmd=help Help
+ ]</small>
+<br>
+!set src=!reinput $src
+!set src=!replace internal &amp;#36; by &#36; in $src
+<textarea wrap=off cols=70 rows=15 name=src>$src</textarea>
+</form>
+
+!tail
+
+!reset src sw

@@ -1,0 +1,63 @@
+!goto $wims_read_parm
+
+:def
+title=Solution numérique
+synonyme=resoudre numeriquement
+input=equation
+!exit
+
+:proc
+
+fml=!singlespace $formula
+fml=!translate = to $\
+$ in $fml
+l=!linecnt $fml
+!if $l>2
+ error=bad_formula
+ !exit
+!endif
+!distribute lines $fml into l1,l2
+!default l2=0
+fml=$l1 - ($l2)
+fml=!rawmath $fml
+var=!translate ,; to $    $ in $variable
+var=!trim $var
+var=!word 1 of $var
+!default var=x
+!default range1=-100
+!default range2=100
+range1=$[$range1]
+range2=$[$range2]
+!if NaN isin $range1 $range2 or Inf isin $range1 $range2 or \
+	abs($range1-$range2)*1000000<abs($range1+$range2)
+ error=bad_range
+ !exit
+!endif
+!if $range1>$range2
+ !exchange range1,range2
+!endif
+
+pari_precision=$precision
+result=!exec pari print(solve($var=$range1,$range2,$fml))
+
+result=!trim $result
+!if $result=$empty
+ error=solve_fail
+!endif
+
+!exit
+
+:output
+!set eq= =
+!if $eq isin $formula
+ Solution de
+!else
+ Racine de
+!endif
+!htmlmath $formula
+ pour $var dans [$range1,$range2]:
+<p><center>
+!insmath $result
+</center> <p>
+!exit
+

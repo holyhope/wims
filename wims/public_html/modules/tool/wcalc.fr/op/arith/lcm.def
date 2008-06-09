@@ -1,0 +1,37 @@
+!goto $wims_read_parm
+
+:def
+title=Plus Petit Commun Multiple
+synonyme=ppcm
+input=list
+!exit
+
+:proc
+
+n=!itemcnt $formula
+!if $n<=1
+ result=$[$formula]
+ !exit
+!endif
+
+u=!item 1 of $formula
+v=!item 2 of $formula
+u=!rawmath $u
+v=!rawmath $v
+src=lcm($u,$v)
+!if $n>2
+ !for i=3 to $n
+  v=!item $i of $formula
+  v=!rawmath $v
+  src=lcm($src,$v)
+ !next i
+!endif
+result=!exec pari $src
+!exit
+
+:output
+
+!htmlmath ppcm($formula) = $result
+ .
+!exit
+

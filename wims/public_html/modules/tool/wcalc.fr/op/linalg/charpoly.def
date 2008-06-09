@@ -1,0 +1,38 @@
+!goto $wims_read_parm
+
+:def
+title=Polynôme caractéristique
+synonyme=charpoly
+input=square_matrix
+!exit
+
+:proc
+result=!exec pari charpoly([$mat])
+!exit
+
+:output
+!set pars=$[max(min($rows,10),1)]
+<center>
+<table border=0 cellpadding=2>
+!for i=1 to $rows
+ !set l=!line $i of $formula
+ <tr>
+ !if $i=1
+  <td nowrap rowspan=$rows>A = $(m_leftpar$pars)
+ !endif
+ !for j=1 to $cols
+  !set k=!item $j of $l
+  <td nowrap align=center>$k
+ !next j
+ !if $i=1
+  <td nowrap rowspan=$rows>$(m_rightpar$pars)
+ !endif
+!next i
+
+</table></center> <p>
+Le polynôme caractéristique de A est
+!htmlmath $result
+ .
+
+!exit
+

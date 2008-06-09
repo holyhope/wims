@@ -1,0 +1,59 @@
+!goto $wims_read_parm
+
+:def
+title=Convertir en fraction
+synonyme=fraction
+input=function
+!exit
+
+:proc
+
+formula=!rawmath $formula
+t=!varlist nofn $formula
+!for v in $t
+ s=!charcnt $v
+ !if $s=1 and $v!=e
+  error=bad_formula
+  !exit
+ !endif
+!next v
+
+pari_precision=50
+result=!exec pari d=contfracpnqn(contfrac($formula)); print(d[1,1])\
+	print(d[2,1])\
+	print(d[1,2])\
+	print(d[2,2])\
+	print(abs(d[1,1]/d[1,2]-$formula))\
+	print(d[2,1]/d[2,2])
+
+!distribute lines $result into n1,d1,n2,d2,diff,ratio
+
+!exit
+
+:output
+
+!if $result!=$empty
+ <table border=0 cellspan=0 cellspacing=0>
+ !if $diff>0 and $ratio>10
+  <tr><td nowrap rowspan=3>
+  !htmlmath $formula
+  &nbsp;=&nbsp;&nbsp;
+  <td align=center>$n1</td>
+  <td nowrap rowspan=3>&nbsp;&nbsp;$m_approx&nbsp;&nbsp;
+  <td align=center>$n2</td><td rowspan=3>&nbsp;.
+  <tr><td nowrap><hr size=2 noshade></td><td nowrap><hr size=2 noshade></td>
+  <tr><td align=center>$d1</td><td align=center>$d2</td>
+ !else
+  <tr><td nowrap rowspan=3>
+  !htmlmath $formula
+  &nbsp;=&nbsp;&nbsp;
+  <td align=center>$n1</td>
+  <td rowspan=3>&nbsp;.
+  <tr><td nowrap><hr size=2 noshade></td>
+  <tr><td align=center>$d1</td>
+ !endif
+ </table>
+!endif
+
+!exit
+

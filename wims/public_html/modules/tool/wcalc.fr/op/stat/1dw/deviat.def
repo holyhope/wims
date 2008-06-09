@@ -1,0 +1,31 @@
+!goto $wims_read_parm
+
+:def
+title=Ecart-type avec poids
+synonyme=poids ecart type
+input=data2d
+!exit
+
+:proc
+
+pari_header=dmat=Mat([$fml2]);w=sum(x=1,$cnt,dmat[x,2]);\
+	mean=(dmat[,1]~*dmat[,2])/w;\
+	dev=sqrt(sum(x=1,$cnt,dmat[x,2]*(dmat[x,1]-mean)^2)/(w));
+result=!exec pari print(dev);\
+	print(w);
+!distribute lines $result into result, totweight
+
+!exit
+
+:output
+
+<center>
+Ecart-type avec poids =
+!htmlmath $result
+</center> <p>
+Données : $cnt nombres avec poids { $fml3 } (total des poids = $totweight).
+<p>
+(Ecart-type de la population entière.)
+<p>
+!exit
+

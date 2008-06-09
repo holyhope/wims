@@ -1,0 +1,44 @@
+
+!goto $wims_read_parm
+
+:def
+title=Factorisation
+synonyme=factoriser, factorise
+input=function
+!exit
+
+:proc
+vars=!varlist nofn $formula
+!if $vars=$empty
+ result=!exec pari print(factor($formula));
+ factor_html=
+ result=!translate ; to $\
+$ in $result
+ result=!trim $result
+ fn=!linecnt $result
+ !for k from 1 to $fn
+  ii=!line $k of $result
+  !distribute items $ii into base,power
+  !if $k>1
+    factor_html=$factor_html <font color=green>&times;</font>
+  !endif
+  factor_html=$factor_html $base
+  !ifval $power != 1
+    factor_html=$factor_html<sup>$power</sup>
+  !endif
+ !next k
+!else
+ result=!exec maxima factor($formula);
+!endif
+!exit
+
+:output
+!htmlmath $formula
+ =
+!if $vars=$empty
+ $factor_html
+!else
+ !htmlmath $result
+!endif
+!exit
+

@@ -1,0 +1,81 @@
+!goto $wims_read_parm
+
+:def
+title=Triangle avec sommets donnés
+synonyme=triangle avec sommets
+input=data2d
+!exit
+
+:proc
+!if $cnt!=3
+ error=bad_formula
+ !exit
+!endif
+!distribute lines $fml into A,B,C
+pari_header=M=[$fml2]; A=M[1,]; B=M[2,]; C=M[3,];\
+	t1=B-C; s1=sqrt(t1[1]^2+t1[2]^2);\
+	t2=A-C; s2=sqrt(t2[1]^2+t2[2]^2);\
+	t3=A-B; s3=sqrt(t3[1]^2+t3[2]^2);
+result=!exec pari print(s1);\
+	print(s2);\
+	print(s3);\
+	area=abs(t1[1]*t2[2]-t1[2]*t2[1])/2;print(area);\
+	r1=acos((t2[1]*t3[1]+t2[2]*t3[2])/(s2*s3));print(r1);\
+	r2=acos(-(t1[1]*t3[1]+t1[2]*t3[2])/(s1*s3));print(r2);\
+	r3=pi-r1-r2;print(r3);\
+	d1=r1*180/pi;print(d1);\
+	d2=r2*180/pi;print(d2);\
+	d3=r3*180/pi;print(d3);\
+	h1=area/s1*2;print(h1);\
+	h2=area/s2*2;print(h2);\
+	h3=area/s3*2;print(h3);\
+	ri=2*area/(s1+s2+s3);print(ri);\
+	rc=(s1*s2*s3)/(4*area);print(rc);\
+	bc=(A+B+C)/3; print(bc);
+!distribute lines $result into s1,s2,s3,area,r1,r2,r3,d1,d2,d3,h1,h2,h3,\
+	ri,rc,bc
+l=!nonempty lines $result
+c=!linecnt $l
+!if $c<16
+ result=
+!endif
+insdraw_size=200,200
+!exit
+
+:output
+Triangle du plan avec 3 sommets
+!distribute items $fml3 into aa,bb,cc
+!htmlmath A = $aa, B = $bb, C = $cc
+&nbsp;:<p>
+Coté AB = $[$s3]<br>
+Coté BC = $[$s2]<br>
+Coté AC = $[$s1]<br>
+Aire = $[$area]<br>
+Angle A = $[$d1]&deg; = $[$r1] radians<br>
+Angle B = $[$d3]&deg; = $[$r3] radians<br>
+Angle C = $[$d2]&deg; = $[$r2] radians<br>
+Hauteur du côté AB = $[$h2]<br>
+Hauteur du côté BC = $[$h1]<br>
+Hauteur du côté AC = $[$h3]<p>
+Rayon du cercle inscrit = $[$ri]<br>
+Rayon du cercle circonscrit = $[$rc]<br>
+Barycentre = ($bc)<br>
+
+<center>
+!!insdraw xrange $X1,$X2\
+yrange $Y1,$Y2\
+linewidth 2\
+polygon blue,0,0,$s3,0,$x,$y\
+fcircle 0,0,6,red\
+fcircle $s3,0,6,red\
+fcircle $x,$y,6,red\
+text black,$s3*0.4,-0.05*$s3,small,$s3\
+text black,0.55*$x,0.5*$y,small,$s2\
+text black,0.53*($s3+$x),0.6*$y,small,$s1\
+text red,-0.08*$s3,0,small,A\
+text red,1.05*$s3,0,small,C\
+text red,$x+0.05*$s3,$y+0.08*$s3,small,B
+
+</center> <br>
+!exit
+

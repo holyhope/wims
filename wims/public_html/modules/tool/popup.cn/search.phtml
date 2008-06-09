@@ -1,0 +1,93 @@
+
+!if $gotcnt=0
+ !if $srch=$empty
+  !exit
+ !endif
+ !if $module!=home
+  抱歉, 没有有关 <em><font color=red>$search</font></em> 的内容.
+ <p>
+ !endif
+ 此弹出计算器表格的数据库尚在试验阶段. 服务器已经把这次失败记录下来,
+ 使得作者知道用户的需求, 以便以后改进. 感谢你的耐心.
+ !exit
+!endif
+
+!set gotm=!item 1 to 20 of $gotm
+!if .. isin $gotm
+ !reset gotm
+!endif
+
+!for s in $gotm
+ !set vars=!record 5 of $formdir/$s.def
+ !set vars=!nonempty lines $vars
+ !if $vars!=$empty
+  !set n_=!linecnt $vars
+  !for i=1 to $n_
+   !set l_=!line $i of $vars
+   !set var_$i=!randitem $l_
+  !next i
+ !endif
+ 
+ !set ops=!record 2 of $formdir/$s.def
+ !set submits=!record 3 of $formdir/$s.def
+ !set content=!record 4 of $formdir/$s.def
+ 
+ !set ops=!nonempty lines $ops
+ !set ocnt=!linecnt $ops
+ !reset oplist
+ !for op=1 to $ocnt
+  !set ol=!line $op of $ops
+  !distribute items $ol into n_,v_
+  !set n_=!word 1 of $n_
+  !if $n_!=$empty and $v_!=$empty
+   !set op_$n_=$v_
+   !set oplist=!append item $n_ to $oplist
+  !endif
+ !next op
+ !set oplist=!listcomplement module,size,color,precision in $oplist
+ 
+ !set submits=!translate internal " to $ $ in $submits
+ !set submits=!nonempty lines $submits
+ !set scnt=!linecnt $submits
+ !for su=1 to $scnt
+  !set sl=!line $su of $submits
+  !distribute items $sl into n_,v_
+  !set n_=!word 1 of $n_
+  !if $v_!=$empty
+   !if $n_!=$empty
+    !set N_=NAME=$n_
+   !else
+    !reset N_
+   !endif
+   !set submit$su=<INPUT TYPE=SUBMIT $N_ VALUE="$v_" $jsdef>
+  !endif
+ !next su
+
+ !default op_size=$default_size
+ !default op_module=$default_module
+ !default op_color=$default_color
+ !default op_precision=$default_precision
+ !set content=!nonempty lines $content
+ <!--     Independent calculator form: $s     -->
+ <FORM TARGET=$winname NAME=calcform ACTION="$wims_ref_name">
+ <INPUT TYPE=HIDDEN NAME=session VALUE=popup> $sizeinput
+ <INPUT TYPE=HIDDEN NAME=module VALUE=$op_module>
+ <INPUT TYPE=HIDDEN NAME=precision VALUE=$op_precision>
+ !for o in $oplist
+ <INPUT TYPE=HIDDEN NAME=$o VALUE="$(op_$o)">
+ !next o
+ <TABLE WIDTH=90% BORDER=0 CELLSPACING=0 CELLPADDING=3 BGCOLOR="$op_color">
+ <TR>$content 
+ </TD></TR></TABLE></FORM>
+ !reset op_module, op_color, op_size, op_precision
+!next s
+
+!if noremark notwordof $wims_read_parm
+ <p><small><b>附注.</b>
+ 上述表格是独立于 Wims 服务器的, 也是相互独立的.
+ 所以它们也能在你自己的网页内正常工作 (但是你的机器必须在线).
+ 你可以把这个页面保存下来, 根据需要修改, 也可以把其中的内容截取下来放到自己的网页上.
+ </small>
+!endif 
+<p>
+

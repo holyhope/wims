@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Moyenne arithmétique
+synonyme=moyenne
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!sum x for x in $formula
+ result=$[($result)/$cnt]
+!else
+ result=0
+!endif
+
+!exit
+
+:output
+
+<center>
+La moyenne arithmétique =
+!htmlmath $result
+</center> <p>
+Données : $cnt nombres { $formula }
+<p>
+<b>Rappel.</b> La <em>moyenne arithmétique</em> de {<i>x</i><sub>1</sub>,
+<i>x</i><sub>2</sub>, ..., <i>x<sub>n</sub></i>} est égale à
+!set ins_align=middle
+!instex $$$$ {1\over n}\sum_{i=1}^n x_i $$$$
+&nbsp;.
+!exit
+

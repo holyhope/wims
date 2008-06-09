@@ -1,0 +1,50 @@
+!goto $wims_read_parm
+
+:def
+title=Ecart-type
+synonyme=deviation, dispersion
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt<2
+ !exit
+!endif
+
+sum=!sum x for x in $formula
+mean=$[($sum)/$cnt]
+fm=!sum (x-($mean))^2 for x in $formula
+res1=$[sqrt($fm/($cnt-1))]
+res2=$[sqrt($fm/$cnt)]
+result=$res1\
+$res2
+
+!exit
+
+:output
+<center>
+Ecart-type =
+!htmlmath $res2
+<br>
+Ecart-type d'échantillonnage =
+!htmlmath $res1
+</center> <p>
+Données : $cnt nombres { $formula }
+<p>
+<b>Rappel.</b>
+L'<em>écart-type</em> (resp. <em>écart-type d'échantillonage</em>)
+de {<i>x</i><sub>1</sub>,
+<i>x</i><sub>2</sub>, ..., <i>x<sub>n</sub></i>} est égal à
+!set ins_align=middle
+!instex $$$$ \sqrt{{1\over n}\sum_{i=1}^n (x_i-\overline x)^2} $$$$
+ (resp.
+!instex $$$$ \sqrt{{1\over n-1}\sum_{i=1}^n (x_i-\overline x)^2} $$$$
+&nbsp;), où
+!set ins_align=bottom
+!instex $$ \overline x $$
+ est la <em>moyenne arithmétique</em> des données.
+
+!exit
+

@@ -1,0 +1,46 @@
+!goto $wims_read_parm
+
+:def
+title=Racines de polynômes
+synonyme=racine polynomiale, polynome racine
+input=polynomial1
+!exit
+
+:proc
+
+fml=!lines2items $formula
+fml=!rawmath $fml
+
+pari_precision=$precision
+result=!exec pari print(polroots($fml)~)
+
+result=!declosing $result
+result=!trim $result
+!if $result=$empty
+ error=solve_fail
+ !exit
+!endif
+result=!replace internal , by , $ in $ $result
+result=!replace internal $ 0.0 + 0.0*I by 0 in $result
+result=!replace internal $ 0.0 + by $ in $result
+result=!replace internal $ 0.0 - by $ - in $result
+result=!replace internal $ + 0.0*I by $ in $result
+result=!replace internal $ - 0.0*I by $ in $result
+result=!singlespace $result
+!exit
+
+:output
+Racines du polynôme
+!htmlmath $fml
+$ :
+!endif
+<p><center><table border=0 cellpadding=0 cellspacing=0>
+!set n=!itemcnt $result
+!for i=1 to $n
+ !set l=!item $i of $result
+ <tr><td align=left nowrap><i>r</i><sub>$i</sub> =
+ !htmlmath $l
+!next i
+</table></center> <p>
+!exit
+

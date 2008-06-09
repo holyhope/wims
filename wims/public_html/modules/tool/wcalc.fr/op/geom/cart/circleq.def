@@ -1,0 +1,46 @@
+!goto $wims_read_parm
+
+:def
+title=Equation d'un cercle
+input=coord2d
+!exit
+
+:proc
+#formula: center. formula2: radius
+formula2=!rawmath $formula2
+formula2=!trim $formula2
+!if $formula2=$empty
+ error=empty_data
+ !exit
+!endif
+t=$[$formula2]
+!if NaN isin $t or Inf isin $t
+ error=bad_formula
+ !exit
+!endif
+
+result=!exec maxima expand((x-($xx))^2+(y-($yy))^2-($formula2)^2);\
+	print(($formula2)^2);\
+	abs($formula2)*cos(t) + ($xx);\
+	abs($formula2)*sin(t) + ($yy);
+!distribute lines $result into result, f2, px, py
+direct=!rawmath (x-$xx)^2 + (y-$yy)^2 = $f2
+!exit
+
+:output
+Equation du cercle avec centre ($xx,$yy) et rayon
+!htmlmath $formula2&nbsp;:
+<p><center>
+!htmlmath $direct
+&nbsp;,&nbsp;&nbsp;&nbsp;ou
+<p>
+!htmlmath $result = 0
+</center> <p>
+Equations paramétrées
+<p><center>
+!htmlmath x = $px
+&nbsp;,&nbsp;&nbsp;
+!htmlmath y = $py
+</center>
+!exit
+

@@ -1,0 +1,96 @@
+!goto $wims_read_parm
+
+:def
+title=Courbe paramétrée à implicite 3D
+synonyme=equation implicite 3d, 3d equation implicite, parametree a implicite 3D, equation implicite d'une courbe d'espace
+input=list
+!exit
+
+:proc
+formula=!nonempty item $formula
+cnt=!itemcnt $formula
+!if $cnt!=3
+ error=bad_formula
+ !exit
+!endif
+v1=!varlist nofn $formula
+v2=!varlist $formula
+n1=!itemcnt $v1
+n2=!itemcnt $v2
+!if $n2>$n1 or . isin $formula
+ result=not_polynomial
+ !exit
+!endif
+!if $n1<1
+ result=no_parameter
+ !exit
+!endif
+w1=!item 1 of $v1
+fml=$formula
+!if t notitemof $v1
+ fml=!mathsubst $w1=t in $fml
+!endif
+
+!distribute items $fml into fx,fy,fz
+!distribute items $formula into Fx,Fy,Fz
+m2_header=implicit3d = (f1,f2,f3) -> (\
+     -- f1 and f2 should be polynomials over QQ in a variable\
+     -- t.  A string representation of the polynomial\
+     -- F(x,y) is returned, where F(f1,f2) = 0.\
+     R = QQ[t,x,y,z,h,MonomialSize=>16,MonomialOrder=>Eliminate 1];\
+     f = value f1;\
+     g = value f2;\
+     k = value f3;\
+     J = ideal(x-f,y-g,z-k);\
+     Jh = homogenize(J,h);\
+     M = selectInSubring(1,gens gb Jh);\
+     toString substitute(M_(0,0), {h=>1}),\
+     toString substitute(M_(0,1), {h=>1}))
+
+result=!exec m2 implicit3d("$fx","$fy","$fz")
+result=!translate # to $\
+$ in $result
+result=!line 1 of $result
+# Here I just discard the first two words of the result
+result=!word 3 to -1 of $result
+result=!declosing $result
+!distribute item $result into e1,e2
+n=!itemcnt $result
+!if $n!=2
+ !reset result
+!endif
+!exit
+
+:output
+
+!if $result=not_polynomial
+ Désolé, mais nous ne pouvons calculer les équations que quand les fonctions
+ paramétrées sont des polynômes de coefficients rationnels.
+ !exit
+!endif
+!if $result=no_parameter
+ Désolé, mais êtes-vous sûr que vous avez entré deux polynômes du paramètre t
+ comme des fonctions de coordonnées paramétrées&nbsp;?
+ !exit
+!endif
+
+La courbe d'espace définie par les fonctions paramétrées
+<p><center>
+!htmlmath x = $Fx , y = $Fy , z = $Fz
+<p></center>
+satisfait le système d'équations implicites
+<p><center>
+<table border=0 cellpadding=0 cellspacing=0>
+<tr><td rowspan=2>$m_leftbrace2
+<td nowrap align=right>
+!insmath $e1
+<td>&nbsp;=&nbsp;0
+<tr><td nowrap align=right>
+!insmath $e2
+<td>&nbsp;=&nbsp;0
+</table>
+</center> <p>
+<small>Calcul effectué par Macaulay 2</small>
+
+!exit
+

@@ -1,0 +1,71 @@
+!goto $wims_read_parm
+
+:def
+title=Tracé de droite
+synonyme=tracer une droite, tracer droite implicite, tracer droite par equation
+input=equation
+!exit
+
+:proc
+formula=!item 1 of $formula
+fml=!mathsubst X=x in $fml
+fml=!mathsubst Y=y in $fml
+eq==
+!if $eq isin $formula
+ f=!translate internal = to , in $formula
+ !distribute items $f into f1,f2
+ !if $f2=$empty or $f1=$empty
+  error=bad_formula
+  !exit
+ !endif
+ fml=$f1 - ($f2)
+!else
+ !if y isvarof $formula
+  fml=$formula
+  formula=$formula = 0
+ !else
+  fml=$formula - y
+  formula=y = $formula
+ !endif
+!endif
+result=!exec pari eq=$fml; a=polcoeff(eq,1,x); print(a);\
+	b=polcoeff(eq,1,y); print(b);\
+	c=polcoeff(polcoeff(eq,0,x),0,y); print(c);\
+	print(sqrt(a^2+b^2));
+result=!nonempty lines $result
+!distribute lines $result into a,b,c,n
+m=$[abs($c)/$n]
+cnt=!linecnt $result
+!ifval $cnt!=4 or $n=0 or NaN isin $m or Inf isin $m
+ result=
+ !exit
+!endif
+!if abs($a) > abs($b)
+ px=$[$b]*t-($[$c/($a)])
+ py=$[-($a)]*t
+ ratio=$[abs($b)/abs($a)]
+!else
+ px=$[$b]*t
+ py=$[-$a]*t-($[$c/($b)])
+ ratio=$[abs($a)/abs($b)]
+!endif
+m=$[2*$m/max($ratio,0.15)^0.7]
+!ifval $m=0
+ m=5
+!endif
+!read insplot_set.proc
+insplot_set=parametric; size $insplot_size; noborder;\
+	arrow from -$m,0 to $m,0 lt 0;\
+	arrow from 0,-$m to 0,$m lt 0;\
+	xtics axis; ytics axis
+!exit
+
+:output
+Droite définie par l'équation
+!htmlmath $formula
+&nbsp;:
+<p><center>
+!insplot [-$m:$m] [-$m:$m] [-$m:$m] $px,$py notitle lt 1
+</center>
+!exit
+

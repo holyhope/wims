@@ -1,0 +1,51 @@
+
+!goto $wims_read_parm
+
+:def
+title=Résoudre
+input=equations
+!exit
+
+:proc
+fml=!lines2items $formula
+fml=!replace , by , $ in $fml
+eqcnt=!itemcnt $fml
+fml=!rawmath $fml
+variable=!trim $variable
+
+!if $variable!=$empty and $variable isvarof $fml
+ # variable solve
+ result=!exec maxima print(solve([$fml],$variable));
+!else
+ # other solve
+ result=!exec maxima print(solve([$fml]));
+!endif
+
+result=!declosing $result
+result=!trim $result
+!if $result=$empty
+ error=solve_fail
+ !exit
+!endif
+result=!replace , by , $ in $result
+!exit
+
+:output
+Solution(s) de
+!if $eqcnt>1
+ {
+ !htmlmath $fml
+ }
+!else
+ !htmlmath $fml
+!endif
+!if $variable!=$empty and $variable isvarof $fml
+ pour $variable:
+!else
+&nbsp;:
+!endif
+<p><center>
+!insmath $result
+</center> <p>
+!exit
+

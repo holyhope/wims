@@ -1,0 +1,64 @@
+!header
+
+!if $compute=yes
+ !if $swout=$empty
+  Votre code n'a pas donné de résultat par <em>$SW</em>.
+ !else
+  Réponse par <em>$SW</em> :
+  !if $sw=draw
+   <img align=middle src=$swout>
+   !goto after
+  !endif
+  !if $sw=povray
+   <img align=middle src=$swout>
+   !goto after
+  !endif
+<pre>
+$swout
+</pre>
+ !endif
+!else
+ Cet outil vous permet d'exécuter la majorité de logiciels ou langages
+ informatiques interfacés par WIMS, directement en ligne. Tapez votre code et
+ voyez le résultat&nbsp;!
+ !href cmd=help Cliquez ici
+ pour les documentations des logiciels.
+ <p>
+ Les développeurs sous WIMS peuvent aussi l'utiliser comme outil d'essai,
+ pour vérifier le comportement de différents lociels sous WIMS.
+ <p>
+ Pour des raisons de sécurité, la longueur du code est limitée à 16K, et l'accès
+ aux ressources du système est strictement contrôlé. Notez aussi que certains
+ logiciels peuvent manquer sur un serveur donné. Veuillez contacter le
+ webmestre en cas de doute.
+!endif
+
+:after
+!if $msg!=$empty
+ <p><hr> <p>
+ Message d'erreur de <em>$SW</em> :
+<font color=red><small><pre>
+$msg
+</pre></small></font>
+!endif
+
+<p><hr> <p>
+!form reply
+<input type=submit value=Exécuter>
+les lignes suivantes par
+!default sw=sh
+!formselect sw list $swlist prompt $swname
+$ : <small>[ 
+!href cmd=renew Vider
+ ] [ 
+!href cmd=help Aide
+ ]</small>
+<br>
+!set src=!reinput $src
+!set src=!replace internal &amp;#36; by &#36; in $src
+<textarea wrap=off cols=70 rows=15 name=src>$src</textarea>
+</form>
+
+!tail
+
+!reset src sw

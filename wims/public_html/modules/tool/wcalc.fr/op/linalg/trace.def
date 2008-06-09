@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Trace de matrice
+synonyme=matrice trace
+input=square_matrix
+!exit
+
+:proc
+
+result=!exec pari trace([$mat])
+!exit
+
+:output
+!set pars=$[max(min($rows,10),1)]
+<center>
+<table border=0 cellpadding=2>
+!for i=1 to $rows
+ !set l=!line $i of $formula
+ <tr>
+ !if $i=1
+  <td nowrap rowspan=$rows>trace $(m_leftpar$pars)
+ !endif
+ !for j=1 to $cols
+  !set k=!item $j of $l
+  <td nowrap align=center>$k
+ !next j
+ !if $i=1
+  <td nowrap rowspan=$rows>$(m_rightpar$pars) = $result
+ !endif
+!next i
+
+</table></center>
+!exit
+

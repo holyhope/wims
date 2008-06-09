@@ -1,0 +1,31 @@
+!goto $wims_read_parm
+
+:def
+title=Evaluation modulo
+synonyme=evaluer modulo, modulo evaluer, evaluation modulaire
+input=function
+!exit
+
+:proc
+formula2=!translate ,; to $  $ in $formula2
+formula2=!rawmath $formula2
+formula2=!singlespace $formula2
+formula2=!trim $formula2
+!if $formula2=$empty
+ error=empty_data
+ !exit
+!endif
+result=!exec pari print(lift(Mod($formula,$formula2)));
+!exit
+
+:output
+<center>
+!htmlmath $formula
+ $m_equiv
+!insmath $result
+&nbsp;&nbsp;
+!htmlmath (mod $formula2)
+&nbsp;.
+</center>
+!exit
+

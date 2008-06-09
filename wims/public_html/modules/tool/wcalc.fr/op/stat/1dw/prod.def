@@ -1,0 +1,28 @@
+!goto $wims_read_parm
+
+:def
+title=Produits des données avec poids
+synonyme=poids produit, produit statistique avec poids, produit avec poids
+input=data2d
+!exit
+
+:proc
+
+pari_header=dmat=Mat([$fml2]);w=sum(x=1,$cnt,dmat[x,2]);
+result=!exec pari print(prod(x=1,$cnt,dmat[x,1]^dmat[x,2]));\
+	print(w);
+!distribute lines $result into result, totweight
+
+!exit
+
+:output
+
+<center>
+Produit avec poids =
+!htmlmath $result
+</center> <p>
+Données : $cnt nombres avec poids { $fml3 }
+(total des poids = $totweight).
+<p>
+!exit
+

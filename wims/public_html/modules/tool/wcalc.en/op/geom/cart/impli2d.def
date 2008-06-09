@@ -1,0 +1,80 @@
+!goto $wims_read_parm
+
+:def
+title=Parametric to implicit curve 2D
+synonyme=implicite equation 2d, 2d implicite equation, parametric to implicit 2D, implicit equation of a plane curve
+input=list
+!exit
+
+:proc
+formula=!nonempty item $formula
+cnt=!itemcnt $formula
+!if $cnt!=2
+ error=bad_formula
+ !exit
+!endif
+v1=!varlist nofn $formula
+v2=!varlist $formula
+n1=!itemcnt $v1
+n2=!itemcnt $v2
+!if $n2>$n1 or . isin $formula
+ result=not_polynomial
+ !exit
+!endif
+!if $n1<1
+ result=no_parameter
+ !exit
+!endif
+w1=!item 1 of $v1
+fml=$formula
+!if t notitemof $v1
+ fml=!mathsubst $w1=t in $fml
+!endif
+
+!distribute items $fml into fx,fy
+!distribute items $formula into Fx,Fy
+m2_header=implicit2d = (f1,f2) -> (\
+     -- f1 and f2 should be polynomials over QQ in a variable\
+     -- t.  A string representation of the polynomial\
+     -- F(x,y) is returned, where F(f1,f2) = 0.\
+     R = QQ[t,x,y,h,MonomialSize=>16,MonomialOrder=>Eliminate 1];\
+     f = value f1;\
+     g = value f2;\
+     J = ideal(x-f,y-g);\
+     Jh = homogenize(J,h);\
+     M = selectInSubring(1,gens gb Jh);\
+     toString substitute(M_(0,0), {h=>1}))
+
+result=!exec m2 implicit2d("$fx","$fy")
+result=!translate # to $\
+$ in $result
+result=!line 1 of $result
+# Here I just discard the first two words of the result
+result=!word 3 to -1 of $result
+!exit
+
+:output
+
+!if $result=not_polynomial
+ Sorry, we can only compute equations when the parametric functions are
+ polynomials of rational coefficients.
+ !exit
+!endif
+!if $result=no_parameter
+ Sorry, but are you sure that you have entered two polynomials of parameter
+ t as the parametric coordinate functions?
+ !exit
+!endif
+
+The plane curve defined by the parametric equations
+<p><center>
+!htmlmath x = $Fx , y = $Fy
+<p></center>
+satisfies the implicit equation
+<p><center>
+!insmath $result = 0 .
+</center> <p>
+<small>Computation done by Macaulay 2</small>
+
+!exit
+
