@@ -15,14 +15,17 @@
   !else
    !reset eq
   !endif
-  <tr><td align=right nowrap>
   !if noanalyzeprint notwordof $(replyoption$i)
+    <tr><td align=right nowrap>
    !imgrename <b>$(replyname$i)</b>$eq<td><tt>$(reply_$i)</tt>&nbsp;: 
   !else
-   !imgrename <b>$(replyname$i)
+    !if $(replyname$i) notsametext 
+     <tr><td align=right nowrap>
+      !imgrename <b>$(replyname$i)</b>
+    !endif
   !endif
-  <td>
   !if $tt!=?analyze
+    <td>
    !if $(diareply$i)=good
     !if $(partialgood$i) = yes and $indpartial != $empty
      !set thisind=$indpartial
@@ -47,5 +50,7 @@
     $name_badsize
    !endif
   !else
-   $indsee.
+   !if noanalyzeprint notwordof $(replyoption$i)
+     $indsee.
+   !endif
   !endif
