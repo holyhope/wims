@@ -38,27 +38,31 @@ $sheet_remark
  Il test di autovalutazione è vuoto! Si tratta probabilmente di un errore.
 !else
  Contenuti del test di autovalutazione:
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of $data
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
-  <p><li>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
 , $de
 !!  !if $require>0
 !!   <small>$[$got] out of $[$require] points obtained, average score
 !!   $[$mean]/10.</small>
 !!  !endif
+ </li>
  !next i
  </ul>
+ </div>
  !if $wims_user=supervisor
   &Egrave; possibile
   !href cmd=resly&job=import Importare
   questo test nelle pagine del corso, o vedere
   !href cmd=reply&job=raw comandi sorgente 
   del test di autovalutazione (per poi copiarli in un altro corso).
+  <p>
  !endif
 !endif
 !href cmd=reply&job=print Versione stampabile
