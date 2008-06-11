@@ -1,0 +1,50 @@
+
+!set wims_module_error=error: $error
+
+<b>Error.</b>
+
+!if empty_data iswordof $error
+ Has enviat una resposta incompleta. Sisplau completa-la.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ He fallat en avaluar els valors que has enviat. Una errada?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Ja has enviat una resposta a aquest problema, la qual ha estat 
+ analitsada i avaluada. Respostes repetides són ignorades. (No utilitzis
+ el botó `reload' del teu navegador per reenviar respostes!)
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ La teua resposta <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if nocompute isin $test
+  no està permesa: sisplau fes tu mateix els càlculs, i envia el valor resultant.
+ !else
+  és incomprensible. 
+  Sisplau corregeix l'errada i torna a enviar la resposta.
+ !endif
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ Per un error en aquest exercici (la resposta correcta per <b>$(replyname$i)</b>
+ és invalida), és impossible fer la correcció de la teua resposta. L'única
+ possibilitat que tens és canviar d'exercici; ho sento.
+ <p>
+ Sisplau 
+ !if $email!=$empty
+  !mailurl $email contacta amb l'autor
+ !else
+  contacta amb l'autor
+ !endif
+ de l'exercici si vols un informe de l'error.
+ !exit
+!endif
+
+$error
