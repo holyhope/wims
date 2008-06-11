@@ -1,0 +1,47 @@
+
+<center><h3>Explorar per tema</h3></center>
+
+!if $parm=$empty
+ Sisplau tria un dels temes següents.
+ <ul class="wims_browse_subject_list">
+ !for d in $tot_dom
+  <li class="wims_browse_subject_list">
+   !set l_=$(dom_$d)
+    !href module=$module&cmd=new&job=$job&parm=$d <b>$(name_$d)</b>
+   !if $l_=$empty
+    .
+   !else
+    $ :
+    !for v in $l_
+     !href module=$module&cmd=new&job=$job&parm=$v $(name_$v)
+     &nbsp;
+    !next v
+   !endif
+   </li>
+ !next d
+ </ul>
+!else
+ Del tema <i><font color=blue>$name</font></i>, hi ha disponibles els
+ següents apartats.
+ !href module=$module&cmd=new&job=subject Altres temes
+.
+ <p><table border=0 cellpadding=2 cellspacing=1>
+ !for t in $list
+  <tr>
+  <td align=left nowrap><b>$t</b></td>
+  !if $has_enc=yes
+   <td nowrap><small>
+   !href target=wims_ref module=adm/enc.en&dom=math&job=search&search=$t $name_L
+   </small></td>
+  !endif
+  !set key=$t
+  !for i in T,P,X,S
+   !set cat=$i
+   <td nowrap><small>
+   !href $search_addr $(name_$i)
+   </small></td>
+  !next i
+  !next t
+ </table> <p>
+!endif
+
