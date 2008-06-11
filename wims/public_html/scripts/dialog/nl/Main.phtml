@@ -1,0 +1,96 @@
+!set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
+!set module_title=$module_title: $title
+
+!header
+
+!if $title=$empty
+Deze module bevat meerdere oefeningen. 
+Je hebt geen specifieke oefening opgevraagd: mogelijk heb je op de verkeerde link geklikt of er is sprake
+van een software fout.
+ <p><center>
+ !href module=$module probeer het opnieuw
+ , of
+ !href $ ga terug 
+ . </center>
+ !goto end
+!endif
+
+:tester
+!read proc/present.phtml
+
+<p><hr width=50%> <p>
+
+!if $cmd=hint
+ !read proc/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read proc/msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read proc/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint Hint
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink hernieuw de oefening
+.
+ !else
+ Dit is oefening nummer $[$reply_cnt+1] uit een serie van $qnum oefeningen.
+  !href $renewlink verlaat deze sessie
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read proc/msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read proc/answer.phtml
+ <p>
+ !if $status!=$empty
+  Dit is oefening nummer $reply_cnt uit een serie van $qnum oefeningen. <p>
+  !href cmd=resume Ga verder met de volgende oefening
+, or
+  !href $renewlink verlaat deze sessie en vraag een nieuwe aan
+. (je moet <b>voor een cijfer</b> echter wel de gehele sessie oefeningen/opgaven afmaken...)
+ !else
+  !if $qnum>1
+  Je hebt de serie van $qnum oefeningen afgesloten, met een eindresultaat
+   $score uit 10.
+   !ifval $score>9.8
+    Heel goed!!!!
+   !endif
+   <p>
+   !href $renewlink Een nieuwe sessie 
+.
+   !if $wims_sheet=$empty
+    !href module=$module&cmd=intro&special_parm=$wims_intro_parm Verander de moeilijkheids graad
+    
+.
+   !endif
+  !else
+  Je hebt een resultaat van $score uit 10 behaald 
+
+   !ifval $score>9.8
+    Fantastisch!, dit gaat dus prima
+   !endif
+   <p>
+   !href $renewlink Opnieuw
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!read endhook.phtml
+:end
+
+!tail
+

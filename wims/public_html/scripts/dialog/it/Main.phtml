@@ -1,0 +1,94 @@
+!set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
+!set module_title=$module_title: $title
+
+!header
+
+!if $title=$empty
+ Questo modulo raggruppa una serie di esercizio. Apparentemente non &egrave;
+ stato precisato quale esercizio svolgere. Questo potrebbe essere dovuto
+ ad un link errato o ad un errore del software.
+ <p><center>
+ !href module=$module Prova a ricominciare da capo
+ , o
+ !href $ annulla
+ . </center>
+ !goto end
+!endif
+
+:tester
+!read proc/present.phtml
+
+<p><hr width=50%> <p>
+
+!if $cmd=hint
+ !read proc/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read proc/msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read proc/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint Suggerimento
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink Un nuovo esercizio
+.
+ !else
+  Questo &egrave; l'esercizio numero $[$reply_cnt+1] in una serie di $qnum.
+  !href $renewlink Annulla
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read proc/msg.phtml
+  <p><hr width=50%> <p>
+ !endif
+ !read proc/answer.phtml
+ <p>
+ !if $status!=$empty
+  Questo &egrave; l'esercizio numero $reply_cnt in una serie di $qnum. <p>
+  !href cmd=next Passa all'esercizio successivo
+, o
+  !href $renewlink abbandona questa sessione e cominciane un'altra
+. (Per ottenere un punteggio occorre portare a termine una sessione.)
+ !else
+  !if $qnum>1
+   Hai portato a termine una serie di $qnum esercizi, ottenendo un 
+   punteggio di $score su 10.
+   !ifval $score>9.8
+    Congratulazioni!
+   !endif
+   <p>
+   !href $renewlink Un'altra serie di esercizi
+.
+   !if $wims_sheet=$empty
+    !href module=$module&cmd=intro&special_parm=$wims_intro_parm Modifica il livello di difficolt&agrave;
+.
+   !endif
+  !else
+   Hai ottenuto un punteggio di $score su 10.
+   !ifval $score>9.8
+    Congratulazioni!
+   !endif
+   <p>
+   !href $renewlink Una nuova serie di esercizi
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!read endhook.phtml
+:end
+
+!tail
+

@@ -1,0 +1,39 @@
+
+!if $remcnt>0
+ !set wims_ref_anchor=#infogot
+ !form reply
+ !if $gotcnt<1
+  <p>In order to solve the problem, you may 
+  <input type=submit value="ask questions">
+ !else
+  <p>Now you may continue to
+  <input type=submit value="ask questions">
+ !endif
+ about $objname:
+ !formselect ask list 0,$remlist prompt ?? Choose your question ??,$prompts
+ !if $comment!=$empty
+  <p>$comment
+ !endif
+ <p></form>
+ <small><b>Attention</b>. Your score depends on the number of questions you
+ ask. A penalty will be applied if you ask for irrelevant or useless 
+ information.</small> <p>
+ <hr width=50%> <p>
+!endif
+
+!if $gotcnt<1
+ !exit
+!endif
+
+!set wims_ref_anchor=#ans
+!form reply
+ !if $remcnt>0
+  When you think you have enough information to solve the problem,
+ !else
+  Now please
+ !endif
+ <input type=submit value="give your answer">&nbsp;:<p>
+ !read $deffile form
+</center>
+</form>
+

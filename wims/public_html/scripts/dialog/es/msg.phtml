@@ -1,0 +1,53 @@
+!! This file contains error messages. It will be processed
+!! whenever the variable `error' is not empty.
+!set wims_module_error=error: $error
+
+<b>Error.</b>
+
+!if empty_data iswordof $error
+ Ha enviado una respuesta incompleta. Por favor, complétela.
+ !exit
+!endif
+
+!if bad_data iswordof $error
+ No he podido evaluar los valores que ha enviado. ¿Un error de tecleado?
+ !exit
+!endif
+
+!if double_reply iswordof $error
+ Ya ha enviado una respuesta a este problema, la cual ha sido
+ analizada y puntuada. Las respuestas repetitivas son ignoradas (¡No
+ use el botón <tt>Actualizar</tt> de su navegador para reenviar respuestas!).
+ !exit
+!endif
+
+!if bad_answer iswordof $error
+ Su respuesta <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if nocompute isin $test
+  no está permitida: por favor, haga los cálculos usted mismo, y 
+  envíe el valor resultante.
+ !else
+  no la puedo entender.
+  Por favor, corrija el error y reenvíe su respuesta.
+ !endif
+ !exit
+!endif
+
+!if bad_exo iswordof $error
+ Debido a un error en este ejercicio (la respuesta correcta para 
+ <b>$(replyname$i)</b> es inválida), es imposible analizar la corrección
+ de su respuesta. La única solución es que cambie de ejercicio; 
+ lo sentimos sinceramente.
+ <p>
+ Por favor,
+ !if $email!=$empty
+  !mailurl $email contacte con el autor
+ !else
+  contacte con el autor
+ !endif
+ del ejercicio si quiere informarle del error.
+ !exit
+!endif
+
+$error

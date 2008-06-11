@@ -1,0 +1,63 @@
+<p><hr width=35%>
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+Helaas, deze module heeft op dit moment geen oefenmateriaal beschikbaar voor jou.
+Kom later nog maar eens terug.
+ !exit
+!endif
+!if $exocnt=1
+Deze module heeft precies 1 oefening/opgave, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Proberen.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+<td align=center>Kies een oefening:<td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+<tr><td align=center>Een enkele sessie heeft <td>
+!set qnum=1
+!formselect qnum from 1 to $qcnt
+oefeningen.
+<tr><td align=center>Moeilijkheidsgraad <td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 8
+!read introhook.phtml
+</table> <p>
+<input type=submit value="Aan het Werk">
+</center>
+</form>
+<b>Opmerking</b>. 
+De opgaven zullen in willekeurige volgorde worden afgenomen, 
+uit de door jou gekozen lijst met oefeningen.
+Als die lijst leeg is wordt uit <em>alle</em> beschikbare oefeningen gekozen.
+
+!if * isin $titlelist
+ <p>Oefeningen met een *  zijn over het algemeen wat lastiger.
+!endif
+

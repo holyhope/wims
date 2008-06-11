@@ -1,0 +1,61 @@
+<p><hr width=35%>
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+ Ho sento, aquest mòdul no disposa en aquest moment de cap exercici. Torna més
+ tard!
+ !exit
+!endif
+!if $exocnt=1
+ Aquest mòdul conté realment un sol exercici, <b>
+ !item 1 de $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Intenta-ho.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+<td align=center>Tria els exercicis:<td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+<tr><td align=center>Una sessió tindrà<td>
+!set qnum=1
+!formselect qnum from 1 to $qcnt
+exercicis.
+<tr><td align=center>Nivell de severitat <td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 8
+!read introhook.phtml
+</table> <p>
+<input type=submit value="Anar al treball">
+</center>
+</form>
+<b>Nota</b>. Els exercicis seran agafats aleatòriament de la llista que triis.
+ Si la tria és buida, es consideraran tots els exercicis disponibles.
+
+!if * isin $titlelist
+ <p>Els exercicis marcats amb * són en general més difícils que els altres.
+!endif
+
