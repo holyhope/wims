@@ -33,6 +33,7 @@ precision=!getopt precision in $(replyoption$i)
 #######################
 TODO ??
 #######################
+!!!attention, tout ce qui commence par w_ a disparu de geogebra.fr
 !!!if $w_axeX isin $(reply$i)
  !! $(reply$i)=xX,line,y=0&&y,line,x=0&&$(reply$i)
 !!!endif
@@ -96,7 +97,8 @@ yourlist_name2=$yourlist_name
     coord= !replace internal ] by ,%%%% in $coord   
     Name= $(coord[1])
     Fonction= !replace internal &&&& by in $(coord[2])
-    Fonction=!getopt $Fonction in $w300 
+	Fonction= !lower $Fonction
+    Fonction=!getopt $Fonction in $typelangue 
     coord=$(coord[3..-1])
     coord_cnt=!itemcnt $coord
     !for u=1 to $coord_cnt
@@ -206,7 +208,9 @@ yourlist1=$yourlist11
 !for li = 1 to $ynamecnt
   ligne=!line $li of $yourlist11
   ligne1=!replace internal = by , in $ligne
-  !if $(ligne1[2]) iswordof $w36
+  vartemp=!lower $(ligne1[2])
+  vartemp=!getopt $vartemp in $typelangue
+  !if $vartemp iswordof segment line ray midperpendicular parallel perpendicular
    !for u = 3 to 4
     !if $(ligne1[$u]) notsametext
       b=!positionof item $(ligne1[$u]) in $your_name
@@ -246,7 +250,9 @@ yourlist1=$yourlist11
         !endif
      !next   
   !endif
-  !if $(ligne1[2]) iswordof $w_intersection
+  vartemp=!lower $(ligne1[2])
+  vartemp=!getopt $vartemp in $typelangue
+  !if $vartemp iswordof intersection
     !for u = 3 to 4
       !if $(ligne1[$u]) notsametext
         ligneb=!line $li of $yourlist1
@@ -336,19 +342,21 @@ yourggb=
   ob1=!replace internal ] by , in $ob1
   name=!item 1 of $ob1
   type=!item 2 of $ob1
-  !if $type issametext $w_segment   
+  type=!lower $type
+  type=!getopt $type in $typelangue
+  !if $type issametext segment   
     obcnt=!itemcnt $ob1
     !if $obcnt>=5   
        ob=
     !endif
   !endif
-  !if $type issametext $w_polygon
+  !if $type issametext polygon
     ob1=!getopt $name in $yourlist_name
     !if $(ob1[1]) notsametext polygon
       ob=
     !endif
   !endif
-  !if $type issametext $w_intersection
+  !if $type issametext intersection
     ob1=!getopt $name in $yourlist_name
     ob2=!replace internal [ by , in $ob
     ob2=!replace internal ] by , in $ob2
@@ -390,7 +398,8 @@ yourlistformal=
     M_objet=!replace internal [ by , in $(M_objet)
     M_objet=!replace internal ] by  in $(M_objet)
   !endif
-  type=!getopt $(M_objet[2]) in $w300
+  vartemp=!lower $(M_objet[2])
+  type=!getopt $vartemp in $typelangue
   !if $type!=
     cn = !itemcnt $M_objet
     cn = $[$cn-2]
@@ -485,7 +494,9 @@ mylist2orig=$mylist2
   ligne=!replace internal = by , in $ligne
   ligne=!replace internal [ by , in $ligne
   ligne=!replace internal ] by , in $ligne
-  !if $(ligne[2]) iswordof $w_ray $w_line
+  vartemp=!lower $(ligne[1])
+  vartemp=!getopt $vartemp in $typelangue
+  !if $vartemp iswordof ray line
     name=!positionof item  $(ligne[4]) in $your_name
     !!type=!line $name of $yourlist_name
     !!type=!replace internal = by , in $type
@@ -502,27 +513,27 @@ mylist2orig=$mylist2
     !endif
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[2]) iswordof $w_midperpendicular
+  !if $vartemp iswordof midperpendicular
     ligne_num=eq_$(ligne[1]):(x_$(ligne[4])-x_$(ligne[3]))*(x-(x_$(ligne[3])+x_$(ligne[4]))/2) + (y_$(ligne[4])-y_$(ligne[3]))*(y-(y_$(ligne[3])+y_$(ligne[4]))/2)=0
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[2]) iswordof $w_perpendicular
+  !if $vartemp iswordof perpendicular
     ligne_num=eq_$(ligne[1]):b_$(ligne[4])*(x-(x_$(ligne[3]))) - (a_$(ligne[4]))*(y-(y_$(ligne[3])))=0
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[2]) iswordof $w_middle
+  !if $vartemp iswordof middle
     ligne_num=$(ligne[1])=x_$(ligne[3])+x_$(ligne[4])/2)),(y_$(ligne[3])+y_$(ligne[4])/2)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[1]) iswordof $w_angle
+  !if $vartemp iswordof angle
 	ligne_num=abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[2])+i*(y_$(ligne[3])-y_$(ligne[2]))))*180/pi-$(ligne[7]))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[1]) iswordof $w_anglegeom 
+  !if $vartemp iswordof anglegeom 
 	ligne_num=abs(abs(arg((x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3])))/(x_$(ligne[2])-x_$(ligne[3])+i*(y_$(ligne[2])-y_$(ligne[3])))))*180/pi-abs($(ligne[6])))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[2]) iswordof $w_bissector
+  !if $vartemp iswordof bissector
     _x1=x_$(ligne[3])-x_$(ligne[4])
     _x2=x_$(ligne[4])
     _x3=x_$(ligne[5])-x_$(ligne[4])
@@ -538,7 +549,7 @@ mylist2orig=$mylist2
      ligne_num=eq_$(ligne[1]):($_X1-($_X3))*(x-$_x2)+($_Y1-($_Y3))*(y-$_y2)=0
      mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
-  !if $(ligne[2]) iswordof $w_circle
+  !if $vartemp iswordof circle
     test = !text remove 0123456789. in $(ligne[4]) 
     !if $test=$empty
      ligne_num=eq_$(ligne[1]):(x-x_$(ligne[3]))^2 +(y-y_$(ligne[3]))^2=($(ligne[4]))^2
@@ -585,7 +596,8 @@ mylistformal=
     M_objet=!replace internal [ by , in $(M_objet)
     M_objet=!replace internal ] by  in $(M_objet)
   !endif
-  type=!getopt $(M_objet[2]) in $w300
+  vartemp=!lower $(M_objet[2])
+  type=!getopt $vartemp in $typelangue
   !if $type!=
     cn = !itemcnt $M_objet
     !for lll = 1 to $[$cn]
@@ -605,7 +617,8 @@ mylistformal=
           !else
             typeu=!line $typeu of $mylist11
             typeu=!replace internal = by , in $typeu
-            typeu=!getopt $(typeu[2]) in $w300
+			vartemp=!lower $(typeu[2])
+            typeu=!getopt $vartemp in $typelangue
             !default typeu=point
           !endif 
         !endif
@@ -662,8 +675,13 @@ displaylist1=
   cond=!nospace $cond
   cond=!replace internal = by , in $cond
   !distribute item $cond into name,type
-  type2=!getopt $type in $w30
-  type2=!items2words $type2
+  type=!lower $type
+  !!type2 est le type de l'objet en anglais
+  type2=!getopt $type in $typelangue
+  !!si l'auteur a déjà mis en anglais, on fait type2=$type
+  !if $type2 issametext 
+     type2=$type
+  !endif
   obj=!item 3 to -1 of $cond
   obj=!nospace $obj
   !if $obj$name issametext
@@ -672,14 +690,13 @@ displaylist1=
     Test=bad $i
     !exit
   !endif
-  ###dans w31 tous les objets à plusieurs arguments "symétriques"
-  !if $type iswordof $w31
+  !if $type2 iswordof segment line intersection bissector center middle
     obj=$obj $(obj[2]),$(obj[1])
   !endif
-  !if $type iswordof $w32
+  !if $type2 iswordof angle
     obj=$obj $(obj[3]),$(obj[2]),$(obj[1])
   !endif
-  !if $type iswordof $w33
+  !if $type2 iswordof polygon
      obcn=!itemcnt $obj
      obj1 = $obj
       !for j=1 to $obcn
@@ -706,7 +723,8 @@ $ in $yobj1
     !for li = 1 to $yoblinecnt
 	 !if $klaar=0
       yobj=!line $li of $yobj1
-      !if $(yobj[1]) iswordof $type $type2
+	  vartemp=!lower $(yobj[1])
+      !if $vartemp iswordof $type $type2
         yobj=!item 2 to -1 of $yobj
         yobj=!nospace $yobj
         yobj=!replace internal , by virgule in $yobj
@@ -758,6 +776,7 @@ $ in $yobj1
            yobj2=
          !endif
          ytype=!item 2 of $yobj
+		 ytype=!lower ytype
          yobj=!item 3 to -1 of $yobj
          yobj=!nospace $yobj
          ycnt=!wordcnt $obj
@@ -1053,7 +1072,7 @@ m_reply$i=$yourggb
 <pre>$(yourlistnew$output)\
 </pre>\
 <hr width=50%>\
-<table><tr><td><ul type="square">$Displaylist</ul>$msg</td>\
+<table><tr><td><ul type="square">$Displaylist</ul>$msg </td>\
 </tr></table>
 !endif
 
