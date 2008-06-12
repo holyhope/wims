@@ -1,0 +1,44 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+<hr width=1>
+<center><h3>$wims_classname, $wims_institutionname</h3>
+<hr> <p><h1>Feuille de travail numéro $sheet<br>$title</h1>
+(Présentation pour participants)
+</center> <p>
+<div class="wims_sheet_desc">$desc</div><p>
+
+!if $exocnt=0
+ Cette feuille est vide! Peut-être
+ une erreur de manipulation de votre enseignant.
+!else
+ Devoirs dans cette feuille :
+ <div class="wims_sheet"><p><ul class="wims_sheet_list">
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  <li class="wims_sheet_list"><p>$i. 
+  !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
+, $de
+  !if $re>0
+   <small>0 des $[$re] points obtenus, qualité
+   0/10. </small>
+  !endif
+  </p>
+  </li>
+ !next i
+ </ul>
+ </div>
+!endif
+<p>
+!homeref
+<p><hr> <p>
+<center>
+!href cmd=resume Retourner à la page pour enseignant.
+</center>
+
+</body></html>
+
+!set job=
+

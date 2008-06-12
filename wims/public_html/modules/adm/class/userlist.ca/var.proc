@@ -1,0 +1,141 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+wims_prefix=class user tmp n sharing sharable
+!read adm/class/authchars
+max_sheet=64
+title_limit=80
+desc_limit=4000
+!read tabletheme
+wims_helper=chapter=3
+userdir=!item -1 of $wims_superclass
+!default userdir=$wims_class
+userdir=log/classes/$userdir/.users
+
+!if $wims_user=$empty
+ error=not_supervisor
+ !exit
+!endif
+
+!if $cmd=help
+ !exit
+!endif
+
+!if $wims_user!=supervisor
+ !reset deluser,formula,getraw,delprep
+ !bound job within getuser,userprop,examcheck default getuser
+ getuser=$wims_user
+!endif
+
+!if $job=examcheck
+ !changeto var.proc.examcheck
+!endif
+
+!if $job=showsheet
+ !changeto var.proc.showsheet
+!endif
+
+deluser=!word 1 of $deluser
+!if $job=sheets
+ show=!translate , to $ $ in $showsheet
+!else
+ showsheet=!words2items $show
+!endif
+mean_per=0
+mean_av=0
+!for i in $showsheet
+ !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
+!next i
+sheetcnt=!itemcnt $showsheet
+
+!if $activesheets=$empty
+ s=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+ scoremax=!line 1 of $s
+ !default scoremax=10
+ defaultformula=!line 2 to -1 of $s
+ shweights=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+ examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
+ n=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ !distribute item $ into activevars,activesh
+ !for i=1 to $n
+  s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $s into a,e,t,d
+  shw=!line $i+1 of $shweights
+  shw=!word 1 of $shw
+  !default shw=1
+  !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
+   ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+   activesheets=!append line $i,$ec,$t to $activesheets
+   activesh=!append item $i to $activesh
+  !endif
+ !next i
+ ecnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+ !for i=1 to $ecnt
+  e=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  e=!word 1 of $e
+  !if $e>0
+   activexams=!append item $i to $activexams
+  !endif
+ !next i
+!endif
+activecnt=!linecnt $activesheets
+eactivecnt=!itemcnt $activexams
+
+!bound job_affi within notes,points,qualite default notes
+!if $showsheet=$empty and $job_affi!=notes
+ showsheet=$activesh
+ !for i in $showsheet
+  !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
+ !next i
+!endif
+
+!read var.proc.weights
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+job=!word 1 of $job
+!if $job iswordof getuser getraw delprep deluser userexam userexamclose transfer
+ logname=$getuser$getraw$delprep$deluser
+ !read adm/class/userdef classes,$wims_class,$logname
+ !defread $userdef
+ lastname=$user_lastname
+ firstname=$user_firstname
+!endif
+
+!if $job=$empty or $job iswordof sheets csv or \
+ ($job=userprop and $abandon!=$empty)
+ m=!record 1 of wimshome/log/classes/$wims_class/.grades
+ !distribute lines $m into manual,titles,weights
+ gcnt=!itemcnt $titles
+ gcnt=$[$gcnt-2]
+ !if $gcnt<1
+  manual=0
+ !else
+  mwtot=0
+  !for g=1 to $gcnt
+   w$g=!item $g+2 of $weights
+   mwtot=$[$mwtot+$(w$g)]
+  !next g
+ !endif
+ !if $manual>0
+  uucnt=!recordcnt wimshome/log/classes/$wims_class/.grades
+  !for i=2 to $uucnt
+   l=!record $i of wimshome/log/classes/$wims_class/.grades
+   n=!item 1 of $l
+   g=!item 3 to -1 of $l
+   n=!hex $n
+   Manual_$n=$g
+   mm=0
+   !for i=1 to $gcnt
+    g_=!item $i of $g
+    mm=$[$mm+($(w$i))*($g_)]
+   !next i
+   manual_$n=$[rint(100*$mm/$mwtot)/100]
+  !next i
+ !endif
+!endif
+
+!if $job!=$empty
+ wims_module_log=$job
+ !read var.proc.$job
+!endif
+

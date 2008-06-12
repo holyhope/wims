@@ -1,0 +1,95 @@
+
+<p>
+!href cmd=reply&job=conf&confcat=2 Click here
+ to configure the site's access policies to virtual classes.
+
+!if $sccnt+$clcnt<1
+ <p>
+ There is no virtual class corresponding to your search. 
+ !reset keyword
+ <p>
+ !href cmd=reply&job=class List of classes
+ .
+ !exit
+!endif
+
+<p> <center>
+ !form reply  
+ 10 best class number of cumulative connection hours since
+ <select name="type_load" onchange=submit()>
+  !let tmp=!line $type_load of selected="",,\
+,selected="",\
+,,selected=""
+  <option value="1" $(tmp[1])>yesterday</option>
+  <option value="2" $(tmp[2])>7 last days</option>
+  <option value="3" $(tmp[3])>one month</option>
+ </select>
+ .</small>
+ <input type=hidden name=job value=bestclass>
+ </form>
+ </center> 
+<p>
+
+!if $sccnt>0
+<p>$table_header
+<caption>List of institutions and class groups</caption>
+$table_hdtr
+<th>name</th><th>action</th><th><small>lang</small></th><th>supervisor</th>
+<th>created<br><small>yyyymmdd</small></th>
+<th>expires<br><small>yyyymmdd</small></th>
+<th>load<sup>[1]</sup></th>
+!for i=1 to $sccnt
+ !set l=!line $i of $sclasses
+ !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ erase
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ modify
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ <td align=center>$load_</td>
+!next i
+$table_end
+!endif
+
+!if $clcnt>0
+<p>$table_header
+<caption>List of independent classes</caption>
+$table_hdtr
+<th>name<th>action<th><small>lang</small><th>supervisor
+<th>created<br><small>yyyymmdd</small>
+<th>expires<br><small>yyyymmdd</small>
+<th>load<sup>[1]</sup></th>
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ erase
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ modify
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ <td align=center>$load_</td>
+!next i
+$table_end
+!endif
+
+<center>
+!href cmd=reply&job=class Return to list of classes
+</center>
+
+!reset keyword

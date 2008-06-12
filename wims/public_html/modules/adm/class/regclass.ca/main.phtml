@@ -1,0 +1,288 @@
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center><h1>WIMS à $httpd_HTTP_HOST
+<p>
+ Création d'une structure : classe, groupement, établissement
+</h1></center> <p><hr width=50%> <p>
+
+!if $toomany=yes
+ !read toomany.phtml
+ !goto end
+!endif
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ !if $restart!=no
+  <p>
+  !href module=$module&cmd=reply&step=0 Recommencer l'opération.
+ !endif
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=pre
+ Choisissez le type de structure que vous voulez créer.
+ <p>
+ !href cmd=reply&step=0&cltype=0 Classe individuelle.
+ <p>
+ !if $regpolicy=file
+  !set noright=(Vous n'avez pas les droits pour cela.)
+ !else
+  !set noright=(Seul le gestionnaire du site peut le faire.)
+ !endif
+ !if 2 isitemof $alltypes
+ Portail d'un
+  !href cmd=reply&step=0&cltype=2 groupement de classes.
+ !else
+Portail d'un <font color=blue><strike>groupement de classes</strike></font>. $noright
+ !endif
+ <p>
+ !if 4 isitemof $alltypes
+  Portail d'un 
+  !href cmd=reply&step=0&cltype=4 établissement.
+  (Réservé aux experts.)
+ !else
+Portail
+  d'un   <font color=blue><strike>établissement</strike></font>. $noright
+ !endif
+ <p>
+ <b>Aides</b>.<ul><li>Une <b>classe individuelle</b> est prévue
+ pour la gestion d'un groupe d'élèves par un enseignant.
+ </li>
+ <li>Un <b>groupement de classes</b> permet aux
+ enseignants d'échanger ou de partager des matériels pédagogiques, et aux
+ élèves de passer d'une classe à l'autre sans retaper le mot de passe.
+ </li><li>
+ Une structure d'<b>établissement</b> est un rassemblement 
+ multi-niveaux de classes
+ virtuelles, capable de
+ gérer le besoin d'un établissement d'enseignement tout entier :
+ bases de données d'élèves et d'enseignants,
+ différents niveaux d'enseignement, programmes, sujets et classes d'élèves,
+ responsabilités d'enseignants, etc.
+ </li></ul>
+ Pour les groupements et les établissements, le lien ci-dessus permet 
+ de créer leur <b>portail</b>. Vous aurez ensuite à créer les classes 
+ qu'ils contiennent.
+ !goto end
+!endif
+
+!if $step=0
+ La création 
+ !if $Cltype<2
+   d'une <font color="blue">classe</font>
+   est une opération réservée à un <font color="blue">enseignant</font>. 
+ !else
+    de <font color="blue">$name_classe</font>
+ est une opération réservée à un <font color="blue">administrateur</font>
+(qui peut être un enseignant).
+ !endif
+ Vous 
+ avez besoin d'une adresse électronique opérationnelle pour l'opération.
+ Après la création de votre $name_classe, vous devez assumer la responsabilité de
+ sa maintenance. <p>
+ Pour créer votre $name_classe, veuillez remplir les renseignements suivants :
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ 
+ <li>Nom de l'établissement (au plus $instlim caractères) :
+ !if $Cltype isin 13
+  !default institution=$wims_institutionname
+ !endif
+ <input size=$instlim name=institution value="$institution"><br>
+ </li>
+ <li>Nom $name_classesss (au plus $desclim caractères) :
+  <input size=$desclim name=description value="$description"> <br>
+ </li>
+ 
+ !if $Cltype notin 24
+ <li>Niveau $name_classesss : 
+  <select name=level>
+   !for k=1 to $nblevel
+    !if $(levelid[$k])=$level
+     <option selected="" value=$(levelid[$k])>$(leveldesc[$k])</option>
+    !else
+     <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
+    !endif   
+   !next k
+  </select>
+ </li>
+ !endif
+
+ <li>Prénom et nom $name_sup $name_classesss (c'est-à-dire vous) :
+  <input size=$suplim name=supervisor value="$supervisor"> <br>
+ </li>
+
+ <li>Adresse électronique : <input size=$emaillim name=email value="$email">
+  !if $regpolicy=email
+   <br>(L'opération de création $name_classesss ne peut aboutir que si vous fournissez
+   une adresse électronique correcte et accessible en ce moment même.)
+  !endif
+  <br>
+ </li>
+
+ <li>Choisissez le mot de passe $name_sup :
+  <input size=16 type=password name=passsup> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Ce mot de passe vous permettra d'accéder à votre $name_classe en tant
+  que responsable. Vous devez être le seul à le connaître.</small> <br>
+ </li>
+
+ <li>Choisissez le mot de passe $name_classesss :
+  <input size=16 type=password name=password> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Le mot de passe $name_classesss sera exigé lors de l'inscription
+  !if $Cltype<2
+ des participants de la classe ; vous pouvez donc le diffuser auprès
+  de vos étudiants/élèves. 
+  !else
+des enseignants $name_classesss ;
+ vous ne devez pas le diffuser auprès
+  de vos étudiants/élèves. 
+ !endif
+ </small><br>
+!!  Sans mot de passe, votre $name_classe est libre d'accès par 
+!!  tous ; la création d'une telle classe n'est possible qu'avec 
+!!  l'autorisation du gestionnaire du site.</small> <p>
+ </li>
+ 
+ <li>Date d'expiration :
+  <select name=exp_day>
+  !for i=1 to 31
+   <option value=$i
+   !ifval $i=$exp_day
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <select name=exp_month>
+  !for i=1 to 12
+   <option value=$i
+   !ifval $i=$exp_month
+    selected
+   !endif
+   >
+   !item $i of $months
+  !next i
+  </select> <select name=exp_year>
+  !for i=$thisyear to $thisyear+1
+   <option value=$i
+   !ifval $i=$exp_year
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <small> C'est la date &agrave; laquelle votre classe sera automatiquement archiv&eacute;e.</small><br>
+ </li>
+
+ <li>Limite du nombre de participants de votre $name_classe :
+  <input size=3 name=limit value="$limit">
+  <small>(Le maximum est $wims_class_user_limit.) </small><br>
+ </li>
+ 
+ <li>Accès sécurisé $name_sup :
+  !default secure=all
+  <input size=30 name=secure value="$secure"> <br>
+  !reset secure
+  <small>Noms des postes à partir desquels vous effectuerez les opérations
+  sensibles sur votre $name_classe. 
+  !if $Cltype<3
+    Facultatif.
+  !endif 
+  </small> <br>
+ </li>
+ </ul>
+ <center><input type=submit value="Continuer"></center>
+ </form>
+ 
+ !goto end
+!endif
+
+!if $step=1
+ Bonjour, $supervisor! <p>
+ Vous êtes en train de créer 
+ !if $Cltype<2
+ la
+!else
+ le
+ !endif
+ $name_classe $classname sur le site WIMS à l'adresse
+ $httpd_HTTP_HOST,
+ !if $Cltype iswordof 0 1
+  !let tmp=!positionof item $ilevel in $levelid
+  de niveau ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
+ !endif
+ qui prendra fin le $exp_day/$exp_month/$exp_year
+ . Le nombre maximum de participants est de $ilimit ; 
+ l'inscription est
+ !if $pword!=$empty
+  protégée par le mot de passe $name_classesss.
+ !else
+  ouvert à tout le monde sur l'internet (en êtes-vous sûr? Sachez que le
+  gestionnaire du site peut les refuser et les détruire).
+ !endif
+ <p>
+ Si vous décelez une erreur dans les renseignements ci-dessus, veuillez
+ !href module=$module&cmd=reply&step=0 la corriger.
+ <p>Sinon, afin de vérifier l'exactitude de vos mots de passe,
+ veuillez les retaper encore une fois. <p>
+ !form reply
+ <input type=hidden name=step value=2>
+ Mot de passe $name_sup :
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  Mot de passe  $name_classesss :
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="Continuer"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ Bonjour, $supervisor! <p>
+ Maintenant vous avez besoin d'un code pour terminer l'opération de création
+ de votre $name_classe sous WIMS sur le site $httpd_HTTP_HOST. <p>
+ Ce code vient d'être envoyé à votre adresse électronique
+ ``<tt>$email</tt>''. Veuillez consulter votre boîte à lettre
+ électronique (attendez quelques instants si nécessaire) et lire le message
+ qui vous a été envoyé. Relevez le code écrit dans le message et copiez-le ci-dessous.
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>Code de votre $name_classe : <input size=12 name=typecode>
+ <p><input type=submit value="Continuer"></center>
+ </form>
+ <b>Attention</b> Ce code ne sert qu'une seule fois. Il ne peut pas
+ être utilisé pour vous connecter à votre $name_classe&nbsp;!
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ Bonjour, $supervisor!<p>
+ Votre $name_classe $classname est maintenant en place. Félicitations
+ et amusez-vous bien&nbsp;!<p>
+ Le nombre de participants est limité à $ilimit participants (y compris vous) 
+ !if $Cltype iswordof 0 1
+  !let tmp=!positionof item $ilevel in $levelid
+  au niveau <font color=green>$(leveldesc[$tmp])</font>. 
+ !endif 
+  <p>
+ !read links.phtml
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 Revenir au début de l'opération.
+:end
+!tail
+
+!set step=
+

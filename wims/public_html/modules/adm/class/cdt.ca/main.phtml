@@ -1,0 +1,23 @@
+!if $job2=print and $job isitemof todo,work
+ !changeto print$job.phtml
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+
+!if link notin $job
+ !headmenu
+!endif
+
+!if $error=bad_class
+ !read msg.phtml $error
+ !tail
+ !exit
+!endif
+
+!read $job.phtml
+
+!if link notin $job
+ !tail
+!endif

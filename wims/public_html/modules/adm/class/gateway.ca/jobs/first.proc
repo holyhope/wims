@@ -1,0 +1,24 @@
+
+parent=
+thiscode=$wims_superclass
+leveldata=!record 0 of $classdir1/levels
+leveldata=!nonempty lines $leveldata
+levels=!column 1 of $leveldata
+levelcnt=!itemcnt $levels
+
+classdata=!record 0 of $classdir1/classes
+classdata=!nonempty lines $classdata
+classes=!column 1 of $classdata
+classdata=!translate internal / to , in $classdata
+classl=!column 1 of $classdata
+
+progdata=!record 0 of $classdir1/programs
+progdata=!nonempty lines $progdata
+progs=!column 1 of $progdata
+progdata=!translate internal / to , in $progdata
+progl=!column 1 of $progdata
+
+teacherlist=!record 0 of $classdir1/.teacherlist
+teachercnt=!linecnt $teacherlist
+studentcnt=!recordcnt $classdir1/.userlist
+

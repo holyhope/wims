@@ -1,0 +1,32 @@
+
+!if $test=$empty or $nlist=$empty
+ Data backup is not active on this server. 
+ !href cmd=reply&job=conf&confcat=6 Click here
+ to set up the automatic daily data backup.
+ !goto end
+!endif
+
+Last data backup: $test.
+Download the backup files: <p>
+!for f in $nlist
+ !getfile $f $f
+ <br>
+!next f
+
+:end
+<p>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=restore>
+<input type=hidden name=job2 value=restore>
+To restore an old backup file, give the file name (it must be a
+*.tgz file): <br>
+<input type=file name=wims_deposit size=50>
+<input type=submit value=OK>
+</form>
+<p>
+<small>You need a fast connection if the file to upload is big.</small>
+<p>
+
+!reset job2
+

@@ -1,0 +1,23 @@
+!form reply
+<input type=hidden name=show value=yes>
+<table border=0>
+<tr><td align=right>Statistiques à montrer&nbsp;:<td>
+!set wims_formselect_switch=multiple size=8
+!formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
+	prompt\
+	points requis,coefficients,\
+	indice de difficulté, totaux,\
+	moyens par score, moyens par participant,\
+	minimum et maximum, écart-type
+<tr><td align=right>Type de donnée&nbsp;:<td>
+!set wims_formselect_switch=
+!formselect types list 1,2,3 prompt \
+	activités comptées,activités non comptées,toutes les activités
+!if $sharer!=$empty
+ <tr><td align=right>Compter les activités des classes<br>
+ partageant les feuilles avec vous&nbsp;:
+ <td>
+ !formradio share list yes,no prompt Oui,Non
+!endif
+<tr><td colspan=2 align=center><input type=submit value=Montrer>
+</table></form>

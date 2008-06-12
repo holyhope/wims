@@ -1,0 +1,54 @@
+!header
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+!read $job.phtml
+!if $auth_login!=$empty and $job!=modname
+ <p>
+ !if $job iswordof flist edfile showfile binfile
+  !href target=wims_test module=devel/$auth_login/$mod Tester le module
+. &nbsp;
+  !set doctest=!module category devel/$auth_login/$mod
+  !if document isin $doctest
+   !href target=wims_test module=adm/doc.$module_language&devdoc=$mod&doc=1&job=read Gestionnaire de document
+. &nbsp;
+  !endif
+ !endif
+ !if $job iswordof flist index publish prop diff binfile
+  !if $job iswordof index publish diff
+   !href cmd=reply&jobreq=flist Contenu du module
+. &nbsp;
+   !href cmd=reply&jobreq=binfile Fichiers binaires
+. &nbsp;
+  !endif
+  !if $job iswordof binfile
+   !href cmd=reply&jobreq=flist Autres fichiers
+. &nbsp;
+  !endif
+  !if $job iswordof flist publish diff binfile
+   !href cmd=reply&jobreq=index Propriétés
+. &nbsp;
+  !endif
+  !if $job notwordof publish prop diff
+   !href cmd=reply&jobreq=backup Sauvegarder le module
+. &nbsp;
+   !if $pubtit!=$empty
+    !href cmd=reply&jobreq=diff Check diff
+. &nbsp;
+   !endif
+   !href cmd=reply&jobreq=publish Publier
+. &nbsp;
+  !endif
+ !endif
+ !href cmd=reply&jobreq=modname Liste des modules
+.
+!endif
+
+!tail
+
+!reset confirm target1 target2 target3 target4 vcheat \
+      i_translator i_translator_address, modifiers \
+      p_name p_email p_pass1 p_pass2 bin_job
+

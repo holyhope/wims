@@ -1,0 +1,45 @@
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+<center>$classname
+<p>
+<h1>Message de la classe
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Retourner à la page d'accueil
+. <p>
+ !goto end
+!endif
+
+Cette page permet d'écrire ou de modifier un message destiné à tous
+les participants de la classe et qui apparaîtra dans 
+!href style=student la page sommaire de la classe pour les participants
+.
+<p>
+Ecrire le message de la classe (liens et tags html sont admis) :
+<p>
+!form reply
+<input type=hidden name=action value=register>
+<textarea name=motd cols=60 rows=15>$motd</textarea>
+<p><center><input type=submit value="Enregistrer le message"></center>
+</form>
+
+
+:end
+!tail
+
+!set job=
+!set showsheet=

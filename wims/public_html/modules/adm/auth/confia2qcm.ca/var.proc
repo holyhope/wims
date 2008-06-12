@@ -1,0 +1,74 @@
+#--------------------------
+# accelerateur d'execution |
+#--------------------------
+
+wims_multiexec= maxima pari yacas
+wims_prefix=class user tmp toef
+
+###########################################################
+
+!if $cmd=reply and $status!=waiting
+  error=double_reply
+  !exit
+!endif
+###########################################################
+!if $cmd=reply and $status=waiting
+     
+  #---------------------
+  # vidange des alertes |
+  #--------------------- 
+  exalert=
+  
+  #---------------------------------------
+  # si on veut modifier des codes sources |
+  #---------------------------------------
+  !if $chexo>1 
+    !if $fichsrc=$empty
+      exalert=$(alerts[6;])
+      !exit
+    !endif
+    
+    !read recupsrc
+    !exit
+  !endif
+  
+  #-----------------------------
+  # sortir si retour en arrière |
+  #-----------------------------
+  !if $navig!=$etape 
+    chronobs=0
+    chronfoncs=0
+    !if $etape=3
+      !if $propsrepList=$empty
+        propsrepList=$rpmat
+      !endif
+      !if $indicList=$empty
+        indicList=$rindic
+      !endif
+      rpmat=
+      rindic=
+    !endif
+    !if $ckchnb!=1
+      fixchnb=
+    !endif
+    !if $ckchnb!=3
+      borng=
+      bornd=
+    !endif
+    propsprep=
+    foncsrep=
+    multirep=
+  !endif
+ 
+  #------------------------------------
+  # aller lire la procedure appropriée |
+  #------------------------------------
+  !if $navig=$etapesnb     
+    exalert=<font color=red><b>Cette étape est la dernière</b></font>
+    !exit
+   !else
+    !read $prefixdir/proc$(navig)
+  !endif
+
+!endif
+###########################################################

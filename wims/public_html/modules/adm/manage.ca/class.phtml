@@ -1,0 +1,122 @@
+
+
+
+!if $job2!=first
+ !changeto class/$job2.phtml
+!endif
+<p>
+!href cmd=reply&job=conf&confcat=2 Click here
+ to configure the site's access policies to virtual classes.
+
+!read class/search.phtml
+!if $overflow=yes
+ !exit
+!endif
+
+!if $sccnt+$clcnt<1
+ <p>
+ There is no virtual class corresponding to your search. 
+ !reset keyword
+ !exit
+!endif
+
+!if $sccnt>0
+<p>$table_header
+<caption>List of institutions and class groups</caption>
+$table_hdtr
+<th>name<th>action<th><small>lang</small><th>supervisor
+<th>created<br><small>yyyymmdd</small>
+<th>expires<br><small>yyyymmdd</small>
+!if $actives=yes
+ <th>load<sup>[1]</sup></th>
+!endif
+!for i=1 to $sccnt
+ !set l=!line $i of $sclasses
+ !distribute items $l into c_,e_,t_,d_
+ !set l=!defof class_lang\
+class_supervisor\
+class_email\
+class_creation in wimshome/log/classes/$c_/.def
+ !distribute lines $l into l_,s_,m_,f_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ erase
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ modify
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ !if $actives=yes
+  !default activ_$c_=-
+  <td align=center>$(activ_$c_)</td>
+ !endif
+!next i
+$table_end
+!endif
+
+!if $clcnt>0
+<p>$table_header
+<caption>List of independent classes</caption>
+$table_hdtr
+<th>name<th>action<th><small>lang</small><th>supervisor
+<th>created<br><small>yyyymmdd</small>
+<th>expires<br><small>yyyymmdd</small>
+!if $actives=yes
+ <th>load<sup>[1]</sup></th>
+!endif
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into c_,e_,t_,d_
+ !set l=!defof class_lang\
+class_supervisor\
+class_email\
+class_creation in wimshome/log/classes/$c_/.def
+ !distribute lines $l into l_,s_,m_,f_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ erase
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ modify
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ !if $actives=yes
+  !default activ_$c_=-
+  <td align=center>$(activ_$c_)</td>
+ !endif
+!next i
+$table_end
+!endif
+
+!if $actives=yes
+ <p> <center>
+ !form reply 
+ <small><b>[1]</b>. ``<em>load</em>'' 
+ means the number of cumulative connection hours since
+ <select name="type_load" onchange=submit()>
+  !let tmp=!line $type_load of selected="",,\
+,selected="",\
+,,selected=""
+  <option value="1" $(tmp[1])>yesterday</option>
+  <option value="2" $(tmp[2])>7 last days</option>
+  <option value="3" $(tmp[3])>one month</option>
+ </select>
+ <input type=hidden name="keyword" value="$keyword">
+ .</small>
+ </form>
+ !href cmd=reply&job=bestclass Show
+ 10 best class activity on this period.
+ </center> <p>
+!endif
+
+!reset keyword

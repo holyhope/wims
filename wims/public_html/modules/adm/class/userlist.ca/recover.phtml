@@ -1,0 +1,24 @@
+<center>$classname<p>
+
+<h3>Participants supprimés</h3> <p>
+
+!if $delcnt<1
+ Il n'y a pas de participant supprimé dans cette classe.
+ <p>
+!else
+ Cliquez sur un nom de login pour remettre le participant dans la classe.
+ $table_header
+ $table_hdtr<th>login<th>nom
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names
+ !next i
+ $table_end <p>
+!endif
+
+ !href cmd=resume Liste des participants
+ .
+</center> <p>
+

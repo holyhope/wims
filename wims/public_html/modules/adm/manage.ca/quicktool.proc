@@ -1,0 +1,13 @@
+!if $job2=1
+adresse=sourcesup.cru.fr/frs/download.php
+file=quicktool.fr-1.50.tgz
+!sh cd modules/adm ; wget http://$adresse/1851/$file ; tar xzf $file ;\
+  rm $file;
+!endif
+!if $job2=2
+adresse=https://subversion.cru.fr/wimsmodules/trunk/modules/adm/quicktool.fr
+!sh cd modules/adm ; svn co $adresse ; find quicktool.fr -name .svn -exec rm -rf '{}' \;
+!endif
+
+
+!reset job2

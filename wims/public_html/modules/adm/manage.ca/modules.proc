@@ -1,0 +1,68 @@
+!bound job2 within all,one,first default first
+
+!for t in site,cat,zone,delay
+ mu_$t=!defof mu_$t in wimshome/log/wims.conf
+ !default mu_$t=!defof DF_mu_$t in wimshome/src/defaults.conf
+!next t
+
+!if $mu_site=random or $musite=$empty
+ mu_site=!defof downloadsites in wimshome/public_html/bases/sys/publishdata
+ mu_site=!randitem $mu_site
+!endif
+
+!if $job2=one
+ !changeto mu/one.proc
+!endif
+
+!default musite=$mu_site
+!default mucat=$mu_cat
+!default muzone=$mu_zone
+!default mudelay=$mu_delay
+
+!if $muauto notwordof check update install
+ muauto=
+ !exit
+!endif
+
+mu_add=mu_site=$musite\
+mu_cat=$mucat\
+mu_zone=$muzone\
+mu_delay=$mudelay\
+mu_auto=$muauto\
+w_wims_session=$wims_session
+auto=$muauto
+muauto=
+
+!if $auto=check
+ modupdate=!sh $wims_home/bin/modupdate
+!else
+ !appendfile wimshome/log/wimslogd.exec scripttest=yes\
+wims_home=$wims_home\
+w_wims_version=$wims_version\
+w_mu_add="$mu_add"\
+export scripttest wims_home w_wims_version w_mu_add\
+$wims_home/bin/modupdate mail
+!endif
+check=!nonempty lines $modupdate
+n=!linecnt $check
+!reset mode,modif,new
+
+!for i=1 to $n
+ l=!line $i of $check
+ !if updated iswordof $l
+  mode=modif
+ !endif
+ !if added iswordof $l
+  mode=new
+ !endif
+ t=!itemcnt $l
+ !if / isin $l and $t=3 and $mode!=$empty
+  $mode=!append line $l to $($mode)
+ !endif
+!next i
+
+modif=!translate internal /~ to ,/ in $modif
+new=!translate internal /~ to ,/ in $new
+modifcnt=!linecnt $modif
+newcnt=!linecnt $new
+

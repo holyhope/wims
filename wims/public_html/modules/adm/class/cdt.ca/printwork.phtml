@@ -1,0 +1,90 @@
+
+<center>$classname<p><h1>$cdt_title.</h1>
+ <b><font size=+1>
+ !if $jour_begin!=$empty
+  du <font color=green>$jday/$jmonth/$jyear</font>
+  !if $jour_begin!=$jour_end
+   au <font color=green>$jday2/$jmonth2/$jyear2</font>
+  !endif
+ !endif
+ </font></b>
+</center> 
+
+<p><p>
+!if $cdt_nbdate=0
+ Aucune information.
+ !goto end
+!else
+ !if $nbligne=0
+  !if $jour_begin=$jour_end
+   Aucune information pour ce jour.
+  !else
+   Aucune information pour cette p&eacute;riode.
+  !endif
+  !goto end
+ !endif
+!endif
+
+<center>
+ !let table_border=1
+ $table_header
+ $table_hdtr 
+  <th>Jour</th>
+  !if no isin $cdt_supervise
+   <th>Mati&egrave;res</th>
+  !endif
+  <th>En classe</th><th>Travail &agrave; faire</th><th width=30>Pour le</th>
+ </tr>
+ !for i=1 to $nbligne
+  !let mem_tr=$table_tr
+  !let don=!line $i of $list
+  !distribute item $don into jour,file,matiere
+  !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$file
+  !let file=wimshome/log/classes/$file/cdt/def/$jour
+  !read $file
+  !let nbtodo=!itemcnt $date_todo
+  $mem_tr
+   <td rowspan=$nbtodo>
+    !read proc/date.phtml $jour
+   </td>
+   !if no isin $cdt_supervise
+    <td rowspan=$nbtodo>$matiere</td>
+   !endif
+   <td rowspan=$nbtodo valign=top>
+    !read $file content
+   </td>
+   !if $nbtodo>0
+    <td valign=top>
+    !read $file todo1
+    </td>
+    <td>
+     !read proc/date.phtml $date_todo
+    </td>
+   !else
+    <td>&nbsp;</td><td>&nbsp;</td>
+   !endif
+  </tr>
+   !if $nbtodo>1
+    !let bgcolor=!positionof char # in $mem_tr
+    !let bgcolor=!char $bgcolor to $[$bgcolor+6] of $mem_tr
+    !for j=2 to $nbtodo
+     <tr bgcolor=$bgcolor>
+      <td valign=top>
+       !read $file todo$j
+      </td>
+      <td>
+       !let tmp=!item $j of $date_todo
+       !read proc/date.phtml $tmp
+      </td>
+     </tr>
+    !next j
+   !endif 
+ !next i
+ $table_end
+<p><p>
+<p>
+
+:end
+<a href="javascript:window.print()">Imprimer la page</a> &nbsp; 
+<a href="javascript:window.close()">Fermer la fen&ecirc;tre</a>
+</center>

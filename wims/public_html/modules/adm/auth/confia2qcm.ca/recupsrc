@@ -1,0 +1,41 @@
+!!! fichier de récupération de code source !!!
+
+!mexec catsrc.sh
+
+!defread wimshome/sessions/$wims_session/tempsrc
+
+!if $toef_var4!=1
+ exalert=$(alerts[6;])
+  !exit
+!endif
+
+!for i=1 to $toef_varcnt
+  toef_var$(i)=!translate ¶ to $\
+  $ in $(toef_var$(i))
+  toef_var$(i)=!replace internal ? by &#63; in $(toef_var$(i))
+!next i
+
+### type1
+!if $toef_var4=1
+  titre=$toef_var1
+  auteur=$toef_var2
+  imel=$toef_var3
+  exo=$toef_var4
+  obsrecord=$toef_var5
+  propsrecord=$toef_var6
+  propsrepList=$toef_var7
+  ckchnb=$toef_var8
+  fixchnb=$toef_var9
+  borng=$toef_var10
+  bornd=$toef_var11
+  chnb=$toef_var12
+  enonceR=$toef_var13
+  chbox_u_radio=$toef_var14
+  indicList=$toef_var15
+!endif
+
+### reinitialisation
+chexo=1
+prefixdir=Dirqcm
+!read $prefixdir/init
+!exit

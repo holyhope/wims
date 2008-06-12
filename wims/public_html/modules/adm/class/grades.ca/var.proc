@@ -1,0 +1,28 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+wims_prefix=class user tmp n sharing sharable
+
+!if $wims_user!=supervisor
+ error=not_supervisor
+ !exit
+!endif
+
+!bound method within column,user,list,raw,percent default list
+maxuser=200
+maxcol=32
+table_bgcolor=bisque
+wims_form_method=post
+
+!if $ucnt>$maxuser
+ error=too_many_users
+ !exit
+!endif
+
+!if $gcnt<=0 and $method=raw
+ method=list
+!endif
+
+!read var.proc.$method
+!read tabletheme
+

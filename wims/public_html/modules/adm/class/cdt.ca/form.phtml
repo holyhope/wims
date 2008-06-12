@@ -1,0 +1,44 @@
+
+!form reply
+  <input type=submit value=Afficher>
+  !reset job
+  !formselect job list work,todo prompt le travail effectu&eacute;,le travail &agrave; faire 
+  entre le
+  !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
+  !let v=!values v for v=1 to 31
+  !formselect jday list 0,$v prompt ---,$v
+  !formselect jmonth from 1 to 12 prompt $months
+  !let creyear=!char 1 to 4 of $class_creation
+  !let expyear=!char 1 to 4 of $class_expiration
+  !formselect jyear from $creyear to $expyear
+  et le
+  !if $jyear2=$empty or $jyear2=0 
+   !let jyear2=!char 1 to 4 of $wims_now
+   !let jmonth2=!char 5 to 6 of $wims_now
+   !let jday2=!char 7 to 8 of $wims_now
+  !endif
+  !distribute item 0,0,0 into jyear2,jday2,jmonth2
+  !formselect jday2 list 0,$v prompt ---,$v
+  !formselect jmonth2 from 0 to 12 prompt ---,$months
+  !let v=!values v for v=$creyear to $expyear
+  !formselect jyear2 list 0,$v prompt ---,$v
+  <small> Si vous ne saisissez pas de deuxi&egrave;me date, vous effectuerez une recherche sur la premi&egrave;re date.</small>
+ </form>
+<p>
+!if $wims_user=supervisor and $cdt_supervise=yes 
+ <p>
+ !href cmd=new&job=adddate Ajouter une date
+ &nbsp;
+ !href cmd=reply&job=file Ajouter un fichier
+ &nbsp;
+ !href cmd=new&job=addtodo Ajouter des devoirs
+ &nbsp;
+ !href cmd=reply&job=config Configurer
+ .
+!endif
+
+!if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
+<p>
+ !href cmd=new&job=home Retour
+.
+!endif

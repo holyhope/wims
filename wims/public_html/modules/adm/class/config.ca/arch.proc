@@ -1,0 +1,15 @@
+
+reclist=user,exo,sheet,exam,doc,sup,def,neighbor,log,forum,score,manual,cdt,vote
+!bound job2 within first,upload,download,restore default first
+
+!if $job2=upload and $wims_deposit=$empty
+ job2=first
+!endif
+
+!if $job2!=first
+ !read arch/$job2.proc
+!endif
+
+!if $job2 iswordof upload restore and $error!=$empty
+ job2=first
+!endif

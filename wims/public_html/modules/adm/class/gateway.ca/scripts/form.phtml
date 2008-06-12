@@ -1,0 +1,90 @@
+!form reply
+<input type=hidden name=job value=$job>
+$table_header
+<caption>
+!if $form_caption!=$tmpty
+ $form_caption
+!endif
+<small>
+!if $passhow=yes
+ !href cmd=reply&passhow=no cacher&nbsp;les&nbsp;mots&nbsp;de&nbsp;passe
+!else
+ !href cmd=reply&passhow=yes montrer&nbsp;les&nbsp;mots&nbsp;de&nbsp;passe
+!endif
+</small></caption>
+$table_tr<td align=right>
+$form_titlename:
+<td><input size=30 name=title value="$title">
+!if $form_level=yes
+ $table_tr<td align=right>
+ Niveau académique:
+ <td>
+ !set alevel=$class_level
+ !formselect alevel list $levellist prompt $levelnames
+!endif
+$table_tr<td align=right>
+Responsable $form_classname<sup>
+!href cmd=help&special_parm=supervisor aide
+</sup>:
+<td>
+!readproc scripts/teacherlist.proc
+!formselect sup list $tlist1 prompt $tlist2
+!if $form_prog=yes
+ $table_tr<td align=right>
+ Style du programme<sup>
+ !href cmd=help&special_parm=progopt aide
+ </sup>:
+ <td>
+ !formselect progstyle1 list mandatory,optional prompt\
+	obligatoire, optionnel
+ $table_tr<td align=right>
+ Installation automatique des cours<sup>
+ !href cmd=help&special_parm=progopt aide
+</sup>:
+ <br><small>à toutes les classes du niveau</small>
+ <td>
+ !formselect progstyle2 list all,select prompt oui,non
+!endif
+!if $form_pass=yes
+ $table_tr<td align=right>
+ Mot de passe d'inscription<sup>
+ !href cmd=help&special_parm=pass aide
+</sup>:
+ !if $passhow=yes
+  <td><input type=text size=30 name=pass value="$pass">
+ !else
+  <td><input type=password size=30 name=pass value="">
+  $table_tr<td align=right>
+  Répétez le mot de passe d'inscription:
+  <td><input type=password size=30 name=pass2 value="">
+ !endif
+!endif
+$table_tr<td align=right>
+Mot de passe du responsable<sup>
+!href cmd=help&special_parm=passs aide
+</sup>:
+!if $passhow=yes
+ <td><input type=text size=30 name=passs value="$passs">
+!else
+ <td><input type=password size=30 name=passs value="">
+ $table_tr<td align=right>
+ Répétez le mot de passe du responsable :
+ <td><input type=password size=30 name=passs2 value="">
+!endif
+$table_tr<td align=right>Postes surs<sup>
+!href cmd=help&special_parm=sechost aide
+</sup>:
+!set sechost=$class_secure
+!default sechost=all
+<td><input type=text size=30 name=sechost value="$sechost">
+!reset sechost
+</tr>
+$table_tr<td align=center colspan=2>
+<input type=submit name=confirm value="$form_OK">
+!if $form_cancel!=$empty
+ &nbsp;
+ <input type=submit name=cancel value=$form_cancel>
+!endif
+$table_end
+</form>
+

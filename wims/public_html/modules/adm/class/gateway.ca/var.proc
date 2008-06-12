@@ -1,0 +1,105 @@
+
+wims_prefix=class user tmp n sharing sharable
+!readdef wimshome/log/classes/$wims_class/.def
+class_defined=
+!default wims_superclass=$wims_class
+classdir1=wimshome/log/classes/$wims_superclass
+classdir2=$wims_home/log/classes/$wims_superclass
+supertype=!defof class_type in $classdir1/.def
+!if $supertype!=4 or $wims_user!=supervisor or \
+	../$wims_superclass/ notin ../$wims_class/
+ error=bad_access
+ !exit
+!endif
+
+!read adm/class/config.auth
+!if $error!=$empty or $jobt=auth
+ error=unsecure
+ !exit
+!endif
+
+!bound passhow within yes,no default no
+!if $passhow=yes
+ pass2=$pass
+ passs2=$passs
+!endif
+job1=first,addlevel,dellevel,user,\
+	teacher,addteacher,modteacher,delteacher
+#	student,addstudent,modstudent,delstudent
+default1=first
+job2=level,addclass,delclass,addprog,delprog
+default2=level
+job3=class,prog,course,addcourse,delcourse,addtest,deltest,\
+	icourse,addicourse,progshare
+!if $wims_class=$wims_superclass
+ lv=1
+ jobs=$job1,$job2
+!else
+ csub=!replace internal ../$wims_superclass/ by in ../$wims_class
+ lc=!translate internal / to , in $wims_class
+ lv=!itemcnt $lc
+ !if $lv>3 or $lv<2
+  error=bad_access
+  !exit
+ !endif
+ !if $lv=2
+  level=$csub
+  jobs=$job2
+  parent=gateway
+ !else
+  test=$(lc[-1])
+  !if $test>199
+   default3=prog
+   prog=$csub
+   parent=level
+   level=$(lc[2])
+  !else
+   default3=class
+   class=$csub
+   parent=level
+   level=$(lc[2])
+  !endif
+  jobs=
+ !endif
+!endif
+
+jobs=!nonempty items $jobs,$job3,backstruct
+!bound job within $jobs default $(default$lv)
+!read tabletheme
+!read adm/class/limits
+!read adm/class/authchars
+
+!read jobs/$job.proc
+
+!if $default3!=$empty
+ parent=$default3
+!endif
+
+!if $job!=first
+ !default parent=gateway
+!endif
+!if $parent!=$empty
+ addline=!defof class_institution in $classdir1/.def
+ !if $parent iswordof level class prog
+  addline2=!defof class_description in $classdir1/$level/.def
+  addline=$addline\
+$addline2
+ !endif
+ !if $parent iswordof class
+  addline2=!defof class_description in $classdir1/$class/.def
+  addline=$addline\
+$addline2
+  parm3=job=class&class=$class
+ !endif
+ !if $parent iswordof prog
+  addline2=!defof class_description in $classdir1/$prog/.def
+  addline=$addline\
+$addline2
+  parm3=job=prog&prog=$prog
+ !endif
+!endif
+
+addparms=job=first,\
+job=level&level=$level,\
+$parm3
+

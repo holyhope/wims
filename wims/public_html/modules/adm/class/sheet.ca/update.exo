@@ -1,0 +1,32 @@
+# update_field is number of field to update
+# update_content is the new content.
+
+ecnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!for e=1 to $ecnt
+ exo_$e=!record $e of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ exo_$e=!line 1 to 8 of $(exo_$e)\
+\
+\
+\
+\
+\
+\
+\
+\
+
+!next e
+!if $update_field>=0
+ !if $update_field>0
+  exo_$exo=!replace line number $update_field by $update_content in $(exo_$exo)
+ !else
+  exo_$exo=$update_content
+ !endif
+!endif
+!writefile wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+!for e=1 to $ecnt
+ !if $e!=$exo or $update_field>=0
+  ef=!line 1 to 8 of $(exo_$e)
+  !appendfile wimshome/log/classes/$wims_class/sheets/.sheet$sheet :$ef
+ !endif
+!next e
+

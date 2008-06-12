@@ -1,0 +1,36 @@
+
+!if $datacnt<1
+ Aucune mise à jour de module n'est encore enregistrée dans le système de
+ publication et mise à jour des modules introduit dans
+ WIMS-3.37f.
+ !exit
+!endif
+
+$table_header
+<caption>Dernières mises à jour des modules sur le serveur</caption>
+$table_hdtr<th>Date</th><th>Lang</th><th>Titre</th><th>Description</th>
+<th>Nouvelle<br>version</th>
+</tr>
+!for i=1 to $datacnt
+ !set l=!line $i of $data
+ !distribute words $l into d_,a_,v_
+ !set la=!module language $a_
+ !set tit=!module title_$lang $a_
+ !set desc=!module description_$lang $a_ 
+ !if $tit=
+  !set tit=!module title $a_
+ !endif
+ !if $desc=
+  !set desc=!module description $a_ 
+ !endif
+ $table_tr
+ <td align=center><small>
+ !char 1 to 8 of $d_
+ </small></td><td align=center>$la</td><td>
+ !href target=wims_test module=$a_ $tit
+ </td><td>
+ $desc
+ </td><td align=center>$v_</td></tr>
+ !reset desc tit
+!next i
+$table_end 

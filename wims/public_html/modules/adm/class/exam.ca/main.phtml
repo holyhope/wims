@@ -1,0 +1,201 @@
+!set wims_name_examremain=Temps restant pour cet examen : $
+!read js/examclock.phtml
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody onload=$wims_html_onload>
+!headmenu
+
+!read names.phtml
+
+!!if $cmd=help
+ !!read help.phtml
+ !!goto end
+!!endif
+
+!if $job iswordof student score scorereg
+ !changeto $job.phtml
+!endif
+
+<center>$classname
+<p>
+<h1>Préparation de l'examen $exam
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home Retourner à la page d'accueil
+. <p>
+ !goto end
+!endif
+
+!if $job=exo or $job=cpsheet
+ !read $job.phtml
+ !goto end
+!endif
+
+!if $activetest>0
+ !form reply
+ <input type=hidden name=job value=text>
+ Cet examen est
+ !if $activetest=1
+  actif.
+  !href cmd=reply&job=expire L'expirer maintenant
+.
+ !else
+  !if $activetest=2
+   périmé mais encore visible par participants.
+   !href cmd=reply&job=hide Le cacher aux participants
+  !else
+   périmé et invisible des participants.
+   !href cmd=reply&job=expire Le faire réapparaitre
+  !endif
+  .
+  !href cmd=reply&job=reactivate Le réactiver
+. <p>
+ !endif
+ <p><center><table border=2>
+ <tr><td align=right>Titre :
+ <td><input size=40 name=title value="$title">
+ <td rowspan=3><input type=submit value=Modifier>
+ <tr><td align=right>Description :
+ <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <tr><td align=right>Date d'expiration :<td>
+ !distribute item $[$expday],$[$expmon] into expday,expmon
+ !formselect expday from 1 to 31
+ !formselect expmon from 1 to 12 prompt $months
+ !formselect expyear from $thisyear to $thisyear+1
+ </table></form></center> <p>
+ !goto end1
+!endif
+
+!form reply
+<input type=hidden name=job value=text>
+Titre (limité à $title_limit caractères) :<br>
+<input size=65 name=title value="$title"> <p>
+Et un texte d'explication (limité à $desc_limit caractères; les tags et 
+liens html sont admis) :<br>
+<textarea rows=6 cols=65 name=desc>$desc</textarea>
+
+<center><input type=submit value="Enregistrer les textes"></center>
+
+<p>Cet examen sera périmé le
+!distribute item $[$expday],$[$expmon] into expday,expmon
+!formselect expday from 1 to 31
+!formselect expmon from 1 to 12 prompt $months
+!formselect expyear from $thisyear to $thisyear+1
+. Une session d'examen dure jusqu'à
+<input size=5 name=duration value="$duration">
+minutes. Chaque participant peut faire l'examen jusqu'à
+!default stries=3
+<input size=3 name=tries value="$stries"> fois.
+<input type=submit value="Enregistrer">
+
+!ifval $activetest=-1
+ <p>Cet examen n'existe pas encore.
+ <input type=submit value="Cliquez pour le créer"> (mais remplissez le titre
+ d'abord).
+ </form>
+ !goto end
+!else
+ </form>
+ !if $exocnt>0
+  <p>Cet examen n'est pas encore actif.
+  !href cmd=reply&job=prep_activate Cliquez ici
+  pour l'activer.
+  (Les étudiants ne voient que les examens actifs; en revanche, vous ne
+  pouvez plus modifier l'examen une fois qu'il est activé.)
+ !endif
+!endif
+
+:end1
+<p>
+!if $exocnt=0
+ Cet examen n'a pas encore de contenu. 
+ !href cmd=reply&job=exo&exo=1 Ajouter un exercice
+, ou
+ !href cmd=reply&job=cpsheet ajouter une s&eacute;rie d'exercices
+.
+!else
+ <a name=list>
+ Contenu de l'examen&nbsp;:</a><ol>
+ !for i=1 to $exocnt
+  <li>
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,ch,ti
+  $ti, poids $we.
+  !if $activetest=0
+   &nbsp;(
+   !if $i>1
+    !href cmd=reply&job=moveup&moveup=$i#list Remonter
+    &nbsp;
+   !endif
+   !href cmd=reply&job=exo&exo=$i Modifier
+   &nbsp;
+   !href cmd=reply&job=delete&delete=$i#list Supprimer
+   )
+  !endif
+ !next i
+ </ol>
+ !if $activetest=0
+  !href cmd=reply&job=exo&exo=$[$exocnt+1] Ajouter un autre exercice
+,
+ou
+ !href cmd=reply&job=cpsheet ajouter une s&eacute;rie d'exercices
+.
+ !endif
+!endif
+
+<p>
+!if $activetest=0 and $erasable=yes
+  Vous pouvez encore
+  !href cmd=reply&job=prep_erase effacer cet examen
+.
+!endif
+
+!if $activetest>=0
+ !href cmd=reply&job=student Vue des participants.
+ <p>
+ !form reply
+ <input type=hidden name=allow value=yes>
+ Cet examen est 
+ !formselect allowtype list all, simulation, none, select prompt\
+	ouvert pour tous, ouvert pour simulation, \
+	fermé pour tous, ouvert pour postes (et/ou heures) suivants:
+ <br><input size=50 name=IPlist value="$IPlist"> <br>
+ Heures de coupure :
+ <input size=50 name=cutt value="$cutt"> <br>
+ <input type=submit value="Enregistrer le changement">
+ !set allowshare=0
+ !if $sharers!=$empty
+  ( pour toutes les classes partageant l'examen :
+  !formselect allowshare list 0,1 prompt non,oui
+  )
+ !else
+  <input type=hidden name=allowshare value=0>
+ !endif
+ </form>
+ <small><b>Indication.</b> Dans le mode sélectif, vous pouvez imposer une
+ restriction dans le temps pour l'enregistrement des notes en ajoutant des
+ mots
+ <font color=blue><b>
+ <tt>&gt;aaaammjj.hh:mm</tt></b></font>
+ (début) et/ou
+ <font color=blue><b>
+ <tt>&lt;aaaammjj.hh:mm</tt></b></font>
+ (fin). Les dates et heures doivent être en temps local du SERVEUR
+ et ces mots doivent être séparés des autres par des espaces.
+ <p>
+ Les heures de coupure sont là pour permettre aux gens de passer l'examen dans
+ des séances différées. Un participant ayant travaillé sur l'examen avant une
+ heure de coupure ne peut plus retravailler dessus après la coupure.
+ <p>
+ Format des heures de coupure: <tt>aaaammjj.hh:mm</tt> (séparez plusieurs
+ heures de coupure par des espaces).
+ </small>
+!endif
+:end
+!tail
+
+!reset job,echoose,eweight,ename,edep,eopt,source

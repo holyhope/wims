@@ -1,0 +1,53 @@
+
+Modifier le fichier
+<font color=blue><em>$fname</em></font>
+dans le module
+<font color=blue><em>$title</em></font>:
+
+!if $makeerror!=$empty
+<hr>
+<pre>
+$makeerror
+</pre>
+<hr>
+!endif
+
+!form reply
+<input type=hidden name=fname value=$fname>
+
+<center><table border=0>
+ <tr><td align=center>
+!sh content=`cat $devdir/$mod/$fname | sed 's/\&/\&amp;/g;s/</\&lt;/g'`\
+ cat <<@\
+<textarea rows=20 cols=70 wrap="off" name=wims_deposit>$$content\
+</textarea>\
+@
+
+</td>
+<td width=20></td>
+<td valign=top>
+ !href target=wims_help module=adm/createxo&+modtoolhelp=yes Documentation OEF.
+ <p>
+ !href target=wims_help module=help/wimsdoc&+subject=slib#slib Liste de librairies (slib).
+ <p>
+ !href target=wims_help module=adm/createxo&+modtoolhelp=yes&+special_parm=reply Liste des types de r&eacute;ponses. 
+</td>
+</tr>
+</table>
+<p>
+<input type=submit name=register value="Enregistrer les changements">
+&nbsp;
+<input type=submit name=abandon value="Abandonner">
+</form>
+</center>
+!set wims_form_method=file
+!form reply
+<input type=hidden name=fname value=$fname>
+<input type=hidden name=register value="file_mode">
+<input type=submit value="Envoyer">
+un fichier pour le remplacer :
+<input type=file name=wims_deposit>
+</form>
+
+!href cmd=reply&jobreq=flist Retour à la liste de fichiers
+.

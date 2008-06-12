@@ -1,0 +1,176 @@
+!set wims_module_log=error: $error
+
+!if no_subclass iswordof $error
+ Vous n'avez pas le droit de créer des sous-classes dans la situation
+ actuelle.
+ !set restart=no
+ !exit
+!endif
+
+!if no_right iswordof $error
+ Désolé, vous n'avez pas le droit de créer des classes virtuelles sur ce site.
+ Veuillez
+ !mailurl $wims_site_manager contacter le gestionnaire du site\
+Création de classe virtuelle
+ pour plus de détail.
+ !set restart=no
+ !exit
+!endif
+
+!if not_manager iswordof $error
+ Désolé, seul le gestionnaire du site a le droit de créer un portail
+ d'établissement.
+ !exit
+!endif
+
+!if getpass iswordof $error
+ !if $regpass!=$empty
+  Désolé, votre mot de passe n'est pas correct. Veuillez réessayer.
+ !else
+  !set cname=!item $cltype+1 of classes virtuelles,,groupements de classes,,\
+        portails d'établissement
+  La création de $cname sur ce site est protégée par un mot de
+  passe. Vous devez entrer ce mot de passe avant de continuer.
+ !endif
+ <p>
+ !form reply
+  <input type=hidden name=step value=0>
+  Entrez le mot de passe : <input size=16 name=regpass type=password>
+ </form> <p>
+ Remarque. Le mot de passe nécessaire à la création de classes virtuelles peut être obtenu auprès du
+ !mailurl $wims_site_manager gestionnaire\
+Mot de passe pour la création de classes virtuelles
+ de ce site WIMS.
+ !set restart=no
+ !exit
+!endif
+
+!if getid iswordof $error
+ !if $regpass$regid!=$empty
+  Désolé, votre mot de passe n'est pas correct. Veuillez réessayer.
+ !else
+  La création de classes virtuelles sur ce site est protégée par un système
+  d'authentification. Veuillez vous identifier.
+ !endif
+ <p>
+ !form reply
+  <p><table border=0 cellspacing=5>
+  <tr><td align=right>
+  Entrez le nom de votre compte :</td><td><input size=20 name=regid></td>
+  </tr><tr><td align=right>
+  Et le mot de passe :</td><td><input size=16 name=regpass type=password>
+  <input type=submit value=OK></td>
+  </tr></table>
+ </form> <p>
+ Remarque. Veuillez écrire au
+ !mailurl $wims_site_manager gestionnaire\
+Mot de passe pour la création de classes virtuelles
+ de ce site si vous voulez un compte de création de classes virtuelles.
+ !set restart=no
+ !exit
+!endif
+
+!if class_quota=$error
+ Vous avez le droit d'installer jusqu'à $r_quota1 classes. Vous avez fait le
+ plein&nbsp;; vous ne pouvez plus en ajouter d'autres.
+ !set restart=no
+ !exit
+!endif
+
+!if bad_secure=$error
+ Votre poste actuel ne fait pas partie de votre définition 
+ d'accès sécurisé (<tt>$secure</tt>)&nbsp;! C'est probablement une erreur qui
+ aurait la conséquence de vous interdire l'accès de contrôle de votre classe.
+ <p>
+ Lisez attentivement la documentation ci-dessous. Si vous ne comprenez toujours pas,
+ laissez ce champ vide (on vous enverra des codes secrets
+ temporaires pour les opérations sensibles), ou mettez le mot <tt>all</tt>
+ pour désactiver cette mesure de sécurité.
+ <p><hr><p>
+ !read help/hosts.phtml
+ !reset secure
+ !exit
+!endif
+
+!if has_empty=$error
+ Vous n'avez pas donné toutes les informations nécessaires pour la création 
+ d'une classe. Veuillez compléter vos données avant de les soumettre.
+ !exit
+!endif
+
+!if too_short=$error
+ Le champ de données ``$(name_$error_subject)'' semble être trop court.
+ !exit
+!endif
+
+!if bad_date=$error
+ Votre date d'expiration n'est pas correcte.
+ !exit
+!endif
+
+!if anti_date=$error
+ Votre classe a une date d'expiration antérieure à aujourd'hui. Elle serait donc 
+ périmée avant d'être créée!
+ !exit
+!endif
+
+!if bad_level=$error
+ Mauvaise valeur de niveau.
+ !exit
+!endif
+
+!if bad_email=$error
+ Votre adresse électronique n'est visiblement pas valable.
+ <p>
+La création de classe ne peut réussir que si vous
+ soumettez VOTRE VRAIE adresse électronique.
+ !exit
+!endif
+
+!if existing=$error
+ La classe $classname semble déjà exister. Vous ne pouvez pas recréer la 
+ même classe.
+ !exit
+!endif
+
+!if pass_discord=$error
+ Le mot de passe que vous avez retapé ne correspond pas au premier. Votre
+ création de classe n'est donc pas pris en compte&nbsp;; vous pouvez réessayer encore
+ une fois.
+ !exit
+!endif
+
+!if bad_pass=$error
+ Votre $(name_$error_subject) contient des caractères illégaux. <p>
+ Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
+ sans accent et sans espace entre eux.
+ !exit
+!endif
+
+!if bad_code=$error
+ Vous n'avez pas entré le bon code pour la classe. L'adresse électronique
+ que avez fournie est-elle correcte&nbsp;?<p>
+ Nous avons enregistré cet echec.
+ !exit
+!endif
+
+!if define_fail=$error or abuse=$error
+ Le serveur n'a pas réussi à insérer votre classe dans la base de
+ données. C'est une erreur interne du logiciel.
+ <p>
+ Veuillez rapporter le problème au
+ !mailurl $wims_site_manager gestionnaire de ce site\
+user registration failure
+. Merci!
+ !exit
+!endif
+
+!if duplicate=$error
+ Vous avez tenté de recréer une classe déjà créée. Peut-être
+ avez-vous cliqué sur le bouton <tt>actualiser</tt>&nbsp;? En tout cas, votre classe
+ $classname est déjà en place et la deuxième tentative de création
+ est ignorée. <p>
+ !read links.phtml
+ !exit
+!endif
+

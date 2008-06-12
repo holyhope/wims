@@ -1,0 +1,38 @@
+!if $special_parm!=$empty
+ !changeto help/$module_language/$special_parm.phtml
+!endif
+
+!if $wims_user!=supervisor
+ Désolé il n'y a pas d'aide pour participant.
+ !tail
+ !exit
+!endif
+
+Le contenu d'un questionnaire peut être un texte html, renforcé par les mêmes facilités
+que pour des messages de forums. Les commandes suivantes sont de plus utilisables. <dl>
+<p><dt><tt>\menu{Oui,Non}</tt>
+	<dd>Un choix par menu déroulant.
+
+<p><dt><tt>\list{A,B,C,D}</tt>
+	<dd>Un choix par boutons dans une liste verticale.
+
+<p><dt><tt>\radio{très mauvais,plutôt mauvais, plutôt bien, très bien}</tt>
+	<dd>Un choix par boutons horizontaux.
+
+<p><dt><tt>\uservar{vname,val0,val1,...}</tt>
+	<dd>Enregistrer le choix immédiatement précédent dans une variable
+	individuelle pour le participant, sous le nom <tt>vname</tt>. Cette
+	variable aura la valeur <tt>val0</tt> par défaut, <tt>val1</tt> si
+	le participant choisit la première option, etc. <p>
+	Cette variable peut ensuite être utilisée pour définir des accès
+	individualisés aux feuilles ou examens, en mettant le mot
+	<tt>\vname</tt> parmi les restrictions de la feuille ou de l'examen.
+<p><dt><tt>\textarea</tt>
+ <dd>Une zone de texte libre, utilisable uniquement lorsque le vote est
+ anonyme. 
+</dl>
+
+Un questionnaire peut contenir jusqu'à 64 champs de choix.
+
+!tail
+

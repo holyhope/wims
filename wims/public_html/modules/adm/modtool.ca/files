@@ -1,0 +1,15 @@
+
+mdir=$devdir/$mod
+files=!sh find $mdir -type f \! -perm +100 | sed 's!^$mdir/!!' | sort
+ff=!words2items $files
+files=
+!for f in $ff
+ !if .htaccess notin $f and $f!=INDEX and $f!=COPYING and\
+	$ Ex notin $ $f and \
+	(/ notin $f or $ src/ isin $ $f or $ help/ isin $ $f)
+  files=!append item $f to $files
+ !endif
+!next f
+
+!read scripts/getdesc $mod
+

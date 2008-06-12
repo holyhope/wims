@@ -1,0 +1,35 @@
+<center><h1>$tit</h1></center>
+
+L'auteur de ce document est 
+!if $email!=$empty
+ !mailurl $email $author
+.
+!else
+ $author.
+!endif
+!if $readauth=yes
+ Ce document n'est pas ouvert au public. Pour le lire, vous devez d'abord
+ donner son code secret.
+!else
+ Pour modifier le document, vous devez d'abord donner son code
+ secret.
+!endif
+<p>
+!form reply
+<input type=hidden name=job value=auth2>
+!if $readauth=yes
+ <input type=hidden name=noedit value=yes>
+!endif
+<center>
+Code secret : <input type=password size=16 name=coder>
+<input type=submit value=OK>
+</center></form>
+<p>
+!if $readauth=yes
+ Si vous êtes auteur du document, sachez que vous avez besoin de 
+ l'approbation du
+ !mailurl $wims_site_manager gestionnaire du site\
+Demande d'ouvrire WIMS document $doc
+ pour rendre le document lisible par le public.
+ <p>
+!endif

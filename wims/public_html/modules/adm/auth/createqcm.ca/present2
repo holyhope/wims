@@ -1,0 +1,34 @@
+!!!--- Ce fichier sert à récupérer un code source brut. ---!!!
+
+!set wims_form_method=file
+
+<div style="background-color:lightblue"> 
+!if $to_ia_qcm!=2
+  Insérez ci-dessous le code source brut de l'exercice à modifier.
+ !else
+  Cliquez sur le bouton <b>"Valider"</b> pour commencer 
+  la modification de votre exercice.
+!endif
+<br>
+<b> Attention!</b> Ce fichier doit avoir été généré par <code>createqcm</code>. 
+</div>
+<hr>
+<br>
+
+!set wims_backslash_insmath=no
+<center>
+!form reply
+<textarea name=fichsrc rows=40 cols=65>
+!if $fichsrc=$empty
+!set temp_fichsrc=!record 0 of wimshome/sessions/$wims_session/submit.oef
+!set temp_fichsrc=!reinput $temp_fichsrc
+$temp_fichsrc
+!else
+!set fichsrc=!reinput $fichsrc
+$fichsrc
+!endif
+</textarea>
+!read comsDir/valideb
+</form>
+</center>
+<br>

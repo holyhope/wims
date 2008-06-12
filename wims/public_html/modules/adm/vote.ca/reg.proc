@@ -1,0 +1,44 @@
+
+!bound reg_status between integer 0 and 3 default 0
+reg_title=!trim $reg_title
+reg_title=!singlespace $reg_title
+!bound reg_option within anonymous,nominative,trace default anonymous
+!bound reg_show within 0,1 default 1
+!if $reg_title=$empty
+ error=no_title
+ :edit
+ job=edit
+ !changeto edit.proc
+!endif
+reg_src=!trim $reg_src
+!if $reg_src=$empty and $vote>$votecnt
+ error=no_content
+ !goto edit
+!endif
+
+!for i=1 to $votecnt
+ v_$i=!record $i of $votedir/.votes
+!next i
+
+v_$vote=$reg_status\
+$reg_title\
+$reg_option\
+$reg_show
+
+!sh mkdir -p $wims_home/log/$Votedir
+!writefile $votedir/.votes
+
+!for i=1 to $[max($votecnt,$vote)]
+ !appendfile $votedir/.votes :$(v_$i)
+!next i
+
+!if $reg_src!=$empty
+ !writefile $votedir/$vote.src $reg_src
+ msg2wims_primitives=def define comment draw if for uservar\
+	menu list radio mmenu mlist checkbox textarea
+ !sh cd $wims_home; bin/msg2wims log/$Votedir/$vote.src log/$Votedir/$vote.def
+!endif
+
+job=read
+!read var.proc
+

@@ -1,0 +1,44 @@
+!if $wims_user!=supervisor
+ error=not_supervisor
+ !exit
+!endif
+
+ucnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!reset ulist,flist,llist,uulist
+!for i=1 to $ucnt
+ u_=!record $i of wimshome/log/classes/$wims_class/.userlist
+ !distribute item $u_ into l_,f_,n_
+ ulist=!append item $n_ to $ulist
+ flist=!append item $f_ to $flist
+ llist=!append item $l_ to $llist
+!next i
+
+uucnt=!recordcnt wimshome/log/classes/$wims_class/.grades
+!if $uucnt>0
+ uucnt=$[$uucnt-1]
+!endif
+!for i=1 to $uucnt
+ u_=!record $i+1 of wimshome/log/classes/$wims_class/.grades
+ n_=!item 1 of $u_
+ uulist=!append item $n_ to $uulist
+!next i
+
+gr=!record 1 of wimshome/log/classes/$wims_class/.grades
+gr=!trim $gr
+!distribute lines $gr into percent,titles,weights
+titles=!item 3 to -1 of $titles
+weights=!item 3 to -1 of $weights
+gcnt=!itemcnt $titles
+!default percent=0
+
+wtot=0
+!for i=1 to $gcnt
+ w_=!item $i of $weights
+ !bound w_ between 0 and 1000 default 1
+ wtot=$[$wtot+$w_]
+!next i
+
+m=!record 0 of wimshome/log/classes/$wims_class/sheets/.severity
+maxscore=!word 1 of $m
+!bound maxscore between 0 and 100000 default 10
+

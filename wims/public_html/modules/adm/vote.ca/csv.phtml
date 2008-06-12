@@ -1,0 +1,42 @@
+
+!set wims_form_method=post
+!if $error iswordof not_secure not_superclass
+  !exit
+!endif
+<h3>$title_data</h3>
+</center> <p>
+ <p><hr> <p>
+
+!if $outfile!=$empty
+ Voici le fichier <tt>
+ !getfile $outfile $outfile
+ </tt> que vous pouvez télécharger et ouvrir dans votre logiciel 
+ tableur préféré.
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+Vous désirez télécharger  
+les données du questionnaire numéro $vote : <font color=green>$vote_title</font>
+<ul><li>
+format
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats $name_help
+</small>
+</li>
+!if $vote_option!=anonymous
+ <li> $name_data
+!formradio csvoption list global,detail prompt $name_global,$name_detail
+<small>
+!href module=$module&cmd=help&special_parm=csvvotes $name_help
+</small>
+</li>
+</ul>
+!endif
+<center><input type=submit value=Télécharger></center>
+
+!readproc csv.proc
+</form>
