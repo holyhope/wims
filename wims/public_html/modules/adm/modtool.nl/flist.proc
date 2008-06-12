@@ -96,6 +96,17 @@ mod=$modreq
  i_wims_version=!word 1 of $i_wims_version
  !default i_version=1.00
  !default i_wims_version=$wims_version
+ ###add fields not accessible by the interface
+ ### will be useful in case of translation in the module itself
+ deflist1=translation_language
+ translation_language=!listintersect $translation_language and $langlist
+ !for l in $(translation_language)
+   deflist1=!append item title_$l to $deflist1
+   deflist1=!append item description_$l to $deflist1
+ !next
+ !for l in $deflist1
+  !default i_$l=$($l)
+ !next
  !default i_data=$data
  !if .. isin $i_data
   i_data=
@@ -104,7 +115,7 @@ mod=$modreq
 # Do not edit by hand.\
 \
 
-!if dialog isin $category
+!if dialog isitemof $category
   i_category=exercise,dialog
 !endif
  cat1=!item 1 of $i_category
@@ -112,7 +123,7 @@ mod=$modreq
   i_category=document
   cat1=doc
  !endif
- !for i in $deflist
+ !for i in $deflist,$deflist1
   ind=$ind$i=$(i_$i)\
 
  !next i

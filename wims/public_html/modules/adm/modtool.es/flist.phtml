@@ -7,12 +7,17 @@
  <p>
 !endif
 
+!set doctest1=!module category devel/$auth_login/$mod
+
 Your module 
 <em><font color=blue>$title</em></font> ($description)
 <small>
 !href cmd=reply&jobreq=index $mod
 </small>
 contains the following files. 
+!if document isin $doctest1
+ (<i>For document files, click on the link <tt>Document manager</tt></i>.)
+!endif
 
 !set table_cellpadding=1
 !set table_cellspacing=0
@@ -29,6 +34,13 @@ $table_hdtr
   !href cmd=reply&jobreq=edfile&fname=$f edit
   &nbsp;
   !href cmd=reply&jobreq=delfile&fname=$f delete
+  !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
+   !set f_=!translate internal / to , in $f
+   !set f_=!item -1 of $f_
+   !set f_=!replace internal .oef.. by in $f_..
+   &nbsp;
+   !href target=wims_test module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
+  !endif
 &nbsp;</td><td align=left>
   !set t_=!translate . to _ in $f
   !set t_=$($t_)
@@ -42,6 +54,9 @@ $table_end
 Add a new file:
 <input size=20 name=fname value=$lastfname>
 <input type=submit value=OK>
+!href cmd=reply&jobreq=binfile Binary files
+&nbsp;
+!href target=wims_test module=tool/directexec&cmd=new Script tester
 </form>
 
 !reset fname

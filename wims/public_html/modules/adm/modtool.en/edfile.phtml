@@ -15,19 +15,31 @@ $makeerror
 !form reply
 <input type=hidden name=fname value=$fname>
 
-<center>
+<center><table border=0>
+ <tr><td align=center>
 !sh content=`cat $devdir/$mod/$fname | sed 's/\&/\&amp;/g;s/</\&lt;/g'`\
  cat <<@\
 <textarea rows=20 cols=70 wrap="off" name=wims_deposit>$$content\
 </textarea>\
 @
+
+</td>
+<td width=20></td>
+<td valign=top>
+ !href target=wims_help module=adm/createxo&+modtoolhelp=yes OEF Documentation.
+ <p>
+ !href target=wims_help module=help/wimsdoc&+subject=slib#slib Librairies (slib).
+ <p>
+ !href target=wims_help module=adm/createxo&+modtoolhelp=yes&+special_parm=reply Available answer types.
+</td>
+</tr>
+</table>
 <p>
 <input type=submit name=register value="Register the changes">
 &nbsp;
 <input type=submit name=abandon value="Cancel">
+</form>
 </center>
-</form>
-</form>
 !set wims_form_method=file
 !form reply
 <input type=hidden name=fname value=$fname>

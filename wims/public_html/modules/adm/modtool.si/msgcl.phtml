@@ -1,7 +1,7 @@
 
 <b>Error</b>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
-!if $w1 iswordof antiwversion badauth badcategory badlang \
+!if $w1 iswordof antiwversion badauth badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright notallow robot \
@@ -23,10 +23,32 @@
 !exit
 
 :badcategory
- The category <tt>$w2</tt> of your submitted module is unknown. Please report
- your problem to the 
- !mailurl $sysadmin publication maintainer
+ !if / isin $w2
+  The category <tt>$w2</tt> of your submitted module is unknown.
+  !set w3=!word 3 to -1 of $wims_read_parm
+  !set w0=!translate / to , in $w2
+  Categories actually available in the zone <b><tt>$(w0[1])</tt></b> are:
+  <p>
+  <tt>$w3</tt>
+  <p>
+  Please write to the
+  !mailurl $sysadmin publication maintainer
+  if you want to add a new category.
+ !else
+  The zone <tt>$w2</tt> of your submitted module is unknown.
+  Please report your problem to the 
+  !mailurl $sysadmin publication maintainer
 .
+ !endif
+!exit
+
+:badhour
+ This is not the time to publish a local module!
+ <p>
+ Please choose a period when the server is quieter. Avoid publishing
+ modules during the following hours:
+ <p>
+ $nopublish
 !exit
 
 :badlang

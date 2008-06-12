@@ -23,10 +23,23 @@
 !exit
 
 :badcategory
+!if / isin $w2
  De categorie <tt>$w2</tt> van de opgestuurder module is hier onbekend.
+ !set w3=!word 3 to -1 of $wims_read_parm
+  !set w0=!translate / to , in $w2
+  Categories actually available in the zone <b><tt>$(w0[1])</tt></b> are:
+  <p>
+  <tt>$w3</tt>
+  <p>
  Graag dit voorval melden bij de 
  !mailurl $sysadmin publicatie afdeling
+   if you want to add a new category.
+ !else
+  The zone <tt>$w2</tt> of your submitted module is unknown.
+  Please report your problem to the 
+  !mailurl $sysadmin publicatie afdeling
 .
+ !endif
 !exit
 
 :badhour
@@ -41,7 +54,6 @@
 :badlang
  Helaas,  maar de taal <tt>$w2</tt> bestaat nog niet in WIMS.
  Iemand zal eerst WIMS moeten vertalen naar deze taal, voor dat u deze modules kunt opsturen.
-
 !exit
 
 :badname
