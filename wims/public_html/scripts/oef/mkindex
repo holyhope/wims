@@ -39,6 +39,7 @@ else
  exindex=Exindex
  extitles=Extitles
  dfindex=Dataindex
+ imindex=Imindex
  tmp1=tmp1
  tmp2=tmp2
 fi
@@ -173,6 +174,17 @@ if [ -d src/data ]; then
  done
  sort -f -t, -k2 <$dfindex.tmp >$dfindex
  rm -f $dfindex.tmp
+fi
+
+#### index of files in images/ "name:directory"
+cd $thisdir
+rm -f $imindex
+if [ -d images ]; then
+  images=`cd images ; find * -type f`
+  for i in $images ; do d=`dirname $i` ; file=`basename $i` ;
+    echo "$file:$d" >> $imindex ; 
+  done;
+ #if [ ! -s "$imindex" ]; then rm $imindex ; fi ;
 fi
 
 # Gather content for robots.
