@@ -1,0 +1,54 @@
+
+#if you change these limits, you have to modify var.def!
+
+sstyle		=!item $style of 1,1,2,2
+ask_reason	=!item $style of 1,0,0,1
+all_steps	=!item $style of 0,1,0,0
+ltype		=!item $sstyle of ol,ul
+wims_prefix	=class user tmp
+!read scenario/names
+!read Exindex
+exocnt=!itemcnt $exolist
+!bound random within 0,1 default 1
+!default format=html
+
+!if $cmd=reply and $status!=waiting
+ error=double_reply
+ !exit
+!endif
+
+!if $status=$empty
+ !read scenario/exo.init
+!endif
+
+nn=!itemcnt $shufflelist
+#thisexo=!item ($reply_cnt)%$nn+1 of $shufflelist
+thisexo=!item 1 of $shufflelist
+!if $nn>1 and $status!=waiting
+ wims_module_log=$wims_module_log got $thisexo
+!endif
+
+!if $status!=waiting
+ !read scenario/var.prep
+!endif
+
+!if $cmd=reply and $status=waiting
+ !read scenario/var.proc.$sstyle 
+ !if $done=yes
+  !if $sstyle=2
+   module_score=$[$scorecnt/$stepcnt]
+  !endif
+  weight=!item $level of 0.6,1,1.6,3,5
+  module_score=$[max(min($module_score,10),0)]
+  !if $level=5 and $module_score<10
+   module_score=0
+  !else
+   module_score=$[rint(100*($module_score/10)^$weight)/10]
+  !endif
+  wims_module_log=score $module_score
+  status=
+ !endif
+!endif
+
+module_title=$module_title<br></b><font size=+0>--- $title ---</font>
+
