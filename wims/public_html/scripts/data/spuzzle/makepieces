@@ -4,8 +4,7 @@
 
 cd `dirname $0`
 flydraw=../../../../other/bin/flydraw
-
-pics=`cd photos; ls *.gif | sed 's/.gif$//'`
+pics=`cd ../photos; ls *.gif | sed 's/.gif$//'`
 levels="2x2 2x3 3x3 3x4 4x5"
 
 p=`echo $pics`
@@ -15,9 +14,10 @@ echo !set levels=!words2items $levels >>photindex
 for name in $pics
 do
 if [ ! -d pieces/$name ] || [ pieces/$name -ot photos/$name.gif ]; then
-photo=photos/$name.gif
-siz=`(identify -verbose '%x:%y' $photo | grep -i 'geometry:' \
-     | grep -iv page | awk '{print $2}') 2>/dev/null`
+photo=../photos/$name.gif
+#siz=`(identify -verbose '%x:%y' $photo | grep -i 'geometry:' \
+#     | grep -iv page | awk '{print $2}') 2>/dev/null`
+siz=`identify -format '%wx%h' $photo`
 if [ -z "$siz" ]; then
  echo ImageMagick missing in your system. Impossible to cut photos.
  echo Program aborted.
@@ -27,6 +27,7 @@ sizex=`echo $siz | awk -F x '{print $1}'`
 sizey=`echo $siz | awk -F x '{print $2}'`
 echo Cutting $photo: $sizex x $sizey
 
+mkdir -pm 755 pieces
 if [ ! -d pieces/$name ]; then mkdir -m 755 pieces/$name; fi
 touch pieces/$name
 
@@ -68,4 +69,3 @@ done
 
 fi
 done
-

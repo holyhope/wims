@@ -4,16 +4,17 @@
 cd `dirname $0`
 flydraw=../../../../other/bin/flydraw
 
-list=`cd photos; ls *.gif | sed 's/.gif$//'`
+list=`cd ../photos; ls *.gif | sed 's/.gif$//'`
 
 for name in $list
 do
 if [ "$name" = "small" ]; then continue; fi
 if [ -f pieces/$name/2/p.0.0.gif ]; then continue; fi
 
-photo=photos/$name.gif
-siz=`(identify -verbose '%x:%y' $photo | grep -i 'geometry:' \
-     | grep -iv page | awk '{print $2}') 2>/dev/null`
+photo=../photos/$name.gif
+#siz=`(identify -verbose '%x:%y' $photo | grep -i 'geometry:' \
+#     | grep -iv page | awk '{print $2}') 2>/dev/null`
+siz=`identify -format '%wx%h' $photo`
 if [ -z "$siz" ]; then
  echo ImageMagick missing in your system. Impossible to cut photos.
  echo Program aborted.
