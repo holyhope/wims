@@ -1,0 +1,87 @@
+
+!if dontknow iswordof $error
+In feite, is de laatste stap
+ !if $step_reason=OK
+  goed. $step_remark
+ !else
+  foutief. $step_remark 
+  <p>
+  !read reasons/$step_reason.det
+  <p>
+  De correcte versie van de laatste stap moest zijn;<p><center>
+  <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+  !line $step of $good
+  </table> </center>
+ !endif
+ <p>het is wel jammer, dat je dat niet doorzag...
+ !goto gnext
+!endif
+
+<b>Fout.</b>
+
+!if step_error iswordof $error
+ !if $step_reason=OK
+ Maar deze stap is <b>ECHT</b> wel goed !! 
+  $step_remark
+ !else
+  !if $ask_reason>0 and $step_reason!=$ans
+ Neen, de laatste stap is foutief, maar niet vlgs jouw verklaring.
+  !else
+  Maar nee , er is wel degelijk een fout in de laatste stap.
+  !endif
+  $step_remark
+  <p>
+  !read reasons/$step_reason.det
+  <p>
+  De correcte versie van de laatste stap moest zijn<p><center>
+  <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+  !line $step of $good
+  </table> </center> <p>
+ !endif
+ :gnext
+ <p>
+ !if $step<$stepcnt
+  !href cmd=reply&ans=next Naar de volgende stap.
+ !else
+ Dit is het einde van deze oefening.Jouw score: $module_score/10.
+ !endif
+ !exit
+!endif
+
+!if bad_step iswordof $error
+ !if $badstep=0
+ Je denkt dat alle stappen goed zijn..
+ !else
+ Je denkt dat de eerste foutieve stap nummer $badstep heeft.
+ !endif
+ !if $bad_steps=$empty
+ Je hebt het mis: alle stappen zijn correct.
+  <p>
+  !line $badstep of $remarks
+ !else
+  Nee, de <em>eerste</em> foutieve stap is nummer $sss. <p>
+  !if $badstep>0
+   !if $badstep isitemof $bad_steps
+    Step nummer $badstep is inderdaad foutief, maar het is niet de <em>eerste</em> foutieve stap.
+   !else
+    In tegenstelling, stap $badstep is gewoon goed.
+   !endif
+  !else
+   $bad_reason <p>
+   !set rrr=!item 1 of $bad_reasons
+   !read reasons/$rrr.det
+  !endif
+ !endif
+ <p>Je score: $module_score/10.
+ !exit
+!endif
+
+!if double_reply=$error
+Je hebt al eens een antwoord op dit probleem ingeleverd.
+Dit antwoord is reeds verwerkt en becijferd.
+Herhaalde pogingen worden niet mee gerekend 
+(maar gebruik niet de "RELOAD" of "TERUG" knop van je browser, voor
+het indienen van je antwoorden...)
+ !exit
+!endif
+

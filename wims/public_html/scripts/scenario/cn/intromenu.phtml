@@ -1,0 +1,52 @@
+<p><hr> <p>
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+ 对不起, 本模块目前没有练习. 请以后再来!
+ !exit
+!endif
+!if $exocnt=1
+本模块包含一个练习, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo 试试看.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value=$module>
+<center><table border=0><tr>
+<td align=center>选择情节:<td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+ <tr><td align=center>练习风格:<td>
+ !formselect style list 1,2,3,4 prompt \
+ 	找出第一个错误,\
+	找出所有错误,\
+	不给理由,\
+	每部都给理由
+ <tr><td align=center>难度:<td>
+ !default level=2
+ !formselect level from 1 to 5
+ </table>
+ <p><center><input type=submit value="开始">
+ </center> <p>

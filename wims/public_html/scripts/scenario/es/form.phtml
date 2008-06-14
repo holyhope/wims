@@ -1,0 +1,72 @@
+!! On pose les questions dans ce fichier. D'habitude, c'est par
+!! des forms. Voici un exemple de conception de la forme de réponse.
+
+!if $sstyle=1
+ !if $substep=0
+  !if $all_steps=0
+   !form reply
+   ¿Cual es el <em>primer</em> paso erróneo de esta serie?
+   !formselect badstep from 0 to $stepcnt
+   (0 significaría que todos los pasos son correctos).
+   <p><center><input type=submit value="Enviar la respuesta"></center>
+  !else
+   Marque a continuación <em>todos</em> los pasos erróneos, y después
+   <input type=submit value="pulse aquí">.
+  !endif
+  </form>
+ !else
+  !if $all_steps=0
+   !if $badstep=0
+    Efectivamente, todos los pasos son correctos.
+   !else
+    Efectivamente, el primer paso erróneo es el número $badstep.
+   !endif
+  !endif
+  Su puntuación: $module_score/10.
+  !if $expstep!=$empty
+   <p>Algunas explicaciones.<ul>
+   !for i in $expstep
+    <p><li> Paso $i
+    !if $i isitemof $badstep
+     es correcto.
+     !line $i of $remarks
+    !else
+     !set j=!positionof item $i in $bad_steps
+     !set e=!item $j of $bad_reasons
+     no es correcto.
+     !read reasons/$e.det
+    !endif
+   !next i   
+   </ul>
+  !endif
+ !endif
+!else
+ !if $substep=0
+  !form reply
+  ¿Qué piensa del <em>último</em> paso?
+  !formselect ans list --,OK,$bad_reasons prompt No sé,\
+  	Sí: este paso es correcto,$bad_rnames
+  <input type=submit value="Enviar">
+  </form>
+ !endif
+ 
+ !if $substep=2
+  Tiene razón:
+  !if $step_reason=OK
+   el último paso es correcto.
+  !else
+   El último paso es erróneo.
+   El paso correcto sería<p><center>
+   <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
+   !line $step of $good
+   </table> </center>
+  !endif
+  <p>
+  !if $step<$stepcnt
+   !href cmd=reply&ans=next Pasar al siguiente paso.
+  !else
+   Este es el final del ejercicio. Su puntuación: $module_score/10.
+  !endif
+ !endif
+!endif
+
