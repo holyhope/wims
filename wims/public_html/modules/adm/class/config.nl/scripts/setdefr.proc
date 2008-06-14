@@ -15,6 +15,12 @@ in wimshome/log/classes/$wims_class/.def
 pr_cssfile=!trim $pr_cssfile
 !writefile wimshome/log/classes/$wims_class/css $pr_cssfile
 
+ !if  / isin $wims_deposit or .. isin $wims_deposit
+  !exit
+ !endif
+ !sh cd $wims_home/$wims_sesdir\
+mv user-deposit $wims_home/log/classes/$wims_class/css
+
 !for ttt in bgcolor, css, bgimg, theme
 !if $(pr_$ttt)!=$(wims_$ttt)
  wims_$ttt=$(pr_$ttt)
