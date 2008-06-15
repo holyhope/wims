@@ -1,0 +1,65 @@
+<center><h1>$cdt_title</h1>
+<font size=+1>Bestands beheer</font></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ <p><hr> <p>
+!endif
+
+!if $erase!=$empty
+ Het bestand <b>$erase</b> is verwijderd.
+ <p>
+!endif
+
+!if $quota_free<1
+ Er is helaas geen opslag capaciteit meert over in uw klas.<br>
+ Vraag systeembeheer Uw quotum te verhogen.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job2 value=deposit>
+ File upload :
+ <input type=file size=35 name=wims_deposit>
+ <input type=submit value=OK>
+ </form>
+!endif
+
+!if $flist!=$empty
+ <p>Beschikbare bestanden &nbsp;:
+ !for f in $flist
+  !getfile cdt/$wims_class/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ verwijder het bestand &nbsp;:
+ !formselect job2 list $flist
+ <input type=submit value=OK>
+ </form>
+ <p>
+ Deze bestanden kunnen worden benaderd via de variabele
+ <tt>\filedir</tt>. 
+ Bijvoorbeeld,
+<p><center>
+ <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ geeft de link naar het bestand <a href=$m_filedir/$f1>$f1</a>.
+ U kunt ook:
+<p><center>
+ <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
+</center> <p>
+gebruiken om het plaatje <tt>myfile.jpg</tt> te verwerken in een pagina.
+ <p>
+ De opgestuurde bestanden zijn exclusief voor uw klas.
+!endif
+
+<p>
+Uw klasse quota &nbsp;: $quota_total Meg.
+Nog over &nbsp;: $quota_free Meg.
+
+<p><p>
+!href cmd=reply&job=home Terug
+.
+
+!reset erase,job2

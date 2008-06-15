@@ -1,5 +1,5 @@
 <center><h1>$cdt_title</h1>
-<font size=+1>Bestands beheer</font></center>
+<font size=+1>File deposit</font></center>
 
 !if $error!=$empty
  !read msg.phtml
@@ -7,25 +7,24 @@
 !endif
 
 !if $erase!=$empty
- Het bestand <b>$erase</b> is verwijderd.
+ The file <b>$erase</b> has been deleted.
  <p>
 !endif
 
 !if $quota_free<1
- Er is helaas geen opslag capaciteit meert over in uw klas.<br>
- Vraag systeembeheer Uw quotum te verhogen.
+ You can no longer deposit files because the content of the class is very close to, or exceeded, the limit of disk space allowance. Sorry.
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- File upload :
+ You can deposit a file :
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Beschikbare bestanden &nbsp;:
+ <p>Available files &nbsp;:
  !for f in $flist
   !getfile cdt/$wims_class/$f $f
   &nbsp;
@@ -33,33 +32,32 @@
  <p>
  !form reply
  <input type=hidden name=job2 value=erase>
- verwijder het bestand &nbsp;:
+ Erase a file &nbsp;:
  !formselect job2 list $flist
- <input type=submit value=OK>
+ <input type=submit value=OK
  </form>
  <p>
- Deze bestanden kunnen worden benaderd via de variabele
- <tt>\filedir</tt>. 
- Bijvoorbeeld,
+ Files can be accessed using the variable
+ <tt>\filedir</tt>. for example,
 <p><center>
  <tt>&lt;a&nbsp;href=\filedir/$f1&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
- geeft de link naar het bestand <a href=$m_filedir/$f1>$f1</a>.
- U kunt ook:
+ gives a link to the file <a href=$m_filedir/$f1>$f1</a>.
+ Also you can write 
 <p><center>
  <tt>&lt;img src=\filedir/myfile.jpg&gt;</tt>
 </center> <p>
-gebruiken om het plaatje <tt>myfile.jpg</tt> te verwerken in een pagina.
+to include an image file <tt>myfile.jpg</tt> to the page.
  <p>
- De opgestuurde bestanden zijn exclusief voor uw klas.
+ Files deposit are only accessible by participant of the class.
 !endif
 
 <p>
-Uw klasse quota &nbsp;: $quota_total Meg.
-Nog over &nbsp;: $quota_free Meg.
+Total available disk space &nbsp;: $quota_total Meg.
+Free disk space &nbsp;: $quota_free Meg.
 
 <p><p>
-!href cmd=reply&job=home Terug
+!href cmd=reply&job=home Back
 .
 
 !reset erase,job2

@@ -2,7 +2,7 @@
 !form reply
   <input type=submit value=Show>
   !reset job
-  !formselect job list work,todo prompt Work,Work to do 
+  !formselect job list work,todo prompt Werk,Nog te doeno 
   between
   !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
   !let v=!values v for v=1 to 31
@@ -23,23 +23,23 @@
   !formselect jmonth2 from 0 to 12 prompt ---,$months
   !let v=!values v for v=1 to 31  
   !formselect jday2 list 0,$v prompt ---,$v
-  <small> if a second date is not entered queries will be based on the first date.</small>
+  <small>als er geen tweede datum vermeld is, wordt uitgegaan van de eerste...</small>
  </form>
 <p>
 !if $wims_user=supervisor and $cdt_supervise=yes 
  <p>
- !href cmd=new&job=adddate Add a date
+ !href cmd=new&job=adddate Voeg een datum toe
  &nbsp;
- !href cmd=reply&job=file Add file
+ !href cmd=reply&job=file Voeg een bastand toe
  &nbsp;
- !href cmd=new&job=addtodo Add work to do
+ !href cmd=new&job=addtodo Voeg huiswerk toe
  &nbsp;
- !href cmd=reply&job=config Configure
+ !href cmd=reply&job=config Configureer
  .
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
 <p>
- !href cmd=new&job=home Back
+ !href cmd=new&job=home Terug
 .
 !endif

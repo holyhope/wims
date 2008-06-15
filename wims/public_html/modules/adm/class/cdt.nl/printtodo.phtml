@@ -1,31 +1,29 @@
 <center>$classname<p><h1>$cdt_title.</h1>
- <font size=+1><b>Work to do
+ <font size=+1><b>Huiswerk
  !if $jour_begin!=$jour_end
-  between <font color=green>$jyear/$jmonth/$jday</font> and <font color=green>$jyear2/$jmonth2/$jday2</font>
+  tussen <font color=green>$jyear/$jmonth/$jday</font> en <font color=green>$jyear2/$jmonth2/$jday2</font>
  !else
-  for <font color=green>$jyear/$jmonth/$jday</font>
+  voor  <font color=green>
+  $jyear/$jmonth/$jday</font>
  !endif
 </b></font>
 </center> 
 <p><p>
 
-!if $cdt_description!=$empty
- <br>$cdt_description<br>
-!endif
-
 !if $nbligne=0
- there is no work to do for $jyear/$jmonth/$jday.
+ Er is geen huiswerk opgegeven voor $jyear/$jmonth/$jday.
  <p>
  !goto end
 !endif
  <center>
+ !let table_border=1
  $table_header
  $table_hdtr 
-  <th>Pour le</th>
+  <th>Voor</th>
   !if no isin $cdt_supervise
-   <th>Disciplines</th>
+   <th>Onderwerp</th>
   !endif
-  <th>Work</th><th>Given the</th>
+  <th>Huiswerk</th><th>te doen</th>
  </tr>
  !for i=1 to $nbligne
   $table_tr
@@ -34,13 +32,13 @@
    !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$dir
    !read wimshome/log/classes/$dir/cdt/def/$date 
    !let no=!positionof item $todo in $date_todo
-   <td valign=top>
+   <td>
     !read proc/date.phtml $todo 
    </td>
    !if no isin $cdt_supervise
     <td>$matiere</td>
    !endif
-   <td>
+   <td valign=top>
     !read wimshome/log/classes/$dir/cdt/def/$date todo$no
    </td>
    <td>
@@ -49,13 +47,9 @@
   </tr>
  !next i
  $table_end
-<p>
- !href target=wims_new cmd=new&module=$module&job=todo&job2=print&jday=$jday&jyear=$jyear&jmonth=$jmonth&jday2=$jday2&jyear2=$jyear2&jmonth2=$jmonth2 Print
-</center>
-
 :end
-<p><hr width=40%> <p>
-!read form.phtml 
-
-!tail
+<p><p><p>
+<a href="javascript:window.print()">Printen</a> &nbsp; 
+<a href="javascript:window.close()">Sluit venster</a>
+ </center>
 

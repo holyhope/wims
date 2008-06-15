@@ -1,38 +1,44 @@
 <center>$classname<p><h1>$cdt_title.</h1>
  <b><font size=+1>
  !if $jour_begin!=$empty
-  between <font color=green>$jyear/$jmonth/$jday</font>
+  tussen <font color=green>$jyear/$jmonth/$jday</font>
   !if $jour_begin!=$jour_end
-   and <font color=green>$jyear2/$jmonth2/$jday2</font>
+   en <font color=green>$jyear2/$jmonth2/$jday2</font>
   !endif
  !endif
  </font></b>
 </center> 
 
+!if $cdt_description!=$empty
+ <br>$cdt_description
+!endif
 <p><p>
+
 !if $cdt_nbdate=0
- no information.
+  geen informatie beschikbaar.
  !goto end
 !else
  !if $nbligne=0
   !if $jour_begin=$jour_end
-   no information for this day.
+    geen informatie beschikbaar voor deze dag.
   !else
-   no information for this periode.
+    geen informatie beschikbaar voor deze periode.
   !endif
   !goto end
  !endif
 !endif
 
 <center>
- !let table_border=1
  $table_header
  $table_hdtr 
-  <th>Day</th>
+  <th>Dag</th>
   !if no isin $cdt_supervise
-   <th>Disciplines</th>
+   <th>Vak</th>
   !endif
-  <th>In Class</th><th>Work to do</th><th width=30>for the</th>
+  <th>In klas</th><th>Huiswerk</th><th width=30>voor</th>
+  !if $wims_user=supervisor and yes isin $cdt_supervise
+   <th>Actie</th>
+  !endif
  </tr>
  !for i=1 to $nbligne
   !let mem_tr=$table_tr
@@ -62,6 +68,12 @@
    !else
     <td>&nbsp;</td><td>&nbsp;</td>
    !endif
+   !if $wims_user=supervisor and yes isin $cdt_supervise
+    <td rowspan=$nbtodo>
+    !href cmd=new&job=adddate&filename=$jour Veranderen
+    &nbsp;
+    !href cmd=new&job=del&filename=$jour Verwijderen
+   !endif
   </tr>
    !if $nbtodo>1
     !let bgcolor=!positionof char # in $mem_tr
@@ -80,10 +92,14 @@
    !endif 
  !next i
  $table_end
-<p><p>
-<p>
+!if $nbligne>0
+ <p>
+ !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 Printen
+!endif
+ </center>
+
 
 :end
-<a href="javascript:window.print()">Print</a> &nbsp; 
-<a href="javascript:window.close()">close window</a>
-</center>
+<p><hr width=40%> <p>
+!read form.phtml 
+!tail
