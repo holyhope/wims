@@ -5,7 +5,7 @@ $wims_html_header
 
 <center>$classname
 <h1>$cdt_title</h1>
-<font size=+1>Add homework assignments</font></center> 
+<font size=+1>Huiswerk toevoegen</font></center> 
 
 <p><hr width=40%> <p>
 
@@ -17,7 +17,7 @@ $wims_html_header
 !form reply
 <input type=hidden name=job value=addtodo>
 <input type=hidden name=job2 value=save>
-<p>S&eacute;ance du  :
+<p>Lessen op  :
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -30,7 +30,7 @@ $wims_html_header
 !formselect jmonth from 1 to 12 prompt $months
 !formselect jday from 1 to 31
 <p>
-Nombre de dates &agrave; afficher : 
+Aantal datums : 
 <select  name="nbredevoir" onchange=submit()>
 !for i=1 to $max_todo
  !if $i=$nbredevoir
@@ -44,7 +44,7 @@ Nombre de dates &agrave; afficher :
 <table>
  !for i=1 to $nbredevoir
  <tr>
-  <td>Work to do for the :
+  <td>De planning voor de :
    !if $(dday$i)=$empty
     !let dday$i=$jday
     !let dyear$i=$jyear
@@ -67,11 +67,11 @@ Nombre de dates &agrave; afficher :
  !next i
 </table> 
 <center><hr width=30%>
-<p><input type=submit value="Save">
+<p><input type=submit value="Opslaan">
 </center>
 </form>
 
 <p><p>
-!href cmd=new&job=home back
+!href cmd=new&job=home Terug
 
 !tail
