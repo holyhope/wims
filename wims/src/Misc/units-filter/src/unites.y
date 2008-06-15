@@ -430,11 +430,15 @@ Uh {$$.unite=TUh; $$.s = strdup("h"); $$.multip=unites[$$.unite].multiplicateur;
 #include "lex.yy.c"
 #include <stdio.h>
 #include <stdbool.h>
-#include <recode.h>
+
+#ifdef RECODE_SUPPORT
+  #include <recode.h>
+#endif
+
 #include <regex.h>
 
 const char *program_name;
-char *isUTF8;
+int isUTF8;
 
 /* le programme lui-même */
 
@@ -510,7 +514,7 @@ void printUnit(optiontype option, char * unit, int tolerance){
   char buffer[128];
   char *codedunit;
 
-
+#ifdef RECODE_SUPPORT
   if(isUTF8) {
     RECODE_OUTER outer = recode_new_outer (true);
     RECODE_REQUEST request = recode_new_request (outer);
@@ -519,6 +523,9 @@ void printUnit(optiontype option, char * unit, int tolerance){
   } else {
     codedunit=strdup(unit);
   }
+#else
+  codedunit=strdup(unit);
+#endif
 
   if (option==option_l){
     strncpy(buffer, codedunit,sizeof(buffer));
@@ -591,6 +598,9 @@ void printValue(optiontype option, yystype result, int s){
     printf(buffer);
   }
 }
+
+double trunc(double x);
+double round(double x);
 
 void sortie_texte(optiontype option){
   /***************************************************/
@@ -695,9 +705,11 @@ int main(int argc, char * argv[]){
   if (envoption && strncmp(envoption, "s", 2)==0) option=option_s;
   if (envoption && strncmp(envoption, "o", 2)==0) option=option_o;
   if (envoption && strncmp(envoption, "l", 2)==0) option=option_l;
+#ifdef RECODE_SUPPORT
   // check if we are in a UTF8 environment
   char *lc_all=getenv("LC_ALL");
-  isUTF8 = (lc_all!=NULL && strstr(lc_all,"UTF-8"));
+  isUTF8 = (lc_all!= NULL && strstr(lc_all,"UTF-8"));
+#endif
   program_name = argv[0];
 
   // environmental option take precedence on command-line options
