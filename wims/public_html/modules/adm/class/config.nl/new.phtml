@@ -1,56 +1,51 @@
 <p>
 !if $backdays>7
  !if $backdays>100
-  Your class is not backed up for more than 100 days.
+    Van uw klas in meer dan 100 dagen geen backup gemaakt. 
  !else
-  Last backup of your class: $backdays days ago.
+    De laatste backup van uw klas was $backdays geleden.
  !endif
  !if backup iswordof $warn
-  <p><font color=red><b><blink>WARNING.</blink></b></font>
-  It is the teachers' responsability to backup their own teaching resources!
-  Don't count on the server's backup for your lost work. Moreover,
-  virtual classes not regularly
-  backed up will be considered as inactive and unimportant by the software,
-  and may be erased at any time to make space for others.
+  <p><font color=red><b><blink>WAARSCHUWING.</blink></b></font>
+  Het is de verantwoordelijkheid van de individuele docent een backup te maken van de virtuele ruimte.<br>
+  Deze server computer zal standaard geen backups van virtuele klassen aanmaken.
  !else
-  <p> Protect yourself against server incidents!
+  <p>
+  Bescherm Uw virtuele klassen tegen onvoorziene "data calamiteiten" !
  !endif
- !href cmd=reply&job=arch Backup the class
- regularly.
+ Maak regelmatig een
+ !href cmd=reply&job=arch backup
+  </a> van de klassen.
  <p>
 !endif
 
 !if creation iswordof $warn
- <p><b>WARNING</b>. Your virtual class is too old! It already has $creatdays days.
+ <p><b>WAARSCHUWING</b>.
+ Uw virtuele klas is $creatdays oud: dit is te oud !
  <p>
- It is highly recommended that you regenerate a new virtual class structure at
- the end of each academic year. Continue using an old virtual class structure over
- the years will result in registry file and disk quota overflow, which risks
- to block access to your class at crucial moments.
+ Het is dringend aan te bevelen een nieuwe klas op te richten aan het begin van 
+ een schooljaar.
  !if $class_type notin 13
   <p>
-  Here is how to regerate your virtual class without recreating your teaching
-  resources.
+  Hier kan een nieuwe virtuele klas oprichten, zonder dat er belangrijk lesmateriaal verloren gaat:
   <ol>
   <p><li>
-  !href cmd=reply&job=arch Backup
-  your class at the end of the academic year.
+  Maak een
+  !href cmd=reply&job=arch backup
+  </a> van de klas aan het einde van het schooljaar.
   <p><li>
-  <a href="$wims_ref_name?lang=$lang&module=adm/class/regclass">Create</a>
-  a new virtual class (or class group or institution gateway) at the beginning
-  of the next academic year.
-  <p><li>Restore the teaching resources you backed up to the new class.
-  (Without restoring student accounts and activities that are obsolete.)
+  <a href="$wims_ref_name?lang=$lang&module=adm/class/regclass">Maak</a>
+  een nieuwe virtuele klas (of een groepje klassen, of een kompleet instituut)
+  aan het begin van het schooljaar.
+  <p><li>
+  Installeer het lesmateriaal in de nieuwe klas, met de backupfile.<br>
+  <small>(zonder de overbodige leerling accounts en scores)</small>
   </ol>
  !else
   <p>
-  Please tell this to the administrator of the class group gateway to which
-  your class belongs.
-  <p>
-  You can
+  Maak een 
   !href cmd=reply&job=arch backup
-  the teaching resources of your current class then retore them to the newly
-  created one.
+  van alle lesmateriaal van uw huidige klas; hiermee kan een nieuwe klas worden gevuld.
  !endif
 !endif
 
@@ -60,7 +55,8 @@
  !changeto list.phtml
 !else
  <p><center>
-  !href cmd=reply&job=list Continue with class maintenance.
+  !href cmd=reply&job=list Doorgaan 
+  </a> met het klasse onderhoud.
  </center>
 !endif
 

@@ -12,7 +12,7 @@ Helaas, maar deze module is alleen voor de supervisor van een virtuele klas bedo
  !if $code!=$empty
   Incorrecte beveilingings code.
  !else
- Deze module is alleen bereikbaar voor een secure host.
+ Deze module is alleen bereikbaar door een "secure host".
  !endif
 Toegang Geweigerd !
 
@@ -20,49 +20,48 @@ Toegang Geweigerd !
 !endif
 
 !if checkhost iswordof $error
-Je huidige ip-adres staat niet in je nieuwe lijst van "secure hosts".
-Waarschijnlijk is dit een klein foutje.
-Ik zal dus de "secure host" definitie lijst niet bijwerken.
+Uw huidige ipadres staat niet in de nieuwe lijst van "secure hosts".
+Waarschijnlijk is dit een klein foutje.En ik zal dus de "secure host" datalijst niet bijwerken.
  !exit
 !endif
 
 !if bad_file iswordof $error
-Helaas, maar ik kan de <em>$wims_deposit</em> file niet als een klas backup-file identificeren
-Of je hebt een verkeerde file gestuurd of de archief-file zelf is corrupt
+Helaas, maar ik kan de <em>$wims_deposit</em> file niet als een klas backup-file identificeren.
+Of U hebt een verkeerde file gestuurd of de archief-file zelf is corrupt.
  
  !exit
 !endif
 
 !if empty_file iswordof $error
-Er zijn geen klas bestanden aangetroffen in je backup-file <tt>$wims_deposit</tt>.
+Er zijn geen klas backup bestanden aangetroffen in uw backup-file <tt>$wims_deposit</tt>.
  !exit
 !endif
 
 !if no_upload iswordof $error
-De gestuurde data zijn verlopen !
-Dat gaat niet goed zo, probeer het nog maar eens
+De gestuurde data zijn ongeldig !
+Probeer het nog eens.
  !exit
 !endif
 
 !if remote_sharing iswordof $error
-Een "buurt-klas" deelt enkele bronnen uit jouw klas.
-Je kunt alleen wijzigingen aanbrengen in materiaal dat niet gedeelt wordt...
-Of je moet voor beide klassen de deling van materiaal beeindigen.
+Een "buurt-klas" deelt enkele bronnen uit uw klas.<br>
+U kunt alleen wijzigingen aanbrengen in materiaal dat niet gedeelt is met anderen.<br>
+Voor beide klassen moet U de deling van materiaal beeindigen.
  !exit
 !endif
 
 !if share_dep iswordof $error
-Bij het delen van bronnen met een "buurt-klas" moet je wel de afhankelijkheden
-van het WIMS systeem respecteren:
-Je moet oefeningen delen om werkbladen te kunnen delen (werkbladen zijn opgebouwd uit oefeningen)
-Je moet werkbladen delen om overhoringen/tentamens te kunnen delen (overhoringen/tentamens
-zijn opgebouwd uit actieve of verlopen werkbladen) 
+Bij het delen van bronnen met een "buurt-klas" moeten wel de enkele eigenschappen
+van het WIMS systeem worden gerespecteerd:<br>
+U moet oefeningen delen om werkbladen te kunnen delen (werkbladen zijn opgebouwd uit oefeningen)<br>
+U moet werkbladen delen om overhoringen/tentamens te kunnen delen (overhoringen/tentamens
+zijn dus opgebouwd uit actieve of verlopen werkbladen)<br> 
  !exit
 !endif
 
 !if not_neighbor iswordof $error
-Je probeert dingen te doen met een klas die alleen weggelegd zijn voor echte geregistreerde  "buurt-klassen" 
- <p>
+U hebt geef erkende "buurt-klas". 
+ <br>
  Onthoud goed dat een klas pas echt een "buurt-klas" als dit door <b>beide</b> klassen wordt erkend !
  !exit
 !endif

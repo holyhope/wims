@@ -1,42 +1,75 @@
 
-!if $classcnt1+$classcnt2<1
-U kunt geen "buur-klassen" klassen definieren , 
-omdat er -nog-  geen andere klassen op deze server zijn geinstalleerd.
+!if $classcnt1+$classcnt2<1 and $kw = $empty
+    U kunt nog geen 'buurt-klassen' definieren omdat er geen andere klassen op deze server zijn geinstalleerd.
  !exit
 !endif
 
 !if $job2!=first
- !distribute items oefeningen,werkbladen,digitale proefwerken,documenten,verkiezingen,\
-	leerling accounts,supervisor account,forum berichten,bericht van de dag \
-	into name_exo,name_sheet,name_exam,name_doc,name_vote,\
+ !distribute items oefeningen,werkbladen,digi-toetsen,documenten,verkiezing,agenda,\
+	deelnemers,docenten,forum berichten,bericht van de dag\
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd
  !read neighbor/$job2.phtml
  <p><center>
- !href cmd=reply&job2=first Lijst van andere klassen
+ !href cmd=reply&job2=first Lijst van andere klassen.
  !if $job2!=sharelist
   &nbsp;
-  !href cmd=reply&job2=sharelist Gedeelde bronnen informatie
+  !href cmd=reply&job2=sharelist Informatie over gedeelde bronnen.
  !endif
  </center>
  !exit
 !endif
 
+!if $toomany = yes
+ !form reply
+ !if $kw=$empty
+    Er zijn erg veel virtuele klassen op deze server geinstalleerd.<br>
+    Geef een zoekterm voor de klas die U zoekt:
+ !else
+    Er komen te veel klassen overeen met de ingevoerde zoekterm $keyword.
+    <br>Probeer een iets specifiekere zoekterm:
+ !endif
+ <p><center>
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=Zoeken>
+ </form> </center> <p>
+!else
+ !if $kw != $empty or $classcnt1 + $classcnt2 > 20
+  !form reply
+  Zoek naar een klas:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=Zoeken>
+  </form> <p>
+ !endif
+!endif
+!if $classcnt1 + $classcnt2 < 1
+    Er kon geen klas worden gevonden met uw zoekterm $keyword . Probeer nog eens.
+ !exit
+!endif
+
 !distribute items ---,<small>supervisor</small>,\
-	<small>leerlingen</small>,\
-	<small>iedereen</small> into n_n0, n_n1, n_n2, n_n3
-"Buur-relaties" tussen virtuele klassen geven U de gelegenheid om lesmateriaal te delen,
-maar ook om gemakkelijk van de ene klas naar een andere klas over te stappen. 
- <small>[&nbsp;
+	<small>deelnemers</small>,\
+	<small>allemaal</small> into n_n0, n_n1, n_n2, n_n3
+
+"Buur relaties" tussen virtuele klassen geeft de mogelijkheid lesmateriaal en andere gegevens uit te wisselen.
+Ook kan gemakkelijk worden overgestapt tussen de "buur-klassen".
+<small> [&nbsp;
 !href cmd=help&special_parm=neighbor Help
 &nbsp;
 !href cmd=help&special_parm=neiexample Voorbeelden
 &nbsp;]</small>
-Klik op de naam van een klas om zo de gedeelde eigenschappen te veranderen.
+
+!if $toomany=yes
+ !exit
+!endif
+
+Klik op de naam van een klas om de "buurt" eigenschappen te veranderen.
+
 <p>
 !if $classcnt1>0
  !set clst=$clist1
  $table_header
- <caption>Klassen in Uw taal</caption>
+ <caption>Virtuele klassen in dezelfde taal</caption>
  !read neighbor/clist.phtml
  $table_end
 !endif
@@ -45,13 +78,12 @@ Klik op de naam van een klas om zo de gedeelde eigenschappen te veranderen.
  <p>
  !set clst=$clist2
  $table_header
- <caption>Klassen in andere talen</caption>
+ <caption>Virtuele klassen in een andere taal</caption>
  !read neighbor/clist.phtml
  $table_end
  <p><center>
- info over de
- !href cmd=reply&job2=sharelist Gedeelde
- &nbsp;bronnen van Uw klas.
+ !href cmd=reply&job2=sharelist Informatie 
+ </a> over de gedeelde bronnen van uw klas
  </center>
 !endif
 
