@@ -3,7 +3,7 @@
  adresse=packs.shtooka.net
  echo $packs ; 
  
-cd scripts/data/shtooka ; 
+cd scripts/data/swac ; 
  for i in $packs; do
   echo $i ; 
   wget http://$adresse/$i/$i.mp3.tar; echo "wget $adresse/$i/$i.mp3.tar" ;
@@ -19,5 +19,5 @@ cd scripts/data/shtooka ;
 ##  rm index.tags.txt_1 ;
  cd .. ;\
 done ;
-cd $w_wims_home/scripts/data/shtooka ; 
+cd $w_wims_home/scripts/data/swac ; 
 ./mkindex ; 
