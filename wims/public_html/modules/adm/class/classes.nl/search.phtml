@@ -1,0 +1,24 @@
+
+!if $overflow=yes
+ !if $keyword = $empty
+    Er zijn zeer veel virtuele klassen geinstalleerd op deze server.
+    Om Uw klas te vinden, voer een zoekterm in.
+ !else
+    Er zijn te veel klassen gevonden met uw zoekterm.
+    Geef een duidelijkere zoekterm. 
+ !endif
+ <p><center>
+ !form reply
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form></center> <p>
+!else
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+  !form reply
+  Zoek mijn klas :
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form>
+ !endif
+!endif
+

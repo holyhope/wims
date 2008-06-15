@@ -1,9 +1,18 @@
 
+!read search.phtml
+!if $overflow=yes
+ !exit
+!endif
+
 !if $clcnt+$sccnt+$directcnt<1
+ !if $keyword=$empty 
     Er is geen nederlandstalige klas op deze server.<br>
-    Zoekt U misschien een klas in een andere
- !href module=home&list=0 taal
- ?
+    Zoekt U misschien een klas in een
+ !href module=home&list=0 andere taal
+ </a>?
+ !else
+  geen enkele klas gevonden.
+ !endif
  !exit
 !endif
 
@@ -16,16 +25,14 @@
 Kies Uw klas of school uit de onderstaande lijst.
  <p>
  Bent U nog niet aangemeld, klik dan op <tt>aanmelden</tt> 
-<br>Als de status <tt>besloten</tt> is, hebt U een aanmeldings wachtwoord nodig.
+<br>Als de status <tt>besloten</tt> is, hebt U een <em>aanmeldings wachtwoord</em> nodig.
 (verkrijgbaar bij de docent van de klas of supervisor van de school/instituut)
  <p>Anders , klik op <tt>Inloggen</tt>. 
 !endif
 
 !if $sccnt>0
  <p>$table_header
- <caption>
- Scholen of Instituten
- </caption>
+ <caption>Scholen of Instituten</caption>
  $table_hdtr
  <th>Naam<th colspan=2>Leerling</th><th>Administrator</th><th>Status</th>
  !for i=1 to $sccnt
@@ -66,7 +73,7 @@ Kies Uw klas of school uit de onderstaande lijst.
 !if $clcnt>0
  <p>$table_header
  !if $superclass=$empty
-  <caption>Onafhankelijke klassen</caption>
+  <caption>Individuele klassen</caption>
   $table_hdtr
   <th>Naam van de klas</th><th colspan=2>Leerling</th>
   <th>Docent</th><th>Niveau</th><th>Status</th>
@@ -80,7 +87,7 @@ Kies Uw klas of school uit de onderstaande lijst.
    !if $splevel>1
     !href cmd=reply&type=$type&superclass2=$sparent Terug
    !endif
-   <caption>
+   </caption>
    $table_hdtr
    <th>Naam van de klas</th><th colspan=2>leerling</th>
    <th>Leraar</th><th>Niveau</th><th>Status</th>
