@@ -2,7 +2,11 @@
 !if $vote_option=anonymous
  This is an anonymous vote.
 !else
- This is a nominative registration.
+  !if $vote_option=trace
+   This is a anonymous and traced vote.
+ !else
+   This is a nominative registration.
+ !endif
 !endif
 !if $vote_status=2
  It is closed.
@@ -11,15 +15,18 @@
 !if $wims_user=supervisor
  ($vcnt votes)
  !href cmd=reply&job=edit Modify
+ 
+  !href cmd=reply&job=csv Spreadsheet
 <p>
 !endif
 
 !if $vote_status=2
- !changeto $votedir/$vote.def
+ !read $votedir/$vote.def
+ !goto comments
 !endif
 
 !if $(user_vote_$Vote)!=$empty
- !if $vote_option=anonymous
+ !if $vote_option!=nominative
   Vous have already voted. <p>
  !else
   You have already expressed your choice, but you can still change your mind.
@@ -41,38 +48,50 @@
  <input type=submit value="Send">
  </center></form>
 !endif
+
+:comments
 !readdef $votedir/$vote.comments 
-!if $wims_user=supervisor and $test_comment=1 and $vote_option=anonymous
+!if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
 <p><b>Textes des commentaires</b> : 
 </p><p> 
 !for i=1 to $parmcnt
  !if $(type_comment$i)=yes
   !set comment_$i = !replace internal --- by $\
- $<br> in $(comment_$i)
+ $<br>- in $(comment_$i)
 
- $i : $(comment_$i)
+ $i : 
+ $(comment_$i)
+ !set rcnt=!recordcnt $votedir/$(vote)_$i.comments
+ !for r_j=1 to $rcnt
+ <br>-
+  !record $r_j of $votedir/$(vote)_$i.comments
+ !next
 </p><p>
  !endif
  </p>
 !next
 !endif
-!if $wims_user=supervisor and $vote_option=nominative
+!if $wims_user=supervisor and $vote_option!=anonymous
  <p> Detail of the registrations.
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/
-    <p>
+    <p>$i-
     !item $c of $(chlist$i)
  <br> <tt>
     !for u in $(votes_$(i)_$c)
-     !set U=!translate internal / to , in $u
-     !readproc adm/class/userdef classes,$U
-     !defof user_lastname, user_firstname in $userdef
-     ($u)
-     <br>
-    !endif
-   !next u
+     !if $vote_option=nominative
+      !set U=!translate internal / to , in $u
+      !readproc adm/class/userdef classes,$U
+      !defof user_lastname, user_firstname in $userdef
+       ($u)
+       <br>
+     !else 
+       ($u) 
+     !endif
+    !next u
    </tt>
+   !endif
   !next c
  !next i
 !endif
