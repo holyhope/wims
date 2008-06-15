@@ -74,9 +74,18 @@ $tableau
      !endif
    !next
   !else
+    cnt_prov=!itemcnt $(comment_$(t))
     !for u = 1 to $vcnt
        line=!line $u of $tableau
-       c=!declosing $(comment_$(t)[$u])
+ ### changement de format - transitoire
+       !if $u <= $cnt_prov
+         c=!declosing $(comment_$(t)[$u])
+       !else
+         uprov=$[$u-$cnt_prov]
+         c=!record $uprov of $votedir/$(vote)_$t.comments
+       !endif
+       c=!replace internal ; by -- in $c
+       c=!replace internal , by - in $c
        line=!replace item number $[$t+1] by _$c _ in $line
        tableau=!replace internal line number $u by $line in $tableau
     !next

@@ -25,9 +25,11 @@ quote="
   !if $vote_option!=nominative and $(type_comment$t)=yes
     tt = !singlespace $(parm$t)
     tt = !char 1 to 600 of $tt
-    tt = !append item ---$quote($tt)$quote to $(comment_$t)
-    tt = !char 1 to 24000 of $tt
-    !setdef comment_$t=$tt in $votedir/$vote.comments
+    !appendfile $votedir/$(vote)_$t.comments :$tt
+!!    tt = !append item ---$quote($tt)$quote to $(comment_$t)
+!!    tt = !char 1 to 24000 of $tt
+!!    !setdef comment_$t=$tt in $votedir/$vote.comments
+!!    !setdef comment_$t=yes in $votedir/$vote.comments
   !endif
 !next t
 voteset=

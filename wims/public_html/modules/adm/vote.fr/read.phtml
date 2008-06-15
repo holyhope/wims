@@ -59,10 +59,13 @@
   !set comment_$i = !replace internal --- by $\
  $<br>- in $(comment_$i)
 
-<pre>
  $i : 
  $(comment_$i)
- </pre>
+ !set rcnt=!recordcnt $votedir/$(vote)_$i.comments
+ !for r_j=1 to $rcnt
+ <br>-
+  !record $r_j of $votedir/$(vote)_$i.comments
+ !next
 </p><p>
  !endif
  </p>
