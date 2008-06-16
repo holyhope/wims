@@ -73,7 +73,7 @@ but : chcompose {
 }
 ;
 
-chcompose : chc {$$=$1}
+chcompose : chc {$$=$1;}
 | chcompose spc01 Compose spc01 chc {
   $1.cq->addChemeq($5.cq);
   $$=$1;
