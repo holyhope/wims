@@ -45,16 +45,17 @@
   <br><small>min/srednja/max razreda:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
- <p>
+ </center> <p>
 !endif
 
+!readdef wimshome/log/classes/$wims_class/.def
 !if $eactivecnt>0
  $table_header$table_hdtr<th colspan=4>Ocene izpitov
-!! !if $wims_user=supervisor
+!if $wims_user=supervisor or $class_examshow!=no
   </b><small>
   !href cmd=reply&job=examcheck&checkuser=$getuser [podrobnosti]
   </small>
-!! !endif
+ !endif
  $table_hdtr<th>serial<th>Naslov<th>Rezultat/$scoremax
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
@@ -101,7 +102,6 @@
  $table_hdtr<th>©t. vaje<th>naslov<th>zahtevane<br>toèke<th>ute¾
      <th>dose¾ene<br>toèke<th>%<th>kvaliteta
  !for j=1 to $e_
-  
   $table_tr<td align=right>$j
   <td>$(title_$(n_)_$j)
   <td align=right>

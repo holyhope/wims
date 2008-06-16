@@ -45,16 +45,17 @@
   <br><small>min/gem/max van deze klas:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
- <p>
+ </center> <p>
 !endif
 
+!readdef wimshome/log/classes/$wims_class/.def
 !if $eactivecnt>0
  $table_header$table_hdtr<th colspan=4>Tentamen cijfers
-!! !if $wims_user=supervisor
+ !if $wims_user=supervisor or $class_examshow!=no
   </b><small>
   !href cmd=reply&job=examcheck&checkuser=$getuser [details]
   </small>
-!! !endif
+!endif
  $table_hdtr<th>onderdeel<th>titel<th>score/$scoremax
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
@@ -126,7 +127,6 @@
  $table_end <p>
  :next
 !next i
-
 <center>
 !if $exologs!=$empty
  <p>

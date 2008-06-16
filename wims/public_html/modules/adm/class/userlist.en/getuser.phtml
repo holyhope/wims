@@ -45,16 +45,17 @@
   <br><small>min/mean/max of the class:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
- <p>
+ </center> <p>
 !endif
 
+!readdef wimshome/log/classes/$wims_class/.def
 !if $eactivecnt>0
  $table_header$table_hdtr<th colspan=4>Examination scores
-!! !if $wims_user=supervisor
+ !if $wims_user=supervisor or $class_examshow!=no
   </b><small>
   !href cmd=reply&job=examcheck&checkuser=$getuser [detail]
   </small>
-!! !endif
+ !endif
  $table_hdtr<th>serial<th>Title<th>Score/$scoremax
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
