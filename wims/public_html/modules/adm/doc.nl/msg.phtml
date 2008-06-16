@@ -3,20 +3,19 @@
 <b>Fout</b>.
 
 !if $error = doc_not_exist
-Het aangevraagde document bestaat niet (meer) op deze server. 
+Het aangevraagde document bestaat niet (meer ?) op deze server. 
  !exit
 !endif
 
 !if $error = abuse
-Uw document heeft een wat vreemde titel... 
+Uw document heeft een wat vreemde titel ... 
  <p> <b>Waarschuwing</b> Personen die deze server "misbruiken"
- zal de toegang worden ontzegd. 
+ zullen worden verwijderd van deze server. 
  !exit
 !endif
 
 !if $error = quota
-U kunt dit document niet lager modificeren, omdat de inhoud
-reeds boven het gestelde maximum is.
+U kunt dit document niet langer modificeren: het document is te groot.
  !exit
 !endif
 
@@ -32,7 +31,7 @@ Geef een titel aan Uw document.
 !endif
 
 !if $error = no_author
-U hebt nog geen naam van de auteur opgegeven.
+U hebt nog geen auteur naam opgegeven.
  !exit
 !endif
 
@@ -43,7 +42,7 @@ Uw emailadres kan niet juist zijn. Graag corrigeren!
 
 !if $error = bad_code
 Helaas, maar de ingevoerde geheime code klopt niet. 
-U hebt dus geen toestemming dit document te lezen
+U hebt dus geen toestemming dit document te lezen.
  <p>
  !mailurl $wims_site_manager schrijf naar de site-manager\
 Vergeten document code
@@ -119,18 +118,14 @@ Daar heb ik helemaal niets aan. Stuur een geldige tekt file.
 !if $error = file_too_long
  Uw LaTeX file kon niet worden geaccepteerd om dat ze de
  groter is dan het toegestane maximum van $max_texlen bytes.
- Maar U kunt ze natuurlijk wel in kleinere stukjes knippen en in 
+ Maar U kunt het natuurlijk wel in kleinere stukjes knippen en in 
  verschillende document-blokken verwerken.
  !exit
 !endif
 
 !if $error = no_latex2html
-Helaas, maar LaTeX files kan ik niet verwerken, omdat de software
- "LaTeX2HTML" niet is geinstalleerd op deze server.
-Probeer het op Uw eigen computer met LaTeX2HTML en geef mij de
-resulterende HTML-file. 
-<small>LaTeX2HTML is een perl-script dat ook
-onder Windows draait (en er een perl-compiler is geinstalleerd)</small>
+Helaas, maar LaTeX files kan ik niet verwerken, omdat de benodigde software
+ "LaTeX2html" niet is geinstalleerd op deze server.
  !exit
 !endif
 

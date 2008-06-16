@@ -7,7 +7,7 @@
 
 !if $doccnt<1
  !if $wims_class!=$empty and $wims_user!=supervisor
-Helaas, je klas heeft nog geen documenten.
+Helaas, deze klas heeft nog geen documenten.
  !else
   !if $authoring=$empty
   Helaas, er is geen publiek document op deze server beschikbaar.
@@ -20,10 +20,9 @@ Helaas, je klas heeft nog geen documenten.
   !read scripts/table.phtml
  !else
   !if $wims_class!=$empty
-  Hier zijn de WIMS documenten van je klas
+  Hier zijn alle WIMS documenten van deze klas
   !else
-  Hier zijn de voor jou beschikbare documenten op deze server.
- 
+  Hier zijn alle beschikbare documenten op deze server.
   !endif
   <ul>
   !for t=1 to $doccnt
@@ -31,9 +30,9 @@ Helaas, je klas heeft nog geen documenten.
    !set t_=!line $t of $tlist
    !set a_=!line $t of $alist
    !set t_=!trim $t_
-   !default t_=No title
+   !default t_=Zonder titel
    <li>
-   !href cmd=reply&job=read&doc=$s_&block=main $t_
+   !href module=$module&cmd=reply&job=read&doc=$s_&block=main $t_
    !if $wims_ismanager=2
     &nbsp;
     !href cmd=reply&job=erase&doc=$s_ Wissen

@@ -91,7 +91,15 @@
 !href module=home WIMS
  @
 <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
-<tr><td align=left colspan=2 nowrap>
-<small>Laatste modificatie $datm
+!if $wims_user=supervisor and $sheetdata!=$empty
+    <tr><td align=left nowrap>
+    <small>Laatste modificatie: $datm
+    <td align=right><small>
+    !href cmd=reply&job=exosource Broncode 
+    </a> van de oefeningen op deze pagina
+    </small>
+!else
+    <tr><td align=left colspan=2 nowrap>
+    <small>Laatste modificatie: $datm
+!endif
 </table>
-
