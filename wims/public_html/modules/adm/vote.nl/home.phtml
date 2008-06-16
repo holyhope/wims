@@ -1,21 +1,21 @@
 
 !if $votecnt<1
  !if $wims_user!=supervisor
- Jouw klas heeft -nog- geen voorziening om te stemmen. <br>
- Neem even kontact op met je leraar
+ Jouw klas heeft geen voorziening voor een stemming / verkiezing of enquete. <br>
+ Neem hierover kontact op met je docent.
   !exit
  !else
- Jouw klas heeft nog geen voorziening om te stemmen.
+ Uw klas heeft nog geen voorziening voor een stemming, verkiezing of enquete.
  !endif
 !else
  !if $wims_user!=supervisor
   !if $active<1
-  Er is geen actieve stemming.<br>
-  Neem hierover kontact op met je leraar.
+  Er is geen actieve stemming/verkiezing in je klas.<br>
+  Neem hier desgewenst kontact over op met je docent.
    !exit
   !endif
  !endif
- Hier zijn de stemmingen / verkiezingen van jouw klas.
+ Hier zijn de stemmingen, verkiezingen of enquetes van jouw klas.
  <ul>
  !for t=1 to $votecnt
    !set l_=!record $t of $votedir/.votes
@@ -41,13 +41,15 @@
 &nbsp;
     !href cmd=reply&job=edit&vote=$t [VERANDEREN]
 &nbsp;
-    !href cmd=reply&job=csv&vote=$t [données tableur]
+    !href cmd=reply&job=csv&vote=$t [SPREADSHEET DATA]
    !endif
  !next t
  </ul>
 !endif
 
 !if $wims_user=supervisor
- !href cmd=reply&job=creat Maak een nieuwe stemronde
+Maak een
+ !href cmd=reply&job=creat  nieuwe 
+ </a> stemronde / verkiezing / enquete.
 !endif
 
