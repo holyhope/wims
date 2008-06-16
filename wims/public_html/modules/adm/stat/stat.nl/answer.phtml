@@ -1,12 +1,12 @@
 !set week_min=3
 !set month_min=20
 !set year_min=200
-!set title_2=requests
-!set title_3=sessions
-!set title_4=visiting sites
+!set title_2=aanvragen
+!set title_3=sessies
+!set title_4=bezoekende sites
 
 De server statistieken vanaf $month1-$day1-$year1 tot $month2-$day2-$year2
-(de som van $laps dagen).
+[de som van $laps dag(en)]
  !set wims_print_precision=4
  $table_header
  $table_hdtr<th>Aantal<th>totaal<th>gemiddeld<br>per dag
@@ -61,19 +61,9 @@ De server statistieken vanaf $month1-$day1-$year1 tot $month2-$day2-$year2
    <td align=right>1
  $table_end
 <p>
-Uitleg.<ul>
-<li>
-Het <b>Aantal Aanvragen</b> telt alleen de verzoeken om webpagina's.<br>
-<small>hits veroorzaakt bijvoorbeeld door  het ontwikkelen van modules worden
-niet meegerekend. </small>
-<li>
-Het aantal <b>sites</b> wordt berekend als een dag gemiddelde.
-<li>
-Een indicatie van <b>bezoekers</b> is dus het verschil tussen het aantal aanvragen en het aantal sessies.
-</ul>
 !if $laps >= 3
  <center>
- <font color=red>Dagelijks $(title_$plot_type)</font> <br>
+ <font color=red>$(title_$plot_type)</font> <br>
  !insplot "insplot_data" using 1:2 smooth csplines notitle with lines
  </center>
 !endif
@@ -137,7 +127,7 @@ Een indicatie van <b>bezoekers</b> is dus het verschil tussen het aantal aanvrag
   :cont
  !next i
  !if $module_type!=2
-  $table_hdtr<td>Sub-total<td align=right nowrap>
+  $table_hdtr<td>Sub_total<td align=right nowrap>
   !htmlmath $t
   !for i=1 to $langcnt
    <td align=right nowrap>
@@ -148,7 +138,7 @@ Een indicatie van <b>bezoekers</b> is dus het verschil tussen het aantal aanvrag
 $table_end <p>
 !else
  <p>
- !href cmd=reply&modules=yes Per module detail
+ !href cmd=reply&modules=yes per module statistiek
  &nbsp;&nbsp;
 !endif modules=yes
 
