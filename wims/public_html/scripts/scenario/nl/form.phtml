@@ -1,16 +1,14 @@
-
 !if $sstyle=1
  !if $substep=0
   !if $all_steps=0
-   !form reply
-   
+   !form reply   
    Wat is de <em>eerste</em> foute stap in deze reeks?
    !formselect badstep from 0 to $stepcnt
    (0 betekend in dit geval dat alle stappen goed zijn.)
-   <p><center><input type=submit value="OK en OPSTUREN"></center>
+   <p><center><input type=submit value="OK"></center>
   !else
    Markeer <em>alle</em> foutieve stappen hierboven, en dan
-   <input type=submit value="Klik Hier">.
+   <input type=submit value="Klik hier">.
   !endif
   </form>
  !else
@@ -45,7 +43,7 @@
   Wat vind je van de <em>laatste</em> stap?
   !formselect ans list --,OK,$bad_reasons prompt I weet het niet,\
   	Ja : deze stap is correct,$bad_rnames
-  <input type=submit value="Send">
+  <input type=submit value="Sturen">
   </form>
  !endif
  
@@ -54,7 +52,7 @@
   !if $step_reason=OK
   de laatste stap is correct.
   !else
-  de laaste stap was foutief.
+  de laatste stap was foutief.
    De goede stap moest zijn<p><center>
    <table border=0 bgcolor=#d0c0d0 width=80%><tr><td align=center>
    !line $step of $good
@@ -64,7 +62,7 @@
   !if $step<$stepcnt
    !href cmd=reply&ans=next Ga na de volgende stap.
   !else
-   Dit is het einde van deze oefening. Je score: $module_score/10.
+   Dit is het einde van deze oefening.<br>Je score: $module_score/10.
   !endif
  !endif
 !endif
