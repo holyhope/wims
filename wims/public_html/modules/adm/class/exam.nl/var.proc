@@ -325,6 +325,10 @@ duration=$sdure
 
 # modify an exercise
 !if $job=exo
+ ltsheets=!listintersect $asheets and $ltsheets
+ !if $ltsheets=$empty
+  ltsheets=$asheets
+ !endif
  !bound $exo between integer 1 and $exocnt+1 default $exocnt+1
  ee=!record $exo of wimshome/log/classes/$wims_class/exams/.exam$exam
  !distribute lines $ee into w_,c_,n_,d_,o_
@@ -362,7 +366,7 @@ $eopt
  !next s
 !endif
 
-!if $job iswordof scorereg renew
+!if $job iswordof scorereg renew cpsheet
  !read $job.proc
 !endif
 

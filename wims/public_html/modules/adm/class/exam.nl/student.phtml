@@ -1,18 +1,22 @@
+!set done=klaar
 
-<center><h1>$wims_classname, $wims_institutionname<br>
-$title</h1>
+<center>
+ <h1>$wims_classname, $wims_institutionname<br>$title</h1>
 !if $wims_user=supervisor
- (zo zien leerlingen dit tentamen)
+ (Zo zien leerlingen deze pagina)
 !endif
-</center> <p>
-$desc<p>
+</center>
+<p>
+$desc
+<p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug naar de homepagina
-. <p>
+ !href module=home Terug
+ </a> naar de klas. 
+ <p>
  !exit
 !endif
 
@@ -21,112 +25,138 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- Dit tentamen is leeg !<br>
- Er staan geen opdrachten in. Waarschijnlijk een foutje van je docent.
+ Dit proefwerk is leeg ! <br>Waarschijnlijk een foutje van de docent.
 !else
- De opgaven van dit tentamen:
-!! !href cmd=reply&job=student [vernieuw deze pagina]
+ Inhoud van dit proefwerk :
+ !! !href cmd=reply&job=student [rafraîchir cette page]
  !set activeexo=0
- <p><ul>
- !for i=1 to $exocnt
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+ <center>
+ !endif
+ <table border=0 class="wims_exam">
+ !for lig=1 to $maxlig
+  <tr>
+    !for col=1 to $maxcol
+ !let i=$[$col*$maxlig+$lig-$maxlig]
+ !if $i<=$exocnt
+!! -------------------------- debut de la ligne correspondant à un exercice de l'examen
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti,de
+  !distribute lines $ex into we,li,ti,de,op
   !set de=!trim $de
-  <p><li>$i. 
-  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
-   ($tryremain=0 and $registered!=$empty))
+  <td>Opgave $i &nbsp;</td>
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    $ti (klaar).
+   <td>$ti</td><td><font color=green><b>$done</b></font></td>
    !else
-    !if $de!=$empty
-     !set dt=!examdep $exam $de
-    !else
-     !set dt=yes
+   !if $de!=$empty
+    !set dt=!examdep $exam $de
+   !else
+    !set dt=yes
+   !endif
+   !if $dt=yes
+    !advance activeexo
+    <td>
+    !href target=wims_exam cmd=new&worksheet=$exam.$i :$ti
+    .</a></td><td class="empty">&nbsp;</td>
+    !if autogen iswordof $op and $wims_exam_remain!=$empty
+    !set ss=$(wims_session)t$(exam)t$i
+    !set test=!defof w_cmd in wimshome/sessions/$ss/var
+    !if $test=$empty
+     !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+     <img src="$test" height=1 width=1 border=0>
     !endif
-    !if $dt=yes
-     !advance activeexo
-     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-.
-     !if autogen iswordof $op and $wims_exam_remain!=$empty
-      !set ss=$(wims_session)_examt$(exam)t$i
-      !set test=!defof w_cmd in wimshome/sessions/$ss/var
-      !if $test=$empty
-       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
-       <img src="$test" height=1 width=1 border=0>
-      !endif
-     !endif
-    !else
-     <b><font color=red>$ti</font></b> (Vereist
-     !href cmd=reply&job=student een positief resultaat 
-     voor de andere opgaven.)
     !endif
+   !else
+    <td>
+    <b><font color=red>$ti</font></b>
+    </td>
+    <td>
+    Een goed resultaat verplicht voor de 
+    !href cmd=reply&job=student andere
+    </a> opgaven.
+    </td>
+   !endif
    !endif
   !else
+   <td>
    $ti.
+   </td>
+   <td class="empty">
+   </td>
   !endif
- !next i
- </ul>
+!! ------------------------------fin d'affichage de la ligne correspondant à  un exercice
+  !endif
+ !next col
+ </tr>
+ !next lig
+ </table>
+ !if $maxcol>1
+    </center>
+ !endif
  !if $t_=no
-  Dit tentamen mag je niet maken van af jouw computer (dus vanaf je ip-adres).
-  !href cmd=reply&job=student Vernieuw deze pagina.
+ Dit proefwerk is niet bereikbaar vanuit uw ipadres.
+ !href cmd=reply&job=student Vernieuw
+ </a> deze pagina.
  !else
-  !if $stries=1
-   Je kunt dit tentamen slechts &eacute;&eacute;n keer maken.
+ !if $stries=1
+  Je mag dit proefwerk &eacute;&eacute;n keer maken.
+ !else
+  Je mag dit proefwerk $stries keer maken. [de beste score telt]
+ !endif 
+ !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+  !if $trcut=0
+  <br>Je hebt dit proefwerk afgesloten [in $tried poging(en)]
   !else
-   Je mag dit tentamen $stries keer maken. (en de beste score telt)
+  <br>Je hebt dit proefwerk nu $tried keer gemaakt.
   !endif
-  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
-   !if $trcut=0
-    Je hebt dit tentamen al $tried keer volledig gemaakt ,
-   !else
-    Je hebt dit tentamen al $tried keer geprobeerd, 
-   !endif
-    dus je kunt je score niet meer verbeteren.
-   !set exhausted=yes
+  !set exhausted=yes
+ !endif
+ !if $tryremain>0
+  <br>en je hebt nu nog $tryremain poging(en) over.
+ !endif
+ !if $registered=$empty and $exhausted!=yes
+ <br>Er zijn $sdure minuten beschikbaar om aan dit proefwerk te werken. 
+ <br>De klok begint te lopen als je op een opgave klikt 
+  !if $allowtype!=simulation
+  en het aantal pogingen wordt met 1 verminderd.
   !endif
-  !if $tryremain>0
-  En je hebt dus nog $tryremain pogingen over.
-  !endif
-  !if $registered=$empty and $exhausted!=yes
-   Je hebt $sdure minuten om aan dit tentamen te werken.
-   Wanneer je op een opgave klikt
-   !if $allowtype!=simulation
-    begint de klok te lopen. (en het aantal tentamenpogingen neemt met &eacute;&eacute;n af)
-   !else
-  begint de klok te lopen.    
-   !endif
-  !else
-   !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-   Dit is je laatste tentamenpoging !!    
-   !endif
-  !endif
-  <p>
-  !href cmd=reply&job=student Vernieuw deze pagina.
-&nbsp;
-  !href cmd=reply&job=score Mijn cijfers.
-  !if $activeexo<1
-&nbsp;
-   !href cmd=reply&job=scorereg Beeindig
-   deze tentamensessie (omdat alle opgaven klaar zijn).
+ !else
+  !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+  Attentie : dit is je laatste poging !
   !endif
  !endif
+ <p>
+ !href cmd=reply&job=student Vernieuw 
+ </a> deze pagina.
+ &nbsp;&nbsp;
+ !href cmd=reply&job=score Mijn cijfers.
+ !if $activeexo<1
+  &nbsp;
+  !href cmd=reply&job=scorereg Beeindig
+  </a> deze proefwerk sessie (omdat er niets meer te doen valt). 
+ !endif
+ !endif
 !endif
-
+ 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>
-  Dit tentamen loopt in simulatie mode. Het werkt precies als het echte tentamen,
-  behalve dan dat de cijfers en tentamen-pogingen niet worden geregistreerd.
+ <p>Dit proefwerk loopt in simulatie mode.<br>
+ Het werkt precies als een echt proefwerk; behalve dat er niets wordt gelogd.
  !endif
 !endif
 
+ 
 !if $wims_user=supervisor
- <p><center>
- !href cmd=resume Terug naar de supervisor pagina.
+ <p>
+ <center>
+ !href cmd=resume Terug
+ </a>naar de supervisor mode.
  </center>
 !endif
 
 !tail
 
 !reset job
-

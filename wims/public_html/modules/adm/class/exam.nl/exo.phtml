@@ -1,21 +1,42 @@
 !if $activetest>0
-Helaas, deze digitale overhoring/tentamen is reeds geactiveerd,
- en kan dus niet meer gemodificeerd worden.<br>
-Geen enkele som kan meer worden veranderd !  
+Helaas, deze digitale overhoring/proefwerk is reeds geactiveerd,
+ en kan dus niet meer gemodificeerd worden.<br> Geen enkele som kan meer worden veranderd !  
  !exit
 !endif
 
 !form reply
 <input type=hidden name=job value=exo>
 <input type=hidden name=exo value=$exo>
-<p>Oefening  $exo : weight=<input size=5 name=eweight value="$eweight">,
-titel = <input size=20 name=ename value="$ename">
+!default eweight=1
+!default ename=vraag
+<p>Opgave $exo : weging = <input size=5 name=eweight value="$eweight">,
+titel=<input size=20 name=ename value="$ename">
 <p>
 Een oefening kan willekeurig worden genomen uit de lijst van bestaande oefeningen
-uit Uw werkbladen.<br>
-Vink de werkbladen aan in de onderstaande lijst als kandidaten voor deze digitale overhoring/tentamen. 
+uit de werkbladen.<br>
+Vink de werkbladen aan in de onderstaande lijst als kandidaten voor deze digitale overhoring/proefwerk. 
 <p>
-!for i in $asheets
+Laat alleen oefeningen zien uit werkblad
+ <select name="ltsheets" onchange=submit() value="$ltsheets">
+  !if $ltsheets=$asheets
+   <option value="$asheets" selected="">Allemaal</option>
+  !else
+   <option value="$asheets">Allemaal</option>  
+  !endif
+  !for k in $asheets
+   !if $ltsheets=$k
+    <option value="$k" selected="">
+   !else
+    <option value="$k">   
+   !endif
+    !let t=!record $k of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $k :
+    !line 3 of $t
+   </option>
+  !next k
+ </select>
+<p>
+!for i in $ltsheets
  !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  !for j=1 to $t
   !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
@@ -28,29 +49,27 @@ Vink de werkbladen aan in de onderstaande lijst als kandidaten voor deze digital
  !next j
 !next i
 <p>
-Score dependencies: <input size=40 name=edep value="$edep"> <br>
-Optie:
+Score drempels: <input size=40 name=edep value="$edep"> <br>
+Opties:
 !formcheckbox eopt list $optionlist
 <br>
-<input type=submit value="OK en VERSTUREN">
+<input type=submit value="Register">
 </form>
 <p>
-!href cmd=reply hoofdpagina van het tentamen
+!href cmd=reply Terug
+</a> naar de hoofdpagina
 . <p><small>
-<b>Help</b>. Score dependencies means that a participant must get
-  required scores in other exercises of the sheet before he/she can do
-  this one. For example, 
-  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
-  means that the
-  participant must get 50% success on exercise 1, 30% success on exercise 2,
-  and an average of 60% success on exercises 3,4,5.
-  <p>
-  Optie: <ul>
-  <li><em>autogen</em>  wil zeggen dat de oefening automatisch wordt gegenereerd,
-  zelfs als de gebruiker er niet op klikt.
-  </ul>
+<b>Help</b>.
+Score drempels : dit betekend dat een deelnemer/leerling een bepaalde hoeveelheid punten
+moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.
+We noemen dit toets-type een "drempel toets".<br>
+Bijvoorbeeld:  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+betekend dat de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 
+en opdracht 3,4,5 samen gemiddeld minimaal 60%.
+<p>
+Opties: <em>autogen</em>
+<br>  Alleen voor experts en voor het handmatig bijwerken van score resultaten.<br>
+  Autogen: betekend dat de oefening automatisch wordt uitgevoerd [automatische piloot...], zelfs als de gebruiker nergens op klikt.
+  De gebruiker kan dit proefwerk dan raadplegen als de score registratie is afgelopen en de sessie reeds is afgesloten.
+   
 </small>
-
-
-
-

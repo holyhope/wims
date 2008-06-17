@@ -2,7 +2,7 @@
 !if $job=score
  <center><h1>$wims_classname, $wims_institutionname<br>$title</h1>
  !if $wims_user=supervisor
-  (Zo zien Uw leerlingen dit tentamen)
+  (Zo zien leerlingen dit proefwerk)
  !endif
  </center> <p>$desc<p>
 !endif
@@ -17,7 +17,7 @@
 !endif
 
 !if $exocnt=0
- Dit tentamen is leeg !
+ Dit proefwerk is leeg !
  Er staat geen enkele opgave in.
  Waarschijnlijk een foutje van de docent.
 !else
@@ -29,7 +29,13 @@
   !distribute lines $ex into we,li,ti
   <tr><td align=center>$i
   <td align=center>$ti
-  <td align=center>$we<td align=center>
+  <td align=center>
+  !if $we=0
+   <font color=red>let op: gewicht is <b>$we</b></font>
+  !else
+   $we
+  !endif
+  <td align=center>
   !if $(replied$i)>0
    $(got$i)
   !else
@@ -38,41 +44,45 @@
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Cijfer voor deze tentamen sessie: <b>$score</b> <small>uit 10</small>.
+ Cijfer voor deze proefwerk sessie: <b>$score</b> <small>uit 10</small>.
  $table_end
 !endif
 <p>
 
 !if $registered=$empty
- U bent nog niet begonnen met dit tentamen.
- !href cmd=reply&job=student Start dit tentamen.
+ U bent nog niet begonnen met dit proefwerk.
+ !href cmd=reply&job=student Start dit proefwerk
+ .
 !else
  !if $timeleft<=0
-   de beschikbare tijd is verlopen!
-   U hebt de toegestane $sdure minuten verbruikt.
+   De beschikbare tijd is verlopen!
+   Je hebt de toegestane $sdure minuten verbruikt.
    <p>
  !endif
  !if $allowtype=simulation
-  Uw score wordt niet geregistreerd, omdat dit tentamen in simulatie mode loopt.
+  Uw score wordt niet geregistreerd, omdat dit proefwerk in simulatie mode loopt.
   !if $lastscore>0
-   (De echte score voor deze tentamen-sessie is $lastscore.)
+   (De echte score voor deze proefwerk-sessie is $lastscore.)
   !endif
  !else
-  De score voor dit tentamen is $lastscore. 
+  De score voor dit proefwerk is $lastscore. 
   (En de beste score telt !)
  !endif
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg Beeindig deze tentamen sessie.
+ !href cmd=reply&job=scorereg Beeindig deze proefwerk sessie
+ .
 &nbsp;&nbsp;
 !endif
- !href cmd=reply&job=student Terug naar het tentamen
+ !href cmd=reply&job=student Terug naar het proefwerk
+ .
 !endif
 
 !if $wims_user=supervisor
  <p><center>
- !href cmd=resume Terug naar het maken van een tentamen.
+ !href cmd=resume Terug 
+ </a> naar de proefwerk aanmaak pagina.
  </center>
 !endif
 

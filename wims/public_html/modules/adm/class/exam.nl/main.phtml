@@ -1,4 +1,4 @@
-!set wims_name_examremain=Resterende tijd voor dit tentamen : $
+!set wims_name_examremain=Resterende tijd voor dit proefwerk : $
 !read js/examclock.phtml
 <html><head>
 $wims_html_header
@@ -18,7 +18,7 @@ $wims_html_header
 
 <center>$classname
 <p>
-<h1>Het samenstellen van tentamen $exam
+<h1>Het samenstellen van proefwerk $exam
 </h1></center> <p><hr width=40%> <p>
 
 !if $error!=$empty
@@ -30,7 +30,7 @@ $wims_html_header
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -38,7 +38,7 @@ $wims_html_header
 !if $activetest>0
  !form reply
  <input type=hidden name=job value=text>
- Dit tentamen is
+ Dit proefwerk is
  !if $activetest=1
   geactiveerd
   !href cmd=reply&job=expire Laat het verlopen
@@ -49,10 +49,13 @@ $wims_html_header
    !href cmd=reply&job=hide Maak het onzichtbaar.
   !else
    is verlopen en onzichtbaar voor uw leerlingen.
-   !href cmd=reply&job=expire Maak het tentamen weer zichtbaar.
+   Maak het proefwerk weer 
+   !href cmd=reply&job=expire zichtbaar
+   </a>.
   !endif
   .
-  !href cmd=reply&job=reactivate Reactiveer het tentamen
+  !href cmd=reply&job=reactivate Reactiveer
+  </a> het proefwerk
 . <p>
  !endif
  <p><center><table border=2>
@@ -78,39 +81,34 @@ en een verklarende tekst (beperkt tot $desc_limit karacters; html
 tags en hyperlinks zijn toegestaan):<br>
 <textarea rows=6 cols=65 name=desc>$desc</textarea>
 
-<center><input type=submit value="OK en stuur de tekst op"></center>
+<center><input type=submit value="Stuur deze tekst op"></center>
 
-<p>Dit tentamen verloopt op
+<p>Dit proefwerk verloopt op
 !distribute item $[$expday],$[$expmon] into expday,expmon
 !formselect expday from 1 to 31
 !formselect expmon from 1 to 12 prompt $months
 !formselect expyear from $thisyear to $thisyear+1
 . 
-Een enkele tentamensessie kan
+Een enkele proefwerksessie kan
 <input size=5 name=duration value="$duration">
-minuten duren
-<br>
-Elke deelnemer mag dit tentamen tot
+minuten duren<br>Elke deelnemer mag dit proefwerk tot
 !default stries=3
 <input size=3 name=tries value="$stries"> keer overdoen.
 <input type=submit value="OK en versturen">
 
 !ifval $activetest=-1
- <p>
- Dit tentamen bestaat nog niet.
- <input type=submit value="Klik hier om een tentamen te maken"> 
- Maar geef dit tentamen eerst even een titel.
+ <p>Dit proefwerk bestaat nog niet.<input type=submit value="Klik hier om een nieuw proefwerk te maken"> <small>Maar geef dit proefwerk eerst even een titel</small>
  </form>
  !goto end
 !else
  </form>
  !if $exocnt>0
   <p>
-  Dit tentamen is <b>nog niet</b> geactiveerd.
+  Dit proefwerk is <b>nog niet</b> geactiveerd.
   !href cmd=reply&job=prep_activate klik hier 
-  om dit tentamen te activeren.
-  Studenten, leerlingen zien alleen de actieve tentamens.<br>
-  Echter: een tentamen eenmaal geactiveerd , kan <b>niet</b> meer inhoudelijk worden veranderd. 
+  </a> om dit proefwerk te activeren.
+  Studenten, leerlingen zien alleen de actieve proefwerks.<br>
+  Echter: een proefwerk eenmaal geactiveerd , kan <b>niet</b> meer inhoudelijk worden veranderd. 
   
  !endif
 !endif
@@ -118,57 +116,75 @@ Elke deelnemer mag dit tentamen tot
 :end1
 <p>
 !if $exocnt=0
- Dit tentamen bevat nog <b>geen</b> opdrachten.
- !href cmd=reply&job=exo&exo=1 Voeg een opgave toe
-.
+ Dit proefwerk bevat nog <b>geen</b> opgaven.
+ !href cmd=reply&job=exo&exo=1 Voeg een opgave
+ </a> toe , of voeg in &eacute;&eacute;n keer een 
+ !href cmd=reply&job=cpsheet serie opgaven
+ </a> toe.
 !else
  <a name=list>
- De opgaven in dit tentamen:</a><ol>
+ De opgaven in dit proefwerk:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, gewicht $we.
+  !if $we=0
+    $ti, <font color=red><b>gewicht 0</b></font>
+  !else
+    $ti, gewicht $we
+  !endif
   !if $activetest=0
    &nbsp;(
    !if $i>1
     !href cmd=reply&job=moveup&moveup=$i#list Verplaats&nbsp;naar&nbsp;boven
-    &nbsp;
+    </a>&nbsp;
    !endif
    !href cmd=reply&job=exo&exo=$i Veranderen
-   &nbsp;
+   </a> &nbsp;
    !href cmd=reply&job=delete&delete=$i#list Verwijderen
-   )
+   )</a>
   !endif
  !next i
  </ol>
  !if $activetest=0
-  !href cmd=reply&job=exo&exo=$[$exocnt+1] Voeg nog een opgave toe
-.
+ Voeg nog
+  !href cmd=reply&job=exo&exo=$[$exocnt+1]  een opgave 
+  </a> toe, of voeg een hele
+ !href cmd=reply&job=cpsheet serie
+ </a> opdrachten toe
+ .
  !endif
 !endif
 
 <p>
 !if $activetest=0 and $erasable=yes
-  U kunt dit tentamen nog steeds
+  U kunt dit proefwerk nog steeds
   !href cmd=reply&job=prep_erase wissen
 .
 !endif
 
 !if $activetest>=0
-Zo zien Uw <b>leerlingen</b>
- !href cmd=reply&job=student  deze pagina.
+Zo zien Uw 
+ !href cmd=reply&job=student <b>leerlingen</b>
+ </a> deze pagina.
  <p>
  !form reply
  <input type=hidden name=allow value=yes>
- Dit tentamen is
+ Dit proefwerk is
  !formselect allowtype list all, simulation, none, select prompt\
 	open voor iedereen, open voor simulatie,\
 	gesloten voor iedereen, open voor de volgende netwerk adressen (en/of tijdstippen):
  <br><input size=50 name=IPlist value="$IPlist"> <br>
  Cut times:
  <input size=50 name=cutt value="$cutt"> <br>
- <input type=submit value="Registreer de veranderingen">
+ <input type=submit value="Veranderingen opslaan">
+  !if $sharers!=$empty                                                                                                                      
+  ( ook voor alle klassen die dit proefwerk delen ? :                                                                                          
+  !formselect allowshare list 0,1 prompt nee,ja
+  )
+  !else
+ <input type=hidden name=allowshare value=0>
+ !endif
  </form>
  <small><b>Hint.</b> In the selective open mode, you can make time
  restrictions for score registrations, by adding words 

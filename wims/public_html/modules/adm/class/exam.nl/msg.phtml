@@ -8,20 +8,19 @@ is voorbehouden aan de <em>supervisor</em> van een klas.
 
 !if bad_class=$error
 Vreemd, maar ik zie nu dat Uw klas niet "geldig" is!
-
  !exit
 !endif
 
 !if $error=no_sheet
 De inhoud van een tentamen of digitale overhoring kan alleen worden genomen
-uit een <em>actief</em> of <em>verlopen</em> <b>werkblad/worksheet</b>
+uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
  <p>
  <small>
  Uw klas heeft echter geen werkbladen (actief of verlopen)
  Dus eerst maakt U een werkblad van Uw oefeningen (oef of module)
- onderaan een oefening/som staan de link <b>"toevoegen aan werkblad"</b> (insert into worksheet")
+ onderaan een oefening/som staan de link <b>"toevoegen aan werkblad"</b>
  Daarna maakt U van deze actieve/verlopen werkbladen het echte
- digitale tentamen of overhoring voor een echt cijfer
+ digitale tentamen of overhoring voor een echt cijfer.
  </small>
  !exit
 !endif
@@ -31,20 +30,25 @@ Uw tentamen nummer is helaas niet geldig...een bug in de software?
  !exit
 !endif
 
+!if $error=simuchange
+    De status van dit tentamen heeft U net veranderd.<br>Klik deze simulatie correct
+ !href cmd=reply&job=scorereg hier
+ </a> om deze simulatie correct te beeindigen.
+ !exit                                                                                                                                     
+!endif
+
 !if already_registered=$error
-Je cijfer staat reeds genoteerd
-.
+Je cijfer staat reeds genoteerd.
  !exit
 !endif
 
 !if no_more_registration=$error
-Bij deze digitale overhoring mag je het maar $stries keer proberen.<br>
-Jij kunt het nu niet meer overdoen.
+Bij deze digitale overhoring mag je het $stries keer proberen.<br>
+Jij mag het proefwerk dus niet meer overdoen.
  !exit
 !endif
 
 !if bad_source=$error
-
  Het item nummer $bad_source in de broncode, die je net hebt opgestuurd, is ongeldig
  !href cmd=reply&job=prep_putsource&source=$source Verbeter de broncode
  .
@@ -52,8 +56,7 @@ Jij kunt het nu niet meer overdoen.
 !endif
 
 !if no_title=$error
-U wit een tentamen registreren zonder een naam? niet verstandig. Fout of manipulatie?
- 
+U wilt een tentamen registreren zonder een naam? niet verstandig. Fout of manipulatie?
  !exit
 !endif
 
@@ -64,9 +67,9 @@ Besef dat een digitale overhoring of tentamen eenmaal geactiveerd niet meer kan 
 Wilt U doorgaan?
 
  <p><center>
- !href cmd=reply&job=activate Jazeker; activeren
+ !href cmd=reply&job=activate Ja : activeren
  .&nbsp;&nbsp;
- !href cmd=resume Nee; annuleren
+ !href cmd=resume Nee: annuleren
  .</center>
  !exit
 !endif
@@ -74,9 +77,9 @@ Wilt U doorgaan?
 !if prep_erase=$error
 Wil U werkelijk het tentamen  #$exam ($title) verwijderen?
  <p><center>
- !href cmd=reply&job=erase Jazeker; weg ermee
+ !href cmd=reply&job=erase Ja: verwijderen
  .&nbsp;&nbsp;
- !href cmd=resume Nee; annuleren
+ !href cmd=resume Nee: annuleren
  .</center>
  !exit
 !endif
@@ -86,15 +89,14 @@ Dit tentamen #$exam ($title) zou verlopen zijn op $expday
  !item $expmon of $months
  $expyear. wilt U het <b>nu</b> laten verlopen?
  <p><center>
- !href cmd=reply&job=expire Jazeker; laten verlopen
+ !href cmd=reply&job=expire Ja: laten verlopen
  .&nbsp;&nbsp;
- !href cmd=resume Nee; annuleren
+ !href cmd=resume Nee: annuleren
  . </center>
  <p><b>Opmerking.</b> 
  Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen tentamen.<br>
 Maar hun reeds behaalde cijfers voor dit tentamen worden wel bewaard.
 (en ook statistisch verwerkt, zodat U altijd deze resultaten nog kunt bestuderen) 
-
  !exit
 !endif
 
