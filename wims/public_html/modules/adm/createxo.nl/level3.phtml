@@ -1,7 +1,8 @@
+
 De software heeft uw oefening zonder problemen gecompileerd.<br>
 Hieronder staat een samenvatting (s.v.p. controleren)
 <table bgcolor=#d0d0d0>
-<tr><td align=right>Tilel<td><td>$title
+<tr><td align=right>Titel<td><td>$title
 <tr><td align=right>Aantal parameters<td><td>$varcnt
 <tr><td align=right>Aantal open antwoorden<td><td>$replycnt
 <tr><td align=right>Aantal meerkeuzevragen<td><td>$choicecnt
@@ -11,10 +12,20 @@ Klik
 !href cmd=resume&realtest=yes&retest=again hier
  om deze oefening uit te testen.
 !if $mode!=file
-<p><li>
-Als u deze oefening nog wilt veranderen, ga dan 
-!href cmd=reply&level=2 ga terug 
- naar het menu.
+    <p><li>
+	Als u deze oefening nog wilt veranderen, ga dan 
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+	!if $to_ia_qcm=-1
+	    !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 terug naar confia2qcm
+	!endif
+	!if $to_ia_qcm=-2
+	    !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 terug naar 2createqcm
+	!endif
+	!if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+	    !href cmd=reply&level=2 terug naar het menu
+	!endif
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!              
+.
 !else
  !set wims_form_method=file
  !form reply

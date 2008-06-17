@@ -1,12 +1,11 @@
-Welkom.<br>
-Dit is de het onderdeel waar interactieve 
+Welkom.<br>Dit is de het onderdeel waar interactieve 
 !if $wims_user!=supervisor
  oefeningen
 !else
  oefeningen voor uw klas<font color=blue>
  $wims_classname</font> van <font color=blue>$wims_institutionname</font>,
 !endif
-kunnen worden gemaakt in de begeleidde modus.<br>
+kunnen worden gemaakt.<br>
 Hier staan enkele uitgewerkte
 !href cmd=reply&mode=model voorbeelden
 <img src=gifs/new.gif>.<br>
@@ -30,14 +29,14 @@ Het statement wordt geschreven in:
  ]<p>
  Deze oefening heeft
 !formselect oef_answercnt from 0 to 10
-<em>open antwoorden</em> en
+open antwoorden en<br>
 !formselect oef_choicecnt from 0 to 10
-<em>multiple-choice</em> antwoorden.
-Antwoorden zoals <tt>3*5-sin(pi/3)</tt> worden
+multiple-choice antwoorden.
+<br>Antwoorden zoals <tt>3*5-sin(pi/3)</tt> worden
 !formselect oef_computeanswer list yes,no prompt geaccepteerd,niet geaccepteerd
-.&nbsp;&nbsp;
+.<br>
 !formselect oef_condcnt from 0 to $condlim
- testcondities worden gebruikt voor het beoordelen van de <em>open antwoorden</em>.
+ testcondities worden gebruikt voor het beoordelen van de open antwoorden.
  [
  !href target=wims_mhelp cmd=help&special_parm=reply help
  ]
@@ -50,20 +49,49 @@ Emailadres:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
 <input type=submit value="OK en ga verder">
 </center>
 </form>
-
-Er is ook
-!href module=adm/modtool Modtool
- voor het online ontwikkelen van <em>full-power</em> WIMS modules.
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!! 
+<table bgcolor=#d0c080> 
+ <tr> 
+ <td rowspan=4> 
+ U kunt ook:
+ </td> 
+ <td bgcolor=lemonchiffon>
+ !href module=adm/modtool Modtool
+ gebruiken voor het produceren van full_power modules, 
+ </td> 
+ </tr> 
+ <tr> 
+ <td bgcolor=lemonchiffon>
+ !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code> 
+ of
+ !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
+ voor het maken van interactieve meerkeuze vragen.
+ </td> 
+ </tr> 
+ <tr> 
+ <td bgcolor=lemonchiffon> 
+ !href module=adm/quicktool Quicktool
+ voor het maken van taalkundige oefeningen.
+ </td> 
+ <tr> 
+ <td bgcolor=lemonchiffon> 
+ !href module=adm/latex2wims Latex2wims
+ voor het produceren van interactieve WIMS documenten uit LaTeX bestanden.
+ </td> 
+ </tr> 
+ </tr> 
+</table> 
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 
 !if $wims_user=supervisor
  !read wimshome/log/classes/$wims_class/Exindex
  !if $exototal>0
-  <p>
-  !form new
-  <input type=hidden name=module value=$module>
-  Verander een bestaande oefening uit mijn klas:
-  !formselect existing list $exolist prompt $titlelist
-  <input type=submit value=OK></form>
+ <p>
+ !form new
+ <input type=hidden name=module value=$module>
+ Verander een bestaande oefening uit mijn klas:
+ !formselect existing list $exolist prompt $titlelist
+ <input type=submit value=OK></form>
  !endif
 !endif
 

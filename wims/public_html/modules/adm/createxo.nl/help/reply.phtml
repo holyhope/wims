@@ -1,198 +1,190 @@
+!set typelist1=!trim\
+default,Auto,automatische herkenning van antwoord types\
+raw,ruwe tekst,de antwoord controle kan worden ingetuned door opties\
+numeric,Numeriek, met tollerantie optie\
+function,Numerieke functie, vergelijkt antwoord (een functie) m.b.v. numerieke tests\
+exp,Wiskundige formule, wordt formeel algebraisch vergeleken\
+text,Tekst, betekenisvolle woorden of zinnen \
+multiple,Meerkeuze vragen,klikken of slepen etc.\
 
-<center><h3>De beantwoording en beoordeling van een Createxo oefening</h3>
-</center> <p>
 
-Er zijn twee manieren waarop een "OEF" oefening antwoorden kan accepteren:
-meerkeuze (multiple choices) en open (freestyle) antwoorden. 
-Deze antwoorden kunnen worden beoordeeld naar gelang het type antwoord dat wordt gevraagd
-Het is ook mogelijk om
-!href cmd=help&special_parm=feedback feedbacks
- te geven aan de leerling, wanneer het antwoord aan een bepaalde
- randvoorwaarde of conditie voldoet. 
- (normaal om te waarschuwen voor een gebruikelijke fout) 
+!set typelist2=!trim\
+atext,Tekst bij benadering, met identificatie voor meervoud enkelvoud etc.\
+chemeq,Chemische vergelijking, met massa/electronen/ladings balans analyse\
+clickfill,Drag 'n drop objecten,tekst en afbeelding [ook van wiskundige TeX formules]\
+compose,Compositie, gebruikt allerlei componenten\
+coord,Hot spot, herkent de klik op een coordinaten of divers gevormde gebieden\
+javacurve,Tekenen in een javaapplet,\
+geogebra,Dynamisch geometrie,gebruikt de applet GeoGebra\
+correspond,Overeenkomst, controlleerd paarsgewijze overeenkomst tussen diverse objecten \
+chset,Setje karakters,\
+matrix,Matrix, wiskundig\
+numexp,Rationale getallen, hat antwoord is een getal in R\
+range,Getal in een bereik, alle getallen binnen het antwoord_bereik zijn correct\
+reorder,Hergroepeer, een gegeven lijst\
+set,Finite set,literal, formal or approximative\
+sigunits,Eenheden,een getal met een eenheid en nauwkeurigheid\
+symtext,Symtext,advanceerde tekst herkenning\
+units,Getal met een eenheid, voor natuur en scheikunde\
+vector,Vector,formele vergelijking van alle componenten\
+wlist,Lijst met significante woorden,\
 
-<p><h4>Multiple choice</h4> <p>
-Een multiple choice is definieerd door een lijst van goede keuzes (een enkele of meerdere)
-en een andere lijst van foute keuzes.<p>
 
-Tot $choicelim verschillende multiple choice vragen kunnen binnen een enkele
-OEF oefening worden gesteld, onder de huidige versie van WIMS.
-Het aantal goede en slechte keuzes is vrijwel onbeperkt
-(alleen beperk door de maximale stringlengte van 16kb in WIMS)
+!set namelist=Basis types, Specifieke of geavanceerde types
+!set symtextlist=text atext raw compose
+
+
+<center><h3>Antwoorden op een OEF</h3></center> <p>
+
+Er zijn twee hoofdgroepen antwoord modellen in een OEF oefening:
+de meerkeuze model en het open_antwoord model [freestyle]
+There are two basic ways in which an OEF exercise accepts user replies:
+multiple choices and freestyle replies. User answers will be analyzed
+according to the nature of the types. It is also possible to show
+Bij alle modellen kan
+!href cmd=help&special_parm=feedback feedback
+ worden gegeven, als het antwoord van de leerling aan bepaalde condities voldoet.
+
+<p><h4>Multiple choices</h4> <p>
+Een meerkeuze vraag wordt bepaald door een lijst met goede keuzes [1 of meer] 
+en door een lijst met foutieve keuzes.<p>
+Er kunnen gelijktijdig tot $choicelim meerkeuze vragen worden gesteld in een enkele OEF.
+Het aantal goede of foute keuzes is bijna onbeperkt.
+De enige -instelbare- limiet is de lengte van een variabele binnen WIMS. 
 <p>
 Zie ook 
-!href cmd=help&special_parm=oef help bij het OEF formaat
-voor de gebruikelijke syntax bij het definieren van multiple choice vragen 
+!href cmd=help&special_parm=oef help bij OEF formaat
+ voor de syntax bij het meerkeuze vraag type.
 
 <p><h4>Freestyle antwoorden</h4> <p>
-Een freestyle antwoord wordt ingevoerd/ingevuld door de leerling
-Tot  $answerlim  verschillende freestyle antwoorden kunnen in een enkele OEF oefening
-worden verwerkt, onder de huidige versie van WIMS.
+Een freestyle antwoord [open antwoord] wordt door de leerling zelf ingetypt.
+Er kunnen op deze server gelijktijdig $answerlim freestyle vragen worden gesteld binnen een enkele OEF
+<p>
+De algemene syntax is als volgt:
+<tt>\answer{Tekst}{\antwoord}{type=...}{option=...}{weight=...}</tt>
+<br>
+(de laatste drie velden zijn optioneel)
 <p>
 
 <a name=freestyle>
-Elk freestyle antwoord  kan onafhankelijk van de eventuele andere freestyle antwoorden 
-een van de volgende types zijn.<ol>
- <p><li>
- <b>Auto.</b> (naam: <tt>default</tt>)<br>
- De software tracht zelf vast te stellen van welk type het leerling antwoord moet zijn,
- afhankelijk van de gegeven goede oplossing.
- De mogelijkeden voor deze automatische herkening is natuurlijk beperkt, en kan
- aleen verschil zien tussen numerieke fucties/getallen/vergelijkingen/text.
- <p>
- <li>
- <b>Algebra&iuml;sche uitdrukking.</b> (naam: <tt>algexp</tt>) <br>
- Dit is een formele algebra&iuml;sche uitdrukking met beperkte vergelijkings mogelijkheden.
- Bijvoorbeeld <em>(x+1)(x-1)</em> wordt <b>niet</b> geaccepteerd wanneer het goede antwoord
- luidt <em>x^2-1</em>. 
- Het zelfde geldt voor sin(x)^2+cos(x)^2 versus 1.
- Alhoewel: x-y*y en -y^2+x wel als gelijk gelden .<p>
- 
+Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het onderstaande types zijn:
 
- <p><li>
- !read help/anstype/atext.phtml
- 
- <p><li>
- <b>Karakter set.</b> (naam: <tt>chset</tt>) <br>
- Dit is een lijst met alpha-numerieke karakters,waarbij de volgorde geen rol speelt
- Case non-sensitive. <p>
- Dit kan worden gebruikt bij multiple-choice antwoorden, waarbij het aantal keuzes moet
- zijn vastgelegd, en waarbij er meerdere goede oplossingen zijn en de leerling
- ze allemaal moet vinden
+!for i=1 to 2
+ <p><b>$(namelist[$i])</b>
+ !set n=!linecnt $(typelist$i)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$i)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <p><li><a name=_$name>
+   !read help/anstype/$name.phtml
+   !if $name iswordof $symtextlist
+    <p>
+    <b>Opmerking</b>.
+    Dis antwoord model accepteerd de <tt>symtext</tt> option.
+    Wanneer <tt>option=symtext</tt> wordt gebruikt wordt de analyse
+    van het antwoord overgedragen aan
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+    .
+   !endif
+   <p>
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<tt>$name</tt>) $desc.
+  !endif
+ !next j
+ </ul>
+!next i
 
- <p><li>
- <b>Finite set.</b> (naam: <tt>set</tt>) <br>
- Dit is een lijst met elementen, gescheiden door komma's, waarbij
- de volgorde der elementen geen rol speelt.
- Er wordt geen evaluatie uitgevoerd, zodat dus 2 en 1+1 niet gelijk zijn
-
- <p><li>
- <b>Finite set formal.</b> (naam: <tt>fset</tt>)<br>
- Gelijk aan <em>finite set</em>, behalve dat nu wel evaluatie plaats heeft,
- en de elementen als <em>formal expressions</em> worden geevalueerd.
-
- <p><li>
- <b>Finite set approximative.</b> (naam: <tt>aset</tt>)<br>
- Gelijk aan <em>finite set</em>,behalve dat de elementen worden geevalueerd als
- <em>approximative expressions</em>.
-
- <p><li>
- <b>Formal expression.</b> (naam: <tt>formal</tt>)<br>
- Gelijk aan numerieke functies, behalve dat er geen benadering is toegestaan
-
- 
- <p><li>
- <b>Literal expression.</b> (naam: <tt>litexp</tt>)<br>
- Dit is een "formal expression" welke letterlijk wordt vergeleken met
- het goede antwoord. Er wordt geen algebraische vereenvoudiging toegepast
- Bijvoorbeeld x+y is niet gelijk aan y+x, 3/2 niet gelijk aan 6/4.
- Echter 2x en 2*x worden wel als gelijk gezien.
- Spaties verdwijnen tijdens deze controle. <p>
-
- <p><li>
- <b>Matrix.</b> (naam: <tt>matrix</tt>)<br>
- Gelijk aan "vector antwoord", elke co&euml;ffici&euml;nt wordt geevalueerd en
- vergeleken met de corresponderende co&euml;ffici&euml;nt in het goede antwoord
-
- <p><li>
- <b>Getal.</b> (naam: <tt>numeric</tt>)<br>
- Vergelijking van reeele getallen, tot de door de auteur bepaalde nauwkeurigheid.
- 
- 
- <p><li>
- <b>Getal met eenheden.</b> (naam: <tt>units</tt>)<br>
- Speciaal voor fysische grootheden met een bepaalde eenheid.
- Het antwoord wordt zo geevalueerd dat bijvoorbeeld <tt>1.5 cm</tt> en <tt>15 mm</tt>
- als gelijk worden beoordeeld !
- Ook hier tot een door de auteur vastgestelde nauwkeurigheid.
- 
- <p><li>
- !read help/anstype/sigunits.phtml
-
- <p><li>
- !read help/anstype/chemeq.phtml
-
- <p><li>
- <b>Numerical function.</b> (naam: <tt>function</tt>)<br>
- Het antwoord wordt vergeleken met het goede antwoord, binnen een reeks waarden voor
- de variabelen zoals gedefinieerd door de auteur en
- ook hier tot een door de auteur vastgestelde nauwkeurigheid.
- 
- 
- <p><li>
- !read help/anstype/text.phtml
- 
- <p><li>
- <b>Vector.</b> (name: <tt>vector</tt>)<br>
- Elke co&euml;ffici&euml;nt wordt geevalueerd en vergeleken met de corresponderende
- co&euml;ffici&euml;nt in de goede oplossing.
- Hierdoor kunnen alleen numerieke vectoren worden gebruikt.
- Het leerling antwoord als ook de goede oplossing kunnen met of zonder
- haakjes worden geformuleerd.
- 
- <p><li>
- !read help/anstype/wlist.phtml
- 
- <p><li><b>De keuzemenu's bij multiple choices</b>: <tt>checkbox</tt>,
- <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt><br>
- Deze kunnen gebruikt worden om het standaard multiple choice input veld te 
- vervangen, om zo meer controle te krijgen over het uiterlijk van de oefeningen 
- De goede oplossing moet een tweetal velden bevatten, gescheiden door een  punt-komma
- ``<tt>;</tt>''. 
- Het tweede veld (achter de punt-komma) is de lijst van keuze teksten.
- Het eerste veld is een lijst getallen corresponderende met de goede keuzes
- In het geval van een <tt>checkbox</tt>, moet de leerling alle goede oplossingen aangeven. 
- Voor alle andere multipe choice inputvelden is een enkele goede oplossing afdoende
- <p>
- Een automatisch door elkaar schudden (shuffle) wordt in deze gevallen niet toegepast,
- en het aantal keuzes wordt niet automatisch beperkt.
- <p>
- <tt>click</tt> kan alleen gebruikt worden in die gevallen waar er geen
- anderen keuzes op invulvelden zijn.
- 
- 
-</ol>
-
+<p>
+De meest gebruikte [gemakkelijkste...]  optie voor open antwoorden is:<tt>default</tt>. 
+Deze antwoord model accepteerd ook nog een extra sleutel <tt><font color=green>default="default_value"</font></tt>. 
+Wanneer de leerling een leeg antwoord invult, wordt verder gerekend met de "default_value"
 <p><h4>Test condities</h4> <p>
-Onder sommige omstandigheden is het wenselijk dat de freestyle antwoorden worden
-onderworpen aan speciale test condities, zoals bijvoorbeeld vragen met meerdere 
-goede antwoorden, oefeningen die vragen om wat voorbeelden, antwoorden met ongelijkheidschema's
-enzovoorts.
-Dit kan op de volgende manier worden bereikt;
+Onder bepaalde omstandigheden, is het wenselijk een open antwoord aan extra te testen te onderwerpen.<br>
+Bijvoorbeeld als er meerdere goede oplossingen zijn [wortels van een vierkantsvergelijking enz.] of antwoorden
+die in de vorm van een ongelijkheid worden geformuleerd.
 <p>
-Als de goede oplossing of een freestyle vraag een ongedefinieerde variabele is,
-kan het leerling antwoord  worden  ingevoerd in deze variabele, welke dan vervolgens
-kan worden gebruikt om de testcondities te implementeren... 
-Het cijfer voor een dergelijk opdracht wordt bepaald door het aantal testcondities
-waaraan is voldaan ,en niet door het aantal antwoorden dat gelijk is aan
-de goede oplossingen...  
+Het leerling antwoord wordt in de OEF code voorgesteld als een ongedefinieerde variabele.
+Als de leerling een antwoord inleverd, krijgt deze variabele de waarde van het antwoord.
+Deze kunnen we onderwerpen aan diverse testen.
+Het cijfer voor de oefening wordt dan ook bepaald door het aantal testcriteria  waaraan is voldaan,
+en niet alleen of het leerling antwoord overeenkomt met het correcte antwoord
 <p>
-Tot  $condlim  conditities kunnen in een enkele oef-oefening worden gedefinieerd
-onder de huidige versie van WIMS. 
-De syntax en verduidelijking is als volgt.
+Op deze server kunnen tot $condlim condities worden geformuleerd in een enkele OEF.
+De Syntax is als volgt:
 <p><tt>
-\condition{prompt tekt}{test condities}
-</tt> <p>
-Hier zijn enkele voorbeelde van test condities.
- (<tt>\ans1</tt>  en <tt>\ans2</tt> zijn ongedefinieerde variabelen
-zoals hierboven beschreven
+\condition{prompt tekst}{test condities}{weight=...}
+</tt>
+(het laatste veld is niet verplicht.)
+<p>
+Hier zijn enkele voorbeelden:
+(<tt>\ans1</tt> en <tt>\ans2</tt> zijn de ongedefinieerde variabelen.)
 <small>
-!href target=wims_mhelp cmd=help&special_parm=if Complete lijst van relaties
+Hier staat een
+!href target=wims_mhelp cmd=help&special_parm=if komplete lijst 
+ met condities.
 </small>
 <p>
 $table_header
-$table_hdtr<th>Conditie<th>betekenis
+$table_hdtr<th>Conditie<th>betekend
 $table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
-    <td>Goed als <tt>ans1</tt> is binnen het interval [0,1].
+    <td>Goed als <tt>ans1</tt> ligt in het interval [0,1].
 $table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
-    <td>Goed als <tt>ans1</tt> is 1, 3 of 5.
+    <td>Goed als <tt>ans1</tt> gelijk is aan 1, 3 of 5.
 $table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
-    <td>Goed als <tt>ans1</tt> en <tt>ans2</tt> zijn de twee wortels 
-    van de polynoom x<sup>2</sup>-5x+6.
+    <td>Goed als <tt>ans1</tt> en <tt>ans2</tt> de twee wortels zijn van de functie  x<sup>2</sup>-5x+6.
 $table_tr<td><tt>sin(\ans1)=0</tt>
-    <td>Goed als <tt>ans1</tt> is een veelvoud van $m_pi.
+    <td>Goed als <tt>ans1</tt> een veelvoud is van $m_pi.
 $table_end <p>
-Zie ook de help pagina bij het
-!href cmd=help&special_parm=oef  OEF formaat
- ,voor de gebruikte syntax bij antwoorden.
+Zie ook de help pagina's over de syntax van de OEF 
+!href cmd=help&special_parm=oef antwoord modellen
+.
+
+
+<h4>De optionele parameter <tt>weight</tt></h4>
+<a name=weight>
+Het is mogelijk de antwoorden binnen een enkele OEF een weging
+mee te geven.
+<p>
+Bijvoorbeeld : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+</p>
+
+
+Er kunnen ook variabelen worden gebruikt als <tt>weight</tt>. 
+Hierdoor kan het scorings mechanisme verder worden getuned.
+<p>
+Voorbeeld :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+</p>
+
+<h4>De optionele parameter <tt>option</tt></h4>
+ <a name=option>
+De toegestane option parameters voor <tt>\answer</tt>
+of <tt>\condition</tt> zijn
+<ul>
+<li>
+<tt>option=split</tt> : By het antwoordtype type = <tt>correspond</tt>, <tt>checkbox</tt> of <tt>mark</tt>,
+wordt er een gedeelde score behaald. 
+</li>
+<li>
+<tt>option=nonstop</tt> : 
+In het geval van een OEF met stappen, wordt de volgende vraag gesteld, ook al is het vorige antwoord fout.
+</li>
+<li>Een optionele parameter bij <tt>condition</tt> : <tt>option=hide</tt> :
+De conditie wordt gebruikt om te analyseren. 
+En bij option=hide worden de resultaten van de test niet geprint en zijn dus niet zichtbaar voor de leerling,
+</li>
+
+</ul>
 
