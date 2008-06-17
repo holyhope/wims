@@ -102,6 +102,12 @@ $SU_greet.
  !goto end
 !endif
 
+!set test=!replace / by , in $wims_class
+!if $(test[-1])=0 
+  !set test_up=!replace internal /0- by in $wims_class- 
+  !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
+!endif
+
 !set ac_0=<small>$SU_Uprep</small>
 !set ac_1=$SU_Ac
 !set ac_2=$SU_Ex

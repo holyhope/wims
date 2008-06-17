@@ -111,6 +111,7 @@ SU_shst		=Status
 SU_Howsh	=Hoe voeg ik lesmateriaal toe aan een werkblad? 
 SU_classexo	=Oefenmateriaal van de klas (<small>dus uw eigen wims-modules</small>)
 SU_Gateway	=	Structuur management
+SU_Bprogram=Back to the program
 
 SE_list		=Leerlingen en Cijfers 
 SE_part		=Zo zien leerlingen deze pagina

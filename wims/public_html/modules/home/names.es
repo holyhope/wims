@@ -113,6 +113,7 @@ SU_shst		=Estado
 SU_Howsh	=Cómo añadir una tarea a una hoja de ejercicios
 SU_classexo	=Ejercicios de la clase (es decir, sus creaciones)
 SU_Gateway	=Administración de la estructura
+SU_Bprogram=Back to the program
 
 SE_list		=Participantes y puntuaciones
 SE_part		=Página inicial para el participante
