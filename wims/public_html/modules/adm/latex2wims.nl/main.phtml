@@ -1,0 +1,196 @@
+!if robot isin $session
+  !exit
+!endif
+!header
+
+<div $frame>
+!if $wims_developer=$empty
+<b>$module_title</b> 
+maakt van een LaTeX bestand een WIMS document binnen Modtool.
+<br>En is alleen te gebruiken door docenten met een modtool account.
+
+<p>
+Voor een goed resultaat moet ook een css bestand worden gebruikt.
+Lees hiervoor eerst deze 
+!href cmd=help&special_parm=doc WIMS-doc
+ of deze
+ !getfile latex2wimsdoc.pdf PDF
+.
+
+
+<p>
+Om een
+!mailurl $wims_site_manager modtool account aan te vragen \
+als WIMS module ontwikkelaar.
+
+
+ !form reply
+ Login voor Modtool:
+<p>
+<table align="center"> 
+<tr><td> Login naam : </td><td><input type=login name=login></td></tr>
+<tr><td> Wachtwoord :</td><td>
+  <input type=password name=passwd>
+</td></tr></table>
+ <center> <input type=submit value="Opsturen"></center>
+  </form>
+  !tail
+  !exit
+!endif
+
+!if $error!=$empty
+  !read msg.phtml
+!endif
+
+<p>
+<b>$module_title</b>
+maakt van een LaTeX bestand een WIMS document binnen Modtool.
+<br>En is alleen te gebruiken door docenten met een modtool account.
+<p>
+Voor een goed resultaat moet ook een css bestand worden gebruikt.
+Leest hiervoor eerst deze 
+!href cmd=help&special_parm=doc WIMS-doc
+!set wims_form_method=file
+!default !set execut=0
+!form reply
+!if $execut!=3
+Om verder te gaan, kunt U de drie bestanden ophalen
+(latex [*.tex], latex [*.sty] en een html [*.css]) 
+  !getfile fichier_test.tex het latex bestand
+,
+  !getfile style.css  het css bestand
+, 
+  !getfile wims.sty het latex2wims sty bestand
+, 
+  !getfile latex2wimsdoc.pdf PDF documentatie
+
+ !if $exemple!=1
+    Een voorbeeld document maken ?
+      !formradio exemple list 1,2 prompt ja,nee
+  !endif
+!endif 
+
+<p>
+!if $execut=0
+  $hh Stap 1</h2>
+  Kopieer de bestanden naar de server :
+  <input type=file name=wims_deposit>
+  <p>
+!if $test!=$empty and ($execut=0 or $cnt_fichier=1)
+  Opgestuurde bestanden :
+  <pre $pre>
+  !for i = 1 to $cnt_fichier
+    $(fichiers[$i]) ($(date[$i]))
+   !next
+   </pre>
+!endif
+  <p>
+  <ul>
+    <li>
+
+   !formradio execut list 0 prompt Stuur een nieuw bestand op 
+   </li><li>
+   !formradio execut list 1 prompt Naar de volgende stap
+   </li>
+   </ul>
+!endif
+
+
+
+!if $execut=1
+
+$hh Stap 1</h2>
+!if $cnt_fichier >0 
+   U kunt 
+    !formcheckbox execut list 0 prompt een nieuw bestand opsturen.
+ !else
+   U moet
+   !default !set execut=0
+   !formradio execut list 0 prompt een LaTeX bestand opsturen.
+   
+   <center>
+<input type=submit value="Opsturen">
+</center>
+</form>
+   !exit
+ !endif
+$hh Stap 2</h2>
+Kies het LaTeX bestand
+  <ul>
+    !for i = 1 to $cnt_fichier
+      !set l=!item $i of $fichiers
+      <li>
+        !formradio principal list $i prompt $(fichiers[$i]) (opgestuurd op: $(date[$i]))
+      </li>
+   !next 
+  </ul>
+  Als er oefeningen zijn, kies dan het werkblad nummer:
+  !formradio wksheet list 1,2,3,4,5,6,7,8,9
+ $hh Stap 3</h2>
+!set choix=Kies
+!if $list_module!=$empty
+    Geef de naam van het document uit uw Modtool account:
+           <p align=center>
+           !formselect document list $choix,$list_module    
+         </p>
+	 of maak een nieuwe document in uw Modtool account maken 
+!else
+<i>U moet eerst een document maken in uw modtool account </i>
+!endif
+     !href target=wims_test module=adm/modtool.$module_language&cmd=reply&jobreq=create Modtool
+
+!if $document notsametext $choix
+<p> <b>Attentie</b> : de bestanden van het document  <tt $stylett>$document</tt>
+    worden gewist en vervangen door de nieuwe.
+!else
+<p> <b>Attentie</b> : U moet een echt document selecteren.
+!endif
+  $hh Stap 4</h2>
+     !formradio execut list 2 prompt Uitvoeren
+  
+!endif
+
+!if $execut=3 
+  !if $confirm=
+   <p> <b>Attentie</b> : de bestanden van het document <tt $stylett>$document</tt>
+    worden gewist en vervangen door de nieuwe.
+   <p>Uitvoeren ? : 
+   !formradio confirm list 0,1 prompt ja,nee
+    <ul>
+  !else
+    !if $confirm=0
+ !reset confirm
+ <ul><li>
+     !href target=wims_internal module=devel/$wims_developer/$document Controleer het resultaat
+ (<i>  kunt u ook bereiken via
+!href target=wims_internal module=adm/modtool.fr&+jobreq=flist&+modreq=$document Modtool
+</i>)
+  </li>
+   !endif
+  !endif
+   <li>
+    !formradio execut list 1 prompt Terug naar de vorige stadia.
+  </li>
+  <li>
+    !formradio execut list 0 prompt Stuur een bestand.
+  </li>
+  </ul>
+!endif
+<center>
+<input type=submit value="Opsturen">
+</center>
+<br>
+Terug naar
+!href module=adm/modtool.fr Modtool
+.
+   
+</form>
+
+!if $wims_exec_error!=$empty
+ <font color=red><pre>$wims_exec_error</pre></font>
+!endif
+</div>
+!tail
+
+!reset wims_exec_error wims_deposit
+

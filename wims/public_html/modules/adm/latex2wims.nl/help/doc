@@ -1,0 +1,409 @@
+<pre $doc>
+=======================================================
+
+                 Documentatie voor latex2wims          
+                    [nog niet vertaald]       
+=======================================================
+
+Begin met een correct compileerbaar LaTeX bestand met een correcte extensie (*.tex)
+- découpé selon les subdivisions 
+      (rappel : part/chapter/section/subsection/subsubsection)
+- dans lequel ont été définis et utilisés des environnements latex, 
+  les environnements de type theorem (package amsart)
+  (par exemple thm, prop, defn), des macros, etc ... 
+     (voir plus loin les commandes \environmentwims ou \defwims)
+- dont l'en-tête est complété (voir plus bas) ; pour un premier essai, 
+  il suffit de prendre le fichier wims.sty
+  et mettre dans l'entête 
+
+\input{wims.sty}
+ 
+=======================================================        
+
+======================   PREAMBULE   ==================
+
+=======================================================              
+
+Il est recommandé de charger certains packages et de 
+mettre dans le préambule latex par les lignes suivantes
+
+%%%%%%% Packages %%%%%%%%%%%%%
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{comment}
+\excludecomment{wimsonly}
+\includecomment{latexonly}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Les lignes suivantes sont obligatoires dans le préambule (afin que 
+il n'y ait pas de messages d'erreurs pour les commandes d'option 
+de wims lors de la compilation latex) et à recopier telles quelles:
+
+\def\defwims{\def\wims@dummy}  
+                     %permet l'inclusion de la commande \defwims
+\def\environmentwims#1[#2][#3]#4#5#6{} 
+                     %permet l'inclusion de la commande \environmentwims
+\def\wimsentre#1{}   %permet l'inclusion de la commande \wimsentre  
+\def\wimsinclude#1{} %permet l'inclusion de la commande \wimsinclude  
+\def\wimsnavig#1#2{} %permet l'inclusion de la commande \wimsnavig  
+\def\samestyle#1{}   %permet l'inclusion de la commande \samestyle
+\def\typefold#1{}    %permet l'inclusion de la commande \typefold
+\def\typelink#1{}    %permet l'inclusion de la commande \typelink
+\def\wimsoption#1{}  %permet l'inclusion de la commande \wimsoption
+
+% dans les deux lignes suivantes changer l'adresse 
+% (permet un lien hyperref dans le fichier pdf)
+
+\def\exercise#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+\def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+\defwims\wimsnavig#1#2{\#1{#2}}
+\defwims\wimsentre#1{\wimsentre#1}
+
+======================================================
+On peut alors inclure des fichiers
+\wimsinclude{fichier.css,fichier.tex, fichier.sty,embed=DOSSIER} 
+      %uniquement pour wims
+Pour un fichier vu aussi par latex, utiliser
+\input{toto.tex}
+
+=======================================================
+
+On peut configurer les options (voir le fichier modèle 'wims.sty')
+
+=======================================================
+
+\wimsoption{depth=[numero]}  
+     le nombre de niveaux de subdivisions qui apparaitront en "link" à 
+     partir du niveau supérieur que vous utilisez 
+     [part,chapter,section,subsection,subsubsection]
+     par defaut, depth=2 (si vous avez des sections/soussections/..
+     les sections et sous-sections en "link", les sous-sous-sections
+     en "fold" )
+
+\wimsoption{index} 
+     Produit un index en utilisant les macros \index{} ; 
+     cela est aussi activé par la commande \makeindex 
+     [un seul index possible]
+     
+\wimsoption{numerotation} 
+     Met les numéros des subdivisions, pour l'instant 
+     roman-arabic-arabic...
+     
+\wimsoption{toc_up}
+     Table de matières sous forme de "chemin" en haut
+     
+\wimsoption{toc_left}
+     Table de matières à gauche de la partie supérieure
+     
+\wimsoption{toc_right}
+     Table de matières à droite du père du bloc actuel 
+     
+\wimsinclude{fichier} 
+     permet la lecture de fichiers auxiliaires ; 
+     on peut aussi utiliser \include{fichier} 
+     pour des fichiers devant être lus par latex.
+     
+\samestyle{thm,prop,...} attribue le style css 'thm' aux environnements 
+     qui suivent. Par défaut, le style de 'environ' est 'environ'.
+     Ces styles doivent être finis dans le fichier style.css 
+     Vous trouverez des exemples dans le fichier style.css
+     
+\typefold{proof,...,} 
+     attribue le type fold aux environnements de la liste.
+     
+\typelink{thm,...} 
+     attribue le type link aux environnements de la liste.
+
+\listwims{..} liste d'environnements de type liste. 
+
+=======================================================
+Les champs des commandes suivantes doivent être remplis.
+=======================================================
+
+\title{.....} ou \title[titre court]{titre}
+     titre général du document.             
+\email{.....} 
+     email de l'auteur.     
+\author{.....} 
+     nom de l'auteur.
+ 
+=======================================================     
+Interprétation dans wims d'un environnement latex
+=======================================================     
+
+Le script utilise la définition fournie par environnementwims, 
+sinon, par défaut, il prend la définition latex
+ 
+\environmentwims{nom}[1]{titre}{debut}{fin}    
+ nom        : nom de l'environnement (déjà défini dans latex) 
+ titre      : titre par défaut de l'environnement.             
+ debut      : avant le texte (balises html) 
+ fin        : après le texte (balises html)
+
+Exemples : 
+
+\environmentwims{proof}[1]{Démonstration}{}{}
+     titre : Démonstration
+     debut : &lt;div class="proof"> (defaut)
+     fin   : &lt;/div>            (defaut)
+
+\environnementwims{proof}[1]{Démonstration}{&lt;i>&lt;font color="blue">}{&lt;/font>&lt;/i>}
+     titre : Démonstration
+     debut : &lt;i>&lt;font color="blue">
+     fin   : &lt;/font>&lt;/i>
+
+Le style css est par défaut 'nom' et peut-être renommé grâce à
+     \samestyle{}
+
+=======================================================
+
+Cas particulier des listes
+
+=======================================================
+
+Les environnements  'enumerate', 'itemize', 'trivlist' sont reconnus 
+et sont mis dans le style html correspondant. (&lt;ol> &lt;ul> ou rien)
+
+L'environnement description est reconnu, mais traité de manière 
+spéciale : les items sont mis en fold. Il est possible de définir un 
+style css 'description' et deux styles 'span.description_item', 
+'div.description_item' (pour le 'xxx' et pour l'intérieur'). 
+
+Si d'autres environnements de liste sont utilisés, 
+elles doivent être déclarées : 
+
+\listwims{ma_liste,ta_liste}
+\listwims{sa_liste}
+
+Pour que les items de 'ma_liste' soient mis en fold 
+(comme pour description), 
+il suffit de déclarer l'environnement 'ma_liste_item' de type fold.
+
+\typefold{ma_liste_item}
+
+On peut définir les style css  de 'ma_liste' et de 'ma_liste_item'.
+Il faut veiller à  la présence de crochets contenant du texte
+à la suite de \item  : \item[texte] 
+
+ul.ma_liste { } 
+div.ma_liste_item { }
+span.ma_liste_item { } 
+
+Si l'on désire mettre un style css à itemize ou enumerate, les traiter 
+comme de nouvelles listes en les incluant dans \listwims{ } 
+
+=======================================================
+
+Interprétation dans wims d'une commande latex
+
+=======================================================
+
+Par défaut, c'est la commande latex qui est utilisée par le script, 
+sinon c'est la commande wims. 
+
+\defwims\commande#2{&lt;em>#1&lt;/em> (#2)}
+
+Si un environnement mathématique ou une commande latex ne "passe pas", 
+vous pouvez aussi utiliser \environnementwims ou \defwims pour
+la redéfinir en latex utilisant les packages chargés par wims
+ou en html (sur une seule ligne ou avec des % à la fin de la ligne).
+
+\defwims\uline#1{&lt;u>#1&lt;/u>}
+\defwims\card{\mathrm{Card}} 
+
+Les commandes suivantes sont traitées automatiquement dans latex2wims 
+actuellement de manière plus ou moins heureuse: 
+
+Il s'agit de 
+ - quelques environnements latex qui ne sont pas reconnus par wims :
+
+   multline, pmatrix, smallmatrix, array, eqnarray, eqnarray*, 
+   align, cases, gather, displaymath, tabular
+   
+   (la commande tabular est traduite sommairement.)
+   
+- quelques commandes standard réinterprétées : 
+
+\label{mon_label}
+     met une ancre html
+
+\cite[mon_titre]{mon_label} : 
+     fait un lien sur la citation. Le lien est fait par défaut
+     sur le mot 'mon_label', sinon sur 'mon_titre'
+
+\ref{mon_label}
+     fait un lien sur la citation. Le lien est fait par défaut
+     sur le mot 'mon_label'. Dans le cas toto~\ref{mon_label}, 
+     le lien est fait sur 'toto'.
+     
+\href{url}{nom}
+             fait un lien externe à wims 
+             (&lt;a http:"url" target="wims_external">nom&lt;/a>)
+
+\url{adresse}
+     fait un lien externe à wims 
+     (&lt;a http:"adresse" target="wims_external">adresse&lt;/a>)  
+     %avec package url
+             
+\index{nom}  ou \index{nom!toto} 
+             
+\text{}
+     la commande latex pour mettre du texte dans un 
+     environnement mathématique
+     (à éviter si possible)
+
+- l'environnement 'algorithm' est traité sans numérotation des lignes.
+           \usepackage[noend]{algorithmic}
+ 
+=======================================================
+
+==================  DANS LE CORPS DU TEXTE ============
+
+=======================================================
+
+\begin{latexonly} ... \end{latexonly}
+     ce qui est à l'intérieur est complètement 
+     négligé dans wims.
+     
+\begin{wimsonly} ... \end{wimsonly}
+     traité par wims (et pas par latex) avec formatage 
+     et remplacement des environnements mathématiques, 
+     comme dans le texte en dehors.
+     
+\begin{wims} ... \end{wims}
+     doit être à l'intérieur de l'environnement 'wimsonly' ; 
+     traité par wims sans aucun formatage ni remplacement ;
+     y mettre toutes les commandes wims \def{ ...} 
+     permettant de faire des programmes. 
+     
+\wimsentre{partie}  
+     avec partie une subdivision latex.
+     permet de terminer la partie avant de commencer la suivante
+     en mettant du texte entre deux subdivisions de même niveau
+     (il apparaîtra dans les sommaires entre deux titres 
+     de subdivision). Cela évite les pages de plans trop sèches.
+     
+\exercise{module=...}{titre} 
+     même syntaxe que la commande wims. 
+     \exercise{module=U1/...}{titre} est remplacé par 
+     \exercise{cmd=new&module=U1/...}{titre}
+      En rajoutant les lignes suivantes
+     au début du document latex (avec tout autre adresse de wims  :
+ \def\exercise#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+ \def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+     le lien est interprété dans le pdf.
+           
+          
+=======================================================
+Les commandes suivantes remplacent les arguments de navigation
+donnés par défaut selon le découpage en subdivisions 
+======================================================= 
+
+Navigation par défaut :     
+  - le titre d'une subdivision est son titre : dans le cas 
+       \section[titre_court]{titre}, le titre court est utilisé pour
+       la table des matières
+  - le suivant d'une subdivision est la subdivision suivante,
+  - le suivant d'une sous-subdivision est la sous-subdivision 
+    suivante ... 
+  - le suivant d'une dernière sous-subdivision est la subdivision 
+    suivante.
+
+\wimsnavig{titb}{mon_titre} 
+     attribue au bloc dans lequel est la commande le titre 'mon_titre'.
+
+\wimsnavig{next}{bloc} 
+     le bloc contenant cette commande aura comme suivant le bloc
+     dans lequel se trouve la commande \label{mon_label}.
+
+\wimsnavig{prev}{mon_label} 
+     le bloc contenant cette commande aura comme précédent le bloc
+     dans lequel se trouve la commande \label{mon_label}.
+     
+\wimsnavig{upbl}{bloc} 
+     le bloc contenant cette commande aura comme sup le bloc
+     dans lequel se trouve la commande \label{mon_label}.
+                  
+\wimsnavig{datm}{date} 
+     attribue au bloc dans lequel sera la commande 
+     la date de modification donnée.
+     
+\wimsnavig{keyw}{mots-cles} attribue au bloc les mots-clés donnés
+  
+=======================================================
+
+              Description du fichier auxiliaire 'style.css' : 
+
+=======================================================
+On peut redéfinir les styles suivants 
+
+body
+
+.wimsdoc : 
+     style général de la page
+h1 : 
+     style du titre général
+h3 : 
+     style du titre de la page
+div.left_toc : 
+     style des tables de matières de gauche
+
+div.left_selection : 
+     style de la rubrique de la table des matières 
+     de gauche de la page courante
+     
+div.right_selection : 
+     style de la rubrique de la table des matières 
+     de droite de la page courante
+     
+div.right_toc : 
+     style des tables de matières de gauche
+     
+div.wims_chemin : 
+     style du chemin qui apparait en haut
+     
+h2.environ : 
+     style du titre de l'environnement 'environ'
+     (voir \samestyle{} pour indiquer qu'un environnement 
+      a le style d'un autre)
+     
+div.environ : 
+     style de l'intérieur d'un environnement 'environ' 
+     pour tout environnement défini par newtheorem
+     
+span.subsection : 
+     style du titre si le type de la sous-section est 'fold
+
+span.environ : 
+     style du titre de l'environnement 'environ'
+     
+.math : 
+     style pour les formules mathématiques centrées
+     
+h2.thebibliography, div.thebibliography ul.thebibliography
+     style du titre et contenu de la bibliographie
+     
+.index : div, ul
+     style de l'index
+     
+div.algorithmic : 
+     style des algorithmes créés avec le package 'algorithmic'
+
+======================================
+
+===================
+TODO : 
+- des environnements d'images (à améliorer) : pour l'instant supprime
+pspicture : met un message d'avertissement
+picture
+
+- \includegraphics[]{} est remplacé par le code html. 
+   Les images chargées sont transférées
+   On prévoit de convertir les images eps avec convert en 
+   images .jpg
+=============================================
+ 
+</pre>
+

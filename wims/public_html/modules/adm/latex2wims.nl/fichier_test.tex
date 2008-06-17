@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+\usepackage{amsthm,amsfonts}
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{pslatex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{comment}
+\excludecomment{wimsonly}
+\includecomment{latexonly}
+\usepackage{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\wimsentre#1{}
+\def\wimsinclude#1{}
+% permet le contrôle de la navigation dans le document :%le premier argument peut être prev, next,upbl,titb,keyw,datm
+\def\wimsnavig#1#2{}
+%%%%%% avec le package hyperref, fait apparaitre les liens sur les exercices à 
+%partir du fichier pdf. changer l'adresse
+\def\exercise#1#2{\href{http://127.0.0.1/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+\def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+%%%si nécessaire
+\def\email#1{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\wimsinclude{wims.sty}%pour inclure des fichiers non lus par latex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%ou
+%\input wims.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{thm}{Theorema}[section]
+\newtheorem{theo}[thm]{Theorema}
+\newtheorem{prop}[thm]{Propositie}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definitie}
+\newtheorem{defn}{Definitie}[section] 
+\newtheorem{ex}{Voorbeeld}
+\newtheorem{exo}{Oefening}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\RR{\mathbb R}
+\def\NN{\mathbb N}
+\def\ZZ{\mathbb Z}
+\def\CC{\mathbb C}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%% indispensable
+\title{Mijn document}
+\author{Bernadette Perrin-Riou}
+\email{bpr@math.u-psud.fr}
+\section{gebruik van \LaTeX secties}
+  \begin{thm}
+    Hier een theorema
+  \end{thm}
+  \begin{proof}
+    Hier een bewijs
+  \end{proof}
+  \begin{defn} 
+    Hier een definitie
+  \end{defn}
+\section{Invoegen van een oefening}
+
+Om een oefening in te voegen, begin u de eerste twee regels
+van het bronbestand een oefening met een \&.
+\begin{exo}
+Maak een oefening van \index{exercice1}
+\exercise{module=H6/analysis/oefcourbe.fr&exo=courb1&scoredelay=&confparm1=A&confparm1=B}{Curves}
+\end{exo}
+\section{Invoegen van een plaatje}
+
+Een voorbeeld van een plaatje
+ \index{exemple}
+ \begin{wimsonly}
+  \begin{wims}
+    \def{matrix A = -6,28,21
+      4,-15,-12
+     -8,a,25}
+    \def{text P = pari(charpoly( [\A], x))}
+    \def{text color=blue,purple,red,orange,yellow}
+    \def{text dessin = xrange -1,4
+      yrange -10,10
+      hline 0,0,black
+      vline 0,0, black
+    }
+    \def{text liste = 31.8,31.9,32,32.1,32.2}
+    \def{integer cnt = items(\liste)}
+    \for{i = 1 to \cnt}{
+      \def{text p = evalue(\P,a = \liste[\i])}
+      \def{text dessin = \dessin
+        plot \color[\i], \p
+      }
+     }
+  \end{wims}
+  Hier is de grafiek van de polynoom gekarakteriseerd bij de matrices \([\A]) 
+  voor de waarden van \(a): \liste.
+    <p align="center"> \draw{300,300}{\dessin} </p>
+  Wat valt op ? 
+\end{wimsonly}
+\section{De lijsten}
+  Hier een geneste lijst [fold]
+  \begin{description}
+    \item[Grafiek] Hier is de definitie
+    \item[KLeuren] De kleur van de grafiek ...
+  \end{description}
+\end{document}
