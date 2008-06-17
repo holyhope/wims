@@ -1,0 +1,56 @@
+!header
+
+!if $modtoolhelp=yes
+ !changeto help.phtml
+!endif
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ Aquest és el codi de l'exercici
+ <font color=red><b>$oef_title</font></b>, en format OEF (Open Exercice Format).
+ Per desar-lo, copia el text entre les dues línies
+ horitzontals, i enganxa-les a un fitxer.
+ !href cmd=resume Tornar al menú.
+ <hr>
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr> <p>
+ <center>
+ !href cmd=resume Tornar al menú
+ </center>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <center>L'exercici serà com segueix.
+ <br>
+ !href cmd=resume&realtest=no Tornar a $module_title.
+ </center>
+ <p><hr> <p>
+ !changeto oef/$module_language/Main.phtml
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p>
+ !href cmd=reply Corregir l'error.
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+:end
+!tail
+
+!reset wims_deposit, delfile
+

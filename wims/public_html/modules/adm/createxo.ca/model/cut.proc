@@ -1,0 +1,128 @@
+!if $cmd=help
+ ses=!replace internal _mhelp by in $wims_session
+!else
+ ses=$wims_session
+!endif
+input=$wims_read_parm
+!default input=wimshome/sessions/$ses/submit.oef
+!default embraced_randitem=help
+
+!reset sps parms desc explain statement statementrec helpst
+cnt=!recordcnt $input
+
+!if $cnt<6
+ !exit
+!endif
+
+lbrace={
+
+r=!record 0 of $input
+model_def=$r
+model_type=!getopt type in $r
+model_textarea=!getopt textarea in $r
+model_textarea=!items2words $model_textarea
+model_author=!getopt author in $r
+
+model_random=!getopt random in $r
+model_random=!items2words $model_random
+model_computed=!getopt computed in $r
+model_computed=!items2words $model_computed
+model_helped=$model_random $model_computed
+model_menutester=item(
+
+r=!record 1 of $input
+r=!trim $r
+desc=!line 1 of $r
+help1=!line 2 to -1 of $r
+
+!if $wims_developer!=
+ !read adm/getdeveloper
+!endif
+
+!for i=2 to $cnt
+ r=!record $i of $input
+ r=!trim $r
+ n=!linecnt $r
+ c=!char 1 of $r
+ !if \ = $c
+  v=!translate internal \{} to $   $ in $r
+  v=!word 1 of $v
+  !if $v iswordof title author email
+   name$i=$v
+   model_$v=!embraced extract $r
+   !if $oef_author!=$empty
+    model_author=$oef_author
+    model_email=$oef_email
+   !endif
+   val$i=$(model_$v)
+   sps=!append item $i to $sps
+  !endif
+  !goto loopend
+ !endif
+ !if $c=%
+  !goto loopend
+ !endif
+ !if $c=:
+  !for j=1 to $n
+   l=!line $j of $r
+   l=!trim $l
+   c=!char 1 of $l
+   !if \ = $c
+    statement=!line $j to -1 of $r
+    statement=!embraced extract $statement
+    statementrec=$i
+    !break
+   !else
+    helpst=!append line $l to $helpst
+   !endif
+  !next j
+  !goto loopend
+ !endif
+ title$i=!line 1 of $r
+ !reset help$i name$i type$i menu$i
+ !for j=2 to $n
+  l=!line $j of $r
+  l=!trim $l
+  c=!char 1 of $l
+  !if \ = $c
+   def=!line $j to -1 of $r
+   t=!positionof char $lbrace in $def
+   t=!item 1 of $t
+   type=!char 2 to $t-1 of $def
+   type$i=!word 1 of $type
+   def=!char $t to -1 of $def
+   def=!trim $def
+   def=!declosing $def
+   c=!char 1 of $def
+   !if $c=$lbrace
+    !goto loopend
+   !endif
+   t=!positionof char = in $def
+   t=!item 1 of $t
+   !if $t=$empty
+    !goto loopend
+   !endif
+   name=!char 1 to $t-1 of $def
+   name$i=!word 1 of $name
+   val$i=!char $t+1 to -1 of $def
+   !if $(type$i)=text
+    val$i=!trim $(val$i)
+    menutest=!char 1 to 5 of $(val$i)
+    !if $menutest=$model_menutester
+     menu$i=!char 6 to -2 of $(val$i)
+     val$i=!item 1 of $(menu$i)
+     menu$i=!item 2 to -1 of $(menu$i)
+    !endif
+   !endif
+   !break
+  !else
+   help$i=!append line $l to $(help$i)
+  !endif
+ !next j
+ !if $(name$i)!=$empty
+  parms=!append item $i to $parms
+ !endif
+ :loopend
+!next i
+
+

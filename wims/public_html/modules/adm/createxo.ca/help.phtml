@@ -1,0 +1,71 @@
+
+!if $realtest=yes
+ !changeto oef/help.phtml
+!endif
+
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if,symtext,model
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty and $s_ isitemof $helplist
+ !read help/$s_.phtml
+ <p><center>
+ !href cmd=help Altres temes d'ajuda.
+ &nbsp;&nbsp;
+ !href cmd=resume Tornar al treball.
+ </center>
+ !exit
+!endif
+
+Temes d'ajuda&nbsp;:<ul>
+<li><p>
+!href cmd=help&special_parm=oef Explicacions sobre el format OEF.
+</p></li>
+!!<p><li>
+!!href cmd=help&special_parm=examples Exemples d'exercicis.
+<li><p>
+!href cmd=help&special_parm=format Els formats de l'enunciat
+ de l'exercici.
+</p></li>
+<li><p> 
+!href cmd=help&special_parm=parameters Paràmetres aleatoris
+ en un exercici interactiu.
+</p></li>
+<li><p>
+!href cmd=help&special_parm=math Fórmules matemàtiques
+ en els exercicis.
+</p></li>
+<li><p>Incloure 
+!href cmd=help&special_parm=draw gràfics dinàmics
+ en els exercicis.
+</p></li>
+<li><p>
+Com l'usuari pot
+!href cmd=help&special_parm=reply respondre a un exercici
+ (tipus de respostes).
+</p></li>
+<li><p>
+!href cmd=help&special_parm=feedback Comentaris
+ als errors típics de les respostes.
+</p></li>
+<li><p>
+!href cmd=help&special_parm=oefadv Possibilitats avançades
+.
+</p></li>
+<li><p>
+!href cmd=help&special_parm=all La totalitat de l'ajuda
+</p></li>
+</ul>
+
+!if $modtoolhelp!=yes
+ <center>
+ !href cmd=resume Tornar al treball.
+ </center>
+!endif

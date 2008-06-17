@@ -1,0 +1,71 @@
+
+El software ha reconegut satisfactòriament el teu exercici, amb les següents informacions. (Sisplau comprova que tot sigui correcte.)
+<table bgcolor=#d0d0d0>
+<tr><td align=right>Títol<td><td>$title
+<tr><td align=right>Nombre de paràmetres<td><td>$varcnt
+<tr><td align=right>Nombre de respostes d'estil lliure<td><td>$replycnt
+<tr><td align=right>Nombre de respostes d'opció múltiple<td><td>$choicecnt
+</table>
+<ul><li>
+Ara pots
+!href cmd=resume&realtest=yes&retest=again provar el teu exercici
+. 
+!if $mode!=file
+ <p><li>
+ Si vols modificar-lo,
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+ !if $to_ia_qcm=-1
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 torna a confia2qcm
+ !endif
+ !if $to_ia_qcm=-2
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 torna a createqcm
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+   !href cmd=reply&level=2 torna al menú
+ !endif
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+.
+!else
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=level value=3>
+ <p><li>
+ O modificar el fitxer de codi llavors
+ <input type=submit value="tornar a enviar">&nbsp;:
+ <input type=file name=wims_deposit>
+ </form>  
+ <p><li>
+ !href cmd=reply&level=1&mode=normal Tornar al menú inicial
+.
+!endif
+!if $wims_user!=$empty
+ <p><li>També pots
+ !href cmd=reply&level=6 enviar un fitxer amb una imatge
+ per a l'exercici.
+!endif
+!if $wims_user!=$empty or $existing!=$empty
+ <p><li>
+ Una vegada tot sigui correcte, pots
+ !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
+   posar aquest exercici a la teua classe, sigui
+   !href cmd=reply&level=4 per substituir l'antic
+, sigui
+   !href cmd=reply&level=4&newone=1 per fer-ne un de nou
+  !else
+   !href cmd=reply&level=4 posar-lo al mòdul de desenvolupament
+  !endif
+ !else
+  !href cmd=reply&level=4 posar aquest exercici a la vostra classe
+ !endif
+. 
+!endif
+!if $mode!=file
+ <p><li>
+ Finalment, no oblidis
+ !getfile submit.oef desar el codi
+ de l'exercici!
+!endif
+</ul>
+
+

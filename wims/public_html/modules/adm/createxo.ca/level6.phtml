@@ -1,0 +1,49 @@
+
+<center><h3>Fitxers d'imatge per a l'exercici</h3></center>
+
+!if $quota=yes
+ <b>Error</b>. No pots posar aquests fitxers a la classe, el
+seu contingut depassa la quantitat d'espai de disc assignat.
+ Ho sento.
+ <p>
+ !goto sendend
+!endif
+
+!set wims_form_method=file
+!form reply
+Fitxer d'imatge a enviar a l'exercici&nbsp;:
+<input type=file name=wims_deposit>
+<input type=submit value=OK>
+</form>
+
+:sendend
+!if $imglist=$empty
+ Aquest exercici encara no te fitxer d'imatge.
+!else
+ Aquesta és la llista dels fitxers d'imatge d'aquest exercici.
+ <p><center><table border=2>
+ <th>Nom del fitxer<th>Miniatura<th>-
+ !for i in $imglist
+  <tr><td valign=middle align=center>$i
+  <td valign=middle align=center>
+  <img src=$wims_ref_name?cmd=getfile&session=$wims_session&special_parm=oefimg/$i
+   height=40 width=50>
+  <td valign=middle align=center>
+  !href cmd=reply&delfile=$i Effacer
+ !next i
+ $table_end <p>
+ !set example=!item 1 of $imglist
+ Es pot accedir a aquests fitxers d'imatges a l'enunciat de l'exercici amb el paràmetre intern \imagedir. Per exemple,  podeu escriure
+ <center><pre>
+ &lt;img src=\imagedir/$example&gt;
+ </pre></center>
+ També podeu escriure <tt>\img{\imagedir/$example}</tt>, o
+ <tt>\img{\imagedir/$example}{html options}</tt>. L'avantatge d'aquest darrer mètode és que els etudiants no veuran pas el nom del fitxer. A causa de la seva exigència, utilitzeu aquest mètode només quan sigui necessari.
+!endif
+<p><center>
+!href cmd=resume&level=3&realtest=yes&retest=again Provar l'exercici
+.&nbsp;
+!href cmd=reply&level=3 Tornar al menú
+.
+</center>
+

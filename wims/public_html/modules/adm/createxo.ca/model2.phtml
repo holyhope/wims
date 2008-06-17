@@ -1,0 +1,96 @@
+
+!set name_title=Títol
+!set name_author=Autor
+!set name_email=Adreça electrònica
+
+!form reply name=replyform id=replyform
+<input type=hidden name=level value=3>
+
+$table_header
+<caption><b>$model_title<sup>
+!href cmd=reply&rawinp=yes Mode pur
+&nbsp;
+!href cmd=reply&level=1&mode=model Llista de models
+</sup>
+</b>
+<br>$desc<sup>
+!href target=wims_mhelp cmd=help&special_parm=model,1 &gt;&gt;
+</sup>
+</caption>
+$table_hdtr
+
+!set ta=
+!for i in $sps,$parms
+ !reset reply$i
+ !if $(type$i)!=matrix and $(name$i) notwordof $model_textarea
+  !set val=!replace internal " by &#34; in $(val$i)
+  !if $i isitemof $sps
+   !set title$i=$(name_$(name$i))
+  !endif
+  !if $(type$i) iswordof integer int real and $i notitemof $sps and \
+	$(name$i) notwordof $model_random $model_computed
+   !set len=8
+  !else
+   !set len=40
+  !endif
+  $table_tr
+  <td>$(title$i)
+  !if $(help$i)!=$empty or $(name$i) iswordof $model_helped
+   <sup>
+   !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i ajuda
+   </sup>
+  !endif
+  </td>
+  <td>
+  !if $(menu$i)!=$empty
+   !set t_=!itemcnt $(menu$i)
+   !set t_=!makelist x for x=1 to $t_
+   !set reply$i=$val
+   !formselect reply$i list $t_ prompt $(menu$i)
+  !else
+   !set l_=!charcnt $val
+   !if $l_ > 50
+    !set val=!reinput $val
+    <textarea name=reply$i cols=$len rows=3>$val</textarea>
+   !else
+    <input size=$len name=reply$i value="$val">
+   !endif
+  !endif
+  </td>
+  </tr>
+ !else 
+  !set ta=!append item $i to $ta
+ !endif
+!next i
+
+$table_end <p>
+
+!if $ta!=$empty
+ !for i in $ta
+  <a name=textarea$i>
+  $(title$i)
+  !set val=!reinput $(val$i)
+  <small><a href=#textarea$i onclick=document.forms["replyform"].reply$i.value="">buidar</a>
+  !if $(help$i)!=$empty
+   &nbsp;
+   !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i ajuda
+  !endif
+  </small>
+  <br>
+  <textarea name=reply$i cols=65 rows=10
+  !if $(type$i) iswordof matrix
+   wrap="off"
+  !endif
+  >$val
+</textarea> <p>
+ !next i
+!endif
+<center>
+<input type=submit value="Desar">
+&nbsp;
+!href cmd=reply&level=1 Abandonar els canvis
+.
+</center>
+
+</form>
+

@@ -1,0 +1,63 @@
+type=first
+textarea="explain"
+random="a b c d"
+computed="ans"
+
+:Une question numérique avec 4 paramètres aléatoires.
+
+La réponse numérique est calculée en fonction des valeurs aléatoires de 4
+paramètres, suivant différentes formules.
+<p>
+Auteur du modèle : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'entete ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Quatre paramètres}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Premier paramètre \a.
+\real{a=randint(-20..20)}
+
+:Deuxième paramètre \b.
+\real{b=randint(-20..20)}
+
+:Troisième paramètre \c.
+\real{c=randint(-20..20)}
+
+:Quatrième paramètre \d.
+\real{d=randint(-20..20)}
+
+:La bonne réponse calculée.
+Toutes les fonctions usuelles sont reconnues. On utilise \a, \b, \c, \d pour
+désigner les paramètres aléatoires définis en haut.
+\real{ans=(\a)*(\d) - (\b)*(\c)}
+
+:Le texte qui explique ce qu'il faut faire.
+Notons que la syntaxe \(...) fait afficher une formule mathématique comme il
+faut.
+$embraced_randitem
+\text{explain=
+Calculez le déterminant de la matrice \([\a,\b;\c,\d]).
+}
+
+:%% Calculs à ne pas modifier
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+\statement{\explain
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+
+\answer{Ma réponse}{\ans}{type=number}
+
