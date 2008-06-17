@@ -1,11 +1,13 @@
 
 !if ~ notin $mod
- <b>Attentie</b>. Deze module heeft een "oud type" naam :<tt>$mod</tt>".
- Een
- !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod opwaardering
- wordt aanbevolen.
+ <b>Attentie</b>. Deze module heeft een verouderde naam/adres "<tt>$mod</tt>".
+ Een 
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod adres opwaardering
+ wordt sterk aanbevolen.
  <p>
 !endif
+
+!set doctest1=!module category devel/$auth_login/$mod
 
 Uw module 
 <em><font color=blue>$title</em></font> ($description)
@@ -13,6 +15,9 @@ Uw module
 !href cmd=reply&jobreq=index $mod
 </small>
 bevat de onderstaande bestanden.
+!if document isin $doctest1
+ (<i>Voor WIMS-documenten, klik op de link <tt>Document manager</tt></i>.)
+!endif
 
 !set table_cellpadding=1
 !set table_cellspacing=0
@@ -24,11 +29,18 @@ $table_hdtr
   $table_tr
   <td align=left nowrap>$f
   <td align=center nowrap>  
-  !href cmd=reply&jobreq=showfile&fname=$f bekijken
+  !href cmd=reply&jobreq=showfile&fname=$f laat zien
   &nbsp;
   !href cmd=reply&jobreq=edfile&fname=$f bewerken
   &nbsp;
   !href cmd=reply&jobreq=delfile&fname=$f verwijderen
+  !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
+   !set f_=!translate internal / to , in $f
+   !set f_=!item -1 of $f_
+   !set f_=!replace internal .oef.. by in $f_..
+   &nbsp;
+   !href target=wims_test module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
+  !endif
 &nbsp;</td><td align=left>
   !set t_=!translate . to _ in $f
   !set t_=$($t_)
@@ -43,8 +55,11 @@ Voeg een nieuw bestand toe:
 <input size=20 name=fname value=$lastfname>
 <input type=submit value=OK>
 !href cmd=reply&jobreq=binfile Binaire bestanden
-&nbsp;
-!href target=wims_test module=tool/directexec&cmd=new Script tester
+<br>
+Aan te sturen software [pari, maxima Octave SciLab GNUplot...] 
+kunt U desgewenst uit testen met onze 
+!href target=wims_test module=tool/directexec&cmd=new Script
+ tester.
 </form>
 
 !reset fname

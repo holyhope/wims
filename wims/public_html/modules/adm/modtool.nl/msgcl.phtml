@@ -14,7 +14,8 @@
 !endif
 
 :antiwversion
- Uw module vereist WIMS versie WIMS-$w2 ? Deze server is echter versie
+ Uw module vereist WIMS versie WIMS-$w2 ? 
+ Deze server is echter versie
  $wims_version. Graag corrigeren.
 !exit
 
@@ -22,38 +23,40 @@
   Inlogfout. Toegang geweigerd.
 !exit
 
-:badcategory
-!if / isin $w2
- De categorie <tt>$w2</tt> van de opgestuurder module is hier onbekend.
- !set w3=!word 3 to -1 of $wims_read_parm
+:badcategory                                                                                                                               
+ !if / isin $w2                                                                                                                            
+  De zone <tt>$w2</tt> van uw module is hier onbekend.
+  !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
-  Categories actually available in the zone <b><tt>$(w0[1])</tt></b> are:
+  De huidige categorieen in de zone <b><tt>$(w0[1])</tt></b>
+  zijn&nbsp;:
   <p>
   <tt>$w3</tt>
   <p>
- Graag dit voorval melden bij de 
- !mailurl $sysadmin publicatie afdeling
-   if you want to add a new category.
+  Schrijf naar de
+  !mailurl $sysadmin administrator dat U een nieuwe categorie 
+  aan het WIMS systeem wilt toevoegen.
  !else
-  The zone <tt>$w2</tt> of your submitted module is unknown.
-  Please report your problem to the 
-  !mailurl $sysadmin publicatie afdeling
-.
- !endif
-!exit
+ De zone <tt>$w2</tt> van uw module is hier niet bekend.
+ Rapporteer dit probleem aan de
+ !mailurl $sysadmin administator
+ van deze server
+ .                                                                                                                                          
+ !endif                                                                                                                                    
+!exit 
 
 :badhour
- This is not the time to publish a local module!
+    Op dit moment kunt U de module niet publiceren !
  <p>
- Please choose a period when the server is quieter. Avoid publishing
- modules during the following hours:
+ Kies een tijdstip waarop de server wat minder bezet is.
+ Vermijdt publicatie op de volgende tijdstippen: 
  <p>
  $nopublish
 !exit
 
 :badlang
  Helaas,  maar de taal <tt>$w2</tt> bestaat nog niet in WIMS.
- Iemand zal eerst WIMS moeten vertalen naar deze taal, voor dat u deze modules kunt opsturen.
+ Iemand zal eerst WIMS moeten vertalen in taal, voor dat u deze modules kunt opsturen.
 !exit
 
 :badname
@@ -65,11 +68,11 @@
 !exit
 
 :badtype
- Verkeerde module gestuurd:
+ Een verkeerde module gestuurd:
  !if $w2=new
-  uw module is niet nieuw
+  Uw module is niet nieuw.
  !else
-  u kunt geen niet-bestaande modules veranderen.
+  U kunt geen niet-bestaande modules veranderen.
  !endif
  Hebt U soms een verkeerd adres van module gebruikt?
 !exit

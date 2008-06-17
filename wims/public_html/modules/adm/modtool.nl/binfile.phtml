@@ -4,30 +4,30 @@
 !set wims_form_method=file
 !form reply
 <input type=hidden name=bin_job value=deposit>
-Deposit a binary file:
+Upload een "binair" bestand&nbsp;
 !formselect bin_dir list $dir
  / <input type=file name=wims_deposit size=30>
-<input type=submit value=Send>
+<input type=submit value=Opsturen>
 </form> <p>
 
 !if $bcnt>0
  $table_header
- <caption>Existing binary files</caption>
- $table_hdtr<th>Name</th><th>&nbsp;</th><th>&nbsp;&nbsp;Size&nbsp;&nbsp;</th></tr>
+ <caption>Reeds aanwezige "binaire" bestanden</caption>
+ $table_hdtr<th>Naam</th><th>&nbsp;</th><th>&nbsp;&nbsp;Grootte&nbsp;&nbsp;</th></tr>
  !for i=1 to $bcnt
   !set l=!line $i of $bfiles
   !distribute items $l into n_,s_
   $table_tr
   <td><tt>$n_</tt></td> <td>&nbsp;<small>
-  <a target=wims_extern href="$devdir/$mod/$n_">See</a>&nbsp;
-  !href cmd=reply&bin_job=erase&fname=$n_ Erase
+  <a target=wims_extern href="$devdir/$mod/$n_">Laat zien</a>&nbsp;
+  !href cmd=reply&bin_job=erase&fname=$n_ Verwijderen
   </small>&nbsp;</td>
   <td align=center>$s_</td>
   </tr>
  !next i
  $table_end
 !else
- No existing binary file in the module.
+ Deze module bevat geen andere dan tekst/code bestanden.
 !endif
 
 <p>
