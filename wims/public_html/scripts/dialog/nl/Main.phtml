@@ -27,10 +27,10 @@ van een software fout.
 
 !if $status=waiting
  !if $error!=$empty
-  !read proc/msg.phtml
+  !read dialog/msg.phtml
   <p><hr width=50%> <p>
  !endif
- !read proc/form.phtml
+ !read dialog/form.phtml
  <p>
  !if $hint!=$empty and $givehint>0
   !href cmd=hint Hint
@@ -62,24 +62,22 @@ van een software fout.
   Je hebt de serie van $qnum oefeningen afgesloten, met een eindresultaat
    $score uit 10.
    !ifval $score>9.8
-    Heel goed!!!!
+    Heel goed !
    !endif
    <p>
-   !href $renewlink Een nieuwe sessie 
+   !href exo_Again
 .
    !if $wims_sheet=$empty
-    !href module=$module&cmd=intro&special_parm=$wims_intro_parm Verander de moeilijkheids graad
-    
+    !href exo_Intro
 .
    !endif
   !else
   Je hebt een resultaat van $score uit 10 behaald 
-
    !ifval $score>9.8
-    Fantastisch!, dit gaat dus prima
+    Fantastisch!
    !endif
    <p>
-   !href $renewlink Opnieuw
+   !href exo_Again
 .
    !if $wims_sheet=$empty and $oef_test!=yes
     !href exo_Intro
