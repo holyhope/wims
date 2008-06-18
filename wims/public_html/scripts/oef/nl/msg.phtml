@@ -1,10 +1,9 @@
-
 !set wims_module_error=error: $error
 
 <b>Fout.</b>
 
 !if empty_out iswordof $error
-    Je moet je antwoord even veranderen: je opgestuurde code geeft geen output.
+    U moet het antwoord even veranderen: de opgestuurde code geeft geen output.
  !if $m_reply_err!=$empty
   <pre><font color=red>$m_reply_err</font></pre>
  !endif
@@ -12,14 +11,14 @@
 !endif
 
 !if empty_data iswordof $error
-Je hebt een onvolledig antwoord ingevuld. Gaarne compleet ingevuld inleveren 
+U heeft een onvolledig antwoord ingevuld.
+<br>Gaarne compleet ingevuld inleveren 
  !exit
 !endif
 
 !if bad_data iswordof $error
- Ik ben er niet in geslaagd je opgestuurde antwoord te controleren.<br>
- Misschien een typefoutje?
- 
+ Ik ben er niet in geslaagd het opgestuurde antwoord te controleren.<br>
+ Misschien een typefoutje? 
  !exit
 !endif
 
@@ -32,35 +31,36 @@ Je hebt al eens een antwoord ingeleverd op deze vraag !<br>
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  Je opgestuurde code bevat de term: <tt>$illegal_name</tt> en deze is niet toegestaan.<br>
+  De opgestuurde code bevat de term: <tt>$illegal_name</tt> en deze is niet toegestaan.<br>
   Corrigeer dit even.
   !exit
  !endif
  !if lengthoverflow iswordof $test
-    De code die je hebt opgestuurd is langer dan is toegestaan.<br>
-    Dit moet je herschrijven.
+    De opgestuurde code is meer dan is toegestaan.<br>
+    Dit moet worden herschreven.
   !exit
  !endif
- jou antwoord  <p><center>
+ Het  antwoord  <p><center>
  <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   is onbegrijpelijk: het woord <font color=red>$w</font>
-  staat in geen enkele relatie met het gestelde probleem.Graag corrigeren
+  staat in geen enkele relatie met het gestelde probleem.<br>
+  Graag corrigeren
   !exit
  !endif
  !if nocompute iswordof $test
- is niet toegestaan; de berekeningen moet jezelf uitvoeren, en de uitkomst daarvan moet je opsturen.
+ is niet toegestaan.<br>
+ Berekeningen moeten worden uitvoerd, en de uitkomst daarvan mag worden opstuurd.
   !exit
  !endif
  !if badform iswordof $test
- Is helaas niet genoteerd zoals voorgeschreven was.
+ Is helaas niet genoteerd zoals voorgeschreven was.<br>
  Verbeter de schrijfwijze en stuur dan opnieuw op.
   !exit
  !endif
  !if notunit iswordof $test
- dat is alleen een getal, ik verwacht eigenlijk ook de passende eenheid.
- 
+ dat is alleen een getal, ik verwacht ook de bijpassende eenheid.
   !exit
  !endif
  onbegrijpelijk...<br>
@@ -80,13 +80,12 @@ Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord 
  !else
   schrijf naar de maker van deze oefening
  !endif
- als je deze bug wilt melden
+ als je deze fout wilt melden
  !exit
 !endif
 
 !if too_many_print iswordof $error
 Je hebt te veel verzoeken tot printbare versies ingediend  
-
  !exit
 !endif
 
