@@ -59,36 +59,6 @@ ldap_cnt=!linecnt $ldap_search
 
 !next i
 
-!if $auth_test=OK
-  auth_test= $auth_real_login
-!endif
-
-!debug $auth_real_login  $auth_test \
-ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'\
-$ldap_search
 
 auth_error=$wims_exec_error
 wims_exec_error=
-
-
-!!!for i=1 to $ldap_cnt
-!! l=!line $i of $ldap_search
-!! field=!word 1 of $l	
-!! !if $field iswordof supannAliasLogin:
-!!  auth_real_login=!word 2 of $l
-!! !endif
-!! !if $l issametext result: 0 Success
-!!  auth_test=OK
-!! !endif
-!!!next i
-!!!if $auth_real_login=$empty and $auth_test=OK
-!! ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id'
-!! ldap_cnt=!linecnt $ldap_search
-!! !for i=1 to $ldap_cnt
-!!  l=!line $i of $ldap_search
-!!  field=!word 1 of $l	 
-!!  !if $field iswordof supannAliasLogin:
-!!   auth_real_login=!word 2 of $l
-!!  !endif
-!! !next i
-!!!endif
