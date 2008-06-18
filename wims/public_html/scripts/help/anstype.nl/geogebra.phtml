@@ -1,0 +1,179 @@
+<b>Dynamische geometrie</b>
+(naam : <tt>geogebra</tt>)
+
+Une applet de géométrie dynamique GeoGebra est affichée
+De applet GeoGebra wordt getoond.
+De leerling moet een vastgesteld aantal objecten
+(punten, rechten,cirkels enz.).
+Dit antwoordtype werkt alleen met het commando 
+<tt>\embed</tt>
+<p>
+Het goede antwoord moet aangegeven worden met een matrix.
+Elke rij moet instructies bevatten in de onderstaande vorm
+(<b>f</b> voor formeel, <b>n</b> voor numeriek)
+<pre>
+n,"numerieke conditie ", tekst
+f,"formele conditie",tekst
+n,"numerieke-formele conditie",tekst
+</pre>
+De tekst wordt getoond in de analyse van het leerling antwoord.
+Als er geen text wordt vermeld, wordt per default de tekst opgebouw uit de conditie zelf.
+Als de tekst in de matrix <tt>hidden</tt> is, wordt geen tekst uit de conditie getoond.
+
+<ul>
+    <li>
+	<tt>"formele conditie"</tt> : 
+	De vereiste type ojecten en hun naam moet voldoen aan de geldende regels (zie voor de syntax & nomenclatuur 
+	de <a href="http://www.geogebra.org/help/docuen">GeoGebra</a> documentatie).<br>
+	Het is verstandig de <b>internationale [engelse] benaming</b> voor de objecten te gebruiken.
+	Als de naam niet correct is, wordt het type object wel door de OEF herkend, en worden er strafpunten gegeven.
+	<small>
+	    Als de opdracht is een cirkel <tt>c</tt> met middelpunt <tt>M</tt> en straal 5 te tekenen, en de leerling
+	    stuurt een "tekening" op met cirkel <tt>d</tt> met middelpunt <tt>M</tt> en staal 5 , wordt een strafpunt
+	    gegeven voor de verkeerde cirkel naam.
+	</small><br>
+	Het is dus verstandig de naam van het object vast te leggen, ook in de numerieke condities.
+	Er worden altijd enkele extra tests uitgevoerd; bijvoorbeeld als de conditie
+	luidt <tt>A=center[c]</tt>, controleert de WIMS software ook of de leering heeft geantwoord met iets als 
+	<tt>c=circle[A,B]</tt>.
+	<p>
+	Enkele voorbeelden : 
+	<pre>
+    	    A=point -> object A is van het type <tt>point</tt>
+	    =circle[D,E] -> object is een <tt>circle</tt> -naam is niet van belang- moet door punt D en E gaan.
+	    c=Cercle[,B] -> object is een <tt>circle</tt> met naam <tt>c</tt> en moet door punt B gaan.
+	    d2=perpendiculair[A,d1] -> dr is een rechte , loodrecht op d1 en door punt A
+	</pre>
+    </li>
+    <li>
+	<tt>"numerieke conditie"</tt> : deze voorwaarden moet worden opgebouwd uit coördinaten van punten , vectoren of vergelijkingen van lijnen, cirkels enz.
+	<ul>
+	    <li><tt>x_A, y_A</tt> :co&ouml;dinaten van een punt met naam <tt>A</tt> of van de vector <tt>A</tt>.</li>
+	    <li><tt>R_c,x_c,y_c</tt> : de cirkel met naam <tt>c</tt>,en radius R_c en middelpunt met co&ouml;dinaten (x_c:y_c)</li>
+	    <li><tt>a_d, b_d, c_d, p_d, m_d</tt> :zijn de coefficienten van de vergelijking van een rechte lijn met naam <tt>d</tt> en vanhet type <tt>ax + by = c</tt>.</li>
+	    <li><tt>v_ob</tt> : de waarde van object  (genaamd "ob") en van het type <tt>segment,function,angle,numeric,text</tt>.</li>
+	    <li><tt>x2_c,y2_c,xy_c,x_c,y_c,cst_c</tt> : de coefficienten van <tt>x^2, y^2, x*y, x,y, 1</tt> curve <tt>c</tt>.</li>
+	</ul>
+	U kunt ook vergelijkingen gebruiken, bijvoorbeeld <tt>eq_a:2x+y=3</tt> (of <tt>eq_:2x+y=3</tt>
+	wanneer de naam van de vergelijking/rechte niet van belang is.) om te testen of de getekende lijn <tt>a</tt> overeenkomt met de vergelijking: 2x+y=3 .
+	<p>
+	<b>Voorbeeld</b> : <tt>x_c>0 && y_c>0 & R_c<4</tt> test of de ingeleverde tekening de cirkel met naam <tt>c</tt>
+	een straal &lt; 2 in het eerste Quadrant ligt.<br>
+	<b>let op</b>: Bij numerieke controle van de opgestuurde tekening zijn de namen van de objecten verplicht.
+	<br>
+	In het geval dat de staal gelijk aan 4 moet zijn: <tt>x_c>0 && y_c>0 & R_c<b>==</b>4</tt>
+	<br>
+	In dit geval geldt:<tt>abs(R_c-4)<10^(-6)</tt><br>
+	Verder kan de nauwkeurigheid binnen GeoGebra [xml] zelf worden bepaald door :&lt;decimals val="3"/&gt;
+    </li>
+    <li>
+	<tt>"numerieke-formele conditie"</tt>
+	De syntax is gelijk aan de <tt>formele conditie</tt>
+	maar de analyse volg de numerieke methode met een grotere precisie (default 10<sup>-18</sup>).
+	De naam van de objecten volgt uit de numerieke conditie.
+	<p>
+	Bijvoorbeeld :
+	<pre>
+	n,a=line[A,B] -> de rechte lijn door A en B , wordt numeriek vergeleken
+	</pre>
+    </li>
+</ul>
+
+
+<p>
+Op dit moment is slechts 1 antwoordtype <tt>geogebra</tt> geimplementeerd.
+En hierbij is het commando <tt>embed</tt> verplicht.
+Zoals in:
+<p>
+<tt>\embed{reply1,\option}</tt>
+<p>
+waarbij in </tt>\option</tt> 
+de eerste regel de grootte van de applet wordt bepaald in pixels [width &times; height].
+De andere regels zijn applet parameters, en vullen de <tt>&lt; param name= value= &gt;</tt>-tag.
+<br>
+Bijvoorbeeld
+<pre>
+showToolBar=true
+customToolBar=0|40|2|10
+A = (1,2)
+B = (-1,2)
+a = Droite[A,B]
+setFixed('A',true)
+setFixed('B',true)
+setAxesVisible(false,false)
+</pre>
+mogelijke opties :
+<pre>
+showToolBar (default : true)
+showMenuBar (default : false)
+showResetIcon(default : true)
+showToolBarHelp(default : true)
+enableRightClick(default : true)
+showAlgebraInput(default : false)
+customToolBar
+file
+</pre>
+Mogelijke commando's:
+<pre>
+evalCommand setValue setco&ouml;ds setColor setVisible setLabelVisible setLabelStyle 
+setFixed setTrace setAxesVisible setGridVisible setco&ouml;dSystem
+</pre>
+<a href="http://www.geogebra.org/source/program/applet/geogebra_applet_javascript.html">Detail uitleg</a> over xml,applet_params en javascript interface.
+<p>
+<!--- no idea what this all means 
+will try later to figure out
+-->
+De variabele <tt>\reply</tt><i>n</i> of <i>n</i> est le numéro du champ de réponse est formée
+de plusieurs lignes. La première ligne donne le nombre d'objets. Les lignes suivantes
+contiennent la définition de chaque objet (une ligne par objet), d'abord formellement
+si cela est possible, puis numériquement.
+</p>
+
+<p>La variable <tt>\sc_reply</tt><i>n</i> contient sur la première ligne : 0 (mauvaise réponse),
+0.5 (erreur de nom seulement) ou 1 (bonne réponse);
+sur les lignes suivantes, le même détail (0, 0.5 ou 1) pour chaque ligne de la bonne réponse
+</p>
+
+<p><b>Opties</b> :
+<ul>
+<li><tt>max</tt> is het maximum aantal objecten dat gemaakt mag worden.(default : 10)
+</li><li><tt>precision</tt> : de absolute precisie ;het aantal decimalen waarmee numerieke antwoorden worden vergeleken. (default : 18)
+</li><li><tt>idontknow</tt> (<tt>yes</tt> of <tt>no</tt> (default : <tt>no</tt>). 
+Bij <tt>yes</tt> wordt een knop "geen idee" getoond , naast de knop "Opsturen". 
+</li><li><tt>extra</tt> (<tt>yes</tt> of <tt>no</tt> (default : <tt>no</tt>).
+autorise les objets supplémentaires (pas de pénalisation du score s'il y a plus 
+d'objets construits dans l'applet qu'il n'y a de <i>conditions formelles</i> dans la bonne réponse.)
+</li><li><tt>output</tt> : mogelijke waarden <tt>coord</tt> (default), 
+<tt>formal</tt>, <tt>nothing</tt>.
+La différence se trouve dans la manière dont les objets construits par l'utilisateur
+sont réaffichés dans l'analyse de la réponse :
+<ul><li><tt>co&ouml;d</tt> : les co&ouml;données des objets sont affichés</li>
+<li><tt>formal</tt> : les relations formelles sont affichées si elles existent</li>
+<li><tt>nothing</tt> : aucun affichage</li>
+</ul>
+</li><li><tt>weights</tt> (par défaut, 1&0.2&1) le score final de la construction est
+la moyenne pondérée de 3 scores dont on peut ici préciser les coefficients
+(séparés par des "&"). Ces 3 scores sont respectivement le score des "tests formels" (f),
+le score des noms des objets demandés, le score des "tests numériques"  (n).
+</li></ul>
+
+<p><b>Algemene opmerkingen</b> :
+<ul>
+<li>
+De applet GeoGebra is geinstalleerd op de server, in de directory
+<tt>public_html/java/geogebra3</tt>.
+Voor oefeningen met applets moet Sun Java worden geinstalleerd op de lokale computer.<br>
+Het pakket GeoGebra vergt erg veel van het geheugen en processor: laat de applet altijd eerst goed laden.
+</li>
+<li>
+Alle objecten die beginnen met de naam  "My_" worden niet met de tekening meegestuurd, en dus ook niet door WIMS geanalyseerd.
+</li>
+<li>
+De hoeken zijn per default in graden.
+</li><li>
+Een functie <tt>f</tt> heeft de naam 
+<tt>f(x)</tt>.
+We moeten iets als  <tt>f(x)=sin(x)</tt> invoeren.
+</li>
+</ul>
+
