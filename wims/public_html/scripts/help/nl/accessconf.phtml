@@ -1,0 +1,52 @@
+<center>WIMS toegangs beleid</center>
+<p>
+
+Dit kan meerdere regels bevatten, en wordt regel voor regel ingelezen.
+De beperkingen gelden niet voor de administatie modules.
+Regels die beginnen met een  `<tt>#</tt>' worden genegeerd [commentaar].
+<p>
+Elke regel is in het formaat <tt>[toegangs condities : host conditions]</tt>.
+<p>
+De <tt>[toegangs condities]<tt> is een lijst met sleutelwoorden.
+Meerdere "keyword" worden ge_AND.
+Elk keyword kan eventueel voor afgegaan worden door <tt>non</tt>. 
+De beschikbare keywords zijn:
+<p><center><table border=2>
+<tr><th>keyword<th>betekenis
+<tr><td>class<td>Voor het inloggen in een virtuele klas.
+<tr><td>com<td>De opgevraagde module valt onder de publiek bereikbare algemene modules.
+<tr><td>document<td>De opgevraagde module is een WIMS document.
+<tr><td>exercise<td>De opgevraagde module is een WIMS oefening.
+<tr><td>hint<td>Er wordt een hint verzocht.
+<tr><td>local<td>De opgevraagde module valt onder lokaal geinstalleerde modules.
+<tr><td>recreation<td>De opgevraagde module is van het type "ontspanning".
+<tr><td>tool<td>De verzochte module is van het type "gereedschap" of popup calculators.
+</table></center> 
+<p>
+
+De <tt>[host conditions]</tt> kan elke gangbare host_definitie zijn,
+eventuel aangevuld met een tijds_restrictie , zoals deze ook voor werkbladen mogelijk is.
+Als het eerste karakter van zo'n host conditie een ``<tt>!</tt>'' is , en
+de host of tijd komt overeen, dan wordt de toegang geblokkeerd.
+In alle andere gevallen is de klas dan open.
+
+<p><hr> <p>
+
+!read help/hosts.phtml
+
+<p><hr> <p>
+Enkele voorbeelden:
+<p>
+# alle computers uit het sub domein 134.59.102.* krijgen geen toegang tot de "tools"
+<br><tt>tool:! 134.59.102.</tt>
+<p>
+# alle anonieme computers afkomstig van het domein www.stmichaelscollege.nl worden geblokkeerd om vrije oefeningen te gebruiken
+<br><tt>exercise nonclass:! www.stmichaelscollege.nl </tt>
+<p>
+# computers afkomstig van de provider zonnet.nl mogen geen wiskundige documenten opvragen
+<br><tt>doc nonclass:! .zonnet.nl</tt>
+<p>
+# Leerlingen van Schaersvoorde mogen op 1 jan. 2009 niet werken met WIMS
+<br><tt>class: ! .schaersvoorde.nl >20090101.00:00 <20090101.23:59</tt>
+<p>
+
