@@ -14,10 +14,11 @@ wims_helper=chapter=3&open=3_creat#creat
  regpolicy0=!word 1 of $regpass0
  regpolicy2=!word 1 of $regpass2
  regpolicy4=!word 1 of $regpass4
- !distribute words $regpass0 into regpolicy, regpasswd
+ !distribute words $regpass0 into regpolicy, regpasswd,regpassmail
  !if $wims_user=$empty and $cltype>0 and $regpolicy notwordof deny file
-  !distribute words $(regpass$cltype) into regpolicy, regpasswd
+  !distribute words $(regpass$cltype) into regpolicy, regpasswd,regpassmail
  !endif
+ regpassmail=!replace internal | by , in $regpassmail
  !if $wims_ismanager<2
   alltypes=0
   !if $regpolicy2 notwordof deny file
@@ -64,6 +65,10 @@ wims_helper=chapter=3&open=3_creat#creat
  r_code=$wims_superclass/$codee
  toomany=no
 !endif		$wims_user=$empty?
+
+!if $adresse1!=$empty and $regpolicy=passwd
+ !read mail2.proc
+!endif
 
 !if $regpolicy=passwd and $regpasswd=$empty
  regpolicy=all

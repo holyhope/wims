@@ -24,6 +24,10 @@ Création de classe virtuelle
 !endif
 
 !if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size=+1><center>Le mot de passe a &eacute;t&eacute; envoy&eacute; &agrave; l'adresse &eacute;lectronique $sendmail.</center></font>
+  <p>
+ !endif
  !if $regpass!=$empty
   Désolé, votre mot de passe n'est pas correct. Veuillez réessayer.
  !else
@@ -41,6 +45,25 @@ Création de classe virtuelle
  !mailurl $wims_site_manager gestionnaire\
 Mot de passe pour la création de classes virtuelles
  de ce site WIMS.
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  Vous pouvez &eacute;galement recevoir le mot de passe par message &eacute;lectronique en saisissant votre adresse &eacute;lectronique ci-contre :
+  <input type="text" name="adresse1" value="$adresse1" size="20">
+  <input type=hidden name=step value=0>
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size=+1>@$regpassmail</font>
+   <input type=hidden name="adresse2" value="$regpassmail">
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Recevoir">
+ </form>
+ !else
+  !reset sendmail
+ !endif
  !set restart=no
  !exit
 !endif
