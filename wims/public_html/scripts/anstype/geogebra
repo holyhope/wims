@@ -191,7 +191,7 @@ yourlist$output=
    ob=$($type)
    !if $(M_objet[2]) issametext segment   
      obcnt=!itemcnt $ob1
-     !if $$obcnt>=5   
+     !if $obcnt>=5
        ob=     
      !endif 
    !endif
@@ -331,6 +331,7 @@ js_fix=
 !next p
 !!debug $yourggb
 yourggb1=$yourggb
+
 ###traitement verbeux des données
 ##on enlève les lignes en trop pour les polygones : segment avec 3 arguments
 ## qui font boguer geogebra
@@ -346,7 +347,7 @@ yourggb=
   type=!getopt $type in $typelangue
   !if $type issametext segment   
     obcnt=!itemcnt $ob1
-    !if $obcnt>=5   
+    !if $obcnt>5   
        ob=
     !endif
   !endif
@@ -1068,7 +1069,7 @@ m_reply$i=$yourggb
 !if $output=nothing
   reply__$i=&nbsp;
 !else
-  reply__$i=$w35: \
+  reply__$i=$w35:\
 <pre>$(yourlistnew$output)\
 </pre>\
 <hr width=50%>\
