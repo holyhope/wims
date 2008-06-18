@@ -9,6 +9,31 @@
 !read adm/class/authchars
 auth_user=!word 1 of $auth_user
 auth_password=!word 1 of $auth_password
+
+# new variables to keep original data (used only in ldap authentication)
+auth_user_connection=$auth_user
+auth_password_connection=$auth_password
+
+##### LDAP connection - part 1 #####
+!default sclass=$class
+
+auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
+
+!if $auth_user notsametext supervisor and $auth_method iswordof ldap
+ authdef=wimshome/log/classes/$sclass/.def
+ 
+ # don't use auth_user and auth_password, some characters are unvailable
+ !readproc adm/class/auth-$auth_method $auth_user_connection,$auth_password_connection
+
+ # if ldap connection is OK, replace auth_user by supannAliasLogin (ie auth_test)
+ !if ERROR notwordof $auth_test
+  auth_user=$auth_test
+  auth_test=OK
+ !endif
+!endif
+##### end of LDAP connection - part 1 #####
+# now we can run the script
+
 auth_user=!translate internal . to @ in $auth_user
 auth_user=!text select $char_login in $auth_user
 auth_password=!text select $char_passwd in $auth_password
@@ -52,17 +77,14 @@ sclass=!defof class_superclass in wimshome/log/classes/$class/.def
 # !endif
 !endif
 
-!default sclass=$class
-auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
+
+##### final test of LDAP connection #####
+# finaly, we must check if user is allowed in class
 exist_check=!defof user_exists in $userdef
-!if $auth_user notsametext supervisor and $exist_check issametext yes \
-	and $auth_method iswordof ldap
- authdef=wimshome/log/classes/$sclass/.def
- !readproc adm/class/auth-$auth_method $auth_user,$auth_password
- !if OK iswordof $auth_test
-  !goto auth_ok
- !endif
+!if $exist_check issametext yes and OK iswordof $auth_test and $auth_method iswordof ldap
+ !goto auth_ok
 !endif
+##### end of final test of LDAP connection #####
 
 pass=!passcrypt $pass
 !if $pass=$empty

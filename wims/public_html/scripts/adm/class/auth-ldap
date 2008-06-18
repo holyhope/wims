@@ -42,8 +42,6 @@ ldap_login=!defof class_ldap_login in $authdef
    !exit
 !endif
 
-##sleep 600
-##kill -9 `pidof monprog`
 ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
 
 ldap_cnt=!linecnt $ldap_search
@@ -60,13 +58,14 @@ ldap_cnt=!linecnt $ldap_search
  !endif
 
 !next i
+
 !if $auth_test=OK
   auth_test= $auth_real_login
 !endif
 
-!!debug $auth_real_login  $auth_test \
-!!ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'\
-!!$ldap_search
+!debug $auth_real_login  $auth_test \
+ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'\
+$ldap_search
 
 auth_error=$wims_exec_error
 wims_exec_error=

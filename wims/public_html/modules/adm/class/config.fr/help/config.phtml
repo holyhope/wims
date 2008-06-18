@@ -1,7 +1,7 @@
 
 !set sp2=$special_parm2
 !bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
-	bgcolor,homepage,bgimg,theme,css,logo,lock,exolog,examlog,examshow,option\
+	bgcolor,homepage,bgimg,theme,css,logo,lock,exolog,examlog,examshow,option,authtype\
 	default $
 
 !if $sp2=$empty
@@ -249,5 +249,22 @@ risque de dépasser le quota du disque.
 :examshow
 Dans le cas où cette option est mise sur <tt>Non</tt>, les élèves ne peuvent
 pas revoir les enregistrements d'examens. Seul l'enseignant le peut.
+
+:authtype
+You can ever use some ldap authentification or the wims
+authentification. In case where ldap authentification doesn't 
+succeed, 
+the internal authentification of wims is tried.
+<p>
+Example of parameters for an ldap uthentification:
+<pre>
+ldap_host=ldap.u-psud.fr
+ldap_port=389
+ldap_version=3
+ldap_base=ou=people,dc=u-psud,dc=fr
+ldap_branch=ou=people,dc=u-psud,dc=fr
+ldap_uid=uid
+ldap_login=supannAliasLogin
+</pre>
 
 
