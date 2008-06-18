@@ -1,0 +1,99 @@
+
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Audio insertion
+slib_parms=3\
+,mot ou groupe de mots\
+,language or list of shtooka packages where to search as words\
+, tag= (only one) can be alphaidx text or for some packages baseform, \
+coll_section (check it if you take something else tha alphaidx or text\
+other option as height etc ... not implemented for the moment
+slib_author=Bernadette Perrin-Riou
+slib_out= Look for the word in the shtooka basis and give the audio code for insertion.\
+If don't find, give the imagedir adresse (don't check if it exists)
+slib_comment=by default height=10 width=40 autostart=false loop=false
+slib_example=manger,fra\
+,swe
+
+!exit
+
+
+:proc
+!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
+ !exit
+!endif
+
+!distribute items $wims_read_parm into slib_word,slib_packs,slib_option
+
+!default slib_option=height=60 width=40 autostart=true loop=false
+!reset slib_son
+slib_tag = !getopt tag in $slib_option
+slib_tag=!word 1 of $slib_tag
+!default slib_tag=text
+slib_packs= !declosing $slib_packs
+slib_packs=!words2items $slib_packs
+slib_pcnt=!itemcnt $slib_packs
+slib_audio=
+!for slib_pa=1 to $slib_pcnt
+  slib_pack= $(slib_packs[$slib_pa])
+  slib_ch=!charcnt $slib_pack
+
+  !if $slib_ch=3
+   slib_adress=!nospace $slib_pack _ $slib_tag _keys
+   slib_au=!lookup $slib_word in data/swac/$(slib_adress)
+   !if $slib_word=
+     slib_au=!randrecord data/swac/$(slib_pack)_keys
+   !endif
+  !else
+   slib_adress=$slib_pack/sw_$(slib_tag)_keys
+   slib_au=!lookup $slib_word in data/swac/$(slib_adress)
+   slib_au=!nospace $slib_au
+   slib_au=!makelist $slib_pack/x for x in $slib_au
+   !if $slib_word=
+     slib_au=!randrecord  data/swac/$slib_pack/sw_index_keys
+   !endif
+  !endif
+  slib_audio=!append item $slib_au to $slib_audio
+!next
+slib_son=!randitem $slib_audio
+slib_w=$slib_son
+
+slib_son=!replace internal / by , in $slib_son
+slib_s=!itemcnt $slib_son
+!if $slib_s >= 1
+   slib_version=!record 0 of $(slib_son[1])/version 
+   slib_word=!lookup $(slib_son[-1]) in data/swac/$(slib_son[1..$[$slib_s-1]])/sw_tags
+   slib_son=$(slib_son[1..$[$slib_s-1]])/mp3/$(slib_son[-1])
+   !if $[$slib_version]=0
+     slib_son=http://packs.shtooka.net/$slib_son
+   !else
+     slib_son=data/swac/$slib_son
+   !endif
+!else
+   slib_son=
+!endif
+!if $slib_son!=
+ !if rename iswordof $slib_option2 
+   slib_son=!rename $slib_son
+ !endif
+!else
+ slib_son=!singlespace $slib_word
+ slib_son=!replace internal $ $ by _ in $slib_son
+ slib_son=!nospace $slib_son
+ slib_son=$imagedir/$slib_son.mp3
+!endif
+
+slib_out =<embed src=$slib_son $slib_option><noembed><bgsound src=$slib_son></noembed></embed>\
+ 
+ 
+!read slib/media/player $slib_son
+
+slib_wo=!getopt swac_text in $slib_word
+!if $slib_wo=
+  slib_out=$slib_out,$slib_word
+!else
+ slib_out=$slib_out,$slib_wo,\
+ $slib_word
+!endif
+
