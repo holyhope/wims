@@ -23,7 +23,7 @@ $form_titlename:
  !formselect alevel list $levellist prompt $levelnames
 !endif
 $table_tr<td align=right>
-Supervisor van de $form_classname<sup>
+Verantwoordelijke van de $form_classname<sup>
 !href cmd=help&special_parm=supervisor help
 </sup>:
 <td>
@@ -41,10 +41,9 @@ Supervisor van de $form_classname<sup>
  Automatische installatie van cursussen <sup>
  !href cmd=help&special_parm=progopt help
 </sup>:
- <br><small>to all classes in the level</small>
+ <br><small>naar alle klasses in het leerniveau</small>
  <td>
- !formselect progstyle2 list all,select prompt\
- ja,nee
+ !formselect progstyle2 list all,select prompt ja,nee
 !endif
 !if $form_pass=yes
  $table_tr<td align=right>
@@ -72,6 +71,14 @@ Supervisor wachtwoord<sup>
  Herhaal het supervisor wachtwoord:
  <td><input type=password size=30 name=passs2 value="">
 !endif
+$table_tr<td align=right>Postes surs<sup>                                                                                                  
+!href cmd=help&special_parm=sechost aide                                                                                                   
+</sup>:                                                                                                                                    
+!set sechost=$class_secure                                                                                                                 
+!default sechost=all                                                                                                                       
+<td><input type=text size=30 name=sechost value="$sechost">                                                                                
+!reset sechost                                                                                                                             
+</tr>
 $table_tr<td align=center colspan=2>
 <input type=submit name=confirm value="$form_OK">
 !if $form_cancel!=$empty

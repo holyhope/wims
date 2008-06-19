@@ -1,0 +1,33 @@
+
+!readproc jobs/supervisors.proc
+
+!if $cnt1>0
+ <p> $table_header
+ <caption wrap="off">Ander toegangs management</caption>
+ $table_hdtr
+ <th>Account<th>Naam<th>Actie
+ </tr>
+ !for i=1 to $cnt1
+  !set l=!line $(list1[$i]) of $teacherlist
+  !distribute items $l into last,first,log
+  $table_tr
+  <td><tt>$log</tt></td>
+  <td>$first $last</td>
+  <td>
+  !href cmd=reply&actype=del&more=$log Verwijderen
+  </td></tr>
+ !next i
+ $table_end
+!endif
+
+!if $cnt2>0
+ <p> <center>
+ !form reply
+ <input type=hidden name=actype value="add">
+ <input type=submit value="Toevoegen">
+ andere topics :
+ !formselect more list $list2 prompt $prompt
+ </center> </form>
+!endif
+
+!reset more actype

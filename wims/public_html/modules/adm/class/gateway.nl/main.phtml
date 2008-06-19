@@ -1,5 +1,6 @@
 !header
 !readproc names
+!set name_prog=$name_program
 !if $addline$thiscode$thistitle!=$empty
  <center><h3>
  !set l=!linecnt $addline
@@ -38,6 +39,9 @@
 !endif
 
 !read jobs/$job.phtml
+!if $job iswordof first level prog class course icourse
+ !read jobs/supervisors.phtml
+!endif
 !tail
 
 !reset confirm cancel del cparent more\

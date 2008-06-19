@@ -1,11 +1,10 @@
 
-!set form_OK=Verstuur deze veranderingen
+!set form_OK=Ok en versturen
 !set form_titlename=Titel
 !set form_caption=Eigenschappen of het programma
 !set title=$class_description
 !set sup=$class_Supervisor
 !read scripts/progform.phtml
-
 <p><center>
 !if $hastest=yes
  Test zone<sup>
@@ -13,13 +12,13 @@
  </sup>:
  !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 bezoek
 . 
- !href cmd=reply&job=deltest verwijder
+ !href cmd=reply&job=deltest verwijderen
 .
 !else
  Dit programma heeft nog geen <em>test zone</em><sup>
  !href cmd=help&special_parm=structure#test help
  </sup>.
- !href cmd=reply&job=addtest Installeer een nieuwe
+ !href cmd=reply&job=addtest Installeer een test zone
 .
 !endif
 </center> <p>
@@ -34,7 +33,7 @@
  <caption>Geistalleerde cursussen<sup>
  !href cmd=help&special_parm=structure#course help
  </sup> in dit programma
- !href cmd=reply&cparent=prog&job=addcourse Voeg&nbsp;een&nbsp;cursus&nbsp;toe
+ !href cmd=reply&cparent=prog&job=addcourse Voeg&nbsp;nog&nbsp;een&nbsp;cursus&nbsp;toe
  </small></caption>
  $table_hdtr
  <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>
@@ -78,7 +77,7 @@
  <caption>Interklas cursussen<sup>
  !href cmd=help&special_parm=structure#icourse help
  </sup> in dit programma
- !href cmd=reply&cparent=prog&job=addicourse Voeg&nbsp;er&nbsp;een&nbsp;aan&nbsp;toe
+ !href cmd=reply&cparent=prog&job=addicourse Voeg&nbsp;toe
  </small></caption>
  $table_hdtr
  <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>
@@ -109,6 +108,20 @@
  !next i
  $table_end
 !endif
+
+!if $class_recshare!=$empty
+ <p>
+ !if $class_recshare=main
+ Het lesmateriaal van dit lesprogramma wordt gedeeld door andere lesprogramma's in dit instituut.
+ !else
+  !set l_=!translate / to , in $class_recshare
+  !set shareprog=!defof class_description in $classdir1/$class_recshare/.def
+  !set sharelevel=!defof class_description in $classdir1/$(l_[1])/.def
+  Dit lesprogramma deelt lesmateriaal van het programma
+  <em>$shareprog</em> uit leerniveau <em>$sharelevel</em>
+ !endif
+!endif
+
 
 !reset title
 
