@@ -11,13 +11,15 @@
 !! Put every definition in ONE LINE!!
 !let module_author	=XIAO, Gang
 !let module_address	=xiao@unice.fr
-!let module_title	=Sites Miroirs Publics
-!let module_description	=liste de sites WIMS publiquement accessibles dans le monde.
+!let module_translator  =Manel Querol
+!let module_translator_address=mquerol@xtec.cat
+!let module_title	=Rèpliques Públiques
+!let module_description	=llista de llocs WIMS accessibles al públic.
 !let module_version	=2.08
 !let module_wims_version=2.08
 
 !! This is English template file
-!let module_language	=fr
+!let module_language	=ca
 
 !!Your copyright policy.
 !!Your page will be included in wims distribution if the word `GNU'
@@ -54,7 +56,7 @@ $wims_html_header
 <font size=-1>à <a href=/>$httpd_HTTP_HOST</a></font> <p>
 $module_title</h1></center> <p>
 
-!set mir=wimshome/public_html/html/mirrors.fr
+!set mir=wimshome/public_html/html/mirrors.ca
 !set thissite=!tolower $httpd_SERVER_NAME
 !set n=!recordcnt $mir
 !set c=
@@ -72,15 +74,13 @@ $ in $l_
 !next i_
 !set n=!itemcnt $c
 !if $n<1
- Ce site WIMS ne maintient pas de liste de sites miroir. Désolé.
+ Aquest lloc WIMS sembla que no té llista de rèpliques. Ho sento.
  <p>
 !else
- Voici les sites WIMS connus pour être ouverts à tout le monde. Si vous utilisez
- WIMS régulièrement dans votre travail, nous suggérons que vous bookmarquiez
- au moins une partie de ces adresses ; ainsi, si votre site préféré
- tombe en panne momentanément, vous pourrez utiliser un de ces sites en remplacement pour votre travail.
+ Aquests són els altres llocs WIMS que sabem que estan oberts al públic. Si utilitzes normalment WIMS a la teva feina, inclou a les teves Adreces d'interès alguna de les següents adreces.
+
  <p>$table_header
- $table_hdtr<th>Site<th>Lieu<th>Pays<th>Langues<br>du site<th>Commentaires
+ $table_hdtr<th>Lloc<th>Localització<th>País<th>Llengües<th>Observacions
  !for i_=1 to $n
   !set j_=!item $i_ of $c
   !set l_=!record $j_ of $mir
@@ -101,16 +101,15 @@ $ in $l_
 !endif
 
 :end
-Si vous avez une installation WIMS et que voulez qu'elle figure dans cette liste, veuillez
-!mailurl xiao@unice.fr m'écrire\
+Si tens un lloc WIMS i vols que aparegui en aquest llistat, sisplau
+!mailurl xiao@unice.fr escriu-me\
 wims mirror
 .
 <p>
-WIMS est un logiciel qui peut être 
-<a href="http://wims.unice.fr/download/wims/">téléchargé</a> gratuitement,
-et s'installe sur Linux.
-Veuillez lire le fichier README dans le répertoire de téléchargement pour
-les détails d'installation de WIMS.
+WIMS és un software que es pot 
+<a href="http://wims.unice.fr/download/wims/">descarregar</a> de franc,
+i s'instal·la sobre Linux.
+Sisplau, llegiu l'arxiu README en el directori de descàrrega per obtenir més informació sobre com instal·lar WIMS.
 
 !tail
 

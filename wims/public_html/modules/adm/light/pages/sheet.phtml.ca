@@ -1,11 +1,13 @@
 !!INDEX
 !let module_author	=XIAO Gang
 !let module_address	=xiao@unice.fr
-!let module_title	=FEUILLES
-!let module_description	=présentation de feuille de travail pour étudiants
+!let module_translator  =Manel Querol
+!let module_translator_address=mquerol@xtec.cat
+!let module_title	=FULLS
+!let module_description	=presentació del full de treball pels estudiants
 !let module_version	=2.22
 !let module_wims_version=2.22
-!let module_language	=fr
+!let module_language	=ca
 !let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
 !let module_category	=adm
 !let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
@@ -42,24 +44,23 @@ $wims_html_header
 
 <hr width=1>
 <center><h3>$wims_classname, $wims_institutionname</h3>
-<hr> <p><h1>Feuille de travail numéro $parm1<br>$sheet_title</h1></center> <p>
+<hr> <p><h1>Full de treball número $parm1<br>$sheet_title</h1></center> <p>
 $sheet_desc<p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
  !set expday=!char 7,8 of $sheet_expiration
  !set expmon=!char 5,6 of $sheet_expiration
  !set expyear=!char 1 to 4 of $sheet_expiration
- !set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
+ !set months=gener,febrer,març,abril,maig,juny,juliol,agost,setembre,octubre,novembre,desembre
  !set expmon=!item $expmon of $months
- Vous pouvez travailler sur cette feuille jusqu'au
+ Pots treballar en aquest full de trebal fins el 
  $expday $expmon $expyear.
  <p>
 !endif
 
 !if $sheet_active=2
- <blink><b><font color=red>Attention</font></b></blink>
- Cette feuille est périmée. Vous pouvez
- encore travailler dessus mais vos notes ne seront plus prises en compte.
+ <blink><b><font color=red>Atenció</font></b></blink>
+ Aquest full ha caducat. Encara hi pots treballar però les qualificacions no seran tingudes en compte.
  <p>
 !endif
 
@@ -71,27 +72,26 @@ $sheet_desc<p>
 
 !if $n=0
  !if $sheet_active=$empty
-  Vous n'êtes pas autorisé à consulter le contenu de cette feuille pour
-  l'instant. Veuillez contacter votre enseignant.
+  De moment no estàs autoritzat per consultar el contingut d'aquest full. Sisplau contacta amb el teu supervisor.
  !else
-  Cette feuille est vide&nbsp;! Rien n'est écrit pour vous à l'intérieur. Peut-être
-  une erreur de manipulation de la part de votre enseignant.
+  Aquest full és vuit&nbsp;! No hi ha res per tu. Potser
+ un error del teu supervisor.
  !endif
 !else
- Devoirs dans cette feuille&nbsp;: (L'enregistrement de notes est
+ Feines d'aquest full&nbsp;: (L'enregistrament de notes està
  !set dd=!getscorestatus sheet=$parm1
  !if $dd=yes
   !if $wims_scorereg!=suspend
-   ouvert, mais vous pouvez
-   !href cmd=resume&parm5=suspend le suspendre
+   activat, però pots
+   !href cmd=resume&parm5=suspend suspendre'l
 .)
   !else
-   suspendu par vous-même.
-   !href cmd=resume&parm5=reopen Le réactiver
+   suspès per tu mateix.
+   !href cmd=resume&parm5=reopen Activar-lo
 .)
   !endif
  !else
-  fermé pour votre connexion.)
+  tancat per a la teva connexió.)
  !endif
  <p><ul>
  !for i=1 to $n
@@ -103,7 +103,7 @@ $sheet_desc<p>
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $require>0
-   <small>$[$got] des $[$require] points obtenus, qualité
+   <small>$[$got] de $[$require] punts obtinguts, qualitat
    $[$mean]/10. </small>
   !endif
  !next i
@@ -112,8 +112,8 @@ $sheet_desc<p>
 
 !if $wims_user=supervisor
 <p>
-!href module=adm/class/sheet&sheet=$parm1 Page de gestion de la feuille
- (pour enseignant).
+!href module=adm/class/sheet&sheet=$parm1 Pàgina de gestió del full
+ (pel supervisor).
 !endif
 <p>
 !tail

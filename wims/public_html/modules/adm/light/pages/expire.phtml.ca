@@ -1,11 +1,13 @@
 !!INDEX
 !let module_author	=XIAO Gang
 !let module_address	=xiao@unice.fr
-!let module_title	=EXPIRATION
-!let module_description	=changer la date d'expiration de la classe.
+!let module_translator  =Manel Querol
+!let module_translator_address=mquerol@xtec.cat
+!let module_title	=CADUCITAT
+!let module_description	=canviar la data de caducitat de la classe.
 !let module_version	=1.10
 !let module_wims_version=1.50
-!let module_language	=fr
+!let module_language	=ca
 !let module_copyright	=&copy; 1998 (<a href=COPYING>GNU GPL</a>)
 !let module_category	=adm
 !let module_level	=E1 E2 E3 E4 E5 E6 H1 H2 H3 H4 H5 H6 U1 U2 U3 U4 G R
@@ -26,15 +28,15 @@ $wims_html_header
 !headmenu
 
 !if $wims_user!=supervisor
- <p>Non, c'est une page à qui vous n'avez pas le droit d'accès.
+ <p>No tens dret a accedir a aquesta pàgina.
  !tail
  !exit
 !endif
 
 <hr width=1>
 <center><h3>$wims_classname, $wims_institutionname</h3>
-<p><h1>Date d'expiration de la classe</h1></center> <p>
-!set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
+<p><h1>Data de caducitat de la classe</h1></center> <p>
+!set months=gener,febrer,març,abril,maig,juny,juliol,agost,setembre,octubre,novembre,decembre
 !set today=!char 1 to 8 of $wims_now
 !set thisyear=!char 1 to 4 of $today
 !set thismonth=!char 5,6 of $today
@@ -71,26 +73,24 @@ $wims_html_header
  !goto old
 !endif
 
-Date d'expiration actuelle&nbsp;: le 
+Data de caducitat actual&nbsp;: 
 $d_
-!item $m_ of $months
+!item $m_ de $months
  $y_.
 
 !form reply
-Nouvelle date d'expiration&nbsp;:
-jour <input size=2 maxlength=2 name=parm3 value=$d_>, mois
+Nova data de caducitat&nbsp;:
+dia <input size=2 maxlength=2 name=parm3 value=$d_>, mes
 !set parm2=$[$m_]
 !formselect parm2 from 1 to 12 prompt $months
-, année
+, any
 !set parm1=$y_
 !formselect parm1 list $thisyear,$[$thisyear+1]
 . <p><center>
-<input type=submit value="Enregistrer le changement">
+<input type=submit value="Desar el canvi">
 </center></form>
-<p>Mettre la date d'aujourd'hui à la date d'expiration entraine la
-fermeture de la classe (qui prendra effet demain matin).
-<p><b>Attention.</b> La validité de la classe ne peut pas dépasser un an
-à partir d'aujourd'hui.
+<p>Posar la data d'avui a la data de caducitat suposa tancar la classe (serà efectiu demà al matí).
+<p><b>Atenció.</b> La validesa de la classe no pot superar un any a partir d'avui.
 
 !tail
 
