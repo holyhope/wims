@@ -2,40 +2,36 @@
 !set name_description=naam van de klas
 !set name_supervisor=naam van de supervisor
 !set name_email=emailadres
-!set name_password=klasse wachtwoord
+!set name_password=aanmeldings wachtwoord
 !set name_passsup=supervisor's wachtwoord
-!set lev_E=Lagere school
-!set lev_H=Middelbare school
-!set lev_U=Universiteit
-!set lv1=!char 1 of $ilevel
-!set lv2=!char 2 of $ilevel
-!set name_level=$(lev_$lv1), leerjaar $lv2
+!set levelid=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R
+!set leveldesc=Lagere school klas 1,Lagere school klas 2,Lagere school klas 3,Lagere school klas 4,Lagere school klas 5,Lagere school klas 6,Middelbare school klas 1,Middelbare school klas 2,Middelbare school klas 3,Middelbare school klas 4,Middelbare school klas 5,Middelbare school klas 6,Universiteit jaar 1,Universiteit jaar 2,Universiteit jaar 3,Universiteit jaar 4,Universiteit jaar 5,Graduate,Research
 
-!set classname=<b><font color=green>$description</font></b>\
- van <b><font color=green>$institution</font></b>
+!set nblevel=19
+!! !itemcnt $levelid
+!set classname=<b><font color=green>$description</font></b> van <b><font color=green>$institution</font></b>
 
 !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
 
 
 !if $Cltype iswordof 2 4
-   !if $Cltype=2
-    !set name_classe=groep  klasses
-    !set name_sup=van de leraar-supervisor
-   !else
-    !set name_classe=instituut
-    !set name_sup=van de supervisor
-   !endif
-     !set name_classes= de $name_classe
-     !set name_classess= een $name_classe
-     !set name_classesss= van de $name_classe
-     !set name_classessss= De $name_classe
- !else
-   !set name_classe=klas
-   !set name_classes=de $name_classe
-   !set name_classess=een $name_classe
-   !set name_classesss= van dee $name_classe
-   !set name_classessss= De $name_classe
-   !set name_sup=van de docent
- !endif
-
+    !if $Cltype=2
+	!set name_classe=digi-school
+	!set name_sup=van de leraar-supervisor
+	!else
+	!set name_classe=digi-hogeschool
+	!set name_sup=van de supervisor
+    !endif
+    !set name_classes=de $name_classe
+    !set name_classess=een $name_classe
+    !set name_classesss=van de $name_classe
+    !set name_classessss=De $name_classe
+!else
+    !set name_classe=klas
+    !set name_classes=de $name_classe
+    !set name_classess=een $name_classe
+    !set name_classesss=van de $name_classe
+    !set name_classessss=De $name_classe
+    !set name_sup=van de docent
+!endif
 
