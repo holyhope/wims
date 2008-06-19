@@ -6,11 +6,10 @@ $wims_html_header
 !read names.phtml
 <center><h1>WIMS op $httpd_HTTP_HOST
 <br>
-Aanmelden bij  $name_classess
+Aanmelden bij $name_classess
 !if $cltype iswordof 2 4 and $classcnt>0
  <br> (alleen voor docenten)
 !endif
-
 </h1></center> <p>
 
 !if $error!=$empty
@@ -21,11 +20,10 @@ Aanmelden bij  $name_classess
 !endif
 
 !if $classcnt=0
-    Helaas , er is geen klas op deze server waarin U zich kunt aanmelden..
+    Helaas , er is nog geen enkele klas op deze server geinstalleerd.
     Probeer het later nog eens...
     !goto end
 !endif
-
 
 !if $class=$empty
     Kies een klas waarby U zich wilt aanmelden
@@ -33,13 +31,12 @@ Aanmelden bij  $name_classess
  $table_header
  !if $ctype=0
   $table_hdtr
-  <th>Naam<th>Docent<th>Niveau<th>taal</th>
-  <th>Beschikbare <br>plaatsen<th>Status
+  <th>Naam</th><th>Docent</th><th>Niveau</th><th>taal</th>
+  <th>Beschikbare plaatsen</th><th>Status</th>
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>Naam<th>Docent<th>Niveau
-  <th>Status
+  <th>Naam</th><th>Docent</th><th>Niveau</th><th>Status</th>
  !endif
  !for cl in $classlist
   !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
@@ -78,7 +75,7 @@ Aanmelden bij  $name_classess
  !next cl
  $table_end <p>
  <b>Opmerking.</b> U kunt zich altijd inschrijven bij de open klassen.<br>
- Vor de aanmelding bij besloten klassen is een klasse wachtwoord vereist.<br>
+ Voor de aanmelding bij besloten klassen is een speciaal <em>aanmeldings wachtwoord</em> vereist.<br>
  Dit wachtwoord is verkrijgbaar bij de docent.
  !goto end1
 !endif class=empty
@@ -118,7 +115,7 @@ Aanmelden bij  $name_classess
  <center> <p>Wachtwoord :
  <input type=password name=classpass>
  <p>
- <input type=submit value="OPSTUREN">
+ <input type=submit value="Opsturen">
  </center></form> <p>
  !if $cltype iswordof 2 4
   <b>Opmerking</b>.
@@ -223,7 +220,7 @@ Aanmelden bij  $name_classess
 
 !if $step=2
  Hallo, $firstn $lastn!<p>
- U bent bezig met de aanmelding en inschrijving als deelnemer
+ U bent bezig met de inschrijving als deelnemer
  !if $Cltype iswordof 2 4
  - docent
  !endif
@@ -239,20 +236,21 @@ Aanmelden bij  $name_classess
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
- <p><input type=submit value="OK en OPSTUREN"></center>
+ <p><input type=submit value="Opsturen"></center>
  </form> <p>
  !goto end1
 !endif
 
 !if $step=3
  !if $wims_user=supervisor
-  De deelnemer <tt>$firstn $lastn </tt> is toegevoegd aan de klas ``<tt>$name_classe</tt>``.
+  De deelnemer $firstn $lastn is toegevoegd aan klas ``$name_classe``.
   !if $wims_supertype=4
    !readproc adm/gateway/transfer $login test
    !if $transfer_test>0
     <p>
     Deze deelnemer heeft misschien al gewerkt in een andere klas.
-    !href module=adm/class/userlist&job=transfer&getuser=$login Zet de activiteiten
+    Zet de zijn/haar
+    !href module=adm/class/userlist&job=transfer&getuser=$login  resultaten
     over naar deze klas.
     <p>
    !endif
@@ -285,7 +283,7 @@ Aanmelden bij  $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
- !href module=adm/class/classes&type=supervisor Lijst van klassen en scholen of instituten 
+ !href module=adm/class/classes&type=supervisor Lijst van klassen ,scholen of instituten 
 .
 !else
  !href module=adm/class/classes&type=participant Lijst van klassen
