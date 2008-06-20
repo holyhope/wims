@@ -7,10 +7,11 @@
 !form reply
 <input type=hidden name=job value=formula>
 U kunt hier de moeilijkheidsgraad en de weging instellen van de werkbladen in de volgende tabel
-De cijfers worden berekend met als maximum =
-<input size=5 name=maxscore value="$scoremax">.
-<p><center><table border=0 cellspacing=2 bgcolor=$table_bgcolor>
-<tr><th>Serie<th>Titel<th>Status<th>Gewicht<th>Moeilijkheidsgraad
+De cijfers worden berekend met als maximum = <input size=5 name=maxscore value="$scoremax">.
+
+
+<p>$table_header
+$table_hdtr <th>Nummer<th>Titel<th>Status<th>Gewicht<th>Moeilijkheidsgraad
 !for i=1 to $totsheets
  !set t_=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !set k_=!line $i of $defaultformula
@@ -20,8 +21,8 @@ De cijfers worden berekend met als maximum =
  !distribute line $t_ into a_,b_,c_,d_
  !set a_=!char 1 of $a_
  !set S_=!item $a_+1 of prep,active,expired,hidden
- !exchange table_color1,table_color2
- <tr bgcolor=$table_color2><td align=right>$i</td>
+ 
+ $table_tr<td align=right>$i</td>
  <td>$c_</td><td align=center>$S_</td>
  <td align=center><input size=5 name=w$i value=$(w$i)></td>
  <td align=center>
@@ -34,18 +35,18 @@ De cijfers worden berekend met als maximum =
  !set t_=!record $i of wimshome/log/classes/$wims_class/exams/.exams
  !set a_=!word 1 of $t_
  !set c_=!line 4 of $t_
- !set S_=!item $a_+1 of prep,active,expired,hidden
- !exchange table_color1,table_color2
- <tr bgcolor=$table_color2><td align=right>Proefwerk $i</td>
+ !set S_=!item $a_+1 of niet klaar,actief,verlopen,onzichtbaar
+ 
+ $table_tr<td align=right>Proefwerk $i</td>
  <td>$c_</td><td align=center>$S_</td>
  <td align=center><input size=5 name=ew$i value=$(ew$i)></td>
  <td align=center>--</td>
 !next i
-</table> <p>
-<input type=submit name=formula value="OK en VERANDEREN">
-&nbsp;<input type=submit value="ANNULEREN">
-</center></form> <p>
-
-!reset formula
+$table_hdtr<td align=center colspan=5>
+<input type=submit name=formula value="Verandering opslaan">
+&nbsp;
+<input type=submit value="Annuleren">
+$table_end <p>
+</form>                                                                                                                                    
 
 

@@ -31,6 +31,10 @@ userdir=log/classes/$userdir/.users
  !changeto var.proc.examcheck
 !endif
 
+!if $job=showsheet
+ !changeto var.proc.showsheet
+!endif
+
 deluser=!word 1 of $deluser
 !if $job=sheets
  show=!translate , to $ $ in $showsheet
@@ -76,6 +80,14 @@ sheetcnt=!itemcnt $showsheet
 !endif
 activecnt=!linecnt $activesheets
 eactivecnt=!itemcnt $activexams
+
+!bound job_affi within notes,points,qualite default notes
+!if $showsheet=$empty and $job_affi!=notes
+ showsheet=$activesh
+ !for i in $showsheet
+  !distribute item 0,0,0 into per_$i, av_$i, cnt_$i
+ !next i
+!endif
 
 !read var.proc.weights
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist

@@ -9,25 +9,30 @@
 </font></h3>
 !if $eremain>0
  <p>
- Deze deelnemer heeft een actieve tentamen sessie:
- !href cmd=reply&job=userexam&getuser=$getuser $esession
+    Deze student heeft op dit moment een actieve proefwerk sessie:
+    !href cmd=reply&job=userexam&getuser=$getuser $esession
 !else
- !if $wims_user=supervisor and $wims_supertype=4
-  !readproc adm/gateway/transfer $getuser test
-  !if $transfer_test>0
-   !href cmd=reply&job=transfer&getuser=$getuser Verplaats zijn/haar activiteiten van andere klassen
-  !endif
- !endif
+    !if $wims_user=supervisor and $wims_supertype=4
+	!readproc adm/gateway/transfer $getuser test
+	!if $transfer_test>0
+	    !href cmd=reply&job=transfer&getuser=$getuser Verplaats 
+	    &nbsp;zijn/haar activiteiten van andere klassen
+	!endif
+    !endif
 !endif
 </center> <p>
 
 !if $manual>0 and $gcnt>0 and $teacher!=$empty
- $table_header$table_hdtr<th>Naam<th>Percentage<th>Gewicht
- $table_tr<td>Handmatige ingevoerde cijfers
+ $table_header
+ <caption><small>
+ min/gem/max de la classe&nbsp;:
+ $min_glob/$mean_glob/$max_glob</small></caption>
+ $table_hdtr<th>Naam<th>Percentage<th>Gewicht
+ $table_hdtr<td>Handmatige ingevoerde cijfers
      <td align=center>$manual%<td align=center>$mav
- $table_tr<td>Server geregistreerde cijfers
+ $table_hdtr<td>Server geregistreerde cijfers
      <td align=center>$[100-$manual]%<td align=center>$per
- $table_tr<td><b>Globaal gemiddelde</b> (uit $scoremax)
+ $table_hdtr<td><b>Globaal gemiddelde</b> (uit $scoremax)
      <td align=center>100%<th>$globalav
  $table_end <p>
  $table_header$table_hdtr<th colspan=3>Handmatig ingevoerde cijfers</th>
@@ -40,7 +45,8 @@
  $table_hdtr<th colspan=2>Gemiddelde<td align=center>$mav</td>
  $table_end <p>
 !else
- Globaal gemiddelde: <b>$per</b> uit $scoremax.
+ <center>
+ Totaal gemiddelde: <b>$per</b> uit $scoremax.
  !if $min_glob<$scoremax
   <br><small>min/gem/max van deze klas:
   $min_glob/$mean_glob/$max_glob</small>
@@ -50,13 +56,13 @@
 
 !readdef wimshome/log/classes/$wims_class/.def
 !if $eactivecnt>0
- $table_header$table_hdtr<th colspan=4>Tentamen cijfers
+ $table_header$table_hdtr<th colspan=4>proefwerk cijfers
  !if $wims_user=supervisor or $class_examshow!=no
   </b><small>
   !href cmd=reply&job=examcheck&checkuser=$getuser [details]
   </small>
 !endif
- $table_hdtr<th>onderdeel<th>titel<th>score/$scoremax
+ $table_hdtr<th>Nummer<th>Titel<th>Cijfer/$scoremax
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !set t=!line 4 of $l
@@ -72,7 +78,6 @@
  !set l_=!line $i of $activesheets
  !distribute items $l_ into n_,e_
  !set L_=!line $n_ of $defaultformula
- !default L_=1 2
  !distribute word $L_ into A_,B_
  !set t_=!item 3 to -1 of $l_
  !set t_=!char 1 to $title_limit of $t_
@@ -87,22 +92,21 @@
   !goto next
  !endif
  $table_header$table_hdtr<th colspan=7>Werkblad $i&nbsp;: $t_
- </b><small>gewicht $A_, severity $B_<br>
+ </b><small>gewicht $A_ , severity $B_<br>
  !set A_=!line $n_ of $percents
  !distribute words $A_ into p1,p2
  !if $p2!=$empty
   !distribute item $[$p1/100],$[$p2/10] into x_,y_
   !set p_=$[rint(100*$scoremax*$(f_$i))/100]
-  Klaar $p1%, kwaliteit $p2/10, equiv. <b>$p_</b> uit $scoremax.
+  klaar $p1%, kwaliteit $p2/10, equiv. <b>$p_</b> uit $scoremax.
   !if $(min_$i)<$scoremax
-   <br>min/gem/max van deze klas: $(min_$i)/$(mean_$i)/$(max_$i)
+   <br>min/gem/max van deze klas : $(min_$i)/$(mean_$i)/$(max_$i)
   !endif
  !endif
  </small>
  $table_hdtr<th>No<th>titel<th>vereiste<br>punten<th>gewicht
-     <th>behaalde<br>punten<th>%<th>qualiteit
+     <th>behaalde<br>punten<th>%<th>kwaliteit
  !for j=1 to $e_
-  
   $table_tr<td align=right>$j
   <td>$(title_$(n_)_$j)
   <td align=right>
@@ -140,8 +144,8 @@
  .
  <p>
  !href cmd=reply&job=delprep&delprep=$getuser Verwijder deze deelnemer
-, or
- !href module=adm/class/passwd&job=part&part=$getuser verander zijn of haar wachtwoord
+, of
+ !href module=adm/class/passwd&job=part&part=$getuser verander het wachtwoord
 .
 !else
  !href module=home Terug naar de klas

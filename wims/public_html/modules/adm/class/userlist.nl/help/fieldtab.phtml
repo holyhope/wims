@@ -1,32 +1,34 @@
 
-<center><table border=1 bgcolor=$table_bgcolor>
-<caption>Geldige data velden</caption>
-<tr><th>Naam<th>Betekenis
-<tr bgcolor=$table_color1><td>login<td>login naam van de leerling
-!if $special_parm=upload
-<tr bgcolor=$table_color2><td>wachtwoord<td>wachtwoord van de leerling,
- kan alleen worden opgestuurd, <b>niet</b> gedownload.
-!else
-<tr bgcolor=$table_color2><td>name<td>Achternaam en Voornaam (in deze volgorde, twee kolummen)
-!endif
-<tr bgcolor=$table_color1><td>lastname<td>Achternaam
-<tr bgcolor=$table_color2><td>firstname<td>Voornaam
-<tr bgcolor=$table_color1><td>email<td>email adres
-<tr bgcolor=$table_color2><td>regnum<td>registratie nummer
-<tr bgcolor=$table_color1><td>comments<td>opmerkingen over deze leerling
+$table_header
+<caption>Steutelwoorden voor spreadsheet bestanden</caption>
+$table_hdtr<th>Sleutelwoord</th><th>Betekenis</th>
+$table_tr<td>login</td><td>loginnaam van de deelnemer</td></tr>
 !if $special_parm!=upload
-<tr bgcolor=$table_color2><td>allscore<td>alle cijfers en gemiddelden 
-<tr bgcolor=$table_color1><td>averages<td>gemiddelde score (server score en handmatige cijfer)
-<tr bgcolor=$table_color2><td>average1<td>gemiddelde server scores
-<tr bgcolor=$table_color1><td>average2<td>gemiddelde van handmatig ingevoerde cijfers
-<tr bgcolor=$table_color2><td>sheets<td>cijfers van alle workbladen (een voor een)
-<tr bgcolor=$table_color1><td>sheet1,sheet2,...<td>cijfer van werkblad 1, werkblad 2, ...
-<tr bgcolor=$table_color2><td>exams<td>cijfers vsan alle proefwerken/tentamens
-<tr bgcolor=$table_color1><td>exam1,exam2,...<td>cijfers van examen 1, examen 2, ...
-<tr bgcolor=$table_color2><td>manuals<td>alle handmatig ingevoerde cijfer (&eacute;&eacute;n voor &eacute;&eacute;n)
+$table_tr<td>name</td><td>achternaam en voornaam (in die volgorde en twee kolommen)</td></tr>
 !endif
-<tr bgcolor=$table_color1><td>manual1,manual2,...<td>handmatige cijfer 1, 2, ...
+$table_tr<td>lastname</td><td>achternaam</td></tr>
+$table_tr<td>firstname</td><td>voornaam</td></tr>
+$table_tr<td>password</td><td>wachtwoord van de student.<br>Wordt met encryptie verstuurd: misschien wel leesbaar op de server.</td></tr>
+$table_tr<td>email</td><td>email adres van de student</td></tr>
+$table_tr<td>regnum</td><td>registratie nummer van de student [mits gedefinieerd]</td></tr>
+$table_tr<td>comments</td><td>opmerkingen over deze student</td></tr>
+!if $special_parm!=upload
+$table_tr<td>allscore</td><td>scores en gemiddelden [alles]</td></tr>
+$table_tr<td>averages</td><td>gemiddelden [van zowel handmatige ingevoerde als op de server behaalde scores]</td></tr>
+$table_tr<td>average1</td><td>gemiddelden [van op de server behaalde scores ]</td></tr>
+$table_tr<td>average2</td><td>gemiddelden [van de handmatig ingevoerde cijfers]</td></tr>
+$table_tr<td>sheets</td><td>cijfers voor alle werkbladen [1 voor 1]</td></tr>
+$table_tr<td>sheet1,sheet2,...</td><td>cijfers voor werkblad no.1, werkblad no.2 ,... etc.</td></tr>
+$table_tr<td>exams</td><td>cijfers voor alle proefwerken</td></tr>
+$table_tr<td>exam1,exam2,...</td><td>cijfers voor proefwerk no.1, proefwerk no.2 ,... etc</td></tr>
+$table_tr<td>manuals</td><td>alle handmatig ingevoerde cijfers [1 voor 1]</td></tr>
+!endif
+$table_tr<td>manual1,manual2,...</td><td>handmatig ingevoerd cijfers, gespecificeerd</td></tr>
+$table_tr<td>var_xxx</td><td>de waarde van de technische variabele <tt>xxx</tt></td></tr>
+$table_end <p>
 
-</table></center> <p>
+Velden met een onbekend of foutief sleutelwoord worden stilletjes genegeerd.<br>
+De technische variabelen zijn gereserveerd voor experts:<br>
+er kunnen o.a. zaken zoals "specifieke begin/eind tentamen tijdsstippen" voor speciale [individuele] gevallen mee worden ingesteld.
 
-Niet herkende velden worden niet ingelezen!
+

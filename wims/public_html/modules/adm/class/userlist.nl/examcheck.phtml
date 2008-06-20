@@ -1,7 +1,7 @@
 
 <center>$classname
 <p>
-<h1>Tentamen details voor $user_lastname, $user_firstname
+<h1>Proefwerk details van $user_lastname, $user_firstname
 </font>
 </h1></center>
 
@@ -17,30 +17,34 @@
  <p>
 !else
  !if $checksessions=$empty
-  Deze leerling heeft nog steeds geen proefwerk/tentamen gemaakt.
+  Deze leerling heeft nog steeds geen proefwerk gemaakt.
   <p>
  !else
- Hier staan de proefwerk/tentamen sessies van deze leerling.
- Klik op een oefening om de inhoud te bekijken. 
-  <p><center>
-  <table border=1>
-  <tr><th>Sessie</th><th>Proefwerk/tentamen</th><th>Resultaat<small>/$scoremax</small></th>
-  <th>Oefening</th><th>Start</th></tr>
+ Hier staan de opgeslagen proefwerk sessies van deze leerling.<br>
+ Klik op het nummer van een oefening om de resultaten te bekijken. 
+  <p>
+  $table_header
+  $table_hdtr 
+  <th>Sessie</th><th>Proefwerk</th><th>Resultaat<small>/$scoremax</small></th><th>Oefening</th><th>Start</th></tr>
   !for ses in $checksessions
    !for x in $(exam$ses)
-    <tr><td><small>$ses</small></td>
-    <td align=center>$x</td>
-    <td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td><td>
+    $table_tr<td><small>$ses</small></td>
+    <td align=center>$x</td><td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td>
+    <td>
     !for i in $(exo$(ses)$x)
      &nbsp;
      !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $i
     !next i
    !next x
-   </td><td><small>
-    !read date.phtml $(start$(ses)$x)
-   </small></td>
+   </td>
+   <td>
+	<small>
+	    !read date.phtml $(start$(ses)$x)
+	</small>
+   </td>
   !next t
-  </table></center> <p>
+  $table_end 
+  <p>
  !endif
 !endif
 

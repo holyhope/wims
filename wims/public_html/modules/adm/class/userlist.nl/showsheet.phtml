@@ -1,0 +1,163 @@
+!!! this seems to be a slightly changed copy of main.phtml 
+<html><head>
+$wims_html_header
+</head>
+<body $wims_htmlbody>
+!headmenu
+!read names.phtml
+
+<center>$classname
+<p>
+<h1>Studenten</h1>
+<font color=green><b>details van werkklad nummer $numshowsheet<b><br>
+<h3>$sh_title</h3></font>
+</center>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ Terug naar de
+ !href module=home klas
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+    Deze klas heeft nog geen studenten.
+!else
+ <p>$table_header
+ !bound job_affi within points,qualite default points
+ !if $job_affi=points
+  !let sign=%
+  <caption>Percentage verkregen punten</caption>
+ !else
+  !if $job_affi=qualite
+   !let sign=$empty
+   <caption>Kwaliteit [ maximum is 10]</caption>
+  !else
+   <caption>Percentage voltooid</caption>
+  !endif
+ !endif
+ $table_hdtr<th>Naam, voornaam</th>
+ <th>Gemiddelde</th>
+ !let tot_0=0
+ !let nonzero_0=0
+ !for j=1 to $nbexo
+  <th><small>opgave $j</small></th>
+  !let tot_$j=0
+  !let nonzero_$j=0
+ !next j
+ !for m=1 to $usercnt
+  !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  $table_tr
+  <td>
+   !href cmd=reply&job=getuser&getuser=$uu $lastname, $firstname
+  </td>
+   !let tot=!getscorepercent user=$uu sheet=$numshowsheet
+   !if $job_affi=points
+    <td align=center>
+     !let t=!word 1 of $tot
+     $t %
+     !let tot_0=$[$tot_0+$t]
+    </td>
+    !if $t!=0
+     !increase nonzero_0
+    !endif 
+    !let tmp=!getscore user=$uu sheet=$numshowsheet
+    !for k=1 to $nbexo
+     <td align=center>
+      !let t=!word $k of $tmp
+      !if $t!=0
+       !increase nonzero_$k
+      !endif 
+      !let div=!word $k of $require
+      !if $div!=0
+       !let t=$[rint($t/$div*10000)/100]
+      !else
+       !let t=100
+      !endif
+      !if $t<40
+       <font color=red><b>
+      !else
+       !if $t<80
+        <font color=blue>
+       !else
+        <font color=green>
+       !endif
+      !endif
+      $t %</b></font>
+      !let tot_$k=$[$(tot_$k)+$t]
+     </td>  
+    !next k
+   !else
+    <td align=center>
+     !let t=!word 2 of $tot
+     !let tot_0=$[$tot_0+$t]
+     $t</font>
+    !if $t!=0
+     !increase nonzero_0
+    !endif 
+    </td>
+    !let tmp=!getscoremean user=$uu sheet=$numshowsheet
+    !for k=1 to $nbexo
+     <td align=center>
+      !let t=!word $k of $tmp
+      !if $t!=0
+       !increase nonzero_$k
+      !endif 
+      !if $t<=4
+       <font color=red><b>
+      !else
+       !if $t=<8
+        <font color=blue>
+       !else
+        <font color=green>
+       !endif
+      !endif
+      $t</b></font>
+      !let tot_$k=$[$(tot_$k)+$t]
+     </td>  
+    !next k
+   !endif
+  </tr>
+ !next m
+ $table_hdtr<td align=center><b>Gemiddelde</b> van deze klas</td>
+ <th align=center>$[rint($tot_0/$usercnt*10)/10]$sign </th>
+ !for j=1 to $nbexo
+  <th align=center>$[rint($(tot_$j)/$usercnt*10)/10]$sign</th>
+ !next j
+ </tr>
+ !if $nonzero_0>0
+  $table_hdtr<td align=center><b>Gemiddelde</b> van alle positieve resultaten</td>
+  <th align=center>$[rint($tot_0/$nonzero_0*10)/10]$sign </th>
+  !for j=1 to $nbexo
+   <th align=center>
+    !if $(nonzero_$j)>0
+     $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
+    !else
+     &nbsp;
+    !endif
+   </th>
+  !next j
+  </tr>
+ !endif
+$table_end
+ <p>
+ Klik op een naam voor een gedetailleerd overzicht
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet Vernieuw deze pagina
+&nbsp;.&nbsp;
+   Geef het overzicht van
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet het percentage voltooid
+    !else
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet de kwaliteit
+    !endif
+   van het werk aan dit werkblad
+<p>
+Lijst van alle
+ !href cmd=reply&job_affi=notes cijfers
+.
+:end
+!tail
