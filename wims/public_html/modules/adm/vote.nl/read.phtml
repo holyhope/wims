@@ -1,13 +1,12 @@
 
 !if $vote_option=anonymous
-Dit is een anonieme stemming/enquete.
+    Dit is een anonieme stemming/enquete.
 !else
-!if $vote_option=trace
-   Ce questionnaire est $name_trace.
- !else
-   Er is een op naam gestelde stemming/enquete .
- !endif
-
+    !if $vote_option=trace
+	Deze enquete is $name_trace.
+    !else
+	Er is een op naam gestelde stemming/enquete .
+    !endif
 !endif
 !if $vote_status=2
  Het is gesloten.
@@ -30,7 +29,7 @@ Dit is een anonieme stemming/enquete.
  !if $vote_option!=nominative
   U hebt reeds gestemd. <p>
  !else
- U hebt Uw voorkeur reeds genoteerd; maar U kunt zich nog bedenken
+  Uw voorkeur is reeds genoteerd; maar U kunt zich nog bedenken
   <p>
   !goto form
  !endif
@@ -73,7 +72,7 @@ Dit is een anonieme stemming/enquete.
 !next
 !endif
 !if $wims_user=supervisor and $vote_option!=anonymous
- <p> Details van de registratie.
+ <p> Details.
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/
