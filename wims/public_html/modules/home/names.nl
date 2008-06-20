@@ -142,6 +142,3 @@ ER_expression	=<b>Waarschuwing.</b> Zoek je een wiskundige uitdrukking? Dat is o
 !else
  U_oclass       =Andere klassen
 !endif
-
-
-
