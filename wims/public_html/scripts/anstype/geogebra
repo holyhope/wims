@@ -94,7 +94,7 @@ yourlist_name2=$yourlist_name
     formal=!line $p of $yourlistformal
     formal= !replace internal = by , in $formal
     coord= !replace internal [ by &&&&, in $formal
-    coord= !replace internal ] by ,%%%% in $coord   
+    coord= !replace internal ] by ,%%%% in $coord 
     Name= $(coord[1])
     Fonction= !replace internal &&&& by in $(coord[2])
 	Fonction= !lower $Fonction
@@ -102,18 +102,23 @@ yourlist_name2=$yourlist_name
     coord=$(coord[3..-1])
     coord_cnt=!itemcnt $coord
     !for u=1 to $coord_cnt
+     !if poly notin $(coord[$u])
       name=!positionof item $(coord[$u]) in $your_name
       !if $name!=
        c=!line $name of $your_coord
        !if $(your_type[$name])=vector
          c=$c,0
        !endif
-       coord=!replace item number $u by [$c] in $coord
+        coord=!replace item number $u by [$c] in $coord
       !endif
+     !else
+       coord=!replace item number $u by in $coord
+     !endif
     !next u
     coord= !nospace $coord
+    coord=!nonempty items $coord
     coord= !replace internal &&&&, by ( in $coord
-    coord= !replace internal ,%%%% by ) in $coord         
+    coord= !replace internal ,%%%% by ) in $coord
     coord= !exec pari $Name=$Fonction($coord
     !if $coord!=
       your_coord=!replace line number $p by $coord in $your_coord
@@ -189,7 +194,7 @@ yourlist$output=
    type=!nospace $(M_objet[2]) $output
    ob1=$ob
    ob=$($type)
-   !if $(M_objet[2]) issametext segment   
+   !if $(M_objet[2]) issametext segment
      obcnt=!itemcnt $ob1
      !if $obcnt>=5
        ob=     
@@ -347,7 +352,7 @@ yourggb=
   type=!getopt $type in $typelangue
   !if $type issametext segment   
     obcnt=!itemcnt $ob1
-    !if $obcnt>5   
+    !if $obcnt>5 
        ob=
     !endif
   !endif
@@ -483,6 +488,7 @@ mylist1=!replace internal ] by  in $mylist1
 mylist1_cnt=!linecnt $mylist1
 mylist2_cnt=!linecnt $mylist2
 mylist2orig=$mylist2
+
 ###inachevé, à completer
 ### transforme certaines conditions formelles en conditions numériques
 !if $precision>12
@@ -492,6 +498,11 @@ mylist2orig=$mylist2
 !endif
 !for p= 1 to $mylist2_cnt
   ligne=!line $p of $mylist2
+  lignetest=!text select =] in $ligne
+  lignetest=!nospace $lignetest
+  !if ]= isin $lignetest
+    ??
+  !endif
   ligne=!replace internal = by , in $ligne
   ligne=!replace internal [ by , in $ligne
   ligne=!replace internal ] by , in $ligne
@@ -527,11 +538,11 @@ mylist2orig=$mylist2
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof angle
-	ligne_num=abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[2])+i*(y_$(ligne[3])-y_$(ligne[2]))))*180/pi-$(ligne[7]))<10^(-$pr)
+   ligne_num=abs(arg((x_$(ligne[6])-x_$(ligne[5])+i*(y_$(ligne[6])-y_$(ligne[5])))/(x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3]))))*180/pi-$(ligne[1]))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof anglegeom 
-	ligne_num=abs(abs(arg((x_$(ligne[4])-x_$(ligne[3])+i*(y_$(ligne[4])-y_$(ligne[3])))/(x_$(ligne[2])-x_$(ligne[3])+i*(y_$(ligne[2])-y_$(ligne[3])))))*180/pi-abs($(ligne[6])))<10^(-$pr)
+ligne_num=abs(abs(arg((x_$(ligne[5])-x_$(ligne[4])+i*(y_$(ligne[5])-y_$(ligne[4])))/(x_$(ligne[3])-x_$(ligne[4])+i*(y_$(ligne[3])-y_$(ligne[4])))))*180/pi-abs($(ligne[1])))<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof bissector
@@ -936,6 +947,7 @@ displaylist2=
   ### remplacer les égalités par des conditions numériques sans demander à l'utilisateur de la faire ?? 
   #### il faudrait remplacer les && (et les ||) par des lignes (commencant par &&), remplacer les lignes où il y a ==
   ### par abs(eq1 -(eq2))< 10^(-precision) et reconstituer
+
   check=!exec pari ($cond)
   !if $check=$empty
     check=0
