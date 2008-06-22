@@ -1,15 +1,15 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=Audio insertion with hbs_mp3_player 
+slib_title=Audio insertion with dewplayer
 slib_parms=3\
 ,URL of the data file\
-,option for the audio insertion (use hbs_mp3_player)\
+,option for the audio insertion (use dewplayer : http://www.alsacreations.fr/dewplayer)\
 ,option=rename imagedir document
 slib_author=Bernadette Perrin-Riou
 slib_out=  Audio insertion in html page
 slib_comment=default option :height="60" width="140" autostart="false" loop="false" width="0"  height="0"\
-the option "imagedir" is to use if hbs_mp3_player is not on wims but in the module, 
+the option "imagedir" is to use if dewplayer is not on wims but in the module, 
 slib_example=\imagedir/exemple.mp3\
 http://packs.shtooka.net/eng-balm-verbs/mp3/eng-I_bought.mp3
 
@@ -21,8 +21,8 @@ http://packs.shtooka.net/eng-balm-verbs/mp3/eng-I_bought.mp3
 !endif
 
 !distribute items $wims_read_parm into slib_son,slib_option,slib_option2
-!reset slib_out
-!default slib_option=width="60" height="16" autostart="false" loop="false"
+
+!default slib_option=height="17" width="40" autostart="false" loop="false"
 slib_option2 = !getopt option in $slib_option2
 
 
@@ -43,6 +43,4 @@ slib_mod = !items2words $slib_mod
 
 ####attention = pas d'espace et mettre sur une seule ligne, sinon il y a 
 #### un problème dans les exos de correspondance
-
-slib_out=<object data="$slib_adresse/hbs_mp3_player.swf" width="60" height="16" type="application/x-shockwave-flash"><param name="type" value="application/x-shockwave-flash" /><param name="src" value="$slib_adresse/hbs_mp3_player.swf" /><param name="data" value="$slib_adresse/hbs_mp3_player.swf" /><param name="codebase" value="$slib_adresse/hbs_mp3_player.swf" /><param name="FlashVars" value="TheSound=$slib_son" /><param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="$slib_adresse/hbs_mp3_player.swf" /><param name="loop" value="false" /><param name="quality" value="high" /><param name="wmode" value="transparent" /><a href="$slib_son">$slib_son</a></object>
-
+slib_out =<object type="application/x-shockwave-flash" data="$slib_adresse/dewplayer-mini.swf?mp3=$slib_son" $slib_option><param name="movie" value="$slib_adresse/dewplayer-mini.swf?mp3=$slib_son"/></object>
