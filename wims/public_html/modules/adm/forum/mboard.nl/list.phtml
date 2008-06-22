@@ -3,28 +3,30 @@
 <p>
 !if $tot<=0
  !if $mlist!=.newlist
- Helaas, er zijn geen beschikbare berichten gevonden op Uw verzoek
+  $n_nomessage
  !else
- Er zijn geen berichten in dit forum.
+  $n_emptyforum
  !endif
 !else
  !if $mlist=.newlist
-  Lijst van de laatste berichten, meest
+  $n_list, $n_most
  !else
-  Lijst van berichten gedurende
+  $n_list_month
   !item $lmon of $monthnames
-  $lyear, meest
+  $lyear, $n_most
  !endif
- !item $l_order of recent first,ancient first
+ !item $l_order of $n_old
 . <small>
- !href cmd=reply&l_order=$[$l_order%2+1] [keer de volgorde om]
+ !href cmd=reply&l_order=$[$l_order%2+1] [$n_reverse]
+  &nbsp;
+!href cmd=reply&job=threadlist& [$n_subjectlist]
  !if $send_right>0
   &nbsp;
-  !href cmd=new&forum=$forum&job=compose [Nieuw Bericht]
+  !href cmd=new&forum=$forum&job=compose [$n_new]
  !endif
 </small>
- <ul>
- !set lh=<li>
+ <ul class="wims_forum_list">
+ !set lh=<li class="wims_forum_list">
  !if $l_order=1
   !distribute item $tot,1,-1 into start,end,step
  !else
@@ -45,7 +47,7 @@
 
 <p>
 !if $mlist!=.newlist
- !href cmd=reply&job=list&mlist=.newlist Laatste berichten.
+ !href cmd=reply&job=list&mlist=.newlist $n_recent.
  &nbsp;
 !endif
 

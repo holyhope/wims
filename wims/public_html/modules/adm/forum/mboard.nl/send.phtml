@@ -1,26 +1,20 @@
 
 !if $s_status=ask
-Dit message board accepteerd geen anonieme berichten.<br>
-Het gebruikt Uw huidige emailadres voor authentificatie,
-dit om misbruik tegen te gaan.
-  <p>
- Om te controleren of Uw emailadres valide is,<br> 
- stuurt de server een "code" naar door opgegeven emailadres.<br>
- Lees deze mail en voer de "code" hier in:<br>
+ $n_statusask
  !form reply
  <input type=hidden name=job value=send>
  <p><center><input size=10 name=s_code>
  <input type=submit value=OK></form>
  <p>
- !href cmd=reply&job=list Annuleren
+ !href cmd=reply&job=list $n_giveup
  </center> <p>
  !exit
 !endif
 
 !if $error=$empty
-Uw bericht is toegevoegd aan het message board.
+ $n_add
 !endif
 
 <p><center>
-!href cmd=reply&job=list Lijst van berichten
+!href cmd=reply&job=list $n_list
 </center> <p>

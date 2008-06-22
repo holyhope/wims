@@ -4,13 +4,13 @@
 !set errorhead=<b>Fout.</b>
 
 !if forum_not_exist = $error
- $errorhead Je hebt gevraagt naar een niet bestaand message board, Sorry.
+ $errorhead U hebt een niet bestaand forum opgevraagd, Sorry.
  !set fatal=yes
  !exit
 !endif
 
 !if no_read_right = $error
- $errorhead U hebt helaas geen toegang tot dit message board
+ $errorhead U hebt geen toegang tot dit forum.
  !set fatal=yes
  !exit
 !endif
@@ -21,50 +21,45 @@
 !endif
 
 !if translation_fail = $error
- $errorhead De software is helaas een interne fout tegengekomen, en kan 
- Uw bericht niet verwerken
+ $errorhead De software heeft helaas een interne fout , en kan het bericht niet verwerken.
  !if $wims_exec_error!=$empty
   <p>
-  Fout type: <tt>$wims_exec_error</tt>
+  De fout : <tt>$wims_exec_error</tt>
  !endif
  !exit
 !endif
 
 !if open_tag = $error
  <b>Waarschuwing.</b>
- Uw bericht eindigd met een niet afgesloten html-tag.
+ Uw bericht bevat een niet afgesloten html-tag.<br>
  Graag controleren en verbeteren.
   <p>
- Uw bericht wordt getoond als een html-pagina, dus als U bijvoorbeeld
- wiskundige ongelijkheden gebruikt, geef dan een spatie achter het `&lt;' teken, 
+ Uw bericht wordt getoond als een html-pagina, dus als U bijvoorbeeld wiskundige ongelijkheden gebruikt, geef dan een spatie achter het `&lt;' teken, 
  of gebruik de TeX manier om de wiskunde te noteren (dus gebruik \( en \) ).
  !exit
 !endif
 
 !if bad_message = $error
- $errorhead Het bericht dat U wilt lezen bestaat niet in dit message board.
- Gaarne het verzoek controleren. 
+ $errorhead Het bericht dat U wilt lezen bestaat niet in dit forum.
  !exit
 !endif
 
 !if erased_message = $error
- $errorhead Het bericht dat U hebt verzocht,is verwijdert uit dit message board.
+ $errorhead Dat bericht is verwijdert uit dit forum.
  !exit
 !endif
 
 !if $error=no_send_right
- $errorhead U hebt helaas niet de bevoegdheden om een bericht naar dit message board te versturen
-
+ $errorhead U mag geen bericht naar dit forum te versturen.
  <p>
  !href cmd=reply&job=list&mlist=.newlist Lijst van berichten.
  !exit
 !endif
 
 !if $error=email_required
- $errorhead U moet een emailadres invullen om een bericht te kunnen schrijven naar dit message board
+ $errorhead U moet een werkend emailadres invullen om een bericht te kunnen opsturen.
  <br>
- <b>WAARSCHUWING.</b> De server zal het opgegeven adres kontroleren. Dus geen fals emailadres
- noteren s.v.p.
+ <b>WAARSCHUWING.</b> De server zal het opgegeven adres kontroleren.
  !set job=compose
  !exit
 !endif
@@ -77,25 +72,24 @@
 !endif
 
 !if $error=bad_sendcode
- $error_head Het bericht kan niet worden opgenomen in het message board, omdat de
+ $error_head Het bericht kan niet worden opgenomen in het forum, omdat de
  geheime code niet correct is ingevuld.
  <p>
-Kontroleer het opgegeven emailadres, klik op de "Send" knop en haal dan
+Kontroleer het opgegeven emailadres, klik op de "versturen knop" en haal dan
 per email de <b>nieuwe</b> geheime code op. 
  !set job=compose
  !exit
 !endif
 
 !if $error=not_owner
- $error_head Alleen de eigenaar van dit message board heeft de 
- bevoegdheid het te configureren
+ $error_head Alleen de eigenaar van dit forum mag het configureren
  <p>
  !set job=list
  !exit
 !endif
 
 !if auth_failure = $error
- $errorhead  Legitimatie is mislukt!. <p>
+ $errorhead  Aanmelden is mislukt!. <p>
  !set fatal=yes
  !exit
 !endif

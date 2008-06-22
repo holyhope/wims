@@ -1,34 +1,39 @@
 
-Hier zijn de instel parameters van Uw message board:
+Voici les paramètres de ce forum que vous pouvez changer.
+
 !form reply
 <input type=hidden name=job value=config>
 <input type=hidden name=cf_set value=yes>
 <ul>
- <p><li>Titel van het message board:<br>
+ <p><li>Titre du forum&nbsp;:<br>
   <input size=60 name=cf_title value="$cf_title">
- <p><li>Omschrijving:<br>
+ <p><li>Description&nbsp;:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
- <p><li>Wie mag deze berichten lezen?
+ <p><li>Qui peut lire les messages&nbsp;?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_readpolicy list alluser,owner prompt \
-	elke deelnemer, alleen ikzelf
+	tout participant, seulement vous-même
  !else
   !formselect cf_readpolicy list open,alluser,owner prompt \
- 	iedereen, alleen geregistreerde gebruikers, niemand behalve ikzelf
+	tout le monde (inscrits ou non), utilisateurs inscrits seulement,\
+	personne à part vous
  !endif
- <p><li>Wie mag berichten opsturen??
+ <p><li>Qui peut envoyer des messages dedans&nbsp;?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
-	elke deelnemer, deelnemers met een valide emailadres, alleen ikzelf
+	tout participant,\
+	participants avec vérification d'email,\
+	seulement vous-même
  !else
   !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
-	bezoekers met een emailadres en gebruikers,\
-	alleen geregistreerde gebruikers , gebruikers met valide emailadres,\
-	niemand behalve ikzelf
+	visiteurs avec adresse email ou inscrits,\
+	utilisateurs inscrits seulement,\
+	inscrits avec vérification d'email,\
+	personne à part vous
  !endif
 
 </ul>
-<p><center><input type=submit name=cf_set value="OK en OPSTUREN">
-&nbsp;&nbsp;<input type=submit name=cf_abandon value="ANNULEREN">
+<p><center><input type=submit name=cf_set value="Enregistrer le changement">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="Abandonner">
 </center> <p></form>
 
