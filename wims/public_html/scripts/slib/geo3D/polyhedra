@@ -3,12 +3,14 @@
  !goto proc
 !endif
 slib_title=Polyhedra applet in C.a.R
-slib_parms=2
-,polyhedra name
+slib_parms=2\
+,polyhedra name\
+,name_vertex name_face name_edge angle
 
 slib_author=Bernadette PERRIN-RIOU
 slib_out=applet code for drawing a polyhedra by its name with C.a.R
-slib_comment=NE PAS UTILISER SAUF EN TEST
+slib_comment= values for angle are [u,v,w] or [u,v] etc
+<br>name_face=[A,B,C,..]
 !exit
 
 :proc
@@ -19,8 +21,6 @@ slib_comment=NE PAS UTILISER SAUF EN TEST
 !!********** Traitement des options
 slib_k=0.7
 slib_f=33
-!!slib_k=0.6
-!!slib_f=33
 
 slib_Z0=-1 
 slib_Z1=-1000
@@ -30,13 +30,12 @@ slib_name_vertex=!getopt name_vertex in $slib_options
 slib_name_face=!getopt name_face in $slib_options
 slib_name_edge=!getopt name_edge in $slib_options
 
-
 slib_angle=!getopt angle in $slib_options
 slib_angle=!declosing $slib_angle
 slib_angle=!text select uvw, in $slib_angle
 
-slib_option_face=!getopt face in $slib_options
-slib_option_edge=!getopt edge in $slib_options
+!!slib_option_face=!getopt face in $slib_options
+!!slib_option_edge=!getopt edge in $slib_options
 
 !default slib_option_face=1	
 !default slib_option_edge=0
@@ -139,42 +138,42 @@ slib_prelim=<?xml version="1.0" encoding="utf-8"?>\
 <Construction>\
 <Window x="$slib_centrex" y="$slib_centrey" w="$slib_width"/>\
 <Objects>\
-<Point name="P0" n="1"  x="0"  y="1" hidden="true" fixed="true"></Point>\
-<Point name="Q0" n="2"  x="360"  y="1"  hidden="true" fixed="true"></Point>\
-<Segment name="s0" n="3"  from="P0" to="Q0"  hidden="true"></Segment>
+<Point name="P0" n="1" x="0" y="1" hidden="true" fixed="true"></Point>\
+<Point name="Q0" n="2" x="360" y="1" hidden="true" fixed="true"></Point>\
+<Segment name="s0" n="3" from="P0" to="Q0" hidden="true"></Segment>
 
 
 slib_cercle=$[$slib_centrex+0.7*$slib_width],$[$slib_centrey+0.7*$slib_width]
 slib_ray=$[0.05*$slib_width],$[0.1*$slib_width],$[0.15*$slib_width]
 !if u isin $slib_angle
   slib_prelim=$slib_prelim\
-<Point name="C1" n="4"  x="$(slib_cercle[1])" y="$(slib_cercle[2])"  hidden="true" fixed="true"></Point>\
+<Point name="C1" n="4" x="$(slib_cercle[1])" y="$(slib_cercle[2])" hidden="true" fixed="true"></Point>\
 <Circle name="c1" n="5" fixed="$(slib_ray[1])" midpoint="C1" acute="true" hidden="true"></Circle>\
 <PointOn name="R1" n="6" type="thick" on="c1"></PointOn>\
-<Parallel name="l1" n="7" color="5" point="C1" line="s0"  hidden="true"></Parallel>\
-<Intersection name="I1" n="8"  first="l1" second="c1" which="first" hidden="true"></Intersection>\
+<Parallel name="l1" n="7" color="5" point="C1" line="s0" hidden="true"></Parallel>\
+<Intersection name="I1" n="8" first="l1" second="c1" which="first" hidden="true"></Intersection>\
 <Angle name="u" n="9" alias="rx" color="1" first="I1" root="C1" second="R1" display="large" filled="true"></Angle>\
 <Segment name="s1" n="10" from="C1" to="I1"></Segment>\
 <Segment sname="t1" n="11" from="C1" to="R1"></Segment>
 !endif
 !if v isin $slib_angle
-  slib_prelim=$slib_prelim\
-<Point name="C2" n="12"  x="$(slib_cercle[1])" y="$(slib_cercle[2])"  hidden="true" fixed="true"></Point>\
-<Circle name="c2" n="13" fixed="$(slib_ray[2])" midpoint="C2" acute="true"  hidden="true"></Circle>\
+ slib_prelim=$slib_prelim\
+<Point name="C2" n="12" x="$(slib_cercle[1])" y="$(slib_cercle[2])" hidden="true" fixed="true"></Point>\
+<Circle name="c2" n="13" fixed="$(slib_ray[2])" midpoint="C2" acute="true" hidden="true"></Circle>\
 <PointOn name="R2" n="14" type="thick" on="c2"></PointOn>\
-<Parallel name="l2" n="15" point="C2" line="s0"  hidden="true"></Parallel>\
-<Intersection name="I2" n="16"  first="l2" second="c2" which="first" hidden="true"></Intersection>\
+<Parallel name="l2" n="15" point="C2" line="s0" hidden="true"></Parallel>\
+<Intersection name="I2" n="16" first="l2" second="c2" which="first" hidden="true"></Intersection>\
 <Angle name="v" alias="ry" n="17" color="2" first="I2" root="C2" second="R2" display="large" filled="true"></Angle>\
 <Segment name="s2" n="18" from="C2" to="I2"></Segment>\
 <Segment sname="t2" n="19" from="C2" to="R2"></Segment>
 !endif
 !if w isin $slib_angle
-  slib_prelim=$slib_prelim\
-<Point name="C3" n="20"  x="$(slib_cercle[1])" y="$(slib_cercle[2])"  hidden="true" fixed="true"></Point>\
-<Circle name="c3" n="21" fixed="$(slib_ray[3])" midpoint="C3" acute="true"  hidden="true"></Circle>\
+ slib_prelim=$slib_prelim\
+<Point name="C3" n="20" x="$(slib_cercle[1])" y="$(slib_cercle[2])" hidden="true" fixed="true"></Point>\
+<Circle name="c3" n="21" fixed="$(slib_ray[3])" midpoint="C3" acute="true" hidden="true"></Circle>\
 <PointOn name="R3" n="22" type="thick" on="c3"></PointOn>\
-<Parallel name="l3" n="23" point="C3" line="s0"  hidden="true"></Parallel>\
-<Intersection name="I3" n="24"  first="l3" second="c3" which="first" hidden="true"></Intersection>\
+<Parallel name="l3" n="23" point="C3" line="s0" hidden="true"></Parallel>\
+<Intersection name="I3" n="24" first="l3" second="c3" which="first" hidden="true"></Intersection>\
 <Angle name="w" alias="rz" n="25" color="3" first="I3" root="C3" second="R3" display="large" filled="true" actw="180"></Angle>\
 <Segment name="s3" n="26" from="C3" to="I3"></Segment>\
 <Segment sname="t3" n="27" from="C3" to="R3"></Segment>
@@ -182,24 +181,17 @@ slib_ray=$[0.05*$slib_width],$[0.1*$slib_width],$[0.15*$slib_width]
 
 !readproc oef/togetfile.proc $slib_fichier new\
 $slib_prelim
-   
+
 slib_polyedre_vertex=
   !for slib_na=1 to $slib_vertex_cnt
     slib_coord=!line $slib_na of $slib_vertex
     slib_coord=!words2items $slib_coord
     slib_liste=u,v,w
     slib_xyz=!exec pari print(round(100*[$slib_coord]*$slib_M)/100.)
-
-    !!slib_xy=!exec pari slib_f([$slib_coord]
     !for slib_c in $slib_liste
-   !! slib_xy=!mathsubst c$slib_c=cos($slib_c) in $slib_xy
-   !! slib_xy=!mathsubst s$slib_c=sin($slib_c) in $slib_xy
     slib_xyz=!mathsubst c$slib_c=cos($slib_c) in $slib_xyz
     slib_xyz=!mathsubst s$slib_c=sin($slib_c) in $slib_xyz
     !next
-  !!  slib_xy=!mathsubst f=$slib_f in $slib_xy
-  !!  slib_xy=!mathsubst k=$slib_k in $slib_xy
-  
 slib_xy=$(slib_xyz[1])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1))),$(slib_xyz[2])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1)))
     slib_polyedre_vertex=$slib_polyedre_vertex\
 <Point name="$slib_compteur" $(slib_name1_vertex[$slib_na]) n="$slib_compteur" $(slib_show_vertex[$slib_na]) x="($(slib_xy[1]))" y="($(slib_xy[2]))"  fixed="true"></Point>

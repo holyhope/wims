@@ -7,8 +7,9 @@ slib_parms=2
 ,polyhedra name
 
 slib_author=Bernadette PERRIN-RIOU
-slib_out=applet code for drawing a polyhedra by its name with C.a.R
-slib_comment=NE PAS UTILISER SAUF EN TEST
+slib_out=C.a.R code for drawing a polyhedra and its dual ; the polyhedra is given\
+by its name 
+slib_comment=
 !exit
 
 :proc
@@ -26,7 +27,6 @@ slib_f=33
 
 slib_Z0=-1 
 slib_Z1=-1000
-
 
 slib_name_vertex=!getopt name_vertex in $slib_options
 slib_name_face=!getopt name_face in $slib_options
@@ -112,7 +112,6 @@ slib_polyedre_vertex=!lines2rows $slib_polyedre_vertex
    !next
    slib_r=!exec pari centre([$slib_f])
    slib_v_d=!append line v,$slib_r to $slib_v_d
-
 !next
 
 slib_e_d=
@@ -121,29 +120,16 @@ slib_adj=!items2lines $slib_adj
 !for slib_e = 1 to $slib_edge_cnt
     slib_ed=
     !for slib_f=1 to $slib_face_cnt
-    
       slib_fo= !nospace $(slib_p_edge[$slib_e;2,1])
-      slib_tmp=!nospace ,$(slib_p_face[$slib_f;2..-1]),$(slib_p_face[$slib_f;2]),
-      
-     
+      slib_tmp=!nospace ,$(slib_p_face[$slib_f;2..-1]),$(slib_p_face[$slib_f;2]), 
      !if ,$(slib_p_edge[$slib_e;]), isin $slib_tmp or ,$slib_fo, isin $slib_tmp
-     
         slib_ed= !append item $[$slib_f+$slib_vertex_cnt] to $slib_ed
-        !!slib_l1=!line $[$(slib_fo[1])] of $slib_adj
-        !!slib_l2=!line $[$(slib_fo[2])] of $slib_adj
-        !!!if $(slib_fo[2]) notitemof $slib_l1
-        !!  slib_adj=!replace line number  $[$(slib_fo[1])] by $slib_l1,$[$(slib_fo[2])] in $slib_adj
-        !!!endif
-        !!!if $(slib_fo[1]) notitemof $slib_l2
-        !!  slib_adj=!replace line number  $[$(slib_fo[2])]  by $slib_l2,$[$(slib_fo[1])] in $slib_adj
-        !!!endif
      !endif
-     
-     !next
-     slib_e_d=!append line l $slib_ed to $slib_e_d
+    !next
+    slib_e_d=!append line l $slib_ed to $slib_e_d
 !next
 
-#### j'atoute les sommets des faces dans le désordre !
+#### j'ajoute les sommets des faces dans le désordre !
 slib_f_d=
 !for slib_na=1 to $slib_vertex_cnt
    slib_fd=
@@ -155,7 +141,6 @@ slib_f_d=
      !next
     slib_c=!itemcnt $slib_fd
    slib_f_d=!append line f $slib_fd to $slib_f_d
-
 !next
 
 !for slib_na=1 to $slib_vertex_cnt
@@ -174,10 +159,8 @@ $slib_face\
 $slib_v_d\
 $slib_e_d
 
-
 slib_out=!items2words $slib_out
-
 !readproc slib/geo3D/CaR $slib_out,$slib_options
-
 slib_out=$slib_out
  
+
