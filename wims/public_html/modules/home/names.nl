@@ -7,7 +7,7 @@ C_O		=Oefeningen (OEF)
 C_S		=Werkbladen
 C_D		=Les en ander oefenmateriaal
 C_P		=Hulpmiddelen
-C_F		=Forum berichten
+C_F		=Forum
 
 N_browse	=browsen
 N_browsesite	=browse deze website
@@ -27,7 +27,7 @@ N_go		=ga naar
 N_at		=bij
 N_or		=of
 N_import	=import
-N_Mboard	=Berichten forum
+N_Mboard	=Forum
 
 #S_tip		=<b>TIP</b>. Searching for empty string in some categories\
 #gives you the list of most popular resources.
@@ -75,7 +75,7 @@ U_cdt           =Agenda
 U_Doc		=Document
 U_Sheet		=Werkblad
 U_Exam		=Overhoring
-U_Vote		=Enqueste
+U_Vote		=Enquete
 U_myscore	=Mijn cijfers
 U_examworking	=<b><blink>Attentie.</blink></b>Je bent nu met een overhoring voor een cijfer bezig.
 U_examdouble	=In dit geval mag je niet inloggen via deze netwerk-verbinding (ip-adres)
