@@ -1,0 +1,65 @@
+!header
+
+!if $compute=yes
+ !if $swout=$empty
+     <em>$SW</em> gaf geen valide output bij de opgestuurde code.
+ !else
+  Antwoord van <em>$SW</em> :
+  !if $sw=draw
+   <img align=middle src=$swout>
+   !goto after
+  !endif
+  !if $sw=povray
+   <img align=middle src=$swout>
+   !goto after
+  !endif
+<pre>
+$swout
+</pre>
+ !endif
+!else
+ Met dit hulpprogramma kunnen commando's voor bijna alle software , waarvoor bij WIMS een interface bestaat ,
+ worden getest.
+ This tool allows you to run most WIMS-interfaced software or
+ computer languages directly online. Just type in your code and get the
+ result!
+ !href cmd=help Klik hier
+  voor documentatie over de geinstalleerde software.
+ <p>
+ Ontwikkelaars van WIMS (les)materiaal kunnen met dit hulpprogramma commandoregels uittesten.
+ <p>
+ De grootte van de opgestuurde code moet worden beperkt tot 16K.
+ Ook wordt het processor gebruik streng bewaakt.
+ Let op: <em>niet</em> elke WIMS server geeft met deze tool toegang tot <em>alle</em> geinstalleerde software.
+ Dit beleid wordt door de systeembeheerder van deze server bepaald.
+!endif
+
+:after
+!if $msg!=$empty
+ <p><hr> <p>
+ Foutmelding van <em>$SW</em> :
+<font color=red><small><pre>
+$msg
+</pre></small></font>
+!endif
+
+<p><hr> <p>
+!form reply
+<input type=submit value=uitvoeren>
+de volgende regels code
+!default sw=sh
+!formselect sw list $swlist prompt $swname
+$ : <small>[ 
+!href cmd=renew Opruimen
+ ] [ 
+!href cmd=help Help
+ ]</small>
+<br>
+!set src=!reinput $src
+!set src=!replace internal &amp;#36; by &#36; in $src
+<textarea wrap=off cols=70 rows=15 name=src>$src</textarea>
+</form>
+
+!tail
+
+!reset src sw
