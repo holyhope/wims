@@ -1,0 +1,26 @@
+
+!for chapter=1 to $chaptercnt
+ !set a=!line 1 of $(chapter$chapter)
+ <h2>
+ !word $chapter of I. II. III. IV. V. VI. VII. VIII. IX. X.
+ $a </h2>
+ !read chapter$chapter.phtml
+ <ol>
+ !set n=!linecnt $(chapter$chapter)
+ !for i=2 to $n
+  !set l=!line $i of $(chapter$chapter)
+  !set t=!item 1 of $l
+  !set s=!item 2 to -1 of $l
+  <p><li><a name=$t><H3>$s </H3>
+  !read $chapter/$t.phtml
+ !next i
+ </ol>
+!next chapter
+
+<p><hr><p>
+<center>
+!href module=$module Interactieve versie
+</center>
+
+!reset style
+
