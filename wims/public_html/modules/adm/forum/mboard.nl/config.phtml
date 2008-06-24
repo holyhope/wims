@@ -1,39 +1,39 @@
 
-Voici les paramètres de ce forum que vous pouvez changer.
+Hier kan het forum worden afgesteld.
 
 !form reply
 <input type=hidden name=job value=config>
 <input type=hidden name=cf_set value=yes>
 <ul>
- <p><li>Titre du forum&nbsp;:<br>
+ <p><li>Naam van dit forum&nbsp;:<br>
   <input size=60 name=cf_title value="$cf_title">
- <p><li>Description&nbsp;:<br>
+ <p><li>Omschrijving &nbsp;:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
- <p><li>Qui peut lire les messages&nbsp;?
+ <p><li>Wie mag deze berichten lezen&nbsp;?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_readpolicy list alluser,owner prompt \
-	tout participant, seulement vous-même
+	alle deelnemers, alleen ikzelf
  !else
   !formselect cf_readpolicy list open,alluser,owner prompt \
-	tout le monde (inscrits ou non), utilisateurs inscrits seulement,\
-	personne à part vous
+	iedereen,deelnemers,\
+	alleen ikzelf
  !endif
- <p><li>Qui peut envoyer des messages dedans&nbsp;?
+ <p><li>Wie mag berichten schrijven&nbsp;?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
-	tout participant,\
-	participants avec vérification d'email,\
-	seulement vous-même
+	alle deelnemers,\
+	alle deelnemers met een geldig emailadres,\
+	alleen ikzelf
  !else
   !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
-	visiteurs avec adresse email ou inscrits,\
-	utilisateurs inscrits seulement,\
-	inscrits avec vérification d'email,\
-	personne à part vous
+	iedereen met een geldig emailadres,\
+	alle deelnemers,\
+	alle deelnemers met een geldig emailadres,\
+	alleen ikzelf
  !endif
 
 </ul>
-<p><center><input type=submit name=cf_set value="Enregistrer le changement">
-&nbsp;&nbsp;<input type=submit name=cf_abandon value="Abandonner">
+<p><center><input type=submit name=cf_set value="Opslaan">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="Annuleren">
 </center> <p></form>
 
