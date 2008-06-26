@@ -921,6 +921,8 @@ displaylist2=
             !if $(my[1])$(my[2]) notsametext
              my=!rawmath $(my[1])-($(my[2]))
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
+			       coord=!rawmath $coord
+			       coord=!exec pari c=$coord ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
              !! mat=!nospace [$my;$coord]
               !! cond=matrank($mat)<=1
              test=!exec pari my=[$my];c=vecmax(abs(my)) ; my=my/c ;\
