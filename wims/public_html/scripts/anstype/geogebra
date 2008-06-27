@@ -7,7 +7,7 @@
 ### see if he pressed the "I have no clue" button...
 !if ? isin $(reply$i)
     freegot=$[$freegot + 0.1]
-    diareply$i=bad 
+    diareply$i=bad
     reply$i=Je ne sais pas.
     !exit
 !endif
@@ -50,7 +50,7 @@ TODO ??
 ### set "all" possible scores zero
 name_score=0
 num_cond_score=0
-formal_cond_score=0 
+formal_cond_score=0
 total_name=0
 total_num_cond=0
 total_formal_cond=0
@@ -77,58 +77,6 @@ yourlistformal=!row 2 of $(reply$i)
 yourlistformal=!nospace $yourlistformal
 yourlistformal=!replace internal && by $\
 $ in $yourlistformal
-
-## on refait une vraie liste $yourlist_name avec des coefficients plus précis
-### on pourrait enlever. Cependant, je laisse au cas où on reviendrait en arrière
-###pour cause d'efficacité de la méthode "xml" 
-## en plus on transforme en liste ...
-yourlist_name2=$yourlist_name
-
-!for p = 1 to $ynamecnt
-  type=$(your_type[$p])
-  !if $type iswordof vector point
-    yo=!line $p of $yourcoord
-    prog=!exec pari $(your_name[$p])=[$yo]
-  !endif
-  !if $type iswordof line circle ray segment
-    formal=!line $p of $yourlistformal
-    formal= !replace internal = by , in $formal
-    coord= !replace internal [ by &&&&, in $formal
-    coord= !replace internal ] by ,%%%% in $coord 
-    Name= $(coord[1])
-    Fonction= !replace internal &&&& by in $(coord[2])
-	Fonction= !lower $Fonction
-    Fonction=!getopt $Fonction in $typelangue 
-    coord=$(coord[3..-1])
-    coord_cnt=!itemcnt $coord
-    !for u=1 to $coord_cnt
-     !if poly notin $(coord[$u])
-      name=!positionof item $(coord[$u]) in $your_name
-      !if $name!=
-       c=!line $name of $your_coord
-       !if $(your_type[$name])=vector
-         c=$c,0
-       !endif
-        coord=!replace item number $u by [$c] in $coord
-      !endif
-     !else
-       coord=!replace item number $u by in $coord
-     !endif
-    !next u
-    coord= !nospace $coord
-    coord=!nonempty items $coord
-    coord= !replace internal &&&&, by ( in $coord
-    coord= !replace internal ,%%%% by ) in $coord
-    coord= !exec pari $Name=$Fonction($coord
-    !if $coord!=
-      your_coord=!replace line number $p by $coord in $your_coord
-      yourlist_name2=!replace line number $p by $(formal[1])=$type,$coord in $yourlist_name2
-    !else
-      !!debug $formal $Fonction 
-    !endif
-   !endif
- !endif
-!next p
 
 
 
@@ -170,7 +118,7 @@ Ne sert plus
 !!yourlist_name_nonignore=$list
 ###################
 
-yourlist_name_nonignore=$yourlist_name2  
+yourlist_name_nonignore=$yourlist_name
 yourlist_nonignore=!replace internal = by , in $yourlist_name_nonignore
 yourlist_nonignore=!column 2 to -1 of $yourlist_nonignore
 
@@ -196,7 +144,7 @@ yourlist$output=
    ob=$($type)
    !if $(M_objet[2]) issametext segment
      obcnt=!itemcnt $ob1
-     !if $obcnt>=5
+     !if $obcnt>=5   
        ob=     
      !endif 
    !endif
@@ -214,6 +162,7 @@ yourlist1=$yourlist11
   ligne=!line $li of $yourlist11
   ligne1=!replace internal = by , in $ligne
   vartemp=!lower $(ligne1[2])
+  vartemp=!deaccent $vartemp
   vartemp=!getopt $vartemp in $typelangue
   !if $vartemp iswordof segment line ray midperpendicular parallel perpendicular
    !for u = 3 to 4
@@ -256,6 +205,7 @@ yourlist1=$yourlist11
      !next   
   !endif
   vartemp=!lower $(ligne1[2])
+  vartemp=!deaccent $vartemp
   vartemp=!getopt $vartemp in $typelangue
   !if $vartemp iswordof intersection
     !for u = 3 to 4
@@ -350,10 +300,10 @@ yourggb=
   type=!item 2 of $ob1
   type=!lower $type
   type=!getopt $type in $typelangue
-  !if $type issametext segment   
+  !if $type issametext segment  
     obcnt=!itemcnt $ob1
-    !if $obcnt>5 
-       ob=
+    !if $obcnt>5   
+       ob=     
     !endif
   !endif
   !if $type issametext polygon
@@ -405,6 +355,7 @@ yourlistformal=
     M_objet=!replace internal ] by  in $(M_objet)
   !endif
   vartemp=!lower $(M_objet[2])
+  vartemp=!deaccent $vartemp
   type=!getopt $vartemp in $typelangue
   !if $type!=
     cn = !itemcnt $M_objet
@@ -423,7 +374,7 @@ yourlistformal=
             typeu=$(your_type[$typeu])
           !endif
           type=$type $typeu
-        !endif
+        !endif                  
       !next
       test=!text select 012345678 in $[$(M_objet[5])]
       !if $test=$(M_objet[5])] and $[$(M_objet[5])] <=8 and $type1 iswordof polygon
@@ -434,7 +385,7 @@ yourlistformal=
          type=$type point $cn
        !endif
     !endif
-    type=!nospace $type formal
+    type=!nospace $type formal     
     yourlistformal = !append line $($type) to $yourlistformal
   !else
      yourlistformal = !append line $ob to $yourlistformal
@@ -507,6 +458,7 @@ mylist2orig=$mylist2
   ligne=!replace internal [ by , in $ligne
   ligne=!replace internal ] by , in $ligne
   vartemp=!lower $(ligne[2])
+  vartemp=!deaccent $vartemp
   vartemp=!getopt $vartemp in $typelangue
   !if $vartemp iswordof ray line
     name=!positionof item  $(ligne[4]) in $your_name
@@ -534,7 +486,7 @@ mylist2orig=$mylist2
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof middle
-    ligne_num=$(ligne[1])=x_$(ligne[3])+x_$(ligne[4])/2)),(y_$(ligne[3])+y_$(ligne[4])/2)
+    ligne_num=abs(x_$(ligne[1])-(x_$(ligne[3])+x_$(ligne[4]))/2)<10^(-$pr)&&abs(y_$(ligne[1])-(y_$(ligne[3])+y_$(ligne[4]))/2)<10^(-$pr)
     mylist2=!replace line number $p by $ligne_num in $mylist2
   !endif
   !if $vartemp iswordof angle
@@ -609,6 +561,7 @@ mylistformal=
     M_objet=!replace internal ] by  in $(M_objet)
   !endif
   vartemp=!lower $(M_objet[2])
+  vartemp=!deaccent $vartemp
   type=!getopt $vartemp in $typelangue
   !if $type!=
     cn = !itemcnt $M_objet
@@ -621,7 +574,7 @@ mylistformal=
     !if $type notwordof polygon or $cn<=3
       !for u = 1 to $cn
         !reset typeu
-        !if $(M_objet[2+$u]) notsametext  and $(M_objet[2+$u]) notsametext ??   
+        !if $(M_objet[2+$u]) notsametext  and $(M_objet[2+$u]) notsametext ??      
           typeu=!positionof item $(M_objet[2+$u]) in $my_name
           ## il peut ne pas exister si défini par eq_c .
           !if $typeu issametext 
@@ -630,6 +583,7 @@ mylistformal=
             typeu=!line $typeu of $mylist11
             typeu=!replace internal = by , in $typeu
 			vartemp=!lower $(typeu[2])
+			vartemp=!deaccent $vartemp
             typeu=!getopt $vartemp in $typelangue
             !default typeu=point
           !endif 
@@ -637,14 +591,14 @@ mylistformal=
         !if $(M_objet[2+$u]) issametext ??
           typeu= _
         !endif
-        type=$type $typeu                                
+        type=$type $typeu              
       !next
      !else
        !if $cn <=8
          type=$type point $cn
        !endif
     !endif 
-    type=!nospace $type formal    
+    type=!nospace $type formal     
     ligne=$($type)
     !if $ligne notsametext 
       mylistformal = !append line $ligne to $mylistformal
@@ -788,7 +742,7 @@ $ in $yobj1
            yobj2=
          !endif
          ytype=!item 2 of $yobj
-		 ytype=!lower ytype
+		 ytype=!lower $ytype
          yobj=!item 3 to -1 of $yobj
          yobj=!nospace $yobj
          ycnt=!wordcnt $obj
@@ -833,7 +787,7 @@ $ in $yobj1
 !!!! laisser la ligne vide précédente    
  !endif
   mscr=!append item $mscr2 to $mscr
-!next p
+!next p		
 
 ###NUMERICAL CONDITION
 displaylist2=
@@ -880,7 +834,7 @@ displaylist2=
        coord=!getopt $name in $obj
        type=!item 1 of $coord
        coord=!item 2 to -1 of $coord
-    ###for a point coord=x,y
+	   ###for a point coord=x,y
     ###for a conic coord=x2,y2,xy,x,y,cst
       !if $type isitemof segment,function,angle,numeric,text
         cond=!replace internal v_$(name)= by ($coord)== in $cond
@@ -902,6 +856,7 @@ displaylist2=
       cond=!replace internal x_$(name) by ($[-$(coord[4])/(2*$(coord[1]))]) in $cond 
       cond=!replace internal y_$(name) by ($[-$(coord[5])/(2*$(coord[2]))]) in $cond
     !endif
+
       !if $type isitemof $conic
         cond=!replace internal x2_$(name) by ($(coord[1])) in $cond 
         cond=!replace internal y2_$(name) by ($(coord[2])) in $cond 
@@ -914,15 +869,15 @@ displaylist2=
         !if eq_ isin $cond
           cond=!replace internal == by = in $cond
           cond=!replace internal = by %% in $cond
-          cond=!replace internal : by , in $cond 
-          !if eq_$(name) issametext $(cond[1]) or $(cond[1]) issametext eq_ 
+          cond=!replace internal : by , in $cond
+         !if eq_$(name) issametext $(cond[1]) or $(cond[1]) issametext eq_ 
             my=$(cond[2..-1])
             my=!replace internal %% by , in $my
             !if $(my[1])$(my[2]) notsametext
              my=!rawmath $(my[1])-($(my[2]))
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-			       coord=!rawmath $coord
-			       coord=!exec pari c=$coord ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
+			 coord=!rawmath $coord
+			 coord=!exec pari c=$coord ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
              !! mat=!nospace [$my;$coord]
               !! cond=matrank($mat)<=1
              test=!exec pari my=[$my];c=vecmax(abs(my)) ; my=my/c ;\
@@ -964,7 +919,7 @@ displaylist2=
   !else
   ## laisser la ligne vide
      displaylist2=$displaylist2\
-  
+ 	
   !endif
   mscr=!append item $mscr2 to $mscr
 !reset display
@@ -1094,6 +1049,6 @@ m_reply$i=$yourggb
 ### Reponse renvoyée dans \reply1
 m_reply$i=$ynamecnt\
 $yourggb\
-$yourlist_name2
+$yourlist_name
 
 m_sc_reply$i=$Mscr
