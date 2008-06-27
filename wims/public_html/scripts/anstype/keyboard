@@ -1,0 +1,64 @@
+
+good=$(replygood$i)
+replyGood$i=<font size=+2>$good</font>
+option=$(replyoption$i)
+dd=$(reply$i)
+
+m_reply_$i=<font size=+2>$dd</font>
+reply_$i=<font size=+2>$dd</font>
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+good=!replace internal æ by &#230; in $good
+good=!replace internal ½ by &#156 in $good
+good=!replace internal ð by &#240; in $good
+dd=!replace internal æ by &#230; in $dd
+dd=!replace internal ½ by &#156 in $dd
+dd=!replace internal ð by &#240; in $dd
+
+!!good=!replace internal . by in $good
+!!dd=!replace internal . by in $dd
+
+badchars=
+repchars=!text repeat $ $ to 256
+
+!if nopunct iswordof $option
+badchars=.,;!:?
+!endif
+
+!if $badchars != $empty
+ dd=!translate internal $badchars to $repchars in $dd
+ good=!translate internal $badchars to $repchars in $good
+!endif
+!if nocase iswordof $option
+ dd=!tolower $dd
+ good=!tolower $good
+!endif
+!if deaccent iswordof $option or noaccent iswordof $option
+ dd=!deaccent $dd
+ good=!deaccent $good
+!endif
+
+ dd=!singlespace $dd
+ good=!singlespace $good
+ 
+!if nospace iswordof $option
+ dd=!nospace $dd
+ good=!nospace $good
+!endif
+
+good=!trim $good
+dd=!trim $dd
+
+!if $good=$empty
+ Test=bad $i
+ !exit
+!endif
+
+!if $dd=$good
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+

@@ -1,0 +1,191 @@
+
+!set anstype=yes
+!set anstyle=symtext
+!set ans_reaccent=yes
+
+!if $wims_read_parm=def
+ !exit
+!endif
+!if debug iswordof $m_oefenv and ?analyze notin $(replygood$i)
+ !set replydefaulted=yes
+ !if $oef_default=yes
+  !set r_=!row 1 of $(replygood$i)
+  !set r_=!translate | to $\
+$ in $r_
+  !default reply$i=!line 1 of $r_
+ !endif
+!endif
+!if $wims_read_parm!=noprompt
+ <tr><td align=right>$(replyname$i)<td>
+!endif
+!set keyboard=!getopt keyboard in $(replyoption$i)
+!set style=!getopt style in $(replyoption$i)
+!set style=!replace internal $ $ by ; in $style
+!set style=!replace internal @ by $ $ in $style
+!if $keyboard=si
+!set keyboard=&#193; &#260; &#196; &#201; &#280; &#282; &#205;\
+&#225; &#261; &#228; &#233; &#281; &#283; &#237;\
+&#211; &#244; &#250; &#366; &#221; &#268;\
+&#243; &#212; &#218; &#367; &#253; &#269;\
+&#271; &#313; &#327; &#340; &#344; &#352; &#381;\
+&#357; &#314; &#328; &#341; &#345; &#353;\
+
+!goto kb
+!endif
+
+
+!if $keyboard=es
+!set keyboard=&#193; &#201; &#205; &#209; &#211; &#218; &#220; &#191;\
+&#225; &#233; &#237; &#241; &#243; &#250; &#252; &#161;
+!goto kb
+!endif
+
+!if $keyboard=ru
+!set keyboard=&#1040; &#1072; &#1041; &#1073; &#1042; &#1074; &#1043; &#1075; &#1044;\
+&#1076; &#1045; &#1077; &#1046; &#1078; &#1047; &#1079; &#1048; &#1080;\
+&#1049; &#1081; &#1050; &#1082; &#1051; &#1083; &#1052; &#1084; &#1053;\
+&#1085; &#1054; &#1086; &#1055; &#1087; &#1056; &#1088; &#1057; &#1089; \
+&#1058; &#1090; &#1059; &#1091; &#1060; &#1092; &#1061; &#1093; &#1062;\
+&#1094; &#1063; &#1095; &#1064; &#1096; &#1065; &#1097; &#1066; &#1098; \
+&#1067; &#1099; &#1068; &#1100; &#1069; &#1101; &#1070; &#1102; &#1071; &#1103;
+!goto kb
+!endif
+
+!if $keyboard=de
+!set keyboard= &#196; &#228; &#201; &#233; &#214; &#246; &#220; &#252; &#223;
+!goto kb
+!endif
+
+!if $keyboard=el
+ !set keyboard= &#913; &#914; &#915; &#916; &#917; &#918; &#919; &#952; &#921; &#922;\
+ &#945; &#946; &#947; &#948; &#949; &#950; &#951; &#920; &#953; &#954;\
+&#923; &#924; &#925; &#926; &#927; &#960; &#961;  &#963; \
+&#955; &#956; &#957; &#958; &#959; &#929;  &#931; &#932;\
+&#964; &#933; &#965; &#934; &#966; &#935; &#967; &#936; &#968; &#937; &#969;
+
+!!&#x3A0; &#x3A0; &#x3C4;\
+
+!endif
+!if $keyboard=pl
+ !set keyboard=&#260; &#280; &#211; &#262; &#321; &#323; &#346; &#377; &#379; \
+  &#261; &#281; &#243; &#263; &#322; &#324; &#347; &#378; &#380; 
+!goto kb
+!endif
+
+!if $keyboard=it
+ !set keyboard=&#192; &#193; &#200; &#201; &#204; &#205; &#210; &#211; &#217; &#218;\
+ &#224; &#225; &#232; &#233; &#236; &#237; &#242; &#243; &#249; &#250;
+!goto kb
+!endif
+
+!if $keyboard=en_ipa
+ !set keyboard= &#230; &#601; &#618; &#650; &#652; e &#594;\
+ &#604;: &#593;: i: u: &#596;:\
+ &#331; &#643; &#952; &#240; &#658; &#734; &#679; &#676;\
+ e&#618; a&#618; &#596;&#618; a&#650; &#601;&#650; &#618;&#601; e&#601;
+
+!!&#171; &#187; &#128; &#649; &#248; &#592; &#655; &#231; &#946;
+!!&#611; &#654; &#626; &#641; &#613; &#660;
+!goto kb
+!endif
+:kb
+!set keyboard=!declosing $keyboard
+!set keyboard=!rows2lines $keyboard
+!set keyboard=!lines2rows $keyboard
+!set keyboard=!singlespace $keyboard
+!set keyboard=!rows2lines $keyboard
+!set cnt_kb=!linecnt $keyboard
+
+!set inputoption=!replace internal $	$ by $\
+$ in $inputsize
+!set inputsize=!line 1 of $inputoption
+!set inputoption=!line 2 to -1 of $inputoption
+!set option=!line 1 of $inputoption
+!if $option issametext default
+  !set option=class="wims_oef_input"
+  !set inputoption=!line 2 to -1 of $inputoption
+!endif
+!set inputoption=$option $inputoption
+<style type="text/css">
+ .char {$style}
+ </style>
+
+<script type="text/javascript">
+var browser="";
+var obj=new Object();
+!for u = 1 to $cnt_kb
+ !set l=!line $u of $keyboard
+ !set l=!trim $l
+ !set l$u = !items2words $l
+!next
+
+!if $cnt_kb= 0
+  !set cnt_kb=4
+!endif
+
+!for u = 1 to $cnt_kb
+ var l$u= "$(l$u)" ;
+!next
+
+function checkBrowser()
+	{
+	if(navigator.appName=='Microsoft Internet Explorer')
+		{browser='I';}
+	else if(navigator.appName=='Netscape')
+		{browser='N';}
+	return browser;
+	}
+function addText(text)
+	{
+	obj=document.forms['replyform'].elements['reply$i'];
+	if(checkBrowser()=="I")
+	 {
+		var start=obj.selectionStart;
+		var beg=obj.value.substring(0, start);
+		var end=obj.value.substring(start);
+		obj.value=end+text+beg;
+		obj.selectionStart=obj.selectionEnd=start+text.length;
+		}		
+	else
+		{
+		var start=obj.selectionStart;
+		var beg=obj.value.substring(0, start);
+		var end=obj.value.substring(start);
+		obj.value=beg+text+end;
+		obj.selectionStart=obj.selectionEnd=start+text.length;
+		obj.focus();
+		}
+	}
+
+function writeChar(win,string)
+	{
+	var buttons=string.split(' ');
+	var i;
+	for(i=0;i<buttons.length;i++)
+		{
+		document.write('<input class="char" type="button" value="'+buttons[i]+'" id="'+buttons[i]+'" onClick="addText(\''+buttons[i]+'\');" />');
+		}
+	}
+</script>
+
+!set inputsize=!translate x to , in $inputsize
+!set inputsize=!items2words $inputsize
+!distribute words $inputsize into sizeh,sizev
+!bound sizeh between integer 10 and 60 default 20
+!bound sizev between integer 1 and 20 default 1
+<center>
+<script type="text/javascript">
+!for a = 1 to $cnt_kb
+  writeChar(self,l$a);
+  document.write('<br>');
+!next
+</script>
+</center>
+<center>
+<textarea name="reply$i" rows="$sizev" cols="$sizeh" $inputoption>$(reply$i)</textarea>
+</center>
+<p>
+
+!!data= decodeURIComponent(data);
+
+!reset inputsize
