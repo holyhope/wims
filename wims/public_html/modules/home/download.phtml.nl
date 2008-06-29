@@ -1,32 +1,30 @@
 !header
 
-You may download
+U kunt downloaden 
 <ul><li>
- the last stable version of wims
+de laatste stabiele versie van wims
 <ul><li>
-from the <a target=wims_external href="http://wims.unice.fr/download/wims/">Nice site</a> ;
+van de server van <a target=wims_external href="http://wims.unice.fr/download/wims/">Nice</a> ;
 </li>
 <li>
-from the development site: 
+van de ontwikkelings server:
 <a target=wims_external href="http://sourcesup.cru.fr/frs/?group_id=379">
 sourcesup
-</a> where a repository of the WIMS project now exists;
+</a>
+waar nu het WIMS project is gehuisvest;
 </li>
 </ul></li><li>
-the last beta version
-from <a target=wims_external href="http://sourcesup.cru.fr/frs/?group_id=379">
+de laatste beta versie van <a target=wims_external href="http://sourcesup.cru.fr/frs/?group_id=379">
 sourcesup
 </a>.
 </li>
 </ul>
 
-See 
+Zie ook
 <a target=wims_external href="http://wimsedu.info">http://wimsedu.info</a>
-for some installation help (in french). 
+ voor een toelichting bij de installatie [franstalig].
 <p>
-Once the installation completed, all modules may be downloaded 
-via the site maintenance tool.
-
+Alle modules [lesmateriaal e.d.] kunnen via internet met "WIMS configuratie & onderhoud"  worden geinstalleerd vanaf een "draaiende" WIMS installatie. 
 
 !tail
 
