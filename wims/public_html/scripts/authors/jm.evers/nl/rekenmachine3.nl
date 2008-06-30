@@ -1,0 +1,2 @@
+<a onClick=window.open("scripts/authors/jm.evers/nl/calculator3.html","REKENMACHINE","width=800,height=500,left=0,top=0")> 
+<img src="scripts/authors/jm.evers/gifs/xcalc.png" alt="toegestane rekenmachine" ></a>
