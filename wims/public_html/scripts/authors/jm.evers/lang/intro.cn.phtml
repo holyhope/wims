@@ -1,23 +1,26 @@
-!! change these for common authordir 
-!set phtmldir=jm.evers/phtml
-!set jsdir=$module_dir/jm.evers/js
-!set gifdir=$module_dir/jm.evers/gifs
-
+!set phtmldir=authors/jm.evers/phtml
+!set jsdir=scripts/authors/jm.evers/js
+!set gifdir=scripts/authors/jm.evers/gifs
 !set max_s=40
+
 !header
 !form new
+!set taal=$lang
 !set s=0
 !for p=1 to 100
-    !set competence=!record $[-1*$p] of lang/remarks.cn
+    !set competence=!record $[-1*$p] of lang/remarks.$taal
     !if $competence=$empty
-	!goto READY
-    !else
-	!increase s
-	!set sum=!append word <li>$competence</li> to $sum
-	!set selecttext=!append line <option value="$s">$competence</option> to $selecttext
+    !goto READY
+    !else    
+    !increase s
+    !if # isin $competence
+        !set competence=!replace internal # by $empty in $competence
+        !set selecttext=!append line <option value="$s"></option> to $selecttext
+    !endif
+    !set sum=!append word <li>$competence</li> to $sum
+    !set selecttext=!append line <option value="$s">$competence</option> to $selecttext
     !endif
 !next p
-
 :READY
     <input type=hidden name=module value="$module">
     <a onmouseover="return escape('$module_title<br>是 <em>SCHAERSVOORDE AALTEN</em> 开发的 WIMS 模块</b><br><img src=$gifdir/schaersvoorde.jpg>')">
@@ -34,11 +37,10 @@
     <p align="center">
     <table bgcolor=$bgcolor2>
         <td>
-	  
         <p align="left">
-             <a onmouseover="return escape('<ol>$sum</ol><br>本模块目前有 $s 个不同主题<br>每个主题通常有 4 个难度等级 ')">
-	        哪个 <font color="blue">主题</font> ?
-	     </a>
+             <a onmouseover="return escape('<ol>$sum</ol><br>本模块目前有 $s 个不同主题<br>每个主题通常有 4 个难度等级')">
+                哪个 <font color="blue">主题</font> ?
+            </a>
             <select name="subject">
             !for p=1 to $s
                 !line $p of $selecttext
@@ -103,14 +105,14 @@
         </p>
         </td>
         !if $usage=3 or $usage=4
-	    <input type="hidden" name="usage" value="5">
-    	    <tr>
-    	    <td>
-    	    <hr width="50%">
-    	    !if devel isin $module_dir
-    	    <p align="left">
-        	自由格式 , 多重选择 , 拖放 ? 
-    		<a onmouseover="return escape('此变量可在练习文件内<br>另设或个别设置.<br>不是每个自由格式模块都能通过选取$$questiontype而成为多重选择<br><br>对于某些$$subject, 使用 GeoGebra 的模块将会如此<br>不受你在这里的设置的影响...')">
+        <input type="hidden" name="usage" value="5">
+        <tr>
+        <td>
+        <hr width="50%">
+        !if devel isin $module_dir
+        <p align="left">
+            自由格式 , 多重选择 , 拖放 ? 
+            <a onmouseover="return escape('此变量可在练习文件内<br>另设或个别设置.<br>不是每个自由格式模块都能通过选取$$questiontype而成为多重选择<br><br>对于某些$$subject, 使用 GeoGebra 的模块将会如此<br>不受你在这里的设置的影响...')">
             <font color=blue>或 GeoGebra</font>
             </a>
             <select name="questiontype">

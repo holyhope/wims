@@ -1,13 +1,13 @@
 var r0="Do You want to send this answer ?\n";
 var r1="You did not answer question number ";
-var r2="your answer is unreal...\nI will not check it.";
+var r2="this answer is unreal...\nI will not check it.";
 var r3="I\'ve rewritten the special root-syntax sqrt[a](b)\ninto a power-syntax b^(1/a)"; 
 var r4="Your answer contains a komma\nUse the decimal point notation for broken numbers...\nIf you want to give multiple answer, use words like \"and\" \"or\" ";
 var r5="you should replace the character \"o\" by the number \"0\"";
 var r6="that\'s some story you try to tell\n But please formulate your answer more seriously...";
 var r7="You are using the letter \"x\" as multiplication symbol\nPlease use a normal symbol like \"*\" for that...\nOr in case of multiple answers, write something like:\n x1=123 and x2=456";
 var r9="Please write a function with parenthesis\n So write: sqrt() sin() etc()";
-var r10="You do not use the correct syntax for scientific notation...\n 5*10^2 == 5e+2\n 5*10^-6 == 5e-6\nNo \"broken\" exponents...";
+var r10="You do not use the correct syntax for scientific notation...\n 5*10^03 == 5*10^3 \n 5*10^2 == 5e+2\n 5*10^-6 == 5e-6\nNo \"broken\" exponents...";
 var r11="A special syntax may be used for the higer roots:\nsqrt[3](11) = \u221B(17) \n sqrt[4](23) = \u221C(23)";
 var r12="I've rewritten your log[a](b) to the corresponding 10log :\n log(b)/log(a)";
 var r13="I can\'t handle square brackets in other usage as sqrt[] and log[]...[?]\nTry to rewrite your answer ";
@@ -24,5 +24,13 @@ var r23="These nice long divisions all end with the number zero (0)";
 var r24="I can not remove more pieces of the \"tail\"...";
 var r25="Question number :";
 var r26="You have some unfinished calculations...";
-var r27="In this exercise the percentage can not be more than 100 % ..."
-var r28="In this exercise the percentage can not be less than 0 % ..."
+var r27="In this exercise the percentage can not be more than 100 % ...";
+var r28="In this exercise the percentage can not be less than 0 % ...";
+var r29="Your (final) answer should be in the form x = 1234 , or something like that...\nLook into the helppages for support.";
+var r30="Your answer should at least contain a few \"arrows\" to indicate the steps of your \"deduction\"\nLook into the help pages for more info";
+var r31="The minimal amount of steps [ arrows ->] must be: ";
+var r32="\n... this \"text\" has been removed from your answer.\n In this exercise there is no need for a \"deduction\" of the correct answer...";
+var r33="If I send this answer to WIMS\nit will most likely be rejected... "; 
+var r34="You will receive a small penalty, because You\'ve used too many objects ";                                                               
+var r35="You\'ve constructed :";                                                                                                          
+                                  

@@ -21,11 +21,13 @@
 	    input=document.applets[0].getLinear();input=input+'';
 	    v=input.length;if(v==0){alert(r1+"\ 1");return;}if(v>100){alert(r2); return;}
 	    if(input.indexOf('error')!=-1){alert(input);return;}
+	    input=arrows(input,2,"","");if(input=="error"){return;}
 	    input=nthroot(input);if(input=="error"){return;}
 	    if(input.indexOf(',')!=-1){alert(r4);return;}
 	    if(check_f(input)==0){return;}if(check_o(input)==0){return;}
 	    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
-	    input=check_s(input);if(check_x(input)==0){return;}
+	    input=science(input);if(input=="error"){return;}
+	    if(check_x(input)==0){return;}
 	    reply=input+"\n";t1=input.indexOf("[");
 	    if(t1 !=- 1){
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
@@ -44,12 +46,13 @@
 		if(document.mydefaultform[z].id=="myinput"){
 		    input=document.mydefaultform[z].value;
 		    v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
-		    input=normalize(input);
 		    input=nthroot(input);if(input=="error"){return;}
 		    if(input.indexOf(',')!=-1){alert(r4);return;}
+		    input=arrows(input,2,"","");if(input=="error"){return;}
 		    if(check_f(input)==0){return;}if(check_o(input)==0){return;}
 		    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
-		    input=check_s(input);if(check_x(input)==0){return;}
+		    input=science(input);if(input=="error"){return;}
+		    if(check_x(input)==0){return;}
 		    reply=reply+input+"\n";t1=input.indexOf("[");
 		    if(t1 !=- 1){
 			if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}

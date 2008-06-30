@@ -1,3 +1,7 @@
+<script language="javascript" type="text/javascript">
+    !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
+    function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
+</script>
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script> 
 <p align="center">
 <table>
@@ -50,12 +54,16 @@
 			!set ins_attr=name="image$n" id="image$n"
 			!set insplot_set=$(image_settings$n)
 			!insplot $(image$n)
-		    !else
-			!if $applet=1
-			    $(object$n)
-			!endif
 		    !endif
 		!endif
+	    </td>
+	!endif
+	!if $applet=1
+	    !if $XSIZE>450
+		<tr>
+	    !endif
+	    <td valign="top" align="center">
+		$(object$n)
 	    </td>
 	!endif
 	!if $javascript != $empty
@@ -73,3 +81,5 @@
 </table>
 </p>
 $dhtml
+!!! after the inputelements are in the DOM-tree: fill-in the previous answers
+<script language="javascript" type="text/javascript">try{document.onload=refill();}catch(e){}</script>

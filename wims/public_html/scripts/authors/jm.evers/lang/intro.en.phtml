@@ -1,11 +1,18 @@
-!! change these for common authordir 
-!set phtmldir=jm.evers/phtml
-!set jsdir=$module_dir/jm.evers/js
-!set gifdir=$module_dir/jm.evers/gifs
-
+!set phtmldir=authors/jm.evers/phtml
+!set jsdir=scripts/authors/jm.evers/js
+!set gifdir=scripts/authors/jm.evers/gifs
 !set max_s=40
+
 !header
 !form new
+!set talen=en nl cn
+!if $lang notin $talen
+    !set taal=en
+    !set translated=0
+!else
+    !set translated=1
+    !set taal=$lang
+!endif
 !set s=0
 !for p=1 to 100
     !set competence=!record $[-1*$p] of lang/remarks.$taal
@@ -13,6 +20,10 @@
 	!goto READY
     !else    
 	!increase s
+	!if # isin $competence
+	    !set competence=!replace internal # by $empty in $competence
+	    !set selecttext=!append line <option value="$s"></option> to $selecttext
+	!endif
 	!set sum=!append word <li>$competence</li> to $sum
 	!set selecttext=!append line <option value="$s">$competence</option> to $selecttext
     !endif
@@ -48,11 +59,29 @@
 			    </em>
 			</small>
 		    </a>
+		    !set taal=en
+		    !! defaults to english for my my-work
+!!		!else
+!!		    <a onmouseover="return escape('the variable $$talen for this module is<br>$talen<br><font color=red>Please note:<br>this jm.evers module is native in Dutch (and translated into English)<br>All other languages are goooogled....<br>and will be not -yet- really usable...</font>')">
+!!			Set the <font color="blue">module language</font> :
+!!		    </a>
+!!		    <select name="taal">
+!!			!set langcnt=!wordcnt $talen
+!!			!for l=1 to $langcnt
+!!			    !set L=!word $l of $talen
+!!			    <option value=$L>$L</option>
+!!			!next p	
+!!			    <option value=fr>fr (not usable)</option>
+!!			    <option value=de>de (not usable)</option>
+!!			    <option value=it>it (not usable)</option>
+!!			    <option value=es>es (not usable)</option>
+!!
+!!		    </select>
 		!endif
 		<p align="left">
-!!		     <a onmouseover="return escape('<ol>$sum</ol><br>This module has $s different subjects or topics<br>normally, each subject has 4 levels')">
+		     <a onmouseover="return escape('<ol>$sum</ol><br>This module has $s different subjects or topics<br>normally, each subject has 4 levels')">
 	    		Which <font color="blue">topic</font> ?:
-!!		    </a>
+		    </a>
 		    <select name="subject">
 			!for p=1 to $s
 			    !line $p of $selecttext

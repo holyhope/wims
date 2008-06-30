@@ -1,8 +1,6 @@
+<script language="javascript" type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script> 
 <script language="javascript" type="text/javascript">
-    var taal="$taal";var URL;
-    if(taal=="nl"){var r0="Zal ik dit antwoord opsturen ?\n";}
-    if(taal=="fr"){var r0="Voulez-vous envoyer la réponse ?\n";} 
-    if(taal=="en" || taal=="cn"){var r0="Do You want to send this answer ?\n";}
+    var URL;
     function dontknow(){
 	t=confirm(r0+"\n$dontknow ?");
 	if(t==true){URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F';
@@ -52,7 +50,7 @@
 			!for p=1 to $options
 			    !increase t
 			    <td  valign="top" style="background-color:lightblue" onMouseover="this.style.backgroundColor='yellow';" onMouseout="this.style.backgroundColor='lightblue';">
-				<a onclick="var t=confirm(r0+'no. $p');if(t==true){window.location.href = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=$p'; return false}">
+				<a onclick="var t=confirm(r0+'$questionnumber $p');if(t==true){window.location.href = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=$p'; return false}">
 				    !if $multiimage=1
 					!if $draw=1
 					    !set insdraw_size=$xsize,$ysize

@@ -7,7 +7,7 @@ var r5="Vous devriez remplacer le caractère \"o\" par le nombre \"0\".";
 var r6="Vous essayez de me raconter une histoire.\n Mais formulez plutôt votre réponse plus sérieusement...";
 var r7="Vous utilisez la lettre  \"x\" comme symbole de multiplication\nUtilisez plutôt un symbole normal comme \"*\" pour cela...\nOu en cas de réponses multiples, écrivez quelque chose comme:\n x1=123 et x2=456";
 var r9="Ecrivez une fonction avec des parenthèses. \nAinsi, écrivez: sqrt() sin() etc()";
-var r10="Vous n\'avez pas utilisé la bonne notation scientifique...\n 5*10^2 == 5e+2\n 5*10^-6 == 5e-6\nPas d\'exposants \"broken\"...";
+var r10="Vous n\'avez pas utilisé la bonne notation scientifique...\n 5*10^03 == 5*10^3 \n 5*10^2 == 5e+2\n 5*10^-6 == 5e-6\nPas d\'exposants \"broken\"...";
 var r11="Une syntaxe spéciale doit être utilisée pour les racines supérieures:\nsqrt[3](11) = \u221B(17) \n sqrt[4](23) = \u221C(23)";
 var r12="J\'ai réécrit votre  log[a](b) avec le log en base 10:\n log(b)/log(a)";
 var r13="Je ne peux pas traiter des crochets pour un autre usage que sqrt[] et log[]...[?]\nEssayez de réécrire votre réponse ";
@@ -25,3 +25,10 @@ var r25="Question :";
 var r26=" Vous devriez refaire vos calculs...";
 var r27="Dans cet exercice, le pourcentage ne peut être supérieur à 100% ..."
 var r28="Dans cet exercice, le pourcentage ne peut être inférieur à 0% ..."
+var r29="J\'espérais (finalement) quelque chose comme:\n x = 123 ...ou quelque chose comme ça \n Essayez encore ";
+var r30="Your answer should at least contain a few \"arrows\" to indicate the steps of your \"deduction\"\n Look into the helppages for some more info...";
+var r31="The minimal amount of steps [ arrows ->] must be: ";
+var r32="\n... this \"text\" has been removed from your answer.\n In this exercise there is no need for a \"deduction\" of the correct answer...";
+var r33="If I send this answer to WIMS\nit will most likely be rejected... ";
+var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets."    
+var r35="Vous avez construit:"
