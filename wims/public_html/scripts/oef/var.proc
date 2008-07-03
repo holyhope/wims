@@ -249,7 +249,6 @@ m_oefenv=!replace word debug by $ in $m_oefenv
   !endif
   !default m_reply$i=$(reply$i)
   !read oef/screply.proc
-      
   !if bad isin $Test
    error=bad_exo
    !advance reply_cnt
@@ -294,15 +293,20 @@ m_oefenv=!replace word debug by $ in $m_oefenv
   !endif
   !if ($choic<=$(choiceitems$i) and $ch isitemof $(choicegood$i)) or $chh=good
    diachoice$i=good
+   m_sc_choice$i=1
    !advance qcmgot
   !else
    diachoice$i=bad
+   m_sc_choice$i=0
    !if $penalty>0 and $choic!=$[$(choiceitems$i)+1]
     cc=!itemcnt $(choicegood$i)
     !if $cc>=$(choiceitems$i)
      cc=$[$(choiceitems$i)-1]
     !endif
     qcmgot=$[$qcmgot-$cc/($(choiceitems$i)-$cc)]
+   !endif
+   !if $choic=$[$(choiceitems$i)+1]
+    m_sc_choice$i=-1
    !endif
   !endif
   :contc
