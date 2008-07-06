@@ -39,6 +39,12 @@
  !next i
  </select>
  <p>També pots modificar el títol i la descripció. <p>
+ !set iniparm1=!replace internal & by $ $ in $iniparm
+ !set exo=!getopt exo in $iniparm1
+ !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
+ !if $title1!=$empty
+   !set title=$title1
+ !endif
  !set title=!trim $title
  !default title=Exercici
  Títol: <input size=50 name=title value="$title"> <p>
