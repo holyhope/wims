@@ -32,8 +32,10 @@ my ($FILE, $MACRO, $EMBED, $NUMERO, $doc_DIR, $DIR, $author, $email, $worksheet,
 my $verbose = 0;
 my $depth = 2 ;
 my $INDEX = 0 ;
+my $TOOLTIP = 0 ;
 my $STYLE = '' ;
 my $OPTION = '' ;
+my $tooltip_prompt = '[?]' ; 
 $worksheet= '';
 $SHEET = '' ;
 $DIR = '';
@@ -85,7 +87,8 @@ my %hash_environ = (
   fin    => {},
   parm   => {},
   origin => {},
-  list   => {}
+  list   => {},
+  tabular => {},
 );
 
 
@@ -99,7 +102,9 @@ my @liste_env_list = ('itemize', 'description', 'enumerate', 'trivlist') ;
   $hash_environ{type}{'description_item'} = 'fold' ;
   $hash_environ{titre}{'description_item'} = ' ' ;
 
-my @liste_env_spec = ('tabular', 'equation', 'multline', 'latexonly',
+my @liste_env_tabular = ('tabular') ; 
+
+my @liste_env_spec = ('equation', 'multline', 'latexonly',
   'pmatrix','smallmatrix', 'eqnarray', 'array', 'algorithmic', 'algorithm', 'align',
   'thebibliography', 'pspicture', 'picture', 'cases', 'gather',
   'displaymath', 'math', 'center');
@@ -160,6 +165,7 @@ my %hash = (
   author => {},
   title => {},
   email => {},
+  toctip => {},
 );
 
 my %hash_toc = ();
@@ -356,7 +362,8 @@ for my $tag (keys %{$hash{text}}) {
   my $TOCd = ($dotoc_right && $tagupbl ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1) ? "\n\n\\link{index}{$tit_index}" : '';
-  out ($tag, toc_HTML ($txt, clean($TOCg), clean($TOCd), $CHEMIN, $index) );
+  my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\" src=\"scripts/js/wz_tooltip.js\"></script>" : '' ;
+  out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN, $index) );
 }
 if ($INDEX == 1) { out ('index.hd', hd('index',\%hash) )};
 my @style = sortuniq(split(',',$STYLE)) if ($STYLE) ;
@@ -397,17 +404,23 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
       $Toc .=  "\n\n<XXXX=$id>\\link{$id}{$toc_titre}</font><YYYY=$id>\n\n";
     }
     $text .= $extract[1];
-
     $ref->{titb}{$id} = $titre;
     $ref->{tittoc}{$id} = $toc_titre;
     $ref->{text}{$id} = $extract[4];
-    $ref->{type}{$id} =  'fold' if !$link ;
+    $ref->{type}{$id} = 'fold' if !$link ;
     $Toc = analyse_texte ($ref->{text}{$id}, $ref, $id, $niveau + 1, $niveau_max, $Toc) ;
     $ref->{upbl}{$id} = $Id;
     $ref->{prev}{$id} = $idold;
     $ref->{next}{$idold} = $id;
    #modifier avec selection
-    $ref->{toc}{$Id} .= "\n<XXXX=$id>\\link{$id}{$ref->{tittoc}{$id}}<YYYY=$id>\n";
+    my $tp = '' ; 
+    if ($TOOLTIP==1) {
+    if (!$ref->{toctip}{$Id}) {$ref->{toctip}{$Id}=' ' ; } else {
+      $ref->{toctip}{$Id} .= ($ref->{tittoc}{$id}) ?  '<br>': '' ;}
+    $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
+    $tp = "ZZZZZ$id" ; }
+    $ref->{toc}{$Id} .= "\n<XXXX=$id>\\link{$id}{$ref->{tittoc}{$id}
+    $tp }<YYYY=$id>\n";
   }
  #maintenant, ce qui reste dans $text est exactement ce qu'on doit mettre dans le hash->{text}{$Id}
   $ref->{text}{$Id} = $text;
@@ -477,6 +490,18 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
      $TEXT = traite_list ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
  }
 
+for my $rubrique (keys %{$ref_env->{tabular}}) {
+     if ($TEXT =~ /\\begin{$rubrique}/) {
+       $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
+     }
+ }
+ 
+for my $rubrique (@liste_env_tabular) {
+   if ($TEXT =~ /\\begin{$rubrique}/) {
+     $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique,0);
+   }
+}
+ 
  for my $rubrique (@liste_env_spec) {
     if ($TEXT =~ /\\begin{$rubrique(\*)?}/) {
       $TEXT = traite_environ ($TEXT, $ref, $ref_env, $Id, $rubrique, 1);
@@ -505,8 +530,9 @@ sub TraiteText {my ($TEXT, $ref, $ref_env, $Id) = @_;
 #tordu. En fait  split me sert uniquement à trouver le premier <$environ>
 #$cnt sert à numéroter semi-globalement (création de blocs correspondant à un même environnement dans une meme page
 #exemple mainS4S3F_proof1,mainS4S3F_proof2,mainS4S3F_proof3,mainS4S3F_proof4,mainS4S3F_proof5
+
 sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
- my ($e_item, $b_item , $b_class, $e_class) = (' ',' ', ' ', ' '); ; 
+ my ($e_item, $b_item , $b_class, $e_class) = (' ',' ', ' ', ' ');
   if ( $option == 1 ) {
          $e_item = "\\end{$environ\_item}" ;
          $b_item = "\\begin{$environ\_item}" ;
@@ -545,7 +571,6 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
   $decoup[0] . $milieu . traite_list ($u[1], $ref, $ref_env, $Id, $environ,$option);
 }
   
-     
 sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
   $TEXT =~ s/\\begin{$environ\*?}/<$environ>/g;
   $TEXT =~ s|\\end{$environ\*?}|</$environ>|g;
@@ -560,9 +585,10 @@ sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
   return $TEXT if (!$milieu);
 
   my $pat_env = join('|', @liste_env_spec);
+  my $patt_env = join('|', @liste_env_tabular); 
   if ($environ =~ /\b($pat_env)\b/) { $milieu = $1->($milieu) ; }
-  else {
-    my @milieu1 = extract_bracketed ($milieu, '{}');
+  elsif ($environ =~ /\b($patt_env)\b/) { $milieu = tabular->($milieu,$environ) ; }
+  else { my @milieu1 = extract_bracketed ($milieu, '{}');
     if ($milieu1[0]) { $milieu = $milieu1[4] ; };
     my $type = $ref_env->{type}{$environ};
 
@@ -582,7 +608,7 @@ sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
         . encadr_defaut("<$environ>$titre<\/$environ>", $environ, $ref_env,'titre')
         . "\}\n\n" ;
     } else {  my $milieu1 = $milieu ; 
-      $milieu = encadr_defaut("<$environ>$milieu<\/$environ>", $environ, $ref_env, 'full');
+      $milieu = encadrement("<$environ>$milieu<\/$environ>", $environ, $ref_env, 'full');
     }
   }
   $decoup[0] . $milieu . traite_environ ($u[1], $ref, $ref_env, $Id, $environ, $cnt);
@@ -645,7 +671,7 @@ sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
 sub encadrement {  my ($TEXT, $rubrique, $ref_env) = @_;
   my $debut = $ref_env->{deb}{$rubrique};
   my $fin   = $ref_env->{fin}{$rubrique};
-  return encadr_defaut ($TEXT, $rubrique, $ref_env, 'bloc') if (!$debut && !$fin);
+  return encadr_defaut ($TEXT, $rubrique, $ref_env, 'full') if (!$debut && !$fin);
 
   $TEXT =~ s/<$rubrique>//;
   my $cnt_arg = $ref_env->{cnt_arg}{$rubrique};
@@ -655,13 +681,16 @@ sub encadrement {  my ($TEXT, $rubrique, $ref_env) = @_;
   $d;
 }
 
-sub tabular { my ( $b ) = @_; 
-  my @v = extract_bracketed ($b, '{}');
-  $b =  '<table border=1 align="center" class="tableau"><tr><td>' . $v[1] . '</table>';
-  $b =~ s|\&|&nbsp;</td><td>&nbsp;|g;
+
+sub tabular { my ( $b, $style ) = @_; 
+  my @v = extract_bracketed ($b, '{}') ; 
+  my $stylerow = $style . "_row";
+  my $stylecell = $style . "_cell";
+  $b =  "<table class=\"$style\"><tr class=\"$stylerow\"><td class=$stylecell>" . $v[1] . '</table>';
+  $b =~ s|\&|&nbsp;</td><td class=$stylecell>&nbsp;|g;
   $b =~ s/\\hline//g;
   $b =~ s|\\\\\s*</table>|</td></tr></table>|g;
-  $b =~ s|\\\\|</td></tr><tr><td>|g;
+  $b =~ s|\\\\|</td></tr><tr class=$stylerow><td class=$stylecell>|g;
   $b;
 }
 
@@ -778,8 +807,8 @@ sub store_environ { my ($def, $cmd, $narg, $titre, $deb, $fin, $ref_env) = @_;
   $ref_env->{origin}{$cmd} = $def;
   my $style = $ref_env->{style}{$cmd} ;
   $style = ($style)? $style : $cmd ; 
-  if (!$ref_env->{deb}{$cmd}) { $ref_env->{deb}{$cmd} = "<div class=\"$style\"> "; }
-  if (!$ref_env->{fin}{$cmd}) { $ref_env->{fin}{$cmd} = "</div> "; }
+  #if (!$ref_env->{deb}{$cmd}) { $ref_env->{deb}{$cmd} = "<div class=\"$style\"> "; }
+  #if (!$ref_env->{fin}{$cmd}) { $ref_env->{fin}{$cmd} = "</div> "; }
   dbg("... environnement perso \"$cmd\" argument: \"$narg\" titre: \"$titre\" style: \"$style\" debut: \"$deb\"  fin: \"$fin\"");
   '';
 }
@@ -807,6 +836,7 @@ sub recup_config { my ($cmd, $arg, $ref_env) = @_;
   my $type = 'style';
   if ($cmd eq 'typefold') { $style = 'fold';  $type = 'type' };
   if ($cmd eq 'typelink') { $style = 'link' ; $type = 'type' };
+  if ($cmd eq 'tablewims') { $type = 'tabular' ; };
   if ($cmd eq 'listwims') {                   $type = 'list' };
   for my $rubrique (@L) {
     $ref_env->{$type}{$rubrique} = $style;
@@ -814,11 +844,12 @@ sub recup_config { my ($cmd, $arg, $ref_env) = @_;
     if ($cmd eq 'listwims') { $ref_env->{'style'}{$rubrique . '_item'} = $style . '_item' ; 
                               $ref_env->{'titre'}{$rubrique . '_item'} = '' }
   }
+  push @liste_env_tabular, (keys %{$ref_env->{tabular}}) ; 
  '';
 }
 sub recup_environ {my ($TEXT, $ref_env) = @_;
   my $pat = '\s*\{(.*)\}';
-  $TEXT =~ s/\\(typefold|typelink|samestyle|listwims)\{([^\}]+)\}/recup_config($1,$2, $ref_env)/eg;
+  $TEXT =~ s/\\(typefold|typelink|samestyle|listwims|tablewims)\{([^\}]+)\}/recup_config($1,$2, $ref_env)/eg;
   # {nom}[#param]{titre}{debut}{fin}
   $TEXT =~ s/\\(environmentwims|[re]?newenvironment)\s*\{(\w*)\}\[(\d)\]$pat$pat$pat/store_environ($1,$2,$3,$4,$5,$6,$ref_env)/eg;
   # {nom}{titre}{debut}{fin}
@@ -850,8 +881,8 @@ sub subst { my ($TEXT, $cnt_arg, $com, $environ, $ref_env ) = @_;
     @a = extract_tagged($TEXT, '{','}');
     ($u,$v) = ($a[1],$a[4]);
     if (!$a[0]) {
-      @a = extract_bracketed($TEXT, '[]');
-      ($u,$v) = ($a[1],$a[0]);
+      @a = extract_tagged($TEXT, '\[','\]');
+      ($u,$v) = ($a[1],$a[4]);
     }
     $TEXT = $u;
     $cnt ++;
@@ -905,7 +936,7 @@ sub find_expand { my ($file) = @_;
   dbg("... lecture de $file");
   my $text = <IN>; close(IN);
   $text =~ s/\%\\(input|include|wimsinclude)([^\n]+)?/dbg("ici, $text")/eg;
-  $text =~ s/\\(input|include|wimsinclude)\s*{?(\w*)\.(sty|tex)\s*}?/find_expand("$2.$3")/eg;
+  $text =~ s/\\(input|include|wimsinclude)\s*{?([a-zA-Z0-9\-_]+)\.(sty|tex)\s*}?/find_expand("$2.$3")/eg;
   $text;
 }
 
@@ -939,8 +970,9 @@ sub store { my ($ref, $cle, $id, $text, $court) = @_ ;
    '';
  }
 sub store_option { my ($A) = @_ ; $A = join(' ' , split(',', $A)) ;
-    if ($A =~ s/numero//) { $NUMERO = 1 ;} ;
+    if ($A =~ s/numero//)  { $NUMERO = 1 ;} ;
     if ($A =~ s/index//)   { $INDEX = 1 ;}
+    if ($A =~ s/tooltip//) { $TOOLTIP = 1 ;}
     if ($A =~ s/depth\s*=\s*([0-8])//) { $depth = $1 ; }
     $OPTION .= $A ;
    '' ;
@@ -1081,6 +1113,7 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\\includegraphics\s*{(.*)}/<img src=$2 $1>/g;
   $TEXT =~ s/\\(begin|end){document}/\\document /g;
   $TEXT =~ s/\\exercise{module=([^\&]+)\&([^}]+)}{([^}]+)}/store_sheet($1,$2,$3,$worksheet)/eg ; 
+  $TEXT =~ s/\\xspace//g;
   $TEXT;
 }
 
@@ -1162,7 +1195,7 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
 sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN, $index) = @_ ;
   if (($toc_g) || ($toc_d)) {
     $CHEMIN . '<table width=100%><tr>'
-   . (($toc_g) ? '<td valign=top><div class="left_toc"><p>' . $toc_g 
+   . (($toc_g) ? '<td valign=top><div class="left_toc">' . $toc_g 
    . $index . '</div></td>' : '')
    . '<td valign=top align=left width=100%><div class="wimsdoc">'
    . $text
@@ -1250,11 +1283,18 @@ sub selection { my ($text, $couleur, @tag) = @_ ;
   $text;
 }
 
-sub clean { my ($text) = @_;
+sub clean { my ($text, $ref) = @_;
   return '' if !defined($text);
    $text =~ s/<XXXX=\w*>//g;
    $text =~ s/<YYYY=\w*>//g;
+   $text =~ s/ZZZZZ(\w+)/store_tip($1,$ref)/ge;
    $text;
+}
+
+sub store_tip { my ($tag,$ref)=@_ ; 
+  my $tip = $ref->{toctip}{$tag} ;
+  $tip =~ s/'/\\'/g ; 
+  $ref->{toctip}{$tag} ?  "<span class=tip><a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a><\/span>" : '' ; 
 }
 
 sub chemin { my ($tag, $ref) = @_;
