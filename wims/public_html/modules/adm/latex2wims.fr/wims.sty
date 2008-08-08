@@ -1,12 +1,14 @@
-%%%%%%%%%%%% Packages utiles %%%%%%%%%%%%%%%%%%%%%
-\usepackage{hyperref}
-\usepackage{verbatim}
+%%%%%%%%%%%%%%%    Première partie (rien à changer)
 \usepackage{comment}
-\excludecomment{wimsonly} %% environnement qui sera négligé par latex
-\includecomment{latexonly} %% environnement qui sera négligé par wims
-\wimsinclude{style.css,embed=document} % mettre l'adresse du fichier de style
-%%%%%%%%%%%%%%%%   Options %%%%%%%%%%%%%%%%%%%%%
-\def\about{} 
+\excludecomment{wimsonly}
+\includecomment{latexonly}
+\usepackage{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\wimsentre#1{}
+\def\wimsinclude#1{}
+% permet le contrôle de la navigation dans le document :%le premier argument peut être prev, next,upbl,titb,keyw,datm
+\def\wimsnavig#1#2{}
+
 %%%%%%% % les definitions ulterieures sont négligées par latex, ne pas toucher
 \def\defwims{\def\wims@dummy}
 \def\environmentwims#1[#2]#3#4#5{}
@@ -15,9 +17,22 @@
 \def\typefold#1{}
 \def\typelink#1{}
 \def\wimsoption#1{}
+\def\listwims#1{}
+\def\tablewims#1{}
 %Permet de mettre du texte dans le document  entre des sections, sousections ...
 \defwims\wimsnavig#1#2{\#1{#2}}
 \defwims\wimsentre#1{\wimsentre#1}
+\def\about{} 
+\def\email#1{}
+%%%%%%%%%%%%%%% Deuxième Partie : 
+%%%%%% avec le package hyperref, fait apparaitre les liens sur les exercices à 
+%partir du fichier pdf. changer l'adresse
+\def\exercise#1#2{\href{http://127.0.0.1/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+\def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
+%%%si nécessaire
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\wimsinclude{style.css,embed=} % mettre l'adresse du fichier de style
+%%%%%%%%%%%%%%%%   Options %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%  definition des styles css (même style que le premier de la liste)
 \samestyle{defn,defin,rems,NB,remF,definF,footnote}                                                 
 \samestyle{thm,prop,theo,lem,prop,cor,rappel,propF}
@@ -33,17 +48,21 @@
 \listwims{enum}
 \listwims{desc}
 \typefold{desc_item}
+\tablewims{tabular}
 %%%%%%%%% option wims
 \wimsoption{depth=4} % profondeur des sections et co de style link
-\wimsoption{toc_up,toc_right,toc_left} %configuration des tables de matières
-\wimsoption{index,numero} %existence d'un index (détecté aussi par \printindex), 
+\wimsoption{toc_down,toc_right,toc_left} %configuration des tables de matières
+%%%%% toc_up
+\wimsoption{index,numero,tooltip} 
+   %existence d'un index (détecté aussi par \printindex), 
    %numerotation des parties
+   %bulle d'aide pour la table des matières
 %%%%%%%%%%%%%%%%%%%%%%% Redéfinition de macros pour le document wims  (exemple) 
 \defwims\paragraph#1{<p class="paragraph">#1</p>}
 \defwims\texttt#1{<tt>#1</tt>}
 %%%%%%%%%%%%% définition de quelques commandes diverses. 
 \defwims\url#1{<a http:"#1" target="wims_external">#1</a>} %avec package url
-\defwims\href#2{<a http:"#1" target="wims_external">#2</a>} %avec package hyperref
+\defwims\href#1#2{<a http:"#1" target="wims_external">#2</a>} %avec package hyperref
 %%%%% exemple de redéfinition perso de commandes 
 \defwims\dfrac{\frac}
 \defwims\card{\mathrm{Card}} 
@@ -63,3 +82,4 @@
 \environmentwims{flushright}[1]{}%
   {<table><tr><td>&nbsp;</td><td align=right>}%
   {</td></tr></table>}
+

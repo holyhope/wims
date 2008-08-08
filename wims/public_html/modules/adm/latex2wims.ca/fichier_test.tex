@@ -8,20 +8,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{comment}
-\excludecomment{wimsonly}
-\includecomment{latexonly}
-\usepackage{verbatim}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\wimsentre#1{}
-\def\wimsinclude#1{}
-% permet le contrôle de la navigation dans le document :%le premier argument peut être prev, next,upbl,titb,keyw,datm
-\def\wimsnavig#1#2{}
-%%%%%% avec le package hyperref, fait apparaitre les liens sur les exercices à 
-%partir du fichier pdf. changer l'adresse
-\def\exercise#1#2{\href{http://127.0.0.1/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
-\def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
-%%%si nécessaire
-\def\email#1{}
+\input wims.sty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \wimsinclude{wims.sty}%pour inclure des fichiers non lus par latex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -94,10 +81,61 @@ Un exemple de dessin non vu dans le fichier pdf \index{exemple}
     <p align="center"> \draw{300,300}{\dessin} </p>
   Que remarquez-vous ? 
 \end{wimsonly}
+
+
+\section{Une animation qui ne va passer dans latex }
+\begin{wimsonly}
+\begin{wims}
+
+\def{text liste=1,2,3,4,10,20,24,28,32,36,40}
+\def{text listepoint=-1.8,-1.8,-1.8,-1.5,-1.2,-1.2}
+\def{integer cnt =items(\liste)}
+\def{text h=wims(makelist x for x = 1 to \cnt)}
+
+\comment{L'entier N est le paramètre qui permet "d'avancer" ;
+parm1 est une variable qui va être transmis à la page suivante. Au
+départ parm1 ne vaut rien donc N = 1 ; ensuite parm1 vaut N
+donc N va s'incrémenter
+}
+\def{integer N = \parm1 notitemof \h ? 1 : \parm1 + 1}
+\def{text commentaire =\N >= \cnt ? Recommencer:Continuer}
+\comment{on fait un lien sur la même page mais en transmettant
+le paramètre \N}
+\link{.}{\commentaire}{}{parm1=\N}{dessin}
+\comment{Ensuite, c'est du code pour faire un dessin}
+\def{text couleur=wims(makelist yellow,orange,pink,blue,green for x = 2 to 5)}
+\def{text dessin= xrange -2,2
+  yrange -1,1
+  hline 0,0,black
+  arrow  0,0,1,0,6,black
+  arrow 0,0,0,1,6,black
+  vline 0,0,black}
+\comment{On ne trace que les N premières courbes}
+\for{i = 1 to \N}{
+  \def{integer j = 2*\liste[\i]}
+  \def{function f=x/(1+x^(\j))}
+  \def{real a=evalue(\f,x=\listepoint[\i])}
+  \def{text dessin=\dessin
+     plot \couleur[\i],\f
+     text \couleur[\i],\listepoint[\i],\a,medium,f\j}
+}
+<a name=dessin>
+\draw{500,300}{\dessin}
+
+\end{wims}
+\end{wimsonly}
 \section{Les listes}
   Voici une liste avec pli (fold)
   \begin{description}
     \item[Graphe] voici la définition
     \item[Coloriage] Colorier un graphe, c'est ...
   \end{description}
+\section{Les tableaux}
+ \begin{tabular}{|c|c|c|}
+ \hline
+ &a&$\frac{1}{2}$\\
+  \hline
+ c&d&f\\
+  \hline
+ \end{tabular}
 \end{document}

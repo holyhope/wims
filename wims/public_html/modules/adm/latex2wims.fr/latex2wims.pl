@@ -35,7 +35,8 @@ my $INDEX = 0 ;
 my $TOOLTIP = 0 ;
 my $STYLE = '' ;
 my $OPTION = '' ;
-my $tooltip_prompt = '[?]' ; 
+my $tooltip_prompt = '<img src=gifs/picto.gif>' ;
+my $linkout='' ; 
 $worksheet= '';
 $SHEET = '' ;
 $DIR = '';
@@ -60,6 +61,8 @@ while ($_ = shift (@ARGV))
   elsif (/^--author=(.*)$/){ $author  = $1; }
   elsif (/^--email=(.*)$/) { $email   = $1; }
   elsif (/^--worksheet=(.*)$/) { $worksheet   = $1; } 
+  elsif (/^--tooltip_prompt=(.*)$/) { $tooltip_prompt = $1; }
+  elsif (/^--linkout=(.*)$/) { $linkout   = $1; } 
   elsif (/^--help$/) {
    usage(); # includes --help !
     exit 1;
@@ -72,6 +75,8 @@ $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
 my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border=0>}';
 my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border=0 valign="bottom">';
+$linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
+
 ##################################
 ##Initialisation
 #si je rajoute les listes : type=fold : signifierait que les item sont en fold [demande
@@ -354,16 +359,19 @@ for my $tag (keys %{$hash{text}}) {
   my $dotoc_left = ($OPTION =~ /toc_left/ && !$type);
   my $dotoc_right = ($OPTION =~ /toc_right/ && !$type);
   my $dotoc_up = ($OPTION =~ /toc_up/ && !$type);
+  my $dotoc_down = ($OPTION =~ /toc_down/ && !$type);
   my $CHEMIN = chemin($tag, \%hash);
   #J'ai enlevé $LOAD
-  $CHEMIN = $dotoc_up && ($hash{niveau}{$tag} > 0) ? $CHEMIN : '';
+  $CHEMIN = ($dotoc_up || $dotoc_down)  && ($CHEMIN =~ $FLECHE) ? $CHEMIN : '';
+  my $CHEMIN_up=($dotoc_up) ? $CHEMIN : '' ;
+  my $CHEMIN_down=($dotoc_down) ? $CHEMIN : '' ; 
   my @Chemin = split(',', $hash{chemin}{$tag});
   my $TOCg = $dotoc_left ? selection($hash{toc}{main}, 'left_selection', @Chemin) : '';
   my $TOCd = ($dotoc_right && $tagupbl ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
   my $tit_index = ($hash{titb}{index})? $hash{titb}{index} : 'Index' ;
   my $index = ($INDEX == 1) ? "\n\n\\link{index}{$tit_index}" : '';
   my $tooltip = ($TOOLTIP == 1) ? "<script type=\"text/javascript\" src=\"scripts/js/wz_tooltip.js\"></script>" : '' ;
-  out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN, $index) );
+  out ($tag, $tooltip . toc_HTML ($txt, clean($TOCg,\%hash), clean($TOCd,\%hash), $CHEMIN_up, $CHEMIN_down, $index) );
 }
 if ($INDEX == 1) { out ('index.hd', hd('index',\%hash) )};
 my @style = sortuniq(split(',',$STYLE)) if ($STYLE) ;
@@ -542,8 +550,8 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
       $e_class= "\/ul" ; 
       }
       {
-        if    ($environ eq 'enumerate'){ $b_class = "ol" ; $e_class= "\/ol" ; }
-        elsif ($environ eq 'itemize'){ $b_class = "ul" ;  $e_class= "\/ul" ;}
+        if    ($environ eq 'enumerate'){ $b_class = "ol class=\"enumerate\"" ; $e_class= "\/ol" ; }
+        elsif ($environ eq 'itemize'){ $b_class = "ul class=\"itemize\"" ;  $e_class= "\/ul" ;}
         elsif ($environ eq 'description'){
               $b_class = "ul style=\"list-style:none;\"" ;  
               $e_class= "\/ul" ;
@@ -560,14 +568,15 @@ sub traite_list {my ($TEXT, $ref, $ref_env, $Id, $environ, $option) = @_;
   my @decoup = split ("<$environ>", $TEXT);
 
   my $a = join ("<$environ>", @decoup[1..$#decoup]);
-  return $TEXT if (!$a);; 
+  return $TEXT if (!$a) ;
   my @u = extract_tagged ("<$environ>$a", "<$environ>");
   my $milieu = "<$environ>" . $u[4] . "<\/$environ>"   ; 
 #FIXME pas de listes emboitées de type différent !
-  $milieu =~ s/\\item/$e_item<\/li><li>$b_item/g;
-  $milieu =~ s/<$environ>\s*$e_item\s*<\/li>/<$b_class>/g;
-  $milieu =~ s/<$environ>/<$b_class>/g;
-  $milieu =~ s/<\/$environ>/$e_item<\/li><$e_class>/g;
+  $milieu =~ s|<$environ>\s*\\item|<$environ><li>$b_item|g ;
+  $milieu =~ s|</$environ>|</li><$e_class>|g;
+  $milieu =~ s|\\item|$e_item</li><li>$b_item|g;
+  $milieu =~ s|</li><$e_class>|$e_item</li><$e_class>|g;
+  $milieu =~ s|<$environ>|<$b_class>|g; 
   $decoup[0] . $milieu . traite_list ($u[1], $ref, $ref_env, $Id, $environ,$option);
 }
   
@@ -599,7 +608,7 @@ sub traite_environ {my ($TEXT, $ref, $ref_env, $Id, $environ, $cnt) = @_;
       $cnt++;
       # LaTeX interdit des [ ] imbriqués.
       if ($milieu =~ s/^\s*\[([^\]]+)\]//) {
-        $titre =  ($titre) ? "$titre $1" :  $1 ;
+        $titre =  ($titre) ? "$titre [ $1 ]" :  $1 ;
       }
       $ref->{titb}{$newtag} = $titre;
       $ref->{text}{$newtag} = encadrement("<$environ>$milieu<\/$environ>", $environ, $ref_env);
@@ -671,7 +680,8 @@ sub encadr_defaut { my ($TEXT, $rubrique, $ref_env, $option) = @_;
 sub encadrement {  my ($TEXT, $rubrique, $ref_env) = @_;
   my $debut = $ref_env->{deb}{$rubrique};
   my $fin   = $ref_env->{fin}{$rubrique};
-  return encadr_defaut ($TEXT, $rubrique, $ref_env, 'full') if (!$debut && !$fin);
+  my $opt= ($ref_env->{type}{$rubrique} && $ref_env->{type}{$rubrique}=~ /fold/) ? 'bloc' : 'full' ; 
+  return encadr_defaut ($TEXT, $rubrique, $ref_env, $opt) if (!$debut && !$fin);
 
   $TEXT =~ s/<$rubrique>//;
   my $cnt_arg = $ref_env->{cnt_arg}{$rubrique};
@@ -690,9 +700,20 @@ sub tabular { my ( $b, $style ) = @_;
   $b =~ s|\&|&nbsp;</td><td class=$stylecell>&nbsp;|g;
   $b =~ s/\\hline//g;
   $b =~ s|\\\\\s*</table>|</td></tr></table>|g;
+  my $par="\\\\\\(|\\\\\\)" ;
+  my @dectab = split(/$par/, $b) ; 
+  $b = $dectab[0] ; 
   $b =~ s|\\\\|</td></tr><tr class=$stylerow><td class=$stylecell>|g;
-  $b;
+  my $cnt = 0; $b = '' ; 
+  while ($cnt <= $#dectab/2) { 
+     my $c = $dectab[2*$cnt] ; 
+     $c =~ s|\\\\|</td></tr><tr class=$stylerow><td class=$stylecell>|g;
+     $b .=  $c . (($dectab[2*$cnt+1]) ? "\\(" . $dectab[2*$cnt+1] .  "\\)" : '' )  ; 
+     $cnt ++ ; 
+ };
+ $b ; 
 }
+
 
 sub multline { my ( $b) = @_;
   $b =~ s/\\\\\s*=/\\)<br>\\(== /g;
@@ -887,7 +908,7 @@ sub subst { my ($TEXT, $cnt_arg, $com, $environ, $ref_env ) = @_;
     $TEXT = $u;
     $cnt ++;
      my $sub = $environ && $ref_env->{titre}{$environ} ? join (' ' , ( $ref_env->{titre}{$environ}, $v)) : $v;
-     $com =~ s/#$cnt/$sub/ge;
+     if (($com) && ($sub) && ("#$cnt")) { $com =~ s/#$cnt/$sub/ge ;  }  ; 
   }
   ($com, $TEXT);
 }
@@ -935,8 +956,10 @@ sub find_expand { my ($file) = @_;
   if (!open(IN, $DIR . $file)) { warn "$DIR$file n'existe pas"; return; }
   dbg("... lecture de $file");
   my $text = <IN>; close(IN);
-  $text =~ s/\%\\(input|include|wimsinclude)([^\n]+)?/dbg("ici, $text")/eg;
-  $text =~ s/\\(input|include|wimsinclude)\s*{?([a-zA-Z0-9\-_]+)\.(sty|tex)\s*}?/find_expand("$2.$3")/eg;
+  $text =~ s/([^%]\s*\\end{document})[[:print:][:space:]]+/$1/;
+  $text =~ s/([^%])\s*\\endinput[[:print:][:space:]]+/$1/;
+  $text =~ s/\%\\(input|include|wimsinclude)([^\n]+)?//g;
+  $text =~ s/\\(input|include|wimsinclude)\s*{?([a-zA-Z0-9\-_\/]+)\.(sty|tex)\s*}?/find_expand("$2.$3")/eg;
   $text;
 }
 
@@ -1110,7 +1133,7 @@ sub traitement_initial { my ($TEXT) = @_;
  #utiliser verb uniquement dans le cas d'un mot
 #FIXME:  $TEXT =~ s/\verb"([^"]+)"/<tt class=verb>$1<\/tt>/g;
   $TEXT =~ s/\\includegraphics\s*\[(.*)\]\s*{(.*)}/<img src=\\filedir\/$2 $1>/g;
-  $TEXT =~ s/\\includegraphics\s*{(.*)}/<img src=$2 $1>/g;
+  $TEXT =~ s/\\includegraphics\s*{(.*)}/<img src=$1>/g;
   $TEXT =~ s/\\(begin|end){document}/\\document /g;
   $TEXT =~ s/\\exercise{module=([^\&]+)\&([^}]+)}{([^}]+)}/store_sheet($1,$2,$3,$worksheet)/eg ; 
   $TEXT =~ s/\\xspace//g;
@@ -1192,21 +1215,21 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
 
 #crée la page
 
-sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN, $index) = @_ ;
+sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ ;
   if (($toc_g) || ($toc_d)) {
-    $CHEMIN . '<table width=100%><tr>'
-   . (($toc_g) ? '<td valign=top><div class="left_toc">' . $toc_g 
+    $CHEMIN_up . '<table class="doc_table"><tr>'
+   . (($toc_g) ? '<td valign=top><div class="left_toc"><p>' . $toc_g 
    . $index . '</div></td>' : '')
    . '<td valign=top align=left width=100%><div class="wimsdoc">'
    . $text
-   . '</div></td>'
-   .(($toc_d) ? '<td valign=top align=right> <div class="right_toc">'
+   . '</div>' .  $CHEMIN_down . ' </td>'
+   . (($toc_d) ? '<td valign=top align=right> <div class="right_toc"><p>'
    . $toc_d
    . '</div><center>'
    . $LOAD
    . '</center></td>' : '') 
-   . '</tr></table>' }
-   else {$CHEMIN . $text };
+   . '</tr></table>'  }
+   else {$CHEMIN_up . $text . $CHEMIN_down };
  }
 
  #################################
@@ -1293,7 +1316,7 @@ sub clean { my ($text, $ref) = @_;
 
 sub store_tip { my ($tag,$ref)=@_ ; 
   my $tip = $ref->{toctip}{$tag} ;
-  $tip =~ s/'/\\'/g ; 
+  $tip =~ s/'/\\'/g if ($tip) ; 
   $ref->{toctip}{$tag} ?  "<span class=tip><a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a><\/span>" : '' ; 
 }
 
@@ -1306,13 +1329,12 @@ sub chemin { my ($tag, $ref) = @_;
     $niv++;
     $tagsup = $ref->{upbl}{$tagsup};
     $ch  = "$tagsup,$ch";
-    $txt = "\\link{$tagsup}{$ref->{tittoc}{$tagsup}} $FLECHE $txt" ;#if ($tagsup !~ /^main\b/);
+    $txt = "\\link{$tagsup}{$ref->{tittoc}{$tagsup}} $FLECHE $txt" ; #if ($tagsup !~ /^main\b/);
   }
   $ref->{chemin}{$tag} = $ch;
   $ref->{niveau}{$tag} = $niv;
   return $LOAD if (!$txt);
-  '<div class="wims_chemin">' . $LOAD . $txt . '</div>';
-}
+  '<div class="wims_chemin">' . $LOAD . "$linkout  $txt" . '</div>';}
 
 sub sortuniq {
   my $prev = "not $_[0]";
