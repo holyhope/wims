@@ -51,7 +51,6 @@
 !endif
 </h3>
 
-!!detrust
 !read $docdir/$doc/$block.def content
 
 </div><div class=wimstail>
@@ -61,24 +60,24 @@
 !endif
 !if help isin $wims_session
  <small>
- !href cmd=reply&job=source Source
- &nbsp; par
+ !href cmd=reply&job=source $n_source0
+ &nbsp; $n_by
  !if $email=$empty
   $author
  !else
   !mailurl $email $author
  !endif
- Dernière modif. $datm</small>
+ $n_lastmod $datm</small>
  !exit
 !endif
 <table width=100% border=0 cellspan=0 cellpadding=1>
 <tr><td align=left nowrap><small>
 !if $editable=yes
- !href cmd=reply&job=prop Propriétés
+ !href cmd=reply&job=prop $n_properties
 &nbsp;
 !endif
 !href cmd=reply&job=source Source
-&nbsp; par
+&nbsp;$n_by
 !if $email=$empty
  $author
 !else
@@ -91,13 +90,13 @@
 <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
 !if $wims_user=supervisor and $sheetdata!=$empty
  <tr><td align=left nowrap>
- <small>Dernière modif. $datm
+ <small>$n_lastmod $datm
  <td align=right><small>
- !href cmd=reply&job=exosource Source d'exercices de la page
+ !href cmd=reply&job=exosource $n_source
  </small>
 !else
  <tr><td align=left colspan=2 nowrap>
- <small>Dernière modif. $datm
+ <small>$n_lastmod $datm
 !endif
 </table>
 

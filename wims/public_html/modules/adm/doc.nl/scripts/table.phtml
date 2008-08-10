@@ -1,11 +1,14 @@
+ !!##language independant
  $table_header
- <caption>Kies het document en de actie:</caption>
+ <caption>$n_choosedocument:</caption>
  $table_hdtr
- <th>Actie<th>Titel
+ <th>$n_action</th><th>$n_title</th>
  !if $wims_ismanager=2
-  <th>Toegangsrechten
+  <th>$n_access
+  </th>
  !endif
- <th>Nummer<th>Auteur
+ <th>$n_number
+ </th><th>$n_author
  !for t=1 to $doccnt
   !set s_=!line $t of $slist
   !set t_=!line $t of $tlist
@@ -13,29 +16,29 @@
   !set e_=!line $t of $elist
   !set i_=!line $t of $ilist
   !set t_=!trim $t_
-  !default t_=No title
+  !default t_=$notitle
   !set e_=!word 1 of $e_
   $table_tr
   <td nowrap align=center>
   !if $wims_ismanager=2
-   !href cmd=reply&job=erase&doc=$s_ Wissen
+   !href cmd=reply&job=erase&doc=$s_ $n_erase
 &nbsp;
   !endif
-  !href cmd=reply&job=read&doc=$s_&block=main&noedit=yes Lezen
+  !href cmd=reply&job=read&doc=$s_&block=main&noedit=yes $n_read
 &nbsp;
   !if $i_>0
-   !href cmd=reply&job=auth&doc=$s_&block=main&noedit=no Veranderen
+   !href cmd=reply&job=auth&doc=$s_&block=main&noedit=no $n_modify
   !else
-   <strike>Veranderen</strike>
+   <strike>$n_modify</strike>
   !endif
   <td>$t_</td>
   !if $wims_ismanager=2
    <td align=center>
    !if $s_>65535
     !if $s_ iswordof $opensite
-     !href cmd=reply&job=openclose&doc=$s_ sluiten
+     !href cmd=reply&job=openclose&doc=$s_ $n_close
     !else
-     !href cmd=reply&job=openclose&doc=$s_ openen
+     !href cmd=reply&job=openclose&doc=$s_ $n_open
     !endif
    !else
     -

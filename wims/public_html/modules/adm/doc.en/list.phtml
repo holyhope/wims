@@ -1,41 +1,41 @@
+!!#language independant
 <center><h1>$tit</h1></center>
 
 !if $fcnt<1
- This document has no content yet.
- !href cmd=reply&job=edit&block=main Create the first page
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
 .
  <p>
  !exit
 !endif
 
 <p>$table_header
-<caption>List of blocks of the document</caption>
+<caption>$n_blocklist</caption>
 $table_hdtr
-<th>Name<th>Title<th>Action
+<th>$n_name</th><th>$n_titre</th><th>$n_action</th></tr>
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
  !set t_=!trim $t_
- !default t_=No title
+ !default t_=$n_notitle
  $table_tr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align=center>
- !href cmd=reply&job=read&block=$s_ Read
+ !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ Edit
+  !href cmd=reply&job=edit&block=$s_ $n_edit
  !endif
 </td>
 !next i
-$table_end <p>
+</tr>$table_end <p>
 
 <center>
-Total available disk space: $quota_total Meg. Free disk space: $quota_free Meg.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 <p>
-!href cmd=reply&job=file File deposit
+!href cmd=reply&job=file $n_file
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Entrance page of the document
-
+!href cmd=reply&job=read&block=main $n_main
 </center> <p>
-

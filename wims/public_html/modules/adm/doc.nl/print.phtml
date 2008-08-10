@@ -32,7 +32,6 @@
 <a name=$block>
 <h3>$titb</h3>
 
-!!detrust
 !read $wims_priv_thisdoc/$block.def content
 
 !if $waitblock$(waitblock_$block)!=$empty
@@ -50,7 +49,7 @@
 <p><hr>
 <table width=100% border=0 cellspan=0 cellpadding=1>
 <tr><td align=left nowrap><small>
-Door
+$n_by
 !if $email=$empty
  $author
 !else
@@ -58,16 +57,16 @@ Door
 !endif
 !! &copy;
 <td align=right><small>
-!href cmd=reply&job=read&doc=$doc&block=$startblock Interactieve versie
+!href cmd=reply&job=read&doc=$doc&block=$startblock $n_interactive
 !if $wims_user=supervisor and $sheetdata!=$empty
  <tr><td align=left nowrap>
- <small>Last modified $datm
+ <small>$n_lastmod $datm
  <td align=right><small>
- !href cmd=reply&job=exosource&block=$startblock het startblok van dit document
+ !href cmd=reply&job=exosource&block=$startblock $n_source
  </small>
 !else
  <tr><td align=left colspan=2 nowrap>
- <small>Laatste verandering op $datm
+ <small>$n_lastmod $datm
 !endif
 </table>
 

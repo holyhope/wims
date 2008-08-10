@@ -1,11 +1,14 @@
+ !!##language independant
  $table_header
- <caption>Choisissez le document et l'action&nbsp;:</caption>
+ <caption>$n_choosedocument:</caption>
  $table_hdtr
- <th>Action<th>Titre
+ <th>$n_action</th><th>$n_title</th>
  !if $wims_ismanager=2
-  <th>Accès
+  <th>$n_access
+  </th>
  !endif
- <th>Numéro<th>Auteur
+ <th>$n_number
+ </th><th>$n_author
  !for t=1 to $doccnt
   !set s_=!line $t of $slist
   !set t_=!line $t of $tlist
@@ -13,7 +16,7 @@
   !set e_=!line $t of $elist
   !set i_=!line $t of $ilist
   !set t_=!trim $t_
-  !default t_=No title
+  !default t_=$notitle
   !set e_=!word 1 of $e_
   $table_tr
   <td nowrap align=center>
@@ -33,9 +36,9 @@
    <td align=center>
    !if $s_>65535
     !if $s_ iswordof $opensite
-     !href cmd=reply&job=openclose&doc=$s_ fermer
+     !href cmd=reply&job=openclose&doc=$s_ $n_close
     !else
-     !href cmd=reply&job=openclose&doc=$s_ ouvrir
+     !href cmd=reply&job=openclose&doc=$s_ $n_open
     !endif
    !else
     -

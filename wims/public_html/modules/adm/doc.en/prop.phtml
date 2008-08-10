@@ -1,4 +1,5 @@
-<center><h1>Proprerty of the Document<br>
+!!##language independant
+<center><h1>$n_properties<br>
 --- $tit ---</h1></center>
 
 !if $error!=$empty
@@ -9,16 +10,17 @@
 !read propform.phtml
 
 !if class != $doctype
- !href cmd=reply&job=recode Change secret code
+ !href cmd=reply&job=recode $n_codechange
 .&nbsp;
 !endif
 
-!href cmd=reply&job=list List of blocks
+!href cmd=reply&job=list $n_blocklist
 .
-!href cmd=reply&job=file File deposit
-.
- <p>
-Document code: $doc.
-Total available disk space: $quota_total Meg. Free disk space: $quota_free Meg.
+!!!href cmd=reply&job=file $n_file
+!!.
+<p>
+Code du document&nbsp;: $doc.
+$n_freespace1 $quota_total Meg
+$n_freespace2 $quota_free Meg.
 <p>
 

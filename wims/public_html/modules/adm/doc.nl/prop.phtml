@@ -1,4 +1,5 @@
-<center><h1>Document eigenschappen<br>
+!!##language independant
+<center><h1>$n_properties<br>
 --- $tit ---</h1></center>
 
 !if $error!=$empty
@@ -9,16 +10,17 @@
 !read propform.phtml
 
 !if class != $doctype
- !href cmd=reply&job=recode Verander de geheime code
+ !href cmd=reply&job=recode $n_codechange
 .&nbsp;
 !endif
 
-!href cmd=reply&job=list  blokken lijst
+!href cmd=reply&job=list $n_blocklist
 .
-!href cmd=reply&job=file File upload
-.
- <p>
-Document code: $doc.
-Totaal beschikbare schijfruimte: $quota_total Meg. Vrije schijfruimte: $quota_free Meg.
+!!!href cmd=reply&job=file $n_file
+!!.
+<p>
+$n_codedoc $doc.
+$n_freespace1 $quota_total Meg
+$n_freespace2 $quota_free Meg.
 <p>
 

@@ -7,13 +7,13 @@
 !set wims_form_method=post
 !form reply
 <center><table border=0>
-<tr><td align=right>Titre :
-<td><input type=text size=40 name=titr value="$tit">
-<tr><td align=right>Auteur :
-<td><input type=text size=40 name=authorr value="$author">
-<tr><td align=right>Adresse électronique :
-<td><input type=text size=40 name=emailr value="$email">
-<tr><td align=right>L'entête:<br>
+<tr><td align=right>$n_title</td>
+<td><input type=text size=40 name=titr value="$tit"></td></tr>
+<tr><td align=right>$n_author</td>
+<td><input type=text size=40 name=authorr value="$author"></td></tr>
+<tr><td align=right>$n_email</td>
+<td><input type=text size=40 name=emailr value="$email"></td></tr>
+<tr><td align=right>$n_header<br>
 <small>(css, js, etc.)</small>
 !set header=!translate internal $	$ to $\
 $ in $header
@@ -25,24 +25,25 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>Droit d'auteur :<td>
+ <tr><td align=right>$n_copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
 	GNU Free Documentation License,\
 	Open Publication License,\
-	Tout Droit Réservé
- <tr><td align=right>Ouvert au public :<td>
- !formselect docopenr list yes,no prompt Oui, Non
- <tr><td align=right>Langue(s):<td>
+	$n_copyright2
+ </td></tr><tr><td align=right>Ouvert au public :</td><td>
+ !formselect docopenr list yes,no prompt $n_yes, $n_no
+ </td></tr><tr><td align=right>Langue(s):</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  Exemples: all en fr es it de cn</small>
  !if $job=creat
-  <tr><td align=right>Code secret :<td nowrap>
+  <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> et répétez :
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  <tr><td colspan=2><small>Le code secret donne droit à la
+  </td></tr><tr><td colspan=2><small>
+  Le code secret donne droit à la
   modification du document. Il doit être composé de $codemin à $codemax lettres
   alpha-numériques.</small>
  !endif

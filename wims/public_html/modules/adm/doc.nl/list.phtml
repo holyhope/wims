@@ -1,42 +1,41 @@
+!!#language independant
 <center><h1>$tit</h1></center>
 
 !if $fcnt<1
-Dit document heeft nog geen inhoud.
- Maak het 
- !href cmd=reply&job=edit&block=main eerste blok
- </a>.
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
+.
  <p>
  !exit
 !endif
 
 <p>$table_header
-<caption>Lijst van blokken in dit document</caption>
+<caption>$n_blocklist</caption>
 $table_hdtr
-<th>Naam<th>Titel<th>Actie
+<th>$n_name</th><th>$n_titre</th><th>$n_action</th></tr>
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
  !set t_=!trim $t_
- !default t_=Zonder titel
+ !default t_=$n_notitle
  $table_tr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align=center>
- !href cmd=reply&job=read&block=$s_ Lezen
+ !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ Bewerken
+  !href cmd=reply&job=edit&block=$s_ $n_edit
  !endif
 </td>
 !next i
-$table_end <p>
+</tr>$table_end <p>
 
 <center>
-Totaal beschikbare schijfruimte: $quota_total Meg. Beschikbare vrije ruimte: $quota_free Meg.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 <p>
-!href cmd=reply&job=file Bestand Invoegen
+!href cmd=reply&job=file $n_file
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Hoofdpagina van dit document
-
+!href cmd=reply&job=read&block=main $n_main
 </center> <p>
-
