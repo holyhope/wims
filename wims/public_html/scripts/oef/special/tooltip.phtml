@@ -1,16 +1,25 @@
 !if $wims_read_parm=help
 <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
 create a tooltip :  the first parameter is the text of the 
-link, the second is the text which appears in the tooltip. 
-You can put some option after the first parameter in the form :
-option=[...] 
+link,
+the third parameter is the text which appears in the tooltip. 
+the second parameter is text option inside bracket : 
 Inside brackets, you must put option as in the wz_tooltip.js documentation. 
-Default is : option=[FONTSIZE, '14pt', ABOVE, 'true']
-<p><b>Example</b> \special{tooltip click here, the word has 5 letters}
-or 
-\special{tooltip click here,option=[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters}
-\special{tooltip click here,option=[TITLE, 'Some Title', PADDING, 9],un texte}
-!readproc slib/utilities/tooltip click here,option=[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters
+Default is : [FONTSIZE, '12pt', ABOVE, 'true']
+If you want only to load the javascript (once time is sufficient for one 
+html page), don't put any parameter. If you don't want to load the javascript
+because you are sure it is already loaded in the html page, add <tt>nojs</tt>
+in the second parameter. 
+You can configure css style class <tt> span.tooltip</tt>.
+
+<p><b>Example</b> <br>
+<pre>
+\special{tooltip click here, the word has 5 letters}
+\special{tooltip click here,[DURATION, 4000, FONTSIZE, '18pt'], the word has 5 letters}
+\special{tooltip click here,[TITLE, 'Some Title', PADDING, 9],un texte}
+\special{tooltip }
+\special{tooltip\special{tooltip click here,nojs [TITLE, 'Some Title', PADDING, 9],un texte}
+</pre>
 <p>The possible options for tooltips are  (from www.walterzorn.com)
  <embed>
 !read js/tooltip_doc.html
@@ -18,31 +27,34 @@ or
 !exit
 !endif
 
-!set text=!item 2 to -1 of $wims_read_parm
-!set option=$(wims_read_parm[2])
-
-!if option isin $option and [ isin $option
-  !set option=!getopt option in $option
-  !set option=!declosing $option
-  !set text=!item 3 to -1 of $wims_read_parm
+!set parms=$wims_read_parm
+!if $parms issametext
+   !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+   $special_out
+!exit
+!endif
+!set parm1=!item 1 of $parms
+!set text=!item 3 to -1 of $parms
+!set option=!item  2 of $parms
+!if nojs iswordof $option
+  !set option=!replace internal nojs by in $option
+  !set special_out=
 !else
-  !set option=$empty
-  !set text=!item 2 to -1 of $wims_read_parm
+  !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>  
 !endif
+!set option=!trim $option
+!set option=!declosing $option
 !if $option=$empty
-  !set option=FONTSIZE, '14pt', ABOVE, 'true'
+  !set option=FONTSIZE, '12pt', ABOVE, 'true'
 !endif
-
-!set prompt=$(wims_read_parm[1])
-!if $prompt != $empty
- !set special_out= <script type="text/javascript" src="scripts/js/wz_tooltip.js"></script>
+!if $parm1 != $empty
  !set text=!replace internal ' by \' in $text
-!set text=!replace internal $\
-$ by  $ in  $text
-!set special_out=$special_out\
-<a onmouseover="Tip('$text', $option)">$(wims_read_parm[1])</a>
+ !set text=!replace internal $\
+$ by  $  in  $text
+ !set special_out=$special_out\
+ <span class=tooltip><a onmouseover="Tip('$text', $option)">$parm1</a></span>
+ !else
+ !set special_out=$text
+ !endif
 $special_out
- !! <a onmouseover="return escape('$(wims_read_parm[1])')">$prompt</a>
- !! <script type="text/javascript" src="scripts/js/wz_tooltipold.js"></script>
-!endif
 
