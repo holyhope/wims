@@ -1,0 +1,62 @@
+!set titb=La commande <tt>\tooltip</tt>
+!set keyw=
+!set datm=20070529
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+Tooltip on words&#58; 3 arguments. <ul>
+ <li>Argument 1&#58; the prompt
+ </li>
+ <li>Argument 2 (facultatif)&#58; the options of the tooltip between <tt>[ ]</tt>. 
+ If the word <tt>nojs</tt> is added (outside the brackets), the used javascript
+is not reload (it is sufficient to load it onec at the begining of
+the html page). 
+The available options are at the adress 
+<a href=http&#58;//www.walterzorn.com target=wims_external>www.walterzorn.com</a>,
+ see also the help of Createxo.
+ </li>
+ <li>Argument 3 &#58; the text inside the tooltip.
+</li>
+</ul>
+If all arguments are empty, only the javascript is loaded.
+You may change the style of the prompt by using 
+html balises or by defining the css style class <tt>span.tooltip</tt>.
+<p>
+For example&#58;
+<pre>
+\tooltip{ }
+\tooltip{word1}{nojs}{help1}
+\tooltip{&lt;font color="brown">word2&lt;/font>}{nojs [FONTSIZE, '20pt', ABOVE, 'true']}{help2}
+\tooltip{word3}{[FONTSIZE, '40pt', ABOVE, 'false']}{help3}
+\tooltip{word4}{ }{help4}
+</pre>
+<p>
+
+!read primitives.phtml 1, tooltip,  
+
+
+!read primitives.phtml 2, tooltip, word1, nojs, help1 
+
+
+!read primitives.phtml 3, tooltip, <font color="brown">word2</font>, nojs [FONTSIZE, '20pt', ABOVE, 'true'], help2 
+
+
+!read primitives.phtml 4, tooltip, word3, [FONTSIZE, '40pt', ABOVE, 'false'], help3 
+
+
+!read primitives.phtml 5, tooltip, word4, , help4 
+
+<p>
+<p>
+

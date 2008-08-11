@@ -1,0 +1,62 @@
+!set titb=La commande <tt>\tooltip</tt>
+!set keyw=
+!set datm=20070529
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+<br>
+Bulle d'aide sur des mots&#58; 3 arguments. <ul>
+ <li>Argument 1&#58; le mot sur lequel la bulle d'aide apparaîtra lorsqu'on passera
+ la souris dessus.
+ </li>
+ <li>Argument 2 (facultatif)&#58; les options de la bulle d'aide entre <tt>[ ] </tt>.
+ Si le mot <tt>nojs</tt> est ajouté (en dehors des crochets), le javascript utilisé
+ n'est pas chargé (il suffit de le charger une fois en haut de la page html.
+Les options disponibles sont à l'adresse
+<a href=http&#58;//www.walterzorn.com target=wims_external>www.walterzorn.com</a>,
+ voir aussi l'aide de  Createxo.
+ </li>
+ <li>Argument 3 &#58; le texte de la bulle d'aide
+</li>
+</ul>
+Si tous les arguments sont vides, le javascript seul est chargé.
+Vous pouvez ajuster le style du "prompt" soit en utilisant des balises html
+soit en définissant la classe de style css <tt>span.tooltip</tt>.
+<p>
+Par exemple, pour ajouter une bulle d'aide
+<pre>
+\tooltip{ }
+\tooltip{mot1}{nojs}{aide1}
+\tooltip{&lt;font color="brown">mot2&lt;/font>}{nojs [FONTSIZE, '20pt', ABOVE, 'true']}{aide2}
+\tooltip{mot3}{ [FONTSIZE, '40pt', ABOVE, 'false']}{aide3}
+\tooltip{mot4}{ }{aide4}
+</pre>
+<p>
+
+!read primitives.phtml 1, tooltip,  
+
+
+!read primitives.phtml 2, tooltip, mot1, nojs, aide1 
+
+
+!read primitives.phtml 3, tooltip, <font color="brown">mot2</font>, nojs [FONTSIZE, '20pt', ABOVE, 'true'], aide2 
+
+
+!read primitives.phtml 4, tooltip, mot3, [FONTSIZE, '40pt', ABOVE, 'false'], aide3 
+
+
+!read primitives.phtml 5, tooltip, mot4, , aide4 
+
+<p>
+<p>
+
