@@ -1,6 +1,7 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
+
 slib_title=Tooltip containing an html text which appears when the mouse points on a word.
 slib_parms=3\
 ,word on which the mouse should point\
@@ -9,15 +10,26 @@ option=[DURATION, 4000, FONTSIZE, '14pt', ABOVE, 'true'],option\
 slib_author=Bernadette Perrin-Riou
 slib_out= code for tooltip
 slib_comment=use javascript  wz_tooltip.js (http://www.walterzorn.com).\
+If no parameters, just load the javascript ; if <tt>nojs</tt>\
+is a word in the second parameter, don't load the javascript \
+(must be one time before the first tooltip).\
+Can use also special method <tt>tooltip</tt> in oef exercise \
+or command <tt>\tooltip</tt> in document
 
-slib_example= rouge,option=[], une couleur\
-mouse here, option=[DURATION, 1000,TITLE,'First clue'], the word has 5 letters\
-mouse here, option=[FONTSIZE, '25pt'], .....\
-mouse here, option=[TITLE, 'Some Title', PADDING, 9],another example
+slib_example= rouge,, une couleur\
+mouse here,nojs [DURATION, 1000,TITLE,'First clue'], the word has 5 letters\
+mouse here, [FONTSIZE, '25pt'], .....\
+mouse here, [TITLE, 'Some Title', PADDING, 9],another example\
+
 !exit
 
 :proc
+slib_parm=!replace internal option= by in $wims_read_parm
+slib_parmcnt=!itemcnt $slib_parm
+!if $slib_parmcnt=2
+ slib_parm=$(slib_parm[1]),,$(slib_parm[2])
+!endif
 
-!read oef/special/tooltip.phtml $wims_read_parm
+!read oef/special/tooltip.phtml $slib_parm
 
 slib_out= $special_out
