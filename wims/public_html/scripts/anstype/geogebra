@@ -26,7 +26,6 @@ precision=!getopt precision in $(replyoption$i)
 !default weight=1,0.2,1
 !default output=coord
 !default lang=$module_language
-!default lang=fr
 !read anstype/geogebra.$lang
 !read anstype/geogebra.inc
 !exec pari $pari_header
@@ -580,8 +579,8 @@ mylistformal=
           !else
             typeu=!line $typeu of $mylist11
             typeu=!replace internal = by , in $typeu
-			      vartemp=!lower $(typeu[2])
-			      vartemp=!deaccent $vartemp
+            vartemp=!lower $(typeu[2])
+            vartemp=!deaccent $vartemp
             typeu=!getopt $vartemp in $typelangue
             !default typeu=point
             !if $typeu iswordof center 
@@ -688,9 +687,9 @@ displaylist1=
 $ in $yobj1
     yoblinecnt=!linecnt $yobj1
     !for li = 1 to $yoblinecnt
-	 !if $klaar=0
+     !if $klaar=0
       yobj=!line $li of $yobj1
-	  vartemp=!lower $(yobj[1])
+      vartemp=!lower $(yobj[1])
       !if $vartemp iswordof $type $type2
         yobj=!item 2 to -1 of $yobj
         yobj=!nospace $yobj
@@ -707,24 +706,24 @@ $ in $yobj1
           !endif 
           mscr2=1
         !else
-	        !for r = 1 to $ycnt  
-	         !if $klaar=0
-	           ob=!word $r of $obj
-	           !if $ob isin $yobj
-	             klaar=1
-	             !increase formal_cond_score
-	             !increase name_score
-	             result=$display2 <font color="green">$w_yes</font>
-	             !if $output=coord
-	               result=$result  ($yobj2)
-	             !endif 
-	             mscr2=1
-	           !endif
-	          !endif
-	        !next r
-		!endif
-      !endif
-	 !endif
+          !for r = 1 to $ycnt  
+           !if $klaar=0
+            ob=!word $r of $obj
+            !if $ob isin $yobj
+              klaar=1
+              !increase formal_cond_score
+              !increase name_score
+              result=$display2 <font color="green">$w_yes</font>
+              !if $output=coord
+                result=$result  ($yobj2)
+              !endif 
+              mscr2=1
+             !endif
+            !endif
+           !next r
+       !endif
+     !endif
+   !endif
     !next li
   !endif
 ##si  on n'a rien obtenu avec les conditions formelles et le nom,
@@ -743,7 +742,7 @@ $ in $yobj1
            yobj2=
          !endif
          ytype=!item 2 of $yobj
-		 ytype=!lower $ytype
+         ytype=!lower $ytype
          yobj=!item 3 to -1 of $yobj
          yobj=!nospace $yobj
          ycnt=!wordcnt $obj
@@ -788,7 +787,7 @@ $ in $yobj1
 !!!! laisser la ligne vide précédente    
  !endif
   mscr=!append item $mscr2 to $mscr
-!next p		
+!next p
 
 ###NUMERICAL CONDITION
 displaylist2=
@@ -835,16 +834,20 @@ displaylist2=
        coord=!getopt $name in $obj
        type=!item 1 of $coord
        coord=!item 2 to -1 of $coord
-	   ###for a point coord=x,y
+       !if $type isitemof $conic
+        coord=!rawmath $coord
+        coord=!exec pari c=$coord; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
+       !endif
+   ###for a point coord=x,y
     ###for a conic coord=x2,y2,xy,x,y,cst
       !if $type isitemof segment,function,angle,numeric,text
         cond=!replace internal v_$(name)= by ($coord)== in $cond
         cond=!replace internal v_$(name) by ($coord) in $cond
       !endif
-      if $type isitemof point,vector
-      cond=!replace internal x_$(name) by ($(coord[1])) in $cond 
-      cond=!replace internal y_$(name) by ($(coord[2])) in $cond
-    !endif
+      !if $type isitemof point,vector
+        cond=!replace internal x_$(name) by ($(coord[1])) in $cond 
+        cond=!replace internal y_$(name) by ($(coord[2])) in $cond
+      !endif
     !if $type=line
       cond=!replace internal m_$(name) by ($[-$(coord[4])/$(coord[5])]) in $cond
       cond=!replace internal p_$(name) by ($[-$(coord[6])/$(coord[5])]) in $cond
@@ -857,8 +860,7 @@ displaylist2=
       cond=!replace internal x_$(name) by ($[-$(coord[4])/(2*$(coord[1]))]) in $cond 
       cond=!replace internal y_$(name) by ($[-$(coord[5])/(2*$(coord[2]))]) in $cond
     !endif
-
-      !if $type isitemof $conic
+    !if $type isitemof $conic
         cond=!replace internal x2_$(name) by ($(coord[1])) in $cond 
         cond=!replace internal y2_$(name) by ($(coord[2])) in $cond 
         cond=!replace internal xy_$(name) by ($(coord[3])) in $cond 
@@ -877,10 +879,6 @@ displaylist2=
             !if $(my[1])$(my[2]) notsametext
              my=!rawmath $(my[1])-($(my[2]))
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-			       coord=!rawmath $coord
-			       coord=!exec pari c=$coord ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-             !! mat=!nospace [$my;$coord]
-              !! cond=matrank($mat)<=1
              test=!exec pari my=[$my];c=vecmax(abs(my)) ; my=my/c ;\
              yo=[$coord] ; c=vecmax(abs(yo)) ; yo=yo/c ;\
              if( vecmax(abs(yo - my)) < 10^(-(max(3,$precision/2))) || vecmax(abs(yo + my)) < 10^(-(max(3,$precision/2))),1,0)
@@ -920,7 +918,7 @@ displaylist2=
   !else
   ## laisser la ligne vide
      displaylist2=$displaylist2\
- 	
+
   !endif
   mscr=!append item $mscr2 to $mscr
 !reset display
