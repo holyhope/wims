@@ -78,8 +78,6 @@ yourlistformal=!nospace $yourlistformal
 yourlistformal=!replace internal && by $\
 $ in $yourlistformal
 
-
-
 ####transformation des équations
 ### liste des noms à ne pas ignorer (attention, pour l'instant  cela change la numérotation des lignes
 ### par rapport à your_name (peut-on laisser une ligne vide dans le cas d'ignore ??)
@@ -582,10 +580,13 @@ mylistformal=
           !else
             typeu=!line $typeu of $mylist11
             typeu=!replace internal = by , in $typeu
-			vartemp=!lower $(typeu[2])
-			vartemp=!deaccent $vartemp
+			      vartemp=!lower $(typeu[2])
+			      vartemp=!deaccent $vartemp
             typeu=!getopt $vartemp in $typelangue
             !default typeu=point
+            !if $typeu iswordof center 
+              typeu=point
+            !endif
           !endif 
         !endif
         !if $(M_objet[2+$u]) issametext ??
@@ -598,7 +599,7 @@ mylistformal=
          type=$type point $cn
        !endif
     !endif 
-    type=!nospace $type formal     
+    type=!nospace $type formal
     ligne=$($type)
     !if $ligne notsametext 
       mylistformal = !append line $ligne to $mylistformal
@@ -876,8 +877,8 @@ displaylist2=
             !if $(my[1])$(my[2]) notsametext
              my=!rawmath $(my[1])-($(my[2]))
              my=!exec pari c=$my ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
-			 coord=!rawmath $coord
-			 coord=!exec pari c=$coord ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
+			       coord=!rawmath $coord
+			       coord=!exec pari c=$coord ; [polcoeff(c,2,x),polcoeff(c,2,y),polcoeff(polcoeff(c,1,x),1,y),polcoeff(polcoeff(c,1,x),0,y),polcoeff(polcoeff(c,0,x),1,y),polcoeff(polcoeff(c,0,x),0,y)]
              !! mat=!nospace [$my;$coord]
               !! cond=matrank($mat)<=1
              test=!exec pari my=[$my];c=vecmax(abs(my)) ; my=my/c ;\
@@ -956,7 +957,6 @@ Mscr=
 !else
   num_cond_score=$[$num_cond_score/$total_num_cond]
 !endif
-
 !if $total_formal_cond=0
   formal_cond_score=0
   weight=0,$(weight[2]),$(weight[3])
@@ -996,10 +996,10 @@ msg=<font color="red"><b>
     diareply$i=bad
 !else
     !if $scorenoname < 1
-  partialgood$i=yes
-  diareply$i=bad
+ !! partialgood$i=yes
+      diareply$i=bad
     !else
-  diareply$i=good
+      diareply$i=good
     !endif
 !endif
 ####cela n'allait pas: il faut que diareply=good simplement si $score=1  
