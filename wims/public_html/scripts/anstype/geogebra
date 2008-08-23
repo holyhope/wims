@@ -25,14 +25,18 @@ precision=!getopt precision in $(replyoption$i)
 !!precision=$[2*$precision]
 !default weight=1,0.2,1
 !default output=coord
-!default lang=$module_language
-!read anstype/geogebra.$lang
+!set ggblang=!getopt language in $(replyoption$i)
+!default ggblang=$module_language
+!read anstype/geogebra.$ggblang
+!if $langexists!=1
+  !read anstype/geogebra.en
+!endif
 !read anstype/geogebra.inc
 !exec pari $pari_header
 #######################
 TODO ??
 #######################
-!!!attention, tout ce qui commence par w_ a disparu de geogebra.fr
+
 !!!if $w_axeX isin $(reply$i)
  !! $(reply$i)=xX,line,y=0&&y,line,x=0&&$(reply$i)
 !!!endif
@@ -76,18 +80,6 @@ yourlistformal=!row 2 of $(reply$i)
 yourlistformal=!nospace $yourlistformal
 yourlistformal=!replace internal && by $\
 $ in $yourlistformal
-
-####transformation des équations
-### liste des noms à ne pas ignorer (attention, pour l'instant  cela change la numérotation des lignes
-### par rapport à your_name (peut-on laisser une ligne vide dans le cas d'ignore ??)
-## yourlist_name_nonignore 
-!!B=point,-3,3
-!!C=point,-0.5800000000000002,4.18
-!!a=segment,3 
-!!point,-3, 3  ???? 
-### yourlist_nonignore= point, 2, 3 \
-!! line, 0, 0, 0, 2, 5, -3 \
-!! circle, 1, 1, 0, -4, 6, 9 .....
 
 ##################
 Ne sert plus
@@ -195,7 +187,7 @@ yourlist1=$yourlist11
             lignebb=!replace internal = by , in $ligneb
             ligneb1=!line $b of $yourlist1
             !if $(lignebb[2]) iswordof point
-             yourlist1=!replace line number $b by $ligneb1&&$w_center,$(ligne1[1]) in $yourlist1
+             yourlist1=!replace line number $b by $ligneb1&&$center,$(ligne1[1]) in $yourlist1
             !endif
           !endif
         !endif
@@ -228,7 +220,7 @@ $ in $ligne1
    !for r= 1 to $vcnt-1
     !for j=$[$r+1] to $vcnt
       !if $(ligne1[$(v[$r]);2]) notsametext  and $(ligne1[$(v[$j]);2]) notsametext
-        rab=$w_intersection,$(ligne1[$(v[$r]);2]),$(ligne1[$(v[$j]);2])
+        rab=$intersection,$(ligne1[$(v[$r]);2]),$(ligne1[$(v[$j]);2])
         !if $rab notin $ligne
           ligne=$ligne&&$rab
         !endif
@@ -982,7 +974,7 @@ msg=<font color="red"><b>
   !if $total_formal_cond < $ynamecnt
     score=$[$score*$total_formal_cond/$ynamecnt]
     scorenoname=$[$scorenoname*$total_formal_cond/$ynamecnt]
-    msg=$msg $w34<br>
+    msg=$msg $w_penalty<br>
   !endif
 !endif
 !if $scorenoname=NaN
@@ -1010,7 +1002,8 @@ msg=<br>$msg </b></font>
 !readproc slib/geo2D/geogebra3  $oef_applet_option\
 $feed\
 $yourggb\
-$js_fix
+$js_fix\
+language=$ggblang
 
 #### On ne fait afficher que les points nouveaux 
  yourlistnew$output =
@@ -1036,7 +1029,7 @@ m_reply$i=$yourggb
 !if $output=nothing
   reply__$i=&nbsp;
 !else
-  reply__$i=$w35:\
+  reply__$i=$w_analyze\
 <pre>$(yourlistnew$output)\
 </pre>\
 <hr width=50%>\

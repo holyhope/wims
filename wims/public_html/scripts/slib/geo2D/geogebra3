@@ -94,7 +94,7 @@ $slib_extra
 slib_list_ap = file,showToolBar,showAlgebraView,showMenuBar,showResetIcon,showToolBarHelp,enableRightClick,showAlgebraInput,customToolBar,language,debug,number
 slib_list_ap1=!items2words $slib_list_ap
 
-!for slib_a in width,height,$slib_list_ap
+!for slib_a in width,height,language,$slib_list_ap
   slib_$slib_a=!getopt $slib_a in $slib_data
 !next slib_a
 slib_customToolBar1= !nospace $slib_customToolBar
@@ -104,7 +104,6 @@ slib_customToolBar= !replace internal || by % in $slib_customToolBar
 slib_customToolBar= !replace internal | by ,|, in $slib_customToolBar
 slib_customToolBar= !replace internal % by ,||, in $slib_customToolBar
 slib_customToolBar= !items2words  $slib_customToolBar
-
 !default slib_width=300
 !default slib_height=300
 !default slib_enableRightClick=true
@@ -113,7 +112,7 @@ slib_customToolBar= !items2words  $slib_customToolBar
 !default slib_showMenuBar=false
 !default slib_showResetIcon=false
 !default slib_showAlgebraInput=false
-!default slib_language=fr
+!default slib_language=$module_language
 !default slib_debug=false
 !default slib_customToolBar=
 !default slib_number=1
