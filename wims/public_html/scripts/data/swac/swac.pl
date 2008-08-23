@@ -7,6 +7,7 @@ my @dir=() ;
 my $lang='' ;
 my @SPECIAL=('');
 my $file='index.tags.txt' ;
+my $PREFIX;
 my @EXTRA=(
 swac_tech_qlt,
 swac_tech_date,
@@ -54,6 +55,7 @@ while ($_ = shift(@ARGV)) {
   elsif (/^--lang=(.*)$/)    {  $lang=$1;   }
   elsif (/^--mode=(.*)$/)    {  $MODE=$1;   }
   elsif (/^--modeout=(.*)$/) {  $MODE1=$1;  }
+  elsif (/^--prefix=(.*)$/) {  $PREFIX=$1 . '/';  }
   else { 
     print STDERR "unknown option: $_\n" if (!/^--help$/);
     usage(); # includes --help !
@@ -61,7 +63,7 @@ while ($_ = shift(@ARGV)) {
 }
 %hash=(swac_alphaidx => swac_baseform) ; 
 
-my %ALLTAGS = ('Swac_text' => {}) ; 
+my %ALLTAGS = ('swac_text' => {}) ; 
 push @dir, glob("$lang-*") if ($lang) ;
 $ALLTAGS = \%ALLTAGS ;
 InitFromFiles($ALLTAGS, (@dir) ? @dir : ".") ; 
@@ -154,7 +156,7 @@ $SIG{__WARN__} = sub { my ($x) = @_;
 
 #### à modifier ou partir d'un fichier sans global !
 
-sub ConsListe { my ($file, $ref, $dir) = @_;
+sub ConsListe { my ($file, $ref, $dir,$prefix) = @_;
   my ($Id, $val) = ('', '');
 #  if (!open IN, $file) { warn "$file n'existe pas"; return; }
   open IN, $file;
@@ -164,7 +166,7 @@ sub ConsListe { my ($file, $ref, $dir) = @_;
   while(<IN>) {
     next if (/^#/ || (/^\s*$/ && !$val)); # vire commmentaires + lignes vides
     #warn "caractères de contrôle" if /[œ‘’ –]/; # carac. Windows courants
-      if (/\[(.*)\]/) { $f=$1 ; $f =~ s/\.ogg/\.mp3/g ;  $id = $dir . $f ; }
+      if (/\[(.*)\]/) { $f=$1 ; $f =~ s/\.ogg/\.mp3/g ;  $id = $prefix . $dir . 'mp3/' . $f ; }
       if (/(\w+)\s*=\s*(.*?)\s*$/) { $r=Traite($2) ;
         $field=canonify($1) ;
         next if ($field =~ /($Extra)/) ; 
@@ -204,7 +206,7 @@ sub canonify { my ($special)=@_ ;
 # $ref a reference to a %Tag2Tableau hash, @files a list of data files
 
 sub InitFromFiles { my ($ref, @files) = @_;
-  for (@files) { ConsListe($_ . (($_) ? "/": "") . $file, $ref, (!($_ eq ".")  ? $_ . "/": "")); }
+  for (@files) { ConsListe($_ . (($_) ? "/": "") . $file, $ref, (!($_ eq ".")  ? $_ . "/": ""),$PREFIX); }
 }
 
 sub sortuniq {
