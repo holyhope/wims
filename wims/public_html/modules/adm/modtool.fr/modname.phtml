@@ -41,10 +41,15 @@
 .&nbsp;
  !href cmd=reply&jobreq=restore Restaurer un fichier de sauvegarde
 .&nbsp;
- !href cmd=new&module=adm/quicktool Utiliser Quicktool
-.&nbsp;
 !href cmd=new&module=adm/latex2wims Utiliser Latex2wims
 .
+!set test_quicktool=!defof exists in wimshome/public_html/modules/adm/quicktool.$lang/version
+!if $test_quicktool=yes
+ !href cmd=new&module=adm/quicktool Utiliser Quicktool
+.&nbsp;
+!else
+<small>Quicktool n'est pas installé sur ce serveur.</small>
+!endif
 !else
  Vous n'avez pas encore de module en développement. Veuillez
  !href cmd=reply&jobreq=create cliquer ici
