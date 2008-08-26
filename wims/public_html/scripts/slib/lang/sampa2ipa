@@ -1,0 +1,76 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=IPA transcription according to Sampa Ascii codage (for english)
+slib_parms=1\
+,text\
+slib_author=Bernadette Perrin-Riou
+slib_out= IPA transcription in html symbols
+slib_comment=don't put any html code except for { (&amp;#230;) and } (&amp;#649;)
+slib_example=zi:br@,
+
+!exit
+
+:proc
+!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
+ !exit
+!endif
+
+slib_word= $wims_read_parm
+
+pas de code html  sauf
+{,&#230;
+},&#649;
+
+slib_out =$slib_word
+
+!!slib_out=!replace internal & by && in $slib_out
+slib_IPA=&#649;,#qqqqqqqqqqqqqqqq;\
+&#230;,#pppppppppppppppp;\
+&,&#zzzzzzzzzzzzzzz;,&#x0276;,s.c. OE lig. \
+2,&#248;,&#x00F8;,o-slash \
+3,xxxxxxxxxxxxxxx\
+9,&#339yyyyyyyyyy;,&#x0153;,oe ligature \
+6,&#592;,&#x0250;,turned a \
+&#339yyyyyyyyyy;,&#339;\
+xxxxxxxxxxxxxxx,3\
+3,&#604;,&#x025C;,rev. epsilon \
+&#zzzzzzzzzzzzzzz,&#630;,&#x0276;,s.c. OE lig. \
+#pppppppppppppppp;,&#230;\
+#qqqqqqqqqqqqqqqq;,&#649;\
+A,&#593;,&#x0251;,script a \
+{,&#230;,&#x00E6;,ae ligature \
+Q,&#594;,&#x0252;,turned script a \
+E,&#603;,&#x025B;,epsilon \
+@,&#601;,&#x0259;,turned e \
+I,&#618;,&#x026A;,small cap I \
+O,&#596;,&#x0254;,turned c \
+U,&#650;,&#x028A;,upsilon \
+},&#649;,&#x0289;,barred u \
+V,&#652;,&#x028C;,turned v \
+Y,&#655;,&#x028F;,small cap Y \
+B,&#946;,&#x03B2;,beta \
+C,&#231;,&#x00E7;,c-cedilla \
+D,&#240;,&#x00F0;,eth \
+G,&#611;,&#x0263;,gamma \
+L,&#654;,&#x028E;,turned y \
+J,&#626;,&#x0272;,left-tail n \
+N,&#331;,&#x014B;,eng \
+R,&#641;,&#x0281;,inv. s.c. R \
+S,&#643;,&#x0283;,esh \
+T,&#952;,&#x03B8;,theta \
+H,&#613;,&#x0265;,turned h \
+Z,&#658;,&#x0292;,ezh (yogh) \
+?,&#660;,&#x0294;,dotless ? 
+`,&#734;
+
+
+slib_IPA_m=!lines2rows $slib_IPA
+
+slib_cnt=!linecnt $slib_IPA
+!for slib_k = 1 to $slib_cnt
+  slib_l=!line $slib_k of $slib_IPA
+  slib_p=!item 1 of $slib_l
+  slib_q=!item 2 of $slib_l
+  slib_out=!replace internal $slib_p by $slib_q in $slib_out
+!next

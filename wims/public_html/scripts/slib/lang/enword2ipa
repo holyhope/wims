@@ -1,0 +1,52 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=IPA transcription of english words
+slib_parms=1
+,text\
+slib_author=Bernadette Perrin-Riou
+slib_out= IPA transcription in html symbols by using epd lexique
+slib_comment=see <a href="http://seas3.elte.hu/szigetva/etcetera/EPD.html">epd</a>. \
+the words must be in the lexique, if not the word is not transcripted.\
+Only comma punctuation is allowed (;?!.: are in test but may be not allowed in the future)
+slib_example=mother,mothers,father,fathers,toto
+
+!exit
+:proc
+!reset slib_epd slib_out
+slib_text=$wims_read_parm
+slib_text=!replace internal $	$ by $\
+$ in $slib_text
+slib_line_cnt=!linecnt $slib_text
+slib_bad=,;?!.:
+slib_bad_cnt=!charcnt $slib_bad
+!for slib_a =1 to $slib_bad_cnt
+  slib_char=!char $slib_a of $slib_bad
+  slib_text=!replace internal $slib_char by $ $slib_char$ $ in $slib_text
+!next
+!for slib_l=1 to $slib_line_cnt
+  !reset slib_epd_l
+  slib_line=!line $slib_l of $slib_text
+  slib_word_cnt=!wordcnt $slib_line
+  !for slib_j = 1 to $slib_word_cnt
+    slib_w = !word $slib_j of $slib_text
+    slib_e=
+    !if $slib_j notin $slib_bad
+      slib_e = !lookup $slib_w in data/lex/epd_data
+      slib_e=!item 1 of $slib_e
+    !endif
+    !default slib_e=$slib_w
+    slib_epd_l=!append word $slib_e to $slib_epd_l
+  !next
+  slib_epd=$slib_epd\
+$slib_epd_l
+!next
+slib_epd=!trim $slib_epd
+
+!read slib/lang/epd2ipa $slib_epd
+!for slib_a =1 to $slib_bad_cnt
+  slib_char=!char $slib_a of $slib_bad
+  slib_out=!replace internal $ $slib_char by $slib_char in $slib_out
+!next
+
+

@@ -1,0 +1,55 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=IPA transcription according to epd ascii codage (for english)
+slib_parms=1\
+,text\
+slib_author=Bernadette Perrin-Riou
+slib_out= IPA transcription in html symbols
+slib_comment=see http://seas3.elte.hu/szigetva/etcetera/EPD.html
+slib_example='g0dmVD@R,pIktS@-kAdz
+
+!exit
+
+:proc
+
+slib_word=$wims_read_parm
+
+pas de code html !
+
+slib_out =$slib_word
+slib_out=!replace internal & by && in $slib_out
+slib_IPA=0,&#59VV;,&#x0251;\
+3,&#604;:,&#x025C\
+&#59VV;,&#594;,;\
+&&,&#230;,&#x00E6;\
+i,i:,i:\
+I,&#618;,&#x026A;\
+@,&#601;,&#x0259;\
+U,&#650;,&#x028A;\
+A,&#593;:,a:\
+V,&#652;,&#x028C;\
+O,&#596;:,&#x0254;:\
+u,u:,u:\
+tS,&#679;,&#x02A7;\
+dZ,&#676;,&#x02A4;\
+N,&#331;,&#x014B;\
+T,&#952;,&#x03B8;\
+D,&#240;,&#x00F0;\
+S,&#643;,&#x0283;\
+Z,&#658;,&#x0292;\
+R,&#734;
+
+
+
+slib_IPA_m=!lines2rows $slib_IPA
+
+slib_cnt=!linecnt $slib_IPA
+!for slib_k = 1 to $slib_cnt
+  slib_l=!line $slib_k of $slib_IPA
+  slib_p=!item 1 of $slib_l
+  slib_q=!item 2 of $slib_l
+  slib_out=!replace internal $slib_p by $slib_q in $slib_out
+!next
+
+
