@@ -102,8 +102,10 @@ slib_atomes=$slib_data
 slib_atomes=!translate $	$ to $\
 $ in $slib_atomes
 
-aleat=!randint 0 100000000
-slib_fichier=fichier.$wims_nowseconds.$aleat
+!default slib_cnt=0
+slib_cnt= $[$slib_cnt +1]
+slib_fichier=fichier.$slib_cnt
+
 !readproc oef/togetfile.proc $slib_fichier new\
 $slib_atomes
 
