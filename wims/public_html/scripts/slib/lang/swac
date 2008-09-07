@@ -66,25 +66,24 @@ slib_audio=
   slib_audio=!append item $slib_au to $slib_audio
 !next
 slib_son=!randitem $slib_audio
-slib_w=$slib_son
-slib_son1=!replace internal / by , in $slib_son
-slib_son1=$(slib_son1[1])
-slib_version=!record 0 of data/swac/version
-slib_version=!lines2items $slib_version
-slib_word=!lookup $slib_son in data/swac/$slib_son1/sw_tags
-!if $slib_son1 isitemof $slib_version
-     slib_son=scripts/data/swac/$slib_son
-!else
-     slib_son=http://packs.shtooka.net/$slib_son
-!endif
 !if $slib_son!=
+ slib_son1=!replace internal / by , in $slib_son
+ slib_son1=$(slib_son1[1])
+ slib_version=!record 0 of data/swac/version
+ slib_version=!lines2items $slib_version
+ slib_word=!lookup $slib_son in data/swac/$slib_son1/sw_tags
+ !if $slib_son1 isitemof $slib_version
+     slib_son=scripts/data/swac/$slib_son
+ !else
+     slib_son=http://packs.shtooka.net/$slib_son
+ !endif
  !if rename iswordof $slib_option2 
    slib_son=!rename $slib_son
  !endif
 !else 
   slib_out=
 !endif
-:end 
+:end
 
 !!slib_out =<embed src=$slib_son $slib_option><noembed><bgsound src=$slib_son></noembed></embed>
 slib_player=!getopt player in $slib_option
