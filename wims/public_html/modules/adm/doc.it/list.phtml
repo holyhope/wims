@@ -1,41 +1,42 @@
+!!#language independant
 <center><h1>$tit</h1></center>
 
 !if $fcnt<1
- Questo documento &egrave; ancora vuoto.
- !href cmd=reply&job=edit&block=main Crea la prima pagina
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
 .
  <p>
  !exit
 !endif
 
 <p>$table_header
-<caption>Elenco dei blocchi che compongono il documento</caption>
+<caption>$n_blocklist</caption>
 $table_hdtr
-<th>Nome del blocco<th>Titolo<th>Operazioni
+<th>$n_name</th><th>$n_title</th><th>$n_action</th></tr>
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
  !set t_=!trim $t_
- !default t_=No title
+ !default t_=$n_notitle
  $table_tr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align=center>
- !href cmd=reply&job=read&block=$s_ Leggi
+ !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ Modifica
+  !href cmd=reply&job=edit&block=$s_ $n_edit
  !endif
 </td>
 !next i
-$table_end <p>
+</tr>$table_end <p>
 
 <center>
-Spazio totale disponibile sul disco: $quota_total Mega. Spazio libero: $quota_free Mega.
+$n_freespace1 $quota_total Mega.
+$n_freespace2 $quota_free Mega.
 <p>
-!href cmd=reply&job=file Allega un file
+!href cmd=reply&job=file $n_file
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Copertina del documento
-
+!href cmd=reply&job=read&block=main $n_main
 </center> <p>
 

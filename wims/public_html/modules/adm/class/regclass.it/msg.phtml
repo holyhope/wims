@@ -22,6 +22,11 @@ Spiacente, ma solo il <em>site manager</em> può creare portali di sede.
 !endif
 
 !if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size=+1><center>La password &egrave; stata inviata per email 
+   all'indirizzo $sendmail.</center></font>
+  <p>
+ !endif
  !if $regpass!=$empty
   Spiacente, la password è errata. Riprova.
  !else
@@ -40,6 +45,26 @@ Spiacente, ma solo il <em>site manager</em> può creare portali di sede.
  !mailurl $wims_site_manager manager \
 Virtual class creation password
 di questo sito WIMS. 
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  &Egrave; possibile ricevere la password di creazione del corso inserendo
+  un indirizzo di posta elettronica:
+  <input type="text" name="adresse1" value="$adresse1" size="20">
+  <input type=hidden name=step value=0>
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size=+1>@$regpassmail</font>
+   <input type=hidden name="adresse2" value="$regpassmail">
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Invia">
+ </form>
+ !else
+  !reset sendmail
+ !endif
  !set restart=no
  !exit
 !endif
@@ -75,12 +100,6 @@ Virtual class creation password
  !exit
 !endif
 
-!if has_empty=$error
- Mancano dei dati indispensabili per la creazione di un nuovo corso
- interattivo. Torna indietro e ricomincia.
- !exit
-!endif
-
 !if bad_secure=$error
  Your current host does not fit your definition of secure access
  (<tt>$secure</tt>)! This is probably an error which would make you unable
@@ -96,6 +115,12 @@ Virtual class creation password
  !exit
 !endif
 
+!if has_empty=$error
+ Mancano dei dati indispensabili per la creazione di un nuovo corso
+ interattivo. Torna indietro e ricomincia.
+ !exit
+!endif
+
 !if too_short=$error
  Il campo ``$(name_$error_subject)'' sembra troppo corto.
  !exit
@@ -103,6 +128,17 @@ Virtual class creation password
 
 !if bad_date=$error
  La data di termine del corso non &egrave; corretta.
+ !exit
+!endif
+
+!if anti_date=$error
+ La data di termine del corso &egrave; 
+ antecedente ad oggi.
+ !exit
+!endif
+
+!if bad_level=$error
+ Il livello scelto non &egrave; accettabile.
  !exit
 !endif
 
@@ -114,16 +150,6 @@ Virtual class creation password
  !exit
 !endif
 
-!if bad_level=$error
- Il livello scelto non &egrave; accettabile.
- !exit
-!endif
-
-!if anti_date=$error
- La data di termine del corso &egrave; 
- antecedente ad oggi.
- !exit
-!endif
 
 !if existing=$error
  Il corso $classname sembra esistere gi&agrave;. Non &egrave; possibile
