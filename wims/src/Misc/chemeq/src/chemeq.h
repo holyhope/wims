@@ -106,6 +106,7 @@ class AtomeListe{
   static AtomeListe * triage(AtomeListe * al);
   void printcount(std::ostream & o, const fraction&, int multiple) const;
   void printnorm(std::ostream & o) const;
+  bool isEqual(const AtomeListe & a2) const;
   void debug(int decal = 0)const{
     for (int i=0; i< decal; i++) std::cout << " ";
     std::cout << "AtomeListe : ( & = " << this << " symb=\"" << symb << "\" Zed = " << Zed 
@@ -116,8 +117,6 @@ class AtomeListe{
     if(suiv) suiv->debug(decal);
   };
 };
-
-bool operator == (const AtomeListe & a1, const AtomeListe & a2);
 
 typedef enum { aqueous, gas, sol } moltype;
 
@@ -139,7 +138,7 @@ class Molec{
   AtomeListe & liste()const{return *al;};
   int charge()const{return ch;};
   bool eqMol(const Molec * m) const {
-    return (al == m->al) && (ch== m->ch);
+    return (al->isEqual(*(m->al))) && (ch== m->ch);
   }
   void nombre(int n, int d=1){nb=fraction(n,d);};
   fraction nombre()const{return nb;};
@@ -173,12 +172,10 @@ class Molec{
     std::cout << ")\n";
   };
   // two Molecs are equal if the AtomLists and the charges are equal.
-  friend bool operator == (const Molec & m1, const Molec & m2);
   friend Membre operator & (Membre & m1, Membre & m2);
   friend Membre operator - (Membre & m1, Membre & m2);
 };
 
-bool operator == (const Molec & m1, const Molec & m2);
 std::ostream & operator << (std::ostream & o, const AtomeListe & l);
 std::ostream & operator << (std::ostream & o, const Molec & m);
 

@@ -192,9 +192,9 @@ AtomeListe * AtomeListe::triage(AtomeListe * al){
   return al;
 }
 
-bool operator == (const AtomeListe & a1, const AtomeListe & a2){
+bool AtomeListe::isEqual(const AtomeListe & a2) const {
   std::stringstream s1, s2;
-  a1.printnorm(s1);
+  printnorm(s1);
   a2.printnorm(s2);
   return s1.str() == s2.str();
 }
@@ -247,10 +247,6 @@ std::ostream & operator << (std::ostream & o, const AtomeListe & l){
 }
 
 const char* moltypeStr[] = { "aq", "g", "s" };
-
-bool operator == (const Molec & m1, const Molec & m2){
-  return *(m1.al) == *(m2.al) && m1.ch == m2.ch;
-}
 
 const std::string Molec::signature()const{
   std::ostringstream o;
@@ -613,11 +609,11 @@ std::ostream & operator << (std::ostream & o, const Membre & m){
 
 Membre operator & (Membre & m1, Membre & m2){
   Membre result;
-  result.printnorm(std::cout);
+  //result.printnorm(std::cout);
   fraction min(1);
   for(Membre::iterator i = m1.begin(); i < m1.end(); i++){
     for(Membre::iterator j = m2.begin(); j < m2.end(); j++){
-      if (**i == **j){
+      if ((*i)->eqMol(*j)){
 	Molec *m = new Molec(**i);
 	if ((*i)->nb > (*j)->nb){
 	  min=(*j)->nb;
@@ -638,7 +634,7 @@ Membre operator - (Membre & m1, Membre & m2){
   for(Membre::iterator i = m1.begin(); i < m1.end(); i++){
     Molec *m = new Molec(**i);
     for(Membre::iterator j = m2.begin(); j < m2.end(); j++){
-      if (**i == **j){
+      if ((*i)->eqMol(*j)){
 	diff=(*i)->nb - (*j)->nb;
 	m->nb=diff;
       }
