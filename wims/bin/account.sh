@@ -71,7 +71,7 @@ fi
 echo "$workday	$cc	$cd	$avcc" >>account/doc/0all
 
 # clear unwanted module accounts
-rm -f account/home account/adm@* account/devel@* account/classes@* account/help@* account/light >&/dev/null
+rm -f account/home account/adm@* account/devel@* account/classes@* account/help@* account/light >/dev/null 2>&1
 
 # exit
 

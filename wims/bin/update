@@ -108,8 +108,8 @@ fi
 backtest=`echo "$oldcrontab" | grep -v '#' | grep 'bin/backup'`
 if [ ! -z "$backtest" ]; then
  bh=`echo "$backtest" | cut -d' ' -f2`
- if [ "$bh" == "1" ]; then bh=2; fi
- if [ "$bh" == "23" ]; then bh=22; fi
+ if [ "$bh" = "1" ]; then bh=2; fi
+ if [ "$bh" = "23" ]; then bh=22; fi
  echo backup_hour=$bh >>log/wims.conf
  newcrontab=yes
 fi
