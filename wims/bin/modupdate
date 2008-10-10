@@ -56,7 +56,7 @@ installone() {
   find $installdir/$addr -type f -exec chmod a-x '{}' \;
   find $installdir/$addr -name .DS_Store -exec rm -f '{}' \;
   chmod -R og-w $installdir/$addr
-  vtest=`awk -F= 'NF == 2 && $1 ~ /^version\>/ {print $2}' $installdir/$addr/INDEX 2>/dev/null`
+  vtest=`awk -F= 'NF == 2 && $1 ~ /^version[ \t]*$/ {print $2}' $installdir/$addr/INDEX 2>/dev/null`
   if [ -n "$vtest" ]; then
    echo "$msg:	Successful."
    echo $addr >>$wims_home/log/modupdate
