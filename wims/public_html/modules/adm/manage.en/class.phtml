@@ -103,19 +103,12 @@ $table_end
  !form reply 
  <small><b>[1]</b>. ``<em>load</em>'' 
  means the number of cumulative connection hours since
- <select name="type_load" onchange=submit()>
-  !let tmp=!line $type_load of selected="",,\
-,selected="",\
-,,selected=""
-  <option value="1" $(tmp[1])>yesterday</option>
-  <option value="2" $(tmp[2])>7 last days</option>
-  <option value="3" $(tmp[3])>one month</option>
- </select>
+ <input type=text name="bst_since" value="$bst_since" onchange=submit()>format <font color=blue>yyyymmdd</font></small>.
  <input type=hidden name="keyword" value="$keyword">
- .</small>
  </form>
- !href cmd=reply&job=bestclass Show
- 10 best class activity on this period.
+ !href cmd=reply&job=bestclass&keyword=$keyword Show
+ !default bst_num=10
+ $bst_num best class activity on this period.
  </center> <p>
 !endif
 

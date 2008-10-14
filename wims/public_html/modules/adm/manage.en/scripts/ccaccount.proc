@@ -1,0 +1,15 @@
+
+bst_since=$[$bst_since+0]
+!if NaN isin $bst_since
+ bst_since=!date -d '1 month ago' '+%Y%m%d'
+!endif 
+
+!sh if [ -e $wims_home/s2/$wims_session/$bst_since ]; then exit; fi;\
+ if [ ! -d $wims_home/log/ccaccount ]; then exit; fi\
+ ltclasses=`cat $wims_home/log/classes/.index | cut -d: -f2 | cut -d, -f1`;\
+ rm -f $wims_home/s2/$wims_session/tmp;\
+ for cl in $$ltclasses; do\
+  awk -v var="$$cl" 'BEGIN{a=0}; $$1>$bst_since{a+=$$2;}; END{print var","a;}' $wims_home/log/ccaccount/$$cl/.total >> $wims_home/s2/$wims_session/tmp 2>/dev/null\
+ done;\
+ cat $wims_home/s2/$wims_session/tmp | sort -n -t, -r -k2 > $wims_home/s2/$wims_session/$bst_since;\
+ rm -f $wims_home/s2/$wims_session/tmp;

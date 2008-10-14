@@ -14,18 +14,13 @@
 !endif
 
 <p> <center>
- !form reply  
- 10 best class number of cumulative connection hours since
- <select name="type_load" onchange=submit()>
-  !let tmp=!line $type_load of selected="",,\
-,selected="",\
-,,selected=""
-  <option value="1" $(tmp[1])>yesterday</option>
-  <option value="2" $(tmp[2])>7 last days</option>
-  <option value="3" $(tmp[3])>one month</option>
- </select>
- .</small>
- <input type=hidden name=job value=bestclass>
+ !form reply
+  !default bst_num=10
+  !let tmp=!date -d '1 month ago' '+%Y%m%d'
+  !default bst_since=$tmp
+  <input type=text name="bst_num" value="$bst_num" size="4"> best class of cumulative connection hours since <input type="text" name="bst_since" value="$bst_since" size="7"><small>format <font color=blue>yyyymmdd</font></small>.
+  <input type=hidden name=job value=bestclass>
+  <input type=submit value="Rafra&icirc;chir">
  </form>
  </center> 
 <p>
@@ -87,9 +82,8 @@ $table_hdtr
 !next i
 $table_end
 !endif
-
+<center><b>[1]</b> <i>"load" means cumulative hour.student connexion since $bst_since.</i></center>
 <center>
 !href cmd=reply&job=class Return to list of classes
 </center>
 
-!reset keyword
