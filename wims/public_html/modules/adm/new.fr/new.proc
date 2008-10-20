@@ -1,4 +1,7 @@
 
-data=!sh tail -$limit modules/Changelog.new | tac | grep .
+data=!sh tail -$limit modules/Changelog.modif | tac | grep .
+!if $data= 
+ data=!sh tail -$limit modules/Changelog.new | perl -e 'print reverse <>'
+!endif
 datacnt=!linecnt $data
 
