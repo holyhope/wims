@@ -40,7 +40,11 @@ slib_n= !charcnt $slib_order
 !if $slib_n > 0
  slib_test= !eval $slib_out/1e$slib_order
  !if $slib_test <> NaN
-  slib_out=$(slib_test)e$slib_order
+  !if $slib_order <> 0
+    slib_out=$(slib_test)e$slib_order
+  !else
+    slib_out=$slib_test
+  !endif
  !endif
 !endif
 
