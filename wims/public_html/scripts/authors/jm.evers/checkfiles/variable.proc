@@ -322,12 +322,14 @@ tussenscore=0
     !endif
 !endif
 
-maxscore=$[$maxscore*$tussenscore/($testvar1)]
+score=$[$tussenscore/($testvar1)]
+maxscore=$[$maxscore*$score]
+modulescore=$[$modulescore + $maxscore]
 
-!if $maxscore=1
+!if $score=1
     remark$n=$OK
 !else
-    !if $maxscore >0.5
+    !if $score >0.5
 	remark$n=$BOK
     !else
 	remark$n=$NOK
@@ -335,9 +337,8 @@ maxscore=$[$maxscore*$tussenscore/($testvar1)]
 !endif
     
 !if $extra != $empty
-    remark$n=$(remark$n)<br>$extra
+    remark$n=!append line $ <br>$extra $ to $(remark$n)
 !endif
-modulescore=$[$modulescore + $maxscore]
 
 goback=0
 !exit

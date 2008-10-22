@@ -1,6 +1,6 @@
 function zirkel2wims(type,name){
     var data="";
-    xmlString =document.applets[0].getDrawing("\""+type+"\"","\""+name+"\"");
+    xmlString =document.getElementById("zirkel").getDrawing("\""+type+"\"","\""+name+"\"");
     data=xmlString;
     var test=data.indexOf("error");
     if(test!=-1){

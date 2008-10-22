@@ -70,10 +70,10 @@ testvar=$empty
 !if $testvar!=$empty
     ex=!record 77 of $remarkdir/commonremarks.$taal
     !if $teaching=1
-	maxscore=$[$P6*$maxscore]
+	maxscore=$[$P9*$maxscore]
 	goback=1
-	errortext=$ex
-	# var=$var va=$va AAA=$AAA testvar=$testvar
+	errortext=$ex 
+	#var=$var va=$va AAA=$AAA testvar=$testvar
     !else
 	remark$n=$NOK<br>$ex
 	maxscore=0
@@ -90,9 +90,11 @@ testvar=$empty
 	    goback=1
 	    errortext=$ex
 	    # heavy pentalty...
-	    maxscore=$[$P4*$maxscore]
+	    maxscore=$[$P9*$maxscore]
     	!else
 	    remark$n=$NOK<br>$ex
+	    goback=0
+	    maxscore=0
 	!endif
 	!exit
     !else
@@ -101,7 +103,7 @@ testvar=$empty
     !endif
 !next i
 
-# check on scientific notation 3e+12 3*10^12
+# check on scientific notation 3e+12 3*10^12 
 AAA=!nospace $AAA
 !if x10 isin $AAA
     ex=!record 68 of $remarkdir/commonremarks.$taal
@@ -115,7 +117,7 @@ AAA=!nospace $AAA
 	!if $extra=$empty
 	    extra=$ex
 	!else
-	    extra=$extra<br>$ex
+	    extra=!append line $ <br>$ex $ to $extra
 	!endif
     !endif
 !endif
@@ -145,12 +147,12 @@ t=!char 1 of $AAA
 
 
 #check for sin etc
-!for i in sqrt,log,sin,ln,cos,tan,sec,abs,*i,i*,+i,i+,-i,i-
-    !if $i isin $AAA
-	I=!toupper $i
-	AAA=!replace internal $i by $I in $AAA
+!for p in sqrt,log,sin,ln,cos,tan,sec,abs,*i,i*,+i,i+,-i,i-
+    !if $p isin $AAA
+	I=!toupper $p
+	AAA=!replace internal $p by $I in $AAA
     !endif
-!next i
+!next p
 AAA=!replace [a-z\~\!\@\#\$\%\&\_\|\=\"\'\:\;\{\}] by $empty in $AAA
 AAA=!lower $AAA
 AAA=!nospace $AAA
@@ -301,19 +303,49 @@ A=!lower $AAA
 G=!lower $(answer$n)
 var=!lower $varlist
 !for p in $varlist
-    num=!randitem 10,100
-    A=!replace internal $p by $num in $A
-    G=!replace internal $p by $num in $G
+    num=!randint 10,100
+    A=!replace internal $p by ($num) in $A
+    G=!replace internal $p by ($num) in $G
 !next p
-A=$[$A]
-G=$[$G]
-
-
+Ac=$[$A]
+Gc=$[$G]
+!if NaN notin $Ac$Gc
+    !if $Ac=$Gc
+	t3=1
+    !else
+	!if $Ac=$[-1*$Gc]
+	    ex=!record 27 of $remarkdir/commonremarks.$taal
+	    t3=0.5
+	    !if $extra=$empty
+		extra=$ex
+	    !else
+		extra=!append line $ $ex <br> $ to $extra
+	    !endif
+	!else
+	    Ac=!replace internal - by + in $A
+	    Ac=$[$Ac]
+	    !if $Ac=$Gc or $Ac=$[-1*$Gc]
+		ex=!record 27 of $remarkdir/commonremarks.$taal
+		t3=0.3
+		!if $extra=$empty
+		    extra=$ex
+		!else
+		    extra=!append line $ $ex <br> $ to $extra
+		!endif
+	    !else
+		t3=0
+	    !endif
+	!endif
+    !endif
+!else
+    t3=1
+!endif
 # very expensive but te only way to compare "variables in powers" like x^a
 tot=!exec maxima if rationalize(expand(float($AAA))) = rationalize(expand(float($(answer$n)))) then 1 else 0 ;\
-if $A=$G then 1 else 0 ;\
+if ratsimp($AAA) = ratsimp($(answer$n)) then 1 else 0 ;\
 expand($AAA);\
 ratsimp($AAA);
+
 
 !if $wims_exec_error != $empty
     testvar=$(reply$n)
@@ -323,69 +355,49 @@ ratsimp($AAA);
  !exit                                                                                       
 !endif
 
+t1=!line 1 of $tot
+t2=!line 2 of $tot
+!if $[$t1+$t2]>0
+    tt=1
+    t3=1
+    #hmmm... sometimes substitution mysteriously goes wrong ??
+!else
+    tt=0
+!endif
+
 # check if the answer can be simplified further on variable level?
 a1=!line 3 of $tot
 a2=!line 4 of $tot
-simpler=0
-!for p in $varlist
-    c1=!positionof char $p in $AAA
-    c2=!positionof char $p in $a1
-    c3=!positionof char $p in $a2
-    c1=!itemcnt $c1
-    c2=!itemcnt $c2
-    c3=!itemcnt $c3
-    !if $c2<$c1 and $c3<$c1
-	!increase simpler
+!if $tt=1
+    # answer is technically correct
+    simpler=0
+    !for p in $varlist
+	c1=!positionof char $p in $AAA
+        c3=!positionof char $p in $a2
+        c1=!itemcnt $c1
+        c3=!itemcnt $c3
+	!if $c3<$c1
+	    !increase simpler
+	!endif
+    !next p
+    !if $simpler>0
+	# can the answer be further simplified on variable level?
+	ex=!record 74 of $remarkdir/commonremarks.$taal
+	testvar=<em>$AAA</em>
+	!if $teaching=1
+	    goback=1
+	    errortext=$ex
+	    maxscore=$[$P7*$maxscore]
+	!else
+	    # this answer will be wrong !!! no consideration
+	    remark$n=$NOK<br>$ex
+	    goback=0
+	    maxscore=0
+	!endif
+        !exit
     !endif
-!next p
-# count variables : now all uppercase?
-#ta=0
-#tg=0
-#tc=0
-#!for i in $varlist
-#    I=!toupper $i
-#    a=!positionof char $I in $AAA
-#    g=!positionof char $i in $(answer$n)
-#    c=!positionof char $i in $var1
-#    a=!itemcnt $a
-#    g=!itemcnt $g
-#    c=!itemcnt $c
-#    ta=$[$ta+$a]
-#    tg=$[$tg+$g]
-#    tc=$[$tc+$c]    
-#!next i
 
-!if $simpler>0
-    # can the answer be further simplified on variable level?
-    ex=!record 74 of $remarkdir/commonremarks.$taal
-    testvar=<em>$AAA</em>
-    !if $teaching=1
-	goback=1
-	errortext=$ex
-	maxscore=$[$P5*$maxscore]
-    !else
-	# this answer will be wrong !!! no consideration
-	remark$n=$NOK<br>$ex
-	goback=0
-	maxscore=0
-    !endif
- !exit
-!endif
-
-t1=!line 1 of $tot
-t2=!line 2 of $tot
-maxscore=$[$maxscore*(9*$t1+$t2)/10]
-!if $maxscore>0.9
-    remark$n=$OK
-!else
-    !if $maxscore>0.4
-	remark$n=$BOK
-    !else
-	remark$n=$NOK
-    !endif
-!endif    
-!if $[$t1+$t2]=2
-    # in some cases we can "check" if the correct student answer (a fraction) can be written simpler...    
+    # in some cases we can "check" if the correct student answer (a fraction) can be written simpler...
     !if / isin $AAA and / isin $(answer$n)
 	a=!replace internal / by , in $AAA
 	at=!itemcnt $a
@@ -400,44 +412,63 @@ maxscore=$[$maxscore*(9*$t1+$t2)/10]
 	    rep2=0
 	    !for p in $varlist
 		!if $p isin $a1 and $p isin $g1
-		    a1=!replace internal $p by 10 in $a1
-		    g1=!replace internal $p by 10 in $g1
+		    a1=!replace internal $p by (10) in $a1
+		    g1=!replace internal $p by (10) in $g1
 		    rep1=1
 		!endif
 		!if $p isin $a2 and $p isin $g2
 		    rep2=1
-		    a2=!replace internal $p by 11 in $a2
-		    g2=!replace internal $p by 11 in $g2
+		    a2=!replace internal $p by (11) in $a2
+		    g2=!replace internal $p by (11) in $g2
 		!endif
 	    !next p
 	    !if $rep1=1 and $rep2=1
-		!ifval $a1 != $g1 or $a2 != $g2
-		    ex=!record 74 of $remarkdir/commonremarks.$taal
-		    maxscore=$[$P4*$maxscore]
-		    !if $extra=$empty
-			extra=$ex
-		    !else
-			extra=$extra<br>$ex
-		    !endif    
+		a1=$[abs($a1)]
+	        g1=$[abs($g1)]
+	        a2=$[abs($a2)]
+		g2=$[abs($g2)]
+		!if NaN notin $a1$a2$g1$g2
+		    !if $a1 != $g1 or $a2 != $g2
+			ex=!record 74 of $remarkdir/commonremarks.$taal
+			maxscore=$[$P6*$maxscore]
+			!if $extra=$empty
+			    extra=$ex 
+			!else
+			    extra=!append line $ <br>$ex $ to $extra
+			!endif
+		    !endif
+		!endif
+	    !endif
+	!else
+	    !if $at > $gt
+		ex=!record 74 of $remarkdir/commonremarks.$taal
+		maxscore=$[$maxscore*$P9]
+		!if $extra=$empty
+		    extra=$ex
+		!else
+		    extra=!append line $ <br>$ex $ to $extra
 		!endif
 	    !endif
 	!endif
     !endif
-!else
-    !if $t2=1
-	testvar1=$(answer$n)
-	testvar2=$(reply$n)
-	ex=!record 16 of $remarkdir/commonremarks.$taal
-	!if $extra=$empty
-	    extra=$ex
-	!else
-	    extra=$extra<br>$ex
-	!endif    
-    !endif
 !endif
-!if $extra != $empty
-    remark$n=$(remark$n)<br>$extra 
-!endif    
+
+score=$[(9*$tt+$t3)/10]
+maxscore=$[$maxscore*$score]
 modulescore=$[$modulescore + $maxscore]
+
+!if $score=1
+    remark$n=$OK
+!else
+    !if $score>0.5
+	remark$n=$BOK
+    !else
+	remark$n=$NOK
+    !endif
+!endif    
+
+!if $extra != $empty
+    remark$n=!append line  $ <br> $extra $ to $(remark$n)
+!endif
 goback=0
 !exit

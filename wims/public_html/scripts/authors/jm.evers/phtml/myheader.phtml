@@ -89,14 +89,41 @@
 	!endif
 	!if $calculator=2
 	    <td valign="top" align="right">
-		<a onClick=window.open("$htmldir/scicalc.html","calculator","width=420,height=260,left=0,top=0,status=no,menubar=no,resizable=no,toolbar=no")>
-		    <img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" >
-		</a>
+		<table>
+		    <th>
+	    		<script language="javascript" type="text/javascript">
+			    function ReadCalculator(){
+				var calc=document.getElementById("calculator").ReadApplet();
+			        var t=confirm("$send \n"+calc);
+				if(t==true){
+				    total=encodeURIComponent(calc);
+			    	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+calc ;
+				    document.location.href = URL;
+			    	    document.getElementById("calculator").destroy();
+				}
+			    }
+			</script>
+			<applet id="calculator" codebase="$appletdir" archive="Rekenmachien.jar" code="Rekenmachien.class" width="100" height="50">
+			    <param name="fontsize1" value="10">
+			    <param name="fontsize2" value="10">
+			    <param name="language" value="$taal">
+			    <param name="pencolor1" value="0,0,0">
+			    <param name="pencolor2" value="255,0,15">
+			    <param name="bgcolor1" value="200,250,255">
+			    <param name="bgcolor2" value="200,210,210">		    
+			    $nojava
+			</applet>
+		    </th>
+		    <tr>		    
+		    <th>
+			<input style="font-size:6pt;background-color:orange" type="button" onclick="javascript:ReadCalculator();" value="$send">
+		    </th>
+		</table>
 	    </td>
 	!else
 	    !if $calculator=1
 		<td valign="top" align="right">
-		    <a onClick=window.open("$htmldir/basicalc.html","calculator","width=200,height=180,left=0,top=0")>
+		    <a onClick=window.open("$htmldir/basicalc.html","calculator","width=300,height=200,left=0,top=0")>
 			<img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" >
 		    </a>
 		</td>

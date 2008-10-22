@@ -4,14 +4,21 @@
     function rekenuit(){
 	var input=document.Calc.Input.value;
 	var result;
-	if(input.indexOf("^")!=-1){
+	if(input.indexOf("^")!=-1 || input.indexOf("sqrt")!=-1 ){
 	    if( input.indexOf("+")>0 ||  input.indexOf("-")>0 ||  input.indexOf("*")>0  ||  input.indexOf("/")>0  ){
 		alert("Nee,\n deze rekenmachine is alleen voor een enkele berekening.");
 		document.Calc.Input.value="" ;return;
 	    }
-	    input=input.split("^");
-	    if(input.length>2){alert("Nee,\n deze rekenmachine is alleen voor enkele berekeningen.");document.Calc.Input.value="";return;}
-	    result=Math.pow(input[0],input[1]);
+	    if(input.indexOf("^")!=-1){
+		input=input.split("^");
+		if(input.length>2){alert("Nee,\n deze rekenmachine is alleen voor enkele berekeningen.");document.Calc.Input.value="";return;}
+		result=Math.pow(input[0],input[1]);
+	    }
+	    else
+	    {
+		input=input.replace(/[a-z\(\)]/g,'');
+		result=Math.sqrt(input);
+	    }
 	}
 	else
 	{
@@ -70,6 +77,10 @@
 	<tr>
 	<th>
 	    <INPUT style="font-weight:normal;text-align:center;font-size:17px;width:40px;heigth:30px"  TYPE="button" NAME="pwr"  VALUE="^" 	OnClick="Calc.Input.value += '^'">
+	    <INPUT style="font-weight:normal;text-align:center;font-size:17px;width:40px;heigth:30px"  TYPE="button" NAME="sqrt"  VALUE="&#8730;" 	OnClick="Calc.Input.value = 'sqrt('+Calc.Input.value+')'">
+	</th>
+	<tr>
+	<th>
 	    <INPUT style="font-weight:normal;text-align:center;font-size:17px;width:40px;heigth:30px" TYPE="button" NAME="DoIt"  VALUE="=" OnClick="javascript:rekenuit();">
 	</th>
 	</table>

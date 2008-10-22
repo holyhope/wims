@@ -20,7 +20,7 @@
     function dontknow(){
 	t=confirm(" $dontknow ?");
 	if(t==true){URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-	document.location.href = URL;document.applets[0].destroy();
+	document.location.href = URL;document.getElementById("ggbApplet").destroy();
 	}                                                                                                                                                                 
     } 
 </script>
@@ -49,13 +49,14 @@
 	    !set height=480
 	!endif
 	<p align="center">
-    	    <applet name="ggbApplet" code="geogebra.GeoGebraApplet" codebase="java/geogebra" archive="geogebra.jar" width=$width height=$height>
+    	    <applet id="ggbApplet" name="ggbApplet" code="geogebra.GeoGebraApplet" codebase="java/geogebra" archive="geogebra.jar" width=$width height=$height>
 		<param name="language" value="$lang">
 		<param name="filename" value="../../$module_dir/$ggb">
 		<param name="showToolBar"  value="$showToolBar">
 		<param name="showMenuBar"  value="$showMenuBar">
 		<param name="framePossible" value="$framePossible">
 		<param name="customToolBar" value=$customToolBar>
+		<param name="showAlgebraInput" value="$showAlgebraInput">
 		$nojava
 	    </applet>    
 	    <script language="javascript" type="text/javascript">

@@ -208,8 +208,9 @@ AAA=!nospace $AAA
 
 #T1=!evalsubst x=10 in $AAA
 #T2=!evalsubst x=10 in $GGG
-test=!exec maxima if ratsimp($AAA) = ratsimp($GGG) then 1 else 0;
-#test2=!exec pari if( 1.0*($AAA) == 1.0*($GGG) ,1,0)
+score=!exec maxima if ratsimp($AAA) = ratsimp($GGG) then 1 else 0;\
+if ratsimp(rationalize($AAA)) = ratsimp(rationalize($GGG)) then 1 else 0;\
+if rationalize(expand(float($AAA))) = rationalize(expand(float($GGG))) then 1 else 0;
 
 !if $wims_exec_error!= $empty
     errortext=!record 26 of $remarkdir/commonremarks.$taal
@@ -218,19 +219,27 @@ test=!exec maxima if ratsimp($AAA) = ratsimp($GGG) then 1 else 0;
     !exit
 !endif
 
-maxscore=$[$maxscore*$test]
+t1=!line 1 of $score
+t2=!line 2 of $score
+t3=!line 3 of $score
+tt=$[$t1 + $t2 + $t3]
+!if $tt>0
+    score=1
+!else
+    score=0
+!endif
+maxscore=$[$maxscore*$score]
+modulescore=$[$modulescore + $maxscore]
 
-!if $maxscore>0.9
+!if $score=1
     remark$n=$OK
 !else
-    !if $maxscore>0.5
+    !if $score>0.5
 	remark$n=$BOK
     !else
 	remark$n=$NOK
     !endif
 !endif
-
-modulescore=$[$modulescore + $maxscore]
 
 goback=0
 !exit

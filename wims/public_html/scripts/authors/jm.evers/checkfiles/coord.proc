@@ -425,16 +425,15 @@ factor=1
 !endif
 
 
-maxscore=$[($maxscore*$totaal1*$factor)/$coord]           
 
-
-# now the score 
+score=$[($totaal1*$factor)/$coord]
+maxscore=$[$maxscore*$score]           
 modulescore=$[$modulescore+$maxscore]	
 
-!if $maxscore>0.9
+!if $score>0.9
     remark$n=$OK
 !else
-    !if $maxscore>0.5
+    !if $score>0.5
 	remark$n=$BOK
     !else
 	remark$n=$NOK
@@ -442,5 +441,7 @@ modulescore=$[$modulescore+$maxscore]
 !endif 
 
 goback=0
-remark$n=$(remark$n)<br>$extra
+!if $extra != $empty
+    remark$n=!append line $ <br>$extra $ to $(remark$n)
+!endif
 !exit

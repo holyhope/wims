@@ -620,18 +620,18 @@ aantalgoed=$tussenscore
 !endif
 
 
-maxscore=$[($maxscore*$tussenscore)/$t1]
-!if $maxscore=1
+score=$[$tussenscore/$t1]
+maxscore=$[$maxscore*$score]
+modulescore=$[$modulescore + $maxscore]
+
+!if $score=1
     remark$n=$OK
 !else
     !if $omgedraaid>0
 	ex=!record 27 of $remarkdir/commonremarks.$taal
-	extra=!append line <br>$ex to $extra
-	!if $maxscore<0.6
-	    maxscore=$[$maxscore+0.2]
-	!endif
+	extra=!append line $ <br>$ex $ to $extra
     !endif
-    !if $maxscore >0.5
+    !if $score >0.45
 	remark$n=$BOK
     !else
 	remark$n=$NOK
@@ -639,9 +639,8 @@ maxscore=$[($maxscore*$tussenscore)/$t1]
 !endif	        		    
 
 !if $extra != $empty
-    remark$n=$(remark$n)<br>$extra
+    remark$n=!append line $ <br>$extra $ to $(remark$n)
 !endif
 
-modulescore=$[$modulescore + $maxscore]
 goback=0    
 !exit

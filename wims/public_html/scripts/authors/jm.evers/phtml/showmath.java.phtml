@@ -10,41 +10,38 @@
     var applet=0;
     function sendanswer(){
 	var v;var input;var reply=new Array ;var total=new Array;
-	var ml;var t1;var t2;var appletid;
-	if(document.applets[0]){
-	    appletid=(document.applets[0].id);
-	    if(appletid=="MathView"){
-		applet=1;
-		input=document.applets[0].getLinear();
-		input=input+'';
-		if(input.indexOf('error')!=-1){alert(input);return;}   
-		input=nthroot(input);if(input=="error"){return;}
-		if(input.indexOf(',')!=-1){alert(r4);return;}
-		v=input.length;if(v==0){alert(r1);return;}if(v>100){alert(r2); return;}if(v==0){alert(r1);return;}
-		if(check_f(input)==0){return;}
-		if(check_o(input)==0){return;}
-		input=science(input);if(input=="error"){return;}
-		input=arrows(input,2,"","");if(input=="error"){return;}
-		if(check_x(input)==0){return;}
-		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
-		reply[0]=input;
+	var ml;var t1;var t2;
+	if(document.getElementById("MathView")){
+	    applet=1;
+	    input=document.applets[0].getLinear();
+	    input=input+'';
+	    if(input.indexOf('error')!=-1){alert(input);return;}   
+	    input=nthroot(input);if(input=="error"){return;}
+	    if(input.indexOf(',')!=-1){alert(r4);return;}
+	    v=input.length;if(v==0){alert(r1);return;}if(v>100){alert(r2); return;}if(v==0){alert(r1);return;}
+	    if(check_f(input)==0){return;}
+	    if(check_o(input)==0){return;}
+	    input=science(input);if(input=="error"){return;}
+	    input=arrows(input,2,"","");if(input=="error"){return;}
+	    if(check_x(input)==0){return;}
+	    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
+	    reply[0]=input;
+	    t1=input.indexOf("[");
+	    if(t1 !=- 1){
+		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
+		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
 		t1=input.indexOf("[");
-		if(t1 !=- 1){
-		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
-		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
-		    t1=input.indexOf("[");
-		    if(t1!=-1){alert(r13);return;}
-		}
-		input=input.replace(/#/g,' ');
-		total[0]=input;
-	    	t=confirm(r0+"\n"+reply);
-		if(t==true){
-		    total=encodeURIComponent(total);
-		    URL = '$wims_ref_name?session=$myvar4&+module=$module&+cmd=reply&+reply$n='+total ;
-		    opener.location.href = URL;
-		    document.applets[0].destroy();
-		    window.close();
-		}
+		if(t1!=-1){alert(r13);return;}
+	    }
+	    input=input.replace(/#/g,' ');
+	    total[0]=input;
+	    t=confirm(r0+"\n"+reply);
+	    if(t==true){
+		total=encodeURIComponent(total);
+		URL = '$wims_ref_name?session=$myvar4&+module=$module&+cmd=reply&+reply$n='+total ;
+		opener.location.href = URL;
+		document.getElementById("MathView").destroy();
+		window.close();
 	    }
 	}
     }
