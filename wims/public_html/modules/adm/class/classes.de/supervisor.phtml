@@ -1,0 +1,184 @@
+
+!read search.phtml
+!if $clcnt+$sccnt<1 and $keyword!=$empty
+ Keine Klasse entspricht Ihrer Suche. <p>
+!endif
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $supervisable!=yes
+  !exit
+ !endif
+ <p>
+!else
+ Anhand virtueller Klassen können Sie die Arbeit Ihrer Schüler/Studenten
+ übersichtlich ordnen und deren Fortschritte mitverfolgen.
+ Dazu können Sie ganz einfach auf die Ressourcen
+ der WIMS-Website zurückgreifen. Gleichzeitig haben Sie auch
+ die Möglichkeit, Ihre eigenen, d. h. die Ihnen selbst erstellten Übungen
+ und Dokumente hinzuzufügen.
+ <p>
+ Sie verfügen noch über keine eigene Klasse. In diesem Fall
+ haben Sie folgende Möglichkeiten:
+ !href module=adm/class/regclass Erstellen Sie eine Klasse
+  (zuvor sollten Sie sich jedoch die
+ !href target=wims_help module=help/main&chapter=3 Hilfeseiten
+ ansehen). Werfen Sie einen Blick auf die 
+ !href module=$module&type=example Beispielklassen
+. <p>
+!endif
+
+!if $overflow=yes
+ !exit
+!endif
+
+!if $clcnt+$sccnt>0
+ !if $wims_user=$empty
+ Andernfalls wählen Sie die Zeile der gesuchten Klasse
+ (bzw. der Bildungseinheit/-struktur) aus und klicken Sie
+ auf <tt>Öffnen</tt>, wenn Sie bereits eingeschrieben sind
+ (oder über den Administratorstatus verfügen). Oder Sie
+ klicken auf <tt>Einschreiben</tt>, wenn Sie sich 
+ als Lehrer/Dozent für eine Bildungseinheit/-struktur 
+ einschreiben möchten. 
+ <br> Eine Einschreibung ist hier auf Lehrpersonal beschränkt.
+ !endif
+ !if $sccnt>0
+  <p>
+  $table_header
+  <caption>Bildungsstrukturen und Bildungseinheiten</caption>
+  $table_hdtr<th>Name</th> <th colspan=2>Lehrer/Dozent</th>
+  <th colspan=2>Administrator</th> </tr>
+  !for i=1 to $sccnt
+   !set l=!line $i of $sclasses
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 to -1 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   <td align="center">
+   $in
+   </td>
+   <td align=center>
+   !href module=$module&type=authparticipant&class=$code Öffnen
+   </td> <td align=center>
+   !href module=adm/class/reguser&class=$code Einschreiben
+   </td>
+   <td align=center>$supv</td>
+   <td align=center>
+   !href module=$module&type=authsupervisor&class=$code Öffnen
+  </td>
+  !next i  
+  $table_end
+ !endif
+ !if $clcnt>0 and $s_prog!=1
+  <p>
+  $table_header 
+  !if $superclass=$empty
+   <caption>Unabhängige Klassen</caption>
+   $table_hdtr<th>Nom</th><th colspan=2>Lehrer/Dozent-Administrator</th>
+  !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+    <caption>$Name_levels in $inst
+    <small>
+    !href cmd=help&special_parm=$module_language/structure [aide]
+    </small>
+    !if $splevel>1
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 Up
+    !endif
+    </caption>
+    $table_hdtr<th>$Name_level</th><th>Lehrer/Dozent</th>
+    !if $superclass!=$empty and $stype=4
+     <th>+</th>
+     !if $ty!=1 and $splevel =1
+      <th>+</th>
+     !endif
+    !endif
+   !endif
+   !for i=1 to $clcnt
+     !set l=!line $i of $classes
+     !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+     !set supv=!item 9 to -1 of $l
+     !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+     $table_tr
+     !if $superclass=$empty
+      <td align="center">$in<br>$cl</td>
+     !else
+      <td align="center">
+      !href module=$module&type=authsupervisor&class=$code $cl
+      </td>
+     !endif
+     <td align="center">$supv</td>
+     !if $superclass!=$empty and $stype=4
+      <td>
+      !if $ty!=1
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=0 $sousclasses
+      !else
+      -
+      !endif
+      </td>
+      !if $ty!=1 and $splevel =1
+       <td>
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=1 $name_program
+       </td>
+      !endif
+     !endif
+     !if $superclass=$empty
+      <td align=center>
+      !href module=$module&type=authsupervisor&class=$code Öffnen
+      </td>
+     !endif   
+    !next i
+   $table_end
+  !else
+!!#####################program
+   !if $clcnt_pr>0
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   $table_header
+    <caption>$Name_program in $inst
+    !if $splevel>1
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 Up
+    !endif
+    </caption>
+    $table_hdtr<th>$Name_level</th><th>Lehrer/Dozent</th><th>+</th>
+    !for i=1 to $clcnt_pr
+     !set l=!line $i of $classes_pr
+     !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+     !set supv=!item 9 to -1 of $l
+     !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def  
+     $table_tr
+     <td align="center">
+     !href module=$module&type=authsupervisor&class=$code $cl
+     </td>
+     <td align="center">$supv</td>
+     !if $superclass!=$empty and $stype=4
+      <td>
+      !if $ty!=1
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=0 $sousclasses
+      !else
+       -
+      !endif
+     !endif
+    !next i
+    $table_end
+   !endif
+  !endif
+!else
+ !if $class_type=$empty and $superclass=$empty
+  (Diese Website enthält keine Klasse in deutscher Sprache.)
+ !else
+   !if $clcnt=0
+    (Keine andere Klasse verfügbar.)
+   !endif
+ !endif
+!endif
+<p>

@@ -1,0 +1,49 @@
+
+!if $clcnt<=0
+ Sorry: Auf dieser Website wurde keine Beispielklasse gefunden.
+ !exit
+!endif
+
+!if $lacnt<=0
+ Auf dieser Website ist keine deutschsprachige Klasse vorhanden.
+ <p>
+!endif
+
+Auf dieser Website sind $clcnt Beispielklassen in Deutsch vorhanden. 
+Beispielklassen illustrieren die Funktionsweise virtueller Klassen aus der 
+Sicht der Schüler/Studenten.
+Sie sollten Ihre eigene Klasse 
+!href module=adm/class/regclass erstellen
+, um die wesentlich komplexere und erweiterte Sicht des Supervisors 
+zu erhalten.
+
+<p>$table_header
+$table_hdtr<th>Name der Klasse<th>Stufe<th>Verbindungstyp<th>Registrieren
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into code,expire,inst,cl
+ !defread wimshome/log/classes/$code/.def
+ !distribute char $class_level into l_,y_
+ 
+ $table_tr<td align=center>$inst<br>$cl</td>
+ <td align=center>$(n_$l_)<br>Jahr $y_</td>
+ <td align=center>
+ !href module=home&user=anonymous,$code,anonymous Anonym
+ &nbsp;
+ !href module=$module&type=authparticipant&class=$code Registriert
+ </td><td align=center>
+ !href module=adm/class/reguser&class=$code Registrieren
+ </td>
+!next i
+</tr>$table_end <p>
+ 
+<ul>
+<li>Klicken Sie auf 'Anonym', um sich bei der Klasse als anonymer Besucher
+ (Teilnehmer) anzumelden.
+<p><li>Klicken Sie auf 'Registriert', um sich bei der Klasse mit einem
+ registrierten Benutzernamen und dem entsprechenden Kennwort anzumelden.
+ (Dazu müssen Sie sich zuvor registriert haben. Allerdings wird Ihre
+ Registrierung ggf. regelmäßig vom Server gelöscht, da es sich hierbei
+ um Beispielklassen handelt).
+<p><li>Klicken Sie auf 'Registrieren', um sich für die Klasse zu registrieren.
+</ul>

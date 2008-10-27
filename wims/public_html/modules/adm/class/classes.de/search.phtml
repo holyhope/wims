@@ -1,0 +1,24 @@
+
+!if $overflow=yes
+ !if $keyword = $empty
+  Auf dieser Website sind zahlreiche virtuelle Klassen verfügbar.
+  Um Ihre Klasse ausfindig zu machen, geben Sie ein relevantes
+  Suchwort ein.
+ !else
+  Ihrem Suchwort entsprechen immer noch zu viele Klassen. Grenzen Sie
+  Ihre Suche durch ein präziseres Suchwort ein.
+ !endif
+ <p><center>
+ !form reply
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form></center> <p>
+!else
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+  !form reply
+  Klasse suchen:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form>
+ !endif
+!endif

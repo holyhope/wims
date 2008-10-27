@@ -2,6 +2,8 @@
 !readproc scripts/ccaccount.proc
 
 test=!record 0 of wimshome/s2/$wims_session/$bst_since
+nbcls=!linecnt $test
+
 test=!line 1 to $bst_num of $test
 sccnt=0
 clcnt=0
@@ -21,9 +23,10 @@ class_expiration\
 class_description\
 class_institution\
 class_type in wimshome/log/classes/$c/.def
+ nbuser=!recordcnt wimshome/log/classes/$c/.userlist
  !distribute line $l into lg,sup,mail,cre,exp,des,inst,ty
  t=$[floor(($t+30)/60)]
- don=$c,$lg,$sup,$mail,$cre,$exp,$des,$inst,$t
+ don=$c,$lg,$sup,$mail,$cre,$exp,$des,$inst,$t,$nbuser
  !if $ty isin 24
   !advance sccnt
   sclasses=!append line $don to $sclasses

@@ -13,6 +13,7 @@
  !exit
 !endif
 
+<br>There is $nbcls class groups or classes in this serveur.
 <p> <center>
  !form reply
   !default bst_num=10
@@ -33,9 +34,10 @@ $table_hdtr
 <th>created<br><small>yyyymmdd</small></th>
 <th>expires<br><small>yyyymmdd</small></th>
 <th>load<sup>[1]</sup></th>
+<th>Participant</th> 
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
- !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_
+ !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
  !default f_=--
  $table_tr
  <td align=center><small>$t_<br>$d_</small>
@@ -50,6 +52,7 @@ $table_hdtr
  <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
  <td align=center>$f_<td align=center>$e_
  <td align=center>$load_</td>
+ <td align=center>$u_</td>
 !next i
 $table_end
 !endif
@@ -62,9 +65,10 @@ $table_hdtr
 <th>created<br><small>yyyymmdd</small>
 <th>expires<br><small>yyyymmdd</small>
 <th>load<sup>[1]</sup></th>
+<th>Participant</th> 
 !for i=1 to $clcnt
  !set l=!line $i of $classes
- !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_
+ !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
  !default f_=--
  $table_tr
  <td align=center><small>$t_<br>$d_</small>
@@ -79,6 +83,7 @@ $table_hdtr
  <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
  <td align=center>$f_<td align=center>$e_
  <td align=center>$load_</td>
+ <td align=center>$u_</td>
 !next i
 $table_end
 !endif

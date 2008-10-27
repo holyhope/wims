@@ -1,0 +1,23 @@
+
+!if $wims_error=empty_data
+ Sie haben eine unvollständige Antwort übergeben. Vervollständigen Sie bitte
+ Ihre Angaben, bevor Sie sie übergeben.
+ !exit
+!endif
+
+!if $wims_error=double_reply
+ Sie haben für dieses Problem bereits eine Antwort übergeben, die analysiert
+ und benotet wurde.
+ Mehrfachantworten werden ignoriert. (Verwenden Sie nicht die Taste
+ 'Aktualisieren' Ihres Browsers, um Ihre Antworten erneut zu übergeben!)
+ !exit
+!endif
+
+!if $wims_error=no_ldap_parameter
+Die mit einem Asterisk gekennzeichneten Felder müssen ausgefüllt werden. Wenden 
+Sie sich diesbezüglich an den Verwalter Ihres LDAP-Verzeichnisses
+!exit
+!endif
+
+Fehlertyp: $wims_error $wims_error_parm.
+

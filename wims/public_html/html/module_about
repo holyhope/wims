@@ -6,7 +6,7 @@ WIMS $module_title [$module_language]
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]
 
-!if $module_language notwordof cn fr it tw si es ca
+!if $module_language notwordof cn fr it tw si es ca de
   !if $module_translator!=$empty and $module_translator_address!=$empty
    !set module_about_tr=<tr><td>Translator</td><td>$module_tr</a></td></tr>
   !endif
@@ -92,6 +92,29 @@ WIMS $module_title [$module_language]
    </table></center><p>
    !exit
 !endif
+
+!if $module_language=de
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Übersetzer</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>Das ist ein Modul des Interaktiven Servers Multifunktionen im Internet (WIMS).\
+   <table border=2\
+   bgcolor=$$module_about_bgcolor>\
+   <tr><td>Nom       </td><td>$module_title</td></tr>\
+   <tr><td>Adresse   </td><td>$module</td></tr>\
+   <tr><td>Verbindung für bookmark</td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Beschreibung</td><td>$module_description</td></tr>\
+   <tr><td>Version   </td><td>$module_version</td></tr>\
+   <tr><td>Version WIMS <br>requise</td>    <td>$m_ge $module_wims_version</td></tr>\
+   <tr><td>Sprache    </td><td>Deutsch</td></tr>\
+   <tr><td>Autor    </td><td>$module_au</td></tr>\
+   $module_about_tr\
+   <tr><td>Recht von Autor</td><td>$module_copyright</td></tr>\
+   </table></center><p>
+   !exit
+!endif
+
 
 !if $module_language=it
   !if $module_translator!=$empty and $module_translator_address!=$empty
