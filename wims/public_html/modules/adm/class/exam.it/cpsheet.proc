@@ -2,12 +2,16 @@ numsheet=!listintersect $numsheet and $asheets
 !if $numsheet=$empty
  !exit
 !else
+ keytitle=!singlespace $key_title
+ keytitle=!char 1 to $title_limit of $keytitle
  nbexo=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$numsheet
  listdon=$empty
-!! !debug $nbexo $exam
+ tmp=$keytitle
  !for k=1 to $nbexo
+  !if $key_title=$empty
   tmp=!record $k of wimshome/log/classes/$wims_class/sheets/.sheet$numsheet
   tmp=!line 5 of $tmp
+  !endif
   exodon=:1\
 $numsheet.$k\
 $tmp\
