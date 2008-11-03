@@ -52,7 +52,8 @@ $wims_html_header
  !else
   disattivata per questo tipo di connessione.)
  !endif
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -60,7 +61,7 @@ $wims_html_header
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <p><li>$i.
+  <li class="wims_sheet_list"><p>$i. 
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
@@ -84,11 +85,12 @@ $wims_html_header
    prima di cominciare a lavorare su questo.
    </small>
   !endif
+ </li>
  !next i
  </ul>
+ </div>
 !endif
 
-:contentend
 !if $wims_user=supervisor
 <p>
 !href module=adm/class/sheet&sheet=$sh Pagina di gestione dei test di autovalutazione
