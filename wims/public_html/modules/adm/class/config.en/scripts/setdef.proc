@@ -108,5 +108,12 @@ firstname=!char 1 to 50 of $firstname
 !set user_lastname=$lastname\
 !set user_firstname=$firstname in wimshome/log/classes/$wims_class/supervisor
 
+sesdir=!translate internal _ to $ $ in $wims_sesdir
+sesdir=!word 1 of $sesdir
+!if $modtoolchg=0
+  !setdef !set wims_developer=$empty in wimshome/log/classes/$wims_class/supervisor
+  !setdef wims_developer=$empty in wimshome/$sesdir/var.stat
+!endif
+
 !sh cd $wims_home/log/classes; ./.build-index
 

@@ -42,6 +42,7 @@ n=!wordcnt $et
 !bound up_limit between integer 1 and $wims_class_user_limit default $class_limit
 !bound up_exolog between integer 0 and $wims_exolog_limit
 !bound up_examlog between integer 0 and $wims_examlog_limit
+!default up_examshow=yes
 ll=!words2items $wims_site_languages
 !bound up_lang within $ll default $class_lang
 today=!char 1 to 8 of $wims_now
@@ -88,6 +89,15 @@ up_secure=!char 1 to 1024 of $up_secure
 !set class_css=$class_css\
 !set class_exolog=$up_exolog\
 !set class_examlog=$up_examlog\
+!set class_examshow=$up_examshow\
+!set class_auth=$class_auth\
+!set class_ldap_host=$class_ldap_host\
+!set class_ldap_port=$class_ldap_port\
+!set class_ldap_version=$class_ldap_version\
+!set class_ldap_base=$class_ldap_base\
+!set class_ldap_branch=$class_ldap_branch\
+!set class_ldap_uid=$class_ldap_uid\
+!set class_ldap_login=$class_ldap_login\
 !set class_defined=yes in wimshome/log/classes/$wims_class/.def 
 
 lastname=!word -1 of $up_supervisor
@@ -97,6 +107,13 @@ firstname=!char 1 to 50 of $firstname
 !setdef !set user_email=$up_email\
 !set user_lastname=$lastname\
 !set user_firstname=$firstname in wimshome/log/classes/$wims_class/supervisor
+
+sesdir=!translate internal _ to $ $ in $wims_sesdir
+sesdir=!word 1 of $sesdir
+!if $modtoolchg=0
+  !setdef !set wims_developer=$empty in wimshome/log/classes/$wims_class/supervisor
+  !setdef wims_developer=$empty in wimshome/$sesdir/var.stat
+!endif
 
 !sh cd $wims_home/log/classes; ./.build-index
 

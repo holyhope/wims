@@ -41,6 +41,17 @@ $table_tr<td align=right>Opciones
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
+!if $wims_supertype!=4 or $class_typename!=class
+$table_tr<td align=right>
+Modtool Account
+<small>
+!href cmd=help&special_parm=config&special_parm2=modtoolchg help
+</small>
+</td><td colspan=3>
+!set modtoolchg=1
+!formcheckbox modtoolchg list 0 prompt Change
+</td></tr>
+!endif
 $table_tr<td align=right colspan=2>Bloqueo de conexión
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock ayuda
@@ -48,7 +59,7 @@ $table_tr<td align=right colspan=2>Bloqueo de conexión
 </td><td colspan=2>
 !set up_lock=$class_lock
 !default up_lock=0
-!formselect up_lock from 0 to 7
+!formselect up_lock list 0,2,3,4,5,6,7
 </td>
 $table_tr<td align=right>Idioma de la clase
 <small>
@@ -58,6 +69,7 @@ $table_tr<td align=right>Idioma de la clase
 !set up_lang=$class_lang
 !set langs=!words2items $wims_site_languages
 !formselect up_lang list $langs
+</td>
 <td align=right>
 Nivel académico
 <small>
@@ -149,6 +161,6 @@ $wims_class_quota).
 
 !reset up_institution, up_description, up_supervisor, up_email, \
 	up_lang, up_level, up_limit, up_expiration, up_secure, up_lock,\
-	up_option,up_exolog,up_examlog,\
+	up_option,up_exolog,up_examlog,up_examshow,\
 	pr_homepage, pr_bgcolor, pr_refcolor, pr_bgimg, pr_css, pr_theme
 

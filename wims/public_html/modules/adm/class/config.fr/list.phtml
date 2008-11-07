@@ -41,15 +41,28 @@ $table_tr<td align=right>Mots d'option
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
-$table_tr<td align=right colspan=2>Verrou de connexion
+</td></tr>
+!if $wims_supertype!=4 or $class_typename!=class
+$table_tr<td align=right>
+Compte Modtool
+<small>
+!href cmd=help&special_parm=config&special_parm2=modtoolchg aide
+</small>
+</td><td colspan=3>
+!set modtoolchg=1
+!formcheckbox modtoolchg list 0 prompt Changer
+</td></tr>
+!endif
+$table_tr<td align=right>
+Verrou de connexion
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock aide
 </small>
-</td><td colspan=2>
+</td><td colspan=3>
 !set up_lock=$class_lock
 !default up_lock=0
-!formselect up_lock from 0 to 7
-</td>
+!formselect up_lock list 0,2,3,4,5,6,7
+</td></tr>
 $table_tr<td align=right>Langue de la classe
 <small>
 !href cmd=help&special_parm=config&special_parm2=lang aide
@@ -58,6 +71,7 @@ $table_tr<td align=right>Langue de la classe
 !set up_lang=$class_lang
 !set langs=!words2items $wims_site_languages
 !formselect up_lang list $langs
+</td>
 <td align=right>
 Niveau académique
 <small>
@@ -129,7 +143,7 @@ Autres configurations:
 .
 !href cmd=reply&job=access Restrictions de ressources
 .
-!href cmd=reply&job=oefdefault Param&eacute;trage OEF par d&eacute;faut
+!href cmd=reply&job=oefdefault Paramétrage OEF par défaut
 .
 !if $class_type iswordof 2 3 4
  !href cmd=reply&job=propagate Envoyer les configurations aux zones inférieures
@@ -169,6 +183,6 @@ $wims_class_quota.)
 
 !reset up_institution, up_description, up_supervisor, up_email, \
 	up_lang, up_level, up_limit, up_expiration, up_secure, up_lock,\
-	up_option,up_exolog,up_examlog,up_examshow\
+	up_option,up_exolog,up_examlog,up_examshow,\
 	pr_homepage, pr_bgcolor, pr_refcolor, pr_bgimg, pr_css, pr_theme
 

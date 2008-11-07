@@ -41,6 +41,17 @@ $table_tr<td align=right>选项词
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
+!if $wims_supertype!=4 or $class_typename!=class
+$table_tr<td align=right>
+Modtool Account
+<small>
+!href cmd=help&special_parm=config&special_parm2=modtoolchg help
+</small>
+</td><td colspan=3>
+!set modtoolchg=1
+!formcheckbox modtoolchg list 0 prompt Change
+</td></tr>
+!endif
 $table_tr<td align=right colspan=2>连接锁定等级
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock 帮助
@@ -48,7 +59,7 @@ $table_tr<td align=right colspan=2>连接锁定等级
 </td><td colspan=2>
 !set up_lock=$class_lock
 !default up_lock=0
-!formselect up_lock from 0 to 7
+!formselect up_lock list 0,2,3,4,5,6,7
 </td>
 $table_tr<td align=right>班级语言
 <small>
