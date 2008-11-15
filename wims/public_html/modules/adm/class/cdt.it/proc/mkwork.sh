@@ -1,6 +1,6 @@
 #! /bin/sh
 if [ "$w_cdt_supervise" = "yes" ]; then
- ls $w_wims_home/log/classes/$w_wims_class/cdt/def | awk -v dir=$w_wims_class -v end=$w_jour_end -v begin=$w_jour_begin '$0<=end && $0>=begin{print $0","dir;}' | sort | head -c 15k;
+ ls $w_wims_home/log/classes/$w_wims_class/cdt/def | awk -v dir=$w_wims_class -v end=$w_jour_end -v begin=$w_jour_begin '$0<=end && $0>=begin{print $0","dir;}' | sort | head -c 15000;
 else
  rm -f $w_wims_home/sessions/$w_wims_session/tmp;
  for i in $w_courses; do
