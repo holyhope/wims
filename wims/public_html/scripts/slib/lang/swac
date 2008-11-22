@@ -6,14 +6,15 @@ slib_title=Insertion of words (audio) from the swac packs
 slib_parms=3\
 ,word or words\
 ,language or list of shtooka packages where to search the words\
-,tag= (only one) can be alphaidx, text or for some packages baseform,coll_section (check it if you take something else than alphaidx or text)
+,tag= (only one) can be alphaidx, text or for some packages baseform,coll_section (check it if you take something else than alphaidx or text)\
+height=16" width="60" autostart=false loop=false,html option
 slib_author=Bernadette Perrin-Riou
 slib_out= Look for the word in the imagedir, then in the swac-shtooka data\
 and give the audio code for insertion. In this case, return also \
 the swac tags of recording ;    return nothing if don't find.
 slib_comment= height=16" width="60" autostart=false loop=false
-slib_example=la vieillesse,fra,player=hbs_mp3_player\
-depolarisatie,dut,player=dewplayer\
+slib_example=aprendizaje,spa,player=dewplayer\
+la vieillesse,fra,player=hbs_mp3_player\
 aimer,fra,tag=baseform player=player\
 carabistouille,fra
 manger,fra,tag=baseform player=player
@@ -26,7 +27,7 @@ manger,fra,tag=baseform player=player
 !endif
 !reset slib_out slib_son slib_son_mod
 
-!distribute items $wims_read_parm into slib_word,slib_packs,slib_option
+!distribute items $wims_read_parm into slib_word,slib_packs,slib_option,slib_optionhtml
 
 slib_son_mod=!singlespace $slib_word
 slib_son_mod=!replace internal $ $ by _ in $slib_son_mod
@@ -43,6 +44,7 @@ slib_tag=!word 1 of $slib_tag
 !default slib_tag=text
 slib_packs= !declosing $slib_packs
 slib_packs=!words2items $slib_packs
+
 slib_pcnt=!itemcnt $slib_packs
 slib_audio=
 !for slib_pa=1 to $slib_pcnt
@@ -85,10 +87,10 @@ slib_son=!randitem $slib_audio
 !endif
 :end
 
-!!slib_out =<embed src=$slib_son $slib_option><noembed><bgsound src=$slib_son></noembed></embed>
+!!slib_out =<embed src=$slib_son $slib_option><noembed><bgsound src=$slib_son $slib_optionhtml></noembed></embed>
 slib_player=!getopt player in $slib_option
 !if $slib_son!=
- !read slib/media/audio $slib_son,,player=$slib_player
+ !read slib/media/audio $slib_son,$slib_optionhtml,player=$slib_player
   slib_wo=!getopt swac_text in $slib_word
  !if $slib_wo=
    slib_wo=$slib_word
