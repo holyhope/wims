@@ -1,0 +1,27 @@
+# test if the user "user" is registered in the class "class".
+# Calling parameter: class,user.
+
+!distribute items $wims_read_parm into c_,u_
+!let d_=wimshome/log/classes
+!default c_=$wims_class
+!let script_reply=no
+
+!if $u_=supervisor
+ !let script_reply=yes
+ !exit
+!else
+ f_=.users/$u_
+!endif
+
+scl_=!defof class_superclass in $d_/$c_/.def
+scl_=!item -1 of $scl_
+!if $scl_=$empty
+ !let script_reply=!defof user_exists in $d_/$c_/$f_
+!else
+ !let auth_=!defof user_participate in $d_/$scl_/$f_
+ !if $c_ isitemof $auth_
+  !let script_reply=yes
+ !endif
+!endif
+
+
