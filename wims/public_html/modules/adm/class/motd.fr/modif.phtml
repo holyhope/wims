@@ -1,0 +1,41 @@
+<center>$classname
+<p>
+<h1>
+!if $user=$empty
+ Modifier le message de la classe
+!else
+ Modifier le message personnel de $user_firstname $user_lastname
+!endif
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href cmd=reply Retour
+. <p>
+ !goto end
+!endif
+
+Cette page permet d'écrire ou de modifier 
+!if $user=$empty
+ le message de la classe
+!else
+ le message destiné &agrave; $user_firstname $user_lastname 
+!endif 
+et qui apparaîtra dans 
+!href style=student la page sommaire de la classe
+.
+<p>
+Ecrire le message (liens et tags html sont admis) :
+<p>
+!form reply
+ <input type=hidden name=action value=register>
+ <input type=hidden name=user value=$user>
+ <input type=hidden name=job value=$job>
+ <textarea name=motd cols=120 rows=10>$motd</textarea>
+ <p><center><input type=submit value="Enregistrer le message"></center>
+</form>
+
+
+

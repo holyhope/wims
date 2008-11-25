@@ -1,0 +1,27 @@
+<center>$classname
+<p>
+<h1>
+!if $user=$empty
+ Effacer le message de la classe
+!else
+ Effacer le message personnel de $user_firstname $user_lastname
+!endif
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href cmd=reply Retour
+. <p>
+ !goto end
+!endif
+
+Confirmez la destruction ?
+<center>
+!href cmd=reply&action=register&job=$job Oui
+&nbsp; &nbsp;&nbsp; &nbsp;
+!href cmd=reply&job=$empty Non
+
+
+

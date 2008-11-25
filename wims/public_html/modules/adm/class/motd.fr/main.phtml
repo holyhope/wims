@@ -5,10 +5,10 @@ $wims_html_header
 !headmenu
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
+!if $job!=$empty
+ !read $job.phtml
+ !goto end
+!endif
 
 <center>$classname
 <p>
@@ -24,22 +24,55 @@ $wims_html_header
  !goto end
 !endif
 
-Cette page permet d'écrire ou de modifier un message destiné à tous
-les participants de la classe et qui apparaîtra dans 
+Cette page permet d'écrire ou de modifier un message destiné à tous les participants de la classe ou des messages personnalis&eacute; pour chaque &eacute;l&egrave;ve.
+Ces messages appara&icirc;tront sur 
 !href style=student la page sommaire de la classe pour les participants
 .
+<br>
+<center><table border=1 width=90%>
+ <tr>
+  <td>Message de la classe (commun &agrave; tous les participants) :</td>
+  <td rowspan=2 valign=middle>
+    !href cmd=reply&job=modif&user=$empty Modifier
+    &nbsp; 
+    !href cmd=reply&job=delete&user=$empty Effacer
+  </td>
+ </tr>
+ <tr><td>&nbsp;
+ !record 0 of wimshome/log/classes/$wims_class/.motd
+ </td></tr>
+</table>
 <p>
-Ecrire le message de la classe (liens et tags html sont admis) :
+Message personnalis&eacute; des participants
+$table_header
+ $table_hdtr
+  <th>El&egrave;ve</th>
+  <th width="75%">Message actuel</th>
+  <th>Action</th>
+ </tr>
+ !for k=1 to $nbuser
+  $table_tr 
+   !let don=!record $k of wimshome/log/classes/$wims_class/.userlist
+   !distribute item $don into f,l,u
+   <td>$l $f</td>
+   <td>
+    !record 0 of wimshome/log/classes/$wims_class/motd/$u
+   </td>
+   <td>
+    !href cmd=reply&job=modif&user=$u Modifier
+    &nbsp; 
+    !href cmd=reply&job=delete&user=$u Effacer
+   </td>
+  </tr>
+ !next k
+$table_end
+</center>
 <p>
-!form reply
-<input type=hidden name=action value=register>
-<textarea name=motd cols=60 rows=15>$motd</textarea>
-<p><center><input type=submit value="Enregistrer le message"></center>
-</form>
-
-
 :end
-!tail
 
-!set job=
-!set showsheet=
+!if $job!=$empty and $job!=delete
+ !href cmd=reply Retour
+!endif
+
+!tail
+!reset job
