@@ -1,0 +1,41 @@
+<center>$classname
+<p>
+<h1>
+!if $user=$empty
+ Modificare il messaggio del giorno
+!else
+ Modificare il messaggio per lo studente $user_firstname $user_lastname
+!endif
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href cmd=reply Indietro
+. <p>
+ !goto end
+!endif
+
+Questa pagina permette di scrivere o modificare
+!if $user=$empty
+ il messaggio del giorno per tutti gli iscritti
+!else
+ il messaggio personale per lo studente &agrave; $user_firstname $user_lastname 
+!endif 
+avvisi che poi compaiono nella 
+!href style=student home page degli studenti
+.
+<p>
+Scrivere i mesaggi (sono accettati link e tag html):
+<p>
+!form reply
+ <input type=hidden name=action value=register>
+ <input type=hidden name=user value=$user>
+ <input type=hidden name=job value=$job>
+ <textarea name=motd cols=120 rows=10>$motd</textarea>
+ <p><center><input type=submit value="Salva"></center>
+</form>
+
+
+

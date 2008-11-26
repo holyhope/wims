@@ -2,15 +2,14 @@
 # It is read and interpreted by wims for all valid calls to the module.
 
 wims_prefix=class user tmp n sharing sharable
-
+!readproc tabletheme
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit
 !endif
 
-!if $action=register
- !writefile wimshome/log/classes/$wims_class/.motd $motd
+!bound job within modif,delete default $empty
+
+!if $job!=$empty
+ !read $job.proc
 !endif
-
-motd=!record 0 of wimshome/log/classes/$wims_class/.motd
-

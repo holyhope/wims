@@ -1,0 +1,27 @@
+<center>$classname
+<p>
+<h1>
+!if $user=$empty
+ Cancellare il messaggio del giorno
+!else
+ Cancellare il messaggio per lo studente $user_firstname $user_lastname
+!endif
+</h1></center> <p><hr width=40%> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href cmd=reply Indietro
+. <p>
+ !goto end
+!endif
+
+Confermare la cancellazione?
+<center>
+!href cmd=reply&action=register&job=$job Sì
+&nbsp; &nbsp;&nbsp; &nbsp;
+!href cmd=reply&job=$empty No
+
+
+
