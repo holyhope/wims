@@ -1,5 +1,5 @@
 
-!bound format within csv, tsv default csv
+!bound format within csv, tsv, xls default csv
 
 !read scripts/check.class
 !if $error!=$empty
@@ -126,7 +126,7 @@ dlcnt=!itemcnt $dl
 !endif
 
 sep_csv=,
-sep_xls=,
+sep_xls=;
 sep_tsv=$	$
 sep=$(sep_$format)
 dl2=!replace , by ,user_ in user_$dl
@@ -150,6 +150,8 @@ $dl3\
 
 s=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
 scoremax=!line 1 of $s
+!default scoremax=10
+
 !read adm/class/sheetsweights
 
 !for u=1 to $usercnt
