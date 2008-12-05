@@ -1,6 +1,5 @@
 !nocache
-<h1 class="wims_docu_title">$tit
-</h1>
+<h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
  !read docu/en/msg.phtml
@@ -29,12 +28,15 @@ By
  !mailurl $email $author
 !endif
 !! &copy;
+</small></td>
 <td align=right><small>
 !href module=home WIMS
  @
 <a href=http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST</a>
+</small></td></tr>
 <tr><td align=left nowrap>
 <small>Last modified $datm
+</small></td>
 !if $wims_developer!=$empty and COPYING isin $module_copyright
  !set V_=!char 1 of $module
  !set M_=!translate internal / to , in $module
@@ -42,8 +44,15 @@ By
  !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
   <td align=right nowrap><small>
   !href module=adm/modtool&original=$module Copy to Modtool
-  </small>
+  </small></td>
  !endif
 !endif
+</tr>
 </table>
+!if $wims_user=supervisor and $sheetdata!=$empty
+<div style="float:right;font-size:small;">
+ !href cmd=reply&job=exosource $n_source
+</div>
+<br>
+!endif
 
