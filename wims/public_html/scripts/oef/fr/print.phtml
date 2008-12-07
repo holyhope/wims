@@ -38,6 +38,7 @@ $wims_html_header
  !goto noans
 !endif
 
+!if $test_print=1
 <p><hr> <p>
 <center><h3>Réponses</h3></center> <p>
 !for i=1 to $n
@@ -45,13 +46,18 @@ $wims_html_header
  !if $t>0
   <p><b>Réponse à l'exercice $i.</b><ul>
   !for k=1 to $t
-   <li>
+  !set l__=!line $k of $(ans_$i)
+  !if $l__ !=
+   <li value=$k>
    !line $k of $(ans_$i)
    </li>
+  !reset l__
+  !endif
   !next k
   </ul>
  !endif
 !next i
+!endif
 
 :noans
 </div> <hr> <p>

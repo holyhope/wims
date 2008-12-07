@@ -14,7 +14,7 @@ $wims_html_header
  <p>
  <b>Exercice</b> $i.
  !if $(question_$i)=$empty
-  (Non-imprimable: $(title_$i))
+  (Non imprimable: $(title_$i))
  !else
   !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
    !set e_=$(e_$i)
@@ -46,8 +46,13 @@ $wims_html_header
  !if $t>0
   <p><b>Réponse à l'exercice $i.</b><ul>
   !for k=1 to $t
-   <li>
-   !line $k of $(ans_$i)
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li value=$k>
+    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
   !next k
   </ul>
  !endif

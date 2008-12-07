@@ -52,7 +52,14 @@ $ $ in $p_
    !next v
    status=prep
    wims_prefix=
-   !read $(class_header)def/$e_.def
+ !! hack for declaring not printable exercise if the commande !getdef (equivalent defof) is used
+ !! should be better to allow this command as in the printable version outside a class
+   testgetdef=!sh grep !getdef $(Class_header)def/$e_.def
+   !if $testgetdef !=
+    question=
+   !else
+    !read $(class_header)def/$e_.def
+   !endif
    wims_prefix=$wims_prefix2
    !if $format=html
     question_$i=$question
@@ -78,7 +85,11 @@ $v_
     !endif
     rep=
     !for k=1 to $choicecnt
-     rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
+     !if $(choicename$k)!=
+      rep=!append line <em>$(choicename$k)</em> : $(choicegood$k) to $rep
+     !else
+      rep=!append line $(choicegood$k) to $rep
+     !endif
     !next k
     !if $conditioncnt<1
      !for k=1 to $replycnt
@@ -115,7 +126,16 @@ $ in $rg_
         rg_=!translate , to $ $ in $rg_
        !endif
       !endif
-      rep=!append line <em>$(replyname$k)</em> = <tt>$rg_</tt> to $rep
+      !if $(replyname$k)$rg_ !=
+       !if http isin $(replyname$k)$rg_
+        rep=!append line $name_noprint to $rep
+       !else
+        !if $(replyname$k)!=
+        rep=!append line <em>$(replyname$k)</em> : <tt>$rg_</tt> to $rep
+        !else
+        rep=!append line <tt>$rg_</tt> to $rep
+       !endif
+      !endif
      !next k
     !endif
     rep=!imgrename $rep
@@ -124,4 +144,3 @@ $ in $rg_
   !endif
  !endif
 !next i
-

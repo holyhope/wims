@@ -21,6 +21,7 @@ n=!itemcnt $exo
 
 M=0
 m_step=1
+test_print=0
 !for i=1 to $n
  question_$i=
  e_=!item $i of $exo
@@ -55,15 +56,22 @@ $v_
    rep=!sort items $rep
    rep=!replace , by <li> in <ul type=square><li>$rep</ul>
    chce_$i=$rep
+   test_print=1
   !else
    chce_$i=
   !endif
   rep=
+!if 3 isin $intro_check or $intro_check=$empty
   !for k=1 to $choicecnt
+   !if $(choicename$k)!=
    rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
+   !else
+    rep=!append line $(choicegood$k) to $rep
+   !endif   
   !next k
   !if $conditioncnt<1
    !for k=1 to $replycnt
+    !if noanalyzeprint notwordof $(replyoption$k)
     rg_=$(replygood$k)
     !if $(replytype$k) iswordof checkbox mark click menu radio
      rg_=!translate internal ; to $\
@@ -97,11 +105,27 @@ $ in $rg_
       rg_=!translate , to $ $ in $rg_
      !endif
     !endif
-    rep=!append line <em>$(replyname$k)</em> = <tt>$rg_</tt> to $rep
-   !next k
-  !endif
+    !if $(replyname$k)$rg_ !=
+     !if http isin $(replyname$k)$rg_
+      rep=!append line $name_noprint to $rep
+     !else
+      !if $(replyname$k)!=
+        rep=!append line <em>$(replyname$k)</em>: <tt>$rg_</tt> to $rep
+      !else
+        rep=!append line <tt>$rg_</tt> to $rep
+      !endif 
+    !endif
+   !endif
+   !reset replyoption$k
+  !next k
+!endif
   rep=!imgrename $rep
   ans_$i=!trim $rep
+  !if  $(ans_$i)!=
+   test_print=1
+  !endif
  !endif
+ !endif
+!reset introcheck
 !next i
 
