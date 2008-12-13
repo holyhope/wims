@@ -89,6 +89,8 @@ char *site_languages=site_langbuf;
 char *show_stat="no";
   /* Author names show up in search result? */
 char *show_author="no";
+  /* Show user IP adress to supervisor */
+char *show_ip="yes"; 
   /* busy hours definition */
 char *busyhours="";
   /* Presentation theme */
@@ -243,6 +245,7 @@ CONFIG_DATA main_config[]={
       {"ref_bgcolor",		0, &ref_bgcolor},
       {"rlimit_cpu",		1, &rlimit_cpu},
       {"show_author",		0, &show_author},
+      {"show_ip",		0, &show_ip},      
       {"show_stat",		0, &show_stat},
       {"site_accounting",	1, &site_accounting},
       {"site_description",	0, &site_description},
@@ -489,6 +492,7 @@ struct {
       {"wims_print_precision", 	1, &DEFAULT_PRINT_PRECISION},
       {"wims_ref_bgcolor",	0, &ref_bgcolor},
       {"wims_show_author",	0, &show_author},
+      {"wims_show_ip",		0, &show_ip},
       {"wims_show_stat",	0, &show_stat},
       {"wims_site_description",	0, &site_description},
       {"wims_site_keywords",	0, &site_keywords},
