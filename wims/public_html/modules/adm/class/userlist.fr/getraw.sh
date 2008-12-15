@@ -10,7 +10,7 @@ fi
 if [ "$w_test" = "no" ]; then
  echo "    Date.Heure 	session	Feuille exo requete"
  echo "------------------------------------------------------------"
- cat $session_dir/user.getraw | cut -d" " -f1-6;
+ cat $session_dir/user.getraw | cut -d"	" -f2 --complement;
 else
  echo "    Date.Heure 	session	Feuille exo requete 	connection"
  echo "------------------------------------------------------------"
