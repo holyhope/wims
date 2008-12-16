@@ -84,7 +84,12 @@ cadd_typename=course
 !next t
 
 !if $passs!=$empty
- passs=!text select */$char_passwd in $passs
+ c=!char 1 of $passs
+ !if $c=* and $wims_priv_cryptpass=allow
+  p=!text select */$char_passwd in $passs
+ !else
+  p=!text select $char_passwd in $passs
+ !endif
  passlen=!charcnt $passs
  !if $passlen<$passwd_min or $passlen>$passwd_max or $passs != $passs2
   error=bad_password
