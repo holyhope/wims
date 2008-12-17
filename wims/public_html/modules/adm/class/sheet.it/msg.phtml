@@ -10,11 +10,6 @@
  !exit
 !endif
 
-!if bad_sheet=$error
- Il numero del test di autovalutazione non &egrave; valido. Errore del software?
- !exit
-!endif
-
 !if bad_source=$error
  L'elemento $bad_source nei comandi inseriti non &egrave;
  valido.
@@ -23,9 +18,82 @@
  !exit
 !endif
 
+!if bad_sheet=$error
+ Il numero del test di autovalutazione non &egrave; valido. Errore del software?
+ !exit
+!endif
+
 !if no_title=$error
  Per registrare un corso &egrave; necessario inserire il titolo. 
  Correggere.
+ !exit
+!endif
+
+!if $error=not_secure
+ Questa operazione è effettuabile solo da un IP sicuro.
+ !if $sec=$empty
+  Non sono stati definiti IP sicuri, accesso non consentito. Consulta
+  il manager del sito.
+ !else
+  Accesso non consentito.
+ !endif
+ !exit
+!endif
+
+!if $error=sharing_sheet
+ <font color=red><b><blink>Pericolo!!!</font></b></blink>
+ Questi test sono condivisi con altri corsi!
+ !if $wims_ismanager<2
+  Solo il site manager li può disattivare il test.
+  !exit
+ !endif
+ Disattivandole puoi danneggiare anche le configurazioni delle classi
+ che le condividono. Si <b>sconsiglia vivamente</b> di disattivare test
+ di autovalutazione condivisi. 
+ <p>
+ Sei sicuro di voler continuare?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes Si; continua
+ .&nbsp;&nbsp;
+ !href cmd=resume No; abbandona
+ . </center>
+ <p>
+ <b>Prima di continuare, è per lo meno consigliabile di chiedere ai docenti
+ delle classi che le condividono di salvare la propria configurazione!</b>
+ !exit
+!endif
+
+!if $error=sheet_in_exam
+ Non è possibile disattivare questo test, in quanto alcuni esami
+ ne utilizzano i contenuti.
+ !exit
+!endif
+
+!if $error=non_empty_activities
+ Stai per disattivare il test $sheet, mentre alcuni studenti hanno 
+ già cominciato a lavorarci!
+ <p>
+ !if share iswordof $confirmed
+  Inoltre, il test è condiviso con altri corsi, dove pure gli 
+  studenti potrebbero aver già cominciato a lavorare. Pertanto
+  non è possibile disattivarlo.
+  !exit
+ !endif
+ Tutti i punteggi ottenuti per questo test di autovalutazione saranno perduti
+ se il test viene disattivato. Vuoi veramente continuare?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes Si, disattiva
+ .&nbsp;&nbsp;
+ !href cmd=resume No, abbandona
+ . </center> <p>
+ Elenco degli studenti che hanno già cominciato a lavorare su questo
+ test di autovalutazione:
+ <p>
+ <tt>$worktest</tt>
+ <p>
+ <b>Nota</b>. Questa operazione è vivamente sconsigliata a meno che questo
+ non sia un corso di prova. Si consiglia di fermarsi ora se si sta 
+ parlando di un corso con studenti <em>veri</em>.
  !exit
 !endif
 
@@ -128,74 +196,6 @@
   3,4,5.
   </small>
  !endif
-!endif
-
-!if $error=not_secure
- Questa operazione è effettuabile solo da un IP sicuro.
- !if $sec=$empty
-  Non sono stati definiti IP sicuri, accesso non consentito. Consulta
-  il manager del sito.
- !else
-  Accesso non consentito.
- !endif
- !exit
-!endif
-
-!if $error=sharing_sheet
- <font color=red><b><blink>Pericolo!!!</font></b></blink>
- Questi test sono condivisi con altri corsi!
- !if $wims_ismanager<2
-  Solo il site manager li può disattivare il test.
-  !exit
- !endif
- Disattivandole puoi danneggiare anche le configurazioni delle classi
- che le condividono. Si <b>sconsiglia vivamente</b> di disattivare test
- di autovalutazione condivisi. 
- <p>
- Sei sicuro di voler continuare?
- <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Si; continua
- .&nbsp;&nbsp;
- !href cmd=resume No; abbandona
- . </center>
- <p>
- <b>Prima di continuare, è per lo meno consigliabile di chiedere ai docenti
- delle classi che le condividono di salvare la propria configurazione!</b>
- !exit
-!endif
-
-!if $error=sheet_in_exam
- Non è possibile disattivare questo test, in quanto alcuni esami
- ne utilizzano i contenuti.
- !exit
-!endif
-
-!if $error=non_empty_activities
- Stai per disattivare il test $sheet, mentre alcuni studenti hanno 
- già cominciato a lavorarci!
- <p>
- !if share iswordof $confirmed
-  Inoltre, il test è condiviso con altri corsi, dove pure gli 
-  studenti potrebbero aver già cominciato a lavorare. Pertanto
-  non è possibile disattivarlo.
-  !exit
- !endif
- Tutti i punteggi ottenuti per questo test di autovalutazione saranno perduti
- se il test viene disattivato. Vuoi veramente continuare?
- <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Si, disattiva
- .&nbsp;&nbsp;
- !href cmd=resume No, abbandona
- . </center> <p>
- Elenco degli studenti che hanno già cominciato a lavorare su questo
- test di autovalutazione:
- <p>
- <tt>$worktest</tt>
- <p>
- <b>Nota</b>. Questa operazione è vivamente sconsigliata a meno che questo
- non sia un corso di prova. Si consiglia di fermarsi ora se si sta 
- parlando di un corso con studenti <em>veri</em>.
- !exit
 !endif
 
 !msg $error

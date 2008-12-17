@@ -1,4 +1,7 @@
-
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+!headmenu
 <hr width=1>
 <center><h3>$wims_classname, $wims_institutionname</h3>
 <hr> <p><h1>Test di autovalutazione numero $sheet<br>$title</h1>
@@ -10,19 +13,23 @@
  questo test di autovalutazione &egrave; vuoto! Si tratta probabilmente di un 
  errore del docente.
 !else
- questo test di autovalutazione contiene i seguenti esercizi :<p><ul>
+ questo test di autovalutazione contiene i seguenti esercizi:
+ <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
-  <p><li>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
    <small>0 su $[$re] punti ottenuti, punteggio medio
    0/10. </small>
   !endif
+  </p>
+  </li>
  !next i
  </ul>
+ </div>
 !endif
 <p>
 !homeref

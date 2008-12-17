@@ -124,12 +124,12 @@ O una presentazione:
  Contenuto del test di autovalutazione:<small>[
  !href module=adm/sheet&sh=$sheet&job=print Versione stampabile
  ]</small>
- <ol>
+ <ol class="wims_sheet_list">
  !for i=1 to $exocnt
-  <li>
+  <li class="wims_sheet_list">
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
-  !set dep=!trim $dep
+!!  !set dep=!trim $dep
   !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
 , $re punti di peso $we.
   !if $activetest=0
@@ -147,6 +147,7 @@ O una presentazione:
    !endif
    )
   !endif
+ </li>
  !next i
  </ol>
 !endif
@@ -158,7 +159,18 @@ O una presentazione:
  , visualizzare la lista degli esercizi. Una volta selezionato e configurato 
  l'esercizio, un link alla base della pagina 
  ne permetter&agrave; l'inserimento nel test.
- !if $erasable=yes
+
+!!  Pour choisir votre travail, vous pouvez
+!!  <ul>
+!!   <li> passer par le moteur de recherche disponible sur la 
+!!  !href $ page d'accueil
+!!  de la classe
+!!  </li>
+!!  <li> ou vous aider de cette 
+!!  !href module=help/teacher/program correspondance indicative
+!!  entre programmes de l'enseignement français et exercices WIMS.
+!! </li>
+!! </ul>
   <p>
   &Egrave; anche possibile inserire
   !href cmd=reply&job=prep_putsource i comandi da un file sorgente
