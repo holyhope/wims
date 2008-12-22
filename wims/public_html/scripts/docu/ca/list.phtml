@@ -1,0 +1,40 @@
+<center><h1>$tit</h1></center>
+
+!if $fcnt<1
+ Ce document n'a pas encore de contenu.
+ !href cmd=reply&job=edit&block=main Créer la page d'entrée
+.
+ <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>Liste de blocs du document</caption>
+$table_hdtr
+<th>Nom<th>Titre<th>Action
+!for i=1 to $fcnt
+ !set s_=!line $i of $slist
+ !set t_=!line $i of $tlist
+ !set t_=!trim $t_
+ !default t_=Sans titre
+ $table_tr
+ <td><tt>$s_</tt></td>
+ <td>$t_</td>
+ <td align=center>
+ !href cmd=reply&job=read&block=$s_ Lire
+&nbsp;
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$s_ Editer
+ !endif
+</td>
+!next i
+$table_end <p>
+
+<center>
+Espace disque disponible au départ&nbsp;: $quota_total Meg.
+Espace libre&nbsp;: $quota_free Meg.
+<p>
+!href cmd=reply&job=file Dépôt de fichier
+&nbsp;&nbsp;
+!href cmd=reply&job=read&block=main Page d'entrée du document
+</center> <p>
