@@ -64,8 +64,10 @@ Espacio de disco libre: $quota_free Meg.
 !href cmd=reply&job=list Lista de bloques
 &nbsp;&nbsp;
 !href cmd=reply&job=read&block=main Bloque principal
+!if $(readhist[-1;2])!=main
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage $(readhist[-1;2])
-
+!href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage
+ (<tt>$(readhist[-1;2])</tt>)
+!endif
 </center> <p>
 
