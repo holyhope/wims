@@ -22,6 +22,9 @@
 
 flist=!filelist $wims_home/$Docdir/$doc/files
 flist=!words2items $flist
-f1=!item 1 of $flist
+f1=$wims_deposit
+!if $f1 notin $flist or $f1=
+  f1=!item 1 of $flist
+!endif
 !read quota.proc
 
