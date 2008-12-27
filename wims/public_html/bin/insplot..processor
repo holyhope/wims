@@ -81,7 +81,17 @@ if [ -z "$w_gnuplot_format" ] || [ "$w_gnuplot_format" = "default" ]; then
 else
  intermediate_format=$w_gnuplot_format
 fi
-insplot_termset="set terminal $intermediate_format $gnuplot_transp $w_insplot_font size 500,400 $insplot_colors"
+
+###fix compatibility with gnuplot 4 
+gnuplot_version=`gnuplot --version | awk  '{ print $2 }'`
+if [ "$gnuplot_version" -lt "4" ] || [ -z "$gnuplot_version" ]; then
+  insplot_termset="set terminal $intermediate_format $gnuplot_transp $w_insplot_font size 500,400 $insplot_colors"
+else
+  testsize=`echo $insplot_set | perl -e 'if (<> =~ /size (\d+\.\d+),(\d+\.\d+)/) {$sx=$1*500 ; $sy=$2*400 ; print "size $sx,$sy" ; } else {print "size 500,400"}'`
+  insplot_termset="set terminal $intermediate_format $gnuplot_transp $w_insplot_font $testsize $insplot_colors"
+# insplot_set=`echo $insplot_set | perl -e '$ins_set=<> ; $ins_set =~ s/(set +size +\d+\.\d+,\d+\.\d+)// ; $ins_set =~ s/set/\nset/g ; print $ins_set;'`
+  insplot_set=`echo "$insplot_set" | sed "s/set *size *[0-9]\.[0-9]*,[0-9]\.[0-9]*//g"`
+fi
 
 if [ ! -z "$multiplot" ]; then
  plotcmd="set multiplot"
