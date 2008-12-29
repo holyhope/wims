@@ -1,10 +1,9 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=For marking  some group of words with given explanation
-slib_parms=2\
-,joker like @_\
-,the input text (embedding delimiter: `??')
+slib_title=For marking  some words with given explanation
+slib_parms=1\
+the input text (embedding delimiter: `??')
 slib_author=Bernadette PERRIN-RIOU
 slib_out= position of words embedded in text by  ?? ?? (without the joker)\
 amongst all the groups of the form ?? ?? (one line by embedding);\
@@ -40,8 +39,11 @@ slib_texte=!replace internal ( by &#40; in $slib_texte
 slib_texte=!replace internal ) by &#41; in $slib_texte
 !for slib_i= 1 to $slib_cntrow
   slib_H = !row $slib_i of $slib_texte
-  slib_cnt_w=!wordcnt $slib_H
   slib_k=$[$slib_i%2]
+  !if $slib_k = 0
+   slib_H=!replace internal $ $ by &nbsp;&nbsp;&nbsp; in $slib_H
+  !endif
+  slib_cnt_w=!wordcnt $slib_H
   !if $slib_k = 0
     slib_faux=!replace internal | by , in $slib_H
     !distribute items $slib_faux into slib_H,slib_juste
@@ -72,7 +74,6 @@ slib_texte=!replace internal ) by &#41; in $slib_texte
 slib_rep=!nonempty items $slib_rep
 slib_mark=!nonempty lines $slib_mark
 
-slib_TEXTE = !nonempty items $slib_TEXTE
 slib_TEXTE = !replace internal @_ by in $slib_TEXTE
 slib_JUSTE = !replace internal slib_ZZZZZ by in $slib_JUSTE
 
