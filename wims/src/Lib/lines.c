@@ -270,7 +270,7 @@ int _cutit_(char *p, char *list[], int max, char *end_finder(char *pt), int tag)
     if(tag&1) pp=find_word_start(p); else pp=p; /* strip head space */
     for(i=0;i<max && *pp;i++) {
 	pe=end_finder(pp);
-	if((tag&2) && myisspace(pe[-1])) { /* strip tailing space */
+	if((tag&2) && myisspace(pe[-1])) { /* strip trailing space */
 	    for(p0=pe; p0>pp && myisspace(p0[-1]); p0--);
 	    if(p0<pe) *p0=0;
 	}
