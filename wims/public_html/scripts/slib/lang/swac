@@ -30,6 +30,7 @@ manger,fra,tag=baseform player=player
 !distribute items $wims_read_parm into slib_word,slib_packs,slib_option,slib_optionhtml
 
 slib_son_mod=!singlespace $slib_word
+
 slib_son_mod=!replace internal $ $ by _ in $slib_son_mod
 slib_son_mod=!nospace $slib_son_mod
 slib_son_test=!lookup $slib_son_mod.mp3 in Imindex
@@ -70,14 +71,14 @@ slib_audio=
 slib_son=!randitem $slib_audio
 !if $slib_son!=
  slib_son1=!replace internal / by , in $slib_son
- slib_son1=$(slib_son1[1])
+ slib_dir=$(slib_son1[1])
  slib_version=!record 0 of data/swac/version
  slib_version=!lines2items $slib_version
- slib_word=!lookup $slib_son in data/swac/$slib_son1/sw_tags
- !if $slib_son1 isitemof $slib_version
+ slib_word=!lookup $slib_son in data/swac/$(slib_dir)/sw_tags
+ !if $slib_dir isitemof $slib_version
      slib_son=scripts/data/swac/$slib_son
  !else
-     slib_son=http://packs.shtooka.net/$slib_son
+     slib_son=http://packs.shtooka.net/$slib_dir/mp3/$(slib_son1[-1])
  !endif
  !if rename iswordof $slib_option2 
    slib_son=!rename $slib_son

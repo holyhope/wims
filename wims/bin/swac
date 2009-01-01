@@ -1,37 +1,35 @@
 #! /bin/sh
+version=1.0
 
 ##this script transfer swac-shtooka ressources at the good place
 ##author Bernadette Perrin-Riou
 packs="deu-balm-alexandra
-dut-wcp
 eng-balm-verbs
 eng-wcp-us
 fra-balm-conjug
+fra-balm-flora-expr
+fra-balm-flora-num
 fra-balm-voc
-fra-vocf
-swe-balm-voc"
-
-adresse=packs.shtooka.net
+fra-wims-voc
+nld-wcp
+spa-wims-octavio
+swe-balm-num
+swe-balm-voc
+"
+adresse=download.shtooka.net
  
 cd `dirname $0`/..
 wimshome=`pwd`
 swac=$wimshome/public_html/scripts/data/swac
-cd $swac ; 
- for i in $packs; do
-  echo $i ; rm -f $i.mp3.tar
-  wget http://$adresse/$i/$i.mp3.tar; echo "wget $adresse/$i/$i.mp3.tar" ;
-  tar xf $i.mp3.tar;
-  mkdir -p $i;
-  rm -r $i/mp3;
-  mv home/www/packs/$i/mp3 $i/mp3;
-  rm -r home; rm $i.mp3.tar ;
-#  cd $i;
-##  mv index.tags.txt index.tags.txt_1 ;
-##  wget http://$adresse/$i/ogg/index.tags.txt ;
-##  echo "wget http://$adresse/$i/ogg/index.tags.txt ";
-##  rm index.tags.txt_1 ;
-# cd .. ;\
+cd $swac ;
+echo "$version" > version.tmp;
+for i in $packs; do
+  j=${i}_mp3 ;
+  wget http://$adresse/$j.tar; echo "wget $adresse/$j.tar" ;
+  tar xf $j.tar;
+  cd $j ; cp -r * $swac/$i/ ; cd $swac ; rm $j.tar ; rm -r $j;
+  echo "$i" >> version.tmp ;
 done ;
 
-cd $swac ; 
+cd $swac ; cp version.tmp version ; rm version.tmp; 
 ./mkindex ; 
