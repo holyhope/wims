@@ -1,12 +1,12 @@
 #!/usr/bin/perl
-##script to generate some index files from tags of index.tags.txt for
+##script to generate some index files from tags of index.tags.xml for
 ## shtooka packages
 use locale;
 #use Encode;
 my @dir=() ;
 my $lang='' ;
 my @SPECIAL=('');
-my $file='index.tags.txt' ;
+my $file='index.xml' ;
 my $PREFIX;
 my @EXTRA=(
 swac_tech_qlt,
@@ -19,6 +19,7 @@ swac_coll_desc,
 swac_coll_license,
 swac_coll_name,
 swac_coll_org,
+swac_coll_section,
 swac_form_name,
 swac_lang,
 swac_pron_speed,
@@ -165,11 +166,14 @@ sub ConsListe { my ($file, $ref, $dir,$prefix) = @_;
   print STDERR "... lecture de $file\n";
   while(<IN>) {
     next if (/^#/ || (/^\s*$/ && !$val)); # vire commmentaires + lignes vides
+    next if (/<\/file\>/) ;
     #warn "caractères de contrôle" if /[œ‘’ –]/; # carac. Windows courants
-      if (/\[(.*)\]/) { $f=$1 ; $f =~ s/\.ogg/\.mp3/g ;  $id = $prefix . $dir . 'mp3/' . $f ; }
-      if (/(\w+)\s*=\s*(.*?)\s*$/) { $r=Traite($2) ;
+     # if (/\[(.*)\]/) { $f=$1 ; $f =~ s/\.ogg/\.mp3/g ;  $id = $prefix . $dir . 'mp3/' . $f ; }
+     s /\<tag\s*//g; s/\s*\/\>//g;
+      if (/\<file path=\"(.*)\"/) {$id=$1 ; $id = $prefix . $dir . $id ; }
+      if (/(\w+)\s*=\s*\"?(.*?)\"?\s*$/) { $r=Traite($2) ;
         $field=canonify($1) ;
-        next if ($field =~ /($Extra)/) ; 
+        next if ($field =~ /($Extra|path)/) ; 
         $ref->{$field}->{$id} = $r if !($id =~ /GLOBAL/);
     }
   }
