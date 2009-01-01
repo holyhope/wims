@@ -1,0 +1,290 @@
+
+<html>
+<head>
+<title>WIMSchem - Applet</title>
+<style>a:link{color:blue;text-decoration:none;}a:hover{color:red;text-decoration:none;}</style> 
+<script language="javascript" type="text/javascript"  src="database_Native.js"></script>
+<script language="javascript" type="text/javascript"  src="database_MDLMol.js"></script>
+<script language="javascript" type="text/javascript">
+var chem;
+
+function Set_Some_Chemical_A(){
+    <!-- picking a random chemical from the database include...stored in array question_A[] -->
+    <!-- the database is made of javascript strings in Native WIMSchem fileformat -->
+    <!-- and is produced by exporting a molecule from the application program to Native-javascript -->
+    <!-- This is just for demonstation...in real life we would not show the correct answer , but-->
+    <!-- ask to draw the chemical structure of "cis hexanediol" ... -->
+    
+    var l=question_A.length;
+    var c=Math.floor(Math.random()*l);
+    chem=question_A[c];
+    document.js.moltext.value=chem;
+    document.molapplet.SetMoleculeNative(chem);
+}
+
+function Set_Some_Chemical_B(){
+    <!-- picking a random chemical from the database include...stored in array question_B[] -->
+    <!-- the database is made of javascript strings in MDLMol WIMSchem fileformat -->
+    <!-- and is produced by exporting a molecule from the application program to MDLMol-javascript -->
+    <!-- This is just for demonstation...in real life we would not show the correct answer , but-->
+    <!-- ask to draw the chemical structure of "cis hexanediol" ... -->
+    
+    var l=question_B.length;
+    var c=Math.floor(Math.random()*l);
+    chem=question_B[c];
+    document.js.moltext.value=chem;
+    document.molapplet.SetMoleculeMDLMol(chem);
+}
+
+function GetMoleculeNative(){
+    <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
+    var str=document.molapplet.GetMoleculeNative();
+    document.js.moltext.value=str;
+}
+
+
+function SetMoleculeNative(){
+    <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
+    var str=document.js.moltext.value
+    document.molapplet.SetMoleculeNative(str);
+}
+
+
+function GetMoleculeMDLMol(){
+    <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
+    var str=document.molapplet.GetMoleculeMDLMol();
+    document.js.moltext.value=str;
+}
+
+
+function SetMoleculeMDLMol(){
+    <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
+    var str=document.js.moltext.value
+    document.molapplet.SetMoleculeMDLMol(str);
+}
+
+function ReadApplet(){
+    var str=document.molapplet.ReadApplet();
+    document.js.moltext.value=str;
+}
+
+function LoadMDLMol(){
+    var str="WIMSchem molfile\n\n 5  5  0  0  0  0  0  0  0  0999 V2000 \n   -5.3750   11.3500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0 \n   -5.3750    9.8500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0 \n   -3.4250    9.8500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0 \n   -3.4250   11.3500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0 \n   -4.3760   12.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0 \n  2  1  1  0  0  0  0 \n  3  2  1  0  0  0  0 \n  3  4  1  0  0  0  0 \n  1  5  1  0  0  0  0 \n  4  5  1  0  0  0  0 \n M  END"
+    document.molapplet.SetMoleculeMDLMol(str);
+}
+
+
+function CompareNative_A(){
+    <!-- comparing String loaded from URL with the drawing -->
+    var result=document.molapplet.CompareNative();
+    var reply=result.split("\n");
+    var rest=result.split("@");
+	<!-- data format from applet :   	 	 -->
+	<!-- sa=student answer			 	 -->
+	<!-- ca=correct answer	 [the question]		 -->
+	<!--    return score+			reply[0] -->
+	<!--    "\n"+weight_sa+		reply[1] -->
+	<!--    "\n"+weight_ca+		reply[2] -->
+	<!--    "\n"+plain_formula_sa+	reply[3] -->
+	<!--    "\n"+plain_formula_ca+	reply[4] -->
+	<!--    "\n"+html_formula_sa+		reply[5] -->
+	<!--    "\n"+html_formula_ca+		reply[6] -->
+	<!--    "\n"+html_smiles_sa+		reply[7] -->
+	<!--    "\n"+html_smiles_ca+		reply[8] -->
+	<!--    "\n"+latex_formula_sa+	reply[9] -->
+	<!--    "\n"+latex_formula_ca+	reply[10] -->
+	<!--    "\n"+feedback+		reply[11] -->
+	<!--    "\n@"+Student_answer+	rest[0] -->
+	<!--    "\n@"+Correct_answer+	rest[2] -->
+	
+
+    document.js.a_reply.value="Your Score ="+reply[0]+"\nYour formula:"+reply[3]+"\nMy formula:"+reply[4]+"\nFeedback:"+reply[11];
+    showhtml.innerHTML = "<hr noshade>Your answer: "+reply[5]+"  [Molweight="+reply[1]+"  "+reply[7]+"]<hr noshade>Correct answer:"+reply[6]+"  [Molweight="+reply[2]+"   "+reply[8]+"]";
+}
+
+function CompareNative_B(){
+    <!-- "Sending" the correct WIMSchem data from the database.js for comparison with the drawing -->
+    document.molapplet.GetQuestion(chem);
+    var result=document.molapplet.CompareNative();
+    var reply=result.split("\n");
+    var rest=result.split("@");
+	<!-- data format from applet :   	 	 -->
+	<!-- sa=student answer			 	 -->
+	<!-- ca=correct answer	 [the question]		 -->
+	<!--    return score+			reply[0] -->
+	<!--    "\n"+weight_sa+		reply[1] -->
+	<!--    "\n"+weight_ca+		reply[2] -->
+	<!--    "\n"+plain_formula_sa+	reply[3] -->
+	<!--    "\n"+plain_formula_ca+	reply[4] -->
+	<!--    "\n"+html_formula_sa+		reply[5] -->
+	<!--    "\n"+html_formula_ca+		reply[6] -->
+	<!--    "\n"+html_smiles_sa+		reply[7] -->
+	<!--    "\n"+html_smiles_ca+		reply[8] -->
+	<!--    "\n"+latex_formula_sa+	reply[9] -->
+	<!--    "\n"+latex_formula_ca+	reply[10] -->
+	<!--    "\n"+feedback+		reply[11] -->
+	<!--    "\n@"+Student_answer+	rest[0] -->
+	<!--    "\n@"+Correct_answer+	rest[2] -->
+	
+
+    document.js.a_reply.value="Your Score ="+reply[0]+"\nYour formula:"+reply[3]+"\nMy formula:"+reply[4]+"\nFeedback:"+reply[11];
+    showhtml.innerHTML = "<hr noshade>Your answer: "+reply[5]+"  [Molweight="+reply[1]+"  "+reply[7]+"]<hr noshade>Correct answer:"+reply[6]+"  [Molweight="+reply[2]+"   "+reply[8]+"]";
+}
+
+</script>
+
+</head> 
+
+<body  bgcolor="#408040" text="#ffffff" link="#80ff80" vlink="#70d070" alink="#80ffff">
+
+
+<h1>WIMSchem Applet</h1>
+<table>
+    <th valign="top">
+	<div id="notify" style="visibility:visible"><blink><font color="red">CHECKING JAVA PLUGIN VERSION</font></blink></div>
+	<applet id="CheckApplet" name="CheckApplet" code="WIMSchem/CheckVersion.class" archive="dist/WIMSchem.jar" width="1" height="1" MAYSCRIPT></applet>
+	    
+	<script language="javascript" type="text/javascript">
+	    var VERSION_REQUIRED =150;
+	    var javaVersion;
+	    try { javaVersion = document.getElementById("CheckApplet").getVersion();} catch(e){ javaVersion = 0;}
+	    if(javaVersion >= VERSION_REQUIRED){
+		alert(" Found usable Java plugin....version : "+javaVersion);
+	    }
+	    else
+	    {	    
+		if( javaVersion < VERSION_REQUIRED ){
+		    var t=confirm("You must go to the java download page to get the latest JavaPlugin...\nVersion at least :"+VERSION_REQUIRED);
+		    if(t){window.open("http://java.sun.com/javase/downloads/index.jsp","","status=1,toolbar=1,width=600,height=480");}
+		}
+		else
+		{
+		    alert(" It seems your browser does not support Java - Javascript communication.\n Continue at own risk...");
+		}
+	    }
+	                
+	    if(document.getElementById){
+		document.getElementById("notify").style.visibility = "hidden";
+	    }
+	    else
+	    {
+		if (document.layers) {
+		    document.notify.visibility = "hidden";
+		}
+		else
+		{
+		    document.all.notify.style.visibility = "hidden";
+		}
+	    }
+	</script>
+	<applet name="molapplet" code="WIMSchem.MainApplet" archive="dist/WIMSchem.jar" width="550" height="550">
+	    <param name="language" value="fr">
+	    <!-- nl,fr,en  default en -->
+	    
+	    <param name="atoms" value="C,N,O,S,Mn,Ni,Mg">
+	    <!-- allowed separators :;,[space] -->
+	    
+	    <param name="file" value="file:/root/JAVA/WIMSchem/test.mol">
+	    <!-- or <param name="file" value="file:../../modules/H4/mymodule/data/molecule1.mol">  needs signed jar-->
+	    <!-- or <param name="file" value="http://this_server/123.mol"> -->
+	    
+	    <param name="showfile" value="yes">
+	    <!-- or <param name="showfile" value="1"> Shows loaded file on startup -->
+	    
+	    <param name="show_hydrogen" value="yes">
+	    <!-- or <param name="show_hydrogen" value="no"> do not show explicit hydrogens -->
+
+	    <param name="show_carbon" value="no">
+	    <!-- or <param name="show_carbon" value="no"> do not show carbonatoms; only the bonding skeleton -->
+
+	  <param name="template1" value="">
+	   <!--  <param name="template2" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=2.el">
+	    -->
+	    <!-- MDLMol / Native -format accepted, same syntax as for "file" parameter -->
+	    <!-- if param not present or invalid, the jar-based templates will be used -->
+	    
+	    <!-- the lefthand tool button bar -->
+	    <param name="TOOL_CURSOR" value="yes">
+	    <param name="TOOL_ROTATOR" value="yes">
+	    <param name="TOOL_ERASOR" value="yes">
+	    <param name="TOOL_DIALOG" value="yes">
+	    <param name="TOOL_EDIT" value="yes">
+	    <param name="TOOL_SETATOM" value="yes">
+	    <param name="TOOL_SINGLE" value="yes">
+	    <param name="TOOL_DOUBLE" value="yes">
+	    <param name="TOOL_TRIPLE" value="yes">
+	    <param name="TOOL_ZERO" value="yes">
+	    <param name="TOOL_INCLINED" value="yes">
+	    <param name="TOOL_DECLINED" value="yes">
+	    <param name="TOOL_CHARGE" value="yes">
+	    <param name="TOOL_UNDO=" value="yes">
+	    <param name="TOOL_REDO=" value="yes">
+	    <param name="TOOL_TEMPLATE" value="yes">
+	    <param name="TOOL_CUT" value="yes">
+	    <param name="TOOL_COPY" value="yes">
+	    <param name="TOOL_PASTE" value="yes">
+	    
+	    <!-- the top menu -->
+	    <param name="MENU_BLOCK" value="yes">
+	    <param name="MENU_SELECT" value="yes">
+	    <param name="MENU_TRANSFORM" value="yes">
+	    <param name="MENU_ZOOM" value="yes">
+	    <param name="MENU_SHOW" value="no">
+	    <param name="MENU_HYDROGEN" value="no>
+	    <param name="MENU_STEREO" value="yes">
+	    <param name="MENU_HELP" value="yes">
+	    (java unavailable)
+	</applet>
+    </th>
+    <th valign="top">
+	<table>
+	    <td halign=left>
+		Molecule text representation:<br>
+		<form name="js">
+		    <textarea name="moltext" rows="17" cols="50"></textarea><br>
+		    <textarea name="a_reply" rows="2" cols="50"></textarea>
+		    <div name="showhtml" id="showhtml"></div>
+		</form>
+		    <ul>
+		    <li><a onClick="javascript:Set_Some_Chemical_A()">Show me a random question chemical [Native fileformat]</a>
+			<br><small> using a javascript include file</small>
+		    <li><a onClick="javascript:Set_Some_Chemical_B()">Show me a random question chemical [MDLMol fileformat]</a> 
+			<br><small> using a javascript include file</small>		    
+		    <li><a onClick="javascript:GetMoleculeNative()">Get the Native fileformat from the drawing</a>
+		    <li><a onClick="javascript:GetMoleculeMDLMol()">Get the MDLMol fileformat from the drawing</a>		    
+		    <li><a onClick="javascript:SetMoleculeNative()">Set drawing from textarea [Native]</a>
+		    <li><a onClick="javascript:SetMoleculeMDLMol()">Set drawing from textarea [MDLMol]</a>
+		    <!-- <li><a onClick="javascript:LoadMDLMol()">Load Javascript MDMOL string</a> -->
+		    <li><a onClick="javascript:ReadApplet()">info about the correct drawing</a>
+		    </ul>
+	    </td>
+	    <tr>
+		<td align=left>
+		    <button type="button" onClick="CompareNative_A()">COMPARE DRAWING WITH URL LOADED MOLECULE</button>
+		</td>
+		<tr>
+		<td align=left>
+		    <button type="button" onClick="CompareNative_B()">COMPARE DRAWING WITH STRING LOADED MOLECULE </button>
+		</td>
+		<tr>                                                                                                                       
+                <td>
+		    <small>
+		    When signature [jar sign]  is accepted, the applet will become a standalone application<br>
+		    if the <em>new window</em> is clicked in the menu.<br>
+		    The browser will not communicate with this standalone java application window.<br>
+		    So the CompareNative() will not read the molecule.<br>
+		    It could be used to draw [question] chemicals and save them in Native of MDLmol format.<br>
+		    Or use the "export to javascript" to generate a Native/MDLMol javascript string.
+		    [see "jm.evers module" on chemistry].
+            	    </small>
+		</td>            
+	    </table>	
+	</form>
+    </th>
+</table>
+
+</body>
+</html>
+
+
+

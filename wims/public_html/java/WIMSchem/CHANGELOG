@@ -1,0 +1,172 @@
+1/09/2008
+
+Starting a "new branche" of SketchEl called WIMSchem.
+
+Because it is likely that some of the functionality and fileformat
+will be altered, I've chosen not to relate in terms of "package name" to 
+the mother program SketchEl. 
+
+4/09/2008
+
+Quitting...this is too difficult
+
+5/09/2008
+
+Well, nothing permanent...
+A reasonable working compromise...does not yet give feedback.
+
+6/09/2008
+
+Checking now goes fine...
+Will try to incorporate in WIMS module and see if there are still problems.
+
+7/09/2008
+Parameter configurable tool-button-bar [lefthand]
+Parameter configurable menu [top]
+
+8/09/2008
+Aplication program only: 
+Exporting a single molecule into a Javascript string,
+suitable for wims_variable substitution in "dynamic javascript".
+Just experimenting with "easy" assembly of a "database of chemicals"
+Adding calulation of molmass 
+
+16/09/2008
+Added "crippled" Smiles output (as alternative to Brutto-Formula)
+
+The problem of showing/representing the "correct answer" remains troublesome, 
+if we want to avoid a huge image database linked to a WIMSchem/SketchEl native format dataset.
+[so of every molecule we must produce a name.jpg ...]
+
+Some ideas:
+ 1) To solve this partially , I've added -very primitive and not always very correct- Smiles output for "correct answer" 
+    and "student reply" in function CompareNative(). This is not really usefull for stereochemistry...etc...
+    
+ 2) We can show in the applet the correct answer together with the student reply , 
+    just before sending the appletreply to WIMS using AppendMoleculeNative().
+    However this can sometimes be a very unclear cluttering of molecules...
+    
+ 3) Another [WIMS] possibility to show the student the correct answers, is ofcourse using the applet as "image" with all params to "no"  
+    in the answer.phtml.
+    This could mean up to 10 instances of the applet in "my modules".
+ 4) Automatically produce an image of the molecules with the applet ...? 
+    Technically this could be implemented in java/applet. But I see a lot of WIMS trouble.
+
+Corrected number_format trouble in "MoleculeStream.java" on my WinXP installation...
+Other Locales can give wrong conversions  [a decimal point into a "decimal comma" ].
+Now internal standard "US".
+On Linux/FreeBSD no trouble , ofcourse :)
+
+17/09/2008
+Changed the order of applet-answer, to avoid problems with WIMS and backslashes in LaTeX
+
+18/09/2008
+Fixed error in calculating Molecule weights [implicite/explicit Hydrogen]
+
+1/10/2008
+Cleaning up a bit...
+
+14/11/2008
+Input molecules [the correct molecule as javascript strings] may now also be in MDLMol format.
+The MDLMol format is converted to a Native-format string and is used comparing with the student drawing & scoring.
+The applet detects Native and MDLMol format: no need to specify.
+
+The application program will now also export a drawing as MDLMol data javascript string.
+[Native export to javascript string was already supported]
+ 
+Added support for "file" and "url" loading [both Native and MDMol].
+<param name="file" value="file:test.mol">
+or
+<param name="file" value="file:$wims_home/public_html/modules/H4/mymodule/data/molecule1.mol">
+or
+<param name="file" value="http://this_server/123.mol"> -->
+
+note: applets can only load files from the originating server.
+note: only signed applets can load files from filesystem
+
+15/11/2008
+Added param triggered atom menulist.
+<param name="atoms" value="H,P,O,C,Zn,S">
+<param name="atoms" value="H:P:O:C:Zn:S">
+<param name="atoms" value="H;P;O;C;Zn;S">
+<param name="atoms" value="H P O C Zn S">
+<param name="atoms" value=""> will give default list
+No "atoms" param will give default list.
+
+28/11/2008
+Added param
+<param name="showfile" value="yes">
+If set to "YES" or "1" the file given with param <param name="file" value="$wims_refname/etc"> will be shown on startup.
+To be used as imageviewer or as question_molecule to be modified by the student ?
+
+If this param is not present or set to anything but 1,yes...
+it will load the "file" into the variable "Correct_answer" and it can be used for
+comparing of the student drawing withing the applet [using CompareNative()].
+ 
+Note: I did not succeed in compiling the Latest version of SketchEl-1.21 
+Even a precompiled SketchEl-1.21.jar did not run on my java version "1.5.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build diablo-1.5.0-b01)
+Java HotSpot(TM) Client VM (build diablo-1.5.0_07-b01, mixed mode)
+
+However on "Java 1.6.0/07" [WinXP] it runs fine [but I did not try to compile...]
+
+18/12/2008
+Improved java version_check mechanism.
+Version is now exported as "150" instead of "1.5.0"
+Makes parsing in javascript easier.
+Note: use javascript example from CheckVersion.java
+Tested javascript molecule-string / molecule-url loading on WinXP on several browsers [latest versions]:
+[java 1.6.0_6 version]
+
+Browser		URL	JS-String	VERSIONCHECK
+
+Google chrome	OK	OK			OK
+Safari		OK	OK [very fast]		OK
+Firefox		OK	OK			OK
+IExplore	OK	OK			OK
+OPERA 9.3	OK	OK [very fast]		OK
+OPERA 9.7	OK?	NOK 			NOK [null]
+OPERA 10a	OK?	NOK			NOK [null]
+
+It seems that OPERA > 9.3 has some problems with Java-Javascript.
+I've added an javascript alert_comment:
+"It seems your browser does not support Java - Javascript communication.\n Continue at own risk..."
+
+27/12/2008
+Introduced param  <param name="show_hydrogen" value="no"> to trigger the viewing of [carbon] H's
+example: CH3-CH2-CH3 -> C-C-C
+
+Introduced param  <param name="show_carbon" value="no"> to trigger the viewing of C's
+example: 
+CH3-CH2-SH -> -- -- SH
+
+Defaults [or if param not present] for both params are "yes"
+
+28/12/2008
+Added param for tailoring the templates. Ofcourse only in the applet.
+The standalone application will use the templates from the jar.
+
+If the Applet param is not present or "empty" the templates from the jar will be used.
+File format of the template molecules [Native or MDLMol] is autodetected.
+
+example:
+<param name="template1" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=1.mol"> 
+<param name="template2" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=2.el"> 
+... 
+<param name="template_n" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=n.mol"> 
+
+29/12/2008
+Successfully tested the template-param usage in combination with WIMS !filewrite in the "getfile" directory.
+TO DO: make it work for "Native / MDLmol molecules" as javascript-strings. 
+
+29/12/2008
+In MoleculeStream.java there was reintroduced one wrong decimal_number_format: 
+Producing errors on all Microsoft based browsers.
+Now all DecimaFormat's are: DecimalFormat fmt=new DecimalFormat("0.0000",new DecimalFormatSymbols(Locale.US));
+ 
+30/12/2008
+Forgotten an extra validity check on param "template" ...
+if( parm != null && parm.length()!=0 ){}
+
+Now things like <param name="template1" value=" "> will no longer give a fatal error.
+
