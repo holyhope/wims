@@ -8,11 +8,11 @@ if [ ! -s "$session_dir/user.getraw" ]; then
  exit
 fi
 if [ "$w_test" = "no" ]; then
- echo "    Date.Heure 	session	Feuille exo requete"
+ echo "    Date.Hour 	session	Sheet exo requete"
  echo "------------------------------------------------------------"
  cat $session_dir/user.getraw | cut -d"	" -f2 --complement;
 else
- echo "    Date.Heure 	session	Feuille exo requete 	connection"
+ echo "    Date.Hour 	session	sheet exo requete 	connection"
  echo "------------------------------------------------------------"
  cat $session_dir/user.getraw;
 fi;

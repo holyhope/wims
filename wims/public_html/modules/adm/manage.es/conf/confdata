@@ -43,6 +43,15 @@ choice
 This is the hour when daily data backup will take place. Choose an hour where
 the server is not busy, or pick none (-1) to disable daily backup.
 
+:resources busyhours wims_busyhours
+Busy hours of the server
+free
+
+You can list here the hours during which the server is most likely to be busy.
+Some activities such as local module publication will be prohibited during 
+such periods. Give a list of words composed of two digits: for example,
+<p>"08 09 13 14".
+
 :graphics default_anim_format ins_format
 Format of dynamic animations*
 choice
@@ -121,6 +130,14 @@ This is the limit of disk space usage for each virtual class on the server.
 If a virtual class' disk space use reaches or exceeds this number in Megabytes,
 the supervisor's homepage will get locked.
 
+:class superclass_quota wims_superclass_quota
+Disk quota for portal in Meg
+int
+1,2000
+This is the limit of disk space usage for each portal on the server.
+If a portal disk space use reaches or exceeds this number in Megabytes,
+the supervisor's homepage will get locked.
+
 :class class_user_limit wims_class_user_limit
 Limit of participants in each class
 int
@@ -133,7 +150,7 @@ gif, jpeg, png
 Sorry for png advocates, but gif is the most compatible format, especially
 if you can install softwares producing compressed gif files. The second
 choice is jpeg. png still have some compatibility problems. <p>
-Note also that animated graphics format is is not affect by this setting.
+Note also that animated graphics format is not affected by this setting.
 
 :security,misc devel_modules
 Access policy for modules under development
@@ -202,6 +219,7 @@ int
 0,102400000
 Length limit of general log files (access.log, post.log, session.log).
 
+
 :graphics gnuplot_format
 Internal graphics format for gnuplot*
 choice
@@ -218,7 +236,7 @@ This module is the entry point of the site. You should not change this
 unless you have designed and put up your own home module.
 
 :tech idle_time
-Delay (in seconds) before an idle class session is killed
+Delay before an idle class session is killed
 choice
 600,1200,1800,2400,3600,5400,7200,10800,14400,18000;10 min,20 min, 30 min, 40 min, 1 hour,1.5 hours, 2 hours, 3 hours,4 hours, 5 hours
 Reducing this may increase performance but slow visitors will find their
@@ -231,7 +249,7 @@ If exams will be carried out on your installation, please note that this
 delay should exceed the time allowance of any exam sheet.
 
 :tech idle_time2
-Delay (in seconds) before an idle anonymous session is killed
+Delay before an idle anonymous session is killed
 choice
 600,900,1200,1800,2400,3600,5400,7200,10800,14400,18000;10 min,15 min,20 min, 30 min, 40 min, 1 hour,1.5 hours, 2 hours, 3 hours,4 hours, 5 hours
 Reducing this may increase performance but slow visitors will find their
@@ -245,7 +263,7 @@ This delay only applies to sessions without authentication. It cannot be
 bigger than delay for class sessions.
 
 :tech idle_time3
-Delay (in seconds) before an idle first-created session is killed
+Delay before an idle first-created session is killed
 choice
 300,360,480,600,720,900,1200,1800,2400,3600,7200;5 min,6 min,8 min,10 min,12 min,15 min,20 min, 30 min, 40 min, 1 hour,2 hours, 2 hours
 If one creates a session without reusing it during this amount of seconds,
@@ -255,6 +273,17 @@ This delay only applies to sessions without authentication. Creating a
 session without reusing it is usually a behavior of internet robots.
 <p>
 This delay cannot be bigger than that for idle anonymous sessions.
+
+:tech mail_opt
+Options for !mailto command
+free
+
+Add options to the system command "mail" when using the !mailto command. See
+the sytem's mail manual for details of possible options.
+<p>
+For example, if your system's mail command supports this, you can use 
+<tt>-a "User-Agent: WIMS"</tt> to add a User-Agent header to the mail sent
+out by wims. Some providers require this to accept mails.
 
 :security manager_https
 Site maintenance must use https connection*
@@ -351,8 +380,8 @@ your delay.
 If you choose a very small number here (0 or 1), you should set
 the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
 <p>
-This feature won't work (delay=0) on Mac OS-X, due to lack of commands on
-this platform.
+!!This feature won't work (delay=0) on Mac OS-X, due to lack of commands on
+!!this platform.
 
 :housekeep mu_zone
 Zones for automatic module update
@@ -466,7 +495,7 @@ $csslist
 The style sheet affects almost all pages of the site.
 <p>
 The available stylesheet (css) files are in 
-<tt>public_html/html/css/</tt>. If you
+<tt>public_html/html/css/$lang</tt>. If you
 want more stylesheets, you can put new css files into this directory.
 <p>
 If you chose css=<tt>-theme-</tt>, the stylesheet of the current theme
@@ -535,13 +564,16 @@ Supported languages*
 free
 
 Available languages: 
+ca (Catalan),
 cn (Chinese gb),
 en (English),
 es (Spanish),
 fr (French), 
 it (Italian),
-nl (Dutch),
-tw (Chinese gib5). 
+nl (Deutch),
+si (Slovene),
+tw (Chinese gib5).
+
 List them separated by white spaces.
 <p>
 The order of your listing is important: languages listed first will get
@@ -649,4 +681,10 @@ eliminating unnecessary session creations.
 <p>
 The use of cookies for works in virtual classes is not affected by this
 parameter.
+
+:log show_ip
+Show userIP to supervisor in class logfile
+choice
+yes,no;yes,no
+if no, supervisor cannot see IP in logfile.
 
