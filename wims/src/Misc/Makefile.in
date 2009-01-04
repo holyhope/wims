@@ -21,12 +21,13 @@ units=@BUILD_UNITS@
 chemeq=@BUILD_CHEMEQ@
 bioinfo=C_etat_civil.o tab1d.o tab2d.o test_cond.o
 Otherbin=$(units) $(chemeq) passcrypt whirlgif
+checkmol=checkmol matchmol
 
 OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp $(Otherbin) bioinfo
+all:: $(progs) mathexp $(Otherbin) bioinfo checkmol
 
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
@@ -47,6 +48,12 @@ bioinfo::
 	cd bioinfo; make && $(STRIP) $(bioinfo)
 	cp $@/*.o $(OTHERDIR)
 	
+checkmol::
+	cd checkmol; make && $(STRIP) checkmol
+	cp $@/checkmol $(OTHERDIR)
+	rm $(OTHERDIR)/matchmol
+	ln -s $(OTHERDIR)/checkmol $(OTHERDIR)/matchmol
+
 clean:
 	rm -f $(progs2)
 	cd mathexp; make clean
@@ -54,7 +61,8 @@ clean:
 	cd chemeq/src; make clean
 	cd voronoiW; make clean
 	cd whirlgif; make clean
-	cd bioinfo;make clean
+	cd bioinfo; make clean
+	cd checkmol; make clean
 
 distclean:
 	rm -f $(progs2)
@@ -63,7 +71,7 @@ distclean:
 	cd whirlgif; make distclean
 	cd units-filter/src; make clean
 	cd chemeq/src; make clean
-	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo)
+	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) 
 	cd $(BINDIR); rm -f $(Homebin)
 	cd $(PUBDIR); rm -f $(Publicbin2) $(namechange)
 	rm -f Makefile
