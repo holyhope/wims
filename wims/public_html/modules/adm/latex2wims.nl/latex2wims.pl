@@ -907,7 +907,10 @@ sub subst { my ($TEXT, $cnt_arg, $com, $environ, $ref_env ) = @_;
     }
     $TEXT = $u;
     $cnt ++;
-     my $sub = $environ && $ref_env->{titre}{$environ} ? join (' ' , ( $ref_env->{titre}{$environ}, $v)) : $v;
+     my $sub="" ; 
+    if ($v) {
+       $sub = $environ && $ref_env->{titre}{$environ} ? join (' ' , ( $ref_env->{titre}{$environ}, $v)) : $v;}
+    else {$sub=''} ; 
      if (($com) && ("#$cnt")) { $com =~ s/#$cnt/$sub/ge ;  }  ; 
   }
   ($com, $TEXT);
