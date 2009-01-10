@@ -1,4 +1,5 @@
-!if $un=!empty
+joker=--
+!if $un=$empty
   un=$getuser
 !endif
 u=!positionof item $un in $ulist
@@ -40,7 +41,7 @@ u_=!positionof item $un in $uulist
  grades=!record $u_+1 of wimshome/log/classes/$wims_class/.grades
  grades=!item 3 to -1 of $grades
 !else
- glist=!makelist ?? for x=1 to $gcnt
+ glist=!makelist $joker for x=1 to $gcnt
  grades=$glist
 !endif
 

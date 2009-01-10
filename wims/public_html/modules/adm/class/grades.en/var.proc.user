@@ -1,9 +1,12 @@
-
+joker=--
+!if $un=$empty
+  un=$getuser
+!endif
 u=!positionof item $un in $ulist
 f_=!item $u of $flist
 l_=!item $u of $llist
 username=$f_ $l_
-
+uu_cnt=!recordcnt wimshome/log/classes/$wims_class/.grades
 !if $reg!=$empty
  glist=
  !for g=1 to $gcnt
@@ -12,7 +15,7 @@ username=$f_ $l_
   glist=!append item $(c$g) to $glist
  !next g
  glist=$un,$username,$glist
- !for i=1 to $uucnt
+ !for i=1 to $[max($uucnt,$uu_cnt-1)]
   l_=!record $i+1 of wimshome/log/classes/$wims_class/.grades
   n_=!item 1 of $l_
   n_=!hex $n_
@@ -21,15 +24,24 @@ username=$f_ $l_
  g_$un=$glist
  t=!record 1 of wimshome/log/classes/$wims_class/.grades
  !writefile wimshome/log/classes/$wims_class/.grades :$t
- !for u=1 to $ucnt
-  t_=!item $u of $ulist
+ !for uu=1 to $ucnt
+  t_=!item $uu of $ulist
   t_=!hex $t_
-  !appendfile wimshome/log/classes/$wims_class/.grades :$(g_$t_)
- !next u
+  !if $uu != $u 
+   !appendfile wimshome/log/classes/$wims_class/.grades :$(g_$t_)
+  !else
+   !appendfile wimshome/log/classes/$wims_class/.grades :$glist
+  !endif
+ !next uu
  !read var.init
 !endif
 
 u_=!positionof item $un in $uulist
-grades=!record $u_+1 of wimshome/log/classes/$wims_class/.grades
-grades=!item 3 to -1 of $grades
+!if $u_ !=
+ grades=!record $u_+1 of wimshome/log/classes/$wims_class/.grades
+ grades=!item 3 to -1 of $grades
+!else
+ glist=!makelist $joker for x=1 to $gcnt
+ grades=$glist
+!endif
 
