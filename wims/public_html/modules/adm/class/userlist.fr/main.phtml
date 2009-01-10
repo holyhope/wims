@@ -198,34 +198,8 @@ $wims_html_header
   !next j
  !endif
  $table_end
- <p>Cliquez sur un nom pour voir le détail de son travail.
- !href cmd=reply&job=formula&formula=prep Changer les niveaux de sévérité
-.
- !href module=adm/class/grades Notes manuellement attribuées
-.
- !href module=adm/class/stat Statistiques d'activité
-. 
-!href module=adm/class/activity Activités globales des participants
-.
-<p>
-   Afficher 
-   !if $job_affi=notes
-    !href cmd=reply&job_affi=qualite la qualit&eacute; 
-    ou
-    !href cmd=reply&job_affi=points le travail effectu&eacute;
-   !else
-    !if $job_affi=qualite
-     !href cmd=reply&job_affi=notes les notes
-     ou
-     !href cmd=reply&job_affi=points le travail effectu&eacute;
-    !else
-     !href cmd=reply&job_affi=notes les notes 
-     ou
-     !href cmd=reply&job_affi=qualite la qualit&eacute;
-    !endif
-   !endif
-   des feuilles de travail.     
- !if $activecnt>1
+<p>Cliquez sur un nom pour voir le détail de son travail.</p>
+!if $activecnt>1
   <p>
   !form reply
   <input type=hidden name=job value=sheets>
@@ -233,7 +207,7 @@ $wims_html_header
   <table border=0>
   <tr><td>Sélectionnez les feuilles pour<br>
   montrer les r&eacute;sultats par feuille&nbsp;:
-  <td>&nbsp;&nbsp;
+  </td><td>&nbsp;&nbsp;
   !reset tmp
   !for i=1 to $activecnt
    !set sh=!line $i of $activesheets
@@ -250,19 +224,50 @@ $wims_html_header
    !set ash=!append item E$tt to $ash
   !next i
   !formselect showsheet list $ash prompt $tmp
-  <td><input type=submit value="Montrer"></table>
-  </form>
   </td>
-  <td>
-       
+  <td><input type=submit value="Montrer"></td>
+  </tr></table>
+  </form>
+ </p>
  !endif
-
+<p>
+   Afficher 
+   !if $job_affi=notes
+    !href cmd=reply&job_affi=qualite la qualité
+    ou
+    !href cmd=reply&job_affi=points le travail effectué
+   !else
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=notes les notes
+     ou
+     !href cmd=reply&job_affi=points le travail effectué
+    !else
+     !href cmd=reply&job_affi=notes les notes
+     ou
+     !href cmd=reply&job_affi=qualite la qualité
+    !endif
+   !endif
+   des feuilles de travail. 
+ </p>
+ 
 !endif (usercnt=0?)
+<p>
+ !href cmd=reply&job=formula&formula=prep Changer les niveaux de sévérité
+.
+ !href module=adm/class/grades Notes manuellement attribuées
+.
+</p>
+<p>
+ !href module=adm/class/stat Statistiques d'activité
+. 
+!href module=adm/class/activity Activités globales des participants
+.
+<p>
 !if $manual>0
- <b>Explications.</b> Dans les colonnes `moyenne', `auto' veut dire moyenne
+<p> <b>Explications.</b> Dans les colonnes <tt>moyenne</tt>,  <tt>auto</tt> veut dire moyenne
  des notes calculées à partir des scores obtenus dans les feuilles de travail,
- `enseign.' veut dire moyenne des notes attribuées manuellement par
- l'enseignant, et `globale' est calculée à partir des deux autres, par la
+  <tt>enseign.</tt> veut dire moyenne des notes attribuées manuellement par
+ l'enseignant. La note <tt>globale</tt> est calculée à partir des deux autres par la
  formule
  <p><center>
   globale = $[$manual/100]*enseign. + $[1-$manual/100]*auto.
