@@ -257,21 +257,25 @@ $wims_html_header
  !href module=adm/class/grades Notes manuellement attribuées
 .
 </p>
+!if $usercnt!=0
 <p>
  !href module=adm/class/stat Statistiques d'activité
 . 
 !href module=adm/class/activity Activités globales des participants
 .
-<p>
+</p>
+!endif
+
 !if $manual>0
 <p> <b>Explications.</b> Dans les colonnes <tt>moyenne</tt>,  <tt>auto</tt> veut dire moyenne
  des notes calculées à partir des scores obtenus dans les feuilles de travail,
   <tt>enseign.</tt> veut dire moyenne des notes attribuées manuellement par
  l'enseignant. La note <tt>globale</tt> est calculée à partir des deux autres par la
  formule
+</p>
  <p><center>
   globale = $[$manual/100]*enseign. + $[1-$manual/100]*auto.
- </center> <p>
+ </center> </p><p>
 !endif
 
 :end
