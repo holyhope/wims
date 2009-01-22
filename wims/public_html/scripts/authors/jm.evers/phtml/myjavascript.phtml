@@ -1,12 +1,14 @@
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
     !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
     function refill(){var hi="$(reply$n)";if(hi.length !=0){hi=hi.split(',');for(var i=0;i<hi.length;i++){document.getElementById("myinput"+i).value=hi[i];}}}
 </script>
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script> 
 <p align="center">
 <table>
+    <tr>
     <td>
     <table bgcolor=$bgcolor1 cellpadding=$cellpadding cellspacing=$cellspacing>
+	<tr>
 	<td valign="top" align="left">
 	    !if $(question$n) != $empty
 		$(question$n)
@@ -14,6 +16,7 @@
 	    !if $(formula$n) != $empty
 		<center>
 		    <table>
+			<tr>
 			<th>
 			    !insmath $(formula$n)
 			</th>
@@ -31,6 +34,7 @@
 			    </form>
 			</th>
 		    !endif
+			</tr>
 		    </table>
 		</center>
 	    !endif
@@ -40,7 +44,7 @@
 	</td>
 	!if $image=1
 	    !if $XSIZE>450
-		<tr>
+		</tr><tr>
 	    !endif
 	    <td valign="top" align="center">
 		!if $draw=1
@@ -60,7 +64,7 @@
 	!endif
 	!if $applet=1
 	    !if $XSIZE>450
-		<tr>
+		</tr><tr>
 	    !endif
 	    <td valign="top" align="center">
 		$(object$n)
@@ -68,18 +72,37 @@
 	!endif
 	!if $javascript != $empty
 	    !if $XSIZE>450
-		<tr>
+		</tr><tr>
 	    !endif
 	    <td>
 	    !! this file handles the input
 		!read $javascript
 	    </td>
 	!endif
+	</tr>
     </table>
-    <tr>
-    <td>
+    </td>
+    </tr>
+    !! sometimes a better place for the buttons....$javascript does not need to define them in this case.
+    !if $inputs=yes
+	<td align="center">
+	    <table>
+		<tr>
+		<th>
+		    <input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send">
+		</th>
+		<th>
+		    <input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow">
+		</th>
+		</tr>
+	    </table>
+	</td>
+	</tr>	
+    !endif
 </table>
 </p>
 $dhtml
 !!! after the inputelements are in the DOM-tree: fill-in the previous answers
-<script language="javascript" type="text/javascript">try{document.onload=refill();}catch(e){}</script>
+<script type="text/javascript">
+    try{document.onload=refill();}catch(e){}
+</script>

@@ -19,7 +19,7 @@
 : Een sinus -of cosinus,tangens,logaritme,sqrt,abs...- schrijf je als sin(x)<br>Dus met haakjes.
 : je hebt $testvar1 x/y-waarden teveel ingevuld...
 : je hebt $testvar1 setje(s) x/y-waarden vergeten...
-: Je hebt $testvar1 van de $testvar2 x/y-co&ouml;rdinaten fout
+: Je hebt $testvar1 van de $testvar2 x/y-waarden fout
 : Je antwoord moet een ongelijkheid zijn zoals<br> $testvar&gt;123<br>1&lt;$testvar&lt;123<br>$testvar&lt;1 en $testvar&gt;123
 : Jouw "decimale komma" is vervangen door een decimale punt.
 : Je moet de berekeningen zelf uitvoeren.<br>er staat een overbodige "*" operator in het antwoord.

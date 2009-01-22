@@ -1,5 +1,5 @@
-<script language="javascript" type="text/javascript"  src="$jsdir/geogebra2wims.js"></script>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript"  src="$jsdir/geogebra2wims.js"></script>
+<script type="text/javascript">
     var list_of_things=new Array();
     !if $list_of_things=$empty 
 	!! A list of all possible object names
@@ -26,6 +26,7 @@
 </script>
 <p align="center">
 <table bgcolor=$bgcolor1 cellpadding=$cellpadding cellspacing=$cellspacing>
+    <tr>
     <td valign="top" align="left">
 	$(question$n)
 	!if $exotext != $empty
@@ -35,14 +36,16 @@
 	!if $(formula$n) != $empty
 	    <p align="center">
 		<table border="1" cellpadding="15" bgcolor="#ffffa0">
+		    <tr>
 		    <th>
 			!insmath $(formula$n)
 		    </th>
+		    </tr>
 		</table>    
 	    </p>
 	!endif
     <td>
-    <tr>
+    </tr><tr>
     <td  valign="top">
 	!if $width=$empty
 	    !set width=640
@@ -50,7 +53,7 @@
 	!endif
 	<p align="center">
     	    <applet id="ggbApplet" name="ggbApplet" code="geogebra.GeoGebraApplet" codebase="java/geogebra" archive="geogebra.jar" width=$width height=$height>
-		<param name="language" value="$lang">
+		<param name="language" value="$taal">
 		<param name="filename" value="../../$module_dir/$ggb">
 		<param name="showToolBar"  value="$showToolBar">
 		<param name="showMenuBar"  value="$showMenuBar">
@@ -59,14 +62,16 @@
 		<param name="showAlgebraInput" value="$showAlgebraInput">
 		$nojava
 	    </applet>    
-	    <script language="javascript" type="text/javascript">
+	    <script type="text/javascript">
 		$appletcommand
 	    </script>
 	    <table>
+		<tr>
 		!if $inputs>0
 		    <th>
-			<form name="sendtext">
+			<form name="sendtext" action="">
 			    <table>
+				<tr>
 			    !for i=1 to $inputs
 				<td>
 				    $(inputtext$i)
@@ -82,27 +87,31 @@
 				    <input  style=$textareastyle name="myvar1" size=$cols value="$myvar1">
 				!endif
 				</td>
-				<tr>
+				</tr><tr>
 			    !next i
 			    </table>
 			</form>
 		    </th>
-		    <tr>
+		    </tr><tr>
 		!endif
 		<td>	
 		    <center>
-		    <table>
-			<th>
-			    <input type=button style=$mybuttonstyle onclick="sendanswer();" name="but1" value="$send">
-			</th>
-			<th>
-			    <input type=button style=$mybuttonstyle onclick="dontknow();" name="but2" value="$dontknow">
-			</th>
-		    </table>
+			<table>
+			    <tr>
+			    <th>
+				<input type=button style=$mybuttonstyle onclick="sendanswer();" name="but1" value="$send">
+			    </th>
+			    <th>
+				<input type=button style=$mybuttonstyle onclick="dontknow();" name="but2" value="$dontknow">
+			    </th>
+			    </tr>
+			</table>
 		    </center>
 		</td>
+		</tr>
 	    </table>    
 	</p>
     </td>
+    </tr>
 </table>
 </p>

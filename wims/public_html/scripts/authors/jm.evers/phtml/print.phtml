@@ -1,7 +1,7 @@
 !! produces a DHTML page of the  exercise for printing
 
 !if $questiontype !=0 or $applet=1
-    <font color=red>
+    <font color="red">
 	My guess : this page not very usefull in a printed paperversion<br>
 	It's most likely a multiplechoice exercise<br>
 	or it makes use of some java applets ?
@@ -12,10 +12,10 @@
     </a>
     </font>
 !else
-    <script type="text/javascript" src="$jsdir/wz_dragdrop.js">
-    </script>
+    <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
     !set DHTML=$empty
     <table>
+	<tr>
 	!set cnt=0
 	!if $total_exos >4
 	    !set limited=I've limited your request for $total_exos exercises to a modest 4 piece papertest
@@ -53,7 +53,7 @@
 		!endif
 	    </td>
 	    !set DHTML=!append item "d$n","dd$n","insert$cnt" to $DHTML
-    	    <tr>
+    	    </tr><tr>
         !next n
     </table>
     !if $image=1
@@ -107,12 +107,14 @@
 
 <p style="page-break-after:always">
 <table>
+    <tr>
     <td>
 	<input type="button" style="$mybuttonstyle" value="Reload Page" onClick="window.location.reload()">
     </td>
     <td>
 	<input type="button" style="$mybuttonstyle" value="Print" onClick="javascript:window.print();">
     </td>
+    </tr>
 </table>
     <font size="-1">
 	!record 69 of $remarkdir/commonremarks.$taal

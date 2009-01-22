@@ -1,7 +1,6 @@
 !! multiplechoice=2 the same as =1 (just 1 option is good) but than drag and drop 
 !! $hpx , $wpx give the width and height of the drag div.
-<script type="text/javascript" src="$jsdir/wz_dragdrop.js">
-</script>
+<script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
 !set DHTML=$empty
 !if $wpx=$empty
     !set wpx=100
@@ -11,6 +10,7 @@
 !endif
 <div align="center">
  <table border=1 width="100%"  bgcolor=$bgcolor1 cellpadding=$cellpadding cellspacing=$cellspacing>
+    <tr>
     <td valign="top" align="left">
 	$(question$n)
 	!if $exotext!=$empty
@@ -22,9 +22,10 @@
 	    </small>
 	!endif
     </td>
-    <tr>
+    </tr><tr>
     <td valign="top" align="center">
 	<table border=1 width="100%">
+	    <tr>
 	    <td valign="top" align="left" width="40%">
 		!if $draw=1
 		    !set insdraw_size=$XSIZE,$YSIZE
@@ -57,28 +58,30 @@
 			$dontknow
 			!set DHTML=!append item "?" to $DHTML
 		    </div>
-		</td>
-		<td valign="center" align="center">    
-		    <div id="target" name="target" style="padding:20px; border:thin solid green; margin:25px;">
-			!if $(formula$n) != $empty
-			    !insmath $(formula$n)
-			!endif
-			!if $image=1
-			    !if $(image$n)!=$empty
-				!if $draw=1
-				    !set insdraw_size=$xsize,$ysize
-				    !insdraw $(image$n)
-				!else
-				    !set insplot_set=$(image_settings$n),size $xsize,$ysize
-				    !insplot $(image$n)
-				!endif
+	    </td>
+	    <td>    
+		<div id="target" name="target" style="padding:20px; border:thin solid green; margin:25px;">
+		    !if $(formula$n) != $empty
+			!insmath $(formula$n)
+		    !endif
+		    !if $image=1
+			!if $(image$n)!=$empty
+			    !if $draw=1
+				!set insdraw_size=$xsize,$ysize
+				!insdraw $(image$n)
+			    !else
+				!set insplot_set=$(image_settings$n),size $xsize,$ysize
+				!insplot $(image$n)
 			    !endif
-			!endif	
-			!set DHTML=!append item "target" to $DHTML
-    		    </div>
-		</td>
+			!endif
+		    !endif	
+		    !set DHTML=!append item "target" to $DHTML
+    		</div>
+	    </td>
+	    </tr>
 	    </table>
 	</td>
+	</tr>
     </table>
 </div>
 

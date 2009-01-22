@@ -1,6 +1,6 @@
-<script language="javascript" type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script> 
-<script language="javascript" type="text/javascript"  src="$jsdir/precheck.js"></script> 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script> 
+<script type="text/javascript"  src="$jsdir/precheck.js"></script> 
+<script type="text/javascript">
     var URL;
 
     function dontknow(){
@@ -74,6 +74,7 @@
 
 <p align="center">
     <table bgcolor=$bgcolor1 cellpadding=$cellpadding cellspacing=$cellspacing>
+	<tr>
 	<td valign="top" align="left" padding="10">
 	    !if $(question$n) != $empty
 		$(question$n)
@@ -89,6 +90,7 @@
 			<br>
 		    !else
 			<table>
+			    <tr>
 			    <th>
 				!insmath $(formula$n)
 			    </th>
@@ -102,6 +104,7 @@
 				    <textarea  id="myinput" style=$textareastyle wrap=off cols=$cols rows=$rows name="reply">$(reply$n)</textarea>
 				!endif
 			    </th>
+			    </tr>
 			</table>
 		    !endif
 		!else
@@ -119,7 +122,7 @@
     !if $image=1
 	!if $XSIZE > 450 or $mathview=3
 	    !! arbitrary value to produce a better layout ...
-	<tr>
+	</tr><tr>
 	!endif
 	<td  valign="top" align="center">
 	    !if $draw=1
@@ -137,7 +140,7 @@
     !if $applet=1
 	!if $XSIZE > 450 or $mathview=3
 	    !! arbitrary value to produce a better layout ...
-	<tr>
+	</tr><tr>
 	!endif
 	<td  valign="top" align="center">
 	    $(object$n)
@@ -145,11 +148,12 @@
     !endif
 !if $embed != 1 or $[$embed+$mathview]=4
     !if $XSIZE > 450 or $mathview=3
-	<tr>
+	</tr><tr>
     !endif
 	<td valign="top" align="center">
 	    !if $mathview=3
 		<table $paperbg width="580">
+		    <tr>
 		    <th>
 			<applet id="MathView" code="MathView.class" codebase="$appletdir" archive="MathView.jar" width="580" height="280">
 			    <script language="javascript" type="text/javascript">
@@ -179,6 +183,7 @@
 			$nojava
 			</applet>
 		    </th>
+		    </tr>
 		</table>
 	    !else
 		!if $inputs=1
@@ -193,6 +198,7 @@
 		!else
 		    !if $inputs>1
 			<table cellpadding="1">
+			    <tr>
 			!for p=1 to $inputs
 			    <td>
 				$(inputtext$p)
@@ -208,7 +214,7 @@
 			    !endif
 				<input id="myinput" style=$textareastyle  size="$cols" name="reply" value="$deelantwoord">
 			    </td>
-			    <tr>
+			    </tr><tr>
 			!next p
 			</table>
 		    !endif
@@ -216,8 +222,10 @@
 	    !endif
 	</td>
 !endif
+	</tr>
     </table>
     <table>
+	<tr>
     !if $inputs !=0
 	<th>
     	    <input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send">
@@ -226,6 +234,7 @@
 	<th>
 	    <input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow">
 	</th>
+	</tr>
     </table>
 </p>
 !exit

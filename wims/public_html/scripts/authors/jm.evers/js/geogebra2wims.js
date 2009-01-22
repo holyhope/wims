@@ -11,8 +11,7 @@ function geogebra2wims(list_of_things) {
     listcnt=list_of_things.length;
     for ( i=0 ; i < max ; i++){
 	thing = total[i];whatisit=document.getElementById("ggbApplet").getObjectType(thing);points_of_polygon='';def=document.getElementById("ggbApplet").getCommandString(thing);
-	test=def.match("Polygon");
-	if (test !=null){def=encodeURIComponent(def);points_of_polygon=def.replace(/Polygon/g,'');points_of_polygon=points_of_polygon.replace(/\%5B/g,'');points_of_polygon=points_of_polygon.replace(/\%5D/g,'');points_of_polygon=points_of_polygon.replace(/\%2C\%20/g,'@');points_of_polygon=decodeURIComponent(points_of_polygon);}
+	if( def=="Polygon" || def=="polygon" ){def=encodeURIComponent(def);points_of_polygon=def.replace(/Polygon/g,'');points_of_polygon=points_of_polygon.replace(/\%5B/g,'');points_of_polygon=points_of_polygon.replace(/\%5D/g,'');points_of_polygon=points_of_polygon.replace(/\%2C\%20/g,'@');points_of_polygon=decodeURIComponent(points_of_polygon);}
 	for ( p=0 ; p < listcnt ; p++){
 	    it=list_of_things[p];
 	    if (it==whatisit){
