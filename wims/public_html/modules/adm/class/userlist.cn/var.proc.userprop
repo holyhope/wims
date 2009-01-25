@@ -8,7 +8,7 @@
 !defread $userdef
 
 !if $user_exists!=yes or $abandon!=$empty
- !reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_vars
+ !reset up_lastname,up_firstname,up_email,up_regnum,up_photourl,up_comments,up_vars
  !if $wims_user=supervisor
   job=
   !exit
@@ -31,13 +31,13 @@
   !exit
  !endif
  up_password=
- replacelist=regnum,comments
+ replacelist=regnum,comments,photourl
  !read adm/class/adduser $getuser
  !read adm/class/mkuserlist
  !if $class_type isin 1234 and $user_supervisable=yes
   !read adm/gateway/mkteacherlist
  !endif
- !reset user_lastname, user_firstname, user_email, user_regnum, user_comments,\
+ !reset user_lastname, user_firstname, user_email, user_regnum, user_photourl, user_comments,\
 	user_supervisable, user_supervise, user_participate
  !defread $userdef
  !if $wims_user=supervisor and $getuser!=supervisor
@@ -45,5 +45,5 @@
  !endif
 !endif
 
-!reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_vars
+!reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_photourl,up_vars
 
