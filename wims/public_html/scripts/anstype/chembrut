@@ -1,0 +1,166 @@
+##traitement des ions à vérifier
+ans_list_atoms=C,H,Ac,Ag,Al,Am,Ar,As,At,Au,B,Ba,Be,Bi,Bk,Br,sCa,Cd,Ce,Cf,Cl,Cm,Co,Cr,Cs,Cu,\
+      Dy,Er,Es,Eu,F,Fe,Fm,Fr,Ga,Gd,Ge,He,Hf,Hg,Ho,I,In,Ir,K,Kr,La,Li,Lr,Lu,Md,Mg,Mn,Mo,\
+      N,Na,Nb,Nd,Ne,Ni,No,Np,O,Os,P,Pa,Pb,Pd,Pm,Po,Pr,Pt,Pu,Ra,Rb,Re,Rh,Rn,Ru,S,Sb,Sc,Se,Si,Sm,Sn,Sr,\
+      Ta,Tb,Tc,Te,Th,Ti,Tl,Tm,U,V,W,Xe,Y,Yb,Zn,Zr
+      
+ans_mol_r=$(reply$i)
+ans_mol_r=!nospace $ans_mol_r
+ans_mol_r=!text remove _ in $ans_mol_r
+ans_mol_r=!trim $ans_mol_r
+ans_mol_r=!nospace $ans_mol_r
+ans_ch_r=!charcnt $ans_mol_r
+transforme la donnée en 
+C,1,
+H,5
+ans_c1=0
+
+!for ans_n=1 to $ans_ch_r
+   ans_c=!char $ans_n of $ans_mol_r
+    !if $ans_c isin abcdefghijklmnoqrstuvwxyz+- or ($ans_c1 isin 0123456789+- and  $ans_c isin 0123456789+-)
+     !if $ans_c1 isin ^ and $ans_c isin -+
+       ans_brut_r=$ans_brut_r,1$ans_c
+     !else
+      ans_brut_r=$ans_brut_r$ans_c
+     !endif
+    !else
+     !if $ans_c isin ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      !if $ans_c1 notin ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnoqrstuvwxyz
+      ans_brut_r=$ans_brut_r\
+$ans_c
+      !else
+       ans_brut_r=$ans_brut_r,1\
+$ans_c
+     !endif
+     !else 
+      ans_brut_r=!append item $ans_c to $ans_brut_r
+    !endif
+    !endif
+    ans_c1=$ans_c
+!next
+
+ans_last=!char -1 of $ans_brut_r
+!if $ans_last notin 01233456789+-
+ ans_brut_r=$ans_brut_r,1
+!endif
+
+ans_brut_r=!replace internal ^ by in $ans_brut_r
+ans_brut_r=!replace internal ,, by , in $ans_brut_r
+ans_brut_r=!replace internal - by ,- in $ans_brut_r
+ans_brut_r=!replace internal + by ,+ in $ans_brut_r
+
+m_reply$i=$(reply$i)\
+$ans_brut_r
+
+!if $wims_read_parm=nocompare
+  !exit
+!endif
+
+
+ans_mol_g=$(replygood$i)
+ans_mol_g=!nospace $ans_mol_g
+ans_mol_g=!text remove _ in $ans_mol_g
+ans_mol_g=!trim $ans_mol_g
+ans_mol_g=!nospace $ans_mol_g
+ans_ch_g=!charcnt $ans_mol_g
+ans_c1=0
+!for ans_n=1 to $ans_ch_g
+   ans_c=!char $ans_n of $ans_mol_g
+    !if $ans_c isin abcdefghijklmnoqrstuvwxyz+- or ($ans_c1 isin 0123456789+- and  $ans_c isin 0123456789+-)
+     !if $ans_c1 isin ^ and $ans_c isin -+
+       ans_brut_g=$ans_brut_g,1$ans_c
+     !else
+      ans_brut_g=$ans_brut_g$ans_c
+     !endif
+    !else
+     !if $ans_c isin ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      !if $ans_c1 notin ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnoqrstuvwxyz
+      ans_brut_g=$ans_brut_g\
+$ans_c
+      !else
+      ans_brut_g=$ans_brut_g,1\
+$ans_c
+     !endif
+     !else
+      ans_brut_g=!append item $ans_c to $ans_brut_g
+    !endif
+    !endif
+    ans_c1=$ans_c
+!next
+
+ans_last=!char -1 of $ans_brut_g
+!if $ans_last notin 01233456789+-
+ ans_brut_g=$ans_brut_g,1
+!endif
+
+!!ans_brut_g=!nonempty lines $ans_brut_g
+ans_brut_g=!replace internal ^ by in $ans_brut_g
+ans_brut_g=!replace internal ,, by , in $ans_brut_g
+ans_brut_g=!replace internal - by ,- in $ans_brut_g
+ans_brut_g=!replace internal + by ,+ in $ans_brut_g
+
+!reset score
+!for ans_at in $ans_list_atoms
+  ans_v= !select $ans_brut_g where column 1=$ans_at
+  ans_w= !select $ans_brut_r where column 1=$ans_at
+  !if $ans_v=$ans_w and $ans_w notsametext 
+    score=!append item 1 to $score
+  !else
+    !if $ans_v notsametext or $ans_w notsametext
+      score=!append item 0 to $score
+    !endif
+  !endif
+  !reset ans_v ans_w 
+!next
+!if 0 notin $score
+  diag=yes
+!else
+  diag=no
+!endif
+
+#### ordre des atomes :
+ ans_order_score=1
+ ans_brut_r1=!nonempty lines $ans_brut_r 
+ ans_brut_r1=!lines2rows $ans_brut_r1
+
+ ans_w= !select $ans_brut_r where column 1=C
+ !if $ans_w!=  and $ans_w notsametext $(ans_brut_r1[1;])
+   ans_order_score=0
+   !goto end
+ !endif
+ ans_w= !select $ans_brut_r where column 1=H
+ !if $ans_w!= and $ans_w notsametext $(ans_brut_r1[2;])
+   ans_order_score=-1
+   !goto end
+ !endif
+ !readproc slib/data/columnsort 1,nocase, $(ans_brut_r1[3..-1;])
+
+ !if $slib_out notsametext $(ans_brut_r1[3..-1;])
+   ans_order_score=-2
+   !goto end
+ !endif
+
+:end
+
+reply_$i=$(reply$i)
+
+!if $diag=yes
+ !if $ans_order_score=1
+  diareply$i=good
+  !advance freegot
+  sc_reply=1
+ !else
+   partialgood$i=yes
+  diareply$i=good
+  freegot=$[$freegot + 0.8]
+  sc_reply=0.5
+ !endif
+!else
+ ans_w_=!itemcnt $score
+ score=!replace internal , by + in $score
+ score=$[rint(min(10,7*($score)/$ans_w_))/10]
+ freegot=$[$freegot+$score]
+ diareply$i=bad
+ sc_reply=0
+!endif
+

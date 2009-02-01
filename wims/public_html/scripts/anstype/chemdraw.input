@@ -1,0 +1,132 @@
+!set appletdir=java/WIMSchem
+!set anstype=yes
+!set anstyle=dprompt
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!set wims_backslash_insmath=no
+
+!set oef_applet_option=!replace internal $	$ by $\
+$ in $inputsize
+!set oef_applet_option=!replace internal ; by $\
+$ in $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set test=!text remove 0123456789x in $Inputsize
+!if $test=$empty
+ !set Inputsize=!replace internal x by , in $Inputsize
+ !set oef_applet_option=!line 2 to -1 of $oef_applet_option
+ !distribute items $Inputsize into xsize,ysize
+!endif
+
+!default xsize=540
+!default ysize=380
+!for opt in show_carbon, show_hydrogen,showfile
+  !set $opt=!getopt $opt in $oef_applet_option
+!next
+
+!default show_hydrogen=yes
+!default show_carbon=no
+!default showfile=yes
+
+!set atoms=!getopt atoms in $oef_applet_option
+
+!if $atoms!=
+  !set atoms=!words2items $atoms
+  !set atoms=!nospace $atoms
+  !set atoms=<param name="atoms" value="$atoms">
+!endif
+!set template=!getopt template in $oef_applet_option
+!if $template notsametext
+  !set templ=
+  !set cnt_=0
+  !if cyclo iswordof $template
+   !set cyclo=cyclopropane,cyclobutane,cyclopentane,cyclohexane,cycloheptane,cyclooctane
+   !for t_=1 to 6
+    !set temp=!record 0 of data/chem/templ/$(cyclo[$t_]).el
+    !readproc oef/togetfile.proc $(cyclo[$t_]).el new\
+$temp
+   !set templ=$templ\
+ <param name="template$t_" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$(cyclo[$t_]).el">
+  !next
+  !set cnt_=$[$cnt_+6]
+ !endif
+ !set template=!words2items $template
+ !set temp_cnt=!itemcnt $template
+ !for s_=1 to $temp_cnt
+  !if $(template[$s_]) notsametext cyclo
+   !set temp_mol=!record 0 of data/$dir/$(template[$s_])
+   !if $temp_mol=
+     !set temp_mol=!record 0 of data/chem/templ/$(template[$s_]).el
+   !endif
+   !readproc oef/togetfile.proc $(template[$s_]) new\
+$temp_mol
+   !set cnt_=$[$cnt_+1]
+   !set templ=$templ\
+   <param name="template$cnt_" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$(template[$s_])">
+  !endif
+ !next
+!endif
+!set file=!getopt file in $oef_applet_option
+ !if $file!=
+   !set temp=!record 0 of data/$dir/$file
+   !readproc oef/togetfile.proc $file new\
+$temp
+  !set file=<param name="file" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$file">
+ !endif
+
+!set list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
+TOOL_SETATOM,TOOL_SINGLE,TOOL_DOUBLE,TOOL_TRIPLE,TOOL_ZERO,\
+TOOL_INCLINED,TOOL_DECLINED,TOOL_UNKNOWN,TOOL_CHARGE,TOOL_UNDO,TOOL_REDO,\
+TOOL_TEMPLATE,TOOL_CUT,TOOL_COPY,TOOL_PASTE,\
+MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STEREO
+!set list_m=!lower $list
+!set list_default=1,0,1,0,0,\
+1,1,1,1,0,\
+0,0,0,0,1,1,\
+1,0,0,0,\
+1,1,0,0,0,0,0
+!set listcnt=!itemcnt $list
+!set params=
+!for u_ =1 to $listcnt
+ !set a_=$(list_m[$u_])
+ !set a__=$(list[$u_])
+ !set b_=!getopt $a_ in $oef_applet_option
+ !bound $b_ within yes, no, 1, 0
+ !if $b_=
+   !set b_=$(list_default[$u_])
+ !endif
+ !set params=!append line <param name="$a__" value="$b_"> to $params
+!next
+<script language="javascript" type="text/javascript">
+ function GetMoleculeMDLMol(){
+    <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
+    var input1=document.WIMSchem.GetMoleculeMDLMol();
+   var result=document.WIMSchem.ReadApplet();
+   var input2=result.split("\n");
+   document.getElementById('WIMSchemreply').value = input2[1] + "\n" + input1;
+   document.applets[0].destroy();
+}
+</script>
+
+ !form reply
+<input type=hidden name="reply$i" id="WIMSchemreply" value=>
+
+<applet name="WIMSchem" codebase=$appletdir code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
+	    <param name="showfile" value="$showfile">
+	    <param name="show_hydrogen" value="$show_hydrogen">
+        <param name="show_carbon" value="$show_carbon">
+        $templ
+	    $atoms
+	    <param name="formattype" value="latex">
+	    $params
+	    $file
+</applet>
+</p>
+<p align=center>
+    <input type="submit" style="" onclick="javascript:GetMoleculeMDLMol();" name="button1" value="Envoyer">
+ <p>   
+ 
+</form>
+!set oef_formnosubmit=yes
