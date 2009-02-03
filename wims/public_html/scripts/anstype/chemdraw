@@ -33,17 +33,17 @@ ans_molecule=$(reply$i)
 ans_brut_r=!line 1 of $ans_molecule
 ans_molecule=!line 2 to -1 of $ans_molecule
 !readproc oef/togetfile.proc $replyfichier new\
- $ans_molecule
+$ans_molecule
 
 !set replyfile=$wims_ref_name?session=$session&cmd=getfile&special_parm=$replyfichier
 
 !if $wims_read_parm=nocompare
-ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
-ans_checkmol_func_r=!exec checkmol -c $wims_home/$wims_sesdir/getfile/$replyfichier
-ans_checkmol_func_r=!replace internal ; by , in $ans_checkmol_func_r
-ans_checkmol_func_r=!nonempty items $ans_checkmol_func_r
-ans_image=
-m_reply$i=$ans_checkmol_r;$ans_checkmol_funct_r;$ans_brut_r;
+ ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
+ ans_checkmol_func_r=!exec checkmol -c $wims_home/$wims_sesdir/getfile/$replyfichier
+ ans_checkmol_func_r=!replace internal ; by , in $ans_checkmol_func_r
+ ans_checkmol_func_r=!nonempty items $ans_checkmol_func_r
+ ans_image=
+ m_reply$i=$ans_checkmol_r;$ans_checkmol_func_r;$ans_brut_r;
   !goto end
 !endif
 
