@@ -21,7 +21,7 @@ Questa pagina permette di scrivere o modificare
 !if $user=$empty
  il messaggio del giorno per tutti gli iscritti
 !else
- il messaggio personale per lo studente &agrave; $user_firstname $user_lastname 
+ il messaggio personale per lo studente $user_firstname $user_lastname 
 !endif 
 avvisi che poi compaiono nella 
 !href style=student home page degli studenti
@@ -34,8 +34,10 @@ Scrivere i mesaggi (sono accettati link e tag html):
  <input type=hidden name=user value=$user>
  <input type=hidden name=job value=$job>
  <textarea name=motd cols=120 rows=10>$motd</textarea>
+ !if $user!=$empty
+  <br>
+  Il messaggio riguarda tutti i seguenti studenti: <br>
+  !formcheckbox listuser list $listiduser prompt $listnameuser
+ !endif
  <p><center><input type=submit value="Salva"></center>
 </form>
-
-
-
