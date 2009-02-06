@@ -36,8 +36,10 @@ manualmente contribuiscono per il
 (<small><input type=submit name=reg value=cambia></small>)
 al punteggio medio globale dei partecipanti.
 !if $method!=list
+<p>
  !href cmd=reply&method=list Annulla le modifiche
 .
+</p>
 !endif
 </form> <p>
 
@@ -49,9 +51,16 @@ al punteggio medio globale dei partecipanti.
 !endif
 
 <p>
+!if $method=user
+!href module=adm/class/userlist&job=getuser&getuser=$un Gli altri voti dello studente $username
+.
+
+!else
 !href module=adm/class/userlist Gli altri voti
 .
 
+!endif
+</p>
 :end
 !tail
 

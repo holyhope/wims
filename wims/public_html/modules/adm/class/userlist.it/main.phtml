@@ -200,15 +200,38 @@ $wims_html_header
   !next j
  !endif
  $table_end
- <p>Selezionare un nome per visualizzare i dettagli.
- !href cmd=reply&job=formula&formula=prep Modificare il livello di severit&agrave;
-.
- !href module=adm/class/grades Assegnare i voti manualmente
-.
- !href module=adm/class/stat Statistiche dell'attivit&agrave; svolta
-.
-!href module=adm/class/activity Schema dell'attività degli iscritti
-.
+ <p>Selezionare un nome per visualizzare i dettagli.</p>
+ !if $activecnt>1
+  <p>
+  !form reply
+  <input type=hidden name=job value=sheets>
+  !set wims_formselect_switch=multiple size=$[min($activecnt,6)]
+  <table border=0>
+  <tr><td>Seleziona un test di autovalutazione per<br>
+  visulizzarne i punteggi medi&nbsp;:
+  </td><td>&nbsp;&nbsp;
+  !reset tmp
+  !for i=1 to $activecnt
+   !set sh=!line $i of $activesheets
+   !set se=!item 1 of $sh
+   !set ti=!item 3 of $sh
+   !set tmp=!append item $se: $ti to $tmp
+  !next i
+  !set ash=$activesh
+  !for i=1 to $eactivecnt
+   !set tt=!item $i of $activexams
+   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
+   !set l=!line 4 of $l
+   !set tmp=!append item Esame $tt: $l to $tmp
+   !set ash=!append item E$tt to $ash
+  !next i
+  !formselect showsheet list $ash prompt $tmp
+  </td>
+  <td><input type=submit value="Visualizza"></td>
+  </tr></table>
+  </form>
+ </p>
+ !endif
 <p>
    Mostra
    !if $job_affi=notes
@@ -227,39 +250,24 @@ $wims_html_header
     !endif
    !endif
    nei test di autovalutazione.
- !if $activecnt>1
-  <p>
-  !form reply
-  <input type=hidden name=job value=sheets>
-  !set wims_formselect_switch=multiple size=$[min($activecnt,6)]
-  <table border=0>
-  <tr><td>Seleziona un test di autovalutazione per<br>
-  visulizzarne i punteggi medi&nbsp;:
-  <td>&nbsp;&nbsp;
-  !reset tmp
-  !for i=1 to $activecnt
-   !set sh=!line $i of $activesheets
-   !set se=!item 1 of $sh
-   !set ti=!item 3 of $sh
-   !set tmp=!append item $se: $ti to $tmp
-  !next i
-  !set ash=$activesh
-  !for i=1 to $eactivecnt
-   !set tt=!item $i of $activexams
-   !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
-   !set l=!line 4 of $l
-   !set tmp=!append item Esame $tt: $l to $tmp
-   !set ash=!append item E$tt to $ash
-  !next i
-  !formselect showsheet list $ash prompt $tmp
-  <td><input type=submit value="Visualizza"></table>
-  </form>
-  </td>
-  <td>
+ </p>
        
- !endif
-
 !endif (usercnt=0?)
+<p>
+ !href cmd=reply&job=formula&formula=prep Modificare il livello di severit&agrave;
+.
+ !href module=adm/class/grades Assegnare i voti manualmente
+.
+</p>
+!if $usercnt!=0
+<p>
+ !href module=adm/class/stat Statistiche dell'attivit&agrave; svolta
+.
+!href module=adm/class/activity Schema dell'attività degli iscritti
+.
+</p>
+!endif
+
 !if $manual>0
  <b>Spiegazione.</b> Nelle colonne `media'
  <dl><dt> `auto'</dt> <dd>indica i voti assegnati

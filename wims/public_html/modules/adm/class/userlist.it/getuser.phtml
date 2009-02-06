@@ -1,15 +1,18 @@
 <center>$classname<p>
 
+!if $wims_user=supervisor
+  !href cmd=resume Torna all'elenco degli iscritti
+!endif
 <h3>Dettagli del lavoro svolto da 
  !href cmd=reply&job=userprop&getuser=$getuser $firstname $lastname
 <br><font size=-1>login&nbsp;: <tt>$getuser</tt>
 !if $user_email!=$empty
  &nbsp;e-mail: <a href="mailto:$user_email">$user_email</a>
 !endif
-</font></h3>
-!if $user_photourl!=
+</font></h3> 
+  !if $user_photourl!=
    <img src=$user_photourl width=100 style="position:absolute;top:auto;right:5%;" Alt="$firstname $lastname ">
-!endif
+  !endif
 !if $eremain>0
  <p>
  Questo studente ha una sessione d'esame in corso:
@@ -37,7 +40,12 @@
  $table_hdtr<td><b>Media globale</b> (su $scoremax)
      <td align=center>100%<th>$globalav
  $table_end<p>
- $table_header$table_hdtr<th colspan=3>Voti assegnati dal docente</th>
+ $table_header$table_hdtr<th colspan=3>Voti assegnati dal docente
+ !if $wims_user=supervisor
+  <br>
+  !href lang=$lang&module=adm/class/grades&method=user&un=$getuser Modifica
+ !endif
+ </th>
  $table_hdtr<th>titolo<th>peso<th>voto</th>
  !set v_=0
  !for i=1 to $gcnt
