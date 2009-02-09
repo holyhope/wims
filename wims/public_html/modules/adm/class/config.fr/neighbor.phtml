@@ -45,6 +45,10 @@
 !endif
 !if $classcnt1 + $classcnt2 < 1
  Aucune classe n'est trouvée pour votre recherche. Réessayez.
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !endif
  !exit
 !endif
 
@@ -61,6 +65,10 @@ ressources et/ou déplacement entre les classes.
 &nbsp;]</small>
 
 !if $toomany=yes
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !endif
  !exit
 !endif
 
@@ -71,8 +79,8 @@ elle.
 !if $classcnt1>0
  !set clst=$clist1
  $table_header
- <caption>Classes dans la même langue que la vôtre</caption>
- !read neighbor/clist.phtml
+  <caption>Classes dans la même langue que la vôtre</caption>
+  !read neighbor/clist.phtml
  $table_end
 !endif
 
@@ -80,11 +88,14 @@ elle.
  <p>
  !set clst=$clist2
  $table_header
- <caption>Classes dans une autre langue</caption>
- !read neighbor/clist.phtml
- $table_end
- <p><center>
- !href cmd=reply&job2=sharelist Information de partage de ressources
- </center>
+  <caption>Classes dans une autre langue</caption>
+  !read neighbor/clist.phtml
+  $table_end
+  <p><center>
+  !href cmd=reply&job2=sharelist Information de partage de ressources
+  </center>
 !endif
-
+!if $excls!=yes and $supertype!=4
+ <p>
+ !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+!endif
