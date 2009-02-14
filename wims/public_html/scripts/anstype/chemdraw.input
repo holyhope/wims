@@ -68,12 +68,14 @@ $temp_mol
   !endif
  !next
 !endif
+
 !set file=!getopt file in $oef_applet_option
  !if $file!=
-   !set temp=!record 0 of data/$dir/$file
-   !readproc oef/togetfile.proc $file new\
+   !set temp=!record 0 of $file
+   !set file0=!replace internal / by , in $file
+   !readproc oef/togetfile.proc $(file0[-1]) new\
 $temp
-  !set file=<param name="file" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$file">
+  !set file=<param name="file" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$(file0[-1])">
  !endif
 
 !set list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
