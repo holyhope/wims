@@ -1,32 +1,72 @@
 
 !default module_about_bgcolor=$wims_ref_bgcolor
 !set module_language=!trim $module_language
+
+!set Lang_name_nl=Nederlands
+!set Lang_name_en=English
+!set Lang_name_fr=Française
+!set Lang_name_de=Deutch
+!set Lang_name_it=Italiano
+!set Lang_name_ca=Català
+!set Lang_name_es=castellano
+!set Lang_name_tw=¤¤¤å(Big5 ½X) - Chinese big5
+!set Lang_name_cn=ÖÐÎÄ - Chinese gb
+!set Lang_name_si=slovenski
+
 !set module_au=!mailurl $module_address $module_author\
 WIMS $module_title [$module_language]
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]
 
-!if $module_language notwordof cn fr it tw si es ca de
+
+!!******** PERMALINK ADD 
+!!set current_module=!replace / by , in $module
+!!set module_path= !item 1 of $current_module
+!!if $module_path notitemof adm,classes
+!!set module_about=$module_about <tr><td colspan="2">
+
+
+!if $module_init_parm == $empty
+	!set permalien=$wims_ref_name?module=$module
+!else
+	!set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+	!set configlink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+!endif
+
+
+!if _exam notin $session
+!set embeddable_tr=<tr><th>$$$$wims_name_embeddable <br> <small>($$$$wims_name_display <strong>$$$$wims_name_this_module</strong> $$$$wims_name_on_your_site)</small> </th>\
+   <td><textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" id="wims_embed_textarea" >&lt;iframe src="$permalien&amp;embededwindow=true" width="100%" height="100%"&gt;&lt;/iframe&gt;</textarea></td></tr>
+!endif
+
+!!******** END OF PERMALINK ADD
+
+!if $module_language notwordof cn it tw si es ca de
   !if $module_translator!=$empty and $module_translator_address!=$empty
-   !set module_about_tr=<tr><td>Translator</td><td>$module_tr</a></td></tr>
+   !set module_about_tr=<tr><th>$$wims_name_Translator</th><td>$module_tr</a></td></tr>
   !endif
+  
   !set module_about=$module_about \
-   <center>This is a module under the WWW Interactive Multipurpose Server.\
-   <table border=2\
+   $$wims_name_This_is_a_module $$wims_name_WIMS_subtitle (<a href="$wims_ref_name?module=help/main.fr&amp;chapter=1&amp;open=1_intro" target="_blank" title="Web Interactive Multipurpose Server">WIMS</a>).<br>\
+   <center><table style="border:1"\
    bgcolor=$$module_about_bgcolor>\
-   <tr><td>Name</td>      <td>$module_title</td></tr>\
-   <tr><td>Address</td>   <td>$module</td></tr>\
-   <tr><td>Link for bookmark</td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
-   <tr><td>Description</td><td>$module_description</td></tr>\
-   <tr><td>Version</td>    <td>$module_version</td></tr>\
-   <tr><td>Required <br>WIMS version</td>    <td>$m_ge $module_wims_version</td></tr>\
-   <tr><td>Language</td>   <td>English</td></tr>\
-   <tr><td>Author</td>    <td>$module_au</a></td></tr>\
+   <caption>$$wims_name_module_infos</caption>\
+   <tr><th>$$wims_name_name</th><td>$module_title</td></tr>\
+   <tr><th>$$wims_name_Address</th><td>$module</td></tr>\
+   <tr><th>$$wims_name_permalink <br><small>($$wims_name_Link_for_bookmark)</small></th><td><a href="$wims_ref_name?module=$module">$wims_ref_name?module=$module</a></td></tr>\
+   $embeddable_tr\
+   <tr><th>$$wims_name_Description</th><td>$module_description</td></tr>\
+   <tr><th>$$wims_name_Version</th><td>$module_version</td></tr>\
+   <tr><th>$$wims_name_Required_WIMS_version</th>    <td>$m_ge $module_wims_version</td></tr>\
+   <tr><th>$$wims_name_Language</th><td>$$Lang_name_$module_language</td></tr>\
+   <tr><th>$$wims_name_Author</th><td>$module_au</td></tr>\
    $module_about_tr\
-   <tr><td>Copyright</td> <td>$module_copyright</td></tr>\
-   </table></center><p>
+   <tr><th>$$wims_name_Copyright</th><td>$module_copyright</td></tr>\
+   </table></center><br>\
+
    !exit
 !endif
+
 
 !if $module_language=si
   !if $module_translator!=$empty and $module_translator_address!=$empty
@@ -45,10 +85,9 @@ WIMS $module_title [$module_language]
    <tr><td>Avtor</td>    <td>$module_au</a></td></tr>\
    $module_about_tr\
    <tr><td>Avtorske pravice</td> <td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
-
 
 !if $module_language=cn
   !if $module_translator!=$empty and $module_translator_address!=$empty
@@ -67,29 +106,7 @@ WIMS $module_title [$module_language]
    <tr><td>×÷Õß    </td><td>$module_au</td></tr>\
    $module_about_tr\
    <tr><td>°æÈ¨ </td><td>$module_copyright</td></tr>\
-   </table></center><p>
-   !exit
-!endif
-
-!if $module_language=fr
-  !if $module_translator!=$empty and $module_translator_address!=$empty
-   !set module_about_tr=<tr><td>Traducteur</td><td>$module_tr</td></tr>
-  !endif
-  !set module_about=$module_about \
-   <center>Ceci est un module du Serveur Interactif Multifonctions sur le Web (WIMS).\
-   <table border=2\
-   bgcolor=$$module_about_bgcolor>\
-   <tr><td>Nom       </td><td>$module_title</td></tr>\
-   <tr><td>Adresse   </td><td>$module</td></tr>\
-   <tr><td>Lien pour bookmark</td><td><a href=$wims_ref_name?module=$module>$wims_ref_name?module=$module</a></td></tr>\
-   <tr><td>Description</td><td>$module_description</td></tr>\
-   <tr><td>Version   </td><td>$module_version</td></tr>\
-   <tr><td>Version WIMS <br>requise</td>    <td>$m_ge $module_wims_version</td></tr>\
-   <tr><td>Langue    </td><td>française</td></tr>\
-   <tr><td>Auteur    </td><td>$module_au</td></tr>\
-   $module_about_tr\
-   <tr><td>Droit d'auteur</td><td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
 
@@ -111,7 +128,7 @@ WIMS $module_title [$module_language]
    <tr><td>Autor    </td><td>$module_au</td></tr>\
    $module_about_tr\
    <tr><td>Recht von Autor</td><td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
 
@@ -134,7 +151,7 @@ WIMS $module_title [$module_language]
    <tr><td>Autore     </td><td>$module_au</td></tr>\
    $module_about_tr\
    <tr><td>Copyright  </td><td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
 
@@ -155,7 +172,7 @@ WIMS $module_title [$module_language]
    <tr><td>Autor      </td><td>$module_au</a></td></tr>\
    $module_about_tr\
    <tr><td>Licencia elegida por el autor</td><td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
 
@@ -176,7 +193,7 @@ WIMS $module_title [$module_language]
    <tr><td>Autor      </td><td>$module_au</a></td></tr>\
    $module_about_tr\
    <tr><td>Copyright</td><td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
 
@@ -193,7 +210,6 @@ WIMS $module_title [$module_language]
    <tr><td>»y¨¥   </td><td>¤¤¤å(Big5 ½X)</td></tr>\
    <tr><td>§@ªÌ    </td><td>$module_au</td></tr>\
    <tr><td>ª©Åv </td><td>$module_copyright</td></tr>\
-   </table></center><p>
+   </table></center>
    !exit
 !endif
-

@@ -1,3 +1,12 @@
+!!************** homeref.phtml  ****************
+
+!! This File creates 2 sets of links, to put in the tail menu of Wims.
+!! 1st set contains up to 6 links
+!! 2nd set contains informations about author(s), and mail links to them.
+
+!! **********************************************
+
+
 !if robot isin $session or _check isin $session
  !if robot isin $session and wims.unice.fr notin $httpd_SERVER_NAME\
 	and $cmd iswordof new intro
@@ -8,8 +17,7 @@
    !set wims_mdcnt=!charcnt $wims_md
    !if $wims_mdcnt=2
     !set wims_ff=!translate / to ~ in $module
-    <small><a href=http://wims.unice.fr/wims/$(wims_md)_$wims_ff.html>The most 
-    recent version</a></small> <p>
+    <small><a href="http://wims.unice.fr/wims/$(wims_md)_$wims_ff.html">The most recent version</a></small><br>
    !endif
   !endif
  !endif
@@ -17,62 +25,85 @@
 !endif
 
 !if $wims_mode=popup
- <P></div><div class=wimstail>
- <hr><table border=0 width=100%>
- <tr><td align=left><small>
- <a target=wims href=http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME>WIMS @ $httpd_HTTP_HOST</A>
-!! </small>
-!! <td align=right><small><a target=wims_help
-!! href=
- </small></table></div>
+ </div>
+ <div class="wimstail">
+ 	<hr>
+ 	<table border="0" width="100%">
+ 		<tr><td align="left">
+ 		<small>
+ 		 <a target="wims" href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME">WIMS @ $httpd_HTTP_HOST</A>
+ 		</small>
+ 		</td></tr>
+ 	</table>
+ </div>
  !exit
 !endif
 
 !if _test isin $session and $wims_hacked_variables!=$empty
  <p><b>WIMS WARNING</b>. The following variables of your module could be hacked
  by students using manually modified http addresses! You might want to put more
- strict permissions to them in var.def, in order to build a secure exercise module.
- <p><tt><b>$wims_hacked_variables</b></tt>
- <p>
+ strict permissions to them in var.def, in order to build a secure exercise module.</p>
+ <tt><b>$wims_hacked_variables</b></tt>
+ <br>
 !endif
 
 !read name.phtml.$module_language
 !default wims_homeref_bgcolor=$wims_ref_bgcolor
+
 !if $wims_rm_1!=$empty
  !goto rm2
 !endif
+
 !reset 1_
+
+!!********* Link #1 : "Close Window" or "Home" (Not Shown if Embedded)
 !if _ isin $wims_subsession
  !set 1_=!append line back2,3,window.close() to $1_
 !else
- !set 1_=!append line home,1,session=$wims_session.1 to $1_
+ !if $window != embeded
+  !set 1_=!append line home,1,session=$wims_session.1 to $1_
+ !endif
 !endif
+
+!!********* Link #2 : "Sheet"
 !if $wims_sheet>0 or P isin $wims_sheet
  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
 !endif
+
+!!********* Link #3 : "Resume"
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
-!if $module_has_intro=yes and $cmd notwordof intro help
+
+!!********* Link #4 : "Introduction" (Not Shown if Embedded)
+!if $window != embeded and $module_has_intro=yes and $cmd notwordof intro help
  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$wims_intro_parm to $1_
 !endif
-!if $module_has_help=yes and $cmd notwordof intro help
- !if $module_help=$empty or $module_help=popup
+
+!!********* Link #5 : "Help"
+!if $module_help!=$empty and $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=popup
   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
  !else
   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
+
+!!********* Link #6 : "About"
 !if $module_has_about=yes and $cmd notwordof help intro
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
+
 !set wims_rm_1=$1_
 
 :rm2
 !if $wims_rm_2!=$empty
  !goto rmend
 !endif
+
 !reset 2_
+
+!!********* Link #8 : "Author(s)"
 !if $module_author!=$empty and @ isin $module_address
  !set wims_homeref_author_num=!itemcnt $module_author
  !if $wims_homeref_author_num>1
@@ -84,14 +115,20 @@
 WIMS $module_title [$module_language]
  !set 2_=!append line author,0,$3_ $4_ to $2_
 !endif
+
+!!********* Link #9 : "Translator(s)"
 !if $module_translator!=$empty and $module_translator_address!=$empty
  !set 3_=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]
  !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_
 !endif
+
+!!********* Link #10 : "Version & Copyright"
 !if $module_version$module_copyright!=$empty
  !set 2_=!append line vesion,0,Version $module_version, $module_copyright to $2_
 !endif
+
+!!********* Link #11 : "Modify"
 !if $wims_developer!=$empty and COPYING isin $module_copyright
  !set V_=!char 1 of $module
  !set M_=!translate internal / to , in $module
@@ -100,11 +137,14 @@ WIMS $module_title [$module_language]
   !set 2_=!append line modify,1,module=adm/modtool&original=$module to $2_
  !endif
 !endif
+
+!!********* Link #12 : "Server Time"
 !if $wims_ismanager>=2
  !set 2_=!append line time,0,Server time: $wims_now to $2_
 !endif
 
 !set wims_rm_2=$2_
+
 :rmend
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2

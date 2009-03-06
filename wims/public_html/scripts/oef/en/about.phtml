@@ -1,41 +1,88 @@
 !set email=!trim $email
 !set author=!trim $author
 
-!if $author!=$empty
- Author of this exercise:
- !if $email!=$empty
-  !mailurl $email $author
-.
- !else
-  $author.
- !endif
-!endif
-!if $solution!=$empty and $hint!=$empty
- This exercise contains both an explained solution and a hint.
-!endif
-!if $solution!=$empty and $hint=$empty
- This exercise has an explained solution but no hint.
-!endif
-!if $solution=$empty and $hint!=$empty
- This exercise contains a hint but no explained solution.
-!endif
-!if $solution$hint=$empty
- This exercise has neither explained solution nor hint.
-!endif
-Link for this exercise: <br>
-!set exolink=$wims_ref_name?module=$module&cmd=new&exo=$thisexo
-<a href=$exolink>$exolink</a> <br>
-Link for the current setup: <br>
-!if $module_init_parm!=$empty
- !set exolink=$wims_ref_name?module=$module&cmd=new&$module_init_parm
-!else
- !set exolink=$wims_ref_name?module=$module&cmd=new
-!endif
-<a href=$exolink>$exolink</a>
-<p>
-Information about this collection of exercises. <p>
-$module_about
-<p>
+!set embedabble_height= 600
+!set embedabble_width= 100%
+
+You're working on an <a href="$wims_ref_name?module=help/teacher/faq.fr&amp;job=oef" target="_blank"><abbr lang="EN" title="Online Exercise Format">OEF</abbr></a> exercice.<br>
+<br>
+<center>
+  <table  style="width:615px;background-color:$module_about_bgcolor">
+    <caption>
+    Informations about this exercice :
+    </caption>
+    <tbody>
+    
+    !if $author!=$empty
+    <tr>
+      <th>Author of $wims_name_this_exercice</th>
+      <td>
+        !if $email!=$empty
+          !mailurl $email $author
+        .
+        !else
+          $author.
+        !endif
+      </td>
+    </tr>
+    !endif
+    <tr>
+      <th>Solution / Hint</th>
+      <td>
+        !if $solution!=$empty and $hint!=$empty
+          $wims_name_this_exercice contains both an explained solution and a hint.
+        !endif
+        !if $solution!=$empty and $hint=$empty
+          $wims_name_this_exercice has an explained solution but no hint.
+        !endif
+        !if $solution=$empty and $hint!=$empty
+          $wims_name_this_exercice contains a hint but no explained solution.
+        !endif
+        !if $solution$hint=$empty
+          $wims_name_this_exercice has neither explained solution nor hint.
+        !endif
+      </td>
+    <tr>
+      <th>$wims_name_permalink<br><small>($wims_name_Link_for_bookmark)</small></th>
+      <td><ul>
+          <li>Link for $wims_name_this_exercice : 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            <a href="$exolink">$exolink</a>
+          </li>
+          !if $module_init_parm!=$empty
+            <li>Link for $wims_name_this_config :            
+              !set configlink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+              <a href="$configlink">$configlink</a>
+            </li>
+          !endif
+        </ul></td>
+    </tr>
+    <tr>
+      <th>$wims_name_embeddable :<small> ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site)</small></th>
+      <td><ul>
+          <li> 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            $wims_name_display <strong>$wims_name_this_exercice</strong> $wims_name_on_your_site ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site) : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" >&lt;iframe src="$exolink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+          </li>
+          <li>
+            !if $module_init_parm!=$empty
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+            !else
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new
+            !endif
+            
+            $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+            
+          </li>
+        </ul></td>
+    </tr>
+    </tbody>
+    
+  </table>
+</center>
+<p> $wims_name_this_exercice is from a collection of exercices, from which are these informations :</p>
+<hr>
+<p> $module_about </p>
 The copyright of the exercises belong to their respective authors.
 
 !changeto NEWS.phtml
