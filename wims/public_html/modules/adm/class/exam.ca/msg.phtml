@@ -97,3 +97,15 @@
  !exit
 !endif
 
+!if nodeactivate=$error
+  L'examen ne peut pas être désactivé car
+  !if badstructure isin $deactivate
+   la structure de votre classe ne le permet pas !
+  !else
+   !if score isin $deactivate
+    some participants have already begun to work on this exam !
+   !else
+    vous partagez vos examens avec une autre classe !
+   !endif
+  !endif
+!endif

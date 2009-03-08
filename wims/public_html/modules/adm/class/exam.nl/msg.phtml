@@ -118,3 +118,15 @@ in het onderstaande venster kopieren en invoegen in het huidige tentamen...
  !exit
 !endif
 
+!if nodeactivate=$error
+  The exam cannot be desactivated because
+  !if badstructure isin $deactivate
+   of the class structure.
+  !else
+   !if score isin $deactivate
+    some participants have already begun to work on this exam !
+   !else
+    your exams are shared with another class !
+   !endif
+  !endif
+!endif

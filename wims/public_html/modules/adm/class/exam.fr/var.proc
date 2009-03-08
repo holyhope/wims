@@ -112,7 +112,6 @@ expp=!line 2 of $activetest
 ecnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$exam
 activetest=!replace line 4 by $ecnt in $activetest
 
-
 !if $job=putsource and $a_=0
  source=!trim $source
  !writefile $srcname $source
@@ -283,9 +282,15 @@ expyear=!char 1,2,3,4 of $expiration
   error=no_title
   !exit
  !endif
- !bound duration between integer 2 and 600 default 90
- !bound tries between integer 1 and 100 default 3
- setup=$duration $tries
+ !ifval $activetest <=0 
+  !bound duration between integer 2 and 600 default 90
+  !bound tries between integer 1 and 100 default 3
+  setup=$duration $tries
+ !else
+   rec=!record $exam of wimshome/log/classes/$wims_class/exams/.exams
+  !distribute lines $rec into bidon,bidon,setup_save
+   setup=$setup_save
+ !endif
  desc=!replace $\
 $ by &#13; in $desc
  title=!singlespace $title

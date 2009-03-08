@@ -160,6 +160,38 @@ activetest=!replace line 4 by $ecnt in $activetest
  !default expiration=$class_expiration
 !endif
 
+!! ---------- desactivation d'examen soumis à condition : pas de partage, pas de score élève, certains type de classe (FG).
+testsharing=!defof sharable_exam\
+sharing_exam in wimshome/log/classes/$wims_class/neighbors
+testsharing=!lines2items $testsharing
+deactivate=yes
+!if $testsharing!=$empty or $activetest<1
+ deactivate=sharing
+!else
+ !if $class_type!=0 and ($class_type!=1 or $wims_superclass!=$class_parent)
+  deactivate=badstructure
+ !else
+  test=!sh cd $wims_home/log/classes/$wims_class/;\
+list=`ls noscore | grep -v supervisor`;\
+cd noscore;\
+awk 'length($$1)==18{if($$3==1){print "no";exit};}' $$list;
+  !if no isin $test
+   deactivate=score
+  !endif
+ !endif
+!endif
+!if $job=deactivate
+ !if yes isin $deactivate
+  !distribute item 1,0 into update_field,update_content
+  !read update.exam
+  job=
+  !read var.proc
+ !else
+  error=nodeactivate
+ !endif
+!endif
+!! ---------------------------
+
 !if $allow=yes and $wims_user=supervisor
  !bound allowtype within all,simulation,none,select default all
  !if $sharers!=$empty and $allowshare=1
@@ -250,9 +282,15 @@ expyear=!char 1,2,3,4 of $expiration
   error=no_title
   !exit
  !endif
- !bound duration between integer 2 and 600 default 90
- !bound tries between integer 1 and 100 default 3
- setup=$duration $tries
+ !ifval $activetest <=0 
+  !bound duration between integer 2 and 600 default 90
+  !bound tries between integer 1 and 100 default 3
+  setup=$duration $tries
+ !else
+   rec=!record $exam of wimshome/log/classes/$wims_class/exams/.exams
+  !distribute lines $rec into bidon,bidon,setup_save
+   setup=$setup_save
+ !endif
  desc=!replace $\
 $ by &#13; in $desc
  title=!singlespace $title
