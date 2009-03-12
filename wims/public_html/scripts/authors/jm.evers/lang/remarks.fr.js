@@ -32,3 +32,4 @@ var r32="\n... this \"text\" has been removed from your answer.\n In this exerci
 var r33="If I send this answer to WIMS\nit will most likely be rejected... ";
 var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets."    
 var r35="Vous avez construit:"
+var r36="Je m\'attendais à un nombre avec une unité..."

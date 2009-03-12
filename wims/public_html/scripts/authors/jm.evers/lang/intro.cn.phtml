@@ -1,7 +1,12 @@
-!! change these for use in common authordir :)
-!set phtmldir=jm.evers/phtml
-!set jsdir=$module_dir/jm.evers/js
-!set gifdir=$module_dir/jm.evers/gifs
+!set phtmldir=authors/jm.evers/phtml 
+!set jsdir=scripts/authors/jm.evers/js 
+!set gifdir=scripts/authors/jm.evers/gifs
+
+!! change these to set "local authordir"
+!! !set phtmldir=jm_evers/phtml
+!! !set jsdir=$module_dir/jm.evers/js
+!! !set gifdir=$module_dir/jm.evers/gifs
+
 !set max_s=40
 
 !header
@@ -37,6 +42,7 @@
     </a>
     <p align="center">
     <table bgcolor=$bgcolor2>
+	<tr>
         <td>
         <p align="left">
              <a onmouseover="return escape('<ol>$sum</ol><br>本模块目前有 $s 个不同主题<br>每个主题通常有 4 个难度等级')">
@@ -97,17 +103,19 @@
         </p>
         !endif
         <p align="center">
-                <table>
-            <th>
+            <table>
+            <tr>
+	    <th>
                 <input type="hidden" name="taal" value="$taal">
                 <input style="background-color:lightgreen;font-weight:normal;font-size:14px" type="submit"  value="确认上述设置">
             </th>
+	    </tr>
             </table>
         </p>
         </td>
         !if $usage=3 or $usage=4
         <input type="hidden" name="usage" value="5">
-        <tr>
+        </tr><tr>
         <td>
         <hr width="50%">
         !if devel isin $module_dir
@@ -277,13 +285,14 @@
         </td>
         !endif
 	!if $usage=6
-	    <tr>
+	    </tr><tr>
 	    <td>
 		<hr><hr>
 		!changeto lang/module.$taal.phtml
 		<hr><hr>
 	    </td>
 	!endif
+	</tr>
     </table>
     <script type="text/javascript" src="$jsdir/wz_tooltip.js"></script>
 </form>

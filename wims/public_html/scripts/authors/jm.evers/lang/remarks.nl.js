@@ -33,3 +33,4 @@ var r32="\n ... deze \"tekst\" heb ik van je antwoord  \"afgeknipt\" ...\n(bij d
 var r33="Als ik je antwoord opstuur , wordt dat waarschijnlijk fout gerekend..."
 var r34="Je krijgt strafpunten, omdat je constructie te veel ojecten bevat";
 var r35="Je hebt geconstrueerd:";
+var r36="Ik verwacht een getal met een eenheid";
