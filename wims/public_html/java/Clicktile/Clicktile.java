@@ -49,6 +49,10 @@
 	    <param name="square2" value="-4:1,-4:2,-4:3,-4:4,-5:4,-6:4,-8:4,-8:3,-8:2,-8:1,-5:1,-6:1,-7:1">
 	    <!-- limited only by xrange/yrange : coordinates of rectangles e.g. predefined square [teacher] -->
     	    <param name="square2_color" value="yellow">
+    	 can add some image (must be transparent)
+    	 <param name="image" value="http://...">
+    	 <param name="copy" value="0,0"> 
+    	 <!-- coordinates in pixels of the left top corner-->
 	    NO JAVA INSTALLED ?
 	</applet>
 
@@ -62,7 +66,8 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;                                                                                                                        
 import java.util.*;
-import java.lang.Math;                                                                                                                        
+import java.lang.Math;
+import java.net.*;
 
 public class Clicktile extends Applet implements Runnable{
     private static final int serialVersionUID = 1;
@@ -81,7 +86,7 @@ public class Clicktile extends Applet implements Runnable{
     int linewidth=5;int TYPE=0;int[] xpoints;int[] ypoints;int point_color=0;
     String language="en";boolean status=true;
     int[] used_colors;int this_color=0;
-
+    Image bg;URL url;int copy_x=0 ; int copy_y=0 ; 
     
     public void init(){
 	String c;
@@ -126,7 +131,7 @@ public class Clicktile extends Applet implements Runnable{
 	canvas = createImage(xsize,ysize);drawing = canvas.getGraphics();
 	xcoords=new int[MAX][MAX];ycoords=new int[MAX][MAX];
 	length=new int[MAX]; // how many squares per color
-	for(int i=0;i<(MAX);i++){// fill array with zero's
+	for(int i=0;i<MAX;i++){// fill array with zero's
 	    length[i]=0;
 	}
 	for(int i=0; i<MAX;i++){
@@ -200,6 +205,29 @@ public class Clicktile extends Applet implements Runnable{
 	}
 	used_colors = ListUniq(tmpcolors);//list uniq array of internal colors [int]
 
+    c=getParameter("image");
+	if (c!=null && c.length()>0) {
+	    try {url=new URL(c);}
+	    catch (MalformedURLException e) {url=null;}
+	    if(url!=null) bg=getImage(url);
+	    else bg=null;
+	}
+	else bg=null;
+
+	c=getParameter("copy");
+	if( c != null && c.length() > 0 ){ 
+	   StringTokenizer q = new StringTokenizer(c, ",");
+	   for( int p = 0 ; p<2 ; p++){
+	    String  k=q.nextToken();
+	    if(p==0){
+				copy_x=Integer.parseInt(k,10);
+		}
+		if(p==1){
+				copy_y=Integer.parseInt(k,10);
+	  }
+   }
+ }
+	
 	addMouseListener(
 	    new MouseAdapter(){
 		public void mousePressed(MouseEvent e){
@@ -222,9 +250,6 @@ public class Clicktile extends Applet implements Runnable{
 			  if( e.getButton() == MouseEvent.BUTTON3 ||  e.getButton() == MouseEvent.BUTTON2 ){
 				this_color++;
 				if(this_color > used_colors.length - 1){this_color=0;}
-			    }
-			   else {
-			     if (this_color == 0 ){this_color++;}
 			    }
 			   Clicktile[dy][dx] = used_colors[this_color];
 			   repaint(); 
@@ -270,6 +295,7 @@ public class Clicktile extends Applet implements Runnable{
     }
 
     public void paint(Graphics g){
+        if(bg!=null) g.drawImage(bg,copy_x,copy_y,this);
         drawing.setColor(Color.white);
         drawing.fillRect(0,0,xsize,ysize);
         int k;
@@ -305,7 +331,8 @@ public class Clicktile extends Applet implements Runnable{
 		}
 		drawing.drawLine(xpoints[lim], ypoints[lim], xpoints[0],ypoints[0]);
 	}
-	g.drawImage(canvas,0,0,this); // draw this square on canvas 
+	g.drawImage(canvas,0,0,this); // draw this square on canvas
+
      }
 
    public void start(){
