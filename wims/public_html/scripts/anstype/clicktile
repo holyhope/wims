@@ -1,0 +1,184 @@
+!set appletdir=java/Clicktile
+
+reply$i=!items2lines $(reply$i)
+reply$i=!replace internal @ by , in $(reply$i)
+replygood$i=!replace internal $	$ by $\
+$ in $(replygood$i)
+replygood$i=!replace internal ; by $\
+$ in $(replygood$i)
+
+color_r=
+cnt_r=!linecnt $(reply$i)
+
+!for a_ = 1 to $cnt_r
+  l=!line $a_ of $(reply$i)
+  color_r=!append item $(l[1]) to $color_r
+  $(l[1])_r=!append item $(l[2..-1]) to $($(l[1])_r)
+!next
+color_r=!listuniq $color_r
+rep_r=
+
+!for c_ in $color_r
+   col=$(c_)_r
+   rep_r=!append line $c_,$($col) to $rep_r
+!next
+m_reply$i=$(rep_r)
+!if $wims_read_parm=nocompare
+  reply$i=$(m_reply$i)
+  !goto applet
+!endif
+cnt_g=!linecnt $(replygood$i)
+color_g=
+!for a_ = 1 to $cnt_g
+  l=!line $a_ of $(replygood$i)
+  l=!nospace $l
+  color_g=!append item $(l[1]) to $color_g
+  $(l[1])_g=!append item $(l[2..-1]) to $($(l[1])_g)
+!next
+color_g=!listuniq $color_g
+diag=1
+score=
+color_rg=!listintersect $color_r and  $color_g
+!for a_ in $color_rg
+   g$a_=!listcomplement $($(a_)_r) in $($(a_)_g)
+   h$a_=!listcomplement $($(a_)_g) in $($(a_)_r)
+   !if $(g$a_) notsametext 
+     score=!append item 0 to $score
+   !else
+     score=!append item 1 to $score
+   !endif
+   !if $(h$a_) notsametext 
+     score=!append item 0 to $score
+   !else
+     score=!append item 1 to $score
+   !endif
+!next
+
+analyse sans les couleurs :
+g_tot=
+!for a_ in $color_g
+   g_tot=!append item $($(a_)_g) to $g_tot
+!next
+r_tot=
+!for a_ in $color_r
+   r_tot=!append item $($(a_)_r) to $r_tot
+!next
+
+sr_tot=!listcomplement $r_tot in $g_tot
+sg_tot=!listcomplement $g_tot in $r_tot
+
+!if $(sr_tot) notsametext
+     diag=0
+     score=!append item 0 to $score
+!else
+     score=!append item 1 to $score
+!endif
+!if $(sg_tot) notsametext
+     diag=0
+     score=!append item 0 to $score
+!else
+     score=!append item 1 to $score
+!endif
+!!debug $score $(sr_tot) -- $(sg_tot)
+!if 0 notin $score
+ diareply$i=good
+ !advance freegot
+!else
+   diareply$i=bad
+  !if $(score[-1])+$(score[-2])>=2
+
+    !!advance precgood
+    freegot=$[$freegot + 0.5]
+    precreply$i=yes
+  !endif
+!endif
+
+ 
+:applet
+!set size=!line 1 of $oef_applet_option
+!distribute items $size into xsize,ysize
+
+!set oef_applet_option=!line 2 to -1 of $oef_applet_option
+!set oef_applet_option_cnt=!linecnt $oef_applet_option
+!set applet_parm=
+!set cmt=0
+
+!for a=1 to $oef_applet_option_cnt
+  !set line=!line $a of $oef_applet_option
+  !set w=!word 1 of $line
+  !set l=!word 2 to -1 of $line
+  !set l=!nospace $l
+  !if square isin $w
+    color=$(l[1])
+    !advance cmt
+   !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(color)_r)"><param name="$(w)$(cmt)_color" value="$(l[1])"> to $applet_parm
+  !else
+   !if $w iswordof segment segment line point polygon
+    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"><param name="point_color" value="$(l[1])"> to $applet_parm
+   !else
+     !if $w iswordof copy
+        !set l1=!nospace $(l[1..2])
+        !set applet_parm=!append line <param name="$w" value="$l1"><param name="image" value="$(l[-1])"> to $applet_parm
+      !else
+       !set applet_parm=!append line <param name="$w" value="$l"> to $applet_parm
+      !endif
+   !endif
+  !endif
+!next
+color_p=!listcomplement $color_g in $color_r
+
+!for co in $color_p
+   !advance cmt
+   !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+!next
+
+reply_$i=<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
+   <param name="status" value="done">\
+   $applet_parm\
+</applet>
+
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+
+!if 0 isin $score
+!set oef_applet_option_cnt=!linecnt $oef_applet_option
+!set cmt=0
+!set applet_parm=
+!for a=1 to $oef_applet_option_cnt
+  !set line=!line $a of $oef_applet_option
+  !set w=!word 1 of $line
+  !set l=!word 2 to -1 of $line
+  !set l=!nospace $l
+  !if square isin  $w
+  !advance cmt
+   !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(l[1])_g)"><param name="$(w)$(cmt)_color" value="$(l[1])"> to $applet_parm
+  !else
+   !if $w iswordof segment line point polygon
+    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"><param name="point_color" value="$(l[1])"> to $applet_parm
+   !else
+     !if $w iswordof copy
+        !set l1=!nospace $(l[1..2])
+        !set applet_parm=!append line <param name="$w" value="$l1"><param name="image" value="$(l[-1])"> to $applet_parm
+      !else
+       !set applet_parm=!append line <param name="$w" value="$l"> to $applet_parm
+      !endif
+   !endif
+  !endif
+!next
+!!debug $applet_parm
+!set reply_$i=<center>\
+<div style="display:inline;border-style:solid; border-color:red; text-align:center; width:$xsize;height:$ysize;" >\
+$(reply_$i) \
+</div>\
+<div style="display:inline;border-style:solid; border-color:green; text-align:center; width:$xsize;height:$ysize;">\
+<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
+<param name="status" value="done">\
+ $applet_parm\
+ </applet>\
+ </div>\
+</center>
+!else
+ !set reply_$i=<center>$(reply_$i)</center>
+!endif
+reply$i=

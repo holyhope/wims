@@ -1,0 +1,83 @@
+!set appletdir=java/Clicktile
+!set anstype=yes
+!set anstyle=dprompt
+!if $wims_read_parm=def
+ !exit
+!endif
+!!########################
+!!###traitement des options (qui se trouvent dans \embed)
+!set oef_applet_option=!replace internal $	$ by $\
+$ in $inputsize
+
+!set oef_applet_option=!replace internal ; by $\
+$ in $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set test=!text remove 0123456789x in $Inputsize
+!if $test issametext $empty
+ !set Inputsize=!replace internal x by , in $Inputsize
+ !set oef_applet_option=!line 2 to -1 of $oef_applet_option
+ !set oef_applet_option=!declosing $oef_applet_option
+ !distribute items $Inputsize into xsize,ysize
+!endif
+!set oef_applet_option_cnt=!linecnt $oef_applet_option
+!set applet_parm=
+!set cnt_square=0
+!for a=1 to $oef_applet_option_cnt
+  !set line=!line $a of $oef_applet_option
+  !set w=!word 1 of $line
+  !set l=!word 2 to -1 of $line
+  !set l1=!nospace $(l[2..-1])
+  !if square isin  $w
+   !advance cnt_square
+   !set applet_parm=!append line <param name="$w$cnt_square" value="$l1"><param name="$(w)$(cnt_square)_color" value="$(l[1])"> to $applet_parm
+  !else
+   !if $w iswordof segment line point polygon
+    !set applet_parm=!append line <param name="$w" value="$(l[2..-1])"><param name="point_color" value="$(l[1])"> to $applet_parm
+   !else
+     !if $w issametext return_all_objects
+       !set $w=$l
+     !else
+      !if $w iswordof copy
+        !set l1=!nospace $(l[1..2])
+        !set applet_parm=!append line <param name="$w" value="$l1"><param name="image" value="$(l[-1])"> to $applet_parm
+      !else
+       !set applet_parm=!append line <param name="$w" value="$l"> to $applet_parm
+      !endif
+     !endif
+   !endif
+  !endif
+!next
+
+!default xsize=480
+!default ysize=480
+!default background_color=black
+!default return_all_objects=no
+!!############################
+!!####partie importante
+ !form reply
+<input type=hidden name="reply$i" id="Clicktilereply" value=>
+
+<script language="javascript" type="text/javascript">
+ function readthis(){
+  var input=document.Clicktile.ReadApplet(); 
+  !!alert(input);
+  document.getElementById("Clicktilereply").value=input;
+  }
+</script>
+<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">
+<param name="language" value="en">
+<param name="return_all_objects" value="$return_all_objects">
+<param name="status" value="waiting">
+$applet_parm
+</applet>
+!!###on garde les options pour le retour, variable de nom imposé oef_applet_option
+!set oef_applet_option=$Inputsize\
+$oef_applet_option
+
+<br>
+    <input type="submit" style="" onclick="javascript:readthis();" name="button1" value="$name_send">   
+ 
+</form>
+!!#### le bouton par défaut est désactivé, c'est le "bouton d'en dessus qui compte, permet de rajouter du javascript
+!set oef_formnosubmit=yes
