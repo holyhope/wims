@@ -1,0 +1,84 @@
+
+<b>Cliquer sur des pavés (nécessite java).</b>
+(nom : <tt>clicktile</tt>)
+<br>
+
+Une applet (faite par Joke Evers) affiche un pavage par des pavés rectangulaires de couleur.
+Il est possible de tracer de plus des lignes polygonales ou (exclusif) un point.
+Il est demandé de mettre dans des couleurs différentes certains des pavés.
+
+<p>Ce type de réponse nécessite l'utilisation de la commande <tt>\embed</tt>.
+Chaque carré est repéré par son coin en haut à gauche sous la forme <tt>entier:entier</tt>. 
+La première ligne de la commande <tt>\embed</tt> est formée de la taille en pixels de l'applet
+X x Y .
+La seconde ligne entre  <tt>[</tt> et de <tt>]</tt> est formée des commandes précisant les pavés 
+colorés (ils ne pourront pas être modifiés) : par exemple
+<pre>
+\embed{r1, 200 x 200
+[xrange -5,5
+yrange -5,5
+background_color yellow
+square blue,1:1,1:2,1:3
+square green,2:3,2:4
+point red,0:0]}
+</pre>
+Les bornes (<tt>xrange</tt> et <tt>yrange</tt>) doivent être entières. 
+La bonne réponse est formée de lignes de la forme 
+<tt>color,a:b,c:d</tt>
+Les points (<tt>a:b<:tt>) repérant les carrés doivent avoir des coordonnées  entières.
+
+Pour le dessin supplémentaire, l'une des lignes est possible
+<pre>
+polygon white,0:0,0:1,1:1
+point red,0:0
+line white,-5:0,5:0
+</pre>
+Il est possible de mettre une image en arrière-plan. Si elle est faite avec flydraw, 
+il faut rajouter le résultat de la fonction <tt>draw()</tt>. Il est recommandé
+de prendre le même <tt>xrange</tt> et <tt>yrange</tt>. 
+
+La variable <tt>reply</tt>n contient la matrice des carrés sélectionnés (une ligne par couleur).
+Si la ligne 
+<pre>
+return_all_objects yes
+</pre>
+est dans la deuxième ligne de la commande <tt>\embed</tt>, tous les carrés seront retournés dans la réponse.
+La variable <tt>sc_reply</tt>n est égale à 0.5 si tous les carrés cliqués sont corrects
+mais de mauvaise couleur. 
+
+<p>Il est possible de mettre une variable vide dans la réponse. Dans ce cas, l'analyse doit
+être faite par des conditions. 
+</p>
+<p>
+<b>Exemple</b> : 
+<pre>
+\statement{
+  \embed{r1,200 x 200
+  [xrange -5,5
+   yrange -5,5
+   background_color yellow
+   square blue,1:1,1:2,1:3
+   square green,2:3,2:4
+   line white,-5:0,5:0
+  ]}
+}
+\answer{}{blue,1:0,1:-1,1:-2; green,2:-2,2:-3}{type=clicktile}
+</pre>
+$table_header
+$table_hdtr<th></th><th>Explication</th></tr>
+$table_tr<td>xrange x1,x2</td><td></td></tr>
+$table_tr<td>yrange y1,y2</td><td></td></tr>
+$table_tr<td>background_color [color]</td><td></td></tr>
+$table_tr<td>square [color],x1:y1,x2:y2,...</td><td></td></tr>
+$table_tr<td>segment [color],x1:y1,x2:y2</td><td></td></tr>
+$table_tr<td>polygon [color],x1:y1,x2:y2,x2:y2,...</td><td></td></tr>
+$table_tr<td>return_all_objects yes/no</td><td></td></tr>
+
+</table>
+</center>
+
+Les couleurs possibles sont
+<tt>white,red, green, blue, orange, yellow, purple, lightgreen, lightblue, cyan,
+brown, salmon, pink</tt>.
+
+

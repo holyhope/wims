@@ -1,0 +1,84 @@
+
+<b>Click in tiles (java needed).</b>
+(name : <tt>clicktile</tt>)
+<br>
+
+An applet (by Joke Evers) shows colored tiles. Some polygonal lines or (exclusif) one point
+can be showed. Some tiles must be colored differently by the student by clicking on.
+
+<p>Command <tt>\embed</tt> must be used. Each tile is given by the left-top corner
+by something like <tt>integer:integer</tt>. 
+The first line of the command <tt>\embed</tt> is the size X x Y  in pixels of the applet.
+The second line inside  <tt>[</tt> <tt>]</tt> contains commands precising colored tiles
+which will be presented (they can't be modified by the student) : for example,
+<pre>
+\embed{r1, 200 x 200
+[xrange -5,5
+yrange -5,5
+background_color yellow
+square blue,1:1,1:2,1:3
+square green,2:3,2:4
+point red,0:0]}
+</pre>
+The bounds (<tt>xrange</tt> et <tt>yrange</tt>) must be integers. 
+The good answer is given by lines as
+<tt>color,a:b,c:d</tt>
+The tile points must be of the forme <tt>a:b</tt>
+with <tt>a</tt> and <tt>b</tt>integers
+
+For the background draw, one of the following lines is possible
+<pre>
+polygon white,0:0,0:1,1:1
+point red,0:0
+line white,-5:0,5:0
+</pre>
+It is possible to put an image in background. 
+<pre>copy,x,y,url
+</pre>
+If done with flydraw, the url is the result of the function <tt>draw()</tt>. It is recommanded
+to take the same <tt>xrange</tt> and <tt>yrange</tt>. 
+
+The variable <tt>reply</tt>n is the matrix of selected tiles (one line by color).
+If the line
+<pre>
+return_all_objects yes
+</pre>
+is in the second line of the command <tt>\embed</tt>, all tiles will be returned in <tt>reply</tt>n.
+The variable <tt>sc_reply</tt>n is equal to 0.5 if all clicked tiles are correct but not of the asked color
+
+<p>An empty variable can be put in the good reply. The analysis must be done with conditions in this
+case.
+</p>
+<p>
+<b>Example</b> : 
+<pre>
+\statement{
+  \embed{r1,200 x 200
+  [xrange -5,5
+   yrange -5,5
+   background_color yellow
+   square blue,1:1,1:2,1:3
+   square green,2:3,2:4
+   line white,-5:0,5:0
+  ]}
+}
+\answer{}{blue,1:0,1:-1,1:-2; green,2:-2,2:-3}{type=clicktile}
+</pre>
+$table_header
+$table_hdtr<th></th><th>Explication</th></tr>
+$table_tr<td>xrange x1,x2</td><td></td></tr>
+$table_tr<td>yrange y1,y2</td><td></td></tr>
+$table_tr<td>background_color [color]</td><td></td></tr>
+$table_tr<td>square [color],x1:y1,x2:y2,...</td><td></td></tr>
+$table_tr<td>segment [color],x1:y1,x2:y2</td><td></td></tr>
+$table_tr<td>polygon [color],x1:y1,x2:y2,x2:y2,...</td><td></td></tr>
+$table_tr<td>return_all_objects yes/no</td><td></td></tr>
+
+</table>
+</center>
+
+Allowable colors are
+<tt>white,red, green, blue, orange, yellow, purple, lightgreen, lightblue, cyan,
+brown, salmon, pink</tt>.
+
+
