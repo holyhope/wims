@@ -86,3 +86,8 @@
 : Gebruik <font color=red>nooit</font> de back-knop van je browser ! 
 : Je hebt de som $try keer terug gekregen ter verbetering.<br>Daar worden -normaal gesproken- strafpunten voor gegeven...
 : Een wortel (of logaritme) uit een negatief getal??
+: Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br> Je "eenheid" <b>$unit_r ...</b> geeft natuurlijk problemen met nakijken.
+: <br>Je zit er een factor $f naast !!
+: Ik verwacht hier eigenlijk een antwoord met een bijpassende [S.I.] eenheid !<br>iets als 1.234 $unit_a ?
+: <br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
+: <br>Je hebt geen eenheid vermeld.<br>Ik neem dus maar aan $unit_a !

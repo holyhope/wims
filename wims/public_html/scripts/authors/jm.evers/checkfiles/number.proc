@@ -64,9 +64,9 @@ errortext=$empty
 !endif
 AAA=!lower $(reply$n)
 
-# first check for the 'decimal' comma
+tot=!singlespace $AAA
 
-tot=!singlespace  $AAA
+# first check for the 'decimal' comma
 
 !if $questiontype notin 0,7
     # questiontype=0  uses precheck.js as default answer-filter questiontype=7 is tailored with own js-functions
@@ -264,7 +264,7 @@ AAA=!replace internal ** by ^ in $AAA
 !next p
 
 #check for sin etc
-!for i in sqrt,log,sin,ln,cos,tan,sec,abs
+!for i in sqrt,log,sin,ln,cos,tan,abs
     !if $i isin $AAA
 	# test on balanced |x|
 	test1=!replace internal $i| by # in $AAA
@@ -352,6 +352,11 @@ AAA=!nospace $AAA
 # ATTENTION: rawmath ln(|x|) => ln(abs(x))
 # ATTENTION: rawmath ln|x| => ln(abs)*(x)
 AAA=!replace internal pi by PI in $AAA
+# correcting for x=1 en x=2
+!for p in en,et,er
+    AAA=!replace internal $p by $empty in $AAA
+!next p
+AAA=!replace internal e by E in $AAA
 # i -> 10
 !if $complex=1
     # complex numbers gewoon vervangen door een getal
