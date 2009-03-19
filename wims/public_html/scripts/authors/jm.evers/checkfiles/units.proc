@@ -1,5 +1,6 @@
 # correct antwoordformat: number1 unit1,number2 unit2... number_n unit_n
-# if unit=yes : we must have a unit in the answer !
+# unit=1,1,1...1 : we must have a unit in all answers 
+# unit=0,1,1,0 : number1,number2 unit2,number3 unit3,number4
 # 19/3/2009
 
 n=$counter
@@ -34,13 +35,8 @@ AAA=!lower $(reply$n)
 # convert common? mistakes into correct abreviations 
 # attention: sequence matters !!!
 nonsi=seconden,secondes,seconde,sec,minuten,minutes,minuut,minute,mins,meters,meter,metre,metres,joulen,joules,watts,grammen,grams,grm
-si=s,s,s,s,min,min,min,min,min,m,m,m,m,j,j,w,g,g,g
-t=!itemcnt $si
-!for p=1 to $t
-    o=!item $p of $nonsi
-    O=!item $p of $si
-    AAA=!replace internal $o by $O in $AAA
-!next p
+si=s,s,s,s,min,min,min,min,min,m,m,m,m,j,j,w,gr,gr,gr
+abbrev=!itemcnt $si
 
 # exclude important mathfunctions
 !for p in ln,log,sin,cos,tan,sqrt,pi
@@ -53,41 +49,7 @@ t=!itemcnt $si
 PREFIX=10^-1,10^1,10^6,10^12,10^15,10^18,10^15,10^12,10^9,10^6,10^3,10^2,10^1,10^-1,10^-2,10^-3,10^-6,10^-9,10^-12,10^-15,10^-18
 prefix=déci,déca,méga,téra,péta,exa,peta,tera,giga,mega,kilo,hecto,deca,deci,centi,milli,micro,nano,pico,femto,atto 
 
-# 26.0 centimeter/milliseconde -> (1/10^-3)* 26.0 *10^-2 m/s
 
-replaced=0
-!for p=1 to 21
-    o=!item $p of $prefix
-    r=!nospace / $o
-    !if $o isin $AAA
-	t1=1
-    !else
-	t1=0
-    !endif
-    !if $r isin $AAA
-	t2=1
-    !else
-	t2=0
-    !endif
-    !if $[$t1+$t2]>0
-	replaced=1
-	O=!item $p of $PREFIX
-	!if $[$t1+$t2]=2
-	    # 1234 millimeter/milliseconde -> 1234 meter/seconde
-	    AAA=!replace internal $o by $empty in $AAA
-	!else
-	    !if $t1=1
-		# 1234 millimeter/seconde -> 1234 *10^-3meter/seconde
-		AAA=!replace internal $o by *$O in $AAA
-		AAA=!nospace $AAA
-	    !else
-		# 1234 meter/milliseconde -> (1/10^-3)*1234 meter/seconde
-		AAA=!replace internal $o by $empty in $AAA
-		AAA=(1/$O)*$AAA
-	    !endif
-	!endif
-    !endif
-!next p
 
 !if $tg>1
     li=<li>
@@ -105,96 +67,143 @@ replaced=0
     ex1=$empty
     ex2=$empty
     ex3=$empty
+    unit=!item $p of $units
+    !if $unit != 1
+	unit=0
+    !endif
     org=!item $p of $AAA
+    ans=!item $p of $(answer$n)
+    
     !if ? isin $org
 	yourreply=!append line $li<font color=red>$dontknow</font>$end_li to $yourreply
     !else	
-	ans=!item $p of $(answer$n)
-	ans=!words2items $ans
-	number_a=!item 1 of $ans 
-	unit_a=!item 2 of $ans
-	!if $unit_a=$empty
-	    errortext=THIS CHECKFILE EXPECTS A CORRECT ANSWER WITH S.I. UNIT<br>LIKE: 1234 m, 4321 cm^2, 2323 m/s !!
-	    goback=1
-	    !exit
-	!endif
-	# 1234 m/sec^2  or 1234 m / sec^2
-	rep=!words2items $org
-	# 1234,m/sec^2  or 1234,m,/,sec^2
-	t=!itemcnt $rep
-	number_r=$empty
-	unit_r=$empty
-	!if $t=1
-	    # 1234m/sec^2 
-	    # always assume: number unit
-	    rep3=!replace [a-z] by @ in $rep
-	    # 1234@/@@@^2
-	    t1=!positionof char @ in $rep3
-	    t1=!item 1 of $t1
-	    number_r=!char 1 to $[$t1-1] of $rep
-	    unit_r=!char $t1 to -1 of $rep
-	!else
-	    # 1234 mmol/gr or 1234mmol /gr  or 1234 mmol/ gr 
-	    !if $t=2	
-		number_r=!item 1 of $rep
-		unit_r=!item 2 of $rep
-		# 1234mmol /gr 
-		rep3=!replace [a-z] by @ in $number_r
-		!if @ isin $rep3
-		    t1=!positionof char @ in $rep3
-		    t1=!item 1 of $t1
-		    rest_unit=!char $t1 to -1 of $number_r
-		    unit_r=!nospace $rest_unit $unit_r
-		    number_r=!char 1 to $[$t1-1] of $number_r
+	!if $unit=1
+	    ans=!words2items $ans
+	    number_a=!item 1 of $ans 
+	    unit_a=!item 2 of $ans
+	    rep=$org
+	    !for q=1 to 21
+		# 26.0 centimeter/milliseconde -> (1/10^-3)* 26.0 *10^-2 m/s
+		o=!item $q of $prefix
+		r=!nospace / $o
+		!if $o isin $rep
+		    u1=1
+		!else
+		    u1=0
 		!endif
+		!if $r isin $rep
+		    u2=1
+		!else
+		    u2=0
+		!endif
+		!if $[$u1+$u2]>0
+		    O=!item $q of $PREFIX
+		    !if $[$u1+$u2]=2
+			# 1234 millimeter/milliseconde -> 1234 meter/seconde
+			rep=!replace internal $o by $empty in $rep
+		    !else
+			!if $u1=1
+			    # 1234 millimeter/seconde -> 1234 *10^-3meter/seconde
+			    rep=!replace internal $o by *$O in $rep
+			    rep=!nospace $AAA
+			!else
+			    # 1234 meter/milliseconde -> (1/10^-3)*1234 meter/seconde
+			    rep=!replace internal $o by $empty in $rep
+			    rep=(1/$O)*$rep
+			!endif
+		    !endif
+		!endif
+	    !next q
+	    
+	    !for q=1 to $abbrev
+		# convert common? mistakes into correct abreviations 
+		o=!item $q of $nonsi
+		O=!item $q of $si
+		rep=!replace internal $o by $O in $rep
+	    !next q
+	    # SQRT -> sqrt
+	    rep=!lower $rep
+	    # 1234 m/sec^2  or 1234 m / sec^2
+	    rep=!words2items $rep
+	    # 1234,m/sec^2  or 1234,m,/,sec^2
+	    t=!itemcnt $rep
+	    number_r=$empty
+	    unit_r=$empty
+	    !if $t=1
+		# 1234m/sec^2 
+	        # always assume: number unit
+	        rep3=!replace [a-z] by @ in $rep
+		# 1234@/@@@^2
+	        t1=!positionof char @ in $rep3
+		t1=!item 1 of $t1
+	        number_r=!char 1 to $[$t1-1] of $rep
+		unit_r=!char $t1 to -1 of $rep
 	    !else
-		# hmmm 1234 mmol / gr  of 1234 m mol / gr 
-		number_r=!item 1 of $rep
-		unit_r=!item 2 to $t of $rep
-		unit_r=!replace internal , by $empty in $unit_r
+		# 1234 mmol/gr or 1234mmol /gr  or 1234 mmol/ gr 
+	        !if $t=2	
+	    	    number_r=!item 1 of $rep
+		    unit_r=!item 2 of $rep
+		    # 1234mmol /gr 
+		    rep3=!replace [a-z] by @ in $number_r
+		    !if @ isin $rep3
+			t1=!positionof char @ in $rep3
+			t1=!item 1 of $t1
+			rest_unit=!char $t1 to -1 of $number_r
+			unit_r=!nospace $rest_unit $unit_r
+			number_r=!char 1 to $[$t1-1] of $number_r
+		    !endif
+		!else
+		    # hmmm 1234 mmol / gr  of 1234 m mol / gr 
+		    number_r=!item 1 of $rep
+		    unit_r=!item 2 to $t of $rep
+		    unit_r=!replace internal , by $empty in $unit_r
+		!endif
 	    !endif
-	!endif
-	number_r=!nospace $number_r
-	number_r=!replace internal , by $empty in $number_r
-	number_r=!lower $number_r
-	unit_r=!nospace $unit_r
-#	errortext=rep=$rep AAA=$AAA unit_r=$unit_r number_r=$number_r
-#	goback=1
-#	!exit
-
-	!if $unit_r=$number_r
-	    !if $units=yes
-	     # we willen perse een eenheid zien
+	    number_r=!nospace $number_r
+	    number_r=!replace internal , by $empty in $number_r
+	    number_r=!lower $number_r
+	    unit_r=!nospace $unit_r
+	    !if $unit_r=$number_r
+	        # we need a unit in the answer
 		errortext=!record 91 of $remarkdir/commonremarks.$taal
 		goback=1
 		!exit
-	    !else
-		# OK, we assume the correct unit...
-		unit_r=$unit_a
-		ex2=!record 93 of $remarkdir/commonremarks.$taal
 	    !endif
-	!endif
-	
-        num_r=$[1.0*($number_r)]
-	!if NaN isin $num_r
-	    errortext=!record 89 of $remarkdir/commonremarks.$taal
-	    goback=1
-	    maxscore=$[$P3*$maxscore]
-	    !exit
-	!else
-    	    A=!exec units-filter $num_r $unit_r
-	    !if ERROR isin $A
+    	    num_r=$[1.0*($number_r)]
+	    !if NaN isin $num_r
 		errortext=!record 89 of $remarkdir/commonremarks.$taal
-		#@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
-    	        maxscore=$[$P5*$maxscore]
-    		goback=1
+	        goback=1
+		maxscore=$[$P3*$maxscore]
+		!exit
+	    !else
+    		A=!exec units-filter $num_r $unit_r
+		!if ERROR isin $A
+		    errortext=!record 89 of $remarkdir/commonremarks.$taal
+		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
+    	    	    maxscore=$[$P5*$maxscore]
+    		    goback=1
+		    !exit
+		!endif
+	    !endif
+	    G=!exec units-filter $number_a $unit_a
+	    A1=!word 1 of $A
+    	    G1=!word 1 of $G
+	!else
+	    # no units required [unit=0]
+	    A1=$[1.0*($org)]
+	    !if NaN isin $A1
+		testvar=$org
+		errortext=!record 94 of $remarkdir/commonremarks.$taal
+		maxscore=$[$P4*$maxscore]
+		goback=1
 		!exit
 	    !endif
+	    
+	    unit_r=$empty
+	    number_r=$org
+	    G1=$ans
 	!endif
-
-	G=!exec units-filter $number_a $unit_a
-	A1=!word 1 of $A
-        G1=!word 1 of $G
+	# end !if $unit=1
 	!if $rounding<1
 	    !ifval $A1=$G1
 		!increase score
@@ -209,14 +218,14 @@ replaced=0
 		!endif
 	    !endif
 	!else
-	    A1=$[(round($rounding*($A1)))/$rounding]
-    	    G1=$[(round($rounding*($G1)))/$rounding]
-	    !ifval $A1=$G1
+	    A11=$[(round($rounding*($A1)))/$rounding]
+    	    G11=$[(round($rounding*($G1)))/$rounding]
+	    !ifval $A11=$G11
 		!increase score
-	        k=green
+	    	k=green
 	    !else
 		rnd=$[$rounding/10]
-	        !ifval $[round($rnd*($A1))] = $[round($rnd*($G1))]
+	    	!ifval $[round($rnd*($A1))] = $[round($rnd*($G1))]
 		    ex1=!record 29 of $remarkdir/commonremarks.$taal
 		    score=$[$score + $P4]
 		    k=orange
@@ -226,22 +235,24 @@ replaced=0
 	    !endif
 	!endif
 	
-	correct_unit=1
-	t1=!wordcnt $G
-	!for p=2 to $t1
-	    a=!word $p of $A
-	    g=!word $p of $G
-	    !if $a != $g
-		correct_unit=0
+	!if $unit=1
+	    correct_unit=1
+	    t1=!wordcnt $G
+	    !for p=2 to $t1
+		a=!word $p of $A
+		g=!word $p of $G
+		!if $a != $g
+		    correct_unit=0
+		!endif
+	    !next p
+	    !if $correct_unit=0
+		ex2=!record 92 of $remarkdir/commonremarks.$taal
+		ex=!append line $ex2 to $ex
+		score=$[$P7*$score]
+		k=red
 	    !endif
-	!next p
-	!if $correct_unit=0
-	    ex2=!record 92 of $remarkdir/commonremarks.$taal
-	    ex=!append line $ex2 to $ex
-	    score=$[$P7*$score]
-	    k=red
 	!endif
-
+	    
 	!if $teaching=1 and $k=red
 	    found=0
 	    !for factor in 1/10000,1/1000,1/100,1/10,10,100,1000,10000,60,3600,1/60,1/3600
@@ -253,11 +264,13 @@ replaced=0
 			found=1
 		    !endif
 		!endif
-	    !next f
+	    !next factor
 	!endif
+	
 	rep=!htmlmath $number_r $unit_r
+	
 	yourreply=!append line $li <tt><font color=$k>$rep</font></tt> <font color=red><em>$ex1 $ex2 $ex3</em></font>$end_li to $yourreply
-
+    
     !endif
 !next p
 
