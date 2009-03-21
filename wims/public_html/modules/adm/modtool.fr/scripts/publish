@@ -18,7 +18,7 @@ cat >pubpost <<@\
 $Boundary\
 Content-Disposition: form-data; name="module"\
 \
-adm/unice/collector\
+$collector\
 $Boundary\
 Content-Disposition: form-data; name="author"\
 \
@@ -61,7 +61,7 @@ echo "\
 \
 $Boundary--" >>pubpost
 
-len=!sh wc -c $wims_home/$wims_sesdir/pubpost | awk '{print $1}'
+len=!sh wc -c $wims_home/$wims_sesdir/pubpost | awk '{print $$1}'
 
 rep=!exec webget POST /$centralcgi?form-data HTTP/1.0\
 User-Agent: Mozilla (WIMS Webget)\
