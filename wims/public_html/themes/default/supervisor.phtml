@@ -134,35 +134,41 @@ $SU_greet.
  !next i
  !for i=1 to $doccnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
-  !distribute lines $sh into s_,t_
-  $table_tr<td align=center>$U_Doc
+  !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
+  $table_tr<td align=center>$U_Doc</td>
   <td>
   !href module=adm/doc&job=read&doc=$s_&block=main $t_
-  <td align=center>-
+  </td>
+  <td align=center><small>
+  !item $[$o_ +1] of $U_Docstatus
+  </small></td>
  !next i
  !for i=1 to $sheetcnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
   !distribute lines $sh into ac,t_,ti
-  $table_tr<td align=center>$U_Sheet $i
+  $table_tr<td align=center>$U_Sheet $i</td>
   <td>
   !href module=adm/class/sheet&sheet=$i $ti
-  <td align=center>$(ac_$[$ac])
+  </td>
+  <td align=center>$(ac_$[$ac])</td>
  !next i 
  !for i=1 to $examcnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !distribute lines $sh into ac,t_,d_,ti
-  $table_tr<td align=center>$U_Exam $i
+  $table_tr<td align=center>$U_Exam $i</td>
   <td>
   !href module=adm/class/exam&exam=$i $ti
-  <td align=center>$(ac_$[$ac])
+  </td>
+  <td align=center>$(ac_$[$ac])</td>
  !next i 
  !for i=1 to $votecnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
   !distribute lines $sh into st_,ti_,op_,re_
-  $table_tr<td align=center>$U_Vote
+  $table_tr<td align=center>$U_Vote</td>
   <td>
   !href module=adm/vote&job=read&vote=$i $ti_
-  <td align=center>$(ac_$[$st_])
+  </td>
+  <td align=center>$(ac_$[$st_])</td>
  !next i 
  $table_end <p>
 !endif
@@ -199,7 +205,9 @@ $ADD_1
 <p><center>
 <table width=99% border=0 cellspacing=0 cellpadding=3 bgcolor=$wims_ref_bgcolor>
 <tr><td align=left width=33%>&nbsp;&nbsp;
+!if $class_typename notsametext program
 !href module=adm/class/userlist $SE_list
+!endif
 <br>&nbsp;&nbsp;
 !href module=adm/class/classes&type=supervisor $U_oclass
 <br>&nbsp;&nbsp;

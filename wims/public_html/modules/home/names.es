@@ -84,7 +84,7 @@ U_oclass	=Zonas de trabajo
 U_back=		=Atrás
 U_account	=Mi cuenta
 U_teacher	=profesor
-
+U_Docstatus=ni leer ni escribir en,leer pero no escribir en,leer y escribir en
 U_gotoclass1	=Entrar como participante:
 U_gotoclass3	=Entrar como profesor:
 U_gotoclass	=Sus zonas de trabajo:

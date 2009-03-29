@@ -84,7 +84,7 @@ U_oclass	=Andere klassen
 U_Back		=Terug
 U_account	=Mijn account
 U_teacher	=Docent
-
+U_Docstatus =niet lezen en niet schrijven,alleen lezen,lezen en schrijven
 
 U_gotoclass1	=Ga naar een klas als leerling:
 U_gotoclass3	=Ga naar een klas als supervisor:
