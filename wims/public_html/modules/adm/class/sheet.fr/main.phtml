@@ -1,7 +1,10 @@
+!read js/speckedit.phtml desc
+
 !reset confirm
-<html><head>
-$wims_html_header
-</head><body $wims_htmlbody>
+!!<html><head>
+!!$wims_html_header
+!!</head><body $wims_htmlbody onload=$wims_html_onload>
+!header
 !headmenu
 
 !read names.phtml
@@ -18,7 +21,7 @@ $wims_html_header
 <center>$classname
 <p>
 <h1>Préparation de la  feuille $sheet
-</h1></center> <p><hr width=40%> <p>
+</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -63,7 +66,7 @@ $wims_html_header
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value=Modifier>
  <tr><td align=right>Description :
- <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <td><textarea id=desc class="iEdit" name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Page de présentation&nbsp;:
  <td><input size=30 name=prpage value="$prpage"><small>
  !href target=wims_mhelp cmd=help&special_parm=sheetpage aide
@@ -83,7 +86,7 @@ Titre (limité à $title_limit caractères) :<br>
 <input size=65 name=title value="$title"> <p>
 Et un texte d'explication (limité à $desc_limit caractères; les tags et 
 liens html sont admis)&nbsp;:<br>
-<textarea rows=6 cols=65 name=desc>$desc</textarea> <p>
+<textarea id=desc class="iEdit" rows=6 cols=65 name=desc>$desc</textarea> <p>
 Ou une page de présentation&nbsp;:
 <input size=30 name=prpage value="$prpage"><small>
 !href target=wims_mhelp cmd=help&special_parm=sheetpage aide
