@@ -79,7 +79,7 @@ $ in $r_
 
 !if $keyboard=en_ipa
  !set keyboard= &#230; &#601; &#618; &#650; &#652; e &#594;\
- &#604;: &#593;: i: u: &#596;:\
+&#604;  &#604;: &#593;: &#594;: i: u: &#596;:\
  &#331; &#643; &#952; &#240; &#658; &#734; &#679; &#676;\
  e&#618; a&#618; &#596;&#618; a&#650; &#601;&#650; &#618;&#601; e&#601;
 
@@ -104,7 +104,13 @@ $ in $inputsize
   !set option=class="wims_oef_input"
   !set inputoption=!line 2 to -1 of $inputoption
 !endif
+!if $inputoption!=
 !set inputoption=$option $inputoption
+!else
+!default inputoption=$option style="font-size:18px;background-color:#e8ffff;border:1px solid #3333CC;"\
+autocomplete=off
+!endif
+!default style=color:black;border:1px solid grey;margin:1px;background-color:lightgrey;font-weight:bolder;font-size:100%
 <style type="text/css">
  .char {$style}
  </style>
