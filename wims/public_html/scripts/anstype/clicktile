@@ -1,5 +1,4 @@
 !set appletdir=java/Clicktile
-
 reply$i=!items2lines $(reply$i)
 reply$i=!replace internal @ by , in $(reply$i)
 replygood$i=!replace internal $	$ by $\
@@ -79,7 +78,7 @@ sg_tot=!listcomplement $g_tot in $r_tot
 !else
      score=!append item 1 to $score
 !endif
-!!debug $score $(sr_tot) -- $(sg_tot)
+
 !if 0 notin $score
  diareply$i=good
  !advance freegot
@@ -102,7 +101,7 @@ sg_tot=!listcomplement $g_tot in $r_tot
 !set oef_applet_option_cnt=!linecnt $oef_applet_option
 !set applet_parm=
 !set cmt=0
-
+!set color_i=
 !for a=1 to $oef_applet_option_cnt
   !set line=!line $a of $oef_applet_option
   !set w=!word 1 of $line
@@ -110,6 +109,7 @@ sg_tot=!listcomplement $g_tot in $r_tot
   !set l=!nospace $l
   !if square isin $w
     color=$(l[1])
+    color_i=!append item $color to $color_i
     !advance cmt
    !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(color)_r)"><param name="$(w)$(cmt)_color" value="$(l[1])"> to $applet_parm
   !else
@@ -119,19 +119,17 @@ sg_tot=!listcomplement $g_tot in $r_tot
      !if $w iswordof copy
         !set l1=!nospace $(l[1..2])
         !set applet_parm=!append line <param name="$w" value="$l1"><param name="image" value="$(l[-1])"> to $applet_parm
-      !else
+     !else
        !set applet_parm=!append line <param name="$w" value="$l"> to $applet_parm
-      !endif
+     !endif
    !endif
   !endif
 !next
-color_p=!listcomplement $color_g in $color_r
-
+color_p=!listcomplement $color_i in $color_g,$color_r in
 !for co in $color_p
    !advance cmt
    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
 !next
-
 reply_$i=<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
    <param name="status" value="done">\
    $applet_parm\
@@ -145,13 +143,15 @@ reply_$i=<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" arc
 !set oef_applet_option_cnt=!linecnt $oef_applet_option
 !set cmt=0
 !set applet_parm=
+!reset color_i
 !for a=1 to $oef_applet_option_cnt
   !set line=!line $a of $oef_applet_option
   !set w=!word 1 of $line
   !set l=!word 2 to -1 of $line
   !set l=!nospace $l
   !if square isin  $w
-  !advance cmt
+    !set color_i=!append item $(l[1]) to $color_i
+   !advance cmt
    !set applet_parm=!append line <param name="$w$cmt" value="$(l[2..-1]),$($(l[1])_g)"><param name="$(w)$(cmt)_color" value="$(l[1])"> to $applet_parm
   !else
    !if $w iswordof segment line point polygon
@@ -165,6 +165,11 @@ reply_$i=<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" arc
       !endif
    !endif
   !endif
+!next
+color_p=!listcomplement $color_i in $color_g
+!for co in $color_p
+   !advance cmt
+   !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
 !next
 !!debug $applet_parm
 !set reply_$i=<center>\
