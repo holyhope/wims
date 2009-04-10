@@ -20,7 +20,7 @@
   <td align=center>$C_
   <td align=center>
   !for L_ in $l_
-   <img src=gifs/$L_.gif alt=$L_>
+   <img src="gifs/$L_.gif" alt=$L_>
   !next L_
   <td>$r_&nbsp;
  !next i_
