@@ -58,9 +58,13 @@ giant	t_prep	p_font
 
 affine		t_obj	6,0,0,0,	obj_affine
 arrow		t_obj	5,1,0,1,	obj_arrow
+arrow2		t_obj	5,1,0,1,	obj_arrow2
 darrow		t_obj	5,1,-1,1,	obj_arrow
+darrow2		t_obj	5,1,-1,1,	obj_arrow2
 dasharrow	t_obj	5,1,-1,1,	obj_arrow
+dasharrow2	t_obj	5,1,-1,1,	obj_arrow2
 dashedarrow	t_obj	5,1,-1,1,	obj_arrow
+dashedarrow2	t_obj	5,1,-1,1,	obj_arrow2
 arc		t_obj	6,1,0,3,	obj_arc
 ball		t_obj	3,1,1,0,	obj_circle
 circle		t_obj	3,1,0,3,	obj_circle
@@ -193,6 +197,8 @@ resettransform 	t_obj	1,0,0,0,	obj_resettransform
 setparallelogram	t_obj	6,0,0,0,	obj_setparallelogram
 resetparallelogram 	t_obj	0,0,0,0,	obj_resetparallelogram
 multicopy 	t_obj	0,0,0,0,	obj_multicopy
+vimgfile	t_obj	0,0,0,0,	obj_vimgfile
+vimg		t_obj	1,0,0,0,	obj_vimg
 @
 `
 namecolor=`awk 'NF==2 {print $1"	t_color \""$2"\""}' colors`

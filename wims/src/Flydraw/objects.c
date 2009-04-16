@@ -131,10 +131,10 @@ void obj_line(objparm *pm)
 {
     scale(pm->pd,pm->p,2);
     gdImageLine(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],pm->color[0]);
+    if(vimg_enable) vimg_line(scale_buf[0],scale_buf[1],scale_buf[2],scale_buf[3]);
 }
 
-	/* Arrow */
-void obj_arrow(objparm *pm)
+void _obj_arrow(objparm *pm, int twoside)
 {
     int l,ii[6],xx,yy;
     double dx,dy,length,dd[6];
@@ -152,11 +152,29 @@ void obj_arrow(objparm *pm)
     ii[4]=rint(dd[4])+ii[0]; ii[5]=rint(dd[5])+ii[1];
     gdImageFilledPolygon(image,(gdPointPtr) ii,3,pm->color[0]);
     xx=rint(dd[0])+ii[0];yy=rint(dd[1])+ii[1];
+    if(twoside) {
+	ii[0]=pm->p[0]; ii[1]=pm->p[1];
+	ii[2]=-rint(dd[2])+ii[0]; ii[3]=-rint(dd[3])+ii[1];
+	ii[4]=-rint(dd[4])+ii[0]; ii[5]=-rint(dd[5])+ii[1];
+	gdImageFilledPolygon(image,(gdPointPtr) ii,3,pm->color[0]);
+    }
     stem: if(pm->fill)
       gdImageDashedLine(image,pm->p[0],pm->p[1],xx,yy,pm->color[0]);
     else
       gdImageLine(image,pm->p[0],pm->p[1],xx,yy,pm->color[0]);
-    
+    if(vimg_enable) vimg_line(scale_buf[0],scale_buf[1],scale_buf[2],scale_buf[3]);
+}
+
+	/* Arrow */
+void obj_arrow(objparm *pm)
+{
+    _obj_arrow(pm,0);
+}
+
+	/* 2-sided arrow */
+void obj_arrow2(objparm *pm)
+{
+    _obj_arrow(pm,1);
 }
 
 	/* horizontal line */
@@ -200,6 +218,8 @@ void obj_parallel(objparm *pm)
 	xi=rint(i*xv); yi=rint(i*yv);
 	gdImageLine(image,pm->p[0]+xi,pm->p[1]+yi,pm->p[2]+xi,pm->p[3]+yi,
 		    pm->color[0]);
+	if(vimg_enable) vimg_line(scale_buf[0]+xi,scale_buf[1]+yi,
+				  scale_buf[2]+xi,scale_buf[3]+yi);
     }
 }
 
@@ -214,6 +234,7 @@ void obj_rect(objparm *pm)
       gdImageFilledRectangle(image,x1,y1,x2,y2,pm->color[0]);
     else
       gdImageRectangle(image,x1,y1,x2,y2,pm->color[0]);
+    if(vimg_enable) vimg_rect(scale_buf[0],scale_buf[1],scale_buf[2],scale_buf[3]);
 }
 
 	/* square */
@@ -228,6 +249,8 @@ void obj_square(objparm *pm)
     else
       gdImageRectangle(image,pm->p[0],pm->p[1],
 		     pm->p[0]+w,pm->p[1]+h,pm->color[0]);
+    if(vimg_enable) vimg_rect(scale_buf[0],scale_buf[1],
+			      scale_buf[0]+pm->pd[2],scale_buf[1]+pm->pd[2]);
 }
 
 	/* triangle */
@@ -238,6 +261,7 @@ void obj_triangle(objparm *pm)
       gdImageFilledPolygon(image,(gdPointPtr) pm->p,3,pm->color[0]);
     else
       gdImagePolygon(image,(gdPointPtr) pm->p,3,pm->color[0]);
+    if(vimg_enable) vimg_polyline(scale_buf,3,1);
 }
 
 	/* polygon */
@@ -250,6 +274,7 @@ void obj_poly(objparm *pm)
       gdImageFilledPolygon(image,(gdPointPtr) pm->p,cnt,pm->color[0]);
     else
       gdImagePolygon(image,(gdPointPtr) pm->p,cnt,pm->color[0]);
+    if(vimg_enable) vimg_polyline(scale_buf,cnt,1);
 }
 
 	/* rays */
@@ -258,8 +283,11 @@ void obj_rays(objparm *pm)
     int i, n;
     n=(pm->pcnt)/2;
     scale(pm->pd,pm->p,n);
-    for(i=2;i<2*n;i+=2)
-      gdImageLine(image,pm->p[0],pm->p[1],pm->p[i],pm->p[i+1],pm->color[0]);
+    for(i=2;i<2*n;i+=2) {
+	gdImageLine(image,pm->p[0],pm->p[1],pm->p[i],pm->p[i+1],pm->color[0]);
+	if(vimg_enable) vimg_line(scale_buf[0],scale_buf[1],
+				  scale_buf[i],scale_buf[i+1]);
+    }
 }
 
 	/* segments */
@@ -270,6 +298,7 @@ void obj_lines(objparm *pm)
     scale(pm->pd,pm->p,n);
     for(i=2;i<2*n;i+=2)
       gdImageLine(image,pm->p[i-2],pm->p[i-1],pm->p[i],pm->p[i+1],pm->color[0]);
+    if(vimg_enable) vimg_polyline(scale_buf,n,0);
 }
 
 	/* segments */
@@ -280,6 +309,7 @@ void obj_dlines(objparm *pm)
     scale(pm->pd,pm->p,n);
     for(i=2;i<2*n;i+=2)
       gdImageDashedLine(image,pm->p[i-2],pm->p[i-1],pm->p[i],pm->p[i+1],pm->color[0]);
+    if(vimg_enable) vimg_polyline(scale_buf,n,0);
 }
 
 	/* points */
@@ -319,6 +349,8 @@ void obj_arc(objparm *pm)
     pm->p[2]=rint(pm->pd[2]*xscale); pm->p[3]=rint(pm->pd[3]*yscale);
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],
 	       pm->pd[4],pm->pd[5],pm->color[0]);
+    if(vimg_enable) vimg_arc(scale_buf[0],scale_buf[1],
+			     0.5*pm->pd[2],0.5*pm->pd[3],pm->pd[4],pm->pd[5]);
 }
 
 	/* Ellipse: centre 0,1, width 2, hight 3, color 4,5,6 */
@@ -333,6 +365,7 @@ void obj_ellipse(objparm *pm)
 			    color_bounder,pm->color[0]);
     }
     gdImageArc(image,pm->p[0],pm->p[1],pm->p[2],pm->p[3],0,360,pm->color[0]);
+    if(vimg_enable) vimg_ellipse(scale_buf[0],scale_buf[1],0.5*pm->pd[2],0.5*pm->pd[3]);
 }
 
 	/* Circle */
@@ -623,7 +656,6 @@ void obj_setstyle(objparm *pm)
 	else
 	  pm->p[i]=getcolor(pm->pd[3*i],pm->pd[3*i+1],pm->pd[3*i+2]);
     }
-    
     gdImageSetStyle(image,pm->p,t); styled=1;
 }
 
@@ -735,6 +767,7 @@ void obj_plot(objparm *pm)
     varpos=eval_getpos(EV_T);
     if(varpos<0) return; /* unknown error */
     evalue_compile(p1); evalue_compile(p2);
+    if(vimg_enable) vimg_plotstart();
     for(i=j=0;i<=tstep;i++) {
 	if(n==1) {
 	    if(tranged) t=tstart+i*v; else t=xstart+i*v; 
@@ -746,6 +779,7 @@ void obj_plot(objparm *pm)
 	}
 	if(!finite(dc[0]) || !finite(dc[1])) ic[0]=ic[1]=-BOUND;
 	else scale(dc,ic,1);
+	if(vimg_enable) vimg_plot1 (scale_buf[0],scale_buf[1]);
 	if(j==0) {
 	    gdImageSetPixel(image,ic[0],ic[1],pm->color[0]); j++;
 	}
@@ -762,6 +796,7 @@ void obj_plot(objparm *pm)
 	}
 	memmove(oc,ic,sizeof(oc));
     }
+    if(vimg_enable) vimg_plotend();
 }
 
 	/* set levelcurve granularity */
@@ -834,6 +869,24 @@ void obj_output(objparm *pm)
     snprintf(imagefilename,sizeof(imagefilename),"%s",p);
     output();
     snprintf(imagefilename,sizeof(imagefilename),"%s",namebuf);
+}
+
+	/* vimgfile */
+void obj_vimgfile(objparm *pm)
+{
+    char *p;
+    p=find_word_start(pm->str); *find_word_end(p)=0;
+    snprintf(vimgfilename,sizeof(vimgfilename),"%s",p);
+    if(vimg_ready) vimg_close();
+}
+
+	/* vimg enable/disable */
+void obj_vimg(objparm *pm)
+{
+    vimg_enable=pm->pd[0];
+    if(vimg_enable>0 && vimg_ready==0) {
+	vimg_init();
+    }
 }
 
 	/* Set affine transformation */

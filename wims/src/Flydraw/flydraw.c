@@ -23,6 +23,7 @@
 #include "../Lib/libwims.h"
 
 char imagefilename[1024];
+char vimgfilename[1024];
 int sizex, sizey, saved;
 gdImagePtr image=NULL, brushimg=NULL, tileimg=NULL, wimg=NULL;
 int brushed=0,tiled=0,styled=0,width=1, savew=1, wcolor=-1;
@@ -39,6 +40,12 @@ int lstep=4;
 ev_variable vartab[MAX_VARS];
 char varnamebuf[MAX_VARNAMEBUF], *varnameptr=varnamebuf;
 int varcnt;
+int vimg=0;			/* 0: no vector image output.
+				 * 1: DXF vector output. */
+int vimg_enable=0;		/* 0: disable. 1: enable. */
+int vimg_ready=0;
+FILE *vimgf=NULL;
+double scale_buf[MAX_PARMS];
 /***** Les modifs a JC Fev 06 *****/
 /** les matrices suivantes sont initialisees par la commande setmatrix nummatrix,a11,a12,a21,a22 */
 /** elles sont remises a l'unite par resetmatrix nummatrix */
@@ -125,6 +132,7 @@ void output(void)
 #include "lines.c"
 #include "nametab.c"
 #include "evalue.c"
+#include "vimg.c"
 #include "objects.c"
 
 void process(void)
@@ -159,6 +167,7 @@ int main(int argc, char *argv[])
     process();
     if(!saved || imagefilename[0]!=0) output();
     if(image) gdImageDestroy(image);
+    if(vimg_ready) vimg_close();
     return 0;
 }
 

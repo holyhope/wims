@@ -149,12 +149,13 @@ int widthcolor(int w, int color)
 void scale(double dbuf[], int ibuf[], int cnt)
 {
     int i; double x,y;
-    for(i=0;i<cnt*2;i+=2) {
+    for(i=0;i<cnt*2 && i<MAX_PARMS;i+=2) {
 	if(transform) {
 	    x=dbuf[i]*matrix[0]+dbuf[i+1]*matrix[1];
 	    y=dbuf[i]*matrix[2]+dbuf[i+1]*matrix[3];
 	}
 	else {x=dbuf[i]; y=dbuf[i+1];}
+	scale_buf[i]=x+transx; scale_buf[i+1]=y+transy;
 	ibuf[i]=rint((x-xstart+transx)*xscale);
 	ibuf[i+1]=rint((y-ystart+transy)*yscale);
 	if(ibuf[i]<-BOUND) ibuf[i]=-BOUND;if(ibuf[i]>BOUND) ibuf[i]=BOUND;
