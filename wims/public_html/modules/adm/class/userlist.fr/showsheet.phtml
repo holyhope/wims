@@ -1,14 +1,19 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!!<html><head>
+!!$wims_html_header
+!!</head>
+!!<body $wims_htmlbody>
+!!!headmenu
+!set module_title1=$module_title
+!reset module_title
+!header
+!set module_title=$module_title1
+
 !read names.phtml
 
 <center>$classname
 <p>
 <h1>Liste de participants
- </b></h1>
+</h1>
 <font color=green><b>D&eacute;tails du travail sur la feuille $numshowsheet<br>
 $sh_title</b></font>
 </h1></center>
@@ -115,7 +120,7 @@ $sh_title</b></font>
         <font color=green>
        !endif
       !endif
-      $t</b></font>
+      $t</font>
       !let tot_$k=$[$(tot_$k)+$t]
      </td>  
     !next k
