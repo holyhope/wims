@@ -35,7 +35,7 @@ $wims_html_header
 <font color=red>I</font>nteractive
 <font color=red>M</font>athematics
 <font color=red>S</font>erver<br>
-<font size=-1>at <a href=/>$httpd_HTTP_HOST</a></font> </h1>
+<font size="-1">at <a href=/>$httpd_HTTP_HOST</a></font> </h1>
 
 !set llimit=100
 !set list=!mexec getnewoef.sh

@@ -53,7 +53,7 @@ $wims_html_header
 <font color=red>M</font>ultipurpose<br>
 <font color=red>I</font>nteractive
 <font color=red>S</font>erver
-<font size=-1>en <a href=/>$httpd_HTTP_HOST</a></font> <p>
+<font size="-1">en <a href=/>$httpd_HTTP_HOST</a></font> <p>
 $module_title</h1></center> <p>
 
 !set mir=wimshome/public_html/html/mirrors.es

@@ -51,7 +51,7 @@ $wims_html_header
 <font color=red>I</font>nteractieve
 <font color=red>M</font>ultipurpose
 <font color=red>S</font>erver<br>
-<font size=-1>op <a href=/>$httpd_HTTP_HOST</a></font> <p>
+<font size="-1">op <a href=/>$httpd_HTTP_HOST</a></font> <p>
 $module_title</h1></center> <p>
 
 !set mir=wimshome/public_html/html/mirrors.en
