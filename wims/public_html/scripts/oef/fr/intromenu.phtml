@@ -42,7 +42,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 !endif
 
 !form new
-<input type=hidden name=module value=$module>
+<input type=hidden name=module value="$module">
 <center><table border=0><tr>
 !set special_parm=!trim $special_parm
 !if select iswordof $special_parm2 and $special_parm!=$empty
@@ -61,9 +61,9 @@ exercices.
 !formselect qcmlevel from 1 to 9
 <tr><td align=center>Chronomètre <td>
 <input size=7 name=scoredelay value="$scoredelay"> secondes.
+</td></tr>
 !read introhook.phtml
 !if expert iswordof $special_parm2
-   </td></tr>
    <tr><td align=center>
    Nombre de r&eacute;ponses affich&eacute;es dans les QCM: </td><td>
    !default intro_qcmpresent=4
@@ -89,13 +89,12 @@ exercices.
    !let tmp=!replace word expert by $ in $special_parm2
    </td></tr>
    <tr><td colspan=2 align=center>
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Param&eacute;trage simplifi&eacute;
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Paramétrage simplifié
    <input type=hidden name=intro_expert value=yes>
 !else
-   </td></tr>
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Param&eacute;trage expert
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp Paramétrage expert
 !endif
 </table></center> <p><center>
 <input type=submit value="Au travail">&nbsp;
@@ -106,7 +105,7 @@ exercices.
 !if $exocnt>10
  !form intro
  <input type=hidden name=special_parm2 value=select>
- <input type=hidden name=module value=$module>
+ <input type=hidden name=module value="$module">
  Sélectionner les titres avec le mot
  <input size=12 maxlength=12 name=special_parm value="$oldparm">
  <input type=submit value=OK>
@@ -120,7 +119,7 @@ vos choix (ou parmi tous les exercices disponibles si votre choix est vide).
  autres.
 !endif
 
-<small><p>Vous pouvez mettre deux nombres dans le chronomètre, une petite
+<p><small>Vous pouvez mettre deux nombres dans le chronomètre, une petite
 limite suivie d'une plus grande. Dans ce cas, la première limite déclenche 
 la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
 </small>
