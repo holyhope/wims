@@ -29,7 +29,7 @@ $n_yourname:
  $n_subject:
  <input size=55 name=c_subject value="$c_subject"> <br>
  $n_content:<br>
- !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap>
+ !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap $wims_id>
  !set msgsrc2=</textarea>
  !if $c_quote>0 and $c_prec!=$empty
   !mexec scripts/quote.sh
@@ -45,7 +45,7 @@ $n_yourname:
  <p><center>
  <input type=submit name=c_preview value="$n_preview">
  &nbsp;&nbsp;
- <input type=submit name=c_send value="$n_send0">
+ <input type=submit name=c_send value="$n_send0" $wims_on_click">
  &nbsp;&nbsp;
  <input type=submit name=c_list value="$n_giveup">
  </center> <p>
@@ -61,7 +61,7 @@ $n_yourname:
   </div>
   <div class="wims_forum_msg">
  !read $forumdir/$c_prec html
- $tag_escaper </div></table></form><font size=+0>
+ $tag_escaper </div></table></form><font size="+0">
  <p><hr> <p>
 !endif
 

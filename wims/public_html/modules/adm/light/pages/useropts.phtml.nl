@@ -30,14 +30,14 @@ Deze pagina geeft U toegang tot het instellen van diverse eigenschappen van WIMS
 Deze instellingen zijn:
 <ul>
 !if $wims_user=$empty
- <p><li>De standaard taal.
+ <li><p>De standaard taal.
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src=gifs/$la.gif border=1>$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
 !endif
- <p><li>
+ <li><p>
  De grootte van wiskundige symbolen en formules. 
  Gebruik de onderstaande regel voor de instellingen.
   <p>
@@ -77,7 +77,7 @@ Deze instellingen zijn:
 
 !if $wims_user=$empty
 Wanneer alles volgens uw wens is , voeg dan  
- <a href="$wims_ref_name?lang=$lang&useropts=$texsize$texalign$useropt2"
+ <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"
  title="WIMS">deze link</a> toe aan uw bookmarks, zodat bij het later bezoeken van deze site
  de instellingen wat gemakkelijker verlopen.
 !else

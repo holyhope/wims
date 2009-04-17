@@ -36,10 +36,10 @@ Estas preferencias son:
  <li>El lenguaje predeterminado.
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
-   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src=gifs/$la.gif border=1>$(lang_name_$la)
+   !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
- <p><li>El tamaño de los símbolos matemáticos y las fórmulas. Use la siguiente
+ <li><p>El tamaño de los símbolos matemáticos y las fórmulas. Use la siguiente
   línea para comparar los tamaños de los símbolos y los textos.
   <p>
   Letras griegas $m_alpha,$m_pi. Expresiones matemáticas 
@@ -76,7 +76,7 @@ Estas preferencias son:
 </ul>
 
 Cuando todo corresponda exactamente con lo que quiera, ponga
-<a href="$wims_ref_name?lang=$lang&useropts=$texsize$texalign$useropt2"
+<a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"
  title="WIMS">este enlace</a>
 en sus Favoritos, para mantener estas preferencias para conexiones futuras.
 
