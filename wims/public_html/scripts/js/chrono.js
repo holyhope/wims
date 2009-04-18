@@ -1,5 +1,5 @@
 
-<script language=javascript>
+<script language=javascript type="text/javascript">
 var rtick;
 rtick=$wims_read_parm;
 function clock() {
