@@ -5,12 +5,12 @@
   !set l=!line $i of $(chapter$chapter)
   !set t=!item 1 of $l
   !set s=!item 2 to -1 of $l
-  <p><li><a name=$t>
+  <li><p><a name=$t></a>
   !if $(chapter)_$t iswordof $open
    !set o=!replace word $(chapter)_$t by $ in $open
-   <H3>$s <font size=-1>
+   <h3>$s <font size="-1">
    !href module=$module&chapter=$chapter&open=$o (cerrar sección)
-   </font></H3> <p>
+   </font></h3> <p>
    !read $chapter/$t.phtml
   !else
    !href module=$module&chapter=$chapter&open=$open,$(chapter)_$t#$t $s

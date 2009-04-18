@@ -3,10 +3,11 @@
 !for i=1 to $chaptercnt
  !set n=!linecnt $(chapter$i)
  !set a=!line 1 of $(chapter$i)
- <p><font size=+1><li>
+ <li><p><font size="+1">
  !href module=$module&chapter=$i $a
- </font><ol>
- !if robot notin $session
+ </font>
+ !if robot notin $session and $n >=2
+  <ol>
   !for j=2 to $n
    !set l=!line $j of $(chapter$i)
    !set t=!item 1 of $l
@@ -14,10 +15,10 @@
    <li>
    !href module=$module&chapter=$i&open=$open,$(i)_$t#$t $s
   !next j
+  </ol>
  !endif
- </ol>
 !next i
- <p><font size=+1><li>
+ <li><p><font size="+1">
  !href module=help/wimsdoc.en Documentació tècnica per desenvolupadors
  </font>
 </ol>
