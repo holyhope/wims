@@ -83,9 +83,9 @@ $ in $input_rg
 !set sup2=!replace <sup> by </sup> in $sup1
 !set sup2=!replace &nbsp; by $ in $sup2
 !set fill_namelist=!append item $fillcnt to $fill_namelist
-$sup1<img width=1 height=$[$fill_sy+4] src=gifs/transparent.gif
+$sup1<img width=1 height=$[$fill_sy+4] src="gifs/transparent.gif" alt="transparent"
 border=0 vspace=0 hspace=0 align=top><a name=fill$fillcnt id=fill$fillcnt><img
-width=$[ceil($sizei/$sizej)*$fill_sx] height=$[($fill_sy*$sizej)+4] src=gifs/transparent.gif
+width=$[ceil($sizei/$sizej)*$fill_sx] height=$[($fill_sy*$sizej)+4] src="gifs/transparent.gif" alt="transparent"
 border=0 vspace=0 hspace=0 align=top></a>$sup2
 <input type=hidden name=reply$i value="">
 !reset inputsize

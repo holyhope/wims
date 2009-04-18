@@ -35,7 +35,7 @@ ans_molecule=!line 2 to -1 of $ans_molecule
 !readproc oef/togetfile.proc $replyfichier new\
 $ans_molecule
 
-!set replyfile=$wims_ref_name?session=$session&cmd=getfile&special_parm=$replyfichier
+!set replyfile=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$replyfichier
 
 !if $wims_read_parm=nocompare
  ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
@@ -47,7 +47,7 @@ $ans_molecule
   !goto end
 !endif
 
-!set goodfile=$wims_ref_name?session=$session&cmd=getfile&special_parm=$goodfichier
+!set goodfile=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$goodfichier
 !readproc oef/togetfile.proc $goodfichier new\
   $ans_mol
   
@@ -103,7 +103,7 @@ ans_feedback=!lines2rows $ans_feedback
 !else
  diareply$i=bad
  !if $ans_image notsametext 
-   ans_image=<img src=$imagedir/$ans_image width=200>
+   ans_image=<img src="$imagedir/$ans_image" width=200>
  !endif
 !endif
 
@@ -125,7 +125,7 @@ ans_checkmol_func_g=!nonempty items $ans_checkmol_func_g
 !set ysize=240
 
 reply_$i =<p>\
-<applet name="WIMSchem" codebase=$ans_appletdir code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">\
+<applet name="WIMSchem" codebase="$ans_appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">\
 	    <param name="showfile" value="yes">\
 	    <param name="language" value="en">\
 	    <param name="formattype" value="latex">\

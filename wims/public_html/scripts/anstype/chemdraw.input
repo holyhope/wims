@@ -48,7 +48,7 @@ $ in $oef_applet_option
     !readproc oef/togetfile.proc $(cyclo[$t_]).el new\
 $temp
    !set templ=$templ\
- <param name="template$t_" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$(cyclo[$t_]).el">
+ <param name="template$t_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(cyclo[$t_]).el">
   !next
   !set cnt_=$[$cnt_+6]
  !endif
@@ -64,7 +64,7 @@ $temp
 $temp_mol
    !set cnt_=$[$cnt_+1]
    !set templ=$templ\
-   <param name="template$cnt_" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$(template[$s_])">
+   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(template[$s_])">
   !endif
  !next
 !endif
@@ -75,7 +75,7 @@ $temp_mol
    !set file0=!replace internal / by , in $file
    !readproc oef/togetfile.proc $(file0[-1]) new\
 $temp
-  !set file=<param name="file" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=$(file0[-1])">
+  !set file=<param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])">
  !endif
 
 !set list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
@@ -115,7 +115,7 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
  !form reply
 <input type=hidden name="reply$i" id="WIMSchemreply" value="">
 
-<applet name="WIMSchem" codebase=$appletdir code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
+<applet name="WIMSchem" codebase="$appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
 	    <param name="showfile" value="$showfile">
 	    <param name="show_hydrogen" value="$show_hydrogen">
         <param name="show_carbon" value="$show_carbon">

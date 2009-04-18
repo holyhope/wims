@@ -31,6 +31,7 @@ ifile=$image
  !else
   !if getins isin $image
    ifile=!replace internal &modif= by $ $ in $ifile
+   ifile=!replace internal &+modif= by $ $ in $ifile
    ifile=!replace internal special_parm= by $ $ in $ifile
    ifile=!word 2 of $ifile
   !endif
@@ -75,11 +76,11 @@ copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
 $test2
 
 !if analysenofig notitemof $(replyoption$i)
- reply_$i=<img src=$ins_url align=middle vspace=5 hspace=5 border=0>
+ reply_$i=<img src="$ins_url" alt="$ins_url" align=middle vspace=5 hspace=5 border=0>
 !else
  reply_$i=&nbsp;
 !endif
-reply__$i=<img src=gifs/$ball.gif>
+reply__$i=<img src="gifs/$ball.gif" alt="$ball">
 m_result$i=$i_
 
 !if $test=$empty
