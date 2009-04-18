@@ -444,7 +444,7 @@ sub store_tag { my ($cle, $label, $tag, $ref, $ref_bloc) = @_;
 
 sub store_label { my ($label, $Id, $ref) = @_;
    $ref->{fichier}{$label} = $Id; 
-   "<a name=\"$label\">";
+   "<a name=\"$label\"></a>";
 }
 
 sub dbg { print STDERR "$_[0]\n" if ($verbose); }
@@ -453,7 +453,7 @@ sub store_index { my ($label, $Id, $ref_index) = @_;
    dbg("... index: \"$label\"");
    my $L = $ref_index->{page}{$label};
    $ref_index->{page}{$label} =  !$L ? $Id : "$L,$Id";
-   "<a name=\"$label\">";
+   "<a name=\"$label\"></a>";
 }
 
 sub class_index { my ($index,$level) = @_ ; 

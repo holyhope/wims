@@ -81,7 +81,7 @@ $d,
 
 !form reply
 Nueva fecha de expiración:
-día <input size=2 maxlength=2 name=parm3 value=$d_>, mes
+día <input size=2 maxlength=2 name=parm3 value="$d_">, mes
 !set parm2=$[$m_]
 !formselect parm2 from 1 to 12 prompt $months
 , año
