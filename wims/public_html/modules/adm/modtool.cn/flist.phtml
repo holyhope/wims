@@ -10,7 +10,7 @@
 !set doctest1=!module category devel/$auth_login/$mod
 
 你的模块
-<em><font color=blue>$title</em></font> ($description)
+<em><font color=blue>$title</font></em> ($description)
 <small>
 !href cmd=reply&jobreq=index $mod
 </small>
@@ -21,7 +21,9 @@
 
 !set table_cellpadding=1
 !set table_cellspacing=0
-!set table_center=left
+!set table_center=
+!set table_header=!replace internal <> by in $table_header
+!set table_end=!replace internal </> by in $table_end
 <p>$table_header
 $table_hdtr
 <th>名称<th>作用</th><th>解释
@@ -52,7 +54,7 @@ $table_end
 !form reply
 <input type=hidden name=jobreq value=edfile>
 添加新文件:
-<input size=20 name=fname value=$lastfname>
+<input size=20 name=fname value="$lastfname">
 <input type=submit value=提交>
 !href cmd=reply&jobreq=binfile 二进制文件
 &nbsp;

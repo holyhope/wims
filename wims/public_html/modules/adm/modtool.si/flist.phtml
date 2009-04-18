@@ -10,7 +10,7 @@
 !set doctest1=!module category devel/$auth_login/$mod
 
 Your module 
-<em><font color=blue>$title</em></font> ($description)
+<em><font color=blue>$title</font></em> ($description)
 <small>
 !href cmd=reply&jobreq=index $mod
 </small>
@@ -21,7 +21,9 @@ contains the following files.
 
 !set table_cellpadding=1
 !set table_cellspacing=0
-!set table_center=left
+!set table_center=
+!set table_header=!replace internal <> by in $table_header
+!set table_end=!replace internal </> by in $table_end
 <p>$table_header
 $table_hdtr
 <th>Name<th>Action</th><th>Explanation
@@ -52,7 +54,7 @@ $table_end
 !form reply
 <input type=hidden name=jobreq value=edfile>
 Add a new file:
-<input size=20 name=fname value=$lastfname>
+<input size=20 name=fname value="$lastfname">
 <input type=submit value=OK>
 !href cmd=reply&jobreq=binfile Binary files
 &nbsp;
