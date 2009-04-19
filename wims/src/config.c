@@ -711,12 +711,12 @@ void define_html_header(void)
 	char *nbuf;
 	cp=find_word_start(cp);
 	if(strchr(cp,'/')==NULL) {
-	    char *pc, *th;
+	    char *pc, *th; int st=0;
 	    pc=getvar("wims_class");
 	    if(pc!=NULL && *pc!=0 && strcmp(cp,"class")==0) {
 		 nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
 		th=getvar("class_theme");
-		if(th==NULL || *th==0) th=getvar("wims_theme");
+		if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
 	    }
 	    else {
 		nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
@@ -724,12 +724,14 @@ void define_html_header(void)
 	    }
 	    if(strcmp(cp,"-theme-")==0 && strchr(th,'.')==NULL) {
 		if(th==NULL || *th==0) th="default";
-		nbuf=mkfname(NULL,"html/themes/%s/css",th);
+		nbuf=mkfname(NULL,"html/themes/%s/css.css",th);
 	    }
 	    if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
-		snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
+	      if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
 %s\n\
---></style>",tmplbuf);
+--></style>",tmplbuf); }
+		  else {snprintf(buf,sizeof(nbuf)+100,"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">",nbuf);
+		}
 		setvar("wims_CSS",buf);
 	    }
 	    else {
