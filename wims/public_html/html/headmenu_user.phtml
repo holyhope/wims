@@ -48,10 +48,10 @@
    !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>&nbsp;...&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$cksteps">$cksteps</a>
   !else
    !ifval $ckstep=$cksteps-2
-    !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]"</a>&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$cksteps">$cksteps</a>
+    !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>&nbsp;<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$cksteps">$cksteps</a>
    !else 
     !ifval $ckstep=$cksteps-1
-     !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]"</a>
+     !set 2_=$2_<a href="$wims_ref_name?session=$session&+$qstr&+checkstep=$[$ckstep+1]">$[$ckstep+1]</a>
     !endif
    !endif
   !endif
@@ -94,7 +94,7 @@
   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
-!if $module_has_about=yes and $cmd notwordof help intro
+!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
 !if _ notin $wims_session

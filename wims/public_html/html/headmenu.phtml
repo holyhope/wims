@@ -1,10 +1,11 @@
+
 !!************** headmenu.phtml  ****************
 
 !! This File creates a set of 1 to 11 links, to put in the head menu of Wims, for anonymous users.
 
 !! **********************************************
 
-!if robot isin $session or $wims_mode=popup or _check isin $session
+!if robot isin $session or $wims_mode=popup or _check isin $session or $module=help/main.$lang
  !exit
 !endif
 
@@ -26,7 +27,7 @@
 !if _ isin $wims_subsession
  !set 1_=!append line back,3,window.close() to $1_
 !else
- !if $window != embeded
+ !if $window != embeded and $module!=home
    !set 1_=!append line home,1,session=$wims_session.1 to $1_
  !endif
 !endif
@@ -52,7 +53,7 @@
 !endif
 
 !!********* Link #6 : "References"
-!if _ notin $wims_session and adm/ notin $module \
+!if _ notin $wims_session and adm/ notin $module and home notin $module\
 	and $cmd notwordof help ref
  !set 1_=!append line ref,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
 !endif
@@ -74,26 +75,28 @@
 !!********* Link #9 : "About"
 !if $window != embeded \
 	and $module_has_about=yes \
-	and adm notin $module \
+	and adm notin $module and tool notin $module and home notin $module \\
 	and $cmd notwordof help intro
 	
-		!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+		!set 1_=!append line about,4,module=$module&+cmd=help&+special_parm=about,mhelp to $1_
 !endif
 
 !!********* Link #10 : "WIMS Help"
-!set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+!if $module!=home
+ !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+!endif
 
 !!********* Link #11 : "Other Languages"
 !if $wims_ref_otherlangs=yes and $wims_otherlangs!=$empty
  !if $wims_light_module=yes
   !set wims_name_pagebase=!char 1 to -4 of $phtml
   !for i_ in $wims_headmenu_languages
-   !set 1_=!append line $i_,0,<a href="wims.cgi?session=$session&lang=$i_&useropts=$useropts&module=$module&phtml=$wims_name_pagebase.$i_&parm1=$parm1&parm2=$parm2&parm3=$parm3&parm4=$parm4&parm5=$parm5"><img src="gifs/$i_.gif" border="1" alt="$i_"></a> to $1_
+   !set 1_=!append line $i_,0,<a href="wims.cgi?session=$session&+lang=$i_&+useropts=$useropts&+module=$module&+phtml=$wims_name_pagebase.$i_&+parm1=$parm1&+parm2=$parm2&+parm3=$parm3&+parm4=$parm4&+parm5=$parm5"><img src="gifs/$i_.gif" border="1" alt="$i_"></a> to $1_
   !next i_
  !else
   !set wims_name_mbase=!char 1 to -4 of $module
   !for i_ in $wims_otherlangs
-   !set 1_=!append line $i_,0,<a href=wims.cgi?session=$session&lang=$i_&useropts=$useropts&module=$wims_name_mbase><img src=gifs/$i_.gif border=1 alt=$i_></a> to $1_
+   !set 1_=!append line $i_,0,<a href="wims.cgi?session=$session&+lang=$i_&+useropts=$useropts&+module=$wims_name_mbase"><img src="gifs/$i_.gif" border=1 alt=$i_></a> to $1_
   !next i_
  !endif
 !endif

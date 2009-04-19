@@ -1,22 +1,30 @@
 !!##language independent 
-<html><head>
-$wims_html_header
+!!<html><head>
+!!
+!!set wims_html_header=!append line $header to $wims_html_header
 !if $job iswordof read print
- $header
+ !set wims_html_header=!append line $header to $wims_html_header
 !endif
-</head>
+!!</head>
 !if $job=help
+!!<html><head>
+!!$wims_html_header
+!!</head>
+!header1
  !changeto help.phtml
 !endif
 
 !if help isin $wims_session and $doc!=$helpd
- <body $wims_htmlbody onload=window.close();>
+!!<html><head>
+!!$wims_html_header
+!set wims_html_onload=!append word window.close(); to $wims_html_onload
+ !!<body $wims_htmlbody onload="window.close();">
+ !header1
  $n_helpclose
  </body></html>
  !exit
 !endif
-<body $wims_htmlbody><div class=wimsmenu>
-
+!!<body $wims_htmlbody><div class=wimsmenu>
 !if $cmd=help and $special_parm=about
  !changeto about.phtml
 !endif
@@ -24,9 +32,9 @@ $wims_html_header
 !if $job notwordof home
  !read menu.phtml
 !else
- !headmenu
+ !header
 !endif
-</div><div class=wimsbody>
+!!</div><div class=wimsbody>
 !read $job.phtml
 
 !reset rEg,preview,abandon,Titb,Keyw,Next,Prev,Upbl,currcont,\
@@ -37,5 +45,7 @@ $wims_html_header
  !reset parm$i
 !next i
 
+!if $job notwordof home
 </div>
 </body></html>
+!endif
