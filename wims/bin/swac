@@ -5,14 +5,19 @@ version=1.0
 ##author Bernadette Perrin-Riou
 packs="deu-balm-alexandra
 deu-balm-ulrike-verbs
+deu-wims-math
+deu-wims-num
 eng-balm-verbs
 eng-wcp-us
+eng-balm-emmanuel
+eng-balm-verbs
 fra-balm-conjug
 fra-balm-flora-expr
 fra-balm-flora-num
 fra-balm-voc
 fra-wims-voc
 nld-wcp
+por-wims-num
 spa-wims-octavio
 swe-balm-num
 swe-balm-voc
@@ -28,7 +33,7 @@ for i in $packs; do
   j=${i}_mp3 ;
   wget http://$adresse/$j.tar; echo "wget $adresse/$j.tar" ;
   tar xf $j.tar;
-  cd $j ; cp -r * $swac/$i/ ; cd $swac ; rm $j.tar ; rm -r $j;
+  mkdir -p $swac/$i; cd $j ; cp -r * $swac/$i/ ; cd $swac ; rm $j.tar ; rm -r $j;
   echo "$i" >> version.tmp ;
 done ;
 
