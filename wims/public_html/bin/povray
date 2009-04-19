@@ -19,7 +19,7 @@ tstamp=`date '+%s'`
 
 if [ "$wims_exec_parm" = "about" ]; then
  dd=`bin/ch..root povray -v 2>&1 | head -1`
- echo "<a href=http://www.povray.org>Povray</a> ($dd)"
+ echo "<a href=\"http://www.povray.org\">Povray</a> ($dd)"
  exit
 fi
 
@@ -62,8 +62,8 @@ bin/ch..root convert $CONVERT_OPT $convert_transp -delay $w_ins_anim_delay -loop
 mv -f $tmp_dir/povray.$format $s2_dir
 
 if [ -f "$s2_dir/povray.$format" ]; then
- src="wims.cgi?session=$w_session&cmd=getins&special_parm=povray.$format&modif=$tstamp"
- echo "<img src=$src $w_povray_image_attr alt=\"Ray traced image\">"
+ src="wims.cgi?session=$w_session&+cmd=getins&+special_parm=povray.$format&+modif=$tstamp"
+ echo "<img src=\"$src\" $w_povray_image_attr alt=\"Ray traced image\">"
  echo $src
 fi
 
