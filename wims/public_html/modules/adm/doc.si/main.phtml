@@ -1,21 +1,27 @@
+!!##language independent 
+!!<html><head>
+!!
+!set wims_html_header=!append line $header to $wims_html_header
+!!!if $job iswordof read print
+ !!$header
+!!!endif
+!!</head>
+!if $job=help
 <html><head>
 $wims_html_header
-!if $job iswordof read print
- $header
-!endif
 </head>
-!if $job=help
  !changeto help.phtml
 !endif
 
 !if help isin $wims_session and $doc!=$helpd
- <body $wims_htmlbody onload=window.close();>
- Zdaj lahko zaprete to okno s pomoèjo.
+<html><head>
+$wims_html_header
+ <body $wims_htmlbody onload="window.close();">
+ $n_helpclose
  </body></html>
  !exit
 !endif
-<body $wims_htmlbody><div class=wimsmenu>
-
+!!<body $wims_htmlbody><div class=wimsmenu>
 !if $cmd=help and $special_parm=about
  !changeto about.phtml
 !endif
@@ -23,9 +29,9 @@ $wims_html_header
 !if $job notwordof home
  !read menu.phtml
 !else
- !headmenu
+ !header
 !endif
-</div><div class=wimsbody>
+!!</div><div class=wimsbody>
 !read $job.phtml
 
 !reset rEg,preview,abandon,Titb,Keyw,Next,Prev,Upbl,currcont,\
@@ -36,6 +42,7 @@ $wims_html_header
  !reset parm$i
 !next i
 
+!if $job notwordof home
 </div>
 </body></html>
-
+!endif
