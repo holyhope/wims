@@ -1,19 +1,22 @@
-!set lan=en
-<HTML><HEAD>
-$wims_html_header
-</HEAD>
+!set lan=fr
+!!<HTML><HEAD>
+!!$wims_html_header
+!!</head>
 !if $wims_window=new
- !set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+ !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+ !set wims_html_onload=!append word self.resizeTo(550,550);self.moveTo(30,50); to $wims_html_onload
 !endif
-<BODY $wims_htmlbody $w_resize>
-<DIV CLASS=wimsmenu>
+
+!header1
+
+!!<body $wims_htmlbody $w_resize>
+<div class=wimsmenu>
 !robottrap
 
-<center><table border=0 cellspacing=0 cellpadding=5 bgcolor=$wims_ref_bgcolor
->
+<center><table border=0 cellspacing=0 cellpadding=5 bgcolor="$wims_ref_bgcolor">
 <tr><td align=center>
 !if _ isin $wims_subsession
- <a href=# onclick="window.close()">Fermer la fenêtre d'aide</a>
+ <a href="#" onclick="window.close()">Fermer la fenêtre d'aide</a>
 !else
  !href session=$wims_session.1 Accueil WIMS
 !endif
@@ -26,6 +29,7 @@ $wims_html_header
 !if $chapter>0
  <td align=center>
  !href module=$module&chapter=0 Index d'aides
+&nbsp;
 !endif
 <td align=center>
 !href module=$module&style=print Version imprimable
@@ -40,7 +44,7 @@ $wims_html_header
 !endif
 
 :tabend
-</table></center></DIV><DIV CLASS=wimsbody>
+</table></center></div><div class=wimsbody>
 
 !if $chapter>0
  !set l=!line 1 of $(chapter$chapter)
@@ -54,7 +58,7 @@ $wims_html_header
  !endif
 !endif
 
-<p><center><h1>Aides de WIMS<br><font size=+1><b>
+<p><center><h1>Aides de WIMS<br><font size="+1"><b>
 $l</b></font>
 </h1></center> <p>
 

@@ -1,26 +1,39 @@
 !set lan=nl
-<HTML><HEAD>$wims_html_header
-</HEAD>
+!!<HTML><HEAD>
+!!$wims_html_header
+!!</head>
 !if $wims_window=new
- !set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+ !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
+ !set wims_html_onload=!append word self.resizeTo(550,550);self.moveTo(30,50); to $wims_html_onload
 !endif
-<BODY $wims_htmlbody $w_resize>
+
+!header1
+
+!!<body $wims_htmlbody $w_resize>
+<div class=wimsmenu>
 !robottrap
 
-<DIV CLASS=wimsmenu>
-<CENTER><TABLE border=0 cellspacing=0 cellpadding=5 bgcolor=$wims_ref_bgcolor
->
+<center><table border=0 cellspacing=0 cellpadding=5 bgcolor="$wims_ref_bgcolor">
 <tr><td align=center>
 !if _ isin $wims_subsession
- <a href=# onclick="window.close()">Sluit dit venster</a>
+ <a href="#" onclick="window.close()">Sluit dit venster</a>
 !else
  !href session=$wims_session.1 WIMS home
+!endif
+!if $style=print
+ &nbsp;
+ !href module=$module&chapter=0 Interactive version
+ !set chapter=-1
+ !goto tabend
 !endif
 !if $chapter>0
  <td align=center>
  !href module=$module&chapter=0 Help index
 &nbsp;
 !endif
+<td align=center>
+!href module=$module&style=print Version imprimable
+&nbsp;
 !if $chapter>1
  <td align=center>
  !href module=$module&chapter=$[$chapter-1] Vorige 
@@ -32,7 +45,7 @@
  &nbsp;hoofdstuk
 !endif
 
-</TABLE></CENTER></DIV><DIV CLASS=wimsbody>
+</table></center></div><div class=wimsbody>
 
 !if $chapter>0
  !set l=!line 1 of $(chapter$chapter)
@@ -42,7 +55,8 @@
  !set l=Algemene index
 !endif
 
-<P><CENTER><H1>WIMS help<br><font size=+1><b>
----- $l ----</b></font>
-</H1></CENTER> <P>
+<p><center><h1>WIMS help<br><font size="+1"><b>
+$l</b></font>
+</h1></center> <p>
+
 

@@ -4,17 +4,20 @@
  </body></html>
  !exit
 !endif
+!!<html><head>
+!!$wims_html_header
+!!</head><body $wims_htmlbody onload=window.focus();>
+!!headmenu
 
-<html><head>
-$wims_html_header
-</head><body $wims_htmlbody onload=window.focus();>
-!headmenu
+!set wims_html_onload=!append word window.focus(); to $wims_html_onload
+!header1
+
 <center><h1>
 <font color=red>W</font>WW
 <font color=red>I</font>nteractive
 <font color=red>M</font>ultipurpose
 <font color=red>S</font>erver<br>
-<font size="-1">at <a href=/>$httpd_HTTP_HOST</a></font>
+<font size="-1">at <a href="/">$httpd_HTTP_HOST</a></font>
 </h1></center>
 
 !read $job.phtml
@@ -26,4 +29,3 @@ $wims_html_header
 !endif
 
 !tail
-

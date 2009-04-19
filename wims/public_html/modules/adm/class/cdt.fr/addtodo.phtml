@@ -1,11 +1,13 @@
-<html><head>
-$wims_html_header
-</head><body $wims_htmlbody>
-!headmenu
+!!<html><head>
+!!$wims_html_header
+!!</head><body $wims_htmlbody>
+!!!headmenu
+
+!header1
 
 <center>$classname
 <h1>$cdt_title</h1>
-<font size=+1>Ajout de devoirs</font></center> 
+<font size="+1">Ajout de devoirs</font></center> 
 
 <p><hr width="40%"> <p>
 
@@ -17,7 +19,7 @@ $wims_html_header
 !form reply
 <input type=hidden name=job value=addtodo>
 <input type=hidden name=job2 value=save>
-<p>S&eacute;ance du  :
+<p>Séance du  :
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -30,11 +32,11 @@ $wims_html_header
 !formselect jmonth from 1 to 12 prompt $months
 !formselect jyear from $creyear to $expyear
 <p>
-Nombre de dates &agrave; afficher : 
-<select  name="nbredevoir" onchange=submit()>
+Nombre de dates à afficher : 
+<select  name="nbredevoir" onchange="submit()">
 !for i=1 to $max_todo
  !if $i=$nbredevoir
-  <option value=$i selected="">$i</option>
+  <option value=$i selected>$i</option>
  !else
   <option value=$i>$i</option>
  !endif
