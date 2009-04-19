@@ -485,7 +485,7 @@ void exec_tail(char *p)
 void determine_font(char *l);
 
 	/* standardized header */
-void exec_header(char *p)
+void _header(char *p, int option)
 {
     char *s1, *s2, hbuf[MAX_LINELEN+1], *ws="", *ws2="", *bo, *ol;
     char wsbuf[MAX_LINELEN+1],wsbuf2[MAX_LINELEN+1];
@@ -555,7 +555,7 @@ void exec_header(char *p)
      </head>\n<body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);
     exec_headmenu(p);
-    exec_title(p);
+    if(option) exec_title(p);
     if(cmd_type==cmd_help) {
 	char *s=getvar("special_parm");
 	if(s==NULL) s="";
@@ -567,6 +567,9 @@ void exec_header(char *p)
     }
     header_executed=1;
 }
+
+void exec_header(char *p) { _header(p,1);}
+void exec_header1(char *p) { _header(p,0);}
 
 char href_target[128];
 char jsbuf[512];
@@ -714,7 +717,7 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
 void exec_href(char *p)
 {
     char *s, st[128], *p1, *p2, *p3, *wn="";
-    char *U="<u><FONT COLOR=\"#A0A0C0\">%s</u></FONT>";
+    char *U="<u><font color=\"#A0A0C0\">%s</u></font>";
     char b1[MAX_LINELEN+1], b2[MAX_LINELEN+1];
     int new=0;
     if(!outputing) return;
@@ -1003,7 +1006,7 @@ void exec_getfile(char *p)
 		  "%s?cmd=getfile&session=%s&special_parm=%s&modif=%ld",
 		  ref_name,s,p,nowtime);
     snprintf(jsbuf,sizeof(jsbuf),jsstr,"wims_file","wims_file");
-    if(*prompt) output("<a href=\"%s\">%s</A>\n", url,prompt);
+    if(*prompt) output("<a href=\"%s\">%s</a>\n", url,prompt);
     else output("<a href=%s>",url);
 }
 
@@ -1689,6 +1692,7 @@ MYFUNCTION exec_routine[]={
       {"getscoreweight",EXEC_SCORE|EXEC_SUBST|EXEC_USECALC,calc_getscoreweight},
       {"goto",		EXEC_JUMP|EXEC_SUBST,	exec_goto},
       {"header",	EXEC_HREF,		exec_header},
+      {"header1",	EXEC_HREF,		exec_header1},
       {"headmenu",	EXEC_HREF,		exec_headmenu},
       {"hex",		EXEC_STRING|EXEC_SUBST|EXEC_USECALC,calc_hex},
       {"homeref",	EXEC_HREF,		exec_homeref},
