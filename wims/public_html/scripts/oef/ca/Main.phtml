@@ -19,9 +19,9 @@
 
 !if 0$delay2>0 and $status!=$empty
  !set now_=$wims_nowseconds
- !read js/chrono.js $[max(0,$delay1-($now_-$starttime))]
+ !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
 !endif
-$header_js
+!set wims_html_header=!append line $header_js to $wims_html_header
 !header
 
 !if $title=$empty
@@ -37,7 +37,7 @@ $header_js
 !endif
 
 !if 0$delay1>0 and $status!=$empty
- <p><form target=# name=chrono><center>
+ <p><form target="#" name=chrono><center>
  <table border=2 bgcolor="$wims_ref_bgcolor"><tr><td>
  &nbsp;<b><font color=red>Atenció!</font></b>
  !if $qnum>1
@@ -45,7 +45,7 @@ $header_js
  !else
   Aquest exercici té el temps limitat.
  !endif
- <input size=4 name=clock readonly onFocus=this.blur();>
+ <input size=4 name=clock readonly onFocus="this.blur()";>
  </table>
  </center></form> <p>
 !endif
