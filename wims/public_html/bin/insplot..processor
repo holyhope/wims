@@ -67,7 +67,7 @@ if [ ! -z $w_insplot_transparent ]; then
  gnuplot_transp=transparent
 # A bad fix for convert transparency incompatibility trouble
 # convert_transp="-transparent $w_insplot_transparent"
- convert_transp="-transparent '#FFFFFF'"
+ convert_transp="-transparent rgb(255,255,255)"
 else
  convert_transp=
 fi
@@ -83,7 +83,7 @@ else
 fi
 
 ###fix compatibility with gnuplot 4 
-gnuplot_version=`gnuplot --version | awk  '{ print $2 }'`
+gnuplot_version=`gnuplot --version | awk '{ print $2 }' | awk -F '.'  '{ print $1 }'`
 if [ "$gnuplot_version" -lt "4" ] || [ -z "$gnuplot_version" ]; then
   insplot_termset="set terminal $intermediate_format $gnuplot_transp $w_insplot_font size 500,400 $insplot_colors"
 else
