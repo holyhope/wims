@@ -96,16 +96,16 @@ Creación de $name_classess
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>Nombre del centro educativo (a lo sumo $instlim caracteres):
+ <li><label for="institution">Nombre del centro educativo (a lo sumo $instlim caracteres):</label>
   !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
- <input size=$instlim name=institution value="$institution">
+ <input size=$instlim name=institution value="$institution" id="institution">
  <p>
- <li>Nombre $name_classesss (a lo sumo $desclim caracteres):
-  <input size=$desclim name=description value="$description"> <p>
+ <li><label for="description">Nombre $name_classesss (a lo sumo $desclim caracteres):</label>
+  <input size=$desclim name=description value="$description" id="description"> <p>
  !if $Cltype notin 24
- <li>Nivel $name_classesss:<br>
+ <li><label for="level">Nivel $name_classesss:</label><br>
   <center><table border=1>
   <tr><th>año</th>
   !for j=1 to 6
@@ -128,24 +128,24 @@ Creación de $name_classess
   !next i
   </tr></table></center> <p>
  !endif
- <li>Nombre completo $name_sup $name_classesss (es decir, usted):
-  <input size=$suplim name=supervisor value="$supervisor"> 
+ <li><label for="supervisor">Nombre completo $name_sup $name_classesss (es decir, usted):</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor"> 
   <p>
- <li>Dirección de correo electrónico:
-  <input size=$emaillim name=email value="$email">
+ <li><label for="email">Dirección de correo electrónico:</label>
+  <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
    <br>(la creación de una clase no tendrá éxito a menos que dé una dirección
    de correo correcta a la que tenga acceso en este momento).
   !endif
   <p>
- <li>Elija la contraseña $name_sup:
-  <input size=16 type=password name=passsup> <br>
+ <li><label for="passsup">Elija la contraseña $name_sup:</label>
+  <input size=16 type=password name=passsup id="passsup"> <br>
   (entre 4 y 16 caracteres, dígitos o letras sin acentuar). <br>
   <small>Esta contraseña le permitirá acceder a la $name_classe como su supervisor.
   Debe ser la única persona que la conozca.</small> 
   <p>
- <li>Elija una contraseña $name_classesss (opcional):
-  <input size=16 type=password name=password> <br>
+ <li><label for="password">Elija una contraseña $name_classesss (opcional):</label>
+  <input size=16 type=password name=password id="password"> <br>
   (entre 4 y 16 caracteres, dígitos o letras sin acento). <br>
   <small>La contraseña $name_classesss se requerirá para la inscripción
   !if $Cltype<2
@@ -160,8 +160,8 @@ Creación de $name_classess
   de clases no está permitido sin la autorización del 
   administrador del sitio.</small> 
   <p>
- <li>Fecha de expiración de la clase:
-  <select name=exp_day>
+ <li><label for="exp_day">Fecha de expiración de la clase:</label>
+  <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
    !ifval $i=$exp_day
@@ -169,7 +169,7 @@ Creación de $name_classess
    !endif
    >$i
   !next i
-  </select> <select name=exp_month>
+  </select> <select name=exp_month id="exp_month">
   !for i=1 to 12
    <option value=$i
    !ifval $i=$exp_month
@@ -178,7 +178,7 @@ Creación de $name_classess
    >
    !item $i of $months
   !next i
-  </select> <select name=exp_year>
+  </select> <select name=exp_year id="exp_year">
   !for i=$thisyear to $thisyear+1
    <option value=$i
    !ifval $i=$exp_year
@@ -188,12 +188,12 @@ Creación de $name_classess
   !next i
   </select> 
   <p>
- <li>Límite de participantes de la $name_classe:
-  <input size=3 name=limit value="$limit">
+ <li><label for="limit">Límite de participantes de la $name_classe:</label>
+  <input size=3 name=limit value="$limit" id="limit">
   (El número máximo es $wims_class_user_limit).
   <p>
- <li>Acceso seguro $name_sup:
-  <input size=30 name=secure value="$secure"> <br>
+ <li><label for="secure">Acceso seguro $name_sup:</label>
+  <input size=30 name=secure value="$secure" id="secure"> <br>
   <small>Nombres de las estaciones de trabajo desde las que 
   efectuará las operaciones sensibles sobre
   su $name_classe. Opcional.</small> 
@@ -233,11 +233,11 @@ Creación de $name_classess
   escríbalas de nuevo. <p>
  !form reply
  <input type=hidden name=step value=2>
- Contraseña $name_sup:
- <input type=password name=passsup> <p>
+ <label for="passsup">Contraseña $name_sup:</label>
+ <input type=password name=passsup id="passsup"> <p>
  !if $pword!=$empty
-  Contraseña $name_classesss:
-  <input type=password name=password> <p>
+  <label for="password">Contraseña $name_classesss:</label>
+  <input type=password name=password id="password"> <p>
  !endif
  <center><input type=submit value="Continuar"></center>
  </form>
@@ -254,7 +254,7 @@ Creación de $name_classess
  mensaje a continuación.
  !form reply
  <input type=hidden name=step value=3>
- <center>Clave de la $name_classe: <input size=12 name=typecode>
+ <center><label for="typecode">Clave de la $name_classe:</label> <input size=12 name=typecode id="typecode">
  <p><input type=submit value="Continuar"></center>
  </form>
  <b>Atención</b> Esta clave es de un solo uso. ¡No puede usarse

@@ -10,6 +10,7 @@
  !!goto end
 !!endif
 
+!read names.phtml
 <center><h1>WIMS à $httpd_HTTP_HOST
 <br>
  Création d'une structure : classe, groupement, établissement
@@ -97,19 +98,19 @@ Portail
  <input type=hidden name=step value=1>
  <ul>
  
- <li>Nom de l'établissement (au plus $instlim caractères) :
+ <li><label for="institution">Nom de l'établissement (au plus $instlim caractères) :</label>
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
- <input size=$instlim name=institution value="$institution"><br>
+ <input size=$instlim name=institution value="$institution" id="institution"><br>
  </li>
- <li>Nom $name_classesss (au plus $desclim caractères) :
-  <input size=$desclim name=description value="$description"> <br>
+ <li><label for="description">Nom $name_classesss (au plus $desclim caractères) :</label>
+  <input size=$desclim name=description value="$description" id="description"> <br>
  </li>
  
  !if $Cltype notin 24
- <li>Niveau $name_classesss : 
-  <select name=level>
+ <li><label for="level">Niveau $name_classesss : </label>
+  <select name=level id="level">
    !for k=1 to $nblevel
     !if $(levelid[$k])=$level
      <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
@@ -121,11 +122,11 @@ Portail
  </li>
  !endif
 
- <li>Prénom et nom $name_sup $name_classesss (c'est-à-dire vous) :
-  <input size=$suplim name=supervisor value="$supervisor"> <br>
+ <li><label for="supervisor">Prénom et nom $name_sup $name_classesss (c'est-à-dire vous) :</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor"> <br>
  </li>
 
- <li>Adresse électronique : <input size=$emaillim name=email value="$email">
+ <li><label for="email">Adresse électronique</label> : <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
    <br>(L'opération de création $name_classesss ne peut aboutir que si vous fournissez
    une adresse électronique correcte et accessible en ce moment même.)
@@ -133,13 +134,13 @@ Portail
   <br>
  </li>
 
- <li>Choisissez le mot de passe $name_sup :
-  <input size=16 type=password name=passsup> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Ce mot de passe vous permettra d'accéder à votre $name_classe en tant
+ <li>Choisissez le <label for="passsup">mot de passe $name_sup</label> :
+  <input size=16 type=password name=passsup id="passsup"> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Ce mot de passe vous permettra d'accéder à votre $name_classe en tant
   que responsable. Vous devez être le seul à le connaître.</small> <br>
  </li>
 
- <li>Choisissez le mot de passe $name_classesss :
-  <input size=16 type=password name=password> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Le mot de passe $name_classesss sera exigé lors de l'inscription
+ <li>Choisissez <label for="password">le mot de passe $name_classesss :</label>
+  <input size=16 type=password name=password id="password"> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Le mot de passe $name_classesss sera exigé lors de l'inscription
   !if $Cltype<2
  des participants de la classe ; vous pouvez donc le diffuser auprès
   de vos étudiants/élèves. 
@@ -154,8 +155,8 @@ des enseignants $name_classesss ;
 !!  l'autorisation du gestionnaire du site.</small> <p>
  </li>
  
- <li>Date d'expiration :
-  <select name=exp_day>
+ <li><label for="exp_day">Date d'expiration :</label>
+ <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
    !ifval $i=$exp_day
@@ -183,14 +184,14 @@ des enseignants $name_classesss ;
   </select> <small> C'est la date &agrave; laquelle votre classe sera automatiquement archiv&eacute;e.</small><br>
  </li>
 
- <li>Limite du nombre de participants de votre $name_classe :
-  <input size=3 name=limit value="$limit">
+ <li><label for="limit">Limite du nombre de participants de votre $name_classe :</label>
+  <input size=3 name=limit value="$limit" id="limit">
   <small>(Le maximum est $wims_class_user_limit.) </small><br>
  </li>
  
- <li>Accès sécurisé $name_sup :
+ <li><label for="secure">Accès sécurisé $name_sup :</label>
   !default secure=all
-  <input size=30 name=secure value="$secure"> <br>
+  <input size=30 name=secure value="$secure" id="secure"> <br>
   !reset secure
   <small>Noms des postes à partir desquels vous effectuerez les opérations
   sensibles sur votre $name_classe. 
@@ -236,11 +237,11 @@ des enseignants $name_classesss ;
  veuillez les retaper encore une fois. <p>
  !form reply
  <input type=hidden name=step value=2>
- Mot de passe $name_sup :
- <input type=password name=passsup> <p>
+<label for="passsup"> Mot de passe $name_sup :</label>
+ <input type=password name=passsup id=passsup> <p>
  !if $pword!=$empty
-  Mot de passe  $name_classesss :
-  <input type=password name=password> <p>
+ <label for="password">Mot de passe  $name_classesss:</label>
+  <input type=password name=password id=password> <p>
  !endif
  <center><input type=submit value="Continuer"></center>
  </form>
@@ -257,7 +258,7 @@ des enseignants $name_classesss ;
  qui vous a été envoyé. Relevez le code écrit dans le message et copiez-le ci-dessous.
  !form reply
  <input type=hidden name=step value=3>
- <center>Code de votre $name_classe : <input size=12 name=typecode>
+ <center><label for="typecode">Code de votre $name_classe :</label> <input size=12 name=typecode id="typecode">
  <p><input type=submit value="Continuer"></center>
  </form>
  <b>Attention</b> Ce code ne sert qu'une seule fois. Il ne peut pas

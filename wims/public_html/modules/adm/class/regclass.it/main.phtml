@@ -89,19 +89,19 @@ Portale di
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>Nome dell'istituzione (al pi&ugrave; $instlim caratteri) :
+ <li><label for="institution">Nome dell'istituzione (al pi&ugrave; $instlim caratteri) :</label>
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
-  <input size=$instlim name=institution value="$institution"><br>
+  <input size=$instlim name=institution value="$institution" id="institution"><br>
  </li>
- <li>Nome $name_classesss (al pi&ugrave; $desclim caratteri) :
-  <input size=$desclim name=description value="$description"> <br>
+ <li><label for="description">Nome $name_classesss (al pi&ugrave; $desclim caratteri) :</label>
+  <input size=$desclim name=description value="$description" id="description"> <br>
  </li>
  
  !if $Cltype notin 24
- <li>Livello $name_classesss : 
-  <select name=level>
+ <li><label for="level">Livello $name_classesss :</label>
+  <select name=level id="level">
    !for k=1 to $nblevel
     !if $(levelid[$k])=$level
      <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
@@ -112,11 +112,11 @@ Portale di
   </select>
  </li>
  !endif
- <li>Nome completo del $name_sup $name_classesss (cio&egrave; voi):
-  <input size=$suplim name=supervisor value="$supervisor"> <br>
+ <li><label for="supervisor">Nome completo del $name_sup $name_classesss (cio&egrave; voi):</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor"> <br>
  </li>
- <li>Indirizzo di posta elettronica:
-  <input size=$emaillim name=email value="$email"> 
+ <li><label for="email">Indirizzo di posta elettronica:</label>
+  <input size=$emaillim name=email value="$email" id="email"> 
   !if $regpolicy=email
   <br>
   (La creazione $name_classesss pu&ograve; essere completata solo se si
@@ -125,14 +125,14 @@ Portale di
  <br>
  </li>
 
- <li>Scegliere una password di gestione ($name_sup):
-  <input size=16 type=password name=passsup> <br>
+ <li><label for="passsup">Scegliere una password di gestione ($name_sup):</label>
+  <input size=16 type=password name=passsup id="passsup"> <br>
   (almeno 4 e non pi&ugrave; di 16 caratteri, numeri o lettere non accentate). <br>
   Questa passowrd permette di accedere alla gestione del $name_classe come $name_sup.
   Non va resa nota ad altri. <br>
  </li>
- <li>Scegliere la password $name_classesss:
-  <input size=16 type=password name=password> <br>
+ <li><label for="password">Scegliere la password $name_classesss:</label>
+  <input size=16 type=password name=password id="password"> <br>
   (da 4 a 16 caratteri, scelti tra numeri o lettere non accentate). <br>
   La password $name_classesss &egrave; necessaria per la registrazione. 
     !if $Cltype<2
@@ -149,8 +149,8 @@ Va comunicata ai docenti $name_classesss ;
   del manager del sito. <br>
  </li>
 
- <li>Data di termine del corso:
-  <select name=exp_day>
+ <li><label for="exp_day">Data di termine del corso:</label>
+  <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
    !ifval $i=$exp_day
@@ -158,7 +158,7 @@ Va comunicata ai docenti $name_classesss ;
    !endif
    >$i
   !next i
-  </select> <select name=exp_month>
+  </select> <select name=exp_month id="exp_month">
   !for i=1 to 12
    <option value=$i
    !ifval $i=$exp_month
@@ -167,7 +167,7 @@ Va comunicata ai docenti $name_classesss ;
    >
    !item $i of $months
   !next i
-  </select> <select name=exp_year>
+  </select> <select name=exp_year id="exp_year">
   !for i=$thisyear to $thisyear+1
    <option value=$i
    !ifval $i=$exp_year
@@ -177,14 +177,14 @@ Va comunicata ai docenti $name_classesss ;
   !next i
   </select> <small>Cioè la data in cui il corso sarà automaticamente chiuso e archiviato.</small><br>
  </li>
- <li>Numero limite di partecipanti al $name_classe:
-  <input size=3 name=limit value="$limit">
+ <li><label for="limit">Numero limite di partecipanti al $name_classe:</label>
+  <input size=3 name=limit value="$limit" id="limit">
   <small>(Questo server impone un massimo di $wims_class_user_limit.)</small><br>
 </li>
 
- <li>Accesso da IP sicuro per il $name_sup:
+ <li><label for="secure">Accesso da IP sicuro per il $name_sup:</label>
   !default secure=all
-  <input size=30 name=secure value="$secure"> <br>
+  <input size=30 name=secure value="$secure" id="secure"> <br>
   !reset secure
   <small>Nome (o IP) dei pc da cui si effettueranno operazioni di gestione
   del $name_classe. 
@@ -224,11 +224,11 @@ Va comunicata ai docenti $name_classesss ;
  le password per una ulteriore verifica. <p>
  !form reply
  <input type=hidden name=step value=2>
- Password del docente:
- <input type=password name=passsup> <p>
+ <label for="passsup">Password del docente:</label>
+ <input type=password name=passsup id="passsup"> <p>
  !if $pword!=$empty
-  Password $name_classesss:
-  <input type=password name=password> <p>
+ <label for="password">Password $name_classesss:
+  <input type=password name=password id="password"> <p>
  !endif
  <center><input type=submit value="Continua"></center>
  </form>
@@ -245,7 +245,7 @@ Va comunicata ai docenti $name_classesss ;
  arrivi a destinazione) e inserisci il codice di attivazione in questo spazio. <p>
  !form reply
  <input type=hidden name=step value=3>
- <center>Codice di attivazione: <input size=12 name=typecode>
+ <center><label for="typecode">Codice di attivazione:</label> <input size=12 name=typecode id="typecode">
  <p><input type=submit value="Continua"></center>
  </form>
  <b>Nota:</b> Questo codice serve solo in questa occasione.

@@ -21,7 +21,6 @@
  !goto end
 !endif
 
-!read names.phtml
 !if $error!=$empty
  <p>
  !read msg.phtml
@@ -80,15 +79,15 @@
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>Name of the institution (at most $instlim characters):
+ <li><label for="institution">Name of the institution (at most $instlim characters):</label>
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
-  <input size=$instlim name=institution value="$institution"> <p>
- <li>Name $name_classesss (at most $desclim characters):
-  <input size=$desclim name=description value="$description"> <p>
+  <input size=$instlim name=institution value="$institution" id="institution"> <p>
+ <li><label for="description">Name $name_classesss (at most $desclim characters):</label>
+  <input size=$desclim name=description value="$description" id="description"> <p>
  !if $Cltype notin 24
- <li>Level $name_classesss:<br>
+ <li><label for="level">Level $name_classesss:</label><br>
   <center><table border=1>
   <tr><th>year
   !for j=1 to 6
@@ -111,22 +110,22 @@
   !next i
   </tr></table></center> <p>
  !endif
- <li>Complete name of the supervisor $name_classesss (that is, you):
-  <input size=$suplim name=supervisor value="$supervisor"> <p>
- <li>Email address:
-  <input size=$emaillim name=email value="$email">
+ <li><label for="supervisor">Complete name of the supervisor $name_classesss (that is, you):</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor"> <p>
+ <li><label for="email">Email address:</label>
+  <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
    <br>(The operation of creation $name_classesss will not succeed unless you give
    your email address which works right now.)
   !endif
   <p>
- <li>Choose a supervisor's password:
-  <input size=16 type=password name=passsup> <br>
+ <li><label for="passsup">Choose a supervisor's password:</label>
+  <input size=16 type=password name=passsup id=passsup> <br>
   (between 4 and 16 characters, digits or letters without accent). <br>
   <small>This password will allow you to access the class as its supervisor.
   You should be the only person to know it.</small> <p>
- <li>Choose a password of the class (optional):
-  <input size=16 type=password name=password> <br>
+ <li><label for="password">Choose a password of the class (optional):</label>
+  <input size=16 type=password name=password id=password> <br>
   (between 4 and 16 characters, digits or letters without accent). <br>
   <small>The password of the class will be required for the register of
     !if $Cltype<2
@@ -139,8 +138,8 @@ teachers $name_classesss ;
  <br>
   A class without password will be of free access to everybody,
   which is not allowed without the authorization of the site manager.</small> <p>
- <li>Expiration date of the class:
-  <select name=exp_day>
+ <li><label for="exp_day">Expiration date of the class:</label>
+  <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
    !ifval $i=$exp_day
@@ -166,11 +165,11 @@ teachers $name_classesss ;
    >$i
   !next i
   </select> <p>
- <li>Limit of the number of participants of the $name_classe:
-  <input size=3 name=limit value="$limit">
+ <li><label for="limit">Limit of the number of participants of the $name_classe:</label>
+  <input size=3 name=limit value="$limit" id="limit">
   (The maximum is $wims_class_user_limit.) <p>
- <li>Supervisor's secured access:
-  <input size=30 name=secure value="$secure"> <br>
+ <li><label for="secure">Supervisor's secured access:</label>
+  <input size=30 name=secure value="$secure" id="secure"> <br>
   <small>Names of hosts from which you will perform sensitive operations on
   the $name_classe. Optional.</small> <p>
  </ul>
@@ -201,11 +200,11 @@ teachers $name_classesss ;
  please type them again. <p>
  !form reply
  <input type=hidden name=step value=2>
- Supervisor's password:
- <input type=password name=passsup> <p>
+ <label for="passsup">Supervisor's password:</label>
+ <input type=password name=passsup id="passsup"> <p>
  !if $pword!=$empty
-  Password of the class:
-  <input type=password name=password> <p>
+  <label for="password">Password of the class:</label>
+  <input type=password name=password id="password"> <p>
  !endif
  <center><input type=submit value="Continue"></center>
  </form>
@@ -222,7 +221,7 @@ teachers $name_classesss ;
  Pick up the code in the message, and copy it below.
  !form reply
  <input type=hidden name=step value=3>
- <center>Code of the class: <input size=12 name=typecode>
+ <center><label for="typecode">Code of the class: <input size=12 name=typecode id="typecode"></label>
  <p><input type=submit value="Continue"></center>
  </form>
  <b>Attention</b> This code is only used once here. It cannot be used to
