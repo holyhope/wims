@@ -1840,7 +1840,7 @@ void calc_rename(char *p)
     s=getvar("wims_session"); if(s==NULL) return;
     if(good_httpd) snprintf(buf1,sizeof(buf1),
 			    "getfile/rename-%u%s?session=%s", t,ext,s);
-    else snprintf(buf1,sizeof(buf1),"%s?cmd=getfile&session=%s&special_parm=rename-%u%s",
+    else snprintf(buf1,sizeof(buf1),"%s?cmd=getfile&+session=%s&+special_parm=rename-%u%s",
 		  ref_name, s, t,ext);
     snprintf(buf2,sizeof(buf2),"%s:%s\n",p,buf1);
     accessfile(buf2,"a","%s/.rename",session_prefix);
