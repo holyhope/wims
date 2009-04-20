@@ -1,12 +1,11 @@
-
-$wims_html_header
-<body $wims_htmlbody>
-
+!!$wims_html_header
+!!<body $wims_htmlbody>
+!header1
 <p><center><h3>
 !href module=$module&cmd=intro WIMS
  $module_title<br>
 <font size=-1>--- Printable version ---</font></h3></center> <p>
-<div class=wimsbody>
+!!<div class=wimsbody>
 
 !if $error!=$empty
  !changeto oef/msg.phtml
@@ -28,8 +27,8 @@ $wims_html_header
   !else
    $(question_$i)
   !endif
-  </a></tt></font></center>
-  </h1></h2></h3></h4></b></i></em>
+  !!</a></tt></font></center>
+ !! </h1></h2></h3></h4></b></i></em>
   $(chce_$i)
  !endif
 !next i
@@ -38,7 +37,8 @@ $wims_html_header
  !goto noans
 !endif
 
-<p><hr> <p>
+<p><hr> 
+<div class="wims_solution">
 <center><h3>Answers</h3></center> <p>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
@@ -51,12 +51,14 @@ $wims_html_header
   </ul>
  !endif
 !next i
+</div>
 
 :noans
-</div> <hr> <p>
-<center>
+</div>
+<div class="wims_print"><hr>
 !href cmd=reply&print=yes Again
 &nbsp;&nbsp;
 !href module=$module&cmd=intro Back
-</center>
+</div>
+</body></html>
 

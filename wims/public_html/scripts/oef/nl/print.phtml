@@ -1,12 +1,11 @@
-
-$wims_html_header
-<body $wims_htmlbody>
-
+!!$wims_html_header
+!!<body $wims_htmlbody>
+!header1
 <p><center><h3>
 !href module=$module&cmd=intro WIMS
  $module_title<br>
 <font size=-1>--- Printbare versie ---</font></h3></center> <p>
-<div class=wimsbody>
+!!<div class=wimsbody>
 
 !if $error!=$empty
  !changeto oef/msg.phtml
@@ -21,15 +20,15 @@ $wims_html_header
   !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
    !set thisexo=$(name_$i)
    !readproc oef/imagedir.proc
-   !for k=1 to $(varcnt_$i)+1
+   !for k=1 to $(varcnt_$i)+5
     !set val$k=!line $k of $(var_$i)
    !next k
-   !read def/$(name_$i).def question
+   !read $(class_header)def/$(name_$i).def question
   !else
    $(question_$i)
   !endif
-  </a></tt></font></center>
-  </h1></h2></h3></h4></b></i></em>
+  !!</a></tt></font></center>
+ !! </h1></h2></h3></h4></b></i></em>
   $(chce_$i)
  !endif
 !next i
@@ -38,7 +37,8 @@ $wims_html_header
  !goto noans
 !endif
 
-<p><hr> <p>
+<p><hr>
+<div class="wims_solution">
 <center><h3>Antwoorden</h3></center> <p>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
@@ -52,12 +52,13 @@ $wims_html_header
   </ul>
  !endif
 !next i
+</div>
 
 :noans
-</div> <hr> <p>
-<center>
+</div>
+<div class="wims_print"><
 !href cmd=reply&print=yes Opnieuw
 &nbsp;&nbsp;
 !href module=$module&cmd=intro Terug
-</center>
-
+</div>
+</body></html>

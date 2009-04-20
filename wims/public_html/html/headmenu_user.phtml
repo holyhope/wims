@@ -5,11 +5,12 @@
 !endif
 !read name.phtml.$module_language
 !default wims_name_bgcolor=$wims_ref_bgcolor
-
 !if $wims_hm!=$empty
  !goto defend
 !endif
-
+!if $job=print or $printing=yes
+ !goto defend
+!endif
 !reset 1_
 !if _ isin $wims_session
  !if _exam isin $wims_session
