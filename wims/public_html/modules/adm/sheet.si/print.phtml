@@ -1,10 +1,9 @@
 
-$wims_html_header
-<body $wims_htmlbody>
-
+!!$wims_html_head<body $wims_htmlbody>
+!header1
 <p><center><h3>$sheet_title<br>
 <font size="-1">$sheet_desc</font></h3></center> <p>
-<div class=wimsbody>
+!!<div class=wimsbody>
 
 !if $error!=$empty
  !changeto msg.phtml
@@ -39,7 +38,7 @@ $wims_html_header
  !goto noans
 !endif
 
-<p><hr> <p>
+<div class="wims_solution"><hr>
 <center><h3>Odgovori</h3></center> <p>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
@@ -52,12 +51,15 @@ $wims_html_header
   </ul>
  !endif
 !next i
+</div>
 
 :noans
-</div> <p><hr> <p>
-<center>
+</div> <p>
+<div class="wims_print">
+<hr> <p>
 !href cmd=reply ©e enkrat
 &nbsp;&nbsp;
 !href cmd=reply&job=read Nazaj
-</center>
+</div>
+</body></html>
 
