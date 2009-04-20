@@ -3,7 +3,6 @@
 !if $module_language=$empty or $module_language notwordof $wims_site_languages
  !set module_language=en
 !endif
-
 !read name.phtml.$module_language
 !default wims_name_bgcolor=$wims_ref_bgcolor
 
@@ -17,7 +16,7 @@
   !set wims_pses=!translate _ to , in $wims_session
   !set wims_pses=!item 1 of $wims_pses
   !set wims_pser=!randint 1,99999
-  !set wims_href_opener=window.opener.location='$wims_ref_name?session=$wims_pses.1&cmd=reply&job=student&randomizer=$wims_pser';
+  !set wims_href_opener=window.opener.location='$wims_ref_name?session=$wims_pses.1&+cmd=reply&+job=student&+randomizer=$wims_pser';
  !endif
  !set 1_=!append line back,3,window.close();$wims_href_opener to $1_
 !else
@@ -87,14 +86,14 @@
 	$wims_sheet=$empty and exam notin $wims_session 
  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$wims_intro_parm to $1_
 !endif
-!if $module_has_help=yes and $cmd notwordof intro help
+!if $module_has_help=yes and $cmd notwordof intro help and _exam notin $wims_session
  !if $module_help=$empty or $module_help=popup
   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
  !else
   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
-!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home
+!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home and _exam notin $wims_session
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
 !if _ notin $wims_session
@@ -104,7 +103,5 @@
 !set wims_hm=$1_
 :defend
 !set wims_hm_cnt=!linecnt $wims_hm
-
 !read themes.phtml header
-
 <div class=wimsbody>
