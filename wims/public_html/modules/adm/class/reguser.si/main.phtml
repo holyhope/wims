@@ -108,8 +108,8 @@ Registracija za uporabo uèilnice
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>Password:
- <input type=password name=classpass>
+ <center> <p><label for="classpass">Password:</label>
+ <input type=password name=classpass id="classpass">
  <p>
  <input type=submit value="Send this password">
  </center></form> <p>
@@ -134,9 +134,9 @@ Registracija za uporabo uèilnice
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
   <input type=hidden name=step value=1>
-  To bring a participant already registered in $name_classes,
-  give a word in his/her name or login:
-  <input size=20 name=search value="$search">
+  <label for="search">To bring a participant already registered in $name_classes,
+  give a word in his/her name or login:</label>
+  <input size=20 name=search id="search" value="$search">
   <input type=submit value=OK>
   </form> <p>
   !default foundcnt=0
@@ -168,25 +168,25 @@ Registracija za uporabo uèilnice
   !set name_Your=Your
   !set name_you=you
  !endif
- <ul>
- !form reply
+  !form reply
  <input type=hidden name=step value=2>
- <li>$name_Your family name <input size=20 name=lastn value="$lastn">
-  and first name <input size=20 name=firstn value="$firstn">
+ <ul>
+ <li><label for="lastn">$name_Your family name</label> <input size=20 name=lastn id="lastn" value="$lastn">
+  and <label for="firstn">first name</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li>Choose a login name:
-  <input size=16 name=login value="$login"> <br>
+ <li><label for="login">Choose a login name:</label>
+  <input size=16 name=login id="login" value="$login"> <br>
   This will be the name which $name_you will use to log into the $classname later.
   Please choose a word containing between 4 and 16 characters
   (digits or letters without accent).
   <p>
- <li>And a password:
-  <input type=password size=16 name=pass> <br>
+ <li><label for="pass">And a password:</label>
+  <input type=password size=16 name=pass id="pass"> <br>
   the password must contain between 4 and 16 characters (digits or letters
   without accent).
   <p>
- <li>$name_Your email address (optional):<br>
-  <input size=60 name=email value="$email">
+ <li><label for="email">$name_Your email address (optional):</label><br>
+  <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>Type of the account:
@@ -194,7 +194,8 @@ Registracija za uporabo uèilnice
   !formradio utype list 0,1 prompt student, teacher
  !endif
  <center><input type=submit value="Register"></center>
- </form></ul>
+</ul>
+ </form>
  !goto end1
 !endif
 
@@ -208,10 +209,10 @@ Registracija za uporabo uèilnice
  !else
   Your email address: <tt>$email</tt> <p>
  !endif
- In order to verify the exactness of your password, please retype it again:
+ <label for="pass2">In order to verify the exactness of your password, please retype it again:</label>
  !form reply
  <input type=hidden name=step value=3>
- <p><center><input type=password size=16 name=pass2>
+ <p><center><input type=password size=16 name=pass2 id="pass2">
  <p><input type=submit value="Send the password"></center>
  </form> <p>
  !goto end1
@@ -246,7 +247,7 @@ Registracija za uporabo uèilnice
 	go to work in it
 .
  !else
-  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&auth_user=$login">
   go to work in the class</a>. (Also think of putting this link in your
   bookmark.)
  !endif

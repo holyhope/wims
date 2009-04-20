@@ -108,8 +108,8 @@
 以前, 必须先输入密码.
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>密码:
- <input type=password name=classpass>
+ <center> <p>  <label for="classpass">密码:</label>
+ <input type=password name=classpass id="classpass">
  <p>
  <input type=submit value="发送此密码">
  </center></form> <p>
@@ -133,9 +133,9 @@
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
   <input type=hidden name=step value=1>
- 为把一个已经注册的参加者放入$name_classes,
- 请给出他的名字或登录名:
-  <input size=20 name=search value="$search">
+  <label for="search"> 为把一个已经注册的参加者放入$name_classes,
+ 请给出他的名字或登录名:</label>
+  <input size=20 name=search id="search" value="$search">
   <input type=submit value=提交>
   </form> <p>
   !default foundcnt=0
@@ -167,23 +167,23 @@
   !set name_Your=你的
   !set name_you=你
  !endif
- <ul>
- !form reply
+  !form reply
  <input type=hidden name=step value=2>
- <li>$name_Your 姓<input size=20 name=lastn value="$lastn">
-  名 <input size=20 name=firstn value="$firstn">
+ <ul>
+ <li> <label for="lastn">$name_Your 姓</label><input size=20 name=lastn id="lastn" value="$lastn">
+   <label for="firstn">名</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li>选取登录名:
-  <input size=16 name=login value="$login"> <br>
+ <li <label for="login">>选取登录名:</label>
+  <input size=16 name=login id="login" value="$login"> <br>
   这是$name_you以后用来登录$classname的名字.
   请选择一个含4至16个字符的串(数字或英文字母).
   <p>
- <li>密码:
-  <input type=password size=16 name=pass> <br>
+ <li> <label for="pass">密码:</label>
+  <input type=password size=16 name=pass id="pass"> <br>
   密码必须是含4至16个字符的串(数字或英文字母).
   <p>
- <li>$name_Your电邮地址(可选):<br>
-  <input size=60 name=email value="$email">
+ <li> <label for="email">$name_Your电邮地址(可选):</label><br>
+  <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>帐户类型:
@@ -191,7 +191,8 @@
   !formradio utype list 0,1 prompt 学生, 教师
  !endif
  <center><input type=submit value="注册"></center>
- </form></ul>
+</ul>
+ </form>
  !goto end1
 !endif
 
@@ -205,10 +206,10 @@
  !else
  你的电邮地址: <tt>$email</tt> <p>
  !endif
-为验证你的密码, 请再输入一次:
+ <label for="pass2">为验证你的密码, 请再输入一次:</label>
  !form reply
  <input type=hidden name=step value=3>
- <p><center><input type=password size=16 name=pass2>
+ <p><center><input type=password size=16 name=pass2 id="pass2">
  <p><input type=submit value="发送密码"></center>
  </form> <p>
  !goto end1

@@ -114,8 +114,8 @@ Aanmelden bij $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>Wachtwoord :
- <input type=password name=classpass>
+ <center> <p><label for="classpass">Wachtwoord :</label>
+ <input type=password name=classpass id="classpass">
  <p>
  <input type=submit value="Opsturen">
  </center></form> <p>
@@ -149,10 +149,10 @@ Aanmelden bij $name_classess
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
   <input type=hidden name=step value=1>
-  Zoekt U een leerling van klas $name_classes, 
+  <label for="search">Zoekt U een leerling van klas $name_classes, 
   voer hier dan de naam of een gedeelte van een naam in
-  (echte naam of loginnaam)&nbsp;
-  <input size=20 name=search value="$search">
+  (echte naam of loginnaam)&nbsp;</label>
+  <input size=20 name=search id="search" value="$search">
   <input type=submit value=OK>
   </form> <p>
   !default foundcnt=0
@@ -192,23 +192,23 @@ Aanmelden bij $name_classess
   !set name_you=uw
   !set utilisera=u gebruikt
  !endif
- <ul>
- !form reply
+  !form reply
  <input type=hidden name=step value=2>
- <li>$name_Your achternaam <input size=20 name=lastn value="$lastn">
-  en voornaam <input size=20 name=firstn value="$firstn">
+ <ul>
+ <li><label for="lastn">$name_Your achternaam</label> <input size=20 name=lastn id="lastn" value="$lastn">
+  <label for="firstn">en voornaam</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li>Kies een loginnaam :
-  <input size=16 name=login value="$login"> <br>
+ <li><label for="login">Kies een loginnaam :</label>
+  <input size=16 name=login id="login" value="$login"> <br>
   Dat is de naam die $utilisera om in te loggen by $classname
     <small> zonder accenten, punten, komma's en spaties</small>
   <p>
- <li>En een wachtwoord :
-  <input type=password size=16 name=pass> <br>
+ <li><label for="pass">En een wachtwoord :</label>
+  <input type=password size=16 name=pass id="pass"> <br>
     Dit wachtwoord mag tussen de 4 en 16 letters en nummers lang zijn<br>
   <p>
- <li>$name_Your email adres (optioneel) :<br>
-  <input size=60 name=email value="$email">
+ <li><label for="email">$name_Your email adres (optioneel) :</label><br>
+  <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>Soort account :
@@ -216,7 +216,7 @@ Aanmelden bij $name_classess
   !formradio utype list 0,1 prompt leerling,docent
  !endif
  <center><input type=submit value="Aanmelden"></center>
- </form></ul>
+ </ul></form>
  !goto end1
 !endif
 
@@ -234,10 +234,10 @@ Aanmelden bij $name_classess
  !else
   Het opgegeven emailadres : <tt>$email</tt> <p>
  !endif
- Om het opgegeven wachtwoord te kontroleren, voer het hier nog een keer in:
+ <label for="pass2>Om het opgegeven wachtwoord te kontroleren, voer het hier nog een keer in:</label>
  !form reply
  <input type=hidden name=step value=3>
- <p><center><input type=password size=16 name=pass2>
+ <p><center><input type=password size=16 name=pass2 id="pass2">
  <p><input type=submit value="Opsturen"></center>
  </form> <p>
  !goto end1
@@ -273,7 +273,7 @@ Aanmelden bij $name_classess
 	aan het werk in de klas
 .
  !else
-  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&auth_user=$login">
   aan het werk</a>. (vergeet geen bookmark te maken van deze link.)
  !endif
  !goto end

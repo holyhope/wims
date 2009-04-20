@@ -114,8 +114,8 @@ Inserimento in $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>Password :
- <input type=password name=classpass>
+ <center> <p><label for="classpass">Password :</label>
+ <input type=password name=classpass id="classpass">
  <p>
  <input type=submit value="Procedi con la registrazione">
  </center></form> <p>
@@ -140,8 +140,8 @@ Inserimento in $name_classess
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
   <input type=hidden name=step value=1>
-  Per includere uno studente già iscritto a $name_classess,
-  ricerca per nome e/o login:
+  <label for="search">Per includere uno studente già iscritto a $name_classess,
+  ricerca per nome e/o login:</label>
   <input size=20 name=search value="$search">
   <input type=submit value=OK>
   </form> <p>
@@ -174,25 +174,25 @@ Inserimento in $name_classess
   !set name_Your=Il tuo
   !set name_you=tu
  !endif
- <ul>
- !form reply
+  !form reply
  <input type=hidden name=step value=2>
- <li>Cognome: <input size=20 name=lastn value="$lastn">
-  Nome: <input size=20 name=firstn value="$firstn">
+ <ul>
+ <li><label for="lastn">Cognome:</label> <input size=20 name=lastn id="lastn" value="$lastn">
+  <label for="firstn">Nome:</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li>Scegliere un login di accesso :
-  <input size=16 name=login value="$login"> <br>
+ <li><label for="login">Scegliere un login di accesso :</label>
+  <input size=16 name=login id="login" value="$login"> <br>
   Questo `login' in futuro permetter&agrave; di accedere al $classname.
   Scegliere un nome di almeno 4 e non pi&ugrave; di 16 caratteri
   alfanumerici (usare solo numeri e/o lettere non accentate).
   <p>
- <li>Scegliere una password :
-  <input type=password size=16 name=pass> <br>
+ <li><label for="pass">Scegliere una password :</label>
+  <input type=password size=16 name=pass id="pass"> <br>
   La password deve essere costituita da almeno 4 e non pi&ugrave; 16 
   caratteri alfanumerici (usare solo numeri e/o lettere non accentate).
   <p>
- <li>$name_Your indirizzo di posta elettronica (facoltativo) :<br>
-  <input size=60 name=email value="$email">
+ <li><label for="email">$name_Your indirizzo di posta elettronica (facoltativo) :</label><br>
+  <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>Tipo di utente:
@@ -200,7 +200,8 @@ Inserimento in $name_classess
   !formradio utype list 0,1 prompt studente, docente
  !endif
  <center><input type=submit value="Procedi con la registrazione"></center>
- </form></ul>
+</ul>
+</form>
  !goto end1
 !endif
 
@@ -214,11 +215,11 @@ Inserimento in $name_classess
  !else
   Indirizzo di posta elettronica : <tt>$email</tt> <p>
  !endif
- Per verificare l'esattezza della password, inseriscila 
- ancora una volta:
+ <label for="pass2">Per verificare l'esattezza della password, inseriscila 
+ ancora una volta:</label>
  !form reply
  <input type=hidden name=step value=3>
- <p><center><input type=password size=16 name=pass2>
+ <p><center><input type=password size=16 name=pass2 id="pass2">
  <p><input type=submit value="Invia"></center>
  </form> <p>
  !goto end1
