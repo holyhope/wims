@@ -77,7 +77,7 @@ U_Exam		=Examen
 U_cdt           =Cuaderno de texto
 U_Vote		=Encuesta
 U_myscore	=Mis puntuaciones
-U_examworking	=<b><blink>Atención.</blink></b> Usted estaba trabajando en un examen.
+U_examworking	=<b><font color=red>Atención.</font></b> Usted estaba trabajando en un examen.
 U_examdouble	=En este caso no puede conectarse desde otro puesto.
 U_examcont	=Continuar el examen.
 U_oclass	=Zonas de trabajo

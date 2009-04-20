@@ -56,7 +56,7 @@ $sheet_desc<p>
 !endif
 
 !if $sheet_active=2
- <blink><b><font color=red>Waarschuwing</font></b></blink>
+ <b><font color=red>Waarschuwing</font></b>
  Dit werkblad is verlopen. U kunt er nog wel aan werken, maar de cijfers worden niet
  meer verwerkt.
  <p>

@@ -77,7 +77,7 @@ U_Sheet		=Werkblad
 U_Exam		=Overhoring
 U_Vote		=Enquete
 U_myscore	=Mijn cijfers
-U_examworking	=<b><blink>Attentie.</blink></b>Je bent nu met een overhoring voor een cijfer bezig.
+U_examworking	=<b><font color=red>Attentie.</font></b>Je bent nu met een overhoring voor een cijfer bezig.
 U_examdouble	=In dit geval mag je niet inloggen via deze netwerk-verbinding (ip-adres)
 U_examcont	=Doorgaan met dit proefwerk.
 U_oclass	=Andere klassen

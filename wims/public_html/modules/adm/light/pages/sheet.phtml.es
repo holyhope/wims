@@ -59,7 +59,7 @@ $sheet_desc<p>
 !endif
 
 !if $sheet_active=2
- <blink><b><font color=red>Atención</font></b></blink>
+ <b><font color=red>Atención</font></b>
  Esta hoja de trabajo ha expirado. Todavía puede trabajar con ella,
  pero no se tomarán en cuenta las puntuaciones.
  <p>
