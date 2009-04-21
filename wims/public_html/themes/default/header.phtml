@@ -1,12 +1,14 @@
 !! Header menu bar definition.
 !nocache
 !set wims_theme_header=yes
+!set current_module=!replace / by , in $module
+!set module_path= !item 1 of $current_module
 !if $wims_hm_cnt!=0 or ($module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty)
 <div class=wimsmenu>
 <center><table border=0 cellspacing=0 cellpadding=2 bgcolor="$wims_name_bgcolor"
-width="100%"><tr>
+width="100%"><tr><td><tr>
 !for i_=1 to $wims_hm_cnt
- <td align=center>
+ <td align=center>s
  !set 1_=!line $i_ of $wims_hm
  !read oneitem.phtml $1_
  </td>
