@@ -15,13 +15,17 @@ $name_noparticipant
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th><small>$name_cnt_exo 
  <br> ($nbexototal $name_exo)</small></th><th>$name_total</th>
  !for j=1 to $sheetcnt
+ !if $(activ[$j])>0
   <th colspan=2><small>$name_sheet $j <br>($(nbexo$j) $name_exo)</small></th>
+ !endif
  !next j
  </tr>
  $table_hdtr
  <th></th><th></th><th></th><th></th><th></th>
  !for j=1 to $sheetcnt
+ !if $(activ[$j])>0
   <th><small>$name_cnt_exo</small></th><th><small>$name_time</small></th>
+ !endif
  !next j
   </tr>
  !for m=1 to $usercnt
@@ -34,7 +38,10 @@ $name_noparticipant
    !href module=adm/class/userlist&job=getuser&getuser=$uu $lastname, $firstname
   </td>
   !for h = 1 to 2*$sheetcnt + 4
-  <td align="center">$(data[$h])</td>
+    !set h1=$[($h+$h%2)/2-2]
+ !if $h <=4 or ($h>4 and $(activ[$h1])>0)
+  <td align="center">$(data[$h]) -- $h --$h1</td>
+!endif
   !next
   </tr>
 !next

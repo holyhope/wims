@@ -1,3 +1,4 @@
+activ=
 sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !bound numshowsheet between 1 and $sheetcnt default 1
 sh_title=!line 3 of $tmp
@@ -5,5 +6,10 @@ nbexototal=0
 !for j = 1 to $sheetcnt
   nbexo$j=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$j
   nbexototal=$[$nbexototal + $(nbexo$j)]
+  t_=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute line $t_ into a_
+  a_=!char 1 of $a_
+  activ=!append item $a_ to $activ
 !next
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
