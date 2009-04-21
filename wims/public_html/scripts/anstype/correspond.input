@@ -32,23 +32,26 @@
 !set leftl=!items2lines $lefts
 !set rightl=!items2lines $rights
 !set leftarr=!replace internal " by \" in $leftl
+!set leftarr=!replace internal ' by \' in $leftl
 !set leftarr=!replace internal $\
-$ by "," in "$leftarr"
+$ by ',' in '$leftarr'
 !set rightarr=!replace internal " by \" in $rightl
+!set rightarr=!replace internal ' by \' in $rightl
 !set rightarr=!replace internal $\
-$ by "," in "$rightarr"
+$ by ',' in '$rightarr'
 !set Rightarr=!replace internal \ by \\ in $rightl
 !set Rightarr=!replace internal " by \" in $Rightarr
+!set Rightarr=!replace internal ' by \' in $Rightarr
 !set Rightarr=!replace internal $\
-$ by "," in "$Rightarr"
-!set bgc1="#c0c0c0"
-!set bgc2="#c0c0c0"
-!set bgc3="bisque"
-!set bgc4="#8080ff"
+$ by ',' in '$Rightarr'
+!set bgc1='#c0c0c0'
+!set bgc2='#c0c0c0'
+!set bgc3='bisque'
+!set bgc4='#8080ff'
 !set gify=$[min(40,$sizev)]
-!set lgif="<img src=gifs/arrows/corrleft.gif width=$sizehm height=$gify vspace=0 hspace=0>"
-!set rgif="<img src=gifs/arrows/corrright.gif width=$sizehm height=$gify vspace=0 hspace=0>"
-!set lrgif="<img src=gifs/arrows/corrlr.gif width=$sizehm height=$gify vspace=0 hspace=0>"
+!set lgif='<img src="gifs/arrows/corrleft.gif" width=$sizehm height=$gify vspace=0 hspace=0>'
+!set rgif='<img src="gifs/arrows/corrright.gif" width=$sizehm height=$gify vspace=0 hspace=0>'
+!set lrgif='<img src="gifs/arrows/corrlr.gif" width=$sizehm height=$gify vspace=0 hspace=0>'
 !set wims_ins_alt=none
 !set z=c$i
 
@@ -71,15 +74,15 @@ $ by "," in "$Rightarr"
 
 dynapi.onLoad(function() {
 
- var tstrl="<table border=0 cellpadding=0 cellspacing=0 width=$sizeh1 height=$sizev><tr><td align=center>";
- var tstrr="<table border=0 cellpadding=0 cellspacing=0 width=$sizeh2 height=$sizev><tr><td align=center>";
- var tstr2="</td></tr></table>";
-	himg1=new Image(); himg1.src="gifs/arrows/corrleft.gif";
-	himg2=new Image(); himg2.src="gifs/arrows/corrright.gif";
-	himg3=new Image(); himg3.src="gifs/arrows/corrlr.gif";
+ var tstrl='<table border=0 cellpadding=0 cellspacing=0 width=$sizeh1 height=$sizev><tr><td align=center>';
+ var tstrr='<table border=0 cellpadding=0 cellspacing=0 width=$sizeh2 height=$sizev><tr><td align=center>';
+ var tstr2='</td></tr></table>';
+	himg1=new Image(); himg1.src='gifs/arrows/corrleft.gif';
+	himg2=new Image(); himg2.src='gifs/arrows/corrright.gif';
+	himg3=new Image(); himg3.src='gifs/arrows/corrlr.gif';
 	lyr$i = new DynLayer();
 	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:$Sizeh,stretchV:$Sizev});
-	lyr$i.setBgColor("white");
+	lyr$i.setBgColor('white');
 	for(var i=0;i<$imgcnt;i++) $(z)_det[i]=0;
 	var mev={};
 	mev.ondragstart = function(e) {
@@ -100,9 +103,9 @@ dynapi.onLoad(function() {
 	dynapi.document.addChild(lyr$i);
 	for(i=0;i<$imgcnt;i++) {
 		$(z)_yleft[i]=$pad+i*($pad+$sizev); $(z)_ys[i]=i;
-		$(z)_lmid[i]=new DynLayer(null,2*$pad+$sizeh1,$(z)_yleft[i],$sizehm,$sizev,"white");
+		$(z)_lmid[i]=new DynLayer(null,2*$pad+$sizeh1,$(z)_yleft[i],$sizehm,$sizev,'white');
 		lyr$i.addChild($(z)_lmid[i]);
-		$(z)_lmid[i].setHTML("");
+		$(z)_lmid[i].setHTML('');
 		$(z)_lleft[i]=new DynLayer(null,$pad,$(z)_yleft[i],$sizeh1,$sizev,$bgc1);
 		$(z)_putlayer($(z)_lleft[i],mev);
 		$(z)_lleft[i].setHTML(tstrl+$(z)_lefts[i]+tstr2);
@@ -120,14 +123,14 @@ function $(z)_putlayer(l,mev) {
 }
 
 function $(z)_update() {
- var tstr="";
+ var tstr='';
  var detot=0;
  var i;
  for(i=0;i<$imgcnt;i++) {
  	var lc,rc,mstr;
  	lc=$bgc1;
  	if($(z)_det[i]>0) {detot++; rc=$bgc2; mstr=$lrgif;}
-	else {rc=$bgc3; mstr="";}
+	else {rc=$bgc3; mstr='';}
  	if($(z)_cly==i) {
 		if($(z)_clx==1) {lc=$bgc4; mstr=$lgif;}
 		if($(z)_clx==2) {rc=$bgc4; mstr=$rgif;}
@@ -138,7 +141,7 @@ function $(z)_update() {
  }
  if(detot>=$imgcnt-1) {
 	for(i=0;i<$imgcnt;i++) {
-		if(i>0) tstr=tstr+",";
+		if(i>0) tstr=tstr+',';
 		tstr=tstr+$(z)_Rights[$(z)_ys[i]];
 	}
  }
