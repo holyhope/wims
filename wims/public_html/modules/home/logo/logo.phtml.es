@@ -3,7 +3,7 @@
 El logo de WIMS
 </h1>
 <p>
-<img src=gifs/logo-160.gif align=center>
+<img src="gifs/logo-160.gif" align=center alt="logo">
 </center>
 <p>La curva representa el trazo de un punto sobre un disco de radio 1 rodando
 dentro de un círculo fijo de radio 3. Y la deformación de la curva representa

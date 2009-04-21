@@ -1,14 +1,17 @@
+!if link isin $job
+
+!endif 
+!header1
+
 !if $job2=print and $job isitemof todo,work
  !changeto print$job.phtml
 !endif
 
-<html><head>
-$wims_html_header
-</head><body $wims_htmlbody>
+!!<html><head>
+!!$wims_html_header
+!!</head><body $wims_htmlbody>
 
-!if link notin $job
- !headmenu
-!endif
+
 
 !if $error=bad_class
  !read msg.phtml $error
@@ -20,4 +23,6 @@ $wims_html_header
 
 !if link notin $job
  !tail
+!else
+ <div></body></html>
 !endif
