@@ -22,11 +22,11 @@
 
 !!INDEXEND
 
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!!<html><head>
+!!$wims_html_header
+!!</head>
+!!<body $wims_htmlbody>
+!header1
 
 !if $wims_user!=supervisor
  <p>No está autorizado a acceder a esta página.

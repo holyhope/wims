@@ -28,11 +28,11 @@
  !set wims_scorereg=
 !endif
 
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!!<html><head>
+!!$wims_html_header
+!!</head>
+!!<body $wims_htmlbody>
+!header1
 
 !set sheet=!record $parm1 of wimshome/log/classes/$wims_class/sheets/.sheets
 !distribute lines $sheet into sheet_active,sheet_expiration,sheet_title,sheet_desc

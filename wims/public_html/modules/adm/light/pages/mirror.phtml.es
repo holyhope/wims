@@ -43,11 +43,11 @@
 
 !!INDEXEND
 
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!!<html><head>
+!!$wims_html_header
+!!</head>
+!!<body $wims_htmlbody>
+!header1
 <center><h1>
 <font color=red>W</font>WW
 <font color=red>M</font>ultipurpose<br>
