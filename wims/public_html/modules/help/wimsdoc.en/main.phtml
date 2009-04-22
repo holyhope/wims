@@ -1,20 +1,20 @@
-<HTML><HEAD>
-!!if $style != folding
+!!<HTML><HEAD>
+!!!if $style != folding
 !if $style = $empty
   wims_expire=
 !endif
-$wims_html_header
+!!$wims_html_header
 
-</HEAD>
-<BODY $wims_htmlbody>
+!!</HEAD>
+!!<BODY $wims_htmlbody>
+!!!headmenu
+!header1
 !robottrap
-!headmenu
-
-<CENTER>
-<H1>
+<center>
+<h1>
 !href cmd=renew&style=$style $module_title
-</H1>
-</CENTER> <p>
+</h1>
+</center> <p>
 This document is currently under $emph$style$emphend style.
 You may change it to
 !set already=
@@ -35,14 +35,14 @@ on WIMS.
 <p>
 
 !if $style=integral or $style=indexed
- <a name=index><center><h2>-------- Table of Contents --------</h2></center></a><ul>
+ <center><h2><a name=index>-------- Table of Contents --------</a></h2></center><ul>
  !for set in user,ref
   <li><H4>$(title_$set)</H4>
   <ol>
   !for i in $($(set)_doc)
    <li>
    <a name=toc_$i></a>
-   $(ref1)$i$(ref2)$i>$(title_$i)</a>
+   $(ref1)$i$(ref2)$i">$(title_$i)</a>
    </li>
   !next i
   </ol> 
@@ -52,9 +52,9 @@ on WIMS.
 !else # folding
  <p>Click on a title to expand or fold out its content.
  !for set in user,ref
-  <p><hr><center><H2>$(title_$set)</h2></center>
+  <p><hr><center><h2>$(title_$set)</h2></center>
   !for i in $($(set)_doc)
-   <a name=$i></a>
+   <a name="$i"></a>
    !if ,$i isin $expand
     <hr><h3>
     !href cmd=resume&op=close&subject=$i#$i $(title_$i)
@@ -62,7 +62,7 @@ on WIMS.
     !read $i.phtml
     <p><hr>
    !else
-    <h4>$(ref1)$i$(ref2)$i>$(title_$i)</a></h4>
+    <h4>$(ref1)$i$(ref2)$i">$(title_$i)</a></h4>
    !endif
   !next i
  !next set
@@ -70,19 +70,18 @@ on WIMS.
 
 !if $style=integral
  !for i in $user_doc,$ref_doc
-  <a name=$i>
-  <hr><center><h3>$(title_$i)</h3></center>
-  </a>
+  <hr><center><h3><a name="$i">$(title_$i)</a></h3></center>
+
   !read $i.phtml
   <p>
-  <a href=#index>Table of Contents</a>
+  <a href="#index">Table of Contents</a>
  !next i
 !endif
 
 !if $style=indexed
  !for set in $user_doc,$ref_doc
   !if $set isin $subject
-   <a name=$set></a>
+   <a name="$set"></a>
    <hr><center><h3>$(title_$set)</h3></center>
    !read $set.phtml
    <p>
