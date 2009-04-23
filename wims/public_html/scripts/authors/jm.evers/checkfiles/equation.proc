@@ -1,9 +1,9 @@
 # this file expects a reply$n and returns a modulescore
-# the answer is an Equation
+# the answer is a single Equation
 # arglist: f(x) y F(x) f:x-> is a list of function 'args' 
 # varlist=x,y,z 
-# varcnt=1 : just 1 variable, for now...
-
+# varcnt=3
+# y=s*x^t-r
 # this checkfile will return the exercise with penalties more often than is wanted
 # because it's very tricky to let students fill in freestyle equations 
 
@@ -21,14 +21,9 @@ errortext=$empty
         goback=1
         !exit
     !endif
-    varcnt=!itemcnt $varlist
-    !if $varcnt=0 or $varcnt>1
-	goback=1
-        errortext=FOR NOW WE ONLY HANDLE ONE VARIABLE <br>like x or y ,Z,yield,profit,H,G)	
-	!exit
-    !endif
 !endif
-
+    
+varcnt=!itemcnt $varlist
 n=$counter
 test=!wordcnt $(reply$n)
 !if $test=0
@@ -37,6 +32,7 @@ test=!wordcnt $(reply$n)
     errortext=!record 37 of $remarkdir/commonremarks.$taal
     !exit
 !endif
+
 !if ? isin $(reply$n)
     remark$n=$NOK
     goback=0
@@ -48,17 +44,25 @@ test=!wordcnt $(reply$n)
 AAA=!nospace $(reply$n)
 AAA=!lower $AAA
 var=!lower $varlist
+varcnt=!itemcnt $varlist
 !if $varlist != nil
+    found=0
+    testvar=$empty
     !for i in $var
-	!if $var notin $AAA 
-	    testvar=$varlist
-	    errortext=!record 32 of $remarkdir/commonremarks.$taal
-	    goback=1
-	    # heavy pentalty...
-	    maxscore=$[$P6*$maxscore]
-    	    !exit
+	!if $i isin $AAA
+	    !increase found
+	!else
+	    testvar=!append item &nbsp;&nbsp;$i to $testvar
 	!endif
     !next i
+    !if $found < $varcnt
+	errortext=!record 32 of $remarkdir/commonremarks.$taal
+	#@ Je bent de variabele "<b>$testvar</b>" vergeten te gebruiken.<br>Even aanvullen.
+	goback=1
+	# heavy pentalty...
+	maxscore=$[$P6*$maxscore]
+    	!exit
+    !endif
 !endif
 
 # Check is the answer is an equation: something like
@@ -74,18 +78,19 @@ test=!replace internal -> by , in $test
 t1=!itemcnt $test
 !if $t1 <2
     errortext=!record 33 of $remarkdir/commonremarks.$taal
+    #@ Je antwoord moest een vergelijking / functievoorschrift zijn.<br>Even verbeteren.
     goback=1
     maxscore=$[$maxscore*$P2]
     !exit
 !endif
 !if $t1 >2
     errortext=!record 34 of $remarkdir/commonremarks.$taal
+    #@ Ik verwacht hier slechts 1 vergelijking (en dus niet $[$t1-1] vergelijkingen)
     goback=1
     maxscore=$[$maxscore*$P2]
     !exit
 !endif
 
-wims_rawmath_variables=$varlist
 # f(x)=x^2 --> A1=f(x) A2=x^2
 
 A1=!item 1 of $test
@@ -104,8 +109,9 @@ arglist=!lower $arglist
 	
 !if $con=0 and $noc=0
     testvar1=!randitem $arglist
-    testvar2=$varlist
+    testvar2=!item 1 of $varlist
     errortext=!record 35 of $remarkdir/commonremarks.$taal
+    #@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
     goback=1
     maxscore=$[$maxscore*$P3]
     !exit
@@ -116,95 +122,104 @@ arglist=!lower $arglist
     !for i in *,+,-,+,/
 	!if $i isin $A1
 	    testvar1=!randitem $arglist
-	    testvar2=$varlist
+	    testvar2=!item 1 of $varlist
 	    errortext=!record 35 of $remarkdir/commonremarks.$taal
+	    #@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
 	    goback=1
 	    maxscore=$[$maxscore*$P3]
 	    !exit
 	!endif
     !next i
-    !if $varlist != nil
-	!if $var isin $A2
-	    # controle op "x" in 4x+5
-	    AAA=!rawmath $A2
-	!else
-	    testvar=$(reply$n)
-	    errortext=!record 26 of $remarkdir/commonremarks.$taal
-	    goback=1
-	    maxscore=$[$maxscore*$P6]
-	    !exit
-	!endif	
-    !else
-	AAA=!rawmath $A2
-    !endif
+    AAA=!nospace $A2
 !else
+    # omgedraaid: 5x+6 = y
     !if $teaching=1
-	testvar2=$varlist
+	testvar2=!item 1 of $varlist
 	testvar1=!randitem $arglist
 	errortext=!record 35 of $remarkdir/commonremarks.$taal
+	#@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
 	goback=1
 	maxscore=$[$maxscore*$P8]
 	!exit
     !else
 	!if $varlist != nil
-	    !if $var isin $A1
-	        testvar=$A2
+	    found=0
+	    !for i in $var
+		!if $i isin $A1
+		    !increase found
+		!endif
+	    !next i
+	    !if $found=$varcnt
+	        testvar1=!randitem $arglist
+		testvar2=!item 1 of $varlist
 		!for i in *,+,-,+,/
 		    !if $i isin $A2
 			errortext=!record 35 of $remarkdir/commonremarks.$taal
+			#@Je moet wel het antwoord als een normale "vergelijking" of "functievoorschrift" noteren.<br>Dus iets als $testvar1=123*$testvar2 - 321 
 			goback=1
 			maxscore=$[$maxscore*$P7]
 			!exit
 		    !endif
 		!next i
-		AAA=!rawmath $A1
+		AAA=!nospace $A1
 	    !else
 		errortext=!record 36 of $remarkdir/commonremarks.$taal
+		#@Je antwoord "$(reply$n)" ga ik echt niet nakijken.<br>Opnieuw invullen graag.
 		goback=1
 		maxscore=$[$maxscore*$P6]
 		!exit
 	    !endif	
 	!else
-	    AAA=!rawmath $A1
+	    AAA=!nospace $A1
 	!endif
     !endif
 !endif	
 
-!if $varlist != nil
-    !for i in sin,cos,tan,ln,sqrt,log
-	!if $i isin $AAA
-	    test=!replace internal $i( by # in $AAA
-	    # haakjes om alles sin(x),cos(x),tan(x),ln(x),sqrt(x),log(x)
-	    !if # notin $test
-		testvar2=!nospace $i $varlist
-		testvar1=!nospace $i ( $varlist )
-		errortext=!record 19 of $remarkdir/commonremarks.$taal
-		goback=1
-		!exit
-	    !endif	    
-	    I=!toupper $i
-	    !if $i=ln
-		# pari en ln -> log
-		AAA=!replace internal $i by LOG in $AAA
-		GGG=!replace internal $i by log in $GGG
-	    !else    
-		AAA=!replace internal $i by $I in $AAA
-		# sin(x) -> SIN(x)
-	    !endif
-	!endif
-    !next i
-!endif
-
 GGG=!lower $(answer$n)
 GGG=!nospace $GGG
-GGG=!replace internal $varlist by x in $GGG
 
+!if $varlist != nil
+    REPLACE=A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,U,V,W,X,Y,Z
+    replace=a,b,c,d,e,f,g,h,J,k,l,m,n,p,q,r,s,t,u,v,w,x,y,z
+    rawvars=$empty
+    !for i=1 to $varcnt
+	# to replace textbases variables like "yield","profit"
+	org=!item $i of $var
+	A=!item $i of $REPLACE
+	a=!item $i of $replace
+	GGG=!replace internal $org by $A in $GGG
+	AAA=!replace internal $org by $A in $AAA
+	rawvars=!append item $a to $rawvars
+    !next i
+    
+    !for i in sin,cos,tan,ln,sqrt,log,pi
+	I=!toupper $i
+	!if $i=ln
+	    # pari en ln -> log
+	    AAA=!replace internal $i by LOG in $AAA
+	    GGG=!replace internal $i by LOG in $GGG
+	!else    
+	    AAA=!replace internal $i by $I in $AAA
+	    GGG=!replace internal $i by $I in $GGG
+	    # sin(x) -> SIN(x)
+	!endif
+    !next i
+    
+    wims_rawmath_variables=$rawvars
+    AAA=!replace [a-z\~!@#$%&_'"] by $empty in $AAA
+    AAA=!lower $AAA
+    AAA=!rawmath $AAA
+    AAA=!nospace $AAA
+    # same procedure for GGG
+    GGG=!replace [a-z\~!@#$%&_'"] by $empty in $GGG
+    GGG=!lower $GGG
+    GGG=!rawmath $GGG
+    GGG=!nospace $GGG
+!else
+    AAA=!rawmath $AAA
+    GGG=!rawmath $GGG
+!endif
 
-AAA=!replace internal $var by X in $AAA
-AAA=!replace [a-z\~!@#$%&_'"] by $empty in $AAA
-AAA=!lower $AAA
-AAA=!rawmath $AAA
-AAA=!nospace $AAA
 
 #T1=!evalsubst x=10 in $AAA
 #T2=!evalsubst x=10 in $GGG
@@ -223,18 +238,46 @@ t1=!line 1 of $score
 t2=!line 2 of $score
 t3=!line 3 of $score
 tt=$[$t1 + $t2 + $t3]
+
+score=0
+
 !if $tt>0
     score=1
 !else
-    score=0
+    # score=0
+    # give it a try
+    !if $varlist != nil
+	g0=$GGG
+        a0=$AAA
+        g1=$GGG
+        a1=$AAA
+	!for i in $rawvars
+	    g0=!replace internal $i by 0 in $g0
+    	    a0=!replace internal $i by 0 in $a0
+    	    g1=!replace internal $i by 1 in $g1
+    	    a1=!replace internal $i by 1 in $a1
+	!next i
+	!ifval $g0=$a0
+	    score=0.15
+	!else
+	    !ifval $g1=$a1
+		score=0.2
+	    !else
+		score=0
+	    !endif
+	!endif	
+    !else
+	score=0
+    !endif
 !endif
+
 maxscore=$[$maxscore*$score]
 modulescore=$[$modulescore + $maxscore]
 
-!if $score=1
+!if $maxscore>0.9
     remark$n=$OK
 !else
-    !if $score>0.5
+    !if $maxscore>0.4
 	remark$n=$BOK
     !else
 	remark$n=$NOK
@@ -243,3 +286,5 @@ modulescore=$[$modulescore + $maxscore]
 
 goback=0
 !exit
+
+

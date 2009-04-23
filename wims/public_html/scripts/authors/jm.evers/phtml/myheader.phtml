@@ -1,3 +1,7 @@
+<style type="text/css">
+     a:link{color:blue;text-decoration:none;}
+     a:hover{color:red;text-decoration:none;}
+</style>
 !if $noselect=1
     <script type="text/javascript" src="$jsdir/nocut.js"></script>
 !endif
@@ -7,6 +11,8 @@
      MijnVenster1.focus();
     }
 </script>
+<script type="text/javascript">var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);} startclock();</script>
+		
 !set wims_texsize=$mytexsize
 
 !if $debug=1
@@ -16,7 +22,7 @@
 	</p>
     !endif
 !endif
-<table width="100%">
+<table summary="" width="100%">
     <tr>
     <td valign="top" align="left">
 	!if $exotitle != $empty
@@ -25,23 +31,23 @@
 		    $exotitle
 		</em>
 	    </small>
-	    <br>
+	    <br/>
 	!endif
 	!if $roundingtext!=$empty
 	    <small>
-		<font color=red>
+		<font color="red">
 		    $roundingtext
 		</font>
 	    </small>
-	    <br>
+	    <br/>
 	!endif
 	    <small>
-		<font color=red>
+		<font color="red">
 		    $no_back_button
 		</font>
 	    </small>
 	!if $helptext!=$empty and exam notin $session
-	    <br>
+	    <br/>
 	    <small>
 		$helptext
 		!href target=wims_mhelp module=$module&+session=$session&+cmd=help
@@ -50,7 +56,7 @@
 	!endif
     </td>
     <td valign="top" align="right">
-	<table>
+	<table summary="">
 	    <tr>
 	!if $viewlogo=1
 	    <td valign="top" align="right">
@@ -84,14 +90,14 @@
 	!endif
 	!if $scribbling=1
 	    <td valign="top" align="right">
-		<a onClick=window.open("$htmldir/scribbling.html","scribbling","width=320,height=260,left=0,top=0,status=no,menubar=no,resizable=yes,toolbar=no")>
+		<a onClick="window.open('$htmldir/scribbling.html','scribbling','width=320,height=260,left=0,top=0,status=no,menubar=no,resizable=yes,toolbar=no')">
 		    <img src="$gifdir/pencil.png" width="50" height="70" alt="scriblingpad" >
 		</a>
 	    </td>
 	!endif
 	!if $calculator=3
 	    <td valign="top" align="right">
-		<table>
+		<table summary="">
 		    <tr>
 		    <th>
 	    		<script type="text/javascript">
@@ -128,13 +134,13 @@
 	!else
 	    !if $calculator=2
 		<td valign="top" align="right">
-		    <a onClick=window.open("$htmldir/mathcalc.html","calculator","width=280,height=370,left=0,top=0")>
+		    <a onClick="window.open('$htmldir/mathcalc.html','calculator','width=280,height=370,left=0,top=0')">
 			<img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" >
 		    </a>
 		</td>
 	    !else
 		<td valign="top" align="right">
-		    <a onClick=window.open("$htmldir/basicalc.html","calculator","width=300,height=200,left=0,top=0")>
+		    <a onClick="window.open('$htmldir/basicalc.html','calculator','width=300,height=200,left=0,top=0')">
 			<img src="$gifdir/xcalc.png" width="50" height="70" alt="calculator" >
 		    </a>
 		</td>
@@ -149,13 +155,13 @@
 	!endif
 	!if $time=1
 	    <td valign="top" align="right">
-		<table>
+		<table summary="">
 		    <tr>
 		    <td valign="top" align="right">
-			<script language="JavaScript">var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);}
-			</script>
-			<body onload="javascript:startclock();">
-			<form name="clock">
+		!!	<script language="JavaScript">var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);}
+		!!	</script>
+		!!	<body onload="javascript:startclock();">
+			<form name="clock" action="">
 			    <input style="text-align:center;background-color:$bgcolor1;color:green;font-size:100%;" type="text" name="time" size="9">
 			</form>
 		    </td>
@@ -175,19 +181,19 @@
 <p align="center">
     !if $goback=1
 	<font color="$fontcolor3">
-	    $errortext
+	    $errortext &nbsp;
 	</font>
     !else
 	!if $goodbadsign>0
 	    <small>
-		$(remark$[$n-1])
+		$(remark$[$n-1]) &nbsp;
 	    </small>
 	!endif
     !endif
     !if $try = $maxtry
 	<center>
 	    <hr>
-		<font color=$fontcolor3>
+		<font color="$fontcolor3">
 		    !set alarm=!record 52 of $remarkdir/commonremarks.$taal
 		    $alarm
 		</font>

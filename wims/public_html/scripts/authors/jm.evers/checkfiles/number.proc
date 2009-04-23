@@ -546,7 +546,8 @@ omgedraaid=0
 	    !ifval ( $[-1*$a1] = $g1 ) and ( $[-1*$g1] notitemof $G1 )
 		!increase omgedraaid
 	    !endif
-	    parivraag0=!append line if( abs(($g0) - ($a0))<10^-15  ,1,0) to $parivraag0
+	    # 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
+    	    parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0))<1.0*10^-15 ,1,0) to $parivraag0
 	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1) ,1,0) to $parivraag1
 	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2) ,1,0) to $parivraag2
 	!else
@@ -568,7 +569,8 @@ omgedraaid=0
 	    !ifval ( $[-1*$a1] = $g1 ) and ( $[-1*$g1] notitemof $G1 )
 		!increase omgedraaid
 	    !endif
-    	    parivraag0=!append line if( abs(($g0) - ($a0))<10^-15 ,1,0) to $parivraag0
+	    # 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
+    	    parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0))<1.0*10^-15 ,1,0) to $parivraag0
 	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1) ,1,0) to $parivraag1
 	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2) ,1,0) to $parivraag2
 	!next s
@@ -629,14 +631,14 @@ score=$[$tussenscore/$t1]
 maxscore=$[$maxscore*$score]
 modulescore=$[$modulescore + $maxscore]
 
-!if $score=1
+!if $maxscore=1
     remark$n=$OK
 !else
     !if $omgedraaid>0
 	ex=!record 27 of $remarkdir/commonremarks.$taal
 	extra=!append line $ <br>$ex $ to $extra
     !endif
-    !if $score >0.45
+    !if $maxscore >0.45
 	remark$n=$BOK
     !else
 	remark$n=$NOK

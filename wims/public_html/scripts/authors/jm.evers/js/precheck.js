@@ -61,6 +61,9 @@ function science(t){
 }
 
 function check_o(t){
+    var alfabet="abcdefghijklmonpqrstuvwxyz";
+    var Alfabet="ABCDEFGHIJKLMONPQRSTUVWXYZ";
+    
     var dingen=['1','2','3','4','5','6','7','8','9','0','.','+','-','*','/','^','=',' '];
     var ld=dingen.length;var t2;var d;var sa;
     var os=['o','O'];var o;var trouble=0;
@@ -68,7 +71,17 @@ function check_o(t){
 	o=os[s];t1=t.indexOf(o)
 	while(t1!=-1){
 	    if(t1<1){t2='a';}else{t2=t.charAt(t1-1);}
-	    t3=t.charAt(t1+1);if(t3!=" " && t2!=" "){for(sa=0;sa<ld;sa++){d=dingen[sa];if(t3==d || t2==d){alert(r5);return 0;}}}
+	    t3=t.charAt(t1+1);
+	    if(t3!=" " && t2!=" "){
+		if(alfabet.indexOf(t2)==-1 && Alfabet.indexOf(t2)==-1 && alfabet.indexOf(t3)==-1 && Alfabet.indexOf(t3)==-1){
+		    for(sa=0;sa<ld;sa++){
+			d=dingen[sa];
+		        if(t3==d || t2==d){
+			    alert(r5);return 0;
+			}
+		    }
+		}
+	    }    
 	    t=t.replace(o,'0');t1=t.indexOf(o);
 	    trouble++;if(trouble>200){alert(r20);return 0;}
 	}
@@ -77,15 +90,18 @@ function check_o(t){
 }
 
 function check_f(t){
+    var alfabet="abcdefghijklmonpqrstuvwxyz";
+    var Alfabet="ABCDEFGHIJKLMONPQRSTUVWXYZ";
     t=t.replace(/log\[/g,'#');
     t=t.replace(/sqrt\[/g,'#');
-    var ft;var ismatch;var fun;var F;var t2;var c0;var functies=['log','ln','abs','sqrt','sin','cos','tan','atan','acos','sinh','cosh','tanh'];
+    var ft;var ismatch;var fun;var F;var t2;var c0;var t1;
+    var functies=['log','ln','abs','sqrt','sin','cos','tan','atan','acos','sinh','cosh','tanh'];
     ft=functies.length;var trouble=0;
     for(s=0;s<ft;s++){
 	fun=functies[s];ismatch=t.indexOf(fun);F=fun.toUpperCase();c0=fun.length;
 	while(ismatch != -1 ){
-	    c=c0+ismatch;t2=t.substring(c,c+1);
-	    if(t2=='('){t=t.replace(fun,F);ismatch=t.indexOf(fun);}else{alert(r9);return 0;}
+	    c=c0+ismatch;t1=t.substring(ismatch-1,ismatch);t2=t.substring(c,c+1);
+	    if(t2=='(' || alfabet.indexOf(t1)!=-1 || Alfabet.indexOf(t1)!=-1 || alfabet.indexOf(t2)!=-1 || Alfabet.indexOf(t2)!=-1){t=t.replace(fun,F);ismatch=t.indexOf(fun);}else{alert(r9);return 0;}
 	    trouble++;if(trouble>200){alert(r20);return 0;}
 	}
     }
@@ -228,7 +244,7 @@ function check_sqrt_NaN(t){
 		    if(got!=0){if(wait==got){end=s;}}
 		}
 	    }
-	    begin=begin+2;exp=t.substring(begin,end);sa=0;variable=0;
+	    begin=begin+2;exp=t.substring(begin,end);exp=exp.replace(/\ /g,'');sa=0;variable=0;
 	    while(sa<27){v=dingen[sa];w=exp.indexOf(v);if(w!=-1){sa=27;variable=1;}sa++;}
 	    if(variable==0){test=eval(exp);if(test<0){alert(r16);return 0;}}
 	    t=t.replace('@(','sqrt(');begin=t.indexOf('@');

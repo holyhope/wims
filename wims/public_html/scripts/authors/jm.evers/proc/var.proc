@@ -4,6 +4,27 @@
 !endif
 
 n=$counter
+
+# firm anti-back-button-policy
+!if exam notin $session
+    # because of strange behaviour of "help_in_exam bug_fix" the help-page starts a copy of the exam-page...
+    !if $cmd=reply
+	session_done=!append item $session to $session_done
+        t=!positionof item $session in $session_done
+	t=!itemcnt $t
+        !if $t!=1
+    	    # disable !insmath $(reply$n)
+	    math=0
+	    status=done
+	    !for counter=$n to $total_exos
+		reply$counter=<b>$no_back_button</b>
+	        remark$counter=$NOK
+	    !next p
+	    !readproc $procdir/score.proc
+	!endif
+    !endif
+!endif
+
 !if $status=waiting and $cmd=reply
     !readproc $checkfile
 	

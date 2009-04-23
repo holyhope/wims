@@ -43,7 +43,7 @@
 	    ml=document.mydefaultform.elements.length;
 	    var inputfieldnumber=0;
 	    for(z=0;z<ml;z++){
-		if(document.mydefaultform[z].id=="myinput"){
+		if(document.mydefaultform[z].id=='myinput'+z){
 		    input=document.mydefaultform[z].value;
 		    v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
 		    input=nthroot(input);if(input=="error"){return;}
@@ -72,8 +72,8 @@
 </script>
 
 
-<p align="center">
-    <table bgcolor=$bgcolor1 cellpadding=$cellpadding cellspacing=$cellspacing>
+<div align="center">
+    <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
 	<tr>
 	<td valign="top" align="left" padding="10">
 	    !if $(question$n) != $empty
@@ -89,7 +89,7 @@
 			</center>
 			<br>
 		    !else
-			<table>
+			<table summary="">
 			    <tr>
 			    <th>
 				!insmath $(formula$n)
@@ -99,9 +99,9 @@
 			    </th>
 			    <th>
 				!if $wims_user=supervisor
-				    <textarea id="myinput" style=$textareastyle wrap=off cols=$cols rows=$rows name="reply">$(answer$n)</textarea>
+				    <textarea id="myinput" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
         			!else
-				    <textarea  id="myinput" style=$textareastyle wrap=off cols=$cols rows=$rows name="reply">$(reply$n)</textarea>
+				    <textarea  id="myinput" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
 				!endif
 			    </th>
 			    </tr>
@@ -152,7 +152,7 @@
     !endif
 	<td valign="top" align="center">
 	    !if $mathview=3
-		<table $paperbg width="580">
+		<table summary="" $paperbg width="580">
 		    <tr>
 		    <th>
 			<applet id="MathView" code="MathView.class" codebase="$appletdir" archive="MathView.jar" width="580" height="280">
@@ -191,15 +191,15 @@
 			$inputtext1:<br>
 		    !endif
 		    !if $wims_user=supervisor
-            		<textarea  id="myinput" style=$textareastyle wrap=off cols=$cols rows=$rows name="reply">$(answer$n)</textarea>
+            		<textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
         	    !else
-            		<textarea  id="myinput" style=$textareastyle wrap=off cols=$cols rows=$rows name="reply">$(reply$n)</textarea>
+            		<textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
         	    !endif
 		!else
 		    !if $inputs>1
-			<table cellpadding="1">
-			    <tr>
+			<table summary="" cellpadding="1">
 			!for p=1 to $inputs
+			    <tr>
 			    <td>
 				$(inputtext$p)
 			    </td>
@@ -212,9 +212,9 @@
 			    !else
 				!set deelantwoord=!item $p of $(reply$n)
 			    !endif
-				<input id="myinput" style=$textareastyle  size="$cols" name="reply" value="$deelantwoord">
+				<input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
 			    </td>
-			    </tr><tr>
+			    </tr>
 			!next p
 			</table>
 		    !endif
@@ -224,7 +224,7 @@
 !endif
 	</tr>
     </table>
-    <table>
+    <table summary="">
 	<tr>
     !if $inputs !=0
 	<th>
@@ -236,5 +236,5 @@
 	</th>
 	</tr>
     </table>
-</p>
+</div>
 !exit

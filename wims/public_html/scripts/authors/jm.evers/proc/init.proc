@@ -1,8 +1,7 @@
-# common authordir
 # used for wims read/readproc
-authordir=authors/jm.evers
+authordir=jm.evers
 # used for html/apache
-AUTHORDIR=scripts/authors/jm.evers
+AUTHORDIR=$module_dir/jm.evers
 
 ######### DO NOT CHANGE THIS ################
 gifdir=$AUTHORDIR/gifs
@@ -76,7 +75,8 @@ cellpadding=10
 cellspacing=1
 border=1
 mybuttonstyle=background-color:$bgcolor1;font-weight:normal;font-size:14px;text-align:center;
-textareastyle="font-size:18px;background-color:#e8ffff;border:1px solid #ff0000"
+textareastyle="font-size:18px;background-color:#e8ffff;border:1px solid #ff0000;wrap:off"
+inputstyle="font-size:18px;background-color:#e8ffff;border:1px solid #ff0000"
 # defaults for "textarea nowrap" answering field for freestyle answer
 rows=3
 cols=30
@@ -98,7 +98,7 @@ no_back_button=!record 86 of $remarkdir/commonremarks.$taal
 !if $printexo=1
     paperbg=$empty
 !else
-    paperbg= background=$gifdir/paper.jpg
+    paperbg= style=background-image:url($gifdir/paper.jpg)
 !endif
 # usage
 # 0 formal exam
@@ -228,6 +228,5 @@ no_back_button=!record 86 of $remarkdir/commonremarks.$taal
 	ok=!record 58 of $remarkdir/commonremarks.$taal
     !endif
 !endif
-
 
 !readproc $remarkdir/rounding.$taal

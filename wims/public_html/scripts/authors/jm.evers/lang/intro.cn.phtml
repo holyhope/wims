@@ -29,25 +29,25 @@
 !next p
 :READY
     <input type=hidden name=module value="$module">
-    <a onmouseover="return escape('$module_title<br>是 <em>SCHAERSVOORDE AALTEN</em> 开发的 WIMS 模块</b><br><img src=$gifdir/schaersvoorde.jpg>')">
     <hr width="50%">
     <p align="center">
         <font color="red">
         <em>
-            设置
+	    <a onmouseover="return escape('$module_title<br>是 <em>SCHAERSVOORDE AALTEN</em> 开发的 WIMS 模块</b><br><img src=$gifdir/schaersvoorde.jpg>')">
+        	设置
+	    </a>
         </em>
         </font>
     </p>
     <hr width="50%">
-    </a>
-    <p align="center">
+    <div align="center">
     <table bgcolor=$bgcolor2>
 	<tr>
         <td>
         <p align="left">
              <a onmouseover="return escape('<ol>$sum</ol><br>本模块目前有 $s 个不同主题<br>每个主题通常有 4 个难度等级')">
                 哪个 <font color="blue">主题</font> ?
-            </a>
+    	    </a>
             <select name="subject">
             !for p=1 to $s
                 !line $p of $selecttext
@@ -102,16 +102,18 @@
             </select>
         </p>
         !endif
-        <p align="center">
+        <div align="center">
             <table>
             <tr>
 	    <th>
+		<p>
                 <input type="hidden" name="taal" value="$taal">
                 <input style="background-color:lightgreen;font-weight:normal;font-size:14px" type="submit"  value="确认上述设置">
-            </th>
+        	</p>
+	    </th>
 	    </tr>
             </table>
-        </p>
+        </div>
         </td>
         !if $usage=3 or $usage=4
         <input type="hidden" name="usage" value="5">
@@ -294,6 +296,7 @@
 	!endif
 	</tr>
     </table>
+    </div>
     <script type="text/javascript" src="$jsdir/wz_tooltip.js"></script>
 </form>
 
