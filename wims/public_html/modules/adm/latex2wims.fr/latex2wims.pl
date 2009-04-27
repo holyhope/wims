@@ -35,7 +35,7 @@ my $INDEX = 0 ;
 my $TOOLTIP = 0 ;
 my $STYLE = '' ;
 my $OPTION = '' ;
-my $tooltip_prompt = '<img src=gifs/picto.gif>' ;
+my $tooltip_prompt = '<img src="gifs/picto.gif" alt="picto">' ;
 my $linkout='' ; 
 $worksheet= '';
 $SHEET = '' ;
