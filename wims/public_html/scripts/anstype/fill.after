@@ -27,17 +27,19 @@
 !set objcnt=!itemcnt $list
 !set list=!items2lines $list
 !set objs=!replace internal " by \" in $list
+!set objs=!replace internal ' by \' in $list
 !set objs=!replace internal $\
-$ by "," in "$objs"
+$ by ',' in '$objs'
 !set Objs=!replace internal \ by \\ in $list
 !set Objs=!replace internal " by \" in $Objs
+!set Objs=!replace internal ' by \' in $Objs
 !set Objs=!replace internal $\
-$ by "," in "$Objs"
-!set leftcolor="#ffd080"
-!set leftcolor2="#c0c0c0"
-!set rightcolor="#87ceeb"
-!set crcolor="#6060ff"
-!set clcolor="#C0A060"
+$ by ',' in '$Objs'
+!set leftcolor='#ffd080'
+!set leftcolor2='#c0c0c0'
+!set rightcolor='#87ceeb'
+!set crcolor='#6060ff'
+!set clcolor='#C0A060'
 !set align_option=!getopt align in $wims_fill_option
 !set align_option=!tolower $align_option
 !bound align_option within left,right,center default center
@@ -72,8 +74,8 @@ $ by "," in "$Objs"
  f_reposition_y=new Array($reposition_y,0)
 !endif
 
- f_objs=new Array($objs,"?");
- f_Objs=new Array($Objs,"?");
+ f_objs=new Array($objs,'?');
+ f_Objs=new Array($Objs,'?');
  f_starts=new Array($fillstarts,$filltotal);
  f_cut=new Array($fillcutpoints,0);
  f_curr=new Array($fillstarts);
@@ -139,7 +141,7 @@ dynapi.onLoad(function() {
 		f_lyr[i].setBgColor($leftcolor);
 		f_lyr[i].addEventListener(mev);
 		dynapi.document.addChild(f_lyr[i]);
-		if(f_minor[i]==0) f_lyr[i].setHTML($crleft+"?"+$crright);
+		if(f_minor[i]==0) f_lyr[i].setHTML($crleft+'?'+$crright);
 	}
 	for(i=0;i<$objcnt2;i++) {
 		f_lbis[i]=new DynLayer();
@@ -158,15 +160,15 @@ dynapi.onLoad(function() {
 });
 
 function f_toleft(l,n) {
-	l.setAnchor({topA:"fill"+f_fillnames[f_major[n]],
-		leftA:"fill"+f_fillnames[f_major[n]],
+	l.setAnchor({topA:'fill'+f_fillnames[f_major[n]],
+		leftA:'fill'+f_fillnames[f_major[n]],
 		left:f_xrel[n],top:f_yrel[n],
 		stretchH:$fill_sx,stretchV:$fill_sy});
 }
 
 function f_toright(l,n) {
-	l.setAnchor({topA:"fillobj"+(n+1),
-		leftA:"fillobj"+(n+1),left:-$fill_sx,
+	l.setAnchor({topA:'fillobj'+(n+1),
+		leftA:'fillobj'+(n+1),left:-$fill_sx,
 		stretchH:$fill_sx,stretchV:$fill_sy});
 }
 
@@ -187,14 +189,14 @@ function f_putval(l) {
 		f_det[j]=-1; f_curr[l]--;
 !!		f_lyr[j].setBgColor($leftcolor);
 !if $wims_fill_type!=dragfill
-		f_lyr[j].setHTML("");
-		if(j==f_starts[l]) f_lyr[j].setHTML($crleft+"?"+$crright);
+		f_lyr[j].setHTML('');
+		if(j==f_starts[l]) f_lyr[j].setHTML($crleft+'?'+$crright);
 !endif
 	}
-	if(f_curr[l]<=f_starts[l]) vv="";
+	if(f_curr[l]<=f_starts[l]) vv='';
 	else {
 		vv=f_Objs[f_det[f_starts[l]]];
-		for(i=f_starts[l]+1;i<f_curr[l];i++) vv=vv+","+f_Objs[f_det[i]];
+		for(i=f_starts[l]+1;i<f_curr[l];i++) vv=vv+','+f_Objs[f_det[i]];
 	}
 	f_fields[l].value=vv;
 !if $wims_fill_type=dragfill

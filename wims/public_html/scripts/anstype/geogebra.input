@@ -113,7 +113,7 @@ function geogebra2wims() {
    if (!(thing in ignore)) {
     whatisit=document.applets[0].getObjectType(thing);
     def=document.applets[0].getCommandString(thing);
-    if (def=="") {def=whatisit;}
+    if (def=='') {def=whatisit;}
 
   !!replace the greek names of the angles
   test=thing;
@@ -140,11 +140,11 @@ function geogebra2wims() {
         data= decodeURIComponent(data);
         !! back to normal...
 
-        if (data.indexOf("_") != 2 )
+        if (data.indexOf('_') != 2 )
       !! check e.g. no special tags like My_A My_B used to mask a *.ggb objects
       {
       totalobject_count=totalobject_count + 1;
-      if (it=="point"||it=="vector")
+      if (it=='point'||it=='vector')
         {
         x=document.applets[0].getXcoord(thing);
         x=(Math.round(x*Math.pow(10,prec)))/(Math.pow(10,prec));
@@ -152,7 +152,7 @@ function geogebra2wims() {
         y=(Math.round(y*Math.pow(10,prec)))/(Math.pow(10,prec));
         data=thing+'='+it+','+x+','+y;
         }
-      else if (it=="circle"||it=="line"||it=="polynomial"||it=="conic"||it=="parabola"||it=="ellipse"||it=="hyperbola"||it=="ray")
+      else if (it=='circle'||it=='line'||it=='polynomial'||it=='conic'||it=='parabola'||it=='ellipse"||it=="hyperbola"||it=="ray")
           !! c:(x - 5.73)^2 + (y - 1.53)^2 = 16,
       {
         t=data.length;
@@ -162,9 +162,9 @@ function geogebra2wims() {
         f=data.substring(d+1,t);
         data=thing+'='+it+','+e+'-(('+f+'))';
         }
-       else if (it=="angle")
+       else if (it=='angle')
        {
-        !!  on enleve le "degre" ("^0")
+        !!  on enleve le 'degre" ("^0")
         data=encodeURIComponent(data);
         data=data.replace(/%5E0/g,'');
         data=decodeURIComponent(data);
@@ -173,20 +173,20 @@ function geogebra2wims() {
         name=name-945;
         name=grec[name];
 
-        data=data.split("=");
+        data=data.split('=');
         data=data[1];
         data=name+'='+it+','+data;
       }
-        else if (it=="text"||it=="numeric"||it=="segment"||it=="function"||it=="conicpart")
+        else if (it=='text'||it=='numeric'||it=='segment'||it=='function'||it=='conicpart')
         {
-        data=data.split("=");
+        data=data.split('=');
         name=data[0];
         data=data[1];
         data=name+'='+it+','+data;
       }
-        else if (it=="polygon"||it=="triangle"||it=="quadrilateral"||it=="pentagon"||it=="hexagon")
+        else if (it=='polygon'||it=='triangle'||it=='quadrilateral'||it=='pentagon'||it=='hexagon')
       {
-        data=data.split("=");
+        data=data.split('=');
         name=data[0];
         data=data[1];
         data=name+'=polygon,'+data;
@@ -205,7 +205,7 @@ function geogebra2wims() {
   tot=tot.substr(0,t-2);
   t=cond.length;
   cond=cond.substr(0,t-2);
-    tot=tot+";"+cond;
+    tot=tot+';'+cond;
 !! use encoding on math '+' signs
     tot=tot.replace(/undefined/g, '');
 !!    tot= encodeURIComponent( tot );
@@ -218,19 +218,19 @@ function geogebra2wims() {
     else
     if ( totalobject_count > $maxobjects )
     {
-  alert("$inp0 "+ $maxobjects +" $inp1");
+  alert('$inp0 '+ $maxobjects +' $inp1');
   }
     else
     {
-    if (debug=='1') {alert("You are about to send a reply:"+tot);}
+    if (debug=='1') {alert('You are about to send a reply:'+tot);}
   document.getElementById('geog').value = tot;
   }
 }
 
 function algebraview() {
  var ch=new String(document.applets[0].getXML());
- var alg1=new String("<show algebraView=\"true\" auxiliaryObjects=\"false\" algebraInput=\"true\" cmdList=\"true\"/>");
- var alg2=new String("<show algebraView=\"false\" auxiliaryObjects=\"false\" algebraInput=\"false\" cmdList=\"false\"/>");
+ var alg1=new String('<show algebraView=\"true\" auxiliaryObjects=\"false\" algebraInput=\"true\" cmdList=\"true\"/>');
+ var alg2=new String('<show algebraView=\"false\" auxiliaryObjects=\"false\" algebraInput=\"false\" cmdList=\"false\"/>');
  ch=ch.replace(alg1,alg2);
  document.applets[0].setXML(ch);
 }

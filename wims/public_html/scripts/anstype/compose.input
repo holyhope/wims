@@ -26,12 +26,14 @@
 !set imgcnt=!itemcnt $imgs
 !set imgl=!items2lines $imgs
 !set imgarr=!replace internal " by \" in $imgl
+!set imgarr=!replace internal ' by \' in $imgl
 !set imgarr=!replace internal $\
-$ by "," in "$imgarr"
+$ by ',' in '$imgarr'
 !set Imgarr=!replace internal \ by \\ in $imgl
 !set Imgarr=!replace internal " by \" in $Imgarr
+!set Imgarr=!replace internal ' by \' in $Imgarr
 !set Imgarr=!replace internal $\
-$ by "," in "$Imgarr"
+$ by ',' in '$Imgarr'
 !set wims_ins_alt=none
 !set z=C$i
 
@@ -43,8 +45,8 @@ $ by "," in "$Imgarr"
  $(z)_Imgs=new Array($Imgarr);
  $(z)_strs=new Array($lenlimit+1);
  $(z)_Strs=new Array($lenlimit+1);
- $(z)_strs[0]="";
- $(z)_Strs[0]="";
+ $(z)_strs[0]='';
+ $(z)_Strs[0]='';
  var lyr$i;
  
 dynapi.onLoad(function() {
@@ -52,15 +54,15 @@ dynapi.onLoad(function() {
 	lyr$i=new DynLayer();
 	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:'90%',stretchV:$inputsize});
 	lyr$i.setBgColor('#c0c0c0');
-	lyr$i.setHTML("");
+	lyr$i.setHTML('');
 	dynapi.document.addChild(lyr$i);
 });
 
  function $(z)_addone(t) {
   if(t<0 || $(z)_imgcnt>=$lenlimit) return;
   if($(z)_imgcnt>0) {
-    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+" "+$(z)_imgs[t];
-    $(z)_Strs[$(z)_imgcnt+1]=$(z)_Strs[$(z)_imgcnt]+" "+$(z)_Imgs[t];
+    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+' '+$(z)_imgs[t];
+    $(z)_Strs[$(z)_imgcnt+1]=$(z)_Strs[$(z)_imgcnt]+' '+$(z)_Imgs[t];
   }
   else {
     $(z)_strs[$(z)_imgcnt+1]=$(z)_imgs[t];

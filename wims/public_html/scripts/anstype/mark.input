@@ -19,12 +19,13 @@
 !set zeroarray=!makelist 0 for x=1 to $input_icnt
 !set rg2=!replace internal \ by \\ in $input_rg
 !set rg2=!replace internal " by \" in $rg2
+!set rg2=!replace internal ' by \' in $rg2
 !set rg2=!translate internal $\
 $ to $ $ in $rg2
 !set rg2 = !makelist x for x=1 to $input_icnt
 !set rg2=!items2lines $rg2
 !set rg2=!replace internal $\
-$ by "," in "$rg2"
+$ by ',' in '$rg2'
 <input type=hidden id=reply$i name=reply$i value="">
 <script language="JavaScript" type="text/JavaScript">
 	replist$i=new Array($zeroarray);
@@ -32,14 +33,14 @@ $ by "," in "$rg2"
 
 function mark_bg_$i(k,tag) {
 	var st = document.getElementById(tag).style;
-	var vv="";
+	var vv='';
 	var i;
 	replist$i[k-1]^=1;
 	if(replist$i[k-1] == 0) st.backgroundColor = 'transparent';
-	else st.backgroundColor = "#FF7878";
+	else st.backgroundColor = '#FF7878';
 	for(i=0;i<$input_icnt;i++) {
 		if(replist$i[i]!=0) {
-			if(vv=="") vv=repval$i[i]; else vv=vv+","+repval$i[i];
+			if(vv=='') vv=repval$i[i]; else vv=vv+','+repval$i[i];
 		}
 	}
 	document.forms['replyform'].reply$i.value=vv;

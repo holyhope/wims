@@ -31,6 +31,8 @@
 !set imgl=!items2lines $imgs
 !set imgarr=!replace internal $\
 $ by "," in "$imgl"
+!set imgarr=!replace internal $\
+$ by ',' in '$imgl'
 !set Imgarr=!replace internal \ by \\ in $imgarr
 !set wims_ins_alt=none
 !set z=r$i
@@ -45,8 +47,8 @@ $ by "," in "$imgl"
  $(z)_Strs=new Array($lenlimit+1);
  $(z)_used=new Array($imgcnt);
  $(z)_use=new Array($lenlimit+1);
- $(z)_strs[0]="";
- $(z)_Strs[0]="";
+ $(z)_strs[0]='';
+ $(z)_Strs[0]='';
  var lyr$i;
  
 dynapi.onLoad(function() {
@@ -55,7 +57,7 @@ dynapi.onLoad(function() {
 	lyr$i=new DynLayer();
 	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:'90%',stretchV:$inputsize});
 	lyr$i.setBgColor('#c0c0c0');
-	lyr$i.setHTML("");
+	lyr$i.setHTML('');
 	dynapi.document.addChild(lyr$i);
 	for(i=0;i<$imgcnt;i++) $(z)_used[i]=0;
 });
@@ -63,8 +65,8 @@ dynapi.onLoad(function() {
  function $(z)_addone(t) {
   if(t<0 || $(z)_imgcnt>=$lenlimit || $(z)_used[t]!=0) return;
   if($(z)_imgcnt>0) {
-    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+"$comma "+$(z)_imgs[t];
-    $(z)_Strs[$(z)_imgcnt+1]=$(z)_Strs[$(z)_imgcnt]+","+$(z)_Imgs[t];
+    $(z)_strs[$(z)_imgcnt+1]=$(z)_strs[$(z)_imgcnt]+'$comma '+$(z)_imgs[t];
+    $(z)_Strs[$(z)_imgcnt+1]=$(z)_Strs[$(z)_imgcnt]+','+$(z)_Imgs[t];
   }
   else {
     $(z)_strs[$(z)_imgcnt+1]=$(z)_imgs[t];
@@ -77,7 +79,7 @@ dynapi.onLoad(function() {
  function $(z)_lockdata() {
   var t;
   lyr$i.setHTML($ct1 $(z)_strs[$(z)_imgcnt] $ct2);
-  document.forms['replyform'].reply$i.value="";
+  document.forms['replyform'].reply$i.value='';
   for(t=0;t<$imgcnt;t++) if($(z)_used[t]==0) return;
   document.forms['replyform'].reply$i.value=$(z)_Strs[$(z)_imgcnt];
  }
