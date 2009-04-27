@@ -1,0 +1,57 @@
+#! /bin/sh
+
+#line 1: <img src= address >
+#line 2: graphviz/number_of_image
+#line 3: size in pixels width,height
+#line 4 and following: plain output (for the coordinates)
+
+if [ "$wims_exec_parm" = "" ] || [ "$s2_dir" = "" ] || [ ! -d "$s2_dir" ]; then
+exit; 
+fi
+
+tstamp=`date '+%s'`
+
+if [ "$wims_exec_parm" = "about" ]; then
+ dd=`bin/ch..root dot -V 2>&1| head -1` ;
+ echo "<a href=\"http://www.graphviz.org\">Graphviz</a> ($dd)" ;
+ exit;
+fi
+
+if [ -z "$w_graphviz_charset" ]; then w_graphviz_charset="iso-8859-1"; fi
+if [ -z "$w_graphviz_output" ]; then w_graphviz_output='png' ;  fi
+if [ -z "$w_graphviz_format" ]; then w_graphviz_format="dot"; fi ;
+if [ "$w_graphviz_format" != 'dot' -a "$w_graphviz_format" != 'neato'  -a "$w_graphviz_format" != 'circo' -a "$w_graphviz_format" != 'fdp' -a "$w_graphviz_format" != 'twopi' ];  then w_graphviz_format='dot'; fi
+mkdir -p $s2_dir/graphviz
+i=1 ;
+for file in `ls $s2_dir/graphviz/*.$w_graphviz_output`
+do
+  num=`basename $file .$w_graphviz_output`
+  if [ $i -le $num ]; then i=$(( $i+1 )) ; fi
+done
+
+
+# ancien : parm="-T$w_graphviz_output -O -Tplain -Gcharset=$w_graphviz_charset"
+parm="-T$w_graphviz_output -o $tmp_dir/graphviz.$w_graphviz_output -Tplain -Gcharset=$w_graphviz_charset"
+parm0="-Tplain -o $tmp_dir/graphviz.plain -Gcharset=$w_graphviz_charset"
+cat <<@ >$tmp_dir/graphviz
+$wims_exec_parm
+@
+
+bin/ch..root $w_graphviz_format $parm $tmp_dir/graphviz > $tmp_dir/graphviz.plain
+mv -f $tmp_dir/graphviz.$w_graphviz_output $s2_dir/graphviz/$i.$w_graphviz_output
+
+ if [ -f "$s2_dir/graphviz/$i.$w_graphviz_output" ]; then
+  src="wims.cgi?session=$w_session&+cmd=getins&+special_parm=graphviz/$i.$w_graphviz_output&+modif=$tstamp"
+ # 
+ echo "$src"
+  a=`identify -format \%w,\%h $s2_dir/graphviz/$i.$w_graphviz_output`
+  echo "$a"
+  cat $tmp_dir/graphviz.plain
+ fi
+#a=identify -format \%w,\%h $s2_dir/$i.$w_graphviz_output
+
+#\text{c=digraph bar {a->b}}
+#\text{a=wims(exec graphviz  \c)}
+#\statement{<img src=\"$a\" $w_graphviz_image_attr alt=\"Graphviz traced image\">"}
+
+#<img src=\"$src\" $w_graphviz_image_attr alt=\"Graphviz traced image\">"

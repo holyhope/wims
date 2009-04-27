@@ -1,0 +1,49 @@
+
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Graphviz
+slib_parms=2\
+,description du graphe dans le language de graphviz\
+,options separated by white spaces : format=dot or  output=jpg or png or plain url charset= 
+slib_author=Bernadette PERRIN-RIOU
+slib_out=in the case where the format is dot, output the url address of the image,\
+in the case there is no format, output the code to show the image : &lt;img src=...> ;\
+in the case where the format is jpg, give the coordinates
+slib_comment=
+slib_example=digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},output=jpg format=dot url\
+digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},output=jpg format=neato url\
+digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},output=png format=neato\
+digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},output=plain format=neato
+
+!exit
+
+:proc
+
+slib_out=
+### faire le test
+!distribute items $wims_read_parm into slib_data,slib_option 
+!for slib_j in charset,format,output 
+ graphviz_$slib_j=!getopt $slib_j in $slib_option
+!next
+!default graphviz_output=jpg
+!default graphviz_format=dot
+
+!if $graphviz_output=plain
+  graphviz_output=jpg
+  slib_d=!exec graphviz $slib_data
+  slib_out=!line 2 to -1 of $slib_d
+  !exit
+!endif
+
+!if $graphviz_output iswordof jpg png gif
+  slib_d=!exec graphviz $slib_data
+  slib_d=!line 1 of $slib_d
+  !if url iswordof $slib_option
+    slib_out=<img src="$slib_d">
+  !else
+    slib_out=!line 1 of $slib_d
+  !endif
+!endif
+
+
