@@ -1,10 +1,12 @@
 !nocache
 !if $oef_test=yes
  !set renewlink=cmd=next&retest=again
- $header_js
+ !!$header_js
  !goto tester
 !else
  !set init_parm=!translate + to $ $ in $module_init_parm
+ !set init_parm=!replace internal $\
+$ by ; in $init_parm
  !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
 !endif
 
@@ -23,7 +25,16 @@
  !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
 !endif
 !set wims_html_header=!append line $header_js to $wims_html_header
-!header
+!set wims_html_header=$oefcss\
+$wims_html_header
+
+!header1
+<h1 class="oeftitle">$title</h1>
+
+!if $module_checkdata!=yes
+ !read oef/$module_language/nodata.phtml
+ !goto end
+!endif
 
 !if $title=$empty
  Ta modul je sestavljen iz skupine vaj. Oèitno ste ga zahtevali, ne da bi natanèno izbrali katero od veljavnih vaj. Morda ste kliknili na napaèno povezavo ali pa gre za napako v programu.

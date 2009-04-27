@@ -22,6 +22,7 @@ char vbuf_statement[MAX_LINELEN+1];
 char vbuf_hint[MAX_LINELEN+1];
 char vbuf_help[MAX_LINELEN+1];
 char vbuf_solution[MAX_LINELEN+1];
+char vbuf_css[MAX_LINELEN+1];
 
 #include "sp.c"
 
@@ -58,6 +59,16 @@ void p_precision(char *p[MAX_PARM])
     if(pr<0 || pr>100000000) return;
     fprintf(outf,"precision=%d\n",pr);
 }
+
+/* ajout de bpr */
+void p_css(char *p[MAX_PARM])
+{   
+    char vbuf_css[MAX_LINELEN+1];
+    if(p==NULL) return;
+    snprintf(vbuf_css,sizeof(vbuf_css),"%s",p[0]); subst(vbuf_css);
+	fprintf(outf,"oefcss=%s\n",vbuf_css); 
+}
+/* */
 
 void p_wims(char *p[MAX_PARM])
 {

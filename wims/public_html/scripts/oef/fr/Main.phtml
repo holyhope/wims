@@ -1,7 +1,7 @@
 !nocache
 !if $oef_test=yes
  !set renewlink=cmd=next&retest=again
- $header_js
+ !!$header_js
  !goto tester
 !else
  !set init_parm=!translate + to $ $ in $module_init_parm
@@ -25,10 +25,13 @@ $ by ; in $init_parm
  !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
 !endif
 !set wims_html_header=!append line $header_js to $wims_html_header
-!header
+!set wims_html_header=!append line $oefcss to $wims_html_header
+
+!header1
+<h1 class="oeftitle">$title</h1>
 
 !if $module_checkdata!=yes
- !read oef/fr/nodata.phtml
+ !read oef/$module_language/nodata.phtml
  !goto end
 !endif
 
