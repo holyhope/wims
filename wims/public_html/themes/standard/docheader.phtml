@@ -1,0 +1,96 @@
+<!-- begin of docheader.phtml -->
+!! document menu
+!nocache
+!set wims_theme_docheader=yes
+</div>
+<div id="wimstopbox">
+<div class="wimsmenu">
+!if help notin $wims_session
+ !if $wims_class=$empty
+  <div class="menuitem">
+  !href module=home $doch_wims
+  </div>
+ !else
+  !if _doc isin $wims_session
+  <div class="menuitem">
+   <a href="#" onclick="window.close()">$doch_class</a>
+  </div>
+  !else 
+  <div class="menuitem">
+   !href module=home $doch_class
+  </div>
+  !endif
+ !endif
+ !if ..//adm/doc isin ..//$module and \
+    ($wims_class=$empty or $wims_user=supervisor)
+  <div class="menuitem">
+  !href module=$module&cmd=reply&job=home $doch_docs
+  </div>
+ !endif
+!endif
+!default upbl=main
+!if $block!=main and $job=read
+  <div class="menuitem">
+ !href cmd=reply&doc=$doc&block=$upbl $doch_up
+  </div>
+ !! <img src="gifs/arrows/up2.32.gif" alt=up>
+ !if $prev!=$empty and $prev!=$upbl
+  <div class="menuitem">
+  !href cmd=reply&doc=$doc&block=$prev $doch_prev
+  </div>
+ !endif
+ !if $next!=$empty and $next!=$upbl
+  <div class="menuitem">
+  !href cmd=reply&doc=$doc&block=$next $doch_next
+  </div>
+ !endif
+!endif
+!if $job=read
+ !if $blocklast$blocknext!=$empty
+  <div class="menuitem">
+  [
+  !if $blocklast!=$empty
+   !href cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 &lt;&lt;
+  !endif
+   &nbsp;$doch_hist
+  !if $blocknext!=$empty
+   &nbsp;
+   !href cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1 &gt;&gt;
+  !endif
+  ]
+  </div>
+ !endif
+!! !href cmd=reply&job=read $doch_reload
+!endif
+</small></td><td align=right><small>
+!if $printable=yes
+  <div class="menuitem">
+ !href cmd=reply&job=read&doc=$doc&block=$startblock $doch_interactive
+  </div>
+!else
+ !if $job=read
+  <div class="menuitem">
+  !href cmd=reply&job=print&doc=$doc $doch_printable
+  </div>
+ !endif
+ !if $job=exosource
+  <div class="menuitem">
+  !href cmd=reply&job=read $doch_back
+  </div>
+ !endif
+ !if $doc!=$helpd and $editable=yes
+  <div class="menuitem">
+  !href target=wims_help module=$module&cmd=new&job=read&doc=$helpd $doch_help
+  </div>
+ !endif
+  <div class="menuitem">
+ !href target=wims_mhelp module=$module&cmd=help&special_parm=about $doch_about
+  </div>
+!endif
+</div>
+</div>
+!! would like to add the following, but will give parsing error 
+!! as no closing </div> are available
+!! <div id="wimsbodybox">
+!! <div id="wimspagebox">
+<!-- end of docheader.phtml -->

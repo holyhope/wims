@@ -1,0 +1,32 @@
+<!-- begin of tail.phtml -->
+!! Tail menu theme.
+!nocache
+!set wims_theme_tail=yes
+</div>
+<div id="wimsmenubox">
+<div class="wimsmenu">
+!if $wims_homeref_special!=$empty
+ <div class="tailitem">$wims_homeref_special</div>
+ !exit
+!endif
+!for i_=1 to $wims_homeref_n1
+ <div class="menuitem">
+ !set 1_=!line $i_ of $wims_rm_1
+ !read oneitem.phtml $1_
+ </div>
+!next i_
+</div>
+</div>
+</div>
+
+<div id="wimstailbox">
+<div class="wimstail">
+!for i_=1 to $wims_homeref_n2
+ <div class="tailitem">
+ !set 1_=!line $i_ of $wims_rm_2
+ !read oneitem.phtml $1_
+ </div>
+!next i_
+</div>
+</div>
+<!-- end of tail.phtml -->

@@ -1,0 +1,268 @@
+<!-- begin of supervisor.phtml -->
+!! supervisor page definition.
+!nocache
+!if $module!=home
+ !exit
+!endif
+
+!set home_theme=yes
+!readproc tabletheme
+!read classlogo.phtml
+<center>
+<br> <br>
+ <b><font size="+1">$wims_classname, $wims_institutionname</font></b>
+<br><small>($SU_log)</small></center>
+<br clear=all> <br></div><div class=wimsbody>
+
+!if _tool isin $wims_session
+ !read ./tools.phtml
+ !goto end
+!endif
+
+!if $class_type isin 3
+ $SU_greet.
+ !read Subclasses1.phtml
+ !if $class_typename=level
+  <p><center>
+  !href module=adm/class/gateway $SU_Gateway
+  </center> <p>
+  !goto end
+ !else
+  !goto nocheck
+ !endif
+!endif
+!if $class_type notin 13
+$SU_greet
+$SU_exp1
+!set d_=!char 7,8 of $class_expiration
+!set m_=!char 5,6 of $class_expiration
+!set y_=!char 1 to 4 of $class_expiration
+!href module=adm/class/config $m_-$d_-$y_
+$SU_exp2.
+!else
+$SU_greet.
+!endif
+<small>
+!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet [$N_help]
+</small>
+!if $quota_free<2
+ !if $quota_free<0
+  <p>
+  Your class has exceeded disk space allowance on the server. Class
+  management is no longer available. Sorry!
+  <p>
+  We suggest that you ask the site manager to increase the disk space
+  allowance for virtual classes.
+  <p>
+  !href cmd=close&module=home&lang=$lang $V_Quit
+  <p>
+  !goto end
+ !else
+  <br><b>Warning</b>! Your class is reaching the limit of disk space allowance.
+  Once this limit is exceeded, class management will be locked!
+ !endif
+!endif
+:nocheck
+
+!if & isin $newmsgcnt or $newmsgcnt>0
+ <br>
+ !href module=adm/forum/mboard $U_newmsg
+!endif
+<p>
+
+!if $class_type=4
+ <center>
+ !href module=adm/class/gateway $SU_Gateway
+ </center> <p>
+ !goto end
+!endif
+
+!if $class_type=2
+ !if $subclasscnt>0
+  $table_header
+  $table_hdtr<th>$SU_shno</th><th>$SU_shti</th><th>$U_teacher</th>
+  !for i=1 to $subclasscnt
+   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+   !let f_aff=!item 4 of $f_class
+   !let f_name=!item 1 of $f_class
+   $table_tr
+    <td align=center>$ADD_class $i</td>
+    <td>
+    !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+    </td>
+    <td align=center>
+     !item 9 of $f_class
+    </td>
+   </tr>
+  !next i
+  $table_end
+  <p><p>
+ !endif
+ <center>
+ !href module=adm/class/regclass $ADD_3 $ADD_class
+ </center>
+ !goto end
+!endif
+
+!set test=!replace / by , in $wims_class
+!if $(test[-1])=0 
+  !set test_up=!replace internal /0- by in $wims_class- 
+  !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
+!endif
+
+!set ac_0=<small>$SU_Uprep</small>
+!set ac_1=$SU_Ac
+!set ac_2=$SU_Ex
+!set ac_3=$SU_Hi
+
+!if $sheetcnt+$examcnt+$doccnt+$votecnt+$subclasscnt<=0
+ $SU_nosheet
+!else
+ $table_header
+ <caption>$SU_shlist &nbsp;
+ </caption>
+ $table_hdtr<th>$SU_shno<th>$SU_shti<th>$SU_shst
+ !for i=1 to $subclasscnt
+  !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+  !let f_aff=!item 4 of $f_class
+  !let f_name=!item 1 of $f_class
+  $table_tr
+   <td align=center>$ADD_class $i</td>
+   <td>
+   !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+   </td>
+   <td align=center>-</td>
+  </tr>
+ !next i
+ !for i=1 to $doccnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
+  !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
+  $table_tr<td align=center>$U_Doc</td>
+  <td>
+  !href module=adm/doc&job=read&doc=$s_&block=main $t_
+  </td>
+  <td align=center><small>
+  !item $[$o_ +1] of $U_Docstatus
+  </small></td>
+ !next i
+ !for i=1 to $sheetcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into ac,t_,ti
+  $table_tr<td align=center>$U_Sheet $i</td>
+  <td>
+  !href module=adm/class/sheet&sheet=$i $ti
+  </td>
+  <td align=center>$(ac_$[$ac])</td>
+ !next i 
+ !for i=1 to $examcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !distribute lines $sh into ac,t_,d_,ti
+  $table_tr<td align=center>$U_Exam $i</td>
+  <td>
+  !href module=adm/class/exam&exam=$i $ti
+  </td>
+  <td align=center>$(ac_$[$ac])</td>
+ !next i 
+ !for i=1 to $votecnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+  !distribute lines $sh into st_,ti_,op_,re_
+  $table_tr<td align=center>$U_Vote</td>
+  <td>
+  !href module=adm/vote&job=read&vote=$i $ti_
+  </td>
+  <td align=center>$(ac_$[$st_])</td>
+ !next i 
+ $table_end <p>
+!endif
+$ADD_1
+!href module=adm/doc&job=creat $ADD_doc
+!if $wims_supertype!=4 or $class_typename!=class
+,
+!href module=adm/class/sheet&sheet=$[$sheetcnt+1] $ADD_sheet
+,
+!href module=adm/class/exam&exam=$[$examcnt+1] $ADD_exam
+,
+!href module=adm/createxo $ADD_exo
+!endif
+!if $class_type=2
+,
+!href module=adm/class/regclass $ADD_class
+!endif
+
+ $N_or
+!href module=adm/vote&job=creat $ADD_vote
+.
+
+<p>
+!read ./form.phtml
+!read ./result.phtml
+!if $wims_supertype!=4 or $class_typename!=class
+<p>
+!href module=classes/$lang&special_parm=.nocache. $SU_classexo
+.&nbsp;
+!href module=adm/modtool Modtool
+.
+!endif
+</div>
+</div>
+:end
+<div id="wimsmenubox">
+<div class="wimsmenu">
+!if $class_typename notsametext program
+<div class="menuitem">
+!href module=adm/class/userlist $SE_list
+</div>
+!endif
+<div class="menuitem">
+!href module=adm/class/classes&type=supervisor $U_oclass
+</div>
+<div class="menuitem">
+!href cmd=close&module=home&lang=$lang $V_Quit
+</div>
+!! to separate sort of submenu (that is insert a separatro, 
+!! i.e. a newline or a "line")
+<div class="tailsep"></div>
+<div class="menuitem">
+!href style=student $SE_part
+</div>
+<div class="menuitem">
+!href module=adm/class/config $SE_config
+</div>
+<div class="menuitem">
+!href module=adm/class/config&job=security $SE_secu
+!!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
+</div>
+<div class="menuitem">
+!href target=wims_help module=help/main&chapter=3 $N_Help
+</div>
+<div class="tailsep"></div>
+<div class="menuitem">
+!href module=adm/forum/mboard $N_Mboard
+</div>
+<div class="menuitem">
+!if $exist_cdt=yes
+ !href module=adm/class/cdt $ADD_cdt
+ &nbsp; / &nbsp;
+!endif
+!href module=adm/class/motd $SE_mod
+</div>
+</div>
+</div>
+</div>
+:end
+<div id="wimstailbox">
+<div class="wimstail">
+<div class="tailitem">
+WIMS-$wims_version@$httpd_HTTP_HOST. 
+</div>
+<div class="tailitem">
+$E_manager
+!mailurl $wims_site_manager\
+WIMS
+.</div>
+</DIV>
+</DIV>
+</BODY>
+</HTML>
+<!-- end of supervisor.phtml -->
+
