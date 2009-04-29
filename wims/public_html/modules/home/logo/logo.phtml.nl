@@ -3,7 +3,7 @@
 Het WIMS logo 
 </h1>
 <p>
-<img src="gifs/logo-160.gif" align=center alt="logo">
+<img src="gifs/logo-160.gif" align=middle alt="logo">
 </center>
 <p>
 Deze kurve volgt een punt op een schijf met straal 1, rond draaiend
