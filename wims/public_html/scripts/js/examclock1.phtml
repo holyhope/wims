@@ -1,0 +1,19 @@
+!set wims_html_onload=examclock();
+!set wims_html_header=!append line <script Language="JavaScript" type="text/javascript"> to $wims_html_header
+!if $wims_exam_remain=$empty
+ !set wims_html_header=!append line function examclock() {\
+ } to  $wims_html_header
+!else
+  !set wims_html_header=!append line var examtick=$wims_exam_remain;\
+ function examclock() {\
+ var timeStr;\
+ examtick=(examtick>1)? examtick-1:0;\
+ minutes=Math.floor(examtick/60); seconds=examtick%60;\
+ timeStr= ((minutes < 10) ? "0" : "") + minutes;\
+ timeStr+= ((seconds < 10) ? ":0" : ":") + seconds;\
+ window.status="$wims_name_examremain" + " " + timeStr;\
+ Timer= setTimeout("examclock()",1000);\
+} to $wims_html_header
+!endif
+!set wims_html_header=!append line </script> to $wims_html_header
+
