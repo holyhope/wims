@@ -706,7 +706,7 @@ void define_html_header(void)
 	setvar("wims_expire",buf);
     }
     css: setvar("wims_CSS","");
-    cp=getvar("wims_css"); 
+    cp=getvar("wims_css");
     if(!robot_access && cp!=NULL && *cp!=0 && strstr(cp,"---")==NULL) {
 	char *nbuf;
 	cp=find_word_start(cp);
@@ -730,7 +730,7 @@ void define_html_header(void)
 	      if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
 %s\n\
 --></style>",tmplbuf); }
-		  else {snprintf(buf,sizeof(nbuf)+100,"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">",nbuf);
+		  else {snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">",nbuf);
 		}
 		setvar("wims_CSS",buf);
 	    }
