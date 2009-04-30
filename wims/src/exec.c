@@ -550,10 +550,17 @@ void _header(char *p, int option)
 <head>%s\n\
 </head><body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);*/
+	 if(ol[0]) {
 	    output("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\
+	    \n<html><head>%s\n\
+     </head>\n<body %s %s\"%s\" %s>\n",
+	   hbuf,s2,ol,wsbuf2,bo);}
+	   else {
+	   output("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\
 	    \n<html><head>%s\n\
      </head>\n<body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);
+	   }
     exec_headmenu(p);
     if(option) exec_title(p);
     if(cmd_type==cmd_help) {
@@ -717,7 +724,7 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
 void exec_href(char *p)
 {
     char *s, st[128], *p1, *p2, *p3, *wn="";
-    char *U="<u><font color=\"#A0A0C0\">%s</u></font>";
+    char *U="<u><font color=\"#A0A0C0\">%s</font></u>";
     char b1[MAX_LINELEN+1], b2[MAX_LINELEN+1];
     int new=0;
     if(!outputing) return;
@@ -818,7 +825,7 @@ void exec_form(char *p)
     s=getvar("wims_ref_target");
     if(href_target[0]!=0) s=href_target;
     if(s!=NULL && *s!=0 && !isspace(*s)) {
-	snprintf(st,sizeof(st)," target=%s",s);
+	snprintf(st,sizeof(st)," target=\"%s\"",s);
 	if(strcmp(s,"_parent")!=0) {
 	    new=1; wn="<input type=hidden name=wims_window value=yes>\n";
 	}
@@ -862,7 +869,7 @@ void exec_form(char *p)
 		snprintf(st,sizeof(st),"%.10s%s",s1,href_target+4);
 		s=st;
 	    }
-	    output("<input type=hidden name=%s value=%s>\n",
+	    output("<input type=hidden name=%s value=\"%s\">\n",
 		   ro_name[follow_list[i]],s);
 	}
     }
@@ -874,9 +881,9 @@ void exec_form(char *p)
 	memmove(buf,p1,i);buf[i]=0;
 	for(i=0;i<CMD_NO && strcmp(buf,commands[i]);i++);
 	if(i<CMD_NO) {
-	    output("<input type=hidden name=cmd value=%s>\n",buf);
+	    output("<input type=hidden name=cmd value=\"%s\">\n",buf);
 	    if(i!=cmd_intro && i!=cmd_new)
-	      output("<input type=hidden name=module value=%s>\n",
+	      output("<input type=hidden name=module value=\"%s\">\n",
 		     getvar(ro_name[ro_module]));
 	}
     }
@@ -1000,14 +1007,14 @@ void exec_getfile(char *p)
     mystrncpy(url,ref_name,sizeof(url));
     for(p1=url+strlen(url);p1>url && *(p1-1)!='/'; p1--);
     if(good_httpd) snprintf(p1,sizeof(url)+p1-url,
-			    "getfile/%s?&session=%s&modif=%ld",
+			    "getfile/%s?&+session=%s&+modif=%ld",
 			    p,s,nowtime);
     else snprintf(url,sizeof(url),
-		  "%s?cmd=getfile&session=%s&special_parm=%s&modif=%ld",
+		  "%s?cmd=getfile&+session=%s&+special_parm=%s&+modif=%ld",
 		  ref_name,s,p,nowtime);
     snprintf(jsbuf,sizeof(jsbuf),jsstr,"wims_file","wims_file");
     if(*prompt) output("<a href=\"%s\">%s</a>\n", url,prompt);
-    else output("<a href=%s>",url);
+    else output("<a href=\"%s\"></a>",url);
 }
 
 	/* internal */
@@ -1056,7 +1063,7 @@ void _exec_ins(char *p, char *script_name,char *format)
 	*p1=0;
 	if(bbuf[0]==0) snprintf(bbuf,sizeof(bbuf),"Fail");
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 " <img src=%s alt=Error> <p><small><pre>%s</pre></small> <p> ",
+		 " <img src=\"%s\" alt=Error> <p><small><pre>%s</pre></small> <p> ",
 		 url,bbuf);
 	setvar("ins_warn","fail");
 	setvar("ins_cnt","0");
@@ -1089,16 +1096,16 @@ void _exec_ins(char *p, char *script_name,char *format)
     mystrncpy(url,ref_name,sizeof(url));
     for(p1=url+strlen(url);p1>url && *(p1-1)!='/'; p1--);
     snprintf(p1,sizeof(url)+p1-url,
-	     "wims.%s?cmd=getins&session=%s&special_parm=insert%s-%d.%s&modif=%ld",
+	     "wims.%s?cmd=getins&+session=%s&+special_parm=insert%s-%d.%s&+modif=%ld",
 	     fmt,s,mh,insert_no,fmt,nowtime);
     if(strchr(ins_alt,'"')!=NULL || strlen(ins_alt)>256) ins_alt[0]=0;
     pt=getvar("wims_ins_alt"); if(pt==NULL) pt="";
     if(ins_alt[0] && strcmp(pt,"none")!=0)
       snprintf(altbuf,sizeof(altbuf)," alt=\"%s\"",ins_alt);
-    else altbuf[0]=0;
+    else snprintf(altbuf,sizeof(altbuf)," alt=%s","none");;
     if(strcasecmp(tag,"form")!=0) {
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<img src=%s border=%d vspace=%d %s %s%s>",
+		 "<img src=\"%s\" border=%d vspace=%d %s %s%s>",
 		 url, border, vspace, at, buf2, altbuf);
     }
     else {
