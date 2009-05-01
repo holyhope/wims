@@ -52,7 +52,7 @@ void setvar(char *p, double v)
     for(i=0;i<varcnt && strcmp(p,vartab[i].name)!=0;i++);
     if(i<varcnt) {vartab[i].value=v; return;}
     else {
-	if(varcnt>=MAX_VARS || varnameptr>=varnamebuf+MAX_NAMELEN+1) return;
+	if(varcnt>=MAX_VARS || varnameptr>=varnamebuf+sizeof(varnamebuf)-1) return;
 	strcpy(varnameptr,p);
 	vartab[varcnt].name=varnameptr; vartab[varcnt].value=v;
 	varnameptr+=strlen(varnameptr)+1; (varcnt)++;

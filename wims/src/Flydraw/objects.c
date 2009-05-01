@@ -212,14 +212,14 @@ void obj_parallel(objparm *pm)
     int i, n, xi,yi;
     double xv,yv;
     n=pm->pd[6]; if(n<0) return; if(n>256) n=256;
-    scale(pm->pd,pm->p,2);
+    scale(pm->pd,pm->p,3);
     scale2(pm->pd[4],pm->pd[5],&xv,&yv);
     for(i=0;i<n;i++) {
 	xi=rint(i*xv); yi=rint(i*yv);
 	gdImageLine(image,pm->p[0]+xi,pm->p[1]+yi,pm->p[2]+xi,pm->p[3]+yi,
 		    pm->color[0]);
-	if(vimg_enable) vimg_line(scale_buf[0]+xi,scale_buf[1]+yi,
-				  scale_buf[2]+xi,scale_buf[3]+yi);
+	if(vimg_enable) vimg_line(scale_buf[0]+i*scale_buf[4],scale_buf[1]+i*scale_buf[5],
+				  scale_buf[2]+i*scale_buf[4],scale_buf[3]+i*scale_buf[5]);
     }
 }
 
