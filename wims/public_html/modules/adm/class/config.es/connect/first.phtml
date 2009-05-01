@@ -24,12 +24,12 @@ pueden fusionarse más tarde.
 
 En estos momentos, este servidor WIMS permite conexiones desde los siguientes servidores.
 <p><center>
-<table border=0 bgcolor=$table_bgcolor cellspacing=1>
+<table border=0 bgcolor="$table_bgcolor" cellspacing=1>
 <tr><th>Nombre
 <th>Descripción<th>Dirección<th>Type<th>Acción
 !for s in $Clist
  !exchange table_color1,table_color2
- <tr bgcolor=$table_color2>
+ <tr bgcolor="$table_color2">
  <td>$s
  <td align=center>$(desc_$s)
  <td align=center><a href="$(url_$s)">$(site_$s)</a>
@@ -50,13 +50,13 @@ En estos momentos, este servidor WIMS permite conexiones desde los siguientes se
 Ha declarado las siguientes conexiones a otros servidores.
 <p><center>
 !distribute items yes,no into io1,io0
-<table border=0 bgcolor=$table_bgcolor cellspacing=1>
+<table border=0 bgcolor="$table_bgcolor" cellspacing=1>
 <tr><th>Servidor<th>Clase
 <th>-<th>-<th>-<th>-
 !for clc in $cllist
  !distribute words $clc into n_,c_,o_,i_
  !exchange table_color1,table_color2
- <tr bgcolor=$table_color2>
+ <tr bgcolor="$table_color2">
  <td>$n_<td align=center>$c_
  <td>
  !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ Test

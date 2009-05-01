@@ -49,7 +49,7 @@ of the site<br>
 (except those in newly added modules.)
 </center>
 
-<p><center><table border=0 cellspacing=1 bgcolor=$table_bgcolor>
+<p><center><table border=0 cellspacing=1 bgcolor="$table_bgcolor">
 <tr><th>Module<th>Exercice
 
 !for i=2 to $n
@@ -57,7 +57,7 @@ of the site<br>
  !distribute items $li into m,o
  !set mname=!module title $m
  !exchange table_color1,table_color2
- <tr bgcolor=$table_color2>
+ <tr bgcolor="$table_color2">
  <td>
  !href module=$m $mname
  <td>
