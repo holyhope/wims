@@ -82,40 +82,40 @@ $table_tr<td align=center colspan=$wims_headmenu_colcnt>
 !read ./result.phtml
 
 </div>
-<div class="wimstail">
 !set wims_show_stat=!tolower $wims_show_stat
-!if yes isin $wims_show_stat
- !set span=4
-!else
- !set span=2
-!endif
-
-$table_header
-$table_tr<td align=center nowrap colspan=$span>
-<small>$CR_1
+!!!if yes isin $wims_show_stat
+!! !set span=4
+!!!else
+!! !set span=2
+!!!endif
+</div>
+<div id="wimsmenubox">
+<div class="wimsmenu">
+<div class="menuitem">
+$CR_1
 !href module=adm/createxo $CR_OEF
  $N_or
 !href module=adm/modtool $CR_mod
-</small>
+</div>
+<div class="tailsep"></div>
 !if $gotcnt<=0 and $s_keywords=$empty
- $table_tr<td align=center nowrap><small>
+<div class="menuitem">
  !href module=help/wimsdoc.en $E_doc
- </small>
- <td align=center nowrap>
- <small> 
+ </div>
+ <div class="menuitem"> 
  !href module=home&special_parm=download $E_src
- </small>
+ </div>
  
  !if yes isin $wims_show_stat
-  <td align=center nowrap><small>
+ <div class="menuitem">
   !href module=adm/stat/referer $E_ref
-  </small>
-  <td align=center nowrap><small>
+  </div>
+  <div class="menuitem">
   !href module=adm/stat/stat $E_stat
-  </small>
+  </div>
  !endif
 !endif
-$table_end
+
 </div>
 </div>
 </div>
