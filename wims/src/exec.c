@@ -1112,7 +1112,7 @@ void _exec_ins(char *p, char *script_name,char *format)
 	char *n;
 	if(*tag2!=0) n="name="; else n="";
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
-		 "<input type=image %s%s src=%s border=%d vspace=%d %s %s%s>",
+		 "<input type=image %s%s src=\"%s\" border=%d vspace=%d %s %s%s>",
 		 n,tag2,url,border,vspace, at,buf2, altbuf);
     }
     if(middle) snprintf(outbuf+strlen(outbuf),
