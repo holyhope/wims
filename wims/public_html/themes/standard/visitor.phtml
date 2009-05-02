@@ -7,33 +7,27 @@
 
 !set home_theme=yes
 !set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
-</div><div class=wimsmenu>
-<center>
-<table border=0 cellspacing=0 cellpadding=0 width="100%">
-<tr>
-<td align=left valign=middle width="15%">
-  <table align=left border=0 cellspacing=0 cellpadding=0>
-  <tr><td align=center valign=bottom>
-  !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo">
-  </td></tr></table></td>
-<td align=center valign=bottom nowrap>
-  <br><font size="+2"><b>$V_title</b></font>
+</div>
+<h1> 
+  !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo" align=left>
+  <font size="+2"><b>$V_title</b></font>
   <br><font size="-1">(WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a></font>
-<br> <br>
+</h1>
 !set wims_headmenu_colcnt=5
-$table_header
-$table_tr<td align=center>
+<div id="wimstopbox">
+<div class="wimsmenu">
+<div class="menuitem">
 !href module=adm/new $N_new
-</td><td align=center>
+</div><div class="menuitem">
 !href module=adm/forum/forum $N_forum
-</td><td align=center>
+</div><div class="menuitem">
 !href module=adm/light&phtml=mirror.phtml.$lang $N_mirror
-</td><td align=center>
+</div><div class="menuitem">
 !href module=adm/light&phtml=useropts.phtml.$lang $N_pref
-</td><td align=center>
+</div><div class="menuitem">
 !href module=help/main $N_help
-</td></tr>
-$table_tr<td align=center colspan=$wims_headmenu_colcnt>
+</div><div class="tailsep"></div>
+<div class="menuitem">
 !for i=1 to $wims_language_cnt
  !set l=!word $i of $wims_site_languages
  !if $l!=$lang
@@ -46,29 +40,31 @@ $table_tr<td align=center colspan=$wims_headmenu_colcnt>
     !reset l_
    !endif
   !endif
+
   !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height=16 border=0>$l_
    <!-- don't remove this empty line or leading whitespace. Flag spacing depends on it. -->
- !endif
-!next i
-  $table_end
-</td><td width="10%">&nbsp;</td>
-</tr>
-!if $gotcnt<=0 and $s_keywords=$empty
-  <tr><td>&nbsp;</td><td align="center">
-  $table_header
- $table_tr<td align=center>$V_cls</td>
- <td align=center>
- !href module=adm/class/classes&type=participant $V_stu
- </td><td align=center>
- !href module=adm/class/classes&type=supervisor $V_sup
- </td><td align=center>
- !href module=adm/class/classes&type=example $V_ex
- </td><td align=center>
- !href module=help/main&chapter=3 $N_help
-   </td></tr>$table_end
-  </td></tr>
+
 !endif
-</table></center>
+!next i
+</div>
+
+<div class="tailsep"></div>
+</div>
+
+<div class="wimsmenu">
+!if $gotcnt<=0 and $s_keywords=$empty
+<div class="menuitem">$V_cls</div>
+<div class="menuitem">
+ !href module=adm/class/classes&type=participant $V_stu
+</div><div class="menuitem">
+ !href module=adm/class/classes&type=supervisor $V_sup
+</div><div class="menuitem">
+ !href module=adm/class/classes&type=example $V_ex
+</div><div class="menuitem">
+ !href module=help/main&chapter=3 $N_help
+</div>
+!endif
+</div>
 
 </div><div class=wimsbody> <p>
 
