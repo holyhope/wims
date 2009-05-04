@@ -218,8 +218,10 @@ void obj_parallel(objparm *pm)
 	xi=rint(i*xv); yi=rint(i*yv);
 	gdImageLine(image,pm->p[0]+xi,pm->p[1]+yi,pm->p[2]+xi,pm->p[3]+yi,
 		    pm->color[0]);
-	if(vimg_enable) vimg_line(scale_buf[0]+i*scale_buf[4],scale_buf[1]+i*scale_buf[5],
-				  scale_buf[2]+i*scale_buf[4],scale_buf[3]+i*scale_buf[5]);
+	if(vimg_enable) vimg_line(scale_buf[0]+i*(scale_buf[4]-transx),
+				  scale_buf[1]+i*(scale_buf[5]-transy),
+				  scale_buf[2]+i*(scale_buf[4]-transx),
+				  scale_buf[3]+i*(scale_buf[5]-transy));
     }
 }
 
@@ -296,7 +298,7 @@ void obj_lines(objparm *pm)
     int i, n;
     n=(pm->pcnt)/2;
     scale(pm->pd,pm->p,n);
-    for(i=2;i<2*n;i+=2)
+    for(i=2;i<2*n;i+=2) 
       gdImageLine(image,pm->p[i-2],pm->p[i-1],pm->p[i],pm->p[i+1],pm->color[0]);
     if(vimg_enable) vimg_polyline(scale_buf,n,0);
 }
