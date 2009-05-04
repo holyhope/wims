@@ -6,7 +6,7 @@
 
 !set n=$[min($n,10)]
  <p><center>
- <table border=2 bgcolor=$wims_ref_bgcolor>
+ <table border=2 bgcolor="$wims_ref_bgcolor">
  <caption>WIMS mirror sites
  <tr><th>Website<th>Locatie<th>Land<th>Ondersteunde<br>Talen<th>Opmerkingen
  !for i_=1 to $n
