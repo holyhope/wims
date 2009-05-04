@@ -8,13 +8,9 @@
 !set home_theme=yes
 !set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
 </div>
-<h1> 
-  !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo" align=left>
-  <font size="+2"><b>$V_title</b></font>
-  <br><font size="-1">(WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a></font>
-</h1>
-!set wims_headmenu_colcnt=5
-<div id="wimstopbox">
+!!!set wims_headmenu_colcnt=5
+<div class="wimsbody">
+<div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menuitem">
 !href module=adm/new $N_new
@@ -47,7 +43,6 @@
 !endif
 !next i
 </div>
-
 <div class="tailsep"></div>
 </div>
 
@@ -65,8 +60,15 @@
 </div>
 !endif
 </div>
-
-</div><div class=wimsbody> <p>
+</div>
+</div>
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<h1> 
+  !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo" align=left>
+  <font size="+2"><b>$V_title</b></font>
+  <br><font size="-1">(WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a></font>
+</h1>
 
 !if $wims_ismanager!=0
 <center>
@@ -84,8 +86,7 @@
 !!!else
 !! !set span=2
 !!!endif
-</div>
-<div id="wimsmenubox">
+<div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menuitem">
 $CR_1
