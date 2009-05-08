@@ -47,13 +47,13 @@
 !!<body $wims_htmlbody>
 !header1
 
-<center><h1>
+<h1 class="wims_title">
 <font color=red>W</font>WW
 <font color=red>I</font>nteractieve
 <font color=red>M</font>ultipurpose
 <font color=red>S</font>erver<br>
-<font size="-1">op <a href=/>$httpd_HTTP_HOST</a></font> <p>
-$module_title</h1></center> <p>
+<font size="-1">op <a href="/">$httpd_HTTP_HOST</a></font> <br>
+$module_title</h1> <p>
 
 !set mir=wimshome/public_html/html/mirrors.en
 !set thissite=!tolower $httpd_SERVER_NAME
