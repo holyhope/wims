@@ -83,10 +83,10 @@ reply 4,10x15
 <a name=fill$oldfillcnt id=fill$oldfillcnt><img src="gifs/transparent.gif" alt=transparent
 width=$bigsizex height=$bigsizey align=top></a>
 !set thisjs=var f_bigimage$oldfillcnt=new DynLayer();\
-f_bigimage$oldfillcnt.setAnchor({topA:"fill$oldfillcnt",leftA:"fill$oldfillcnt",\
+f_bigimage$oldfillcnt.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',\
 stretchH:$bigsizex,stretchV:$bigsizey});\
 dynapi.document.addChild(f_bigimage$oldfillcnt);\
-f_bigimage$oldfillcnt.setHTML("<img src=$imgurl width=$bigsizex height=$bigsizey>");
+f_bigimage$oldfillcnt.setHTML('<img src="$imgurl" width=$bigsizex height=$bigsizey>');
 
 !if $q_form=yes
  $hlist
@@ -96,8 +96,8 @@ $thisjs
  !distribute item 40C040,FF4040 into colorr_good,colorr_bad
  !set colorr_ana=C8C8E0
  !distribute item 20,15 into Sx,Sy
- !set cc1="<table border=0 cellpadding=0 cellspacing=0 width=$ssizex height=$ssizey><tr><td align=center>"
- !set cc2="</td></tr></table>"
+ !set cc1='<table border=0 cellpadding=0 cellspacing=0 width=$ssizex height=$ssizey><tr><td align=center>'
+ !set cc2='<\/td><\/tr><\/table>'
  !set wims_ins_alt=none
  !read js/dynapi3.phtml
  <script language=javascript type="text/javascript">
@@ -123,14 +123,15 @@ $thisjs
   f_l$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
     left:$rx,top:$ry,stretchH:$ssizex,stretchV:$ssizey});
   dynapi.document.addChild(f_l$c);
-  f_l$c.setBgColor("#$cl");
+  f_l$c.setBgColor('#$cl');
   !set ss=!replace internal " by \" in $(reply$i)
-  f_l$c.setHTML($cc1+"$ss"+$cc2);
+  !set ss=!replace internal ' by \' in $ss
+  f_l$c.setHTML($cc1+'$ss'+$cc2);
   !if $tt!=?analyze
    f_t$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
     left:$rx+$ssizex-4,top:$ry,stretchH:$Sx,stretchV:$Sy});
    dynapi.document.addChild(f_t$c);
-   f_t$c.setHTML("<small><small>[$embcnt]</small></small>");
+   f_t$c.setHTML('<small><small>[$embcnt]<\/small><\/small>');
    f_t$c.setZIndex(100);
   !endif
  !next c
