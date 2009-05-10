@@ -38,4 +38,4 @@ Fecha de creación 03-27-1998, &copy; XIAO, Gang.
 <center>
 !href module=home Volver a wims
 .</center>
-
+</div>

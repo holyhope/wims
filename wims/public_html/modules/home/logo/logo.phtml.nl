@@ -41,4 +41,4 @@ Gemaakt op 03-27-1998, &copy; XIAO, Gang.
 <center>
 !href module=home Terug naar WIMS
 </center>
-
+</div>
