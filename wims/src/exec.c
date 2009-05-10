@@ -1101,8 +1101,8 @@ void _exec_ins(char *p, char *script_name,char *format)
     if(strchr(ins_alt,'"')!=NULL || strlen(ins_alt)>256) ins_alt[0]=0;
     pt=getvar("wims_ins_alt"); if(pt==NULL) pt="";
     if(ins_alt[0] && strcmp(pt,"none")!=0)
-      snprintf(altbuf,sizeof(altbuf)," alt=\"%s\"",ins_alt);
-    else snprintf(altbuf,sizeof(altbuf)," alt=%s","none");;
+      snprintf(altbuf,sizeof(altbuf)," alt=\"%s \"",ins_alt);
+    else altbuf[0]=0;
     if(strcasecmp(tag,"form")!=0) {
 	snprintf(outbuf+strlen(outbuf),sizeof(outbuf)-strlen(outbuf),
 		 "<img src=\"%s\" border=%d vspace=%d %s %s%s>",

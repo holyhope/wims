@@ -1163,7 +1163,7 @@ void main_phtml_put(char *mname)
     }
     else txbuf[0]=0;
     snprintf(buf,sizeof(buf),
-	     "bgcolor=\"%s\" %s %s link=\"blue\" vlink=\"blue\"",
+	     "bgcolor=\"%s\" %s %s",
 	     bcolor,txbuf, bgbuf);
     setvar("wims_htmlbody",buf);
     phtml_put(mname,0);
