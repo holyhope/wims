@@ -98,11 +98,13 @@
 				&nbsp;&nbsp; $m_rightarrow &nbsp;&nbsp;
 			    </th>
 			    <th>
+				<form name="mydefaultform" action="">
 				!if $wims_user=supervisor
-				    <textarea id="myinput" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
+				    <textarea id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
         			!else
-				    <textarea  id="myinput" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
+				    <textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
 				!endif
+				</form>
 			    </th>
 			    </tr>
 			</table>
@@ -190,13 +192,16 @@
 		    !if $inputtext1!=$empty
 			$inputtext1:<br>
 		    !endif
+		    <form name="mydefaultform" action="">
 		    !if $wims_user=supervisor
             		<textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
         	    !else
             		<textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
         	    !endif
+		    </form>
 		!else
 		    !if $inputs>1
+		    <form name="mydefaultform" action="">
 			<table summary="" cellpadding="1">
 			!for p=1 to $inputs
 			    <tr>
@@ -217,6 +222,7 @@
 			    </tr>
 			!next p
 			</table>
+		    </form>
 		    !endif
 		!endif
 	    !endif
