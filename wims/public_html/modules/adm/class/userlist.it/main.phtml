@@ -217,7 +217,8 @@
   !for i=1 to $activecnt
    !set sh=!line $i of $activesheets
    !set se=!item 1 of $sh
-   !set ti=!item 3 of $sh
+   !set ti=!item 3 to -1 of $sh
+   !set ti=!replace internal , by &#44; in $ti
    !set tmp=!append item $se: $ti to $tmp
   !next i
   !set ash=$activesh
@@ -225,6 +226,7 @@
    !set tt=!item $i of $activexams
    !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
    !set l=!line 4 of $l
+   !set l=!replace internal , by &#44; in $l
    !set tmp=!append item Esame $tt: $l to $tmp
    !set ash=!append item E$tt to $ash
   !next i
@@ -233,7 +235,6 @@
   <td><input type=submit value="Visualizza"></td>
   </tr></table>
   </form>
- </p>
  !endif
 <p>
    Mostra
