@@ -20,7 +20,7 @@
 #ifndef wimsdef_h
 
 	/* maximal (multi-)line length. */
-#define MAX_LINELEN 16383
+#define MAX_LINELEN 32000
 	/* limit of items in a list; will never exceed MAX_LINELEN/2. */
 #define MAX_LIST 8192
  	/* maximal name length */
