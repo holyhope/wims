@@ -5,16 +5,18 @@
  !word $chapter of I. II. III. IV. V. VI. VII. VIII. IX. X.
  $a </h2>
  !read chapter$chapter.phtml
+!if $chapter!=2
  <ol>
  !set n=!linecnt $(chapter$chapter)
  !for i=2 to $n
   !set l=!line $i of $(chapter$chapter)
   !set t=!item 1 of $l
   !set s=!item 2 to -1 of $l
-  <li><p><a name=$t></a><h3>$s </h3>
+  <li><p><a name=$t></a><h3>$s</h3>
   !read $chapter/$t.phtml
  !next i
  </ol>
+!endif
 !next chapter
 
 <p><hr><p>
