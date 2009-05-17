@@ -1,22 +1,26 @@
 !!##language independent 
 !!<html><head>
 !!
-!set wims_html_header=!append line $header to $wims_html_header
-!!!if $job iswordof read print
- !!$header
-!!!endif
+!!set wims_html_header=!append line $header to $wims_html_header
+!if $job iswordof read print
+ !set wims_html_header=!append line $header to $wims_html_header
+!endif
+!read adm/css.phtml
 !!</head>
 !if $job=help
-<html><head>
-$wims_html_header
-</head>
+!!<html><head>
+!!$wims_html_header
+!!</head>
+!header1
  !changeto help.phtml
 !endif
 
 !if help isin $wims_session and $doc!=$helpd
-<html><head>
-$wims_html_header
- <body $wims_htmlbody onload="window.close();">
+!!<html><head>
+!!$wims_html_header
+!set wims_html_onload=!append word window.close(); to $wims_html_onload
+ !!<body $wims_htmlbody onload="window.close();">
+ !header1
  $n_helpclose
  </body></html>
  !exit

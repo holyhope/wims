@@ -1,12 +1,12 @@
-!distribute words $wims_read_parm into css_file
+!!## load the css file of a class by a link in the header
+!!distribute words $wims_read_parm into css_file
 !default module_title2=$module_title
-!if $wims_css=----
-  !set css_file=$wims_theme/css.css
-!else
-  !set css_file=html/css/$lang/$(wims_css)_color.css
+
+!set css_file=!sh cat $wims_home/log/classes/$wims_class/css
+
+!if $css_file=$empty
+!exit
 !endif
-!default css_file=$wims_theme/css.css
-!set css_file=!record 0 of wimshome/public_html/$css_file
 !set css_file=!replace internal $$$wims_bgcolor by $$wims_bgcolor in $css_file
 !set css_file=!replace internal $$$wims_ref_bgcolor by $$wims_ref_bgcolor in $css_file
 !writefile getfile/css.css $css_file
