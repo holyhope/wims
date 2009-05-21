@@ -1,0 +1,106 @@
+<!--begin of doctail.phtml-->
+
+<div class=wimstail>
+
+!if $job=read
+<p><hr>
+!if ($wims_class!=$empty and $wims_user!=supervisor)
+ !exit
+!endif
+!if help isin $wims_session
+ <small>
+ !href cmd=reply&job=source $n_source0 
+ &nbsp; $n_by
+ !if $email=$empty
+  $author
+ !else
+  !mailurl $email $author
+ !endif
+ $n_lastmod $datm</small>
+ !exit
+!endif
+<table width="100%" border=0 cellspacing=0 cellpadding=1>
+<tr><td align=left nowrap><small>
+!if $editable=yes
+ !href cmd=reply&job=prop $n_properties
+&nbsp;
+!href cmd=reply&job=file $n_file
+&nbsp;
+!endif
+ !!!href cmd=reply&job=source $n_source0
+&nbsp;$n_by
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+</small></td>
+<td align=right><small>
+!href module=home WIMS
+ @
+<a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
+</small></td></tr>
+<tr>
+<td align=left nowrap><small>$n_lastmod $datm</small></td>
+!if $wims_developer!=$empty and COPYING isin $module_copyright
+ !set V_=!char 1 of $module
+ !set M_=!translate internal / to , in $module
+ !set M_=!item 1 of $M_
+ !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
+  <td align=right nowrap><small>
+  !href module=adm/modtool&original=$module $n_modtool
+  </small></td>
+ !endif
+!endif
+</tr>
+</table>
+!if $wims_user=supervisor and $sheetdata!=$empty
+<div style="float:right;font-size:small;">
+ !href cmd=reply&job=exosource $n_source
+</div>
+!endif
+!goto end
+!endif job=read
+
+!if $job=exosource
+<p><hr><p>
+<center>
+!href cmd=reply&job=read $n_back
+</center> <p>
+!goto end
+!endif job=exosource
+
+!if $job=print
+<p><hr>
+<table width="100%" border=0 cellspacing=0 cellpadding=1>
+<tr><td align=left nowrap><small>
+Par
+!if $email=$empty
+ $author
+!else
+ !mailurl $email $author
+!endif
+!! &copy;
+</small>
+<td align=right><small>
+!href cmd=reply&job=read&doc=$doc&block=$startblock $n_interactive
+</small>
+!if $wims_user=supervisor and $sheetdata!=$empty
+ <tr><td align=left nowrap>
+ <small>Dernière modif. $datm</small>
+ <td align=right><small>
+ !href cmd=reply&job=exosource&block=$startblock $n_source
+ </small>
+!else
+ <tr><td align=left colspan=2 nowrap>
+ <small>$n_lastmod $datm</small>
+!endif
+</table>
+!goto end
+!endif job=print
+
+:end
+</div><!--end of wimstail-->
+<!-- end of doctail.phtml-->
+
