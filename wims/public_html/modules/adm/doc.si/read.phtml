@@ -1,5 +1,5 @@
 
-<center><h1>$tit
+<h1 class="wims_docu_title">$tit
 !if $editable=yes
  </b><font size="-1">[
  !if $block=main
@@ -11,7 +11,7 @@
  !endif
  ]</font>
 !endif
-</h1></center>
+</h1>
 
 !if $error!=$empty
  !read msg.phtml
@@ -53,56 +53,4 @@
 
 !read $docdir/$doc/$block.def content
 
-</div><div class=wimstail>
-<p><hr>
-!if ($wims_class!=$empty and $wims_user!=supervisor)
- !exit
-!endif
-!if help isin $wims_session
- <small>
- !href cmd=reply&job=source Koda
- &nbsp; avtor
- !if $email=$empty
-  $author
- !else
-  !mailurl $email $author
- !endif
- Zadnja sprememba: $datm</small>
- !exit
-!endif
-<table width="100%" border=0 cellspacing=0 cellpadding=1>
-<tr><td align=left nowrap><small>
-!if $editable=yes
- !href cmd=reply&job=prop Lastnosti
-&nbsp;
-!href cmd=reply&job=file $n_file
-&nbsp;
-!endif
-!href cmd=reply&job=source Koda
-&nbsp; by
-!if $email=$empty
- $author
-!else
- !mailurl $email $author
-!endif
-!! &copy;
-</small>
-<td align=right><small>
-!href module=home WIMS
- @
-<a href="http://$httpd_HTTP_HOST/>$httpd_HTTP_HOST"</a>
-!if $wims_user=supervisor and $sheetdata!=$empty
- </small></td></tr>
- <tr><td align=left nowrap>
- <small>Zadnja sprememba: $datm
-</small>
-<td align=right><small>
- !href cmd=reply&job=exosource Koda za vaje na tej strani
- </small>
-!else
- <tr><td align=left colspan=2 nowrap>
- <small>Zadnja sprememba: $datm
-</small>
-!endif
-</table>
 

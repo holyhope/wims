@@ -1,5 +1,5 @@
 
-<h1 class="wims_title">$tit
+<h1 class="wims_docu_title">$tit
 !if $editable=yes
  </b><font size="-1">[
  !if $block=main
@@ -54,53 +54,5 @@
 !!detrust
 !read $docdir/$doc/$block.def content
 
-</div><div class=wimstail>
-<p><hr>
-!if ($wims_class!=$empty and $wims_user!=supervisor)
- !exit
-!endif
-!if help isin $wims_session
- <small>
- !href cmd=reply&job=source 源文件
- &nbsp; 作者
- !if $email=$empty
-  $author
- !else
-  !mailurl $email $author
- !endif
- 最后修改日期 $datm</small>
- !exit
-!endif
-<table width="100%" border=0 cellspacing=0 cellpadding=1>
-<tr><td align=left nowrap><small>
-!if $editable=yes
- !href cmd=reply&job=prop 性质
-&nbsp;
-!endif
-!href cmd=reply&job=source 源文件
-&nbsp; 作者
-!if $email=$empty
- $author
-!else
- !mailurl $email $author
-!endif
-!! &copy;
-</small>
-<td align=right><small>
-!href module=home WIMS
- @
-<a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</small>
-!if $wims_user=supervisor and $sheetdata!=$empty
- <tr><td align=left nowrap>
- <small>最后修改日期 $datm</small>
- <td align=right><small>
- !href cmd=reply&job=exosource 本页练习的源码
- </small>
-!else
- <tr><td align=left colspan=2 nowrap>
- <small>最后修改日期 $datm</small>
-!endif
-</table>
 
 
