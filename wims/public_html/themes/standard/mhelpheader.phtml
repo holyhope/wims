@@ -1,0 +1,37 @@
+!set wims_theme_mhelpheader=yes
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+!read name.phtml.$module_language
+!if $special_parm=about
+ !set wname_h=$wims_name_about
+!else
+ !set wname_h=$wims_name_help
+!endif
+!set module_title2=$wname_h : $module_title
+!!set wims_html_onload=window.focus();window.moveTo(150,120);window.resizeTo(700,600);
+!read adm/css.phtml
+!!debug $wims_html_header
+$wims_html_header
+</head>
+<body $wims_htmlbody onload="window.focus();window.moveTo(150,120);window.resizeTo(700,600);">
+
+<div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
+<div class="wimsmenu">
+ <div class="menuitem">
+$wname_h 
+</div>
+<div class="menuitem">
+ [<a href= "#" onclick="window.close();">$wims_name_back2</a>]
+</div> <!-- end of menuitem -->
+</div> <!-- end of wimsmenu -->
+</div><!-- wimstopbox -->
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<div class="wimsbody">
+<h1 class="wims_title">$module_title</h1>
+
+<!-- end of mhelpheader.phtml -->
+

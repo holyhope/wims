@@ -15,18 +15,22 @@
 !set sitehelp=!record 0 of conf/sitehelp.phtml
 !set bgimgs=!filelist gifs/bg
 
-<h3><center>Configuración: $tt</center></h3>
+<center><h3>Config: $tt</h3></center>
 
 <p>
 !line 5 to -1 of $t
 <p>
 !set n_=!word 2 of $t
+!if $n_ issametext css
+  <pre>
+  !record 0 of  wimshome/public_html/bases/sys/css_classes
+  </pre>
+!endif
 !set d_=$(DF_$n_)
 !default d_=[empty]
 Valor por defecto: <tt>$d_</tt>
 <p>
-<center>
-<a href="#" onclick=window.close()>Cerrar esta ventana de ayuda</a>
-</center>
-</body></html>
-
+!!<center>
+!!<a href="#" onclick="window.close()">Close this help</a>
+!!</center>
+!!</body></html>
