@@ -13,16 +13,6 @@
  <div class="menuitem">
  !href cmd=reply&job=source $n_source0 
  </div>
- <div class="menuitem">$n_by
- !if $email=$empty
-  $author
- !else
-  !mailurl $email $author
- !endif
- </div>
- <div class="menuitem">
- $n_lastmod $datm
- </div>
  !goto end
 !endif
 !if $editable=yes
@@ -34,20 +24,6 @@
 </div>
 !endif
  !!!href cmd=reply&job=source $n_source0
-<div class="menuitem">$n_by
-!if $email=$empty
- $author
-!else
- !mailurl $email $author
-!endif
-!! &copy;
-</div>
-<div class="menuitem">
-!href module=home WIMS
- @
-<a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</div>
-<div class="menuitem">$n_lastmod $datm</div>
 !if $wims_developer!=$empty and COPYING isin $module_copyright
  !set V_=!char 1 of $module
  !set M_=!translate internal / to , in $module
@@ -78,37 +54,38 @@
 
 !if $job=print
 <div class="menuitem">
-$n_by
-!if $email=$empty
- $author
-!else
- !mailurl $email $author
-!endif
-!! &copy;
-</div>
-<div class="menuitem">
 !href cmd=reply&job=read&doc=$doc&block=$startblock $n_interactive
 </div>
 !if $wims_user=supervisor and $sheetdata!=$empty
 <div class="menuitem">
-$n_lastmod $datm
-</div>
-<div class="menuitem">
  !href cmd=reply&job=exosource&block=$startblock $n_source
  </div>
-!else
-<div class="menuitem">
- $n_lastmod $datm
-</div>
 !endif
 !goto end
 !endif job=print
 
 :end
-<div class=wimstail>
-</div><!--end of wimstail-->
-</div><!-- end ofwimsmenu-->
+</div><!--end of wimsmenu-->
 </div><!--end of wimsmenubox-->
-</div><!--end of wimsbodybox-->
+</div><!-- end ofwimsbodybox-->
+<div class=wimstail>
+<div class="menuitem">$n_by
+ !if $email=$empty
+  $author
+ !else
+  !mailurl $email $author
+ !endif
+ </div>
+ <div class="menuitem">
+ $n_lastmod $datm
+ </div>
+ <div class="menuitem">
+!href module=home WIMS
+ @
+<a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
+</div>
+ 
+</div><!--end of wimstail-->
+
 <!-- end of doctail.phtml-->
 
