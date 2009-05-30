@@ -26,19 +26,24 @@
  </form>
 <p>
 !if $wims_user=supervisor and $cdt_supervise=yes 
- <p>
- !href cmd=new&job=adddate Ajouter une date
- &nbsp;
- !href cmd=reply&job=file Ajouter un fichier
- &nbsp;
- !href cmd=new&job=addtodo Ajouter des devoirs
- &nbsp;
- !href cmd=reply&job=config Configurer
- .
+ !set wims_menu_tail= !append line "Ajouter une date",1,cmd=new&job=adddate\
+ "Ajouter un fichier",1,cmd=reply&job=file\
+ "Ajouter des devoirs",1,cmd=new&job=addtodo\
+ "Configurer",1,cmd=reply&job=config to $wims_menu_tail
+ 
+ !!!href cmd=new&job=adddate Ajouter une date
+ !!&nbsp;
+ !!!href cmd=reply&job=file Ajouter un fichier
+ !!&nbsp;
+ !!!href cmd=new&job=addtodo Ajouter des devoirs
+!! &nbsp;
+!!!href cmd=reply&job=config Configurer
+!! .
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
-<p>
- !href cmd=new&job=home Retour
-.
+!!<p>
+!! !href cmd=new&job=home Retour
+!!.
+!set wims_menu_tail=!append line back,1,cmd=new&job=home to $wims_menu_tail
 !endif

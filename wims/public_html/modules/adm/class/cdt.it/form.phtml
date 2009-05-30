@@ -26,8 +26,12 @@
  </form>
 <p>
 !if $wims_user=supervisor and $cdt_supervise=yes 
- <p>
- !href cmd=new&job=adddate Inserisci una data
+ !set wims_menu_tail= !append line "Inserisci una data",1,cmd=new&job=adddate\
+ "Inserisci un file",1,cmd=reply&job=file\
+ "Inserisci un compito da svolgere",1,cmd=new&job=addtodo\
+ "Configurazione",1,cmd=reply&job=config to $wims_menu_tail
+ !!<p>
+ !!!href cmd=new&job=adddate Inserisci una data
  &nbsp;
  !href cmd=reply&job=file Inserisci un file
  &nbsp;
@@ -38,7 +42,8 @@
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
-<p>
- !href cmd=new&job=home Indietro
-.
+!!<p>
+!! !href cmd=new&job=home Indietro
+!!.
+!set wims_menu_tail=!append line back,1,cmd=new&job=home to $wims_menu_tail
 !endif
