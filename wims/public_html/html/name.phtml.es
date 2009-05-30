@@ -1,4 +1,3 @@
-
 !if $wims_name_home!=$empty
  !exit
 !endif
@@ -13,7 +12,11 @@
 		Ayuda de WIMS,Referencias,\
 		Foro de discusión,Foro,\
 		Hoja de trabajo,Herramientas,\
-		Copiar a Modtool\
+		Copiar a Modtool,
+		Print,
+		Importar a su clase,\
+		Versión imprimible,\
+		Otro nuevo\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -23,7 +26,8 @@
 	wims_name_translatedby,wims_name_exit,\
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
-	wims_name_modify
+	wims_name_modify,wims_name_print,wims_name_import,\
+	wims_name_printable,wims_name_renew
 
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,\
@@ -32,13 +36,15 @@
 		El registro de puntuación está cerrado.,\
 		Ha suspendido el registro de puntuación.,\
 		Usted es el profesor de la clase,\
-		Registrar los detalles de este ejercicio\
+		Registrar los detalles de este ejercicio,\
+		Página de gestión de las hojas de trabajo\
 	into wims_name_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
 	wims_name_syou,\
-	wims_name_exolog
+	wims_name_exolog,\
+	wims_name_sheetmanagement
  !set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
 	$[$wims_homeref_req] puntos en este trabajo. <br>Puntuación media \
 	$[$wims_homeref_mean]/10.
@@ -53,5 +59,3 @@
   !let wims_page_name=Page
  !endif
 !endif
-
-

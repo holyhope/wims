@@ -1,16 +1,15 @@
 !!<html><head>
 !!$wims_html_header
 !!</head><body $wims_htmlbody>
-!header1
+!!!headmenu
 
-!!headmenu
+!header1
 
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
-
-<center><h3>$wims_classname, $wims_institutionname</h3>
-<hr> <p><h1>Feuille de travail numéro $sh<br>$sheet_title</h1></center> <p>
+<h2>$wims_classname, $wims_institutionname</h2>
+<hr><h3 class="wims_sheet_title">Feuille de travail numéro $sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -96,20 +95,32 @@
  </div>
 !endif
 
+!!!if $wims_user=supervisor
+!!<p>
+!!!href module=adm/class/sheet&sheet=$sh Page de gestion de la feuille
+!! (pour enseignant).
+!!!endif
+!!!if $n>0
+!! !href cmd=reply&job=print Version imprimable
+!!.
+!! !if $exolog!=$empty
+!!  !href module=adm/class/exolog&job=llist&logsheet=$sh Enregistrer les détails d'un exercice
+!!.
+!! !endif
+!!!endif
+!!<p>
+
 !if $wims_user=supervisor
-<p>
-!href module=adm/class/sheet&sheet=$sh Page de gestion de la feuille
- (pour enseignant).
+!set wims_menu_tail=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+to $wims_menu_tail
 !endif
 !if $n>0
- !href cmd=reply&job=print Version imprimable
-.
+!set wims_menu_tail=!append line printable,1,cmd=reply&job=print\
+to $wims_menu_tail
  !if $exolog!=$empty
-  !href module=adm/class/exolog&job=llist&logsheet=$sh Enregistrer les détails d'un exercice
-.
+  !set wims_menu_tail=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
+to $wims_menu_tail 
  !endif
 !endif
-<p>
-
 !tail
 

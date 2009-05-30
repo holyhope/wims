@@ -38,21 +38,24 @@ $sheet_remark
  The sheet is empty! This is probably an error.
 !else
  Assigned works in this sheet:
- <p><ul>
+<div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of $data
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
-  <li><p>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
 , $de
 !!  !if $require>0
 !!   <small>$[$got] out of $[$require] points obtained, quality
 !!   $[$mean]/10.</small>
 !!  !endif
+ </li>
  !next i
  </ul>
+ </div>
  !if $wims_user=supervisor
   !href cmd=resly&job=import Import
   this sheet into your class, or
@@ -61,8 +64,10 @@ $sheet_remark
   <p>
  !endif
 !endif
-!href cmd=reply&job=print Printable version
-.
+!!!href cmd=reply&job=print Printable version
+!!.
+!set wims_menu_tail=!append line printable,1,cmd=reply&job=print\
+to $wims_menu_tail
 
 !tail
 

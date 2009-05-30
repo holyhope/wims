@@ -1,8 +1,8 @@
 
 !!$wims_html_head<body $wims_htmlbody>
 !header1
-<p><center><h3>$sheet_title<br>
-<font size="-1">$sheet_desc</font></h3></center> <p>
+<h3 class="wims_sheet_title">$sheet_title</h3>
+<div class="wims_sheet_desc">$sheet_desc</div><p>
 !!<div class=wimsbody>
 
 !if $error!=$empty
@@ -61,10 +61,13 @@
 
 :noans
 <p>
-<div class="wims_print">
-<hr>
-!href cmd=reply Renouveler
-&nbsp;&nbsp;
-!href cmd=reply&job=read Retour
-</div><!--end of wims_print-->
+!!<div class="wims_noprint">
+!!<hr>
+!!!href cmd=reply Renouveler
+!!&nbsp;&nbsp;
+!!!href cmd=reply&job=read Retour
+!!</div><!--end of wims_noprint-->
+!set wims_menu_tail=!append line renew,1,cmd=reply\
+back2,1,cmd=reply&job=read\
+to $wims_menu_tail
 !tail
