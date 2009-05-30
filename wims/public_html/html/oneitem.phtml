@@ -1,4 +1,9 @@
 !distribute items $wims_read_parm into 1_,2_,3_,4_
+!if " isin $1_
+  !set w_name=!replace internal " by in $1_
+!else
+  !set w_name=$(wims_name_$1_)
+!endif
 !goto $2_
 :0
  $(wims_read_parm[3..-1])
@@ -6,16 +11,16 @@
 :1
  !set 3_=!item 3 to -1 of $wims_read_parm
  !set 3_=!nospace $3_
- !href $3_ $(wims_name_$1_)
+ !href $3_ $w_name
  !exit
 :2
- <a href="$3_">$(wims_name_$1_)</a>
+ <a href="$3_">$w_name</a>
  !exit
 :3
- <a href="#" onclick="$3_">$(wims_name_$1_)</a>
+ <a href="#" onclick="$3_">$w_name</a>
  !exit
 :4
- !href target=wims_$4_ $3_ $(wims_name_$1_)
+ !href target=wims_$4_ $3_ $w_name
  !exit
 :*
 

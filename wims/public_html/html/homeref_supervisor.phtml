@@ -1,3 +1,4 @@
+!!##preparation of the "bottom menu"
 
 !if _check isin $session or $wims_mode=popup
  !exit
@@ -21,6 +22,10 @@
  !goto rmend
 !endif
 
+!if $wims_rm_1=no
+ !reset wims_rm_1
+ !goto local
+!endif
 !if $wims_rm_1!=$empty
  !goto rm2
 !endif
@@ -53,6 +58,36 @@
 !if $module_has_about=yes and $cmd notwordof help intro
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
+!if print isin $job,$job2 or $print!=
+  !set 1_=!append line print,3,window.print() to $1_
+!endif
+!if $wims_developer!=$empty and COPYING isin $module_copyright and ../classes/ notin ../$module
+ !set V_=!char 1 of $module
+ !set M_=!translate internal / to , in $module
+ !set M_=!item 1 of $M_
+ !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
+  !set 1_=!append line modify,1,module=adm/modtool&original=$module to $1_
+ !endif
+!endif
+!if $cmd!=intro and $cmd!=help and $module!=home and \
+	../adm/ notin ../$module and \
+	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
+ !set wims_homeref_parm=!replace % by %25 in $module_init_parm
+ !set wims_homeref_parm=!replace + by %2B in $module_init_parm
+ !set wims_homeref_parm=!replace & by %26 in $module_init_parm
+ !set 1_=!append line add,1,module=adm/class/addmodule&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $1_
+!endif
+!if $wims_user=supervisor and exam notin $session and \
+	..classes/ notin ..$module and ..adm/ notin ..$module and \
+	..devel/ notin ..$module and \
+	GNU isin $module_copyright and \
+	_check notin $session and \
+	$class_importation!=no and\
+	$thisexo!=
+  !set 1_=!append line import,1,module=adm/createxo&existing=$thisexo&catmodule=$module to $1_
+!endif
+:local
+!set 1_=!append line $wims_menu_tail to $1_
 !set wims_rm_1=$1_
 
 :rm2
@@ -78,22 +113,6 @@ WIMS $module_title [$module_language]
 !endif
 !set 2_=!append line syou,0,$wims_name_syou to $2_
 !set 2_=!append line class,0,$wims_classname ($wims_institutionname) to $2_
-!if $cmd!=intro and $cmd!=help and $module!=home and \
-	../adm/ notin ../$module and \
-	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
- !set wims_homeref_parm=!replace % by %25 in $module_init_parm
- !set wims_homeref_parm=!replace + by %2B in $module_init_parm
- !set wims_homeref_parm=!replace & by %26 in $module_init_parm
- !set 2_=!append line add,1,module=adm/class/addmodule&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $2_
-!endif
-!if $wims_developer!=$empty and COPYING isin $module_copyright and ../classes/ notin ../$module
- !set V_=!char 1 of $module
- !set M_=!translate internal / to , in $module
- !set M_=!item 1 of $M_
- !if $V_ isin ABCDEFGHIJKLMNOPQRTSUVWXYZ or $M_ iswordof local contrib tool
-  !set 2_=!append line modify,1,module=adm/modtool&original=$module to $2_
- !endif
-!endif
 !set 2_=!append line time,0,Server time: $wims_now to $2_
 !set wims_rm_2=$2_
 

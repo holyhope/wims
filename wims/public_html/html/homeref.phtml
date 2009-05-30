@@ -50,6 +50,10 @@
 !read name.phtml.$module_language
 !default wims_homeref_bgcolor=$wims_ref_bgcolor
 
+!if $wims_rm_1=no
+ !reset wims_rm_1
+ !goto local
+!endif
 !if $wims_rm_1!=$empty
  !goto rm2
 !endif
@@ -94,6 +98,8 @@
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
 
+:local
+!set 1_=!append line $wims_menu_tail to $1_
 !set wims_rm_1=$1_
 
 :rm2

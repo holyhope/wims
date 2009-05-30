@@ -12,6 +12,10 @@
  !goto rmend
 !endif
 
+!if $wims_rm_1=no
+ !reset wims_rm_1
+ !goto local
+!endif
 !if $wims_rm_1!=$empty
  !goto rm2
 !endif
@@ -41,6 +45,12 @@
 !if $module_has_about=yes and $cmd notwordof help intro
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
+!if print isin $job,$job2 or $print!=
+  !set 1_=!append line print,3,window.print() to $1_
+!endif
+
+:local
+!set 1_=!append line $wims_menu_tail to $1_
 !set wims_rm_1=$1_
 
 :rm2
