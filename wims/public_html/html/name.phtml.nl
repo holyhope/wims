@@ -1,4 +1,3 @@
-
 !if $wims_name_home!=$empty
  !exit
 !endif
@@ -13,7 +12,11 @@
 		WIMS Help,Referentie,\
 		Message board,Forums,\
 		Werkblad,Hulpmiddelen,\
-		Kopieer naar Modtool\
+		Kopieer naar Modtool,\
+		Print,\
+		Importeer in uw eigen klas,\
+		Printbare versie,\
+		Opnieuw,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -23,7 +26,8 @@
 	wims_name_translatedby,wims_name_exit,\
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
-	wims_name_modify
+	wims_name_modify,wims_name_print,wims_name_import,\
+	wims_name_printable,wims_name_renew
 
 !if $wims_class!=$empty
  !distribute items Homepagina van je klas,Voeg $ toe aan het werkblad,\
@@ -31,13 +35,16 @@
 		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
 		Je hebt het behalen van cijfers opgeschort,\
 		Jij bent de leraar van deze klas,\
-		Bewaar de details van deze oefening\
+		Bewaar de details van deze oefening,\
+		Werkblad Startpagina\
 	into wims_name_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
 	wims_name_syou,\
-	wims_name_exolog
+	wims_name_exolog,\
+	wims_name_sheetmanagement
+	
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br>Gemiddelde score \
 	$[$wims_homeref_mean]/10.
@@ -52,6 +59,3 @@
   !let wims_page_name=Page
  !endif
 !endif
-
-
-
