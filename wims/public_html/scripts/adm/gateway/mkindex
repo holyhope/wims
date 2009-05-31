@@ -20,6 +20,7 @@ icourses=!sh cd $E_; find . -maxdepth 3 -mindepth 3 -type d -name '3[0-9][0-9]' 
 cp_=!append item $classes to $progs
 cp_=!translate internal / to _ in $cp_
 idata=
+rdata=
 !for c in $cp_
  rdata_$cp_=
  idata_$cp_=
@@ -30,7 +31,6 @@ idata=
  pdata_$c=
  idata_$c=
 !next c
-
 !for c in $courses
  c_=!translate internal / to , in $c
  cc=!char 1 to 3 of $(c_[3])
@@ -39,21 +39,26 @@ idata=
  p_=$(c_[1])_$cc
  t_=!defof class_Supervisor\
 class_supervisor\
-class_description in $D_/$c/.def
- !distribute lines $t_ into s_,n_,t_
- L_=$c,$s_,$t_,$n_
+class_description\
+class_connections\
+in $D_/$c/.def
+ !distribute lines $t_ into s_,n_,t_,co_
+ co_=!items2words $co_
+ L_=$c,$s_,$t_,$n_,$co_
  rdata_$l_=!append line $L_ to $(rdata_$l_)
  rdata_$C_=!append line $L_ to $(rdata_$C_)
  rdata_$p_=!append line $L_ to $(rdata_$p_)
+ rdata=!append line $L_ to $(rdata)
 !next c
-
 !for c in $icourses
  c_=!translate internal / to , in $c
  l_=$(c_[1])
  p_=$(c_[1])_$(c_[2])
  t_=!defof class_Supervisor\
 class_supervisor\
-class_description in $D_/$c/.def
+class_description\
+class_connections\
+in $D_/$c/.def
  !distribute lines $t_ into s_,n_,t_
  L_=$c,$s_,$t_,$n_
  idata_$l_=!append line $L_ to $(idata_$l_)
@@ -70,13 +75,17 @@ cdata=
  c_=!item 1 of $c_
  t_=!defof class_Supervisor\
 class_supervisor\
-class_description in $D_/$c/.def
- !distribute lines $t_ into s_,n_,t_
- cdata=!append line $c,$s_,$t_,$n_ to $cdata
+class_description\
+class_connections\
+in $D_/$c/.def
+ !distribute lines $t_ into s_,n_,t_,co_
+ co_=!items2words $co_
+ cdata=!append line $c,$s_,$t_,$n_,$co_ to $cdata
  cdata_$c_=!append line $c,$s_,$t_,$n_ to $(cdata_$c_)
  c_=!translate internal / to _ in $c
  !writefile $D_/$c/courses $(rdata_$c_)
 !next c
+!writefile $D_/courses $(rdata_$c_)
 
 pdata=
 !for c in $progs
@@ -84,10 +93,13 @@ pdata=
  c_=!item 1 of $c_
  t_=!defof class_Supervisor\
 class_supervisor\
-class_description in $D_/$c/.def
- !distribute lines $t_ into s_,n_,t_
- pdata=!append line $c,$s_,$t_,$n_ to $pdata
- pdata_$c_=!append line $c,$s_,$t_,$n_ to $(pdata_$c_)
+class_description\
+class_connections\
+in $D_/$c/.def
+ !distribute lines $t_ into s_,n_,t_,co_
+ co_=!items2words $co_
+ pdata=!append line $c,$s_,$t_,$n_,$co_ to $pdata
+ pdata_$c_=!append line $c,$s_,$t_,$n_,$co_ to $(pdata_$c_)
  c_=!translate internal / to _ in $c
  !writefile $D_/$c/courses $(rdata_$c_)
  !writefile $D_/$c/icourses $(idata_$c_)
@@ -97,9 +109,12 @@ ldata=
 !for c in $levels
  t_=!defof class_Supervisor\
 class_supervisor\
-class_description in $D_/$c/.def
- !distribute lines $t_ into s_,n_,t_
- ldata=!append line $c,$s_,$t_,$n_ to $ldata
+class_description\
+class_connections\
+in $D_/$c/.def
+ !distribute lines $t_ into s_,n_,t_,co_
+ co_=!items2words $co_
+ ldata=!append line $c,$s_,$t_,$n_,$co_ to $ldata
  !writefile $D_/$c/classes $(cdata_$c)
  !writefile $D_/$c/programs $(pdata_$c)
  !writefile $D_/$c/courses $(rdata_$c)
@@ -110,4 +125,5 @@ class_description in $D_/$c/.def
 !writefile $D_/classes $cdata
 !writefile $D_/programs $pdata
 !writefile $D_/icourses $idata
+!writefile $D_/courses $rdata
 

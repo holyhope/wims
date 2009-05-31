@@ -14,11 +14,12 @@ do
  pswd=`awk -F'=' '$1=="!set class_password" {print substr($2,2,3); exit}' $cls/.def`
  supv=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' $cls/.def`
  type=`awk -F'=' '$1=="!set class_type" {print $2; exit}' $cls/.def`
+ connexion=`awk -F'=' '$1=="!set class_connections" {print $2; exit}' $cls/.def`
  if [ -n "$desc" ]; then
   [ -z "$type" ] && type=0
   case $type in
    0|2|4)
-    echo ":$cls,$expr,$inst,$desc,$lang,$type,$lvl,$pswd,$supv" >>.IND
+    echo ":$cls,$expr,$inst,$desc,$lang,$type,$lvl,$pswd,$supv,$connexion" >>.IND
     if [ "$type" = "2" ]; then
      slist=`ls -d $cls/[0-9]* | sort -n -t/ -k2 2>/dev/null`
      for scs in $slist; do
@@ -29,7 +30,8 @@ do
       lvl=`awk -F'=' '$1=="!set class_level" {print $2; exit}' $scs/.def`
       pswd=`awk -F'=' '$1=="!set class_password" {print substr($2,2,3); exit}' $scs/.def`
       supv=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' $scs/.def`
-      echo ":$scs,$expr,$inst,$desc,$lang,1,$lvl,$pswd,$supv" >>$cls/.subclasses
+      connexion=`awk -F'=' '$1=="!set class_connections" {print $2; exit}' $cls/.def`
+      echo ":$scs,$expr,$inst,$desc,$lang,1,$lvl,$pswd,$supv,$connexion" >>$cls/.subclasses
      done
     fi
     ;;
@@ -43,6 +45,7 @@ done
 env LC_COLLATE=POSIX LANG=POSIX LC_CTYPE=fr_FR.UTF-8 sort -t ',' -f -k 2 <.IND >.index
 rm -f .IND
 
+###cleanup example class
 for cls in 1???
 do
  if [ -d "$cls/.users.bak" ]; then
