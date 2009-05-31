@@ -13,11 +13,30 @@ class_usercount=!wordcnt $class_userlist
 class_userlist= !words2items $class_userlist
 
 # Pour compter les exos, on utilise le fichier Extitles de la classe
-class_exotitlelist=!sh cat $wims_home/log/classes/$qclass/Extitles
+class_exotitlelist=!record 0 of wimshome/log/classes/$qclass/Extitles
 class_exotitlelist=!lines2items $class_exotitlelist
 class_exocount=!itemcnt $class_exotitlelist
 
+##course list,  program list
+!if $class_type>=2
+  !for typ in programs,classes,icourses,levels,courses,icourses
+   class_$typ=!record 0 of wimshome/log/classes/$qclass/$typ
+   class_$typ=!lines2rows $(class_$typ)
+   class_$typ=$(class_$typ[;1])
+  !next
+!endif
+!if $class_type=2
+  class_subclasses=!record 0 of wimshome/log/classes/$qclass/.subclasses
+!endif
 option=!listintersect $option and $classdefs,$supp
 !if $option=$empty
  option=$classdefs,$supp
+!endif
+suff=s
+suff1=es
+option=!listcomplement $class_typename$suff,$class_typename$suff1 in $option
+!if $class_type!=2
+  option=!listcomplement subclasses in $option
+!else
+  option=!listcomplement programs,courses,classes in $option
 !endif
