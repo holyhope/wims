@@ -13,6 +13,7 @@ usercnt=!recordcnt wimshome/log/classes/$qclass/.userlist
 
 quote="
 fbase=data-$qclass
+fbase=!translate internal / to _ in $fbase
 fname=$wims_sesdir/spreadsheet
 dl=!singlespace $option
 dl=!lower $dl
@@ -26,7 +27,7 @@ dl=!replace word allscores by allscore in $dl
 dl=!replace word name by lastname firstname in $dl
 dl=!replace word allscore by averages sheets exams manuals in $dl
 
-good=login password lastname firstname email regnum comments
+basic=login lastname firstname password email regnum comments
 scnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
 activesh=
 !for i=1 to $scnt
@@ -44,7 +45,7 @@ sh=
  name=!line 3 of $l
  name_sheet$i=$quote$name$quote
 !next i
-good=$good $sh
+good=$basic $sh
 
 scnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
 activexams=
@@ -65,11 +66,11 @@ ex=
 !next i
 good=$good $ex
 
+ma=
 l=!record 1 of wimshome/log/classes/$qclass/.grades
 !distribute lines $l into manual,titles,weights
 gcnt=!itemcnt $titles
 gcnt=$[max(0,$gcnt-2)]
-ma=
 !for i=1 to $gcnt
  ma=$ma manual$i
  name=!item $i+2 of $titles
@@ -136,6 +137,7 @@ tit=!translate , to $sep in $dl
 !for n in login,password,lastname,firstname,email,regnum,comments
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
+
 dl3=!replace user_ by $$name_ in $dl2
 dl2=!replace user_ by $$user_ in $dl2
 
@@ -152,16 +154,21 @@ s=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
 scoremax=!line 1 of $s
 !default scoremax=10
 
-!read adm/class/sheetsweights
+!read adm/class/sheetweights
 
 !for u=1 to $usercnt
+ !reset user_lastname,user_firstname,user_email,user_regnum,user_comments
  l=!record $u of wimshome/log/classes/$qclass/.userlist
  user_login=!item 3 of $l
- !defread wimshome/log/classes/$qclass/.users/$user_login
+ uu=$user_login
+ uuu=!hex $uu
+ !reset $basic
+ !read adm/class/userdef classes,$wims_class,$user_login
+ !defread $userdef
  !if $scores=yes
   !read adm/class/userscore $user_login
   user_average1=$per
-  user_average2=$(manual_$user_login)
+  user_average2=$(manual_$uuu)
   !if average0 isitemof $dl
    user_average0=$[rint($manual*$user_average2+(100-$manual)*($per))/100]
   !endif
@@ -184,7 +191,7 @@ scoremax=!line 1 of $s
   !next i
   !for i=1 to $gcnt
    !if manual$i isitemof $dl
-    user_manual$i=!item $i of $(Manual_$user_login)
+    user_manual$i=!item $i of $(Manual_$uuu)
     !default user_manual$i=0
    !endif
   !next i
