@@ -1,7 +1,13 @@
 !! Tail menu theme.
 !nocache
 !set wims_theme_tail=yes
-
+<center>
+!for i_=1 to $wims_homeref_n0
+ !set 1_=!line $i_ of $wims_rm_0
+ !read oneitem.phtml $1_
+ &nbsp;
+!next i_
+</center>
 <div class=wimstail>
 <center><hr width="35%">
 !if $wims_homeref_special!=$empty
@@ -13,6 +19,7 @@
 <table align=center border=0 cellspacing=0 cellpadding=2
 bgcolor="$wims_homeref_bgcolor"
 class=wimstail>
+<tr>
 <tr>
 !for i_=1 to $wims_homeref_n1
  <td align=center><small>

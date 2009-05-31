@@ -3,12 +3,29 @@
 !nocache
 !set wims_theme_tail=yes
 </div><!--end of wimspagebox-->
-<div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
-<div class="wimsmenu">
+
 !if $wims_homeref_special!=$empty
  <div class="tailitem">$wims_homeref_special</div><!--tailitem-->
  !exit
 !endif
+!if $wims_homeref_n0>0
+<div id="wimsmenumodbox">
+<div class="wimsmenu">
+ !for i_=1 to $wims_homeref_n0
+  !set 1_=!line $i_ of $wims_rm_0
+  !if $1_=
+   <div class="tailsep"></div>
+  !else
+   <div class="menuitem">
+     !read oneitem.phtml $1_
+   </div>
+  !endif
+ !next i_
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox-->
+!endif
+<div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
+<div class="wimsmenu">
 !for i_=1 to $wims_homeref_n1
  <div class="menuitem">
  !set 1_=!line $i_ of $wims_rm_1
