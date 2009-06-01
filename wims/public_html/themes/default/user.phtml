@@ -104,6 +104,7 @@ $U_greet
 !next i
 !set dcnt=!linecnt $ds_list
 !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
 !set aclist=
 !for i=1 to $t
  !set s_$i=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
@@ -182,7 +183,14 @@ $U_greet
    !else
     &nbsp;
    !endif
-   </td></tr>
+   </td><td>
+   !if showshweight iswordof $class_option
+    ($U_weight
+     !line $i of $wlist
+    )
+   !endif
+   </td>
+   </tr>
   !next i
   </table><p>
  !endif
