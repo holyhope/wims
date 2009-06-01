@@ -17,6 +17,13 @@ specification of the receiving software, while the result of the request
 should be formatted according to the need of WIMS, as described below.
 
 -----------------------------------------------------------------------------
+
+New features and modifications in the 3.22 version (03/2008) (in work) :
+   - bugs in getcvs due to !hex in scoring
+   - New options for getclass (program, subcourse,. ..) 
+   - New job : listclasses which gives listclasses with connexion with some ident
+   and rclass
+-----------------------------------------------------------------------------
 New features and modifications in the 3.21 version (03/2008) :
 
 	-ALL outputs can be formatted according to the desire of the querying software.
@@ -57,6 +64,7 @@ of the request.
 ---------------------------------------
 qclass		identifier of the class on the receiving server.
 		It should be an integer.
+qprogram
 quser		user identifier in the receiving server (when the request
 		concerns a particular user).
 qsheet		sheet identifier in the receiving server (when the request
@@ -182,6 +190,14 @@ job=getclass	Get the properties of a class.
 		it outputs a multi-line text, each line corresponding
 		to one definition in the format 'name=value', as
 		for the input format for 'addclass'.
+		Definitions for portals have beed added (not yet in addclass) :
+		  typename 
+	      programs
+	      courses
+	      classes
+	      levels
+	      icourses
+	      subclasses
 		
 job=getsheet	Get the properties of a sheet (of a class).
 
@@ -193,8 +209,8 @@ job=getsheet	Get the properties of a sheet (of a class).
 	queryclass : the requested class
 	querysheet : the requested sheet
 	sheet_properties : list of properties of the requested sheet (sheet status,expiration date,title,description)
-	exocnt : numer of exercices included
-	exotitlelist= list of the exercices included (mudule:params)
+	exocnt : number of exercices included
+	exotitlelist= list of the exercices included (module:params)
 
 job=listsheets	list all the sheets of a class.
 	 	If the output type is WIMS, output is a multi-line text, each line corresponding

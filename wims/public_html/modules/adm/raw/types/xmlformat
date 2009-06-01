@@ -39,12 +39,16 @@ sheet_id=$qsheet
 !exit
 
 :getclass
-!shortout queryclass=$qclass\
+!shortout <class>\
+  <qclass> $qclass</qclass>\
+  <rclass> $rclass</rclass>\
 
 !for d in $option
- !shortout $d=$(class_$d)\
+ !shortout   \
+    <$d>$(class_$d)</$d>\
 
 !next d
+!shortout </class>
 !exit
 
 :getclassmodif
@@ -106,20 +110,33 @@ scoreaverages=$meandetail\
  !shortout $wims_session
 # !shortout $wims_ref_name?session=$wims_session.1&module=home
 
+:getcourse
+ !shortout queryclass=$qprogram\
+ courses=$wims_class
+
 :listclasses
 list_cnt=!itemcnt $listclasses
+!shortout <list>\
   
 !for i = 1 to $list_cnt
    qclass=!item $i of $listclasses
    !read jobs/getclass.proc
-   !shortout  $qclass:connexion=$ident/$rclass\\
-
+   !shortout  <class=$qclass>\
+        <connection>\
+         <rclass>$rclass</rclass>\
+         <ident>$ident</ident>\
+        </connection>\
+         
    !for d in $option
- !shortout $d=$(class_$d)\\
+ !shortout   \
+        <$d>$(class_$d)</$d>\
 
+  
    !next d
-!shortout end\
-
+!shortout </class>\
+  
 !next i
+!shortout \
+</list>
 
 !exit

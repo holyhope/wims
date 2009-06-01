@@ -1,0 +1,12 @@
+
+cnt_class=!recordcnt wimshome/log/classes/.index
+!for i = 1 to $cnt_class
+  cl=!record $i of wimshome/log/classes/.index
+  !if $ident/$rclass iswordof $(cl[10])
+    listclasses=!append item $(cl[1]) to $listclasses
+  !endif
+!next
+!if $error!=$empty
+ !exit
+!endif
+
