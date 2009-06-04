@@ -1,0 +1,21 @@
+##############################      listlinks.proc      ##############################
+# permet de lister le nombre d'exercices de la feuille $qsheet lies a l'examen $qexam 
+# (utile dans le cas ou l'ont souhaite desactiver une feuille)
+######################################################################################
+
+#pour commencer, on verifie que la feuille $qsheet existe.
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+#Ensuite, on verifie que l'examen $qexam existe.
+type=exams
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+
+!read scripts/listlinks.proc
