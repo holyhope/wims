@@ -19,12 +19,10 @@ WIMS $module_title [$module_language]
 WIMS $module_title [$module_language]
 
 
-!!******** PERMALINK ADD 
-!!set current_module=!replace / by , in $module
-!!set module_path= !item 1 of $current_module
-!!if $module_path notitemof adm,classes
-!!set module_about=$module_about <tr><td colspan="2">
+!!******** PERMALINK / EMBEDDABLE PLAYER ADD 
 
+!set current_module=!replace / by , in $module
+!set module_path= !item 1 of $current_module
 
 !if $module_init_parm == $empty
 	!set permalien=$wims_ref_name?module=$module
@@ -34,12 +32,16 @@ WIMS $module_title [$module_language]
 !endif
 
 
-!if _exam notin $session
-!set embeddable_tr=<tr><th>$$$$wims_name_embeddable <br> <small>($$$$wims_name_display <strong>$$$$wims_name_this_module</strong> $$$$wims_name_on_your_site)</small> </th>\
+!if _exam notin $session and $module_path notitemof adm,classes
+
+	!set permalink_tr=<tr><th>$$wims_name_permalink <br><small>($$wims_name_Link_for_bookmark)</small></th><td><a href="$wims_ref_name?module=$module">$wims_ref_name?module=$module</a></td></tr>
+
+	!set embeddable_tr=<tr><th>$$$$wims_name_embeddable <br> <small>($$$$wims_name_display <strong>$$$$wims_name_this_module</strong> $$$$wims_name_on_your_site)</small> </th>\
    <td><textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" id="wims_embed_textarea" >&lt;iframe src="$permalien&amp;embededwindow=true" width="100%" height="100%"&gt;&lt;/iframe&gt;</textarea></td></tr>
 !endif
 
-!!******** END OF PERMALINK ADD
+!!******** END OF PERMALINK / EMBEDDABLE PLAYER ADD
+!!***** for the moment, only EN and FR names are implemented with "WIMS_name_XXX" parameters
 
 !if $module_language notwordof cn it tw si es ca de
   !if $module_translator!=$empty and $module_translator_address!=$empty
@@ -53,7 +55,7 @@ WIMS $module_title [$module_language]
    <caption>$$wims_name_module_infos</caption>\
    <tr><th>$$wims_name_name</th><td>$module_title</td></tr>\
    <tr><th>$$wims_name_Address</th><td>$module</td></tr>\
-   <tr><th>$$wims_name_permalink <br><small>($$wims_name_Link_for_bookmark)</small></th><td><a href="$wims_ref_name?module=$module">$wims_ref_name?module=$module</a></td></tr>\
+   $permalink_tr\
    $embeddable_tr\
    <tr><th>$$wims_name_Description</th><td>$module_description</td></tr>\
    <tr><th>$$wims_name_Version</th><td>$module_version</td></tr>\
@@ -74,7 +76,7 @@ WIMS $module_title [$module_language]
   !endif
   !set module_about=$module_about \
    <center>To je modul, ki pripada sistemu WIMS.\
-   <table border=2\
+   <table border="2"\
    bgcolor="$$module_about_bgcolor">\
    <tr><td>Ime</td>      <td>$module_title</td></tr>\
    <tr><td>Naslov</td>   <td>$module</td></tr>\
@@ -95,7 +97,7 @@ WIMS $module_title [$module_language]
   !endif
   !set module_about=$module_about \
    <center>这是网上互动式多功能服务站的一个模块.\
-   <table border=2\
+   <table border="2"\
    bgcolor="$$module_about_bgcolor">\
    <tr><td>标题   </td><td>$module_title</td></tr>\
    <tr><td>地址   </td><td>$module</td></tr>\
@@ -116,7 +118,7 @@ WIMS $module_title [$module_language]
   !endif
   !set module_about=$module_about \
    <center>Das ist ein Modul des Interaktiven Servers Multifunktionen im Internet (WIMS).\
-   <table border=2\
+   <table border="2"\
    bgcolor="$$module_about_bgcolor">\
    <tr><td>Nom       </td><td>$module_title</td></tr>\
    <tr><td>Adresse   </td><td>$module</td></tr>\
@@ -140,7 +142,7 @@ WIMS $module_title [$module_language]
   !set module_about=$module_about \
    <center>Questo &egrave; un modulo WIMS: WWW Interactive Multipurpose Server.\
    <br><br>\
-   <table border=2\
+   <table border="2"\
    bgcolor="$$module_about_bgcolor">\
    <tr><td>Nome       </td><td>$module_title</td></tr>\
    <tr><td>Indirizzo  </td><td>$module</td></tr>\
@@ -161,7 +163,7 @@ WIMS $module_title [$module_language]
   !endif
   !set module_about=$module_about \
    <center>Este es un m骴ulo del Servidor Interactivo Multiprop髎ito WIMS.\
-   <table border=2\
+   <table border="2"\
    bgcolor="$$module_about_bgcolor">\
    <tr><td>Nombre     </td><td>$module_title</td></tr>\
    <tr><td>Direcci髇  </td><td>$module</td></tr>\
@@ -182,7 +184,7 @@ WIMS $module_title [$module_language]
   !endif
   !set module_about=$module_about \
    <center>Aquest 閟 un m騞ul del Servidor Web Interactiu de Matem鄑iques (WIMS).\
-   <table border=2\
+   <table border="2"\
    bgcolor="$$module_about_bgcolor">\
    <tr><td>Nom     </td><td>$module_title</td></tr>\
    <tr><td>Adre鏰  </td><td>$module</td></tr>\
@@ -200,8 +202,8 @@ WIMS $module_title [$module_language]
 !if $module_language=tw
   !set module_about=$module_about \
    <center>硂琌 WWW Interactive Mathematics 狝竟家舱\
-   <table border=2\
-   bgcolor=$$module_about_bgcolor>\
+   <table border="2"\
+   bgcolor="$$module_about_bgcolor">\
    <tr><td>嘿      </td><td>$module_title</td></tr>\
    <tr><td>竚   </td><td>$module</td></tr>\
    <tr><td>Link</td>    <td><a href="$wims_ref_name?module=$module">$wims_ref_name?module=$module</a></td></tr>\
@@ -213,3 +215,4 @@ WIMS $module_title [$module_language]
    </table></center>
    !exit
 !endif
+
