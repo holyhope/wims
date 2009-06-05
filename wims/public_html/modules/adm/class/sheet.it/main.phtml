@@ -1,8 +1,8 @@
 !reset confirm
 !!<html><head>
 !!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+!!</head><body $wims_htmlbody onload=$wims_html_onload>
+!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -43,7 +43,7 @@
  !if $activetest=1
   in corso, quindi non più modificabile.
   !href cmd=reply&job=expire Terminala ORA
-  or
+  o
   !href cmd=reply&job=deactivate disattivala
 (per poterla modificare).
  !else
@@ -66,7 +66,7 @@
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value=Modifica>
  <tr><td align=right>Descrizione:
- <td><textarea name=desc rows=2 cols=40>$desc</textarea>
+ <td><textarea id=desc class="iEdit" name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Presentazione:
  <td><input size=30 name=prpage value="$prpage"><small>
  !href target=wims_mhelp cmd=help&special_parm=sheetpage help
@@ -86,7 +86,7 @@ Titolo (massimo $title_limit caratteri) :<br>
 <input size=65 name=title value="$title"> <p>
 Descrizione (massimo $desc_limit caratteri, sono ammesse
 tag html):<br>
-<textarea rows=6 cols=65 name=desc>$desc</textarea> <p>
+<textarea id=desc class="iEdit" rows=6 cols=65 name=desc>$desc</textarea> <p>
 O una presentazione:
 <input size=30 name=prpage value="$prpage"><small>
 !href target=wims_mhelp cmd=help&special_parm=sheetpage help
@@ -205,10 +205,10 @@ O una presentazione:
  <small><b>Suggerimento.</b> &Egrave; possibile dare un accesso limitato
  anche aggiungendo le date
  <font color=blue><b>
- <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
+ <tt>&gt;aaaammgg.hh:mm</tt></b></font>
  (data di inizio) e/o
  <font color=blue><b>
- <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
+ <tt>&lt;aaaammgg.hh:mm</tt></b></font>
  (data di fine). Queste date devono essere espresse nel fuso orario del
  SERVER, e devono essere separate l'una dall'altra da spazi.
  </small>
