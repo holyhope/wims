@@ -1,6 +1,6 @@
 /* ********************************************************************
  **********************************************************************
- * HTML Virtual Keyboard Interface Script - v1.22
+ * HTML Virtual Keyboard Interface Script - v1.26
  *   Copyright (c) 2009 - GreyWyvern
  *
  *  - Licenced for free distribution under the BSDL
@@ -12,17 +12,16 @@
  * See http://www.greywyvern.com/code/javascript/keyboard for examples
  * and usage instructions.
  *
- * Version 1.22 - March 30, 2009
- *   - Added support for max-length on inputs (Olivier DÃ©sormeaux)
- *   - Downgrade comma-below forms of S and T to cedilla for IE < 8
- *   - Change exposed attachment function name to VKI_attach
- *   - Exposed keyboard close function as VKI_close
- *   - No longer expose any functions in the userscript version
+ * Version 1.26 - June 5, 2009
+ *   - Slovak keyboard layout added
  *
  *   See full changelog at:
  *     http://www.greywyvern.com/code/javascript/keyboard.changelog.txt
  *
  * Keyboard Credits
+ *   - Slovak keyboard layout by Daniel Lara (www.learningslovak.com)
+ *   - Belarusian, Serbian Cyrillic and Serbian Latin keyboard layouts by Evgeniy Titov
+ *   - Bulgarian Phonetic keyboard layout by Samuil Gospodinov
  *   - Swedish keyboard layout by Håkan Sandberg
  *   - Romanian keyboard layout by Aurel
  *   - Farsi (Persian) keyboard layout by Kaveh Bakhtiyari (www.bakhtiyari.com)
@@ -44,13 +43,14 @@ var VKI_attach, VKI_close;
   function VKI_buildKeyboardInputs() {
     var self = this;
 
-    this.VKI_version = "1.22";
+    this.VKI_version = "1.26";
     this.VKI_target = this.VKI_visible = false;
     this.VKI_shift = this.VKI_capslock = this.VKI_alternate = this.VKI_dead = false;
     this.VKI_deadkeysOn = false;
     this.VKI_kt = "French";  // Default keyboard layout
     this.VKI_clearPasswords = false;  // Clear password fields on focus
     this.VKI_showVersion = true;
+    this.VKI_imageURI = "keyboard.png";
     this.VKI_clickless = false;
     this.VKI_clicklessDelay = 500;
     this.VKI_keyCenter = 3;
@@ -68,7 +68,7 @@ var VKI_attach, VKI_close;
 
     // - Lay out each keyboard in rows of sub-arrays.  Each sub-array
     //   represents one key.
-    // 
+    //
     // - Each sub-array consists of four slots described as follows:
     //     example: ["a", "A", "\u00e1", "\u00c1"]
     //
@@ -124,12 +124,28 @@ var VKI_attach, VKI_close;
       [[" ", " ", " ", " "], ["Alt", "Alt"]]
     ];
 
+    this.VKI_layout.Belarusian = [ // Belarusian Standard Keyboard
+      [["\u0451", "\u0401"], ["1", "!"], ["2", '"'], ["3", "\u2116"], ["4", ";"], ["5", "%"], ["6", ":"], ["7", "?"], ["8", "*"], ["9", "("], ["0", ")"], ["-", "_"], ["=", "+"], ["Bksp", "Bksp"]],
+      [["Tab", "Tab"], ["\u0439", "\u0419"], ["\u0446", "\u0426"], ["\u0443", "\u0423"], ["\u043a", "\u041a"], ["\u0435", "\u0415"], ["\u043d", "\u041d"], ["\u0433", "\u0413"], ["\u0448", "\u0428"], ["\u045e", "\u040e"], ["\u0437", "\u0417"], ["\u0445", "\u0425"], ["'", "'"], ["\\", "/"]],
+      [["Caps", "Caps"], ["\u0444", "\u0424"], ["\u044b", "\u042b"], ["\u0432", "\u0412"], ["\u0430", "\u0410"], ["\u043f", "\u041f"], ["\u0440", "\u0420"], ["\u043e", "\u041e"], ["\u043b", "\u041b"], ["\u0434", "\u0414"], ["\u0436", "\u0416"], ["\u044d", "\u042d"], ["Enter", "Enter"]],
+      [["Shift", "Shift"], ["/", "|"], ["\u044f", "\u042f"], ["\u0447", "\u0427"], ["\u0441", "\u0421"], ["\u043c", "\u041c"], ["\u0456", "\u0406"], ["\u0442", "\u0422"], ["\u044c", "\u042c"], ["\u0431", "\u0411"], ["\u044e", "\u042e"], [".", ","], ["Shift", "Shift"]],
+      [[" ", " "]]
+    ];
+
     this.VKI_layout.Belgian = [ // Belgian Standard Keyboard
       [["\u00b2", "\u00b3"], ["&", "1", "|"], ["\u00e9", "2", "@"], ['"', "3", "#"], ["'", "4"], ["(", "5"], ["\u00a7", "6", "^"], ["\u00e8", "7"], ["!", "8"], ["\u00e7", "9", "{"], ["\u00e0", "0", "}"], [")", "\u00b0"], ["-", "_"], ["Bksp", "Bksp"]],
       [["Tab", "Tab"], ["a", "A"], ["z", "Z"], ["e", "E", "\u20ac"], ["r", "R"], ["t", "T"], ["y", "Y"], ["u", "U"], ["i", "I"], ["o", "O"], ["p", "P"], ["\u005e", "\u00a8", "["], ["$", "*", "]"], ["Enter", "Enter"]],
       [["Caps", "Caps"], ["q", "Q"], ["s", "S"], ["d", "D"], ["f", "F"], ["g", "G"], ["h", "H"], ["j", "J"], ["k", "K"], ["l", "L"], ["m", "M"], ["\u00f9", "%", "\u00b4"], ["\u03bc", "\u00a3", "`"]],
       [["Shift", "Shift"], ["<", ">", "\\"], ["w", "W"], ["x", "X"], ["c", "C"], ["v", "V"], ["b", "B"], ["n", "N"], [",", "?"], [";", "."], [":", "/"], ["=", "+", "~"], ["Shift", "Shift"]],
       [[" ", " ", " ", " "], ["AltGr", "AltGr"]]
+    ];
+
+    this.VKI_layout['Bulgarian Ph'] = [ // Bulgarian Phonetic Keyboard
+      [["\u0447", "\u0427"], ["1", "!"], ["2", "@"], ["3", "#"], ["4", "$"], ["5", "%"], ["6", "^"], ["7", "&"], ["8", "*"], ["9", "("], ["0", ")"], ["-", "_"], ["=", "+"], ["Bksp", "Bksp"]],
+      [["Tab", "Tab"], ["\u044F", "\u042F"], ["\u0432", "\u0412"], ["\u0435", "\u0415"], ["\u0440", "\u0420"], ["\u0442", "\u0422"], ["\u044A", "\u042A"], ["\u0443", "\u0423"], ["\u0438", "\u0418"], ["\u043E", "\u041E"], ["\u043F", "\u041F"], ["\u0448", "\u0428"], ["\u0449", "\u0429"], ["\u044E", "\u042E"]],
+      [["Caps", "Caps"], ["\u0430", "\u0410"], ["\u0441", "\u0421"], ["\u0434", "\u0414"], ["\u0444", "\u0424"], ["\u0433", "\u0413"], ["\u0445", "\u0425"], ["\u0439", "\u0419"], ["\u043A", "\u041A"], ["\u043B", "\u041B"], [";", ":"], ["'", '"'], ["Enter", "Enter"]],
+      [["Shift", "Shift"], ["\u0437", "\u0417"], ["\u044C", "\u042C"], ["\u0446", "\u0426"], ["\u0436", "\u0416"], ["\u0431", "\u0411"], ["\u043D", "\u041D"], ["\u043C", "\u041C"], [",", "<"], [".", ">"], ["/", "?"], ["Shift", "Shift"]],
+      [[" ", " "]]
     ];
 
     this.VKI_layout.Burmese = [ // Burmese Keyboard
@@ -219,7 +235,7 @@ var VKI_attach, VKI_close;
       [["Shift", "Shift"], ["<", ">"], ["z", "Z"], ["x", "X"], ["c", "C"], ["v", "V"], ["b", "B"], ["n", "N"], ["m", "M"], [",", ";"], [".", ":"], ["-", "_"], ["Shift", "Shift"]],
       [[" ", " ", " ", " "], ["AltGr", "AltGr"]]
     ];
-  
+
     this.VKI_layout.Lithuanian = [ // Lithuanian Standard Keyboard
       [["`", "~"], ["\u0105", "\u0104"], ["\u010D", "\u010C"], ["\u0119", "\u0118"], ["\u0117", "\u0116"], ["\u012F", "\u012E"], ["\u0161", "\u0160"], ["\u0173", "\u0172"], ["\u016B", "\u016A"], ["\u201E", "("], ["\u201C", ")"], ["-", "_"], ["\u017E", "\u017D"], ["Bksp", "Bksp"]],
       [["Tab", "Tab"], ["q", "Q"], ["w", "W"], ["e", "E"], ["r", "R"], ["t", "T"], ["y", "Y"], ["u", "U"], ["i", "I"], ["o", "O"], ["p", "P"], ["[", "{"], ["]", "}"], ["Enter", "Enter"]],
@@ -275,6 +291,30 @@ var VKI_attach, VKI_close;
       [["Caps", "Caps"], ["\u0444", "\u0424"], ["\u044B", "\u042B"], ["\u0432", "\u0412"], ["\u0430", "\u0410"], ["\u043F", "\u041F"], ["\u0440", "\u0420"], ["\u043E", "\u041E"], ["\u043B", "\u041B"], ["\u0434", "\u0414"], ["\u0436", "\u0416"], ["\u044D", "\u042D"], ["\\", "/"]],
       [["Shift", "Shift"], ["/", "|"], ["\u044F", "\u042F"], ["\u0447", "\u0427"], ["\u0441", "\u0421"], ["\u043C", "\u041C"], ["\u0438", "\u0418"], ["\u0442", "\u0422"], ["\u044C", "\u042C"], ["\u0431", "\u0411"], ["\u044E", "\u042E"], [".", ","], ["Shift", "Shift"]],
       [[" ", " "]]
+    ];
+
+    this.VKI_layout.SerbianCyr = [ // Serbian Cyrillic Standard Keyboard
+      [["`", "~"], ["1", "!"], ["2", '"'], ["3", "#"], ["4", "$"], ["5", "%"], ["6", "&"], ["7", "/"], ["8", "("], ["9", ")"], ["0", "="], ["'", "?"], ["+", "*"], ["Bksp", "Bksp"]],
+      [["Tab", "Tab"], ["\u0459", "\u0409"], ["\u045a", "\u040a"], ["\u0435", "\u0415", "\u20ac"], ["\u0440", "\u0420"], ["\u0442", "\u0422"], ["\u0437", "\u0417"], ["\u0443", "\u0423"], ["\u0438", "\u0418"], ["\u043e", "\u041e"], ["\u043f", "\u041f"], ["\u0448", "\u0428"], ["\u0452", "\u0402"], ["Enter", "Enter"]],
+      [["Caps", "Caps"], ["\u0430", "\u0410"], ["\u0441", "\u0421"], ["\u0434", "\u0414"], ["\u0444", "\u0424"], ["\u0433", "\u0413"], ["\u0445", "\u0425"], ["\u0458", "\u0408"], ["\u043a", "\u041a"], ["\u043b", "\u041b"], ["\u0447", "\u0427"], ["\u045b", "\u040b"], ["\u0436", "\u0416"]],
+      [["Shift", "Shift"], ["<", ">"], ["\u0455", "\u0405"], ["\u045f", "\u040f"], ["\u0446", "\u0426"], ["\u0432", "\u0412"], ["\u0431", "\u0411"], ["\u043d", "\u041d"], ["\u043c", "\u041c"], [",", ";", "<"], [".", ":", ">"], ["-", "_", "\u00a9"], ["Shift", "Shift"]],
+      [[" ", " ", " ", " "], ["AltGr", "AltGr"]]
+    ];
+
+    this.VKI_layout.SerbianLat = [ // Serbian Latin Standard Keyboard
+      [["\u201a", "~"], ["1", "!", "~"], ["2", '"', "\u02c7"], ["3", "#", "^"], ["4", "$", "\u02d8"], ["5", "%", "\u00b0"], ["6", "&", "\u02db"], ["7", "/", "`"], ["8", "(", "\u02d9"], ["9", ")", "\u00b4"], ["0", "=", "\u02dd"], ["'", "?", "\u00a8"], ["+", "*", "\u00b8"], ["Bksp", "Bksp"]],
+      [["Tab", "Tab"], ["q", "Q", "\\"], ["w", "W","|"], ["e", "E", "\u20ac"], ["r", "R"], ["t", "T"], ["z", "Z"], ["u", "U"], ["i", "I"], ["o", "O"], ["p", "P"], ["\u0161", "\u0160", "\u00f7"], ["\u0111", "\u0110", "\u00d7"], ["Enter", "Enter"]],
+      [["Caps", "Caps"], ["a", "A"], ["s", "S"], ["d", "D"], ["f", "F", "["], ["g", "G", "]"], ["h", "H"], ["j", "J"], ["k", "K", "\u0142"], ["l", "L", "\u0141"], ["\u010d", "\u010c"], ["\u0107", "\u0106", "\u00df"], ["\u017e", "\u017d", "\u00a4"]],
+      [["Shift", "Shift"], ["<", ">"], ["y", "Y"], ["x", "X"], ["c", "C"], ["v", "V", "@"], ["b", "B", "{",], ["n", "N", "}"], ["m", "M", "\u00a7"], [",", ";", "<"], [".", ":", ">"], ["-", "_", "\u00a9"], ["Shift", "Shift"]],
+      [[" ", " ", " ", " "], ["AltGr", "AltGr"]]
+    ];
+
+    this.VKI_layout.Slovak = [ // Slovak Keyboard
+     [[";", "\u00b0"], ["+", "1", "~"], ["\u013E", "2", "\u02C7"], ["\u0161", "3", "\u005E"], ["\u010D", "4", "\u02D8"], ["\u0165", "5", "\u00B0"], ["\u017E", "6", "\u02DB"], ["\u00FD", "7", "\u0060"], ["\u00E1", "8", "\u02D9"], ["\u00ED", "9", "\u00B4"], ["\u00E9", "0", "\u02DD"], ["=", "%", "\u00A8"], ["\u00B4", "\u02c7", "\u00B8"], ["Bksp", "Bksp"]],
+     [["Tab", "Tab"], ["q", "Q","\u005C"], ["w", "W","\u007C"], ["e", "E", "\u20AC"], ["r", "R"], ["t", "T"], ["z", "Z"], ["u", "U"], ["i", "I"], ["o", "O"], ["p", "P","\u0027"], ["\u00FA", "/", "\u00F7"], ["\u00E4", "(", "\u00D7"], ["Enter", "Enter"]],
+     [["Caps", "Caps"], ["a", "A"], ["s", "S","\u0111"], ["d", "D","\u0110"], ["f", "F","\u005B"], ["g", "G","\u005D"], ["h", "H"], ["j", "J"], ["k", "K","\u0142"], ["l", "L","\u0141"], ["\u00F4", '"', "\u0024"], ["\u00A7", "!", "\u00DF",], ["\u0148", ")","\u00A4"]],
+     [["Shift", "Shift"], ["&", "*", "\u003C"], ["y", "Y","\u003E"], ["x", "X","\u0023"], ["c", "C","\u0026"], ["v", "V","\u0040"], ["b", "B","\u007B"], ["n", "N","\u007D"], ["m", "M"], [",", "?", "<"], [".", ":", ">"], ["-", "_", "\u002A", ], ["Shift", "Shift"]],
+     [[" ", " ", " ", " "], ["AltGr", "AltGr"]]
     ];
 
     this.VKI_layout.Slovenian = [ // Slovenian Standard Keyboard
@@ -341,7 +381,6 @@ var VKI_attach, VKI_close;
       [[" ", " ", " ", " "], ["Alt", "Alt"]]
     ];
 
-
     /* ***** Define Dead Keys ************************************** */
     this.VKI_deadkey = {};
 
@@ -404,7 +443,7 @@ var VKI_attach, VKI_close;
       ["c", "\u010B"], ["e", "\u0117"], ["g", "\u0121"], ["z", "\u017C"],
       ["C", "\u010A"], ["E", "\u0116"], ["G", "\u0120"], ["Z", "\u017B"]
     ];
-    this.VKI_deadkey['\u00B8'] = [ // Cedilla
+    this.VKI_deadkey['\u00B8'] = this.VKI_deadkey['\u201a'] = [ // Cedilla
       ["c", "\u00e7"], ["s", "\u015F"],
       ["C", "\u00c7"], ["S", "\u015E"]
     ];
@@ -429,7 +468,7 @@ var VKI_attach, VKI_close;
           keybut.elem = elem;
           keybut.onclick = function() { self.VKI_show(this.elem); };
       elem.VKI_attached = true;
-      elem.parentNode.insertBefore(keybut, elem.nextSibling);
+      elem.parentNode.insertBefore(keybut, (elem.dir == "rtl") ? elem : elem.nextSibling);
       if (this.VKI_isIE) {
         elem.onclick = elem.onselect = elem.onkeyup = function(e) {
           if ((e || event).type != "keyup" || !this.readOnly)
@@ -537,7 +576,7 @@ var VKI_attach, VKI_close;
           }
           tr.appendChild(td);
         tbody.appendChild(tr);
-    this.VKI_keyboard.appendChild(tbody);      
+    this.VKI_keyboard.appendChild(tbody);
 
     if (this.VKI_isIE6) {
       this.VKI_iframe = document.createElement('iframe');
@@ -545,6 +584,7 @@ var VKI_attach, VKI_close;
       this.VKI_iframe.style.border = "0px none";
       this.VKI_iframe.style.filter = "mask()";
       this.VKI_iframe.style.zIndex = "999999";
+      this.VKI_iframe.src = this.VKI_imageURI;
     }
 
 
@@ -580,9 +620,9 @@ var VKI_attach, VKI_close;
                   td.VKI_clickless = 0;
                   if (!td.click) {
                     td.click = function() {
-                      var evt = this.ownerDocument.createEvent('MouseEvents');  
-                      evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);  
-                      this.dispatchEvent(evt); 
+                      var evt = this.ownerDocument.createEvent('MouseEvents');
+                      evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                      this.dispatchEvent(evt);
                     };
                   }
                   td.onmouseover = function() {
@@ -633,7 +673,7 @@ var VKI_attach, VKI_close;
                           self.VKI_target.selEnd = range.endOffset;
                         }
                       } else if (self.VKI_target.createTextRange) {
-                        try { 
+                        try {
                           self.VKI_target.range.select();
                         } catch(e) { self.VKI_target.range = document.selection.createRange(); }
                         if (!self.VKI_target.range.text.length) self.VKI_target.range.moveStart('character', -1);
@@ -779,9 +819,10 @@ var VKI_attach, VKI_close;
      */
     this.VKI_insert = function(text) {
       this.VKI_target.focus();
-      if (typeof this.VKI_target.maxLength == "undefined" || 
-          this.VKI_target.maxLength < 0 ||
-          this.VKI_target.value.length < this.VKI_target.maxLength) {
+      if (this.VKI_target.maxLength) this.VKI_target.maxlength = this.VKI_target.maxLength;
+      if (typeof this.VKI_target.maxlength == "undefined" ||
+          this.VKI_target.maxlength < 0 ||
+          this.VKI_target.value.length < this.VKI_target.maxlength) {
         if (this.VKI_target.setSelectionRange) {
           if (this.VKI_target.readOnly && this.VKI_isWebKit) {
             var rng = [this.VKI_target.selStart || 0, this.VKI_target.selEnd || 0];
@@ -805,7 +846,8 @@ var VKI_attach, VKI_close;
         if (this.VKI_shift) this.VKI_modify("Shift");
         if (this.VKI_alternate) this.VKI_modify("AltGr");
         this.VKI_target.focus();
-      } else if (this.VKI_target.createTextRange) this.VKI_target.range.select();
+      } else if (this.VKI_target.createTextRange && this.VKI_target.range)
+        this.VKI_target.range.select();
     };
 
 
@@ -867,7 +909,7 @@ var VKI_attach, VKI_close;
 
 
     if (window.addEventListener) {
-      window.addEventListener('resize', this.VKI_position, false); 
+      window.addEventListener('resize', this.VKI_position, false);
     } else if (window.attachEvent)
       window.attachEvent('onresize', this.VKI_position);
 
@@ -935,6 +977,6 @@ var VKI_attach, VKI_close;
 
   /* ***** Attach this script to the onload event ****************** */
   if (window.addEventListener) {
-    window.addEventListener('load', VKI_buildKeyboardInputs, false); 
+    window.addEventListener('load', VKI_buildKeyboardInputs, false);
   } else if (window.attachEvent)
     window.attachEvent('onload', VKI_buildKeyboardInputs);
