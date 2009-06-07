@@ -48,11 +48,11 @@
 !if print isin $job,$job2 or $print!=
   !set 1_=!append line print,3,window.print() to $1_
 !endif
-
-:local
-!set 1_=!append line $wims_menu_tail to $1_
 !set wims_rm_1=$1_
-
+:local
+!reset 1_
+!set 1_=!append line $wims_menu_tail to $1_
+!set wims_rm_0=$1_
 :rm2
 !if $wims_rm_2!=$empty
  !goto rmend
@@ -87,6 +87,7 @@ $module_title
 :rmend
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2
+!set wims_homeref_n0=!linecnt $wims_rm_0
 </div>
 !read themes.phtml tail
 !robottrap
