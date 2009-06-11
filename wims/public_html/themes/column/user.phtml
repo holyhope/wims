@@ -135,6 +135,13 @@ $U_greet
 
 <p>
 !read ./wimshome/log/classes/$wims_class/.motd
+
+!let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
+!if $test=$empty
+ !read ./wimshome/log/classes/$wims_class/motd/$wims_user
+ &nbsp; 
+ !href module=adm/class/motd $N_hide
+!endif
 <br> 
 !read ./wimshome/log/classes/$wims_class/motd/$wims_user
 <p>
@@ -262,4 +269,5 @@ $U_greet
 !endif
 </DIV></BODY>
 </HTML>
+
 

@@ -28,6 +28,7 @@ N_at		=en
 N_or		=o
 N_import	=importar
 N_Mboard	=Foro de discusión
+N_hide		=Hide
 
 S_tip		=<b>Consejo</b>. Dejar la búsqueda vacía en algunas categorías\
 devuelve la lista de los recursos más populares.

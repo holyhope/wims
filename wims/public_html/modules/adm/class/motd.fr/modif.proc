@@ -1,10 +1,3 @@
-test=!defof class_defined in wimshome/log/classes/$wims_class/.def
-!if $test!=yes
- error=bad_class
- !reset job
- !exit
-!endif
-
 !if $user!=$empty
  !read adm/class/userdef classes,$wims_class,$user
  !defread $userdef
@@ -20,7 +13,7 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
   !distribute item $l into f,l,id
   !if $id!=$user
    listiduser=!append item $id to $listiduser    
-   n=$f $l ;
+   n=$f $l 
    listnameuser=!append item $n to $listnameuser
   !endif
  !next k
@@ -35,9 +28,13 @@ test=!defof class_defined in wimshome/log/classes/$wims_class/.def
 
 !if $action=register
  !writefile wimshome/log/classes/$wims_class/$file $motd
+ !if $user isin $file
+  !writefile wimshome/log/classes/$wims_class/motd/.$user
+ !endif 
  !if $listuser!=$empty and $user!=$empty
   !for id in $listuser
    !writefile wimshome/log/classes/$wims_class/motd/$id $motd
+   !writefile wimshome/log/classes/$wims_class/motd/.$id
   !next id 
  !endif
  !reset job,user,action,listuser

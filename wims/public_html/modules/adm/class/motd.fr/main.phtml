@@ -45,7 +45,8 @@ Message personnalisé des participants
 $table_header
  $table_hdtr
   <th>Elève</th>
-  <th width="75%">Message actuel</th>
+  <th width="65%">Message actuel</th>
+  <th>statut</th>
   <th>Action</th>
  </tr>
  !for k=1 to $nbuser
@@ -55,6 +56,15 @@ $table_header
    <td>$l $f</td>
    <td>
     !record 0 of wimshome/log/classes/$wims_class/motd/$u
+   </td>
+   <td>
+    !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$u
+    !if $test=$empty
+     Actif
+    !else
+     Cach&eacute; &nbsp;
+     !href cmd=reply&job=reactivate&user=$u R&eacute;activer
+    !endif
    </td>
    <td>
     !href cmd=reply&job=modif&user=$u Modifier

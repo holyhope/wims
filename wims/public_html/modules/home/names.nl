@@ -28,6 +28,7 @@ N_at		=bij
 N_or		=of
 N_import	=import
 N_Mboard	=Forum
+N_hide		=Hide
 
 #S_tip		=<b>TIP</b>. Searching for empty string in some categories\
 #gives you the list of most popular resources.

@@ -87,7 +87,12 @@ $U_greet
 <div class="wims_class_motd">
 !read ./wimshome/log/classes/$wims_class/.motd
 <br>
-!read ./wimshome/log/classes/$wims_class/motd/$wims_user
+!let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
+!if $test=$empty
+ !read ./wimshome/log/classes/$wims_class/motd/$wims_user
+ &nbsp; 
+ !href module=adm/class/motd $N_hide
+!endif
 </div>
 <p>
 !if $class_type>=2
