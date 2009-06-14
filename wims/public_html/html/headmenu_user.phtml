@@ -97,8 +97,10 @@
 !if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home and _exam notin $wims_session
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
-!if _ notin $wims_session
- !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+!if $wims_theme_version=0
+  !if _ notin $wims_session
+    !set 1_=!append line whelp,4,module=help/main&$wims_helper,help to $1_
+  !endif
 !endif
 
 !set wims_hm=$1_
