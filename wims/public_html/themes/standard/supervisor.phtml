@@ -15,6 +15,8 @@
 
 !if _tool isin $wims_session
  !read ./tools.phtml
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
  !goto end
 !endif
 
@@ -24,7 +26,9 @@
  !if $class_typename=level
   <p><center>
   !href module=adm/class/gateway $SU_Gateway
-  </center> <p>
+  </center>
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
   !goto end
  !else
   !goto nocheck
@@ -54,7 +58,8 @@ $SU_greet.
   allowance for virtual classes.
   <p>
   !href cmd=close&module=home&lang=$lang $V_Quit
-  <p>
+  </div><!--wimsbody-->
+</div><!--wimspagebox-->
   !goto end
  !else
   <br><b>Warning</b>! Your class is reaching the limit of disk space allowance.
@@ -73,7 +78,10 @@ $SU_greet.
  <center>
  !href module=adm/class/gateway $SU_Gateway
  </center> <p>
+ </div><!--wimsbody-->
+</div><!--wimspagebox-->
  !goto end
+ 
 !endif
 
 !if $class_type=2
@@ -100,6 +108,8 @@ $SU_greet.
  <center>
  !href module=adm/class/regclass $ADD_3 $ADD_class
  </center>
+</div><!--wimsbody-->
+</div><!--wimspagebox-->
  !goto end
 !endif
 
@@ -195,74 +205,108 @@ $ADD_1
 <p>
 !read ./form.phtml
 !read ./result.phtml
+</div><!--wimsbody-->
+</div><!--wimspagebox-->
 !if $wims_supertype!=4 or $class_typename!=class
-<p>
-!href module=classes/$lang&special_parm=.nocache. $SU_classexo
-.&nbsp;
-!href module=adm/modtool Modtool
-.
+<div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
+<div class="wimsmenu">
+   <div class="menuitem">
+   !href module=classes/$lang&special_parm=.nocache. $SU_classexo
+   </div><!--menuitem-->
+   <div class="menuitem">
+   !href module=adm/modtool Modtool
+   </div><!--menuitem-->
+   <div class="menuitem">   <hr>
+   </div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/doc&job=creat $ADD_1 $ADD_doc
+</div><!--menuitem-->
+!if $wims_supertype!=4 or $class_typename!=class
+ <div class="menuitem">
+!href module=adm/class/sheet&sheet=$[$sheetcnt+1] $ADD_1 $ADD_sheet
+</div><!--menuitem-->
+ <div class="menuitem">
+!href module=adm/class/exam&exam=$[$examcnt+1] $ADD_1 $ADD_exam
+</div><!--menuitem-->
+ <div class="menuitem">
+!href module=adm/createxo $ADD_1 $ADD_exo
+</div><!--menuitem-->
+!endif
+!if $class_type=2
+<div class="menuitem">
+!href module=adm/class/regclass $ADD_1 $ADD_class
+</div><!--menuitem-->
+!endif
+<div class="menuitem">
+!href module=adm/vote&job=creat $ADD_1 $ADD_vote
+</div><!--menuitem-->
+
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox-->
 !endif
 :end
-</div>
-</div>
+
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menublock">
 !if $class_typename notsametext program
 <div class="menuitem">
 !href module=adm/class/userlist $SE_list
-</div>
+</div><!--menuitem-->
 !endif
 <div class="menuitem">
 !href module=adm/class/classes&type=supervisor $U_oclass
-</div>
+</div><!--menuitem-->
 <div class="menuitem">
 !href cmd=close&module=home&lang=$lang $V_Quit
-</div>
+</div><!--menuitem-->
 </div><!--end menublock-->
 !! to separate sort of submenu 
 <div class="menublock">
 <div class="menuitem">
 !href style=student $SE_part
-</div>
+</div><!--menuitem-->
 <div class="menuitem">
 !href module=adm/class/config $SE_config
-</div>
+</div><!--menuitem-->
 <div class="menuitem">
 !href module=adm/class/config&job=security $SE_secu
 !!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
-</div>
+</div><!--menuitem-->
 </div><!--end menublock-->
 <div class="menublock">
+!if $wims_theme_version=0
 <div class="menuitem">
 !href target=wims_help module=help/main&chapter=3 $N_Help
-</div>
+</div><!--menuitem-->
+!endif
 <div class="menuitem">
 !href module=adm/forum/mboard $N_Mboard
-</div>
-<div class="menuitem">
+</div><!--menuitem-->
 !if $exist_cdt=yes
+<div class="menuitem">
  !href module=adm/class/cdt $ADD_cdt
- &nbsp; / &nbsp;
+</div><!--menuitem-->
 !endif
+<div class="menuitem">
 !href module=adm/class/motd $SE_mod
-</div>
+</div><!--menuitem-->
+</div><!--end wimsblock-->
 </div><!--end wimsmenu-->
-</div><!--end menublock-->
 </div><!--end wimsmenubox-->
-</div>
+</div><!--wimsbodybox-->
 :end
 <div id="wimstailbox">
 <div class="wimstail">
 <div class="tailitem">
 WIMS-$wims_version@$httpd_HTTP_HOST. 
-</div>
+</div><!--tailitem-->
 <div class="tailitem">
 $E_manager
 !mailurl $wims_site_manager\
 WIMS
-.</div>
-</div>
+.</div><!--tailitem-->
+</div><!--wimstail-->
 </div><!--end wimstailbox-->
 </body>
 </html>
