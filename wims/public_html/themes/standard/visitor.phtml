@@ -12,6 +12,10 @@
 <div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menuitem">
+<div id="wimslogo">
+!href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo">
+</div><!--wimslogo-->
+</div><!--menuitem-->
 !for i=1 to $wims_language_cnt
  !set l=!word $i of $wims_site_languages
  !if $l!=$lang
@@ -24,54 +28,55 @@
     !reset l_
    !endif
   !endif
-
+<div class="menuitem">
   !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height=16 border=0>$l_
    <!-- don't remove this empty line or leading whitespace. Flag spacing depends on it. -->
-
+</div><!--menuitem-->
 !endif
 !next i
-</div>
-</div>
-<div class="tailsep"></div>
+</div><!--wimsmenu-->
+<div class="tailsep"></div><!--tailsep-->
 
 <div class="wimsmenu">
 <div class="menuitem">
 !href module=adm/new $N_new
-</div><div class="menuitem">
-!href module=adm/forum/forum $N_forum
-</div><div class="menuitem">
-!href module=adm/light&phtml=mirror.phtml.$lang $N_mirror
-</div><div class="menuitem">
-!href module=adm/light&phtml=useropts.phtml.$lang $N_pref
-</div><div class="menuitem">
-!href module=help/main $N_help
-</div><div class="tailsep"></div>
-
-</div>
-<div class="wimsmenu">
-<div class="menuitem">$V_cls</div>
-</div>
-<div class="tailsep"></div>
-<div class="wimsmenu">
-!if $gotcnt<=0 and $s_keywords=$empty
-
+</div><!--menuitem-->
 <div class="menuitem">
- !href module=adm/class/classes&type=participant $V_stu
-</div><div class="menuitem">
+!href module=adm/forum/forum $N_forum
+</div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/light&phtml=mirror.phtml.$lang $N_mirror
+</div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/light&phtml=useropts.phtml.$lang $N_pref
+</div><!--menuitem-->
+<div class="menuitem">
+!href module=help/main $N_help
+</div><!--menuitem-->
+<div class="tailsep"></div><!--tailsep-->
+</div><!--wimsmenu-->
+<div class="wimsmenu">
+!!!if $gotcnt<=0 and $s_keywords=$empty
+<div class="menuitem">$V_cls</div><!--menuitem-->
+<div class="menuitem">
+ !href module=adm/class/classes&type=participant <img border=0 src="gifs/themes/$wims_theme/home.gif"> $V_stu
+</div><!--menuitem-->
+<div class="menuitem">
  !href module=adm/class/classes&type=supervisor $V_sup
-</div><div class="menuitem">
+</div><!--menuitem-->
+<div class="menuitem">
  !href module=adm/class/classes&type=example $V_ex
-</div><div class="menuitem">
- !href module=help/main&chapter=3 $N_help
-</div>
-!endif
-</div>
+</div><!--menuitem-->
+!!<div class="menuitem">
+!! !href module=help/main&chapter=3 $N_help
+!!</div><!--menuitem-->
+!!!endif
+</div><!--wimsmenu-->
 </div>
 <div id="wimsbodybox">
 <div id="wimspagebox">
 <div class=wimsbody>
-<h1 class="wims_title"> 
-  !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo" align=left>
+<h1 class="wims_title">
   <font size="+2"><b>$V_title</b></font>
   <br><font size="-1">(WIMS) $N_at <a href="/">$httpd_HTTP_HOST</a></font>
 </h1>
@@ -92,8 +97,8 @@
 !!!else
 !! !set span=2
 !!!endif
-</div>
-<div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
+</div><!--wimspagebox-->
+<div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 $CR_1
 <div class="menuitem">
@@ -102,8 +107,8 @@ $CR_1
 </div><div class="menuitem">
 !href module=adm/modtool $CR_mod
 </div>
-<div class="tailsep"></div>
-!if $gotcnt<=0 and $s_keywords=$empty
+<div class="tailsep">&nbsp;</div>
+!!!if $gotcnt<=0 and $s_keywords=$empty
 <div class="menuitem">
  !href module=help/wimsdoc.en $E_doc
  </div>
@@ -119,19 +124,19 @@ $CR_1
   !href module=adm/stat/stat $E_stat
   </div>
  !endif
-!endif
-</div>
-</div>
-</div>
+!!!endif
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox-->
+</div><!--wimsbodybox-->
 <div id="wimstailbox">
 <div class="wimstail">
 <div class="tailitem">WIMS-$wims_version $E_comp $wims_version_date.</div>
 <div class="tailitem">$E_manager
 !mailurl $wims_site_manager\
 WIMS: $httpd_HTTP_HOST
-.</div>
+.</div><!--tailitem-->
 !robottrap
-</div>
-</div>
+</div><!--wimstail-->
+</div><!--wimstailbox-->
 </body></html>
 <!-- end of visitor.phtml -->
