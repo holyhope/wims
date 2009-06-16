@@ -1,7 +1,3 @@
-!distribute items 新模块, 更新模块, 最新系统更新 into \
-    name_new, name_modif, name_sys
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !header1
 <h1 class="wims_title">$module_title
@@ -12,15 +8,19 @@
 !for j in $joblist
  &nbsp;
  !if $j=$job
-  <u><b>$(name_$j)</b></u>
+  <u><b>$(wims_name_mod_$j)</b></u>
  !else
-  !href cmd=reply&job=$j $(name_$j)
+  !href cmd=reply&job=$j $(wims_name_mod_$j)
+  !set wims_menu_tail=!append line mod_$j,1,cmd=reply&job=$j \
+  to $wims_menu_tail
  !endif
  &nbsp;
 !next j
 </center><p>
 
 !read $job.phtml
+!set wims_menu_tail=!append line rss,2,$w_/rss/new.xml,wims_internal\
+to $wims_menu_tail
 
 !tail
 
