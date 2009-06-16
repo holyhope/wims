@@ -1,4 +1,4 @@
-
+!readproc names
 <p>
 !if $totalcnt>0
  !if $totalcnt>=$sellist
@@ -25,30 +25,30 @@
   $table_tr<td><small>
   !replace internal ~ by ~ $ in $n $
   !if ~ notin $n
-   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [renommer]
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename]
   !endif
   </small></td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
   <td align=center><small>
-  !href cmd=reply&jobreq=index&modreq=$n propriétés
+  !href cmd=reply&jobreq=index&modreq=$n $name_prop
 
-  !href cmd=reply&jobreq=del&modreq=$n effacer
+  !href cmd=reply&jobreq=del&modreq=$n $name_del0
   </small></td><td><small>$description</small></td>
   </tr>
  !next n
- $table_end <p>
- !href cmd=reply&jobreq=create Créer un nouveau module
-.&nbsp;
- !href cmd=reply&jobreq=restore Restaurer un fichier de sauvegarde
-.&nbsp;
-!href cmd=new&module=adm/latex2wims Utiliser Latex2wims
-.
+ $table_end 
+<p>
+ !set wims_menu_tail=!append line createnew,1,cmd=reply&jobreq=create\
+ restore,1,cmd=reply&jobreq=restore\
+ latex2wims,1,cmd=new&module=adm/latex2wims\
+ to $wims_menu_tail
 !set test_quicktool=!defof exists in wimshome/public_html/modules/adm/quicktool.$lang/version
 !if $test_quicktool=yes
- !href cmd=new&module=adm/quicktool Utiliser Quicktool
-.&nbsp;
+ !set wims_menu_tail=!append line quicktool,1,cmd=new&module=adm/quicktool\
+ to $wims_menu_tail
 !else
-<small>Quicktool n'est pas installé sur ce serveur.</small>
+ !set wims_menu_tail=!append line ,0,$name_noquicktool\
+ to $wims_menu_tail
 !endif
 !else
  Vous n'avez pas encore de module en développement. Veuillez
@@ -57,6 +57,11 @@
  !href cmd=reply&jobreq=restore restaurer un fichier de sauvegarde
 .
 !endif
+
+!set wims_menu_tail=!append line \
+\<hr>,0,<hr>\
+account_property,1,cmd=reply&jobreq=prop\
+to $wims_menu_tail
 
 !reset target target1 target2 target3 target4 selectshow
 
