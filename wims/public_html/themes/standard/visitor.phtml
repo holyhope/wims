@@ -4,7 +4,7 @@
 !if $module!=home
  !exit
 !endif
-
+!set im=<img border=0 src=
 !set home_theme=yes
 !set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
 </div>
@@ -34,38 +34,19 @@
 </div><!--menuitem-->
 !endif
 !next i
-</div><!--wimsmenu-->
-<div class="tailsep"></div><!--tailsep-->
-
-<div class="wimsmenu">
-<div class="menuitem">
-!href module=adm/new $N_new
-</div><!--menuitem-->
-<div class="menuitem">
-!href module=adm/forum/forum $N_forum
-</div><!--menuitem-->
-<div class="menuitem">
-!href module=adm/light&phtml=mirror.phtml.$lang $N_mirror
-</div><!--menuitem-->
-<div class="menuitem">
-!href module=adm/light&phtml=useropts.phtml.$lang $N_pref
-</div><!--menuitem-->
-<div class="menuitem">
-!href module=help/main $N_help
-</div><!--menuitem-->
 <div class="tailsep"></div><!--tailsep-->
 </div><!--wimsmenu-->
 <div class="wimsmenu">
 !!!if $gotcnt<=0 and $s_keywords=$empty
 <div class="menuitem">$V_cls</div><!--menuitem-->
 <div class="menuitem">
- !href module=adm/class/classes&type=participant $V_stu
+ !href module=adm/class/classes&type=participant $im "gifs/themes/$wims_theme/n_participant.gif" alt="V_stu"> $V_stu
 </div><!--menuitem-->
 <div class="menuitem">
- !href module=adm/class/classes&type=supervisor $V_sup
+ !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/n_supervisor.gif" alt="V_sup"> $V_sup
 </div><!--menuitem-->
 <div class="menuitem">
- !href module=adm/class/classes&type=example $V_ex
+ !href module=adm/class/classes&type=example $im "gifs/themes/$wims_theme/n_example.gif" alt="n_example"> $V_ex
 </div><!--menuitem-->
 !!<div class="menuitem">
 !! !href module=help/main&chapter=3 $N_help
@@ -100,30 +81,67 @@
 </div><!--wimspagebox-->
 <div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
+<div class="menuitem">
+!href module=adm/new $im "gifs/themes/$wims_theme/mod_new.gif" alt="new"> $N_New
+</div><!--menuitem-->
+
 $CR_1
 <div class="menuitem">
-
-!href module=adm/createxo $CR_OEF
+!href module=adm/createxo $im "gifs/themes/$wims_theme/createxo.gif" alt="createxo"> $CR_OEF
 </div><div class="menuitem">
-!href module=adm/modtool $CR_mod
+!href module=adm/modtool $im "gifs/themes/$wims_theme/modtool.gif" alt="modtool"> $CR_mod
 </div>
-<div class="tailsep">&nbsp;</div>
-!!!if $gotcnt<=0 and $s_keywords=$empty
+ <div class="tailsep">&nbsp;</div>
 <div class="menuitem">
- !href module=help/wimsdoc.en $E_doc
+!href module=help/main $im "gifs/themes/$wims_theme/help.gif" alt="help"> $N_Help
+</div><!--menuitem-->
+!!!if $gotcnt<=0 and $s_keywords=$empty
+ !if $lang=fr
+<div class="menuitem">
+!href module=adm/doc $im "gifs/themes/$wims_theme/E_doc.gif" alt="E_dochelp"> $E_dochelp
+</div>
+<div class="menuitem">
+!href module=help/teacher/faq.fr $im "gifs/themes/$wims_theme/E_faq.gif" alt="E_faq"> $E_faq
+</div>
+!endif
+<div class="menuitem">
+ !href module=help/wimsdoc.en $im "gifs/themes/$wims_theme/E_doc.gif" alt="E_doc"> $E_doc
  </div>
+ <div class="tailsep">&nbsp;</div>
  <div class="menuitem"> 
- !href module=home&special_parm=download $E_src
- </div>
- 
+ !href module=home&special_parm=download $im "gifs/themes/$wims_theme/download.gif" alt="download"> $E_src
+ </div>  
  !if yes isin $wims_show_stat
- <div class="menuitem">
-  !href module=adm/stat/referer $E_ref
+  <div class="menuitem">
+  !href module=adm/stat/stat $im "gifs/themes/$wims_theme/stat.gif" alt="stat"> $E_stat
   </div>
   <div class="menuitem">
-  !href module=adm/stat/stat $E_stat
+  !href module=adm/stat/referer $im "gifs/themes/$wims_theme/E_ref.gif" alt="E_ref"> $E_ref
   </div>
  !endif
+ <div class="tailsep">&nbsp;</div>
+ !if $has_browse=yes
+ <div class="menuitem">
+ !href module=adm/browse.$lang&$browse_parm $im "gifs/themes/$wims_theme/browse.gif" alt="browse"> $N_browse2
+ </div>
+!endif
+<div class="menuitem">
+!href cmd=new&module=home&search_keywords=&search_category=S#searchform $im "gifs/themes/$wims_theme/sheet.gif" alt="sheet"> $V_sh
+</div>
+<div class="menuitem">
+ !href module=adm/class/classes&type=example $im "gifs/themes/$wims_theme/n_example.gif" alt="n_example"> $V_ex
+</div><!--menuitem-->
+
+ <div class="tailsep">&nbsp;</div>
+ <div class="menuitem">
+!href module=adm/light&phtml=useropts.phtml.$lang $im "gifs/themes/$wims_theme/N_pref.gif" alt="pref"> $N_Pref
+</div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/light&phtml=mirror.phtml.$lang $im "gifs/themes/$wims_theme/N_mirror.gif" alt="mirror"> $N_Mirror
+</div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/forum/forum $im "gifs/themes/$wims_theme/forum.gif" alt="forum"> $N_Forum
+</div><!--menuitem-->
 !!!endif
 </div><!--wimsmenu-->
 </div><!--wimsmenumodbox-->
