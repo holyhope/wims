@@ -56,3 +56,30 @@
  !endif
 !endif
 
+!if adm/class isin $module
+ !distribute line 教师区域\
+    学生区域\
+    实例班级\
+    主持教师身份验证\
+    参加者身份验证\
+    小学\
+    中学\
+    大学\
+    into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+    wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
+!endif
+
+!if adm/new isin $module
+  !distribute line 新模块\
+  更新模块\
+  最新系统\
+  耚
+  RSS\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+!endif
+
+!if $wims_user=$empty
+  !distribute line Create a class\
+  into wims_name_classcreate
+!endif
+

@@ -59,3 +59,29 @@
   !let wims_page_name=Page
  !endif
 !endif
+
+!if adm/class isin $module
+ !distribute line Docenten zone\
+	Leerlingen zone\
+	Demonstratie klassen\
+	Inloggen voor docenten\
+	Inloggen voor deelnemers\
+	lagere school\
+	middelbare school\
+	universiteit\
+	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
+!endif
+
+!if adm/new isin $module
+  !distribute line nieuwe modules\
+  verbeterde modules\
+  laatste systeem veranderingen\
+  RSS\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+!endif
+
+!if $wims_user=$empty
+  !distribute line Create a class\
+  into wims_name_classcreate
+!endif

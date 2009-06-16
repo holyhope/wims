@@ -50,3 +50,29 @@ Sheet management page\
   !let wims_page_name=Seiten
  !endif
 !endif
+
+!if adm/class isin $module
+ !distribute line Lehrer/Dozenten\
+	Schüler/Studenten\
+	Beispielklassen\
+	Authentifizierung als Leiter\
+	Authentifizierung als Teilnehmer\
+	Grundschule\
+	Mittelschule/Realschule/Gymnasium\
+	Hochschule/Universität\
+	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
+!endif
+
+!!if adm/new isin $module
+  !distribute line new modules\
+  module updates\
+  latest system changes\
+  RSS\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+!endif
+
+!if $wims_user=$empty
+  !distribute line Create a class\
+  into wims_name_classcreate
+!endif

@@ -106,3 +106,31 @@
   !let wims_page_name=Page
  !endif
 !endif
+
+!if adm/class isin $module
+!distribute line Teachers' area\
+	Students' area\
+	Example classes\
+	Supervisor authentification\
+	Participant authentification\
+	elementary school\
+	secondary school\
+	university\
+	into n_supervisor,n_participant,n_example,\
+	n_authsupervisor,n_authparticipant,n_E,n_H,n_U
+!endif
+
+!if adm/new isin $module
+  !distribute line new modules\
+  module updates\
+  latest system changes\
+  RSS\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+!endif
+
+!if $wims_user=$empty
+  !distribute line Create a class\
+  into wims_name_classcreate
+!endif
+
+

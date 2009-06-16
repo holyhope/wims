@@ -14,7 +14,7 @@
 		Deska sporoèil,Forumi,\
 		Delovni list,Orodja,\
 		Skopiraj v Modtool,\
-		Print,
+		Print,\
 		Uvozi,\
 		Razlièica za tiskanje,\
 		Ponovno\
@@ -58,4 +58,30 @@
  !if _check isin $session
   !let wims_page_name=Page
  !endif
+!endif
+
+!if adm/class isin $module
+ !distribute line Podroèje za uèitelje\
+	Podroèje za uèence\
+	Primeri uèilnic\
+	Identifikacija skrbnika\
+	Identifikacija uporabnika\
+	Osnovna ¹ola\
+	Srednja ¹ola\
+	Visoka ¹ola / Univerza\
+	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
+!endif
+
+!if adm/new isin $module
+  !distribute line novi moduli\
+  nadgradnje modulov\
+  zadnje sistemske spremembe\
+  RSS\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+!endif
+
+!if $wims_user=$empty
+  !distribute line Create a class\
+  into wims_name_classcreate
 !endif

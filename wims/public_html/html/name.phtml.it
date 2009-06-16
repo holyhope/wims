@@ -106,4 +106,30 @@
   !let wims_page_name=Pagina
  !endif
 !endif
+!if adm/class isin $module
+ !distribute line Area docenti\
+	Area studenti\
+	Esempi di corsi interattivi\
+	Accedi come docente\
+	Accedi\
+	scuola elementare\
+	scuola secondaria\
+	università\
+	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
+
+!endif
+
+!if adm/new isin $module
+ !distribute line nuovi moduli\
+  aggiornamento moduli\
+   recenti modifiche del sistema\
+   RSS\
+   into wims_name_mod_new, wims_name_mod_modif, wims_name_mod_sys,wims_name_mod_rss
+!endif
+
+!if $wims_user=$empty
+  !distribute line Create a class\
+  into wims_name_classcreate
+!endif
 
