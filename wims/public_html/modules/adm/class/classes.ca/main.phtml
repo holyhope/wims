@@ -2,22 +2,12 @@
  !exit
 !endif
 !if $error issametext bad_password
- !read js/chrono.phtml 5
+  !read js/chrono.phtml 5
 !endif
-
+!set wims_html_header=$wims_html_header $header_js
 !read names.phtml
 !read adm/css.phtml
 !header
-!distribute line Àrea de professors\
-	Àrea d'estudiants\
-	Classes d'exemple\
-	Autentificació del supervisor\
-	Autentificació del participant\
-	ensenyament primari\
-	ensenyament secundari\
-	universitat\
-	into n_supervisor,n_participant,n_example,\
-	n_authsupervisor,n_authparticipant,n_E,n_H,n_U
 
 <center><h3>--- $(n_$type) ---</h3></center>
 !if $error!=$empty
@@ -27,18 +17,26 @@
 
 !read $type.phtml
 !if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
- <p><center>
  !for t in participant,supervisor,example
   !if $t!=$type or $superclass!=$empty
-   !href module=$module&type=$t $(n_$t)
-&nbsp;&nbsp;
+   !set wims_menu_tail=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
+to $wims_menu_tail
+  !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
   !endif
  !next t
- !href target=wims_help module=help/main&chapter=3 Explicacions
- </center>
+!endif
+!if $wims_user=$empty
+ !set wims_menu_tail=!append line <hr>,0,<hr>\
+ classcreate, 1,module=adm/class/regclass\
+to $wims_menu_tail
+!endif
+
+ !if $wims_theme_version=0
+  !href target=wims_help module=help/main&chapter=3 Explicacions
+ !endif
 !endif
 
 !tail
 
-!reset auth_user,auth_password,superclass
+!reset auth_user,auth_password,superclass,keyword
 
