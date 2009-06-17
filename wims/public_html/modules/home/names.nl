@@ -10,13 +10,14 @@ C_P		=Hulpmiddelen
 C_F		=Forum
 
 N_browse	=browsen
+N_browse2	=browse deze website
 N_browsesite	=browse deze website
-N_manage	=WIMS online onderhoud
+N_manage	=	WIMS online onderhoud
 N_best		=het beste van
 N_new		=nieuwste
-N_new		=Nieuwste
-N_mirror	=mirrors
-N_Mirror	=Mirrors
+N_New		=Nieuwste
+N_mirror	=mirror websites
+N_Mirror	=Mirror websites
 N_forum		=forums
 N_Forum		=Forums
 N_pref		=instellingen
@@ -59,6 +60,8 @@ E_ref		=backward links
 E_stat		=gebruiks statistieken
 E_comp		=gecompileerd op
 E_manager	=Site manager:
+E_faq      	=FAQ
+E_dochelp  	=Help documenten
 
 RE_found	=!nosubst Gezocht en gevonden $gotcnt $tt
 RE_nomatch	=!nosubst Er is op deze server niets passends te vinden.
@@ -67,8 +70,7 @@ RE_pop2		=!nosubst $gotcnt $tt op volgorde van populariteit\
 (number $[$list_start+1] - $[$list_start+$gotcnt])
 RE_try		=Probeer
 
-U_greet		=!nosubst Hallo, $wims_firstname $wims_lastname! Welkom in \
-$wims_classname van  $supmail.
+U_greet		=!nosubst Hallo, $wims_firstname $wims_lastname !
 U_newmsg	=Er zijn $$newmsgcnt nieuwe bericht(en) in het message board.
 U_nosheet	=Deze klas heeft (op dit moment)  nog geen werkbladen\
 Probeer het later nog eens, als de docent wat werk heeft samengesteld.
@@ -89,8 +91,8 @@ U_oclass	=Andere klassen
 U_Back		=Terug
 U_account	=Mijn account
 U_teacher	=Docent
-U_Docstatus =niet lezen en niet schrijven,alleen lezen,lezen en schrijven
-U_weight    =weight
+U_Docstatus 	=niet lezen en niet schrijven,alleen lezen,lezen en schrijven
+U_weight    	=weging
 
 U_gotoclass1	=Ga naar een klas als leerling:
 U_gotoclass3	=Ga naar een klas als supervisor:
@@ -101,7 +103,8 @@ U_clickhere	=Klik hier
 U_supervise	=om naar een andere klas te gaan als supervisor.
 U_creatclass	=Maak een nieuwe klas.
 
-SU_greet	=!nosubst Hallo, $wims_firstname $wims_lastname! Welkom op de Onderhouds pagina van uw klas.<br>
+SU_greet	=!nosubst Hallo, $wims_firstname $wims_lastname!<br>\
+Welkom op de Onderhouds pagina van uw klas.<br>
 SU_Bhome	=Terug naar de supervisor pagina
 SU_log		=supervisor login
 SU_exp1		=Deze klas is verlopen op:  
@@ -111,6 +114,7 @@ SU_Ac		=Actief
 SU_Ex		=Verlopen
 SU_Hi		=Verlopen+Onzichtbaar
 SU_nosheet	=Uw klas heeft nog geen lesmateriaal ter beschikking.
+SU_Crone        =Maken.
 SU_shlist	=Lesmateriaal van de klas
 SU_shno		=Nummer
 SU_shti		=Titel
@@ -118,7 +122,7 @@ SU_shst		=Status
 SU_Howsh	=Hoe voeg ik lesmateriaal toe aan een werkblad? 
 SU_classexo	=Oefenmateriaal van de klas (<small>dus uw eigen wims-modules</small>)
 SU_Gateway	=Structuur management
-SU_Bprogram=Terug naar het lesprogramma
+SU_Bprogram	=Terug naar het lesprogramma
 
 SE_list		=Leerlingen en cijfers 
 SE_part		=Zo zien leerlingen deze pagina
@@ -141,7 +145,8 @@ CL_Names	=Niveaus ,Klassen ,Programma's ,Cursussen ,Interklas cursussen
 CL_Test		=Test zone
 CL_otherNames=Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas
 
-ER_expression	=<b>Waarschuwing.</b> Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch 
+ER_expression	=<b>Waarschuwing.</b> <br>\
+Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch 
 
 !if $wims_supertype=4
  U_oclass       =Verwissel van zone
