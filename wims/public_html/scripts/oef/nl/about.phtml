@@ -1,41 +1,89 @@
 !set email=!trim $email
 !set author=!trim $author
 
-!if $author!=$empty
-Schrijver van deze oefening:
- !if $email!=$empty
-  !mailurl $email $author
-.
- !else
-  $author.
- !endif
-!endif
-!if $solution!=$empty and $hint!=$empty
- Deze oefening heeft een hint en een uitgewerkte goede oplossing.
-!endif
-!if $solution!=$empty and $hint=$empty
- Deze oefening heeft geen hint , maar wel een uitgewerkte goede oplossing.
-!endif
-!if $solution=$empty and $hint!=$empty
- Deze oefening heeft een hint,  maar geen uitgewerkte oefening
-!endif
-!if $solution$hint=$empty
- Deze oefening heeft geen hint en ook geen uitgewerkte goede oplossing
-!endif
-Link naar deze oefening: <br>
-!set exolink=$wims_ref_name?module=$module&+cmd=new&+exo=$thisexo
-<a href="$exolink">$exolink</a> <br>
-Link naar de huidige configuratie: <br>
-!if $module_init_parm!=$empty
- !set exolink=$wims_ref_name?module=$module&+cmd=new&+$module_init_parm
-!else
- !set exolink=$wims_ref_name?module=$module&+cmd=new
-!endif
-<a href="$exolink">$exolink</a>
-<p>
-Information over deze verzameling oefeningen. <p>
-$module_about
-<p>
-Het copyright van oefeningen berust bij de individuele auteurs.
+!set embedabble_height= 600
+!set embedabble_width= 100%
+
+U bent bezig met <a href="$wims_ref_name?module=help/teacher/faq.fr&amp;job=oef" target="_blank"><abbr lang="EN" title="Online Exercise Format">OEF</abbr></a> interactieve opgave.<br>
+<br> 
+
+<center>
+  <table  style="width:615px;background-color:$module_about_bgcolor">
+    <caption>
+    Informatie over deze oefening :
+    </caption>
+    <tbody>
+    
+    !if $author!=$empty
+    <tr>
+      <th>Schrijver van $wims_name_this_exercice</th>
+      <td>
+        !if $email!=$empty
+          !mailurl $email $author
+        .
+        !else
+          $author.
+        !endif
+      </td>
+    </tr>
+    !endif
+    <tr>
+      <th>Oplossing / Hint</th>
+      <td>
+        !if $solution!=$empty and $hint!=$empty
+          $wims_name_this_exercice bevat een uitgewerkte oplossing en een hint.
+        !endif
+        !if $solution!=$empty and $hint=$empty
+          $wims_name_this_exercice bevat een uitgewerkte oplossing maar geen hint.
+        !endif
+        !if $solution=$empty and $hint!=$empty
+          $wims_name_this_exercice bevat een hint maar geen uitgewerkte oplossing.
+        !endif
+        !if $solution$hint=$empty
+          $wims_name_this_exercice bevat geen uitwerking of hint.
+        !endif
+      </td>
+    <tr>
+      <th>$wims_name_permalink<br><small>($wims_name_Link_for_bookmark)</small></th>
+      <td><ul>
+          <li>Een link voor $wims_name_this_exercice : 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            <a href="$exolink">$exolink</a>
+          </li>
+          !if $module_init_parm!=$empty
+            <li>Een link voor $wims_name_this_config :            
+              !set configlink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+              <a href="$configlink">$configlink</a>
+            </li>
+          !endif
+        </ul></td>
+    </tr>
+    <tr>
+      <th>$wims_name_embeddable :<small> ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site)</small></th>
+      <td><ul>
+          <li> 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            $wims_name_display <strong>$wims_name_this_exercice</strong> $wims_name_on_your_site ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site) : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" >&lt;iframe src="$exolink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+          </li>
+          <li>
+            !if $module_init_parm!=$empty
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+            !else
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new
+            !endif
+            
+            $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+            
+          </li>
+        </ul></td>
+    </tr>
+    </tbody>
+    
+  </table>
+</center>
+<p> $wims_name_this_exercice bevat een collectie oefeningen, met deze informatie :</p>
+<hr>
+<p> $module_about </p>
+Het copyright van deze oefeningen berust bij de schrijvers ervan.
 
 !changeto NEWS.phtml

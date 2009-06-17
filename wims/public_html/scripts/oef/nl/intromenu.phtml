@@ -1,5 +1,5 @@
 !set proc=oef
-<p><center><hr width="35%"></center> <p>
+<br><center><hr width="35%"></center> <br>
 
 !if robot isin $session
  !changeto content.html
@@ -61,9 +61,9 @@ oefeningen.
 !formselect qcmlevel from 1 to 9
 <tr><td align=center>Tijdslimiet<td>
 <input size=7 name=scoredelay value="$scoredelay"> seconden.
+</td></tr>
 !read introhook.phtml
 !if expert iswordof $special_parm2
-   </td></tr>
    <tr><td align=center>
    Het aantal items bij een meerkeuze vraag: </td><td>
    !default intro_qcmpresent=4
@@ -74,8 +74,7 @@ oefeningen.
    !formselect intro_presentsol list 0,1,2 prompt nooit,alleen als de score niet maximaal is,altijd
    </td></tr>
    <tr><td rowspan=4>&nbsp;</td><td>
-   !default intro_check=1,2,3,4
-   
+   !default intro_check=1,2,3,4   
    !formcheckbox intro_check list 1 prompt altijd
    de goede oplossing bij een meerkeuze vraag laten zien.
    </td></tr>
@@ -93,12 +92,11 @@ oefeningen.
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp Simpel menu
    <input type=hidden name=intro_expert value=yes>
 !else
-   </td></tr>
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp Expert menu
 !endif
-</table></center> <p><center>
+</table></center> <br><center>
 <input type=submit value="Aan het werk">&nbsp;
 <input type=submit name=print value="Printbare versie">
 </center>
@@ -114,14 +112,14 @@ oefeningen.
  </form>
 !endif
 
-<b>Opmerking</b>.De oefeningen worden willekeurig gekozen uit je selectie. 
- <br>(of uit al je oefeningen als je geen keuzelijst hebt aangegeven). 
- 
-!if * isin $titlelist
-<p>Oefeningen met een * zijn in't algemeen wat lastiger. 
+<b>Opmerking</b>.De oefeningen worden willekeurig gekozen uit je selectie. <br>
+(of uit al je oefeningen als je geen keuzelijst hebt aangegeven). 
+ !if * isin $titlelist
+<br>Oefeningen met een * zijn in't algemeen wat lastiger. 
 !endif 
  
-<p><small>Je kunt twee getallen aangeven in de tijdslimiet; een kleinere 
+<br><small>Je kunt twee getallen aangeven in de tijdslimiet; een kleinere 
 limiet gevolgd door een wat grotere. In dat geval is eerste getal de score 
 reductie, die loopt tot 0 als de tweede limiet bereikt is. 
 </small>
+

@@ -1,7 +1,7 @@
 !set langexists=1
 !!INPUT
-!set inp0=Veel te veel objecten getekend.Het aantal toegestaan 
-!set inp1=objects. Probeer opnieuw...
+!set inp0=Veel te veel objecten getekend. Het aantal toegestaan 
+!set inp1=objecten. Probeer opnieuw...
 !set inp2=Versturen
 !set inp3=Ik weet het niet
 

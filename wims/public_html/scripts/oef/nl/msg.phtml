@@ -11,14 +11,12 @@
 !endif
 
 !if empty_data iswordof $error
-U heeft een onvolledig antwoord ingevuld.
-<br>Gaarne compleet ingevuld inleveren 
+U heeft een onvolledig antwoord ingevuld.<br>Gaarne compleet ingevuld inleveren 
  !exit
 !endif
 
 !if bad_data iswordof $error
- Ik ben er niet in geslaagd het opgestuurde antwoord te controleren.<br>
- Misschien een typefoutje? 
+ Ik ben er niet in geslaagd het opgestuurde antwoord te controleren.<br>Misschien een typefoutje? 
  !exit
 !endif
 
@@ -31,17 +29,15 @@ Je hebt al eens een antwoord ingeleverd op deze vraag !<br>
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  De opgestuurde code bevat de term: <tt>$illegal_name</tt> en deze is niet toegestaan.<br>
-  Corrigeer dit even.
+  De opgestuurde code bevat de term: <tt>$illegal_name</tt> en deze is niet toegestaan.<br>Corrigeer dit even.
   !exit
  !endif
  !if lengthoverflow iswordof $test
-    De opgestuurde code is meer dan is toegestaan.<br>
-    Dit moet worden herschreven.
+    De hoeveelheid opgestuurde code is meer dan is toegestaan.<br>Dit moet worden herschreven.
   !exit
  !endif
- Het  antwoord  <p><center>
- <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ Het antwoord  <br><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <br></center>
  !if unknownword iswordof $test
   !set w=!word 3 of $test
   is onbegrijpelijk: het woord <font color=red>$w</font>
@@ -69,11 +65,10 @@ Je hebt al eens een antwoord ingeleverd op deze vraag !<br>
 !endif
 
 !if bad_exo iswordof $error
-Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord voor vraag <b>$(replyname$i)</b>
- is ongeldig...).
+Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord voor vraag <b>$(replyname$i)</b> is ongeldig...).
  Dus het is onmogelijk om te testen of jou antwoord goed is...en voor jou betekend dit niets
  anders dan een andere opdracht uit te kiezen. Waarvoor mijn excuses.
- <p>
+ <br>
  S.V.P.
  !if $email!=$empty
   !mailurl $email schrijf naar de maker van deze oefening
@@ -88,4 +83,5 @@ Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord 
 Je hebt te veel verzoeken tot printbare versies ingediend  
  !exit
 !endif
+
 

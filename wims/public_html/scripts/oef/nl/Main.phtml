@@ -25,7 +25,7 @@ $ by ; in $init_parm
  !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
 !endif
 !set wims_html_header=!append line $header_js to $wims_html_header
-!set wims_html_header=$oefcss\
+!set wims_html_header=$oefcss \
 $wims_html_header
 
 !header1
@@ -42,7 +42,7 @@ Deze module bevat een hele verzameling aan oefeningen.<br>
  oefening je precies wilt gaan werken.<br> 
 <small>Dit komt misschien omdat je op een verkeerde link hebt geklikt,                                                                     
 of misschien een software fout ?</small>
-<p><center>
+<br><center>
 Probeer
  !href module=$module opnieuw
  , of
@@ -52,7 +52,7 @@ Probeer
 !endif
 
 !if 0$delay1>0 and $status!=$empty
- <p><form target="#" name=chrono><center>
+ <br><form target="#" name=chrono><center>
  <table border=2 bgcolor="$wims_ref_bgcolor"><tr><td>
  &nbsp;<b><font color=red>Attentie !</font></b>
  !if $qnum>1
@@ -62,7 +62,7 @@ Probeer
  !endif
  <input size=4 name=clock readonly onFocus="this.blur()";>
  </table>
- </center></form> <p>
+ </center></form> <br>
 !endif
 
 :tester
@@ -81,7 +81,7 @@ Probeer
   <center><hr width="50%"></center>
  !endif
  !read oef/form.phtml
- <p>
+ <br>
  !if $hint!=$empty and $givehint>0
   !href cmd=hint Hint
 .
@@ -105,9 +105,9 @@ Probeer
   <center><hr width="50%"></center>
  !endif
  !read oef/answer.phtml
- <p>
+ <br>
  !if $status!=$empty
- Dit is de $reply_cnt oefening uit een serie van $qnum. <p>
+ Dit is de $reply_cnt oefening uit een serie van $qnum. <br>
  Ga door naar de
   !href cmd=next volgende
    of 
@@ -123,7 +123,7 @@ Probeer
    !if $toolate!=$empty and $score>$module_score
     (U krijgt strafpunten voor het overschrijden van de tijdslimiet.)
    !endif
-   <p>
+   <br>
    !href $renewlink Herhaal
    de hele serie.
    !if $wims_sheet=$empty
@@ -138,7 +138,7 @@ Probeer
    !if $toolate!=$empty and $score>$module_score
     (U hebt strafpunten gekregen voor het overschrijden van de tijdslimiet.)
    !endif
-   <p>
+   <br>
    !href $renewlink Herhaal 
    dezelfde oefening.
    !if $wims_sheet=$empty and $oef_test!=yes
@@ -150,7 +150,7 @@ Probeer
 !endif
 
 !if $replydefaulted=yes
- <p> <small>
+ <br> <small>
  Experimenteer mode:
  !if $oef_default=yes
     de goede antwoorde zijn reeds ingevuld
@@ -169,10 +169,11 @@ Probeer
 !!	GNU isin $module_copyright and \
 !!	_check notin $session and \
 !!	$class_importation!=no
-!! <p>
+!! <br>
 !! !href module=adm/createxo&existing=$thisexo&catmodule=$module Importeer
 !!  deze oefening in uw eigen klas. Daar kan de broncode eenvoudig worden aangepast.
 !!!endif
 :end
 !tail
+
 
