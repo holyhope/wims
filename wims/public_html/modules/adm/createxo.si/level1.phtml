@@ -46,7 +46,9 @@ E-naslov avtorja:<td><input size=30 maxlength=80 name=oef_email value="$oef_emai
 <input type=submit value="Naprej na vsebino vaje">
 </center>
 </form>
-
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+ to $wims_menu_tail
+ 
 Oglejte si tudi
 !href module=adm/modtool Modtool
  za online razvoj celotnih WIMS modulov.
@@ -56,7 +58,7 @@ Oglejte si tudi
  !if $exototal>0
   <p>
   !form new
-  <input type=hidden name=module value=$module>
+  <input type=hidden name=module value="$module">
   Za spreminjanje ¾e obstojeèe vaje jo izberite s seznama:
   !formselect existing list $exolist prompt $titlelist
   <input type=submit value=Potrdi></form>

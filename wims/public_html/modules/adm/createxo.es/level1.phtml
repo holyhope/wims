@@ -46,7 +46,10 @@ Dirección de correo electrónico:<td><input size=30 maxlength=80 name=oef_email v
 <input type=submit value="Continuar al contenido del ejercicio">
 </center>
 </form>
-
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+model,1,cmd=reply&mode=model\
+ to $wims_menu_tail
+ 
 Vea también
 !href module=adm/modtool Modtool
  para desarrollar en línea módulos WIMS a toda potencia.
@@ -56,7 +59,7 @@ Vea también
  !if $exototal>0
   <p>
   !form new
-  <input type=hidden name=module value=$module>
+  <input type=hidden name=module value="$module">
   Modificar un ejercicio existente de la clase:
   !formselect existing list $exolist prompt $titlelist
   <input type=submit value=OK></form>

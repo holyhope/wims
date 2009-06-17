@@ -49,7 +49,10 @@ Indirizzo e-mail:<td><input size=30 maxlength=80 name=oef_email value="$oef_emai
 <input type=submit value="Continua">
 </center>
 </form>
-
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+model,1,cmd=reply&mode=model\
+ to $wims_menu_tail
+ 
 &Egrave; anche disponibile 
 !href module=adm/modtool Modtool
  (in inglese) per la creazione di moduli WIMS completi.
@@ -59,7 +62,7 @@ Indirizzo e-mail:<td><input size=30 maxlength=80 name=oef_email value="$oef_emai
  !if $exototal>0
   <p>
   !form new
-  <input type=hidden name=module value=$module>
+  <input type=hidden name=module value="$module">
   Modifica un esercizio del corso già esistente:
   !formselect existing list $exolist prompt $titlelist
   <input type=submit value=OK></form>

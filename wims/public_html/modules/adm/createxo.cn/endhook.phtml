@@ -7,12 +7,19 @@ $wims_exec_error
 !reset wims_exec_error
 !endif
 
-<p><center>
-!href cmd=resume&realtest=no  返回创建练习页
-.
+!set wims_menu_tail=!append line backcreatexo,1,cmd=resume&realtest=no\
+to $wims_menu_tail
 !if $mode=model
-&nbsp;
- !href cmd=reply&level=1&mode=model 模块表
-.
+!set wims_menu_tail=!append line modellist,1,cmd=reply&level=1&mode=model\
+to $wims_menu_tail
 !endif
-</center> <p>
+
+!!<p><center>
+!!!href cmd=resume&realtest=no  返回创建练习页
+!!.
+!!!if $mode=model
+!!&nbsp;
+!! !href cmd=reply&level=1&mode=model 模块表
+!!.
+!!!endif
+!!</center> <p>

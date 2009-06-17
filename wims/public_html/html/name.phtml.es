@@ -119,3 +119,12 @@ New exercise\
 Class exercises\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
+
+!distribute items WIMS,Clase,Docs,Arriba,Prev.,Sig.,Hist.,Recargar,\
+    Versión interactiva,Versión para imprimir,\
+    Volver a doc.,Ayuda,Acerca de,\
+    into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
+    wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
+    wims_name_doch_interactive,wims_name_doch_printable,\
+    wims_name_doch_back,wims_name_doch_help,wims_name_doch_about
+    

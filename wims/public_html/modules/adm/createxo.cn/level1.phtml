@@ -47,7 +47,10 @@
 <input type=submit value="进入练习的内容">
 </center>
 </form>
-
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+model,1,cmd=reply&mode=model\
+ to $wims_menu_tail
+ 
 也可参见
 !href module=adm/modtool 模块工具
  以了解在线开发具有全部功能的WIMS模块的方法.
@@ -57,7 +60,7 @@
  !if $exototal>0
   <p>
   !form new
-  <input type=hidden name=module value=$module>
+  <input type=hidden name=module value="$module">
   修改以下班级的已有练习:
   !formselect existing list $exolist prompt $titlelist
   <input type=submit value=提交></form>

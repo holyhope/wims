@@ -49,7 +49,11 @@ Email address:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
 <input type=submit value="Continue to the content of the exercise">
 </center>
 </form>
-
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+model,1,cmd=reply&mode=model\
+latex2wims,1,module=adm/latex2wims\
+ to $wims_menu_tail
+ 
 See also
 !href module=adm/modtool Modtool
  for online development of full-power WIMS modules.
@@ -59,7 +63,7 @@ See also
  !if $exototal>0
   <p>
   !form new
-  <input type=hidden name=module value=$module>
+  <input type=hidden name=module value="$module">
   Modify an existing exercise of the class:
   !formselect existing list $exolist prompt $titlelist
   <input type=submit value=OK></form>

@@ -29,7 +29,7 @@
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew
-	
+
 !! **** Permalink Names ***	
 !distribute items ce module, cet exercice,\
 		Afficher,sur votre site,\
@@ -133,7 +133,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
   !distribute line Tester\
    Gestionnaire de document\
    Contenu du module\
@@ -155,6 +155,25 @@
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
 wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property
+
+  !distribute line Retourner à la page de création d'exercices\
+   Liste de modèles\
+   Modèles préparés\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
+
+!distribute line Tester l'exercice\
+Retourner à confia2qcm\
+Retourner à createqcm\
+Modifier le source de l'exercice\
+Mettre dans le module de développement\
+Mettre cet exercice dans la classe\
+Faire une nouvelle version\
+Charger un fichier d'image\
+Remplacer l'ancien exercice\
+into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
+wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
+wims_name_downloadbinary,wims_name_replace
+
 !endif
 
 !distribute line Nouveau document\
@@ -166,4 +185,15 @@ Nouvel exercice\
 Exercices de la classe\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
+
+!!! for documents
+
+!distribute item WIMS,Classe,Docs,Sup,Préc,Suiv,Hist.,Recharger,\
+	Version interactive,Version imprimable,\
+	Retour au doc,Aide,A propos\
+	into doch_wims,doch_class,doch_docs,doch_up,\
+	doch_prev,doch_next,doch_hist,doch_reload,\
+	doch_interactive,doch_printable,\
+	doch_back,doch_help,doch_about
+	
 

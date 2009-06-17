@@ -49,6 +49,12 @@ Emailadres:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
 <input type=submit value="OK en ga verder">
 </center>
 </form>
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+model,1,cmd=reply&mode=model\
+quicktool,1,module=adm/quicktool\
+latex2wims,1,module=adm/latex2wims\
+ to $wims_menu_tail
+
 !!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!! 
 <table bgcolor="#d0c080"> 
  <tr> 
@@ -82,7 +88,6 @@ Emailadres:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
  </tr> 
 </table> 
 !!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
-
 !if $wims_user=supervisor
  !read wimshome/log/classes/$wims_class/Exindex
  !if $exototal>0

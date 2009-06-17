@@ -46,8 +46,15 @@ Adreça electrònica&nbsp;:<td><input size=30 maxlength=80 name=oef_email value="$
 <input type=submit value="Continuar amb el contingut de l'exercici">
 </center>
 </form>
+!set wims_menu_tail=!append line modtool,1,module=adm/modtool\
+model,1,cmd=reply&mode=model\
+quicktool,1,module=adm/quicktool\
+latex2wims,1,module=adm/latex2wims\
+ to $wims_menu_tail
+
 !!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
-<table bgcolor="#d0c080">
+
+ <table bgcolor="#d0c080">
   <tr>
     <td rowspan=4>
       Veure també
@@ -84,7 +91,7 @@ Adreça electrònica&nbsp;:<td><input size=30 maxlength=80 name=oef_email value="$
  !if $exototal>0
   <p>
   !form new
-  <input type=hidden name=module value=$module>
+  <input type=hidden name=module value="$module">
   Modificar un exercici existent de la classe :
   !formselect existing list $exolist prompt $titlelist
   <input type=submit value=OK></form>

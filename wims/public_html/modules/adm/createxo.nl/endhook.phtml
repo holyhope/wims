@@ -7,12 +7,19 @@ $wims_exec_error
 !reset wims_exec_error
 !endif
 
-<p><center>
-!href cmd=resume&realtest=no Terug
- naar de Createxo startpagina.
+!set wims_menu_tail=!append line backcreatexo,1,cmd=resume&realtest=no\
+to $wims_menu_tail
 !if $mode=model
-&nbsp;Hier staat een
- !href cmd=reply&level=1&mode=model Lijst
-  met voorbeeld oefeningen.
+!set wims_menu_tail=!append line modellist,1,cmd=reply&level=1&mode=model\
+to $wims_menu_tail
 !endif
-</center> <p>
+
+!!<p><center>
+!!!href cmd=resume&realtest=no Terug
+!! naar de Createxo startpagina.
+!!!if $mode=model
+!!&nbsp;Hier staat een
+!! !href cmd=reply&level=1&mode=model Lijst
+!!  met voorbeeld oefeningen.
+!!!endif
+!!</center> <p>

@@ -32,17 +32,31 @@ Zdaj lahko
  <li><p>Vajo lahko opremite tudi s
  !href cmd=reply&level=6 slikovno datoteko
 .
+ !set wims_menu_tail=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_tail
 !endif
-!if $wims_user!=$empty
+!if $wims_user!=$empty or $existing!=$empty
  <li><p>
  Èe je vaja brezhibno pripravljena, jo lahko
  !if $existing!=$empty
+  !if ..devel/ notin ..$catmodule
   namestite v svoji uèilnici, tako da 
   !href cmd=reply&level=4 nadomestite staro
   ali pa kot
   !href cmd=reply&level=4&newone=1 novo vajo
- !else
-  !href cmd=reply&level=4 namestite v svoji uèilnici
+   !set wims_menu_tail=!append line replace,1,cmd=reply&level=4\
+ newversion,1,cmd=reply&level=4&newone=1\
+ to $wims_menu_tail
+  !else
+   !href cmd=reply&level=4 namestite v svoji uèilnici
+   !set wims_menu_tail=!append line putmodtool,1,cmd=reply&level=4\
+   to $wims_menu_tail
+  !endif
+.
+!else
+ !href cmd=reply&level=4 save this exercise in your class
+ !set wims_menu_tail=!append line putclass,1,cmd=reply&level=4\
+ to $wims_menu_tail
  !endif
 .
 !endif
@@ -53,5 +67,10 @@ Zdaj lahko
  pravkar ustvarjene vaje!
 !endif
 </ul>
+!set wims_menu_tail=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_tail
 
+!if $wims_version_theme=0
+  !reset wims_menu_tail
+!endif
 
