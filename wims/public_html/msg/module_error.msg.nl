@@ -48,8 +48,15 @@ $debug
 :defn_too_long
   Definitie string te lang.
   
+:executable
+  Het bestand $executable kan niet worden verwerkt door WIMS.
+  (omdat het execuable is.)
+
+:file_access_denied
+    Toegang tot het bestand ``$wims_error_data'' is verboden.
+  
 :file_too_long
-  De lengte van de file ``$wims_error_data'' overschrijdt de lengte limiet.
+  De file ``$wims_error_data'' is te groot.
   
 :for_syntax
   Syntax fout in `for'.
@@ -59,16 +66,19 @@ $debug
 
 :illegal_cmd
   Het commando ``$wims_error_data'' is illegaal:
-  U moet niet proberen om naar parent directories te gaan via de command name.
+  U moet niet proberen om naar onder- of bovenliggende mappen te gaan via de command name.
   
 :illegal_fname
   De naam van de file ``$wims_error_data'' is illegaal:
-  Het is verboden om files tebenaderen via parent directories.
-  
+  Het is verboden om bestanden via parent directories op te vragen.
+
+:illegal_name
+    De variabele naam ``$wims_bad_name'' is verboden.
+      
 :illegal_plot_cmd
-  De parameter string voor gnuplot kunnen illegale strings bevatten.
+  De parameters voor GNUplot kunnen illegale opdrachtregels bevatten.
   Het gebruik van een 'pipeline' in deze string (an apostrof gevolgd door `<')
-  is niet toegestaan.
+  is zekerniet toegestaan.
   
 :label_not_found
   Kan het label ``$wims_error_data'' niet vinden
@@ -77,11 +87,9 @@ $debug
   Syntax fout in ``mathsubst''.
 
 :name_is_reserved
-  De naam ``$wims_reserved_name'' is gereserveerd voor  intern gebruik door de server. 
-  U kun dit dus niet gebruiken in U module.
-  Gebruik een andere variabele naam hiervoor
+  De naam ``$wims_reserved_name'' is gereserveerd voor intern gebruik door de server. 
+  Gebruik een andere variabele naam.
   
-
 :name_too_long
   Variabele naam te lang.
 
@@ -90,24 +98,21 @@ $debug
   (Is er een `goto'  die springt in een  `for' loop?)
 
 :no_double_quote
-    Een dubbele aanhaling " is om beveiligings redenen niet toegstaan in de commano parameter  
+    Een dubbele aanhaling " is niet toegstaan in een commando  
 
-  
 :no_of
   Syntax fout. De syntax is: $wims_error_data ??? of ???
 
 :not_trusted
-  De module $module heeft geen rechten om private scripts of
-  administratieve commando's uit te voeren.
+  De module $module heeft geen rechten om administratieve commando's uit te voeren.
 
 :output_too_long
     De lengte van de html-pagina heeft de ingestelde limiet overschreden.
-  Als je geen extreem lange html-pagina geschreven hebt (in dat geval opsplitsen)
+  Als U geen extreem lange html-pagina geschreven hebt (in dat geval opsplitsen)
   wordt dit waarschijnlijk veroorzaakt door een oneindige loop.
   
 :parm_too_long
-    De parameter string heeft het toegestane maximum overschreden.
-  
+    De parameter string heeft het ingestelde maximum overschreden.
   
 :replace_syntax
   Syntax fout in `replace'.
@@ -134,6 +139,9 @@ $debug
 :too_many_fors
   Het aantal  `for' loops heeft de limiet overschreden.
 
+:too_many_nested_read
+    Het aantal executies is te groot. Controleer of het script niet zichzelf leest...
+  
 :too_many_variables
   Het aantal gedefinieerde variabelen in var.def heeft de limiet overschreden.
 
@@ -159,8 +167,6 @@ $debug
 :
 
 </p>
-Wanneer U dit bericht leest, is er een bug gecontateerd in de module `$module'.
-
-De WIMS server heeft deze fout geregisteerd, en zal automatisch in verband met deze
-bug contact opnemen met de auteur van deze module.
+Wanneer U dit bericht leest, is er een bug gecontateerd in de module `$module'.<br>
+De WIMS server heeft deze fout geregisteerd. Neem svp contasct op met de auteur van deze module.
 

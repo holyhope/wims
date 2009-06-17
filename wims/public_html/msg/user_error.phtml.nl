@@ -63,18 +63,6 @@ padding-left: 3%; padding-right: 3%;}
 
 !if trapped iswordof $wims_user_error
  <H1 align=center>Stop!</H1><hr>
- De inhoud van deze
- <A HREF=http://$httpd_HTTP_HOST>$httpd_HTTP_HOST</a> is niet geschikt
- om met automatische download programma's op te halen.
- <p>
- Om deze WIMS site te gebruiken, is een normale webbrowser -zonder downloadversneller-
- noodzakelijk.
- <p>
- Besef goed dat deze WIMS pagina's dynamisch worden gegenereerd, en kunnen
- dus <b>niet</b> ofline gebruikt worden. 
- 
- </body></html>
- !exit
 !endif
 
 <H1 align=center>WIMS error</H1><hr>
@@ -83,8 +71,7 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
- Voorkom het gebruik van de 'Terug' knop van Uw browser,
- op deze Interactieve server
+ Voorkom het gebruik van de 'Terug' knop van Uw browser op deze Interactieve server.
   <p><center>
   !set tit=!module title $module
   !default tit=$module
@@ -106,7 +93,7 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
  !form new
  <input type=hidden name=module value="home">
  <input type=hidden name=deblockparm value="$[randint(10000000)+1000000]">
- Hebt U perongeluk op de `Terug' knop van de browser geklikt,
+ Hebt U per ongeluk op de `Terug' knop van de browser geklikt,
  typ dan s.v.p. het woord "wims" hier:
  <input size=8 name=special_parm> en dan
  <input type=submit value="opsturen naar de server">.</form>
@@ -115,6 +102,7 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
  dus <b>alleen</b> online gebruikt worden, via een normale browser.
  Het is zinloos deze pagina's op te halen met een "download robot". 
  
+
  !if robot_doubt iswordof $wims_user_error
   <small>Besef goed dat hackers voorgoed toegang tot deze
   site wordt ontnomen !</small>
@@ -163,7 +151,7 @@ Dit is niet toegestaan in Uw virtuele klas.
  !if $cmd=getfile
  Het gezochte bestand bestaat niet
  !else
- De bestandsnaam -voor deze 'dynamische invoeging'- is niet geldig.
+ De bestandsnaam voor dit dynamisch bestand is niet geldig.
   
  !endif
  !goto end
@@ -172,7 +160,7 @@ Dit is niet toegestaan in Uw virtuele klas.
 !if cmd_output_too_long iswordof $wims_user_error
 Het resultaat van de door U verzocht berekening heeft het ingestelde maximum
 ruim overtreden.<br>
-U hebt vermoedelijk een irrealistisch gecompliceerde berekening opgedragen.
+U hebt vermoedelijk om een te gecompliceerde? berekening verzocht.
 Vereenvoudig Uw verzoek, s.v.p.
  
   !goto end
@@ -220,7 +208,6 @@ Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan
 
 !if no_module_name iswordof $wims_user_error
 U hebt een nieuwe sessie aangevraagd zonder module naam.  
-
   !goto end
 !endif
 
