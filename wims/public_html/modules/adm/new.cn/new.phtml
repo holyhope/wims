@@ -5,22 +5,31 @@
  !exit
 !endif
 
+!set w_=!replace internal /wims.cgi by in $wims_ref_name
+
 $table_header
-<caption>服务器已安装的新模块</caption>
+<caption>服务器已安装的新模块
+<a href="$w_/rss/new.xml"><img src="gifs/rss.png" border=0 alt=rss></a></caption>
 $table_hdtr<th>日期<th>语言<th>标题<th>描述
 </tr>
 !for i=1 to $datacnt
  !set l=!line $i of $data
  !distribute words $l into d_,a_,v_
  !set la=!module language $a_
- !set tit=!module title $a_
+ !set tit=!module title_$lang $a_ 
+ !set desc=!module description_$lang $a_ 
+ !if $tit=
+  !set tit=!module title $a_
+ !endif
+ !if $desc=
+  !set desc=!module description $a_ 
+ !endif
  $table_tr
  <td align=center><small>
  !char 1 to 8 of $d_
  </small></td><td align=center>$la</td><td>
  !href target=wims_test module=$a_ $tit
- </td><td>
- !module description $a_
- </td></th>
+ </td><td>$desc</td></tr>
+ !reset desc tit
 !next i
 $table_end
