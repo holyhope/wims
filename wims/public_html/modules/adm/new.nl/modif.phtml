@@ -6,8 +6,11 @@
  !exit
 !endif
 
+!set w_=!replace internal /wims.cgi by in $wims_ref_name
+
 $table_header
-<caption>De laatste module wijzigingen op deze server</caption>
+<caption>De laatste module wijzigingen op deze server
+<a href="$w_/rss/modif.xml"><img src="gifs/rss.png" border=0 alt=rss></a></caption>
 $table_hdtr<th>Datum</th><th>Taal</th><th>Titel</th><th>Omschrijving</th>
 <th>Nieuwe<br>versie</th>
 </tr>
@@ -15,10 +18,10 @@ $table_hdtr<th>Datum</th><th>Taal</th><th>Titel</th><th>Omschrijving</th>
  !set l=!line $i of $data
  !distribute words $l into d_,a_,v_
  !set la=!module language $a_
- !set tit=!module title_$lang $a_ 
+ !set tit=!module title_$lang $a_
  !set desc=!module description_$lang $a_ 
  !if $tit=
-  !set tit=!module title $a_ 
+  !set tit=!module title $a_
  !endif
  !if $desc=
   !set desc=!module description $a_ 

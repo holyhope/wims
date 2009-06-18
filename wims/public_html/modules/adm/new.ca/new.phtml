@@ -1,13 +1,16 @@
 
 !if $datacnt<1
  Aucun nouveau module n'est encore enregistré dans le système de
- publication et mise à jour des modules introduit dans
+ publication et de mise à jour des modules introduit dans
  WIMS-3.37f.
  !exit
 !endif
 
+!set w_=!replace internal /wims.cgi by in $wims_ref_name
+
 $table_header
-<caption>Nouveaux modules installés sur le serveur</caption>
+<caption>Nouveaux modules installés sur le serveur 
+<a href="$w_/rss/new.xml"><img src="gifs/rss.png" border=0 alt=rss></a></caption>
 $table_hdtr<th>Date</th><th>Lang</th><th>Titre</th><th>Description</th>
 </tr>
 !for i=1 to $datacnt
