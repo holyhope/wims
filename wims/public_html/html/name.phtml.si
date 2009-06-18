@@ -77,8 +77,9 @@
   !distribute line novi moduli\
   nadgradnje modulov\
   zadnje sistemske spremembe\
-  RSS\
-  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+  RSS novi moduli\
+  RSS nadgradnje modulov\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
 !if $wims_user=$empty
@@ -86,7 +87,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
   !distribute line Test the module\
    Document manager\
    Module content\
@@ -104,11 +105,24 @@
    Quicktool\
    Latex2wims\
    Account properties\
+   Script Tester\
+   OEF Documentation \
+   Script Library\
+   Answer types\
+   Doc technic\
+   Back to file list\
+   Edit this file\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
-wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property
-!endif
+wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property,\
+wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
+wims_name_back3,wims_name_edfile
+
+!distribute line Back to the exercise creation\
+   Model list\
+   Prepared models\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
 !distribute lines preizkusite vajo\
 Modifier le source de l'exercice\
@@ -122,6 +136,8 @@ into wims_name_testexo,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace
 
+!endif
+
 !distribute line New document\
 New  sheet\
 New exam\
@@ -132,9 +148,11 @@ Class exercises\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
 
-!distribute item WIMS,Classe,Docs,Sup,Préc,Suiv,Hist.,Recharger,\
-	Version interactive,Version imprimable,\
-	Retour au doc,Aide,A propos\
+!!! for documents
+
+!distribute item WIMS,Class,Docs,Up,Prev,Next,Hist.,Reload,\
+	Interactive version,Printable version,\
+	Back to doc,Help,About\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
 	wims_name_doch_interactive,wims_name_doch_printable,\

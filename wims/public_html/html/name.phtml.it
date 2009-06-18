@@ -29,7 +29,7 @@
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew
-	
+
 !! **** Permalink Names ***	
 !distribute items questo modulo, questo esercizio,\
 		Salva,sul vostro sito,\
@@ -106,6 +106,7 @@
   !let wims_page_name=Pagina
  !endif
 !endif
+
 !if adm/class isin $module
  !distribute line Area docenti\
 	Area studenti\
@@ -117,15 +118,15 @@
 	università\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
-
 !endif
 
 !if adm/new isin $module
  !distribute line nuovi moduli\
-  aggiornamento moduli\
+   aggiornamento moduli\
    recenti modifiche del sistema\
-   RSS\
-   into wims_name_mod_new, wims_name_mod_modif, wims_name_mod_sys,wims_name_mod_rss
+   RSS  nuovi moduli\
+   RSS aggiornamento moduli\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
 !if $wims_user=$empty
@@ -133,7 +134,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
   !distribute line Test the module\
    Document manager\
    Module content\
@@ -144,17 +145,42 @@
    Publish it\
    New Module\
    List of modules\
-   Binary files\
+   File binari\
    Backup the module\
    Modtool\
    Createxo\
    Quicktool\
    Latex2wims\
    Account properties\
+   Script Tester\
+   OEF Documentation \
+   Script Library\
+   Answer types\
+   Doc technic\
+   Torna all'elenco dei file\
+   Modifica\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
-wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property
+wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property,\
+wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
+wims_name_back3,wims_name_edfile
+
+!distribute line Back to the exercise creation\
+   Model list\
+   Prepared models\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
+
+!distribute line Tester l'exercice\
+Modifier le source de l'exercice\
+Mettre dans le module de développement\
+Mettre cet exercice dans la classe\
+Faire une nouvelle version\
+Charger un fichier d'image\
+Remplacer l'ancien exercice\
+into wims_name_testexo,wims_name_exomodify,\
+wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
+wims_name_downloadbinary,wims_name_replace
 
 !endif
 
@@ -167,6 +193,8 @@ New exercise\
 Class exercises\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
+
+!!! for documents
 
 !distribute item WIMS,Corso,Documenti,Livello superiore,Prec.,Succ,History,Aggiorna,\
 	Versione interattiva,Versione stampabile,\

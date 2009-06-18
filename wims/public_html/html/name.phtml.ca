@@ -29,6 +29,53 @@
     wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew
 
+!! **** Permalink Names ***	
+!distribute items ce module, cet exercice,\
+		Afficher,sur votre site,\
+		Masquer ces options,\
+		Permalien, Lecteur exportable,\
+		copiez et collez, le lien, le code, ou, dans un mail,\
+		pour, uniquement,\
+		la config actuelle,\
+		Nom\
+	into wims_name_this_module, wims_name_this_exercice,\
+	wims_name_display,wims_name_on_your_site,\
+	wims_name_mask_this,\
+	wims_name_permalink,wims_name_embeddable,\
+	wims_name_copy_and_paste,wims_name_the_link,wims_name_the_code,wims_name_or,wims_name_in_a_mail,\
+	wims_name_for,wims_name_only,\
+	wims_name_this_config
+	
+!! **** Module About Names ***
+!distribute items Nom,\
+		Informations sur ce module,\
+		Addresse,\
+		Lien pour marque-page,\
+		Description,\
+		Version,\
+		Version WIMS <br>requise,\
+		Langue,\
+		Auteur,\
+		Traducteur,\
+		Ceci est un module du,\
+		Serveur Interactif Multifonctions sur le Web,\
+		Droits d'auteur\
+	into wims_name_name,\
+	wims_name_module_infos,\
+	wims_name_Address,\
+	wims_name_Link_for_bookmark,\
+	wims_name_Description,\
+	wims_name_Version,\
+	wims_name_Required_WIMS_version,\
+	wims_name_Language,\
+	wims_name_Author,\
+	wims_name_Translator,\
+	wims_name_This_is_a_module,\
+	wims_name_WIMS_subtitle,\
+	wims_name_Copyright
+
+
+!! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Principal,Inserir a un full de treball,\
 		Escriure al supervisor,Acabar,\
@@ -59,7 +106,6 @@
  !endif
 !endif
 
-
 !if adm/class isin $module
   !distribute line Àrea de professors\
 	Àrea d'estudiants\
@@ -77,8 +123,9 @@
   !distribute line Nouveaux modules\
   Modules mis à jour\
   Changements au système \
-  Liens RSS\
-  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+  RSS Nouveaux modules\
+  RSS Modules mis à jour\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
 !if $wims_user=$empty
@@ -86,7 +133,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
   !distribute line Tester\
    Gestionnaire de document\
    Contenu du module\
@@ -104,10 +151,37 @@
    Quicktool\
    Latex2wims\
    Propriétés du compte\
+   Testeur de script\
+   OEF Documentation \
+   Script Library\
+   Answer types\
+   Doc technic\
+   Back to file list\
+   Editer le fichier\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
-wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property
+wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property,\
+wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
+wims_name_back3,wims_name_edfile
+
+  !distribute line Retourner à la page de création d'exercices\
+   Liste de modèles\
+   Modèles préparés\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
+
+!distribute line Tester l'exercice\
+Retourner à confia2qcm\
+Retourner à createqcm\
+Modifier le source de l'exercice\
+Mettre dans le module de développement\
+Mettre cet exercice dans la classe\
+Faire une nouvelle version\
+Charger un fichier d'image\
+Remplacer l'ancien exercice\
+into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
+wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
+wims_name_downloadbinary,wims_name_replace
 
 !endif
 
@@ -120,6 +194,8 @@ Nouvel exercice\
 Exercices de la classe\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
+
+!!! for documents
 
 !distribute item WIMS,Classe,Docs,Sup,Préc,Suiv,Hist.,Recharger,\
 	Version interactive,Version imprimable,\

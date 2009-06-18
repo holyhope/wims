@@ -31,7 +31,7 @@
 
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,\
-                Inserte en$ una hoja de trabajo,\
+        Inserte en una hoja de trabajo,\
 		Escriba al profesor,Cierre la clase,\
 		El registro de puntuación está cerrado.,\
 		Ha suspendido el registro de puntuación.,\
@@ -77,8 +77,9 @@
   !distribute line nuevos módulos\
   actualizaciones de módulos\
   últimos cambios del sistema\
-  RSS\
-  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+  RSS nuevos módulos\
+  RSS actualizaciones de módulos\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
 !if $wims_user=$empty
@@ -86,7 +87,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
   !distribute line Test the module\
    Document manager\
    Module content\
@@ -104,10 +105,36 @@
    Quicktool\
    Latex2wims\
    Account properties\
+   Script Tester\
+   OEF Documentation \
+   Script Library\
+   Answer types\
+   Doc technic\
+   Back to file list\
+   Edit file\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
-wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property
+wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property,\
+wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
+wims_name_back3,wims_name_edfile
+
+!distribute line Back to the exercise creation\
+   Model list\
+   Prepared models\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
+
+!distribute line Test\
+Modify the source\
+Save in the development module\
+Save into your class\
+Save as a new exercise\
+Send an image file\
+Replace the old one\
+into wims_name_testexo,wims_name_exomodify,\
+wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
+wims_name_downloadbinary,wims_name_replace
+
 !endif
 
 !distribute line New document\
@@ -119,6 +146,8 @@ New exercise\
 Class exercises\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
+
+!!! for documents
 
 !distribute items WIMS,Clase,Docs,Arriba,Prev.,Sig.,Hist.,Recargar,\
     Versión interactiva,Versión para imprimir,\

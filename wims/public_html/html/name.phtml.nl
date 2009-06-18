@@ -47,7 +47,6 @@
     wims_name_for,wims_name_only,\
     wims_name_this_config
 
-!! **** Module About Names ***
 !distribute items Naam,\
 	Module Informatie,\
 	Adres,\
@@ -74,6 +73,7 @@
     wims_name_This_is_a_module,\
     wims_name_WIMS_subtitle,\
     wims_name_Copyright
+	
 
 
 !! **** Class Relative Names ***
@@ -92,7 +92,7 @@
 	wims_name_syou,\
 	wims_name_exolog,\
 	wims_name_sheetmanagement
-	
+
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br>Gemiddelde score \
 	$[$wims_homeref_mean]/10.
@@ -125,8 +125,9 @@
   !distribute line nieuwe modules\
   verbeterde modules\
   laatste systeem veranderingen\
-  RSS\
-  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss
+  RSS nieuwe modules\
+  RSS verbeterde modules\
+  into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
 !if $wims_user=$empty
@@ -134,7 +135,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
   !distribute line Test de module\
    Document manager\
    Inhoud module\
@@ -152,10 +153,36 @@
    Quicktool\
    Latex2wims\
    Eigenschappen van account\
+   Script tester\
+   OEF Documentation \
+   Script Library\
+   Answer types\
+   Doc technic\
+   Terug naar de bestanden lijst\
+   edfile Bewerken\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
-wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property
+wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property,\
+wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
+wims_name_back3,wims_name_edfile
+
+!distribute line Back to the exercise creation\
+   Model list\
+   Prepared models\
+into wims_name_backcreatexo,wims_name_modellist,wims_name_model
+
+!distribute line Test\
+Modify the source\
+Save in the development module\
+Save into your class\
+Save as a new exercise\
+Send an image file\
+Replace the old one\
+into wims_name_testexo,wims_name_exomodify,\
+wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
+wims_name_downloadbinary,wims_name_replace
+
 !endif
 
 !distribute line Nieuw document\
@@ -167,3 +194,13 @@ Nieuw oefening\
 Oefeningen van deze klas\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
+
+!!! for documents
+
+!distribute item WIMS,Class,Docs,Up,Prev,Next,Hist.,Reload,\
+	Interactive version,Printable version,\
+	Back to doc,Help,About\
+	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
+	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
+	wims_name_doch_interactive,wims_name_doch_printable,\
+	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about
