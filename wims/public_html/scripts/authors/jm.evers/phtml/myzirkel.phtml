@@ -1,0 +1,222 @@
+<script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script>
+<script type="text/javascript"  src="$jsdir/precheck.js"></script>
+<script type="text/javascript"  src="$jsdir/zirkel2wims.js"></script>
+<script type="text/javascript">
+    !!! this is used for filling_in the inputfields myinput[n] after a return: the inputfields are present in a variable-string and thus can "not be filled" by wims... note: if $embed=1 ... WIMS will fill in the rejected answer...see below [id=myinput]
+    function refill(){
+	var hi="$(reply$n)";
+	if(hi.length !=0){
+	    hi=hi.split(',');
+	    for(var i=0;i<hi.length;i++){
+		document.getElementById("myinput"+i).value=hi[i];
+	    }
+	}
+    }
+
+    var maxcookies=20;
+    var cookiesize=400;
+    var cookiecount=-1;
+    var reply="";
+    function readapplet(){
+	!if $list_of_things = $empty
+	    reply=zirkel2wims(null,null);
+	!else
+	    !! we decide what we want from the drawing. note the pupil must name the objects correctly
+	    !! this array should be filled by WIMS : scheme ["type,name1,name2..." , "type,name1,name2..."]
+	    !! like ["point,p1,p2,p3","line,l1,l2","function,f1,f2,f3","area,poly1","angle,a1","circle,c1","segment,s1"];
+	    var list_of_things = new Array();
+	    list_of_things= $list_of_things ;
+	    var tmp;var tmp2;
+	    for(var p=0; p<list_of_things.length;p++){
+		tmp=list_of_things[p].split(',');
+		if(tmp[0].length>0){
+		    for(var s=1;s<tmp.length;s++){
+			tmp2=zirkel2wims(tmp[0],tmp[s]);if(tmp2 == "error"){return;}else{reply=reply+tmp2;}
+		    }
+		}
+	    }
+	!endif
+	reply=encodeURIComponent(reply);
+	
+	!! setting a cookie to save the much too large xml-string...splitting in small cookies...
+	!! no way to retreive browser settings for this cookie cache space...all react different
+	var myConstruction=document.getElementById("zirkel").getConstruction();
+	myConstruction=encodeURIComponent(""+myConstruction+"");
+	    var date = new Date();date.setTime(date.getTime()+600000);var expires=date.toGMTString();
+	    cookiecount=0;cookiearray=new Array();var t1=0;var t2=cookiesize;
+	    totalsize=0;
+	    while(myConstruction.substring(t1,t2).length>0){
+		cookiearray[cookiecount]=myConstruction.substring(t1,t2);
+		totalsize=(totalsize+cookiesize);cookiecount++;t1=t2;t2=t2+cookiesize;
+	    }
+	    if(cookiecount>maxcookies){
+		alert("construction is too big to be stored in cookies \n If the exercise is returned by WIMS for correction,\n You will have to draw it all over again...");
+		cookiecount=-1;
+	    }
+	    else
+	    {
+		for(var p=0;p<cookiecount;p++){
+		    document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires= ; path=/";
+		    !!document.cookie ="zirkel"+p+"="+cookiearray[p]+"; expires="+expires+"; path=/";
+		}
+	    }
+    }
+    
+    function sendanswer(){
+	if(document.mydefaultform){
+	    var extra_answer=new Array();
+	    var show="";
+	    var input="";var t1;
+	    var ml=document.mydefaultform.elements.length;
+	    var inputfieldnumber=0;
+	    for(z=0;z<ml;z++){
+		input=document.mydefaultform[z].value;
+		v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
+		input=nthroot(input);if(input=="error"){return;}
+		if(input.indexOf(',')!=-1){alert(r4);return;}
+		input=arrows(input,2,"","");if(input=="error"){return;}
+		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
+		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
+		input=science(input);if(input=="error"){return;}
+		if(check_x(input)==0){return;}
+		t1=input.indexOf("[");
+		if(t1 !=- 1){
+		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
+		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
+		    t1=input.indexOf("[");if(t1!=-1){alert(r13);return;}
+		}
+		input=input.replace(/#/g,' ');
+		extra_answer[z]=input;
+		show=show+(z+1)+")  "+input+"\n";
+	    }
+	    readapplet();
+	    var t=confirm(" $send ?\n"+show);
+	    if(t==true){
+		extra_answer=encodeURIComponent( extra_answer );
+		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+','+extra_answer+'&+myvar$n='+cookiecount;
+		document.location.href = URL;
+		document.getElementById("zirkel").destroy();
+	    }
+	}
+	else
+	{    
+	    readapplet();
+	    var t=confirm(" $send ?");
+	    if(t==true){
+		var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply+'&+myvar$n='+cookiecount ;
+		document.location.href = URL;
+		!!document.getElementById("zirkel").destroy();
+	    }
+	}
+    }	     
+
+    function dontknow(){
+	var t=confirm(" $dontknow ?");
+	if(t==true){URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
+	document.location.href = URL;document.getElementById("zirkel").destroy();
+	}                                                                                                                                                                 
+    }
+</script>
+
+<p align="center">
+<table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+    <tr>
+    <td valign="top" align="left">
+	$(question$n)
+	!if $(formula$n) != $empty
+	    <br>
+	    !insmath $(formula$n)
+	!endif
+	!if $exotext != $empty
+	    <br>
+	    $exotext
+	!endif
+	!if $inputs>0
+	    <table summary="">
+		<form name="mydefaultform" action="">
+		    !for i=1 to $inputs
+			<tr>
+			<td>
+			    $(inputtext$i)
+			</td>
+			<td>
+			    $m_rightarrow
+			</td>
+			<td>
+			!if $wims_user=supervisor
+			    !set voorzeggen=!item $i of $(answer$n)
+			    <input id="myinput$[$i-1]" style=$textareastyle name="myinput$[$i-1]" size="$cols" value="$voorzeggen">
+			!else
+			    <input id="myinput$[$i-1]" style=$textareastyle name="myinput$[$i-1]" size="$cols" value="$(myinput$[$i-1])">
+			!endif
+			</td>
+			</tr>
+		    !next i
+		</form>
+	    </table>
+	!endif
+    </td>
+    !if $XSIZE>640
+    </tr><tr>
+    !endif
+    <td  valign="top">
+	!if $width=$empty
+	    !set width=640
+	    !set height=480
+	!endif
+	<p align="center">
+    	    <applet id="zirkel" name="zirkel" code="rene.zirkel.ZirkelApplet.class" codebase="$appletdir" archive="zirkel.jar" width=$xsize height=$ysize MAYSCRIPT>
+		<param name="language" value="$taal">
+		$var1
+		$nojava
+	    </applet>
+	</p>
+    </td>
+    </tr>
+</table>
+<table summary="">
+    <tr>
+    <th>
+	<input type=button style=$mybuttonstyle onclick="sendanswer();" name="but1" value="$send">
+    </th>
+    <th>
+	<input type=button style=$mybuttonstyle onclick="dontknow();" name="but2" value="$dontknow">
+    </th>
+    </tr>
+</table>
+</p>
+!if $(myvar$n) != $empty
+    !if $(myvar$n)>-1
+    !! get the stored cookies .
+    <script type="text/javascript">
+	var cookiecount=$(myvar$n) ;
+	function get_cookie(Name) {
+	    var search = Name + "=";
+	    var returnvalue = "";var end;var offset;
+	    if (document.cookie.length > 0) {
+		offset = document.cookie.indexOf(search);
+		if (offset != -1) { 
+		    offset += search.length;
+		    end = document.cookie.indexOf(";", offset);
+		    if (end == -1) end = document.cookie.length;
+		    returnvalue=unescape(document.cookie.substring(offset, end))
+		}
+	    }
+	    return returnvalue;
+	}
+	var test="";var stored_construction="";
+	for(var p=0;p<=cookiecount;p++){
+	    test = get_cookie("zirkel"+p);
+	    if(test.length != 0){
+		stored_construction=stored_construction+""+test;
+	    }
+	}
+	var test=decodeURIComponent(stored_construction);
+	document.getElementById("zirkel").putConstruction(test);
+    </script>
+    !endif
+!endif
+!!! after the inputelements are in the DOM-tree: fill-in the previous answers
+<script type="text/javascript">
+    try{document.onload=refill();}catch(e){}
+</script>

@@ -112,6 +112,29 @@ WIMS $module_title [$module_language]
    !exit
 !endif
 
+!if $module_language=nl
+  !if $module_translator!=$empty and $module_translator_address!=$empty
+   !set module_about_tr=<tr><td>Vertaler</td><td>$module_tr</td></tr>
+  !endif
+  !set module_about=$module_about \
+   <center>Is een module van de WWW Interactieve Multipurpose Server [WIMS]. \
+   <table border="2"\
+   bgcolor="$$module_about_bgcolor">\
+   <tr><td>Naam</td><td>$module_title</td></tr>\
+   <tr><td>Adres   </td><td>$module</td></tr>\
+   <tr><td>Link bookmark</td><td><a href="$wims_ref_name?module=$module">$wims_ref_name?module=$module</a></td></tr>\
+   <tr><td>Omschrijving</td><td>$module_description</td></tr>\
+   <tr><td>Versie   </td><td>$module_version</td></tr>\
+   <tr><td>Vereiste versie WIMS</td>    <td>$m_ge $module_wims_version</td></tr>\
+   <tr><td>Taal    </td><td>$module_language</td></tr>\
+   <tr><td>Schrijver    </td><td>$module_au</td></tr>\
+   $module_about_tr\
+   <tr><td>Copyright</td><td>$module_copyright</td></tr>\
+   </table></center>
+   !exit
+!endif
+
+
 !if $module_language=de
   !if $module_translator!=$empty and $module_translator_address!=$empty
    !set module_about_tr=<tr><td>Übersetzer</td><td>$module_tr</td></tr>

@@ -1,12 +1,15 @@
+
 function zirkel2wims(type,name){
-    var data="";
-    xmlString =document.getElementById("zirkel").getDrawing("\""+type+"\"","\""+name+"\"");
-    data=xmlString;
-    var test=data.indexOf("error");
-    if(test!=-1){
-	alert(r19+data); return 0;
+    var data;
+    if(type != null && name != null){
+	// get only the things we want...
+	data = document.getElementById("zirkel").getDrawing(type,name);
     }
-    else{
-	return data;
+    else
+    {
+	// this function retreives all construction details 
+	// excluded objects with name prefix "my_" 
+	data = document.getElementById("zirkel").getAllObjects();    
     }
-}
+    if(data.indexOf("error") != -1){alert(r19+"\n"+data); return "error";}else{return data;}
+}   

@@ -1,3 +1,4 @@
+<script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script>
 <script type="text/javascript"  src="$jsdir/geogebra2wims.js"></script>
 <script type="text/javascript">
     var list_of_things=new Array();
@@ -10,17 +11,18 @@
     function sendanswer(){
 	var reply=geogebra2wims(list_of_things);
 	reply=encodeURIComponent( reply );
-	t=confirm(" $send ?");
-	if(t==true){var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
-	document.location.href = URL;
-	document.applets[0].destroy();
+	var t=confirm(" $send ?");
+	if(t==true){
+	    var URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
+	    document.location.href = URL;document.getElementById("ggbApplet").destroy();
 	}
     }
 
     function dontknow(){
-	t=confirm(" $dontknow ?");
-	if(t==true){URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
-	document.location.href = URL;document.getElementById("ggbApplet").destroy();
+	var t=confirm(" $dontknow ?");
+	if(t==true){
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
+	    document.location.href = URL;document.getElementById("ggbApplet").destroy();
 	}                                                                                                                                                                 
     } 
 </script>
@@ -29,30 +31,49 @@
     <tr>
     <td valign="top" align="left">
 	$(question$n)
+	!if $(formula$n) != $empty
+	    <br>
+	    !insmath $(formula$n)
+	!endif
 	!if $exotext != $empty
 	    <br>
 	    $exotext
 	!endif
-	!if $(formula$n) != $empty
-	    <p align="center">
-		<table summary="" border="1" cellpadding="15" bgcolor="#ffffa0">
-		    <tr>
-		    <th>
-			!insmath $(formula$n)
-		    </th>
-		    </tr>
-		</table>    
-	    </p>
+	!if $inputs>0
+	    <table summary="">
+		<form name="sendtext" action="">
+		    !for i=1 to $inputs
+			<tr>
+			<td>
+			    $(inputtext$i)
+			</td>
+			<td>
+			    $m_rightarrow
+			</td>
+			<td>
+			!if $wims_user=supervisor
+			    !set voorzeggen=!item $i of $(answer$n)
+			    <input  style=$textareastyle name="myvar1" size=$cols value=$voorzeggen>
+			!else
+			    <input  style=$textareastyle name="myvar1" size=$cols value="$myvar1">
+			!endif
+			</td>
+			</tr>
+		    !next i
+		</form>
+	    </table>
 	!endif
-    <td>
+    </td>
+    !if $XSIZE>640
     </tr><tr>
+    !endif
     <td  valign="top">
 	!if $width=$empty
 	    !set width=640
 	    !set height=480
 	!endif
 	<p align="center">
-    	    <applet id="ggbApplet" name="ggbApplet" code="geogebra.GeoGebraApplet" codebase="java/geogebra" archive="geogebra.jar" width=$width height=$height>
+	    <applet id="ggbApplet" name="ggbApplet" code="geogebra.GeoGebraApplet" codebase="java/geogebra" archive="geogebra.jar" width=$width height=$height>
 		<param name="language" value="$taal">
 		<param name="filename" value="../../$module_dir/$ggb">
 		<param name="showToolBar"  value="$showToolBar">
@@ -65,53 +86,19 @@
 	    <script type="text/javascript">
 		$appletcommand
 	    </script>
-	    <table summary="">
-		<tr>
-		!if $inputs>0
-		    <th>
-			<form name="sendtext" action="">
-			    <table summary="">
-				<tr>
-			    !for i=1 to $inputs
-				<td>
-				    $(inputtext$i)
-				</td>
-				<td>
-				    $m_rightarrow
-				</td>
-				<td>
-				!if $wims_user=supervisor
-				    !set voorzeggen=!item $i of $(answer$n)
-				    <input  style=$textareastyle name="myvar1" size=$cols value=$voorzeggen>
-				!else
-				    <input  style=$textareastyle name="myvar1" size=$cols value="$myvar1">
-				!endif
-				</td>
-				</tr><tr>
-			    !next i
-			    </table>
-			</form>
-		    </th>
-		    </tr><tr>
-		!endif
-		<td>	
-		    <center>
-			<table summary="">
-			    <tr>
-			    <th>
-				<input type=button style=$mybuttonstyle onclick="sendanswer();" name="but1" value="$send">
-			    </th>
-			    <th>
-				<input type=button style=$mybuttonstyle onclick="dontknow();" name="but2" value="$dontknow">
-			    </th>
-			    </tr>
-			</table>
-		    </center>
-		</td>
-		</tr>
-	    </table>    
 	</p>
     </td>
     </tr>
 </table>
+<table summary="">
+    <tr>
+    <th>
+	<input type=button style=$mybuttonstyle onclick="sendanswer();" name="but1" value="$send">
+    </th>
+    <th>
+	<input type=button style=$mybuttonstyle onclick="dontknow();" name="but2" value="$dontknow">
+    </th>
+    </tr>
+</table>
 </p>
+

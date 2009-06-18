@@ -32,10 +32,10 @@
 
 !! **** Permalink Names *** 
 !distribute items deze module, deze oefening,\
-	Programma,op uw site,\
+	Installeer,op uw site,\
 	verberg deze opties,\
-	Permalink, Embeddable player,\
-	knippen en plakken, deze link, deze code, of, in een email,\
+	Permanente link, Embeddable player,\
+	knip en plak, deze link, deze code, of, in een email,\
 	voor, enkel,\
 	deze configuratie,\
 	Naam\
