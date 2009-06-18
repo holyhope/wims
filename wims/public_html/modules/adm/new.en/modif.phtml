@@ -6,6 +6,8 @@
  !exit
 !endif
 
+!set w_=!replace internal /wims.cgi by in $wims_ref_name
+
 $table_header
 <caption>Recent module updates on the server</caption>
 $table_hdtr<th>Date</th><th>Lang</th><th>Title</th><th>Description</th>
@@ -15,10 +17,10 @@ $table_hdtr<th>Date</th><th>Lang</th><th>Title</th><th>Description</th>
  !set l=!line $i of $data
  !distribute words $l into d_,a_,v_
  !set la=!module language $a_
- !set tit=!module title_$lang $a_ 
+ !set tit=!module title_$lang $a_
  !set desc=!module description_$lang $a_ 
  !if $tit=
-  !set tit=!module title $a_ 
+  !set tit=!module title $a_
  !endif
  !if $desc=
   !set desc=!module description $a_ 
