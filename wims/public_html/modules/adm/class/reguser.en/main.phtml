@@ -55,7 +55,6 @@ Registration of participation to $name_classess
   <td align=center>
   !mailurl $class_email $class_supervisor
   </td>
-    </td>
   !if $class_level=$empty
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
@@ -126,9 +125,9 @@ Registration of participation to $name_classess
   <b>Remark</b>. If the supervisor ($supervisor) of this class
  !endif
  allows you the access, you should be able to obtain the password from him/her.
- (
+(
  !mailurl $smail Write to the supervisor
- )
+)
  !goto end1
 !endif
 
@@ -262,11 +261,15 @@ Registration of participation to $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
- !href module=adm/class/classes&type=supervisor List of classes
-.
+ !set wims_menu_tail=!append line portallist,1,module=adm/class/classes&type=supervisor\
+to $wims_menu_tail
+ !!href module=adm/class/classes&type=supervisor List of classes
+!!.
 !else
- !href module=adm/class/classes&type=participant List of classes
-.
+ !set wims_menu_tail=!append line classlist,1,module=adm/class/classes&type=participant\
+to $wims_menu_tail
+ !!href module=adm/class/classes&type=participant List of classes
+!!.
 !endif
 :end
 !tail

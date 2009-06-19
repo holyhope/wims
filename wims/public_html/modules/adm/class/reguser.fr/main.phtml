@@ -61,9 +61,9 @@ Inscription  à $name_classess
   !mailurl $class_email $class_supervisor
   </td>
   !if $class_level=$empty
-  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
- !else
+  !else
     <td align=center>$(level$l1)<br>année $l2</td>
   !endif
   !if $ctype=0
@@ -132,14 +132,14 @@ Inscription  à $name_classess
   Si l'enseignant ($supervisor)
  !endif
  vous en autorise l'accès,
- il vous donnera ce mot de passe.
- (
+ il vous donnera ce mot de passe
+(
  !if $cltype iswordof 2 4
-  !mailurl $smail Ecrire à l'administrateur
+!mailurl $smail Ecrire à l'administrateur
  !else
-  !mailurl $smail Ecrire à l'enseignant
+ !mailurl $smail Ecrire à l'enseignant
  !endif
- )
+).
  !if $cltype iswordof 2 4
   <p><b>ATTENTION</b>. L'inscription directe au $name_classe est réservée aux
   enseignants. Si vous êtes élève, veuillez vous inscrire
@@ -293,11 +293,15 @@ Inscription  à $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
- !href module=adm/class/classes&type=supervisor Liste de classes et portails
-.
+!set wims_menu_tail=!append line portallist,1,module=adm/class/classes&type=supervisor\
+to $wims_menu_tail
+!! !href module=adm/class/classes&type=supervisor Liste de classes et portails
+!!.
 !else
- !href module=adm/class/classes&type=participant Liste de classes
-.
+!set wims_menu_tail=!append line classlist,1,module=adm/class/classes&type=participant\
+to $wims_menu_tail
+!! !href module=adm/class/classes&type=participant Liste de classes
+!!.
 !endif
 :end
 !tail

@@ -291,11 +291,15 @@ Inscripción a $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
- !href module=adm/class/classes&type=supervisor Lista de clases y portales
-.
+!set wims_menu_tail=!append line portallist,1,module=adm/class/classes&type=supervisor\
+to $wims_menu_tail
+ !!!href module=adm/class/classes&type=supervisor Lista de clases y portales
+!!.
 !else
- !href module=adm/class/classes&type=participant Lista de clases
-.
+!set wims_menu_tail=!append line classlist,1,module=adm/class/classes&type=participant\
+to $wims_menu_tail
+!! !href module=adm/class/classes&type=participant Lista de clases
+!!.
 !endif
 :end
 !tail
