@@ -152,8 +152,12 @@ wims_name_add_exo,wims_name_classexo
 !distribute items WIMS,Clase,Docs,Arriba,Prev.,Sig.,Hist.,Recargar,\
     Versión interactiva,Versión para imprimir,\
     Volver a doc.,Ayuda,Acerca de,\
+    Depósito de archivos,\
+    Back to the file list,\
+	Página de entrada del documento\
     into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
     wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
     wims_name_doch_interactive,wims_name_doch_printable,\
-    wims_name_doch_back,wims_name_doch_help,wims_name_doch_about
+    wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
+	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
     

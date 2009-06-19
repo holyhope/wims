@@ -116,8 +116,11 @@
 	primaire\
 	secondaire\
 	universitaire\
+	Liste de classes\
+    Liste de classes et portails\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_classlist,wims_name_portal_list
 !endif
 
 !if adm/new isin $module
@@ -200,8 +203,40 @@ wims_name_add_exo,wims_name_classexo
 
 !distribute item WIMS,Classe,Docs,Sup,Préc,Suiv,Hist.,Recharger,\
 	Version interactive,Version imprimable,\
-	Retour au doc,Aide,A propos\
+	Retour au doc,Aide,A propos,\
+	Dépôt de fichier,\
+	Retour à la liste de fichiers,\
+	Page d'entrée du document\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
 	wims_name_doch_interactive,wims_name_doch_printable,\
-	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about
+	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
+	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
+	
+!!!if adm/class/cdt isin $module
+ !distribute line Ajouter une date\
+   Ajouter un fichier\
+   Ajouter des devoirs\
+   Configurer\
+  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
+!!!endif
+
+!set wims_name_supervisor=administrateur
+!set wims_name_teacher=Comptes d'enseignant
+!set wims_name_addteacher=Nouvel enseignant
+!set wims_name_modteacher=Propriétés d'enseignant
+!set wims_name_delteacher=Effacer un enseignant
+!set wims_name_student=Comptes d'élève
+!set wims_name_addstudent=Nouvel élève
+!set wims_name_modstudent=Propriétés d'élève
+!set wims_name_delstudent=Effacer un élève
+!set wims_name_portal=Portail
+!set wims_name_level=Niveau
+!set wims_name_class=Classe
+!set wims_name_program=Programme
+!set wims_name_course=Cours
+!set wims_name_icourse=Cours interclasse
+
+!set wims_name_backstruct=Sauvegarder la structure
+
+
