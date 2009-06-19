@@ -7,11 +7,12 @@
 !set home_theme=yes
 !readproc tabletheme
 !read classlogo.phtml
+!set ENT=<a href="http://formation.u-psud.fr/index.php?logincas">dokeos</a>
 !set im=<img border=0 src=
 <center>
 <br> <br>
  <b><font size="+1">$wims_classname, $wims_institutionname</font></b>
-<br><small>($SU_log)</small></center>
+<br><small>($SU_log - $(wims_name_$class_typename))</small></center>
 <br clear=all> <br></div><div class=wimsbody>
 
 !if _tool isin $wims_session
@@ -30,6 +31,13 @@
   </center>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
+<div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
+<div class="wimsmenu">
+<div class="menuitem">
+!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
+</div><!--menuitem-->
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox-->
   !goto end
  !else
   !goto nocheck
@@ -81,6 +89,14 @@ $SU_greet.
  </center> <p>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
+<div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
+<div class="wimsmenu">
+<div class="menuitem">
+!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
+</div><!--menuitem-->
+<div class="menuitem">$ENT</div><!--menuitem-->
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox-->
  !goto end
  
 !endif
@@ -107,10 +123,17 @@ $SU_greet.
   <p><p>
  !endif
  <center>
- !href module=adm/class/regclass $ADD_3 $ADD_class
+
  </center>
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
+<div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
+<div class="wimsmenu">
+   <div class="menuitem">
+    !href module=adm/class/regclass $ADD_3 $ADD_class
+</div><!--menuitem-->
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox--> 
  !goto end
 !endif
 
@@ -217,36 +240,38 @@ $ADD_1
    <div class="menuitem">
    !href module=adm/modtool $im "gifs/themes/$wims_theme/modtool.gif" alt="modtool"> $wims_name_modtool
    </div><!--menuitem-->
-   <div class="menuitem">   <hr>
-   </div><!--menuitem-->
+   <div class="menuitem"><hr></div><!--menuitem-->
 <div class="menuitem">
-!href module=adm/doc&job=creat $im "gifs/themes/$wims_theme/add_doc.gif" alt=add_doc> $wims_name_add_doc
+!href module=adm/doc&job=creat $im "gifs/themes/$wims_theme/add_doc.gif" alt="add_doc" title="add_doc"> $wims_name_add_doc
 </div><!--menuitem-->
 !if $wims_supertype!=4 or $class_typename!=class
  <div class="menuitem">
-!href module=adm/class/sheet&sheet=$[$sheetcnt+1] $im "gifs/themes/$wims_theme/add_sheet.gif" alt=add_sheet> $wims_name_add_sheet
+!href module=adm/class/sheet&sheet=$[$sheetcnt+1] $im "gifs/themes/$wims_theme/add_sheet.gif" alt="add_sheet" title="add_sheet"> $wims_name_add_sheet
 </div><!--menuitem-->
  <div class="menuitem">
-!href module=adm/class/exam&exam=$[$examcnt+1] $im "gifs/themes/$wims_theme/add_exam.gif" alt=add_exam> $wims_name_add_exam
+!href module=adm/class/exam&exam=$[$examcnt+1] $im "gifs/themes/$wims_theme/add_exam.gif" alt="add_exam" title="add_exam"> $wims_name_add_exam
 </div><!--menuitem-->
  <div class="menuitem">
-!href module=adm/createxo $im "gifs/themes/$wims_theme/add_exo.gif" alt=add_exo> $wims_name_add_exo
+!href module=adm/createxo $im "gifs/themes/$wims_theme/add_exo.gif" alt="add_exo" title="add_exo"> $wims_name_add_exo
 </div><!--menuitem-->
 !endif
 !if $class_type=2
 <div class="menuitem">
-!href module=adm/class/regclass $im "gifs/themes/$wims_theme/add_class.gif" alt=add_class> $wims_name_add_class
+!href module=adm/class/regclass $im "gifs/themes/$wims_theme/add_class.gif" alt="add_class" title="add_class"> $wims_name_add_class
 </div><!--menuitem-->
 !endif
 <div class="menuitem">
-!href module=adm/vote&job=creat $im "gifs/themes/$wims_theme/add_vote.gif" alt=add_vote> $wims_name_add_vote
+!href module=adm/vote&job=creat $im "gifs/themes/$wims_theme/add_vote.gif" alt="add_vote" title="add_vote"> $wims_name_add_vote
 </div><!--menuitem-->
-
+<div class="menuitem"><hr></div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
+</div><!--menuitem-->
+<div class="menuitem">$ENT</div>
 </div><!--wimsmenu-->
 </div><!--wimsmenumodbox-->
 !endif
 :end
-
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menublock">
@@ -254,27 +279,15 @@ $ADD_1
 <div class="menuitem">
 !href module=adm/class/userlist $im "gifs/themes/$wims_theme/SE_list.gif" alt="SE_list"> $SE_list
 </div><!--menuitem-->
-!endif
-<div class="menuitem">
-!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
-</div><!--menuitem-->
-<div class="menuitem">
-!href cmd=close&module=home&lang=$lang $im "gifs/themes/$wims_theme/visitor.gif" alt="exit"> $V_Quit
-</div><!--menuitem-->
-</div><!--end menublock-->
-!! to separate sort of submenu 
-<div class="menublock">
 <div class="menuitem">
 !href style=student $im "gifs/themes/$wims_theme/n_participant.gif" alt="SE_part"> $SE_part
 </div><!--menuitem-->
-<div class="menuitem">
-!href module=adm/class/config $im "gifs/themes/$wims_theme/SE_config.gif" alt="SE_config"> $SE_config
-</div><!--menuitem-->
-<div class="menuitem">
-!href module=adm/class/config&job=security $im "gifs/themes/$wims_theme/SE_secu.gif" alt="SE_secu"> $SE_secu
-!!href module=adm/light&phtml=useropts.phtml.$lang $im "gifs/themes/$wims_theme/V_Chpref.gif" alt="V_Chpref"> $V_Chpref
-</div><!--menuitem-->
+!endif
+!!<div class="menuitem">
+!!!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
+!!</div><!--menuitem-->
 </div><!--end menublock-->
+!! to separate sort of submenu 
 <div class="menublock">
 !if $wims_theme_version=0
 <div class="menuitem">
@@ -294,14 +307,26 @@ $ADD_1
 <div class="menuitem">
 !href module=adm/forum/mboard $im "gifs/themes/$wims_theme/forum.gif" alt="forum"> $N_Mboard
 </div><!--menuitem-->
-
-
-
-</div><!--end wimsblock-->
+</div><!--end menublock-->
+<div class="menublock">
+<div class="menuitem">
+!href module=adm/class/config $im "gifs/themes/$wims_theme/SE_config.gif" alt="SE_config"> $SE_config
+</div><!--menuitem-->
+<div class="menuitem">
+!href module=adm/class/config&job=security $im "gifs/themes/$wims_theme/SE_secu.gif" alt="SE_secu"> $SE_secu
+</div><!--menuitem-->
+</div><!--end menublock-->
+<div class="menublock">
+<div class="menuitem">
+!href module=adm/light&phtml=useropts.phtml.$lang $im "gifs/themes/$wims_theme/V_Chpref.gif" alt="V_Chpref"> $V_Chpref
+</div><!--menuitem-->
+!!<div class="menuitem">
+!!!href cmd=close&module=home&lang=$lang $im "gifs/themes/$wims_theme/visitor.gif" alt="exit"> $V_Quit
+!!</div><!--menuitem-->
+</div><!--end menublock-->
 </div><!--end wimsmenu-->
 </div><!--end wimsmenubox-->
 </div><!--wimsbodybox-->
-:end
 <div id="wimstailbox">
 <div class="wimstail">
 <div class="tailitem">

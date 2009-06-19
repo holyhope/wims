@@ -6,32 +6,32 @@
 <tr><td align=left><small>&nbsp;
 !if help notin $wims_session
  !if $wims_class=$empty
-  !href module=home $doch_wims
+  !href module=home $wims_name_doch_wims
  !else
   !if _doc isin $wims_session
-   <a href="#" onclick="window.close()">$doch_class</a>
+   <a href="#" onclick="window.close()">$wims_name_doch_class</a>
   !else 
-   !href module=home $doch_class
+   !href module=home $wims_name_doch_class
   !endif
  !endif
 &nbsp;
  !if ..//adm/doc isin ..//$module and \
     ($wims_class=$empty or $wims_user=supervisor)
-  !href module=$module&cmd=reply&job=home $doch_docs
+  !href module=$module&cmd=reply&job=home $wims_name_doch_docs
  !endif
 !endif
 !default upbl=main
 !if $block!=main and $job=read
  &nbsp;
- !href cmd=reply&doc=$doc&block=$upbl $doch_up
+ !href cmd=reply&doc=$doc&block=$upbl $wims_name_doch_up
  !! <img src="gifs/arrows/up2.32.gif" alt=up>
  !if $prev!=$empty and $prev!=$upbl
   &nbsp;
-  !href cmd=reply&doc=$doc&block=$prev $doch_prev
+  !href cmd=reply&doc=$doc&block=$prev $wims_name_doch_prev
  !endif
  !if $next!=$empty and $next!=$upbl
   &nbsp;
-  !href cmd=reply&doc=$doc&block=$next $doch_next
+  !href cmd=reply&doc=$doc&block=$next $wims_name_doch_next
  !endif
 !endif
 !if $job=read
@@ -40,7 +40,7 @@
   !if $blocklast!=$empty
    !href cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 &lt;&lt;
   !endif
-   &nbsp;$doch_hist
+   &nbsp;$wims_name_doch_hist
   !if $blocknext!=$empty
    &nbsp;
    !href cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1 &gt;&gt;
@@ -48,25 +48,25 @@
   ]
  !endif
 !! &nbsp;
-!! !href cmd=reply&job=read $doch_reload
+!! !href cmd=reply&job=read $wims_name_doch_reload
 !endif
 </small></td><td align=right><small>
 !if $printable=yes
- !href cmd=reply&job=read&doc=$doc&block=$startblock $doch_interactive
+ !href cmd=reply&job=read&doc=$doc&block=$startblock $wims_name_doch_interactive
 !else
  !if $job=read
-  !href cmd=reply&job=print&doc=$doc $doch_printable
+  !href cmd=reply&job=print&doc=$doc $wims_name_doch_printable
 &nbsp;
  !endif
  !if $job=exosource
-  !href cmd=reply&job=read $doch_back
+  !href cmd=reply&job=read $wims_name_doch_back
 &nbsp;
  !endif
  !if $doc!=$helpd and $editable=yes
-  !href target=wims_help module=$module&cmd=new&job=read&doc=$helpd $doch_help
+  !href target=wims_help module=$module&cmd=new&job=read&doc=$helpd $wims_name_doch_help
 &nbsp;
  !endif
- !href target=wims_mhelp module=$module&cmd=help&special_parm=about $doch_about
+ !href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
 &nbsp;
 !endif
 </small></td></tr></table>
