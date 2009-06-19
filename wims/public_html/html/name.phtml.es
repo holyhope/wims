@@ -173,16 +173,16 @@ wims_name_add_exo,wims_name_classexo
 !endif
 
 
-wims_name_supervisor=administrador
-wims_name_teacher=Cuentas de profesores
-wims_name_addteacher=Nuevo profesor
-wims_name_modteacher=Propiedades del profesor
-wims_name_delteacher=Borrar un profesor
-wims_name_student=Cuentas de alumnos
-wims_name_addstudent=Nuevo alumno
-wims_name_modstudent=Propiedades del alumno
-wims_name_delstudent=Borrar un alumno
-wims_name_backstruct=Hacer una copia de seguridad de la estructura
+!set wims_name_supervisor=administrador
+!set wims_name_teacher=Cuentas de profesores
+!set wims_name_addteacher=Nuevo profesor
+!set wims_name_modteacher=Propiedades del profesor
+!set wims_name_delteacher=Borrar un profesor
+!set wims_name_student=Cuentas de alumnos
+!set wims_name_addstudent=Nuevo alumno
+!set wims_name_modstudent=Propiedades del alumno
+!set wims_name_delstudent=Borrar un alumno
+!set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
 !if config isin $module
  !distribute line Página principal de configuración\
