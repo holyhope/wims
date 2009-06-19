@@ -2,7 +2,7 @@
 !form reply
   <input type=submit value=Afficher>
   !reset job
-  !formselect job list work,todo prompt le travail effectu&eacute;,le travail &agrave; faire 
+  !formselect job list work,todo prompt le travail effectué,le travail à faire 
   entre le
   !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
   !let v=!values v for v=1 to 31
@@ -22,14 +22,15 @@
   !formselect jmonth2 from 0 to 12 prompt ---,$months
   !let v=!values v for v=$creyear to $expyear
   !formselect jyear2 list 0,$v prompt ---,$v
-  <small> Si vous ne saisissez pas de deuxi&egrave;me date, vous effectuerez une recherche sur la premi&egrave;re date.</small>
+  <small> Si vous ne saisissez pas de deuxième date, vous effectuerez une recherche sur la première date.</small>
  </form>
 <p>
 !if $wims_user=supervisor and $cdt_supervise=yes 
- !set wims_menu_tail= !append line "Ajouter une date",1,cmd=new&job=adddate\
- "Ajouter un fichier",1,cmd=reply&job=file\
- "Ajouter des devoirs",1,cmd=new&job=addtodo\
- "Configurer",1,cmd=reply&job=config to $wims_menu_tail
+ !set wims_menu_tail= !append line adddate,1,cmd=new&job=adddate\
+ addfile,1,cmd=reply&job=file\
+ addtodo,1,cmd=new&job=addtodo\
+ config,1,cmd=reply&job=config\
+ to $wims_menu_tail
  
  !!<p>
 !! !href cmd=new&job=adddate Ajouter une date
