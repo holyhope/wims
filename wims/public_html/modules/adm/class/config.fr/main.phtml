@@ -29,11 +29,17 @@
 !read $job.phtml
 
 !if $job notwordof list new
- <p><center>
- !href cmd=renew&job=list Page principale de configuration
- </center> <p>
+!set wims_menu_tail=!append line config,1,cmd=renew&job=list\
+save,1,cmd=reply&job=arch&job2=first\
+to $wims_menu_tail
+!!<p><center>
+!! !href cmd=renew&job=list Page principale de configuration
+!! </center> <p>
 !endif
-
+!if $job iswordof list
+  !set wims_menu_tail=!append line save,1,cmd=reply&job=arch&job2=first\
+to $wims_menu_tail
+!endif
 :end
 !tail
 

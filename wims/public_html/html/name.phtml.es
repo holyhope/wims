@@ -168,3 +168,24 @@ wims_name_add_exo,wims_name_classexo
    Configure\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
 !endif
+
+
+wims_name_supervisor=administrador
+wims_name_teacher=Cuentas de profesores
+wims_name_addteacher=Nuevo profesor
+wims_name_modteacher=Propiedades del profesor
+wims_name_delteacher=Borrar un profesor
+wims_name_student=Cuentas de alumnos
+wims_name_addstudent=Nuevo alumno
+wims_name_modstudent=Propiedades del alumno
+wims_name_delstudent=Borrar un alumno
+wims_name_backstruct=Hacer una copia de seguridad de la estructura
+
+!if config isin $module
+ !distribute line Página principal de configuración\
+ Gestión de la estructura\
+ Copias de seguridad y recuperación\
+into wims_name_config, wims_name_struct,wims_name_save
+
+!endif
+

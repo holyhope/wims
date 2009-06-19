@@ -217,3 +217,28 @@ wims_name_add_exo,wims_name_classexo
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
 !endif
 
+wims_name_supervisor=supervisor
+wims_name_teacher=Leraren accounts
+wims_name_addteacher=Nieuwe leraar
+wims_name_modteacher=Leraar eigenschappen
+wims_name_delteacher=Verwijder een leraar
+wims_name_student=Leerlingen accounts
+wims_name_addstudent=Nieuwe leerling
+wims_name_modstudent=Leerling eigenschappen
+wims_name_delstudent=Verwijder een leerling
+wims_name_backstruct=Backup van de gehele structuur
+wims_name_portal=portaal
+wims_name_level=niveau
+wims_name_class=klas
+wims_name_program=programma
+wims_name_course=cursus
+wims_name_icourse=interklas cursus
+
+!if config isin $module
+ !distribute line Hoofdpagina klassen onderhoud\
+ Instituut administratie\
+ backup en herstel\
+into wims_name_config, wims_name_struct,wims_name_save
+
+!endif
+
