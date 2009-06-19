@@ -8,7 +8,8 @@
  !href cmd=reply&job=teacher $teachercnt comptes d'enseignant
 .
 !endif
-
+!set wims_menu_tail=!append line addteacher,1,cmd=reply&job=addteacher \
+to $wims_menu_tail
 !goto nopart
 !if $studentcnt=0
  <p>
@@ -16,15 +17,22 @@
  !href cmd=reply&job=addstudent Nouveau compte d'élève
 .
 !else
+!set wims_menu_tail=!append line student,1,cmd=reply&job=student\
+to $wims_menu_tail
  !href cmd=reply&job=student $studentcnt comptes d'élève
 .
 !endif
+!set wims_menu_tail=!append line addstudent,1,cmd=reply&job=addstudent\
+to $wims_menu_tail
+
 :nopart
 </center>
 <p>
 !if $levelcnt=0
   Aucun niveau d'enseignement n'est encore installé.
   !href cmd=reply&job=addlevel Créer un niveau
+  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_tail
 .<sup>
   !href cmd=help&special_parm=structure#level aide
 </sup>
@@ -36,6 +44,10 @@
  !href cmd=reply&job=addlevel Ajouter&nbsp;un&nbsp;autre&nbsp;niveau
  &nbsp; 
  !href cmd=reply&job=backstruct Sauvegarder&nbsp;la&nbsp;structure
+ !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+ save_struct,1,cmd=reply&job=backstruct\
+to $wims_menu_tail
+ 
  </small></caption>
  $table_hdtr
  <th>Code<th>Nom</th><th>-</th><th>Responsable</th>

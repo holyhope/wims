@@ -1,5 +1,7 @@
 !read adm/css.phtml
 !header
+!readproc names
+!set name_prog=$name_program
 !if $addline$thiscode$thistitle!=$empty
  <center><h3>
  !set l=!linecnt $addline
@@ -11,6 +13,8 @@
   !set t_=!item $i of $addparms
   !if $lv<=$i
    !href cmd=reply&$t_ $l_
+   !set wims_menu_tail=!append line backgateway,1,cmd=reply&$t_\
+to $wims_menu_tail
   !else
    $l_
   !endif
@@ -22,10 +26,11 @@
   / $class_description ($thiscode)
   !if $thiscode!=$wims_superclass and $wims_superclass/$thiscode!=$wims_class
    <br>
-   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode login de gestión
+   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode login de gestion
+   !set wims_menu_tail=!append line login,1,module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode\
+to $wims_menu_tail
   !endif
  !else
-  !readproc names
   !if $(name_$job)!=$empty
    ($wims_superclass) / $(name_$job)
   !endif
@@ -37,8 +42,13 @@
  !read msg.phtml
  <p><hr><p>
 !endif
-
+!if $wims_menu_tail!=
+ !set wims_menu_tail=!append line ,0,<hr> to $wims_menu_tail
+!endif
 !read jobs/$job.phtml
+!if $job iswordof first level prog class course icourse
+ !read jobs/supervisors.phtml
+!endif
 !tail
 
 !reset confirm cancel del cparent more\

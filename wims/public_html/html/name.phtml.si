@@ -192,3 +192,15 @@ into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
 
+!set wims_name_backgateway=!nosubst Back to $l_
+
+!distribute line Add a course\
+Add a interclass course\
+Add a class\
+Add a program\
+Add a level\
+login de gestion\
+Zone change\
+Save the gateway structuree\
+into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprogr,wims_name_addlevel\
+wims_name_login,wims_name_chzone,wims_name_save_struct
