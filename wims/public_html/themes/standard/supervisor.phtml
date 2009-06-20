@@ -7,7 +7,7 @@
 !set home_theme=yes
 !readproc tabletheme
 !read classlogo.phtml
-!set ENT=<a href="http://formation.u-psud.fr/index.php?logincas">dokeos</a>
+
 !set im=<img border=0 src=
 <center>
 <br> <br>
@@ -36,8 +36,6 @@
 <div class="menuitem">
 !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
 </div><!--menuitem-->
-</div><!--wimsmenu-->
-</div><!--wimsmenumodbox-->
   !goto end
  !else
   !goto nocheck
@@ -94,9 +92,8 @@ $SU_greet.
 <div class="menuitem">
 !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
 </div><!--menuitem-->
-<div class="menuitem">$ENT</div><!--menuitem-->
-</div><!--wimsmenu-->
-</div><!--wimsmenumodbox-->
+!! <div class="menuitem">$ENT</div><!--menuitem-->
+
  !goto end
  
 !endif
@@ -132,8 +129,7 @@ $SU_greet.
    <div class="menuitem">
     !href module=adm/class/regclass $ADD_3 $ADD_class
 </div><!--menuitem-->
-</div><!--wimsmenu-->
-</div><!--wimsmenumodbox--> 
+ 
  !goto end
 !endif
 
@@ -265,13 +261,20 @@ $ADD_1
 </div><!--menuitem-->
 <div class="menuitem"><hr></div><!--menuitem-->
 <div class="menuitem">
-!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
+!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass" title="U_oclass"> $U_oclass
 </div><!--menuitem-->
-<div class="menuitem">$ENT</div>
-</div><!--wimsmenu-->
-</div><!--wimsmenumodbox-->
 !endif
 :end
+!set class_ent1=!rows2lines $class_ent
+!set class_ent_n0=!linecnt $class_ent1
+!for i_=1 to $class_ent_n0
+  !set 1_=!line $i_ of $class_ent1
+   <div class="menuitem">
+     <a href="$(1_[2])" target="wims_external">$im "gifs/themes/$wims_theme/ent.gif" alt="ent" title="ent"> $(1_[1])</a>
+   </div>
+ !next i_
+</div><!--wimsmenu-->
+</div><!--wimsmenumodbox-->
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menublock">

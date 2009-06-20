@@ -6,6 +6,7 @@
 !endif
 
 !set home_theme=yes
+!set im=<img border=0 src=
 !set percents=!getscorepercent
 !set class_homepage=!getdef class_homepage in wimshome/log/classes/$wims_class/.def
 !set etest=!record 0 of wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
@@ -260,11 +261,20 @@ $U_greet
 !href module=adm/forum/mboard $N_Mboard
 </div><!--menuitem-->
 !ifval $dcnt+$n+$m+$v>0 and $is_interclass!=yes
-<div class="menuitem"><hr></div>
+<div class="menuitem"><hr></div><!--menuitem-->
 <div class="menuitem">
 !href module=adm/class/userlist.$lang $U_myscore
 </div><!--menuitem-->
 !endif
+<div class="menuitem"><hr></div><!--menuitem-->
+!set class_ent1=!rows2lines $class_ent
+!set class_ent_n0=!linecnt $class_ent1
+!for i_=1 to $class_ent_n0
+  !set 1_=!line $i_ of $class_ent1
+   <div class="menuitem">
+     <a href="$(1_[2])" target=wims_external>$im "gifs/themes/$wims_theme/ent.gif" alt="ent" title="ent"> $(1_[1])</a>
+   </div><!--menuitem-->
+ !next i_
 </div><!--wimsmenu-->
 </div><!--wimsmenumodbox-->
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
