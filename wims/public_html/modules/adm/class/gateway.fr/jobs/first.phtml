@@ -1,11 +1,11 @@
 <center>
 !if $teachercnt=0
  Il n'y a pas encore de compte d'enseignants.
- !href cmd=reply&job=addteacher Nouveau compte d'enseignant
+ !href cmd=reply&job=addteacher $wims_name_addteacher
 . <p>
 !else
  Il y a
- !href cmd=reply&job=teacher $teachercnt comptes d'enseignant
+ !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
 !set wims_menu_tail=!append line addteacher,1,cmd=reply&job=addteacher \
@@ -14,12 +14,12 @@ to $wims_menu_tail
 !if $studentcnt=0
  <p>
  Il n'y a pas encore de compte d'élèves.
- !href cmd=reply&job=addstudent Nouveau compte d'élève
+ !href cmd=reply&job=addstudent $wims_name_addstudent
 .
 !else
 !set wims_menu_tail=!append line student,1,cmd=reply&job=student\
 to $wims_menu_tail
- !href cmd=reply&job=student $studentcnt comptes d'élève
+ !href cmd=reply&job=student $studentcnt $wims_name_student
 .
 !endif
 !set wims_menu_tail=!append line addstudent,1,cmd=reply&job=addstudent\
@@ -30,24 +30,23 @@ to $wims_menu_tail
 <p>
 !if $levelcnt=0
   Aucun niveau d'enseignement n'est encore installé.
-  !href cmd=reply&job=addlevel Créer un niveau
+  !href cmd=reply&job=addlevel $wims_name_addlevel
   !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
 to $wims_menu_tail
 .<sup>
-  !href cmd=help&special_parm=structure#level aide
+  !href cmd=help&special_parm=structure#level $wims_name_help
 </sup>
 !else
  $table_header
  <caption>Niveaux d'enseignement disponibles<sup>
- !href cmd=help&special_parm=structure#level aide
+ !href cmd=help&special_parm=structure#level $wims_name_help
  </sup><br><small>
- !href cmd=reply&job=addlevel Ajouter&nbsp;un&nbsp;autre&nbsp;niveau
+ !href cmd=reply&job=addlevel $wims_name_addlevel
  &nbsp; 
- !href cmd=reply&job=backstruct Sauvegarder&nbsp;la&nbsp;structure
+ !href cmd=reply&job=backstruct $wims_name_backstruct
  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
- save_struct,1,cmd=reply&job=backstruct\
+ backstruct,1,cmd=reply&job=backstruct\
 to $wims_menu_tail
- 
  </small></caption>
  $table_hdtr
  <th>Code<th>Nom</th><th>-</th><th>Responsable</th>

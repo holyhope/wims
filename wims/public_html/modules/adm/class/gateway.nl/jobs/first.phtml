@@ -8,7 +8,8 @@
  !href cmd=reply&job=teacher $teachercnt docent&nbsp;accounts
 .
 !endif
-
+!set wims_menu_tail=!append line addteacher,1,cmd=reply&job=addteacher \
+to $wims_menu_tail
 !goto nopart
 !if $studentcnt=0
  <p>
@@ -16,9 +17,14 @@
  !href cmd=reply&job=addstudent Voeg&nbsp;een&nbsp;nieuwe&nbsp;student&nbsp;toe
 .
 !else
+!set wims_menu_tail=!append line student,1,cmd=reply&job=student\
+to $wims_menu_tail
  !href cmd=reply&job=student $studentcnt studenten&nbsp;accounts
 .
 !endif
+!set wims_menu_tail=!append line addstudent,1,cmd=reply&job=addstudent\
+to $wims_menu_tail
+
 :nopart
 </center>
 <p>
@@ -26,7 +32,9 @@
     Er zijn geen leer-niveaus geinstalleerd.
   !href cmd=reply&job=addlevel Maak&nbsp;een&nbsp;nieuw&nbsp;niveau
 .<sup>
-  !href cmd=help&special_parm=structure#level help
+  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_tail
+  !href cmd=help&special_parm=structure#level $wims_name_help
 </sup>
 !else
  $table_header
@@ -36,6 +44,9 @@
  !href cmd=reply&job=addlevel Voeg&nbsp;een&nbsp;ander&nbsp;niveau&nbsp;toe
  &nbsp; 
  !href cmd=reply&job=backstruct Maak&nbsp;een&nbsp;Backup&nbsp;van&nbsp;de&nbsp;structuur
+  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+ backstruct,1,cmd=reply&job=backstruct\
+to $wims_menu_tail
  </small></caption>
  $table_hdtr
  <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>

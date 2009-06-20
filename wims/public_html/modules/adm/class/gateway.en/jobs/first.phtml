@@ -8,7 +8,8 @@
  !href cmd=reply&job=teacher $teachercnt teacher accounts
 .
 !endif
-
+!set wims_menu_tail=!append line addteacher,1,cmd=reply&job=addteacher \
+to $wims_menu_tail
 !goto nopart
 !if $studentcnt=0
  <p>
@@ -16,9 +17,14 @@
  !href cmd=reply&job=addstudent New participant
 .
 !else
+!set wims_menu_tail=!append line student,1,cmd=reply&job=student\
+to $wims_menu_tail
  !href cmd=reply&job=student $studentcnt participant accounts
 .
 !endif
+!set wims_menu_tail=!append line addstudent,1,cmd=reply&job=addstudent\
+to $wims_menu_tail
+
 :nopart
 </center>
 <p>
@@ -26,16 +32,21 @@
   There is no teaching levels installed yet.
   !href cmd=reply&job=addlevel Create a level
 .<sup>
-  !href cmd=help&special_parm=structure#level help
+  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_tail
+  !href cmd=help&special_parm=structure#level $wims_name_help
 </sup>
 !else
  $table_header
  <caption>Available teaching levels<sup>
- !href cmd=help&special_parm=structure#level help
+ !href cmd=help&special_parm=structure#level $wims_name_help
  </sup><br><small>
  !href cmd=reply&job=addlevel Add&nbsp;another&nbsp;level
  &nbsp; 
  !href cmd=reply&job=backstruct Backup&nbsp;the&nbsp;structure
+  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+ backstruct,1,cmd=reply&job=backstruct\
+to $wims_menu_tail
  </small></caption>
  $table_hdtr
  <th>Code<th>Name</th><th>-</th><th>Responsable</th>

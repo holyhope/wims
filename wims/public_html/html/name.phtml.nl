@@ -254,7 +254,7 @@ Add a program\
 Add a level\
 login de gestion\
 Zone change\
-Save the gateway structuree\
-into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprogr,wims_name_addlevel\
-wims_name_login,wims_name_chzone,wims_name_save_struct
+into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
+wims_name_login,wims_name_chzone
+
 
