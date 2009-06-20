@@ -34,6 +34,9 @@
 <div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menuitem">
+!href module=adm/class/gateway $im "gifs/themes/$wims_theme/struct.gif" alt="struct"> $SU_Gateway
+</div><!--menuitem-->
+<div class="menuitem">
 !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
 </div><!--menuitem-->
   !goto end
@@ -92,8 +95,6 @@ $SU_greet.
 <div class="menuitem">
 !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme/U_oclass.gif" alt="U_oclass"> $U_oclass
 </div><!--menuitem-->
-!! <div class="menuitem">$ENT</div><!--menuitem-->
-
  !goto end
  
 !endif
@@ -227,9 +228,9 @@ $ADD_1
 !read ./result.phtml
 </div><!--wimsbody-->
 </div><!--wimspagebox-->
-!if $wims_supertype!=4 or $class_typename!=class
 <div id="wimsmenumodbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
+!if $wims_supertype!=4 or $class_typename!=class
    <div class="menuitem">
    !href module=classes/$lang&special_parm=.nocache. $im "gifs/themes/$wims_theme/classexo.gif" alt="classexo"> $wims_name_classexo
    </div><!--menuitem-->
@@ -237,9 +238,7 @@ $ADD_1
    !href module=adm/modtool $im "gifs/themes/$wims_theme/modtool.gif" alt="modtool"> $wims_name_modtool
    </div><!--menuitem-->
    <div class="menuitem"><hr></div><!--menuitem-->
-<div class="menuitem">
-!href module=adm/doc&job=creat $im "gifs/themes/$wims_theme/add_doc.gif" alt="add_doc" title="add_doc"> $wims_name_add_doc
-</div><!--menuitem-->
+!endif
 !if $wims_supertype!=4 or $class_typename!=class
  <div class="menuitem">
 !href module=adm/class/sheet&sheet=$[$sheetcnt+1] $im "gifs/themes/$wims_theme/add_sheet.gif" alt="add_sheet" title="add_sheet"> $wims_name_add_sheet
@@ -256,6 +255,9 @@ $ADD_1
 !href module=adm/class/regclass $im "gifs/themes/$wims_theme/add_class.gif" alt="add_class" title="add_class"> $wims_name_add_class
 </div><!--menuitem-->
 !endif
+<div class="menuitem">
+!href module=adm/doc&job=creat $im "gifs/themes/$wims_theme/add_doc.gif" alt="add_doc" title="add_doc"> $wims_name_add_doc
+</div><!--menuitem-->
 <div class="menuitem">
 !href module=adm/vote&job=creat $im "gifs/themes/$wims_theme/add_vote.gif" alt="add_vote" title="add_vote"> $wims_name_add_vote
 </div><!--menuitem-->

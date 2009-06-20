@@ -4,7 +4,11 @@
   !href cmd=resume Liste de tous les participants
 !endif
 <h3>Détail du travail de
+!if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
+!else
+$lastname, $firstname
+!endif
 <br><font size="-1">Nom de login&nbsp;: <tt>$getuser</tt>
 !if $user_email!=$empty
  &nbsp;Adresse: <a href="mailto:$user_email">$user_email</a>
@@ -41,7 +45,7 @@
      <td align=center>100%<th>$globalav
  $table_end <p>
  $table_header$table_hdtr<th colspan=3>Notes attribuées par l'enseignant
- !if $wims_user=supervisor
+ !if $teacher!=$empty
   <br>
   !href lang=$lang&module=adm/class/grades&method=user&un=$getuser Modifier
  !endif

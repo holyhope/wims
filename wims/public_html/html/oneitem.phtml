@@ -6,9 +6,11 @@
 !if " isin $1_
   !set w_name=!replace internal " by in $1_
 !else
-  !set w_name=$(wims_name_$1_)
-   !if $wims_theme_image!=$empty
-    !set w_image=<img border=0 src="gifs/themes/$wims_theme_image/$1_.gif" alt="$1_" title="$_">
+  !set w_name1=!word 1 of $1_
+  !set w_name2=!word 2 to -1 of $1_
+  !set w_name=$(wims_name_$(w_name1)) $w_name2
+  !if $wims_theme_image!=$empty
+    !set w_image=<img border=0 src="gifs/themes/$wims_theme_image/$w_name1.gif" alt="$1_" title="$_">
   !endif
 !endif
 !goto $2_

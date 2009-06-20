@@ -271,6 +271,16 @@ Globaal
 !endif 
 !!(usercnt=0?)
 
+!set wims_menu_tail=!append line csv,1,cmd=reply&job=csv\
+ formula,1,cmd=reply&job=formula&formula=prep\
+ grades,1,module=adm/class/grades\
+ ,0,<hr>\
+ to $wims_menu_tail
+!if $usercnt!=0
+!set wims_menu_tail=!append line class_stat,1,module=adm/class/stat\
+activity,1,module=adm/class/activity\
+to $wims_menu_tail
+
 !if $manual>0
  <b>Verklaringen.</b> In de `Gemiddelde' kolommen, `auto' betekent het gemiddelde van
  de cijfers berekend aan de hand van de scores behaald op werkbladen, `leraar' 

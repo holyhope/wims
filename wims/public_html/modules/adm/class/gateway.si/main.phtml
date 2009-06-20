@@ -1,6 +1,7 @@
 !read adm/css.phtml
 !header
 !readproc names
+!set name_prog=$name_program
 !if $addline$thiscode$thistitle!=$empty
  <center><h3>
  !set l=!linecnt $addline
@@ -12,7 +13,7 @@
   !set t_=!item $i of $addparms
   !if $lv<=$i
    !href cmd=reply&$t_ $l_
-   !set wims_menu_tail=!append line backgateway,1,cmd=reply&$t_\
+   !set wims_menu_tail=!append line backgateway $l_,1,cmd=reply&$t_\
 to $wims_menu_tail
   !else
    $l_
@@ -25,7 +26,7 @@ to $wims_menu_tail
   / $class_description ($thiscode)
   !if $thiscode!=$wims_superclass and $wims_superclass/$thiscode!=$wims_class
    <br>
-   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode login de gestion
+   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode $wims_name_login
    !set wims_menu_tail=!append line login,1,module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$thiscode\
 to $wims_menu_tail
   !endif

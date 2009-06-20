@@ -11,6 +11,7 @@ C_F		=Mensajes de los foros
 
 N_browse	=visita guiada
 N_browsesite	=explorar este sitio
+N_browse2	=Explorar este sitio
 N_manage	=Administración de WIMS en línea
 N_best		=los mejores
 N_new		=lo nuevo
