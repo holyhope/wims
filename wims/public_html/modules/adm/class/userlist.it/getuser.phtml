@@ -148,15 +148,20 @@
 !endif
 <p>
 !if $wims_user=supervisor
- !href cmd=reply&job=getraw&getraw=$getuser Dati non elaborati
- .
- !href cmd=resume Elenco iscritti
- .
- <p>
- !href cmd=reply&job=delprep&delprep=$getuser Escludi questo studente
-, o
- !href module=adm/class/passwd&job=part&part=$getuser modificane la password
+!! !href cmd=reply&job=getraw&getraw=$getuser Dati non elaborati
+!! .
+!! !href cmd=resume Elenco iscritti
+!! .
+!! <p>
+!! !href cmd=reply&job=delprep&delprep=$getuser Escludi questo studente
+!!, o
+!! !href module=adm/class/passwd&job=part&part=$getuser modificane la password
 .
+!set wims_menu_tail=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ delprep,1,cmd=reply&job=delprep&delprep=$getuser\
+passwd,1,module=adm/class/passwd.fr&job=part&part=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail
 !else
  !href module=home Home page del corso
 !endif

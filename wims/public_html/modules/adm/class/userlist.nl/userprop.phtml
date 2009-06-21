@@ -37,19 +37,25 @@ $table_end
 <p>
 </form>
 !if $wims_user=supervisor
- <p><center>
- !href cmd=reply&job=getuser&getuser=$getuser de cijfers 
- van deze student.
- <p>
- !href cmd=reply&job=getraw&getraw=$getuser details van het werk
- .
- <p>
- !href cmd=reply&job=delprep&delprep=$getuser Schors
- &nbsp;deze student.
- Lijst van 
- !href cmd=resume alle studenten
- .
-</center> <p>
+!! <p><center>
+!! !href cmd=reply&job=getuser&getuser=$getuser de cijfers 
+!! van deze student.
+!! <p>
+!! !href cmd=reply&job=getraw&getraw=$getuser details van het werk
+!! .
+!! <p>
+!! !href cmd=reply&job=delprep&delprep=$getuser Schors
+!! &nbsp;deze student.
+!! Lijst van 
+!! !href cmd=resume alle studenten
+!! .
+!!</center> <p>
+ !set wims_menu_tail=!append line scores,1,cmd=reply&job=getuser&getuser=$getuser\
+ workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
+ delprep,1,cmd=reply&job=delprep&delprep=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail
+
 !endif
 
 !reset reg,abandon

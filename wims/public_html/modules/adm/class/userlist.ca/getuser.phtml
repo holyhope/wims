@@ -140,15 +140,20 @@
 !endif
 <p>
 !if $wims_user=supervisor
- !href cmd=reply&job=getraw&getraw=$getuser Données brutes
- .
- !href cmd=resume Liste de tous les participants
- .
- <p>
- !href cmd=reply&job=delprep&delprep=$getuser Supprimer ce participant
-, ou
- !href module=adm/class/passwd.fr&job=part&part=$getuser changer son mot de passe
-.
+ !!!href cmd=reply&job=getraw&getraw=$getuser Données brutes
+!! .
+!! !href cmd=resume Liste de tous les participants
+!! .
+!! <p>
+!! !href cmd=reply&job=delprep&delprep=$getuser Supprimer ce participant
+!!, ou
+!! !href module=adm/class/passwd.fr&job=part&part=$getuser changer son mot de passe
+!!.
+!set wims_menu_tail=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ delprep,1,cmd=reply&job=delprep&delprep=$getuser\
+passwd,1,module=adm/class/passwd.fr&job=part&part=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail
 !else
  !href module=home Accueil de la classe
 !endif

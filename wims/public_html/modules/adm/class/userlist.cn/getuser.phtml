@@ -138,15 +138,20 @@
 !endif
 <p>
 !if $wims_user=supervisor
- !href cmd=reply&job=getraw&getraw=$getuser 原始数据
- .
- !href cmd=resume 参加者名单
- .
- <p>
- !href cmd=reply&job=delprep&delprep=$getuser 删除此参加者
-, 或
- !href module=adm/class/passwd&job=part&part=$getuser 改变他的密码
-.
+ !!!href cmd=reply&job=getraw&getraw=$getuser 原始数据
+!! .
+!! !href cmd=resume 参加者名单
+!! .
+!! <p>
+!! !href cmd=reply&job=delprep&delprep=$getuser 删除此参加者
+!!, 或
+!! !href module=adm/class/passwd&job=part&part=$getuser 改变他的密码
+!!.
+!set wims_menu_tail=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ delprep,1,cmd=reply&job=delprep&delprep=$getuser\
+passwd,1,module=adm/class/passwd.fr&job=part&part=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail
 !else
  !href module=home 班级主页
 !endif

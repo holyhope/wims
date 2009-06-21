@@ -264,3 +264,17 @@ Notes manuellement attribuées\
 spreadsheet data\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
+
+!if adm/class/userlist isin $module
+!distribute line Lijst van alle leerlingen \
+Cijfers \
+Sluit / be&euml;indig deze tentamen sessie\
+details van het werk\
+Schors deze student\
+Ruwe gegevens\
+verander het wachtwoord\
+Verwerkte data\
+into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
+wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
+!endif
+

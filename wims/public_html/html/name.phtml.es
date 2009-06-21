@@ -211,3 +211,17 @@ Notes manuellement attribuées\
 spreadsheet data\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
+
+!if adm/class/userlist isin $module
+!distribute line Lista de los participantes\
+Puntuaciones del participante\
+Cerrar esta sesión de examen\
+Detalles de su trabajo\
+Dar de baja al participante\
+Datos en bruto\
+cambiar su contraseña\
+Datos tratados\
+into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
+wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
+!endif
+

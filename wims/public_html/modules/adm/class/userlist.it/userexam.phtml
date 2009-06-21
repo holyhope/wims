@@ -16,12 +16,17 @@
  <td>$eremain minutes</td></tr>
  $table_end <p>
 
-<center>
-!href cmd=reply&job=userexamclose&getuser=$getuser Termina questa sessione 
- di $firstname $lastname.
- <p>
-!href cmd=reply&job=getuser&getuser=$getuser Punteggi dello studente.
- .
-!href cmd=resume Elenco iscritti
- .
-</center>
+!!<center>
+!!!href cmd=reply&job=userexamclose&getuser=$getuser Termina questa sessione 
+!! di $firstname $lastname.
+!! <p>
+!!!href cmd=reply&job=getuser&getuser=$getuser Punteggi dello studente.
+!! .
+!!!href cmd=resume Elenco iscritti
+!! .
+!!</center>
+
+!set wims_menu_tail=!append line partexamclose,1,cmd=reply&job=userexamclose&getuser=$getuser\
+scores,1,cmd=reply&job=getuser&getuser=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail

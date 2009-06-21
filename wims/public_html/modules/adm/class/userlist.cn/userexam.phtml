@@ -18,12 +18,17 @@
  <td>$eremain 分</td></tr>
  $table_end <p>
 
-<center>
-!href cmd=reply&job=userexamclose&getuser=$getuser 关闭
-$lastname $firstname 的此次考试对话.
- <p>
-!href cmd=reply&job=getuser&getuser=$getuser 用户得分
- .
-!href cmd=resume 所有参加者名单
- .
-</center>
+!!<center>
+!!!href cmd=reply&job=userexamclose&getuser=$getuser 关闭
+!!$lastname $firstname 的此次考试对话.
+!! <p>
+!!!href cmd=reply&job=getuser&getuser=$getuser 用户得分
+!! .
+!!!href cmd=resume 所有参加者名单
+!! .
+!!</center>
+
+!set wims_menu_tail=!append line partexamclose,1,cmd=reply&job=userexamclose&getuser=$getuser\
+scores,1,cmd=reply&job=getuser&getuser=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail

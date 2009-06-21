@@ -38,17 +38,23 @@ $table_hdtr<td align=center colspan=2>
 $table_end <p>
 </form>
 !if $wims_user=supervisor
- <p><center>
- !href cmd=reply&job=getuser&getuser=$getuser Scores of this participant
- .
- !href cmd=reply&job=getraw&getraw=$getuser Raw work detail
- .
- <p>
- !href cmd=reply&job=delprep&delprep=$getuser Delete this participant
- .
- !href cmd=resume List of all participants
- .
- </center> <p>
+ !!<p><center>
+ !!!href cmd=reply&job=getuser&getuser=$getuser Scores of this participant
+!! .
+!! !href cmd=reply&job=getraw&getraw=$getuser Raw work detail
+!! .
+!! <p>
+!! !href cmd=reply&job=delprep&delprep=$getuser Delete this participant
+!! .
+!! !href cmd=resume List of all participants
+!! .
+!! </center> <p>
+  !set wims_menu_tail=!append line scores,1,cmd=reply&job=getuser&getuser=$getuser\
+ workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
+ delprep,1,cmd=reply&job=delprep&delprep=$getuser\
+part_list,1,cmd=resume\
+to $wims_menu_tail
+
 !endif
 
 !reset reg,abandon
