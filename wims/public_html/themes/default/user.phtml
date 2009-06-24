@@ -86,8 +86,9 @@ $U_greet
 !read ./wimshome/log/classes/$wims_class/.motd
 !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
 !if $test!=$empty
- <br>
- </div><div class="wims_class_pmotd">
+ </div>
+ 
+ <div class="wims_class_pmotd">
  !read ./wimshome/log/classes/$wims_class/motd/$wims_user
  &nbsp;
  !href module=adm/class/motd $N_hide
@@ -247,8 +248,15 @@ $U_greet
 <table width="99%" border=0 cellspacing=0 cellpadding=3 bgcolor="$wims_ref_bgcolor">
 <tr><td align=left width="33%">&nbsp;&nbsp;
 !href module=adm/class/classes&type=participant $U_oclass
-<br>&nbsp;&nbsp;
+<br>
 !href cmd=close&module=home $V_Quit
+!set class_ent1=!rows2lines $class_ent
+!set class_ent_n0=!linecnt $class_ent1
+!for i_=1 to $class_ent_n0
+  !set 1_=!line $i_ of $class_ent1
+     <a href="$(1_[2])" target=wims_external>$(1_[1])</a>
+   <br>
+!next i_
 </td><td align=center width="33%">
 !if $exist_cdt=yes
   !href module=adm/class/cdt $U_cdt
