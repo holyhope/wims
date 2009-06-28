@@ -16,7 +16,8 @@
 		Print,\
 		Importar a su clase,\
 		Versión imprimible,\
-		Otro nuevo\
+		Otro nuevo,\
+		mostrar\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -27,7 +28,7 @@
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
-	wims_name_printable,wims_name_renew
+	wims_name_printable,wims_name_renew,wims_name_testgo
 
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,\
@@ -38,7 +39,7 @@
 		Usted es el profesor de la clase,\
 		Registrar los detalles de este ejercicio,\
 		Página de gestión de las hojas de trabajo\
-	into wims_name_home,wims_name_add,\
+	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\

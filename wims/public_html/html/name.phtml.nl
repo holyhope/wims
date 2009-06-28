@@ -18,6 +18,7 @@
 		Importeer in uw eigen klas,\
 		Printbare versie,\
 		Opnieuw,\
+		ga naar\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -28,7 +29,7 @@
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
-	wims_name_printable,wims_name_renew
+	wims_name_printable,wims_name_renew,wims_name_testgo
 
 !! **** Permalink Names *** 
 !distribute items deze module, deze oefening,\
@@ -85,7 +86,7 @@
 		U bent de leraar van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
-	into wims_name_home,wims_name_add,\
+	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
