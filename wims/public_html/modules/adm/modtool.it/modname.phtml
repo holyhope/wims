@@ -36,19 +36,24 @@
   </small></td><td><small>$description</small></td>
   </tr>
  !next n
- $table_end <p>
- !href cmd=reply&jobreq=create Crea un nuovo modulo
-.&nbsp;
- !href cmd=reply&jobreq=restore Ripristina un file di backup
-.&nbsp;
-!href cmd=new&module=adm/latex2wims Utilizzare Latex2wims
-.
-!set test_quicktool=!defof exists in wimshome/public_html/modules/adm/quicktool.$lang/version
+ $table_end
+!! !href cmd=reply&jobreq=create Crea un nuovo modulo
+!!.&nbsp;
+!! !href cmd=reply&jobreq=restore Ripristina un file di backup
+!!.&nbsp;
+!!!href cmd=new&module=adm/latex2wims Utilizzare Latex2wims
+!!.
+!set wims_menu_tail=!append line createnew,1,cmd=reply&jobreq=create\
+ restore,1,cmd=reply&jobreq=restore\
+ latex2wims,1,cmd=new&module=adm/latex2wims\
+ to $wims_menu_tail
+!set test_quicktool=!defof exists in wimshome/public_html/modules/adm/quicktool.fr/version
 !if $test_quicktool=yes
- !href cmd=new&module=adm/quicktool Utiliser Quicktool
-.&nbsp;
+ !set wims_menu_tail=!append line quicktool,1,cmd=new&module=adm/quicktool\
+ to $wims_menu_tail
 !else
-<small>Quicktool n'est pas installé sur ce serveur.</small>
+ !set wims_menu_tail=!append line ,0,$name_noquicktool\
+ to $wims_menu_tail
 !endif
 !else
  Non ci sono moduli in lavorazione. &Egrave; possibile
@@ -57,6 +62,11 @@
  !href cmd=reply&jobreq=restore ripristinare un file di backup
 .
 !endif
+
+!set wims_menu_tail=!append line \
+,0,\
+account_property,1,cmd=reply&jobreq=prop\
+to $wims_menu_tail
 
 !reset target target1 target2 target3 target4 selectshow
 
