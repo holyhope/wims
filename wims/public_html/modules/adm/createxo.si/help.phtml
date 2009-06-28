@@ -16,11 +16,13 @@
 !endif
 !if $s_!=$empty and $s_ isitemof $helplist
  !read help/$s_.phtml
- <p><center>
- !href cmd=help Druge teme pomoèi.
- &nbsp;&nbsp;
- !href cmd=resume Nazaj k delu.
- </center>
+!! <p><center>
+!! !href cmd=help Druge teme pomoèi.
+!! &nbsp;&nbsp;
+!! !href cmd=resume Nazaj k delu.
+!! </center>
+ !set wims_menu_tail=!append line back2,1,cmd=help\
+ to $wims_menu_tail
  !exit
 !endif
 
@@ -50,7 +52,7 @@ Teme pomoèi:<ul>
 !href cmd=help&special_parm=oefadv Napredne mo¾nosti
 .
 <li><p>
-!href cmd=help&special_parm=slib Library of scripts
+!href cmd=help&special_parm=slib&slib_cmd=help Library of scripts
  (slib).
 </p></li>
 <li><p>
@@ -58,9 +60,9 @@ Teme pomoèi:<ul>
 </p></li>
 </ul>
 
-!if $modtoolhelp!=yes
-<center>
-!href cmd=resume Nazaj k delu.
-</center>
-!endif
+!!!if $modtoolhelp!=yes
+!!<center>
+!!!href cmd=resume Nazaj k delu.
+!!</center>
+!!!endif
 

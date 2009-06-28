@@ -16,11 +16,13 @@
 !endif
 !if $s_!=$empty and $s_ isitemof $helplist
  !read help/$s_.phtml
- <p><center>
- !href cmd=help Otros temas de ayuda.
- &nbsp;&nbsp;
- !href cmd=resume Volver al trabajo.
- </center>
+!! <p><center>
+!! !href cmd=help Otros temas de ayuda.
+!! &nbsp;&nbsp;
+!! !href cmd=resume Volver al trabajo.
+!! </center>
+ !set wims_menu_tail=!append line back2,1,cmd=help\
+ to $wims_menu_tail
  !exit
 !endif
 
@@ -50,15 +52,15 @@ Temas de ayuda:<ul>
 !href cmd=help&special_parm=oefadv Características avanzadas
 .
 </p></li><li><p>
-!href cmd=help&special_parm=slib Library of scripts
+!href cmd=help&special_parm=slib&slib_cmd=help Library of scripts
  (slib).
 </p></li><li><p>
 !href cmd=help&special_parm=all La totalidad de la ayuda
 </p></li></ul>
 
-!if $modtoolhelp!=yes
-<center>
-!href cmd=resume Volver al trabajo.
-</center>
-!endif
+!!!if $modtoolhelp!=yes
+!!<center>
+!!!href cmd=resume Volver al trabajo.
+!!</center>
+!!!endif
 

@@ -16,11 +16,13 @@
 !endif
 !if $s_!=$empty and $s_ isitemof $helplist
  !read help/$s_.phtml
- <p><center>
- !href cmd=help 其他帮助主题
- &nbsp;&nbsp;
- !href cmd=resume 返回原工作
- </center>
+!! <p><center>
+!! !href cmd=help 其他帮助主题
+!! &nbsp;&nbsp;
+!! !href cmd=resume 返回原工作
+!! </center>
+ !set wims_menu_tail=!append line back2,1,cmd=help\
+ to $wims_menu_tail
  !exit
 !endif
 
@@ -50,8 +52,8 @@
 !href cmd=help&special_parm=all 全部帮助
 </p></li></ul>
 
-!if $modtoolhelp!=yes
-<center>
-!href cmd=resume 返回原工作
-</center>
-!endif
+!!!if $modtoolhelp!=yes
+!!<center>
+!!!href cmd=resume 返回原工作
+!!</center>
+!!!endif

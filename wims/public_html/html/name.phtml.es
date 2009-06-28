@@ -226,3 +226,7 @@ into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_work
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
 !endif
 
+!if adm/manage isin $module
+  !distribute line Other maintenance tasks
+  into wims_name_sitegestion
+!endif
