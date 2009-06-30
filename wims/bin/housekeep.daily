@@ -79,18 +79,21 @@ for l in `find . -name examlog -type d`; do
 done
 # Sheet expiration management. This should be activated during summer vacation.
 
-#for s in `find . -path '*/sheets/.sheets' -type f`; do
-#   test=`awk 'BEGIN {a=0};
-#	a==1 {a=0; if($1<'$today' && b==1) {print "abcde"; exit}}
-#	substr($1,1,1)==":" {a=1;b=substr($1,2,1)};' $s`
-#   if [ ! -z "$test" ]; then
-#    awk 'BEGIN {a=0; v=0};
-#	a==1 {a=0; if($1>='$today' || v>1) {print t} else {print ":2"};}
-#	substr($1,1,1)!=":" {print};
-#	substr($1,1,1)==":" {a=1; t=$1; v=substr(t,2)};' $s >.sheets
-#    mv -f .sheets $s
-#   fi
-#done
+for s in `find . -path '*/sheets/.sheets' -type f`; do
+# quick test : any sheet to expire now ?
+   test=`awk 'BEGIN {a=0};
+	a==1 {a=0; if($1<'$today' && b==1) {print "Z"; exit}}
+	substr($1,1,1)==":" {a=1;b=substr($1,2,1)};' $s`
+# if test then change status code to 2 for sheets to expire
+# in temporary file, then overwrite old file with new one
+   if [ ! -z "$test" ]; then
+    awk 'BEGIN {a=0; v=0};
+	a==1 {a=0; if($1>='$today' || v>1) {print t} else {print ":2"};}
+	substr($1,1,1)!=":" {print};
+	substr($1,1,1)==":" {a=1; t=$1; v=substr(t,2)};' $s >.sheets
+    mv -f .sheets $s
+   fi
+done
 
 # Build class index file
 ./.build-index
