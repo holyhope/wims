@@ -53,10 +53,30 @@
 !endif
 
 !if share_dep iswordof $error
- Le partage de ressources doit respecter les dépendances&nbsp;: vous devez
- partager d'abord les exercices avant de partager ses 
- feuilles de travail et vous devez partager d'abord les feuilles de travail
-  avant de partager les feuilles d'examen.
+ Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord partager 
+ !if sheet iswordof $error
+  les exercices avant de partager les feuilles de travail.
+ !else
+  !if exam iswordof $error
+   les exercices et les feuilles de travail avant de partager les examens.
+  !else
+   !if livret iswordof $error
+    les exercices et les feuilles de travail avant de partager le livret de compétences.
+   !endif
+  !endif    
+ !endif
+ !exit
+!endif
+
+!if stopshare_dep iswordof $error
+ Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord arr&ecirc;ter le partage 
+ !if sheet iswordof $error
+  des examens et du livret de compétences avant celui des feuilles de travail .
+ !else
+  !if exo iswordof $error
+   des feuilles de travail avant celui des exercices. 
+  !endif    
+ !endif
  !exit
 !endif
 
