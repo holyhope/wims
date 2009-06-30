@@ -1,0 +1,44 @@
+usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+tooltip_parm=FONTSIZE,'14pt',ABOVE,'true'
+
+t=!defof user_exists\
+user_firstname\
+user_lastname in wimshome/log/classes/$wims_class/.users/$user
+!distribute line $t into test,user_firstname,user_lastname
+!if $test!=yes
+ error=nouser
+ !exit
+!endif
+score=!getscore user=$user
+!for k=1 to $livret_nbcomp
+ !for l=1 to $livret_nbpalier
+    l_$(k)_$(l)=0
+ !next l
+!next k
+
+maxnbpalier=0
+!for k=1 to $livret_nbcomp
+ t=!record $k of wimshome/log/classes/$wims_class/livret/.comps
+ !distribute line $t into title_$k,nbpalier_$k
+ maxnbpalier=$[max($maxnbpalier,$(nbpalier_$k))]
+ !for l=1 to $(nbpalier_$k)
+  list=!record $l of wimshome/log/classes/$wims_class/livret/.comp$k
+  list=!line 2 of $list
+  nbit=!itemcnt $list
+  list2=$empty
+  !for it in $list
+   t=!replace internal . by , in $it
+   !if $(t[1]) notitemof $livret_nonactivesheet
+    list2=!append line $(t[1]),$(t[2]) to $list2
+   !endif
+  !next it
+  nbit=!linecnt $list2
+  !for m=1 to $nbit
+   t=!line $m of $list2
+   s=!line $(t[1]) of $score
+   s=!word $(t[2]) of $s
+   l_$(k)_$(l)=$(l_$(k)_$(l))+$s/$nbit
+  !next it
+ !next l
+!next k
+

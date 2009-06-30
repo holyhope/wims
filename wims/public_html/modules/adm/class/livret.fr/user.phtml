@@ -1,0 +1,41 @@
+<center>$classname
+<h1>$livret_title</h1><br>
+Livret de <font color=green>$user_firstname $user_lastname</font></center>
+
+!if $error!=$empty
+ !read msg.phtml $error
+ !exit
+!endif
+
+!if $livret_nbcomp==0
+ Il n'y a aucune comp&eacute;tence dans ce livret !
+ !exit
+!endif
+<p>
+$table_header
+ $table_hdtr
+  <th>Comp&eacute;tences/Paliers</th>
+  !for j=1 to $maxnbpalier
+   !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comps
+   !let desc=!line 1 of $desc
+   <th valign=center><a onmouseover="Tip('$desc',$tooltip_parm)">P $j</a></th>
+  !next j
+ </tr>
+ !for k=1 to $livret_nbcomp
+  $table_tr
+   <td>
+    $(title_$k)
+   </td>
+   !for j=1 to $(nbpalier_$k)
+    !let t=!charcnt $(l_$(k)_$(j))
+    !if $t>1
+     !let note=$[rint($(l_$(k)_$(j)))]
+    !else
+     !let note=&nbsp;
+    !endif 
+    <td align="center" style="background-color: $(livret_color[$note+1])">$note</td>
+   !next j
+  </tr>
+ !next k 
+$table_end
+

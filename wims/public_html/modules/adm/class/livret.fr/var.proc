@@ -1,0 +1,26 @@
+
+wims_prefix=class user livret
+
+!if $wims_class=$empty or ($wims_supertype!=0 and\
+ ($wims_supertype!=2 or $wims_typename!=class) and\
+ ($wims_supertype!=4 or $wims_typename notitemof class,course))
+ error=bad_class
+ !exit
+!endif
+
+!defread wimshome/log/classes/$wims_class/.def
+!defread wimshome/log/classes/$wims_class/livret/.def
+
+!read names
+!read tabletheme
+
+!if $wims_user=supervisor and yes isin $livret_supervise
+ !bound job within user,userlist,config,addcomp,modpalier default userlist
+!else
+ !bound job within user default user
+ user=$wims_user
+!endif
+
+livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
+
+!read $job.proc

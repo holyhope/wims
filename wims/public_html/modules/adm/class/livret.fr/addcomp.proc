@@ -1,0 +1,42 @@
+
+!bound comp between 1 and $livret_nbcomp+1 default $empty
+!if $cf_abandon!=$empty or $comp=$empty
+ !reset cf_abandon
+ job=userlist
+ !read userlist.proc
+ !exit
+!endif
+
+!if $comp>$maxcomp
+ error=toomanycomp
+ !exit
+!endif 
+
+tmp=!record $comp of wimshome/log/classes/$wims_class/livret/.comps
+!distribute line $tmp into mem_title,mem_nbpalier
+
+!if $cf_set!=$empty or ($cf_nbpalier!=$mem_nbpalier and $cf_nbpalier!=$empty)
+ !bound cf_nbpalier between 1 and $maxpalier default $mem_palier
+ !reset cf_set
+ cf_title=!trim $cf_title
+ !if $comp>$livret_nbcomp
+  !appendfile wimshome/log/classes/$wims_class/livret/.comps :$cf_title\
+$cf_nbpalier
+ !else
+  sortie=$empty
+  !for k=1 to $livret_nbcomp
+   !if $k=$comp
+    sortie=!append line :$cf_title\
+$cf_nbpalier to $sortie
+   !else
+    t=!record $k of wimshome/log/classes/$wims_class/livret/.comps
+    sortie=!append line :$t to $sortie
+   !endif
+  !next k
+  !writefile wimshome/log/classes/$wims_class/livret/.comps $sortie
+ !endif
+ !reset cf_set
+ mem_nbpalier=$cf_nbpalier
+ mem_title=$cf_title
+!endif
+

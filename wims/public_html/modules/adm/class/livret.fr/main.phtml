@@ -1,0 +1,38 @@
+!if $job2=print and $job isitemof todo,work
+ !changeto print$job.phtml
+!endif
+
+<html><head>
+$wims_html_header
+</head><body $wims_htmlbody>
+
+<script type="text/javascript" src="scripts/js/wz_tooltip.js" language="Javascript"></script>
+
+!!if link notin $job
+!headmenu
+!!endif
+
+
+
+!if $error=bad_class
+ !read msg.phtml $error
+ !tail
+ !exit
+!endif
+
+!read $job.phtml
+
+!if $wims_user=supervisor
+ <p>
+ !href cmd=renew&job=config Configuration
+ &nbsp;
+ !href cmd=renew&job=addcomp&comp=$[$livret_nbcomp+1] Ajouter une comp&eacute;tence
+ &nbsp;
+ !href cmd=reply Rafra&icirc;chir cette page
+
+!endif
+
+!!if link notin $job
+!tail
+!!endif
+

@@ -1,0 +1,30 @@
+
+!if $cf_abandon!=$empty
+ !reset cf_abandon
+ job=userlist
+ !read userlist.proc
+ !exit
+!endif
+
+!if $cf_set!=$empty
+ !reset cf_set
+ cf_title=!trim $cf_title
+ !if $cf_title=$empty
+  cf_title=livret de comp&eacute;tences
+ !endif
+ cf_description=!singlespace $cf_description
+ cf_title=!singlespace $cf_title
+ cf_title=!char 1 to 50 of $cf_title
+ cf_description=!char 1 to 1024 of $cf_description
+ cf_nonactivesheet=!nospace $cf_nonactivesheet
+ cf_nonactivesheet=!listintersect $cf_nonactivesheet and $asheets
+ !setdef !set livret_title=$cf_title\
+!set livret_description=$cf_description\
+!set livret_nonactivesheet=$cf_nonactivesheet in wimshome/log/classes/$wims_class/livret/.def
+!else
+ !for k in title,description,nonactivesheet
+  cf_$k=$(livret_$k)
+ !next k
+!endif
+
+

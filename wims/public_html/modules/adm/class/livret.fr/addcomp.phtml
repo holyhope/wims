@@ -1,0 +1,48 @@
+<center>$classname
+<h1>$cdt_title</h1>
+<font size=+1>Ajouter/Modifier la comp&eacute;tence $comp</font></center> 
+
+<p><hr width=40%> <p>
+
+<ul>
+ <p><li>Informations sur cette comp&eacute;tence :
+  !form reply
+  <ul>
+   <li>Titre de la comp&eacute;tence : <input size=50 name=cf_title value="$mem_title">.</li>
+   <li>Nombre de paliers : 
+    <select  name="cf_nbpalier" onchange="submit()">
+    !for i=1 to $maxpalier
+     !if $i=$mem_nbpalier
+      <option value=$i selected>$i</option>
+     !else
+      <option value=$i>$i</option>
+     !endif
+    !next i
+    </select>
+   </li>
+  </ul>
+  <input type=submit name=cf_set value="Enregistrer le changement">
+  </form>
+ </li>
+ !for k=1 to $mem_nbpalier
+  !let eold=!record $k of wimshome/log/classes/$wims_class/livret/.comp$comp
+  !distribute line $eold into name,eold
+  <p><li>Palier $k : <font color=green><b>$name</b></font><small> [
+   !href cmd=reply&job=modpalier&comp=$comp&palier=$k Modifier
+   ] </small>
+   <ul>
+    !for l in $eold
+     !let t=!replace internal . by , in $l
+     <li> $l
+      !line $(t[2]) of $(sheet$(t[1]))
+     </li>
+    !next l    
+   </ul>
+  </li>
+ !next k
+</ul>
+<p>
+!href cmd=reply&job=home Retour
+.
+
+!reset cf_nbpalier

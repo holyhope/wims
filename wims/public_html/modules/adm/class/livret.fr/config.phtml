@@ -1,0 +1,48 @@
+<center>$classname
+<h1>$cdt_title</h1>
+<font size=+1>Configurer</font></center> 
+
+<p><hr width=40%> <p>
+
+Voici les paramètres que vous pouvez changer :
+
+!form reply
+<input type="hidden" name="job" value="config">
+<ul>
+ <p><li>Titre &nbsp;:<br>
+  <input size="60" name="cf_title" value="$cf_title">
+ <p><li>Description&nbsp;:<br>
+  <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea></li>
+
+ <p><li>Couleur des fonds des cases en fonction du niveau de validation du palier : <br>
+  <table><tr>
+   !for k=1 to 11
+    <td style="background-color: $(livret_color[$k])">&nbsp;$k&nbsp;</td>
+   !next k
+  </tr></table>
+  <br>Ces couleurs peuvent &ecirc;tre modifi&eacute;es dans le 
+  !href module=adm/class/config&job=present panneau de configuration 
+  de la classe.
+ </li>
+ <p>
+ <li>Les scores des exercices des feuilles de travail suivantes sont neutralis&eacute;s pour le calcul des niveaux d'acquisition des paliers : <br>
+ !for i in $asheets
+   <input type="checkbox" name="cf_nonactivesheet" value="$i"
+  !if $i isitemof $cf_nonactivesheet
+   checked
+  !endif
+  >
+  !let t=!record $i of  wimshome/log/classes/$wims_class/sheets/.sheets
+  $i :
+  !line 3 of $t
+  <br>
+ !next i
+ </li>
+</ul>
+<p><center><input type="submit" name="cf_set" value="Enregistrer le changement">
+&nbsp;&nbsp;<input type="submit" name="cf_abandon" value="Abandonner">
+</center> <p></form>
+<p>
+ !href cmd=reply&job=home Retour
+.
+!reset cf_nonactivesheet,cf_set,cf_title,cf_description

@@ -1,0 +1,48 @@
+<center>$classname
+<h1>$cdt_title</h1>
+<font size=+1>Modifier le palier $palier (<font color=green>$name_palier</font>) de la comp&eacute;tence $comp (<font color=green>$name_comp</font>).</font></center> 
+
+<p>
+!form reply
+Titre du palier : <input type=text name=cf_title value="$name_palier" size=40><br>
+Veuillez cocher les exercices que vous souhaitez utiliser pour ce palier.
+<p>
+Afficher seulement les exercices de la feuille 
+ <select name="ltsheets" onchange=submit() value="$ltsheets">
+  !if $ltsheets=$asheets
+   <option value="$asheets" selected="">Toutes</option>
+  !else
+   <option value="$asheets">Toutes</option>  
+  !endif
+  !for k in $asheets
+   !if $ltsheets=$k
+    <option value="$k" selected="">
+   !else
+    <option value="$k">   
+   !endif
+    !let t=!record $k of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $k :
+    !line 3 of $t
+   </option>
+  !next k
+ </select>
+<p>
+!for i in $ltsheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $eold
+   checked
+  !endif
+  > $i.$j 
+  !line $j of $(sheet$i)
+  <br>
+ !next j
+!next i
+<p>
+<input type=submit value="enregistrer" name="cf_set">
+</form>
+
+<p>
+!href cmd=reply&job=addcomp&comp=$comp Retour
+
