@@ -1,6 +1,6 @@
 <center>$classname
 <h1>$cdt_title</h1>
-<font size=+1>Modifier le palier $palier (<font color=green>$name_palier</font>) de la comp&eacute;tence $comp (<font color=green>$name_comp</font>).</font></center> 
+<font size="+1">Modifier le palier $palier (<font color=green>$name_palier</font>) de la compétence $comp (<font color=green>$name_comp</font>).</font></center> 
 
 <p>
 !form reply
@@ -8,8 +8,8 @@ Titre du palier : <input type=text name=cf_title value="$name_palier" size=40><b
 Veuillez cocher les exercices que vous souhaitez utiliser pour ce palier.
 <p>
 Afficher seulement les exercices de la feuille 
- <select name="ltsheets" onchange=submit() value="$ltsheets">
-  !if $ltsheets=$asheets
+ <select name="ltsheets" onchange="submit()">
+  !if $ltsheets=$asheets"
    <option value="$asheets" selected="">Toutes</option>
   !else
    <option value="$asheets">Toutes</option>  
@@ -43,6 +43,5 @@ Afficher seulement les exercices de la feuille
 <input type=submit value="enregistrer" name="cf_set">
 </form>
 
-<p>
-!href cmd=reply&job=addcomp&comp=$comp Retour
-
+!set wims_menu_tail=!append line back2,1,cmd=reply&job=home\
+to $wims_menu_tail

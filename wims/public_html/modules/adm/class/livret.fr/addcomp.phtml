@@ -1,14 +1,15 @@
 <center>$classname
 <h1>$cdt_title</h1>
-<font size=+1>Ajouter/Modifier la comp&eacute;tence $comp</font></center> 
+<font size="+1">Ajouter/Modifier la compétence $comp</font></center> 
 
-<p><hr width=40%> <p>
+<p><hr width="40%"> <p>
 
-<ul>
- <p><li>Informations sur cette comp&eacute;tence :
-  !form reply
+!form reply
   <ul>
-   <li>Titre de la comp&eacute;tence : <input size=50 name=cf_title value="$mem_title">.</li>
+ <li>Informations sur cette compétence :
+
+  <ul>
+   <li>Titre de la compétence : <input size=50 name=cf_title value="$mem_title">.</li>
    <li>Nombre de paliers : 
     <select  name="cf_nbpalier" onchange="submit()">
     !for i=1 to $maxpalier
@@ -22,14 +23,14 @@
    </li>
   </ul>
   <input type=submit name=cf_set value="Enregistrer le changement">
-  </form>
  </li>
  !for k=1 to $mem_nbpalier
   !let eold=!record $k of wimshome/log/classes/$wims_class/livret/.comp$comp
   !distribute line $eold into name,eold
-  <p><li>Palier $k : <font color=green><b>$name</b></font><small> [
-   !href cmd=reply&job=modpalier&comp=$comp&palier=$k Modifier
+  <li>Palier $k : <font color=green><b>$name</b></font><small> [
+   !href cmd=reply&job=modpalier&comp=$comp&palier=$k $wims_name_class_modify
    ] </small>
+   !if $eold!=
    <ul>
     !for l in $eold
      !let t=!replace internal . by , in $l
@@ -38,11 +39,12 @@
      </li>
     !next l    
    </ul>
+   !endif
   </li>
  !next k
 </ul>
-<p>
-!href cmd=reply&job=home Retour
-.
+</form>
+!set wims_menu_tail=!append line back2,1,cmd=reply&job=home\
+to $wims_menu_tail
 
 !reset cf_nbpalier
