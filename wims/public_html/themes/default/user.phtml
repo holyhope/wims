@@ -81,20 +81,19 @@ $U_greet
  !href module=adm/forum/mboard $U_newmsg
 !endif
 
-<p>
 <div class="wims_class_motd">
 !read ./wimshome/log/classes/$wims_class/.motd
+ </div><!--wims_class_motd-->
 !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
 !let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
 !if # notin $test and $test2!=$empty
- </div>
- 
  <div class="wims_class_pmotd">
  !read ./wimshome/log/classes/$wims_class/motd/$wims_user
  &nbsp;
  !href module=adm/class/motd $N_hide
+ </div><!--wims_class_pmotd-->
 !endif
-</div>
+
 <p>
 !if $class_type>=2
  !read ./subclasses.phtml
