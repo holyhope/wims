@@ -11,18 +11,17 @@
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>Voeg een oefening toe aan een Werkblad
-</h1></center> <p><hr width="40%"> <p>
+<div class="wims_classname">$classname</div>
+<h1 class="wims_title">Voeg een oefening toe aan een Werkblad
+</h1><p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug naar de homepagina
-. <p>
- !goto end
+!! !href module=home Terug naar de homepagina
+!!. <p>
+ !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
@@ -71,11 +70,17 @@
 !if $cmd=reply
  De oefening ``<tt>$title</tt>'' is succesvol toegevoegd aan het werkblad
  $picksheet van uw klas.
- !href module=adm/class/sheet&sheet=$picksheet Bekijk dit Werkblad
-.
+!! !href module=adm/class/sheet&sheet=$picksheet Bekijk dit Werkblad
+!!.
 !endif
+:end1
+!set wims_menu_tail=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+moduback,1,module=$dir\
+to $wims_menu_tail
 
 :end
+!set wims_menu_tail=!append line classback,1,module=home\
+to $wims_menu_tail
 !tail
 
 !set job=

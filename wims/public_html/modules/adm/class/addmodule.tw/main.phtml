@@ -11,20 +11,19 @@
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>加入模組到作業清單
-</h1></center> <p><hr width="40%"> <p>
+<div class="wims_classname">$classname</div>
+<h1 class="wims_title">加入模組到作業清單
+</h1> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
-[
- !href module=home 回首頁
- ]
-<p>
- !goto end
+!![
+!! !href module=home 回首頁
+!! ]
+!!<p>
+ !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
@@ -66,12 +65,18 @@
 
 !if $cmd=reply
  本應用程式 "<tt>$title</tt>" 已成功地加入到您課程的清單 $picksheet 中了。
-[
- !href module=adm/class/sheet&sheet=$picksheet 確認清單
- ]
+!![
+!! !href module=adm/class/sheet&sheet=$picksheet 確認清單
+!! ]
 !endif
+:end1
+!set wims_menu_tail=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+moduback,1,module=$dir\
+to $wims_menu_tail
 
 :end
+!set wims_menu_tail=!append line classback,1,module=home\
+to $wims_menu_tail
 !tail
 
 !set job=

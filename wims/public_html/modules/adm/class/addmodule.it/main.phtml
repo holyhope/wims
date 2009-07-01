@@ -4,7 +4,6 @@
 !!!headmenu
 !read adm/css.phtml
 !header1
-
 !read names.phtml
 
 !!if $cmd=help
@@ -12,10 +11,9 @@
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>Inserire un modulo in un test di autovalutazione
-</h1></center> <p><hr width="40%"> <p>
+<div class="wims_classname">$classname</div>
+<h1 class="wims_title">Inserire un modulo in un test di autovalutazione
+</h1> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -23,7 +21,7 @@
  <p>
  !href module=home Torna alla home page del corso
 . <p>
- !goto end
+ !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
@@ -70,15 +68,21 @@
 !if $cmd=reply
  Il modulo ``<tt>$title</tt>'' &egrave; stato inserito nel test di autovalutazione numero
  $picksheet del corso virtuale. &Egrave; possibile
- !href module=adm/class/sheet&sheet=$picksheet provarla
-.</li>
-  <li>
-   !href module=$dir torna al modulo
-.</li>
- </ul>
+!! !href module=adm/class/sheet&sheet=$picksheet provarla
+!!.</li>
+!!  <li>
+!!   !href module=$dir torna al modulo
+!!.</li>
+!! </ul>
 !endif
+:end1
+!set wims_menu_tail=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+moduback,1,module=$dir\
+to $wims_menu_tail
 
 :end
+!set wims_menu_tail=!append line classback,1,module=home\
+to $wims_menu_tail
 !tail
 
 !set job=

@@ -4,6 +4,7 @@
 !!!headmenu
 !read adm/css.phtml
 !header1
+
 !read names.phtml
 
 !!if $cmd=help
@@ -11,18 +12,17 @@
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>Vstavite modul v delovni list
-</h1></center> <p><hr width="40%"> <p>
+<div class="wims_classname">$classname</div>
+<h1 class="wims_title">Vstavite modul v delovni list
+</h1> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Vrnitev na domaèo stran
-. <p>
- !goto end
+!! !href module=home Vrnitev na domaèo stran
+!!. <p>
+ !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
@@ -66,11 +66,17 @@
 
 !if $cmd=reply
  Element ``<tt>$title</tt>'' je bil uspe¹no vstavljen v delovni list $picksheet va¹e uèilnice.
- !href module=adm/class/sheet&sheet=$picksheet Preglej delovni list
-.
+!! !href module=adm/class/sheet&sheet=$picksheet Preglej delovni list
+!!.
 !endif
+:end1
+!set wims_menu_tail=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+moduback,1,module=$dir\
+to $wims_menu_tail
 
 :end
+!set wims_menu_tail=!append line classback,1,module=home\
+to $wims_menu_tail
 !tail
 
 !set job=

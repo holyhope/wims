@@ -4,6 +4,7 @@
 !!!headmenu
 !read adm/css.phtml
 !header1
+
 !read names.phtml
 
 !!if $cmd=help
@@ -11,18 +12,17 @@
  !!goto end
 !!endif
 
-<center>$classname
-<p>
+<div class="wims_classname">$classname</div>
 <h1>Inserir un mòdul a un full de treball
-</h1></center> <p><hr width="40%"> <p>
+</h1><p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Tornar a la pàgina principal de la classe
-. <p>
- !goto end
+ !!!href module=home Tornar a la pàgina principal de la classe
+!!. <p>
+ !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
@@ -69,17 +69,23 @@
 !if $cmd=reply
  L'aplicació ``<tt>$title</tt>'' s'ha afegit satisfactoriament al 
  full $picksheet de la teua classe.
- <ul>
-  <li>
-   !href module=adm/class/sheet&sheet=$picksheet Comprova el full
-.</li>
-  <li>
-   !href module=$dir tornar al mòdul
-.</li>
- </ul>
+!! <ul>
+!!  <li>
+!!   !href module=adm/class/sheet&sheet=$picksheet Comprova el full
+!!.</li>
+!!  <li>
+!!   !href module=$dir tornar al mòdul
+!!.</li>
+!! </ul>
 !endif
+:end1
+!set wims_menu_tail=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+moduback,1,module=$dir\
+to $wims_menu_tail
 
 :end
+!set wims_menu_tail=!append line classback,1,module=home\
+to $wims_menu_tail
 !tail
 
 !set job=
