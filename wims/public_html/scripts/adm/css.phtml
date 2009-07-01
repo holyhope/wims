@@ -3,7 +3,10 @@
 !default module_title2=$module_title
 
 !if $wims_class!=
-  !set css_file=!sh cat $wims_home/log/classes/$wims_class/css
+  !set css_file=!sh \
+  if (test -r $wims_home/log/classes/$wims_class/css) then\
+  cat $wims_home/log/classes/$wims_class/css\
+  fi
 !endif
 
 !if $css_file=$empty
