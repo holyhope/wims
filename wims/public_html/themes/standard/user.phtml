@@ -4,9 +4,19 @@
 !if $module!=home
  !exit
 !endif
+!!!!! provisoire
+
+!set wims_name_cdt=$U_cdt
+!set wims_name_forum=$N_Mboard
+!set wims_name_myscore=$U_myscore
+!set wims_name_account=$U_account
+!set wims_name_U_oclass=$U_oclass
+!set wims_name_V_Chpref=$V_Chpref
+!set wims_name_V_Chpass=$V_Chpass
+!!!!
 
 !set home_theme=yes
-!set im=<img border=0 src=
+
 !set percents=!getscorepercent
 !set class_homepage=!getdef class_homepage in wimshome/log/classes/$wims_class/.def
 !set etest=!record 0 of wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
@@ -24,13 +34,17 @@
 
 :normal
 !read classlogo.phtml
+!read ./adm/title.phtml 2\
+$wims_classname
+
+!!<center>
+!!<br> <br>
+!!<b><font size="+2">$wims_classname</font></b>
+!!<br>
+!!<small>($(wims_name_$class_typename))</small>
 <center>
-<br> <br>
-<b><font size="+2">$wims_classname</font></b>
-<br>
-<small>($(wims_name_$class_typename))</small>
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
- $wims_institutionname
+!set  $wims_institutionname
 !else
  !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
   !if / isin $class_parent and $class_type=1
@@ -40,7 +54,7 @@
  !endif
 !endif
 </center>
-<br clear=all> <br></div><div class=wimsbody>
+<br clear=all></div><div class=wimsbody>
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -255,21 +269,25 @@ $U_greet
 <div class="wimsmenu">
 !if $exist_cdt=yes
 <div class="menuitem">
-  !href module=adm/class/cdt $U_cdt
+  !read ./adm/oneitem.phtml cdt,1,module=adm/class/cdt
+!!  !href module=adm/class/cdt $U_cdt
 </div><!--menuitem-->
 !endif
 <div class="menuitem">
-!href module=adm/forum/mboard $im "gifs/themes/$wims_theme/forum.gif" alt="forum" title=forum"> $N_Mboard
+!read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard
+!!!href module=adm/forum/mboard $im "gifs/themes/$wims_theme_image/forum.gif" alt="forum" title=forum"> $N_Mboard
 </div><!--menuitem-->
 !ifval $dcnt+$n+$m+$v>0 and $is_interclass!=yes
 <div class="itemsep"></div><!--itemsep-->
 <div class="menuitem">
-!href module=adm/class/userlist.$lang $im "gifs/themes/$wims_theme/myscore.gif" alt="myscore" title=myscore"> $U_myscore
+!read ./adm/oneitem.phtml myscore,1,module=adm/class/userlist.$lang
+!!!href module=adm/class/userlist.$lang $im "gifs/themes/$wims_theme_image/myscore.gif" alt="myscore" title=myscore"> $U_myscore
 </div><!--menuitem-->
 !endif
 !if $class_type isin 234
 <div class="menuitem">
- !href module=adm/class/userlist&job=userprop $im "gifs/themes/$wims_theme/account.gif" alt="account" title="account"> $U_account
+!read ./adm/oneitem.phtml account,1,module=adm/class/userlist&job=userprop
+!!! !href module=adm/class/userlist&job=userprop $im "gifs/themes/$wims_theme_image/account.gif" alt="account" title="account"> $U_account
 </div><!--menuitem-->
 !endif
 <div class="tailsep"></div><!--tailsep-->
@@ -278,7 +296,8 @@ $U_greet
 !for i_=1 to $class_ent_n0
   !set 1_=!line $i_ of $class_ent1
    <div class="menuitem">
-     <a href="$(1_[2])" target=wims_external>$im "gifs/themes/$wims_theme/ent.gif" alt="ent" title="ent"> $(1_[1])</a>
+   !read ./adm/oneitem.phtml $(1_[1]),2,$(1_[2]),external
+   !!  <a href="$(1_[2])" target=wims_external>$im "gifs/themes/$wims_theme_image/ent.gif" alt="ent" title="ent"> $(1_[1])</a>
    </div><!--menuitem-->
 !next i_
 </div><!--wimsmenu-->
@@ -287,7 +306,8 @@ $U_greet
 <div class="wimsmenu">
 <div class="menublock">
 <div class="menuitem">
-!href module=adm/class/classes&type=participant $U_oclass
+!read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=participant
+!!!href module=adm/class/classes&type=participant $U_oclass
 </div><!--menuitem-->
 !!<div class="menuitem">
 !!!href cmd=close&module=home $V_Quit
@@ -298,10 +318,12 @@ $U_greet
 </div><!--end menublock-->
 <div class="menublock">
 <div class="menuitem">
-!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
+!read ./adm/oneitem.phtml V_Chpref,1,module=adm/light&phtml=useropts.phtml.$lang 
+!!!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
 </div><!--menuitem-->
 <div class="menuitem">
-!href module=adm/class/passwd $V_Chpass
+!read ./adm/oneitem.phtml V_Chpass,1,module=adm/class/passwd
+!!!href module=adm/class/passwd $V_Chpass
 </div><!--menuitem-->
 </div><!--end menublock-->
 </div><!--wimsmenu-->
