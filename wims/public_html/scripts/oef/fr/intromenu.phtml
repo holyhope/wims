@@ -24,8 +24,10 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 !set qcnt=$[min($exocnt,8)]
 !if $exocnt<1
  !if $wims_user=supervisor and #classes/ isin #$module
-  !href module=adm/createxo Cliquez ici
-  pour créer un exercice.
+  !!!href module=adm/createxo Cliquez ici
+  !!pour créer un exercice.
+  !set wims_menu_items=!append line add_exo,1,module=adm/createxo\
+  to $wims_menu_items
  !else
   Désolé, aucun exercice n'est disponible dans ce module pour l'instant. 
   Revenez plus tard!

@@ -178,14 +178,14 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
 !! !href module=adm/class/passwd.fr&job=part&part=$getuser changer son mot de passe
 !!.
 
- !set wims_menu_tail=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
 passwd,1,module=adm/class/passwd.fr&job=part&part=$getuser\
 part_list,1,cmd=resume\
 livret,1,module=adm/class/livret&job=user&user=$getuser\
-to $wims_menu_tail
+to $wims_menu_items
 !else
- !set wims_menu_tail=!append line livret,1,module=adm/class/livret to $wims_menu_tail
+ !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
  !href module=home Accueil de la classe
 !endif
 </center> <p>

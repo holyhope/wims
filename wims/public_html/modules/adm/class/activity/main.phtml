@@ -5,10 +5,9 @@
 !endif
 !header1
 
-<center><b><font color=green>$wims_classname</font></b>\
--  <b><font color=green>$wims_institutionname</font></b>
-<h1>$name_title
-</h1></center> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title
 
 !if $error!=$empty
  <p>
@@ -16,6 +15,8 @@
  <p>
  !href module=home $name_homeback
 . <p>
+!set wims_menu_items=!append line back,1,module=home\
+to $wims_menu_items
  !goto end
 !endif
 

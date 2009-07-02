@@ -19,16 +19,16 @@
 !if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
  !for t in participant,supervisor,example
   !if $t!=$type or $superclass!=$empty
-   !set wims_menu_tail=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
-to $wims_menu_tail
+   !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
+to $wims_menu_items
   !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
   !endif
  !next t
 !endif
 !if $wims_user=$empty
- !set wims_menu_tail=!append line ,0,\
+ !set wims_menu_items=!append line ,0,\
  classcreate, 1,module=adm/class/regclass\
-to $wims_menu_tail
+to $wims_menu_items
 !endif
 
  !if $wims_theme_version=0 or $wims_theme_version=

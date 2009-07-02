@@ -11,9 +11,12 @@
  !!goto end
 !!endif
 
-<div class="wims_classname">$classname</div>
-<h1 class="wims_title">Insérer un module dans une feuille
-</h1><p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$classname\
+Insérer un module dans une feuille
+
+!!<hr width="40%">
+
 
 !if $error!=$empty
  <p>
@@ -79,13 +82,13 @@
 !! </ul>
 !endif
 :end1
-!set wims_menu_tail=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
+!set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
 moduback,1,module=$dir\
-to $wims_menu_tail
+to $wims_menu_items
 
 :end
-!set wims_menu_tail=!append line classback,1,module=home\
-to $wims_menu_tail
+!set wims_menu_items=!append line classback,1,module=home\
+to $wims_menu_items
 !tail
 
 !set job=

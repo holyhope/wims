@@ -42,8 +42,8 @@ Maintenant vous pouvez
  <li><p>
  !href cmd=reply&level=6 envoyer un fichier d'image
  dans l'exercice.
- !set wims_menu_tail=!append line downloadbinary,1,cmd=reply&level=6\
- to $wims_menu_tail
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
  <li><p>
@@ -53,20 +53,20 @@ Maintenant vous pouvez
    !href cmd=reply&level=4 pour remplacer l'ancien
 ,  soit
    !href cmd=reply&level=4&newone=1 pour en faire un nouveau
-   !set wims_menu_tail=!append line replace,1,cmd=reply&level=4\
+   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
  newversion,1,cmd=reply&level=4&newone=1\
- to $wims_menu_tail
+ to $wims_menu_items
   !else
    !href cmd=reply&level=4 le mettre dans le module de développement 
    une fois que tout est correct
-   !set wims_menu_tail=!append line putmodtool,1,cmd=reply&level=4\
-   to $wims_menu_tail
+   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   to $wims_menu_items
   !endif
  !else
   !href cmd=reply&level=4 mettre cet exercice dans votre classe 
   une fois que tout est correct
-   !set wims_menu_tail=!append line putclass,1,cmd=reply&level=4\
- to $wims_menu_tail
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+ to $wims_menu_items
  !endif
 .
 !endif
@@ -76,23 +76,23 @@ Maintenant vous pouvez
  de l'exercice sur votre ordinateur !
 !endif
 </ul>
-!set wims_menu_tail=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
-to $wims_menu_tail
+!set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_items
 
 !if $to_ia_qcm=-1
-!set wims_menu_tail=!append line backconfia2qcm,1,module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1\
- to $wims_menu_tail
+!set wims_menu_items=!append line backconfia2qcm,1,module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1\
+ to $wims_menu_items
  !endif
  !if $to_ia_qcm=-2
-!set wims_menu_tail=!append line backcreateqcm,1,module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2\
- to $wims_menu_tail
+!set wims_menu_items=!append line backcreateqcm,1,module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2\
+ to $wims_menu_items
  !endif
  !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
-!set wims_menu_tail=!append line exomodify,1,cmd=reply&level=2\
- to $wims_menu_tail
+!set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+ to $wims_menu_items
  !endif
 
 !if $wims_version_theme=0
-  !reset wims_menu_tail
+  !reset wims_menu_items
 !endif
 

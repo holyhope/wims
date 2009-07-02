@@ -152,10 +152,6 @@
    Lijst van modules\
    Binary bestanden\
    Backup van de module\
-   Modtool\
-   Createxo\
-   Quicktool\
-   Latex2wims\
    Eigenschappen van account\
    Script tester\
    OEF Documentation \
@@ -166,8 +162,7 @@
    edfile Bewerken\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
-wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_modtool,\
-wims_name_createxo,wims_name_quicktool,wims_name_latex2wims,wims_name_account_property,\
+wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
 wims_name_back3,wims_name_edfile
 
@@ -283,3 +278,10 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
   !distribute line Other maintenance tasks\
   into wims_name_sitegestion
 !endif
+
+!distribute lines Modtool\
+   Createxo\
+   Quicktool\
+   Latex2wims\
+   into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims
+   

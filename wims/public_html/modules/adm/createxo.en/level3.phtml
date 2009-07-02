@@ -32,8 +32,8 @@ Now you can
  <li><p>You can also
  !href cmd=reply&level=6 send an image file
  to the exercise.
- !set wims_menu_tail=!append line downloadbinary,1,cmd=reply&level=6\
- to $wims_menu_tail
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
  <li><p>
@@ -44,18 +44,18 @@ Now you can
    !href cmd=reply&level=4 to replace the old one
    or
    !href cmd=reply&level=4&newone=1 as a new exercise
-   !set wims_menu_tail=!append line replace,1,cmd=reply&level=4\
+   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
  newversion,1,cmd=reply&level=4&newone=1\
- to $wims_menu_tail
+ to $wims_menu_items
   !else
    !href cmd=reply&level=4 put it to the development module
-   !set wims_menu_tail=!append line putmodtool,1,cmd=reply&level=4\
-   to $wims_menu_tail
+   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   to $wims_menu_items
   !endif
  !else
   !href cmd=reply&level=4 put this exercise into your class
-   !set wims_menu_tail=!append line putclass,1,cmd=reply&level=4\
- to $wims_menu_tail
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+ to $wims_menu_items
  !endif
 .
 !endif
@@ -66,9 +66,9 @@ Now you can
  of the exercise!
 !endif
 </ul>
-!set wims_menu_tail=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
-to $wims_menu_tail
+!set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_items
 
 !if $wims_version_theme=0
-  !reset wims_menu_tail
+  !reset wims_menu_items
 !endif

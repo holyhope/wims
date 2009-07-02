@@ -18,6 +18,11 @@
  !goto end
 !endif
 
+!read adm/title.phtml 1\
+$classname\
+Liste de participants
+
+
 <center>$classname
 <h1>Liste de participants
  <font size="-1">[
@@ -256,18 +261,18 @@
  
 !endif (usercnt=0?)
 
-!set wims_menu_tail=!append line addstudent,1,module=adm/class/reguser&step=1\
+!set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
 csv,1,cmd=reply&job=csv\
 formula,1,cmd=reply&job=formula&formula=prep\
 grades,1,module=adm/class/grades\
- ,0,<hr>\
-to $wims_menu_tail
+ ,0,\
+to $wims_menu_items
 
 !if $usercnt!=0
- !set wims_menu_tail=!append line class_stat,1,module=adm/class/stat\
+ !set wims_menu_items=!append line class_stat,1,module=adm/class/stat\
 activity,1,module=adm/class/activity\
 livret,1,module=adm/class/livret\
-to $wims_menu_tail
+to $wims_menu_items
 !endif
 
 !if $manual>0

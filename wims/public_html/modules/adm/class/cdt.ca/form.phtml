@@ -26,11 +26,11 @@
  </form>
 <p>
 !if $wims_user=supervisor and $cdt_supervise=yes 
- !set wims_menu_tail= !append line adddate,1,cmd=new&job=adddate\
+ !set wims_menu_items= !append line adddate,1,cmd=new&job=adddate\
  addfile,1,cmd=reply&job=file\
  addtodo,1,cmd=new&job=addtodo\
  config,1,cmd=reply&job=config\
- to $wims_menu_tail
+ to $wims_menu_items
  
  !!<p>
 !! !href cmd=new&job=adddate Ajouter une date
@@ -44,6 +44,6 @@
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
-!set wims_menu_tail=!append line back,1,cmd=new&job=home to $wims_menu_tail
+!set wims_menu_items=!append line back,1,cmd=new&job=home to $wims_menu_items
 !! !href cmd=new&job=home Retour.
 !endif

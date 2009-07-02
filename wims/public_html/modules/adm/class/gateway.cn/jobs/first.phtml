@@ -8,8 +8,8 @@
  !href cmd=reply&job=teacher $teachercnt个教师帐户
 .
 !endif
-!set wims_menu_tail=!append line addteacher,1,cmd=reply&job=addteacher \
-to $wims_menu_tail
+!set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
+to $wims_menu_items
 !goto nopart
 !if $studentcnt=0
  <p>
@@ -17,13 +17,13 @@ to $wims_menu_tail
  !href cmd=reply&job=addstudent 新参加者
 .
 !else
-!set wims_menu_tail=!append line student,1,cmd=reply&job=student\
-to $wims_menu_tail
+!set wims_menu_items=!append line student,1,cmd=reply&job=student\
+to $wims_menu_items
  !href cmd=reply&job=student $studentcnt个参加者帐户
 .
 !endif
-!set wims_menu_tail=!append line addstudent,1,cmd=reply&job=addstudent\
-to $wims_menu_tail
+!set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
+to $wims_menu_items
 
 :nopart
 </center>
@@ -32,8 +32,8 @@ to $wims_menu_tail
 这里还没有建立年级.
   !href cmd=reply&job=addlevel 创建年级
 .<sup>
-  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
-to $wims_menu_tail
+  !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_items
   !href cmd=help&special_parm=structure#level 帮助
 </sup>
 !else
@@ -44,9 +44,9 @@ to $wims_menu_tail
  !href cmd=reply&job=addlevel 添加别的年级
  &nbsp; 
  !href cmd=reply&job=backstruct 备份结构
-  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+  !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
  backstruct,1,cmd=reply&job=backstruct\
-to $wims_menu_tail
+to $wims_menu_items
  </small></caption>
  $table_hdtr
  <th>代码<th>名称</th><th>-</th><th>负责人</th>

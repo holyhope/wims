@@ -8,8 +8,8 @@
  !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
-!set wims_menu_tail=!append line addteacher,1,cmd=reply&job=addteacher \
-to $wims_menu_tail
+!set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
+to $wims_menu_items
 !goto nopart
 !if $studentcnt=0
  <p>
@@ -17,13 +17,13 @@ to $wims_menu_tail
  !href cmd=reply&job=addstudent $wims_name_addstudent
 .
 !else
-!set wims_menu_tail=!append line student,1,cmd=reply&job=student\
-to $wims_menu_tail
+!set wims_menu_items=!append line student,1,cmd=reply&job=student\
+to $wims_menu_items
  !href cmd=reply&job=student $studentcnt $wims_name_student
 .
 !endif
-!set wims_menu_tail=!append line addstudent,1,cmd=reply&job=addstudent\
-to $wims_menu_tail
+!set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
+to $wims_menu_items
 
 :nopart
 </center>
@@ -31,8 +31,8 @@ to $wims_menu_tail
 !if $levelcnt=0
   Aucun niveau d'enseignement n'est encore installé.
   !href cmd=reply&job=addlevel $wims_name_addlevel
-  !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
-to $wims_menu_tail
+  !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
+to $wims_menu_items
 .<sup>
   !href cmd=help&special_parm=structure#level $wims_name_help
 </sup>
@@ -44,9 +44,9 @@ to $wims_menu_tail
  !href cmd=reply&job=addlevel $wims_name_addlevel
  &nbsp; 
  !href cmd=reply&job=backstruct $wims_name_backstruct
- !set wims_menu_tail=!append line addlevel,1,cmd=reply&job=addlevel\
+ !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
  backstruct,1,cmd=reply&job=backstruct\
-to $wims_menu_tail
+to $wims_menu_items
  </small></caption>
  $table_hdtr
  <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
