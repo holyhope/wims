@@ -1,0 +1,34 @@
+!!# en-tête des classes de manière normalisée
+!!# wims_read_parm: 
+!!# 1: presentation pour \
+classname\
+titre du module\
+sous-titre
+!!# 2: titre\
+sous-titre en petit\
+
+
+!distribute line $wims_read_parm into number_,tit1_,tit2_,tit3_,tit4_
+
+!goto $number_
+
+:1
+<div id="wims_modu_title1">
+<div class="wims_classname">$tit1_</div>
+<h1 class="wims_title">$tit2_</h1>
+!if $tit3_ != 
+ <div class="subtitle">$tit3_</div>
+!endif
+<div class="wims_title_close"> </div>
+</div><!--wims_modu_title1-->
+!exit
+
+:2
+<div id="wims_modu_title2">
+<div class="wims_title">$tit1_</div>
+!if $tit2_!= 
+<div class="wims_subtitle">$tit2_</div>
+!endif
+<div class="wims_title_close"> </div>
+</div><!--wims_modu_title2-->
+!exit
