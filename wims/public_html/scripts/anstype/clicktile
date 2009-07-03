@@ -125,10 +125,12 @@ sg_tot=!listcomplement $g_tot in $r_tot
    !endif
   !endif
 !next
-color_p=!listcomplement $color_i in $color_g,$color_r in
+color_p=!listcomplement $color_i in $color_g,$color_r
 !for co in $color_p
-   !advance cmt
-   !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+   !if $($(co)_r)!=
+      !advance cmt
+    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+   !endif
 !next
 reply_$i=<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
    <param name="status" value="done">\
@@ -168,10 +170,11 @@ reply_$i=<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" arc
 !next
 color_p=!listcomplement $color_i in $color_g
 !for co in $color_p
-   !advance cmt
-   !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
-!next
-!!debug $applet_parm
+   !if $($(co)_g)!=
+    !advance cmt
+    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+   !endif
+ !next
 !set reply_$i=<center>\
 <div style="display:inline;border-style:solid; border-color:red; text-align:center; width:$xsize;height:$ysize;" >\
 $(reply_$i) \
