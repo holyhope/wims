@@ -8,8 +8,12 @@
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
-<h2>$wims_classname, $wims_institutionname</h2>
-<hr><h3 class="wims_sheet_title">WWerkblad #$sh<br>$sheet_title</h3>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+WWerkblad #$sh<br>$sheet_title
+
+!!<h2>$wims_classname, $wims_institutionname</h2>
+!!<hr><h3 class="wims_sheet_title">WWerkblad #$sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -43,11 +47,15 @@ De opdrachten in dit werkblad: (cijfer registratie is
    open, maar je kunt het
    !href cmd=resume&job=suspend opschorten
 .)
+!set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
+to $wims_menu_items
   !else
    !set scorestat=no
    door jezelf opgeschort.
    !href cmd=resume&job=reopen reactiveren
 .)
+!set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
+to $wims_menu_items
   !endif
  !else
   geloten voor jou.)
@@ -90,15 +98,21 @@ De opdrachten in dit werkblad: (cijfer registratie is
 :contentend
 !if $wims_user=supervisor
 <p>
-!href module=adm/class/sheet&sheet=$sh Werkblad aanmaak pagina
- (voor docenten ).&nbsp;
+!!!href module=adm/class/sheet&sheet=$sh Werkblad aanmaak pagina
+!! (voor docenten ).&nbsp;
+!set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+to $wims_menu_items
 !endif
-!href cmd=reply&job=print Printbare versie.
+!if $n>0
+!set wims_menu_items=!append line printable,1,cmd=reply&job=print\
+to $wims_menu_items
+!!!href cmd=reply&job=print Printbare versie.
 !if $exolog!=$empty
- !href module=adm/class/exolog&job=llist&logsheet=$sh Registreer de details van deze oefening
-.
+!! !href module=adm/class/exolog&job=llist&logsheet=$sh Registreer de details van deze oefening
+!!.
+  !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
+to $wims_menu_items 
+ !endif
 !endif
-<p>
-
 !tail
 

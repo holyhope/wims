@@ -8,8 +8,12 @@
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
-<h2>$wims_classname, $wims_institutionname</h2>
-<hr><h3 class="wims_sheet_title">Delovni list #$sh<br>$sheet_title</h3>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+Delovni list #$sh<br>$sheet_title
+
+!!<h2>$wims_classname, $wims_institutionname</h2>
+!!<hr><h3 class="wims_sheet_title">Delovni list #$sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 !if $sheet_expiration!=$empty and $sheet_active=1
  !set expday=!char 7,8 of $sheet_expiration
@@ -40,11 +44,15 @@
    vkljuèeno, toda lahko ga
    !href cmd=resume&job=suspend izkljuèite
 .)
+!set wims_menu_items=!append line scoresuspend,1,cmd=resume&job=suspend\
+to $wims_menu_items
   !else
    !set scorestat=no
    izkljuèeno na va¹o zahtevo.
    !href cmd=resume&job=reopen Ponoven vklop
 .)
+!set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
+to $wims_menu_items
   !endif
  !else
   zaprto za va¹o povezavo.)
@@ -57,7 +65,7 @@
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <li><p>$i.
+  <li class="wims_sheet_list"><p>$i. 
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
@@ -86,17 +94,24 @@
 
 :contentend
 !if $wims_user=supervisor
-<p>
-!href module=adm/class/sheet&sheet=$sh Urejanje lista
- (za skrbnika).&nbsp;
+!set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+to $wims_menu_items
+!!<p>
+!!!href module=adm/class/sheet&sheet=$sh Urejanje lista
+!! (za skrbnika).&nbsp;
 !endif
-!href cmd=reply&job=print Razlièica za tiskanje
-.
+!if $n>0
+!set wims_menu_items=!append line printable,1,cmd=reply&job=print\
+to $wims_menu_items
+!!!href cmd=reply&job=print Razlièica za tiskanje
+!!.
 !if $exolog!=$empty
- !href module=adm/class/exolog&job=llist&logsheet=$sh Bele¾enje podrobnosti naloge
-.
+!! !href module=adm/class/exolog&job=llist&logsheet=$sh Bele¾enje podrobnosti naloge
+!!.
+  !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
+to $wims_menu_items 
 !endif
-<p>
+!endif
 
 !tail
 

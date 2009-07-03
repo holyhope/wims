@@ -8,8 +8,12 @@
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
-<h2>$wims_classname, $wims_institutionname</h2>
-<hr><h3 class="wims_sheet_title">作业页 #$sh<br>$sheet_title</h3>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+作业页 #$sh<br>$sheet_title
+
+!!<h2>$wims_classname, $wims_institutionname</h2>
+!!<hr><h3 class="wims_sheet_title">作业页 #$sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 
@@ -42,11 +46,15 @@
    是打开的, 但你可以使它
    !href cmd=resume&job=suspend 暂停
 .)
+!set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
+to $wims_menu_items
   !else
    !set scorestat=no
    被你自己暂停了.
    !href cmd=resume&job=reopen 打开纪录
 .)
+!set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
+to $wims_menu_items
   !endif
  !else
   对于你的链接是关闭的.)
@@ -83,19 +91,24 @@
 
 :contentend
 !if $wims_user=supervisor
-<p>
-!href module=adm/class/sheet&sheet=$sh 页面管理
- (主持教师用).&nbsp;
+!set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+to $wims_menu_items
+!!!href module=adm/class/sheet&sheet=$sh 页面管理
+!! (主持教师用).&nbsp;
 !endif
 !if $n>0
-!href cmd=reply&job=print 供打印的版本
-.
+!set wims_menu_items=!append line printable,1,cmd=reply&job=print\
+to $wims_menu_items
+!!!href cmd=reply&job=print 供打印的版本
+!!.
 !if $exolog!=$empty
- !href module=adm/class/exolog&job=llist&logsheet=$sh 记录练习的详情
-.
+!! !href module=adm/class/exolog&job=llist&logsheet=$sh 记录练习的详情
+!!.
+!set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
+to $wims_menu_items 
+ !endif
 !endif
-!endif
-<p>
+
 
 !tail
 

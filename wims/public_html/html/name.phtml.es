@@ -36,6 +36,7 @@
 		Escriba al profesor,Cierre la clase,\
 		El registro de puntuación está cerrado.,\
 		Ha suspendido el registro de puntuación.,\
+		Open score registration,Close score registration,\
 		Usted es el profesor de la clase,\
 		Registrar los detalles de este ejercicio,\
 		Página de gestión de las hojas de trabajo\
@@ -43,6 +44,7 @@
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
+	wims_name_scorereopen,wims_name_scoreclose2,\
 	wims_name_syou,\
 	wims_name_exolog,\
 	wims_name_sheetmanagement

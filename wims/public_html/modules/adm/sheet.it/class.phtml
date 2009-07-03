@@ -8,8 +8,12 @@
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
-<h2>$wims_classname, $wims_institutionname</h2>
-<hr><h3 class="wims_sheet_title">test #$sh<br>$sheet_title</h3>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+test #$sh<br>$sheet_title
+
+!!<h2>$wims_classname, $wims_institutionname</h2>
+!!<hr><h3 class="wims_sheet_title">test #$sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -45,11 +49,15 @@
    attiva, ma puoi
    !href cmd=resume&job=suspend sospenderla
 .)
+!set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
+to $wims_menu_items
   !else
    !set scorestat=no
    stata da te sospesa.
    !href cmd=resume&job=reopen Riattivala
 .)
+!set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
+to $wims_menu_items
   !endif
  !else
   disattivata per questo tipo di connessione.)
@@ -94,19 +102,24 @@
 !endif
 
 !if $wims_user=supervisor
-<p>
-!href module=adm/class/sheet&sheet=$sh Pagina di gestione dei test di autovalutazione
- (per i docenti).&nbsp;
+!set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+to $wims_menu_items
+
+!!!href module=adm/class/sheet&sheet=$sh Pagina di gestione dei test di autovalutazione
+!! (per i docenti).&nbsp;
 !endif
 !if $n>0
- !href cmd=reply&job=print Versione stampabile
-.
+!set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+to $wims_menu_items
+!! !href cmd=reply&job=print Versione stampabile
+!!.
  !if $exolog!=$empty
-  !href module=adm/class/exolog&job=llist&logsheet=$sh Salva la risoluzione di un esercizio
-.
+ !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
+to $wims_menu_items 
+!!  !href module=adm/class/exolog&job=llist&logsheet=$sh Salva la risoluzione di un esercizio
+!!.
  !endif
 !endif
-<p>
 
 !tail
 

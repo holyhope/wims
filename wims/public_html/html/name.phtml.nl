@@ -83,6 +83,7 @@
 		Schrijf naar je leraar,Uitloggen,\
 		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
 		Je hebt het behalen van cijfers opgeschort,\
+		Open score registration,Close score registration,\
 		U bent de leraar van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
@@ -90,6 +91,7 @@
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
+	wims_name_scorereopen,wwims_name_scoreclose2,\
 	wims_name_syou,\
 	wims_name_exolog,\
 	wims_name_sheetmanagement
