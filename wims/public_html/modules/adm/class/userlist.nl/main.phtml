@@ -19,12 +19,16 @@
  !goto end
 !endif
 
-<center>$classname
-<h1>Studenten
- </b><font size="-1">[
-!href cmd=reply&job=csv Spreadsheets formaat
- ]</font>
-</h1></center>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Studenten
+
+!!<center>$classname
+!!<h1>Studenten
+!! </b><font size="-1">[
+!!!href cmd=reply&job=csv Spreadsheets formaat
+!! ]</font>
+!!</h1></center>
 
 !if $error!=$empty
  <p>
@@ -49,6 +53,8 @@
  [
  Voeg nog een
  !href module=adm/class/reguser&step=1 student toe 
+ ] [
+!href cmd=reply&job=csv Spreadsheets formaat
  ]
  !if $deleted!=$empty
   &nbsp;[

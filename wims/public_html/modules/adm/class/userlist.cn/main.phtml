@@ -18,14 +18,18 @@
  !goto end
 !endif
 
-<center>$classname
-<p>
-<h1>参加者名单
- </b><font size="-1">[
-!href cmd=reply&job=csv 电子表格数据
- ]
-</font>
-</h1></center>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+参加者名单
+
+!!<center>$classname
+!!<p>
+!!<h1>参加者名单
+!! </b><font size="-1">[
+!!!href cmd=reply&job=csv 电子表格数据
+!! ]
+!!</font>
+!!</h1></center>
 
 !if $error!=$empty
  <p>
@@ -45,6 +49,8 @@
  <center>
  [
  !href module=adm/class/reguser&step=1 添加参加者
+ ] [
+!href cmd=reply&job=csv 电子表格数据
  ]
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted

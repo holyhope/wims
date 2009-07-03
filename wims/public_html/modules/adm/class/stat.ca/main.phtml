@@ -13,17 +13,25 @@
 
 !read names.phtml
 
-<center>$classname
-<p>
-<h1>Statistiques d'activité
-</h1></center> <p>
+!read names.phtml
+!read adm/title.phtml 1\
+$classname\
+Statistiques d'activité
+
+!!<center>$classname
+!!<p>
+!!<h1>Statistiques d'activité
+!!</h1></center> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
- <p>
- !href module=home Retourner à la page d'accueil
-. <p>
+ 
+ !set wims_menu_items=!append line class_home,1,module=home\
+ to $wims_menu_items
+ 
+!! !href module=home Retourner à la page d'accueil
+!!. <p>
  !goto end
 !endif
 

@@ -12,18 +12,23 @@
 !header1
 
 !read names.phtml
+!read names.phtml
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Estadísticas de actividad
 
-<center>$classname
-<p>
-<H1>Estadísticas de actividad
-</H1></center> <p>
+!!<center>$classname
+!!<p>
+!!<H1>Estadísticas de actividad
+!!</H1></center> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
- <p>
- !href module=home Volver a la página principal
-. <p>
+ 
+ !set wims_menu_items=!append line class_home,1,module=home\
+ to $wims_menu_items
+ 
  !goto end
 !endif
 

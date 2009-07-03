@@ -17,13 +17,16 @@
  !read $job.phtml
  !goto end
 !endif
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Lista de los participantes
 
-<center>$classname
-<h1>Lista de los participantes
- </b><font size="-1">[
-!href cmd=reply&job=csv datos de hoja de cálculo
- ]</font>
-</h1></center>
+!!<center>$classname
+!!<h1>Lista de los participantes
+!! </b><font size="-1">[
+!!!href cmd=reply&job=csv datos de hoja de cálculo
+!! ]</font>
+!!</h1></center>
 
 !if $error!=$empty
  <p>
@@ -45,6 +48,8 @@
  !set deleted=!trim $deleted
  [
  !href module=adm/class/reguser&step=1 Añadir un participante
+ ] [
+!href cmd=reply&job=csv datos de hoja de cálculo
  ]
  !if $deleted!=$empty
   &nbsp;[
