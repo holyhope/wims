@@ -1,20 +1,30 @@
 
 !header1
-<h1 class="wims_title">$module_title
-<br><font size="+0">$httpd_HTTP_HOST</font>
-</h1>
+!read adm/title.phtml 2\
+$module_title\
+$httpd_HTTP_HOST
+
+!!<h1 class="wims_title">$module_title
+!!<br><font size="+0">$httpd_HTTP_HOST</font>
+!!</h1>
 
 <center>
 !for j in $joblist
  &nbsp;
  !if $j=$job
+ !if $wims_theme_version=0 or $wims_theme_version=
   <u><b>$(wims_name_mod_$j)</b></u>
+  !endif
  !else
+ !if $wims_theme_version=0 or $wims_theme_version=
   !href cmd=reply&job=$j $(wims_name_mod_$j)
+ !endif
   !set wims_menu_items=!append line mod_$j,1,cmd=reply&job=$j \
   to $wims_menu_items
  !endif
+ !if $wims_theme_version=0 or $wims_theme_version=
  &nbsp;
+ !endif
 !next j
 </center><p>
 
