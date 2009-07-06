@@ -1,7 +1,5 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
+!read adm/css.phtml
+!header1
 
 !read names.phtml
 
@@ -10,10 +8,13 @@ $wims_html_header
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>課程訊息
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+課程訊息
+!!<center>$classname
+!!<p>
+!!<h1>課程訊息
+!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -39,9 +40,10 @@ $wims_html_header
 
 
 :end
-<p><hr width="30%"> <p>
-!homeref
-!taile
 
-!set job=
-!set showsheet=
+!if $job!=$empty and $job!=delete
+ !href cmd=reply Back
+!endif
+
+!tail
+!reset job

@@ -11,10 +11,13 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
-<br>
+!read adm/title.phtml 3\
+WIMS at $httpd_HTTP_HOST\
  Ustvarjanje uèilnice $name_classess
-</h1> <p><hr width="50%"> <p>
+!!<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
+!!<br>
+!! Ustvarjanje uèilnice $name_classess
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -46,6 +49,8 @@
  !if 2 isitemof $alltypes
   !href cmd=reply&step=0&cltype=2 Vhodna toèka
   za skupino uèilnic.
+   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
  !else
   <font color=blue><strike>Vhodna toèka</strike></font>
   za skupino uèilnic. $noright
@@ -54,6 +59,8 @@
  !if 4 isitemof $alltypes
   !href cmd=reply&step=0&cltype=4 Portal
   za celotno ustanovo.
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
  !else
   <font color=blue><strike>Portal</strike></font>
   za celotno ustanovo. $noright

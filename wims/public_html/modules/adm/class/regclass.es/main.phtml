@@ -11,10 +11,14 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS en $httpd_HTTP_HOST
-<br>
+!read adm/title.phtml 3\
+WIMS en $httpd_HTTP_HOST\
 Creación de $name_classess
-</h1> <p><hr width="50%"> <p>
+
+!!<h1 class="wims_title">WIMS en $httpd_HTTP_HOST
+!!<br>
+!!Creación de $name_classess
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -37,6 +41,8 @@ Creación de $name_classess
  <p>
  !href cmd=reply&step=0&cltype=0 Clase individual
  para gestionar el trabajo de un grupo de alumnos.
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
  <p>
  !if $regpolicy=file
   !set noright=(no está autorizado para hacer eso).
@@ -46,6 +52,8 @@ Creación de $name_classess
  !if 2 isitemof $alltypes
   !href cmd=reply&step=0&cltype=2 Página de entrada
   de una agrupación de clases.
+   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
  !else
   <font color=blue><strike>Página inicial</strike></font>
   de una agrupación de clases $noright

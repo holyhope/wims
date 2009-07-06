@@ -1,19 +1,21 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!read adm/css.phtml
+!header1
+
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
+!if $job!=$empty
+ !read $job.phtml
+ !goto end
+!endif
 
-<center>$classname
-<p>
-<h1>Sporoèilo dneva
-</h1></center> <p><hr width="40%"> <p>
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Sporoèilo dneva
+!!<center>$classname
+!!<p>
+!!<h1>Sporoèilo dneva
+!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -38,7 +40,10 @@ Vnesite svoje sporoèilo dneva (html ukazi so dovoljeni):
 
 
 :end
-!tail
 
-!set job=
-!set showsheet=
+!if $job!=$empty and $job!=delete
+ !href cmd=reply Retour
+!endif
+
+!tail
+!reset job

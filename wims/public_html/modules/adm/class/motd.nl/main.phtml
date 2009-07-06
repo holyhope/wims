@@ -1,8 +1,5 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!read adm/css.phtml
+!header1
 
 !read names.phtml
 
@@ -11,10 +8,13 @@ $wims_html_header
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>Bericht van de dag
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Bericht van de dag
+!!<center>$classname
+!!<p>
+!!<h1>Bericht van de dag
+!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -39,7 +39,10 @@ Schijf het "Bericht van de dag" (html-links en html-tags zijn toegestaan):
 
 
 :end
-!tail
 
-!set job=
-!set showsheet=
+!if $job!=$empty and $job!=delete
+ !href cmd=reply Retour
+!endif
+
+!tail
+!reset job

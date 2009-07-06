@@ -11,10 +11,13 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS Î»ÓÚ $httpd_HTTP_HOST
-<br>
+!read adm/title.phtml 3\
+WIMS à $httpd_HTTP_HOST\
 ´´½¨$name_classess
-</h1> <p><hr width="50%"> <p>
+!!<h1 class="wims_title">WIMS Î»ÓÚ $httpd_HTTP_HOST
+!!<br>
+!!´´½¨$name_classess
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -37,6 +40,8 @@
  <p>
  !href cmd=reply&step=0&cltype=0 ¶ÀÁ¢°à¼¶
  ÒÔ¹ÜÀíÒ»ÈºÑ§ÉúµÄ¹¤×÷.
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
  <p>
  !if $regpolicy=file
   !set noright=(ÄãÃ»ÓĞÈ¨ÏŞ×öÕâ¼şÊÂ.)
@@ -47,6 +52,8 @@
 Ò»×é°à¼¶µÄ
  !href cmd=reply&step=0&cltype=2 Èë¿Ú
 .
+   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
  !else
 Ò»×é°à¼¶µÄ
  <font color=blue><strike>Èë¿Ú</strike></font>
@@ -57,6 +64,8 @@
 Ò»¸öÑ§Ğ£µÄ
   !href cmd=reply&step=0&cltype=4 Èë¿Ú
 .
+!set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
  !else
 Ò»¸öÑ§Ğ£µÄ
  <font color=blue><strike>Èë¿Ú</strike></font>

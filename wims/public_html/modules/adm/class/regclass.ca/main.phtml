@@ -2,7 +2,7 @@
 !!$wims_html_header
 !!</head><body $wims_htmlbody>
 !!!headmenu
-
+!read adm/css.phtml
 !header1
 
 !!if $cmd=help
@@ -11,10 +11,15 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS à $httpd_HTTP_HOST
-<br>
- Création d'une structure : classe, groupement, établissement
-</h1> <p><hr width="50%"> <p>
+!read adm/title.phtml 3\
+WIMS à $httpd_HTTP_HOST\
+Création d'une structure : classe, groupement, établissement
+
+
+!!<h1 class="wims_title">WIMS à $httpd_HTTP_HOST
+!!<br>
+!! Création d'une structure : classe, groupement, établissement
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -36,6 +41,8 @@
  Choisissez le type de structure que vous voulez créer.
  <p>
  !href cmd=reply&step=0&cltype=0 Classe individuelle.
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
  <p>
  !if $regpolicy=file
   !set noright=(Vous n'avez pas les droits pour cela.)
@@ -45,6 +52,8 @@
  !if 2 isitemof $alltypes
  Portail d'un
   !href cmd=reply&step=0&cltype=2 groupement de classes.
+   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
  !else
 Portail d'un <font color=blue><strike>groupement de classes</strike></font>. $noright
  !endif
@@ -53,6 +62,8 @@ Portail d'un <font color=blue><strike>groupement de classes</strike></font>. $no
   Portail d'un 
   !href cmd=reply&step=0&cltype=4 établissement.
   (Réservé aux experts.)
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
  !else
 Portail
   d'un   <font color=blue><strike>établissement</strike></font>. $noright
@@ -181,7 +192,7 @@ des enseignants $name_classesss ;
    !endif
    >$i
   !next i
-  </select> <small> C'est la date &agrave; laquelle votre classe sera automatiquement archiv&eacute;e.</small><br>
+  </select> <small> C'est la date à laquelle votre classe sera automatiquement archivée.</small><br>
  </li>
 
  <li><label for="limit">Limite du nombre de participants de votre $name_classe :</label>

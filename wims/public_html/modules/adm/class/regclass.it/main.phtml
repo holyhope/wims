@@ -11,10 +11,14 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">wims @ $httpd_HTTP_HOST
-<br>
-     Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
-</h1> <p><hr width="50%"> <p>
+!read adm/title.phtml 3\
+WIMS @ $httpd_HTTP_HOST\
+Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
+
+!!<h1 class="wims_title">wims @ $httpd_HTTP_HOST
+!!<br>
+!!     Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -38,6 +42,8 @@
  !href cmd=reply&step=0&cltype=0 Corso singolo
   per gestire il lavoro degli studenti, senza un coordinamento dei corsi
  a livello di sede.
+  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
  <p>
  !if $regpolicy=file
   !set noright=(Non hai i privilegi per farlo.)
@@ -47,6 +53,8 @@
  !if 2 isitemof $alltypes
   !href cmd=reply&step=0&cltype=2 Coordinamento
   di un gruppo di corsi coordinati.
+   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
  !else
   <font color=blue><strike>Coordinamento</strike></font>
   di un gruppo di corsi coordinati. $noright
@@ -56,6 +64,8 @@
  Portale di
   !href cmd=reply&step=0&cltype=4 sede
 . (Per utenti esperti.)
+!set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
  !else
 Portale di
   <font color=blue><strike>sede</strike></font>.

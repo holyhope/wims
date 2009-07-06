@@ -1,7 +1,7 @@
 !!<html><head>
 !!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
+!!</head><body $wims_htmlbody>
+!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -10,17 +10,20 @@
  !!goto end
 !!endif
 
-<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
-<br>
+!read names.phtml
+!read adm/title.phtml 3\
+WIMS at $httpd_HTTP_HOST\
 $module_title
-</h1> <p><hr width="50%"> <p>
+!!<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
+!!<br>
+!!$module_title
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
  !goto end
 !endif
 
-!read names.phtml
 !if $error!=$empty
  <p>
  !read msg.phtml

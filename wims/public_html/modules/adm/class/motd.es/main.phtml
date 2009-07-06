@@ -1,8 +1,6 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!read adm/css.phtml
+!header1
+
 !read names.phtml
 
 !!if $cmd=help
@@ -10,10 +8,13 @@ $wims_html_header
  !!goto end
 !!endif
 
-<center>$classname
-<p>
-<h1>Mensaje del día
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Mensaje del día
+!!<center>$classname
+!!<p>
+!!<h1>Mensaje del día
+!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -39,7 +40,10 @@ Escriba su mensaje del día (se permiten enlaces y marcas html):
 
 
 :end
-!tail
 
-!set job=
-!set showsheet=
+!if $job!=$empty and $job!=delete
+ !href cmd=reply Retour
+!endif
+
+!tail
+!reset job

@@ -11,10 +11,13 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
-<br>
+!read adm/title.phtml 3\
+WIMS à $httpd_HTTP_HOST\
  Creation of $name_classess
-</h1> <p><hr width="50%"> <p>
+!!<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
+!!<br>
+!! Creation of $name_classess
+!!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -37,6 +40,8 @@
  <p>
  !href cmd=reply&step=0&cltype=0 Individual class
  to manage works of a group of students.
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
  <p>
  !if $regpolicy=file
   !set noright=(You don't have the right to do so.)
@@ -46,6 +51,8 @@
  !if 2 isitemof $alltypes
   !href cmd=reply&step=0&cltype=2 Entrance point
   of a group of classes.
+  !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
  !else
   <font color=blue><strike>Entrance point</strike></font>
   of a group of classes. $noright
@@ -54,6 +61,8 @@
  !if 4 isitemof $alltypes
   !href cmd=reply&step=0&cltype=4 Portal
   for an institution structure. (For experts.)
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
  !else
   <font color=blue><strike>Portal</strike></font>
   of an institution structure. $noright

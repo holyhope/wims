@@ -1,19 +1,21 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+!read adm/css.phtml
+!header1
+
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
+!if $job!=$empty
+ !read $job.phtml
+ !goto end
+!endif
 
-<center>$classname
-<p>
-<h1>Message of the day
-</h1></center> <p><hr width="40%"> <p>
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+Message of the day
+!!<center>$classname
+!!<p>
+!!<h1>Message of the day
+!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -39,7 +41,10 @@ Write your message of the day (html links and tags are allowed):
 
 
 :end
-!tail
 
-!set job=
-!set showsheet=
+!if $job!=$empty and $job!=delete
+ !href cmd=reply Retour
+!endif
+
+!tail
+!reset job

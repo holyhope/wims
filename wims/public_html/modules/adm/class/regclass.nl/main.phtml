@@ -10,11 +10,16 @@
  !!goto end
 !!endif
 
-<center><h1>WIMS op $httpd_HTTP_HOST</h1>
-<br>
+!read names.phtml
+!read adm/title.phtml 3\
+WIMS op $httpd_HTTP_HOST\
 Oprichten van een virtuele klas, groep klassen, school of  instituut.
-</center> 
-<p><hr width="50%"> <p>
+
+!!<center><h1>WIMS op $httpd_HTTP_HOST</h1>
+!!<br>
+!!Oprichten van een virtuele klas, groep klassen, school of  instituut.
+!!</center> 
+!!<p><hr width="50%"> <p>
 
 !if $toomany=yes
  !read toomany.phtml
@@ -37,8 +42,10 @@ Oprichten van een virtuele klas, groep klassen, school of  instituut.
     Kies hier het soort virtuele_ruimte dat U wilt aanmaken.
     <p>
     Een&nbsp;
-    !href cmd=reply&step=0&cltype=0 enkele&nbsp;klas
-    .
+    !href cmd=reply&step=0&cltype=0 enkele&nbsp;klas   
+.
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
     <p>
     !if $regpolicy=file
 	!set noright=(U bent hiertoe niet bevoegd.)
@@ -49,6 +56,8 @@ Oprichten van een virtuele klas, groep klassen, school of  instituut.
 	Een gemeenschappelijke ingang voor een&nbsp;
 	!href cmd=reply&step=0&cltype=2 groep&nbsp;klassen
 	.
+	!set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
     !else
 	 Een gemeenschappelijke ingang voor een <font color=blue><strike>groep klassen</strike></font>. $noright
     !endif
@@ -57,6 +66,8 @@ Oprichten van een virtuele klas, groep klassen, school of  instituut.
 	Een kompleet&nbsp;
 	!href cmd=reply&step=0&cltype=4 virtueel institituut
 	(uitsluitend voor experts).
+    !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
     !else
 	Een portaal voor een <font color=blue><strike>virtuel instituut</strike></font>. $noright
     !endif
