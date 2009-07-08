@@ -51,7 +51,8 @@ Messaggi personali per i singoli iscritti
 $table_header
  $table_hdtr
   <th>Studente</th>
-  <th width="75%">Messaggio attuale</th>
+  <th width="65%">Messaggio attuale</th>
+  <th>stato</th>
   <th>Azione</th>
  </tr>
  !for k=1 to $nbuser
@@ -63,7 +64,16 @@ $table_header
     !record 0 of wimshome/log/classes/$wims_class/motd/$u
    </td>
    <td>
-    !href cmd=reply&job=modif&user=$u Modifica
+    !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$u
+    !if $test=$empty
+     Attivo
+    !else
+     Archiviato
+     !href cmd=reply&job=reactivate&user=$u Riattivalo
+    !endif
+   </td>
+   <td>
+    !href cmd=reply&job=modif&user=$u Modifca
     &nbsp; 
     !href cmd=reply&job=delete&user=$u Cancella
    </td>
