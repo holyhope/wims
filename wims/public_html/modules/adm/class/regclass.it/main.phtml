@@ -12,12 +12,13 @@
 
 !read names.phtml
 !read adm/title.phtml 3\
-WIMS @ $httpd_HTTP_HOST\
+WIMS à $httpd_HTTP_HOST\
 Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
 
-!!<h1 class="wims_title">wims @ $httpd_HTTP_HOST
+
+!!<h1 class="wims_title">WIMS à $httpd_HTTP_HOST
 !!<br>
-!!     Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
+!! Création d'une structure : classe, groupement, établissement
 !!</h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
@@ -40,9 +41,9 @@ Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
  Scegli il tipo di corso che vuoi creare.
  <p>
  !href cmd=reply&step=0&cltype=0 Corso singolo
-  per gestire il lavoro degli studenti, senza un coordinamento dei corsi
- a livello di sede.
-  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+!!  per gestire il lavoro degli studenti, senza un coordinamento dei corsi
+!! a livello di sede.
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
  to $wims_menu_items
  <p>
  !if $regpolicy=file
@@ -64,7 +65,7 @@ Creazione di una struttura: classe, gruppo di corsi coordinati, portale di sede
  Portale di
   !href cmd=reply&step=0&cltype=4 sede
 . (Per utenti esperti.)
-!set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
  to $wims_menu_items
  !else
 Portale di
@@ -105,12 +106,12 @@ Portale di
  !endif
   <input size=$instlim name=institution value="$institution" id="institution"><br>
  </li>
- <li><label for="description">Nome $name_classesss (al pi&ugrave; $desclim caratteri) :</label>
+ <li><label for="description">Nome $name_classesss (al pi&ugrave; $desclim caratteri):</label>
   <input size=$desclim name=description value="$description" id="description"> <br>
  </li>
  
  !if $Cltype notin 24
- <li><label for="level">Livello $name_classesss :</label>
+ <li><label for="level">Livello $name_classesss:</label>
   <select name=level id="level">
    !for k=1 to $nblevel
     !if $(levelid[$k])=$level
@@ -135,7 +136,7 @@ Portale di
  <br>
  </li>
 
- <li><label for="passsup">Scegliere una password di gestione ($name_sup):</label>
+ <li>Scegliere una <label for="passsup">password di gestione ($name_sup):</label>
   <input size=16 type=password name=passsup id="passsup"> <br>
   (almeno 4 e non pi&ugrave; di 16 caratteri, numeri o lettere non accentate). <br>
   Questa passowrd permette di accedere alla gestione del $name_classe come $name_sup.
@@ -168,7 +169,7 @@ Va comunicata ai docenti $name_classesss ;
    !endif
    >$i
   !next i
-  </select> <select name=exp_month id="exp_month">
+  </select> <select name=exp_month>
   !for i=1 to 12
    <option value=$i
    !ifval $i=$exp_month
@@ -177,7 +178,7 @@ Va comunicata ai docenti $name_classesss ;
    >
    !item $i of $months
   !next i
-  </select> <select name=exp_year id="exp_year">
+  </select> <select name=exp_year>
   !for i=$thisyear to $thisyear+1
    <option value=$i
    !ifval $i=$exp_year

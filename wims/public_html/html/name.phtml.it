@@ -11,14 +11,16 @@
 		Site manager,Autore della pagina,Autori della pagina,\
 		Traduzione di,Esci,\
 		Help su WIMS,Materiale bibliografico,\
-		Messaggi,Gruppi di discussione,\
+		Forum,Gruppi di discussione,\
 		Test di autovalutazione,Strumenti,\
 		Copia in Modtool,\
-		Print,\
+		Stampa,\
 		Importa nel tuo corso,\
-		Printable Version,\
-		Un'altra,\
-		vai\
+		Versione stampabile,\
+		Un'altra versione,\
+		vai nella zona test XXX,\
+		Aggiorna la pagina,\
+		Salva\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -29,13 +31,14 @@
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
-	wims_name_printable,wims_name_renew,wims_name_testgo
+	wims_name_printable,wims_name_renew,wims_name_testgo,\
+	wims_name_refresh,wims_name_tosave
 
 !! **** Permalink Names ***	
 !distribute items questo modulo, questo esercizio,\
 		Salva,sul vostro sito,\
 		Nascondi le opzioni,\
-		Permalien, Lecteur exportable,\
+		Link permanente, Lecteur exportable,\
 		copia e incolla, il link, il codice, o, in una mail,\
 		per, solo,\
 		la configurazione attuale,\
@@ -59,7 +62,7 @@
 		Lingua,\
 		Autore,\
 		Traduzione di,\
-		Ceci est un module du,\
+		Questo è un modulo di,\
 		WWW Interactive Multipurpose Server,\
 		Copyright\
 	into wims_name_name,\
@@ -81,9 +84,9 @@
 !if $wims_class!=$empty
  !distribute items Home page del corso,Inserire nel test di autovalutazione,\
 		Scrivi al docente,Esci (logout),\
-		La registrazione dei punteggi &egrave; chiusa,\
+		La registrazione dei punteggi è chiusa,\
 		Hai sospeso la registrazione dei punteggi.,\
-		Open score registration,Close score registration,\
+		Attivare la registrazione dei punteggi,Sospendere la registrazione dei punteggi,\
 		Sei il docente del corso,\
 		Salva i dettagli di questo esercizio,\
 		Pagina di gestione dei test di autovalutazione\
@@ -119,11 +122,14 @@
 	scuola elementare\
 	scuola secondaria\
 	università\
-    List of classes\
-    List of classes and portals\
+    Elenco dei corsi\
+    Elenco dei corsi e dei portali di sede\
+    Corsi singoli\
+    Corsi coordinati\
+    Portali di sede\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U\
-	wims_name_classlist,wims_name_portal_list
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_classlist,wims_name_portal_list,wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !endif
 
 !if adm/new isin $module
@@ -136,62 +142,65 @@
 !endif
 
 !if $wims_user=$empty
-  !distribute line Create a class\
+  !distribute line Crea un corso\
   into wims_name_classcreate
 !endif
 
 !if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
-  !distribute line Test the module\
-   Document manager\
-   Module content\
-   Other files\
-   Properties\
-   Save\
-   Check diff\
-   Publish it\
-   New Module\
-   List of modules\
+  !distribute line Prova il modulo\
+   Amministrazione documenti\
+   Contenuto del modulo\
+   Altri tipi di file\
+   Proprietà\
+   Salva\
+   Verifica le differenze\
+   Pubblica\
+   Crea un nuovo modulo\
+   Elenco dei moduli\
    File binari\
-   Backup the module\
-   Account properties\
+   Fai un backup\
+   Opzioni account\
    Script Tester\
-   OEF Documentation \
+   Documentazione OEF\
    Script Library\
-   Answer types\
-   Doc technic\
+   Tipi di risposta\
+   Documentazione tecnica\
    Torna all'elenco dei file\
    Modifica\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
-wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_account_property,\
+wims_name_modlist,wims_name_binfile,wims_name_restore,\
+wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
 wims_name_back3,wims_name_edfile
 
-!distribute line Back to the exercise creation\
-   Model list\
-   Prepared models\
+!distribute line Torna alla creazione dell'esercizio\
+   Elenco dei modelli\
+   Esempi già pronti\
 into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
 !distribute line Tester l'exercice\
-Modifier le source de l'exercice\
-Mettre dans le module de développement\
-Mettre cet exercice dans la classe\
-Faire une nouvelle version\
+Retourner à confia2qcm\
+Retourner à createqcm\
+Modificare il codice dell'esercizio\
+Copia in modtool\
+Inserire questo esercizio nel corso\
+Creare una nuova versione\
 Charger un fichier d'image\
-Remplacer l'ancien exercice\
-into wims_name_testexo,wims_name_exomodify,\
+Sostituire il vecchio esercizio\
+into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace
 
 !endif
 
-!distribute line New document\
-New  sheet\
-New exam\
-New class\
-Crea un nuovo questionario\
-New exercise\
-Class exercises\
+!distribute line Nuovo documento\
+Nuovo test di autovalutazione\
+Nuovo tema d'esame\
+Nuovo corso\
+Nuovo questionario\
+Nuovo esercizio\
+Esercizi del corso\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
 
@@ -201,7 +210,7 @@ wims_name_add_exo,wims_name_classexo
 	Versione interattiva,Versione stampabile,\
 	Torna indietro,Help on line,Informazioni\
     Allega un file,\
-    Back to the file list,\
+    Torna all'elenco dei file,\
     Copertina del documento\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
@@ -217,13 +226,13 @@ wims_name_add_exo,wims_name_classexo
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
 !endif
 
-!set wims_name_supervisor=supervisor
+!set wims_name_supervisor=docente
 !set wims_name_teacher=Teacher accounts
-!set wims_name_addteacher=New teacher
+!set wims_name_addteacher=Nuovo docente
 !set wims_name_modteacher=Teacher properties
-!set wims_name_delteacher=Delete a teacher
+!set wims_name_delteacher=Elimina docente
 !set wims_name_student=Participant accounts
-!set wims_name_addstudent=New participant
+!set wims_name_addstudent=Nuovo iscritto
 !set wims_name_modstudent=Particpant properties
 !set wims_name_delstudent=Delete a participant
 !set wims_name_portal=portal
@@ -235,14 +244,14 @@ wims_name_add_exo,wims_name_classexo
 !set wims_name_backstruct=Backup the structure
 
 !if config isin $module
- !distribute line Page principale de configuration\
+ !distribute line Torna alla pagina principale di configurazione\
  Gestion de structure\
- Sauvegarde et restauration\
+ Backup e ripristino\
 into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
 
-!set wims_name_backgateway=Gestion of
+!set wims_name_backgateway=Gestione di
 
 !distribute line Add a course\
 Add a interclass course\
@@ -254,11 +263,11 @@ Zone change\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
 wims_name_login,wims_name_chzone
 
-!distribute line Statistiques d'activité\
-Activités globales des participants\
+!distribute line Statistiche dell'attività svolta\
+Schema attività degli iscritti\
 Modificare il livello di severità\
 Assegnare i voti manualmente\
-spreadsheet data\
+Dati in formato&nbsp;csv\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
 
@@ -269,16 +278,22 @@ Termina questa sessione\
 Dati non elaborati\
 Escludi questo studente\
 Dati non elaborati\
-modificane la password\
+Modifica password studente\
 Elabora i dati\
+Livelli di competenza\
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
-wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
+wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret
+
 !endif
 
 !if adm/manage isin $module
   !distribute line Other maintenance tasks\
   into wims_name_sitegestion
 !endif
+
+  !distribute line Nouvelle compétence\
+   Configurer\
+  into wims_name_add_competence,wims_name_config
 
 !distribute lines Modtool\
    Createxo\
