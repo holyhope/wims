@@ -1,6 +1,9 @@
 !if $job!=home and $vote_title!=$empty
  !set module_title=$vote_title
 !endif
+!!!if $job=edit
+ !!!read js/speckedit.phtml src
+!!!endif
 !read adm/css.phtml
 !header
 
@@ -12,11 +15,9 @@
 !read $job.phtml
 
 !if $job!=home
- !!<p><center>
-!! !href cmd=renew&job=home Elenco dei questionari
-!! </center>
  !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
  to $wims_menu_items
+
 !endif
 
 !tail

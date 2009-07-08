@@ -5,7 +5,6 @@
 $sheet_title
 !!<h3 class="wims_sheet_title">$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
-
 !!<div class=wimsbody>
 
 !if $error!=$empty
@@ -49,8 +48,13 @@ $sheet_title
  !if $t>0
   <p><b>Risposta all'esercizio $i.</b><ul>
   !for k=1 to $t
-   <li>
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li value=$k>
    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
   !next k
   </ul>
  !endif
@@ -58,7 +62,7 @@ $sheet_title
 </div><!--end of wims_solution-->
 
 :noans
-!!<p>
+<p>
 !!<div class="wims_noprint">
 !!<hr>
 !!!href cmd=reply Un'altra versione
@@ -69,4 +73,3 @@ $sheet_title
 back2,1,cmd=reply&job=read\
 to $wims_menu_items
 !tail
-

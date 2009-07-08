@@ -24,8 +24,10 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 !set qcnt=$[min($exocnt,8)]
 !if $exocnt<1
  !if $wims_user=supervisor and #classes/ isin #$module
-  !href module=adm/createxo Crea
-  nuovi esercizi.
+  !!!href module=adm/createxo Crea
+  !!nuovi esercizi.
+  !set wims_menu_items=!append line add_exo,1,module=adm/createxo\
+  to $wims_menu_items
  !else
   Spiacente, questo modulo non contiene ancora esercizi. 
   Riprovate pi&ugrave; tardi.
@@ -61,27 +63,33 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 !formselect qcmlevel from 1 to 9
 <tr><td align=center>Limite di tempo <td>
 <input size=7 name=scoredelay value="$scoredelay"> secondi.
+</td></tr>
 !read introhook.phtml
 !if expert iswordof $special_parm2
    <tr><td align=center>
-   Numero di risposte multiple da cui scegliere: <td>
+   Numero di risposte multiple da cui scegliere: </td><td>
    !default intro_qcmpresent=4
    !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
-   <tr><td align=center>Dare la soluzione (se disponibile)? <td>
+   </td></tr>
+   <tr><td align=center>Dare la soluzione (se disponibile)? </td><td>
    !default intro_presentsol=1
    !formselect intro_presentsol list 0,1,2 prompt mai,se il punteggio non è massimo,sempre
-   <tr><td align=right>
+   </td></tr>
+   <tr><td rowspan=4>&nbsp;</td><td>
    !default intro_check=1,2,3,4
-   Scelte multiple</td><td>
-   !formcheckbox intro_check list 1 prompt Contengono sempre
+   !formcheckbox intro_check list 1 prompt Le scelte multiple contengono sempre
    la risposta giusta.
-   <tr><td rowspan=3>&nbsp;</td><td align=left>
+   </td></tr>
+   <tr><td align=left>
    !formcheckbox intro_check list 2 prompt Le risposte sbagliate nelle scelte multiple sono penalizzate.
+   </td></tr>
    <tr><td align=left>
    !formcheckbox  intro_check list 3 prompt Mostra la risposta giusta.
+   </td></tr>
    <tr><td align=left>
    !formcheckbox intro_check list 4 prompt Mostra suggerimenti (se disponibili).
    !let tmp=!replace word expert by $ in $special_parm2
+   </td></tr>
    <tr><td colspan=2 align=center>
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp Menu semplice
    <input type=hidden name=intro_expert value=yes>
@@ -119,3 +127,4 @@ piccolo seguito da uno più grande. In questo caso, quando si raggiunge
 il primo limite il punteggio viene ridotto mentre quando si raggiunge 
 il secondo limite, il punteggio viene azzerato.
 </small>
+

@@ -25,14 +25,13 @@ $ by ; in $init_parm
  !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
 !endif
 !set wims_html_header=!append line $header_js to $wims_html_header
-!set wims_html_header=$oefcss\
-$wims_html_header
+!set wims_html_header=!append line $oefcss to $wims_html_header
 
 !header1
 <h1 class="oeftitle">$title</h1>
 
 !if $module_checkdata!=yes
- !read oef/it/nodata.phtml
+ !read oef/$module_language/nodata.phtml
  !goto end
 !endif
 
@@ -156,6 +155,7 @@ $wims_html_header
 !endif
 
 !read ./endhook.phtml
+!!## transfer in the "bottom menu"
 !!!if $wims_user=supervisor and exam notin $session and \
 !!	..classes/ notin ..$module and ..adm/ notin ..$module and \
 !!	..devel/ notin ..$module and \
@@ -168,4 +168,3 @@ $wims_html_header
 !!!endif
 :end
 !tail
-

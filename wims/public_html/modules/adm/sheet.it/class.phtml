@@ -1,3 +1,4 @@
+
 !!<html><head>
 !!$wims_html_header
 !!</head><body $wims_htmlbody>
@@ -23,6 +24,7 @@ test #$sh<br>$sheet_title
  !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
  !set expmon=!item $expmon of $months
  Devi completare questo test di autovalutazione entro il $expday $expmon $expyear.
+ <p>
 !endif
 
 !if $sheet_active=2
@@ -104,22 +106,14 @@ to $wims_menu_items
 !if $wims_user=supervisor
 !set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
 to $wims_menu_items
-
-!!!href module=adm/class/sheet&sheet=$sh Pagina di gestione dei test di autovalutazione
-!! (per i docenti).&nbsp;
 !endif
 !if $n>0
-!set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
+!set wims_menu_items=!append line printable,1,cmd=reply&job=print\
 to $wims_menu_items
-!! !href cmd=reply&job=print Versione stampabile
-!!.
  !if $exolog!=$empty
  !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
 to $wims_menu_items 
-!!  !href module=adm/class/exolog&job=llist&logsheet=$sh Salva la risoluzione di un esercizio
-!!.
  !endif
 !endif
-
 !tail
 

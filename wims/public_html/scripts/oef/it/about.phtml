@@ -1,15 +1,35 @@
 !set email=!trim $email
 !set author=!trim $author
 
+!set embedabble_height= 600
+!set embedabble_width= 100%
+
+
+State lavorando su un esercizio di tipo <a href="$wims_ref_name?module=help/teacher/faq.fr&amp;job=oef" target="_blank"><abbr lang="EN" title="Online Exercise Format">OEF</abbr></a>.<br>
+<br>
+<center>
+  <table  style="width:615px;background-color:$module_about_bgcolor">
+    <caption>
+    Informazioni su questo esercizio:
+    </caption>
+    <tbody>
+    
 !if $author!=$empty
- Autore dell'esercizio:
+    <tr class="odd">
+ <th>Autore di $wims_name_this_exercice</th>
+      <td>
  !if $email!=$empty
   !mailurl $email $author
 .
  !else
  $author.
 !endif
+      </td>
+    </tr>
 !endif
+    <tr class="even">
+      <th>Soluzioni/suggerimenti</th>
+      <td>
 !if $solution!=$empty and $hint!=$empty
  &Egrave; disponibile sia un suggerimento che la souluzione completa dell'esercizio.
 !endif
@@ -22,20 +42,52 @@
 !if $solution$hint=$empty
  Non sono disponibili n&eacute; suggerimenti, n&eacute; soluzioni.
 !endif
-Link per questo esercizio: <br>
-!set exolink=$wims_ref_name?module=$module&+cmd=new&+exo=$thisexo
-<a href="$exolink">$exolink</a> <br>
-Link per questo esercizio con queste opzioni: <br>
-!if $module_init_parm!=$empty
- !set exolink=$wims_ref_name?module=$module&+cmd=new&+$module_init_parm
+      </td>
+    <tr class="odd">
+      <th>$wims_name_permalink<br><small>($wims_name_Link_for_bookmark)</small></th>
+      <td><ul>
+          <li>Link per $wims_name_this_exercice:
+!set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+<a href="$exolink">$exolink</a> 
+          </li>
+          !if $module_init_parm!=$empty
+            <li>Lien pour $wims_name_this_config :            
+              !set configlink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+              <a href="$configlink">$configlink</a>
+            </li>
+          !endif
+        </ul></td>
+    </tr>
+    <tr class="even">
+      <th>$wims_name_embeddable :<small> ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site)</small></th>
+      <td><ul>
+          <li> 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            $wims_name_display <strong>$wims_name_this_exercice</strong> $wims_name_on_your_site ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site) : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" >&lt;iframe src="$exolink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+          </li>
+          <li>
+!!
+!!Link per questo esercizio con queste opzioni: <br>
+        !if $module_init_parm!=$empty
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
 !else
- !set exolink=$wims_ref_name?module=$module&+cmd=new
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new
 !endif
-<a href="$exolink">$exolink</a>
-<p>
-Informazioni su questa collezione di esercizi. <p>
-$module_about
-<p>
+            
+            $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+            
+          </li>
+        </ul></td>
+    </tr>
+    </tbody>
+    
+  </table>
+</center>
+<p>Questo esercizio fa parte di una collezione di esercizi (modulo), queste
+sono le informazioni relative a questa collezione.
+<hr>
+</p>
+<p>$module_about </p>
 Il copyright degli esercizi appartiene ai rispettivi autori. 
 
 !changeto NEWS.phtml

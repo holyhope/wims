@@ -37,32 +37,38 @@
  !goto noans
 !endif
 
-<p>
-<hr> 
+!if $test_print=1
+<p><hr> 
 <div class="wims_solution">
-<center><h3>Soluzione</h3></center> <p>
+<center><h3>Soluzione</h3></center>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
  !if $t>0
   <p><b>Risposta all'esercizio $i.</b><ul>
   !for k=1 to $t
-   <li>
+  !set l__=!line $k of $(ans_$i)
+  !if $l__ !=
+   <li value=$k>
    !line $k of $(ans_$i)
+   </li>
+  !reset l__
+  !endif
   !next k
   </ul>
  !endif
 !next i
 </div>
+!endif
 
 :noans
+</div>
 !!<div class="wims_noprint"><hr>
 !!!href cmd=reply&print=yes Un'altra
 !!&nbsp;&nbsp;
 !!!href module=$module&cmd=intro Torna alla versione interattiva
 !!</div>
-!!</body></html>
 !set wims_menu_items=!append line renew,1,cmd=reply&print=yes\
 back2,1,module=$module&cmd=intro\
 to $wims_menu_items
 !tail
-
+!tail

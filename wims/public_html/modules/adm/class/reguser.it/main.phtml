@@ -2,7 +2,7 @@
 !!$wims_html_header
 !!</head><body $wims_htmlbody>
 !!!headmenu
-
+!read adm/css.phtml
 !header1
 
 !!if $cmd=help
@@ -12,8 +12,11 @@
 
 !read names.phtml
 <h1 class="wims_title">WIMS @ $httpd_HTTP_HOST
-<p>
+<br>
 Inserimento in $name_classess
+!if $cltype iswordof 2 4 and $classcnt>0
+ <br> (riservato ai docenti)
+!endif
 </h1> <p>
 
 !if $error!=$empty
@@ -57,7 +60,6 @@ Inserimento in $name_classess
   <td align=center>
   !mailurl $class_email $class_supervisor
   </td>
-    </td>
   !if $class_level=$empty
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
@@ -90,11 +92,14 @@ Inserimento in $name_classess
  presso <b><font color=green>$institution</font></b>
 
 !if $password!=$empty and $passverify=$empty
+ !if $cltype iswordof 2 4
+  Il
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>portale</b>
+ !else
   $name_classessss
  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+ !endif
  presso <b><font color=green>$institution</font></b>
-
-
  !if $cltype iswordof 4 2
   è `riservato' (per la registrazione è necessario conoscerne 
   la password di accesso) e solo i <b>docenti</b> possono iscriversi.
@@ -114,25 +119,32 @@ Inserimento in $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p><label for="classpass">Password :</label>
+ <center> <p><label for="classpass">Password:</label>
  <input type=password name=classpass id="classpass">
  <p>
  <input type=submit value="Procedi con la registrazione">
  </center></form> <p>
  !if $cltype iswordof 2 4
-  <b>ATTENZIONE</b>. La registrazione ad un coordinamento di corsi con 
-  risorse condivise è riservata ai docenti. Gli studenti devono iscriversi
-  !href cmd=new&module=$module&class=$class&subclass=yes ad uno dei corsi collegati
-.
-  <p>
-  <b>Nota</b>. Contatta il cordinatore ($supervisor) del portale di sede
+  <b>Nota</b>. 
+   Contatta il cordinatore ($supervisor) del portale di sede
  !else
   <b>Nota</b>. Contatta il docente ($supervisor) del corso
  !endif
  per ottenere la password di accesso  necessaria per la registrazione
  (
+ !if $cltype iswordof 2 4
+!mailurl $smail Scrivi al coordinatore
+ !else
  !mailurl $smail Scrivi al docente
- )
+ !endif
+).
+ !if $cltype iswordof 2 4
+!! coordinamento di corsi con con risorse condivise 
+  <b>ATTENZIONE</b>. La registrazione a $name_classe è riservata ai docenti. Gli studenti devono iscriversi
+  !href cmd=new&module=$module&class=$class&subclass=yes ad uno dei corsi collegati
+.
+  <p>
+  !endif
  !goto end1
 !endif
 
@@ -142,7 +154,7 @@ Inserimento in $name_classess
   <input type=hidden name=step value=1>
   <label for="search">Per includere uno studente già iscritto a $name_classess,
   ricerca per nome e/o login:</label>
-  <input size=20 name=search value="$search">
+  <input size=20 name=search id="search" value="$search">
   <input type=submit value=OK>
   </form> <p>
   !default foundcnt=0
@@ -166,13 +178,18 @@ Inserimento in $name_classess
   !endif
   Inserisci i dati del nuovo studente al $name_classe
   $classname.
-  !set name_Your=Il
+  !set name_Your=Il suo
   !set name_you=lo studente
+  !set utilisera=lo studente utilizzerà
  !else
- Per completare l'iscrizione al corso interattivo $classname,
- inserire i propri dati.
-  !set name_Your=Il tuo
-  !set name_you=tu
+ Per iscrivervi 
+  !if  $cltype iswordof 2 4
+  come docente
+  !endif
+ al corso interattivo $classname, inserite i vostri dati.
+  !set name_Your=Il vostro
+  !set name_you=voi
+  !set utilisera=voi utilizzerete
  !endif
   !form reply
  <input type=hidden name=step value=2>
@@ -207,7 +224,11 @@ Inserimento in $name_classess
 
 !if $step=2
  Cara/o, $firstn $lastn!<p>
- Ti sei registrato per partecipare al $name_classesss $classname, 
+ Ti sei registrato 
+ !if $Cltype iswordof 2 4
+   come docente
+ !endif
+ a $name_classesss $classname, 
  con login &nbsp;
  ``<tt><b><font color=green>$login</font></b></tt>''. <p>
  !if $email=$empty
@@ -246,14 +267,14 @@ Inserimento in $name_classess
  Cara/o, $firstn $lastn!<p>
  Benvenuta/o nel corso $classname.
  Sei in grado di partecipare al corso utilizzando il login 
- ``<b><font color=green>$login</font></b>''. <p>
+ <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
  A questo punto puoi
  !if $wims_class!=$empty
   !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
 	cominciare a lavorare
 .
  !else
- <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login">
+ <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
  cominciare a lavorare</a>. (Pu&ograve; essere utile salvare questo
  indirizzo nei &ldquo;Preferiti&rdquo;.)
  !endif
