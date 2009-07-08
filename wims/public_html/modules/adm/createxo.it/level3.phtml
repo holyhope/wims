@@ -7,14 +7,23 @@ Il server ha salvato l'esercizio con i seguenti parametri
 <tr><td align=right>Numero di risposte libere<td><td>$replycnt
 <tr><td align=right>Numero di risposte a scelta multipla<td><td>$choicecnt
 </table>
-<ul><li>
 &Egrave; ora possibile
+<ul><li>
 !href cmd=resume&realtest=yes&retest=again provare l'esercizio
 . 
 !if $mode!=file
 <li><p>
-Per modificarlo, 
-!href cmd=reply&level=2 puoi tornare al men&ugrave; precedente.
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+ !if $to_ia_qcm=-1
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 retourner à confia2qcm
+ !endif
+ !if $to_ia_qcm=-2
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 retourner à createqcm
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+!href cmd=reply&level=2 modificare il sorgente del vostro esercizio.
+ !endif
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 .
 !else
  !set wims_form_method=file
@@ -33,6 +42,8 @@ Per modificarlo,
  <li><p>&Egrave; anche possibile
  !href cmd=reply&level=6 inserire un file immagine
  nell'esercizio.
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
  <li><p>
@@ -43,11 +54,18 @@ Per modificarlo,
    !href cmd=reply&level=4 sostituendo il vecchio esercizio
 ,  che
    !href cmd=reply&level=4&newone=1 creandone uno nuovo
+   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+ newversion,1,cmd=reply&level=4&newone=1\
+ to $wims_menu_items
   !else
    !href cmd=reply&level=4 inserirlo tra i moduli in preparazione
+   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   to $wims_menu_items
   !endif
  !else
   !href cmd=reply&level=4 inserire l'esercizio nella pagine del corso
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+ to $wims_menu_items
  !endif
 .
 !endif
@@ -58,5 +76,23 @@ Per modificarlo,
  dell'esercizio!
 !endif
 </ul>
+!set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_items
 
+!if $to_ia_qcm=-1
+!set wims_menu_items=!append line backconfia2qcm,1,module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1\
+ to $wims_menu_items
+ !endif
+ !if $to_ia_qcm=-2
+!set wims_menu_items=!append line backcreateqcm,1,module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2\
+ to $wims_menu_items
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+!set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+ to $wims_menu_items
+ !endif
+
+!if $wims_version_theme=0
+  !reset wims_menu_items
+!endif
 
