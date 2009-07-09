@@ -1,4 +1,5 @@
 !nocache
+<!-- Begin fr/form.phtml-->
 !if $oefsteps!=$empty
  !set fieldtot=!itemcnt $thisstep
 !else
@@ -15,8 +16,8 @@
 !endif
 
 !if $hasembedding!=yes
- <a name=oefform id=oefform> </a>
- !form reply name=replyform onsubmit="return formcheck();"
+ <a name="oefform" id="oefform"> </a>
+ !form reply name="replyform" onsubmit="return formcheck();"
 !endif
 
 !if $error=$empty
@@ -31,7 +32,7 @@
   (étape $oefstep/$oefstepcnt)
  !endif
 !endif
-<br><table border=0>
+<br><table border="0">
 !distribute item 1,1 into cntr,cntc
 !for t in $ansorder
  !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
@@ -46,14 +47,15 @@
 !endif
 !if $oef_formnosubmit!=yes
  <center>
- <input type=submit value="Envoyer la réponse">
+ <input type="submit" value="Envoyer la réponse">
  </center>
 !endif
+<!-- </fieldset> end of "oefstatement" fieldset should be here ?-->
 </form>
 
 !if $qcmgood<1 and $choicecnt>0
  <small><b>Remarque.</b> Choisissez 'aucun n'est bon', si vous pensez que le bon 
  choix n'est pas parmi ceux présentés.</small> <p>
 !endif
-
+<!-- End fr/form.phtml-->
 

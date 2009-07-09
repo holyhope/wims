@@ -1,14 +1,15 @@
 !nocache
+<!-- Begin Present.phtml-->
 !if $status=waiting and $cmd!=hint and $hasembedding=yes
- <a name=oefform id=oefform> </a>
-<div class=oefform>
- !form reply name=replyform onsubmit="return formcheck();"
+ <a name="oefform" id="oefform"> </a>
+ <div class="oefform">
+ !form reply name="replyform" onsubmit="return formcheck();"
  !set q_form=yes
 !else
  !set m_status=end
 !endif
 
-<div class=oefstatement>
+<fieldset class="oefstatement">
 !if $format=tex
  <center>
  !if $question_url=$empty or $cmd=resume
@@ -18,13 +19,13 @@
   !set wims_texsize=0
   !set question_url=$ins_url
  !else
-  <img src="$question_url" alt=question>
+  <img src="$question_url" alt="question">
  !endif
  </center>
 !endif
 
 !if $format=html or $format=
- <div class=oefnameexo>$name_exo</div>
+ <legend class="oefnameexo">$name_exo</legend>
  !if $executed_str!=$question or $oef2wims_version<3.10
   $question
  !else
@@ -35,7 +36,8 @@
 !if $plot_fn!=$empty
  <p><center>
  !insplot $plot_fn notitle
- </center>
+ </center></p>
 !endif
-</div>
+</fieldset>
+<!-- End Present.phtml-->
 
