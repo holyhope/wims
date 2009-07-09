@@ -1,8 +1,21 @@
 
-themelist=!sh find themes -name visitor.phtml | sed 's!^themes/!!;s!/visitor.phtml$!!'
-themelist=!words2items $themelist
+tmp_themelist=!sh find themes -name visitor.phtml | sed 's!^themes/!!;s!/visitor.phtml$!!'
+tmp_themelist=!words2items $tmp_themelist
+themelist=$empty
+!for i in $tmp_themelist
+ file=themes/$i/.def
+ theme_hide=no
+ !readdef $file
+ !if $theme_hide!=yes 
+  themelist=!append item $i to $themelist
+ !endif
+!next i
+iconlist=!sh cd gifs/themes/;ls | sort
+!!not very clean
+iconlist=!replace internal mkindex by in $iconlist
+iconlist=!words2items $iconlist
 csslist=!words2items ---- -theme- class $csslist
-csslist=!sh cd html/css; ls *.css | sed 's/\.css$$//'
+csslist=!sh cd html/css/$lang; ls *.css | sed 's/\.css$$//'
 csslist=!words2items ---- -theme- class $csslist
 cssfile=!record 0 of wimshome/log/classes/$wims_class/css
 bgimgs=!filelist gifs/bg

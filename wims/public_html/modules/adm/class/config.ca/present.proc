@@ -10,6 +10,10 @@ themelist=$empty
   themelist=!append item $i to $themelist
  !endif
 !next i
+iconlist=!sh cd gifs/themes/;ls | sort
+!!not very clean
+iconlist=!replace internal mkindex by in $iconlist
+iconlist=!words2items $iconlist
 csslist=!words2items ---- -theme- class $csslist
 csslist=!sh cd html/css/$lang; ls *.css | sed 's/\.css$$//'
 csslist=!words2items ---- -theme- class $csslist

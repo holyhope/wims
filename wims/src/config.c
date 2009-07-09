@@ -144,6 +144,7 @@ char *texgif_texheader="mathfonts/header";
 char *bgcolor="#E8E8E8";	/* page background color */
 char *bgimg="";			/* page background image file */
 char *pagecss="-theme-";		/* style sheet file */
+char *theme_icon="default";		/* icon */
 char *usecookie="no";		/* whether to send cookies to anon requests */
 char *mail_opt="";		/* !mailto options */
 char nodeip[256]="";		/* ip of cluster node if relevant */
@@ -255,6 +256,7 @@ CONFIG_DATA main_config[]={
       {"superclass_quota",	1, &superclass_quota},
       {"texbasesize",		1, &texbasesize},
       {"theme",			0, &theme},
+      {"theme_icon",			0, &theme_icon},
       {"threshold1",		1, &threshold1},
       {"threshold2",		1, &threshold2},
       {"tmp_debug",		0, &tmp_debug},
@@ -500,6 +502,7 @@ struct {
       {"wims_texalign",		1, &mathalign_base},
       {"wims_texbasesize",	1, &texbasesize},
       {"wims_theme",		0, &theme},
+      {"wims_theme_icon",	0, &theme_icon},
       {"wims_tmp_debug",	0, &tmp_debug},
       {"wims_usecookie",	0, &usecookie},
       {"wims_user_limit",	1, &user_limit},
@@ -711,16 +714,18 @@ void define_html_header(void)
 	char *nbuf;
 	cp=find_word_start(cp);
 	if(strchr(cp,'/')==NULL) {
-	    char *pc, *th; int st=0;
+	    char *pc, *th, *ti; int st=0;
 	    pc=getvar("wims_class");
 	    if(pc!=NULL && *pc!=0 && strcmp(cp,"class")==0) {
 		 nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
-		th=getvar("class_theme");
+		th=getvar("class_theme");ti=getvar("class_theme_icon") ;
 		if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
+		if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
 	    }
 	    else {
 		nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
 		th=getvar("wims_theme");
+		ti=getvar("wims_theme_icon");
 	    }
 	    if(strcmp(cp,"-theme-")==0 && strchr(th,'.')==NULL) {
 		if(th==NULL || *th==0) th="default";
@@ -730,7 +735,9 @@ void define_html_header(void)
 	      if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
 %s\n\
 --></style>",tmplbuf); }
-		  else {snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">",nbuf);
+		  else {
+		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">\n\
+		  <link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\">",nbuf,ti);
 		}
 		setvar("wims_CSS",buf);
 	    }

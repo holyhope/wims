@@ -1,5 +1,5 @@
-!if $wims_theme_image=yes
-  !set  wims_theme_image=$wims_theme
+!if $wims_theme_icon=yes
+  !set  wims_theme_icon=$wims_theme
 !endif
 !distribute items $wims_read_parm into 1_,2_,3_,4_
 !reset w_image
@@ -9,9 +9,9 @@
   !set w_name1=!word 1 of $1_
   !set w_name2=!word 2 to -1 of $1_
   !set w_name=$(wims_name_$(w_name1)) $w_name2
-  !if $wims_theme_image!=$empty
-    !set w_image=<img border=0 src="gifs/themes/$wims_theme_image/$w_name1.gif" alt="$1_" title="$_">
-  !endif
+ !! !if $wims_theme_icon!=$empty
+ !!   !set w_image=<img border=0 src="gifs/themes/$wims_theme_icon/$w_name1.gif" alt="$1_" title="$_">
+ !! !endif
 !endif
 !goto $2_
 :0
@@ -20,19 +20,21 @@
 :1
  !set 3_=!item 3 to -1 of $wims_read_parm
  !set 3_=!nospace $3_
- !href $3_ $w_image $w_name
+ !set wims_ref_class=$w_name1
+ !href $3_ $w_name
  !exit
 :2
  !if $4_ notsametext
-  <a href="$3_" target="wims_$4_">$w_image $w_name</a>
+  <a href="$3_" target="wims_$4_" class="$w_name1"><span class="text_item">$w_name</span></a>
  !else
-  <a href="$3_">$w_image $w_name</a>
+  <a href="$3_" id="$w_name1"><span class="text_item">$w_name</span></a>
  !endif
  !exit
 :3
- <a href="#" onclick="$3_">$w_image $w_name</a>
+ <a href="#" onclick="$3_" id="$w_name1"><span class="text_item">$w_name</span></a>
  !exit
 :4
- !href target=wims_$4_ $3_ $w_image $w_name
+ !set wims_ref_class=$w_name1
+ !href target=wims_$4_ $3_ <span class="text_item">$w_name</span>
  !exit
 :*

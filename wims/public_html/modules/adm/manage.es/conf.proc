@@ -10,6 +10,10 @@ l=!record $confcat of conf/cat
  themelist=!sh find themes -name visitor.phtml | sed 's!^themes/!!;s!/visitor.phtml$!!' | sort
  themelist=!words2items $themelist
  themelist=!listuniq default,$themelist
+ iconlist=!sh cd gifs/themes/;ls | sort
+!!not very clean
+ iconlist=!replace internal mkindex by in $iconlist
+ iconlist=!words2items default $iconlist
 !endif
 
 !if $catname=graphics
@@ -85,7 +89,7 @@ wims_prefix=$wims_prefix2
   !if $v_!=$(DF_$n_)
    !appendfile wimshome/log/wims.conf2 $n_=$v_
   !endif
-  !if $w_ !=$empty and $w_ iswordof wims_bgcolor wims_bgimg wims_ref_bgcolor wims_css
+  !if $w_ !=$empty and $w_ iswordof wims_bgcolor wims_bgimg wims_ref_bgcolor wims_css wims_theme_icon
    $w_=$v_
   !endif
  !next i
