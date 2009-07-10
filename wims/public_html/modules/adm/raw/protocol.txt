@@ -18,10 +18,10 @@ should be formatted according to the need of WIMS, as described below.
 
 -----------------------------------------------------------------------------
 
-New features and modifications in the 3.22 version (03/2008) (in work) :
+New features and modifications in the 3.22 version (06/2009) (in work) :
    - bugs in getcvs due to !hex in scoring
    - New options for getclass (program, subcourse,. ..) 
-   - New job : listclasses which gives listclasses with connexion with some ident
+   - New job : listclasses which gives listclasses with connection with some ident
    and rclass
 -----------------------------------------------------------------------------
 New features and modifications in the 3.21 version (03/2008) :
@@ -218,7 +218,18 @@ job=listsheets	list all the sheets of a class.
 	queryclass : the requested class
 	nbsheet : number of sheets in this class
 	sheettitlelist=list of the sheets with the format "sheet_id:title"
-	
+
+job=listclasses list all the classes with connection between the rclass and
+$ident/$rclass.
+    Optionally, the query parameter 'option' contains the name of fields related to classes asked :
+    module=adm/raw&ident=$ident&passwd=....&code=abcde&job=listclasses&option=description,supervisor&rclass=$rclass
+
+job=getclassesuser list all the classes with connection between the rclass and
+$ident/$rclass where the user exists.
+   Optionally, the query parameter 'option' may contain
+  the names of fields queried. In this case, only the
+  queried properties of the classes are returned.
+
 job=getuser	Get the properties of a user (of a class).
 
 		Optionally, the query parameter 'option' may contain

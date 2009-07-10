@@ -2,8 +2,20 @@
 cnt_class=!recordcnt wimshome/log/classes/.index
 !for i = 1 to $cnt_class
   cl=!record $i of wimshome/log/classes/.index
-  !if $ident/$rclass iswordof $(cl[10])
-    listclasses=!append item $(cl[1]) to $listclasses
+  !if $(cl[10]) != $empty
+	rc=!words2items in $(cl[10])	
+    	index=1
+	# pour avoir toutes les connections possibles on parcourt rc
+	!while $(rc[$index]) != $empty
+		# on a une donnee de connection, on verifie que c'est pour le bon serveur
+		infos_ident=!replace internal / by , in $(rc[$index])						
+		!if $(infos_ident[1]) issametext $ident
+			# on stocke le numero de la classe (qclass)
+			# l'identifiant de la classe pour le serveur (rclass)
+			listclasses=!append line $(cl[1]),$(infos_ident[2]) to $listclasses
+		!endif
+		!increase index
+	!endwhile	
   !endif
 !next
 !if $error!=$empty

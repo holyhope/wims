@@ -8,7 +8,6 @@ quser=!translate internal ./;,?* to $         $ in $quser
 !if $ $ isin $quser
  quser=
 !endif
-
 !if $quser=$empty
  :baduser
  error=bad user
@@ -20,11 +19,51 @@ quser=!translate internal ./;,?* to $         $ in $quser
 !else
  deffile=.users/$quser
 !endif
-
 userdeffile=wimshome/log/classes/$qclass/$deffile
+class_superclass=!defof class_superclass in $classdeffile
 
-test=!defof user_exists in $userdeffile
-!if $test!=yes
- !goto baduser
-!endif
-
+!if $class_superclass=
+ test=!defof user_exists in $userdeffile
+ !if $test!=yes
+   !if $job!=getclassesuser
+    !goto baduser
+   !endif
+ !else
+   !if $job=getclassesuser
+    listclassesuser=!append item $qclass to $listclassesuser
+   !endif
+  !endif
+ !exit
+!else
+ !!on regarde si user existe dans la superclasse
+ userdeffile=wimshome/log/classes/$class_superclass/$deffile
+ test=!defof user_exists in $userdeffile
+  !if $test!=yes
+   !goto baduser
+   !exit
+ !endif
+ test=!defof user_participate in $userdeffile
+ ### contient les classes auxquelles est inscrit l'étudiant et les cours non obligatoires
+ test=!items2words $test
+ !if $qclass iswordof $test
+    !exit
+ !endif
+ class_typename=!defof class_typename in $classdeffile
+ !if $class_typename iswordof program and (mandatory notwordof $class_progstyles or $class_progstyles=$empty)
+ ###si le programme n'est pas obligatoire, user_participate contient ce qu'il faut
+     qlist=!record 0 of wimshome/log/classes/$qclass/courses
+     qcourses=!linecnt $qlist
+     !for q_c=1 to $qcourses
+      testc=!line $q_c of $qlist
+      test1=!replace internal / by , in $(testc[1])
+      ###test1 doit avoir trois items dans le cas d'un établissement
+      !if $class_superclass/$(test1[1])/$(test1[2]) iswordof $test
+        qclass=$class_superclass/$(testc[1])
+        #### il devrait n'y en avoir qu'un correspondant au programme ?
+        !if $job=getclassesuser
+           listclassesuser=!append item $qclass to $listclassesuser
+        !endif
+        !exit
+      !endif
+     !next
+ !endif

@@ -13,10 +13,18 @@
 
 !exit
 
+:listexams
 :listsheets
  !shortout queryclass=$qclass\
-nbsheet=$sheetcnt\
-sheettitlelist=$sheettitles\
+count=$cnt\
+titlelist=$titles\
+
+!exit
+
+
+:listlinks
+!shortout nblinks=$nblink\
+listlinks=$listlinks\
 
 !exit
 
@@ -115,29 +123,41 @@ scoreaverages=$meandetail\
  courses=$wims_class
 
 :listclasses
-list_cnt=!itemcnt $listclasses
-!shortout <list>\
-  
-!for i = 1 to $list_cnt
-   qclass=!item $i of $listclasses
-   !read jobs/getclass.proc
-   !shortout  <class>\
-	<qclass>$qclass</qclass>\
-        <connection>\
-         <rclass>$rclass</rclass>\
-         <ident>$ident</ident>\
-        </connection>\
-         
-   !for d in $option
- !shortout   \
-        <$d>$(class_$d)</$d>\
+# listclasse represente les couples qclass,rclass pour chaque classe
+# accessible d'un serveur donne
+list_cnt=!linecnt $listclasses
+index=1
 
+!shortout <list>\
+
+!while $index <= $list_cnt
+	!read jobs/getclass.proc
+	
+	!shortout <class>\
+	<qclass>$(listclasses[$index;1])</qclass>\
+	<connection>\
+        	<rclass>$(listclasses[$index;2])</rclass>\
+          	<ident>$ident</ident>\
+	</connection>\
+ 
+	!for d in $option
+		!shortout \
+	<$d>$(class_$d)</$d>\
+
+	!next d
+	
+	!shortout \
+</class>\
+
+	!increase index
+!endwhile
   
-   !next d
-!shortout </class>\
-  
-!next i
 !shortout \
 </list>
+
+!exit
+
+:getclassesuser
+!shortout $listclassesuser\
 
 !exit

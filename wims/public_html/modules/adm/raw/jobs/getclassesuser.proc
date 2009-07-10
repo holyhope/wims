@@ -1,0 +1,12 @@
+!read jobs/listclasses.proc
+listclasses_cnt=!linecnt $listclasses
+!for cl =1 to $listclasses_cnt
+  qclass=$(listclasses[$cl;1])
+  rclass=$(listclasses[$cl;2])
+ !read scripts/check.user
+!next
+
+!if $listclassesuser=$empty 
+ error=no class
+ !exit
+!endif

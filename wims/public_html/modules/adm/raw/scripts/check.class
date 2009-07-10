@@ -25,17 +25,39 @@ test1=!translate internal +,; to $   $ in $test
  !exit
 !endif
 
-# La partie qui suit me semble redondante, puisqu'on vient de verifier les connexions de la classe.
+# La partie qui suit me semble redondante, puisqu'on vient de verifier les connections de la classe.
 #A quoi servent les "+" ?
 #le double plus (+$ident/$rclass+) accorde-t-il des droits supplémentaires ?
+##ces plus sont rajoutés quand il y a des droits d'une classe sur l'autre. Aussi je décommente, à vérifier
+##(bpr)
 # d'autre part, si la ligne contient "$ident/$rclass+", elle contient forcement "+$ident/$rclass+"
 
-#!if $job iswordof modclass delclass adduser moduser deluser recuser \
-#	putcsv update and\
-#	($ident/$rclass+ notwordof $test and +$ident/$rclass+ notwordof $test)
-# error=modification of class not allowed
-# !exit
-#!endif
+!if $job iswordof modclass delclass adduser moduser deluser recuser \
+	putcsv update and\
+	($ident/$rclass+ notwordof $test and +$ident/$rclass+ notwordof $test)
+ error=modification of class not allowed
+ !exit
+!endif
+
+!!#une classe créée à travers le module raw : il y a un + à la fin dans class_connections
+
+!!# si l'on crée une classe en ajoutant une connection 
+!!# no no
+!!# dans la classe créée myself/2534808+
+!!# dans la classe local yourself/7020853
+
+!!# yes no
+!!# myself/2534808+
+!!# +yourself/6114403
+
+!!# no yes
+!!# myself/2534808#
+!!#yourself/4729460+
+
+!!# yes yes
+!!# myself/2534808+
+!!# +yourself/1446641+
+
 
 wims_class=$qclass
 wims_user=supervisor
