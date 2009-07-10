@@ -168,7 +168,7 @@ char nowstr[32];
 int rlimit_cpu=20; 	/* cpu time in seconds */
 int rlimit_fsize=8388608;/* file size */
 int rlimit_as=209715200;/* virtual memory size */
-int rlimit_data=104857600;/* data segment size; maxima requires a lot */
+int rlimit_data=204857600;/* data segment size; maxima requires a lot */
 int rlimit_stack=2097152;/* stack size */
 int rlimit_core=0;	/* core dump size */
 int rlimit_rss=16777216;	/* resident size */
