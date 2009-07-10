@@ -2,13 +2,15 @@
 
 for j in `ls` ; do
  if [ -d "$j" ]; then rm $j/icon.css ; touch $j/icon.css ;
+     w=`identify -format \%w $j/home.gif`
+     h=`identify -format \%h $j/home.gif`
      echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a{
 	background-repeat:no-repeat;
-	min-height:24px;	/* here you put the height of your  icon set*/
-	padding-left:24px;/* and here the width*/
+	min-height:"$h"px;	/* here you put the height of your  icon set*/
+	padding-left:"$w"px;/* and here the width*/
 }" > icon.css
-     for i in `ls $j/*.gif` ; do file=`basename $i .gif` ; echo "a.$file{
-        background-image: url(/wims/gifs/themes/$i);
+     for i in `ls $j/*.gif` ; do file=`basename $i .gif` ; echo ".$file{
+ background-image:url($file.gif);
 }" >> icon.css; done ;
   mv icon.css $j ; fi; 
 done
