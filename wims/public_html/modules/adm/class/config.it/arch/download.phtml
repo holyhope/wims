@@ -1,0 +1,38 @@
+
+!if $fsize=$empty
+  Spiacente, il salvataggio del vostro corso non è andato a buon fine. Errore interno.
+ !exit
+!endif
+
+Voici le fichier de sauvegarde de votre classe :
+!getfile $fname.$format $fname.$format
+ ($fsize K).
+<p>
+
+!if $fsize<50 and all isitemof $selection
+ !exit
+!endif
+
+!form reply
+<input type=hidden name=job value=$job>
+<input type=hidden name=job2 value=$job2>
+!if $fsize<200
+  &Egrave; anche possibile fare un
+!else
+ Questo file di backup è troppo grande e supera il limite per un ripristino sul
+ server. &Egrave; necessario ridurre le dimensioni del file, per fare ciò è
+ possibile fare un
+!endif
+
+<input type=submit value="Backup selettivo">:
+<p>
+!set selection=$select
+!formcheckbox selection list $reclist prompt $tot
+<p>
+<b>Remarque</b>. Selon les activités de la classe, ce sont d'habitude les
+registres d'activités de iscritti, messages de discussion et les
+documenti de la classe qui forment l'essentiel de la taille du fichier. Vous pouvez
+faire plusieurs sauvegardes sélectives pour différentes ressources.
+</form>
+
+

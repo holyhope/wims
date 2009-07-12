@@ -1,0 +1,114 @@
+
+!if $cl_reccnt<1
+ Votre classe est vide&nbsp;!
+ <p>
+ Il n'y a pas de ressources dans votre classe pouvant être effacées.
+ !exit
+!endif
+
+!if $cl_testcnt>0
+ <b>ATTENTION</b>. Vous ne pouvez pas effacer des ressources de la classe
+ quand les activités de iscritti ont déjà commencé.
+ <p>
+ Ceci est une mesure de sécurité importante. Si vous avez envie
+ d'outrepasser cette restriction, pensez aux deux aspects suivants.
+ <p>
+ D'un côté, supposons qu'un étudiant vole votre mot de passe. S'il vient dans
+ cette page pour tout effacer, les étudiants honnêtes vont beaucoup souffrir,
+ et vos activités d'enseignement seront considérablement perturbées.
+ <p>
+ D'un autre côté, les différentes ressources de la classe sont inter-dépendantes.
+ Si vous effacez certaines ressources sans effacer celles qui en dépendent,
+ votre classe ne fonctionnera plus.
+ !href cmd=help&special_parm=dependencies Exemples.
+ <p>
+ De toute façon, si vous voulez vraiment nettoyer cette classe, vous pouvez
+ sempre l'effacer (en mettant sa date d'expiration à aujourd'hui&nbsp;
+ la classe disparaîtra demain matin), ou
+ <a href="mailto:$wims_site_manager?subject=Potete erase my class">demander
+ au gestionnaire du site</a> de l'effacer pour vous.
+ !exit
+!endif
+
+!set no_erase=Ne peuvent pas être nettoyés car vous partagez ceux d'une autre
+	classe.
+<b>ATTENTION</b>. Les ressources effacées par cette page ne peuvent pas être 
+ récupérées &nbsp;!
+!href cmd=reply&job=arch&job2=first Backup del corso
+ avant d'effacer quoi que ce soit.
+<p>
+Les ressources actuelles de votre classe&nbsp;:
+<ul>
+ <li>
+ !href cmd=reply&job=clean&clean=all Nettoyer tout ce qui peut être nettoyé
+.
+!if $cl_usercnt>0
+ <li>$cl_usercnt comptes de participant.
+ !if $sharing_user!=$empty
+  $no_erase
+ !else
+  !href cmd=reply&job=clean&clean=user Effacer.
+  !if $cl_scorecnt>0
+   (Les registres d'activité seront aussi effacés.)
+  !endif
+ !endif
+!endif
+!if $cl_doccnt>0
+ <li>$cl_doccnt documenti.
+ !if $sharing_doc!=$empty
+  $no_erase
+ !else
+  !href cmd=reply&job=clean&clean=doc Effacer.
+ !endif
+!endif
+!if $cl_exocnt>0
+ <li>$cl_exocnt esercizi.
+ !if $sharing_exo!=$empty
+  $no_erase
+ !else
+  !href cmd=reply&job=clean&clean=exo Effacer.
+ !endif
+!endif
+!if $cl_sheetcnt>0
+ <li>$cl_sheetcnt feuilles de travail.
+ !if $sharing_sheet!=$empty
+  $no_erase
+ !else
+  !href cmd=reply&job=clean&clean=sheet Effacer.
+  !if $cl_examcnt>0
+   (Les feuilles d'examen seront aussi effacées.)
+  !endif
+ !endif
+!endif
+!if $cl_examcnt>0
+ <li>$cl_examcnt exam sheets.
+ !if $sharing_exam!=$empty
+  $no_erase
+ !else
+  !href cmd=reply&job=clean&clean=exam Effacer.
+ !endif
+!endif
+!if $cl_forumcnt>0
+ <li>$cl_forumcnt messages de forum.
+ !if $sharing_forum!=$empty
+  $no_erase
+ !else
+  !href cmd=reply&job=clean&clean=forum Effacer.
+ !endif
+!endif
+!if $cl_scorecnt>0
+ <li>$cl_scorecnt lignes dans les registres d'activité de iscritti.
+ !href cmd=reply&job=clean&clean=score Effacer.
+!endif
+</ul>
+
+<p><b>Remarques</b>. 1. Cette page est accessible seulement au moment où la
+classe est en préparation. Une fois que les activités de iscritti ont
+commencé, il  n'est plus possible d'effacer des ressources.
+<p>
+2. Les ressources partagées par plusieurs classes peuvent seulement être
+effacées à partir de la classe maître du partage. Les autres classes doivent
+d'abord
+!href cmd=reply&job=neighbor&job2=sharelist arrêter le partage
+ des ressources avant de les effacer.
+

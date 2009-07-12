@@ -1,0 +1,52 @@
+!read names.phtml
+!!<html><head>
+!!$wims_html_header
+!!</head><body $wims_htmlbody>
+
+!!!headmenu
+
+!if $cmd=help
+ !read help.phtml
+ !goto end
+ !else
+ !read adm/css.phtml
+ !header1
+!endif
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$title
+
+!!<center>$classname
+!!<p>
+!!<h1>$title
+!!</h1></center>
+
+!if $error!=$empty
+ !read msg.phtml
+ !if $wims_user!=supervisor or not_secure iswordof $error
+  !goto end
+ !endif
+ <p><hr> <p>
+!endif
+
+!read $job.phtml
+
+!if $job notwordof list new
+!set wims_menu_items=!append line config,1,cmd=renew&job=list\
+save,1,cmd=reply&job=arch&job2=first\
+to $wims_menu_items
+!!<p><center>
+!! !href cmd=renew&job=list Torna alla pagina principale di configurazione
+!! </center> <p>
+!endif
+!if $job iswordof list
+  !set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
+to $wims_menu_items
+!endif
+:end
+!tail
+
+!reset save, abandon, confirm, clean, allow, except,\
+	changeshare, mksharable, stoprec, import, modtoolchg
+

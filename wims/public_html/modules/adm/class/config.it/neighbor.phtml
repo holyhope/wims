@@ -1,0 +1,101 @@
+
+!if $classcnt1+$classcnt2<1 and $kw = $empty
+ Vous ne pouvez pas définir des corsi vicini car il n'y a aucune autre 
+ classe sur ce site.
+ !exit
+!endif
+
+!if $job2!=first
+ !distribute items esercizi,test di autovalutazione,temi d'esame,documenti,questionari,agenda,\
+	account degli studenti,compte d'docente,forum e relativi messaggi,messaggio del giorno,livelli di competenza \
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
+	name_user,name_sup,name_forum,name_motd,name_livret
+ !read neighbor/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first Elenco degli altri corsi
+ !if $job2!=sharelist
+  &nbsp;
+  !href cmd=reply&job2=sharelist Informazione sulla condivisione delle risorse
+ !endif
+ </center>
+ !exit
+!endif
+
+!if $toomany = yes
+ !form reply
+ !if $kw=$empty
+  Il y a trop de classes virtuelles sur le site. Donnez un mot clé pour
+  rechercher les classes qui vous concernent&nbsp;:
+ !else
+  Il y a encore trop de classes correspondant à votre recherche. Veuillez
+  donner un mot clé plus précis.
+ !endif
+ <p><center>
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form> </center> <p>
+!else
+ !if $kw != $empty or $classcnt1 + $classcnt2 > 20
+  !form reply
+  Rechercher une classe :
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form> <p>
+ !endif
+!endif
+!if $classcnt1 + $classcnt2 < 1
+ Aucune classe n'est trouvée pour votre recherche. Réessayez.
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Elenco degli esempi di corso presenti sul server
+ !endif
+ !exit
+!endif
+
+!distribute items ---,<small>docente</small>,\
+	<small>iscritti</small>,\
+	<small>docente et iscritti</small> into n_n0, n_n1, n_n2, n_n3
+
+Les relations de voisinage entre des classes virtuelles permettent l'échange de
+ressources et/ou déplacement entre les classes.
+<small>[&nbsp;
+!href cmd=help&special_parm=neighbor Help on line
+&nbsp;
+!href cmd=help&special_parm=neiexample Exemples
+&nbsp;]</small>
+
+!if $toomany=yes
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Elenco degli esempi di corso presenti sul server
+ !endif
+ !exit
+!endif
+
+Cliquez sur le nom d'une classe pour changer vos relations de voisinage avec
+elle.
+
+<p>
+!if $classcnt1>0
+ !set clst=$clist1
+ $table_header
+  <caption>Corsi nella stessa lingua del vostro</caption>
+  !read neighbor/clist.phtml
+ $table_end
+!endif
+
+!if $classcnt2>0
+ <p>
+ !set clst=$clist2
+ $table_header
+  <caption>Corsi in altre lingue</caption>
+  !read neighbor/clist.phtml
+  $table_end
+  <p><center>
+  !href cmd=reply&job2=sharelist Informazione sulla condivisione delle risorse
+  </center>
+!endif
+!if $excls!=yes and $supertype!=4
+ <p>
+ !href cmd=reply&keyword=*&excls=yes Elenco degli esempi di corso presenti sul server
+!endif

@@ -1,0 +1,47 @@
+!set name_secure=Accesso da IP sicuro
+!set name_colors=Colori della pagina
+!set name_css=Foglio stile
+!set name_logo=Logo
+!set name_theme=Tema
+!set name_theme_icon=Set di icone
+!set name_level=Livello accademico
+!set name_security=Postes autorisés aux notes
+!set name_password=Password del corso
+!set name_supass=Password di gestione del corso
+!set name_exolog=Mumero massimo di esercizi e esami salvabili
+!set name_ent=Link verso una piattaforma o una pagina web
+!if $wims_supertype=2
+ !set name_thisclass=du portail
+ !set name_subclasses=sous-classes
+!else
+ !set name_thisclass=de la zone actuelle
+ !set name_subclasses=zones inférieures
+!endif
+
+!if $confirm!=$empty and $propagate!=$empty
+ Configurations envoyées aux $name_subclasses avec succès&nbsp;: <p><b>
+ !for s in $propagate
+  $(name_$s).
+ !next s
+ </b>
+!else
+ !form reply
+ Vous pouvez choisir d'envoyer les configurations suivantes $name_thisclass
+ à toutes ses $name_subclasses&nbsp;: <p>
+
+ !for s in $propall
+  !if $(name_$s)!=$empty
+   !set name_=!replace internal $ $ by &nbsp; in $(name_$s)
+   <input type="checkbox" name="propagate" value="$s">$name_&nbsp;
+  !endif
+ !next s
+ <p>
+ <input type="submit" name="confirm" value="Envoyer">
+ </form>
+!endif
+<p>
+Notez que les $name_subclasses ne répercuteront pas les
+changements ultérieurs des configurations $name_thisclass. Vous devez
+réenvoyer les changements chaque fois que vous voulez les répercuter
+dans les $name_subclasses.
+

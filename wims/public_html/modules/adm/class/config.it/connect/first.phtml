@@ -1,0 +1,69 @@
+!set job2=first
+
+Server / platform connection allows your class to directly communicate with
+one on another WIMS server or another web e-learning platform. Participants
+can transparently navigate between the connected classes.
+<p>
+In particular, you can mirror this class to a remote WIMS server,
+so that if this server becomes momentarily unavailable, work
+may continue on the mirror class. Scores on the mirror can be merged later.
+<p>
+!if $ccnt<1
+ This WIMS server has not declared any connectable remote server. In order
+ to use this connection feature, the
+ <a href="mailto:$wims_site_manager?subject=server connection">site
+ manager</a> must declare such remote server, and the remote server must also
+ declare this WIMS server as connectable.
+ !set basedir=!sh cd ..; pwd
+ (The site manager can refer to the file
+ <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
+ declare site connections.)
+ !exit
+!endif
+
+Actually, this WIMS server has the following connectable servers.
+<p>$table_header
+$table_hdtr<th>Name
+<th>Description<th>Address<th>Type<th>Action
+!for s in $Clist
+ 
+ $table_tr
+ <td>$s
+ <td align=center>$(desc_$s)
+ <td align=center><a href="$(url_$s)">$(site_$s)</a>
+ <td align=center>$(type_$s)
+ <td align=center nowrap><small>
+ !href cmd=reply&job2=testserver&connident=$s Test
+ &nbsp;
+ !href cmd=reply&job2=add1&connident=$s Add a connection
+ </small>
+!next s
+$table_end <p>
+
+!if $clcnt<1
+ This class has no connections to other servers.
+ !exit
+!endif
+
+You have declared the following connections to other servers.
+<p>
+!distribute items yes,no into io1,io0
+$table_header
+$table_hdtr<th>Server<th>Class
+<th>-<th>-<th>-<th>-
+!for clc in $cllist
+ !distribute words $clc into n_,c_,o_,i_
+ 
+ $table_tr
+ <td>$n_<td align=center>$c_
+ <td>
+ !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ Test
+ <td>
+ !href cmd=reply&job2=mod1&connident=$n_&connclass=$c_ Manage
+ <td>
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ Delete
+ <td>
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy Destroy remote class
+!next clc
+$table_end <p>
+

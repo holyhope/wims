@@ -1,0 +1,109 @@
+
+!read adm/title.phtml 3\
+\
+Configurazione dell'aspetto del corso.
+
+!set wims_form_method=file
+!form reply
+<input type=hidden name=up_job value=present>
+<p>$table_header
+$table_tr<td align=right>Logo del corso
+<small>
+!href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
+ </small>
+</td><td><input size=45 name=pr_logo value="$class_logo">
+</td></tr>
+$table_tr<td align=right>Posizione del logo
+<small>
+!href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
+ </small>
+</td><td>
+!set pr_logoside=$class_logoside
+!formselect pr_logoside list left,right prompt in alto a sinistra, in alto a destra
+ della home page del corso.
+</td></tr>
+$table_tr<td align=right>Home page del corso (area studenti)
+<small>
+!href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
+ </small>
+</td><td><input size=45 name=pr_homepage value="$class_homepage">
+</td></tr>
+$table_tr<td align=right>Colore sfondo delle pagine
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+ </small>
+</td><td><input size=10 name=pr_bgcolor value="$class_bgcolor">
+</td></tr>
+$table_tr<td align=right>Colore sfondo dei menu
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+ </small>
+</td><td><input size=10 name=pr_refcolor value="$class_refcolor">
+</td></tr>
+$table_tr
+ <td align=right>Scala dei colori dei livelli di competenza (da 0 a 10)</td>
+ <td>
+  !for col=1 to 11
+   &nbsp; <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])">
+  !next col
+ </td>
+</tr>
+$table_tr<td align=right>Immagine di sfondo delle pagine
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
+ </small>
+</td><td><input size=45 name=pr_bgimg value="$class_bgimg">
+</td></tr>
+$table_tr<td align=right>Tema del corso
+<small>
+!href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
+ </small>
+</td><td>
+!set pr_theme=$class_theme
+!formselect pr_theme list $themelist
+</td></tr>
+$table_tr<td align=right>Icones de la classe
+<small>
+!href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
+ </small>
+</td><td>
+!set pr_theme_icon=$class_theme_icon
+!formselect pr_theme_icon list $iconlist
+</td></tr>
+$table_tr<td align=right>Foglio stile (css) delle pagine
+<small>
+!href cmd=help&special_parm=config&special_parm2=css $wims_name_help
+ </small>
+</td><td>
+!set pr_css=$class_css
+!formselect pr_css list $csslist
+$table_tr
+<td align=right valign=middle>
+Contenu de la feuille de style
+de la classe 
+<br>(lorsque <tt>Feuille de style</tt>  est sur <tt>class</tt>)&nbsp;:
+<small>
+!href cmd=help&special_parm=config&special_parm2=css $wims_name_help
+</small>
+</td><td valign=middle>carica un file css
+<input type=file name=wims_deposit>
+<br>
+<br>
+copia qui i comandi css delle pagine&nbsp;<br>
+<textarea rows=6 cols=45 name=pr_cssfile>
+!!record 0 of wimshome/log/classes/$wims_class/css
+$cssfile
+</textarea>
+</td></tr>
+$table_hdtr<td align=center colspan=2>
+<input type=submit name=save value=Salva>
+&nbsp;
+<input type=submit name=abandon value=Annulla>
+</td></tr>
+$table_end <p>
+</form>
+
+
+!reset pr_logo, pr_logoside, pr_bgcolor,\
+	pr_refcolor, pr_bgimg, pr_theme, pr_css, pr_theme_icon, pr_homepage, pr_cssfile
+

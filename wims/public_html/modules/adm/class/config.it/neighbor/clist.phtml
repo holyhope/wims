@@ -1,0 +1,81 @@
+
+$table_hdtr
+ <th rowspan=2>Nome del corso</th>
+ <th colspan=2>Configurazione<br>di vicinato</b><small>
+  !href cmd=help&special_parm=neibordecl help
+ </small></th>
+ <th rowspan=2>Condivisione risorse</b><small>
+  !href cmd=help&special_parm=share help
+  </small>
+ </th>
+ <th rowspan=2>Docente</th>
+ <th rowspan=2>Lingua</th>
+</tr>
+$table_hdtr
+ <td align=center><small>per voi</small></td>
+ <td align=center><small>per l'altro corso</small></td>
+</tr>
+!for i in $clst
+ !set D_=!defof class_institution\
+class_description\
+class_lang\
+class_supervisor in wimshome/log/classes/$i/.def
+ !distribute lines $D_ into i_,d_,l_,s_
+ !set t_=0
+ !if $i isitemof $n_sup
+  !advance t_
+ !endif
+ !if $i isitemof $n_part
+  !set t_=$[$t_+2]
+ !endif
+ $table_tr
+ <td align=center>
+  !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
+ </td>
+ <td align=center>$(n_n$t_)</td>
+  !set t_=0
+  !set D_=!defof n_sup\
+n_part\
+sharable_all\
+sharing_all in wimshome/log/classes/$i/neighbors
+  !distribute line $D_ into sup,part,nsharable,nsharing
+  !if $wims_class isitemof $sup or all isitemof $sup
+   !advance t_
+  !endif
+  !if $wims_class isitemof $part or all isitemof $part
+   !set t_=$[$t_+2]
+  !endif
+  <td align=center>$(n_n$t_)</td>
+  !if $i notitemof $sharable_all,$sharing_all and\
+	$wims_class notitemof $nsharable,$nsharing
+  <td align=center>---</td>
+ !else
+  <td>
+  !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
+   !if $i isitemof $sharing_all and $wims_class isitemof $nsharing
+    Partages mutuels actifs.
+   !else
+    !if $i isitemof $sharing_all
+     Vous partagez ses ressources.
+    !else
+     Partage vos ressources.
+    !endif
+   !endif
+  !else
+   !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
+    Permissions mutuelles de partage.
+   !else
+    !if $i isitemof $sharable_all
+     A le droit de partager vos ressources.
+    !else
+     Vous permet de partager ses ressources.
+    !endif
+   !endif
+  !endif
+  </td>
+ !endif
+ <td align=center><small>$s_</small></td>
+ <td align=center>$l_</td>
+</tr>
+!next i
+

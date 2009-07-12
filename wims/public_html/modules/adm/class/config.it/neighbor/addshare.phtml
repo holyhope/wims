@@ -1,0 +1,62 @@
+
+<center><font size="+1"><b>Partager les ressources sur la classe
+!href cmd=reply&job2=def $nei_description
+ de
+<em><font color=blue>$nei_institution</font></em></b></font></center><center>
+(Docente&nbsp;:
+<a href="mailto:$nei_email?subject=Class neighboring
+relations">$nei_supervisor</a>)
+</center>
+<p>
+La classe <em><font color=blue>$nei_description</font></em></b> 
+vous permet de partager ses ressources suivantes.
+<small>
+!href cmd=help&special_parm=share Help on line
+</small>
+<ul>
+!for r in $nsharable
+ <li><p><em>$(name_$r)</em> ($(it_$(r)cnt) disponible).
+ !if $r isitemof $sharing or $(sharable_$r)!=$empty
+  !if $r isitemof $sharing
+   !if $(sharing_$r)=$nei
+    Vous êtes en cours de partage.
+    !href cmd=reply&job2=stopshare&stoprec=$r Arrêter ce partage
+. <small>
+    !href cmd=help&special_parm=stopshare Help on line
+    </small>
+   !else
+    Vous ne pouvez pas les partager car vous partagez déjà celles
+    d'une autre classe.
+   !endif
+  !else
+   Vous ne pouvez pas les partager car vous permettez à d'autres classes
+   de partager VOS ressources du même type. Les partages en cascade ne sont pas
+   autorisés. Donc vous devez d'abord arrêter les permissions de partage
+   avec l'autre classe
+   avant de pouvoir partager celles de la classe 
+   <em><font color=blue>$nei_description</font></em>.
+  !endif
+ !else
+  !if $(me_$(r)cnt)>0 and $r isitemof $nosharelist
+   Vous ne pouvez pas les partager car vos propres $(name_$r) ne sont pas
+   vides. Avant le partage, vous devez d'abord
+   !href cmd=reply&job=clean nettoyer
+   vos propres ressources (si c'est possible).
+  !else
+   !href cmd=reply&addshare=$r Partager
+.
+   !if $(me_$(r)cnt)>0
+    <b><font color=red>AVERTISSEMENT</font></b>.
+    !if $r=sup
+     Il est très dangereux de partager le compte d'docente&nbsp;!
+     !href cmd=help&special_parm=supshare Détail.
+    !else
+     Le partage va EFFACER vos $(name_$r) existant(es)&nbsp;! 
+     Elles seront définitivement perdues si vous n'avez pas de sauvegarde.
+    !endif
+   !endif
+  !endif
+ !endif
+!next r
+</ul>
+

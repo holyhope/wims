@@ -1,0 +1,24 @@
+
+<center><h3>Arrêter un partage
+</b><small>
+!href cmd=help&special_parm=stopshare Help on line
+</small>
+</h3></center>
+
+!if $stoprec!=$empty and $(sharing_$stoprec)=$nei and \
+	$(me_$(stoprec)cnt)>0 and $me_testcnt>0 and confirm!=yes and \
+	$stoprec isitemof $nosharelist
+ <b>ATTENTION</b>. Votre classe a un registre d'activités actif et les
+ ressources partagées ne sont pas vides. Si vous arrêtez ce partage
+ maintenant, vous ne pourrez plus les repartager plus tard.
+ <p>
+ Etes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
+ <p><center><font size="+1"> 
+ !href cmd=reply&stoprec=$stoprec&confirm=yes Oui&nbsp;; arrêter.
+ &nbsp;&nbsp;
+ !href cmd=reply&job2=def Non&nbsp;; laisser en l'état.
+ </font></center> <p>
+!else
+ Manipulation error: You should never land here.
+!endif
+

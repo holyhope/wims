@@ -1,0 +1,57 @@
+common=userlist,oef,doc
+
+!if $class_type=4
+ !bound job2 within structure,teacherlist,$common default $
+!else
+ !if $class_type=2
+  !bound job2 within teacherlist,$common default $
+ !else
+  !bound job2 within $common default $
+ !endif
+!endif
+
+!if $job2=$empty
+ job=list
+ !changeto $job.proc
+!endif
+
+!if $job2=structure
+ !read adm/gateway/mkindex
+ lcnt=!linecnt $ldata
+ ccnt=!linecnt $cdata
+ pcnt=!linecnt $pdata
+ icnt=!linecnt $idata
+ result=$lcnt levels, $ccnt classes, $pcnt programs, $icnt interlevel courses found.
+ !exit
+!endif
+
+!if $job2=teacherlist
+ !read adm/gateway/mkteacherlist
+ result=!record 0 of wimshome/log/classes/$wims_class/.teacherlist
+ result=!linecnt $result
+ result=$result teachers found.
+ !exit
+!endif
+
+!if $job2=userlist
+ !read adm/class/mkuserlist
+ result=!recordcnt wimshome/log/classes/$wims_class/.userlist
+ result=$result participants found.
+ !exit
+!endif
+
+!if $job2=oef
+ result=!sh cd $wims_home/log/classes/$wims_class\
+  src2def oef
+ !exit
+!endif
+
+!if $job2=doc
+ Docdir=log/classes/$wims_class/doc
+ docdir=wimshome/$Docdir
+ !read adm/docindex.proc
+ result=!recordcnt $docdir/.index
+ result=$result documents found.
+ !exit
+!endif
+
