@@ -3,6 +3,8 @@
  There is no manually entered grades yet in your class.
  !href cmd=reply&method=column&cc=1 Add one
 .
+!set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
+to $wims_menu_items
  !exit
 !endif
 
@@ -64,6 +66,8 @@ $table_end
  modify grades, or 
  !href cmd=reply&method=column&cc=$[$gcnt+1] add another column
 .
+ !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
+to $wims_menu_items
 !else
  modify grades.
 !endif
@@ -74,5 +78,8 @@ You can also directly
  of the grades, or
  !href module=adm/class/userlist&cmd=new&job=csv communicate the grades
  with your spreadsheet.
+ !set wims_menu_items=!append line raw,1,cmd=reply&method=raw\
+ csv,1,module=adm/class/userlist&cmd=new&job=csv\
+to $wims_menu_items
 !endif
 

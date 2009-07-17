@@ -41,19 +41,26 @@ in het globale gemiddelde van elke leerling.
 !if $method!=list
  !href cmd=reply&method=list Annuleer 
  de veranderingen.
+ !set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!if $method!=list
- !href cmd=reply&method=list Annuleer 
- de veranderingen.
-!endif
+!!!if $method!=list
+!! !href cmd=reply&method=list Annuleer 
+!! de veranderingen.
+!!!endif
 
 <p>
-!href module=adm/class/userlist De andere cijfers
+!if $method=user
+ !href module=adm/class/userlist&job=getuser&getuser=$un De andere cijfers  $username
 .
+!endif
+
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userlist\
+to $wims_menu_items
 
 :end
 !tail

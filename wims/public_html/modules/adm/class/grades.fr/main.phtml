@@ -43,28 +43,27 @@ dans la moyenne globale de chaque participant.
 <p>
  !href cmd=reply&method=list Revenir à la liste
 .
-</p>
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!if $method!=list
- !href cmd=reply&method=list Revenir à la liste
-.
-!endif
+!!!if $method!=list
+!! !href cmd=reply&method=list Revenir à la liste
+!!.
+!!!endif
 
 <p>
 !if $method=user
-!href module=adm/class/userlist&job=getuser&getuser=$un Les autres notes de $username
+ !href module=adm/class/userlist&job=getuser&getuser=$un Les autres notes de $username
 .
-
-!else
-!href module=adm/class/userlist Les autres notes
-.
-
 !endif
-</p>
+
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userlist\
+to $wims_menu_items
+
 :end
 !tail
 

@@ -3,6 +3,8 @@
  Il n'y a aucune note attribuée manuellement dans votre classe.
  !href cmd=reply&method=column&cc=1 En ajouter une colonne
 .
+!set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
+to $wims_menu_items
  !exit
 !endif
 
@@ -65,6 +67,8 @@ $table_end
  modifier les notes ou
  !href cmd=reply&method=column&cc=$[$gcnt+1] ajoutez une autre colonne
 .
+ !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
+to $wims_menu_items
 !else
  modifier les notes.
 !endif
@@ -75,5 +79,8 @@ Vous pouvez aussi
  des notes directement ou
  !href module=adm/class/userlist&cmd=new&job=csv récupérer les notes
  en format tableur.
+ !set wims_menu_items=!append line raw,1,cmd=reply&method=raw\
+ csv,1,module=adm/class/userlist&cmd=new&job=csv\
+to $wims_menu_items
 !endif
 

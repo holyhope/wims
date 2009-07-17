@@ -3,6 +3,8 @@
  No hay puntuaciones introducidas manualmente en su clase.
  !href cmd=reply&method=column&cc=1 Añadir una columna
 .
+!set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
+to $wims_menu_items
  !exit
 !endif
 
@@ -18,6 +20,7 @@ $table_hdtr<th>Nombre<th><small>Media</small>
  !endif
  </small>
 !next g
+
 $table_hdtr<th>Peso<td align=center>--</th>
 !for g=1 to $gcnt
  !set w_=!item $g of $weights
@@ -64,6 +67,8 @@ $table_end
  modificar las puntuaciones, o
  !href cmd=reply&method=column&cc=$[$gcnt+1] añadir otra columna
 .
+ !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
+to $wims_menu_items
 !else
  modificar las puntuaciones.
 !endif
@@ -74,5 +79,8 @@ También puede
  las puntuaciones de manera manual, o
  !href module=adm/class/userlist&cmd=new&job=csv comunicar las notas
  por medio de una hoja de cálculo.
+ !set wims_menu_items=!append line raw,1,cmd=reply&method=raw\
+ csv,1,module=adm/class/userlist&cmd=new&job=csv\
+to $wims_menu_items
 !endif
 

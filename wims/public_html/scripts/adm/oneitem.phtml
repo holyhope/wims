@@ -9,6 +9,9 @@
   !set w_name1=!word 1 of $1_
   !set w_name2=!word 2 to -1 of $1_
   !set w_name=$(wims_name_$(w_name1)) $w_name2
+  !if $w_name issametext
+    !set w_name=$1_
+  !endif
  !! !if $wims_theme_icon!=$empty
  !!   !set w_image=<img border=0 src="gifs/themes/$wims_theme_icon/$w_name1.gif" alt="$1_" title="$_">
  !! !endif
@@ -27,11 +30,11 @@
  !if $4_ notsametext
   <a href="$3_" target="wims_$4_" class="$w_name1"><span class="text_item">$w_name</span></a>
  !else
-  <a href="$3_" id="$w_name1"><span class="text_item">$w_name</span></a>
+  <a href="$3_" class="$w_name1"><span class="text_item">$w_name</span></a>
  !endif
  !exit
 :3
- <a href="#" onclick="$3_" id="$w_name1"><span class="text_item">$w_name</span></a>
+ <a href="#" onclick="$3_" class="$w_name1"><span class="text_item">$w_name</span></a>
  !exit
 :4
  !set wims_ref_class=$w_name1

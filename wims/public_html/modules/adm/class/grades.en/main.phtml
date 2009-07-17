@@ -12,6 +12,7 @@
  !!read help.phtml
  !!goto end
 !!endif
+
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 Manually entered participant grades
@@ -40,19 +41,26 @@ in the global average for each participant.
 !if $method!=list
  !href cmd=reply&method=list Abandon the changes
 .
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!if $method!=list
- !href cmd=reply&method=list Abandon the changes
+!i!!f $method!=list
+!! !href cmd=reply&method=list Abandon the changes
+!!.
+!!!endif
+
+<p>
+!if $method=user
+ !href module=adm/class/userlist&job=getuser&getuser=$un The other grades of $username
 .
 !endif
 
-<p>
-!href module=adm/class/userlist The other grades
-.
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userlist\
+to $wims_menu_items
 
 :end
 !tail

@@ -12,6 +12,7 @@
  !!read help.phtml
  !!goto end
 !!endif
+
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 Voti inseriti manualmente
@@ -44,28 +45,27 @@ al punteggio medio globale dei partecipanti.
 <p>
  !href cmd=reply&method=list Annulla le modifiche
 .
-</p>
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!if $method!=list
- !href cmd=reply&method=list Annulla le modifiche
-.
-!endif
+!!!if $method!=list
+!!!href cmd=reply&method=list Annulla le modifiche
+!!.
+!!!endif
 
 <p>
 !if $method=user
 !href module=adm/class/userlist&job=getuser&getuser=$un Gli altri voti dello studente $username
 .
-
-!else
-!href module=adm/class/userlist Gli altri voti
-.
-
 !endif
-</p>
+
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userlist\
+to $wims_menu_items
+
 :end
 !tail
 

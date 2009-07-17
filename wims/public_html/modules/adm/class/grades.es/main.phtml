@@ -13,7 +13,7 @@
  !!goto end
 !!endif
 
- !read adm/title.phtml 1\
+!read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 Puntuaciones de los participantes introducidas manualmente
 !!<center>$classname
@@ -42,19 +42,26 @@ en la media global de cada participante.
 !if $method!=list
  !href cmd=reply&method=list Descartar los cambios
 .
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!if $method!=list
- !href cmd=reply&method=list Descartar los cambios
+!!!if $method!=list
+!! !href cmd=reply&method=list Descartar los cambios
+!!.
+!!!endif
+
+<p>
+!if $method=user
+ !href module=adm/class/userlist&job=getuser&getuser=$un Las otras puntuaciones $username
 .
 !endif
 
-<p>
-!href module=adm/class/userlist Las otras puntuaciones
-.
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userlist\
+to $wims_menu_items
 
 :end
 !tail

@@ -41,18 +41,26 @@ $wims_classname - $wims_institutionname\
 !if $method!=list
  !href cmd=reply&method=list 放弃修改
 .
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!if $method!=list
- !href cmd=reply&method=list 放弃修改
+!!!if $method!=list
+!! !href cmd=reply&method=list 放弃修改
+!!.
+!!!endif
+
+<p>
+!if $method=user
+ !href module=adm/class/userlist&job=getuser&getuser=$un 其它评分 $username
 .
 !endif
 
-<p>
-!href module=adm/class/userlist 其它评分
+!set wims_menu_items=!append line otherscore,1,module=adm/class/userlist\
+to $wims_menu_items
 
 :end
 !tail

@@ -3,6 +3,8 @@
 你的班级里还没有手工输入的评分.
  !href cmd=reply&method=column&cc=1 添加
 .
+!set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
+to $wims_menu_items
  !exit
 !endif
 
@@ -18,6 +20,7 @@ $table_hdtr<th>名字<th><small>平均</small>
  !endif
  </small>
 !next g
+
 $table_hdtr<th>权重<td align=center>--</th>
 !for g=1 to $gcnt
  !set w_=!item $g of $weights
@@ -64,6 +67,8 @@ $table_end
 修改评分, 或
  !href cmd=reply&method=column&cc=$[$gcnt+1] 添加另一个栏目
 .
+ !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
+to $wims_menu_items
 !else
 修改评分.
 !endif
@@ -74,5 +79,8 @@ $table_end
 评分的源码, 或者与你的电子表格
  !href module=adm/class/userlist&cmd=new&job=csv 交换评分
 .
+!set wims_menu_items=!append line raw,1,cmd=reply&method=raw\
+ csv,1,module=adm/class/userlist&cmd=new&job=csv\
+to $wims_menu_items
 !endif
 

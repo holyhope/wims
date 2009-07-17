@@ -3,6 +3,8 @@
  Non ci sono voti inseriti manulamente
  !href cmd=reply&method=column&cc=1 Aggiungi una colonna
 .
+!set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
+to $wims_menu_items
  !exit
 !endif
 
@@ -65,6 +67,8 @@ $table_end
  modificarne i voti o 
  !href cmd=reply&method=column&cc=$[$gcnt+1] aggiungere una nuova colonna
 .
+ !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
+to $wims_menu_items
 !else
  modificare i voti.
 !endif
@@ -75,6 +79,8 @@ Si possono anche
  i file dei voti o
  !href module=adm/class/userlist&cmd=new&job=csv passare i dati
  ad un foglio elettronico.
-.
+ !set wims_menu_items=!append line raw,1,cmd=reply&method=raw\
+ csv,1,module=adm/class/userlist&cmd=new&job=csv\
+to $wims_menu_items
 !endif
 
