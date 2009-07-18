@@ -17,7 +17,7 @@ Op deze website, vind je
 Bezoek:
 <ul class="wims_home_list">
 <li class="wims_home_list">
-!href module=adm/class/classes Virtuele klaslokalen.
+!href module=adm/class/classes Openbare virtuele klaslokalen.
 </li>
 !if $wims_theme_version=0
 <li class="wims_home_list">
