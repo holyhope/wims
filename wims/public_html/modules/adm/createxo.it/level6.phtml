@@ -1,5 +1,7 @@
 
-<center><h3>Immagine da inserire nell'esercizio</h3></center>
+!read adm/title.phtml 3\
+\
+Immagine da inserire nell'esercizio
 
 !if $quota=yes
  <b>Errore</b>. Spiacenti: non è più possibile inserire file relativi 
@@ -43,10 +45,16 @@ Nome del file immagine da inserire nell'esercizio:
  un metodo <em>costoso</em> e il suo uso va pertanto limitato a quando
  effettivamente necessario.
 !endif
-<p><center>
-!href cmd=resume&level=3&realtest=yes&retest=again Prova l'esercizio
-.&nbsp;
-!href cmd=reply&level=3 Torna al menù
-.
-</center>
+
+!set wims_menu_items=!append line \
+testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
+backcreatexo,1,cmd=reply&level=3\
+to $wims_menu_items
+
+!!<p><center>
+!!!href cmd=resume&level=3&realtest=yes&retest=again Prova l'esercizio
+!!.&nbsp;
+!!!href cmd=reply&level=3 Torna al menù
+!!.
+!!</center>
 

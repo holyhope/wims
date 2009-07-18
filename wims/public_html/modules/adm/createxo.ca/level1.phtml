@@ -1,19 +1,3 @@
-Benvingut a aquesta pàgina que permet crear en mode guiat els vostres
-!if $wims_user!=supervisor
- exercicis interactius
-!else
- exercicis interactius per la classe <font color=blue>
- $wims_classname</font> de <font color=blue>$wims_institutionname</font>
-!endif
-. Hi ha
-!href cmd=reply&mode=model models preparats
-.
-Si ja sou un expert o si 
-teniu un fitxer amb el codi de l'exercici, també podeu passar a
-!href cmd=reply&rawinp=yes mode pur
- o a
-!href cmd=reply&mode=file mode fitxer
-.
 
 !form reply
 <input type=hidden name=level value=2>
@@ -46,46 +30,7 @@ Adreça electrònica&nbsp;:<td><input size=30 maxlength=80 name=oef_email value="$
 <input type=submit value="Continuar amb el contingut de l'exercici">
 </center>
 </form>
-!set wims_menu_items=!append line modtool,1,module=adm/modtool\
-model,1,cmd=reply&mode=model\
-quicktool,1,module=adm/quicktool\
-latex2wims,1,module=adm/latex2wims\
- to $wims_menu_items
 
-!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
-
- <table bgcolor="#d0c080">
-  <tr>
-    <td rowspan=4>
-      Veure també
-    </td>
-   <td bgcolor=lemonchiffon>
-      !href module=adm/modtool Modtool
-       per a desenvolupar en línia mòduls WIMS d'alt nivell,
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor=lemonchiffon>
-      !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code>
-       o 
-       !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
-        per una confecció interactiva de qcm simples.
-    </td>
-  </tr>
-  <tr>
-  <td bgcolor=lemonchiffon>
-      !href module=adm/quicktool Quicktool
-       per a desenvolupar exercicis de llengües,
-    </td>
-    <tr>
-    <td bgcolor=lemonchiffon>
-      !href module=adm/latex2wims Latex2wims
-       per a fabricar documents a partir de textos en latex.
-    </td>
-    </tr>
-  </tr>
-</table>
-!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 !if $wims_user=supervisor
  !read wimshome/log/classes/$wims_class/Exindex
  !if $exototal>0

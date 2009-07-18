@@ -1,22 +1,3 @@
-Welkom.<br>Dit is de het onderdeel waar interactieve 
-!if $wims_user!=supervisor
- oefeningen
-!else
- oefeningen voor uw klas<font color=blue>
- $wims_classname</font> van <font color=blue>$wims_institutionname</font>,
-!endif
-kunnen worden gemaakt.<br>
-Hier staan enkele uitgewerkte
-!href cmd=reply&mode=model voorbeelden
-<img src="gifs/new.gif">.<br>
-Hebt u al vaker gewerkt met Createxo of het OEF formaat, kunt u in
-!href cmd=reply&rawinp=yes expert mode
- online uw broncode bewerken en uittesten, of 
-!href cmd=reply&mode=file in file mode
- voor het opsturen van OEF bestanden naar de server.<br>
-Nieuwkomers kunnen ook werken aan enkele simpele 
-!href cmd=help&special_parm=examples voorbeelden
-.
 
 !form reply
 <input type=hidden name=level value=2>
@@ -49,45 +30,7 @@ Emailadres:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
 <input type=submit value="OK en ga verder">
 </center>
 </form>
-!set wims_menu_items=!append line modtool,1,module=adm/modtool\
-model,1,cmd=reply&mode=model\
-quicktool,1,module=adm/quicktool\
-latex2wims,1,module=adm/latex2wims\
- to $wims_menu_items
 
-!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!! 
-<table bgcolor="#d0c080"> 
- <tr> 
- <td rowspan=4> 
- U kunt ook:
- </td> 
- <td bgcolor=lemonchiffon>
- !href module=adm/modtool Modtool
- gebruiken voor het produceren van full_power modules, 
- </td> 
- </tr> 
- <tr> 
- <td bgcolor=lemonchiffon>
- !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code> 
- of
- !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
- voor het maken van interactieve meerkeuze vragen.
- </td> 
- </tr> 
- <tr> 
- <td bgcolor=lemonchiffon> 
- !href module=adm/quicktool Quicktool
- voor het maken van taalkundige oefeningen.
- </td> 
- <tr> 
- <td bgcolor=lemonchiffon> 
- !href module=adm/latex2wims Latex2wims
- voor het produceren van interactieve WIMS documenten uit LaTeX bestanden.
- </td> 
- </tr> 
- </tr> 
-</table> 
-!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 !if $wims_user=supervisor
  !read wimshome/log/classes/$wims_class/Exindex
  !if $exototal>0

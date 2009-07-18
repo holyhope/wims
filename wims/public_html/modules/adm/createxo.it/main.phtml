@@ -1,3 +1,4 @@
+!read names.phtml
 !if $oef_test=yes
  !set wims_html_header=!append line $header_js to $wims_html_header
 !endif
@@ -34,7 +35,7 @@
 
 !if $oef_test=yes
  <center>La realizzazione dell'esercizio sar&agrave; come segue.
- !if $wims_theme_version=0
+ !if $wims_theme_version=0 or $wims_theme_version=
  <br>
  !href cmd=resume&realtest=no Torna a $module_title.
  !endif
@@ -57,6 +58,30 @@
 !endif
 
 :end
+!if $level notwordof 0 6
+ !set wims_menu_items=!append line createxo,1,module=adm/createxo\
+to $wims_menu_items
+!else
+ !set wims_menu_items=createxo,0,Createxo\
+to $wims_menu_items
+!endif
+!if $level iswordof 0 1
+!set wims_menu_items=!append line  model,1,cmd=reply&mode=model&level=1\
+normalmode,1,cmd=reply&mode=normal&level=1\
+rawmode,1,cmd=reply&rawinp=yes&level=1\
+filemode,1,cmd=reply&mode=file&level=1\
+ to $wims_menu_items
+ 
+!set wims_menu_items=!append line ,0,\
+othermethods,0,$wims_name_othermethods\
+Createqcm,1,module=adm/auth/createqcm\
+Confia2qcm,1,module=adm/auth/confia2qcm\
+modtool,1,module=adm/modtool\
+quicktool,1,module=adm/quicktool\
+latex2wims,1,module=adm/latex2wims\
+ to $wims_menu_items
+!endif
+
 !tail
 
 !reset wims_deposit, delfile

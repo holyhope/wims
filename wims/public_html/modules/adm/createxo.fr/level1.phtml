@@ -1,20 +1,3 @@
-Bienvenue à cette page qui vous permet de créer vos propres
-!if $wims_user!=supervisor
- exercices interactifs,
-!else
- exercices interactifs pour la classe <font color=blue>
- $wims_classname</font> de <font color=blue>$wims_institutionname</font>,
-!endif
-en mode guidé. Il y a des
-!href cmd=reply&mode=model modèles préparés
-.
-Si vous êtes expert ou si vous
-avez un fichier source d'exercice sauvé auparavant, vous pouvez aussi passer
-en
-!href cmd=reply&rawinp=yes mode brut
- ou
-!href cmd=reply&mode=file mode fichier
-.
 
 !form reply
 <input type=hidden name=level value=2>
@@ -47,45 +30,7 @@ Adresse électronique&nbsp;:<td><input size=30 maxlength=80 name=oef_email value=
 <input type=submit value="Continuer pour créer le contenu de l'exercice">
 </center>
 </form>
-!set wims_menu_items=!append line modtool,1,module=adm/modtool\
-model,1,cmd=reply&mode=model\
-quicktool,1,module=adm/quicktool\
-latex2wims,1,module=adm/latex2wims\
- to $wims_menu_items
 
-!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
-
- <table bgcolor="#d0c080">
-  <tr>
-    <td rowspan=4>
-      Voir aussi
-    </td>
-   <td bgcolor=lemonchiffon>
-      !href module=adm/modtool Modtool
-       pour développer en ligne des modules WIMS à pleine puissance,
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor=lemonchiffon>
-      !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code>
-       ou 
-       !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
-        pour une confection interactive de qcm simples.
-    </td>
-  </tr>
-  <tr>
-  <td bgcolor=lemonchiffon>
-      !href module=adm/quicktool Quicktool
-       pour développer  des exercices de langues,
-    </td>
-    <tr>
-    <td bgcolor=lemonchiffon>
-      !href module=adm/latex2wims Latex2wims
-       pour fabriquer des documents à partir de textes en latex.
-    </td>
-    </tr>
-</table>
-!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 !if $wims_user=supervisor
  !read wimshome/log/classes/$wims_class/Exindex
  !if $exototal>0

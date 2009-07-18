@@ -1,5 +1,7 @@
 
-<center><h3>Fichiers d'image pour l'exercice</h3></center>
+!read adm/title.phtml 3\
+\
+Fichiers d'image pour l'exercice
 
 !if $quota=yes
  <b>Erreur</b>. Vous ne pouvez plus mettre des fichiers dans votre classe, car
@@ -26,7 +28,7 @@ Fichier d'image à envoyer dans l'exercice&nbsp;:
  !for i in $imglist
   <tr><td valign=middle align=center>$i
   <td valign=middle align=center>
-  <img src="$wims_ref_name?cmd=getfile&session=$wims_session&special_parm=oefimg/$i" alt=""
+  <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
    height=40 width=50>
   <td valign=middle align=center>
   !href cmd=reply&delfile=$i Effacer
@@ -43,10 +45,13 @@ Fichier d'image à envoyer dans l'exercice&nbsp;:
  est que les étudiants ne verront pas le nom du fichier. A cause de son coût
  en performance, n'utilisez cette méthode que lorsque c'est nécessaire.
 !endif
-<p><center>
-!href cmd=resume&level=3&realtest=yes&retest=again Tester l'exercice
-.&nbsp;
-!href cmd=reply&level=3 Retour au menu
-.
-</center>
+
+!set wims_menu_items=!append line \
+testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
+backcreatexo,1,cmd=reply&level=3\
+to $wims_menu_items
+
+!!!href cmd=resume&level=3&realtest=yes&retest=again Tester l'exercice
+!!.&nbsp;
+!!!href cmd=reply&level=3 Retour au menu
 

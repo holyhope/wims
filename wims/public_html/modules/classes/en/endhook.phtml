@@ -1,18 +1,23 @@
 !! This file can contain contents which go to the end of the page.
 
 !if $wims_user=supervisor
+!! <p>
+!! You may
+!! !href module=adm/createxo&existing=$thisexo modify
+!! or
+!! !href module=adm/createxo&delete=$thisexo&deltitle=$title delete
+!! this exercise.
  <p>
- You may
- !href module=adm/createxo&existing=$thisexo modify
- or
- !href module=adm/createxo&delete=$thisexo&deltitle=$title delete
- this exercise.
- <p>
+ !set wims_menu_items=!append line exomodify,1,module=adm/createxo&existing=$thisexo\
+ exoerase,1,module=adm/createxo&delete=$thisexo&deltitle=$title\
+ to $wims_menu_items
 !else
  !if ..*/$wims_user. isin ..*/$thisexo
-  You may
-  !href module=adm/createxo&existing=$thisexo modify
-  this exercise.
+!!  You may
+!! !href module=adm/createxo&existing=$thisexo modify
+!!  this exercise.
+  !set wims_menu_items=!append line exomodify,1,module=adm/createxo&existing=$thisexo\
+  to $wims_menu_items
  !endif
 !endif
 

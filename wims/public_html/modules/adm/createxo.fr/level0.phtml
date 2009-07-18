@@ -1,0 +1,118 @@
+
+Bienvenue à cette page qui vous permet de créer vos propres
+!if $wims_user!=supervisor
+ exercices interactifs.
+!else
+ exercices interactifs pour la classe <font color=blue>
+ $wims_classname</font> de <font color=blue>$wims_institutionname</font>,
+!endif
+
+Vous avez à votre disposition plusieurs outils de création dans Createxo.
+Ils permettent de créer des exercices de format OEF (Online Exercise Format) : 
+<ol>
+<li>Différents modes guidés pour créer un exercice à l'aide d'un formulaire : 
+   <ul><li>
+      des exercices libres en 
+     !href cmd=reply&mode=normal&level=1 mode guidé
+ ;</li><li>
+    plusieurs modèles d'exercices paramétrables sont disponibles :
+    !href cmd=reply&mode=model&level=1 modèles préparés
+.</li>
+   </ul>
+<li> Un mode non guidé sous deux versions :
+<ul><li>
+!href cmd=reply&rawinp=yes&level=1 en mode brut
+, pour écrire le  code source d'un exercice 
+directement en ligne ;
+</li><li>
+!href cmd=reply&mode=file&level=1 en mode fichier
+, pour envoyer un code source de l'exercice que vous avez préalablement 
+créé avec l'éditeur de texte de votre ordinateur.
+</li>
+</ul>
+</ol>
+
+D'autres outils sont disponibles : 
+<ul><li>des outils comme
+  !href module=adm/auth/confia2qcm Confia2qcm
+, 
+!href module=adm/auth/createqcm Createqcm
+ aident à la création de deux types de QCM préformatés.
+<li>    
+Modtool permet de créer des exercices très libres mais aussi d'organiser 
+vos exercices OEF ou vos documents (nécessite un compte développeur).
+ Cet outil est le moyen permettant de publier par la suite vos exercices ou
+documents même en dehors de vos classes.
+<li>
+!href module=adm/quicktool Quicktool
+ est particulièrement adapté aux langues et aux matières littéraires. Il permet de concevoir
+en mode guidé des exercices de type OEF de formats divers (GAP, QCM, SELECTWORD, ...) ; 
+il permet des exercices à étape, des exercices où l'élève peut avoir plusieurs essais, des aides progressives.
+Il permet d'utiliser les banques d'enregistrement d'audio du projet <a href="http=">Shtooka</a>.
+L'utilisation de Quicktool nécessite pour l'instant d'avoir un compte développeur.
+<li>     
+!href module=adm/latex2wims Latex2wims
+ permet de traduire au format WIMS des documents écrits en latex. Il prend compte
+ des parties interactives faites dans un environnement <tt>wims</tt>. 
+ Il nécessite un compte dévelopeur. 
+</li></ul>
+
+!!Bienvenue à cette page qui vous permet de créer vos propres
+!!!if $wims_user!=supervisor
+!! exercices interactifs,
+!!!else
+!! exercices interactifs pour la classe <font color=blue>
+!! $wims_classname</font> de <font color=blue>$wims_institutionname</font>,
+!!!endif
+!!en mode guidé. Il y a des
+!!!href cmd=reply&mode=model modèles préparés
+!!.
+!!Si vous êtes expert ou si vous
+!!avez un fichier source d'exercice sauvé auparavant, vous pouvez aussi passer
+!!en
+!!!href cmd=reply&rawinp=yes mode brut
+!! ou
+!!!href cmd=reply&mode=file mode fichier
+!!.
+!!
+!!
+!!!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+!!
+!! <table bgcolor="#d0c080">
+!!  <tr>
+!!    <td rowspan=4>
+!!      Voir aussi
+!!    </td>
+!!   <td bgcolor=lemonchiffon>
+!!      !href module=adm/modtool Modtool
+!!       pour développer en ligne des modules WIMS à pleine puissance,
+!!    </td>
+!!  </tr>
+!!  <tr>
+!!    <td bgcolor=lemonchiffon>
+!!      !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code>
+!!       ou 
+!!       !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
+!!        pour une confection interactive de qcm simples.
+!!    </td>
+!!  </tr>
+!!  <tr>
+!!  <td bgcolor=lemonchiffon>
+!!      !href module=adm/quicktool Quicktool
+!!       pour développer  des exercices de langues,
+!!    </td>
+!!    <tr>
+!!    <td bgcolor=lemonchiffon>
+!!      !href module=adm/latex2wims Latex2wims
+!!       pour fabriquer des documents à partir de textes en latex.
+!!    </td>
+!!    </tr>
+!!</table>
+!!!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+!!
+!!
+!!!!!if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+!!!!   !set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+!!!!   to $wims_menu_items  
+!!!!!endif
+!!
