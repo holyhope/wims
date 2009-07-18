@@ -3,7 +3,7 @@
 Het WIMS logo 
 </h1>
 <p>
-<img src="gifs/logo-160.gif" align=middle alt="logo">
+<img src="gifs/logo-160.gif" align="middle" alt="logo">
 </center>
 <p>
 Deze kurve volgt een punt op een schijf met straal 1, rond draaiend
@@ -17,7 +17,7 @@ Dit bewegende plaatje is gemaakt met de module
  met WIMS.
 <p>
 <ul>
-<li>Type plot: een parametrische curve in 2D.
+<li>Type plot: een parametrische curve in 2D.</li>
 <li>Vergelijkingen:
 <pre>
      x=(1-s)*cos(t+pi*s)+s*cos(2*t)
@@ -25,10 +25,12 @@ Dit bewegende plaatje is gemaakt met de module
 </pre>
   (waarbij s de ``sequentiele parameter'' is, zoals gedefineerd in 
   <font color=red>Tracés animés</font>.)
+</li>
 <li>Variabelen range:
 <pre>
      -1&lt;x&lt;1, -1&lt;y&lt;1, 0&lt;t&lt;2*pi.
 </pre>
+</li>
 </ul>
 Je kunt ook
 !href module=tool/geometry/animtrace.en&cmd=new&type=parametric2D&x1=(1-s)*cos(t+pi*s)+s*cos(2*t)&y1=(1-s)*sin(t+pi*s)-s*sin(2*t)&tleft=0&tright=2*pi&xleft=-1&xright=1&yleft=-1&yright=1&special_parm=noshow  direct deze instellingen

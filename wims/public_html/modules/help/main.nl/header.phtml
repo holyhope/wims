@@ -10,53 +10,58 @@
 !header1
 
 !!<body $wims_htmlbody $w_resize>
-<div class=wimsmenu>
+<div class="wimsmenu">
 !robottrap
 
-<center><table border=0 cellspacing=0 cellpadding=5 bgcolor="$wims_ref_bgcolor">
-<tr><td align=center>
+<center><table summary="" border="0" cellspacing="0" cellpadding="5" bgcolor="$wims_ref_bgcolor">
+<tr><td align="center">
 !if _ isin $wims_subsession
  <a href="#" onclick="window.close()">Sluit dit venster</a>
 !else
- !href session=$wims_session.1 WIMS home
+ !href session=$wims_session.1 Terug
 !endif
 !if $style=print
  &nbsp;
- !href module=$module&chapter=0 Interactive version
+ !href module=$module&chapter=0 Interactieve version
  !set chapter=-1
  !goto tabend
 !endif
 !if $chapter>0
- <td align=center>
+ <td align="center">
  !href module=$module&chapter=0 Help index
 &nbsp;
 !endif
-<td align=center>
-!href module=$module&style=print Version imprimable
+<td align="center">
+!href module=$module&style=print Print versie
 &nbsp;
 !if $chapter>1
- <td align=center>
- !href module=$module&chapter=$[$chapter-1] Vorige 
- &nbsp;hoofdstuk
+ <td align="center">
+ !href module=$module&chapter=$[$chapter-1] Vorige&nbsp;hoofdstuk
 !endif
 !if $chapter<$chaptercnt
- <td align=center>
- !href module=$module&chapter=$[$chapter+1] Volgende
- &nbsp;hoofdstuk
+ <td align="center">
+ !href module=$module&chapter=$[$chapter+1] Volgende&nbsp;hoofdstuk
 !endif
 
-</table></center></div><div class=wimsbody>
+:tabend
+</table></center>
+</div>
+<!--wimsmenu-->
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<div class="wimsbody">   
 
 !if $chapter>0
  !set l=!line 1 of $(chapter$chapter)
  !set ll=!word $chapter of I II III IV V VI VII IIIV IX X
- !set l=Chapter $ll. $l
+ !set l=Hoofdstuk $ll. $l
 !else
- !set l=Algemene index
+    !if $chapter<0
+	!set l=Print versie
+    !else
+	!set l=Algemene index
+    !endif
 !endif
-
-<p><center><h1>WIMS help<br><font size="+1"><b>
+<p><h1 class="wims_title">WIMS help<br><font size="+1"><b>
 $l</b></font>
-</h1></center> <p>
-
-
+</h1> <p> 

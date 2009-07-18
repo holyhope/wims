@@ -47,7 +47,8 @@ V_Quit		=Weg uit de klas
 V_Wsup		=Schrijf naar de docent
 V_Chpref	=Verander de voorkeurs instellingen 
 V_Chpass	=Verander het wachtwoord
-V_sh		=werkblad
+V_sh		=Werkblad
+V_shs           =Werkbladen
 V_exam		=proefwerk
 
 CR_1		=maak je eigen
@@ -130,7 +131,7 @@ SE_mod		=Bericht van de dag
 SE_config	=Configuratie/Onderhoud
 SE_secu		=Security management
 
-ADD_1		=Voeg toe
+ADD_1		=Toevoegen:
 ADD_doc		=document
 ADD_sheet	=werkblad
 ADD_exam	=overhoring
@@ -138,7 +139,7 @@ ADD_exo		=oefening
 ADD_vote	=enquete
 ADD_class	=klas
 ADD_2		=
-ADD_3		=voeg toe
+ADD_3		=Toevoegen:
 ADD_cdt         =Agenda
 
 CL_Names	=Niveaus ,Klassen ,Programma's ,Cursussen ,Interklas cursussen
@@ -146,7 +147,7 @@ CL_Test		=Test zone
 CL_otherNames=Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas
 
 ER_expression	=<b>Waarschuwing.</b> <br>\
-Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch 
+Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch.
 
 !if $wims_supertype=4
  U_oclass       =Verwissel van zone
