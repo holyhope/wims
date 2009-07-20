@@ -42,7 +42,11 @@ $classname\
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>Sheet $se: $ti
+  !if $se=$sheetcnt 
+   <option value=$se selected>Sheet $se: $ti
+  !else
+   <option value=$se>Sheet $se: $ti
+  !endif
  !next i
  </select>
  <p>你也能改变标题及其描述. <p>

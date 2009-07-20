@@ -42,7 +42,11 @@ Inserire un modulo in un test di autovalutazione
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>Test numero $se: $ti
+  !if $se=$sheetcnt 
+   <option value=$se selected>Test numero $se: $ti
+  !else
+   <option value=$se>Test numero $se: $ti
+  !endif
  !next i
  </select>
  <p>&Egrave; possibile modificare il titolo e/o la descrizione. <p>

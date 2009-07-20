@@ -41,7 +41,11 @@ Insérer un module dans une feuille
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>Feuille $se: $ti
+  !if $se=$sheetcnt
+   <option value=$se selected>Feuille $se: $ti
+  !else
+   <option value=$se>Feuille $se: $ti
+  !endif
  !next i
  </select>
  <p>Vous pouvez aussi modifier le titre et le texte descriptif. <p>

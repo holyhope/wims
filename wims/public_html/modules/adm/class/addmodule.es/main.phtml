@@ -42,7 +42,11 @@ Insertar un módulo en una hoja de trabajo
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>Hoja $se: $ti
+  !if $se=$sheetcnt 
+   <option value=$se selected>Hoja $se: $ti
+  !else
+   <option value=$se>Hoja $se: $ti
+  !endif
  !next i
  </select>
  <p>También puede modificar el título y el texto de la descripción. <p>

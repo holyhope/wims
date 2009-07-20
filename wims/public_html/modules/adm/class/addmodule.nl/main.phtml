@@ -42,7 +42,11 @@ Voeg een oefening toe aan een Werkblad
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>Werkblad $se: $ti
+  !if $se=$sheetcnt 
+   <option value=$se selected>Werkblad $se: $ti
+  !else
+   <option value=$se>Werkblad $se: $ti
+  !endif
  !next i
  </select>
  <p>Je kunt nu ook de titel en de omschrijving van het werkblad veranderen

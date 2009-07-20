@@ -46,7 +46,10 @@ $classname\
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  <option value=$se>清單 $se: $ti
+  !if $se=$sheetcnt
+   !set selected=selected
+  !endif
+   <option value=$se $selected>清單  $se: $ti
  !next i
  </select>
  <p>您也可以修改標題及說明內容。<p>
