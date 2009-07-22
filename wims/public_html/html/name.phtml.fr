@@ -284,7 +284,6 @@ Données traitées\
 Livret de compétences\
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret
-
 !endif
 
 !if adm/manage isin $module
@@ -292,9 +291,18 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
   into wims_name_sitegestion
 !endif
 
-  !distribute line Nouvelle compétence\
-   Configurer\
-  into wims_name_add_competence,wims_name_config
+!if adm/class/livret isin $module
+ !if $wims_user=supervisor
+  !let tmp=Gestion des participants et notes
+ !else 
+  !let tmp=Mes notes
+ !endif
+ !distribute line Nouvelle compétence\
+Configurer\
+$tmp\
+Livret de la classe\
+  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret
+!endif
 
 !distribute lines Modtool\
    Createxo\
