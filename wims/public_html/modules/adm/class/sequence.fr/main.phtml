@@ -1,0 +1,40 @@
+!read adm/css.phtml
+!read names.phtml
+!header1
+!if $job!=addseq
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$module_title
+!endif
+
+!!if link notin $job
+!headmenu
+!!endif
+
+!if $error=bad_class
+ !read msg.phtml $error
+ !tail
+ !exit
+!endif
+
+!if $wims_user=supervisor
+ !set wims_menu_items=!append line config,1,cmd=new&job=config\
+to $wims_menu_items
+ !set wims_menu_items=!append line add_sequence,1,cmd=renew&job=addseq&seq=$[$seq_cnt+1]\
+to $wims_menu_items
+ !if $job!=show
+  !set wims_menu_items=!append line back2,1,cmd=new&job=show\
+to $wims_menu_items
+ !endif
+ !if $wims_sequence>0
+  !set wims_menu_items=!append line back2,1,cmd=new&job=show&seq=$wims_sequence\
+to $wims_menu_items
+ !endif
+!endif
+
+!read $job.phtml
+
+
+!tail
+
+

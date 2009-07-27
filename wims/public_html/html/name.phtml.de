@@ -3,15 +3,26 @@
 !endif
 
 !! **** Default Names ***
-!distribute items Suchen,An die Arbeit,Zurück zur Arbeit,WIMS-Startseite,Einf./Konfig,Hilfe,\
-Info,Einführung,Dieses Fenster schließen,Zurück,\
-Verwalter der Website,Verfasser der Seite,Verfasser der Seite,Übersetzt von,Beenden,\
-WIMS-Hilfe,Referenzen,Nachrichten,Foren,Arbeitsblatt,Tools,In Modtool kopieren,\
+!distribute items Suchen,
+       An die Arbeit,Zurück zur Arbeit,
+       WIMS-Startseite,Einf./Konfig,Hilfe,Info,\
+       Einführung,\
+       Dieses Fenster schließen,Zurück,\
+       Verwalter der Website,Verfasser der Seite,Verfasser der Seite,\
+       Übersetzt von,Beenden,\
+       WIMS-Hilfe,Referenzen,\
+       Nachrichten,Foren,\
+       Arbeitsblatt,Tools,\
+       In Modtool kopieren,\
 		Print,\
 		Import in class,\
 		Printable Version,\
 		Again,\
 		Gehe zu\
+	    Refresh,\
+		Save,\
+		yes,\
+		no,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -22,8 +33,56 @@ WIMS-Hilfe,Referenzen,Nachrichten,Foren,Arbeitsblatt,Tools,In Modtool kopieren,\
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
-	wims_name_printable,wims_name_renew,wims_name_testgo
+	wims_name_printable,wims_name_renew,wims_name_testgo,\
+	wims_name_refresh,wims_name_tosave,\
+	wims_name_yes,wims_name_no
 
+!! **** Permalink Names ***	
+!distribute items this module, this exercice,\
+		Display,on your site,\
+		Mask these options,\
+		Permalink, Embeddable player,\
+		copy and paste, this link, the code, or, in an email,\
+		for, only,\
+		current setup\
+	into wims_name_this_module, wims_name_this_exercice,\
+	wims_name_display,wims_name_on_your_site,\
+	wims_name_mask_this,\
+	wims_name_permalink,wims_name_embeddable,\
+	wims_name_copy_and_paste,wims_name_the_link,wims_name_the_code,wims_name_or,wims_name_in_a_mail,\
+	wims_name_for,wims_name_only,\
+	wims_name_this_config
+	
+!! **** Module About Names ***
+!distribute items Name,\
+		Module Informations,\
+		Address,\
+		Link for bookmark,\
+		Description,\
+		Version,\
+		Required<br>WIMS version,\
+		Language,\
+		Author,\
+		Translator,\
+		This is a module under the,\
+		WWW Interactive Multipurpose Server,\
+		Copyright\
+	into wims_name_name,\
+	wims_name_module_infos,\
+	wims_name_Address,\
+	wims_name_Link_for_bookmark,\
+	wims_name_Description,\
+	wims_name_Version,\
+	wims_name_Required_WIMS_version,\
+	wims_name_Language,\
+	wims_name_Author,\
+	wims_name_Translator,\
+	wims_name_This_is_a_module,\
+	wims_name_WIMS_subtitle,\
+	wims_name_Copyright
+
+
+!! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Startseite,In ein Arbeitsblatt einfügen,\
 Lehrer/Dozenten kontaktieren,Abmelden,\
@@ -52,6 +111,8 @@ Sheet management page\
  !if _check isin $session
   !let wims_page_name=Seiten
  !endif
+ !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
+ !default wims_name_sequence=Sequence
 !endif
 
 !if adm/class isin $module
@@ -65,9 +126,13 @@ Sheet management page\
 	Hochschule/Universität\
     List of classes\
     List of classes and portals\
+    Individual class\
+    Superclasse\
+    Portal\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U\
-	wims_name_classlist,wims_name_portal_list
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_classlist,wims_name_portal_list,\
+	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !endif
 
 !if adm/new isin $module
@@ -104,12 +169,16 @@ Sheet management page\
    Answer types\
    Doc technic\
    Back to file list\
-   Edit file
+   Edit file\
+   Modify\
+   Up\
+   Erase\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
-wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_account_property,\
+wims_name_modlist,wims_name_binfile,wims_name_restore,\
+wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
-wims_name_back3,wims_name_edfile
+wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase
 
 !distribute line Back to the exercise creation\
    Model list\
@@ -154,13 +223,25 @@ wims_name_add_exo,wims_name_classexo
 	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
 	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
 
-!if adm/class/cdt isin $module
+!! for sequence et document
+
+!distribute line Document\
+hiden,visible\
+Title\
+Organize\
+Insert in the class\
+Create a new document\
+Write on a try document\
+Status\
+into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+wims_name_createdoc,wims_name_doctry,wims_name_Status
+
  !distribute line Add a date\
    Add file\
    Add work\
    Configure\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
-!endif
+
 
 !set wims_name_supervisor=supervisor
 !set wims_name_teacher=Teacher accounts
@@ -169,7 +250,7 @@ wims_name_add_exo,wims_name_classexo
 !set wims_name_delteacher=Delete a teacher
 !set wims_name_student=Participant accounts
 !set wims_name_addstudent=New participant
-!set wims_name_modstudent=Particpant properties
+!set wims_name_modstudent=Participant properties
 !set wims_name_delstudent=Delete a participant
 !set wims_name_portal=portal
 !set wims_name_level=level
@@ -193,7 +274,7 @@ Add a interclass course\
 Add a class\
 Add a program\
 Add a level\
-login de gestion\
+gestion login
 Zone change\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
 wims_name_login,wims_name_chzone
@@ -215,13 +296,27 @@ Supprimer le participant\
 Données brutes\
 Changer son mot de passe\
 Données traitées\
+Livret de compétences\
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
-wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
+wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret
 !endif
 
 !if adm/manage isin $module
   !distribute line Other maintenance tasks\
   into wims_name_sitegestion
+!endif
+
+!if adm/class/livret isin $module
+ !if $wims_user=supervisor
+  !let tmp=Gestion des participants et notes
+ !else 
+  !let tmp=Mes notes
+ !endif
+ !distribute line Nouvelle compétence\
+Configurer\
+$tmp\
+Livret de la classe\
+  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret
 !endif
 
 !distribute lines Modtool\

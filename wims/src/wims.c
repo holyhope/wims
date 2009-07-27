@@ -287,6 +287,7 @@ struct {
       {"req_time",	0},	/* time of the request */
       {"sclassdir",	1},
       {"scorereg",	0},	/* score registration flag */
+      {"sequence", 0},  /*sequence number */
       {"sescookie",	1},	/* session cookie */
       {"sesdir",	1},
       {"session_serial",0},	/* request serial in the session */

@@ -1,0 +1,25 @@
+
+wims_prefix=class user seq
+ 
+!if $wims_class=$empty or ($wims_supertype!=0 and\
+ ($wims_supertype!=2 or $wims_typename!=class) and\
+ ($wims_supertype!=4 or $wims_typename notitemof class,course,program))
+ error=bad_class
+ !exit
+!endif
+
+!defread wimshome/log/classes/$wims_class/.def
+!defread wimshome/log/classes/$wims_class/seq/.def
+
+!read names
+!read tabletheme
+!!debug $job $wims_user
+!if $wims_user=supervisor
+ !bound job within config,addseq,moveup,show,delete default show
+!else
+ job=show
+!endif
+
+seq_cnt=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
+seq_cnt=!line 1 of $seq_cnt
+!read $job.proc

@@ -1,0 +1,44 @@
+!read adm/css.phtml
+!header1
+!read $lang/names.phtml
+!default module_title=!module title
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$module_title
+!if $error!=$empty
+ <p>
+ !read $lang/msg.phtml
+ !goto end
+!endif
+
+ $name_intro
+ !if $iniparm!=$empty
+ (<tt>$iniparm</tt>)
+ !endif
+.
+ !form reply 
+
+ !set iniparm1=!replace internal & by $ $ in $iniparm
+ !set block=!getopt block in $iniparm1
+ !if $doc>0
+  !formcheckbox update list 0 prompt $wims_name_erase
+ !endif
+ <p> $wims_name_title: <input size=50 name=title value="$title">
+ <p>$wims_name_Description: <textarea name=desc rows=5 cols=50>$desc</textarea>
+ <p> $wims_name_Status: 
+ !formselect status list 0,1 prompt $wims_name_status
+ <input type=hidden name=job value="$job">
+ <p><center><input type=submit value="$wims_name_tosave"></center>
+ 
+ </form>
+!endif
+
+:end
+
+!set wims_menu_items=!append line class_home,1,module=home\
+to $wims_menu_items
+
+!tail
+
+!set job=
+

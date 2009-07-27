@@ -1,0 +1,50 @@
+
+!bound seq between 1 and $seq_cnt+1 default $empty
+
+!if $cf_abandon!=$empty or $seq=$empty
+ !reset cf_abandon
+ job=show
+ !exit
+!endif
+
+!if $seq>$maxseq
+ error=toomanyseq
+ !exit
+!endif
+
+!if $cmd=reply
+
+new_data=:$seq_title\
+$seq_desc
+
+!set listdoc=!makelist doc_ i for i=1 to $docpubliccnt
+!set listc=!makelist c_ i for i=1 to $doccnt
+!set listexam=!makelist exam_ i for i=1 to $examcnt
+!set listsheet=!makelist sheet_ i for i=1 to $sheetcnt
+!set listvote=!makelist vote_ i for i=1 to $votecnt
+list=!nospace $listc,$listdoc,$listsheet,$listexam,$listvote
+list=!nonempty items $list
+list1=debut
+!for x in $list
+  list1=!append item $($x) to $list1
+!next
+list1=$(list1[2..-1])
+listcnt=!replace internal ,0, by , in ,$list1,
+listcnt=!nonempty items $listcnt
+listcnt=!itemcnt $listcnt
+!for j = 1 to $listcnt
+  jj=!positionof item $j in $list1
+  !if $jj!=
+    listfinal=!append item $(list[$jj]) to $listfinal
+  !endif
+!next
+list=!replace internal _ by $ $ in $(listfinal)
+new_data=!append line $list to $new_data
+!writefile wimshome/log/classes/$wims_class/seq/.sequence$seq $new_data\
+$visible
+
+!if $seq= $[$seq_cnt+1]
+ seq_cnt=$[$seq_cnt+1]
+ !writefile wimshome/log/classes/$wims_class/seq/.sequences $seq_cnt
+!endif
+

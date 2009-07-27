@@ -1,0 +1,26 @@
+
+!if $seq_abandon!=$empty
+ !reset seq_abandon
+ job=show
+ !exit
+!endif
+!if $seq_set!=$empty
+ !reset seq_set
+ seq_Title=!trim $seq_Title
+ !if $seq_Title=$empty
+  seq_Title=$name_sequence
+ !endif
+ seq_description=!singlespace $seq_description
+ seq_Title=!singlespace $seq_Title
+ seq_Title=!char 1 to 50 of $seq_Title
+ seq_description=!char 1 to 1024 of $seq_description
+!setdef !set sequence_reverse=$seq_reverse\
+!set sequence_Title=$seq_Title\
+!set sequence_description=$seq_description\
+!set sequence_open=$seq_open\
+   in wimshome/log/classes/$wims_class/seq/.def
+!else
+ !for k in Title,description,reverse,open
+  seq_$k=$(sequence_$k)
+ !next k
+!endif

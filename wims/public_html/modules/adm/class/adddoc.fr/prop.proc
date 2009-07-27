@@ -1,0 +1,22 @@
+
+rec=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
+!distribute lines $rec into bidon,bidon,title_save,desc_save,status_save
+
+!if $title!=$title_save
+ !distribute item 3,$title into update_field,update_content
+ !read update.doc
+!endif
+!if $desc!=$desc_save
+ !distribute item 4,$desc into update_field,update_content
+ !read update.doc
+!endif
+!if $status!=$status_save
+ !distribute item 5,$status into update_field,update_content
+ !read update.doc
+!endif
+!if $update=0
+  !distribute item 0 into update_field
+  !read update.doc
+!endif
+
+!restart

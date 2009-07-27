@@ -18,7 +18,11 @@
 		Importeer in uw eigen klas,\
 		Printbare versie,\
 		Opnieuw,\
-		ga naar\
+		ga naar,\
+		Refresh,\
+		Save,\
+		yes,\
+		no,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -29,7 +33,9 @@
 	wims_name_whelp,wims_name_ref,wims_name_forum,wims_name_forums,\
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
-	wims_name_printable,wims_name_renew,wims_name_testgo
+	wims_name_printable,wims_name_renew,wims_name_testgo,\
+	wims_name_refresh,wims_name_tosave,\
+	wims_name_yes,wims_name_no
 
 !! **** Permalink Names *** 
 !distribute items deze module, deze oefening,\
@@ -91,7 +97,7 @@
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
 	wims_name_scoresuspend,\
-	wims_name_scorereopen,wwims_name_scoreclose2,\
+	wims_name_scorereopen,wims_name_scoreclose2,\
 	wims_name_syou,\
 	wims_name_exolog,\
 	wims_name_sheetmanagement
@@ -109,6 +115,8 @@
  !if _check isin $session
   !let wims_page_name=Page
  !endif
+ !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
+ !default wims_name_sequence=Sequence
 !endif
 
 !if adm/class isin $module
@@ -122,9 +130,13 @@
 	universiteit\
 	List of classes\
     List of classes and portals\
+    Individual class\
+    Superclasse\
+    Portal\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
-	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U\
-	wims_name_classlist,wims_name_portal_list
+	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
+	wims_name_classlist,wims_name_portal_list,\
+	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
 !endif
 
 !if adm/new isin $module
@@ -164,9 +176,10 @@
    edfile Bewerken\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
-wims_name_modlist,wims_name_binfile,wims_name_restore,wims_name_account_property,\
+wims_name_modlist,wims_name_binfile,wims_name_restore,\
+wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
-wims_name_back3,wims_name_edfile
+wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase
 
 !distribute line Back to the exercise creation\
    Model list\
@@ -211,13 +224,26 @@ wims_name_add_exo,wims_name_classexo
 	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
 	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
 
-!if adm/class/cdt isin $module
- !distribute line Voeg een datum toe\
-   Voeg een bastand toe\
-   Voeg huiswerk toe\
-   Configureer\
+!! for sequence et document
+
+!distribute line Document\
+hiden,visible\
+Title\
+Organize\
+Insert in the class\
+Create a new document\
+Write on a try document\
+Status\
+into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
+wims_name_createdoc,wims_name_doctry,wims_name_Status 
+
+
+ !distribute line Add a date\
+   Add file\
+   Add work\
+   Configure\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
-!endif
+
 
 !set wims_name_supervisor=supervisor
 !set wims_name_teacher=Leraren accounts
@@ -243,7 +269,6 @@ wims_name_add_exo,wims_name_classexo
 into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
-
 !set wims_name_backgateway=Gestion of
 
 !distribute line Add a course\
@@ -273,13 +298,27 @@ Schors deze student\
 Ruwe gegevens\
 verander het wachtwoord\
 Verwerkte data\
+Livret de compétences\
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
-wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw
+wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret
 !endif
 
 !if adm/manage isin $module
   !distribute line Other maintenance tasks\
   into wims_name_sitegestion
+!endif
+
+!if adm/class/livret isin $module
+ !if $wims_user=supervisor
+  !let tmp=Gestion des participants et notes
+ !else 
+  !let tmp=Mes notes
+ !endif
+ !distribute line Nouvelle compétence\
+Configurer\
+$tmp\
+Livret de la classe\
+  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret
 !endif
 
 !distribute lines Modtool\

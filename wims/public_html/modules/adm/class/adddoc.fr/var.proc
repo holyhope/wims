@@ -1,0 +1,70 @@
+
+!if $wims_user=supervisor 
+!! !bound job within prop,show default show
+!else
+ !exit
+!endif
+
+title_limit=50
+desc_limit=255
+
+doctot=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+wims_prefix=none
+sup=$wims_user
+class=$wims_class
+!if $sup!=supervisor
+ error=not_supervisor
+ !exit
+!endif
+!if $job=prop and $cmd iswordof new resume
+  sh=!record $doc of wimshome/log/classes/$wims_class/doc/.docindex
+  !distribute lines $sh into dir,t_,title,desc,status
+!endif
+!if $cmd=reply and $job=proc
+  !read prop.proc
+ !exit
+!endif
+!if ($cmd=new or $cmd=resume) and $job!=prop
+ title=!module title $dir
+ desc=!module description $dir
+ !exit
+!endif
+
+!if $cmd=reply
+ !if ../adm/ isin ../$dir or $dir=home or \
+   (../devel/ isin ../$dir and $wims_devel_modules notwordof open)
+  error=insert_fail
+  !exit
+ !endif
+
+ idesc=!singlespace $desc
+ idesc=!char 1 to $desc_limit of $idesc
+ ititle=!singlespace $title
+ ititle=!char 1 to $title_limit of $ititle
+ !if $cmd=reply and $job!=prop
+  !for i=1 to $doctot
+   e=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+   !distribute lines $e into wdi,win
+   !if $dir=$wdi and $iniparm=$win
+    test=$i
+    error=already_exist
+   !exit
+   !endif
+  !next i
+!endif
+
+!if $cmd=reply and $job=prop
+ !read prop.proc
+ !exit
+!endif
+
+!appendfile wimshome/log/classes/$wims_class/doc/.docindex :$dir\
+$iniparm\
+$ititle\
+$idesc\
+$status
+
+wims_module_log=class $class: add $dir
+
+!restart
+

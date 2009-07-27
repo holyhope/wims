@@ -1,0 +1,24 @@
+maxseq=30
+
+!if ($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course program icourse)
+ sequence_supervise=yes
+ !readdef wimshome/log/classes/$wims_class/seq/.def
+ !if $sequence_defined!=yes
+  !sh mkdir -p $wims_home/log/classes/$wims_class/seq;
+  !filewrite wimshome/log/classes/$wims_class/seq/.def !set sequence_defined=yes\
+  !set sequence_Title=$wims_name_sequence\
+  !set sequence_reverse=no
+ !endif
+ !readdef wimshome/log/classes/$wims_class/seq/.def
+!else
+ sequence_supervise=no
+error=no_seq
+!exit
+!endif
+
+!set sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!set docpubliccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+!set examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!set votecnt=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
+!set doccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
+!set docpubliccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex

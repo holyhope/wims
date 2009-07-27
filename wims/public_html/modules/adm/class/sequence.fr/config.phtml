@@ -1,0 +1,26 @@
+!read adm/title.phtml 3\
+\
+Configurer
+
+Voici les paramètres que vous pouvez changer :
+!default seq_Title=$wims_name_sequence
+!!default seq_open=no
+
+!form reply
+Présentation des séquences dans l'ordre inverse : 
+!formradio seq_reverse list yes,no prompt oui,non
+<input type="hidden" name="job" value="config">
+<p>
+!formradio seq_open list yes,no prompt open,closed
+<p>
+ $wims_name_title ($name_sequence):
+  <input size="60" name="seq_Title" value="$seq_Title">
+
+ $wims_name_Description:
+  <textarea wrap name=seq_description cols=60 rows=5>$seq_description</textarea></li>
+
+<p><center><input type="submit" name="seq_set" value="$wims_name_tosave">
+&nbsp;&nbsp;<input type="submit" name="seq_abandon" value="$wims_name_giveup">
+</center></form>
+
+!reset seq_set,seq_Title,seq_description, seq_open, seq_reverse

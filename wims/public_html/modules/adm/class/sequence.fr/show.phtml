@@ -1,0 +1,16 @@
+!if $wims_user=supervisor
+ $name_show1
+ !if $seq_cnt>0
+  $name_show2
+ !endif
+.
+!endif
+!set sequence_Title=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
+!if $wims_sequence!=
+   !read adm/class/sequence $wims_sequence
+   !reset wims_sequence
+  !else
+!for i= 1 to $seq_cnt
+ !read adm/class/sequence $i
+!next
+!endif
