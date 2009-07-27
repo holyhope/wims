@@ -1,4 +1,5 @@
 !nocache
+<!-- Begin nl/form.phtml-->
 !if $oefsteps!=$empty
  !set fieldtot=!itemcnt $thisstep
 !else
@@ -13,17 +14,19 @@
 !if $fieldtot<=$N_
  !goto send 
 !endif
-
-!if $hasembedding!=yes
- <a name=oefform id=oefform> </a>
- !form reply name=replyform onsubmit="return formcheck();"
-!endif
-
+<legend>
 !if $error=$empty
 Voer hier je antwoord in: 
 !else
  <b>Corrigeer</b> je antwoord :
 !endif
+</legend>
+
+!if $hasembedding!=yes
+ <a name=oefform id=oefform> </a>
+ !form reply name="replyform" onsubmit="return formcheck();"
+!endif
+
 !if $oefsteps!=$empty and $oefstepcnt>1
  !if $dynsteps=yes
   (stap $oefstep)
@@ -44,6 +47,10 @@ Voer hier je antwoord in:
 !if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
  !read anstype/$wims_fill_type.after
 !endif
+!if $hasembedding!=yes
+</fieldset>
+<!-- </fieldset> end of "oefform" fieldset-->
+!endif
 !if $oef_formnosubmit!=yes
  <center>
  <input type=submit value="OK en VERSTUREN">
@@ -54,5 +61,5 @@ Voer hier je antwoord in:
 !if $qcmgood<1 and $choicecnt>0
  <small><b>Opmerking.</b> Kies '$ch_none', als je denkt dat het goede antwoord er niet bijzit.</small> <p>
 !endif
-
+<!-- End nl/form.phtml-->
 

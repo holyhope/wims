@@ -1,4 +1,5 @@
 !nocache
+<!-- Begin fr/form.phtml-->
 !if $oefsteps!=$empty
  !set fieldtot=!itemcnt $thisstep
 !else
@@ -13,17 +14,19 @@
 !if $fieldtot<=$N_
  !goto send 
 !endif
+<legend>
+!if $error=$empty
+ Vnesite svoj odgovor:
+!else
+ <b>Popravite</b> svoj odgovor:
+!endif
+</legend>
 
 !if $hasembedding!=yes
  <a name=oefform id=oefform></a>
  !form reply name=replyform onsubmit="return formcheck();"
 !endif
 
-!if $error=$empty
- Vnesite svoj odgovor:
-!else
- <b>Popravite</b> svoj odgovor:
-!endif
 !if $oefsteps!=$empty and $oefstepcnt>1
  !if $dynsteps=yes
   (step $oefstep)
@@ -44,6 +47,10 @@
 !if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
  !read anstype/$wims_fill_type.after
 !endif
+!if $hasembedding!=yes
+</fieldset>
+<!-- </fieldset> end of "oefform" fieldset-->
+!endif
 !if $oef_formnosubmit!=yes
  <center>
  <input type=submit value="Po¹ljite odgovor">
@@ -54,4 +61,4 @@
 !if $qcmgood<1 and $choicecnt>0
  <small><b>Opomba.</b> Izberite '$ch_none', èe menite, da med na¹tetimi odgovori ni pravilnega.</small> <p>
 !endif
-
+<!-- End si/form.phtml-->

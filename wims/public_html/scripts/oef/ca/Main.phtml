@@ -57,14 +57,17 @@ $wims_html_header
  !else
   Aquest exercici té el temps limitat.
  !endif
- <input size=4 name=clock readonly onFocus="this.blur()";>
+ <input size=4 name=clock readonly onFocus="this.blur();">
  </table>
  </center></form> <p>
 !endif
 
 :tester
 !read oef/present.phtml
+
+!if $wims_theme_version= or $wims_theme_version<1 
 <center><hr width="50%"></center>
+!endif
 
 !if $cmd=hint
  !read oef/hint.phtml
@@ -74,7 +77,9 @@ $wims_html_header
 !if $status=waiting
  !if $error!=$empty
   !read oef/msg.phtml
+ !if $wims_theme_version= or $wims_theme_version<1 
   <center><hr width="50%"></center>
+ !endif
  !endif
  !read oef/form.phtml
  <p>
@@ -97,7 +102,9 @@ $wims_html_header
 !else
  !if $error!=$empty
   !read oef/msg.phtml
+  !if $wims_theme_version= or $wims_theme_version<1 
   <center><hr width="50%"></center>
+  !endif
  !endif
  !read oef/answer.phtml
  <p>

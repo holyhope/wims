@@ -14,17 +14,19 @@
 !if $fieldtot<=$N_
  !goto send 
 !endif
+<legend>
+!if $error=$empty
+ Entrez votre réponse
+!else
+ <b>Corrigez</b> votre réponse :
+!endif
+</legend>
 
 !if $hasembedding!=yes
  <a name="oefform" id="oefform"> </a>
  !form reply name="replyform" onsubmit="return formcheck();"
 !endif
 
-!if $error=$empty
- Entrez votre réponse&nbsp;:
-!else
- <b>Corrigez</b> votre réponse&nbsp;:
-!endif
 !if $oefsteps!=$empty and $oefstepcnt>1
  !if $dynsteps=yes
   (étape $oefstep)
@@ -45,17 +47,19 @@
 !if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
  !read anstype/$wims_fill_type.after
 !endif
+!if $hasembedding!=yes
+</fieldset>
+<!-- </fieldset> end of "oefform" fieldset-->
+!endif
 !if $oef_formnosubmit!=yes
  <center>
  <input type="submit" value="Envoyer la réponse">
  </center>
 !endif
-<!-- </fieldset> end of "oefstatement" fieldset should be here ?-->
 </form>
 
 !if $qcmgood<1 and $choicecnt>0
  <small><b>Remarque.</b> Choisissez 'aucun n'est bon', si vous pensez que le bon 
  choix n'est pas parmi ceux présentés.</small> <p>
 !endif
-<!-- End fr/form.phtml-->
 

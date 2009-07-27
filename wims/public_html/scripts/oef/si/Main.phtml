@@ -62,7 +62,10 @@ $wims_html_header
 
 :tester
 !read oef/present.phtml
+
+!if $wims_theme_version= or $wims_theme_version<1 
 <center><hr width="50%"></center>
+!endif
 
 !if $cmd=hint
  !read oef/hint.phtml
@@ -72,7 +75,9 @@ $wims_html_header
 !if $status=waiting
  !if $error!=$empty
   !read oef/msg.phtml
+ !if $wims_theme_version= or $wims_theme_version<1 
   <center><hr width="50%"></center>
+ !endif
  !endif
  !read oef/form.phtml
  <p>
@@ -95,7 +100,9 @@ $wims_html_header
 !else
  !if $error!=$empty
   !read oef/msg.phtml
+  !if $wims_theme_version= or $wims_theme_version<1 
   <center><hr width="50%"></center>
+  !endif
  !endif
  !read oef/answer.phtml
  <p>
@@ -159,6 +166,5 @@ $wims_html_header
 !! to vajo v svojo uèilnico, kjer jo lahko prilagodite po svojih ¾eljah.
 !!!endif
 :end
-
 !tail
 

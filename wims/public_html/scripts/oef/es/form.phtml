@@ -1,4 +1,5 @@
 !nocache
+<!-- Begin it/form.phtml-->
 !if $oefsteps!=$empty
  !set fieldtot=!itemcnt $thisstep
 !else
@@ -13,17 +14,19 @@
 !if $fieldtot<=$N_
  !goto send 
 !endif
-
-!if $hasembedding!=yes
- <a name=oefform id=oefform> </a>
- !form reply name=replyform onsubmit="return formcheck();"
-!endif
-
+<legend>
 !if $error=$empty
  Introduzca su respuesta:
 !else
  <b>Corrija</b> su respuesta:
 !endif
+</legend>
+
+!if $hasembedding!=yes
+ <a name=oefform id=oefform> </a>
+ !form reply name="replyform" onsubmit="return formcheck();"
+!endif
+
 !if $oefsteps!=$empty and $oefstepcnt>1
  !if $dynsteps=yes
   (etapa $oefstep)
@@ -43,6 +46,10 @@
 :send
 !if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
  !read anstype/$wims_fill_type.after
+!endif
+!if $hasembedding!=yes
+</fieldset>
+<!-- </fieldset> end of "oefform" fieldset-->
 !endif
 !if $oef_formnosubmit!=yes
  <center>
