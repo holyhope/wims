@@ -187,8 +187,8 @@ hiden,visible\
 Title\
 Organize\
 Insert in the class\
-Create a new document\
-Write on a try document\
+Crear un documento nuevo\
+trabajar en un borrador de documento\
 Status\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status

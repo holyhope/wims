@@ -53,10 +53,13 @@
 !endif
 
 !if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
- !href cmd=reply&job=creat Créer un nouveau document
-, ou
- !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd écrire sur un document d'essai
-. <p>
+!! !href cmd=reply&job=creat Créer un nouveau document
+!!, ou
+!! !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd écrire sur un document d'essai
+!!. <p>
+!set wims_menu_items=!append line createdoc,1, cmd=reply&job=creat\
+doctry,1,cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd\
+to $wims_menu_items
 !endif
 
 !tail
