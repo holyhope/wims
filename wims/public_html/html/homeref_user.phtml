@@ -26,7 +26,11 @@
  !set 1_=!append line class_home,1,session=$wims_session.1 to $1_
 !endif
 !if $wims_sheet>0 or P isin $wims_sheet
- !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+ !if $wims_sequence>0
+  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet&seq=$wims_sequence to $1_
+ !else
+  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet& to $1_
+ !endif
 !endif
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
@@ -53,6 +57,7 @@
 !reset 1_
 !set 1_=!append line $wims_menu_items to $1_
 !set wims_rm_0=$1_
+!set wims_rm_3=!append line $wims_menu_tabs to $wims_rm_3
 :rm2
 !if $wims_rm_2!=$empty
  !goto rmend
@@ -88,6 +93,7 @@ $module_title
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2
 !set wims_homeref_n0=!linecnt $wims_rm_0
+!set wims_homeref_n3=!linecnt $wims_rm_3
 </div>
 !read themes.phtml tail
 !robottrap

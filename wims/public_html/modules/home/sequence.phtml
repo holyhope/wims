@@ -1,0 +1,108 @@
+!distribute items $wims_read_parm into i,j
+!default j=1
+!set seq_=!record $j of wimshome/log/classes/$wims_class/seq/.sequence$i
+!distribute line $seq_ into tis_,cos_,obj_,o_
+
+!if $o_<1
+  !exit
+!endif
+!set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
+!set TI=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
+<fieldset id=wims_seq_$i class=wims_seq>
+<legend>$TI $i
+</legend><div class=wims_title_seq>
+   $tis_
+</div>
+<div class=wims_comment_seq>
+   $cos_
+</div>
+!set dcnt=!itemcnt $obj_
+!for i_=1 to $dcnt
+
+   !distribute word $(obj_[$i_]) into type,num
+   !if $type=c
+      !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.index
+      !distribute lines $d_ into s_,t_,bidon,bidon,bidon,o_
+      !if $o_>0
+      <div class=wims_doc_item>
+        !href module=adm/doc&job=read&doc=$s_&block=main&seq=$i $t_
+     </div>
+      !endif
+   !endif
+   !if $type=doc
+     !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.docindex
+     !distribute lines $d_ into s_,t_,ti_,de_,o_
+     !if $o_>0
+     <div class="wims_doc_item">
+        !href module=$s_&$t_&seq=$i&name=$wims_name_sequence  $ti_
+     $de_</div>
+     !endif
+   !endif
+   !if $type=sheet
+     !set s_=!record $num of wimshome/log/classes/$wims_class/sheets/.sheets
+     !distribute lines $s_ into a_,t_,ti,de
+     !if $a_>=1 and $a_<=2  
+     <div class="wims_sheet_item">
+       !href module=adm/sheet&sh=$num&seq=$i $ti
+    <span class="wims_user_sheet_expire"><!--wims_user_sheet_expire-->
+      !if $a_>=2
+        $U_expired
+      !else
+       !if showshexpire iswordof $class_option
+        !read misc/expire.phtml.$lang $t_
+       !endif
+      !endif
+    </span><!--wims_user_sheet_expire-->
+      !set pe=!line $num of $percents
+      !set p1=!word 1 of $pe
+      !set p2=!word 2 of $pe
+      <span class="wims_user_sheet_score">
+       !if $p1!=$empty
+        $p1% $U_done, $U_average $[$p2]/10
+      !else
+        &nbsp;
+      !endif
+      !if showshweight iswordof $class_option
+       ($U_weight
+        !line $i of $wlist
+       )
+      !endif
+   </span><!--wims_user_sheet_score-->
+   </div><!--wims_sheet_item--> 
+    !endif
+   !endif
+   !if $type=vote
+     !set v_=!record $num of wimshome/log/classes/$wims_class/vote/.votes
+     !distribute lines $v_ into a_,t_,ti,de
+     !if $a_>=1 and $a_<=2
+     <div class="wims_vote_item">
+      !href module=adm/vote&job=read&vote=$num&seq=$i $t_
+     </div>
+     !endif
+   !endif
+   !if $type=exam
+     !set e_=!record $num of wimshome/log/classes/$wims_class/exams/.exams
+     !distribute lines $e_ into a_,ex,da,t_
+     !if $a_>=1 and $a_<=2
+     <div class="wims_exam_item">
+      !href module=adm/class/exam&exam=$num&seq=$i $t_
+      <span class="wims_user_exam_type">Examen $se. </span>
+  <span class="wims_user_exam_expire">
+  !if $a_>=2
+   $U_expired
+  !else
+   !if showexexpire iswordof $class_option
+    !read misc/expire.phtml.$lang $ex
+   !else
+    &nbsp;
+   !endif
+  !endif
+  </span>
+     </div>
+     !endif
+   !endif
+   
+   !reset s_ v_ d_ e_
+ !next i_
+ </fieldset>
+

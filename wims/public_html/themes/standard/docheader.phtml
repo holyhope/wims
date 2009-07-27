@@ -24,7 +24,28 @@
    !href module=home $wims_name_doch_class
   </div>
   !endif
+  !if $m_wims_sequence>0
+    <div class="menuitem">
+    !if $wims_user=supervisor
+     !href module=adm/class/sequence&seq=$m_wims_sequence $name
+    !else
+     !href module=home&seq=$m_wims_sequence $name
+    !endif
+    </div>
+  !else
+   !if $wims_sequence>0
+    !set ti=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
+    <div class="menuitem">
+     !if $wims_user=supervisor
+       !href module=adm/class/sequence&seq=$wims_sequence
+     !else
+       !href module=home&seq=$wims_sequence $wims_name_sequence
+     !endif
+    </div>
+   !endif
+  !endif
  !endif
+!endif
  !if ..//adm/doc isin ..//$module and \
     ($wims_class=$empty or $wims_user=supervisor)
   <div class="menuitem">
@@ -66,7 +87,6 @@
  !endif
 !! !href cmd=reply&job=read $wims_name_doch_reload
 !endif
-<div class="menuitem"></div>
 !if $printable=yes
   <div class="menuitem">
  !href cmd=reply&job=read&doc=$doc&block=$startblock $wims_name_doch_interactive

@@ -3,8 +3,8 @@
 
 </div><!--end of wimspagebox-->
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
-
 <div class="wimsmenu">
+
 !if $job=read
 !if ($wims_class!=$empty and $wims_user!=supervisor)
 </div><!--end of wimsmenu-->
@@ -42,6 +42,11 @@
 !if $wims_user=supervisor and $sheetdata!=$empty
 <div class="menuitem">
  !href cmd=reply&job=exosource $n_source
+</div>
+!endif
+!if $wims_user=supervisor and _adm/doc notin _$module
+<div class="menuitem">
+!href module=adm/class/adddoc&dir=$module $wims_name_adddoc
 </div>
 !endif
 

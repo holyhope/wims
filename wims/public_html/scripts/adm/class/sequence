@@ -1,0 +1,71 @@
+
+!distribute items $wims_read_parm into i,j
+   !default j=1
+   !set seq_=!record $j of wimshome/log/classes/$wims_class/seq/.sequence$i
+   !distribute line $seq_ into tis_,cos_,obj_,o_
+   <fieldset id=wims_seq_$i class=wims_seq>
+   <legend>$sequence_Title $i</legend>
+   !if $wims_user=supervisor
+      ($(wims_name_status[$o_+1])):
+   !href module=adm/class/sequence&job=addseq&seq=$i $wims_name_change
+   !if $i>1
+     &nbsp;
+     !href cmd=reply&job=moveup&moveup=$i $wims_name_up
+   !endif
+   &nbsp;
+   !href cmd=reply&job=delete&seq=$i $wims_name_erase
+   !else
+   <div class=wims_title_seq>
+   $tis_
+   </div>
+   <div class=wims_comment_seq>
+   $cos_
+   </div>
+   !endif
+   !set dcnt=!itemcnt $obj_
+   !for i_=1 to $dcnt
+    !distribute word $(obj_[$i_]) into type,num
+    !if $type=c
+      !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.index
+      !distribute lines $d_ into s_,t_,bidon,bidon,bidon,o_
+      <div class=wims_doc_item>
+        !href module=adm/doc&job=read&doc=$s_&block=main&seq=$i $t_
+      ($(wims_name_status[$o_+1]))</div>
+    !endif
+    !if $type=doc
+     !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.docindex
+     !distribute lines $d_ into s_,t_,ti_,de_,o_
+     <div class="wims_doc_item">
+        !href module=$s_&$t_&seq=$i&name=$wims_name_sequence $ti_
+     ($(wims_name_status[$o_+1])) $de_
+     </div>
+     !endif
+    !endif
+    !if $type=sheet
+     !set s_=!record $num of wimshome/log/classes/$wims_class/sheets/.sheets
+     !distribute lines $s_ into a_,t_,ti,de
+     <div class="wims_sheet_item">
+       !href module=adm/sheet&sh=$num&seq=$i $ti
+    ($(name_sheet_status[$a_+1]))</div>
+    !endif
+    !if $type=vote
+     !set v_=!record $num of wimshome/log/classes/$wims_class/vote/.votes
+     !distribute lines $v_ into a_,t_,ti,de
+     <div class="wims_vote_item">
+      !href module=adm/vote&job=read&vote=$num&seq=$i $t_
+     ($(wims_name_status[$a_+1]))</div>
+     !endif
+   !endif
+   !if $type=exam
+     !set e_=!record $num of wimshome/log/classes/$wims_class/exams/.exams
+     !distribute lines $e_ into a_,t_,bla,ti,de
+     <div class="wims_exam_item">
+     !href module=adm/class/exam&exam=$num&seq=$i bbb$ti
+     ($(name_sheet_status[$a_+1]))</div>
+     !endif
+   !endif
+   
+   !reset s_ v_ d_ e_
+  !next i_
+  </fieldset>
+

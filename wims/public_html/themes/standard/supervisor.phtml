@@ -19,7 +19,7 @@
 !set wims_name_SE_mod=$SE_mod
 !set wims_name_SE_config=$SE_config
 !set wims_name_SE_secu=$SE_secu
-!set wims_name_struct=SU_Gateway
+!set wims_name_struct=$SU_Gateway
 !!!!
 
 !readproc tabletheme
@@ -28,7 +28,7 @@
 !read ./adm/title.phtml 2\
 $wims_classname, $wims_institutionname\
 ($SU_log - $(wims_name_$class_typename))
-
+!!!read ./adm/class/direct
 !!<center>
 !!<br> <br>
 !! <b><font size="+1">$wims_classname, $wims_institutionname</font></b>
@@ -168,12 +168,15 @@ $SU_greet.
 !set ac_1=$SU_Ac
 !set ac_2=$SU_Ex
 !set ac_3=$SU_Hi
-
-!if $sheetcnt+$examcnt+$doccnt+$votecnt+$subclasscnt<=0
+!set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+!if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  $SU_nosheet
 !else
  $table_header
  <caption>$SU_shlist &nbsp;
+ [
+ !href module=adm/class/sequence $wims_name_reorder
+ ]
  </caption>
  $table_hdtr<th>$SU_shno<th>$SU_shti<th>$SU_shst
  !for i=1 to $subclasscnt
@@ -196,7 +199,24 @@ $SU_greet.
   !href module=adm/doc&job=read&doc=$s_&block=main $t_
   </td>
   <td align=center><small>
-  !item $[$o_ +1] of $U_Docstatus
+  !item $[$o_ +1] of $U_Docstatus 
+   [
+  !href module=adm/doc&job=prop&doc=$s_ $wims_name_change
+  ]
+  </small></td>
+ !next i
+  !for i=1 to $docpubliccnt
+    !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+    !distribute lines $sh into s_,t_,ti,d_,o_
+    $table_tr<td align=center>$U_Doc</td>
+   <td>
+   !href module=$s_&$t_ $ti
+   </td>
+   <td align=center><small>
+   !item $[$o_ +1] of $wims_name_status
+   [
+   !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
+   ]
   </small></td>
  !next i
  !for i=1 to $sheetcnt
