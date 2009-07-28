@@ -54,7 +54,7 @@ $wims_classname
  !endif
 !endif
 </center>
-<br clear=all></div><div class=wimsbody>
+!!<br clear=all></div><div class=wimsbody>
 
 !if _tool isin $wims_session
  !read ./tools.phtml
@@ -102,7 +102,7 @@ $U_greet
 <p>
 <div class="wims_class_motd">
 !read ./wimshome/log/classes/$wims_class/.motd
-</div>
+</div><!--wims_class_motd-->
 !let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
 !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
 !if # notin $test and $test2!=$empty
@@ -110,7 +110,7 @@ $U_greet
  !read ./wimshome/log/classes/$wims_class/motd/$wims_user
  &nbsp; [
  !href module=adm/class/motd $N_hide
-] </div>
+] </div><!--wims_class_pmotd-->
 !endif
 
 <p>
@@ -309,7 +309,7 @@ $U_greet
 
 :endbar
 </div><!--wimsbody-->
-</div>
+</div><!--wimspagebox-->
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 !if $exist_cdt=yes
@@ -373,7 +373,7 @@ $U_greet
 </div><!--end menublock-->
 </div><!--wimsmenu-->
 </div><!--wimsmenubox-->
-</div>
+</div><!--wimsbodybox-->
 <div id="wimstailbox">
 <div class="wimstail">
 <div class="tailitem">
@@ -383,7 +383,7 @@ WIMS-$wims_version@$httpd_HTTP_HOST
 !if $wims_user=supervisor
  <div class="tailitem">
  !href $ $SU_Bhome
- </div>
+ </div><!--tailitem-->
 !endif
 </div><!--wimstail-->
 </div><!--wimstailbox-->

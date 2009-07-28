@@ -2,10 +2,14 @@
 !! Tail menu theme.
 !nocache
 !set wims_theme_tail=yes
-</div><!--end of wimspagebox-->
-
+</div><!--end of wimspagebox or wimsbody-->
 !if $wims_homeref_special!=$empty
+ </div><!--end of wimspagebox -->
+ <div class="wimsmenu"> 
  <div class="tailitem">$wims_homeref_special</div><!--tailitem-->
+ </div><!--wimsmenu-->
+ </div><!--wimsbodybox-->
+</div><!--id wimsexam-->
  !exit
 !endif
 !if $wims_homeref_n0>0
@@ -23,6 +27,22 @@
  !next i_
 </div><!--wimsmenu-->
 </div><!--wimsmenumodubox-->
+!endif
+!if $wims_homeref_n3>0
+  <div id="wimsmenutab">
+  <div class="wimsmenu"> 
+  !for i_=1 to $wims_homeref_n3
+    !set 1_=!line $i_ of $wims_rm_3
+    !if $(1_[1])=
+      <div class="itemsep"></div>
+    !else
+     <div class="menuitem">
+     !read oneitem.phtml $1_
+     </div>
+    !endif
+  !next i_
+  </div><!--wimsmenu-->
+  </div><!--wimsmenumodubox-->
 !endif
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
