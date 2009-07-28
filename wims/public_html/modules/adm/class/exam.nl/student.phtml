@@ -1,11 +1,12 @@
 !set done=klaar
 
-<center>
- <h1>$wims_classname, $wims_institutionname<br>$title</h1>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+$title
 !if $wims_user=supervisor
- (Zo zien leerlingen deze pagina)
+ <center>(Zo zien leerlingen deze pagina)</center>
 !endif
-</center>
+
 <p>
 $desc
 <p>
@@ -128,15 +129,20 @@ $desc
   Attentie : dit is je laatste poging !
   !endif
  !endif
- <p>
- !href cmd=reply&job=student Vernieuw 
- </a> deze pagina.
- &nbsp;&nbsp;
- !href cmd=reply&job=score Mijn cijfers.
+ !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+scoreexam,1,cmd=reply&job=score \
+to $wims_menu_items
+!!<p>
+!! !href cmd=reply&job=student Vernieuw 
+!! </a> deze pagina.
+!! &nbsp;&nbsp;
+!! !href cmd=reply&job=score Mijn cijfers.
  !if $activeexo<1
-  &nbsp;
-  !href cmd=reply&job=scorereg Beeindig
-  </a> deze proefwerk sessie (omdat er niets meer te doen valt). 
+ !set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+!!&nbsp;
+!!  !href cmd=reply&job=scorereg Beeindig
+!!  </a> deze proefwerk sessie (omdat er niets meer te doen valt). 
  !endif
  !endif
 !endif
@@ -150,11 +156,13 @@ $desc
 
  
 !if $wims_user=supervisor
- <p>
- <center>
- !href cmd=resume Terug
- </a>naar de supervisor mode.
- </center>
+ !set wims_menu_items=!append line backteacher,1,cmd=resume\
+ to $wims_menu_items
+!! <p>
+!! <center>
+!! !href cmd=resume Terug
+!! </a>naar de supervisor mode.
+!! </center>
 !endif
 
 !tail

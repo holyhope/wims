@@ -18,7 +18,7 @@
 		Versión imprimible,\
 		Otro nuevo,\
 		mostrar,\
-		Refresh,\
+		Actualizar esta página,\
 		Save,\
 		yes,\
 		no,\
@@ -268,6 +268,11 @@ Configurer\
 $tmp\
 Livret de la classe\
   into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret
+!endif
+
+!if $wims_user=supervisor
+ !distribute line Retourner à la page pour enseignant \
+ into wims_name_backteacher
 !endif
 
 !distribute lines Modtool\

@@ -1,10 +1,11 @@
 
-<center><h1>$wims_classname, $wims_institutionname<br>
-$title</h1>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+$title
 !if $wims_user=supervisor
- (应试者用)
+ <center>(应试者用)</center>
 !endif
-</center> <p>
+ <p>
 $desc<p>
 
 !if $error!=$empty
@@ -99,14 +100,19 @@ $desc<p>
     这是你的最后一次尝试. 请注意!
    !endif
   !endif
-  <p>
-  !href cmd=reply&job=student 更新本页.
-&nbsp;
-  !href cmd=reply&job=score 我的得分.
+ !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+scoreexam,1,cmd=reply&job=score \
+to $wims_menu_items
+!!<p>
+!!  !href cmd=reply&job=student 更新本页.
+!!&nbsp;
+!!  !href cmd=reply&job=score 我的得分.
   !if $activeexo<1
-&nbsp;
-   !href cmd=reply&job=scorereg 结束
-   本次考试(因为已经没有练习可做).
+!set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+!!&nbsp;
+!!   !href cmd=reply&job=scorereg 结束
+!!   本次考试(因为已经没有练习可做).
   !endif
  !endif
 !endif
@@ -118,9 +124,11 @@ $desc<p>
 !endif
 
 !if $wims_user=supervisor
- <p><center>
- !href cmd=resume 返回主持教师的主页.
- </center>
+ !set wims_menu_items=!append line backteacher,1,cmd=resume\
+ to $wims_menu_items
+ !!<p><center>
+ !!!href cmd=resume 返回主持教师的主页.
+!! </center>
 !endif
 
 !tail

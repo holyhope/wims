@@ -1,11 +1,12 @@
 !set done=completato
 
-<center><h1>$wims_classname, $wims_institutionname<br>
-$title</h1>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+$title
 !if $wims_user=supervisor
-  (Pagina pubblica del tema d'esame)
+ <center>(Pagina pubblica del tema d'esame)</center>
 !endif
-</center> <p>
+<p>
 $desc<p>
 
 !if $error!=$empty
@@ -120,14 +121,19 @@ $desc<p>
       ATTENZIONE: questo &egrave; l'ultimo tentativo a disposizione.
    !endif
   !endif
-  <p>
-  !href cmd=reply&job=student Rivisualizza la pagina.
-&nbsp;
-  !href cmd=reply&job=score Punteggio ottenuto.
+!set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+scoreexam,1,cmd=reply&job=score \
+to $wims_menu_items
+!!<p>
+!!  !href cmd=reply&job=student Rivisualizza la pagina.
+!!&nbsp;
+!!  !href cmd=reply&job=score Punteggio ottenuto.
   !if $activeexo<1
-&nbsp;
-   !href cmd=reply&job=scorereg Termina
-   questa sessione d'esame (non ci sono più esercizi da svolgere).
+  !set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+!!&nbsp;
+!!   !href cmd=reply&job=scorereg Termina
+!!   questa sessione d'esame (non ci sono più esercizi da svolgere).
   !endif
  !endif
 !endif

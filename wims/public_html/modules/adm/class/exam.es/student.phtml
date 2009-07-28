@@ -1,10 +1,11 @@
 
-<center><h1>$wims_classname, $wims_institutionname<br>
-$title</h1>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+$title
 !if $wims_user=supervisor
- (Presentación a los participantes)
+ <center>(Presentación a los participantes)</center>
 !endif
-</center> <p>
+ <p>
 $desc<p>
 
 !if $error!=$empty
@@ -92,14 +93,19 @@ $desc<p>
        Es su último intento disponible. ¡Preste atención!
      !endif
   !endif
-  <p>
-  !href cmd=reply&job=student Actualizar esta página.
-&nbsp;
-  !href cmd=reply&job=score Mi puntuación.
+  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+scoreexam,1,cmd=reply&job=score \
+to $wims_menu_items
+!!  <p>
+!!  !href cmd=reply&job=student Actualizar esta página.
+!!&nbsp;
+!!  !href cmd=reply&job=score Mi puntuación.
   !if $activeexo<1
 &nbsp;
-   !href cmd=reply&job=scorereg Terminar
-   esta sesión de examen (puesto que no queda nada que hacer).
+!set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+!!  !href cmd=reply&job=scorereg Terminar
+!!   esta sesión de examen (puesto que no queda nada que hacer).
   !endif
  !endif
 !endif

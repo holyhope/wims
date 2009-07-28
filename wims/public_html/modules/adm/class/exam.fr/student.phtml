@@ -1,11 +1,13 @@
 !set done=fait
 
-<center><h1>$wims_classname, $wims_institutionname<br>
-$title</h1>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+$title
+
 !if $wims_user=supervisor
- (Présentation aux participants)
+ <center>(Présentation aux participants)</center>
 !endif
-</center> <p>
+ <p>
 $desc<p>
 
 !if $error!=$empty
@@ -109,9 +111,9 @@ $desc<p>
   !endif
   !if $registered=$empty and $exhausted!=yes
    Vous avez $sdure minutes pour travailler sur cet examen.
-   Quand vous cliquerez sur un des exercice ci-dessus,
+   Quand vous cliquerez sur un des exercices ci-dessus,
    !if $allowtype!=simulation
-    le compte à rebours commencera et le nombre d'essais tentés sera avancé de 1.
+    le compte à rebours commencera et le nombre d'essais tentés sera augmenté de 1.
    !else
     le compte à rebours commencera.
    !endif
@@ -120,14 +122,18 @@ $desc<p>
     C'est votre dernier essai disponible. Faites attention&nbsp;!
    !endif
   !endif
-  <p>
-  !href cmd=reply&job=student Rafraîchir cette page.
-&nbsp;
-  !href cmd=reply&job=score Mon score.
+!set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+scoreexam,1,cmd=reply&job=score \
+to $wims_menu_items
+!!<p>
+!!  !href cmd=reply&job=student Rafraîchir cette page.
+!!&nbsp;
+!!  !href cmd=reply&job=score Mon score.
   !if $activeexo<1
-&nbsp;
-   !href cmd=reply&job=scorereg Terminer
-   cette session d'examen (car il n'y a plus rien à faire).
+!set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+ !!  !href cmd=reply&job=scorereg Terminer
+ !!  cette session d'examen (car il n'y a plus rien à faire).
   !endif
  !endif
 !endif
@@ -140,9 +146,8 @@ $desc<p>
 !endif
 
 !if $wims_user=supervisor
- <p><center>
- !href cmd=resume Retourner à la page pour enseignant
- </center>
+!set wims_menu_items=!append line backteacher,1,cmd=resume\
+ to $wims_menu_items
 !endif
 
 !tail

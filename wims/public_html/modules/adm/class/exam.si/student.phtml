@@ -1,10 +1,11 @@
 
-<center><h1>$wims_classname, $wims_institutionname<br>
-$title</h1>
+!read adm/title.phtml 1\
+$wims_classname, $wims_institutionname\
+$title
 !if $wims_user=supervisor
- (Predstavitev za uporabnike)
+<center> (Predstavitev za uporabnike)</center>
 !endif
-</center> <p>
+<p>
 $desc<p>
 
 !if $error!=$empty
@@ -91,14 +92,19 @@ $desc<p>
    To je va¹ zadnji dovoljeni poskus. Bodite uspe¹ni!
    !endif
   !endif
-  <p>
-  !href cmd=reply&job=student Osve¾i to stran
-&nbsp;
-  !href cmd=reply&job=score Moj rezultat.
+  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+scoreexam,1,cmd=reply&job=score \
+to $wims_menu_items
+
+!!  !href cmd=reply&job=student Osve¾i to stran
+!!&nbsp;
+!!  !href cmd=reply&job=score Moj rezultat.
   !if $activeexo<1
-&nbsp;
-   !href cmd=reply&job=scorereg Konèaj
-   ta izpit (ker ni veè nere¹enih vaj).
+  !set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+to $wims_menu_items
+
+!!   !href cmd=reply&job=scorereg Konèaj
+!!   ta izpit (ker ni veè nere¹enih vaj).
   !endif
  !endif
 !endif
@@ -110,6 +116,8 @@ $desc<p>
 !endif
 
 !if $wims_user=supervisor
+!set wims_menu_items=!append line backteacher,1,cmd=resume\
+ to $wims_menu_items
  <p><center>
  !href cmd=resume Nazaj na skrbni¹ke strani.
  </center>
