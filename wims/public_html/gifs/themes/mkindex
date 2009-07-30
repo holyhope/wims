@@ -1,16 +1,24 @@
 #! /bin/sh
+cd `dirname $0`
 
 for j in `ls` ; do
  if [ -d "$j" ]; then rm $j/icon.css ; touch $j/icon.css ;
-     w=`identify -format \%w $j/home.gif`
-     h=`identify -format \%h $j/home.gif`
+     if [ -s $j/home.gif ]; then 
+      w=`identify -format \%w $j/home.gif`;
+      h=`identify -format \%h $j/home.gif`;
+     else w=20;h=20;
+     fi;
+     w=`expr $w + 5`
      echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a{
 	background-repeat:no-repeat;
 	min-height:"$h"px;	/* here you put the height of your  icon set*/
 	padding-left:"$w"px;/* and here the width*/
 }" > icon.css
      for i in `ls $j/*.gif` ; do file=`basename $i .gif` ; echo ".$file{
- background-image:url($file.gif);
+ background-image:url($file.gif);background-repeat:no-repeat;
+ min-height:"$h"px;	/* here you put the height of your  icon set*/
+ padding-left:"$w"px;/* and here the width*/
 }" >> icon.css; done ;
-  mv icon.css $j ; fi; 
+     mv icon.css $j ; if [ -s "$j/icon_orig.css" ]; then `cp $j/icon_orig.css $j/icon1.css`; fi 
+ fi;
 done
