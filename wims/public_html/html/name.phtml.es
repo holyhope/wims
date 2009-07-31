@@ -209,6 +209,14 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status
 !set wims_name_addstudent=Nuevo alumno
 !set wims_name_modstudent=Propiedades del alumno
 !set wims_name_delstudent=Borrar un alumno
+!set wims_name_group=portal
+!set wims_name_portal=portal
+!set wims_name_level=level
+!set wims_name_class=class
+!set wims_name_program=program
+!set wims_name_course=course
+!set wims_name_icourse=interclass course
+!set wims_name_backstruct=Backup the structure
 !set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
 !if config isin $module

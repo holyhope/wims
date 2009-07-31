@@ -1,3 +1,5 @@
+!default CL_Name=$CL_Names
+!set arr=--->
 !for cnt in 3,1
  !if $(subclasscnt$cnt)>0 and $insc!=yes
   !if $supervisable!=yes
@@ -33,24 +35,62 @@
     !set word_class=$CL_otherNames
   !endif
   !default word_class=$(CL_Names[2..-1])
-
    <ul class="wims_subclasses">
-  !for tt = 1 to 3
+  !for tt = 3 to 1 step -1
     !set liste=!sort line $(liste_$(list_class[$tt]))
     !set liste_cnt=!linecnt $liste
     !if $liste_cnt > 0 
-       <li> $(word_class[$tt]):
+     !reset aux
+     !if $tt=3 and $class_type< 4
+      !set aux=<li>$arr<span class="wims_classes_direct_class"> $wims_classname ($(CL_Name[2]))</span>
+     !else
+      !if $class_type < 4 and $tt=3 
+      !set aux=$(CL_otherNames[1])
+      !endif
+     !endif
+     !if $tt=3 and $class_type< 4
+            $aux <ul>
+     !endif
      !for j = 1 to $liste_cnt
-      !href module=adm/class/classes&type=auth$(liste[$j;2])&class=$(liste[$j;3])&auth_user=$(liste[$j;4]) $(liste[$j;1])
-     &nbsp;
-     !next j 
-       </li>
+     !if ($class_type < 4 and $tt=3) or $tt iswordof of 1 2
+     !!  !if ($class_type < 4 and $tt=3)
+     !!!  !else
+       !if $class_type < 4 and $class_typename!=group
+      </ul>
+     !! !endif
+     !endif
+      <li> $arr <span class="wims_classes_direct_$(list_class[$tt])"> 
+        !href module=adm/class/classes&type=auth$(liste[$j;2])&class=$(liste[$j;3])&auth_user=$(liste[$j;4]) $(liste[$j;1])
+        ($(CL_Name[$tt+1]))</span>
+      !endif
+      !set c=$(liste[$j;3])
+      !set sub_=!record 0 of wimshome/log/classes/$c/courses
+      !set sub_cnt=!linecnt $sub_
+      !if $sub_cnt>0 
+      <ul>
+      !for k_ =1 to $sub_cnt
+       !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
+       !set name_c=!defof class_description in wimshome/log/classes/$parent_c/.def
+       <li>
+    &nbsp; $arr&nbsp;
+       <span class="wims_classes_direct_course">
+        !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
+        ($(CL_Name[4]))
+       </span>
+      !next k_
+     </ul>
+   !!   !endif
+    !next j
+    !if $tt=3 and $class_type< 4
+    </ul>
+    !endif
+    !endif
    !endif
   !next tt
-  </ul>
  !endif
 !next cnt
 
+ </ul>
 !if $subclasscnt2>0
  !if $insc!=yes
   !href module=home&cmd=new&insc=yes $U_inscription2

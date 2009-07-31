@@ -35,7 +35,7 @@
 :normal
 !read classlogo.phtml
 !read ./adm/title.phtml 2\
-$wims_classname
+$wims_classname <small>($(wims_name_$class_typename))</small>
 
 !!<center>
 !!<br> <br>
@@ -44,13 +44,17 @@ $wims_classname
 !!<small>($(wims_name_$class_typename))</small>
 <center>
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
-!set  $wims_institutionname
+  $wims_institutionname
 !else
+<span class="wims_classes_direct_portal">
  !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
-  !if / isin $class_parent and $class_type=1
+ </span>
+ !if / isin $class_parent and $class_type=1
   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
   / 
+ <span class="wims_classes_direct_class">
   !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user $pname
+ </span>
  !endif
 !endif
 </center>

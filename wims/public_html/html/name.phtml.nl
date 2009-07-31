@@ -255,6 +255,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status
 !set wims_name_modstudent=Leerling eigenschappen
 !set wims_name_delstudent=Verwijder een leerling
 !set wims_name_backstruct=Backup van de gehele structuur
+!set wims_name_group=portaal
 !set wims_name_portal=portaal
 !set wims_name_level=niveau
 !set wims_name_class=klas

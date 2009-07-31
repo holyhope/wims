@@ -7,8 +7,9 @@
  !for i=1 to $classcnt
   !set l=!line $i of $classes
   !distribute items $l into c_,s_,t_
+  <span class="wims_classes_direct_class">
   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
-  &nbsp;
+</span>
  !next i
 !endif
 !set progs=!record 0 of wimshome/log/classes/$wims_class/programs
@@ -19,8 +20,9 @@
  !for i=1 to $progcnt
   !set l=!line $i of $progs
   !distribute items $l into c_,s_,t_
+  <span class="wims_classes_direct_program">
   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
-  &nbsp;
+  </span>
  !next i
 !endif
 
@@ -33,8 +35,9 @@
   !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into c_,s_,t_
+   <span class="wims_classes_direct_course">
    !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
-   &nbsp;
+   </span>
   !next i
  !endif
  !set courses=!record 0 of wimshome/log/classes/$wims_class/icourses
@@ -45,8 +48,9 @@
   !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into c_,s_,t_
+   <span class="wims_classes_direct_course">
    !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
-   &nbsp;
+   </span>
   !next i
  !endif
 !endif
@@ -55,8 +59,9 @@
  !set test=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
  !if $test=yes
   <p>$CL_Test:
+  <span class="wims_classes_direct_program">
   !href module=adm/class/classes&type=authsupervisor&class=$wims_class/0 $N_go
-&nbsp;
+</span>
   !href module=adm/class/config&job=neighbor&job2=import&nei=$wims_class/0 $N_import
   !set wims_tail_menu=!append line testgo,1,module=adm/class/classes&type=authsupervisor&class=$wims_class/0 \
   import,1,adm/class/config&job=neighbor&job2=import&nei=$wims_class/0\
