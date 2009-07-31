@@ -1,135 +1,118 @@
 !set wims_module_log=error: $error
 
-<b>Erreur</b>.
+<b>Napaka</b>.
 
 !if $error = doc_not_exist
- Le document que vous avez demandé n'existe pas (plus).
+ Dokument, ki ga i¹èete, ne obstaja (veè).
  !exit
 !endif
 
 !if $error = abuse
- Votre document a un titre bizarre ! Etes-vous sûr que vous voulez créer un
- document sérieux&nbsp;?
+ Va¹ dokument ima èuden naslov. Ali res ¾elite ustvariti tak¹en dokument.
  <p>
- <b>Attention</b> ! Les auteurs d'abus du serveur se verront refuser l'accès.
+ <b>Opozorilo!</b> Ob poskusu zlorabe vam bo stre¾nik blokiral dostop.
  !exit
 !endif
 
 !if $error = quota
- Vous ne pouvez plus modifier ce document, car son contenu a dépassé la limite
- d'espace disque autorisé.
+ Tega dokumenta ne morete veè spreminjati, saj ste z njegovo vsebino presegli dovoljeno kvoto na disku.
  !exit
 !endif
 
 !if $error = quota_file
- Dépot de fichier refusé car il n'y a pas assez d'espace disque libre pour
- votre document.
+ Dodajanje datotek je zavrnjeno, ker na disku ni veè dovolj prostora za va¹ dokument.
  !exit
 !endif
 
 !if $error = no_tit
- Il faut donner un titre à votre document.
+ Svojemu dokumentu morate izbrati naslov.
  !exit
 !endif
 
 !if $error = no_author
- Vous n'avez pas défini l'auteur du document.
+ Pozabili ste vpisati avtorja dokumenta.
  !exit
 !endif
 
 !if $error = bad_email
- Votre adresse électronique ne semble pas être correcte ! Veuillez la
- vérifier.
+ Va¹ e-naslov je videti neveljaven. Popravite ga.
  !exit
 !endif
 
 !if $error = bad_code
- Désolé, mais le code secret ne correspond pas. Vous n'avez donc pas le
- droit de lire/modifier le document demandé.
+ Vneseno geslo je napaèno. Dostop do dokumenta je zavrnjen.
  <p>
- Veuillez
- !mailurl $wims_site_manager écrire au gestionnaire du site\
- Code document oublié
- si vous avez oublié le code secret de votre
- document.
+ Prosim,
+ !mailurl $wims_site_manager pi¹ite skrbniku\
+Forgotten document code
+ èe ste pozabili za¹èitno geslo dokumenta.
  !exit
 !endif
 
 !if $error = unauthorized
- Vous n'avez pas le droit de lire/modifier le document demandé.
+ Nimate pravice dostopati do tega dokumenta.
  !exit
 !endif
 
 !if $error = bad_data
- Certaines de vos définitions ne sont pas correctes. Veuillez corriger.
+ Nekatere podatki niso ustrezni. Prosim, da jih popravite.
  !exit
 !endif
 
 !if $error = class_no_right
- Désolé mais votre demande n'est pas autorisée. Veuillez vérifier avec
- l'enseignant de cette classe.
+ Ta zahteva ni dovoljena. Posvetujte se s skrbnikom uèilnice.
  !exit
 !endif
 
 !if $error = small_code
- Le code secret est trop court.
+ Za¹èitno geslo je prekratko.
  !exit
 !endif
 
 !if $error = big_code
- Le code secret est trop long.
+ Za¹èitno geslo je predolgo.
  !exit
 !endif
 
 !if $error = code_discord
- <b>Attention</b>. Vous avez tapé deux fois deux codes secrets distincts.
- Essayez encore une fois.
+ <b>Opozorilo</b>. V dveh poskusih ste vnesli dve razlièni za¹èitni gesli. Poskusite ¹e enkrat.
  !exit
 !endif
 
 !if $error = bad_newcode
- Votre code secret contient des caractères interdits. Veuillez utiliser
- uniquement des lettres alpha-numériques.
+ Va¹e za¹èitno geslo vsebuje nedovoljene znake. Prosim za drugo geslo.
  !exit
 !endif
 
 !if $error = bad_oldcode
- Vous n'avez pas donné le bon code secret actuel. Veuillez réessayer.
+ Staro geslo je napaèno. Poskusite znova.
  !exit
 !endif
 
 !if $error = deposit_fail
- Désolé mais je n'ai pas pu recevoir un fichier valide de votre part. Vérifiez
- le nom de votre fichier.
+ ®al ne najdem ustrezne datoteke. Preverite ime va¹e datoteke. 
  !exit
 !endif
 
 !if $error = deposit_binary
- Vous avez soumis un fichier binaire <tt>$wims_deposit</tt>&nbsp;!
- Je ne peux pas l'utiliser. Veuillez envoyer un fichier de texte.
+ Dodali ste binarno datoteko <tt>$wims_deposit</tt>,
+ ki je ne morem uporabiti. Po¹ljite smiselno besedilno datoteko.
  !exit
 !endif
 
 !if $error = src_too_long
- Votre bloc <tt>$block</tt> ne peut pas être accepté car sa longueur a dépassé
- la limite ($max_blocklen octets). Vous pouvez le couper
- en plusieurs blocs.
+ Va¹ blok <tt>$block</tt> ni sprejet, saj presega dovoljeno dol¾ino ($max_blocklen bytov). Lahko ga razdelite v veè manj¹ih blokov.
  !exit
 !endif
 
 !if $error = file_too_long
- Votre fichier LaTeX ne peut pas être accepté car il a dépassé
- la limite de longueur ($max_texlen octets).
- Mais vous pouvez le couper
- en parties, et les soumettre une par une dans de différents blocs.
+ Va¹a LaTeX datoteka ni sprejeta, saj presega dovoljeno dol¾ino ($max_texlen bytov).
+ Poskusite jo razdeliti na veè delov in jih vnesti kot razliène bloke.
  !exit
 !endif
 
 !if $error = no_latex2html
- Désolé, mais l'envoi des fichiers LaTeX ne peut pas se faire sur ce serveur,
- car le logiciel LaTeX2HTML n'est pas installé sur le serveur.
- Veuillez tourner LaTeX2HTML sur votre ordinateur local, puis
- soumettre le fichier html qui en résulte.
+ Dodajanje LaTeX datotek na tem stre¾niku ni mogoèe, ker programska oprema LaTeX2HTML ni name¹èena. Poskusite pognati LaTeX2HTML na va¹em raèunalniku in dodati nastalo html datoteko.
  !exit
 !endif
 
