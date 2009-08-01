@@ -9,10 +9,12 @@
 <li><p>配置:
 !set catcnt=!recordcnt conf/cat
 !for i=1 to $catcnt
+ !if $i notwordof 5 11
  !set l=!record $i of conf/cat
  !distribute lines $l into x_,y_
  !href cmd=reply&job=conf&confcat=$i $y_
 &nbsp;&nbsp;
+!endif
 !next i
 
 <li><p>系统检查表:

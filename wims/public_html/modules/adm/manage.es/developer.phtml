@@ -1,9 +1,13 @@
+!set wims_name_adddevel=Añadir una nueva cuenta de desarrollador
+!set wims_name_develaccount=Lista de cuentas de desarrolladores
 
 !if $job2 iswordof mod1 mod2 del1
  !read developer/$job2.phtml
- <p><center>
- !href cmd=reply&job2=first Lista de cuentas de desarrolladores
- </center> <p>
+ !set wims_menu_items=!append line develaccount,1,cmd=reply&job2=first\
+to $wims_menu_items
+!! <p><center>
+!! !href cmd=reply&job2=first Lista de cuentas de desarrolladores
+!! </center> <p>
  !exit
 !endif
 
@@ -25,9 +29,12 @@ $table_hdtr
  !href module=adm/modtool&login=$login&passwd=$passwd&jobreq=modname Visitar
 </small>
 !next d
-$table_end <p><center>
-!href cmd=reply&job2=mod1&devno=0 Añadir una nueva cuenta de desarrollador
-</center> <p>
+$table_end <p>
+!!<center>
+!!!href cmd=reply&job2=mod1&devno=0 Añadir una nueva cuenta de desarrollador
+!!</center> <p>
+!set wims_menu_items=!append line adddevel,1,cmd=reply&job2=mod1&devno=0\
+to $wims_menu_items
 
 !form reply
 <input type=hidden name=job2 value=pub>

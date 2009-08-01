@@ -10,10 +10,12 @@ Lista de tareas que puede realizar en línea:<ul>
 <li><p>Configuración:
 !set catcnt=!recordcnt conf/cat
 !for i=1 to $catcnt
+ !if $i notwordof 5 11
  !set l=!record $i of conf/cat
  !distribute lines $l into x_,y_
  !href cmd=reply&job=conf&confcat=$i $y_
 &nbsp;&nbsp;
+!endif
 !next i
 
 <li><p>Chequeo del sistema:
@@ -23,36 +25,36 @@ programas utilizados internamente por
 !href cmd=reply&job=conf&confcat=11#check los cálculos
 ,
 !href cmd=reply&job=attrib permisos de los ficheros
-,
-!href cmd=reply&job=activ actividades actuales del servidor
 .
 
 <li><p>Gestión y mantenimiento:
 !href cmd=reply&job=class&job2=first clases virtuales
 ,
-<u>foros</u> (planeado)
-,
+!!<u>foros</u> (planeado)
+!!,
 !href module=adm/doc documentos
 ,
+!href cmd=reply&job=activ actividades actuales del servidor
+!! y
+!!<u>mensaje del día</u> (planeado)
+.
+</li><li><p>
 !href cmd=reply&job=developer&job2=first cuentas de desarrolladores de módulos
- y
-<u>mensaje del día</u> (planeado)
-.
-<li><p>
-Gestión del sistema de 
-!href cmd=reply&job=backup&job2=first copias de seguridad
-.
+
 Administración de los 
 !href cmd=reply&job=modules&job2=first Módulos
 .
-!href cmd=reply&job=upload Subida
- de recursos al servidor.
-!href cmd=reply&job=update&job2=first Actualización del software del servidor
-.
-<li><p>
 !href cmd=reply&job=mkindex Reconstrucción del índice de recursos
   tras la adición de nuevos recursos (módulos, hojas de trabajo) al servidor.
-<li><p>
+</li><li><p>
+Gestión del sistema de 
+!href cmd=reply&job=backup&job2=first copias de seguridad
+.
+!href cmd=reply&job=upload Subida
+ de recursos al servidor.
+
+!href cmd=reply&job=update&job2=first Actualización del software del servidor
+.
 !href cmd=reply&job=fs&job2= Gestión directa de ficheros
 , reservada a los expertos.
 </ul>

@@ -9,10 +9,12 @@ Here is the list of tasks you may perform online.<ul>
 <li><p>Configuration:
 !set catcnt=!recordcnt conf/cat
 !for i=1 to $catcnt
+ !if $i notwordof 5 11
  !set l=!record $i of conf/cat
  !distribute lines $l into x_,y_
  !href cmd=reply&job=conf&confcat=$i $y_
 &nbsp;&nbsp;
+!endif
 !next i
 
 </li><li><p>System checklist:
@@ -22,39 +24,40 @@ support softwares for
 !href cmd=reply&job=conf&confcat=11#check computation
 ,
 !href cmd=reply&job=attrib file permissions
-,
-!href cmd=reply&job=activ current server activities
 .
 
 </li><li><p>Check/maintain
 !href cmd=reply&job=class&job2=first virtual classes
 ,
-<u>forums</u> (planned)
-,
+!!<u>forums</u> (planned)
+!!,
 !href module=adm/doc documents
 ,
-!href cmd=reply&job=developer&job2=first module developer accounts
- and
-<u>message of the day</u> (planned)
+!href cmd=reply&job=activ current server activities
+!! and
+!!<u>message of the day</u> (planned)
 .
+</li><li><p>Create/maintain
+!href cmd=reply&job=developer&job2=first module developer accounts
+ (Modtool)
+</li><li><p>
+!href cmd=reply&job=modules&job2=first Modules
+ management.
+
+!href cmd=reply&job=mkindex Rebuild resource index
+ (to be run after each addition of new resources as modules, sheets, ... to the
+server.)
 </li><li><p>
 !href cmd=reply&job=backup&job2=first Backup
- management.
-!href cmd=reply&job=modules&job2=first Modules
  management.
 !href cmd=reply&job=upload Upload
  resources to the server.
 !href cmd=reply&job=update&job2=first Server software update
 .
-</li><li><p>
-!href cmd=reply&job=mkindex Rebuild resource index
-, to be run after each addition of new resources (modules, sheets) to the
-server.
-</li><li><p>
-!href cmd=reply&job=fs&job2= Direct file management
-, reserved to experts.
-</li><li><p>
 !href cmd=reply&job=otherdownload Download other ressources
+,
+!href cmd=reply&job=fs&job2= Direct file management
+
 </li>
 </ul>
 

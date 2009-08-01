@@ -1,9 +1,13 @@
+!set wims_name_adddevel=加入一个新开发者
+!set wims_name_develaccount=开发者表
 
 !if $job2 iswordof mod1 mod2 del1
  !read developer/$job2.phtml
- <p><center>
- !href cmd=reply&job2=first 开发者表
- </center> <p>
+ !set wims_menu_items=!append line develaccount,1,cmd=reply&job2=first\
+to $wims_menu_items
+!! <p><center>
+!! !href cmd=reply&job2=first 开发者表
+!! </center> <p>
  !exit
 !endif
 
@@ -25,9 +29,12 @@ $table_hdtr
  !href module=adm/modtool&login=$login&passwd=$passwd&jobreq=modname 访问
 </small>
 !next d
-$table_end <p><center>
-!href cmd=reply&job2=mod1&devno=0 加入一个新开发者
-</center> <p>
+$table_end <p>
+!!<center>
+!!!href cmd=reply&job2=mod1&devno=0 加入一个新开发者
+!!</center> <p>
+!set wims_menu_items=!append line adddevel,1,cmd=reply&job2=mod1&devno=0\
+to $wims_menu_items
 
 !form reply
 <input type=hidden name=job2 value=pub>
