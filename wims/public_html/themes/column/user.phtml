@@ -31,6 +31,10 @@
  !set sm=!record 0 of wimshome/log/classes/$wims_class/.E$n_
  !if $r_!=$empty and $s_!=$ws and $t_>$now and $sm!=#
   !read classlogo.phtml
+  <table border=0 cellspacing=0 cellpadding=8 align=$class_logoside>
+<tr><td align=center valign=middle>
+<img src="$class_logo" border=0 alt="logo" align=left>
+</td></tr></table>
   <center> <br> <br>
   <b><font size="+2">$wims_classname</font></b>
   <br>
@@ -101,7 +105,13 @@
 <div class=wimsbody>
 
 !read classlogo.phtml
+!if $class_logo!=
+<table border=0 cellspacing=0 cellpadding=8 align=$class_logoside>
+<tr><td align=center valign=middle>
+<img src="$class_logo" border=0 alt="logo" align=left>
+</td></tr></table>
 <center> <br> <br>
+!endif
 <b><font size="+2">$wims_classname</font></b>
 <br>
 !if $wims_superclass=$empty or $wims_superclass=$wims_class

@@ -36,12 +36,14 @@
 !read classlogo.phtml
 !read ./adm/title.phtml 2\
 $wims_classname <small>($(wims_name_$class_typename))</small>
+!if $class_logo!=
+<div class="menuitem">
+<div id="wimslogo$class_logoside">
+<img src="$class_logo" border=0 alt="class logo" align=left>
+</div><!--wimslogo-->
+</div><!--menuitem-->
+!endif
 
-!!<center>
-!!<br> <br>
-!!<b><font size="+2">$wims_classname</font></b>
-!!<br>
-!!<small>($(wims_name_$class_typename))</small>
 <center>
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
   $wims_institutionname
