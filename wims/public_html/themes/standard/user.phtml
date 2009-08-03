@@ -324,10 +324,36 @@ $U_greet
 !!  !href module=adm/class/cdt $U_cdt
 </div><!--menuitem-->
 !endif
-<div class="menuitem">
+!set forum_policy=!defof mb_readpolicy in wimshome/log/classes/$wims_class/forum/.def
+!reset name_c
+!if $forum_policy!=owner
+  !if $class_superclass!=
+   !set name_c=!defof class_description in wimshome/log/classes/$wims_class/.def
+   !set name_c=<small>($name_c)</small>
+  !endif
+ <div class="menuitem">
 !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard
-!!!href module=adm/forum/mboard $im "gifs/themes/$wims_theme_image/forum.gif" alt="forum" title=forum"> $N_Mboard
-</div><!--menuitem-->
+ $name_c
+ </div><!--menuitem-->
+!endif
+!!! the following allows to have forums in level. I comment because 
+!!I don't know if it useful. don't delete. 
+!!!if $wims_class=$wims_superclass and $class_type=4
+!!  !set level_cnt=!record 0 of wimshome/log/classes/$wims_class/levels
+!!  !set level_cnt=!linecnt $level_cnt
+!!  !set participate_=!defof user_participate in wimshome/log/classes/$wims_class/.users/$wims_user
+!!  !set supervise_=!defof user_supervise in wimshome/log/classes/$wims_class/.users/$wims_user 
+!!  !for le_ from 1 to $level_cnt
+!!     !defread wimshome/log/classes/$wims_class/$le/forum/.def
+!!   !if $mb_defined!=yes and ,$wims_class/$le_/ isin ,$participate_,$supervise_ and $mb_readpolicy!=owner
+!!    !set name_c=!defof class_description in wimshome/log/classes/$wims_class/$le_/.def
+!!     <div class="menuitem">
+!!      !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard&forum=classes/$wims_class/$le_
+!!      <small>($name_c)</small>
+!!     </div><!--menuitem-->
+!!    !endif
+!!  !next
+!!!endif
 !ifval $dcnt+$n+$m+$v>0 and $is_interclass!=yes
 <div class="itemsep"></div><!--itemsep-->
 <div class="menuitem">
