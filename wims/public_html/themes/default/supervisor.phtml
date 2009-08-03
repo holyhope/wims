@@ -118,12 +118,15 @@ $SU_greet.
 !set ac_1=$SU_Ac
 !set ac_2=$SU_Ex
 !set ac_3=$SU_Hi
-
-!if $sheetcnt+$examcnt+$doccnt+$votecnt+$subclasscnt<=0
+!set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
+!if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  $SU_nosheet
 !else
  $table_header
  <caption>$SU_shlist &nbsp;
+ [
+ !href module=adm/class/sequence $wims_name_reorder
+ ]
  </caption>
  $table_hdtr<th>$SU_shno<th>$SU_shti<th>$SU_shst
  !for i=1 to $subclasscnt
@@ -147,6 +150,20 @@ $SU_greet.
   </td>
   <td align=center><small>
   !item $[$o_ +1] of $U_Docstatus
+  </small></td>
+ !next i
+ !for i=1 to $docpubliccnt
+    !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
+    !distribute lines $sh into s_,t_,ti,d_,o_
+    $table_tr<td align=center>$U_Doc</td>
+   <td>
+   !href module=$s_&$t_ $ti
+   </td>
+   <td align=center><small>
+   !item $[$o_ +1] of $wims_name_status
+   [
+   !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
+   ]
   </small></td>
  !next i
  !for i=1 to $sheetcnt
