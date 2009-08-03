@@ -28,16 +28,30 @@ et qui apparaîtra dans
 .
 <p>
 Ecrire le message (liens et tags html sont admis) :
+(
+!if $speckedit!=no
+!href cmd=reply&job=modif&speckedit=no  $wims_name_desactive
+!else
+ !href cmd=reply&job=modif&speckedit=yes $wims_name_active
+!endif
+)
 <p>
+
 !form reply
  <input type=hidden name=action value=register>
  <input type=hidden name=user value="$user">
  <input type=hidden name=job value="$job">
- <textarea $wims_id name=motd cols=120 rows=10>$motd</textarea>
+!if $speckedit=no
+<textarea name=motd cols=120 rows=10 >$motd</textarea>
+!else
+<textarea $wims_id name=motd cols=120 rows=10 >$motd</textarea>
+!endif
  !if $user!=$empty
   <br>
   Le message concernera également les élèves suivants : <br>
   !formcheckbox listuser list $listiduser prompt $listnameuser
  !endif
  <p><center><input type=submit value="Enregistrer le message" $wims_on_click></center>
+
 </form>
+

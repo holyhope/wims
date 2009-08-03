@@ -1,4 +1,5 @@
 !read adm/css.phtml
+!read js/speckedit.phtml name_deposit
 !header1
 
 !read names.phtml
@@ -26,7 +27,8 @@ Message de la classe
  !goto end
 !endif
 
-er un message destiné à tous les participants de la classe ou des messages personnalisés pour chaque élève.
+Cette page permet d'écrire ou de modifier un message destiné à tous les participants de la classe 
+ou des messages personnalisés pour chaque élève.
 Ces messages apparaîtront sur 
 !href style=student la page d'accueil des participants
 .
@@ -83,7 +85,9 @@ $table_end
 :end
 
 !if $job!=$empty and $job!=delete
- !href cmd=reply Retour
+!set wims_menu_items=!append line back2,1,cmd=reply\
+to $wims_menu_items
+ !!!href cmd=reply Retour
 !endif
 
 !tail
