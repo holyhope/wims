@@ -37,10 +37,20 @@ slib_mod = !items2words $slib_mod
 !endif
 !default slib_adresse=flash
 
-!if rename iswordof $slib_option2 
-   slib_son=!rename $slib_son
+slib_son=!words2items $slib_son
+slib_Son=
+!if rename iswordof $slib_option2
+  !for slib_s_ in $slib_son
+    slib_S=!rename $slib_s_
+    slib_Son=!append item $slib_S to $slib_son
+  !next
 !endif
+!if $slib_Son!=
+  slib_son=$slib_Son
+!endif
+slib_son=!replace internal , by | in $slib_son
+slib_son=!nospace $slib_son
 
 ####attention = pas d'espace et mettre sur une seule ligne, sinon il y a 
 #### un problème dans les exos de correspondance
-slib_out =<object type="application/x-shockwave-flash" data="$slib_adresse/dewplayer-mini.swf?mp3=$slib_son" $slib_option alt="audio"><param name="movie" value="$slib_adresse/dewplayer-mini.swf?mp3=$slib_son"/></object>
+slib_out =<object type="application/x-shockwave-flash" data="$slib_adresse/dewplayer-multi.swf?mp3=$slib_son" $slib_option alt="audio"><param name="movie" value="$slib_adresse/dewplayer-multi.swf?mp3=$slib_son"/></object>
