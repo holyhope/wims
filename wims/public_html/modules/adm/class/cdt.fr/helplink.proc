@@ -33,3 +33,29 @@ file_titles=!filelist $wims_home/log/classes/$wims_class/cdt/files/
 file_titles=!lines2items $file_titles
 nbfile=!itemcnt $file_titles
 !bound cible within ddesc1,ddesc2,ddesc3,ddesc4,ddesc5,jdesc default ddesc1
+
+nbdocs= !recordcnt wimshome/log/classes/$wims_class/doc/.index
+
+doc_nums=
+doc_titles=
+!for i = 1 to $nbdocs
+  d_= !record  $i of  wimshome/log/classes/$wims_class/doc/.index
+ !distribute lines $d_ into s_,t_,a_,e_,c_,o_
+ !if $o_>0
+    doc_nums=!append item c$i to $doc_nums
+    doc_titles=!append item $t_ to $doc_titles
+ !endif
+!next i
+
+nbpdocs= !recordcnt wimshome/log/classes/$wims_class/doc/.docindex
+pdoc_adds=
+pdoc_titles=
+!for i = 1 to $nbpdocs
+  d_= !record  $i of  wimshome/log/classes/$wims_class/doc/.docindex
+ !distribute lines $d_ into s_,p_,t_,d_,o_
+ !if $o_>0
+    pdoc_adds=!append item $s_ to $pdoc_adds
+    pdoc_titles=!append item $t_ to $pdoc_titles
+ !endif
+!next i
+
