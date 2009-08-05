@@ -28,8 +28,17 @@
  !endif
 主题:
  <input size=55 name=c_subject value="$c_subject"> <br>
-信息主体:<br>
- !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap>
+信息主体:(
+ !if $speckedit=no
+   !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit>
+   !href cmd=reply&job=compose&speckedit=yes&c_quote=$c_quote  $wims_name_active
+!else
+  !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit $wims_id>
+  !href cmd=reply&job=compose&speckedit=no&c_quote=$c_quote $wims_name_desactive
+!endif
+ <small>
+$n_warning
+</small>)<br>
  !set msgsrc2=</textarea>
  !if $c_quote>0 and $c_prec!=$empty
   !mexec scripts/quote.sh
@@ -43,9 +52,9 @@
  !set c_quote=0
  $tag_escaper</table>
  <p><center>
- <input type=submit name=c_preview value="预览">
+ <input type=submit name=c_preview value="预览" $wims_on_click>
  &nbsp;&nbsp;
- <input type=submit name=c_send value="发送">
+ <input type=submit name=c_send value="发送" $wims_on_click>
  &nbsp;&nbsp;
  <input type=submit name=c_list value="取消">
  </center> <p>

@@ -28,8 +28,17 @@ $n_yourname:
  !endif
  $n_subject:
  <input size=55 name=c_subject value="$c_subject"> <br>
- $n_content:<br>
- !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit wrap>
+ $n_content:(
+ !if $speckedit=no
+   !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit>
+   !href cmd=reply&job=compose&speckedit=yes&c_quote=$c_quote  $wims_name_active
+!else
+  !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit $wims_id>
+  !href cmd=reply&job=compose&speckedit=no&c_quote=$c_quote $wims_name_desactive
+!endif
+ <small>
+$n_warning
+</small>)<br>
  !set msgsrc2=</textarea>
  !if $c_quote>0 and $c_prec!=$empty
   !mexec scripts/quote.sh
@@ -43,9 +52,9 @@ $n_yourname:
  !set c_quote=0
  $tag_escaper</table>
  <p><center>
- <input type=submit name=c_preview value="$n_preview">
+ <input type=submit name=c_preview value="$n_preview" $wims_on_click>
  &nbsp;&nbsp;
- <input type=submit name=c_send value="$n_send0">
+ <input type=submit name=c_send value="$n_send0" $wims_on_click>
  &nbsp;&nbsp;
  <input type=submit name=c_list value="$n_giveup">
  </center> <p>
