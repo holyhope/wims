@@ -279,7 +279,7 @@ Livret de la classe\
 !endif
 
 !if $wims_user=supervisor
- !distribute line Retourner à la page pour enseignant \
+ !distribute line Volver a la página del profesor \
  into wims_name_backteacher
 !endif
 
@@ -289,3 +289,6 @@ Livret de la classe\
    Latex2wims\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims
    
+!distribute line activer l'éditeur html\
+désactiver l'éditeur html\
+into wims_name_active, wims_name_desactive

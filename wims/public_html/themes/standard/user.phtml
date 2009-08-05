@@ -367,7 +367,8 @@ $U_greet
 !!! !href module=adm/class/userlist&job=userprop $im "gifs/themes/$wims_theme_image/account.gif" alt="account" title="account"> $U_account
 </div><!--menuitem-->
 !endif
-<div class="tailsep"></div><!--tailsep-->
+!if $class_ent_n0>0
+<div class="itemsep"></div><!--tailsep-->
 !set class_ent1=!rows2lines $class_ent
 !set class_ent_n0=!linecnt $class_ent1
 !for i_=1 to $class_ent_n0
@@ -377,6 +378,14 @@ $U_greet
    !!  <a href="$(1_[2])" target=wims_external>$im "gifs/themes/$wims_theme_image/ent.gif" alt="ent" title="ent"> $(1_[1])</a>
    </div><!--menuitem-->
 !next i_
+!endif
+<div class="itemsep"></div><!--tailsep-->
+!if $wims_user=supervisor
+ <div class="menuitem">
+ !read ./adm/oneitem.phtml backteacher,1,$
+ </div><!--menuitem-->
+!endif
+
 </div><!--wimsmenu-->
 </div><!--wimsmenumodubox-->
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
