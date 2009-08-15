@@ -1,22 +1,33 @@
-
+!set n_compose=Pisanje novega sporoèila
+!set n_archives=Meseèni arhivi
+!set n_config=Nastavitve deske sporoèil
 !if $send_right>0
- !href cmd=new&forum=$forum&job=compose Pisanje novega sporoèila
-.
+!set wims_menu_items=!append line "$n_compose",1,cmd=new&forum=$forum&job=compose\
+to $wims_menu_items
+!! !href cmd=new&forum=$forum&job=compose $n_compose
+!!.
 !endif
 !if $is_owner=yes
- &nbsp;
- !href cmd=reply&job=config Nastavitve deske sporoèil
+!set wims_menu_items=!append line config,1,cmd=reply&job=config\
+to $wims_menu_items
+!! &nbsp;
+!! !href cmd=reply&job=config $n_config
 !endif
 
 !if $archlist=$empty or $mlist=$archlist
  !exit
 !endif
 
-<p>Meseèni arhivi:
-
+!set wims_menu_items=!append line $n_archives,0,$n_archives\
+to $wims_menu_items
+!!<p>$n_archives:
 !for i in $archlist
- !href cmd=reply&job=list&mlist=$i $i
- &nbsp;
+!set wims_menu_items=!append line $i,1,cmd=reply&job=list&mlist=$i\
+to $wims_menu_items
+
+!! !href cmd=reply&job=list&mlist=$i $i
+!! &nbsp;
 !next i
+
 <p>
 
