@@ -60,12 +60,14 @@ to $wims_menu_items
 !set wims_menu_items=!append line ,0,\
  to $wims_menu_items
 !set wims_menu_items=!append line config_refresh,0,Actualiser\
-to $wims_menu_items 
+to $wims_menu_items
+!if $class_type=4
+ !set wims_menu_items=!append line zones,1,cmd=reply&job=index&job2=structure\
+ to $wims_menu_items
+!endif
 !if $class_type=4 or $class_type=2
-!set wims_menu_items=!append line zones,1,cmd=reply&job=index&job2=structure\
-to $wims_menu_items 
-!set wims_menu_items=!append line teachers,1,cmd=reply&job=index&job2=teacherlist\
-to $wims_menu_items 
+ !set wims_menu_items=!append line teachers,1,cmd=reply&job=index&job2=teacherlist\
+ to $wims_menu_items 
 !endif
 !set wims_menu_items=!append line participants,1,cmd=reply&job=index&job2=userlist\
 to $wims_menu_items 
@@ -80,11 +82,11 @@ to $wims_menu_items
 !endif
 
 !if $job notwordof list new
-!set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
+ !set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
  ,0,\
  config,1,cmd=renew&job=list\
 to $wims_menu_items
-!! <p><center>
+!!<p><center>
 !! !href cmd=renew&job=list Main configuration page
 !! </center> <p>
 !endif
