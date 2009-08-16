@@ -122,7 +122,7 @@ $table_tr<td align=right>Enregistrement d'exercices
  </small>
 !default class_examshow=yes
 !set up_examshow=$class_examshow
-!formselect up_examshow list no,yes prompt Non,Oui
+!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 !set up_ent=$class_ent
 $table_tr<td align=right>Adresse d'une plateforme
 <small>
@@ -131,12 +131,12 @@ $table_tr<td align=right>Adresse d'une plateforme
 <td colspan=3>
 <input size=50 name=up_ent value="$class_ent">
 $table_hdtr<td align=center colspan=4>
-<input type=submit name=save value=Sauver>
+<input type=submit name=save value="$wims_name_tosave">
 &nbsp;
-<input type=submit name=abandon value=Restaurer>
+<input type=submit name=abandon value="$wims_name_giveup">
 $table_end <p>
 </form>
-
+!if $wims_theme_version=0 or $wims_theme_version=
 Autres configurations:
 !href cmd=reply&job=present Apparence
 .
@@ -192,9 +192,11 @@ Actualiser les index<sup>
 <p>
 !href module=adm/light&phtml=useropts.phtml.$lang Préférences personnelles
 .
+!endif
 <p>
 Utilisation actuelle d'espace disque : $du megaoctets. (La limite est
 $wims_class_quota.)
+
 
 !reset up_institution, up_description, up_supervisor, up_email, \
 	up_lang, up_level, up_limit, up_topscores, up_expiration, up_secure, up_lock,\

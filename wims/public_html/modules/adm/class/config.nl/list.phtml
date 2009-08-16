@@ -21,25 +21,25 @@ $table_tr<td align=right>Naam van de klas
 <input size=50 name=up_description value="$class_description">
 $table_tr<td align=right>Toegestane netwerkadressen
 <small>
-!href cmd=help&special_parm=config&special_parm2=secure help
+!href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
  </small>
 <td colspan=3>
 <input size=50 name=up_secure value="$class_secure">
 $table_tr<td align=right>Docent
 <small>
-!href cmd=help&special_parm=config&special_parm2=supervisor help
+!href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_supervisor value="$class_supervisor">
 $table_tr<td align=right>Email docent
 <small>
-!href cmd=help&special_parm=config&special_parm2=email help
+!href cmd=help&special_parm=config&special_parm2=email $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_email value="$class_email">
 $table_tr<td align=right>Optioneel
 <small>
-!href cmd=help&special_parm=config&special_parm2=option help
+!href cmd=help&special_parm=config&special_parm2=option $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
@@ -47,7 +47,7 @@ $table_tr<td align=right>Optioneel
 $table_tr<td align=right>
 Modtool Account
 <small>
-!href cmd=help&special_parm=config&special_parm2=modtoolchg help
+!href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 </small>
 </td><td colspan=3>
 !set modtoolchg=1
@@ -56,7 +56,7 @@ Modtool Account
 !endif
 $table_tr<td align=right colspan=2>Netwerk security niveau
 <small>
-!href cmd=help&special_parm=config&special_parm2=lock help
+!href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
 </td><td colspan=3>
 !set up_lock=$class_lock
@@ -65,7 +65,7 @@ $table_tr<td align=right colspan=2>Netwerk security niveau
 </td>
 $table_tr<td align=right>Taal van de klas
 <small>
-!href cmd=help&special_parm=config&special_parm2=lang help
+!href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
  </small>
 <td>
 !set up_lang=$class_lang
@@ -74,20 +74,20 @@ $table_tr<td align=right>Taal van de klas
 <td align=right>
 Les niveau
 <small>
-!href cmd=help&special_parm=config&special_parm2=level help
+!href cmd=help&special_parm=config&special_parm2=level $wims_name_help
  </small>
 <td>
 !set up_level=$class_level
 !formselect up_level list $levellist
 $table_tr<td align=right>Maximum aantal deelnemers
 <small>
-!href cmd=help&special_parm=config&special_parm2=limit help
+!href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
  </small>
 <td><input size=5 name=up_limit value="$class_limit">
 <td align=right>Verloop datum
 <small><b>yyyymmdd</b></small>
 <small>
-!href cmd=help&special_parm=config&special_parm2=expiration help
+!href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
  </small>
 <td>
 !if $class_type notin 13
@@ -98,37 +98,37 @@ $table_tr<td align=right>Maximum aantal deelnemers
 $table_tr<td align=right>Aantal bewaarde oefeningen
 
 <small>
-!href cmd=help&special_parm=config&special_parm2=exolog help
+!href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
  </small>
 !default class_exolog=0
 <td><input size=3 name=up_exolog value="$class_exolog">
 <td align=right>Aantal bewaarde digi-toetsen
 <small>
-!href cmd=help&special_parm=config&special_parm2=examlog help
+!href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
  </small>
 !default class_examlog=$wims_examlog_limit
 <input size=3 name=up_examlog value="$class_examlog">
 <td>zichtbaar voor studenten
 <small>
-!href cmd=help&special_parm=config&special_parm2=examshow help
+!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
  </small>
 !default class_examshow=yes
 !set up_examshow=$class_examshow
-!formselect up_examshow list no,yes prompt No,Yes
+!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 !set up_ent=$class_ent
 $table_tr<td align=right>Other platform link
 <small>
-!href cmd=help&special_parm=config&special_parm2=ent help
+!href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
  </small>
 <td colspan=3>
 <input size=50 name=up_ent value="$class_ent">
 $table_hdtr<td align=center colspan=4>
-<input type=submit name=save value=Opslaan>
+<input type=submit name=save value="$wims_name_tosave">
 &nbsp;
-<input type=submit name=abandon value=Annuleren>
+<input type=submit name=abandon value="$wims_name_giveup">
 $table_end <p>
 </form>
-
+!if $wims_theme_version=0 or $wims_theme_version=
 Andere configuraties:
 !href cmd=reply&job=present uiterlijk
 .
@@ -165,7 +165,7 @@ Andere configuraties:
 .
 <br>
 Actualiseer de index<sup>
-!href cmd=help&special_parm=index help
+!href cmd=help&special_parm=index $wims_name_help
 </sup>:
 !if $class_type=4
 !href cmd=reply&job=index&job2=structure subklassen
@@ -184,6 +184,7 @@ Actualiseer de index<sup>
 <p>
 !href module=adm/light&phtml=useropts.phtml.$lang Mijn persoonlijke instellingen
 .
+!endif
 <p>
 Huidige klasse grootte: $du megabytes. (het ingestelde maximum is
 $wims_class_quota.)

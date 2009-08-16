@@ -21,25 +21,25 @@ $table_tr<td align=right>Nombre de la clase
 <input size=50 name=up_description value="$class_description">
 $table_tr<td align=right>Estaciones de trabajo seguras
 <small>
-!href cmd=help&special_parm=config&special_parm2=secure ayuda
+!href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
  </small>
 <td colspan=3>
 <input size=50 name=up_secure value="$class_secure">
 $table_tr<td align=right>Nombre del profesor
 <small>
-!href cmd=help&special_parm=config&special_parm2=supervisor ayuda
+!href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_supervisor value="$class_supervisor">
 $table_tr<td align=right>Dirección de correo electrónico del profesor
 <small>
-!href cmd=help&special_parm=config&special_parm2=email ayuda
+!href cmd=help&special_parm=config&special_parm2=email $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_email value="$class_email">
 $table_tr<td align=right>Opciones
 <small>
-!href cmd=help&special_parm=config&special_parm2=option ayuda
+!href cmd=help&special_parm=config&special_parm2=option $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
@@ -47,7 +47,7 @@ $table_tr<td align=right>Opciones
 $table_tr<td align=right>
 Modtool Account
 <small>
-!href cmd=help&special_parm=config&special_parm2=modtoolchg help
+!href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 </small>
 </td><td colspan=3>
 !set modtoolchg=1
@@ -56,7 +56,7 @@ Modtool Account
 !endif
 $table_tr<td align=right colspan=2>Bloqueo de conexión
 <small>
-!href cmd=help&special_parm=config&special_parm2=lock ayuda
+!href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
 </td><td colspan=2>
 !set up_lock=$class_lock
@@ -65,7 +65,7 @@ $table_tr<td align=right colspan=2>Bloqueo de conexión
 </td>
 $table_tr<td align=right>Idioma de la clase
 <small>
-!href cmd=help&special_parm=config&special_parm2=lang ayuda
+!href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
  </small>
 <td>
 !set up_lang=$class_lang
@@ -75,20 +75,20 @@ $table_tr<td align=right>Idioma de la clase
 <td align=right>
 Nivel académico
 <small>
-!href cmd=help&special_parm=config&special_parm2=level ayuda
+!href cmd=help&special_parm=config&special_parm2=level $wims_name_help
  </small>
 <td>
 !set up_level=$class_level
 !formselect up_level list $levellist
 $table_tr<td align=right>Límite del número de participantes
 <small>
-!href cmd=help&special_parm=config&special_parm2=limit ayuda
+!href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
  </small>
 <td><input size=5 name=up_limit value="$class_limit">
 <td align=right>Fecha de expiración
 <small><b>aaaammdd</b></small>
 <small>
-!href cmd=help&special_parm=config&special_parm2=expiration ayuda
+!href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
  </small>
 <td>
 !if $class_type notin 13
@@ -98,37 +98,37 @@ $table_tr<td align=right>Límite del número de participantes
 !endif
 $table_tr<td align=right>Grabación de los ejercicios
 <small>
-!href cmd=help&special_parm=config&special_parm2=exolog ayuda
+!href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
  </small>
 !default class_exolog=0
 <td><input size=3 name=up_exolog value="$class_exolog">
 <td align=right>Grabación de los exámenes
 <small>
-!href cmd=help&special_parm=config&special_parm2=examlog ayuda
+!href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
  </small>
 !default class_examlog=$wims_examlog_limit
 <input size=3 name=up_examlog value="$class_examlog">
 <td>visibles par les élèves
 <small>
-!href cmd=help&special_parm=config&special_parm2=examshow ayuda
+!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
  </small>
 !default class_examshow=yes
 !set up_examshow=$class_examshow
-!formselect up_examshow list no,yes prompt Non,Oui
+!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 !set up_ent=$class_ent
 $table_tr<td align=right>Other platform link
 <small>
-!href cmd=help&special_parm=config&special_parm2=ent ayuda
+!href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
  </small>
 <td colspan=3>
 <input size=50 name=up_ent value="$class_ent">
 $table_hdtr<td align=center colspan=4>
-<input type=submit name=save value=Guardar>
+<input type=submit name=save value="$wims_name_tosave">
 &nbsp;
-<input type=submit name=abandon value=Recuperar>
+<input type=submit name=abandon value="$wims_name_giveup">
 $table_end <p>
 </form>
-
+!if $wims_theme_version=0 or $wims_theme_version=
 Otras configuraciones:
 !href cmd=reply&job=present Apariencia
 .
@@ -164,6 +164,7 @@ Otras configuraciones:
 <p>
 !href module=adm/light&phtml=useropts.phtml.$lang Preferencias personales
 .
+!endif
 <p>
 Utilización actual del espacio de disco: $du megabytes (el límite es
 $wims_class_quota).

@@ -19,9 +19,10 @@
 		Otro nuevo,\
 		mostrar,\
 		Actualizar esta página,\
-		Save,\
+		Guardar,\
 		yes,\
 		no,\
+        Recuperar,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -35,7 +36,7 @@
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no
+	wims_name_yes,wims_name_no,wims_name_giveup
 
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,\

@@ -20,9 +20,10 @@
 		Opnieuw,\
 		ga naar,\
 		Refresh,\
-		Save,\
+		Opslaan,\
 		yes,\
 		no,\
+		Annuleren,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -35,7 +36,7 @@
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no
+	wims_name_yes,wims_name_no,wims_name_giveup
 
 !! **** Permalink Names *** 
 !distribute items deze module, deze oefening,\

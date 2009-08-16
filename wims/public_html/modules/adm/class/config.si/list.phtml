@@ -21,25 +21,25 @@ $table_tr<td align=right>Ime uèilnice
 <input size=50 name=up_description value="$class_description">
 $table_tr<td align=right>Varne povezave
 <small>
-!href cmd=help&special_parm=config&special_parm2=secure help
+!href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
  </small>
 <td colspan=3>
 <input size=50 name=up_secure value="$class_secure">
 $table_tr<td align=right>Ime skrbnika
 <small>
-!href cmd=help&special_parm=config&special_parm2=supervisor help
+!href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_supervisor value="$class_supervisor">
 $table_tr<td align=right>E-naslov skrbnika
 <small>
-!href cmd=help&special_parm=config&special_parm2=email help
+!href cmd=help&special_parm=config&special_parm2=email $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_email value="$class_email">
 $table_tr<td align=right>Option words
 <small>
-!href cmd=help&special_parm=config&special_parm2=option help
+!href cmd=help&special_parm=config&special_parm2=option $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
@@ -48,7 +48,7 @@ $table_tr<td align=right>Option words
 $table_tr<td align=right>
  Modtool Account
 <small>
-!href cmd=help&special_parm=config&special_parm2=modtoolchg help
+!href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 </small>
 </td><td colspan=3>
 !set modtoolchg=1
@@ -57,7 +57,7 @@ $table_tr<td align=right>
 !endif
 $table_tr<td align=right colspan=2>Stopnja zaklepa povezave
 <small>
-!href cmd=help&special_parm=config&special_parm2=lock help
+!href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
 </td><td colspan=3>
 !set up_lock=$class_lock
@@ -66,7 +66,7 @@ $table_tr<td align=right colspan=2>Stopnja zaklepa povezave
 </td>
 $table_tr<td align=right>Jezik uèilnice
 <small>
-!href cmd=help&special_parm=config&special_parm2=lang help
+!href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
  </small>
 <td>
 !set up_lang=$class_lang
@@ -76,20 +76,20 @@ $table_tr<td align=right>Jezik uèilnice
 <td align=right>
 Akademska stopnja
 <small>
-!href cmd=help&special_parm=config&special_parm2=level help
+!href cmd=help&special_parm=config&special_parm2=level $wims_name_help
  </small>
 <td>
 !set up_level=$class_level
 !formselect up_level list $levellist
 $table_tr<td align=right>Maks. ¹tevilo uporabnikov
 <small>
-!href cmd=help&special_parm=config&special_parm2=limit help
+!href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
  </small>
 <td><input size=5 name=up_limit value="$class_limit">
 <td align=right>Datum zakljuèka
 <small><b>llllmmdd</b></small>
 <small>
-!href cmd=help&special_parm=config&special_parm2=expiration help
+!href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
  </small>
 <td>
 !if $class_type notin 13
@@ -99,37 +99,37 @@ $table_tr<td align=right>Maks. ¹tevilo uporabnikov
 !endif
 $table_tr<td align=right>Registracija vaj
 <small>
-!href cmd=help&special_parm=config&special_parm2=exolog help
+!href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
  </small>
 !default class_exolog=0
 <td><input size=3 name=up_exolog value="$class_exolog">
 <td align=right>Registracija izpitov
 <small>
-!href cmd=help&special_parm=config&special_parm2=examlog help
+!href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
  </small>
 !default class_examlog=$wims_examlog_limit
 <input size=3 name=up_examlog value="$class_examlog">
 <td>visible by students
 <small>
-!href cmd=help&special_parm=config&special_parm2=examshow help
+!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
  </small>
 !default class_examshow=yes
 !set up_examshow=$class_examshow
-!formselect up_examshow list no,yes prompt No,Yes
+!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 !set up_ent=$class_ent
 $table_tr<td align=right>Other platform link
 <small>
-!href cmd=help&special_parm=config&special_parm2=ent help
+!href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
  </small>
 <td colspan=3>
 <input size=50 name=up_ent value="$class_ent">
 $table_hdtr<td align=center colspan=4>
-<input type=submit name=save value=Shrani>
+<input type=submit name=save value="$wims_name_tosave">
 &nbsp;
-<input type=submit name=abandon value=Povrni>
+<input type=submit name=abandon value="$wims_name_giveup">
 $table_end <p>
 </form>
-
+!if $wims_theme_version=0 or $wims_theme_version=
 Other configurations:
 !href cmd=reply&job=present Podoba
 .
@@ -165,6 +165,7 @@ Other configurations:
 <p>
 !href module=adm/light&phtml=useropts.phtml.$lang Osebne nastavitve
 .
+!endif
 <p>
 Trenutna porabljen prostor v uèilnici: $du megabytes. (The allowance is
 $wims_class_quota.)
