@@ -135,41 +135,34 @@ $table_hdtr<td align=center colspan=4>
 $table_end <p>
 </form>
 
-Autres configurations:
+Modifier l'apparence : 
+!href module=adm/light&phtml=useropts.phtml.$lang Préférences personnelles
+.
 !href cmd=reply&job=present Apparence
-.
-!href cmd=reply&job=neighbor&job2=first Classes voisines
-.
-!href cmd=reply&job=connect&job2=first Autres serveurs
-.
-!href module=adm/class/passwd Mots de passe
-.
-!if $classdepth<=1 
- !href cmd=reply&job=authtype Type d'authentification
-.
-!endif
-!href module=adm/forum/mboard&job=config Forum de discussion
-.
-!href module=adm/doc Documents
-.
-!href module=adm/class/motd Message du jour
-.
-!href cmd=reply&job=access Restrictions de ressources
 .
 !href cmd=reply&job=oefdefault Paramétrage OEF par défaut
 .
+<p>
 !if $class_type iswordof 2 3 4
- !href cmd=reply&job=propagate Répercuter les configurations aux zones dépendantes
+Répercuter les
+ !href cmd=reply&job=propagate configurations aux zones dépendantes
 .
 !endif
 <p>
-!href cmd=reply&job=security Gestion de sécurité
+Définir des
+!href cmd=reply&job=neighbor&job2=first classes voisines
+,
+des liens vers
+!href cmd=reply&job=connect&job2=first d'autres serveurs
 .
-!href cmd=reply&job=arch&job2=first Sauvegarde et restauration
-.
-!href cmd=reply&job=clean Nettoyage sélectif
-.
-<br>
+<p>
+!if $classdepth<=1 
+Utiliser une 
+!href cmd=reply&job=authtype authentification
+ des participants par annuaire ldap.
+ <p>
+!endif
+
 Actualiser les index<sup>
 !href cmd=help&special_parm=index $wims_name_help
 </sup>:
@@ -188,9 +181,33 @@ Actualiser les index<sup>
 !href cmd=reply&job=index&job2=doc documents
 .
 <p>
-!href module=adm/light&phtml=useropts.phtml.$lang Préférences personnelles
+!href cmd=reply&job=security Gestion de sécurité
+ (dont le changement de 
+!href module=adm/class/passwd mots de passe
+).
+<p>
+Faire une 
+!href cmd=reply&job=arch&job2=first sauvegarde ou restauration
+ de la classe, 
+!href cmd=reply&job=access restreindre les ressources
+ accessibles, 
+ !href cmd=reply&job=grestrict restreindre les sites 
+ pour lequels les scores sont enregistrés,
+ faire un 
+!href cmd=reply&job=clean nettoyage sélectif
 .
-
+<p>
+Configurer le
+!href module=adm/forum/mboard&job=config forum de discussion
+, le
+!href module=adm/class/motd message du jour
+, le 
+!href module=adm/class/cdt&job=config cahier de texte
+, le 
+!href module=adm/class/livret&job=config livret de compétence
+, les 
+!href module=adm/class/sequence&job=config séquences 
+.
 <p>
 Utilisation actuelle d'espace disque : $du megaoctets. (La limite est
 $wims_class_quota.)
