@@ -2,8 +2,6 @@
 <p><center>
  !href module=adm/class/gateway Gestion de structure
 </center>
-!set wims_menu_items=!append line struct,1,adm/class/gateway\
-to $wims_menu_items
 !endif
 
 !form reply
@@ -66,7 +64,7 @@ Verrou de connexion
 !formselect up_lock list 0,2,3,4,5,6,7
 <td align=right>Nombre de meilleures notes
 <small>
-!href cmd=help&special_parm=config&special_parm2=topscores aide
+!href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
  </small>
 !default class_topscores=0
 <td><input size=3 name=up_topscores value="$class_topscores">
@@ -136,7 +134,7 @@ $table_hdtr<td align=center colspan=4>
 <input type=submit name=abandon value="$wims_name_giveup">
 $table_end <p>
 </form>
-!if $wims_theme_version=0 or $wims_theme_version=
+
 Autres configurations:
 !href cmd=reply&job=present Apparence
 .
@@ -161,7 +159,7 @@ Autres configurations:
 !href cmd=reply&job=oefdefault Paramétrage OEF par défaut
 .
 !if $class_type iswordof 2 3 4
- !href cmd=reply&job=propagate Envoyer les configurations aux zones inférieures
+ !href cmd=reply&job=propagate Répercuter les configurations aux zones dépendantes
 .
 !endif
 <p>
@@ -192,7 +190,7 @@ Actualiser les index<sup>
 <p>
 !href module=adm/light&phtml=useropts.phtml.$lang Préférences personnelles
 .
-!endif
+
 <p>
 Utilisation actuelle d'espace disque : $du megaoctets. (La limite est
 $wims_class_quota.)

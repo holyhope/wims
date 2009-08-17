@@ -32,72 +32,52 @@ $title
 !read $job.phtml
 
 !if $wims_theme_version!=0 and $wims_theme_version!=
+ !set wims_menu_items=!append line config,1,cmd=renew&job=list\
+to $wims_menu_items
+!if $job=list and $supertype=4 and $classdepth<=3
+!set wims_menu_items=!append line struct,1,adm/class/gateway\
+to $wims_menu_items
+!endif
+!set wims_menu_items=!append line ,0,\
+to $wims_menu_items
 !set wims_menu_items=!append line config_present,1,cmd=reply&job=present\
-config_passwd,1,module=adm/class/passwd\
+to $wims_menu_items
+!set wims_menu_items=!append line config_oef,1,cmd=reply&job=oefdefault\
+  to $wims_menu_items
+!if $class_type iswordof 2 3 4
+!set wims_menu_items=!append line config_propagate,1,cmd=reply&job=propagate\
+to $wims_menu_items
+!endif
+!set wims_menu_items=!append line ,0,\
+ to $wims_menu_items
+!set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
+to $wims_menu_items
+!set wims_menu_items=!append line config_secure,1,cmd=reply&job=security\
 to $wims_menu_items
 !if $classdepth<=1 
  !set wims_menu_items=!append line config_auth,1,cmd=reply&job=authtype\
  to $wims_menu_items
 !endif
-!set wims_menu_items=!append line config_pref,1,module=adm/light&phtml=useropts.phtml.$lang\
-to $wims_menu_items
-!set wims_menu_items=!append line ,0,\
- to $wims_menu_items
-!set wims_menu_items=!append line config_restr,1,cmd=reply&job=access\
-  to $wims_menu_items
-!set wims_menu_items=!append line config_oef,1,cmd=reply&job=oefdefault\
-  to $wims_menu_items
-!set wims_menu_items=!append line forum,1,module=adm/forum/mboard&job=config\
- to $wims_menu_items
-!set wims_menu_items=!append line ,0,\
- to $wims_menu_items 
- !set wims_menu_items=!append line config_neigh,1,cmd=reply&job=neighbor&job2=first\
-to $wims_menu_items
-!set wims_menu_items=!append line config_secure,1,cmd=reply&job=security\
-to $wims_menu_items
+
 !set wims_menu_items=!append line config_clean,1, cmd=reply&job=clean\
 to $wims_menu_items 
 !set wims_menu_items=!append line ,0,\
  to $wims_menu_items
-!set wims_menu_items=!append line config_refresh,0,Actualiser\
+ !set wims_menu_items=!append line config_restr,1,cmd=reply&job=access\
+  to $wims_menu_items
+!set wims_menu_items=!append line config_score,1,cmd=reply&job=grestrict\
 to $wims_menu_items
-!if $class_type=4
- !set wims_menu_items=!append line zones,1,cmd=reply&job=index&job2=structure\
- to $wims_menu_items
-!endif
-!if $class_type=4 or $class_type=2
- !set wims_menu_items=!append line teachers,1,cmd=reply&job=index&job2=teacherlist\
- to $wims_menu_items 
-!endif
-!set wims_menu_items=!append line participants,1,cmd=reply&job=index&job2=userlist\
-to $wims_menu_items 
-!set wims_menu_items=!append line exercises,1,cmd=reply&job=index&job2=oef\
-to $wims_menu_items
-!set wims_menu_items=!append line docs,1,cmd=reply&job=index&job2=doc\
-to $wims_menu_items 
 !set wims_menu_items=!append line ,0,\
  to $wims_menu_items
+!set wims_menu_items=!append line config_neigh,1,cmd=reply&job=neighbor&job2=first\
+to $wims_menu_items
 !set wims_menu_items=!append line config_otherserver,1,cmd=reply&job=connect&job2=first\
 to $wims_menu_items
-!endif
-
+!else
 !if $job notwordof list new
- !set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
- ,0,\
- config,1,cmd=renew&job=list\
-to $wims_menu_items
-!!<p><center>
-!! !href cmd=renew&job=list Hoofdpagina klassen onderhoud
-!! </center> <p>
-!endif
-!if $job iswordof list
-  !set wims_menu_items=!append line save,1,cmd=reply&job=arch&job2=first\
+ !set wims_menu_items=!append line config,1,cmd=renew&job=list\
 to $wims_menu_items
 !endif
-!if $class_type iswordof 2 3 4
-!set wims_menu_items=!append line  ,0,\
-config_propagate,1,cmd=reply&job=propagate\
-to $wims_menu_items
 !endif
 :end
 !tail
