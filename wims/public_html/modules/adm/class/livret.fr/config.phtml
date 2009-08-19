@@ -1,30 +1,32 @@
-<center>$classname
-<h1>$cdt_title</h1>
-<font size="+1">Configurer</font></center> 
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$wims_name_config
 
 <p><hr width="40%"> <p>
 
-Voici les paramètres que vous pouvez changer :
+$name_param_change:
 
 !form reply
 <input type="hidden" name="job" value="config">
 <ul>
- <li>Titre &nbsp;:<br>
+ <li>$wims_name_title&nbsp;:<br>
   <input size="60" name="cf_title" value="$cf_title">
- <li>Description&nbsp;:<br>
+ <li>$wims_name_Description&nbsp;:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea></li>
 
- <li>Couleur des fonds des cases en fonction du niveau de validation du palier : <br>
+ <li>$name_color: <br>
   <table><tr>
    !for k=1 to 11
     <td style="background-color: $(livret_color[$k])">&nbsp;$k&nbsp;</td>
    !next k
   </tr></table>
+ !!<language>
   <br>Ces couleurs peuvent être modifiées dans le 
   !href module=adm/class/config&job=present panneau de configuration 
   de la classe.
+!!</language>
  </li>
- <li>Les scores des exercices des feuilles de travail suivantes sont neutralisés pour le calcul des niveaux d'acquisition des paliers : <br>
+ <li>$name_score_modify: <br>
  !for i in $asheets
    <input type="checkbox" name="cf_nonactivesheet" value="$i"
   !if $i isitemof $cf_nonactivesheet
@@ -38,8 +40,8 @@ Voici les paramètres que vous pouvez changer :
  !next i
  </li>
 </ul>
-<p><center><input type="submit" name="cf_set" value="Enregistrer le changement">
-&nbsp;&nbsp;<input type="submit" name="cf_abandon" value="Abandonner">
+<p><center><input type="submit" name="cf_set" value="$wims_name_tosave">
+&nbsp;&nbsp;<input type="submit" name="cf_abandon" value="$wims_name_giveup">
 </center></form>
 
 

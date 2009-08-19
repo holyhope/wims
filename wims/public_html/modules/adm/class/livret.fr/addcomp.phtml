@@ -1,16 +1,17 @@
-<center>$classname
-<h1>$cdt_title</h1>
-<font size="+1">Ajouter/Modifier la compétence $comp</font></center> 
+!!##!! language independant
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$livret_title\
+$name_job
 
 <p><hr width="40%"> <p>
 
 !form reply
   <ul>
- <li>Informations sur cette compétence :
-
+ <li>$name_info:
   <ul>
-   <li>Titre de la compétence : <input size=50 name=cf_title value="$mem_title">.</li>
-   <li>Nombre de paliers : 
+   <li>$name_title_comp: <input size=50 name=cf_title value="$mem_title">.</li>
+   <li>$name_cnt_palier: 
     <select  name="cf_nbpalier" onchange="submit()">
     !for i=1 to $maxpalier
      !if $i=$mem_nbpalier
@@ -22,13 +23,13 @@
     </select>
    </li>
   </ul>
-  <input type=submit name=cf_set value="Enregistrer le changement">
+  <input type=submit name=cf_set value="$wims_name_tosave">
  </li>
  !for k=1 to $mem_nbpalier
   !let eold=!record $k of wimshome/log/classes/$wims_class/livret/.comp$comp
   !distribute line $eold into name,eold
-  <li>Palier $k : <font color=green><b>$name</b></font><small> [
-   !href cmd=reply&job=modpalier&comp=$comp&palier=$k Modifier
+  <li>$name_n_palier $k : <font color=green><b>$name</b></font><small> [
+   !href cmd=reply&job=modpalier&comp=$comp&palier=$k $wims_name_change
    ] </small>
    !if $eold!=
    <ul>

@@ -1,22 +1,24 @@
-<div class="wims_classname">$classname</div>
-<h1 class="wims_title">$livret_title</h1>
+!!##!! language independant
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$livret_title
 
 !if $usercnt==0
- Cette classe n'a pas encore de participant.
+ $name_noyetparticipant
  !exit
 !endif
 !if $livret_nbcomp==0
- Il n'y a aucune compétence dans ce livret !
+ $name_no_competence
  !exit
 !endif
 !default note=0
 <p>
 $table_header
  $table_hdtr
-   <th rowspan=2>Nom, prénom</th>
+   <th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
    !for k=1 to $livret_nbcomp
     <th valign=center colspan=$(nbpalier_$k)>
-     !href cmd=renew&job=addcomp&comp=$k Compétence $k
+     !href cmd=renew&job=addcomp&comp=$k $name_competence $k
      <a onmouseover="Tip('$(title_$k)',$tooltip_parm)"> ? </a>
     </th>
    !next k
@@ -26,7 +28,7 @@ $table_header
    !for j=1 to $(nbpalier_$k)
     !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comp$k
     !let desc=!line 1 of $desc
-    <th valign=center><a onmouseover="Tip('$desc',$tooltip_parm)">P $j</a></th>
+    <th valign=center><a onmouseover="Tip('$desc',$tooltip_parm)">$name_n_palier $j</a></th>
    !next j
   !next k
  </tr>    

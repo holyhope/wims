@@ -23,7 +23,6 @@
 		Opslaan,\
 		yes,\
 		no,\
-		Annuleren,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -82,6 +81,33 @@
     wims_name_WIMS_subtitle,\
     wims_name_Copyright
 	
+!! **** Module About Names ***
+!distribute items Name,\
+		Module Informations,\
+		Address,\
+		Link for bookmark,\
+		Description,\
+		Version,\
+		Required<br>WIMS version,\
+		Language,\
+		Author,\
+		Translator,\
+		This is a module under the,\
+		WWW Interactive Multipurpose Server,\
+		Copyright\
+	into wims_name_name,\
+	wims_name_module_infos,\
+	wims_name_Address,\
+	wims_name_Link_for_bookmark,\
+	wims_name_Description,\
+	wims_name_Version,\
+	wims_name_Required_WIMS_version,\
+	wims_name_Language,\
+	wims_name_Author,\
+	wims_name_Translator,\
+	wims_name_This_is_a_module,\
+	wims_name_WIMS_subtitle,\
+	wims_name_Copyright
 
 
 !! **** Class Relative Names ***
@@ -175,6 +201,9 @@
    Doc technic\
    Terug naar de bestanden lijst\
    edfile Bewerken\
+   Modify\
+   Up\
+   Erase\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
@@ -188,6 +217,8 @@ wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase
 into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
 !distribute line Test\
+Back to confia2qcm\
+Back to createqcm\
 Modify the source\
 Save in the development module\
 Save into your class\
@@ -195,7 +226,7 @@ Save as a new exercise\
 Send an image file\
 Replace the old one\
 Erase the exercise\
-into wims_name_testexo,wims_name_exomodify,\
+into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
 
@@ -236,14 +267,14 @@ Maak een nieuw document\
 bewerk een draft document\
 Status\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
-wims_name_createdoc,wims_name_doctry,wims_name_Status 
-
+wims_name_createdoc,wims_name_doctry,wims_name_Status
 
  !distribute line Add a date\
    Add file\
    Add work\
    Configure\
-  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
+   Restore\
+  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup
 
 
 !set wims_name_supervisor=supervisor
@@ -320,7 +351,8 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 Configurer\
 $tmp\
 Livret de la classe\
-  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret
+Livret de compétences\
+  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
 !endif
 
 !if $wims_user=supervisor
@@ -333,7 +365,10 @@ Livret de la classe\
    Quicktool\
    Latex2wims\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims
-   
+
 !distribute line activer l'éditeur html\
 désactiver l'éditeur html\
 into wims_name_active, wims_name_desactive
+
+!distribute items Lastname,Firstname \
+into wims_name_lastname, wims_name_firstname

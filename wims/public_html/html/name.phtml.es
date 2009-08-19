@@ -22,7 +22,6 @@
 		Guardar,\
 		yes,\
 		no,\
-        Recuperar,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -34,10 +33,55 @@
 	wims_name_sheet,wims_name_tools,\
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
-	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_giveup
+	wims_name_yes,wims_name_no
 
+!! **** Permalink Names ***	
+!distribute items this module, this exercice,\
+		Display,on your site,\
+		Mask these options,\
+		Permalink, Embeddable player,\
+		copy and paste, this link, the code, or, in an email,\
+		for, only,\
+		current setup\
+	into wims_name_this_module, wims_name_this_exercice,\
+	wims_name_display,wims_name_on_your_site,\
+	wims_name_mask_this,\
+	wims_name_permalink,wims_name_embeddable,\
+	wims_name_copy_and_paste,wims_name_the_link,wims_name_the_code,wims_name_or,wims_name_in_a_mail,\
+	wims_name_for,wims_name_only,\
+	wims_name_this_config
+	
+!! **** Module About Names ***
+!distribute items Name,\
+		Module Informations,\
+		Address,\
+		Link for bookmark,\
+		Description,\
+		Version,\
+		Required<br>WIMS version,\
+		Language,\
+		Author,\
+		Translator,\
+		This is a module under the,\
+		WWW Interactive Multipurpose Server,\
+		Copyright\
+	into wims_name_name,\
+	wims_name_module_infos,\
+	wims_name_Address,\
+	wims_name_Link_for_bookmark,\
+	wims_name_Description,\
+	wims_name_Version,\
+	wims_name_Required_WIMS_version,\
+	wims_name_Language,\
+	wims_name_Author,\
+	wims_name_Translator,\
+	wims_name_This_is_a_module,\
+	wims_name_WIMS_subtitle,\
+	wims_name_Copyright
+
+
+!! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,\
         Inserte en una hoja de trabajo,\
@@ -144,6 +188,8 @@ wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase
 into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
 !distribute line Test\
+Back to confia2qcm\
+Back to createqcm\
 Modify the source\
 Save in the development module\
 Save into your class\
@@ -151,7 +197,7 @@ Save as a new exercise\
 Send an image file\
 Replace the old one\
 eliminar este ejercicio\
-into wims_name_testexo,wims_name_exomodify,\
+into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
 
@@ -198,7 +244,8 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status
    Add file\
    Add work\
    Configure\
-  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config
+   Recuperar\
+  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup
 
 
 !set wims_name_supervisor=administrador
@@ -289,7 +336,10 @@ Livret de la classe\
    Quicktool\
    Latex2wims\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims
-   
+
 !distribute line activer l'éditeur html\
 désactiver l'éditeur html\
 into wims_name_active, wims_name_desactive
+
+!distribute items Lastname,Firstname \
+into wims_name_lastname, wims_name_firstname

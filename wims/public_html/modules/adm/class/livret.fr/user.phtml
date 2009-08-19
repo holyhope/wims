@@ -1,6 +1,8 @@
-<div class="wims_classname">$classname</div>
-<h1  class="wims_title">$livret_title</h1><br>
-Livret de <font color=green>$user_firstname $user_lastname</font></center>
+!!##!! language independant
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$livret_title\
+$name_job
 
 !if $error!=$empty
  !read msg.phtml $error
@@ -8,17 +10,17 @@ Livret de <font color=green>$user_firstname $user_lastname</font></center>
 !endif
 
 !if $livret_nbcomp==0
- Il n'y a aucune compétence dans ce livret !
+ $name_no_competence
  !exit
 !endif
 <p>
 $table_header
  $table_hdtr
-  <th>Compétences/Paliers</th>
+  <th>$name_competences / $name_n_paliers</th>
   !for j=1 to $maxnbpalier
    !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comps
    !let desc=!line 1 of $desc
-   <th valign=middle><a onmouseover="Tip('$desc',$tooltip_parm)">P $j</a></th>
+   <th valign=middle><a onmouseover="Tip('$desc',$tooltip_parm)">$name_n_palier $j</a></th>
   !next j
  </tr>
  !for k=1 to $livret_nbcomp

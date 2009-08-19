@@ -4,3 +4,38 @@
 
 !set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
 
+!set name_no_competence=Il n'y a aucune compétence dans ce livret !
+!set name_noyetparticipant=Cette classe n'a pas encore de participant.
+!set name_info=Informations sur cette compétence&nbsp;
+!set name_param_change=Voici les paramètres que vous pouvez changer&nbsp;
+!set name_color=Couleur des fonds des cases en fonction du niveau de validation du palier&nbsp;
+!set name_score_modify=Les scores des exercices des feuilles de travail suivantes sont neutralisés \
+pour le calcul des niveaux d'acquisition des paliers&nbsp;
+!set name_cocher=Veuillez cocher les exercices que vous souhaitez utiliser pour ce palier.
+!set name_see=Afficher seulement les exercices de la feuille
+
+!distribute items Compétence,\
+Compétences,\
+Palier,\
+Paliers,\
+Toutes,\
+into name_competence,name_competences,name_n_palier,name_n_paliers,name_all
+
+!distribute items Titre de la compétence&nbsp;,\
+Titre du palier&nbsp;,\
+Nombre de paliers&nbsp;,\
+into name_title_comp,name_title_palier,name_cnt_palier
+
+!if $job=addcomp
+ !set name_job=!nosubst Ajouter/Modifier la compétence $comp
+ !exit
+!endif
+
+!if $job=modpalier
+  !set name_job=!nosubst Modifier le palier $palier (<font color=green>$name_palier</font>) de la compétence $comp (<font color=green>$name_comp</font>).
+  !exit
+!endif
+
+!if $job=user
+  !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
+
