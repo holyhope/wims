@@ -1,0 +1,39 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=HTML form
+slib_parms=1\
+ , molecule 
+slib_author=Bernadette PERRIN-RIOU
+slib_out= Give the html code for a molecule in a brut form
+slib_comment=
+slib_example= COCl2\
+NH2^+
+
+!exit
+
+:proc
+
+slib_mol=$wims_read_parm
+
+slib_B=!text mark  0123456789 in $slib_mol
+slib_c=!charcnt $slib_mol
+!reset slib_out
+!for slib_i=1 to $slib_c
+  slib_v=!char $slib_i of $slib_mol
+  slib_b=!char $slib_i of $slib_B
+  slib_b1=!char $slib_i+1 of $slib_B
+  !if $slib_i>1
+  slib_b2=!char $slib_i-1  of $slib_B
+  !endif
+  !if $slib_b=1 and ($slib_v != 1 or $slib_b1=1 or $slib_b2=1)
+  slib_out=$slib_out<sub>$slib_v</sub>
+  !else
+    !if $slib_b=1 and $slib_v = 1 and ($slib_b1=0 or $slib_b1=) and $slib_b2=0
+      slib_out=$slib_out
+    !else
+   slib_out=$slib_out$slib_v
+   !endif
+!endif
+!next
+
