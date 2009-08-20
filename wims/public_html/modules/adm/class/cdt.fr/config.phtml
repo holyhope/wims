@@ -8,7 +8,7 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-Configurer
+$wims_name_config
 
 
 Voici les paramètres que vous pouvez changer :
@@ -16,20 +16,18 @@ Voici les paramètres que vous pouvez changer :
 !form reply
 <input type=hidden name=job value=config>
 <ul>
- <li><p>Titre &nbsp;:<br>
+ <li><p>$wims_name_title&nbsp;:<br>
   <input size=60 name=cf_title value="$cf_title">
- <li><p>Description&nbsp;:<br>
+ <li><p>$wims_name_Description&nbsp;:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea></li>
  <li><p>Nom du lien sur la page d'accueil &nbsp; : <input size=60 name=cf_link value="$cdt_link"></li> 
  <li><p>
   !href cmd=renew&job=logfile Voir
   le fichier de connexion au cahier de texte de la classe.</li>
 </ul>
-<p><center><input type=submit name=cf_set value="Enregistrer le changement">
-&nbsp;&nbsp;<input type=submit name=cf_abandon value="Abandonner">
+<p><center><input type=submit name=cf_set value="$wims_name_tosave">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="$wims_giveup">
 </center> <p></form>
-!!<p>
-!! !href cmd=reply&job=home Retour
-!! .
+
 !set wims_menu_items=!append line back2,1,cmd=reply&job=home\
 to $wims_menu_items
