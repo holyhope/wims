@@ -29,7 +29,7 @@
  <div id="wimslogo$class_logoside">
   <img src="$class_logo" border=0 alt="class logo" align=left>
  </div><!--wimslogo-->
- </div><!--menuitem-->
+ </div><!-- menuitem-->
 !endif
 !read ./adm/title.phtml 2\
 $wims_classname, $wims_institutionname\
@@ -333,14 +333,14 @@ $ADD_1
 <div class="wimsmenu">
 <div class="menublock">
 !if $class_typename notsametext program
-<div class="menuitem">
+<span class="menuitem">
 !read ./adm/oneitem.phtml SE_list,1,module=adm/class/userlist
 !!!href module=adm/class/userlist $im "gifs/themes/$wims_theme_image/SE_list.gif" alt="SE_list"> $SE_list
-</div><!--menuitem-->
-<div class="menuitem">
+</span><!-- menuitem-->
+<span class="menuitem">
 !read ./adm/oneitem.phtml n_participant,1,style=student
 !!!href style=student $im "gifs/themes/$wims_theme_image/n_participant.gif" alt="SE_part"> $SE_part
-</div><!--menuitem-->
+</span><!-- menuitem-->
 !endif
 !!<div class="menuitem">
 !!!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme_image/U_oclass.gif" alt="U_oclass"> $U_oclass
@@ -349,32 +349,32 @@ $ADD_1
 !! to separate sort of submenu 
 <div class="menublock">
 !if $wims_theme_version=0 or $wims_theme_version=
-<div class="menuitem">
+<span class="menuitem">
 !read ./adm/oneitem.phtml help,1,module=help/main&chapter=3,help
 !!!href target=wims_help module=help/main&chapter=3 $N_Help
-</div><!--menuitem-->
+</span><!-- menuitem-->
 !endif
 !if $class_typename notsametext program
-<div class="menuitem">
+<span class="menuitem">
 !read ./adm/oneitem.phtml SE_mod,1,module=adm/class/motd 
 !!!href module=adm/class/motd $im "gifs/themes/$wims_theme_image/SE_mod.gif" alt="SE_mod"> $SE_mod
-</div><!--menuitem-->
+</span><!-- menuitem-->
 !endif
 !if $exist_cdt=yes
-<div class="menuitem">
+<span class="menuitem">
 !read ./adm/oneitem.phtml cdt,1,module=adm/class/cdt
 !! !href module=adm/class/cdt $im "gifs/themes/$wims_theme_image/cdt.gif" alt="cdt"> $ADD_cdt
-</div><!--menuitem-->
+</span><!-- menuitem-->
 !endif
 !reset name_c
 !if $class_superclass!=
  !set name_c=!defof class_description in wimshome/log/classes/$wims_class/.def
   !set name_c=<small>($name_c)</small>
 !endif
-<div class="menuitem">
+<span class="menuitem">
 !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard
 <small>$name_c</small>
-</div><!--menuitem-->
+</span><!-- menuitem-->
 !!! the following allows to have forums in level. I comment because 
 !!I don't know if it useful. don't delete. 
 !!!if $wims_class=$wims_superclass and $class_type=4

@@ -29,11 +29,11 @@
 !!!set wims_headmenu_colcnt=5
 <div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
-<div class="menuitem">
-<div id="wimslogo">
+<span class="menuitem">
+<span id="wimslogo">
 !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo">
-</div><!--wimslogo-->
-</div><!--menuitem-->
+</span><!--wimslogo-->
+</span><!--menuitem-->
 !for i=1 to $wims_language_cnt
  !set l=!word $i of $wims_site_languages
  !if $l!=$lang
@@ -46,29 +46,29 @@
     !reset l_
    !endif
   !endif
-<div class="menuitem">
+<span class="menuitem">
   !href lang=$l&session=$wims_session.1&module=$module <img src="gifs/$l.gif" alt="$(Lang_name_$l)" height=16 border=0>$l_
    <!-- don't remove this empty line or leading whitespace. Flag spacing depends on it. -->
-</div><!--menuitem-->
+</span><!--menuitem-->
 !endif
 !next i
 <div class="itemsep"></div><!--itemsep-->
 </div><!--wimsmenu-->
 <div class="wimsmenu">
 !!!if $gotcnt<=0 and $s_keywords=$empty
-<div class="menuitem">$V_cls</div><!--menuitem-->
-<div class="menuitem">
+<span class="menuitem">$V_cls</span><!--menuitem-->
+<span class="menuitem">
 !read ./adm/oneitem.phtml n_participant,1,module=adm/class/classes&type=participant
  !!!href module=adm/class/classes&type=participant $im "gifs/themes/$wims_theme_image/n_participant.gif" alt="V_stu" title="V_stu"> $V_stu
-</div><!--menuitem-->
-<div class="menuitem">
+</span><!--menuitem-->
+<span class="menuitem">
 !read ./adm/oneitem.phtml n_supervisor,1,module=adm/class/classes&type=supervisor
 !! !href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme_image/n_supervisor.gif" alt="V_sup" title="V_sup"> $V_sup
-</div><!--menuitem-->
-<div class="menuitem">
+</span><!--menuitem-->
+<span class="menuitem">
 !read ./adm/oneitem.phtml n_example,1,module=adm/class/classes&type=example
 !! !href module=adm/class/classes&type=example $im "gifs/themes/$wims_theme_image/n_example.gif" alt="n_example" title="n_example"> $V_ex
-</div><!--menuitem-->
+</span><!--menuitem-->
 !!<div class="menuitem">
 !! !href module=help/main&chapter=3 $N_help
 !!</div><!--menuitem-->
@@ -185,18 +185,18 @@
 </div><!--wimsmenumodubox-->
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
-<div class="menuitem">
+<span class="menuitem">
 !read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
 !!!href module=adm/light&phtml=useropts.phtml.$lang $im "gifs/themes/$wims_theme_image/pref.gif" alt="pref" title="pref"> $N_Pref
-</div><!--menuitem-->
-<div class="menuitem">
+</span><!-- menuitem-->
+<span class="menuitem">
 !read ./adm/oneitem.phtml mirror,1,module=adm/light&phtml=mirror.phtml.$lang
 !!!href module=adm/light&phtml=mirror.phtml.$lang $im "gifs/themes/$wims_theme_image/mirror.gif" alt="mirror" title="mirror"> $N_Mirror
-</div><!--menuitem-->
-<div class="menuitem">
+</span><!-- menuitem-->
+<span class="menuitem">
 !read ./adm/oneitem.phtml forum,1,module=adm/forum/forum
 !!!href module=adm/forum/forum $im "gifs/themes/$wims_theme_image/forum.gif" alt="forum" title="forum"> $N_Forum
-</div><!--menuitem-->
+</span><!-- menuitem-->
 </div><!--wimsmenu-->
 </div><!--wimsmenubox-->
 </div><!--wimsbodybox-->

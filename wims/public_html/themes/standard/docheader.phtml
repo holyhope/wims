@@ -11,68 +11,68 @@
 <div class="wimsmenu">
 !if help notin $wims_session
  !if $wims_class=$empty
-  <div class="menuitem">
+  <span class="menuitem">
   !href module=home $wims_name_doch_wims
-  </div>
+  </span><!-- menuitem-->
  !else
   !if _doc isin $wims_session
-  <div class="menuitem">
+  <span class="menuitem">
    <a href="#" onclick="window.close()">$wims_name_doch_class</a>
-  </div>
+  </span><!-- menuitem-->
   !else 
-  <div class="menuitem">
+  <span class="menuitem">
    !href module=home $wims_name_doch_class
-  </div>
+  </span><!-- menuitem-->
   !endif
   !if $m_wims_sequence>0
-    <div class="menuitem">
+    <span class="menuitem">
     !if $wims_user=supervisor
      !href module=adm/class/sequence&seq=$m_wims_sequence $name
     !else
      !href module=home&seq=$m_wims_sequence $name
     !endif
-    </div>
+    </span><!-- menuitem-->
   !else
    !if $wims_sequence>0
     !set ti=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
-    <div class="menuitem">
+    <span class="menuitem">
      !if $wims_user=supervisor
        !href module=adm/class/sequence&seq=$wims_sequence
      !else
        !href module=home&seq=$wims_sequence $wims_name_sequence
      !endif
-    </div>
+    </span><!-- menuitem-->
    !endif
   !endif
  !endif
 !endif
  !if ..//adm/doc isin ..//$module and \
     ($wims_class=$empty or $wims_user=supervisor)
-  <div class="menuitem">
+  <span class="menuitem">
   !href module=$module&cmd=reply&job=home $wims_name_doch_docs
-  </div>
+  </span><!-- menuitem-->
  !endif
 !endif
 !default upbl=main
 !if $block!=main and $job=read
-  <div class="menuitem">
+  <span class="menuitem">
  !href cmd=reply&doc=$doc&block=$upbl $wims_name_doch_up
-  </div>
+  </span><!-- menuitem-->
  !! <img src="gifs/arrows/up2.32.gif" alt=up>
  !if $prev!=$empty and $prev!=$upbl
-  <div class="menuitem">
+  <span class="menuitem">
   !href cmd=reply&doc=$doc&block=$prev $wims_name_doch_prev
-  </div>
+  </span><!-- menuitem-->
  !endif
  !if $next!=$empty and $next!=$upbl
-  <div class="menuitem">
+  <span class="menuitem">
   !href cmd=reply&doc=$doc&block=$next $wims_name_doch_next
-  </div>
+  </span><!-- menuitem-->
  !endif
 !endif
 !if $job=read
  !if $blocklast$blocknext!=$empty
-  <div class="menuitem">
+  <span class="menuitem">
   [
   !if $blocklast!=$empty
    !href cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 &lt;&lt;
@@ -83,33 +83,33 @@
    !href cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1 &gt;&gt;
   !endif
   ]
-  </div>
+  </span><!-- menuitem-->
  !endif
 !! !href cmd=reply&job=read $wims_name_doch_reload
 !endif
 !if $printable=yes
-  <div class="menuitem">
+  <span class="menuitem">
  !href cmd=reply&job=read&doc=$doc&block=$startblock $wims_name_doch_interactive
-  </div>
+  </span><!-- menuitem-->
 !else
  !if $job=read
-  <div class="menuitem">
+  <span class="menuitem">
   !href cmd=reply&job=print&doc=$doc $wims_name_doch_printable
-  </div>
+  </span><!-- menuitem-->
  !endif
  !if $job=exosource
-  <div class="menuitem">
+  <span class="menuitem">
   !href cmd=reply&job=read $wims_name_doch_back
-  </div>
+  </span><!-- menuitem-->
  !endif
  !if $doc!=$helpd and $editable=yes
-  <div class="menuitem">
+  <span class="menuitem">
   !href target=wims_help module=$module&cmd=new&job=read&doc=$helpd $wims_name_doch_help
-  </div>
+  </span><!-- menuitem-->
  !endif
-  <div class="menuitem">
+  <span class="menuitem">
  !href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
-  </div>
+  </span><!-- menuitem-->
 !endif
 </div><!--end of wimsmenu  -->
 </div><!--end of wimstopbox  -->
