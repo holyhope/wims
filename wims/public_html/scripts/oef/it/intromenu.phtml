@@ -90,9 +90,11 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
    !formcheckbox intro_check list 4 prompt Mostra suggerimenti (se disponibili).
    !let tmp=!replace word expert by $ in $special_parm2
    </td></tr>
+  !if $wims_class=$empty or $wims_user!=supervisor
    <tr><td colspan=2 align=center>
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp Menu semplice
    <input type=hidden name=intro_expert value=yes>
+  !endif
 !else
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert

@@ -26,6 +26,8 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
  !if $wims_user=supervisor and #classes/ isin #$module
   !href module=adm/createxo Klik hier
   om een nieuwe oefening te maken.
+  !set wims_menu_items=!append line add_exo,1,module=adm/createxo\
+  to $wims_menu_items
  !else
  Helaas , er is geen enkele oefening beschikbaar op dit moment.
  Kom later nog eens terug !
@@ -88,9 +90,11 @@ oefeningen.
    !formcheckbox intro_check list 4 prompt Geef een hint (mits aanwezig).
    !let tmp=!replace word expert by $ in $special_parm2
    </td></tr>
+  !if $wims_class=$empty or $wims_user!=supervisor
    <tr><td colspan=2 align=center>
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp Simpel menu
    <input type=hidden name=intro_expert value=yes>
+  !endif
 !else
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert
