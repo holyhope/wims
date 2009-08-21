@@ -23,7 +23,7 @@ Now you can
  Or modify the source file then
  <input type=submit value="send again">:
  <input type=file name=wims_deposit>
- </form>  
+ </form>
  <li><p>
  !href cmd=reply&level=1&mode=normal Back to the starting menu
 .
@@ -39,8 +39,9 @@ Now you can
  !if $success!=1 and $regout!=fail
  <li><p>
  Once everything is correct, you can
- !if $existing!=$empty
+ !if $existing!=$empty 
   !if ..devel/ notin ..$catmodule
+   !if $catmodule=$empty
    put this exercise into your class, either
    !href cmd=reply&level=4 to replace the old one
    or
@@ -48,6 +49,10 @@ Now you can
    !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
  newversion,1,cmd=reply&level=4&newone=1\
  to $wims_menu_items
+    !else
+     !href cmd=reply&level=4 put this exercise into your class
+     !reset catmodule
+    !endif
   !else
    !href cmd=reply&level=4 put it to the development module
    !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\

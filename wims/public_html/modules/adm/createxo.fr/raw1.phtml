@@ -2,29 +2,25 @@
 <input type=hidden name=level value=3>
 
 !if $existing=$empty
- Vous êtes en mode brut de création d'exercice.
+ Vous êtes en mode brut de création d'exercices.
  !if $modeltest=yes
   Puisque cet exercice est basé sur un modèle standard, essayez le
   !href cmd=reply&mode=model&level=2 mode guidé
 .
-  !href cmd=reply&mode=none&level=1 Abandonner
+  !href cmd=reply&mode=none&level=0 Abandonner
 .
  !else
-  Ce mode est réservé aux experts, ou pour enregistrer
-  un exercice dont vous avez le fichier source. Utilisez
-  plutôt le
-  !href cmd=reply&mode=normal&level=1 mode guidé
-  pour une première création d'exercice.
- <p>
+!!  Ce mode est réservé aux experts, ou pour enregistrer
+!!  un exercice dont vous avez le fichier source.  Utilisez
+!!  plutôt le
+!!  !href cmd=reply&mode=normal&level=1 mode guidé
+!!  pour une première création d'exercice.
+
   Entrez le source entier (
   !href target=wims_mhelp cmd=help&special_parm=oef format OEF
   ) de votre exercice&nbsp;:
   (pour enregistrer un fichier source existant, copiez le fichier dans 
   la fenêtre.)
-  <br>
-  [
-  !href target=wims_test module=tool/directexec&cmd=new Testeur de script
-].
  !endif
 !else
  Voici le source d'un exercice
@@ -40,20 +36,25 @@
   Puisque cet exercice est basé sur un modèle standard, essayez aussi le
   !href cmd=reply&mode=model&level=2 mode guidé
 .
-  !href cmd=reply&mode=none&level=1 Abandonner
+  !href cmd=reply&mode=none&level=0 Abandonner
 .
  !endif
 !endif
-<a name=textarea></a>
+
+ Vous pouvez tester certains programmes externes avec le
+  !href target=wims_test module=tool/directexec&cmd=new testeur de script
+.
+<p><center>
+!mexec textarea.sh
+
+<p><input type=submit value="Envoyer le source"></center>
+<center><a name=textarea></a>
 [
 <a href="#"
 onclick="document.forms['replyform'].wims_deposit.value=''">Vider</a>
-]. [
-!href cmd=resume Réinitier
+] [
+!href cmd=resume Abandonner les modifications
 ].
-
-<p><center>
-!mexec textarea.sh
-<p><input type=submit value="Envoyer le source"></center>
+</center>
 </form>
 
