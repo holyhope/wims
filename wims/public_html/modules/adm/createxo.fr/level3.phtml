@@ -46,27 +46,30 @@ Maintenant vous pouvez
  to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
- <li><p>
- !if $existing!=$empty
-  !if ..devel/ notin ..$catmodule
-   mettre cet exercice dans votre classe
-   !href cmd=reply&level=4 pour remplacer l'ancien
- ou
-   !href cmd=reply&level=4&newone=1 pour en faire un nouveau
-   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
- newversion,1,cmd=reply&level=4&newone=1\
- to $wims_menu_items
+ !if $success!=1 and $regout!=fail
+    <li><p>
+  !if $existing!=$empty
+   !if ..devel/ notin ..$catmodule
+    mettre cet exercice dans votre classe
+    !href cmd=reply&level=4 pour remplacer l'ancien
+   ou
+    !href cmd=reply&level=4&newone=1 pour en faire un nouveau
+    !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+  newversion,1,cmd=reply&level=4&newone=1\
+    to $wims_menu_items
+   !else
+    !href cmd=reply&level=4 le mettre dans le module de développement
+    !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+    to $wims_menu_items
+   !endif
   !else
-   !href cmd=reply&level=4 le mettre dans le module de développement
-   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   !href cmd=reply&level=4 mettre cet exercice dans votre classe 
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
- !else
-  !href cmd=reply&level=4 mettre cet exercice dans votre classe 
-   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
- to $wims_menu_items
- !endif
 .
+ !endif
+ !reset success
 !endif
 !if $mode!=file
  <li><p>

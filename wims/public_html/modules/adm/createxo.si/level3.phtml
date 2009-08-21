@@ -36,7 +36,8 @@ Zdaj lahko
  to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
- <li><p>
+ !if $success!=1 and $regout!=fail
+  <li><p>
  Èe je vaja brezhibno pripravljena, jo lahko
  !if $existing!=$empty
   !if ..devel/ notin ..$catmodule
@@ -49,16 +50,19 @@ Zdaj lahko
  to $wims_menu_items
   !else
    !href cmd=reply&level=4 namestite v svoji uèilnici
-   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
 .
+
 !else
  !href cmd=reply&level=4 save this exercise in your class
  !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
  to $wims_menu_items
  !endif
 .
+!endif
+ !reset success
 !endif
 !if $mode!=file
  <li><p>

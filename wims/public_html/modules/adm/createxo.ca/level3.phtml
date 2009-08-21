@@ -42,8 +42,11 @@ Ara pots
  <li><p>També pots
  !href cmd=reply&level=6 enviar un fitxer amb una imatge
  per a l'exercici.
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
+ !if $success!=1 and $regout!=fail
  <li><p>
  Una vegada tot sigui correcte, pots
  !if $existing!=$empty
@@ -52,13 +55,22 @@ Ara pots
    !href cmd=reply&level=4 per substituir l'antic
 , sigui
    !href cmd=reply&level=4&newone=1 per fer-ne un de nou
+   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+  newversion,1,cmd=reply&level=4&newone=1\
+    to $wims_menu_items
   !else
    !href cmd=reply&level=4 posar-lo al mòdul de desenvolupament
+   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   to $wims_menu_items
   !endif
  !else
   !href cmd=reply&level=4 posar aquest exercici a la vostra classe
+  !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+   to $wims_menu_items
  !endif
 . 
+ !endif
+ !reset success
 !endif
 !if $mode!=file
  <li><p>

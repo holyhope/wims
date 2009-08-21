@@ -45,8 +45,11 @@ Klik
  Het is natuurlijk ook mogelijk een 
  !href cmd=reply&level=6 plaatje
  in te binden.
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
+  !if $success!=1 and $regout!=fail
  <li><p>
  Wanneer alles inorde is, kunt u
  !if $existing!=$empty
@@ -56,16 +59,25 @@ Klik
    van een reeds bestaande oefening,<br>
    of als een
    !href cmd=reply&level=4&newone=1 nieuwe oefening
+   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+  newversion,1,cmd=reply&level=4&newone=1\
+    to $wims_menu_items
   !else
   deze module toevoegen aan uw "werk in uitvoering" 
    !href cmd=reply&level=4 modules
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+   to $wims_menu_items
   !endif
  !else
     deze module 
   !href cmd=reply&level=4 toevoegen
    aan uw klas
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+   to $wims_menu_items
  !endif
 .
+ !endif
+ !reset success
 !endif
 !if $mode!=file
  <li><p>
@@ -74,6 +86,21 @@ Klik
  van deze oefening te bewaren op uw eigen computer !
 !endif
 </ul>
+!set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_items
+
+!if $to_ia_qcm=-1
+!set wims_menu_items=!append line backconfia2qcm,1,module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1\
+ to $wims_menu_items
+ !endif
+ !if $to_ia_qcm=-2
+!set wims_menu_items=!append line backcreateqcm,1,module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2\
+ to $wims_menu_items
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+!set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+ to $wims_menu_items
+ !endif
 !set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
 to $wims_menu_items
 

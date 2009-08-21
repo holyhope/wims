@@ -161,7 +161,7 @@ slib/circuits/comppos
 !bound oef_precision within 100,1000,10000,100000,1000000 default 10000
 !bound oef_computeanswer within yes,no default no
 !bound level between integer 0 and 6 default 0
-!if $level=6 and $wims_user!=superviso!bound level between integer 0 and 6 default 0r
+!if $level=6 and $wims_user!=supervisor
  level=1
 !endif
 
@@ -305,6 +305,8 @@ slib/circuits/comppos
  reg1=!word 1 of $regout
  !if $reg1=success
   fnamebase=!word 2 of $regout
+  existing=$fnamebase
+  success=1
  !else
   error=!word 2 of $regout
   !if $error!=already
