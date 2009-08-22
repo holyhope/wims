@@ -3,7 +3,7 @@
 !endif
 !bound inputsize between integer 1 and 40 default 10
 !if $inputsize<=5
- !distribute item "<center>" +,+ "</center>" into ct1,ct2
+ !distribute item '<center>' +,+ '</center>' into ct1,ct2
 !else
  !reset ct1,ct2
 !endif
@@ -29,11 +29,15 @@
 !set imgs=!shuffle odd $imgs
 !set imgcnt=!itemcnt $imgs
 !set imgl=!items2lines $imgs
+!set imgarr=!replace internal " by \" in $imgl
+!set imgarr=!replace internal ' by \' in $imgarr
 !set imgarr=!replace internal $\
-$ by "," in "$imgl"
-!set imgarr=!replace internal $\
-$ by ',' in '$imgl'
-!set Imgarr=!replace internal \ by \\ in $imgarr
+$ by ',' in '$imgarr'
+!set Imgarr=!replace internal \ by \\ in $imgl
+!set Imgarr=!replace internal " by \" in $Imgarr
+!set Imgarr=!replace internal ' by \' in $Imgarr
+!set Imgarr=!replace internal $\
+$ by ',' in '$Imgarr'
 !set wims_ins_alt=none
 !set z=r$i
 
@@ -55,7 +59,7 @@ dynapi.onLoad(function() {
 
 	var i;
 	lyr$i=new DynLayer();
-	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:'90%',stretchV:$inputsize});
+	lyr$i.setAnchor({topA:'tarea$i',leftA:'tarea$i',stretchH:'70%',stretchV:$inputsize});
 	lyr$i.setBgColor('#c0c0c0');
 	lyr$i.setHTML('');
 	dynapi.document.addChild(lyr$i);
@@ -96,10 +100,9 @@ dynapi.onLoad(function() {
   for(t=0;t<$imgcnt;t++) $(z)_used[t]=0;
   $(z)_imgcnt=0; $(z)_lockdata();
  }
-
 </script>
-!reset wims_ins_alt
 
+!reset wims_ins_alt
 !if $wims_read_parm!=noprompt
  </table>
  !if $module_language=fr
@@ -137,9 +140,9 @@ dynapi.onLoad(function() {
 
 <p><center>
 <a name=tarea$i id=tarea$i>
-<img height=2 width="90%" src="gifs/transparent.gif" alt="transparent" align=middle>
+<img height=2 width="70%" src="gifs/transparent.gif" alt="transparent" align=middle>
 </a> <br>
-<img height=$[$inputsize-10] width="90%" src="gifs/transparent.gif" alt="transparent" align=middle>
+<img height=$[$inputsize-10] width="70%" src="gifs/transparent.gif" alt="transparent" align=middle>
 </center> <p>
 
 <input type=hidden name=reply$i value="">
