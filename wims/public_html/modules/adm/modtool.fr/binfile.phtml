@@ -4,7 +4,7 @@
 !set wims_form_method=file
 !form reply
 <input type=hidden name=bin_job value=deposit>
-Déposer un fichier binaire&nbsp;:
+Déposer un fichier dans un des répertoires suivants&nbsp;:
 !formselect bin_dir list $dir
  / <input type=file name=wims_deposit size=30>
 <input type=submit value=Envoyer>
@@ -12,7 +12,7 @@ Déposer un fichier binaire&nbsp;:
 
 !if $bcnt>0
  $table_header
- <caption>Fichiers binaires existants</caption>
+ <caption>Fichiers existants</caption>
  $table_hdtr<th>Nom</th><th>&nbsp;</th><th>&nbsp;&nbsp;taille&nbsp;&nbsp;</th></tr>
  !for i=1 to $bcnt
   !set l=!line $i of $bfiles
@@ -27,7 +27,7 @@ Déposer un fichier binaire&nbsp;:
  !next i
  $table_end
 !else
- Aucun fichier binaire existant dans le module.
+ Aucun fichier déposé dans le module.
 !endif
 
 <p>
