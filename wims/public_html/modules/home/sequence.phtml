@@ -8,24 +8,27 @@
 !endif
 !set wlist=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
 !set TI=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
-<fieldset id=wims_seq_$i class=wims_seq>
+<fieldset id="wims_seq_$i" class="wims_seq">
 <legend>$TI $i
-</legend><div class=wims_title_seq>
+</legend>
+<div class="wims_title_seq">
+<span class="wims_title_item">
    $tis_
-</div>
-<div class=wims_comment_seq>
+</span>
+<span class="wims_comment_item">
    $cos_
-</div>
+</span>
+</div><!--wims_title_seq-->
 !set dcnt=!itemcnt $obj_
 !for i_=1 to $dcnt
-
    !distribute word $(obj_[$i_]) into type,num
    !if $type=c
       !set d_=!record $num of wimshome/log/classes/$wims_class/doc/.index
       !distribute lines $d_ into s_,t_,bidon,bidon,bidon,o_
       !if $o_>0
-      <div class=wims_doc_item>
+      <div class="wims_doc_item">
         !href module=adm/doc&job=read&doc=$s_&block=main&seq=$i $t_
+     <span class="wims_doc_desc">$de_</span>
      </div>
       !endif
    !endif
@@ -35,8 +38,9 @@
      !if $o_>0
      <div class="wims_doc_item">
         !href module=$s_&$t_&seq=$i&name=$wims_name_sequence  $ti_
-     $de_</div>
+       <span class="wims_doc_desc">$de_</span></div>
      !endif
+     !reset s_,t_,ti_,de_,o_
    !endif
    !if $type=sheet
      !set s_=!record $num of wimshome/log/classes/$wims_class/sheets/.sheets
@@ -68,21 +72,25 @@
        )
       !endif
    </span><!--wims_user_sheet_score-->
-   </div><!--wims_sheet_item--> 
+  <span class="wims_sheet_desc"> $de </span><!--wims_sheet_desc--> 
+  </div><!--wims_sheet_item--> 
+  !reset a_,t_,ti,de
     !endif
    !endif
    !if $type=vote
      !set v_=!record $num of wimshome/log/classes/$wims_class/vote/.votes
-     !distribute lines $v_ into a_,t_,ti,de
+     !distribute lines $v_ into a_,t_,ti,de_
      !if $a_>=1 and $a_<=2
      <div class="wims_vote_item">
       !href module=adm/vote&job=read&vote=$num&seq=$i $t_
+     <span class="wims_vote_desc">$de_</span>
      </div>
      !endif
+     !reset a_,t_,ti,de_
    !endif
    !if $type=exam
      !set e_=!record $num of wimshome/log/classes/$wims_class/exams/.exams
-     !distribute lines $e_ into a_,ex,da,t_
+     !distribute lines $e_ into a_,ex_,du_,t_,de_
      !if $a_>=1 and $a_<=2
      <div class="wims_exam_item">
       !href module=adm/class/exam&exam=$num&seq=$i $t_
@@ -91,14 +99,16 @@
    $U_expired
   !else
    !if showexexpire iswordof $class_option
-    !read misc/expire.phtml.$lang $ex
+    !read misc/expire.phtml.$lang $ex_
    !else
     &nbsp;
    !endif
   !endif
   </span>
+     <span class="wims_exam_desc">$de_</span>
      </div>
      !endif
+    !reset a_,ex_,du_,nb_,t_,de_
    !endif
    
    !reset s_ v_ d_ e_
