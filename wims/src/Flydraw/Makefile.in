@@ -22,13 +22,15 @@ distclean:
 	cd gd; make clean; cd ..
 	rm -f Makefile
 
-flydraw: *.c *.h gd/libgd.a htmldoc.sh commands ../Lib/libwims.*
+flydraw: *.c *.h gd/libgd.a htmldoc.sh commands commands.* ../Lib/libwims.*
 	$(cc) $(cflags) $(defines) flydraw.c $(lopt) -o flydraw
 	$(STRIP) flydraw
 	./flydraw table
 	cp flydraw ../../other/bin/flydraw
 	chmod a+x ../../other/bin/flydraw
-	./htmldoc.sh >../../public_html/scripts/help/flydraw.phtml
+	./htmldoc.sh >../../public_html/scripts/help/en/flydraw.phtml
+	for i in fr ; do ./htmldoc.sh $$i >../../public_html/scripts/help/$$i/flydraw.phtml ; done
+
 
 nametab.c: nametab.sh colors
 	./nametab.sh
