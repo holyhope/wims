@@ -10,6 +10,8 @@ $(cl)_forumcnt=!recordcnt wimshome/$cls/forum/.msglist
 t=!filelist $wims_home/$cls/src/*.oef
 $(cl)_exocnt=!wordcnt $t
 $(cl)_cdtcnt=!defof cdt_nbdate in wimshome/$cls/cdt/.def
+$(cl)_seqcnt=!record 0 of wimshome/$cls/seq/.sequences
+$(cl)_seqcnt=!word 1 of $($(cl)_seqcnt)
 scorecnt=!mexec scripts/scorefcnt.sh $cls
 !distribute words $scorecnt into $(cl)_scorecnt1,$(cl)_scorecnt2
 $(cl)_scorecnt=$[$($(cl)_scorecnt1)+$($(cl)_scorecnt2)]
