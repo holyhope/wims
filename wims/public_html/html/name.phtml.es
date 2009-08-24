@@ -92,6 +92,7 @@
 		Usted es el profesor de la clase,\
 		Registrar los detalles de este ejercicio,\
 		Página de gestión de las hojas de trabajo\
+		Add a sequence,\
 	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
@@ -99,7 +100,9 @@
 	wims_name_scorereopen,wims_name_scoreclose2,\
 	wims_name_syou,\
 	wims_name_exolog,\
-	wims_name_sheetmanagement
+	wims_name_sheetmanagement,\
+	wims_name_add_sequence
+
  !set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
 	$[$wims_homeref_req] puntos en este trabajo. <br>Puntuación media \
 	$[$wims_homeref_mean]/10.

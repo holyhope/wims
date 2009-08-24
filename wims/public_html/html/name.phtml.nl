@@ -120,6 +120,7 @@
 		U bent de leraar van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
+		Add a sequence,\
 	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
@@ -127,7 +128,8 @@
 	wims_name_scorereopen,wims_name_scoreclose2,\
 	wims_name_syou,\
 	wims_name_exolog,\
-	wims_name_sheetmanagement
+	wims_name_sheetmanagement,\
+	wims_name_add_sequence
 
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br>Gemiddelde score \
