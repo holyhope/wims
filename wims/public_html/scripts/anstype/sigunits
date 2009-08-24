@@ -13,7 +13,6 @@ d2=!word 2 to 8 of $dd
 !! the number of digits
 d3=!word 9 of $dd
 
-m_reply$i=$(reply$i)
 !if $wims_read_parm=nocompare
  !if NaN isin $d1 or Inf isin $d1 or ERROR isin $d1 or $dt=$empty
   test=NaN 
@@ -30,7 +29,7 @@ units_option=
 
 !! the value
 good=!word 1 of $(replyGood$i)
-good1=$[$good]
+good1=!word 1 of $gg
 !! the units and number of digits
 good2=!word 2 to 8 of $gg
 !! the number of digits
@@ -47,7 +46,7 @@ good3=!word 9 of $gg
 !endif
 
 !default precision=1000
-diff=$[abs($test-($good))]
+diff=$[abs($test-($good1))]
 !if NaN isin $diff or Inf isin $diff
  test=NaN
  !exit
@@ -65,7 +64,7 @@ emptyunit=0 0 0 0 0 0 0
  diareply$i=good
  !advance freegot
 !else
- !if sqrt($precision)*$diff < abs($good) or ($good1=$d1 and $good2=$d2 and $d3!=$good3)
+ !if sqrt($precision)*$diff < abs($good1) or ($good1=$d1 and $good2=$d2 and $d3!=$good3)
   !advance precgood
   precreply$i=yes
  !endif
