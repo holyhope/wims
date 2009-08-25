@@ -2,16 +2,21 @@
 !!$wims_html_header
 !!</head><body $wims_htmlbody>
 !!!headmenu
-
+!read adm/css.phtml
 !header1
+
+!!if $cmd=help                                                                                                                             
+ !!read help.phtml                                                                                                                         
+ !!goto end                                                                                                                                
+!!endif  
 
 !read names.phtml
 <h1 class="wims_title">WIMS op $httpd_HTTP_HOST
 <br>
 Aanmelden bij $name_classess
 !if $cltype iswordof 2 4 and $classcnt>0
- <br> (alleen voor docenten)
-!endif
+    <br> (uitsluitend voor docenten)
+!endif 
 </h1> <p>
 
 !if $error!=$empty
@@ -22,8 +27,8 @@ Aanmelden bij $name_classess
 !endif
 
 !if $classcnt=0
-    Helaas , er is nog geen enkele klas op deze server geinstalleerd.
-    Probeer het later nog eens...
+    Helaas , er is nog geen enkele klas op deze server geinstalleerd. Probeer het later nog eens...
+
     !goto end
 !endif
 
@@ -39,6 +44,7 @@ Aanmelden bij $name_classess
   <caption>$institution_name</caption>
   $table_hdtr
   <th>Naam</th><th>Docent</th><th>Niveau</th><th>Status</th>
+
  !endif
  !for cl in $classlist
   !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
@@ -105,8 +111,7 @@ Aanmelden bij $name_classess
  !else
  en is beschermd door een wachtwoord.
   !endif
- <p>
- Geef hier het aanmeldings wachtwoord
+ <p> Geef hier het aanmeldings wachtwoord
  !if $cltype iswordof 2 4
   voor <b>docenten</b>.
  !else
@@ -126,6 +131,7 @@ Aanmelden bij $name_classess
   <b>Opmerking</b>. 
   De Docent ($supervisor)
  !endif
+ 
  moet U het aanmeldings wachtwoord geven. 
  (
  !if $cltype iswordof 2 4
@@ -158,9 +164,7 @@ Aanmelden bij $name_classess
   !default foundcnt=0
   !if $foundcnt>0
    $table_header
-   <caption>
-   Klik op de naam van een klas waarin U zich wilt aanmelden.
-  </caption>
+   <caption>Klik op de naam van een klas waarin U zich wilt aanmelden.</caption>
    $table_hdtr<th>Naam</th><th>login</th></tr>
    !for i=1 to $foundcnt
     !set l=!line $i of $found
@@ -178,6 +182,7 @@ Aanmelden bij $name_classess
   <p>
   !endif
   Vul de volgende informatie in over de nieuwe deelnemer van $classname.
+  
   !set name_Your=De
   !set name_you=de deelnemer
   !set utilisera=de deelnemer gebruikt
@@ -186,7 +191,7 @@ Aanmelden bij $name_classess
   !if  $cltype iswordof 2 4
   - docent
   !endif
- van $name_classes $classname,
+ van "$name_classes $classname",
  geef de volgende informatie
   !set name_Your=Uw
   !set name_you=uw
@@ -196,12 +201,13 @@ Aanmelden bij $name_classess
  <input type=hidden name=step value=2>
  <ul>
  <li><label for="lastn">$name_Your achternaam</label> <input size=20 name=lastn id="lastn" value="$lastn">
-  <label for="firstn">en voornaam</label> <input size=20 name=firstn id="firstn" value="$firstn">
+  en <label for="firstn">voornaam</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
  <li><label for="login">Kies een loginnaam :</label>
   <input size=16 name=login id="login" value="$login"> <br>
   Dat is de naam die $utilisera om in te loggen by $classname
     <small> zonder accenten, punten, komma's en spaties</small>
+    
   <p>
  <li><label for="pass">En een wachtwoord :</label>
   <input type=password size=16 name=pass id="pass"> <br>
@@ -227,14 +233,14 @@ Aanmelden bij $name_classess
  - docent
  !endif
  van $name_classesss $classname, met als loginnaam &nbsp;
- ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ <tt><b><font color=green>"$login"</font></b></tt>. <p>
  !if $email=$empty
  U heeft geen geldig emailadres opgegeven.
   <p>
  !else
   Het opgegeven emailadres : <tt>$email</tt> <p>
  !endif
- <label for="pass2>Om het opgegeven wachtwoord te kontroleren, voer het hier nog een keer in:</label>
+ <label for="pass2">Om het opgegeven wachtwoord te kontroleren, voer het hier nog een keer in:</label>
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2 id="pass2">
@@ -274,7 +280,7 @@ Aanmelden bij $name_classess
 .
  !else
   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&auth_user=$login">
-  aan het werk</a>. (vergeet geen bookmark te maken van deze link.)
+  aan het werk</a>. (niet vergeten een bookmark te maken van deze link.)
  !endif
  !goto end
 !endif
