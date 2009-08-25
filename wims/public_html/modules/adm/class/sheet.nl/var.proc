@@ -113,7 +113,7 @@ expp=!line 2 of $activetest
  expiration=$class_expiration
 !endif
 ecnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-activetest=!replace line 3 by $ecnt in $activetest
+activetest=!replace line number 3 by $ecnt in $activetest
 
 !if $job=putsource and $a_=0
  source=!trim $source
@@ -240,6 +240,8 @@ $ by &#13; in $desc
  desc=!singlespace $desc
  title=!char 1 to $title_limit of $title
  desc=!char 1 to $desc_limit of $desc
+ desc=!replace internal : by &#58; in $desc
+ title=!replace internal : by &#58; in $title
  prpage=!word 1 of $prpage
  prpage=!char 1 to 100 of $prpage
  !if .. isin $prpage or / notin $prpage
@@ -342,4 +344,3 @@ $mod_dep
   !endif
  !next s
 !endif
-
