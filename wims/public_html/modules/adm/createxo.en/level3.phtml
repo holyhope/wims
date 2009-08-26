@@ -13,7 +13,17 @@ Now you can
 .
 !if $mode!=file
 <li><p>
-!href cmd=reply&level=2 modify the source
+!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+ !if $to_ia_qcm=-1
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 retourner à confia2qcm
+ !endif
+ !if $to_ia_qcm=-2
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 retourner à createqcm
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+   !href cmd=reply&level=2 modifier le source de l'exercice
+ !endif
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 .
 !else
  !set wims_form_method=file
@@ -39,7 +49,7 @@ Now you can
  !if $success!=1 and $regout!=fail
  <li><p>
  Once everything is correct, you can
- !if $existing!=$empty 
+ !if $existing!=$empty
   !if ..devel/ notin ..$catmodule
    !if $catmodule=$empty
    put this exercise into your class, either
@@ -53,16 +63,16 @@ Now you can
      !href cmd=reply&level=4 put this exercise into your class
      !reset catmodule
     !endif
+   !else
+    !href cmd=reply&level=4 put it to the development module
+    !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+    to $wims_menu_items
+   !endif
   !else
-   !href cmd=reply&level=4 put it to the development module
-   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+   !href cmd=reply&level=4 mettre cet exercice dans votre classe
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
- !else
-  !href cmd=reply&level=4 put this exercise into your class
-   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
- to $wims_menu_items
- !endif
 .
  !endif
  !reset success
@@ -74,6 +84,21 @@ Now you can
  of the exercise!
 !endif
 </ul>
+!set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_items
+
+!if $to_ia_qcm=-1
+!set wims_menu_items=!append line backconfia2qcm,1,module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1\
+ to $wims_menu_items
+ !endif
+ !if $to_ia_qcm=-2
+!set wims_menu_items=!append line backcreateqcm,1,module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2\
+ to $wims_menu_items
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+!set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+ to $wims_menu_items
+ !endif
 !set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
 to $wims_menu_items
 
