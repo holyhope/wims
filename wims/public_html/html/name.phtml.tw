@@ -1,3 +1,5 @@
+!!!!WARNING Don't use "into" in the translation ...
+
 !if $wims_name_home!=$empty
  !exit
 !endif
@@ -195,7 +197,7 @@ Back to confia2qcm\
 Back to createqcm\
 Modify the source\
 Save in the development module\
-Save into your class\
+Save in class\
 Save as a new exercise\
 Send an image file\
 Replace the old one\

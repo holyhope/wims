@@ -1,3 +1,5 @@
+!!!!WARNING Don't use "into" in the translation ...
+
 !if $wims_name_home!=$empty
  !exit
 !endif
