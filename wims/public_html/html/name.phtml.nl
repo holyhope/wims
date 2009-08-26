@@ -41,11 +41,10 @@
 !distribute items deze module, deze oefening,\
 	Installeer,op uw site,\
 	verberg deze opties,\
-	Permanente link, Embeddable player,\
+	Permanente link, media speler,\
 	knip en plak, deze link, deze code, of, in een email,\
 	voor, enkel,\
 	deze configuratie,\
-	Naam\
     into wims_name_this_module, wims_name_this_exercice,\
     wims_name_display,wims_name_on_your_site,\
     wims_name_mask_this,\
@@ -82,17 +81,17 @@
     wims_name_Copyright
 	
 !! **** Module About Names ***
-!distribute items Name,\
-		Module Informations,\
-		Address,\
-		Link for bookmark,\
-		Description,\
-		Version,\
-		Required<br>WIMS version,\
-		Language,\
-		Author,\
-		Translator,\
-		This is a module under the,\
+!distribute items Naam,\
+		Module Informatie,\
+		Hyperlink,\
+		Link voor bookmark,\
+		Omschrijving,\
+		Versie,\
+		Vereist<br>WIMS versie,\
+		Taal,\
+		Auteur,\
+		Vertaler,\
+		Deze module hoort bij de,\
 		WWW Interactive Multipurpose Server,\
 		Copyright\
 	into wims_name_name,\
@@ -112,11 +111,11 @@
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Homepagina van je klas,Voeg $ toe aan het werkblad,\
+ !distribute items Homepagina van je klas,Toevoegen aan het werkblad,\
 		Schrijf naar je leraar,Uitloggen,\
 		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
 		Je hebt het behalen van cijfers opgeschort,\
-		Open score registration,Close score registration,\
+		Open cijfer registratie,Sluit cijfer registratie,\
 		U bent de leraar van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
@@ -142,26 +141,26 @@
 	into wims_name_back,wims_name_examremain,wims_name_whenloaded
  !endif
  !if _check isin $session
-  !let wims_page_name=Page
+  !let wims_page_name=Paginas
  !endif
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Sequence
 !endif
 
 !if adm/class isin $module
- !distribute line Docenten zone\
-	Leerlingen zone\
+ !distribute line Docenten \
+	Leerlingen \
 	Demonstratie klassen\
 	Inloggen voor docenten\
 	Inloggen voor deelnemers\
 	lagere school\
 	middelbare school\
 	universiteit\
-	List of classes\
-    List of classes and portals\
-    Individual class\
-    Superclasse\
-    Portal\
+	klassen lijst\
+    Lijst met Klassen of instituten\
+    Individuele klassen\
+    Superklas\
+    Instituut\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
@@ -169,16 +168,16 @@
 !endif
 
 !if adm/new isin $module
-  !distribute line nieuwe modules\
-  verbeterde modules\
-  laatste systeem veranderingen\
+  !distribute line Nieuwe modules\
+  Verbeterde modules\
+  Laatste systeem veranderingen\
   RSS nieuwe modules\
   RSS verbeterde modules\
   into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
 !if $wims_user=$empty
-  !distribute line Create a class\
+  !distribute line Oprichten van een klas\
   into wims_name_classcreate
 !endif
 
@@ -198,14 +197,14 @@
    Eigenschappen van account\
    Script tester\
    OEF Documentation \
-   Script Library\
-   Answer types\
-   Doc technic\
+   Script bibiliotheek\
+   Antwoord types\
+   Doc technisch\
    Terug naar de bestanden lijst\
-   edfile Bewerken\
-   Modify\
-   Up\
-   Erase\
+   Bewerken\
+   Veranderen\
+   Terug\
+   Wissen\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
@@ -213,21 +212,21 @@ wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
 wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase
 
-!distribute line Back to the exercise creation\
-   Model list\
-   Prepared models\
+!distribute line Terug naar Createxo\
+   Lijst met voorbeelden\
+   Voorbeelden\
 into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
-!distribute line Test\
-Back to confia2qcm\
-Back to createqcm\
-Modify the source\
-Save in the development module\
-Save into your class\
-Save as a new exercise\
-Send an image file\
-Replace the old one\
-Erase the exercise\
+!distribute line Test de oefening\
+Terug naar confia2qcm\
+Terug naar createqcm\
+Verander de broncode\
+Bewaar deze testmodule\
+Bewaar in uw klas\
+Bewaar als een nieuwe oefening\
+Stuur een bestand (plaatje)\
+Vervang de bestaande\
+Verwijder de oefening\
 into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
 wims_name_putmodtool,wims_name_putclass,wims_name_newversion,\
 wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
@@ -246,11 +245,11 @@ wims_name_add_exo,wims_name_classexo
 
 !!! for documents
 
-!distribute item WIMS,Class,Docs,Up,Prev,Next,Hist.,Reload,\
-	Interactive version,Printable version,\
-	Back to doc,Help,About,\
-	Bestand invoegen,\
-	Back to the file list,\
+!distribute item WIMS,Klas,Docs,Up,Vorige,Volgende,Hist.,Vernieuwen,\
+	Interactieve versie,Printbare versie,\
+	Terug naar doc,Help,Info,\
+	Bestand opsturen,\
+	Terug naar de bestanden lijst,\
 	Hoofdpagina van dit document\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
@@ -261,21 +260,21 @@ wims_name_add_exo,wims_name_classexo
 !! for sequence et document
 
 !distribute line Document\
-hiden,visible\
-Title\
-Organize\
-Insert in the class\
+onzichtbaar,zichtbaar\
+Titel\
+Organiseer\
+Toevoegen aan klas\
 Maak een nieuw document\
 bewerk een draft document\
 Status\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status
 
- !distribute line Add a date\
-   Add file\
-   Add work\
-   Configure\
-   Restore\
+ !distribute line Toevoegen een datum\
+   Toevoegen een bestand\
+   Bewerk de ToDo lijst\
+   Configureren\
+   Herstellen\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup
 
 
@@ -304,22 +303,22 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status
 into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
-!set wims_name_backgateway=Gestion of
+!set wims_name_backgateway=Beheer van
 
-!distribute line Add a course\
-Add a interclass course\
-Add a class\
-Add a program\
-Add a level\
-login de gestion\
-Zone change\
+!distribute line Toevoegen een kursus\
+Toevoegen een interklas kursus\
+Toevoegen een klas\
+Toevoegen een programma\
+Toevoegen een niveau\
+Inloggen beheerder \
+Verander van zone\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
 wims_name_login,wims_name_chzone
 
-!distribute line Statistiques d'activité\
-Activités globales des participants\
-Changer les niveaux de sévérité\
-Notes manuellement attribuées\
+!distribute line Statistisch overzicht van de activiteiten\
+Globale activiteiten van de deelnemers\
+Verander de moeilijkheidsgraad\
+Handmatig ingevoerde cijfers\
 spreadsheet data\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
@@ -327,13 +326,13 @@ wims_name_csv
 !if adm/class/userlist isin $module
 !distribute line Lijst van alle leerlingen \
 Cijfers \
-Sluit / be&euml;indig deze tentamen sessie\
-details van het werk\
+Be&euml;indig deze tentamen sessie\
+Details van het werk\
 Schors deze student\
 Ruwe gegevens\
-verander het wachtwoord\
+Verander het wachtwoord\
 Verwerkte data\
-Livret de compétences\
+Vaardigheden overzicht\
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret
 !endif
@@ -345,15 +344,15 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 
 !if adm/class/livret isin $module
  !if $wims_user=supervisor
-  !let tmp=Gestion des participants et notes
+  !let tmp=Deelnemers en behaalde resultaten
  !else 
-  !let tmp=Mes notes
+  !let tmp=Mijn cijfers
  !endif
- !distribute line Nouvelle compétence\
-Configurer\
+ !distribute line Nieuwe vaardigheden\
+Configureren\
 $tmp\
-Livret de la classe\
-Livret de compétences\
+Klasseboek\
+Lijst van vaardigheden\
   into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
 !endif
 
@@ -368,9 +367,9 @@ Livret de compétences\
    Latex2wims\
    into wims_name_modtool,wims_name_createxo,wims_name_quicktool,wims_name_latex2wims
 
-!distribute line activer l'éditeur html\
-désactiver l'éditeur html\
+!distribute line activeer de html-editor\
+deactiveer de html-editor\
 into wims_name_active, wims_name_desactive
 
-!distribute items Lastname,Firstname \
+!distribute items Achternaam,Voornaam \
 into wims_name_lastname, wims_name_firstname
