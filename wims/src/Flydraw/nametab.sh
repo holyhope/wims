@@ -252,6 +252,6 @@ $list
 
 @
 
-rm -f .nametab.* >&/dev/null
+rm -f .nametab.* >/dev/null 2>&1
 
 
