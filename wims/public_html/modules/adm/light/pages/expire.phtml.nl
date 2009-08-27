@@ -83,7 +83,7 @@ Nieuwe einddatum van de klas:
 !set parm1=$y_
 !formselect parm1 list $thisyear,$[$thisyear+1]
 . <p><center>
-<input type=submit value="Registrer le change">
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p>Een einddatum gesteld op vandaag sluit deze klas. (effectief van af morgen).
 <p><b>Attentie.</b>

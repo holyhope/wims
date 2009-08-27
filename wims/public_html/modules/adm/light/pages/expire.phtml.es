@@ -88,7 +88,7 @@ día <input size=2 maxlength=2 name=parm3 value="$d_">, mes
 !set parm1=$y_
 !formselect parm1 list $thisyear,$[$thisyear+1]
 . <p><center>
-<input type=submit value="Grabar los cambios">
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p> Hacer que la clase expire hoy significa la clausura de la clase (que será efectiva 
 mañana por la mañana).
