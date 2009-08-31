@@ -1,34 +1,78 @@
 %{
 /* inclusions, définition */
-#include <string.h>
+#include <string>
+#include <sstream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <gmp.h>
+#include <gmpxx.h>
 #include "unites.h"
 
-  char * unit_names[BU_LAST]={"m","kg","s","A","K","mol","cd"};
+  int yylex();
+  int yyerror(const char * msg);
 
-  typedef struct{
+  const char * unit_names[BU_LAST]={"m","kg","s","A","K","mol","cd"};
+
+/*   typedef struct{ */
+/*     int i; */
+/*     mpq_class multip, maxmultip, wanted_multip;  */
+/*     /\* mutiplicators are mutiprecisions rationals *\/ */
+/*     uniteSI unite; */
+/*     int base[BU_LAST]; */
+/*     char * s, * v; */
+/*     std::string wanted_unit; */
+/*     mpq_class val; */
+/*     /\* values are mutiprecisions rationals *\/ */
+/*     int signif; */
+/*     int pcent; /\* percent tolerance *\/ */
+/*   } yystype; */
+  
+  class yystype{
+  public:
     int i;
-    double multip, maxmultip, wanted_multip;
+    mpq_class multip, maxmultip, wanted_multip;
+    /* mutiplicators are mutiprecisions rationals */
     uniteSI unite;
     int base[BU_LAST];
-    char * s, * v, * wanted_unit;
-    double val;
+    char * s, * v;
+    std::string wanted_unit;
+    mpq_class val;
+    /* values are mutiprecisions rationals */
     int signif;
     int pcent; /* percent tolerance */
-  } yystype;
+    yystype(){
+      s=(char*) NULL;
+      v=(char*) NULL;
+    }
+  };
+
+  std::ostream & operator << (std::ostream & o, yystype data);
+  std::ostream & operator << (std::ostream & o, yystype data){
+    o << "YYSTYPE[" <<"i="<<data.i<<", multip="<<data.multip;
+    o<<", maxmultip="<<data.maxmultip<<", wanted_multip="<<data.wanted_multip;
+    o<<", unite="<<data.unite<<", base={";
+    for (int i=0;i<BU_LAST;i++){
+      o<<data.base[i]<<" ";
+    }
+    o<<"}";
+    if(data.s!=NULL){ o<<", s="<<data.s;}else{o<<", s=NULL";}
+    if(data.v!=NULL){o<<", v="<<data.v;}else{o<<", v=NULL";}
+    o<<", wanted_unit="<<data.wanted_unit;
+    o<<", val="<<data.val<<", signif="<<data.signif<<", pcent="<<data.pcent;
+    o<<"] ";
+    return o;
+  }
   
 #define YYSTYPE yystype 
 
- extern char * yytext;
  extern FILE * yyin;
 
 /* variables globales */
 #define MAXBUF 255
  char buffer[MAXBUF+1], buffer2[MAXBUF+1];
  yystype result;
- double val_real;
+ mpq_class val_real; /* a multiprecision rational */
  int val_int, count_signif=0;
  long pos;
 
@@ -227,7 +271,7 @@ sans_unite :REAL {
   for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
   $$.multip=1.0; 
   $$.signif=0; $$.pcent=0;
-  $$.wanted_unit=0;
+  $$.wanted_unit="";
 }
 | REAL Signif {
   int i;
@@ -325,7 +369,7 @@ Um base_unite {
 
 prim_unit : prim_unit1 puissance01 {
   int index;
-  double r;
+  mpq_class r;
 
   $$.i=$2.i;
   strncpy(buffer, $1.s,MAXBUF);
@@ -352,12 +396,12 @@ prim_unit : prim_unit1 puissance01 {
 ;
 
 puissance01 : /*rien*/ {$$.i=1;}
-| PUIS {$$.i = atoi(yytext);}
+| PUIS {$$.i = val_int;}
 ;
 
 prefixe : 
-PP {$$.s = strdup(yytext); $$.multip=1.0;
- switch (yytext[0]){
+PP {$$.multip=1.0; char c=$$.s[0]; 
+ switch (c){
  case 'y' : $$.multip = 1e-24; break;
  case 'z' : $$.multip = 1e-21; break;
  case 'a' : $$.multip = 1e-18; break;
@@ -366,7 +410,7 @@ PP {$$.s = strdup(yytext); $$.multip=1.0;
  case 'n' : $$.multip = 1e-9; break;
  case 'µ' : $$.multip = 1e-6; break;
  case 'c' : $$.multip = 1e-2; break;
- case 'd' : if (!strcmp (yytext,"da") ) $$.multip = 10.0;
+ case 'd' : if (!strcmp ($$.s,"da") ) $$.multip = 10.0;
     else $$.multip = 0.1; break;
  case 'h' : $$.multip = 1e2; break;
  case 'k' : $$.multip = 1e3; break;
@@ -382,52 +426,53 @@ PP {$$.s = strdup(yytext); $$.multip=1.0;
 
 base_unite :  
 Uh {$$.unite=TUh; $$.s = strdup("h"); $$.multip=unites[$$.unite].multiplicateur;}
-| Umin {$$.unite=TUmin; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
+| Umin {$$.unite=TUmin;  $$.multip=unites[$$.unite].multiplicateur;}
 | Um {$$.unite=TUm; $$.s = strdup("m"); $$.multip=unites[$$.unite].multiplicateur;}
-| Ug {$$.unite=TUg; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
-| Us {$$.unite=TUs; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
-| UA { $$.unite = TUA; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UK { $$.unite = TUK; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Umol { $$.unite = TUmol; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Ucd { $$.unite = TUcd; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UHz { $$.unite = TUHz; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UN { $$.unite = TUN; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UPa { $$.unite = TUPa; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UJ { $$.unite = TUJ; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}
+| Ug {$$.unite=TUg;  $$.multip=unites[$$.unite].multiplicateur;}
+| Us {$$.unite=TUs;  $$.multip=unites[$$.unite].multiplicateur;}
+| UA { $$.unite = TUA;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UK { $$.unite = TUK;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Umol { $$.unite = TUmol;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Ucd { $$.unite = TUcd;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UHz { $$.unite = TUHz;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UN { $$.unite = TUN;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UPa { $$.unite = TUPa;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UJ { $$.unite = TUJ;  $$.multip=unites[$$.unite].multiplicateur;}
 | UT { $$.unite = TUT; $$.s = strdup("T"); $$.multip=unites[$$.unite].multiplicateur;}  
-| UW { $$.unite = TUW; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UC { $$.unite = TUC; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UV { $$.unite = TUV; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Uohm { $$.unite = TUohm; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| US { $$.unite = TUS; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UF { $$.unite = TUF; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UWb { $$.unite = TUWb; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UH { $$.unite = TUH; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Ulm { $$.unite = TUlm; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Ulx { $$.unite = TUlx; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UBq { $$.unite = TUBq; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| UGy { $$.unite = TUGy; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| USv { $$.unite = TUSv; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Urad { $$.unite = TUrad; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Usr { $$.unite = TUsr; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;}  
-| Uda { $$.unite = TUda; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Uma { $$.unite = TUma; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Usa { $$.unite = TUsa; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Uangs { $$.unite = TUangs; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Ubarn { $$.unite = TUbarn; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Uare { $$.unite = TUare; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Ul { $$.unite = TUl; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Ut { $$.unite = TUt; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Ubar { $$.unite = TUbar; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| UeV { $$.unite = TUeV; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
-| Uuam { $$.unite = TUuam; $$.s = strdup(yytext); $$.multip=unites[$$.unite].multiplicateur;} 
+| UW { $$.unite = TUW;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UC { $$.unite = TUC;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UV { $$.unite = TUV;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Uohm { $$.unite = TUohm;  $$.multip=unites[$$.unite].multiplicateur;}  
+| US { $$.unite = TUS;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UF { $$.unite = TUF;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UWb { $$.unite = TUWb;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UH { $$.unite = TUH;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Ulm { $$.unite = TUlm;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Ulx { $$.unite = TUlx;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UBq { $$.unite = TUBq;  $$.multip=unites[$$.unite].multiplicateur;}  
+| UGy { $$.unite = TUGy;  $$.multip=unites[$$.unite].multiplicateur;}  
+| USv { $$.unite = TUSv;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Urad { $$.unite = TUrad;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Usr { $$.unite = TUsr;  $$.multip=unites[$$.unite].multiplicateur;}  
+| Uda { $$.unite = TUda;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Uma { $$.unite = TUma;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Usa { $$.unite = TUsa;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Uangs { $$.unite = TUangs;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Ubarn { $$.unite = TUbarn;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Uare { $$.unite = TUare;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Ul { $$.unite = TUl;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Ut { $$.unite = TUt;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Ubar { $$.unite = TUbar;  $$.multip=unites[$$.unite].multiplicateur;} 
+| UeV { $$.unite = TUeV;  $$.multip=unites[$$.unite].multiplicateur;} 
+| Uuam { $$.unite = TUuam;  $$.multip=unites[$$.unite].multiplicateur;} 
 ;
 
 
 
 %%
 
-#include "lex.yy.c"
+#include "uniteslex.cc"
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -444,7 +489,15 @@ int isUTF8;
 
 typedef enum {option_default, option_s, option_o, option_l} optiontype;
 
-inline int yyerror(char * msg){
+yyFlexLexer lexer;
+yyFlexLexer * thelexer = &lexer;
+
+int yylex(){
+  return thelexer->yylex();
+}
+
+
+inline int yyerror(const char * msg){
   printf("ERROR at %ld : %s\n", pos, msg);
   exit(1);
 }
@@ -454,8 +507,7 @@ void test_verbeux(){
   yyparse();
   if (result.s) {
     if (result.unite == TU_LAST){
-      printf("%s %g SI (équation aux dimensions : ", result.s, 
-	     result.multip*result.val );
+      std::cout << result.s << " " << result.multip*result.val << " SI (équation aux dimensions : ";
       for (i=0; i<BU_LAST; i++){
 	printf("%3d", result.base[i]);
       }
@@ -463,12 +515,12 @@ void test_verbeux(){
     }
     else {
       if (result.i!=1) 
-	printf ("%s (%g %s)^{%d}\n", result.s, 
-		result.multip*result.val, 
-		unites[result.unite].nom, result.i);
-      else printf("%s %g %s\n", result.s, 
-		  result.multip*result.val, 
-		  unites[result.unite].nom);
+	std::cout <<  result.s << " (" << result.multip*result.val 
+		  << " " << unites[result.unite].nom << ")^{" << result.i 
+		  << "}\n";
+      else 
+	std::cout << result.s << " " << result.multip*result.val 
+		  << " " << unites[result.unite].nom << "\n";
     }
   }
   else fprintf(stderr, "problème : result.s = null\n");
@@ -494,7 +546,10 @@ void sortie_normalisee(){
   int i,s=0,pc=0;
 
   yyparse();
-  printf("%g", result.multip*result.val );
+  // il faut afficher le résultat sous forme d'un nombre décimal et pas d'une
+  // fraction
+  //std::cout << result.multip*result.val;
+  std::cout << mpf_class(result.multip*result.val);
   if (count_signif){ //il faut prendre en compte les nombres significatifs
     if (!result.signif) {
       s=significative(result.v);
@@ -509,7 +564,7 @@ void sortie_normalisee(){
   printf("    %d    %d\n",s,pc);
 }
 
-void printUnit(optiontype option, char * unit, int tolerance){
+void printUnit(optiontype option, std::string unit, int tolerance){
   char * indexohm;
   char buffer[128];
   char *codedunit;
@@ -519,12 +574,12 @@ void printUnit(optiontype option, char * unit, int tolerance){
     RECODE_OUTER outer = recode_new_outer (true);
     RECODE_REQUEST request = recode_new_request (outer);
     recode_scan_request (request, "latin1..utf8"); 
-    codedunit=strdup(recode_string(request,unit));
+    codedunit=strdup(recode_string(request,unit.c_str()));
   } else {
-    codedunit=strdup(unit);
+    codedunit=strdup(unit.c_str());
   }
 #else
-  codedunit=strdup(unit);
+  codedunit=strdup(unit.c_str());
 #endif
 
   if (option==option_l){
@@ -548,59 +603,87 @@ void printUnit(optiontype option, char * unit, int tolerance){
   free(codedunit);
 }
 
+mpq_class round_mpc(const mpq_class & x);
+
 void printValue(optiontype option, yystype result, int s){
-  char buffer[128], val[128],exp[128], *i, *j, *indexE;
+  char val[128],exp[128], *i, *j, *indexE;
+  char buf[128];
   regex_t regex;
   regmatch_t matches[3];
   int success,l;
   int vallen;
+
+  mpq_class value=result.multip*result.val;
+  mpq_class absval=abs(value);
+  mpq_class puisdix=trunc(log(absval.get_d())/log(10))+1-s;
+  mpq_class powten=1;
+  if (puisdix>0) for(int i=0; i < puisdix; i++) powten=powten*10;
+  if (puisdix<0) for(int i=0; i < -puisdix; i++) powten=powten/10;
+  mpz_class r=round_mpc(value/powten);
+  value=r*powten;
+  // C'est à ce niveau qu'il faut faire attention. Le formatage avec %1.*e
+  // casse la précision de tout ce qui a précédé !!
+  // ne pas faire confiance à ce formatage, ni à get_d()
   if (s<=1){ 
-    snprintf(buffer,sizeof(buffer),"%1.0e", result.multip*result.val );
+    snprintf(buf,sizeof(buf),"%1.0e", value.get_d() );
   } else {
-    snprintf(buffer,sizeof(buffer),"%1.*e", s-1,result.multip*result.val );
+    snprintf(buf,sizeof(buf),"%1.*e", s-1,value.get_d() );
   }
   // simplifications
   regcomp(&regex, "^(.*)(e[+-][0-9]+)$", REG_EXTENDED);
-  regexec(&regex,buffer, 3, matches,0);
-  if (strcmp(buffer+matches[2].rm_so,"e+00")==0) {
+  regexec(&regex, buf, 3, matches,0);
+  if (strcmp(buf+matches[2].rm_so,"e+00")==0) {
     // removing e+00
-    *(buffer+matches[2].rm_so)=0;
+    *(buf+matches[2].rm_so)=0;
   }
-  l=strlen(buffer);
-  if (*(buffer+matches[2].rm_so+1)=='+'){
-    j=buffer+matches[2].rm_so+2;
+  l=strlen(buf);
+  if (*(buf+matches[2].rm_so+1)=='+'){
+    j=buf+matches[2].rm_so+2;
     while (*j=='0') j++;
-    for(i=buffer+matches[2].rm_so+1; j<=buffer+l; i++,j++){
+    for(i=buf+matches[2].rm_so+1; j<=buf+l; i++,j++){
       // erasing +0* after e
       *i=*j;
     }
   }
-  if (*(buffer+matches[2].rm_so+1)=='-'){
-    j=buffer+matches[2].rm_so+2;
+  if (*(buf+matches[2].rm_so+1)=='-'){
+    j=buf+matches[2].rm_so+2;
     while (*j=='0') j++;
-    for(i=buffer+matches[2].rm_so+2; j<=buffer+l; i++,j++){
+    for(i=buf+matches[2].rm_so+2; j<=buf+l; i++,j++){
       // erasing 0* after e-
       *i=*j;
     }
   }
   if (option==option_l){
-    indexE=strstr(buffer,"e");
+    indexE=strstr(buf,"e");
     if (indexE){
-      vallen=indexE-buffer;
-      strncpy(val,buffer,vallen);
+      vallen=indexE-buf;
+      strncpy(val,buf,vallen);
       val[vallen]=0;
       strncpy(exp,indexE+1,sizeof(exp));
       printf("%s\\times 10^{%s}\\,",val,exp);
     } else{
-      printf("%s\\,",buffer);
+      printf("%s\\,",buf);
     }
   } else {
-    printf(buffer);
+    printf(buf);
   }
 }
 
 double trunc(double x);
-double round(double x);
+
+mpq_class round_mpc(const mpq_class & x){
+  /**
+   * computes a rounded multiprecision integer from the input data
+   * this may be valid only for positive inputs.
+   * @param x the input data
+   * @result the rouded value : 1499999/1000000 is rounded towards 1
+   * and 3/2 is rounded towards 2
+   */
+  mpq_class y = x+mpq_class(1,2);
+  mpz_class q=y.get_num()/y.get_den();
+  return q;
+}
+
 
 void sortie_texte(optiontype option){
   /***************************************************/
@@ -616,33 +699,40 @@ void sortie_texte(optiontype option){
     notfirst=0,
     trouve=0,
     nb_pref=sizeof(pref_units)/sizeof(pref_units[0]);
-  double val,powten;
+  //mpq_class val, r, powten, absval; /* val r powten and absval are multiprecision rationals */
   int puisdix;
 
   yyparse();
   if (!result.signif) {
     s=significative(result.v);
+    /* le nombre de chiffres significatifs est déduit de la valeur donnée */
   } else {
     s=result.signif;
+    /* le nombre de chiffres significatifs a été explicité */
   }
   pc=result.pcent;
   // arrondit en tenant compte du nombre de chiffres significatifs
-  val=result.multip*result.val;
-  puisdix=trunc(log(abs(val))/log(10));
-  powten=pow(10,puisdix+1-s);
-  val=round(val/powten)*powten;
+  ////// les lignes suivantes sont commentées : faut-il les supprimer ? ///
+  // val=result.multip*result.val;
+  // absval=abs(val);
+  // puisdix=trunc(log(absval.get_d())/log(10))+1-s;
+  // powten=1;
+  // if (puisdix>0) for(int i=0; i < puisdix; i++) powten=powten*10;
+  // if (puisdix<0) for(int i=0; i < -puisdix; i++) powten=powten/10;
+  // r=round_mpc(val/powten);
+  // val=r*powten;
   //affiche la valeur
-  if (result.wanted_unit && strlen(result.wanted_unit)>0){
+  if (result.wanted_unit.length()>0){
     result.multip /= result.wanted_multip;
   }else{ // met le multiplicateur à 1 si l'unité d'entrée a été repérée
     if (result.s && strlen(result.s)>0){
-      result.multip = 1.0;
+      result.multip = mpq_class(1,1);
     }
   }
   printValue(option, result, s);
   // affiche l'unité SI.
   // renvoie l'unité demandée si elle existe
-  if (result.wanted_unit && strlen(result.wanted_unit)>0){
+  if (result.wanted_unit.length()>0){
     printUnit(option, result.wanted_unit, pc);
     return;
   }
@@ -662,16 +752,24 @@ void sortie_texte(optiontype option){
       return;
     }
   }
+  // on teste s'il y aura une unité visible
+  int visible_unit=0;
   for (i=0; i<BU_LAST; i++){
-    if (result.base[i]!=0){
-      if (notfirst) printf("."); else printf(" ");
-      printf("%s",unit_names[i]);
-      notfirst=1;
-      if (result.base[i]!=1){
-	if (option==option_l){
-	  printf("^{%d}",result.base[i]);
-	} else {
-	  printf("^%d",result.base[i]);
+    if (result.base[i]!=0) visible_unit=1;
+  }
+  if (result.wanted_unit.length()>0) visible_unit=1;
+  if(visible_unit!=0){ // on ne marque les unités que s'il y en a !
+    for (i=0; i<BU_LAST; i++){
+      if (result.base[i]!=0){
+	if (notfirst) printf("."); else printf(" ");
+	printf("%s",unit_names[i]);
+	notfirst=1;
+	if (result.base[i]!=1){
+	  if (option==option_l){
+	    printf("^{%d}",result.base[i]);
+	  } else {
+	    printf("^%d",result.base[i]);
+	  }
 	}
       }
     }
@@ -680,7 +778,7 @@ void sortie_texte(optiontype option){
 }
 
 int main(int argc, char * argv[]){
-  char * optstr = "osl";
+  const char * optstr = "osl";
   char * envoption=getenv("units_option");
   // environmental option take precedence on command-line options
 
@@ -732,24 +830,13 @@ int main(int argc, char * argv[]){
   return 0;
 }
 
-double atof1(char* s){
-  /* like function atof, but spaces or tabs are eliminated */
-  /* from the input string */
-  char* s1=strdup(s);
-  int i,j,l;
-  double result;
-
-  l=strlen(s1);
-  for(i=0;i<l;i++){
-    while (i<l && (s1[i]==' ' || s1[i]=='\t')){
-      for(j=i+1; j<l; j++){
-	s1[j-1]=s1[j];
-      }
-      l--;
-      s1[l]=0;
-    }
-  }
-  result=atof(s1);
-  free(s1);
-  return result;
+void atof1(char* s, mpq_class & r){
+  /**
+   * ascii to fraction
+   * @param s : a string, where the spaces and tabs will be removed
+   * @param r : the result which is the fraction.
+   */
+  double result=atof(s);
+  r=result;
+  return;
 }

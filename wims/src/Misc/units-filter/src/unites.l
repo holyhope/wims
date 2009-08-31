@@ -1,9 +1,9 @@
+/* -*- coding: iso-8859-1 -*- */
 %option noyywrap
-/* coding: iso-8859-1 */
+%option c++
      
    #include <stdlib.h>
    #include "unites.h"
-     
 
 spc            [ \t]+
 
@@ -83,58 +83,58 @@ cube           ³
 %%
 
 
-{real}              { val_real = atof1(yytext); yylval.v=strdup(yytext); pos+=yyleng; return REAL;}
-{heure_ou_hecto}    { pos+=yyleng; return Uh;}
-{minute}            { pos+=yyleng; return Umin;}
-{milli_ou_metre}    { pos+=yyleng; return Um;}
-{are}               {pos+=yyleng; return Uare;}
-{gramme}            { pos+=yyleng; return Ug;}
-{seconde}           { pos+=yyleng; return Us;}
-{ampere}            { pos+=yyleng; return UA;}
-{kelvin}|{degre_c}  { pos+=yyleng; return UK;}
-{mole}              { pos+=yyleng; return Umol;}
-{candela}           { pos+=yyleng; return Ucd;}
-{hertz}             { pos+=yyleng; return UHz;}
-{newton}            { pos+=yyleng; return UN;}
-{pascal}            { pos+=yyleng; return UPa;}
-{joule}             { pos+=yyleng; return UJ;}
-{watt}              { pos+=yyleng; return UW;}
-{coulomb}           { pos+=yyleng; return UC;}
-{volt}              { pos+=yyleng; return UV;}
-{ohm}               { pos+=yyleng; return Uohm;}
-{siemens}           { pos+=yyleng; return US;}
-{farad}             { pos+=yyleng; return UF;}
-{tera_ou_tesla}     { pos+=yyleng; return UT;}
-{weber}             { pos+=yyleng; return UWb;}
-{henry}             { pos+=yyleng; return UH;}
-{lumen}             { pos+=yyleng; return Ulm;}
-{lux}               { pos+=yyleng; return Ulx;}
-{becquerel}         { pos+=yyleng; return UBq;}
-{gray}              { pos+=yyleng; return UGy;}
-{sievert}           { pos+=yyleng; return USv;}
-{radian}            { pos+=yyleng; return Urad;}
-{steradian}         { pos+=yyleng; return Usr;}
-{puissance}         { pos+=yyleng; while (!index("-0123456789", *yytext)) yytext++; return PUIS;}
-{carre}             { yytext="2"; pos+=yyleng; return PUIS;}
-{cube}              { yytext="3"; pos+=yyleng; return PUIS;}
-{prefixe_pur}       { pos+=yyleng; return PP;}
+{real}              { atof1(yytext, val_real); yylval.v=strdup(yytext); pos+=yyleng; return REAL;}
+{heure_ou_hecto}    { pos+=yyleng; yylval.s=strdup(yytext); return Uh;}
+{minute}            { pos+=yyleng; yylval.s=strdup(yytext); return Umin;}
+{milli_ou_metre}    { pos+=yyleng; yylval.s=strdup(yytext); return Um;}
+{are}               { pos+=yyleng; yylval.s=strdup(yytext); return Uare;}
+{gramme}            { pos+=yyleng; yylval.s=strdup(yytext); return Ug;}
+{seconde}           { pos+=yyleng; yylval.s=strdup(yytext); return Us;}
+{ampere}            { pos+=yyleng; yylval.s=strdup(yytext); return UA;}
+{kelvin}|{degre_c}  { pos+=yyleng; yylval.s=strdup(yytext); return UK;}
+{mole}              { pos+=yyleng; yylval.s=strdup(yytext); return Umol;}
+{candela}           { pos+=yyleng; yylval.s=strdup(yytext); return Ucd;}
+{hertz}             { pos+=yyleng; yylval.s=strdup(yytext); return UHz;}
+{newton}            { pos+=yyleng; yylval.s=strdup(yytext); return UN;}
+{pascal}            { pos+=yyleng; yylval.s=strdup(yytext); return UPa;}
+{joule}             { pos+=yyleng; yylval.s=strdup(yytext); return UJ;}
+{watt}              { pos+=yyleng; yylval.s=strdup(yytext); return UW;}
+{coulomb}           { pos+=yyleng; yylval.s=strdup(yytext); return UC;}
+{volt}              { pos+=yyleng; yylval.s=strdup(yytext); return UV;}
+{ohm}               { pos+=yyleng; yylval.s=strdup(yytext); return Uohm;}
+{siemens}           { pos+=yyleng; yylval.s=strdup(yytext); return US;}
+{farad}             { pos+=yyleng; yylval.s=strdup(yytext); return UF;}
+{tera_ou_tesla}     { pos+=yyleng; yylval.s=strdup(yytext); return UT;}
+{weber}             { pos+=yyleng; yylval.s=strdup(yytext); return UWb;}
+{henry}             { pos+=yyleng; yylval.s=strdup(yytext); return UH;}
+{lumen}             { pos+=yyleng; yylval.s=strdup(yytext); return Ulm;}
+{lux}               { pos+=yyleng; yylval.s=strdup(yytext); return Ulx;}
+{becquerel}         { pos+=yyleng; yylval.s=strdup(yytext); return UBq;}
+{gray}              { pos+=yyleng; yylval.s=strdup(yytext); return UGy;}
+{sievert}           { pos+=yyleng; yylval.s=strdup(yytext); return USv;}
+{radian}            { pos+=yyleng; yylval.s=strdup(yytext); return Urad;}
+{steradian}         { pos+=yyleng; yylval.s=strdup(yytext); return Usr;}
+{puissance}         { pos+=yyleng; while (!index("-0123456789", *yytext)) yytext++; val_int=atoi(yytext); return PUIS;}
+{carre}             { val_int=2; pos+=yyleng; return PUIS;}
+{cube}              { val_int=3; pos+=yyleng; return PUIS;}
+{prefixe_pur}       { pos+=yyleng; yylval.s=strdup(yytext); return PP;}
 {point}             { pos+=yyleng; return POINT;}
 {barre}             { pos+=yyleng; return BARRE;}
-{degre_angle}       {pos+=yyleng; return Uda;}
-{minute_angle}      {pos+=yyleng; return Uma;}
-{seconde_angle}     {pos+=yyleng; return Usa;}
-{angstrom}          {pos+=yyleng; return Uangs;}
-{barn}              {pos+=yyleng; return Ubarn;}
-{litre}             { pos+=yyleng; return Ul;}
-{tonne}             {pos+=yyleng; return Ut;}
-{bar}               {pos+=yyleng; return Ubar;}
-{ev}                {pos+=yyleng; return UeV;}
-{uam}               {pos+=yyleng; return Uuam;}
+{degre_angle}       { pos+=yyleng; yylval.s=strdup(yytext); return Uda;}
+{minute_angle}      { pos+=yyleng; yylval.s=strdup(yytext); return Uma;}
+{seconde_angle}     { pos+=yyleng; yylval.s=strdup(yytext); return Usa;}
+{angstrom}          { pos+=yyleng; yylval.s=strdup(yytext); return Uangs;}
+{barn}              { pos+=yyleng; yylval.s=strdup(yytext); return Ubarn;}
+{litre}             { pos+=yyleng; yylval.s=strdup(yytext); return Ul;}
+{tonne}             { pos+=yyleng; yylval.s=strdup(yytext); return Ut;}
+{bar}               { pos+=yyleng; yylval.s=strdup(yytext); return Ubar;}
+{ev}                { pos+=yyleng; yylval.s=strdup(yytext); return UeV;}
+{uam}               { pos+=yyleng; yylval.s=strdup(yytext); return Uuam;}
 {spc}               { pos+=yyleng; return SPC;}
-{signif}            {pos+=yyleng; val_int=atoi(strchr(yytext,'#')+1); return Signif;}
-{plusminpc}         {pos+=yyleng; val_int=atoi(strchr(yytext,'~')+1); return PlusminPC;}
-{plusminpcbis}      {pos+=yyleng; val_int=atoi(strchr(yytext,'+')+2); return PlusminPC;}
-{colon}             {pos+=yyleng; return COLON;}
+{signif}            { pos+=yyleng; val_int=atoi(strchr(yytext,'#')+1); return Signif;}
+{plusminpc}         { pos+=yyleng; val_int=atoi(strchr(yytext,'~')+1); return PlusminPC;}
+{plusminpcbis}      { pos+=yyleng; val_int=atoi(strchr(yytext,'+')+2); return PlusminPC;}
+{colon}             { pos+=yyleng; return COLON;}
 
 .                    pos+=yyleng;
 \n                   pos+=yyleng;

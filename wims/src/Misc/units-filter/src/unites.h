@@ -1,6 +1,9 @@
 #ifndef UNITES_H
 #define UNITES_H
 
+#include <gmp.h>
+#include <gmpxx.h>
+
 typedef enum {
   TUh, TUmin,
   TUm, TUg, TUs, TUA, TUK, TUmol, TUcd, TUHz, TUN, TUPa, TUJ, TUW, 
@@ -22,8 +25,8 @@ typedef struct{
   int base[BU_LAST];
 } unite_data;
 
-extern double val_real;
+extern mpq_class val_real;
 
-double atof1(char* s);
+void atof1(char* s, mpq_class & r);
 
 #endif

@@ -1,13 +1,14 @@
+# -*- coding: utf-8 -*-
 Source: units-filter
 Section: science
 Priority: optional
 Maintainer: Georges Khaznadar <georgesk@ofset.org>
-Build-Depends: debhelper (>> 3.0.0), flex, bison, librecode-dev
-Standards-Version: 3.7.2
+Build-Depends: debhelper (>> 7), flex, bison, librecode-dev, docbook-xsl, xsltproc, libgmp3-dev
+Standards-Version: 3.8.1
 
 Package: units-filter
 Architecture: any
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests : wims
 Description: Parser for expressions concerning physical values
  Units-filter is a basic standalone filter written in C language,
@@ -16,7 +17,7 @@ Description: Parser for expressions concerning physical values
  standard SI unit, followed by the physical dimension of this value.
  .
   example :~/src$ echo 1.5e3 nN.m.s^-1 | units-filter
-  1.5e-06   2   1  -3   0   0   0   0    0    0
+  1.5e-06   2   1  -3   0   0   0   0    0    0
  .
                                    2     -3
   which means : 1.5e-06 (SI unit) m .kg.s
