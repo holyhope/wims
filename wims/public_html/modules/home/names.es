@@ -1,17 +1,4 @@
 
-C_A		=Actividades WIMS
-C_X		=Ejercicios interactivos
-C_T		=Calculadoras en línea
-C_R		=Matemáticas recreativas
-C_O		=Ejercicios clasificados (OEF)
-C_S		=Hojas de ejercicios
-C_D		=Lecciones y referencias
-C_P		=Herramientas rápidas
-C_F		=Mensajes de los foros
-
-N_browse	=visita guiada
-N_browsesite	=explorar este sitio
-N_browse2	=Explorar este sitio
 N_manage	=Administración de WIMS en línea
 N_best		=los mejores
 N_new		=lo nuevo
@@ -24,8 +11,6 @@ N_pref		=preferencias
 N_Pref		=Preferencias
 N_help		=ayuda
 N_Help		=Ayuda
-N_Search	=Buscar
-N_search	=buscar
 N_within	=en
 N_clear		=Empezar de nuevo
 N_go		=mostrar

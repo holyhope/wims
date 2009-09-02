@@ -54,31 +54,32 @@ gotlim=1000
 gotlim2=50
 list_batch=20
 
-rel_A=D,S
-rel_T=X,D,R
-rel_D=X,T,S,R
-rel_X=T,D,S,R
-rel_R=X,T,D,S
-rel_P=T,X,D
-rel_O=X,S,T,D,R
-rel_S=X,R,T,D
+!read adm/search_engine/mklist_form.proc
+!!rel_A=D,S
+!!rel_T=X,D,R
+!!rel_D=X,T,S,R
+!!rel_X=T,D,S,R
+!!rel_R=X,T,D,S
+!!rel_P=T,X,D
+!!rel_O=X,S,T,D,R
+!!rel_S=X,R,T,D
 
-slist=A D T X R P O S
-module_P=wimshome/public_html/modules/tool/popup
-wims_trustfile=$module_P.$lang/search.phtml $module_P.$lang/search.proc
-test=!record 0 of $module_P.$lang/.test
-!if yes notin $test
- slist=!translate P to $ $ in $slist
-!endif
-cnt=!record 0 of wimshome/public_html/bases/sheet/index/count.$lang
-!if $cnt<=0
- slist=!translate S to $ $ in $slist
-!endif
-slist=!words2items $slist
-plist=
-!for i in $slist
- plist=!append item $(C_$i) to $plist
-!next i
+!!slist=A D T X R P O S
+!!module_P=wimshome/public_html/modules/tool/popup
+!!wims_trustfile=$module_P.$lang/search.phtml $module_P.$lang/search.proc
+!!test=!record 0 of $module_P.$lang/.test
+!!!if yes notin $test
+!! slist=!translate P to $ $ in $slist
+!!!endif
+!!cnt=!record 0 of wimshome/public_html/bases/sheet/index/count.$lang
+!!!if $cnt<=0
+!! slist=!translate S to $ $ in $slist
+!!!endif
+!!slist=!words2items $slist
+!!plist=
+!!!for i in $slist
+!! plist=!append item $(C_$i) to $plist
+!!!next i
 
 !if $wims_user=supervisor
  !default search_level=$class_level
