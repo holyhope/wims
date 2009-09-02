@@ -1,7 +1,6 @@
 
 !set wims_form_method=post
 !form reply
-
 投票或记录的
 !if $vote_title=$empty
  创建
@@ -20,12 +19,24 @@
 投票结果:
 !formselect reg_show list 1,0 prompt 公开,隐藏
 <br> 内容: <small>
-!href cmd=help [$wims_name_help]
-</small> <br>
-<textarea name=reg_src cols=60 rows=20>$src</textarea>
+!href cmd=help $wims_name_help
+</small>
+<br>
+(
+!if $speckedit=no
+   !set msgsrc1=<textarea id=src name=reg_src cols=80 rows=20>$src</textarea>
+   !href cmd=reply&job=edit&speckedit=yes  $wims_name_active
+!else
+  !set msgsrc1=<textarea class="iEdit" id=src name=reg_src cols=80 rows=20>$src</textarea>
+  !href cmd=reply&job=edit&speckedit=no $wims_name_desactive
+!endif
+- <small>$wims_name_speck_warning</small>)
+ 
+$msgsrc1
 <center>
-<input type=submit name=rEg value="发送">
-<input type=submit name=abandon value="取消">
+<input type=submit name=rEg value="$wims_name_tosave" onclick="javascript:editthis();">
+<input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
+
 !reset reg_option reg_status reg_show

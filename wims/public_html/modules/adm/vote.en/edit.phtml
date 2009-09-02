@@ -1,7 +1,6 @@
 
 !set wims_form_method=post
 !form reply
-
 !if $vote_title=$empty
  Creation
 !else
@@ -9,23 +8,35 @@
 !endif
 of a vote or registration.
 <br>
-Title: <input size=50 name=reg_title value="$vote_title"> <br>
+$wims_name_title: <input size=50 name=reg_title value="$vote_title"> <br>
 Mode:
 !set reg_status=$vote_status
 !set reg_option=$vote_option
 !set reg_show=$vote_show
 !formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
-Status:
+$wims_name_Status::
 !formselect reg_status from 0 to 3 prompt prep,open,closed,hidden
 Result of the vote:
 !formselect reg_show list 1,0 prompt publish,hide
 <br> Content: <small>
-!href cmd=help [$wims_name_help]
-</small> <br>
-<textarea name=reg_src cols=60 rows=20>$src</textarea>
+!href cmd=help $wims_name_help
+</small>
+<br>
+(
+!if $speckedit=no
+   !set msgsrc1=<textarea id=src name=reg_src cols=80 rows=20>$src</textarea>
+   !href cmd=reply&job=edit&speckedit=yes  $wims_name_active
+!else
+  !set msgsrc1=<textarea class="iEdit" id=src name=reg_src cols=80 rows=20>$src</textarea>
+  !href cmd=reply&job=edit&speckedit=no $wims_name_desactive
+!endif
+- <small>$wims_name_speck_warning</small>)
+ 
+$msgsrc1
 <center>
-<input type=submit name=rEg value="Send">
-<input type=submit name=abandon value="Cancel">
+<input type=submit name=rEg value="$wims_name_tosave" onclick="javascript:editthis();">
+<input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
+
 !reset reg_option reg_status reg_show

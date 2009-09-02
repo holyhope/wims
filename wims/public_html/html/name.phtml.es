@@ -25,6 +25,7 @@
 		Guardar,\
 		si,\
 		no,\
+		Télécharger,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -37,7 +38,7 @@
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no
+	wims_name_yes,wims_name_no,wims_name_download
 
 !! **** Permalink Names ***	
 !distribute items este módulo, este ejercicio,\
@@ -233,7 +234,7 @@ wims_name_add_exo,wims_name_classexo
     wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
 	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
 
-!! for secuencia y documento 
+!! for sequence et document
 
 !distribute line Document\
 ocultado, visible \
@@ -345,7 +346,8 @@ Cuaderno de competencias \
 
 !distribute line activar el editor HTML \
 desactivar el editor HTML \
-into wims_name_active, wims_name_desactive
+attention, les modifications faites ne seront pas sauvées si vous changez cette option en cours de rédaction\
+into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
 !distribute items Apellido,Nombre \
 into wims_name_lastname, wims_name_firstname

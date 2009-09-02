@@ -25,6 +25,7 @@
 		Opslaan,\
 		yes,\
 		no,\
+		Download,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -37,7 +38,7 @@
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_giveup
+	wims_name_yes,wims_name_no,wims_name_giveup,wims_name_download
 
 !! **** Permalink Names *** 
 !distribute items deze module, deze oefening,\
@@ -371,7 +372,7 @@ Lijst van vaardigheden\
 
 !distribute line activeer de html-editor\
 deactiveer de html-editor\
-into wims_name_active, wims_name_desactive
-
+Be cautious, modifications will not be saved if you change this option when writing\
+into wims_name_active, wims_name_desactive,wims_name_speck_warning
 !distribute items Achternaam,Voornaam \
 into wims_name_lastname, wims_name_firstname
