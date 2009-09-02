@@ -1,0 +1,100 @@
+!! Tableau d'information générale de la feuille d'exos
+!! ce fichier utilise des mots définis dans le fichier names.phtml du module adm/sheet.$lang
+
+!form reply
+ <input type=hidden name=job value=text>
+ $table_header
+  $table_tr
+   <td>$(name_shinfo[1]) : </td>
+   <td><input size="65" name="title" value="$title"></td>
+  </tr>
+  $table_tr
+   <td>$(name_shinfo[2]) : </td>
+   <td>$(statutname[$activetest+2]) &nbsp;
+   !ifval $activetest>-1
+    !if $activetest=0
+     !if $exocnt>0
+      !href cmd=reply&job=prep_activate $(statutaction[1])
+     !endif
+    !else
+     !if $activetest=1
+      &nbsp;
+      !href cmd=reply&job=expire $(statutaction[2])
+      &nbsp;
+      !href cmd=reply&job=deactivate $(statutaction[3])
+     !else
+      &nbsp;
+      !if $activetest=2
+       !href cmd=reply&job=hide $(statutaction[4])
+      !else
+       !href cmd=reply&job=expire $(statutaction[5])
+      !endif
+      &nbsp;
+      !href cmd=reply&job=reactivate $(statutaction[1])
+      &nbsp;
+      !href cmd=reply&job=deactivate $(statutaction[3])
+     !endif
+    !endif
+    !if $erasable=yes
+     &nbsp;
+     !href cmd=reply&job=prep_erase $(statutaction[6])
+    !endif
+   !endif
+   </td>
+  </tr>
+  $table_tr
+   <td>$(name_shinfo[3])&nbsp;:</td>
+   <td><textarea id="desc" class="iEdit" rows="6" cols="65" name="desc">$desc</textarea> </td>
+  </tr>
+  $table_tr
+   <td>$(name_shinfo[4])&nbsp;:</td>
+   <td>
+    !distribute item $[$expday],$[$expmon] into expday,expmon
+    !formselect expday from 1 to 31
+    !formselect expmon from 1 to 12 prompt $months
+    !formselect expyear from $thisyear to $thisyear+1
+   </td>
+  </tr>
+  $table_tr
+   <td>$(name_shinfo[5])&nbsp;
+    <small>
+     !href target=wims_mhelp cmd=help&special_parm=sheetpage $wims_name_help
+    </small>
+    :
+   </td>
+   <td><input size="30" name="prpage" value="$prpage"></td>
+  </tr>
+  !if $activetest>0
+   $table_tr
+    <input type=hidden name=allow value=yes>
+    <td>
+     $(name_shinfo[6])&nbsp;:
+     <small>
+      !href target=wims_mhelp cmd=help&special_parm=allowtype $wims_name_help
+     </small>
+    </td>
+    <td>
+     !formselect allowtype list all, none, select prompt $name_allowtype 
+     <br><input size=50 name=IPlist value="$IPlist"> <br>
+     !set allowshare=0
+     !if $sharers!=$empty
+      ( $(name_shinfo[7])
+      !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
+      )
+     !else
+      <input type=hidden name=allowshare value=0>
+     !endif
+    </td>
+   </tr>
+  !endif
+  $table_tr
+   <td colspan="2" align=center>
+    !ifval $activetest=-1
+     <input type=submit value="$name_mksheet">
+    !else
+     <input type=submit value="$wims_name_tosave">
+    !endif
+   </td>
+  </tr>
+ $table_end
+</form>

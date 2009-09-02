@@ -10,6 +10,10 @@ wims_prefix=class user tmp n sharing sharable
 srcname=wimshome/$wims_sesdir/home_sheet.src
 wims_helper=chapter=3
 
+!readproc tabletheme
+!readproc adm/search_engine/names.fr
+!readproc adm/search_engine/mklist.proc
+
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit
@@ -24,6 +28,7 @@ thisyear=!char 1 to 4 of $today
   class_expiration=!defof class_expiration in wimshome/log/classes/$wims_superclass/.def
  !endif
 !endif
+
 !if $class_expiration=$empty
  error=bad_class
  !exit
@@ -240,8 +245,8 @@ $ by &#13; in $desc
  desc=!singlespace $desc
  title=!char 1 to $title_limit of $title
  desc=!char 1 to $desc_limit of $desc
- desc=!replace internal : by &#58; in $desc
  title=!replace internal : by &#58; in $title
+ desc=!replace internal : by &#58; in $desc
  prpage=!word 1 of $prpage
  prpage=!char 1 to 100 of $prpage
  !if .. isin $prpage or / notin $prpage

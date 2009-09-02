@@ -1,0 +1,45 @@
+!! --------------------  affiche le contenu de la feuille $sheet de la classe $wims_class
+!! ce fichier ne contient pas de langue (les mots utilisés sont dans names.phtml du module adm/class/sheet.$lang)
+
+
+$table_header
+ $table_hdtr
+  !for k=1 to 6
+   <th>$(name_shtab[1])</th>
+  !next k
+  !if $activetest=0
+   <th>$(name_shtab[7])</th>
+  !endif
+ </tr>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  $table_tr
+   <td>$i</td>
+   <td>
+    !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
+   </td>
+   <td>$de</td>
+   <td align="center">$re</td>
+   <td align="center">$we</td>
+   <td>
+    !if $dep!=$empty
+     $dep
+    !else
+     &nbsp;
+    !endif
+   </td>
+   !if $activetest=0
+    <td>
+     !href cmd=reply&job=prep_modify&modif=$i $(seriesaction[1])
+     &nbsp;
+     !href cmd=reply&job=delete&delete=$i#list $(seriesaction[2])
+     !if $i>1
+      &nbsp;
+      !href cmd=reply&job=moveup&moveup=$i#list $(seriesaction[3])
+     !endif
+    </td>
+   !endif
+  </tr>
+ !next i
+$table_end

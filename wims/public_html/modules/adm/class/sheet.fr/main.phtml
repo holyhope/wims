@@ -3,6 +3,7 @@
 !!$wims_html_header
 !!</head><body $wims_htmlbody onload=$wims_html_onload>
 !!headmenu
+
 !read adm/css.phtml
 !header1
 
@@ -19,8 +20,15 @@
 
 <center>$classname
 <p>
-<h1>Préparation de la  feuille $sheet
-</h1></center> <p><hr width="40%"> <p>
+<h1>
+!if $activetest=0
+ Préparation 
+!else
+ Gestion
+!endif
+de la  feuille $sheet</h1></center> 
+
+<p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -36,185 +44,64 @@
  !goto end
 !endif
 
-!if $activetest>0
- !form reply
- <input type=hidden name=job value=text>
- Cette feuille est
- !if $activetest=1
-  active.
-  !href cmd=reply&job=expire L'expirer maintenant
-  ou
-  !href cmd=reply&job=deactivate la désactiver
-.
- !else
-  !if $activetest=2
-   périmée mais encore visible par les participants.
-   !href cmd=reply&job=hide La cacher aux participants
-  !else
-   périmée et invisible des participants.
-   !href cmd=reply&job=expire La faire réapparaitre
-  !endif
-  .
-  !href cmd=reply&job=reactivate La réactiver
-  ou
-  !href cmd=reply&job=deactivate désactiver
-  (pour pouvoir la modifier). <p>
- !endif
- <p><center><table border=2>
- <tr><td align=right>Titre :
- <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modifier>
- <tr><td align=right>Description :
- <td><textarea id=desc class="iEdit" name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Page de présentation&nbsp;:
- <td><input size=30 name=prpage value="$prpage"><small>
- !href target=wims_mhelp cmd=help&special_parm=sheetpage aide
- </small>
- <tr><td align=right>Date d'expiration :<td>
- !distribute item $[$expday],$[$expmon] into expday,expmon
- !formselect expday from 1 to 31
- !formselect expmon from 1 to 12 prompt $months
- !formselect expyear from $thisyear to $thisyear+1
- </table></center></form> <p>
- !goto end1
+!if $activetest>-1
+ <b>Informations générales :</b>
 !endif
-
-!form reply
-<input type=hidden name=job value=text>
-Titre (limité à $title_limit caractères) :<br>
-<input size=65 name=title value="$title"> <p>
-Et un texte d'explication (limité à $desc_limit caractères; les tags et 
-liens html sont admis)&nbsp;:<br>
-<textarea id=desc class="iEdit" rows=6 cols=65 name=desc>$desc</textarea> <p>
-Ou une page de présentation&nbsp;:
-<input size=30 name=prpage value="$prpage"><small>
-!href target=wims_mhelp cmd=help&special_parm=sheetpage aide
-</small> <p>
-<center><input type=submit value="Enregistrer les textes"></center>
-
-<p>Date d'expiration de la feuille:
-!distribute item $[$expday],$[$expmon] into expday,expmon
-!formselect expday from 1 to 31
-!formselect expmon from 1 to 12 prompt $months
-!formselect expyear from $thisyear to $thisyear+1
-&nbsp; <input type=submit value="$wims_name_tosave">
+!read adm/sheet/sheetinfo.phtml
 
 !ifval $activetest=-1
- <p>La feuille n'existe pas encore.
- <input type=submit value="Cliquez pour la créer"> (mais remplissez le titre
- d'abord).
- </form>
  !goto end
-!else
- </form>
- !if $exocnt>0
-  <p>Cette feuille n'est pas encore active.
-  !href cmd=reply&job=prep_activate Cliquez ici
-  pour l'activer.
-  (Les étudiants ne voient que les feuilles actives&nbsp;; en revanche, vous ne
-  pouvez plus modifier la feuille une fois qu'elle est activée.)
- !endif
 !endif
 
 :end1
-<p>
+<p><hr width="40%"> <p>
+
+<a name=list></a>
+<b>Contenu de la feuille : </b>
 !if $exocnt=0
- Cette feuille n'a pas encore de contenu. 
+ <p>Cette feuille n'a pas encore de contenu. 
 !else
- <a name=list></a>
- Contenu de la feuille : <small>[
+ <small>[
  !href module=adm/sheet&sh=$sheet&job=print Version imprimable
  ]</small>
- <ol class="wims_sheet_list">
- !for i=1 to $exocnt
-  <li class="wims_sheet_list">
-  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $ex into di,pa,re,we,ti,de,dep
-  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
-, $re points de poids $we.
-  !if $activetest=0
-   &nbsp;(
-   !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Remonter
-    &nbsp;
-   !endif
-   !href cmd=reply&job=prep_modify&modif=$i Modifier
-   &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Supprimer
-   !if $dep!=$empty
-    &nbsp;
-    !href cmd=reply&job=prep_modify&modif=$i Dépendances
-   !endif
-   )
-  !endif
- </li>
- !next i
- </ol>
+ !read adm/sheet/sheetcontent.phtml
 !endif
 
 !if $activetest=0
-
-<p>Pour ajouter un travail (exercice, cours, outil, etc.) à la feuille, vous devez
-d'abord choisir l'objet correspondant (voir ci-dessous) ; 
-réglez les différents paramètres proposés et lancez l'exercice. 
-Ensuite, utilisez  le lien en bas de la page de l'exercice pour 
-l'ajouter dans la feuille.
- 
+ <p>Pour ajouter un travail (exercice, cours, outil, etc.) à la feuille, vous devez d'abord choisir l'objet correspondant (voir ci-dessous) ; réglez les différents paramètres proposés et lancez l'exercice.
+ Ensuite, utilisez  le lien en bas de la page de l'exercice pour l'ajouter dans la feuille.
  Pour choisir votre travail, vous pouvez
- <ul>
-  <li> passer par le moteur de recherche disponible sur la 
- !href $ page d'accueil
- de la classe
- </li>
- <li> ou vous aider de cette 
- !href module=help/teacher/program correspondance indicative
- entre programmes de l'enseignement français et exercices WIMS.
-</li>
-</ul>
-<p>
- Vous pouvez 
- !href cmd=reply&job=prep_putsource insérer un fichier source
- !if $erasable=yes
-  dans la feuille, ou encore
-  !href cmd=reply&job=prep_erase effacer cette feuille
- !endif
-.
+  <ul>
+   <li> passer par le moteur de recherche :
+	!read adm/search_engine/form.phtml
+   </li>
+   <li> ou vous aider de cette 
+    !href module=help/teacher/program correspondance indicative
+    entre programmes de l'enseignement français et exercices WIMS.
+   </li>
+   <li> vous pouvez également 
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li>
+  </ul>
 !endif
 
-!if $activetest>=0
- <p>
- !href module=adm/sheet&sh=$sheet La feuille vue des participants.
- &nbsp;
- !href cmd=reply&job=getsource Source de la feuille.
- <p>
- !form reply
- <input type=hidden name=allow value=yes>
- L'enregistrement de notes est 
- !formselect allowtype list all, none, select prompt ouvert pour tous, fermé pour tous, ouvert pour postes (et/ou heures) suivants:
- <br><input size=50 name=IPlist value="$IPlist"> <br>
- <input type=submit value="Enregistrer le changement">
- !set allowshare=0
- !if $sharers!=$empty
-  ( pour toutes les classes partageant la feuille :
-  !formselect allowshare list 0,1 prompt non,oui
-  )
- !else
-  <input type=hidden name=allowshare value=0>
- !endif
- </form>
- <small><b>Indication.</b> Dans le mode sélectif, vous pouvez imposer une
- restriction dans le temps pour l'enregistrement des notes en ajoutant des
- mots
- <font color=blue><b>
- <tt>&gt;aaaammjj.hh:mm</tt></b></font>
- (début) et/ou
- <font color=blue><b>
- <tt>&lt;aaaammjj.hh:mm</tt></b></font>
- (fin). Les dates et heures doivent être en temps local du SERVEUR
- et ces mots doivent être séparés les uns des autres par des espaces.
- </small>
-!endif
 :end
+!if $activetest>=0
+ !if $activetest=0
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=putsource to $wims_menu_items
+ !endif
+ !if $job!=getsource
+  !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
+ !endif
+ !let wims_menu_items=!append line ,0,\
+printable,1,module=adm/sheet&sh=$sheet&job=print\
+,0,\
+participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
+!endif
+
+ !let wims_menu_items=!append line ,0,\
+class_home,1,module=home to $wims_menu_items
+
 !tail
 
 !distribute item ,, into job,source,title,desc,prpage
