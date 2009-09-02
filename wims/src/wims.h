@@ -141,7 +141,10 @@ struct {
       {"it","iso-8859-1"},
       {"nl","iso-8859-1"},
       {"si","iso-8859-2"},
-      {"tw","big5"}
+      {"tw","big5"},
+      {"pt","iso-8859-1"},
+      {"ca","iso-8859-1"},
+      {"ru","iso-8859-5"}
 };
 
 #define charname_no (sizeof(charname)/sizeof(charname[0]))
