@@ -1,8 +1,4 @@
 
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -10,11 +6,10 @@
  !changeto docpage.phtml
 !endif
 !read adm/title.phtml 1\
-$wims_classname, $wims_institutionname\
+$wims_classname - $wims_institutionname\
 Feuille de travail numéro $sh <br>$sheet_title
 
-!!<h2>$wims_classname, $wims_institutionname</h2>
-!!<hr><h3 class="wims_sheet_title">Feuille de travail numéro $sh<br>$sheet_title</h3>
+
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -103,21 +98,6 @@ to $wims_menu_items
  </ul>
  </div>
 !endif
-
-!!!if $wims_user=supervisor
-!!<p>
-!!!href module=adm/class/sheet&sheet=$sh Page de gestion de la feuille
-!! (pour enseignant).
-!!!endif
-!!!if $n>0
-!! !href cmd=reply&job=print Version imprimable
-!!.
-!! !if $exolog!=$empty
-!!  !href module=adm/class/exolog&job=llist&logsheet=$sh Enregistrer les détails d'un exercice
-!!.
-!! !endif
-!!!endif
-!!<p>
 
 !if $wims_user=supervisor
 !set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\

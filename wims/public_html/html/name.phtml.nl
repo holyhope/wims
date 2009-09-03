@@ -26,6 +26,7 @@
 		yes,\
 		no,\
 		Download,\
+		Send,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -38,9 +39,9 @@
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_giveup,wims_name_download
+	wims_name_yes,wims_name_no,wims_name_download,wims_name_send
 
-!! **** Permalink Names *** 
+!! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
 	Installeer,op uw site,\
 	verberg deze opties,\

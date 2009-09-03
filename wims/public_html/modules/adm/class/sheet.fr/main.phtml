@@ -1,9 +1,4 @@
 !reset confirm
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!headmenu
-
 !read adm/css.phtml
 !header1
 
@@ -18,24 +13,15 @@
  !goto end
 !endif
 
-<center>$classname
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title
+
 <p>
-<h1>
-!if $activetest=0
- Préparation 
-!else
- Gestion
-!endif
-de la  feuille $sheet</h1></center> 
-
-<p><hr width="40%"> <p>
-
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
-. <p>
  !goto end
 !endif
 
@@ -54,32 +40,33 @@ de la  feuille $sheet</h1></center>
 !endif
 
 :end1
-<p><hr width="40%"> <p>
+!!<p><hr width="40%"> <p>
 
 <a name=list></a>
-<b>Contenu de la feuille : </b>
+<b>Contenu de la feuille :</b>
 !if $exocnt=0
  <p>Cette feuille n'a pas encore de contenu. 
 !else
  <small>[
- !href module=adm/sheet&sh=$sheet&job=print Version imprimable
+ !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
  ]</small>
  !read adm/sheet/sheetcontent.phtml
 !endif
 
 !if $activetest=0
- <p>Pour ajouter un travail (exercice, cours, outil, etc.) à la feuille, vous devez d'abord choisir l'objet correspondant (voir ci-dessous) ; réglez les différents paramètres proposés et lancez l'exercice.
- Ensuite, utilisez  le lien en bas de la page de l'exercice pour l'ajouter dans la feuille.
- Pour choisir votre travail, vous pouvez
+ <p>Pour ajouter un travail (exercice, outil, etc.) à la feuille, vous devez d'abord choisir
+ l'objet correspondant (voir ci-dessous) ; réglez les différents paramètres proposés et lancez l'exercice.
+ Ensuite, utilisez le lien en bas de la page de l'exercice pour l'ajouter dans la feuille.
+ Pour choisir votre travail, vous avez une des possibilités suivantes
   <ul>
-   <li> passer par le moteur de recherche :
+   <li> Passer par le moteur de recherche :
 	!read adm/search_engine/form.phtml
    </li>
-   <li> ou vous aider de cette 
+   <li> Vous aider de cette 
     !href module=help/teacher/program correspondance indicative
     entre programmes de l'enseignement français et exercices WIMS.
    </li>
-   <li> vous pouvez également 
+   <li> 
     !href cmd=reply&job=prep_putsource $wims_name_putsource
    </li>
   </ul>
@@ -88,19 +75,15 @@ de la  feuille $sheet</h1></center>
 :end
 !if $activetest>=0
  !if $activetest=0
-  !let wims_menu_items=!append line putsource,1,cmd=reply&job=putsource to $wims_menu_items
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
  !endif
  !if $job!=getsource
   !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
  !endif
  !let wims_menu_items=!append line ,0,\
 printable,1,module=adm/sheet&sh=$sheet&job=print\
-,0,\
 participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
 !endif
-
- !let wims_menu_items=!append line ,0,\
-class_home,1,module=home to $wims_menu_items
 
 !tail
 
