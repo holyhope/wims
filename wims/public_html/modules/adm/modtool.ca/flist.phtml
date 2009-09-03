@@ -34,9 +34,9 @@ $table_hdtr
   <td align=center nowrap>  
   !href cmd=reply&jobreq=showfile&fname=$f voir
   &nbsp;
-  !href cmd=reply&jobreq=edfile&fname=$f modifier
+  !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
   &nbsp;
-  !href cmd=reply&jobreq=delfile&fname=$f effacer
+  !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
   !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
    !set f_=!translate internal / to , in $f
    !set f_=!item -1 of $f_
@@ -57,9 +57,6 @@ $table_end
 Ajouter un autre fichier&nbsp;:
 <input size=20 name=fname value="$lastfname">
 <input type=submit value=OK>
-!!href cmd=reply&jobreq=binfile Fichiers binaires
-!!&nbsp;
-!!!href target=wims_test module=tool/directexec&cmd=new Testeur de script
 </form>
 
 !reset fname
