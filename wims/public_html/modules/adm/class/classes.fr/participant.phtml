@@ -25,11 +25,11 @@
 Choisissez la ligne correspondant à la classe ou l'établissement 
 qui vous concerne. 
  <p>
-Si vous n'êtes pas encore inscrit, cliquer sur <tt>S'inscrire</tt> 
+Si vous n'êtes pas encore inscrit, cliquer sur <tt>$name_register</tt> 
 (si le statut est <tt>protégé</tt>, vous avez besoin d'un mot de passe 
 que vous obtiendrez auprès de l'enseignant ou de l'administrateur).
 
- <p>Sinon, cliquez <tt>Entrer</tt> pour y entrer. 
+ <p>Sinon, cliquez <tt>$name_enter</tt> pour y entrer. 
 !endif
 
 !if $sccnt>0
@@ -41,9 +41,9 @@ que vous obtiendrez auprès de l'enseignant ou de l'administrateur).
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
-  !else
-   !set show=$cl
+   !set show=$inst<br>$cl
+  !else 
+   show=$inst
   !endif
   !set supv=!item 9 of $l
   !if $supv=$empty
@@ -57,9 +57,9 @@ que vous obtiendrez auprès de l'enseignant ou de l'administrateur).
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> <td align=center>
-  !href module=$module&type=authparticipant&class=$code Entrer
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes S'inscrire
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td> <td align=center>
   $supv
   </td> <td align=center>
@@ -118,12 +118,12 @@ que vous obtiendrez auprès de l'enseignant ou de l'administrateur).
   $table_tr<td align=center>
     $show
   </td><td align=center> 
-  !href module=$module&type=authparticipant&class=$code Entrer
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center> 
   !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser&class=$code S'inscrire
+   !href module=adm/class/reguser&class=$code $name_register
   !else
-   <font color=grey>S'inscrire</font>
+   <font color=grey>$name_register</font>
   !endif
   </td><td align=center>
   $supv

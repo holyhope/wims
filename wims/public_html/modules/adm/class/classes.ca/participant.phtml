@@ -24,7 +24,7 @@
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
+   !set show=$inst<br>$cl
   !else
    !set show=$cl
   !endif
@@ -47,7 +47,7 @@
    protegida
   !endif
   <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes Registrar
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td>
  !next i
  $table_end <p>
@@ -57,7 +57,7 @@
  <p>$table_header
  !if $superclass=$empty
   <caption>Classes independents</caption>
-  $table_hdtr<th>Nom de la classe<th>Professor<th>Nivell<th>Estat<th>Registrar
+  $table_hdtr<th>Nom de la classe<th>Professor<th>Nivell<th>Estat<th>$name_register
  !else
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
@@ -69,7 +69,7 @@
     !href cmd=reply&type=$type&superclass2=$sparent Up
    !endif
    </caption>
-   $table_hdtr<th>Nom de la classe<th>Professor<th>Nivell<th>Estat<th>Registrar
+   $table_hdtr<th>Nom de la classe<th>Professor<th>Nivell<th>Estat<th>$name_register
    !if $superclass!=$empty and $stype=4
     <th>Més
    !endif
@@ -105,9 +105,9 @@
   !endif
   </td><td align=center>
   !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser?class=$code Registrar
+   !href module=adm/class/reguser?class=$code $name_register
   !else
-   <font color=grey>Registrar</font>
+   <font color=grey>$name_register</font>
   !endif
   </td>
    !if $superclass!=$empty and $stype=4
@@ -125,6 +125,6 @@
 Clica sobre el nom de la classe per anar a treballar-hi (cal que estiguis
 registrat com a participant de la classe).
 <p>
-Clica sobre `Registrar' per registrar-te a la classe (necessites la contrasenya de la classe,
+Clica sobre `$name_register' per registrar-te a la classe (necessites la contrasenya de la classe,
 ha de donar-te-la el teu professor).
 

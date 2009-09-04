@@ -27,7 +27,7 @@ Kies Uw klas of school uit de onderstaande lijst.
  Bent U nog niet aangemeld, klik dan op <tt>aanmelden</tt> 
 <br>Als de status <tt>besloten</tt> is, hebt U een <em>aanmeldings wachtwoord</em> nodig.
 (verkrijgbaar bij de docent van de klas of supervisor van de school/instituut)
- <p>Anders , klik op <tt>Inloggen</tt>. 
+ <p>Anders , klik op <tt>$name_enter</tt>. 
 !endif
 
 !if $sccnt>0
@@ -39,7 +39,7 @@ Kies Uw klas of school uit de onderstaande lijst.
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
+   !set show=$inst<br>$cl
   !else
    !set show=$cl
   !endif
@@ -55,9 +55,9 @@ Kies Uw klas of school uit de onderstaande lijst.
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> <td align=center>
-  !href module=$module&type=authparticipant&class=$code Inloggen
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes Aanmelden
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td> <td align=center>
   $supv
   </td> <td align=center>
@@ -116,12 +116,12 @@ Kies Uw klas of school uit de onderstaande lijst.
   $table_tr<td align=center>
     $show
   </td><td align=center> 
-  !href module=$module&type=authparticipant&class=$code Inloggen
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center> 
   !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser&class=$code Aanmelden
+   !href module=adm/class/reguser&class=$code $name_register
   !else
-   <font color=grey>Aanmelden</font>
+   <font color=grey>$name_register</font>
   !endif
   </td><td align=center>
   $supv

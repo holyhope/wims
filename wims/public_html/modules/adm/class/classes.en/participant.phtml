@@ -34,7 +34,7 @@
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
+   !set show=$inst<br>$cl
   !else
    !set show=$cl
   !endif
@@ -50,9 +50,9 @@
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> <td align=center>
-  !href module=$module&type=authparticipant&class=$code Enter
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes Register
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td> <td align=center>
   $supv
   </td> <td align=center>
@@ -111,12 +111,12 @@
   $table_tr<td align=center>
     $show
   </td><td align=center> 
-  !href module=$module&type=authparticipant&class=$code Entrer
+  !href module=$module&type=authparticipant&class=$code name_enter
   </td> <td align=center> 
   !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser&class=$code Register
+   !href module=adm/class/reguser&class=$code $name_register
   !else
-   <font color=grey>Register</font>
+   <font color=grey>$name_register</font>
   !endif
   </td><td align=center>
   $supv
@@ -143,7 +143,7 @@
 Click on the name of the class to go to work in it (if you are
 registered participant of that class).
 <p>
-Click on the word `Register' to register to the class (you will
+Click on the word `$name_register' to register to the class (you will
 need a class password for protected classes,
 which should be obtained from your teacher).
 

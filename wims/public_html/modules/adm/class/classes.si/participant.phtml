@@ -19,12 +19,12 @@ S klikom na ime lahko vstopite v virtualno uèilnico.
  <p>$table_header
  <caption>Ustanove in skupine uèilnic</caption>
  $table_hdtr
- <th>Ime ustanove<th>Skrbnik<th>Status<th>Registracija
+ <th>Ime ustanove<th>Skrbnik<th>Status<th>$name_register
  !for i=1 to $sccnt
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
+   !set show=$inst<br>$cl
   !else
    !set show=$cl
   !endif
@@ -47,7 +47,7 @@ S klikom na ime lahko vstopite v virtualno uèilnico.
    za¹èiteno
   !endif
   <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes Registracija
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td>
  !next i
  $table_end <p>
@@ -61,7 +61,7 @@ S klikom na ime lahko vstopite v virtualno uèilnico.
   !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
   <caption>Uèilnice ustanove $inst</caption>
  !endif
- $table_hdtr<th>Ime uèilnice<th>Uèitelj<th>Stopnja<th>Status<th>Registracija
+ $table_hdtr<th>Ime uèilnice<th>Uèitelj<th>Stopnja<th>Status<th>$name_register
  !for i=1 to $clcnt
   !set l=!line $i of $classes
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
@@ -92,13 +92,13 @@ S klikom na ime lahko vstopite v virtualno uèilnico.
    za¹èiteno
   !endif
   </td><td align=center>
-  !href module=adm/class/reguser?class=$code Registracija
+  !href module=adm/class/reguser?class=$code $name_register
   </td>
  !next i
  $table_end <p>
 !endif
 
-Novi uporabniki se s klikom na besedo 'Registracija' registrirate za uporabo uèilnice
+Novi uporabniki se s klikom na besedo '$name_register' registrirate za uporabo uèilnice
 (èe je uèilnica za¹èitena z geslom, potrebujete skupno geslo, ki vam ga posreduje va¹ skrbnik).
 <p>
 Èe ste se ¾e registrirali, pa se s klikom na ime uèilnice prijavite za delo v njej (potrebujete uporabni¹ko ime in osebno geslo, ki ste ju izbrali ob registraciji).

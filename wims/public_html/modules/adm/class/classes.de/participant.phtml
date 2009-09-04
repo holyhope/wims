@@ -25,11 +25,11 @@
 Wählen Sie die Zeile der Sie betreffenden Klasse
  bzw. Bildungsstruktur aus.
  <p>
-Wenn Sie noch nicht eingeschrieben sind, klicken Sie auf <tt>Einschreiben</tt> 
+Wenn Sie noch nicht eingeschrieben sind, klicken Sie auf <tt>$name_register</tt> 
 (liegt der Status <tt>Geschützt</tt> vor, dann müssen Sie ein Kennwort eingeben. 
 Sie erhalten dieses vom Lehrer/Dozenten bzw. Administrator).
 
- <p>Andernfalls klicken Sie auf <tt>Öffnen</tt>, um die gewünschte Seite 
+ <p>Andernfalls klicken Sie auf <tt>$name_enter</tt>, um die gewünschte Seite 
 aufzurufen. 
 !endif
 
@@ -42,7 +42,7 @@ aufzurufen.
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
+   !set show=$inst<br>$cl
   !else
    !set show=$cl
   !endif
@@ -58,9 +58,9 @@ aufzurufen.
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> <td align=center>
-  !href module=$module&type=authparticipant&class=$code Öffnen
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes Einschreiben
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td> <td align=center>
   $supv
   </td> <td align=center>
@@ -119,12 +119,12 @@ aufzurufen.
   $table_tr<td align=center>
     $show
   </td><td align=center> 
-  !href module=$module&type=authparticipant&class=$code Öffnen
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center> 
   !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser&class=$code Einschreiben
+   !href module=adm/class/reguser&class=$code $name_register
   !else
-   <font color=grey>Einschreiben</font>
+   <font color=grey>$name_register</font>
   !endif
   </td><td align=center>
   $supv

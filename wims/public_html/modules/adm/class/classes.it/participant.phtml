@@ -34,7 +34,7 @@
  !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
-   !set show=$inst
+   !set show=$inst<br>$cl
   !else
    !set show=$cl
   !endif
@@ -50,9 +50,9 @@
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> <td align=center>
-  !href module=$module&type=authparticipant&class=$code Accedi
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes Registrazione
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td>  <td align=center>
   $supv
   </td> <td align=center>
@@ -110,10 +110,10 @@
   $table_tr<td align=center>
     $show
   </td><td align=center> 
-  !href module=$module&type=authparticipant&class=$code Accedi
+  !href module=$module&type=authparticipant&class=$code $name_enter
   </td> <td align=center> 
   !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser&class=$code Registrazione
+   !href module=adm/class/reguser&class=$code $name_register
   !else
    <font color=grey>Registrazione</font>
   !endif
@@ -142,7 +142,7 @@
 Seleziona il nome del corso per cominciare a lavorare (se ti sei già 
 registrato).
 <p>
-Seleziona `Registrazione' per iscriverti al corso (per i corsi 
+Seleziona `$name_register' per iscriverti al corso (per i corsi 
 con tipo di connessione `riservato' è necessario ottenere la
 password di accesso dal docente).
 

@@ -31,8 +31,8 @@
 !if $clcnt+$sccnt>0
  !if $wims_user=$empty
  Klik op de klas (of school of instituut) van Uw keuze.<br>
- <small> Als U op <tt>Inloggen</tt> klikt, bent U reeds aangemeld als docent of supervisor.<br>
- Klik op <tt>Aanmelden</tt> als U docent wilt worden in een school of instituut.<br>
+ <small> Als U op <tt>$name_enter</tt> klikt, bent U reeds aangemeld als docent of supervisor.<br>
+ Klik op <tt>$name_register</tt> als U docent wilt worden in een school of instituut.<br>
  Deze aanmelding is dus <b>alleen</b> voor <tt>docenten</tt>.
  !endif
  !if $sccnt>0
@@ -49,16 +49,16 @@
    
    $table_tr
    <td align="center">
-   $in
+   $in<br>$cl
    </td>
    <td align=center>
-   !href module=$module&type=authparticipant&class=$code Inloggen
+   !href module=$module&type=authparticipant&class=$code $name_enter
    </td> <td align=center> 
-   !href module=adm/class/reguser&class=$code Aanmelden
+   !href module=adm/class/reguser&class=$code $name_register
    </td>
    <td align=center>$supv</td>
    <td align=center>
-   !href module=$module&type=authsupervisor&class=$code Inloggen
+   !href module=$module&type=authsupervisor&class=$code $name_enter
   </td>
   !next i  
   $table_end
@@ -123,7 +123,7 @@
      !endif
      !if $superclass=$empty
       <td align=center>
-      !href module=$module&type=authsupervisor&class=$code Inloggen
+      !href module=$module&type=authsupervisor&class=$code $name_enter
       </td>
      !endif   
     !next i
