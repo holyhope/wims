@@ -23,10 +23,10 @@
 		ga naar,\
 		Refresh,\
 		Opslaan,\
-		yes,\
-		no,\
+		ja,\
+		nee,\
 		Download,\
-		Send,\
+		Sturen,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -45,7 +45,7 @@
 !distribute items deze module, deze oefening,\
 	Installeer,op uw site,\
 	verberg deze opties,\
-	Permanente link, media speler,\
+	Permanente link, embed,\
 	knip en plak, deze link, deze code, of, in een email,\
 	voor, enkel,\
 	deze configuratie,\
@@ -264,12 +264,12 @@ wims_name_add_exo,wims_name_classexo
 !! for sequence et document
 
 !distribute line Document\
-onzichtbaar,zichtbaar\
+Onzichtbaar,Zichtbaar\
 Titel\
 Organiseer\
 Toevoegen aan klas\
 Maak een nieuw document\
-bewerk een draft document\
+Bewerk een draft document\
 Status\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status
@@ -336,7 +336,7 @@ Schors deze student\
 Ruwe gegevens\
 Verander het wachtwoord\
 Verwerkte data\
-Vaardigheden overzicht\
+Overzicht vaardigheden \
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
 wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_livret
 !endif
@@ -373,7 +373,8 @@ Lijst van vaardigheden\
 
 !distribute line activeer de html-editor\
 deactiveer de html-editor\
-Be cautious, modifications will not be saved if you change this option when writing\
+Let op: veranderingen worden niet opgeslagen als deze optie tijdens het schrijven wordt veranderd\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
+
 !distribute items Achternaam,Voornaam \
 into wims_name_lastname, wims_name_firstname

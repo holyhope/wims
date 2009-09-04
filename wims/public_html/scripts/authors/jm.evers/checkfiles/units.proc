@@ -124,8 +124,9 @@ score=0
     ex3=$empty
     ex4=$empty
     ex5=$empty
-    k=$empty
-    
+    ex6=$empty
+
+    k=$empty    
     found=0
     correct_unit=1
     unit=!item $p of $var1
@@ -133,6 +134,16 @@ score=0
 	unit=0
     !endif
     org=!item $p of $AAA
+    # check on deduction... g=3m/s^2 
+    # javascript will handle arrow symbols -->,==>,->,=>
+    test=!replace internal = by , in $org
+    t=!itemcnt $test
+    !if $t>1
+	nw=!item -1 of $test
+	ex6=!record 95 of $remarkdir/commonremarks.$taal
+	ex6=$ex6 <br>$org --> $nw 
+	org=$nw
+    !endif
     ans=!item $p of $(answer$n)
     
     !if ? isin $org
@@ -449,7 +460,7 @@ score=0
 	!endif
 	#rep=!htmlmath $number_r $unit_r
 	
-	yourreply=!append line $li <tt><font color=$k>$org</tt> <em>$ex1 $ex2 $ex3 $ex4</em></font>$ex5 $end_li to $yourreply
+	yourreply=!append line $li <tt><font color=$k>$org</tt> <em>$ex1 $ex2 $ex3 $ex4 $ex6</em></font>$ex5 $end_li to $yourreply
     
     !endif
     score=$[$score+$score1]

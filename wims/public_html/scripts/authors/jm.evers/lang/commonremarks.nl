@@ -92,3 +92,4 @@
 : <br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
 : <br>Je hebt geen eenheid vermeld.<br>Ik neem dus maar aan $unit_a !
 : <br>Je hebt je antwoord in $dec decimalen opgegeven...<br>dat is een te hoge precisie ... $decimals decimalen was gevraagd
+: <br>Ik gebruik alleen het laatste gedeelte van je antwoord...
