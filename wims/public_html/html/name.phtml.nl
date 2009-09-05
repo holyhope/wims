@@ -123,7 +123,7 @@
 		U bent de leraar van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
-		Add a sequence,\
+		Lesmateriaal in pedagogische werkvolgorde,\
 	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
@@ -148,7 +148,7 @@
   !let wims_page_name=Paginas
  !endif
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
- !default wims_name_sequence=Sequence
+ !default wims_name_sequence=Werkvolgorde
 !endif
 
 !if adm/class isin $module
