@@ -685,7 +685,7 @@ mpq_class round_mpc(const mpq_class & x){
   // actually slightly less : 0.4999999999999998 or so. The following 
   // definition  of the constant "halfUnit" is a workaround for this
   // current issue.
-  mpq_class halfUnit=mpq_class(10000000000000001,20000000000000000);
+  mpq_class halfUnit=mpq_class(1000000001,2000000000);
   mpq_class y = x+halfUnit;
   mpz_class q=y.get_num()/y.get_den();
   return q;
