@@ -1,11 +1,28 @@
+units-filter (3.0-2) unstable; urgency=low
+
+  * fixed a bug which was not detected by the test suite: the written
+    output for numbers lesser than 1 was false. Integrated one new test
+    in the suite.
+  * modified the routine used to round the numbers. As many examples
+    made by teachers use integer data, and divisions by 2, rounding
+    numbers whose mantissa should be 0.5 is not unfrequent. 
+    Unfortunately computations with floats (for example with the
+    interpreter of Wims) often yelds unprecise results. This may cause
+    troublesome behaviors, when a mantissa which should be 0.5 is actually
+    0.4999999999999998 or so. Therefore, the routine used to round numbers
+    adds the fraction 10000000000000001/20000000000000000 before making a 
+    trucation.
+
+ -- Georges Khaznadar <georgesk@ofset.org>  Sun, 06 Sep 2009 15:59:50 +0200
+
 units-filter (3.0-1) unstable; urgency=low
 
   * introduced multiprecision calculus, in order to avoid errors when 
-    doing truncations. A typical error found with the version 2.9
-    was the following : «echo 2.5#1|units-filter» returned 2 and not
-    3 as expected.
+    doing truncations (for exemple when specifying the number of 
+    significant digits)
+  * recoded sources from latin1 to utf8
 
- -- Georges Khaznadar <georgesk@ofset.org>  Mon, 31 Aug 2009 17:22:38 +0200
+ -- Georges Khaznadar <georgesk@ofset.org>  Mon, 31 Aug 2009 11:31:43 +0200
 
 units-filter (2.9-7) unstable; urgency=low
 

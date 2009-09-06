@@ -8,6 +8,7 @@
 #include <gmp.h>
 #include <gmpxx.h>
 #include "unites.h"
+#include <iostream>
 
   int yylex();
   int yyerror(const char * msg);
@@ -618,12 +619,9 @@ void printValue(optiontype option, yystype result, int s){
   mpq_class puisdix=trunc(log(absval.get_d())/log(10))+1-s;
   mpq_class powten=1;
   if (puisdix>0) for(int i=0; i < puisdix; i++) powten=powten*10;
-  if (puisdix<0) for(int i=0; i < -puisdix; i++) powten=powten/10;
+  if (puisdix<0) for(int i=-1; i < -puisdix; i++) powten=powten/10;
   mpz_class r=round_mpc(value/powten);
   value=r*powten;
-  // C'est à ce niveau qu'il faut faire attention. Le formatage avec %1.*e
-  // casse la précision de tout ce qui a précédé !!
-  // ne pas faire confiance à ce formatage, ni à get_d()
   if (s<=1){ 
     snprintf(buf,sizeof(buf),"%1.0e", value.get_d() );
   } else {
@@ -679,7 +677,16 @@ mpq_class round_mpc(const mpq_class & x){
    * @result the rouded value : 1499999/1000000 is rounded towards 1
    * and 3/2 is rounded towards 2
    */
-  mpq_class y = x+mpq_class(1,2);
+  // half unity is defined as slightly greater than 1/2 because
+  // values submitted to this function are frequently made from
+  // flots whose mantissas are approximately 0.5 (many examples 
+  // made by teachers are based on integer data, and use a division 
+  // by 2). Unfortunately flots whose mantissas had to be 0.5 are
+  // actually slightly less : 0.4999999999999998 or so. The following 
+  // definition  of the constant "halfUnit" is a workaround for this
+  // current issue.
+  mpq_class halfUnit=mpq_class(10000000000000001,20000000000000000);
+  mpq_class y = x+halfUnit;
   mpz_class q=y.get_num()/y.get_den();
   return q;
 }
@@ -712,16 +719,6 @@ void sortie_texte(optiontype option){
   }
   pc=result.pcent;
   // arrondit en tenant compte du nombre de chiffres significatifs
-  ////// les lignes suivantes sont commentées : faut-il les supprimer ? ///
-  // val=result.multip*result.val;
-  // absval=abs(val);
-  // puisdix=trunc(log(absval.get_d())/log(10))+1-s;
-  // powten=1;
-  // if (puisdix>0) for(int i=0; i < puisdix; i++) powten=powten*10;
-  // if (puisdix<0) for(int i=0; i < -puisdix; i++) powten=powten/10;
-  // r=round_mpc(val/powten);
-  // val=r*powten;
-  //affiche la valeur
   if (result.wanted_unit.length()>0){
     result.multip /= result.wanted_multip;
   }else{ // met le multiplicateur à 1 si l'unité d'entrée a été repérée
