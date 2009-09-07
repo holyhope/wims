@@ -4,3 +4,30 @@
 
 !set months=gener,febrer,març,abril,maig,juny,juliol,agost,setembre,octubre,novembre,desembre
 
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
+!set statutaction=Activer,Expirer,Désactiver,Cacher,Montrer,$wims_name_erase
+!set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
+
+!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Insérer un fichier source,\
+		Vue des participants,\
+		Source de la feuille \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!let name_shtab=No,Titre,Description,Points,Poids,Dépendances,Actions
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=Page de préparation
+ !set name_title=!nosubst Préparation de la feuille $sheet
+!else
+ !let wims_name_sheetadmin=Page de gestion
+ !set name_title=!nosubst Gestion de la feuille $sheet
+!endif
+
+!let name_shinfo=!nosubst Titre <small>(limité à $title_limit caractères)</small>,Statut,\
+Texte d'explication <br></small>(limité à $desc_limit caractères; les tags et liens html sont admis)</small>,\
+Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les classes partageant la feuille :
+!let name_allowtype=ouvert pour tous, fermé pour tous, ouvert pour postes (et/ou heures) suivants :
+!let name_mksheet=Créer la feuille
+
+
