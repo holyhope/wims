@@ -93,7 +93,7 @@
 		Escribir al profesor, Cerrar la clase,\
 		El registro de notas es cerrado.,\
 		Ha suspendido el registro de notas.,\
-		Activar el registro, suspender el registro 
+		Activar el registro, suspender el registro,\
 		Usted es el profesor de la clase,\
 		Registrar los detalles de este ejercicio,\
 		Página de gestión de la hoja de trabajo\
