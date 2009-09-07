@@ -15,16 +15,10 @@
 $classname\
 Voeg een oefening toe aan een Werkblad
 
-!!<div class="wims_classname">$classname</div>
-!!<h1 class="wims_title">Voeg een oefening toe aan een Werkblad
-!!</h1><p><hr width="40%"> <p>
-
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
-!! !href module=home Terug naar de homepagina
-!!. <p>
  !goto end1
 !endif
 
@@ -42,7 +36,7 @@ Voeg een oefening toe aan een Werkblad
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  !if $se=$sheetcnt 
+  !if $se=$sheetcnt
    <option value=$se selected>Werkblad $se: $ti
   !else
    <option value=$se>Werkblad $se: $ti
@@ -60,17 +54,17 @@ Voeg een oefening toe aan een Werkblad
  !set title=!trim $title
  !set nummer=!date +%j-%Y 
  !default title=Oefening.$classname.$nummer
- Titel: <input size=50 name=title value="$title"> <p>
- Omschrijving: <textarea name=new_desc rows=8 cols=80>$desc</textarea>
+ $wims_name_title: <input size=50 name=title value="$title"> <p>
+$wims_name_Description: <textarea name=new_desc rows=8 cols=80>$desc</textarea>
  !if $scoring=yes
   <p>Het aantal punten dat minimaal gevraagt wordt te halen voor deze opdracht: 
   <input size=4 name=require value="$require"> <small>
   (elk 100% correct antwoord levert 10 punten op: dus als je meer dan
   10 punten vraagt moet de leerling deze opdracht dus meerdere keren doen)</small> <p>
   Het gewicht van de punten (deze weging wordt gebruikt voor de berekening van het gemiddelde):
-  <input size=6 name=weging value="$weight">.
+  <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="OK"></center>
+ <p><center><input type=submit value="$wims_name_changeto"></center>
  </form>
  !goto end
 !endif
@@ -78,8 +72,7 @@ Voeg een oefening toe aan een Werkblad
 !if $cmd=reply
  De oefening ``<tt>$title</tt>'' is succesvol toegevoegd aan het werkblad
  $picksheet van uw klas.
-!! !href module=adm/class/sheet&sheet=$picksheet Bekijk dit Werkblad
-!!.
+
 !endif
 :end1
 !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\

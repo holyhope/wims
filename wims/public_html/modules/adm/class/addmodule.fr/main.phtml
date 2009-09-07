@@ -15,15 +15,10 @@
 $classname\
 Insérer un module dans une feuille
 
-!!<hr width="40%">
-
-
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
-!! !href module=home Retourner au sommaire de la classe
-!!. <p>
  !goto end1
 !endif
 
@@ -48,7 +43,8 @@ Insérer un module dans une feuille
   !endif
  !next i
  </select>
- <p>Vous pouvez aussi modifier le titre et le texte descriptif. <p>
+ <p>Vous pouvez aussi modifier le titre et le texte descriptif. 
+ <p>
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
  !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
@@ -57,8 +53,8 @@ Insérer un module dans une feuille
  !endif
  !set title=!trim $title
  !default title=Exercice
- Titre: <input size=50 name=title value="$title"> <p>
- Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ $wims_name_title: <input size=50 name=title value="$title"> <p>
+ $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
   <p>Nombre de points que vous demandez à chaque participant d'obtenir sur
   ce travail : <input size=4 name=require value="$require"> <small>(chaque
@@ -67,7 +63,7 @@ Insérer un module dans une feuille
   Poids des points obtenus sur ce travail (pour le calcul de la moyenne) :
   <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="Insérer"></center>
+ <p><center><input type=submit value="$wims_name_changeto"></center>
  </form>
  !goto end
 !endif
@@ -76,14 +72,6 @@ Insérer un module dans une feuille
  L'application ``<tt>$title</tt>'' a été insérée avec succès dans la feuille
  $picksheet de votre classe.
 
-!! <ul>
-!!  <li>
-!! !href module=adm/class/sheet&sheet=$picksheet Vérifier la feuille
-!!.</li>
-!! <li>
-!! !href module=$dir Retour au module
-!!. </li>
-!! </ul>
 !endif
 :end1
 !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
