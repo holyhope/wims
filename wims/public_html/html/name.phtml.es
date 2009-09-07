@@ -89,7 +89,7 @@
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Página principal de la clase,\
-        Insertar en una hoja de trabajo,\
+		Insertar en una hoja de trabajo,\
 		Escribir al profesor, Cerrar la clase,\
 		El registro de notas es cerrado.,\
 		Ha suspendido el registro de notas.,\
