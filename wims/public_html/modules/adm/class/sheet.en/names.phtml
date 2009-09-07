@@ -4,7 +4,7 @@
  
 !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
 
-!set statutname=Under preparation,Under preparation,Active,Expired,Expired and Hidden
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
 !set statutaction=Activate,Expire it,Deactivate it,Hide it,show it,$wims_name_erase
 !set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
 
@@ -17,9 +17,11 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 !let name_shtab=No,Title,Description,Points,Weight,Dependencies,Actions
 
 !if $activetest<=0
-    !let wims_name_sheetadmin=Page of preparation
+ !let wims_name_sheetadmin=Page of preparation
+ !set name_title=!nosubst Preparation of sheet $sheet
 !else
-    !let wims_name_sheetadmin=Page of management
+ !set name_title=!nosubst Management of sheet $sheet
+ !let wims_name_sheetadmin=Page of management
 !endif
 
 !let name_shinfo=!nosubst Title <small>(limited to 80 characters)</small>,Status,\
@@ -28,8 +30,4 @@ Expiration date,Presentation page,Registration of scores,for all sharing classes
 !let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
 !let name_mksheet=Make the sheet
 
-!if $activetest<=0
- !set name_title=!nosubst Preparation of sheet $sheet
-!else
- !set name_title=!nosubst Management of sheet $sheet
-!endif
+
