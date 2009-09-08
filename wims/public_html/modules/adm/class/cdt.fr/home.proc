@@ -10,7 +10,10 @@
 !endif
 
 !if $cdt_nbdate<$max_defaffi
- jour_begin=$class_creation
+ firstdate=!filelist $wims_home/log/classes/$wims_class/cdt/src
+ firstdate=!word 1 of $firstdate
+ jour_begin=!char 1 to 8 of $firstdate
+ !default jour_begin=$class_creation
  jour_end=$class_expiration
 !else
  j=!char 7 to 8 of $wims_now
@@ -45,6 +48,6 @@ jyear2=!char 1 to 4 of $jour_end
 list=!mexec proc/mkwork.sh
 nbligne=!linecnt $list
 job=work
-!if $cdt_nbdate<$max_defaffi
+!!if $cdt_nbdate<$max_defaffi
 !! !reset jour_begin,jour_end
-!endif
+!!endif
