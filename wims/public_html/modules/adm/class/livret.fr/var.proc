@@ -11,7 +11,11 @@ wims_prefix=class user livret
 !defread wimshome/log/classes/$wims_class/.def
 !defread wimshome/log/classes/$wims_class/livret/.def
 
-!read names
+!reset lang_exists
+!read lang/names.$lang
+!if $lang_exists!=yes
+ !read lang/names.en
+!endif
 !read tabletheme
 
 !if $wims_user=supervisor and yes isin $livret_supervise
