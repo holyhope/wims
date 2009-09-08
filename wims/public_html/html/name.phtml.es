@@ -320,19 +320,19 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
   into wims_name_sitegestion
 !endif
 
-!if adm/class/livret isin $module
- !if $wims_user=supervisor
-  !let tmp= Gestión de los participantes y notas 
- !else 
-  !let tmp= Mis notas 
- !endif
- !distribute line Nueva competencia \
-Configurar \
-$tmp\
-Cuaderno de la clase \
-Cuaderno de competencias \
-  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret 
-!endif
+!!if adm/class/livret isin $module
+!! !if $wims_user=supervisor
+!!  !let tmp= Gestión de los participantes y notas 
+!! !else 
+!!  !let tmp= Mis notas 
+!! !endif
+!! !distribute line Nueva competencia \
+!!Configurar \
+!!$tmp\
+!!Cuaderno de la clase \
+!!Cuaderno de competencias \
+!!  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret 
+!!endif
 
 !if $wims_user=supervisor
  !distribute line Volver a la página del profesor \

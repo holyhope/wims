@@ -346,19 +346,19 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
   into wims_name_sitegestion
 !endif
 
-!if adm/class/livret isin $module
- !if $wims_user=supervisor
-  !let tmp=Deelnemers en behaalde resultaten
- !else 
-  !let tmp=Mijn cijfers
- !endif
- !distribute line Nieuwe vaardigheden\
-Configureren\
-$tmp\
-Klasseboek\
-Lijst van vaardigheden\
-  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
-!endif
+!!if adm/class/livret isin $module
+!! !if $wims_user=supervisor
+!!  !let tmp=Deelnemers en behaalde resultaten
+!! !else 
+!!  !let tmp=Mijn cijfers
+!! !endif
+!! !distribute line Nieuwe vaardigheden\
+!!Configureren\
+!!$tmp\
+!!Klasseboek\
+!!Lijst van vaardigheden\
+!!  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
+!!endif
 
 !if $wims_user=supervisor
  !distribute line Terug naar de supervisor mode\
