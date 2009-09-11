@@ -7,6 +7,7 @@ $(cl)_examcnt=!recordcnt wimshome/$cls/exams/.exams
 $(cl)_doccnt=!recordcnt wimshome/$cls/doc/.index
 $(cl)_votecnt=!recordcnt wimshome/$cls/vote/.votes
 $(cl)_forumcnt=!recordcnt wimshome/$cls/forum/.msglist
+$(cl)_docpubliccnt=!recordcnt wimshome/$cls/doc/.docindex
 t=!filelist $wims_home/$cls/src/*.oef
 $(cl)_exocnt=!wordcnt $t
 $(cl)_cdtcnt=!defof cdt_nbdate in wimshome/$cls/cdt/.def
@@ -22,7 +23,7 @@ $(cl)_manualcnt=$[max(0,$t-2)]
 $(cl)_testcnt=$[$($(cl)_scorecnt1)+$($(cl)_manualcnt)]
 
 $(cl)_reccnt=$[$($(cl)_usercnt)+$($(cl)_sheetcnt)+$($(cl)_examcnt)\
-	+$($(cl)_doccnt)+$($(cl)_forumcnt)+$($(cl)_votecnt)\
+	+$($(cl)_doccnt)+$($(cl)_docpubliccnt)+$($(cl)_forumcnt)+$($(cl)_votecnt)\
 	+$($(cl)_exocnt)+$($(cl)_scorecnt)+$($(cl)_manualcnt)]
 
 t=!defof user_exists in wimshome/$cls/supervisor
