@@ -1,3 +1,9 @@
+!read adm/class/userisinclass ,$getuser
+!if yes notin $script_reply
+ error=bad_usercls
+ !reset job,getuser
+ !exit
+!endif
 
 !if $getuser!=$empty
  sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
@@ -48,7 +54,7 @@
  t=!item -1 of $t
  means=!record 0 of wimshome/log/classes/$wims_class/scoreavg
  ot=!line 1 of $means
- !if $ot=$empty or $ot<$t-300
+ !if $ot=$empty or $ot<$t-3
   !read var.avg
  !endif
  l=!line 2 of $means

@@ -1,13 +1,14 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname
 
-<h3>Transfert d'activités pour
+<center><h3>Transfert d'activités pour
  !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
  (<tt>$getuser</tt>)
 </h3> </center> <p>
 
 !if $error=no_reccourse
  <b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant
- dans la classe actuelle pour recevoir le transfert depuis
+à la classe actuelle et permettant le transfert depuis
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -30,14 +31,14 @@
 &nbsp;
   !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass Remplacer
 &nbsp;
-  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser Annuler
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser $wims_name_giveup
   </center>
   !goto endd
  !endif
 !endif
 
 Voici les autres cours dans lesquels le participant a eu des activités.
-Cliquez sur une action pour transférer dans
+Cliquez sur une action pour transférer ces activités dans
 !if $tr_typename=course
  ce cours.
 !else
@@ -62,10 +63,10 @@ $table_end
 
 :endd
 <b>Remarques</b>. <ol>
-<li>"Joindre" veut dire mettre ensemble les activités dans les deux cours.
+<li>"Joindre" veut dire mettre ensemble les activités venant des deux cours.
 <li>"Remplacer" veut dire que les activités de l'autre cours vont écraser
-celles ici. Le remplacement n'aura pas lieu si le premier est vide.
-<li>Les scores des examens et des activités non-comptées sont toujours joints.
+celles de ce cours. Le remplacement n'aura pas lieu si le premier est vide.
+<li>Les scores des examens et des activités non comptées sont toujours joints.
 <li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.
 <li>Après l'action (joindre ou remplacer), les registres d'activités du participant dans
 l'autre cours seront effacés.

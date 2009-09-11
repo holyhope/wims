@@ -1,5 +1,11 @@
 
 checkuser=!translate / to $ $ in $checkuser
+!read adm/class/userisinclass ,$checkuser
+!if yes notin $script_reply
+ error=bad_usercls
+ !reset job,checkuser
+ !exit
+!endif
 !read adm/class/userdef classes,$wims_class,$checkuser
 !readdef $userdef
 !if $user_exists != yes

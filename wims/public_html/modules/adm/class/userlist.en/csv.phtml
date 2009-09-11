@@ -1,10 +1,12 @@
 
 !set wims_form_method=post
-<center>$classname
-<h3>Class data for spreadsheet
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
 <br></b><font size="-1">[
 !href cmd=reply direct score listing
- ]</font></h3>
+ ]</font>
 </center> <p>
 
 !if $error!=$empty
@@ -71,7 +73,7 @@
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-To <input type=submit value=download>
+To <input type=submit value="$wims_name_download">
 class data for your spreadsheet, please specify: <ul>
 <li>Format
 !formselect csvformat list csv,tsv
@@ -105,4 +107,5 @@ class data for your spreadsheet, please specify: <ul>
  </form>
 !endif
 
-
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

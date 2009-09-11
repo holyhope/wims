@@ -1,65 +1,97 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname
 
-<h3>Detail of the work of 
+<center><b>
+$name_workdetail
+!if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
-<br><font size="-1">Login name: <tt>$getuser</tt>
-!if $user_email!=$empty
- &nbsp;Address: <a href="mailto:$user_email">$user_email</a>
+!else
+ $lastname, $firstname
 !endif
-</font></h3>
+</b><br><font size="-1">login: <tt>$getuser</tt>
+!if $user_email!=$empty
+ &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
+!endif
+</center>
   !if $user_photourl!=
    <img src="$user_photourl" width=100 style="position:absolute;top:auto;right:5%;" alt="$firstname $lastname">
   !endif
 !if $eremain>0
  <p>
- This participant has an active exam session:
+ $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
 !else
  !if $wims_user=supervisor and $wims_supertype=4
   !readproc adm/gateway/transfer $getuser test
   !if $transfer_test>0
-   !href cmd=reply&job=transfer&getuser=$getuser Transfer his/her activities from other classes
+   !href cmd=reply&job=transfer&getuser=$getuser $name_transfert
   !endif
  !endif
 !endif
 </center> <p>
 
 !if $manual>0 and $gcnt>0 and $teacher!=$empty
- $table_header$table_hdtr<th>Name<th>Percentage<th>Quality
- $table_tr<td>Teacher-attributed grades
+ $table_header
+ <caption><small>
+ $name_minmax&nbsp;:
+ $min_glob/$mean_glob/$max_glob</small></caption>
+ $table_hdtr<th>$wims_name_name<th>$(name_thsheet[6])<th>$(name_thsheet[7])
+ $table_hdtr<td>$name_manualscore
      <td align=center>$manual%<td align=center>$mav
- $table_tr<td>Server-registered grades
+ $table_hdtr<td>$name_autoscore
      <td align=center>$[100-$manual]%<td align=center>$per
- $table_tr<td><b>Global average</b> (over $scoremax)
+ $table_tr<td><b>$name_globalaverage</b> (/ $scoremax)
      <td align=center>100%<th>$globalav
  $table_end <p>
- $table_header$table_hdtr<th colspan=3>Teacher attributed grades</th>
- $table_hdtr<th>title<th>weight<th>grade</th>
+ $table_header$table_hdtr<th colspan=3>$name_manualscore
+ !if $teacher!=$empty
+  <br>
+  !href lang=$lang&module=adm/class/grades&method=user&un=$getuser $wims_name_change
+ !endif
+ </th>
+ $table_hdtr<th>$(name_thsheet[2])<th>$(name_thsheet[4])<th>$(name_thsheet[9])</th>
  !set v_=0
  !for i=1 to $gcnt
   !set t_=!item $i+2 of $titles
   $table_tr<td>$t_<td align=center>$(w$i)<td align=center>$(g_$i)</td>
  !next i
- $table_hdtr<th colspan=2>Average<td align=center>$mav</td>
+ $table_hdtr<th colspan=2>$name_Average<td align=center>$mav</td>
  $table_end <p>
 !else
- Global average: <b>$per</b> over $scoremax.
+<center>
+ $name_globalaverage: <b>$per</b> / $scoremax.
  !if $min_glob<$scoremax
-  <br><small>min/mean/max of the class:
+  <br><small>$name_minmax:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
  </center> <p>
 !endif
 
-!readdef wimshome/log/classes/$wims_class/.def
+
+!!readdef wimshome/log/classes/$wims_class/.def
+!!default class_topscores=0
+!if $class_topscores>0
+ <center>
+ $table_header$table_hdtr<th colspan=2>Top $class_topscores des moyennes de la classe </td></tr>
+ !for i=1 to $class_topscores 
+  !set L=!line $i of   $TT
+  !set name=!item 1 of $L
+  !set firstname=!item 2 of $L
+  !set avg=!item 4 of $L
+$table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=left><small>&nbsp;$avg</small>
+ !next i
+ $table_end<p>
+ </center> 
+!endif
+
 !if $eactivecnt>0
- $table_header$table_hdtr<th colspan=4>Examination scores
+ $table_header$table_hdtr<th colspan=4>$name_examnote
  !if $wims_user=supervisor or $class_examshow!=no
-  </b><small>
-  !href cmd=reply&job=examcheck&checkuser=$getuser [detail]
+  <small>
+  !href cmd=reply&job=examcheck&checkuser=$getuser [$wims_name_detail]
   </small>
  !endif
- $table_hdtr<th>serial<th>Title<th>Score/$scoremax
+ $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])<th>$(name_thsheet[9])/$scoremax
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !set t=!line 4 of $l
@@ -75,7 +107,6 @@
  !set l_=!line $i of $activesheets
  !distribute items $l_ into n_,e_
  !set L_=!line $n_ of $defaultformula
- !default L_=1 2
  !distribute word $L_ into A_,B_
  !set t_=!item 3 to -1 of $l_
  !set t_=!char 1 to $title_limit of $t_
@@ -89,21 +120,21 @@
  !if $S_<=0
   !goto next
  !endif
- $table_header$table_hdtr<th colspan=7>Sheet $i&nbsp;: $t_
- </b><small>weight $A_, severity $B_<br>
+ $table_header$table_hdtr<th colspan=7>$name_Sheet $i&nbsp;: $t_
+ <small>$(name_thsheet[4]) $A_, $(name_thsheet[8]) $B_<br>
  !set A_=!line $n_ of $percents
  !distribute words $A_ into p1,p2
  !if $p2!=$empty
   !distribute item $[$p1/100],$[$p2/10] into x_,y_
   !set p_=$[rint(100*$scoremax*$(f_$i))/100]
-  Done $p1%, quality $p2/10, equiv. <b>$p_</b> over $scoremax.
+  $name_done:$p1% , $(name_thsheet[7])  $p2/10, $name_equiv <b>$p_</b> / $scoremax.
   !if $(min_$i)<$scoremax
-   <br>min/mean/max of the class: $(min_$i)/$(mean_$i)/$(max_$i)
+   <br>$name_minmax: $(min_$i)/$(mean_$i)/$(max_$i)
   !endif
  !endif
  </small>
- $table_hdtr<th>No<th>title<th>points<br>required<th>weight
-     <th>points<br>got<th>%<th>quality
+ $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])<th>$(name_thsheet[3])<th>$(name_thsheet[4])
+     <th>$(name_thsheet[5])<th>$(name_thsheet[6])<th>$(name_thsheet[7])
  !for j=1 to $e_
   $table_tr<td align=right>$j
   <td>$(title_$(n_)_$j)
@@ -132,26 +163,19 @@
 <center>
 !if $exologs!=$empty
  <p>
- !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser List of registered exercises
+ !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser $name_reg_ex
 !endif
 <p>
 !if $wims_user=supervisor
-!! !href cmd=reply&job=getraw&getraw=$getuser Raw data
-!! .
-!! !href cmd=resume List of all participants
-!! .
-!! <p>
-!! !href cmd=reply&job=delprep&delprep=$getuser Delete this participant
-!!, or
-!! !href module=adm/class/passwd&job=part&part=$getuser change his/her password
-!!.
-!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
 passwd,1,module=adm/class/passwd.fr&job=part&part=$getuser\
 part_list,1,cmd=resume\
+livret,1,module=adm/class/livret&job=user&user=$getuser\
 to $wims_menu_items
 !else
- !href module=home Home of the class
+ !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+ !href module=home $wims_name_class_home
 !endif
 </center> <p>
 

@@ -1,23 +1,19 @@
-<center>$classname<p>
-
+!!## language independant
 !if $logname=$empty
- You have submitted an illegal request.
+!read adm/title.phtml 1\
+$classname
+
+$name_warning
 !else
- <h3>Detail of the work of $lastname, $firstname</h3>
- (in raw data)
- </center> <p>
+ !read adm/title.phtml 1\
+$classname\
+$name_title_getraw
+
 <pre>
 !set test=$wims_show_ip
 !mexec getraw.sh
 </pre>
 !endif
-
-!!<p><center>
-!!!href cmd=reply&job=getuser&getuser=$getraw Processed data
-!! .
-!!!href cmd=resume List of all participants
-!! .
-!!</center> <p>
 
 !set wims_menu_items=!append line getraw,1,cmd=reply&job=getuser&getuser=$getraw\
 part_list,1,cmd=resume\

@@ -14,6 +14,7 @@ $table_tr<td>email<td>email address
 $table_tr<td>regnum<td>registration number
 $table_tr<td>photourl</td><td>Photo URL</td></tr>
 $table_tr<td>comments<td>comments about the participant
+
 !if $special_parm!=upload
 $table_tr<td>allscore<td>all scores and averages
 $table_tr<td>averages<td>average score (server score and manual grades)
@@ -24,10 +25,22 @@ $table_tr<td>sheet1,sheet2,...<td>score of worksheet 1, worksheet 2, ...
 $table_tr<td>exams<td>scores of all exams
 $table_tr<td>exam1,exam2,...<td>scores of exam 1, exam 2, ...
 $table_tr<td>manuals<td>all manual grades (one by one)
+!else
+$table_tr<td>participate (in case of gateways only, reserved to the administrator)</td><td>number of classes 
+as abcdefg/1/101
+wher rabcdefg is the number of the gateway. If there is several classes,
+seperate them by spaces.</td></tr>
 !endif
+
 $table_tr<td>manual1,manual2,...<td>manual grade 1, 2, ...
 $table_tr<td>var_xxx</td><td>technical variable <tt>xxx</tt></td></tr>
 
 $table_end <p>
 
-Unrecognized fields will be ignored.
+Unrecognized fields will be ignored.Technical variables can be used to make 
+selective restrictions on sheets and exams.
+<p>
+!if $special_parm=upload
+In cas of field <tt>participate</tt>, one may add classes but not suppress them.
+!endif
+

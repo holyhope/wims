@@ -1,8 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
 
 !read adm/css.phtml
 !header1
@@ -11,47 +6,39 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Détails du travail sur la feuille $numshowsheet<br>$sh_title
-
-!!<center>$classname
-!!<p>
-!!<h1>Liste de participants
-!!</h1>
-!!<font color=green><b>Détails du travail sur la feuille $numshowsheet<br>
-!!$sh_title</b></font>
-!!</h1></center>
+$name_title_showsheet
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !if $usercnt==0
- Cette classe n'a pas encore de participant.
+ $name_noyetparticipant
 !else
  <p>$table_header
  !bound job_affi within points,qualite default points
  !if $job_affi=points
   !let sign=%
-  <caption>Pourcentage des points obtenus</caption>
+  <caption>$name_percentagegot</caption>
  !else
   !if $job_affi=qualite
    !let sign=$empty
-   <caption>Qualité du travail calculée sur un maximum de 10</caption>
+   <caption>$name_qualitygot</caption>
   !else
-   <caption>Pourcentage de travail effectué</caption>
+   <caption>$name_percentagedone</caption>
   !endif
  !endif
- $table_hdtr<th>Nom, prénom</th>
- <th>Moyenne</th>
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_Average</th>
  !let tot_0=0
  !let nonzero_0=0
  !for j=1 to $nbexo
-  <th><small>exercice $j</small></th>
+  <th><small>$name_Exercise $j</small></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
@@ -113,7 +100,7 @@ Détails du travail sur la feuille $numshowsheet<br>$sh_title
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
-      !endif 
+      !endif
       !if $t<=4
        <font color=red><b>
       !else
@@ -130,14 +117,14 @@ Détails du travail sur la feuille $numshowsheet<br>$sh_title
    !endif
   </tr>
  !next m
- $table_hdtr<td align=center><b>Moyenne de la classe</b></td>
+ $table_hdtr<td align=center><b>$name_classAverage</b></td>
  <th align=center>$[rint($tot_0/$usercnt*10)/10]$sign </th>
  !for j=1 to $nbexo
   <th align=center>$[rint($(tot_$j)/$usercnt*10)/10]$sign</th>
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td align=center><b>Moyenne des notes positives</b></td>
+  $table_hdtr<td align=center><b>$name_posAverage</b></td>
   <th align=center>$[rint($tot_0/$nonzero_0*10)/10]$sign </th>
   !for j=1 to $nbexo
    <th align=center>
@@ -151,19 +138,19 @@ Détails du travail sur la feuille $numshowsheet<br>$sh_title
   </tr>
  !endif
 $table_end
- <p>Cliquez sur un nom pour voir le détail de son travail.
- !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet Rafraîchir la page
+ <p>$name_click
+ <p>
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
 &nbsp;.&nbsp;
-   Afficher 
+   $name_post 
     !if $job_affi=qualite
-     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet le travail effectué
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
     !else
-     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet la qualité
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
     !endif
-   de la feuille.     
+.
 <p>
-!! !href cmd=reply&job_affi=notes Liste des participants
-!!.
+
 !set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
 to $wims_menu_items
 :end
