@@ -17,17 +17,15 @@
  !goto end
 !endif
 
-<center>$classname
-<p>
-<h1>Preparazione del test di autovalutazione $sheet
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title
 
+<p>
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Torna alla home page
-. <p>
  !goto end
 !endif
 
@@ -36,125 +34,28 @@
  !goto end
 !endif
 
-!if $activetest>0
- !form reply
- <input type=hidden name=job value=text>
- Questo test &egrave;
- !if $activetest=1
-  in corso, quindi non più modificabile.
-  !href cmd=reply&job=expire Terminala ORA
-  o
-  !href cmd=reply&job=deactivate disattivala
-(per poterla modificare).
- !else
-  !if $activetest=2
-   terminato, ma ancora visibile per gli studenti.
-   !href cmd=reply&job=hide Nascondilo
-  !else
-   terminato e non visibile agli studenti.
-   !href cmd=reply&job=expire Renderlo visibile
-  !endif
-  .
-  !href cmd=reply&job=reactivate Riattivarlo
-  o
-  !href cmd=reply&job=deactivate disattivarlo
-  (in modo da poterlo modificare). <p>
-. <p>
- !endif
- <p><center><table border=2>
- <tr><td align=right>Titolo:
- <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modifica>
- <tr><td align=right>Descrizione:
- <td><textarea id=desc class="iEdit" name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Presentazione:
- <td><input size=30 name=prpage value="$prpage"><small>
- !href target=wims_mhelp cmd=help&special_parm=sheetpage help
- </small>
- <tr><td align=right>Termine per il completamento:<td>
- !distribute item $[$expday],$[$expmon] into expday,expmon
- !formselect expday from 1 to 31
- !formselect expmon from 1 to 12 prompt $months
- !formselect expyear from $thisyear to $thisyear+1
- </table></center></form> <p>
- !goto end1
+!if $activetest>-1
+ <b>Informazioni generali:</b>
 !endif
-
-!form reply
-<input type=hidden name=job value=text>
-Titolo (massimo $title_limit caratteri) :<br>
-<input size=65 name=title value="$title"> <p>
-Descrizione (massimo $desc_limit caratteri, sono ammesse
-tag html):<br>
-<textarea id=desc class="iEdit" rows=6 cols=65 name=desc>$desc</textarea> <p>
-O una presentazione:
-<input size=30 name=prpage value="$prpage"><small>
-!href target=wims_mhelp cmd=help&special_parm=sheetpage help
-</small> <p>
-<center><input type=submit value="Salva"></center>
-
-<p>Termine per il completamento del test di autovalutazione:
-!distribute item $[$expday],$[$expmon] into expday,expmon
-!formselect expday from 1 to 31
-!formselect expmon from 1 to 12 prompt $months
-!formselect expyear from $thisyear to $thisyear+1
-&nbsp; <input type=submit value="Salva">
+!read adm/sheet/sheetinfo.phtml
 
 !ifval $activetest=-1
- <p>Il test non esiste ancora.
- <input type=submit value="Crea"> (occorre aver inserito il 
- titolo).
- </form>
  !goto end
-!else
- </form>
- !if $exocnt>0
-  <p>Il test non &egrave; ancora cominciata.
-  !href cmd=reply&job=prep_activate Cominciare
-  . (Solo i test in corso
-  sono visibili per gli studenti; un test di autovalutazione in corso
-  non pu&ograve; pi&ugrave; essere modificato.)
- !endif
 !endif
 
 :end1
-<p>
+<a name=list></a>
+<b>Contenuto del test di autovalutazione:</b>
 !if $exocnt=0
- Il test non contiene ancora alcun esercizio.
+ <p>Il test non contiene ancora alcun esercizio.
 !else
- <a name=list></a>
- Contenuto del test di autovalutazione:<small>[
- !href module=adm/sheet&sh=$sheet&job=print Versione stampabile
+ <small>[
+ !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
  ]</small>
- <ol class="wims_sheet_list">
- !for i=1 to $exocnt
-  <li class="wims_sheet_list">
-  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $ex into di,pa,re,we,ti,de,dep
-  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
-, $re punti di peso $we.
-  !if $activetest=0
-   &nbsp;(
-   !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Spostare&nbsp;su
-    &nbsp;
-   !endif
-   !href cmd=reply&job=prep_modify&modif=$i Modificare
-   &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Eliminare
-   !if $dep!=$empty
-    &nbsp;
-    !href cmd=reply&job=prep_modify&modif=$i Dipendenze
-   !endif
-   )
-  !endif
- </li>
- !next i
- </ol>
+ !read adm/sheet/sheetcontent.phtml
 !endif
 
 !if $activetest=0
-
  <p>Per inserire un elemento (esercizio, cours, strumento, etc.) in un test 
  di autovalutazione è necessario selezionare l'elemento (vedi sotto),
  configurarne le opzioni e avviarlo. In questo modo alla base della pagina 
@@ -162,58 +63,32 @@ O una presentazione:
 
  Per scegliere gli elementi potete
  <ul>
-  <li> tornare alla 
- !href $ home page
- del corso e utilizzare il motore di ricerca ivi disponibile
+  <li> utilizzare il motore di ricerca:
+	!read adm/search_engine/form.phtml
  </li>
  <li> oppure utilizzare lo strumento di 
  !href module=help/teacher/program confronto 
  tra i programmi di insegnamento francese e gli esercizi di WIMS.
 </li>
+   <li> 
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li>
 </ul>
-  <p>
-  &Egrave; anche possibile inserire
-  !href cmd=reply&job=prep_putsource i comandi da un file sorgente
- !if $erasable=yes
-  o anche 
-  !href cmd=reply&job=prep_erase eliminare il test
- !endif
-.
 !endif
 
-!if $activetest>=0
- <p>
- !href module=adm/sheet&sh=$sheet Pagina pubblica del test di autovalutazione.
- &nbsp;
- !href cmd=reply&job=getsource Codice sorgente del test di autovalutazione.
- <p>
- !form reply
- <input type=hidden name=allow value=yes>
- La registrazione dei voti &egrave; 
- !formselect allowtype list all, none, select prompt attiva per tutti, disattivata, limitata ai seguenti IP (e/o periodi):
- <br><input size=60 name=IPlist value="$IPlist"> <br>
- <input type=submit value="Salva le modifiche">
- !set allowshare=0
- !if $sharers!=$empty
- (per tutti i corsi collegati:
-  !formselect allowshare list 0,1 prompt no,si
-  )
- !else
-  <input type=hidden name=allowshare value=0>
- !endif
- </form>
- <small><b>Suggerimento.</b> &Egrave; possibile dare un accesso limitato
- anche aggiungendo le date
- <font color=blue><b>
- <tt>&gt;aaaammgg.hh:mm</tt></b></font>
- (data di inizio) e/o
- <font color=blue><b>
- <tt>&lt;aaaammgg.hh:mm</tt></b></font>
- (data di fine). Queste date devono essere espresse nel fuso orario del
- SERVER, e devono essere separate l'una dall'altra da spazi.
- </small>
-!endif
 :end
+!if $activetest>=0
+ !if $activetest=0
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
+ !endif
+ !if $job!=getsource
+  !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
+!endif
+ !let wims_menu_items=!append line ,0,\
+printable,1,module=adm/sheet&sh=$sheet&job=print\
+participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
+!endif
+
 !tail
 
 !distribute item ,, into job,source,title,desc,prpage

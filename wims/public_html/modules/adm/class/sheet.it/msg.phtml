@@ -41,7 +41,7 @@
 !endif
 
 !if $error=sharing_sheet
- <font color=red><b>Pericolo!!!</b></font>
+!! <font color=red><b>Pericolo!!!</b></font>
  Questi test sono condivisi con altri corsi!
  !if $wims_ismanager<2
   Solo il site manager li può disattivare il test.
@@ -132,7 +132,8 @@
  !item $expmon of $months
  $expyear. Concluderla ora?
  <p><center>
- !href cmd=reply&job=expire Si, concludi
+ !href cmd=reply&job=expire $wims_name_yes , 
+ concludi
  .&nbsp;&nbsp;
  !href cmd=resume No, annulla
  . </center>
@@ -149,12 +150,13 @@
  e salvarli cliccando su `Salva'. &Egrave; anche possibile inserire 
  il sorgente di un test pubblico mediante taglia e incolla.
  <p>
- Altrimenti,
- !href cmd=resume Torna alla Home page del corso
+!set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
  !form reply
  <input type=hidden name=job value=putsource><center>
  <textarea cols=55 rows=10 name=source>$source</textarea>
- <p><input type=submit value="Salva">
+ <p><input type=submit value="$wims_name_send">
  </center></form>
  <b>Attenzione</b>. Non inserire file di istruzioni modificate. Potrebbero
  essere inutilizzabili dal server.
@@ -187,9 +189,10 @@
   <input size=40 name=mod_dep value="$dep">.
   !reset mod_dep
   </ul>
-  <p><center><input type=submit value="Salva le modifiche"></form>
+  <p><center><input type=submit value="$wims_name_change"></form>
   </center> <p>
-  !href cmd=resume Annulla le modifiche.
+  !href cmd=resume $wims_name_giveup
+ .
   <p><small>
   <b>Suggerimento</b>. Punteggi con dipendenza significa che uno studente
   deve ottenere un dato punteggio su un esercizio prima di poter svolgere
