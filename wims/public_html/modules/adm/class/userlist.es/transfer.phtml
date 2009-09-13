@@ -1,9 +1,11 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname\
+$name_title_transfer
 
-<h3>Transferencia de las actividades de
+<center>
  !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
  (<tt>$getuser</tt>)
-</h3> </center> <p>
+</center> <p>
 
 !if $error=no_reccourse
  <b>Error</b>. El participante no está inscrito en ningún curso que corresponda
@@ -11,6 +13,29 @@
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
+ !exit
+!endif
+
+!if $ttype=show
+ !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
+ !if $transferclass notitemof $tr_list or $i=$empty
+  <b>Erreur</b> d'identifiant des classes. Fausse manoeuvre ou bogue du
+  logiciel ?
+  !exit
+ !else
+  Détail des activités dans $i (limité à 1000 lignes).
+  <p><hr>
+  <small><pre>
+  !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
+  </pre></small><hr><p><center>
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass $name_merge
+&nbsp;
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass $name_replace
+&nbsp;
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser $wims_name_giveup
+  </center>
+  !goto endd
+ !endif
 !endif
 
 Estos son los otros cursos en los que ha realizado actividades el participante.
@@ -22,19 +47,22 @@ Pulse sobre una acción para hacer la transferencia a
 !endif
 
 $table_header
-$table_hdtr<th>Curso</th>
-<th>Acción</th></tr>
+$table_hdtr<th>$wims_name_course</th>
+<th>$wims_name_action</th></tr>
 !for c in $tr_list
  $table_tr
  <td>
  !defof class_description in wimshome/log/classes/$c/.def
  <td>
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Unir
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c $name_merge
 &nbsp;
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Sustituir
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c $name_replace
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c $name_show
 !next c
 $table_end
 
+:endd
 <b>Notas</b>. <ol>
 <li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.
 <li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar 

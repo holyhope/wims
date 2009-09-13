@@ -1,13 +1,15 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname\
+$name_title_transfer
 
-<h3>Transfert d'activités pour
+<center>
  !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
  (<tt>$getuser</tt>)
-</h3> </center> <p>
+</center> <p>
 
 !if $error=no_reccourse
  <b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant
- dans la classe actuelle pour recevoir le transfert depuis
+à la classe actuelle et permettant le transfert depuis
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -26,18 +28,18 @@
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
   </pre></small><hr><p><center>
-  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass Joindre
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass $name_merge
 &nbsp;
-  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass Remplacer
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass $name_replace
 &nbsp;
-  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser Annuler
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser $wims_name_giveup
   </center>
   !goto endd
  !endif
 !endif
 
 Voici les autres cours dans lesquels le participant a eu des activités.
-Cliquez sur une action pour transférer dans
+Cliquez sur une action pour transférer ces activités dans
 !if $tr_typename=course
  ce cours.
 !else
@@ -45,27 +47,27 @@ Cliquez sur une action pour transférer dans
 !endif
 
 $table_header
-$table_hdtr<th>Cours</th>
-<th>Action</th></tr>
+$table_hdtr<th>$wims_name_course</th>
+<th>$wims_name_action</th></tr>
 !for c in $tr_list
  $table_tr
  <td>
  !defof class_description in wimshome/log/classes/$c/.def
  <td>
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Joindre
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c $name_merge
 &nbsp;
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Remplacer
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c $name_replace
 &nbsp;
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c Examiner
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c $name_show
 !next c
 $table_end
 
 :endd
 <b>Remarques</b>. <ol>
-<li>"Joindre" veut dire mettre ensemble les activités dans les deux cours.
+<li>"Joindre" veut dire mettre ensemble les activités venant des deux cours.
 <li>"Remplacer" veut dire que les activités de l'autre cours vont écraser
-celles ici. Le remplacement n'aura pas lieu si le premier est vide.
-<li>Les scores des examens et des activités non-comptées sont toujours joints.
+celles de ce cours. Le remplacement n'aura pas lieu si le premier est vide.
+<li>Les scores des examens et des activités non comptées sont toujours joints.
 <li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.
 <li>Après l'action (joindre ou remplacer), les registres d'activités du participant dans
 l'autre cours seront effacés.

@@ -1,10 +1,12 @@
 
 !set wims_form_method=post
-<center>$classname
-<h3>Preglednica rezultatov
-<br></b><font size="-1">[
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
+<center><font size="-1">[
 !href cmd=reply Neposredni prikaz rezultatov
- ]</font></h3>
+ ]</font>
 </center> <p>
 
 !if $error!=$empty
@@ -48,7 +50,11 @@
   !endif
   !if $missing!=$empty
    <li>The following login names do not exist in the class and cannot be
-   added, because of unsufficient/incorrect information in the data:
+   !if full notwordof $remark
+    added, because of unsufficient/incorrect information in the data:
+   !else
+    added (bad data, or no more space):
+   !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes
@@ -67,7 +73,7 @@
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-To <input type=submit value=download>
+To <input type=submit value="$wims_name_download">
 class data for your spreadsheet, please specify: <ul>
 <li>Format
 !formselect csvformat list csv,tsv
@@ -83,21 +89,23 @@ class data for your spreadsheet, please specify: <ul>
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
-<hr>
-!set wims_form_method=file
-!form reply
-<input type=hidden name=job value=csv>
-<input type=hidden name=csvtype value=upload>
-To <input type=submit value=upload>
-your spreadsheet data to the class, please specify:
-<small>
-!href module=$module&cmd=help&special_parm=upload $wims_name_help
-</small><ul>
-<li>Data file <input type=file size=30 name=wims_deposit> <br>
- <small>Accepted formats: .csv, .tsv, .txt
-!href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
-</small>
-</ul>
-</form>
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ To <input type=submit value=upload>
+ your spreadsheet data to the class, please specify:
+ <small>
+ !href module=$module&cmd=help&special_parm=upload $wims_name_help
+ </small><ul>
+ <li>Data file <input type=file size=30 name=wims_deposit> <br>
+  <small>Accepted formats: .csv, .tsv, .txt
+ !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+ </small>
+ </ul>
+ </form>
 !endif
 
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

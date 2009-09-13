@@ -1,9 +1,7 @@
 
-<center>$classname
-<p>
-<h1>$user_lastname $user_firstname的考试详情
-</font>
-</h1></center>
+!read adm/title.phtml 1\
+$classname\
+$name_title_examcheck
 
 !if _check isin $session
  !set error=bad_op
@@ -17,14 +15,13 @@
  <p>
 !else
  !if $checksessions=$empty
-此参加者没有参加任何考试.
+  $name_no_exampart
   <p>
  !else
-这里是此参加者的考试对话. 在练习上点击以看它的内容.
-  <p>
-  $table_header
-  $table_hdtr<th>会话</th><th>考试</th><th>得分<small>/$scoremax</small></th>
-  <th>练习</th><th>开始</th></tr>
+  $name_exampart
+  <p>$table_header
+  $table_hdtr<th>$name_Session</th><th>$name_Exam</th><th>$name_Score<small>/$scoremax</small></th>
+  <th>$name_Exercise</th><th>$name_Start</th></tr>
   !for ses in $checksessions
    !for x in $(exam$ses)
     $table_tr<td><small>$ses</small></td>
@@ -36,16 +33,14 @@
     !next i
    !next x
    </td><td><small>
-   !read date.phtml $(start$(ses)$x)
+    !read date.phtml $(start$(ses)$x)
    </small></td>
   !next t
   $table_end <p>
  !endif
 !endif
 
-<center>
-!href cmd=reply&job=getuser&getuser=$checkuser 其它得分
-&nbsp;
-!href cmd=resume 参加者表
-</center>
-
+!set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$checkuser\
+,0,\
+part_list,1,cmd=resume\
+to $wims_menu_items

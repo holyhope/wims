@@ -10,7 +10,7 @@ fi
 if [ "$w_test" = "no" ]; then
  echo "    Date.Hour 	session	Sheet exo requete"
  echo "------------------------------------------------------------"
- cat $session_dir/user.getraw | cut -d"	" -f2 --complement;
+ cat $session_dir/user.getraw | cut -d"	" -f1,3 ;
 else
  echo "    Date.Hour 	session	sheet exo requete 	connection"
  echo "------------------------------------------------------------"

@@ -1,54 +1,44 @@
-<html><head>
-$wims_html_header
-</head>
-<body $wims_htmlbody>
-!headmenu
+
+!read adm/css.phtml
+!header1
+
 !read names.phtml
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-第 $numshowsheet 页的作业详情<br>$sh_title
-
-!!<center>$classname
-!!<p>
-!!<h1>参加者名单
-!! </b></h1>
-!!<font color=green><b>第 $numshowsheet 页的作业详情<br>
-!!$sh_title</b></font>
-!!</h1></center>
+$name_title_showsheet
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home 返回主页
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !if $usercnt==0
-此班级尚无参加者.
+ $name_noyetparticipant
 !else
  <p>$table_header
  !bound job_affi within points,qualite default points
  !if $job_affi=points
   !let sign=%
-  <caption>已做作业的百分比</caption>
+  <caption>$name_percentagegot</caption>
  !else
   !if $job_affi=qualite
    !let sign=$empty
-   <caption>质量 (最大值 10)</caption>
+   <caption>$name_qualitygot</caption>
   !else
-   <caption>已做作业的百分比</caption>
+   <caption>$name_percentagedone</caption>
   !endif
  !endif
- $table_hdtr<th>姓, 名</th>
- <th>平均</th>
- !let $tot_0=0
- !let nonzero=0
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_Average</th>
+ !let tot_0=0
  !let nonzero_0=0
  !for j=1 to $nbexo
-  <th><small>练习 $j</small></th>
+  <th><small>$name_Exercise $j</small></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
@@ -120,21 +110,21 @@ $wims_classname - $wims_institutionname\
         <font color=green>
        !endif
       !endif
-      $t</b></font>
+      $t</font>
       !let tot_$k=$[$(tot_$k)+$t]
      </td>  
     !next k
    !endif
   </tr>
  !next m
- $table_hdtr<td align=center><b>班级平均</b></td>
+ $table_hdtr<td align=center><b>$name_classAverage</b></td>
  <th align=center>$[rint($tot_0/$usercnt*10)/10]$sign </th>
  !for j=1 to $nbexo
   <th align=center>$[rint($(tot_$j)/$usercnt*10)/10]$sign</th>
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td align=center><b>零分除外的平均</b></td>
+  $table_hdtr<td align=center><b>$name_posAverage</b></td>
   <th align=center>$[rint($tot_0/$nonzero_0*10)/10]$sign </th>
   !for j=1 to $nbexo
    <th align=center>
@@ -147,20 +137,21 @@ $wims_classname - $wims_institutionname\
   !next j
   </tr>
  !endif
- <p>在名字上点击以了解他工作的详情.
- !href cmd=reply&job=showsheet&showsheet=$numshowsheet 刷新本页
+$table_end
+ <p>$name_click
+ <p>
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
 &nbsp;.&nbsp;
-   公布作业页的
+   $name_post 
     !if $job_affi=qualite
-     !href cmd=reply&job_affi=points&job=showsheet&showsheet=$numshowsheet 已做的工作
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
     !else
-     !href cmd=reply&job_affi=qualite&job=showsheet&showsheet=$numshowsheet 质量
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
     !endif
-.     
-!!<p>
-!! !href cmd=new 参加者名单
-!!.
-!set wims_menu_items=!append line part_list,1,cmd=new\
+.
+<p>
+
+!set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
 to $wims_menu_items
 :end
 !tail

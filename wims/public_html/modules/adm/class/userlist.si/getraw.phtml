@@ -1,23 +1,19 @@
-<center>$classname<p>
-
+!!## language independant
 !if $logname=$empty
- Va¹a zahteva ni dovoljena.
+!read adm/title.phtml 1\
+$classname
+
+$name_warning
 !else
- <h3>Podrobnosti dela uporabnika z imenom $firstname, $lastname</h3>
- (neobdelani podatki)
- </center> <p>
+ !read adm/title.phtml 1\
+$classname\
+$name_title_getraw
+
 <pre>
 !set test=$wims_show_ip
 !mexec getraw.sh
 </pre>
 !endif
-
-!!<p><center>
-!!!href cmd=reply&job=getuser&getuser=$getraw Obdelani podatki
-!! .
-!!!href cmd=resume Seznam uporabnikov
-!! .
-!!</center> <p>
 
 !set wims_menu_items=!append line getraw,1,cmd=reply&job=getuser&getuser=$getraw\
 part_list,1,cmd=resume\

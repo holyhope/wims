@@ -1,10 +1,12 @@
 
 !set wims_form_method=post
-<center>$classname
-<h3>Données de classe pour tableur
-<br></b><font size="-1">[
-!href cmd=reply liste et notes en direct
- ]</font></h3>
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
+<center><font size="-1">[
+!href cmd=reply $name_direct_score
+ ]</font>
 </center> <p>
 
 !if $error!=$empty
@@ -48,7 +50,7 @@
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>Les noms de login suivants sont inexistants et ne peuvent pas être
+   <li>Les noms de login suivants n'existent pas et ne peuvent pas être
    !if full notwordof $remark
     ajoutés, à cause d'information insuffisante/incorrecte dans les données
     envoyées&nbsp;:
@@ -58,7 +60,7 @@
    <tt>$missing</tt>
   !endif
   !if $manual=yes
-   <li>Les notes manuelles sont enregistrées seulement pour des colonnes
+   <li>Les notes manuelles sont enregistrées seulement pour des colonnes déjà
    existantes.
    !href module=adm/class/grades Vérifier ces notes
 .
@@ -74,7 +76,7 @@
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Pour <input type=submit value=télécharger>
+Pour <input type=submit value="$wims_name_download">
 les données de la classe dans votre tableur, veuillez préciser&nbsp;:<ul>
 <li>Format
 !formselect csvformat list csv,tsv
@@ -90,21 +92,23 @@ les données de la classe dans votre tableur, veuillez préciser&nbsp;:<ul>
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
-<hr>
-!set wims_form_method=file
-!form reply
-<input type=hidden name=job value=csv>
-<input type=hidden name=csvtype value=upload>
-Pour <input type=submit value=envoyer>
-des données de votre tableur à la classe, veuillez préciser&nbsp;:
-<small>
-!href module=$module&cmd=help&special_parm=upload $wims_name_help
-</small><ul>
-<li>Fichier de données <input type=file size=30 name=wims_deposit> <br>
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ Pour <input type=submit value="$wims_name_send">
+ des données de votre tableur à la classe, veuillez préciser&nbsp;:
+ <small>
+ !href module=$module&cmd=help&special_parm=upload $wims_name_help
+ </small><ul>
+ <li>Fichier de données <input type=file size=30 name=wims_deposit> <br>
  <small>Formats acceptés&nbsp;: .csv, .tsv, .txt
-!href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
-</small>
-</ul>
-</form>
+ !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+ </small>
+ </ul>
+ </form>
 !endif
 
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

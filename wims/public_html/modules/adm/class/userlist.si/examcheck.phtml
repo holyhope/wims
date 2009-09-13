@@ -1,9 +1,7 @@
 
-<center>$classname
-<p>
-<h1>Podrobnosti izpita uporabnika $user_lastname, $user_firstname
-</font>
-</h1></center>
+!read adm/title.phtml 1\
+$classname\
+$name_title_examcheck
 
 !if _check isin $session
  !set error=bad_op
@@ -17,14 +15,13 @@
  <p>
 !else
  !if $checksessions=$empty
-  Ta uporabnik ¹e ni opravljal nobenega izpita.
+  $name_no_exampart
   <p>
  !else
-  Tu je seznam izpitov, ki jih je opravljal ta uporabnik. Kliknite na ime vaje za podrobnosti.
-  <p>
-  $table_header
-  $table_hdtr<th>Seansa</th><th>Izpit</th><th>Rezultat<small>/$scoremax</small></th>
-  <th>Vaja</th><th>Zaèetek</th></tr>
+  $name_exampart
+  <p>$table_header
+  $table_hdtr<th>$name_Session</th><th>$name_Exam</th><th>$name_Score<small>/$scoremax</small></th>
+  <th>$name_Exercise</th><th>$name_Start</th></tr>
   !for ses in $checksessions
    !for x in $(exam$ses)
     $table_tr<td><small>$ses</small></td>
@@ -43,9 +40,7 @@
  !endif
 !endif
 
-<center>
-!href cmd=reply&job=getuser&getuser=$checkuser Drugi rezultati
-&nbsp;
-!href cmd=resume Seznam uporabnikov
-</center>
-
+!set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$checkuser\
+,0,\
+part_list,1,cmd=resume\
+to $wims_menu_items

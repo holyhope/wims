@@ -1,11 +1,11 @@
+!read adm/class/userisinclass $wims_class,$deluser
+!if yes notin $script_reply
+ !reset deluser,job
+ error=bad_usercls
+ !exit
+!endif
 !if $deluser!=$empty
- !defread wimshome/log/classes/$wims_class/.users/$deluser
- !if $user_exists=yes
-  !mexec deluser.sh
-  usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
-  wims_module_log=Delete $deluser
-  wims_class_log=delete user $deluser
- !endif
+ !read adm/class/deluser $deluser
 !else
  job=
 !endif

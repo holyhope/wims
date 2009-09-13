@@ -1,10 +1,12 @@
 
 !set wims_form_method=post
-<center>$classname
-<h3>电子表格的班级数据
-<br></b><font size="-1">[
-!href cmd=reply 直接得分表
- ]</font></h3>
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
+<center><font size="-1">[
+!href cmd=reply $name_direct_score
+ ]</font>
 </center> <p>
 
 !if $error!=$empty
@@ -69,7 +71,7 @@
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-为你的电子表格 <input type=submit value=下载>
+为你的电子表格 <input type=submit value="$wims_name_download">
 班级数据, 请选定: <ul>
 <li>格式
 !formselect csvformat list csv,tsv
@@ -85,21 +87,23 @@
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
-<hr>
-!set wims_form_method=file
-!form reply
-<input type=hidden name=job value=csv>
-<input type=hidden name=csvtype value=upload>
-为把你的电子表格数据 <input type=submit value=上传>
-到班级, 请选定:
-<small>
-!href module=$module&cmd=help&special_parm=upload $wims_name_help
-</small><ul>
-<li>数据文件 <input type=file size=30 name=wims_deposit> <br>
- <small>可接受的格式: .csv, .tsv, .txt
-!href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
-</small>
-</ul>
-</form>
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ 为把你的电子表格数据 <input type=submit value="$wims_name_send">
+ 到班级, 请选定:
+ <small>
+ !href module=$module&cmd=help&special_parm=upload $wims_name_help
+ </small><ul>
+ <li>数据文件 <input type=file size=30 name=wims_deposit> <br>
+  <small>可接受的格式: .csv, .tsv, .txt
+ !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+ </small>
+ </ul>
+ </form>
 !endif
 
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

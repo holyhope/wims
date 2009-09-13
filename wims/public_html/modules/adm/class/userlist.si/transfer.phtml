@@ -1,6 +1,7 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname
 
-<h3>Activity transfer for
+<center><h3>Activity transfer for
  !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
  (<tt>$getuser</tt>)
 </h3> </center> <p>
@@ -11,6 +12,29 @@
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
+ !exit
+!endif
+
+!if $ttype=show
+ !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
+ !if $transferclass notitemof $tr_list or $i=$empty
+  <b>Error</b> of class identification. Wrong manoeuvre or bug of the
+  software?
+  !exit
+ !else
+  Detail of activities in $i (limited to 1000 lines).
+  <p><hr>
+  <small><pre>
+  !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
+  </pre></small><hr><p><center>
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass Merge
+&nbsp;
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass Replace
+&nbsp;
+  !href cmd=reply&job=$job&transfertype=first&getuser=$getuser $wims_name_giveup
+  </center>
+  !goto endd
+ !endif
 !endif
 
 Here are the other courses in which the participant has activities. Click on
@@ -32,9 +56,12 @@ $table_hdtr<th>Course</th>
  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Merge
 &nbsp;
  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Replace
+&nbsp;
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c Examine
 !next c
 $table_end
 
+:endd
 <b>Remarks</b>. <ol>
 <li>"Merge" means putting together the activities in two courses.
 <li>"Replace" means that the activities in the other cours will replace

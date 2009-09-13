@@ -1,10 +1,11 @@
 !read adm/title.phtml 1\
-$classname
+$classname\
+$name_title_transfer
 
-<center><h3>Activity transfer for
+<center>
  !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
  (<tt>$getuser</tt>)
-</h3> </center> <p>
+</center> <p>
 
 !if $error=no_reccourse
  <b>Error</b>. The participant has no registration in a corresponding
@@ -27,9 +28,9 @@ $classname
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
   </pre></small><hr><p><center>
-  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass Merge
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$transferclass $name_merge
 &nbsp;
-  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass Replace
+  !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$transferclass $name_replace
 &nbsp;
   !href cmd=reply&job=$job&transfertype=first&getuser=$getuser $wims_name_giveup
   </center>
@@ -46,18 +47,18 @@ an action to transfer to this
 !endif
 
 $table_header
-$table_hdtr<th>Course</th>
-<th>Action</th></tr>
+$table_hdtr<th>$wims_name_course</th>
+<th>$wims_name_action</th></tr>
 !for c in $tr_list
  $table_tr
  <td>
  !defof class_description in wimshome/log/classes/$c/.def
  <td>
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c Merge
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=merge&transferclass=$c $name_merge
 &nbsp;
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c Replace
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=replace&transferclass=$c $name_replace
 &nbsp;
- !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c Examine
+ !href cmd=reply&job=$job&getuser=$getuser&transfertype=show&transferclass=$c $name_show
 !next c
 $table_end
 

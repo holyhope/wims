@@ -1,23 +1,19 @@
-<center>$classname<p>
-
+!!## language independant
 !if $logname=$empty
- Ha efectuado una petición ilegal.
+!read adm/title.phtml 1\
+$classname
+
+$name_warning
 !else
- <h3>Detalles del trabajo de $lastname, $firstname</h3>
- (datos en bruto)
- </center> <p>
+ !read adm/title.phtml 1\
+$classname\
+$name_title_getraw
+
 <pre>
 !set test=$wims_show_ip
 !mexec getraw.sh
 </pre>
 !endif
-
-!!<p><center>
-!!!href cmd=reply&job=getuser&getuser=$getraw Datos tratados
-!! .
-!!!href cmd=resume Lista de todos los participantes
-!! .
-!!</center> <p>
 
 !set wims_menu_items=!append line getraw,1,cmd=reply&job=getuser&getuser=$getraw\
 part_list,1,cmd=resume\

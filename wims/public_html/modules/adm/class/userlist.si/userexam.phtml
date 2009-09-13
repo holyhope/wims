@@ -1,31 +1,20 @@
 <center>$classname<p>
 
-<h3>Izpitno delo uporabnika
+<h3>$name_exam_session
  !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
-<br><font size="-1">Uporabni¹ko ime: <tt>$getuser</tt>
+<br><font size="-1">$wims_name_login: <tt>$getuser</tt>
 !if $user_email!=$empty
- &nbsp;E-naslov: <a href="mailto:$user_email">$user_email</a>
+ &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
 !endif
-</font></h3> <p>
-</center>
+</font></h3></center> <p>
 
- $table_header$table_tr<td align=right>Ime seanse:</td>
+ $table_header$table_tr<td align=right>$wims_name_Session:</td>
  <td><tt>$esession</tt></td></tr>
- $table_tr<td align=right>Naslov povezave:</td>
+ $table_tr<td align=right>$name_connecting:</td>
  <td><tt>$ehost</tt></td></tr>
- $table_tr<td align=right>Preostali èas:</td>
- <td>$eremain minutes</td></tr>
+ $table_tr<td align=right>$name_remaining_time:</td>
+ <td>$eremain $name_minutes</td></tr>
  $table_end <p>
-
-!!<center>
-!!!href cmd=reply&job=userexamclose&getuser=$getuser Zakljuèi izpitno delo 
-!! uporabnika $lastname,$firstname.
-!! <p>
-!!!href cmd=reply&job=getuser&getuser=$getuser Rezultati uporabnika
-!!.
-!!!href cmd=resume Seznam vseh uporabnikov
-!!.
-!!</center>
 
 !set wims_menu_items=!append line partexamclose,1,cmd=reply&job=userexamclose&getuser=$getuser\
 scores,1,cmd=reply&job=getuser&getuser=$getuser\

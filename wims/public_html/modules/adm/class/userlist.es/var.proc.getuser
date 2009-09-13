@@ -1,3 +1,9 @@
+!read adm/class/userisinclass ,$getuser
+!if yes notin $script_reply
+ error=bad_usercls
+ !reset job,getuser
+ !exit
+!endif
 
 !if $getuser!=$empty
  sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
@@ -44,10 +50,51 @@
  !else
   mav=0
  !endif
+ t=!translate = to , in $wims_req_time
+ t=!item -1 of $t
+ means=!record 0 of wimshome/log/classes/$wims_class/scoreavg
+ topscores=!record 0 of wimshome/log/classes/$wims_class/.scoretop
+ topnb=!defof class_topscores in wimshome/log/classes/$wims_class/.def
+ classnb=!defof class_limit in wimshome/log/classes/$wims_class/.def
+ !for ic=1 to $classnb
+  UU=!line $ic of $topscores
+  UU1=!item 4 of $UU
+  VV=!append line $UU1 to $VV
+  WW=!append line $UU to $WW
+ !next ic
+ VV=!sort reverse numeric line  $VV
+!readdef wimshome/log/classes/$wims_class/.def
+!default class_topscores=0
+ !for s=1 to $class_topscores 
+  ic=!item $s of $wims_sort_order
+  LL=!line $ic of $WW
+  TT=!append line $LL to $TT
+ !next s
+ ot=!line 1 of $means
+ !if $ot=$empty or $ot<$t-3
+  !read var.avg
+  !read var.topscores
+ !endif
+ l=!line 2 of $means
+ !distribute words $l into\
+	min_auto,mean_auto,max_auto,\
+	min_tea,mean_tea,max_tea,\
+	min_glob,mean_glob,max_glob
+ c=!linecnt $means
+ !for i=3 to $c
+  l=!line $i of $means
+  s=!word 1 of $l
+  !distribute words $l into x_,min_$s,mean_$s,max_$s
+ !next i
  uu=$getuser
  !read userscore
  globalav=$[rint($manual*$mav+((100-$manual)*$per))/100]
+ exologs=!filelist $wims_home/log/classes/$wims_class/exolog/$getuser
 !else
  job=
+!endif
+
+!if $wims_user=supervisor
+ !read var.proc.userexam
 !endif
 

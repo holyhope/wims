@@ -10,7 +10,7 @@ Average of positive scores\
 Global average\
 into name_classAverage,name_Average,name_posAverage,name_globalaverage
 
-!set name_partdeleted=Deleted participants
+!set name_partdeleted=Zbrisani uporabniki
 !set name_reg_ex=List of registered exercises
 !set name_transfer=Transfer his/her activities from other classes
 
@@ -27,13 +27,13 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set name_sheetstatut=prep,active,expired,hidden
 
 !distribute items Exam,Sheet,Exercise,Start,Score,Session,Done,equiv.\
-into name_Exam,name_sheet,name_exercise,name_Start,name_Score,name_Session,\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv
 
 !set name_formula_comment=You can define the severity levels and weights of work sheets in the following \
 table. The grades will be computed with maximum =
 !set name_formula2=Grades computed over a maximum of $scoremax
-!set name_pickup=Pick up sheets to show<br>averages per sheet:
+!set name_pickup=Pick up sheets to show<br>averages per sheet
 !set name_warning=You have submitted an illegal request.
 
 !set name_click=Click on a name for the detail of his/her work.
@@ -70,12 +70,20 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !if $job=examcheck
  !set name_title_examcheck=!nosubst Exam details by $user_lastname, $user_firstname
  !set name_no_exampart=This participant has not yet done any exam.
- !set name_no_exampart=  Here are the exam sessions made by this participant. Click on an exercise \
+ !set name_exampart=  Here are the exam sessions made by this participant. Click on an exercise \
   to see its content.
  !goto end
 !endif
 !if $job=getraw
   !set name_title_getraw=!nosubst Detail of the work of $lastname, $firstname <br>(in raw data)  
   !goto end
+!endif
+
+!set name_direct_score=direct score listing
+
+!if $job=transfer
+   !set name_title_transfer=Activity transfer
+   !distribute items Merge, Replace,Examiner\
+   into name_merge, name_replace,name_show
 !endif
 :end

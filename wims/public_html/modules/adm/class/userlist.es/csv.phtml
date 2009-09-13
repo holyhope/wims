@@ -1,10 +1,12 @@
 
 !set wims_form_method=post
-<center>$classname
-<h3>Datos de la clase para una hoja de cálculo
-<br></b><font size="-1">[
-!href cmd=reply lista y notas en directo
- ]</font></h3>
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
+<center><font size="-1">[
+!href cmd=reply $name_direct_score
+ ]</font>
 </center> <p>
 
 !if $error!=$empty
@@ -70,7 +72,7 @@
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Para <input type=submit value=descargar>
+Para <input type=submit value="$wims_name_download">
 los datos de la clase en la hoja de cálculo, especifique:<ul>
 <li>El formato
 !formselect csvformat list csv,tsv
@@ -86,21 +88,23 @@ los datos de la clase en la hoja de cálculo, especifique:<ul>
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
-<hr>
-!set wims_form_method=file
-!form reply
-<input type=hidden name=job value=csv>
-<input type=hidden name=csvtype value=upload>
-Para <input type=submit value=subir>
-los datos de su hoja de cálculo a la clase, especifique:
-<small>
-!href module=$module&cmd=help&special_parm=upload $wims_name_help
-</small><ul>
-<li>El fichero de datos <input type=file size=30 name=wims_deposit> <br>
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ Para <input type=submit value="$wims_name_send">
+ los datos de su hoja de cálculo a la clase, especifique:
+ <small>
+ !href module=$module&cmd=help&special_parm=upload $wims_name_help
+ </small><ul>
+ <li>El fichero de datos <input type=file size=30 name=wims_deposit> <br>
  <small>Formatos aceptados: .csv, .tsv, .txt
-!href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
-</small>
-</ul>
-</form>
+ !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+ </small>
+ </ul>
+ </form>
 !endif
 
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

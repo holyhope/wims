@@ -32,7 +32,7 @@ name_done,name_equiv
 !set name_formula_comment=Vous pouvez définir les niveaux de sévérité et les poids des feuilles de \
 travail dans le tableau suivant. Les notes seront calculées avec un maximum =
 !set name_formula2=Notes calculées sur un maximum de $scoremax
-!set name_pickup=Sélectionnez les feuilles pour<br>montrer les résultats par feuille&nbsp;:
+!set name_pickup=Sélectionnez les feuilles pour<br>montrer les résultats par feuille&nbsp;
 !set name_warning= Vous avez soumis une requête illégale.
 
 !set name_click=Cliquez sur un nom pour voir le détail de son travail.
@@ -70,7 +70,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !if $job=examcheck
  !set name_title_examcheck=!nosubst Détails d'examens faits par $user_lastname, $user_firstname
  !set name_no_exampart=Ce participant n'a pas encore fait d'examen.
- !set name_no_exampart=Voici les sessions d'examen effectuées par ce participant. Cliquez sur un \
+ !set name_exampart=Voici les sessions d'examen effectuées par ce participant. Cliquez sur un \
   exercice pour voir son contenu.
  !goto end
 !endif
@@ -78,4 +78,13 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
   !set name_title_getraw=!nosubst Détail du travail de $lastname, $firstname<br>(en données brutes)
   !goto end
 !endif
+
+!set name_direct_score=liste et notes en direct
+
+!if $job=transfer
+   !set name_title_transfer=Transférer les activités
+   !distribute items Joindre, Remplacer,Examiner\
+   into name_merge, name_replace,name_show
+!endif
+
 :end

@@ -1,4 +1,80 @@
-!set classname=<b><font color=green>$wims_classname</font></b>,\
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
 <b><font color=green>$wims_institutionname</font></b>
  
 !set months=Jan,Feb,Mar,Apr,Maj,Jun,Jul,Avg,Sep,Okt,Nov,Dec
+
+!distribute line Povpreèje uèilnice\
+Povpreèje\
+Povpreèje pozitivnih rezultatov\
+Celotno povpreèje\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage
+
+!set name_partdeleted=Zbrisani uporabniki
+!set name_reg_ex=Seznam shranjenih nalog
+!set name_transfer=Prenos aktivnosti uporabnika iz drugih uèilnic
+
+!set name_thsheet=No,Naslov,zahtevane,ute¾,dose¾ene<br>toèke,%,kvaliteta,stopnja resnosti,Rezultat
+!set name_minmax=min/srednja/max razreda
+
+!set name_manualscore=Ocene uèitelja
+!set name_autoscore=Ocene stre¾nika
+!set name_manual_notes=globale,uèitelj,auto
+!set name_examnote=Ocene izpitov
+
+!set name_severitylevels=Work sheets severity levels
+!set name_formula=Serial,Weight,Level
+!set name_sheetstatut=prep,active,expired,hidden
+
+!distribute items Izpit,Sheet,Vaja,Zaèetek,Rezultat,Seansa,Opravljeno,equiv.\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv
+
+!set name_formula_comment=Vous pouvez définir les niveaux de sévérité et les poids des feuilles de \
+travail dans le tableau suivant. Les notes seront calculées avec un maximum =
+!set name_formula2=NGrades computed over a maximum of $scoremax
+!set name_pickup=Izberite liste za izpis<br>povpreènih rezultatov posameznih listov
+!set name_warning= Va¹a zahteva ni dovoljena.
+
+!set name_click=Click on a name for the detail of his/her work.
+!set name_affi=quality,carried out work,grades
+!set name_workdetail=Podrobnosti dela uporabnika
+!set name_activesession=Ta uporabnik ima trenutno aktivno izpitno delo
+
+!distribute items Naslov povezave, Preostali èas, Izpitno delo uporabnika ,minutes\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant= Ta uèilnica ¹e nima nobenega uporabnika.
+
+!if $manual>0
+ !set name_manual_explanation=Explanations.</b> In the `Average' columns, `auto' means\
+ average of  grades computed from scores obtained in work sheets, `teacher' means 
+ average of grades attributed manually by the supervisor, and `global' is computed from \
+ the two other averages, by the formula
+!endif
+
+!set name_title_showsheet=!nosubst details of the work on sheet $numshowsheet<br>$sh_title
+!set name_percentagegot=Percentage of carried out work
+!set name_qualitygot=Quality computed over a maximum of 10
+!set name_percentagedone=Percentage of carried out work
+!set name_post=Post
+  
+!if $job=userprop
+  !distribute items Spremeni,©tevilka registracije,Opombe,URL d'une photo,Spremenljivke (tehniène),\
+  Geslo uèilnice,Vpi¹ite geslo, ki bo zahtevano za registracijo novih uporabnikov.\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Podrobnosti izpita uporabnika $user_lastname, $user_firstname
+ !set name_no_exampart=Ta uporabnik ¹e ni opravljal nobenega izpita.
+ !set name_exampart=Tu je seznam izpitov, ki jih je opravljal ta uporabnik. Kliknite na ime vaje za podrobnosti.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Podrobnosti dela uporabnika z imenom $firstname, $lastname<br>(neobdelani podatki)
+  !goto end
+!endif
+:end

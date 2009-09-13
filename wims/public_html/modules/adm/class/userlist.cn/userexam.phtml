@@ -1,32 +1,21 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname
 
-<h3>
- !href cmd=reply&job=userprop&getuser=$getuser $lastname $firstname
-的考试对话
-<br><font size="-1">登录名: <tt>$getuser</tt>
+<center>$name_exam_session
+ !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
+<br><font size="-1">$wims_name_Login: <tt>$getuser</tt>
 !if $user_email!=$empty
- &nbsp;Address: <a href="mailto:$user_email">$user_email</a>
+ &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
 !endif
-</font></h3> <p>
-</center>
+</font></center> <p>
 
- $table_header$table_tr<td align=right>对话名:</td>
+ $table_header$table_tr<td align=right>$wims_name_Session:</td>
  <td><tt>$esession</tt></td></tr>
- $table_tr<td align=right>连接主机:</td>
+ $table_tr<td align=right>$name_connecting:</td>
  <td><tt>$ehost</tt></td></tr>
- $table_tr<td align=right>剩余时间:</td>
- <td>$eremain 分</td></tr>
+ $table_tr<td align=right>$name_remaining_time:</td>
+ <td>$eremain $name_minutes</td></tr>
  $table_end <p>
-
-!!<center>
-!!!href cmd=reply&job=userexamclose&getuser=$getuser 关闭
-!!$lastname $firstname 的此次考试对话.
-!! <p>
-!!!href cmd=reply&job=getuser&getuser=$getuser 用户得分
-!! .
-!!!href cmd=resume 所有参加者名单
-!! .
-!!</center>
 
 !set wims_menu_items=!append line partexamclose,1,cmd=reply&job=userexamclose&getuser=$getuser\
 scores,1,cmd=reply&job=getuser&getuser=$getuser\
