@@ -27,7 +27,7 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 !set name_sheetstatut=in bewerking,actief,verlopen,onzichtbaar
 
 !distribute items Proefwerk,Werkblad,Oefening,Start,Cijfer,Sessie,Klaar,equiv.\
-into name_Exam,name_sheet,name_exercise,name_Start,name_Score,name_Session,\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv
 
 !set name_formula_comment=U kunt de moelijkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
@@ -77,5 +77,13 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
 !if $job=getraw
   !set name_title_getraw=!nosubst Alle details van $lastname, $firstname <br>(in onbewerkte data)  
   !goto end
+!endif
+
+!set name_direct_score=direct score listing
+
+!if $job=transfer
+   !set name_title_transfer=Activity transfer
+   !distribute items Merge, Replace,Examiner\
+   into name_merge, name_replace,name_show
 !endif
 :end
