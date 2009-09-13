@@ -1,8 +1,4 @@
 !reset confirm
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -17,17 +13,15 @@
  !goto end
 !endif
 
-<center>$classname
-<p>
-<h1>Urejanje delovnega lista ¹t. $sheet
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title
 
+<p>
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Nazaj na domaèo stran
-. <p>
  !goto end
 !endif
 
@@ -36,6 +30,16 @@
  !goto end
 !endif
 
+!if $activetest>-1
+ <b>sheet information :</b>
+!endif
+!read adm/sheet/sheetinfo.phtml
+
+!ifval $activetest=-1
+ !goto end
+!endif
+
+:end1
 !if $activetest>0
  !form reply
  <input type=hidden name=job value=text>
@@ -196,7 +200,6 @@ Ali predstavitvena stran:
  (èas zakljuèka). Èasi se nana¹ajo na lokalni èas STRE®NIKA in morajo biti loèeni od ostalih besed (oz. IP naslovov) s presledki.
  </small>
 !endif
-:end
 !tail
 
 !distribute item ,, into job,source,title,desc,prpage

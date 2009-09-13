@@ -1,16 +1,14 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Feuille de travail numéro $sheet<br>$title\
-(Présentation pour participants)
+$name_title
 
 <div class="wims_sheet_desc">$desc</div><p>
 
 !if $exocnt=0
- Cette feuille est vide! Peut-être
- une erreur de manipulation de votre enseignant.
+ $wims_name_sheetempty
 !else
- Devoirs dans cette feuille :
+ $name_assignedwork:
  <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
@@ -19,7 +17,7 @@ Feuille de travail numéro $sheet<br>$title\
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
-   <small>0 des $[$re] points obtenus, qualité
+   <small>$name_quality
    0/10. </small>
   !endif
   </p>

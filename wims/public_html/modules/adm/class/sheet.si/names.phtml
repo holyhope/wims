@@ -4,3 +4,30 @@
  
 !set months=Jan,Feb,Mar,Apr,Maj,Jun,Jul,Avg,Sep,Okt,Nov,Dec
 
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
+!set statutaction=Activate,Expire it,Deactivate it,Hide it,show it,$wims_name_erase
+!set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
+
+!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Insert a source file,\
+		participants' view of the sheet,\
+		Source of the sheet \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!let name_shtab=No,Title,Description,Points,Weight,Dependencies,Actions
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=Page of preparation
+ !set name_title=!nosubst Urejanje delovnega lista ¹t. $sheet
+!else
+ !let wims_name_sheetadmin=Page of management
+ !set name_title=!nosubst Management of sheet $sheet
+!endif
+
+!let name_shinfo=!nosubst Title <small>(limited to 80 characters)</small>,Status,\
+Description <br></small>(limited to $desc_limit characters; tags and html link allowed)</small>,\
+Expiration date,Presentation page,Registration of scores,for all sharing classes :
+!let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
+!let name_mksheet=Make the sheet
+
+

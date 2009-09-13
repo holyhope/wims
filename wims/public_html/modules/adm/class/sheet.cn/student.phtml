@@ -1,41 +1,36 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-作业页  $sheet<br>$title\
-(学生用)
+$name_title
 
-!!<hr width=1>
-!!<center><h3>$wims_classname ($wims_institutionname)</h3>
-!!<hr> <p><h1>作业页 #$sheet<br>$title</h1>
-!!(学生用)
-!!</center> <p>
 <div class="wims_sheet_desc">$desc</div><p>
 
 !if $exocnt=0
- 本页是空的! 没有为您指定任何作业. 可能是您的主持教师的失误. 
+ $wims_name_sheetempty
 !else
- 本页所指定的作业:<p><ul>
+ $name_assignedwork:
+ <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
-  <li><p>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
-   <small> $[$re] 分中得 0 分, 平均分 0/10. </small>
+   <small>$name_quality
+   0/10. </small>
   !endif
+  </p>
+  </li>
  !next i
  </ul>
+ </div>
 !endif
 <p>
 !homeref
 !set wims_menu_items=!append line ,0,\
 backteacher,1,cmd=resume\
 to $wims_menu_items
-!!<p><hr> <p>
-!!<center>
-!!!href cmd=resume 回到主持教师的页面.
-!!</center>
 
 !tail
 

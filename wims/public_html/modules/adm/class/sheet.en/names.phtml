@@ -28,6 +28,13 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 Description <br></small>(limited to $desc_limit characters; tags and html link allowed)</small>,\
 Expiration date,Presentation page,Registration of scores,for all sharing classes :
 !let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
-!let name_mksheet=Make the sheet
+!let name_mksheet=Create the sheet
 
+!if $job=student
+  !set name_title=Worksheet $sheet<br>$title Presentation for participants)
+  !set name_sheetempty=The sheet is empty! Nothing is assigned for you in it. Possibly an \
+ error in the manipulation by your supervisor.
+  !set name_assignedwork=Assigned works in this sheet
+  !set name_quality=0 out of $[$re] points obtained, quality
+!endif
 

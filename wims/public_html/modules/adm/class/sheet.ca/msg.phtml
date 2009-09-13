@@ -45,7 +45,7 @@
 !! <font color=red><b>Danger!!!</b></font>
  Vos feuilles sont en partage avec d'autres classes !
  !if $wims_ismanager<2
-  Il vous faudra demander au gestionnaire du site de désactiver la feuille
+  Il faut demander au gestionnaire du site de désactiver la feuille
   pour vous.
   !exit
  !endif
@@ -78,11 +78,11 @@
  déjà commencé à travailler dessus !
  <p>
  !if share iswordof $confirmed
-  En plus, la feuille est partagée avec d'autres classes où il peut y avoir
+  De plus, la feuille est partagée avec d'autres classes où il peut y avoir
   du travail et des scores aussi. Il est donc interdit de la désactiver.
   !exit
  !endif
- Tous les scores obtenus sur cette feuille seront effacés, si vous la
+ Tous les scores obtenus sur cette feuille seront effacés si vous la
  désactivez. Etes-vous sûr de vouloir le faire ?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes Oui; désactiver
@@ -130,10 +130,11 @@
  !item $expmon of $months
  $expyear. Voulez-vous la rendre périmée maintenant?
  <p><center>
- !href cmd=reply&job=expire Oui; expirer
+ !href cmd=reply&job=expire $wims_name_yes ; 
+ expirer
  .&nbsp;&nbsp;
- !href cmd=resume Non; abandonner
- . </center>
+ !href cmd=resume $wims_name_yes ; 
+ abandonner. </center>
  <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
  sur une feuille périmée. Mais leurs notes antérieures seront conservées 
  (et seront prises
@@ -147,8 +148,9 @@
  puis en cliquant sur le bouton <tt>$wims_name_send</tt>. Vous pouvez aussi utiliser ce
  formulaire pour insérer le source d'une feuille publique par copier-coller.
  <p>
- Autrement,
- !href cmd=resume Retourner à la page principale de la feuille.
+!set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
  !form reply
  <input type=hidden name=job value=putsource><center>
  <textarea cols=55 rows=10 name=source>$source</textarea>
@@ -185,9 +187,10 @@
   <input size=40 name=mod_dep value="$dep">.
   !reset mod_dep
   </ul>
-  <p><center><input type=submit value="Enregistrer le changement"></form>
+  <p><center><input type=submit value="$wims_name_change"></form>
   </center> <p>
-  !href cmd=resume Abandonner le changement.
+  !href cmd=resume $wims_name_giveup
+ .
   <p><small>
   <b>Aide</b>. <tt>Dépendances des scores</tt> veut dire qu'un participant doit
   d'abord acquérir des points dans d'autres exercices de la feuille, avant
