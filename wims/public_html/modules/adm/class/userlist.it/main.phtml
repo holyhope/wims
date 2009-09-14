@@ -76,10 +76,10 @@ $wims_name_part_list
   $table_hdtr<th><small>$(name_manual_notes[1])<th><small>$(name_manual_notes[2])<th><small>$(name_manual_notes[3])
  !else
   $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
- !if $job_affi=notes 
+  !if $job_affi=notes
    <th>$name_Average</th> 
- !endif
-    !for j in $showsheet
+  !endif
+  !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
     <th><small>$name_Exam $k</small></th>
@@ -116,12 +116,12 @@ $wims_name_part_list
    !endif
   !else
    !if $job_affi=notes
-   <td align=center>$per</td>
-   !if $per>0
-    !advance cnt_auto
-    !advance cnt_glob
+    <td align=center>$per</td>
+    !if $per>0
+     !advance cnt_auto
+     !advance cnt_glob
+    !endif
    !endif
-  !endif
   !endif
   !set mean_auto=$[$mean_auto+$per]
   !for j in $showsheet
@@ -136,13 +136,13 @@ $wims_name_part_list
     !set p_=!line $j of $percents
     !distribute words $p_ into p1,p2
     !if $job_affi=notes
-    !if $p2!=$empty
-     !distribute item $[$p1/100],$[$p2/10] into x_,y_
-     !set p_=$[rint(100*$scoremax*$(f_$j))/100]
-    !else
-     !set p_=0
-    !endif
-    <td align=center>$p_</td>
+     !if $p2!=$empty
+      !distribute item $[$p1/100],$[$p2/10] into x_,y_
+      !set p_=$[rint(100*$scoremax*$(f_$j))/100]
+     !else
+      !set p_=0
+     !endif
+     <td align=center>$p_</td>
     !else
      !if qualite iswordof $job_affi
       !set p_=$p2
@@ -154,7 +154,7 @@ $wims_name_part_list
      !if $p2=$empty
       !set $p_=0
      !endif
-   !endif
+    !endif
    !endif
    !set per_$j=$[$(per_$j)+$p_]
    !if $p_>0
@@ -196,7 +196,7 @@ $wims_name_part_list
  !endif
  $table_end
 <p>$name_click</p>
- !if $activecnt>1
+!if $activecnt>1
   <p>
   !form reply
   <input type=hidden name=job value=sheets>
@@ -245,14 +245,14 @@ $wims_name_part_list
     !endif
    !endif
 . </p>
-       
+
 !endif (usercnt=0?)
 
 !set wims_menu_items=!append line photoboard,1,module=adm/class/photoboard\
 addstudent,1,module=adm/class/reguser&step=1\
 csv,1,cmd=reply&job=csv\
- formula,1,cmd=reply&job=formula&formula=prep\
- grades,1,module=adm/class/grades\
+formula,1,cmd=reply&job=formula&formula=prep\
+grades,1,module=adm/class/grades\
  ,0,\
 to $wims_menu_items
 

@@ -4,9 +4,9 @@ $classname
 <center><b>
 $name_workdetail
 !if $wims_user=supervisor
- !href cmd=reply&job=userprop&getuser=$getuser $firstname $lastname
+ !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
 !else
-$lastname, $firstname
+ $lastname, $firstname
 !endif
 </b><br><font size="-1">$wims_name_Login: <tt>$getuser</tt>
 !if $user_email!=$empty
@@ -25,7 +25,7 @@ $lastname, $firstname
   !readproc adm/gateway/transfer $getuser test
   !if $transfer_test>0
    !href cmd=reply&job=transfer&getuser=$getuser $name_transfert
-!endif
+  !endif
  !endif
 !endif
 </center> <p>
@@ -167,7 +167,7 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
 !endif
 <p>
 !if $wims_user=supervisor
-!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
 passwd,1,module=adm/class/passwd&job=part&part=$getuser\
 part_list,1,cmd=resume\
