@@ -1,15 +1,14 @@
 
 !read adm/title.phtml 1\
-$wims_classname, $wims_institutionname
-Delovni list #$sheet<br>$title
-(Prikaz za uporabnike)
+$wims_classname - $wims_institutionname\
+$name_title
 
 <div class="wims_sheet_desc">$desc</div><p>
 
 !if $exocnt=0
- Ta delovni list je prazen. Morda gre za napako skrbnika.
+ $wims_name_sheetempty
 !else
- Zahtevane naloge na tem listu:
+ $name_assignedwork:
  <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
@@ -18,7 +17,7 @@ Delovni list #$sheet<br>$title
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
-   <small>0 toèk (zahtevanih $[$re]), kvaliteta
+   <small>$name_quality
    0/10. </small>
   !endif
   </p>

@@ -4,11 +4,6 @@ $wims_classname - $wims_institutionname\
 Werkblad $sheet<br>$title\
 (Presentatie voor leerlingen)
 
-!!<hr width=1>
-!!<center><h3>$wims_classname, $wims_institutionname</h3>
-!!<hr> <p><h1>Werkblad #$sheet<br>$title</h1>
-!!(Presentatie voor leerlingen)
-!!</center> <p>
 <div class="wims_sheet_desc">$desc</div><p>
 
 !if $exocnt=0
@@ -20,25 +15,24 @@ Waarschijnlijk een foutje van je leraar
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
-  <li><p>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
    <small>0 uit $[$re] punten behaald, gemiddeld cijfer
    0/10. </small>
   !endif
+  </p>
+  </li>
  !next i
  </ul>
+ </div>
 !endif
 <p>
 !homeref
 !set wims_menu_items=!append line ,0,\
 backteacher,1,cmd=resume\
 to $wims_menu_items
-!!<p><hr> <p>
-!!<center>
-!!!href cmd=resume Terug naar de supervisor pagina.
-!!</center>
 
 !tail
 

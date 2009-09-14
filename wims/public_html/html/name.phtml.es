@@ -27,7 +27,7 @@
 		no,\
 		Télécharger,\
 		Send,\
-		Detalles,\	
+		Detalles,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
