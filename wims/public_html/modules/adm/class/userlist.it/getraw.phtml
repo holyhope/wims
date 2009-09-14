@@ -1,23 +1,19 @@
-<center>$classname<p>
-
+!!## language independant
 !if $logname=$empty
- La richiesta non &egrave; valida.
+!read adm/title.phtml 1\
+$classname
+
+$name_warning
 !else
- <h3>Dettagli del lavoro svolto da $firstname $lastname</h3>
- (dati non elaborati)
- </center> <p>
+ !read adm/title.phtml 1\
+$classname\
+$name_title_getraw
+
 <pre>
 !set test=$wims_show_ip
 !mexec getraw.sh
 </pre>
 !endif
-
-!!<p><center>
-!!!href cmd=reply&job=getuser&getuser=$getraw Elabora i dati
-!! .
-!!!href cmd=resume Elenco iscritti
-!! .
-!!</center> <p>
 
 !set wims_menu_items=!append line getraw,1,cmd=reply&job=getuser&getuser=$getraw\
 part_list,1,cmd=resume\

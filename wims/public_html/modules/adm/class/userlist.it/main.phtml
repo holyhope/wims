@@ -1,8 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -19,86 +14,78 @@
 !endif
 
 !read adm/title.phtml 1\
-$classname\
-Elenco degli iscritti
-
-!!<center>$classname
-!!<h1>Elenco degli iscritti
-!!<font size="-1">[
-!!!href cmd=reply&job=csv formato csv
-!! ]
-!!</font>
-!!</h1></center>
+$wims_classname - $wims_institutionname\
+$wims_name_part_list
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Torna alla home page del corso
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !if $usercnt==0
- Non ci sono ancora studenti.
+ $name_noyetparticipant
  [
- !href module=adm/class/reguser&step=1 Inserisci uno studente
+ !href module=adm/class/reguser&step=1 $wims_name_addstudent
  ]
 !else
  <center>
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
  [
- !href module=adm/class/reguser&step=1 Inserisci uno studente
+ !href module=adm/class/reguser&step=1 $wims_name_addstudent
  ] [
- !href cmd=reply&job=csv formato csv
+ !href cmd=reply&job=csv $wims_name_csv
  ]
  !if $deleted!=$empty
   &nbsp;[
-  !href cmd=reply&job=recover Studenti esclusi
+  !href cmd=reply&job=recover $name_partdeleted
   ]
  !endif
  </center>
  <p>$table_header
  !if $job_affi=notes
- <caption>Voti calcolati su un massimo di $scoremax</caption>
+  <caption>$name_formula2</caption>
  !else
   !let tmp=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
   !let tmp=!values v for v=1 to $tmp
   !let showsheet=!listintersect $showsheet and $tmp
   !if $job_affi=qualite
-   <caption>Qualità calcolata su un massimo di 10</caption>
+   <caption>$name_qualitygot</caption>
   !else
-   <caption>Percentuale di lavoro portato a termine.</caption>
+   <caption>$name_percentagedone</caption>
   !endif
  !endif
  !if $manual>0 and $job_affi=notes
-  $table_hdtr<th rowspan=2>Nome e cognome</th>
-  <th colspan=3>Media</th>
+  $table_hdtr<th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
+   <th colspan=3>$name_Average</th>
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th rowspan=2><small>esame $k</small></th>
+    <th rowspan=2><small>$name_Exam $k</small></th>
    !else
     <th rowspan=2>
     <small>
-     !href cmd=reply&job=showsheet&numshowsheet=$j test $j
+     !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j
     </small></th>
    !endif
   !next j
-  $table_hdtr<th><small>globale<th><small>docente.<th><small>auto
+  $table_hdtr<th><small>$(name_manual_notes[1])<th><small>$(name_manual_notes[2])<th><small>$(name_manual_notes[3])
  !else
-  $table_hdtr<th>Nome e cognome</th>
+  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  !if $job_affi=notes 
-  <th>Media</th>
+   <th>$name_Average</th> 
  !endif
     !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th><small>esame $k</small></th>
+    <th><small>$name_Exam $k</small></th>
    !else
     <th><small>
-     !href cmd=reply&job=showsheet&numshowsheet=$j test $j
+     !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j
     </small></th>
    !endif
   !next j
@@ -178,7 +165,7 @@ Elenco degli iscritti
  !distribute item $[rint(100*$mean_auto/$usercnt)/100],\
 	$[rint(100*$mean_tea/$usercnt)/100],\
 	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
- $table_hdtr<td align=center><b>Media del<br>corso</b></td>
+ $table_hdtr<td align=center><b>$name_classAverage</b></td>
  !if $job_affi=notes
  !if $manual>0
   <td align=center>$m_glob</td>
@@ -195,7 +182,7 @@ Elenco degli iscritti
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
 	$[rint(100*$mean_tea/max(1,$cnt_tea))/100],\
 	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
-  $table_hdtr<td align=center><b>Media dei punteggi effettivi</b></td>
+  $table_hdtr<td align=center><b>$name_posAverage</b></td>
   !if $manual>0
    <td align=center>$m_glob</td>
    <td align=center>$m_tea</td>
@@ -208,15 +195,14 @@ Elenco degli iscritti
   !next j
  !endif
  $table_end
- <p>Selezionare un nome per visualizzare i dettagli.</p>
+<p>$name_click</p>
  !if $activecnt>1
   <p>
   !form reply
   <input type=hidden name=job value=sheets>
   !set wims_formselect_switch=multiple size=$[min($activecnt,6)]
   <table border=0>
-  <tr><td>Seleziona un test di autovalutazione per<br>
-  visulizzarne i punteggi medi&nbsp;:
+  <tr><td>$name_pickup:
   </td><td>&nbsp;&nbsp;
   !reset tmp
   !for i=1 to $activecnt
@@ -232,38 +218,38 @@ Elenco degli iscritti
    !set l=!record $tt of wimshome/log/classes/$wims_class/exams/.exams
    !set l=!line 4 of $l
    !set l=!replace internal , by &#44; in $l
-   !set tmp=!append item Esame $tt: $l to $tmp
+   !set tmp=!append item $name_Exam $tt: $l to $tmp
    !set ash=!append item E$tt to $ash
   !next i
   !formselect showsheet list $ash prompt $tmp
   </td>
-  <td><input type=submit value="Visualizza"></td>
+  <td><input type=submit value="$wims_name_Show"></td>
   </tr></table>
   </form>
  !endif
 <p>
-   Mostra
+   $name_post
    !if $job_affi=notes
-    !href cmd=reply&job_affi=qualite qualità
-    o
-    !href cmd=reply&job_affi=points lavoro portato a termine
+    !href cmd=reply&job_affi=qualite $(name_affi[1])
+    ,
+    !href cmd=reply&job_affi=points $(name_affi[2])
    !else
     !if $job_affi=qualite
-     !href cmd=reply&job_affi=notes voti
-     o
-     !href cmd=reply&job_affi=points lavoro portato a termine
+     !href cmd=reply&job_affi=notes $(name_affi[3])
+,
+     !href cmd=reply&job_affi=points $(name_affi[2])
     !else
-     !href cmd=reply&job_affi=notes voti
-     o
-     !href cmd=reply&job_affi=qualite qualità
+     !href cmd=reply&job_affi=notes $(name_affi[3])
+,
+     !href cmd=reply&job_affi=qualite $(name_affi[1])
     !endif
    !endif
-   nei test di autovalutazione.
- </p>
+. </p>
        
 !endif (usercnt=0?)
 
-!set wims_menu_items=!append line addstudent,1,module=adm/class/reguser&step=1\
+!set wims_menu_items=!append line photoboard,1,module=adm/class/photoboard\
+addstudent,1,module=adm/class/reguser&step=1\
 csv,1,cmd=reply&job=csv\
  formula,1,cmd=reply&job=formula&formula=prep\
  grades,1,module=adm/class/grades\
@@ -278,21 +264,13 @@ to $wims_menu_items
 !endif
 
 !if $manual>0
- <b>Spiegazione.</b> Nelle colonne `media'
- <dl><dt> `auto'</dt> <dd>indica i voti assegnati
- automaticamente dal sistema;</dd>
-<dt>`docente'</dt> <dd>indica i voti assegnati
- manualmente dal docente</dd>
- <dt>`globale' </dt><dd>&egrave; calcolato a partire
- dai dati `auto' e `docente' attraverso la  
- formula<br> <br>
- <center>
-  globale = $[$manual/100]*docente. + $[1-$manual/100]*auto.
- </center> <br>
- (il coefficiente $[$manual/100] è modificabile nella pagina
+<p>$name_manual_explanation</p>
+<p><center>
+  $(name_manual_notes[1]) = $[$manual/100]* $(name_manual_notes[2]) + $[1-$manual/100]* $(name_manual_notes[3])
+ </center> 
+<p>(Il coefficiente $[$manual/100] è modificabile nella pagina
  !href module=adm/class/grades di inserimento dei voti
-).</dd></dl>
- <p>
+)</p>
 !endif
 
 :end

@@ -3,19 +3,88 @@
 
 !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
 
-!distribute line Moyenne de la classe\
-Moyenne\
-Moyenne des notes positives\
-into name_classAverage,name_Average,name_posAverage
+!distribute line Media del corso\
+Media\
+Media dei punteggi effettivi\
+Media globale\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage
 
-!set name_partdeleted=Participants supprimés
-!set name_reg_ex=Liste des exercices enregistrés
-!set name_transfer=Transférer ses activités d'autres classes
+!set name_partdeleted=Studenti esclusi
+!set name_reg_ex=Elenco degli esercizi registrati
+!set name_transfer=Importa la sua attività da altro corso
 
-!set name_thsheet=No,titre,points<br>requis,poids,points<br>obtenus,%,qualité,sévérité,note
-!set name_minmax=min/moyen/max de la classe&nbsp;
+!set name_thsheet=Numero,Titolo,Punti<br>richiesti,Peso,Punti<br>ottenuti,%,Media,Severità,Voto
+!set name_minmax=min/media/max del corso
 
-!set name_manualscore=Notes attribuées par l'enseignant
-!set name_examnote=Notes d'examens
+!set name_manualscore=Voti assegnati dal docente
+!set name_autoscore=Voti registrati dal server
+!set name_manual_notes=globale,docente,auto
+!set name_examnote=Voti d'esame
 
-!set name_severitylevels=Niveaux de sévérité des feuilles de travail
+!set name_severitylevels=Livello di severit&agrave; del test di autovalutazione
+!set name_formula=Numero,Peso,Livello
+!set name_sheetstatut=prep,in corso,terminato,nascosto
+
+!distribute items Esame,Test di autovalutazione,Esercizio,Iniziato il,Punteggio,Sessione,completato il,equivalente a\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv
+
+!set name_formula_comment=&Egrave; possibile definire il livello di severit&agrave; e il `peso' dei test di autovalutazione nella tabella che segue. \
+I voti saranno calcolati con massimo=
+!set name_formula2=Voti calcolati su un massimo di $scoremax
+!set name_pickup=Seleziona un test di autovalutazione per<br>\
+  visulizzarne i punteggi medi
+!set name_warning=La richiesta non &egrave; valida.
+
+!set name_click=Selezionare un nome per visualizzare i dettagli.
+!set name_affi=la qualità,lavoro portato a termine,voti
+!set name_workdetail=Dettagli del lavoro svolto da 
+!set name_activesession=Questo studente ha una sessione d'esame in corso
+
+!distribute items IP, Tempo rimanente, Sessione d'esame di ,minuti\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=Non ci sono ancora studenti.
+
+!if $manual>0
+ !set name_manual_explanation=<b>Spiegazione.</b> Nelle colonne <tt>media</tt>\
+<tt>auto</tt> indica i voti assegnati automaticamente dal sistema a partire \
+dai risultati nei test, <tt>docente</tt> indica i voti assegnati manualmente dal docente.\
+ Il voto <tt>globale</tt> &egrave; calcolato utilizzando la formula seguente
+!endif
+
+!set name_title_showsheet=!nosubst Dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<br>$sh_title
+!set name_percentagegot=Percentuale dei punti ottenuti
+!set name_qualitygot=Qualità calcolata su un massimo di 10
+!set name_percentagedone=Percentuale di lavoro portato a termine
+!set name_post=Mostra
+  
+!if $job=userprop
+  !distribute items Cambia,Matricola,Commenti,URL di una foto,Variabili (tecniche),\
+  Password pubblica del corso,Inserire la password <em>pubblica</em> del corso e cio&egrave; quella utilizzata per effettuare la prima iscrizione\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Dettagli degli esami di $user_firstname $user_lastname
+ !set name_no_exampart=Questo studente non ha ancora concluso alcun esame.
+ !set name_exampart=Queste sono le sessioni d'esame di questo studente. Seleziona un esercizio \
+  per verderne lo svolgimento.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Dettagli del lavoro svolto da $lastname, $firstname<br>(dati non elaborati)
+  !goto end
+!endif
+
+!set name_direct_score=torna alla visualizzazione dei dati
+
+!if $job=transfer
+   !set name_title_transfer=Trasferisci l'attività di
+   !distribute items Unisci, Sostituisci,Verifica\
+   into name_merge, name_replace,name_show
+!endif
+
+:end

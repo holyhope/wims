@@ -1,7 +1,6 @@
 
 !read adm/title.phtml 3\
-\
-Opzioni studente
+$wims_name_account_property
 !if $error!=$empty
  !read msg.phtml
  <p><hr> <p>
@@ -12,48 +11,35 @@ Opzioni studente
 <input type=hidden name=job value=userprop>
 <input type=hidden name=getuser value=$getuser>
 <p>$table_header
-$table_tr<th>Login<td><tt>$getuser</tt>
-$table_tr<th>Password<td>
-	!href module=adm/class/passwd&job=part&part=$getuser Modifica password
-$table_tr<th><label for="up_lastname">Cognome</label><td>
+$table_tr<th>$wims_name_Login<td><tt>$getuser</tt>
+$table_tr<th>$wims_name_Password<td>
+	!href module=adm/class/passwd&job=part&part=$getuser $name_change
+$table_tr<th><label for="up_lastname">$wims_name_lastname</label><td>
 	<input size=$inplen name=up_lastname id=up_lastname value="$user_lastname">
-$table_tr<th><label for="up_firstname">Nome</label><td>
+$table_tr<th><label for="up_firstname">$wims_name_firstname</label><td>
 	<input size=$inplen name=up_firstname id=up_firstname value="$user_firstname">
-$table_tr<th><label for="up_email">Indirizzo email</label><td>
+$table_tr<th><label for="up_email">$wims_name_email</label><td>
 	<input size=$inplen name=up_email id=up_email value="$user_email">
-$table_tr<th><label for="up_regnum">Matricola</label><td>
+$table_tr<th><label for="up_regnum">$name_regnum</label><td>
 	<input size=$inplen name=up_regnum id=up_regnum value="$user_regnum">
 !if $wims_user=supervisor
- $table_tr<th><label for="up_comments">Commenti</label><td>
+ $table_tr<th><label for="up_comments">$name_comments</label><td>
 	<input size=$inplen name=up_comments id=up_comments value="$user_comments">
- $table_tr<th><label for="up_photourl">URL di una foto</label><td>
+ $table_tr<th><label for="up_photourl">$name_photourl</label><td>
 	<input size=$inplen name=up_photourl id=up_photourl value="$user_photourl">
- $table_tr<th><label for="up_vars">Variabili (tecniche)</label></th><td>
+ $table_tr<th><label for="up_vars">$name_vars</label></th><td>
 	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars id=up_vars>$user_vars</textarea>
 !else
- $table_tr<th><label for="passcheck">Password pubblica</label><td>
+ $table_tr<th><label for="passcheck">$name_classpassword</label><td>
 	<input size=14 type=password name=passcheck id=passcheck> <br>
-	<small>Per effettuare le modifiche occorre inserire la password 
-        `pubblica', <br>cio&egrave; quella utilizzata per effettuare la prima
-         iscrizione a questo corso.</small>
+	<small>$name_enterpassword</small>
 !endif
 $table_hdtr<td align=center colspan=2>
-<input type=submit name=reg value=Salva> &nbsp;
-<input type=submit name=abandon value=Annulla>
+<input type=submit name=reg value="$wims_name_tosave"> &nbsp;
+<input type=submit name=abandon value="$wims_name_giveup">
 $table_end
 </form>
-!if $wims_user=supervisor
-!!<p><center>
-!! !href cmd=reply&job=getuser&getuser=$getuser Punteggi ottenuti
-!! .
-!! !href cmd=reply&job=getraw&getraw=$getuser Dati non elaborati
-!! .
-!! <p>
-!! !href cmd=reply&job=delprep&delprep=$getuser Escludi questo studente
-!!.
-!! !href cmd=resume Elenco iscritti
-!! .
-!!</center> <p>
+
  !set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$getuser\
  workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\

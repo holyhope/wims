@@ -1,8 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
 
 !read adm/css.phtml
 !header1
@@ -11,46 +6,39 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<br>$sh_title
-
-!!<center>$classname
-!!<p>
-!!<h1>Elenco iscritti</h1>
-!!<font color=green><b>dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<br>
-!!$sh_title</b></font>
-!!</h1></center>
+$name_title_showsheet
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Torna alla home page
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !if $usercnt==0
- Non ci sono ancora studenti.
+ $name_noyetparticipant
 !else
  <p>$table_header
  !bound job_affi within points,qualite default points
  !if $job_affi=points
   !let sign=%
-  <caption>Percentuale di lavoro portato a termine</caption>
+  <caption>$name_percentagegot</caption>
  !else
   !if $job_affi=qualite
    !let sign=$empty
-   <caption>Qualità calcolata su un massimo di 10</caption>
+   <caption>$name_qualitygot</caption>
   !else
-   <caption>Percentuale di lavoro portato a termine</caption>
+   <caption>$name_percentagedone</caption>
   !endif
  !endif
- $table_hdtr<th>Nome e cognome</th>
- <th>Media</th>
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_Average</th>
  !let tot_0=0
  !let nonzero_0=0
  !for j=1 to $nbexo
-  <th><small>esercizio $j</small></th>
+  <th><small>$name_Exercise $j</small></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
@@ -129,14 +117,14 @@ dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<
    !endif
   </tr>
  !next m
- $table_hdtr<td align=center><b>Media del<br>corso</b></td>
+ $table_hdtr<td align=center><b>$name_classAverage</b></td>
  <th align=center>$[rint($tot_0/$usercnt*10)/10]$sign </th>
  !for j=1 to $nbexo
   <th align=center>$[rint($(tot_$j)/$usercnt*10)/10]$sign</th>
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td align=center><b>Media dei punteggi effettivi</b></td>
+  $table_hdtr<td align=center><b>$name_posAverage</b></td>
   <th align=center>$[rint($tot_0/$nonzero_0*10)/10]$sign </th>
   !for j=1 to $nbexo
    <th align=center>
@@ -150,19 +138,19 @@ dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<
   </tr>
  !endif
 $table_end
- <p>Selezionare il nome di uno studente per i dettagli.
- !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet Aggiorna la pagina
+ <p>$name_click
+ <p>
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
 &nbsp;.&nbsp;
-   Mostra
+   $name_post 
     !if $job_affi=qualite
-     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet il lavoro portato a termine
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
     !else
-     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet la qualità del lavoro
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
     !endif
-  in questo test di autovalutazione.     
-!!<p>
-!! !href cmd=reply&job_affi=notes Elenco iscritti
-!!.
+.
+<p>
+
 !set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
 to $wims_menu_items
 :end

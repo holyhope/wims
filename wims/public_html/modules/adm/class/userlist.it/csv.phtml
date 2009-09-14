@@ -1,11 +1,13 @@
 
 !set wims_form_method=post
-<center>$classname</center>
-<h3>Esporta i dati 
-<br><font size="-1">[
-!href cmd=reply torna alla visualizzazione dei dati
- ]</font></h3>
- <p>
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
+<center><font size="-1">[
+!href cmd=reply $name_direct_score
+ ]</font>
+</center> <p>
 
 !if $error!=$empty
  !read msg.phtml
@@ -76,7 +78,7 @@
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Per <input type=submit value=salvare>
+Per <input type=submit value="salvare">
 i dati in formato foglio elettronico, specificare: <ul>
 <li>Formato
 !formselect csvformat list csv,tsv
@@ -97,10 +99,10 @@ i dati in formato foglio elettronico, specificare: <ul>
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=upload>
-Per <input type=submit value=inserire>
+Per <input type=submit value="inserire">
 sul server dati in formato foglio elettronico, specificare:
 <small>
-!href module=$module&cmd=help&special_parm=upload $wims_name_help
+ !href module=$module&cmd=help&special_parm=upload $wims_name_help
 </small><ul>
 <li>Nome del file <input type=file size=30 name=wims_deposit> <br>
  <small>Formati accettati: .csv, .tsv, .txt
@@ -110,3 +112,5 @@ sul server dati in formato foglio elettronico, specificare:
 </form>
 !endif
 
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

@@ -1,8 +1,7 @@
 
-<center>$classname
-<p>
-<h1>Dettagli degli esami di $user_firstname $user_lastname
-</h1></center>
+!read adm/title.phtml 1\
+$classname\
+$name_title_examcheck
 
 !if _check isin $session
  !set error=bad_op
@@ -16,15 +15,13 @@
  <p>
 !else
  !if $checksessions=$empty
-  Questo studente non ha ancora concluso alcun esame.
+  $name_no_exampart
   <p>
  !else
-  Queste sono le sessioni d'esame di questo studente. Seleziona un esercizio
-  per verderne lo svolgimento.
-  <p>
-  $table_header
-  $table_hdtr<th>Sessione</th><th>Esame</th><th>Punteggio<small>/$scoremax</small></th>
-  <th>Esercizio</th><th>Iniziato il</th></tr>
+  $name_exampart
+  <p>$table_header
+  $table_hdtr<th>$name_Session</th><th>$name_Exam</th><th>$name_Score<small>/$scoremax</small></th>
+  <th>$name_Exercise</th><th>$name_Start</th></tr>
   !for ses in $checksessions
    !for x in $(exam$ses)
     $table_tr<td><small>$ses</small></td>
@@ -43,8 +40,7 @@
  !endif
 !endif
 
-<center>
-!href cmd=reply&job=getuser&getuser=$checkuser Altri punteggi
-&nbsp;
-!href cmd=resume Elenco iscritti
-</center>
+!set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$checkuser\
+,0,\
+part_list,1,cmd=resume\
+to $wims_menu_items
