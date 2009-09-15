@@ -13,18 +13,16 @@ scnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
 \
 
 !next s
-!if $update_field!=0
+!if $update_field!=0 
  doc_$doc=!replace line number $update_field by $update_content in $(doc_$doc)
 !else
  !reset doc_$doc
 !endif
 !writefile wimshome/log/classes/$wims_class/doc/.docindex
 !for s=1 to $scnt
- !if $s!=$doc
   sf=!line 1 to 5 of $(doc_$s)
   !if $(sf[1])$(sf[2])!=$empty
    !appendfile wimshome/log/classes/$wims_class/doc/.docindex :$sf
   !endif
- !endif
 !next s
 
