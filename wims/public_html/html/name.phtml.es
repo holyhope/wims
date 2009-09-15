@@ -303,7 +303,7 @@ Conexión hoja de cálculo \
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
 
-!if adm/class/userlist isin $module
+!if adm/class/userlist isin $module or reguser isin $module
 !distribute line Lista de los participantes\
 Resultados del participante \
 Cerrar esta sesión de examen\
