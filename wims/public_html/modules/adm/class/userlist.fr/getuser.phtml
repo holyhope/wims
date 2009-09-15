@@ -1,8 +1,8 @@
 !read adm/title.phtml 1\
-$classname
+$classname\
+$name_workdetail
 
 <center><b>
-$name_workdetail
 !if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
 !else
@@ -160,11 +160,14 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
  $table_end <p>
  :next
 !next i
-<center>
+
 !if $exologs!=$empty
  <p>
+ <center>
  !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser $name_reg_ex
+</center>
 !endif
+
 <p>
 !if $wims_user=supervisor
  !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
@@ -175,7 +178,6 @@ livret,1,module=adm/class/livret&job=user&user=$getuser\
 to $wims_menu_items
 !else
  !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
- !href module=home $wims_name_class_home
 !endif
-</center> <p>
+ <p>
 

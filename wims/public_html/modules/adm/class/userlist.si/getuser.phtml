@@ -1,14 +1,14 @@
 !read adm/title.phtml 1\
-$classname
+$classname\
+$name_workdetail
 
 <center><b>
-$name_workdetail
 !if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
 !else
  $lastname, $firstname
 !endif
-</b><br><font size="-1">$wims_name_login: <tt>$getuser</tt>
+</b><br><font size="-1">$wims_name_Login: <tt>$getuser</tt>
 !if $user_email!=$empty
  &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
 !endif
@@ -33,7 +33,7 @@ $name_workdetail
 !if $manual>0 and $gcnt>0 and $teacher!=$empty
  $table_header
  <caption><small>
- $name_minmax&nbsp;:
+ $name_minmax:
  $min_glob/$mean_glob/$max_glob</small></caption>
  $table_hdtr<th>$wims_name_name<th>$(name_thsheet[6])<th>$(name_thsheet[7])
  $table_hdtr<td>$name_manualscore
@@ -42,7 +42,7 @@ $name_workdetail
      <td align=center>$[100-$manual]%<td align=center>$per
  $table_tr<td><b>$name_globalaverage</b> (/ $scoremax)
      <td align=center>100%<th>$globalav
- $table_end <p>
+ $table_end<p>
  $table_header$table_hdtr<th colspan=3>$name_manualscore
  !if $teacher!=$empty
   <br>
@@ -58,7 +58,7 @@ $name_workdetail
  $table_hdtr<th colspan=2>$name_Average<td align=center>$mav</td>
  $table_end <p>
 !else
-<center>
+ <center>
  $name_globalaverage: <b>$per</b> / $scoremax.
  !if $min_glob<$scoremax
   <br><small>$name_minmax:
@@ -160,11 +160,14 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
  $table_end <p>
  :next
 !next i
-<center>
+
 !if $exologs!=$empty
  <p>
+ <center>
  !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser $name_reg_ex
+</center>
 !endif
+
 <p>
 !if $wims_user=supervisor
  !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
@@ -175,7 +178,6 @@ livret,1,module=adm/class/livret&job=user&user=$getuser\
 to $wims_menu_items
 !else
  !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
- !href module=home $wims_name_class_home
 !endif
-</center> <p>
+ <p>
 
