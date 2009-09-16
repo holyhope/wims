@@ -6,26 +6,22 @@
  !if $modeltest=yes
   Dal momento che questo esercizio è costruito seguendo un modello standard, 
   si consiglia 
-  !href cmd=reply&mode=model&level=2 il modo guidato
+  !href cmd=reply&mode=model&level=2 $name_normal
 .
-  !href cmd=reply&mode=none&level=0 Annulla
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !else
-  Per utilizzarlo occorre avere gi&agrave; a disposizione 
-  il file con il codice sorgente dell'esercizio. Per la
-  prima creazione di un esercizio &egrave; possibile utilizzare
-  !href cmd=reply&mode=normal&level=1 il modo guidato
-  .
+!!  Per utilizzarlo occorre avere gi&agrave; a disposizione 
+!!  il file con il codice sorgente dell'esercizio. Per la
+!!  prima creazione di un esercizio &egrave; possibile utilizzare
+!!  !href cmd=reply&mode=normal&level=1 $name_normal
+!!  .
   <p>
   Inserire il codice sorgente (
   !href target=wims_mhelp cmd=help&special_parm=oef in formato OEF
   ) del vostro esercizio:
   (per inserire il contenuto di un file gi&agrave; esistente, fare un 
-  copia&amp;incolla da un editor di testo)
-  <br>
-  [
-  !href target=wims_test module=tool/directexec&cmd=new Verifica il codice
-].
+  copia&amp;incolla da un editor di testo).
  !endif
 !else
  Questo &egrave; il codice sorgente di 
@@ -40,22 +36,26 @@
  !if $modeltest=yes
   Dal momento che questo esercizio è costruito seguendo un modello standard, 
   si consiglia 
-  !href cmd=reply&mode=model&level=2 il modo guidato
+  !href cmd=reply&mode=model&level=2 $name_normal
 .
-  !href cmd=reply&mode=none&level=0 Annulla
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !endif
 !endif
-<a name=textarea></a>
-[
-<a href="#"
-onclick="document.forms['replyform'].wims_deposit.value=''">Annulla</a>.
-]. [
-!href cmd=resume Ricomincia
-].
 
+ Potete anche 
+  !href target=wims_test module=tool/directexec&cmd=new verificare il codice
+.
 <p><center>
 !mexec textarea.sh
 <p><input type=submit value="Salva"></center>
+<center><a name=textarea></a>
+[
+<a href="#"
+onclick="document.forms['replyform'].wims_deposit.value=''">Salva</a>
+] [
+!href cmd=resume $wims_name_giveup
+].
+</center>
 </form>
 

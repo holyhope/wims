@@ -40,7 +40,7 @@ Il server ha salvato l'esercizio con i seguenti parametri
 !endif
 !if $wims_user!=$empty
  <li><p>&Egrave; anche possibile
- !href cmd=reply&level=6 inserire un file immagine
+ !href cmd=reply&level=6 inserire un file (immagine, documento pdf, ...)
  nell'esercizio.
  !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
  to $wims_menu_items
@@ -51,6 +51,7 @@ Il server ha salvato l'esercizio con i seguenti parametri
  Una volta che tutto &egrave; corretto, &egrave; possibile
  !if $existing!=$empty
   !if ..devel/ notin ..$catmodule
+    !if $catmodule=$empty
    inserire l'esercizio nella pagine del corso, sia
    !href cmd=reply&level=4 sostituendo il vecchio esercizio
 ,  che
@@ -59,7 +60,11 @@ Il server ha salvato l'esercizio con i seguenti parametri
  newversion,1,cmd=reply&level=4&newone=1\
  to $wims_menu_items
   !else
-   !href cmd=reply&level=4 inserirlo tra i moduli in preparazione
+   !href cmd=reply&level=4 inserirlo tra i moduli del corso
+     !reset catmodule
+    !endif
+   !else
+    !href cmd=reply&level=4 inserirlo tra i moduli in modtool
    !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
@@ -69,7 +74,7 @@ Il server ha salvato l'esercizio con i seguenti parametri
  to $wims_menu_items
  !endif
 .
- !endif
+!endif
  !reset success
 !endif
 !if $mode!=file

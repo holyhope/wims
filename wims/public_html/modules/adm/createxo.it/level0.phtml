@@ -1,52 +1,62 @@
+
 Benvenuto/a in questa pagina che permette la creazione di 
 !if $wims_user!=supervisor
  esercizi interattivi,
 !else
  esercizi interattivi per il corso <font color=blue>
- $wims_classname</font> presso <font color=blue>$wims_institutionname</font>,
+ $wims_classname</font> presso <font color=blue>$wims_institutionname</font>.
 !endif
-in modo guidato. Sono disponibili
-!href cmd=reply&mode=model modelli già pronti
-.
-Se siete esperti e avete gi&agrave; preparato un file
-con il codice sorgente degli esercizi, &egrave; possibile passare al 
-!href cmd=reply&rawinp=yes modo `esperti'
- oppure al
-!href cmd=reply&mode=file modo `file'
-. I non esperti possono anche cominciare da 
-!href cmd=help&special_parm=examples esempi gi&agrave; pronti
-.
- 
-!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 
- <table bgcolor="#d0c080">
-  <tr>
-    <td rowspan=4>
-      Sono disponibili<br>anche
-    </td>
-   <td bgcolor=lemonchiffon>
-      !href module=adm/modtool Modtool
-        per la creazione di moduli WIMS completi.
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor=lemonchiffon>
-      !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code>
-       ou 
-       !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
-        per creare semplici domande a scelta multipla.
-    </td>
-  </tr>
-  <tr>
-  <td bgcolor=lemonchiffon>
-      !href module=adm/quicktool Quicktool
-       per creare esercizi di lingua.
-    </td>
-    <tr>
-    <td bgcolor=lemonchiffon>
-      !href module=adm/latex2wims Latex2wims
-       per creare documenti a partire da testi in LaTeX.
-    </td>
-    </tr>
-</table>
-!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+Createxo vi offre vari strumenti di creazione degli esercizi in formato
+!href cmd=help&special_parm=oef OEF
+  . In particolare:
+<ol>
+<li>due diversi modi guidati per la creazione di esercizi con parametri
+  <ul><li>
+  esercizi liberi, in 
+     !href cmd=reply&mode=normal&level=1 $name_normal
+ ;</li><li>
+    a partire da
+!href cmd=reply&mode=model&level=1 modelli già pronti
+.</li>
+   </ul>
+<li>Per i più esperti sono disponibili due modalità:
+<ul><li>un 
+!href cmd=reply&rawinp=yes&level=1 modo `esperti'
+, per inserire il codice dell'esercizio direttamente on line;
+</li><li>un
+!href cmd=reply&mode=file&level=1 modo `file'
+ se avete gi&agrave; preparato un file con il codice sorgente degli esercizi
+con il vostro editor preferito e lo volete inserire sul server.
+</li>
+</ul>
+</ol>
+ 
+Altri strumenti disponibili:
+<ul><li>Strumenti come
+  !href module=adm/auth/confia2qcm Confia2qcm
+, 
+!href module=adm/auth/createqcm Createqcm
+ per creare semplici domande a scelta multipla.
+</li><li>
+ !href module=adm/modtool $wims_name_modtool 
+ per la creazione di moduli WIMS completi, sia esercizi non standard,
+ sia di organizzare più esercizi o documenti in un solo modulo
+ (è necessario un account apposito).
+ Questo strumento è il mezzo per pubblicare successivamente i vostri 
+ esercizi o i vostri documenti per poterli utilizzare anche al di fuori del 
+ vostro corso
+<li>
+!href module=adm/quicktool $wims_name_quicktool
+ est particulièrement adapté aux langues et aux matières littéraires. Il permet de concevoir
+en mode guidé des exercices de type OEF de divers formats (GAP, QCM, SELECTWORD, ...) ; 
+il autorise des exercices à étape, des exercices où l'élève peut avoir plusieurs essais, des aides progressives.
+Il permet d'utiliser les banques d'enregistrement d'audio du projet 
+<a target="wims_external" href="http://shtooka.net">Shtooka</a>.
+L'utilisation de Quicktool nécessite pour l'instant d'avoir un compte développeur.
+<li>     
+!href module=adm/latex2wims $wims_name_latex2wims
+ permette di creare documenti WIMS a partire da testi in LaTeX. Il prend compte
+ des parties interactives faites dans un environnement <tt>wims</tt>
+ (è necessario un account apposito).
+</li></ul>
