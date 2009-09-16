@@ -3,6 +3,7 @@
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
+
 !if $wims_user=supervisor
  <center>(Pagina pubblica del tema d'esame)</center>
 !endif
@@ -146,9 +147,8 @@ to $wims_menu_items
 !endif
 
 !if $wims_user=supervisor
- <p><center>
- !href cmd=resume Torna alla home page del docente
- </center>
+!set wims_menu_items=!append line backteacher,1,cmd=resume\
+ to $wims_menu_items
 !endif
 
 !tail

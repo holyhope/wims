@@ -21,10 +21,10 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 Preparazione del tema d'esame $exam
-!!<center>$classname</center>
+!!<center>$classname
 !!<p>
 !!<h1>
-!!</h1> <p><hr width="40%"> <p>
+!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -45,30 +45,29 @@ Preparazione del tema d'esame $exam
  <input type=hidden name=job value=text>
  Questo tema d'esame &egrave; 
  !if $activetest=1
-  attivo
-  !href cmd=reply&job=expire [terminarlo]
-, quindi non più modificabile.
+  attivo (quindi non modificabile).
+  !href cmd=reply&job=expire Terminarlo
+.
  !else
   !if $activetest=2
-   terminato, ma ancora visibile per gli studenti
-   !href cmd=reply&job=hide [nasconderlo agli studenti]
-.
+   terminato, ma ancora visibile per gli studenti.
+   !href cmd=reply&job=hide Nascondilo agli studenti
   !else
    terminato e non visibile dagli studenti.
-   !href cmd=reply&job=expire Riproporlo agli studenti
+   !href cmd=reply&job=expire Riproponilo agli studenti
   !endif
-  .
-  !href cmd=reply&job=reactivate Riattivarlo
-. <p>
+.
+  !href cmd=reply&job=reactivate Riattivalo
+.
  !endif
- !href cmd=reply&job=deactivate Desactive it
+ !href cmd=reply&job=deactivate Disattivalo
  <center><table border=2>
  <tr><td align=right>Titolo:
  <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modifica>
+ <td rowspan=3><input type=submit value="$wims_name_change">
  <tr><td align=right>Descrizione:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Date di termine:<td>
+ <tr><td align=right>Data di termine:<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
  !formselect expday from 1 to 31
  !formselect expmon from 1 to 12 prompt $months
@@ -87,17 +86,17 @@ tag html e link) :<br>
 
 <center><input type=submit value="Salva"></center>
 
-<p>Questo esame terminer&agrave;
+<p>Questo esame terminerà
 !distribute item $[$expday],$[$expmon] into expday,expmon
 !formselect expday from 1 to 31
 !formselect expmon from 1 to 12 prompt $months
 !formselect expyear from $thisyear to $thisyear+1
 . Una sessione d'esame dura al pi&ugrave;
 <input size=5 name=duration value="$duration">
-minuti. Ogni studente pu&ograve; ripetere l'esame al pi&ugrave; 
+minuti. Ogni studente pu&ograve; ripetere l'esame al più 
 !default stries=3
 <input size=3 name=tries value="$stries"> volte.
-<input type=submit value="Salva">
+<input type=submit value="$wims_name_tosave">
 
 !ifval $activetest=-1
  <p>Questo tema d'esame non esiste ancora. 
@@ -135,7 +134,7 @@ minuti. Ogni studente pu&ograve; ripetere l'esame al pi&ugrave;
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Sposta s&ugrave;
+    !href cmd=reply&job=moveup&moveup=$i#list Sposta su
     &nbsp;
    !endif
    !href cmd=reply&job=exo&exo=$i Modifica
