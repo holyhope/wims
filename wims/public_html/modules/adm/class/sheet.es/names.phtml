@@ -1,39 +1,39 @@
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
- 
+
 !set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
 
-!set statutaction=Activarla,Hacerla expirar ahora mismo,desactivarla,Ocultarla a los participantes,Hacerla reaparecer,$wims_name_erase
+!set statutaction=Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
 !set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
 
-!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items insertar un fichero fuente,\
-		Punto de vista de los participantes de la hoja de trabajo,\
+!! definición de los nombres para los vínculos en el menubox (definidos por wims_menu_items)
+!distribute items insertar un archivo fuente,\
+		Punto de vista de los participantes ,\
 		Obtener el código fuente de la hoja \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,Título,Descripción,Points,Poids,Dépendances,Actions
+!let name_shtab=No,Título,Descripción,Puntos,Peso,Dépendancias,Acciones
 
 !if $activetest<=0
  !let wims_name_sheetadmin=página de preparación
  !set name_title=!nosubst Preparación de la hoja de trabajo $sheet
 !else
- !let wims_name_sheetadmin=página de preparación
- !set name_title=!nosubst Preparación de la hoja de trabajo $sheet
+ !let wims_name_sheetadmin=Página de gestión
+ !set name_title=!nosubst Gestión de la hoja $sheet
 !endif
 
 !let name_shinfo=!nosubst Título <small>(limitado a $title_limit caracteres)</small>,Estado,\
 Y un texto explicativo <br></small>(limitado a $desc_limit caracteres; se permiten etiquetas y enlaces html)</small>,\
 Fecha de expiración,Página de presentación,El registro de puntuaciones,para todas las clases que comparten la hoja :
-!let name_allowtype=abierto a todos, cerrado a todos,abierto para las siguientes estaciones de trabajo (y/o horas) :
+!let name_allowtype=abierto a todos, cerrado a todos,abierto para las siguientes estaciones de trabajo (y/o horas)siguientes :
 !let name_mksheet=Pulse para crearla
 
 !if $job=student
-  !set name_title=Hoja de trabajo número $sheet<br>$title (presentación para los participantes)  
-  !set name_sheetempty=¡La hoja está vacía! No se le ha asignado nada todavía. Posiblemente se trate de un error de su profesor.  
+  !set name_title=Hoja de trabajo número $sheet<br>$title (presentación para los participantes)
+  !set name_sheetempty=¡La hoja está vacía! No se le ha asignado nada todavía. Posiblemente se trate de un error de su profesor.
   !set name_assignedwork=Tareas asignadas en esta hoja
   !set name_quality=0 de $[$re] puntos obtenidos, calidad
 !endif
