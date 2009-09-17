@@ -54,15 +54,15 @@ $wims_classname, $wims_institutionname\
  $SU_greet.
  !read Subclasses1.phtml
  !if $class_typename=level
-  <p><center>
-  !href module=adm/class/gateway $SU_Gateway
-  </center>
+ !! <p><center>
+ !! !href module=adm/class/gateway $SU_Gateway
+ !! </center>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menuitem">
-!read ./adm/oneitem struct,1,module=adm/class/gateway
+!read ./adm/oneitem.phtml struct,1,module=adm/class/gateway
 !!!href module=adm/class/gateway $im "gifs/themes/$wims_theme_image/struct.gif" alt="struct"> $SU_Gateway
 </div><!--menuitem-->
 <div class="menuitem">
@@ -179,7 +179,7 @@ $SU_greet.
 !set ac_3=$SU_Hi
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
- $SU_nosheet
+ <p>$SU_nosheet
 !else
  $table_header
  <caption>$SU_shlist &nbsp;
