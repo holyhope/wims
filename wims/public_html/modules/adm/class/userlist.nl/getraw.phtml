@@ -1,25 +1,19 @@
-<center>$classname<p>
-
+!!## language independant
 !if $logname=$empty
-    Deze handeling is ongeldige.
+!read adm/title.phtml 1\
+$classname
+
+$name_warning
 !else
- <h3>Gedetailleerde resultaten van $lastname, $firstname</h3>
- [in ruwe serverlog data]
- </center> <p>
+ !read adm/title.phtml 1\
+$classname\
+$name_title_getraw
+
 <pre>
 !set test=$wims_show_ip
 !mexec getraw.sh
 </pre>
 !endif
-
-!!<p><center>
-!!!href cmd=reply&job=getuser&getuser=$getraw Verwerkte data
-!! .
-!! Lijst van&nbsp;
-!!!href cmd=resume alle leerlingen
-!! .
-!!</center> <p>
-
 
 !set wims_menu_items=!append line getraw,1,cmd=reply&job=getuser&getuser=$getraw\
 part_list,1,cmd=resume\

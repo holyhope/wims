@@ -1,71 +1,97 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname\
+$name_workdetail
 
-<h3>Score details van 
+<center><b>
+!if $wims_user=supervisor
  !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
-<br><font size="-1">Loginnaam <tt>$getuser</tt>
-!if $user_email!=$empty
- &nbsp;Email adres: <a href="mailto:$user_email">$user_email</a>
+!else
+ $lastname, $firstname
 !endif
-</font></h3>
+</b><br><font size="-1">$wims_name_Login: <tt>$getuser</tt>
+!if $user_email!=$empty
+ &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
+!endif
+</center>
   !if $user_photourl!=
    <img src="$user_photourl" width=100 style="position:absolute;top:auto;right:5%;" alt="$firstname $lastname">
   !endif
 !if $eremain>0
  <p>
-    Deze student heeft op dit moment een actieve proefwerk sessie:
-    !href cmd=reply&job=userexam&getuser=$getuser $esession
+ $name_activesession:
+ !href cmd=reply&job=userexam&getuser=$getuser $esession
 !else
-    !if $wims_user=supervisor and $wims_supertype=4
-	!readproc adm/gateway/transfer $getuser test
-	!if $transfer_test>0
-	    !href cmd=reply&job=transfer&getuser=$getuser Verplaats 
-	    &nbsp;zijn/haar activiteiten van andere klassen
-	!endif
-    !endif
+ !if $wims_user=supervisor and $wims_supertype=4
+  !readproc adm/gateway/transfer $getuser test
+  !if $transfer_test>0
+   !href cmd=reply&job=transfer&getuser=$getuser $name_transfert
+  !endif
+ !endif
 !endif
 </center> <p>
 
 !if $manual>0 and $gcnt>0 and $teacher!=$empty
  $table_header
  <caption><small>
- min/gem/max de la classe&nbsp;:
+ $name_minmax:
  $min_glob/$mean_glob/$max_glob</small></caption>
- $table_hdtr<th>Naam<th>Percentage<th>Gewicht
- $table_hdtr<td>Handmatige ingevoerde cijfers
+ $table_hdtr<th>$wims_name_name<th>$(name_thsheet[6])<th>$(name_thsheet[7])
+ $table_hdtr<td>$name_manualscore
      <td align=center>$manual%<td align=center>$mav
- $table_hdtr<td>Server geregistreerde cijfers
+ $table_hdtr<td>$name_autoscore
      <td align=center>$[100-$manual]%<td align=center>$per
- $table_hdtr<td><b>Globaal gemiddelde</b> (uit $scoremax)
+ $table_tr<td><b>$name_globalaverage</b> (/ $scoremax)
      <td align=center>100%<th>$globalav
- $table_end <p>
- $table_header$table_hdtr<th colspan=3>Handmatig ingevoerde cijfers</th>
- $table_hdtr<th>titel<th>gewicht<th>cijfer</th>
+ $table_end<p>
+ $table_header$table_hdtr<th colspan=3>$name_manualscore
+ !if $teacher!=$empty
+  <br>
+  !href lang=$lang&module=adm/class/grades&method=user&un=$getuser $wims_name_change
+ !endif
+ </th>
+ $table_hdtr<th>$(name_thsheet[2])<th>$(name_thsheet[4])<th>$(name_thsheet[9])</th>
  !set v_=0
  !for i=1 to $gcnt
   !set t_=!item $i+2 of $titles
   $table_tr<td>$t_<td align=center>$(w$i)<td align=center>$(g_$i)</td>
  !next i
- $table_hdtr<th colspan=2>Gemiddelde<td align=center>$mav</td>
+ $table_hdtr<th colspan=2>$name_Average<td align=center>$mav</td>
  $table_end <p>
 !else
  <center>
- Totaal gemiddelde: <b>$per</b> uit $scoremax.
+ $name_globalaverage: <b>$per</b> / $scoremax.
  !if $min_glob<$scoremax
-  <br><small>min/gem/max van deze klas:
+  <br><small>$name_minmax:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
  </center> <p>
 !endif
 
-!readdef wimshome/log/classes/$wims_class/.def
-!if $eactivecnt>0
- $table_header$table_hdtr<th colspan=4>proefwerk cijfers
- !if $wims_user=supervisor or $class_examshow!=no
-  </b><small>
-  !href cmd=reply&job=examcheck&checkuser=$getuser [details]
-  </small>
+
+!!readdef wimshome/log/classes/$wims_class/.def
+!!default class_topscores=0
+!if $class_topscores>0
+ <center>
+ $table_header$table_hdtr<th colspan=2>Top $class_topscores van deze clas</td></tr>
+ !for i=1 to $class_topscores 
+  !set L=!line $i of   $TT
+  !set name=!item 1 of $L
+  !set firstname=!item 2 of $L
+  !set avg=!item 4 of $L
+$table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=left><small>&nbsp;$avg</small>
+ !next i
+ $table_end<p>
+ </center> 
 !endif
- $table_hdtr<th>Nummer<th>Titel<th>Cijfer/$scoremax
+
+!if $eactivecnt>0
+ $table_header$table_hdtr<th colspan=4>$name_examnote
+ !if $wims_user=supervisor or $class_examshow!=no
+  <small>
+  !href cmd=reply&job=examcheck&checkuser=$getuser [$wims_name_detail]
+  </small>
+ !endif
+ $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])<th>$(name_thsheet[9])/$scoremax
  !for i in $activexams
   !set l=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !set t=!line 4 of $l
@@ -94,21 +120,21 @@
  !if $S_<=0
   !goto next
  !endif
- $table_header$table_hdtr<th colspan=7>Werkblad $i&nbsp;: $t_
- </b><small>gewicht $A_ , severity $B_<br>
+ $table_header$table_hdtr<th colspan=7>$name_Sheet $i&nbsp;: $t_
+ <small>$(name_thsheet[4]) $A_, $(name_thsheet[8]) $B_<br>
  !set A_=!line $n_ of $percents
  !distribute words $A_ into p1,p2
  !if $p2!=$empty
   !distribute item $[$p1/100],$[$p2/10] into x_,y_
   !set p_=$[rint(100*$scoremax*$(f_$i))/100]
-  klaar $p1%, kwaliteit $p2/10, equiv. <b>$p_</b> uit $scoremax.
+  $name_done:$p1% , $(name_thsheet[7])  $p2/10, $name_equiv <b>$p_</b> / $scoremax.
   !if $(min_$i)<$scoremax
-   <br>min/gem/max van deze klas : $(min_$i)/$(mean_$i)/$(max_$i)
+   <br>$name_minmax: $(min_$i)/$(mean_$i)/$(max_$i)
   !endif
  !endif
  </small>
- $table_hdtr<th>No<th>titel<th>vereiste<br>punten<th>gewicht
-     <th>behaalde<br>punten<th>%<th>kwaliteit
+ $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])<th>$(name_thsheet[3])<th>$(name_thsheet[4])
+     <th>$(name_thsheet[5])<th>$(name_thsheet[6])<th>$(name_thsheet[7])
  !for j=1 to $e_
   $table_tr<td align=right>$j
   <td>$(title_$(n_)_$j)
@@ -134,29 +160,24 @@
  $table_end <p>
  :next
 !next i
-<center>
+
 !if $exologs!=$empty
  <p>
- !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser Lijst van oefeningen
+ <center>
+ !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser $name_reg_ex
+</center>
 !endif
+
 <p>
 !if $wims_user=supervisor
- !!!href cmd=reply&job=getraw&getraw=$getuser Ruwe gegevens
- !!.
-!! !href cmd=resume Lijst van alle deelnemers
-!! .
-!! <p>
-!! !href cmd=reply&job=delprep&delprep=$getuser Verwijder deze deelnemer
-!!, of
-!! !href module=adm/class/passwd&job=part&part=$getuser verander het wachtwoord
-!!.
-!set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
+ !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
 passwd,1,module=adm/class/passwd&job=part&part=$getuser\
 part_list,1,cmd=resume\
+livret,1,module=adm/class/livret&job=user&user=$getuser\
 to $wims_menu_items
 !else
- !href module=home Terug naar de klas
+ !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
 !endif
-</center> <p>
+ <p>
 

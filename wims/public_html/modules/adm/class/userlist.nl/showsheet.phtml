@@ -1,56 +1,44 @@
-!!! this seems to be a slightly changed copy of main.phtml 
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
 
 !read adm/css.phtml
 !header1
 
 !read names.phtml
+
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-details van werkklad nummer $numshowsheet<br>$sh_title
-
-!!<center>$classname
-!!<p>
-!!<h1>Studenten</h1>
-!!<font color=green><b>details van werkklad nummer $numshowsheet<b><br>
-!!<h3>$sh_title</h3></font>
-!!</center>
+$name_title_showsheet
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- Terug naar de
- !href module=home klas
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !if $usercnt==0
-    Deze klas heeft nog geen studenten.
+ $name_noyetparticipant
 !else
  <p>$table_header
  !bound job_affi within points,qualite default points
  !if $job_affi=points
   !let sign=%
-  <caption>Percentage verkregen punten</caption>
+  <caption>$name_percentagegot</caption>
  !else
   !if $job_affi=qualite
    !let sign=$empty
-   <caption>Kwaliteit [ maximum is 10]</caption>
+   <caption>$name_qualitygot</caption>
   !else
-   <caption>Percentage voltooid</caption>
+   <caption>$name_percentagedone</caption>
   !endif
  !endif
- $table_hdtr<th>Naam, voornaam</th>
- <th>Gemiddelde</th>
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_Average</th>
  !let tot_0=0
  !let nonzero_0=0
  !for j=1 to $nbexo
-  <th><small>opgave $j</small></th>
+  <th><small>$name_Exercise $j</small></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
@@ -112,7 +100,7 @@ details van werkklad nummer $numshowsheet<br>$sh_title
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
-      !endif 
+      !endif
       !if $t<=4
        <font color=red><b>
       !else
@@ -122,21 +110,21 @@ details van werkklad nummer $numshowsheet<br>$sh_title
         <font color=green>
        !endif
       !endif
-      $t</b></font>
+      $t</font>
       !let tot_$k=$[$(tot_$k)+$t]
      </td>  
     !next k
    !endif
   </tr>
  !next m
- $table_hdtr<td align=center><b>Gemiddelde</b> van deze klas</td>
+ $table_hdtr<td align=center><b>$name_classAverage</b></td>
  <th align=center>$[rint($tot_0/$usercnt*10)/10]$sign </th>
  !for j=1 to $nbexo
   <th align=center>$[rint($(tot_$j)/$usercnt*10)/10]$sign</th>
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td align=center><b>Gemiddelde</b> van alle positieve resultaten</td>
+  $table_hdtr<td align=center><b>$name_posAverage</b></td>
   <th align=center>$[rint($tot_0/$nonzero_0*10)/10]$sign </th>
   !for j=1 to $nbexo
    <th align=center>
@@ -150,21 +138,19 @@ details van werkklad nummer $numshowsheet<br>$sh_title
   </tr>
  !endif
 $table_end
+ <p>$name_click
  <p>
- Klik op een naam voor een gedetailleerd overzicht
- !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet Vernieuw deze pagina
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
 &nbsp;.&nbsp;
-   Geef het overzicht van
+   $name_post 
     !if $job_affi=qualite
-     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet het percentage voltooid
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
     !else
-     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet de kwaliteit
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
     !endif
-   van het werk aan dit werkblad
+.
 <p>
-!!Lijst van alle
-!! !href cmd=reply&job_affi=notes cijfers
-!!.
+
 !set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
 to $wims_menu_items
 :end
