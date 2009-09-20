@@ -27,7 +27,7 @@ OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp $(Otherbin) bioinfo checkmol
+all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol
 
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
@@ -44,6 +44,9 @@ whirlgif::
 mathexp::
 	cd mathexp; make mathexp
 
+symtext::
+	cd symtext; make
+	
 bioinfo::
 	cd bioinfo; make && $(STRIP) $(bioinfo)
 	cp $@/*.o $(OTHERDIR)
@@ -63,6 +66,7 @@ clean:
 	cd whirlgif; make clean
 	cd bioinfo; make clean
 	cd checkmol; make clean
+	cd symtext; make clean
 
 distclean:
 	rm -f $(progs2)
