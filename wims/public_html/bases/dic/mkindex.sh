@@ -11,7 +11,7 @@ do
   k=`echo $j | sed 's/^'$i'.//'`
   echo "cnt$k="`grep -c . $j` >>.cnt.$i
  done
- if [ $i == fr ]; then
+ if [ $i = fr ]; then
   for f in conj accord; do
    grep -v '#' $f.src > $f
    ../../../../bin/dicsort $f
