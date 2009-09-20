@@ -21,7 +21,7 @@
 		Printbare versie,\
 		Opnieuw,\
 		ga naar,\
-		Refresh,\
+		Vernieuwen,\
 		Opslaan,\
 		ja,\
 		nee,\
@@ -117,11 +117,11 @@
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Homepagina van je klas,Toevoegen aan het werkblad,\
-		Schrijf naar je leraar,Uitloggen,\
+		Schrijf naar je docent,Uitloggen,\
 		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
 		Je hebt het behalen van cijfers opgeschort,\
 		Open cijfer registratie,Sluit cijfer registratie,\
-		U bent de leraar van deze klas,\
+		U bent docent van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
 		Lesmateriaal in pedagogische werkvolgorde,\
@@ -284,14 +284,14 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status
 
 
 !set wims_name_supervisor=supervisor
-!set wims_name_teacher=Leraren accounts
-!set wims_name_addteacher=Nieuwe leraar
+!set wims_name_teacher=Docenten accounts
+!set wims_name_addteacher=Nieuwe docent
 !set wims_name_modteacher=Leraar eigenschappen
-!set wims_name_delteacher=Verwijder een leraar
+!set wims_name_delteacher=Verwijder een docent
 !set wims_name_student=Leerlingen accounts
-!set wims_name_addstudent=Nieuwe leerling
-!set wims_name_modstudent=Leerling eigenschappen
-!set wims_name_delstudent=Verwijder een leerling
+!set wims_name_addstudent=Nieuwe student
+!set wims_name_modstudent=Studenten eigenschappen
+!set wims_name_delstudent=Verwijder een student
 !set wims_name_backstruct=Backup van de gehele structuur
 !set wims_name_group=portaal
 !set wims_name_portal=portaal
@@ -331,7 +331,7 @@ wims_name_csv
 !if adm/class/userlist isin $module or reguser isin $module
 !distribute line Lijst van alle leerlingen \
 Cijfers \
-Be&euml;indig deze tentamen sessie\
+Beeindig deze tentamen sessie\
 Details van het werk\
 Schors deze student\
 Ruwe gegevens\
@@ -343,7 +343,7 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 !endif
 
 !if adm/manage isin $module
-  !distribute line Other maintenance tasks\
+  !distribute line Andere server instellingen\
   into wims_name_sitegestion
 !endif
 
@@ -377,8 +377,8 @@ deactiveer de html-editor\
 Let op: veranderingen worden niet opgeslagen als deze optie tijdens het schrijven wordt veranderd\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
-!distribute items Achternaam,Voornaam,email,Login\
+!distribute items Achternaam,Voornaam,email,Loginnaam\
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
 wims_name_Login
 
-!set wims_name_Show=Show
+!set wims_name_Show=Laat zien

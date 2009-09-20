@@ -14,5 +14,11 @@ Herhaalde antwoorden worden genegeerd.
  !exit
 !endif
 
-Type of error: $wims_error $wims_error_parm.
+!if $wims_error=no_ldap_parameter
+De met een asterix gemarkeerde velden moeten worden ingevuld.
+Raadpleeg desgewenst eerst de documentatie van uw <tt>ldap</tt> server. 
+ !exit
+!endif
+
+Soort foutmelding: $wims_error $wims_error_parm.
 
