@@ -205,12 +205,20 @@ $wims_name_part_list
   <tr><td>$name_pickup:
   </td><td>&nbsp;&nbsp;
   !reset tmp
+  !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
   !for i=1 to $activecnt
    !set sh=!line $i of $activesheets
    !set se=!item 1 of $sh
-   !set ti=!item 3 to -1 of $sh
-   !set ti=!replace internal , by &#44; in $ti
-   !set tmp=!append item $se: $ti to $tmp
+   !if $seq_open!=yes
+    !set ti=!item 3 to -1 of $sh
+    !set ti=!replace internal , by &#44; in $ti
+    !set tmp=!append item $se: $ti to $tmp
+   !else
+    !set ti=!item 4 to -1 of $sh
+    !set ti=!replace internal , by &#44; in $ti
+    !set seq=!item 3 of $sh
+    !set tmp=!append item $seq/$se: $ti to $tmp
+   !endif
   !next i
   !set ash=$activesh
   !for i=1 to $eactivecnt
