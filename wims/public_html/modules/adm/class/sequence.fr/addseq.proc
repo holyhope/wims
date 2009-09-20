@@ -43,8 +43,11 @@ new_data=!append line $list to $new_data
 !writefile wimshome/log/classes/$wims_class/seq/.sequence$seq $new_data\
 $visible
 
+s_ =!record 0 of .sequences
+s_=!line 2 to -1 of s_
 !if $seq= $[$seq_cnt+1]
  seq_cnt=$[$seq_cnt+1]
- !writefile wimshome/log/classes/$wims_class/seq/.sequences $seq_cnt
+ !writefile wimshome/log/classes/$wims_class/seq/.sequences $seq_cnt\
+ $s_
 !endif
 

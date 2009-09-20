@@ -24,3 +24,7 @@ wims_prefix=class user seq
 seq_cnt=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
 seq_cnt=!line 1 of $seq_cnt
 !read $job.proc
+
+!if $wims_user=supervisor and $job iswordof addseq moveup show delete
+  !read sheetindex
+!endif
