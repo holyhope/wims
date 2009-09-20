@@ -1,17 +1,26 @@
-cc=@CC@
+CC=@CC@
 CFLAGS=@CFLAGS@
+CXX = g++
+CXXFLAGS= -g
+RECODE_SUPPORT =
+LIBS= -lm -lgmp -lgmpxx
 
-units-filter : unites.o
-	#$(cc) $(CFLAGS) -o units-filter unites.o -lfl -lm -lrecode
-	$(cc) $(CFLAGS) -o units-filter unites.o -lfl -lm
+all : units-filter
 
-unites.o : unites.c
-	#$(cc) $(CFLAGS) -c -DRECODE_SUPPORT=1 unites.c
-	$(cc) $(CFLAGS) -c unites.c
+test : all
+	sh units-test
 
-unites.c : unites.l unites.y unites.h
-	flex  unites.l
-	bison  --verbose -o unites.c unites.y
+units-filter : unitesparser.o
+	${CXX} $(CXXFLAGS) $(LIBS) -o units-filter unitesparser.o
+
+unitesparser.o : uniteslex.cc unitesparser.cc
+	${CXX} $(CXXFLAGS) -c $(RECODE_SUPPORT) unitesparser.cc 
+
+uniteslex.cc : unites.l unites.y unites.h
+	flex  -o uniteslex.cc unites.l
+
+unitesparser.cc: unites.y
+	bison  --verbose -o unitesparser.cc unites.y
 
 clean :
-	rm -f *~ unites.c *.o lex.yy.c *.output units-filter
+	rm -f *~ uniteslex.cc unitesparser.cc *.o  *.output units-filter
