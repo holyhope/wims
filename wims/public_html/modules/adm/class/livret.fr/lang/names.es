@@ -17,7 +17,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 
 !set name_no_competence=Il n'y a aucune $name_competence dans ce livret !
 !set name_noyetparticipant=Cette classe n'a pas encore de participant.
-!set name_info=Informations sur cette $anme_competence &nbsp;
+!set name_info=Informations sur cette $name_competence&nbsp;
 !set name_param_change=Voici les paramètres que vous pouvez changer&nbsp;
 !set name_color=Couleur des fonds des cases en fonction du niveau de validation du $name_n_palier &nbsp;
 !set name_score_modify=Les scores des exercices des feuilles de travail suivantes sont neutralisés pour le calcul des niveaux d'acquisition des $name_n_paliers &nbsp;
@@ -49,15 +49,15 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_con
 
 !!------------------------------- definition des noms de liens pour wims_menu_items
 
- !if $wims_user=supervisor
-  !let tmp= Gestión de los participantes y notas 
- !else 
-  !let tmp= Mis notas 
- !endif
- !distribute line Nueva competencia \
+!if $wims_user=supervisor
+ !let tmp= Gestión de los participantes y notas 
+!else 
+ !let tmp= Mis notas 
+!endif
+!distribute line Nueva competencia \
 Configurar \
 $tmp\
 Cuaderno de la clase \
 Cuaderno de competencias \
-  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret 
-!endif
+ into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret 
+
