@@ -3,7 +3,7 @@
 !!!bound job within all,filter,login default all
 job=!items2words $job
 !default job=all
-aim=photo
+aim=photourl
 
 rac=wimshome/log/classes/$wims_class
 wims_superclass=!defof class_superclass in $rac/.def
@@ -22,8 +22,8 @@ file=$rac/.userlist
 !if $job=all
   loginlist_=all
 !endif
-
-$aim_exists=0
+!default loginlist_=all
+$(aim)_exists=0
 
 variable=!trim $variable
 !set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
@@ -80,7 +80,7 @@ variable=!trim $variable
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_!=
      list_user=!append line $login,$l_name_,$f_name_,$aim_ to $list_user
-     !set aim_exists=1
+     !set $(aim)_exists=1
     !else
      list_user=!append line $login,$l_name_,$f_name_, to $list_user
     !endif
@@ -98,7 +98,7 @@ variable=!trim $variable
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_ !=
      list_user=!append line $login,$l_name_,$f_name_,$ph_ to $list_user
-     !set aim_exists=1
+     !set $(aim)_exists=1
     !else
      list_user=!append line $login,$l_name_,$f_name_, to $list_user
     !endif
