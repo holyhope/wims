@@ -28,6 +28,7 @@
 		Download,\
 		Sturen,\
 		Details,\
+		Laat zien,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -40,7 +41,8 @@
 	wims_name_modify,wims_name_print,wims_name_import,\
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
-	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail
+	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
+	wims_name_Show
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
@@ -381,4 +383,6 @@ into wims_name_active, wims_name_desactive,wims_name_speck_warning
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
 wims_name_Login
 
-!set wims_name_Show=Laat zien
+!distribute line Photo Board\
+Send mail\
+into wims_name_photoboard,wims_name_sendmail
