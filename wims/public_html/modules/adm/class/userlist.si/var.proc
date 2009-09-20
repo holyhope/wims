@@ -56,20 +56,53 @@ sheetcnt=!itemcnt $showsheet
  examweights=!record 0 of wimshome/log/classes/$wims_class/exams/.eseverity
  n=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
  !distribute item $ into activevars,activesh
- !for i=1 to $n
-  s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
-  !distribute lines $s into a,e,t,d
-  shw=!line $i+1 of $shweights
-  shw=!word 1 of $shw
-  !default shw=1
-  !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
-   ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
-   activesheets=!append line $i,$ec,$t to $activesheets
-   activesh=!append item $i to $activesh
-  !endif
- !next i
 
-
+ seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
+ !if $seq_open!=yes
+  !for i=1 to $n
+   s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+   !distribute lines $s into a,e,t,d
+   shw=!line $i+1 of $shweights
+   shw=!word 1 of $shw
+   !default shw=1
+   !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
+    ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+    activesheets=!append line $i,$ec,$t to $activesheets
+    activesh=!append item $i to $activesh
+   !endif
+  !next i
+ !else
+!!!for sequences
+  !set seq_=!record 0 of wimshome/log/classes/$wims_class/seq/.sequences
+ !set seq_reverse=!defof sequence_reverse in wimshome/log/classes/$wims_class/seq/.def
+  seq_cnt=!line 1 of $seq_
+!!!!!! for compatibility. Will be remove in the definitive version
+  !read adm/class/sheetindex
+!!!!!!
+  !for ii=1 to $seq_cnt
+   !if $seq_reverse=yes
+      !set iii=$[$seq_cnt+2-$ii]
+     !else
+      !set iii=$[$ii+1]
+    !endif
+    n=!itemcnt $(seq_[$iii;])  
+    !for j=2 to $n
+      !if sheet isin $(seq_[$iii;$j])
+        i=!word 2 of $(seq_[$iii;$j])
+        s=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+        !distribute lines $s into a,e,t,d
+        shw=!line $i+1 of $shweights
+        shw=!word 1 of $shw
+       !default shw=1
+       !if $a>0 and ($a<2 or $wims_user=supervisor or $shw>0)
+        ec=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+        activesheets=!append line $i,$ec,$[$iii-1],$t to $activesheets
+        activesh=!append item $i to $activesh
+      !endif
+     !endif
+   !next j
+ !next ii
+ !endif seq_open
  
  ecnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
  !for i=1 to $ecnt

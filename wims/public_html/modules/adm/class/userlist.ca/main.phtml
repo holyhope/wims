@@ -137,7 +137,7 @@ $wims_name_part_list
     !distribute words $p_ into p1,p2
     !if $job_affi=notes
      !if $p2!=$empty
-      !distribute item $[$p1/100],$[$p2/10] into x_,y_ 
+      !distribute item $[$p1/100],$[$p2/10] into x_,y_
       !set p_=$[rint(100*$scoremax*$(f_$j))/100]
      !else
       !set p_=0
@@ -205,12 +205,20 @@ $wims_name_part_list
   <tr><td>$name_pickup:
   </td><td>&nbsp;&nbsp;
   !reset tmp
+  !set seq_open=!defof sequence_open in wimshome/log/classes/$wims_class/seq/.def
   !for i=1 to $activecnt
    !set sh=!line $i of $activesheets
    !set se=!item 1 of $sh
-   !set ti=!item 3 to -1 of $sh
-   !set ti=!replace internal , by &#44; in $ti
-   !set tmp=!append item $se: $ti to $tmp
+   !if $seq_open!=yes
+    !set ti=!item 3 to -1 of $sh
+    !set ti=!replace internal , by &#44; in $ti
+    !set tmp=!append item $se: $ti to $tmp
+   !else
+    !set ti=!item 4 to -1 of $sh
+    !set ti=!replace internal , by &#44; in $ti
+    !set seq=!item 3 of $sh
+    !set tmp=!append item $seq/$se: $ti to $tmp
+   !endif
   !next i
   !set ash=$activesh
   !for i=1 to $eactivecnt
@@ -245,7 +253,7 @@ $wims_name_part_list
     !endif
    !endif
 . </p>
- 
+
 !endif (usercnt=0?)
 
 !set wims_menu_items=!append line photoboard,1,module=adm/class/photoboard\

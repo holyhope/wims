@@ -71,7 +71,7 @@
 !form reply
     <input type=hidden name=job value=csv>
     <input type=hidden name=csvtype value=download>
-    <input type=submit value="Download">&nbsp;klasse data voor Uw spreadsheet.<br>
+    <input type=submit value="$wims_name_download">&nbsp;klasse data voor Uw spreadsheet.<br>
     Specificeer het gewenste spreadsheet type:
     <ul>
 	<li>Formaat
@@ -90,11 +90,11 @@
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
-    <hr>
-    !set wims_form_method=file
-    !form reply
-	<input type=hidden name=job value=csv>
-        <input type=hidden name=csvtype value=upload>
+  <hr>
+  !set wims_form_method=file
+  !form reply
+  <input type=hidden name=job value=csv>
+  <input type=hidden name=csvtype value=upload>
         <input type=submit value="Stuur">
         &nbsp;klasse data naar de server.
 	<ul>
@@ -116,3 +116,5 @@
     </form>
 !endif
 
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

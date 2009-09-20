@@ -58,7 +58,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_qualitygot=Quality computed over a maximum of 10
 !set name_percentagedone=Percentage of carried out work
 !set name_post=Post
-  
+
 !if $job=userprop
   !distribute items Spremeni,©tevilka registracije,Opombe,URL d'une photo,Spremenljivke (tehniène),\
   Geslo uèilnice,Vpi¹ite geslo, ki bo zahtevano za registracijo novih uporabnikov.\
@@ -77,4 +77,13 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
   !set name_title_getraw=!nosubst Podrobnosti dela uporabnika z imenom $firstname, $lastname<br>(neobdelani podatki)
   !goto end
 !endif
+
+!set name_direct_score=direct score listing
+
+!if $job=transfer
+   !set name_title_transfer=Activity transfer
+   !distribute items Merge, Replace,Examine\
+   into name_merge, name_replace,name_show
+!endif
+!set name_topten=!nosubstitute Top $class_topscores of the class average
 :end

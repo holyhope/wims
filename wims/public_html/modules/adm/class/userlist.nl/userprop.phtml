@@ -1,6 +1,5 @@
 
 !read adm/title.phtml 3\
-\
 Eigenschappen studenten account
 !if $error!=$empty
  !read msg.phtml
@@ -12,26 +11,27 @@ Eigenschappen studenten account
 <input type=hidden name=job value=userprop>
 <input type=hidden name=getuser value=$getuser>
 <p>$table_header
-$table_tr <th>Login naam<td><tt>$getuser</tt>
-$table_tr <th>Wachtwoord<td>
-	!href module=adm/class/passwd&job=part&part=$getuser Verander
-$table_tr <th><label for="up_lastname">Achternaam</label><td>
+$table_tr<th>$wims_name_Login<td><tt>$getuser</tt>
+$table_tr<th>$wims_name_Password<td>
+	!href module=adm/class/passwd&job=part&part=$getuser $name_change
+$table_tr<th><label for="up_lastname">$wims_name_lastname</label><td>
 	<input size=$inplen name=up_lastname id=up_lastname value="$user_lastname">
-$table_tr <th><label for="up_firstname">Voornaam</label><td>
+$table_tr<th><label for="up_firstname">$wims_name_firstname</label><td>
 	<input size=$inplen name=up_firstname id=up_firstname value="$user_firstname">
-$table_tr <th><label for="up_email">E2mail adres</label><td>
+$table_tr<th><label for="up_email">$wims_name_email</label><td>
 	<input size=$inplen name=up_email id=up_email value="$user_email">
-$table_tr <th><label for="up_regnum">Registratie nummer</label><td>
+$table_tr<th><label for="up_regnum">$name_regnum</label><td>
 	<input size=$inplen name=up_regnum id=up_regnum value="$user_regnum">
 !if $wims_user=supervisor
- $table_tr <th><label for="up_comments">Opmerkingen</label><td>
+ $table_tr<th><label for="up_comments">$name_comments</label><td>
 	<input size=$inplen name=up_comments id=up_comments value="$user_comments">
- $table_tr <th><label for="up_vars">Variabelen (technisch)</label></th><td>
+ $table_tr<th><label for="up_photourl">$name_photourl</label><td>
+	<input size=$inplen name=up_photourl id=up_photourl value="$user_photourl">
+ $table_tr<th><label for="up_vars">$name_vars</label></th><td>
 	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars id=up_vars>$user_vars</textarea>
-!else
- $table_tr <th><label for="passcheck">klasse wachtwoord</label><td>
-	<input size=14 type=password name=passcheck id=passcheck> <br>
-	<small>Geef het wachtwoord dat nodig is voor het starten van de aanmeldings procedure voor nieuwe studenten</small>
+ $table_tr<th><label for="passcheck">$name_classpassword</label><td>
+ 	<input size=14 type=password name=passcheck id=passcheck> <br>
+	<small>$name_enterpassword</small>
 !endif
 $table_hdtr<td align=center colspan=2>
 <input type=submit name=reg value="$wims_name_tosave"> &nbsp;

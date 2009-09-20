@@ -22,6 +22,11 @@ $table_tr<td>sheet1,sheet2,...</td><td>cijfers voor werkblad no.1, werkblad no.2
 $table_tr<td>exams</td><td>cijfers voor alle proefwerken</td></tr>
 $table_tr<td>exam1,exam2,...</td><td>cijfers voor proefwerk no.1, proefwerk no.2 ,... etc</td></tr>
 $table_tr<td>manuals</td><td>alle handmatig ingevoerde cijfers [1 voor 1]</td></tr>
+!else
+$table_tr<td>participate (dans le cas du portail d'un établissement uniquement, 
+réservé à son administrateur)</td><td>numéro des classes 
+auxquelles est inscrit le participant sous la forme abcdefg/1/101
+où abcdefg est le numéro du portail. S'il y a plusieurs classes, les séparer par des espaces.</td></tr>
 !endif
 $table_tr<td>manual1,manual2,...</td><td>handmatig ingevoerd cijfers, gespecificeerd</td></tr>
 $table_tr<td>var_xxx</td><td>de waarde van de technische variabele <tt>xxx</tt></td></tr>
@@ -30,5 +35,7 @@ $table_end <p>
 Velden met een onbekend of foutief sleutelwoord worden stilletjes genegeerd.<br>
 De technische variabelen zijn gereserveerd voor experts:<br>
 er kunnen o.a. zaken zoals "specifieke begin/eind tentamen tijdsstippen" voor speciale [individuele] gevallen mee worden ingesteld.
-
-
+<p>
+!if $special_parm=upload
+Dans le cas du champ <tt>participate</tt>, il est possible de rajouter des classes mais pas d'en enlever.
+!endif

@@ -1,18 +1,17 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
-
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
+!if $cmd=help
+ !read help.phtml
+ !goto end
+!endif
+
+!if $job!=$empty and $job!=sheets
+ !read $job.phtml
+ !goto end
+!endif
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
