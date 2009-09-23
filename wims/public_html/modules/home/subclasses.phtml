@@ -10,7 +10,6 @@
   !set liste_class=
   !set liste_program=
   !set liste_course=
-  
   !for c in $(subclass$cnt)
    !set name=!defof class_description in wimshome/log/classes/$c/.def
    !set type=!defof class_type in wimshome/log/classes/$c/.def
@@ -69,12 +68,19 @@
       <ul><!--2-->
       !for k_ =1 to $sub_cnt
        !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
+       !set split=!replace internal / by , in $(sub_[$k_;1])
+       !set progstyle=!defof class_progstyle in wimshome/log/classes/$wims_superclass/$(split[1])/$(split[3])/.def
        !set name_c=!defof class_description in wimshome/log/classes/$parent_c/.def
-       <li> &nbsp; $arr&nbsp;
-       <span class="wims_classes_direct_course">
-       !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
+       !if  optional iswordof $progstyle
+         !set inscrit=!defof user_class in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.users/$wims_user
+       !endif
+       !if mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit or $wims_user=supervisor
+        <li> &nbsp; $arr&nbsp;
+        <span class="wims_classes_direct_course">
+        !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
        ($(CL_Name[4]))
-       </span>
+        </span>
+       !endif
       !next k_
        </ul><!--2-->
      !endif
