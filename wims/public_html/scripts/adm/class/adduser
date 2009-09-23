@@ -78,7 +78,11 @@ replace_=
    !if $n iswordof comments photourl
      l_=!char 1 to 5000 of $l_
     !else
-     l_=!char 1 to 40 of $l_
+      !if $n iswordof participate
+        l_=!char 1 to 500 of $l_
+      !else
+        l_=!char 1 to 40 of $l_
+      !endif
    !endif
    replace_=!append line !set user_$n=$l_ to $replace_
   !endif
