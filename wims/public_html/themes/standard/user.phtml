@@ -92,13 +92,14 @@ $wims_classname <small>($(wims_name_$class_typename))</small>
 !endif
 
 $U_greet
-<small>
-!if $class_type isin 234
- !href module=adm/class/userlist&job=userprop $U_account
- &nbsp;
-!endif
+!!<small>
+$class_type
+!!!if $class_type isin 234
+!! !href module=adm/class/userlist&job=userprop $U_account
+!! &nbsp;
+!!!endif
 !!!href target=wims_help module=help/main&chapter=3 $N_help
-</small>
+!!</small>
 
 !if & isin $newmsgcnt or $newmsgcnt>0
  <br>
@@ -361,8 +362,9 @@ $U_greet
 !read ./adm/oneitem.phtml myscore,1,module=adm/class/userlist.$lang
 !!!href module=adm/class/userlist.$lang $im "gifs/themes/$wims_theme_image/myscore.gif" alt="myscore" title=myscore"> $U_myscore
 </div><!--menuitem-->
+<div class="itemsep"></div><!--itemsep-->
 !endif
-!if $class_type isin 234
+!if $class_type isin 013
 <div class="menuitem">
 !read ./adm/oneitem.phtml account,1,module=adm/class/userlist&job=userprop
 !!! !href module=adm/class/userlist&job=userprop $im "gifs/themes/$wims_theme_image/account.gif" alt="account" title="account"> $U_account
@@ -380,8 +382,8 @@ $U_greet
    </div><!--menuitem-->
 !next i_
 !endif
-<div class="itemsep"></div><!--tailsep-->
 !if $wims_user=supervisor
+ <div class="itemsep"></div><!--tailsep-->
  <div class="menuitem">
  !read ./adm/oneitem.phtml backteacher,1,$
  </div><!--menuitem-->

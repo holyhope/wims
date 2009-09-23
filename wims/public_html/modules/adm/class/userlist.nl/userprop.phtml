@@ -1,6 +1,6 @@
 
 !read adm/title.phtml 3\
-Eigenschappen studenten account
+$wims_name_account_property
 !if $error!=$empty
  !read msg.phtml
  <p><hr> <p>
@@ -29,6 +29,7 @@ $table_tr<th><label for="up_regnum">$name_regnum</label><td>
 	<input size=$inplen name=up_photourl id=up_photourl value="$user_photourl">
  $table_tr<th><label for="up_vars">$name_vars</label></th><td>
 	<textarea wrap="off" cols=$[$inplen-1] rows=4 name=up_vars id=up_vars>$user_vars</textarea>
+!else
  $table_tr<th><label for="passcheck">$name_classpassword</label><td>
  	<input size=14 type=password name=passcheck id=passcheck> <br>
 	<small>$name_enterpassword</small>
@@ -39,8 +40,10 @@ $table_hdtr<td align=center colspan=2>
 $table_end
 </form>
 
- !set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$getuser\
- workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
+!set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$getuser\
+to $wims_menu_items
+!if $wims_user=supervisor
+ !set wims_menu_items=!append line workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
  part_list,1,cmd=resume\
 to $wims_menu_items
