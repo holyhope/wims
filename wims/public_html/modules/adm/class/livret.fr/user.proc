@@ -1,9 +1,16 @@
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 tooltip_parm=FONTSIZE,'14pt',ABOVE,'true'
 
+wims_superclass=!defof class_superclass\
+in wimshome/log/classes/$wims_class/.def
+
+!if $wims_superclass=$empty
+ wims_superclass=$wims_class
+!endif
+
 t=!defof user_exists\
 user_firstname\
-user_lastname in wimshome/log/classes/$wims_class/.users/$user
+user_lastname in wimshome/log/classes/$wims_superclass/.users/$user
 !distribute line $t into test,user_firstname,user_lastname
 !if $test!=yes
  error=nouser
