@@ -22,7 +22,14 @@
   !exit
  !endif
 !else
- Seleziona il nome di un corso.
+Scegliete la riga corrispondente al corso o all'istituzione 
+che vi interessa.
+ <p>
+Se non siete ancora iscritti, cliccate su <tt>$name_register</tt> 
+(se il corso è <tt>riservato</tt>, avrete bisogno della password
+che vi ha fornito il vostro docente).
+
+  <p>Altrimente, cliccate semplicemente su <tt>$name_enter</tt> per accedere. 
 !endif
 
 !if $sccnt>0
@@ -36,7 +43,7 @@
   !if $superclass=$empty
    !set show=$inst<br>$cl
   !else
-   !set show=$cl
+   show=$inst
   !endif
   !set supv=!item 9 of $l
   !if $supv=$empty
@@ -57,7 +64,7 @@
   $supv
   </td> <td align=center>
   !if $pswd=$empty
-   open
+   aperto
  !else
   riservato
  !endif
@@ -86,7 +93,7 @@
    <th>Nome corso</th><th colspan=2>Studente</th>
    <th>Docente</th><th>Livello</th><th>Tipo di accesso</th>
    !if $superclass!=$empty and $stype=4
-    <th>Continua</th>
+    <th>+</th>
    !endif
  !endif
 !for i=1 to $clcnt
@@ -115,14 +122,14 @@
   !if $splevel=$empty or $splevel=2
    !href module=adm/class/reguser&class=$code $name_register
   !else
-   <font color=grey>Registrazione</font>
+   <font color=grey>$name_register</font>
   !endif
   </td><td align=center>
   $supv
   </td><td align=center>$(n_$l_)<br>anno $y_</td>
  <td align=center>
   !if $pswd=$empty
-   open
+   aperto
  !else
    riservato
   !endif
@@ -139,10 +146,4 @@
  $table_end <p>
 !endif
 
-Seleziona il nome del corso per cominciare a lavorare (se ti sei già 
-registrato).
-<p>
-Seleziona `$name_register' per iscriverti al corso (per i corsi 
-con tipo di connessione `riservato' è necessario ottenere la
-password di accesso dal docente).
 
