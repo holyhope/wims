@@ -52,13 +52,13 @@
 !endif
 
 !if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
-!set wims_menu_items=!append line createdoc,1, cmd=reply&job=creat\
-doctry,1,cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd\
-to $wims_menu_items
 !! !href cmd=reply&job=creat Crea un nuovo documento
 !!, oppure
 !! !href cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd scrivi un nuovo documento utilizzando un modello
-. <p>
+!!. <p>
+!set wims_menu_items=!append line createdoc,1, cmd=reply&job=creat\
+doctry,1,cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd\
+to $wims_menu_items
 !endif
 
 !tail
