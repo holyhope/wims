@@ -1,9 +1,4 @@
 !reset confirm
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!header
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -18,17 +13,15 @@
  !goto end
 !endif
 
-<center>$classname
-<p>
-<h1>Het Werkblad: $sheet
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title
 
+<p>
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug naar uw klas
-. <p>
  !goto end
 !endif
 
@@ -37,164 +30,57 @@
  !goto end
 !endif
 
-!if $activetest>0
- !form reply
- <input type=hidden name=job value=text>
- Dit werkblad is
- !if $activetest=1
-  actief.
-  !href cmd=reply&job=expire <b>Laat nu verlopen</b>
-.
- !else
-  !if $activetest=2
-  nu verlopen , maar wel <b>nog steeds zichtbaar</b> voor uw leerlingen.
-   !href cmd=reply&job=hide Maak het <b>onzichtbaar</b> voor leerlingen
-  !else
- nu <b>verlopen en onzichtbaar</b> voor uw leerlingen
-   !href cmd=reply&job=expire Maak het <b>weer zichtbaar</b> voor mijn leerlingen
-  !endif
-  .
-  !href cmd=reply&job=reactivate Maak het weer Actief
-. <p>
- !endif
- <p><center><table border=2>
- <tr><td align=right>Titel:
- <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modify>
- <tr><td align=right>Beschrijving:
- <td><textarea name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Presentatie pagina:
- <td><input size=30 name=prpage value="$prpage"><small>
- !href target=wims_mhelp cmd=help&special_parm=sheetpage help
- </small>
- <tr><td align=right>Uiterste Gebruiksdatum:<td>
- !distribute item $[$expday],$[$expmon] into expday,expmon
- !formselect expday from 1 to 31
- !formselect expmon from 1 to 12 prompt $months
- !formselect expyear from $thisyear to $thisyear+1
- </table></center></form> <p>
- !goto end1
+!if $activetest>-1
+ <b>Werkblad informatie :</b>
 !endif
-
-!form reply
-<input type=hidden name=job value=text>
-Titel (beperkt tot $title_limit karacters):<br>
-<input size=65 name=title value="$title"> <p>
-En hier kan een verklarende text (beperk tot $desc_limit karacters; 
-html-tags en html hyperlinks  zijn toegestaan):<br>
-<textarea rows=6 cols=65 name=desc>$desc</textarea> <p>
-Of een reeds bestaande Presentatie pagina:
-<input size=30 name=prpage value="$prpage"><small>
-!href target=wims_mhelp cmd=help&special_parm=sheetpage help
-</small> <p>
-<center><input type=submit value="OK en VERSTUREN"></center>
-
-<p>De uiterste gebruiksdatum van dit Werkblad:
-!distribute item $[$expday],$[$expmon] into expday,expmon
-!formselect expday from 1 to 31
-!formselect expmon from 1 to 12 prompt $months
-!formselect expyear from $thisyear to $thisyear+1
-&nbsp; <input type=submit value="OK en VERSTUREN">
+!read adm/sheet/sheetinfo.phtml
 
 !ifval $activetest=-1
- <p>Dit werkblad bestaat nog niet.
- <input type=submit value="Klik hier om een nieuw Werkblad te maken"> 
- (maar geef het wel eerst even een naam).
- </form>
  !goto end
-!else
- </form>
- !if $exocnt>0
-  <p>Dit werkblad is nog <b>niet geactiveerd</b>
-  !href cmd=reply&job=prep_activate <b>Klik hier</b> 
-   om het Werkblad te activeren
-   .
-    (Uw leerlingen zien alleen geactiveerde werkbladen, echter een eenmaal geactiveerd werkblad
-  kan niet meer worden veranderd !)
- !endif
 !endif
 
 :end1
-<p>
+<a name=list></a>
+<b>Content of the sheet :</b>
 !if $exocnt=0
-Dit werkblad heeft nog geen inhoud 
+ <p>Dit werkblad is leeg en heeft nog geen oefingen.
 !else
- <a name=list></a>
-De inhoudsopgave van dit Werkblad: <small>[
- !href module=adm/sheet&sh=$sheet&job=print Printbare versie
- </small>
- <ol>
- !for i=1 to $exocnt
-  <li>
-  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $ex into di,pa,re,we,ti,de,dep
-  !set dep=!trim $dep
-  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
-, $re points of weight $we.
-  !if $activetest=0
-   &nbsp;(
-   !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Move&nbsp;up
-    &nbsp;
-   !endif
-   !href cmd=reply&job=prep_modify&modif=$i Wijzigen
-   &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Verwijderen
-   !if $dep!=$empty
-    &nbsp;
-    !href cmd=reply&job=prep_modify&modif=$i Afhankelijkheden
-   !endif
-   )
-  !endif
- !next i
- </ol>
+ <small>[
+ !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
+ ]</small>
+ !read adm/sheet/sheetcontent.phtml
 !endif
 
 !if $activetest=0
- <p>Om opdrachten (oefeningen, cursusen , "gereedschappen" als calculators, etc.) aan een werkblad toe te voegen,
-ga dan naar de
- !href $ home pagina van Uw klas
- en neem het gewenste item uit de lijst van applicaties en kies een moeilijkheidsgraad.
- Gebruik hierna de link <b>"toevoegen aan werkblad"</b> helemaal onderaan de pagina om deze applicatie toe te voegen aan
- het werkblad
- </ul>
-!if $erasable=yes
-  <p>
-  U kunt ook
-  !href cmd=reply&job=prep_putsource een "broncode" toevoegen
-  aan dit werkblad, en zelfs dit werkblad
-  !href cmd=reply&job=prep_erase  Wissen
-.
- !endif
+ <p>
+ Om oefeningen (of cursussen, hulpmiddelen etc) aan een werkblad toe te voegen,
+ stel deze dan in (afhankelijk van uw wensen) en start de oefening, 
+gebruik de link onderaan de pagina van de oefening "Voeg toe aan werkblad".
+ <p>
+ U kunt :
+  <ul>
+   <li> de interne zoekmachine gebruiken :
+	!read adm/search_engine/form.phtml
+   </li>
+   <li> 
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li>
+  </ul>
 !endif
 
-!if $activetest>=0
- <p>
- !href module=adm/sheet&sh=$sheet Zo zien Uw leerlingen dit Werkblad.
- 
- &nbsp;
- !href cmd=reply&job=getsource de broncode van dit Werkblad.
- <p>
- !form reply
- <input type=hidden name=allow value=yes>
- De score registratie is
- !formselect allowtype list all, none, select prompt open voor iedereen,gesloten,open voor de volgende computers (en/of tijden):
- <br><input size=60 name=IPlist value="$IPlist"> <br>
- <input type=submit value="OK en VERANDEREN">
- </form>
- <small><b>Hint.</b>
- In the selective open mode, you can make time
- restrictions for score registrations, by adding words 
- <font color=blue><b>
- <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
- (starting time) and/or
- <font color=blue><b>
- <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
- (ending time). These must be in the
- SERVER's local time, and must be separated from other words by white spaces.
- </small>
-!endif
 :end
+!if $activetest>=0
+ !if $activetest=0
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
+ !endif
+ !if $job!=getsource
+  !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
+ !endif
+ !let wims_menu_items=!append line ,0,\
+printable,1,module=adm/sheet&sh=$sheet&job=print\
+participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
+!endif
+
 !tail
 
 !distribute item ,, into job,source,title,desc,prpage

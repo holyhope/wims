@@ -2,5 +2,38 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  van <b><font color=green>$wims_institutionname</font></b>
  
-!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
+!set months=Jan,Feb,Mar,Apr,Mei,Jun,Jul,Aug,Sept,Okt,Nov,Dec
+
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
+!set statutaction=Activeren,Laat verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
+!set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
+
+!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Voeg een broncode toe,\
+		zo zien studenten het werkblad,\
+		Broncode van het werkblad \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!let name_shtab=No,Titel,Omschrijving,Punten,Gewicht,Afhankelijkheden,Akties
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=Werkblad aanmaak pagina
+ !set name_title=!nosubst Aanmaken van werkblad $sheet
+!else
+ !let wims_name_sheetadmin=Werkblad beheer
+ !set name_title=!nosubst Beheer van werkblad $sheet
+!endif
+
+!let name_shinfo=!nosubst Titel <small>(beperkt tot 80 karakters)</small>,Status,\
+Omschrijving <br></small>(beperkt tot $desc_limit karakters; html en links toegestaan)</small>,\
+Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle delende klassen :
+!let name_allowtype=open voor iedereen,gesloten voor iedereen, open voor de volgende netwerkadressen (en/of tijden) :
+!let name_mksheet=Maak het werkblad
+
+!if $job=student
+  !set name_title=Werkblad $sheet<br>$title Presentatie voor deelnemers)
+  !set name_sheetempty=Het werkblad is leeg! Waarschijnlijke een foutje van de docent.
+  !set name_assignedwork=De opdrachten in dit werkblad
+  !set name_quality=0 uit $[$re] punten behaald, kwaliteit
+!endif
 

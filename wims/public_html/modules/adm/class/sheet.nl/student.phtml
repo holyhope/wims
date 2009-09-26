@@ -1,17 +1,15 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Werkblad $sheet<br>$title\
-(Presentatie voor leerlingen)
+$name_title
 
 <div class="wims_sheet_desc">$desc</div><p>
 
 !if $exocnt=0
-Dit werkblad is leeg!
-Er staan geen opdrachten in.
-Waarschijnlijk een foutje van je leraar
+ $wims_name_sheetempty
 !else
- Opdrachten in dit werkblad:<p><ul>
+ $name_assignedwork:
+ <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
@@ -19,7 +17,7 @@ Waarschijnlijk een foutje van je leraar
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
-   <small>0 uit $[$re] punten behaald, gemiddeld cijfer
+   <small>$name_quality
    0/10. </small>
   !endif
   </p>
