@@ -29,6 +29,7 @@
 		Send,\
 		Detalles,\
 		Montrer,\
+		Editer,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -162,7 +163,7 @@
   into wims_name_classcreate
 !endif
 
-!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty
+!if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty or $module!=
   !distribute line Probar el módulo \
    Gestor de documento \
    Contenido del módulo \
@@ -187,12 +188,14 @@
    Atras\
    Eliminar\
    Acción\
+   Para utilizar esta actividad, debe activar java en su navigador.\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
 wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
-wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase,wims_name_action
+wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase,wims_name_action,\
+wims_name_nojava
 
 !distribute line Volver a la página de creación de ejercicios \
    Lista de modelos \
@@ -323,20 +326,6 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
   !distribute line Otras tareas de mantenimiento \
   into wims_name_sitegestion
 !endif
-
-!!if adm/class/livret isin $module
-!! !if $wims_user=supervisor
-!!  !let tmp= Gestión de los participantes y notas 
-!! !else 
-!!  !let tmp= Mis notas 
-!! !endif
-!! !distribute line Nueva competencia \
-!!Configurar \
-!!$tmp\
-!!Cuaderno de la clase \
-!!Cuaderno de competencias \
-!!  into wims_name_add_competence,wims_name_config,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret 
-!!endif
 
 !if $wims_user=supervisor
  !distribute line Volver a la página del profesor \
