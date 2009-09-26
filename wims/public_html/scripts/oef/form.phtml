@@ -3,5 +3,68 @@
 !if $hasembedding!=yes
 <fieldset class=oefform>
 !endif
-!read ./oef/$module_language/form.phtml
+!
+!nocache
+<!-- Begin form.phtml-->
+!if $oefsteps!=$empty
+ !set fieldtot=!itemcnt $thisstep
+!else
+ !set fieldtot=$[$choicecnt+$replycnt]
+!endif
+
+!if $fieldtot<1
+ !changeto oef/noreply.phtml
+!endif
+
+!set N_=!itemcnt $embedded
+!if $fieldtot<=$N_
+ !goto send 
+!endif
+<legend>
+!if $error=$empty
+$name_enterreply:
+!else
+ $name_correctreply:
+!endif
+</legend>
+
+!if $hasembedding!=yes
+ <a name="oefform" id="oefform"> </a>
+ !form reply name="replyform" onsubmit="return formcheck();"
+!endif
+
+!if $oefsteps!=$empty and $oefstepcnt>1
+ !if $dynsteps=yes
+  ($name_step $oefstep)
+ !else
+  ($name_step $oefstep/$oefstepcnt)
+ !endif
+!endif
+<br><table border="0">
+!distribute item 1,1 into cntr,cntc
+!for t in $ansorder
+ !if $oefsteps=$empty or $t$(cnt$t) isitemof $thisstep
+  !read oef/form$t.phtml $(cnt$t)
+ !endif
+ !advance cnt$t
+!next t
+</table>
+:send
+!if $wims_fill_list!=$empty and $fillcnt>0 and $wims_fill_type!=$empty
+ !read anstype/$wims_fill_type.after
+!endif
+!if $oef_formnosubmit!=yes
+ <center>
+ <input type="submit" value="$name_sendanswer">
+ </center>
+!endif
+</form>
+!if $hasembedding!=yes
+</fieldset>
+<!-- </fieldset> end of "oefform" fieldset-->
+!endif
+
+!if $qcmgood<1 and $choicecnt>0
+ <small>$name_remark</small><p>
+!endif
 

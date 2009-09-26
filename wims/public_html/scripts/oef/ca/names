@@ -2,8 +2,95 @@
 	la resposta correcta és, les respostes correctes són\
 	into ch_choose, ch_noidea, ch_none, ch_good1, ch_goodn
 
-name_badsize=(La teva resposta no sembla tenir la mida correcta.)
-name_empty=Sisplau completa la teua resposta abans d'enviar-la.
-name_exo=Pregunta.
-name_sorry=ho sento
-name_send=Enviar
+!set name_badsize=(La teva resposta no sembla tenir la mida correcta.)
+!set name_empty=Sisplau completa la teua resposta abans d'enviar-la.
+!set name_exo=Pregunta
+!set name_sorry=ho sento
+!set name_noprint=No imprimible
+!set name_print=Versió imprimible
+!set name_send=Enviar
+!set name_sendanswer=Envia la resposta
+!set name_enterreply=Envia la resposta
+!set name_correctreply=<b>Corregeix</b> la teva resposta
+!set name_step=étape
+!set name_remark=<b>Nota.</b> Tria '$ch_none', si penses que entre les respostes\
+ presentades no n'hi ha cap de correcta.
+!set name_answeranalysis=Anàlisi de la teua resposta
+!set name_Hint=Consell
+!set name_answers=Respostes
+!set name_answer_i=!nosubstitute Resposta a l'exercici $i
+!set name_Solution=Solució
+
+!!!!
+!set name_emptytitle=Aquest mòdul és un agrupament d'exercicis. Aparentment l'has demanat\
+ sense precisar quin exercici vàlid vols fer. Pot ser que hagis clicat\
+ sobre un enllaç incorrecte, o per un error al software.\
+ 
+ !distribute line Intenta tornar a començar\
+  Aquestes sèries d'exercicis tenen un temps limitat.\
+  Aquest exercici té el temps limitat.\
+  Renova l'exercici\
+  demanar-ne una de nova\
+  Continuar la sèrie amb el següent exercici\
+  (Has d'arribar al final de la sèrie si vols obtenir una nota.)\
+  (Has estat penelitzat per excedir-te del temps límit.)\
+  En el mode d'elaboració\
+  s'inclouen per defecte les respostes correctes en els camps de resposta.\
+  insérer les bonnes réponses dans les champs.\
+ into name_restart,name_serie_limit,name_exo_limit,name_exo_renew,name_serie_renew,\
+  name_serie_nextexo,name_serie_new2,name_penalty,\
+  name_devel_mode,name_devel_warning,name_devel_insert
+ 
+!set name_serie_exo=!nosubstitute Aquest és l'exercici número $[$reply_cnt+1] d'una sèrie de $qnum exercicis.
+!set name_serie_score=!nosubstitute Has acabat una sèrie de $qnum exercicis, amb una nota de\
+   $module_score sobre 10.
+!set name_exo_score=!nosubstitute Vous avez obtenu une note de $module_score sur 10.
+
+
+!!!!
+
+!if $cmd=intro
+
+!distribute line  Ho sento, en aquest moment aquest mòdul no disposa de cap exercici. Torna més tard!\
+ Aquest mòdul conté actualment un sol exercici\
+ Tria'l.\
+ Tria els exercicis\
+ Exercicis continguts\
+ Una sèrie tindrà\
+ Nivell de dificultat\
+ Temps límit\
+ segons\
+ Nombre de réponses affichées dans les QCM&nbsp;\
+ Donner une solution (si disponible)&nbsp;\
+ Menú simplificat\
+ Menú expert\
+ Sélectionner les titres avec le mot\
+ exercicis\
+into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+name_simplifiedmenu,name_expertmenu,name_select,name_exercises
+
+
+!set name_choice=mai,si la nota no és màxima,sempre
+
+!set name_choice_check= Sempre conté la resposta correcta,\
+  Penalitzar per respostes incorrectes en respostes múltiples.,\
+  Mostrar resposta correcta.,\
+  Permetre consell (quan n'hi hagi).
+
+
+!set name_remarkintro1=<b>Nota</b>. Els exercicis s'agafaran aleatòriament entre els que triïs\
+(o entre tots els exercicis disponibles si no en tries cap).
+!if * isin $titlelist
+
+!set name_remarkintro2= Exercicis marcats amb un * són en general més difícils que els altres.
+!endif
+
+!set name_remarkintro3=Pots posar dos números al temps límit, un límit petit seguit \
+per un altre de gran. En aquest cas, al primer límit comença a diminuir-se la nota, que\
+serà 0 si el segon límit se supera.
+
+!endif
+
+
+

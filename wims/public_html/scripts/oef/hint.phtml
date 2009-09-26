@@ -1,3 +1,24 @@
 <div class=oefhint>
-!read oef/$module_language/hint.phtml
-</div>
+!set hh=!trim $hint
+!if $hh=$empty or $givehint<1
+ !read oef/$module_language/hint.phtml
+<p> 
+ <center>
+ !href cmd=resume $wims_name_resume
+.
+ </center>
+ !exit
+!endif
+
+<b>$name_Hint.</b>
+!if $hint!=$executed_str or $oef2wims_version<3.10
+ $hint
+!else
+ !read $deffile hint
+!endif
+<p><center>
+!href cmd=resume $wims_name_resume
+.
+</center>
+</div><!--oefhint-->
+

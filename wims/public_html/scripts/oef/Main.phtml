@@ -1,5 +1,168 @@
 !nocache
-!read ./oef/$module_language/Main.phtml
+!if $oef_test=yes
+ !set renewlink=cmd=next&retest=again
+ !!$header_js
+ !goto tester
+!else
+ !set init_parm=!translate + to $ $ in $module_init_parm
+ !set init_parm=!replace internal $\
+$ by ; in $init_parm
+ !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
+!endif
+
+!if $printing=yes
+ !changeto oef/print.phtml
+!endif
+
+!if $title!=$empty
+ !set module_title=$title
+ !set module_author=$author
+ !set module_address=$email
+!endif
+
+!if 0$delay2>0 and $status!=$empty
+ !set now_=$wims_nowseconds
+ !read js/chrono.phtml $[max(0,$delay1-($now_-$starttime))]
+!endif
+!set wims_html_header=!append line $header_js to $wims_html_header
+!set wims_html_header=!append line $oefcss to $wims_html_header
+
+!header1
+<h1 class="oeftitle">$title</h1>
+
+!if $module_checkdata!=yes
+ !read oef/$module_language/nodata.phtml
+ !goto end
+!endif
+
+!if $title=$empty
+ $name_emptytitle <p><center>
+ !href module=$module $name_restart
+  $wims_name_or
+ !href $ $wims_name_giveup
+ . </center>
+ !goto end
+!endif
+
+!if 0$delay1>0 and $status!=$empty
+ <p><form target="#" name=chrono><center>
+ <table border=2 bgcolor="$wims_ref_bgcolor"><tr><td>
+ &nbsp;<b><font color=$wims_name_warning!</font></b>
+ !if $qnum>1
+  $name_serie_limit.
+ !else
+  $name_exo_limit.
+ !endif
+ <input size=4 name=clock readonly onFocus="this.blur();">
+ </table>
+ </center></form> <p>
+!endif
+
+:tester
+!read oef/present.phtml
+
+!if $wims_theme_version= or $wims_theme_version<1 
+<center><hr width="50%"></center>
+!endif
+
+!if $cmd=hint
+ !read oef/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read oef/msg.phtml
+  !if $wims_theme_version= or $wims_theme_version<1 
+   <center><hr width="50%"></center>
+  !endif
+ !endif
+ !read oef/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint $name_Hint
+.
+ !endif
+ !if $help!=$empty
+  !href cmd=help $wims_name_help
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink $name_exo_renew
+.
+ !else
+  $name_serie_exo
+  !href $renewlink $name_serie_renew
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read oef/msg.phtml
+  !if $wims_theme_version= or $wims_theme_version<1 
+  <center><hr width="50%"></center>
+  !endif
+ !endif
+ !read oef/answer.phtml
+ <p>
+ !if $status!=$empty
+  $name_serie_exo
+  <p>
+  !href cmd=next $name_serie_nextexo
+ $wims_name_or
+  !href $renewlink $name_serie_renew
+. $name_serie_new2
+ !else
+  !if $qnum>1
+   $name_serie_score
+   !ifval $module_score>9.8
+    $wims_name_Congratulations
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    $name_penalty
+   !endif
+   <p>
+   !href $renewlink $name_serie_renew
+.
+   !if $wims_sheet=$empty
+    !href exo_Intro
+.
+   !endif
+  !else
+   $name_exo_score
+   !ifval $module_score>9.8
+    $wims_name_Congratulations!
+   !endif
+   !if $toolate!=$empty and $score>$module_score
+    $name_penalty
+   !endif
+   <p>
+   !href $renewlink $name_exo_renew
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!if $replydefaulted=yes
+ <p> <small>
+ $name_devel_mode:
+ !if $oef_default=yes
+  $name_devel_warning
+ !else
+  !href cmd=config&oef_default=yes $name_devel_insert
+.
+ !endif
+ </small>
+!endif
+
+!read ./endhook.phtml
+:end
+<!--fin main.phtml-->
+!tail
+
 
 !if debug iswordof $m_oefenv
  !reset module_score

@@ -3,4 +3,128 @@
 !if robot isin $session
  !changeto content.html
 !endif
-!changeto ./oef/$module_language/intromenu.phtml
+
+!readproc oef/$module_language/names
+
+<p><center><hr width="35%"></center> <p>
+
+!if robot isin $session
+ !changeto content.html
+!endif
+
+!if $wims_class!=$empty and $wims_user=supervisor
+ !distribute line $wims_oefdefault_qnum\
+$wims_oefdefault_qcmlevel\
+$wims_oefdefault_scoredelay\
+$wims_oefdefault_qcmpresent\
+$wims_oefdefault_presentsol\
+$wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check
+ !let special_parm2=expert
+!endif
+
+!if ////classes/ isin ////$module
+ !set class_header=wimshome/log/classes/$wims_class/
+!endif
+
+!read $(class_header)Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=$[min($exocnt,8)]
+!if $exocnt<1
+ !if $wims_user=supervisor and #classes/ isin #$module
+  !set wims_menu_items=!append line add_exo,1,module=adm/createxo\
+  to $wims_menu_items
+ !else
+  $name_noexercise
+ !endif
+ !exit
+!endif
+!if $exocnt=1
+ $name_oneexercise, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo $name_tryit
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value="$module">
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if select iswordof $special_parm2 and $special_parm!=$empty
+ <td align=center>$name_exercisescontaining<br>
+ <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+!else
+ <td align=center>$name_chooseexo:<td>
+!endif
+!read oef/select.phtml
+<tr><td align=center>$name_oneserie<td>
+!default qnum=1
+!formselect qnum from 1 to 9
+ $name_exercises.
+<tr><td align=center>$name_levelseverity<td>
+!default qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>$name_chrono<td>
+<input size=7 name=scoredelay value="$scoredelay"> $name_secondes.
+</td></tr>
+!read introhook.phtml
+!if expert iswordof $special_parm2
+   <tr><td align=center>
+   $name_qcmanswer: </td><td>
+   !default intro_qcmpresent=4
+   !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+   </td></tr>
+   <tr><td align=center>$name_solutiongiven? </td><td>
+   !default intro_presentsol=1
+   !formselect intro_presentsol list 0,1,2 prompt $name_choice
+   <tr><td rowspan=4>&nbsp;</td><td>
+   !default intro_check=1,2,3,4
+   !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
+   une bonne réponse dans les QCM.
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox  intro_check list 3 prompt $(name_choice_check[3])
+   </td></tr>
+   <tr><td align=left>
+   !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
+   !let tmp=!replace word expert by $ in $special_parm2
+   </td></tr>
+  !if $wims_class=$empty or $wims_user!=supervisor
+   <tr><td colspan=2 align=center>
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp $name_simplifiedmenu
+  !endif
+   <input type=hidden name=intro_expert value=yes>
+!else
+   <tr><td colspan=2 align=center>
+   !let tmp=$special_parm2 expert
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp $name_expertmenu
+!endif
+</table></center> <p><center>
+<input type=submit value="$wims_name_work">&nbsp;
+<input type=submit name=print value="$name_print">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value="$module">
+ $name_select
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value="$wims_name_send">
+ </form>
+!endif
+
+$name_remarkintro1
+
+!if * isin $titlelist
+ <p>$name_remarkintro2
+!endif
+
+<p><small>
+$name_remarkintro3
+</small>

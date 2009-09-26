@@ -2,8 +2,89 @@
 	the correct answer is, the correct answers are\
 	into ch_choose, ch_noidea, ch_none, ch_good1, ch_goodn
 
-name_badsize=(Your answer does not even have a correct size.)
-name_empty=Please complete your reply before sending it.
-name_exo=Question.
-name_sorry=sorry
-name_send=Send
+!set name_badsize=(Your answer does not even have a correct size.)
+!set name_empty=Please complete your reply before sending it.
+!set name_exo=Question
+!set name_sorry=sorry
+!set name_noprint=Non printable
+!set name_print=Printable version
+!set name_send=Send
+!set name_sendanswer=Send the reply
+!set name_enterreply=Enter your reply
+!set name_correctreply=<b>Correct</b> your reply
+!set name_step=step
+!set name_remark=<b>Remark.</b> Choose '$ch_none', if you think that the good \
+!set  choice is not among those presented.
+!set name_answeranalysis=Analysis of your reply
+!set name_Hint=Hint
+!set name_answers=Answers
+!set name_answer_i=!nosubstitute Answers to exercise $i
+!set name_Solution=Solution
+
+!!!!
+!set name_emptytitle=This module is a groupment of exercises. You have apparently requested it \
+ without precising which valid exercise you want to do. It is either because\
+ you clicked on a wrong link, or because of a software bug.
+ 
+ !distribute line Try to restart your manipulation\
+  This series of exercises is limited in time.\
+  This exercise is limited in time.\
+  Once again\
+  abandon the series and ask for a new one\
+  Continue the series with the next exercise\
+  (You must go through to the end of a series if you want a score.)\
+  (You have been punished for exceeding the time limit.)\
+  Development mode&nbsp;\
+  good replies inserted into reply fields as default.\
+  insert good replies into reply fields.\
+ into name_restart,name_serie_limit,name_exo_limit,name_exo_renew,name_serie_renew,\
+  name_serie_nextexo,name_serie_new2,name_penalty,\
+  name_devel_mode,name_devel_warning,name_devel_insert
+ 
+ !set name_serie_exo=!nosubstitute This is exercise number $[$reply_cnt+1] in a series of $qnum exercises.
+ !set name_serie_score=!nosubstitute You have finished a series of $qnum exercises, with a score of \
+   $module_score over 10.
+ !set name_exo_score=!nosubstitute Vous avez obtenu une note de $module_score sur 10.
+
+!!!!
+
+!if $cmd=intro
+ !distribute line Sorry, this module has no available exercise for the time being. Come back later!\
+    This module contains actually only one exercise\
+    Try it.\
+    Choose the exercises\
+    Exercises containing\
+    One series will have\
+    Level of severity\
+    Time limit\
+    seconds\
+    Number of items shown in multiple choices\
+    Give solution (if available)\
+    Simplified menu\
+    Expert menu\
+    Select titles containing word\
+    exercices\
+ into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+    name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+    name_simplifiedmenu,name_expertmenu,name_select,name_exercises
+
+!set name_choice=never,if the score is not maximal,always
+
+!set name_choice_check=Always contain good reply,\
+  Penalty for bad replies in multiple choices.,\
+  Show good reply.,\
+  Allow hint (when available).
+
+
+!set name_remarkintro1=<b>Remarks</b>. The exercises will be randomly taken among your choice \
+  (or among all the available exercises if your choice is empty).
+
+!if * isin $titlelist
+  !set name_remarkintro2=Exercises marked by a * are in general harder than the others.
+!endif
+
+ !set name_remarkintro3=You can put two numbers into the time limit, a smaller limit followed \
+   by a bigger one. In this case, the first limit starts score reduction, which \
+   will go to 0 if the second limit is reached.
+
+!endif

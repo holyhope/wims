@@ -4,6 +4,92 @@
 
 name_badsize=(Va¹ odgovor nima niti smiselne velikosti.)
 name_empty=Prosim, da dopolnite svoj odgovor in ga ¹ele nato po¹ljite.
-name_exo=Vpra¹anje.
-name_send=Send
+name_exo=Vpra¹anje
+name_sorry=désolé
+name_noprint=Te vaje ni moè natisniti.
+name_print=Razlièica za tiskanje
+name_send=Envoyer
+name_sendanswer=Po¹ljite odgovor
+name_enterreply=Vnesite svoj odgovor
+name_correctreply=<b>Popravite</b> svoj odgovor
+name_step=step
+name_remark=<b>Opomba.</b> Izberite '$ch_none', èe menite, da med na¹tetimi odgovori ni pravilnega.
+name_answeranalysis=Analiza va¹ega odgovora
+name_Hint=Namig
+name_answers=Odgovori
+name_answer_i=!nosubstitute Re¹itve vaje $i
+name_Solution=Solution
 
+!!!!
+
+!set name_emptytitle= Ta modul je sestavljen iz skupine vaj. Oèitno ste ga zahtevali, \
+ne da bi natanèno izbrali katero od veljavnih vaj. Morda ste kliknili na napaèno povezavo ali \
+pa gre za napako v programu.
+
+ 
+ !distribute line Poskusite znova\
+  Re¹evanje te skupine vaj je èasovno omejeno.\
+  Re¹evanje te vaje je èasovno omejeno.\
+  Obnovi vajo\
+  Prekini niz \
+  Nadaljuj niz z naslednjo vajo\
+  (Rezultat dobite le, èe zakljuèite celoten niz.)\
+  (Bili ste kaznovani zaradi prekoraèene èasovne omejitve.)\
+  Preizkusni naèin\
+  v polja za odgovore so avtomatsko vpisani pravilni odgovori.\
+  insérer les bonnes réponses dans les champs.\
+ into name_restart,name_serie_limit,name_exo_limit,name_exo_renew,name_serie_renew,\
+  name_serie_nextexo,name_serie_new2,name_penalty,\
+  name_devel_mode,name_devel_warning,name_devel_insert
+ 
+!set name_serie_exo=!nosubstitute To je vaja ¹tevilka $[$reply_cnt+1] iz niza. ©tevilo vseh vaj v tem nizu je $qnum.
+!set name_serie_score=!nosubstitute VZakljuèili ste re¹evanje niza vaj, za katerega ste dobili oceno\
+   $module_score od 10.
+!set name_exo_score=!nosubstitute Va¹ rezultat je $module_score od 10.
+
+!!!!
+
+!if $cmd=intro
+
+!distribute line Oprostite, ta modul trenutno ne vsebuje nobene dostopne vaje. Poskusite kdaj drugiè.\
+ Ta modul trenutno vsebuje eno samo vajo\
+ Preizkusite jo.\
+ Izberite vaje\
+ Exercises containing\
+ ©tevilo vaj v posameznem nizu naj bo\
+ Stopnja zahtevnosti\
+ Èasovna omejitev\
+ sekund\
+ ©tevilo mo¾nih odgovorov pri vpra¹anjih izbirnega tipa\
+ Vrni pravilno re¹itev (èe je na voljo)\
+ Osnovni meni\
+ Raz¹irjeni meni\
+ Izberi naslove, ki vsebujejo besedo\
+ exercises\
+into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+name_simplifiedmenu,name_expertmenu,name_select,name_exercises
+
+
+!set name_choice=nikoli,èe rezultat ni maksimalen,vedno
+
+!set name_choice_checkVedno je podan pravilen odgovor.,\
+  Kazen za izbiro napaènih odgovorov.,\
+  Poka¾i pravilen odgovor.,\
+  Dovoli namig (èe je pripravljen).
+ 
+
+!set name_remarkintro1=<b>Opomba</b>. Niz bo sestavljen iz nakljuènega zaporedja vaj, ki ste jih oznaèili,\
+ali med vsemi vajami, èe niste oznaèili nobene.
+
+
+!if * isin $titlelist
+!set name_remarkintro2= Vaje oznaèene z * so obièajno zahtevnej¹e od ostalih.
+!endif
+
+!set name_remarkintro3=Za èasovno omejitev lahko predpi¹ete tudi dve razlièni vrednosti: \
+najprej manj¹o, nato veèjo. V tem primeru bo prva spro¾ila le odbijanje toèk, èe pa je prese¾ena \
+tudi druga, bo rezultat naloge avtomatsko 0 toèk.
+
+
+!endif
