@@ -28,7 +28,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !distribute items Titel van de $name_comptences&nbsp;,\
 Titel van $name_n_palier&nbsp;,\
 Aantal $name_n_paliers&nbsp;,\
-De kleuren kunnen worden veranderd in het,
+De kleuren kunnen worden veranderd in het,\
 configuratie menu,\
 van de klas,\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2
@@ -54,9 +54,9 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_con
 !else 
  !let tmp=Mijn cijfers
 !endif
-!distribute line Nouvelle compétence\
+!distribute line Nieuwe vaardigheid\
 $tmp\
-Rapport van dezek las\
+Rapport van deze klas\
 Rapport van $name_competences\
  into wims_name_add_competence,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
 
