@@ -29,7 +29,7 @@
 		Sturen,\
 		Details,\
 		Laat zien,\
-		Edit,\
+		Bewerken,\
 	into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -157,7 +157,7 @@
 
 !if adm/class isin $module
  !distribute line Docenten \
-	Leerlingen \
+	Studenten \
 	Demonstratie klassen\
 	Inloggen voor docenten\
 	Inloggen voor deelnemers\
@@ -213,8 +213,8 @@
    Veranderen\
    Terug\
    Wissen\
-   Action\
-   Om dit te kunnen gebruiken moet je java ondersteuning in je browser hebben.\
+   Aktie\
+   Om dit te gebruiken moet de webbrowser Java ondersteunen.\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
@@ -294,7 +294,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status
 !set wims_name_addteacher=Nieuwe docent
 !set wims_name_modteacher=Leraar eigenschappen
 !set wims_name_delteacher=Verwijder een docent
-!set wims_name_student=Leerlingen accounts
+!set wims_name_student=Studenten accounts
 !set wims_name_addstudent=Nieuwe student
 !set wims_name_modstudent=Studenten eigenschappen
 !set wims_name_delstudent=Verwijder een student
@@ -335,7 +335,7 @@ into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,
 wims_name_csv
 
 !if adm/class/userlist isin $module or reguser isin $module
-!distribute line Lijst van alle leerlingen \
+!distribute line Lijst van alle studenten \
 Cijfers \
 Beeindig deze tentamen sessie\
 Details van het werk\
