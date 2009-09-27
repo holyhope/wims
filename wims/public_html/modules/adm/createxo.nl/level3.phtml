@@ -7,23 +7,22 @@ Hieronder staat een samenvatting (s.v.p. controleren)
 <tr><td align=right>Aantal open antwoorden<td><td>$replycnt
 <tr><td align=right>Aantal meerkeuzevragen<td><td>$choicecnt
 </table>
+U kunt nu
 <ul><li>
-Klik 
-!href cmd=resume&realtest=yes&retest=again hier
- om deze oefening uit te testen.
+!href cmd=resume&realtest=yes&retest=again de oefening uittesten
+.
 !if $mode!=file
     <li><p>
-	Als u deze oefening nog wilt veranderen, ga dan 
 !!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
-	!if $to_ia_qcm=-1
-	    !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 terug naar confia2qcm
-	!endif
-	!if $to_ia_qcm=-2
-	    !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 terug naar 2createqcm
-	!endif
-	!if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
-	    !href cmd=reply&level=2 terug naar het menu
-	!endif
+    !if $to_ia_qcm=-1
+	!href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 terug naar confia2qcm
+    !endif
+    !if $to_ia_qcm=-2
+	!href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 terug naar createqcm
+    !endif
+    !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+	!href cmd=reply&level=2 terug naar het menu
+    !endif
 !!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!              
 .
 !else
@@ -32,46 +31,44 @@ Klik
  <input type=hidden name=level value=3>
  <li><p>
  Of verander de de broncode en stuur deze
- <input type=submit value="opnieuw naar de server">:
+ <input type=submit value="opnieuw naar de server">&nbsp;:
  <input type=file name=wims_deposit>
  </form>  
  <li><p>
- Terug naar het
- !href cmd=reply&level=1&mode=normal startmenu
+ !href cmd=reply&level=1&mode=normal  Terug naar het startmenu
 .
 !endif
 !if $wims_user!=$empty
  <li><p>
- Het is natuurlijk ook mogelijk een 
- !href cmd=reply&level=6 plaatje
- in te binden.
+ !href cmd=reply&level=6 Verwerk een bestand (plaatje , pdf ,...)
+ in deze oefening.
  !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
  to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
   !if $success!=1 and $regout!=fail
  <li><p>
- Wanneer alles inorde is, kunt u
  !if $existing!=$empty
   !if ..devel/ notin ..$catmodule
-   deze oefening toevoegen aan uw klas, of als 
-   !href cmd=reply&level=4 vervanging
-   van een reeds bestaande oefening,<br>
-   of als een
-   !href cmd=reply&level=4&newone=1 nieuwe oefening
+  !if $catmodule=$empty
+   deze oefening toevoegen aan uw klas als 
+   !href cmd=reply&level=4 vervanging van een reeds bestaande oefening 
+   of
+   !href cmd=reply&level=4&newone=1 als een nieuwe oefening
    !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
   newversion,1,cmd=reply&level=4&newone=1\
     to $wims_menu_items
   !else
-  deze module toevoegen aan uw "werk in uitvoering" 
-   !href cmd=reply&level=4 modules
+   !href cmd=reply&level=4 deze module toevoegen aan uw klas
+    !reset catmodule
+  !endif
+  !else
+  !href cmd=reply&level=4 deze module toevoegen aan de ontwikkelings module
    !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
  !else
-    deze module 
-  !href cmd=reply&level=4 toevoegen
-   aan uw klas
+  !href cmd=reply&level=4 deze module toevoegen aan uw klas
    !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
  !endif
@@ -81,8 +78,7 @@ Klik
 !endif
 !if $mode!=file
  <li><p>
- Als laatste: vergeet niet de
- !getfile submit.oef broncode
+ !getfile submit.oef Bewaar de broncode
  van deze oefening te bewaren op uw eigen computer !
 !endif
 </ul>

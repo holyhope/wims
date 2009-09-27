@@ -1,9 +1,10 @@
+
 !set wims_module_error=error: $error
 
 <b>Fout.</b>
 
 !if empty_out iswordof $error
-    U moet het antwoord even veranderen: de opgestuurde code geeft geen output.
+    U moet het antwoord even veranderen: de opgestuurde code geeft geen zinnige output.
  !if $m_reply_err!=$empty
   <pre><font color=red>$m_reply_err</font></pre>
  !endif
@@ -11,7 +12,7 @@
 !endif
 
 !if empty_data iswordof $error
-U heeft een onvolledig antwoord ingevuld.<br>Gaarne compleet ingevuld inleveren 
+U heeft een onvolledig antwoord ingevuld.<br>Graag compleet ingevuld inleveren 
  !exit
 !endif
 
@@ -21,19 +22,19 @@ U heeft een onvolledig antwoord ingevuld.<br>Gaarne compleet ingevuld inleveren
 !endif
 
 !if double_reply iswordof $error
-Je hebt al eens een antwoord ingeleverd op deze vraag !<br> 
-<small>Herhalingen van antwoorden worden niet beoordeeld.<br>
-(En in elk geval <b>niet</b> de terug-knop van je browser gebruiken)</small>
+Je hebt al eens een antwoord ingeleverd op deze vraag ! 
+Herhalingen van antwoorden worden niet beoordeeld.
+(En in elk geval <b>niet</b> de terug-knop van je browser gebruiken)
  !exit
 !endif
 
 !if bad_answer iswordof $error
  !if illegalname iswordof $test
-  De opgestuurde code bevat de term: <tt>$illegal_name</tt> en deze is niet toegestaan.<br>Corrigeer dit even.
+  De opgestuurde code bevat de term: <tt>$illegal_name</tt> en is niet toegestaan.<br>Corrigeer dit even.
   !exit
  !endif
  !if lengthoverflow iswordof $test
-    De hoeveelheid opgestuurde code is meer dan is toegestaan.<br>Dit moet worden herschreven.
+    De hoeveelheid opgestuurde code is groter dan is toegestaan.<br>Dit moet worden herschreven.
   !exit
  !endif
  Het antwoord  <br><center>
@@ -66,8 +67,7 @@ Je hebt al eens een antwoord ingeleverd op deze vraag !<br>
 
 !if bad_exo iswordof $error
 Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord voor vraag <b>$(replyname$i)</b> is ongeldig...).
- Dus het is onmogelijk om te testen of jou antwoord goed is...en voor jou betekend dit niets
- anders dan een andere opdracht uit te kiezen. Waarvoor mijn excuses.
+ Dus het is onmogelijk om te testen of het ingeleverde antwoord correct is. Waarvoor excuses.
  <br>
  S.V.P.
  !if $email!=$empty
@@ -75,12 +75,12 @@ Door een fout in deze oefening is deze opdracht ongeldig (het correcte antwoord 
  !else
   schrijf naar de maker van deze oefening
  !endif
- als je deze fout wilt melden
+ als U deze fout wilt melden.
  !exit
 !endif
 
 !if too_many_print iswordof $error
-Je hebt te veel verzoeken tot printbare versies ingediend  
+U hebt te veel verzoeken tot printbare versies ingediend  
  !exit
 !endif
 

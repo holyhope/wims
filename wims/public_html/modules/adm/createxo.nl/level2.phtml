@@ -1,16 +1,15 @@
 !set sizex=65
 !set types=!sort nocase lines \
 auto,			default\
+letterlijke uitdrukking,litexp\
 algebraische uitdrukking,algexp\
+formele uitdrukking,	formal\
 tekst met kernwoorden,	atext\
 hoofdletter ongevoelige tekst,	nocase\
 hoofdletter gevoelige tekst,	case\
 ruwe tekst,		raw\
-karakter set, 		chset\
 vergelijking,		equation\
 beperkte set,		set\
-formele uitdrukking,	formal\
-letterlijke uitdrukking,	litexp\
 matrix,			matrix\
 getal,			numeric\
 getal in een range,	range\
@@ -22,14 +21,15 @@ woorden in een lijst,	wlist
 !set types=!nonempty lines $types
 !set typelist=!column 2 of $types
 !set typenames=!column 1 of $types
+
 Geef nu de inhoud van uw oefening
 <font color=red><b>$oef_title</b></font>.
-!href cmd=reply&level=1 Terug 
- naar het start menu. <p>
+!href cmd=reply&level=1 Terug naar het start menu
+. <p>
 
 !form reply
 <input type=hidden name=level value=3>
-U kunt random parameters definieren: [
+U kunt random parameters definieren&nbsp;: [
 !href target=wims_mhelp cmd=help&special_parm=parameters uitleg
  ]<br>
 !set o_parms=!reinput $oef_parms
@@ -79,7 +79,7 @@ Het statement van de oefening ($oef_format formaat): [
 !if $oef_choicecnt>0
  <table border=1>
  <caption>Meerkeuze antwoorden (multiple choice)
- <tr><th>Naam<th><font color=green>goede</font> antwoorden<th><fontcolor=red>Foute</font> antwoorden
+ <tr><th>Naam<th>Goede keuze<th>Foute keuze
  !for i=1 to $oef_choicecnt
   !set p_=!reinput $(choiprompt$i)
   <tr><td> <input size=$promptlim maxlength=$promptlim name=choiprompt$i value="$p_">
@@ -94,9 +94,9 @@ Het statement van de oefening ($oef_format formaat): [
 <p><center>
 <input type=submit value="Configuratie is OK">
 </center> <p>
-Hier kunt u als extra ook een <em>hint</em> en/of een <em>uitgewerkte oplossing</em> definieren:
+Hier kunt u als extra ook een tip en/of een uitgewerkte oplossing definieren:
 <table border=0>
-<tr><td>Hint<br>(html formaat)
+<tr><td>Tip<br>(html formaat)
 !set pp=!reinput $oef_hint
 <td><textarea wrap="off" rows=3 cols=$[$sizex-10] name=oef_hint>$pp</textarea>
 <tr><td>Oplossing<br>(html formaat)

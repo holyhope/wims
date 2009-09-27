@@ -5,21 +5,22 @@
  U bent nu in de "expert mode" voor het maken van OEF oefeningen.
  !if $modeltest=yes
  Als deze oefening is gebaseerd op een standaard model, probeer eerst de
-  !href cmd=reply&mode=model&level=2 standaard Createxo
+  !href cmd=reply&mode=model&level=2 $name_normal
 .
-  !href cmd=reply&mode=none&level=0 Annuleer
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !else
- Deze mode is bedoeld voor gevorderden of voor het rechtstreeks invoeren van een OEF broncode.
- Bent u onervaren in het maken van dit type interactieve oefeningen, probeer dan eerst
-  !href cmd=reply&mode=normal&level=1 standaard Createxo
-.
-  <p>
+!! Deze mode is bedoeld voor gevorderden of voor het rechtstreeks invoeren van een OEF broncode.
+!! Bent u onervaren in het maken van dit type interactieve oefeningen, probeer dan eerst
+!!  !href cmd=reply&mode=normal&level=1 $name_normal
+!!.
+!!
+
   Geef de broncode (
   !href target=wims_mhelp cmd=help&special_parm=oef OEF formaat
-  ) van uw oefening:
-  
-  !href target=wims_test module=tool/directexec&cmd=new Script tester
+  ) van uw oefening&nbsp;:
+  (voeg een bestaande broncode toe door knippen en plakken in 
+  het venster.) 
  !endif
 !else
  Hier is de broncode
@@ -31,24 +32,28 @@
  !endif
  !if $modeltest=yes
  Deze oefening is gebaseerd op een "standaard model" oefening, 
- beginners kunnen beter eerst het normale
-  !href cmd=reply&mode=model&level=2  Createxo
-  proberen.
-  !href cmd=reply&mode=none&level=0 Annuleer
+ en klan worden bewerkt met
+  !href cmd=reply&mode=model&level=2  $name_normal
+.
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !endif
 !endif
 
-<a name=textarea></a>
-[
-<a href="#"
-onclick="document.forms['replyform'].wims_deposit.value=''">Wissen</a>
-]. [
-!href cmd=resume Opnieuw
-].
+U kunt het gebruik van de hulpsoftware testen met  
+  !href target=wims_test module=tool/directexec&cmd=new de script tester
 
 <p><center>
 !mexec textarea.sh
+
 <p><input type=submit value="Registreer de code"></center>
+<center><a name=textarea></a>
+[
+<a href="#"
+onclick="document.forms['replyform'].wims_deposit.value=''">Wissen</a>
+] [
+!href cmd=resume $wims_name_giveup
+].
+</center>
 </form>
 

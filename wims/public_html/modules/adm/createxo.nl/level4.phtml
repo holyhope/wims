@@ -1,15 +1,15 @@
 !if $wims_developer!=$empty and ..devel/ isin ..$catmodule
  !if $reg1=success
   De oefening <tt>$existing.oef</tt> horende bij  
-  <tt>$catmodule</tt> is met succes geinstalleerd.
+  <tt>$catmodule</tt> 
+  is met succes geinstalleerd.
  !else
   De oefening <tt>$existing</tt> kon niet worden opgenomen in
   <tt>$catmodule</tt>.
   <pre>$wims_exec_error</pre>
  !endif
  <p>
- !href cmd=reply&level=3 Terug 
- naar het vorige menu.
+ !href cmd=reply&level=3 Terug naar het vorige menu.
  !exit
 !endif
 
@@ -17,29 +17,26 @@
  !read level5.phtml
 !else
  !if $already!=yes
-    Uw modules is met succes geinstalleerd.
+    Uw module is met succes geinstalleerd.
  !else
-    Er bestaat een identieke module in uw virtuele klas. <br>Deze module kan dus niet worden opgenomen.
-  <p>
+    Er bestaat een identieke module in uw virtuele klas.
+    Deze module kan dus niet worden opgenomen.<p>
  !endif
- <small>Deze oefening is alleen bereikbaar voor deelnemers aan uw klas<br> 
- en alleen als U deze module inbrengt in een werkblad.</small>
+ Deze oefening is alleen bereikbaar 
+ voor studenten in uw klas
+ en alleen als deze module is verwerkt in een werkblad.
  <p>
  !if $wims_user!=supervisor
-  U kunt nu de oefeningen 
-  !href module=classes/$lang&special_parm=.nocache. bekijken.
+  U kunt nu 
+  !href module=classes/$lang&special_parm=.nocache. de oefenigen in uw klas bekijken.
  !else
-  U kunt nu:
+  U kunt nu&nbsp;:
   <ul>
-  <li>
-  de oefeningen van uw klas 
-  !href module=classes/$lang&special_parm=.nocache. bekijken.
+  <li><p>
+  !href module=classes/$lang&special_parm=.nocache. de oefenigen in uw klas bekijken
   (en ze eventueel verwerken in werkbladen.)
-  </li>
-  <li>
-  terug gaan naar het
-  !href cmd=reply&level=3&success=1 vorige menu.
-  </li>
+  <li><p>
+  !href cmd=reply&level=3&success=1 terug naar het vorige menu.
   </ul>
  !endif
 !endif

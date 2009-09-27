@@ -1,53 +1,59 @@
-Welkom.<br>Dit is de het onderdeel waar interactieve 
-!if $wims_user!=supervisor
- oefeningen
-!else
- oefeningen voor uw klas<font color=blue>
- $wims_classname</font> van <font color=blue>$wims_institutionname</font>,
-!endif
-kunnen worden gemaakt.<br>
-Hier staan enkele uitgewerkte
-!href cmd=reply&mode=model voorbeelden
-<img src="gifs/new.gif">.<br>
-Hebt u al vaker gewerkt met Createxo of het OEF formaat, kunt u in
-!href cmd=reply&rawinp=yes expert mode
- online uw broncode bewerken en uittesten, of 
-!href cmd=reply&mode=file in file mode
- voor het opsturen van OEF bestanden naar de server.<br>
-Nieuwkomers kunnen ook werken aan enkele simpele 
-!href cmd=help&special_parm=examples voorbeelden
-.
 
-!!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!! 
-<table bgcolor="#d0c080"> 
- <tr> 
- <td rowspan=4> 
- U kunt ook:
- </td> 
- <td bgcolor=lemonchiffon>
- !href module=adm/modtool Modtool
- gebruiken voor het produceren van full_power modules, 
- </td> 
- </tr> 
- <tr> 
- <td bgcolor=lemonchiffon>
- !href module=adm/auth/confia2qcm <code style="background-color:azure">Confia2qcm</code> 
- of
- !href module=adm/auth/createqcm <code style="background-color:azure">Createqcm</code>
- voor het maken van interactieve meerkeuze vragen.
- </td> 
- </tr> 
- <tr> 
- <td bgcolor=lemonchiffon> 
- !href module=adm/quicktool Quicktool
- voor het maken van taalkundige oefeningen.
- </td> 
- <tr> 
- <td bgcolor=lemonchiffon> 
- !href module=adm/latex2wims Latex2wims
- voor het produceren van interactieve WIMS documenten uit LaTeX bestanden.
- </td> 
- </tr> 
- </tr> 
-</table> 
-!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+Welkom op de pagina waar
+!if $wims_user!=supervisor
+ interactieve oefeningen kunnen worden gemaakt.
+!else
+    interactieve oefeningen kunnen worden gemaakt voor klas <font color=blue>
+ $wims_classname</font> van <font color=blue>$wims_institutionname</font>.
+!endif
+
+Createxo bevat verschillende hulpmiddelen voor het maken van
+!href cmd=help&special_parm=oef OEF
+ oefeningen.
+<ol>
+<li>
+    Beginners mode voor het maken van:
+   <ul><li>
+      open antwoord oefeningen
+     !href cmd=reply&mode=normal&level=1 $name_normal stap voor stap
+ ;</li><li>
+    Verschillende demonstratie oefeningen die kunnen fungeren als
+    !href cmd=reply&mode=model&level=1 template oefeningen
+.</li>
+   </ul>
+<li> Expert mode voor het maken van oefeningen:
+<ul><li>
+
+!href cmd=reply&rawinp=yes&level=1 directe mode
+ voor het online schrijven van oefeningen;
+</li><li>
+!href cmd=reply&mode=file&level=1 tekstbestand mode
+ voor het opsturen van een broncode tekstbestand, bijvoorbeeld geschreven op uw eigen ascii textbewerker.
+</li>
+</ul>
+</ol>
+
+Andere beschikbare hulpmiddelen:
+<ul><li>
+  !href module=adm/auth/confia2qcm Confia2qcm
+, 
+!href module=adm/auth/createqcm Createqcm
+    voor het online aanmaken van verschillende multiple choice oefeningen
+<li>    
+!href module=adm/modtool $wims_name_modtool 
+    voor het online maken en organiseren van alle types OEF oefeningen en interactieve documenten.
+    Hiervoor is een 'ontwikkelaar account' noodzakelijk.
+    Het publiceren van uw interactieve materiaal verondersteld een Modtool account. 
+<li>
+!href module=adm/quicktool $wims_name_quicktool
+ is een hulpmiddel voor het online aanmaken van interactieve oefeningen over taal en literatuur.
+ Verschillende types OEF oefeningen kunnen worden gemaakt in begeleidde mode, zoals GAP,MCQ,SELECTWORD etc.
+ Met $wims_name_quicktool kunnen oefeningen worden met speciale help paginas.
+ Ook kan gebruik worden gemaakt van de audio databank van het <a target="wims_external" href="http://shtooka.net">Shtooka</a>
+ Ook $wims_name_quicktool vereist een 'ontwikkelaar account'.
+
+<li>     
+!href module=adm/latex2wims $wims_name_latex2wims
+    maakt mogelijk dat LaTeX documenten kunnen worden omgezet naar interactieve <tt>WIMS</tt>  documenten.
+    Ook dit hulpmiddel vereist een 'ontwikkelaar account'.
+</li></ul>
