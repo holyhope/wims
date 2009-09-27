@@ -1,17 +1,11 @@
-!set n_compose=Pisanje novega sporoèila
-!set n_archives=Meseèni arhivi
-!set n_config=Nastavitve deske sporoèil
+
 !if $send_right>0
-!set wims_menu_items=!append line "$n_compose",1,cmd=new&forum=$forum&job=compose\
-to $wims_menu_items
-!! !href cmd=new&forum=$forum&job=compose $n_compose
-!!.
+  !set wims_menu_items=!append line "$n_compose",1,cmd=new&forum=$forum&job=compose\
+  to $wims_menu_items
 !endif
 !if $is_owner=yes
-!set wims_menu_items=!append line config,1,cmd=reply&job=config\
-to $wims_menu_items
-!! &nbsp;
-!! !href cmd=reply&job=config $n_config
+  !set wims_menu_items=!append line config,1,cmd=reply&job=config\
+  to $wims_menu_items
 !endif
 
 !if $archlist=$empty or $mlist=$archlist
@@ -20,13 +14,10 @@ to $wims_menu_items
 
 !set wims_menu_items=!append line $n_archives,0,$n_archives\
 to $wims_menu_items
-!!<p>$n_archives:
+<p>
 !for i in $archlist
-!set wims_menu_items=!append line $i,1,cmd=reply&job=list&mlist=$i\
+  !set wims_menu_items=!append line $i,1,cmd=reply&job=list&mlist=$i\
 to $wims_menu_items
-
-!! !href cmd=reply&job=list&mlist=$i $i
-!! &nbsp;
 !next i
 
 <p>

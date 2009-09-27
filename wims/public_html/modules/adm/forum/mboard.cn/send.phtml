@@ -1,23 +1,21 @@
 
 !if $s_status=ask
-本信息板不接受匿名张贴. 为避免滥用, 以你的电邮地址作为你的身份.
- <p>
-为了验证你的电邮地址的有效性, 服务器会用电邮发一个密码给你.
-请读了电邮后把密码输入下面:
+ $n_statusask
+ <p><center>
  !form reply
  <input type=hidden name=job value=send>
- <p><center><input size=10 name=s_code>
- <input type=submit value=发送></form>
+ <input size=10 name=s_code>
+ <input type=submit value=$wims_name_send></form>
  <p>
- !href cmd=reply&job=list 放弃操作
+ !href cmd=reply&job=list $wims_name_giveup
  </center> <p>
  !exit
 !endif
 
 !if $error=$empty
-你的信息已被加入信息板.
+ $n_add
 !endif
 
 <p><center>
-!href cmd=reply&job=list 信息表
+!href cmd=reply&job=list $n_list
 </center> <p>

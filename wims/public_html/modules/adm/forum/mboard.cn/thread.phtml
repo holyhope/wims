@@ -3,14 +3,16 @@
 <p>
 !set l_=!record $o2 of $forumdir/$o1/.msglist
 !set lh=
-跟帖:
+$n_following
 !read listone.phtml $l_
 !set level=0
-!set lh=<li>
+!set lh=<li class="wims_forum_list">
 !read thsub.phtml $startnum
 
 <p>
-!href cmd=reply&job=list 按日期的最新信息
+!href cmd=reply&job=threadlist $n_subjectlist
+.&nbsp;
+!href cmd=reply&job=list $n_recent
 .
 !read listarch.phtml
 

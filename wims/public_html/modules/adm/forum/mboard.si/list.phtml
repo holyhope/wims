@@ -3,28 +3,30 @@
 <p>
 !if $tot<=0
  !if $mlist!=.newlist
-  Tukaj ni nobenega ustreznega sporoèila. 
+  $n_nomessage
  !else
-  Na tem forumu ni nobenega sporoèila.
+  $n_emptyforum
  !endif
 !else
  !if $mlist=.newlist
-  Seznam zadnjih sporoèil, najprej
+  $n_list, $n_most
  !else
-  Seznam sporoèil za obdobje
+  $n_list_month
   !item $lmon of $monthnames
-  $lyear, najprej
+  $lyear, $n_most
  !endif
- !item $l_order of novej¹a, starej¹a
+ !item $l_order of $n_old
 . <small>
- !href cmd=reply&l_order=$[$l_order%2+1] [Zamenjaj vrstni red]
+ !href cmd=reply&l_order=$[$l_order%2+1] [$n_reverse]
+  &nbsp;
+!href cmd=reply&job=threadlist& [$n_subjectlist]
  !if $send_right>0
   &nbsp;
-  !href cmd=new&forum=$forum&job=compose [Novo sporoèilo]
+  !href cmd=new&forum=$forum&job=compose [$n_new]
  !endif
 </small>
- <ul>
- !set lh=<li>
+ <ul class="wims_forum_list">
+ !set lh=<li class="wims_forum_list">
  !if $l_order=1
   !distribute item $tot,1,-1 into start,end,step
  !else
@@ -45,7 +47,7 @@
 
 <p>
 !if $mlist!=.newlist
- !href cmd=reply&job=list&mlist=.newlist Zadnja sporoèila.
+ !href cmd=reply&job=list&mlist=.newlist $n_recent.
  &nbsp;
 !endif
 

@@ -8,14 +8,16 @@
  !read readref.phtml
  !if $erased=yes and $forumuser!=supervisor
   </center> <p>
-  Izbrisano sporoèilo.
+  $n_erasedmsg.
   !exit
  !endif
- <br>Napi¹i odgovor:
- !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 z navedkom
- ali
- !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 brez navedka
- </center> <p>
+ <br>$n_follow&nbsp;:
+ !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 $n_with
+ $wims_name_or
+ !href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 $n_without
+ $n_citation.
+ </center> 
+ <div class="wims_forum_intro">
  <i>
  !if $m_email!=$empty
   !mailurl $m_email $m_from
@@ -30,29 +32,34 @@
  <b>$m_subject</b><small>
 
 !if $readtype=html
- !href cmd=reply&readtype=source [Neoblikovano]
+ !href cmd=reply&readtype=source [$n_source]
 !else
- !href cmd=reply&readtype=html [Oblikovano]
+ !href cmd=reply&readtype=html [$n_format]
 !endif
 !if $forumuser=supervisor
  &nbsp;
- !href cmd=reply&job=erase [Zbri¹i]
+ !href cmd=reply&job=erase [$n_erase]
 !endif
 
- </small><hr>
+ </small>
+ </div>
+ <hr>
+ <div class="wims_forum_msg">
  !read $msg $readtype
- $tag_escaper</table><font size="+0">
+ $tag_escaper
+  </div>
+</table><font size="+0">
 
 <hr></ul></ol></dl></form> <p><center>
 !if $readtype=html
- !href cmd=reply&readtype=source Neoblikovan pogled
+ !href cmd=reply&readtype=source [$n_source]
 !else
- !href cmd=reply&readtype=html Oblikovan pogled
+ !href cmd=reply&readtype=html [$n_format]
 !endif
 &nbsp;
-!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 Odgovor z navedkom
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 [$n_follow_c]
 &nbsp;
-!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 Odgovor brez navedka
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 [$n_follow_nc]
 <p>
 !read readref.phtml
 </center> <p>
