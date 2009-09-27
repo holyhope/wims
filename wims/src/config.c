@@ -640,7 +640,7 @@ void module_index(void)
 
 #endif
 
-	/* Set up a unique job identity */
+	/* Set up a unique job identity as a 4-bytes integer */
 unsigned long create_job_ident(void)
 {
     unsigned long it;
@@ -651,7 +651,8 @@ unsigned long create_job_ident(void)
     	/* The encryption is very simple. */
     it=it^0x5a3c9671;
     for(i=0;i<MAX_SESRANDOM;i++) sesrandomtab[i]=random();
-    return it;
+    /* ensure that the result will be a 4-bytes integer */
+    return it & 0xffff;
 }
 
 	/* Setup a job identifier */
