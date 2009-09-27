@@ -30,7 +30,7 @@ Het samenstellen van proefwerk $exam
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug naar de homepagina
+ !href module=home Terug naar de home pagina
 . <p>
  !goto end
 !endif
@@ -53,24 +53,21 @@ Het samenstellen van proefwerk $exam
   is verlopen maar nog wel zichtbaar voor uw leerlingen.
    !href cmd=reply&job=hide Maak het onzichtbaar.
   !else
-   is verlopen en onzichtbaar voor uw leerlingen.
-   Maak het proefwerk weer 
+   is verlopen en onzichtbaar voor uw leerlingen. Maak het proefwerk weer 
    !href cmd=reply&job=expire zichtbaar
-   </a>.
   !endif
   .
-  !href cmd=reply&job=reactivate Reactiveer
-!href cmd=reply&job=deactivate Desactive it
-</a> het proefwerk
-. <p>
- !endif
+  !href cmd=reply&job=reactivate Reactiveer het proefwerk
+.
+  !endif
+  !href cmd=reply&job=deactivate Deactiveer het proefwerk
  <center><table border=2>
  <tr><td align=right>Titel:
  <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modify>
- <tr><td align=right>Omschrijving:
+ <td rowspan=3><input type=submit value="$wims_name_change">
+ <tr><td align=right>Omschrijving :
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Verloop datum:<td>
+ <tr><td align=right>Verloop datum :<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
  !formselect expday from 1 to 31
  !formselect expmon from 1 to 12 prompt $months
@@ -81,9 +78,9 @@ Het samenstellen van proefwerk $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Titel (maximaal $title_limit karacters):<br>
+Titel (maximaal $title_limit karakters):<br>
 <input size=65 name=title value="$title"> <p>
-en een verklarende tekst (beperkt tot $desc_limit karacters; html
+en een verklarende tekst (beperkt tot $desc_limit karakters; html
 tags en hyperlinks zijn toegestaan):<br>
 <textarea rows=6 cols=65 name=desc>$desc</textarea>
 
@@ -94,39 +91,38 @@ tags en hyperlinks zijn toegestaan):<br>
 !formselect expday from 1 to 31
 !formselect expmon from 1 to 12 prompt $months
 !formselect expyear from $thisyear to $thisyear+1
-. 
-Een enkele proefwerksessie kan
+. Een enkele proefwerksessie kan
 <input size=5 name=duration value="$duration">
 minuten duren<br>Elke deelnemer mag dit proefwerk tot
 !default stries=3
 <input size=3 name=tries value="$stries"> keer overdoen.
-<input type=submit value="OK en versturen">
+<input type=submit value="$wims_name_tosave">
 
 !ifval $activetest=-1
- <p>Dit proefwerk bestaat nog niet.<input type=submit value="Klik hier om een nieuw proefwerk te maken"> <small>Maar geef dit proefwerk eerst even een titel</small>
+ <p>Dit proefwerk bestaat nog niet.
+ <input type=submit value="Klik hier om een nieuw proefwerk te maken"> (Maar geef dit proefwerk eerst even 
+ een titel)
  </form>
  !goto end
 !else
  </form>
  !if $exocnt>0
-  <p>
-  Dit proefwerk is <b>nog niet</b> geactiveerd.
+  <p>Dit proefwerk is nog niet geactiveerd.
   !href cmd=reply&job=prep_activate klik hier 
-  </a> om dit proefwerk te activeren.
-  Studenten, leerlingen zien alleen de actieve proefwerks.<br>
-  Echter: een proefwerk eenmaal geactiveerd , kan <b>niet</b> meer inhoudelijk worden veranderd. 
-  
+  om dit proefwerk te activeren.
+  ( Studenten zien alleen de actieve proefwerken.
+  Echter: een proefwerk eenmaal geactiveerd , kan niet zonder meer inhoudelijk worden veranderd.)
  !endif
 !endif
 
 :end1
 <p>
 !if $exocnt=0
- Dit proefwerk bevat nog <b>geen</b> opgaven.
- !href cmd=reply&job=exo&exo=1 Voeg een opgave
- </a> toe , of voeg in &eacute;&eacute;n keer een 
- !href cmd=reply&job=cpsheet serie opgaven
- </a> toe.
+ Dit proefwerk bevat nog geen opgaven.
+ !href cmd=reply&job=exo&exo=1 Voeg een opgave toe 
+ , of  
+ !href cmd=reply&job=cpsheet voeg in &eacute;&eacute;n keer een serie opgaven toe
+.
 !else
  <a name=list>
  De opgaven in dit proefwerk:</a><ol>
@@ -143,36 +139,33 @@ minuten duren<br>Elke deelnemer mag dit proefwerk tot
    &nbsp;(
    !if $i>1
     !href cmd=reply&job=moveup&moveup=$i#list Verplaats&nbsp;naar&nbsp;boven
-    </a>&nbsp;
+    &nbsp;
    !endif
    !href cmd=reply&job=exo&exo=$i Veranderen
-   </a> &nbsp;
+   &nbsp;
    !href cmd=reply&job=delete&delete=$i#list Verwijderen
-   )</a>
+   )
   !endif
  !next i
  </ol>
  !if $activetest=0
- Voeg nog
-  !href cmd=reply&job=exo&exo=$[$exocnt+1]  een opgave 
-  </a> toe, of voeg een hele
- !href cmd=reply&job=cpsheet serie
- </a> opdrachten toe
- .
+   !href cmd=reply&job=exo&exo=$[$exocnt+1]  Voeg nog een opgave toe
+ , 
+of 
+ !href cmd=reply&job=cpsheet voeg een hele serie opdrachten toe
+.
  !endif
 !endif
 
 <p>
 !if $activetest=0 and $erasable=yes
-  U kunt dit proefwerk nog steeds
-  !href cmd=reply&job=prep_erase wissen
+  U kunt
+  !href cmd=reply&job=prep_erase  dit proefwerk nog steeds wissen
 .
 !endif
 
 !if $activetest>=0
-Zo zien Uw 
- !href cmd=reply&job=student <b>leerlingen</b>
- </a> deze pagina.
+  !href cmd=reply&job=student Zo zien leerlingen deze pagina.
  <p>
  !form reply
  <input type=hidden name=allow value=yes>
@@ -181,9 +174,10 @@ Zo zien Uw
 	open voor iedereen, open voor simulatie,\
 	gesloten voor iedereen, open voor de volgende netwerk adressen (en/of tijdstippen):
  <br><input size=50 name=IPlist value="$IPlist"> <br>
- Cut times:
+ Openingstijden :
  <input size=50 name=cutt value="$cutt"> <br>
  <input type=submit value="$wims_name_tosave">
+ !set allowshare=0
   !if $sharers!=$empty                                                                                                                      
   ( ook voor alle klassen die dit proefwerk delen ? :                                                                                          
   !formselect allowshare list 0,1 prompt nee,ja
@@ -192,22 +186,18 @@ Zo zien Uw
  <input type=hidden name=allowshare value=0>
  !endif
  </form>
- <small><b>Hint.</b> In the selective open mode, you can make time
- restrictions for score registrations, by adding words 
+ <small><b>Hint.</b>
+ U kunt openings tijden definieren voor dit proefwerk, door het toevoegen van woorden
  <font color=blue><b>
  <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
- (starting time) and/or
+ (openings tijd) en/of
  <font color=blue><b>
  <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
- (ending time). These must be in the
- SERVER's local time, and must be separated from other words by white spaces.
+ (sluitings tijd). 
+ Deze rijden moeten worden aangegeven in de lokale tijd van de SERVER,
+ en moeten van andere woorden worden gescheiden door spaties.
  <br>
- Cut times are used to let people take the exam in different sessions. A
- participant having worked on the exam before a cut time will have no access
- after the cut time.
- <br>
- Format of cut times: <tt>yyyymmdd.hh:mm</tt> (separate several cut times
- by white spaces).
+ Formaat van de tijden <tt>yyyymmdd.hh:mm</tt> (bij meer opties deze scheiden door spaties).
  </small>
 !endif
 :end

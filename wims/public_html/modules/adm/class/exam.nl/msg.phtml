@@ -1,8 +1,8 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
-Helaas, maar het maken/modificeren van een digitale overhoring/tentamen
-is voorbehouden aan de <em>supervisor</em> van een klas. 
+Helaas, maar het maken/modificeren van een digitale overhoring/proefwerk
+is voorbehouden aan de supervisor van een klas. 
  !exit
 !endif
 
@@ -12,7 +12,7 @@ Vreemd, maar ik zie nu dat Uw klas niet "geldig" is!
 !endif
 
 !if $error=no_sheet
-De inhoud van een tentamen of digitale overhoring kan alleen worden genomen
+De inhoud van een proefwerk of digitale overhoring kan alleen worden genomen
 uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
  <p>
  <small>
@@ -20,18 +20,18 @@ uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
  Dus eerst maakt U een werkblad van Uw oefeningen (oef of module)
  onderaan een oefening/som staan de link <b>"toevoegen aan werkblad"</b>
  Daarna maakt U van deze actieve/verlopen werkbladen het echte
- digitale tentamen of overhoring voor een echt cijfer.
+ digitale proefwerk of overhoring voor een echt cijfer.
  </small>
  !exit
 !endif
 
 !if bad_exam=$error
-Uw tentamen nummer is helaas niet geldig...een bug in de software? 
+Uw proefwerk nummer is helaas niet geldig...een bug in de software? 
  !exit
 !endif
 
 !if $error=simuchange
-    De status van dit tentamen heeft U net veranderd.<br>Klik deze simulatie correct
+    De status van dit proefwerk heeft U net veranderd.<br>Klik deze simulatie correct
  !href cmd=reply&job=scorereg hier
  </a> om deze simulatie correct te beeindigen.
  !exit                                                                                                                                     
@@ -56,13 +56,13 @@ Jij mag het proefwerk dus niet meer overdoen.
 !endif
 
 !if no_title=$error
-U wilt een tentamen registreren zonder een naam? niet verstandig. Fout of manipulatie?
+U wilt een proefwerk registreren zonder een naam? niet verstandig. Fout of manipulatie?
  !exit
 !endif
 
 !if prep_activate=$error
-U wilt het tentamen $exam activeren, en dus beschikbaar stellen aan Uw leerlingen. <p>
-Besef dat een digitale overhoring of tentamen eenmaal geactiveerd niet meer kan worden veranderd.
+U wilt het proefwerk $exam activeren, en dus beschikbaar stellen aan Uw leerlingen. <p>
+Besef dat een digitale overhoring of proefwerk eenmaal geactiveerd niet meer kan worden veranderd.
 
 Wilt U doorgaan?
 
@@ -75,7 +75,7 @@ Wilt U doorgaan?
 !endif
 
 !if prep_erase=$error
-Wil U werkelijk het tentamen  #$exam ($title) verwijderen?
+Wil U werkelijk het proefwerk  #$exam ($title) verwijderen?
  <p><center>
  !href cmd=reply&job=erase Ja: verwijderen
  .&nbsp;&nbsp;
@@ -85,7 +85,7 @@ Wil U werkelijk het tentamen  #$exam ($title) verwijderen?
 !endif
  
 !if prep_expire=$error
-Dit tentamen #$exam ($title) zou verlopen zijn op $expday
+Dit proefwerk #$exam ($title) zou verlopen zijn op $expday
  !item $expmon of $months
  $expyear. wilt U het <b>nu</b> laten verlopen?
  <p><center>
@@ -94,19 +94,19 @@ Dit tentamen #$exam ($title) zou verlopen zijn op $expday
  !href cmd=resume Nee: annuleren
  . </center>
  <p><b>Opmerking.</b> 
- Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen tentamen.<br>
-Maar hun reeds behaalde cijfers voor dit tentamen worden wel bewaard.
+ Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen proefwerk.<br>
+Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
 (en ook statistisch verwerkt, zodat U altijd deze resultaten nog kunt bestuderen) 
  !exit
 !endif
 
 !if prep_putsource=$error
-Hebt U een broncode van een eerder -bewaard- tentamen, kunt U deze code 
-in het onderstaande venster kopieren en invoegen in het huidige tentamen...
+Hebt U een broncode van een eerder -bewaard- proefwerk, kunt U deze code 
+in het onderstaande venster kopieren en invoegen in het huidige proefwerk...
  en druk op de knop "VERSTUREN"
  <p>
  Anders,
- !href cmd=resume Terug naar de Hoofdpagina van dit tentamen.
+ !href cmd=resume Terug naar de Hoofdpagina van dit proefwerk.
  !form reply
  <input type=hidden name=job value=putsource><center>
  <textarea cols=55 rows=10 name=source>$source</textarea>
@@ -114,19 +114,19 @@ in het onderstaande venster kopieren en invoegen in het huidige tentamen...
  </center></form>
  <b>WAARSCHUWING</b>. 
  Gebruik geen handmatig veranderde broncode's, 
- U loopt het risico dat het gehele tentamen onbruikbaar wordt.
+ U loopt het risico dat het gehele proefwerk onbruikbaar wordt.
  !exit
 !endif
 
 !if nodeactivate=$error
-  The exam cannot be desactivated because
+    Dit proefwerk kan niet worden gedeactiveerd omdat
   !if badstructure isin $deactivate
-   of the class structure.
+   de structuur van dit instituut dit niet toestaat.
   !else
    !if score isin $deactivate
-    some participants have already begun to work on this exam !
+    enkele studenten al zijn begonnen met dit proefwerk !
    !else
-    your exams are shared with another class !
+    het wordt gedeeld met een andere klas !
    !endif
   !endif
 !endif
