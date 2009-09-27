@@ -11,4 +11,3 @@ src=`awk 'BEGIN {a=0};
 ' $w_Forumdir/$w_c_prec | sed 's!<pre>!!g;s!</pre>!!g'`
 echo "$w_msgsrc1$w_t_from $w_name_wroteon $w_t_date, $w_t_time:
 $src$w_msgsrc2"
-

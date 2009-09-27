@@ -2,13 +2,32 @@
  !exit
 !endif
 wims_prefix=mb class user tmp
-
-!if $wims_class>0 and ($forum=$empty or $forum=classes/$wims_class)
- forumdir=wimshome/log/classes/$wims_class/forum
- Forumdir=$wims_home/log/classes/$wims_class/forum
- forum=classes/$wims_class
+!defread wimshome/log/classes/$wims_class/.def
+!!! the forum in levels should be accessible from the portal
+!if $wims_class=$wims_superclass and $class_type=4
+  participate_=!defof user_participate in wimshome/log/classes/$wims_class/.users/$wims_user
+  supervise_=!defof user_supervise in wimshome/log/classes/$wims_class/.users/$wims_user
+  for_test=!replace internal classes/ by in $forum
+  !reset for_test_
+  !if ,$for_test isin ,$participate_,$supervise_
+    for_test_=yes
+    for_test=!replace internal / by , in $for_test
+    for_test=!item 2 of $for_test
+  !endif
+!endif
+!if $wims_class>0 and ($forum=$empty or $forum=classes/$wims_class or $for_test_=yes)
+ !if $for_test_!=
+   for_level=!nospace /$for_test
+ !else
+   for_level=
+ !endif
+   classname=!defof class_description in wimshome/log/classes/$wims_class$for_level/.def
+ forumdir=wimshome/log/classes/$wims_class$for_level/forum
+ Forumdir=$wims_home/log/classes/$wims_class$for_level/forum
+ forum=classes/$wims_class$level
  !defread $forumdir/.def
  !if $mb_defined!=yes
+ !!!FIXME ??? if wims_class is 456778/3/201, what is the value ???
   !if $wims_class>9999
    cfm_send=alluser
   !else

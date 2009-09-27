@@ -4,9 +4,9 @@
 !endif
 
 !if $c_prec!=$empty
- El nuevo sigue a
+ $n_newfollow
  !href cmd=reply&job=read <b>$m_subject</b>
- por
+ $n_by 
  !if $m_email!=$empty
   <i><a href="mailto:$m_email">$m_from</a></i>
  !else
@@ -16,20 +16,19 @@
 !endif
 
 !form reply
- Nombre:
+$n_yourname:
  !if $forumuser=$empty
   <input size=15 name=c_sender value="$c_sender">
  !else
-  <tt>$c_sender</tt>;
+  <tt>$c_sender</tt>&nbsp;
  !endif
- correo electrónico: <input size=30 name=c_smail value="$c_smail"> <br>
+ $n_email: <input size=30 name=c_smail value="$c_smail"> <br>
  !if $send_right<2
-  <b>Atención.</b> Su mensaje no será aceptado, a menos que dé una 
-  dirección de correo electrónico QUE FUNCIONE. <br>
+  $n_cautious<br>
  !endif
- Tema:
+ $n_subject:
  <input size=55 name=c_subject value="$c_subject"> <br>
- Cuerpo del mensaje:(
+ $n_content:(
  !if $speckedit=no
    !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit>
    !href cmd=reply&job=compose&speckedit=yes&c_quote=$c_quote  $wims_name_active
@@ -53,22 +52,25 @@
  !set c_quote=0
  $tag_escaper</table>
  <p><center>
- <input type=submit name=c_preview value="Vista previa" $wims_on_click>
+ <input type=submit name=c_preview value="$n_preview" $wims_on_click>
  &nbsp;&nbsp;
- <input type=submit name=c_send value="Enviar" $wims_on_click>
+ <input type=submit name=c_send value="$n_send0" $wims_on_click>
  &nbsp;&nbsp;
- <input type=submit name=c_list value="Cancelar">
+ <input type=submit name=c_list value="$wims_name_giveup">
  </center> <p>
 </form> <p>
-!href cmd=help Ayuda
- sobre cómo escribir fórmulas matemáticas en sus mensajes.
+!href cmd=help $wims_name_help
+ $n_mathhelp
 
 !if $c_prec!=$empty
- <p><hr> <p>
- !href cmd=reply&job=read Mensaje original
-  by <i>$m_from</i>:<p>
+ <p><hr> 
+ <div class="wims_forum_intro">
+ !href cmd=reply&job=read $m_subject $n_origin
+  $n_by <i>$m_from</i>:
+  </div>
+  <div class="wims_forum_msg">
  !read $forumdir/$c_prec html
- $tag_escaper</table></form><font size="+0">
+ $tag_escaper </div></table></form><font size="+0">
  <p><hr> <p>
 !endif
 
