@@ -651,8 +651,9 @@ unsigned long create_job_ident(void)
     	/* The encryption is very simple. */
     it=it^0x5a3c9671;
     for(i=0;i<MAX_SESRANDOM;i++) sesrandomtab[i]=random();
-    /* ensure that the result will be a 4-bytes integer */
-    return it & 0xffff;
+    /* ensure that the result will be a 4-bytes integer gives random problem on 32 bits
+    return it & 0xffff;*/
+    return it;
 }
 
 	/* Setup a job identifier */
