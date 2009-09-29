@@ -18,7 +18,7 @@ N_at		=en
 N_or		=o
 N_import	=importar
 N_Mboard	=Foro de discusión
-N_hide		=Hide
+N_hide		=ocultar
 
 S_tip		=<b>Consejo</b>. Dejar la búsqueda vacía en algunas categorías\
 devuelve la lista de los recursos más populares.
@@ -55,6 +55,9 @@ RE_try		=Pruebe
 
 U_greet		=!nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a\
 a $wims_classname, moderada por $supmail.
+
+
+
 U_newmsg	=Hay $$newmsgcnt nuevo(s) mensajes(s) en el foro de la clase.
 U_nosheet	=Esta clase no tiene aún hojas de trabajo. Por favor, vuelva a entrar\
 más tarde, cuando su profesor haya preparado una.
@@ -76,15 +79,20 @@ U_back=		=Atrás
 U_account	=Mi cuenta
 U_teacher	=profesor
 U_Docstatus=ni leer ni escribir en,leer pero no escribir en,leer y escribir en
+U_weight    = coeficiente
+
 U_gotoclass1	=Entrar como participante:
 U_gotoclass3	=Entrar como profesor:
 U_gotoclass	=Sus zonas de trabajo:
-U_inscription1	=Para inscribirse en una zona de trabajo:
-U_inscription2	=Inscribirse en otra zona de trabajo.
+
+
+
+U_inscription1	=Para inscribirse en una zona de trabajo, pulse una de las clases:
+U_inscription2	=Inscribirse en una zona de trabajo como participante.
 U_clickhere	=Pulse aquí
 U_supervise	=para entrar a una zona como profesor.
 U_creatclass	=Crear una clase nueva.
-U_weight    =weight
+U_weight    =peso
 
 SU_greet	=!nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a a la página\
 de mantenimiento de su clase
@@ -105,7 +113,7 @@ SU_shst		=Estado
 SU_Howsh	=Cómo añadir una tarea a una hoja de ejercicios
 SU_classexo	=Ejercicios de la clase (es decir, sus creaciones)
 SU_Gateway	=Administración de la estructura
-SU_Bprogram=Back to the program
+SU_Bprogram=Vuelta al programa
 
 SE_list		=Participantes y puntuaciones
 SE_part		=Página inicial para el participante
@@ -121,14 +129,18 @@ ADD_exo		=ejercicio
 ADD_vote	=encuesta
 ADD_class	=clase
 ADD_2		=	
-ADD_3=		=cuaderno de texto
+ADD_3           =Añadir una
+ADD_cdt         =cuaderno de texto
+
+
 
 CL_Names	=Niveles,Clases,Programas,Cursos,Cursos interclase
+CL_Name	=nivel, clase,programa,Curso,Curso interclase
 CL_Test		=Zona de pruebas
 CL_otherNames=Other $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) of the class
 
-ER_expression	=<b>Advertencia.</b> ¿Busca usted una expresión\
-matemática? Aquí no tiene sentido.
+ER_expression	=<b>Atención.</b> ¿Busca usted una expresión matemática? \
+ Aquí no tiene sentido.
 
 !if $wims_supertype=4
  U_oclass	=Cambiar de zona
