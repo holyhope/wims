@@ -92,7 +92,7 @@ U_inscription2	=Inscribirse en una zona de trabajo como participante.
 U_clickhere	=Pulse aquí
 U_supervise	=para entrar a una zona como profesor.
 U_creatclass	=Crear una clase nueva.
-U_weight    =peso
+
 
 SU_greet	=!nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a a la página\
 de mantenimiento de su clase
