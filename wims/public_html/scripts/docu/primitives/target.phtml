@@ -1,4 +1,4 @@
-
+!!##language independant
 !if \ isin $parm1
  !for p in 1
   !set parm$p=!slashsubst $(parm$p)
@@ -16,6 +16,8 @@
  !distribute words $add into sh,ex
  !set l_=!record $ex of wimshome/log/classes/$wims_class/sheets/.sheet$sh
  !distribute lines $l_ into m_,p_,a_,b_,t_,d_
+ !set m_exotitle=$t_
+ !set m_exodescription=$d_
  !set prompt=!item 2 to -1 of $parms
  !default prompt=$t_
  !href target=wims_exo cmd=new&module=$m_&worksheet=$sh&$p_ $prompt

@@ -104,7 +104,8 @@
 		Vertaler,\
 		Deze module hoort bij de,\
 		WWW Interactive Multipurpose Server,\
-		Copyright\
+		Copyright,\
+		Keywords,\
 	into wims_name_name,\
 	wims_name_module_infos,\
 	wims_name_Address,\
@@ -117,7 +118,7 @@
 	wims_name_Translator,\
 	wims_name_This_is_a_module,\
 	wims_name_WIMS_subtitle,\
-	wims_name_Copyright
+	wims_name_Copyright,wims_name_Keywords
 
 
 !! **** Class Relative Names ***

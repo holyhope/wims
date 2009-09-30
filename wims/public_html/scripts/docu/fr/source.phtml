@@ -4,29 +4,29 @@
 
 !if $titb=$empty
  <p>
- Le bloc <tt>$titb</tt> de ce document n'est pas encore créé.
+ $name_noncreate2
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Ce bloc n'est pas encore lisible. Revenez plus tard !
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Ce bloc est périmé. Il n'est plus lisible. Désolé !
+$name_expired
  <p>
  !exit
 !endif
 
-<h3>$titb (Document source)
+<h3>$titb ($name_src)
 </b><font size=-1>
  [
- !href cmd=reply&job=read Formaté
+ !href cmd=reply&job=read $n_formatted
  ]</font>
 </h3>
 
@@ -40,7 +40,7 @@
 !endif
 <table width="100%" border=0>
 <tr><td align=left><small>
-!href cmd=reply&job=read Formaté
+!href cmd=reply&job=read $n_formatted
 &nbsp; par
 !if $email=$empty
  $author
@@ -57,7 +57,7 @@
 </small>
 !endif
 <tr><td align=left colspan=2 nowrap>
-<small>Dernière modif. $datm</small>
+<small>$n_lastmod $datm</small>
 </table>
 
 

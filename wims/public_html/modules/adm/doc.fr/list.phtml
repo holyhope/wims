@@ -12,7 +12,7 @@
 <p>$table_header
 <caption>$n_blocklist</caption>
 $table_hdtr
-<th>$n_name</th><th>$n_titre</th><th>$n_action</th></tr>
+<th>$wims_name_erase</th><th>$wims_name_title</th><th>$wims_name_action</th></tr>
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
@@ -25,7 +25,7 @@ $table_hdtr
  !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ $n_edit
+  !href cmd=reply&job=edit&block=$s_ $wims_name_Edit
  !endif
 </td>
 !next i
@@ -35,9 +35,9 @@ $table_hdtr
 $n_freespace1 $quota_total Meg.
 $n_freespace2 $quota_free Meg.
 <p>
-!href cmd=reply&job=file $n_file
+!href cmd=reply&job=file $wims_name_doch_upload
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main $n_main
+!href cmd=reply&job=read&block=main $wims_name_doch_main
 </center> <p>
 
 !set wims_menu_items=!append line doch_upload,1,cmd=reply&job=file\
