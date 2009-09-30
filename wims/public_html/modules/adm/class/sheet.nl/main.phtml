@@ -31,7 +31,7 @@ $name_title
 !endif
 
 !if $activetest>-1
- <b>Werkblad informatie :</b>
+ <b>$name_info:</b>
 !endif
 !read adm/sheet/sheetinfo.phtml
 
@@ -41,9 +41,9 @@ $name_title
 
 :end1
 <a name=list></a>
-<b>Inhoud van dit werkblad :</b>
+<b>$name_content:</b>
 !if $exocnt=0
- <p>Dit werkblad is leeg en heeft nog geen oefeningen.
+ <p>$name_warning
 !else
  <small>[
  !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
@@ -52,19 +52,22 @@ $name_title
 !endif
 
 !if $activetest=0
- <p>
- Om oefeningen (of cursussen, hulpmiddelen etc) aan een werkblad toe te voegen,
- stel deze dan in (afhankelijk van uw wensen) en start de oefening, 
-gebruik de link onderaan de pagina van de oefening "Voeg toe aan werkblad".
- <p>
- U kunt :
+ <p>$name_text1
   <ul>
-   <li> de interne zoekmachine gebruiken :
+   <li> $name_text2:
 	!read adm/search_engine/form.phtml
    </li>
    <li> 
     !href cmd=reply&job=prep_putsource $wims_name_putsource
    </li>
+   <li> $name_text3
+   !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
+   </li>
+   !if $wims_devel_modules iswordof open
+    <li> $name_text4
+    !href module=adm/modtool $wims_name_modtool
+    </li>
+   !endif
   </ul>
 !endif
 

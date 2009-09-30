@@ -31,7 +31,7 @@ $name_title
 !endif
 
 !if $activetest>-1
- <b>sheet information :</b>
+ <b>$name_info:</b>
 !endif
 !read adm/sheet/sheetinfo.phtml
 
@@ -40,166 +40,50 @@ $name_title
 !endif
 
 :end1
-!if $activetest>0
- !form reply
- <input type=hidden name=job value=text>
- Ta list je
- !if $activetest=1
-  vkljuèen.
-  !href cmd=reply&job=expire Zakljuèite ga TAKOJ
-  ali pa ga
-  !href cmd=reply&job=deactivate izkljuèite
-.
- !else
-  !if $activetest=2
-  zakljuèena, a ¹e vedno vidna uporabnikom.
-   !href cmd=reply&job=hide Skrij list
-  !else
-   zakljuèen in skrit uporabnikom.
-   !href cmd=reply&job=expire Razkrij list
-  !endif
-  .
-  !href cmd=reply&job=reactivate Vkljuèite list
-  ali
-  !href cmd=reply&job=deactivate izkljuèite list
-  (da boste lahko urejali njegovo vsebino). <p>
-. <p>
- !endif
- <p><center><table border=2>
- <tr><td align=right>Naslov:
- <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Uveljavi>
- <tr><td align=right>Opis:
- <td><textarea name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Predstavitvena stran:
- <td><input size=30 name=prpage value="$prpage"><small>
- !href target=wims_mhelp cmd=help&special_parm=sheetpage help
- </small>
- <tr><td align=right>Datum zakljuèka:<td>
- !distribute item $[$expday],$[$expmon] into expday,expmon
- !formselect expday from 1 to 31
- !formselect expmon from 1 to 12 prompt $months
- !formselect expyear from $thisyear to $thisyear+1
- </table></center></form> <p>
- !goto end1
-!endif
-
-!form reply
-<input type=hidden name=job value=text>
-Naslov (najveè $title_limit znakov):<br>
-<input size=65 name=title value="$title"> <p>
-Pojasnilo (najveè $desc_limit znakov; dovoljeni so html
-ukazi):<br>
-<textarea rows=6 cols=65 name=desc>$desc</textarea> <p>
-Ali predstavitvena stran:
-<input size=30 name=prpage value="$prpage"><small>
-!href target=wims_mhelp cmd=help&special_parm=sheetpage pomoè
-</small> <p>
-<center><input type=submit value="Shrani besedila"></center>
-
-<p>Datum zakljuèka lista:
-!distribute item $[$expday],$[$expmon] into expday,expmon
-!formselect expday from 1 to 31
-!formselect expmon from 1 to 12 prompt $months
-!formselect expyear from $thisyear to $thisyear+1
-&nbsp; <input type=submit value="Uveljavi">
-
-!ifval $activetest=-1
- <p>List s tem imenom ¹e ne obstaja.
- <input type=submit value="Kliknite za nov list"> (pred tem vpi¹ite naslov).
- </form>
- !goto end
-!else
- </form>
- !if $exocnt>0
-  <p>Ta list ¹e ni vkljuèen.
-  !href cmd=reply&job=prep_activate Kliknite
-  za vklop.
-  (©tudentje vidijo le vkljuèene liste, po drugi strani pa vkljuèenih listov ni veè mogoèe spreminjati, ne da bi jih predtem izkljuèili in s tem izgubili rezultate.)
- !endif
-!endif
-
-:end1
-<p>
+<a name=list></a>
+<b>$name_content :</b>
 !if $exocnt=0
- Ta list ¹e nima vsebine.
+ <p>$name_warning
 !else
- <a name=list></a>
- Vsebina lista: <small>[
- !href module=adm/sheet&sh=$sheet&job=print Razlièica za tiskanje
+ <small>[
+ !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
  ]</small>
- <ol>
- !for i=1 to $exocnt
-  <li>
-  !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $ex into di,pa,re,we,ti,de,dep
-  !set dep=!trim $dep
-  !href cmd=new&module=$di&worksheet=$sheet&$pa $ti
-, $re toèk z ute¾jo $we.
-  !if $activetest=0
-   &nbsp;(
-   !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Prestavi&nbsp;vi¹je
-    &nbsp;
-   !endif
-   !href cmd=reply&job=prep_modify&modif=$i Spremeni
-   &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Zbri¹i
-   !if $dep!=$empty
-    &nbsp;
-    !href cmd=reply&job=prep_modify&modif=$i Odvisnosti
-   !endif
-   )
-  !endif
- !next i
- </ol>
+ !read adm/sheet/sheetcontent.phtml
 !endif
 
 !if $activetest=0
- <p>Za dodajanje vsebine (vaje, orodja, razlage) v delovni list se vrnite na 
- !href $ domaèo stran 
- uèilnice. Tam poi¹èite ustrezno stran v seznamu vsebin
- in izberite ustrezno zahtevnost, èe gre za vajo. Nato uporabite povezavo na dnu strani z vajo, da jo dodate na delovni list.
- !if $erasable=yes
-  <p>
-  V ta list lahko tudi
-  !href cmd=reply&job=prep_putsource vstavite datoteko s kodo
-  ali pa ga
-  !href cmd=reply&job=prep_erase erase izbri¹ete
-.
- !endif
+ <p>$name_text1
+  <ul>
+   <li> $name_text2:
+	!read adm/search_engine/form.phtml
+   </li>
+   <li> 
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li>
+   <li> $name_text3
+   !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
+   </li>
+   !if $wims_devel_modules iswordof open
+    <li> $name_text4
+    !href module=adm/modtool $wims_name_modtool
+    </li>
+   !endif
+  </ul>
 !endif
 
+:end
 !if $activetest>=0
- <p>
- !href module=adm/sheet&sh=$sheet Pogled uporabnika.
- &nbsp;
- !href cmd=reply&job=getsource Izvorna koda.
- <p>
- !form reply
- <input type=hidden name=allow value=yes>
- Bele¾enje rezultatov je
- !formselect allowtype list all, none, select prompt omogoèeno vsem., onemogoèeno vsem., omogoèeno le za naslednje IP naslove in èasovne termine:
- <br><input size=60 name=IPlist value="$IPlist"> <br>
- <input type=submit value="Uveljavi spremembe">
- !set allowshare=0
- !if $sharers!=$empty
-  ( za celotno skupino uèilnic:
-  !formselect allowshare list 0,1 prompt no,yes
-  )
- !else
-  <input type=hidden name=allowshare value=0>
+ !if $activetest=0
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
  !endif
- </form>
- <small><b>Namig.</b> Pri selektivnem dostopu dodate èasovno omejitev bele¾enja rezultatov z vnosom
- <font color=blue><b>
- <tt>&gt;llllmmdd.uu:mm</tt></b></font>
- (èas zaèetka) in/ali
- <font color=blue><b>
- <tt>&lt;llllmmdd.uu:mm</tt></b></font>
- (èas zakljuèka). Èasi se nana¹ajo na lokalni èas STRE®NIKA in morajo biti loèeni od ostalih besed (oz. IP naslovov) s presledki.
- </small>
+ !if $job!=getsource
+  !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
+ !endif
+ !let wims_menu_items=!append line ,0,\
+printable,1,module=adm/sheet&sh=$sheet&job=print\
+participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
 !endif
+
 !tail
 
 !distribute item ,, into job,source,title,desc,prpage

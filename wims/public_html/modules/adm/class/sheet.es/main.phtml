@@ -31,7 +31,7 @@ $name_title
 !endif
 
 !if $activetest>-1
- <b>Informaciones generales :</b>
+ <b>$name_info:</b>
 !endif
 !read adm/sheet/sheetinfo.phtml
 
@@ -41,9 +41,9 @@ $name_title
 
 :end1
 <a name=list></a>
-<b>Contenido de la hoja de trabajo :</b>
+<b>$name_content:</b>
 !if $exocnt=0
- <p>Esta hoja de trabajo no tiene aún contenido. 
+ <p>$name_warning
 !else
  <small>[
  !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
@@ -52,12 +52,23 @@ $name_title
 !endif
 
 !if $activetest=0
- <p>Para añadir una tarea (ejercicio, curso, herramienta, etc.) a una
- hoja de trabajo,
-  !read adm/search_engine/form.phtml
- , tome el elemento correspondiente de la lista de aplicaciones,
- y decida su nivel de dificultad. Use entonces el enlace que se encuentra
- al pie de la página del ejercicio para añadirlo a la hoja de trabajo.
+ <p>$name_text1
+  <ul>
+   <li> $name_text2:
+	!read adm/search_engine/form.phtml
+   </li>
+   <li> 
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li>
+   <li> $name_text3
+   !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
+   </li>
+   !if $wims_devel_modules iswordof open
+    <li> $name_text4
+    !href module=adm/modtool $wims_name_modtool
+    </li>
+   !endif
+  </ul>
 !endif
 
 :end

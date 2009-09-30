@@ -31,7 +31,7 @@ $name_title
 !endif
 
 !if $activetest>-1
- <b>Sheet information :</b>
+ <b>$name_info:</b>
 !endif
 !read adm/sheet/sheetinfo.phtml
 
@@ -41,9 +41,9 @@ $name_title
 
 :end1
 <a name=list></a>
-<b>Content of the sheet :</b>
+<b>$name_content:</b>
 !if $exocnt=0
- <p>This sheet has no content yet. 
+ <p>$name_warning
 !else
  <small>[
  !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
@@ -52,22 +52,19 @@ $name_title
 !endif
 
 !if $activetest=0
- <p>To add a work (exercise, course, tool, etc.) to a sheet, you have to choose it (see below), choose its level of difficulty. Then use the link at the end of the page
- of this exercise to add it to the sheet.
- <p>
- You can :
+ <p>$name_text1
   <ul>
-   <li> use search engine :
+   <li> $name_text2:
 	!read adm/search_engine/form.phtml
    </li>
    <li> 
     !href cmd=reply&job=prep_putsource $wims_name_putsource
    </li>
-   <li> Find an exercise amongst
+   <li> $name_text3
    !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
    </li>
    !if $wims_devel_modules iswordof open
-    <li> Find an exercise in your account
+    <li> $name_text4
     !href module=adm/modtool $wims_name_modtool
     </li>
    !endif

@@ -1,8 +1,4 @@
 !reset confirm
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -35,7 +31,7 @@ $name_title
 !endif
 
 !if $activetest>-1
- <b>Informazioni generali:</b>
+ <b>$name_info:</b>
 !endif
 !read adm/sheet/sheetinfo.phtml
 
@@ -45,9 +41,9 @@ $name_title
 
 :end1
 <a name=list></a>
-<b>Contenuto del test di autovalutazione:</b>
+<b>$name_content:</b>
 !if $exocnt=0
- <p>Il test non contiene ancora alcun esercizio.
+ <p>$name_warning
 !else
  <small>[
  !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
@@ -56,23 +52,25 @@ $name_title
 !endif
 
 !if $activetest=0
- <p>Per inserire un elemento (esercizio, cours, strumento, etc.) in un test 
- di autovalutazione è necessario selezionare l'elemento (vedi sotto),
- configurarne le opzioni e avviarlo. In questo modo alla base della pagina 
- che si apre compare un link che permette l'inserimento nel test.
-
- Per scegliere gli elementi potete
- <ul>
-  <li> utilizzare il motore di ricerca:
+ <p>$name_text1
+  <ul>
+   <li> $name_text2:
 	!read adm/search_engine/form.phtml
- </li>
- <li> oppure utilizzare lo strumento di 
- !href module=help/teacher/program confronto 
- tra i programmi di insegnamento francese e gli esercizi di WIMS.
-</li>
+   </li>
    <li> 
     !href cmd=reply&job=prep_putsource $wims_name_putsource
    </li>
+   <li> $name_text3
+   !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
+   </li>
+   !if $wims_devel_modules iswordof open
+    <li> $name_text4
+    !href module=adm/modtool $wims_name_modtool
+    </li>
+   <li> oppure utilizzare lo strumento di 
+ !href module=help/teacher/program confronto 
+ tra i programmi di insegnamento francese e gli esercizi di WIMS.
+</li>
 </ul>
 !endif
 
@@ -83,7 +81,7 @@ $name_title
  !endif
  !if $job!=getsource
   !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
-!endif
+ !endif
  !let wims_menu_items=!append line ,0,\
 printable,1,module=adm/sheet&sh=$sheet&job=print\
 participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items

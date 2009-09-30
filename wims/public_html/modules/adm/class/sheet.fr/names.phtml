@@ -14,7 +14,7 @@
 		Source de la feuille \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,Titre,Description,Points,Poids,Dépendances,Actions
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Points,Poids,Dépendances,$wims_name_action
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Page de préparation
@@ -24,11 +24,25 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
  !set name_title=!nosubst Gestion de la feuille $sheet
 !endif
 
-!let name_shinfo=!nosubst Titre <small>(limité à $title_limit caractères)</small>,Statut,\
+!let name_shinfo=!nosubst $wims_name_title <small>(limité à $title_limit caractères)</small>,$wims_name_status,\
 Texte d'explication <br></small>(limité à $desc_limit caractères; les tags et liens html sont admis)</small>,\
 Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les classes partageant la feuille :
 !let name_allowtype=ouvert pour tous, fermé pour tous, ouvert pour postes (et/ou heures) suivants :
 !let name_mksheet=Créer la feuille
+
+!distribute lines Informations générales&nbsp;\
+Contenu de la feuille&nbsp;\
+Cette feuille n'a pas encore de contenu.\
+into name_info,name_content,name_warning
+
+!set name_text1=Pour ajouter un travail (exercice, outil, etc.) à la feuille, vous devez d'abord choisir\
+ l'objet correspondant (voir ci-dessous) ; réglez les différents paramètres proposés et lancez l'exercice.\
+ Ensuite, utilisez le lien sur le bord de l'exercice pour l'ajouter à la feuille.\
+ Pour choisir votre travail, vous avez une des possibilités suivantes
+ 
+!set name_text2=Passer par le moteur de recherche
+!set name_text3=Chercher un exercice parmi les 
+!set name_text4=Chercher un exercice de votre compte
 
 !if $job=student
   !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)

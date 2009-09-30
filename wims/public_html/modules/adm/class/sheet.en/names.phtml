@@ -14,7 +14,7 @@
 		Source of the sheet \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,Title,Description,Points,Weight,Dependencies,Actions
+!let name_shtab=No,$wims_name_title,$wims_name_Description,,Points,Weight,Dependencies,Actions
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Page of preparation
@@ -30,8 +30,20 @@ Expiration date,Presentation page,Registration of scores,for all sharing classes
 !let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
 !let name_mksheet=Create the sheet
 
+!distribute lines Sheet information\
+Content of the sheet\
+This sheet has no content yet.\
+into name_info,name_content,name_warning
+
+!set name_text1=To add a work (exercise, course, tool, etc.) to a sheet, you have to choose it (see below), choose its level of difficulty. Then use the link at the end of the page\
+of this exercise to add it to the sheet.
+
+!set name_text2= use search engine
+!set name_text3=Find an exercise amongst
+!set name_text4=Find an exercise in your account
+
 !if $job=student
-  !set name_title=Worksheet $sheet<br>$title Presentation for participants)
+  !set name_title=Worksheet $sheet<br>$title (Presentation for participants)
   !set name_sheetempty=The sheet is empty! Nothing is assigned for you in it. Possibly an \
  error in the manipulation by your supervisor.
   !set name_assignedwork=Assigned works in this sheet
