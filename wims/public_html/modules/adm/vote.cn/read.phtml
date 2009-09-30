@@ -14,9 +14,9 @@
 
 !if $wims_user=supervisor
  ($vcnt 票)
- !href cmd=reply&job=edit 修改
+ !href cmd=reply&job=edit $wims_name_change
  
- !href cmd=reply&job=csv Spreadsheet
+ !href cmd=reply&job=csv $wims_name_csv
 <p>
 !set wims_menu_items=!append line  votemod,1,cmd=reply&job=edit\
  csv,1,cmd=reply&job=csv\
@@ -40,7 +40,7 @@ to $wims_menu_items
  你的选择: <p>
  :form
  !form reply
- <input type=hidden name=job value=投票>
+ <input type=hidden name=job value=vote>
  !set m_formed=yes
 !endif
 
@@ -48,7 +48,7 @@ to $wims_menu_items
 
 !if $m_formed=yes
  <p><center>
- <input type=submit value="发送">
+ <input type=submit value="$wims_name_tosave">
  </center></form>
 !endif
 
