@@ -2,27 +2,27 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- El bloque <tt>$block</tt> de este documento no se creado todavía.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Aún no se ha abierto esta página a la lectura. ¡Vuelva más adelante!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Esta página ha expirado, ya no es posible leerla. ¡Lo sentimos!
+ $name_expired
  <p>
  !exit
 !endif
@@ -31,17 +31,16 @@
 
 !if $sheetdata=$empty
  <p>
- No hay datos de ejercicios en esta página.
+ $name_noexercise
  <p>
  !exit
 !endif
 
-Estos son los ejercicios de la página en formato de hoja de trabajo.
-Puede cortar y pegar para insertarlos
+$name_exercise
 !if $wims_user=supervisor
- en una hoja de su elección en la clase.
+ $name_sheet1
 !else
- en una hoja de una clase virtual que le pertenezca.
+ $name_sheet2
 !endif
 
 <pre>

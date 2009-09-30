@@ -8,27 +8,27 @@
 
 !if $titb=$empty
  <p>
- The block <tt>$block</tt> is not yet created.
+ $name_nocreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- This page is not yet open to reading. Come back later!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- This page is expired. You can no longer read it. Sorry!
+ $name_expired
  <p>
  !exit
 !endif
 
 :newblock
-<a name=$block></a>
+<a name="$block"></a>
 <h3>$titb</h3>
 
 !read $wims_priv_thisdoc/$block.def content

@@ -1,20 +1,21 @@
-<html><head>
-$wims_html_header
+!!##language independent 
 !if $job iswordof read print
- $header
+ !set wims_html_header=!append line $header to $wims_html_header
 !endif
-</head>
+!read adm/css.phtml
+
 !if $job=help
+ !header1
  !changeto help.phtml
 !endif
 
 !if help isin $wims_session and $doc!=$helpd
- <body $wims_htmlbody onload="window.close();">
- Vous pouvez maintenant fermer cette fenêtre d'aide.
+ !set wims_html_onload=!append word window.close(); to $wims_html_onload
+ !header1
+ $n_helpclose
  !tail
  !exit
 !endif
-<body $wims_htmlbody><div class=wimsmenu>
 
 !if $cmd=help and $special_parm=about
  !changeto about.phtml
@@ -23,19 +24,19 @@ $wims_html_header
 !if $job notwordof home
  !read menu.phtml
 !else
- !headmenu
+ !header
 !endif
-</div><div class=wimsbody>
+
 !read $job.phtml
 
 !reset rEg,preview,abandon,Titb,Keyw,Next,Prev,Upbl,currcont,\
-       titr,descr,authorr,emailr,coder,coder1,coder2,copyrightr,docopenr,dlangr,\
+       titr,authorr,descr,emailr,coder,coder1,coder2,copyrightr,docopenr,dlangr,\
        foldin,foldout,readcntadv,job2
 
 !for i=1 to 20
  !reset parm$i
 !next i
 
-</div>
+!if $job notwordof home
 !tail
-
+!endif

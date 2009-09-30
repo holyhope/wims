@@ -55,15 +55,15 @@ para incluir un fichero de imagen <tt>myfile.jpg</tt> en la página.
 !endif
 
 <p>
-Espacio de disco disponible total: $quota_total Meg.
-Espacio de disco libre: $quota_free Meg.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 
 <p><center>
-!href cmd=reply&job=prop Propiedades del documento
+!href cmd=reply&job=prop $n_properties
 &nbsp;&nbsp;
-!href cmd=reply&job=list Lista de bloques
+!href cmd=reply&job=list $n_blocklist
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Bloque principal
+!href cmd=reply&job=read&block=main $wims_name_doch_main
 !if $(readhist[-1;2])!=main
 &nbsp;&nbsp;
 !href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage

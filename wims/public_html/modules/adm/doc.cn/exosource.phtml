@@ -2,27 +2,27 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- 此文件的块<tt>$block</tt>尚未建立.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- 本页尚未向读者公开. 请以后再来!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- 本页已过期. 你不再能阅读. 抱歉!
+ $name_expired
  <p>
  !exit
 !endif
@@ -31,16 +31,16 @@
 
 !if $sheetdata=$empty
  <p>
-本页无练习.
+ $name_noexercise
  <p>
  !exit
 !endif
 
-本页练习是工作页的格式. 你可以用复制-粘贴的方式将其插入
+$name_exercise
 !if $wims_user=supervisor
-你的班级的一个选中的页.
+ $name_sheet1
 !else
-你负责的虚拟班的页内.
+ $name_sheet2
 !endif
 
 <pre>

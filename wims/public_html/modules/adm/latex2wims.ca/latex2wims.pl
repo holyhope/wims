@@ -262,7 +262,7 @@ out1 ('about.phtml', (($ABOUT)? $ABOUT :'') . '
 <p>
 Ce document a été créé par Latex2wims.<p>
 
-!changeto docu/$module_language/about.phtml') ;
+!changeto docu/about.phtml') ;
 if (!($hash{author}{main})) {
   warn " ATTENTION : Vous devez mettre un nom d'auteur \\author{xxx}" ;
   $hash{author}{main}=$author } ;

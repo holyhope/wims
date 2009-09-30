@@ -2,7 +2,7 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
@@ -16,11 +16,11 @@
 <input type=hidden name=block value="$block">
 
 !if $titb=$empty
- Creación
+ Creación del bloque <tt>$block</tt>.
 !else
- Modificación
+ Modificación del bloque <tt>$block</tt>.
 !endif
-del bloque <tt>$block</tt>.
+
 !if $edtype=file
  !href cmd=reply&edtype=textarea [Composición en línea]
 !else
@@ -43,9 +43,9 @@ Title: <input size=50 name=Titb value="$titb"> <br>
  !mexec scripts/textarea.sh
 !endif
 <center>
-<input type=submit name=preview value="Vista previa">
-<input type=submit name=rEg value="Grabar">
-<input type=submit name=abandon value="Cancelar">
+<input type=submit name=preview value="$n_preview">
+<input type=submit name=rEg value="$wims_name_tosave">
+<input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>
 !! Palabras clave: <input size=50 name=Keyw value="$keyw"> <br>
 !if $block!=main
@@ -66,5 +66,4 @@ Fechas válidas <small>aaaammdd</small> : desde
  una fórmula matemática o algo así).
 !endif
 <p><hr> <p>
-
 

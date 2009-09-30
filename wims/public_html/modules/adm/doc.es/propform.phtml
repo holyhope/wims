@@ -7,15 +7,15 @@
 !set wims_form_method=post
 !form reply
 <center><table border=0>
-<tr><td align=right>Título:
-<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>$wims_name_title</td>
+<td><input type=text size=40 name=titr value="$tit"></td></tr>
 <tr><td align=right>$wims_name_Description</td>
 <td><input type=text size=40 name=descr value="$desc"></td></tr>
-<tr><td align=right>Autor:
-<td><input type=text size=40 name=authorr value="$author">
-<tr><td align=right>Correo electrónico:
-<td><input type=text size=40 name=emailr value="$email">
-<tr><td align=right>Cabecera:<br>
+<tr><td align=right>$wims_name_author</td>
+<td><input type=text size=40 name=authorr value="$author"></td></tr>
+<tr><td align=right>$wims_name_email</td>
+<td><input type=text size=40 name=emailr value="$email"></td></tr>
+<tr><td align=right>$n_header<br>
 <small>(css, js, etc.)</small>
 !set header=!translate internal $	$ to $\
 $ in $header
@@ -27,7 +27,7 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>Copyright:<td>
+ <tr><td align=right>$n_copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
@@ -35,13 +35,13 @@ $ in $header
 	Open Publication License,\
 	All Rights Reserved
  <tr><td align=right>Abierto al público:<td>
- !formselect docopenr list yes,no prompt Sí, No
- <tr><td align=right>Idioma(s):<td>
+ !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
+ </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  Examples: all en fr es it de cn</small>
  !if $job=creat
-  <tr><td align=right>Clave secreta:<td nowrap>
+  <tr><td align=right>$n_codedoc:<td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> repítala:
   <input type=password size=$codemax maxlength=$codemax name=coder2>
   <tr><td colspan=2><small>La clave secreta autoriza a modificar el documento.
@@ -59,8 +59,8 @@ $ in $header
 
 </table>
 <p>
- <input type=submit name=rEg value="Grabar">&nbsp;
- <input type=submit name=abandon value="Cancelar">
+ <input type=submit name=rEg value="$wims_name_tosave">&nbsp;
+ <input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
 

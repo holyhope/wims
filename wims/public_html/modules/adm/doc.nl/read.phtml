@@ -1,26 +1,25 @@
 
 <h1 class="wims_docu_title">$tit
 !if $editable=yes
- </b><font size="-1">[
+ <font size="-1">[
  !if $block=main
   !href cmd=reply&job=prop $n_properties
   ] [
-  !href cmd=reply&job=erase $n_erase
+  !href cmd=reply&job=erase $wims_name_erase
  !else
   !href cmd=reply&job=list $n_otherblocks
  !endif
  ]</font>
 !endif
 </h1>
-
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- Het blok <tt>$block</tt> is nog niet aangemaakt.
+ $name_noncreate
  !if $editable=yes
   !href cmd=reply&job=edit&block=$block $n_create2.
 .
@@ -31,24 +30,21 @@
 
 !if $datetest<0
  <p>
- Deze pagina is nog niet voor publiek toegankelijk. Kom later maar eens terug!
-
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Deze pagina is helaas verlopen.
- U kunt deze pagina dus niet langer raadplegen.
+$name_expired
  <p>
  !exit
 !endif
-
-<h3>$titb
+<h3 class="wims_docu_titleb">$titb
 !if $editable=yes
- </b><font size="-1">[
- !href cmd=reply&job=edit&doc=$doc&block=$block $n_edit
+ <font size="-1">[
+ !href cmd=reply&job=edit&doc=$doc&block=$block $wims_name_Edit
  ]</font>
 !endif
 </h3>

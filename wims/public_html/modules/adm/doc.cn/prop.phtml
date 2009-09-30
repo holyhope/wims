@@ -1,4 +1,5 @@
-<h1 class="wims_title">文件性质<br>
+!!##language independant
+<h1 class="wims_docu_title">$n_properties<br>
 --- $tit ---</h1>
 
 !if $error!=$empty
@@ -9,16 +10,15 @@
 !read propform.phtml
 
 !if class != $doctype
- !href cmd=reply&job=recode 改变密码
+ !href cmd=reply&job=recode $n_codechange
 .&nbsp;
 !endif
 
-!href cmd=reply&job=list 块表
+!href cmd=reply&job=list $n_blocklist
 .
-!href cmd=reply&job=file 文档存放
-.
- <p>
-文件编码: $doc.
-可用磁盘空间总数: $quota_total Meg. 自由空间: $quota_free Meg.
+<p>
+$n_codedoc $doc.
+$n_freespace1 $quota_total Meg
+$n_freespace2 $quota_free Meg.
 <p>
 

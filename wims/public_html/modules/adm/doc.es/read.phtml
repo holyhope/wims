@@ -1,28 +1,27 @@
 
 <h1 class="wims_docu_title">$tit
 !if $editable=yes
- </b><font size="-1">[
+ <font size="-1">[
  !if $block=main
-  !href cmd=reply&job=prop Propiedades
+  !href cmd=reply&job=prop $n_properties
   ] [
-  !href cmd=reply&job=erase Borrar
+  !href cmd=reply&job=erase $wims_name_erase
  !else
-  !href cmd=reply&job=list Otros bloques
+  !href cmd=reply&job=list $n_otherblocks
  !endif
  ]</font>
 !endif
 </h1>
-
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- El bloque <tt>$block</tt> no ha sido creado aún.
+ $name_noncreate
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$block Crearlo
+  !href cmd=reply&job=edit&block=$block $n_create2.
 .
  !endif
  <p>
@@ -31,27 +30,25 @@
 
 !if $datetest<0
  <p>
- Esta página todavía no está abierta para su lectura. ¡Vuelva más adelante!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Esta página ha expirado, ya no es posible leerla. ¡Lo sentimos!
+$name_expired
  <p>
  !exit
 !endif
-
-<h3>$titb
+<h3 class="wims_docu_titleb">$titb
 !if $editable=yes
- </b><font size="-1">[
- !href cmd=reply&job=edit&doc=$doc&block=$block Editar
+ <font size="-1">[
+ !href cmd=reply&job=edit&doc=$doc&block=$block $wims_name_Edit
  ]</font>
 !endif
-</h3></div>
+</h3>
 
-!!detrust
 !read $docdir/$doc/$block.def content
 
 

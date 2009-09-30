@@ -1,32 +1,32 @@
 
-<h1 class="wims_title">$tit
+<h1 class="wims_docu_title">$tit
 </h1>
 
 !if $titb=$empty
  <p>
- Le bloc <tt>$titb</tt> de ce document n'est pas encore créé.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Ce bloc n'est pas encore lisible. Revenez plus tard !
+$name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Ce bloc est périmé. Il n'est plus lisible. Désolé !
+ $name_expired
  <p>
  !exit
 !endif
 
-<h3>$titb (Document source)
-</b><font size="-1">
+<h3>$titb ($n_sourcedoc)
+<font size="-1">
  [
- !href cmd=reply&job=read Formaté
+ !href cmd=reply&job=read $n_formatted
  ]</font>
 </h3>
 
@@ -40,8 +40,8 @@
 !endif
 <table width="100%" border=0>
 <tr><td align=left><small>
-!href cmd=reply&job=read Formaté
-&nbsp; par
+!href cmd=reply&job=read $n_formatted
+&nbsp; $n_by
 !if $email=$empty
  $author
 !else
@@ -54,10 +54,10 @@
  !href module=home WIMS
   @
  <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</small>
+ </small>
 !endif
 <tr><td align=left colspan=2 nowrap>
-<small>Dernière modif. $datm</small>
+<small>$n_lastmod $datm</small>
 </table>
 
 

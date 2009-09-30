@@ -4,29 +4,29 @@
 
 !if $titb=$empty
  <p>
- El bloque <tt>$titb</tt> de este documento no ha sido creado aún.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Este bloque todavía no se puede leer. ¡Vuelva más adelante!
+$name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Este bloque ha expirado, ya no es posible leerlo. ¡Lo sentimos!
+ $name_expired
  <p>
  !exit
 !endif
 
-<h3>$titb (Fuente del documento)
-</b><font size="-1">
+<h3>$titb ($n_sourcedoc)
+<font size="-1">
  [
- !href cmd=reply&job=read Formateada
+ !href cmd=reply&job=read $n_formatted
  ]</font>
 </h3>
 
@@ -40,8 +40,8 @@
 !endif
 <table width="100%" border=0>
 <tr><td align=left><small>
-!href cmd=reply&job=read Formateado
-&nbsp; por
+!href cmd=reply&job=read $n_formatted
+&nbsp; $n_by
 !if $email=$empty
  $author
 !else
@@ -54,10 +54,10 @@
  !href module=home WIMS
   @
  <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</small>
+ </small>
 !endif
 <tr><td align=left colspan=2 nowrap>
-<small>Última modificación $datm</small>
+<small>$n_lastmod $datm</small>
 </table>
 
 

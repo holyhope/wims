@@ -4,29 +4,29 @@
 
 !if $titb=$empty
  <p>
- The block <tt>$titb</tt> of this document is not yet created.
+ $name_noncreate2
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- This block is not yet readable. Come back later!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- This block is expired. It is no longer readable. Sorry!
+$name_expired
  <p>
  !exit
 !endif
 
-<h3>$titb (Document source)
+<h3>$titb ($name_src)
 </b><font size=-1>
  [
- !href cmd=reply&job=read Formatted
+ !href cmd=reply&job=read $n_formatted
  ]</font>
 </h3>
 
@@ -40,8 +40,8 @@
 !endif
 <table width="100%" border=0>
 <tr><td align=left><small>
-!href cmd=reply&job=read Formatted
-&nbsp; by
+!href cmd=reply&job=read $n_formatted
+&nbsp; par
 !if $email=$empty
  $author
 !else
@@ -57,7 +57,7 @@
 </small>
 !endif
 <tr><td align=left colspan=2 nowrap>
-<small>Last modified $datm</small>
+<small>$n_lastmod $datm</small>
 </table>
 
 

@@ -1,5 +1,5 @@
 
-<h1 class="wims_title">$tit</h1>
+<h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
  !read docu/$lang/msg.phtml
@@ -12,8 +12,8 @@
  !set wims_form_method=post
 !endif
 !form reply
-<input type=hidden name=doc value=$doc>
-<input type=hidden name=block value=$block>
+<input type=hidden name=doc value="$doc">
+<input type=hidden name=block value="$block">
 
 !if $titb=$empty
  Creation
@@ -29,7 +29,7 @@ of the block <tt>$block</tt>.
 <br>
 
 !set titb=!reinput $titb
-Title: <input size=50 name=Titb value="$titb"> <br>
+$wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
  Insert a file into the content : <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
@@ -43,9 +43,9 @@ Title: <input size=50 name=Titb value="$titb"> <br>
  !mexec scripts/textarea.sh
 !endif
 <center>
-<input type=submit name=preview value="Preview">
-<input type=submit name=rEg value="Register">
-<input type=submit name=abandon value="Cancel">
+<input type=submit name=preview value="$n_preview">
+<input type=submit name=rEg value="$wims_name_tosave">
+<input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>
 !! Key words: <input size=50 name=Keyw value="$keyw"> <br>
 !if $block!=main

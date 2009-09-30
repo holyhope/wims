@@ -7,17 +7,17 @@
 !set wims_form_method=post
 !form reply
 <center><table border=0>
-<tr><td align=right>标题:
-<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>$wims_name_title</td>
+<td><input type=text size=40 name=titr value="$tit"></td></tr>
 <tr><td align=right>$wims_name_Description</td>
 <td><input type=text size=40 name=descr value="$desc"></td></tr>
-<tr><td align=right>作者:
-<td><input type=text size=40 name=authorr value="$author">
-<tr><td align=right>Email:
-<td><input type=text size=40 name=emailr value="$email">
-<tr><td align=right>头文件:<br>
+<tr><td align=right>$wims_name_author</td>
+<td><input type=text size=40 name=authorr value="$author"></td></tr>
+<tr><td align=right>$wims_name_email</td>
+<td><input type=text size=40 name=emailr value="$email"></td></tr>
+<tr><td align=right>$n_header<br>
 <small>(css, js, etc.)</small>
-!set header=!translate internal $   $ to $\
+!set header=!translate internal $	$ to $\
 $ in $header
 !set hl=!linecnt $header
 !set hr=$[max(3,min($hl+2,10))]
@@ -35,8 +35,8 @@ $ in $header
     公开发布许可(Open Publication License),\
     保留一切版权
  <tr><td align=right>对公众开放:<td>
- !formselect docopenr list yes,no prompt 是, 否
- <tr><td align=right>语言:<td>
+ !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
+ </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  例: all en fr es it de cn</small>
@@ -59,8 +59,8 @@ $ in $header
 
 </table>
 <p>
- <input type=submit name=rEg value="纪录">&nbsp;
- <input type=submit name=abandon value="取消">
+ <input type=submit name=rEg value="$wims_name_tosave">&nbsp;
+ <input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
 

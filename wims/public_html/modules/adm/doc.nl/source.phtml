@@ -4,27 +4,27 @@
 
 !if $titb=$empty
  <p>
- Het blok <tt>$titb</tt> van dit document is nog niet aangemaakt
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Dit blok is nog niet leesbaar, kom later maar eens terug..
+$name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
-Helaas, dit blok is verlopen. Het is dus niet langer leesbaar
+ $name_expired
  <p>
  !exit
 !endif
 
 <h3>$titb ($n_sourcedoc)
-</b><font size="-1">
+<font size="-1">
  [
  !href cmd=reply&job=read $n_formatted
  ]</font>
@@ -54,7 +54,7 @@ Helaas, dit blok is verlopen. Het is dus niet langer leesbaar
  !href module=home WIMS
   @
  <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
-</small>
+ </small>
 !endif
 <tr><td align=left colspan=2 nowrap>
 <small>$n_lastmod $datm</small>

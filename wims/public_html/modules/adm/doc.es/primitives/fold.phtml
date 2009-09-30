@@ -1,3 +1,4 @@
+!!##language independant
 !set parm1=!text select /$namechars in $parm1
 !set parm1=!char 1 to $namelim of $parm1
 
@@ -13,7 +14,7 @@
   $pp
   !if $printable!=yes
    <small>[
-   !href cmd=reply&job=read&foldout=$block.$serial#primi$serial Ocultar
+   !href cmd=reply&job=read&foldout=$block.$serial#primi$serial $n_foldout
    ]</small>
   !endif
  !endif
@@ -29,10 +30,10 @@
  $prompt
  !if $editable=yes
   <small>[
-  !href cmd=reply&job=edit&block=$parm1 Crear
+  !href cmd=reply&job=edit&block=$parm1 $n_create
   ]</small>
  !else
-  <small>[no disponible]</small>
+  <small>$n_nonavailable</small>
  !endif
 !else
  <a name="primi$serial"></a>
@@ -42,14 +43,14 @@
  !endif
  <small>[
  !if $doc/$block.$serial notitemof $foldlist and robot notin $session
-  !href cmd=reply&job=read&foldin=$block.$serial#primi$serial Detalle
+  !href cmd=reply&job=read&foldin=$block.$serial#primi$serial $wims_name_detail
   ]</small>
  !else
-  !href cmd=reply&job=read&foldout=$block.$serial#primi$serial Ocultar
+  !href cmd=reply&job=read&foldout=$block.$serial#primi$serial $n_foldout
   ]
   !if $editable=yes
    [
-   !href cmd=reply&job=edit&doc=$doc&block=$parm1 Editar
+   !href cmd=reply&job=edit&doc=$doc&block=$parm1 $wims_name_Edit
    ]
   !endif
   </small>

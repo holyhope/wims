@@ -2,27 +2,27 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/en/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- The block <tt>$block</tt> is not yet created.
+ $name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- This page is not yet open to reading. Come back later!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- This page is expired. You can no longer read it. Sorry!
+ $name_expired
  <p>
  !exit
 !endif
@@ -31,19 +31,19 @@
 
 !if $sheetdata=$empty
  <p>
- There is no exercise data in this page.
+ $name_noexercise
  <p>
  !exit
 !endif
 
-Here are the exercises of this page under worksheet format. You can use cut
-and paste to insert them
+$name_exercise
 !if $wims_user=supervisor
- into a sheet of your choice of your class.
+ $name_sheet1
 !else
- into a sheet of a virtual class under your responsibility.
+ $name_sheet2
 !endif
 
 <pre>
 $sheetdata
 </pre>
+

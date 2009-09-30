@@ -1,42 +1,43 @@
-<h1 class="wims_title">$tit</h1>
+!!#language independant
+<h1 class="wims_docu_title">$tit</h1>
 
 !if $fcnt<1
- Ce document n'a pas encore de contenu.
- !href cmd=reply&job=edit&block=main Créer la page d'entrée
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
 .
  <p>
  !exit
 !endif
 
 <p>$table_header
-<caption>Liste de blocs du document</caption>
+<caption>$n_blocklist</caption>
 $table_hdtr
-<th>Nom</th><th>Titre</th><th>Action</th></tr>
+<th>$wims_name_name</th><th>$wims_name_title</th><th>$wims_name_action</th></tr>
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
  !set t_=!trim $t_
- !default t_=Sans titre
+ !default t_=$n_notitle
  $table_tr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align=center>
- !href cmd=reply&job=read&block=$s_ Lire
+ !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ Editer
+  !href cmd=reply&job=edit&block=$s_ $wims_name_Edit
  !endif
 </td>
 !next i
 </tr>$table_end <p>
 
 <center>
-Espace disque disponible au départ&nbsp;: $quota_total Meg.
-Espace libre&nbsp;: $quota_free Meg.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 <p>
-!href cmd=reply&job=file Dépôt de fichier
+!href cmd=reply&job=file $wims_name_doch_upload
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Page d'entrée du document
+!href cmd=reply&job=read&block=main $wims_name_doch_main
 </center> <p>
 
 !set wims_menu_items=!append line doch_upload,1,cmd=reply&job=file\

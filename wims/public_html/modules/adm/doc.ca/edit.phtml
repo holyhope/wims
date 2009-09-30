@@ -1,8 +1,8 @@
 
-<h1 class="wims_title">$tit</h1>
+<h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
@@ -12,26 +12,26 @@
  !set wims_form_method=post
 !endif
 !form reply
-<input type=hidden name=doc value=$doc>
-<input type=hidden name=block value=$block>
+<input type=hidden name=doc value="$doc">
+<input type=hidden name=block value="$block">
 
 !if $titb=$empty
- Création
+$name_blockcreation
 !else
- Edition
+$name_blockedition
 !endif
-du bloc <tt>$block</tt>.
+
 !if $edtype=file
- !href cmd=reply&edtype=textarea [Composition en ligne]
+ !href cmd=reply&edtype=textarea [$name_compose]
 !else
- !href cmd=reply&edtype=file [Insérer un fichier]
+ !href cmd=reply&edtype=file [$name_file]
 !endif
 <br>
 
 !set titb=!reinput $titb
-Titre : <input size=50 name=Titb value="$titb"> <br>
+$wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
- Insérer un fichier au contenu : <input type=file size=35 name=wims_deposit>
+ Insérer un fichier texte: <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
   <br>Ce fichier va
   !formselect addtype list replace,append,prepend prompt\
@@ -43,7 +43,7 @@ Titre : <input size=50 name=Titb value="$titb"> <br>
  !mexec scripts/textarea.sh
 !endif
 <center>
-<input type=submit name=preview value="Aperçu">
+<input type=submit name=preview value="$n_preview">
 <input type=submit name=rEg value="$wims_name_tosave">
 <input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>

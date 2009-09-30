@@ -2,7 +2,7 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
@@ -16,22 +16,22 @@
 <input type=hidden name=block value="$block">
 
 !if $titb=$empty
- Création
+$name_blockcreation
 !else
- Edition
+$name_blockedition
 !endif
-du bloc <tt>$block</tt>.
+
 !if $edtype=file
- !href cmd=reply&edtype=textarea [Composition en ligne]
+ !href cmd=reply&edtype=textarea [$name_compose]
 !else
- !href cmd=reply&edtype=file [Insérer un fichier texte]
+ !href cmd=reply&edtype=file [$name_file]
 !endif
 <br>
 
 !set titb=!reinput $titb
 $wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
- Insérer un fichier texte au contenu : <input type=file size=35 name=wims_deposit>
+ Insérer un fichier texte: <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
   <br>Ce fichier va
   !formselect addtype list replace,append,prepend prompt\

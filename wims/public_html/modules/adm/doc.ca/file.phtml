@@ -1,4 +1,4 @@
-<h1 class="wims_title">$tit</h1>
+<h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
  !read docu/$lang/msg.phtml
@@ -42,27 +42,29 @@
 <p><center>
  <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
+(<b>copiez ce texte après avoir chargé votre fichier</b>)
  crée un lien vers le fichier <a href="$m_filedir/$f1">$f1</a>.
+ 
  Vous pouvez aussi écrire
 <p><center>
  <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </center> <p>
 pour inclure un fichier d'image <tt>myfile.jpg</tt> dans la page.
  <p>
- Les fichiers déposés dans ce document sont uniquement accessibles à ceux
+ Les fichiers déposés dans ce document sont accessibles uniquement à ceux
  ayant le droit de lire le document.
 !endif
 
 <p>
-Espace disque disponible au départ&nbsp;: $quota_total Meg.
-Espace libre&nbsp;: $quota_free Meg.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 
 <p><center>
-!href cmd=reply&job=prop Propriétés du document
+!href cmd=reply&job=prop $n_properties
 &nbsp;&nbsp;
-!href cmd=reply&job=list Liste de blocs
+!href cmd=reply&job=list $n_blocklist
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Bloc d'entrée
+!href cmd=reply&job=read&block=main $wims_name_doch_main
 !if $(readhist[-1;2])!=main
 &nbsp;&nbsp;
 !href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage

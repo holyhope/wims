@@ -8,28 +8,27 @@
 
 !if $titb=$empty
  <p>
- Het blok <tt>$block</tt> is nog niet aangemaakt.
+ $name_nocreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Deze pagina is nog niet klaar.<br>
- Kom later maar eens terug ! 
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Deze pagina is verlopen. Sorry!
+ $name_expired
  <p>
  !exit
 !endif
 
 :newblock
-<a name=$block></a>
+<a name="$block"></a>
 <h3>$titb</h3>
 
 !read $wims_priv_thisdoc/$block.def content

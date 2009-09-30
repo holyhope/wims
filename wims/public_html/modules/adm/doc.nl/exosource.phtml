@@ -2,27 +2,27 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- Dit blok <tt>$block</tt> is nog niet aangemaakt.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Deze pagina is nog niet beschikbaar. Kom later maar eens terug !
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Deze pagina is verlopen, en is helaas niet meer beschikbaar.
+ $name_expired
  <p>
  !exit
 !endif
@@ -31,16 +31,16 @@
 
 !if $sheetdata=$empty
  <p>
- Er staan geen oefeningen in deze pagina.
+ $name_noexercise
  <p>
  !exit
 !endif
-Hier staan de oefeningen onder "werkblad formaat".
-U kunt ze met "cut & past" invoegen
+
+$name_exercise
 !if $wims_user=supervisor
- in een werkblad naar keuze.
+ $name_sheet1
 !else
- in een werkblad van Uw virtuele klas.
+ $name_sheet2
 !endif
 
 <pre>

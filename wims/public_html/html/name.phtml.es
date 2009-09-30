@@ -78,7 +78,14 @@
 		Esto es un módulo de,\
 		Servidor Interactivo Multifunciones en la Red,\
 		Derechos de autor,\
-		Keywords, \
+		Keywords,\
+		Email du traducteur,\
+		Email de l'auteur,\
+		Domaine,\
+		Type,\
+		Niveau(x),\
+		Mécanisme de score <br><small>(exercice / récréation)</small>,\
+		Logiciels de soutien<br>nécessaires,\
 	into wims_name_name,\
 	wims_name_module_infos,\
 	wims_name_Address,\
@@ -91,7 +98,11 @@
 	wims_name_Translator,\
 	wims_name_This_is_a_module,\
 	wims_name_WIMS_subtitle,\
-	wims_name_Copyright,wims_name_Keywords
+	wims_name_Copyright,wims_name_Keywords,\
+	wims_name_tr_email,wims_name_auth_email,\
+	wims_name_Domain,wims_name_Type,wims_name_Levels,\
+	wims_name_Scoring,\
+	wims_name_require
 
 
 !! **** Class Relative Names ***

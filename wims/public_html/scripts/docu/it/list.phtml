@@ -1,42 +1,39 @@
 <center><h1>$tit</h1></center>
 
 !if $fcnt<1
- Questo documento &egrave; ancora vuoto.
- !href cmd=reply&job=edit&block=main Crea la prima pagina
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
 .
  <p>
  !exit
 !endif
 
 <p>$table_header
-<caption>Elenco dei blocchi che compongono il documento</caption>
+<caption>$n_blocklist</caption>
 $table_hdtr
-<th>Nome del blocco<th>Titolo<th>Operazioni
+<th>$wims_name_name<th>$wims_name_title<th>$wims_name_action
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
  !set t_=!trim $t_
- !default t_=No title
+ !default t_=$n_notitle
  $table_tr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align=center>
- !href cmd=reply&job=read&block=$s_ Leggi
+ !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ Modifica
+  !href cmd=reply&job=edit&block=$s_ $wims_name_Edit
  !endif
 </td>
 !next i
 $table_end <p>
 
 <center>
-Spazio totale disponibile sul disco: $quota_total Mega. Spazio libero: $quota_free Mega.
+$n_freespace1: $quota_total Meg.
+$n_freespace2: $quota_free Meg.
 <p>
-!!!href cmd=reply&job=file Allega un file
-!!&nbsp;&nbsp;
-!!!href cmd=reply&job=read&block=main Copertina del documento
-!!</center> <p>
 
 !set wims_menu_items=!append line doch_upload,1,cmd=reply&job=file\
 doch_main,1, cmd=reply&job=read&block=main\
