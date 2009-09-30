@@ -25,6 +25,7 @@
    <small> (si può omettere la seconda data).</small>
  </form>
 <p>
+
 !if $wims_user=supervisor and $cdt_supervise=yes 
  !set wims_menu_items= !append line "Inserisci una data",1,cmd=new&job=adddate\
  "Inserisci un file",1,cmd=reply&job=file\
@@ -42,8 +43,5 @@
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
-!!<p>
-!! !href cmd=new&job=home Indietro
-!!.
 !set wims_menu_items=!append line back,1,cmd=new&job=home to $wims_menu_items
 !endif

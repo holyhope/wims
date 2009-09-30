@@ -8,27 +8,25 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-Configurazione
+$wims_name_config
 
 Questi sono i parametri che è possibile modificare:
 
 !form reply
 <input type=hidden name=job value=config>
 <ul>
- <li><p>Titolo:<br>
+ <li><p>$wims_name_title:<br>
   <input size=60 name=cf_title value="$cf_title">
- <li><p>Descrizione:<br>
+ <li><p>$wims_name_Description:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea></li>
  <li><p>Testo che compare come link in Home page: <input size=60 name=cf_link value="$cdt_link"></li> 
  <li><p>
   !href cmd=renew&job=logfile Visualizza
   il log dell'agenda.</li>
 </ul>
-<p><center><input type=submit name=cf_set value="Salva">
-&nbsp;&nbsp;<input type=submit name=cf_abandon value="Annulla">
+<p><center><input type=submit name=cf_set value="$wims_name_tosave">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="$wims_name_giveup">
 </center> <p></form>
-!!<p>
-!! !href cmd=reply&job=home Indietro
-!! .
+
 !set wims_menu_items=!append line back2,1,cmd=reply&job=home\
 to $wims_menu_items

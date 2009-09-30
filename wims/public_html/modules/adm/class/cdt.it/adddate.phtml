@@ -27,9 +27,9 @@ Aggiungi/Modifica una data
 !let expyear=!char 1 to 4 of $class_expiration
 !let creyear=!char 1 to 4 of $class_creation
 !distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
-!formselect jyear from $creyear to $expyear
-!formselect jmonth from 1 to 12 prompt $months
 !formselect jday from 1 to 31
+!formselect jmonth from 1 to 12 prompt $months
+!formselect jyear from $creyear to $expyear
 <p>
 Compito (massimo $desc_limit caratteri): [ 
 !href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
@@ -60,9 +60,9 @@ Numero di scadenze da visualizzare:
     !let dmonth$i=$jmonth
    !endif
    !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
-   !formselect dyear$i from $creyear to $expyear
-   !formselect dmonth$i from 1 to 12 prompt $months
    !formselect dday$i from 1 to 31
+   !formselect dmonth$i from 1 to 12 prompt $months
+   !formselect dyear$i from $creyear to $expyear
    &#58;
    [ 
    !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help
@@ -72,7 +72,7 @@ Numero di scadenze da visualizzare:
 </textarea>
  !next i
 <center><hr width="30%">
-<p><input type=submit value="Salva">
+<p><input type=submit value="$wims_name_tosave">
 </center>
 </form>
 
