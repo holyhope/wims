@@ -1,16 +1,14 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Test di autovalutazione numero $sheet<br>$title\
-(Pagina pubblica del test)
+$name_title
 
 <div class="wims_sheet_desc">$desc</div><p>
 
 !if $exocnt=0
- questo test di autovalutazione &egrave; vuoto! Si tratta probabilmente di un 
- errore del docente.
+ $wims_name_sheetempty
 !else
- questo test di autovalutazione contiene i seguenti esercizi:
+ $name_assignedwork:
  <div class="wims_sheet"><p><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
@@ -19,7 +17,7 @@ Test di autovalutazione numero $sheet<br>$title\
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
-   <small>0 su $[$re] punti ottenuti, punteggio medio
+   <small>$name_quality
    0/10. </small>
   !endif
   </p>
