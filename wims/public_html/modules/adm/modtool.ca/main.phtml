@@ -23,12 +23,24 @@
   !if $job iswordof index publish diff
    !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
    binfile,1,cmd=reply&jobreq=binfile\
-   to $wims_menu_items 
+   to $wims_menu_items
+  !endif
+  !if $job iswordof flist
+    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+   scripttest,1,module=tool/directexec&cmd=new\
+to $wims_menu_items
   !endif
   !if $job iswordof binfile
    !set wims_menu_items=!append line otherfiles,1,cmd=reply&jobreq=flist\
      to $wims_menu_items
   !endif
+  !set wims_menu_items=!append line ,0,\
+   docoef,4,module=adm/createxo&modtoolhelp=yes,help\
+   docslib,4, module=help/wimsdoc&subject=slib#slib,help\
+   docanswer,4,module=adm/createxo&modtoolhelp=yes&special_parm=reply,help\
+   doctec,4,module=help/wimsdoc.en,help\
+   ,0,\
+  to $wims_menu_items
   !if $job iswordof flist publish diff binfile
   !set wims_menu_items=!append line properties,1,cmd=reply&jobreq=index\
   to $wims_menu_items

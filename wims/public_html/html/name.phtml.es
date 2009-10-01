@@ -33,7 +33,8 @@
 		¡Atención!,\
 		¡Felicidades!,\
 		o,\
-	into wims_name_search,\
+		Explanations,\
+ into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
 	wims_name_titleintro,\
@@ -46,9 +47,10 @@
 	wims_name_printable,wims_name_renew,wims_name_testgo,\
 	wims_name_refresh,wims_name_tosave,\
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
-	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or
+	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
+	wims_name_Explanations
 
-!! **** Permalink Names ***	
+!! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
 		Indicar, en su sitio,\
 		Encubrir estas opciones, \
@@ -204,13 +206,14 @@
    Eliminar\
    Acción\
    Para utilizar esta actividad, debe activar java en su navigador.\
+   Fecha\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
 wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
 wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase,wims_name_action,\
-wims_name_nojava
+wims_name_nojava,wims_name_date
 
 !distribute line Volver a la página de creación de ejercicios \
    Lista de modelos \
@@ -358,9 +361,9 @@ desactivar el editor HTML \
 attention, les modifications faites ne seront pas sauvées si vous changez cette option en cours de rédaction\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
-!distribute items Apellido,Nombre,Contraseña,Correo electrónico,Identificador de usuario \
+!distribute items Apellido,Nombre,Contraseña,Correo electrónico,Identificador de usuario,Repeat the password \
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
-wims_name_Login
+wims_name_Login,wims_name_repeat_pass
 
 !distribute line Photo Board\
 Send mail\

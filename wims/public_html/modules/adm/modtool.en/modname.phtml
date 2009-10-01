@@ -1,15 +1,15 @@
-
+!readproc names
 <p>
 !if $totalcnt>0
  !if $totalcnt>=$sellist
   You have $totalcnt modules under development.
-  !href cmd=reply&jobreq=prop <small>Properties of my account</small>
+  !href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
   <p>
   !form reply
   Show only modules with address containing 
   <input type=text size=30 name=selectshow value="$selectshow">
   <input type=submit value=OK>
-  !href cmd=help&special_parm=regex <sup>help</sup>
+  !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
   </form> <p>
  !endif
  $table_header
@@ -18,21 +18,22 @@
   <br>(list limited to $maxlist items)
  !endif
  </caption>
- $table_hdtr<th>Address<th>Title<th>Action<th>Description
+ $table_hdtr<th>$wims_name_Address</th><th>$wims_name_action</th><th>$wims_name_Description</th>
+ </tr>
  </tr>
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
   $table_tr<td><small>
   !replace internal ~ by ~ $ in $n $
   !if ~ notin $n
-   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [rename]
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename]
   !endif
   </small></td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
   <td align=center><small>
-  !href cmd=reply&jobreq=index&modreq=$n properties
+  !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
 
-  !href cmd=reply&jobreq=del&modreq=$n delete
+  !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
   </small></td><td><small>$description</small></td>
   </tr>
  !next n
@@ -46,14 +47,9 @@
  !set wims_menu_items=!append line quicktool,1,cmd=new&module=adm/quicktool\
  to $wims_menu_items
 !else
- !set wims_menu_items=!append line ,0,$name_noquicktool\
+ !set wims_menu_items=!append line $name_noquicktool,0,$name_noquicktool\
  to $wims_menu_items
 !endif
-!!<p>
-!! !href cmd=reply&jobreq=create Create a new module
-!!.&nbsp;
-!! !href cmd=reply&jobreq=restore Restore a backup file
-!!.
 !else
  You have no module under development yet. Please
  !href cmd=reply&jobreq=create click here

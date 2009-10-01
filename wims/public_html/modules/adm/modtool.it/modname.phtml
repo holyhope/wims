@@ -18,7 +18,7 @@
   <br>(la lista è limitata a $maxlist elementi)
  !endif
  </caption>
- $table_hdtr<th>Indirizzo<th>Titolo<th>Azione<th>Descrizione
+ $table_hdtr<th>$wims_name_Address</th><th>$wims_name_action</th><th>$wims_name_Description</th>
  </tr>
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
@@ -37,12 +37,7 @@
   </tr>
  !next n
  $table_end
-!! !href cmd=reply&jobreq=create Crea un nuovo modulo
-!!.&nbsp;
-!! !href cmd=reply&jobreq=restore Ripristina un file di backup
-!!.&nbsp;
-!!!href cmd=new&module=adm/latex2wims Utilizzare Latex2wims
-!!.
+
 !set wims_menu_items=!append line createnew,1,cmd=reply&jobreq=create\
  restore,1,cmd=reply&jobreq=restore\
  latex2wims,1,cmd=new&module=adm/latex2wims\

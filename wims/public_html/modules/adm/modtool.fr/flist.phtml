@@ -1,25 +1,22 @@
 !if ~ notin $mod
- <b>Attention</b>. L'adresse de ce module est une adresse simplifiée&nbsp;: "<tt>$mod</tt>".
- Une
- !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod mise à jour de l'adresse
- est recommandée.
+ <b>$wims_name_warning</b>.
+ $name_simpl_address: "<tt>$mod</tt>".
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod $name_updateadress
  <p>
 !endif
 
 !set doctest1=!module category devel/$auth_login/$mod
 
-Votre module
+$name_your_module
 <em><font color=blue>$title</font></em> ($description)
 <small>
 !href cmd=reply&jobreq=index $mod
 </small>
-contient les fichiers
+$name_file2.
 !if document isin $doctest1
-  suivants (<i>pour voir les fichiers du document, cliquez sur le lien <tt>Gestionnaire de
-   document</tt></i>)&nbsp;:
-!else
-  suivants&nbsp;:
+  (<i>$name_gestion</i>)
 !endif
+
 !set table_cellpadding=1
 !set table_cellspacing=0
 !set table_center=center
@@ -27,14 +24,14 @@ contient les fichiers
 !set table_end=!replace internal </> by in $table_end
 <p>$table_header
 $table_hdtr
-<th>Nom</th><th>Action</th><th>Explication
+<th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations
  !for f in $files
   $table_tr
   <td align=left nowrap>$f
   <td align=center nowrap>  
-  !href cmd=reply&jobreq=showfile&fname=$f voir
+  !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
   &nbsp;
-  !href cmd=reply&jobreq=edfile&fname=$f modifier
+  !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
   &nbsp;
   !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
   !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
@@ -54,12 +51,9 @@ $table_end
 
 !form reply
 <input type=hidden name=jobreq value=edfile>
-Ajouter un autre fichier&nbsp;:
+$name_addfile:
 <input size=20 name=fname value="$lastfname">
-<input type=submit value=OK>
-!!!href cmd=reply&jobreq=binfile Fichiers binaires
-!!&nbsp;
-!!!href target=wims_test module=tool/directexec&cmd=new Testeur de script
+<input type=submit value="$wims_name_tosave">
 </form>
 !reset fname
 

@@ -3,13 +3,13 @@
 !if $totalcnt>0
  !if $totalcnt>=$sellist
   Vous avez $totalcnt modules en développement.
-  !href cmd=reply&jobreq=prop <small>Propriétés de mon compte</small>
+  !href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
   <p>
   !form reply
   Ne montrer que les modules dont l'adresse contient
   <input type=text size=30 name=selectshow value="$selectshow">
   <input type=submit value=OK>
-  !href cmd=help&special_parm=regex <sup>aide</sup>
+  !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
   </form> <p>
  !endif
  $table_header
@@ -18,7 +18,8 @@
   <br>(liste limitée à $maxlist modules)
  !endif
  </caption>
- $table_hdtr<th>Adresse<th>Titre<th>Action<th>Description
+ $table_hdtr<th>$wims_name_Address</th><th>$wims_name_action</th><th>$wims_name_Description</th>
+ </tr>
  </tr>
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
@@ -30,9 +31,9 @@
   </small></td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
   <td align=center><small>
-  !href cmd=reply&jobreq=index&modreq=$n $name_prop
+  !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
 
-  !href cmd=reply&jobreq=del&modreq=$n $name_del0
+  !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
   </small></td><td><small>$description</small></td>
   </tr>
  !next n
