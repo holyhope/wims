@@ -7,13 +7,13 @@
 !set wims_form_method=post
 !form reply
 <center><table border=0>
-<tr><td align=right>$n_title</td>
+<tr><td align=right>$wims_name_title</td>
 <td><input type=text size=40 name=titr value="$tit"></td></tr>
 <tr><td align=right>$wims_name_Description</td>
 <td><input type=text size=40 name=descr value="$desc"></td></tr>
-<tr><td align=right>$n_author</td>
+<tr><td align=right>$wims_name_author</td>
 <td><input type=text size=40 name=authorr value="$author"></td></tr>
-<tr><td align=right>$n_email</td>
+<tr><td align=right>$wims_name_email</td>
 <td><input type=text size=40 name=emailr value="$email"></td></tr>
 <tr><td align=right>$n_header<br>
 <small>(css, js, etc.)</small>
@@ -27,7 +27,7 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright:</td><td>
+ <tr><td align=right>$n_copyright1:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
@@ -35,13 +35,13 @@ $ in $header
 	Open Publication License,\
 	$n_copyright2
  </td></tr><tr><td align=right>Visibile da tutti:</td><td>
- !formselect docopenr list yes,no prompt $n_yes, $n_no
- </td></tr><tr><td align=right>Lingua(e):</td><td>
+ !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
+ </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  Esempio: all en fr es it de cn</small>
  !if $job=creat
-  <tr><td align=right>Codice di accesso:<td nowrap>
+  <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> di nuovo:
   <input type=password size=$codemax maxlength=$codemax name=coder2>
   <tr><td colspan=2><small>Il codice di accesso permette di modificare il documento (e va quindi tenuto segreto).

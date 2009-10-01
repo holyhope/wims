@@ -2,27 +2,27 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- Il blocco <tt>$block</tt> non è ancora stato creato.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Questa pagina non è ancora disponibile in lettura. Riprova più tardi!
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Questa pagina non è più disponibile in lettura. Spiacenti!
+ $name_expired
  <p>
  !exit
 !endif
@@ -31,17 +31,16 @@
 
 !if $sheetdata=$empty
  <p>
- Non ci sono esercizi in questa pagina.
+ $name_noexercise
  <p>
  !exit
 !endif
 
-Questi soo gli esercizi contenuti in questa pagina in formato WIMS. 
-Con un taglia e incolla puoi inserirli
+$name_exercise
 !if $wims_user=supervisor
- in un test di autovalutazione del tuo corso.
+ $name_sheet1
 !else
- in un test di autovalutazione di un gruppo di corsi coordinati.
+ $name_sheet2
 !endif
 
 <pre>

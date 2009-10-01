@@ -2,7 +2,7 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
@@ -16,20 +16,20 @@
 <input type=hidden name=block value="$block">
 
 !if $titb=$empty
- Creazione
+$name_blockcreation
 !else
- Modifica
+$name_blockedition
 !endif
-del blocco <tt>$block</tt>.
+
 !if $edtype=file
- !href cmd=reply&edtype=textarea [Composizione on line]
+ !href cmd=reply&edtype=textarea [$name_compose]
 !else
- !href cmd=reply&edtype=file [Inserisci un file]
+ !href cmd=reply&edtype=file [$name_file]
 !endif
 <br>
 
 !set titb=!reinput $titb
-$n_title: <input size=50 name=Titb value="$titb"> <br>
+$wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
  Inserisci un file di testo: <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
@@ -43,7 +43,7 @@ $n_title: <input size=50 name=Titb value="$titb"> <br>
  !mexec scripts/textarea.sh
 !endif
 <center>
-<input type=submit name=preview value="Preview">
+<input type=submit name=preview value="$n_preview">
 <input type=submit name=rEg value="$wims_name_tosave">
 <input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>
