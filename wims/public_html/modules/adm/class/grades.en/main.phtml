@@ -1,45 +1,31 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Manually entered participant grades
-!!<center>$classname
-!!<p>
-!!<h1>
-!!</h1></center> <p>
+$name_manual_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Back to home page of the class
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !form reply
 <input type=hidden name=method value=percent>
-Here you can manually attribute grades to the participants of the 
-class. Each participant can consult his/her own grades when logged to the
-class. Average will also be computed on these grades, which will count for
+$name_explanation
 <input size=4 name=per value="$percent">%
 (<small><input type=submit name=reg value=change></small>)
-in the global average for each participant.
+.
 !if $method!=list
- !href cmd=reply&method=list Abandon the changes
+<p>
+ !href cmd=reply&method=list $wims_name_back4
 .
 !set wims_menu_items=!append line back4,1,cmd=reply&method=list\
 to $wims_menu_items
@@ -48,14 +34,9 @@ to $wims_menu_items
 
 !read $method.phtml
 
-!i!!f $method!=list
-!! !href cmd=reply&method=list Abandon the changes
-!!.
-!!!endif
-
 <p>
 !if $method=user
- !href module=adm/class/userlist&job=getuser&getuser=$un The other grades of $username
+ !href module=adm/class/userlist&job=getuser&getuser=$un $wims_name_otherscore ($username)
 .
 !endif
 

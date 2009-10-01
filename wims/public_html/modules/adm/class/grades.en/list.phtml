@@ -1,7 +1,7 @@
 !set joker=--
 !if $gcnt<=0
- There is no manually entered grades yet in your class.
- !href cmd=reply&method=column&cc=1 Add one
+ $name_nomanual
+ !href cmd=reply&method=column&cc=1 $wims_name_addmanual
 .
 !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
 to $wims_menu_items
@@ -9,7 +9,7 @@ to $wims_menu_items
 !endif
 
 $table_header
-$table_hdtr<th>Name<th><small>Average</small>
+$table_hdtr<th>$wims_name_name</th><th><small>$name_average/th>
 !for g=1 to $gcnt
  <th><small>
  !set t_=!item $g of $titles
@@ -21,7 +21,7 @@ $table_hdtr<th>Name<th><small>Average</small>
  </small>
 !next g
 
-$table_hdtr<th>Weight<td align=center>--</th>
+$table_hdtr<th>$name_weight<td align=center>--</th>
 !for g=1 to $gcnt
  !set w_=!item $g of $weights
  !default w_=1
@@ -62,23 +62,23 @@ $table_hdtr<th>Weight<td align=center>--</th>
 !next u
 $table_end
 
-<p>Click on the name of a column or a participant to
+<p>$name_modify
 !if $gcnt<$maxcol
- modify grades, or 
- !href cmd=reply&method=column&cc=$[$gcnt+1] add another column
+$wims_name_or
+ !href cmd=reply&method=column&cc=$[$gcnt+1] $wims_name_addmanual
 .
  !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
 to $wims_menu_items
 !else
- modify grades.
+.
 !endif
 !if $gcnt>0
 <p>
-You can also directly
-!href cmd=reply&method=raw modify the source
- of the grades, or
- !href module=adm/class/userlist&cmd=new&job=csv communicate the grades
- with your spreadsheet.
+$name_can_also 
+!href cmd=reply&method=raw $wims_name_raw
+ $name_can_also2 (
+ !href module=adm/class/userlist&cmd=new&job=csv $wims_name_csv
+).
  !set wims_menu_items=!append line raw,1,cmd=reply&method=raw\
  csv,1,module=adm/class/userlist&cmd=new&job=csv\
 to $wims_menu_items
