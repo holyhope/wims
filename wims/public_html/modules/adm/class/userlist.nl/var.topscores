@@ -1,0 +1,13 @@
+topscores=
+
+!for i=1 to $usercnt
+ uutotal=!record $i of wimshome/log/classes/$wims_class/.userlist
+ uu=!item 3 of $uutotal
+ !read userscore
+ UU_$i=$uutotal,  $per
+topscores=!append line $(UU_$i) to $topscores
+!next i
+
+
+!writefile wimshome/log/classes/$wims_class/.scoretop $topscores
+

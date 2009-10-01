@@ -30,12 +30,9 @@ Uw klas is leeg !
  !exit
 !endif
 
-!set no_erase=kan niet worden verwijderd omdat er "gedeelde bronnen"\
- zijn met een andere klas.
-
-<b>WAARSCHUWING</b>. Het materiaal dat m.b.v deze pagina verwijderd kan worden, 
-kan naderhand niet meer worden terug gezet !
-
+!set no_erase=kan niet worden verwijderd omdat er "gedeelde bronnen" zijn met een andere klas.
+<b>WAARSCHUWING</b>. Het materiaal dat m.b.v deze pagina verwijderd kan worden, kan naderhand niet meer worden 
+terug gezet&nbsp;!
 !href cmd=reply&job=arch&job2= maak eerst een <b>Backup</b> van de Klas, 
 voor de grote schoonmaak.
 <p>
@@ -49,7 +46,7 @@ Materiaal in Uw digitale klas:
  !if $sharing_user!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=user Wissen.
+  !href cmd=reply&job=clean&clean=user $wims_name_erase.
   !if $cl_scorecnt>0
    (Wist ook het "activity register".)
   !endif
@@ -60,7 +57,9 @@ Materiaal in Uw digitale klas:
  !if $sharing_doc!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=doc Wissen.
+  !href cmd=reply&job=clean&clean=doc $wims_name_erase
+  .
+  
  !endif
 !endif
 !if $cl_exocnt>0
@@ -68,7 +67,8 @@ Materiaal in Uw digitale klas:
  !if $sharing_exo!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=exo Wissen.
+  !href cmd=reply&job=clean&clean=exo $wims_name_erase
+  .
  !endif
 !endif
 !if $cl_sheetcnt>0
@@ -76,7 +76,8 @@ Materiaal in Uw digitale klas:
  !if $sharing_sheet!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=sheet Wissen.
+  !href cmd=reply&job=clean&clean=sheet $wims_name_erase
+  .
   !if $cl_examcnt>0
    (Wist ook de tentamen werkbladen)
   !endif
@@ -87,7 +88,8 @@ Materiaal in Uw digitale klas:
  !if $sharing_exam!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=exam Wissen.
+  !href cmd=reply&job=clean&clean=exam $wims_name_erase
+  .
  !endif
 !endif
 !if $cl_forumcnt>0
@@ -95,12 +97,14 @@ Materiaal in Uw digitale klas:
  !if $sharing_forum!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=forum Wissen.
+  !href cmd=reply&job=clean&clean=forum $wims_name_erase
+  .
  !endif
 !endif
 !if $cl_scorecnt>0
- <li>$cl_scorecnt leerling activiteiten.
- !href cmd=reply&job=clean&clean=score Wissen.
+ <li>$cl_scorecnt regels in het bestand leerling activiteiten.
+ !href cmd=reply&job=clean&clean=score $wims_name_erase
+ .
 !endif
 </ul>
 
