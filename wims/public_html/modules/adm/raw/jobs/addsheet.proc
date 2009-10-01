@@ -42,12 +42,25 @@ sh_creation=!char 1 to 8 of $wims_now
 sh_creation=!eval $sh_creation
 ## Ici par defaut je place la date d'expiration de la feuille a creation+1an.
 ## On pourrait aussi mettre simplement la meme date d'expiration que la classe
+
 !default sh_expiration=$[$sh_creation+10000]
 !default sh_title=Feuille d'exercices #$n
 !default sh_description=Feuille d'exercices #$n
+!default sh_sheetmode 0
+
+############# contenu de la nouvelle feuille ##############################
+## Par défaut, le contenu de la feuille est vide, autrement c'est une ligne
+## dont les points-virgules seront interprétés comme des retours à la ligne
+## les signes = sont interdits, il faut les remplacer par %3D
+## la structure du contenu n'est pas vérifiée, c'est à vos risques et périls !
+###########################################################################
+!default sh_contents=
+sh_contents=!translate ; to $\
+$ in $sh_contents
+sh_contents=!translate @ to = in $sh_contents
 
 !appendfile wimshome/log/classes/$qclass/sheets/.sheets \
-:0\
+:$sh_sheetmode\
 $sh_expiration\
 $sh_title\
 $sh_description\
@@ -59,7 +72,7 @@ sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
  !exit
 !endif
 
-!writefile wimshome/log/classes/$qclass/sheets/.sheet$sheetcnt
+!writefile wimshome/log/classes/$qclass/sheets/.sheet$sheetcnt $sh_contents
 
 
 wims_sheet=$n
