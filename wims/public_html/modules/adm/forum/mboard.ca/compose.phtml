@@ -20,9 +20,9 @@ $n_yourname:
  !if $forumuser=$empty
   <input size=15 name=c_sender value="$c_sender">
  !else
-  <tt>$c_sender</tt>;
+  <tt>$c_sender</tt>&nbsp;
  !endif
- $n_email&nbsp;: <input size=30 name=c_smail value="$c_smail"> <br>
+ $n_email: <input size=30 name=c_smail value="$c_smail"> <br>
  !if $send_right<2
   $n_cautious<br>
  !endif
@@ -36,9 +36,9 @@ $n_yourname:
   !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit $wims_id>
   !href cmd=reply&job=compose&speckedit=no&c_quote=$c_quote $wims_name_desactive
 !endif
- <small>
-$n_warning
-</small>)<br>
+ : <small>
+ $wims_name_speck_warning
+</small><br>
  !set msgsrc2=</textarea>
  !if $c_quote>0 and $c_prec!=$empty
   !mexec scripts/quote.sh
@@ -59,7 +59,7 @@ $n_warning
  <input type=submit name=c_list value="$wims_name_giveup">
  </center> <p>
 </form> <p>
-!href cmd=help $n_help
+!href cmd=help $wims_name_help
  $n_mathhelp
 
 !if $c_prec!=$empty
