@@ -24,6 +24,11 @@ $table_tr<td>sheet1,sheet2,...</td><td>score of worksheet 1, worksheet 2, ...</t
 $table_tr<td>exams</td><td>scores of all exams</td></tr>
 $table_tr<td>exam1,exam2,...</td><td>scores of exam 1, exam 2, ...</td></tr>
 $table_tr<td>manuals</td><td>all manual grades (one by one)</td></tr>
+!else
+$table_tr<td>participate (dans le cas du portail d'un établissement uniquement, 
+réservé à son administrateur)</td><td>numéro des classes 
+auxquelles est inscrit le participant sous la forme abcdefg/1/101
+où abcdefg est le numéro du portail. S'il y a plusieurs classes, les séparer par des espaces.</td></tr>
 !endif
 $table_tr<td>manual1,manual2,...<td>manual grade 1, 2, ...
 $table_tr<td>var_xxx</td><td>technical variable <tt>xxx</tt></td></tr>
@@ -32,3 +37,8 @@ $table_end <p>
 
 Unrecognized fields will be ignored.  Les variables techniques peuvent être utilisées pour limiter
 de manière sélective la durée d'ouverture de feuilles d'exercices ou d'examens.
+<p>
+!if $special_parm=upload
+Dans le cas du champ <tt>participate</tt>, il est possible de rajouter des classes mais pas d'en enlever.
+!endif
+
