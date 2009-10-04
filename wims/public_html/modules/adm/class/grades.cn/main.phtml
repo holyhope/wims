@@ -1,45 +1,31 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-手工输入的参加者评分
-!!<center>$classname
-!!<p>
-!!<h1>手工输入的参加者评分
-!!</h1></center> <p>
+$name_manual_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home 返回班级主页
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !form reply
 <input type=hidden name=method value=percent>
-这里你可以手工地给参加者评分.
-每个参加者登录到班级后都可询问他自己的评分.
-从这些评分也可算出平均分, 以
+$name_explanation
 <input size=4 name=per value="$percent">%
-(<small><input type=submit name=reg value=改变></small>)
-记入每个参加者的总平均.
+(<small><input type=submit name=reg value=change></small>)
+.
 !if $method!=list
- !href cmd=reply&method=list 放弃修改
+<p>
+ !href cmd=reply&method=list $wims_name_back4
 .
 !set wims_menu_items=!append line back4,1,cmd=reply&method=list\
 to $wims_menu_items
@@ -48,14 +34,9 @@ to $wims_menu_items
 
 !read $method.phtml
 
-!!!if $method!=list
-!! !href cmd=reply&method=list 放弃修改
-!!.
-!!!endif
-
 <p>
 !if $method=user
- !href module=adm/class/userlist&job=getuser&getuser=$un 其它评分 $username
+ !href module=adm/class/userlist&job=getuser&getuser=$un $wims_name_otherscore ($username)
 .
 !endif
 

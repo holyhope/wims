@@ -1,7 +1,7 @@
 !set joker=--
 !if $gcnt<=0
- Non ci sono voti inseriti manulamente
- !href cmd=reply&method=column&cc=1 Aggiungi una colonna
+ $name_nomanual
+ !href cmd=reply&method=column&cc=1 $wims_name_addmanual
 .
 !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=1\
 to $wims_menu_items
@@ -9,7 +9,7 @@ to $wims_menu_items
 !endif
 
 $table_header
-$table_hdtr<th>Nome<th><small>Media</small>
+$table_hdtr<th>$wims_name_name</th><th><small>$name_average/th>
 !for g=1 to $gcnt
  <th><small>
  !set t_=!item $g of $titles
@@ -21,7 +21,7 @@ $table_hdtr<th>Nome<th><small>Media</small>
  </small>
 !next g
 
-$table_hdtr<th>Peso<td align=center>--</th>
+$table_hdtr<th>$name_weight<td align=center>--</th>
 !for g=1 to $gcnt
  !set w_=!item $g of $weights
  !default w_=1
@@ -62,15 +62,15 @@ $table_hdtr<th>Peso<td align=center>--</th>
 !next u
 $table_end
 
-<p>Selezionare il nome di uno studente per
+<p>$name_modify
 !if $gcnt<$maxcol
- modificarne i voti o 
- !href cmd=reply&method=column&cc=$[$gcnt+1] aggiungere una nuova colonna
+$wims_name_or
+ !href cmd=reply&method=column&cc=$[$gcnt+1] $wims_name_addmanual
 .
  !set wims_menu_items=!append line addmanual,1,cmd=reply&method=column&cc=$[$gcnt+1]\
 to $wims_menu_items
 !else
- modificare i voti.
+.
 !endif
 !if $gcnt>0
 <p>

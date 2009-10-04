@@ -1,61 +1,42 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Handmatige invoering van Cijfers
-!!<center>$classname
-!!<p>
-!!<h1></h1></center> <p>
+$name_manual_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug 
- naar de homepagina van Uw klas. <p>
+ !href module=home $wims_name_class_home
+. <p>
  !goto end
 !endif
 
 !form reply
 <input type=hidden name=method value=percent>
-Hier kunt U handmatig cijfers invoeren voor alle leerlingen uit uw klas.<br>
-Elke leerling kan zijn/haar cijfers bekijken wanneer ze zijn ingelogd in deze klas.<br>
-Ook het gemiddelde wordt automatisch berekend over deze cijfers, 
-wat telt voor
+$name_explanation
 <input size=4 name=per value="$percent">%
-(<small><input type=submit name=reg value="veranderen"></small>)
-in het globale gemiddelde van elke leerling.
+(<small><input type=submit name=reg value=change></small>)
+.
 !if $method!=list
- !href cmd=reply&method=list Annuleer 
- de veranderingen.
- !set wims_menu_items=!append line back4,1,cmd=reply&method=list\
+<p>
+ !href cmd=reply&method=list $wims_name_back4
+.
+!set wims_menu_items=!append line back4,1,cmd=reply&method=list\
 to $wims_menu_items
 !endif
 </form> <p>
 
 !read $method.phtml
 
-!!!if $method!=list
-!! !href cmd=reply&method=list Annuleer 
-!! de veranderingen.
-!!!endif
-
 <p>
 !if $method=user
- !href module=adm/class/userlist&job=getuser&getuser=$un De andere cijfers  $username
+ !href module=adm/class/userlist&job=getuser&getuser=$un $wims_name_otherscore ($username)
 .
 !endif
 
