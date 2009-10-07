@@ -15,16 +15,10 @@
 $classname\
 Inserire un modulo in un test di autovalutazione
 
-!!<div class="wims_classname">$classname</div>
-!!<h1 class="wims_title">Inserire un modulo in un test di autovalutazione
-!!</h1> <p><hr width="40%"> <p>
-
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
-!! !href module=home Torna alla home page del corso
-!!. <p>
  !goto end1
 !endif
 
@@ -45,7 +39,7 @@ Inserire un modulo in un test di autovalutazione
   !if $se=$sheetcnt 
    <option value=$se selected>Test numero $se: $ti
   !else
-   <option value=$se>Test numero $se: $ti
+  <option value=$se>Test numero $se: $ti
   !endif
  !next i
  </select>
@@ -58,8 +52,8 @@ Inserire un modulo in un test di autovalutazione
  !endif
  !set title=!trim $title
  !default title=Exercice
- Titolo: <input size=50 name=title value="$title"> <p>
- Descrizione: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ $wims_name_title: <input size=50 name=title value="$title"> <p>
+ $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
   <p>Punteggio richiesto per completare questo test di autovalutazione:
   <input size=4 name=require value="$require"> <small>(un esercizio
@@ -68,7 +62,7 @@ Inserire un modulo in un test di autovalutazione
   Peso dei punti ottenuti per questo test (per il calcolo della media):
   <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="Salva"></center>
+ <p><center><input type=submit value="$wims_name_change"></center>
  </form>
  !goto end
 !endif
@@ -77,13 +71,6 @@ Inserire un modulo in un test di autovalutazione
  Il modulo ``<tt>$title</tt>'' &egrave; stato inserito nel test di autovalutazione numero
  $picksheet del corso virtuale. 
 
-!! &Egrave; possibile
-!! !href module=adm/class/sheet&sheet=$picksheet provarla
-!!.</li>
-!!  <li>
-!!   !href module=$dir torna al modulo
-!!.</li>
-!! </ul>
 !endif
 :end1
 !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
@@ -92,6 +79,7 @@ to $wims_menu_items
 :end
 !set wims_menu_items=!append line moduback,1,module=$dir\
 to $wims_menu_items
+
 !tail
 
 !set job=

@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -11,13 +7,14 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS @ $httpd_HTTP_HOST
-<br>
+!read adm/title.phtml 1\
+WIMS @ $httpd_HTTP_HOST\
 Inserimento in $name_classess
 !if $cltype iswordof 2 4 and $classcnt>0
- <br> (riservato ai docenti)
+ <center>
+ (riservato ai docenti)
+ </center>
 !endif
-</h1> <p>
 
 !if $error!=$empty
  <p>
@@ -38,13 +35,13 @@ Inserimento in $name_classess
  $table_header
  !if $ctype=0
   $table_hdtr
- <th>Nome del corso<th>docente<th>livello<th>lingua</th>
+ <th>$wims_name_name<th>docente<th>livello<th>lingua</th>
  <th>posti<br>disponibili<th>stato
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>Nome<th>docente<th>livello
-  <th>stato
+  <th>$wims_name_name<th>docente<th>$wims_name_level
+  <th>$wims_name_Status
  !endif
  !for cl in $classlist
   !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
@@ -119,7 +116,7 @@ Inserimento in $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p><label for="classpass">Password:</label>
+ <center> <p><label for="classpass">$wims_name_Password:</label>
  <input type=password name=classpass id="classpass">
  <p>
  <input type=submit value="Procedi con la registrazione">
@@ -194,8 +191,8 @@ Inserimento in $name_classess
   !form reply
  <input type=hidden name=step value=2>
  <ul>
- <li><label for="lastn">Cognome:</label> <input size=20 name=lastn id="lastn" value="$lastn">
-  <label for="firstn">Nome:</label> <input size=20 name=firstn id="firstn" value="$firstn">
+ <li><label for="lastn">$wims_name_lastname:</label> <input size=20 name=lastn id="lastn" value="$lastn">
+  <label for="firstn">$wims_name_firstname:</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
  <li><label for="login">Scegliere un login di accesso :</label>
   <input size=16 name=login id="login" value="$login"> <br>
@@ -241,7 +238,7 @@ Inserimento in $name_classess
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2 id="pass2">
- <p><input type=submit value="Invia"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
@@ -258,10 +255,9 @@ Inserimento in $name_classess
     <p>
    !endif
   !endif
-  !href module=adm/class/userlist Elenco dei partecipanti
-.&nbsp;
-  !href module=$module&step=1 Aggiungi un altro studente
-.
+ !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
+ addstudent,1,module=$module&step=1\
+ to wims_menu_items
   !goto end
  !endif
  Cara/o, $firstn $lastn!<p>
@@ -289,13 +285,9 @@ Inserimento in $name_classess
 !if $cltype iswordof 2 4
 !set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items
-!! !href module=adm/class/classes&type=supervisor Elenco di tutti i corsi
-!!.
 !else
 !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
 to $wims_menu_items
-!!!href module=adm/class/classes&type=participant Elenco di tutti i corsi
-!!.
 !endif
 :end
 !tail
