@@ -61,11 +61,11 @@
 !endif
 
 !!********* Link #7 : "Help"
-!if $module_help!=$empty and $module_has_help=yes and $cmd notwordof intro help
- !if $module_help=popup
-  !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
+!if $module_has_help=yes and $cmd notwordof intro help
+ !if $module_help=nopopup
+   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_  
  !else
-  !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
+   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
 
@@ -73,6 +73,7 @@
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
+
 !!********* Link #9 : "About"
 !if $window != embeded \
 	and $module_has_about=yes \
