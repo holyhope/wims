@@ -27,13 +27,13 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>版权:<td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
     GNU自由文件许可(GNU Free Documentation License),\
     公开发布许可(Open Publication License),\
-    保留一切版权
+    $n_copyright2
  <tr><td align=right>对公众开放:<td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align=right>$wims_name_Language:</td><td>
@@ -41,7 +41,7 @@ $ in $header
  <input size=14 name=dlangr value="$dlang"> <br><small>
  例: all en fr es it de cn</small>
  !if $job=creat
-  <tr><td align=right>密码:<td nowrap>
+  <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> 重复一遍:
   <input type=password size=$codemax maxlength=$codemax name=coder2>
   <tr><td colspan=2><small>密码给你修改文件的权力,
@@ -49,11 +49,10 @@ $ in $header
   </small>
  !endif
 !else
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right> 参加者<td>
  !formselect docopenr list 0,1,2 prompt \
-    既不能读也不能写,\
-    能读不能写,\
-    能读能写
+    $U_Docstatus
  本文件.
 !endif
 

@@ -27,7 +27,7 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright1:</td><td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
@@ -44,17 +44,16 @@ $ in $header
   <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> nog een keer:
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  <tr><td colspan=2><small>
+  </td></tr><tr><td colspan=2><small>
   De geheime code geeft U het recht om een document te veranderen.
   Deze code moet tussen de $codemin en $codemax karakters bevatten.
   </small>
  !endif
 !else
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right> Deelnemers mogen dit document <td>
  !formselect docopenr list 0,1,2 prompt \
-	niet lezen en niet schrijven,\
-	alleen lezen,\
-	lezen en schrijven
+	$U_Docstatus
 !endif
 
 </table>

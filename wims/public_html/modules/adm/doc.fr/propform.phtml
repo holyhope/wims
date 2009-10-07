@@ -27,7 +27,7 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright1:</td><td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
@@ -50,11 +50,10 @@ $ in $header
   alpha-numériques.</small>
  !endif
 !else
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right> Les participants peuvent<td>
  !formselect docopenr list 0,1,2 prompt \
-	ni lire ni écrire,\
-	lire mais pas écrire,\
-	lire et écrire
+	$U_Docstatus
  ce document.
 !endif
 

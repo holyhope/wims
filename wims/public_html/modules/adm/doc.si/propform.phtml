@@ -7,16 +7,16 @@
 !set wims_form_method=post
 !form reply
 <center><table border=0>
-<tr><td align=right>Naslov:
-<td><input type=text size=40 name=titr value="$tit">
+<tr><td align=right>$wims_name_title</td>
+<td><input type=text size=40 name=titr value="$tit"></td></tr>
 <tr><td align=right>$wims_name_Description</td>
 <td><input type=text size=40 name=descr value="$desc"></td></tr>
-<tr><td align=right>Avtor:
-<td><input type=text size=40 name=authorr value="$author">
-<tr><td align=right>E-po¹ta:
-<td><input type=text size=40 name=emailr value="$email">
-<tr><td align=right>Glava:<br>
-<small>(css, js,...)</small>
+<tr><td align=right>$wims_name_author</td>
+<td><input type=text size=40 name=authorr value="$author"></td></tr>
+<tr><td align=right>$wims_name_email</td>
+<td><input type=text size=40 name=emailr value="$email"></td></tr>
+<tr><td align=right>$n_header<br>
+<small>(css, js, etc.)</small>
 !set header=!translate internal $	$ to $\
 $ in $header
 !set hl=!linecnt $header
@@ -33,15 +33,15 @@ $ in $header
  !formselect copyrightr list gnu,opl,private prompt\
 	GNU Free Documentation License,\
 	Open Publication License,\
-	All Rights Reserved
- <tr><td align=right>Odprt za uporabnike:<td>
- !formselect docopenr list yes,no prompt Da, Ne
- <tr><td align=right>Jezik(i):<td>
+	$n_copyright2
+ <tr><td align=right>$wims_name_Copyright:<td>
+ !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
+ </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  Primeri: all si en fr es it de cn</small>
  !if $job=creat
-  <tr><td align=right>Za¹èitno geslo:<td nowrap>
+  <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> ponovite vnos:
   <input type=password size=$codemax maxlength=$codemax name=coder2>
   <tr><td colspan=2><small>Za¹èitno geslo omogoèa spreminjanje vsebine dokumenta.
@@ -49,18 +49,17 @@ $ in $header
   </small>
  !endif
 !else
+!set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right> Dovoljenja za uporabnike:<td> 
  !formselect docopenr list 0,1,2 prompt \
-	ne branje ne spreminjanje,\
-	branje brez spreminjanja,\
-	branje in spreminjanje
+	$U_Docstatus
  dokumenta.
 !endif
 
 </table>
 <p>
- <input type=submit name=rEg value="Potrditev">&nbsp;
- <input type=submit name=abandon value="Preklic">
+ <input type=submit name=rEg value="$wims_name_tosave">&nbsp;
+ <input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
 

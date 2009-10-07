@@ -27,7 +27,7 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright1:</td><td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
@@ -50,11 +50,10 @@ $ in $header
   </small>
  !endif
 !else
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right>Gli studenti possono <td>
  !formselect docopenr list 0,1,2 prompt \
-	n&eacute; leggere n&eacute; modificare,\
-	leggere ma non modificare,\
-	leggere e modificare
+	$U_Docstatus
  questo documento.
 !endif
 
@@ -73,6 +72,6 @@ Richiesta di pubblicare il documento WIMS $doc
  per rendere il documento accessibile a tutti.
  <p>
 !else
- Questo documento &egrave; visibile solo per gli studenti del corso.
+ Questo documento è visibile solo per gli studenti del corso.
 !endif
 

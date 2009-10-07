@@ -27,7 +27,7 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright:</td><td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
@@ -36,7 +36,7 @@ $ in $header
 	$n_copyright2
  </td></tr><tr><td align=right>Ouvert au public :</td><td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
- </td></tr><tr><td align=right>Langue(s):</td><td>
+ </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  Exemples: all en fr es it de cn</small>
@@ -44,17 +44,16 @@ $ in $header
   <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> et répétez :
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  <tr><td colspan=2><small>
+  </td></tr><tr><td colspan=2><small>
   Le code secret donne droit à la
   modification du document. Il doit être composé de $codemin à $codemax lettres
   alpha-numériques.</small>
  !endif
 !else
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right> Les participants peuvent<td>
  !formselect docopenr list 0,1,2 prompt \
-	ni lire ni écrire,\
-	lire mais pas écrire,\
-	lire et écrire
+	$U_Docstatus
  ce document.
 !endif
 

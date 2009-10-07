@@ -27,21 +27,21 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright:</td><td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
 	GNU Free Documentation License,\
 	Open Publication License,\
 	$n_copyright2
- <tr><td align=right>Open to the public:</td><td>
- !formselect docopenr list yes,no prompt $n_yes, $n_no
-</td></tr><tr><td align=right>Language(s):</td><td>
+ </td></tr><tr><td align=right>Open to the public:</td><td>
+ !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
+ </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
  Examples: all en fr es it de cn</small>
  !if $job=creat
-  <tr><td align=right>Secret code:</td><td nowrap>
+  <tr><td align=right>$n_codedoc:</td><td nowrap>
   <input type=password size=$codemax maxlength=$codemax name=coder> repeat it:
   <input type=password size=$codemax maxlength=$codemax name=coder2>
  </td></tr><tr><td colspan=2><small>
@@ -50,11 +50,10 @@ $ in $header
   </small>
  !endif
 !else
+!set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
  <tr><td align=right> Participants may <td>
  !formselect docopenr list 0,1,2 prompt \
-	neither read nor write,\
-	read but not write,\
-	read and write
+    $U_Docstatus
  this document.
 !endif
 
