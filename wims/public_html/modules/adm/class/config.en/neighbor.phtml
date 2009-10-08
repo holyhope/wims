@@ -45,6 +45,10 @@
 !endif
 !if $classcnt1 + $classcnt2 < 1
  No class is found for your search. Try again.
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !endif
  !exit
 !endif
 
@@ -60,8 +64,13 @@ inter-class travel. <small>[&nbsp;
 &nbsp;]</small>
 
 !if $toomany=yes
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !endif
  !exit
 !endif
+
 
 Click on a class name to change your neighboring properties with it.
 
@@ -78,11 +87,14 @@ Click on a class name to change your neighboring properties with it.
  <p>
  !set clst=$clist2
  $table_header
- <caption>Classes in other languages</caption>
- !read neighbor/clist.phtml
- $table_end
- <p><center>
- !href cmd=reply&job2=sharelist Resource sharing information of your class
+  <caption>Classes in other languages</caption>
+  !read neighbor/clist.phtml
+  $table_end
+  <p><center>
+  !href cmd=reply&job2=sharelist Resource sharing information of your class
  </center>
 !endif
-
+!if $excls!=yes and $supertype!=4
+ <p>
+ !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+!endif
