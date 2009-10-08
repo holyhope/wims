@@ -1,0 +1,97 @@
+!distribute item suchen Sie aus!, keine Ahnung,keine dieser Antworten,\
+	die richtige Antwort ist, die richtigen Antworten sind\
+	into ch_choose, ch_noidea, ch_none, ch_good1, ch_goodn
+
+!set name_badsize=(Votre réponse n'a même pas la bonne taille.)
+!set name_empty=Ergänzen Sie bevor Sie die Antwort verschicken!
+!set name_exo=Übung
+!set name_sorry= Schade!
+!set name_noprint=Nicht ausdruckbar
+!set name_print=Print-Version
+!set name_send=Verschicken
+!set name_sendanswer=Antwort verschicken
+!set name_enterreply=Antwort eingeben
+!set name_correctreply=Antwort <b>verbessern</b>
+!set name_step=Schritt
+!set name_remark=<b>Anmerkung</b> Suchen Sie aus  'keine dieser Antworten', wenn Sie denken, dass die richtige Anwort nicht vorgestellt ist
+!set name_answeranalysis=Antwortanalyse
+!set name_Hint= Hinweis
+!set name_answers=Antworten
+!set name_answer_i=!nosubst Antworten zur Übung $i
+!set name_Solution=Lösung
+
+!!!!
+
+!set name_emptytitle=Ce module est un groupement d'exercices. Vous l'avez visiblement demandé sans \
+  préciser l'exercice du module que vous voulez faire. Vous avez peut-être cliqué sur un \
+  lien incorrect à moins qu'il ne s'agisse d'une erreur du logiciel.
+
+ !distribute line Essayez de refaire votre manipulation\
+  Diese Serie wird chronometriert.\
+  Diese Übung wird chronometriert.\
+  Übung wiederholen\
+  Serie wiederholen\
+  nächste Übung der Serie\
+  (bis zum Ende der Serie weitermachen, um eine Note zu bekommen)\
+  (Sie haben die Zeit überschritten und bekommen Punkte abgezogen)\
+  Mode de développement\
+  Die richtigen Antworten werden automatisch in die Antwortfelder eingegeben.\
+  richtige Antworten in die Antwortfelder eingeben.\
+ into name_restart,name_serie_limit,name_exo_limit,name_exo_renew,name_serie_renew,\
+  name_serie_nextexo,name_serie_new2,name_penalty,\
+  name_devel_mode,name_devel_warning,name_devel_insert
+
+!set name_serie_exo=!nosubst Ceci est l'exercice $[$reply_cnt+1] d'une série qui en compte $qnum.
+!set name_serie_score=!nosubst Vous avez terminé une série de $qnum exercices, avec une note de \
+  $module_score sur 10.
+!set name_exo_score=!nosubst Vous avez obtenu une note de $module_score sur 10.
+
+!!!!
+
+!if $cmd=intro
+ !distribute line Désolé, aucun exercice n'est disponible dans ce module pour l'instant. Revenez plus tard !\
+    Ce module contient en ce moment un seul exercice\
+    Versuchen Sie ihn.\
+    Choisissez les exercices\
+    Exercices contenant\
+    Une série aura\
+    Niveau de sévérité\
+    Chronometer\
+    secondes\
+    Nombre de réponses affichées dans les QCM\
+    Donner une solution (si disponible)\
+    Paramétrage simplifié\
+    Paramétrage expert\
+    Die Titel mit dem Wort auswählen\
+    Übungen\
+ into name_noexercise,name_oneexercise,name_tryit,name_chooseexo,name_exercisescontaining,name_oneserie,\
+    name_levelseverity,name_chrono,name_secondes,name_qcmanswer,name_solutiongiven,\
+    name_simplifiedmenu,name_expertmenu,name_select,name_exercises
+
+
+
+ !set name_choice=Niemals ,si la note est non maximale,Immer
+
+ !set name_choice_check=Toujours afficher une bonne réponse dans les QCM,\
+     Pénalité pour mauvaise réponse dans les QCM.,\
+     Die gute Antwort geben.,\
+     Permettre les indications (si disponibles).
+
+
+ !set name_remarkintro1=<b>Remarques</b>. Les exercices proposés seront pris aléatoirement parmi \
+     vos choix (ou parmi tous les exercices disponibles si votre choix est vide).
+
+ !if * isin $titlelist
+   !set name_remarkintro2= Les exercices marqués par un * sont en général plus difficiles que les autres.
+ !endif
+
+  !set name_remarkintro3=Vous pouvez mettre deux nombres dans le chronomètre, une petite \
+    limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
+    la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+
+!endif
+
+
+!distribute line Désolé, cet exercice n'a pas d'aide.\
+Désolé, aucune indication n'est disponible pour cet exercice.\
+into name_warning_help, name_warning_hint
