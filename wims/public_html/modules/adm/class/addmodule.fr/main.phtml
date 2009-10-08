@@ -1,19 +1,11 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $classname\
-Insérer un module dans une feuille
+$name_title
 
 !if $error!=$empty
  <p>
@@ -23,27 +15,27 @@ Insérer un module dans une feuille
 !endif
 
 !if $cmd=new or $cmd=resume
- Vous voulez insérer l'objet de travail <tt>$dir</tt>
+ $name_insert <tt>$dir</tt>
  !if $iniparm!=$empty
-  avec des paramètres d'initialisation <tt>$iniparm</tt>
+  $name_parm <tt>$iniparm</tt>
  !endif
 . <p>
 
  !form reply
- Choisissez la feuille dans laquelle vous voulez insérer le travail :
+ $name_choose:
  <select name=picksheet>
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
   !if $se=$sheetcnt
-   <option value=$se selected>Feuille $se: $ti
+   <option value=$se selected>$wims_name_Sheet $se: $ti
   !else
-   <option value=$se>Feuille $se: $ti
+   <option value=$se>$wims_name_Sheet $se: $ti
   !endif
  !next i
  </select>
- <p>Vous pouvez aussi modifier le titre et le texte descriptif. 
+ <p>$name_modifytitle
  <p>
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
@@ -52,25 +44,26 @@ Insérer un module dans une feuille
    !set title=$title1
  !endif
  !set title=!trim $title
- !default title=Exercice
+ !default title=$wims_name_Exercise
  $wims_name_title: <input size=50 name=title value="$title"> <p>
  $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
-  <p>Nombre de points que vous demandez à chaque participant d'obtenir sur
-  ce travail : <input size=4 name=require value="$require"> <small>(chaque
-  exercice totalement réussi donne 10 points; mettez donc plus que 10 points
-  ici si vous voulez que le participant répète l'exercice.)</small> <p>
-  Poids des points obtenus sur ce travail (pour le calcul de la moyenne) :
+  <p>$name_required:
+  <input size=4 name=require value="$require">
+  <small>
+  ($name_repeat)
+  </small><p>
+ $name_weight:
   <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="$wims_name_change"></center>
+ <p><center><input type=submit value="$wims_name_Insert"></center>
  </form>
  !goto end
 !endif
 
 !if $cmd=reply
- L'application ``<tt>$title</tt>'' a été insérée avec succès dans la feuille
- $picksheet de votre classe.
+ $name_end
+ $picksheet.
 
 !endif
 :end1

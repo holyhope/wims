@@ -1,55 +1,42 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $classname\
-插入一个模块到页面
-
-!!<div class="wims_classname">$classname</div>
-!!<h1 class="wims_title">插入一个模块到页面
-!!</h1><p><hr width="40%"> <p>
+$name_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
-!! <p>
-!! !href module=home 返回主页
-!!. <p>
+ <p>
  !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
-你想要插入一个作业题 <tt>$dir</tt>
+ $name_insert <tt>$dir</tt>
  !if $iniparm!=$empty
-其初始参数为 <tt>$iniparm</tt>
+  $name_parm <tt>$iniparm</tt>
  !endif
 . <p>
 
  !form reply
-选择你想要插入作业题的页:
+ $name_choose:
  <select name=picksheet>
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  !if $se=$sheetcnt 
-   <option value=$se selected>Sheet $se: $ti
+  !if $se=$sheetcnt
+   <option value=$se selected>$wims_name_Sheet $se: $ti
   !else
-   <option value=$se>Sheet $se: $ti
+   <option value=$se>$wims_name_Sheet $se: $ti
   !endif
  !next i
  </select>
- <p>你也能改变标题及其描述. <p>
+ <p>$name_modifytitle
+ <p>
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
  !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
@@ -57,31 +44,27 @@ $classname\
    !set title=$title1
  !endif
  !set title=!trim $title
- !default title=Exercise
- 题目: <input size=50 name=title value="$title"> <p>
- 描述: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !default title=$wims_name_Exercise
+ $wims_name_title: <input size=50 name=title value="$title"> <p>
+ $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
-  <p>你要求每个参加者在这个作业中得到的分数是:
-  <input size=4 name=require value="$require"> <small>(一个练习的满分是 10 分;
-因此若你想要参加者重复练习, 得分必须设定在 10 以上.)</small> <p>
-这个作业的权重(用于计算平均值):
+  <p>$name_required:
+  <input size=4 name=require value="$require">
+  <small>
+  ($name_repeat)
+  </small><p>
+ $name_weight:
   <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="插入"></center>
+ <p><center><input type=submit value="$wims_name_Insert"></center>
  </form>
  !goto end
 !endif
 
 !if $cmd=reply
- 练习 ``<tt>$title</tt>'' 已被成功地插入你的班级的页面 $picksheet 中.
-!! <ul>
-!!  <li>
-!!   !href module=adm/class/sheet&sheet=$picksheet 验证页面
-!!.</li>
-!!  <li>
-!!   !href module=$dir 返回模块
-!!.</li>
-!! </ul>
+ $name_end
+ $picksheet.
+
 !endif
 :end1
 !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
@@ -90,6 +73,7 @@ to $wims_menu_items
 :end
 !set wims_menu_items=!append line moduback,1,module=$dir\
 to $wims_menu_items
+
 !tail
 
 !set job=

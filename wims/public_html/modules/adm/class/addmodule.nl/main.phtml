@@ -1,19 +1,11 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $classname\
-Voeg een oefening toe aan een Werkblad
+$name_title
 
 !if $error!=$empty
  <p>
@@ -23,27 +15,27 @@ Voeg een oefening toe aan een Werkblad
 !endif
 
 !if $cmd=new or $cmd=resume
- Je wilt enkele oefeningen toevoegen <tt>$dir</tt>
+ $name_insert <tt>$dir</tt>
  !if $iniparm!=$empty
-  met "init parameters" <tt>$iniparm</tt>
+  $name_parm <tt>$iniparm</tt>
  !endif
 . <p>
 
  !form reply
- Kies het werkblad waarin je deze oefening in wilt opnemen:
+ $name_choose:
  <select name=picksheet>
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
   !if $se=$sheetcnt
-   <option value=$se selected>Werkblad $se: $ti
+   <option value=$se selected>$wims_name_Sheet $se: $ti
   !else
-   <option value=$se>Werkblad $se: $ti
+   <option value=$se>$wims_name_Sheet $se: $ti
   !endif
  !next i
  </select>
- <p>Je kunt nu ook de titel en de omschrijving van het werkblad veranderen
+ <p>$name_modifytitle
  <p>
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
@@ -55,23 +47,24 @@ Voeg een oefening toe aan een Werkblad
  !set nummer=!date +%j-%Y 
  !default title=Oefening.$classname.$nummer
  $wims_name_title: <input size=50 name=title value="$title"> <p>
-$wims_name_Description: <textarea name=new_desc rows=8 cols=80>$desc</textarea>
+ $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
-  <p>Het aantal punten dat minimaal gevraagt wordt te halen voor deze opdracht: 
-  <input size=4 name=require value="$require"> <small>
-  (elk 100% correct antwoord levert 10 punten op: dus als je meer dan
-  10 punten vraagt moet de leerling deze opdracht dus meerdere keren doen)</small> <p>
-  Het gewicht van de punten (deze weging wordt gebruikt voor de berekening van het gemiddelde):
+  <p>$name_required:
+  <input size=4 name=require value="$require">
+  <small>
+  ($name_repeat)
+  </small><p>
+ $name_weight:
   <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="$wims_name_changeto"></center>
+ <p><center><input type=submit value="$wims_name_Insert"></center>
  </form>
  !goto end
 !endif
 
 !if $cmd=reply
- De oefening ``<tt>$title</tt>'' is succesvol toegevoegd aan het werkblad
- $picksheet van uw klas.
+ $name_end
+ $picksheet.
 
 !endif
 :end1

@@ -1,80 +1,70 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $classname\
-加入模組到作業清單
-
-!!<div class="wims_classname">$classname</div>
-!!<h1 class="wims_title">加入模組到作業清單
-!!</h1> <p><hr width="40%"> <p>
+$name_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
-!![
-!! !href module=home 回首頁
-!! ]
-!!<p>
  !goto end1
 !endif
 
 !if $cmd=new or $cmd=resume
- 您想要
-
+ $name_insert <tt>$dir</tt>
  !if $iniparm!=$empty
-  以原來的參數 <tt>$iniparm</tt>
+  $name_parm <tt>$iniparm</tt>
  !endif
- 加入作業項目。 <tt>$dir</tt>
- <p>
+. <p>
 
  !form reply
- 選擇欲加入作業項目的清單：
+ $name_choose:
  <select name=picksheet>
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
   !if $se=$sheetcnt
-   !set selected=selected
+   <option value=$se selected>$wims_name_Sheet $se: $ti
+  !else
+   <option value=$se>$wims_name_Sheet $se: $ti
   !endif
-   <option value=$se $selected>清單  $se: $ti
  !next i
  </select>
- <p>您也可以修改標題及說明內容。<p>
- 標題： <input size=50 name=title value="$title"> <p>
- 說明： <textarea name=new_desc rows=5 cols=50>
- $desc
- </textarea>
- !if $scoring=yes
-  <p>在這個作業中您要求每位參與者所要獲得的點數為 <input size=4 name=require value="$require">
-   點。<br>
-  <small>(每次完全答對習題給 10 點，如果您要參與者重覆練習習題的話，應在這裏提高
-  點數超過 10 點)</small> <p>
-  在計算平均時，這個作業所獲點數的加權權值為
-  <input size=6 name=weight value="$weight">。
+ <p>$name_modifytitle
+ <p>
+ !set iniparm1=!replace internal & by $ $ in $iniparm
+ !set exo=!getopt exo in $iniparm1
+ !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
+ !if $title1!=$empty
+   !set title=$title1
  !endif
- <p><center><input type=submit value=" 加入 "></center>
+ !set title=!trim $title
+ !default title=$wims_name_Exercise
+ $wims_name_title: <input size=50 name=title value="$title"> <p>
+ $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
+ !if $scoring=yes
+  <p>$name_required:
+  <input size=4 name=require value="$require">
+  <small>
+  ($name_repeat)
+  </small><p>
+ $name_weight:
+  <input size=6 name=weight value="$weight">.
+ !endif
+ <p><center><input type=submit value="$wims_name_Insert"></center>
  </form>
  !goto end
 !endif
 
 !if $cmd=reply
- 本應用程式 "<tt>$title</tt>" 已成功地加入到您課程的清單 $picksheet 中了。
-!![
-!! !href module=adm/class/sheet&sheet=$picksheet 確認清單
-!! ]
+ $name_end
+ $picksheet.
+
 !endif
 :end1
 !set wims_menu_items=!append line sheetcheck,1, module=adm/class/sheet&sheet=$picksheet\
@@ -83,6 +73,7 @@ to $wims_menu_items
 :end
 !set wims_menu_items=!append line moduback,1,module=$dir\
 to $wims_menu_items
+
 !tail
 
 !set job=

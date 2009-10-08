@@ -1,19 +1,11 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $classname\
-Inserire un modulo in un test di autovalutazione
+$name_title
 
 !if $error!=$empty
  <p>
@@ -23,27 +15,28 @@ Inserire un modulo in un test di autovalutazione
 !endif
 
 !if $cmd=new or $cmd=resume
- Stai per inserire l'esercizio <tt>$dir</tt>
+ $name_insert <tt>$dir</tt>
  !if $iniparm!=$empty
-  con parametri di configurazione <tt>$iniparm</tt>
+  $name_parm <tt>$iniparm</tt>
  !endif
 . <p>
 
  !form reply
- Selezionare il test di autovalutazione in cui si vuole inserire il modulo:
+ $name_choose:
  <select name=picksheet>
  !for i=1 to $sheetcnt
   !set sh=!line $i of $sheets
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
-  !if $se=$sheetcnt 
-   <option value=$se selected>Test numero $se: $ti
+  !if $se=$sheetcnt
+   <option value=$se selected>$wims_name_Sheet $se: $ti
   !else
-  <option value=$se>Test numero $se: $ti
+   <option value=$se>$wims_name_Sheet $se: $ti
   !endif
  !next i
  </select>
- <p>&Egrave; possibile modificare il titolo e/o la descrizione. <p>
+ <p>$name_modifytitle
+ <p>
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
  !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
@@ -51,25 +44,26 @@ Inserire un modulo in un test di autovalutazione
    !set title=$title1
  !endif
  !set title=!trim $title
- !default title=Exercice
+ !default title=$wims_name_Exercise
  $wims_name_title: <input size=50 name=title value="$title"> <p>
  $wims_name_Description: <textarea name=new_desc rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
-  <p>Punteggio richiesto per completare questo test di autovalutazione:
-  <input size=4 name=require value="$require"> <small>(un esercizio
-  completato correttamente assegna 10 punti; se si richiedono pi&ugrave; di 
-  10 punti si fa ripetere l'esercizio.)</small> <p>
-  Peso dei punti ottenuti per questo test (per il calcolo della media):
+  <p>$name_required:
+  <input size=4 name=require value="$require">
+  <small>
+  ($name_repeat)
+  </small><p>
+ $name_weight:
   <input size=6 name=weight value="$weight">.
  !endif
- <p><center><input type=submit value="$wims_name_change"></center>
+ <p><center><input type=submit value="$wims_name_Insert"></center>
  </form>
  !goto end
 !endif
 
 !if $cmd=reply
- Il modulo ``<tt>$title</tt>'' &egrave; stato inserito nel test di autovalutazione numero
- $picksheet del corso virtuale. 
+ $name_end
+ $picksheet.
 
 !endif
 :end1

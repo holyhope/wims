@@ -34,6 +34,8 @@
 		Gefeliciteerd,\
 		of,\
 		Explanations,\
+		Exercise,\
+		Werkblad,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -48,7 +50,7 @@
 	wims_name_refresh,wims_name_tosave,\
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
-	wims_name_Explanations
+	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
@@ -296,8 +298,9 @@ Toevoegen aan klas\
 Maak een nieuw document\
 Bewerk een draft document\
 Status\
+Insert\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
-wims_name_createdoc,wims_name_doctry,wims_name_Status
+wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 
  !distribute line Toevoegen een datum\
    Toevoegen een bestand\
