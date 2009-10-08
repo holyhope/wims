@@ -14,7 +14,7 @@
 		Broncode van het werkblad \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,Titel,Omschrijving,Punten,Gewicht,Afhankelijkheden,Akties
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Punten,Gewicht,Afhankelijkheden,$wims_name_action
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Werkblad aanmaak pagina
@@ -24,7 +24,7 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
  !set name_title=!nosubst Beheer van werkblad $sheet
 !endif
 
-!let name_shinfo=!nosubst Titel <small>(beperkt tot 80 karakters)</small>,Status,\
+!let name_shinfo=!nosubst $wims_name_title <small>(beperkt tot $title_limit karakters)</small>,$wims_name_Status,\
 Omschrijving <br></small>(beperkt tot $desc_limit karakters; html en links toegestaan)</small>,\
 Verloopdatum,Presentatie pagina,Cijfer registratie,voor alle delende klassen :
 !let name_allowtype=open voor iedereen,gesloten voor iedereen, open voor de volgende netwerkadressen (en/of tijden) :
@@ -37,18 +37,16 @@ into name_info,name_content,name_warning
 
 !set name_text1=Om oefeningen (of cursussen, hulpmiddelen etc) aan een werkblad toe te voegen,\
  stel deze dan in (afhankelijk van uw wensen) en start de oefening, \
-gebruik de link onderaan de pagina van de oefening "Voeg toe aan werkblad".\
- <p>\
- U kunt :
+gebruik de link onderaan de pagina van de oefening "Voeg toe aan werkblad".<p> U kunt:
 
-!set name_text2= de interne zoekmachine gebruiken
-!set name_text3=Find an exercise amongst
-!set name_text4=Find an exercise in your account
+!set name_text2=De interne zoekmachine gebruiken
+!set name_text3=Zoek een oefening onder 
+!set name_text4=Zoek een oefening in uw eigen account
 
 !if $job=student
-  !set name_title=Werkblad $sheet<br>$title Presentatie voor deelnemers)
+  !set name_title=Werkblad $sheet<br>$title ( Presentatie voor studenten)
   !set name_sheetempty=Het werkblad is leeg! Waarschijnlijke een foutje van de docent.
-  !set name_assignedwork=De opdrachten in dit werkblad
+  !set name_assignedwork=De opdrachten in dit werkblad&nbsp;
   !set name_quality=0 uit $[$re] punten behaald, kwaliteit
 !endif
 
