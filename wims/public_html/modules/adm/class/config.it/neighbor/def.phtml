@@ -1,48 +1,43 @@
-
-<center><font size="+1"><b>Relations avec la classe <em><font color=blue>
-$nei_description</font></em> presso
-<em><font color=blue>$nei_institution</font></em>.</b>
-</font><center>
-</center>(Docente:
-<a href="mailto:$nei_email?subject=Class neighboring
-relations">$nei_supervisor</a>)</center>
+!read adm/title.phtml 3\
+Relazione con il corso <em><font color=blue>$nei_description</font></em> presso <em><font color=blue>$nei_institution</font></em>\
+(Docente:<a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
 <p>
-<b>Relation de voisinage. </b> <small>[
+<b>Relazione di vicinao. </b> <small>[
 !href cmd=help&special_parm=neibordecl $wims_name_help 
  ]</small> 
- <p>La classe <em><font color=blue>
+ <p>Il corso <em><font color=blue>
 $nei_description</font></em>
 !if $wims_class notitemof $nei_sup,$nei_part
- n'a pas déclaré la vôtre comme voisine.
+ non ha dichiarato il vostro corso come vicino.
 !else
- vous accepte comme voisine,
+ vi ha accettato come vicino.
  !if $wims_class isitemof $nei_sup and $wims_class isitemof $nei_part
-  pour docente et iscritti.
+  per il docente e gli iscritti.
  !else
   !if $wims_class isitemof $nei_sup
-   pour docente.
+   per il docente.
   !else
-   pour iscritti.
+   per gli iscritti.
   !endif
  !endif
 !endif
 <p>
 !form reply
-Acceptez-vous la classe <em><font color=blue>
-$nei_description</font></em> comme votre voisine&nbsp;?
-!formselect nlevel from 0 to 3 prompt Non, Pour docente,\
-	Pour iscritti, Pour docente et iscritti
+Accettate il corso <em><font color=blue>
+$nei_description</font></em> come vostro vicino?
+!formselect nlevel from 0 to 3 prompt No, Per il docente,\
+	Per gli iscritti, Per docente e iscritti
 <input type=submit value=Salva> 
 </form> <p>
 
 
 !if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
    all isitemof $nei_sup,$nei_part
- <p><b>Importation de ressources. </b> <small>[
+ <p><b>Importazione delle risorse. </b> <small>[
  !href cmd=help&special_parm=import $wims_name_help
  ]</small>
- <p>Vous pouvez
- !href cmd=reply&job2=import importer des ressources
+ <p>Potete
+ !href cmd=reply&job2=import importare le risorse
  de la classe <em><font color=blue>
 $nei_description</font></em>.
  <p>
@@ -52,7 +47,7 @@ $nei_description</font></em>.
 <p>
 <b>Condivisione risorses.</b> 
 <small>[
-!href cmd=help&special_parm=share Help on line
+!href cmd=help&special_parm=share $wims_name_help
 ]</small>
 <ul>
 !endif
@@ -60,29 +55,29 @@ $nei_description</font></em>.
 !if $wims_class isitemof $nei_sup and $nei isitemof $n_sup
  <li>
  !if $nsharable=$empty
-  Il n'y a aucun (nouveau) type de ressources dans la classe 
+  Non c'`e alcuna (nuova) risorsa nel corso
   <em><font color=blue>
-$nei_description</font></em> qu'elle vous autorise à partager. 
+$nei_description</font></em> che siete autorizzati a condividere.
  !else
- La classe <em><font color=blue>
-$nei_description</font></em> vous <b>autorise</b> à partager ses
+ Il corso <em><font color=blue>
+$nei_description</font></em> vi <b>autorizza</b> a condividere i suoi
   !set names=!replace , by , $$name_ in $$name_$nsharable
   <em>$names</em>.
-  !href cmd=reply&job2=addshare Cliquez ici pour accepter
+  !href cmd=reply&job2=addshare Cliccare qui per accettare
 .
  !endif
  <p>
 !endif
 
 !if $nei isitemof $sharing_all
- Vous partagez déjà les ressources suivantes de la classe <em><font color=blue>
+ Voi condividete già le seguenti risorse del corso <em><font color=blue>
 $nei_description</font></em>&nbsp;:<ul>
  !for r in $sharelist
   !if $(sharing_$r)=$nei
    <li><b><em>$(name_$r)</em></b>. 
-   !href cmd=reply&job2=stopshare&stoprec=$r Arrêter ce partage
+   !href cmd=reply&job2=stopshare&stoprec=$r Interrompi la condivizione
 . <small>[
-   !href cmd=help&special_parm=stopshare Help on line
+   !href cmd=help&special_parm=stopshare $wims_name_help
    ]</small>
   !endif
  !next r 
@@ -94,21 +89,21 @@ $nei_description</font></em>&nbsp;:<ul>
 <li>
  !form reply
  <input type=hidden name=changeshare value=yes>
- Choisissez les ressources que vous <b>autorisez</b> la classe <em><font color=blue>
-$nei_description</font></em> à partager&nbsp; (<i>sélectionnez puis cliquez sur <tt>Salva</tt></i>): <small>[
- !href cmd=help&special_parm=sharable Help on line
+ Scegliete le risorse che voi <b>autorizzate</b> il corso <em><font color=blue>
+$nei_description</font></em> a condividere&nbsp; (<i>selezionatele e quindi cliccate su <tt>Salva</tt></i>): <small>[
+ !href cmd=help&special_parm=sharable $wims_name_help
  ]</small>
 <p>
  !set sh=!nospace $sharablelist
  !set sh=!replace , by , $$name_ in $$name_$sharablelist
  !formcheckbox mksharable list $sharablelist prompt $sh
- <input type=submit value=Salva>
+ <input type=submit value=$wims_name_tochange>
  </form> <p>
 !if $nsharable!=$empty
-<p><b>ATTENTION</b> La classe <em><font color=blue>
+<p><b>$wims_name_warning</b> Il corso <em><font color=blue>
 $nei_description</font></em>
-vous autorise à partager certaines ressources. 
-Vous ne devez pas l'autoriser à partager les mêmes ressources sous peine de confusion. 
+vi autorizza a condividere certe risorse.
+Autorizzare la condivisioen delle medesime risorse può creare una grossa confusione.
 Commencez per voi entendre avec elle et avec toutes les classes avec lesquelles vous
 voulez partager des ressources. 
 !endif

@@ -2,21 +2,21 @@
 !distribute item message du jour,\
 	exercice,feuille de travail,examen,document,participant\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
-!set code1=Aucun
-!set code2=Oui mais différent
-!set code3=Oui, actif et différent
+!set code1=Nessuno
+!set code2=Si, ma diversi
+!set code3=Si, attivi e diversi
 
-La classe
+Il corso
 !href cmd=reply&job2=def $nei_description
- de
+ presso
 <em><font color=blue>$nei_institution</font></em>
 !if $newcnt1+$newcnt2<1
- n'a pas de ressources que vous pouvez importer.
- !href cmd=reply&job2=def Retour
+ non ha risorse importabili.
+ !href cmd=reply&job2=def Torna
 .
  !exit
 !endif
-a les ressources importables suivantes.
+he le seguente risorse importabili.
 <small>
 !href cmd=help&special_parm=import $wims_name_help
 </small>
@@ -24,9 +24,9 @@ a les ressources importables suivantes.
 !if $newcnt1>0
  <p>$table_header
  <caption>Ressources d'enseignement</caption>
- $table_hdtr<th>Type<th>Titre<th><small>Nom</small>
- <th><small>Contenu</small>
- <th>Même titre dans votre classe<th>Importer
+ $table_hdtr<th>$wims_name_Type<th>$wims_name_title<th><small>$wims_name_name</small>
+ <th><small>Contenuto</small>
+ <th>Stesso titolo nel vostro corso<th>Importa
  !for i=1 to $newcnt1
   !set l=!line $i of $newrec
   !set ll=!words2items $l
@@ -41,15 +41,15 @@ a les ressources importables suivantes.
    !if $(rcnt$i)=0
     Vide
    !else
-    <small>en préparation</small>
+    <small>in preparazione</small>
    !endif
   !else
    !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
-    !href cmd=reply&job2=import2&import=$ll&impmethod=add Ajouter
+    !href cmd=reply&job2=import2&import=$ll&impmethod=add Aggiungi
    !endif
    !if $(rcode$i)=2
     &nbsp;
-    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) Remplacer
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) Sostituisci
    !endif
   !endif
  !next i
@@ -58,22 +58,22 @@ a les ressources importables suivantes.
 
 !if $newcnt2>0
  <p>$table_header
- <caption>Comptes de iscritti
+ <caption>Account degli iscritti
  !if $newcnt2>2
   !href cmd=reply&job2=import2&import=user,-all- [import&nbsp;everybody]
  !endif
  </caption>
- $table_hdtr<th>login<th>Nom de famille<th>Prénom<th>Importer
+ $table_hdtr<th>login<th>Cognome<th>Nome<th>Importa
  !for i=1 to $newcnt2
   $table_tr<td>$(ulogin$i)
   <td>$(uname2$i)<td>$(uname1$i)<td align=center>
   !if $(ucode$i)=1
-   !href cmd=reply&job2=import2&import=user,$(ulogin$i) Ajouter
+   !href cmd=reply&job2=import2&import=user,$(ulogin$i) Aggiungi
   !else
    !if $(ucode$i)=2
-    Login en utilisation dans votre classe
+    Login utilizzato nel vostro corso
    !else
-    Participant effacé existant dans votre classe
+    Iscritto cancellato dal vostro corso
    !endif
   !endif
  !next i
