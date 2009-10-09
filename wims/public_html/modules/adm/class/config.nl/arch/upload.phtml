@@ -14,22 +14,21 @@
 !if $test=bad
  <font color=red><b>WAARSCHUWING!!!</b></font>
  U hebt materiaaal van een andere klas opgestuurd voor herstel.<br>
- Wanneer dit materiaal foutief is , wordt deze virtuele klas onwerkbaar.
+ Wanneer dit materiaal foutief is , 
+ wordt deze virtuele klas onwerkbaar.
  !href cmd=help&special_parm=dependencies Hoezo?
  <p>
  !href cmd=reply&job=list Stop
-  nu als U niet helemaal zeker bent...in elk geval 
- verdient het aanbeveling <b>nu</b> eerst een komplete backup te maken van de huidige situatie
+  nu als U niet helemaal zeker bent...in elk geval verdient het aanbeveling eerst een komplete backup te maken van de huidige situatie
  zodat bij een eventuele fout, de zaak weer hersteld kan worden.
  <p><hr> <p> 
 !endif
 
-!set no_restore=Kan niet worden hersteld omdat er materiaal gedeeld wordt met een andere klas.<br>\ 
+!set no_restore=Kan niet worden hersteld omdat er materiaal gedeeld wordt met een andere klas.\
 Het herstel kan alleen plaatsvinden vanuit de klas waar het geleende materiaal vandaan komt.
-
 !form reply
 <input type=hidden name=job value=$job>
-<input type=hidden name=job2 value=Herstel>
+<input type=hidden name=job2 value=restore>
 De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
 <br><small>(Kontroleer eerst voor dat U dit materiaal terugzet in de klas.)</small>
 <ul>
@@ -63,6 +62,7 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
  !else
   <small>(bestaande accounts: $old_usercnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_doccnt>0
  <li>
@@ -75,6 +75,7 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
  !else
   <small>(bestaande documenten: $old_doccnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_exocnt>0
  <li>
@@ -87,6 +88,7 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
  !else
   <small>(bestaande oefeningen: $old_exocnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_sheetcnt>0
  <li>
@@ -100,6 +102,7 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
  dus het terugzetten van alle oefeningen uit Uw klas
   <small>(bestaande werkbladen: $old_sheetcnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_examcnt>0
  <li>
@@ -113,6 +116,7 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
   dus het terugzetten van alle werkbladen en digitoetsen 
   <small>(aantal bestaande toetsen : $old_examcnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_forumcnt>0
  <li>
@@ -123,18 +127,21 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
  !if $sharing_forum!=$empty
   $no_restore
  !else
-  <small>(aantal bestaande forum berichten: $old_forumcnt.)</small>
+  <small>(Bestaande berichten: $old_forumcnt.)</small>
  !endif
+ </li>
 !endif
 !if $new_scorecnt>0
  <li><input type=checkbox name=selection value=score>
  leerlingen activiteiten logfiles en de cijfer registratie,
  dus ook het terugzetten van de complete leerlingen administratie.
+ </li>
 !endif
 !if $new_manualcnt>0
  <li><input type=checkbox name=selection value=manual>
  $new_manualcnt handmatig ingevoerde cijfers. <small>(bestaande cijfers:
  $old_manualcnt.)</small>
+ </li>
 !endif
 !if $new_cdtcnt>0
  <li><input type=checkbox name=selection value=cdt>
@@ -161,11 +168,13 @@ De backup file <tt>$wims_deposit</tt> bevat het volgende materiaal:
 !endif
 </ul>
 Herstel methode:<ul>
-<li><input type=radio name=restore value="vervang aangevinkt">
-Verangen: vervang alle bestaande gegevens met de backup.
-<li><input type=radio name=restore value="Invoegen>
-Invoegen: vervang alle gegevens behalve leerling gegevens en oefeningen.
-Bij de oefeningen worden bestanden met een gelijke naam wel overschreven.
+<li><input type=radio name=restore value=replace checked>
+Verangen: vervang alle bestaande gegevens met de backup.</li>
+<li><input type=radio name=restore value=merge>
+Invoegen: vervang alle gegevens behalve leerling
+ gegevens en oefeningen.
+Bij de oefeningen worden bestanden met een gelijke naam wel 
+overschreven.</li>
 </ul>
 <input type=submit value="vervang het geselecteerde ">
 !href cmd=reply&job=list Verlaat deze herstelprocedure

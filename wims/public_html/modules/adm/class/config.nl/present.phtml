@@ -12,6 +12,7 @@ $table_tr<td align=right>Het logo van de klas
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 <td><input size=45 name=pr_logo value="$class_logo">
+</td></tr>
 $table_tr<td align=right>Positie van het logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
@@ -20,34 +21,48 @@ $table_tr<td align=right>Positie van het logo
 !set pr_logoside=$class_logoside
 !formselect pr_logoside list left,right prompt links boven, rechts boven
  op de klasse pagina.
+</td></tr>
 $table_tr<td align=right>Homepagina voor leerlingen
 <small>
 !href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
  </small>
-<td><input size=45 name=pr_homepage value="$class_homepage">
+</td><td><input size=45 name=pr_homepage value="$class_homepage">
+</td></tr>
 $table_tr<td align=right>Pagina achtergrond kleur
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
-<td><input size=10 name=pr_bgcolor value="$class_bgcolor">
+</td><td><input size=10 name=pr_bgcolor value="$class_bgcolor">
+</td></tr>
 $table_tr<td align=right>Menu achtergrond kleur 
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
-<td><input size=10 name=pr_refcolor value="$class_refcolor">
+</td><td><input size=10 name=pr_refcolor value="$class_refcolor">
+</td></tr>
+$table_tr
+<td align=right>Kleurschaal voor de scores(van 0 tot 10)</td>
+ <td>
+ !for col=1 to 11
+  &nbsp; <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])">
+  !next col
+ </td>
+</tr>
 $table_tr<td align=right>Achtergrond plaatje
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
  </small>
-<td><input size=45 name=pr_bgimg value="$class_bgimg">
-$table_tr<td align=right>Styl_thema van de klas
+</td><td><input size=45 name=pr_bgimg value="$class_bgimg">
+</td></tr>
+$table_tr<td align=right>Styl thema van de klas
 <small>
 !href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
  </small>
-<td>
+</td><td>
 !set pr_theme=$class_theme
 !formselect pr_theme list $themelist
-$table_tr<td align=right>Icones de la classe
+</td></tr>
+$table_tr<td align=right>Iconen in deze klas
 <small>
 !href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
  </small>
@@ -59,25 +74,36 @@ $table_tr<td align=right>Stylesheet (css) van de pagina's
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
  </small>
-<td>
+</td><td>
 !set pr_css=$class_css
 !formselect pr_css list $csslist
-$table_tr<td align=right valign=middle>Bepaal een klasse stylesheet (css) :
+$table_tr
+<td align=right valign=middle>
+Bepaal een klasse stylesheet
+ (css) :
+<br>(in het geval er <tt>Style sheet</tt> wordt gebruikt in deze <tt>klas</tt>)&nbsp;:
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
 </small>
-<td valign=middle>
-stuur het css-style bestand.
+</td><td valign=middle>stuur het css-style bestand.
 <input type=file name=wims_deposit>
 <br>
-<textarea rows=6 cols=45 name=pr_cssfile>$cssfile</textarea>
-$table_tr<td align=center colspan=2>
-<input type=submit name=save value=Opslaan>
+Of kopieer hier een stylesheet bestand
+<textarea rows=6 cols=45 name=pr_cssfile>
+$cssfile
+</textarea>
+</td></tr>
+$table_hdtr<td align=center colspan=2>
+<input type=submit name=save value="$wims_name_tosave">
 &nbsp;
-<input type=submit name=abandon value=Annuleren>
+<input type=submit name=abandon value="$wims_name_giveup">
+</td></tr>
 $table_end <p>
 </form>
 
+
 !reset pr_logo, pr_logoside, pr_bgcolor, pr_refcolor, \
 	pr_bgimg, pr_theme, pr_theme_icon, pr_css, pr_homepage, pr_cssfile
+
+
 
