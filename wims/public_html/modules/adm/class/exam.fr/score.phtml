@@ -1,9 +1,9 @@
 
 !if $job=score
-!read adm/title.phtml 1\
-$wims_classname, $wims_institutionname\
-$title
-
+ !read adm/title.phtml 1\
+ $wims_classname, $wims_institutionname\
+ $title
+ 
  !if $wims_user=supervisor
   <center>(Présentation aux participants)</center>
  !endif
@@ -14,7 +14,7 @@ $title
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -25,7 +25,7 @@ $title
 !else
  <p><center><table border=1 bgcolor=bisque>
  <caption>Détail du score actuel</caption>
- <tr><th>Exercice<th>Titre<th>Coefficient<th>Score
+ <tr><th>$wims_name_Exercise<th>$wims_name_title</th><th>Coefficient<th>Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti

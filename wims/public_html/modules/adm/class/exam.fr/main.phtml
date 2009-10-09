@@ -1,18 +1,9 @@
 !set wims_name_examremain=Temps restant pour cet examen : $
 !read js/examclock1.phtml
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
 !read names.phtml
-
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -20,17 +11,13 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Préparation de l'examen $exam
-!!<center>$classname
-!!<p>
-!!<h1>
-!!</h1></center> <p><hr width="40%"> <p>
+$title $exam
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -46,15 +33,15 @@ Préparation de l'examen $exam
  Cet examen est
  !if $activetest=1
   actif.
-  !href cmd=reply&job=expire L'expirer maintenant
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
    périmé mais encore visible par participants.
-   !href cmd=reply&job=hide Le cacher aux participants
+   !href cmd=reply&job=hide Cacher l'examen aux participants
   !else
    périmé et invisible des participants.
-   !href cmd=reply&job=expire Le faire réapparaitre
+   !href cmd=reply&job=expire Faire réapparaitre l'examen
   !endif
   .
   !href cmd=reply&job=reactivate Le réactiver
@@ -62,10 +49,10 @@ Préparation de l'examen $exam
  !endif
  !href cmd=reply&job=deactivate Le désactiver
  <center><table border=2>
- <tr><td align=right>Titre :
+ <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value="$wims_name_change">
- <tr><td align=right>Description :
+ <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Date d'expiration :<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
@@ -78,7 +65,7 @@ Préparation de l'examen $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Titre (limité à $title_limit caractères) :<br>
+$wims_name_title (limité à $title_limit caractères) :<br>
 <input size=65 name=title value="$title"> <p>
 Et un texte d'explication (limité à $desc_limit caractères; les tags et 
 liens html sont admis) :<br>
@@ -134,12 +121,12 @@ minutes. Chaque participant peut faire l'examen jusqu'à
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Remonter
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Modifier
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Supprimer
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
@@ -147,7 +134,7 @@ minutes. Chaque participant peut faire l'examen jusqu'à
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Ajouter un autre exercice
 ,
-ou
+$wims_name_or
  !href cmd=reply&job=cpsheet ajouter une série d'exercices
 .
  !endif
@@ -176,13 +163,13 @@ ou
  !set allowshare=0
  !if $sharers!=$empty
   ( pour toutes les classes partageant l'examen :
-  !formselect allowshare list 0,1 prompt non,oui
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
  !else
   <input type=hidden name=allowshare value=0>
  !endif
  </form>
- <small><b>Indication.</b> Dans le mode sélectif, vous pouvez imposer une
+ <small><b>$wims_name_help.</b> Dans le mode sélectif, vous pouvez imposer une
  restriction dans le temps pour l'enregistrement des notes en ajoutant des
  mots
  <font color=blue><b>

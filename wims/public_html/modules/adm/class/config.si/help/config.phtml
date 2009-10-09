@@ -1,7 +1,7 @@
 
 !set sp2=$special_parm2
-!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
-	bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,option\
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,topscores\
 	default $
 
 !if $sp2=$empty
@@ -134,7 +134,7 @@ and score quality.
  Status of sheet 1, sheet 2, exam 1, ... This is a non-negative integer; 0
  = under preparation, 1 = active, 2 = expired, 3 = hidden.
  </ul>
-!exit
+!goto end
 
 :bgimg
  Background image file (tile) for pages in the class. You may use any valid URL.
@@ -181,7 +181,7 @@ Otherwise, you may put the URL of any valid graphics file here.
 
 :lock
 Connection lock helps to track users, and can help anti-cheating. There are
-7 lock levels. <ul>
+8 lock levels. <ul>
 <li><p>0: No connection lock is used.
 
 <li><p>1: Cookie-tracking is activated. Connections without correct return
@@ -198,6 +198,7 @@ when connections are made from dynamically allocated IP numbers.
 <li><p>4: Cookie-tracking + https.
 <li><p>5: Cookie-tracking + Host lock.
 <li><p>6: All the above methods are activated.
+<li><p>7: The class is closed. No participant connection accepted.
 </ul> <p>
 !exit
 
@@ -226,7 +227,6 @@ exam, exercise by exercise.
 <p>
 The registration of exam sessions is automatic. When the maximal number is
 exceeded, the most ancient registrations will be erased.
-
 !exit
 
 :logs
@@ -250,4 +250,5 @@ For example,
 If you need more than one link, they must be seperate by ";". 
 
 !exit
+
 :end

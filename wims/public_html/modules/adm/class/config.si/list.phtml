@@ -2,6 +2,8 @@
 <p><center>
  !href module=adm/class/gateway Urejanje strukture
 </center>
+!set wims_menu_items=!append line struct,1,adm/class/gateway\
+to $wims_menu_items
 !endif
 
 !form reply
@@ -51,17 +53,24 @@ $table_tr<td align=right>
 </td><td colspan=3>
 !set modtoolchg=1
 !formcheckbox modtoolchg list 0 prompt Change
-</td>
+</td></tr>
 !endif
 $table_tr<td align=right colspan=2>Stopnja zaklepa povezave
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
-</td><td colspan=3>
+</td><td>
 !set up_lock=$class_lock
 !default up_lock=0
 !formselect up_lock list 0,2,3,4,5,6,7
 </td>
+<td align=right>Number of the best scores
+<small>
+!href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
+ </small>
+!default class_topscores=0
+<td><input size=3 name=up_topscores value="$class_topscores">
+</td></tr>
 $table_tr<td align=right>Jezik uèilnice
 <small>
 !href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
@@ -149,6 +158,8 @@ Other configurations:
 .
 !href cmd=reply&job=access Omejitve virov
 .
+!href cmd=reply&job=oefdefault OEF default configuration
+.
 !if $class_type iswordof 2 3 4
  !href cmd=reply&job=propagate Send setups to subclasses
 .
@@ -163,13 +174,34 @@ Other configurations:
 <p>
 !href module=adm/light&phtml=useropts.phtml.$lang Osebne nastavitve
 .
+<br>
+Rebuild indices<sup>
+!href cmd=help&special_parm=index $wims_name_help
+</sup>:
+!if $class_type=4
+!href cmd=reply&job=index&job2=structure subclasses
+,
+!endif
+!if $class_type=4 or $class_type=2
+!href cmd=reply&job=index&job2=teacherlist teachers
+,
+!endif
+!href cmd=reply&job=index&job2=userlist participants
+,
+!href cmd=reply&job=index&job2=oef exercises
+,
+!href cmd=reply&job=index&job2=doc documents
+.
+<p>
+!href module=adm/light&phtml=useropts.phtml.$lang My personal preferences
+.
 
 <p>
 Trenutna porabljen prostor v uèilnici: $du megabytes. (The allowance is
 $wims_class_quota.)
 
 !reset up_institution, up_description, up_supervisor, up_email, \
-	up_lang, up_level, up_limit, up_expiration, up_secure, up_lock,\
-	up_option,up_exolog,up_examlog,up_examshow,\
+	up_lang, up_level, up_limit, up_topscores, up_expiration, up_secure, up_lock,\
+	up_option,up_exolog,up_examlog,up_examshow,up_ent\
 	pr_homepage, pr_bgcolor, pr_refcolor, pr_bgimg, pr_css, pr_theme, pr_theme_icon
 

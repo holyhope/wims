@@ -1,4 +1,9 @@
-#! /bin/sh
+#/! /bin/sh
+
+# FG 08/08/2008 : ce fichier ne semble plus utilisé. Il est remplacé par l'appel à adm/class/stopshare.proc
+# rajout du exit
+
+exit;
 
 mdir=`pwd`
 

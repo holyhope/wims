@@ -11,8 +11,9 @@ addshare=!listintersect $addshare and $sharelist
 	and $addshare isitemof $nsharable
  otherlang=!defof class_lang in wimshome/log/classes/$nei/.def
  !if $addshare=sheet and $sharing_exo!=$nei or \
-	$addshare=exam and $sharing_sheet!=$nei
-  error=share_dep
+	$addshare=exam and $sharing_sheet!=$nei or \
+	$addshare=livret and $sharing_sheet!=$nei
+  error=share_dep $addshare
   !exit
  !endif
  !read adm/class/addshare $nei $wims_class\

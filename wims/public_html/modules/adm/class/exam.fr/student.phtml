@@ -14,7 +14,7 @@ $desc<p>
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_back
 . <p>
  !exit
 !endif
@@ -28,7 +28,6 @@ $desc<p>
  erreur de manipulation de votre enseignant.
 !else
  Contenu de l'examen&nbsp;:
-!! !href cmd=reply&job=student [rafraîchir cette page]
  !set activeexo=0
  <p>
  !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
@@ -122,18 +121,12 @@ $desc<p>
     C'est votre dernier essai disponible. Faites attention&nbsp;!
    !endif
   !endif
-!set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-!!<p>
-!!  !href cmd=reply&job=student Rafraîchir cette page.
-!!&nbsp;
-!!  !href cmd=reply&job=score Mon score.
   !if $activeexo<1
 !set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
 to $wims_menu_items
- !!  !href cmd=reply&job=scorereg Terminer
- !!  cette session d'examen (car il n'y a plus rien à faire).
   !endif
  !endif
 !endif

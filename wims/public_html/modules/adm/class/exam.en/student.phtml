@@ -1,3 +1,4 @@
+!set done=done
 
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
@@ -12,7 +13,7 @@ $desc<p>
  <p>
  !read msg.phtml
  <p>
- !href module=home Back to home page
+ !href module=home $wims_name_back
 . <p>
  !exit
 !endif
@@ -26,18 +27,28 @@ $desc<p>
  error in the manipulation by your supervisor.
 !else
  Assigned works in this exam:
-!! !href cmd=reply&job=student [refresh this page]
  !set activeexo=0
- <p><ul>
- !for i=1 to $exocnt
-  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti,de,op
-  !set de=!trim $de
-  <li><p>$i. 
-  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+  <center>
+ !endif
+ <table border=0 class="wims_exam">
+  !for lig=1 to $maxlig
+   <tr>
+    !for col=1 to $maxcol
+     !let i=$[$col*$maxlig+$lig-$maxlig]
+      !if $i<=$exocnt
+!! -------------------------- debut de la ligne correspondant р un exercice de l'examen
+ !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+ !distribute lines $ex into we,li,ti,de,op
+ !set de=!trim $de
+ <td>$i.</td> 
+ !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    $ti (done).
+    <td>$ti </td><td>$done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -46,10 +57,11 @@ $desc<p>
     !endif
     !if $dt=yes
      !advance activeexo
+     <td>
      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-.
+</td><td class="empty">&nbsp;</td>
      !if autogen iswordof $op and $wims_exam_remain!=$empty
-      !set ss=$(wims_session)_examt$(exam)t$i
+      !set ss=$(wims_session)t$(exam)t$i
       !set test=!defof w_cmd in wimshome/sessions/$ss/var
       !if $test=$empty
        !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
@@ -57,16 +69,23 @@ $desc<p>
       !endif
      !endif
     !else
-     <b><font color=red>$ti</font></b> (Requires
+     <td><b><font color=red>$ti</font></b> </td><td>Requires
      !href cmd=reply&job=student the success on other exercises
-.)
+.</td>
     !endif
    !endif
   !else
-   $ti.
+   <td>$ti.</td><td class="empty"></td>
   !endif
- !next i
- </ul>
+!! ------------------------------fin d'affichage de la ligne correspondant ра un exercice
+      !endif
+    !next col
+   </tr>
+  !next lig
+ </table>
+ !if $maxcol>1
+  </center>
+ !endif
  !if $t_=no
   This exam is actually closed for your connection.
   !href cmd=reply&job=student Refresh this page.
@@ -105,16 +124,9 @@ $desc<p>
   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-  !!<p>
-!!  !href cmd=reply&job=student Refresh this page.
-!!&nbsp;
-!!  !href cmd=reply&job=score My score.
   !if $activeexo<1
 !set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
 to $wims_menu_items
-!!&nbsp;
-!!   !href cmd=reply&job=scorereg Finish
-!!   this exam session (because there is no more exercise to do).
   !endif
  !endif
 !endif
@@ -127,15 +139,12 @@ to $wims_menu_items
 !endif
 
 !if $wims_user=supervisor
-!if $wims_user=supervisor
 !set wims_menu_items=!append line backteacher,1,cmd=resume\
  to $wims_menu_items
-!! <p><center>
-!! !href cmd=resume Back to the page for supervisor.
-!! </center>
 !endif
 
 !tail
 
 !reset job
+
 

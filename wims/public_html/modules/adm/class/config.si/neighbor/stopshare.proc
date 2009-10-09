@@ -9,8 +9,9 @@ stoprec=!listintersect $stoprec and $sharelist
 	($(me_$(stoprec)cnt)=0 or $me_testcnt<1 or \
 	$stoprec notitemof $nosharelist or $confirm=yes)
  !if $stoprec=exo and $sharing_sheet!=$empty or \
-	$stoprec=sheet and $sharing_exam!=$empty
-  error=share_dep
+	$stoprec=sheet and $sharing_exam!=$empty or \
+	$stoprec=sheet and $sharing_livret!=$empty
+  error=stopshare_dep $stoprec
   job2=def
   !exit
  !endif

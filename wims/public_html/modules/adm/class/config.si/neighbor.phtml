@@ -1,5 +1,5 @@
 
-!if $classcnt1+$classcnt2<1
+!if $classcnt1+$classcnt2<1 and $kw = $empty
  You cannot define class neighbors because there is no other class on this
  site.
  !exit
@@ -21,6 +21,37 @@
  !exit
 !endif
 
+!if $toomany = yes
+ !form reply
+ !if $kw=$empty
+  There are too many virtual classes on this site. Please give a keyword
+  to search for classes that you want:
+ !else
+  There are too many classes corresponding to your search. Please
+  give a more precise keyword.
+ !endif
+ <p><center>
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form> </center> <p>
+!else
+ !if $kw != $empty or $classcnt1 + $classcnt2 > 20
+  !form reply
+  Search for a class:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form> <p>
+ !endif
+!endif
+!if $classcnt1 + $classcnt2 < 1
+ No class is found for your search. Try again.
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !endif
+ !exit
+!endif
+
 !distribute items ---,<small>supervisor</small>,\
 	<small>participants</small>,\
 	<small>everybody</small> into n_n0, n_n1, n_n2, n_n3
@@ -31,6 +62,16 @@ inter-class travel. <small>[&nbsp;
 &nbsp;
 !href cmd=help&special_parm=neiexample Examples
 &nbsp;]</small>
+
+!if $toomany=yes
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !endif
+ !exit
+!endif
+
+
 Click on a class name to change your neighboring properties with it.
 
 <p>
@@ -46,11 +87,14 @@ Click on a class name to change your neighboring properties with it.
  <p>
  !set clst=$clist2
  $table_header
- <caption>Classes in other languages</caption>
- !read neighbor/clist.phtml
- $table_end
- <p><center>
- !href cmd=reply&job2=sharelist Resource sharing information of your class
+  <caption>Classes in other languages</caption>
+  !read neighbor/clist.phtml
+  $table_end
+  <p><center>
+  !href cmd=reply&job2=sharelist Resource sharing information of your class
  </center>
 !endif
-
+!if $excls!=yes and $supertype!=4
+ <p>
+ !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+!endif

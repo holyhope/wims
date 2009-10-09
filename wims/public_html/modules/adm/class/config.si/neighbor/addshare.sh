@@ -1,5 +1,10 @@
 #! /bin/sh
 
+# ne semble plus utilisé remplacé par adm/class/addshare
+# ajout du exit le 29/6/2009
+
+exit;
+
 mdir=`pwd`
 
 nei=$w_wims_home/log/classes/$w_nei

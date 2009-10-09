@@ -1,26 +1,43 @@
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
- 
+	
+	
 !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
 
 !set title=Configuration et Maintenance
 !if $job=arch
  !set title=Sauvegarde et Restauration
+ !goto commun
 !endif
 
 !if $job=clean
  !set title=Nettoyage de la classe
+ !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Classes voisines
+ !goto commun
 !endif
 
 !if $job=connect
  !set title=Se connecter aux autres serveurs / plate-formes
+ !goto commun
 !endif
 
+!if $job=access
+ !set title=Configuration de l'accès aux ressources
+ !goto commun
+!endif
+
+!if $job2=addshare
+ !set title=Partager les ressources sur la classe
+ !goto commun
+!endif
+
+
+:commun
 !distribute line Authentification\
 Préférences\
 Restriction d'accès\
@@ -34,10 +51,11 @@ Mots de passe\
 Zones dépendantes\
 Apparence\
 Restriction des scores\
+Adresse d'une plateforme\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score
+wims_name_config_score,wims_name_config_ent
 
 !distribute items zones,participants,exercices,documents,enseignants\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers

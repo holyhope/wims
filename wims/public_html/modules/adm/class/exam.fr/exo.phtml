@@ -7,8 +7,8 @@
 !form reply
 <input type=hidden name=job value=exo>
 <input type=hidden name=exo value=$exo>
-<p>Exercice $exo : poids=<input size=5 name=eweight value="$eweight">,
-titre=<input size=20 name=ename value="$ename">
+<p>$wims_name_Exercise $exo : poids=<input size=5 name=eweight value="$eweight">,
+$wims_name_title:<input size=20 name=ename value="$ename">
 <p>
 Cet exercice peut être pris (aléatoirement) dans une liste d'exercices
 existants dans des feuilles de travail. Veuillez marquer parmi les exercices des
@@ -17,9 +17,9 @@ feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'e
 Afficher seulement les exercices de la feuille 
  <select name="ltsheets" onchange="submit()" value="$ltsheets">
   !if $ltsheets=$asheets
-   <option value="$asheets" selected>Toutes</option>
+   <option value="$asheets" selected>$name_All</option>
   !else
-   <option value="$asheets">Toutes</option>  
+   <option value="$asheets">$name_All</option>  
   !endif
   !for k in $asheets
    !if $ltsheets=$k
@@ -47,16 +47,17 @@ Afficher seulement les exercices de la feuille
  !next j
 !next i
 <p>
-Dépendances des scores&nbsp;: <input size=40 name=edep value="$edep"> <br>
-Options:
+$name_dependency: <input size=40 name=edep value="$edep"> <br>
+$name_Options:
 !formcheckbox eopt list $optionlist
 <br>
 <input type=submit value="$wims_name_tosave">
 </form>
 <p>
-!href cmd=reply Page principale de l'examen
+!href cmd=reply $name_mainpage
 . <p><small>
-<b>Aide</b>. Dépendances des scores veulent dire qu'un participant doit
+<b>$wims_name_help</b>. 
+Dépendances des scores veulent dire qu'un participant doit
   d'abord acquérir des points dans d'autres exercices de la feuille, avant
   de pouvoir travailler sur celui-ci. Par exemple,
   <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
