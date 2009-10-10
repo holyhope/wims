@@ -50,11 +50,12 @@
     !if $tt=3 and $class_type< 4
      $aux
     !endif
-  !if  $tt=3 and $class_type< 4
+    !if $tt=3 and $class_type< 4
    <ul><!--1-->
-  !endif
+    !endif
     !for j = 1 to $liste_cnt
-     !if ($class_type < 4 and $tt=3) or $tt iswordof of 1 2
+     !set parent_c=!defof class_parent in wimshome/log/classes/$(liste[$j;3])/.def
+     !if ($class_type < 4 and $tt=3) or $tt iswordof 1 2 or ($tt=3 and $parent_c notitemof $(liste_class[$j;3]),$(liste_program[$j;3]))
       !if $class_type < 4 and $class_typename!=group
       !endif
       <li> $arr <span class="wims_classes_direct_$(list_class[$tt])"> 
