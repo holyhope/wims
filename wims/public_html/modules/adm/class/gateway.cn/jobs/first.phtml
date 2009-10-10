@@ -1,11 +1,10 @@
 <center>
 !if $teachercnt=0
-这里还没有教师帐户.
- !href cmd=reply&job=addteacher 新教师帐户
+$name_first1
+ !href cmd=reply&job=addteacher $wims_name_addteacher
 . <p>
 !else
-这里有
- !href cmd=reply&job=teacher $teachercnt个教师帐户
+ !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
 !set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
@@ -13,13 +12,13 @@ to $wims_menu_items
 !goto nopart
 !if $studentcnt=0
  <p>
-这里还没有参加者帐户.
- !href cmd=reply&job=addstudent 新参加者
+ $name_first2
+ !href cmd=reply&job=addstudent $wims_name_addstudent
 .
 !else
 !set wims_menu_items=!append line student,1,cmd=reply&job=student\
 to $wims_menu_items
- !href cmd=reply&job=student $studentcnt个参加者帐户
+ !href cmd=reply&job=student $studentcnt $wims_name_student
 .
 !endif
 !set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
@@ -29,29 +28,29 @@ to $wims_menu_items
 </center>
 <p>
 !if $levelcnt=0
-这里还没有建立年级.
-  !href cmd=reply&job=addlevel 创建年级
-.<sup>
+  $name_first3
+  !href cmd=reply&job=addlevel $wims_name_addlevel
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
 to $wims_menu_items
-  !href cmd=help&special_parm=structure#level 帮助
+.<sup>
+  !href cmd=help&special_parm=structure#level $wims_name_help
 </sup>
 !else
  $table_header
- <caption>可用年级<sup>
- !href cmd=help&special_parm=structure#level 帮助
+ <caption>$name_first4<sup>
+ !href cmd=help&special_parm=structure#level $wims_name_help
  </sup><br><small>
- !href cmd=reply&job=addlevel 添加别的年级
+ !href cmd=reply&job=addlevel $wims_name_addlevel
  &nbsp; 
- !href cmd=reply&job=backstruct 备份结构
-  !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
+ !href cmd=reply&job=backstruct $wims_name_backstruct
+ !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
  backstruct,1,cmd=reply&job=backstruct\
 to $wims_menu_items
  </small></caption>
  $table_hdtr
- <th>代码<th>名称</th><th>-</th><th>负责人</th>
- <th><small>班级</small></th>
- <th><small>计划</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>$wims_name_Action</th><th>$name_supervisor2</th>
+ <th><small>$name_class</small></th>
+ <th><small>$name_programm</small></th>
  </tr>
  !for i=1 to $levelcnt
    !set l=!line $i of $leveldata
@@ -69,13 +68,13 @@ to $wims_menu_items
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-   不可用
+    $name_nonavailable
    !endif
    </td><td align=center>$c
    </td><td align=center>$p

@@ -1,20 +1,19 @@
 
 !if $ccnt=0
  !if $parent=class
-  Il n'y a aucun programme ayant des cours à ajouter dans cette classe.
+ $name_course1
  !else
-  Il n'y a aucune classe où ce programme peut installer des cours.
+  $name_course2
  !endif
- !href cmd=reply&job=$parent Retour
+ !href cmd=reply&job=$parent $wims_name_back2
 .
  !exit
 !endif
 
 !if $parent=class
- Voici les programmes permettant à votre classe d'ajouter des cours. Cliquez
- sur le titre pour ajouter un cours.
+ $name_course3
  $table_header
- $table_hdtr<th>Titre<th>Commentaire
+ $table_hdtr<th>$wims_name_title<th>$wims_name_comment
  !for p in $clist
   !set i_=!defof class_description in wimshome/log/classes/$p/.def
   $table_tr
@@ -27,10 +26,9 @@
 !endif
 
 !if $parent=prog
- Voici les classes où ce programme peut encore installer des cours.
- Cliquez sur le titre pour installer un cours.
+$name_course4
  $table_header
- $table_hdtr<th>Titre<th>Commentaire
+ $table_hdtr<th>$wims_name_title<th>$wims_name_comment
  !for c in $clist
   !set i_=!defof class_description in wimshome/log/classes/$c/.def
   $table_tr

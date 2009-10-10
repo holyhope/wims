@@ -1,20 +1,19 @@
 
 !if $ccnt=0
  !if $parent=class
-  There is no program that allows more courses to be added to this class.
+ $name_course1
  !else
-  There is no class that allows more courses to be added for this program.
+  $name_course2
  !endif
- !href cmd=reply&job=$parent Return
+ !href cmd=reply&job=$parent $wims_name_back2
 .
  !exit
 !endif
 
 !if $parent=class
- Here are the teaching programs allowing your class to add courses. Click on
- the title to add.
+ $name_course3
  $table_header
- $table_hdtr<th>Title<th>Comment
+ $table_hdtr<th>$wims_name_title<th>$wims_name_comment
  !for p in $clist
   !set i_=!defof class_description in wimshome/log/classes/$p/.def
   $table_tr
@@ -27,10 +26,9 @@
 !endif
 
 !if $parent=prog
- Here are the classes to which this program can add courses. Click on
- the title to add.
+$name_course4
  $table_header
- $table_hdtr<th>Title<th>Comment
+ $table_hdtr<th>$wims_name_title<th>$wims_name_comment
  !for c in $clist
   !set i_=!defof class_description in wimshome/log/classes/$c/.def
   $table_tr

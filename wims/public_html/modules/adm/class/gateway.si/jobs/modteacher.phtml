@@ -1,2 +1,25 @@
 !read scripts/userform.phtml teacher
 
+!if $supervise!=$empty
+ $table_header
+ <caption>$name_gestion</caption>
+ $table_hdtr
+ <th>$wims_name_name<th>$wims_name_Type<th>$wims_name_action
+ </tr>
+ !for z in $supervise
+  !set name=!defof class_description in wimshome/log/classes/$z/.def
+  !set type=!defof class_typename in wimshome/log/classes/$z/.def
+  !set default=!defof class_Supervisor in wimshome/log/classes/$z/.def
+  $table_tr
+  <td align=center>$name</td>
+  <td align=center>$(name_$type)</td>
+  <td align=center>
+  !if $default=$login
+   --
+  !else
+   !href cmd=reply&del=$z $wims_name_erase
+  !endif
+ !next z
+ $table_end
+!endif
+

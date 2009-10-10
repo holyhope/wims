@@ -1,29 +1,29 @@
 
-!set form_OK=发送修改后属性
-!set form_titlename=名称
-!set form_caption=年级属性
+!!!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_levelproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !set alevel=$class_level
 !read scripts/levelform.phtml
 <p>
 !if $classcnt=0
-本年级还没有班级.
- !href cmd=reply&job=addclass 创建班级
+ $name_level1
+ !href cmd=reply&job=addclass $wims_name_addclass
 .<sup>
- !href cmd=help&special_parm=structure#class 帮助
+ !href cmd=help&special_parm=structure#class $wims_name_help
 </sup>
 !else
  $table_header
- <caption>此年级可用的班级<sup>
- !href cmd=help&special_parm=structure#class 帮助
+ <caption>$name_level4<sup>
+ !href cmd=help&special_parm=structure#class $wims_name_help
  </sup> <small>
- !href cmd=reply&job=addclass 添加更多班级
+ !href cmd=reply&job=addclass $wims_name_addclass
  </small></caption>
  $table_hdtr
- <th>代码<th>名称</th><th>-</th><th>负责人</th>
- <th><small>课程</small></th>
- <th><small>参加者</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $classcnt
    !set l=!line $i of $classes
@@ -35,18 +35,18 @@
    <td align=center>
    !href cmd=reply&job=class&class=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delclass&del=$l_ 删除
+    !href cmd=reply&job=delclass&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-      $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non-available
+    $name_nonavailable
    !endif
    </td><td align=center>$c</td>
    !set c=!recordcnt $classdir1/$l_/.userlist
@@ -58,21 +58,21 @@
 
 <p>
 !if $progcnt=0
-本年级还没有教学计划.
- !href cmd=reply&job=addprog 创建计划
+$name_level2
+ !href cmd=reply&job=addprog $wims_name_addprog
 .<sup>
- !href cmd=help&special_parm=structure#program 帮助
+ !href cmd=help&special_parm=structure#program $wims_name_help
  </sup>
 !else
  $table_header
- <caption>本年级可用的计划<sup>
- !href cmd=help&special_parm=structure#program 帮助
+ <caption>$name_level3<sup>
+ !href cmd=help&special_parm=structure#program $wims_name_help
  </sup> <small>
- !href cmd=reply&job=addprog 添加更多计划
+ !href cmd=reply&job=addprog $wims_name_addprog
  </small></caption>
  $table_hdtr
- <th>代码<th>名称</th><th>-</th><th>负责人</th>
- <th><small>课程</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
  </tr>
  !for i=1 to $progcnt
    !set l=!line $i of $programs
@@ -84,18 +84,18 @@
    <td align=center>
    !href cmd=reply&job=prog&prog=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delprog&del=$l_ 删除
+    !href cmd=reply&job=delprog&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-      $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-   不可用
+    $name_nonavailable
    !endif
    </td><td align=center>$c
  !next i
@@ -103,7 +103,6 @@
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
 addprog,1,cmd=reply&job=addprog\
 to $wims_menu_items
-
 !endif
 
 !reset title

@@ -1,29 +1,29 @@
 
-!set form_OK=Send the modified properties
-!set form_titlename=Title
-!set form_caption=Properties of the level
+!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_levelproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !set alevel=$class_level
 !read scripts/levelform.phtml
 <p>
 !if $classcnt=0
- This level has no classes yet.
- !href cmd=reply&job=addclass Create classes
+ $name_level1
+ !href cmd=reply&job=addclass $wims_name_addclass
 .<sup>
  !href cmd=help&special_parm=structure#class $wims_name_help
 </sup>
 !else
  $table_header
- <caption>Available classes<sup>
+ <caption>$name_level4<sup>
  !href cmd=help&special_parm=structure#class $wims_name_help
- </sup>in this level <small>
- !href cmd=reply&job=addclass Add&nbsp;more&nbsp;classes
+ </sup> <small>
+ !href cmd=reply&job=addclass $wims_name_addclass
  </small></caption>
  $table_hdtr
- <th>Code<th>Name</th><th>-</th><th>Responsable</th>
- <th><small>Courses</small></th>
- <th><small>Participants</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $classcnt
    !set l=!line $i of $classes
@@ -35,18 +35,18 @@
    <td align=center>
    !href cmd=reply&job=class&class=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delclass&del=$l_ delete
+    !href cmd=reply&job=delclass&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-      $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non-available
+    $name_nonavailable
    !endif
    </td><td align=center>$c</td>
    !set c=!recordcnt $classdir1/$l_/.userlist
@@ -58,21 +58,21 @@
 
 <p>
 !if $progcnt=0
- This level has no teaching programs yet.
- !href cmd=reply&job=addprog Create programs
+$name_level2
+ !href cmd=reply&job=addprog $wims_name_addprog
 .<sup>
  !href cmd=help&special_parm=structure#program $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Available teaching programs<sup>
+ <caption>$name_level3<sup>
  !href cmd=help&special_parm=structure#program $wims_name_help
- </sup>in this level <small>
- !href cmd=reply&job=addprog Add&nbsp;more&nbsp;programs
+ </sup> <small>
+ !href cmd=reply&job=addprog $wims_name_addprog
  </small></caption>
  $table_hdtr
- <th>Code<th>Name</th><th>-</th><th>Responsable</th>
- <th><small>Courses</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
  </tr>
  !for i=1 to $progcnt
    !set l=!line $i of $programs
@@ -84,18 +84,18 @@
    <td align=center>
    !href cmd=reply&job=prog&prog=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delprog&del=$l_ delete
+    !href cmd=reply&job=delprog&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-      $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non-available
+    $name_nonavailable
    !endif
    </td><td align=center>$c
  !next i
@@ -103,7 +103,6 @@
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
 addprog,1,cmd=reply&job=addprog\
 to $wims_menu_items
-
 !endif
 
 !reset title

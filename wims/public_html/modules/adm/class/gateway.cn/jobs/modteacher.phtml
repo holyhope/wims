@@ -2,9 +2,9 @@
 
 !if $supervise!=$empty
  $table_header
- <caption>主持教师登入</caption>
+ <caption>$name_gestion</caption>
  $table_hdtr
- <th>姓名<th>类型<th>动作
+ <th>$wims_name_name<th>$wims_name_Type<th>$wims_name_action
  </tr>
  !for z in $supervise
   !set name=!defof class_description in wimshome/log/classes/$z/.def
@@ -17,7 +17,7 @@
   !if $default=$login
    --
   !else
-   !href cmd=reply&del=$z 拒绝
+   !href cmd=reply&del=$z $wims_name_erase
   !endif
  !next z
  $table_end

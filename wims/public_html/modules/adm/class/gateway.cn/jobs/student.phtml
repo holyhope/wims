@@ -1,12 +1,12 @@
 !exit
 $table_header
-<caption>学生帐户
-!href cmd=reply&job=addstudent 添加学生
+<caption>$wims_name_student
+!href cmd=reply&job=addstudent $wims_name_addstudent
 </caption>
 $table_hdtr
-<th>帐户</th>
-<th>名字</th>
-<th>-</th>
+<th>$wims_name_student</th>
+<th>$wims_name_lastname</th>
+<th>$wims_name_action</th>
 !for i=1 to $studentcnt
  !set l=!record $i of $classdir1/.studentlist
  !distribute items $l into l_,f_,c_
@@ -16,7 +16,7 @@ $table_hdtr
  !href cmd=reply&job=modstudent&student=$c_ $l_, $f_
  </td>
  <td>
- !href cmd=reply&job=delstudent&student=$c_ 删除
+ !href cmd=reply&job=delstudent&student=$c_ $wims_name_erase
  </td>
 !next i
 $table_end

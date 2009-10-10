@@ -1,43 +1,43 @@
 
-!set form_OK=Envoyer la modification
-!set form_titlename=Titre
-!set form_caption=Propriétés du programme
+!!!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_programproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !read scripts/progform.phtml
 <p><center>
 !if $hastest=yes
- Zone de test<sup>
+ $name_prog1<sup>
  !href cmd=help&special_parm=structure#test $wims_name_help
  </sup>:
- !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 visiter
+ !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 $name_visit
 . 
- !href cmd=reply&job=deltest effacer
+ !href cmd=reply&job=deltest $wims_name_erase
 .
 !else
- Ce programme n'a pas de zone de test<sup>
+ $name_prog2<sup>
  !href cmd=help&special_parm=structure#test $wims_name_help
  </sup>.
- !href cmd=reply&job=addtest En installer une
+ !href cmd=reply&job=addtest $name_prog3
 .
 !endif
 </center> <p>
 !if $coursecnt=0
- Ce programme n'a pas encore de cours.
+ $name_prog4
  !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
 .<sup>
  !href cmd=help&special_parm=structure#course $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Cours installés<sup>
+ <caption>$name_prog5<sup>
  !href cmd=help&special_parm=structure#course $wims_name_help
- </sup> dans ce programme
+ </sup> 
  !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
  </small></caption>
  $table_hdtr
- <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
- <th><small>Participants</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $coursecnt
    !set l=!line $i of $courses
@@ -51,13 +51,13 @@
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non disponible
+    $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
    </td><td align=center>$c</td>
@@ -67,21 +67,21 @@
 <p>
 
 !if $icoursecnt=0
- Ce programme n'a pas de cours interclasse.
- !href cmd=reply&cparent=prog&job=addicourse Créer
+$name_prog9
+ !href cmd=reply&cparent=prog&job=addicourse $wims_name_addicourse
 .<sup>
  !href cmd=help&special_parm=structure#icourse $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Cours interclasse<sup>
+ <caption>$wims_name_icourse<sup>
  !href cmd=help&special_parm=structure#icourse $wims_name_help
- </sup> dans le programme
- !href cmd=reply&cparent=prog&job=addicourse Ajouter&nbsp;plus
+ </sup>
+ !href cmd=reply&cparent=prog&job=addicourse $wims_name_addcourse
  </small></caption>
  $table_hdtr
- <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
- <th><small>Participants</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $icoursecnt
    !set l=!line $i of $icourses
@@ -101,7 +101,7 @@
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non disponible
+    $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
    </td><td align=center>$c</td>
@@ -112,11 +112,11 @@
 !if $recsharable!=$empty
  <p>
  $table_header
- <caption>Partager les ressources d'un autre programme (<b>expérimental</b>)</caption>
+ <caption>$name_prog6</caption>
  $table_hdtr
  <th>Code</th>
- <th>Niveau</th>
- <th>Programme</th>
+ <th>$wims_name_level</th>
+ <th>$wims_name_program</th>
  </tr>
  !set n=!linecnt $recsharable
  !for i=1 to $n
@@ -138,13 +138,13 @@
 !if $class_recshare!=$empty
  <p>
  !if $class_recshare=main
-  Les ressources de ce programme sont partagées par d'autres programmes.
+  $name_prog7
  !else
   !set l_=!translate / to , in $class_recshare
   !set shareprog=!defof class_description in $classdir1/$class_recshare/.def
   !set sharelevel=!defof class_description in $classdir1/$(l_[1])/.def
-  Ce programme partage les ressources pédagogiques du programme
-  <em>$shareprog</em> dans le niveau <em>$sharelevel</em>.
+  $name_prog8
+  <em>$shareprog</em> ($name_level <em>$sharelevel</em>).
  !endif
 !endif
 

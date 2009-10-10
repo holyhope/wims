@@ -3,76 +3,83 @@
 $table_header
 <caption>
 !if $form_caption!=$tmpty
- $form_caption
+ <b>$form_caption</b>
 !endif
 <small>
 !if $passhow=yes
- !href cmd=reply&passhow=no hide&nbsp;passwords
+ !href cmd=reply&passhow=no $name_hidepass
 !else
- !href cmd=reply&passhow=yes show&nbsp;passwords
+ !href cmd=reply&passhow=yes $name_showpass
 !endif
 </small></caption>
 $table_tr<td align=right>
-$form_titlename:
+$form_titlename
 <td><input size=30 name=title value="$title">
 !if $form_level=yes
  $table_tr<td align=right>
- Academic level:
+ $wims_name_level
  <td>
  !set alevel=$class_level
  !formselect alevel list $levellist prompt $levelnames
 !endif
 $table_tr<td align=right>
-Supervisor of the $form_classname<sup>
+$name_supervisor2 ($form_classname)<sup>
 !href cmd=help&special_parm=supervisor $wims_name_help
-</sup>:
+</sup>
 <td>
 !readproc scripts/teacherlist.proc
 !formselect sup list $tlist1 prompt $tlist2
 !if $form_prog=yes
  $table_tr<td align=right>
- Style of the program<sup>
+$name_Style<sup>
  !href cmd=help&special_parm=progopt $wims_name_help
- </sup>:
+ </sup>
  <td>
  !formselect progstyle1 list mandatory,optional prompt\
-	mandatory, optional
+	$name_style
  $table_tr<td align=right>
- Automatic installation of courses<sup>
+ $name_installation<sup>
  !href cmd=help&special_parm=progopt $wims_name_help
-</sup>:
- <br><small>to all classes in the level</small>
+</sup>
  <td>
  !formselect progstyle2 list all,select prompt $wims_name_yes,$wims_name_no
 !endif
 !if $form_pass=yes
  $table_tr<td align=right>
- Registration password<sup>
+ $wims_name_Password ($name_register)<sup>
  !href cmd=help&special_parm=pass $wims_name_help
-</sup>:
+</sup>
  !if $passhow=yes
   <td><input type=text size=30 name=pass value="$pass">
  !else
   <td><input type=password size=30 name=pass value="">
   $table_tr<td align=right>
-  Repeat registration password:
+  $wims_name_repeat_pass ($name_register)
   <td><input type=password size=30 name=pass2 value="">
  !endif
 !endif
 $table_tr<td align=right>
-Supervisor's password<sup>
+$wims_name_Password ($name_supervisor2)<sup>
 !href cmd=help&special_parm=passs $wims_name_help
-</sup>:
+</sup>
 !if $passhow=yes
  <td><input type=text size=30 name=passs value="$passs">
 !else
  <td><input type=password size=30 name=passs value="">
  $table_tr<td align=right>
- Repeat supervisor's password:
+ $wims_name_repeat_pass ($name_supervisor2)
  <td><input type=password size=30 name=passs2 value="">
 !endif
+$table_tr<td align=right>$name_IP<sup>
+!href cmd=help&special_parm=sechost $wims_name_help
+</sup>
+!set sechost=$class_secure
+!default sechost=all
+<td><input type=text size=30 name=sechost value="$sechost">
+!reset sechost
+</tr>
 $table_tr<td align=center colspan=2>
-<input type=submit name=confirm value="$form_OK">
+<input type=submit name=confirm value="$wims_name_tosave">
 !if $form_cancel!=$empty
  &nbsp;
  <input type=submit name=cancel value=$form_cancel>
