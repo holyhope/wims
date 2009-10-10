@@ -1,18 +1,9 @@
 !set wims_name_examremain=Resterende tijd voor dit proefwerk : $
 !read js/examclock1.phtml
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
 !read names.phtml
-
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -20,17 +11,13 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Het samenstellen van proefwerk $exam
-!!<center>$classname
-!!<p>
-!!<h1>Het samenstellen van proefwerk $exam
-!!</h1></center> <p><hr width="40%"> <p>
+$title $exam
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug naar de home pagina
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -46,7 +33,7 @@ Het samenstellen van proefwerk $exam
  Dit proefwerk is
  !if $activetest=1
   geactiveerd
-  !href cmd=reply&job=expire Laat het verlopen
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -78,7 +65,7 @@ Het samenstellen van proefwerk $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Titel (maximaal $title_limit karakters):<br>
+$wims_name_title (maximaal $title_limit karakters):<br>
 <input size=65 name=title value="$title"> <p>
 en een verklarende tekst (beperkt tot $desc_limit karakters; html
 tags en hyperlinks zijn toegestaan):<br>

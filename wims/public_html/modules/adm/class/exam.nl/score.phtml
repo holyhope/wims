@@ -14,7 +14,7 @@
  <p>
  !read msg.phtml
  <p>
- !href module=home Terug naar de homepagina
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -25,19 +25,13 @@
 !else
  <p><center><table border=1 bgcolor=bisque>
  <caption>Score details</caption>
- <tr><th>Opgave<th>Titel<th>gewicht<th>Score
+ <tr><th>$wims_name_Exercise<th>$wims_name_title<th>Gewicht<th>Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
   <tr><td align=center>$i
   <td align=center>$ti
-  <td align=center>
-  !if $we=0
-   <font color=red>let op: gewicht is <b>$we</b></font>
-  !else
-   $we
-  !endif
-  <td align=center>
+  <td align=center>$we<td align=center>
   !if $(replied$i)>0
    $(got$i)
   !else
@@ -46,15 +40,14 @@
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Cijfer voor deze proefwerk sessie: <b>$score</b> <small>uit 10</small>.
+ Cijfer voor deze proefwerk sessie&Nbsp;: <b>$score</b> <small>uit 10</small>.
  $table_end
 !endif
 <p>
 
 !if $registered=$empty
  U bent nog niet begonnen met dit proefwerk.
- !href cmd=reply&job=student Start dit proefwerk
- .
+ !href cmd=reply&job=student Start dit proefwerk.
 !else
  !if $timeleft<=0
    De beschikbare tijd is verlopen!
@@ -62,7 +55,8 @@
    <p>
  !endif
  !if $allowtype=simulation
-  Uw score wordt niet geregistreerd, omdat dit proefwerk in simulatie mode loopt.
+  Uw score wordt niet geregistreerd, 
+  omdat dit proefwerk in simulatie mode loopt.
   !if $lastscore>0
    (De echte score voor deze proefwerk-sessie is $lastscore.)
   !endif

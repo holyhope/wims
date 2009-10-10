@@ -1,11 +1,11 @@
 <center>
 !if $teachercnt=0
     Er zijn nog geen docenten accounts.
- !href cmd=reply&job=addteacher Een&nbsp;nieuw&nbsp;docent&nbsp;account
+ !href cmd=reply&job=addteacher $wims_name_addteacher
 . <p>
 !else
  Er zijn
- !href cmd=reply&job=teacher $teachercnt docent&nbsp;accounts
+ !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
 !set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
@@ -14,12 +14,12 @@ to $wims_menu_items
 !if $studentcnt=0
  <p>
  Er zijn geen deelnemers.
- !href cmd=reply&job=addstudent Voeg&nbsp;een&nbsp;nieuwe&nbsp;student&nbsp;toe
+ !href cmd=reply&job=addstudent $wims_name_addstudent
 .
 !else
 !set wims_menu_items=!append line student,1,cmd=reply&job=student\
 to $wims_menu_items
- !href cmd=reply&job=student $studentcnt studenten&nbsp;accounts
+ !href cmd=reply&job=student $studentcnt $wims_name_student
 .
 !endif
 !set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
@@ -29,8 +29,8 @@ to $wims_menu_items
 </center>
 <p>
 !if $levelcnt=0
-    Er zijn geen leer-niveaus geinstalleerd.
-  !href cmd=reply&job=addlevel Maak&nbsp;een&nbsp;nieuw&nbsp;niveau
+    Er zijn geen leerniveaus geinstalleerd.
+  !href cmd=reply&job=addlevel $wims_name_addlevel
 .<sup>
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
 to $wims_menu_items
@@ -41,9 +41,9 @@ to $wims_menu_items
  <caption>Beschikbare leer niveaus<sup>
  !href cmd=help&special_parm=structure#level $wims_name_help
  </sup><br><small>
- !href cmd=reply&job=addlevel Voeg&nbsp;een&nbsp;ander&nbsp;niveau&nbsp;toe
- &nbsp; 
- !href cmd=reply&job=backstruct Maak&nbsp;een&nbsp;Backup&nbsp;van&nbsp;de&nbsp;structuur
+ !href cmd=reply&job=addlevel $wims_name_addlevel
+  &nbsp; 
+ !href cmd=reply&job=backstruct $wims_name_backstruct
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
  backstruct,1,cmd=reply&job=backstruct\
 to $wims_menu_items

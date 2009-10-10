@@ -95,6 +95,49 @@
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
+     $name_supervisor
+    !else
+     !default n_=$s_
+     !href cmd=reply&job=modteacher&teacher=$s_ $n_
+    !endif
+   !else
+    Niet beschikbaar
+   !endif
+   !set c=!recordcnt $classdir1/$l_/.userlist
+   </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+<p>
+!if $icoursecnt=0
+ Dit lesprogramma heeft nog geen kursus
+ !href cmd=reply&cparent=prog&job=addicourse $wims_name_addcourse
+.<sup>
+ !href cmd=help&special_parm=structure#icourse $wims_name_help
+ </sup>
+!else
+ $table_header
+ <caption>Interklas kursus<sup>
+ !href cmd=help&special_parm=structure#icourse $wims_name_help
+ </sup> in het lesprogramma
+ !href cmd=reply&cparent=prog&job=addicourse $wims_name_addcourse
+ </small></caption>
+ $table_hdtr
+ <th>Code<th>Naam</th><th>-</th><th>Verantwoordelijke</th>
+ <th><small>Deelnemers</small></th>
+ </tr>
+ !for i=1 to $icoursecnt
+   !set l=!line $i of $icourses
+   !distribute items $l into l_,s_,t_,n_
+   $table_tr<td align=center>$l_</td>
+   <td align=center>
+   !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
+   </td><td align=center><small>
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
+   </small>
+   </td><td align=center>
+   !if $s_!=$empty
+    !if $s_=supervisor
      $s_
     !else
      !default n_=$s_
@@ -105,6 +148,32 @@
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
    </td><td align=center>$c</td>
+ !next i
+ $table_end
+!endif
+
+!if $recsharable!=$empty
+ <p>
+ $table_header
+ <caption>Gebruik lesmateriaal uit een andere lesprogramma (<b>exprimenteel</b>)</caption>
+ $table_hdtr
+ <th>Code</th>
+ <th>Niveau</th>
+ <th>Programma</th>
+ </tr>
+ !set n=!linecnt $recsharable
+ !for i=1 to $n
+  $table_tr
+  !set l=!line $i of $recsharable
+  !distribute items $l into add,name
+  !set l_=!translate / to , in $add
+  !set l_=!item 1 of $l_
+  !set l_=!defof class_description in $classdir1/$l_/.def
+  <td align=center><tt>$add</tt></td>
+  <td align=center>$l_</td>
+  <td align=left>
+  !href cmd=reply&job=progshare&prog=$prog&shareprog=$add $name
+  </td></tr>
  !next i
  $table_end
 !endif
@@ -125,7 +194,6 @@
 !set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=prog&job=addcourse\
 addicourse,1,cmd=reply&cparent=prog&job=addicourse\
 to $wims_menu_items
-
 
 !reset title
 

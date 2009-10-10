@@ -16,25 +16,28 @@
 !endif
 
 <h1 class="wims_title">WIMS op $httpd_HTTP_HOST
-<br>Server Statistieken</h1>
+<br>Statistische gegevens</h1>
 <p><hr> <p>
 
 !if $sitestart=$empty
-    Helaas, maar op deze server zijn de statistieken niet openbaar. <p>
+    De bezoekstatistieken zijn op deze server gedeactiveerd. 
+  <p>
  !goto end
 !endif
 
 !if $show=yes and $total_site>0 and $laps>0
 !!if $show=yes
- !href cmd=resume Terug
- </a> naar het menu
+ !href cmd=resume Terug naar het menu
  <p>
  !read answer.phtml
- !href cmd=resume Terug 
- </a> naar het menu
+ !set wims_menu_items=!append line back2,1,cmd=resume\
+ to $wims_menu_items
+ !!!href cmd=resume Retour au menu
  <p>
 !else
  !if $usercnt>0
+  Er zijn $classcnt instituten en individuele klassen op deze server geinstalleerd met daarin
+  $usercnt gebruikers.
   <p>
  !endif
  !read menu.phtml

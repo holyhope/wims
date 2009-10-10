@@ -9,7 +9,7 @@
 <p>
 !if $classcnt=0
     Dit niveau heeft nog geen klassen.
- !href cmd=reply&job=addclass Maak een nieuwe klas
+ !href cmd=reply&job=addclass $wims_name_addclass
 .<sup>
  !href cmd=help&special_parm=structure#class $wims_name_help
 </sup>
@@ -18,7 +18,7 @@
  <caption>Beschikbare klassen<sup>
  !href cmd=help&special_parm=structure#class $wims_name_help
  </sup>in this level <small>
- !href cmd=reply&job=addclass Voeg&nbsp;nog&nbsp;een&nbsp;klas&nbsp;toe
+ !href cmd=reply&job=addclass $wims_name_addclass
  </small></caption>
  $table_hdtr
  <th>Code</th><th>Naam</th><th>-</th><th>Verantwoordelijke</th>
@@ -35,7 +35,7 @@
    <td align=center>
    !href cmd=reply&job=class&class=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delclass&del=$l_ verwijder
+    !href cmd=reply&job=delclass&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
@@ -59,7 +59,7 @@
 <p>
 !if $progcnt=0
  Dit niveau heeft nog geen lesprogramma's.
- !href cmd=reply&job=addprog Maak een lesprogramma
+ !href cmd=reply&job=addprog $wims_name_addprog
 .<sup>
  !href cmd=help&special_parm=structure#program $wims_name_help
  </sup>
@@ -68,7 +68,7 @@
  <caption>Beschikbare lesprogramma's<sup>
  !href cmd=help&special_parm=structure#program $wims_name_help
  </sup>in dit niveau<small>
- !href cmd=reply&job=addprog Voeg&nbsp;meer&nbsp;programma's&nbsp;toe
+ !href cmd=reply&job=addprog $wims_name_addprog
  </small></caption>
  $table_hdtr
  <th>Code<th>Naam</th><th>-</th><th>Verantwoordelijke</th>
@@ -84,7 +84,7 @@
    <td align=center>
    !href cmd=reply&job=prog&prog=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delprog&del=$l_ verwijder
+    !href cmd=reply&job=delprog&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
@@ -103,7 +103,6 @@
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
 addprog,1,cmd=reply&job=addprog\
 to $wims_menu_items
-
 !endif
 
 !reset title
