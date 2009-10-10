@@ -1,29 +1,29 @@
 
-!set form_OK=Envoyer la modification
-!set form_titlename=Titre
-!set form_caption=Propriétés du niveau
+!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_levelproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !set alevel=$class_level
 !read scripts/levelform.phtml
 <p>
 !if $classcnt=0
- Ce niveau n'a pas encore de classes.
- !href cmd=reply&job=addclass $wims_name_addclass
+ $name_level1
+ !href cmd=reply&job=addclass $wims_name_createclass
 .<sup>
  !href cmd=help&special_parm=structure#class $wims_name_help
 </sup>
 !else
  $table_header
- <caption>Classes disponibles<sup>
+ <caption>$name_level4<sup>
  !href cmd=help&special_parm=structure#class $wims_name_help
- </sup>dans ce niveau <small>
+ </sup> <small>
  !href cmd=reply&job=addclass $wims_name_addclass
  </small></caption>
  $table_hdtr
- <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
- <th><small>Cours</small></th>
- <th><small>Participants</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $classcnt
    !set l=!line $i of $classes
@@ -40,13 +40,13 @@
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non disponible
+    $name_nonavailable
    !endif
    </td><td align=center>$c</td>
    !set c=!recordcnt $classdir1/$l_/.userlist
@@ -58,21 +58,21 @@
 
 <p>
 !if $progcnt=0
- Ce niveau n'a pas encore de programmes d'enseignement.
+$name_level2
  !href cmd=reply&job=addprog $wims_name_addprog
 .<sup>
  !href cmd=help&special_parm=structure#program $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Programmes d'enseignement disponibles<sup>
+ <caption>$name_level3<sup>
  !href cmd=help&special_parm=structure#program $wims_name_help
- </sup>dans ce niveau <small>
+ </sup> <small>
  !href cmd=reply&job=addprog $wims_name_addprog
  </small></caption>
  $table_hdtr
- <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
- <th><small>Cours</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
  </tr>
  !for i=1 to $progcnt
    !set l=!line $i of $programs
@@ -89,13 +89,13 @@
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non disponible
+    $name_nonavailable
    !endif
    </td><td align=center>$c
  !next i

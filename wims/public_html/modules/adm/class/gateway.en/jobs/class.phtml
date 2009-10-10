@@ -1,27 +1,27 @@
 
-!set form_OK=Send the modified properties
-!set form_titlename=Title
-!set form_caption=Properties of the class
+!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_classproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !read scripts/classform.phtml
 
 <p>
 !if $coursecnt=0
- This class has no courses yet.
- !href cmd=reply&cparent=class&job=addcourse Add a course
+ $name_class1
+ !href cmd=reply&cparent=class&job=addcourse $wims_name_addcourse
 .<sup>
  !href cmd=help&special_parm=structure#course $wims_name_help
 </sup>
 !else
  $table_header
- <caption>Existing courses<sup>
+ <caption>$name_class2<sup>
  !href cmd=help&special_parm=structure#course $wims_name_help
- </sup> in this class
- !href cmd=reply&cparent=class&job=addcourse Add&nbsp;another&nbsp;course
+ </sup>
+ !href cmd=reply&cparent=class&job=addcourse $wims_name_addcourse
  </small></caption>
  $table_hdtr
- <th>Code<th>Name</th><th>-</th><th>Responsable</th>
+ <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  </tr>
  !for i=1 to $coursecnt
    !set l=!line $i of $courses
@@ -30,7 +30,7 @@
    <td align=center>
    !href cmd=reply&job=course&cparent=class&course=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delcourse&cparent=class&del=$l_ delete
+    !href cmd=reply&job=delcourse&cparent=class&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
@@ -41,12 +41,13 @@
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non-available
+    $name_nonavailable
    !endif
  !next i
  $table_end
 
 !endif
-
+!set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=class&job=addcourse\
+to $wims_menu_items
 !reset title
 

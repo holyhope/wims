@@ -5,7 +5,7 @@
  <p> $table_header
  <caption wrap="off">Autres accès de gestion</caption>
  $table_hdtr
- <th>compte<th>nom<th>action
+ <th>$wims_name_Account<th>$wims_name_name<th>$wims_name_action
  </tr>
  !for i=1 to $cnt1
   !set l=!line $(list1[$i]) of $teacherlist
@@ -14,7 +14,7 @@
   <td><tt>$log</tt></td>
   <td>$first $last</td>
   <td>
-  !href cmd=reply&actype=del&more=$log Enlever
+  !href cmd=reply&actype=del&more=$log $wims_name_erase
   </td></tr>
  !next i
  $table_end
@@ -24,8 +24,7 @@
  <p> <center>
  !form reply
  <input type=hidden name=actype value="add">
- <input type=submit value="Ajouter">
- un autre accès de gestion :
+ <input type=submit value="$name_addgestion">:
  !formselect more list $list2 prompt $prompt
  </center> </form>
 !endif

@@ -1,44 +1,43 @@
 
-!set form_OK=Enviar la modificación
-!set form_titlename=Título
-!set form_caption=Propiedades del programa
+!!!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_programproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !read scripts/progform.phtml
-!readproc names
 <p><center>
 !if $hastest=yes
- Zona de pruebas<sup>
- !href cmd=help&special_parm=test ayuda
+ $name_prog1<sup>
+ !href cmd=help&special_parm=structure#test $wims_name_help
  </sup>:
- !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 visitar
+ !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 $name_visit
 . 
- !href cmd=reply&job=deltest borrar
+ !href cmd=reply&job=deltest $wims_name_erase
 .
 !else
- Este programa no tiene una zona de pruebas<sup>
- !href cmd=help&special_parm=test ayuda
+ $name_prog2<sup>
+ !href cmd=help&special_parm=structure#test $wims_name_help
  </sup>.
- !href cmd=reply&job=addtest Instalar una
+ !href cmd=reply&job=addtest $name_prog3
 .
 !endif
 </center> <p>
 !if $coursecnt=0
- Este programa todavía no tiene cursos.
- !href cmd=reply&cparent=prog&job=addcourse Añadir&nbsp;un&nbsp;curso
+ $name_prog4
+ !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
 .<sup>
- !href cmd=help&special_parm=course ayuda
+ !href cmd=help&special_parm=structure#course $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Cursos instalados<sup>
- !href cmd=help&special_parm=course ayuda
- </sup> en este programa
- !href cmd=reply&cparent=prog&job=addcourse Añadir&nbsp;otro&nbsp;curso
+ <caption>$prog5<sup>
+ !href cmd=help&special_parm=structure#course $wims_name_help
+ </sup> 
+ !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
  </small></caption>
  $table_hdtr
- <th>Código<th>Nombre</th><th>-</th><th>Responsable</th>
- <th><small>Participantes</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $coursecnt
    !set l=!line $i of $courses
@@ -47,18 +46,18 @@
    <td align=center>
    !href cmd=reply&job=course&cparent=prog&course=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ borrar
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    No disponible
+    $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
    </td><td align=center>$c</td>
@@ -68,21 +67,21 @@
 <p>
 
 !if $icoursecnt=0
- Este programa no tiene cursos interclases.
- !href cmd=reply&cparent=prog&job=addicourse Crear
+$name_prog9
+ !href cmd=reply&cparent=prog&job=addicourse $wims_name_addicourse
 .<sup>
- !href cmd=help&special_parm=icourse ayuda
+ !href cmd=help&special_parm=structure#icourse $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Curso interclases<sup>
- !href cmd=help&special_parm=icourse ayuda
- </sup> en el programa
- !href cmd=reply&cparent=prog&job=addicourse Añadir&nbsp;más
+ <caption>$wims_name_icourse<sup>
+ !href cmd=help&special_parm=structure#icourse $wims_name_help
+ </sup>
+ !href cmd=reply&cparent=prog&job=addicourse $wims_name_addcourse
  </small></caption>
  $table_hdtr
- <th>Código<th>Nombre</th><th>-</th><th>Responsable</th>
- <th><small>Participantes</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $icoursecnt
    !set l=!line $i of $icourses
@@ -91,7 +90,7 @@
    <td align=center>
    !href cmd=reply&job=icourse&cparent=prog&course=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ borrar
+    !href cmd=reply&job=delcourse&cparent=prog&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
@@ -102,12 +101,51 @@
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    No disponible
+    $name_nonavailable
    !endif
    !set c=!recordcnt $classdir1/$l_/.userlist
    </td><td align=center>$c</td>
  !next i
  $table_end
+!endif
+
+!if $recsharable!=$empty
+ <p>
+ $table_header
+ <caption>$name_prog6</caption>
+ $table_hdtr
+ <th>Code</th>
+ <th>$wims_name_level</th>
+ <th>$wims_name_program</th>
+ </tr>
+ !set n=!linecnt $recsharable
+ !for i=1 to $n
+  $table_tr
+  !set l=!line $i of $recsharable
+  !distribute items $l into add,name
+  !set l_=!translate / to , in $add
+  !set l_=!item 1 of $l_
+  !set l_=!defof class_description in $classdir1/$l_/.def
+  <td align=center><tt>$add</tt></td>
+  <td align=center>$l_</td>
+  <td align=left>
+  !href cmd=reply&job=progshare&prog=$prog&shareprog=$add $name
+  </td></tr>
+ !next i
+ $table_end
+!endif
+
+!if $class_recshare!=$empty
+ <p>
+ !if $class_recshare=main
+  $name_prog7
+ !else
+  !set l_=!translate / to , in $class_recshare
+  !set shareprog=!defof class_description in $classdir1/$class_recshare/.def
+  !set sharelevel=!defof class_description in $classdir1/$(l_[1])/.def
+  $name_prog8
+  <em>$shareprog</em> ($name_level <em>$sharelevel</em>).
+ !endif
 !endif
 
 !set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=prog&job=addcourse\

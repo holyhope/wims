@@ -1,10 +1,9 @@
 <center>
 !if $teachercnt=0
- Il n'y a pas encore de compte d'enseignants.
+$name_first1
  !href cmd=reply&job=addteacher $wims_name_addteacher
 . <p>
 !else
- Il y a
  !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
@@ -13,7 +12,7 @@ to $wims_menu_items
 !goto nopart
 !if $studentcnt=0
  <p>
- Il n'y a pas encore de compte d'élèves.
+ $name_first2
  !href cmd=reply&job=addstudent $wims_name_addstudent
 .
 !else
@@ -29,7 +28,7 @@ to $wims_menu_items
 </center>
 <p>
 !if $levelcnt=0
-  Aucun niveau d'enseignement n'est encore installé.
+  $name_first3
   !href cmd=reply&job=addlevel $wims_name_addlevel
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
 to $wims_menu_items
@@ -38,7 +37,7 @@ to $wims_menu_items
 </sup>
 !else
  $table_header
- <caption>Niveaux d'enseignement disponibles<sup>
+ <caption>$name_first4<sup>
  !href cmd=help&special_parm=structure#level $wims_name_help
  </sup><br><small>
  !href cmd=reply&job=addlevel $wims_name_addlevel
@@ -49,9 +48,9 @@ to $wims_menu_items
 to $wims_menu_items
  </small></caption>
  $table_hdtr
- <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
- <th><small>Classes</small></th>
- <th><small>Programmes</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$name_class</small></th>
+ <th><small>$name_programm</small></th>
  </tr>
  !for i=1 to $levelcnt
    !set l=!line $i of $leveldata
@@ -69,13 +68,13 @@ to $wims_menu_items
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non disponible
+    $name_nonavailable
    !endif
    </td><td align=center>$c
    </td><td align=center>$p

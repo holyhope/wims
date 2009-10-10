@@ -1,27 +1,27 @@
 
-!set form_OK=Envoyer la modification
-!set form_titlename=Titre
-!set form_caption=Propriétés de la classe
+!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_classproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !read scripts/classform.phtml
 
 <p>
 !if $coursecnt=0
- Cette classe n'a pas encore de cours.
- !href cmd=reply&cparent=class&job=addcourse Ajouter un cours
+ $name_class1
+ !href cmd=reply&cparent=class&job=addcourse $wims_name_addcourse
 .<sup>
- !href cmd=help&special_parm=structure#course aide
+ !href cmd=help&special_parm=structure#course $wims_name_help
 </sup>
 !else
  $table_header
- <caption>Cours existants<sup>
- !href cmd=help&special_parm=structure#course aide
- </sup> dans cette classe
- !href cmd=reply&cparent=class&job=addcourse Ajouter&nbsp;un&nbsp;autre&nbsp;cours
+ <caption>$name_class2<sup>
+ !href cmd=help&special_parm=structure#course $wims_name_help
+ </sup>
+ !href cmd=reply&cparent=class&job=addcourse $wims_name_addcourse
  </small></caption>
  $table_hdtr
- <th>Code<th>Nom</th><th>-</th><th>Responsable</th>
+ <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  </tr>
  !for i=1 to $coursecnt
    !set l=!line $i of $courses
@@ -41,13 +41,13 @@
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    Non disponible
+    $name_nonavailable
    !endif
  !next i
  $table_end
 
 !endif
-!set wims_menu_items=!append line "Ajouter un cours",1,cmd=reply&cparent=class&job=addcourse\
+!set wims_menu_items=!append line addcourse,1,cmd=reply&cparent=class&job=addcourse\
 to $wims_menu_items
 !reset title
 

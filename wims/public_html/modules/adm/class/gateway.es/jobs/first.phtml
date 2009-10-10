@@ -1,12 +1,10 @@
-!readproc names
 <center>
 !if $teachercnt=0
- Todavía no hay cuentas de profesores.
- !href cmd=reply&job=addteacher Nueva cuenta de profesor
+$name_first1
+ !href cmd=reply&job=addteacher $wims_name_addteacher
 . <p>
 !else
- Hay
- !href cmd=reply&job=teacher $teachercnt cuentas de profesores
+ !href cmd=reply&job=teacher $teachercnt $wims_name_teacher
 .
 !endif
 !set wims_menu_items=!append line addteacher,1,cmd=reply&job=addteacher \
@@ -14,13 +12,13 @@ to $wims_menu_items
 !goto nopart
 !if $studentcnt=0
  <p>
- Todavía no hay cuentas de alumnos.
- !href cmd=reply&job=addstudent Nueva cuenta de alumno
+ $name_first2
+ !href cmd=reply&job=addstudent $wims_name_addstudent
 .
 !else
 !set wims_menu_items=!append line student,1,cmd=reply&job=student\
 to $wims_menu_items
- !href cmd=reply&job=student $studentcnt cuentas de alumnos
+ !href cmd=reply&job=student $studentcnt $wims_name_student
 .
 !endif
 !set wims_menu_items=!append line addstudent,1,cmd=reply&job=addstudent\
@@ -30,29 +28,29 @@ to $wims_menu_items
 </center>
 <p>
 !if $levelcnt=0
-  Todavía no se ha instalado ningún nivel educativo.
-  !href cmd=reply&job=addlevel Crear un nivel
-.<sup>
+  $name_first3
+  !href cmd=reply&job=addlevel $wims_name_addlevel
   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
 to $wims_menu_items
-  !href cmd=help&special_parm=structure#level ayuda
+.<sup>
+  !href cmd=help&special_parm=structure#level $wims_name_help
 </sup>
 !else
  $table_header
- <caption>Niveles educativos disponibles<sup>
- !href cmd=help&special_parm=structure#level ayuda
+ <caption>$name_first4<sup>
+ !href cmd=help&special_parm=structure#level $wims_name_help
  </sup><br><small>
- !href cmd=reply&job=addlevel Añadir&nbsp;otro&nbsp;nivel
+ !href cmd=reply&job=addlevel $wims_name_addlevel
  &nbsp; 
- !href cmd=reply&job=backstruct Hacer&nbsp;copia&nbsp;de&nbsp;seguridad&nbsp;de&nbsp;la&nbsp;estructura
-   !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
+ !href cmd=reply&job=backstruct $wims_name_backstruct
+ !set wims_menu_items=!append line addlevel,1,cmd=reply&job=addlevel\
  backstruct,1,cmd=reply&job=backstruct\
 to $wims_menu_items
-</small></caption>
+ </small></caption>
  $table_hdtr
- <th>Código<th>Nombre</th><th>-</th><th>Responsable</th>
- <th><small>Clases</small></th>
- <th><small>Programas</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$name_class</small></th>
+ <th><small>$name_programm</small></th>
  </tr>
  !for i=1 to $levelcnt
    !set l=!line $i of $leveldata
@@ -70,13 +68,13 @@ to $wims_menu_items
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    No disponible
+    $name_nonavailable
    !endif
    </td><td align=center>$c
    </td><td align=center>$p

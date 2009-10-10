@@ -36,6 +36,7 @@
 		Explanations,\
 		Ejercicio,\
 		Hoja,\
+		Cuenta,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -50,7 +51,7 @@
 	wims_name_refresh,wims_name_tosave,\
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
-	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet
+	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
@@ -146,6 +147,7 @@
  !endif
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Sequence
+ !set wims_name_sequences=sequences
 !endif
 
 !if adm/class isin $module
@@ -364,9 +366,9 @@ desactivar el editor HTML \
 attention, les modifications faites ne seront pas sauvées si vous changez cette option en cours de rédaction\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
-!distribute items Apellido,Nombre,Contraseña,Correo electrónico,Identificador de usuario,Repeat the password \
+!distribute items Apellido,Nombre,Contraseña,Correo electrónico,Identificador de usuario,Repita la contraseña,Comentario \
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
-wims_name_Login,wims_name_repeat_pass
+wims_name_Login,wims_name_repeat_pass,wims_name_comment
 
 !distribute line Photo Board\
 Send mail\

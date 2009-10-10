@@ -1,30 +1,29 @@
 
-!set form_OK=Enviar la modificación
-!set form_titlename=Título
-!set form_caption=Propiedades del nivel
+!set form_OK=$wims_name_tosave
+!set form_titlename=$wims_name_title
+!set form_caption=$name_levelproperties
 !set title=$class_description
 !set sup=$class_Supervisor
 !set alevel=$class_level
 !read scripts/levelform.phtml
-!readproc names
 <p>
 !if $classcnt=0
- Este nivel todavía no tiene clases.
- !href cmd=reply&job=addclass Crear una clase
+ $name_level1
+ !href cmd=reply&job=addclass $wims_name_createclass
 .<sup>
- !href cmd=help&special_parm=structure#class ayuda
+ !href cmd=help&special_parm=structure#class $wims_name_help
 </sup>
 !else
  $table_header
- <caption>Clases disponibles<sup>
- !href cmd=help&special_parm=structure#class ayuda
- </sup>en este nivel <small>
- !href cmd=reply&job=addclass Añadir&nbsp;otras&nbsp;clases
+ <caption>$name_level4<sup>
+ !href cmd=help&special_parm=structure#class $wims_name_help
+ </sup> <small>
+ !href cmd=reply&job=addclass $wims_name_addclass
  </small></caption>
  $table_hdtr
- <th>Código<th>Nombre</th><th>-</th><th>Responsable</th>
- <th><small>Curso</small></th>
- <th><small>Participantes</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
+ <th><small>$name_participant</small></th>
  </tr>
  !for i=1 to $classcnt
    !set l=!line $i of $classes
@@ -36,18 +35,18 @@
    <td align=center>
    !href cmd=reply&job=class&class=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delclass&del=$l_ borrar
+    !href cmd=reply&job=delclass&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    No disponible
+    $name_nonavailable
    !endif
    </td><td align=center>$c</td>
    !set c=!recordcnt $classdir1/$l_/.userlist
@@ -59,21 +58,21 @@
 
 <p>
 !if $progcnt=0
- Este nivel todavía no tiene programas educativos.
- !href cmd=reply&job=addprog Crear un programa
+$name_level2
+ !href cmd=reply&job=addprog $wims_name_addprog
 .<sup>
- !href cmd=help&special_parm=structure#program ayuda
+ !href cmd=help&special_parm=structure#program $wims_name_help
  </sup>
 !else
  $table_header
- <caption>Programas educativos disponibles<sup>
- !href cmd=help&special_parm=structure#program ayuda
- </sup>en este nivel <small>
- !href cmd=reply&job=addprog Añadir&nbsp;otros&nbsp;programas
+ <caption>$name_level3<sup>
+ !href cmd=help&special_parm=structure#program $wims_name_help
+ </sup> <small>
+ !href cmd=reply&job=addprog $wims_name_addprog
  </small></caption>
  $table_hdtr
- <th>Código<th>Nombre</th><th>-</th><th>Responsable</th>
- <th><small>Curso</small></th>
+ <th>$name_code<th>$wims_name_name</th><th>-</th><th>$name_supervisor2</th>
+ <th><small>$wims_name_course</small></th>
  </tr>
  !for i=1 to $progcnt
    !set l=!line $i of $programs
@@ -85,18 +84,18 @@
    <td align=center>
    !href cmd=reply&job=prog&prog=$l_ $t_
    </td><td align=center><small>
-    !href cmd=reply&job=delprog&del=$l_ borrar
+    !href cmd=reply&job=delprog&del=$l_ $wims_name_erase
    </small>
    </td><td align=center>
    !if $s_!=$empty
     !if $s_=supervisor
-     $name_supervisor
+     $wims_name_supervisor
     !else
      !default n_=$s_
      !href cmd=reply&job=modteacher&teacher=$s_ $n_
     !endif
    !else
-    No disponible
+    $name_nonavailable
    !endif
    </td><td align=center>$c
  !next i
@@ -104,7 +103,6 @@
 !set wims_menu_items=!append line addclass,1,cmd=reply&job=addclass\
 addprog,1,cmd=reply&job=addprog\
 to $wims_menu_items
-
 !endif
 
 !reset title
