@@ -48,8 +48,13 @@ $sheet_title
  !if $t>0
   <p><b>Answer to exercise $i.</b><ul>
   !for k=1 to $t
-   <li>
-   !line $k of $(ans_$i)
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li value=$k>
+    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
   !next k
   </ul>
  !endif
@@ -57,13 +62,7 @@ $sheet_title
 </div><!--end of wims_solution-->
 
 :noans
-!!<p>
-!!<div class="wims_noprint">
-!!<hr>
-!!!href cmd=reply Again
-!!&nbsp;&nbsp;
-!!!href cmd=reply&job=read Back
-!!</div><!--end of wims_noprint-->
+<p>
 !set wims_menu_items=!append line renew,1,cmd=reply\
 back2,1,cmd=reply&job=read\
 to $wims_menu_items

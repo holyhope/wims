@@ -1,19 +1,14 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
+!read adm/css.phtml
 !header1
 
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
 !read adm/title.phtml 1\
-$wims_classname, $wims_institutionname\
+$wims_classname - $wims_institutionname\
 Hoja de trabajo número $sh<br>$sheet_title
 
-!!<h2>$wims_classname, $wims_institutionname</h2>
-!!<hr><h3 class="wims_sheet_title">Hoja de trabajo número $sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -69,7 +64,7 @@ to $wims_menu_items
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <li><p>$i.
+  <li class="wims_sheet_list"><p>$i. 
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de

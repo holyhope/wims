@@ -44,15 +44,13 @@ $sheet_remark
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
-  <li><p>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
 , $de
-!!  !if $require>0
-!!   <small>$[$got] de $[$require] puntos obtenidos, calidad
-!!   $[$mean]/10.</small>
-!!  !endif
+ </li>
  !next i
  </ul>
+ </div>
  !if $wims_user=supervisor
   !href cmd=resly&job=import Importar
   esta hoja en su clase, o
@@ -61,9 +59,9 @@ $sheet_remark
   <p>
  !endif
 !endif
-!href cmd=reply&job=print Versión imprimible
-.
+
 !set wims_menu_items=!append line printable,1,cmd=reply&job=print\
 to $wims_menu_items
+
 !tail
 
