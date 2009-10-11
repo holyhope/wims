@@ -1,18 +1,18 @@
 
 !if $prelogcnt<1
- No tiene ningún ejercicio que se pueda grabar.
+$name_noexercise
  !exit
 !endif
 
-Pueden grabarse los ejercicios de la hoja de trabajo $logsheet:
+$name_listexercise:
 
 !read tabletheme
 
 <p>$table_header
 $table_hdtr
-<th><small>Número</small></th>
-<th><small>Pasos</small></th>
-<th>Puntuación</th>
+<th><small>$name_number</small></th>
+<th><small>$name_Steps</small></th>
+<th>Score</th>
 <th></th>
 <th>$wims_name_title</th></tr>
 !for i=1 to $prelogcnt
@@ -27,7 +27,7 @@ $table_hdtr
  <td align=center>$c</td>
  <td align=center>$s</td>
  <td><small>
- !href cmd=reply&job=log&logsheet=$logsheet&logexo=$e&checkuser=$wims_user Grabar
+ !href cmd=reply&job=log&logsheet=$logsheet&logexo=$e&checkuser=$wims_user $wims_name_tosave
  </small></td>
  <td>$T_ <small>$D_</small></td>
  </tr>

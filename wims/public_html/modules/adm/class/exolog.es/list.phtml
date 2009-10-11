@@ -1,34 +1,34 @@
+
 !if $exologcnt<1
- No se ha grabado ningún ejercicio de $wims_firstname $wims_lastname.
+ $name_noexercise2 $(names[1]) $(names[2]).
  !exit
 !endif
 
-Estos son los ejercicios grabados de $wims_firstname $wims_lastname.
-Pulse en la fecha para reproducir uno.
-!read colors-class
+$name_click
 
-<p><center><table border=0 cellspacing=2 cellpadding=1>
-<tr bgcolor="$table_bgcolor">
-<th><small>Fecha de la grabación</small></th>
-<th><small>Hoja</small></th>
-<th><small>Ejercicio</small></th>
-<th><small>Pasos</small></th>
-<th><small>Puntuación</small></th>
-<th>Título</th>
+!read tabletheme
+
+<p>$table_header
+$table_hdtr
+<th><small>$wims_name_date</small></th>
+<th><small>$wims_name_Sheet</small></th>
+<th><small>$wims_name_Exercise</small></th>
+<th><small>$name_Step</small></th>
+<th><small>$wims_name_Score</small></th>
+<th>$wims_name_title</th>
 !for i=1 to $exologcnt
  !set l=!line $i of $exolog2
  !set l_=!line $i of $exologs
  !distribute item $l into d_,s_,n_
  !set n_=!translate . to , in $n_
  !distribute item $n_ into S_,E_
- !set s_=!getdef w_module_score in classes/$wims_class/exolog/$checkuser/$l_
+ !set s_=!getdef w_module_score in wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
  !default s_=-
- !set p_=!recordcnt classes/$wims_class/exolog/$checkuser/$l_
- !set V_=!record $E_ of classes/$wims_class/sheets/.sheet$S_
+ !set p_=!recordcnt wimshome/log/classes/$wims_class/exolog/$checkuser/$l_
+ !set V_=!record $E_ of wimshome/log/classes/$wims_class/sheets/.sheet$S_
  !distribute lines $V_ into a,a,a,a,T_,D_
  !if $D_!=$empty
-  !exchange table_color1,table_color2
-  <tr bgcolor="$table_color2"><td align=center>
+  $table_tr<td align=center>
   !href target=wims_check module=$module&job=check&checkuser=$checkuser&logcheck=$l_&checkstep=1 $d_
   </td>
   <td align=center>$S_</td><td align=center>$E_</td>
@@ -41,5 +41,7 @@ Pulse en la fecha para reproducir uno.
   </small></td></tr>
  !endif
 !next i
-</table></center>
+$table_end
 
+!set wims_menu_items=!append line Score,1,module=adm/class/userlist&job=getuser&getuser=$checkuser\
+to $wims_menu_items
