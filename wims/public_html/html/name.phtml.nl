@@ -20,11 +20,11 @@
 		Importeer in uw eigen klas,\
 		Printbare versie,\
 		Opnieuw,\
-		ga naar,\
+		Ga naar,\
 		Vernieuwen,\
 		Opslaan,\
-		ja,\
-		nee,\
+		Ja,\
+		Nee,\
 		Download,\
 		Sturen,\
 		Details,\
@@ -33,9 +33,12 @@
 		Attentie,\
 		Gefeliciteerd,\
 		of,\
-		Explanations,\
-		Exercise,\
+		Uileg,\
+		Oefening,\
 		Werkblad,\
+		Account,\
+		Inloggen,\
+		Cijfers,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -50,12 +53,13 @@
 	wims_name_refresh,wims_name_tosave,\
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
-	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet
+	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
+	wims_name_Score
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
 	Installeer,op uw site,\
-	verberg deze opties,\
+	Verberg deze opties,\
 	Permanente link, embed,\
 	knip en plak, deze link, deze code, of, in een email,\
 	voor, enkel,\
@@ -68,72 +72,45 @@
     wims_name_for,wims_name_only,\
     wims_name_this_config
 
-!distribute items Naam,\
-	Module Informatie,\
-	Adres,\
-	Link voor bookmark,\
-	Omschrijving,\
-	Versie,\
-	Vereiste <br>WIMS versie,\
-	Taal,\
-	Schrijver,\
-	Vertaler,\
-	Dit is een module van,\
-	WWW Interactive Multipurpose Server,\
-	Copyright\
-    into wims_name_name,\
-    wims_name_module_infos,\
-    wims_name_Address,\
-    wims_name_Link_for_bookmark,\
-    wims_name_Description,\
-    wims_name_Version,\
-    wims_name_Required_WIMS_version,\
-    wims_name_Language,\
-    wims_name_Author,\
-    wims_name_Translator,\
-    wims_name_This_is_a_module,\
-    wims_name_WIMS_subtitle,\
-    wims_name_Copyright
-	
 !! **** Module About Names ***
 !distribute items Naam,\
-		Module Informatie,\
-		Hyperlink,\
-		Link voor bookmark,\
-		Omschrijving,\
-		Versie,\
-		Vereist<br>WIMS versie,\
-		Taal,\
-		Auteur,\
-		Vertaler,\
-		Deze module hoort bij de,\
-		WWW Interactive Multipurpose Server,\
-		Copyright,\
-		Keywords,\
-		Translator's email,\
-		Author's email,\
-		Domain,\
-		Type,\
-		Level(s),\
-		Scoring <br><small>(exercise / recreation)</small>,\
-		Support software<br>requirements,\
+	    Module Informatie,\
+	    Adres,\
+	    Link voor bookmark,\
+	    Omschrijving,\
+	    Versie,\
+	    Vereiste <br>WIMS versie,\
+	    Taal,\
+	    Schrijver,\
+	    Vertaler,\
+    	    Dit is een module van,\
+	    WWW Interactive Multipurpose Server,\
+	    Copyright\
+	    Zoektermen,\
+	    Emailadres vertaler,\
+	    Emailadres auteur,\
+	    Onderwerp,\
+	    Soort,\
+	    Niveau(x),\
+	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\ 
+	    Hulp software<br>vereist,\
 	into wims_name_name,\
 	wims_name_module_infos,\
-	wims_name_Address,\
-	wims_name_Link_for_bookmark,\
-	wims_name_Description,\
-	wims_name_Version,\
-	wims_name_Required_WIMS_version,\
-	wims_name_Language,\
-	wims_name_Author,\
-	wims_name_Translator,\
-	wims_name_This_is_a_module,\
-	wims_name_WIMS_subtitle,\
-	wims_name_Copyright,wims_name_Keywords,\
-	wims_name_tr_email,wims_name_auth_email,\
-	wims_name_Domain,wims_name_Type,wims_name_Levels,\
-	wims_name_Scoring,\
-	wims_name_require
+        wims_name_Address,\
+        wims_name_Link_for_bookmark,\
+        wims_name_Description,\
+        wims_name_Version,\
+        wims_name_Required_WIMS_version,\
+        wims_name_Language,\
+        wims_name_Author,\
+        wims_name_Translator,\
+        wims_name_This_is_a_module,\
+        wims_name_WIMS_subtitle,\
+        wims_name_Copyright,wims_name_Keywords,\
+        wims_name_tr_email,wims_name_auth_email,\
+        wims_name_Domain,wims_name_Type,wims_name_Levels,\
+        wims_name_Scoring,\
+        wims_name_require
 
 
 !! **** Class Relative Names ***
@@ -163,15 +140,16 @@
  !set wims_name_you=jij bent <b>$wims_firstname $wims_lastname</b>, en hoort bij
  !if _exam isin $session
   !distribute items Andere opgaven uit deze overhoring,\
-	resterende tijd voor deze overhoring:,\
+	resterende tijd voor deze overhoring&nbsp;:,\
 	zo gauw deze pagina is geladen\
 	into wims_name_back,wims_name_examremain,wims_name_whenloaded
  !endif
  !if _check isin $session
-  !let wims_page_name=Paginas
+  !let wims_page_name=Pagina's
  !endif
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Werkvolgorde
+ !set wims_name_sequences=werkvolgorde
 !endif
 
 !if adm/class isin $module
@@ -179,14 +157,14 @@
 	Studenten \
 	Demonstratie klassen\
 	Inloggen voor docenten\
-	Inloggen voor deelnemers\
+	Inloggen voor studenten\
 	lagere school\
 	middelbare school\
 	universiteit\
 	klassen lijst\
-    Lijst met Klassen of instituten\
+    Lijst met klassen en/of instituten\
     Individuele klassen\
-    Superklas\
+    Groep klassen\
     Instituut\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
@@ -309,7 +287,10 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
    Herstellen\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup
 
-!set wims_name_supervisor=supervisor
+!set wims_name_supervisor=administrator
+!set wims_name_Supervisor=Administrator
+!set wims_name_namesstudent=Student
+!set wims_name_namesteacher=Docent
 !set wims_name_teacher=Docenten accounts
 !set wims_name_addteacher=Nieuwe docent
 !set wims_name_modteacher=Leraar eigenschappen
@@ -318,14 +299,14 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !set wims_name_addstudent=Nieuwe student
 !set wims_name_modstudent=Studenten eigenschappen
 !set wims_name_delstudent=Verwijder een student
+!set wims_name_group=Portaal
+!set wims_name_portal=Portaal
+!set wims_name_level=Niveau
+!set wims_name_class=Klas
+!set wims_name_program=Programma
+!set wims_name_course=Cursus
+!set wims_name_icourse=Interklas cursus
 !set wims_name_backstruct=Backup van de gehele structuur
-!set wims_name_group=portaal
-!set wims_name_portal=portaal
-!set wims_name_level=niveau
-!set wims_name_class=klas
-!set wims_name_program=programma
-!set wims_name_course=cursus
-!set wims_name_icourse=interklas cursus
 
 !if config isin $module
  !distribute line Hoofdpagina klassen onderhoud\
@@ -334,13 +315,14 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
+
 !set wims_name_backgateway=Beheer van
 
 !distribute line Toevoegen een kursus\
 Toevoegen een interklas kursus\
 Toevoegen een klas\
 Toevoegen een programma\
-Toevoegen een niveau\
+Toevoegen een studieniveau\
 Inloggen beheerder \
 Verander van zone\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
@@ -389,10 +371,10 @@ deactiveer de html-editor\
 Let op: veranderingen worden niet opgeslagen als deze optie tijdens het schrijven wordt veranderd\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
-!distribute items Achternaam,Voornaam,Password,email,Loginnaam,Repeat the password\
+!distribute items Achternaam,Voornaam,Wachtwoord,email,Loginnaam,Herhaal het wachtwoord\
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
 wims_name_Login,wims_name_repeat_pass
 
-!distribute line Photo Board\
-Send mail\
+!distribute line Foto album\
+Verstuur email\
 into wims_name_photoboard,wims_name_sendmail
