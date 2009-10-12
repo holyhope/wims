@@ -1,8 +1,5 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
+!read adm/css.phtml
 !header1
 
 !if $sheet_docpage!=$empty
@@ -10,10 +7,9 @@
 !endif
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
-Werkblad #$sh<br>$sheet_title
+Werkblad nummer $sh<br>$sheet_title
 
-!!<h2>$wims_classname, $wims_institutionname</h2>
-!!<hr><h3 class="wims_sheet_title">Werkblad #$sh<br>$sheet_title</h3>
+
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
@@ -22,7 +18,9 @@ Werkblad #$sh<br>$sheet_title
  !set expyear=!char 1 to 4 of $sheet_expiration
  !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
  !set expmon=!item $expmon of $months
- Je kunt aan dit werkblad werken <b>tot</b> $expday $expmon $expyear.
+ Je kunt aan dit werkblad werken <b>tot</b> 
+ $expday $expmon $expyear.
+ <p>
 !endif
 
 !if $sheet_active=2
@@ -34,7 +32,8 @@ Werkblad #$sh<br>$sheet_title
 
 !if $n=0
  !if $sheet_active=$empty
- Je hebt -nog- niet de rechten met dit werkblad te werken ; vraag na bij je docent.
+ Je mag nog niet met dit werkblad te werken ; 
+ vraag na bij je docent.
  !else
  Dit werkblad is leeg. Er is dus voorlopig voor jou hier niks te doen ;-)<br> 
  Mogelijk een foutje van je docent ?
@@ -60,6 +59,7 @@ to $wims_menu_items
  !else
   geloten voor jou.)
  !endif
+ <div class="wims_sheet"> 
  <p><ul>
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
@@ -68,7 +68,7 @@ to $wims_menu_items
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <li><p>$i.
+  <li class="wims_sheet_list"><p>$i.
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
@@ -83,33 +83,30 @@ to $wims_menu_items
    !endif
   !endif
   !if $dep!=$empty
-   <small>je moet dit verbeteren; <br>
+   <small>je moet
+   je cijfers voor 
    !if , isin $dep
-    je cijfers voor deze oefeningen $dep
+    deze oefeningen $dep
    !else
-    je cijfer voor deze oefening $dep
+    deze oefening $dep
    !endif
+    verbeteren voordat je verder mag.
    </small>
   !endif
+  </li>
  !next i
  </ul>
+ </div>
 !endif
 
-:contentend
 !if $wims_user=supervisor
-<p>
-!!!href module=adm/class/sheet&sheet=$sh Werkblad aanmaak pagina
-!! (voor docenten ).&nbsp;
 !set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
 to $wims_menu_items
 !endif
 !if $n>0
 !set wims_menu_items=!append line printable,1,cmd=reply&job=print\
 to $wims_menu_items
-!!!href cmd=reply&job=print Printbare versie.
-!if $exolog!=$empty
-!! !href module=adm/class/exolog&job=llist&logsheet=$sh Registreer de details van deze oefening
-!!.
+ !if $exolog!=$empty
   !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
 to $wims_menu_items 
  !endif

@@ -47,6 +47,11 @@ cdir=$wims_home/log/classes/$wims_class
   mkdir -p getfile\
   rm -f getfile/exolog\
   ln -s $wims_home/log/classes/$wims_class/exolog/$checkuser getfile/exolog
+  userdir=!item -1 of $wims_superclass
+  !default userdir=$wims_class
+  userdir=log/classes/$userdir/.users
+  !set names=!getdef user_firstname,user_lastname in wimshome/$userdir/$checkuser
+
 !endif
 
 !if $job=llist
@@ -58,5 +63,4 @@ cdir=$wims_home/log/classes/$wims_class
  prelog3=!translate internal . to , in $prelogs
  prelogcnt=!itemcnt $prelog2
 !endif
-
 

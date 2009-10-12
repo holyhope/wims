@@ -1,18 +1,18 @@
 
 !if $prelogcnt<1
-U heeft nog geen oefeningen.
+$name_noexercise
  !exit
 !endif
 
-Oefeningen van werkblad $logsheet die kunnen worden geregistreerd:
+$name_listexercise:
 
 !read tabletheme
 
 <p>$table_header
 $table_hdtr
-<th><small>Aantal</small></th>
-<th><small>Stappen</small></th>
-<th>Resultaat</th>
+<th><small>$name_number</small></th>
+<th><small>$name_Steps</small></th>
+<th>Score</th>
 <th></th>
 <th>$wims_name_title</th></tr>
 !for i=1 to $prelogcnt
@@ -23,12 +23,11 @@ $table_hdtr
  !default s=-
  !set V_=!record $e of wimshome/log/classes/$wims_class/sheets/.sheet$logsheet
  !distribute lines $V_ into a,a,a,a,T_,D_
- 
  $table_tr<td align=center>$e</td>
  <td align=center>$c</td>
  <td align=center>$s</td>
  <td><small>
- !href cmd=reply&job=log&logsheet=$logsheet&logexo=$e&checkuser=$wims_user Opslaan
+ !href cmd=reply&job=log&logsheet=$logsheet&logexo=$e&checkuser=$wims_user $wims_name_tosave
  </small></td>
  <td>$T_ <small>$D_</small></td>
  </tr>
