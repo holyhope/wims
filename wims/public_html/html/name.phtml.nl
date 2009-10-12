@@ -92,7 +92,7 @@
 	    Onderwerp,\
 	    Soort,\
 	    Niveau(x),\
-	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\ 
+	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
 	    Hulp software<br>vereist,\
 	into wims_name_name,\
 	wims_name_module_infos,\
