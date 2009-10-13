@@ -15,7 +15,6 @@ Vous devez
 !href module=adm/class/regclass créer
  votre propre classe pour avoir le point de vue d'un enseignant qui est bien plus sophistiqué.
 
-!let classification=Ecole,Collège,Lycée,Université,Autre
 !let nb=!itemcnt $classification
 !bound exampletype between 1 and $nb default 3
 <p>
@@ -34,9 +33,8 @@ Vous devez
  </tr>
  <tr><td colspan=$nb>
  $table_header
-  $table_hdtr<th>Nom de classe</th>
-!!  <th>Niveau</th>
-  <th>type de connexion</th><th>S'inscrire</th></tr>
+  $table_hdtr<th>$wims_name_name</th>
+  <th>$name_connexion</th><th>$name_register</th></tr>
   !for i=1 to $clcnt
    !set l=!line $i of $classes
    !distribute items $l into code,expire,inst,cl
@@ -49,14 +47,13 @@ Vous devez
    !if $exampletype=$clsty or ($clsty=$empty and $exampletype=$nb)
     $table_tr
      <td align=center>$cl</td>
-!!     <td align=center>$(n_$l_)<br>année $y_</td>
      <td align=center>
-      !href module=home&user=anonymous,$code,anonymous anonyme
+      !href module=home&user=anonymous,$code,anonymous $name_anonymous
       &nbsp;
-      !href module=$module&type=authparticipant&class=$code inscrit
+      !href module=$module&type=authparticipant&class=$code $name_registered
      </td>
      <td align=center>
-      !href module=adm/class/reguser&class=$code S'inscrire
+      !href module=adm/class/reguser&class=$code $name_register
      </td>
     </tr>
    !endif
@@ -65,12 +62,12 @@ Vous devez
 </tbody></table></center><p>
  
 <ul>
-<li>Cliquez sur <tt class="d">anonyme</tt> pour entrer dans la classe en tant que visiteur anonyme (participant).
-<li><p>Cliquez sur <tt class="d">inscrit</tt> pour entrer dans la classe avec un nom de login
+<li>Cliquez sur <tt class="d">$name_anonymous</tt> pour entrer dans la classe en tant que visiteur anonyme (participant).
+<li><p>Cliquez sur <tt class="d">$name_registered</tt> pour entrer dans la classe avec un nom de login
 et mot de passe personnel. (Vous devez être inscrit dans la classe auparavant,
 et votre inscription dans une classe d'exemple peut être régulièrement
 effacée par le serveur).
-<li><p>Cliquez sur <tt class="d">S'inscrire</tt> pour vous inscrire dans la classe.
+<li><p>Cliquez sur <tt class="d">$name_register</tt> pour vous inscrire dans la classe.
 </ul>
 
 Vous trouverez aussi

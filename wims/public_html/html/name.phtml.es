@@ -37,6 +37,8 @@
 		Ejercicio,\
 		Hoja,\
 		Cuenta,\
+		Enviar,\
+		Notes,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -51,7 +53,8 @@
 	wims_name_refresh,wims_name_tosave,\
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
-	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account
+	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
+	wims_name_Score
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
@@ -373,3 +376,6 @@ wims_name_Login,wims_name_repeat_pass,wims_name_comment
 !distribute line Photo Board\
 Send mail\
 into wims_name_photoboard,wims_name_sendmail
+
+!distribute items Profesor,Administrador,\
+into wims_name_nameteacher,wims_name_Supervisor
