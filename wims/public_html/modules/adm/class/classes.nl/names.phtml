@@ -32,9 +32,35 @@
    !set sousclasses_else=een klas of een instituut
  !endif
 
-!set CL_Name	=Niveau,Klas,Programma,Cursus,Cursus,Portaal,Test Zone
+!set CL_Name=Niveau,Klas,Programma,Cursus,Cursus,Portaal,Test Zone
 !set Name_program=Programma
 !set name_program=programma
- 
-!distribute items Inloggen,Aanmelden\
-into name_enter,name_register
+!set name_portalandgroup=Instituten en groepen klassen
+!set name_independantclass=Onafhankelijke klassen
+
+!distribute items Aanmelden,Anoniem,openbaar,besloten,Jaar,\
+Nieuwe deelnemer,aanmelden,Type verbinding\
+into name_register,name_anonymous,name_open,name_protected,name_year,\
+name_new_participant,name_registered,name_connexion
+
+!distribute line U heeft geen account in een andere klas.\
+Zoek mijn klassen\
+Geen andere klassen aanwezig.\
+Geen klas gevonden.\
+U kunt direct overstappen naar&nbsp;\
+into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
+
+!let classification=Lagere school,Middelbare school,Lyceum,Universiteit,Anders
+
+!set name_text1=Kies uit de tabel uw klas\
+<p>Nog niet aangemeld? klik dan op <tt>$name_register</tt>\
+ (als de status heet <tt>$name_protected</tt> , is er een wachtwoord vereist voor de aanmeldings procedure.\
+ Dit wachtwoord is verkrijgbaar bij de docent of administrator.)\
+<p>Klik op <tt>$wims_name_Enter</tt> om in te loggen. 
+
+!set name_text2=Om over te stappen naar  $name_level_else $sousclasses_else, kies \
+uit de onderstaande tabel.
+!set name_text3=Of kies $name_level_else $sousclasses_else uit de onderstaande tabel.
+
+!set name_language=Er is geen nederlandstalige klas aanwezig op deze server. Wilt u een klas in een andere taal ?
+!set name_language2=Op deze server zijn geen enkele nederlandstalige klassen  geinstalleerd.

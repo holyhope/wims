@@ -165,7 +165,7 @@
     Lijst met klassen en/of instituten\
     Individuele klassen\
     Groep klassen\
-    Instituut\
+    Portaal van het Instituut\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
@@ -318,8 +318,8 @@ into wims_name_config, wims_name_struct,wims_name_save
 
 !set wims_name_backgateway=Beheer van
 
-!distribute line Toevoegen een kursus\
-Toevoegen een interklas kursus\
+!distribute line Toevoegen een cursus\
+Toevoegen een interklas cursus\
 Toevoegen een klas\
 Toevoegen een programma\
 Toevoegen een studieniveau\
