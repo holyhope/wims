@@ -2,42 +2,60 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  presso <b><font color=green>$wims_institutionname</font></b>
  
+
 !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
 
 !set title=Configurazione e gestione
 !if $job=arch
  !set title=Backup e ripristino
+ !goto commun
 !endif
 
 !if $job=clean
  !set title=Manutenzione del corso
+ !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Corsi vicini
+ !goto commun
 !endif
 
 !if $job=connect
  !set title=Connessioni ad altri server/piattaforme
+ !goto commun
 !endif
 
+!if $job=access
+ !set title=Configurazione dell'accesso alle risorse
+ !goto commun
+!endif
+
+!if $job2=addshare
+ !set title=Condividere le risorse del corso
+ !goto commun
+!endif
+
+
+:commun
 !distribute line Autenticazione\
 Opzioni\
 Accesso agli strumenti\
 Parametri di default per esercizi OEF\
 Corsi vicini\
 Opzioni di sicurezza\
-Manutenzione\
+Pulizia selettiva\
 Actualiser\
 Altri server\
-Password del corso\
+Modifica password\
 Zones dépendantes\
 Aspetto\
 Registrazione dei voti\
+Indirizzo di una piattaforma esterna\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score
+wims_name_config_score,wims_name_config_ent
 
 !distribute items zone,iscritti,esercizi,documenti,docenti\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers

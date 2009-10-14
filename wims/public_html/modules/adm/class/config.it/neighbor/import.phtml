@@ -12,7 +12,7 @@ Il corso
 <em><font color=blue>$nei_institution</font></em>
 !if $newcnt1+$newcnt2<1
  non ha risorse importabili.
- !href cmd=reply&job2=def Torna
+ !href cmd=reply&job2=def $wims_name_back2
 .
  !exit
 !endif
@@ -26,7 +26,7 @@ he le seguente risorse importabili.
  <caption>Ressources d'enseignement</caption>
  $table_hdtr<th>$wims_name_Type<th>$wims_name_title<th><small>$wims_name_name</small>
  <th><small>Contenuto</small>
- <th>Stesso titolo nel vostro corso<th>Importa
+ <th>Stesso titolo nel vostro corso<th>$wims_name_import
  !for i=1 to $newcnt1
   !set l=!line $i of $newrec
   !set ll=!words2items $l
@@ -58,12 +58,12 @@ he le seguente risorse importabili.
 
 !if $newcnt2>0
  <p>$table_header
- <caption>Account degli iscritti
+ <caption>$wims_name_student
  !if $newcnt2>2
   !href cmd=reply&job2=import2&import=user,-all- [import&nbsp;everybody]
  !endif
  </caption>
- $table_hdtr<th>login<th>Cognome<th>Nome<th>Importa
+ $table_hdtr<th>login<th>$wims_name_lastname<th>$wims_name_firstname<th>$wims_name_import
  !for i=1 to $newcnt2
   $table_tr<td>$(ulogin$i)
   <td>$(uname2$i)<td>$(uname1$i)<td align=center>
