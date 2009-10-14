@@ -1,3 +1,5 @@
+
+!!!####language independant
 !read search.phtml
 !if $overflow=yes
  !exit
@@ -5,11 +7,10 @@
 
 !if $clcnt+$sccnt+$directcnt<1
  !if $keyword=$empty
- 本站尚无中文版虚拟班. 可能你想找一个
- !href module=home&list=0 其他文版
-的班级?
+  $name_language
+  !href module=home&list=0 $wims_name_search
  !else
-  没有班级与你的关键词对应.
+  $name_nofound
  !endif
  !exit
 !endif
@@ -20,21 +21,22 @@
   !exit
  !endif
 !else
-请选一个班级进入.
+$name_text1
+
 !endif
 
 !if $sccnt>0
  <p>$table_header
- <caption>学校与班级组</caption>
- $table_hdtr
- <th>班名<th>教师<th>状态<th>注册
-!for i=1 to $sccnt
- !set l=!line $i of $sclasses
- !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+ <caption>$name_portalandgroup</caption>
+ $table_hdtr$
+ <th>$wims_name_name<th colspan=2>$wims_name_namesstudent</th><th>$wims_name_Supervisor</th><th>$wims_name_Statut</th>
+ !for i=1 to $sccnt
+  !set l=!line $i of $sclasses
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
    !set show=$inst<br>$cl
-  !else
-   !set show=$cl
+  !else 
+   show=$inst
   !endif
   !set supv=!item 9 of $l
   !if $supv=$empty
@@ -43,42 +45,49 @@
    !set supv=$class_supervisor
    !set pswd=$class_password
   !endif
-
- $table_tr<td align=center>
- !href module=$module&type=authparticipant&class=$code $show
- </td><td align=center>
+  
+  $table_tr<td align=center>
+  !!!href module=$module&type=authparticipant&class=$code 
+  $show
+  </td> <td align=center>
+  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+  </td> <td align=center>
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
+  </td> <td align=center>
   $supv
   </td> <td align=center>
   !if $pswd=$empty
-  开放的
- !else
-  保护的
- !endif
- </td><td align=center>
-  !href module=adm/class/reguser&class=$code&subclass=yes 注册
- </td>
-!next i
-$table_end <p>
+   $name_open
+  !else
+   $name_protected
+  !endif
+ !next i
+ $table_end <p>
+!endif
 
 !if $clcnt>0
  <p>$table_header
  !if $superclass=$empty
-  <caption>独立班级</caption>
-  $table_hdtr<th>班级名<th>教师<th>程度<th>状态<th>注册
+  <caption>$name_independantclass</caption>
+  $table_hdtr
+  <th>$wims_name_name</th><th colspan=2>$wims_name_namestudent</th>
+  <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
  !else
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
     !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
    !endif
-   <caption>$Name_levels in $inst 
+   <caption>$Name_levels ($inst)
    !if $splevel>1
-    !href cmd=reply&type=$type&superclass2=$sparent 向上
+    !href cmd=reply&type=$type&superclass2=$sparent $name_up
    !endif
    </caption>
-   $table_hdtr<th>班级名<th>教师<th>程度<th>状态<th>注册
+   $table_hdtr
+   <th>$wims_name_name</th><th colspan=2>$wims_name_namestudent</th>
+   <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
    !if $superclass!=$empty and $stype=4
-    <th>More
+    <th>+</th>
    !endif
  !endif
  !for i=1 to $clcnt
@@ -100,27 +109,29 @@ $table_end <p>
    !set show=$cl
   !endif
   $table_tr<td align=center>
-  !href module=$module&type=authparticipant&class=$code $show
-  </td><td align=center>
-  $supv
-  </td><td align=center>$(n_$l_)<br>$y_ 年级</td>
-  <td align=center>
-  !if $pswd=$empty
-   开放的
+    $show
+  </td><td align=center> 
+  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+  </td> <td align=center> 
+  !if $splevel=$empty or $splevel=2
+   !href module=adm/class/reguser&class=$code $name_register
   !else
-   保护的
+   <font color=grey>$name_register</font>
   !endif
   </td><td align=center>
-  !if $splevel=$empty or $splevel=2
-   !href module=adm/class/reguser?class=$code 注册
+  $supv
+  </td><td align=center>$(n_$l_)<br>$name_year $y_</td>
+  <td align=center>
+  !if $pswd=$empty
+   $name_open
   !else
-   <font color=grey>注册</font>
+   $name_protected
   !endif
   </td>
    !if $superclass!=$empty and $stype=4
     <td>
     !if $ty!=1
-     !href cmd=reply&type=$type&superclass2=$code 分班
+     !href cmd=reply&type=$type&superclass2=$code $sousclasses
     !else
     -
     !endif
@@ -128,11 +139,5 @@ $table_end <p>
  !next i
  $table_end <p>
 !endif
-
-在班名上单击以进入该班 (如果你是这个班级的注册参加者).
-<p>
-在 `注册' 上单击以在该班注册 (在保护班级注册需要一个班级密码, 该
-密码应当在你的教师那里得到).
-
 
 

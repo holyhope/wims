@@ -378,3 +378,7 @@ wims_name_Login,wims_name_repeat_pass
 !distribute line Foto album\
 Verstuur email\
 into wims_name_photoboard,wims_name_sendmail
+
+!distribute items Teacher,Administrator,Student\
+into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
+

@@ -1,9 +1,9 @@
 
 !read search.phtml
 !if $clcnt+$sccnt<1 and $keyword!=$empty
- Keine Klasse entspricht Ihrer Suche. <p>
+ $name_nofound
+ <p>
 !endif
-
 !if $wims_user!=$empty
  !read direct.phtml
  !if $wims_user!=supervisor and $supervisable!=yes
@@ -43,12 +43,13 @@
  einschreiben möchten. 
  <br> Eine Einschreibung ist hier auf Lehrpersonal beschränkt.
  !endif
+ !!!!####language independant
  !if $sccnt>0
   <p>
   $table_header
-  <caption>Bildungsstrukturen und Bildungseinheiten</caption>
-  $table_hdtr<th>Name</th> <th colspan=2>Lehrer/Dozent</th>
-  <th colspan=2>Administrator</th> </tr>
+  <caption>$name_portalandgroup</caption>
+  $table_hdtr<th>$wims_name_name</th> <th colspan=2>$wims_name_nameteacher</th>
+  <th colspan=2>$wims_name_Supervisor</th> </tr>
   !for i=1 to $sccnt
    !set l=!line $i of $sclasses
    !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
@@ -60,38 +61,41 @@
    $in<br>$cl
    </td>
    <td align=center>
-   !href module=$module&type=authparticipant&class=$code $name_enter
+   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
    </td> <td align=center>
    !href module=adm/class/reguser&class=$code $name_register
    </td>
    <td align=center>$supv</td>
    <td align=center>
-   !href module=$module&type=authsupervisor&class=$code $name_enter
+   !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
   </td>
   !next i  
   $table_end
  !endif
  !if $clcnt>0 and $s_prog!=1
   <p>
-  $table_header 
+  $table_header
   !if $superclass=$empty
-   <caption>Unabhängige Klassen</caption>
-   $table_hdtr<th>Nom</th><th colspan=2>Lehrer/Dozent-Administrator</th>
+   <caption>$name_independantclass</caption>
+   $table_hdtr<th>$wims_name_name</th><th colspan=2>$wims_name_nameteacher / $wims_name_Supervisor</th>
   !else
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
     !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
    !endif
-    <caption>$Name_levels in $inst
+   !default Name_level=$(CL_Name[2])
+    <caption>$Name_level / $inst
+    !if $class_type>2
     <small>
     !href cmd=help&special_parm=$module_language/structure [$wims_name_help]
     </small>
+    !endif
     !if $splevel>1
-     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 Up
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
     !endif
     </caption>
-    $table_hdtr<th>$Name_level</th><th>Lehrer/Dozent</th>
+    $table_hdtr<th>$Name_level</th><th>$wims_name_nameteacher</th>
     !if $superclass!=$empty and $stype=4
      <th>+</th>
      !if $ty!=1 and $splevel =1
@@ -130,7 +134,7 @@
      !endif
      !if $superclass=$empty
       <td align=center>
-      !href module=$module&type=authsupervisor&class=$code $name_enter
+      !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
       </td>
      !endif   
     !next i
@@ -144,12 +148,12 @@
     !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
    !endif
    $table_header
-    <caption>$Name_program in $inst
+    <caption>$Name_program ($inst)
     !if $splevel>1
-     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 Up
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
     !endif
     </caption>
-    $table_hdtr<th>$Name_level</th><th>Lehrer/Dozent</th><th>+</th>
+    $table_hdtr<th>$wims_name_level</th><th>$wims_name_nameteacher</th><th>+</th>
     !for i=1 to $clcnt_pr
      !set l=!line $i of $classes_pr
      !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
@@ -174,11 +178,11 @@
   !endif
 !else
  !if $class_type=$empty and $superclass=$empty
-  (Diese Website enthält keine Klasse in deutscher Sprache.)
- !else
+  ($name_language2)
    !if $clcnt=0
-    (Keine andere Klasse verfügbar.)
+    ($name_noavailable)
    !endif
  !endif
 !endif
 <p>
+

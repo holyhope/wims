@@ -2,14 +2,16 @@
  !exit
 !endif
 
-listlim=250
-wims_module_log=$type
+listlim=60
+wims_prefix=class user tmp
+wims_module_log=$type $keyword
 wims_helper=chapter=3
 wims_form_method=post
 wims_ref_otherlangs=yes
 !default class_bgcolor=$wims_bgcolor
 !default class_bgimg=$wims_bgimg
 !default class_css=$wims_css
+
 superclass=!text remove . in $superclass
 !if $wims_superclass!=$empty
  superclass=$wims_superclass
@@ -23,11 +25,17 @@ superclass=!text remove . in $superclass
 !endif
 !if $superclass=$empty
  indf=wimshome/log/classes/.index
+ limited=yes
 !else
  indf=wimshome/log/classes/$superclass/.subclasses
+ keyword=
 !endif
+keyword=!items2words $keyword
+keyword=!trim $keyword
+kw=!words2items $keyword
+kw=!deaccent $kw
+kw=!tolower $kw
 ccnt=!recordcnt $indf
-ccnt=$[min($ccnt,$listlim)]
 !if $wims_class!=$empty
  !read var.direct
  !if $error!=$empty
@@ -86,17 +94,24 @@ lacnt=0
     !if $splevel=2
      classes1=!record 0 of wimshome/log/classes/$superclass2/classes
      classes2=!record 0 of wimshome/log/classes/$superclass2/programs
-     classes1=!append line $classes2 to $classes1
+     !!classes1=!append line $classes2 to $classes1
     !endif
     !if $splevel=3
      classes1=!record 0 of wimshome/log/classes/$superclass2/courses
     !endif
     clcnt=!linecnt $classes1
+    clcnt_pr=!linecnt $classes2
     classes=
+    classes_pr=
     !for i=1 to $clcnt
      l=!line $i of $classes1
      !distribute items $l into code,Sup,name,sup
      classes=!append line $wims_superclass/$code,,,$name to $classes
+    !next i
+    !for i=1 to $clcnt_pr
+     l=!line $i of $classes2
+     !distribute items $l into code,Sup,name,sup
+     classes_pr=!append line $wims_superclass/$code,,,$name to $classes_pr
     !next i
     !exit
    !endif
@@ -105,9 +120,19 @@ lacnt=0
  !for i=1 to $ccnt
   l=!record $i of $indf
   !distribute items $l into code,expire,inst,cl,la,ty
+  l1=!deaccent $l
+  l1=!tolower $l1
   c1=!text extract 0123456789 in $code
+  k=yes
+  !for w in $kw
+   !if $w notin $l1
+    k=no
+    !break
+   !endif
+  !next w
   !if (/ isin $code or $c1>9999) and $la=$module_language and \
-   ($code!=$wims_class or ($wims_user!=supervisor and $type=supervisor))
+   ($code!=$wims_class or ($wims_user!=supervisor and $type=supervisor)) and \
+   $k = yes
     !if $ty isin 24
       sclasses=!append line $l to $sclasses
       !advance sccnt
@@ -116,8 +141,12 @@ lacnt=0
       !advance clcnt
     !endif
   !endif
+  !if $limited = yes and $clcnt+$sccnt > $listlim
+   overflow=yes
+   !break
+  !endif
  !next i
- !if $wims_user!=$empty and $wims_supertype iswordof 24
+ !if $wims_user!=$empty and $wims_supertype iswordof 2 4
   sccnt=0
  !endif
 !endif

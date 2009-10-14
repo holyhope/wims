@@ -28,14 +28,16 @@ to $wims_menu_items
   !endif
  !next t
 !endif
-!if $wims_user=$empty
+!if $wims_user=$empty and $type=supervisor
  !set wims_menu_items=!append line ,0,\
  classcreate, 1,module=adm/class/regclass\
 to $wims_menu_items
 !endif
 
  !if $wims_theme_version=0 or $wims_theme_version=
-  !href target=wims_help module=help/main&chapter=3 Erklärungen
+ <center>
+  !href target=wims_help module=help/main&chapter=3 $wims_name_Explanations
+ </center>
  !endif
 !endif
 

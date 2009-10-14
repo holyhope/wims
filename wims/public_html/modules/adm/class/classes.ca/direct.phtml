@@ -1,30 +1,52 @@
 
 !if $directcnt>0
- Pots canviar directament a:<ul>
- !for cl in $directlist
+!for i_=1 to $directcnt
+  !set cl=!word 1 of $(directlist[$i_])
+   !if /0/ notin $(cl)/
+    !set type_=!defof class_typename in wimshome/log/classes/$cl/.def
+    !set direct$type_=!append item $(directlist[$i_]) to $(direct$type_)
+  !else
+   !set directtest=!append item $(directlist[$i_]) to $directtest
+  !endif
+!next
+
+$name_direct:
+ <table class="wims_classes_direct">
+ !for ty in portal,level,class,course,program,test
+  !set nstyle=wims_classes_direct_$ty
+  !set ntype_=$ty
+  !set ntype_ = !replace internal program by $(CL_Name[3]) in $ntype_
+  !set ntype_ = !replace internal level by $(CL_Name[1])  in $ntype_
+  !set ntype_ = !replace internal class by $(CL_Name[2])  in $ntype_
+  !set ntype_ = !replace internal course by $(CL_Name[4]) in $ntype_
+  !set ntype_ = !replace internal portal by $(CL_Name[6]) in $ntype_
+  !set ntype_ = !replace internal group by $(CL_Name[6]) in $ntype_
+  !set ntype_ = !replace internal test by $(CL_Name[7]) in $ntype_
+ !for cl in $(direct$ty)
   !distribute words $cl into c_,u_
   !set n_=!defof class_institution, class_description in\
 	wimshome/log/classes/$c_/.def
-  <li>
   !if $u_=supervisor
    !set t_=supervisor
   !else
    !set t_=$type
   !endif
+  <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td><td class="wims_classes_direct_name">
   !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
-  (<tt>$u_</tt>)
+  </td><td><tt>$u_</tt></td>
+  </tr>
  !next cl
- </ul>
+!next ty
+ </table>
  <p><hr> <p>
  !if $wims_user=supervisor
-  O triar el nom $name_level_else $sousclasses_else a la taula següent.
+  $name_text3
  !endif
 !else
  !if $wims_user=supervisor
-  Per anar a una altra $name_level_else $sousclasses_else, tria el seu nom a
- la taula següent.
+ $name_text2
  !else
-  No tens compte en altres classes.
+ $name_noaccount
  !endif
 !endif
 
