@@ -1,26 +1,21 @@
+
 !if $exologcnt<1
- There is no registered exercise by $wims_firstname $wims_lastname.
+ $name_noexercise2 $(names[1]) $(names[2]).
  !exit
 !endif
 
-Questi sono gli esercizi svolti da 
-  !if $wims_user=supervisor
-    $checkuser
-  !else
-    $wims_firstname $wims_lastname 
-  !endif
-la cui risoluzione è stata salvata.
-Clicca sulla data di salvataggio per esaminarli.
+$name_click
+
 !read tabletheme
 
 <p>$table_header
 $table_hdtr
-<th><small>Data di salvataggio</small></th>
-<th><small>Test</small></th>
-<th><small>Esercizio</small></th>
-<th><small>Passaggi</small></th>
-<th><small>Punteggio</small></th>
-<th>Titolo esercizio</th>
+<th><small>$wims_name_date</small></th>
+<th><small>$wims_name_Sheet</small></th>
+<th><small>$wims_name_Exercise</small></th>
+<th><small>$name_Step</small></th>
+<th><small>$wims_name_Score</small></th>
+<th>$wims_name_title</th>
 !for i=1 to $exologcnt
  !set l=!line $i of $exolog2
  !set l_=!line $i of $exologs
@@ -48,3 +43,5 @@ $table_hdtr
 !next i
 $table_end
 
+!set wims_menu_items=!append line Score,1,module=adm/class/userlist&job=getuser&getuser=$checkuser\
+to $wims_menu_items
