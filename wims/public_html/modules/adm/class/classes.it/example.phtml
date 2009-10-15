@@ -17,7 +17,6 @@ Gli esempi mostrano come un corso interattivo virtuale appare agli studenti.
  il proprio corso interattivo e accedere al men&ugrave; docenti
 ricco di molte funzioni pi&ugrave; sofisticate.
 
-!let classification=Scuola,College,Liceo,Università,Altro
 !let nb=!itemcnt $classification
 !bound exampletype between 1 and $nb default 3
 <p>
@@ -36,9 +35,8 @@ ricco di molte funzioni pi&ugrave; sofisticate.
  </tr>
  <tr><td colspan=$nb>
  $table_header
-  $table_hdtr<th>Nome del corso</th>
-!!  <th>Livello</th>
-<th>tipo di accesso</th><th>Registrazione</th></tr>
+  $table_hdtr<th>$wims_name_name</th>
+  <th>$name_connexion</th><th>$name_register</th></tr>
 !for i=1 to $clcnt
  !set l=!line $i of $classes
  !distribute items $l into code,expire,inst,cl
@@ -51,14 +49,13 @@ ricco di molte funzioni pi&ugrave; sofisticate.
    !if $exampletype=$clsty or ($clsty=$empty and $exampletype=$nb)
     $table_tr
      <td align=center>$cl</td>
-!!     <td align=center>$(n_$l_)<br>anno $y_</td>
  <td align=center>
- !href module=home&user=anonymous,$code,anonymous anonimo
+      !href module=home&user=anonymous,$code,anonymous $name_anonymous
  &nbsp;
- !href module=$module&type=authparticipant&class=$code iscritto
+      !href module=$module&type=authparticipant&class=$code $name_registered
  </td>
      <td align=center>
-      !href module=adm/class/reguser&class=$code Registrazione
+      !href module=adm/class/reguser&class=$code $name_register
      </td>
     </tr>
    !endif
@@ -67,17 +64,17 @@ ricco di molte funzioni pi&ugrave; sofisticate.
 </tbody></table></center><p>
  
 <ul>
-<li>Selezionare <tt class="d">anonimo</tt> per accedere al corso senza iscrizione
+<li>Selezionare <tt class="d">$name_anonymous</tt> per accedere al corso senza iscrizione
 (come studente non iscritto).
 
-<li><p>Selezionare <tt class="d">iscritto</tt> per accedere al corso come utente
+<li><p>Selezionare <tt class="d">$name_registered</tt> per accedere al corso come utente
 registrato con proprio login e password. (Dovete aver gi&agrave;
 provveduto alla registrazione.)(Se la registrazione fosse stata
 fatta molto tempo fa, potrebbe essere stata cancellata: questi corsi
 sono solo a titolo di esempio e le registrazioni delle attività
 degli utenti non vengono conservate.)
 
-<li><p>Selezionare <tt class="d">Registrazione</tt> per iscriversi al corso interattivo.
+<li><p>Selezionare <tt class="d">$name_register</tt> per iscriversi al corso interattivo.
 </ul>
 
 Sono disponibili

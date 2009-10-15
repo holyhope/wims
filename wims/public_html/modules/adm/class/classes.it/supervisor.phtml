@@ -1,9 +1,9 @@
 
 !read search.phtml
 !if $clcnt+$sccnt<1 and $keyword!=$empty
- Non ci sono corsi corrispondenti alla ricerca. <p>
+ $name_nofound
+ <p>
 !endif
-
 !if $wims_user!=$empty
  !read direct.phtml
  !if $wims_user!=supervisor and $supervisable!=yes
@@ -36,12 +36,13 @@
 se vi volete registrare come docente in un gruppo di corsi coordinati.<br>
 Questa registrazione è riservata ai docenti.
  !endif
+ !!!!####language independant
  !if $sccnt>0
   <p>
   $table_header
-  <caption>Sedi e corsi coordinati</caption>
-  $table_hdtr<th>Nome</th><th colspan=2>Docente</th>
-  <th colspan=2>Gestore</th> </tr>
+  <caption>$name_portalandgroup</caption>
+  $table_hdtr<th>$wims_name_name</th> <th colspan=2>$wims_name_nameteacher</th>
+  <th colspan=2>$wims_name_Supervisor</th> </tr>
   !for i=1 to $sccnt
    !set l=!line $i of $sclasses
    !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
@@ -53,13 +54,13 @@ Questa registrazione è riservata ai docenti.
    $in<br>$cl
    </td>
    <td align=center>
-   !href module=$module&type=authparticipant&class=$code $name_enter
+   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
    </td> <td align=center>
    !href module=adm/class/reguser&class=$code $name_register
    </td>
    <td align=center>$supv</td>
    <td align=center>
-   !href module=$module&type=authsupervisor&class=$code $name_enter
+   !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
    </td>
   !next i  
   $table_end
@@ -68,23 +69,26 @@ Questa registrazione è riservata ai docenti.
   <p>
   $table_header
   !if $superclass=$empty
-   <caption>Corsi autonomi</caption>
-  $table_hdtr<th>Nome del corso</th><th colspan=2>Docente-amministratore</th>
+   <caption>$name_independantclass</caption>
+   $table_hdtr<th>$wims_name_name</th><th colspan=2>$wims_name_nameteacher / $wims_name_Supervisor</th>
   !else
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
   !else
    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
    !endif
-   <caption>$Name_levels in $inst 
+   !default Name_level=$(CL_Name[2])
+    <caption>$Name_level / $inst
+    !if $class_type>2
     <small>
     !href cmd=help&special_parm=$module_language/structure [$wims_name_help]
     </small>
+    !endif
    !if $splevel>1
     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
    !endif
    </caption>
-   $table_hdtr<th>$Name_level</th><th>Docente</th>
+    $table_hdtr<th>$Name_level</th><th>$wims_name_nameteacher</th>
    !if $superclass!=$empty and $stype=4
      <th>+</th>
      !if $ty!=1 and $splevel =1
@@ -123,7 +127,7 @@ Questa registrazione è riservata ai docenti.
      !endif
      !if $superclass=$empty
    <td align=center>
-      !href module=$module&type=authsupervisor&class=$code $name_enter
+      !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
       </td>
      !endif   
     !next i
@@ -137,12 +141,12 @@ Questa registrazione è riservata ai docenti.
     !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
    !endif
    $table_header
-    <caption>$Name_program dans $inst
+    <caption>$Name_program ($inst)
     !if $splevel>1
      !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
     !endif
     </caption>
-    $table_hdtr<th>$Name_level</th><th>Enseignant</th><th>+</th>
+    $table_hdtr<th>$wims_name_level</th><th>$wims_name_nameteacher</th><th>+</th>
     !for i=1 to $clcnt_pr
      !set l=!line $i of $classes_pr
      !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
@@ -167,10 +171,9 @@ Questa registrazione è riservata ai docenti.
   !endif
 !else
  !if $class_type=$empty and $superclass=$empty
- (In questo server non sono presenti corsi in lingua italiana.)
- !else
+  ($name_language2)
    !if $clcnt=0
-    (Non ci sono corsi.)
+    ($name_noavailable)
    !endif
  !endif
 !endif

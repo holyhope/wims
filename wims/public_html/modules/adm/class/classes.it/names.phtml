@@ -29,12 +29,42 @@
    !set name_level_else= !item $splevel of un livello,un corso,un insegnamento
  !else
    !set sousclasses=sottocorso
-   !set sousclasses_else=a class or an institution
+   !set sousclasses_else=un corso o una sede
  !endif
  
 !set CL_Name	=Livello,Corso,Programma,Insegnamento,Insegnamento opzionale,Test Zone
 !set Name_program=Programmi
 !set name_program=programma
+!set name_portalandgroup=Sedi e gruppi di corsi coordinati
+!set name_independantclass=Corsi autonomi
 
-!distribute items Accedi,Registrazione\
-into name_enter,name_register
+!distribute items Registrazione,anonimo,aperto,riservato,Anno,\
+Nuovo iscritto,iscritto,Tipo di accesso,Torna su\
+into name_register,name_anonymous,name_open,name_protected,name_year,\
+name_new_participant,name_registered,name_connexion,name_up
+
+!distribute line Voi non avete un accesso per altri corsi.\
+Cerca il tuo corso\
+Aucune autre classe disponible.\
+Non ci sono corsi corrispondenti alla ricerca.\
+Potete passare direttamente a\
+into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
+
+!let classification=Scuola,College,Liceo,Università,Altro
+
+!set name_text1=Scegliete la riga corrispondente al corso o all'istituzione \
+che vi interessa.\
+ <p>\
+Se non siete ancora iscritti, cliccate su <tt>$name_register</tt> \
+(se il corso è <tt>$name_protected</tt>, avrete bisogno della password\
+che vi ha fornito il vostro docente o il coordinatore).\
+<p>Altrimenti cliccate semplicemente su <tt>$wims_name_Enter</tt> per accedere.
+
+!set name_text2=Pour aller dans  $name_level_else $sousclasses_else, choisissez \
+son nom dans le tableau suivant.
+!set name_text3=Vous pouvez choisir $name_level_else $sousclasses_else dans le tableau suivant.
+
+!set name_language= Non ci sono corsi in lingua italiana su questo server. \
+Forse stai cercando un corso in un'altra lingua?
+!set name_language2=In questo server non sono presenti corsi in lingua italiana.
+

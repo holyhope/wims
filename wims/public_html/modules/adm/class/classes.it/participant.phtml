@@ -1,4 +1,5 @@
 
+!!!####language independant
 !read search.phtml
 !if $overflow=yes
  !exit
@@ -6,12 +7,10 @@
 
 !if $clcnt+$sccnt+$directcnt<1
  !if $keyword=$empty
- Non ci sono corsi in lingua italiana su questo server. Forse stai cercando
- un corso in 
- !href module=home&list=0 un'altra lingua
-?
+  $name_language
+  !href module=home&list=0 $wims_name_search
  !else
-  Non ci sono corsi corrispondenti alla tua richiesta.
+  $name_nofound
  !endif
  !exit
 !endif
@@ -22,21 +21,15 @@
   !exit
  !endif
 !else
-Scegliete la riga corrispondente al corso o all'istituzione 
-che vi interessa.
- <p>
-Se non siete ancora iscritti, cliccate su <tt>$name_register</tt> 
-(se il corso è <tt>riservato</tt>, avrete bisogno della password
-che vi ha fornito il vostro docente).
+$name_text1
 
-  <p>Altrimente, cliccate semplicemente su <tt>$name_enter</tt> per accedere. 
 !endif
 
 !if $sccnt>0
 <p>$table_header
- <caption>Sedi e gruppi di corsi coordinati</caption>
- $table_hdtr
- <th>Nome</th><th colspan=2>Studente</th><th>Gestore</th><th>Tipo di accesso</th>
+ <caption>$name_portalandgroup</caption>
+ $table_hdtr$
+ <th>$wims_name_name<th colspan=2>$wims_name_namesstudent</th><th>$wims_name_Supervisor</th><th>$wims_name_Statut</th>
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
@@ -57,16 +50,16 @@ che vi ha fornito il vostro docente).
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> <td align=center>
-  !href module=$module&type=authparticipant&class=$code $name_enter
+  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
   </td> <td align=center>
   !href module=adm/class/reguser&class=$code&subclass=yes $name_register
   </td>  <td align=center>
   $supv
   </td> <td align=center>
   !if $pswd=$empty
-   aperto
+   $name_open
  !else
-  riservato
+   $name_protected
  !endif
 !next i
  $table_end <p>
@@ -75,23 +68,24 @@ che vi ha fornito il vostro docente).
 !if $clcnt>0
 <p>$table_header
  !if $superclass=$empty
-  <caption>Corsi autonomi</caption>
- $table_hdtr<th>Nome corso</th><th colspan=2>Studente</th>
- <th>Docente</th><th>Livello</th><th>Tipo di accesso</th>
+  <caption>$name_independantclass</caption>
+  $table_hdtr
+  <th>$wims_name_name</th><th colspan=2>$wims_name_namestudent</th>
+  <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
  !else
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
   !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
  !endif
-  <caption>$Name_levels in $inst
+   <caption>$Name_levels ($inst)
    !if $splevel>1
-    !href cmd=reply&type=$type&superclass2=$sparent Torna su
+    !href cmd=reply&type=$type&superclass2=$sparent $name_up
    !endif
    </caption>
    $table_hdtr
-   <th>Nome corso</th><th colspan=2>Studente</th>
-   <th>Docente</th><th>Livello</th><th>Tipo di accesso</th>
+   <th>$wims_name_name</th><th colspan=2>$wims_name_namestudent</th>
+   <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
    !if $superclass!=$empty and $stype=4
     <th>+</th>
    !endif
@@ -117,7 +111,7 @@ che vi ha fornito il vostro docente).
   $table_tr<td align=center>
     $show
   </td><td align=center> 
-  !href module=$module&type=authparticipant&class=$code $name_enter
+  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
   </td> <td align=center> 
   !if $splevel=$empty or $splevel=2
    !href module=adm/class/reguser&class=$code $name_register
@@ -126,12 +120,12 @@ che vi ha fornito il vostro docente).
   !endif
   </td><td align=center>
   $supv
-  </td><td align=center>$(n_$l_)<br>anno $y_</td>
+  </td><td align=center>$(n_$l_)<br>$name_year $y_</td>
  <td align=center>
   !if $pswd=$empty
-   aperto
+   $name_open
  !else
-   riservato
+   $name_protected
   !endif
  </td>
    !if $superclass!=$empty and $stype=4
