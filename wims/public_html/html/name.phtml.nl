@@ -371,9 +371,9 @@ deactiveer de html-editor\
 Let op: veranderingen worden niet opgeslagen als deze optie tijdens het schrijven wordt veranderd\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
-!distribute items Achternaam,Voornaam,Wachtwoord,email,Loginnaam,Herhaal het wachtwoord\
+!distribute items Achternaam,Voornaam,Wachtwoord,email,Loginnaam,Herhaal het wachtwoord,Opmerkingen\
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
-wims_name_Login,wims_name_repeat_pass
+wims_name_Login,wims_name_repeat_pass,wims_name_comment
 
 !distribute line Foto album\
 Verstuur email\
