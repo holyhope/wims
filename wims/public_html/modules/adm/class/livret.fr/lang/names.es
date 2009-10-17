@@ -2,7 +2,7 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
 
-!set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
+!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 
 !distribute items Compétence,\
 compétence,\
@@ -25,7 +25,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_see=Afficher seulement les exercices de la feuille
 
 
- !distribute items Titre de la $name_comptences&nbsp;,\
+ !distribute items Titre de la $name_competence&nbsp;,\
 Titre du $name_n_palier&nbsp;,\
 Nombre de $name_n_paliers&nbsp;,\
 Ces couleurs peuvent être modifiées dans le,\

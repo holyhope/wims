@@ -25,7 +25,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_see=Toon alleen de werkblad oefeningen.
 
 
-!distribute items Titel van de $name_comptences&nbsp;,\
+!distribute items Titel van de $name_comptence&nbsp;,\
 Titel van $name_n_palier&nbsp;,\
 Aantal $name_n_paliers&nbsp;,\
 De kleuren kunnen worden veranderd in het,\
