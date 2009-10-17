@@ -14,7 +14,7 @@
 		页的源码. \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,Title,Description,Points,Weight,Dependencies,Actions
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Points,Weight,得分相关性,Actions
 
 !if $activetest<=0
  !let wims_name_sheetadmin=返回页面维护的主页.
@@ -30,10 +30,18 @@ Expiration date,Presentation page,Registration of scores,for all sharing classes
 !let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
 !let name_mksheet=Create the sheet
 
-!distribute lines Sheet information&nbsp;\
+!distribute lines Sheet information\
 Content of the sheet\
 This sheet has no content yet.\
-into name_info,name_content,name_warning
+原标题为\
+改变项目\
+需得分\
+权重  \
+改正源码\
+The sheet expiration date of the sheet must be before the class expiration date which is\
+Your request is ignored.\
+into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1=To add a work (exercise, course, tool, etc.) to a sheet, you have to choose it (see below), choose its level of difficulty. Then use the link at the end of the page\
 of this exercise to add it to the sheet.

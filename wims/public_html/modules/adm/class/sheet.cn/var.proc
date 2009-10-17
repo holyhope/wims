@@ -51,6 +51,11 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
 	and $expyear$expmon$expday<=$class_expiration
 	and N notin $expmon$expday$expyear
  expiration=$expyear$expmon$expday
+ !else 
+   !if $expyear$expmon$expday>$class_expiration
+     !readproc adm/date.phtml $class_expiration
+     error=toolate
+   !endif
 !endif
 
 !if $sheet<1 or $sheet>$max_sheet

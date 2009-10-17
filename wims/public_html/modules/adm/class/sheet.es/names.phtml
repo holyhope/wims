@@ -5,7 +5,6 @@
 !set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-
 !set statutaction=Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
 !set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
 
@@ -15,7 +14,7 @@
 		Obtener el código fuente de la hoja \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,Título,Descripción,Puntos,Peso,Dépendancias,Acciones
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Puntos,Peso,Dépendancias,Acciones
 
 !if $activetest<=0
  !let wims_name_sheetadmin=página de preparación
@@ -25,7 +24,7 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
  !set name_title=!nosubst Gestión de la hoja $sheet
 !endif
 
-!let name_shinfo=!nosubst Título <small>(limitado a $title_limit caracteres)</small>,Estado,\
+!let name_shinfo=!nosubst $wims_name_title <small>(limitado a $title_limit caracteres)</small>,Estado,\
 Y un texto explicativo <br></small>(limitado a $desc_limit caracteres; se permiten etiquetas y enlaces html)</small>,\
 Fecha de expiración,Página de presentación,El registro de puntuaciones,para todas las clases que comparten la hoja :
 !let name_allowtype=abierto a todos, cerrado a todos,abierto para las siguientes estaciones de trabajo (y/o horas)siguientes :
@@ -34,7 +33,15 @@ Fecha de expiración,Página de presentación,El registro de puntuaciones,para toda
 !distribute lines Informaciones generales \
 Contenido de la hoja de trabajo\
 Esta hoja de trabajo no tiene aún contenido.\
-into name_info,name_content,name_warning
+El título original es\
+Modificación del ejercicio\
+Número de puntos pedidos\
+de peso\
+Corriger le source\
+La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
+Votre requête est donc ignorée.\
+into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1=To add a work (exercise, course, tool, etc.) to a sheet, you have to choose it (see below), choose its level of difficulty. Then use the link at the end of the page\
 of this exercise to add it to the sheet.

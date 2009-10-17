@@ -53,9 +53,9 @@
  <p>
  ¿De verdad quiere desactivar la hoja?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Sí, continuar
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
 .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
+ !href cmd=resume $wims_name_no; $wims_name_giveup
 . </center>
  <p>
  <b>¡Antes de continuar, pida al menos a los profesores de las clases vecinas que
@@ -84,9 +84,9 @@
  Todas las puntuaciones obtenidas en el trabajo en esta hoja quedarán borradas
  si la desactiva. ¿Está usted seguro de querer hacerlo?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Sí, desactivarla
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
 .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
+ !href cmd=resume $wims_name_no; $wims_name_giveup
 . </center> <p>
  Lista de cuentas que ya han trabajado en esta hoja:
  <p>
@@ -108,19 +108,19 @@
  <p>
  ¿Desea continuar?
  <p><center>
- !href cmd=reply&job=activate Sí, activarla
-.&nbsp;&nbsp;
- !href cmd=resume No, cancelar
-.</center>
+ !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
 
 !if prep_erase=$error
  ¿Realmente quiere borrar la hoja de trabajo #$sheet ($title)?
  <p><center>
- !href cmd=reply&job=erase Sí, borrar
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
 .</center>
  !exit
 !endif
@@ -130,9 +130,9 @@
  !item $expmon of $months
  $expyear. ¿Quiere hacerla expirar ahora?
  <p><center>
- !href cmd=reply&job=expire Sí, hacerla expirar
+ !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
  .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </center>
  <p><b>Nota.</b> Sus estudiantes no pueden continuar trabajando en una hoja
  que ha expirado. Pero las puntuaciones anteriores se conservarán (y se tomarán en 
@@ -147,12 +147,13 @@
  También puede utilizar este formulario para insertar los fuentes de una
  hoja pública por el proceso de copiar y pegar.
  <p>
- Por otro lado,
- !href cmd=resume volver a la página principal de la hoja de trabajo.
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
  !form reply
  <input type=hidden name=job value=putsource><center>
  <textarea cols=55 rows=10 name=source>$source</textarea>
- <p><input type=submit value="Enviar">
+ <p><input type=submit value="$wims_name_send">
  </center></form>
  <b>Atención</b>. ¡No inserte un fichero fuente modificado! Se arriesga a
  inutilizar su hoja de trabajo.
@@ -160,46 +161,64 @@
 !endif
 
 !if prep_modify=$error
- !set cnt=!recordcnt classes/$wims_class/sheets/.sheet$sheet
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
  !if $modif>$cnt or $modif<1
   Has enviado una solicitud no válida. Ignorada.
  !else
-  !set exo=!record $modif of classes/$wims_class/sheets/.sheet$sheet
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $exo into directory,parm,require,weight,title,desc,dep
   !set orgtit=!module title $directory
-  <p><center><h3>Modificación del ejercicio $modif</h3></center>
+  <p><center><h3>$name_titlemodif $modif</h3></center>
   !form reply
   <input type=hidden name=modif value=$modif>
   <input type=hidden name=job value=modify>
   <ul>
-  <li>Título: <small>(El título original es <em>$orgtit</em>)
+  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
   </small> <br>
   <input size=50 name=mod_title value="$title">
-  <li>Descripción:<br>
+  <li>$wims_name_Description<br>
   <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>Número de puntos pedidos: 
+  <li>name_pointsasked: 
   <input size=4 name=mod_require value="$require">,
-  de peso
+  $name_ofweight
   <input size=4 name=mod_weight value="$weight">.
-  <li>Dependencias de las puntuaciones:
+  <li>$(name_shtab[6]):
   <input size=40 name=mod_dep value="$dep">.
   !reset mod_dep
   </ul>
-  <p><center><input type=submit value="Guardar los cambios"></form>
+  <p><center><input type=submit value="$wims_name_change"></form>
   </center> <p>
-  !href cmd=resume Descartar los cambios.
+  !href cmd=resume $wims_name_giveup
+ .
   <p><small>
-  <b>Ayuda</b>. <tt>Dependencias de las puntuaciones</tt> quiere decir que 
+  <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt> 
+  quiere decir que 
   un participante debe primero lograr puntos en otros ejercicios de la hoja, 
   antes de poder trabajar en este. Por ejemplo,
   <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
   significa que el participante debe tener un éxito del 50% en el ejercicio 1,
   30% en el ejercicio 2, y una media de éxito del 60% en los ejercicios
   3, 4 y 5.
-
   </small>
-
  !endif
+ !exit
 !endif
 
+!if $error=toolate
+$name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
+!msg $error
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
 !msg $error

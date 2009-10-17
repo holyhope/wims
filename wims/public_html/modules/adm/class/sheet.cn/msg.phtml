@@ -10,111 +10,21 @@
  !exit
 !endif
 
-!if bad_sheet=$error
-你的页码不正确. 是软件的漏洞?
+!if bad_source=$error
+你提交的源码的项目数 $bad_source 是无效的.
+ !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
+.
  !exit
 !endif
 
-!if bad_source=$error
-你提交的源码的项目数 $bad_source 是无效的.
- !href cmd=reply&job=prep_putsource&source=$source 改正源码
- .
+!if bad_sheet=$error
+你的页码不正确. 是软件的漏洞?
  !exit
 !endif
 
 !if no_title=$error
 你想注册一个没有标题的页面, 我们不希望你这样做. 也许是操作错误?
  !exit
-!endif
-
-!if prep_activate=$error
-你想要激活页面 $sheet 使它能被参加者得到. <p>
-请注意: 一旦被激活, 你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
- <p>
-要继续吗?
- <p><center>
- !href cmd=reply&job=activate 是; 激活它
- .&nbsp;&nbsp;
- !href cmd=resume 不; 放弃
- .</center>
- !exit
-!endif
-
-!if prep_erase=$error
-你真的要删除这一页 #$sheet ($title)?
- <p><center>
- !href cmd=reply&job=erase 是; 删除
- .&nbsp;&nbsp;
- !href cmd=resume 不; 放弃
- .</center>
- !exit
-!endif
- 
-!if prep_expire=$error
-本页 #$sheet ($title) 正常的失效日期是 $expyear,
- !item $expmon of $months
- $expday. 你要使他在现在失效吗?
- <p><center>
- !href cmd=reply&job=expire 是; 失效
- .&nbsp;&nbsp;
- !href cmd=resume 不; 放弃
- . </center>
- <p><b>注意.</b> 你的学生不能在已失效的页上做作业.
-但他们以前的成绩仍被保存(而且在统计时被计入), 你总是能查看这些成绩.
- !exit
-!endif
-
-!if prep_putsource=$error
-如果你有已保存的源码, 你可将这段源码插入当前页, 只需将这段源码复制入以下窗口,
-再点击按钮 `发送'. 这个表也允许你用切割-复制的形式插入公开作业页的源码.
- <p>
-否则,
- !href cmd=resume 回到本页的首页.
- !form reply
- <input type=hidden name=job value=putsource><center>
- <textarea cols=55 rows=10 name=source>$source</textarea>
- <p><input type=submit value="发送">
- </center></form>
- <b>警告</b>. 不要插入修改过的文件! 这样可能使你的整个作业页无法使用.
- !exit
-!endif
-
-!if prep_modify=$error
- !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
- !if $modif>$cnt or $modif<1
-  你输入了一个无效请求, 不予考虑.
- !else
-  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
-  !set orgtit=!module title $directory
-  <p><center><h3>改变项目 $modif</h3></center>
-  !form reply
-  <input type=hidden name=modif value=$modif>
-  <input type=hidden name=job value=modify>
-  <ul>
-  <li>标题: <small>(原标题为 <em>$orgtit</em>)
-  </small> <br>
-  <input size=50 name=mod_title value="$title">
-  <li>说明:<br>
-  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>需得分: 
-  <input size=4 name=mod_require value="$require">,
-  权重 
-  <input size=4 name=mod_weight value="$weight">,
-  <li>得分相关性:
-  <input size=40 name=mod_dep value="$dep">.
-  !reset mod_dep
-  </ul>
-  <p><center><input type=submit value="记录修改"></form>
-  </center> <p>
-  !href cmd=resume 放弃修改.
-  <p><small>
-  <b>帮助</b>. 得分相关性是指参加者必须在本页的其它练习里得到所需的分数后,
-才能做这道题. 例如,
-  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
-是指参加者在第1题必须得50%, 第2题得30%, 第3, 4, 5题平均得60%.
-  </small>
- !endif
 !endif
 
 !if $error=not_secure
@@ -138,9 +48,9 @@
  <p>
 你是否仍要取消激活此页?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes 是的; 继续
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume 不; 取消
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p>
  <b>在继续此操作前, 至少应该通知相邻班的主持教师保存他们的班级!</b>
@@ -162,9 +72,9 @@
  !endif
 如果你取消激活, 此页的所有得分都将删除. 确实要这样做吗?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes 是的; 取消激活
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume 不; 取消操作
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
 在此页作作业的帐户表:
  <p>
@@ -175,5 +85,114 @@
  !exit
 !endif
 
+!if prep_activate=$error
+你想要激活页面 $sheet 使它能被参加者得到. <p>
+请注意: 一旦被激活, 你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
+ <p>
+要继续吗?
+ <p><center>
+ !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ .</center>
+ !exit
+!endif
+
+!if prep_erase=$error
+你真的要删除这一页 #$sheet ($title)?
+ <p><center>
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+.&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+.</center>
+ !exit
+!endif
+
+!if prep_expire=$error
+本页 #$sheet ($title) 正常的失效日期是 $expyear,
+ !item $expmon of $months
+ $expday. 你要使他在现在失效吗?
+ <p><center>
+ !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+ . </center>
+ <p><b>注意.</b> 你的学生不能在已失效的页上做作业.
+但他们以前的成绩仍被保存(而且在统计时被计入), 你总是能查看这些成绩.
+ !exit
+!endif
+
+!if prep_putsource=$error
+如果你有已保存的源码, 你可将这段源码插入当前页, 只需将这段源码复制入以下窗口,
+再点击按钮 `发送'. 这个表也允许你用切割-复制的形式插入公开作业页的源码.
+  <p>
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="$wims_name_send">
+ </center></form>
+ <b>警告</b>. 不要插入修改过的文件! 这样可能使你的整个作业页无法使用.
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+  你输入了一个无效请求, 不予考虑.
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
+  !set orgtit=!module title $directory
+  <p><center><h3>$name_titlemodif $modif</h3></center>
+  !form reply
+  <input type=hidden name=modif value=$modif>
+  <input type=hidden name=job value=modify>
+  <ul>
+  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
+  </small> <br>
+  <input size=50 name=mod_title value="$title">
+  <li>$wims_name_Description<br>
+  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
+  <li>name_pointsasked: 
+  <input size=4 name=mod_require value="$require">,
+  $name_ofweight
+  <input size=4 name=mod_weight value="$weight">.
+  <li>$(name_shtab[6]):
+  <input size=40 name=mod_dep value="$dep">.
+  !reset mod_dep
+  </ul>
+  <p><center><input type=submit value="$wims_name_change"></form>
+  </center> <p>
+  !href cmd=resume $wims_name_giveup
+ .
+  <p><small>
+  <b>帮助</b>. 得分相关性是指参加者必须在本页的其它练习里得到所需的分数后,
+才能做这道题. 例如,
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+是指参加者在第1题必须得50%, 第2题得30%, 第3, 4, 5题平均得60%.
+  </small>
+ !endif
+ !exit
+!endif
+
+!if $error=toolate
+$name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
 !msg $error
 
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
+!msg $error

@@ -1,0 +1,27 @@
+!! if wims_read_parm is empty, read the variable months 
+!! (list of months in suitable language). If it is non empty,
+!! gives the date of the form 13 janvier 2009 (according to language)
+!! to be completed
+
+!if $wims_read_parm!=
+ !let day=!char 7 to 8 of $wims_read_parm
+ !let month=!char 5 to 6 of $wims_read_parm
+ !let year=!char 1 to 4 of $wims_read_parm
+ !set c_date=$year/$month/$day
+ !read adm/lang/date.phtml.$lang
+ !if $months=
+   !read adm/lang/date.phtml.en
+ !endif
+ !set l_m=!item $month of $months
+ !if $lang=fr
+  !set l_date=$day $l_m $year
+  !exit
+ !endif
+ 
+ !set l_date=$year, $l_m, $day 
+!else
+ !read lang/date.phtml.$lang
+!endif
+
+
+ 

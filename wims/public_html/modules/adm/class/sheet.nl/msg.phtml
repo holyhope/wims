@@ -52,28 +52,14 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  <p>
   Doorgaan met de procedure?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Ja
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume Nee
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p>
  <b>Het is verstanding om collega's eerst een backup te laten maken van hun klassen.</b>
  !exit
 !endif
-
-!if prep_activate=$error
-U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken. <p>
-Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
-
-Wilt U doorgaan?
- <p><center>
- !href cmd=reply&job=activate Ja, activeren
- .&nbsp;&nbsp;
- !href cmd=resume Nee ; Annuleren
- .</center>
- !exit
-!endif
-
 
 !if $error=sheet_in_exam
     Het is onmogelijk dit werkblad te deactiveren: er zijn proefwerken op basis van dit werkblad.
@@ -91,9 +77,9 @@ Wilt U doorgaan?
  Alle behaalde cijfers voor dit werblad worden verwijderd, indien U het deactiveerd.
  Doorgaan ?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Ja
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume Nee
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
  Lijst van deelnemers die aan dit werblad heben gewerkt:
  <p>
@@ -105,17 +91,30 @@ Wilt U doorgaan?
  !exit
 !endif
 
+!if prep_activate=$error
+U wilt het werkblad $sheet laten activeren, zodat Uw leerlingen hiermee kunnen werken. <p>
+Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
+
+Wilt U doorgaan?
+ <p><center>
+ !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ .</center>
+ !exit
+!endif
+
 !if prep_erase=$error
 Weet U zeker dat U het werkblad #$sheet ($title) wilt verwijderen?
 
  <p><center>
- !href cmd=reply&job=erase Ja ,weg ermee
- .&nbsp;&nbsp;
- !href cmd=resume Nee; Annuleren
- .</center>
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+.&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+.</center>
  !exit
 !endif
- 
+
 !if prep_expire=$error
 Dit werkblad #$sheet ($title) was normaal verlopen op $expday
  !item $expmon of $months
@@ -123,9 +122,9 @@ Dit werkblad #$sheet ($title) was normaal verlopen op $expday
  U wilt het <b>nu</b> laten verlopen?
 
  <p><center>
- !href cmd=reply&job=expire Ja
+ !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
  .&nbsp;&nbsp;
- !href cmd=resume Nee
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </center>
  <p><b>Opmerking.</b> 
  Uw studenten kunnen niet doorgaan met werken aan een verlopen werkblad.
@@ -138,14 +137,14 @@ Dit werkblad #$sheet ($title) was normaal verlopen op $expday
 Hebt U een broncode van een reeds eerder gemaakt werkblad, kunt U deze
 in het onderstaande venster invoeren. Daarna klikken op "VERSTUREN".
 Uiteraard kunt U met "knippen en plakken" werken
- <p>
- anders,
- !href cmd=resume Terug naar de hoofdpagina van het Werkblad
- 
+  <p>
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
  !form reply
  <input type=hidden name=job value=putsource><center>
  <textarea cols=55 rows=10 name=source>$source</textarea>
- <p><input type=submit value="VERSTUREN">
+ <p><input type=submit value="$wims_name_send">
  </center></form>
  <b>WAARSCHUWING</b>. 
  Voer geen "corrupte code" handmatig in, U loopt het risico
@@ -157,32 +156,33 @@ Uiteraard kunt U met "knippen en plakken" werken
 !if prep_modify=$error
  !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
  !if $modif>$cnt or $modif<1
- Uw verzoek is illegaal. 
+ Uw verzoek is illegaal.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $exo into directory,parm,require,weight,title,desc,dep
   !set orgtit=!module title $directory
-  <p><center><h3>Verandering van item $modif</h3></center>
+  <p><center><h3>$name_titlemodif $modif</h3></center>
   !form reply
   <input type=hidden name=modif value=$modif>
   <input type=hidden name=job value=modify>
   <ul>
-  <li>Titel: <small>(De originele titel is <em>$orgtit</em>)
+  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
   </small> <br>
   <input size=50 name=mod_title value="$title">
-  <li>Omschrijving:<br>
+  <li>$wims_name_Description<br>
   <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>Aantal vereiste punten: 
+  <li>name_pointsasked: 
   <input size=4 name=mod_require value="$require">,
-  met een weging: 
-  <input size=4 name=mod_weight value="$weight">,
-  <li>Cijfer afhankelijkheden:
+  $name_ofweight
+  <input size=4 name=mod_weight value="$weight">.
+  <li>$(name_shtab[6]):
   <input size=40 name=mod_dep value="$dep">.
   !reset mod_dep
   </ul>
-  <p><center><input type=submit value="OK en VERANDER"></form>
+  <p><center><input type=submit value="$wims_name_change"></form>
   </center> <p>
-  !href cmd=resume Annuleer de Verandering
+  !href cmd=resume $wims_name_giveup
+ .
   <p><small>
   <b>Help</b>. 
   De cijfer afhankelijkheden wil zeggen:<br>
@@ -194,6 +194,24 @@ Uiteraard kunt U met "knippen en plakken" werken
   30$ van opdracht 2 en een gemiddelde score van 60% over de opdrachtwn 3,4 en 5
   </small>
  !endif
+ !exit
 !endif
 
+!if $error=toolate
+$name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
+!msg $error
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
 !msg $error

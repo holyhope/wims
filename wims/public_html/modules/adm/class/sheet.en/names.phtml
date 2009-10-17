@@ -2,7 +2,7 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  of <b><font color=green>$wims_institutionname</font></b>
  
-!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
+!read adm/lang/date.phtml.$lang
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
 !set statutaction=Activate,Expire it,Deactivate it,Hide it,show it,$wims_name_erase
@@ -14,7 +14,7 @@
 		Source of the sheet \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,$wims_name_title,$wims_name_Description,,Points,Weight,Dependencies,Actions
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Points,Weight,Dependencies,Actions
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Page of preparation
@@ -33,7 +33,15 @@ Expiration date,Presentation page,Registration of scores,for all sharing classes
 !distribute lines Sheet information\
 Content of the sheet\
 This sheet has no content yet.\
-into name_info,name_content,name_warning
+The original title is\
+Modification of exercise\
+Number of points asked\
+of weight \
+Correct the source\
+The sheet expiration date of the sheet must be before the class expiration date which is\
+Your request is ignored.\
+into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1=To add a work (exercise, course, tool, etc.) to a sheet, you have to choose it (see below), choose its level of difficulty. Then use the link at the end of the page\
 of this exercise to add it to the sheet.

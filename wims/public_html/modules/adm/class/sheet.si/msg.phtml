@@ -10,15 +10,15 @@
  !exit
 !endif
 
-!if bad_sheet=$error
- ©tevilka va¹ega delovnega lista je neveljavna. Hro¹è v programski opremi?
+!if bad_source=$error
+ Element ¹tevilka $bad_source v va¹em delovnem listu je neveljaven.
+ !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
+ .
  !exit
 !endif
 
-!if bad_source=$error
- Element ¹tevilka $bad_source v va¹em delovnem listu je neveljaven.
- !href cmd=reply&job=prep_putsource&source=$source Popravi kodo
- .
+!if bad_sheet=$error
+ ©tevilka va¹ega delovnega lista je neveljavna. Hro¹è v programski opremi?
  !exit
 !endif
 
@@ -26,101 +26,6 @@
  Posku¹ate registrirati delovni list brez naslova, kar ni priporoèljivo.
  Gre za pomoto?
  !exit
-!endif
-
-!if prep_activate=$error
- ®eleli ste vkljuèiti delovni list $sheet, s èimer bo postal dostopen uporabnikom uèilnice. <p>
- Pomnite, da vsebine vkljuèenega lista ni mogoèe spreminjati, ne da bi ga prej izkljuèili in s tem zbrisali vse rezultate, dose¾ene na tem listu.
- <p>
- Ali ¾elite nadaljevati?
- <p><center>
- !href cmd=reply&job=activate Da, vkljuèi list
- .&nbsp;&nbsp;
- !href cmd=resume Ne, preklièi
- .</center>
- !exit
-!endif
-
-!if prep_erase=$error
- Ali res ¾elite izbrisati ta list #$sheet ($title)?
- <p><center>
- !href cmd=reply&job=erase Da, zbri¹i
- .&nbsp;&nbsp;
- !href cmd=resume Ne, preklièi
- .</center>
- !exit
-!endif
- 
-!if prep_expire=$error
- Ta list #$sheet ($title) naj bi bil zakljuèen na dan $expday
- !item $expmon $months
- $expyear. Ali ga ¾elite zakljuèiti takoj?
- <p><center>
- !href cmd=reply&job=expire Da, zakljuèi
- .&nbsp;&nbsp;
- !href cmd=resume Ne, preklièi
- . </center>
- <p><b>Opomba.</b> Uporabniki na zakljuèenem delovnem listu ne morejo veè pridobivati toèk. ®e dose¾eni rezultati pa bodo ostali shranjeni in upo¹tevani v statistiki.
- !exit
-!endif
-
-!if prep_putsource=$error
- If you have a source of a sheet saved earlier, you can insert this source
- into the current sheet, by copying this source into the window below,
- then clicking on the button `Send'. This form also allows you to insert the
- source of a public work sheet using cut-and-paste.
- <p>
- Otherwise,
- !href cmd=resume Return to the main page of the sheet.
- !form reply
- <input type=hidden name=job value=putsource><center>
- <textarea cols=55 rows=10 name=source>$source</textarea>
- <p><input type=submit value="Send">
- </center></form>
- <b>Warning</b>. Don't insert modified source file! You risk to make your
- worksheet useless.
- !exit
-!endif
-
-!if prep_modify=$error
- !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
- !if $modif>$cnt or $modif<1
-  You have sent an invalid request. Ignored.
- !else
-  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
-  !set orgtit=!module title $directory
-  <p><center><h3>Modification of item $modif</h3></center>
-  !form reply
-  <input type=hidden name=modif value=$modif>
-  <input type=hidden name=job value=modify>
-  <ul>
-  <li>Title: <small>(The original title is <em>$orgtit</em>)
-  </small> <br>
-  <input size=50 name=mod_title value="$title">
-  <li>Description:<br>
-  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>Number of points asked: 
-  <input size=4 name=mod_require value="$require">,
-  of weight 
-  <input size=4 name=mod_weight value="$weight">,
-  <li>Score dependencies:
-  <input size=40 name=mod_dep value="$dep">.
-  !reset mod_dep
-  </ul>
-  <p><center><input type=submit value="Register the change"></form>
-  </center> <p>
-  !href cmd=resume Abandon the change.
-  <p><small>
-  <b>Help</b>. Score dependencies means that a participant must get
-  required scores in other exercises of the sheet before he/she can do
-  this one. For example, 
-  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
-  means that the
-  participant must get 50% success on exercise 1, 30% success on exercise 2,
-  and an average of 60% success on exercises 3,4,5.
-  </small>
- !endif
 !endif
 
 !if $error=not_secure
@@ -135,7 +40,6 @@
 !endif
 
 !if $error=sharing_sheet
- <font color=red><b>Danger!!!</b></font>
  You are sharing sheets with other classes!
  !if $wims_ismanager<2
   You must ask the site manager to deactivate the sheet for you.
@@ -146,9 +50,9 @@
  <p>
  Do you still want to deactivate the sheet?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Yes; continue
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume No; cancel
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p>
  <b>Before continuing, ask at least the supervisors of your class neighbors to
@@ -174,9 +78,9 @@
  All scores obtained on this sheet will be erased, if you deactivate. Really
  want to do it?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Yes; deactivate
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume No; cancel
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
  List of accounts having worked on this sheet:
  <p>
@@ -187,4 +91,120 @@
  !exit
 !endif
 
+!if prep_activate=$error
+ ®eleli ste vkljuèiti delovni list $sheet, s èimer bo postal dostopen uporabnikom uèilnice. <p>
+ Pomnite, da vsebine vkljuèenega lista ni mogoèe spreminjati, ne da bi ga prej izkljuèili in s tem zbrisali vse rezultate, dose¾ene na tem listu.
+ <p>
+ Ali ¾elite nadaljevati?
+ <p><center>
+ !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Ali res ¾elite izbrisati ta list #$sheet ($title)?
+ <p><center>
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+ . </center>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Ta list #$sheet ($title) naj bi bil zakljuèen na dan $expday
+ !item $expmon $months
+ $expyear. Ali ga ¾elite zakljuèiti takoj?
+ <p><center>
+ !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+ . </center>
+ <p><b>Opomba.</b> Uporabniki na zakljuèenem delovnem listu ne morejo veè pridobivati toèk. ®e dose¾eni rezultati pa bodo ostali shranjeni in upo¹tevani v statistiki.
+ !exit
+!endif
+
+!if prep_putsource=$error
+ If you have a source of a sheet saved earlier, you can insert this source
+ into the current sheet, by copying this source into the window below,
+ then clicking on the button `Send'. This form also allows you to insert the
+ source of a public work sheet using cut-and-paste.
+  <p>
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="$wims_name_send">
+ </center></form>
+ <b>Warning</b>. Don't insert modified source file! You risk to make your
+ worksheet useless.
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+  You have sent an invalid request. Ignored.
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
+  !set orgtit=!module title $directory
+  <p><center><h3>$name_titlemodif $modif</h3></center>
+  !form reply
+  <input type=hidden name=modif value=$modif>
+  <input type=hidden name=job value=modify>
+  <ul>
+  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
+  </small> <br>
+  <input size=50 name=mod_title value="$title">
+  <li>$wims_name_Description<br>
+  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
+  <li>name_pointsasked: 
+  <input size=4 name=mod_require value="$require">,
+  $name_ofweight
+  <input size=4 name=mod_weight value="$weight">.
+  <li>$(name_shtab[6]):
+  <input size=40 name=mod_dep value="$dep">.
+  !reset mod_dep
+  </ul>
+  <p><center><input type=submit value="$wims_name_change"></form>
+  </center> <p>
+  !href cmd=resume $wims_name_giveup
+ .
+  <p><small>
+  <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt>
+  means that a participant must get
+  required scores in other exercises of the sheet before he/she can do
+  this one. For example, 
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  means that the
+  participant must get 50% success on exercise 1, 30% success on exercise 2,
+  and an average of 60% success on exercises 3, 4, 5.
+  </small>
+ !endif
+ !exit
+!endif
+
+!if $error=toolate
+$name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
+!msg $error
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
 !msg $error
