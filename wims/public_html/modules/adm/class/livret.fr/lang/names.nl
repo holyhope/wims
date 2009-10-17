@@ -33,6 +33,20 @@ configuratie menu,\
 van de klas,\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2
 
+!!------------------------------- definition des noms de liens pour wims_menu_items
+
+!if $wims_user=supervisor
+ !let tmp=!defof SE_list in wimshome/public_html/modules/home/names.$lang
+!else 
+ !let tmp=!defof U_myscore in wimshome/public_html/modules/home/names.$lang
+!endif
+
+!distribute line Nieuwe vaardigheid\
+$tmp\
+Rapport van deze klas\
+Rapport van $name_competences\
+ into wims_name_add_competence,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
+
 !if $job=addcomp
  !set name_job=!nosubst Toevoegen / bewerken van $name_competence $comp
  !exit
@@ -46,19 +60,4 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_con
 !if $job=user
   !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
 !endif
-
-!!------------------------------- definition des noms de liens pour wims_menu_items
-
-!if $wims_user=supervisor
- !let tmp=Studenten en scores
-!else 
- !let tmp=Mijn cijfers
-!endif
-!distribute line Nieuwe vaardigheid\
-$tmp\
-Rapport van deze klas\
-Rapport van $name_competences\
- into wims_name_add_competence,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
-
-
 
