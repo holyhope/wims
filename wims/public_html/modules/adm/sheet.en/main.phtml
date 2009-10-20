@@ -1,3 +1,4 @@
+!read names.phtml
 !if $job=print
  !changeto print.phtml
 !endif
@@ -15,15 +16,16 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
- Here is the source of the sheet. You may import it into your class using
- cut-and-paste.
+$name_textsource
  <p><hr><pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
  </pre><hr>
- <p>
- !href cmd=resume&job=read Back to normal view of the sheet.
+
+!set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
+to $wims_menu_items
+
  !tail
  !exit
 !endif
@@ -35,10 +37,9 @@ $sheet_remark
 <p>
 
 !if $n=0
- The sheet is empty! This is probably an error.
+ $name_empty
 !else
- Assigned works in this sheet:
-<div class="wims_sheet">
+ <div class="wims_sheet">
  <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of $data
@@ -53,11 +54,9 @@ $sheet_remark
  </ul>
  </div>
  !if $wims_user=supervisor
-  !href cmd=resly&job=import Import
-  this sheet into your class, or
-  !href cmd=reply&job=raw show the source
-  of the sheet.
-  <p>
+ !set wims_menu_items=!append line import,1,cmd=reply&job=import \
+ sheetsource,1,cmd=reply&job=raw\
+ to $wims_menu_items
  !endif
 !endif
 

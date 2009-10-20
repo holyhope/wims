@@ -2,20 +2,19 @@
 !readproc adm/docsheet.prep
 !read $docdef content
 <p><center>
-Score registration is
  !set dd=!getscorestatus sheet=$sh
  !if $dd=yes
   !if $wims_scorereg!=suspend
-   open, but you can
-   !href cmd=resume&job=suspend suspend it
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
 .
   !else
-   suspended by yourself.
-   !href cmd=resume&job=reopen Reactivate it
+  $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
 .
   !endif
  !else
-  closed for your connection.
+ $name_scoreclose
  !endif
 
 !if $wims_user=supervisor

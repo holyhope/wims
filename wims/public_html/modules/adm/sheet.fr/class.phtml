@@ -1,5 +1,6 @@
 
 !read adm/css.phtml
+!read names.phtml
 !header1
 
 !if $sheet_docpage!=$empty
@@ -7,8 +8,7 @@
 !endif
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Feuille de travail numéro $sh <br>$sheet_title
-
+$name_title
 
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
@@ -16,48 +16,43 @@ Feuille de travail numéro $sh <br>$sheet_title
  !set expday=!char 7,8 of $sheet_expiration
  !set expmon=!char 5,6 of $sheet_expiration
  !set expyear=!char 1 to 4 of $sheet_expiration
- !set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
+ !read adm/date.phtml
  !set expmon=!item $expmon of $months
- Vous pouvez travailler sur cette feuille jusqu'au
+ $name_student1
  $expday $expmon $expyear.
  <p>
 !endif
 
 !if $sheet_active=2
- <b><font color=red>Warning</font></b>
- Cette feuille est périmée. Vous pouvez
- encore travailler dessus mais vos notes ne seront plus prises en compte.
+ <b><font color=red>$wims_name_warning</font></b>
+ $name_student2
  <p>
 !endif
-
 !if $n=0
  !if $sheet_active=$empty
-  Vous n'êtes pas autorisé à consulter le contenu de cette feuille pour
-  l'instant. Veuillez contacter votre enseignant.
+  $name_student3
  !else
-  Cette feuille est vide! Rien n'est écrit pour vous dedans. Peut-être
-  une erreur de manipulation de la part de votre enseignant.
+  $name_student4
  !endif
 !else
- Devoirs dans cette feuille&nbsp;: (L'enregistrement de notes est
  !set scorestat=!getscorestatus sheet=$sh
  !if $scorestat=yes
   !if $wims_scorereg!=suspend
-   ouvert, mais vous pouvez
-   !href cmd=resume&job=suspend le suspendre
-.)
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
+.
 !set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
 to $wims_menu_items
   !else
    !set scorestat=no
-   suspendu par vous-même.
-   !href cmd=resume&job=reopen Le réactiver
-.)
+   $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
+.
 !set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
 to $wims_menu_items
   !endif
  !else
-  fermé pour votre connexion.)
+ $name_scoreclose
  !endif
  <div class="wims_sheet">
  <p><ul class="wims_sheet_list">
@@ -73,24 +68,23 @@ to $wims_menu_items
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
    !if $require>0
-    <small>$[$got] des $[$require] points requis, qualité
+    <small>$name_score
     $[$mean]/10. </small>
    !endif
   !else
    <font color=red><b>$ti</b></font>, $de
    !if $require>0
-    <small>($[$require] points requis.)</small>
+    <small>$name_score2</small>
    !endif
   !endif
   !if $dep!=$empty
-   <small>Vous devez améliorer
-   vos notes sur
+   <small>
    !if , isin $dep
-    les exercices $dep
+    $name_deps $dep
    !else
-    l'exercice $dep
+    $name_dep $dep
    !endif
-   avant d'avoir des notes sur celui-ci.
+   $name_dep2.
    </small>
   !endif
  </li>
