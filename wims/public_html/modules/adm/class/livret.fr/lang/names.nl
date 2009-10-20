@@ -31,7 +31,8 @@ Aantal $name_n_paliers&nbsp;,\
 De kleuren kunnen worden veranderd in het,\
 configuratie menu,\
 van de klas,\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2
+minimal score for validing an item\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2,name_configtext3
 
 !!------------------------------- definition des noms de liens pour wims_menu_items
 

@@ -18,11 +18,13 @@
  cf_description=!char 1 to 1024 of $cf_description
  cf_nonactivesheet=!nospace $cf_nonactivesheet
  cf_nonactivesheet=!listintersect $cf_nonactivesheet and $asheets
+ !bound cf_minac between 0 and 10 default 9
  !setdef !set livret_title=$cf_title\
 !set livret_description=$cf_description\
-!set livret_nonactivesheet=$cf_nonactivesheet in wimshome/log/classes/$wims_class/livret/.def
+!set livret_nonactivesheet=$cf_nonactivesheet\
+!set livret_minac=$cf_minac in wimshome/log/classes/$wims_class/livret/.def
 !else
- !for k in title,description,nonactivesheet
+ !for k in title,description,nonactivesheet,minacquis
   cf_$k=$(livret_$k)
  !next k
 !endif

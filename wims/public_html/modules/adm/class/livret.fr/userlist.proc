@@ -33,7 +33,9 @@ userlist=$empty
    !for user in $userlist
     s=!line $(t[1]) of $(s_$user)
     s=!word $(t[2]) of $s
-    l_$(user)_$(k)_$(l)=$(l_$(user)_$(k)_$(l))+$s/$nbit
+    !if $s>=$livret_minac
+     l_$(user)_$(k)_$(l)=$(l_$(user)_$(k)_$(l))+$s/$nbit
+    !endif
    !next user
   !next m
  !next l

@@ -30,8 +30,9 @@ Título del $name_n_palier&nbsp;,\
 Número de $name_n_paliers&nbsp;,\
 Estos colores pueden modificarse en el,\
 panel de configuración,\
-de la clase\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2
+de la clase,\
+minimal score for validing an item\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2,name_configtext3
 
 !!------------------------------- definición de los nombres de vínculos para wims_menu_items
 

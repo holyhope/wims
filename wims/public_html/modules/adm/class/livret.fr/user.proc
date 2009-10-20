@@ -44,7 +44,9 @@ maxnbpalier=0
    t=!line $m of $list2
    s=!line $(t[1]) of $score
    s=!word $(t[2]) of $s
-   l_$(k)_$(l)=$(l_$(k)_$(l))+$s/$nbit
+   !if $s>=$livret_minac
+    l_$(k)_$(l)=$(l_$(k)_$(l))+$s/$nbit
+   !endif
   !next it
  !next l
 !next k
