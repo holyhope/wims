@@ -2,7 +2,7 @@
 <p>
 <h1>
 !if $user=$empty
- Modificare il messaggio del giorno
+ $name_modify1
 !else
  Modificare il messaggio per lo studente $user_firstname $user_lastname
 !endif
@@ -12,22 +12,22 @@
  <p>
  !read msg.phtml
  <p>
- !href cmd=reply Indietro
+ !href cmd=reply $wims_name_back2
 . <p>
  !goto end
 !endif
 
-Questa pagina permette di scrivere o modificare
+$name_intro1
 !if $user=$empty
- il messaggio del giorno per tutti gli iscritti
+ $name_intro2
 !else
- il messaggio personale per lo studente $user_firstname $user_lastname 
+ name_intro3 $user_firstname $user_lastname 
 !endif 
-avvisi che poi compaiono nella 
-!href style=student home page degli studenti
+name_intro4
+!href style=student $name_home
 .
 <p>
-Scrivere i mesaggi (sono accettati link e tag html):
+$name_write:
 (
 !if $speckedit!=no
 !href cmd=reply&job=modif&speckedit=no $wims_name_desactive
@@ -48,9 +48,10 @@ Scrivere i mesaggi (sono accettati link e tag html):
 !endif
  !if $user!=$empty
   <br>
-  Il messaggio riguarda tutti i seguenti studenti: <br>
+  $name_otherstudent: <br>
   !formcheckbox listuser list $listiduser prompt $listnameuser
  !endif
  <p><center><input type=submit value="$wims_name_tosave" $wims_on_click></center>
 
 </form>
+

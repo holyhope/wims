@@ -13,7 +13,7 @@
 !if bad_source=$error
  L'elemento $bad_source nei comandi inseriti non &egrave;
  valido.
- !href cmd=reply&job=prep_putsource&source=$source Correggere
+ !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
  .
  !exit
 !endif
@@ -41,7 +41,6 @@
 !endif
 
 !if $error=sharing_sheet
-!! <font color=red><b>Pericolo!!!</b></font>
  Questi test sono condivisi con altri corsi!
  !if $wims_ismanager<2
   Solo il site manager li può disattivare il test.
@@ -51,11 +50,11 @@
  che le condividono. Si <b>sconsiglia vivamente</b> di disattivare test
  di autovalutazione condivisi. 
  <p>
- Sei sicuro di voler continuare?
+ Sei sicuro di voler disattivare il test?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Si; continua
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume No; abbandona
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p>
  <b>Prima di continuare, è per lo meno consigliabile di chiedere ai docenti
@@ -84,11 +83,11 @@
   !exit
  !endif
  Tutti i punteggi ottenuti per questo test di autovalutazione saranno perduti
- se il test viene disattivato. Vuoi veramente continuare?
+ se il test viene disattivato. Vuoi veramente disattivare il test?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes Si, disattiva
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
- !href cmd=resume No, abbandona
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
  Elenco degli studenti che hanno già cominciato a lavorare su questo
  test di autovalutazione:
@@ -109,9 +108,9 @@
  studenti saranno cancellati). <br>
  Continuare?
  <p><center>
- !href cmd=reply&job=activate Si, attivare
+ !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
  .&nbsp;&nbsp;
- !href cmd=resume No, annulla
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  !exit
 !endif
@@ -119,9 +118,9 @@
 !if prep_erase=$error
  Sicuri di voler eliminare il test numero #$sheet ($title)?
  <p><center>
- !href cmd=reply&job=erase si; eliminare
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume No, annulla
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </center>
  !exit
 !endif
@@ -132,11 +131,10 @@
  !item $expmon of $months
  $expyear. Concluderla ora?
  <p><center>
- !href cmd=reply&job=expire $wims_name_yes , 
- concludi
+ !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
  .&nbsp;&nbsp;
- !href cmd=resume No, annulla
- . </center>
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+ </center>
  <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su un test
  terminato. I voti fin qui acquisiti vengono conservati (e le statistiche
  ne tengono conto) e possono essere consultati dal 
@@ -171,21 +169,21 @@ to $wims_menu_items
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $exo into directory,parm,require,weight,title,desc,dep
   !set orgtit=!module title $directory
-  <p><center><h3>Modifica l'elemento $modif</h3></center>
+  <p><center><h3>$name_titlemodif $modif</h3></center>
   !form reply
   <input type=hidden name=modif value=$modif>
   <input type=hidden name=job value=modify>
   <ul>
-  <li>Titolo&nbsp;: <small>(Il titolo originale &egrave; <em>$orgtit</em>)
+  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
   </small> <br>
   <input size=50 name=mod_title value="$title">
-  <li>Descrizione:<br>
+  <li>$wims_name_Description<br>
   <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>Numero di punti richiesti&nbsp;:
+  <li>name_pointsasked: 
   <input size=4 name=mod_require value="$require">,
-  di peso
+  $name_ofweight
   <input size=4 name=mod_weight value="$weight">.
-  <li>Punteggi con dipendenza:
+  <li>$(name_shtab[6]):
   <input size=40 name=mod_dep value="$dep">.
   !reset mod_dep
   </ul>
@@ -194,7 +192,8 @@ to $wims_menu_items
   !href cmd=resume $wims_name_giveup
  .
   <p><small>
-  <b>Suggerimento</b>. Punteggi con dipendenza significa che uno studente
+  <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt> 
+  significa che uno studente
   deve ottenere un dato punteggio su un esercizio prima di poter svolgere
   questo esercizio. Per esempio
   <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
@@ -203,6 +202,16 @@ to $wims_menu_items
   3,4,5.
   </small>
  !endif
+ !exit
 !endif
 
+!if $error=toolate
+ $name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
 !msg $error

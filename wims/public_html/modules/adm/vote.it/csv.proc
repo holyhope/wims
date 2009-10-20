@@ -79,7 +79,7 @@ $tableau
        line=!line $u of $tableau
  ### changement de format - transitoire
        !if $u <= $cnt_prov
-       c=!declosing $(comment_$(t)[$u])
+         c=!declosing $(comment_$(t)[$u])
        !else
          uprov=$[$u-$cnt_prov]
          c=!record $uprov of $votedir/$(vote)_$t.comments
@@ -138,7 +138,9 @@ entete= !makelist _ Q.x _ for x=1 to $parmcnt
  
 :end
 tableau=!replace internal _,_ by $sep in $tableau
-tableau=!replace internal _ by  in $tableau
+!! !! the following messes up with username containing _
+!! !! testing!
+!!tableau=!replace internal _ by  in $tableau
 tableau=!replace internal --- by  in $tableau
  
 !appendfile $fname $tableau

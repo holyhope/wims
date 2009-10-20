@@ -1,18 +1,9 @@
 !set wims_name_examremain=Tempo rimanente per completare il tema d'esame: $
 !read js/examclock1.phtml
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
 !read names.phtml
-
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -20,17 +11,13 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Preparazione del tema d'esame $exam
-!!<center>$classname
-!!<p>
-!!<h1>
-!!</h1></center> <p><hr width="40%"> <p>
+$title $exam
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Torna alla home page
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -46,7 +33,7 @@ Preparazione del tema d'esame $exam
  Questo tema d'esame &egrave; 
  !if $activetest=1
   attivo (quindi non modificabile).
-  !href cmd=reply&job=expire Terminarlo
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -62,10 +49,10 @@ Preparazione del tema d'esame $exam
  !endif
  !href cmd=reply&job=deactivate Disattivalo
  <center><table border=2>
- <tr><td align=right>Titolo:
+ <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value="$wims_name_change">
- <tr><td align=right>Descrizione:
+ <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Data di termine:<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
@@ -78,7 +65,7 @@ Preparazione del tema d'esame $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Titolo (massimo $title_limit caratteri):<br>
+$wims_name_title (massimo $title_limit caratteri):<br>
 <input size=65 name=title value="$title"> <p>
 E una introduzione (massimo $desc_limit caratteri; sono ammessi
 tag html e link) :<br>
@@ -134,19 +121,20 @@ minuti. Ogni studente pu&ograve; ripetere l'esame al più
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Sposta su
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Modifica
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Cancella
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Inserisci un altro esercizio
-, o
+, 
+$wims_name_or
  !href cmd=reply&job=cpsheet inserisci un gruppo di esercizi
 .
  !endif
@@ -175,7 +163,7 @@ minuti. Ogni studente pu&ograve; ripetere l'esame al più
  !set allowshare=0
  !if $sharers!=$empty
   (per tutti i corsi coordinati:
-  !formselect allowshare list 0,1 prompt no,si
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
  !else
   <input type=hidden name=allowshare value=0>

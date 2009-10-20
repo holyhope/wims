@@ -2,7 +2,7 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  presso <b><font color=green>$wims_institutionname</font></b>
 
-!set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+!read adm/lang/date.phtml.$lang
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
 !set statutaction=Attiva,Termina,Disattiva,Nascondi,Mostra,$wims_name_erase
@@ -14,7 +14,7 @@
 		Codice sorgente del test di autovalutazione \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=N.,Titolo,Descrizione,Punti,Peso,Dipendenze,$wims_name_action
+!let name_shtab=N.,$wims_name_title,$wims_name_Description,Punti,Peso,Punteggi con dipendenza,$wims_name_action
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Pagina di preparazione dei test
@@ -33,7 +33,15 @@ Termine per il completamento,Presentazione,Registrazione dei voti,per tutti i co
 !distribute lines Informazioni generali\
 Contenuto del test di autovalutazione\
 Il test non contiene ancora alcun esercizio.\
-into name_info,name_content,name_warning
+Il titolo originale &egrave;\
+Modifica l'elemento\
+Numero di punti richiesti\
+di peso\
+Correggere il codice\
+La data di termine del test di autovalutazione è successiva alla data di termine del corso\
+La richiesta è quindi ignorata.\
+into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1= <p>Per inserire un elemento (esercizio, cours, strumento, etc.) in un test \
  di autovalutazione è necessario selezionare l'elemento (vedi sotto),\
