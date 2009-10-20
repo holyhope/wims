@@ -29,8 +29,8 @@
   <th colspan=4><small>$name_avg_participant</small></th>
  !endif
  !if minmax isitemof $show
-  <th colspan=2>min</th>
-  <th colspan=2>max</th>
+  <th colspan=2>$name_min</th>
+  <th colspan=2>$name_max</th>
  !endif
  !if deviat isitemof $show
   <th colspan=2>$name_deviation</th>
@@ -68,7 +68,6 @@
   !if $scavg>0 and $st=S
    !set sdur=$[$sdur+$duravg*$3_/$scavg]
   !endif
-  
   $table_tr<td><small>$exo.
   !if $st=S
    !href target=wims_exo module=$1_&cmd=new&worksheet=$sn&$2_ $t_
@@ -164,7 +163,7 @@
  !endif
  <caption>
  <b>$(name_$st) $sn.</b> $shtit
- <small>($name_theoric $[rint($sdur)] min.)</small>
+ <small>($name_theoric $[rint($sdur)] $name_minute)</small>
  </caption>
  $table_end <p>
 !next ss

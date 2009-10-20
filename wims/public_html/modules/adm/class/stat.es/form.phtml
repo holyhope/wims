@@ -1,24 +1,19 @@
 !form reply
 <input type=hidden name=show value=yes>
 <table border=0>
-<tr><td align=right>Estadísticas que mostrar:<td>
+<tr><td align=right>$name_showstat:<td>
 !set wims_formselect_switch=multiple size=8
 !formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
 	prompt\
-	puntos requeridos, peso,\
-	índice de dificultad, totales,\
-	medias por puntuación, medias por participante,\
-	mínimo y máximo, desviación estándar
-<tr><td align=right>Tipo de datos:<td>
+	$name_prompt
+<tr><td align=right>$name_data:<td>
 !set wims_formselect_switch=
 !formselect types list 1,2,3 prompt \
-	actividades registradas, actividades no registradas, todas las actividades
+	$name_typ_activities
 !if $sharer!=$empty
- <tr><td align=right>Contar las actividades de las clases<br>
- que comparten hojas con usted:
+ <tr><td align=right>$name_shareclass:
  <td>
  !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
 !endif
 <tr><td colspan=2 align=center><input type=submit value="$wims_name_Show">
 </table></form>
-

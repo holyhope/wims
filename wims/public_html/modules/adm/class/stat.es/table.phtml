@@ -1,5 +1,5 @@
-!distribute items Examen, Hoja, exámenes/.exam, hojas/.sheet, 4, 3, 3, 5\
-	into name_E, name_S, file_E, file_S, line_E, line_S, linei_E, linei_S
+!distribute items exams/.exam, sheets/.sheet, 4, 3, 3, 5\
+	into file_E, file_S, line_E, line_S, linei_E, linei_S
 
 !for ss in $listsh
  !distribute items 0,0,0,0,0,0,0,0,0,0 into\
@@ -9,51 +9,51 @@
  !set l_=!record $sn of wimshome/log/classes/$wims_class/$(file_$st)s
  !set shtit=!line $(line_$st) of $l_
  <p>$table_header
- $table_hdtr<th rowspan=$hdrow>Ejercicio</th>
+ $table_hdtr<th rowspan=$hdrow>$wims_name_Exercise</th>
  !if req isitemof $show and $st=S
-  <th rowspan=$hdrow><small>puntos<br>requeridos</small></th>
+  <th rowspan=$hdrow><small>$name_required_points</small></th>
  !endif
  !if weight isitemof $show
-  <th rowspan=$hdrow><small>peso</small></th>
+  <th rowspan=$hdrow><small>$name_coeff</small></th>
  !endif
  !if cid isitemof $show
-  <th rowspan=$hdrow><small>índice de<br>dificultad</small></th>
+  <th rowspan=$hdrow><small>$name_index</small></th>
  !endif
  !if tot isitemof $show
-  <th colspan=4>Totales</th>
+  <th colspan=4>$name_totals</th>
  !endif
  !if scoremean isitemof $show
-  <th colspan=2><small>media/puntos</small></th>
+  <th colspan=2><small>$name_avg_score</small></th>
  !endif
  !if partmean isitemof $show
-  <th colspan=4><small>media/participante</small></th>
+  <th colspan=4><small>$name_avg_participant</small></th>
  !endif
  !if minmax isitemof $show
-  <th colspan=2>mín</th>
-  <th colspan=2>máx</th>
+  <th colspan=2>$name_min</th>
+  <th colspan=2>$name_max</th>
  !endif
  !if deviat isitemof $show
-  <th colspan=2><small>desviación<br>estándar</small></th>
+  <th colspan=2>$name_deviation</th>
  !endif
  !if $hdrow>1
   $table_hdtr
   !if tot isitemof $show
-   <th><small>nuevos</small></th><th><small>puntuación</small></th>
-   <th><small>puntos</small></th><th><small>duración</small></th>
+   <th><small>new</small></th><th><small>$name_score</small></th>
+   <th><small>points</small></th><th><small>$name_duration</small></th>
   !endif
   !if scoremean isitemof $show
-   <th><small>puntos</small></th><th><small>duración</small></th>
+   <th><small>points</small></th><th><small>$name_duration</small></th>
   !endif
   !if partmean isitemof $show
-   <th><small>nuevos</small></th><th><small>puntuación</small></th>
-   <th><small>puntos</small></th><th><small>duración</small></th>
+   <th><small>new</small></th><th><small>score</small></th>
+   <th><small>points</small></th><th><small>$name_duration</small></th>
   !endif
   !if minmax isitemof $show
-   <th><small>puntos</small></th><th><small>duración</small></th>
-   <th><small>puntos</small></th><th><small>duración</small></th>
+   <th><small>points</small></th><th><small>$name_duration</small></th>
+   <th><small>points</small></th><th><small>$name_duration</small></th>
   !endif
   !if deviat isitemof $show
-   <th><small>puntos</small></th><th><small>duración</small></th>
+   <th><small>points</small></th><th><small>$name_duration</small></th>
   !endif
  !endif
  !for i=$(start$st$sn) to $(end$st$sn)
@@ -68,7 +68,6 @@
   !if $scavg>0 and $st=S
    !set sdur=$[$sdur+$duravg*$3_/$scavg]
   !endif
-
   $table_tr<td><small>$exo.
   !if $st=S
    !href target=wims_exo module=$1_&cmd=new&worksheet=$sn&$2_ $t_
@@ -125,7 +124,7 @@
  !next i
  !set test=!listintersect $show and req,weight,cid,tot,scoremean,partmean
  !if $st=S and $(start$st$sn)<$(end$st$sn) and $test!=$empty
-  $table_hdtr<th>Suma</th>
+  $table_hdtr<th>$name_sum</th>
   !if req isitemof $show
    <td align=center>$sreq</td>
   !endif
@@ -164,7 +163,7 @@
  !endif
  <caption>
  <b>$(name_$st) $sn.</b> $shtit
- <small>(duración teórica $[rint($sdur)] mín.)</small>
+ <small>($name_theoric $[rint($sdur)] $name_minute)</small>
  </caption>
  $table_end <p>
 !next ss

@@ -1,24 +1,19 @@
 !form reply
 <input type=hidden name=show value=yes>
 <table border=0>
-<tr><td align=right>统计显示:<td>
+<tr><td align=right>$name_showstat:<td>
 !set wims_formselect_switch=multiple size=8
 !formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
-    prompt\
-    所需分数, 权重,\
-    难度指数, 总计,\
-    按得分平均, 按参加者平均,\
-    极小与极大, 标准偏差
-<tr><td align=right>数据类型:<td>
+	prompt\
+	$name_prompt
+<tr><td align=right>$name_data:<td>
 !set wims_formselect_switch=
 !formselect types list 1,2,3 prompt \
-    记录的活动, 不记录的活动, 所有活动
+	$name_typ_activities
 !if $sharer!=$empty
- <tr><td align=right>与你共享作业页的<br>
-班级活动计数:
+ <tr><td align=right>$name_shareclass:
  <td>
- !formradio share list yes,no prompt 是, 否
+ !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
 !endif
-<tr><td colspan=2 align=center><input type=submit value=显示>
+<tr><td colspan=2 align=center><input type=submit value="$wims_name_Show">
 </table></form>
-
