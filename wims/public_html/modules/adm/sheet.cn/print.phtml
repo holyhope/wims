@@ -1,9 +1,8 @@
 
-!!$wims_html_head<body $wims_htmlbody>
 !header1
 !read adm/title.phtml 2\
 $sheet_title
-!!<h3 class="wims_sheet_title">$sheet_title</h3>
+
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
 !if $error!=$empty
@@ -12,9 +11,9 @@ $sheet_title
 
 !for i=1 to $n
  <p>
- <b>练习</b> $i.
+ <b>$name_exo</b> $i.
  !if $(question_$i)=$empty
-  (不能打印: $(title_$i))
+  ($name_noprint: $(title_$i))
  !else
   !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
    !set e_=$(e_$i)
@@ -30,8 +29,6 @@ $sheet_title
    $(question_$i)
   !endif
   <a></a>
-  !!</tt></font></center>
- !! </h1></h2></h3></h4></b></i></em>
   $(chce_$i)
  !endif
 !next i
@@ -41,14 +38,19 @@ $sheet_title
 !endif
 
 <div class="wims_solution"><hr>
-<center><h3>答案</h3></center> <p>
+<center><h3>$wims_name_answer</h3></center> <p>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
  !if $t>0
   <p><b>练习 $i 的答案.</b><ul>
   !for k=1 to $t
-   <li>
-   !line $k of $(ans_$i)
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li value=$k>
+    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
   !next k
   </ul>
  !endif
@@ -56,15 +58,8 @@ $sheet_title
 </div><!--end of wims_solution-->
 
 :noans
-!!<p>
-!!<div class="wims_noprint">
-!!<hr>
-!!!href cmd=reply 再一次
-!!&nbsp;&nbsp;
-!!!href cmd=reply&job=read 返回
-!!</div><!--end of wims_noprint-->
+<p>
 !set wims_menu_items=!append line renew,1,cmd=reply\
 back2,1,cmd=reply&job=read\
 to $wims_menu_items
 !tail
-

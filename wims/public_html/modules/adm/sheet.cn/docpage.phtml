@@ -2,20 +2,19 @@
 !readproc adm/docsheet.prep
 !read $docdef content
 <p><center>
-得分纪录
  !set dd=!getscorestatus sheet=$sh
  !if $dd=yes
   !if $wims_scorereg!=suspend
-   是打开的, 但你可以使它
-   !href cmd=resume&job=suspend 暂停
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
 .
   !else
-   被你自己暂停了.
-   !href cmd=resume&job=reopen 打开纪录
+  $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
 .
   !endif
  !else
-  对于你的链接是关闭的.
+ $name_scoreclose
  !endif
 
 !if $wims_user=supervisor
@@ -24,9 +23,9 @@
 .&nbsp;
  !set d_=!translate / to , in $sheet_docpage
  !distribute items $d_ into d_,b_
- !href target=wims_doc module=adm/doc.en&job=edit&doc=$d_&block=$b_ 编辑本页
+ !href target=wims_doc module=adm/doc&job=edit&doc=$d_&block=$b_ $wims_name_Edit
 .&nbsp;
- !href cmd=resume 重做
+ !href cmd=resume $wims_name_refresh
 .
 !endif
 </center>

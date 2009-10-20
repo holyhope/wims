@@ -4,6 +4,10 @@
 !endif
 
 wims_trustfile=primitives/target.phtml
+wims_prefix=class user tmp
+wims_prefix2=$wims_prefix
+wims_nw=deps prcnt empty job class_header data\
+	imagedir Imagedir Class_header wims_prefix wims_prefix2
 !default prcnt=0
 !if $job=suspend
  wims_scorereg=suspend
@@ -39,8 +43,11 @@ c=!char 1 of $sh
  data=wimshome/log/classes/$wims_class/sheets/.sheet$sh
  sheet=!record $sh of wimshome/log/classes/$wims_class/sheets/.sheets
  !distribute lines $sheet into sheet_active,sheet_expiration,sheet_title,sheet_desc,sheet_docpage
- !if $wims_user != supervisor and $sheet_active<1
+ !if $wims_user != supervisor and $sheet_active notin 12
   !distribute items $ into sheet_active,sheet_expiration,sheet_title,sheet_desc,sheet_docpage
+  !if $job=print
+   job=read
+  !endif
  !endif
  sheet_docpage=!word 1 of $sheet_docpage
  !if $sheet_docpage!=$empty
@@ -53,17 +60,6 @@ c=!char 1 of $sh
  requires=!getscorerequire sheet=$sh
  scores=!getscore sheet=$sh
  means=!getscoremean sheet=$sh
- m_user_login=$wims_user
- m_user_lastname=$wims_lastname
- m_user_firstname=$wims_firstname
- m_class_code=$wims_class
- m_scorerequire=!words2items $requires
- m_title=$sheet_title
- m_desc=$sheet_desc
- m_scoregot=!words2items $scores
- m_scoremean=!words2items $means
- m_expiration=$sheet_expiration
- m_today=!char 1 to 8 of $wims_now
  !if $sheet_active=$empty
   n=0
  !else

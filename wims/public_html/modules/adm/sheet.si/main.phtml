@@ -1,3 +1,4 @@
+!read names.phtml
 !if $job=print
  !changeto print.phtml
 !endif
@@ -15,14 +16,16 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
- Tukaj je izvorna koda va¹ega delovnega lista. Lahko si jo skopirate in uporabite kje drugje.
+$name_textsource
  <p><hr><pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
  </pre><hr>
- <p>
- !href cmd=resume&job=read Nazaj na obièajen pogled.
+
+!set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
+to $wims_menu_items
+
  !tail
  !exit
 !endif
@@ -34,34 +37,31 @@ $sheet_remark
 <p>
 
 !if $n=0
- Ta delovni list je prazen. Verjetno gre za napako.
+ $name_empty
 !else
- Predpisane naloge:
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of $data
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
-  <li><p>$i. 
+  <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
 , $de
-!!  !if $require>0
-!!   <small>$[$got] toèk (zahtevanih $[$require]), kvaliteta
-!!   $[$mean]/10.</small>
-!!  !endif
+ </li>
  !next i
  </ul>
+ </div>
  !if $wims_user=supervisor
-  !href cmd=resly&job=import Uvozi
-  ta delovni list v svojo uèilnico, ali
-  !href cmd=reply&job=raw poka¾i izvorno kodo.
-  <p>
+ !set wims_menu_items=!append line import,1,cmd=reply&job=import \
+ sheetsource,1,cmd=reply&job=raw\
+ to $wims_menu_items
  !endif
 !endif
-!!!href cmd=reply&job=print Razlièica za tiskanje
-!!.
+
 !set wims_menu_items=!append line printable,1,cmd=reply&job=print\
 to $wims_menu_items
+
 !tail
 

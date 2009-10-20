@@ -2,20 +2,19 @@
 !readproc adm/docsheet.prep
 !read $docdef content
 <p><center>
-Bele¾enje rezultatov je 
  !set dd=!getscorestatus sheet=$sh
  !if $dd=yes
   !if $wims_scorereg!=suspend
-   vkljuèeno, a ga lahko
-   !href cmd=resume&job=suspend izkljuèite
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
 .
   !else
-   izklopljeno na va¹o zahtevo.
-   !href cmd=resume&job=reopen Ponoven vklop
+  $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
 .
   !endif
  !else
-  onemogoèeno za va¹o povezavo.
+ $name_scoreclose
  !endif
 
 !if $wims_user=supervisor
@@ -24,9 +23,9 @@ Bele¾enje rezultatov je
 .&nbsp;
  !set d_=!translate / to , in $sheet_docpage
  !distribute items $d_ into d_,b_
- !href target=wims_doc module=adm/doc.en&job=edit&doc=$d_&block=$b_ Uredi to stran
+ !href target=wims_doc module=adm/doc&job=edit&doc=$d_&block=$b_ $wims_name_Edit
 .&nbsp;
- !href cmd=resume Ponovno nalo¾i
+ !href cmd=resume $wims_name_refresh
 .
 !endif
 </center>

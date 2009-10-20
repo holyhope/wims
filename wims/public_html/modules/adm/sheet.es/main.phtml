@@ -1,3 +1,4 @@
+!read names.phtml
 !if $job=print
  !changeto print.phtml
 !endif
@@ -15,15 +16,16 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
- Este es el fichero fuente de la hoja. Puede importarlo a su clase simplemente
- mediante el sistema de recortar y pegar.
+$name_textsource
  <p><hr><pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
  </pre><hr>
- <p>
- !href cmd=resume&job=read Volver a la vista normal de la hoja
+
+!set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
+to $wims_menu_items
+
  !tail
  !exit
 !endif
@@ -35,10 +37,10 @@ $sheet_remark
 <p>
 
 !if $n=0
- ¡Esta hoja está en blanco! Se trata probablemente de un error.
+ $name_empty
 !else
- Tareas asignadas en esta hoja:
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of $data
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -52,11 +54,9 @@ $sheet_remark
  </ul>
  </div>
  !if $wims_user=supervisor
-  !href cmd=resly&job=import Importar
-  esta hoja en su clase, o
-  !href cmd=reply&job=raw mostrar el fichero fuente
-  de la hoja.
-  <p>
+ !set wims_menu_items=!append line import,1,cmd=reply&job=import \
+ sheetsource,1,cmd=reply&job=raw\
+ to $wims_menu_items
  !endif
 !endif
 

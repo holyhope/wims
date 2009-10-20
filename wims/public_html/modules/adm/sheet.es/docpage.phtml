@@ -1,20 +1,20 @@
+
 !readproc adm/docsheet.prep
 !read $docdef content
 <p><center>
-El registro de las puntuaciones está
  !set dd=!getscorestatus sheet=$sh
  !if $dd=yes
   !if $wims_scorereg!=suspend
-   abierto, pero puede
-   !href cmd=resume&job=suspend suspenderlo
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
 .
   !else
-   suspendido por usted mismo.
-   !href cmd=resume&job=reopen Reactivarlo
+  $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
 .
   !endif
  !else
-  cerrado para su conexión.
+ $name_scoreclose
  !endif
 
 !if $wims_user=supervisor

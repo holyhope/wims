@@ -1,63 +1,60 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
+!read adm/css.phtml
+!read names.phtml
 !header1
 
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
 !read adm/title.phtml 1\
-$wims_classname, $wims_institutionname\
-Delovni list #$sh<br>$sheet_title
+$wims_classname - $wims_institutionname\
+$name_title
 
-!!<h2>$wims_classname, $wims_institutionname</h2>
-!!<hr><h3 class="wims_sheet_title">Delovni list #$sh<br>$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
+
 !if $sheet_expiration!=$empty and $sheet_active=1
  !set expday=!char 7,8 of $sheet_expiration
  !set expmon=!char 5,6 of $sheet_expiration
  !set expyear=!char 1 to 4 of $sheet_expiration
- !set months=januar,februar,marec,april,maj,junij,julij,avgust,september,oktober,november,december
+ !read adm/date.phtml
  !set expmon=!item $expmon of $months
- Datum zakljuèka lista: $expday. $expmon $expyear.
-!endif
-<p>
-!if $sheet_active=2
-<b><font color=red>Opozorilo</font></b>
- Ta delovni list je ¾e zakljuèen. Naloge na njem lahko ¹e vedno re¹ujete, toda na novo dose¾eni rezultati ne bodo veè upo¹tevani.
+ $name_student1
  <p>
 !endif
 
+!if $sheet_active=2
+ <b><font color=red>$wims_name_warning</font></b>
+ $name_student2
+ <p>
+!endif
 !if $n=0
  !if $sheet_active=$empty
-  Urejanje vsebine delovnega lista je dovoljeno le skrbniku.
+  $name_student3
  !else
-  Ta delovni list je prazen. Morda gre za napako skrbnika.
+  $name_student4
  !endif
 !else
- Predpisane naloge: (Bele¾enje rezultatov je
  !set scorestat=!getscorestatus sheet=$sh
  !if $scorestat=yes
   !if $wims_scorereg!=suspend
-   vkljuèeno, toda lahko ga
-   !href cmd=resume&job=suspend izkljuèite
-.)
-!set wims_menu_items=!append line scoresuspend,1,cmd=resume&job=suspend\
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
+.
+!set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
 to $wims_menu_items
   !else
    !set scorestat=no
-   izkljuèeno na va¹o zahtevo.
-   !href cmd=resume&job=reopen Ponoven vklop
-.)
+   $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
+.
 !set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
 to $wims_menu_items
   !endif
  !else
-  zaprto za va¹o povezavo.)
+ $name_scoreclose
  !endif
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -70,48 +67,42 @@ to $wims_menu_items
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
    !if $require>0
-    <small>$[$got] toèk (zahtevanih $[$require]), kvaliteta
-    $[$mean]/10.</small>
+    <small>$name_score
+    $[$mean]/10. </small>
    !endif
   !else
-   <font color=red><b>$ti</b></font>, $de 
-   !if $require>0 toèk
-    <small>($[$require] zahtevanih.)</small>
+   <font color=red><b>$ti</b></font>, $de
+   !if $require>0
+    <small>($name_score2)</small>
    !endif
   !endif
   !if $dep!=$empty
-   <small>Predno se lotite te vaje, morate izbolj¹ati
+   <small>
    !if , isin $dep
-    va¹e rezultate pri vajah $dep.
+    $name_deps $dep
    !else
-    va¹ rezultat pri vaji $dep.
+    $name_dep $dep
    !endif
+   $name_dep2.
    </small>
   !endif
+ </li>
  !next i
  </ul>
+ </div>
 !endif
 
-:contentend
 !if $wims_user=supervisor
 !set wims_menu_items=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$sh\
 to $wims_menu_items
-!!<p>
-!!!href module=adm/class/sheet&sheet=$sh Urejanje lista
-!! (za skrbnika).&nbsp;
 !endif
 !if $n>0
 !set wims_menu_items=!append line printable,1,cmd=reply&job=print\
 to $wims_menu_items
-!!!href cmd=reply&job=print Razlièica za tiskanje
-!!.
-!if $exolog!=$empty
-!! !href module=adm/class/exolog&job=llist&logsheet=$sh Bele¾enje podrobnosti naloge
-!!.
+ !if $exolog!=$empty
   !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
 to $wims_menu_items 
+ !endif
 !endif
-!endif
-
 !tail
 

@@ -1,12 +1,9 @@
 
-!!$wims_html_head<body $wims_htmlbody>
 !header1
-!read adm/title.phtml 1\
+!read adm/title.phtml 2\
 $sheet_title
 
-!!<h3 class="wims_sheet_title">$sheet_title</h3>
 <div class="wims_sheet_desc">$sheet_desc</div><p>
-!!<div class=wimsbody>
 
 !if $error!=$empty
  !changeto msg.phtml
@@ -14,9 +11,9 @@ $sheet_title
 
 !for i=1 to $n
  <p>
- <b>Exercici</b> $i.
+ <b>$name_exo</b> $i.
  !if $(question_$i)=$empty
-  (No imprimible: $(title_$i))
+  ($name_noprint: $(title_$i))
  !else
   !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
    !set e_=$(e_$i)
@@ -32,8 +29,6 @@ $sheet_title
    $(question_$i)
   !endif
   <a></a>
-  !!</tt></font></center>
- !! </h1></h2></h3></h4></b></i></em>
   $(chce_$i)
  !endif
 !next i
@@ -43,14 +38,19 @@ $sheet_title
 !endif
 
 <div class="wims_solution"><hr>
-<center><h3>Respostes</h3></center> <p>
+<center><h3>$wims_name_answer</h3></center> <p>
 !for i=1 to $n
  !set t=!linecnt $(ans_$i)
  !if $t>0
-  <p><b>Resposta a l'exercici $i.</b><ul>
+  <p><b>$name_answer $i.</b><ul>
   !for k=1 to $t
-   <li>
-   !line $k of $(ans_$i)
+   !set l__=!line $k of $(ans_$i)
+   !if $l__ !=
+    <li value=$k>
+    !line $k of $(ans_$i)
+    </li>
+   !reset l__
+   !endif
   !next k
   </ul>
  !endif
@@ -58,15 +58,8 @@ $sheet_title
 </div><!--end of wims_solution-->
 
 :noans
-!!<p>
-!!<div class="wims_noprint">
-!!<hr>
-!!!href cmd=reply Un altre
-!!&nbsp;&nbsp;
-!!!href cmd=reply&job=read Tornar
-!!</div><!--end of wims_noprint-->
+<p>
 !set wims_menu_items=!append line renew,1,cmd=reply\
 back2,1,cmd=reply&job=read\
 to $wims_menu_items
 !tail
-
