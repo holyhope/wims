@@ -2,20 +2,19 @@
 !readproc adm/docsheet.prep
 !read $docdef content
 <p><center>
-La registrazione dei punteggi è
  !set dd=!getscorestatus sheet=$sh
  !if $dd=yes
   !if $wims_scorereg!=suspend
-   attiva, ma puoi
-   !href cmd=resume&job=suspend sospenderla
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
 .
   !else
-   stata da te sospesa.
-   !href cmd=resume&job=reopen Riattivala
+  $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
 .
   !endif
  !else
-  disattivata per questo tipo di connessione.
+ $name_scoreclose
  !endif
 
 !if $wims_user=supervisor

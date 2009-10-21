@@ -1,5 +1,6 @@
 
 !read adm/css.phtml
+!read names.phtml
 !header1
 
 !if $sheet_docpage!=$empty
@@ -7,7 +8,7 @@
 !endif
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-test #$sh<br>$sheet_title
+$name_title
 
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
@@ -15,48 +16,42 @@ test #$sh<br>$sheet_title
  !set expday=!char 7,8 of $sheet_expiration
  !set expmon=!char 5,6 of $sheet_expiration
  !set expyear=!char 1 to 4 of $sheet_expiration
- !set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+ !read adm/date.phtml
  !set expmon=!item $expmon of $months
- Devi completare questo test di autovalutazione entro il $expday $expmon $expyear.
+ $name_student1
  <p>
 !endif
 
 !if $sheet_active=2
- <b><font color=red>Warning</font></b>
- Avresti dovuto aver gi&agrave; completato questo test di autovalutazione.
- Puoi ancora lavorarci,
- ma i punteggi ottenuti non saranno più tenuti in considerazione.
+ <b><font color=red>$wims_name_warning</font></b>
+ $name_student2
  <p>
 !endif
-
 !if $n=0
  !if $sheet_active=$empty
-  Questo test di autovalutazione non &egrave; ancora disponibile. 
-  Contatta il docente.
+  $name_student3
  !else
-  Il test di autovalutazione è vuoto! Potrebbe trattarsi di un errore da parte
-  del docente.
+  $name_student4
  !endif
 !else
- Contenuti del test: (la registrazione dei punteggi è
  !set scorestat=!getscorestatus sheet=$sh
  !if $scorestat=yes
   !if $wims_scorereg!=suspend
-   attiva, ma puoi
-   !href cmd=resume&job=suspend sospenderla
-.)
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
+.
 !set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
 to $wims_menu_items
   !else
    !set scorestat=no
-   stata da te sospesa.
-   !href cmd=resume&job=reopen Riattivala
-.)
+   $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
+.
 !set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
 to $wims_menu_items
   !endif
  !else
-  disattivata per questo tipo di connessione.)
+ $name_scoreclose
  !endif
  <div class="wims_sheet">
  <p><ul class="wims_sheet_list">
@@ -72,23 +67,23 @@ to $wims_menu_items
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
    !if $require>0
-    <small>hai ottenuto $[$got] punti su $[$require], con media
+    <small>$name_score
     $[$mean]/10.</small>
    !endif
   !else
    <font color=red><b>$ti</b></font>, $de 
    !if $require>0
-    <small>(sono richiesti $[$require] punti.)</small>
+    <small>($name_score2)</small>
    !endif
   !endif
   !if $dep!=$empty
-   <small>Devi migliorare
+   <small>
    !if , isin $dep
-    i tuoi punteggi negli esercizi $dep
+    $name_deps $dep
    !else
-    il tuo punteggio nell'esercizio $dep
+    $name_dep $dep
    !endif
-   prima di cominciare a lavorare su questo.
+   $name_dep2
    </small>
   !endif
  </li>

@@ -16,15 +16,16 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
- Questo è il sorgente del test di autovalutazione. Puoi copiarlo per inserirlo in
- un altro corso.
+$name_textsource
  <p><hr><pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
  </pre><hr>
- <p>
- !href cmd=resume&job=read Torna alla versione formattata del test di autovalutazione.
+
+!set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
+to $wims_menu_items
+
  !tail
  !exit
 !endif
@@ -36,9 +37,8 @@ $sheet_remark
 <p>
 
 !if $n=0
- Il test di autovalutazione è vuoto! Si tratta probabilmente di un errore.
+ $name_empty
 !else
- Contenuti del test di autovalutazione:
  <div class="wims_sheet">
  <p><ul class="wims_sheet_list">
  !for i=1 to $n
@@ -54,12 +54,9 @@ $sheet_remark
  </ul>
  </div>
  !if $wims_user=supervisor
-  &Egrave; possibile
-  !href cmd=resly&job=import Importare
-  questo test nelle pagine del corso, o vedere
-  !href cmd=reply&job=raw comandi sorgente 
-  del test di autovalutazione (per poi copiarli in un altro corso).
-  <p>
+ !set wims_menu_items=!append line import,1,cmd=reply&job=import \
+ sheetsource,1,cmd=reply&job=raw\
+ to $wims_menu_items
  !endif
 !endif
 
