@@ -21,7 +21,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_param_change=Hier staan de instel-parameters waaruit u kunt kiezen&nbsp;
 !set name_color=De kleur van de prestaties van $name_n_palier &nbsp;
 !set name_score_modify=Scores voor oefeningen uit de volgende werkbladen benodigd voor de berekening van de prestatieniveaus van $name_n_paliers &nbsp;
-!set name_cocher=Controleer de gegevens die gebruikt moete worden in het overzicht van$name_n_palier.
+!set name_cocher=Controleer de gegevens die gebruikt moete worden in het overzicht van $name_n_palier.
 !set name_see=Toon alleen de werkblad oefeningen.
 
 
