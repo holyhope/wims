@@ -276,7 +276,7 @@ Toevoegen aan klas\
 Maak een nieuw document\
 Bewerk een draft document\
 Status\
-Insert\
+Toevoegen\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 
