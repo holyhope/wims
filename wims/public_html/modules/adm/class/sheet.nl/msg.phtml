@@ -42,7 +42,6 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 !endif
 
 !if $error=sharing_sheet
-!! <font color=red><b>Danger!!!</b></font>
     Deze werkbladen worden gedeeld met een andere klas !
  !if $wims_ismanager<2
     U zult de oprichter van dit instituut moeten vragen het werkblad te deactiveren.
@@ -171,7 +170,7 @@ to $wims_menu_items
   <input size=50 name=mod_title value="$title">
   <li>$wims_name_Description<br>
   <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>name_pointsasked: 
+  <li>$name_pointsasked: 
   <input size=4 name=mod_require value="$require">,
   $name_ofweight
   <input size=4 name=mod_weight value="$weight">.
@@ -198,15 +197,7 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
-$name_expiration1 ($l_date). $name_expiration2
-
-<p>
-!href cmd=resume $wims_name_back2
- ($wims_name_sheetmanagement)
-
- !exit
-!endif
-!msg $error
+ $name_expiration1 ($l_date). $name_expiration2
 
 <p>
 !href cmd=resume $wims_name_back2
