@@ -1,15 +1,20 @@
 
-$table_hdtr<th rowspan=2>Naam van de Klas
-<th colspan=2>Buren<br>declaratie</b><small>
-!href cmd=help&special_parm=neibordecl $wims_name_help
-</small>
-<th rowspan=2>Delen</b><small>
-!href cmd=help&special_parm=share $wims_name_help
-</small>
-<th rowspan=2>Supervisor
-<th rowspan=2>Taal
-$table_tr<td align=center><small>door U</small>
-<td align=center><small>door Anderen</small>
+$table_hdtr
+ <th rowspan=2>Naam van de Klas
+ <th colspan=2>Buren<br>declaratie</b><small> 
+  !href cmd=help&special_parm=neibordecl $wims_name_help
+ </small>
+ <th rowspan=2>Delen van lesmateriaal</b><small>
+ !href cmd=help&special_parm=share $wims_name_help
+ </small>
+ </th>
+ <th rowspan=2>Docent</th>
+ <th rowspan=2>$wims_name_language</th>
+ </tr>
+$table_hdtr
+ <td align=center><small>door U</small></td>
+ <td align=center><small>door Anderen</small></td>
+ </tr>
 !for i in $clst
  !set D_=!defof class_institution\
 class_description\
@@ -23,9 +28,11 @@ class_supervisor in wimshome/log/classes/$i/.def
  !if $i isitemof $n_part
   !set t_=$[$t_+2]
  !endif
- <tr><td align=center>
- !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
- <td align=center>$(n_n$t_)
+ $table_tr
+ <td align=center>
+  !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
+ </td>
+ <td align=center>$(n_n$t_)</td>
  !set t_=0
  !set D_=!defof n_sup\
 n_part\
@@ -38,10 +45,10 @@ sharing_all in wimshome/log/classes/$i/neighbors
  !if $wims_class isitemof $part or all isitemof $part
   !set t_=$[$t_+2]
  !endif
- <td align=center>$(n_n$t_)
+ <td align=center>$(n_n$t_)</td>
  !if $i notitemof $sharable_all,$sharing_all and\
 	$wims_class notitemof $nsharable,$nsharing
-  <td align=center>---
+  <td align=center>---</td>
  !else
   <td>
   !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
@@ -56,19 +63,18 @@ sharing_all in wimshome/log/classes/$i/neighbors
    !endif
   !else
    !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
-    Mutually allowing sharings
-    Gemeenschappelijk materiaal
-    .
+    Gemeenschappelijk materiaal.
    !else
     !if $i isitemof $sharable_all
-     Allowed to share your resources.
+     Mag uw materiaal lenen.
     !else
-     Allows you to share its resources.
+    Staat U toe hun lesmateriaal te delen.
     !endif
    !endif
   !endif
  !endif
- <td align=center><small>$s_</small>
- <td align=center>$l_
+ <td align=center><small>$s_</small></td>
+ <td align=center>$l_</td>
+ </tr>
 !next i
 

@@ -53,18 +53,39 @@ Voor beide klassen moet U de deling van materiaal beeindigen.
 !endif
 
 !if share_dep iswordof $error
-Bij het delen van bronnen met een "buurt-klas" moeten wel de enkele eigenschappen
-van het WIMS systeem worden gerespecteerd:<br>
-U moet oefeningen delen om werkbladen te kunnen delen (werkbladen zijn opgebouwd uit oefeningen)<br>
-U moet werkbladen delen om overhoringen/tentamens te kunnen delen (overhoringen/tentamens
-zijn dus opgebouwd uit actieve of verlopen werkbladen)<br> 
- !exit
+ Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord partager                                                
+ !if sheet iswordof $error                                                                                                                 
+  les exercices avant de partager les feuilles de travail.                                                                                 
+ !else                                                                                                                                     
+  !if exam iswordof $error                                                                                                                 
+   les exercices et les feuilles de travail avant de partager les examens.                                                                 
+  !else                                                                                                                                    
+   !if livret iswordof $error                                                                                                              
+    les exercices et les feuilles de travail avant de partager le livret de compétences.                                                   
+   !endif                                                                                                                                  
+  !endif                                                                                                                                   
+ !endif                                                                                                                                    
+ !exit                                                                                                                                     
+!endif
+
+!if stopshare_dep iswordof $error                                                                                                          
+ Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord arr&ecirc;ter le partage                                
+ !if sheet iswordof $error                                                                                                                 
+  des examens et du livret de compétences avant celui des feuilles de travail .                                                            
+ !else                                                                                                                                     
+  !if exo iswordof $error                                                                                                                  
+   des feuilles de travail avant celui des exercices.                                                                                      
+  !endif                                                                                                                                   
+ !endif                                                                                                                                    
+ !exit                                                                                                                                     
 !endif
 
 !if not_neighbor iswordof $error
 U hebt geef erkende "buurt-klas". 
  <br>
  Onthoud goed dat een klas pas echt een "buurt-klas" als dit door <b>beide</b> klassen wordt erkend !
+
+
  !exit
 !endif
 

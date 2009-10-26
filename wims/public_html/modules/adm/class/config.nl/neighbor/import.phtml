@@ -12,7 +12,7 @@ De virtuele klas
 <em><font color=blue>$nei_institution</font></em>
 !if $newcnt1+$newcnt2<1
 heeft niets dat U kunt delen/lenen.
- !href cmd=reply&job2=def Terug
+ !href cmd=reply&job2=def $wims_name_back2
 .
  !exit
 !endif
@@ -24,9 +24,9 @@ heeft het volgende -leenbare- materiaal.
 !if $newcnt1>0
  <p>$table_header
  <caption>Lesmateriaal</caption>
- $table_hdtr<th>Soort<th>Title<th><small>Naam</small>
- <th><small>Inhoud</small>
- <th>De zelfde naam in Uw klas<th>Importeer
+ $table_hdtr<th>$wims_name_Type</th><th>$wims_name_title</th><th><small>$wims_name_name</small></th>
+ <th><small>Inhoud</small></th>
+ <th>De zelfde naam in Uw klas</th><th>$wims_name_import</th>
  !for i=1 to $newcnt1
   !set l=!line $i of $newrec
   !set ll=!words2items $l
@@ -41,7 +41,7 @@ heeft het volgende -leenbare- materiaal.
    !if $(rcnt$i)=0
     Empty
    !else
-    <small>werk in uitvoering !!</small>
+    <small>werk in uitvoering </small>
    !endif
   !else
    !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
@@ -63,10 +63,10 @@ heeft het volgende -leenbare- materiaal.
   !href cmd=reply&job2=import2&import=user,-all- [import&nbsp;everybody]
  !endif
  </caption>
- $table_hdtr<th>login<th>Achternaam<th>Voornaam<th>Importeer
+  $table_hdtr<th>login</th><th>$wims_name_lastname</th><th>$wims_name_firstname</th><th>$wims_name_import</th>
  !for i=1 to $newcnt2
-  $table_tr<td>$(ulogin$i)
-  <td>$(uname2$i)<td>$(uname1$i)<td align=center>
+  $table_tr<td>$(ulogin$i)</td>
+  <td>$(uname2$i)</td><td>$(uname1$i)</td><td align=center>
   !if $(ucode$i)=1
    !href cmd=reply&job2=import2&import=user,$(ulogin$i) Toevoegen
   !else
@@ -78,6 +78,7 @@ heeft het volgende -leenbare- materiaal.
    
    !endif
   !endif
+  </td>
  !next i
  $table_end
 !endif

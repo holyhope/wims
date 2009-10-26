@@ -3,7 +3,7 @@
 !endif
 
 !distribute item Bericht van de dag,\
-	oefening,werkblad,overhoring,document,leerling\
+	oefening,werkblad,overhoring,document,student\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 
 Import van de klas
@@ -37,16 +37,15 @@ als in de "leenklas"
   <p>
  !endif
  !if replace iswordof $cfm
-  <b>WAARSCHUWING</b>.U bent van plan een bestaande $(name_$itype) in uw eigen klas te vervangen
-  door een "import" uit een buur-klas. 
-  Er is geen herstel meer mogelijk na deze handeling, en uw eigen bestaande  $(name_$itype), 
+  <b>Attentie</b>.U bent van plan een bestaande $(name_$itype) in uw eigen klas te vervangen
+  door een "import" uit een buur-klas. Er is geen herstel meer mogelijk na deze handeling, en uw eigen bestaande  $(name_$itype), 
   die afwijkt van de te importeren versie, zal dus voorgoed verloren zijn.
   <p>
  !endif
  <p><center><font size="+1">
  !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes Bevestigen
  &nbsp;
- !href cmd=reply&job2=import Annuleren
+ !href cmd=reply&job2=import $wims_name_giveup
  </font></center> <p>
  !exit
 !endif
@@ -54,16 +53,17 @@ als in de "leenklas"
 !if $result=none
 Er kon geen leerlingen account meer toegevoegd worden aan uw klas.
 Controleer s.v.p. of uw klas misschien reeds vol is.
- <p>
+ 
+<p>
  !exit
 !endif
-Geslaagde transfer
+
+Geslaagde transfer&nbsp;:
 !if $itype!=user
  one $(name_$itype).
  !if $itype iswordof sheet exam
   (Het geimporteerde $(name_$itype) is inactief gemaakt, 
-  zo dat U het naar eigen inzicht kunt modificeren)
-  <p>
+  zo dat U het naar eigen inzicht kunt modificeren).<p>
  !endif
 !else
  $importedcnt leerlingen acconts van de "buur-klas" accounts:

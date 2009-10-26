@@ -31,7 +31,7 @@ class_supervisor in wimshome/log/classes/$(sharing_$rec)/.def
 !if $sharable_all!=$empty
  <p>$table_header
  <caption>Klassen met toestemming om Uw materiaal te lenen</caption>
- $table_hdtr<th>Toegestaan materiaal<th>Naam van de klas<th>uitgeleend
+ $table_hdtr<th>Toegestaan materiaal</th><th>$wims_name_class</th><th>uitgeleend</th>
  !for r in $sharable
   !for cl in $(sharable_$r)
    $table_tr<td align=center>$(name_$r)
@@ -42,9 +42,9 @@ class_description in wimshome/log/classes/$cl/.def
    !href cmd=reply&job2=def&nei=$cl $i_<br>$d_
    !set s_=!defof $(sharing_$r) in wimshome/log/classes/$cl/neighbors
    !if $s_=$wims_class
-    <td align=center>Actief
+    </td><td align=center>Actief</td>
    !else
-    <td align=center>---
+    </td><td align=center>---</td>
    !endif
   !next cl
  !next r

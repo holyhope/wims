@@ -1,6 +1,10 @@
 !bound job2 within first,def,addshare,stopshare,sharelist,\
 	import,import2 default first
 
+!if $keyword=*
+ !reset keyword
+!endif
+
 !if $wims_superclass=$empty
  clfile=wimshome/log/classes/.index
  cllimit=50
@@ -8,6 +12,7 @@
  cllimit=300
  supertype=!defof class_type in wimshome/log/classes/$wims_superclass/.def
  !if $supertype=4 and / isin $wims_class
+  !reset excls
   cterms=!translate / to , in $wims_class
   clevel=!itemcnt $cterms
   !if $clevel>=3
@@ -36,7 +41,11 @@ $crs
   !endif
  !else
   scl=!item 1 of $wims_superclass
-  clfile=wimshome/log/classes/$scl/.subclasses
+  !if yes isin $excls
+   clfile=wimshome/log/classes/.index
+  !else
+   clfile=wimshome/log/classes/$scl/.subclasses
+  !endif
  !endif
 !endif
 
@@ -48,39 +57,50 @@ kw=!trim $kw
 kw=!singlespace $kw
 kw=!deaccent $kw
 kw=!tolower $kw
-!if $classcnt>1 and ($clist1$clist2=$empty or $keyword != $save_keyword)
+!if $keyword!=$empty
+ !reset excls
+!endif
+
+!if $classcnt>1 and ($clist1$clist2=$empty or $keyword != $save_keyword or yes isin $excls)
  !reset clist1 clist2
  save_keyword=$keyword
  !for c=1 to $classcnt
   l_=!record $c of $clfile
   n_=!item 1 of $l_
-  !if $kw != $empty
-   L_=!singlespace $l_
-   L_=!deaccent $L_
-   L_=!tolower $L_
-   !if $kw notin $L_
-    !goto loopend
-   !endif
-  !endif
-#  !if $n_>9999
-   ln=!defof class_lang in wimshome/log/classes/$n_/.def
-   !if $ln=$class_lang
-    !if $n_!=$wims_class
+  !if yes isin $excls
+   !if $n_<10000
+    ln=!defof class_lang in wimshome/log/classes/$n_/.def
+    !if $ln=$class_lang
      clist1=!append item $n_ to $clist1
-     !advance clgot
+    !else
+     clist2=!append item $n_ to $clist2    
     !endif
-   !else
-    !if $ln!=$empty
-     clist2=!append item $n_ to $clist2
-     !advance clgot
+   !endif  
+  !else
+   !if $kw != $empty
+    L_=!singlespace $l_
+    L_=!deaccent $L_
+    L_=!tolower $L_
+   !endif
+   !if $kw isin $L_ or $kw=$empty
+    ln=!defof class_lang in wimshome/log/classes/$n_/.def
+    !if $ln=$class_lang
+     !if $n_!=$wims_class
+      clist1=!append item $n_ to $clist1
+      !advance clgot
+     !endif
+    !else
+     !if $ln!=$empty
+      clist2=!append item $n_ to $clist2
+      !advance clgot
+     !endif
+    !endif
+    !if $clgot > $cllimit
+     toomany=yes
+     !break
     !endif
    !endif
-#  !endif
-  !if $clgot > $cllimit
-   toomany=yes
-   !break
   !endif
-  :loopend
  !next c
 !endif
 
