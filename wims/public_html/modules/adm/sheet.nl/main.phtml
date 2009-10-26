@@ -1,3 +1,4 @@
+!read names.phtml
 !if $job=print
  !changeto print.phtml
 !endif
@@ -15,15 +16,16 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
-Hier staat de broncode van het werkblad.
- U kunt deze importeren in Uw klas door te "knippen & plakken".
+$name_textsource
  <p><hr><pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
  </pre><hr>
- <p>
- !href cmd=resume&job=read Terug naar het werkblad.
+
+!set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
+to $wims_menu_items
+
  !tail
  !exit
 !endif
@@ -35,9 +37,8 @@ $sheet_remark
 <p>
 
 !if $n=0
- Het werkblad is leeg, dit is waarschijnlijk een fout.
+ $name_empty
 !else
- Het oefenmateriaal in dit werkblad:
  <div class="wims_sheet">
  <p><ul class="wims_sheet_list">
  !for i=1 to $n
@@ -48,20 +49,14 @@ $sheet_remark
   <li class="wims_sheet_list"><p>$i. 
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
 , $de
-!!  !if $require>0
-!!   <small>$[$got] uit $[$require] punten behaald, gemiddelde score
-!!   $[$mean]/10.</small>
-!!  !endif
  </li>
  !next i
  </ul>
  </div>
-  !if $wims_user=supervisor
-    !href cmd=reply&job=import Importeer                                                                                                      
-  dit werkblad in uw klas , of
-  !href cmd=reply&job=raw bekijke de boroncode
-  van het werkblad
-  <p>                                                                                                                                      
+ !if $wims_user=supervisor
+ !set wims_menu_items=!append line import,1,cmd=reply&job=import \
+ sheetsource,1,cmd=reply&job=raw\
+ to $wims_menu_items
  !endif
 !endif
 

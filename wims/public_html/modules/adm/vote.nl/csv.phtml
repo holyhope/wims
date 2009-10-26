@@ -10,30 +10,30 @@
 !if $outfile!=$empty
  Hier is het bestand <tt>
  !getfile $outfile $outfile
- </tt> dat geopend kan worden met een spreadsheet programma naar keuze.
+ </tt> dat geopend kan worden met een spreadsheet 
+ programma naar keuze.
  <p><hr> <p>
 !endif
 
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-
-U wilt de gegevens downloaden uit de vragenlijst nummer $vote : <font color=green>$vote_title</font>
-<ul>
-    <li>
-	formaat
-	!formselect csvformat list csv,tsv
-	<small>
-	    !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
-	</small>
-    </li>
+U wilt de gegevens downloaden 
+uit de vragenlijst nummer $vote : <font color=green>$vote_title</font>
+<ul><li>
+formaat
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats $wims_name_help
+</small>
+</li>
 !if $vote_option!=anonymous
-    <li> $name_data
-	!formradio csvoption list global,detail prompt $name_global,$name_detail
-	<small>
-	    !href module=$module&cmd=help&special_parm=csvvotes $wims_name_help
-	</small>
-    </li>
+<li> $name_data
+!formradio csvoption list global,detail prompt $name_global,$name_detail
+<small>
+!href module=$module&cmd=help&special_parm=csvvotes $wims_name_help
+</small>
+</li>
 !endif
 </ul>
 <center><input type=submit value="$wims_name_download"></center>

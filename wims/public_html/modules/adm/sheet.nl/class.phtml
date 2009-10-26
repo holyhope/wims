@@ -1,14 +1,14 @@
 
 !read adm/css.phtml
+!read names.phtml
 !header1
 
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
 !read adm/title.phtml 1\
-$wims_classname, $wims_institutionname\
-Werkblad nummer $sh<br>$sheet_title
-
+$wims_classname - $wims_institutionname\
+$name_title
 
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
@@ -16,51 +16,45 @@ Werkblad nummer $sh<br>$sheet_title
  !set expday=!char 7,8 of $sheet_expiration
  !set expmon=!char 5,6 of $sheet_expiration
  !set expyear=!char 1 to 4 of $sheet_expiration
- !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
+ !read adm/date.phtml
  !set expmon=!item $expmon of $months
- Je kunt aan dit werkblad werken <b>tot</b> 
- $expday $expmon $expyear.
+ $name_student1
  <p>
 !endif
 
 !if $sheet_active=2
- <b><font color=red>Waarschuwing</font></b>
- Dit werkblad is <b>verlopen</b>.<br>
- Je kunt er nog wel met werken, maar de cijfers worden niet langer bewaard.
+ <b><font color=red>$wims_name_warning</font></b>
+ $name_student2
  <p>
 !endif
-
 !if $n=0
  !if $sheet_active=$empty
- Je mag nog niet met dit werkblad te werken ; 
- vraag na bij je docent.
+  $name_student3
  !else
- Dit werkblad is leeg. Er is dus voorlopig voor jou hier niks te doen ;-)<br> 
- Mogelijk een foutje van je docent ?
+  $name_student4
  !endif
 !else
-De opdrachten in dit werkblad: (cijfer registratie is
  !set scorestat=!getscorestatus sheet=$sh
  !if $scorestat=yes
   !if $wims_scorereg!=suspend
-   open, maar je kunt het
-   !href cmd=resume&job=suspend opschorten
-.)
+   $name_scoreopen
+   !href cmd=resume&job=suspend $wims_name_scoreclose2
+.
 !set wims_menu_items=!append line scoreclose2,1,cmd=resume&job=suspend\
 to $wims_menu_items
   !else
    !set scorestat=no
-   door jezelf opgeschort.
-   !href cmd=resume&job=reopen reactiveren
-.)
+   $name_scoresuspend
+   !href cmd=resume&job=reopen $wims_name_scorereopen
+.
 !set wims_menu_items=!append line scorereopen,1,cmd=resume&job=reopen\
 to $wims_menu_items
   !endif
  !else
-  geloten voor jou.)
+ $name_scoreclose
  !endif
- <div class="wims_sheet"> 
- <p><ul>
+ <div class="wims_sheet">
+ <p><ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -68,32 +62,31 @@ to $wims_menu_items
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <li class="wims_sheet_list"><p>$i.
+  <li class="wims_sheet_list"><p>$i. 
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
    !if $require>0
-    <small>$[$got] uit $[$require] punten behaald, een gemiddelde score van
-    $[$mean]/10.</small>
+    <small>$name_score
+    $[$mean]/10. </small>
    !endif
   !else
-   <font color=red><b>$ti</b></font>, $de 
+   <font color=red><b>$ti</b></font>, $de
    !if $require>0
-    <small>($[$require] benodigde punten.)</small>
+    <small>($name_score2)</small>
    !endif
   !endif
   !if $dep!=$empty
-   <small>je moet
-   je cijfers voor 
+   <small>
    !if , isin $dep
-    deze oefeningen $dep
+    $name_deps $dep
    !else
-    deze oefening $dep
+    $name_dep $dep
    !endif
-    verbeteren voordat je verder mag.
+   $name_dep2
    </small>
   !endif
-  </li>
+ </li>
  !next i
  </ul>
  </div>
@@ -108,7 +101,7 @@ to $wims_menu_items
 to $wims_menu_items
  !if $exolog!=$empty
   !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
-to $wims_menu_items 
+to $wims_menu_items
  !endif
 !endif
 !tail

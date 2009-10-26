@@ -13,6 +13,7 @@
    Als dit niet de bedoeling is, graag
    !mailurl $wims_site_manager de systeembeheerder
     vragen de module "met de hand" te verwijderen 
+    
   !else
     U wordt een email ter bevestiging toegestuurd.
   !endif
@@ -24,8 +25,10 @@
  Deze module heeft versie WIMS-$Wver2 nodig,
  terwijl deze server versie $wims_version is.<br>
  U moet de INDEX file van de module even veranderen om dit recht te trekken.
+ 
+ 
  <p><center>
- !href cmd=help&special_parm=wimsversion Uitleg
+ !href cmd=help&special_parm=wimsversion $wims_name_Explanations
 .
  !href cmd=reply&vcheat=no OK, ga door
 .
@@ -36,7 +39,6 @@ Als U zeker bent van uw zaak, kunt U de andere servers
  (een rikante operatie...)
  !exit
 !endif
-
 
 !if $pubprep=yes
  !if $local!=yes
@@ -51,7 +53,7 @@ Als U zeker bent van uw zaak, kunt U de andere servers
   <tr><td align=right>Submissie id: </td>
   <td><input type=text size=20 name=submitauth value="$submitauth">
   </td></tr>
-  <tr><td align=right>Submissie wachtwoord: </td>
+  <tr><td align=right>$wims_name_Password: </td>
   <td><input type=password size=20 name=submitpass value="$submitpass">
   </td></tr>
   <tr><td align=right>Type publicatie: </td>
@@ -62,17 +64,17 @@ Als U zeker bent van uw zaak, kunt U de andere servers
 	stabiele versie - verander een bestaande module, \
 	stabiele versie - voeg een nieuwe module toe
   </td></tr>
-  <tr><td align=right>Is deze module een vertaalde module?
+  <tr><td align=right>Is deze module een vertaald ?<br>
+  en gemaakt door een ander ?
+  
   </td><td>
-
-
   !set istranslate=no
-  !formselect istranslate list yes,no prompt Ja,Nee
+  !formselect istranslate list yes,no prompt $wims_name_yes,$wims_name_no
   </td></tr>
   <tr><td align=right>Toegelaten mede-auteurs:
   </td><td>
   <input size=40 name=modifiers value="$modifiers">
-  !href cmd=help&special_parm=modifiers <sup>help</sup>
+  !href cmd=help&special_parm=modifiers <sup>$wims_name_help</sup>
   </td></tr>
   <tr><td colspan=2 align=center><input type=submit value=OK>
   </tr>$table_end <p>
@@ -84,11 +86,13 @@ Als U zeker bent van uw zaak, kunt U de andere servers
   Uw module heeft een lokaal adres. Het kan dus alleen worden gepubliceerd
   op deze lokale WIMS server. Wilt U toch doorgaan?
   <p><center>
-  !href cmd=reply&confirm=yes&vcheat=$vcheat Doorgaan
+  !href cmd=reply&confirm=yes&vcheat=$vcheat $wims_name_yes
   &nbsp;
-  !href cmd=reply&jobreq=flist Annuleren
+  !href cmd=reply&jobreq=flist $wims_name_giveup
   </center> <p>
+  
   Het grote voordeel van publicatie op een lokale WIMS server is,
-  dat de module door de zoekmachine van deze lokale server kan worden aangeroepen.  
+  dat de module door de zoekmachine van deze lokale server kan worden
+   aangeroepen.  
  !endif
 !endif

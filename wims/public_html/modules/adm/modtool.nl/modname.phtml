@@ -1,15 +1,15 @@
-
+!readproc names
 <p>
 !if $totalcnt>0
  !if $totalcnt>=$sellist
   U hebt $totalcnt modules in bewerking.
-  !href cmd=reply&jobreq=prop <small>Eigenschappen van mijn account</small>
+  !href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
   <p>
   !form reply
   Laat alleen modules zien waarvan het adres bevat
   <input type=text size=30 name=selectshow value="$selectshow">
   <input type=submit value=OK>
-  !href cmd=help&special_parm=regex <sup>help</sup>
+  !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
   </form> <p>
  !endif
  $table_header
@@ -20,31 +20,24 @@
  </caption>
  $table_hdtr<th>$wims_name_Address</th><th>$wims_name_action</th><th>$wims_name_Description</th>
  </tr>
+ 
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
   $table_tr<td><small>
   !replace internal ~ by ~ $ in $n $
   !if ~ notin $n
-   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [hernoemen]
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename] 
   !endif
   </small></td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
   <td align=center><small>
-  !href cmd=reply&jobreq=index&modreq=$n eigenschappen
+  !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
 
-  !href cmd=reply&jobreq=del&modreq=$n verwijderen
+  !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase 
   </small></td><td><small>$description</small></td>
   </tr>
  !next n
- $table_end <p>
- !!!href cmd=reply&jobreq=create Maak een nieuwe module
- !!.&nbsp;
- !!!href cmd=reply&jobreq=restore Zet een backup-file terug
-!! .&nbsp;gebruik&nbsp;
-!! !href cmd=new&module=adm/quicktool Quicktool
-!! .&nbsp;gebruik&nbsp;
-!! !href cmd=new&module=adm/latex2wims Latex2wims                                                                                    
-!! . 
+ $table_end
  !set wims_menu_items=!append line createnew,1,cmd=reply&jobreq=create\
  restore,1,cmd=reply&jobreq=restore\
  latex2wims,1,cmd=new&module=adm/latex2wims\
@@ -54,13 +47,11 @@
  !set wims_menu_items=!append line quicktool,1,cmd=new&module=adm/quicktool\
  to $wims_menu_items
 !else
- !set wims_menu_items=!append line ,0,$name_noquicktool\
+ !set wims_menu_items=!append line $name_noquicktool,0,$name_noquicktool\
  to $wims_menu_items
 !endif
-
 !else
-U hebt nog geen modules onder ontwikkeling.
-S.v.p.
+U hebt geen modules onder ontwikkeling. S.v.p.
  !href cmd=reply&jobreq=create klik hier
  om een nieuwe module te maken, of
  !href cmd=reply&jobreq=restore zet een backup-file terug

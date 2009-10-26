@@ -14,14 +14,18 @@
 !endif
 
 :antiwversion
- Uw module vereist WIMS versie WIMS-$w2 ? 
- Deze server is echter versie
+ Uw module vereist WIMS versie WIMS-$w2 ?  Deze server is echter versie
  $wims_version. Graag corrigeren.
 !exit
 
 :badauth
   Inlogfout. Toegang geweigerd.
 !exit
+
+:badauthhost
+ Identiteit verificatie fout. 
+ Het is niet toegestaan vanaf uw IP adres te publiceren.                                                                                                                       
+!exit 
 
 :badcategory                                                                                                                               
  !if / isin $w2                                                                                                                            
@@ -169,13 +173,19 @@ Netwerkfout :kon geen verbinding maken met de centrale publicatie host $centralh
 !exit
 
 :unpublishable
- Deze module geeft geen goedgekeurd publicatie adres.
- Deze module moet voor publicatie eerst worden 
- !href cmd=reply&jobreq=move&modreq=$mod hernoemd
- of
- !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod gedupliceerd
+Deze module heeft een niet geldig publicatie adres.
+Om verder te gaan kunt U de module
+!href cmd=reply&jobreq=move&modreq=$mod hernoemen
+of
+!href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod dupliceren
+.
+!if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
+En omdat deze module gemaakt is als een OEF, dient de naam te beginnen met <tt>oef</tt>.
+!endif
+!if doc iswordof  $w1 $w2 $w3 $w4 $w5 $w6
+En omdat deze module gemaakt is als een wims document , dient de naam te beginnen met <tt>doc</tt>.
+!endif
 !exit
-
 
 
 
