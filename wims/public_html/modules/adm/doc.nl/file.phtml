@@ -11,20 +11,20 @@
 !endif
 
 !if $quota_free<1
- U kunt geen bestanden meer toevoegen aan dit document: de grens van de maximale filegrootte op deze server is bereikt.
-
+ U kunt geen bestanden meer toevoegen aan dit document: 
+ de grens van de maximale bestands grootte op deze server is bereikt.
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- U kunt een bestand invoeren in dit document:
+ U kunt een bestand invoeren in dit document&nbsp;:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Beschikbare files in dit document:
+ <p>Beschikbare files in dit document&nbsp;:
  !for f in $flist
   !getfile doc/$f $f
   &nbsp;
@@ -32,7 +32,7 @@
  <p>
  !form reply
  <input type=hidden name=job2 value=erase>
- Verwijder een bestand:
+ Verwijder een bestand&nbsp;:
  !formselect job2 list $flist
  <input type=submit value=OK>
  </form>
