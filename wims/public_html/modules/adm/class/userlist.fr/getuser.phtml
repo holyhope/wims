@@ -12,6 +12,7 @@ $name_workdetail
 !if $user_email!=$empty
  &nbsp;$wims_name_email: <a href="mailto:$user_email">$user_email</a>
 !endif
+</font>
 </center>
   !if $user_photourl!=
    <img src="$user_photourl" width=100 style="position:absolute;top:auto;right:5%;" alt="$firstname $lastname">
@@ -168,10 +169,8 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
 !next i
 
 !if $exologs!=$empty
- <p>
- <center>
- !href module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser $name_reg_ex
-</center>
+ !set wims_menu_items=!append line reg_ex,1,module=adm/class/exolog&cmd=new&job=list&checkuser=$getuser\
+ to $wims_menu_items
 !endif
 
 <p>
