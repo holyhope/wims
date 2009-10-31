@@ -34,11 +34,11 @@ char *conffile=		"log/wims.conf";
 char *mlistbase=	"list";
 
 char lang[MAX_LANGS][4]={
-    "en","fr","cn","es","it","nl","si","ca"
+    "en","fr","cn","es","it","nl","si","ca","pt"
 };
 #define DEFAULT_LANGCNT	6
 char allang[MAX_LANGS][4]={
-    "en","fr","cn","es","it","nl","tw","de","si","ca"
+    "en","fr","cn","es","it","nl","tw","de","si","ca","pt"
 };
 #define allangcnt 8
 char ignore[MAX_LANGS][MAX_LINELEN+1];
