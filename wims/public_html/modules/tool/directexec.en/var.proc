@@ -16,7 +16,8 @@ SW=!item $sw1 of $swname
 compute=yes
 
 !reset wims_exec_error
-nonprintable=
+nonprintable=
+
 src=!translate internal $nonprintable to \
 	$                                           $ in $src
 src1=!replace internal &#36; by $$$$ in $src
@@ -38,6 +39,10 @@ src1=!replace internal &#36; by $$$$ in $src
 !endif
 
 swout=!exec $sw $src1
+!if $sw=pari
+  swout=!replace internal $ $ $ by $\
+$ in $swout
+!endif
 !if $sw=povray
  swout=!line -1 of $swout
 !endif
