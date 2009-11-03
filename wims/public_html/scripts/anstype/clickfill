@@ -55,11 +55,18 @@ diag=
 t_=!linecnt $good
 good=!replace internal , $ by , in $good
 dd=!replace internal , $ by , in $dd
+ddo=!sort items $dd
 !for n=1 to $t_
  g=!line $n of $good
  g=!trim $g
  !if $dd issametext $g
   diag=yes
+ !endif
+ !if noorder iswordof $(replyoption$i)
+   go=!sort items $g
+   !if $ddo issametext $go
+     diag=yes
+   !endif
  !endif
 !next n
 
