@@ -7,8 +7,8 @@
  !reset checked emph1 emph2
  !if $i iswordof $(parm$parmcnt)
   !set checked=checked
-  !set emph1=<b><i>
-  !set emph2=</b></i>
+  !set emph1=<b>$name_yourchoice<em>
+  !set emph2=</b></em>
  !endif
  !set i_1=<input type=radio name=parm$parmcnt value=$i $checked>
  !set i_2=$emph1 $(parms[$i]) $emph2
@@ -18,7 +18,7 @@
   !if $remain>0
    $i_1
   !endif
-  $i_2 ($remain remaining places).
+  $i_2 ($remain $name_remaining).
  !else
   $i_1 $i_2
   !if $(vcnt_$(parmcnt)_$i)!=$empty and $vshow=1
