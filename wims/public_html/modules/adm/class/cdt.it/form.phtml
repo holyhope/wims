@@ -16,7 +16,7 @@
    !let jyear2=!char 1 to 4 of $wims_now
    !let jmonth2=!char 5 to 6 of $wims_now
    !let jday2=!char 7 to 8 of $wims_now
-   !endif
+  !endif
   !distribute item 0,0,0 into jyear2,jday2,jmonth2
   !formselect jday2 list 0,$v prompt ---,$v
   !formselect jmonth2 from 0 to 12 prompt ---,$months
@@ -26,20 +26,12 @@
  </form>
 <p>
 
-!if $wims_user=supervisor and $cdt_supervise=yes 
- !set wims_menu_items= !append line "Inserisci una data",1,cmd=new&job=adddate\
- "Inserisci un file",1,cmd=reply&job=file\
- "Inserisci un compito da svolgere",1,cmd=new&job=addtodo\
- "Configurazione",1,cmd=reply&job=config to $wims_menu_items
- !!<p>
- !!!href cmd=new&job=adddate Inserisci una data
- !!&nbsp;
- !!!href cmd=reply&job=file Inserisci un file
- !!&nbsp;
- !!!href cmd=new&job=addtodo Inserisci un compito da svolgere
- !!&nbsp;
- !!!href cmd=reply&job=config Configurazione
-!! .
+!if $wims_user=supervisor and $cdt_supervise=yes
+ !set wims_menu_items= !append line adddate,1,cmd=new&job=adddate\
+ addfile,1,cmd=reply&job=file\
+ addtodo,1,cmd=new&job=addtodo\
+ config,1,cmd=reply&job=config\
+ to $wims_menu_items
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi

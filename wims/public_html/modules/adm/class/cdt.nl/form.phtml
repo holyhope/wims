@@ -26,21 +26,13 @@
   <small>als er geen tweede datum vermeld is, wordt uitgegaan van de eerste...</small>
  </form>
 <p>
-!if $wims_user=supervisor and $cdt_supervise=yes 
-!set wims_menu_items= !append line "Voeg een datum toe",1,cmd=new&job=adddate\
- "Voeg een bastand toe",1,cmd=reply&job=file\
- "Voeg huiswerk toe",1,cmd=new&job=addtodo\
- "Configureer",1,cmd=reply&job=config to $wims_menu_items
- 
- !!<p>
- !!!href cmd=new&job=adddate Voeg een datum toe
- !!&nbsp;
- !!!href cmd=reply&job=file Voeg een bastand toe
- !!&nbsp;
- !!!href cmd=new&job=addtodo Voeg huiswerk toe
- !!&nbsp;
- !!!href cmd=reply&job=config Configureer
- !!.
+
+!if $wims_user=supervisor and $cdt_supervise=yes
+ !set wims_menu_items= !append line adddate,1,cmd=new&job=adddate\
+ addfile,1,cmd=reply&job=file\
+ addtodo,1,cmd=new&job=addtodo\
+ config,1,cmd=reply&job=config\
+ to $wims_menu_items
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
