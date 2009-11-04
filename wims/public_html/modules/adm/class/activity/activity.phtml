@@ -2,7 +2,7 @@
  <p>
  !read msg.phtml
  <p>
- !href module=home $name_homeback 
+ !href module=home $wims_name_class_home 
 . <p>
  !goto end
 !endif
@@ -11,12 +11,12 @@
 $name_noparticipant
 !else
  <p>$table_header
- $table_hdtr<th>$name_lastname, $name_firstname</th>
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th><small>$name_cnt_exo 
  <br> ($nbexototal $name_exo)</small></th><th>$name_total</th>
  !for j=1 to $sheetcnt
  !if $(activ[$j])>0
-  <th colspan=2><small>$name_sheet $j <br>($(nbexo$j) $name_exo)</small></th>
+  <th colspan=2><small>$wims_name_Sheet $j <br>($(nbexo$j) $name_exo)</small></th>
  !endif
  !next j
  </tr>
@@ -47,12 +47,8 @@ $name_noparticipant
 !next
 $table_end
  <p>$name_click
-!! !href cmd=reply $name_refresh
-!! =<p>
-!! !href module=adm/class/userlist&job_affi=notes $name_notes
-!!.
-!set wims_menu_items=!append line "$name_refresh",1,cmd=reply\
-"$name_notes",1,module=adm/class/userlist&job_affi=notes\
+!set wims_menu_items=!append line refresh,1,cmd=reply\
+Score,1,module=adm/class/userlist&job_affi=notes\
 to $wims_menu_items
 
 :end
