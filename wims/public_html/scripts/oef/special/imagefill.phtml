@@ -35,6 +35,8 @@ reply 4,10x15
  type), and at respective positions 120x250, 300x50, 10x15 within the big
  image.
  <p> The big image will be stretched to fit exactly the specified size.
+ <p> It is possible to have multiple answers. Add a third integer parameter to the size
+ <tt>reply 1,120x250x4</tt> will show a field of length 4.
  !exit
 !endif
 !set parm=!replace internal $	$ by $ ; $ in $wims_read_parm
@@ -60,7 +62,8 @@ reply 4,10x15
 !for t=1 to $icnt
  !set l=!row $t of $parm2
  !set l=!translate x to , in $l
- !distribute item $l into n_,x_,y_
+ !distribute item $l into n_,x_,y_,sizei
+ !default sizei=1
  !set n_=!text select 0123456789()+-*/ in $n_
  !set n_=$[$n_]
  !bound n_ between integer 1 and 100 default $
@@ -70,7 +73,7 @@ reply 4,10x15
   !set embedded=!append item r$n_ to $embedded
   !set flist=!append item $n_ to $flist
   !set i=$n_
-  !set inputsize=$smallsize 1
+  !set inputsize=$smallsize $sizei
   !read anstype/fill.inc noshow
   !set hlist=$hlist<input type=hidden name=reply$n_ value="">
   !set fill_namelist=!append item $oldfillcnt to $fill_namelist
@@ -121,10 +124,11 @@ $thisjs
   var f_l$c=new DynLayer();
   var f_t$c=new DynLayer();
   f_l$c.setAnchor({topA:'fill$oldfillcnt',leftA:'fill$oldfillcnt',
-    left:$rx,top:$ry,stretchH:$ssizex,stretchV:$ssizey});
+    left:$rx,top:$ry,stretchH:$sizei*$ssizex,stretchV:$ssizey});
   dynapi.document.addChild(f_l$c);
   f_l$c.setBgColor('#$cl');
   !set ss=!replace internal " by \" in $(reply$i)
+  !set ss=!replace internal , by &nbsp; in $(reply$i)
   !set ss=!replace internal ' by \' in $ss
   f_l$c.setHTML($cc1+'$ss'+$cc2);
   !if $tt!=?analyze
