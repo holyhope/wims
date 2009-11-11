@@ -29,7 +29,6 @@ manger,fra,tag=baseform player=player
 !reset slib_out slib_son slib_Son slib_son_mod
 
 !distribute items $wims_read_parm into slib_word,slib_packs,slib_option,slib_optionhtml
-
 slib_son_mod=!singlespace $slib_word
 slib_son_mod=!replace internal $ $ by _ in $slib_son_mod
 slib_son_mod=!nospace $slib_son_mod
@@ -45,6 +44,7 @@ $ in $slib_word
 slib_word=!nonempty lines $slib_word
 slib_word_cnt=!linecnt $slib_word
 slib_tag = !getopt tag in $slib_option
+
 slib_tag=!word 1 of $slib_tag
 !default slib_tag=text
 slib_packs= !declosing $slib_packs
@@ -68,7 +68,7 @@ slib_audio=
    slib_adress=$slib_pack/sw_$(slib_tag)_keys
    slib_au=!lookup $slib_ww in data/swac/$(slib_adress)
    slib_au=!nospace $slib_au
-   slib_au=!makelist $slib_pack/x for x in $slib_au
+   slib_au=!makelist x for x in $slib_au
    !if $slib_ww=
      slib_au=!randrecord data/swac/$slib_pack/sw_index_keys
    !endif

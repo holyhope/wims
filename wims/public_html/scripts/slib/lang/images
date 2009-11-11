@@ -1,27 +1,30 @@
-!! not stable so don't appear in the index
 !if $wims_read_parm!=slib_header
-!!  !goto proc
-!! !endif
-!! slib_title=Images in some datamodule
-!! slib_parms=3\
-!! ,word or words\
-!! eng,language\
-!! small,size (small,medium,large)
-!! slib_out= Look for the word in the imagedir, then in the images in modules/data/language/images
-!! and give the code for insertion. Return -- if don't found.
-!! slib_comment=
-!! slib_example=[antelope,tree],eng
-!! !exit
+  !goto proc
+!endif
+slib_title=Images in some datamodule
+slib_parms=3\
+ ,word or words\
+eng,language\
+small,size (small,medium,large)
+slib_out= Look for the word in the imagedir, then in the images in modules/data/language/images\
+ and give the code for insertion. Return -- if don't found.
+slib_comment=
+slib_example=[antelope,tree],eng\
+[fourmi],fra\
+
+!exit
 
 :proc
-!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
- !exit
-!endif
+!!!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
+!! !exit
+!!!endif
 !reset slib_out slib_word slib_word_mod slib_word_test
-
+!set slib_dir1=language/images.fr
+!set slib_dir=$wims_home/public_html/modules/data/$slib_dir1
 !distribute items $wims_read_parm into slib_word,slib_lang,slib_size
 !default slib_lang=eng
 !default slib_size=small
+slib_size=small
 slib_word=!declosing $slib_word
 slib_word_mod=!singlespace $slib_word
 slib_word_mod=!trim $slib_word_mod
@@ -42,9 +45,9 @@ slib_cnt=!itemcnt $slib_word_mod
    !endif
  !next
  !if $slib_test = 0 
-   slib_word_test2=!lookup $(slib_word_mod[$slib_a]) in datamodule/language/images/$(slib_lang)_$slib_size.keys
+   slib_word_test2=!lookup $(slib_word[$slib_a]) in datamodule/$slib_dir1/$(slib_lang)_$slib_size.keys
    !if $slib_word_test2 notsametext
-    slib_rename= !rename modules/data/language/images/$slib_word_test2
+    slib_rename= !rename modules/data/$slib_dir1/$slib_word_test2
     slib_out=!append item <img src="$slib_rename"> to $slib_out
    !else
     slib_out=!append item -- to $slib_out
