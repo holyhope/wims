@@ -1,18 +1,11 @@
 !set wims_name_examremain=这次考试的剩余时间: $
 !read js/examclock1.phtml
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -20,16 +13,12 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 准备试卷 $exam
-!!<center>$classname
-!!<p>
-!!<h1>
-!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home 返回主页
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -61,10 +50,10 @@ $wims_classname - $wims_institutionname\
  !endif
 !href cmd=reply&job=deactivate Desactive it
 <p><center><table border=2>
- <tr><td align=right>标题:
+ <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value=修改>
- <tr><td align=right>描述:
+ <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>失效日期:<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
@@ -77,7 +66,7 @@ $wims_classname - $wims_institutionname\
 
 !form reply
 <input type=hidden name=job value=text>
-标题 (限$title_limit个字符):<br>
+$wims_name_title (限$title_limit个字符):<br>
 <input size=65 name=title value="$title"> <p>
 说明文字 (限$desc_limit个字符; 允许应用html tags或链接):<br>
 <textarea rows=6 cols=65 name=desc>$desc</textarea>

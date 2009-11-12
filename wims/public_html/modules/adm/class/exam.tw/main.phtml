@@ -1,38 +1,28 @@
 !set wims_name_examremain=Time left for this exam: $
 !read js/examclock1.phtml
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
-!if $job iswordof student score
+!if $job iswordof student score scorereg
  !changeto $job.phtml
 !endif
 
-<center>$classname
-<p>
-<h1>Preparation of exam $exam
-</h1></center> <p><hr width="40%"> <p>
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$title $exam
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Back to home page
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -43,7 +33,7 @@
  This exam is
  !if $activetest=1
   active.
-  !href cmd=reply&job=expire Expire it
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -55,14 +45,14 @@
   !endif
   .
   !href cmd=reply&job=reactivate Reactivate it
-. <p>
+.
  !endif
  !href cmd=reply&job=deactivate Desactive it
  <center><table border=2>
- <tr><td align=right>Title:
+ <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modify>
- <tr><td align=right>Description:
+ <td rowspan=3><input type=submit value="$wims_name_change">
+ <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Expiration date:<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
@@ -75,7 +65,7 @@
 
 !form reply
 <input type=hidden name=job value=text>
-Title (limited to $title_limit characters):<br>
+$wims_name_title (limited to $title_limit characters):<br>
 <input size=65 name=title value="$title"> <p>
 And a text of explanation (limited to $desc_limit characters; html
 tags and links are allowed):<br>
@@ -93,7 +83,7 @@ tags and links are allowed):<br>
 minutes. Each participant can take the exam up to
 !default stries=3
 <input size=3 name=tries value="$stries"> times.
-<input type=submit value="Register">
+<input type=submit value="$wims_name_tosave">
 
 !ifval $activetest=-1
  <p>This exam does not exist yet.
@@ -128,18 +118,20 @@ minutes. Each participant can take the exam up to
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Move&nbsp;up
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Modify
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Delete
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Add another exercise
+, $wims_name_or
+ !href cmd=reply&job=cpsheet add a series of exercises
 .
  !endif
 !endif
@@ -161,9 +153,19 @@ minutes. Each participant can take the exam up to
 	open to all, open for simulation,\
 	closed to all, open to following hosts (and/or hours):
  <br><input size=50 name=IPlist value="$IPlist"> <br>
+ Cut times:
+ <input size=50 name=cutt value="$cutt"> <br>
  <input type=submit value="$wims_name_tosave">
+ !set allowshare=0
+ !if $sharers!=$empty
+  ( for all sharing classes:
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
+  )
+ !else
+  <input type=hidden name=allowshare value=0>
+ !endif
  </form>
- <small><b>Hint.</b> In the selective open mode, you can make time
+ <small><b>$wims_name_help.</b> In the selective open mode, you can make time
  restrictions for score registrations, by adding words 
  <font color=blue><b>
  <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
@@ -172,6 +174,13 @@ minutes. Each participant can take the exam up to
  <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
  (ending time). These must be in the
  SERVER's local time, and must be separated from other words by white spaces.
+ <br>
+ Cut times are used to let people take the exam in different sessions. A
+ participant having worked on the exam before a cut time will have no access
+ after the cut time.
+ <br>
+ Format of cut times: <tt>yyyymmdd.hh:mm</tt> (separate several cut times
+ by white spaces).
  </small>
 !endif
 :end

@@ -1,3 +1,4 @@
+!set done=done
 
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
@@ -12,7 +13,7 @@ $desc<p>
  <p>
  !read msg.phtml
  <p>
- !href module=home Back to home page
+ !href module=home $wims_name_back
 . <p>
  !exit
 !endif
@@ -25,81 +26,125 @@ $desc<p>
  The exam is empty! Nothing is assigned in it. Possibly an 
  error in the manipulation by your supervisor.
 !else
- !set t_=!getscorestatus sheet=$exam exam=yes
- Assigned works in this exam:<p><ul>
- !for i=1 to $exocnt
-  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti
-  <li><p>$i. 
-  !if $t_=yes
+ Assigned works in this exam:
+ !set activeexo=0
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+  <center>
+ !endif
+ <table border=0 class="wims_exam">
+  !for lig=1 to $maxlig
+   <tr>
+    !for col=1 to $maxcol
+     !let i=$[$col*$maxlig+$lig-$maxlig]
+      !if $i<=$exocnt
+!! -------------------------- debut de la ligne correspondant р un exercice de l'examen
+ !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+ !distribute lines $ex into we,li,ti,de,op
+ !set de=!trim $de
+ <td>$i.</td> 
+ !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+   ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    $ti (done).
+    <td>$ti </td><td>$done</td>
    !else
-    !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-.
+    !if $de!=$empty
+     !set dt=!examdep $exam $de
+    !else
+     !set dt=yes
+    !endif
+    !if $dt=yes
+     !advance activeexo
+     <td>
+     !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
+</td><td class="empty">&nbsp;</td>
+     !if autogen iswordof $op and $wims_exam_remain!=$empty
+      !set ss=$(wims_session)t$(exam)t$i
+      !set test=!defof w_cmd in wimshome/sessions/$ss/var
+      !if $test=$empty
+       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+       <img src="$test" height=1 width=1 border=0>
+      !endif
+     !endif
+    !else
+     <td><b><font color=red>$ti</font></b> </td><td>Requires
+     !href cmd=reply&job=student the success on other exercises
+.</td>
+    !endif
    !endif
   !else
-   $ti.
+   <td>$ti.</td><td class="empty"></td>
   !endif
- !next i
- </ul>
+!! ------------------------------fin d'affichage de la ligne correspondant ра un exercice
+      !endif
+    !next col
+   </tr>
+  !next lig
+ </table>
+ !if $maxcol>1
+  </center>
+ !endif
  !if $t_=no
   This exam is actually closed for your connection.
-  !href cmd=reply&job=student Refresh this page.
+  !href cmd=reply&job=student $wims_name_refresh
  !else
   !if $stries=1
-   You can register score only once on this exam.
+   You can try this exam only once.
   !else
-   You can register up to $stries scores on this exam, each registration
-   erasint the preceding ones.
+   You can try this exam up to $stries times.
   !endif
-  !if $tryremain<=0
-   You have already made $tried score registrations, and can no longer
-   register any more score.
-  !else
-   And you can still make $tryremain registrations.
+  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
+   !if $trcut=0
+    You have already finished your exam session with $tried tries,
+   !else
+    You have already tried $tried times, 
+   !endif
+   therefore you can no longer improve your scores.
+   !set exhausted=yes
   !endif
-  !if $registered=$empty
-   You have $sdure minutes to work on this exam. The count down will start
-   when you click on an exercise above.
+  !if $tryremain>0
+   And you can still make $tryremain new tries.
+  !endif
+  !if $registered=$empty and $exhausted!=yes
+   You have $sdure minutes to work on this exam.
+   When you click on an exercise above, 
+   !if $allowtype!=simulation
+    the count-down will start, and the number of tries will be advanced by
+    one.
+   !else
+    the count-down will start.
+   !endif
   !else
-   (Quit the class and reenter with your password if you want to abandon
-   this exam session and get a new one.)
+   !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
+    This is your last available try. Take care!
+   !endif
   !endif
   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-!!  !href cmd=reply&job=student Refresh this page.
-!!&nbsp;
-!!  !href cmd=reply&job=score My score.
   !if $activeexo<1
-&nbsp;
-!set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+!set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
 to $wims_menu_items
   !endif
  !endif
 !endif
 
 !if $t_=yes
- !if $allowtype!=simulation
-  <p><b>Warning.</b> We suggest that you temporarily put this page into your
-  bookmark, so that in the case of a browser crash during the exam, you can
-  recover your work.
- !else
+ !if $allowtype=simulation
   <p>This exam is in simulation mode. It works exactly as in a true exam, 
-  except that you cannot register the score.
+  except that you cannot register the score, and your try will not be counted.
  !endif
 !endif
 
 !if $wims_user=supervisor
 !set wims_menu_items=!append line backteacher,1,cmd=resume\
  to $wims_menu_items
- !!<p><center>
- !!!href cmd=resume Back to the page for supervisor.
-!! </center>
 !endif
 
 !tail
 
 !reset job
+
 

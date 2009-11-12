@@ -1,18 +1,10 @@
 !set wims_name_examremain=Preostali èas za re¹evanje: $
 !read js/examclock1.phtml
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=$wims_html_onload>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read names.phtml
-
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -21,11 +13,6 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 Priprava izpita $exam
-
-!!<center>$classname
-!!<p>
-!!<h1>Priprava izpita $exam
-!!</h1></center> <p><hr width="40%"> <p>
 
 !if $error!=$empty
  <p>
@@ -63,10 +50,10 @@ Priprava izpita $exam
  !endif
  !href cmd=reply&job=deactivate Desactive it
  <center><table border=2>
- <tr><td align=right>Naslov:
+ <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value=Modify>
- <tr><td align=right>Opis:
+ <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Datum zakljuèka:<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
@@ -79,7 +66,7 @@ Priprava izpita $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Naslov (najveè $title_limit znakov):<br>
+$wims_name_title (najveè $title_limit znakov):<br>
 <input size=65 name=title value="$title"> <p>
 Besedilo opisa (najveè $desc_limit znakov; dovoljeni so html
 ukazi in hiperpovezave):<br>

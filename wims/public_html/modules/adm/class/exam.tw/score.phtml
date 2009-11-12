@@ -1,20 +1,20 @@
 
 !if $job=score
-!read adm/title.phtml 1\
-$wims_classname, $wims_institutionname\
-$title
-
+ !read adm/title.phtml 1\
+ $wims_classname, $wims_institutionname\
+ $title
+ 
  !if $wims_user=supervisor
   <center>(Presentation for participants)</center>
  !endif
-<p>$desc<p>
+  <p>$desc<p>
 !endif
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Back to home page
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -24,8 +24,8 @@ $title
  error in the manipulation by your supervisor.
 !else
  <p><center><table border=1 bgcolor=bisque>
- <caption>Current score</caption>
- <tr><th>Exercise<th>Title<th>Weight<th>Score
+ <caption>Current score detail</caption>
+ <tr><th>$wims_name_Exercise<th>$wims_name_title</th><th>Weight<th>Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
@@ -40,7 +40,7 @@ $title
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Global score of the exam: <b>$score</b> <small>over 10</small>.
+ Score of this exam session: <b>$score</b> <small>over 10</small>.
  $table_end
 !endif
 <p>
@@ -49,42 +49,28 @@ $title
  You have not yet started your work on the exam.
  !href cmd=reply&job=student Go to start the work.
 !else
- !if $registered>0
-  !if $timeleft<=0
-   Time is up!<p>
+ !if $timeleft<=0
+   Time is up!
    You have used up the $sdure minutes allocated for this exam.
-   !if $score>$lastscore
-    Now you should
-    !href cmd=reply&job=scorereg register your score
-    in order for it to take effect.
-   !else
-    Your score ($score) being no better than your last registered score
-    ($lastscore), the former will be ignored.
-   !endif
-  !else
-   !if $score>$lastscore
-    Your score will not be effective until you
-    !href cmd=reply&job=scorereg register it
-. And the registration of score terminates this examination session.
-    !if $allowtype=simulation
-     (Simulation mode.)
-    !endif
-   !else
-    Your current score ($score) is no better than your last registered score
-    ($lastscore).
-   !endif
-  !endif
-  <p>
-  !href cmd=reply&job=student Back to work on the exam.
- !else
-  This exam session is terminated.
-  !if $allowtype=simulation
-   But your score is not taken into account because this exam is in 
-   simulation mode.
-  !endif
-  (Quit the class and reenter with your password if you want to
-  start a new session of exam.)
+   <p>
  !endif
+ !if $allowtype=simulation
+  The current score is not taken into account, because
+  the exam is in simulation mode.
+  !if $lastscore>0
+   (Your real score for this exam sheet is $lastscore.)
+  !endif
+ !else
+  Your best score for this exam is $lastscore. (It is the best score 
+  which will be taken into account.)
+ !endif
+ <p>
+!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test>=2
+ !href cmd=reply&job=scorereg Finish this exam session.
+&nbsp;&nbsp;
+!endif
+ !href cmd=reply&job=student Back to work on the exam.
 !endif
 
 !if $wims_user=supervisor

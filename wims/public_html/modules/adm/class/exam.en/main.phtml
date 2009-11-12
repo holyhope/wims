@@ -33,7 +33,7 @@ $title $exam
  This exam is
  !if $activetest=1
   active.
-  !href cmd=reply&job=expire Expire it
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -65,7 +65,7 @@ $title $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Title (limited to $title_limit characters):<br>
+$wims_name_title (limited to $title_limit characters):<br>
 <input size=65 name=title value="$title"> <p>
 And a text of explanation (limited to $desc_limit characters; html
 tags and links are allowed):<br>
@@ -106,8 +106,6 @@ minutes. Each participant can take the exam up to
 !if $exocnt=0
  This exam has no content yet.
  !href cmd=reply&job=exo&exo=1 Add an exercise
-, or
- !href cmd=reply&job=cpsheet add a series of exercises
 .
 !else
  <a name=list>
