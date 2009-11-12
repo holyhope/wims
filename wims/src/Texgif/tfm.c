@@ -21,7 +21,7 @@ struct tfm {
     int bc, ec;
     int checksum, designsize;
     struct f {
-	long int w,h,d;
+	int32_t w,h,d;
     } f[256];
 } tfm;
 
@@ -44,8 +44,8 @@ void loadtfm(char *fname)
 {
     int i, k, t, len, charcnt;
     char namebuf[1024];
-    long int *wpbase;
-    long int *headp, *fp, *fip, *wp, *hp, *dp;
+    int32_t *wpbase;
+    int32_t *headp, *fp, *fip, *wp, *hp, *dp;
     unsigned char *tfmbuf, *ftp;
 
     memset(&tfm,0,sizeof(tfm));
@@ -59,7 +59,7 @@ void loadtfm(char *fname)
     tfm.bc=tfmbc; tfm.ec=tfmec;
     charcnt=tfmec-tfmbc+1;
     if(charcnt<=0) return;
-    wpbase=(long int *) tfmbuf;
+    wpbase=(int32_t *) tfmbuf;
     headp=wpbase+6; 		/* header */
     fp=headp+tfmlh; 		/* font info */
     wp=fp+charcnt;		/* width table */
