@@ -1,0 +1,13 @@
+
+!set name_title=Activités individuelles globales
+!set name_noparticipant=Cette classe n'a pas encore de participant.
+!set name_lastconnexion=Dernière connexion
+!set name_total=temps total
+!set name_click=Cliquez sur un nom pour voir le détail de son travail.
+!set name_nbsessions=Nb. sessions
+!set name_exo=exercices
+!set name_time=Temps
+!set name_cnt_exo=Nb. d'exercices
+
+!set name_not_supervisor=Désolé, mais cette opération est réservée aux enseignants enregistrés d'une classe.
+!set name_bad_class=Etrange, mais je trouve que votre classe n'est pas valide!
