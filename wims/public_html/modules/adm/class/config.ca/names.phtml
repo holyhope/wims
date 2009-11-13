@@ -7,20 +7,60 @@
 !set title=Configuració i Manteniment
 !if $job=arch
  !set title=Còpia de seguretat i Restauració
+ !goto commun
 !endif
 
 !if $job=clean
  !set title=Manteniment de la classe
+ !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Classes veïnes
+ !goto commun
 !endif
 
 !if $job=connect
  !set title=Connectar a altres servidors / plataformes
+ !goto commun
 !endif
 
+!if $job=access
+ !set title=Configuration de l'accès aux ressources
+ !goto commun
+!endif
+
+!if $job2=addshare
+ !set title=Partager les ressources d'une classe
+ !goto commun
+!endif
+
+!if $job=grestrict
+ !set title=Restriction de l'accès aux scores
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=Configuration de l'apparence de la classe.
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=Paramétrage par défaut des modules OEF
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=Activités de gestion de sécurité disponibles
+ !goto commun
+!endif
+
+!if $job=authtype
+ !set title=Authentification par un annuaire ldap
+ !goto commun
+!endif
+
+:commun
 !distribute line Autentificació\
 Preferències\
 Restriccions d'accés\
@@ -33,9 +73,12 @@ Altres servidors\
 Contrasenyes\
 Enviar les configuracions a les subclasses\
 Aspecte\
+Restriction des scores\
+Adresse d'une plateforme\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
-wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present
+wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
+wims_name_config_score,wims_name_config_ent
 
 !distribute items subclasses,participants,exercicis,documents,professors\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers

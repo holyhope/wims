@@ -7,20 +7,60 @@
 !set title=配置与维护
 !if $job=arch
  !set title=备份与恢复
+ !goto commun
 !endif
 
 !if $job=clean
  !set title=清除班级
+ !goto commun
 !endif
 
 !if $job=neighbor
  !set title=相邻班
+ !goto commun
 !endif
 
 !if $job=connect
  !set title=连接到其它服务器/平台
+ !goto commun
 !endif
 
+!if $job=access
+ !set title=资源存取配置
+ !goto commun
+!endif
+
+!if $job2=addshare
+ !set title=Share resources on class 
+ !goto commun
+!endif
+
+!if $job=grestrict
+ !set title=Score restriction
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=班级外观的配置
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=Default configuration for OEF modules
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=可用的安全管理活动
+ !goto commun
+!endif
+
+!if $job=authtype
+ !set title=Ldap authentification
+ !goto commun
+!endif
+
+:commun
 !distribute line Authentification\
 我的个人喜好\
 资源限制\
@@ -33,9 +73,12 @@ Param閠rage OEF\
 密码\
 传送配置到分班\
 外观\
+Score restriction\
+Platform address\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
-wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present
+wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
+wims_name_config_score,wims_name_config_ent
 
 !distribute items 分班,参加者,练习,文件, 教师\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers

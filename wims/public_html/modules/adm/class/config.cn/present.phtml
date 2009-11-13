@@ -1,17 +1,16 @@
 
-班级外观的配置
 !set wims_form_method=file
 !form reply
 <input type=hidden name=up_job value=present>
 <p>$table_header
 $table_tr<td align=right>班级的图标
 <small>
-!href cmd=help&special_parm=config&special_parm2=logo 帮助
+!href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 <td><input size=45 name=pr_logo value="$class_logo">
 $table_tr<td align=right>图标位置
 <small>
-!href cmd=help&special_parm=config&special_parm2=logo 帮助
+!href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 <td>
 !set pr_logoside=$class_logoside
@@ -20,31 +19,32 @@ $table_tr<td align=right>图标位置
 .
 $table_tr<td align=right>参加者主页
 <small>
-!href cmd=help&special_parm=config&special_parm2=homepage 帮助
+!href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
  </small>
 <td><input size=45 name=pr_homepage value="$class_homepage">
 $table_tr<td align=right>页面背景色
 <small>
-!href cmd=help&special_parm=config&special_parm2=bgcolor 帮助
+!href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
 <td><input size=10 name=pr_bgcolor value="$class_bgcolor">
 $table_tr<td align=right>菜单背景色
 <small>
-!href cmd=help&special_parm=config&special_parm2=bgcolor 帮助
+!href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
 <td><input size=10 name=pr_refcolor value="$class_refcolor">
 $table_tr<td align=right>背景图形文件
 <small>
-!href cmd=help&special_parm=config&special_parm2=bgimg 帮助
+!href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
  </small>
 <td><input size=45 name=pr_bgimg value="$class_bgimg">
 $table_tr<td align=right>班级的格式主题
 <small>
-!href cmd=help&special_parm=config&special_parm2=theme 帮助
+!href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
  </small>
-<td>
+</td><td>
 !set pr_theme=$class_theme
 !formselect pr_theme list $themelist
+</td></tr>
 $table_tr<td align=right>Icones de la classe
 <small>
 !href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
@@ -55,27 +55,32 @@ $table_tr<td align=right>Icones de la classe
 </td></tr>
 $table_tr<td align=right>格式页(css)
 <small>
-!href cmd=help&special_parm=config&special_parm2=css 帮助
+!href cmd=help&special_parm=config&special_parm2=css $wims_name_help
  </small>
 <td>
 !set pr_css=$class_css
 !formselect pr_css list $csslist
 $table_tr<td align=right valign=middle>你可以在这里定义班级的格式页:
 <small>
-!href cmd=help&special_parm=config&special_parm2=css 帮助
+!href cmd=help&special_parm=config&special_parm2=css $wims_name_help
 </small>
 <td valign=middle>
 download a css-style file
 <input type=file name=wims_deposit>
 <br>
-<textarea rows=6 cols=45 name=pr_cssfile>$cssfile</textarea>
+<textarea rows=6 cols=45 name=pr_cssfile>
+$cssfile
+</textarea>
+</td></tr>
 $table_hdtr<td align=center colspan=2>
-<input type=submit name=save value=保存>
+<input type=submit name=save value="$wims_name_tosave">
 &nbsp;
-<input type=submit name=abandon value=恢复>
+<input type=submit name=abandon value="$wims_name_giveup">
+</td></tr>
 $table_end <p>
 </form>
 
-!reset pr_logo, pr_logoside, pr_bgcolor, pr_refcolor, \
-    pr_bgimg, pr_css, pr_theme, pr_theme_icon, pr_homepage, pr_cssfile
+
+!reset pr_logo, pr_logoside, pr_bgcolor,\
+	pr_refcolor, pr_bgimg, pr_theme, pr_css, pr_theme_icon, pr_homepage, pr_cssfile
 

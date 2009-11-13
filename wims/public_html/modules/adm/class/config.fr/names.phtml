@@ -1,8 +1,7 @@
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
-	
-	
+
 !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
 
 !set title=Configuration et Maintenance
@@ -32,10 +31,34 @@
 !endif
 
 !if $job2=addshare
- !set title=Partager les ressources sur la classe
+ !set title=Partager les ressources d'une classe
  !goto commun
 !endif
 
+!if $job=grestrict
+ !set title=Restriction de l'accès aux scores
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=Configuration de l'apparence de la classe.
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=Paramétrage par défaut des modules OEF
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=Activités de gestion de sécurité disponibles
+ !goto commun
+!endif
+
+!if $job=authtype
+ !set title=Authentification par un annuaire ldap
+ !goto commun
+!endif
 
 :commun
 !distribute line Authentification\

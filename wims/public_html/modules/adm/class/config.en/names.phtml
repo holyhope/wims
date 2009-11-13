@@ -1,26 +1,66 @@
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
  of <b><font color=green>$wims_institutionname</font></b>
- 
+
 !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
 
 !set title=Configuration and Maintenance
 !if $job=arch
  !set title=Backup and Restoration
+ !goto commun
 !endif
 
 !if $job=clean
  !set title=Clean up the class
+ !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Class neighbors
+ !goto commun
 !endif
 
 !if $job=connect
  !set title=Connect to other servers / platforms
+ !goto commun
 !endif
 
+!if $job=access
+ !set title=Resource access configuration
+ !goto commun
+!endif
+
+!if $job2=addshare
+ !set title=Share resources on class 
+ !goto commun
+!endif
+
+!if $job=grestrict
+ !set title=Score restriction
+ !goto commun
+!endif
+
+!if $job=present
+ !set title=Configuration of appearances of the class.
+ !goto commun
+!endif
+
+!if $job=oefdefault
+ !set title=Default configuration for OEF modules
+ !goto commun
+!endif
+
+!if $job=security
+ !set title=Available security management activities
+ !goto commun
+!endif
+
+!if $job=authtype
+ !set title=Ldap authentification
+ !goto commun
+!endif
+
+:commun
 !distribute line Authentification\
 My personal preferences\
 Resource restrictions\
@@ -33,9 +73,12 @@ Other servers\
 Passwords\
 Send setups to subclasses\
 Appearances\
+Score restriction\
+Platform address\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
-wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present
+wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
+wims_name_config_score,wims_name_config_ent
 
 !distribute items subclasses,participants,exercises,documents,teachers\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
