@@ -1,4 +1,5 @@
 !nocache
+!!!set module_language=$lang
 !set proc=oef
 !if robot isin $session
  !changeto content.html
@@ -44,20 +45,21 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
  </b>.
  !set exoo=!item 1 of $exolist
  !href cmd=new&module=$module&exo=$exoo $name_tryit
- !exit
 !endif
 
 !form new
 <input type=hidden name=module value="$module">
-<center><table border=0><tr>
-!set special_parm=!trim $special_parm
-!if select iswordof $special_parm2 and $special_parm!=$empty
- <td align=center>$name_exercisescontaining<br>
- <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
-!else
- <td align=center>$name_chooseexo:<td>
+<center><table border=0>
+!if $exocnt>1
+ !set special_parm=!trim $special_parm
+ !if select iswordof $special_parm2 and $special_parm!=$empty
+  <td align=center>$name_exercisescontaining<br>
+  <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+ !else
+  <td align=center>$name_chooseexo:<td>
+ !endif
+ !read oef/select.phtml
 !endif
-!read oef/select.phtml
 <tr><td align=center>$name_oneserie<td>
 !default qnum=1
 !formselect qnum from 1 to 9
@@ -92,12 +94,12 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
    <tr><td align=left>
    !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
    !let tmp=!replace word expert by $ in $special_parm2
-   </td></tr>
+    <input type=hidden name=intro_expert value=yes>
+    </td></tr>
   !if $wims_class=$empty or $wims_user!=supervisor
    <tr><td colspan=2 align=center>
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp $name_simplifiedmenu
   !endif
-   <input type=hidden name=intro_expert value=yes>
 !else
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert
