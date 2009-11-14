@@ -2,5 +2,78 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
 
-!set months=january,february,march,april,may,june,july,august,september,october,november,december
+!!!set months=january,february,march,april,may,june,july,august,september,october,november,december
 
+!if $job=adddate
+  !set cdt_subtitle=Ajout/Modification d'une date
+  !goto common
+!endif
+
+!if $job=addtodo
+  !set cdt_subtitle=Ajout de devoirs
+  !goto common
+!endif
+
+!if $job=logfile
+  !set cdt_subtitle=Fiche d'enregistrement
+  !set name_text=Voici l'enregistrement des connections au cahier de texte de la classe
+  !goto common
+!endif
+
+!if $job=config
+  !set cdt_subtitle=Fiche d'enregistrement
+  !set name_link=Nom du lien sur la page d'accueil
+  !set name_intro=Voici les paramètres que vous pouvez changer
+  !set name_see=Voir
+  !set name_see2=le fichier de connexion au cahier de texte de la classe  
+  !goto common
+!endif
+
+!if $job=file
+  !set name_erasedfile=!nosubst Le fichier <b>$erase</b> a été effacé.
+  !set name_depos=Vous pouvez déposer un fichier&nbsp;
+  !set name_available=Fichiers disponibles dans
+  !set name_erase=Effacer un fichier
+  !set name_nodeposit=Vous ne pouvez plus déposer de fichier car son contenu est très proche, ou a dépassé, la limite d'espace disque autorisé. Désolé.
+  !goto common
+!endif
+
+!if $job=helplink
+  !set name_Add=Pour ajouter un objet, cliquer sur le lien correspondant.
+  !set name_exam=Examens&nbsp;
+  !goto common
+!endif
+
+:common
+!distribute line le travail effectué\
+le travail à faire\
+entre le\
+et le\
+Ajout d'un examen\
+Ajout d'une feuille d'exercices\
+pour le\
+Travail à faire \
+Devoirs\
+Nombre de dates à afficher\
+Travail à faire pour le \
+Travail effectué\
+Séance du\
+caractères\
+Aucune information\
+Aucune information pour ce jour\
+Aucune information pour cette période\
+Jour\
+Matières\
+En classe\
+Donné le\
+Il n'y a pas de travail à faire pour le\
+into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
+name_work,name_nb_date,name_todo2,name_workdone,name_session,\
+name_character,name_noinfo1,name_noinfo2,name_noinfo3,\
+name_Day,name_discipline,name_inclass,name_giventhe,name_nowork
+
+!set name_warning1=Si vous ne saisissez pas de deuxième date, vous effectuerez \
+une recherche sur la première date.
+
+!set name_date=!nosubst $jday/$jmonth/$jyear
+!set name_date2=!nosubst $jday2/$jmonth2/$jyear2

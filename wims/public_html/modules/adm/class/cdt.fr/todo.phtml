@@ -3,11 +3,11 @@ $wims_classname - $wims_institutionname\
 $cdt_title
 
 <center>
- <font size="+1"><b>Travail à faire 
+ <font size="+1"><b>$name_worktodo
  !if $jour_begin!=$jour_end
-  entre le <font color=green>$jday/$jmonth/$jyear</font> et le <font color=green>$jday2/$jmonth2/$jyear2</font>
+  $name_between <font color=green>$name_date</font> $name_and <font color=green>$name_date2</font>
  !else
-  pour le <font color=green>$jday/$jmonth/$jyear</font>
+  pour le <font color=green>$name_date</font>
  !endif
 </b></font>
 </center> 
@@ -18,18 +18,18 @@ $cdt_title
 !endif
 
 !if $nbligne=0
- Il n'y a pas de travail à faire pour le $jday/$jmonth/$jyear.
+ $name_nowork $name_date.
  <p>
  !goto end
 !endif
  <center>
  $table_header
  $table_hdtr 
-  <th>Pour le</th>
+  <th>$name_for</th>
   !if no isin $cdt_supervise
-   <th>Matières</th>
+   <th>$name_discipline</th>
   !endif
-  <th>Travail</th><th>Donné le</th>
+  <th>$name_work</th><th>$name_giventhe</th>
  </tr>
  !for i=1 to $nbligne
   $table_tr
@@ -54,7 +54,7 @@ $cdt_title
  !next i
  $table_end
 <p>
- !href target=wims_new cmd=new&module=$module&job=todo&job2=print&jday=$jday&jyear=$jyear&jmonth=$jmonth&jday2=$jday2&jyear2=$jyear2&jmonth2=$jmonth2 Imprimer
+ !href target=wims_new cmd=new&module=$module&job=todo&job2=print&jday=$jday&jyear=$jyear&jmonth=$jmonth&jday2=$jday2&jyear2=$jyear2&jmonth2=$jmonth2 $wims_name_print
 </center>
 
 :end

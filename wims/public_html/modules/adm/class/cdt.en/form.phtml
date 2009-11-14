@@ -1,29 +1,29 @@
 
 !form reply
-  <input type=submit value=Show>
+  <input type=submit value=$wims_name_Show>
   !reset job
-  !formselect job list work,todo prompt Work,Work to do 
-  between
+  !formselect job list work,todo prompt $name_done,$name_todo 
+  $name_between
   !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
   !let v=!values v for v=1 to 31
+  !read adm/date.phtml
   !let creyear=!char 1 to 4 of $class_creation
   !let expyear=!char 1 to 4 of $class_expiration
   !formselect jyear from $creyear to $expyear
   !formselect jmonth from 1 to 12 prompt $months
   !formselect jday list 0,$v prompt ---,$v
-  and
+  $name_and
   !if $jyear2=$empty or $jyear2=0 
    !let jyear2=!char 1 to 4 of $wims_now
    !let jmonth2=!char 5 to 6 of $wims_now
    !let jday2=!char 7 to 8 of $wims_now
   !endif
   !distribute item 0,0,0 into jyear2,jday2,jmonth2
-  !let v=!values v for v=$creyear to $expyear
-  !formselect jyear2 list 0,$v prompt ---,$v
+  !let v1=!values v for v=$creyear to $expyear
+  !formselect jyear2 list 0,$v1 prompt ---,$v1
   !formselect jmonth2 from 0 to 12 prompt ---,$months
-  !let v=!values v for v=1 to 31  
   !formselect jday2 list 0,$v prompt ---,$v
-  <small> if a second date is not entered queries will be based on the first date.</small>
+  <br><small> $name_warning1</small>
  </form>
 <p>
 

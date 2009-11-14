@@ -1,7 +1,6 @@
-!read adm/title.phtml 1\
-$wims_classname - $wims_institutionname\
+!read adm/title.phtml 3\
 $cdt_title\
-File deposit
+$wims_name_binfile
 
 !if $error!=$empty
  !read msg.phtml
@@ -9,24 +8,24 @@ File deposit
 !endif
 
 !if $erase!=$empty
- The file <b>$erase</b> has been deleted.
+$name_erasedfile
  <p>
 !endif
 
 !if $quota_free<1
- You can no longer deposit files because the content of the class is very close to, or exceeded, the limit of disk space allowance. Sorry.
+ $name_nodeposit
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- You can deposit a file :
+ $name_depos:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Available files &nbsp;:
+ <p>$name_available:
  !for f in $flist
   !getfile cdt/$wims_class/$f $f
   &nbsp;
@@ -34,9 +33,9 @@ File deposit
  <p>
  !form reply
  <input type=hidden name=job2 value=erase>
- Erase a file &nbsp;:
+ $name_erase:
  !formselect job2 list $flist
- <input type=submit value=OK
+ <input type=submit value=OK>
  </form>
  <p>
  Files can be accessed using the variable

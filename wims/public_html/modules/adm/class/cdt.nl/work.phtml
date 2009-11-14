@@ -1,12 +1,12 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title
-<center>
- <b><font size="+1">
+
+<center> <b><font size="+1">
  !if $jour_begin!=$empty
-  tussen <font color=green>$jyear/$jmonth/$jday</font>
+  tussen <font color=green>$name_date</font>
   !if $jour_begin!=$jour_end
-   en <font color=green>$jyear2/$jmonth2/$jday2</font>
+   en <font color=green>$name_date2</font>
   !endif
  !endif
  </font></b>
@@ -40,7 +40,7 @@ $cdt_title
   !endif
   <th>In klas</th><th>Huiswerk</th><th width=30>voor</th>
   !if $wims_user=supervisor and yes isin $cdt_supervise
-   <th>Actie</th>
+   <th>$wims_name_action</th>
   !endif
  </tr>
  !for i=1 to $nbligne
@@ -73,9 +73,9 @@ $cdt_title
    !endif
    !if $wims_user=supervisor and yes isin $cdt_supervise
     <td rowspan=$nbtodo>
-    !href cmd=new&job=adddate&filename=$jour Veranderen
+    !href cmd=new&job=adddate&filename=$jour $wims_name_change
     &nbsp;
-    !href cmd=new&job=del&filename=$jour Verwijderen
+    !href cmd=new&job=del&filename=$jour $wims_name_erase
    !endif
   </tr>
    !if $nbtodo>1
@@ -97,7 +97,7 @@ $cdt_title
  $table_end
 !if $nbligne>0
  <p>
- !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 Printen
+ !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 $wims_name_print
 !endif
  </center>
 

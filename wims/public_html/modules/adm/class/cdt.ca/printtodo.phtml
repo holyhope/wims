@@ -1,18 +1,21 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title
- <center><font size="+1"><b>Travail à faire 
+
+<center>
+ <font size="+1"><b>$name_worktodo
  !if $jour_begin!=$jour_end
-  entre le <font color=green>$jday/$jmonth/$jyear</font> et le <font color=green>$jday2/$jmonth2/$jyear2</font>
+  $name_between <font color=green>$name_date</font> $name_and <font color=green>$jday2/$jmonth2/$jyear2</font>
  !else
-  pour le <font color=green>$jday/$jmonth/$jyear</font>
+  $name_for 
+  <font color=green>$name_date</font>
  !endif
 </b></font>
 </center> 
 <p><p>
 
 !if $nbligne=0
- Il n'y a pas de travail à faire pour le $jday/$jmonth/$jyear.
+ $name_text $name_date.
  <p>
  !goto end
 !endif
@@ -20,11 +23,11 @@ $cdt_title
  !let table_border=1
  $table_header
  $table_hdtr 
-  <th>Pour le</th>
+  <th>$name_for</th>
   !if no isin $cdt_supervise
-   <th>Matières</th>
+   <th>$name_discipline</th>
   !endif
-  <th>Travail</th><th>Donné le</th>
+  <th>$name_work</th><th>$name_giventhe</th>
  </tr>
  !for i=1 to $nbligne
   $table_tr
@@ -49,9 +52,6 @@ $cdt_title
  !next i
  $table_end
 :end
-!!<div class="wims_noprint">
-!!<a href="javascript:window.print()">Imprimer la page</a> &nbsp; 
-!!<a href="javascript:window.close()">Fermer la fenêtre</a>
-!!</div><!--end of wims_noprint-->
+
 !tail
 

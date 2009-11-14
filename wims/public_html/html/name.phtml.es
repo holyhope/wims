@@ -286,8 +286,9 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
    Añadir deberes \
    Configurar \
    Abandonar \
-  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup
-
+   Cahier de texte\
+  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
+  wims_name_cdt
 
 !set wims_name_supervisor=administrador
 !set wims_name_teacher=Cuentas de profesores

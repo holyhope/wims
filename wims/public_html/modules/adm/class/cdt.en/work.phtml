@@ -4,9 +4,9 @@ $cdt_title
 
 <center> <b><font size="+1">
  !if $jour_begin!=$empty
-  between <font color=green>$jyear/$jmonth/$jday</font>
+  $name_between <font color=green>$name_date</font>
   !if $jour_begin!=$jour_end
-   and <font color=green>$jyear2/$jmonth2/$jday2</font>
+   $name_and <font color=green>$name_date2</font>
   !endif
  !endif
  </font></b>
@@ -18,14 +18,14 @@ $cdt_title
 <p><p>
 
 !if $cdt_nbdate=0
- no information.
+ $name_noinfo1.
  !goto end
 !else
  !if $nbligne=0
   !if $jour_begin=$jour_end
-   no information for this day.
+   $name_noinfo2.
   !else
-   no information for this period.
+   $name_noinfo3.
   !endif
   !goto end
  !endif
@@ -34,13 +34,13 @@ $cdt_title
 <center>
  $table_header
  $table_hdtr 
-  <th>Day</th>
+  <th>$name_Day</th>
   !if no isin $cdt_supervise
-   <th>Discipline</th>
+   <th>$name_discipline</th>
   !endif
-  <th>In class</th><th>Work to do</th><th width=30>for</th>
+  <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
   !if $wims_user=supervisor and yes isin $cdt_supervise
-   <th>Action</th>
+   <th>$wims_name_action</th>
   !endif
  </tr>
  !for i=1 to $nbligne
@@ -73,9 +73,9 @@ $cdt_title
    !endif
    !if $wims_user=supervisor and yes isin $cdt_supervise
     <td rowspan=$nbtodo>
-    !href cmd=new&job=adddate&filename=$jour Modify
+    !href cmd=new&job=adddate&filename=$jour $wims_name_change
     &nbsp;
-    !href cmd=new&job=del&filename=$jour Delete
+    !href cmd=new&job=del&filename=$jour $wims_name_erase
    !endif
   </tr>
    !if $nbtodo>1
@@ -97,7 +97,7 @@ $cdt_title
  $table_end
 !if $nbligne>0
  <p>
- !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 Print
+ !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 $wims_name_print
 !endif
  </center>
 

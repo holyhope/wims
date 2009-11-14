@@ -1,8 +1,6 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
+!read names
 !header1
 
 !read adm/title.phtml 1\
@@ -17,9 +15,9 @@ De volgende items kunnen worden geconfigureerd :
 !form reply
 <input type=hidden name=job value=config>
 <ul>
- <li><p>Titel &nbsp;:<br>
+ <li><p>$wims_name_title:<br>
   <input size=60 name=cf_title value="$cf_title">
- <li><p>Omschrijving &nbsp;:<br>
+ <li><p>$wims_name_Description&nbsp;:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea></li>
  <li><p>De linknaam op de homepagina &nbsp; : <input size=60 name=cf_link value="$cdt_link"></li> 
  <li><p>
@@ -28,11 +26,9 @@ De volgende items kunnen worden geconfigureerd :
   </a> van de agenda zien 
   .</li>
 </ul>
-<p><center><input type=submit name=cf_set value="Opslaan">
-&nbsp;&nbsp;<input type=submit name=cf_abandon value="Annuleren">
+<p><center><input type=submit name=cf_set value="$wims_name_tosave">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="$wims_name_giveup">
 </center> <p></form>
-!!<p>
-!! !href cmd=reply&job=home Terug
-!! .
+
 !set wims_menu_items=!append line back2,1,cmd=reply&job=home\
 to $wims_menu_items

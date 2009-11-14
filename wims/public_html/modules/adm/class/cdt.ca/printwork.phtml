@@ -2,11 +2,12 @@
 $wims_classname - $wims_institutionname\
 $cdt_title
 
-<center> <b><font size="+1">
+<center>
+ <b><font size="+1">
  !if $jour_begin!=$empty
-  du <font color=green>$jday/$jmonth/$jyear</font>
+  $name_between <font color=green>$name_date</font>
   !if $jour_begin!=$jour_end
-   au <font color=green>$jday2/$jmonth2/$jyear2</font>
+   $name_and <font color=green>$name_date2</font>
   !endif
  !endif
  </font></b>
@@ -14,14 +15,14 @@ $cdt_title
 
 <p><p>
 !if $cdt_nbdate=0
- Aucune information.
+ $name_noinfo1
  !goto end
 !else
  !if $nbligne=0
   !if $jour_begin=$jour_end
-   Aucune information pour ce jour.
+   $name_noinfo2.
   !else
-   Aucune information pour cette période.
+   $name_noinfo3.
   !endif
   !goto end
  !endif
@@ -30,11 +31,11 @@ $cdt_title
  !let table_border=1
  $table_header
  $table_hdtr 
-  <th>Jour</th>
+  <th>$name_Day</th>
   !if no isin $cdt_supervise
-   <th>Matières</th>
+   <th>$name_discipline</th>
   !endif
-  <th>En classe</th><th>Travail à faire</th><th width=30>Pour le</th>
+  <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
  </tr>
  !for i=1 to $nbligne
   !let mem_tr=$table_tr
@@ -85,9 +86,5 @@ $cdt_title
 <p><p>
 
 :end
-!!<div class="wims_noprint">
-!!<a href="javascript:window.print()">Imprimer la page</a> &nbsp; 
-!!<a href="javascript:window.close()">Fermer la fen&ecirc;tre</a>
-!!</div><!--end of wims_noprint-->
 
 !tail

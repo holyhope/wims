@@ -1,14 +1,11 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-Add/Modify date
+$cdt_subtitle
 
 !if $error!=$empty
  <p>
@@ -18,7 +15,7 @@ Add/Modify date
 !form reply
 <input type=hidden name=job value=adddate>
 <input type=hidden name=job2 value=save>
-<p>Session  :
+<p>$name_session:
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -31,7 +28,7 @@ Add/Modify date
 !formselect jmonth from 1 to 12 prompt $months
 !formselect jday from 1 to 31
 <p>
-Work (limit to $desc_limit chars) : [ 
+$name_workdone (limit to $desc_limit $name_character) : [ 
 !href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
  ] 
 <br>
@@ -39,9 +36,9 @@ Work (limit to $desc_limit chars) : [
 !replace internal \( by &#92;( in $jdesc
 </textarea>
 <p>
-<center><hr width="30%"><b>Work to do</b></center>
+<center><hr width="30%"><b>$name_worktodo</b></center>
 <br>
-Number of dates to be displayed : 
+$name_nb_date: 
 <select  name="nbredevoir" onchange="submit()">
 !for i=0 to $max_todo
  !if $i=$nbredevoir
@@ -53,7 +50,7 @@ Number of dates to be displayed :
 </select>
 
  !for i=1 to $nbredevoir
-  <br>Work to do for the 
+  <br>$name_todo2
    !if $(dday$i)=$empty
     !let dday$i=$jday
     !let dyear$i=$jyear
@@ -72,13 +69,10 @@ Number of dates to be displayed :
 </textarea>
  !next i
 <center><hr width="30%">
-<p><input type=submit value="Save">
+<p><input type=submit value="$wims_name_tosave">
 </center>
 </form>
 
-!!<p><p>
-!!!href cmd=reply&job=home Back
-!!.
 !set wims_menu_items=!append line back2,1,cmd=new&job=home\
 to $wims_menu_items
 !tail

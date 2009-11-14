@@ -1,12 +1,13 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title
+
 <center>
  <font size="+1"><b>Huiswerk 
  !if $jour_begin!=$jour_end
-  tussen <font color=green>$jyear/$jmonth/$jday</font> en <font color=green>$jyear2/$jmonth2/$jday2</font>
+  tussen <font color=green>$name_date</font> en <font color=green>$jyear2/$jmonth2/$jday2</font>
  !else
-  voor <font color=green>$jyear/$jmonth/$jday</font>
+  voor <font color=green>$name_date</font>
  !endif
 </b></font>
 </center> 
@@ -17,7 +18,7 @@ $cdt_title
 !endif
 
 !if $nbligne=0
- er is geen huiswerk opgegeven voor $jyear/$jmonth/$jday.
+ er is geen huiswerk opgegeven voor $name_date.
  <p>
  !goto end
 !endif
@@ -53,7 +54,7 @@ $cdt_title
  !next i
  $table_end
 <p>
- !href target=wims_new cmd=new&module=$module&job=todo&job2=print&jday=$jday&jyear=$jyear&jmonth=$jmonth&jday2=$jday2&jyear2=$jyear2&jmonth2=$jmonth2 Printen
+ !href target=wims_new cmd=new&module=$module&job=todo&job2=print&jday=$jday&jyear=$jyear&jmonth=$jmonth&jday2=$jday2&jyear2=$jyear2&jmonth2=$jmonth2 $wims_name_print
 </center>
 
 :end

@@ -1,28 +1,29 @@
 
 !form reply
-  <input type=submit value=Afficher>
+  <input type=submit value=$wims_name_Show>
   !reset job
-  !formselect job list work,todo prompt le travail effectué,le travail à faire 
-  entre le
+  !formselect job list work,todo prompt $name_done,$name_todo 
+  $name_between
   !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
   !let v=!values v for v=1 to 31
-  !formselect jday list 0,$v prompt ---,$v
-  !formselect jmonth from 1 to 12 prompt $months
+  !read adm/date.phtml
   !let creyear=!char 1 to 4 of $class_creation
   !let expyear=!char 1 to 4 of $class_expiration
+  !formselect jday list 0,$v prompt ---,$v
+  !formselect jmonth from 1 to 12 prompt $months
   !formselect jyear from $creyear to $expyear
-  et le
+  $name_and
   !if $jyear2=$empty or $jyear2=0 
    !let jyear2=!char 1 to 4 of $wims_now
    !let jmonth2=!char 5 to 6 of $wims_now
    !let jday2=!char 7 to 8 of $wims_now
   !endif
   !distribute item 0,0,0 into jyear2,jday2,jmonth2
+  !let v1=!values v for v=$creyear to $expyear
   !formselect jday2 list 0,$v prompt ---,$v
-  !formselect jmonth2 from 0 to 12 prompt ---,$months
-  !let v=!values v for v=$creyear to $expyear
-  !formselect jyear2 list 0,$v prompt ---,$v
-  <br><small> Si vous ne saisissez pas de deuxième date, vous effectuerez une recherche sur la première date.</small>
+  !formselect jmonth2 from 0 to 12 prompt ---,$months 
+  !formselect jyear2 list 0,$v1 prompt ---,$v1
+  <br><small> $name_warning1</small>
  </form>
 <p>
 

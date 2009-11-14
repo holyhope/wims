@@ -1,19 +1,21 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title
+
 <center>
  <font size="+1"><b>Work to do
  !if $jour_begin!=$jour_end
-  tra il <font color=green>$jday/$jmonth/$jyear</font> e il <font color=green>$jday2/$jmonth2/$jyear2</font>
+  tra il <font color=green>$name_date</font> e il <font color=green>$jday2/$jmonth2/$jyear2</font>
  !else
-  per il <font color=green>$jday/$jmonth/$jyear</font>
+  per il 
+  <font color=green>$name_date</font>
  !endif
 </b></font>
 </center> 
 <p><p>
 
 !if $nbligne=0
- Non c'è lavoro da svolgere per il $jday/$jmonth/$jyear.
+ Non c'è lavoro da svolgere per il $name_date.
  <p>
  !goto end
 !endif
@@ -50,9 +52,6 @@ $cdt_title
  !next i
  $table_end
 :end
-!!<div class="wims_noprint">
-!!<a href="javascript:window.print()">Print</a> &nbsp; 
-!!<a href="javascript:window.close()">Close window</a>
-!!</div><!--end of wims_noprint-->
+
 !tail
 

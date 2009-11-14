@@ -1,34 +1,29 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
+!read names
 !header1
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-Configuration panel
+$wims_name_config
 
-Here the parameters you can change :
-
+$name_intro:
 !form reply
 <input type=hidden name=job value=config>
 <ul>
- <li><p>Title &nbsp;:<br>
+ <li><p>$wims_name_title :<br>
   <input size=60 name=cf_title value="$cf_title">
- <li><p>Description&nbsp;:<br>
+ <li><p>$wims_name_Description :<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea></li>
- <li><p>Name of the link in Home page &nbsp; : <input size=60 name=cf_link value="$cdt_link"></li> 
+ <li><p>$name_link: <input size=60 name=cf_link value="$cdt_link"></li> 
  <li><p>
-  !href cmd=renew&job=logfile View 
-  the log file of the agenda.</li>
+  !href cmd=renew&job=logfile $name_see
+  $name_see2.</li>
 </ul>
-<p><center><input type=submit name=cf_set value="Save">
-&nbsp;&nbsp;<input type=submit name=cf_abandon value="Cancel">
+<p><center><input type=submit name=cf_set value="$wims_name_tosave">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="$wims_name_giveup">
 </center> <p></form>
-!!<p>
-!! !href cmd=reply&job=home Back
-!! .
+
 !set wims_menu_items=!append line back2,1,cmd=reply&job=home\
 to $wims_menu_items

@@ -1,12 +1,12 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title
-<center>
- <b><font size="+1">
+
+<center> <b><font size="+1">
  !if $jour_begin!=$empty
-  da <font color=green>$jday/$jmonth/$jyear</font>
+  da <font color=green>$name_date</font>
   !if $jour_begin!=$jour_end
-   a <font color=green>$jday2/$jmonth2/$jyear2</font>
+   a <font color=green>$name_date2</font>
   !endif
  !endif
  </font></b>
@@ -40,7 +40,7 @@ $cdt_title
   !endif
   <th>in aula</th><th>da svolgere</th><th width=45>entro</th>
   !if $wims_user=supervisor and yes isin $cdt_supervise
-   <th>gestione</th>
+   <th>$wims_name_action</th>
   !endif
  </tr>
  !for i=1 to $nbligne
@@ -97,7 +97,7 @@ $cdt_title
  $table_end
 !if $nbligne>0
  <p>
- !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 Stampa
+ !href target=wims_new module=$module&cmd=new&job=work&job2=print&jday=$jday&jmonth=$jmonth&jyear=$jyear&jyear2=$jyear2&jmonth2=$jmonth2&jday2=$jday2 $wims_name_print
 !endif
  </center>
 

@@ -6,11 +6,11 @@ $wims_html_header
 <script language='javascript'>
   function addsheet(num,msg){
        ta1=window.opener.document.forms[0].elements['$cible'];
-       ta1.value=ta1.value+' sheet n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fsheet&+sh='+num+'}{'+msg+'}';
+       ta1.value=ta1.value+' $wims_name_sheet n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fsheet&+sh='+num+'}{'+msg+'}';
   }
   function addexam(num,msg){
        ta1=window.opener.document.forms[0].elements['$cible'];
-       ta1.value=ta1.value+' Examen n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fclass%2Fexam&+exam='+num+'}{'+msg+'}';
+       ta1.value=ta1.value+' $wims_name_Examen n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fclass%2Fexam&+exam='+num+'}{'+msg+'}';
   }
   function addfile(msg){
      ta1=window.opener.document.forms[0].elements['$cible'];
@@ -18,17 +18,19 @@ $wims_html_header
   }
   function adddoc(num,msg){
      ta1=window.opener.document.forms[0].elements['$cible'];
-     ta1.value=ta1.value+' Document : \\exercise{module=adm%2Fdoc&+job=read&+doc='+num+'}{'+msg+'}';
+     ta1.value=ta1.value+' $wims_name_doc : \\exercise{module=adm%2Fdoc&+job=read&+doc='+num+'}{'+msg+'}';
  }
  function addpdoc(num,msg){
      ta1=window.opener.document.forms[0].elements['$cible'];
-     ta1.value=ta1.value+' Document : \\exercise{module='+num+'}{'+msg+'}';
+     ta1.value=ta1.value+' $wims_name_doc : \\exercise{module='+num+'}{'+msg+'}';
   }
 </script>
+!read names
 
+$name_Add <p>
 !let nb=!itemcnt $sheet_nums
 !if $nb!=0
-  Voeg werkblad toe :<br>
+  $wims_name_sheet:<br>
   !for i in $sheet_nums
    !set title_js=!replace internal ' by \' in $(sheet_titles[$i])
    <a href="javascript:addsheet($i,'$title_js');">$(sheet_titles[$i])</a> ; &nbsp; 
@@ -52,20 +54,23 @@ $wims_html_header
    <a href="javascript:addfile('$(file_titles[$i])');">$(file_titles[$i])</a> ; &nbsp; 
   !next i
 !endif
-
+<p>
 !if $nbdocs > 0
  <p>
   !for i=1 to $nbdocs
     !set title_js=!replace internal ' by \' in $(doc_titles[$i])
-   <a href="javascript:adddoc('$(doc_nums[$i])','$title_js');">$(doc_titles[$i])</a> ; &nbsp; 
+    !if $title_js!=
+   <a href="javascript:adddoc('$(doc_nums[$i])','$title_js');">$(doc_titles[$i])</a> ; &nbsp;
+    !endif
   !next i
 !endif
 
 !if $nbpdocs > 0
- <p>
   !for i=1 to $nbpdocs
     !set title_js=!replace internal ' by \' in $(pdoc_titles[$i])
-   <a href="javascript:addpdoc('$(pdoc_adds[$i])','$title_js');">$(pdoc_titles[$i])</a> ; &nbsp; 
+    !if $title_js!=
+      <a href="javascript:addpdoc('$(pdoc_adds[$i])','$title_js');">$(pdoc_titles[$i])</a> ; &nbsp;
+    !endif
   !next i
 !endif
 

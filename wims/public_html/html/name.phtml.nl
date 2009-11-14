@@ -285,7 +285,9 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
    Bewerk de ToDo lijst\
    Configureren\
    Herstellen\
-  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup
+   Agenda\
+  into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
+  wims_name_cdt
 
 !set wims_name_supervisor=administrator
 !set wims_name_Supervisor=Administrator

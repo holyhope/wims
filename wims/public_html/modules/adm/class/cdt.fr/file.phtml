@@ -1,6 +1,6 @@
 !read adm/title.phtml 3\
 $cdt_title\
-Dépôt de fichier
+$wims_name_binfile
 
 !if $error!=$empty
  !read msg.phtml
@@ -8,24 +8,24 @@ Dépôt de fichier
 !endif
 
 !if $erase!=$empty
- Le fichier <b>$erase</b> a été effacé.
+$name_erasedfile
  <p>
 !endif
 
 !if $quota_free<1
- Vous ne pouvez plus déposer de fichier car son contenu est très proche, ou a dépassé, la limite d'espace disque autorisé. Désolé.
+ $name_nodeposit
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- Vous pouvez déposer un fichier&nbsp;:
+ $name_depos:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Fichiers disponibles dans &nbsp;:
+ <p>$name_available:
  !for f in $flist
   !getfile cdt/$wims_class/$f $f
   &nbsp;
@@ -33,7 +33,7 @@ Dépôt de fichier
  <p>
  !form reply
  <input type=hidden name=job2 value=erase>
- Effacer un fichier&nbsp;:
+ $name_erase:
  !formselect job2 list $flist
  <input type=submit value=OK>
  </form>
@@ -41,7 +41,7 @@ Dépôt de fichier
  Ces fichiers sont accessibles à l'aide de la variable
  <tt>\filedir</tt>. Par exemple,
 <p><center>
- <tt>&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
  crée un lien vers le fichier <a href="$m_filedir/$f1">$f1</a>.
  Vous pouvez aussi écrire
