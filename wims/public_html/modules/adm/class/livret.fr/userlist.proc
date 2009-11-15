@@ -8,7 +8,7 @@ userlist=$empty
  s_$user=!getscore user=$user
  userlist=!append item $user to $userlist
  !for k=1 to $livret_nbcomp
-  t=!record $k of wimshome/log/classes/$wims_class/livret/.comps
+  t=!record $k of $livret_dir/.comps
   !distribute line $t into title_$k,nbpalier_$k
   !for l=1 to $(nbpalier_$k)
     l_$(user)_$(k)_$(l)=0
@@ -18,7 +18,7 @@ userlist=$empty
 
 !for k=1 to $livret_nbcomp
  !for l=1 to $(nbpalier_$k)
-  list=!record $l of wimshome/log/classes/$wims_class/livret/.comp$k
+  list=!record $l of $livret_dir/.comp$k
   list=!line 2 of $list
   list2=$empty
   !for it in $list

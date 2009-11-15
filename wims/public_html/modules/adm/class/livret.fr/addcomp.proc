@@ -12,7 +12,7 @@
  !exit
 !endif 
 
-tmp=!record $comp of wimshome/log/classes/$wims_class/livret/.comps
+tmp=!record $comp of $livret_dir/.comps
 !distribute line $tmp into mem_title,mem_nbpalier
 
 !if $cf_set!=$empty or ($cf_nbpalier!=$mem_nbpalier and $cf_nbpalier!=$empty)
@@ -20,7 +20,7 @@ tmp=!record $comp of wimshome/log/classes/$wims_class/livret/.comps
  !reset cf_set
  cf_title=!trim $cf_title
  !if $comp>$livret_nbcomp
-  !appendfile wimshome/log/classes/$wims_class/livret/.comps :$cf_title\
+  !appendfile $livret_dir/.comps :$cf_title\
 $cf_nbpalier
  !else
   sortie=$empty
@@ -29,11 +29,11 @@ $cf_nbpalier
     sortie=!append line :$cf_title\
 $cf_nbpalier to $sortie
    !else
-    t=!record $k of wimshome/log/classes/$wims_class/livret/.comps
+    t=!record $k of $livret_dir/.comps
     sortie=!append line :$t to $sortie
    !endif
   !next k
-  !writefile wimshome/log/classes/$wims_class/livret/.comps $sortie
+  !writefile $livret_dir/.comps $sortie
  !endif
  !reset cf_set
  mem_nbpalier=$cf_nbpalier

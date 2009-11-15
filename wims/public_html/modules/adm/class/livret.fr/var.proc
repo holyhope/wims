@@ -3,13 +3,13 @@ wims_prefix=class user livret
 
 !if $wims_class=$empty or ($wims_supertype!=0 and\
  ($wims_supertype!=2 or $wims_typename!=class) and\
- ($wims_supertype!=4 or $wims_typename notitemof class,course))
+ ($wims_supertype!=4 or $wims_typename!=course))
  error=bad_class
  !exit
 !endif
 
 !defread wimshome/log/classes/$wims_class/.def
-!defread wimshome/log/classes/$wims_class/livret/.def
+!defread $livret_dir/.def
 
 !default livret_minac=9
 
@@ -20,13 +20,13 @@ wims_prefix=class user livret
 !endif
 !read tabletheme
 
-!if $wims_user=supervisor and yes isin $livret_supervise
- !bound job within user,userlist,config,addcomp,modpalier default userlist
+!if $livret_supervise=yes
+ !bound job within modpalier,userlist,config,addcomp,user default userlist
 !else
- !bound job within user default user
+ job=user
  user=$wims_user
 !endif
 
-livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
+livret_nbcomp=!recordcnt $livret_dir/.comps
 
 !read $job.proc
