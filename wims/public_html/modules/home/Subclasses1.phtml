@@ -3,26 +3,40 @@
 !set classcnt=!linecnt $classes
 !if $classcnt>0
  <p>
- $(CL_Names[2]):
+ $(CL_Names[2]):<p>
+ !reset compt
  !for i=1 to $classcnt
   !set l=!line $i of $classes
   !distribute items $l into c_,s_,t_
   <span class="wims_classes_direct_class">
   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
 </span>
+  !if $compt=9
+    !set compt=0
+    <p>
+  !else
+    !increase compt
+  !endif
  !next i
 !endif
 !set progs=!record 0 of wimshome/log/classes/$wims_class/programs
 !set progcnt=!linecnt $progs
 !if $progcnt>0
  <p>
- $(CL_Names[3]):
+ $(CL_Names[3]):<p>
+ !reset compt
  !for i=1 to $progcnt
   !set l=!line $i of $progs
   !distribute items $l into c_,s_,t_
   <span class="wims_classes_direct_program">
   !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
   </span>
+  !if $compt=9
+    !set compt=0
+    <p>
+  !else
+    !increase compt
+  !endif
  !next i
 !endif
 
@@ -31,26 +45,40 @@
  !set coursecnt=!linecnt $courses
  !if $coursecnt>0
   <p>
-  $(CL_Names[4]):
+  $(CL_Names[4]):<p>
+  !reset compt
   !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into c_,s_,t_
    <span class="wims_classes_direct_course">
    !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
    </span>
+   !if $compt=9
+    !set compt=0
+    <p>
+   !else
+    !increase compt
+   !endif
   !next i
  !endif
  !set courses=!record 0 of wimshome/log/classes/$wims_class/icourses
  !set coursecnt=!linecnt $courses
  !if $coursecnt>0
   <p>
-  $(CL_Names[5]):
+  $(CL_Names[5]):<p>
+  !reset compt
   !for i=1 to $coursecnt
    !set l=!line $i of $courses
    !distribute items $l into c_,s_,t_
    <span class="wims_classes_direct_course">
    !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$c_ $t_
    </span>
+   !if $compt=9
+    !set compt=0
+    <p>
+   !else
+    !increase compt
+   !endif
   !next i
  !endif
 !endif
