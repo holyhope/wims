@@ -43,26 +43,24 @@
 	    ml=document.mydefaultform.elements.length;
 	    var inputfieldnumber=0;
 	    for(z=0;z<ml;z++){
-		if(document.mydefaultform[z].id=='myinput'+z){
-		    input=document.mydefaultform[z].value;
-		    v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
-		    input=nthroot(input);if(input=="error"){return;}
-		    if(input.indexOf(',')!=-1){alert(r4);return;}
-		    input=arrows(input,2,"","");if(input=="error"){return;}
-		    if(check_f(input)==0){return;}if(check_o(input)==0){return;}
-		    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
-		    input=science(input);if(input=="error"){return;}
-		    if(check_x(input)==0){return;}
-		    reply=reply+input+"\n";t1=input.indexOf("[");
-		    if(t1 !=- 1){
-			if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
-			if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
-			t1=input.indexOf("[");if(t1!=-1){alert(r13);return;}
-		    }
-		    input=input.replace(/#/g,' ');
-		    total[inputfieldnumber+applet]=input;
-		    inputfieldnumber=inputfieldnumber+1;
+		input=document.mydefaultform[z].value;
+		v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
+		input=nthroot(input);if(input=="error"){return;}
+		if(input.indexOf(',')!=-1){alert(r4);return;}
+		input=arrows(input,2,"","");if(input=="error"){return;}
+		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
+		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
+		input=science(input);if(input=="error"){return;}
+		if(check_x(input)==0){return;}
+		reply=reply+input+"\n";t1=input.indexOf("[");
+		if(t1 !=- 1){
+		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
+		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
+		    t1=input.indexOf("[");if(t1!=-1){alert(r13);return;}
 		}
+		input=input.replace(/#/g,' ');
+		total[inputfieldnumber+applet]=input;
+		inputfieldnumber=inputfieldnumber+1;
 	    }
 	}
 	v=total.length;if(v==0){alert(r1);return;}

@@ -53,7 +53,7 @@
 : We verwachten eigenlijk een antwoord als: $testvar
 : In je antwoord verwacht ik de variabele: $testvar
 : Je mag hier van alles invullen...<br>Maar was is in dit verband "$testvar" ?
-: niet zo best,niet echt lekker,niet echt goed,mmm nog maar eens over doen,klopt niet veel van,fout,niet goed,behoorlijk slecht,helemaal fout,nou nou nou,Ooooooh man,zwaar weer ,fout,beetje bagger,tja ,blijven oefenen, niet goed genoeg,niet geweldig,magertjes,bepaald niet goed
+: niet zo best,niet echt lekker,niet echt goed,mmm nog maar eens over doen,klopt niet veel van,fout,niet goed,behoorlijk slecht,helemaal fout,nou nou nou,Ooooooh man,zwaar weer ,wind tegen, fout,beetje bagger,tja ,blijven oefenen, niet goed genoeg,niet geweldig,magertjes,bepaald niet goed
 : niet alles was even goed,bijna prima,ongeveer redelijk,hmmm,dat kan nog iets beter,redelijk goed,niet echt fantastisch
 : flex,feest,beestachtig,prima,uitstekend,goed,zeer goed,helemaal goed,heel fijn,listig,perfect,goed gedaan,kan niet mooier,kan niet beter,zeker niet slecht,toppie,grandioos,superbe,super,Enorm,virtuoos,...YES,fantastisch,verdraaid goed,verduveld goed,Prachtig,Machtig,netjes,Ooooh GEWELDIG
 :&eacute;&eacute;n,twee,drie,vier,vijf,zes,zeven,acht,negen,tien,elf,twaalf,dertien,veertien,vijftien,zestien,zeventien,achttien,negentien,twintig,&eacute;&eacute;nentwintig,tweeentwintig,drieentwintig,vierentwintig,vijfentwintig, zesentwintig ,zevenentwintig, achtentwintig, negenentwintig, dertig, &eacute;&eacute;nendertig, tweeendertig,drieendertig,vierendertig,vijvendertig,zesendertig,zevenendertig,achtendertig,negenendertig,veertig,&eacute;&eacute;nenveertig,tweeenveertig,drieenveertig,vierenveertig,vijfenveertig,zesenveertig,zevenenveertig,achtenveertig,negenenveertig,vijftig

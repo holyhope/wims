@@ -1,0 +1,390 @@
+<b>Teken een molecuul</b> (naam : <tt>chemdraw</tt>)
+Deze applet is een voor WIMS gemodificeerde versie van SketchEl <a href="http://sketchel.sourceforge.net"/>http://sketchel.sourceforge.net</a>
+<p>
+Het correcte antwoord is een url voor een MDMol bestand (extensie .mol) dat de correcte structuurformule omschrijft. 
+Andere bestandstypes [behalve het SKetchEL-interne formaat] worden nog niet ondersteund. 
+De applet gestart als een applicatie programma kan desgewenst een getekende structuur formule exporteren naar MDMol (versie 2000) of SKetchEl formaat.
+En er is een database van MDMol data beschikbaar onder WIMS.
+
+<p>
+Het door de student getekende molecuul wordt op de WIMS server (vanaf versie 3.65a) geanalyseerd door het programma <tt>checkmol</tt>
+en <tt>matchmol</tt>
+(<a href="http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html</a>)
+
+<p>De variabele <tt>\reply</tt>i is een matrix (met ; als rij scheidingsteken)
+<ul>
+<li>in het geval van een incorrect antwoord,
+<ul><li>
+Rij 1 : de karakteristiek van het antwoord
+</li>
+<li>
+Rij 2 : de groepen in het antwoord
+</li>
+<li>
+Rij 3 : de bruto formule van het antwoord.
+</li>
+<li>
+Rij 4 : de karakteristiek van het correcte antwoord
+</li>
+<li>
+Rij 5 : de groepen in het antwoord
+</li>
+<li>
+Rij 6 : op dit moment leeg
+</li>
+<li>
+Rij 7 : een lijst met nummers van regels waarin het antwoord verscilt van het correcte molecuul
+</li>
+<li>
+Andere rijen : feedback 
+</li>
+</ul>
+</li>
+<li>in het geval van een correct antwoord (in dit geval is de waarde van variabele <tt>\sc_reply</tt>i = 1),
+alleen de vier eerste regeld 
+</li>
+<li>in eentuele andere gevallen alleen de regels 1 t/m 3.
+</li>
+</ul>
+<p>
+De onderstaande opties zijn beschikbaar :
+<ul><li>image : de MDMol bestanden in de directory <tt>data/directory_naam</tt>), 
+de afbeeldingen zijn te vinden in de directory </tt>images/directory_naam</tt>.
+</li><li>
+image=png: 
+une image est mise dans la réponse 
+(son adresse doit être fournie et le nom de l'image doit être le nom du fichier mol fournie, 
+la valeur de image étant l'extension de l'image). 
+</li>
+</ul>
+
+<p>
+Les options du champ <tt>embed</tt> sont la taille sur la première ligne <tt>L x H</tt>
+suivi sur une nouvelle ligne des options possibles de l'applet (valeurs  yes (ou 1) et  no  (ou 0))
+
+De applet kan worden ingesteld worden d.m.v. :
+$table_header
+$table_hdtr<th>Naam</th><th>Default</th><th>Uitleg</th></tr>
+$table_hdtr<th colspan=3>Horizontale menu balk</th></tr>
+$table_tr<td>menu_block</td><td>1</td><td>geeft een menubalk  met editing tools</td></tr>
+$table_tr<td>menu_select</td><td>1</td><td>geeft een knop voor een atoom, verwisselen atomen</td></tr>
+ $table_tr<td>menu_transform</td><td>0</td><td>geeft een knop voor transformaties (rotaties, spiegelen)</td></tr>
+ $table_tr<td>menu_zoom</td><td>1</td><td>geeft een knop met zoom functie</td></tr>
+ $table_tr<td>menu_show</td><td>0</td><td>koolstof atomen zichtbaar als C/td></tr>
+ $table_tr<td>menu_hydrogen</td><td>0</td><td>waterstof atomemn zichbaar als H</td></tr>
+ $table_tr<td>menu_stereo</td><td>0</td><td>geeft een speciaal menu voor stereochemie</td></tr>
+$table_hdtr<th colspan=3>Verticale menu balk </th></tr>
+$table_tr<td>tool_cursor</td><td>1</td><td>onmisbaar bij het tekenen van een molecuul</td></tr>
+ $table_tr<td>tool_rotator</td><td>0</td><td>geeft een knop voor het draaien van een molecuul</td></tr>
+ $table_tr<td>tool_erasor</td><td>1</td><td>geeft een knop voor het wissen van een molecuul </td></tr>
+ $table_tr<td>tool_dialog</td><td>0</td><td></td></tr>
+ $table_tr<td>tool_edit</td><td>0</td><td>geen een naam aan het molecuul (tekst)</td></tr>
+$table_tr<td>tool_setatom</td><td>1</td><td>een knop met atomen (deze lijst kan worden samengesteld met parameter <tt>atoms</tt></td></tr>
+ $table_tr<td>tool_single</td><td>1</td><td>een knop voor een enkele binding</td></tr>
+ $table_tr<td>tool_double</td><td>1</td><td>een knop voor een dubbele binding</td></tr>
+ $table_tr<td>tool_triple</td><td>1</td><td>een knop voor een 3-voudige binding</td></tr>
+ $table_tr<td>tool_zero</td><td>0</td><td>een knop voor een "nul-binding"</td></tr> 
+$table_tr<td>tool_inclined</td><td>0</td><td>links draaiende binding</td></tr>
+ $table_tr<td>tool_declined</td><td>0</td><td>rechts draaiende binding</td></tr>
+ $table_tr<td>tool_unknown</td><td>0</td><td>onbekend bindingdstype</tr>
+ $table_tr<td>tool_charge</td><td>0</td><td>ladingen</td></tr>
+ $table_tr<td>tool_undo</td><td>1</td><td>Undo</td></tr>
+ $table_tr<td>tool_redo</td><td>1</td><td>Redo</td></tr>
+$table_tr<td>tool_template</td><td>1</td><td>geeft voor-getekende moleculen of groepen, kan worden ingesteld met parameter <tt>template</tt> (séparés par un espace ...) </td></tr>
+ $table_tr<td>tool_cut</td><td>0</td><td>Knippen</td></tr>
+ $table_tr<td>tool_copy</td><td>0</td><td>Kopieren</td></tr>
+ $table_tr<td>tool_paste</td><td>0</td><td>Plakken</td></tr>
+ $table_hdtr<th colspan=3>Andere opties</th></tr>
+ $table_tr<td>atoms</td><td colspan=2>lijst met beschikbare atomen, gescheiden door spaties, zoals
+ <tt>atoms="C N O S Mn Ni Mg Br Cl Mo Na "</tt></td></tr>
+ $table_tr<td>template</td><td colspan=2>een lijst met toegestane template moleculen</td></tr>
+ </table>
+</center>
+<p>
+De onderstaande tabel geeft de verschillende items weer van de regels 1 en 4 van  <tt>\reply</tt>i
+(deze informatie is van het programma <tt>checkmol</tt>) 
+$table_header
+$table_hdtr<th>Nummer</th><th></th><th>Uitleg</th></tr>
+$table_tr<td>1</td><td>n_atomen</td><td>     aantal zware atomen</td></tr>
+$table_tr<td>2</td><td>n_binding</td><td>     aantal binding between niet-H atomen</td></tr>
+$table_tr<td>3</td><td>n_ringen</td><td>     aantal ringen</td></tr>
+$table_tr<td>4</td><td>n_QA</td><td>        aantal atomen</td></tr>
+$table_tr<td>5</td><td>n_QB</td><td>        aantal binding</td></tr>
+$table_tr<td>6</td><td>n_chg</td><td>       aantal ladingen</td></tr>
+$table_tr<td>7</td><td>n_C1</td><td>        aantal sp-hybride koolstof atomen</td></tr>
+$table_tr<td>8</td><td>n_C2</td><td>        aantal sp2-hybride koolstof atomen</td></tr>
+$table_tr<td>9</td><td>n_C</td><td>         total aantal koolstof atomen</td></tr>
+$table_tr<td>10</td><td>n_CHB1p</td><td>     aantal koolstof atomen met tenminste 1 bond to a hetero atom</td></tr>
+$table_tr<td>11</td><td>n_CHB2p</td><td>     aantal koolstof atomen met tenminste 2 binding to a hetero atom</td></tr>
+$table_tr<td>12</td><td>n_CHB3p</td><td>     aantal koolstof atomen met tenminste 3 binding to a hetero atom</td></tr>
+$table_tr<td>13</td><td>n_CHB4</td><td>      aantal koolstof atomen with 4 binding to a hetero atom</td></tr>
+$table_tr<td>14</td><td>n_O2</td><td>        aantal sp2-hybride zuurstof atomen</td></tr>
+$table_tr<td>15</td><td>n_O3</td><td>        aantal sp3-hybride zuurstof atomen</td></tr>
+$table_tr<td>16</td><td>n_N1</td><td>        aantal sp-hybride stikstof atomen</td></tr>
+$table_tr<td>17</td><td>n_N2</td><td>        aantal sp2-hybride stikstof atomen</td></tr>
+$table_tr<td>18</td><td>n_N3</td><td>        aantal sp3-hybride stikstof atomen</td></tr>
+$table_tr<td>19</td><td>n_S</td><td>         aantal sulfur atomen</td></tr>
+$table_tr<td>20</td><td>n_SeTe</td><td>      total aantal selenium and tellurium atomen</td></tr>
+$table_tr<td>21</td><td>n_F</td><td>         aantal fluoride atomen</td></tr>
+$table_tr<td>22</td><td>n_Cl</td><td>        aantal chloride atomen</td></tr>
+$table_tr<td>23</td><td>n_Br</td><td>        aantal bromide atomen</td></tr>
+$table_tr<td>24</td><td>n_I</td><td>         aantal jodide atomen</td></tr>
+$table_tr<td>25</td><td>n_P</td><td>         aantal fosfor atomen</td></tr>
+$table_tr<td>26</td><td>n_B</td><td>         aantal borium atomen</td></tr>
+$table_tr<td>27</td><td>n_Met</td><td>       total aantal metaal atomen</td></tr>
+$table_tr<td>28</td><td>n_X</td><td>         total aantal "ander" atomen en halogenen</td></tr>
+$table_tr<td>29</td><td>n_b1</td><td>        aantal single binding</td></tr>
+$table_tr<td>30</td><td>n_b2</td><td>        aantal double binding</td></tr>
+$table_tr<td>31</td><td>n_b3</td><td>        aantal triple binding</td></tr>
+$table_tr<td>32</td><td>n_bar</td><td>       aantal aromatic binding</td></tr>
+$table_tr<td>33</td><td>n_C1O</td><td>       aantal C-O enkele binding</td></tr>
+$table_tr<td>34</td><td>n_C2O</td><td>       aantal C=O dubbele binding</td></tr>
+$table_tr<td>35</td><td>n_CN</td><td>        aantal C/N binding (all types)</td></tr>
+$table_tr<td>36</td><td>n_XY</td><td>        aantal heteroatoom binding (all types)</td></tr>
+$table_tr<td>37</td><td>n_r3</td><td>        aantal 3-ringen</td></tr>
+$table_tr<td>38</td><td>n_r4</td><td>        aantal 4-ringen</td></tr>
+$table_tr<td>39</td><td>n_r5</td><td>        aantal 5-ringen</td></tr>
+$table_tr<td>40</td><td>n_r6</td><td>        aantal 6-ringen</td></tr>
+$table_tr<td>41</td><td>n_r7</td><td>        aantal 7-ringen</td></tr>
+$table_tr<td>42</td><td>n_r8</td><td>        aantal 8-ringen</td></tr>
+$table_tr<td>43</td><td>n_r9</td><td>        aantal 9-ringen</td></tr>
+$table_tr<td>44</td><td>n_r10</td><td>       aantal 10-ringen</td></tr>
+$table_tr<td>45</td><td>n_r11</td><td>       aantal 11-ringen</td></tr>
+$table_tr<td>46</td><td>n_r12</td><td>       aantal 12-ringen</td></tr>
+$table_tr<td>47</td><td>n_r13p</td><td>      aantal 13- en meer ringen</td></tr>
+$table_tr<td>48</td><td>n_rN</td><td>        aantal ringen met stikstof (willekeurig aantal)</td></tr>
+$table_tr<td>49</td><td>n_rN1</td><td>       aantal ringen met 1 stikstof atom</td></tr>
+$table_tr<td>50</td><td>n_rN2</td><td>       aantal ringen met 2 stikstof atomen</td></tr>
+$table_tr<td>51</td><td>n_rN3p</td><td>      aantal ringen met 3 of meer stikstof atomen</td></tr>
+$table_tr<td>52</td><td>n_rO</td><td>        aantal ringen met zuurstof (willekeurig aantal)</td></tr>
+$table_tr<td>53</td><td>n_rO1</td><td>       aantal ringen met 1 zuurstof atom</td></tr>
+$table_tr<td>54</td><td>n_rO2p</td><td>      aantal ringen met 2 of meer zuurstof atomen</td></tr>
+$table_tr<td>55</td><td>n_rS</td><td>        aantal ringen met sulfur (willekeurig aantal)</td></tr>
+$table_tr<td>56</td><td>n_rX</td><td>        aantal heterocycles (willekeurig type)</td></tr>
+$table_tr<td>57</td><td>n_rar</td><td>       aantal aromatic ringen (willekeurig type)</td></tr>
+$table_tr<td>58</td><td>n_rbz</td><td>       aantal benzene ringen</td></tr>
+$table_tr<td>59</td><td>n_br2p</td><td>      aantal binding horend bij twee of meer ringen</td></tr>
+$table_tr<td>60</td><td>n_psg01</td><td>     aantal atomen horend bij groep 1 van het periodiek systeem</td></tr>
+$table_tr<td>61</td><td>n_psg02</td><td>     aantal atomen horend bij groep 2 van het periodiek systeem</td></tr>
+$table_tr<td>62</td><td>n_psg13</td><td>     aantal atomen horend bij groep 13 van het periodiek systeem</td></tr>
+$table_tr<td>63</td><td>n_psg14</td><td>     aantal atomen horend bij groep 14 van het periodiek systeem</td></tr>
+$table_tr<td>64</td><td>n_psg15</td><td>     aantal atomen horend bij groep 15 van het periodiek systeem</td></tr>
+$table_tr<td>65</td><td>n_psg16</td><td>     aantal atomen horend bij groep 16 van het periodiek systeem</td></tr>
+$table_tr<td>66</td><td>n_psg17</td><td>     aantal atomen horend bij groep 17 van het periodiek systeem</td></tr>
+$table_tr<td>67</td><td>n_psg18</td><td>     aantal atomen horend bij groep 18 van het periodiek systeem</td></tr>
+$table_tr<td>68</td><td>n_pstm</td><td>      aantal atomen horend bij de overgangs metalen</td></tr>
+$table_tr<td>69</td><td>n_psla</td><td>      aantal atomen horend bij de lanthanides of actinides</td></tr>
+$table_tr<td>70</td><td>n_iso</td><td>      aantal isotopen</td></tr>
+$table_tr<td>71</td><td>n_rad</td><td>      aantal radicalen</td></tr>
+</table></center>
+De onderstaande tabel geeft de codes weer voor regels 2 en 5 van <tt>reply</tt>i). 
+Deze kunnen worden gebruikt als specifieke check op de aanwezige groepen in het molecuul
+$table_header
+$table_hdtr<th >Code</th><th>Uitleg</th></tr>
+$table_tr<td>000000T2</td><td>kation</td></tr>
+$table_tr<td>000000T1</td><td>anion</td></tr>
+$table_tr<td>C2O10000</td><td>Carbonyl</td></tr>
+$table_tr<td>C2O1H000</td><td>aldehyde</td></tr>
+$table_tr<td>C2O1C000</td><td>ketonen</td></tr>
+$table_tr<td>C2S10000</td><td>zwavelkoolstof</td></tr>
+$table_tr<td>C2S1H000</td><td>thioaldehyde</td></tr>
+$table_tr<td>C2S1C000</td><td>thioketone</td></tr>
+$table_tr<td>C2N10000</td><td>imine</td></tr>
+$table_tr<td>C2N1N000</td><td>hydrazon</td></tr>
+$table_tr<td>C2NNC4ON</td><td>semicarbazone</td></tr>
+$table_tr<td>C2NNC4SN</td><td>thiosemicarbazone</td></tr>
+$table_tr<td>C2N1OH00</td><td>oxime</td></tr>
+$table_tr<td>C2N1OC00</td><td>oxime ether</td></tr>
+$table_tr<td>C3OC0000</td><td>ketene</td></tr>
+$table_tr<td>C3OCC000</td><td>ketene_acetal_deriv</td></tr>
+$table_tr<td>C2O2H200</td><td>cabornylyl_hydrate</td></tr>
+$table_tr<td>C2O2HC00</td><td>hemiacetal, hémiacetal</td></tr>
+$table_tr<td>C2O2CC00</td><td>acetal, acétal</td></tr>
+$table_tr<td>C2NOHC10</td><td>hemiaminal, hémiaminal</td></tr>
+$table_tr<td>C2N2CC10</td><td>aminal, aminal</td></tr>
+$table_tr<td>C2NSHC10</td><td>thiohemiaminal</td></tr>
+$table_tr<td>C2S2CC00</td><td>thioacetal, thioacétal</td></tr>
+$table_tr<td>C2CNH000</td><td>enamine, énamine</td></tr>
+$table_tr<td>C2COH000</td><td>enol, énol</td></tr>
+$table_tr<td>C2COC000</td><td>enolether, éther d'énol</td></tr>
+$table_tr<td>O1H00000</td><td>hydroxy && hydroxy_generic,  groepement hydroxy</td></tr>
+$table_tr<td>O1H0C000</td><td>alcohol, alcool</td></tr>
+$table_tr<td>O1H1C000</td><td>prim_alcohol, alcool primaire</td></tr>
+$table_tr<td>O1H2C000</td><td>sec_alcohol, alcool secondaire</td></tr>
+$table_tr<td>O1H3C000</td><td>tert_alcohol, alcool tertiaire</td></tr>
+$table_tr<td>O1H0CO1H</td><td>1_2_diol, diol-1, 2</td></tr>
+$table_tr<td>O1H0CN1C</td><td>1_2_aminoalcohol, 1_2_aminoalcohol</td></tr>
+$table_tr<td>O1H1A000</td><td>phenol, phénol</td></tr>
+$table_tr<td>O1H2A000</td><td>1_2_diphenol, diphenol-1, 2</td></tr>
+$table_tr<td>C2COH200</td><td>enediol</td></tr>
+$table_tr<td>O1C00000</td><td>ether && ether_generic, éther</td></tr>
+$table_tr<td>O1C0CC00</td><td>dialkylether, dialkyléther</td></tr>
+$table_tr<td>O1C0CA00</td><td>alkylarylether, alkylaryéther</td></tr>
+$table_tr<td>O1C0AA00</td><td>diarylether, diaryéther</td></tr>
+$table_tr<td>S1C00000</td><td>thioether, thioéther</td></tr>
+$table_tr<td>S1S1C000</td><td>disulfide, disulfure</td></tr>
+$table_tr<td>O1O1C000</td><td>peroxide, peroxyde</td></tr>
+$table_tr<td>O1O1H000</td><td>hydroperoxide, hydroperoxyde</td></tr>
+$table_tr<td>N1N10000</td><td>hydrazine, hydrazine</td></tr>
+$table_tr<td>N1O1H000</td><td>hydroxylamine, hydroxylamine</td></tr>
+$table_tr<td>N1C00000</td><td>amine, amine</td></tr>
+$table_tr<td>N1C10000</td><td>prim_amine, amine primaire</td></tr>
+$table_tr<td>N1C1C000</td><td>prim_aliph_amine, amine p-primaire</td></tr>
+$table_tr<td>N1C1A000</td><td>prim_arom_amine, amine p-primaire aromatique</td></tr>
+$table_tr<td>N1C20000</td><td>sec_amine, amine secondaire</td></tr>
+$table_tr<td>N1C2CC00</td><td>sec_aliph_amine</td></tr>
+$table_tr<td>N1C2AC00</td><td>sec_mixed_amine</td></tr>
+$table_tr<td>N1C2AA00</td><td>sec_arom_amine</td></tr>
+$table_tr<td>N1C30000</td><td>tert_amine, amine tertiaire</td></tr>
+$table_tr<td>N1C3CC00</td><td>tert_aliph_amine</td></tr>
+$table_tr<td>N1C3AC00</td><td>tert_mixed_amine</td></tr>
+$table_tr<td>N1C3AA00</td><td>tert_arom_amine</td></tr>
+$table_tr<td>N1C400T2</td><td>quart_ammonium, sel d'amonium quaternaire</td></tr>
+$table_tr<td>N0O10000</td><td>n_oxide, N-oxyde</td></tr>
+$table_tr<td>XX000000</td><td>halogen_deriv, dérivé halogéné</td></tr>
+$table_tr<td>XX00C000</td><td>alkyl_halide</td></tr>
+$table_tr<td>XF00C000</td><td>alkyl_fluoride</td></tr>
+$table_tr<td>XC00C000</td><td>alkyl_chloride</td></tr>
+$table_tr<td>XB00C000</td><td>alkyl_bromide</td></tr>
+$table_tr<td>XI00C000</td><td>alkyl_iodide</td></tr>
+$table_tr<td>XX00A000</td><td>aryl_halide</td></tr>
+$table_tr<td>XF00A000</td><td>aryl_fluoride</td></tr>
+$table_tr<td>XC00A000</td><td>aryl_chloride</td></tr>
+$table_tr<td>XB00A000</td><td>aryl_bromide</td></tr>
+$table_tr<td>XI00A000</td><td>aryl_iodide</td></tr>
+$table_tr<td>000000MX</td><td>organometaallic</td></tr>
+$table_tr<td>000000ML</td><td>organolithium, organolithien</td></tr>
+$table_tr<td>000000MM</td><td>organomagnesium, organomagnesien</td></tr>
+$table_tr<td>C3O20000</td><td>carboxylic_acid_deriv</td></tr>
+$table_tr<td>C3O2H000</td><td>carboxylic_acid, acide carboxylique</td></tr>
+$table_tr<td>C3O200T1</td><td>carboxylic_acid_salt, carboxylate</td></tr>
+$table_tr<td>C3O2C000</td><td>carboxylic_acid_ester, ester</td></tr>
+$table_tr<td>C3O2CZ00</td><td>lactone, lactone</td></tr>
+$table_tr<td>C3ONC000</td><td>carboxylic_acid_amide, amide</td></tr>
+$table_tr<td>C3ONC100</td><td>carboxylic_acid_prim_amide, amide primaire</td></tr>
+$table_tr<td>C3ONC200</td><td>carboxylic_acid_sec_amide, amide secondaire</td></tr>
+$table_tr<td>C3ONC300</td><td>carboxylic_acid_tert_amide, amide tertiaire</td></tr>
+$table_tr<td>C3ONCZ00</td><td>lactam, lactame</td></tr>
+$table_tr<td>C3ONN100</td><td>carboxylic_acid_hydrazide</td></tr>
+$table_tr<td>C3ONN200</td><td>carboxylic_acid_azide</td></tr>
+$table_tr<td>C3ONOH00</td><td>hydroxamic_acid</td></tr>
+$table_tr<td>C3N2H000</td><td>carboxylic_acid_amidine</td></tr>
+$table_tr<td>C3NNN100</td><td>carboxylic_acid_amidrazone</td></tr>
+$table_tr<td>C3N00000</td><td>nitrile, nitrile</td></tr>
+$table_tr<td>C3OXX000</td><td>acyl_halide</td></tr>
+$table_tr<td>C3OXF000</td><td>acyl_fluoride, fluorure d'acide|fluorure d'acyle</td></tr>
+$table_tr<td>C3OXC000</td><td>acyl_chloride, chlorure d'acide|chlorure d'acyle</td></tr>
+$table_tr<td>C3OXB000</td><td>acyl_bromide, bromure d'acide|bromure d'acyle</td></tr>
+$table_tr<td>C3OXI000</td><td>acyl_iodide, iodure d'acide|iodure d'acyle</td></tr>
+$table_tr<td>C2OC3N00</td><td>acyl_cyanide, cyanure d'acide|cyanure d'acyle</td></tr>
+$table_tr<td>C3NOC000</td><td>imido_ester</td></tr>
+$table_tr<td>C3NXX000</td><td>imidoyl_halide</td></tr>
+$table_tr<td>C3SO0000</td><td>thiocarboxylic_acid_deriv</td></tr>
+$table_tr<td>C3SOH000</td><td>thiocarboxylic_acid, thioacide|thioacide carboxylique</td></tr>
+$table_tr<td>C3SOC000</td><td>thiocarboxylic_acid_ester</td></tr>
+$table_tr<td>C3SOCZ00</td><td>thiolactone, thiolactone</td></tr>
+$table_tr<td>C3SNH000</td><td>thiocarboxylic_acid_amide</td></tr>
+$table_tr<td>C3SNCZ00</td><td>thiolactam, thiolactame</td></tr>
+$table_tr<td>C3NSC000</td><td>imido_thioester</td></tr>
+$table_tr<td>C3ONAZ00</td><td>oxohetarene</td></tr>
+$table_tr<td>C3SNAZ00</td><td>thioxohetarene</td></tr>
+$table_tr<td>C3NNAZ00</td><td>iminohetarene</td></tr>
+$table_tr<td>C3O30000</td><td>orthocarboxylic_acid_deriv</td></tr>
+$table_tr<td>C3O3C000</td><td>carboxylic_acid_orthoester, orthoester</td></tr>
+$table_tr<td>C3O3NC00</td><td>carboxylic_acid_amide_acetal</td></tr>
+$table_tr<td>C3O2C3O2</td><td>carboxylic_acid_anhydride, anhydride d'acide</td></tr>
+$table_tr<td>C3ONC000</td><td>carboxylic_acid_imide, imide</td></tr>
+$table_tr<td>C3ONCH10</td><td>carboxylic_acid_unsubst_imide, imide</td></tr>
+$table_tr<td>C3ONCC10</td><td>carboxylic_acid_subst_imide, imide</td></tr>
+$table_tr<td>C4000000</td><td>co2_deriv</td></tr>
+$table_tr<td>C4O30000</td><td>carbonic_acid_deriv</td></tr>
+$table_tr<td>C4O3C100</td><td>carbonic_acid_monoester</td></tr>
+$table_tr<td>C4O3C200</td><td>carbonic_acid_diester, koolstofate</td></tr>
+$table_tr<td>C4O3CX00</td><td>carbonic_acid_ester_halide</td></tr>
+$table_tr<td>C4SO0000</td><td>thiocarbonic_acid_deriv</td></tr>
+$table_tr<td>C4SOC100</td><td>thiocarbonic_acid_monoester</td></tr>
+$table_tr<td>C4SOC200</td><td>thiocarbonic_acid_diester</td></tr>
+$table_tr<td>C4SOX_00</td><td>thiocarbonic_acid_ester_halide</td></tr>
+$table_tr<td>C4O2N000</td><td>carbamic_acid_deriv</td></tr>
+$table_tr<td>C4O2NH00</td><td>carbamic_acid, acide caramique</td></tr>
+$table_tr<td>C4O2NC00</td><td>carbamic_acid_ester, carbamate</td></tr>
+$table_tr<td>C4O2NX00</td><td>carbamic_acid_halide</td></tr>
+$table_tr<td>C4SN0000</td><td>thiocarbamic_acid_deriv</td></tr>
+$table_tr<td>C4SNOH00</td><td>thiocarbamic_acid</td></tr>
+$table_tr<td>C4SNOC00</td><td>thiocarbamic_acid_ester</td></tr>
+$table_tr<td>C4SNXX00</td><td>thiocarbamic_acid_halide</td></tr>
+$table_tr<td>C4O1N200</td><td>urea, urée</td></tr>
+$table_tr<td>C4N2O100</td><td>isourea</td></tr>
+$table_tr<td>C4S1N200</td><td>thiourea, thiourée</td></tr>
+$table_tr<td>C4N2S100</td><td>isothiourea</td></tr>
+$table_tr<td>C4N30000</td><td>guanidine, guanidine</td></tr>
+$table_tr<td>C4ON2N00</td><td>semicarbazide</td></tr>
+$table_tr<td>C4SN2N00</td><td>thiosemicarbazide</td></tr>
+$table_tr<td>N4N20000</td><td>azide, azoture</td></tr>
+$table_tr<td>N2N10000</td><td>azo_compound, hydrazone</td></tr>
+$table_tr<td>N3N100T2</td><td>diazonium_salt, sel diazonium</td></tr>
+$table_tr<td>N3C10000</td><td>isonitrile, isonitrile</td></tr>
+$table_tr<td>C4NO1000</td><td>cyanate, cyanate</td></tr>
+$table_tr<td>C4NO2000</td><td>isocyanate, isocyanate</td></tr>
+$table_tr<td>C4NS1000</td><td>thiocyanate, thyiocyanate</td></tr>
+$table_tr<td>C4NS2000</td><td>isothiocyanate, isothiocyanate</td></tr>
+$table_tr<td>C4N20000</td><td>carbodiimide, carbodiimide</td></tr>
+$table_tr<td>N2O10000</td><td>nitroso_compound, nitroso</td></tr>
+$table_tr<td>N4O20000</td><td>nitro_compound, nitro</td></tr>
+$table_tr<td>N3O20000</td><td>nitrite, nitrite</td></tr>
+$table_tr<td>N4O30000</td><td>nitrate, nitrate</td></tr>
+$table_tr<td>S6O00000</td><td>sulfuric_acid_deriv</td></tr>
+$table_tr<td>S6O4H000</td><td>sulfuric_acid, acide sulfurique</td></tr>
+$table_tr<td>S6O4HC00</td><td>sulfuric_acid_monoester</td></tr>
+$table_tr<td>S6O4CC00</td><td>sulfuric_acid_diester</td></tr>
+$table_tr<td>S6O3NC00</td><td>sulfuric_acid_amide_ester</td></tr>
+$table_tr<td>S6O3N100</td><td>sulfuric_acid_amide</td></tr>
+$table_tr<td>S6O2N200</td><td>sulfuric_acid_diamide</td></tr>
+$table_tr<td>S6O3XX00</td><td>sulfuryl_halide</td></tr>
+$table_tr<td>S5O00000</td><td>sulfonic_acid_deriv</td></tr>
+$table_tr<td>S5O3H000</td><td>sulfonic_acid, acide sulfonique</td></tr>
+$table_tr<td>S5O3C000</td><td>sulfonic_acid_ester</td></tr>
+$table_tr<td>S5O2N000</td><td>sulfonamide, sulfonamide</td></tr>
+$table_tr<td>S5O2XX00</td><td>sulfonyl_halide, halogénure de sulfonyle</td></tr>
+$table_tr<td>S4O20000</td><td>sulfone, sulfone</td></tr>
+$table_tr<td>S2O10000</td><td>sulfoxide, sulfoxyde</td></tr>
+$table_tr<td>S3O00000</td><td>sulfinic_acid_deriv</td></tr>
+$table_tr<td>S3O2H000</td><td>sulfinic_acid</td></tr>
+$table_tr<td>S3O2C000</td><td>sulfinic_acid_ester</td></tr>
+$table_tr<td>S3O1XX00</td><td>sulfinic_acid_halide</td></tr>
+$table_tr<td>S3O1N000</td><td>sulfinic_acid_amide</td></tr>
+$table_tr<td>S1O00000</td><td>sulfenic_acid_deriv</td></tr>
+$table_tr<td>S1O1H000</td><td>sulfenic_acid</td></tr>
+$table_tr<td>S1O1C000</td><td>sulfenic_acid_ester</td></tr>
+$table_tr<td>S1O0XX00</td><td>sulfenic_acid_halide</td></tr>
+$table_tr<td>S1O0N100</td><td>sulfenic_acid_amide</td></tr>
+$table_tr<td>S1H10000</td><td>thiol, thiol</td></tr>
+$table_tr<td>S1H1C000</td><td>alkylthiol, thiol</td></tr>
+$table_tr<td>S1H1A000</td><td>arylthiol, thiophénol</td></tr>
+$table_tr<td>P5O0H000</td><td>phosphoric_acid_deriv</td></tr>
+$table_tr<td>P5O4H200</td><td>phosphoric_acid, acid phosphorique</td></tr>
+$table_tr<td>P5O4HC00</td><td>phosphoric_acid_ester</td></tr>
+$table_tr<td>P5O3HX00</td><td>phosphoric_acid_halide</td></tr>
+$table_tr<td>P5O3HN00</td><td>phosphoric_acid_amide</td></tr>
+$table_tr<td>P5O0S000</td><td>thiophosphoric_acid_deriv</td></tr>
+$table_tr<td>P5O3SH00</td><td>thiophosphoric_acid</td></tr>
+$table_tr<td>P5O3SC00</td><td>thiophosphoric_acid_ester</td></tr>
+$table_tr<td>P5O2SX00</td><td>thiophosphoric_acid_halide</td></tr>
+$table_tr<td>P5O2SN00</td><td>thiophosphoric_acid_amide</td></tr>
+$table_tr<td>P4O30000</td><td>phosphonic_acid_deriv</td></tr>
+$table_tr<td>P4O3H000</td><td>phosphonic_acid, acid phosphonique</td></tr>
+$table_tr<td>P4O3C000</td><td>phosphonic_acid_ester</td></tr>
+$table_tr<td>P3000000</td><td>phosphine, phosphine</td></tr>
+$table_tr<td>P2O00000</td><td>phosphinoxide, oxyde de phosphine</td></tr>
+$table_tr<td>B2O20000</td><td>boronic_acid_deriv</td></tr>
+$table_tr<td>B2O2H000</td><td>boronic_acid, acide boronique</td></tr>
+$table_tr<td>B2O2C000</td><td>boronic_acid_ester, ester boronique</td></tr>
+$table_tr<td>000C2C00</td><td>alkene, alcène</td></tr>
+$table_tr<td>000C3C00</td><td>alkyne, alcyne</td></tr>
+$table_tr<td>0000A000</td><td>aromatic, aromatique</td></tr>
+$table_tr<td>0000CZ00</td><td>heterocycle, composé hétérocyclique</td></tr>
+$table_tr<td>C3O2HN1C</td><td>alpha_aminoacid, alpha_aminoacide</td></tr>
+$table_tr<td>C3O2HO1H</td><td>alpha_hydroxyacid, alpha-hydroxyacide</td></tr>
+</table>
+</center>
+
