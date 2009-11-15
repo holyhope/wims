@@ -1,13 +1,13 @@
 
-!set name_title=Activités individuelles globales
-!set name_noparticipant=Cette classe n'a pas encore de participant.
-!set name_lastconnexion=Dernière connexion
-!set name_total=temps total
-!set name_click=Cliquez sur un nom pour voir le détail de son travail.
-!set name_nbsessions=Nb. sessions
-!set name_exo=exercices
-!set name_time=Temps
-!set name_cnt_exo=Nb. d'exercices
+!set name_title=Actividades individuales globales
+!set name_noparticipant=Esta clase no tiene participante todavía.
+!set name_lastconnexion=Última conexión
+!set name_total=tiempo total
+!set name_click=Pulse un nombre para ver el detalle de su trabajo.
+!set name_nbsessions=Numero de sesiones
+!set name_exo=ejercicios
+!set name_time=Tiempo
+!set name_cnt_exo=Numero de ejercicios
 
-!set name_not_supervisor=Désolé, mais cette opération est réservée aux enseignants enregistrés d'une classe.
-!set name_bad_class=Etrange, mais je trouve que votre classe n'est pas valide!
+!set name_not_supervisor=Lo siento, pero esta operación se reserva a los profesores registrados de una clase.
+!set name_bad_class=Extraño, pero encuentro que su clase no es válida!
