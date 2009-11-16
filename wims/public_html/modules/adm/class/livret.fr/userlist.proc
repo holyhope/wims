@@ -5,7 +5,7 @@ userlist=$empty
 !for u=1 to $usercnt
  user=!record $u of wimshome/log/classes/$wims_class/.userlist
  user=!item 3 of $user
- s_$user=!getscore user=$user
+ s_$user=!getscoremean user=$user
  userlist=!append item $user to $userlist
  !for k=1 to $livret_nbcomp
   t=!record $k of $livret_dir/.comps
@@ -35,6 +35,10 @@ userlist=$empty
     s=!word $(t[2]) of $s
     !if $s>=$livret_minac
      l_$(user)_$(k)_$(l)=$(l_$(user)_$(k)_$(l))+$s/$nbit
+    !else
+     !if $s!=0
+      l_$(user)_$(k)_$(l)=$(l_$(user)_$(k)_$(l))+0
+     !endif
     !endif
    !next user
   !next m

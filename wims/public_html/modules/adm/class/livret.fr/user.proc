@@ -16,7 +16,7 @@ user_lastname in wimshome/log/classes/$wims_superclass/.users/$user
  error=nouser
  !exit
 !endif
-score=!getscore user=$user
+score=!getscoremean user=$user
 !for k=1 to $livret_nbcomp
  !for l=1 to $livret_nbpalier
     l_$(k)_$(l)=0
@@ -46,6 +46,10 @@ maxnbpalier=0
    s=!word $(t[2]) of $s
    !if $s>=$livret_minac
     l_$(k)_$(l)=$(l_$(k)_$(l))+$s/$nbit
+   !else
+    !if $s>0
+     l_$(k)_$(l)=$(l_$(k)_$(l))+0
+    !endif    
    !endif
   !next it
  !next l
