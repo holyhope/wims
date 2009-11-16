@@ -63,6 +63,13 @@ padding-left: 3%; padding-right: 3%;}
 
 !if trapped iswordof $wims_user_error
  <H1 align=center>Stop!</H1><hr>
+ Het materiaal op
+ <A HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
+ is niet geschikt voor het automaitsch downloaden.
+ De pagina's worden interactief gegenereerd, en zijn ongeschikt voor offline gebruik
+ </body>
+ </html>
+ !exit 
 !endif
 
 <H1 align=center>WIMS error</H1><hr>

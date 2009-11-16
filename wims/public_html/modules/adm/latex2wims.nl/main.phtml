@@ -1,3 +1,4 @@
+!read names
 !set wims_menu_items=!append line modtool,1,module=adm/modtool\
 to $wims_menu_items
 !if robot isin $session
@@ -7,8 +8,7 @@ to $wims_menu_items
 
 <div $frame>
 !if $wims_developer=$empty
-<b>$module_title</b> 
-maakt van een LaTeX bestand een WIMS document binnen Modtool.
+<b>$module_title</b> maakt van een LaTeX bestand een WIMS document binnen Modtool.
 <br>En is alleen te gebruiken door docenten met een modtool account.
 
 <p>
@@ -57,7 +57,7 @@ Leest hiervoor eerst deze
 !form reply
 !if $execut!=3
 Om verder te gaan, kunt U de drie bestanden ophalen
-(latex [*.tex], latex [*.sty] en een html [*.css]) 
+(latex code [*.tex], latex style [*.sty] en een html [*.css]) 
   !getfile fichier_test.tex het latex bestand
 ,
   !getfile style.css  het css bestand
@@ -90,7 +90,7 @@ Om verder te gaan, kunt U de drie bestanden ophalen
   <ul>
     <li>
 
-   !formradio execut list 0 prompt Stuur een nieuw bestand op 
+   !formradio execut list 0 prompt $name_newtransfer
    </li><li>
    !formradio execut list 1 prompt Naar de volgende stap
    </li>
@@ -126,7 +126,8 @@ Kies het LaTeX bestand
       </li>
    !next 
   </ul>
-  Als er oefeningen zijn, kies dan het werkblad nummer:
+  Als er oefeningen zijn, 
+  kies dan het werkblad nummer:
   !formradio wksheet list 1,2,3,4,5,6,7,8,9
  $hh Stap 3</h2>
 !set choix=Kies
@@ -174,7 +175,7 @@ Kies het LaTeX bestand
     !formradio execut list 1 prompt Terug naar de vorige stadia.
   </li>
   <li>
-    !formradio execut list 0 prompt Stuur een bestand.
+    !formradio execut list 0 prompt $name_transfer
   </li>
   </ul>
 !endif
@@ -187,6 +188,7 @@ Kies het LaTeX bestand
 !if $wims_exec_error!=$empty
  <font color=red><pre>$wims_exec_error</pre></font>
 !endif
+
 </div>
 !tail
 

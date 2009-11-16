@@ -33,12 +33,13 @@
 		Attentie,\
 		Gefeliciteerd,\
 		of,\
-		Uileg,\
+		Uitleg,\
 		Oefening,\
 		Werkblad,\
 		Account,\
 		Inloggen,\
 		Cijfers,\
+		Proefwerk,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -54,7 +55,7 @@
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
-	wims_name_Score
+	wims_name_Score,,wims_name_Examen
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
@@ -91,7 +92,7 @@
 	    Emailadres auteur,\
 	    Onderwerp,\
 	    Soort,\
-	    Niveau(x),\
+	    Niveau(s),\
 	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
 	    Hulp software<br>vereist,\
 	into wims_name_name,\
@@ -201,9 +202,9 @@
    Backup van de module\
    Eigenschappen van account\
    Script tester\
-   OEF Documentation \
+   OEF Documentatie \
    Script bibiliotheek\
-   Antwoord types\
+   Mogelijjke antwoord modellen\
    Doc technisch\
    Terug naar de bestanden lijst\
    Bewerken\
@@ -320,11 +321,11 @@ into wims_name_config, wims_name_struct,wims_name_save
 
 !set wims_name_backgateway=Beheer van
 
-!distribute line Toevoegen een cursus\
-Toevoegen een interklas cursus\
-Toevoegen een klas\
-Toevoegen een programma\
-Toevoegen een studieniveau\
+!distribute line Een cursus toevoegen\
+Een interklas cursus toevoegen\
+Een klas toevoegen\
+Een programma toevoegen\
+Een studieniveau toevoegen\
 Inloggen beheerder \
 Verander van zone\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
@@ -383,4 +384,5 @@ into wims_name_photoboard,wims_name_sendmail
 
 !distribute items Docent,Administrator,Student\
 into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
+
 
