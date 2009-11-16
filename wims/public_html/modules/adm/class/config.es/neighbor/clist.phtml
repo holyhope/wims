@@ -1,15 +1,20 @@
 
-$table_hdtr<th rowspan=2>Nombre de la clase
-<th colspan=2>Declaración<br>vecindad</b><small>
-!href cmd=help&special_parm=neibordecl ayuda
-</small>
-<th rowspan=2>Compartir un recurso</b><small>
-!href cmd=help&special_parm=share ayuda
-</small>
-<th rowspan=2>Profesor
-<th rowspan=2>Idioma
-$table_hdtr<td align=center><small>por usted</small>
-<td align=center><small>por otro</small>
+$table_hdtr
+ <th rowspan=2>$wims_name_name</th>
+ <th colspan=2>$name_declaration<small>
+  !href cmd=help&special_parm=neibordecl $wims_name_help
+ </small></th>
+ <th rowspan=2>$name_sharing</b><small>
+  !href cmd=help&special_parm=share $wims_name_help
+  </small>
+ </th>
+ <th rowspan=2>$wims_name_namesteacher</th>
+ <th rowspan=2>$wims_name_language</th>
+</tr>
+$table_hdtr
+ <td align=center><small>$name_byyou</small></td>
+ <td align=center><small>$name_other</small></td>
+</tr>
 !for i in $clst
  !set D_=!defof class_institution\
 class_description\
@@ -48,22 +53,22 @@ sharing_all in wimshome/log/classes/$i/neighbors
   <td>
   !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
    !if $i isitemof $sharing_all and $wims_class isitemof $nsharing
-    Relaciones mutuas de compartir activas.
+    $name_actif
    !else
     !if $i isitemof $sharing_all
-     Usted comparte sus recursos.
+      $name_share1
     !else
-     Comparte sus recursos.
+      $name_share2
     !endif
    !endif
   !else
    !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
-    Permisos mutuos para compartir.
+     $name_permit1
    !else
     !if $i isitemof $sharable_all
-     Tiene permiso para compartir sus recursos.
+     $name_permit2
     !else
-     Le permite compartir sus recursos.
+     $name_permit3
     !endif
    !endif
   !endif
