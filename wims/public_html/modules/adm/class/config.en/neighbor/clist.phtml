@@ -1,20 +1,20 @@
 
 $table_hdtr
- <th rowspan=2>Class name
- <th colspan=2>Neighborhood<br>declaration</b><small>
+ <th rowspan=2>$wims_name_name</th>
+ <th colspan=2>$name_declaration<small>
   !href cmd=help&special_parm=neibordecl $wims_name_help
  </small></th>
- <th rowspan=2>Resource sharing</b><small>
+ <th rowspan=2>$name_sharing</b><small>
   !href cmd=help&special_parm=share $wims_name_help
   </small>
  </th>
- <th rowspan=2>Supervisor</th>
+ <th rowspan=2>$wims_name_namesteacher</th>
  <th rowspan=2>$wims_name_language</th>
 </tr>
 $table_hdtr
- <td align=center><small>by you</small>
- <td align=center><small>by the other</small>
- </tr>
+ <td align=center><small>$name_byyou</small></td>
+ <td align=center><small>$name_other</small></td>
+</tr>
 !for i in $clst
  !set D_=!defof class_institution\
 class_description\
@@ -53,24 +53,25 @@ sharing_all in wimshome/log/classes/$i/neighbors
   <td>
   !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
    !if $i isitemof $sharing_all and $wims_class isitemof $nsharing
-    Active mutually sharing.
+    $name_actif
    !else
     !if $i isitemof $sharing_all
-     You are sharing its resources.
+      $name_share1
     !else
-     Sharing your resources.
+      $name_share2
     !endif
    !endif
   !else
    !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
-    Mutually allowing sharings.
+     $name_permit1
    !else
     !if $i isitemof $sharable_all
-     Allowed to share your resources.
+     $name_permit2
     !else
-     Allows you to share its resources.
+     $name_permit3
     !endif
    !endif
+  !endif
   </td>
  !endif
  <td align=center><small>$s_</small></td>

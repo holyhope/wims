@@ -23,25 +23,27 @@ class_supervisor in wimshome/log/classes/$i/.def
  !if $i isitemof $n_part
   !set t_=$[$t_+2]
  !endif
- $table_tr<td align=center>
- !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
- <td align=center>$(n_n$t_)
- !set t_=0
- !set D_=!defof n_sup\
+ $table_tr
+ <td align=center>
+  !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
+ </td>
+ <td align=center>$(n_n$t_)</td>
+  !set t_=0
+  !set D_=!defof n_sup\
 n_part\
 sharable_all\
 sharing_all in wimshome/log/classes/$i/neighbors
- !distribute line $D_ into sup,part,nsharable,nsharing
- !if $wims_class isitemof $sup or all isitemof $sup
-  !advance t_
- !endif
- !if $wims_class isitemof $part or all isitemof $part
-  !set t_=$[$t_+2]
- !endif
- <td align=center>$(n_n$t_)
- !if $i notitemof $sharable_all,$sharing_all and\
+  !distribute line $D_ into sup,part,nsharable,nsharing
+  !if $wims_class isitemof $sup or all isitemof $sup
+   !advance t_
+  !endif
+  !if $wims_class isitemof $part or all isitemof $part
+   !set t_=$[$t_+2]
+  !endif
+  <td align=center>$(n_n$t_)</td>
+  !if $i notitemof $sharable_all,$sharing_all and\
 	$wims_class notitemof $nsharable,$nsharing
-  <td align=center>---
+  <td align=center>---</td>
  !else
   <td>
   !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
@@ -65,8 +67,10 @@ sharing_all in wimshome/log/classes/$i/neighbors
     !endif
    !endif
   !endif
+  </td>
  !endif
- <td align=center><small>$s_</small>
- <td align=center>$l_
+ <td align=center><small>$s_</small></td>
+ <td align=center>$l_</td>
+</tr>
 !next i
 

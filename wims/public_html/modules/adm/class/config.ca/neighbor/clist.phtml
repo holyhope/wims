@@ -1,15 +1,20 @@
 
-$table_hdtr<th rowspan=2>Nom de classe
-<th colspan=2>Déclaration<br>voisinage</b><small>
-!href cmd=help&special_parm=neibordecl aide
-</small>
-<th rowspan=2>Partage de ressource</b><small>
-!href cmd=help&special_parm=share aide
-</small>
-<th rowspan=2>Enseignant
-<th rowspan=2>Langue
-$table_hdtr<td align=center><small>par vous</small>
-<td align=center><small>par l'autre</small>
+$table_hdtr
+ <th rowspan=2>$wims_name_name</th>
+ <th colspan=2>$name_declaration<small>
+  !href cmd=help&special_parm=neibordecl $wims_name_help
+ </small></th>
+ <th rowspan=2>$name_sharing</b><small>
+  !href cmd=help&special_parm=share $wims_name_help
+  </small>
+ </th>
+ <th rowspan=2>$wims_name_namesteacher</th>
+ <th rowspan=2>$wims_name_language</th>
+</tr>
+$table_hdtr
+ <td align=center><small>$name_byyou</small></td>
+ <td align=center><small>$name_other</small></td>
+</tr>
 !for i in $clst
  !set D_=!defof class_institution\
 class_description\
@@ -23,50 +28,54 @@ class_supervisor in wimshome/log/classes/$i/.def
  !if $i isitemof $n_part
   !set t_=$[$t_+2]
  !endif
- $table_tr<td align=center>
- !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
- <td align=center>$(n_n$t_)
- !set t_=0
- !set D_=!defof n_sup\
+ $table_tr
+ <td align=center>
+  !href cmd=reply&job2=def&nei=$i&nlevel=$t_ $i_<br>$d_
+ </td>
+ <td align=center>$(n_n$t_)</td>
+  !set t_=0
+  !set D_=!defof n_sup\
 n_part\
 sharable_all\
 sharing_all in wimshome/log/classes/$i/neighbors
- !distribute line $D_ into sup,part,nsharable,nsharing
- !if $wims_class isitemof $sup or all isitemof $sup
-  !advance t_
- !endif
- !if $wims_class isitemof $part or all isitemof $part
-  !set t_=$[$t_+2]
- !endif
- <td align=center>$(n_n$t_)
- !if $i notitemof $sharable_all,$sharing_all and\
+  !distribute line $D_ into sup,part,nsharable,nsharing
+  !if $wims_class isitemof $sup or all isitemof $sup
+   !advance t_
+  !endif
+  !if $wims_class isitemof $part or all isitemof $part
+   !set t_=$[$t_+2]
+  !endif
+  <td align=center>$(n_n$t_)</td>
+  !if $i notitemof $sharable_all,$sharing_all and\
 	$wims_class notitemof $nsharable,$nsharing
-  <td align=center>---
+  <td align=center>---</td>
  !else
   <td>
   !if $i isitemof $sharing_all or $wims_class isitemof $nsharing
    !if $i isitemof $sharing_all and $wims_class isitemof $nsharing
-    Partages mutuels actifs.
+    $name_actif
    !else
     !if $i isitemof $sharing_all
-     Vous partagez ses ressources.
+      $name_share1
     !else
-     Partage vos ressources.
+      $name_share2
     !endif
    !endif
   !else
    !if $i isitemof $sharable_all and $wims_class isitemof $nsharable
-    Permissions mutuelles de partage.
+     $name_permit1
    !else
     !if $i isitemof $sharable_all
-     A le droit de partager vos ressources.
+     $name_permit2
     !else
-     Vous permet de partager ses ressources.
+     $name_permit3
     !endif
    !endif
   !endif
+  </td>
  !endif
- <td align=center><small>$s_</small>
- <td align=center>$l_
+ <td align=center><small>$s_</small></td>
+ <td align=center>$l_</td>
+</tr>
 !next i
 
