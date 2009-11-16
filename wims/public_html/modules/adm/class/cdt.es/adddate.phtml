@@ -5,7 +5,7 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-$cdt_subtitle\
+$cdt_subtitle
 
 !if $error!=$empty
  <p>
@@ -13,9 +13,9 @@ $cdt_subtitle\
 !endif
 
 !form reply
-<input type=hidden name=job value=addtodo>
+<input type=hidden name=job value=adddate>
 <input type=hidden name=job2 value=save>
-<p>Séance du  :
+<p>$name_session:
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -28,9 +28,19 @@ $cdt_subtitle\
 !formselect jmonth from 1 to 12 prompt $months
 !formselect jyear from $creyear to $expyear
 <p>
+$name_workdone (< $desc_limit $name_character) : [ 
+!href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
+ ] 
+<br>
+<textarea rows=10 cols=65 name=jdesc wrap>
+!replace internal \( by &#92;( in $jdesc
+</textarea>
+<p>
+<center><hr width="30%"><b>$name_worktodo</b></center>
+<br>
 $name_nb_date: 
 <select  name="nbredevoir" onchange="submit()">
-!for i=1 to $max_todo
+!for i=0 to $max_todo
  !if $i=$nbredevoir
   <option value=$i selected>$i</option>
  !else
@@ -38,11 +48,9 @@ $name_nb_date:
  !endif
 !next i
 </select>
-<br>
-<table>
+
  !for i=1 to $nbredevoir
- <tr>
-  <td>$name_work $name_for
+  <br>$name_todo2
    !if $(dday$i)=$empty
     !let dday$i=$jday
     !let dyear$i=$jyear
@@ -52,24 +60,19 @@ $name_nb_date:
    !formselect dday$i from 1 to 31
    !formselect dmonth$i from 1 to 12 prompt $months
    !formselect dyear$i from $creyear to $expyear
-   [
-    !href target=wims_help cmd=renew&job=helplink&cible=ddesc$i $wims_name_help
-   ]
-   <br><textarea rows=3 cols=65 name=ddesc$i>
-    !replace internal \( by &#92;( in $(ddesc$i)
-   </textarea></td>
-  <td>
-  <td>
-  </td>
- </tr>
+   &#58;
+   [ 
+   !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help
+    ]
+<br><textarea rows=3 cols=65 name=ddesc$i>
+!replace internal \( by &#92;( in $(ddesc$i)
+</textarea>
  !next i
-</table> 
 <center><hr width="30%">
 <p><input type=submit value="$wims_name_tosave">
 </center>
 </form>
 
-!set wims_menu_items=!append line back,1,cmd=new&job=home\
+!set wims_menu_items=!append line back2,1,cmd=new&job=home\
 to $wims_menu_items
-
 !tail

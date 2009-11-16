@@ -1,0 +1,20 @@
+!read adm/css.phtml
+!if link isin $job
+ !header
+!else
+ !header1
+!endif
+
+!if $job2=print and $job isitemof todo,work
+ !changeto print$job.phtml
+!endif
+
+!if $error=bad_class
+ !read msg.phtml $error
+ !tail
+ !exit
+!endif
+
+!read $job.phtml
+
+!tail

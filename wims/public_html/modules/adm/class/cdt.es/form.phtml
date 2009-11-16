@@ -1,0 +1,40 @@
+
+!form reply
+  <input type=submit value=$wims_name_Show>
+  !reset job
+  !formselect job list work,todo prompt $name_done,$name_todo 
+  $name_between
+  !distribute item $[$jyear],0,$[$jmonth] into jyear,jday,jmonth
+  !let v=!values v for v=1 to 31
+  !read adm/date.phtml
+  !let creyear=!char 1 to 4 of $class_creation
+  !let expyear=!char 1 to 4 of $class_expiration
+  !formselect jday list 0,$v prompt ---,$v
+  !formselect jmonth from 1 to 12 prompt $months
+  !formselect jyear from $creyear to $expyear
+  $name_and
+  !if $jyear2=$empty or $jyear2=0 
+   !let jyear2=!char 1 to 4 of $wims_now
+   !let jmonth2=!char 5 to 6 of $wims_now
+   !let jday2=!char 7 to 8 of $wims_now
+  !endif
+  !distribute item 0,0,0 into jyear2,jday2,jmonth2
+  !let v1=!values v for v=$creyear to $expyear
+  !formselect jday2 list 0,$v prompt ---,$v
+  !formselect jmonth2 from 0 to 12 prompt ---,$months 
+  !formselect jyear2 list 0,$v1 prompt ---,$v1
+  <br><small> $name_warning1</small>
+ </form>
+<p>
+
+!if $wims_user=supervisor and $cdt_supervise=yes
+ !set wims_menu_items= !append line adddate,1,cmd=new&job=adddate\
+ addfile,1,cmd=reply&job=file\
+ addtodo,1,cmd=new&job=addtodo\
+ config,1,cmd=reply&job=config\
+ to $wims_menu_items
+!endif
+
+!if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
+  !set wims_menu_items=!append line back,1,cmd=new&job=home to $wims_menu_items
+!endif

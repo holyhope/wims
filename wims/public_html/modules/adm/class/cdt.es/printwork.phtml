@@ -1,0 +1,90 @@
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$cdt_title
+
+<center>
+ <b><font size="+1">
+ !if $jour_begin!=$empty
+  $name_between <font color=green>$name_date</font>
+  !if $jour_begin!=$jour_end
+   $name_and <font color=green>$name_date2</font>
+  !endif
+ !endif
+ </font></b>
+</center> 
+
+<p><p>
+!if $cdt_nbdate=0
+ $name_noinfo1
+ !goto end
+!else
+ !if $nbligne=0
+  !if $jour_begin=$jour_end
+   $name_noinfo2.
+  !else
+   $name_noinfo3.
+  !endif
+  !goto end
+ !endif
+!endif
+
+ !let table_border=1
+ $table_header
+ $table_hdtr 
+  <th>$name_Day</th>
+  !if no isin $cdt_supervise
+   <th>$name_discipline</th>
+  !endif
+  <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
+ </tr>
+ !for i=1 to $nbligne
+  !let mem_tr=$table_tr
+  !let don=!line $i of $list
+  !distribute item $don into jour,file,matiere
+  !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$file
+  !let file=wimshome/log/classes/$file/cdt/def/$jour
+  !read $file
+  !let nbtodo=!itemcnt $date_todo
+  $mem_tr
+   <td rowspan=$nbtodo>
+    !read proc/date.phtml $jour
+   </td>
+   !if no isin $cdt_supervise
+    <td rowspan=$nbtodo>$matiere</td>
+   !endif
+   <td rowspan=$nbtodo valign=top>
+    !read $file content
+   </td>
+   !if $nbtodo>0
+    <td valign=top>
+    !read $file todo1
+    </td>
+    <td>
+     !read proc/date.phtml $date_todo
+    </td>
+   !else
+    <td>&nbsp;</td><td>&nbsp;</td>
+   !endif
+  </tr>
+   !if $nbtodo>1
+    !let bgcolor=!positionof char # in $mem_tr
+    !let bgcolor=!char $bgcolor to $[$bgcolor+6] of $mem_tr
+    !for j=2 to $nbtodo
+     <tr bgcolor="$bgcolor">
+      <td valign=top>
+       !read $file todo$j
+      </td>
+      <td>
+       !let tmp=!item $j of $date_todo
+       !read proc/date.phtml $tmp
+      </td>
+     </tr>
+    !next j
+   !endif 
+ !next i
+ $table_end
+<p><p>
+
+:end
+
+!tail
