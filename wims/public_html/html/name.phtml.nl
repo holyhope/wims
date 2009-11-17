@@ -339,7 +339,7 @@ spreadsheet data\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
 
-!if adm/class/userlist isin $module or reguser isin $module
+!if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lijst van alle studenten \
 Cijfers \
 Beeindig deze tentamen sessie\

@@ -39,6 +39,7 @@
 		Cuenta,\
 		Enviar,\
 		Notes,\
+		Examen,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -54,7 +55,7 @@
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
-	wims_name_Score
+	wims_name_Score,wims_name_Examen
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
@@ -315,6 +316,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
+
 !set wims_name_backgateway= Gestión de 
 
 !distribute line Añadir un curso \
@@ -335,7 +337,7 @@ Conexión hoja de cálculo \
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
 
-!if adm/class/userlist isin $module or reguser isin $module
+!if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lista de los participantes\
 Resultados del participante \
 Cerrar esta sesión de examen\
