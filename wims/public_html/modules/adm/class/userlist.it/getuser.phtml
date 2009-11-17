@@ -4,7 +4,7 @@ $name_workdetail
 
 <center><b>
 !if $wims_user=supervisor
- !href cmd=reply&job=userprop&getuser=$getuser $firstname $lastname
+ !href cmd=reply&job=userprop&getuser=$getuser $lastname, $firstname
 !else
  $lastname, $firstname
 !endif
@@ -179,10 +179,15 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
 passwd,1,module=adm/class/passwd&job=part&part=$getuser\
 part_list,1,cmd=resume\
-livret,1,module=adm/class/livret&job=user&user=$getuser\
 to $wims_menu_items
+ !if ($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)
+  !set wims_menu_items=!append line livret,1,module=adm/class/livret&job=user&user=$getuser to $wims_menu_items
+ !endif
 !else
- !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+  !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
+ !if $livret_nbcomp >0
+  !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+ !endif
 !endif
  <p>
 
