@@ -261,18 +261,23 @@ $wims_name_part_list
 
 !endif (usercnt=0?)
 
-!set wims_menu_items=!append line photoboard,1,module=adm/class/photoboard\
+!set wims_menu_items=!append line sendmail,1,module=adm/class/sendmail\
+photoboard,1,module=adm/class/photoboard\
 addstudent,1,module=adm/class/reguser&step=1\
 csv,1,cmd=reply&job=csv\
+ ,0,\
 formula,1,cmd=reply&job=formula&formula=prep\
 grades,1,module=adm/class/grades\
- ,0,\
 to $wims_menu_items
+!if ($wims_supertype<4 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename iswordof course program)
+ !set wims_menu_items=!append line livret,1,module=adm/class/livret\
+  to $wims_menu_items
+!endif
 
 !if $usercnt!=0
- !set wims_menu_items=!append line class_stat,1,module=adm/class/stat\
+ !set wims_menu_items=!append line  ,0,\
+ class_stat,1,module=adm/class/stat\
 activity,1,module=adm/class/activity\
-livret,1,module=adm/class/livret\
 to $wims_menu_items
 !endif
 
