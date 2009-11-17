@@ -184,7 +184,10 @@ to $wims_menu_items
   !set wims_menu_items=!append line livret,1,module=adm/class/livret&job=user&user=$getuser to $wims_menu_items
  !endif
 !else
- !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+  !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
+ !if $livret_nbcomp >0
+  !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+ !endif
 !endif
  <p>
 
