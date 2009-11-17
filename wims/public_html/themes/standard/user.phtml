@@ -50,7 +50,7 @@ $wims_classname <small>($(wims_name_$class_typename))</small>
 !else
 <span class="wims_classes_direct_portal">
  !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
- </span>
+</span>
  !if / isin $class_parent and $class_type=1
   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
   / 
@@ -90,7 +90,6 @@ $wims_classname <small>($(wims_name_$class_typename))</small>
   !writefile wimshome/log/classes/$wims_class/.parmreg/$wims_user.exam
  !endif
 !endif
-
 $U_greet
 !!<small>
 !!!if $class_type isin 234
@@ -322,7 +321,6 @@ $U_greet
 !if $exist_cdt=yes
 <div class="menuitem">
   !read ./adm/oneitem.phtml cdt,1,module=adm/class/cdt
-!!  !href module=adm/class/cdt $U_cdt
 </div><!--menuitem-->
 !endif
 !set forum_policy=!defof mb_readpolicy in wimshome/log/classes/$wims_class/forum/.def
@@ -359,14 +357,12 @@ $U_greet
 <div class="itemsep"></div><!--itemsep-->
 <div class="menuitem">
 !read ./adm/oneitem.phtml myscore,1,module=adm/class/userlist.$lang
-!!!href module=adm/class/userlist.$lang $im "gifs/themes/$wims_theme_image/myscore.gif" alt="myscore" title=myscore"> $U_myscore
 </div><!--menuitem-->
 <div class="itemsep"></div><!--itemsep-->
 !endif
 !if $class_type isin 013
 <div class="menuitem">
 !read ./adm/oneitem.phtml account,1,module=adm/class/userlist&job=userprop
-!!! !href module=adm/class/userlist&job=userprop $im "gifs/themes/$wims_theme_image/account.gif" alt="account" title="account"> $U_account
 </div><!--menuitem-->
 !endif
 !if $class_ent_n0>0
@@ -377,7 +373,6 @@ $U_greet
   !set 1_=!line $i_ of $class_ent1
    <div class="menuitem">
    !read ./adm/oneitem.phtml $(1_[1]),2,$(1_[2]),external
-   !!  <a href="$(1_[2])" target=wims_external>$im "gifs/themes/$wims_theme_image/ent.gif" alt="ent" title="ent"> $(1_[1])</a>
    </div><!--menuitem-->
 !next i_
 !endif
@@ -395,7 +390,6 @@ $U_greet
 <div class="menublock">
 <span class="menuitem">
 !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=participant
-!!!href module=adm/class/classes&type=participant $U_oclass
 </span><!-- menuitem-->
 !!<div class="menuitem">
 !!!href cmd=close&module=home $V_Quit
@@ -407,11 +401,9 @@ $U_greet
 <div class="menublock">
 <span class="menuitem">
 !read ./adm/oneitem.phtml V_Chpref,1,module=adm/light&phtml=useropts.phtml.$lang 
-!!!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
 </span><!-- menuitem-->
 <span class="menuitem">
 !read ./adm/oneitem.phtml passwd,1,module=adm/class/passwd
-!!!href module=adm/class/passwd $V_Chpass
 </span><!-- menuitem-->
 </div><!--end menublock-->
 </div><!--wimsmenu-->
