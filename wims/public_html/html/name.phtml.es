@@ -76,6 +76,7 @@
 !! **** Module About Names ***
 !distribute items Nombre,\
 		Información sobre este módulo,\
+		Informations sur cet exercice,\
 		dirección,\
 		Vínculo para marca-página,\
 		Descripción,\
@@ -97,6 +98,7 @@
 		Logiciels de soutien<br>nécessaires,\
 	into wims_name_name,\
 	wims_name_module_infos,\
+	wims_name_exo_infos,\
 	wims_name_Address,\
 	wims_name_Link_for_bookmark,\
 	wims_name_Description,\

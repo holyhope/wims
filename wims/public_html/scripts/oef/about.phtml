@@ -1,2 +1,94 @@
-!changeto oef/$module_language/about.phtml
+!set email=!trim $email
+!set author=!trim $author
+
+!set embedabble_height= 600
+!set embedabble_width= 100%
+
+!read ./tabletheme
+$name_about1
+<a href="$wims_ref_name?module=help/teacher/faq.fr&amp;job=oef" target="_blank">
+<abbr lang="EN" title="Online Exercise Format">OEF</abbr></a>.<br>
+<br>
+
+  $table_header
+    <caption>
+    $wims_name_exo_infos
+    </caption>
+    <tbody>
+    
+    !if $author!=$empty
+    $table_tr
+      <th>$wims_name_Author</th>
+      <td>
+        !if $email!=$empty
+          !mailurl $email $author
+        .
+        !else
+          $author.
+        !endif
+      </td>
+    </tr>
+    !endif
+    $table_tr
+      <th>$name_Solution / $name_Hint</th>
+      <td>
+        !if $solution!=$empty and $hint!=$empty
+          $name_hint1
+        !endif
+        !if $solution!=$empty and $hint=$empty
+          $name_hint2
+        !endif
+        !if $solution=$empty and $hint!=$empty
+          $name_hint3
+        !endif
+        !if $solution$hint=$empty
+          $name_hint4
+        !endif
+      </td>
+    $table_tr
+      <th>$wims_name_permalink<br><small>($wims_name_Link_for_bookmark)</small></th>
+      <td><ul>
+          <li>$name_linkfor $wims_name_this_exercice : 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            <a href="$exolink">$exolink</a>
+          </li>
+          !if $module_init_parm!=$empty
+            <li>$name_linkfor $wims_name_this_config :            
+              !set configlink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+              <a href="$configlink">$configlink</a>
+            </li>
+          !endif
+        </ul></td>
+    </tr>
+    $table_tr
+      <th>$wims_name_embeddable <small> ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site)</small></th>
+      <td><ul>
+          <li> 
+            !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
+            <br>
+            $wims_name_display <strong>$wims_name_this_exercice</strong> $wims_name_on_your_site ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site) : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" >&lt;iframe src="$exolink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+          </li>
+          <li>
+            !if $module_init_parm!=$empty
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;$module_init_parm
+            !else
+              !set exolink=$wims_ref_name?module=$module&amp;cmd=new
+            !endif
+            <br>
+            $wims_name_display <strong>$wims_name_this_config</strong> $wims_name_on_your_site : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly">&lt;iframe src="$configlink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>
+            
+          </li>
+        </ul></td>
+    </tr>
+    </tbody>
+    
+  </table>
+</center>
+<p> $name_collection
+<hr>
+
+<p> $module_about <p>
+$name_copyr
+
+!changeto NEWS.phtml
 

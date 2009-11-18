@@ -76,6 +76,7 @@
 !! **** Module About Names ***
 !distribute items Naam,\
 	    Module Informatie,\
+	    Informatie over deze oefening,\
 	    Adres,\
 	    Link voor bookmark,\
 	    Omschrijving,\
@@ -84,7 +85,7 @@
 	    Taal,\
 	    Schrijver,\
 	    Vertaler,\
-    	    Dit is een module van,\
+	    Dit is een module van,\
 	    WWW Interactive Multipurpose Server,\
 	    Copyright\
 	    Zoektermen,\
@@ -96,7 +97,8 @@
 	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
 	    Hulp software<br>vereist,\
 	into wims_name_name,\
-	wims_name_module_infos,\
+        wims_name_module_infos,\
+        wims_name_exo_infos,\
         wims_name_Address,\
         wims_name_Link_for_bookmark,\
         wims_name_Description,\
