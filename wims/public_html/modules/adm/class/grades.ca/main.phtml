@@ -1,47 +1,31 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
 !read names.phtml
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Notes attribuées manuellement
-!!<center>$classname
-!!<p>
-!!<h1>
-!!</h1></center> <p>
+$name_manual_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Retour à la page d'accueil de la classe
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
 !form reply
 <input type=hidden name=method value=percent>
-Vous pouvez attribuer manuellement des notes aux participants de la
-classe. Chaque participant peut consulter ses notes une fois qu'il est dans
-la classe. Les moyennes de ces notes sont aussi calculées et comptent
-pour
+$name_explanation
 <input size=4 name=per value="$percent">%
-(<small><input type=submit name=reg value=changer></small>)
-dans la moyenne globale de chaque participant.
+(<small><input type=submit name=reg value=change></small>)
+.
 !if $method!=list
 <p>
- !href cmd=reply&method=list Revenir à la liste
+ !href cmd=reply&method=list $wims_name_back4
 .
 !set wims_menu_items=!append line back4,1,cmd=reply&method=list\
 to $wims_menu_items
@@ -50,14 +34,9 @@ to $wims_menu_items
 
 !read $method.phtml
 
-!!!if $method!=list
-!! !href cmd=reply&method=list Revenir à la liste
-!!.
-!!!endif
-
 <p>
-!if $method=user
- !href module=adm/class/userlist&job=getuser&getuser=$un Les autres notes de $username
+!if $method=user and $wims_user=supervisor
+ !href module=adm/class/userlist&job=getuser&getuser=$un $wims_name_otherscore ($username)
 .
 !endif
 
