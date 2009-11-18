@@ -9,7 +9,7 @@ to $wims_menu_items
 !endif
 
 $table_header
-$table_hdtr<th>$wims_name_name</th><th><small>$name_average/th>
+$table_hdtr<th>$wims_name_name</th><th><small>$name_average</small></th>
 !for g=1 to $gcnt
  <th><small>
  !set t_=!item $g of $titles
@@ -21,17 +21,17 @@ $table_hdtr<th>$wims_name_name</th><th><small>$name_average/th>
  </small>
 !next g
 
-$table_hdtr<th>$name_weight<td align=center>--</th>
+$table_hdtr<td align="center"><b>$name_weight</b><td align=center>--</td>
 !for g=1 to $gcnt
  !set w_=!item $g of $weights
  !default w_=1
- <td align=center>$w_
+ <td align=center><b>$w_</b></td>
 !next g
 !for u=1 to $ucnt
  !set n_=!item $u of $ulist
  !set f_=!item $u of $flist
  !set l_=!item $u of $llist
- $table_tr<td align=center>
+ $table_tr<td>
  !href cmd=reply&method=user&un=$n_ $l_, $f_
  !set t_=!positionof item $n_ in $uulist
  !if $t_!=
