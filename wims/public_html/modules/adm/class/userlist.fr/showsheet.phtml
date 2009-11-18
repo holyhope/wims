@@ -51,8 +51,9 @@ $name_title_showsheet
   </td>
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
    !if $job_affi=points
-    <td align=center>
      !let t=!word 1 of $tot
+     !let t1=$[round($t/10)]
+    <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
      $t %
      !let tot_0=$[$tot_0+$t]
     </td>
@@ -61,7 +62,6 @@ $name_title_showsheet
     !endif 
     !let tmp=!getscore user=$uu sheet=$numshowsheet
     !for k=1 to $nbexo
-     <td align=center>
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
@@ -72,68 +72,54 @@ $name_title_showsheet
       !else
        !let t=100
       !endif
-      !if $t<40
-       <font color=red><b>
-      !else
-       !if $t<80
-        <font color=blue>
-       !else
-        <font color=green>
-       !endif
-      !endif
-      $t %</b></font>
+      !let t1=$[round($t/10)]
+      <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
+      $t %
       !let tot_$k=$[$(tot_$k)+$t]
      </td>  
     !next k
    !else
-    <td align=center>
      !let t=!word 2 of $tot
      !let tot_0=$[$tot_0+$t]
-     $t</font>
+     !let t1=$[round($t)]
+      <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
+     $t
+      </td>
     !if $t!=0
      !increase nonzero_0
     !endif 
-    </td>
     !let tmp=!getscoremean user=$uu sheet=$numshowsheet
     !for k=1 to $nbexo
-     <td align=center>
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
       !endif
-      !if $t<=4
-       <font color=red><b>
-      !else
-       !if $t=<8
-        <font color=blue>
-       !else
-        <font color=green>
-       !endif
-      !endif
-      $t</font>
+      !set t1=$[round($t)]
+      <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
+      $t
+      </td> 
       !let tot_$k=$[$(tot_$k)+$t]
-     </td>  
     !next k
    !endif
   </tr>
  !next m
  $table_hdtr<td align=center><b>$name_classAverage</b></td>
- <th align=center>$[rint($tot_0/$usercnt*10)/10]$sign </th>
+ <td style="font-weight:bold; text-align:center;">$[rint($tot_0/$usercnt*10)/10]$sign </td>
  !for j=1 to $nbexo
-  <th align=center>$[rint($(tot_$j)/$usercnt*10)/10]$sign</th>
+   <td style="font-weight:bold; text-align:center;">$[rint($(tot_$j)/$usercnt*10)/10]$sign</td>
  !next j
  </tr>
  !if $nonzero_0>0
   $table_hdtr<td align=center><b>$name_posAverage</b></td>
-  <th align=center>$[rint($tot_0/$nonzero_0*10)/10]$sign </th>
+   <td style="font-weight:bold; text-align:center;">$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
   !for j=1 to $nbexo
-   <th align=center>
+    <td style="font-weight:bold; text-align:center;">
     !if $(nonzero_$j)>0
      $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
     !else
      &nbsp;
     !endif
-   </th>
+   </td>
   !next j
   </tr>
  !endif
