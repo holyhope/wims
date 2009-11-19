@@ -54,7 +54,7 @@ $name_title_showsheet
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
    !if $job_affi=points
      !let t=!word 1 of $tot
-     !read adm/class/colors $[round($t/10)]
+     !read adm/class/colors $[ceil($t/10)]
     <td style=$style_note>
      $t %
      </td>
@@ -74,7 +74,7 @@ $name_title_showsheet
       !else
        !let t=100
       !endif
-      !read adm/class/colors $[round($t/10)]
+      !read adm/class/colors $[ceil($t/10)]
       <td style=$style_note>
       $t %
       !let tot_$k=$[$(tot_$k)+$t]
@@ -83,7 +83,7 @@ $name_title_showsheet
    !else
      !let t=!word 2 of $tot
      !let tot_0=$[$tot_0+$t]
-     !read adm/class/colors $[round($t)]
+     !read adm/class/colors $[ceil($t)]
       <td style=$style_note>
       $t 
       </td>
@@ -96,7 +96,7 @@ $name_title_showsheet
       !if $t!=0
        !increase nonzero_$k
       !endif
-      !read adm/class/colors $[round($t)]
+      !read adm/class/colors $[ceil($t)]
       <td style=$style_note>
       $t
       </td> 
@@ -106,7 +106,7 @@ $name_title_showsheet
   </tr>
  !next m
  $table_hdtr<td align=center><b>$name_classAverage</b></td>
- !read adm/class/colors $[round($tot_0/$usercnt*10)/$sign1]
+ !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1]
  <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
  !for j=1 to $nbexo
    !read adm/class/colors $[rint($(tot_$j)/$usercnt*10)/$sign1]

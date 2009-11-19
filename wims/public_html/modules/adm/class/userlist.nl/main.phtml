@@ -107,11 +107,11 @@ $wims_name_part_list
   !read userscore
   !if $manual>0 and $job_affi=notes
    !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
-   !read adm/class/colors $[round($glob*10/$scoremax)]
+   !read adm/class/colors $[ceil($glob*10/$scoremax)]
    <td style=$style_note>$glob</td>
-   !read adm/class/colors $[round($(manual_$UU)*10/$scoremax)]
+   !read adm/class/colors $[ceil($(manual_$UU)*10/$scoremax)]
    <td style=$style_note>$(manual_$UU)</td>
-   !read adm/class/colors $[round($per*10/$scoremax)]
+   !read adm/class/colors $[ceil($per*10/$scoremax)]
    <td style=$style_note>$per</td>
    !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
    !if $glob>0
@@ -125,7 +125,7 @@ $wims_name_part_list
    !endif
   !else
    !if $job_affi=notes
-    !read adm/class/colors $[round($per)]
+    !read adm/class/colors $[ceil($per)]
     <td style=$style_note>$per</td>
     !if $per>0
      !advance cnt_auto
@@ -141,7 +141,7 @@ $wims_name_part_list
     !if NaN isin $p_
      !set p_=0
     !endif
-    !read adm/class/colors $[round($p_*10/$scoremax)]
+    !read adm/class/colors $[ceil($p_*10/$scoremax)]
     <td style=$style_note>$p_</td>
    !else
     !set p_=!line $j of $percents
@@ -182,14 +182,14 @@ $wims_name_part_list
  $table_hdtr<td align=center><b>$name_classAverage</b></td>
  !if $job_affi=notes
  !if $manual>0
-  !read adm/class/colors $[round($m_glob*10/$scoremax)]
+  !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
   <td style=$style_note>$m_glob</td>
-  !read adm/class/colors $[round($m_tea*10/$scoremax)]
+  !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
   <td style=$style_note>$m_tea</td>
-  !read adm/class/colors $[round($m_auto*10/$scoremax)]
+  !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
   <td style=$style_note>$m_auto</td>
  !else
- !read adm/class/colors $[round($m_auto*10/$scoremax)]
+ !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
   <td align=center>$m_auto</td>
  !endif
  !endif
@@ -203,14 +203,14 @@ $wims_name_part_list
 	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
   $table_hdtr<td align=center><b>$name_posAverage</b></td>
   !if $manual>0
-  !read adm/class/colors $[round($m_glob*10/$scoremax)]
+  !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
    <td style=$style_note>$m_glob</td>
-   !read adm/class/colors $[round($m_tea*10/$scoremax)]
+   !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
    <td style=$style_note>$m_tea</td>
-   !read adm/class/colors $[round($m_auto*10/$scoremax)]
+   !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
    <td style=$style_note>$m_auto</td>
   !else
-  !read adm/class/colors $[round($m_auto)]
+  !read adm/class/colors $[ceil($m_auto)]
    <td style=$style_note>$m_auto</td>
   !endif
   !for j in $showsheet
