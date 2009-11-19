@@ -40,7 +40,9 @@ $name_title_showsheet
  !let tot_0=0
  !let nonzero_0=0
  !for j=1 to $nbexo
-  <th><small>$name_Exercise $j</small></th>
+    !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
+    !set e=!line 5 of $e
+  <th><small>$name_Exercise $j <a onmouseover="Tip('$e',$tooltip_parm)">$picto</a></small></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
