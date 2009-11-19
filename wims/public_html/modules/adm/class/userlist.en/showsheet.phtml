@@ -24,10 +24,12 @@ $name_title_showsheet
  !bound job_affi within points,qualite default points
  !if $job_affi=points
   !let sign=%
+  !set sign1=100
   <caption>$name_percentagegot</caption>
  !else
   !if $job_affi=qualite
    !let sign=$empty
+   !set sign1=10
    <caption>$name_qualitygot</caption>
   !else
    <caption>$name_percentagedone</caption>
@@ -52,11 +54,11 @@ $name_title_showsheet
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
    !if $job_affi=points
      !let t=!word 1 of $tot
-     !let t1=$[round($t/10)]
-    <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
+     !read adm/class/colors $[round($t/10)]
+    <td style=$style_note>
      $t %
+     </td>
      !let tot_0=$[$tot_0+$t]
-    </td>
     !if $t!=0
      !increase nonzero_0
     !endif 
@@ -72,8 +74,8 @@ $name_title_showsheet
       !else
        !let t=100
       !endif
-      !let t1=$[round($t/10)]
-      <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
+      !read adm/class/colors $[round($t/10)]
+      <td style=$style_note>
       $t %
       !let tot_$k=$[$(tot_$k)+$t]
      </td>  
@@ -81,9 +83,9 @@ $name_title_showsheet
    !else
      !let t=!word 2 of $tot
      !let tot_0=$[$tot_0+$t]
-     !let t1=$[round($t)]
-      <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
-     $t
+     !read adm/class/colors $[round($t)]
+      <td style=$style_note>
+      $t 
       </td>
     !if $t!=0
      !increase nonzero_0
@@ -94,8 +96,8 @@ $name_title_showsheet
       !if $t!=0
        !increase nonzero_$k
       !endif
-      !set t1=$[round($t)]
-      <td align="center" style="background-color: $(class_scorecolor[$t1+1]);font-weight:bold;">
+      !read adm/class/colors $[round($t)]
+      <td style=$style_note>
       $t
       </td> 
       !let tot_$k=$[$(tot_$k)+$t]
@@ -104,21 +106,26 @@ $name_title_showsheet
   </tr>
  !next m
  $table_hdtr<td align=center><b>$name_classAverage</b></td>
- <td style="font-weight:bold; text-align:center;">$[rint($tot_0/$usercnt*10)/10]$sign </td>
+ !read adm/class/colors $[round($tot_0/$usercnt*10)/$sign1]
+ <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
  !for j=1 to $nbexo
-   <td style="font-weight:bold; text-align:center;">$[rint($(tot_$j)/$usercnt*10)/10]$sign</td>
+   !read adm/class/colors $[rint($(tot_$j)/$usercnt*10)/$sign1]
+   <td style=$style_note>$[rint($(tot_$j)/$usercnt*10)/10]$sign</td>
  !next j
  </tr>
  !if $nonzero_0>0
   $table_hdtr<td align=center><b>$name_posAverage</b></td>
-   <td style="font-weight:bold; text-align:center;">$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
+   !read adm/class/colors $[rint($tot_0/$nonzero_0*10)/$sign1]
+   <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
   !for j=1 to $nbexo
-    <td style="font-weight:bold; text-align:center;">
     !if $(nonzero_$j)>0
-     $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
+      !read adm/class/colors $[rint($(tot_$j)/$(nonzero_$j)*10)/$sign1]
+      <td style=$style_note>
+    $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
     !else
-     &nbsp;
-    !endif
+       <td align="center">
+       &nbsp;
+    !endif  
    </td>
   !next j
   </tr>
