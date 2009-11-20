@@ -6,7 +6,7 @@ $wims_html_header
 <script language='javascript'>
   function addsheet(num,msg){
        ta1=window.opener.document.forms[0].elements['$cible'];
-       ta1.value=ta1.value+' test di autovalutazione n. '+num+': \\exercise{module=adm%2Fsheet&+sh='+num+'}{'+msg+'}';
+       ta1.value=ta1.value+' $wims_name_sheet n<sup>o</sup> '+num+' : \\exercise{module=adm%2Fsheet&+sh='+num+'}{'+msg+'}';
   }
   function addexam(num,msg){
        ta1=window.opener.document.forms[0].elements['$cible'];
@@ -22,14 +22,15 @@ $wims_html_header
  }
  function addpdoc(num,msg){
      ta1=window.opener.document.forms[0].elements['$cible'];
-     ta1.value=ta1.value+' Document : \\exercise{module='+num+'}{'+msg+'}';
+     ta1.value=ta1.value+' $wims_name_doc : \\exercise{module='+num+'}{'+msg+'}';
   }
 </script>
 !read names
 
+$name_Add <p>
 !let nb=!itemcnt $sheet_nums
 !if $nb!=0
-  Inserisci test di autovalutazione:<br>
+  $wims_name_sheet:<br>
   !for i in $sheet_nums
    !set title_js=!replace internal ' by \' in $(sheet_titles[$i])
    <a href="javascript:addsheet($i,'$title_js');">$(sheet_titles[$i])</a> ; &nbsp; 
@@ -39,7 +40,7 @@ $wims_html_header
 !let nb=!itemcnt $exam_nums
 !if $nb!=0
   <p>
-  Inserisci esame:<br>
+  $name_exam:<br>
   !for i in $exam_nums
    !set title_js=!replace internal ' by \' in $(exam_titles[$i])
    <a href="javascript:addexam($i,'$title_js');">$(exam_titles[$i])</a> ; &nbsp; 
@@ -48,14 +49,14 @@ $wims_html_header
 
 !if $nbfile > 0
  <p>
-  Inserisci file:<br>
+  $wims_name_addfile:<br>
   !for i=1 to $nbfile
    <a href="javascript:addfile('$(file_titles[$i])');">$(file_titles[$i])</a> ; &nbsp; 
   !next i
 !endif
 <p>
 !if $nbdocs > 0
- <p>
+ $wims_name_doc:<br>
   !for i=1 to $nbdocs
     !set title_js=!replace internal ' by \' in $(doc_titles[$i])
     !if $title_js!=

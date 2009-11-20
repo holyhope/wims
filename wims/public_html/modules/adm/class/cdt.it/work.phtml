@@ -4,9 +4,9 @@ $cdt_title
 
 <center> <b><font size="+1">
  !if $jour_begin!=$empty
-  da <font color=green>$name_date</font>
+  $name_between <font color=green>$name_date</font>
   !if $jour_begin!=$jour_end
-   a <font color=green>$name_date2</font>
+   $name_and <font color=green>$name_date2</font>
   !endif
  !endif
  </font></b>
@@ -18,14 +18,14 @@ $cdt_title
 <p><p>
 
 !if $cdt_nbdate=0
- nessuna informazione.
+ $name_noinfo1.
  !goto end
 !else
  !if $nbligne=0
   !if $jour_begin=$jour_end
-   nessuna informazione per il giorno indicato.
+   $name_noinfo2.
   !else
-   nessuna informazione per il periodo indicato.
+   $name_noinfo3.
   !endif
   !goto end
  !endif
@@ -34,11 +34,11 @@ $cdt_title
 <center>
  $table_header
  $table_hdtr 
-  <th width=45>Data</th>
+  <th>$name_Day</th>
   !if no isin $cdt_supervise
-   <th>materia</th>
+   <th>$name_discipline</th>
   !endif
-  <th>in aula</th><th>da svolgere</th><th width=45>entro</th>
+  <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
   !if $wims_user=supervisor and yes isin $cdt_supervise
    <th>$wims_name_action</th>
   !endif

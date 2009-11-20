@@ -1,24 +1,19 @@
 !form reply
 <input type=hidden name=show value=yes>
 <table border=0>
-<tr><td align=right>Mostra le statistiche:<td>
+<tr><td align=right>$name_showstat:<td>
 !set wims_formselect_switch=multiple size=8
 !formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
 	prompt\
-	punteggio richesto, pesi,\
-        indice di difficoltà, statistiche generali,\
-	media per punteggio, media per studente,\
-	minimo e massimo, deviazione standard
-<tr><td align=right>Tipo di dati:<td>
+	$name_prompt
+<tr><td align=right>$name_data:<td>
 !set wims_formselect_switch=
 !formselect types list 1,2,3 prompt \
-	attività registrate, attività non registrate, tutte le attività
+	$name_typ_activities
 !if $sharer!=$empty
- <tr><td align=right>Tenendo conto delle attività dei corsi<br>
- che condividono risorse con questo corso:
+ <tr><td align=right>$name_shareclass:
  <td>
- !formradio share list yes,no prompt $wims_name_yes,$wims_name_noo
+ !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
 !endif
 <tr><td colspan=2 align=center><input type=submit value="$wims_name_Show">
 </table></form>
-

@@ -5,7 +5,7 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-Aggiungi un compito
+$cdt_subtitle\
 
 !if $error!=$empty
  <p>
@@ -15,7 +15,7 @@ Aggiungi un compito
 !form reply
 <input type=hidden name=job value=addtodo>
 <input type=hidden name=job2 value=save>
-<p>Lezione del:
+<p>$name_session del:
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -28,7 +28,7 @@ Aggiungi un compito
 !formselect jmonth from 1 to 12 prompt $months
 !formselect jyear from $creyear to $expyear
 <p>
-Numero di scandenze da mostrare:
+$name_nb_date: 
 <select  name="nbredevoir" onchange="submit()">
 !for i=1 to $max_todo
  !if $i=$nbredevoir
@@ -42,7 +42,7 @@ Numero di scandenze da mostrare:
 <table>
  !for i=1 to $nbredevoir
  <tr>
-  <td>Compiti da svolgere entro:
+  <td>$name_work $name_for
    !if $(dday$i)=$empty
     !let dday$i=$jday
     !let dyear$i=$jyear

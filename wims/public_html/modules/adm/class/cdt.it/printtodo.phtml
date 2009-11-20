@@ -3,11 +3,11 @@ $wims_classname - $wims_institutionname\
 $cdt_title
 
 <center>
- <font size="+1"><b>Work to do
+ <font size="+1"><b>$name_worktodo
  !if $jour_begin!=$jour_end
-  tra il <font color=green>$name_date</font> e il <font color=green>$jday2/$jmonth2/$jyear2</font>
+  $name_between <font color=green>$name_date</font> $name_and <font color=green>$jday2/$jmonth2/$jyear2</font>
  !else
-  per il 
+  $name_for 
   <font color=green>$name_date</font>
  !endif
 </b></font>
@@ -15,7 +15,7 @@ $cdt_title
 <p><p>
 
 !if $nbligne=0
- Non c'è lavoro da svolgere per il $name_date.
+ $name_nowork $name_date.
  <p>
  !goto end
 !endif
@@ -23,11 +23,11 @@ $cdt_title
  !let table_border=1
  $table_header
  $table_hdtr 
-  <th>Per il</th>
+  <th>$name_for</th>
   !if no isin $cdt_supervise
-   <th>Mati&egrave;res</th>
+   <th>$name_discipline</th>
   !endif
-  <th>Compito</th><th>Give the</th>
+  <th>$name_work</th><th>$name_giventhe</th>
  </tr>
  !for i=1 to $nbligne
   $table_tr

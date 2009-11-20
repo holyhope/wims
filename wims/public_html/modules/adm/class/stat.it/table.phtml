@@ -1,5 +1,5 @@
-!distribute items Esame, Test, exams/.exam, sheets/.sheet, 4, 3, 3, 5\
-	into name_E, name_S, file_E, file_S, line_E, line_S, linei_E, linei_S
+!distribute items exams/.exam, sheets/.sheet, 4, 3, 3, 5\
+	into file_E, file_S, line_E, line_S, linei_E, linei_S
 
 !for ss in $listsh
  !distribute items 0,0,0,0,0,0,0,0,0,0 into\
@@ -9,51 +9,51 @@
  !set l_=!record $sn of wimshome/log/classes/$wims_class/$(file_$st)s
  !set shtit=!line $(line_$st) of $l_
  <p>$table_header
- $table_hdtr<th rowspan=$hdrow>Esercizio</th>
+ $table_hdtr<th rowspan=$hdrow>$wims_name_Exercise</th>
  !if req isitemof $show and $st=S
-  <th rowspan=$hdrow><small>punteggio<br>richiesto</small></th>
+  <th rowspan=$hdrow><small>$name_required_points</small></th>
  !endif
  !if weight isitemof $show
-  <th rowspan=$hdrow><small>peso</small></th>
+  <th rowspan=$hdrow><small>$name_coeff</small></th>
  !endif
  !if cid isitemof $show
-  <th rowspan=$hdrow><small>indice di<br>difficoltà</small></th>
+  <th rowspan=$hdrow><small>$name_index</small></th>
  !endif
  !if tot isitemof $show
-  <th colspan=4>Statistica generale</th>
+  <th colspan=4>$name_totals</th>
  !endif
  !if scoremean isitemof $show
-  <th colspan=2><small>media/a punti</small></th>
+  <th colspan=2><small>$name_avg_score</small></th>
  !endif
  !if partmean isitemof $show
-  <th colspan=4><small>media/studente</small></th>
+  <th colspan=4><small>$name_avg_participant</small></th>
  !endif
  !if minmax isitemof $show
-  <th colspan=2>min</th>
-  <th colspan=2>max</th>
+  <th colspan=2>$name_min</th>
+  <th colspan=2>$name_max</th>
  !endif
  !if deviat isitemof $show
-  <th colspan=2><small>deviazione standard</small></th>
+  <th colspan=2>$name_deviation</th>
  !endif
  !if $hdrow>1
   $table_hdtr
   !if tot isitemof $show
-   <th><small>iniziati</small></th><th><small>a punti</small></th>
-   <th><small>punteggio</small></th><th><small>tempo</small></th>
+   <th><small>iniziati</small></th><th><small>$name_score</small></th>
+   <th><small>punteggio</small></th><th><small>$name_duration</small></th>
   !endif
   !if scoremean isitemof $show
-   <th><small>punteggio</small></th><th><small>tempo</small></th>
+   <th><small>punteggio</small></th><th><small>$name_duration</small></th>
   !endif
   !if partmean isitemof $show
    <th><small>iniziati</small></th><th><small>a punti</small></th>
-   <th><small>punteggio</small></th><th><small>tempo</small></th>
+   <th><small>punteggio</small></th><th><small>$name_duration</small></th>
   !endif
   !if minmax isitemof $show
-   <th><small>punteggio</small></th><th><small>tempo</small></th>
-   <th><small>punteggio</small></th><th><small>tempo</small></th>
+   <th><small>punteggio</small></th><th><small>$name_duration</small></th>
+   <th><small>punteggio</small></th><th><small>$name_duration</small></th>
   !endif
   !if deviat isitemof $show
-   <th><small>punteggio</small></th><th><small>tempo</small></th>
+   <th><small>punteggio</small></th><th><small>$name_duration</small></th>
   !endif
  !endif
  !for i=$(start$st$sn) to $(end$st$sn)
@@ -124,7 +124,7 @@
  !next i
  !set test=!listintersect $show and req,weight,cid,tot,scoremean,partmean
  !if $st=S and $(start$st$sn)<$(end$st$sn) and $test!=$empty
-  $table_hdtr<th>Somma</th>
+  $table_hdtr<th>$name_sum</th>
   !if req isitemof $show
    <td align=center>$sreq</td>
   !endif
@@ -163,7 +163,7 @@
  !endif
  <caption>
  <b>$(name_$st) $sn.</b> $shtit
- <small>(tempo teorico $[rint($sdur)]&nbsp;min.)</small>
+ <small>($name_theoric $[rint($sdur)] $name_minute)</small>
  </caption>
  $table_end <p>
 !next ss
