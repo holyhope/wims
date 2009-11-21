@@ -61,7 +61,7 @@ $name_workdetail
  !for i=1 to $gcnt
   $table_tr<td>$t_<td align=center>$(w$i)</td>
   !read adm/class/colors $[10*ceil($(g_$i))/$scoremax]
-  <td style=$style_note>$(g_$i)</td>)
+  <td style=$style_note>$(g_$i)</td>
  !next i
  $table_hdtr<td colspan=2>$name_Average</td>
  !read adm/class/colors $[ceil(10*$mav/$scoremax)]
@@ -152,9 +152,9 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
  $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])</th><th>$(name_thsheet[3])</th><th>$(name_thsheet[4])
      <th>$(name_thsheet[5])</th><th>$(name_thsheet[6])</th><th>$(name_thsheet[7])</th>
  !for j=1 to $e_
-  $table_tr<td align=right>$j
+  $table_tr<td align=center>$j
   <td>$(title_$(n_)_$j)
-  <td align=right>
+  <td align=center>
   !set v_=$(req_$(n_)_$j)
   $v_
   <td align=center>$(weight_$(n_)_$j)</td>
@@ -163,21 +163,23 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
   !read adm/class/colors $[ceil(10*$d_/$(weight_$(n_)_$j))/$(req_$(n_)_$j)]
   !if $d_>0
   <td style=$style_note>
+       $d_
   !else
   <td align=right>
+  --
   !endif
-    $d_
   </td>
-  !read adm/class/colors $[ceil(10*$d_/$v_)]
   !if $v_>0
+   !read adm/class/colors $[ceil(10*$d_/$v_)]
    !if $d_>0
     <td align=right style=$style_note>
+    $[round(100*$d_/$v_)]%
    !else
-    <td align=right>
-   !endif
-   $[round(100*$d_/$v_)]%
+    <td align=center>
+    --
+   !endif  
   !else
-   <td align=right>
+   <td align=center>
    ---
   !endif
   </td>
@@ -185,11 +187,12 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
   !default d_=0
   !read adm/class/colors $[ceil($d_)]
   !if $d_>0
-   <td align=right style=$style_note>  
+   <td style=$style_note>
+       $d_
   !else
-   <td align=right>
+   <td align=center>
+     --
   !endif
-    $d_
    </td>
  !next j
  $table_end <p>
