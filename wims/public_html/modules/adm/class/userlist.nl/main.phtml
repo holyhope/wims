@@ -110,12 +110,27 @@ $wims_name_part_list
   !read userscore
   !if $manual>0 and $job_affi=notes
    !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
-   !read adm/class/colors $[ceil($glob*10/$scoremax)]
-   <td style=$style_note>$glob</td>
-   !read adm/class/colors $[ceil($(manual_$UU)*10/$scoremax)]
-   <td style=$style_note>$(manual_$UU)</td>
-   !read adm/class/colors $[ceil($per*10/$scoremax)]
-   <td style=$style_note>$per</td>
+   !if $glob>0
+    !read adm/class/colors $[ceil($glob*10/$scoremax)]
+    <td style=$style_note>$glob
+   !else
+     <td align="center">--
+   !endif
+   </td>
+   !if $(manual_$UU)>0
+    !read adm/class/colors $[ceil($(manual_$UU)*10/$scoremax)]
+    <td style=$style_note>$(manual_$UU)
+   !else
+     <td align="center">--
+   !endif
+   </td>
+   !if $per>0
+    !read adm/class/colors $[ceil($per*10/$scoremax)]
+    <td style=$style_note>$per
+   !else
+     <td align="center">--
+   !endif
+   </td>
    !distribute item $[$mean_glob+$glob],$[$mean_tea+$(manual_$UU)] into mean_glob,mean_tea
    !if $glob>0
     !advance cnt_glob
@@ -128,12 +143,15 @@ $wims_name_part_list
    !endif
   !else
    !if $job_affi=notes
-    !read adm/class/colors $[ceil($per)]
-    <td style=$style_note>$per</td>
     !if $per>0
+     !read adm/class/colors $[ceil($per*10/$scoremax)]
+     <td style=$style_note>$per 
      !advance cnt_auto
      !advance cnt_glob
+    !else
+     <td align="center">--
     !endif
+     </td>
    !endif
   !endif
   !set mean_auto=$[$mean_auto+$per]
@@ -144,8 +162,13 @@ $wims_name_part_list
     !if NaN isin $p_
      !set p_=0
     !endif
-    !read adm/class/colors $[ceil($p_*10/$scoremax)]
-    <td style=$style_note>$p_</td>
+    !if $p_>0
+     !read adm/class/colors $[ceil($p_*10/$scoremax)]
+     <td style=$style_note>$p_
+    !else
+     <td align="center">--
+    !endif
+     </td>
    !else
     !set p_=!line $j of $percents
     !distribute words $p_ into p1,p2
@@ -156,17 +179,32 @@ $wims_name_part_list
      !else
       !set p_=0
      !endif
-     !read adm/class/colors $[rint(10*$p_/$scoremax)]
-      <td style=$style_note>$p_</td>
+     !if $p_>0
+      !read adm/class/colors $[ceil(10*$p_/$scoremax)]
+      <td style=$style_note>$p_
+     !else
+      <td align="center">--
+     !endif
+      </td>
     !else
      !if qualite iswordof $job_affi
       !set p_=$p2
-      !read adm/class/colors $[rint(10*$p_/$scoremax)]
-      <td style=$style_note>$p_</td>
+      !if $p_>0
+       !read adm/class/colors $[ceil($p_)]
+       <td style=$style_note>$p_
+      !else
+       <td align="center">--
+      !endif
+      </td>
      !else
       !set p_=$p1
-      !read adm/class/colors $[rint($p_/10)]
-      <td style=$style_note>$p_ %</td>
+      !if $p_>0
+       !read adm/class/colors $[ceil($p_/10)]
+       <td style=$style_note>$p_ %
+      !else
+       <td align="center">--
+       </td>
+      !endif  
      !endif
      !if $p2=$empty
       !set $p_=0
@@ -184,21 +222,50 @@ $wims_name_part_list
 	$[rint(100*$mean_glob/$usercnt)/100] into m_auto,m_tea,m_glob
  $table_hdtr<td align=center><b>$name_classAverage</b></td>
  !if $job_affi=notes
- !if $manual>0
-  !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
-  <td style=$style_note>$m_glob</td>
-  !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
-  <td style=$style_note>$m_tea</td>
-  !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
-  <td style=$style_note>$m_auto</td>
- !else
- !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
-  <td align=center>$m_auto</td>
- !endif
+  !if $manual>0
+   !if $m_glob >0
+     !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
+     <td style=$style_note>$m_glob
+   !else
+     <td align=center>--
+   !endif
+   </td>
+   !if $m_tea >0
+    !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
+    <td style=$style_note>$m_tea
+   !else
+    <td align=center>--
+   !endif
+   </td>
+   !if $m_auto>0
+    !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
+    <td style=$style_note>$m_auto
+   !else
+    <td align=center>--
+   !endif
+   </td>
+  !else
+   !if $m_auto>0
+    !read adm/class/colors $[ceil($m_auto/10)]
+    <td style=$style_note>$m_auto
+   !else
+    <td align=center>--
+   !endif
+   </td>
+  !endif
  !endif
  !for j in $showsheet
-   !read adm/class/colors $[rint(100*$(per_$j)/max(1,$usercnt)/100)]
-  <td style=$style_note>$[rint(100*$(per_$j)/max(1,$usercnt))/100]</td>
+  !if $[rint(100*$(per_$j)/max(1,$usercnt))/100]>0
+   !if $job_affi=points
+    !read adm/class/colors $[ceil($(per_$j)/max(1,$usercnt)/10)]
+    <td style=$style_note>$[rint(100*$(per_$j)/max(1,$usercnt))/100] %
+   !else
+    <td style=$style_note>$[rint(100*$(per_$j)/max(1,$usercnt))/100]
+   !endif
+  !else
+    <td align=center>--
+  !endif
+  </td>
  !next j
  !if $cnt_glob>0
   !distribute item $[rint(100*$mean_auto/max(1,$cnt_auto))/100],\
@@ -206,21 +273,47 @@ $wims_name_part_list
 	$[rint(100*$mean_glob/max(1,$cnt_glob))/100] into m_auto,m_tea,m_glob
   $table_hdtr<td align=center><b>$name_posAverage</b></td>
   !if $manual>0
-  !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
-   <td style=$style_note>$m_glob</td>
-   !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
-   <td style=$style_note>$m_tea</td>
-   !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
-   <td style=$style_note>$m_auto</td>
+    !if $m_glob>0
+     !read adm/class/colors $[ceil($m_glob*10/$scoremax)]
+     <td style=$style_note>$m_glob
+    !else
+     <td align=center>--
+    !endif
+    </td>
+    !if $m_tea>0
+     !read adm/class/colors $[ceil($m_tea*10/$scoremax)]
+     <td style=$style_note>$m_tea
+    !else
+     <td align=center>--
+    !endif
+    </td>
+    !if $m_auto>0
+     !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
+     <td style=$style_note>$m_auto
+    !else
+     <td align=center>--
+    !endif
+    </td>
   !else
-  !read adm/class/colors $[ceil($m_auto)]
-   <td style=$style_note>$m_auto</td>
+    !if $m_auto>0
+     !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
+     <td style=$style_note>$m_auto
+    !else
+      <td align=center>--
+    !endif
+    </td>
   !endif
   !for j in $showsheet
-    !read adm/class/colors $[rint($(per_$j)/max(1,$(cnt_$j))*10/$scoremax)]
-    <td style=$style_note>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]</td>
+   !if $[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]>0
+    !read adm/class/colors $[ceil($(per_$j)/max(1,$(cnt_$j))*10/$scoremax)]
+    <td style=$style_note>$[rint(100*$(per_$j)/max(1,$(cnt_$j)))/100]
+   !else
+    <td align=center>--
+   !endif
+   </td>
   !next j
  !endif
+
  $table_end
 <p>$name_click</p>
 !if $activecnt>1
