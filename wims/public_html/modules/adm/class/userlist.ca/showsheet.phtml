@@ -56,9 +56,13 @@ $name_title_showsheet
    !let tot=!getscorepercent user=$uu sheet=$numshowsheet
    !if $job_affi=points
      !let t=!word 1 of $tot
-     !read adm/class/colors $[ceil($t/10)]
-    <td style=$style_note>
-     $t %
+     !if $t!=0
+      !read adm/class/colors $[ceil($t/10)]
+      <td style=$style_note>
+      $t %
+     !else
+      <td align="center">--
+     !endif
      </td>
      !let tot_0=$[$tot_0+$t]
     !if $t!=0
@@ -76,57 +80,69 @@ $name_title_showsheet
       !else
        !let t=100
       !endif
-      !read adm/class/colors $[ceil($t/10)]
-      <td style=$style_note>
-      $t %
-      !let tot_$k=$[$(tot_$k)+$t]
-     </td>  
+      !if $t>0
+       !read adm/class/colors $[ceil($t/10)]
+       <td style=$style_note>
+       $t %
+       !let tot_$k=$[$(tot_$k)+$t]
+      !else
+       <td align="center">--
+      !endif
+      </td>  
     !next k
    !else
      !let t=!word 2 of $tot
      !let tot_0=$[$tot_0+$t]
      !read adm/class/colors $[ceil($t)]
+     !if $t!=0 
       <td style=$style_note>
-      $t 
-      </td>
-    !if $t!=0
-     !increase nonzero_0
-    !endif 
-    !let tmp=!getscoremean user=$uu sheet=$numshowsheet
+      $t
+      !increase nonzero_0
+     !else
+      <td align="center">--
+     !endif
+     </td>
+     !let tmp=!getscoremean user=$uu sheet=$numshowsheet
     !for k=1 to $nbexo
       !let t=!word $k of $tmp
       !if $t!=0
        !increase nonzero_$k
+       !read adm/class/colors $[ceil($t)]
+       <td style=$style_note>
+       $t
+      !else
+       <td align="center">--
       !endif
-      !read adm/class/colors $[ceil($t)]
-      <td style=$style_note>
-      $t
       </td> 
       !let tot_$k=$[$(tot_$k)+$t]
     !next k
    !endif
   </tr>
  !next m
- $table_hdtr<td align=center><b>$name_classAverage</b></td>
+ $table_hdtr<td align="center"><b>$name_classAverage</b></td>
  !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1]
  <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
  !for j=1 to $nbexo
-   !read adm/class/colors $[rint($(tot_$j)/$usercnt*10)/$sign1]
-   <td style=$style_note>$[rint($(tot_$j)/$usercnt*10)/10]$sign</td>
+  !if $(tot_$j)>0
+   !read adm/class/colors $[ceil($(tot_$j)/$usercnt*10/$sign1)]
+   <td style=$style_note>$[rint($(tot_$j)/$usercnt*10)/10]$sign
+  !else
+   <td align="center">--
+  !endif
+    </td>
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td align=center><b>$name_posAverage</b></td>
-   !read adm/class/colors $[rint($tot_0/$nonzero_0*10)/$sign1]
+  $table_hdtr<td align="center"><b>$name_posAverage</b></td>
+   !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1)]
    <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
   !for j=1 to $nbexo
     !if $(nonzero_$j)>0
-      !read adm/class/colors $[rint($(tot_$j)/$(nonzero_$j)*10)/$sign1]
+      !read adm/class/colors $[ceil($(tot_$j)/$(nonzero_$j)*10/$sign1)]
       <td style=$style_note>
     $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
     !else
-       <td align="center">
-       &nbsp;
+       <td align="center">--
     !endif  
    </td>
   !next j
