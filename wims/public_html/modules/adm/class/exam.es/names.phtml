@@ -7,47 +7,55 @@
 !set wims_name_endexam=Terminar esta sesión de examen
 !set wims_name_scoreexam=Mi puntuación
 
-!set name_mainpage=Page principale de l'examen
+!set name_mainpage=Página principal del examen
 !set name_dependency=Dépendances des scores&nbsp;
 !set name_Options=Options
 !set name_All=Toutes
-!set name_title=Préparation de l'examen
-!set name_expire=Expirer maintenant l'examen
-!set name_done=fait
+!set name_title=Preparación del examen
+!set name_expire=Darlo por expirado ahora mismo
+!set name_done=hecho
 
-!distribute items poids,coefficient\
-into name_weight,name_coeff
+!distribute items poids,Coeficiente,Puntuación\
+into name_weight,name_coeff,name_Score
 
 
-!distribute lines Terminer cette session d'examen\
-Retourner travailler sur l'examen\
-Vue d'enseignant de l'examen\
-Présentation aux participants\
-Détail du score actuel\
-Cet examen est vide&nbsp;! Il s'agit apparemment d'une erreur de manipulation de votre enseignant.\
-Contenu de l'examen&nbsp;\
-Cet examen est actuellement fermé pour votre connexion.\
-Vous pouvez faire cet examen une seule fois.\
-donc vous ne pouvez plus améliorer vos scores.\
-C'est votre dernier essai disponible. Faites attention&nbsp;!\
-le compte à rebours commencera et le nombre d'essais tentés sera augmenté de 1.\
-le compte à rebours commencera.\
+!distribute lines Terminar esta sesión de examen\
+Volver a trabajar en el examen\
+Punto de vista del profesor sobre el examen\
+Presentación a los participantes\
+Detalle de la puntuación actual\
+¡Este examen está vacío! No se le ha asignado nada. Posiblemente un error de manipulación de su supervisor.Contenido del examen\
+Contenido del examen\
+Actualmente, este examen está cerrado a su conexión.\
+Solo puede realizar una vez este examen.\
+por lo tanto no puede mejorar su puntuación.\
+ Es su último intento disponible. ¡Preste atención!\
+la cuenta atrás comenzará, y se incrementará en 1 el número de intentos.\
+la cuenta atrás comenzará.\
 Nécessite le succès sur d'autres exercices\
-Score de cette session d'examen&nbsp;\
+Puntuación de esta sesión del examen\
 into name_endexam,name_backexam,name_teacherview,name_presentation,\
 name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
-!set name_exam2=!nosubst Vous pouvez faire cet examen jusqu'à $stries fois au total.
+     !else
+       la cuenta atrás comenzará.
+     !endif
+    
+   !else
+     Ya lo ha intentado $tried veces,
+   !endif
+   
+   
+!set name_exam2=!nosubst Puede registrar hasta $stries puntuaciones en este examen.
+!set name_exam3=!nosubst Ya ha terminado su sesión de examen con $tried ensayos,
+!set name_exam4=!nosubst Ya lo ha intentado $tried veces,
+!set name_exam6=!nosubst Y todavía puede hacer $tryremain nuevos intentos.
 
-!set name_exam3=!nosubst Vous avez déjà terminé votre séance d'examen avec $tried essais, 
-!set name_exam4=!nosubst Vous avez déjà fait l'examen $tried fois,
-!set name_exam6=!nosubst Et il vous reste actuellement $tryremain essai(s) permis.
-
-!set name_exam9=!nosubst Vous avez $sdure minutes pour travailler sur cet examen. \
-Quand vous cliquerez sur un des exercices ci-dessus,
+!set name_exam9=!nosubst Tiene $sdure minutos para trabajar en el examen.\
+     Cuando pulse en un ejercicio de los anteriores,
  
-!set name_simulation=Cet examen est en mode simulation. Il fonctionne exactement comme le vrai examen\
-  mais le score n'est pas enregistré et votre essai ne sera pas compté.
+!set name_simulation=Este examen está en modo simulación. Funciona exactamente igual \
+que el examen verdadero pero no se puede guardar la puntuación y el intento no se tendrá en cuenta.
   
-!set wims_name_examremain=Temps restant pour cet examen : $
+!set wims_name_examremain=Tiempo restante de examen: $

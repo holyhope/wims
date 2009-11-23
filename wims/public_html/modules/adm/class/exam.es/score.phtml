@@ -5,27 +5,26 @@
  $title
  
  !if $wims_user=supervisor
- <center>(Presentación a los participantes)</center>
+  <center>($name_presentation)</center>
  !endif
- <p>$desc<p>
+  <p>$desc<p>
 !endif
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Vuelta a la página principal
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
 
 !if $exocnt=0
- ¡Este examen está vacío! No se le ha asignado nada. Posiblemente
- un error de manipulación de su supervisor.
+ $name_empty
 !else
  <p><center><table border=1 bgcolor=bisque>
- <caption>Detalle de la puntuación actual</caption>
- <tr><th>Ejercicio<th>Título<th>Coeficiente<th>Puntuación
+ <caption>$name_scoreexam</caption>
+ <tr><th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
@@ -40,7 +39,7 @@
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Puntuación de esta sesión del examen: <b>$score</b> <small>sobre 10</small>.
+$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  $table_end
 !endif
 <p>
@@ -67,15 +66,15 @@
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg Terminar esta sesión de examen.
+ !href cmd=reply&job=scorereg $name_endexam.
 &nbsp;&nbsp;
 !endif
- !href cmd=reply&job=student Volver a trabajar en el examen.
+ !href cmd=reply&job=student $name_backexam.
 !endif
 
 !if $wims_user=supervisor
  <p><center>
- !href cmd=resume Punto de vista del profesor sobre el examen.
+ !href cmd=resume $name_teacherview.
  </center>
 !endif
 
@@ -83,3 +82,4 @@
 !tail
 
 !reset job
+

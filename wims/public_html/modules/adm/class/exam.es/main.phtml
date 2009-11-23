@@ -1,10 +1,7 @@
-!set wims_name_examremain=Tiempo restante de examen: $
+!read names.phtml
 !read js/examclock1.phtml
-
 !read adm/css.phtml
 !header1
-
-!read names.phtml
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -12,7 +9,7 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Preparación del examen $exam
+$name_title $exam
 
 !if $error!=$empty
  <p>
@@ -23,7 +20,7 @@ Preparación del examen $exam
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -34,7 +31,7 @@ Preparación del examen $exam
  Este examen está
  !if $activetest=1
   activo.
-  !href cmd=reply&job=expire Darlo por expirado ahora mismo
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -50,10 +47,10 @@ Preparación del examen $exam
  !endif 
 !href cmd=reply&job=deactivate Desactive it
 <center><table border=2>
- <tr><td align=right>Título:
+ <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value="$wims_name_change">
- <tr><td align=right>Descripción:
+ <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Fecha de expiración:<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
@@ -66,7 +63,7 @@ Preparación del examen $exam
 
 !form reply
 <input type=hidden name=job value=text>
-Título (limitado a $title_limit caracteres):<br>
+$wims_name_title (limitado a $title_limit caracteres):<br>
 <input size=65 name=title value="$title"> <p>
 Y un texto explicativo (limitado a $desc_limit caracteres; 
 se permiten etiquetas html y enlaces):<br>
@@ -84,7 +81,7 @@ se permiten etiquetas html y enlaces):<br>
 minutos. Cada participante puede intentar el examen hasta
 !default stries=3
 <input size=3 name=tries value="$stries"> veces.
-<input type=submit value="Grabar">
+<input type=submit value="$wims_name_tosave">
 
 !ifval $activetest=-1
  <p>Este examen no existe aún.
@@ -108,30 +105,34 @@ minutos. Cada participante puede intentar el examen hasta
 !if $exocnt=0
  Este examen no tiene aún contenidos.
  !href cmd=reply&job=exo&exo=1 Añadir un ejercicio
+ $wims_name_or
+ !href cmd=reply&job=cpsheet ajouter une série d'exercices
 .
 !else
  <a name=list>
- Contenido del examen:</a><ol>
+ $name_content:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, weight $we.
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Subir
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Modificar
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Eliminar
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Añadir otro ejercicio
+$wims_name_or
+ !href cmd=reply&job=cpsheet ajouter une série d'exercices
 .
  !endif
 !endif
