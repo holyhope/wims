@@ -1,22 +1,23 @@
 !set wims_name_examremain=Temps restant pour cet examen : $
 !read js/examclock1.phtml
-
 !read adm/css.phtml
 !header1
+
 !read names.phtml
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
 !endif
+
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Préparation de l'examen $exam
+$name_title $exam
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
@@ -32,15 +33,15 @@ Préparation de l'examen $exam
  Cet examen est
  !if $activetest=1
   actif.
-  !href cmd=reply&job=expire L'expirer maintenant
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
    périmé mais encore visible par participants.
-   !href cmd=reply&job=hide Le cacher aux participants
+   !href cmd=reply&job=hide Cacher l'examen aux participants
   !else
    périmé et invisible des participants.
-   !href cmd=reply&job=expire Le faire réapparaitre
+   !href cmd=reply&job=expire Faire réapparaitre l'examen
   !endif
   .
   !href cmd=reply&job=reactivate Le réactiver
@@ -107,25 +108,25 @@ minutes. Chaque participant peut faire l'examen jusqu'à
  Cet examen n'a pas encore de contenu. 
  !href cmd=reply&job=exo&exo=1 Ajouter un exercice
 , ou
- !href cmd=reply&job=cpsheet ajouter une s&eacute;rie d'exercices
+ !href cmd=reply&job=cpsheet ajouter une série d'exercices
 .
 !else
  <a name=list>
- Contenu de l'examen&nbsp;:</a><ol>
+ $name_content:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, poids $we.
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Remonter
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Modifier
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Supprimer
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
@@ -133,8 +134,8 @@ minutes. Chaque participant peut faire l'examen jusqu'à
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Ajouter un autre exercice
 ,
-ou
- !href cmd=reply&job=cpsheet ajouter une s&eacute;rie d'exercices
+$wims_name_or
+ !href cmd=reply&job=cpsheet ajouter une série d'exercices
 .
  !endif
 !endif
@@ -162,13 +163,13 @@ ou
  !set allowshare=0
  !if $sharers!=$empty
   ( pour toutes les classes partageant l'examen :
-  !formselect allowshare list 0,1 prompt non,oui
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
  !else
   <input type=hidden name=allowshare value=0>
  !endif
  </form>
- <small><b>Indication.</b> Dans le mode sélectif, vous pouvez imposer une
+ <small><b>$wims_name_help.</b> Dans le mode sélectif, vous pouvez imposer une
  restriction dans le temps pour l'enregistrement des notes en ajoutant des
  mots
  <font color=blue><b>

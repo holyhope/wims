@@ -1,11 +1,10 @@
-!set done=fait
 
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
 
 !if $wims_user=supervisor
-<center>(Présentation aux participants)</center>
+ <center>($name_presentation)</center>
 !endif
  <p>
 $desc<p>
@@ -14,7 +13,7 @@ $desc<p>
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_back
 . <p>
  !exit
 !endif
@@ -24,11 +23,9 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- Cet examen est vide&nbsp;! Il s'agit apparemment d'une
- erreur de manipulation de votre enseignant.
+ $name_empty
 !else
- Contenu de l'examen&nbsp;:
-!! !href cmd=reply&job=student [rafraîchir cette page]
+ $name_content:
  !set activeexo=0
  <p>
  !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
@@ -50,7 +47,7 @@ $desc<p>
  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    <td>$ti </td><td>$done</td>
+    <td>$ti </td><td>$name_done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -71,15 +68,15 @@ $desc<p>
       !endif
      !endif
     !else
-     <td><b><font color=red>$ti</font></b> </td><td>Nécessite
-     !href cmd=reply&job=student le succès sur d'autres exercices
+     <td><b><font color=red>$ti</font></b> </td><td>
+     !href cmd=reply&job=student $name_depend
 .</td>
     !endif
    !endif
   !else
    <td>$ti.</td><td class="empty"></td>
   !endif
-!! ------------------------------fin d'affichage de la ligne correspondant à  un exercice
+!! -------fin d'affichage de la ligne correspondant à  un exercice
       !endif
     !next col
    </tr>
@@ -89,60 +86,51 @@ $desc<p>
   </center>
  !endif
  !if $t_=no
-  Cet examen est actuellement fermé pour votre connexion.
-  !href cmd=reply&job=student Rafraîchir cette page.
+  $name_examclosed
+  !href cmd=reply&job=student $wims_name_refresh
  !else
   !if $stries=1
-   Vous pouvez faire cet examen une seule fois.
+   $name_exam1
   !else
-   Vous pouvez faire cet examen jusqu'à $stries fois au total.
+   $name_exam2
   !endif
   !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
    !if $trcut=0
-    Vous avez déjà terminé votre séance d'examen avec $tried essais,
+    $name_exam3
    !else
-    Vous avez déjà fait l'examen $tried fois,
+   $name_exam4
    !endif
-   donc vous ne pouvez plus améliorer vos scores.
+   $name_exam5
    !set exhausted=yes
   !endif
   !if $tryremain>0
-   Et il vous reste actuellement $tryremain essai(s) permis.
+   $name_exam6
   !endif
   !if $registered=$empty and $exhausted!=yes
-   Vous avez $sdure minutes pour travailler sur cet examen.
-   Quand vous cliquerez sur un des exercices ci-dessus,
+   $name_exam9
    !if $allowtype!=simulation
-    le compte à rebours commencera et le nombre d'essais tentés sera augmenté de 1.
+    $name_exam7
    !else
-    le compte à rebours commencera.
+    $name_exam8
    !endif
   !else
    !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-    C'est votre dernier essai disponible. Faites attention&nbsp;!
+    $name_lasttry
    !endif
   !endif
-!set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-!!<p>
-!!  !href cmd=reply&job=student Rafraîchir cette page.
-!!&nbsp;
-!!  !href cmd=reply&job=score Mon score.
   !if $activeexo<1
-&nbsp;
 !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
 to $wims_menu_items
- !!  !href cmd=reply&job=scorereg Terminer
- !!  cette session d'examen (car il n'y a plus rien à faire).
   !endif
  !endif
 !endif
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>Cet examen est en mode simulation. Il fonctionne exactement comme le vrai examen 
-  mais le score n'est pas enregistré et votre essai ne sera pas compté.
+  <p>$name_simulation
  !endif
 !endif
 

@@ -2,17 +2,18 @@
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
+
 !if $wims_user=supervisor
-<center> (Predstavitev za uporabnike)</center>
+ <center>($name_presentation)</center>
 !endif
-<p>
+ <p>
 $desc<p>
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Nazaj na domaèo stran
+ !href module=home $wims_name_back
 . <p>
  !exit
 !endif
@@ -22,21 +23,31 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- Izpit ne vsebuje nobene naloge. Morda gre za napako skrbnika uèilnice.
+ $name_empty
 !else
- Predpisane naloge v tem izpitu:
-!! !href cmd=reply&job=student [obnovi to stran]
+ $name_content:
  !set activeexo=0
- <p><ul>
- !for i=1 to $exocnt
-  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti,de
-  !set de=!trim $de
-  <li><p>$i. 
-  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+  <center>
+ !endif
+ <table border=0 class="wims_exam">
+  !for lig=1 to $maxlig
+   <tr>
+    !for col=1 to $maxcol
+     !let i=$[$col*$maxlig+$lig-$maxlig]
+      !if $i<=$exocnt
+!! -------------------------- debut de la ligne correspondant à un exercice de l'examen
+ !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+ !distribute lines $ex into we,li,ti,de,op
+ !set de=!trim $de
+ <td>$i.</td> 
+ !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    $ti (done).
+    <td>$ti </td><td>$name_done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -45,85 +56,91 @@ $desc<p>
     !endif
     !if $dt=yes
      !advance activeexo
+     <td>
      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-.
+</td><td class="empty">&nbsp;</td>
+     !if autogen iswordof $op and $wims_exam_remain!=$empty
+      !set ss=$(wims_session)t$(exam)t$i
+      !set test=!defof w_cmd in wimshome/sessions/$ss/var
+      !if $test=$empty
+       !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
+       <img src="$test" height=1 width=1 border=0>
+      !endif
+     !endif
     !else
-     <b><font color=red>$ti</font></b> (Requires
-     !href cmd=reply&job=student uspeh pri drugih vajah
-.)
+     <td><b><font color=red>$ti</font></b> </td><td>
+     !href cmd=reply&job=student $name_depend
+.</td>
     !endif
    !endif
   !else
-   $ti.
+   <td>$ti.</td><td class="empty"></td>
   !endif
- !next i
- </ul>
+!! -------fin d'affichage de la ligne correspondant à  un exercice
+      !endif
+    !next col
+   </tr>
+  !next lig
+ </table>
+ !if $maxcol>1
+  </center>
+ !endif
  !if $t_=no
-  Z va¹e povezave re¹evanje izpita ni dovoljeno.
-  !href cmd=reply&job=student Osve¾i to stran.
+  $name_examclosed
+  !href cmd=reply&job=student $wims_name_refresh
  !else
   !if $stries=1
-  Ta izpit lahko re¹ujete le enkrat.
+   $name_exam1
   !else
-  ©tevilo dovoljenih ponovitev tega izpita je $stries.
+   $name_exam2
   !endif
   !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
    !if $trcut=0
-   Pisanje izpita ste ¾e zakljuèili, na voljo ste imeli $tried poskusov,
+    $name_exam3
    !else
-   Izkoristili ste ¾e $tried dovoljenih poskusov, 
+   $name_exam4
    !endif
-   zato rezultata zdaj ne morete veè izbolj¹evati.
+   $name_exam5
    !set exhausted=yes
   !endif
   !if $tryremain>0
-   Na voljo vam je ¹e $tryremain poskusov.
+   $name_exam6
   !endif
   !if $registered=$empty and $exhausted!=yes
-   Za re¹evanje izpita imate na voljo $sdure minut.
-   S klikom na zgornjo nalogo 
+   $name_exam9
    !if $allowtype!=simulation
-    boste spro¾ili od¹tevanje èasa in poveèali ¹tevec porabljenih poskusov za ena.
+    $name_exam7
    !else
-   boste spro¾ili od¹tevanje èasa.
+    $name_exam8
    !endif
   !else
    !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-   To je va¹ zadnji dovoljeni poskus. Bodite uspe¹ni!
+    $name_lasttry
    !endif
   !endif
   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-
-!!  !href cmd=reply&job=student Osve¾i to stran
-!!&nbsp;
-!!  !href cmd=reply&job=score Moj rezultat.
   !if $activeexo<1
-  !set wims_menu_items=!append line end,1,cmd=reply&job=scorereg\
+!set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
 to $wims_menu_items
-
-!!   !href cmd=reply&job=scorereg Konèaj
-!!   ta izpit (ker ni veè nere¹enih vaj).
   !endif
  !endif
 !endif
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>Ta izpit deluje v poskusnem naèinu, ki je enak obièajnemu, le da se vam poskusi ne ¹tejejo in registracija rezultata ni mo¾na.
+  <p>$name_simulation
  !endif
 !endif
 
 !if $wims_user=supervisor
 !set wims_menu_items=!append line backteacher,1,cmd=resume\
  to $wims_menu_items
- <p><center>
- !href cmd=resume Nazaj na skrbni¹ke strani.
- </center>
 !endif
 
 !tail
 
 !reset job
+
 

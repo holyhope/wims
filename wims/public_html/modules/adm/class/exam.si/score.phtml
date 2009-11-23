@@ -1,11 +1,11 @@
 
 !if $job=score
- !read adm/title.phtml 1/
+ !read adm/title.phtml 1\
  $wims_classname, $wims_institutionname\
  $title
  
  !if $wims_user=supervisor
-  <center>(Predstavitev za uporabnike)</center>
+  <center>($name_presentation)</center>
  !endif
   <p>$desc<p>
 !endif
@@ -14,17 +14,17 @@
  <p>
  !read msg.phtml
  <p>
- !href module=home Nazaj na domaèo stran
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
 
 !if $exocnt=0
- Ta izpit ne vsebuje nobene naloge. Morda gre za napako skrbnika uèilnice.
+ $name_empty
 !else
  <p><center><table border=1 bgcolor=bisque>
- <caption>Trenutni rezultat - podrobnosti</caption>
- <tr><th>Vaja<th>Naslov<th>Ute¾<th>Rezultat
+ <caption>$name_scoreexam</caption>
+ <tr><th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
@@ -39,7 +39,7 @@
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Rezultat tega izpitnega poskusa: <b>$score</b> <small>od 10</small>.
+$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  $table_end
 !endif
 <p>
@@ -64,15 +64,15 @@
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg Zakljuèi ta izpit.
+ !href cmd=reply&job=scorereg $name_endexam.
 &nbsp;&nbsp;
 !endif
- !href cmd=reply&job=student Nazaj k re¹evanju izpita.
+ !href cmd=reply&job=student $name_backexam.
 !endif
 
 !if $wims_user=supervisor
  <p><center>
- !href cmd=resume Skrbnikov pogled izpita.
+ !href cmd=resume $name_teacherview.
  </center>
 !endif
 

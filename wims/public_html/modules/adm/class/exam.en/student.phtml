@@ -1,10 +1,10 @@
-!set done=done
 
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
+
 !if $wims_user=supervisor
- <center>(Presentation for participants)</center>
+ <center>($name_presentation)</center>
 !endif
  <p>
 $desc<p>
@@ -23,10 +23,9 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- The exam is empty! Nothing is assigned in it. Possibly an 
- error in the manipulation by your supervisor.
+ $name_empty
 !else
- Assigned works in this exam:
+ $name_content:
  !set activeexo=0
  <p>
  !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
@@ -48,7 +47,7 @@ $desc<p>
  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    <td>$ti </td><td>$done</td>
+    <td>$ti </td><td>$name_done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -69,15 +68,15 @@ $desc<p>
       !endif
      !endif
     !else
-     <td><b><font color=red>$ti</font></b> </td><td>Requires
-     !href cmd=reply&job=student the success on other exercises
+     <td><b><font color=red>$ti</font></b> </td><td>
+     !href cmd=reply&job=student $name_depend
 .</td>
     !endif
    !endif
   !else
    <td>$ti.</td><td class="empty"></td>
   !endif
-!! ------------------------------fin d'affichage de la ligne correspondant ра un exercice
+!! -------fin d'affichage de la ligne correspondant ра un exercice
       !endif
     !next col
    </tr>
@@ -87,38 +86,36 @@ $desc<p>
   </center>
  !endif
  !if $t_=no
-  This exam is actually closed for your connection.
+  $name_examclosed
   !href cmd=reply&job=student $wims_name_refresh
  !else
   !if $stries=1
-   You can try this exam only once.
+   $name_exam1
   !else
-   You can try this exam up to $stries times.
+   $name_exam2
   !endif
   !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
    !if $trcut=0
-    You have already finished your exam session with $tried tries,
+    $name_exam3
    !else
-    You have already tried $tried times, 
+   $name_exam4
    !endif
-   therefore you can no longer improve your scores.
+   $name_exam5
    !set exhausted=yes
   !endif
   !if $tryremain>0
-   And you can still make $tryremain new tries.
+   $name_exam6
   !endif
   !if $registered=$empty and $exhausted!=yes
-   You have $sdure minutes to work on this exam.
-   When you click on an exercise above, 
+   $name_exam9
    !if $allowtype!=simulation
-    the count-down will start, and the number of tries will be advanced by
-    one.
+    $name_exam7
    !else
-    the count-down will start.
+    $name_exam8
    !endif
   !else
    !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-    This is your last available try. Take care!
+    $name_lasttry
    !endif
   !endif
   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
@@ -133,8 +130,7 @@ to $wims_menu_items
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>This exam is in simulation mode. It works exactly as in a true exam, 
-  except that you cannot register the score, and your try will not be counted.
+  <p>$name_simulation
  !endif
 !endif
 

@@ -1,9 +1,7 @@
-!set wims_name_examremain=Time left for this exam: $
+!read names.phtml
 !read js/examclock1.phtml
 !read adm/css.phtml
 !header1
-
-!read names.phtml
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -109,12 +107,12 @@ minutes. Each participant can take the exam up to
 .
 !else
  <a name=list>
- Content of the exam:</a><ol>
+ $name_content:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, weight $we.
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1

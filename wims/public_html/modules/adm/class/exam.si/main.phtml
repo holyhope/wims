@@ -1,10 +1,7 @@
-!set wims_name_examremain=Preostali èas za re¹evanje: $
+!read names.phtml
 !read js/examclock1.phtml
-
 !read adm/css.phtml
 !header1
-
-!read names.phtml
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -12,18 +9,18 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Priprava izpita $exam
+$name_title $exam
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Nazaj na domaèo stran
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -33,8 +30,8 @@ Priprava izpita $exam
  <input type=hidden name=job value=text>
  Ta izpit je
  !if $activetest=1
-  aktiven.
-  !href cmd=reply&job=expire Zakljuèite izpit
+  active.
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -52,7 +49,7 @@ Priprava izpita $exam
  <center><table border=2>
  <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=Modify>
+ <td rowspan=3><input type=submit value="$wims_name_change">
  <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>Datum zakljuèka:<td>
@@ -110,27 +107,29 @@ minut. Vsak uporabnik ima na voljo
 .
 !else
  <a name=list>
- Content of the exam:</a><ol>
+ $name_content:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, weight $we.
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Move&nbsp;up
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Modify
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Delete
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] Add another exercise
+, $wims_name_or
+ !href cmd=reply&job=cpsheet add a series of exercises
 .
  !endif
 !endif
@@ -154,17 +153,17 @@ minut. Vsak uporabnik ima na voljo
  <br><input size=50 name=IPlist value="$IPlist"> <br>
  Cut times:
  <input size=50 name=cutt value="$cutt"> <br>
- <input type=submit value="Register the change">
+ <input type=submit value="$wims_name_tosave">
  !set allowshare=0
  !if $sharers!=$empty
   ( for all sharing classes:
-  !formselect allowshare list 0,1 prompt no,yes
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
  !else
   <input type=hidden name=allowshare value=0>
  !endif
  </form>
- <small><b>Hint.</b> In the selective open mode, you can make time
+ <small><b>$wims_name_help.</b> In the selective open mode, you can make time
  restrictions for score registrations, by adding words 
  <font color=blue><b>
  <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
