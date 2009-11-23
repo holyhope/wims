@@ -246,7 +246,7 @@ $wims_name_part_list
    </td>
   !else
    !if $m_auto>0
-    !read adm/class/colors $[ceil($m_auto/10)]
+    !read adm/class/colors $[ceil($m_auto*10/$scoremax)]
     <td style=$style_note>$m_auto
    !else
     <td align=center>--
@@ -260,6 +260,7 @@ $wims_name_part_list
     !read adm/class/colors $[ceil($(per_$j)/max(1,$usercnt)/10)]
     <td style=$style_note>$[rint(100*$(per_$j)/max(1,$usercnt))/100] %
    !else
+    !read adm/class/colors $[ceil($(per_$j)/max(1,$usercnt)*10/$scoremax)]
     <td style=$style_note>$[rint(100*$(per_$j)/max(1,$usercnt))/100]
    !endif
   !else
