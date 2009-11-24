@@ -1,9 +1,7 @@
-!set wims_name_examremain=Tempo rimanente per completare il tema d'esame: $
+!read names.phtml
 !read js/examclock1.phtml
 !read adm/css.phtml
 !header1
-
-!read names.phtml
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -112,12 +110,12 @@ minuti. Ogni studente pu&ograve; ripetere l'esame al più
 .
 !else
  <a name=list>
- Contenuti:</a><ol>
+ $name_content:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, peso $we.
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1
@@ -169,7 +167,7 @@ $wims_name_or
   <input type=hidden name=allowshare value=0>
  !endif
  </form>
- <small><b>Suggerimento.</b> &Egrave; possibile dare un accesso limitato 
+ <small><b>$wims_name_help.</b> &Egrave; possibile dare un accesso limitato 
  per la registrazione dei voti aggiungendo le date nelle forme:
  <font color=blue><b>
  <tt>&gt;aaaammgg.hh:mm</tt></b></font>

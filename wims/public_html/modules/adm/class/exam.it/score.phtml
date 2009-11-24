@@ -5,7 +5,7 @@
  $title
 
  !if $wims_user=supervisor
-  <center>(Pagina pubblica del tema d'esame)</center>
+  <center>($name_presentation)</center>
  !endif
  <p>$desc<p>
 !endif
@@ -20,12 +20,11 @@
 !endif
 
 !if $exocnt=0
- Questo tema d'esame &egrave; vuoto. Non ci sono esercizi da svolgere.
- Si tratta probabilmente di un errore del docente.
+ $name_empty
 !else
  <p><center><table border=1 bgcolor=bisque>
- <caption>Punteggio ottenuto</caption>
- <tr><th>$wims_name_Exercise<th>$wims_name_title<th>Peso<th>Punteggio
+ <caption>$name_scoreexam</caption>
+ <tr><th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
@@ -40,7 +39,7 @@
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Punteggio globale ottenuto: <b>$score</b> <small>su 10</small>.
+$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  $table_end
 !endif
 <p>
@@ -67,15 +66,15 @@
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg Termina la sessione d'esame.
+ !href cmd=reply&job=scorereg $name_endexam.
 &nbsp;&nbsp;
 !endif
- !href cmd=reply&job=student Torna a lavorare sull'esame.
+ !href cmd=reply&job=student $name_backexam.
 !endif
 
 !if $wims_user=supervisor
  <p><center>
- !href cmd=resume Tema d'esame (pagina del docente).
+ !href cmd=resume $name_teacherview.
  </center>
 !endif
 

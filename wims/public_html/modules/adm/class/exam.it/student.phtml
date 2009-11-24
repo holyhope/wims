@@ -1,11 +1,10 @@
-!set done=completato
 
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
 
 !if $wims_user=supervisor
- <center>(Pagina pubblica del tema d'esame)</center>
+ <center>($name_presentation)</center>
 !endif
 <p>
 $desc<p>
@@ -24,11 +23,9 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- Questo tema d'esame &egrave; vuoto! Si tratta probabilmente di un
- errore del docente.
+ $name_empty
 !else
- Questo tema d'esame contiene i seguenti esercizi:
-!! !href cmd=reply&job=student [ricarica la pagina]
+ $name_content:
  !set activeexo=0
  <p>
  !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
@@ -50,7 +47,7 @@ $desc<p>
   !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    <td>$ti </td><td>$done</td>
+    <td>$ti </td><td>$name_done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -71,15 +68,15 @@ $desc<p>
       !endif
      !endif
     !else
-     <td><b><font color=red>$ti</font></b> </td><td>&Egrave; necessario
-     !href cmd=reply&job=student aver svolto con successo altri esercizi
+     <td><b><font color=red>$ti</font></b> </td><td>
+     !href cmd=reply&job=student $name_depend
 .</td>
     !endif
    !endif
   !else
    <td>$ti.</td><td class="empty"></td>
   !endif
-!! ------------------------------fin d'affichage de la ligne correspondant à  un exercice
+!! -------fin d'affichage de la ligne correspondant à  un exercice
       !endif
     !next col
    </tr>
@@ -89,37 +86,36 @@ $desc<p>
   </center>
   !endif
  !if $t_=no
-  Accesso negato.
-  !href cmd=reply&job=student Riprova.
+  $name_examclosed
+  !href cmd=reply&job=student $wims_name_refresh
  !else
   !if $stries=1
-   Puoi sostenere l'esame (una sola volta).
+   $name_exam1
   !else
-   Hai un massimo di $stries possibilità per questo esame. 
+   $name_exam2
   !endif
   !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
    !if $trcut=0
-    Hai già terminato il tuo esame, con $tried tentativi.
+    $name_exam3
    !else
-    Hai gi&agrave; esaurito le tue $tried possibilità.
+   $name_exam4
    !endif
-    Non puoi pi&ugrave; migliorare il punteggio fin qui ottenuto.
+   $name_exam5
    !set exhausted=yes
   !endif
   !if $tryremain>0
-   Hai ancora $tryremain possibilità.
+   $name_exam6
   !endif
   !if $registered=$empty and $exhausted!=yes
-   Hai $sdure minuti per completare questo esame. 
+   $name_exam9
    !if $allowtype!=simulation
-    Il conteggio comincia nel momento in cui selezioni uno degli esercizi
-    e il tentativo sar&agrave; conteggiato
+    $name_exam7
    !else
-    Il conteggio comincia nel momento in cui selezioni uno degli esercizi.
+    $name_exam8
    !endif
   !else
     !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-      ATTENZIONE: questo &egrave; l'ultimo tentativo a disposizione.
+    $name_lasttry
    !endif
   !endif
 !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
@@ -134,8 +130,7 @@ to $wims_menu_items
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>Questa &egrave; la simulazione di un esame. A differenza del <em>vero</em>
-  esame il server non terr&agrave; alcun conto del tentativo.
+  <p>$name_simulation
  !endif
 !endif
 
