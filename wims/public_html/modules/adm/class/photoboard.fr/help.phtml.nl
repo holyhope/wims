@@ -14,7 +14,7 @@ door middel van een niet-anonieme enquete
 (zie documentatie),  de studenten kunnen worden gelecteerd aan de hand van deze variabelen. 
 Schrijf op een lijn en gescheiden door spaties de voorwaarden waaraan tegelijkertijd moet  worden voldaan.
 De fotogalerij zal dan bestaan uit deelnemers die aan ten minste 1 lijn van deze  voorwaarden voldeed.
-<p>Bij voorbeeld, 
+<p>Bijvoorbeeld, 
 <pre>
 groep=1 taal=2
 groep=3

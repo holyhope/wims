@@ -5,7 +5,7 @@
  $title
 
  !if $wims_user=supervisor
-  <center>(Zo zien leerlingen dit proefwerk)</center>
+  <center>($name_presentation)</center>
  !endif
   <p>$desc<p>
 !endif
@@ -20,12 +20,11 @@
 !endif
 
 !if $exocnt=0
- Dit proefwerk is leeg !
- Er staat geen enkele opgave in. Waarschijnlijk een foutje van de docent.
+    $name_empty
 !else
  <p><center><table border=1 bgcolor=bisque>
- <caption>Score details</caption>
- <tr><th>$wims_name_Exercise<th>$wims_name_title<th>Gewicht<th>Score
+ <caption>$name_scoreexam</caption>
+ <tr><th>$wims_name_Exercise</th><th>$wims_name_title</th><th>$name_coeff</th><th>$name_Score</th>
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
@@ -40,7 +39,7 @@
  !next i
  <tr><td align=center colspan=4>
  !default score=$sprime
- Cijfer voor deze proefwerk sessie&Nbsp;: <b>$score</b> <small>uit 10</small>.
+ $name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  $table_end
 !endif
 <p>
@@ -67,15 +66,15 @@
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg Beeindig deze proefwerk sessie.
+ !href cmd=reply&job=scorereg $name_endexam .
  &nbsp;&nbsp;
 !endif
- !href cmd=reply&job=student Terug naar het proefwerk.
+ !href cmd=reply&job=student $name_backexam .
 !endif
 
 !if $wims_user=supervisor
  <p><center>
- !href cmd=resume Terug naar de supervisor pagina.
+ !href cmd=resume $name_teacherview.
  </center>
 !endif
 

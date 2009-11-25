@@ -55,7 +55,7 @@
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
-	wims_name_Score,,wims_name_Examen
+	wims_name_Score,wims_name_Examen
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
@@ -126,7 +126,7 @@
 		U bent docent van deze klas,\
 		Bewaar de details van deze oefening,\
 		Werkblad startpagina\
-		Lesmateriaal in pedagogische werkvolgorde,\
+		Lesmateriaal in werkvolgorde,\
 	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
 	wims_name_scoreclose,\
@@ -316,7 +316,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !if config isin $module
  !distribute line Hoofdpagina klassen onderhoud\
  Instituut administratie\
- backup en herstel\
+ Backup en herstel\
 into wims_name_config, wims_name_struct,wims_name_save
 
 !endif

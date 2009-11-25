@@ -1,11 +1,10 @@
-!set done=klaar
 
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
 
 !if $wims_user=supervisor
- <center>(Zo zien leerlingen deze pagina)</center>
+ <center>($name_presentation)</center> 
 !endif
 <p>
 $desc<p>
@@ -24,10 +23,9 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- Dit proefwerk is leeg ! 
- Waarschijnlijk een foutje van de docent.
+ $name_empty
 !else
- Inhoud van dit proefwerk :
+ $name_content:
  !set activeexo=0
  <p>
  !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
@@ -36,7 +34,7 @@ $desc<p>
  <center>
  !endif
  <table border=0 class="wims_exam">
- !for lig=1 to $maxlig
+  !for lig=1 to $maxlig
   <tr>
     !for col=1 to $maxcol
      !let i=$[$col*$maxlig+$lig-$maxlig]
@@ -45,11 +43,11 @@ $desc<p>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti,de,op
   !set de=!trim $de
-  <td>Opgave $i &nbsp;</td>
-  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or ($tryremain=0 and $registered!=$empty))
-   
+  <td> $i.</td>
+  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+    ($tryremain=0 and $registered!=$empty))
   !if $(replied$i)>0
-   <td>$ti</td><td><font color=green><b>$done</b></font></td>
+   <td>$ti</td><td>$name_done</td>
    !else
    !if $de!=$empty
     !set dt=!examdep $exam $de
@@ -59,7 +57,7 @@ $desc<p>
    !if $dt=yes
     !advance activeexo
     <td>
-    !href target=wims_exam cmd=new&worksheet=$exam.$i :$ti
+    !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
 </td><td class="empty">&nbsp;</td>
     !if autogen iswordof $op and $wims_exam_remain!=$empty
     !set ss=$(wims_session)t$(exam)t$i
@@ -71,7 +69,7 @@ $desc<p>
     !endif
    !else
     <td><b><font color=red>$ti</font></b></td><td>Vereist
-    !href cmd=reply&job=student een goed resultaat voor de andere opgaves
+    !href cmd=reply&job=student $name_depend
     .</td>
    !endif
    !endif
@@ -88,37 +86,36 @@ $desc<p>
     </center>
  !endif
  !if $t_=no
- Dit proefwerk is niet bereikbaar vanuit uw ipadres.
- !href cmd=reply&job=student Vernieuw deze pagina.
+ $name_examclosed
+ !href cmd=reply&job=student $wims_name_refresh
  !else
  !if $stries=1
-  Je mag dit proefwerk &eacute;&eacute;n keer maken.
+    $name_exam1
  !else
-  Je mag dit proefwerk $stries keer maken. [de beste score telt]
+    $name_exam2
  !endif 
  !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
   !if $trcut=0
-  Je hebt dit proefwerk afgesloten [in $tried poging(en)]
+    $name_exam3
   !else
-  Je hebt dit proefwerk nu $tried keer gemaakt.
+    $name_exam4
   !endif
-  dus de resultaten zijn niet meer te verbeteren.
+    $name_exam5
   !set exhausted=yes
  !endif
  !if $tryremain>0
-  En je hebt nu nog $tryremain poging(en) over.
+     $name_exam6
  !endif
  !if $registered=$empty and $exhausted!=yes
-    Er zijn $sdure minuten beschikbaar om aan dit proefwerk te werken. 
-    De klok begint te lopen als je op een opgave klikt
+     $name_exam9
     !if $allowtype!=simulation
-	en het aantal pogingen wordt met 1 verminderd.
+     $name_exam7
     !else
-	en het aftellen begint.
+     $name_exam8
     !endif
  !else
     !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-	Attentie : dit is je laatste poging !
+    $name_lasttry	
     !endif
  !endif
 !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
@@ -133,8 +130,7 @@ to $wims_menu_items
  
 !if $t_=yes
  !if $allowtype=simulation
- <p>Dit proefwerk loopt in simulatie mode.
- Het werkt precies als een echt proefwerk; behalve dat er niets wordt gelogd.
+ <p>$name_simulation
  !endif
 !endif
 

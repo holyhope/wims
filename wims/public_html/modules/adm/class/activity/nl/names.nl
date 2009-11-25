@@ -8,5 +8,6 @@
 !set name_exo=oefening
 !set name_time=Tijd
 !set name_cnt_exo=Aantal oefeningen
+
 !set name_not_supervisor=Bewerking niet toegestaan
 !set name_bad_class=Je klas bestaat niet...

@@ -1,9 +1,7 @@
-!set wims_name_examremain=Resterende tijd voor dit proefwerk : $
+!read names.phtml
 !read js/examclock1.phtml
 !read adm/css.phtml
 !header1
-
-!read names.phtml
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
@@ -117,28 +115,23 @@ minuten duren<br>Elke deelnemer mag dit proefwerk tot
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  !if $we=0
-    $ti, <font color=red><b>gewicht 0</b></font>
-  !else
-    $ti, gewicht $we
-  !endif
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list Verplaats&nbsp;naar&nbsp;boven
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i Veranderen
+   !href cmd=reply&job=exo&exo=$i $wims_name_change 
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list Verwijderen
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
  </ol>
  !if $activetest=0
-   !href cmd=reply&job=exo&exo=$[$exocnt+1]  Voeg nog een opgave toe
- , 
-of 
+  !href cmd=reply&job=exo&exo=$[$exocnt+1]  Voeg nog een opgave toe
+ $wims_name_or
  !href cmd=reply&job=cpsheet voeg een hele serie opdrachten toe
 .
  !endif
@@ -167,7 +160,7 @@ of
  !set allowshare=0
   !if $sharers!=$empty                                                                                                                      
   ( ook voor alle klassen die dit proefwerk delen ? :                                                                                          
-  !formselect allowshare list 0,1 prompt nee,ja
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
   !else
  <input type=hidden name=allowshare value=0>

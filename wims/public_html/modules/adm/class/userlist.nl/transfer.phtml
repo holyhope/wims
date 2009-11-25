@@ -1,14 +1,15 @@
-<center>$classname<p>
+!read adm/title.phtml 1\
+$classname\
+$name_title_transfer
 
-<h3>Het werk van
+<center>
  !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
- (<tt>$getuser</tt>) overzetten.
-</h3> </center> <p>
+ (<tt>$getuser</tt>)
+</center> <p>
 
 !if $error=no_reccourse
  <b>Fout</b>. <br>
- Deze deelnemer/leerling staat niet geregistreerd voor de cursus, en er kan dus
- geen "transfer" plaats vinden vanuit 
+ Deze deelnemer/leerling staat niet geregistreerd voor de cursus, en er kan dus geen "transfer" plaats vinden vanuit 
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -19,11 +20,10 @@
  !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
  !if $transferclass notitemof $tr_list or $i=$empty
   <b>Fout</b><br>
-  Er is een fout opgetreden m.b.t. inlezen van " $i ".<br>
-  Een foutje in de software? of verkeerd geklikt ?
+  Er is een fout opgetreden m.b.t. inlezen van " $i ". Een foutje in de software? of verkeerd geklikt ?
   !exit
  !else
-  Details van het werk in klas <tt>$i</tt> (beperkt tot 1000 regels).
+  Details van het werk in klas $i (beperkt tot 1000 regels).
   <p><hr>
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
@@ -47,8 +47,8 @@ Klik op "aktie" voor de transfer van deze
 !endif
 
 $table_header
-$table_hdtr<th>Cursus</th>
-<th>Aktie</th></tr>
+$table_hdtr<th>$wims_name_course</th>
+<th>$wims_name_action</th></tr>
 !for c in $tr_list
  $table_tr
  <td>
@@ -66,10 +66,10 @@ $table_end
 <b>Opmerkingen</b>. 
 <ol>
     <li>
-	"Samenvoegen" wil zeggen: het samenvoegen van de twee cursussen.
+	"$name_merge" wil zeggen: het samenvoegen van de twee cursussen.
     </li>
     <li>
-	"Vervangen" kan alleen als als beiden onderdelen niet leeg zijn.
+	"$name_replace" kan alleen als als beiden onderdelen niet leeg zijn.
     </li>
     <li>
 	De digi-toetsen en alle cijfers voor werkbladen worden altijd samengevoegd.
@@ -78,7 +78,7 @@ $table_end
 	De geregistreerde details van oefeningen of digitoetsen worden niet overgebracht [exolog en examlog].
     </li>
     <li>
-	Na de aktie "samenvoegen" of "vervangen" worden de bestanden van de student in de originele cursus opgeschoond.
+	Na de aktie ($name_merge of $name_replace) worden de bestanden van de student in de originele cursus opgeschoond.
     </li>
 </ol>
 

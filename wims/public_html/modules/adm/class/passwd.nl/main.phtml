@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -11,17 +7,11 @@
 $wims_classname - $wims_institutionname\
 Verander hier de Wachtwoorden
 
-!!<center>$classname
-!!<p>
-!!<h1>Verander hier de Wachtwoorden
-!!</h1></center> <p><hr width="40%"> <p>
-
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- Terug naar de&nbsp;
- !href module=home hoofdpagina
+ !href module=home  Terug naar hoofdpagina
 . <p>
  !goto end
 !endif
@@ -33,9 +23,11 @@ Verander hier de Wachtwoorden
  !default job=user
  !set ch_$job=checked
  <li><input type=radio name=job $ch_user value=user> Uw persoonlijke login wachtwoord
+ 
  !if $part!=$empty and $job=part
   <li><input type=radio name=job $ch_part value=part> Een wachtwoord voor een leerling
   <tt>$part</tt>. (in dit geval hoeft U <b>niet</b> het oude wachtwoord in te typen)
+ 
  !endif
  <li><input type=radio name=job $ch_class value=class>Het klasse wachtwoord
  <small>(voor nieuwe leerlingen: het wachtwoord nodig voor het starten van de aanmeldingprocedure
@@ -54,9 +46,9 @@ Verander hier de Wachtwoorden
 </table>
 <input type=submit value="$wims_name_tosave">
 <small>
-    Voor persoonlijke wachtwoorden: voor wachtwoorden met een eenmalig gebruik 
-    geef een "<b>+</b>"-teken voorafgaand aan het nieuwe wachtwoord  
-!href target=wims_mhelp cmd=help Help.
+Voor persoonlijke wachtwoorden: voor wachtwoorden met een eenmalig gebruik 
+geef een "<b>+</b>"-teken voorafgaand aan het nieuwe wachtwoord  
+!href target=wims_mhelp cmd=help $wims_name_detail
 </small>
 </form>
 De wachtwoorden moeten worden opgebouwd uit uitsluitend alfanumerieke karakters,
