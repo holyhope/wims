@@ -17,7 +17,7 @@ $sheet_title
  !set expday=!char 7,8 of $sheet_expiration
  !set expmon=!char 5,6 of $sheet_expiration
  !set expyear=!char 1 to 4 of $sheet_expiration
- !read adm/date.phtml $sheet_expiration
+ !read adm/date.phtml
  !set expmon=!item $expmon of $months
  $name_student1
  <p>
@@ -69,10 +69,10 @@ to $wims_menu_items
 , $de
    !if $require>0
     <small>$name_score
-    $[$mean]/10. </small>
+    $[$mean]/10.</small>
    !endif
   !else
-   <font color=red><b>$ti</b></font>, $de
+   <font color=red><b>$ti</b></font>, $de 
    !if $require>0
     <small>($name_score2)</small>
    !endif
@@ -101,8 +101,8 @@ to $wims_menu_items
 !set wims_menu_items=!append line printable,1,cmd=reply&job=print\
 to $wims_menu_items
  !if $exolog!=$empty
-  !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
-to $wims_menu_items
+ !set wims_menu_items=!append line exolog,1, module=adm/class/exolog&job=llist&logsheet=$sh \
+to $wims_menu_items 
  !endif
 !endif
 !tail
