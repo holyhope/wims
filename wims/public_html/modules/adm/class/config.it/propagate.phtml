@@ -11,23 +11,23 @@
 !set name_exolog=Mumero massimo di esercizi e esami salvabili
 !set name_ent=Link verso una piattaforma o una pagina web
 !if $wims_supertype=2
- !set name_thisclass=du portail
- !set name_subclasses=sous-classes
+ !set name_thisclass=del portale
+ !set name_subclasses=i corsi coordinati
 !else
- !set name_thisclass=de la zone actuelle
- !set name_subclasses=zones inférieures
+ !set name_thisclass=della zona attuale
+ !set name_subclasses=le zone dipendenti
 !endif
 
 !if $confirm!=$empty and $propagate!=$empty
- Configurations envoyées aux $name_subclasses avec succès&nbsp;: <p><b>
+ L'invio della configurazione a $name_subclasses ha avuto successo: <p><b>
  !for s in $propagate
   $(name_$s).
  !next s
  </b>
 !else
  !form reply
- Vous pouvez choisir d'envoyer les configurations suivantes $name_thisclass
- à toutes ses $name_subclasses&nbsp;: <p>
+ Potete scegliere di inviare le configurazioni seguenti $name_thisclass
+ a tutti $name_subclasses: <p>
 
  !for s in $propall
   !if $(name_$s)!=$empty
@@ -40,8 +40,8 @@
  </form>
 !endif
 <p>
-Notez que les $name_subclasses ne répercuteront pas les
-changements ultérieurs des configurations $name_thisclass. Vous devez
-réenvoyer les changements chaque fois que vous voulez les répercuter
-dans les $name_subclasses.
+Si noti che $name_subclasses non riceveranno automaticamente le 
+ulteriori modifiche della configurazione $name_thisclass. &Egrave; 
+necessario reinviare le modifiche ogni volta che volete trasmettere
+le modifiche a $name_subclasses.
 
