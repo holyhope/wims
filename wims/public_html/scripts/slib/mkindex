@@ -9,6 +9,7 @@ cat <<@ >index.phtml
 !if adm/createxo isin \$module
   !set slib_cmd=help
 !endif
+!read tabletheme
 !default slib_cmd=resume
 !default slib_detname=special_cmd
 !set slib_detail=\$(\$slib_detname)
@@ -20,13 +21,14 @@ cat <<@ >index.phtml
   !set slpdflt\$i=!item 1 of \$(slp\$i)
   !set slp\$i=!item 2 to -1 of \$(slp\$i)
  !next i
- <p><center><table border=2 bgcolor="\$wims_ref_bgcolor" cellpadding=3>
+ <p><center>
+ \$table_header
  <caption>Library script</caption>
- <tr><th>Name</th><td><tt>\$slib_detail</tt></td></tr>
- <tr><th>Effect</th><td>\$slib_title</td></tr>
- <tr><th>Call from module</th><td><tt>!readproc slib/\$slib_detail [parameters]</tt></td></tr>
- <tr><th>Call from OEF / DOC</th><td><tt>slib(\$slib_detail [parameters])</tt></td></tr>
- <tr><th>Parameters</th><td>
+ \$table_tr<th>Name</th><td><tt>\$slib_detail</tt></td></tr>
+ \$table_tr<th>Effect</th><td>\$slib_title</td></tr>
+ \$table_tr<th>Call from module</th><td><tt>!readproc slib/\$slib_detail [parameters]</tt></td></tr>
+ \$table_tr<th>Call from OEF / DOC</th><td><tt>slib(\$slib_detail [parameters])</tt></td></tr>
+ \$table_tr<th>Parameters</th><td>
  !if \$slpcnt>1
   !if + isin \$slpcnt
    Variable list of comma-separated items
@@ -38,7 +40,7 @@ cat <<@ >index.phtml
  !endif
  </td></tr>
  !for i=1 to \$slpcnt
-  <tr><th>Parameter \$i
+  \$table_tr<th>Parameter \$i
   !ifval \$i=\$slpcnt and + isin \$slpcnt
    and up
   !endif
@@ -49,14 +51,14 @@ cat <<@ >index.phtml
   !endif
   </td></tr>
  !next i
- <tr><th>Output</th><td>\$slib_out</td></tr>
+ \$table_tr<th>Output</th><td>\$slib_out</td></tr>
  !if \$slib_comment!=\$empty
-  <tr><th>Comment</th><td>\$slib_comment</td></tr> 
+  \$table_tr<th>Comment</th><td>\$slib_comment</td></tr> 
  !endif
  
  !if \$slib_example!=\$empty
 !set excnt=!linecnt \$slib_example
-  <tr><th>Examples OEF </th><td>
+  \$table_tr<th>Examples OEF </th><td>
   !for i=1 to \$excnt
  !set  slib_exemple=!line \$i of \$slib_example
 <tt><b>\text{A=slib(\$slib_detail \$slib_exemple)}</b></tt>
@@ -90,9 +92,10 @@ messages, use the function <tt>slib()</tt>.
 <p>
 Only variables prefixed by <tt>slib_</tt> are modified by these scripts.
 
-<p><center><table border=2 bgcolor="\$wims_ref_bgcolor" cellpadding=3>
+<p><center>
+\$table_header
 <caption>Available scripts in slib</caption>
-<tr><th>Name</th><th>Effect</th></tr>
+\$table_tr<th>Name</th><th>Effect</th></tr>
 @
 
 cnt=0
@@ -103,7 +106,7 @@ do
   echo $f
   cnt=`expr $cnt + 1`
   cat <<@ >>index.phtml
-<tr><td><tt>$f</tt></td><td>$tit
+\$table_tr<td><tt>$f</tt></td><td>$tit
 !href cmd=\$slib_cmd&special_parm=slib&\$slib_detname=$f\$slib_detailanchor [detail]
 </td></tr>
 @
