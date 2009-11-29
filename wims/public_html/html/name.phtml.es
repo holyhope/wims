@@ -25,20 +25,20 @@
 		Guardar,\
 		si,\
 		no,\
-		Télécharger,\
-		Send,\
+		Cargar a distancia,\
+		Enviar,\
 		Detalles,\
-		Montrer,\
-		Editer,\
+		Mostrar,\
+		Corregir,\
 		¡Atención!,\
 		¡Felicidades!,\
 		o,\
-		Explanations,\
+		Explicaciones,\
 		Ejercicio,\
 		Hoja,\
 		Cuenta,\
-		Enviar,\
-		Notes,\
+		Entrar,\
+		Notas,\
 		Examen,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
@@ -61,7 +61,7 @@
 !distribute items este módulo, este ejercicio,\
 		Indicar, en su sitio,\
 		Encubrir estas opciones, \
-		Permalink, Lector exportable,\
+		Permaenlace, Lector exportable,\
 		copiar y pegar, el vínculo, el código, o, en un correo electrónico,\
 		para, solamente,\
 		el config actual,\
@@ -76,7 +76,7 @@
 !! **** Module About Names ***
 !distribute items Nombre,\
 		Información sobre este módulo,\
-		Informations sur cet exercice,\
+		Información sobre este ejercicio,\
 		dirección,\
 		Vínculo para marca-página,\
 		Descripción,\
@@ -88,14 +88,14 @@
 		Esto es un módulo de,\
 		Servidor Interactivo Multifunciones en la Red,\
 		Derechos de autor,\
-		Keywords,\
-		Email du traducteur,\
-		Email de l'auteur,\
-		Domaine,\
-		Type,\
-		Niveau(x),\
-		Mécanisme de score <br><small>(exercice / récréation)</small>,\
-		Logiciels de soutien<br>nécessaires,\
+		Palabras clave,\
+		Correo electrónico del traductor,\
+		Correo electrónico del autor,\
+		Dominio,\
+		Tipo,\
+		Nivel(x),\
+		Mecanismo de puntuación <br><small>(ejercicio/recreación)</small>,\
+		Programas informáticos de apoyo<br>nécessaires,\
 	into wims_name_name,\
 	wims_name_module_infos,\
 	wims_name_exo_infos,\
@@ -118,9 +118,8 @@
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Página principal de la clase,\
-		Insertar en una hoja de trabajo,\
-		Escribir al profesor, Cerrar la clase,\
+ !distribute items Página principal de la clase,Insertar en una hoja de trabajo,\
+		Escribir al profesor, Salir,\
 		El registro de notas es cerrado.,\
 		Ha suspendido el registro de notas.,\
 		Activar el registro, suspender el registro,\
@@ -139,12 +138,12 @@
 	wims_name_add_sequence
 
  !set wims_name_score=!nosubst Ha conseguido $[$wims_homeref_got] de \
-	$[$wims_homeref_req] puntos en este trabajo. <br>Puntuación media \
+	$[$wims_homeref_req] puntos en este trabajo, calidad \
 	$[$wims_homeref_mean]/10.
- !set wims_name_you=usted es <b>$wims_firstname $wims_lastname</b>, accediendo a
+ !set wims_name_you=usted es <b>$wims_firstname $wims_lastname</b>, perteneciendo a
  !if _exam isin $session
   !distribute items Otros ejercicios del examen,\
-	Tiempo que permanece para este examen:,\
+	Tiempo que permanece para este examen&nbsp;:,\
 	cuando se cargue esta página\
 	into wims_name_back,wims_name_examremain,wims_name_whenloaded
  !endif
@@ -152,8 +151,8 @@
   !let wims_page_name=Page
  !endif
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
- !default wims_name_sequence=Sequence
- !set wims_name_sequences=sequences
+ !default wims_name_sequence=Secuencia
+ !set wims_name_sequences=secuencias
 !endif
 
 !if adm/class isin $module
@@ -233,7 +232,7 @@ into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 !distribute line Probar el ejercicio \
 Volver a confia2qcm\
 Volver a createqcm\
-Modificar el programa \
+Modificar el programa fuente \
 Poner en el módulo de desarrollo \
 Poner este ejercicio en la clase \
 Guardar como nuevo ejercicio \
@@ -256,31 +255,31 @@ Ejercicios de la clase \
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
 
-!!! for documents
+!!! for documentos  en particular...
 
-!distribute items WIMS,Clase,Docs,Arriba,Atras.,Sig.,Hist.,Recargar,\
-    Versión interactiva,Versión para imprimir,\
-    Volver a doc.,Ayuda,Acerca de,\
-    Depósito de archivos,\
-    Volver a la lista de archivos,\
-    Página de entrada del documento\
-    into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
-    wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
-    wims_name_doch_interactive,wims_name_doch_printable,\
-    wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
+!distribute items WIMS,Clase,Docs,Arriba,Atras,Sig.,Hist.,Recargar,\
+	Versión interactiva,Versión para imprimir,\
+	Volver a doc.,Ayuda,Acerca de,\
+	Depósito de archivos,\
+	Volver a la lista de archivos,\
+	Página de entrada del documento\
+	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
+	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
+	wims_name_doch_interactive,wims_name_doch_printable,\
+	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
 	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
 
 !! for sequence et document
 
-!distribute line Document\
+!distribute line Documento\
 ocultado, visible \
 Título \
 Reorganización por secuencias \
-Inserción en la clase \
+Insertar en la clase \
 Crear un nuevo documento \
-trabajar en un documento de prueba\
+Documento de prueba\
 Estatuto\
-Insert\
+Insertar\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 
@@ -289,26 +288,29 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
    Añadir deberes \
    Configurar \
    Abandonar \
-   Cahier de texte\
+   Cuaderno de textos\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
 
 !set wims_name_supervisor=administrador
+!set wims_name_Supervisor=Administrador
+!set wims_name_namesstudent=Alumno
+!set wims_name_namesteacher=Profesor
 !set wims_name_teacher=Cuentas de profesores
-!set wims_name_addteacher=Nuevo profesor
+!set wims_name_addteacher=Nueva cuenta de profesor
 !set wims_name_modteacher=Propiedades del profesor
 !set wims_name_delteacher=Borrar a un profesor
 !set wims_name_student=Cuentas de alumnos
 !set wims_name_addstudent=Nuevo alumno
 !set wims_name_modstudent=Propiedades del alumno
 !set wims_name_delstudent=Borrar a un alumno
-!set wims_name_group= Pórtico 
-!set wims_name_portal= Pórtico 
-!set wims_name_level=nivel
-!set wims_name_class=clase
-!set wims_name_program=programa
-!set wims_name_course=curso
-!set wims_name_icourse=curso de interclase
+!set wims_name_group= Pórtico
+!set wims_name_portal= Pórtico
+!set wims_name_level=Nivel
+!set wims_name_class=Clase
+!set wims_name_program=Programa
+!set wims_name_course=Curso
+!set wims_name_icourse=Curso de interclase
 !set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
 !if config isin $module
@@ -319,7 +321,7 @@ into wims_name_config, wims_name_struct,wims_name_save
 
 !endif
 
-!set wims_name_backgateway= Gestión de 
+!set wims_name_backgateway= Gestión de
 
 !distribute line Añadir un curso \
 Añadir un curso interclase \
@@ -344,9 +346,9 @@ wims_name_csv
 Resultados del participante \
 Cerrar esta sesión de examen\
 Detalles de su trabajo\
-Suprimir el participante \
+Eliminar el participante \
 Datos brutos\
-cambiar su contraseña\
+Cambiar su contraseña\
 Datos tratados\
 Cuaderno de competencias \
 into wims_name_part_list,wims_name_scores,wims_name_partexamclose,wims_name_workdetail,\
@@ -371,16 +373,16 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 
 !distribute line activar el editor HTML \
 desactivar el editor HTML \
-attention, les modifications faites ne seront pas sauvées si vous changez cette option en cours de rédaction\
+cuidado, las modificaciones hechadas no se salvarán si cambian esta opción en curso de redacción\
 into wims_name_active, wims_name_desactive,wims_name_speck_warning
 
 !distribute items Apellido,Nombre,Contraseña,Correo electrónico,Identificador de usuario,Repita la contraseña,Comentario \
 into wims_name_lastname, wims_name_firstname,wims_name_Password,wims_name_email,\
 wims_name_Login,wims_name_repeat_pass,wims_name_comment
 
-!distribute line Photo Board\
-Send mail\
+!distribute line Trombinoscopio\
+Envío de correos electrónicos\
 into wims_name_photoboard,wims_name_sendmail
 
-!distribute items Profesor,Administrador,Elève\
+!distribute items Profesor,Administrador,Alumno\
 into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
