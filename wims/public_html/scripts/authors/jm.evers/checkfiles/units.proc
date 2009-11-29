@@ -21,7 +21,7 @@ tg=!itemcnt $(answer$n)
 
 !if $ta != $tg
     ex=!record 38 of $remarkdir/commonremarks.$taal
-    errortext=$(reply$n) ... ?<br>$ex
+    errortext=$(reply$n) ... <br>$ex
     maxscore=$[$P6*$maxscore]
     goback=1
  !exit
@@ -59,7 +59,7 @@ prefix=déci,déca,méga,téra,péta,exa,peta,tera,giga,mega,kilo,hecto,deca,deci,cen
     li=<li>
     end_li=</li>
     ul=<ul>
-    end_ul=</il>
+    end_ul=</ul>
 !else
     li=$empty
     end_li=$empty
@@ -316,7 +316,10 @@ score=0
 ########### no units required [unit=0] 
 ########### $ans is !item $p of $(answer$n)
 ########### $org is !item $p of $(reply$n)
-	    A1=$[1.0*($org)]
+	    A1=!replace [a-z]*.[a-z] by $empty in $org
+	    A1=!lower $A1
+	    # SQRT(12) -> sqrt(12)
+	    A1=$[1.0*($A1)]
 	    !if NaN isin $A1
 		testvar=$org
 		errortext=!record 26 of $remarkdir/commonremarks.$taal
@@ -335,8 +338,8 @@ score=0
 			ex4=!record 94 of $remarkdir/commonremarks.$taal
 		    !endif
 		!endif
-		A1=$[(round($rounding*($A1)))/$rouding]
-		G1=$[(round($rounding*($ans)))/$rouding]
+		A1=$[(round($rounding*($A1)))/$rounding]
+		G1=$[(round($rounding*($ans)))/$rounding]
 	    !else
 		G1=$[1.0*($ans)]
     	    !endif
@@ -390,6 +393,12 @@ score=0
 	    tot=!exec pari if(abs($A1 - $G1) < $prec1,1,0)\
 	    if(abs($A1 - $G1) < $prec2,1,0)\
 	    if(abs($A1 - $G1) < $prec3,1,0)
+	    
+	    !if $wims_exec_error!=$empty
+		errortext=I'm very sorry , <br>but there is some trouble with the <tt>Units Filter</tt> program
+		goback=1
+		!exit
+	    !endif
 	
 	    r1=!line 1 of $tot
 	    r2=!line 2 of $tot
