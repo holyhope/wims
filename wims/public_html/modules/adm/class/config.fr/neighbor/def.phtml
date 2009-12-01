@@ -1,6 +1,6 @@
 !read adm/title.phtml 3\
 Relations avec la classe <em><font color=blue>$nei_description</font></em> de <em><font color=blue>$nei_institution</font></em>\
-(Enseignant&nbsp;:<a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
+($wims_name_namesteacher: <a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
 <p>
 <b>Relation de voisinage. </b> <small>[
 !href cmd=help&special_parm=neibordecl $wims_name_help
@@ -25,9 +25,9 @@ $nei_description</font></em>
 !form reply
 Acceptez-vous la classe <em><font color=blue>
 $nei_description</font></em> comme votre voisine&nbsp;?
-!formselect nlevel from 0 to 3 prompt Non, Pour enseignant,\
+!formselect nlevel from 0 to 3 prompt $wims_name_no, Pour enseignant,\
 	Pour participants, Pour enseignant et participants
-<input type=submit value=Sauver> 
+<input type=submit value=$wims_name_tosave> 
 </form> <p>
 
 
@@ -75,7 +75,7 @@ $nei_description</font></em>&nbsp;:<ul>
  !for r in $sharelist
   !if $(sharing_$r)=$nei
    <li><b><em>$(name_$r)</em></b>. 
-   !href cmd=reply&job2=stopshare&stoprec=$r Arrêter ce partage
+   !href cmd=reply&job2=stopshare&stoprec=$r $name_stopsharing
 . <small>[
    !href cmd=help&special_parm=stopshare $wims_name_help
    ]</small>

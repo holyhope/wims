@@ -1,8 +1,6 @@
-
-Neighboring relations with class <em><font color=blue>
-$nei_description</font></em> of
-<em><font color=blue>$nei_institution</font></em>.
-(Supervisor:
+!read adm/title.phtml 3\
+Neighboring relations with class <em><font color=blue> $nei_description</font></em> of <em><font color=blue>$nei_institution</font></em>.
+($wims_name_namesteacher: 
 <a href="mailto:$nei_email?subject=Class neighboring
 relations">$nei_supervisor</a>) This class
 !if $wims_class notitemof $nei_sup,$nei_part
@@ -22,9 +20,9 @@ relations">$nei_supervisor</a>) This class
 <p>
 !form reply
 Do you accept this class as your neighbor?
-!formselect nlevel from 0 to 3 prompt No, For supervisor,\
+!formselect nlevel from 0 to 3 prompt $wims_name_no, For supervisor,\
 	For participants, For supervisor and participants
-<input type=submit value=Save> <small>[
+<input type=submit value=$wims_name_tosave> <small>[
 !href cmd=help&special_parm=neibordecl $wims_name_help
  ]</small>
 </form> <p>
@@ -75,9 +73,9 @@ Do you accept this class as your neighbor?
   !if $(sharing_$r)=$nei
    <li><b><em>$(name_$r)</em></b>. 
    !href cmd=reply&job2=stopshare&stoprec=$r Stop this sharing
-. <small>
+. <small>[
    !href cmd=help&special_parm=stopshare $wims_name_help
-   </small>
+   ]</small>
   !endif
  !next r 
  </ul>
