@@ -251,6 +251,9 @@ public class Clicktile extends Applet implements Runnable{
 				this_color++;
 				if(this_color > used_colors.length - 1){this_color=0;}
 			    }
+			   else {
+			     if (this_color == 0 ){this_color++;}
+			    }
 			   Clicktile[dy][dx] = used_colors[this_color];
 			   repaint(); 
 			}
