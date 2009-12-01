@@ -2,14 +2,15 @@
 !!<HTML><HEAD>
 !!$wims_html_header
 !!</head>
-!if $wims_window=new
+!!!if $wims_window=new
  !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
- !set wims_html_onload=!append word self.resizeTo(550,550);self.moveTo(30,50); to $wims_html_onload
-!endif
+!! !set wims_html_onload=!append word self.resizeTo(800,550);self.moveTo(30,50); to $wims_html_onload
+!!!endif
 
 !header1
 
 !!<body $wims_htmlbody $w_resize>
+<div id="wimsmhelp">
 <div class=wimsmenu>
 !robottrap
 
@@ -44,7 +45,11 @@
 !endif
 
 :tabend
-</table></center></div><div class=wimsbody>
+</table></center>
+</div><!--wimsmenu-->
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<div class=wimsbody>
 
 !if $chapter>0
  !set l=!line 1 of $(chapter$chapter)
@@ -58,7 +63,7 @@
  !endif
 !endif
 
-<p><center><h1>WIMS help<br><font size="+1"><b>
+<p><h1 class="wims_title">WIMS help<br><font size="+1"><b>
 $l</b></font>
-</h1></center> <p>
+</h1> <p>
 
