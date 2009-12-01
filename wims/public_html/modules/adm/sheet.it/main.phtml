@@ -30,7 +30,13 @@ to $wims_menu_items
  !exit
 !endif
 
-<h3 class="wims_sheet_title">$sheet_title</h3>
+!set intro=!record 0 of $data
+!set dur=!words2items $(intro[3;])
+!distribute items $dur into duration,year
+!read adm/title.phtml 3\
+$sheet_title\
+$name_level $(intro[5;]), $name_duration $duration mn ($year)<br>$(intro[8;])\
+
 <div class="wims_sheet_desc">$sheet_desc</div> <p>
 
 $sheet_remark
