@@ -1,0 +1,72 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Domino
+slib_parms=5\
+,number of points in the first square\
+,number of points in the second square\
+black,color\
+H,direction (V or H)\
+,text if one of the numbers of points is 0\
+slib_author=Bernadette Perrin-Riou
+slib_out=code flydraw for a domino
+slib_comment=
+slib_example=5,3,red,H\
+5,0,red,V,Text
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_h,slib_k,slib_color,slib_D,slib_text
+slib_h=$[$slib_h]
+slib_k=$[$slib_k]
+slib_color=!declosing $slib_color
+!default slib_D=H
+!default slib_w=8
+!default slib_color=black
+!set slib_domino0=
+!set slib_domino1=fcircle 2.5,2.5,$slib_w,$slib_color
+!set slib_domino2=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color
+!set slib_domino3=fcircle 2.5,2.5,$slib_w,$slib_color\
+fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color
+!set slib_domino4=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color\
+fcircle 1.5,3.5,$slib_w,$slib_color\
+fcircle 3.5,1.5,$slib_w,$slib_color
+!set slib_domino5=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color\
+fcircle 1.5,3.5,$slib_w,$slib_color\
+fcircle 3.5,1.5,$slib_w,$slib_color\
+fcircle 2.5,2.5,$slib_w,$slib_color
+!set slib_domino6=fcircle 1.5,1.5,$slib_w,$slib_color\
+fcircle 1.5,2.5,$slib_w,$slib_color\
+fcircle 1.5,3.5,$slib_w,$slib_color\
+fcircle 3.5,1.5,$slib_w,$slib_color\
+fcircle 3.5,2.5,$slib_w,$slib_color\
+fcircle 3.5,3.5,$slib_w,$slib_color
+
+
+!if $slib_text!= 
+   slib_domino0=text $slib_color,2.5,3,medium,$slib_text
+!endif
+ 
+!if $slib_D=H
+ slib_out=xrange -1,11\
+yrange -1,6\
+linewidth 3\
+rectangle 0,0,10,5,$slib_color\
+line 5,0,5,5,black\
+$(slib_domino$slib_h)\
+translate 5,0\
+$(slib_domino$slib_k)
+!else
+  slib_out=xrange -1,6\
+yrange -1,11\
+linewidth 3\
+rectangle 0,0,5,10,$slib_color\
+line 0,5,5,5,$slib_color\
+$(slib_domino$slib_k)\
+translate 0,5\
+$(slib_domino$slib_h)
+ !endif
