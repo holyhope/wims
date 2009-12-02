@@ -1,8 +1,8 @@
 :het aantal heavy atomen 
 :het aantal bindingen tussen niet-H atomen 
 :het aantal ringen 
-:het aantal rechte atomen 
-:het aantal rechte bindingen 
+:het aantal gezochte atomen 
+:het aantal gezochte bindingen 
 :het aantal ladingen 
 :het aantal sp-hybride koolstof atomen 
 :het aantal sp2-hybride koolstof atomen 
@@ -56,15 +56,15 @@
 :het aantal heterocyclische verbindingen (willekeurig type) 
 :het aantal aromatische ringen (willekeurig type) 
 :het aantal benzeen ringen 
-:het aantal bindingen met twee of meer ringen 
-:het aantal atomen dat hoort bij groep 1 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 2 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 13 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 14 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 15 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 16 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 17 van :het periodiek systeem 
-:het aantal atomen dat hoort bij groep 18 van :het periodiek systeem 
+:het aantal bindingen tussen twee of meer ringen 
+:het aantal atomen dat hoort bij groep 1 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 2 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 13 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 14 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 15 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 16 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 17 van het periodiek systeem 
+:het aantal atomen dat hoort bij groep 18 van het periodiek systeem 
 :het aantal atomen dat hoort bij de transitie metalen 
 :het aantal atomen dat hoort bij de lanthaniden of actiniden 
 :het aantal isotopen 
