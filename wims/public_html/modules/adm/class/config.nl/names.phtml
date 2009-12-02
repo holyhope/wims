@@ -2,7 +2,6 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  van <b><font color=green>$wims_institutionname</font></b>
  
-
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
 
 !set title=Configuratie en Onderhoud
@@ -23,12 +22,15 @@
    door U\
    door Anderen\
    Actief gemeenschappelijk materiaal.\
-   U deelt hun materiaal\
+   U deelt hun materiaal.\
    Deelt uw materiaal.\
    Gemeenschappelijk materiaal.\
    Mag uw materiaal lenen.\
+   U mag hun materiaal lenen.\
+   Stop het delen\
+   Delen\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
- name_permit1,name_permit2,name_permit3
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share
  !goto commun
 !endif
 
@@ -68,9 +70,10 @@
 !endif
 
 !if $job=authtype
- !set title=Ldap authentification
+ !set title=Ldap authentificatie
  !goto commun
 !endif
+
 
 :commun
 !distribute line Authentificatie\
@@ -85,7 +88,7 @@ Andere servers\
 Wachtwoorden\
 Andere zones\
 Uiterlijk\
-Score instellingen,\
+Score restricties,\
 Platform adressen,\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
@@ -94,3 +97,19 @@ wims_name_config_score,wims_name_config_ent
 
 !distribute items subklassen,deelnemers,oefeningen,documenten,docenten\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+
+
+!distribute lines Beveiliging\ 
+Pagina kleuren\ 
+ Stylesheet\ 
+ Logo\ 
+ Style thema\ 
+ Iconen\ 
+ Les niveau\ 
+ Toegestane adressen \ 
+ Klasse inschrijvings wachtwoord\ 
+ Wachtwoord docenten\ 
+ Logfiles voor oefeningen en proefwerken\ 
+ Hyperlinks naar andere paginas of servers\ 
+ into name_secure,name_colors,name_css,name_logo,name_theme,name_theme_icons,name_level,name_security,\ 
+name_password,name_supass,name_exolog,name_ent
