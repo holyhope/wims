@@ -18,7 +18,7 @@ $table_header
  $table_hdtr
   <th>$name_Competences / $name_n_Paliers</th>
   !for j=1 to $maxnbpalier
-   <th valign=middle>$name_n_Palier $j</th>
+   <th valign=middle>$(name_ipalier)$j</th>
   !next j
  </tr>
  !for k=1 to $livret_nbcomp
@@ -27,15 +27,10 @@ $table_header
     $(title_$k)
    </td>
    !for j=1 to $(nbpalier_$k)
-    !let t=!charcnt $(l_$(k)_$(j))
     !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comp$k
     !let desc=!line 1 of $desc
-    !if $t>1
-     !let note=$[rint($(l_$(k)_$(j)))]
-     <td align="center" style="background-color: $(livret_color[$note+1]);"><a onmouseover="Tip('$desc',$tooltip_parm)">$note</a></td>
-    !else
-     <td align="center"><a onmouseover="Tip('$desc',$tooltip_parm)">- - -</a></td>
-    !endif 
+     !read adm/class/colors $(l_$(k)_$(j))\
+<a onmouseover="Tip('$desc',$tooltip_parm)"><img src="gifs/picto.gif"></a>
    !next j
    !for j=$(nbpalier_$k)+1 to $maxnbpalier
      <td align="center" style="background-image:url(gifs/bg/crossgrey.gif);">&nbsp;</td>

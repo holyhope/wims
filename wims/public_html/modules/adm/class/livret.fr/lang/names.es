@@ -28,11 +28,17 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
  !distribute items Título de la $name_competence&nbsp;,\
 Título del $name_n_palier&nbsp;,\
 Número de $name_n_paliers&nbsp;,\
-Estos colores pueden modificarse en el,\
-panel de configuración,\
 de la clase,\
 minimal score for validing an item\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2,name_configtext3
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3
+
+!! ----------------------------------------------   ajout pour la version 1.04
+!let name_nowork=No work
+!distribute line Which color panel is used in $name_n_paliers level\
+show result in $name_n_paliers level into name_configtext4,name_configtext5
+!let name_listscoreoption=of the class,of the booklet
+!let name_listscoreview=don't show,integer,with one digit,with two digit,with three digit,with four digit
+
 
 !!------------------------------- definición de los nombres de vínculos para wims_menu_items
 

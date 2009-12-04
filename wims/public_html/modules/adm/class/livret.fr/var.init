@@ -6,14 +6,17 @@ maxpalier=5
  livret_supervise=no
 !endif
 livret_dir=wimshome/log/classes/$wims_class/livret
+Livret_dir=$wims_home/log/classes/$wims_class/livret
 
 !readdef $livret_dir/.def
 
 !if $livret_defined!=yes
- !sh mkdir -p $wims_home/log/classes/$wims_class/livret;
+ !sh mkdir -p $Livret_dir;
  !filewrite $livret_dir/.def !set livret_title=$wims_name_livret\
 !set livret_description=$empty\
-!set livret_defined=yes
+!set livret_defined=yes\
+!set livret_scoreview=-1\
+!set livret_scoreoption=class
  !readdef $livret_dir/.def
 !endif
 
@@ -35,5 +38,10 @@ livret_dir=wimshome/log/classes/$wims_class/livret
  !next i
 !endif
 
-livret_color=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
-!default livret_color=,red,red,red,orange,orange,orange,yellow,yellow,green,green
+!distribute line $livret_scorecolor\
+$livret_scoreview into wims_scorecolor,wims_scoreview
+!default wims_scorecolor=,red,red,red,orange,orange,orange,yellow,yellow,green,green
+!default wims_scoreview=-1
+!if class isin $livret_scoreoption
+ wims_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
+!endif

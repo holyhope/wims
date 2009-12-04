@@ -1,19 +1,15 @@
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
 
-userlist=$empty
 userscore=$empty
+userlist=$empty
 !for u=1 to $usercnt
  user=!record $u of wimshome/log/classes/$wims_class/.userlist
- user=!item 3 of $user
- !!s_$user=!getscoremean user=$user
- s=!getscoremean user=$user
- s=!lines2rows $s
+ !distribute item $user into lastname,firstname,user
+ userlist=!append line $user,$lastname $firstname to $userlist
+ userscore_$u=!getscoremean user=$user
  userlist=!append item $user to $userlist
- userscore=!append line $s to $userscore
  !for k=1 to $livret_nbcomp
-  t=!record $k of $livret_dir/.comps
-  !distribute line $t into title_$k,nbpalier_$k
   !for l=1 to $(nbpalier_$k)
     l_$(u)_$(k)_$(l)=0
   !next l
@@ -34,9 +30,7 @@ userscore=$empty
   !for m=1 to $nbit
    t=!line $m of $list2
    !for u=1 to $usercnt
-    s_user=!line $u of $userscore
-    s=$(s_user[$(t[1]);])
-    s=!word $(t[2]) of $s
+    s=!word $(t[2]) of $(userscore_$(u)[$(t[1]);])
     !if $s>=$livret_minac
      l_$(u)_$(k)_$(l)=$(l_$(u)_$(k)_$(l))+$s/$nbit
     !else

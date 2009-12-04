@@ -18,8 +18,8 @@ $table_header
    <th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
    !for k=1 to $livret_nbcomp
     <th valign=middle colspan=$(nbpalier_$k)>
-     !href cmd=renew&job=addcomp&comp=$k $name_Competence $k
-     <a onmouseover="Tip('$(title_$k)',$tooltip_parm)"> ? </a>
+     !href cmd=renew&job=addcomp&comp=$k $(name_icompetence)$k
+     <a onmouseover="Tip('$(title_$k)',$tooltip_parm)"><img src="gifs/picto.gif" alt="picto"></a>
     </th>
     !if $k<$livret_nbcomp
      <td width="3" rowspan="$[2+$usercnt]"></td>
@@ -31,26 +31,19 @@ $table_header
    !for j=1 to $(nbpalier_$k)
     !let desc=!record $j of $livret_dir/.comp$k
     !let desc=!line 1 of $desc
-    <th valign=middle><a onmouseover="Tip('$desc',$tooltip_parm)">$name_n_Palier $j</a></th>
+    <th valign=middle>$(name_ipalier)$j<a onmouseover="Tip('$desc',$tooltip_parm)"><img src="gifs/picto.gif" alt="picto"></a></th>
    !next j
   !next k
  </tr>    
  !for i=1 to $usercnt
-  !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
-  !distribute items $uu into lastname,firstname,uu
+  !set uu=!line $i of $userlist
   $table_tr
    <td>
-    !href cmd=reply&job=user&user=$uu $lastname,$firstname
+    !href cmd=reply&job=user&user=$(uu[1]) $(uu[2])
    </td>
    !for k=1 to $livret_nbcomp
     !for j=1 to $(nbpalier_$k)
-     !let t=!charcnt $(l_$(i)_$(k)_$(j))
-     !if $t>1
-      !let note=$[rint($(l_$(i)_$(k)_$(j)))]
-      <td align="center" style="background-color: $(livret_color[$note+1])">$note</td>
-     !else
-      <td align="center">&nbsp;</td>
-     !endif
+     !read adm/class/colors $(l_$(i)_$(k)_$(j))
     !next j
    !next k
   </tr>

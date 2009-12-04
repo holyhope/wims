@@ -19,6 +19,8 @@ wims_prefix=class user livret
  !read lang/names.en
 !endif
 !read tabletheme
+name_icompetence=!char 1 of $name_Competences
+name_ipalier=!char 1 of $name_n_Palier
 
 !if $livret_supervise=yes
  !bound job within modpalier,userlist,config,addcomp,user default userlist
@@ -28,5 +30,9 @@ wims_prefix=class user livret
 !endif
 
 livret_nbcomp=!recordcnt $livret_dir/.comps
+!for k=1 to $livret_nbcomp
+  t=!record $k of $livret_dir/.comps
+  !distribute line $t into title_$k,nbpalier_$k
+!next k
 
 !read $job.proc
