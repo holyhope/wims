@@ -161,8 +161,9 @@ sub ConsListe { my ($file, $ref, $dir,$prefix) = @_;
 #  if (!open IN, $file) { warn "$file n'existe pas"; return; }
   open IN, $file;
   ### le lit en utf8
+  $actualdir=`pwd`;
   if ($MODE eq "utf8") {binmode IN ,":utf8";}
-  print STDERR "... lecture de $file\n";
+  print STDERR "... lecture de $actualdir$file\n";
   while(<IN>) {
     next if (/^#/ || (/^\s*$/ && !$val)); # vire commmentaires + lignes vides
     next if (/<\/file\>/) ;
