@@ -20,8 +20,8 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_info=Informatie over deze $name_competence &nbsp;
 !set name_param_change=Hier staan de instel-parameters waaruit u kunt kiezen&nbsp;
 !set name_color=De kleur van de prestaties van $name_n_palier &nbsp;
-!set name_score_modify=Scores voor oefeningen uit de volgende werkbladen benodigd voor de berekening van de prestatieniveaus van $name_n_paliers &nbsp;
-!set name_cocher=Controleer de gegevens die gebruikt moete worden in het overzicht van $name_n_palier.
+!set name_score_modify=Cijfers voor oefeningen uit de volgende werkbladen, benodigd voor de berekening van de prestatieniveaus van $name_n_paliers &nbsp;
+!set name_cocher=Controleer de gegevens die gebruikt moeten worden in het overzicht van $name_n_palier.
 !set name_see=Toon alleen de werkblad oefeningen.
 
 
@@ -29,15 +29,17 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 Titel van $name_n_palier&nbsp;,\
 Aantal $name_n_paliers&nbsp;,\
 van de klas,\
-minimal score for validing an item\
+minimale score voor dit onderdeel\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3
 
 !! ----------------------------------------------   ajout pour la version 1.04
-!let name_nowork=No work
-!distribute line Which color panel is used in $name_n_paliers level\
-show result in $name_n_paliers level into name_configtext4,name_configtext5
-!let name_listscoreoption=of the class,of the booklet
-!let name_listscoreview=don't show,integer,with one digit,with two digit,with three digit,with four digit
+!let name_nowork=Geen werk
+!distribute line Welke kleuren voor het $name_n_paliers niveau\
+Laat het $name_n_paliers  niveau zien \
+into name_configtext4,name_configtext5
+
+!let name_listscoreoption=van de klas,van het raport boekje
+!let name_listscoreview=niet laten zien,integer,op &eacute;&eacute;n decimaal,op twee decimalen,op drie decimalen,op vier decimalen
 
 !!------------------------------- definition des noms de liens pour wims_menu_items
 
