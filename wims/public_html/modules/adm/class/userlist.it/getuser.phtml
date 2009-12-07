@@ -157,15 +157,15 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
  $table_hdtr<th>$(name_thsheet[1])<th>$(name_thsheet[2])</th><th>$(name_thsheet[3])</th><th>$(name_thsheet[4])
      <th>$(name_thsheet[5])</th><th>$(name_thsheet[6])</th><th>$(name_thsheet[7])</th>
  !for j=1 to $e_
-  $table_tr<td align="center">$j
-  <td>$(title_$(n_)_$j)
-  <td align="center">
-  !set v_=$(req_$(n_)_$j)
-  $v_
-  <td align="center">$(weight_$(n_)_$j)</td>
+  !let d=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$n_
+  !distribute line $d into t,t,req_,weight_,title_,t
+  $table_tr<td align="center">$j</td>
+  <td>$(title_)</td>
+  <td align="center">$(req_)</td>
+  <td align="center">$(weight_)</td>
   !set d_=!getscore user=$getuser sheet=$n_ work=$j
   !default d_=0
-  !read adm/class/colors $[ceil(10*$d_/$(req_$(n_)_$j))]
+  !read adm/class/colors $[ceil(10*$d_/$(req_$))]
   !if $d_>0
    <td style=$style_note>
    $d_
@@ -173,11 +173,11 @@ $table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=l
    <td align="center">--
   !endif
   </td>
-  !if $v_>0
-   !read adm/class/colors $[ceil(10*$d_/$v_)]
+  !if $req_>0
+   !read adm/class/colors $[ceil(10*$d_/$req_)]
    !if $d_>0
     <td align=right style=$style_note>
-    $[round(100*$d_/$v_)]%
+    $[round(100*$d_/$req_)]%
    !else
     <td align="center">--
    !endif
@@ -222,4 +222,6 @@ to $wims_menu_items
  !endif
 !endif
  <p>
+
+
 
