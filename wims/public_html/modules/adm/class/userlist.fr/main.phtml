@@ -29,7 +29,11 @@ $wims_name_part_list
 !if $usercnt==0
  $name_noyetparticipant
  [
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !if $wims_typename!=class
+  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
+ !else
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !endif
  ]
  
  [
@@ -41,7 +45,11 @@ $wims_name_part_list
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
  [
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !if $wims_typename!=class
+  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
+ !else
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !endif
  ] [
  !href cmd=reply&job=csv $wims_name_csv
  ]
