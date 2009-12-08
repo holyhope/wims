@@ -78,6 +78,11 @@ m_oefenv=!replace word debug by $ in $m_oefenv
  !bound qnum between integer 1 and 9 default 1
  !bound qcmlevel between integer 1 and 9 default 3
  !bound random within 0,1 default 1
+ tmp=!replace internal & by ; in $module_init_parm
+ tmp=exo=$exo;intro_check=$intro_check;$tmp
+ tmp=!replace internal scoredelay=; by scoredelay=0; in $tmp
+ tmp=!replace internal exo=; by exo=0; in $tmp
+ special_parm3=!nospace $tmp
  !if $scoredelay!=$empty and $scoredelay!=0
   d_=!items2words $scoredelay
   !distribute words $d_ into delay1,delay2
@@ -405,4 +410,3 @@ function formcheck() {\
 !endif
 
 savedrawcnt=0
-

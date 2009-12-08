@@ -13,7 +13,21 @@
  !changeto content.html
 !endif
 
-!if $wims_class!=$empty and $wims_user=supervisor
+!if $special_parm3!=$empty
+ !let tmp=!replace internal ; by $ $ in $special_parm3
+ !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8
+  !let t=!getopt $(cle) in $tmp
+  !default $(cle)=$t
+ !next cle
+ !if $scoredelay=0
+  !reset scoredelay
+ !endif
+ !if $exo=0
+  !reset exo
+ !endif
+!endif
+
+!if $wims_class!=$empty and $wims_user=supervisor and $special_parm3=$empty
  !distribute line $wims_oefdefault_qnum\
 $wims_oefdefault_qcmlevel\
 $wims_oefdefault_scoredelay\
@@ -22,6 +36,7 @@ $wims_oefdefault_presentsol\
 $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check
  !let special_parm2=expert
 !endif
+!reset special_parm3
 
 !if ////classes/ isin ////$module
  !set class_header=wimshome/log/classes/$wims_class/
@@ -96,28 +111,28 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
    !let tmp=!replace word expert by $ in $special_parm2
     <input type=hidden name=intro_expert value=yes>
     </td></tr>
-  !if $wims_class=$empty or $wims_user!=supervisor
    <tr><td colspan=2 align=center>
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp $name_simplifiedmenu
-  !endif
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3 $name_simplifiedmenu
 !else
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp $name_expertmenu
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3 $name_expertmenu
 !endif
 </table></center> <p><center>
 <input type=submit value="$wims_name_work">&nbsp;
 <input type=submit name=print value="$name_print">
+<input type="hidden" name="special_parm2" value="$special_parm2">
 </center>
 </form>
 
 !if $exocnt>10
  !form intro
- <input type=hidden name=special_parm2 value=select>
- <input type=hidden name=module value="$module">
+ <input type="hidden" name="special_parm2" value="select $special_parm2">
+ <input type="hidden" name="special_parm3" value="$special_parm3">
+ <input type="hidden" name="module" value="$module">
  $name_select
- <input size=12 maxlength=12 name=special_parm value="$oldparm">
- <input type=submit value="$wims_name_send">
+ <input size="12" maxlength="12" name="special_parm" value="$special_parm">
+ <input type="submit" value="$wims_name_send">
  </form>
 !endif
 
@@ -130,3 +145,6 @@ $name_remarkintro1
 <p><small>
 $name_remarkintro3
 </small>
+
+
+
