@@ -3,16 +3,16 @@
 
 $table_header
  $table_hdtr
-  !for k=1 to 6
+  !for k=1 to 7
    <th>$(name_shtab[$k])</th>
   !next k
   !if $activetest=0
-   <th>$(name_shtab[7])</th>
+   <th>$(name_shtab[8])</th>
   !endif
  </tr>
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $ex into di,pa,re,we,ti,de,dep
+  !distribute lines $ex into di,pa,re,we,ti,de,dep,com
   $table_tr
    <td>$i</td>
    <td>
@@ -28,6 +28,7 @@ $table_header
      &nbsp;
     !endif
    </td>
+   <td>$com</td>
    !if $activetest=0
     <td>
      !href cmd=reply&job=prep_modify&modif=$i $(seriesaction[1])

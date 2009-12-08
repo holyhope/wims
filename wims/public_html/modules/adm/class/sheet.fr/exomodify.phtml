@@ -1,0 +1,44 @@
+!! fichier de modification des informations sur les exercices d'une feuille
+!! ce fichier est multi-langue
+!!
+ !distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_
+!! !set orgtit_=!module title $directory_
+  <p><center><h3>$name_titlemodif $ex_</h3></center>
+  !form reply
+   $table_header
+   <input type=hidden name=modif value=$ex_>
+   <input type=hidden name=job value=modify>
+   $table_tr
+    <td><b>$wims_name_title </b></td>
+!!<small>($name_oldtitle <em>$orgtit</em>)</small></td>
+    <td><input size="50" name="mod_title" value="$title_"></td>
+   </tr>
+   $table_tr
+    <td><b>$wims_name_Description</b></td>
+    <td><textarea name="mod_desc" rows="3" cols="60">$desc_</textarea></td>
+   </tr>
+   $table_tr
+    <td><b>$(name_shtab[7])</b> <small>($name_desc_comment)</small></td>
+    <td><textarea name="mod_comment" rows="3" cols="60">$comment_</textarea></td>
+   </tr>
+   $table_tr
+    <td><b>$name_pointsasked</b></td>
+    <td><input size="4" name="mod_require" value="$require_"></td>
+   </tr>
+   $table_tr
+    <td><b>$name_ofweight</b></td>
+    <td><input size="4" name="mod_weight" value="$weight_"></td>
+   </tr>
+   $table_tr
+    <td><b>$(name_shtab[6])</b> <small>($name_desc_dependancy)</small> :</td>
+    <td><input size="40" name="mod_dep" value="$dep_"></td>
+    !reset mod_dep
+   </tr>
+   $table_tr
+    <td colspan=2><center>
+     <input type="submit" value="$wims_name_change"> &nbsp;
+     !href cmd=resume $wims_name_giveup
+    </center></td>
+   </tr>
+  $table_end
+ </form>
