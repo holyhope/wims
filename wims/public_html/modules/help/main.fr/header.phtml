@@ -1,21 +1,14 @@
 !set lan=fr
-!!<HTML><HEAD>
-!!$wims_html_header
-!!</head>
-!!!if $wims_window=new
- !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
-!! !set wims_html_onload=!append word self.resizeTo(800,550);self.moveTo(30,50); to $wims_html_onload
-!!!endif
-
+!read tabletheme
 !header1
 
-!!<body $wims_htmlbody $w_resize>
 <div id="wimsmhelp">
+
 <div class=wimsmenu>
 !robottrap
-
-<center><table border=0 cellspacing=0 cellpadding=5 bgcolor="$wims_ref_bgcolor">
-<tr><td align=center>
+<center>
+$table_header
+ $table_tr<th>
 !if _ isin $wims_subsession
  <a href="#" onclick="window.close()">Fermer la fenêtre d'aide</a>
 !else
@@ -28,19 +21,19 @@
  !goto tabend
 !endif
 !if $chapter>0
- <td align=center>
+ <th>
  !href module=$module&chapter=0 Index d'aides
-&nbsp;
+</th>
 !endif
-<td align=center>
+<th>
 !href module=$module&style=print Version imprimable
-&nbsp;
+</th>
 !if $chapter>1
- <td align=center>
+ <th>
  !href module=$module&chapter=$[$chapter-1] Chapitre précédent
 !endif
 !if $chapter<$chaptercnt
- <td align=center>
+ <th>
  !href module=$module&chapter=$[$chapter+1] Chapitre suivant
 !endif
 

@@ -1,20 +1,14 @@
 !set lan=en
-!!<HTML><HEAD>
-!!$wims_html_header
-!!</head>
-!if $wims_window=new
- !!!set w_resize=onload="self.resizeTo(550,550);self.moveTo(30,50);"
- !set wims_html_onload=!append word self.resizeTo(550,550);self.moveTo(30,50); to $wims_html_onload
-!endif
-
+!read tabletheme
 !header1
 
-!!<body $wims_htmlbody $w_resize>
+<div id="wimsmhelp">
+
 <div class=wimsmenu>
 !robottrap
-
-<center><table border=0 cellspacing=0 cellpadding=5 bgcolor="$wims_ref_bgcolor">
-<tr><td align=center>
+<center>
+$table_header
+ $table_tr<th>
 !if _ isin $wims_subsession
  <a href="#" onclick="window.close()">Close help window</a>
 !else
@@ -27,24 +21,28 @@
  !goto tabend
 !endif
 !if $chapter>0
- <td align=center>
+ <th>
  !href module=$module&chapter=0 Help index
-&nbsp;
+</th>
 !endif
-<td align=center>
+<th>
 !href module=$module&style=print Printable version
-&nbsp;
+</th>
 !if $chapter>1
- <td align=center>
+ <th>
  !href module=$module&chapter=$[$chapter-1] Preceding chapter
 !endif
 !if $chapter<$chaptercnt
- <td align=center>
+ <th>
  !href module=$module&chapter=$[$chapter+1] Next chapter
 !endif
 
 :tabend
-</table></center></div><div class=wimsbody>
+</table></center>
+</div><!--wimsmenu-->
+<div id="wimsbodybox">
+<div id="wimspagebox">
+<div class=wimsbody>
 
 !if $chapter>0
  !set l=!line 1 of $(chapter$chapter)
@@ -58,7 +56,7 @@
  !endif
 !endif
 
-<p><center><h1>WIMS help<br><font size="+1"><b>
----- $l ----</b></font>
-</h1></center> <p>
+<p><h1 class="wims_title">WIMS help<br><font size="+1"><b>
+$l</b></font>
+</h1> <p>
 
