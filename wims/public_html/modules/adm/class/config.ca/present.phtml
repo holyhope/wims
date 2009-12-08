@@ -1,56 +1,55 @@
-
+!!!### language independant
 !set wims_form_method=file
 !form reply
 <input type=hidden name=up_job value=present>
 <p>$table_header
-$table_tr<td align=right>Logo de la classe
+$table_tr<td align=right>$name_logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 </td><td><input size=45 name=pr_logo value="$class_logo">
 </td></tr>
-$table_tr<td align=right>Position du logo
+$table_tr<td align=right>$name_position_logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 </td><td>
 !set pr_logoside=$class_logoside
-!formselect pr_logoside list left,right prompt en haut à gauche, en haut à droite
- des pages d'accueil.
+!formselect pr_logoside list left,right prompt $name_logo_side
 </td></tr>
-$table_tr<td align=right>Page d'accueil des participants
+$table_tr<td align=right>$wims_name_class_home
 <small>
 !href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
  </small>
 </td><td><input size=45 name=pr_homepage value="$class_homepage">
 </td></tr>
-$table_tr<td align=right>Couleur de fond des pages
+$table_tr<td align=right>$name_background_color
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
 </td><td><input size=10 name=pr_bgcolor value="$class_bgcolor">
 </td></tr>
-$table_tr<td align=right>Couleur de fond des menus
+$table_tr<td align=right>$name_menu_color
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
 </td><td><input size=10 name=pr_refcolor value="$class_refcolor">
 </td></tr>
 $table_tr
- <td align=right>Dégradé de couleurs des scores (de 0 à 10)</td>
+ <td align=right>$name_colorscore</td>
  <td>
   !for col=1 to 11
    &nbsp; <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])">
   !next col
  </td>
 </tr>
-$table_tr<td align=right>Image de fond des pages
+$table_tr<td align=right>$name_image
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
  </small>
 </td><td><input size=45 name=pr_bgimg value="$class_bgimg">
 </td></tr>
-$table_tr<td align=right>Thème de style de la classe
+$table_tr<td align=right>$name_theme
 <small>
 !href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
  </small>
@@ -58,7 +57,7 @@ $table_tr<td align=right>Thème de style de la classe
 !set pr_theme=$class_theme
 !formselect pr_theme list $themelist
 </td></tr>
-$table_tr<td align=right>Icones de la classe
+$table_tr<td align=right>$name_theme_icon
 <small>
 !href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
  </small>
@@ -66,7 +65,7 @@ $table_tr<td align=right>Icones de la classe
 !set pr_theme_icon=$class_theme_icon
 !formselect pr_theme_icon list $iconlist
 </td></tr>
-$table_tr<td align=right>Feuille de style (css) des pages
+$table_tr<td align=right>$name_css (css)
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
  </small>
@@ -75,16 +74,14 @@ $table_tr<td align=right>Feuille de style (css) des pages
 !formselect pr_css list $csslist
 $table_tr
 <td align=right valign=middle>
-Contenu de la feuille de style
-de la classe 
-<br>(lorsque <tt>Feuille de style</tt>  est sur <tt>class</tt>)&nbsp;:
+$name_content_style
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
 </small>
-</td><td valign=middle>transférer un fichier css
+</td><td valign=middle>$name_css_transfer
 <input type=file name=wims_deposit>
 <br>
-ou copier ici la feuille de style de la classe&nbsp;<br>
+$name_content_style2&nbsp;<br>
 <textarea rows=6 cols=45 name=pr_cssfile>
 $cssfile
 </textarea>

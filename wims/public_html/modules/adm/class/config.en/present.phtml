@@ -1,46 +1,55 @@
-
+!!!### language independant
 !set wims_form_method=file
 !form reply
 <input type=hidden name=up_job value=present>
 <p>$table_header
-$table_tr<td align=right>Logo of the class
+$table_tr<td align=right>$name_logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 </td><td><input size=45 name=pr_logo value="$class_logo">
 </td></tr>
-$table_tr<td align=right>Position of the logo
+$table_tr<td align=right>$name_position_logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
 </td><td>
 !set pr_logoside=$class_logoside
-!formselect pr_logoside list left,right prompt top left, top right
- corner of the home pages.
+!formselect pr_logoside list left,right prompt $name_logo_side
 </td></tr>
-$table_tr<td align=right>Homepage of participants
+$table_tr<td align=right>$wims_name_class_home
 <small>
 !href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
  </small>
-</td></tr><input size=45 name=pr_homepage value="$class_homepage">
+</td><td><input size=45 name=pr_homepage value="$class_homepage">
 </td></tr>
-$table_tr<td align=right>Page background color
+$table_tr<td align=right>$name_background_color
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
-</td></tr><input size=10 name=pr_bgcolor value="$class_bgcolor">
-$table_tr<td align=right>Menu background color
+</td><td><input size=10 name=pr_bgcolor value="$class_bgcolor">
+</td></tr>
+$table_tr<td align=right>$name_menu_color
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
-</td></tr><input size=10 name=pr_refcolor value="$class_refcolor">
-$table_tr<td align=right>Background image file
+</td><td><input size=10 name=pr_refcolor value="$class_refcolor">
+</td></tr>
+$table_tr
+ <td align=right>$name_colorscore</td>
+ <td>
+  !for col=1 to 11
+   &nbsp; <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])">
+  !next col
+ </td>
+</tr>
+$table_tr<td align=right>$name_image
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
  </small>
-</td><td><td><input size=45 name=pr_bgimg value="$class_bgimg">
+</td><td><input size=45 name=pr_bgimg value="$class_bgimg">
 </td></tr>
-$table_tr<td align=right>Style theme of the class
+$table_tr<td align=right>$name_theme
 <small>
 !href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
  </small>
@@ -48,7 +57,7 @@ $table_tr<td align=right>Style theme of the class
 !set pr_theme=$class_theme
 !formselect pr_theme list $themelist
 </td></tr>
-$table_tr<td align=right>Icones de la classe
+$table_tr<td align=right>$name_theme_icon
 <small>
 !href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
  </small>
@@ -56,7 +65,7 @@ $table_tr<td align=right>Icones de la classe
 !set pr_theme_icon=$class_theme_icon
 !formselect pr_theme_icon list $iconlist
 </td></tr>
-$table_tr<td align=right>Style sheet (css) of pages
+$table_tr<td align=right>$name_css (css)
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
  </small>
@@ -64,16 +73,15 @@ $table_tr<td align=right>Style sheet (css) of pages
 !set pr_css=$class_css
 !formselect pr_css list $csslist
 $table_tr
-<td align=right valign=middle>You can define your class-wide
-stylesheet here:
+<td align=right valign=middle>
+$name_content_style
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
 </small>
-<td valign=middle>
-download a css-style file
+</td><td valign=middle>$name_css_transfer
 <input type=file name=wims_deposit>
 <br>
-ou copier ici la feuille de style de la classe&nbsp;<br>
+$name_content_style2&nbsp;<br>
 <textarea rows=6 cols=45 name=pr_cssfile>
 $cssfile
 </textarea>
