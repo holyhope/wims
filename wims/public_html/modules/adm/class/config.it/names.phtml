@@ -27,8 +27,10 @@
    Permesso reciproco di condivisione.\
    Ha il permesso di condividere le vostre risorse.\
    Vi permette di condividere le sue risorse.\
+   Arrêter le partage\
+   Partager\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
- name_permit1,name_permit2,name_permit3
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share
  !goto commun
 !endif
 
@@ -69,6 +71,8 @@
 
 !if $job=authtype
  !set title=Autenticazione attraverso un server LDAP
+ !set name_intro_authtype=Sélectionnez <tt>ldap</tt> et remplissez cette page si \
+   vous désirez utiliser une authentification par un annuaire ldap.
  !goto commun
 !endif
 
@@ -94,3 +98,31 @@ wims_name_config_score,wims_name_config_ent
 
 !distribute items zone,iscritti,esercizi,documenti,docenti\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+
+
+!distribute lines Postes sûrs\
+   Feuille de style\
+   Logo\
+   Position du logo\
+   en haut à gauche, en haut à droite\
+   Thème de style\
+   Jeu d'icones\
+   Niveau académique\
+   Postes autorisés aux notes\
+   Mot de passe d'inscription\
+   Mot de passe d'enseignant\
+   Limites d'enregistrement d'exercices et d'examens\
+   Liens sur une plateforme ou une page web\
+   Couleur de fond des pages\
+   Couleur de fond des menus\
+   Image de fond des pages\
+   transférer un fichier css\
+   Dégradé de couleurs des scores (de 0 à 10)\
+   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+   name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
+  name_background_color,name_menu_color,name_image,name_css_transfer,name_colorscore
+
+!set name_content_style = Contenu de la feuille de style de la classe \
+<br>(lorsque <tt>$name_css</tt>  est sur <tt>class</tt>)&nbsp;:
+
+!set name_content_style2=ou copier ici la feuille de style de la classe
