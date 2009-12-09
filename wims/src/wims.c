@@ -217,6 +217,7 @@ char *ro_name[]={
       "special_parm",
       "special_parm2",
       "special_parm3",
+      "special_parm4",
       "useropts" ,
       "wims_session",
       "wims_subsession",
@@ -225,7 +226,7 @@ char *ro_name[]={
 };
 enum {
     ro_cmd, ro_empty, ro_lang, ro_module, ro_session, ro_special_parm,
-      ro_special_parm2, ro_special_parm3, ro_useropts, ro_wsession, ro_subsession, ro_win, ro_worksheet
+      ro_special_parm2, ro_special_parm3, ro_special_parm4, ro_useropts, ro_wsession, ro_subsession, ro_win, ro_worksheet
 } RO_NAMES;
 #define RO_NAME_NO (sizeof(ro_name)/sizeof(ro_name[0]))
 

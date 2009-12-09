@@ -34,7 +34,7 @@ $wims_oefdefault_scoredelay\
 $wims_oefdefault_qcmpresent\
 $wims_oefdefault_presentsol\
 $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check
- !let special_parm2=expert
+ !let special_parm2=$special_parm expert
 !endif
 !reset special_parm3
 
@@ -112,16 +112,17 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
     <input type=hidden name=intro_expert value=yes>
     </td></tr>
    <tr><td colspan=2 align=center>
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3 $name_simplifiedmenu
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_simplifiedmenu
 !else
    <tr><td colspan=2 align=center>
    !let tmp=$special_parm2 expert
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3 $name_expertmenu
+   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_expertmenu
 !endif
 </table></center> <p><center>
 <input type=submit value="$wims_name_work">&nbsp;
 <input type=submit name=print value="$name_print">
 <input type="hidden" name="special_parm2" value="$special_parm2">
+<input type="hidden" name="special_parm4" value="$special_parm4">
 </center>
 </form>
 
@@ -129,6 +130,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
  !form intro
  <input type="hidden" name="special_parm2" value="select $special_parm2">
  <input type="hidden" name="special_parm3" value="$special_parm3">
+ <input type="hidden" name="special_parm4" value="$special_parm4">
  <input type="hidden" name="module" value="$module">
  $name_select
  <input size="12" maxlength="12" name="special_parm" value="$special_parm">

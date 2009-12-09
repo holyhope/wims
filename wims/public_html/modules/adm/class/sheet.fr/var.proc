@@ -11,13 +11,17 @@ srcname=wimshome/$wims_sesdir/home_sheet.src
 wims_helper=chapter=3
 
 !readproc tabletheme
-!readproc adm/search_engine/names.$lang
-!readproc adm/search_engine/mklist_form.proc
-
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit
 !endif
+!if $job=chseries
+!! num=!replace internal . by , in $num
+!! !distribute item $num into sheet,modif
+ !changeto chseries.proc
+!endif
+!readproc adm/search_engine/names.$lang
+!readproc adm/search_engine/mklist_form.proc
 
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today

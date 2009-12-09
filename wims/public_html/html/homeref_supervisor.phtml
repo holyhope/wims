@@ -46,7 +46,7 @@
 !endif
 !if $module_has_intro=yes and $cmd notwordof intro help and\
         $wims_sheet=$empty and exam notin $wims_session
- !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3 to $1_
+ !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
 !endif
 !if $module_has_help=yes and $cmd notwordof intro help
  !if $module_help=$empty or $module_help=popup
@@ -72,6 +72,7 @@
   !set 1_=!append line modify,1,module=adm/modtool&original=$module to $1_
  !endif
 !endif
+!if $special_parm4=$empty
 !if $cmd!=intro and $cmd!=help and $module!=home and \
 	../adm/ notin ../$module and \
 	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
@@ -88,6 +89,17 @@
 	$class_importation!=no and\
 	$thisexo!=
   !set 1_=!append line import,1,module=adm/createxo&existing=$thisexo&catmodule=$module to $1_
+!endif
+!else
+!! ---------------------------------------------- place pour ajouter le lien vers la modification de serie dans une feuille
+ !if $cmd!=intro and $cmd!=help and $module!=home and \
+	../adm/ notin ../$module and \
+	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
+  !set wims_homeref_parm=!replace % by %25 in $module_init_parm
+  !set wims_homeref_parm=!replace + by %2B in $module_init_parm
+  !set wims_homeref_parm=!replace & by %26 in $module_init_parm
+  !set 1_=!append line chseries,1,module=adm/class/sheet&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm&job=chseries&num=$special_parm4 to $1_
+ !endif
 !endif
 !set 1_=!append line $wims_menu_items to $1_
 !set wims_rm_0=$1_
