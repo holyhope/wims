@@ -1,53 +1,62 @@
-
+!!!### language independant
 !if $votecnt<1
  !if $wims_user!=supervisor
-  Non sono definiti questionari. Verifica con il docente.
+  $name_novote $name_novotecheck
   !exit
  !else
-  Non sono definiti questionari.
+  $name_novote
  !endif
 !else
  !if $wims_user!=supervisor
   !if $active<1
-   Non ci sono questionari attivi. Verifica con il docente.
+   $name_noactivevote $name_novotecheck
    !exit
   !endif
  !endif
- Elenco dei questionari definiti per il corso.
- <ul>
+ $name_class_vote
+ $table_header
+ $table_tr<th>$wims_name_title</th><th>$name_cnt_votes</th>
+ <th>$wims_name_Status</th><th>$wims_name_action</th>
  !for t=1 to $votecnt
    !set l_=!record $t of $votedir/.votes
    !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show
-   !default vote_title=Senza titolo
+   !default vote_title=$name_untitled
    !set vcnt=!defof vcnt in $votedir/$t.votes
    !default vcnt=0
    !if $wims_user!=supervisor
     !if $vote_status iswordof 1 2
-     <li>
+     $table_tr<td>
      !href cmd=reply&job=read&vote=$t $vote_title
+     </td><td>
      !if $vote_show>0
-      ($(name_$vote_status), $(name_$vote_option), $vcnt risposte)
+      <td align="center">$vcnt</td>
+      <td>$(name_$vote_status), $(name_$vote_option)
      !else
-      ($(name_$vote_status), $(name_$vote_option))
+       <td>&nbsp;</td>
+       <td>$(name_$vote_status), $(name_$vote_option)</td>
      !endif
+     </td></tr>
     !endif
    !else
-    <li>
+    $table_tr<td>
     $vote_title
-    <small>($(name_$vote_status), $(name_$vote_option), $vcnt risposte)</small>
-    !href cmd=reply&job=read&vote=$t [leggi]
+    </td>
+    <td align="center">$vcnt</td>
+     <td><small>$(name_$vote_status), $(name_$vote_option)</small>
+    </td><td>
+    !href cmd=reply&job=read&vote=$t $wims_name_Show
 &nbsp;
-    !href cmd=reply&job=edit&vote=$t [modifica]
+    !href cmd=reply&job=edit&vote=$t $wims_name_change
 &nbsp;
-    !href cmd=reply&job=csv&vote=$t [ $wims_name_csv ]
+    !href cmd=reply&job=csv&vote=$t $wims_name_csv
+    </td>
    !endif
  !next t
- </ul>
+$table_end
+<p>
 !endif
 
 !if $wims_user=supervisor
- !!!href cmd=reply&job=creat Crea un nuovo questionario
  !set wims_menu_items=!append line add_vote,1,cmd=reply&job=creat\
 to $wims_menu_items
 !endif
-
