@@ -17,7 +17,7 @@
    !let jyear2=!char 1 to 4 of $wims_now
    !let jmonth2=!char 5 to 6 of $wims_now
    !let jday2=!char 7 to 8 of $wims_now
-   !endif
+  !endif
   !distribute item 0,0,0 into jyear2,jday2,jmonth2
   !let v1=!values v for v=$creyear to $expyear
   !formselect jday2 list 0,$v prompt ---,$v
@@ -27,7 +27,7 @@
  </form>
 <p>
 
-!if $wims_user=supervisor and $cdt_supervise=yes 
+!if $wims_user=supervisor and $cdt_supervise=yes
  !set wims_menu_items= !append line adddate,1,cmd=new&job=adddate\
  addfile,1,cmd=reply&job=file\
  addtodo,1,cmd=new&job=addtodo\
@@ -36,5 +36,5 @@
 !endif
 
 !if ($job isitemof home,todo or work isin $job and $jour_begin!=$empty) and $cdt_nbdate<$max_defaffi
-!set wims_menu_items=!append line back,1,cmd=new&job=home to $wims_menu_items
+  !set wims_menu_items=!append line back2,1,cmd=new&job=home to $wims_menu_items
 !endif
