@@ -150,19 +150,30 @@ unite_data pref_units[] ={
 
 int significative(char* text);
 int significative(char* text){
-  // returns the number of significative numbers of a real
-  // if the real is null returns zero.
+  // returns the number of significative digits of a real
+  // considers separately the case when a number is zero
   int i,j,result=0;
+  char *end = text+strlen(text);
+  while (end>text && *(end-1)==' '){ // removes the rightmost spaces
+    end--;
+    *end=0;
+  }
   for(i=0;
       i<strlen(text)&&(text[i]=='0'||text[i]=='.'|| text[i]=='+'||text[i]=='-');
       i++){
     //skip leading plus,minus,zeros and the decimal point
   }
-  for(j=i;j<strlen(text)&&(text[j]>='0'&&text[j]<='9'||text[j]=='.');j++){
-    if (text[j]!='.') {
-      result++;
-    } else {
-      //skip the decimal point
+  if (i==strlen(text)){ // the number is probably zero
+    result=1;
+    char * dot = strchr(text,'.');
+    if (dot != NULL && *dot == '.') result += (end-dot)-1;
+  } else { // the number is not zero
+    for(j=i;j<strlen(text)&&(text[j]>='0'&&text[j]<='9'||text[j]=='.');j++){
+      if (text[j]!='.') {
+	result++;
+      } else {
+	//skip the decimal point
+      }
     }
   }
   return result;
@@ -615,6 +626,16 @@ void printValue(optiontype option, yystype result, int s){
   int vallen;
 
   mpq_class value=result.multip*result.val;
+  if (value==0){
+    printf("0");
+    if (s>1){
+      printf(".");
+      for (int i=1; i<s; i++){
+	printf("0");
+      }
+    }
+    return;
+  }
   mpq_class absval=abs(value);
   mpq_class puisdix=trunc(log(absval.get_d())/log(10))+1-s;
   mpq_class powten=1;
@@ -658,7 +679,7 @@ void printValue(optiontype option, yystype result, int s){
       strncpy(val,buf,vallen);
       val[vallen]=0;
       strncpy(exp,indexE+1,sizeof(exp));
-      printf("%s\\times 10^{%s}\\,",val,exp);
+      printf("%s\\cdot 10^{%s}\\,",val,exp);
     } else{
       printf("%s\\,",buf);
     }
@@ -686,7 +707,8 @@ mpq_class round_mpc(const mpq_class & x){
   // definition  of the constant "halfUnit" is a workaround for this
   // current issue.
   mpq_class halfUnit=mpq_class(1000000001,2000000000);
-  mpq_class y = x+halfUnit;
+  mpq_class y;
+  if (x>0){ y = x+halfUnit;} else { y = x-halfUnit;}
   mpz_class q=y.get_num()/y.get_den();
   return q;
 }
