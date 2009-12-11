@@ -10,11 +10,21 @@
  !exit
 !endif
 
+!if bad_series=$error
+ Spiacente, il gruppo di esercizi da modificare non esiste!!
+ !exit
+!endif
+
 !if bad_source=$error
  L'elemento $bad_source nei comandi inseriti non &egrave;
  valido.
  !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
  .
+ !exit
+!endif
+
+!if active_sheet=$error
+ Questo test è attivo. Non è quindi possibile effettuare modifiche.
  !exit
 !endif
 
@@ -167,51 +177,23 @@ to $wims_menu_items
   La richiesta non &egrave; valida.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
-  !set orgtit=!module title $directory
-  <p><center><h3>$name_titlemodif $modif</h3></center>
-  !form reply
-  <input type=hidden name=modif value=$modif>
-  <input type=hidden name=job value=modify>
-  <ul>
-  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
-  </small> <br>
-  <input size=50 name=mod_title value="$title">
-  <li>$wims_name_Description<br>
-  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>$name_pointsasked: 
-  <input size=4 name=mod_require value="$require">,
-  $name_ofweight
-  <input size=4 name=mod_weight value="$weight">.
-  <li>$(name_shtab[6]):
-  <input size=40 name=mod_dep value="$dep">.
-  !reset mod_dep
-  </ul>
-  <p><center><input type=submit value="$wims_name_change"></form>
-  </center> <p>
-  !href cmd=resume $wims_name_giveup
- .
-  <p><small>
-  <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt> 
-  significa che uno studente
-  deve ottenere un dato punteggio su un esercizio prima di poter svolgere
-  questo esercizio. Per esempio
-  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
-  significa che lo studente deve ottenere un punteggio minimo del 50% 
-  nell'esercizio 1, 30% nell'esercizio 2, e una media del 60% negli esercizi 
-  3,4,5.
-  </small>
+  !read exomodify.phtml $exo
  !endif
  !exit
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2
-
-<p>
+ $name_expiration1 ($l_date). $name_expiration2 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
-
  !exit
 !endif
+
+!if $error=srcnoexo
+ Questo test di autovalutazione non contiene alcun esercizio: il file sorgente &egrave; vuoto.<br>
+ !href cmd=resume torna alla pagina di preparazione del test
+ !exit
+!endif
+
 !msg $error
+

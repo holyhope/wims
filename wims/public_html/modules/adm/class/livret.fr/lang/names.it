@@ -1,7 +1,9 @@
-!let lang_exists=yes
-!set classname=$wims_classname - $wims_institutionname
 
-!set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+!let lang_exists=yes
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ de <b><font color=green>$wims_institutionname</font></b>
+
+!read adm/lang/date.phtml.$lang
 
 !distribute items Competenza,\
 competenza,\
@@ -22,22 +24,21 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_score_modify=I punteggi dei test di autovalutazione seguenti sono ignorati ai fini del calcolo del livello di acquisizione del $name_n_paliers 
 !set name_cocher=Scegliete gli esercizi che contribuiscono a questo $name_n_palier.
 !set name_see=Mostrare solo gli esercizi del test
+!let name_nowork=Nessuna attività
+!let name_listscoreoption=del corso,del registro
+!let name_listscoreview=non mostrare,intero,con una cifra decimale,con due cifre decimali,con tre cifre decimali,con quattro cifre decimali
 
 
  !distribute items Titolo della $name_competence,\
 Titolo del $name_n_palier,\
 Numero di $name_n_paliers,\
+Questi colori possono essere modificati nella,\
+pagina di gestione,\
 del corso,\
-punteggio minimo per considerare acquisito l'esercizio\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3
-
-!! ----------------------------------------------   ajout pour la version 1.04
-!let name_nowork=No work
-!distribute line Which color panel is used in $name_n_paliers level\
-show result in $name_n_paliers level into name_configtext4,name_configtext5
-!let name_listscoreoption=of the class,of the booklet
-!let name_listscoreview=don't show,integer,with one digit,with two digit,with three digit,with four digit
-
+punteggio minimo per considerare acquisito l'esercizio,\
+Utilizzo dei colori per i livelli dei $name_n_paliers,\
+Visibilità dei risultati numerici nei livelli \
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext1,name_configlink,name_configtext2,name_configtext3,name_configtext4,name_configtext5
 
 !!------------------------------- definition des noms de liens pour wims_menu_items
 
@@ -46,6 +47,7 @@ show result in $name_n_paliers level into name_configtext4,name_configtext5
 !else 
  !let tmp=!defof U_myscore in wimshome/public_html/modules/home/names.$lang
 !endif
+
 !distribute line Nuova competenza\
 $tmp\
 Registro del corso\
@@ -65,4 +67,5 @@ Registro delle $name_competences\
 !if $job=user
   !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
 !endif
+
 

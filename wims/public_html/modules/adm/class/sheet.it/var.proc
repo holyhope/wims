@@ -11,13 +11,17 @@ srcname=wimshome/$wims_sesdir/home_sheet.src
 wims_helper=chapter=3
 
 !readproc tabletheme
-!readproc adm/search_engine/names.$lang
-!readproc adm/search_engine/mklist_form.proc
-
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit
 !endif
+!if $job=chseries
+!! num=!replace internal . by , in $num
+!! !distribute item $num into sheet,modif
+ !changeto chseries.proc
+!endif
+!readproc adm/search_engine/names.$lang
+!readproc adm/search_engine/mklist_form.proc
 
 today=!char 1 to 8 of $wims_now
 thisyear=!char 1 to 4 of $today
@@ -67,7 +71,7 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
 !if $job!=$empty and $job iswordof \
 	prep_activate prep_erase prep_expire prep_putsource prep_modify
  data=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
- !distribute lines $data into active,expire,title,desc
+ !distribute lines $data into active,expire,title,desc,,comment
  error=$job
  !exit
 !endif
@@ -234,11 +238,12 @@ expyear=!char 1,2,3,4 of $expiration
 !if $job!=text
  !if $title_save$desc_save=$empty
   rec=!record $sheet of wimshome/log/classes/$wims_class/sheets/.sheets
-  !distribute lines $rec into bidon,bidon,title_save,desc_save,prpage_save
+  !distribute lines $rec into bidon,bidon,title_save,desc_save,prpage_save,,comment_save
  !endif
  title=$title_save
  desc=$desc_save
  prpage=$prpage_save
+ comment=$comment_save
 !else
  !if $title=$empty
   error=no_title
@@ -276,12 +281,16 @@ $desc into update_field,update_content
   !distribute lines 5\
 $prpage into update_field,update_content
   !read update.sheet
+  !distribute lines 6\
+$comment into update_field,update_content
+  !read update.sheet
  !else
   !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :0\
 $expiration\
 $title\
 $desc\
-$prpage
+$prpage\
+$comment
   sheet_exist=yes
   activetest=0
   sheet=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
@@ -328,19 +337,22 @@ $prpage
  !bound mod_require between 0,1000 default 0
  mod_title=!singlespace $mod_title
  mod_desc=!singlespace $mod_desc
+ mod_comment=!singlespace $mod_comment
  mod_title=!char 1 to $etitle_limit of $mod_title
  mod_desc=!char 1 to $edesc_limit of $mod_desc
+ mod_comment=!char 1 to $edesc_limit of $mod_comment
  update_content=$D_\
 $p_\
 $mod_require\
 $mod_weight\
 $mod_title\
 $mod_desc\
-$mod_dep
+$mod_dep\
+$mod_comment
  update_field=0
  exo=$modif
  !read update.exo
- !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep
+ !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment
 !endif
 
 !if $[$activetest]=0

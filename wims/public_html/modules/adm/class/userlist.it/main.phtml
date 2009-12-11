@@ -1,3 +1,5 @@
+!!!###language independant
+
 !read adm/css.phtml
 !header1
 <script type="text/javascript" src="scripts/js/wz_tooltip.js" language="Javascript"></script>
@@ -29,7 +31,11 @@ $wims_name_part_list
 !if $usercnt==0
  $name_noyetparticipant
  [
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !if $wims_typename!=class
+  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
+ !else
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !endif
  ]
  
  [
@@ -41,7 +47,11 @@ $wims_name_part_list
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
  [
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !if $wims_typename!=class
+  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
+ !else
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !endif
  ] [
  !href cmd=reply&job=csv $wims_name_csv
  ]
@@ -158,16 +168,16 @@ $wims_name_part_list
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    !set p_=$[rint(10*$scoremax*$(es_$k))/100]
+    !set p_=[rint(10*$scoremax*$(es_$k))/100]
     !if NaN isin $p_
      !set p_=0
     !endif
-    !if $p_>0
+   !if $p_>0
      !read adm/class/colors $[ceil($p_*10/$scoremax)]
      <td style=$style_note>$p_
-    !else
-     <td align="center">--
-    !endif
+   !else
+   <td align="center"><pre>$examout</pre> [rint(10*$scoremax*$(es_$k))/100] --checksessions= $checksessions
+   !endif
      </td>
    !else
     !set p_=!line $j of $percents
