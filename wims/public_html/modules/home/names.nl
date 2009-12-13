@@ -33,7 +33,7 @@ V_Wsup		=Schrijf naar de docent
 V_Chpref	=Verander de voorkeurs instellingen 
 V_Chpass	=Verander het wachtwoord
 V_sh		=Werkblad
-V_shs           =Werkbladen
+V_shs       =Werkbladen
 V_exam		=proefwerk
 
 CR_1		=maak je eigen

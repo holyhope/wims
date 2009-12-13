@@ -33,6 +33,7 @@ V_Wsup		=Escribir al supervisor
 V_Chpref	=Cambiar las preferencias
 V_Chpass	=Cambiar la contraseña
 V_sh		=hoja de trabajo
+V_shs		=hoja de trabajo
 V_exam		=examen
 
 CR_1		=Crear mis propios
