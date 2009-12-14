@@ -1123,7 +1123,7 @@ void phtml_put_base(char *fname,int cache)
 void main_phtml_put(char *mname)
 {
     char *p, buf[1024], txbuf[256], bgbuf[256];
-    char *bcolor, *refcolor, *bg, *tx;
+    char *bcolor, *refcolor, *bg, *tx, *vlink, *link;
     define_html_header(); readnest=0;
     nph_header(200);
     p=getvar("wims_backslash_insmath");
@@ -1145,6 +1145,10 @@ void main_phtml_put(char *mname)
     else _output_("Content-type: text/html\r\n\r\n");
     bcolor=getvar("wims_bgcolor");
     if(bcolor==NULL || *bcolor==0) bcolor=bgcolor;
+    link=getvar("wims_link_color");
+    if(link==NULL || *link==0) link="blue";
+    vlink=getvar("wims_vlink_color");
+    if(vlink==NULL || *vlink==0) vlink="blue";
     refcolor=getvar("wims_ref_bgcolor");
     if(refcolor==NULL || *refcolor==0) {
 	setvar("wims_ref_bgcolor","white");
@@ -1163,8 +1167,8 @@ void main_phtml_put(char *mname)
     }
     else txbuf[0]=0;
     snprintf(buf,sizeof(buf),
-	     "bgcolor=\"%s\" %s %s",
-	     bcolor,txbuf, bgbuf);
+	     "bgcolor=\"%s\" %s %s link=\"%s\" vlink=\"%s\"",
+	     bcolor,txbuf, bgbuf,link,vlink);
     setvar("wims_htmlbody",buf);
     phtml_put(mname,0);
 }
