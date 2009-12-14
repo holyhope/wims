@@ -2,24 +2,23 @@
 <p>
 !if $totalcnt>0
  !if $totalcnt>=$sellist
-  Vous avez $totalcnt modules en développement.
-  !href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
+$name_moddevcnt
+!href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
   <p>
   !form reply
-  Ne montrer que les modules dont l'adresse contient
+  $name_browselist
   <input type=text size=30 name=selectshow value="$selectshow">
   <input type=submit value=OK>
   !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
   </form> <p>
  !endif
  $table_header
- <caption>Cliquez sur le titre d'un module pour y travailler.
+ <caption>$name_clicktitle
  !if $totalcnt>=$maxlist and $existcnt>=$maxlist
-  <br>(liste limitée à $maxlist modules)
+  <br>($name_limited)
  !endif
  </caption>
- $table_hdtr<th>$wims_name_Address</th><th>$wims_name_action</th><th>$wims_name_Description</th>
- </tr>
+ $table_hdtr<th>$wims_name_Address</th><th>$wims_name_title</th><th>$wims_name_action</th><th>$wims_name_Description</th>
  </tr>
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
@@ -51,10 +50,10 @@
  to $wims_menu_items
 !endif
 !else
- Vous n'avez pas encore de module en développement. Veuillez
- !href cmd=reply&jobreq=create cliquer ici
- pour en créer un, ou
- !href cmd=reply&jobreq=restore restaurer un fichier de sauvegarde
+$name_nomodule
+ !href cmd=reply&jobreq=create $name_create
+ $wims_name_or
+ !href cmd=reply&jobreq=restore $name_restore
 .
 !endif
 

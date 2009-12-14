@@ -1,38 +1,38 @@
-
+!readproc names
 <p>
 !if $totalcnt>0
  !if $totalcnt>=$sellist
-你有$totalcnt个模块在开发中.
-  !href cmd=reply&jobreq=prop <small>我的帐户的属性</small>
+$name_moddevcnt
+!href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
   <p>
   !form reply
-只显示地址中含有以下字符串的模块
+  $name_browselist
   <input type=text size=30 name=selectshow value="$selectshow">
-  <input type=submit value=提交>
-  !href cmd=help&special_parm=regex <sup>帮助</sup>
+  <input type=submit value=OK>
+  !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
   </form> <p>
  !endif
  $table_header
- <caption>在模块名称上点击以开始工作.
+ <caption>$name_clicktitle
  !if $totalcnt>=$maxlist and $existcnt>=$maxlist
-  <br>(list limited to $maxlist items)
+  <br>($name_limited)
  !endif
  </caption>
- $table_hdtr<th>地址<th>名称<th>活动<th>描述
+ $table_hdtr<th>$wims_name_Address</th><th>$wims_name_title</th><th>$wims_name_action</th><th>$wims_name_Description</th>
  </tr>
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
   $table_tr<td><small>
   !replace internal ~ by ~ $ in $n $
   !if ~ notin $n
-   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [改名]
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename]
   !endif
   </small></td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
   <td align=center><small>
-  !href cmd=reply&jobreq=index&modreq=$n 属性
+  !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
 
-  !href cmd=reply&jobreq=del&modreq=$n 删除
+  !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
   </small></td><td><small>$description</small></td>
   </tr>
  !next n
@@ -46,18 +46,14 @@
  !set wims_menu_items=!append line quicktool,1,cmd=new&module=adm/quicktool\
  to $wims_menu_items
 !else
- !set wims_menu_items=!append line ,0,$name_noquicktool\
+ !set wims_menu_items=!append line $name_noquicktool,0,$name_noquicktool\
  to $wims_menu_items
 !endif
-!! !href cmd=reply&jobreq=create 创建新模块
-!!.&nbsp;
-!! !href cmd=reply&jobreq=restore 从备份文件恢复
-!!.
 !else
-你没有开发中的模块. 请
- !href cmd=reply&jobreq=create 点击这里
-以创建, 或
- !href cmd=reply&jobreq=restore 从备份文件恢复
+$name_nomodule
+ !href cmd=reply&jobreq=create $name_create
+ $wims_name_or
+ !href cmd=reply&jobreq=restore $name_restore
 .
 !endif
 
