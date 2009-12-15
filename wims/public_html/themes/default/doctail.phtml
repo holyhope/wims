@@ -1,6 +1,16 @@
 <!--begin of doctail.phtml-->
 
 <div class=wimstail>
+<center>
+!for i_=1 to $wims_homeref_n0
+ !set 1_=!line $i_ of $wims_rm_0
+ !if $(1_[2])=0 and $(1_[1])=$empty
+  <p>
+ !endif
+ !read oneitem.phtml $1_
+ &nbsp;
+!next i_
+</center>
 
 !if $job=read
 <p><hr>
@@ -9,7 +19,7 @@
 !endif
 !if help isin $wims_session
  <small>
- !href cmd=reply&job=source $n_source0 
+ !href cmd=reply&job=source $n_source0
  &nbsp; $n_by
  !if $email=$empty
   $author
@@ -24,7 +34,7 @@
 !if $editable=yes
  !href cmd=reply&job=prop $n_properties
 &nbsp;
-!href cmd=reply&job=file $n_file
+!href cmd=reply&job=file $wims_name_doch_upload
 &nbsp;
 !endif
  !!!href cmd=reply&job=source $n_source0
@@ -75,7 +85,7 @@
 <p><hr>
 <table width="100%" border=0 cellspacing=0 cellpadding=1>
 <tr><td align=left nowrap><small>
-$n_by
+ $n_by
 !if $email=$empty
  $author
 !else
