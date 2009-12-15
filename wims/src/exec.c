@@ -723,7 +723,7 @@ void _href_getdef(char src[], char vname[], char buf[], int buflen)
 	/* Create href to wims requests. subst() is not done. */
 void exec_href(char *p)
 {
-    char *s, st[128], sti[128], stc[128], *p1, *p2, *p3, *wn="";
+    char *s, st[128], sti[128], stc[128], stt[128], *p1, *p2, *p3, *wn="";
     char *U="<u><font color=\"#A0A0C0\">%s</font></u>";
     char b1[MAX_LINELEN+1], b2[MAX_LINELEN+1];
     int new=0;
@@ -792,6 +792,12 @@ void exec_href(char *p)
     }
     else stc[0]=0;
     
+    s=getvar("wims_ref_title");
+    if(s!=NULL && *s!=0 && !isspace(*s)) {
+	snprintf(stt,sizeof(stt)," title=\"%s\"",s);
+    }
+    else stt[0]=0;
+    
     s=getvar("wims_ref_target");
     if(href_target[0]!=0) s=href_target;
     if(s!=NULL && *s!=0 && !isspace(*s)) {
@@ -820,12 +826,13 @@ void exec_href(char *p)
 	}
     }
     if(*b2)
-      output("<a href=\"%s?%s\"%s%s %s %s>%s</a>",
-	     ref_name, b1, st, jsbuf,sti,stc, b2);
+      output("<a href=\"%s?%s\"%s%s %s %s %s>%s</a>",
+	     ref_name, b1, st, jsbuf,sti,stc,stt,b2);
     else
-      output("<a href=\"%s?%s\"%s%s %s %s>",ref_name, b1, st, jsbuf,sti,stc);
-    setvar("wims_ref_id"," ");
-    setvar("wims_ref_class"," ");
+      output("<a href=\"%s?%s\"%s%s %s %s %s>",ref_name, b1, st, jsbuf,sti,stc,stt);
+    setvar("wims_ref_id","");
+    setvar("wims_ref_class","");
+    setvar("wims_ref_title","");
 }
 
 	/* Create form refering to the page. */
