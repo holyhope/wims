@@ -2,7 +2,7 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
@@ -16,20 +16,20 @@
 <input type=hidden name=block value="$block">
 
 !if $titb=$empty
- Ustvarjanje
+$name_blockcreation
 !else
- Spreminjanje
+$name_blockedition
 !endif
-bloka <tt>$block</tt>.
+
 !if $edtype=file
- !href cmd=reply&edtype=textarea [Neposredno sestavljanje]
+ !href cmd=reply&edtype=textarea [$name_compose]
 !else
- !href cmd=reply&edtype=file [Vstavljanje datoteke]
+ !href cmd=reply&edtype=file [$name_file]
 !endif
 <br>
 
 !set titb=!reinput $titb
-Naslov: <input size=50 name=Titb value="$titb"> <br>
+$wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
  Vstavite datoteko kot vsebino: <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
@@ -43,9 +43,9 @@ Naslov: <input size=50 name=Titb value="$titb"> <br>
  !mexec scripts/textarea.sh
 !endif
 <center>
-<input type=submit name=preview value="Predogled">
-<input type=submit name=rEg value="Potrditev">
-<input type=submit name=abandon value="Preklic">
+<input type=submit name=preview value="$n_preview">
+<input type=submit name=rEg value="$wims_name_tosave">
+<input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>
 !! Kljuène besede: <input size=50 name=Keyw value="$keyw"> <br>
 !if $block!=main

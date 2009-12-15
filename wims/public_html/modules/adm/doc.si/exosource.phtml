@@ -2,27 +2,27 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/$lang/msg.phtml
+ !read docu/msg.phtml
  <p><hr> <p>
 !endif
 
 !if $titb=$empty
  <p>
- Blok <tt>$block</tt> ¹e ni ustvarjen.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Ta stran ¹e ni odprta za branje. Vrnite se kasneje.
+ $name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Ta stran je potekla in branje ni veè mogoèe.
+ $name_expired
  <p>
  !exit
 !endif
@@ -31,16 +31,16 @@
 
 !if $sheetdata=$empty
  <p>
- Ta stran ne vsebuje podatkov o vaji.
+ $name_noexercise
  <p>
  !exit
 !endif
 
-Tukaj so vaje te strani v formatu za delovne liste. Lahko jih prepi¹ete in vstavite 
+$name_exercise
 !if $wims_user=supervisor
- v izbrani delovni list izbrane uèilnice.
+ $name_sheet1
 !else
- v delovni list virtualne uèilnice, za katero skrbite.
+ $name_sheet2
 !endif
 
 <pre>

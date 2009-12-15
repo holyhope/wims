@@ -1,15 +1,16 @@
 !!##language independant
 
-<center><table border=1 bgcolor="$wims_ref_bgcolor">
-<caption>$wims_name_doc<b>$doc</b></caption>
-<tr><th>$wims_name_title<td>$tit
-<tr><th>$wims_name_author<td>$author
+$table_header
+<caption>$wims_name_doc <b>$doc</b></caption>
+$table_tr<th>$wims_name_title</th><td>$tit</td>
+$table_tr<th>$wims_name_Author</th><td>$author</td>
 !if @ isin $email
- <tr><th>email<td>
+ <tr><th>$wims_name_email</th><td>
  !mailurl $email
+ </td></tr>
 !endif
 !if class != $doctype
- <tr><th>$wims_name_Copyright<td>
+$table_tr<th>$wims_name_Copyright</th><td>
  !if $copyright iswordof gnu opl
   !if $copyright=gnu
    <a href=fdl.txt>GNU Free Documentation License</a>
@@ -20,6 +21,7 @@
  !else
   $n_copyright2
  !endif
+ </td></tr>
 !endif
 $table_end</div>
 

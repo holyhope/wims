@@ -1,4 +1,5 @@
-<h1 class="wims_docu_title">Lastnosti dokumenta<br>
+!!##language independant
+<h1 class="wims_docu_title">$n_properties<br>
 --- $tit ---</h1>
 
 !if $error!=$empty
@@ -9,16 +10,15 @@
 !read propform.phtml
 
 !if class != $doctype
- !href cmd=reply&job=recode Spremeni za¹èitno geslo dokumenta
+ !href cmd=reply&job=recode $n_codechange
 .&nbsp;
 !endif
 
-!href cmd=reply&job=list Seznam blokov
+!href cmd=reply&job=list $n_blocklist
 .
-!href cmd=reply&job=file Dodajanje datotek
-.
- <p>
-Koda dokumenta: $doc.
-Razpolo¾ljiv prostor na disku: $quota_total Meg. Prosti prostor na disku: $quota_free Meg.
+<p>
+$n_codedoc $doc.
+$n_freespace1 $quota_total Meg
+$n_freespace2 $quota_free Meg.
 <p>
 

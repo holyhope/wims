@@ -52,18 +52,19 @@ in tako na stran dodate slikovno datoteko <tt>myfile.jpg</tt>.
 !endif
 
 <p>
-Razpolo¾ljiv prostor na disku: $quota_total Mb. Prosti prostor na disku: $quota_free Mb.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 
-<center><p>
-!href cmd=reply&job=prop Lastnosti dokumenta
+<p><center>
+!href cmd=reply&job=prop $n_properties
 &nbsp;&nbsp;
-!href cmd=reply&job=list Seznam blokov
+!href cmd=reply&job=list $n_blocklist
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=main Glavni blok
+!href cmd=reply&job=read&block=main $wims_name_doch_main
 !if $(readhist[-1;2])!=main
 &nbsp;&nbsp;
-!href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage 
+!href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage
  (<tt>$(readhist[-1;2])</tt>)
 !endif
- </p></center>
+</center> <p>
 

@@ -4,29 +4,29 @@
 
 !if $titb=$empty
  <p>
- Blok <tt>$titb</tt> v tem dokumentu ¹e ne obstaja.
+$name_noncreate
  <p>
  !exit
 !endif
 
 !if $datetest<0
  <p>
- Ta blok ¹e ni berljiv. Vrnite se kasneje.
+$name_noread
  <p>
  !exit
 !endif
 
 !if $datetest>0
  <p>
- Ta blok je ¾e zakljuèen, zato ni veè berljiv.
+ $name_expired
  <p>
  !exit
 !endif
 
-<h3>$titb (koda dokumenta)
-</b><font size="-1">
+<h3>$titb ($n_sourcedoc)
+<font size="-1">
  [
- !href cmd=reply&job=read Oblikovano
+ !href cmd=reply&job=read $n_formatted
  ]</font>
 </h3>
 
@@ -40,26 +40,24 @@
 !endif
 <table width="100%" border=0>
 <tr><td align=left><small>
-!href cmd=reply&job=read Oblikovano
-&nbsp; avtor
+!href cmd=reply&job=read $n_formatted
+&nbsp; $n_by
 !if $email=$empty
  $author
 !else
  !mailurl $email $author
 !endif
 !! &copy;
+</small>
 !if help notin $wims_session
-</small> 
-<td align=right><small>
+ <td align=right><small>
  !href module=home WIMS
   @
  <a href="http://$httpd_HTTP_HOST/">$httpd_HTTP_HOST</a>
+ </small>
 !endif
-</small>
-</trd></tr><tr><td align=left colspan=2 nowrap>
-<small>Zadnja sprememba: $datm
-</small>
-</td></tr>
+<tr><td align=left colspan=2 nowrap>
+<small>$n_lastmod $datm</small>
 </table>
 
 
