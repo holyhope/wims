@@ -1,68 +1,62 @@
-<b>Dessiner une molécule</b> (nom : <tt>chemdraw</tt>)
-Une applet (modification par Joke Evers de l'applet SketchEl <a href="http://sketchel.sourceforge.net"/>http://sketchel.sourceforge.net</a>) permettant de dessiner une molécule est affichée.  
+<b>Draw a molecule</b> (name : <tt>chemdraw</tt>)
+The java applet , a slightly modified version of <tt>SketchEl</tt> <a href="http://sketchel.sourceforge.net"/>http://sketchel.sourceforge.net</a>)
+, is used for drawing molecular structures.
 <p>
-La réponse est définie comme l'adresse d'un fichier du type MDMol (extension .mol)
-correspondant à la molécule 
-ou son contenu (voir plus loin pour l'adresse).
-D'autres types de fichiers pourront être reconnus ultérieurement.
-Ce fichier peut par exemple obtenu préliminairement grâce à l'applet
-(fonctionnant seul) ou être un fichier mol conforme (version 2000). 
-Dans l'avenir, une banque de tels fichiers sera accessible dans wims. 
-
+The chemical structure is send as reply to the WIMS server in MDMol fileformat [ version 2000 , extension *.mol] for checking and grading.  
+The WIMS server can use a database of MDMol files for generating the question and comparing the answer.
+Tailormade MDMol files can also be used. 
 <p>
-La molécule dessinée est analysée et comparée grâce aux programmes <tt>checkmol</tt>
-et <tt>matchmol</tt>
+WIMS version 3.65a or newer is capable of analysing the molecule , using the software <tt>checkmol</tt> or <tt>matchmol</tt>
 (<a href="http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html</a>)
-qui se trouve maintenant sur le serveur WIMS (à partir de la version 3.65a). 
 
-<p>La variable <tt>\reply</tt>i est une matrice (avec ; comme séparateur de ligne)
+<p>The variable <tt>\reply</tt>i is a matrix (with a semicolon ";" used as line separator)
 <ul>
-<li>dans le cas d'une mauvaise réponse,
+<li>in case of a wrong answer,
 <ul><li>
-Ligne 1 : les caractéristiques de la réponse (voir plus loin)
+Line 1 : the features of the reply (see below)
 </li>
 <li>
-Ligne 2 : les fonctions caractéristiques de la réponse (voir plus loin)
+Line 2 : the typical chemical functionalty in the reply (see below)
 </li>
 <li>
-Ligne 3 : la formule brute de la réponse
+Line 3 : the bruto formula of the reply
 </li>
 <li>
-Ligne 4 : les caractéristiques de la bonne réponse (voir plus loin)
+Line 4 : the features of the correct answer (see below)
 </li>
 <li>
-Ligne 5 : les fonctions caractéristiques de la bonne réponse (voir plus loin)
+Line 5 : the typical chemical functionalty in the reply (see below)
 </li>
 <li>
-Ligne 6 : pour l'instant, vide
+Line 6 : not used  (for the time being.)
 </li>
 <li>
-Ligne 7 : la liste des numéros des lignes pour lesquels les deux molécules diffèrent selon les sorties de matchmol (voir plus loin)
+Line 7 : a list of line numbers produced by <tt>matchmol</tt> representing the differences between the two molecules .(see below)
 </li>
 <li>
-Lignes suivantes : un feedback prérempli correspondant à chacune des numéros de lignes pour lesquels les deux molécules
-différent (dans le même ordre que les numéros de la ligne 1). 
+Following lines : feedback corresponding to each of the line number where the molecules differ.(in the same order as line 1)
 </li>
 </ul>
 </li>
-<li>dans le cas d'une bonne réponse (ce qui peut se tester par la valeur 1 de la variable <tt>\sc_reply</tt>i),
-les quatre premières lignes uniquement. 
+<li>in case of a correct answer (which can be verified testing the value of the variable <tt>\sc_reply</tt>i),
+only the first four lines.
 </li>
-<li>lorsqu'aucune bonne réponse n'est fournie, les lignes 1 à 3. 
+<li>
+if no correct answer is provided, lines 1 to 3
 </li>
 </ul>
 <p>
-Il est possible que soient rajoutés ultérieurement d'autres items dans les lignes 3 et 7, il est donc conseillé
-si elles sont utilisées de prendre systématiquement le premier item de ces lignes. 
-
+It may be added later from other items in lines 3 and 7, it is advisable
+if they are used systematically to take the first item of these lines.
 <p>
-Quelques options sont disponibles : 
-<ul><li>image : les fichiers mol doivent alors se trouver
-dans le dossier <tt>data/nom_dossier</tt>), les images fournies doivent alors être dans le dossier 
-</tt>images/nom_dossier</tt>.
+The next options are available:
+<ul><li>image : 
+the MDMol files should be located in the directory <tt>data/dir_name_mdmol</tt>), 
+the images should be in the directory </tt>images/dir_name_images</tt>.
 </li><li>
-image=png: une image est mise dans la réponse (son adresse doit être fournie et le nom de l'image doit être le nom du fichier mol fournie, 
-la valeur de image étant l'extension de l'image). 
+image=png: 
+An image maybe added to the response (the address must be provided and the image name must be the filename of the molfile,
+but with an image extensione).
 </li>
 </ul>
 
@@ -70,51 +64,48 @@ la valeur de image étant l'extension de l'image).
 Les options du champ <tt>embed</tt> sont la taille sur la première ligne <tt>L x H</tt>
 suivi sur une nouvelle ligne des options possibles de l'applet (valeurs  yes (ou 1) et  no  (ou 0))
 
+The applet menu and toolbars can be configurated with:
 $table_header
-$table_hdtr<th >Nom</th><th>Défaut</th><th>Explication</th></tr>
-$table_hdtr<th colspan=3>Menu (barre horizontale en haut)</th></tr>
-$table_tr<td>menu_block</td><td>1</td><td>menu d'édition</td></tr>
-$table_tr<td>menu_select</td><td>1</td><td>permet de sélectionner un atome, de passer d'un atome à l'autre</td></tr>
- $table_tr<td>menu_transform</td><td>0</td><td>transformations (rotations, symétrie) et utilisation des modèles</td></tr>
- $table_tr<td>menu_zoom</td><td>1</td><td>permet de zoomer</td></tr>
- $table_tr<td>menu_show</td><td>0</td><td>permet de faire apparaître ou disparaître les carbones etc </td></tr>
- $table_tr<td>menu_hydrogen</td><td>0</td><td>permet de faire apparaître ou non les hydrogènes</td></tr>
- $table_tr<td>menu_stereo</td><td>0</td><td>Menu de stéréochimie</td></tr>
-$table_hdtr<th colspan=3>Outils (barre verticale à gauche)</th></tr>
-$table_tr<td>tool_cursor</td><td>1</td><td>indispensable, permet de sélectionner une zone</td></tr>
- $table_tr<td>tool_rotator</td><td>0</td><td>permet la rotation des molécules</td></tr>
- $table_tr<td>tool_erasor</td><td>1</td><td>permet d'effacer</td></tr>
+$table_hdtr<th>Name</th><th>Default</th><th>Explication</th></tr>
+$table_hdtr<th colspan=3>Menu [horizontal menubar]</th></tr>
+$table_tr<td>menu_block</td><td>1</td><td>Provides an editing menu</td></tr>
+$table_tr<td>menu_select</td><td>1</td><td>Select atoms or molecules for further modification</td></tr>
+ $table_tr<td>menu_transform</td><td>0</td><td>Tools for transformations</td></tr>
+ $table_tr<td>menu_zoom</td><td>1</td><td>Tools for zooming</td></tr>
+ $table_tr<td>menu_show</td><td>0</td><td>Explicit hiding or showing Carbon </td></tr>
+ $table_tr<td>menu_hydrogen</td><td>0</td><td>Explicit hiding or showing Hydrogenn </td></tr>
+ $table_tr<td>menu_stereo</td><td>0</td><td>Menu for stereochemistry</td></tr>
+$table_hdtr<th colspan=3>Utils [vertical buttonbar]</th></tr>
+$table_tr<td>tool_cursor</td><td>1</td><td>Indispensable</td></tr>
+ $table_tr<td>tool_rotator</td><td>0</td><td>Rotation of molecules</td></tr>
+ $table_tr<td>tool_erasor</td><td>1</td><td>Erasing parts of molecules</td></tr>
  $table_tr<td>tool_dialog</td><td>0</td><td></td></tr>
- $table_tr<td>tool_edit</td><td>0</td><td>permet d'écrire le nom des molécules (texte libre)</td></tr>
-$table_tr<td>tool_setatom</td><td>1</td><td>propose une liste d'atomes (la liste peut être précisée dans le paramètres <tt>atoms</tt></td></tr>
- $table_tr<td>tool_single</td><td>1</td><td>liasion simple</td></tr>
- $table_tr<td>tool_double</td><td>1</td><td>liaison double</td></tr>
- $table_tr<td>tool_triple</td><td>1</td><td>liaison triple</td></tr>
- $table_tr<td>tool_zero</td><td>0</td><td>liaison nulle</td></tr> 
-$table_tr<td>tool_inclined</td><td>0</td><td>liaison inclinée</td></tr>
- $table_tr<td>tool_declined</td><td>0</td><td>liaison déclinée</td></tr>
- $table_tr<td>tool_unknown</td><td>0</td><td>liaison inconnue</td></tr>
- $table_tr<td>tool_charge</td><td>0</td><td>charges</td></tr>
- $table_tr<td>tool_undo</td><td>1</td><td>permet de revenir en arrière</td></tr>
- $table_tr<td>tool_redo</td><td>1</td><td>permet de refaire</td></tr>
-$table_tr<td>tool_template</td><td>1</td><td>outil donnant des modèles, par défaut, ce sont les modèles de l'applet ; 
-on peut configurer quels 
-modèles apparaîtront en donnant des valeurs à <tt>template</tt> (séparés par un espace ...) </td></tr>
- $table_tr<td>tool_cut</td><td>0</td><td>Couper</td></tr>
- $table_tr<td>tool_copy</td><td>0</td><td>Copier</td></tr>
- $table_tr<td>tool_paste</td><td>0</td><td>Coller</td></tr>
- $table_hdtr<th colspan=3>Autres options</th></tr>
- $table_tr<td>atoms</td><td colspan=2>liste (entre guillemets) 
- d'atomes séparés par des espaces, par exemple
- <tt>atoms="C N O S Mn Ni Mg Br Cl I"</tt></td></tr>
- $table_tr<td>template</td><td colspan=2>liste des noms des molécules à mettre dans le template, si le mot cyclo s'y trouve, met les cycles de base)</td></tr>
+ $table_tr<td>tool_edit</td><td>0</td><td>Write the name of the molecule (free text)</td></tr>
+$table_tr<td>tool_setatom</td><td>1</td><td>Sets the list of atoms determined by the parameter <tt>atoms</tt></td></tr>
+ $table_tr<td>tool_single</td><td>1</td><td>Single bond tool</td></tr>
+ $table_tr<td>tool_double</td><td>1</td><td>Double bond tool</td></tr>
+ $table_tr<td>tool_triple</td><td>1</td><td>Triple bond tool</td></tr>
+ $table_tr<td>tool_zero</td><td>0</td><td>"Zero bond" tool</td></tr> 
+$table_tr<td>tool_inclined</td><td>0</td><td>Inclined bonds</td></tr>
+ $table_tr<td>tool_declined</td><td>0</td><td>Declined bonds</td></tr>
+ $table_tr<td>tool_unknown</td><td>0</td><td>Squiggly bonds</td></tr>
+ $table_tr<td>tool_charge</td><td>0</td><td>Charge</td></tr>
+ $table_tr<td>tool_undo</td><td>1</td><td>Undo</td></tr>
+ $table_tr<td>tool_redo</td><td>1</td><td>Redo</td></tr>
+$table_tr<td>tool_template</td><td>1</td><td>Prefab molecules; can be tailored bij the param <tt>template</tt></td></tr>
+ $table_tr<td>tool_cut</td><td>0</td><td>Cut</td></tr>
+ $table_tr<td>tool_copy</td><td>0</td><td>Copy</td></tr>
+ $table_tr<td>tool_paste</td><td>0</td><td>Paste</td></tr>
+ $table_hdtr<th colspan=3>Other options</th></tr>
+ $table_tr<td>atoms</td><td colspan=2>list of atomes separated by white spaces, for example<tt>atoms="C N O S Mn Ni Mg Br Cl I"</tt></td></tr>
+ $table_tr<td>template</td><td colspan=2>List of molecules for the template</td></tr>
  </table>
 </center>
 <p>
-Le tableau suivant indique la signification des différents items des lignes 1 et 4 de <tt>\reply</tt>i
-(selon la documentation de <tt>checkmol</tt>) 
+The next table decodes the different items on lines 1 and 4 of the <tt>\reply</tt>i
+(extracted from the documentation of the <tt>checkmol</tt> program.) 
 $table_header
-$table_hdtr<th >Numéro</th><th></th><th>Explication</th></tr>
+$table_hdtr<th >Number</th><th></th><th>Explication</th></tr>
 $table_tr<td>1</td><td>n_atoms</td><td>     number of heavy atoms</td></tr>
 $table_tr<td>2</td><td>n_bonds</td><td>     number of bonds between non-H atoms</td></tr>
 $table_tr<td>3</td><td>n_rings</td><td>     number of rings</td></tr>
