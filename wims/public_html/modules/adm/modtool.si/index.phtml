@@ -1,4 +1,7 @@
 !set size=50
+!set swlist=coq, gap, m2, maxima, octave, pari, povray, geogebra
+!set swname=COQ, Gap, Macaulay 2, Maxima, Octave, PARI/GP, Povray, GeoGebra
+!set year=!char 1 to 4 of $wims_now
 
 !if $title=$empty or $modreq=.new
  !set this=your new module
@@ -10,7 +13,7 @@
 $table_header
 <caption>Properties of $this</caption>
 
-$table_tr<td align=right nowrap>Address
+$table_tr<th align=right nowrap>$wims_name_Address
  <td>
  !if $title!=$empty and $modreq!=.new
   <tt>$modreq</tt>&nbsp;
@@ -22,27 +25,29 @@ $table_tr<td align=right nowrap>Address
   !read scripts/addressform.phtml nook
  !endif
 
-$table_tr<td align=right nowrap><label for="i_title">Title</label>
+$table_tr<th align=right nowrap><label for="i_title">$wims_name_title</label>
  <td><input size=$size name=i_title id="i_title" value="$i_title">
 
-$table_tr<td align=right nowrap><label for="i_description">Description</label>
+$table_tr<th align=right nowrap><label for="i_description">$wims_name_Description</label>
  <td><input size=$size name=i_description id="i_description" value="$i_description">
 
-$table_tr<td align=right nowrap><label for="i_language">Language</label>
+$table_tr<th align=right nowrap><label for="i_language">$wims_name_Language</label>
  <td>
  !default i_language=$module_language
  !formselect i_language list $langlist prompt $langname
 
-$table_tr<td align=right nowrap><label for="i_category">Type</label>
+$table_tr<th align=right nowrap><label for="i_label">$wims_name_Type</label>
  <td nowrap>
  !set wims_formselect_switch=multiple
  !formcheckbox i_category list exercise,tool,document,recreation,oef,deductio
 
-$table_tr<td align=right nowrap><label for="i_domain">Domain</label>
+$table_tr<th align=right nowrap><label for="i_domain">$wims_name_Domain</label>
  <td>
  <input size=$size name=i_domain id="i_domain" value="$i_domain">
-
-$table_tr<td align=right nowrap><label for="i_level">Level(s)</label>
+<small>
+!href cmd=help&special_parm=domain $wims_name_help
+</small>
+$table_tr<th align=right nowrap><label for="i_level">$wims_name_Levels</label>
  <td>
  !formcheckbox i_level list $levellist
  <br><small>E: elementary school; H: high school; U: university;
@@ -52,9 +57,9 @@ $table_tr<td align=right nowrap><label for="i_scoring">Scoring mechanism</label>
  <small>(exercise / recreation)</small>
  <td>
  !default i_scoring=no
- !formradio i_scoring list yes,no prompt Yes, No
+ !formradio i_scoring list yes,no prompt $wims_name_yes, $wims_name_no
 
-$table_tr<td align=right nowrap><label for="i_version">Version</label>
+$table_tr<th align=right nowrap><label for="i_version">$wims_name_Version</label>
  <td>
  !default i_version=1.00
  <input type=text size=6 name=i_version id="i_version" value="$i_version">
@@ -66,37 +71,37 @@ $table_tr<td align=right nowrap><label for="i_wims_version">wims_version</label>
  <input type=text size=6 name=i_wims_version id="i_wims_version" value="$i_wims_version">&nbsp;
  !href cmd=help&special_parm=wimsversion $wims_name_help
 
-$table_tr<td align=right nowrap><label for="i_author">Author</label>
+$table_tr<th align=right nowrap><label for="i_author">$wims_name_Author</label>
  <td>
  !default i_author=$auth_name
  <input type=text size=$size name=i_author id="i_author" value="$i_author">
 
-$table_tr<td align=right nowrap><label for="i_address">Author's email</label>
+$table_tr<th align=right nowrap><label for="i_adress">$wims_name_auth_email</label>
  <td>
  !default i_address=$auth_email
  <input type=text size=$size name=i_address id="i_address" value="$i_address">
-s
-$table_tr<td align=right nowrap><label for="i_translator">Translator</label>
+
+$table_tr<th align=right nowrap><label for="i_translator">$wims_name_Translator</label>
  <td>
  <input type=text size=$size name=i_translator id="i_translator" value="$i_translator">
 
-$table_tr<td align=right nowrap><label for="i_translator_address">Translator's email</label>
+$table_tr<th align=right nowrap><label for="i_translator_address">$wims_name_tr_email</label>
  <td>
  <input type=text size=$size name=i_translator_address id="i_translator_address" value="$i_translator_address">
 
-$table_tr<td align=right nowrap><label for="i_require">Support software<br>requirements</label>
+$table_tr<th align=right nowrap><label for="i_require">$wims_name_require</label>
  <td>
  !formcheckbox i_require list $swlist prompt $swname
 
-$table_tr<td align=right nowrap><label for="i_keywords">Keywords</label>
+$table_tr<th align=right nowrap><label for="i_keywords">$wims_name_Keywords</label>
  <td><input size=$size name=i_keywords id="i_keywords" value="$i_keywords">
 
-$table_tr<td align=right nowrap><label for="i_copyright">Copyright</label>
+$table_tr<th align=right nowrap><label for="i_copyright">$wims_name_Copyright</label>
  <td>
  !set wims_formselect_switch=
  !formselect i_copyright list gnu prompt GNU General Public License
 
-$table_hdtr<td align=center nowrap colspan=2>
+$table_hdtr<th align=center nowrap colspan=2>
 <input type=submit name=inddef value="$wims_name_tosave">
 &nbsp;&nbsp;
 <input type=submit value="$wims_name_giveup">
