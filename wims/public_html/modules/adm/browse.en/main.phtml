@@ -4,10 +4,6 @@
  </body></html>
  !exit
 !endif
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody onload=window.focus();>
-!!headmenu
 
 !set wims_html_onload=!append word window.focus(); to $wims_html_onload
 !header1
@@ -24,8 +20,10 @@
 
 !if $job!=home
  <p>
- !href module=$module&cmd=new&job=home Other browsing methods
-.
+!set wims_menu_items=!append line browse,1,module=$module&cmd=new&job=home\
+to $wims_menu_items
+
 !endif
 
 !tail
+

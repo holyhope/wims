@@ -10,12 +10,12 @@
 !read propform.phtml
 
 !if class != $doctype
- !href cmd=reply&job=recode $n_codechange
-.&nbsp;
+ !set wims_menu_items=!append line "$n_codechange",1,cmd=reply&job=recode\
+   to $wims_menu_items
 !endif
+!set wims_menu_items=!append line "$n_blocklist",1,cmd=reply&job=list\
+   to $wims_menu_items
 
-!href cmd=reply&job=list $n_blocklist
-.
 <p>
 $n_codedoc $doc.
 $n_freespace1 $quota_total Meg

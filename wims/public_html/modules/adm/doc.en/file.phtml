@@ -56,17 +56,15 @@ to include an image file <tt>myfile.jpg</tt> in the page.
 <p>
 $n_freespace1 $quota_total Meg.
 $n_freespace2 $quota_free Meg.
+!set wims_menu_items=!append line properties,1,cmd=reply&job=prop\
+  blocklist,1,cmd=reply&job=list\
+  doch_main,1,cmd=reply&job=read&block=main\
+to $wims_menu_items
 
-<p><center>
-!href cmd=reply&job=prop $n_properties
-&nbsp;&nbsp;
-!href cmd=reply&job=list $n_blocklist
-&nbsp;&nbsp;
-!href cmd=reply&job=read&block=main $wims_name_doch_main
 !if $(readhist[-1;2])!=main
-&nbsp;&nbsp;
-!href cmd=reply&job=read&block=$(readhist[-1;2]) $n_lastpage
- (<tt>$(readhist[-1;2])</tt>)
+ !set wims_menu_items=!append line "<tt>$(readhist[-1;2])</tt>",1,cmd=reply&job=read&block=$(readhist[-1;2])\
+to $wims_menu_items 
 !endif
-</center> <p>
+
+<p>
 
