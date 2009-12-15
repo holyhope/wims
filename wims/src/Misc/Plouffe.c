@@ -22,7 +22,7 @@
 	/* limit of parameter string */
 #define parmlim 131072
 	/* Address of Plouffe's Inverter */
-#define WebPlouffe "<a target=wims_external href=\"http://www.cecm.sfu.ca/cgi-bin/isc/lookup?lookup_type=simple&number=%s\">"
+#define WebPlouffe "<a target=wims_external href=\"http://oldweb.cecm.sfu.ca/cgi-bin/isc/lookup?lookup_type=simple&number=%s\">"
 
 	/* minimal and maximal lengths of a number to interface */
 #define Plouffe_min 6
