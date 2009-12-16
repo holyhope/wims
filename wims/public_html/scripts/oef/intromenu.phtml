@@ -21,7 +21,7 @@
 
 !if $special_parm3!=$empty
  !let tmp=!replace internal ; by $ $ in $special_parm3
- !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8
+ !for cle in exo,qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_presentsol,intro_check,confparm1,confparm2,confparm3,confparm4,confparm5,confparm6,confparm7,confparm8,intro_expert
   !let t=!getopt $(cle) in $tmp
   !default $(cle)=$t
  !next cle
@@ -30,6 +30,9 @@
  !endif
  !if $exo=0
   !reset exo
+ !endif
+ !if yes isin $intro_expert
+  !let special_parm2=!append word expert to $special_parm4
  !endif
 !endif
 
@@ -153,6 +156,5 @@ $name_remarkintro1
 <p><small>
 $name_remarkintro3
 </small>
-
 
 

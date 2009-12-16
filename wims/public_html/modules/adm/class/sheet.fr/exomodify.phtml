@@ -43,7 +43,15 @@
      <td>
       <b>$(name_shtab[9])</b>
       !let parm_=!replace internal & by ; in $parm_
-      !href target=wims_oef cmd=intro&module=$directory_&special_parm=&special_parm2=&special_parm3=$parm_&special_parm4=$sheet,$modif $(seriesaction[1])
+      !let parm_=!replace internal scoredelay=; by scoredelay=0; in $parm_
+      !let parm_=!replace internal exo=; by exo=0; in $parm_
+      !let tmp_=!replace internal = by , in $parm_
+      !let tmp2_=!column 1 of $tmp_
+      !let tmp2_=!positionof item exo in $tmp2_
+      !let tmp_=!column 2 of $tmp_
+      !let tmp_=!item $tmp2_ of $tmp_
+      !let tmp_=!nospace $tmp_
+      !href target=wims_oef cmd=intro&module=$directory_&special_parm=&special_parm2=&special_parm3=exo=$tmp_;$parm_&special_parm4=$sheet,$modif $(seriesaction[1])
      </td>
      <td>$directory_ <br> $parm_ </td>
     </tr>
