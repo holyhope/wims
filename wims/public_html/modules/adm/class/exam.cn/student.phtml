@@ -2,8 +2,9 @@
 !read adm/title.phtml 1\
 $wims_classname, $wims_institutionname\
 $title
+
 !if $wims_user=supervisor
- <center>(Ó¦ÊÔÕßÓÃ)</center>
+ <center>($name_presentation)</center>
 !endif
  <p>
 $desc<p>
@@ -12,7 +13,7 @@ $desc<p>
  <p>
  !read msg.phtml
  <p>
- !href module=home »ØÖ÷Ò³
+ !href module=home $wims_name_back
 . <p>
  !exit
 !endif
@@ -22,21 +23,31 @@ $desc<p>
 !endif
 
 !if $exocnt=0
- ÊÔ¾íÊÇ¿ÕµÄ! ÆäÖĞÃ»ÓĞÄÚÈİ. ¿ÉÄÜÊÇÄãµÄÖ¸µ¼ÀÏÊ¦µÄ²Ù×÷´íÎó.
+ $name_empty
 !else
- Îª´Ë´Î¿¼ÊÔÖ¸¶¨µÄÁ·Ï°:
-!! !href cmd=reply&job=student [¸üĞÂ±¾Ò³]
+ $name_content:
  !set activeexo=0
- <p><ul>
- !for i=1 to $exocnt
-  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-  !distribute lines $ex into we,li,ti,de,op
-  !set de=!trim $de
-  <li><p>$i. 
-  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
+ <p>
+ !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
+ !let maxlig=$[ceil($exocnt/$maxcol)]
+ !if $maxcol>1
+  <center>
+ !endif
+ <table border=0 class="wims_exam">
+  !for lig=1 to $maxlig
+   <tr>
+    !for col=1 to $maxcol
+     !let i=$[$col*$maxlig+$lig-$maxlig]
+      !if $i<=$exocnt
+!! -------------------------- debut de la ligne correspondant à un exercice de l'examen
+ !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+ !distribute lines $ex into we,li,ti,de,op
+ !set de=!trim $de
+ <td>$i.</td> 
+ !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    $ti (done).
+    <td>$ti </td><td>$name_done</td>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -45,10 +56,11 @@ $desc<p>
     !endif
     !if $dt=yes
      !advance activeexo
+     <td>
      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-.
+</td><td class="empty">&nbsp;</td>
      !if autogen iswordof $op and $wims_exam_remain!=$empty
-      !set ss=$(wims_session)_examt$(exam)t$i
+      !set ss=$(wims_session)t$(exam)t$i
       !set test=!defof w_cmd in wimshome/sessions/$ss/var
       !if $test=$empty
        !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
@@ -56,82 +68,79 @@ $desc<p>
       !endif
      !endif
     !else
-     <b><font color=red>$ti</font></b> (ÒªÇó
-     !href cmd=reply&job=student ÆäËüÁ·Ï°È¡µÃ³É¹¦
-.)
+     <td><b><font color=red>$ti</font></b> </td><td>
+     !href cmd=reply&job=student $name_depend
+.</td>
     !endif
    !endif
   !else
-   $ti.
+   <td>$ti.</td><td class="empty"></td>
   !endif
- !next i
- </ul>
+!! -------fin d'affichage de la ligne correspondant à  un exercice
+      !endif
+    !next col
+   </tr>
+  !next lig
+ </table>
+ !if $maxcol>1
+  </center>
+ !endif
  !if $t_=no
-  ±¾´Î¿¼ÊÔÒÑ¾­¹Ø±ÕÁËÓëÄãµÄÁ¬½á.
-  !href cmd=reply&job=student ¸üĞÂ±¾Ò³.
+  $name_examclosed
+  !href cmd=reply&job=student $wims_name_refresh
  !else
   !if $stries=1
-   ±¾¿¼ÊÔÖ»ÄÜ×öÒ»´Î.
+   $name_exam1
   !else
-   ÄãÖÁ¶à¿ÉÒÔ¿¼ $stries ´Î.
+   $name_exam2
   !endif
   !if $tryremain<0 or ($tryremain=0 and ($registered=$empty or $allowtype=simulation))
    !if $trcut=0
-    ÄãÒÑ¾­Íê³ÉÁË $tried ´Î¿¼ÊÔ, 
+    $name_exam3
    !else
-    ÄãÒÑ¾­¿¼ÁË $tried ´Î, 
+   $name_exam4
    !endif
-   Òò´ËÄã²»ÄÜÔÙ¸Ä½øÄãµÄµÃ·Ö.
+   $name_exam5
    !set exhausted=yes
   !endif
   !if $tryremain>0
-   Äã»¹¿ÉÒÔÊÔ $tryremain ´Î.
+   $name_exam6
   !endif
   !if $registered=$empty and $exhausted!=yes
-   Õâ´Î¿¼ÊÔÄã»¹Ê£ÏÂ $sdure ·ÖÖÓ.
-   µ±Äãµã»÷ÉÏÃæµÄÁ·Ï°Ê±,
+   $name_exam9
    !if $allowtype!=simulation
-    ¾Í»á¿ªÊ¼µ¹Êı¼ÆÊ±, ¶øÇÒ³¢ÊÔ´ÎÊıÒ²»áÔö¼Ó 1.
+    $name_exam7
    !else
-    ¾Í¿ªÊ¼µ¹Êı¼ÆÊ±.
+    $name_exam8
    !endif
   !else
    !if $allowtype!=simulation and $tryremain=0 and $exhausted!=yes
-    ÕâÊÇÄãµÄ×îºóÒ»´Î³¢ÊÔ. Çë×¢Òâ!
+    $name_lasttry
    !endif
   !endif
- !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-!!<p>
-!!  !href cmd=reply&job=student ¸üĞÂ±¾Ò³.
-!!&nbsp;
-!!  !href cmd=reply&job=score ÎÒµÄµÃ·Ö.
   !if $activeexo<1
 !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
 to $wims_menu_items
-!!&nbsp;
-!!   !href cmd=reply&job=scorereg ½áÊø
-!!   ±¾´Î¿¼ÊÔ(ÒòÎªÒÑ¾­Ã»ÓĞÁ·Ï°¿É×ö).
   !endif
  !endif
 !endif
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>Õâ´Î¿¼ÊÔÊÇÄ£Äâ×´Ì¬, ËüÓëÕæÊµµÄ¿¼ÊÔÒ»Ñù, Ö»ÊÇ²»ÄÜ¼ÍÂ¼·ÖÊı, ¶øÇÒ²»¼Æ¿¼ÊÔµÄ´ÎÊı.
+  <p>$name_simulation
  !endif
 !endif
 
 !if $wims_user=supervisor
  !set wims_menu_items=!append line backteacher,1,cmd=resume\
  to $wims_menu_items
- !!<p><center>
- !!!href cmd=resume ·µ»ØÖ÷³Ö½ÌÊ¦µÄÖ÷Ò³.
-!! </center>
 !endif
 
 !tail
 
 !reset job
+
 

@@ -7,7 +7,7 @@
  !if $wims_user=supervisor
   <center>($name_presentation)</center>
  !endif
-  <p>$desc<p>
+ <p>$desc<p>
 !endif
 
 !if $error!=$empty
@@ -20,61 +20,60 @@
 !endif
 
 !if $exocnt=0
-    $name_empty
+ $name_empty
 !else
- <p><center><table border=1 bgcolor=bisque>
+ $table_header
+ $table_hdtr
  <caption>$name_scoreexam</caption>
- <tr><th>$wims_name_Exercise</th><th>$wims_name_title</th><th>$name_coeff</th><th>$name_Score</th>
+ $table_tr<th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
-  <tr><td align=center>$i
+   $table_tr<td align=center>$i
   <td align=center>$ti
   <td align=center>$we<td align=center>
   !if $(replied$i)>0
    $(got$i)
   !else
-   <small>bezig...</small>
+   <small>$name_pending</small>
   !endif
  !next i
- <tr><td align=center colspan=4>
+  $table_tr<td align=center colspan=4>
  !default score=$sprime
- $name_scoreexam2: <b>$score</b> <small>/ 10</small>.
+$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  $table_end
 !endif
 <p>
 
 !if $registered=$empty
- U bent nog niet begonnen met dit proefwerk.
- !href cmd=reply&job=student Start dit proefwerk.
+ $name_begin1.
+ !href cmd=reply&job=student $name_begin2
 !else
  !if $timeleft<=0
-   De beschikbare tijd is verlopen!
-   Je hebt de toegestane $sdure minuten verbruikt.
+  $name_timeleft
    <p>
  !endif
  !if $allowtype=simulation
-  Uw score wordt niet geregistreerd, 
-  omdat dit proefwerk in simulatie mode loopt.
+  $name_simulation2
   !if $lastscore>0
-   (De echte score voor deze proefwerk-sessie is $lastscore.)
+   ($name_realscore)
   !endif
  !else
-  De score voor dit proefwerk is $lastscore. 
-  (En de beste score telt !)
+  $name_bestscore
  !endif
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg $name_endexam .
- &nbsp;&nbsp;
+ !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
+ to $wims_menu_items
 !endif
- !href cmd=reply&job=student $name_backexam .
+!set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
+ to $wims_menu_items
 !endif
 
 !if $wims_user=supervisor
- <p><center>
- !href cmd=resume $name_teacherview.
+!set wims_menu_items=!append line teacherview,1,cmd=resume\
+ to $wims_menu_items
  </center>
 !endif
 

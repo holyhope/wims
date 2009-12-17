@@ -6,3 +6,57 @@
 
 !set wims_name_endexam=结束 本次考试
 !set wims_name_scoreexam=我的得分
+
+!set name_mainpage=考试的主页
+!set name_dependency=Score dependencies
+!set name_Options=选项
+!set name_All=All
+!set name_title=准备试卷
+!set name_expire=Expire the examen
+!set name_done=done
+
+!distribute items 标题=,权重,分数\
+into name_weight,name_coeff,name_Score
+
+!distribute lines 结束本次考试\
+返回答题状态\
+ 主持教师所见的试卷\
+ 应试者用\
+ 目前得分\
+ 试卷是空的! 其中没有内容. 可能是你的主持老师的操作错误.\
+ 试卷内容\
+ 本次考试已经关闭了与你的连结.\
+ 本考试只能做一次.\
+ 你至多可以考 $stries 次.
+ 因此你不能再改进你的得分.\
+ 这是你的最后一次尝试. 请注意!\
+ 就会开始倒数计时, 而且尝试次数也会增加 1.\
+ 就开始倒数计时.\
+ 得分相关性\
+ 这场考试总得分\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
+name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
+name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
+
+!set name_exam2=!nosubst You can try this exam up to $stries times.
+
+!set name_exam3=!nosubst 你已经完成了 $tried 次考试, 
+!set name_exam4=!nosubst 你已经考了 $tried 次,  
+!set name_exam6=!nosubst 你还可以试 $tryremain 次.
+!set name_exam9=!nosubst  这次考试你还剩下 $sdure 分钟.\
+   当你点击上面的练习时,
+ 
+!set name_simulation=这次考试是模拟状态, 它与真实的考试一样, 只是不能纪录分数,\
+  而且不计考试的次数.
+  
+!set wims_name_examremain=这次考试的剩余时间: $
+
+!distribute lines 还不能算出\
+   你还没有开始答题.\
+   开始答题.\
+  你的得分不被纪录, 因为这是模拟状态.
+ into name_pending,name_begin1,name_begin2,name_simulation2
+
+!set name_timeleft=!nosubst  时间已到! 你已经用完了分配给这次考试的 $sdure 分钟时间.
+!set name_realscore=!nosubst 本试卷你的实际得分是 $lastscore.
+!set name_bestscore=!nosubst 本试卷你的最佳得分是 $lastscore. (这是被登录下来的最好成绩.)

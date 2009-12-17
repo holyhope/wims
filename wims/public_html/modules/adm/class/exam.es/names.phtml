@@ -18,7 +18,6 @@
 !distribute items poids,Coeficiente,Puntuación\
 into name_weight,name_coeff,name_Score
 
-
 !distribute lines Terminar esta sesión de examen\
 Volver a trabajar en el examen\
 Punto de vista del profesor sobre el examen\
@@ -34,20 +33,12 @@ la cuenta atrás comenzará, y se incrementará en 1 el número de intentos.\
 la cuenta atrás comenzará.\
 Nécessite le succès sur d'autres exercices\
 Puntuación de esta sesión del examen\
-into name_endexam,name_backexam,name_teacherview,name_presentation,\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
 name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
-     !else
-       la cuenta atrás comenzará.
-     !endif
-    
-   !else
-     Ya lo ha intentado $tried veces,
-   !endif
-   
-   
 !set name_exam2=!nosubst Puede registrar hasta $stries puntuaciones en este examen.
+
 !set name_exam3=!nosubst Ya ha terminado su sesión de examen con $tried ensayos,
 !set name_exam4=!nosubst Ya lo ha intentado $tried veces,
 !set name_exam6=!nosubst Y todavía puede hacer $tryremain nuevos intentos.
@@ -59,3 +50,13 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 que el examen verdadero pero no se puede guardar la puntuación y el intento no se tendrá en cuenta.
   
 !set wims_name_examremain=Tiempo restante de examen: $
+
+!distribute lines pendiente\
+ Todavía no ha comenzado a trabajar en este examen.\
+ Comenzar a trabajar.\
+ La puntuación actual no se tomará en cuenta, porque el examen está en modo simulación.\
+into name_pending,name_begin1,name_begin2,name_simulation2
+
+!set name_timeleft=!nosubst ¡Se acabó el tiempo! Ya ha usado los $sdure minutos permitidos para este examen.
+!set name_realscore=!nosubst Su puntuación real para esta hoja de examen es $lastscore
+!set name_bestscore =!nosubst Su mejor puntuación para este examen es $lastscore (la mejor puntuación es la que se tomará en cuenta).

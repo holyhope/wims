@@ -3,76 +3,78 @@
  !read adm/title.phtml 1\
  $wims_classname, $wims_institutionname\
  $title
- 
+
  !if $wims_user=supervisor
-  <center>(应试者用)</center>
+  <center>($name_presentation)</center>
  !endif
-  <p>$desc<p>
+ <p>$desc<p>
 !endif
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home 回主页
+ !href module=home $wims_name_back
 . <p>
  !goto end
 !endif
 
 !if $exocnt=0
- 试卷是空的! 其中没有内容. 可能是你的主持老师的操作错误.
+ $name_empty
 !else
- <p><center><table border=1 bgcolor=bisque>
- <caption>目前得分</caption>
- <tr><th>练习<th>标题<th>权重<th>分数
+ $table_header
+ $table_hdtr
+ <caption>$name_scoreexam</caption>
+ $table_tr<th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,li,ti
-  <tr><td align=center>$i
+   $table_tr<td align=center>$i
   <td align=center>$ti
   <td align=center>$we<td align=center>
   !if $(replied$i)>0
    $(got$i)
   !else
-   <small>还不能算出</small>
+   <small>$name_pending</small>
   !endif
  !next i
- <tr><td align=center colspan=4>
+  $table_tr<td align=center colspan=4>
  !default score=$sprime
- 这场考试总得分: <b>$score</b><small>/10</small>.
+$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
  $table_end
 !endif
 <p>
 
 !if $registered=$empty
- 你还没有开始答题.
- !href cmd=reply&job=student 开始答题.
+ $name_begin1.
+ !href cmd=reply&job=student $name_begin2
 !else
  !if $timeleft<=0
-   时间已到!<p>
-   你已经用完了分配给这次考试的 $sdure 分钟时间.
+  $name_timeleft
    <p>
  !endif
  !if $allowtype=simulation
-   你的得分不被纪录, 因为这是模拟状态.
+  $name_simulation2
   !if $lastscore>0
-   (本试卷你的实际得分是 $lastscore.)
+   ($name_realscore)
   !endif
  !else
-  本试卷你的最佳得分是 $lastscore. (这是被登录下来的最好成绩.)
+  $name_bestscore
  !endif
  <p>
 !set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
 !if $test>=2
- !href cmd=reply&job=scorereg 结束本次考试.
-&nbsp;&nbsp;
+ !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
+ to $wims_menu_items
 !endif
- !href cmd=reply&job=student 返回答题状态.
+!set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
+ to $wims_menu_items
 !endif
 
 !if $wims_user=supervisor
- <p><center>
- !href cmd=resume 主持教师所见的试卷.
+!set wims_menu_items=!append line teacherview,1,cmd=resume\
+ to $wims_menu_items
+ </center>
 !endif
 
 :end

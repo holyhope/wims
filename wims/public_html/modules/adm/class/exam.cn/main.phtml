@@ -1,18 +1,15 @@
-!set wims_name_examremain=这次考试的剩余时间: $
+!read names.phtml
 !read js/examclock1.phtml
-
 !read adm/css.phtml
 !header1
-
-!read names.phtml
-
 
 !if $job iswordof student score scorereg
  !changeto $job.phtml
 !endif
+
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-准备试卷 $exam
+$name_title $exam
 
 !if $error!=$empty
  <p>
@@ -23,7 +20,7 @@ $wims_classname - $wims_institutionname\
  !goto end
 !endif
 
-!if $job=exo
+!if $job=exo or $job=cpsheet
  !read $job.phtml
  !goto end
 !endif
@@ -52,7 +49,7 @@ $wims_classname - $wims_institutionname\
 <p><center><table border=2>
  <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
- <td rowspan=3><input type=submit value=修改>
+ <td rowspan=3><input type=submit value="$wims_name_change">
  <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
  <tr><td align=right>失效日期:<td>
@@ -108,21 +105,21 @@ $wims_name_title (限$title_limit个字符):<br>
 .
 !else
  <a name=list>
- 试卷内容:</a><ol>
+ $name_content:</a><ol>
  !for i=1 to $exocnt
   <li>
   !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
   !distribute lines $ex into we,ch,ti
-  $ti, weight $we.
+  $ti, $name_weight $we.
   !if $activetest=0
    &nbsp;(
    !if $i>1
-    !href cmd=reply&job=moveup&moveup=$i#list 上移
+    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
     &nbsp;
    !endif
-   !href cmd=reply&job=exo&exo=$i 修改
+   !href cmd=reply&job=exo&exo=$i $wims_name_change
    &nbsp;
-   !href cmd=reply&job=delete&delete=$i#list 删除
+   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
    )
   !endif
  !next i
