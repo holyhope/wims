@@ -40,14 +40,17 @@ $table_hdtr<td align=center colspan=2>
 $table_end
 </form>
 
-!set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$getuser\
-to $wims_menu_items
+
 !if $wims_user=supervisor
+ !set wims_menu_items=!append line Score1,1,cmd=reply&job=getuser&getuser=$getuser\
+to $wims_menu_items
  !set wims_menu_items=!append line workdetail,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
  part_list,1,cmd=resume\
 to $wims_menu_items
-
+!else
+ !set wims_menu_items=!append line class_home,1,module=home\
+to $wims_menu_items
 !endif
 
 !reset reg,abandon

@@ -32,7 +32,15 @@
 !endif
 !set wims_menu_items=!append line refresh,1,cmd=reply\
 ,0,\
-go_userlist,1,cmd=new&module=adm/class/userlist to $wims_menu_items
+to $wims_menu_items
+!if $wims_user=supervisor
+  !set wims_menu_items=!append line part_list,1,cmd=new&module=adm/class/userlist\
+to $wims_menu_items
+!else
+  !set wims_menu_items=!append line myscore,1,cmd=new&module=adm/class/userlist\
+to $wims_menu_items
+!endif
+
 
 !endif
 
