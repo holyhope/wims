@@ -10,6 +10,7 @@
     19/1/2009	"e+" and "e-" eval_output converted to "*10^" and "*10^-" format.
     19/1/2009	Due to "space limitations" deleted the "x^2" button.
     19/1/2009 	Added asin(),acos(),atan() for J.C.A. Logmans.
+    16/12/2009  Added degrees / radians switch , removed button memory_clear due to space limitations
     
     J.M. Evers
 -->
@@ -26,7 +27,10 @@
 <body>
 <script type="text/javascript">
     var MarthParser;
-    
+    var radians=0;
+    var Rconst=eval((Math.PI)/180);
+    var Iconst=eval(180/(Math.PI));
+
     MathParser = function(){
 	var o = this, p = o.operator = {};
 	p["+"] = function(n, m){return n + m;}
@@ -43,6 +47,11 @@
 	    }
 	    if(s=="ln"){
 		return Math.log(n);
+	    }
+	    if(radians == 0){
+		if( s == "sin" || s == "cos" || s == "tan"){ return Math[s](n*Rconst);}
+		else
+		if( s == "asin" || s == "acos" || s == "atan"){ var r = Math[s](n); return eval(r*Iconst);}
 	    }
 	    if(Math[s]) return Math[s](n);
 	    else if(o.custom[s]) return o.custom[s].apply(o, n);
@@ -199,21 +208,33 @@
     function memory_in(){
 	memory=document.Calc.Input.value;
 	memory=memory.replace("m:","");
-	document.Calc.Input.value="m:"; 
+	document.Calc.Input.value="";
+	var mi=document.getElementById('mem_in');
+	mi.setAttribute("style","background-color:red;font-weight:normal;color:white;text-align:center;font-size:12px;width:40px;height:30px"); 
+	mi.setAttribute("value","M..."); 
     }
 
-    function memory_clear(){
-	memory="";
-	var tmp=document.Calc.Input.value;
-	tmp=tmp.replace("m:","");
-	document.Calc.Input.value=tmp;
-    }
-    
     function memory_out(){
 	var tmp=document.Calc.Input.value;
-	if(tmp.length!=0){
-	    document.Calc.Input.value="";
-	    document.Calc.Input.value=tmp+"("+memory+")";
+	document.Calc.Input.value="";
+	document.Calc.Input.value=tmp+"("+memory+")";
+	var mi=document.getElementById('mem_in');
+	mi.setAttribute("style","background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:40px;height:30px"); 
+	mi.setAttribute("value","M in"); 
+    }
+    
+    function set_radians(){
+	var ra=document.getElementById('radian_switch');
+	if(radians == 1){
+	    radians = 0;
+	    ra.setAttribute("style","background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px");    
+	    ra.setAttribute("value","deg");
+	}
+	else
+	{
+	    radians=1;
+	    ra.setAttribute("style","background-color:red;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px");    
+	    ra.setAttribute("value","rad");
 	}
     }
     
@@ -244,10 +265,10 @@
     <tr>
     <td width="100%" nowrap>
 	<center>
-	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:11px;width:45px;height:30px" type="button" name="mem_in"   value="M in" OnClick="javascript:memory_in()">
-	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:11px;width:45px;height:30px" type="button" name="mem_in"   value="M cl" OnClick="javascript:memory_clear()">
-	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:11px;width:60px;height:30px" type="button" name="mem_out"   value="M out" OnClick="javascript:memory_out()">
-	    <input style="background-color:red;font-weight:normal;color:black;text-align:center;font-size:11px;width:30px;height:30px" type="button" name="exit"   value="Exit" OnClick="javascript:window.close()">
+	    <input id="radian_switch" style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px"  type="button" name="deg;" value="deg" OnClick="javascript:set_radians();">
+	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="mem_in" id="mem_in"  value="M in" OnClick="javascript:memory_in()">
+	    <input style="background-color:black;font-weight:normal;color:white;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="mem_out"   value="Mout" OnClick="javascript:memory_out()">
+	    <input style="background-color:red;font-weight:normal;color:black;text-align:center;font-size:12px;width:45px;height:30px" type="button" name="exit"   value="Exit" OnClick="javascript:window.close()">
 	</center>
     </td>
     </tr>

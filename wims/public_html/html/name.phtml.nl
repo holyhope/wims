@@ -1,4 +1,4 @@
-!!!!WARNING Don't use "into" in the translation ...
+!!!!WARNING Don't use "into" in the translation ... 
 
 !if $wims_name_home!=$empty
  !exit
@@ -107,15 +107,15 @@
         wims_name_Version,\
         wims_name_Required_WIMS_version,\
         wims_name_Language,\
-        wims_name_Author,\
-        wims_name_Translator,\
-        wims_name_This_is_a_module,\
-        wims_name_WIMS_subtitle,\
-        wims_name_Copyright,wims_name_Keywords,\
-        wims_name_tr_email,wims_name_auth_email,\
+	wims_name_Author,\
+	wims_name_Translator,\
+	wims_name_This_is_a_module,\
+	wims_name_WIMS_subtitle,\
+	wims_name_Copyright,wims_name_Keywords,\
+	wims_name_tr_email,wims_name_auth_email,\
         wims_name_Domain,wims_name_Type,wims_name_Levels,\
-        wims_name_Scoring,\
-        wims_name_require
+	wims_name_Scoring,\
+	wims_name_require
 
 
 !! **** Class Relative Names ***
@@ -138,7 +138,7 @@
 	wims_name_exolog,\
 	wims_name_sheetmanagement,\
 	wims_name_add_sequence
-
+ !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op. 
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br>Gemiddelde score \
 	$[$wims_homeref_mean]/10.
@@ -300,7 +300,8 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !set wims_name_namesteacher=Docent
 !set wims_name_teacher=Docenten accounts
 !set wims_name_addteacher=Nieuwe docent
-!set wims_name_modteacher=Leraar eigenschappen
+!set wims_name_addparticipant=Voeg een deelnemr toe
+!set wims_name_modteacher=Docent eigenschappen
 !set wims_name_delteacher=Verwijder een docent
 !set wims_name_student=Studenten accounts
 !set wims_name_addstudent=Nieuwe student
@@ -358,7 +359,7 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 !endif
 
 !if adm/manage isin $module
-  !distribute line Andere server instellingen\
+  !distribute line Other maintenance tasks\
   into wims_name_sitegestion
 !endif
 
@@ -388,5 +389,3 @@ into wims_name_photoboard,wims_name_sendmail
 
 !distribute items Docent,Administrator,Student\
 into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
-
-
