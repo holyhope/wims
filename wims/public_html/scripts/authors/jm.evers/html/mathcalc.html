@@ -11,6 +11,7 @@
     19/1/2009	Due to "space limitations" deleted the "x^2" button.
     19/1/2009 	Added asin(),acos(),atan() for J.C.A. Logmans.
     16/12/2009  Added degrees / radians switch , removed button memory_clear due to space limitations
+    19/12/2009  In case of "forgotten matching parenthesis" adding a ')' e.g.  sin(90 -> sin(90) = 1
     
     J.M. Evers
 -->
@@ -173,7 +174,12 @@
 	var fun=["asin","acos","atan","sin","cos","tan","log","ln","pi","e"];
 	var cons=["pi","e","0","1","2","3","4","5","6","7","8","9"];
 	var P;var D;var p;var d;
-	var l=cons.length;
+	var l=cons.length;var cntl=0;var cntr=0;
+	for(p=0;p<i.length;p++){
+	    if(i.charAt(p) == '('){cntl++;}
+	    if(i.charAt(p) == ')'){cntr++;}
+	}
+	if(cntl != cntr){i = i+')';}
 	for(p=0;p<fun.length;p++){
 	    for(d=0;d<l;d++){
 		while(i.indexOf(cons[d]+""+fun[p])!=-1){
