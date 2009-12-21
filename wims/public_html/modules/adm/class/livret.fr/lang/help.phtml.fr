@@ -1,0 +1,29 @@
+!! for translate this help you just have to copy this file with correct extension (fr en de) and traduce it !
+!!
+
+!let help_isreaded=yes
+Le livret de compétences permet d'obtenir une grille de lecture synthétique de l'ensemble du travail noté des élèves de la classe.<br>
+Le livret se compose de compétences (au maximum ....) chacune de ses compétences peut posséder plusieurs paliers (jusqu'à ....).<p>
+
+Pour chaque palier, l'enseignant peut définir la liste des séries d'exercices de la classe pour lesquels le score va intervenir dans le calcul du niveau d'acquisition du palier.<p>
+
+L'enseignant de la classe peut décider que certaines feuilles virtuelles sont neutralisées pour le calcul du degré d'acquisition des paliers du livret de compétences (cela permet de conserver
+les données pédagogiques d'une année sur l'autre tout en permettant de commencer à valider certaines compétences).<p>
+
+Le calcul du niveau d'acquisition est effectué de la façon suivante :
+<center>
+!insmath 10 \times \frac{\sum_{i=1}^{N} NM(x_{L[i;1],L[i;2]})}{\sum_{i=1}^{N} \delta_{L[i;1]}}
+</center>
+où
+<ul>
+ <li> <i>N</i> est le nombre de séries d'exercices intervenant dans le palier.</li>
+ <li> <i>L</i> est la liste des séries d'exercices intervenant dans le palier. Chaque élément de la liste contient le numéro de feuille (noté L[i;1]) et 
+ le numéro de la série d'exercices dans la feuille (noté L[i;2]).</li>
+ <li> 
+  !insmath X_{i,j}
+  est la note de qualité de la série d'exercices <i>j</i> de la feuille <i>i</i>.</li>
+ <li> 
+  !insmath \delta_i
+  vaut 1 si la feuille <i>i</i> n'est pas dans la liste des feuilles désactivées pour le calcul du niveau d'acquisition des paliers et <i>0</i> sinon.</li>
+ <li> NM(a) vaut <i>1</i> si  et <i>a</i> est supérieur à la note minimale pour considérer qu'une série est acquise et <i>0</i> sinon (fixer la note minimale à <i>0</i> neutralise cette option).</li>
+</ul>
