@@ -71,11 +71,15 @@ $temp_mol
 
 !set file=!getopt file in $oef_applet_option
  !if $file!=
-   !set temp=!record 0 of $file
-   !set file0=!replace internal / by , in $file
-   !readproc oef/togetfile.proc $(file0[-1]) new\
+   !set File=
+   !set file=!words2items $file
+   !for files in $file
+     !set temp=!record 0 of $files
+     !set file0=!replace internal / by , in $files
+     !readproc oef/togetfile.proc $(file0[-1]) new\
 $temp
-  !set file=<param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])">
+     !set File=!append line <param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])"> to $File
+   !next
  !endif
 
 !set list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
@@ -123,11 +127,11 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 	    $atoms
 	    <param name="formattype" value="latex">
 	    $params
-	    $file
+	    $File
 </applet>
 </p>
 <p align=center>
-    <input type="submit" style="" onclick="javascript:GetMoleculeMDLMol();" name="button1" value="Envoyer">
+    <input type="submit" style="" onclick="javascript:GetMoleculeMDLMol();" name="button1" value="$wims_name_send">
  <p>   
  
 </form>
