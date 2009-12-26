@@ -1,0 +1,111 @@
+!set anstype=yes
+!set anstyle=mc
+!if $wims_read_parm=def
+ !exit
+!endif
+!set inputoption=!replace internal $	$ by $\
+$ in $inputsize
+!set input_no=!line 1 of $inputoption
+!set input_no=!item 1 of $input_no
+!set inputoption=!line 2 to -1 of $inputoption
+!set option1=!line 1 of $inputoption
+!set option2=!line 2 of $inputoption
+!default option2=$option1
+!distribute items #9999CC,#FF6699 into color1,color2
+!default option1=style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:$color1;"
+!default option2=style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:$color2;"
+
+!set oef_fill_option=$option1\
+$option2
+
+!set input_rg=!rows2lines $(replygood$i)
+!set input_1=!word 1 of $input_rg
+!if $input_1!=?analyze
+ !set input_rg=!line 2 to -1 of $input_rg
+!endif
+
+!set input_rg=!translate internal | to $\
+$ in $input_rg
+!set input_1=!line 1 of $input_rg
+!set input_icnt=!itemcnt $input_1
+!set prompt=!line 2 of $input_rg
+
+!if shuffle iswordof $(replyoption$i)
+ !default anstype_shuffle_$i=!shuffle $input_icnt
+ !set input_1=!item $(anstype_shuffle_$i) of $input_1
+!endif
+!if sort iswordof $(replyoption$i)
+ !set input_1=!sort items $input_1
+!endif
+
+
+!default prompt=??
+
+!default nb_form=0
+!if $nb_form=0 or $input_no=$empty
+!form reply onsubmit="javascript:fieldsend();"
+<script language="javascript" type="text/javascript">
+var n=$input_icnt;
+var click=0;
+var input = new Array();
+var click = new Array();
+!for s_=0 to $[$input_icnt-1]
+  input[$s_]='$(input_1[$s_+1])'
+  click[$s_]='0'
+!next
+function flashcard_on(s){
+    var fl = document.getElementById('flashcard'+s)
+   if (fl.innerHTML == '$prompt') {
+      fl.innerHTML = input[s]; 
+      fl.style.backgroundColor='$color1';
+      click[s] ++
+    } 
+   else {
+    fl.innerHTML = '$prompt'; 
+    fl.style.backgroundColor='$color2'
+   };
+   fieldsend();
+}
+
+function fieldsend(){
+    	var rep;var reply=''; var click_for_wims='';
+	    for(var p=0;p<n;p++){
+	    var p1=p+1;
+	    rep=document.getElementById('flashcard'+p).innerHTML;
+		if (rep!='$prompt') { if (reply !='' ){ reply=reply+',';} ; reply=reply+p1;}
+		if (click_for_wims !='' ){click_for_wims=click_for_wims+','} ; click_for_wims=click_for_wims+click[p];
+     }
+      document.getElementById('oefvar').value=reply+';'+click_for_wims;  
+  }
+
+</script>
+<input type=hidden name="reply$i" id="oefvar" value="">
+!endif
+
+!if $input_no!=$empty and $input_no<=$input_icnt
+!! !default prompt_=!item $input_no of $input_rg
+!increase nb_form
+!if $nb_form>1
+  <form>
+ !endif
+  <div id="flashcard$[$input_no-1]" onclick="flashcard_on('$[$input_no-1]')" $option2>$prompt</div>
+  !if $nb_form>$input_icnt
+  </form>
+  !endif
+!else
+ !for s_=0 to $[$input_icnt-1]
+   <div id="flashcard$s_" onclick="flashcard_on('$s_')" $option2>$prompt</div>&nbsp;
+ !next
+ </form>
+!endif
+
+!!<p><center>
+!!<input type=submit style="font-weight:normal;text-align:center" 
+!!onclick="javascript:fieldsend();" name="button1" value="$wims_name_send">
+!!</center>
+!!<script type="text/javascript">
+!!    try{document.onload=refill();}catch(e){}
+!!</script>
+
+!!set oef_formnosubmit=yes
+

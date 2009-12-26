@@ -1,24 +1,26 @@
 <b>Choix multiples contrôlables par l'auteur</b>: (noms : <tt>checkbox</tt>,
- <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt>)<br>
+ <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt>, <tt>flashcard</tt>)<br>
  Ils peuvent être utilisés pour remplacer l'entrée standard de choix multiple
  (<tt>\choice</tt>), vous donnant plus de contrôle de son apparence. La bonne
  réponse doit contenir deux champs, séparés par un point-virgule
  ``<tt>;</tt>''. Le second champ (après le point-virgule) est la liste de
  textes dans le choix, tandis que le premier est une liste de numéros de bons
- choix. Dans le cas de <tt>checkbox</tt>, l'utilisateur doit choisir
+ choix. Dans le cas de <tt>checkbox</tt> et de <tt>flashcard</tt>, l'utilisateur doit choisir
  exactement tous les bons choix. Dans les autres cas, le choix de n'importe
  quel bon choix suffira.
+ Dans le cas de <tt>flashcard</tt>, la troisième ligne sera affichée sur chaque face cachée des 
+ cartes. Par défaut, des points d'interrogation apparaissent. 
  <p>
- Pour les types <tt>checkbox</tt>, <tt>menu</tt> et <tt>radio</tt>, une option
+ Pour les types <tt>checkbox</tt>, <tt>menu</tt>, <tt>radio</tt> et <tt>flashcard</tt>, une option
  <tt>shuffle</tt> peut être ajoutée, qui a pour effet de permuter
  aléatoirement l'ordre des items dans les choix multiples
  proposés aux élèves.
  <p>
  La permutation aléatoire automatique n'est pas appliquée en l'absence de l'option
- <tt>shuffle</tt>, et le nombre de choix n'est pas limité.
+ <tt>shuffle</tt> et le nombre de choix n'est pas limité.
  <p>
- Et pour un effet contraire, le mot d'option <tt>sort</tt> rend les choix
- toujours dans l'ordre alphabétique.
+ Pour un effet contraire, le mot d'option <tt>sort</tt> a pour effet de montrer les choix
+dans l'ordre alphabétique.
  <p>
  <tt>click</tt> doit être utilisé uniquement dans le cas où il n'y a pas
  d'autres réponses ou choix.
@@ -34,11 +36,17 @@
  le choix. Il est principalement destiné à une utilisation dans le texte de 
  l'énoncé. Ainsi, un même choix peut intervenir plusieurs fois et 
  il est alors tenu compte de sa position dans le texte. Lors de l'analyse de
- la réponse,  les bonnes réponses sont coloriées en vert, 
+ la réponse, les bonnes réponses sont coloriées en vert, 
  les mauvaises en rouge et les réponses oubliées en bleu. 
  Un exemple d'utilisation possible : cliquez sur tous les articles 
  définis de la phrase suivante ... 
  <p>
+ Dans le cas de <tt>flashcard</tt>, les choix (cartes) sont cachés et les bons choix 
+ doivent être retournés. Le nombre de clicks sur chaque carte est renvoyé dans 
+ la deuxième ligne de la variable <tt>\reply</tt>n. 
+ 
+ <p>
+ 
  Pour des types qui acceptent la saisie de plusieurs choix (<tt>checkbox</tt>,
  <tt>mark</tt>, ainsi que <tt>menu</tt> avec l'option <tt>multiple</tt>),
  par défaut l'élève aura un zéro dès que sa réponse ne s'accorde pas
@@ -59,3 +67,16 @@
  seulement un bon choix. Mais vous êtes averti que cette politique en
  apparence juste peut conduire à des effets pervers&nbsp;!
 
+Dans le cas d'utilisation de la commande <tt>\embed</tt>, il est possible de placer
+précisément le k-ième item  en écrivant <tt>\embed{r</tt>n<tt>,k}</tt>
+avec <tt>n</tt> le numéro de la question. Dans le cas de <tt>flashcard</tt>, on peut de plus 
+préciser sur les deux lignes suivantes le style css des cartes (style associé à la balise div).
+(il doit être le même pour chaque carte, dans le cas de style différent, c'est le dernier placé
+qui est utilisé dans la réponse).
+Par exemple,
+<pre>
+\embed{r1,4
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:red;"
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:blue;"
+}
+</pre>

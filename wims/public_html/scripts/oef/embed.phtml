@@ -1,12 +1,18 @@
 !set parm=!replace internal \ by $$m_ in $wims_read_parm
 !distribute items $parm into t_,inputsize,prompt_
 
+!set inputsize1=!word 1 of $inputsize
+!if $(replytype$i) iswordof flashcard
+  !set inputsize1=!word 1 of $inputsize
+!else
+  !set inputsize1=$inputsize
+!endif
 !if $printing=yes or $cmd=hint
- !if $inputsize>0 and mc iswordof $(replystyle$i)
+ !if $inputsize1>0 and mc iswordof $(replystyle$i)
   !if $prompt_=$empty
    !set g_=!rows2lines $(replygood$i)
    !set g_=!line 2 of $g_
-   !set prompt_=!item $inputsize of $g_
+   !set prompt_=!item $inputsize1 of $g_
   !endif
   !imgrename <u>$prompt_</u>
  !else
@@ -77,13 +83,13 @@
   !if dprompt iswordof $(replystyle$i)
    !set reply_$i=$(reply__$i)
   !endif
-  !if mc iswordof $(replystyle$i) and $inputsize!=$empty and $inputsize >= 1 and $inputsize <= 1000
+  !if mc iswordof $(replystyle$i) and $inputsize1!=$empty and $inputsize1 >= 1 and $inputsize1 <= 1000
    !set tt=!rows2lines $(replygood$i)
    !distribute lines $tt into ts,tt
-   !default prompt_=!item $inputsize of $tt
+   !default prompt_=!item $inputsize1 of $tt
    !set p_=$prompt_
    !reset tv
-   !if $(replytype$i)  iswordof mark
+   !if $(replytype$i)  iswordof mark flashcard
      !set tv=$(reply$i)
    !else
     !for r_ in $(reply$i)
@@ -91,8 +97,8 @@
      !set tv=!append item $tu to $tv
     !next r_
    !endif
-   !if $inputsize notitemof $tv
-    !if $inputsize isitemof $ts and $(replytype$i) iswordof mark
+   !if $inputsize1 notitemof $tv
+    !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashback
      !set cl = $colorr_forget
      !imgrename <b><tt><u><font color=$cl>$p_</font></u></tt></b>
     !else

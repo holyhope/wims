@@ -1,10 +1,25 @@
 good=!rows2lines $(replygood$i)
+!if $(replytype$i) iswordof flashcard
+ !set option1=!line 1 of $oef_fill_option
+ !set option2=!line 2 of $oef_fill_option
+ good=!line 1 to 2 of $good
+!endif
 menulist=!line 2 to -1 of $good
 menulist=!translate internal $\
 $ to ; in $menulist
 good=!line 1 of $good
 replyGood$i=!item $good of $menulist
 replyGood$i=!replace internal \\( by \( in $(replyGood$i)
+!if $(replytype$i) iswordof flashcard
+ replygood1=
+ !for x in $menulist
+   replygood1$i=!append item <div $option2>$x</div> to $(replygood1$i)
+ !next
+ replygood$i=$good\
+$(replygood1$i)
+ replyGood$i=!makelist <div $option2>x</div> for x in $(replyGood$i)
+ replygood$i=!replace internal ; by &#59; in $(replygood$i)
+!endif
 !if $wims_read_parm=nocompare
  !exit
 !endif
@@ -15,10 +30,22 @@ replyGood$i=!replace internal \\( by \( in $(replyGood$i)
 !endif
 
 !reset menupos
-!if $(replytype$i) iswordof mark
+!if $(replytype$i) iswordof mark flashcard
   menupos=$(reply$i)
+  !if  $(replytype$i) iswordof flashcard
+    click=$(menupos[2;])
+    menupos=$(menupos[1;])
+    reply$i=$menupos
+  !endif
   m_reply$i=!item $menupos of $menulist
- reply_$i=$(m_reply$i)
+  reply_$i=$(m_reply$i)
+  !if  $(replytype$i) iswordof flashcard
+    m_reply$i=$(m_reply$i)\
+$click
+    reply$i=$(reply$i)
+    reply_$i= !makelist <div $option2>x</div> for x in $(reply_$i)
+    reply_$i=!items2words $(reply_$i)
+  !endif
 !else
  reply$i=!replace internal \\( by \( in $(reply$i)
  m_reply$i=$(reply$i)
