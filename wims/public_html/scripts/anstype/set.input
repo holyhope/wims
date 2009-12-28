@@ -10,7 +10,11 @@
   !if , notin $good
    !set r_=!words2items $r_
   !endif
-  !default reply$i=!listuniq $r_
+  !if repeat notwordof $(replyoption$i)
+   !default reply$i=!listuniq $r_
+  !else
+   !default reply$i=$r_
+  !endif
  !endif
 !endif
 !if $wims_read_parm!=noprompt
