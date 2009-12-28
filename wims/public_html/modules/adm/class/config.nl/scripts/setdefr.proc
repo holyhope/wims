@@ -1,17 +1,25 @@
 
-!for ttt in homepage, bgcolor, bgimg, refcolor, logo, logoside
+!for ttt in homepage, bgcolor, bgimg, refcolor, ref_menucolor, logo, logoside
  pr_$ttt=!word 1 of $(pr_$ttt)
 !next ttt
-
+pr_sccolor=$empty
+!for ttt=1 to 11
+ tmp=!word 1 of $(pr_sccolor$ttt)
+ tmp=!item 1 of $tmp
+ pr_sccolor=$pr_sccolor,$tmp
+!next ttt
+pr_sccolor=!item 2 to -1 of $pr_sccolor
 !setdef !set class_logo=$pr_logo\
 !set class_logoside=$pr_logoside\
 !set class_homepage=$pr_homepage\
 !set class_bgcolor=$pr_bgcolor\
 !set class_refcolor=$pr_refcolor\
+!set class_ref_menucolor=$pr_ref_menucolor\
 !set class_bgimg=$pr_bgimg\
 !set class_theme=$pr_theme\
 !set class_theme_icon=$pr_theme_icon\
 !set class_css=$pr_css\
+!set class_scorecolor=$pr_sccolor\
 in wimshome/log/classes/$wims_class/.def
 pr_cssfile=!trim $pr_cssfile
 !writefile wimshome/log/classes/$wims_class/css $pr_cssfile
@@ -40,3 +48,9 @@ pr_cssfile=!trim $pr_cssfile
  !setdef wims_class_refcolor=$pr_refcolor in wimshome/$wims_sesdir/var.stat
 !endif
 
+!if $pr_ref_menucolor!=$wims_class_ref_menucolor
+ !if $pr_ref_menucolor!=$empty
+  wims_ref_menucolor=$pr_ref_menucolor
+ !endif
+ !setdef wims_class_ref_menucolor=$pr_ref_menucolor in wimshome/$wims_sesdir/var.stat
+!endif

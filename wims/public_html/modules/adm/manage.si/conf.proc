@@ -13,7 +13,7 @@ l=!record $confcat of conf/cat
  iconlist=!sh cd gifs/themes/;ls | sort
 !!not very clean
  iconlist=!replace internal mkindex by in $iconlist
- iconlist=!words2items default $iconlist
+ iconlist=!words2items $iconlist
 !endif
 
 !if $catname=graphics
@@ -34,8 +34,7 @@ l=!record $confcat of conf/cat
 	adm/doc,\
 	H5/physics/chim1,\
 	H3/geometry/oefsect,\
-	into mod_bc,mod_fortune,mod_perl,\
-		mod_chemeq,mod_units
+	into mod_bc,mod_fortune,mod_perl,mod_chemeq,mod_units
 # otherlist=tex perl bc fortune chemeq units-filter
  otherlist=tex perl chemeq units-filter
  test=!sh for bin in $otherlist\
@@ -91,7 +90,7 @@ wims_prefix=$wims_prefix2
   !if $v_!=$(DF_$n_)
    !appendfile wimshome/log/wims.conf2 $n_=$v_
   !endif
-  !if $w_ !=$empty and $w_ iswordof wims_bgcolor wims_bgimg wims_ref_bgcolor wims_css wims_theme_icon
+  !if $w_ !=$empty and $w_ iswordof wims_bgcolor wims_bgimg wims_ref_bgcolor wims_css wims_theme_icon wims_ref_menucolor
    $w_=$v_
   !endif
  !next i
