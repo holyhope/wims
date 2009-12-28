@@ -6,7 +6,18 @@
 . <p>
  !goto end
 !endif
+
+  
 !readproc var.activity.proc
+!if $showsheet=$empty
+$name_showsheet
+!form reply
+  <input type=hidden name=job value=select>
+  !set wims_formselect_switch=multiple size=$[min($activelist_cnt,7)]
+  !formselect showsheet list $activlist prompt $(shs_title[$(activlist)])
+  <input type=submit value="$wims_name_Show">
+  </form>
+!else
 !if $usercnt==0
 $name_noparticipant
 !else
@@ -14,16 +25,16 @@ $name_noparticipant
  $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
  <th>$name_lastconnexion</th><th>$name_nbsessions</th><th><small>$name_cnt_exo 
  <br> ($nbexototal $name_exo)</small></th><th>$name_total</th>
- !for j=1 to $sheetcnt
+ !for j in $showsheet
  !if $(activ[$j])>0
-  <th colspan=2><small>$wims_name_Sheet $j <br>($(nbexo$j) $name_exo)</small></th>
+  <th colspan=2><small>$wims_name_Sheet $j <br>$(shs_title[$j])<br>($(nbexo$j) $name_exo)</small></th>
  !endif
  !next j
  </tr>
  $table_hdtr
  <th></th><th></th><th></th><th></th><th></th>
- !for j=1 to $sheetcnt
- !if $(activ[$j])>0
+ !for j in $showsheet
+ !if $(activ[$j])>0 
   <th><small>$name_cnt_exo</small></th><th><small>$name_time</small></th>
  !endif
  !next j
@@ -39,7 +50,7 @@ $name_noparticipant
   </td>
   !for h = 1 to 2*$sheetcnt + 4
     !set h1=$[($h+$h%2)/2-2]
- !if $h <=4 or ($h>4 and $(activ[$h1])>0)
+ !if $h <=4 or ($h>4 and $(activ[$h1])>0) and $h1 isin $showsheet
   <td align="center">$(data[$h])</td>
 !endif
   !next
@@ -47,7 +58,9 @@ $name_noparticipant
 !next
 $table_end
  <p>$name_click
+!endif
 !set wims_menu_items=!append line refresh,1,cmd=reply\
+back2,1,cmd=new\
 Score1,1,module=adm/class/userlist&job_affi=notes\
 to $wims_menu_items
 

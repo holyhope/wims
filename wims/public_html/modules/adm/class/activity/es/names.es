@@ -11,3 +11,4 @@
 
 !set name_not_supervisor=Lo siento, pero esta operación se reserva a los profesores registrados de una clase.
 !set name_bad_class=Extraño, pero encuentro que su clase no es válida!
+!set name_showsheet=Sélectionnez les feuilles dont vous désirez voir l'activité.

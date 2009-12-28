@@ -11,3 +11,4 @@
 
 !set name_not_supervisor=Bewerking niet toegestaan
 !set name_bad_class=Je klas bestaat niet...
+!set name_showsheet=Select the sheets to show the participant activities

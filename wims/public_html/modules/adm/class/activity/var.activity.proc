@@ -1,15 +1,24 @@
 activ=
 sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !bound numshowsheet between 1 and $sheetcnt default 1
-sh_title=!line 3 of $tmp
+!set shs_title=
 nbexototal=0
 !for j = 1 to $sheetcnt
   nbexo$j=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$j
   nbexototal=$[$nbexototal + $(nbexo$j)]
   t_=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
-  !distribute line $t_ into a_
+  !distribute line $t_ into a_,bidon,ti_
   a_=!char 1 of $a_
   activ=!append item $a_ to $activ
+   shs_title=!append line $ti_ to $shs_title
 !next
+shs_title=!replace internal , by &#44; in $shs_title
+shs_title=!lines2items $shs_title
+
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+
+!set activlist=!positionof item 0 in $activ
+!set listtot=!makelist x for x = 1 to $sheetcnt
+!set activlist=!listcomplement $activlist in $listtot
+!set activlist_cnt=!itemcnt $activlist
 
