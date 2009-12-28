@@ -41,7 +41,7 @@ Inscription  à $name_classess
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>$wims_name_name<th>enseignant<th>niveau
+  <th>$wims_name_name<th>$wims_name_Supervisor<th>$wims_name_level
   <th>$wims_name_Status
  !endif
  !for cl in $classlist
@@ -198,21 +198,21 @@ Inscription  à $name_classess
   !form reply
  <input type=hidden name=step value=2>
  <ul>
- <li><label for="lastn">$name_Your nom</label> <input size=20 name=lastn id="lastn" value="$lastn">
-  et <label for="firstn">$wims_name_firstname</label> <input size=20 name=firstn id="firstn" value="$firstn">
+ <li><label for="lastn">$wims_name_lastname</label> <input size=20 name=lastn id="lastn" value="$lastn">
+<label for="firstn">$wims_name_firstname</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li><label for="login">Choisissez un nom de login :</label>
+ <li><label for="login">$wims_name_Login</label>
   <input size=16 name=login id="login" value="$login"> <br>
   Ce sera le nom que $utilisera pour entrer dans $classname
   ultérieurement. Veuillez choisir un mot contenant entre 4 et 16
   caractères alphanumériques sans accent uniquement.
   <p>
- <li><label for="pass">Et un mot de passe :</label>
+ <li><label for="pass">$wims_name_Password</label>
   <input type=password size=16 name=pass id="pass"> <br>
   Le mot de passe doit contenir entre 4 et 16 caractères alphanumériques
   sans accent.
   <p>
- <li><label for="email">$name_Your adresse électronique (facultative) :</label><br>
+ <li><label for="email">$wims_name_email (facultatif) :</label><br>
   <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
@@ -237,7 +237,7 @@ Inscription  à $name_classess
  !if $email=$empty
   Vous n'avez pas donné d'adresse électronique valide. <p>
  !else
-  Votre adresse électronique : <tt>$email</tt> <p>
+  $wims_name_email: <tt>$email</tt> <p>
  !endif
  <label for="pass2">Pour que l'exactitude de votre mot de passe soit vérifiée, veuillez le retaper
  encore une fois :</label>
