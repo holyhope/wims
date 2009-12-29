@@ -1,0 +1,55 @@
+!goto $wims_read_parm
+
+:def
+title=Plot implicit curve
+synonyme=implicit plot, implicit curve plot, implicit curve 2D, plane implicit curve plot, plot plane implicit curve
+input=equation
+!exit
+
+:proc
+formula=!item 1 of $formula
+fml=!mathsubst X=x in $fml
+fml=!mathsubst Y=y in $fml
+eq==
+!if $eq isin $formula
+ f=!translate internal = to , in $formula
+ !distribute items $f into f1,f2
+ !if $f2=$empty or $f1=$empty
+  error=bad_formula
+  !exit
+ !endif
+ fml=$f1 - ($f2)
+!else
+ fml=$formula
+!endif
+result=$fml
+x1=$[$xrange1]
+x2=$[$xrange2]
+y1=$[$yrange1]
+y2=$[$yrange2]
+s1=$[$picturesize1]
+s2=$[$picturesize2]
+!distribute item -2,2,-2,2,260,260 into dx1,dx2,dy1,dy2,ds1,ds2
+!for r in x1,x2,y1,y2,s1,s2
+ !if NaN isin $($r)
+  $r=
+ !endif
+ !default $r=$(d$r)
+!next r
+insdraw_size=$s1,$s2
+!exit
+
+:output
+Plane implicit curve defined by
+!htmlmath $formula
+&nbsp;:
+<p><center>
+!insdraw xrange $x1,$x2\
+yrange $y1,$y2\
+arrow $x1,0,$x2,0,10,grey\
+arrow 0,$y1,0,$y2,10,grey\
+levelcurve red,$fml,0
+
+</center>
+!exit
+

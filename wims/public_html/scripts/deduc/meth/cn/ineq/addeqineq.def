@@ -1,0 +1,41 @@
+!set methtit=不等式加一个等式
+!set methenv=ZZ QQ RR
+!set methparmtype=function, parm equation >,parm inequality
+!set methhelp=此方法利用以下的不等式性质导出新的不等式:\
+<p><center>\
+ 若 \(a = b), 则 \(c > d <=> f*a+c > f*b+d) 对任意的 \(f).\
+</center>
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把
+ !default methparm1=1
+ !read deduc/methparm.phtml 1,10
+ 乘等式
+ !read deduc/methparm.phtml 2
+ 加到不等式
+ !read deduc/methparm.phtml 3
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left1,sign1,right1
+ !distribute items $methparmobj3 into data,left2,sign2,right2
+ methexp=把 \(($methparm1)*($left1 $sign1 $right1)) 加到 \($left2 $sign2 $right2)
+ 
+ !read deduc/sub/simplify ($methparm1)*($left1) + ($left2)\
+    ($methparm1)*($right1) + ($right2)
+ !distribute lines $out into newleft, newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+
+ newobject3=$newleft $sign2 $newright
+ oldobject=3
+
+!exit
+

@@ -1,0 +1,65 @@
+<p><center><hr width="35%"></center> <p>
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set Askresult=0
+!set Askcontext=0
+!if $exocnt<1
+ 抱歉, 此模块目前没有可用的练习. 请以后再来!
+ !exit
+!endif
+!if $exocnt=1
+ 本模块目前只含一个练习, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo 试试看.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value="$module">
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if $special_parm2=select and $special_parm!=$empty
+ <td align=center>练习中包含<br>
+ <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+!else
+ <td align=center>选择练习:<td>
+!endif
+!read deduc/select.phtml
+<tr><td align=center>难度<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>询问方法 <br>
+的条件
+<td>
+!formselect Askcontext list -1,0,1 prompt 从不,根据练习,总是
+<tr><td align=center>询问方法 <br>
+的结果
+<td>
+!formselect Askresult list -1,0,1 prompt 从不,根据练习,总是
+!read introhook.phtml
+</table> <p>
+<input type=submit value="开始">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value=$module>
+ 选取包含你输入的词的标题
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=OK>
+ </form>
+!endif
+
+<b>注</b>. 将从你选取的范围里随机生成练习
+(如果你没有选取, 将从所有可能的练习中抽取).
+
+!if * isin $titlelist
+ <p>一般说来, 标有星号 * 的练习是较难的练习.
+!endif
+
+

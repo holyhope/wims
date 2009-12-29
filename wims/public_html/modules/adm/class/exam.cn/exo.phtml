@@ -6,13 +6,33 @@
 !form reply
 <input type=hidden name=job value=exo>
 <input type=hidden name=exo value=$exo>
-<p>练习 $exo : 权重=<input size=5 name=eweight value="$eweight">,
-标题=<input size=20 name=ename value="$ename">
+<p>$wims_name_Exercise $exo : $name_weight=<input size=5 name=eweight value="$eweight">,
+$wims_name_title:<input size=20 name=ename value="$ename">
 <p>
 本试卷可以从作业页里已有的练习清单中(随机地)选取. 请在以下清单的练习
 前面加上标记, 使它们成为考试题的候选者.
 <p>
-!for i in $asheets
+仅显示以下作业页的练习
+ <select name="ltsheets" onchange="submit()" value="$ltsheets">
+  !if $ltsheets=$asheets
+   <option value="$asheets" selected>$name_All</option>
+  !else
+   <option value="$asheets">$name_All</option>  
+  !endif
+  !for k in $asheets
+   !if $ltsheets=$k
+    <option value="$k" selected>
+   !else
+    <option value="$k">   
+   !endif
+    !let t=!record $k of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $k :
+    !line 3 of $t
+   </option>
+  !next k
+ </select>
+<p>
+!for i in $ltsheets
  !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  !for j=1 to $t
   !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
@@ -34,7 +54,8 @@ $name_Options:
 <p>
 !href cmd=reply $name_mainpage
 . <p><small>
-<b>帮助</b>. 得分相关性是指参加者必须在其它练习页得到所要求的分数,
+<b>$wims_name_help</b>. 
+得分相关性是指参加者必须在其它练习页得到所要求的分数,
 才能做本练习. 例如
   <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
   意指参加者必须在练习 1 取得 50% 的分数, 练习 2 得到 30% 的分数,

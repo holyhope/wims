@@ -1,9 +1,7 @@
 !if $supertype=4 and $classdepth<=3
 <p><center>
- !href module=adm/class/gateway 结构管理
+ !href module=adm/class/gateway $wims_name_struct
 </center>
-!set wims_menu_items=!append line struct,1,adm/class/gateway\
-to $wims_menu_items
 !endif
 
 !form reply
@@ -19,7 +17,7 @@ $table_tr<td align=right>学校名
 $table_tr<td align=right>班级名
 <td colspan=3>
 <input size=50 name=up_description value="$class_description">
-$table_tr<td align=right>安全主机
+$table_tr<td align=right>$name_secure
 <small>
 !href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
  </small>
@@ -43,26 +41,34 @@ $table_tr<td align=right>选项词
  </small>
 <td colspan=3>
 <input size=40 name=up_option value="$class_option">
+</td></tr>
 !if $wims_supertype!=4 or $class_typename!=class
 $table_tr<td align=right>
-Modtool Account
+模块开发工具(Modtool)的帐号
 <small>
 !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 </small>
 </td><td colspan=3>
 !set modtoolchg=1
-!formcheckbox modtoolchg list 0 prompt Change
+!formcheckbox modtoolchg list 0 prompt 修改
 </td></tr>
 !endif
-$table_tr<td align=right colspan=2>连接锁定等级
+$table_tr<td align=right>
+连接锁定
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
-</td><td colspan=2>
+</td><td>
 !set up_lock=$class_lock
 !default up_lock=0
 !formselect up_lock list 0,2,3,4,5,6,7
-</td>
+<td align=right>最佳得分数
+<small>
+!href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
+ </small>
+!default class_topscores=0
+<td><input size=3 name=up_topscores value="$class_topscores">
+</td></tr>
 $table_tr<td align=right>班级语言
 <small>
 !href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
@@ -71,6 +77,7 @@ $table_tr<td align=right>班级语言
 !set up_lang=$class_lang
 !set langs=!words2items $wims_site_languages
 !formselect up_lang list $langs
+</td>
 <td align=right>
 程度
 <small>
@@ -106,9 +113,16 @@ $table_tr<td align=right>练习记录限制
 !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
  </small>
 !default class_examlog=$wims_examlog_limit
-<td><input size=3 name=up_examlog value="$class_examlog">
+<input size=3 name=up_examlog value="$class_examlog">
+<td>学生能看到
+<small>
+!href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
+ </small>
+!default class_examshow=yes
+!set up_examshow=$class_examshow
+!formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 !set up_ent=$class_ent
-$table_tr<td align=right>Other platform link
+$table_tr<td align=right>$wims_name_config_ent
 <small>
 !href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
  </small>
@@ -121,62 +135,82 @@ $table_hdtr<td align=center colspan=4>
 $table_end <p>
 </form>
 
-其它配置:
-!href cmd=reply&job=present 外观
+改变外观 : 
+!href module=adm/light&phtml=useropts.phtml.$lang 个人喜好
 .
-!href cmd=reply&job=neighbor&job2=first 相邻班
+!href cmd=reply&job=present $wims_name_config_present
 .
-!href cmd=reply&job=connect&job2=first 其它服务器
+!href cmd=reply&job=oefdefault $wims_name_config_oef
 .
-!href module=adm/class/passwd 密码
-.
-!if $classdepth<=1 
- !href cmd=reply&job=authtype Type d'authentification
-.
-!endif
-!href module=adm/forum/mboard&job=config 信息板
-.
-!href module=adm/doc 文件
-.
-!href module=adm/class/motd 每日信息
-.
-!href cmd=reply&job=access 资源限制
-.
+<p>
 !if $class_type iswordof 2 3 4
- !href cmd=reply&job=propagate 传送配置到分班
+把
+ !href cmd=reply&job=propagate 设置扩展到相关区域
 .
 !endif
 <p>
-!href cmd=reply&job=security 安全管理
+定义
+!href cmd=reply&job=neighbor&job2=first 相邻班
+,
+!href cmd=reply&job=connect&job2=first 到其它服务器
+的链接.
+<p>
+!if $classdepth<=1 
+通过 ldap 号簿实行参加者的
+!href cmd=reply&job=authtype 身份验证
 .
-!href cmd=reply&job=arch&job2=first 备份与恢复
-.
-!href cmd=reply&job=clean 选择性清除
-.
-<br>
+ <p>
+!endif
+
 重建索引<sup>
 !href cmd=help&special_parm=index $wims_name_help
 </sup>:
 !if $class_type=4
-!href cmd=reply&job=index&job2=structure 分班
+!href cmd=reply&job=index&job2=structure $wims_name_zones
 ,
 !endif
 !if $class_type=4 or $class_type=2
-!href cmd=reply&job=index&job2=teacherlist 教师
+!href cmd=reply&job=index&job2=teacherlist $wims_name_teachers
 ,
 !endif
-!href cmd=reply&job=index&job2=userlist 参加者
+!href cmd=reply&job=index&job2=userlist $wims_name_participants
 ,
-!href cmd=reply&job=index&job2=oef 练习
+!href cmd=reply&job=index&job2=oef $wims_name_exercises
 ,
-!href cmd=reply&job=index&job2=doc 文件
+!href cmd=reply&job=index&job2=doc $wims_name_docs
 .
 <p>
-!href module=adm/light&phtml=useropts.phtml.$lang 我的个人喜好
+!href cmd=reply&job=security $wims_name_config_secure
+ (修改
+!href module=adm/class/passwd $wims_name_config_passwd
+).
+<p>
+执行
+!href cmd=reply&job=arch&job2=first 备份或恢复
+班级, 
+!href cmd=reply&job=access 限制资源
+的存取, 
+ !href cmd=reply&job=grestrict 限制进入记录成绩的网站
+,
+执行
+!href cmd=reply&job=clean 选择性清除
 .
+<p>
+设置
+!href module=adm/forum/mboard&job=config 讨论区
+, 
+!href module=adm/class/motd 每日信息
+, 
+!href module=adm/class/cdt&job=config 纪事本
+, 
+!href module=adm/class/livret&job=config 技能记录本
+, 
+!href module=adm/class/sequence&job=config 教学系列
+.
+<p>
+磁盘空间当前使用情况 : $du Mb. (上限是
+$wims_class_quota.)
 
-<p>
-班级目前使用的盘空间: $du megabytes. (分配值为 $wims_class_quota.)
 
 !reset up_institution, up_description, up_supervisor, up_email, \
 	up_lang, up_level, up_limit, up_topscores, up_expiration, up_secure, up_lock,\

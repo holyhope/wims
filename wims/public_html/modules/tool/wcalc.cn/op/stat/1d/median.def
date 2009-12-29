@@ -1,0 +1,44 @@
+!goto $wims_read_parm
+
+:def
+title=Data median
+synonyme=statistic median, median of statistics
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+fml=
+!for i=1 to $cnt
+ t=!item $i of $formula
+ fml=!append item $[$t] to $fml
+!next i
+fml=!sort numeric item $fml
+!if $[$cnt%2]=1
+ result=!item $[($cnt+1)/2] of $fml
+!else
+ t1=!item $[$cnt/2] of $fml
+ t2=!item $[$cnt/2+1] of $fml
+ result=$[($t1+$t2)/2]
+!endif
+
+!exit
+
+:output
+
+<center>
+Median =
+!htmlmath $result
+</center> <p>
+Data: $cnt numbers { $formula }
+<p>
+The <em>median</em> of sorted data {<i>x</i><sub>1</sub>,
+<i>x</i><sub>2</sub>, ..., <i>x<sub>n</sub></i>} is equal to
+!set ins_align=middle
+!instex $$$$ {x_n+x_{n+1}\over 2} $$$$
+ when <i>n</i> is even, or to <i>x</i><sub>(<i>n</i>+1)/2</sub> 
+when <i>n</i> is odd.
+
+!exit
+

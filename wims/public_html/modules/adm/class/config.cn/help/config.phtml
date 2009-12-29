@@ -1,7 +1,7 @@
 
 !set sp2=$special_parm2
-!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
-    bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,option\
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,topscores\
     default $
 
 !if $sp2=$empty
@@ -44,8 +44,7 @@
  <ul>
  <li><tt>showshexpire</tt>. 在参加者主页上显示作业页的有效期.
  <li><tt>showexexpire</tt>. 在参加者主页上显示考试页的有效期.
- <li><tt>showshweight</tt>. Show sheet weight in the
-  home page of participants.
+ <li><tt>showshweight</tt>. 在参加者主页上显示作业页的权重.
  </ul> 
 !exit
 
@@ -56,6 +55,7 @@
  <li>es (西班牙语)
  <li>fr (法语)
  <li>it (意大利语)
+ <li>nl (荷兰语)
 </ul>
 !exit
 
@@ -79,8 +79,7 @@
 不过不能超过一年后的今天.
 <p>
 如果你想规定一年以上的有效期, 你可以分几次延长, 或者
- <a href="mailto:$wims_site_manager?subject=Virtual class extension
- demand">要求网站管理员</a>帮你做.
+ <a href="mailto:$wims_site_manager?subject=虚拟班级延长请求">要求网站管理员</a>帮你做.
  <p>
 日期表示成8位数字的形式 (yyyymmdd).
 例如: 20120523 意为2012年5月23日.
@@ -101,21 +100,23 @@
  <p>
 块内所有链接都应该用命令 <tt>\adm</tt> 定义.
 你可以使用下列预定义的变量:<ul>
- <li><tt>\firstname</tt> 参加者的名
- <li><tt>\lastname</tt> 参加者的姓
+ <li><tt>\firstname</tt> 参加者的名</li>
+ <li><tt>\lastname</tt> 参加者的姓</li>
  <li><tt>\scores</tt> 参加者的分数信息. 这是一个数表, 每一页对应一对数:
-得分百分比及质量.
- <li><tt>\newmsgcnt</tt> 班级论坛内未阅读信息.
- <li><tt>\today</tt> 今天日期, yyyymmdd.
- <li><tt>\sheets</tt> 作业页数.
- <li><tt>\exams</tt> 考试页数.
+得分百分比及质量.</li>
+ <li><tt>\newmsgcnt</tt> 班级论坛内未阅读信息.</li>
+ <li><tt>\today</tt> 今天日期, yyyymmdd.</li>
+ <li><tt>\sheets</tt> 作业页数.</li>
+ <li><tt>\exams</tt> 考试页数.</li>
  <li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
-第1页, 第2页, 考试第1页, ... 的有效日期, yyyymmdd.
+第1页, 第2页, 考试第1页, ... 的有效日期, yyyymmdd.</li>
  <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
 第1页, 第2页, 考试第1页, ... 的状态, 这是一个非负整数: 
-0 = 准备中, 1 = 激活, 2 = 过期, 3= 隐藏.
+0 = 准备中, 1 = 激活, 2 = 过期, 3= 隐藏.</li>
+ <li><tt>\daymessage</tt> : 班级的每日信息.</li>
+ <li><tt>\userdaymessage</tt> : 每个参加者的个人每日信息.</li>
  </ul>
-!exit
+!goto end
 
 :bgimg
 班级网页的背景图像文件(平铺式). 你可以使用任何有效的 URL.
@@ -128,7 +129,7 @@
 !exit
 
 :theme_icon
-The icons in the menu
+出现在菜单上的图标.
 !exit
 
 :css
@@ -139,8 +140,13 @@ The icons in the menu
 选择 `<tt>-theme-</tt>' 使用与你选取的主题相应的格式页.
 <p>
 选择 `<tt>class</tt>' 使用自定义的格式页. 请参看 css 文件的语法.
-<b>说明</b>. 如果你自定义 css, 请对学生使用的各种浏览器一一测试,
+<p><b>说明</b>. 如果你自定义 css, 请对学生使用的各种浏览器一一测试,
 以避免出现不兼容情况.
+你可以使用自己的格式页. 
+以下改变格式的格式页可被重新定义 :
+<pre>
+!read  wimshome/public_html/bases/sys/css_classes
+</pre>
 <p>
 其余选择对应于此 WIMS 站预定义的格式.
 !exit
@@ -157,20 +163,20 @@ The icons in the menu
 
 :lock
 连接锁定可帮助追踪用户以及反作弊. 共有8个等级.<ul>
-<li><p>0: 不使用连接锁定.
+<p><li>0: 不使用连接锁定.
 
-<li><p>1: 激活 cookie 追踪. 没有返回正确 cookie 的连接将被拒绝.
+<p><li>1: 激活 cookie 追踪. 没有返回正确 cookie 的连接将被拒绝.
 
-<li><p>2: 要求使用安全连接(https). 通常的 http 请求将被拒绝.
+<p><li>2: 要求使用安全连接(https). 通常的 http 请求将被拒绝.
 首先你要从网站管理员那里确认此WIMS站能接受 https 连接.
 
-<li><p>3: 激活主机地址锁定. 在一次对话中参加者不能改变主机地址.
+<p><li>3: 激活主机地址锁定. 在一次对话中参加者不能改变主机地址.
 当连接来自动态分配的IP地址时, 这样做有困难.
 
-<li><p>4: Cookie 追踪 + https.
-<li><p>5: Cookie 追踪 + 主机锁定.
-<li><p>6: 激活上述所有方法.
-<li><p>7: 关闭班级. 不接受参加者的连接.
+<p><li>4: Cookie 追踪 + https.
+<p><li>5: Cookie 追踪 + 主机锁定.
+<p><li>6: 激活上述所有方法.
+<p><li>7: 关闭班级. 不接受参加者的连接.
 </ul> <p>
 !exit
 
@@ -194,21 +200,64 @@ The icons in the menu
 <p>
 考试对话的记录是自动的. 当超过上限时,
 最早的记录将被删除.
+!exit
 :logs
 <p>
 当这个数等于 0 时, 将不作记录.
 <b>注意</b> 练习和考试的纪录会耗用大量空间!
 如果这个界限取得太大, 将会造成班级的盘空间超限.
+!exit
+
+:examshow
+如果把这个选项设置为 <tt>否</tt>, 学生将不能看到
+考试成绩. 只有教师能看到.
+!exit
+
+:authtype
+<b>身份验证的类型</b> : 
+你可以通过 ldap 或 wims 作身份验证.
+当 ldap 验证失败时, 就尝试通过 wims 内部过程作验证.
+<p>
+ldap 验证的参数的例 :
+<pre>
+ldap_host=ldap.u-psud.fr
+ldap_port=389
+ldap_version=3
+ldap_base=ou=people,dc=u-psud,dc=fr
+ldap_branch=ou=people,dc=u-psud,dc=fr
+ldap_uid=uid
+ldap_login=supannAliasLogin
+</pre>
+!exit
+
+:modtoolchg
+<b>模块开发工具(Modtool)的帐户</b> : 
+当你通过班级进入模块开发工具后, 也就注册了你的模块开发工具帐户.
+如果你需要使用另一个模块开发工具帐户, 你可以在这里注销此注册.
+然后你应该通过主页内的 <tt>模块开发工具(Modtool)</tt> 链接以进入此工具.
 
 !exit
 
 :ent
-<b>Links on another plateform</b> :
-You may add a link on another plateform :
-<pre> link_title,link_adress</pre>
-For example,
-<pre>Dokeos,http://-------</pre>
-If you need more than one link, they must be seperate by ";". 
+<b>平台上或网页上的连接</b> :
+你可以用以下形式指示平台上或网页上的连接
+<pre>连接的标题,连接的地址</pre>
+例如,
+<pre>Dokeos,http://----</pre>
+如果你要放几个连接, 请用分号作分隔.
 
 !exit
+
+:topscores
+<center><b>最佳成绩</b></center>
+<p>如果这个数 n 大于等于 1, 当一个参加者请求得到他的分数时,
+他同时能看到 n 个有最佳平均分的参加者的名单.
+<p>
+这个平均值不考虑手工计分, 因此如果有这样的分数, 请设为 0.
+<p>
+默认=0
+
+!exit
+
 :end
+

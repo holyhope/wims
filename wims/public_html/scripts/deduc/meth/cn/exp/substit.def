@@ -1,0 +1,40 @@
+!set methtit=表达式内的替换
+!set methtit2=整体或局部表达式内的替换
+!set methenv=ZZ QQ RR CC
+!set methparmtype=parm algexp nocomma nonesting, parm equation >, choice 2
+!set methhelp=根据已有等式在表达式内作替换.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 应用
+ !formselect methparm3 list 1,2 prompt 替换, 逆替换
+ !read deduc/methparm.phtml 2
+ 于表达式 <br>
+ !read deduc/methparm.phtml 1
+!exit
+:check
+ !distribute items $methparmobj2 into hd,left,eq,right
+ eqt==
+ !if $eq!=$eqt
+  error=错的替换.
+  !exit
+ !endif
+ !if $methparm3=2
+  !exchange left,right
+ !endif
+ !distribute items $methparmobj1 into hd2,exp2
+ !read deduc/sub/simplify ratsubst($right,$left,$exp2)
+ !if $out=$empty
+  error=失败
+  !exit
+ !endif
+
+ newobject1=$out
+ oldobject=1
+ methexp=替换 \($left = $right).
+!exit
+

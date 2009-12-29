@@ -4,17 +4,19 @@
 本网站有下列资源类型可供选择.
 
 <ol class="wims_browse_type_list">
-<li class="wims_browse_type_list">课程与参考资料:<br>
-  !if $wims_pedia_type=1 and $wims_pedia_address!=$empty
+!goto skip
+<li class="wims_browse_type_list">
+课程与参考资料:<br>
+ !if $wims_pedia_type=1 and $wims_pedia_address!=$empty
   <a href=$wims_pedia_address?module=adm/enc.en&cmd=new>分布式科学百科</a>
   ($wims_pedia_address)
  !else
   !href module=adm/enc.en 分布式科学百科
  !endif
  含有各主题的最佳网络资源表. 可用关键词搜索及浏览. (本功能目前不可用)
-
-</li><li class="wims_browse_type_list">在线计算及绘图: 此外, 你还可以看一下
- <ul class="wims_browse_type_list">
+:skip
+<li class="wims_browse_type_list">
+在线计算及绘图: 此外, 你还可以看一下 <ul class="wims_browse_type_list">
  <li class="wims_browse_type_list">
   !set cat=T
   !reset key
@@ -23,16 +25,16 @@
  </li><li class="wims_browse_type_list">
   数值计算:
   !set cat=P
-  !set key=number, complex, roots
+  !set key=number, complex, root
   !href $search_addr 弹出式简单计算器
   (化简, 分数, 互化, 分解因子, 复数, 等.) 以及各种
   !set cat=T
-  !set key=number, roots
+  !set key=number, root
   !href $search_addr 专用计算器
   (整数, 连分数, 正特征数, 等.)
  </li><li class="wims_browse_type_list">
   数学分析
-  !set key=analysis, calculus, functions
+  !set key=analysis, calculus, function
   !set cat=P
   !href $search_addr 弹出工具
   以及
@@ -57,12 +59,12 @@
 . 可以画曲线, 曲面, 数列与级数, ...
  </li><li class="wims_browse_type_list">
   !set cat=T
-  !set key=statistics, data
+  !set key=statistics, statistic,data
   !href $search_addr 统计计算器
 $ : 均值与偏差, 直方图, 回归, ...
  </ul>
- 
-</li><li class="wims_browse_type_list">互动式练习: WIMS 上的练习有各种不同的类型.
+</li>
+<li class="wims_browse_type_list">互动式练习: WIMS 上的练习有各种不同的类型.
 其中有:
  <ul class="wims_browse_type_list">
   <li class="wims_browse_type_list">
@@ -71,7 +73,7 @@ $ : 均值与偏差, 直方图, 回归, ...
   !href $search_addr 所有可用的练习,
   按欢迎程度排列.
   </li><li class="wims_browse_type_list">
-  !set key=graphic choices
+  !set key=graphic choice
   !href $search_addr 图形选择题
   用随机生成的图形给出题目, 然后要你选出正确的图形.
   </li><li class="wims_browse_type_list">
@@ -101,7 +103,7 @@ $ : 均值与偏差, 直方图, 回归, ...
   </li><li class="wims_browse_type_list">
   !set cat=O
   !reset key
-  !href $search_addr 分类练习 (OEF)
+  !href $search_addr OEF 练习
   (开放练习格式)
   这是一些在线生成的练习. 问题是随机产生的, 答案可以是多重选择, 数, 函数等.
   </li><li class="wims_browse_type_list">

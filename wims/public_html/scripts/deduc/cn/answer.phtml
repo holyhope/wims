@@ -1,0 +1,33 @@
+!if $error!=$empty
+ !exit
+!endif
+
+!if $condtest1<0
+ 不! 你做了错误的操作, 使得练习的证明无法继续.
+此练习已经失败, 得分=0.
+ <p>
+ !exit
+!endif
+
+!if $cutstop=yes
+ 不! 你已经超过了允许的步骤数.
+操作失败. 得分=0.
+ <p>
+ !exit
+!endif
+
+!if nostatus notwordof $m_options
+ !read deduc/$module_language/status.phtml
+!endif
+
+!item floor($score/2)+1 of 终于, 嗯, 还行, 好, 很好, 祝贺你
+$ ! 你在第 $ctstep 步解决了问题.
+!if $ctstep>$m_minsteps
+ (可以在 $m_minsteps 步内完成.)
+!endif
+得分: $score/10. <small>
+($[$ustep-$currstep] 个多余的步骤,
+由于严重错误的扣分是 $penalty)</small>
+
+<p>
+

@@ -1,0 +1,78 @@
+
+!read adm/css.phtml
+!header1
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$cdt_title\
+$cdt_subtitle
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+!endif
+
+!form reply
+<input type=hidden name=job value=adddate>
+<input type=hidden name=job2 value=save>
+<p>$name_session:
+!if $jyear=$empty
+ !let jyear=!char 1 to 4 of $wims_now
+ !let jmonth=!char 5 to 6 of $wims_now
+ !let jday=!char 7 to 8 of $wims_now
+!endif
+!let expyear=!char 1 to 4 of $class_expiration
+!let creyear=!char 1 to 4 of $class_creation
+!distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
+!formselect jday from 1 to 31
+!formselect jmonth from 1 to 12 prompt $months
+!formselect jyear from $creyear to $expyear
+<p>
+$name_workdone (< $desc_limit $name_character) : [ 
+!href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
+ ] 
+<br>
+<textarea rows=10 cols=65 name=jdesc wrap>
+!replace internal \( by &#92;( in $jdesc
+</textarea>
+<p>
+<center><hr width="30%"><b>$name_worktodo</b></center>
+<br>
+$name_nb_date: 
+<select  name="nbredevoir" onchange="submit()">
+!for i=0 to $max_todo
+ !if $i=$nbredevoir
+  <option value=$i selected>$i</option>
+ !else
+  <option value=$i>$i</option>
+ !endif
+!next i
+</select>
+
+ !for i=1 to $nbredevoir
+  <br>$name_todo2
+   !if $(dday$i)=$empty
+    !let dday$i=$jday
+    !let dyear$i=$jyear
+    !let dmonth$i=$jmonth
+   !endif
+   !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
+   !formselect dday$i from 1 to 31
+   !formselect dmonth$i from 1 to 12 prompt $months
+   !formselect dyear$i from $creyear to $expyear
+   &#58;
+   [ 
+   !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help
+    ]
+<br><textarea rows=3 cols=65 name=ddesc$i>
+!replace internal \( by &#92;( in $(ddesc$i)
+</textarea>
+ !next i
+<center><hr width="30%">
+<p><input type=submit value="$wims_name_tosave">
+</center>
+</form>
+
+!set wims_menu_items=!append line back2,1,cmd=new&job=home\
+to $wims_menu_items
+!tail

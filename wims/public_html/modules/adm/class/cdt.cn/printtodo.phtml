@@ -1,0 +1,57 @@
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$cdt_title
+
+<center>
+ <font size="+1"><b>$name_worktodo
+ !if $jour_begin!=$jour_end
+  $name_between <font color=green>$name_date</font> $name_and <font color=green>$jday2/$jmonth2/$jyear2</font> ÆÚ¼ä
+ !else
+  $name_for 
+  <font color=green>$name_date</font>
+ !endif
+</b></font>
+</center> 
+<p><p>
+
+!if $nbligne=0
+ $name_nowork $name_date.
+ <p>
+ !goto end
+!endif
+
+ !let table_border=1
+ $table_header
+ $table_hdtr 
+  <th>$name_for</th>
+  !if no isin $cdt_supervise
+   <th>$name_discipline</th>
+  !endif
+  <th>$name_work</th><th>$name_giventhe</th>
+ </tr>
+ !for i=1 to $nbligne
+  $table_tr
+   !let don=!line $i of $list
+   !distribute item $don into todo,date,dir,matiere
+   !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$dir
+   !read wimshome/log/classes/$dir/cdt/def/$date 
+   !let no=!positionof item $todo in $date_todo
+   <td>
+    !read proc/date.phtml $todo 
+   </td>
+   !if no isin $cdt_supervise
+    <td>$matiere</td>
+   !endif
+   <td valign=top>
+    !read wimshome/log/classes/$dir/cdt/def/$date todo$no
+   </td>
+   <td>
+    !read proc/date.phtml $date
+   </td>
+  </tr>
+ !next i
+ $table_end
+:end
+
+!tail
+

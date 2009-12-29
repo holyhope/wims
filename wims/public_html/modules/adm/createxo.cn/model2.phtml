@@ -8,7 +8,7 @@
 
 $table_header
 <caption><b>$model_title<sup>
-!href cmd=reply&rawinp=yes 简洁模式
+!href cmd=reply&rawinp=yes 源码模式
 &nbsp;
 !href cmd=reply&level=1&mode=model 模块表
 </sup>
@@ -17,7 +17,7 @@ $table_header
 !href target=wims_mhelp cmd=help&special_parm=model,1 &gt;&gt;
 </sup>
 </caption>
-$table_hdtr
+!!$table_hdtr
 
 !set ta=
 !for i in $sps,$parms
@@ -37,7 +37,7 @@ $table_hdtr
   <td>$(title$i)
   !if $(help$i)!=$empty or $(name$i) iswordof $model_helped
    <sup>
-   !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i 帮助
+   !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
    </sup>
   !endif
   </td>
@@ -73,7 +73,7 @@ $table_end <p>
   <small><a href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">清除</a>
   !if $(help$i)!=$empty
    &nbsp;
-   !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i 帮助
+   !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
   !endif
   </small>
   <br>
@@ -86,7 +86,7 @@ $table_end <p>
  !next i
 !endif
 <center>
-<input type=submit value="保存">
+<input type=submit value="$wims_name_tosave">
 &nbsp;
 !href cmd=reply&level=1 放弃修改
 .

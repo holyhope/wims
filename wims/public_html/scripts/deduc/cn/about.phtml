@@ -1,0 +1,32 @@
+!set email=!trim $email
+!set author=!trim $author
+
+!if $author!=$empty
+ 本练习的作者:
+ !if $email!=$empty
+  !mailurl $email $author
+.
+ !else
+ $author.
+!endif
+!if $solution!=$empty and $hint!=$empty
+ 本练习既包含带有解释的解, 也包含提示.
+!endif
+!if $solution!=$empty and $hint=$empty
+ 本练习包含带有解释的解, 但没有提示.
+!endif
+!if $solution=$empty and $hint!=$empty
+ 本练习有提示, 但没有带有解释的解.
+!endif
+!if $solution$hint=$empty
+ 本练习既没有带有解释的解, 也没有提示.
+!endif
+<p>
+关于本组练习的信息. <p>
+$module_about
+<p>
+本练习的版权属于它的作者.
+把练习的源材料安装在服务器上应得到作者的同意.
+
+!tail
+

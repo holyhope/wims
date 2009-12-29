@@ -1,0 +1,56 @@
+!set lstyle=<i><font color=#800080>
+!set lstend=</i></font>:
+!set lst_tit=!char 5 to -1 of $tit
+!set lst_titend=$titend</a>
+!set lst_type=$lstyle 类型$lstend
+!set type_exec=$lst_type 执行命令<br>
+!set type_pexec=$lst_type 执行命令(只对phtml文件有效)<br>
+!set type_var =$lst_type 变量命令<br>
+!set type_both=$lst_type 既是执行命令又是变量命令<br>
+!set lst_syntax=$lstyle 语法$lstend <tt>!
+!set lst_alias=$lstyle 别名$lstend
+!set lst_mean =$lstyle 意义$lstend
+
+Wims命令可同时用于变量处理文件以及phtml文件.
+命令就是以 $emph!$emphend 起首的一个词. 
+<p>
+命令分成两种类型:
+<ul>
+ <li>执行命令, 它应该出现在行首.
+ <li>变量命令, 它出现在变量定义的起首.
+</ul>
+某些命令既是执行命令又是变量命令.
+<p>
+命令可以接受参数, 参数就是接在后面的词. 参数间用空格或其它词(由命令决定)分隔.
+<a name=cmdlist_list></a>
+<hr><h4>这里是$emph$(choose_$cmd_choose)$emphend命令表.</h4>
+
+!if $style!=integral
+你可以切换到
+ !for i in $cmd_choose_list
+  !if $i != $cmd_choose
+   !href cmd=resume&cmd_choose=$i#cmdlist_list $(choose_$i)
+命令表&nbsp;&nbsp;
+  !endif
+ !next i
+!endif
+
+<ul>
+!for c in $cmdfiles
+ <li><a name=cmdlist_$(c)_></a>
+ !if $style != folding
+  !read cmd/$c.phtml
+  <p>
+ !else
+  !if cmdlist_$(c)_ isin $expand
+   <a href="$httpd_SCRIPT_NAME?session=$session&+cmd=resume&+op=close&+subject=cmdlist_$(c)_#cmdlist_$(c)_">
+   !read cmd/$c.phtml
+   <p>
+  !else
+   !href cmd=resume&op=open&subject=cmdlist_$(c)_#cmdlist_$(c)_ $c
+  !endif
+ !endif
+!next c
+
+</ul>
+

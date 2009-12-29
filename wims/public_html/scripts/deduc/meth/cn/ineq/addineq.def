@@ -1,0 +1,59 @@
+!set methtit=两个不等式相加
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality >,parm inequality >
+!set methhelp=此方法从两个已有的不等式推导出新的不等式:\
+<p><center>\
+ 若 \(a > b) 与 \(c > b), 则 \(a+c > b+d) .\
+</center><p>\
+ 得到的不等式加入假设中.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把不等式
+ !read deduc/methparm.phtml 1
+ 与
+ !read deduc/methparm.phtml 2
+相加
+
+!exit
+:check
+ !distribute items $methparmobj1 into data,left1,sign1,right1
+ !distribute items $methparmobj2 into data,left2,sign2,right2
+ methexp=把 \($left1 $sign1 $right1) 与 \($left2 $sign2 $right2) 相加
+ 
+ gt=>
+ lt=<
+ !if ($gt isin $sign1 and $lt isin $sign2) or\
+    ($lt isin $sign1 and $gt isin $sign2)
+  !exchange left2,right2
+ !endif
+ !read deduc/sub/simplify ($left1) + ($left2)\
+    ($right1) + ($right2)
+ !distribute lines $out into newleft, newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+
+ !if $gt isin $sign1
+  s_=>
+ !else
+  s_=<
+ !endif
+ eq=$empty=
+ !if $eq isin $sign1 and $eq isin $sign2
+  s_=$s_=
+ !endif
+ newobject0=$newleft $s_ $newright
+ oldobject=0
+
+ contextlist=$ct_Always,\
+    $ct_Onlywhen两个不等式是正的,\
+    $ct_Onlywhen其中之一是正的,\
+    $ct_Onlywhen其中之一同号
+
+!exit

@@ -86,31 +86,15 @@
  !exit
 !endif
 
-!if prep_putsource=$error
- 如果你有早先保存的试卷源码, 你可以把它插入目前的试卷, 只需把源码
-复制入以下窗口, 然后点击按钮`发送'.
- <p>
- 否则,
- !href cmd=resume 返回试卷的主页.
- !form reply
- <input type=hidden name=job value=putsource><center>
- <textarea cols=55 rows=10 name=source>$source</textarea>
- <p><input type=submit value="发送">
- </center></form>
- <b>警告</b>. 不要插入修改过的源文件! 这有可能使你的试卷不能使用.
- !exit
-!endif
-
-
 !if nodeactivate=$error
-  The exam cannot be desactivated because
+  此考试不能放弃激活, 这是因为
   !if badstructure isin $deactivate
-   of the class structure.
+   班级结构的问题.
   !else
    !if score isin $deactivate
-    some participants have already begun to work on this exam !
+    有些参加者已经在考了 !
    !else
-    your exams are shared with another class !
+    你的考试是与其他班级分享的 !
    !endif
   !endif
 !endif

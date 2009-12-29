@@ -1,0 +1,102 @@
+!set methtit=变量的直接替换
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, function
+!set methhelp=本方法对不定积分应用变量替换.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !set N=!linecnt $mtobj1
+ !if $N>1 and $methsubstep=1
+  :first
+  !set methsubstep=2
+  施行变量替换: <p>
+  !read deduc/methparm.phtml 1
+ !else
+  !bound methparm1 between integer 0 and $N default 1
+  !if $methparm1=0 or $error!=$empty
+   !goto first
+  !endif
+  <input type=hidden name=methparm1 value=$methparm1>
+  !set methsubstep=1
+  !set l=!line $methparm1 of $mtobj1
+  !set l=!item 2 to -1 of $l
+  !set k=!mathsubst integrate= in $l
+  !set k=!declosing $k
+  !set v=!item 2 of $k
+  !set nvar=!item 1 of $newvariables
+  作变量替换:
+  <p><center>
+    \($l = integrate(f($v),$v) = integrate(f(h($nvar))h'($nvar),$nvar)) ,
+  </center> <p>
+  其中
+  \($v = h($nvar) = )
+  !read deduc/methparm.phtml 2,36
+.
+ !endif
+!exit
+:check
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=失败
+  !exit
+ !endif
+
+ newvar=!item 1 of $newvariables
+ vv=!varlist nofn $methparm2
+ vtest=!listcomplement $newvar,e,pi,euler in $vv
+ !if $vtest!=$empty
+  error=\($methparm2) 只能是 \($newvar) 的函数.
+  !exit
+ !endif
+ diff=!exec maxima diff($methparm2,$newvar);
+ !if $diff=$empty
+  :bad_data
+  error=bad_data
+  !exit
+ !endif
+ inv=!exec maxima solve($ivar=$methparm2,$newvar);
+ inv=!declosing $inv
+ n=!itemcnt $inv
+ inv2=!nospace $inv
+ eq==
+ !if $n!=1 or +++**$newvar$eq notin +++**$inv2
+  error=不能找到 $methparm2 的逆函数,\
+ 这对于以后运用变量的逆替换是必须的.
+  !exit
+ !endif
+ substed=!mathsubst $ivar=($methparm2) in $iker
+ !read deduc/sub/checkzero diff(($substed)*($diff),$newvar)
+ difftest=$out
+ !read deduc/sub/simplify ($substed)*($diff)\
+    ($substed)*($diff)*$newvar
+ !distribute lines $out into newker,ktest
+ !if $newker=$empty or $ktest=$empty or $difftest=$empty
+  !goto bad_data
+ !endif
+ 
+ !if strictintegrate iswordof $m_options and $difftest=yes
+  error=在这个环境下不允许使用这种变量替换.\
+    请改变方法.
+  !exit
+ !endif
+
+ !if $difftest=yes
+  newobject1=$ktest
+ !else
+  newobject1=integrate($newker,$newvar)
+ !endif
+ newobject0=$inv
+ oldobject=0,1
+ methexp=\($ivar=$methparm2)
+ variables=$variables,$newvar 
+!exit
+

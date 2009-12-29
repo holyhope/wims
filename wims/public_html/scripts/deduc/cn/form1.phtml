@@ -1,0 +1,58 @@
+!if $option iswordof newcase
+ !changeto deduc/$module_language/form$option.phtml
+!endif
+
+!if $casefinished!=$empty
+ 情况
+ !htmlmath $casefinished
+ 已经结束.
+!endif
+
+!if $casecnt>1
+ !if $casecnt<3
+  !if $casefinished!=$empty
+   剩下
+  !else
+   这是你的
+  !endif
+  待处理的最后一种情况:
+ !else
+  !if $casefinished!=$empty
+   剩下
+  !else
+   你有
+  !endif
+  !href cmd=reply&opt=newcase $[$casecnt-1] 种情况
+  有待处理. 目前的情况:
+ !endif
+ !htmlmath $caseid
+ <p>
+!endif
+
+!form reply
+!if $currstep=1
+ 你必须一步一步地做这个练习, 并使用菜单上显示的步骤.
+ 第一步的方法：
+!else
+ 第 $currstep 步的方法:
+!endif
+ <small>[
+ !href cmd=help&help_subject=methall&special_parm=$thisexo 帮助
+ ]
+ !set random1=!randint 1,10^6
+ !set random2=!randint 1,10^6
+ !set random=$random1.$random2
+ [
+ !href cmd=help&help_subject=status&special_parm=$random 练习进展状况
+ ]</small> <br>
+!set n_=!linecnt $m_context
+!reset l_,t_
+!if $n_>10 and prf/cleanhyp notitemof $mthlist
+ !set l_=,prf/cleanhyp
+ !set t_=,删除无用的解释
+!endif
+!formselect method list -,$mthlist$l_ prompt $ch_choose,$mtitles$t_
+<input type=submit value=继续>
+
+</form>
+

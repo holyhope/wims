@@ -1,0 +1,27 @@
+!set methtit=根据(不)等式分解成各种情况
+!set methenv=ZZ QQ RR
+!set methparmtype=function, choice 6, function
+!set methhelp=这个方法根据一个等式或不等式成立与否把目前情况分成两种情况.\
+等式/不等式或其逆可以相应地加到两种情况的假设里.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把目前情况根据以下(不)等式成立与否分成两种情况 <br>
+ <input size=10 name=methparm1 value="$methparm1">
+ !formselect methparm2 from 1 to 6 prompt =,!=,<,>,<=,>=
+ <input size=10 name=methparm3 value="$methparm3">
+!exit
+:check
+ sign1=!item $methparm2 of =,!=,<,>,<=,>=
+ sign2=!item $methparm2 of !=,=,>=,<=,>,<
+
+ casesplit=$methparm1 $sign1 $methparm3\
+$methparm1 $sign2 $methparm3
+ methexp=分成情况 \($methparm1 $sign1 $methparm3) 与 \($methparm1 $sign2 $methparm3)
+
+!exit
+

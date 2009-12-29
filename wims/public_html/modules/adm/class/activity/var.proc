@@ -3,7 +3,11 @@ fields=typ,sh,exo,newcnt,sccnt,scsum,dursum,scavg,duravg,scmin,durmin,scmax,durm
 wims_prefix=class user tmp n sharing sharable
 !read tabletheme
 module_language=$lang
-!read $langdefaut/names.$langdefaut
+!if $module_language isitemof {en,fr,cn,es,it,nl}
+ !read $module_language/names.$module_language
+!else 
+ !read $langdefaut/names.$langdefaut
+!endif
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit

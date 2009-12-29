@@ -1,0 +1,84 @@
+!set methtit=不等式加权相加
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality >,parm inequality >,\
+    number, number
+!set methhelp=此方法利用加权相加从假设中两个已知不等式导出新的不等式,\
+新的不等式再被加到假设中.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 引入新的不等式, 它是 <br>
+ !default methparm3=1
+ !default methparm4=1
+ !read deduc/methparm.phtml 3,5
+ 乘不等式
+ !read deduc/methparm.phtml 1
+ <br>加上
+ !read deduc/methparm.phtml 4,5
+ 乘不等式
+ !read deduc/methparm.phtml 2
+
+!exit
+:check
+ !ifval $methparm3=0 and $methparm4=0
+  error=加上零!
+  !exit
+ !endif
+ !distribute items $methparmobj1 into data1,left1,sign1,right1
+ !distribute items $methparmobj2 into data2,left2,sign2,right2
+ !if $data1 issametext $data2
+  error=此方法禁止不等式与自己相加.
+  !exit
+ !endif
+ methexp=\(($methparm3)*($left1 $sign1 $right1) + ($methparm4)*($left2 $sign2 $right2))
+ !if $methparm3<0
+  methparm3=-($methparm3)
+  sign1=!translate internal <> to >< in $sign1
+  left1=-($left1)
+  right1=-($right1)
+ !endif
+ !if $methparm4<0
+  methparm4=-($methparm4)
+  sign2=!translate internal <> to >< in $sign2
+  left2=-($left2)
+  right2=-($right2)
+ !endif
+ 
+ gt=>
+ lt=<
+ !if ($gt isin $sign1 and $lt isin $sign2) or\
+    ($lt isin $sign1 and $gt isin $sign2)
+  !exchange left2,right2
+ !endif
+ !read deduc/sub/simplify ($methparm3)*($left1) + ($methparm4)*($left2)\
+    ($methparm3)*($right1) + ($methparm4)*($right2)
+ !distribute lines $out into newleft, newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+
+ !if $gt isin $sign1
+  s_=>
+ !else
+  s_=<
+ !endif
+ eq=$empty=
+ !if ($eq isin $sign1 or $[$methparm3]=0) \
+    and ($eq isin $sign2 or $[$methparm4]=0)
+  s_=$s_=
+ !endif
+ newobject0=$newleft $s_ $newright
+ oldobject=0
+
+ contextlist=$ct_Always,\
+    $ct_Onlywhen系数均非零,\
+    $ct_Onlywhen两个不等式都是正的,\
+    $ct_Onlywhen其中一个不等式是正的,\
+    $ct_Onlywhen其中一个不等式是同号的
+
+!exit

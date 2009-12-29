@@ -1,0 +1,51 @@
+!set methtit=删除无用的假设
+!set methparmtype=special
+!set methparmrelax=1
+!set stepnocount=yes
+!set methhelp=你可以用这个方法删除无用的假设,\
+ 以净化环境. 不过, <b>请注意</b>! 如果你删除了必要的假设,\
+你将无法完成证明!\
+ <p>\
+任何时候你都可以使用这个方法而不用担心被扣分,\
+因为这不会增加推导的步数.
+!set N_=!linecnt $m_context
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if $N_<1
+ !set error1=目前情况下已经没有任何假设!
+!endif
+
+!exit
+:form
+ $methhelp
+ <p>
+ 这里是当前的假设. 标记你想删除的假设. <ul>
+ !for i=1 to $N_
+  !set l=!line $i of $m_context
+  <li> <input type=checkbox name=methparm1 value=$i> \($l)
+ !next i
+ </ul>
+!exit
+:check
+ !reset newobject,oldobject
+ n_=!itemcnt $methparm1
+ !if $n_=0
+  methexp=空的步骤
+  !exit
+ !endif
+ nc=
+ !for i=1 to $N_
+  !if $i notitemof $methparm1
+   l=!line $i of $m_context
+   nc=!append line $l to $nc
+  !endif
+ !next i
+ m_context=$nc
+ !read deduc/objects.combine
+ methexp=删除 $n_ hypotheses
+ 
+!exit
+

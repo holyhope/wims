@@ -1,6 +1,6 @@
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- of <b><font color=green>$wims_institutionname</font></b>
+!set classname=<b><font color=green>$wims_classname</font></b>,\
+ <b><font color=green>$wims_institutionname</font></b>
  
 !set months=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
 
@@ -24,7 +24,7 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 
 !set name_severitylevels=作业页严厉度
 !set name_formula=序列号,权重,严厉度
-!set name_sheetstatut=prep,active,expired,hidden
+!set name_sheetstatut=准备中,已激活,已过期,隐藏
 
 !distribute items 考试,页,练习,开始,得分,会话, 完成,等价于\
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
@@ -37,7 +37,7 @@ name_done,name_equiv
 !set name_warning=你提出了一个非法的请求.
 
 !set name_click=在名字上点击以了解他工作的详情.
-!set name_affi=质量,已做的工作
+!set name_affi=质量,已做的工作,得分
 !set name_workdetail=的作业的详细情况
 !set name_activesession=此参加者有一个活动中的考试对话
 
@@ -59,7 +59,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_post=公布作业页的
   
 !if $job=userprop
-  !distribute items 修改,注册号,注解,Photo url,变量 (技术的),\
+  !distribute items 修改,注册号,注解,照片的url,变量 (技术的),\
   班级口令,输入参加者注册的口令,\
   into name_change,name_regnum,name_comments,name_photourl,name_vars,\
   name_classpassword,name_enterpassword
@@ -84,4 +84,5 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
    !distribute items 合并, 替换, 检查\
    into name_merge, name_replace,name_show
 !endif
+!set name_topten=!nosubst 班级的平均分最高 $class_topscores 人
 :end

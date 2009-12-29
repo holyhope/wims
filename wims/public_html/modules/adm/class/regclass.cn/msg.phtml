@@ -1,20 +1,5 @@
 !set wims_module_log=error: $error
 
-!if bad_secure=$error
- Your current host does not fit your definition of secure access
- (<tt>$secure</tt>)! This is probably an error which would make you unable
- to control your class.
- <p>
- Please read attentively the documentation below. If you still don't
- understand, leave this field empty (you will be sent temporary secret codes
- for sensitive operations), or put the word <tt>all</tt> to disable this
- security measure.
- <p><hr><p>
- !read help/hosts.phtml
- !reset secure
- !exit
-!endif
-
 !if no_subclass iswordof $error
 当前你无权创建分班.
  !set restart=no
@@ -31,27 +16,51 @@
 !endif
 
 !if not_manager iswordof $error
-对不起, 只有网站管理员才有权创建学校入口.
+对不起, 只有网站管理员才有权创建学校的学区.
  !exit
 !endif
 
 !if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size="+1"><center>发送到电邮地址 $sendmail 的密码.</center></font>
+  <p>
+ !endif
  !if $regpass!=$empty
 抱歉, 你的密码不对. 请重试.
  !else
   !set cname=!item $cltype+1 of 虚拟班,,班级组,,\
-    学校入口
+    学校的学区
   在本站创建$cname受密码保护. 你必须输入密码才能继续.
  !endif
  <p>
  !form reply
   <input type=hidden name=step value=0>
  输入密码: <input size=16 name=regpass type=password>
+  <input type="submit" name="Envoyer" value="$wims_name_Send">
  </form> <p>
 附注. 创建虚拟班级的密码应该从 WIMS 网站的
  !mailurl $wims_site_manager 管理员\
 虚拟班级创建密码
 那里得到.
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  你可以从以下的电邮地址收到密码 :
+  <input type="text" name="adresse1" value="$adresse1" size="20">
+  <input type=hidden name=step value=0>
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size="+1">@$regpassmail</font>
+   <input type=hidden name="adresse2" value="$regpassmail">
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Recevoir">
+ </form>
+ !else
+  !reset sendmail
+ !endif
  !set restart=no
  !exit
 !endif
@@ -85,6 +94,20 @@
  !exit
 !endif
 
+!if bad_secure=$error
+ 你目前的网络位置不在你自己定义的安全连接表内 (<tt>$secure</tt>)&nbsp;! 
+ 这个错误可能就是由于对班级的接入控制所造成.
+ <p>
+ 请仔细阅读以下文件. 如果你还是搞不懂,
+ 你可以把此栏留空 (对于敏感的操作将会把一次性密码发送给你),
+ 或者填入 <tt>all</tt>
+ 以关闭这个安全措施.
+ <p><hr><p>
+ !read help/hosts.phtml
+ !reset secure
+ !exit
+!endif
+
 !if has_empty=$error
 你还没有给出创建班级所需的所有信息. 请在填全数据后再递交.
  !exit
@@ -100,20 +123,21 @@
  !exit
 !endif
 
-!if bad_email=$error
-你的电子邮件地址是无效的.
- <p>
-请注意: 如果你不提供你本人的电子邮件的真实地址, 创建班级的工作是不可能完成的.
+!if anti_date=$error
+ 你的班级的失效日期早于今天.
+ 因此班级还没有创建就失效了!
  !exit
 !endif
 
 !if bad_level=$error
-程度值无效.
+ 错误的年级名.
  !exit
 !endif
 
-!if anti_date=$error
-你的班级的失效日期比今天还早. 它还没有创建就已经过期了!
+!if bad_email=$error
+你的电子邮件地址是无效的.
+ <p>
+请注意: 如果你不提供你本人的电子邮件的真实地址, 创建班级的工作是不可能完成的.
  !exit
 !endif
 

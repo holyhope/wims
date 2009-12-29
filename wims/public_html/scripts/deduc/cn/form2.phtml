@@ -1,0 +1,22 @@
+!reset methremark
+!form reply
+第 $currstep 步.
+
+!read deduc/meth/$module_language/$meth.def form
+
+<input type=submit value=OK> <p>
+!href cmd=help&help_subject=meth&method=$meth 帮助
+.
+!set random1=!randint 1,10^6
+!set random2=!randint 1,10^6
+!set random=$random1.$random2
+!href cmd=help&help_subject=status&special_parm=$random 练习进展状况
+.
+!href cmd=reply&opt=newstep&gotostep=$currstep 改变方法
+.
+</form>
+!if $methremark!=$empty
+ <p>
+ <b>注</b>. $methremark
+!endif
+

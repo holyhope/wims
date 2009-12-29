@@ -1,0 +1,94 @@
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+属于 <b><font color=green>$wims_institutionname</font></b>
+
+!!!set months=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
+!set cdt_title=记事本
+
+!if $job=adddate
+  !set cdt_subtitle=添加/修改日期
+  !goto common
+!endif
+
+!if $job=addtodo
+  !set cdt_subtitle=添加任务
+  !goto common
+!endif
+
+!if $job=logfile
+  !set cdt_subtitle=记录文件
+  !set name_text=这里是班级的作业连接的记录
+  !goto common
+!endif
+
+!if $job=config
+  !set cdt_subtitle=记录文件
+  !set name_link=主页连接的名称
+  !set name_intro=这里是你可以修改的参数
+  !set name_see=参看
+  !set name_see2=记事本的日志文件
+  !goto common
+!endif
+
+!if $job=file
+  !set name_erasedfile=!nosubst 文件 <b>$erase</b> 已被删除
+  !set name_depos=你可以存放文件
+  !set name_available=可用的文件
+  !set name_erase=删除文件
+  !set name_nodeposit=你不能再存放文件, 因为分配给班级的硬盘空间限额已经接近或超过
+  !set name_explanation1=!nosubst 这些文件可以利用变量
+  <tt>\filedir</tt> 存取. \
+  例如,\
+  <p><center>\
+ <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
+ </center> <p>\
+ 给出到文件 <a href="$m_filedir/$f1">$f1</a> 的链接.\
+ 你也可以写
+ 
+ !set name_explanation2=以包含一个图像文件 <tt>myfile.jpg</tt> 到页面.\
+ <p>只有班级的参加者才能存取被存放的文件.
+
+!set name_availablespace=可用盘空间总数,自由盘空间
+  !goto common
+!endif
+
+!if $job=helplink
+  !set name_Add=为了添加一个对象, 请点击相应的链接.
+  !set name_exam=考试;
+  !goto common
+!endif
+
+:common
+!distribute line 已做工作\
+要做的工作\
+在\
+以及\
+添加考试\
+添加作业页\
+在\
+要做的工作\
+任务\
+显示的日期数\
+欲做的工作\
+已做工作\
+会话\
+字符\
+没有信息\
+没有这一天的信息\
+没有这一阶段的信息\
+日\
+课程\
+班级\
+提供\
+无事可做\
+into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
+name_work,name_nb_date,name_todo2,name_workdone,name_session,\
+name_character,name_noinfo1,name_noinfo2,name_noinfo3,\
+name_Day,name_discipline,name_inclass,name_giventhe,name_nowork
+
+!set name_warning1=如果不提供第二个日期, \
+就只能按第一个日期进行.
+
+!set name_date=!nosubst $jday/$jmonth/$jyear
+!set name_date2=!nosubst $jday2/$jmonth2/$jyear2
+

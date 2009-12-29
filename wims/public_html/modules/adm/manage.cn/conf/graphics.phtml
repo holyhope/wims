@@ -30,7 +30,7 @@
 使用了动态TeX插入. 应该能正确显示, 否则说明你的系统里没有正确安装TeX.
 你可以改变TeX字体的大小等级使它们不会显得太大或太小
 (请先阅读 
-!href cmd=help&help_subject=conf&help_conf=texbasesize 帮助
+!href cmd=help&help_subject=conf&help_conf=texbasesize $wims_name_help
 ).
 <p>
 以下两个图形由内涵的动态绘图程序生成.
@@ -66,7 +66,9 @@ linewidth 2\
 levelcurve green,x^4+y^4+(cos(s*pi)*x-sin(s*pi)*y)*(sin(s*pi)*x+cos(s*pi)*y),0,-0.06,0.2,0.6,1
 </td></tr>$table_end <p>
 
-下面使用了gnuplot描图. 曲线应该有不同的颜色.
+下面使用了 <b>gnuplot</b> 描图 (
+!exec insplot_about
+). 曲线应该有不同的颜色.
 如果不能正确显示, 请尝试不同的图形格式.
 <p><center>
 !set ins_border=2
@@ -75,10 +77,22 @@ levelcurve green,x^4+y^4+(cos(s*pi)*x-sin(s*pi)*y)*(sin(s*pi)*x+cos(s*pi)*y),0,-
  x$color_1 x$color_2 x$color_3 x$color_4 x$color_5 x$color_6 x$color_7 x$color_8 x$color_9 x$color_10
 !insplot [-5:5] [-1.4:1.4] sin(x),cos(x),-sin(x),-cos(x)
 </center> <p>
+以下的描图使用了 <b>graphviz</b>. 如果没有显示, 那么一定是
+!!!! no space after about ...
+!exec graphviz about
+没有正确安装.
+<p><center>
+!set graphviz_dot=neato
+!set graph=!exec graphviz digraph test {a->b [color=red] ; b-> c; a-> ?; c-> 閩
+!set graph=!line 1 of $graph
+ <img src="$graph" alt="graphviz">
+</center>
+
+<p>
 以下的光线跟踪图形不受上述图形格式的影响. 如果没有出现图形, 那么一定是
 !exec povray about
  没有正确安装.
- !href cmd=help&help_subject=soft&help_conf=povray 帮助
+ !href cmd=help&help_subject=soft&help_conf=povray $wims_name_help
 
 <p><center>
 !set povray_width=200

@@ -1,0 +1,38 @@
+
+!if $help_subject iswordof methall status
+ !read deduc/$module_language/help/$help_subject.phtml
+ <p><center>
+ !href cmd=help 其它帮助主题
+ </center><p>
+ !reset help_subject
+ !exit
+!endif
+
+!if $help_subject=meth and $method!=$empty
+ !read deduc/meth/$module_language/$method.def
+ !default methhelp=这个方法没有更多的帮助.
+ <p>
+ <b>方法: <em><font color=blue>$methtit</font></em></b>
+ <p> 
+ $methhelp
+ !reset help_subject
+ !exit
+!endif
+
+!if help iswordof $exo_has
+ !read $deffile help
+!else
+ 本练习没有特别的帮助.
+!endif
+<p>
+!set random1=!randint 1,10^6
+!set random2=!randint 1,10^6
+!set random=$random1.$random2
+帮助主题:
+!href cmd=help&help_subject=methall&special_parm=$thisexo 方法
+,
+!href cmd=help&help_subject=status&special_parm=$random 练习进展情况
+.
+
+!reset help_subject
+

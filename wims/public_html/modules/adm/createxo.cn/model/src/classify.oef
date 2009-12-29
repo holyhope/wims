@@ -1,100 +1,98 @@
 type=datalist
 textarea="data"
 
-:Classify objects according to their properties, drag-and-drop.
+:根据性质把对象分类, 鼠标拖放.
 
-The exercise presents a list of objects, which should be classified
-according to their properties by dragging them towards corresponding boxes
-with the mouse.
+本练习展示了一些对象的表, 要求按它们的性质作分类,
+这是通过鼠标拖放来实现的.
 <p>
-To construct an exercise with this model, it is enough to enter the list of
-objects and their properties.
+为了构造这种类型的练习, 
+只需给出对象以及它们的性质的表.
 <p>
-With a slight modification, a variant of this model can accept image objects.
+只要稍作修改就能使用图像对象.
 <p>
-Author of the model: Gang Xiao <xiao@unice.fr>
+模块作者: Gang Xiao <xiao@unice.fr>
 
-:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+:%%%%%%%%%%%%%%%%%      注       意      %%%%%%%%%%%%%%%%%%%%
 
-Remove the above header if you destroy the model tags! (The lines starting
-with a ':'.) Otherwise the exercise might not be taken back by Createxo.
+如果你删去了本范例中的标签 (即跟随在冒号 ':' 后面的那几行),
+那么也请删去这个头部, 否则有可能回不到 Createxo.
 
-:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+:%%%%%%%%%%%%%%%%%   被重新定义的参数示例   %%%%%%%%%%%%%%%%%%
 
-:\title{Classify by property}
+:\title{按性质分类}
 :\author{XIAO Gang}
 :\email{xiao@unice.fr}
 
-:Number of objects to classify by exercise. Up to 20.
+:在练习中需要分类的对象个数. 至多 20 个.
 \integer{tot=8}
 
-: The maximal number of presented objects having a same property.
-This number must be strictly greater than 1.
+: 被展示的具有相同性质的对象的最大个数.
+这个数字应该严格大于 1.
 \integer{max1=4}
 
-:The size of objects to drag, in pixels, x times y.
-Think of people who increase the font size of their browsers! Don't put the
-boxes too small.
+:被拖放对象的大小, 以像素为单位, x 乘 y.
+考虑到用户可能会增大浏览器的字体, 因此不能取得太小.
 \text{size1=100x40}
 
-:List of properties. Up to 10, separated by commas.
-\text{prop=Insect,bird,mammal}
+:性质的表. 最多 10, 用逗号分隔.
+\text{prop=昆虫,鸟类,哺乳动物}
 
-:Main data.
-Define one object per line, first the name, then the property,
-separated by a comma. <p>
-It is best to define data in abundant quantity for each category. <p>
-Take care not to introduce typos in the properties! Otherwise the 
-corresponding object may break the exercise.
+:主要数据.
+每个对象占一行, 先是名称, 然后是性质,
+用逗号分隔. <p>
+最好每个范畴都含有足够数量的对象.
+注意在输入性质时不要出现打字错误!
+否则这个对象会使练习崩溃.
 \matrix{data=
-Eagle,Bird
-Albatross,Bird
-Spider,Insect
-Duck, bird
-Cat, Mammal
-Horse,Mammal
-Dog,Mammal
-Pig,Mammal
-Corbel,Bird
-Locust,Insect
-Elephant,Mammal
-Falcon,Bird
-Seagull,Bird
-Gueppe,Insect
-Bee,Insect
-Lion,Mammal
-Sparrow,Bird
-Fly,Insect
-Mosquito,Insect
-Sheep,Mammal
-Goose,Bird
-Butterfly,Insect
-Pigeon,Bird
-Fox,Mammal
-Nightingale,Bird
-Scorpion,Insect
-Monkey,Mammal
-tiger,Mammal
-Cow,Mammal
+鹰,鸟类
+信天翁,鸟类
+蜘蛛,昆虫
+鸭, 鸟类
+猫, 哺乳动物
+马,哺乳动物
+狗,哺乳动物
+猪,哺乳动物
+乌鸦,鸟类
+蚱蜢,昆虫
+象,哺乳动物
+猎鹰,鸟类
+海鸥,鸟类
+蜈蚣,昆虫
+蜂,昆虫
+狮子,哺乳动物
+燕子,鸟类
+蝇,昆虫
+蚊,昆虫
+羊,哺乳动物
+鹅,鸟类
+蝴蝶,昆虫
+鸽,鸟类
+狐狸,哺乳动物
+夜莺,鸟类
+蝎,昆虫
+猴,哺乳动物
+虎,哺乳动物
+牛,哺乳动物
 }
 
-:Option words.
-Add the word "shuffle" if you want the order of properties to be randomized.
+:选项.
+如果你想随机排列性质的次序, 可使用选项 "shuffle".
 \text{option=}
 
-:Text before the table. html tags allowed.
-\text{pre=Classify the following animals according to their categories. <p>}
+:表格前面的文字. 可以使用 html 标注.
+\text{pre=请根据所给范畴分类下列动物. <p>}
 
-:Text after the table. html tags allowed.
+:表格后面的文字. 可以使用 html 标注.
 \text{post=}
 
-:Verb and article to post before the classified category.
-\text{estun=is}
+:在范畴前的系词.
+\text{estun=是}
 
-:How to say if an object is not classified?
-\text{noclass=does not belong to any category}
+:如何称呼不能分类的对象?
+\text{noclass=不属于任何范畴}
 
-:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+:%%%%%%%%%%%%%%       不要改动下面这段命令          %%%%%%%%%%%%%%%%
 
 \integer{pcnt=items(\prop)}
 \integer{datacnt=rows(\data)}
@@ -144,12 +142,11 @@ Add the word "shuffle" if you want the order of properties to be randomized.
 \steps{\rep}
 \conditions{wims(makelist x for x=1 to \tot)}
 
-:%%%%%%%%%%%%% Now the statement in html. %%%%%%%%%%%%%%%%%%%%
+:%%%%%%%%%%%%% 现在可以用 html 格式填入问题的陈述  %%%%%%%%%%%%%%%%%%%%%%%%%
 
-::The command to show the field of reply number 3 for example, is
-\embed{reply 3,\size} <p>
-And the name of the property number 4, is \prop[4] with the first letter
-in upper case, or \props[4] in lower case.
+::在文中可使用 \embed{reply 3,\size} 表示第 3 个回答栏 <p>
+用 \prop[4] 或 \props[4] 指第 4 个性质, 前者表示首字母大写,
+后者表示首字母小写.
 
 \statement{\pre
 
@@ -163,7 +160,7 @@ in upper case, or \props[4] in lower case.
 \post
 }
 
-:%%%%%%%%%%%%% Nothing to modify after. %%%%%%%%%%%%%%%%%5
+:%%%%%%%%%%%%%      不要改动以下的命令        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \answer{\prop[1]}{\r1;\all}{type=dragfill}
 \answer{\prop[2]}{\r2}{type=dragfill}
@@ -177,16 +174,16 @@ in upper case, or \props[4] in lower case.
 \answer{\prop[10]}{\r10}{type=dragfill}
 
 \text{totans=item(1..\pcnt,
-	wims(items2words \r1),
-	wims(items2words \r2),
-	wims(items2words \r3),
-	wims(items2words \r4),
-	wims(items2words \r5),
-	wims(items2words \r6),
-	wims(items2words \r7),
-	wims(items2words \r8),
-	wims(items2words \r9),
-	wims(items2words \r10))}
+    wims(items2words \r1),
+    wims(items2words \r2),
+    wims(items2words \r3),
+    wims(items2words \r4),
+    wims(items2words \r5),
+    wims(items2words \r6),
+    wims(items2words \r7),
+    wims(items2words \r8),
+    wims(items2words \r9),
+    wims(items2words \r10))}
 text{totans=wims(replace internal &#39; to ' in \totans)}
 \text{clean=}
 \text{check=}

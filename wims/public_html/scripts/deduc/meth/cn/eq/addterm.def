@@ -1,0 +1,48 @@
+!set methtit=方程两边加一个代数式
+!set methparmtype=function,parm equation
+!set methhelp=此方法把方程 \(a = b)\
+ 变成等价方程 \(a + f = b + f), 其中 \(f) 是一个代数式.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把代数式
+ !read deduc/methparm.phtml 1,15
+ 加到方程的两边
+ !read deduc/methparm.phtml 2
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ methexp=把 \($methparm1) 加到 \($left $sign $right) 的两边
+
+ !read deduc/sub/simplify $left + ($methparm1)\
+    $right + ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ newsign=$sign
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Always,\
+    $ct_Onlywhen加项有固定符号,\
+    $ct_Onlywhen加项是正的
+
+ !if $askresult>1
+  !read deduc/sub/simplify $left - ($methparm1)\
+    $right - ($methparm1)
+  !distribute lines $out into badleft, badright
+ 
+  resultlist=$newobject2,\
+    $newleft $newsign $badright,\
+    $badleft $newsign $newright
+ !endif
+
+!exit
+

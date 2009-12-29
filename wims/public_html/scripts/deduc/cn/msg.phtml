@@ -1,0 +1,132 @@
+!set wims_module_error=error: $error
+!if $oldpenalty<$penalty
+ !set penaltymsg=这个严重错误要扣分.
+ !set oldpenalty=$penalty
+!endif
+
+<b>错误.</b>
+
+!set n=!wordcnt $error
+!if $n>1
+ $error
+ !exit
+!endif
+
+!if $error iswordof empty_data bad_data bad_reply double_reply\
+    bad_answer bad_exo nofloat unjustified check_fail no_object\
+    bad_step illegal_method bad_method bad_env fixedgoal msg\
+    unknown_variable
+ !goto $error
+!else
+ !msg $error
+ !exit
+!endif
+
+:empty_data
+ 你发送的回答不完整. 请补完整.
+ !exit
+
+:bad_data
+ 你的数据不能理解. 打字错误?
+ !exit
+
+:bad_reply
+ 不! 你的回答是错的. 请再试.
+ !exit
+
+:double_reply
+本练习已经结束且打了分. 你不能继续发送回答.
+(请不要使用浏览器的 `刷新' 按钮重复发送回答!)
+ !exit
+
+:unknown_variable
+ 变量 <b><em>$unknown</em></b> 在这里没有定义过.
+ !exit
+
+:nofloat
+ 练习中不能使用小数. 用 1/3 代替
+ 0.33333, 用 1/4 代替 0.25!
+ !exit
+
+:unjustified
+ 抱歉, 这个方法不能接受你的输入.
+你应该尝试其他手段.
+ !exit
+
+:check_fail
+ 软件错误: 请报告这个漏洞.
+ !exit
+
+:no_object
+ 在这种情况你没有应用此方法的依据 <font color=red>
+ <em>$badmeth</em></font>.
+ !exit
+
+:bad_step
+ 你想要尝试无效的步骤. 操作错误?
+ !exit
+
+:illegal_method
+ 你想使用不被允许的方法. 想要取巧吗?
+ !exit
+
+:bad_method
+ 此方法不存在. 这也许是练习的错误.
+ 请与作者联系以纠正它.
+ !exit
+
+:bad_env
+ 此方法与练习的的环境不相容.
+ !exit
+
+:fixedgoal
+ 这个练习不允许你改变目标.
+所以你不能使用这个方法.
+ !exit
+
+:msg
+ $msg
+ !exit
+
+:bad_answer
+ 你的回答 <p><center>
+ <b>$bad_name</b> = <tt>$bad_value</tt> <p></center>
+ !if unknownword iswordof $test
+  !set w=!word 3 of $test
+  不可理解: 回答中的词 <font color=red>$w</font>
+  与问题无关. 请纠正.
+  !exit
+ !endif
+ !if nocompute iswordof $test
+  不被允许: 请你自己计算好,
+再提交计算结果.
+  !exit
+ !endif
+ !if badform iswordof $test
+  不符合要求. 请重新写成正确的形式.
+  !exit
+ !endif
+ !if notunit iswordof $test
+  只是一个数: 请明确它的单位.
+  !exit
+ !endif
+ 不能理解. 
+请改正并重新发送.
+ !exit
+
+:bad_exo
+ 由于本练习设计有错 (<b>$(replyname$i)</b> 的正确答案是无效的),
+无法测试你的回答的正确性. 
+因此只能请你换一个练习. 抱歉.
+ <p>
+ 如果你要报告这个问题, 请 
+ !if $email!=$empty
+  !mailurl $email 联系作者
+ !else
+  联系作者
+ !endif
+.
+ !exit
+
+
+

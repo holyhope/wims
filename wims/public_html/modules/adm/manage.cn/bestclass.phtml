@@ -1,0 +1,94 @@
+
+<p>
+!href cmd=reply&job=conf&confcat=2 点击这里
+ 以设置本服务站对于虚拟班级的存取策略.
+
+!if $sccnt+$clcnt<1
+ <p>
+ 没有与你的搜索对应的虚拟班.
+ !reset keyword
+ <p>
+ !href cmd=reply&job=class 班级表
+ .
+ !exit
+!endif
+
+<br>本服务器上有 $nbcls 个班级组或班级.
+<p> <center>
+ !form reply  
+  !default bst_num=10
+  !let tmp=!date -d '1 month ago' '+%Y%m%d'
+  !default bst_since=$tmp
+  从 <input type="text" name="bst_since" value="$bst_since" size="7"><small>格式 <font color=blue>yyyymmdd</font></small> 以来, <input type=text name="bst_num" value="$bst_num" size="4"> 个累计连接时间最多的班级.
+ <input type=hidden name=job value=bestclass>
+  <input type=submit value="Rafra&icirc;chir">
+ </form>
+ </center> 
+<p>
+
+!if $sccnt>0
+<p>$table_header
+<caption>学校和班级组的表</caption>
+$table_hdtr
+<th>名称</th><th>操作</th><th><small>语言</small></th><th>主持教师</th>
+<th>创建于<br><small>yyyymmdd</small></th>
+<th>失效于<br><small>yyyymmdd</small></th>
+<th>装入<sup>[1]</sup></th>
+<th>参加者</th> 
+!for i=1 to $sccnt
+ !set l=!line $i of $sclasses
+ !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ 删除
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ 修改
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager 访问
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=你的 WIMS 虚拟班">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ <td align=center>$load_</td>
+ <td align=center>$u_</td>
+!next i
+$table_end
+!endif
+
+!if $clcnt>0
+<p>$table_header
+<caption>独立班级表</caption>
+$table_hdtr
+<th>名称<th>操作<th><small>语言</small><th>主持教师
+<th>创建于<br><small>yyyymmdd</small>
+<th>失效于<br><small>yyyymmdd</small>
+<th>装入<sup>[1]</sup></th>
+<th>参加者</th> 
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ 删除
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ 修改
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager 访问
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=你的 WIMS 虚拟班级">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ <td align=center>$load_</td>
+ <td align=center>$u_</td>
+!next i
+$table_end
+!endif
+<center><b>[1]</b> <i>"装入" 意为从 $bst_since 以来累计的小时数乘学生连接数.</i></center>
+<center>
+!href cmd=reply&job=class 返回班级列表
+</center>
+

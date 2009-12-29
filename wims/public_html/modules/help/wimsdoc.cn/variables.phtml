@@ -1,0 +1,126 @@
+!read tabletheme
+<h4>变量的定义与替换</h4>
+
+Wims的变量只有一种类型: 它们都是字符串变量. 
+对变量的赋值是通过变量命令
+$(ref1)cmdlist_eval_&cmd_choose=all$(ref2)cmdlist_eval_>!eval</a> 实现的.
+<p>
+变量的定义或改变可由变量处理文件完成, 或使用命令
+$(ref1)cmdlist_let_&cmd_choose=all$(ref2)cmdlist_let_>!let</a> 与
+$(ref1)cmdlist_default_&cmd_choose=all$(ref2)cmdlist_default_>!default</a>.
+<p>
+变量名可以使用任何英文字母、数字以及下划线 $(emph)_$emphend. 
+对于变量名的长度以及变量值的长度都有限制.
+(由服务器的配置确定.)
+<p>
+在变量处理文件或phtml文件的任何地方(甚至在变量定义命令行的名称栏)
+都可以进行变量替换. 以字符 $emph$$$emphend 起首的字母串被认为是变量名,
+而且在包含它的命令行被处理时被替换成它的值.
+<p>
+变量替换的特殊规则:
+<ul>
+ <li>如果字符 $emph$$$emphend 后接空格, 将被舍弃.
+ <li>字符串 $emph$$$$$emphend 被替换成单个 $emph$$$emphend.
+ <li>如果字符 $emph$$$emphend 后接左括号 $emph($emphend, 
+  那么会找到匹配的右括号 $emph)$emphend, 括号内的内容将被替换.
+  替换结果将成为变量名, 而且最后结果是后一变量的值.
+  这就允许嵌套的替换, 对于变量后接字符数字串也有同样替换.
+  <br>例: 如果变量 $(emph)i$emphend 取值 $(emph)3$emphend,
+  变量 $(emph)alpha3beta$emphend 将取值 $(emph)pi$emphend,
+  字符串<pre>
+  3*$$(alpha$$(i)beta)*x</pre>经替换后变成<pre>
+  3*pi*x.</pre>
+  <p>
+  数组的赋值: 如果变量 $(emph)l$emphend 含有以逗号分隔的表
+  $(emph)a,b,c,d,e$emphend, 则经替换后, 字符串
+  <tt>$$(i[3])</tt> 取值 <tt>c</tt>, 且
+  <tt>$$(i[2 to 4])</tt> 给出 <tt>b,c,d</tt>, 等等.
+  <p>
+  也可给2维数组赋值: 如果
+  <p><center><tt>$$M=x,y,z;a,b,c</tt>
+  </center> <p>
+  (一个2x3矩阵), 则
+  <p><center>
+  <tt> $$(M[1;3,2])=z,y </tt>
+  </center> 
+ <li><p>如果字符 $emph$$$emphend 后接左方括号
+  $emph[$emphend, 则先找到匹配的 $emph]$emphend, 括号内的内容被替换,
+  再被赋予实数值, 其精度由 $emph print_precision$emphend 确定.
+  所得的值前面加上 $emph$$$emphend 后代替原来的美元号加一对方括号及其中的所有内容.<br>
+  它可用于作为数组的下标.
+  <br>例: 若变量 $(emph)i$emphend 取值 $(emph)3$emphend,
+  变量<br>
+  $(emph)a1$emphend 的值是 $(emph)3$emphend,  <br>
+  $(emph)a2$emphend 的值是 $(emph)pi$emphend, <br>
+  则经过替换后, 串<pre>
+  $$(a$$[$$i-1])*x+$$(a$$[$$i-2])</pre>成为<pre>
+  pi*x+3.</pre>
+ <li>如果经替换后变量的值仍含有字符
+  $emph$$$emphend, 那么继续进行替换, 直至没有替换可作为止.
+  服务器对嵌套替换的层次有个上限; 
+  无限嵌套的替换会因超过这个限制而以出错信息结束.
+</ul>
+
+<hr><h4>被保留的变量名</h4>
+
+以下名称有特殊意义, 不能用在任何模块的内部名称里.
+
+<ul>
+ <li>不要使用全由数字组成的变量名.
+  这将留作以后系统的发展使用.
+ <li>变量名
+  !for i in cmd,module,session,lang,special_parm,user,useropts,worksheet
+   $emph$i$emphend,
+  !next i
+  用于传送用户的特殊参数. 模块的变量处理文件以及phtml文件可以读这些变量,
+  但不能给它们设置值.<br>
+  这些变量的意义参见 $emph$title_structure$emphend.
+ <li>变量 $emph no_name$emphend 有特殊用途: <br>
+  用户询问串里的无名参数(例如把图像坐标传送给http服务器时)就存放在这个变量里.
+  因此它不能用于其它目的.
+ <li>所有以 $emph wims_$emphend 起首的名字都对wims服务器有特殊含义.
+  仅当它们被赋予特殊含义时, 模块才能对它们读或写.
+ <li>以 $emph m_$emphend 起首的变量名保留作为内嵌数学符号用.
+  模块程序设计者可以对它们重新定义, 但原来的定义就消失了.
+ <li>变量 $emph module_dir$emphend 的值已被预设为当前模块的目录
+  (相对于服务器的公开网页主目录). 它的值通常是
+  $emph $$module_dir=module/$$module $emphend
+  (但可因安装时的配置而改变).
+ <li>以 $emph module_$emphend 起首的变量名有特殊含义:
+  它们用于储存模块的INDEX文件所定义的变量. 目前已使用的变量有:
+
+  $table_header
+  $table_tr<th>变量</th><th>意义</th></tr>
+   $table_tr<td>$emph module_title$emphend<td>模块名称
+   $table_tr<td>$emph module_description$emphend<td>模块的简短说明
+   $table_tr<td>$emph module_author$emphend<td>模块作者名
+   $table_tr<td>$emph module_address$emphend<td>(主要)作者的电邮地址
+   $table_tr<td>$emph module_copyright$emphend<td>模块的版权
+   $table_tr<td>$emph module_version$emphend<td>模块的当前版本
+   $table_tr<td>$emph module_wims_version$emphend<td>为执行此模块所需的<br>
+   最低wims版本
+   $table_tr<td>$emph module_language$emphend<td>模块语言(cn, en, fr, es, 等 ...)
+   $table_tr<td>$emph module_category$emphend<td>模块的范畴<br>
+    (exercise, tool, course, pedia, recreation, adm, other)
+   $table_tr<td>$emph module_level$emphend<td>模块的程度
+   $table_tr<td>$emph module_domain$emphend<td>algebra, analysis, geometry, ...
+   $table_tr<td>$emph module_keywords$emphend<td>关键词, 用于html的头部
+   $table_tr<td>$emph module_scoring$emphend<td>= yes (若模块按wims标准给分)
+  </table></center>
+  此外, 变量 $emph module_has_intro$emphend, 
+  $emph module_has_help$emphend 以及
+  $emph module_has_about$emphend
+  取值 "yes" 意为模块目录里含有相应的 .phtml 文件.
+  这些变量用于命令 <tt>!homeref</tt> 中.
+ <li>以 $emph httpd_$emphend 起首的变量是httpd设置的环境变量,
+  可供wims模块读出. 例如环境变量 $emph REMOTE_HOST$emphend 在wims内部成为
+  $emph httpd_REMOTE_HOST$emphend.<br>
+  这类变量的详情请参看httpd协议的说明.
+ <li>以 $emph ins_$emphend, $emph insplot_$emphend, $emph instex_$emphend 
+  起首的变量名都有与插入引擎有关的特殊含义. 
+  只有当它们被指定特殊意义时, 模块才能对它们读或写.
+ <li>如果你的模块使用外部软件包(例如 $emph pari$emphend),
+  那么以与此外部包的接口名后接 $emph _$emphend 的变量名将有特殊含义,
+  不应用作其它用途.
+</ul>
+

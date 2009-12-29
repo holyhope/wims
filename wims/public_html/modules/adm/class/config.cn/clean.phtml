@@ -36,11 +36,11 @@
  !href cmd=reply&job=clean&clean=all 清除所有能清除的内容
 .
 !if $cl_usercnt>0
- <li>$cl_usercnt 参加者帐号.
+ <li>$cl_usercnt $wims_name_student.
  !if $sharing_user!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=user 删除.
+  !href cmd=reply&job=clean&clean=user $wims_name_erase.
   !if $cl_scorecnt>0
    (也将删除活动记录.)
   !endif
@@ -51,7 +51,7 @@
  !if $sharing_doc!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=doc 删除.
+  !href cmd=reply&job=clean&clean=doc $wims_name_erase
  !endif
 !endif
 !if $cl_exocnt>0
@@ -59,7 +59,8 @@
  !if $sharing_exo!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=exo 删除.
+  !href cmd=reply&job=clean&clean=exo $wims_name_erase
+.
  !endif
 !endif
 !if $cl_sheetcnt>0
@@ -67,7 +68,8 @@
  !if $sharing_sheet!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=sheet 删除.
+  !href cmd=reply&job=clean&clean=sheet $wims_name_erase
+.
   !if $cl_examcnt>0
    (也将删除考试页.)
   !endif
@@ -78,7 +80,8 @@
  !if $sharing_exam!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=exam 删除.
+  !href cmd=reply&job=clean&clean=exam $wims_name_erase
+.
  !endif
 !endif
 !if $cl_forumcnt>0
@@ -86,12 +89,14 @@
  !if $sharing_forum!=$empty
   $no_erase
  !else
-  !href cmd=reply&job=clean&clean=forum 删除.
+  !href cmd=reply&job=clean&clean=forum $wims_name_erase
+.
  !endif
 !endif
 !if $cl_scorecnt>0
  <li>$cl_scorecnt 参加者活动记录.
- !href cmd=reply&job=clean&clean=score 删除.
+ !href cmd=reply&job=clean&clean=score $wims_name_erase
+.
 !endif
 </ul>
 
@@ -100,5 +105,5 @@
 <p>
 2. 共享资源只能从发起共享的班级清除.
 其他班级应在删除这些资源前先
-!href cmd=reply&job=neighbor&job2=sharelist 停止共享
+!href cmd=reply&job=neighbor&job2=sharelist $name_stopsharing
 .

@@ -1,0 +1,77 @@
+!read tabletheme
+Wims服务器的核心是cgi程序, 通常称为wims.cgi. 
+它截取所有对服务器的http请求, 然后做以下工作:
+<ol>
+<li>调用用户请求的模块, 并按照模块的要求处理参数与变量.
+<li>会话管理.
+<li>把处理结果送回用户.
+<li>写下各种记录文件.
+</ol>
+
+<h4>Wims的模块</h4>
+
+Wims服务器是一个模块系统, 其模块就是各种应用.
+在发送给wims的每个请求里, 用户都会选择一个模块.<p>
+
+Wims的模块可以是(任何程度的)互动式课程或练习, 计算工具, 辞典, 数学游戏,
+数据库或上述各种的混合.<p>
+
+Wims的模块是各自独立的. 每个模块有自己的目录, 它也是模块的地址,
+模块的所有文件都在这个目录里. 不同的模块有不同的作者与维护者,
+而且可以有不同的版权原则.<p>
+
+同一个wims网站的模块之间并无联系, 除非通过超文本链接从一个模块进入另一个.
+
+<h4>如何进入一个wims服务站</h4>
+
+可通过对cgi主程序的请求进入wims, 例如
+<pre>
+http://wims.unice.fr/wims/wims.cgi
+</pre>
+通常应该后接一批参数. 不带参数的请求将带到网站的wims主页.<p>
+
+wims.cgi的参数是通常的http $emph name=value$emphend 对, 这里的
+$emph name$emphend 域的取值如下:
+<ul>
+<li><font color=green>cmd</font>: 其值是调用的命令. 
+有效命令为:
+$table_header
+$table_tr<th>参数串<th>　意　　义
+$table_tr<td>cmd=intro<td>进入模块的导入页
+$table_tr<td>cmd=new<td>开始新的工作对话
+$table_tr<td>cmd=renew<td>重新开始工作对话
+$table_tr<td>cmd=reply<td>发送对模块的回答
+$table_tr<td>cmd=next<td>进入下一个练习(在一次作业对话内)
+$table_tr<td>cmd=config<td>设置喜好
+$table_tr<td>cmd=help<td>获得与内容有关的帮助
+$table_tr<td>cmd=hint<td>获得与内容有关的提示
+$table_tr<td>cmd=resume<td>恢复工作 (例如在帮助以后)
+$table_tr<td>cmd=getins<td>获得动态插入: 服务器内部<br>使用. 不供模块使用.
+</table></center>
+<li><font color=green>module</font>. 用户想进入的模块名.<BR>
+<li><font color=green>session</font>: 用户当前对话的编号.<br>
+会话编号是wims.cgi自动生成的, 通常自动包含在用户发送的页面内.
+用户不允许修改此参数(比如想窥探他人的作业), 而且也不可能成功.
+<li><font color=green>lang</font>: 用户想用的语言.
+<li><font color=green>user</font>: 用户名的值(对于注册用户, 只能内部使用).
+<li><font color=green>useropts</font>: 其值含有服务器的用户选项.
+经过编码, 而且与版本有关.
+<li><font color=green>worksheet</font>: 内部使用, 以确定作业页给用户指定的练习.
+<li><font color=green>special_parm</font>: 此参数保留用作特殊请求(帮助等).
+<li>用户调用的模块能接受的任何变量.
+</ul>
+
+例:
+<pre>
+http://wims.unice.fr/~wims/wims.cgi?cmd=new&module=tool/algebra/factor.cn
+</pre>
+是对 wims.unice.fr 的wims服务器的请求, `cmd' 的值为 `new' ,
+模块名是 `tool/algebra/factor.cn'.
+
+
+<h4>如何使用主持教师界面</h4>
+
+注册班级的主持教师可以通过同一个网址(即cgi主程序)维护他的班级或监察学生的活动,
+只要作为主持教师登录即可. 所有的选项都可通过html链接或按钮来实现.
+
+

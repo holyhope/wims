@@ -1,0 +1,28 @@
+
+!form reply
+第 $currstep&nbsp; 步: $methexp.
+<p>
+!if $shcontext!=$empty
+ 应用本方法的条件是什么?
+ !set n=!itemcnt $shcontext
+ !formselect repcontext from 0 to $n prompt $ch_choose,$listcontext
+ <p>
+!endif
+!if $shresult!=$empty
+ 本方法能得到什么? <ul>
+ !set n=!itemcnt $shresult
+ !for i=1 to $n
+  !set b=!item $i of $listresult
+  <li><input type=radio name=represult value=$i
+  !if $i=$represult
+   checked
+  !endif
+  >
+  !insmath $b
+ !next i
+ </ul><p>
+!endif
+
+<center><input type=submit value=发送>
+</center></form>
+

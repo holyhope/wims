@@ -1,0 +1,44 @@
+!goto $wims_read_parm
+
+:def
+title=Circle
+input=function
+!exit
+
+:proc
+formula=!item 1 of $formula
+option=!lower $option
+option2=!lower $option2
+option=!word 1 of $option
+option2=!word 1 of $option2
+!if $option=$empty or $option2=$empty
+ error=empty_data
+ !exit
+!endif
+!if $option notwordof radius diameter circumference area or \
+    $option2 notwordof radius diameter circumference area
+ error=bad_option
+ !exit
+!endif
+o1=!positionof item $option in radius,diameter,circumference,area
+o2=!positionof item $option2 in radius,diameter,circumference,area
+t1=!item $o1 of $formula,($formula)/2,($formula)/(2*pi),sqrt(($formula)/pi)
+t2=!item $o2 of r, 2*r, 2*pi*r, pi*r^2
+
+result=!exec pari r=$t1; print($t2);
+
+!exit
+
+:output
+
+A circle with
+!item $o1 of radius,diameter,circumference,area
+
+!htmlmath = $formula
+&nbsp;:<p>
+!item $o2 of radius,diameter,circumference,area
+
+!htmlmath = $result
+ .
+!exit
+

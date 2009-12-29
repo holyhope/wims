@@ -1,0 +1,72 @@
+!set methtit=反证法
+!set methparmtype=parm predicate nocomma >
+!set methparmrelax=1
+!set methhelp=把假设与目标取否定:\
+即把 A \(=>) B 重写成 not(A) \(=>) not(B)).\
+<p>\
+你可以利用这个方法导出矛盾得到证明.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!if fixedgoal iswordof $m_options
+ !set error1=fixedgoal
+ !exit
+!endif
+
+!set n_=!linecnt $m_goal
+!if $n_>1
+ !set error1=目前情况下你有几个目标!\
+ 反证法只能用于唯一的目标.\
+请先分离目标.
+ !exit
+!endif
+!if $n_<1
+ !set error1=你没有目标可施行反证.
+ !exit
+!endif
+
+!exit
+:form
+ !set i_=!linecnt $mtobj1
+ !if $i_>0
+  对假设
+  !set ch_optional=无
+  !read deduc/methparm.phtml 1 
+  与目标 \($m_goal) 取否定.
+  !set methremark=选择 "假设=空" 以用归谬法论证.
+ !else
+  对目标 \($m_goal)&nbsp;取否定: 用归谬法论证.
+ !endif
+!exit
+:check
+ !if contradiction notwordof $m_goal
+  newobject0=!exec mathexp not\
+$m_goal
+  oldobject=0
+ !else
+  !reset newobject, newobject0
+ !endif
+ !if $methparm1=$empty or $methparm1<1
+  !if contradiction iswordof $m_goal
+   error=没有假设的情形下反证导致矛盾是无意义的!
+   !exit
+  !endif
+  newgoal=矛盾
+  methexp=反证
+ !else
+  obj=!line $methparm1 of $mtobj1
+  d=!item 1 of $obj
+  l=!word 1 of $d
+  obj=!item 2 to -1 of $obj
+  m_context=!replace line number $l by $ in $m_context
+  m_context=!nonempty lines $m_context
+  newgoal=!exec mathexp not\
+$obj
+  methexp=对 \($obj) 反证
+ !endif
+ m_goal=$newgoal
+ !read deduc/objects.combine
+!exit
+

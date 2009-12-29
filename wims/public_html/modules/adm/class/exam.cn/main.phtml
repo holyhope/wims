@@ -31,7 +31,7 @@ $name_title $exam
  本试卷
  !if $activetest=1
   已被激活.
-  !href cmd=reply&job=expire 请使其失效
+  !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
@@ -45,8 +45,8 @@ $name_title $exam
   !href cmd=reply&job=reactivate 重新激活
 . <p>
  !endif
-!href cmd=reply&job=deactivate Desactive it
-<p><center><table border=2>
+!href cmd=reply&job=deactivate 放弃激活
+ <center><table border=2>
  <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value="$wims_name_change">
@@ -80,7 +80,7 @@ $wims_name_title (限$title_limit个字符):<br>
 分钟. 每个参加者可以考
 !default stries=3
 <input size=3 name=tries value="$stries">次.
-<input type=submit value="注册">
+<input type=submit value="$wims_name_tosave">
 
 !ifval $activetest=-1
  <p>此试卷不存在.
@@ -102,6 +102,8 @@ $wims_name_title (限$title_limit个字符):<br>
 !if $exocnt=0
 本试卷尚无内容.
  !href cmd=reply&job=exo&exo=1 添加练习
+, 或
+ !href cmd=reply&job=cpsheet 添加一系列练习
 .
 !else
  <a name=list>
@@ -126,6 +128,9 @@ $wims_name_title (限$title_limit个字符):<br>
  </ol>
  !if $activetest=0
   !href cmd=reply&job=exo&exo=$[$exocnt+1] 加入别的练习
+,
+$wims_name_or
+ !href cmd=reply&job=cpsheet 加入一系列练习
 .
  !endif
 !endif
@@ -138,7 +143,7 @@ $wims_name_title (限$title_limit个字符):<br>
 !endif
 
 !if $activetest>=0
- !href cmd=reply&job=考生所见.
+ !href cmd=reply&job=student 考生所见.
  <p>
  !form reply
  <input type=hidden name=allow value=yes>
@@ -153,13 +158,13 @@ $wims_name_title (限$title_limit个字符):<br>
  !set allowshare=0
  !if $sharers!=$empty
   (对所有共享的班级:
-  !formselect allowshare list 0,1 prompt 否,是
+  !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
  !else
   <input type=hidden name=allowshare value=0>
  !endif
  </form>
-  <small><b>提示.</b> 在选取开放模式时, 你可以为得分的录入设立
+ <small><b>$wims_name_help.</b>  在选取开放模式时, 你可以为得分的录入设立
 时间限制, 只要加入
  <font color=blue><b>
  <tt>&gt;yyyymmdd.hh:mm</tt></b></font>

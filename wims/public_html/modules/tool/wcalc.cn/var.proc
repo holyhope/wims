@@ -1,0 +1,66 @@
+
+datatype=!char 1 to 20 of $datatype
+operation=!trim $operation
+operation=!char 1 to 100 of $operation
+opr=!deaccent $datatype $operation
+opr=!lower $opr
+opr=!translate internal `'"\/,;.-?! to $                  $ in $opr
+opr=!singlespace $opr
+dictionary=$module_dir/dic/syno
+suffix_dictionary=bases/sys/suffix.$module_language
+translator_unknown=leave
+opr=!exec translator $opr
+opr=!singlespace $opr
+dictionary=$module_dir/dic/cmd
+translator_unknown=
+opr=!exec translator $opr
+opr=!word 1 of $opr
+!bound showformat within tex,html,raw default $
+!bound precision between integer 3,1000 default 20
+!if $picturesize!=$empty
+ psize=!translate internal ,;xX to $      $ in $picturesize
+ !distribute words $psize into picx, picy
+ picx=$[$picx]
+ picy=$[$picy]
+!endif
+!bound picx between 10 and 1000 default 320
+!bound picy between 10 and 1000 default 240
+
+formula=!trim $formula
+!if $formula=$empty
+ !if $opr!=$empty
+  error=empty_data
+ !endif
+ !exit
+!endif
+!if $opr=$empty and $operation!=$empty
+ error=unknown_operation
+ !exit
+!endif
+
+!if $opr!=$empty
+ op=!translate internal / to $ $ in $opr
+ opdir=!word 1 to -2 of op $op
+ opdir=!translate $ $ to / in $opdir
+ !read op/$opr.def def
+ module_title=$module_title: $title
+ !if $input!=$empty
+  !read input/$input
+  !if $error!=$empty
+   !exit
+  !endif
+ !endif
+ pari_precision=$precision
+ maxima_precision=$precision
+ print_precision=$precision
+ !read op/$opr.def proc
+ result=!mathsubst I=i in $result
+ result=!trim $result
+ !if $result=$empty
+  !default error=fail
+  !exit
+ !endif
+!endif
+
+wims_module_log=$operation
+

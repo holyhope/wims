@@ -1,0 +1,42 @@
+!set methtit2=实数的平方非负
+!set methtit=实数平方的正性
+!set methenv=ZZ QQ RR
+!set methparmtype=function
+!set methhelp=此方法把形如 \(U^2 >= 0) 的条件加到假设中,\
+这里 \(U) 是你选择的代数式.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 应用 \(U^2 >= 0), 其中 \(U) =
+ !read deduc/methparm.phtml 1
+
+!exit
+:check
+ !if / isin $methparm1
+  error=本方法不能有除法!
+  !exit
+ !endif
+ !read deduc/sub/simplify ($methparm1)^2
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ sqr=$out
+ oldobject=0
+ newobject0=$sqr >= 0
+ methexp=\($methparm1) 平方的正性
+ 
+ contextlist=$ct_Onlywhen $m_U 代表实数,\
+    $ct_Always,\
+    $ct_Onlywhen $m_U 是正数或零,\
+    $ct_Onlywhen $m_U 是整数
+
+ resultlist=$newobject0,\
+  $sqr > 0
+
+!exit
+

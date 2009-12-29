@@ -1,0 +1,50 @@
+!goto $wims_read_parm
+
+:def
+title=Standard deviation
+synonyme=deviation, normal deviation, data deviation, mean square deviation
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt<2
+ !exit
+!endif
+
+sum=!sum x for x in $formula
+mean=$[($sum)/$cnt]
+fm=!sum (x-($mean))^2 for x in $formula
+res1=$[sqrt($fm/($cnt-1))]
+res2=$[sqrt($fm/$cnt)]
+result=$res1\
+$res2
+
+!exit
+
+:output
+<center>
+Standard deviation =
+!htmlmath $res2
+<br>
+Standard deviation of sampling =
+!htmlmath $res1
+</center> <p>
+Data: $cnt numbers { $formula }
+<p>
+The <em>standard deviation</em> (resp. <em>standard deviation of
+sampling</em>)
+of {<i>x</i><sub>1</sub>,
+<i>x</i><sub>2</sub>, ..., <i>x<sub>n</sub></i>} is equal to
+!set ins_align=middle
+!instex $$$$ \sqrt{{1\over n}\sum_{i=1}^n (x_i-\overline x)^2} $$$$
+ (resp.
+!instex $$$$ \sqrt{{1\over n-1}\sum_{i=1}^n (x_i-\overline x)^2} $$$$
+&nbsp;), where
+!set ins_align=bottom
+!instex $$ \overline x $$
+ is the <em>arithmetic mean</em> of the data.
+
+!exit
+

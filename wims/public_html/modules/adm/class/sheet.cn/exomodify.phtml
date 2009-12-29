@@ -1,0 +1,66 @@
+!! fichier de modification des informations sur les exercices d'une feuille
+!!!### langage independant
+!!
+ !distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_
+!! !set orgtit_=!module title $directory_
+  <p><center><h3>$name_titlemodif $modif</h3></center>
+  !form reply
+   $table_header
+   <input type=hidden name=modif value=$ex_>
+   <input type=hidden name=job value=modify>
+   $table_tr
+    <td><b>$wims_name_title </b></td>
+!!<small>($name_oldtitle <em>$orgtit</em>)</small></td>
+    <td><input size="50" name="mod_title" value="$title_"></td>
+   </tr>
+   $table_tr
+    <td><b>$wims_name_Description</b></td>
+    <td><textarea name="mod_desc" rows="3" cols="60">$desc_</textarea></td>
+   </tr>
+   $table_tr
+    <td><b>$(name_shtab[7])</b> <small>($name_desc_comment)</small></td>
+    <td><textarea name="mod_comment" rows="3" cols="60">$comment_</textarea></td>
+   </tr>
+   $table_tr
+    <td><b>$name_pointsasked</b></td>
+    <td><input size="4" name="mod_require" value="$require_"></td>
+   </tr>
+   $table_tr
+    <td><b>$name_ofweight</b></td>
+    <td><input size="4" name="mod_weight" value="$weight_"></td>
+   </tr>
+   $table_tr
+    <td><b>$(name_shtab[6])</b> <small>[ 
+     !href target=wims_mhelp cmd=help&special_parm=dependancies $wims_name_help
+     ] </small> :
+    </td>
+    <td><input size="40" name="mod_dep" value="$dep_"></td>
+    !reset mod_dep
+   </tr>
+   !let oef=!defof category in wimshome/public_html/modules/$directory_/INDEX
+   !if oef isitemof $oef
+    $table_tr
+     <td>
+      <b>$(name_shtab[9])</b>
+      !let parm_=!replace internal & by ; in $parm_
+      !let parm_=!replace internal scoredelay=; by scoredelay=0; in $parm_
+      !let parm_=!replace internal exo=; by exo=0; in $parm_
+      !let tmp_=!replace internal = by , in $parm_
+      !let tmp2_=!column 1 of $tmp_
+      !let tmp2_=!positionof item exo in $tmp2_
+      !let tmp_=!column 2 of $tmp_
+      !let tmp_=!item $tmp2_ of $tmp_
+      !let tmp_=!nospace $tmp_
+      !href target=wims_oef cmd=intro&module=$directory_&special_parm=&special_parm2=&special_parm3=exo=$tmp_;$parm_&special_parm4=$sheet,$modif $(seriesaction[1])
+     </td>
+     <td>$directory_ <br> $parm_ </td>
+    </tr>
+    $table_tr
+   !endif
+    <td colspan=2><center>
+     <input type="submit" value="$wims_name_change"> &nbsp;
+     !href cmd=resume $wims_name_giveup
+    </center></td>
+   </tr>
+  $table_end
+ </form>

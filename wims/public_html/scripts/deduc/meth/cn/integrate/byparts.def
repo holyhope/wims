@@ -1,0 +1,75 @@
+!set methtit=分部积分
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, function, function
+!set methhelp=本方法应用于分部积分.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把分部积分应用于
+ !read deduc/methparm.phtml 1
+$ :
+ <p><center>
+    \(integrate(u*v'dx) = u*v - integrate(u'*v dx))
+ </center> <p>
+ <table border=0>
+ <tr><td align=right> 其中 \(u = ) <td>
+ !read deduc/methparm.phtml 2,30
+ <tr><td align=right> 以及 \(v = ) <td>
+ !read deduc/methparm.phtml 3,30
+ </table>
+
+!exit
+:check
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=失败
+  !exit
+ !endif
+
+ mout=!exec maxima diff($methparm3,$ivar);\
+    diff($methparm2,$ivar);
+ !distribute lines $mout into vprime,uprime
+ !if diff isvarof $vprime,$uprime or $vprime=$empty or $uprime=$empty
+  :bad_data
+  error=bad_data
+  !exit
+ !endif
+ !read deduc/sub/checkzero ($iker)-($methparm2)*($vprime)\
+    ($uprime)*($methparm3)
+ !distribute lines $out into ztest1,ztest2
+ !if $ztest1=$empty or $ztest2=$empty
+  !goto bad_data
+ !endif
+ !if $ztest1!=yes
+  error=函数错: \(uv') $m_neq \($iker)!
+  !advance penalty
+  !exit
+ !endif  
+ !read deduc/sub/simplify ($methparm2)*($methparm3)\
+    ($uprime)*($methparm3)
+ !distribute lines $out into uv,uprimev
+ !if $ztest2=yes
+  !if strictintegrate isin $m_options
+   error=你不能把 \(u) 取成常数.\
+    请换个方法.
+   !exit
+  !else
+   newobject1=($uv)
+  !endif
+ !else
+  newobject1=($uv - integrate($uprimev,$ivar))
+ !endif
+ oldobject=1
+ methexp=\(u=$methparm2), \(v=$methparm3)
+ 
+!exit
+

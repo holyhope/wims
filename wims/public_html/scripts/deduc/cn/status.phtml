@@ -1,0 +1,44 @@
+
+<p>
+!if $currstep=1 and $m_context!=$empty
+ 初始假设: {
+ !set n=!linecnt $m_context
+ !for i=1 to $n
+  !set l=!line $i of $m_context
+  !insmath $l
+  !if $i<$n
+   ;
+  !endif
+ !next i
+ } <p>
+!else
+ !set t__=!word 1 of $newObject
+ !distribute item <,>,= into lt,gt,eq
+ !if $t__ = $gt
+  !set l=!char 3 to -1 of $newObject
+  !set l=!replace internal $\
+$> by , in $l
+  新假设:
+  !htmlmath $l
+  <p>
+ !endif
+ !if $currstep>1 and $t__ notwordof $lt $gt and $newObject!=$empty
+  现在你有
+  !htmlmath $newObject
+  <p>
+ !endif
+!endif
+
+!if $m_goal!=$empty and $status=waiting
+ 需要证明: {
+ !set n=!linecnt $m_goal
+ !for i=1 to $n
+  !set l=!line $i of $m_goal
+  !insmath $l
+  !if $i<$n
+   ;
+  !endif
+ !next i
+ } <p>
+!endif
+

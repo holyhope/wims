@@ -48,8 +48,30 @@
 !endif
 
 !if share_dep iswordof $error
-资源共享要顾及相关性: 如果你要共享作业页, 就先要共享同一班级的练习.
-若要共享考试, 则先要共享同一班级的作业页.
+资源共享要顾及相关性: 
+ !if sheet iswordof $error
+  如果你要共享作业页, 就先要共享练习.
+ !else
+  !if exam iswordof $error
+  若要共享考试, 则先要共享练习与作业页.
+  !else
+   !if livret iswordof $error
+  若要共享技能记录本, 则先要共享练习与作业页.
+   !endif
+  !endif    
+ !endif
+ !exit
+!endif
+
+!if stopshare_dep iswordof $error
+资源共享要顾及相关性: 
+ !if sheet iswordof $error
+  如果你要停止共享作业页, 就要先停止共享考试与技能记录本.
+ !else
+  !if exo iswordof $error
+  如果你要停止共享练习, 就要先停止共享作业页.
+  !endif    
+ !endif
  !exit
 !endif
 
@@ -66,7 +88,7 @@
 !endif
 
 !if toobigfile iswordof $error
- La taille de votre fichier est trop importante : la limite est de 12K.
+ 你的文件太大了, 不能超过 12K.
  !exit
 !endif
 

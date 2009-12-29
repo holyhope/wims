@@ -2,8 +2,8 @@
  !set wims_class_log=Import $import from $nei
 !endif
 
-!distribute item message of the day,\
-    exercise,work sheet,exam,document,participant\
+!distribute item 每日信息,\
+	练习,作业页,考试,文件,参加者\
     into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 
 从
@@ -32,13 +32,13 @@
  !endif
  !if replace iswordof $cfm
   <b>警告</b>. 你将要把你班级已有的 $(name_$itype) 用输入资源取代.
-在此操作以后不再能恢复. 而且已有的 $(name_$itype) 与输入的不相同.
+在此操作以后不再能恢复. 
   <p>
  !endif
  <p><center><font size="+1">
  !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes 确认此操作
  &nbsp;
- !href cmd=reply&job2=import 放弃此操作
+ !href cmd=reply&job2=import $wims_name_giveup
  </font></center> <p>
  !exit
 !endif
@@ -51,7 +51,7 @@
 
 成功转移
 !if $itype!=user
- one $(name_$itype).
+ 一个$(name_$itype).
  !if $itype iswordof sheet exam
   (输入的 $(name_$itype) 置为不激活状态, 所以你可以作修改.)<p>
  !endif

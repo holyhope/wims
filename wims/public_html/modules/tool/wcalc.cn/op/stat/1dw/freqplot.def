@@ -1,0 +1,88 @@
+!goto $wims_read_parm
+
+:def
+title=Weighted histogram
+synonyme=histogram weighted, weighted data histogram, weighted frequency plot
+input=data2d
+!exit
+
+:proc
+
+!default range=$range1
+range=!trim $range
+!default range=1
+range=$[$range]
+data1=!item 1 of $fml
+data1=$[$data1]
+!if NaN isin $range or Inf isin $range or \
+	NaN isin $data1 or Inf isin $data1 or \
+	$range*10000<abs($data1)
+ error=bad_formula
+ !exit
+!endif
+
+list=
+wt=
+totweight=0
+!for i=1 to $cnt
+ l=!line $i of $fml
+ !distribute items $l into x_,y_
+ l=$[(floor(($x_)/$range)+0.5)*($range)]
+ list=!append item $l to $list
+ wt=!append item $[$y_] to $wt
+ totweight=$[$totweight+($y_)]
+!next i
+!if NaN isin $list $wt or Inf isin $list $wt
+ error=bad_formula
+ !exit
+!endif
+list=!sort numeric item $list
+wt=!item $wims_sort_order of $wt
+
+x1=!item 1 of $list
+x2=!item -1 of $list
+y1=0
+y2=1
+
+old=$x1
+ocnt=1
+!reset pdata
+!for i=2 to $cnt
+ curr=!item $i of $list
+ w=!item $i of $wt
+ !if $curr=$old
+  ocnt=$[$ocnt+($w)]
+ !else
+  pdata=!append line $old $ocnt to $pdata
+  y2=$[max($y2,$ocnt)]
+  old=$curr
+  ocnt=$w
+ !endif
+!next i
+pdata=!append line $old $ocnt to $pdata
+insplot_data=$pdata
+
+y2=$[ceil($y2*1.2)]
+xdiff=$[max($range,0.1*($x2-($x1)))]
+x1=$[$x1-$xdiff]
+x2=$[$x2+$xdiff]
+
+insplot_set=size $[$picx/500], $[$picy/400]; boxwidth $range
+!insplot [$x1:$x2] [$y1:$y2] 'insplot_data' notitle with boxes
+result=$ins_out
+!if getins notin $result
+ result=
+!endif
+
+!exit
+
+:output
+
+<center>
+$result
+</center> <p>
+Interval = $range.
+Data: $cnt weighted numbers { $fml3 } (total weight = $totweight).
+<p>
+!exit
+

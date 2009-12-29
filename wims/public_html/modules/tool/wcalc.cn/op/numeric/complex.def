@@ -1,0 +1,35 @@
+!goto $wims_read_parm
+
+:def
+title=Complex number
+synonyme=modulus, argument, real part, imaginary part
+input=function
+!exit
+
+:proc
+result=!exec pari c=$formula; print(real(c));\
+	print(imag(c));\
+	print(abs(c));\
+	print(arg(c));\
+	print(arg(c)/pi);
+result=!nonempty lines $result
+n=!linecnt $result
+!if $n<5
+ result=
+!endif
+!distribute lines $result into re,im,mod,arg,argp
+!exit
+
+:output
+Complex number 
+!htmlmath c = $formula
+&nbsp;:
+<p><center><table border=0>
+ <tr><td align=right nowrap>Re(c) = <td> $re
+ <tr><td align=right nowrap>Im(c) = <td> $im
+ <tr><td align=right nowrap>|c| = <td> $mod
+ <tr><td align=right nowrap>argument(c) = <td>$arg + 2k$m_pi
+ <tr><td align=right nowrap> = <td>$argp$m_pi + 2k$m_pi
+</table></center>
+!exit
+

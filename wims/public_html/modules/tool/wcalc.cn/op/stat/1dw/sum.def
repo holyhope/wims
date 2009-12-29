@@ -1,0 +1,27 @@
+!goto $wims_read_parm
+
+:def
+title=Weighted data sum
+synonyme=weighted sum, sum weighted
+input=data2d
+!exit
+
+:proc
+
+pari_header=dmat=Mat([$fml2]);w=sum(x=1,$cnt,dmat[x,2]);
+result=!exec pari print((dmat[,1]~*dmat[,2]));\
+	print(w);
+!distribute lines $result into result, totweight
+
+!exit
+
+:output
+
+<center>
+Weighted sum =
+!htmlmath $result
+</center> <p>
+Data: $cnt weighted numbers { $fml3 } (total weight = $totweight).
+<p>
+!exit
+

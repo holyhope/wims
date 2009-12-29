@@ -1,3 +1,4 @@
+!!###language independant
 !read adm/css.phtml
 !header
 
@@ -10,47 +11,57 @@
 !if $auth_login!=$empty and $job!=modname
  <p>
  !if $job iswordof flist edfile showfile binfile
-  !href target=wims_test module=devel/$auth_login/$mod 测试模块
-. &nbsp;
+ !set wims_menu_items=!append line test,4,module=devel/$auth_login/$mod,test\
+ to $wims_menu_items
   !set doctest=!module category devel/$auth_login/$mod
   !if document isin $doctest
-   !href target=wims_test module=adm/doc.$module_language&devdoc=$mod&doc=1&job=read 文件管理者
-. &nbsp;
+    !set wims_menu_items=!append line docgestion,4,module=adm/doc.$module_language&devdoc=$mod&doc=1&job=read,test\
+     to $wims_menu_items
   !endif
  !endif
  !if $job iswordof flist index publish prop diff binfile
   !if $job iswordof index publish diff
-   !href cmd=reply&jobreq=flist 模块内容
-. &nbsp;
-   !href cmd=reply&jobreq=binfile 二进制文件
-. &nbsp;
+   !set wims_menu_items=!append line modcontent,1,cmd=reply&jobreq=flist\
+   binfile,1,cmd=reply&jobreq=binfile\
+   to $wims_menu_items
+  !endif
+  !if $job iswordof flist
+    !set wims_menu_items=!append line binfile,1,cmd=reply&jobreq=binfile\
+   scripttest,1,module=tool/directexec&cmd=new\
+to $wims_menu_items
   !endif
   !if $job iswordof binfile
-   !href cmd=reply&jobreq=flist 其它文件
-. &nbsp;
+   !set wims_menu_items=!append line otherfiles,1,cmd=reply&jobreq=flist\
+     to $wims_menu_items
   !endif
+  !set wims_menu_items=!append line ,0,\
+   docoef,4,module=adm/createxo&modtoolhelp=yes,help\
+   docslib,4, module=help/wimsdoc&subject=slib#slib,help\
+   docanswer,4,module=adm/createxo&modtoolhelp=yes&special_parm=reply,help\
+   doctec,4,module=help/wimsdoc.cn,help\
+   ,0,\
+  to $wims_menu_items
   !if $job iswordof flist publish diff binfile
-   !href cmd=reply&jobreq=index 属性
-. &nbsp;
+  !set wims_menu_items=!append line properties,1,cmd=reply&jobreq=index\
+  to $wims_menu_items
   !endif
   !if $job notwordof publish prop diff
-   !href cmd=reply&jobreq=backup 备份此模块
-. &nbsp;
+  !set wims_menu_items=!append line modsave,1,cmd=reply&jobreq=backup\
+  to $wims_menu_items
    !if $pubtit!=$empty
-    !href cmd=reply&jobreq=diff 检查相互区别
-. &nbsp;
+   !set wims_menu_items=!append line checkdiff,1,cmd=reply&jobreq=diff\
+    to $wims_menu_items
    !endif
-   !href cmd=reply&jobreq=publish 发布
-. &nbsp;
+   !set wims_menu_items=!append line publish,1,cmd=reply&jobreq=publish\
+   to $wims_menu_items
   !endif
  !endif
- !href cmd=reply&jobreq=modname 模块表
-.
+ !set wims_menu_items=!append line modlist,1,cmd=reply&jobreq=modname\
+ to $wims_menu_items
 !endif
 
 !tail
 
 !reset confirm target1 target2 target3 target4 vcheat \
-    i_translator i_translator_address, modifiers \
-    p_name p_email p_pass1 p_pass2 bin_job
-
+      i_translator i_translator_address, modifiers \
+      p_name p_email p_pass1 p_pass2 bin_job

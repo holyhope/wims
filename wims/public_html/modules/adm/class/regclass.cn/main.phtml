@@ -12,12 +12,8 @@
 
 !read names.phtml
 !read adm/title.phtml 3\
-WIMS à $httpd_HTTP_HOST\
-´´½¨$name_classess
-!!<h1 class="wims_title">WIMS Î»ÓÚ $httpd_HTTP_HOST
-!!<br>
-!!´´½¨$name_classess
-!!</h1> <p><hr width="50%"> <p>
+WIMS Î»ÓÚ $httpd_HTTP_HOST\
+´´½¨ : °à¼¶, °à¼¶×é, Ñ§Ğ£
 
 !if $toomany=yes
  !read toomany.phtml
@@ -38,8 +34,7 @@ WIMS à $httpd_HTTP_HOST\
 !if $step=$empty or $step=pre
  Ñ¡ÔñÄãÒª´´½¨µÄĞéÄâ°à¼¶µÄÀàĞÍ.
  <p>
- !href cmd=reply&step=0&cltype=0 ¶ÀÁ¢°à¼¶
- ÒÔ¹ÜÀíÒ»ÈºÑ§ÉúµÄ¹¤×÷.
+ !href cmd=reply&step=0&cltype=0 ¶ÀÁ¢°à¼¶.
  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
  to $wims_menu_items
  <p>
@@ -49,34 +44,36 @@ WIMS à $httpd_HTTP_HOST\
   !set noright=(Ö»ÓĞÍøÕ¾¹ÜÀíÔ±²ÅÄÜ×öÕâ¼şÊÂ.)
  !endif
  !if 2 isitemof $alltypes
-Ò»×é°à¼¶µÄ
- !href cmd=reply&step=0&cltype=2 Èë¿Ú
-.
+ !href cmd=reply&step=0&cltype=2 Ò»×é°à¼¶µÄ
+Ñ§Çø.
    !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
  to $wims_menu_items
  !else
-Ò»×é°à¼¶µÄ
- <font color=blue><strike>Èë¿Ú</strike></font>
-. $noright
+<font color=blue><strike>Ò»×é°à¼¶µÄ</strike></font>Ñ§Çø. $noright
  !endif
  <p>
  !if 4 isitemof $alltypes
-Ò»¸öÑ§Ğ£µÄ
-  !href cmd=reply&step=0&cltype=4 Èë¿Ú
-.
-!set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+  !href cmd=reply&step=0&cltype=4 Ò»¸öÑ§Ğ£µÄ
+Ñ§Çø. (±£Áô¸ø×¨¼Ò.)
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
  to $wims_menu_items
  !else
-Ò»¸öÑ§Ğ£µÄ
- <font color=blue><strike>Èë¿Ú</strike></font>
-. $noright
+ <font color=blue><strike>Ò»¸öÑ§Ğ£µÄ</strike></font>Ñ§Çø. $noright
  !endif
  <p>
- <b>°ïÖú</b>. ¾ßÓĞÍ¬Ò»Èë¿ÚµÄÒ»×é°à¼¶Ê¹µÃ½ÌÊ¦¿ÉÒÔ½»»»»ò¹²Ïí½Ì²Ä,
-Ñ§ÉúÒ²¿É´ÓÒ»¸ö°àÌøµ½ÁíÒ»¸ö°à, ²»ĞèÖØĞÂÊäÈëÃÜÂë.
- <p>
-Ñ§Ğ£ÊÇÒ»¸ö¶à²ã´ÎµÄĞéÄâ°à¼¶ÏµÍ³, ËüÄÜÂú×ãÕû¸öÑ§Ğ£µÄĞèÇó:
-Ê¦ÉúÊı¾İ¿â, ²»Í¬µÄÄê¼¶, ½ÌÑ§¼Æ»®ºÍ¿Î³Ì, Ñ§Éú°à¼¶, ¸ºÔğ½ÌÊ¦µÈµÈ.
+ <b>°ïÖú</b>.<ul>
+ <li> <b>¶ÀÁ¢°à¼¶</b>ÊÇÓÉÒ»Î»Ö¸µ¼½ÌÊ¦¹ÜÀíÒ»ÈºÑ§Éú.
+ </li>
+ <li> <b>°à¼¶×é</b>Ê¹µÃ½ÌÊ¦ÃÇ¿ÉÒÔ½»»»»ò¹²Ïí½Ì²Ä,
+Ñ§ÉúÒ²¿É´ÓÒ»¸ö°àÌøµ½ÁíÒ»¸ö°à, ²»ĞèÖØĞÂÊäÈëÃÜÂë. 
+ </li><li>
+ <b>Ñ§Ğ£</b>ÊÇ¶à¸öÄê¼¶µÄĞéÄâ°à¼¶µÄ¼¯ºÏ,
+ ÓĞÄÜÁ¦¹ÜÀíÕû¸öÑ§Ğ£µÄ½ÌÑ§ĞèÇó:
+ Ñ§ÉúºÍ½ÌÊ¦µÄÊı¾İ¿â, ²»Í¬Äê¼¶µÄ½ÌÑ§, ¼Æ»®, ¿Î³ÌºÍÑ§ÉúµÄ°à¼¶,
+ ²¢¶Ô½ÌÑ§¸ºÔğ, µÈµÈ.
+ </li></ul>
+ ¶ÔÓÚÒ»Ğ©°à¼¶×é»òÑ§Ğ£, ÉÏÊöÁªÏµÊ¹µÃÎÒÃÇ¿ÉÒÔ´´½¨
+ ËüÃÇµÄ<b>Ñ§Çø</b>. È»ºóÄã¿ÉÒÔÔÙ½¨Á¢ËüËù°üº¬µÄ°à¼¶.
  !goto end
 !endif
 
@@ -86,7 +83,8 @@ WIMS à $httpd_HTTP_HOST\
  µÄ´´½¨ÊÇÓÉ<font color="blue">½ÌÊ¦</font>²Ù×÷µÄ. 
  !else
     <font color="blue">$name_classe</font>
-µÄ´´½¨ÊÇÓÉ<font color="blue">Ö÷³Ö½ÌÊ¦</font>²Ù×÷µÄ. 
+µÄ´´½¨ÊÇÓÉ<font color="blue">¹ÜÀíÕß</font>²Ù×÷µÄ
+(Ëû¿ÉÒÔÊÇÒ»Î»½ÌÊ¦).
  !endif
 ÄãĞèÒªÓĞÒ»¸öÓĞĞ§µÄµç×ÓÓÊ¼şµØÖ·²ÅÄÜÍê³É´Ë²Ù×÷.
  ÔÚÄã´´½¨ÁËÄãµÄ$name_classeºó, ÄãÓ¦¸Ã¸ºÆğÎ¬»¤µÄÔğÈÎ. <p>
@@ -94,63 +92,61 @@ WIMS à $httpd_HTTP_HOST\
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li><label for="institution">Ñ§Ğ£Ãû³Æ (ÖÁ¶à$instlim¸ö×Ö·û):</label>
+ <li><label for="institution">Ñ§Ğ£Ãû³Æ (ÖÁ¶à$instlim¸ö×Ö·û) :</label>
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
-  <input size=$instlim name=institution value="$institution"> <p>
- <li><label for="description">$name_classesssÃû (ÖÁ¶à$desclim¸ö×Ö·û):</label>
-  <input size=$desclim name=description value="$description"> <p>
+ <input size=$instlim name=institution value="$institution" id="institution"><br>
+ </li>
+ <li><label for="description">$name_classesssÃû (ÖÁ¶à$desclim¸ö×Ö·û) :</label>
+  <input size=$desclim name=description value="$description" id="description"> <br>
+ </li>
+ 
  !if $Cltype notin 24
- <li>$name_classesssµÄ³Ì¶È:<br>
-  <center><table border=1>
-  <tr><th><label for="level">Äê¼¶</label>
-  !for j=1 to 6
-   <td align=center>$j</td>
-  !next j
-  </tr>
-  !for i in E,H,U
-   <tr><td align=center>$(lev_$i)</td>
-   !for j=1 to 6
-    !if $i!=U or $j<6
-     <td><input type=radio name=level id="level"
-     !if $level=$i$j
-      checked
-     !endif
-     value=$i$j></td>
+ <li><label for="level">$name_classesssµÄ³Ì¶È : </label>
+  <select name=level id="level">
+   !for k=1 to $nblevel
+    !if $(levelid[$k])=$level
+     <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
     !else
-     <td>.</td>
-    !endif
-   !next j
-  !next i
-  </tr></table></center> <p>
+     <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
+    !endif   
+   !next k
+  </select>
+ </li>
  !endif
- <li>$name_classesssµÄ$name_supµÄÈ«Ãû (¾ÍÊÇÄã×Ô¼º):
-  <input size=$suplim name=supervisor value="$supervisor"> <p>
- <li>µçÓÊµØÖ·:
-  <input size=$emaillim name=email value="$email">
+
+ <li><label for="supervisor">$name_classesss$name_supµÄĞÕÃû (¾ÍÊÇÄã) :</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor"> <br>
+ </li>
+
+ <li><label for="email">µçÓÊµØÖ·</label> : <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
    <br>(Ö»ÓĞÄãµÄµçÓÊµØÖ·ÏÖÔÚ¾ÍÓĞĞ§, $name_classesssµÄ´´½¨¹¤×÷²ÅÄÜ³É¹¦.)
   !endif
-  <p>
- <li><label for="password">Ñ¡Ôñ$name_supµÄÃÜÂë:</label>
-  <input size=16 type=passsup name=passsup id="passsup"> <br>
-  (4 ÖÁ 16 ¸ö×Ö·û, ¿ÉÒÔÊÇÊı×Ö»ò×ÖÄ¸). <br>
-  <small>´ËÃÜÂëÊ¹ÄãÄÜ×÷ÎªËüµÄ$name_sup½øÈë$name_classe.
-  Ö»ÓĞÄãÒ»¸öÈËÄÜÖªµÀ´ËÃÜÂë.</small> <p>
- <li><label for="password">Ñ¡Ôñ$name_classesssµÄÃÜÂë (¿ÉÑ¡µÄ):</label>
-  <input size=16 type=password name=password id="password"> <br>
-  (4 ÖÁ 16 ¸ö×Ö·û, ¿ÉÒÔÊÇÊı×Ö»ò×ÖÄ¸). <br>
-  <small>$name_classesssµÄÃÜÂëÊÇÓÃÓÚ×¢²á
-    !if $Cltype<2
+  <br>
+ </li>
+
+ <li>Ñ¡Ôñ<label for="passsup">$name_supµÄÃÜÂë</label> :
+  <input size=16 type=password name=passsup id="passsup"> <small>(4 ÖÁ 16 ¸ö×Ö·û, ¿ÉÒÔÊÇÊı×Ö»ò×ÖÄ¸).
+´ËÃÜÂëÊ¹ÄãÄÜ×÷ÎªËüµÄ¸ºÔğÈË½øÈë$name_classe.
+  Ö»ÓĞÄãÒ»¸öÈËÄÜÖªµÀ´ËÃÜÂë.</small> <br>
+ </li>
+
+ <li>Ñ¡Ôñ<label for="password">$name_classesssµÄÃÜÂë :</label>
+  <input size=16 type=password name=password id="password"> <small>(4 ÖÁ 16 ¸ö×Ö·û, ¿ÉÒÔÊÇÊı×Ö»ò×ÖÄ¸).
+  $name_classesssµÄÃÜÂëÊÇÓÃÓÚ×¢²á
+  !if $Cltype<2
 °à¼¶µÄ²Î¼ÓÕßµÄ; Òò´Ë¿ÉÒÔ·Ö·¢¸øÄãµÄÑ§Éú.
-    !else
+  !else
 $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
  !endif
- <br>
-  ÈÎºÎÈË¶¼ÄÜ½øÈëÃ»ÓĞÃÜÂëµÄ$name_classe, ¶øÍøÕ¾¹ÜÀíÔ±ÊÇ²»ÔÊĞíÕâÑù×öµÄ.</small> <p>
- <li><label for="exp_day">Ê§Ğ§ÈÕÆÚ</label>
-  <select name=exp_day id="exp_day">
+ </small><br>
+!!    ÈÎºÎÈË¶¼ÄÜ½øÈëÃ»ÓĞÃÜÂëµÄ$name_classe, ¶øÍøÕ¾¹ÜÀíÔ±ÊÇ²»ÔÊĞíÕâÑù×öµÄ.</small> <p>
+ </li>
+ 
+ <li><label for="exp_day">Ê§Ğ§ÈÕÆÚ :</label>
+ <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
    !ifval $i=$exp_day
@@ -158,7 +154,7 @@ $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
    !endif
    >$i
   !next i
-  </select> <select name=exp_month id="exp_month">
+  </select> <select name=exp_month>
   !for i=1 to 12
    <option value=$i
    !ifval $i=$exp_month
@@ -167,7 +163,7 @@ $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
    >
    !item $i of $months
   !next i
-  </select> <select name=exp_year id="exp_year">
+  </select> <select name=exp_year>
   !for i=$thisyear to $thisyear+1
    <option value=$i
    !ifval $i=$exp_year
@@ -175,17 +171,24 @@ $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
    !endif
    >$i
   !next i
-  </select> <p>
- <li>$name_classe²Î¼ÓÕßÈËÊıÉÏÏŞ:
-  <input size=3 name=limit value="$limit">
-  (×î¶à$wims_class_user_limit.) <p>
- <li>$name_supµÄ°²È«½øÈë:
-  <input size=30 name=secure value="$secure"> <br>
+  </select> <small>ÕâÊÇÄãµÄ°à¼¶×Ô¶¯´æµµµÄÈÕÆÚ.</small><br>
+ </li>
+
+ <li><label for="limit">ÄãµÄ$name_classe²Î¼ÓÕßÈËÊıÉÏÏŞ :</label>
+  <input size=3 name=limit value="$limit" id="limit">
+  <small>(×î¶à $wims_class_user_limit.) </small><br>
+ </li>
+ 
+ <li><label for="secure">$name_supµÄ°²È«½øÈë :</label>
+  !default secure=all
+  <input size=30 name=secure value="$secure" id="secure"> <br>
+  !reset secure
   <small>Äã¶Ô$name_classeÊ©ĞĞÃô¸Ğ²Ù×÷µÄÖ÷»úÃû.
   !if $Cltype<3
     ¿ÉÑ¡µÄ.
   !endif 
-  </small> <p>
+  </small> <br>
+ </li>
  </ul>
  <center><input type=submit value="¼ÌĞø"></center>
  </form>
@@ -197,27 +200,28 @@ $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
  ÄãºÃ, $supervisor!<p>
 ÄãÕıÔÚ WIMS ÍøÕ¾$httpd_HTTP_HOSTÉÏ´´½¨$name_classe $classname,
  !if $Cltype iswordof 0 1
-³Ì¶ÈÊÇ 
- ``<b><font color=green>$name_level</font></b>'',
+  !let tmp=!positionof item $ilevel in $levelid
+  ³Ì¶ÈÊÇ ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
  !endif
+´Ë°à¼¶½«ÓÚ$exp_year-$exp_month-$exp_dayµ½ÆÚ. 
  ÏŞÖÆ$ilimit¸ö²Î¼ÓÕß. ×¢²áµ½´Ë°à¼¶
  !if $pword!=$empty
 ÊÜµ½$name_classesssµÄÃÜÂë±£»¤.
  !else
 ¶Ô»¥ÁªÍøÉÏËùÓĞÈË¿ª·Å (Äã¿Ï¶¨Âğ? Çë×¢ÒâÍøÕ¾¹ÜÀíÔ±½«¾Ü¾ø²¢Çå³ı¹«¿ªµÄ°à¼¶!).
  !endif
-´Ë°à¼¶½«ÓÚ$exp_year-$exp_month-$exp_dayµ½ÆÚ. <p>
+<p>
 Èç¹ûÄã·¢ÏÖÉÏÊöĞÅÏ¢ÖĞµÄ´íÎó, Çë
  !href module=$module&cmd=reply&step=0 ¾ÀÕıËü.
  <p>·ñÔò, ÎªÁË²âÊÔÄãµÄÃÜÂëµÄÕıÈ·ĞÔ,
 ÇëÔÙÊäÈëÒ»´Î. <p>
  !form reply
  <input type=hidden name=step value=2>
-<label for="passsup">Ö÷³Ö½ÌÊ¦ÃÜÂë:</label>
- <input type=password name=passsup id="passsup"> <p>
+<label for="passsup">$name_supµÄÃÜÂë :</label>
+ <input type=password name=passsup id=passsup> <p>
  !if $pword!=$empty
-<label for="password">$name_classesssµÄÃÜÂë:</label>
-  <input type=password name=password id="password"> <p>
+ <label for="password">$name_classesssµÄÃÜÂë :</label>
+  <input type=password name=password id=password> <p>
  !endif
  <center><input type=submit value="¼ÌĞø"></center>
  </form>
@@ -226,13 +230,13 @@ $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
 
 !if $step=2
 ÄãºÃ, $supervisor!<p>
-ÎªÁËÔÚ WIMS ÍøÕ¾$http_HTTP_HOSTÉÏ½áÊø´´½¨ĞÂ°à¼¶µÄ²Ù×÷, ÄãĞèÒªÊäÈëÒ»¸öÃÜÂë.<p>
+ÎªÁËÔÚ WIMS ÍøÕ¾$http_HTTP_HOSTÉÏ½áÊø´´½¨ÄãµÄ$name_classeµÄ²Ù×÷, ÄãĞèÒªÊäÈëÒ»¸öÃÜÂë.<p>
 ´ËÃÜÂëÒÑ¾­ËÍµ½ÄãµÄµçÓÊµØÖ·``<tt>$email</tt>''. 
 ÇëÈ¥´ò¿ªÄãµÄµçÓÊĞÅÏä(Ò²ĞíÒªÉÔµÈÒ»»á), ÔÄ¶ÁĞÅÏ¢.
 È¡³öÃÜÂë, ²¢ÊäÈëµ½ÏÂÃæ
  !form reply
  <input type=hidden name=step value=3>
- <center><label for="typecode">°à¼¶ÃÜÂë: </label><input size=12 name=typecode id="typecode">
+ <center><label for="typecode">ÄãµÄ$name_classeÃÜÂë :</label> <input size=12 name=typecode id="typecode">
  <p><input type=submit value="¼ÌĞø"></center>
  </form>
  <b>×¢Òâ</b> ´ËÃÜÂëÖ»ÓÃÒ»´Î. ²»ÄÜÓÃÓÚÁ¬½Ó$name_classe!
@@ -245,7 +249,8 @@ $name_classesssµÄ½ÌÊ¦µÄ; Äã²»ÄÜ¸æËßÄãµÄÑ§Éú.
 ÄãµÄ$name_classe $classnameÒÑ¾­½¨Á¢. ×£ºØÄã!<p>
 ²Î¼ÓÕßÈËÊıÏŞÖÆÎª$ilimit(°üÀ¨Äã×Ô¼º)
   !if $Cltype iswordof 0 1
-  , ³Ì¶ÈÎª<font color=green>$name_level</font>.
+  !let tmp=!positionof item $ilevel in $levelid
+ ³Ì¶ÈÎª<font color=green>$(leveldesc[$tmp])</font>. 
  !endif
  <p>
  !read links.phtml

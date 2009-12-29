@@ -1,0 +1,22 @@
+!set methtit=常数的积分
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate
+
+!set basic=a
+!set basiccnt=!itemcnt $basic
+!set basicp=!replace internal , by ), \( in \($basic)
+!set methhelp=本方法能解决常数的积分.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !read deduc/methparm.phtml 1
+ 是常数的积分.
+ <input type=hidden name=methparm2 value=1>
+!exit
+:check
+!changeto deduc/meth/$module_language/integrate/basicheck
+

@@ -1,0 +1,65 @@
+!set methtit=重写积分
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, function
+!set methhelp=把积分的核重写成等价的形式.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !reset methparm3
+ !set N=!linecnt $mtobj1
+ !if $N=1
+  !set l=!item 2 to -1 of $mtobj1
+  !set l=!mathsubst integrate= in $l
+  !set l=!declosing $l
+  !set v=!item 2 of $l
+ !endif
+ 把积分
+ !read deduc/methparm.phtml 1
+ 重写成
+ <p><center><table border=0>
+ <tr><td nowrap>
+ \(integrate())
+ !read deduc/methparm.phtml 2,40
+ !if $N=1
+  d$v
+ !else 
+  d<input size=4 name=methparm3>
+ !endif
+ </td></tr></table></center>
+!exit
+:check
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=失败
+  !exit
+ !endif
+
+ methparm3=!word 1 of $methparm3
+ !if $methparm3!=$empty and $methparm3!=$ivar
+  error=这里你不能改变变量名称. 请改正.
+  !exit
+ !endif
+ !read deduc/sub/checkzero ($iker)-($methparm2)
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $out!=yes
+  error=重写错误. 请改正.
+  !exit
+ !endif
+ 
+ newobject1=integrate($methparm2,$ivar)
+ oldobject=1
+ methexp=重写
+!exit
+

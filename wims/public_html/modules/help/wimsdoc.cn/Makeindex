@@ -1,0 +1,46 @@
+#! /bin/sh
+
+cd cmd
+dd=`ls *.phtml | sed 's/.phtml//g'`
+
+cd ..
+rm -f *.tmp
+for i in $dd
+do
+  for j in var exec jump string vardef ins html random loop datafile file
+  do
+    t=`grep +$j+ cmd/$i.phtml`
+    if [ ! -z "$t" ]; then echo $i >>tmp.$j.tmp; fi
+  done
+done
+
+ddd_all=`echo "$dd" | tr '\n' ','`
+ddd_var=`cat tmp.var.tmp | tr '\n' ','`
+ddd_exec=`cat tmp.exec.tmp | tr '\n' ','`
+ddd_jump=`cat tmp.jump.tmp | tr '\n' ','`
+ddd_string=`cat tmp.string.tmp | tr '\n' ','`
+ddd_vardef=`cat tmp.vardef.tmp | tr '\n' ','`
+ddd_ins=`cat tmp.ins.tmp | tr '\n' ','`
+ddd_html=`cat tmp.html.tmp | tr '\n' ','`
+ddd_random=`cat tmp.random.tmp | tr '\n' ','`
+ddd_loop=`cat tmp.loop.tmp | tr '\n' ','`
+ddd_datafile=`cat tmp.datafile.tmp | tr '\n' ','`
+ddd_file=`cat tmp.file.tmp | tr '\n' ','`
+
+cat <<1 >Findex
+cmdf_all=!char 1 to -2 of $ddd_all
+cmdf_var=!char 1 to -2 of $ddd_var
+cmdf_exec=!char 1 to -2 of $ddd_exec
+cmdf_jump=!char 1 to -2 of $ddd_jump
+cmdf_string=!char 1 to -2 of $ddd_string
+cmdf_vardef=!char 1 to -2 of $ddd_vardef
+cmdf_ins=!char 1 to -2 of $ddd_ins
+cmdf_html=!char 1 to -2 of $ddd_html
+cmdf_random=!char 1 to -2 of $ddd_random
+cmdf_loop=!char 1 to -2 of $ddd_loop
+cmdf_datafile=!char 1 to -2 of $ddd_datafile
+cmdf_file=!char 1 to -2 of $ddd_file
+1
+
+rm -f *.tmp
+

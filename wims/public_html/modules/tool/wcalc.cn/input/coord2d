@@ -1,0 +1,14 @@
+fml=!declosing $formula
+fml=!rawmath $fml
+cnt=!itemcnt $fml
+!if $cnt!=2
+ error=bad_formula
+ !exit
+!endif
+!distribute items $fml into xx,yy
+t=$[$xx] $[$yy]
+!if $xx=$empty or $yy=$empty or NaN isin $t or Inf isin $t
+ error=bad_formula
+ !exit
+!endif
+

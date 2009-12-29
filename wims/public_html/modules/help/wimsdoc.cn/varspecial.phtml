@@ -1,0 +1,104 @@
+!read tabletheme
+!set var_lst=<li>变量$emph
+!set var_lst=$table_tr<td>$emph
+!set emphend0=$emphend<td>
+
+$table_header
+<caption>Wims服务器使用的变量</caption>
+ $var_lst wims_exec_error$emphend0 用于存放被
+  $(ref1)cmdlist_exec_&+cmd_choose=all$(ref2)cmdlist_exec_">!exec</a>.
+  调用的外部程序产生的出错信息. 因此每执行一次 $emph!exec$emphend 命令,
+  此变量就被改写.
+ $var_lst wims_module_log$emphend0 是独立模块的执行记录文件名:
+  如果此变量非空, 则在用户请求的进程结束时, wims.cgi 就把它的内容放到模块的执行记录文件里.
+ $var_lst wims_version$emphend0 放置wims服务器的当前版本.
+ $var_lst wims_version_date$emphend0 放置服务器程序最新编译的日期.
+ $var_lst wims_site_manager$emphend0 含有网站的配置文件 $emph wims.conf$emphend
+  里定义的管理员的电邮地址. 模块中不应改变此地址.
+ $var_lst wims_print_precision$emphend0 当赋值结果
+  (通过命令 <tt>!eval</tt> 或 <tt>$[...]</tt> 计算)被转化成字符序列时的打印精度.
+  默认值: $emph$wims_print_precision$emphend (可在wims.conf里修改).
+ $var_lst wims_warn_$emphend0... 是 ...
+ $var_lst wims_compare_precision$emphend0 用于定义wims比较两个数值量时的容许误差.
+  公式为: 如果
+  <center>
+  abs(a-b)*$$wims_compare_precision&lt;abs(a+b)+1/$$wims_compare_precision. </center>
+  则命令 <tt>!ifval a=b</tt> 的返回值是 TRUE (真). 
+  默认值: $emph$wims_compare_precision$emphend (可在wims.conf里修改).
+ $var_lst wims_texsize$emphend0 用于改变模块里的TeX字体大小. 
+  默认值是0(不变). 可以取 1,2,... (增大)或 -1,-2... (减小).
+ $var_lst wims_homeref_parm$emphend0 保留给命令 <tt>!homeref</tt> 将来使用.
+ $var_lst wims_homeref_bgcolor$emphend0 是...
+ $var_lst wims_rawmath_functions$emphend0 用于告诉 rawmath 
+  子程序, 这个变量值里包含的词应被看作函数名. 这些词相互用空格或逗号分隔.
+ $var_lst wims_rawmath_variables$emphend0 用于告诉 rawmath 
+  子程序, 这个变量值里包含的词应被看作数学变量名. 这些词相互用空格或逗号分隔.
+ $var_lst wims_ref_name$emphend0  给出 wims 服务器的名字 (本服务器是 $wims_ref_name)
+ $var_lst httpd_HTTP_HOST$emphend0 给出 wims 服务器的地址 (本服务器是 $httpd_HTTP_HOST)
+ $var_lst wims_ref_target$emphend0 定义了命令
+  <tt>!href, !homeref, !form</tt> 的目标. 在这些命令执行后, 
+  它的值<b>不会</b>自动重置为空. (默认值是空串, 意指目标就是当前文件.)
+ $var_lst wims_ref_id$emphend0 定义了命令
+  <tt>!href</tt> 里的 id (&lt;a ... id=" "&gt;). 在命令后它的值被自动重置为空.
+ (默认值是空串)
+ $var_lst wims_ref_class$emphend0 定义了命令
+  <tt>!href</tt> 里的 css class (&lt;a ... class=" "&gt;). 在命令后它的值被自动重置为空.
+ (默认值是空串)
+  $var_lst wims_ref_title$emphend0 定义了命令
+  <tt>!href</tt> 里的 title (&lt;a ... title=" "&gt;). 在命令后它的值被自动重置为空.
+ (默认值是空串)
+ $var_lst wims_html_header$emphend0 是所有模块的html输出的标准html头部.
+  它的值由文件 html/header.phtml 定义. 建议在生成模块时利用此变量定义html头部. 
+ $var_lst wims_expire$emphend0 用于定义发送给用户的网页的有效期.
+  最好不要动它, 除非你清楚知道你在做什么.
+ $var_lst module_init_parm$emphend0 是...
+$table_end
+<p>
+!set resetyes=<br>在动态插入以后, 此变量重置为空.
+$table_header
+<caption>保留给动态插入使用的变量</caption>
+ $var_lst ins_align$emphend0 确定内嵌图形相对于文字基线的位置.
+  可取的值为: bottom(底部对齐), middle(中间对齐) 或 top(顶部对齐). 
+  默认值为空(指底部对齐).
+ $var_lst ins_attr$emphend0 用于定义动态插入的各种属性. 例如:
+  <pre>  ins_attr = align=middle</pre>
+  (使图形中线与文字基线对齐), 或
+  <pre>  ins_attr = ismap</pre>
+  (鼠标点击的坐标将被发送给服务器; 如果此对象的链接是wims服务器,
+  那么坐标将被记录在变量 $emph no_name$emphend 里.)
+  $resetyes
+ $var_lst ins_border$emphend0 用于定义经过动态插入得到的html元素  $emph IMG $emphend
+  的边框宽度. 它的值应该是正数.
+  $resetyes
+ $var_lst ins_density$emphend0 用于定义动态插入的密度. 
+  默认值: $emph 100x100 $emphend.
+  <br>
+  <b><font color=red>请避免使用这些变量!</font></b> 我们正计划取消它们.
+  它们将被服务器管理的变量取代.
+ $var_lst ins_format$emphend0 用于确定动态插入的图形文件格式:
+  它的值只能是 $emph gif$emphend 或 $emph jpg$emphend. 默认值是
+  $emph gif$emphend (可在文件 $emph wims.conf$emphend 里改变此值; 但不推荐). <br>
+  某些动态插入可能不受此变量影响.
+ $var_lst ins_quality$emphend0 用于定义动态插入的图形转换质量.
+  它的值应该在0与100之间. 只对图形格式为jpg的动态插入有影响.
+ $var_lst ins_tag$emphend0 用于表格内的动态插入.
+  此时定义<br>
+  <tt>ins_tag=form </tt>$emph name$emphend<br>
+  这里的 $emph name$emphend 是html元素 $emph IMG $emphend 在表格内的名称(可选).
+  $resetyes
+  <p>
+ $var_lst insdraw_size$emphend0 是 ...
+ $var_lst insplot_data$emphend0 是 ...
+ $var_lst insplot_font$emphend0 是 ...
+ $var_lst insplot_set $emphend0 是 ...
+ $var_lst insplot_split$emphend0 是 ...
+ $var_lst insplot_transparent$emphend0 用于定义插入的透明色彩.
+  默认值是空(不透明). 常用值: 255,255,255(透明白色).
+$table_end
+
+!! module_about
+!! module_about_bgcolor
+!! ins_anim_loop
+!! ins_anim_delay
+!! ins_anim_frames
+

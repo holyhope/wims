@@ -1,41 +1,39 @@
-
 !if ~ notin $mod
- <b>注意</b>. 此模块只有简化地址"<tt>$mod</tt>".
-建议作
- !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod 地址更新
-.
+ <b>$wims_name_warning</b>.
+ $name_simpl_address: "<tt>$mod</tt>".
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod $name_updateadress
  <p>
 !endif
 
 !set doctest1=!module category devel/$auth_login/$mod
 
-你的模块
+$name_your_module
 <em><font color=blue>$title</font></em> ($description)
 <small>
 !href cmd=reply&jobreq=index $mod
 </small>
-包含下列文件. 
+$name_file2.
 !if document isin $doctest1
- (<i>For document files, click on the link <tt>Document manager</tt></i>.)
+  (<i>$name_gestion</i>)
 !endif
 
 !set table_cellpadding=1
 !set table_cellspacing=0
-!set table_center=
+!set table_center=center
 !set table_header=!replace internal <> by in $table_header
 !set table_end=!replace internal </> by in $table_end
 <p>$table_header
 $table_hdtr
-<th>名称<th>作用</th><th>解释
+<th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations
  !for f in $files
   $table_tr
   <td align=left nowrap>$f
   <td align=center nowrap>  
-  !href cmd=reply&jobreq=showfile&fname=$f 显示
+  !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
   &nbsp;
-  !href cmd=reply&jobreq=edfile&fname=$f 编辑
+  !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
   &nbsp;
-  !href cmd=reply&jobreq=delfile&fname=$f 删除
+  !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
   !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
    !set f_=!translate internal / to , in $f
    !set f_=!item -1 of $f_
@@ -53,13 +51,9 @@ $table_end
 
 !form reply
 <input type=hidden name=jobreq value=edfile>
-添加新文件:
+$name_addfile:
 <input size=20 name=fname value="$lastfname">
-<input type=submit value=提交>
-!!!href cmd=reply&jobreq=binfile 二进制文件
-!!&nbsp;
-!!!href target=wims_test module=tool/directexec&cmd=new 脚本测试
+<input type=submit value="$wims_name_tosave">
 </form>
-
 !reset fname
 

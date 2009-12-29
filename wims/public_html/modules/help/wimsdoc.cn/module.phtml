@@ -1,0 +1,76 @@
+
+每个wims模块有自己的主目录, 其中存放模块的所有文件. <p>
+
+一个模块至少要有下列文件:
+<UL>
+$tit 变量定义文件 $emph var.def$emphend. $titend
+此文件定义了模块的$emph 外部$emphend 变量. 用户给出的参数的变量名必须在这个文件里声明,
+除非是wims保留的参数名(cmd, session, module, ...). 
+并且只有本文件声明过的变量才能保存在本次对话的目录里供同一次对话的其它请求调用.
+$tit 变量处理文件 $emph var.proc$emphend.$titend
+本文件在每次调用模块时都被处理(特殊调用除外: cmd=intro 或 getins).
+$tit 主 phtml 文件 $emph main.phtml$emphend.$titend
+本文件在每次调用模块时都被处理(特殊调用除外: cmd=intro 或 getins).
+$tit 索引文件 $emph INDEX$emphend, 它确定了模块的特性.$titend
+本文件供wims数据库搜索可用模块之用.
+</UL>
+
+<p>
+通常还有以下(可选的)文件:
+<ul>
+$tit 变量初始化文件 $emph var.init$emphend.$titend
+本文件的语法同 $emph var.proc$emphend, 而且只在带有 cmd=new 或 cmd=renew 的请求时被处理.
+$tit 导引文件 $emph intro.phtml$emphend.$titend
+这是一个 phtml 文件, 当模块被带有 cmd=intro 的调用时处理.
+通常用于介绍模块的内容, 让用户选择初始选项.
+</ul>
+
+<p>还可以有许多其它文件, 像 $emph README$emphend 文件, 一些帮助页,
+一个 $emph about$emphend 页, 图形文件或者被上述文件调用的文件.
+
+<hr><h4>变量处理文件</h4>
+
+文件 $emph var.init$emphend, $emph var.proc$emphend, 
+以及被这两个文件调用的文件都是变量处理文件. <p>
+
+变量处理文件由行组成, 行与行之间由换行符分隔,
+但是接在 $emph \$emphend 后面的换行符不起分隔作用. 
+
+变量处理文件的每一行只能是以下类型之一:
+<ol>
+ <li>注解行, 它的第一个非空格字符只能是 $emph #$emphend, 或者
+  $emph!$emphend 后接另一个 $emph!$emphend.
+ <li>变量定义行, 其形式为
+  $emph name$emphend=$(emph)value$emphend. 
+  $(emph)value$emphend 的内容可以是一个字符串(如果这个串里含有换行号,
+  它的前面必须加上 $emph \$emphend), 或者是wims变量命令
+  (它的起始字符必须是 $emph!$emphend).
+ <li>命令行, 它的第一个非空格字符必须是 $emph!$emphend, 
+  后接命令名以及可选的参数.
+  <br>如果此命令产生输出字符串, 这个输出将被忽略.
+ <li>标记行, 它的第一个非空格字符必须是 $emph:$emphend, 
+  后接标记名. 在标记名后面的内容都被看作注解, 不被处理.
+  <br>标记用于跳转命令 $emph!goto$emphend.
+  <br>以字符 '*' 的标记是万用的,
+能与 $emph!goto$emphend  命令的任何标记匹配.
+  <br>如果此命令产生输出字符串, 这个输出将被忽略.
+ <li>不符合上述4条的行将得到一个出错信息.
+</ol>
+
+<hr><h4>phtml文件</h4>
+
+文件 main.phtml, intro.phtml, 以及这两个文件调用的任何文件都是phtml(可编程html)文件.
+<p>
+除去第一个非空格字符是 $emph!$emphend 或 $emph:$emphend 的行以外,
+phtml文件是一个通常的html文件.
+<p>
+如同变量处理文件, $emph\$emphend 后面的换行符不被看成产生新行.
+<p>
+如同变量处理文件, 以 $emph:$emphend 起首的行是标记行.
+<p>
+如同变量处理文件, 以 $emph!$emphend 起首的行是命令行.
+但是与变量处理文件不同, 命令输出的字符串被插入html页的这一行里, 
+<p>
+不属于上述两种类型的行则经过变量替换后发送给http用户.
+
+

@@ -1,10 +1,12 @@
+!!!### langage independant
+!!
 # update_field is number of field to update
 # update_content is the new content.
 
 scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !for s=1 to $scnt
  sheet_$s=!record $s of wimshome/log/classes/$wims_class/sheets/.sheets
- sheet_$s=!line 1 to 7 of $(sheet_$s)\
+ sheet_$s=!line 1 to 8 of $(sheet_$s)\
 \
 \
 \
@@ -21,7 +23,7 @@ scnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 !writefile wimshome/log/classes/$wims_class/sheets/.sheets
 !for s=1 to $scnt
  !if $s!=$sheet or $update_field!=0
-  sf=!line 1 to 5 of $(sheet_$s)
+  sf=!line 1 to 8 of $(sheet_$s)
   !appendfile wimshome/log/classes/$wims_class/sheets/.sheets :$sf
  !endif
 !next s

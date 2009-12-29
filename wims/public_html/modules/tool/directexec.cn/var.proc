@@ -1,0 +1,57 @@
+
+swlist=c,draw,   fortran77, gap,maxima,m2,        ocaml,octave,pari,   pascal,perl,povray,python,scilab,sh       ,yacas
+swname=C,Flydraw,Fortran 77,GAP,Maxima,Macaulay 2,Ocaml,Octave,PARI/GP,Pascal,Perl,Povray,Python,Scilab,sh (bash),YACAS
+
+!bound sw within $swlist default $
+src=!trim $src
+
+!if $sw=$empty or $src=$empty or $cmd!=reply
+ compute=no
+ !exit
+!endif
+
+sw1=!positionof item $sw in $swlist
+SW=!item $sw1 of $swname
+
+compute=yes
+
+!reset wims_exec_error
+nonprintable=
+
+src=!translate internal $nonprintable to \
+	$                                           $ in $src
+src1=!replace internal &#36; by $$$$ in $src
+
+!if $sw=draw
+ !insdraw $src1
+ swout=$ins_url
+ !goto execout
+!endif
+
+!if $sw=perl
+ swout=!perl $src1
+ !goto execout
+!endif
+
+!if $sw=sh
+ swout=!sh $src1
+ !goto execout
+!endif
+
+swout=!exec $sw $src1
+!if $sw=pari
+  swout=!replace internal $ $ $ by $\
+$ in $swout
+!endif
+!if $sw=povray
+ swout=!line -1 of $swout
+!endif
+:execout
+msg=!trim $wims_exec_error
+msg=!line 2 to -1 of $msg
+!reset wims_exec_error
+
+src2=!singlespace $src
+src2=!char 1 to 20 of $src2
+wims_module_log=$sw $src2
+

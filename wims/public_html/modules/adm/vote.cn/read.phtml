@@ -3,7 +3,7 @@
  ÕâÊÇÄäÃûÍ¶Æ±.
 !else
  !if $vote_option=trace
-   Ce questionnaire est anonyme et tracé.
+   ÕâÊÇ¿É×·×ÙµÄÄäÃûÍ¶Æ±
  !else
    ÕâÊÇ¼ÇÃûÍ¶Æ±.
  !endif
@@ -40,7 +40,7 @@ to $wims_menu_items
  ÄãµÄÑ¡Ôñ: <p>
  :form
  !form reply
- <input type=hidden name=job value=vote>
+ <input type=hidden name=job value=Í¶Æ±>
  !set m_formed=yes
 !endif
 
@@ -48,14 +48,14 @@ to $wims_menu_items
 
 !if $m_formed=yes
  <p><center>
- <input type=submit value="$wims_name_tosave">
+ <input type=submit value="·¢ËÍ">
  </center></form>
 !endif
 
 :comments
 !readdef $votedir/$vote.comments 
 !if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
-<p><b>Textes des commentaires</b> : 
+<p><b>ÆÀÂÛµÄÎÄ×Ö</b> : 
 </p><p> 
 !for i=1 to $parmcnt
  !if $(type_comment$i)=yes
@@ -75,7 +75,7 @@ to $wims_menu_items
 !next
 !endif
 !if $wims_user=supervisor and $vote_option!=anonymous
- <p> Détail des enregistrements.
+ <p> ¼ÇÂ¼µÄÏêÇé.
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/

@@ -1,0 +1,49 @@
+!set methtit=方程两边加上一个数
+!set methparmtype=number,parm equation
+!set methhelp=这个方法把一个方程 \(a = b)\
+ 转换成等价方程 \(a + n = b + n), 其中 \(n) 是一个数.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把数
+ !read deduc/methparm.phtml 1,15
+ 加到方程
+ !read deduc/methparm.phtml 2
+的两边
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ methexp=把 \(methparm1) 加到 \($left $sign $right) 的两边
+
+ !read deduc/sub/simplify ($left + ($methparm1)\
+    $right + ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ newsign=$sign
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+ 
+ contextlist=$ct_Always,\
+    $ct_Onlywhen所加的数有固定的符号,\
+    $ct_Onlywhen所加的数是正的
+
+ !if $askresult>1
+  !read deduc/sub/simplify $left - ($methparm1)\
+    $right - ($methparm1)
+  !distribute lines $out into badleft, badright
+  badsign=!translate internal <> to >< in $newsign
+ 
+  resultlist=$newobject2,\
+    $newleft $newsign $badright,\
+    $badleft $newsign $newright
+ !endif
+
+!exit
+

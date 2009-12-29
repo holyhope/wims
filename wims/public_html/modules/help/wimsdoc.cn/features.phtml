@@ -1,0 +1,70 @@
+
+<ol>
+  $tit 写html网页时可以利用可编程的扩展: 变量替换、条件分支等.$titend
+      这个对html的扩充不需要在浏览器端增加任何插件,
+      因为所有wims命令都是由服务器处理的, 
+      送给用户的已经是标准的html网页. <br>
+      举例来说, 这样你可以定义各种网页格式并能动态变换格式. <br>
+      并且这样的扩展可以和当前的所有html标准共存, 包括java applets, javascripts,
+      嵌入对象, dhtml等. 这是因为wims扩展严格遵循行间隔的原则
+      (即wims命令必须是行的起首词), 而html标准与换行无关. <br>
+      因此甚至能把wims扩展嵌入javascripts, 
+      applets, dhtml...
+      
+  $tit 图形、TeX格式的数学公式可以动态插入html网页. $titend
+      例如你可以把下面的一行命令插入wims扩展html页.
+      在浏览器端, 用户可以看到一个TeX格式的矩阵, 其内容由变量
+      $emph $$matrix$emphend 的值确定:
+      <pre>
+     $ !instex $$$$ \left( $$matrix \right) $$$$</pre>
+      此外, 实现了动态插入后, 以后的升级就不需对模块作任何改动.
+      (比方说, 如果有更好的方法生成数学公式, 只要在服务器端作简单的改动,
+      就能使所有的 $emph!instex$emphend 命令行同时采用新标准.)
+      
+  $tit 内嵌图形可以是动画!$titend
+      例见工具
+      !href module=tool/geometry/animtrace.$lang&cmd=intro 轨迹动画
+      .
+  
+  $tit 提供直接调用外部软件包的界面.$titend
+      例如你可以用下面的命令行定义一个变量 `factor':
+      <pre>
+      factor=!exec pari print(factor($$number))</pre>
+      在执行这一行时, 变量 $$number 将用它的当前值代入,
+      然后用命令串 `print(factor(&lt;value of $$number>))' 调用软件包 `PARI'
+      执行此命令. 从输出结果中挑出所需的值赋给变量 `factor'. <br> 
+      在wims $wims_version 里提供的界面有: PARI, Maxima, MuPAD,
+      Coq, Povray, gnuplot, PostgreSQL, Fly (gif作图), CALC (作者Keith Matthew).
+
+  $tit 既简单又适应性强的语言.$titend
+      Wims模块使用的语言是广泛使用的html语言的扩展.
+      这个扩展语言设计得简单易用, 又贴近自然语言. 并且尽可能接受同义词.
+      例如为了插入另一文件的内容, 你不必记住wims命令是
+      $emph include$emphend (如C), 或 $emph input$emphend (如TeX), 
+      因为两者都有效.
+
+  $tit 方便的串操作指令:$titend
+      如利用正则表示式作置换, 从项目表中提取子集合, 字符重排,
+      数学公式赋值等.
+
+  $tit 易用的内嵌数学符号:$titend
+      只要输入 <tt>$$m_pi</tt> 就能得到 $m_pi, <tt>$$m_RR</tt> 得到
+      $m_RR, <tt>$$m_eufM</tt> 得到 $m_eufM, <tt>$$m_le</tt> 得到
+      $m_le, <tt>$$m_Rightarrow</tt> 得到 $m_Rightarrow, 等等.
+      
+  $tit 对数学公式的智能化处理:$titend
+      内建的解释程序能够在容许范围内接受简化的表达式, 例如
+      <tt>2y</tt> (即 <tt>2*y</tt>) 或 <tt>(x+1)(x-1)</tt>
+      (即 <tt>(x+1)*(x-1)</tt>), 也能把原始数学表达式转化成美观的html源码
+      (如 <tt>x^3-3*x^2+1*x-5</tt> 转化为
+      $emph
+      !htmlmath x^3-3*x^2+1*x-5
+      $emphend
+      ), 或转为TeX源码.
+      
+  $tit 强有力的随机性能:$titend
+      如随机置换(字符重排), 从数据库随机挑选记录, 随机文件名等.
+
+</ol>
+
+

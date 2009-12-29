@@ -1,0 +1,28 @@
+!! for translate this help you just have to copy this file with correct extension (fr en de) and traduce it !
+!!
+
+!let help_isreaded=yes
+技能记录本是根据班级学生的完成作业情况汇总得到的综合性表格.<br>
+记录本由一些技能(最多 ...)构成, 每个技能可以具有多个(最多 ...)等第.<p>
+
+对于每个等第, 教师可以定义班级练习的系列表, 根据这个表, 从得分可以算出获得的等第.<p>
+
+教师可以决定使得某些虚拟页在计算技能等第时不起作用 
+(这样可以保留当年的有些教学数据供次年计算某些技能等第时使用).<p>
+
+等第的计算公式如下 :
+<center>
+!insmath 10 \times \frac{\sum_{i=1}^{N} NM(X_{L[i;1],L[i;2]})}{\sum_{i=1}^{N} \delta_{L[i;1]}}
+</center>
+其中<ul>
+ <li> <i>N</i> 是参加等第计算的系列练习数.</li>
+ <li> <i>L</i> 是参加等第计算的系列练习的表. 表的每个元素由页码 L[i;1] 以及此页包含的系列练习号码 
+ L[i;2] 构成.</li>
+ <li> 
+  !insmath X_{i,j}
+  是页 <i>i</i> 的第 <i>j</i> 个系列练习的质量分.</li>
+ <li> 
+  !insmath \delta_i
+  当页 <i>i</i> 参加等第计算时取成 <i>1</i>, 否则取 <i>0</i>.</li>
+ <li> NM(a) 当此页参加计算并且 <i>a</i> 超过最小得分时取 <i>1</i>, 否则取 <i>0</i> (若把最小得分固定为 <i>0</i> 就使这个选项不起作用).</li>
+</ul>

@@ -1,4 +1,4 @@
-!set special_list=imagefill,expandlines,help
+!set special_list=imagefill,expandlines,rename,help,tooltip
 
 <p><center><h2>OEF的高级技巧</h2></center>
 
@@ -57,18 +57,19 @@ choice 3
 \while{条件}{循环内容}     (只用在主环境)
 </pre>
 
-这些命令可以被用于陈述、提示、解答或反馈内, 或用于主环境里.
+这些命令(<tt>while</tt> 除外)可以被用于陈述(<tt>statement</tt>)、提示(<tt>hint</tt>)、解答(<tt>solution</tt>)或反馈(<tt>feedback</tt>)内, 
+或用于主环境里.
 在最后一种情形, 条件执行只影响参数的定义.
 
 <a name=special></a>
 <h3>特殊方法</h3>
 
-在练习的陈述里利用命令 <tt>\special{...}</tt>
+在练习的陈述(<tt>statement</tt>)里利用命令 <tt>\special{...}</tt>
 可有下列特殊方法:
 <p>
 !if $special_parm=all
  !for sp in $special_list
-  <p><center><h4>特殊方法<tt>$sp</tt></center></h4> <p>
+  <p><center><h4>特殊方法 <tt>$sp</tt></center></h4> <p>
   一般语法: <tt>\special{$sp <i>参数</i>}</tt> <p>
 
   !read oef/special/$sp.phtml help
@@ -81,7 +82,7 @@ choice 3
 !endif
 
 !if $special_parm2 isitemof $special_list
-<p><center><h4>特殊方法<tt>$special_parm2</tt></center></h4> <p>
+<p><center><h4>特殊方法 <tt>$special_parm2</tt></center></h4> <p>
 一般语法: <tt>\special{$special_parm2 <i>参数</i>}</tt> <p>
 
 !read oef/special/$special_parm2.phtml help
@@ -89,7 +90,7 @@ choice 3
 
 <h3>预处理资源</h3>
 
-本功能不能用于Createxo. 你可在模块工具(Modtool)下使用它来写OEF(及Deductio)练习.
+本功能不能用于创建练习(createxo). 你可在模块工具(Modtool)下使用它来写OEF(及Deductio)练习.
 <p>
 它使你可以把源码的公共部分包含在几个oef文件里.
 你也可以利用它从一个预资源批生成几个oef, 它们相互之间相差一些宏定义.
@@ -137,10 +138,12 @@ cpp会陷于混乱. 在这种情形,
 特殊变量 <tt>\oefenv</tt> 可用来测试练习的环境(如果在练习里没有对它重定义的话).
 <p>
 目前此变量能测试的内容只有
-``debug''. 在以下情形里, debug将出现在 <tt>\oefenv</tt> 里:<ol>
-<li>当它在Createxo内执行时.
-<li>当它在Modtool内被测试时, 目的是为了开发.
+``debug''. 在以下情形里, debug将出现在 <tt>\oefenv</tt> 里:
+<ol>
+<li>当它在创建练习(createxo)内执行时.</li>
+<li>当它在模块工具(modtool)内被测试时, 目的是为了开发.</li>
 <li>当它是班级的练习, 而且被主持教师执行时.
+</li>
 </ol>
 在这些情形, 许多类型的输入栏里都会显示正确的答案, 
 让你看到练习期望的结果是什么.

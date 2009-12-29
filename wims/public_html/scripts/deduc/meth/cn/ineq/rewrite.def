@@ -1,0 +1,63 @@
+!set methtit=重写不等式
+!set methenv=ZZ QQ RR
+!set methparmtype=parm inequality, function, choice 5, function
+!set methhelp=这个方法允许你通过综合使用项的相加、交换两边以及乘非零常数等手段,\
+把已知(不)等式变换成等价的(不)等式.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 重写不等式
+ !read deduc/methparm.phtml 1
+ 为 <br>
+ <input size=15 name=methparm2 value="$methparm2">
+ !formselect methparm3 from 1 to 5 prompt =,<,>,<=,>=
+ <input size=15 name=methparm4 value="$methparm4">
+ !set methremark=你的新不等式必须与原来的等价.
+!exit
+:check
+ !distribute items $methparmobj1 into data,left1,sign1,right1
+ sign2=!item $methparm3 of =,<,>,<=,>=
+ sign3=!item $methparm3 of =,>,<,>=,<=
+ !if $sign2 notsametext $sign1 and $sign3 notsametext $sign1
+  :badequiv
+  error=你的新不等式不等价于原来的!
+  !advance penalty
+  !exit
+ !endif
+ 
+ check1=($left1) - ($right1)
+ !if $sign2 issametext $sign1
+  check2=($methparm2) - ($methparm4)
+ !else
+  check2=($methparm4) - ($methparm2)
+ !endif
+  
+ !read deduc/sub/checkzero $check1\
+    $check2
+ !distribute line $out into out1, out2
+ !read deduc/sub/_Simplify ($check1) / ($check2)
+ out3=$out
+ !if $out1=yes or $out2=yes
+  !if $out1!=yes or $out2!=yes
+   !goto badequiv
+  !endif
+ !else
+  out3=$[$out3]
+  !if NaN isin $out3 or Inf isin $out3
+   !goto badequiv
+  !endif
+  !if $out3<=0 and $sign2 notsametext $sign3
+   !goto badequiv
+  !endif
+ !endif
+ methexp=重写 \($left1 $sign1 $right1)
+
+ newobject1=$methparm2 $sign2 $methparm4
+ oldobject=1
+
+!exit
+

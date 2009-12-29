@@ -1,0 +1,26 @@
+!goto $wims_read_parm
+
+:def
+title=Data product
+synonyme=product of data
+input=data1d
+!exit
+
+:proc
+
+cnt=!itemcnt $formula
+!if $cnt>0
+ result=!product x for x in $formula
+!else
+ result=1
+!endif
+
+!exit
+
+:output
+
+!replace , by $ &times; $ in $formula
+<br> =
+!htmlmath $result
+!exit
+

@@ -1,12 +1,14 @@
-<li><b>可控多重选择</b>: <tt>checkbox</tt>,
- <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt><br>
-这些可用来代替标准的多重选择, 使作者对其形式有更多的控制权.
+<b>可控多重选择</b>: <tt>checkbox</tt>,
+ <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt>, <tt>flashcard</tt><br>
+这些可用来代替标准的多重选择 (<tt>\choice</tt>), 使作者对其形式有更多的控制权.
 正确的回答应该包括两个区段, 它们之间用分号 ``<tt>;</tt>'' 间隔. 
-第二个区段(分号以后)是选择文字的表, 而第一个区段则是正确选择的数字表.
-在 <tt>checkbox</tt> 的情形, 用户必须在所有正确的选择前标注,
+第二个区段(分号以后)是选择文字的表, 而第一个区段则是正确选择的号码表.
+在 <tt>checkbox</tt> 和 <tt>flashcard</tt> 的情形, 用户必须在所有正确的选择前标注,
 而其它情形只要选一个正确的即可. 
+在 <tt>flashcard</tt> 的情形, 第 3 行给出显示在正面朝下的纸牌表面上的内容,
+其默认值是问号.
  <p>
-对于 <tt>checkbox</tt>, <tt>menu</tt> 以及 <tt>radio</tt>, 
+对于 <tt>checkbox</tt>, <tt>menu</tt>, <tt>radio</tt> 以及 <tt>flashcard</tt>, 
 有一个选项是 <tt>shuffle</tt>, 就是把出现在学生面前的多重选择作随机乱排. 
  <p>
 没有选项 <tt>shuffle</tt> 时, 不会自动乱排.
@@ -21,16 +23,34 @@
 例如 <tt>multiple=5</tt> 给出了 5 行高的多重菜单窗口.
  <p>
  <tt>mark</tt> 类似于 <tt>checkbox</tt>, 只是不用按钮， 而是使用颜色变化.
-所以原则上只能在线使用.
+所以主要用在文字叙述里. 同样的选择可以出现好几处, 它在段落里的位置也是考虑因素之一.
+在分析回答时, 绿色表示正确, 红色表示错误, 蓝色表示遗漏的选择.
+例如: 点击下文内的所有定冠词...
+ <p>
+在 <tt>flashcard</tt> 的情形, 选择是正面朝下的(纸牌), 正确的选择是翻转过来的.
+每张牌上的点击次数记录在变量 <tt>\reply</tt>n 的第二行. 
  <p>
 对于可有多个选择的类型 (<tt>checkbox</tt>,
  <tt>mark</tt>, 以及带选项 <tt>multiple</tt> 的 <tt>menu</tt> ),
 在默认的情形, 回答只要与正确答案不同, 就判 0 分. 
-如果你对一部分对的情形想给一点部分成绩的话, 可以使用选项 <tt>split</tt> 
+如果你对部分对的情形想给一点部分成绩的话, 可以使用选项 <tt>split</tt> 
 (同义词: <tt>partialscore</tt>). 在这种情形部分成绩按学生答对的比例计算,
 另一方面, 给出一个错误的回答会扣去两个正确回答的分数, 直至扣到 0 分.
 这是对投机的惩罚.
  <p>
 你也可以使用选项 <tt>eqweight</tt>, 这时每个错答只扣去一个正确回答的分数.
+
+在使用命令 <tt>\embed</tt> 时, 可以把第 k 项写成 <tt>\embed{r</tt>n<tt>,k}</tt>
+其中 <tt>n</tt> 是问题的序号. 在 <tt>flashcard</tt> 的情形,
+还可以在后面加上两行以规定纸牌的 css 格式
+(它们对于每张牌都应该是相同的, 否则就采用最后出现的说明).
+ 例如,
+<pre>
+\embed{r1,4
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:red;"
+style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:blue;"
+}
+</pre>
+
 
 

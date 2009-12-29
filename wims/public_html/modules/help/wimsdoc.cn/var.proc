@@ -1,0 +1,104 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+!if robot isin $session
+ style=integral
+!endif
+
+tit=<li><font color=#A00000>
+titend=</font> <br>
+emph=<font color=#00A000><b>
+emphend=</font></b>
+
+!default lang=cn
+!default style=indexed
+!default cmd_choose=all
+
+!if $style=integral
+ cmd_choose=all
+!endif
+
+!read Findex
+cmdfiles=$(cmdf_$cmd_choose)
+
+title_user      =总体介绍
+title_devel =在wims里发布你的网页
+title_ref   =Wims模块: 技术参考资料
+
+title_whatis    =Wims是什么?
+title_why       =为何使用wims?
+title_copyright =版权原则
+title_status    =目前发展状态
+title_examples  =Wims的能力示例
+title_compare   =与其它方法作比较
+title_features  =Wims目前的功能
+title_todo  =计划今后的版本增加的功能
+title_lightpub  =简易phtml网页: 利用wims功能的最简便方式
+title_lighthowto=如何发布简易phtml网页
+title_migrate   =从简易phtml网页升级为模块
+title_structure =Wims基本结构
+title_remote_dev=活动的在线开发
+title_module    =Wims模块的结构
+title_variables =模块内的变量
+title_varspecial=有特殊意义的变量
+title_datastruct=数据结构
+title_cmdlist   =命令表
+title_mathfn    =数学函数表
+title_slib  =slib(脚本库)表
+title_mathfonts =内嵌数学符号表
+title_interface =外部软件包界面
+title_class =班级与用户注册
+
+user_doc =whatis,examples,compare,features,remote_dev
+#devel_doc=features,lightpub,lighthowto,migrate,remote_dev
+ref_doc=structure,module,variables,varspecial,datastruct,cmdlist,mathfonts,slib,interface
+
+wims_module_log=$style $lang $subject
+
+!if $style=integral
+ ref1=<!
+ ref2=><a href=#
+!endif
+
+!if $style=indexed
+ ref1=<a href=$httpd_SCRIPT_NAME?cmd=resume&session=$session&subject=
+ ref2=#
+!endif
+
+!if $style=folding
+ ref1=<a href=$httpd_SCRIPT_NAME?cmd=resume&session=$session&op=open&subject=
+ ref2=#
+!endif
+
+!if $style=folding and $subject!=$empty
+
+ !if $op=close and ,$subject isin $expand
+   exp=
+   !for i in $expand
+    !if $i != $empty and .$subject notin .$i
+     exp=$exp,$i
+    !endif
+    expand=$exp
+   !next i
+ !endif
+ 
+ !if $op=open and ,$subject notin $expand
+   expand=$expand,$subject
+ !endif
+
+!endif
+
+cmd_choose_list=all,exec,var,string,file,datafile,ins,random,html,jump,loop,vardef
+
+choose_all   =所有
+choose_exec  =执行
+choose_var   =变量
+choose_html  =html界面
+choose_jump  =进程控制
+choose_loop  =循环
+choose_string=串操作
+choose_datafile=数据文件操作
+choose_vardef=变量定义
+choose_ins   =公式/图像插入
+choose_random=随机数据生成
+choose_file  =文件操作

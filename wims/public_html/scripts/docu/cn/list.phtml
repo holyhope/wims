@@ -1,41 +1,40 @@
 <center><h1>$tit</h1></center>
 
 !if $fcnt<1
- 本文件尚无内容.
- !href cmd=reply&job=edit&block=main 创建第一页
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
 .
  <p>
  !exit
 !endif
 
 <p>$table_header
-<caption>文件的块的列表</caption>
+<caption>$n_blocklist</caption>
 $table_hdtr
-<th>姓名<th>标题<th>动作
+<th>$wims_name_name<th>$wims_name_title<th>$wims_name_action
 !for i=1 to $fcnt
  !set s_=!line $i of $slist
  !set t_=!line $i of $tlist
  !set t_=!trim $t_
- !default t_=无标题
+ !default t_=$n_notitle
  $table_tr
  <td><tt>$s_</tt></td>
  <td>$t_</td>
  <td align=center>
- !href cmd=reply&job=read&block=$s_ 阅读
+ !href cmd=reply&job=read&block=$s_ $n_read
 &nbsp;
  !if $editable=yes
-  !href cmd=reply&job=edit&block=$s_ 编辑
+  !href cmd=reply&job=edit&block=$s_ $wims_name_Edit
  !endif
 </td>
 !next i
 $table_end <p>
 
 <center>
-可用磁盘空间总数: $quota_total Meg. 自由空间: $quota_free Meg.
+$n_freespace1: $quota_total Meg.
+$n_freespace2: $quota_free Meg.
 <p>
-!href cmd=reply&job=file 文档存放
-&nbsp;&nbsp;
-!href cmd=reply&job=read&block=main 进入文件
 
-</center> <p>
-
+!set wims_menu_items=!append line doch_upload,1,cmd=reply&job=file\
+doch_main,1, cmd=reply&job=read&block=main\
+to $wims_menu_items

@@ -1,0 +1,63 @@
+!header
+
+!if $compute=yes
+ !if $swout=$empty
+  你的源码不能从 <em>$SW</em> 得到任何输出.
+ !else
+  请 <em>$SW</em> 回答 :
+  !if $sw=draw
+   <img align=middle src="$swout">
+   !goto after
+  !endif
+  !if $sw=povray
+   <img align=middle src="$swout">
+   !goto after
+  !endif
+<pre>
+$swout
+</pre>
+ !endif
+!else
+ 本工具允许你直接在线执行大部分与 WIMS 互动的软件或者计算机语言.
+ 只要输入你的源码并得到结果!
+ 
+ !href cmd=help 点击这里
+ 以获得软件的文件.
+ <p>
+ WIMS 开发者可用来作为测试工具,
+ 以检验各种软件在 WIMS 下的行为.
+ <p>
+ 为安全起见, 码长限于 16K, 并严格限制使用的系统资源.
+ 你使用的服务器可能缺少某些软件.
+ 请与网站管理员联系.
+!endif
+
+:after
+!if $msg!=$empty
+ <p><hr> <p>
+ <em>$SW</em> 的出错信息 :
+<pre style="color:red;font-size:80%">
+$msg
+</pre>
+!endif
+
+<p><hr> <p>
+!form reply
+<input type=submit value="执行">
+以下命令行, 使用
+!default sw=sh
+!formselect sw list $swlist prompt $swname
+$ : <small>[ 
+!href cmd=renew 清除
+ ] [ 
+!href cmd=help $wims_name_help
+ ]</small>
+<br>
+!set src=!reinput $src
+!set src=!replace internal &amp;#36; by &#36; in $src
+<textarea wrap=off cols=70 rows=15 name=src>$src</textarea>
+</form>
+
+!tail
+
+!reset src sw

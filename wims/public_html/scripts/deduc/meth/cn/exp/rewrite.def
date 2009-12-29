@@ -1,0 +1,36 @@
+!set methtit2=重写代数式
+!set methtit=重写代数式
+!set methenv=ZZ QQ RR CC
+!set methparmtype=parm algexp nocomma nonesting, function
+!set methhelp=通过代数重写进行推导. 只允许使用算术等价性.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 重写代数式
+ !read deduc/methparm.phtml 1
+ 为
+ !read deduc/methparm.phtml 2,20
+ !set methremark=只允许使用算术等价性.
+!exit
+:check
+ !distribute items $methparmobj1 into data,exp
+ !read deduc/sub/checkzero ($exp)-($methparm2)
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $out!=yes
+  error=unjustified
+  !exit
+ !endif
+ methexp=重写 \($exp)
+
+ newobject1=$methparm2
+ oldobject=1
+
+!exit
+

@@ -1,0 +1,67 @@
+
+!let lang_exists=yes
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ <b>(<font color=green>$wims_institutionname</font>)</b>
+
+!read adm/lang/date.phtml.$lang
+
+!distribute items 技能,\
+技能,\
+技能,\
+技能,\
+等第,\
+等第,\
+等第,\
+等第,\
+所有,\
+into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_all
+
+!set name_no_competence=在此记录本里没有$name_competence !
+!set name_noyetparticipant=这个班级还没有参加者.
+!set name_info=关于这个$name_competence的信息 ;
+!set name_param_change=这是你可以改变的参数&nbsp;
+!set name_color=与$name_n_palier对应的格子的背景色&nbsp;
+!set name_score_modify=被选作业页的练习的得分在计算所得到的$name_n_palier时不予考虑 &nbsp;
+!set name_cocher=请勾选你要用于这个$name_n_palier的.
+!set name_see=只显示对应页号的练习
+!let name_nowork=没有活动
+!let name_listscoreoption=班级的,记录本的
+!let name_listscoreview=不显示,整数,一位小数,2位小数,3位小数,4位小数
+
+!distribute items $name_competence的名称,\
+$name_n_palier的名称,\
+$name_n_paliers的个数,\
+班级的,\
+为使一个练习的技能被认可的最低得分\
+利用颜色表示$name_n_paliers的水平,\
+显示等第的数值结果\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5
+
+!!------------------------------- definition des noms de liens pour wims_menu_items
+
+!if $wims_user=supervisor
+ !let tmp=!defof SE_list in wimshome/public_html/modules/home/names.$lang
+!else 
+ !let tmp=!defof U_myscore in wimshome/public_html/modules/home/names.$lang
+!endif
+
+!distribute line 新$name_competence\
+$tmp\
+班级记录本\
+$name_competences记录本\
+ into wims_name_add_competence,wims_name_go_userlist,wims_name_cls_livret,wims_name_livret
+
+!if $job=addcomp
+ !set name_job=!nosubst 添加/修改$name_competence $comp
+ !exit
+!endif
+
+!if $job=modpalier
+  !set name_job=!nosubst 修改$name_competence $comp (<font color=green>$name_comp</font>) 的$name_n_palier $palier (<font color=green>$name_palier</font>).
+  !exit
+!endif
+
+!if $job=user
+  !set name_job=!nosubst <font color=green> $user_lastname$user_firstname</font>
+!endif
+

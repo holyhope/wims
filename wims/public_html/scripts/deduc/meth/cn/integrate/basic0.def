@@ -1,0 +1,29 @@
+!set methtit=基本积分公式
+!set methtit2=最少的基本积分公式
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, choice
+
+!set basic=a*t^b,a/(t^2+1),a/sqrt(1-t^2),\
+    a/sqrt(t^2+1),a/sqrt(t^2-1),a*e^t,a*sin(t),a*cos(t)
+!set basiccnt=!itemcnt $basic
+!set basicp=!replace internal , by ), \( in \($basic)
+!set methhelp=本方法知道以下函数的积分.\
+ <p>$basicp
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 积分
+ !read deduc/methparm.phtml 1
+ 是熟知的, 因为它具有以下形式
+ <p><center>
+ \(integrate())
+ !formselect methparm2 from 1 to $basiccnt prompt $basic
+ \(dt), </center><p> 其中 \(a) 和 \(b) 是常数.
+!exit
+:check
+!changeto deduc/meth/$module_language/integrate/basicheck
+

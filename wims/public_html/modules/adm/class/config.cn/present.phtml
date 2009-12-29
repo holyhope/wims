@@ -1,43 +1,61 @@
-
+!!!### language independant
 !set wims_form_method=file
 !form reply
 <input type=hidden name=up_job value=present>
 <p>$table_header
-$table_tr<td align=right>班级的图标
+$table_tr<td align=right>$name_logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
-<td><input size=45 name=pr_logo value="$class_logo">
-$table_tr<td align=right>图标位置
+</td><td><input size=45 name=pr_logo value="$class_logo">
+</td></tr>
+$table_tr<td align=right>$name_position_logo
 <small>
 !href cmd=help&special_parm=config&special_parm2=logo $wims_name_help
  </small>
-<td>
+</td><td>
 !set pr_logoside=$class_logoside
-主页的
-!formselect pr_logoside list left,right prompt 左上角, 右上角
-.
-$table_tr<td align=right>参加者主页
+!formselect pr_logoside list left,right prompt $name_logo_side
+</td></tr>
+$table_tr<td align=right>$wims_name_class_home
 <small>
 !href cmd=help&special_parm=config&special_parm2=homepage $wims_name_help
  </small>
-<td><input size=45 name=pr_homepage value="$class_homepage">
-$table_tr<td align=right>页面背景色
+</td><td><input size=45 name=pr_homepage value="$class_homepage">
+</td></tr>
+$table_tr<td align=right>$name_background_color
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
-<td><input size=10 name=pr_bgcolor value="$class_bgcolor">
-$table_tr<td align=right>菜单背景色
+</td><td><input size=10 name=pr_bgcolor value="$class_bgcolor">
+</td></tr>
+$table_tr<td align=right>$name_menu_color
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
  </small>
-<td><input size=10 name=pr_refcolor value="$class_refcolor">
-$table_tr<td align=right>背景图形文件
+</td><td><input size=10 name=pr_refcolor value="$class_refcolor">
+</td></tr>
+$table_tr<td align=right>$name_refmenu_color
+<small>
+!href cmd=help&special_parm=config&special_parm2=bgcolor $wims_name_help
+ </small>
+</td><td><input size=10 name=pr_ref_menucolor value="$class_ref_menucolor">
+</td></tr>
+$table_tr
+ <td align=right>$name_colorscore</td>
+ <td>
+  !for col=1 to 11
+   &nbsp; <input size="5" name="pr_sccolor$col" value="$(class_scorecolor[$col])">
+  !next col
+ </td>
+</tr>
+$table_tr<td align=right>$name_image
 <small>
 !href cmd=help&special_parm=config&special_parm2=bgimg $wims_name_help
  </small>
-<td><input size=45 name=pr_bgimg value="$class_bgimg">
-$table_tr<td align=right>班级的格式主题
+</td><td><input size=45 name=pr_bgimg value="$class_bgimg">
+</td></tr>
+$table_tr<td align=right>$name_theme
 <small>
 !href cmd=help&special_parm=config&special_parm2=theme $wims_name_help
  </small>
@@ -45,7 +63,7 @@ $table_tr<td align=right>班级的格式主题
 !set pr_theme=$class_theme
 !formselect pr_theme list $themelist
 </td></tr>
-$table_tr<td align=right>Icones de la classe
+$table_tr<td align=right>$name_theme_icon
 <small>
 !href cmd=help&special_parm=config&special_parm2=icon $wims_name_help
  </small>
@@ -53,14 +71,16 @@ $table_tr<td align=right>Icones de la classe
 !set pr_theme_icon=$class_theme_icon
 !formselect pr_theme_icon list $iconlist
 </td></tr>
-$table_tr<td align=right>格式页(css)
+$table_tr<td align=right>$name_css (css)
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
  </small>
-<td>
+</td><td>
 !set pr_css=$class_css
 !formselect pr_css list $csslist
-$table_tr<td align=right valign=middle>你可以在这里定义班级的格式页:
+$table_tr
+<td align=right valign=middle>
+$name_content_style
 <small>
 !href cmd=help&special_parm=config&special_parm2=css $wims_name_help
 </small>
@@ -82,5 +102,5 @@ $table_end <p>
 
 
 !reset pr_logo, pr_logoside, pr_bgcolor,\
-	pr_refcolor, pr_bgimg, pr_theme, pr_css, pr_theme_icon, pr_homepage, pr_cssfile
+	pr_refcolor, pr_ref_menucolor,pr_bgimg, pr_theme, pr_css, pr_theme_icon, pr_homepage, pr_cssfile
 

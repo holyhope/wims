@@ -1,0 +1,28 @@
+
+!read themes/$wims_theme/table.proc
+!if $special_parm=flydraw
+ <p><center><h3>Flydraw 的命令</h3></center><p>
+ !read help/flydraw.phtml
+ !exit
+!endif
+
+<form action=http://www.google.com/search>
+<input type=submit value="搜索 Google"> 寻找
+<select name=q>
+!for sw in $swname
+ <option value="$sw documentation">$sw
+!next sw
+</select></form>
+
+<p>
+!href cmd=help&special_parm=flydraw Flydraw 文件
+.
+<p>
+任何执行的输入输出限制都是 16K. 为安全起见,
+不能连接网络, 写文件限于当前目录.
+执行时间限于几秒.
+
+<p>
+对 C 界面的特别注记: 进入点是 <tt>int test(void)</tt>,
+不是 <tt>main()</tt>!
+

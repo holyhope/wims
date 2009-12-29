@@ -12,8 +12,17 @@
 .
 !if $mode!=file
 <li><p>
-如果你要修改它,
-!href cmd=reply&level=2 返回菜单
+!!!!!!!!!!!!! d閎ut de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
+ !if $to_ia_qcm=-1
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 返回 confia2qcm
+ !endif
+ !if $to_ia_qcm=-2
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 返回 createqcm
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+   !href cmd=reply&level=2 修改练习的源代码
+ !endif
+!!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 .
 !else
  !set wims_form_method=file
@@ -32,6 +41,8 @@
  <li><p>你也可以
  !href cmd=reply&level=6 发送一个图形文件
 到练习.
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
  !if $success!=1 and $regout!=fail
@@ -39,15 +50,27 @@
  如果正确无误, 你可以
  !if $existing!=$empty
   !if ..devel/ notin ..$catmodule
-  将此练习放入班级,
-  !href cmd=reply&level=4 替换旧练习
-  或者
-  !href cmd=reply&level=4&newone=1 作为新练习
- !else
-   !href cmd=reply&level=4 放入开发中模块
-  !endif
- !else
-  !href cmd=reply&level=4 将此练习放入你的班级
+   !if $catmodule=$empty
+   将此练习放入班级,
+   !href cmd=reply&level=4 替换旧练习
+   或者
+   !href cmd=reply&level=4&newone=1 作为新练习
+   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+ newversion,1,cmd=reply&level=4&newone=1\
+ to $wims_menu_items
+    !else
+     !href cmd=reply&level=4 将此练习放入你的班级
+     !reset catmodule
+    !endif
+   !else
+    !href cmd=reply&level=4 放入开发中模块
+    !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+    to $wims_menu_items
+   !endif
+  !else
+   !href cmd=reply&level=4 将此练习放入你的班级
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
+   to $wims_menu_items
  !endif
 .
  !endif
@@ -59,6 +82,21 @@
  !getfile submit.oef 保存练习的源码!
 !endif
 </ul>
+!set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
+to $wims_menu_items
+
+!if $to_ia_qcm=-1
+!set wims_menu_items=!append line backconfia2qcm,1,module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1\
+ to $wims_menu_items
+ !endif
+ !if $to_ia_qcm=-2
+!set wims_menu_items=!append line backcreateqcm,1,module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2\
+ to $wims_menu_items
+ !endif
+ !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+!set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+ to $wims_menu_items
+ !endif
 !set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
 to $wims_menu_items
 

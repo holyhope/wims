@@ -1,0 +1,23 @@
+formula=!lines2items $formula
+cnt=!itemcnt $formula
+!if $cnt!=3
+ error=bad_formula
+ !exit
+!endif
+formula=!rawmath $formula
+!distribute item $formula into s1,s2,s3
+s1=$[$s1]
+s2=$[$s2]
+s3=$[$s3]
+!if NaN isin $s1 $s2 $s3 or Inf isin $s1 $s2 $s3
+ error=bad_formula
+ !exit
+!endif
+sides=!sort numeric item $s1,$s2,$s3
+Sides=!item $wims_sort_order of $formula
+!distribute item $sides into s1,s2,s3
+!distribute item $Sides into S1,S2,S3
+!if $s3>=$s1+$s2 or $s1<=0
+ error=incompatible_sides
+ !exit
+!endif

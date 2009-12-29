@@ -1,0 +1,64 @@
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=Fail
+  !exit
+ !endif
+
+ !bound methparm2 between integer 0 and $basiccnt default 0
+ !if $methparm2=0
+  error=empty_data
+  !exit
+ !endif
+
+ form=!item $methparm2 of $basic
+ ftest=$form
+ form=!mathsubst a=1 in $form
+ form=!mathsubst t=$ivar in $form
+ !if $ftest=a*t^b
+  test=!mathsubst $ivar=1 in $iker
+  coef=$[$test]
+  !if NaN isin $coef
+   !goto badformula
+  !endif
+  !if $coef=0
+   !if $[$iker]!=0
+    !goto badformula
+   !else
+    !goto OK
+   !endif
+  !endif
+  !read deduc/sub/simplify log(($iker)/($test))/log($ivar)
+  power=$[$out]
+  !if $out=$empty or NaN isin $power or Inf isin $power
+   !goto badformula
+  !endif
+  !goto OK
+ !endif
+ !read deduc/sub/simplify ($iker)/($form)
+ test=$[$out]
+ !if NaN isin $test
+  :badformula
+  error=公式不对!
+  !advance penalty
+  !exit
+ !endif
+ !if Inf isin $test or $test=0
+  error=bad_data
+  !exit
+ !endif
+
+ :OK
+ got=!exec maxima integrate($iker,$ivar)
+ !if $got=$empty or integrate isvarof $got
+  error=失败
+  !exit
+ !endif
+
+ newobject1=($got)
+ oldobject=1
+ methexp=基本公式

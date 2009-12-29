@@ -1,0 +1,99 @@
+!set methtit2=用不变号代数式乘不等式
+!set methtit=用代数式乘不等式
+!set methenv=ZZ QQ RR
+!set methparmtype=function,parm inequality >,choice,parm inequality >
+!set methparmrelax=4
+!set methhelp=此方法把不等式 \(A > B) 变换成\
+ \(A*f > B*f) (或 \(A*f < B*f)), 这里 \(f) 是有恒定符号的代数式.\
+ 此方法允许 \(f) 有零点. 为此, 原不等式与新不等式不一定等价,\
+因此只被用于假设条件.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把不等式
+ !read deduc/methparm.phtml 2
+ 乘以代数式
+ !read deduc/methparm.phtml 1,10
+ , 这个式子
+ !formselect methparm3 list 0,-1,1 prompt \
+    $ch_choose, 取负值或零值, 取正值或零值
+ 因为
+ !set ch_optional=这是一个数
+ !read deduc/methparm.phtml 4
+!exit
+:check
+ !bound methparm3 within -1,0,1 default 0
+ !if $methparm3=0
+  error=empty_data
+  !exit
+ !endif
+ !distribute items $methparmobj2 into data,left,sign,right
+ !read deduc/sub/checkineq ($methparm1),=,0
+ ztest=$out
+ !if $ztest=true
+  zr=zero
+  sign2=>=
+  !goto OK
+ !endif
+ !if $ztest=bad
+  !if $methparm4<1
+   :bad
+   sens=!item ($methparm3+3)/2 of 负的, 正的
+   error=我看不出为什么 \($methparm1) 是$sens.
+   !exit
+  !endif
+  !distribute items $methparmobj4 into data,left2,sign2,right2
+  gt=>
+  lt=<
+  eq=$(empty)=
+  !if ($methparm3>0 and $lt isin $sign2) or \
+    ($methparm3<0 and $gt isin $sign2)
+   !exchange left2,right2
+  !endif
+  sens=!item ($methparm3+3)/2 of <,>
+  !read deduc/sub/checkineq ($methparm1) - ($left2) + ($right2),$sens=,0\
+    ($methparm1) - ($left2) + ($right2),=,0
+  !distribute line $out into sn,zr
+  !if $sn!=true
+   !goto bad
+  !endif
+ !else
+  !if ($methparm1)*$methparm3<0
+   error=符号错!
+   !exit
+  !endif
+ !endif
+ :OK
+ methexp=把 \($left $sign $right) 乘以 \($methparm1)
+
+ !read deduc/sub/simplify ($left) * ($methparm1)\
+    ($right) * ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $methparm3<0
+  newsign=!translate internal <> to >< in $sign
+ !else
+  newsign=$sign
+ !endif
+ newobject2=$newleft $newsign $newright
+ !if $eq notin $sign and $zr=true and $eq isin $sign2
+  newsign=$newsign=
+  newobject0=$newobject2
+  oldobject=0
+ !else
+  oldobject=2
+ !endif
+
+ badsign=!translate internal <> to >< in $newsign
+ resultlist=$newobject2,\
+    $newright $newsign $newleft,\
+    $newleft $badsign $newright
+!exit
+

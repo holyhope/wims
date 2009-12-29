@@ -1,0 +1,95 @@
+!goto $wims_read_parm
+
+:def
+title=Line through 2 points
+synonyme=line thru two points
+input=data2d
+!exit
+
+:proc
+!if $cnt!=2
+ error=bad_formula
+ !exit
+!endif
+!distribute lines $fml into p1,p2
+!distribute items $p1 into x1,y1
+!distribute items $p2 into x2,y2
+xmax=$[1.2*max(abs($x1),abs($x2))]
+ymax=$[1.2*max(abs($y1),abs($y2))]
+xmin=-$xmax
+ymin=-$ymax
+dist=$[($x1-$x2)^2+($y1-$y2)^2]
+!ifval $dist=0
+ error=bad_formula
+ !exit
+!endif
+result=!exec pari a=$x1-($x2); print(a);\
+	b=$y1-($y2); print(b);\
+	c=$x2*($y1)-($x1)*($y2); print(c);\
+	print(b*x-a*y);\
+	print(-a*t+($x1));\
+	print(-b*t+($y1));\
+	if(a<>0,print(b/a*x-c/a));
+result=!nonempty lines $result
+c=!linecnt $result
+!if $c<6
+ result=
+!endif
+!distribute lines $result into a,b,c,eq,px,py,expl
+!read insplot_set.proc
+insplot_set=parametric; size $insplot_size; noborder;\
+	arrow from $xmin,0 to $xmax,0 lt 0;\
+	arrow from 0,$ymin to 0,$ymax lt 0;\
+	xtics axis; ytics axis
+insplot_data=$[$x1] $[$y1]\
+$[$x2] $[$y2]
+
+op=
+option=!words2items $option
+!for o in $option
+ !if $o isitemof implicit, explicit, parametric, plot
+  op=!append item $o to $op
+ !endif
+!next o
+!default op=implicit, parametric, plot
+!if implicit notitemof $op and \
+	(explicit notitemof $op or $expl=$empty)
+ op=implicit, $op
+!endif
+!exit
+
+:output
+Equation of the line through two points $fml3&nbsp;:
+!if implicit isitemof $op
+ <p><center>
+ !htmlmath $eq = $c
+ </center>
+!endif
+!if explicit isitemof $op and $expl!=$empty
+ !if implicit isitemof $op
+  or
+ !else
+  <p>
+ !endif
+ <center>
+ !htmlmath y = $expl
+ </center>
+!endif
+!if parametric isitemof $op
+ <p>
+ Parametric equations
+ <p><center>
+ !htmlmath x = $px
+ &nbsp;,&nbsp;&nbsp;
+ !htmlmath y = $py
+ </center>
+!endif
+!if plot isitemof $op
+ <p><center>
+ !insplot [-10:10] [$xmin:$xmax] [$ymin:$ymax] $px,$py notitle lt 1,\
+	'insplot_data' notitle lt 3 pt 1
+ </center>
+!endif
+
+!exit
+

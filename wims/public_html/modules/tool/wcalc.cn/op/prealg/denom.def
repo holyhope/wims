@@ -1,0 +1,30 @@
+!goto $wims_read_parm
+
+:def
+title=Common denominator
+synonyme=denominator
+input=mixed
+!exit
+
+:proc
+
+fml=!rawmath $formula
+cnt=!itemcnt $fml
+!if $cnt>1
+ fml=[$fml]
+!endif
+
+result=!exec pari denominator($fml)
+
+!exit
+
+:output
+
+Common denominator of
+!htmlmath $formula
+&nbsp;:
+<p><center><font size=+1> $result
+</font></center>
+
+!exit
+

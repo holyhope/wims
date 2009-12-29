@@ -10,10 +10,20 @@
  !exit
 !endif
 
+!if bad_series=$error
+奇怪, 我找不到要修改的练习系列 !!
+ !exit
+!endif
+
 !if bad_source=$error
-你提交的源码的项目数 $bad_source 是无效的.
+你提交的源码的第 $bad_source 项是无效的.
  !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
 .
+ !exit
+!endif
+
+!if active_sheet=$error
+ 此页已激活. 其内容不能修改.
  !exit
 !endif
 
@@ -38,7 +48,6 @@
 !endif
 
 !if $error=sharing_sheet
- <font color=red><b>危险!!!</b></font>
 你在与其它班级共享页面!
  !if $wims_ismanager<2
 你应该要求网站管理员取消激活此页面.
@@ -54,6 +63,9 @@
  . </center>
  <p>
  <b>在继续此操作前, 至少应该通知相邻班的主持教师保存他们的班级!</b>
+ 否则如果出现混乱, 也许在几个月以后, 你不得不回复到取消激活前的状态,
+ 从而失去此后的所有数据, 包括分享此页的班级的数据!
+ 你要充分认识面临的风险.
  !exit
 !endif
 
@@ -99,7 +111,7 @@
 !endif
 
 !if prep_erase=$error
-你真的要删除这一页 #$sheet ($title)?
+你真的要删除第 $sheet 页 ($title)?
  <p><center>
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
@@ -109,7 +121,7 @@
 !endif
 
 !if prep_expire=$error
-本页 #$sheet ($title) 正常的失效日期是 $expyear,
+第 $sheet 页 ($title) 正常的失效日期是 $expyear,
  !item $expmon of $months
  $expday. 你要使他在现在失效吗?
  <p><center>
@@ -144,47 +156,23 @@ to $wims_menu_items
   你输入了一个无效请求, 不予考虑.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
-  !set orgtit=!module title $directory
-  <p><center><h3>$name_titlemodif $modif</h3></center>
-  !form reply
-  <input type=hidden name=modif value=$modif>
-  <input type=hidden name=job value=modify>
-  <ul>
-  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
-  </small> <br>
-  <input size=50 name=mod_title value="$title">
-  <li>$wims_name_Description<br>
-  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
-  <li>$name_pointsasked: 
-  <input size=4 name=mod_require value="$require">,
-  $name_ofweight
-  <input size=4 name=mod_weight value="$weight">.
-  <li>$(name_shtab[6]):
-  <input size=40 name=mod_dep value="$dep">.
-  !reset mod_dep
-  </ul>
-  <p><center><input type=submit value="$wims_name_change"></form>
-  </center> <p>
-  !href cmd=resume $wims_name_giveup
- .
-  <p><small>
-  <b>帮助</b>. 得分相关性是指参加者必须在本页的其它练习里得到所需的分数后,
-才能做这道题. 例如,
-  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
-是指参加者在第1题必须得50%, 第2题得30%, 第3, 4, 5题平均得60%.
-  </small>
+  !read exomodify.phtml $exo
  !endif
  !exit
 !endif
 
 !if $error=toolate
  $name_expiration1 ($l_date). $name_expiration2
-
 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
-
  !exit
 !endif
+
+!if $error=srcnoexo
+ 本页不含任何练习, 因此其源码是空的.<br>
+ !href cmd=resume 返回准备页
+ !exit
+!endif
+
 !msg $error

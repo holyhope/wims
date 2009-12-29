@@ -1,0 +1,56 @@
+!set methtit=重写方程
+!set methenv=ZZ QQ RR CC
+!set methparmtype=parm equation, function, choice, function
+!set methhelp=你可以利用这个方法把已给方程通过加项,、
+ 交换方程两边, 乘以非零数等的复合变形成一个等价方程.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 重写方程
+ !read deduc/methparm.phtml 1
+ 为 <br>
+ <input size=15 name=methparm2 value="$methparm2">
+ =
+ <input size=15 name=methparm4 value="$methparm4">
+ !set methremark=你的新方程必须等价于原方程.
+!exit
+:check
+ !distribute items $methparmobj1 into data,left1,sign1,right1
+ sign2==
+ sign3==
+ !if $sign2 notsametext $sign1 and $sign3 notsametext $sign1
+  :badequiv
+  error=你的新方程不等价于原方程!
+  !advance penalty
+  !exit
+ !endif
+ 
+ check1=($left1) - ($right1)
+ check2=($methparm2) - ($methparm4)
+  
+ !read deduc/sub/checkzero $check1\
+    $check2
+ !distribute line $out into out1, out2
+ !read deduc/sub/_Simplify ($check1) / ($check2)
+ out3=$out
+ !if $out1=yes or $out2=yes
+  !if $out1!=yes or $out2!=yes
+   !goto badequiv
+  !endif
+ !else
+  out3=$[$out3]
+  !if NaN isin $out3 or Inf isin $out3
+   !goto badequiv
+  !endif
+ !endif
+ methexp=重写 \($left1 = $right1)
+
+ newobject1=$methparm2 = $methparm4
+ oldobject=1
+
+!exit
+

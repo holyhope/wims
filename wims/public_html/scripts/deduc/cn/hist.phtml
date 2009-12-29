@@ -1,0 +1,62 @@
+
+!if equalities iswordof $m_options or $laststep<1
+ !exit
+!endif
+
+!readproc tabletheme
+<p>$table_header
+<caption>步骤的历史纪录</caption>
+$table_hdtr<th>步骤</th>
+!if $casecnt>1
+ <th>情况</th>
+!endif
+<th>结果</th><th></th>
+<th>方法</th>
+<th>注</th></tr>
+!reset light1,light2
+!set hstart=$[max(1,$currstep-10)]
+!set hstop=$[min($laststep,$currstep+8)]
+!for i=$hstart to $hstop
+ !if $i=$currstep
+  !distribute item <font color=#9090C0>,</font> into light1,light2
+ !endif
+ $table_tr<td align=center nowrap>$light1
+ $i
+ !if $status=waiting
+  <small>
+  !if $i<$currstep
+   !href cmd=reply&opt=newstep&gotostep=$i 取消
+  !else
+   !href cmd=reply&opt=newstep&gotostep=$[$i+1] 重做
+  !endif
+  </small>
+ !endif
+$light2</td>
+ !if $casecnt>1
+ !set c_=!item $i of $stepcases
+  <td align=center>$light1 \($c_) $light2</td>
+ !endif
+ <td align=center>$light1
+ !read deduc/putobject.phtml $i
+$light2</td><td></td><td>$light1
+ !line $i of $methods
+$light2</td>
+<td>$light1
+!reset R_
+!if $objisgoal=yes
+ 目标改变.
+!endif
+!set t_=!char $i of $stepcounting
+!if $t_=0
+ 不被记分.
+ !set R_=1
+!endif
+!if $R_!=1
+ &nbsp;
+!endif
+$light2</td>
+</tr>
+!next i
+$table_end<a name=last></a>
+<p>
+

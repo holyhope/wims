@@ -1,0 +1,53 @@
+
+<p><table border=0>
+!set hstart=$[max(1,$currstep-10)]
+!set hstop=$[min($laststep,$currstep+8)]
+!for i=$hstart to $hstop
+ !if $i=$currstep
+  !distribute item <font color=#9090C0>,</font> into light1,light2
+  !set instex_color=144,144,192
+ !endif
+ <tr><td nowrap>$light1
+ !if $i=$hstart
+  $m_startname
+ !endif
+ $light2</td><td nowrap>$light1 =
+ !read deduc/putobject.phtml $i
+$light2</td>
+ <td>&nbsp;</td>
+ !if $status=waiting
+  <td align=center nowrap>$light1
+  <small>
+  !if $i<$currstep
+   !href cmd=reply&opt=newstep&gotostep=$i 取消
+  !else
+   !href cmd=reply&opt=newstep&gotostep=$[$i+1] 重做
+  !endif
+  </small>
+  $light2</td>
+ !endif
+ !set Z_=!line $i of $methods
+ !if $Z_!=$empty and ?? notin $Z_
+  !set wims_texsize=-2
+  <td nowrap><small>$light1($Z_)$light2</small></td>
+  !set wims_texsize=0
+ !endif
+!goto skip
+<td>$light1
+!reset R_
+!set t_=!char $i of $stepcounting
+!if $t_=0
+ 不计分.
+ !set R_=1
+!endif
+!if $R_!=1
+ &nbsp;
+!endif
+$light2</td>
+:skip
+</tr>
+!next i
+</table><a name=last></a>
+<p>
+
+!set instex_color=black

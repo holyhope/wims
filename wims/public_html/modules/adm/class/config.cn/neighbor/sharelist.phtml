@@ -1,7 +1,7 @@
 
 资源共享信息.
 <small>
-!href cmd=help&special_parm=share 帮助
+!href cmd=help&special_parm=share $wims_name_help
 </small>
 <p>
 
@@ -17,9 +17,9 @@ class_description\
 class_supervisor in wimshome/log/classes/$(sharing_$rec)/.def
    !distribute lines $D_ into i_,d_,s_
    <em>$d_</em> of <em>$i_</em> (by <em>$s_</em>).
-   !href cmd=reply&job2=stopshare&nei=$(sharing_$rec)&stoprec=$rec 中断这个共享
+   !href cmd=reply&job2=stopshare&nei=$(sharing_$rec)&stoprec=$rec $name_stopsharing
 . <small>
-   !href cmd=help&special_parm=stopshare 帮助
+   !href cmd=help&special_parm=stopshare $wims_name_help
    </small>
   !endif
  !next rec
@@ -31,7 +31,7 @@ class_supervisor in wimshome/log/classes/$(sharing_$rec)/.def
 !if $sharable_all!=$empty
  <p>$table_header
  <caption>允许共享你的资源的班级</caption>
- $table_hdtr<th>允许的资源<th>班级<th>共享
+ $table_hdtr<th>允许的资源<th>$wims_name_class<th>共享
  !for r in $sharable
   !for cl in $(sharable_$r)
    $table_tr<td align=center>$(name_$r)
@@ -42,7 +42,7 @@ class_description in wimshome/log/classes/$cl/.def
    !href cmd=reply&job2=def&nei=$cl $i_<br>$d_
    !set s_=!defof $(sharing_$r) in wimshome/log/classes/$cl/neighbors
    !if $s_=$wims_class
-    <td align=center>Active
+    <td align=center>激活
    !else
     <td align=center>---
    !endif

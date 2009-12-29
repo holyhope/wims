@@ -4,7 +4,7 @@
 验证文件的准许权限
 
 !if $bad$writable$execable$baduser$bad_wrapper$noexec=$empty
- WIMS是按安全的模式设置文件的准入权限.
+ WIMS 是按安全的模式设置文件的准入权限.
  !sh rm -f $wims_home/log/unsecure
 !else
  <b><font color=red>警告!</font></b>
@@ -16,6 +16,11 @@
  !endif
  !if $writable!=$empty
   !if $writcnt>=50
+   有大量文件或目录可被他人执行, 而它们应该是不可执行的. <p>
+   此问题只是部分被纠正. 请
+   !href cmd=reply 重复此过程
+   (直至不再有文件或目录具有错误的准入权限).
+   <p>本次被改正的准许权限表:
 <pre>
 !words2lines $writable
 
@@ -51,7 +56,7 @@
  !endif
  !if $baduser!=$empty
   !if $usercnt>=50
-   有大量文件或目录不是WIMS拥有的.
+   有大量文件或目录不是 WIMS 拥有的.
    <p>下面列举了一部分.
 <pre>
 !words2lines $baduser
@@ -70,9 +75,9 @@
   <p>
  !endif
  !if $bad_wrapper=true
-  重要安全提示: 请给文件<tt>public_html/bin/ch..root</tt>,
-  <tt>public_html/bin/wrap..exec</tt>, <tt>bin/wimsd</tt>以正确的拥有者. 
-  这对安全性十分重要. 为此你应该作为root执行 bin/wrapuid.
+  重要安全提示: 请给文件 <tt>public_html/bin/ch..root</tt>,
+  <tt>public_html/bin/wrap..exec</tt>, <tt>bin/wimsd</tt> 以正确的拥有者. 
+  这对安全性十分重要. 为此你应该作为 root 执行 bin/wrapuid.
   <p>
   !writefile wimshome/log/unsecure yes
  !else

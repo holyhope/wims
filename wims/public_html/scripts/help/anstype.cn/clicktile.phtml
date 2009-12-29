@@ -1,0 +1,88 @@
+
+<b>点击地砖以着色 (需要 java).</b>
+(名称 : <tt>clicktile</tt>)
+<br>
+
+这个 java 应用程序会显示一方由彩色矩形地砖铺成的地坪.
+里面画有多边形折线或一个点. 要求学生通过点击使得某些地砖变成不同的颜色.
+
+<p>这类回答应该使用命令 <tt>\embed</tt>.
+每块地砖的标记点位于左上角, 其坐标为 <tt>整数:整数</tt>.
+命令 <tt>\embed</tt> 的第一行规定了地坪的范围 X x Y , 以像素为单位.
+第二行起方括号 <tt>[</tt> 与 <tt>]</tt> 之间的内容是规定彩色地砖布局
+(学生不能修改) 的命令. 例如
+<pre>
+\embed{r1, 200 x 200
+[xrange -5,5
+yrange -5,5
+background_color yellow
+square blue,1:1,1:2,1:3
+square green,2:3,2:4
+point red,0:0]}
+</pre>
+地坪的边界 (<tt>xrange</tt> 与 <tt>yrange</tt>) 应该是整数,
+地砖的坐标就是以此为据的. 这个例中水平和竖直各有 10 块地砖.
+<tt>background_color</tt> 表示背景色, <tt>square</tt> 表示地砖, 
+<tt>point</tt> 代表点.
+正确答案表成如下形式的行 
+<tt>颜色,a:b,c:d</tt>
+每个 (<tt>a:b</tt>) 代表一块地砖, 其坐标都是整数.
+
+画背景时也可使用如下命令:
+<pre>
+polygon white,0:0,0:1,1:1
+point red,0:0
+line white,-5:0,5:0
+</pre>
+其中 <tt>polygon</tt> 表示闭合多边形, <tt>line</tt> 表示直线.
+根据译者试验, 背景的彩色地砖可以任意设置, 但是多边形、直线或点只能设置一种.
+还可以用以下命令设置背景图形:
+<pre>copy,x,y,网址</pre>
+如果是用 flydraw 作图, <b>网址</b>就是函数 <tt>draw()</tt> 作用的结果.
+不过建议你使用同样的 <tt>xrange</tt> 和 <tt>yrange</tt>. 
+
+回答问题时点击右键可以改变选取的颜色.
+
+变量 <tt>reply</tt>n 是包含所选取的地砖的矩阵, 每种颜色各占一行.
+如果在命令 <tt>\embed</tt> 的第二行包含
+<pre>
+return_all_objects yes
+</pre>
+那么所有地砖都出现在 <tt>reply</tt>n 里.
+如果地砖的选取正确, 但颜色不对, 则变量 <tt>sc_reply</tt>n 取值 0.5.
+
+<p>正确回答可以设成空变量. 这时将会根据题设的条件来分析回答.
+</p>
+<p>
+<b>例</b> : 
+<pre>
+\statement{
+  \embed{r1,200 x 200
+  [xrange -5,5
+   yrange -5,5
+   background_color yellow
+   square blue,1:1,1:2,1:3
+   square green,2:3,2:4
+   line white,-5:0,5:0
+  ]}
+}
+\answer{}{blue,1:0,1:-1,1:-2; green,2:-2,2:-3}{type=clicktile}
+</pre>
+$table_header
+$table_hdtr<th></th><th>解释</th></tr>
+$table_tr<td>xrange x1,x2</td><td></td></tr>
+$table_tr<td>yrange y1,y2</td><td></td></tr>
+$table_tr<td>background_color [color]</td><td></td></tr>
+$table_tr<td>square [color],x1:y1,x2:y2,...</td><td></td></tr>
+$table_tr<td>segment [color],x1:y1,x2:y2</td><td></td></tr>
+$table_tr<td>polygon [color],x1:y1,x2:y2,x2:y2,...</td><td></td></tr>
+$table_tr<td>return_all_objects yes/no</td><td></td></tr>
+
+</table>
+</center>
+
+可使用的颜色有
+<tt>white(白), red(红), green(绿), blue(蓝), orange(橘), yellow(黄), purple(紫),
+lightgreen(浅绿), lightblue(浅蓝), cyan(青紫), brown(棕), salmon(橙红), pink(粉红)</tt>.
+
+

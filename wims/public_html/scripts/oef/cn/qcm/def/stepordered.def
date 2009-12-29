@@ -1,0 +1,464 @@
+!set title=按原始次序一个接一个
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+oef2wims_version=3.22
+language=cn
+author=XIAO, Gang
+email=xiao@unice.fr
+computeanswer=no
+
+ansorder=r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r
+varcnt=97
+prevarcnt=91
+postvarcnt=5
+replycnt=20
+choicecnt=0
+conditioncnt=0
+feedbackcnt=0
+format=html
+
+val1=$imagedir
+val2=$confparm1
+val3=$confparm2
+val4=$confparm3
+val5=$confparm4
+
+!if $testcondition=yes
+ !goto test
+!endif
+!if $status=waiting
+ !exit
+!endif
+
+!readproc slib/oef/env datafile 
+tmp0=$slib_out
+val6=$(tmp0)
+tmp0=!recordcnt $val6
+
+val7=$[rint($(tmp0))]
+tmp0=!shuffle $val7
+
+val8=$(tmp0)
+
+!ifval $val2 notsametext
+val9=$[rint($val2)]
+!else
+val9=$[rint(1)]
+!endif
+
+!ifval $val9 issametext NaN
+val9=$[rint(1)]
+!endif
+val9=$[rint(min(min(20,$val7),max(1,$val9)))]
+tmp0=!shuffle $val7
+
+val8=$(tmp0)
+tmp0=!sort numeric items $(val8[1..$val9])
+
+val10=$(tmp0)
+val11=step
+val12=选择
+tmp0=!record 0 of $val6
+
+tmp1=!nonempty lines $(tmp0)
+
+val13=$(tmp1)
+tmp0=!linecnt $val13
+
+val14=$[rint($(tmp0))]
+val15=
+!for val16 =1 to $val14 
+val17=$(val13[$val16;])
+tmp0=!char 1 to 3 of $val17
+
+val18=$(tmp0)
+tmp0=!char 4 to -1 of $val17
+
+val17=$(tmp0)
+
+!ifval $val18 issametext .IQ
+val15=$val15 $val17
+!endif
+!next
+tmp0=!itemcnt $val10
+
+val19=$[rint($(tmp0))]
+val20=$[rint(1)]
+val21=$[rint(0)]
+val22=
+val23=$[rint(8)]
+
+!ifval checkbox iswordof $val22
+val24=checkbox
+!else
+val24=radio
+!endif
+val25=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z
+val26=
+val27=
+val28=
+val29=
+val30=
+val31=
+val32=
+val33=
+val34=
+!for val35  in $val10 
+tmp0=!record $val35 of $val6
+
+tmp1=!trim $(tmp0)
+
+val36=$(tmp1)
+tmp0=!embraced randitem $val36
+
+val36=$(tmp0)
+tmp0=!line 1 of $val36
+
+val37=$(tmp0)
+tmp0=!rows2lines $val37
+
+tmp1=!singlespace $(tmp0)
+
+val37=$(tmp1)
+tmp0=!linecnt $val36
+
+val14=$[rint($(tmp0))]
+val38=
+val39=
+val40=statement
+val41=
+!for val16 =2 to $val14 
+tmp0=!line $val16 of $val36
+
+tmp1=!trim $(tmp0)
+
+val17=$(tmp1)
+tmp0=!char 1 of $val17
+
+val42=$(tmp0)
+tmp0=!char 2 to -1 of $val17
+
+val17=$(tmp0)
+tmp0=!replace internal , by &#44; in $val17
+
+val17=$(tmp0)
+tmp0=!rows2lines $val17
+
+tmp1=!singlespace $(tmp0)
+
+val17=$(tmp1)
+val40=$val40,$val17
+!if $val42 issametext 0 
+tmp0=!append item $val16 to $val39
+
+val39=$(tmp0)
+!endif
+!if $val42 issametext 1 
+tmp0=!append item $val16 to $val38
+
+val38=$(tmp0)
+!endif
+!if $val42 isin Ff and $val16 > 2 
+val41=$val41$val17
+!endif
+!if $val42 isin Hh 
+val29=$val17
+!endif
+!if $val42 isin Ii 
+tmp0=!trim $val17
+
+val30=$(tmp0)
+!endif
+val41=$val41,
+!next
+tmp0=!itemcnt $val38
+
+val43=$[rint($(tmp0))]
+tmp0=!itemcnt $val39
+
+val44=$[rint($(tmp0))]
+
+!ifval $val20>$val43
+val45=$[rint($val43)]
+!else
+val45=$[rint($val20)]
+!endif
+
+!ifval $val23 > $val44+$val20
+val46=$[rint($val44+$val20)]
+!else
+val46=$[rint($val23)]
+!endif
+
+!ifval $val45>$val46-1
+val45=$[rint($val46-1)]
+!endif
+
+!ifval $val21>$val46-$val45
+val47=$[rint($val46-$val45)]
+!else
+val47=$[rint($val21)]
+!endif
+tmp0=!shuffle $val43
+
+val48=$(tmp0)
+tmp0=!item $val48 of $val38
+
+val49=$(tmp0)
+!if $val47>0 
+tmp0=!item 1 to $val47 of $val39
+
+val39=$(tmp0);
+tmp0=!item $val47+1 to $val44 of $val39
+
+val50=$(tmp0)
+!else
+val47=$[rint(0)]
+val50=$val39
+val39=
+!endif
+tmp0=!shuffle $val44
+
+val51=$(tmp0)
+tmp0=!item $val51 of $val50
+
+val50=$(tmp0)
+tmp0=!item 1 to $val45 of $val49
+
+tmp1=!item 1 to $val46-$val45-$val47 of $val50
+
+val52=$(tmp0),$val39 $(tmp1)
+tmp0=!makelist 1 for x=1 to $val45
+
+tmp1=!makelist 0 for x=1 to $val46-$val45
+
+val53=$(tmp0),$(tmp1)
+tmp0=!shuffle $val46
+
+val54=$(tmp0)
+tmp0=!item $val54 of $val53
+
+val53=$(tmp0)
+tmp0=!item $val54 of $val52
+
+val52=$(tmp0)
+tmp0=!positionof item 1 in $val53
+
+val55=$(tmp0)
+tmp0=!item 1 to $val46 of $val25
+
+val56=$(tmp0)
+val34=$val34$val46,
+val27=$val27$val56;
+val26=$val26$val55;
+val31=$val31$(val41[$val52]);
+val52=$(val40[$val52])
+val28=$val28$val52;
+val32=$val32$val37;
+!next
+val57=
+val58=
+val59=
+tmp0=!makelist r x for x=1 to $val19
+
+val60=$(tmp0)
+
+!ifval $val11 notsametext all
+tmp0=!items2lines $val60
+
+val60=$(tmp0)
+!endif
+oefsteps=$val60 
+nextstep=!nosubst $val60 
+!readproc oef/steps.proc
+replytype1=$val24
+
+replyoption1=$val22 
+replyname1=$val12 1
+replygood1=$(val26[1;]);$(val27[1;])
+replytype2=$val24
+
+replyoption2=$val22 
+replyname2=$val12 2
+replygood2=$(val26[2;]);$(val27[2;])
+replytype3=$val24
+
+replyoption3=$val22 
+replyname3=$val12 3
+replygood3=$(val26[3;]);$(val27[3;])
+replytype4=$val24
+
+replyoption4=$val22 
+replyname4=$val12 4
+replygood4=$(val26[4;]);$(val27[4;])
+replytype5=$val24
+
+replyoption5=$val22 
+replyname5=$val12 5
+replygood5=$(val26[5;]);$(val27[5;])
+replytype6=$val24
+
+replyoption6=$val22 
+replyname6=$val12 6
+replygood6=$(val26[6;]);$(val27[6;])
+replytype7=$val24
+
+replyoption7=$val22 
+replyname7=$val12 7
+replygood7=$(val26[7;]);$(val27[7;])
+replytype8=$val24
+
+replyoption8=$val22 
+replyname8=$val12 8
+replygood8=$(val26[8;]);$(val27[8;])
+replytype9=$val24
+
+replyoption9=$val22 
+replyname9=$val12 9
+replygood9=$(val26[9;]);$(val27[9;])
+replytype10=$val24
+
+replyoption10=$val22 
+replyname10=$val12 10
+replygood10=$(val26[10;]);$(val27[10;])
+replytype11=$val24
+
+replyoption11=$val22 
+replyname11=$val12 11
+replygood11=$(val26[11;]);$(val27[11;])
+replytype12=$val24
+
+replyoption12=$val22 
+replyname12=$val12 12
+replygood12=$(val26[12;]);$(val27[12;])
+replytype13=$val24
+
+replyoption13=$val22 
+replyname13=$val12 13
+replygood13=$(val26[13;]);$(val27[13;])
+replytype14=$val24
+
+replyoption14=$val22 
+replyname14=$val12 14
+replygood14=$(val26[14;]);$(val27[14;])
+replytype15=$val24
+
+replyoption15=$val22 
+replyname15=$val12 15
+replygood15=$(val26[15;]);$(val27[15;])
+replytype16=$val24
+
+replyoption16=$val22 
+replyname16=$val12 16
+replygood16=$(val26[16;]);$(val27[16;])
+replytype17=$val24
+
+replyoption17=$val22 
+replyname17=$val12 17
+replygood17=$(val26[17;]);$(val27[17;])
+replytype18=$val24
+
+replyoption18=$val22 
+replyname18=$val12 18
+replygood18=$(val26[18;]);$(val27[18;])
+replytype19=$val24
+
+replyoption19=$val22 
+replyname19=$val12 19
+replygood19=$(val26[19;]);$(val27[19;])
+replytype20=$val24
+
+replyoption20=$val22 
+replyname20=$val12 20
+replygood20=$(val26[20;]);$(val27[20;])
+question=__EXECUTED_1692754_EXERCISE__
+hint=!nosubst $val29
+
+
+!goto stat
+
+!exit
+
+:question
+$()	 
+!if $val30 notsametext  
+$()	  <img align=right hspace=10 src=$val1/$val30> <p>	 
+!endif
+$()	$val15	 
+!for m_q=1 to $val19 
+$()	  
+!if $val11 issametext all or ($m_status issametext end and $m_q<=$m_step) or $m_q=$m_step 
+$()	   
+!if $val19>1 
+$()<p> $m_q.  
+!endif
+$()	  $(val32[$m_q;])	  <p><table border=0 cellspacing=4>	   
+!for m_i=1 to $(val34[$m_q]) 
+$()	   <tr><td nowrap> 
+!read oef/embed.phtml reply \q,\i 
+$().</td>	   <td>$(val28[$m_q;$m_i])</td></tr>	   
+!next
+$()	  </table>	   
+!if $m_status issametext end and $(val57[$m_q])>0 and $(val31[$m_q;$(val57[$m_q])]) notsametext  
+$()	   <p><font color=$(val58[$m_q])><em>$(val31[$m_q;$(val57[$m_q])])</em></font>	   
+!endif
+$()	   
+!if $m_q<$val19 and ($val11 issametext all or $m_q<$m_step) 
+$()<p><hr> 
+!endif
+$()	  
+!endif
+$()	 
+!next
+$()	 
+!if $val30 notsametext  
+$()<br clear=right> 
+!endif
+$()	
+$()
+!exit
+
+:hint
+$()$val29
+$()
+!exit
+
+:help
+$()
+$()
+!exit
+
+:solution
+$()
+$()
+!exit
+
+:postdef
+val59=$m_reply1,$m_reply2,$m_reply3,$m_reply4,$m_reply5,$m_reply6,$m_reply7,\preply8,\preply9,$m_reply10,	  $m_reply11,$m_reply12,$m_reply13,$m_reply14,$m_reply15,$m_reply16,$m_reply17,\preply8,\preply9,$m_reply20
+!for val61 =1 to $val19 
+tmp0=!positionof item $(val59[$val61]) in $val25
+
+val53=$(tmp0)
+val57=$val57$val53,
+
+!ifval $val53 isitemof $(val26[$val61;])
+val58=$(val58[])green,
+!else
+val58=$(val58[])red,
+!endif
+!next
+
+!exit
+
+:feedback
+
+!exit
+
+:test
+
+!exit
+
+:stat
+vsavelist=1,11,15,19,25,26,28,29,30,31,32,34,53,57,58,59
+embedcnt=1

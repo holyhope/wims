@@ -2,7 +2,7 @@
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
- !read docu/msg.phtml
+ !read docu/$lang/msg.phtml
  <p><hr> <p>
 !endif
 
@@ -16,15 +16,15 @@
 <input type=hidden name=block value="$block">
 
 !if $titb=$empty
-$name_blockcreation
+创建
 !else
-$name_blockedition
+修改
 !endif
-
+块 <tt>$block</tt>.
 !if $edtype=file
- !href cmd=reply&edtype=textarea [$name_compose]
+ !href cmd=reply&edtype=textarea [在线编辑]
 !else
- !href cmd=reply&edtype=file [$name_file]
+ !href cmd=reply&edtype=file [插入文件]
 !endif
 <br>
 

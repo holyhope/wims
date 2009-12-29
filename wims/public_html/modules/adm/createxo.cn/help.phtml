@@ -1,10 +1,9 @@
-
 !if $realtest=yes
  !changeto oef/help.phtml
 !endif
 
 !set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
-	feedback,math,draw,draw_example,oefadv,if,symtext,model,slib
+	feedback,math,draw,draw_example,oefadv,if,model,slib
 
 !set s_=!item 1 of $special_parm
 !if $s_=all
@@ -16,12 +15,12 @@
 !endif
 !if $s_!=$empty and $s_ isitemof $helplist
  !read help/$s_.phtml
-!! <p><center>
-!! !href cmd=help 其他帮助主题
-!! &nbsp;&nbsp;
-!! !href cmd=resume 返回原工作
-!! </center>
- !set wims_menu_items=!append line back2,1,cmd=help\
+ <p><center>
+ !href cmd=help 其他帮助主题
+ &nbsp;&nbsp;
+ !href cmd=resume 返回原工作
+ </center>
+ !set wims_menu_items=!append line 返回,1,cmd=help\
  to $wims_menu_items
  !exit
 !endif
@@ -29,31 +28,44 @@
 帮助主题:<ul>
 <li><p>
 !href cmd=help&special_parm=oef 对OEF格式的解释
-</p></li><li><p>
-!href cmd=help&special_parm=examples 练习的示例
-</p></li><li><p>
+</p></li>
+!!<li><p>
+!!href cmd=help&special_parm=examples 练习的示例
+</p></li>
+<li><p>
 !href cmd=help&special_parm=format 练习陈述的格式
-</p></li><li><p>
+</p></li>
+<li><p>
 !href cmd=help&special_parm=parameters 交互式练习中的随机参数
-</p></li><li><p>
+</p></li>
+<li><p>
 !href cmd=help&special_parm=math 练习中的数学公式
-</p></li><li><p>
+</p></li>
+<li><p>
 !href cmd=help&special_parm=draw 练习中的动态绘图
-</p></li><li><p>用户如何
+</p></li>
+<li><p>用户如何
 !href cmd=help&special_parm=reply 回答练习
-</p></li><li><p>
+.
+</p></li>
+<li><p>
 !href cmd=help&special_parm=feedback 对用户回答的反馈信息
-</p></li><li><p>
-!href cmd=help&special_parm=oefadv 高级功能
-</li></p><li><p>
-!href cmd=help&special_parm=slib Library of scripts
+</p></li>
+<li><p>
+!href cmd=help&special_parm=oefadv 高级技巧
+.
+</p></li>
+<li><p>
+!href cmd=help&special_parm=slib&slib_cmd=help 脚本库
  (slib).
-</p></li><li><p>
+</p></li>
+<li><p>
 !href cmd=help&special_parm=all 全部帮助
 </p></li></ul>
 
 !!!if $modtoolhelp!=yes
 !!<center>
-!!!href cmd=resume 返回原工作
+!!!href cmd=resume 返回原工作.
 !!</center>
 !!!endif
+

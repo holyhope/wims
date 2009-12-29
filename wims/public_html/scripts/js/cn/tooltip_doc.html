@@ -1,0 +1,554 @@
+
+<style type="text/css">
+<!--
+.tt {
+  font-size:12px;
+}
+
+#T2tDirect {
+  border:2px solid red;
+  background:yellow;
+  padding:3px;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function FixCalcXY(el)
+{
+    if(typeof(el.offsetParent) == "undefined")
+        return [70, 4000];
+	var a = new Array(0, -70);
+	while(el)
+	{
+		a[0] += el.offsetLeft || 0;
+		a[1] += el.offsetTop || 0;
+		el = el.offsetParent || null;
+	}
+	return a;
+}
+//-->
+</script>
+
+    <table>
+      <tbody><tr>
+        <td width="50"><br></td>
+        <td>
+          <table bgcolor="#000099" border="0" cellpadding="0" cellspacing="0">
+            <tbody><tr>
+              <td>
+                <table border="0" cellpadding="6" cellspacing="1" width="100%">
+                  <tbody><tr bgcolor="#eeeeee">
+                    <th align="center">命令</th>
+                    <th align="center">描述</th>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('tooltip 放在鼠标点上面', ABOVE, true);">ABOVE</a></tt>
+                    </td>
+                    <td>
+                      tooltip 放在鼠标点上面.
+                      取值: true 或 false.
+                      <br>&nbsp;<br>
+                      与
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('此处用了以下命令:<br>ABOVE, true, OFFSETY, 50', ABOVE,true,OFFSETY,50);">OFFSETY</a></tt>
+                      联用可调节到鼠标点的垂直距离,
+                      或用
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('此处用了以下命令:<br>ABOVE, true, CENTERMOUSE, true', ABOVE, true, CENTERMOUSE, true, OFFSETX, 0);">CENTERMOUSE</a></tt>
+                      使得 tooltip 的中心位于鼠标点上面.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变 tooltip 的背景色', BGCOLOR,'#f3e0f3');">BGCOLOR</a></tt>
+                    </td>
+                    <td>
+                      tooltip 的背景色.
+                      取值: 放在单引号里面的 HTML 色彩, 例如 '#D3E3F6' 或 'DarkCyan',
+                      空色彩 <tt>''</tt> 表示
+                      <tt><a class="nodeco" href="javascript:void(0)" onmouseover="Tip('此 tooltip 既无背景<br>也无边框', BORDERWIDTH, 0, BGCOLOR, '', FONTWEIGHT, 'bold', FONTCOLOR, '#00AA00')">无背景</a></tt>.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', BGCOLOR, '#D3E3F6')"</font></tt>
+                      <br>or<br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', BGCOLOR, '')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('带背景图像的 tooltip', BGIMG, '../images/tooltip/tt_bg.jpg', PADDING, 10, WIDTH, 180);">BGIMG</a></tt>
+                    </td>
+                    <td>
+                      背景图像.
+                      取值: 用单引号括起来的到图像的路径.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', BGIMG, '../images/tipbackground.gif')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变边框颜色', BORDERCOLOR, '#dd00aa');">BORDERCOLOR</a></tt>
+                    </td>
+                    <td>
+                      边框颜色.
+                      取值: 用单引号括起来的 HTML 色彩, 例如 '#dd00aa'.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('虚线边框', BORDERSTYLE, 'dashed', PADDING, 8);">BORDERSTYLE</a></tt>
+                    </td>
+                    <td>
+                      边框格式.
+                      取值: 用单引号括起来的 CSS 边框格式.
+                      推荐值为 'solid' (默认), 'dashed' 或 'dotted', 其它值可能不适用于某些浏览器.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('tooltip 边框宽度', BORDERWIDTH, 5);">BORDERWIDTH</a></tt>
+                    </td>
+                    <td>
+                      tooltip 边框宽度.
+                      取值: 非负整数. 默认是 1. 0 表示无框.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', BORDERWIDTH, 2)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td align="right">
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('居中处于鼠标下方', CENTERMOUSE, true, OFFSETX, 0, OFFSETY, 22);">CENTERMOUSE</a></tt>
+                    </td>
+                    <td>
+                      使 tooltip 居中处于鼠标下方(或上方).
+                      取值: true 或 false.
+                      tooltip 离中心的水平偏移量整体由 wz_tooltip.js (<tt>设置&nbsp;OffsetX</tt>) 规定, 或者利用 OFFSETX 命令设定.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', CENTERMOUSE, true, OFFSETX, 0)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('由于使用了 CLICKCLOSE, true, 这个 tooltip 是 &quot;粘滞的&quot;, 但可以通过点击 tooltip 或文件而关闭.', CLICKCLOSE, true, STICKY, true, WIDTH, 300);">CLICKCLOSE</a></tt>
+                    </td>
+                    <td>
+                      当用户在 tooltip 或文件内部点击才能关闭此 tooltip.
+                      取值: true, false.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('关闭按钮位于标题栏', CLOSEBTN, true, STICKY, true);">CLOSEBTN</a></tt>
+                    </td>
+                    <td>
+                      关闭按钮位于标题栏.
+                      取值: true, false.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变关闭按钮的颜色', CLOSEBTN, true, STICKY, true, CLOSEBTNCOLORS, ['#7799cc', '#ffaaaa', '#ffffff', '#ff0000']);">CLOSEBTNCOLORS</a></tt>
+                    </td>
+                    <td>
+                      关闭按钮的颜色.
+                      <br>&nbsp;<br>
+其取值必须是用逗号分隔的 4 个颜色值. 每个颜色放在一对单引号内. 
+整个数组用一对方括号括起来, 参见下例.
+4 个颜色参数的含义如下 : <br>
+                      1. 背景色
+                      <br>
+                      2. 文字色
+                      <br>
+                      3. 当鼠标移至按钮上面时, 加亮的背景色
+                      <br>
+                      4. 当鼠标移至按钮上面时, 加亮的文字色
+                      <br>
+                      可以用空串 <tt>''</tt> 作为颜色参数,
+                      此时分别使用标题栏的背景色或文字色作为按钮的颜色.
+                      <br>&nbsp;<br>
+                      例:<br>
+                      <tt><font class="tt" size="2">Tip('文字', CLOSEBTN, true, CLOSEBTNCOLORS, ['', '#66ff66', 'white', '#00cc00'], STICKY, true)</font></tt>
+                      <br>
+                      这个例子里的背景色是空串, 因此关闭按钮继承标题栏的背景色.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变关闭按钮的文字', CLOSEBTN, true, STICKY, true, CLOSEBTNTEXT, '点击这里');">CLOSEBTNTEXT</a></tt>
+                    </td>
+                    <td>
+                      关闭按钮的文字.
+                      取值必须放在单引号里面.
+                      例:
+                      <br>
+                      <tt><font class="tt" size="2">Tip('Tooltip 文字', CLOSEBTN, true, CLOSEBTNTEXT, '点击这里', STICKY, true)</font></tt>
+                      <br>
+在 wz_tooltip.js 里被整体预置为 '&amp;nbsp;X&amp;nbsp;' - 
+空格 '&amp;nbsp;' 用来作为按钮的水平铺垫. </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="TagToTip('T2tDirect', COPYCONTENT, false, PADDING, 0, BORDERWIDTH, 0, WIDTH, 280);">COPYCONTENT</a></tt>
+                      <div style="display: none;" id="T2tDirect">
+这个 DIV 实际上已被放入文件的 HTML,
+但它暂时转换成一个 tooltip. </div>
+                    </td>
+                    <td>
+                      COPYCONTENT 仅当使用 <tt>TagToTip()</tt> 创建 tooltip 时才有效, 也就是说, 当一个 HTML 元素被转换成 tooltip 时.
+                      <br>
+                      取值: true, false.
+                      <br>
+若是 true (这是 wz_tooltip.js 里预置的默认值), HTML 的仅仅一段文字(或内部 HTML)被插入 tooltip.
+若是 false, 整个 HTML 元素(它的 DOM 结点)被暂时转换成一个 tooltip，
+这在以下情形可能有用:<br> 1) 如果转换成 tooltip 的 HTML 元素包含输入表格,
+那么即使 tooltip 没有显示, 当前用户仍能输入. <br>
+                      2) tooltip 继承 HTML 元素的格式性质.
+                      <br>
+                      下例显示通过运用 COPYCONTENT 并设值为 <tt>false</tt>, 如何把一个 HTML 元素全部转换成 tooltip:
+                      <br>
+                      <tt><font class="tt" size="2">TagToTip('某个识别符id', COPYCONTENT, false, BORDERWIDTH, 0, PADDING, 0)</font></tt>
+                      <br>
+                      这个例子关闭了 tooltip 的自然边框 (BORDERWIDTH,&nbsp;0), 
+                      并把 tooltip 的自然铺垫设成零, 这样就只显示 HTML 元素本身设定的边框及铺垫.</td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('延迟 1000 ms 才显示 tooltip.<br><br>在 wz_tooltip.js (GLOBAL TOOLTIP CONFIGURATION) 中预置了较短的 400 ms 延迟, 这里可以改变. 不过要注意过短或过长于 500 ms 可能会激起不快.', DELAY, 1000, WIDTH, 360);">DELAY</a></tt>
+                    </td>
+                    <td>
+                      经一段延迟后才显示 tooltip, 以毫秒为单位.
+                      <br>
+                      取值:
+                      非负整数. 0 意为无延迟.
+                      在 wz_tooltip.js 预置为 400.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', DELAY, 1000)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('这个提示的生存期限制为 2500 毫秒', DURATION, 2500);">DURATION</a></tt>
+                    </td>
+                    <td>
+                      提示显示的时间, 以毫秒为单位.
+                      即使使用了 <tt>STICKY</tt> 命令或甚至仍然位于触发 tooltip 的 HTML 元素上,
+                      本命令仍然起作用.
+                      <br>
+                      取值:
+                      非负整数.
+                      0 表示无限制 (这是默认值)
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover=" Tip('渐显', FADEIN, 1000, PADDING, 10);">FADEIN</a></tt>
+                    </td>
+                    <td>
+                      渐显.
+                      其取值 (非负整数) 规定了渐显持续时间, 以毫秒为单位.
+                      0 表示无渐变.
+                      <br>&nbsp;<br>
+                      早于 v.9.0 的 Opera, Safari 的旧版本, 某些版本的 Konqueror 不支持此命令.
+                      它们只显示通常的无渐变的提示.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover=" Tip('渐淡', FADEOUT, 1000, PADDING, 10);">FADEOUT</a></tt>
+                    </td>
+                    <td>
+                      渐淡.
+                      其取值 (非负整数) 规定了渐淡持续时间, 以毫秒为单位.
+                      0 表示无渐变.
+                      <br>&nbsp;<br>
+                      推荐: 与
+                      <tt><a class="nodeco" href="javascript:void(0)" onmouseover="Tip('例<br><img src=\'../../data/maps/fr.jpg\' width=\'132\' height=\'141\' \/>', FADEIN, 800, FADEOUT, 800, TEXTALIGN, 'center', BGCOLOR, '#ffffff')">FADEIN</a></tt>
+                      联用.<br>&nbsp;<br>
+                      早于 v.9.0 的 Opera, Safari 的旧版本, 某些版本的 Konqueror 不支持此命令.
+                      它们只显示通常的无渐变的提示.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover=" Tip('Tooltip 放在取定位置', FIX, FixCalcXY(this));">FIX</a></tt>
+                    </td>
+                    <td>
+                      在坐标 [x, y] 的地方显示 tooltip.
+                      取值: 用方括号括起来的一对整数.
+                      例:<br>
+                      <tt>onmouseover="Tip('某些文字', FIX, [230, 874])"</tt>
+                      <br>
+                      你也可以调用其它地方定义的函数动态地计算坐标:
+                      <br>
+                      <tt>onmouseover="Tip('文字', FIX, [CalcFixX(), CalcFixY()], BORDERWIDTH, 2)"</tt>
+                      <br>
+                      或
+                      <br>
+                      <tt>onmouseover="Tip('文字', FIX, CalcFixXY(), ABOVE, true)"</tt>
+                      <br>
+                      在后一情形, 函数 CalcFixXY() 返回包含两个数的数组.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('由于使用了命令 FOLLOWMOUSE 并接着取值 false, 此 tooltip 不会跟随鼠标移动', FOLLOWMOUSE, false, WIDTH, 300);">FOLLOWMOUSE</a></tt>
+                    </td>
+                    <td>
+                      tooltip 跟随鼠标移动.
+                      取值: true, false. 默认: true.
+                      <br>&nbsp;<br>
+                      当取值 false 关掉这个命令时, tooltip 不会跟随鼠标移动.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变文字色彩', FONTCOLOR, '#ff0000');">FONTCOLOR</a></tt>
+                    </td>
+                    <td>
+                      改变文字色彩.
+                      取值: 包含在单引号里面的 HTML 色彩, 例如 '#990099'
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变字体', FONTFACE, 'Courier New, Courier, mono');">FONTFACE</a></tt>
+                    </td>
+                    <td>
+                      改变字体.
+                      <br>
+                      取值:
+                      如同 HTML 或 CSS 里使用的字体名称, 用单引号括起来, 例如
+                      <tt>Tip('某些文字', FONTFACE, 'Arial, Helvetica, sans-serif', FONTSIZE, '12pt')</tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('改变字体大小', FONTSIZE, '72pt');">FONTSIZE</a></tt>
+                    </td>
+                    <td>
+                      字体大小.
+                      取值: 带单位的度量, 用单引号括起来.
+                      单位可以是 'px', 'pt', 'em' 等.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('FONTWEIGHT, \'bold\'', FONTWEIGHT, 'bold');">FONTWEIGHT</a></tt>
+                    </td>
+                    <td>
+                      字体粗细.
+                      取值: 'normal' 或 'bold', 用单引号括起来.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td align="right">
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('放在另一侧', LEFT, true);">LEFT</a></tt>
+                    </td>
+                    <td>
+                      把 tooltip 放在鼠标的左边.
+                      取值: true, false.
+                      <br>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('LEFT 和 ABOVE 联合使用...', LEFT, true, ABOVE, true);">LEFT 和 ABOVE 联合使用</a></tt>.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', LEFT, true, ABOVE, true)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('增加水平偏移', OFFSETX, 150);">OFFSETX</a></tt>
+                    </td>
+                    <td>
+                      从鼠标点的水平偏移.
+                      取值: 任意整数. 也可取负值.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('增加垂直偏移', OFFSETY, 70);">OFFSETY</a></tt>
+                    </td>
+                    <td>
+                      从鼠标点的水平偏移.
+                      取值: 任意整数. 也可取负值.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('半透明的 tooltip', OPACITY, 70, PADDING, 14);">OPACITY</a></tt>
+                    </td>
+                    <td>
+                      透明程度.
+                      取值: 从 0 (完全透明) 到 100 (不透明) 间的整数.
+                      <br>&nbsp;<br>
+                      不透明度(opacity)&nbsp;=&nbsp;100&nbsp;-&nbsp;透明度&nbsp;(取百分比).<br>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('<img src=../../data/maps/fr.jpg width=130 height=103><br>带有图形、阴影、背景图像以及渐显渐隐效果的 tooltip', WIDTH, 180, OPACITY, 80, TEXTALIGN, 'center', TITLEALIGN, 'center', SHADOW, true, TITLE, '例', BGIMG, '../../data/maps/it.jpg', FADEIN, 700, FADEOUT, 700);">另一例子</a></tt>
+用到了 SHADOW, TEXTALIGN, BGIMG 以及 FADEIN / FADEOUT 命令. <br>&nbsp;<br>
+                      早于 v.9.0 的 Opera, Safari 的旧版本, 某些版本的 Konqueror 不支持此命令.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('内容旁有足够铺垫的 tooltip', PADDING, 30);">PADDING</a></tt>
+                    </td>
+                    <td>
+                      在边界与提示内容间的内部铺垫空间.
+                      取值: 非负整数.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('SHADOW, true', SHADOW, true);">SHADOW</a></tt>
+                    </td>
+                    <td>
+                      带有阴影的 tooltip.
+                      取值: true, false
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('这个提示有阴影 (SHADOW 命令),<br>而且改变了它的阴影颜色 (SHADOWCOLOR 命令)', PADDING, 8, SHADOW, true, SHADOWCOLOR, '#dd99aa');">SHADOWCOLOR</a></tt>
+                      <!--br>
+
+                      <form> &nbsp; &nbsp; <select><option>aaa</option><option>bbb</option><option>ccc</option></select></form-->
+                    </td>
+                    <td>
+                      阴影颜色.
+                      取值: 放在单引号内部的 HTML 色彩.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', SHADOW, true, SHADOWCOLOR, '#dd99aa')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('增加阴影宽度', SHADOW, true, SHADOWWIDTH, 10, PADDING, 8);">SHADOWWIDTH</a></tt>
+                    </td>
+                    <td>
+                      阴影宽度 (偏移).
+                      取值: 非负整数.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', SHADOW, true, SHADOWWIDTH, 7)"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('STICKY, true<ul><li style=\'font-family:Verdana,Geneva,sans-serif;font-size:8pt;\'><a href=#top>页顶<\/a><\/li><li style=\'font-family:Verdana,Geneva,sans-serif;font-size:8pt;\'><a href=\'#docu\'>文件开始<\/a><\/li><\/ul>', STICKY, true, CLICKCLOSE, true, PADDING, 6);">STICKY</a></tt>
+                    </td>
+                    <td>
+                      Tooltip 停留在初始位置直至弹出另一个 tooltip.
+                      取值: true, false.
+                      <br>&nbsp;<br>
+                      利用
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('STICKY, true, DURATION, 2500<br>这个提示是粘滞的, 但它的生存周期限制在 2.5 秒.', STICKY, true, CLICKCLOSE, true, DURATION, 2500, WIDTH, 280)">DURATION</a></tt>
+                      你可以让 tooltip 过一段时间后自动消失.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TEXTALIGN 命令取值 \'right\', \'center\', \'justify\' 或 \'left\', 最后一个值是多余的, 因为这是默认值.', WIDTH, 200, TITLE, '右端对齐的文字', TEXTALIGN, 'right');">TEXTALIGN</a></tt>
+                    </td>
+                    <td>
+                      规定提示内容的对齐方式.
+                      取值: 'right', 'center',
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('<img align=\'right\' src=\'..\/..\/data\/photos\/small.gif\' width=\'60\' height=\'40\'>这是一段相当长的文字, 它展示了命令 TEXTALIGN 取值 \'justify\' 后的效应. 请注意, 对于行数较少的文字不推荐使用对齐 - 这也是这个 tooltip 的情形, 特别是上面还有一个图像的情形.', TITLE, '文字与图像对齐', TEXTALIGN, 'justify', WIDTH, 250);">'justify'</a></tt>
+                      或 'left'.
+                      <br>例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', TEXTALIGN, 'right')"</font></tt>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLE, \'某个标题\'', TITLE, '某个标题');">TITLE</a></tt>
+                    </td>
+                    <td>
+                      显示标题栏.
+                      取值: 放在单引号里面的标题文本.
+                      可以包含 HTML, 它使你在设计标题栏时有更多的自由度.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEALIGN 命令可取值 \'right\', \'justify\' 或 \'left\', 最后的值是多余的, 因为这是默认值.', WIDTH, 240, TITLE, '右端对齐的标题', TITLEALIGN, 'right');">TITLEALIGN</a></tt>
+                    </td>
+                    <td>
+                      标题栏内文字的对齐方式.
+                      取值: 'right', 'center', 'justify' 或 'left'
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEBGCOLOR, \'#990099\'', TITLE, '标题背景色', TITLEBGCOLOR, '#990099');">TITLEBGCOLOR</a></tt>
+                    </td>
+                    <td>
+                      标题栏的背景色.
+                      取值: 放在单引号里面的 HTML 颜色.
+                      如果它取空串 <tt>''</tt>,
+                      则使用边界的颜色 (参见 BORDERCOLOR 命令), 这也是默认值.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEFONTCOLOR, \'#ff6666\'', TITLE, '红色标题',  TITLEFONTCOLOR, '#ff6666');">TITLEFONTCOLOR</a></tt>
+                    </td>
+                    <td>
+                      标题文字的颜色.
+                      取值: 放在单引号里面的 HTML 颜色.
+                      如果它取空串 <tt>''</tt>,
+                      则使用 tooltip 主体的背景色 (参见 BGCOLOR 命令), 这也是默认值.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEFONTFACE, \'Courier New, Courier, mono\'', TITLE, '改变标题字体',  TITLEFONTFACE, 'Courier New, Courier, mono');">TITLEFONTFACE</a></tt>
+                    </td>
+                    <td>
+                      标题字体.
+                      取值: 放在单引号里面的 HTML 或 CSS 格式.
+                      如果它取空串 <tt>''</tt>, 则使用 tooltip 主体的字体, 这也是默认值.
+                      <br>
+                      例:
+                      <br>
+                      <tt><font style="font-size: 12px;" size="2">onmouseover="Tip('某些文字', TITLE, '某个标题', TITLEFONTFACE, 'Verdana,sans-serif')"</font></tt>
+                      <br>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('TITLEFONTSIZE, \'18pt\'', TITLE, '大标题',  TITLEFONTSIZE, '18pt');">TITLEFONTSIZE</a></tt>
+                    </td>
+                    <td>
+                      标题字体大小.
+                      取值: 放在单引号里面的带单位的度量.
+                      单位可取 'px', 'pt', 'em' 等.
+                      如果它取空串 <tt>''</tt>, 则使用 tooltip 主体的字体大小.
+                    </td>
+                  </tr>
+                  <tr bgcolor="#ffffff" valign="top">
+                    <td>
+                      <tt><a class="nodeco" href="javascript:void(0);" onmouseover="Tip('WIDTH, 200', WIDTH, 200);">WIDTH</a></tt>
+                    </td>
+                    <td>
+                      宽度.
+                      取值: 非负整数.
+                      若取默认值 0, 宽度将根据 tooltip 的内容自动调整.
+                      <br>&nbsp;<br>
+                      注意 tooltip 遵从 W3C box 模式,
+                      也就是被指定的宽度仅应用于 tooltip 的实际内容,
+                      不包含铺垫 (见 PADDING 命令), 边界及阴影.
+                    </td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+        </td>
+        <td width="50"><br></td>
+      </tr>
+    </tbody></table>
+

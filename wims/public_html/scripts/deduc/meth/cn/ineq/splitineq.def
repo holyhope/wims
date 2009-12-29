@@ -1,0 +1,29 @@
+!set methtit=根据一不等式把情况分解
+!set methenv=ZZ QQ RR
+!set methparmtype=function, choice 4, function
+!set methhelp=此方法利用某个不等式成立与否把原情况分成两个情况.\
+这个不等式及其逆被分别加入新情况的假设中.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 根据以下不等式成立与否分解成两种情况 <br>
+ !read deduc/methparm.phtml 1,10
+ !formselect methparm2 from 1 to 4 prompt <,>,<=,>=
+ !read deduc/methparm.phtml 3,10
+!exit
+:check
+ sign1=!item $methparm2 of <,>,<=,>=
+ sign2=!item $methparm2 of >=,<=,>,<
+
+ casesplit=$methparm1 $sign1 $methparm3\
+$methparm1 $sign2 $methparm3
+ mt1=$methparm1 $sign1 $methparm3
+ mt2=$methparm1 $sign2 $methparm3
+ methexp=分解成情况 \($mt1) 与 \($mt2)
+
+!exit
+

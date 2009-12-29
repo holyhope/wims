@@ -1,0 +1,56 @@
+!set methtit2=用非零数乘不等式
+!set methtit=用数乘不等式
+!set methenv=ZZ QQ RR
+!set methparmtype=number,parm inequality
+!set methhelp=此方法把不等式 \(A > B) 转换成等价不等式\
+ \(A*n > B*n) (或 \(A*n < B*n)), 这里 \(n)\
+ 必须是非零数以保证变换的等价性.
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ 把不等式
+ !read deduc/methparm.phtml 2
+ 乘以数
+ !read deduc/methparm.phtml 1,10
+
+!exit
+:check
+ !distribute items $methparmobj2 into data,left,sign,right
+ !if $methparm1=0
+  error=用零乘不等式会丢失信息, 因此是禁止的.
+  !advance penalty
+  !exit
+ !endif
+ methexp=Multiply \($left $sign $right) by \($methparm1)
+
+ !read deduc/sub/simplify ($left) * ($methparm1)\
+    ($right) * ($methparm1)
+ !distribute lines $out into newleft,newright
+ !if $newleft=$empty or $newright=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $methparm1<0
+  newsign=!translate internal <> to >< in $sign
+ !else
+  newsign=$sign
+ !endif
+ newobject2=$newleft $newsign $newright
+ oldobject=2
+
+ contextlist=$ct_Onlywhen乘数非零,\
+    $ct_Onlywhen乘数是正的,\
+    $ct_Onlywhen两边是正的,\
+    $ct_Onlywhen两边同号,\
+    $ct_Onlywhen不等式是严格的
+ 
+ badsign=!translate internal <> to >< in $newsign
+ resultlist=$newobject2,\
+    $newright $newsign $newleft,\
+    $newleft $badsign $newright
+!exit
+

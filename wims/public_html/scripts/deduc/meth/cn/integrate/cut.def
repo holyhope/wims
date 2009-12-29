@@ -1,0 +1,76 @@
+!set methtit=把积分拆分为二
+!set methenv=ZZ QQ RR
+!set methparmtype=parm function integrate, function
+!set methhelp=本方法把 \(integrate(A+B,t)) 拆成\
+ \(integrate(A,t) + integrate(B,t)).
+
+!if $wims_read_parm iswordof form check
+ !goto $wims_read_parm
+!endif
+
+!exit
+:form
+ !set N=!linecnt $mtobj1
+ !reset methparm3
+ !if $N>1 and $methsubstep=1
+  :first
+  !set methsubstep=2
+  选择欲分拆的积分: <p>
+  !read deduc/methparm.phtml 1
+ !else
+  !bound methparm1 between integer 0 and $N default 1
+  !if $methparm1=0 or $error!=$empty
+   !goto first
+  !endif
+  <input type=hidden name=methparm1 value=$methparm1>
+  !set methsubstep=1
+  !set l=!line $methparm1 of $mtobj1
+  !set l=!item 2 to -1 of $l
+  !set k=!mathsubst integrate= in $l
+  !set k=!declosing $k
+  !set v=!item 2 of $k
+  写成 \($l = integrate(f1($v),$v) + integrate(f2($v),$v)), 其中
+  <p>
+  \(f1($v) = ) <input size=30 name=methparm2 value="$methparm2"> (必须有的), <br>
+  \(f2($v) = ) <input size=30 name=methparm3> (可选的).
+ !endif
+!exit
+:check
+ ker=!item 2 of $methparmobj1
+ ker=!mathsubst integrate= in $ker
+ ker=!trim $ker
+ ker=!declosing $ker
+ !distribute items $ker into iker,ivar
+ vartest=!varlist $ivar
+ !if $ivar != $vartest
+  error=失败
+  !exit
+ !endif
+
+ !if $methparm3=$empty
+  !read deduc/sub/simplify ($iker)-($methparm2)
+  !if $out=$empty
+   error=bad_data
+   !exit
+  !endif
+  methparm3=$out
+ !else
+  wims_rawmath_variables=$variables
+  methparm3=!rawmath $methparm3
+ !endif
+ !read deduc/sub/checkzero ($iker)-($methparm2)-($methparm3)
+ !if $out=$empty
+  error=bad_data
+  !exit
+ !endif
+ !if $out!=yes
+  error=加法错. 请改正.
+  !exit
+ !endif
+ 
+ newobject1=(integrate($methparm2,$ivar)+integrate($methparm3,$ivar))
+ oldobject=1
+ !reset methparm3
+ methexp=
+!exit
+

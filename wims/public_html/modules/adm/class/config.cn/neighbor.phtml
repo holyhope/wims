@@ -5,9 +5,9 @@
 !endif
 
 !if $job2!=first
- !distribute items exercises,work sheets,exams,documents,votes,agenda,\
-    participant accounts,supervisor account,forum messages,message of the day,livret de comp閠ences,\
-	sequences p閐agogiques\
+ !distribute items 练习,作业页,考试,文件,投票,记事本,\
+    参加者帐户,主持教师帐户,论坛信息,每日信息,技能记录本,\
+	教学系列\
     into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
     name_user,name_sup,name_forum,name_motd,name_livret,name_seq
  !read neighbor/$job2.phtml
@@ -43,6 +43,10 @@
 !endif
 !if $classcnt1 + $classcnt2 < 1
  没有你要搜索的班级. 再试试.
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes 显示服务器的实例班
+ !endif
  !exit
 !endif
 
@@ -50,13 +54,18 @@
     <small>参加者</small>,\
     <small>所有人</small> into n_n0, n_n1, n_n2, n_n3
 
-虚拟班间的相邻关系允许资源交换以及跨班漫游. <small>[&nbsp;
-!href cmd=help&special_parm=neighbor 帮助
+虚拟班间的相邻关系允许资源交换以及跨班漫游. 
+<small>[&nbsp;
+!href cmd=help&special_parm=neighbor $wims_name_help
 &nbsp;
 !href cmd=help&special_parm=neiexample 例
-&nbsp;]</small>
+&nbsp;]</small><p>
 
 !if $toomany=yes
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes 显示服务器的实例班
+ !endif
  !exit
 !endif
 
@@ -81,5 +90,9 @@
  <p><center>
  !href cmd=reply&job2=sharelist 你的班级的资源共享信息
  </center>
+!endif
+!if $excls!=yes and $supertype!=4
+ <p>
+ !href cmd=reply&keyword=*&excls=yes 显示服务器的实例班
 !endif
 

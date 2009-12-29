@@ -1,0 +1,33 @@
+!header
+
+!if $wims_mode=popup
+ !changeto popup.phtml
+!endif
+
+!if $operation=$empty
+ 这是一个多用途一步式计算器,  
+ 可用于多种计算.
+ <p>
+ 你可以在下面的输入表格中提交一个计算请求, 
+ 本模块适用于作为弹出式计算器, 
+ 可以搜索
+ !href module=tool/popup 弹出计算器表格的数据库
+.
+ !goto form
+!endif
+
+<p>
+!if $error!=$empty
+ !read msg.phtml
+!else
+ !read op/$opr.def output
+!endif
+
+:form
+<p><hr> <p>
+!read form.phtml
+!href cmd=renew 更新
+.
+
+!tail
+

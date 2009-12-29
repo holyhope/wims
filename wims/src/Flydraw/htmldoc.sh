@@ -31,6 +31,16 @@ correspondant aux valeurs de  rouge, vert ,bleu.
 <th colspan=3>Signification</th></tr><tr><td><td colspan=5>
 " ; fi
 
+if [ "$lang" == cn ] ;  then echo "
+每条命令占一行.<p>
+在下表中, <tt>[色彩]</tt>
+可以是色彩名, 或3个用逗号分隔的0到255的整数, 分别代表红绿蓝三种颜色.
+<p>\$table_header
+<caption>作图命令</caption>
+\$table_hdtr<th colspan=5>名称与语法
+\$table_hdtr<th colspan=2>同义词
+<th colspan=3>含义</th></tr><tr><td><td colspan=5>
+"  ; fi 
 
 awk 'BEGIN {a=10}
 	substr($0,1,1)==":" {a=0}
