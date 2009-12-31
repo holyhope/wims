@@ -18,12 +18,11 @@ existence of the anstype.
 2. define the form style using the variable "anstyle". Here are the possible
 words to declare in this variable.
 
-	mc		multiple choice style.
-      	symtext 	allows symtext processing.
-      	numeric		the data is numeric.
-      	dprompt		good answer prompt given under double-underlined
-			variable (internal).
-	nogood		never present good answer (because there cannot be).
+    mc          multiple choice style.
+    symtext     allows symtext processing.
+    numeric     the data is numeric.
+    dprompt     good answer prompt given under double-underlined variable (internal).
+    nogood     never present good answer (because there cannot be).
 
 These scripts accept the following input variables.
 
@@ -34,7 +33,7 @@ These scripts accept the following input variables.
 	replyoption$i	Option words. Anstypes are more or less free to
 			define their own recognized option words.
 	inputsize	The size of the form element. Its format
-			depends on the type of the reply.
+			depends on the type of the reply. This is defined in the command \embed{}
 
 Moreover, if no comparison is wanted, the answer processing file can have a
 calling parameter "nocompare".
@@ -68,3 +67,12 @@ There are also some optional output variables (they can be left empty).
 			real answer typed in.
 	reply__$i	A special prompt to show when dprompt is declared in anstyle.
 
+There are also some variables which can be used (new/2009)
+     oef_formnosubmit:  if yes, no "Send answer" button appear.
+     oef_js_submit: can be used to put javascript in the answer button, 
+         the line onclick="javascript:$oef_js_submit;" will be present 
+         in this button (in test).
+     if the following variables are defined in the file _name.input, they can be
+     reused in the file _name : 
+         oef_applet_option oef_applet_command oef_fill_option
+     (for reuse applet options or embed options for example)

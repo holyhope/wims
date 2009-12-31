@@ -54,8 +54,13 @@ $name_enterreply:
  !read anstype/$wims_fill_type.after
 !endif
 !if $oef_formnosubmit!=yes
+ !if $oef_js_submit!=
+  !set oef_js_submit=onclick="javascript:$oef_js_submit;"
+ !else
+  !set oef_js_submit=
+ !endif
  <center>
- <input type="submit" value="$name_sendanswer">
+ <input type="submit" $oef_js_submit value="$name_sendanswer">
  </center>
 !endif
 </form>
