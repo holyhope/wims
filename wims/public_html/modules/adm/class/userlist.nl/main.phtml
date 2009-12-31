@@ -1,3 +1,5 @@
+!!!###language independant
+
 !read adm/css.phtml
 !header1
 <script type="text/javascript" src="scripts/js/wz_tooltip.js" language="Javascript"></script>
@@ -29,7 +31,11 @@ $wims_name_part_list
 !if $usercnt==0
  $name_noyetparticipant
  [
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !if $wims_typename!=class
+  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
+ !else
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !endif
  ]
  
  [
@@ -41,7 +47,11 @@ $wims_name_part_list
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
  [
- !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !if $wims_typename!=class
+  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
+ !else
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ !endif
  ] [
  !href cmd=reply&job=csv $wims_name_csv
  ]
@@ -76,8 +86,9 @@ $wims_name_part_list
     <small>
      !set s=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
      !set s=!line 3 of $s
+     !set wims_ref_title=$s
      !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j
-     <a onmouseover="Tip('$s',$tooltip_parm)">$picto</a>
+     !!<a onmouseover="Tip('$s',$tooltip_parm)">$picto</a>
     </small></th>
    !endif
   !next j
@@ -166,7 +177,7 @@ $wims_name_part_list
      !read adm/class/colors $[ceil($p_*10/$scoremax)]
      <td style=$style_note>$p_
     !else
-     <td align="center">--
+   <td align="center">$p_
     !endif
      </td>
    !else

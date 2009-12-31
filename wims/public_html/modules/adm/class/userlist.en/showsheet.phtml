@@ -40,9 +40,12 @@ $name_title_showsheet
  !let tot_0=0
  !let nonzero_0=0
  !for j=1 to $nbexo
-    !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
-    !set e=!line 5 of $e
-  <th><small>$name_Exercise $j <a onmouseover="Tip('$e',$tooltip_parm)">$picto</a></small></th>
+  !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
+  !distribute line $e into m_,n_,bidon,bidon,t_
+  <th><small>
+  !set wims_ref_title=$t_
+  !href cmd=new&module=$m_&$n_ $name_Exercise $j 
+!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a></small></th>
   !let tot_$j=0
   !let nonzero_$j=0
  !next j
@@ -86,7 +89,7 @@ $name_title_showsheet
        $t %
        !let tot_$k=$[$(tot_$k)+$t]
       !else
-       <td align=center>--
+       <td align="center">--
       !endif
       </td>  
     !next k
@@ -119,7 +122,7 @@ $name_title_showsheet
    !endif
   </tr>
  !next m
- $table_hdtr<td align=center><b>$name_classAverage</b></td>
+ $table_hdtr<td align="center"><b>$name_classAverage</b></td>
  !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1]
  <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
  !for j=1 to $nbexo
@@ -127,13 +130,13 @@ $name_title_showsheet
    !read adm/class/colors $[ceil($(tot_$j)/$usercnt*10/$sign1)]
    <td style=$style_note>$[rint($(tot_$j)/$usercnt*10)/10]$sign
   !else
-   <td align=center>--
+   <td align="center">--
   !endif
     </td>
  !next j
  </tr>
  !if $nonzero_0>0
-  $table_hdtr<td align=center><b>$name_posAverage</b></td>
+  $table_hdtr<td align="center"><b>$name_posAverage</b></td>
    !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1)]
    <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
   !for j=1 to $nbexo
