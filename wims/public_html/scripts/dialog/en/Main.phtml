@@ -1,83 +1,81 @@
+!exit
 !set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
 !set module_title=$module_title: $title
 
 !header
 
 !if $title=$empty
- This module is a groupment of exercises. You have apparently requested it
- without precising which valid exercise you want to do. It is either because
- you clicked on a wrong link, or because of a software bug.
+  $name_emptytitle
  <p><center>
- !href module=$module Try to restart your manipulation
- , or
- !href $ abandon
+ !href module=$module $name_restart
+ , $wims_name_or
+ !href $ $wims_name_giveup
  . </center>
  !goto end
 !endif
 
 :tester
-!read proc/present.phtml
+!read dialog/present.phtml
 
 <p><hr width="50%"> <p>
 
 !if $cmd=hint
- !read proc/hint.phtml
+ !read dialog/hint.phtml
  !goto end
 !endif
 
 !if $status=waiting
  !if $error!=$empty
-  !read proc/msg.phtml
+  !read dialog/msg.phtml
   <p><hr width="50%"> <p>
  !endif
- !read proc/form.phtml
+ !read dialog/form.phtml
  <p>
  !if $hint!=$empty and $givehint>0
-  !href cmd=hint Hint
+  !href cmd=hint $name_Hint
 .
  !endif
  !if $qnum<=1
-  !href $renewlink Renew the exercise
+  !href $renewlink $name_exo_renew
 .
  !else
-  This is exercise number $[$reply_cnt+1] in a session of $qnum exercises.
-  !href $renewlink Abandon the session
+  $name_serie_exo
+  !href $renewlink $name_serie_renew
 .
  !endif
 !else
  !if $error!=$empty
-  !read proc/msg.phtml
+  !read dialog/msg.phtml
   <p><hr width="50%"> <p>
  !endif
- !read proc/answer.phtml
+ !read dialog/answer.phtml
  <p>
  !if $status!=$empty
-  This is exercise number $reply_cnt in a session of $qnum exercises. <p>
-  !href cmd=next Continue the session with the next exercise
-, or
-  !href $renewlink abandon the session and ask for a new one
-. (You must go through to the end of a session if you want a score.)
+  $name_serie_exo2 <p>
+  !href cmd=next $name_serie_nextexo
+, $wims_name_or
+  !href $renewlink name_exo_renew
+. $name_serie_new2
  !else
   !if $qnum>1
-   You have finished a session of $qnum exercises, with a score of
-   $score over 10.
+   $name_serie_score
    !ifval $score>9.8
-    Congratulations!
+    $wims_name_Congratulations
    !endif
    <p>
-   !href $renewlink Another session
+   !href exo_Again
 .
    !if $wims_sheet=$empty
-    !href module=$module&cmd=intro&special_parm=$wims_intro_parm Change the level of difficulty
+    !href exo_Intro
 .
    !endif
   !else
-   You have obtained a score of $score over 10.
+   $name_exo_score
    !ifval $score>9.8
-    Congratulations!
+    $wims_name_Congratulations
    !endif
    <p>
-   !href $renewlink Once again
+   !href exo_Again
 .
    !if $wims_sheet=$empty and $oef_test!=yes
     !href exo_Intro

@@ -1,3 +1,5 @@
+!exit
+
 <p><hr width="35%">
 
 !read Exindex
@@ -7,23 +9,22 @@
  !set qcnt=$exocnt
 !endif
 !if $exocnt<1
- Sorry, this module has no available exercise for the time being. Come back
- later!
+ $name_noexercise
  !exit
 !endif
 !if $exocnt=1
- This module contains actually only one exercise, <b>
+ $name_oneexercise, <b>
  !item 1 of $titlelist
  </b>.
  !set exoo=!item 1 of $exolist
- !href cmd=new&module=$module&exo=$exoo Try it.
+ !href cmd=new&module=$module&exo=$exoo $name_tryit.
  !exit
 !endif
 
 !form new
 <input type=hidden name=module value="$module">
 <center><table border=0><tr>
-<td align=center>Choose the exercises:<td>
+<td align=center>$name_chooseexo:<td>
 !if $exocnt>6
  !set selsize=6
 !else
@@ -40,23 +41,21 @@
 !endif
 !formselect exo list $exolist prompt $titlelist
 !set wims_formselect_switch=
-<tr><td align=center>One session will have<td>
+<tr><td align=center>$name_oneserie<td>
 !set qnum=1
 !formselect qnum from 1 to $qcnt
-exercises.
-<tr><td align=center>Level of severity <td>
+$name_exercises.
+<tr><td align=center>$name_levelseverity<td>
 !set qcmlevel=3
 !formselect qcmlevel from 1 to 8
 !read introhook.phtml
 </table> <p>
-<input type=submit value="Go to work">
+<input type=submit value="$wims_name_work">
 </center>
 </form>
-<b>Remarks</b>. The exercises will be taken randomly in the list of
-your choice. If your choice is empty, all the available exercises
-will be considered.
-
+$name_remarkintro1
+<p>
 !if * isin $titlelist
- <p>Exercises marked by a * are in general harder than the others.
+ <p>$name_remarkintro2
 !endif
 

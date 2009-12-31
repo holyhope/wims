@@ -1,41 +1,37 @@
-
+!exit
 <a name=ans></a>
 !if $badask=yes
  !if $comment!=$empty
-  Votre demande pour $badname est illégale&nbsp;:
+  $name_illegal1:
   $comment 
  !else
-  Votre demande pour $badname est illégale, car cette information n'a pas de
-  sens.
+  $name_illegal2
  !endif
- <p>Votre travail sur cet exercice est terminé par cette demande illégale.
+ <p>$name_illegal3
  !exit
 !endif
 
 !if $speculate=yes
- Vous ne disposez pas d'information suffisante pour résoudre ce
- problème&nbsp;! Votre réponse n'est donc pas valable, et est considérée 
- comme étant fausse.
+ $name_speculate
  !exit
 !else
  !read $deffile ans
 !endif
 
 !if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $thisscore<0.7))
- <p><b>Solution.</b> $solution
+ <p><b>$name_Solution.</b> $solution
 !endif
 
 <p>
 !if $gotcnt>$minask
- Vous auriez pu résoudre le problème en posant seulement $minask
  !if $minask>1
-  questions.
+  $name_minasks
  !else
-  question.
+  $name_minasks
  !endif
 !endif
 
 !if $uselesscnt>0
- Les informations suivantes sont inutiles&nbsp;: <b>$useless</b>.
+ $name_useless: <b>$useless</b>.
 !endif
 

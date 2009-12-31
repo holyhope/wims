@@ -1,16 +1,16 @@
+!exit
+
 !set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
 !set module_title=$module_title: $title
 
 !header
 
 !if $title=$empty
- Ce module est un groupement d'exercices. Vous l'avez visiblement demandé sans
- préciser un exercice valable que vous voulez faire. C'est soit parce que vous
- avez cliqué sur un lien incorrect, soit à cause d'une erreur du logiciel.
+  $name_emptytitle
  <p><center>
- !href module=$module Essayez de refaire votre manipulation
- , ou
- !href $ abandonner
+ !href module=$module $name_restart
+ , $wims_name_or
+ !href $ $wims_name_giveup
  . </center>
  !goto end
 !endif
@@ -33,15 +33,15 @@
  !read dialog/form.phtml
  <p>
  !if $hint!=$empty and $givehint>0
-  !href cmd=hint Indication
+  !href cmd=hint $name_Hint
 .
  !endif
  !if $qnum<=1
-  !href $renewlink Renouveler l'exercice
+  !href $renewlink $name_exo_renew
 .
  !else
-  Ceci est l'exercice $[$reply_cnt+1] dans une séance qui en compte $qnum.
-  !href $renewlink Abandonner la séance
+  $name_serie_exo
+  !href $renewlink $name_serie_renew
 .
  !endif
 !else
@@ -52,17 +52,16 @@
  !read dialog/answer.phtml
  <p>
  !if $status!=$empty
-  Ceci est l'exercice $reply_cnt dans une séance qui en compte $qnum. <p>
-  !href cmd=next Continuer la séance avec l'exercice suivant
-, ou
-  !href $renewlink abandonner la séance en demandant une autre
-. (Vous devez arriver jusqu'à la fin de la séance pour avoir une note.)
+  $name_serie_exo2 <p>
+  !href cmd=next $name_serie_nextexo
+, $wims_name_or
+  !href $renewlink name_exo_renew
+. $name_serie_new2
  !else
   !if $qnum>1
-   Vous avez terminé une séance de $qnum exercices, avec une note de
-   $score sur 10.
+   $name_serie_score
    !ifval $score>9.8
-    Félicitations!
+    $wims_name_Congratulations
    !endif
    <p>
    !href exo_Again
@@ -72,9 +71,9 @@
 .
    !endif
   !else
-   Vous avez obtenu une note de $score sur 10.
+   $name_exo_score
    !ifval $score>9.8
-    Félicitations!
+    $wims_name_Congratulations
    !endif
    <p>
    !href exo_Again
