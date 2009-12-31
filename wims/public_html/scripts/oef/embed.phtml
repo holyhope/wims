@@ -8,11 +8,20 @@
   !set inputsize1=$inputsize
 !endif
 !if $printing=yes or $cmd=hint
- !if $inputsize1>0 and mc iswordof $(replystyle$i)
-  !if $prompt_=$empty
-   !set g_=!rows2lines $(replygood$i)
-   !set g_=!line 2 of $g_
-   !set prompt_=!item $inputsize1 of $g_
+ !set replystyle$i=!defof anstyle in anstype/$(replytype$i).input
+ !if mc iswordof $(replystyle$i)
+  !if $inputsize1>0 
+   !if $prompt_=$empty
+    !set g_=!rows2lines $(replygood$i)
+    !set g_=!line 2 of $g_
+    !set prompt_=!item $inputsize1 of $g_
+   !endif
+  !else
+   !if $prompt_=$empty
+    !set g_=!rows2lines $(replygood$i)
+    !set g_=!line 2 of $g_
+    !set prompt_=$g_
+   !endif
   !endif
   !imgrename <u>$prompt_</u>
  !else
