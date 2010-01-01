@@ -1,21 +1,20 @@
-/* This notice must be untouched at all times.
+/* This notice must be untouched at all times, and must not be removed.
 
-wz_dragdrop.js	v. 4.89
+wz_dragdrop.js	v. 4.91
 The latest version is available at
 http://www.walterzorn.com
 or http://www.devira.com
 or http://www.walterzorn.de
 
-Copyright (c) 2002-2007 Walter Zorn. All rights reserved.
+Copyright (c) Walter Zorn. All rights reserved.
 Created 26. 8. 2002 by Walter Zorn (Web: http://www.walterzorn.com )
-Last modified: 13.6.2007
+Last modified: 10.10.2008
 
-This DHTML & Drag&Drop Library adds Drag&Drop functionality
-to the following types of html-elements:
-- images, even if not positioned via layers,
-  nor via stylesheets or any other kind of "hard-coding"
+This DHTML & Drag&Drop Library adds Drag&Drop functionality to:
+- images, even those not positioned via layers,
+  nor via stylesheets or any other kind of "hard-coding";
 - relatively and absolutely positioned layers (DIV elements).
-Moreover, it provides extended DHTML abilities.
+Moreover, it provides extended DHTML capabilities.
 
 LICENSE: LGPL
 
@@ -353,7 +352,9 @@ dd.addProps = function(d_o)
 		if(!d_o.noalt && !dd.noalt && d_o.nimg && d_o.oimg)
 		{
 			d_o.nimg.alt = d_o.oimg.alt || '';
-			if(d_o.oimg.title) d_o.nimg.title = d_o.oimg.title;
+			d_o.nimg.title = d_o.oimg.title;
+			d_o.nimg.onmouseover = d_o.oimg.onmouseover;
+			d_o.nimg.onmouseout = d_o.oimg.onmouseout;
 		}
 		d_o.bgColor = '';
 	}
@@ -580,7 +581,7 @@ function DDObj(d_o, d_i)
 		if(this.div)
 		{
 			this.div.ddObj = this;
-			this.div.pos_rel = ("" + (this.div.parentNode? this.div.parentNode.tagName : this.div.parentElement? this.div.parentElement.tagName : '').toLowerCase().indexOf('body') < 0);
+			this.div.pos_rel = dd.getCssProp(this.div, 'position','position','position') == "relative";
 		}
 		dd.getPageXY(this.div);
 		this.defx = this.x = dd.x;
@@ -807,10 +808,10 @@ DDObj.prototype.addChild = function(d_kd, detach, defp)
 		d_kd.defz = d_kd.defz+this.defz-(d_kd.parent? d_kd.parent.defz : 0)+(!d_kd.is_image*1);
 		d_kd.setZ(d_kd.z+this.z-(d_kd.parent? d_kd.parent.z : 0)+(!d_kd.is_image*1), 1);
 	}
-	if(d_kd.parent) d_kd.parent._removeChild(d_kd, 1);
+	if(d_kd.parent) d_kd.parent.removeChild(d_kd, 1);
 	d_kd.parent = this;
 };
-DDObj.prototype._removeChild = function(d_kd, d_newp)
+DDObj.prototype.removeChild = function(d_kd, d_newp)
 {
 	if(typeof d_kd != "object") d_kd = this.children[d_kd];
 	var d_oc = this.children, d_nc = new Array();
@@ -866,9 +867,9 @@ DDObj.prototype._setOpaRel = function(d_x, d_kd, d_y, d_o)
 	{
 		d_y = this.opacity*d_x;
 		if(typeof this.css.MozOpacity != dd_u) this.css.MozOpacity = d_y;
+		else if (typeof this.css.opacity != dd_u) this.css.opacity = d_y;
 		else if(typeof this.css.filter != dd_u)
 			this.css.filter = "Alpha(opacity="+parseInt(100*d_y)+")";
-		else this.css.opacity = d_y;
 		for(var d_i = this.children.length; d_i;)
 			if(!(d_o = this.children[--d_i]).detached) d_o._setOpaRel(d_x, 1);
 	}
@@ -925,7 +926,7 @@ DDObj.prototype.getEltBelow = function(d_ret, d_x, d_y)
 DDObj.prototype.del = function(d_os, d_o)
 {
 	var d_i, d_l;
-	if(this.parent && this.parent._removeChild) this.parent._removeChild(this);
+	if(this.parent && this.parent.removeChild) this.parent.removeChild(this);
 	if(this.original)
 	{
 		this.hide();
