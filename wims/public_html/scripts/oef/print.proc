@@ -69,9 +69,11 @@ $v_
     rep=!append line $(choicegood$k) to $rep
    !endif   
   !next k
-  !if $conditioncnt<1
-   !for k=1 to $replycnt
-    !if noanalyzeprint notwordof $(replyoption$k)
+ !if $conditioncnt<1
+  !for k=1 to $replycnt
+   !if noanalyzeprint notwordof $(replyoption$k)
+    thisstep=!line 1 of $oefsteps
+    !if r$k isitemof $thisstep
     rg_=$(replygood$k)
     !if $(replytype$k) iswordof checkbox mark click menu radio
      rg_=!translate internal ; to $\
@@ -114,6 +116,9 @@ $ in $rg_
       !else
         rep=!append line <tt>$rg_</tt> to $rep
       !endif 
+     !endif
+    !else
+     rep=
     !endif
    !endif
    !reset replyoption$k
