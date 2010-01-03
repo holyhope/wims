@@ -1,0 +1,81 @@
+!set appletdir=java/jmol
+
+!set anstype=yes
+!set anstyle=dprompt
+!set oef_js_submit=analyse()
+
+!if $wims_read_parm=def
+ !exit
+!endif
+!!########################
+!!###traitement des options (qui se trouvent dans \embed)
+!set oef_applet_option=!replace internal $	$ by $\
+$ in $inputsize
+
+!set oef_applet_option=!replace internal ; by $\
+$ in $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set Inputsize=!line 1 of $oef_applet_option
+!set test=!text remove 0123456789x in $Inputsize
+!if $test issametext $empty
+ !set Inputsize=!replace internal x by , in $Inputsize
+ !set oef_applet_option=!line 2 to -1 of $oef_applet_option
+ !set oef_applet_option=!declosing $oef_applet_option
+ !distribute items $Inputsize into xsize,ysize
+!endif
+
+!set oef_applet_option=!translate [] to $  $ in $oef_applet_option
+!set file=!getopt file in $oef_applet_option
+
+!set temp=!record 0 of $file
+!set file0=!replace internal / by , in $file
+!readproc oef/togetfile.proc $(file0[-1]) new\
+$temp
+!set file0=!imgrename $file0
+
+!set file1=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
+
+!set other_options=!line 2 to -1 of $oef_applet_option
+!set other_options_cnt=!linecnt $other_options
+!!
+!default xsize=480
+!default ysize=480
+
+!!############################
+!!####partie importante
+!! !form reply
+<input type=hidden name="reply$i" id="Clickjmolreply" value="">
+
+<script type="text/javascript" src="$appletdir/Jmol.js"></script> 
+
+<script language="javascript" type="text/javascript">
+function analyse() {
+ var atsel = jmolGetPropertyAsArray('AtomInfo','(selected)');
+ var chaine=atsel[0].atomno+','+atsel[0].sym;
+ for(at=1;at<atsel.length;at++){
+  chaine=chaine+ ';'+atsel[at].atomno+','+atsel[at].sym;
+ }
+  document.getElementById('Clickjmolreply').value=chaine;
+}
+</script>
+<script type="text/javascript">       
+      jmolInitialize('$appletdir','JmolApplet.jar');
+      jmolSetAppletColor("white");
+      jmolSetCallback("menuFile", "$appletdir/Jmol.mnu");
+      jmolApplet([$xsize,$ysize]);
+      alert('OK');
+ !!jmolLoadInline(struct)
+ var jmolscript='load $file1;';
+ jmolscript= jmolscript +'selectionhalos on;select none;set frank off;';
+ jmolscript= jmolscript +'set picking select atom;';
+ jmolscript= jmolscript +'set disablePopupMenu on;';
+  !for s_=1 to $other_options_cnt
+   !set opt_=!line $s_ of $other_options
+   jmolscript= jmolscript +'$opt_';
+ !next
+ jmolScriptWait(jmolscript);
+</script>
+!!###on garde les options pour le retour, variable de nom imposé oef_applet_option
+!set oef_applet_option=$Inputsize\
+$file
+$other_options
