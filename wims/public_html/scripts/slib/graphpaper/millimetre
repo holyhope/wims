@@ -12,29 +12,61 @@ slib_parms=10\
 [240,233,255],background color \
 [255,220,180],lines color \
 [10,10,10],dots color \
-void,list of dots (an even count of coordinates : x1,y1,x2,y2,etc.)
+void, <ol><li>optional list of style specifications. The syntax of style specifications is&nbsp;: <ul><li><span style="color:green;">style:grad={xy, no, x_only, y_only}</span> for graduations [defaults to xy], to draw respectively both graduations, no graduations, graduations only on x axis, graduations only on y axis&nbsp;;<li><span style="color:green;">style:dot={+,x,o}</span> for dots [defaults to +], to make dots like straight crosses, oblique crosses, circles. </ul><li>Then optional list of dots (an even count of coordinates : x1,y1,x2,y2,etc.)</ul>
 slib_author=Georges KHAZNADAR
 slib_out=Source for insdraw-ing a graph paper with the dots on it
 slib_comment=if color are three numbers, \
-put them in brackets ; there may be no dots.<br> \
-The syntax for x_step and y_step is the following :
+put them in brackets ; there may be no dots.<br><br> \
+The syntax for <b>x_step</b> and <b>y_step</b> is the following&nbsp;: \
 a bare number is for deltaX or deltaY, a number followed by the \
 word "max" means a maximum value, any other words are interpreted \
 like a label for the axis.
 slib_example= ,,,,,,,,,0,0,1.2,1.5,2.4,3.2\
-12,8,0,0,1 max t (ms),1 max U (V),blue,red,[255,128,128],0,0,1.2,1.5,2.4,3.2 
+12,8,0,0,1 max t (ms),1 max U (V),blue,red,[255,128,128],0,0,1.2,1.5,2.4,3.2\
+12,8,0,0,1 max t (ms),1 max U (V),blue,red,[255,128,128],style.grad=x_only, style.dot=o,0,0,1.2,1.5,2.4,3.2
 
  
 !exit
 
 :proc
 
-!reset slib_xd, slib_yd, slib_bg, slib_lc, slib_dc, slib_point, slib_xo, slib_yo, slib_xs, slib_ys, slib_labx, slib_laby, slib_maxx, slib_maxy
+!reset slib_formdot,slib_grad,slib_xd, slib_yd, slib_bg, slib_lc, slib_dc, slib_point, slib_xo, slib_yo, slib_xs, slib_ys, slib_labx, slib_laby, slib_maxx, slib_maxy, slib_style, slib_empty, slib_key, slib_val, slib_pos
 
 slib_parm=!item 1 to 9 of $wims_read_parm
 !distribute item $slib_parm into slib_xd, slib_yd, slib_xo, slib_yo, slib_xs, slib_ys, slib_bg, slib_lc, slib_dc
 
 slib_point=!item 10 to -1 of $wims_read_parm
+
+slib_empty=
+slib_style=!item 1 of $slib_point
+slib_pos=!positionof style: in $slib_style
+!while $slib_pos=0
+  slib_point=!item 2 to -1 of $slib_point
+  slib_style= !replace style: by $slib_empty in $slib_style
+  slib_style= !replace = by , in $slib_style
+  !distribute item $slib_style into slib_key, slib_val
+  !if $slib_key=grad
+    !if $slib_val=no
+      slib_grad=0
+    !endif
+    !if $slib_val=x_only
+      slib_grad=2
+    !endif
+    !if $slib_val=y_only
+      slib_grad=3
+    !endif
+  !endif
+  !if $slib_key=dot
+    !if $slib_val=x
+      slib_formdot=0
+    !endif
+    !if $slib_val=o
+      slib_formdot=2
+    !endif
+  !endif
+  slib_style=!item 1 of $slib_point
+  slib_pos=!positionof style: in $slib_style
+!endwhile
 
 !default slib_xd=8
 !default slib_yd=8
@@ -42,6 +74,8 @@ slib_point=!item 10 to -1 of $wims_read_parm
 !default slib_yo=1
 !default slib_xs=1
 !default slib_ys=1
+!default slib_grad=1
+!default slib_formdot=1
 
 slib_labx=!word 2 to -1 of $slib_xs
 slib_laby=!word 2 to -1 of $slib_ys
@@ -143,6 +177,7 @@ parallel 0,$[10*$slib_yo+1],0,$[10*$slib_yo-1], 10, 0, $slib_xd+1, $slib_grey
 slib_val=$[-$slib_xo*$slib_xs]
 slib_dessin=$slib_dessin\
 linewidth 1
+!if ($slib_grad=2 or $slib_grad=1)
 !for slib_x from 0 to  10*$slib_xd step 10
  slib_dessin=$slib_dessin\
  text blue,$[$slib_x+1],$[10*$slib_yo-1],medium,$slib_val
@@ -152,7 +187,7 @@ linewidth 1
   slib_dessin=$slib_dessin\
   text blue,$[$slib_x-20],$[10*$slib_yo-6],medium,$slib_labx
 !endif
-
+!endif
 
 !! axe_y
 slib_dessin=$slib_dessin\
@@ -165,6 +200,7 @@ parallel $[10*$slib_xo+1],0,$[10*$slib_xo-1], 0, 0, 10, $slib_yd+1, $slib_grey
 slib_val=$[-$slib_yo*$slib_ys]
 slib_dessin=$slib_dessin\
 linewidth 1
+!if ($slib_grad=3 or $slib_grad=1)
 !for slib_y from 0 to  10*$slib_yd step 10
  slib_dessin=$slib_dessin\
  text blue,$[10*$slib_xo+1],$[$slib_y-1],medium,$slib_val
@@ -173,6 +209,7 @@ linewidth 1
 !if $slib_laby != $empty
   slib_dessin=$slib_dessin\
   text blue,$[10*$slib_xo-9],$[$slib_y-10],medium,$slib_laby
+!endif
 !endif
 
 !!!!!!!!!!!!!!!!! end grid !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -187,6 +224,7 @@ slib_x=$[10*$slib_xy/$slib_xs]
 !if $slib_i=1
 slib_i=0
 slib_y=$[10*$slib_xy/$slib_ys]
+!if $slib_formdot=0
 slib_x1=$[10*$slib_xo+$slib_x-0.6]
 slib_x2=$[10*$slib_xo+$slib_x+0.6]
 slib_y1=$[10*$slib_yo+$slib_y-0.6]
@@ -195,6 +233,24 @@ slib_dessin=$slib_dessin\
 linewidth 2\
 line $slib_x1,$slib_y1,$slib_x2,$slib_y2,$slib_dc\
 line $slib_x2,$slib_y1,$slib_x1,$slib_y2,$slib_dc
+!endif
+!if $slib_formdot=1
+slib_x1=$[10*$slib_xo+$slib_x-1]
+slib_x2=$[10*$slib_xo+$slib_x+1]
+slib_x3=$[10*$slib_xo+$slib_x]
+slib_y1=$[10*$slib_yo+$slib_y]
+slib_y2=$[10*$slib_yo+$slib_y+1]
+slib_y3=$[10*$slib_yo+$slib_y-1]
+slib_dessin=$slib_dessin\
+linewidth 2\
+line $slib_x1,$slib_y1,$slib_x2,$slib_y1,$slib_dc\
+line $slib_x3,$slib_y2,$slib_x3,$slib_y3,$slib_dc
+!endif
+!if $slib_formdot=2
+ slib_dessin=$slib_dessin\
+  linewidth 1\
+  circle $slib_xo+$slib_x,$slib_yo+$slib_y,6,$slib_dc
+!endif
 !endif
 :continue
 !next slib_xy
