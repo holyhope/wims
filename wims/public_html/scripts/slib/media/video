@@ -1,0 +1,56 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Video insertion with player_flv_maxi.swf
+slib_parms=3\
+,URL of the data file\
+,option for the media insertion for flv video (use player_flv_maxi.swf)\
+,option=rename imagedir
+slib_author=Bernadette Perrin-Riou
+slib_out=  Audio insertion in html page
+slib_comment=http://flv-player.net, default option :height="240" width="320" autostart="false"
+the option "imagedir" is to use if dewplayer is not on wims but in the module, 
+slib_example=\imagedir/exemple.flv\
+
+!exit
+
+:proc
+!!!if ...adm/ isin ...$module or .. isin $wims_read_parm or !!$wims_read_parm=$empty
+!! !exit
+!!!endif
+
+!distribute items $wims_read_parm into slib_media,slib_option,slib_option2
+
+!default slib_option=height="240" width="320" autostart="false"
+
+slib_option2 = !getopt option in $slib_option2
+
+
+slib_mod = $module_category
+slib_mod = !items2words $slib_mod
+!if imagedir iswordof $slib_option2 
+  !if document iswordof $slib_mod
+    slib_image_dir=$Docdir/$doc/files
+  !else
+    slib_adresse=$imagedir
+  !endif
+!endif
+!default slib_adresse=flash
+
+slib_media=!words2items $slib_media
+!if rename iswordof $slib_option2
+   slib_media=!rename $slib_media
+!endif
+
+slib_media=!replace internal , by | in $slib_media
+slib_media=!nospace $slib_media
+
+!if http notin $slib_media
+ !set wims_http=!replace internal /wims.cgi by in $wims_ref_name
+ !set slib_media=$wims_http/$slib_media
+!endif
+
+slib_out=<object type="application/x-shockwave-flash" data="flash/player_flv_maxi.swf" $slib_option>\
+<param name="movie" value="flash/player_flv_maxi.swf" />\
+<param name="allowFullScreen" value="true" />\
+<param name="FlashVars" value="flv=$slib_media" /></object>\

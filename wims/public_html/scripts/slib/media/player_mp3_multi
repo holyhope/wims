@@ -1,30 +1,31 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=Audio insertion with dewplayer
+slib_title=Audio insertion with player_mp3_multi 
 slib_parms=3\
 ,URL of the data file\
-,option for the audio insertion (use dewplayer : http://www.alsacreations.fr/dewplayer)\
+,option for the audio insertion (use player_mp3_multi http://flash-mp3-player.net/)\
 ,option=rename imagedir document
 slib_author=Bernadette Perrin-Riou
-slib_out=Audio insertion in html page
-slib_comment=default option :height="17" width="40" autostart="false" loop="false"\
-the option "imagedir" is to use if dewplayer is not on wims but in the module.
+slib_out=  Audio insertion in html page
+slib_comment=default option :height="16" width="60" autostart="false" loop="false" width="0"  height="0"\
+the option "imagedir" is to use if player_mp3_multi is not on WIMS but in the module, several audio \
+can be successively listened, seperate them by |
 slib_example=\imagedir/exemple.mp3\
-http://packs.shtooka.net/eng-balm-verbs/mp3/eng-I_bought.mp3
+http://packs.shtooka.net/eng-balm-verbs/mp3/eng-I_bought.mp3|http://packs.shtooka.net/eng-balm-verbs/mp3/eng-I_brought.mp3
 
 !exit
 
 :proc
 !!!if ...adm/ isin ...$module or .. isin $wims_read_parm or $wims_read_parm=$empty
 !! !exit
-!! !endif
+!!!endif
 
 !distribute items $wims_read_parm into slib_son,slib_option,slib_option2
 
-!default slib_option=height="17" width="100" autostart="false" loop="false"
+!reset slib_out
+!default slib_option=width="200" height="20" autostart="false" loop="false"
 slib_option2 = !getopt option in $slib_option2
-
 
 slib_mod = $module_category
 slib_mod = !items2words $slib_mod
@@ -39,12 +40,7 @@ slib_mod = !items2words $slib_mod
 
 slib_son=!words2items $slib_son
 slib_Son=
-!if rename iswordof $slib_option2
-  !for slib_s_ in $slib_son
-    slib_S=!rename $slib_s_
-    slib_Son=!append item $slib_S to $slib_son
-  !next
-!endif
+
 !if $slib_Son!=
   slib_son=$slib_Son
 !endif
@@ -53,4 +49,5 @@ slib_son=!nospace $slib_son
 
 ####attention = pas d'espace et mettre sur une seule ligne, sinon il y a 
 #### un problème dans les exos de correspondance
-slib_out =<object type="application/x-shockwave-flash" data="$slib_adresse/dewplayer-multi.swf?mp3=$slib_son" $slib_option alt="audio"><param name="movie" value="$slib_adresse/dewplayer-multi.swf?mp3=$slib_son"/></object>
+
+slib_out=<object data="$slib_adresse/player_mp3_multi.swf" $slib_option type="application/x-shockwave-flash"><param name="type" value="application/x-shockwave-flash" /><param name="movie" value="player_mp3_multi.swf" /><param name="FlashVars" value="mp3=$slib_son" /></object>
