@@ -1,91 +1,91 @@
 !set wims_module_log=error: $error
 
 !if no_subclass iswordof $error
- Vous n'avez pas le droit de créer des sous-classes dans la situation
- actuelle.
+ No teniu dret a crear sub-classes en la situació
+ actual.
  !set restart=no
  !exit
 !endif
 
 !if no_right iswordof $error
- Désolé, vous n'avez pas le droit de créer des classes virtuelles sur ce site.
- Veuillez
- !mailurl $wims_site_manager contacter le gestionnaire du site\
-Création de classe virtuelle
- pour plus de détail.
+ Ho sento, no teniu dret a crear classes virtuals en aquest lloc.
+ Si us plau
+ !mailurl $wims_site_manager contacteu amb el gestor del lloc\
+Creació de classes virtuals
+ per a més detalls.
  !set restart=no
  !exit
 !endif
 
 !if not_manager iswordof $error
- Désolé, seul le gestionnaire du site a le droit de créer un portail
- d'établissement.
+ Ho sento, només l'administrador del lloc té el dret de crear un portal
+ d'institució.
  !exit
 !endif
 
 !if getpass iswordof $error
  !if $regpass!=$empty
-  Désolé, votre mot de passe n'est pas correct. Veuillez réessayer.
+  Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
  !else
-  !set cname=!item $cltype+1 of classes virtuelles,,groupements de classes,,\
-        portails d'établissement
-  La création de $cname sur ce site est protégée par un mot de
-  passe. Vous devez entrer ce mot de passe avant de continuer.
+  !set cname=!item $cltype+1 de classes virtuals,,grups de classes,,\
+        portals d'institucions
+  La creació de $cname en aquest lloc està protegit per una
+  contrasenya. Heu d'introduir aquesta contrasenya abans de continuar.
  !endif
  <p>
  !form reply
   <input type=hidden name=step value=0>
-  Entrez le mot de passe : <input size=16 name=regpass type=password>
+  Entreu la contrasenya : <input size=16 name=regpass type=password>
  </form> <p>
- Remarque. Le mot de passe nécessaire à la création de classes virtuelles peut être obtenu auprès du
- !mailurl $wims_site_manager gestionnaire\
-Mot de passe pour la création de classes virtuelles
- de ce site WIMS.
+ Nota. La contrasenya necessària per crear classes virtuals pot obtenir-se a partir de
+ !mailurl $wims_site_manager gestor\
+Contrasenya per a la creació de classes virtuals
+ d'aquest lloc WIMS.
  !set restart=no
  !exit
 !endif
 
 !if getid iswordof $error
  !if $regpass$regid!=$empty
-  Désolé, votre mot de passe n'est pas correct. Veuillez réessayer.
+  Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
  !else
-  La création de classes virtuelles sur ce site est protégée par un système
-  d'authentification. Veuillez vous identifier.
+  La creació de classes virtuals en aquest lloc està protegit per un sistema
+  d'autentificació. Si us plau identifiqueu-vos.
  !endif
  <p>
  !form reply
   <p><table border=0 cellspacing=5>
   <tr><td align=right>
-  Entrez le nom de votre compte :</td><td><input size=20 name=regid></td>
+  Entreu el vostre identificador :</td><td><input size=20 name=regid></td>
   </tr><tr><td align=right>
-  Et le mot de passe :</td><td><input size=16 name=regpass type=password>
+  I la contrasenya :</td><td><input size=16 name=regpass type=password>
   <input type=submit value=OK></td>
   </tr></table>
  </form> <p>
- Remarque. Veuillez écrire au
- !mailurl $wims_site_manager gestionnaire\
-Mot de passe pour la création de classes virtuelles
- de ce site si vous voulez un compte de création de classes virtuelles.
+ Nota. Si us plau escriviu a
+ !mailurl $wims_site_manager gestor\
+Contrasenya per a la creació de classes virtuals
+ en aquest lloc si voleu un compte per crear classes virtuals.
  !set restart=no
  !exit
 !endif
 
 !if class_quota=$error
- Vous avez le droit d'installer jusqu'à $r_quota1 classes. Vous avez fait le
- plein&nbsp;; vous ne pouvez plus en ajouter d'autres.
+ Teniu el dret a instal·lar fins a $r_quota1 classes. Ja no us en
+ queden&nbsp;; no en podeu instal·lar més.
  !set restart=no
  !exit
 !endif
 
 !if bad_secure=$error
- Votre poste actuel ne fait pas partie de votre définition 
- d'accès sécurisé (<tt>$secure</tt>)&nbsp;! C'est probablement une erreur qui
- aurait la conséquence de vous interdire l'accès de contrôle de votre classe.
+ La vostra situació actual no consta a la vostra definició
+ d'accés segur (<tt>$secure</tt>)&nbsp;! Això és probablement un error que
+ provocarà la prohibició d'accedir al control de la vostra classe.
  <p>
- Lisez attentivement la documentation ci-dessous. Si vous ne comprenez toujours pas,
- laissez ce champ vide (on vous enverra des codes secrets
- temporaires pour les opérations sensibles), ou mettez le mot <tt>all</tt>
- pour désactiver cette mesure de sécurité.
+ Llegiu atentament la documentació següent. Si encara no ho enteneu,
+ deixeu aquest camp en blanc (us enviarem els codis secrets
+ temporals per les operacions sensibles), o poseu la paraula <tt>all</tt>
+ per desactivar aquesta mesura de seguretat.
  <p><hr><p>
  !read help/hosts.phtml
  !reset secure
@@ -93,83 +93,83 @@ Mot de passe pour la création de classes virtuelles
 !endif
 
 !if has_empty=$error
- Vous n'avez pas donné toutes les informations nécessaires pour la création 
- d'une classe. Veuillez compléter vos données avant de les soumettre.
+ No heu donat tota la informació necessària per a la creació
+ d'una classe. Si us plau, completeu les dades abans d'enviar-les.
  !exit
 !endif
 
 !if too_short=$error
- Le champ de données ``$(name_$error_subject)'' semble être trop court.
+ El camp de dades ''$(name_$error_subject)'' sembla ser massa curt.
  !exit
 !endif
 
 !if bad_date=$error
- Votre date d'expiration n'est pas correcte.
+ La vostra data de caducitat no és correcta.
  !exit
 !endif
 
 !if anti_date=$error
- Votre classe a une date d'expiration antérieure à aujourd'hui. Elle serait donc 
- périmée avant d'être créée!
+ La vostra classe té una data de caducitat aanterior a avui. Estaria per tant
+ caducada abans de ser creada!
  !exit
 !endif
 
 !if bad_level=$error
- Mauvaise valeur de niveau.
+ Valor del nivell incorrecte.
  !exit
 !endif
 
 !if bad_email=$error
- Votre adresse électronique n'est visiblement pas valable.
+ La vostra adreça de correu electrònic, òbviament no és vàlida.
  <p>
-La création de classe ne peut réussir que si vous
- soumettez VOTRE VRAIE adresse électronique.
+La creació de la classe només pot tenir èxit si
+ envieu la vostra adreça de correu electrònic real.
  !exit
 !endif
 
 !if existing=$error
- La classe $classname semble déjà exister. Vous ne pouvez pas recréer la 
- même classe.
+ La classe $classname ja sembla existir. No podeu tornar a crear
+ la mateixa classe.
  !exit
 !endif
 
 !if pass_discord=$error
- Le mot de passe que vous avez retapé ne correspond pas au premier. Votre
- création de classe n'est donc pas pris en compte&nbsp;; vous pouvez réessayer encore
- une fois.
+ La contrasenya que heu tornat a escriure no coincideix amb la primera. La
+ creació de la classe no es té en compte&nbsp;; podeu intentar-ho de nou
+ una altra vegada.
  !exit
 !endif
 
 !if bad_pass=$error
- Votre $(name_$error_subject) contient des caractères illégaux. <p>
- Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
- sans accent et sans espace entre eux.
+ El vostre $(name_$error_subject) conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
  !exit
 !endif
 
 !if bad_code=$error
- Vous n'avez pas entré le bon code pour la classe. L'adresse électronique
- que avez fournie est-elle correcte&nbsp;?<p>
- Nous avons enregistré cet echec.
+ No heu introduït el codi correcte per a la classe. L'adreça de correu electrònic
+ que heu utilitzat és correcta&nbsp;?<p>
+ Hem registrat aquest fracàs.
  !exit
 !endif
 
 !if define_fail=$error or abuse=$error
- Le serveur n'a pas réussi à insérer votre classe dans la base de
- données. C'est une erreur interne du logiciel.
+ El servidor no ha pogut afegir la vostra classe a la base de
+ dades. Això és un error intern de programari.
  <p>
- Veuillez rapporter le problème au
- !mailurl $wims_site_manager gestionnaire de ce site\
+ Si us plau, informeu del problema a
+ !mailurl $wims_site_manager gestor d'aquest lloc\
 user registration failure
-. Merci!
+. Gràcies!
  !exit
 !endif
 
 !if duplicate=$error
- Vous avez tenté de recréer une classe déjà créée. Peut-être
- avez-vous cliqué sur le bouton <tt>actualiser</tt>&nbsp;? En tout cas, votre classe
- $classname est déjà en place et la deuxième tentative de création
- est ignorée. <p>
+ Heu intentat tornar a crear una classe ja creada. Potser
+ heu clicat al botó <tt>actualitzar</tt>&nbsp;? En tot cas, la vostra classe
+ $classname ja està en aquest lloc i el segon intent de crear-la
+ s'ha ignorat. <p>
  !read links.phtml
  !exit
 !endif

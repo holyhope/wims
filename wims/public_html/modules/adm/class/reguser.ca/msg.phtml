@@ -1,117 +1,117 @@
 !set wims_module_log=error: $error
 
 !if bad_classtype=$error
- L'inscription de participant n'est pas autorisée dans cette zone.
+ El registre de participants no està permès en aquest àmbit.
  !exit
 !endif
 
 !if no_class=$error
- La classe que vous avez choisie ne semble pas exister&nbsp;! 
- Si ce n'est pas un bug  du logiciel, alors la classe est périmée ou vous êtes en train de jouer avec
- le site (dans ce cas, sachez que toutes vos activités sont enregistrées).
+ La classe que heu triat no sembla existir-hi&nbsp;! 
+ Si això no és un error de programari, llavors la classe ha caducat o estàs jugant amb
+ el lloc (en aquest cas, sàpigues que es registren totes les activitats).
  !exit
 !endif
 
 !if complete=$error
- La classe que vous avez choisie est complète. Il n'y a plus de place
- disponible pour vous. Désolé.
+ La classe que heu triat està completa. No hi ha més lloc
+ disponible. Ho sento.
  !exit
 !endif
 
 !if no_real=$error
- Vous n'avez pas donné votre nom et prénom.
+ No heu donat els vostres codnom i nom.
  !exit
 !endif
 
 !if bad_login=$error
- Votre nom de login contient des caractères illégaux. <p>
- Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
- sans accent et sans espace entre eux.
+ El vostre nom d'usuari conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
  !exit
 !endif
 
 !if bad_pass=$error
- Votre mot de passe contient des caractères illégaux. <p>
- Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
- sans accent et sans espace entre eux.
+ La vostra contrasenya conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
  !exit
 !endif
 
 !if login_size=$error
- votre nom de login est trop
+ El vostre nom d'usuari és massa
  !if $n<4
-  court.
+  curt.
  !else
-  long.
+  llarg.
  !endif
- Il doit contenir entre 4 et 16 caractères.
+ Ha de contenir entre 4 i 16 caràcters.
  !exit
 !endif
 
 !if pass_size=$error
- votre mot de passe est trop
+ La vostra contrasenya és massa
  !if $n<4
-  court.
+  curta.
  !else
-  long.
+  llarga.
  !endif
- Il doit contenir entre 4 et 16 caractères.
+ Ha de contenir entre 4 i 16 caràcters.
  !exit
 !endif
 
 !if bad_classpass=$error
- Votre mot de passe pour la classe
+ La vostra contrasenya per la classe
  <b><font color=green>$description</font></b>
  de <b><font color=green>$institution</font></b>
- n'est pas correct. Vous n'avez donc pas le droit de vous inscrire dans
- cette classe. Désolé.
+ no és correcta. Així que no teniu el dret a registrar-vos a
+ aquesta classe. Ho sento.
  !exit
 !endif
 
 !if login_double=$error
- Le nom de login ``<b><font color=green>$login</font></b>''
- est déjà en utilisation dans la classe
+ El nom d'usuari ''<b><font color=green>$login</font></b>''
+ ja està en ús a la classe
  <p><center>
  <b><font color=green>$description</font></b>
  de <b><font color=green>$institution</font></b>.
  </center> <p>
- Veuillez vérifier si vous ne vous êtes pas déjà inscrit&nbsp;; sinon, choisissez un autre nom de login.
+ Si us plau, comproveu que no estigueu ja registrat&nbsp;; en cas contrari, trieu un altre nom d'usuari.
  !exit
 !endif
 
 !if pass_error=$error
- Le mot de passe que vous avez retapé ne correspond pas au premier. Votre
- enregistrement n'est donc pas pris en compte; vous pouvez réessayer.
+ La contrasenya que heu tornat a escriure no coincideix amb la primera. El teu
+ registre no és tingut en compte, podeu intentar-ho de nou.
  !exit
 !endif
 
 !if insert_fail=$error
- Le logiciel n'a pas réussi à insérer votre enregistrement dans la base de
- données. Il y a une erreur interne.
+ El programari no ha pogut afegir el vostre registre a la base de
+ dades. Hi ha un error intern.
  <p>
- Veuillez signaler le problème au
- !mailurl $wims_site_manager gestionnaire de ce site\
+ Si us plau, informeu del problema a
+ !mailurl $wims_site_manager gestor d'aquest lloc\
 user registration failure
-. Merci!
+. Gràcies!
  !exit
 !endif
 
 !if site_complete=$error
- Le nombre d'utilisateurs inscrits a atteint la limite autorisée par
- ce site ($wims_user_limit). Le service d'inscription est donc fermé,
- désolé. <p>
- Vous pouvez 
- !mailurl $wims_site_manager écrire au gestionnaire du site\
+ El nombre d'usuaris registrats ha arribat al límit permès per a
+ aquest lloc ($wims_user_limit). El servei de registre està doncs tancat,
+ ho sento. <p>
+ Podeu 
+ !mailurl $wims_site_manager escriure al gestor del lloc\
 site user limit
- pour lui demander d'augmenter cette limite ou vous
- !href $ connecter à wims en tant que visiteur
+ demanant-li que augmenti aquest límit o 
+ !href $ connectar a wims en tant que visitant
 . <p>
  !exit
 !endif
 
 !if internal_total=$error
- Erreur interne du logiciel&nbsp;: échec déterminant le nombre d'utilisateurs
-inscrits.
+ Error intern de programari&nbsp;: error de la determinació del nombre d'usuaris
+ registrats.
  !exit
 !endif
 
