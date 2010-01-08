@@ -18,57 +18,57 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
- Voici le fichier <tt>
+ Aquí està el fitxer <tt>
  !getfile $outfile $outfile
- </tt> que vous pouvez télécharger et ouvrir dans votre logiciel 
- tableur préféré.
+ </tt> que podeu descarregar i obrir en el vostre programari
+ de full de càlcul preferit.
  <p><hr> <p>
 !endif
 
 !if $processed=yes and $error=$empty
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
-  Le fichier de tableur <tt>$wims_deposit</tt> est reconnu avec succès.<ul>
+  El fitxer de full de càlcul <tt>$wims_deposit</tt> s'ha reconegut amb èxit.<ul>
   !if $change!=$empty
-   <li>Informations de participants changées&nbsp;: <tt>$change</tt>
+   <li>Informacions dels participants canviades&nbsp;: <tt>$change</tt>
   !endif
   !if $added!=$empty
-   <li>Nouveaux participants ajoutés&nbsp;: <tt>$added</tt>
+   <li>Nous participants afegits&nbsp;: <tt>$added</tt>
   !endif
   !if full iswordof $remark
-   <li>L'addition de nouveaux participants est ignorée car il n'y a plus de place
+   <li>La incorporació de nous participants s'ha ignorat perquè no hi ha prou espai
    disponible.
   !endif
   !if noprop iswordof $remark
-   <li>Informations de participants inchangées car des notes sont reçues.
+   <li>No s'han canviat les informacions dels participants ja que s'han rebut notes.
   !endif
   !if noauto iswordof $remark
-   <li>Les notes calculées par le serveur (moyennes et notes de feuilles/examens)
-  sont ignorées dans vos données car elles ne peuvent pas être changées.
+   <li>Les notes calculades pel servidor (mitjanes i notes de fulls/exàmens)
+  s'ignoren en les vostres dades perquè no es poden canviar.
   !endif
   !if $erased!=$empty
-   <li>Données ignorées concernant des participants effacés&nbsp;:
+   <li>Dades ignorades corresponents als participants suprimits&nbsp;:
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>Les noms de login suivants n'existent pas et ne peuvent pas être
+   <li>Els noms d'usuari següents no existeixen i no poden ser
    !if full notwordof $remark
-    ajoutés, à cause d'information insuffisante/incorrecte dans les données
+    afegits, a causa d'informació insuficient/incorrecta en les dades
     envoyées&nbsp;:
    !else
-    ajoutés (mauvaises données ou classe pleine)&nbsp;:
+    afegits (dades incorrectes o classe plena)&nbsp;:
    !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes
-   <li>Les notes manuelles sont enregistrées seulement pour des colonnes déjà
-   existantes.
-   !href module=adm/class/grades Vérifier ces notes
+   <li>Les notes manuals s'emmagatzemen només per a les columnes ja
+   existents.
+   !href module=adm/class/grades Revisar les notes
 .
   !endif
   </ul>
  !else
-  Aucune différence  entre les données envoyées et les données
-  existant dans la classe.
+  No hi ha diferència entre les dades enviades i les dades
+  existents a la classe.
  !endif
  <p><hr> <p>
 !endif
@@ -76,14 +76,14 @@ $wims_name_csv
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Pour <input type=submit value="$wims_name_download">
-les données de la classe dans votre tableur, veuillez préciser&nbsp;:<ul>
+Per <input type=submit value="$wims_name_download">
+les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu&nbsp;:<ul>
 <li>Format
 !formselect csvformat list csv,tsv
 <small>
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </small>
-<li>Colonnes
+<li>Columnes
 <input type=text size=45 name=csvdownload value="$csvdownload">
 <small>
 !href module=$module&cmd=help&special_parm=csvfields $wims_name_help
@@ -97,13 +97,13 @@ les données de la classe dans votre tableur, veuillez préciser&nbsp;:<ul>
  !form reply
  <input type=hidden name=job value=csv>
  <input type=hidden name=csvtype value=upload>
- Pour <input type=submit value="$wims_name_send">
- des données de votre tableur à la classe, veuillez préciser&nbsp;:
+ Per <input type=submit value="$wims_name_send">
+ les dades del vostre full de càlcul a la classe, si us plau, especifiqueu&nbsp;:
  <small>
  !href module=$module&cmd=help&special_parm=upload $wims_name_help
  </small><ul>
- <li>Fichier de données <input type=file size=30 name=wims_deposit> <br>
- <small>Formats acceptés&nbsp;: .csv, .tsv, .txt
+ <li>Fitxer de dades <input type=file size=30 name=wims_deposit> <br>
+ <small>Formats acceptats&nbsp;: .csv, .tsv, .txt
  !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
  </small>
  </ul>

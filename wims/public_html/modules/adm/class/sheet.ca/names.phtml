@@ -5,57 +5,57 @@
 !read adm/lang/date.phtml.$lang
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activer,Expirer,Désactiver,Cacher,Montrer,$wims_name_erase
+!set statutaction=Activar, Caducar, Desactivar, Ocultar, Mostrar,$wims_name_erase
 !set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
 
 !! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Insérer un fichier source,\
-		Vue des participants,\
-		Source de la feuille \
+!distribute items Inserir un fitxer de codi,\
+		Vista dels participants,\
+		Codi del full \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,$wims_name_title,$wims_name_Description,Points,Poids,Dépendances,$wims_name_comment,$wims_name_action
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Punts,Pes,Dependències,$wims_name_comment,$wims_name_action
 
 !if $activetest<=0
- !let wims_name_sheetadmin=Page de préparation
- !set name_title=!nosubst Préparation de la feuille $sheet
+ !let wims_name_sheetadmin=Pàgina de preparació
+ !set name_title=!nosubst Preparació del full $sheet
 !else
- !let wims_name_sheetadmin=Page de gestion
- !set name_title=!nosubst Gestion de la feuille $sheet
+ !let wims_name_sheetadmin=Pàgina de gestió
+ !set name_title=!nosubst Gestió del full $sheet
 !endif
 
-!let name_shinfo=!nosubst $wims_name_title <small>(limité à $title_limit caractères)</small>,$wims_name_Status,\
-Texte d'explication <br></small>(limité à $desc_limit caractères; les tags et liens html sont admis)</small>,\
-Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les classes partageant la feuille,$wims_name_comment
-!let name_allowtype=ouvert pour tous, fermé pour tous, ouvert pour postes (et/ou heures) suivants :
-!let name_mksheet=Créer la feuille
+!let name_shinfo=!nosubst $wims_name_title <small>(limitat a $title_limit caràcters)</small>,$wims_name_Status,\
+Text d'explicació <br></small>(limitat a $desc_limit caràcters; estan permesos etiquetes i enllaços html)</small>,\
+Data de caducitat,Pàgina de presentació,Registre de notes,per a totes les classes que comparteixen el full,$wims_name_comment
+!let name_allowtype=obert a tothom, tancat a tothom, obert als llocs (i/o hores) següents :
+!let name_mksheet=Crear el full
 
-!distribute lines Informations générales&nbsp;\
-Contenu de la feuille&nbsp;\
-Cette feuille n'a pas encore de contenu.\
-Le titre d'origine est\
-Modification d'exercice\
-Nombre de points demandés\
-de poids\
-Corriger le source\
-La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
-Votre requête est donc ignorée.\
+!distribute lines Informacions generals&nbsp;\
+Contingut del full&nbsp;\
+Aquest full encara no té contingut.\
+El títol original és\
+Modificació de l'exercici\
+Nombre de punts demanats\
+de pes\
+Corregir el codi\
+La data de caducitat del full ha de ser anterior a la data de caducitat de la classe\
+La vostra petició s'ignora.\
 into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
 name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
-!set name_text1=Pour ajouter un travail (exercice, outil, etc.) à la feuille, vous devez d'abord choisir\
- l'objet correspondant (voir ci-dessous) ; réglez les différents paramètres proposés et lancez l'exercice.\
- Ensuite, utilisez le lien sur le bord de l'exercice pour l'ajouter à la feuille.\
- Pour choisir votre travail, vous avez une des possibilités suivantes
+!set name_text1=Per afegir un treball (exercici, eina, etc.) al full, primer heu de triar\
+ l'objecte corresponent (veure baix); establir els diferents paràmetres proposats i executar l'exercici.\
+ A continuació, utilitzeu l'enllaç del costat de l'exercici per afegir-lo al full.\
+ Per triar el vostre treball, teniu les possibilitats següents:
 
-!set name_text2=Passer par le moteur de recherche
-!set name_text3=Chercher un exercice parmi les 
-!set name_text4=Chercher un exercice de votre compte
+!set name_text2=Passar pel motor de cerca
+!set name_text3=Cercar un exercici entre els 
+!set name_text4=Cercar un exercici del vostre compte
 
 !if $job=student
-  !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
-  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
-  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
-  !set name_quality=0 des $[$re] points obtenus, qualité
+  !set name_title=Full de treball número $sheet<br>$title (Presentació per als participants)
+  !set name_sheetempty=Aquest full està buid! Potser un error de maneig del vostre professor.
+  !set name_assignedwork=Deures d'aquest full&nbsp;
+  !set name_quality=0 des $[$re] punts obtinguts, qualitat
 !endif
 

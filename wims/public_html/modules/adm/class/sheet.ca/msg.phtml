@@ -1,40 +1,40 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
- Désolé, mais l'opération de préparation / modification d'une feuille de
- travail est réservée aux enseignants enregistrés d'une classe.
+ Ho sento, però l'operació de preparació i modificació d'un full de
+ treball està reservada als professors registrats de la classe.
  !exit
 !endif
 
 !if bad_class=$error
- Etrange, mais je trouve que votre classe n'est pas valide!
+ És estrany, però penso que la vostra classe no és vàlida!
  !exit
 !endif
 
 !if bad_source=$error
- L'article numéro $bad_source dans le source que vous venez de soumettre
- n'est pas valable.
+ L'article número $bad_source del codi que acabeu d'enviar
+ no és vàlid.
  !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
  .
  !exit
 !endif
 
 !if bad_sheet=$error
- Votre numéro de feuille n'est pas valide. Bug du logiciel?
+ El vostre número de full no és vàlid. Error de programari?
  !exit
 !endif
 
 !if no_title=$error
- Vous avez voulu enregistrer une feuille sans titre, ce qui est
- déconseillé. Erreur de manipulation?
+ Heu intentat desar un full sense títol, cosa que no és
+ aconsellable. Error de manipulació?
  !exit
 !endif
 
 !if $error=not_secure
- Cette opération ne peut se faire qu'à partir d'un poste sûr.
+ Aquesta operació es pot fer només des d'un lloc segur.
  !if $sec=$empty
-  Vous n'avez pas défini de poste sûr. Accès interdit. Vous pouvez
-  demander au gestionnaire du site de le faire pour vous.
+  No heu definit una posició segura. Accés denegat. Podeu
+  demanar a l'administrador del lloc que ho faci per vosaltres.
  !else
   Accès interdit.
  !endif
@@ -42,70 +42,70 @@
 !endif
 
 !if $error=sharing_sheet
- Vos feuilles sont en partage avec d'autres classes !
+ Els vostres fulls són compartits amb altres classes !
  !if $wims_ismanager<2
-  Il faut demander au gestionnaire du site de désactiver la feuille
-  pour vous.
+  Heu de demanar a l'administrador del lloc que desactivi el full
+  per vosaltres.
   !exit
  !endif
- Vous risquez de mettre vos classes voisines en désordre total en désactivant cette
- feuille. Cette opération est donc <b>fortement déconseillée</b>.
+ Si desactiveu aquest full us arrisqueu a posar en un desordre total
+ les classes veïnes. Així que aquesta operació és <b>molt desaconsellable</b>.
  <p>
- Voulez-vous vraiment désactiver la feuille ?
+ Esteu segurs que voleu desactivar el full ?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p>
- <b>Avant de continuer, demandez au moins aux enseignants de vos classes voisines de
- sauvegarder leurs classes&nbsp;!</b> Si les désordres apparaissent, même
- au bout de plusieurs mois, vous serez obligé de revenir en l'état AVANT la
- désactivation, perdant tout ce qui se passe APRES, et ce pour toutes les classes
- partageant la feuille ! On espère vous avoir suffisamment averti.
+ <b>Abans de continuar, demani almenys els professors de les classes veïnes
+ salvaguardar les seves classes&nbsp;!</b> Si es produeixen els desordres, fins i tot
+ després de diversos mesos, haureu de tornar a l'estat ANTERIOR a
+ la desactivació, perdent tot el que succeeixi DESPRËS, i això per a totes les classes
+ que comparteixen el full! Espero que estiguis prou advertit.
  !exit
 !endif
 
 !if $error=sheet_in_exam
- Impossible de désactiver cette feuille, car vous avez des examens
- basés sur son contenu.
+ Impossible desactivar aquest full, perquè teniu exàmens
+ basats en el seu contingut.
  !exit
 !endif
 
 !if $error=non_empty_activities
- Vous voulez désactiver la feuille $sheet, alors que les participants ont
- déjà commencé à travailler dessus !
+ Voleu desactivar el full $sheet, però els participants
+ ja han començat a treballar en ell !
  <p>
  !if share iswordof $confirmed
-  De plus, la feuille est partagée avec d'autres classes où il peut y avoir
-  du travail et des scores aussi. Il est donc interdit de la désactiver.
+  A més, el full es comparteix amb altres classes on també pot haver-hi
+  treball i les seves notes. Així que està prohibit desactivar-lo.
   !exit
  !endif
- Tous les scores obtenus sur cette feuille seront effacés si vous la
- désactivez. Etes-vous sûr de vouloir le faire ?
+ Totes les notes obtingudes en aquest full seran esborrades si el
+ desactiveu. Esteu segurs de voler-ho fer ?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
 . </center> <p>
- Liste de comptes ayant déjà travaillé sur cette feuille :
+ Llista de comptes que ja han treballat en aquest full :
  <p>
  <tt>$worktest</tt>
  <p>
- <b>Remarque</b>. Cette action ne doit être prise que si c'est une classe de
- test. N'allez pas plus loin si les participants sont vos vrais élèves&nbsp;!
+ <b>Nota</b>. Aquesta acció s'ha de prendre només si és una classe de
+ prova. No ho feu si els participants són realment els vostres alumnes&nbsp;!
  !exit
 !endif
 
 !if prep_activate=$error
- Vous demandez d'activer la feuille $sheet, c'est-à-dire la rendre 
- accessible aux participants de la classe. <p>
- Veuillez noter qu'une feuille active n'est pas modifiable sans être
- désactivée préalablement, et la désactivation de la feuille entraîne la
- suppression de l'ensemble des scores sur la feuille, si elle n'est pas
- interdite par la situation.
+ Heu demanat activar el full $sheet, és a dir, fer-lo
+ accessible als participants de la classe. <p>
+ Tingueu en compte que un full actiu no pot ser modificat sense
+ desactivar-lo prèviament, i la desactivació del full provoca
+ l'eliminació de totes les puntuacions en el full, si això no
+ està prohibit per la situació.
  <p>
- Voulez-vous continuer?
+ Voleu continuar?
  <p><center>
  !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
  .&nbsp;&nbsp;
@@ -115,7 +115,7 @@
 !endif
 
 !if prep_erase=$error
- Voulez-vous vraiment effacer cette feuille numéro $sheet ($title)?
+ Voleu realment esborrar aquest full número $sheet ($title)?
  <p><center>
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
@@ -125,26 +125,26 @@
 !endif
 
 !if prep_expire=$error
- Cette feuille numéro $sheet ($title) expire normalement le $expday
- !item $expmon of $months
- $expyear. Voulez-vous la rendre périmée maintenant?
+ Aquest full número $sheet ($title) caduca normalment el $expday
+ !item $expmon de $months
+ $expyear. Voleu fer-lo caducar ara?
  <p><center>
  !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
  </center>
- <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
- sur une feuille périmée. Mais leurs notes antérieures seront conservées 
- (et seront prises en compte dans les statistiques)
- et vous pouvez toujours les consulter.
+ <p><b>Nota.</b> Els vostres estudiants no podran seguir treballant
+ en un full caducat. Però les seves notes anteriors es mantindran
+ (i es reflectiran en les estadístiques)
+ i vosaltres sempre les podreu consultar.
  !exit
 !endif
 
 !if prep_putsource=$error
- Si vous avez le source d'une feuille sauvée auparavant, vous pouvez l'insérer
- dans la feuille actuelle, en copiant ce source dans la fenêtre ci-dessous,
- puis en cliquant sur le bouton <tt>$wims_name_send</tt>. Vous pouvez aussi utiliser ce
- formulaire pour insérer le source d'une feuille publique par copier-coller.
+ Si teniu el codi d'un full prèviament guardat, podeu inserir-lo
+ en el full actual, copiant aquest codi a la finestra de sota,
+ a continuació, feu clic al botó <tt>$wims_name_send</tt>. També podeu utilitzar aquest
+ formulari per a inserir el codi d'un full públic amb copiar i enganxar.
  <p>
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
@@ -154,15 +154,15 @@ to $wims_menu_items
  <textarea cols=55 rows=10 name=source>$source</textarea>
  <p><input type=submit value="$wims_name_send">
  </center></form>
- <b>Attention</b>. N'insérez pas de fichier source modifié&nbsp;! Vous risquez
- de rendre votre feuille inutilisable.
+ <b>Atenció</b>. No inseriu un fitxer de codi modificat&nbsp;! Us arrisqueu
+ a fer el vostre full inservible.
  !exit
 !endif
 
 !if prep_modify=$error
  !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
  !if $modif>$cnt or $modif<1
-  Vous avez envoyé une demande invalide. Elle est ignorée.
+  Heu enviat una sol·licitud invàlida. S'ignora.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $exo into directory,parm,require,weight,title,desc,dep
@@ -191,12 +191,12 @@ to $wims_menu_items
  .
   <p><small>
   <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt> 
-  signifie qu'un participant doit
-  d'abord acquérir des points dans d'autres exercices de la feuille, avant
-  de pouvoir travailler sur celui-ci. Par exemple,
+  vol dir que un participant ha
+  d'haver obtingut punts en altres exercicis del full abans de
+  poder treballar-hi en aquest. Per exemple,
   <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
-  signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
-  30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices
+  vol dir que el participant ha de tenir un èxit del 50% sobre l'exercici 1, del
+  30% sobre l'exercici 2, i una mitjana d'èxit del 60% sobre els exercicis
   3, 4, 5.
   </small>
  !endif
