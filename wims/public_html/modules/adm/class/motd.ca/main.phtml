@@ -1,4 +1,5 @@
 !read adm/css.phtml
+!read js/speckedit.phtml name_deposit
 !header1
 
 !read names.phtml
@@ -11,29 +12,24 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Message de la classe
-!!<center>$classname
-!!<p>
-!!<h1>Message de la classe
-!!</h1></center> <p><hr width="40%"> <p>
+$name_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Retourner à la page d'accueil
+ !href module=home $wims_name_class_home
 . <p>
  !goto end
 !endif
 
-Cette page permet d'écrire ou de modifier un message destiné à tous les participants de la classe ou des messages personnalisés pour chaque élève.
-Ces messages apparaîtront sur 
-!href style=student la page d'accueil des participants
+$name_Intro
+!href style=student $name_home
 .
 <br>
 <center><table border=1 width="90%">
  <tr>
-  <td>Message de la classe (commun à tous les participants) :</td>
+  <td>$name_commun :</td>
   <td rowspan=2 valign=middle>
     !href cmd=reply&job=modif&user=.CLASS. $wims_name_change
     &nbsp; 
@@ -45,13 +41,13 @@ Ces messages apparaîtront sur
  </td></tr>
 </table>
 <p>
-Message personnalisé des participants
+$name_motd
 $table_header
  $table_hdtr
-  <th>Elève</th>
-  <th width="65%">Message actuel</th>
-  <th>statut</th>
-  <th>Action</th>
+  <th>$name_participant</th>
+  <th width="65%">$name_actualmotd</th>
+  <th>$wims_name_Status</th>
+  <th>$wims_name_action</th>
  </tr>
  !for k=1 to $nbuser
   $table_tr 
@@ -67,11 +63,11 @@ $table_header
      Actif
     !else
      Caché &nbsp;
-     !href cmd=reply&job=reactivate&user=$u Réactiver
+     !href cmd=reply&job=reactivate&user=$u $name_reactive
     !endif
    </td>
    <td>
-    !href cmd=reply&job=modif&user=$u  $wims_name_change
+    !href cmd=reply&job=modif&user=$u $wims_name_change
     &nbsp; 
     !href cmd=reply&job=delete&user=$u $wims_name_erase
    </td>
@@ -83,7 +79,8 @@ $table_end
 :end
 
 !if $job!=$empty and $job!=delete
- !href cmd=reply Retour
+  !set wims_menu_items=!append line back2,1,cmd=reply\
+ to $wims_menu_items
 !endif
 
 !tail

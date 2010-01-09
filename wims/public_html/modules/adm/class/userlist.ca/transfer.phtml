@@ -8,8 +8,8 @@ $name_title_transfer
 </center> <p>
 
 !if $error=no_reccourse
- <b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant
-à la classe actuelle et permettant le transfert depuis
+ <b>Error</b>. El participant no està registrat en un curs corresponent
+a la classe actual i no es possible la transferència
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -19,11 +19,11 @@ $name_title_transfer
 !if $ttype=show
  !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
  !if $transferclass notitemof $tr_list or $i=$empty
-  <b>Erreur</b> d'identifiant des classes. Fausse manoeuvre ou bogue du
-  logiciel ?
+  <b>Error</b> d'identificació de classes. Moviment en fals o error de
+  programari ?
   !exit
  !else
-  Détail des activités dans $i (limité à 1000 lignes).
+  Detall de l'activitat a $i (limitat a 1000 línies).
   <p><hr>
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
@@ -38,12 +38,12 @@ $name_title_transfer
  !endif
 !endif
 
-Voici les autres cours dans lesquels le participant a eu des activités.
-Cliquez sur une action pour transférer ces activités dans
+Aquests són els altres cursos en els que el participant ha actuat.
+Cliqueu sobre una acció per transferir les seves activitats a
 !if $tr_typename=course
- ce cours.
+ aquest curs.
 !else
- cette classe.
+ aquesta classe.
 !endif
 
 $table_header
@@ -63,13 +63,14 @@ $table_hdtr<th>$wims_name_course</th>
 $table_end
 
 :endd
-<b>Remarques</b>. <ol>
-<li>"Joindre" veut dire mettre ensemble les activités venant des deux cours.
-<li>"Remplacer" veut dire que les activités de l'autre cours vont écraser
-celles de ce cours. Le remplacement n'aura pas lieu si le premier est vide.
-<li>Les scores des examens et des activités non comptées sont toujours joints.
-<li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.
-<li>Après l'action (joindre ou remplacer), les registres d'activités du participant dans
-l'autre cours seront effacés.
+<b>Notes</b>. <ol>
+<li>"$name_merge" significa ajuntar les activitats de tots dos cursos.
+<li>"$name_replace" significa que les activitats dels altres cursos substituiran
+les d'aquest curs. La substitució no es produirà si el primer és buit.
+<li>Les notes dels exàmens i les activitats no comptades van sempre unides.
+<li>El registre dels detalls d'exercicis o exàmens no és transferible.
+<li>Després de fer la transferència de (sigui com a "$name_merge" i com a 
+"$name_replace"), els registres de les activitats del participant en
+els altres cursos seran eliminats.
 </ol>
 

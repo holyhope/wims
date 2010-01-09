@@ -1,82 +1,82 @@
 !set wims_module_log=error: $error
 
-<b>Erreur</b>.
+<b>Error</b>.
 
 !if not_supervisor=$error
- Désolé, mais l'opération de préparation / modification d'une feuille de
- travail est réservée aux enseignants enregistrés d'une classe.
+ Ho sento, però l'operació de preparació / modificació d'un full de
+ treball està reservada als professors registrats d'una classe.
  !exit
 !endif
 
 !if not_superclass=$error
- Opération interdite car vous faites partie d'un groupement de classes. Seul le
-gestionnaire du groupement peut faire cela.
+ Operació prohibida perquè sou són part d'un grup de classes. Només
+ pot fer això el gestor del grup.
  !exit
 !endif
 
 !if bad_class=$error
- Etrange, mais je trouve que votre classe n'est pas valide!
+ És estrany, però penso que la vostra classe no és vàlida!
  !exit
 !endif
 
 !if bad_classpass=$error
- Désolé mais vous n'avez pas fourni le bon mot de passe de la classe. Vous
- n'avez pas le droit de changer les informations sur les participants.
+ Ho sento, però no heu proporcionat la contrasenya correcta de la classe.
+ No teniu dret a modificar la informació dels participants.
  !exit
 !endif
 
 !if no_login iswordof $error
- Vos données envoyées doivent obligatoirement avoir une colonne correspondant
- aux noms de login des participants.
+ Les dades enviades han de tenir necessàriament una columna corresponent
+ als noms d'usuari dels participants.
  !exit
 !endif
 
 !if bad_filename iswordof $error
- Votre fichier ne semble pas être un fichier de tableur sous format texte.
+ El vostre fitxer no sembla ser un fitxer de full de càlcul en format text.
  :csvformat
- Veuillez sauvez vos données sous un format texte (séparateur virgule ou tab,
- avec des extensions .csv, .tsv ou .txt), avant de l'envoyer à la classe.
+ Si us plau, deseu les vostres dades en un format de text (separats per coma o tab,
+ amb extensions .csv, .tsv o .txt) abans d'enviar-lo a la classe.
  !exit
 !endif
 
 !if binary_upload iswordof $error
- Vos données de tableur sont dans un format binaire&nbsp;! Ceci n'est pas
- reconnu, désolé.
+ Les vostres dades de full de càlcul estan en format binari&nbsp;! Això no és
+ reconegut, ho sento.
  <p>
  !goto csvformat
 !endif
 
 !if no_manual iswordof $error
- Veuillez d'abord
- !href module=adm/class/grades créer une colonne de notes manuelles
- avant d'envoyer des données dedans.
+ Si us plau primer
+ !href module=adm/class/grades creeu una columna de notes manuals
+ abans de l'enviar de dades a la mateixa.
  !exit
 !endif
 
 !if not_secure iswordof $error
- La communication de données de tableurs est disponible uniquement pour
- des connections à partir de postes sûrs. Veuillez vérifier la configuration
- de votre classe.
+ La comunicació de dades de fulls de càlcul només està disponible per
+ les connexions des d'un lloc segur. Si us plau, reviseu la configuració de
+ la vostra classe.
  !exit
 !endif
 
 !if bad_user=$error
- Erreur d'appel : le participant <tt>$checkuser</tt> n'existe pas.
+ Error de crida : el participant <tt>$checkuser</tt> no existeix.
  !exit
 !endif
 
 !if bad_exo=$error
- Article à vérifier non-existant.
+ Article a revisar no existent.
  !exit
 !endif
 
 !if bad_op=$error
- Mauvaise opération. Fermez la fenêtre.
+ Operació incorrecta. Tanqueu la finestra.
  !exit
 !endif
 
 !if bad_usercls=$error
- Bizarre ! il semble que cet utilisateur ne soit pas inscrit dans votre classe !
+ Estrany! sembla que aquest usuari no està registrat a la vostra classe!
  !exit
 !endif
 

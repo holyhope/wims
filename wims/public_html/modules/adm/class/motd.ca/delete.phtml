@@ -1,0 +1,27 @@
+<center>$classname
+<p>
+<h1>
+!if $user=$empty
+ $name_erase1
+!else
+ $name_erase2 $user_firstname $user_lastname
+!endif
+</h1></center> <p><hr width="40%"> <p>
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href cmd=reply $wims_name_back2
+. <p>
+ !goto end
+!endif
+
+$name_confirm
+<center>
+!href cmd=reply&action=register&job=$job $wims_name_yes
+&nbsp; &nbsp;&nbsp; &nbsp;
+!href cmd=reply&job=$empty $wims_name_no
+
+
+
