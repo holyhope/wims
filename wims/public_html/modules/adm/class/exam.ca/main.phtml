@@ -1,4 +1,4 @@
-!set wims_name_examremain=Temps restant pour cet examen : $
+!set wims_name_examremain=Temps restant per a aquesta examen : $
 !read js/examclock1.phtml
 !read adm/css.phtml
 !header1
@@ -30,31 +30,31 @@ $name_title $exam
 !if $activetest>0
  !form reply
  <input type=hidden name=job value=text>
- Cet examen est
+ Aquest examen està
  !if $activetest=1
-  actif.
+  actiu.
   !href cmd=reply&job=expire $name_expire
 .
  !else
   !if $activetest=2
-   périmé mais encore visible par participants.
-   !href cmd=reply&job=hide Cacher l'examen aux participants
+   caducat però encora visible pels participants.
+   !href cmd=reply&job=hide Amagar l'examen als participants
   !else
-   périmé et invisible des participants.
-   !href cmd=reply&job=expire Faire réapparaitre l'examen
+   caducat i invisible pels participants.
+   !href cmd=reply&job=expire Fer reaparèixer l'examen
   !endif
   .
-  !href cmd=reply&job=reactivate Le réactiver
+  !href cmd=reply&job=reactivate Reactivar-lo
 .
  !endif
- !href cmd=reply&job=deactivate Le désactiver
+ !href cmd=reply&job=deactivate Desactivar-lo
  <center><table border=2>
  <tr><td align=right>$wims_name_title:
  <td><input size=40 name=title value="$title">
  <td rowspan=3><input type=submit value="$wims_name_change">
  <tr><td align=right>$wims_name_Description:
  <td><textarea name=desc rows=2 cols=40>$desc</textarea>
- <tr><td align=right>Date d'expiration :<td>
+ <tr><td align=right>Data de caducitat :<td>
  !distribute item $[$expday],$[$expmon] into expday,expmon
  !formselect expday from 1 to 31
  !formselect expmon from 1 to 12 prompt $months
@@ -65,50 +65,50 @@ $name_title $exam
 
 !form reply
 <input type=hidden name=job value=text>
-$wims_name_title (limité à $title_limit caractères) :<br>
+$wims_name_title (limitat a $title_limit caràcters) :<br>
 <input size=65 name=title value="$title"> <p>
-Et un texte d'explication (limité à $desc_limit caractères; les tags et 
-liens html sont admis) :<br>
+I un text d'explicació (limitat a $desc_limit caràcters; estan permesos enllaços 
+i etiquetes html) :<br>
 <textarea rows=6 cols=65 name=desc>$desc</textarea>
 
-<center><input type=submit value="Enregistrer les textes"></center>
+<center><input type=submit value="Desar els textos"></center>
 
-<p>Cet examen sera périmé le
+<p>Aquest examen caducarà el
 !distribute item $[$expday],$[$expmon] into expday,expmon
 !formselect expday from 1 to 31
 !formselect expmon from 1 to 12 prompt $months
 !formselect expyear from $thisyear to $thisyear+1
-. Une session d'examen dure jusqu'à
+. Una sessió d'examen serà de fins a
 <input size=5 name=duration value="$duration">
-minutes. Chaque participant peut faire l'examen jusqu'à
+minuts. Cada participant pot fer l'examen fins a
 !default stries=3
-<input size=3 name=tries value="$stries"> fois.
+<input size=3 name=tries value="$stries"> vegades.
 <input type=submit value="$wims_name_tosave">
 
 !ifval $activetest=-1
- <p>Cet examen n'existe pas encore.
- <input type=submit value="Cliquez pour le créer"> (mais remplissez le titre
- d'abord).
+ <p>Aquest examen encara no existeix.
+ <input type=submit value="Cliqueu per crear-lo"> (però primer poseu-li
+ títol).
  </form>
  !goto end
 !else
  </form>
  !if $exocnt>0
-  <p>Cet examen n'est pas encore actif.
-  !href cmd=reply&job=prep_activate Cliquez ici
-  pour l'activer.
-  (Les étudiants ne voient que les examens actifs; en revanche, vous ne
-  pouvez plus modifier l'examen une fois qu'il est activé.)
+  <p>Aquest examen encara no està actiu.
+  !href cmd=reply&job=prep_activate Cliqueu aci
+  per activar-lo.
+  (Els estudiants veuen només els exàmens actius, però, no
+  podeu modificar l'examen una vegada que s'activi.)
  !endif
 !endif
 
 :end1
 <p>
 !if $exocnt=0
- Cet examen n'a pas encore de contenu. 
- !href cmd=reply&job=exo&exo=1 Ajouter un exercice
-, ou
- !href cmd=reply&job=cpsheet ajouter une série d'exercices
+ Aquest examen encara no te contingut. 
+ !href cmd=reply&job=exo&exo=1 Afegir un exercici
+, o
+ !href cmd=reply&job=cpsheet afegir una sèrie d'exercicis
 .
 !else
  <a name=list>
@@ -132,60 +132,59 @@ minutes. Chaque participant peut faire l'examen jusqu'à
  !next i
  </ol>
  !if $activetest=0
-  !href cmd=reply&job=exo&exo=$[$exocnt+1] Ajouter un autre exercice
+  !href cmd=reply&job=exo&exo=$[$exocnt+1] Afegir un altre exercici
 ,
 $wims_name_or
- !href cmd=reply&job=cpsheet ajouter une série d'exercices
+ !href cmd=reply&job=cpsheet afegir una sèrie d'exercicis
 .
  !endif
 !endif
 
 <p>
 !if $activetest=0 and $erasable=yes
-  Vous pouvez encore
-  !href cmd=reply&job=prep_erase effacer cet examen
+  Encara podeu
+  !href cmd=reply&job=prep_erase esborrar aquest examen
 .
 !endif
 
 !if $activetest>=0
- !href cmd=reply&job=student Vue des participants.
+ !href cmd=reply&job=student Vista dels participants.
  <p>
  !form reply
  <input type=hidden name=allow value=yes>
- Cet examen est 
+ Aquest examen és 
  !formselect allowtype list all, simulation, none, select prompt\
-	ouvert pour tous, ouvert pour simulation, \
-	fermé pour tous, ouvert pour postes (et/ou heures) suivants:
+	obert a tothom, obert per simulació, \
+        tancat a tothom, obert als llocs (i/o hores) següents:
  <br><input size=50 name=IPlist value="$IPlist"> <br>
- Heures de coupure :
+ Hores de tall :
  <input size=50 name=cutt value="$cutt"> <br>
  <input type=submit value="$wims_name_tosave">
  !set allowshare=0
  !if $sharers!=$empty
-  ( pour toutes les classes partageant l'examen :
+  ( per a totes les classes que comparteixen l'examen :
   !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
   )
  !else
   <input type=hidden name=allowshare value=0>
  !endif
  </form>
- <small><b>$wims_name_help.</b> Dans le mode sélectif, vous pouvez imposer une
- restriction dans le temps pour l'enregistrement des notes en ajoutant des
- mots
+ <small><b>$wims_name_help.</b> En el mode selectiu, podeu imposar una
+ restricció de temps per a la gravació de notes mitjançant l'addició de
+ paraules
  <font color=blue><b>
- <tt>&gt;aaaammjj.hh:mm</tt></b></font>
- (début) et/ou
+ <tt>&gt;aaaammdd.hh:mm</tt></b></font>
+ (inici) i/o
  <font color=blue><b>
- <tt>&lt;aaaammjj.hh:mm</tt></b></font>
- (fin). Les dates et heures doivent être en temps local du SERVEUR
- et ces mots doivent être séparés des autres par des espaces.
+ <tt>&lt;aaaammdd.hh:mm</tt></b></font>
+ (fi). Les dates i hores han de estar en el temps local del SERVIDOR
+ i aquestes paraules han de separar-se per espais.
+ <br>Els temps de tall s'utilitzen per permetre que els usuaris facin l'examen en sessions diferents. Un
+ participant que hagi treballat en l'examen abans d'una hora tall no tindrà accés
+ després de la hora de tall.
  <br>
- Les heures de coupure sont là pour permettre aux gens de passer l'examen dans
- des séances différées. Un participant ayant travaillé sur l'examen avant une
- heure de coupure ne peut plus retravailler dessus après la coupure.
- <br>
- Format des heures de coupure: <tt>aaaammjj.hh:mm</tt> (séparez plusieurs
- heures de coupure par des espaces).
+ Format de les hores de tall: <tt>aaaammdd.hh:mm</tt> (separeu les diverses
+ hores de tall per espais).
  </small>
 !endif
 :end

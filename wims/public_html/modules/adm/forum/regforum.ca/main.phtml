@@ -10,9 +10,9 @@
  !!goto end
 !!endif
 
-<h1 class="wims_title">WIMS à $httpd_HTTP_HOST
+<h1 class="wims_title">WIMS a $httpd_HTTP_HOST
 <br>
-Création d'un forum de discussion
+Creació d'un fòrum de discussió
 </h1> <p><hr width="50%"> <p>
 
 !if $toomany=yes
@@ -25,7 +25,7 @@ Création d'un forum de discussion
  <p>
  !read msg.phtml
  <p>
- !href module=$module&cmd=reply&step=0 Recommencer l'opération.
+ !href module=$module&cmd=reply&step=0 Tornar a començar l'operatió.
  <p>
  !goto end
 !endif
@@ -33,96 +33,96 @@ Création d'un forum de discussion
 !if $step=$empty or $step=0
  !set password=
  !set passsup=
- Si vous créez un forum de discussion sur ce site WIMS, 
- vous devez assumer la responsabilité de sa maintenance. <p>
- Pour créer votre forum, veuillez remplir les renseignements suivants.
+ Si creeu un fòrum de discussió en aquest lloc WIMS, 
+ heu d'assumir la responsabilitat del seu manteniment. <p>
+ Per crear el fòrum, si us plau completeu la següent informació.
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>Nom du forum (au plus $titlelim caractères) :
+ <li>Nom del fòrum (com a màxim $titlelim caràcters) :
   <input size=$titlelim name=title value="$title"> <p>
- <li>Description (au plus $desclim caractères) :
+ <li>Descripció (com a màxim $desclim caràcters) :
   <textarea cols=65 rows=5 name=description>$description</textarea> <p>
- <li>Nom et prénom du gérant du forum (c'est-à-dire vous)&nbsp;:
+ <li>Cognom i nom del gestor del fòrum (és a dir vosaltres)&nbsp;:
   <input size=$suplim name=supervisor value="$supervisor"> <p>
- <li>Adresse électronique&nbsp;:
+ <li>Adreça electrònica&nbsp;:
   <input size=$emaillim name=email value="$email"> <br>
-  (Votre forum ne sera créé  que si vous fournissez
-  une adresse électronique qui fonctionne en ce moment même.)<p>
- <li>Choisissez un mot de passe du gérant :
+  (El fòrum només es crearà si proporcioneu
+  una adreça de correu electrònic que funcioni en aquest moment.)<p>
+ <li>Trieu una contrasenya de gestor :
   <input size=16 type=password name=passsup> <br>
-  (entre 4 et 16 caractères, chiffres ou lettres sans accent). <br>
-  Ce mot de passe vous permettra d'accéder à la classe en tant
-  que gérant. Vous devez être le seul à le connaître. <p>
- <li>Choisissez un mot de passe du forum :
+  (entre 4 i 16 caràcters, xifres o lletres sense accent). <br>
+  Aquesta contrasenya us permetrà l'accés al fòrum
+  com a gerent. Heu de ser l'únic que la coneix. <p>
+ <li>Trieu una contrasenya del fòrum :
   <input size=16 type=password name=password> <br>
-  (entre 4 et 16 caractères, chiffres ou lettres sans accent). <br>
-  Le mot de passe du forum sera exigé pour les inscriptions des 
-  utilisateurs du forum ; vous pouvez donc le diffuser auprès
-  de tous ceux que vous autorisez à participer aux discussions. <p>
+  (entre 4 i 16 caràcters, xifres o lletres sense accent). <br>
+  La contrasenya del fòrum serà requerida per a les inscripcions
+  dels usuaris del fòrum; podeu distribuir-la a
+  tots els que autoritzeu a participar a les discussions. <p>
  </ul>
- <center><input type=submit value="Continuer"></center>
+ <center><input type=submit value="Continuar"></center>
  </form>
 
  !goto end
 !endif
 
 !if $step=1
- Bonjour, $supervisor!<p>
- Vous êtes en train de créer un forum de discussion $forumname sur le site
- WIMS à
+ Hola, $supervisor!<p>
+ Esteu creant el fòrum de discussió $forumname al lloc
+ WIMS a
  $httpd_HTTP_HOST.
  <p>
- Si vous décelez une erreur dans les renseignements ci-dessus, veuillez
- !href module=$module&cmd=reply&step=0 la corriger.
- <p>Sinon, afin de vérifier l'exactitude de vos mots de passe,
- veuillez les retaper encore une fois. <p>
+ Si trobeu un error en la informació, si us plau
+ !href module=$module&cmd=reply&step=0 corregiu-la.
+ <p>En cas contrari, per verificar l'exactitud de les contrasenyes,
+ si us plau, torneu-les a escriure. <p>
  !form reply
  <input type=hidden name=step value=2>
- Mot de passe du gérant :
+ Contrasenya de gestor :
  <input type=password name=passsup> <p>
  !if $pword!=$empty
-  Mot de passe du forum :
+  Contrasenya del fòrum :
   <input type=password name=password> <p>
  !endif
- <center><input type=submit value="Continuer"></center>
+ <center><input type=submit value="Continuar"></center>
  </form>
  !goto end1
 !endif
 
 !if $step=2
- Bonjour, $supervisor!<p>
- Maintenant, vous avez besoin d'un code pour terminer l'opération de création
- d'un nouveau forum de discussion sous WIMS sur le site $http_HTTP_HOST. <p>
- Ce code vient d'être envoyé à votre adresse électronique
- ``<tt>$email</tt>''. Veuillez vérifier votre boîte à lettre
- électronique (attendez quelques instants si nécessaire) et lire le message
- qui vous a été envoyé.
- Relevez le code qui se trouve dans le message et copiez-le ci-dessous.
+ Hola, $supervisor!<p>
+ Ara necessiteu un codi per completar el procés de creació d'un
+ nou fòrum de discussió a WIMS  del lloc $http_HTTP_HOST. <p>
+ Aquest codi s'ha enviat a la vostra adreça de correu electrònic
+ ''<tt>$email</tt>''. Si us plau, reviseu la bústia de correu
+ electrònic (esperaeu uns minuts si és necessari) i llegiu el missatge
+ que us han enviat.
+ Agafeu el codi que hi ha en el missatge, i copieu-lo a continuació.
  !form reply
  <input type=hidden name=step value=3>
- <center>Code pour le forum : <input size=16 name=typecode>
+ <center>Codi pel fòrum : <input size=16 name=typecode>
  <p><input type=submit value="Continuer"></center>
  </form>
- <b>Attention</b> Ce code ne sert qu'une seule fois ici. Il ne peut pas 
- être utilisé pour vous connecter au forum&nbsp;!
+ <b>Atenció</b> Aquest codi s'utilitza només una vegada aquí. No es pot
+ utilitzar per connectar amb el fòrum&nbsp;!
  <p>
  !goto end1
 !endif
 
 !if $step=3
- Bonjour, $supervisor!<p>
- Votre forum de discussion $forumname est maintenant en place. Félicitations
- et amusez-vous&nbsp;!<p>
- Vous pouvez accéder à votre forum 
- !href module=adm/forum/forum à partir d'ici
+ Hola, $supervisor!<p>
+ El vostre fòrum de discussió $forumname ja està en marxa. Felicitats
+ i disfruteu&nbsp;!<p>
+ Podeu accedir al vostre fòrum 
+ !href module=adm/forum/forum a partir d'aquí
 .
  !goto end
 !endif
 
 :end1
 <p>
-!href module=$module&cmd=reply&step=0 Retourner au début de l'opération.
+!href module=$module&cmd=reply&step=0 Tornar a l'inici de l'operació.
 :end
 !tail
 
