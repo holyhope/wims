@@ -1,3 +1,5 @@
+!set lang_exists=yes
+
 !set module_title=Foto album
 
 !set name_intro=Als de adressen van de foto's bekend zijn, kan een fotoalbum van de klas of een selectie van de klas worden samengesteld.

@@ -1,3 +1,4 @@
+!set lang_exists=yes
 
 !set name_noemail=Geen van de deelnemers heeft een emailadres opgegeven.
 !set name_noemail2=De volgend deelnemers hebben geen emailadres opgegeven

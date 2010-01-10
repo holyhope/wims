@@ -1,4 +1,5 @@
-!!in other language, must define module_title and module_description
+!set lang_exists=yes
+
 !set module_title=Secuencias pedagógicas
 !set module_description=Preparación/Modificación de secuencias pedagógicas
 

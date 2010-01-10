@@ -2,9 +2,18 @@
 
 !! looks for module_title in lang/names.$class_lang or in names.$class_lang
 !set class_lang=!defof class_lang in wimshome/log/classes/$wims_class/.def
-!set lang_exists1=!defof module_title in names.$class_lang
-!set lang_exists2=!defof module_title in lang/names.$class_lang
+!set lang_exists1=!defof lang_exists in names.$class_lang
+!set lang_exists2=!defof lang_exists in lang/names.$class_lang
 !if $lang_exists1$lang_exists2!=
  !set module_language=$class_lang
 !endif
 !!########
+
+
+!!!reset lang_exists
+!!!read lang/names.$lang
+!!!if $lang_exists!=yes
+!! !read lang/names.en
+!!!else
+!!  module_language=$lang
+!!!endif
