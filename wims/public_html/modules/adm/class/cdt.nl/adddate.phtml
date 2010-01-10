@@ -5,7 +5,7 @@
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title\
-Datum wijzigen/toevoegen
+$cdt_subtitle
 
 !if $error!=$empty
  <p>
@@ -15,7 +15,7 @@ Datum wijzigen/toevoegen
 !form reply
 <input type=hidden name=job value=adddate>
 <input type=hidden name=job2 value=save>
-<p>Sessie  :
+<p>$name_session:
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
  !let jmonth=!char 5 to 6 of $wims_now
@@ -24,11 +24,11 @@ Datum wijzigen/toevoegen
 !let expyear=!char 1 to 4 of $class_expiration
 !let creyear=!char 1 to 4 of $class_creation
 !distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
-!formselect jyear from $creyear to $expyear
-!formselect jmonth from 1 to 12 prompt $months
 !formselect jday from 1 to 31
+!formselect jmonth from 1 to 12 prompt $months
+!formselect jyear from $creyear to $expyear
 <p>
-Werk (limit to $desc_limit chars) : [ 
+$name_workdone (< $desc_limit $name_character) : [ 
 !href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
  ] 
 <br>
@@ -36,9 +36,9 @@ Werk (limit to $desc_limit chars) : [
 !replace internal \( by &#92;( in $jdesc
 </textarea>
 <p>
-<center><hr width="30%"><b>Nog te doen</b></center>
+<center><hr width="30%"><b>$name_worktodo</b></center>
 <br>
-Aantal getoonde datums : 
+$name_nb_date: 
 <select  name="nbredevoir" onchange="submit()">
 !for i=0 to $max_todo
  !if $i=$nbredevoir
@@ -50,16 +50,16 @@ Aantal getoonde datums :
 </select>
 
  !for i=1 to $nbredevoir
-  <br>De planning voor 
+  <br>$name_todo2
    !if $(dday$i)=$empty
     !let dday$i=$jday
     !let dyear$i=$jyear
     !let dmonth$i=$jmonth
    !endif
    !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
-   !formselect dyear$i from $creyear to $expyear
-   !formselect dmonth$i from 1 to 12 prompt $months
    !formselect dday$i from 1 to 31
+   !formselect dmonth$i from 1 to 12 prompt $months
+   !formselect dyear$i from $creyear to $expyear
    &#58;
    [ 
    !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help

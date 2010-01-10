@@ -1,6 +1,6 @@
 !read adm/title.phtml 3\
 $cdt_title\
-Bestands beheer
+$wims_name_binfile
 
 !if $error!=$empty
  !read msg.phtml
@@ -8,25 +8,24 @@ Bestands beheer
 !endif
 
 !if $erase!=$empty
- Het bestand <b>$erase</b> is verwijderd.
+$name_erasedfile
  <p>
 !endif
 
 !if $quota_free<1
- Er is helaas geen opslag capaciteit meert over in uw klas.<br>
- Vraag systeembeheer Uw quotum te verhogen.
+ $name_nodeposit
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- File upload :
+ $name_depos:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Beschikbare bestanden &nbsp;:
+ <p>$name_available:
  !for f in $flist
   !getfile cdt/$wims_class/$f $f
   &nbsp;
@@ -34,30 +33,21 @@ Bestands beheer
  <p>
  !form reply
  <input type=hidden name=job2 value=erase>
- verwijder het bestand &nbsp;:
+ $name_erase:
  !formselect job2 list $flist
  <input type=submit value=OK>
  </form>
  <p>
- Deze bestanden kunnen worden benaderd via de variabele
- <tt>\filedir</tt>. 
- Bijvoorbeeld,
-<p><center>
- <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
-</center> <p>
- geeft de link naar het bestand <a href="$m_filedir/$f1">$f1</a>.
- U kunt ook:
+$name_explanation1
 <p><center>
  <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </center> <p>
-gebruiken om het plaatje <tt>myfile.jpg</tt> te verwerken in een pagina.
- <p>
- De opgestuurde bestanden zijn exclusief voor uw klas.
+$name_explanation2
 !endif
 
 <p>
-Uw klasse quota &nbsp;: $quota_total Meg.
-Nog over &nbsp;: $quota_free Meg.
+$(name_availablespace[1]): $quota_total Meg.
+$(name_availablespace[2]): $quota_free Meg.
 
 !set wims_menu_items=!append line back2,1,cmd=new&job=home\
 to $wims_menu_items

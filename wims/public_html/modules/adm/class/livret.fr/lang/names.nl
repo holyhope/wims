@@ -1,8 +1,9 @@
+
 !let lang_exists=yes
 !set classname=<b><font color=green>$wims_classname</font></b>\
  van <b><font color=green>$wims_institutionname</font></b>
 
-!set months=Jan,Feb,Mar,Apr,Mei,Jun,Jul,Aug,Sept,Okt,Nov,Dec
+!read adm/lang/date.phtml.$lang
 
 !distribute items Bekwaamheid,\
 bekwaamheid,\
@@ -23,6 +24,9 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_score_modify=Cijfers voor oefeningen uit de volgende werkbladen, benodigd voor de berekening van de prestatieniveaus van $name_n_paliers &nbsp;
 !set name_cocher=Controleer de gegevens die gebruikt moeten worden in het overzicht van $name_n_palier.
 !set name_see=Toon alleen de werkblad oefeningen.
+!let name_nowork=Geen activiteit                                                                                                            
+!let name_listscoreoption=van de klas,van het raport                                                                                           
+!let name_listscoreview=niet laten zien,integer,met &eacute;&eacute;n decimaal,met twee decimalen,met drie decimalen,met vier decimalen 
 
 
 !distribute items Titel van de $name_comptence&nbsp;,\
@@ -30,18 +34,11 @@ Titel van $name_n_palier&nbsp;,\
 Aantal $name_n_paliers&nbsp;,\
 van de klas,\
 minimale score voor dit onderdeel\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3
+Gebruik kleuren om het prestatieniveau aan te geven,\
+Gebruik cijfers om het prestatieniveau aan te geven,\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5
 
-!! ----------------------------------------------   ajout pour la version 1.04
-!let name_nowork=Geen werk
-!distribute line Welke kleuren voor het $name_n_paliers niveau\
-Laat het $name_n_paliers  niveau zien \
-into name_configtext4,name_configtext5
-
-!let name_listscoreoption=van de klas,van het raport boekje
-!let name_listscoreview=niet laten zien,integer,op &eacute;&eacute;n decimaal,op twee decimalen,op drie decimalen,op vier decimalen
-
-!!------------------------------- definition des noms de liens pour wims_menu_items
+!!------------------------------- définition des noms de liens pour wims_menu_items
 
 !if $wims_user=supervisor
  !let tmp=!defof SE_list in wimshome/public_html/modules/home/names.$lang
@@ -68,4 +65,5 @@ Rapport van $name_competences\
 !if $job=user
   !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
 !endif
+
 
