@@ -69,8 +69,7 @@ The syntax is as follows:
 <br>
 (The last 3 fields are optional.)
 <p>
-
-<a name=freestyle></a>
+<h5>Il parametro <tt>type</tt></h5>
 Each freestyle answer can independently take one of the following types.
 
 !for i=1 to 2
@@ -83,13 +82,13 @@ Each freestyle answer can independently take one of the following types.
   !set desc=!item 3 to -1 of $l
   !if $name isitemof $special_parm or all isitemof $special_parm
    <li><p><a name="_$name"></a>
-   !read help/anstype,$lang/$name.phtml
+   !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <p>
-    <b>Remark</b>.
-    This type of reply accepts the symtext option. If the word
-    <tt>symtext</tt> is declared in the option of the reply, the analysis of
-    the reply will be exactly as for
+    <b>Remarque</b>.
+    Ce type de réponse accepte l'option symtext. Si le mot <tt>symtext</tt> est
+    déclaré dans l'option de la réponse, l'analyse de la réponse sera exactement
+    comme pour
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
 , in particular with no preliminary processing of the texts. And all the
 symtext options will be understood in this case.
@@ -159,6 +158,9 @@ Example :
 \answer{}{1}{type=numeric}{weight=2}
 </pre>
 
+Le niveau de sévérité  sera aussi pris en compte lors du 
+calcul fait et le pourcentage sera pris sur un pourcentage fixé
+par le niveau de sévérité. 
 
 One can put variables in <tt>weight</tt>. 
 <p>
