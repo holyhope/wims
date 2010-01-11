@@ -4,11 +4,12 @@
 !set class_lang=!defof class_lang in wimshome/log/classes/$wims_class/.def
 !set lang_exists1=!defof lang_exists in names.$class_lang
 !set lang_exists2=!defof lang_exists in lang/names.$class_lang
-!if $lang_exists1$lang_exists2!=
+!set lang_exists=!defof lang_exists in lang/$wims_read_parm.$class_lang
+
+!if $lang_exists1$lang_exists2$lang_exists!=
  !set module_language=$class_lang
 !endif
 !!########
-
 
 !!!reset lang_exists
 !!!read lang/names.$lang
