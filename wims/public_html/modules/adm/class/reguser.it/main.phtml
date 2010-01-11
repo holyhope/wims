@@ -40,7 +40,7 @@ Inserimento in $name_classess
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>$wims_name_name<th>docente<th>$wims_name_level
+  <th>$wims_name_name<th>$wims_name_Supervisor<th>$wims_name_level
   <th>$wims_name_Status
  !endif
  !for cl in $classlist
@@ -194,18 +194,18 @@ Inserimento in $name_classess
  <li><label for="lastn">$wims_name_lastname:</label> <input size=20 name=lastn id="lastn" value="$lastn">
   <label for="firstn">$wims_name_firstname:</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li><label for="login">Scegliere un login di accesso :</label>
+ <li><label for="login">$wims_name_Login</label>
   <input size=16 name=login id="login" value="$login"> <br>
   Questo `login' in futuro permetter&agrave; di accedere al $classname.
   Scegliere un nome di almeno 4 e non pi&ugrave; di 16 caratteri
   alfanumerici (usare solo numeri e/o lettere non accentate).
   <p>
- <li><label for="pass">Scegliere una password :</label>
+ <li><label for="pass">$wims_name_Password</label>
   <input type=password size=16 name=pass id="pass"> <br>
   La password deve essere costituita da almeno 4 e non pi&ugrave; 16 
   caratteri alfanumerici (usare solo numeri e/o lettere non accentate).
   <p>
- <li><label for="email">$name_Your indirizzo di posta elettronica (facoltativo) :</label><br>
+ <li><label for="email">$wims_name_email (facoltativo) :</label><br>
   <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
@@ -213,8 +213,8 @@ Inserimento in $name_classess
   !default utype=0
   !formradio utype list 0,1 prompt studente, docente
  !endif
- <center><input type=submit value="Procedi con la registrazione"></center>
 </ul>
+ <center><input type=submit value="$wims_name_tosave"></center>
 </form>
  !goto end1
 !endif
@@ -231,7 +231,7 @@ Inserimento in $name_classess
  !if $email=$empty
   Non hai dato un indirizzo di posta elettronica. <p>
  !else
-  Indirizzo di posta elettronica : <tt>$email</tt> <p>
+  $wims_name_email: <tt>$email</tt> <p>
  !endif
  <label for="pass2">Per verificare l'esattezza della password, inseriscila 
  ancora una volta:</label>
