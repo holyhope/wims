@@ -28,7 +28,6 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 !let name_shinfo=!nosubst $wims_name_title <small>(maximaal $title_limit karakters)</small>,$wims_name_Status,\
 Omschrijving <br><small>(maximaal $desc_limit karakters; html tags en links zijn toegestaan)</small>,\
 Einddatum,Presentatie pagina,Cijfer registratie,voor alle klassen die dit werkblad delen :,Opmerkingen <small>(Alleen zichtbaar voor de docenten)</small>
-lang_exists=yes
 !let name_allowtype=open voor iedereen, gesloten voor iedereen, alleen open voor de volgende adressen (en/of tijdstippen) :
 !let name_mksheet=Maak een werkblad
 
