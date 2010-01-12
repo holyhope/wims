@@ -1,0 +1,179 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ 抱歉，作業清單的準備 / 修改權利保留給課程的管理者。
+ !exit
+!endif
+
+!if bad_class=$error
+ 奇怪，我發現您的課程不應當！
+ !exit
+!endif
+
+!if bad_source=$error
+ The item number $bad_source in the source you just submitted is not
+ valid.
+ !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
+.
+ !exit
+!endif
+
+!if bad_sheet=$error
+ 您的作業清單編號不適當，可能是軟體的 bug ？
+ !exit
+!endif
+
+!if no_title=$error
+ 您所登錄的作業清單沒有標題，不建議您這麼做。處理時的錯誤？
+ !exit
+!endif
+
+
+
+!if $error=not_secure
+ This operation can only be done from a secure host.
+ !if $sec=$empty
+  You haven't defined secure host. Access denied. You may ask the site manager
+  to do it for you.
+ !else
+  Access denied.
+ !endif
+ !exit
+!endif
+
+!if $error=sharing_sheet
+ You are sharing sheets with other classes!
+ !if $wims_ismanager<2
+  You must ask the site manager to deactivate the sheet for you.
+  !exit
+ !endif
+ You might put your neighboring classes in total disorder by deactivating
+ this sheet. This operation is therefore <b>stronly discouraged</b>.
+ <p>
+ Do you still want to deactivate the sheet?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
+ <p>
+ <b>Before continuing, ask at least the supervisors of your class neighbors to
+ save their classes!</b>
+ !exit
+!endif
+
+!if $error=sheet_in_exam
+ Impossible to deactivate this sheet, because you have exams based on its
+ content.
+ !exit
+!endif
+
+!if $error=non_empty_activities
+ You want to deactivate the sheet $sheet, while participants have already
+ started to work on it!
+ <p>
+ !if share iswordof $confirmed
+  Moreover, the sheet is shared with other classes where there may be works
+  and scores too. It is therefore not allowed to deactivate it.
+  !exit
+ !endif
+ All scores obtained on this sheet will be erased, if you deactivate. Really
+ want to do it?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center> <p>
+ List of accounts having worked on this sheet:
+ <p>
+ <tt>$worktest</tt>
+ <p>
+ <b>Note</b>. This action should be taken only if this is a testing class.
+ Don't go further if the participants are your real students!
+ !exit
+!endif
+
+!if prep_activate=$error
+ 您要求運作作業清單  $sheet ，亦即讓作業清單被課程參與者存取。<p>
+ 請注意，一旦作業清單運作後，您就無法再修改清單。您確定要繼續？
+ <p><center>
+ !href cmd=reply&job=activate  運作清單
+ 。&nbsp;&nbsp;
+ !href cmd=resume  放棄運作
+ 。</center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ 您確定要刪除這個作業清單 #$sheet ($title) 嗎？
+ <p><center>
+ !href cmd=reply&job=erase  刪除
+ 。&nbsp;&nbsp;
+ !href cmd=resume  放棄刪除
+ 。</center>
+ !exit
+!endif
+
+!if prep_expire=$error
+
+ 作業清單 #$sheet ($title) 的截止日期為： $expday
+ !item $expmon of $months
+ $expyear 。您要將清單設定為已過期嗎？
+ <p><center>
+ !href cmd=reply&job=expire 設定為已過期
+ 。&nbsp;&nbsp;
+ !href cmd=resume 放棄設定
+ 。 </center>
+ <p><b>備註：</b>您的學生無法運作已到期的作業清單
+ 。但他們原先的成績仍然保留(統計時仍然包含這些成績)，且您仍可以查詢這些成績。
+ !exit
+!endif
+
+!if prep_putsource=$error
+ If you have a source of a sheet saved earlier, you can insert this source
+ into the current sheet, by copying this source into the window below,
+ then clicking on the button `Send'. This form also allows you to insert the
+ source of a public work sheet using cut-and-paste.
+  <p>
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="$wims_name_send">
+ </center></form>
+ <b>Warning</b>. Don't insert modified source file! You risk to make your
+ worksheet useless.
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+  You have sent an invalid request. Ignored.
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !changeto exomodify.phtml $exo
+ !endif
+ !exit
+!endif
+
+!if $error=toolate
+ $name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
+!msg $error
+!set wims_module_log=error: $error
+
+
+
+
+
+
+!msg $error

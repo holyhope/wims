@@ -1,0 +1,93 @@
+!!!### language independant
+
+!reset confirm
+!read adm/css.phtml
+!header1
+
+!read lang/names.phtml.$lang
+
+!if $job iswordof student chseries
+ !changeto $job.phtml
+!endif
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title $name_title2
+
+<p>
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$lang
+ <p>
+ !goto end
+!endif
+
+!if $job=getsource
+ !read getsource.phtml
+ !goto end
+!endif
+
+!if $activetest>-1
+ <b>$name_info:</b>
+!endif
+!read adm/sheet/sheetinfo.phtml
+
+!ifval $activetest=-1
+ !goto end
+!endif
+
+:end1
+<a name=list></a>
+<b>$name_content:</b>
+!if $exocnt=0
+ <p>$name_warning
+!else
+ <small>[
+ !href module=adm/sheet&sh=$sheet&job=print $wims_name_printable
+ ]</small>
+ !read adm/sheet/sheetcontent.phtml
+!endif
+
+!if $activetest=0
+ <p>$name_text1
+  <ul>
+   <li> $name_text2:
+	!read adm/search_engine/form.phtml
+   </li>
+   <li> 
+    !href cmd=reply&job=prep_putsource $wims_name_putsource
+   </li>
+   <li> $name_text3
+   !href module=classes/$lang&special_parm=.nocache. $wims_name_classexo
+   </li>
+   !if $wims_devel_modules iswordof open
+    <li> $name_text4
+    !href module=adm/modtool $wims_name_modtool
+    </li>
+   !endif
+   !if $name_helpprog!=$empty
+    <li>$(name_helpprog[1])
+     !href module=help/teacher/program $(name_helpprog[2])
+     $(name_helpprog[3])
+    </li>
+   !endif
+  </ul>
+!endif
+
+:end
+!if $activetest>=0
+ !if $activetest=0
+  !let wims_menu_items=!append line putsource,1,cmd=reply&job=prep_putsource to $wims_menu_items
+ !endif
+ !if $job!=getsource
+  !let wims_menu_items=!append line sheetsource,1,cmd=reply&job=getsource to $wims_menu_items
+ !endif
+ !let wims_menu_items=!append line ,0,\
+printable,1,module=adm/sheet&sh=$sheet&job=print\
+participantview,1,module=adm/sheet&sh=$sheet to $wims_menu_items
+!endif
+
+!tail
+
+!distribute item ,, into job,source,title,desc,prpage
+

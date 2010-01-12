@@ -1,0 +1,215 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ Désolé, mais l'opération de préparation / modification d'une feuille de
+ travail est réservée aux enseignants enregistrés d'une classe.
+ !exit
+!endif
+
+!if bad_class=$error
+ Etrange, mais je trouve que votre classe n'est pas valide!
+ !exit
+!endif
+
+!if bad_source=$error
+ L'article numéro $bad_source dans le source que vous venez de soumettre
+ n'est pas valable.
+ !href cmd=reply&job=prep_putsource&source=$source $name_correctsource
+ .
+ !exit
+!endif
+
+!if bad_sheet=$error
+ Votre numéro de feuille n'est pas valide. Bug du logiciel?
+ !exit
+!endif
+
+!if no_title=$error
+ Vous avez voulu enregistrer une feuille sans titre, ce qui est
+ déconseillé. Erreur de manipulation?
+ !exit
+!endif
+
+!if $error=not_secure
+ Cette opération ne peut se faire qu'à partir d'un poste sûr.
+ !if $sec=$empty
+  Vous n'avez pas défini de poste sûr. Accès interdit. Vous pouvez
+  demander au gestionnaire du site de le faire pour vous.
+ !else
+  Accès interdit.
+ !endif
+ !exit
+!endif
+
+!if $error=sharing_sheet
+ Vos feuilles sont en partage avec d'autres classes !
+ !if $wims_ismanager<2
+  Il faut demander au gestionnaire du site de désactiver la feuille
+  pour vous.
+  !exit
+ !endif
+ Vous risquez de mettre vos classes voisines en désordre total en désactivant cette
+ feuille. Cette opération est donc <b>fortement déconseillée</b>.
+ <p>
+ Voulez-vous vraiment désactiver la feuille ?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
+ <p>
+ <b>Avant de continuer, demandez au moins aux enseignants de vos classes voisines de
+ sauvegarder leurs classes&nbsp;!</b> Si les désordres apparaissent, même
+ au bout de plusieurs mois, vous serez obligé de revenir en l'état AVANT la
+ désactivation, perdant tout ce qui se passe APRES, et ce pour toutes les classes
+ partageant la feuille ! On espère vous avoir suffisamment averti.
+ !exit
+!endif
+
+!if $error=sheet_in_exam
+ Impossible de désactiver cette feuille, car vous avez des examens
+ basés sur son contenu.
+ !exit
+!endif
+
+!if $error=non_empty_activities
+ Vous voulez désactiver la feuille $sheet, alors que les participants ont
+ déjà commencé à travailler dessus !
+ <p>
+ !if share iswordof $confirmed
+  De plus, la feuille est partagée avec d'autres classes où il peut y avoir
+  du travail et des scores aussi. Il est donc interdit de la désactiver.
+  !exit
+ !endif
+ Tous les scores obtenus sur cette feuille seront effacés si vous la
+ désactivez. Etes-vous sûr de vouloir le faire ?
+ <p><center>
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+.&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+. </center> <p>
+ Liste de comptes ayant déjà travaillé sur cette feuille :
+ <p>
+ <tt>$worktest</tt>
+ <p>
+ <b>Remarque</b>. Cette action ne doit être prise que si c'est une classe de
+ test. N'allez pas plus loin si les participants sont vos vrais élèves&nbsp;!
+ !exit
+!endif
+
+!if prep_activate=$error
+ Vous demandez d'activer la feuille $sheet, c'est-à-dire la rendre 
+ accessible aux participants de la classe. <p>
+ Veuillez noter qu'une feuille active n'est pas modifiable sans être
+ désactivée préalablement, et la désactivation de la feuille entraîne la
+ suppression de l'ensemble des scores sur la feuille, si elle n'est pas
+ interdite par la situation.
+ <p>
+ Voulez-vous continuer?
+ <p><center>
+ !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Voulez-vous vraiment effacer cette feuille numéro $sheet ($title)?
+ <p><center>
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
+.&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+.</center>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Cette feuille numéro $sheet ($title) expire normalement le $expday
+ !item $expmon of $months
+ $expyear. Voulez-vous la rendre périmée maintenant?
+ <p><center>
+ !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
+ .&nbsp;&nbsp;
+ !href cmd=resume $wims_name_no ; $wims_name_giveup
+ </center>
+ <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
+ sur une feuille périmée. Mais leurs notes antérieures seront conservées 
+ (et seront prises en compte dans les statistiques)
+ et vous pouvez toujours les consulter.
+ !exit
+!endif
+
+!if prep_putsource=$error
+ Si vous avez le source d'une feuille sauvée auparavant, vous pouvez l'insérer
+ dans la feuille actuelle, en copiant ce source dans la fenêtre ci-dessous,
+ puis en cliquant sur le bouton <tt>$wims_name_send</tt>. Vous pouvez aussi utiliser ce
+ formulaire pour insérer le source d'une feuille publique par copier-coller.
+ <p>
+ !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
+to $wims_menu_items
+
+ !form reply
+ <input type=hidden name=job value=putsource><center>
+ <textarea cols=55 rows=10 name=source>$source</textarea>
+ <p><input type=submit value="$wims_name_send">
+ </center></form>
+ <b>Attention</b>. N'insérez pas de fichier source modifié&nbsp;! Vous risquez
+ de rendre votre feuille inutilisable.
+ !exit
+!endif
+
+!if prep_modify=$error
+ !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+ !if $modif>$cnt or $modif<1
+  Vous avez envoyé une demande invalide. Elle est ignorée.
+ !else
+  !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
+  !set orgtit=!module title $directory
+  <p><center><h3>$name_titlemodif $modif</h3></center>
+  !form reply
+  <input type=hidden name=modif value=$modif>
+  <input type=hidden name=job value=modify>
+  <ul>
+  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
+  </small> <br>
+  <input size=50 name=mod_title value="$title">
+  <li>$wims_name_Description<br>
+  <textarea name=mod_desc rows=5 cols=50>$desc</textarea>
+  <li>$name_pointsasked: 
+  <input size=4 name=mod_require value="$require">,
+  $name_ofweight
+  <input size=4 name=mod_weight value="$weight">.
+  <li>$(name_shtab[6]):
+  <input size=40 name=mod_dep value="$dep">.
+  !reset mod_dep
+  </ul>
+  <p><center><input type=submit value="$wims_name_change"></form>
+  </center> <p>
+  !href cmd=resume $wims_name_giveup
+ .
+  <p><small>
+  <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt> 
+  signifie qu'un participant doit
+  d'abord acquérir des points dans d'autres exercices de la feuille, avant
+  de pouvoir travailler sur celui-ci. Par exemple,
+  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
+  signifie que le participant doit avoir un succès de 50% sur l'exercice 1,
+  30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices
+  3, 4, 5.
+  </small>
+ !endif
+ !exit
+!endif
+
+!if $error=toolate
+ $name_expiration1 ($l_date). $name_expiration2
+
+<p>
+!href cmd=resume $wims_name_back2
+ ($wims_name_sheetmanagement)
+
+ !exit
+!endif
+!msg $error
