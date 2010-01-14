@@ -2,23 +2,22 @@
 !set wims_form_method=post
 !form reply
 !if $vote_title=$empty
- Creación
+ $name_creation
 !else
- Edición
+ $name_edition
 !endif
-de una encuesta o una votación.
 <br>
 $wims_name_title: <input size=50 name=reg_title value="$vote_title"> <br>
-Modo:
+$wims_name_Status:
 !set reg_status=$vote_status
 !set reg_option=$vote_option
 !set reg_show=$vote_show
 !formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
-Estado:
-!formselect reg_status from 0 to 3 prompt preparac.,abierta,cerrada,oculta
-Resultado de la encuesta:
-!formselect reg_show list 1,0 prompt publicado,oculto
-<br> Contenido: <small>
+$wims_name_Status:
+!formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
+$name_result:
+!formselect reg_show list 1,0 prompt $name_publish,$name_hide
+<br> $name_content: <small>
 !href cmd=help $wims_name_help
 </small>
 <br>

@@ -1,19 +1,19 @@
 
 !if $vote_option=anonymous
- Ce questionnaire est anonyme.
+ $name_thisvote_anomymous
 !else
  !if $vote_option=trace
-   Ce questionnaire est $name_trace.
+   $name_thisvote_trace
  !else
-   Cet enregistrement est $name_nominative.
+   $name_thisvote_nominatif
  !endif
 !endif
 !if $vote_status=2
- Il est fermé.
+ $name_thisvote_closed
 !endif
 
 !if $wims_user=supervisor
- ($vcnt votes)
+ ($vcnt $name_thisvote_answer)
  !href cmd=reply&job=edit $wims_name_change
  
  !href cmd=reply&job=csv $wims_name_csv
@@ -30,14 +30,13 @@ to $wims_menu_items
 
 !if $(user_vote_$Vote)!=$empty
  !if $vote_option!=nominative
-  Vous avez déjà voté. <p>
+  $name_thisvote_already1<p>
  !else
-  Vous avez déjà exprimé votre choix, mais vous pouvez encore changer d'avis.
-  <p>
+  $name_thisvote_already2<p>
   !goto form
  !endif
 !else
- Exprimez votre choix : <p>
+ $name_give_your_choice<p>
  :form
  !form reply
  <input type=hidden name=job value=vote>
@@ -55,7 +54,7 @@ to $wims_menu_items
 :comments
 !readdef $votedir/$vote.comments 
 !if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
-<p><b>Textes des commentaires</b> : 
+<p><b>$name_comments</b>: 
 </p><p> 
 !for i=1 to $parmcnt
  !if $(type_comment$i)=yes
@@ -75,7 +74,7 @@ to $wims_menu_items
 !next
 !endif
 !if $wims_user=supervisor and $vote_option!=anonymous
- <p> Détail des enregistrements.
+ <p> $name_details
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/

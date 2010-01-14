@@ -1,19 +1,19 @@
 
 !if $vote_option=anonymous
- 这是匿名投票.
+ $name_thisvote_anomymous
 !else
  !if $vote_option=trace
-   这是可追踪的匿名投票
+   $name_thisvote_trace
  !else
-   这是记名投票.
+   $name_thisvote_nominatif
  !endif
 !endif
 !if $vote_status=2
- 已经关闭.
+ $name_thisvote_closed
 !endif
 
 !if $wims_user=supervisor
- ($vcnt 票)
+ ($vcnt $name_thisvote_answer)
  !href cmd=reply&job=edit $wims_name_change
  
  !href cmd=reply&job=csv $wims_name_csv
@@ -30,17 +30,16 @@ to $wims_menu_items
 
 !if $(user_vote_$Vote)!=$empty
  !if $vote_option!=nominative
-  你已经投过票了. <p>
+  $name_thisvote_already1<p>
  !else
-  你已经表示过你的选择, 不过你还可以改变主意.
-  <p>
+  $name_thisvote_already2<p>
   !goto form
  !endif
 !else
- 你的选择: <p>
+ $name_give_your_choice<p>
  :form
  !form reply
- <input type=hidden name=job value=投票>
+ <input type=hidden name=job value=vote>
  !set m_formed=yes
 !endif
 
@@ -48,14 +47,14 @@ to $wims_menu_items
 
 !if $m_formed=yes
  <p><center>
- <input type=submit value="发送">
+ <input type=submit value="$wims_name_tosave">
  </center></form>
 !endif
 
 :comments
 !readdef $votedir/$vote.comments 
 !if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
-<p><b>评论的文字</b> : 
+<p><b>$name_comments</b>: 
 </p><p> 
 !for i=1 to $parmcnt
  !if $(type_comment$i)=yes
@@ -75,7 +74,7 @@ to $wims_menu_items
 !next
 !endif
 !if $wims_user=supervisor and $vote_option!=anonymous
- <p> 记录的详情.
+ <p> $name_details
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/

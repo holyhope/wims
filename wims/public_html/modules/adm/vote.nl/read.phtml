@@ -1,19 +1,19 @@
 
 !if $vote_option=anonymous
-    Dit is een anonieme stemming/enquete.
+ $name_thisvote_anomymous
 !else
-    !if $vote_option=trace
-	Deze enquete is $name_trace.
-    !else
-	Deze enquest is $name_nominative.
-    !endif
+ !if $vote_option=trace
+   $name_thisvote_trace
+ !else
+   $name_thisvote_nominatif
+ !endif
 !endif
 !if $vote_status=2
- Het is gesloten.
+ $name_thisvote_closed
 !endif
 
 !if $wims_user=supervisor
- ($vcnt votes)
+ ($vcnt $name_thisvote_answer)
  !href cmd=reply&job=edit $wims_name_change
  
  !href cmd=reply&job=csv $wims_name_csv
@@ -30,14 +30,13 @@ to $wims_menu_items
 
 !if $(user_vote_$Vote)!=$empty
  !if $vote_option!=nominative
-  U hebt reeds gestemd. <p>
+  $name_thisvote_already1<p>
  !else
-  Uw voorkeur is reeds genoteerd; maar U kunt zich nog bedenken
-  <p>
+  $name_thisvote_already2<p>
   !goto form
  !endif
 !else
- Uw Keuze: <p>
+ $name_give_your_choice<p>
  :form
  !form reply
  <input type=hidden name=job value=vote>
@@ -55,7 +54,7 @@ to $wims_menu_items
 :comments
 !readdef $votedir/$vote.comments 
 !if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
-<p><b>Opmerkingen</b> : 
+<p><b>$name_comments</b>: 
 </p><p> 
 !for i=1 to $parmcnt
  !if $(type_comment$i)=yes
@@ -75,7 +74,7 @@ to $wims_menu_items
 !next
 !endif
 !if $wims_user=supervisor and $vote_option!=anonymous
- <p> Details.
+ <p> $name_details
  !for i=1 to $parmcnt
   !for c=1 to $(choices$i)
    !if /supervisor/ notin $c/
