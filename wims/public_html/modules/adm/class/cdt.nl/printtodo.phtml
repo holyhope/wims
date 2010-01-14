@@ -3,19 +3,19 @@ $wims_classname - $wims_institutionname\
 $cdt_title
 
 <center>
- <font size="+1"><b>Huiswerk
+ <font size="+1"><b>$name_worktodo
  !if $jour_begin!=$jour_end
-  tussen <font color=green>$jyear/$jmonth/$jday</font> en <font color=green>$jyear2/$jmonth2/$jday2</font>
+  $name_between <font color=green>$name_date</font> $name_and <font color=green>$jday2/$jmonth2/$jyear2</font>
  !else
-  voor  
-  <font color=green>>$name_date</font>
+  $name_for 
+  <font color=green>$name_date</font>
  !endif
 </b></font>
 </center> 
 <p><p>
 
 !if $nbligne=0
- Er is geen huiswerk opgegeven voor $jyear/$jmonth/$jday.
+ $name_nowork $name_date.
  <p>
  !goto end
 !endif
@@ -23,11 +23,11 @@ $cdt_title
  !let table_border=1
  $table_header
  $table_hdtr 
-  <th>Voor</th>
+  <th>$name_for</th>
   !if no isin $cdt_supervise
-   <th>Onderwerp</th>
+   <th>$name_discipline</th>
   !endif
-  <th>Huiswerk</th><th>te doen</th>
+  <th>$name_work</th><th>$name_giventhe</th>
  </tr>
  !for i=1 to $nbligne
   $table_tr

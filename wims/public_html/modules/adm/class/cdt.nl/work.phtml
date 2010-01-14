@@ -4,9 +4,9 @@ $cdt_title
 
 <center> <b><font size="+1">
  !if $jour_begin!=$empty
-  tussen <font color=green>$name_date</font>
+  $name_between <font color=green>$name_date</font>
   !if $jour_begin!=$jour_end
-   en <font color=green>$name_date2</font>
+   $name_and <font color=green>$name_date2</font>
   !endif
  !endif
  </font></b>
@@ -18,14 +18,14 @@ $cdt_title
 <p><p>
 
 !if $cdt_nbdate=0
-  geen informatie beschikbaar.
+ $name_noinfo1.
  !goto end
 !else
  !if $nbligne=0
   !if $jour_begin=$jour_end
-    geen informatie beschikbaar voor deze dag.
+   $name_noinfo2.
   !else
-    geen informatie beschikbaar voor deze periode.
+   $name_noinfo3.
   !endif
   !goto end
  !endif
@@ -34,11 +34,11 @@ $cdt_title
 <center>
  $table_header
  $table_hdtr 
-  <th>Dag</th>
+  <th>$name_Day</th>
   !if no isin $cdt_supervise
-   <th>Vak</th>
+   <th>$name_discipline</th>
   !endif
-  <th>In klas</th><th>Huiswerk</th><th width=30>voor</th>
+  <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
   !if $wims_user=supervisor and yes isin $cdt_supervise
    <th>$wims_name_action</th>
   !endif
