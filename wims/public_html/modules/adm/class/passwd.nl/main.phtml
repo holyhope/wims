@@ -5,13 +5,13 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Verander hier de Wachtwoorden
+$module_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home  Terug naar hoofdpagina
+ !href module=home $wims_name_back2
 . <p>
  !goto end
 !endif
@@ -19,43 +19,37 @@ Verander hier de Wachtwoorden
 !form reply
 
 !if $wims_user=supervisor
- Welk type wachtwoord: <ul>
+ $name_passwdtype: <ul>
  !default job=user
  !set ch_$job=checked
- <li><input type=radio name=job $ch_user value=user> Uw persoonlijke login wachtwoord
- 
+ <li><input type=radio name=job $ch_user value=user> $name_persopasswd<br>
  !if $part!=$empty and $job=part
-  <li><input type=radio name=job $ch_part value=part> Een wachtwoord voor een leerling
-  <tt>$part</tt>. (in dit geval hoeft U <b>niet</b> het oude wachtwoord in te typen)
- 
+  <li><input type=radio name=job $ch_part value=part> $name_partpasswd
+  <tt>$part</tt> ($name_warning1).
  !endif
- <li><input type=radio name=job $ch_class value=class>Het klasse wachtwoord
- <small>(voor nieuwe leerlingen: het wachtwoord nodig voor het starten van de aanmeldingprocedure
- in een besloten klas/school.<br>Ook hier hoeft U het oude wachtwoord niet te weten)</small>
+ <li><input type=radio name=job $ch_class value=class> $name_classpasswd 
+ ($name_warning1).
  </ul>
 !else
  <input type=hidden name=job value=user>
 !endif
 <table>
-<tr><td align=right>geef het oude wachtwoord:
+<tr><td align=right>$name_actualpasswd:
 	<td><input type=password size=16 name=old>
-<tr><td align=right>geef nu het nieuwe wachtwoord:
+<tr><td align=right>$name_newpasswd:
 	<td><input type=password size=42 name=pw1>
-<tr><td align=right>het nieuwe wachtwoord nog een keer:
+<tr><td align=right>$name_newpasswd2:
 	<td><input type=password size=42 name=pw2>
 </table>
-<input type=submit value="$wims_name_tosave">
-<small>
-Voor persoonlijke wachtwoorden: voor wachtwoorden met een eenmalig gebruik 
-geef een "<b>+</b>"-teken voorafgaand aan het nieuwe wachtwoord  
+<input type=submit value="$wims_name_tosave"> <p>
+<small>$name_jetable
 !href target=wims_mhelp cmd=help $wims_name_detail
 </small>
 </form>
-De wachtwoorden moeten worden opgebouwd uit uitsluitend alfanumerieke karakters,
-met een lengte tussen de 4 en 16 tekens
+<p>
+$name_alphanumer
 !if $wims_user=supervisor
-(Een leeg wachtwoord wordt wel geaccepteerd door de software, maar de systeembeheerder van de server
-zou dit wel eens kunnen afkeuren)
+ ($name_emptypasswd).
 !endif
 
 !endif

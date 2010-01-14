@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -9,18 +5,13 @@
 
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-Cambio de la contraseña
-
-!!<center>$classname
-!!<p>
-!!<h1>Cambio de la contraseña
-!!</h1></center> <p><hr width="40%"> <p>
+$module_title
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=home Vuelta a la página principal de la clase
+ !href module=home $wims_name_back2
 . <p>
  !goto end
 !endif
@@ -28,43 +19,37 @@ Cambio de la contraseña
 !form reply
 
 !if $wims_user=supervisor
- Elija el tipo de contraseña: <ul>
+ $name_passwdtype: <ul>
  !default job=user
  !set ch_$job=checked
- <li><input type=radio name=job $ch_user value=user> Su contraseña
-  personal (para entrar en la clase como profesor)<br>
+ <li><input type=radio name=job $ch_user value=user> $name_persopasswd<br>
  !if $part!=$empty and $job=part
-  <li><input type=radio name=job $ch_part value=part> Contraseña de los
-   participantes <tt>$part</tt> (no necesita introducir la contraseña actual
-   en este caso).
+  <li><input type=radio name=job $ch_part value=part> $name_partpasswd
+  <tt>$part</tt> ($name_warning1).
  !endif
- <li><input type=radio name=job $ch_class value=class> Contraseña de la clase
-  (utilizada por los participantes para inscribirse; no necesita introducir
-  la contraseña anterior).
+ <li><input type=radio name=job $ch_class value=class> $name_classpasswd 
+ ($name_warning1).
  </ul>
 !else
  <input type=hidden name=job value=user>
 !endif
 <table>
-<tr><td align=right>Introduzca la contraseña actual:
+<tr><td align=right>$name_actualpasswd:
 	<td><input type=password size=16 name=old>
-<tr><td align=right>Ahora la contraseña nueva:
+<tr><td align=right>$name_newpasswd:
 	<td><input type=password size=42 name=pw1>
-<tr><td align=right>Vuelva a teclear la nueva contraseña:
+<tr><td align=right>$name_newpasswd2:
 	<td><input type=password size=42 name=pw2>
 </table>
 <input type=submit value="$wims_name_tosave"> <p>
-<small>Para las contraseñas personales: preceda la contraseña nueva
-con el signo <tt class="d">+</tt> si desea añadir contraseñas
-de un solo uso.
-!href target=wims_mhelp cmd=help Detalle.
+<small>$name_jetable
+!href target=wims_mhelp cmd=help $wims_name_detail
 </small>
 </form>
-La contraseña debe estar compuesta únicamente de entre 4 y 16
-caracteres alfanuméricos.
+<p>
+$name_alphanumer
 !if $wims_user=supervisor
- (el programa acepta la contraseña vacía, pero es posible que el 
- administrador del sitio prohiba las clases sin contraseña).
+ ($name_emptypasswd).
 !endif
 
 !endif
