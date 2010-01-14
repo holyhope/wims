@@ -1,31 +1,29 @@
 
-这里是你可以修改的信息板参数.
+$name_introconfig
 
 !form reply
 <input type=hidden name=job value=config>
 <input type=hidden name=cf_set value=yes>
 <ul>
- <li><p>信息板标题:<br>
+<li><p>$wims_name_title&nbsp;:<br>
   <input size=60 name=cf_title value="$cf_title">
  <li><p>$wims_name_Description:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
- <li><p>谁能阅读此信息?
+ <li><p>$name_whoread?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_readpolicy list alluser,owner prompt \
-    每个参加者, 只有你自己
+	$name_prompt1
  !else
   !formselect cf_readpolicy list open,alluser,owner prompt \
-    任何人, 只对注册用户, 只有你自己
+	$name_prompt2
  !endif
- <li><p>谁能发送信息进来?
+ <li><p>$name_whosend?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
-    每个参加者, 检验电邮地址后的参加者, 只有你自己
+	$name_prompt3
  !else
   !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
-    有电邮地址的访问者及用户,\
-    只对注册用户, 检验电邮地址后的用户,\
-    只有你自己
+	$name_prompt4
  !endif
 </ul>
 <p><center><input type=submit name=cf_set value="$wims_name_tosave">

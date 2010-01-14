@@ -1,35 +1,29 @@
 
-Parámetros del foro de discusión que puede cambiar:
+$name_introconfig
 
 !form reply
 <input type=hidden name=job value=config>
 <input type=hidden name=cf_set value=yes>
 <ul>
- <li><p>Título del foro:<br>
+<li><p>$wims_name_title&nbsp;:<br>
   <input size=60 name=cf_title value="$cf_title">
  <li><p>$wims_name_Description:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
- <li><p>¿Quién puede leer los mensajes?
+ <li><p>$name_whoread?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_readpolicy list alluser,owner prompt \
-	todos los participantes, sólo usted
+	$name_prompt1
  !else
   !formselect cf_readpolicy list open,alluser,owner prompt \
- 	todos (inscritos o no), usuarios inscritos solamente, \
-        nadie excepto usted
+	$name_prompt2
  !endif
- <li><p>¿Quién puede enviar mensajes?
+ <li><p>$name_whosend?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
-	todos los participantes,\
-	participantes con comprobación del correo electrónico,\
-        solamente usted
+	$name_prompt3
  !else
   !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
-	visitantes con dirección de correo electrónico o inscritos,\
-	sólo los usuarios inscritos,\
-	usuarios con comprobación del correo electrónico,\
-	nadie excepto usted
+	$name_prompt4
  !endif
 </ul>
 <p><center><input type=submit name=cf_set value="$wims_name_tosave">

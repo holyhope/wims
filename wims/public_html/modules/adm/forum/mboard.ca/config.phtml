@@ -1,35 +1,29 @@
 
-Aquests són els paràmetres d'aquest fòrum que podeu canviar.
+$name_introconfig
 
 !form reply
 <input type=hidden name=job value=config>
 <input type=hidden name=cf_set value=yes>
 <ul>
- <li><p>Títol del fòrum&nbsp;:<br>
+<li><p>$wims_name_title&nbsp;:<br>
   <input size=60 name=cf_title value="$cf_title">
  <li><p>$wims_name_Description:<br>
   <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
- <li><p>Qui pot llegir els missatges&nbsp;?
+ <li><p>$name_whoread?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_readpolicy list alluser,owner prompt \
-	tout participant, seulement vous-même
+	$name_prompt1
  !else
   !formselect cf_readpolicy list open,alluser,owner prompt \
-	tout le monde (inscrits ou non), utilisateurs inscrits seulement,\
-	personne à part vous
+	$name_prompt2
  !endif
- <li><p>Qui pot enviar missatges&nbsp;?
+ <li><p>$name_whosend?
  !if classes/ isin $forum or $forum>9999
   !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
-	tout participant,\
-	participants avec vérification d'email,\
-	seulement vous-même
+	$name_prompt3
  !else
   !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
-	visiteurs avec adresse email ou inscrits,\
-	utilisateurs inscrits seulement,\
-	inscrits avec vérification d'email,\
-	personne à part vous
+	$name_prompt4
  !endif
 </ul>
 <p><center><input type=submit name=cf_set value="$wims_name_tosave">
