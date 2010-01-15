@@ -1,6 +1,7 @@
 !set appletdir=java/WIMSchem
 !set anstype=yes
 !set anstyle=dprompt
+!set oef_js_submit=GetMoleculeMDLMol()
 !if $wims_read_parm=def
  !exit
 !endif
@@ -56,15 +57,16 @@ $temp
  !set temp_cnt=!itemcnt $template
  !for s_=1 to $temp_cnt
   !if $(template[$s_]) notsametext cyclo
-   !set temp_mol=!record 0 of data/$dir/$(template[$s_])
+   !set temp_mol=!record 0 of data/$(template[$s_])
    !if $temp_mol=
      !set temp_mol=!record 0 of data/chem/templ/$(template[$s_]).el
    !endif
-   !readproc oef/togetfile.proc $(template[$s_]) new\
+   !set temp_file=!replace internal / by _ in $(template[$s_]) 
+   !readproc oef/togetfile.proc $temp_file new\
 $temp_mol
    !set cnt_=$[$cnt_+1]
    !set templ=$templ\
-   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(template[$s_])">
+   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$temp_file">
   !endif
  !next
 !endif
@@ -129,10 +131,4 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 	    $params
 	    $File
 </applet>
-</p>
-<p align=center>
-    <input type="submit" style="" onclick="javascript:GetMoleculeMDLMol();" name="button1" value="$wims_name_send">
- <p>   
- 
-</form>
-!set oef_formnosubmit=yes
+
