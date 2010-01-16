@@ -27,7 +27,7 @@ OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol
+all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb
 
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
@@ -57,6 +57,10 @@ checkmol::
 	-rm -f $(OTHERDIR)/matchmol
 	ln -s $(OTHERDIR)/checkmol $(OTHERDIR)/matchmol
 
+lceb::
+	cd lceb ; make && $(STRIP) lceb_dynopt
+	cp $@/lceb_dynopt $(OTHERDIR)
+	
 clean:
 	rm -f $(progs2)
 	cd mathexp; make clean
