@@ -1,31 +1,27 @@
 !set lang_exists=yes
-!set module_title=Envoi de mails groupés
-!set name_noemail=Aucun des participants sélectionnés n'a d'adresse email
-!set name_noemail2=Les participants suivants n'ont pas d'email
-!set name_nouser=Vous n'avez sélectionné aucun participant. Vérifiez les filtres.
-!set name_nomsg=Votre message est vide !
+!set module_title=Envío de correos electrónicos agrupados
+!set name_noemail=Ningún de los participantes seleccionados tiene correo electrónico
+!set name_noemail2=Los participantes siguientes no tienen correo electrónico
+!set name_nouser=No seleccionaron a ningún participante. Compruebe los filtros.
+!set name_nomsg=¡Su mensaje es vacío!
 
-!set name_participant1=Le message a été envoyé à 
-!set name_participant2=Le message n'a pas pu être envoyé aux participants suivants
-!set name_intro=Le mail suivant sera envoyé à tous les participants ayant une adresse email \
-ou simplement à une sélection si vous avez utilisé le menu expert :
+!set name_participant1=Se envió el mensaje a
+!set name_participant2=El mensaje no pudo enviarse a los participantes siguientes
+!set name_intro=El correo electrónico siguiente se enviará a todos los participantes que tienen una dirección de correo electrónico \
+o simplemente a una selección si utilizaron el menú experto :
 
-!set name_expert0=Si vous désirez sélectionner certains participants, plusieurs méthodes sont proposées.\
-Cochez la méthode désirée.
+!set name_expert0=Si desean seleccionar a algunos participantes, se proponen varios métodos. \ Marcan el método deseado.
 
-!set name_expert1=A l'aide des flèches, faites passer dans la fenêtre de droite les participants\
-auxquels vous désirez que le mail soit envoyé.
+!set name_expert1=Con ayuda de las flechas, haga pasar en la ventana de derecha los participantes \ a los cuales desean que el correo electrónico se envíe.
 
-!set name_expert2=Entrez la liste des logins séparés par des virgules.
+!set name_expert2=Entre la lista de los logins separados por comas.
 
-!set name_expert3=Lorsque des variables techniques ont été rentrées pour les participants, \
-il est possible de filtrer les participants selon leurs valeurs. \
+!set name_expert3=Cuando se entraron algunas variables técnicas para los participantes, \ es posible filtrar a los participantes según sus valores. \
 
-!set name_warning=Vous allez envoyer le message suivant aux participants dont la liste suit.
+!set name_warning=Van a enviar el mensaje siguiente a los participantes cuya lista sigue.
 
 !distribute items Menu expert,Filtres&nbsp;,Liste de logins&nbsp;,Message&nbsp;,Sujet&nbsp;,Sélection&nbsp;,\
  Tous les participants\
 into name_menu,name_filter,name_loginlist,name_message,name_subject,name_select,name_allparticipants
 
-!set name_nosupervisoremail= Vous n'avez pas indiqué d'email. Il ne vous est donc pas possible\
-d'envoyer un mail.
+!set name_nosupervisoremail= No indicaron correo electrónico. No les es pues posible \ enviar un correo electrónico.
