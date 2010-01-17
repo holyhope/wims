@@ -10,13 +10,16 @@
 !set name_intro=El correo electrónico siguiente se enviará a todos los participantes que tienen una dirección de correo electrónico \
 o simplemente a una selección si utilizaron el menú experto :
 
-!set name_expert0=Si desean seleccionar a algunos participantes, se proponen varios métodos. \ Marcan el método deseado.
+!set name_expert0=Si desean seleccionar a algunos participantes, se proponen varios métodos. \
+Marcan el método deseado.
 
-!set name_expert1=Con ayuda de las flechas, haga pasar en la ventana de derecha los participantes \ a los cuales desean que el correo electrónico se envíe.
+!set name_expert1=Con ayuda de las flechas, haga pasar en la ventana de derecha los participantes \
+a los cuales desean que el correo electrónico se envíe.
 
 !set name_expert2=Entre la lista de los logins separados por comas.
 
-!set name_expert3=Cuando se entraron algunas variables técnicas para los participantes, \ es posible filtrar a los participantes según sus valores. \
+!set name_expert3=Cuando se entraron algunas variables técnicas para los participantes, \
+es posible filtrar a los participantes según sus valores.
 
 !set name_warning=Van a enviar el mensaje siguiente a los participantes cuya lista sigue.
 
