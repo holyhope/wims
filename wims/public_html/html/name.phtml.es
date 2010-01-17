@@ -218,8 +218,8 @@
    Acción\
    Para utilizar esta actividad, debe activar java en su navigador.\
    Fecha\
-   Ajouter\
-   Supprimer\
+   Añadir\
+   Suprimir\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
