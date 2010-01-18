@@ -20,6 +20,14 @@ parmcnt=0
  !else
   showres=1
  !endif
+ whovote_login=!sh cd $wims_home/log/classes/$wims_superclass/.users;\
+grep -r "!set user_vote_$Vote=yes" * | cut -d":" -f1;
+ whovote_login=!lines2items $whovote_login
+ whovote=$empty
+ !for k in $whovote_login
+  tmp=!defof user_firstname user_lastname in wimshome/log/classes/$wims_superclass/.users/$k
+  whovote=!append item $tmp to $whovote
+ !next k
 !else
  showres=0
 !endif
