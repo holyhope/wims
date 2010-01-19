@@ -6,7 +6,7 @@
 !read adm/lang/date.phtml.$lang
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activeren,Berlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
+!set statutaction=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
 !set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
 
 !! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
@@ -40,7 +40,7 @@ Vereiste punten aantal\
 Punten\
 Corrigeer de broncode\
 De uiterste datum van het werkblad moet vóór de vervaldatum van deze klas zijn\
-Uw date worden dus genegeerd\
+Uw data worden dus genegeerd\
 into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
 name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
@@ -56,7 +56,7 @@ Voor het selecteren van oefening zijn de volgende opties beschikbaar
 
 !if $job=student
   !set name_title=Werkblad nummer $sheet<br>$title (Presentatie voor studenten)
-  !set name_sheetempty=Dit werkblad is leeg. Waarschijnlijk een foutje van de je docent.
+  !set name_sheetempty=Dit werkblad is leeg. Waarschijnlijk een foutje van je docent.
   !set name_assignedwork=Opdrachten in dit werkblad&nbsp;
   !set name_quality=0 uit $[$re] punten behaald, kwaliteit
 !endif

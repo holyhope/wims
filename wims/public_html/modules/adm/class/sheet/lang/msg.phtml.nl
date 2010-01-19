@@ -66,7 +66,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
 !endif
 
 !if $error=non_empty_activities
-	U wilt het werblad $sheet deactieven, maar er zijn al studenten mee aan het werk geslagen.
+	U wilt het werblad $sheet deactiveren, maar er zijn al studenten mee aan het werk geweest.
  <p>
  !if share iswordof $confirmed
      En dit werkblad wordt ook gedeeld mat andere klassen.
