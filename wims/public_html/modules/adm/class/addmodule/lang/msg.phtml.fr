@@ -1,0 +1,54 @@
+!set wims_module_log=error: $error
+
+!if no_pick=$error
+ Veuillez
+ !href cmd=resume choisir une feuille
+ avant de cliquer sur le bouton  <tt class="c">insérer</tt>.
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Désolé, mais l'opération de modification d'une feuille de travail
+ est réservée à l'enseignant enregistré d'une classe.
+ !exit
+!endif
+
+!if bad_class=$error
+ Etrange, mais je trouve que votre classe n'est pas valide!
+ !exit
+!endif
+
+!if no_sheet=$error
+ Votre classe n'a pas de feuille de travail non activée. Un travail ne peut
+ être inséré que dans une feuille non activée.
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] $wims_name_addsheet
+?
+ !exit
+!endif
+!if bad_sheet=$error
+ Mauvais numéro de feuille.
+ !exit
+!endif
+
+!if insert_fail=$error
+ Le logiciel n'a pas pu insérer votre travail dans la base de données. Veuillez
+ vérifier vos données.
+ !exit
+!endif
+
+!if too_many_exos=$error
+ La feuille $picksheet de travail contient déjà le maximum de $max_exo
+ objets de travail. Effacez-en quelques uns avant d'en insérer d'autres.
+ !exit
+!endif
+
+!if already_exist=$error
+ Le travail que vous voulez insérer existe déjà dans la feuille $test.
+ Vous ne pouvez pas mettre deux fois le même exercice avec les mêmes
+ paramètres initiaux  dans la même feuille. <p>
+ Veuillez changer les paramètres de cet exercice avant de l'insérer dans
+ une feuille. <p>
+ Si vous voulez que vos étudiants répètent leur travail sur l'exercice,
+ vous pouvez augmenter le nombre de points requis pour l'exercice.
+ !exit
+!endif

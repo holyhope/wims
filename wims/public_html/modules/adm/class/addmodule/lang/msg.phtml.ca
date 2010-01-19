@@ -1,0 +1,55 @@
+!set wims_module_log=error: $error
+
+!if no_pick=$error
+ Sisplau
+ !href cmd=resume tria un full
+ abans de clicar al botó "inserir".
+ !exit
+!endif
+
+!if not_supervisor=$error
+ Ho sento, però l'operació de modificar un full de treball
+ està reservada al supervisor registrat de la classe.
+ !exit
+!endif
+
+!if bad_class=$error
+ Estrany, però sembla que la teua classe no és vàlida!
+ !exit
+!endif
+
+!if no_sheet=$error
+ La teva classe no té fulls de treball no-actius. Un treball s'ha d'inserir en un full
+ de treball no-actiu. 
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] Crear-ne un
+?
+ !exit
+!endif
+!if bad_sheet=$error
+ Nombre de full incorrecte.
+ !exit
+!endif
+
+!if insert_fail=$error
+ El software ha fallat en inserir el teu treball a la base de dades. Sisplau
+ comprova les teues dades.
+ !exit
+!endif
+
+!if too_many_exos=$error
+ El full de treball $picksheet ja conté el màxim permés ($max_exo).
+ Esborra'n algun abans d'inserir-ne de nous.
+ !exit
+!endif
+
+!if already_exist=$error
+ El treball que vols inserir ja existeix en el full $test.
+ No has de referenciar el mateix exercici amb els
+ mateixos paràmetres inicials dues vegades en el mateix full. <p>
+ Sisplau canvia els paràmetres de l'exercici abans d'inserir-lo
+ en un full. <p>
+ Si vols que els estudiants repeteixin el treball de l'exercici,
+ has d'incrementar el nombre de punts exigits en aquest exercici.
+ !exit
+!endif
+
