@@ -27,4 +27,4 @@ es posible filtrar a los participantes según sus valores.
  Tous les participants\
 into name_menu,name_filter,name_loginlist,name_message,name_subject,name_select,name_allparticipants
 
-!set name_nosupervisoremail= No indicaron correo electrónico. No les es pues posible \ enviar un correo electrónico.
+!set name_nosupervisoremail= No indicaron correo electrónico. No les es pues posible enviar un correo electrónico.
