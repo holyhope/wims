@@ -1,4 +1,4 @@
-
+!set lang_exists=yes
 !set name_title=Actividades individuales globales
 !set name_noparticipant=Esta clase no tiene participante todavía.
 !set name_lastconnexion=Última conexión

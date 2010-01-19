@@ -1,13 +1,11 @@
+!read adm/class/classlang names.phtml
 
 fields=typ,sh,exo,newcnt,sccnt,scsum,dursum,scavg,duravg,scmin,durmin,scmax,durmax,scdev,durdev,cid
 wims_prefix=class user tmp n sharing sharable
 !read tabletheme
-module_language=$lang
-!if $module_language isitemof {en,fr,cn,es,it,nl}
- !read $module_language/names.$module_language
-!else 
- !read $langdefaut/names.$langdefaut
-!endif
+
+!read lang/names.phtml.$lang
+
 !if $wims_user!=supervisor
  error=not_supervisor
  !exit
