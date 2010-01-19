@@ -1,5 +1,5 @@
 
-<center><h3>Arrêter un partage
+<center><h3>Interrompi una condivisione
 </b><small>
 !href cmd=help&special_parm=stopshare $wims_name_help
 </small>
@@ -8,17 +8,18 @@
 !if $stoprec!=$empty and $(sharing_$stoprec)=$nei and \
 	$(me_$(stoprec)cnt)>0 and $me_testcnt>0 and confirm!=yes and \
 	$stoprec isitemof $nosharelist
- <b>ATTENTION</b>. Votre classe a un registre d'activités actif et les
- ressources partagées ne sont pas vides. Si vous arrêtez ce partage
- maintenant, vous ne pourrez plus les repartager plus tard.
+ <b>ATTENZIONE</b>. Il vostro corso ha attività in corso e le risorso condivise
+   non sono vuote. Se si interrompe la condivisione, non sarà più possibile
+   ripristinarla.
  <p>
- Etes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
+ Siete sicuri di voler interrompere definitivamente questa condivisione?
  <p><center><font size="+1"> 
- !href cmd=reply&stoprec=$stoprec&confirm=yes Oui&nbsp;; arrêter.
+ !href cmd=reply&stoprec=$stoprec&confirm=yes $wims_name_yes&nbsp;; interrompi
  &nbsp;&nbsp;
- !href cmd=reply&job2=def Non&nbsp;; laisser en l'état.
+ !href cmd=reply&job2=def $wims_name_no&nbsp;; lascia le cose come stanno.
  </font></center> <p>
 !else
+ Errore!<br>
  Manipulation error: You should never land here.
 !endif
 

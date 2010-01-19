@@ -3,8 +3,8 @@
 	exercice,feuille de travail,examen,document,participant\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 !set code1=Nessuno
-!set code2=Si, ma diversi
-!set code3=Si, attivi e diversi
+!set code2=$wims_name_yes, ma diversi
+!set code3=$wims_name_yes, attivi e diversi
 
 Il corso
 !href cmd=reply&job2=def $nei_description
@@ -23,7 +23,7 @@ he le seguente risorse importabili.
 
 !if $newcnt1>0
  <p>$table_header
- <caption>Ressources d'enseignement</caption>
+ <caption>$name_teaching</caption>
  $table_hdtr<th>$wims_name_Type<th>$wims_name_title<th><small>$wims_name_name</small>
  <th><small>Contenuto</small>
  <th>Stesso titolo nel vostro corso<th>$wims_name_import
@@ -45,7 +45,7 @@ he le seguente risorse importabili.
    !endif
   !else
    !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
-    !href cmd=reply&job2=import2&import=$ll&impmethod=add Aggiungi
+    !href cmd=reply&job2=import2&import=$ll&impmethod=add $wims_name_import
    !endif
    !if $(rcode$i)=2
     &nbsp;
@@ -60,15 +60,17 @@ he le seguente risorse importabili.
  <p>$table_header
  <caption>$wims_name_student
  !if $newcnt2>2
-  !href cmd=reply&job2=import2&import=user,-all- [import&nbsp;everybody]
+ [
+  !href cmd=reply&job2=import2&import=user,-all- $name_everybodyimport
+ ]
  !endif
  </caption>
- $table_hdtr<th>login<th>$wims_name_lastname<th>$wims_name_firstname<th>$wims_name_import
+ $table_hdtr<th>login<th>$wims_name_lastname<th>$wims_name_firstname<th>$wims_name_action
  !for i=1 to $newcnt2
   $table_tr<td>$(ulogin$i)
   <td>$(uname2$i)<td>$(uname1$i)<td align=center>
   !if $(ucode$i)=1
-   !href cmd=reply&job2=import2&import=user,$(ulogin$i) Aggiungi
+   !href cmd=reply&job2=import2&import=user,$(ulogin$i) $wims_name_import
   !else
    !if $(ucode$i)=2
     Login utilizzato nel vostro corso
