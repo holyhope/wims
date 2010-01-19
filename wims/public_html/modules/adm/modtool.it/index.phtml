@@ -4,22 +4,22 @@
 !set year=!char 1 to 4 of $wims_now
 
 !if $title=$empty or $modreq=.new
- !set this=il tuo nuovo modulo
+ !set this=$name_this1
 !else
- !set this=il modulo attualmente in lavorazione
+ !set this=$name_this2
 !endif
 !form reply
 <input type=hidden name=jobreq value=flist>
 $table_header
-<caption>Proprietà di $this</caption>
+<caption>$name_prop $this</caption>
 
 $table_tr<th align=right nowrap>$wims_name_Address
  <td>
  !if $title!=$empty and $modreq!=.new
   <tt>$modreq</tt>&nbsp;
-  !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq cambia nome
+  !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq $name_rename
 &nbsp;
-  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq copia
+  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq $name_duplicate
  !else
   !set modreq=.new
   !read scripts/addressform.phtml nook
@@ -40,10 +40,9 @@ $table_tr<th align=right nowrap><label for="i_label">$wims_name_Type</label>
  <td nowrap>
  !set wims_formselect_switch=multiple
  !formcheckbox i_category list exercise,tool,document,recreation,oef,deductio\
-   prompt exercice, outil, document, récréation, OEF, Deductio
+   prompt $name_type
 
 $table_tr<th align=right nowrap><label for="i_domain">$wims_name_Domain</label>
-
  <td>
  <input size=$size name=i_domain id="i_domain" value="$i_domain">
 <small>
@@ -52,11 +51,9 @@ $table_tr<th align=right nowrap><label for="i_domain">$wims_name_Domain</label>
 $table_tr<th align=right nowrap><label for="i_level">$wims_name_Levels</label>
  <td>
  !formcheckbox i_level list $levellist
- <br><small>E: scuola primaria; H: scuola secondaria; U: università;
- <br>G: dottorato; R: rircerca</small>
+ <br><small>$name_levellist</small>
 
-$table_tr<th align=right nowrap><label for="i_scoring">Punteggio automatico<br></label>
- <small>(esercizio / ricreazione)</small>
+$table_tr<th align=right nowrap><label for="i_scoring">$wims_name_Scoring</label>
  <td>
  !default i_scoring=no
  !formradio i_scoring list yes,no prompt $wims_name_yes, $wims_name_no
@@ -65,9 +62,8 @@ $table_tr<th align=right nowrap><label for="i_version">$wims_name_Version</label
  <td>
  !default i_version=1.00
  <input type=text size=6 name=i_version id="i_version" value="$i_version">
- <small>Da aumentare ogni volta che si pubblica una nuova versione!</small>
-
-$table_tr<td align=right nowrap><label for="i_wims_version">versione wims</label>
+ <small>$name_increment</small>
+$table_tr<th align=right nowrap><label for="i_wims_version">$wims_name_Required_WIMS_version</label>
  <td>
  !default i_wims_version=$wims_version
  <input type=text size=6 name=i_wims_version id="i_wims_version" value="$i_wims_version">&nbsp;
@@ -87,7 +83,7 @@ $table_tr<th align=right nowrap><label for="i_translator">$wims_name_Translator<
  <td>
  <input type=text size=$size name=i_translator id="i_translator" value="$i_translator">
 
-$table_tr<td align=right nowrap><label for="i_translator_address">Indirizzo email del traduttore</label>
+$table_tr<th align=right nowrap><label for="i_translator_address">$wims_name_tr_email</label>
  <td>
  <input type=text size=$size name=i_translator_address id="i_translator_address" value="$i_translator_address">
 
