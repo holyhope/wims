@@ -1,4 +1,4 @@
-!set lang_exist=yes
+!set lang_exists=yes
 
 !set name_noexercise= No tiene ningún ejercicio que se pueda grabar.
 !set name_listexercise=!nosubstPueden grabarse los ejercicios de la hoja de trabajo $logsheet

@@ -1,4 +1,4 @@
-!set lang_exist=yes
+!set lang_exists=yes
 
 !set name_noexercise=Er zijn geen oefeningen om te registreren.
 !set name_listexercise=!nosubst Oefeningen van werkblad $logsheet kunnen worden geregistreerd
