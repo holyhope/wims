@@ -1,0 +1,30 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+
+wims_prefix=class user tmp n sharing sharable
+
+test=!defof class_defined in wimshome/log/classes/$wims_class/.def
+!if $test!=yes
+ error=bad_class
+ !reset job
+ !exit
+!endif
+
+!readproc tabletheme
+
+!if $wims_user!=supervisor
+ job=hide
+!else
+ !bound job within modif,delete,reactivate default $empty
+ !if $user=.CLASS.
+  !reset user
+ !endif
+!endif
+
+!if $job!=$empty
+ !read $job.proc
+!endif
+
+
+
+

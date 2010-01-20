@@ -1,0 +1,57 @@
+<center>$classname
+<p>
+<h1>
+!if $user=$empty
+ $name_modify1
+!else
+ $name_modify2 $user_firstname $user_lastname
+!endif
+</h1></center> <p><hr width="40%"> <p>
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$moduclass_lang
+ <p>
+ !href cmd=reply $wims_name_back2
+. <p>
+ !goto end
+!endif
+
+$name_intro1
+!if $user=$empty
+ $name_intro2
+!else
+ $name_intro3 $user_firstname $user_lastname 
+!endif 
+$name_intro4
+!href style=student $name_home
+.
+<p>
+$name_write :
+(
+!if $speckedit!=no
+!href cmd=reply&job=modif&speckedit=no $wims_name_desactive
+!else
+ !href cmd=reply&job=modif&speckedit=yes $wims_name_active
+!endif
+  <small>$wims_name_speck_warning</small>)
+<p>
+
+!form reply
+ <input type=hidden name=action value=register>
+ <input type=hidden name=user value="$user">
+ <input type=hidden name=job value="$job">
+!if $speckedit=no
+<textarea name=motd cols=70 rows=18>$motd</textarea>
+!else
+<textarea $wims_id name=motd cols=70 rows=18>$motd</textarea>
+!endif
+ !if $user!=$empty
+  <br>
+  $name_otherstudent: <br>
+  !formcheckbox listuser list $listiduser prompt $listnameuser
+ !endif
+ <p><center><input type=submit value="$wims_name_tosave" $wims_on_click></center>
+
+</form>
+
