@@ -1,8 +1,7 @@
 !!##should allow to have only one module by language
 
-!! looks for module_title in lang/names.$class_lang or in names.$class_lang
 !set class_lang=!defof class_lang in wimshome/log/classes/$wims_class/.def
-!!debug $class_lang lang/names.$class_lang
+
 !set lang_exists1=!defof lang_exists in names.$class_lang
 !set lang_exists2=!defof lang_exists in lang/names.$class_lang
 !set lang_exists3=!defof lang_exists in $class_lang/names.phtml
@@ -10,6 +9,8 @@
 !set lang_exists=!defof lang_exists in lang/$wims_read_parm.$class_lang
 
 !if $lang_exists1$lang_exists2$lang_exists$lang_exists3!=
- !set module_language=$class_lang
+ !set moduclass_lang=$class_lang
 !endif
+!default moduclass_lang=en
+!set module_language=$class_lang
 !!########
