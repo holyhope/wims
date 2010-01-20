@@ -3,7 +3,7 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  of <b><font color=green>$wims_institutionname</font></b>
  
-!read adm/lang/date.phtml.$lang
+!read adm/lang/date.phtml.$moduclass_lang
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
 !set statutaction=Activate,Expire it,Deactivate it,Hide it,show it,$wims_name_erase
@@ -15,7 +15,7 @@
 		Source of the sheet \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,$wims_name_title,$wims_name_Description,Points,Weight,Dependencies,$wims_name_comment,Actions
+!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Points,Weight,Dependencies,$wims_name_comment,$wims_name_action,Paramètres de la série
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Page of preparation
@@ -25,8 +25,8 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
  !set name_title=!nosubst Management of sheet $sheet
 !endif
 
-!let name_shinfo=!nosubst Title <small>(limited to 80 characters)</small>,Status,\
-Description <br></small>(limited to $desc_limit characters; tags and html link allowed)</small>,\
+!let name_shinfo=!nosubst $wims_name_title <small>(limited to 80 characters)</small>,$wims_name_Status,\
+$wims_name_Description <br></small>(limited to $desc_limit characters; tags and html link allowed)</small>,\
 Expiration date,Presentation page,Registration of scores,for all sharing classes,$wims_name_comment
 !let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
 !let name_mksheet=Create the sheet
