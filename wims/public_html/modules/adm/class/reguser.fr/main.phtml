@@ -36,8 +36,8 @@ Inscription  à $name_classess
  $table_header
  !if $ctype=0
   $table_hdtr
-  <th>$wims_name_name<th>enseignant<th>niveau<th>langue</th>
-  <th>places<br>disponibles<th>statut
+  <th>$wims_name_name<th>$wims_name_namesteacher<th>$wims_name_level<th>$wims_name_Language</th>
+  <th>$name_remainig<th>$wims_name_Status
  !else
   <caption>$institution_name</caption>
   $table_hdtr
@@ -62,7 +62,7 @@ Inscription  à $name_classess
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
   !else
-    <td align=center>$(level$l1)<br>année $l2</td>
+    <td align=center>$(level$l1)<br>$name_year $l2</td>
   !endif
   !if $ctype=0
    <td align=center>$(lang_$class_lang)</td>
@@ -74,9 +74,9 @@ Inscription  à $name_classess
    !endif
   !endif
   !if $class_password=$empty
-   <td align=center>ouverte</td>
+   <td align=center>$(name_statut[1])</td>
   !else
-   <td align=center>protégée</td>
+   <td align=center>$(name_statut[2])</td>
   !endif
  !next cl
  $table_end <p>
@@ -87,7 +87,7 @@ Inscription  à $name_classess
 !endif class=empty
 
 !set classname=<b><font color=green>$description</font></b>\
- de <b><font color=green>$institution</font></b>
+  - <b><font color=green>$institution</font></b>
 
 !if $password!=$empty and $passverify=$empty
  !if $cltype iswordof 2 4
@@ -117,10 +117,10 @@ Inscription  à $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p><label for="classpass">$wims_name_Password:</label>
+ <center> <p><label for="classpass">$wims_name_Password</label>
  <input type=password name=classpass id="classpass">
  <p>
- <input type=submit value="Envoyer ce mot de passe">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
  !if $cltype iswordof 2 4
   <b>Remarque</b>.
@@ -163,7 +163,7 @@ Inscription  à $name_classess
   !if $foundcnt>0
    $table_header
    <caption>Cliquez sur un nom pour l'inscrire dans $name_classes.</caption>
-   $table_hdtr<th>Nom</th><th>login</th></tr>
+   $table_hdtr<th>$wims_name_name</th><th>$wims_name_Login</th></tr>
    !for i=1 to $foundcnt
     !set l=!line $i of $found
     !distribute item $l into l_,f_,L_
@@ -218,7 +218,7 @@ Inscription  à $name_classess
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>Type du compte :
   !default utype=0
-  !formradio utype list 0,1 prompt élève,enseignant
+  !formradio utype list 0,1 prompt $wims_name_namesstudent,$wims_name_namesteacher
  !endif
  </ul>
  <center><input type=submit value="$wims_name_tosave"></center>
@@ -290,10 +290,10 @@ Inscription  à $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
-!set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
+ !set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items
 !else
-!set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
 to $wims_menu_items
 !endif
 :end

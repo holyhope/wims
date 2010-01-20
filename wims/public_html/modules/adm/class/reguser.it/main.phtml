@@ -50,7 +50,7 @@ Inserimento in $name_classess
   !set part=!recordcnt wimshome/log/classes/$cl/.userlist
   $table_tr<td align=center>
   !if $ctype=0
-  !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
+   !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
   !else
    !href module=$module&cmd=reply&class=$cl $class_description
   !endif
@@ -116,10 +116,10 @@ Inserimento in $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p><label for="classpass">$wims_name_Password:</label>
+ <center> <p><label for="classpass">$wims_name_Password</label>
  <input type=password name=classpass id="classpass">
  <p>
- <input type=submit value="Procedi con la registrazione">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
  !if $cltype iswordof 2 4
   <b>Nota</b>. 
@@ -158,7 +158,7 @@ Inserimento in $name_classess
   !if $foundcnt>0
    $table_header
    <caption>Clicca sul nome per inserirlo nel corso.</caption>
-   $table_hdtr<th>Nome</th><th>login</th></tr>
+   $table_hdtr<th>$wims_name_name</th><th>$wims_name_Login</th></tr>
    !for i=1 to $foundcnt
     !set l=!line $i of $found
     !distribute item $l into l_,f_,L_
@@ -191,8 +191,8 @@ Inserimento in $name_classess
   !form reply
  <input type=hidden name=step value=2>
  <ul>
- <li><label for="lastn">$wims_name_lastname:</label> <input size=20 name=lastn id="lastn" value="$lastn">
-  <label for="firstn">$wims_name_firstname:</label> <input size=20 name=firstn id="firstn" value="$firstn">
+ <li><label for="lastn">$wims_name_lastname</label> <input size=20 name=lastn id="lastn" value="$lastn">
+<label for="firstn">$wims_name_firstname</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
  <li><label for="login">$wims_name_Login</label>
   <input size=16 name=login id="login" value="$login"> <br>
@@ -211,11 +211,11 @@ Inserimento in $name_classess
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>Tipo di utente:
   !default utype=0
-  !formradio utype list 0,1 prompt studente, docente
+  !formradio utype list 0,1 prompt $wims_name_namesstudent,$wims_name_namesteacher
  !endif
-</ul>
+ </ul>
  <center><input type=submit value="$wims_name_tosave"></center>
-</form>
+ </form>
  !goto end1
 !endif
 
@@ -283,10 +283,10 @@ Inserimento in $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
-!set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
+ !set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items
 !else
-!set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
 to $wims_menu_items
 !endif
 :end

@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -33,13 +29,13 @@ Registration of participation to $name_classess
  $table_header
  !if $ctype=0
   $table_hdtr
-  <th>Name<th>supervisor<th>level<th>language</th>
-  <th>available<br>places<th>status
+  <th>$wims_name_name<th>$wims_name_namesteacher<th>$wims_name_level<th>$wims_name_Language</th>
+ <th>available<br>places<th>$wims_name_Status
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>Name<th>supervisor<th>level
-  <th>status
+  <th>$wims_name_name<th>$wims_name_Supervisor<th>$wims_name_level
+  <th>$wims_name_Status
  !endif
  !for cl in $classlist
   !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
@@ -59,7 +55,7 @@ Registration of participation to $name_classess
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
   !else
-  <td align=center>$(level$l1)<br>year $l2</td>
+    <td align=center>$(level$l1)<br>year $l2</td>
   !endif
   !if $ctype=0
    <td align=center>$(lang_$class_lang)</td>
@@ -84,7 +80,7 @@ Registration of participation to $name_classess
 !endif class=empty
 
 !set classname=<b><font color=green>$description</font></b>\
- of <b><font color=green>$institution</font></b>
+  - <b><font color=green>$institution</font></b>
 
 !if $password!=$empty and $passverify=$empty
   $name_classessss
@@ -109,10 +105,10 @@ Registration of participation to $name_classess
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p><label for="classpass">Password:</label>
+ <center> <p><label for="classpass">$wims_name_Password</label>
  <input type=password name=classpass id="classpass">
  <p>
- <input type=submit value="Send this password">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
  !if $cltype iswordof 2 4
   <b>ATTENTION</b>. Direct registration to an institution portal is reserved
@@ -144,7 +140,7 @@ Registration of participation to $name_classess
   !if $foundcnt>0
    $table_header
    <caption>Click on a name to bring to the class.</caption>
-   $table_hdtr<th>Name</th><th>login</th></tr>
+   $table_hdtr<th>$wims_name_name</th><th>$wims_name_Login</th></tr>
    !for i=1 to $foundcnt
     !set l=!line $i of $found
     !distribute item $l into l_,f_,L_
@@ -172,31 +168,31 @@ Registration of participation to $name_classess
   !form reply
  <input type=hidden name=step value=2>
  <ul>
- <li><label for="lastn">$name_Your family name</label> <input size=20 name=lastn id="lastn" value="$lastn">
-  and <label for="firstn">first name</label> <input size=20 name=firstn id="firstn" value="$firstn">
+ <li><label for="lastn">$wims_name_lastname</label> <input size=20 name=lastn id="lastn" value="$lastn">
+<label for="firstn">$wims_name_firstname</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li><label for="login">Choose a login name:</label>
+ <li><label for="login">$wims_name_Login</label>
   <input size=16 name=login id="login" value="$login"> <br>
   This will be the name which $name_you will use to log into the $classname later.
   Please choose a word containing between 4 and 16 characters
   (digits or letters without accent).
   <p>
- <li><label for="pass">And a password:</label>
+ <li><label for="pass">$wims_name_Password</label>
   <input type=password size=16 name=pass id="pass"> <br>
   the password must contain between 4 and 16 characters (digits or letters
   without accent).
   <p>
- <li><label for="email">$name_Your email address (optional):</label><br>
+ <li><label for="email">$wims_name_email  (optional):</label><br>
   <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>Type of the account:
   !default utype=0
-  !formradio utype list 0,1 prompt student, teacher
+  !formradio utype list 0,1 prompt $wims_name_namesstudent,$wims_name_namesteacher
  !endif
- <center><input type=submit value="Register"></center>
-</ul>
-</form>
+ </ul>
+ <center><input type=submit value="$wims_name_tosave"></center>
+ </form>
  !goto end1
 !endif
 
@@ -214,7 +210,7 @@ Registration of participation to $name_classess
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2 id="pass2">
- <p><input type=submit value="Send the password"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
@@ -263,13 +259,9 @@ Registration of participation to $name_classess
 !if $cltype iswordof 2 4
  !set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items
- !!href module=adm/class/classes&type=supervisor List of classes
-!!.
 !else
  !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
 to $wims_menu_items
- !!href module=adm/class/classes&type=participant List of classes
-!!.
 !endif
 :end
 !tail
