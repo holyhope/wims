@@ -1,4 +1,5 @@
 !set lang_exists=yes
+
 !set module_title=Envío de correos electrónicos agrupados
 !set name_noemail=Ningún de los participantes seleccionados tiene correo electrónico
 !set name_noemail2=Los participantes siguientes no tienen correo electrónico
