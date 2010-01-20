@@ -1,0 +1,80 @@
+!if $wims_module_log=$empty
+ !set wims_module_log=error: $error
+!endif
+
+!if not_supervisor=$error
+ Désolé, mais seul l'enseignant est autorisé à changer le mot de passe de
+ la classe.
+ !exit
+!endif
+
+!if not_secure=$error
+ Désolé, mais seules les connections à partir de postes sûrs ont le droit
+ de changer les mots de passe de la classe. Veuillez utiliser
+ !href module=adm/class/config l'outil de configuration de la classe
+ pour définir des postes sûrs, et connecter à partir de là pour changer
+ ce mot de passe.
+ !exit
+!endif
+
+!if bad_class=$error
+ Etrange, mais j'ai trouvé que votre classe n'est pas valide&nbsp;!
+ !exit
+!endif
+
+!if discord iswordof $error
+ Changement de mot de passe refusé&nbsp;: les nouveaux mots de passe
+ sont différents.
+ !exit
+!endif
+
+!if bad_pass=$error
+ Votre nouveau mot de passe contient des caractères illégaux. <p>
+ Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
+ sans accent, et sans espace entre eux.
+ !exit
+!endif
+
+!if bad_class_password iswordof $error
+ L'actuel mot de passe n'est pas correct&nbsp;!<p>
+ Etes-vous vraiement l'enseignant de cette classe&nbsp;?
+ !exit
+!endif
+
+!if bad_user iswordof $error
+ Echec&nbsp;: il n'existe pas de participant au nom de <tt>$part</tt>
+ dans la classe.
+ !exit
+!endif
+
+!if bad_user_password iswordof $error
+ L'actuel mot de passe n'est pas correct&nbsp;!<p>
+ Changement de mot de passe refusé.
+ !exit
+!endif
+
+!if success iswordof $error
+ Le mot de passe a été changé.
+ !exit
+!endif
+
+!if fail iswordof $error
+ Le logiciel n'a pas pu enregistrer votre nouveau mot de passe.
+ Ceci est une erreur interne; veuillez contacter le gestionnaire du site.
+ !exit
+!endif
+
+!if too_long iswordof $error
+ Erreur&nbsp;: Le nouveau mot de passe est trop long.
+ !exit
+!endif
+
+!if too_short iswordof $error
+ Erreur&nbsp;: Le nouveau mot de passe est trop court.
+ !exit
+!endif
+
+!if nothing_to_do iswordof $error
+ Rien n'est fait car le nouveau mot de passe est égal à l'ancien.
+ !exit
+!endif

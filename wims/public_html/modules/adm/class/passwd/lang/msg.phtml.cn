@@ -1,0 +1,74 @@
+!if $wims_module_log=$empty
+ !set wims_module_log=error: $error
+!endif
+
+!if not_supervisor=$error
+抱歉. 只有班级的主持教师才有权改变班级密码.
+ !exit
+!endif
+
+!if not_secure=$error
+ 对不起, 只有来自安全主机的连接才可以改变班级密码. 请使用
+ !href module=adm/class/config 班级配置工具
+以定义安全主机, 并从那里连接以改变密码.
+ !exit
+!endif
+
+!if bad_class=$error
+奇怪, 我发现你的班级是无效的!
+ !exit
+!endif
+
+!if discord iswordof $error
+密码改变遭到拒绝: 新密码不相同.
+ !exit
+!endif
+
+!if bad_pass=$error
+你的新密码含有非法字符. <p>
+密码必须由数字或英文字母组成, 而且中间不能有空格符.
+ !exit
+!endif
+
+!if bad_class_password iswordof $error
+原有密码不正确!<p>
+你确实是这个班级的主持教师吗?
+ !exit
+!endif
+
+!if bad_user iswordof $error
+ 改变密码失败: 本班没有叫 <tt>$part</tt> 的参加者.
+ !exit
+!endif
+
+!if bad_user_password iswordof $error
+原有密码不正确!<p>
+密码改变遭拒绝.
+ !exit
+!endif
+
+!if success iswordof $error
+密码已经改变.
+ !exit
+!endif
+
+!if fail iswordof $error
+软件无法记录下你的新密码.
+这可能是一个内部错误; 请与网站管理者联系.
+ !exit
+!endif
+
+!if too_long iswordof $error
+错误: 新密码太长.
+ !exit
+!endif
+
+!if too_short iswordof $error
+错误: 新密码太短.
+ !exit
+!endif
+
+!if nothing_to_do iswordof $error
+新密码与原有密码相同, 什么事也没做.
+ !exit
+!endif

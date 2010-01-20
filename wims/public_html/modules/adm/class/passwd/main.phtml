@@ -1,0 +1,62 @@
+!read adm/class/class.lang names.phtml
+!read lang/names.phtml.$moduclass_lang
+
+!read adm/css.phtml
+!header1
+
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$module_title
+
+!if $error!=$empty
+ <p>
+ !read msg.phtml
+ <p>
+ !href module=home $wims_name_back2
+. <p>
+ !goto end
+!endif
+
+!form reply
+
+!if $wims_user=supervisor
+ $name_passwdtype: <ul>
+ !default job=user
+ !set ch_$job=checked
+ <li><input type=radio name=job $ch_user value=user> $name_persopasswd<br>
+ !if $part!=$empty and $job=part
+  <li><input type=radio name=job $ch_part value=part> $name_partpasswd
+  <tt>$part</tt> ($name_warning1).
+ !endif
+ <li><input type=radio name=job $ch_class value=class> $name_classpasswd 
+ ($name_warning1).
+ </ul>
+!else
+ <input type=hidden name=job value=user>
+!endif
+<table>
+<tr><td align=right>$name_actualpasswd:
+	<td><input type=password size=16 name=old>
+<tr><td align=right>$name_newpasswd:
+	<td><input type=password size=42 name=pw1>
+<tr><td align=right>$name_newpasswd2:
+	<td><input type=password size=42 name=pw2>
+</table>
+<input type=submit value="$wims_name_tosave"> <p>
+<small>$name_jetable
+!href target=wims_mhelp cmd=help $wims_name_detail
+</small>
+</form>
+<p>
+$name_alphanumer
+!if $wims_user=supervisor
+ ($name_emptypasswd).
+!endif
+
+!endif
+:end
+!tail
+
+!distribute item $ into job,pw1,pw2,old
+
