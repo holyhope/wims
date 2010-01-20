@@ -9,9 +9,7 @@
   !read adm/date.phtml
   !let creyear=!char 1 to 4 of $class_creation
   !let expyear=!char 1 to 4 of $class_expiration
-  !formselect jday list 0,$v prompt ---,$v
-  !formselect jmonth from 1 to 12 prompt $months
-  !formselect jyear from $creyear to $expyear
+  !read date.proc 3
   $name_and
   !if $jyear2=$empty or $jyear2=0 
    !let jyear2=!char 1 to 4 of $wims_now
@@ -20,9 +18,7 @@
   !endif
   !distribute item 0,0,0 into jyear2,jday2,jmonth2
   !let v1=!values v for v=$creyear to $expyear
-  !formselect jday2 list 0,$v prompt ---,$v
-  !formselect jmonth2 from 0 to 12 prompt ---,$months
-  !formselect jyear2 list 0,$v1 prompt ---,$v1
+  !read date.proc 4
   <br><small> $name_warning1</small>
  </form>
 <p>

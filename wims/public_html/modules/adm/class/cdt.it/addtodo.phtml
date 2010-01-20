@@ -24,9 +24,7 @@ $cdt_subtitle\
 !let expyear=!char 1 to 4 of $class_expiration
 !let creyear=!char 1 to 4 of $class_creation
 !distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
-!formselect jday from 1 to 31
-!formselect jmonth from 1 to 12 prompt $months
-!formselect jyear from $creyear to $expyear
+!read date.proc 1
 <p>
 $name_nb_date: 
 <select  name="nbredevoir" onchange="submit()">
@@ -42,16 +40,14 @@ $name_nb_date:
 <table>
  !for i=1 to $nbredevoir
  <tr>
-  <td>$name_work $name_for
+  <td>$name_workfor
    !if $(dday$i)=$empty
     !let dday$i=$jday
     !let dyear$i=$jyear
     !let dmonth$i=$jmonth
    !endif
    !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
-   !formselect dday$i from 1 to 31
-   !formselect dmonth$i from 1 to 12 prompt $months
-   !formselect dyear$i from $creyear to $expyear
+   !read date.proc 2
    [
     !href target=wims_help cmd=renew&job=helplink&cible=ddesc$i $wims_name_help
    ]
