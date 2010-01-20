@@ -1,0 +1,19 @@
+!form reply
+<input type=hidden name=show value=yes>
+$table_header
+$table_tr<td width="40%">$name_showstat</td><td>
+!set wims_formselect_switch=multiple size=8
+!formselect show list req,weight,cid,tot,scoremean,partmean,minmax,deviat\
+	prompt\
+	$name_prompt
+$table_tr<td>$name_data<td>
+!set wims_formselect_switch=
+!formselect types list 1,2,3 prompt \
+	$name_typ_activities
+!if $sharer!=$empty
+$table_tr<td>$name_shareclass
+ <td>
+ !formradio share list yes,no prompt $wims_name_yes,$wims_name_no
+!endif
+$table_tr<td colspan=2 align=center><input type=submit value="$wims_name_Show">
+$table_end</form>

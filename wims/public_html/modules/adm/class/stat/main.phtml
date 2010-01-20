@@ -1,0 +1,34 @@
+!read adm/css.phtml
+!read adm/class/classlang names.phtml
+!read lang/names.phtml.$moduclass_lang
+
+!if $cmd=help
+ !header
+ !changeto help.phtml
+!endif
+
+!header1
+
+
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$moduclass_lang
+ !set wims_menu_items=!append line class_home,1,module=home\
+ to $wims_menu_items
+ !goto end
+!endif
+
+!read table.phtml
+
+!read form.phtml
+
+:end
+!tail
+
+!reset show
+
