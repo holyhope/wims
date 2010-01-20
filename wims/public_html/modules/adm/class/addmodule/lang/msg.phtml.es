@@ -22,7 +22,7 @@
 !if no_sheet=$error
  Su clase no tiene una hoja de trabajo no activa. Se debe insertar un trabajo
  en una hoja de trabajo no activa.
- !href module=adm/class/sheet&sheet=$[$sheettot+1] $wims_name_addsheet
+ !href module=adm/class/sheet&sheet=$[$sheettot+1] $wims_name_add_sheet
 ?
  !exit
 !endif
