@@ -6,7 +6,7 @@
 !set name_sequence=volgorde
 !set name_sheet_status=In bewerking,Actief,Verlopen,Verlopen en onzichtbaar
 !set name_addseq= Geef rangnummber voor de intevoegen activiteiten.\
-Om een rangnummer te verwijderen , schrijf 0.
+Om een rangnummer te verwijderen, schrijf 0.
 
 !set name_show1=U kunt een nieuwe pedagogisch volgorde van lesmateriaal aanmaken
 
