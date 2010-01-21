@@ -1,0 +1,67 @@
+!set lang_exists=yes
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ de <b><font color=green>$wims_institutionname</font></b>
+
+!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
+
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
+!set statutaction=Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
+!set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
+
+!! definición de los nombres para los enlaces en el menubox (definidos por wims_menu_items)
+!distribute items insertar un archivo fuente,\
+		Punto de vista de los participantes ,\
+		Obtener el código fuente de la hoja \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!let name_shtab=No,$wims_name_title,$wims_name_Description,Puntos,Peso,Dépendancias,$wims_name_comment,Acciones
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=página de preparación
+ !set name_title=!nosubst Preparación de la hoja de trabajo $sheet
+!else
+ !let wims_name_sheetadmin=Página de gestión
+ !set name_title=!nosubst Gestión de la hoja $sheet
+!endif
+
+!let name_shinfo=!nosubst $wims_name_title <small>(limitado a $title_limit caracteres)</small>,Estado,\
+Y un texto explicativo <br></small>(limitado a $desc_limit caracteres; se permiten etiquetas y enlaces html)</small>,\
+Fecha de expiración,Página de presentación,El registro de puntuaciones,para todas las clases que comparten la hoja,$wims_name_comment
+!let name_allowtype=abierto a todos, cerrado a todos,abierto para las siguientes estaciones de trabajo (y/o horas)siguientes :
+!let name_mksheet=Pulse para crearla
+
+!distribute lines Informaciones generales \
+Contenido de la hoja de trabajo\
+Esta hoja de trabajo no tiene aún contenido.\
+El título original es\
+Modificación del ejercicio\
+Número de puntos pedidos\
+de peso\
+Corregir el código fuente\
+La fecha de expiración de la hoja debe ser previa a la fecha de expiración de la clase\
+Se ignora pues su petición.\
+into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+
+!set name_text1=Para añadir un trabajo (ejercicio, herramienta, etc.) a la hoja, deben en primer lugar elegirlo\
+(véase abajo); regule los distintos parámetros propuestos y lanza el ejercicio.\
+A continuación, utilizan el vínculo sobre el borde del ejercicio para añadirlo a la hoja.\
+Para elegir su trabajo, tienen una de las posibilidades siguientes
+
+!set name_text2= Pasar por el motor de investigación
+!set name_text3=Buscar un ejercicio entre
+!set name_text4=Buscar un ejercicio de su cuenta
+
+
+!if $job=student
+  !set name_title=Hoja de trabajo número $sheet<br>$title (presentación para los participantes)
+  !set name_sheetempty=¡La hoja está vacía! No se le ha asignado nada todavía. Posiblemente se trata de un error de su profesor.
+  !set name_assignedwork=Tareas asignadas en esta hoja&nbsp;
+  !set name_quality=0 de $[$re] puntos obtenidos, calidad
+!endif
+
+!set name_regmodif=Modification enregistrée
+!! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
+!!set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims
+!set name_helpprog=$empty

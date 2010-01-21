@@ -1,0 +1,18 @@
+!! ce fichier permet d'afficher le source de la feuille
+!!!### langage independant
+
+
+!if $exocnt<=0
+ !let error=srcnoexo
+ !read lang/msg.phtml.$moduclass_lang
+ !goto end
+!endif
+
+$name_getsource <p>
+******************************************************************
+!read wimshome/$wims_sesdir/home_sheet.src
+******************************************************************
+:end
+<p>
+!let wims_menu_items=!append line sheetadmin,1,cmd=resume to $wims_menu_items
+

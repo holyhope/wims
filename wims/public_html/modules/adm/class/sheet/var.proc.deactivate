@@ -1,0 +1,53 @@
+ sec=!defof class_secure in wimshome/log/classes/$wims_class/.def
+ sec=!trim $sec
+ htest=!checkhost $sec
+ !if ($sec=$empty or $htest<1) and $wims_ismanager<2
+  error=not_secure
+  !exit
+ !endif
+ !readdef wimshome/log/classes/$wims_class/neighbors
+ !if ($sharable_sheet!=$empty or $sharing_sheet!=$empty) and share notwordof $confirmed
+  !if $confirm=yes and $wims_ismanager>1
+   confirmed=share
+  !else
+   confirm=
+   confirmed=
+   error=sharing_sheet
+   !exit
+  !endif
+  confirm=
+ !endif
+ examtest=!sh grep '\<$sheet\.' $wims_home/log/classes/$wims_class/exams/.exam[0-9]*
+ !if $examtest!=$empty
+  error=sheet_in_exam
+  !exit
+ !endif
+ worktest=!sh cd $wims_home/log/classes/$wims_class\
+   list=`ls score | grep -v '\.exam$$'`\
+   if [ ! -e "$$list" ]; then\
+    cd score; awk 'length($$1)==17 && $$3==$sheet {print FILENAME; nextfile}' $$list\
+   fi
+ !if $worktest!=$empty
+  worktest2=!replace word supervisor by $ in $worktest
+  worktest2=!trim $worktest2
+  !if $confirm!=yes or (share iswordof $confirmed and $worktest2!=$empty)
+   error=non_empty_activities
+   !exit
+  !else
+   worktest=!singlespace $worktest
+   !sh cd $wims_home/log/classes/$wims_class\
+   for user in $worktest\
+   do\
+    awk 'length($$1)!=17 || $$3!=$sheet {print}' score/$$user >awk.tmp1\
+    awk 'length($$1)==17 && $$3==$sheet {print $$0" deact noscore"}' score/$$user >awk.tmp2\
+    mv awk.tmp1 score/$$user\
+    cat awk.tmp2 >>noscore/$$user\
+   done\
+   rm -f awk.tmp*
+  !endif
+ !endif
+ !distribute item 1,0 into update_field,update_content
+ !read update.sheet
+ !read writeweights
+ job=
+ wims_class_log=deactivate sheet $sheet
