@@ -7,10 +7,15 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
-<br>
-Registration of participation to $name_classess
-</h1> <p>
+!read adm/title.phtml 1\
+WIMS à $httpd_HTTP_HOST\
+$name_title
+
+!if $cltype iswordof 2 4 and $classcnt>0
+ <center>
+ ($name_reserved)
+ </center>
+!endif
 
 !if $error!=$empty
  <p>
@@ -20,17 +25,18 @@ Registration of participation to $name_classess
 !endif
 
 !if $classcnt=0
- There is no class that you can register to. Sorry, try again later! !goto end
+  $name_warning1
+ !goto end
 !endif
 
 !if $class=$empty
- Please choose the class to which you want to participate
- (click on its name). <p>
+ $name_inscription 
+ <p>
  $table_header
  !if $ctype=0
   $table_hdtr
   <th>$wims_name_name<th>$wims_name_namesteacher<th>$wims_name_level<th>$wims_name_Language</th>
- <th>available<br>places<th>$wims_name_Status
+  <th>$name_remainig<th>$wims_name_Status
  !else
   <caption>$institution_name</caption>
   $table_hdtr
@@ -55,7 +61,7 @@ Registration of participation to $name_classess
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
   !else
-    <td align=center>$(level$l1)<br>year $l2</td>
+    <td align=center>$(level$l1)<br>$name_year $l2</td>
   !endif
   !if $ctype=0
    <td align=center>$(lang_$class_lang)</td>
@@ -67,15 +73,13 @@ Registration of participation to $name_classess
    !endif
   !endif
   !if $class_password=$empty
-   <td align=center>open</td>
+   <td align=center>$(name_statut[1])</td>
   !else
-   <td align=center>protected</td>
+   <td align=center>$(name_statut[2])</td>
   !endif
  !next cl
  $table_end <p>
- <b>Remark.</b> You may register yourself freely into any open classes. On the
- contrary, protected classes need a password to register (the password should
- be obtained from the supervisor of the class).
+ $name_remark1
  !goto end1
 !endif class=empty
 
@@ -83,25 +87,28 @@ Registration of participation to $name_classess
   - <b><font color=green>$institution</font></b>
 
 !if $password!=$empty and $passverify=$empty
+ !if $cltype iswordof 2 4
+  $name_Portal
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+ !else
   $name_classessss
   !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
- of <b><font color=green>$institution</font></b>
+ !endif
+ (<b><font color=green>$institution</font></b>)
  !if $cltype iswordof 4 2
-  is protected by a password and direct inscription is reserved to 
-  <b>teachers</b>.
+  $name_warning_protected
   !if $classcnt>0 
-  If you are a student, you should directly register to a 
-  !href cmd=new&module=$module&class=$class&subclass=yes subordinate class
+  $name_inscription_student
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
   !endif
  !else
- is protected by a password.
+  $name_isprotected
   !endif
- <p> You have to type this
- password before you can register yourself
-  !if $cltype iswordof 2 4
-  as a <b>teacher</b> in it.
+ <p> $name_writepasswd
+ !if $cltype iswordof 2 4
+  $name_asateacher.
  !else
-  as a participant to this class.
+  $name_asaparticipant.
  !endif
  !form reply
  <input type=hidden name=step value=1>
@@ -110,20 +117,28 @@ Registration of participation to $name_classess
  <p>
  <input type=submit value="$wims_name_send">
  </center></form> <p>
+ <b>$wims_name_warning</b>.
  !if $cltype iswordof 2 4
-  <b>ATTENTION</b>. Direct registration to an institution portal is reserved
-  to teachers. Students should directly register to a
-  !href cmd=new&module=$module&class=$class&subclass=yes subordinate class
+  $name_access1
+ !else
+  $name_access2
+ !endif
+ $name_obtainpasswd
+(
+ !if $cltype iswordof 2 4
+!mailurl $smail $name_write_adm
+ !else
+ !mailurl $smail $wims_name_wsup
+ !endif
+).
+ !if $cltype iswordof 2 4
+  <p><b>ATTENTION</b>. L'inscription directe au $name_classe est réservée aux
+  enseignants. Si vous êtes élève, veuillez vous inscrire
+  !href cmd=new&module=$module&class=$class&subclass=yes dans la classe
+  qui vous concerne
 .
   <p>
-  <b>Remark</b>. If the administrator ($supervisor) of the portal
- !else
-  <b>Remark</b>. If the supervisor ($supervisor) of this class
- !endif
- allows you the access, you should be able to obtain the password from him/her.
-(
- !mailurl $smail Write to the supervisor
-)
+  !endif
  !goto end1
 !endif
 
@@ -131,15 +146,14 @@ Registration of participation to $name_classess
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
   <input type=hidden name=step value=1>
-  <label for="search">To bring a participant already registered in $name_classes,
-  give a word in his/her name or login:</label>
+  <label for="search">$name_research:</label>
   <input size=20 name=search id="search" value="$search">
   <input type=submit value=OK>
   </form> <p>
   !default foundcnt=0
   !if $foundcnt>0
    $table_header
-   <caption>Click on a name to bring to the class.</caption>
+   <caption>$name_clickname</caption>
    $table_hdtr<th>$wims_name_name</th><th>$wims_name_Login</th></tr>
    !for i=1 to $foundcnt
     !set l=!line $i of $found
@@ -153,17 +167,11 @@ Registration of participation to $name_classess
    !goto end1
   !endif
   !if $search!=$empty and $foundcnt=0
-   (No participant account found with <tt>$search</tt> in name or login.) <p>
+   ($name_nofound) <p>
   !endif
-  Please fill-in the following informations about the new participant to
-  $classname.
-  !set name_Your=The
-  !set name_you=the participant
+  $name_newparticipant
  !else
-  In order to register yourself as a participant to the class $classname,
-  please fill-in the following informations.
-  !set name_Your=Your
-  !set name_you=you
+  $name_inscription2
  !endif
   !form reply
  <input type=hidden name=step value=2>
@@ -173,20 +181,17 @@ Registration of participation to $name_classess
   <p>
  <li><label for="login">$wims_name_Login</label>
   <input size=16 name=login id="login" value="$login"> <br>
-  This will be the name which $name_you will use to log into the $classname later.
-  Please choose a word containing between 4 and 16 characters
-  (digits or letters without accent).
+  $name_warning_login. $name_passwd_warning
   <p>
  <li><label for="pass">$wims_name_Password</label>
   <input type=password size=16 name=pass id="pass"> <br>
-  the password must contain between 4 and 16 characters (digits or letters
-  without accent).
+  $name_passwd_warning
   <p>
- <li><label for="email">$wims_name_email  (optional):</label><br>
+ <li><label for="email">$wims_name_email ($name_optional) :</label><br>
   <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
-  <li>Type of the account:
+  <li>$name_accounttype :
   !default utype=0
   !formradio utype list 0,1 prompt $wims_name_namesstudent,$wims_name_namesteacher
  !endif
@@ -197,16 +202,14 @@ Registration of participation to $name_classess
 !endif
 
 !if $step=2
- Hello, $firstn $lastn!<p>
- You are registering yourself as a participant to the $name_classesss $classname,
- with the login name &nbsp;
- ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ $name_hello, $firstn $lastn!<p>
+ $name_inscription3 <tt><b><font color=green>$login</font></b></tt>. <p>
  !if $email=$empty
-  You didn't give a valid email address. <p>
+  $name_nonvalid <p>
  !else
-  Your email address: <tt>$email</tt> <p>
+  $wims_name_email: <tt>$email</tt> <p>
  !endif
- <label for="pass2">In order to verify the exactness of your password, please retype it again:</label>
+ <label for="pass2">$name_passwd_exact:</label>
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2 id="pass2">
@@ -217,37 +220,33 @@ Registration of participation to $name_classess
 
 !if $step=3
  !if $wims_user=supervisor
-  The participant $firstn $lastn is added to the $name_classe.
+  $name_studentadded
+  <p>
   !if $wims_supertype=4
    !readproc adm/gateway/transfer $login test
    !if $transfer_test>0
     <p>
-    This participant may have activities in another class. 
-    !href module=adm/class/userlist&job=transfer&getuser=$login Transfer the activities
-    into this class.
+    $name_otheractivities
+    !href module=adm/class/userlist&job=transfer&getuser=$login $name_transfer1
     <p>
    !endif
   !endif
-  !href module=adm/class/userlist List of participants
-.&nbsp;
-  !href module=$module&step=1 Add another participant
-.
+ !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
+ addstudent,1,module=$module&step=1\
+ to wims_menu_items
   !goto end
  !endif
- Hello, $firstn $lastn!<p>
- Welcome to the class $classname.
- You are now a participant of this class/course, with the login name
- ``<b><font color=green>$login</font></b>''. <p>
- You may now
+ $name_hello, $name_student!<p>
+ $name_welcome
+ <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
+ $name_youcan 
  !if $wims_class!=$empty
-  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
-	go to work in it
+  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
 .
  !else
-  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&auth_user=$login">
-  go to work in the class</a>. (Also think of putting this link in your
-  bookmark.)
- !endif
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
+  $name_gotowork</a>. 
+  ($name_bookmark)
  !goto end
 !endif
 
@@ -257,7 +256,7 @@ Registration of participation to $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
- !set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items
 !else
  !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
