@@ -1,0 +1,103 @@
+!goto $wims_read_parm
+
+:pass
+
+<center><h2>Mot de passe d'inscription</h2></center>
+
+Il y a deux types de mots de passe d'inscription&nbsp;:
+<p>
+Le mot de passe d'inscription au portail permet de créer les comptes
+d'enseignant. Ce mot de passe ne doit JAMAIS être donné aux élèves, puisque
+tous ceux qui s'inscrivent directement dans le portail sont reconnus
+comme enseignants et ont les droits d'enseignant.
+<p>
+Le mot de passe d'inscription d'une classe ou d'un cours permet de créer
+des comptes d'élèves. Un élève doit s'inscrire dans une classe donnée, mais toute
+inscription est enregistrée pour tout l'établissement, en tant qu'élève.
+<p>
+Seuls les classes et certains cours ont besoin d'un mot de passe
+d'inscription : dans les autres zones (niveau, programme), l'inscription
+des élèves n'est pas autorisée.
+<p>
+Mais vous pouvez aussi définir ou modifier le mot de passe d'inscription pour un
+niveau, qui descendra dans tous les classes et cours du niveau en tant que
+mot de passe par défaut.
+<p>
+Quand vous modifiez les propriétés et que vous ne voulez pas changer le mot
+de passe, vous n'avez qu'à laisser le champ vide.
+
+
+
+!exit
+:passs
+
+<center><h2>Mot de passe d'enseignant</h2></center>
+
+Ces mots de passe permettent aux enseignants d'accéder à la
+gestion des niveaux, classes, programmes ou cours. Par défaut, le mot de
+passe d'enseignant de la zone parent est installé.
+<p>
+Quand vous modifiez les propriétés et que vous ne voulez pas changer le mot
+de passe, laissez le champ vide.
+
+
+!exit
+
+:progopt
+
+
+<center><h2>Options d'un programme</h2></center>
+
+Si un programme est <em>obligatoire</em>, tous les élèves d'une classe ayant
+un cours dépendant du programme sont automatiquement inscrits dans ce cours.
+Autrement dit, tous les cours du programme sont obligatoires pour les classes
+correspondantes.
+<p>
+Par contre, pour un cours <em>optionnel</em>, les élèves doivent
+spécifiquement s'inscrire à ces cours. C'est utile quand le programme est une
+option de l'enseignement.
+<p>
+Si l'installation automatique des cours du programme est mise à "oui", un
+cours sera créé pour chaque classe du niveau, au moment de la création du
+programme. De plus, un cours du programme sera automatiquement créé 
+dès qu'une nouvelle classe
+sera créée dans le niveau.
+<p>
+Si l'installation automatique des cours est mise à "non", les enseignants
+des classes doivent manuellement créer les cours correspondant au programme.
+
+
+!exit
+
+:sechost
+!reset wims_prefix
+!set special_parm2=secure
+!read wimshome/public_html/modules/adm/class/config.$lang/help/config.phtml
+
+!exit
+
+:structure
+
+!read lang/structure.phtml.$moduclass_lang
+
+!exit
+
+:supervisor
+
+<center><h2>L'enseignant responsable d'une zone</h2></center>
+
+Chaque zone (niveau, classe, programme, cours) d'une structure d'établissement
+doit avoir un enseignant responsable. Le droit d'accès aux pages 
+de gestion de la zone se fait normalement par un compte
+d'enseignant.
+<p>
+Par défaut, l'enseignant responsable de la zone sera celui de la zone parent.
+<p>
+Pourtant, tout autre enseignant de l'établissement peut aussi avoir accès 
+à la gestion de la zone, s'il connaît le mot de passe d'enseignant-responsable de la zone.
+La seule différence est que ce sont le nom et l'adresse email de l'enseignant
+responsable
+"officiel" qui s'afficheront dans les pages pour élèves de la zone.
+
+
+!exit

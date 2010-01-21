@@ -1,0 +1,22 @@
+
+cparent=teacher
+parent=teacher
+!if $cancel!=$empty or $del=$empty
+ job=teacher
+ !changeto jobs/$job.proc
+!endif
+
+user_exists=
+!readdef $classdir1/.users/$del
+
+!if $confirm=$empty or $user_exists!=yes
+ !exit
+!endif
+
+!sh cd $wims_home/log/classes; rm -fR $wims_superclass/.users/$del
+!read adm/gateway/mkteacherlist
+
+confirm=
+job=$cparent
+!changeto jobs/$job.proc
+

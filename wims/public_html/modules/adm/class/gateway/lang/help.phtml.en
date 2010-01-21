@@ -1,0 +1,92 @@
+!goto $wims_read_parm
+
+:pass
+
+<center><h2>Registration password</h2></center>
+
+There are two types of registration password:
+<p>
+Registration password of the portal is for teacher accounts. This password
+should NEVER be given to students, because everybody registering directly
+into the portal will be recognized as a teacher and be given teacher's rights.
+<p>
+Registration password of a class or a course is for student accounts.
+Students must register to a given class, but any registation is globally
+registered for the whole institution, as a student.
+<p>
+Only classes and certain courses need registration password, because other
+zones (level, program) do not accept student registrations.
+<p>
+But you can also define or modify the registration password for a level,
+which will go down to all the classes and courses of the level as the default
+password.
+<p>
+Leave the field empty when you modify the properties, if you don't want to
+change the password.
+
+
+!exit
+:passs
+
+<center><h2>Supervisor password</h2></center>
+
+This is used to let teachers to gain management access to the level, class,
+program or course. By default, the supervisor password of the parent zone
+will be used.
+<p>
+Leave the field empty when you modify the properties, if you don't want to
+change the password.
+
+
+!exit
+
+:progopt
+<center><h2>Options of a program</h2></center>
+
+If a program is <em>mandatory</em>, all students of a class having a course
+corresponding to it will be automatically registered to the course. That is,
+all its courses are mandatory for the corresponding classes.
+<p>
+On the other hand, for an <em>optional</em> program, students must
+specifically register to its courses. This is useful when the program is an
+option.
+<p>
+If the automatic course installation of the program is set to "yes", a course will
+be created for each class of the level at the creation of the program. A
+course for the program will also be created when a new class is created in
+the level.
+<p>
+If automatic course installation is set to "no", supervisors of classes must
+manually create courses corresponding to the program.
+
+
+!exit
+
+:sechost
+!reset wims_prefix
+!set special_parm2=secure
+!read wimshome/public_html/modules/adm/class/config.$lang/help/config.phtml
+
+!exit
+
+:structure
+
+!read help/$lang/structure.phtml
+
+!exit
+
+:supervisor
+<center><h2>The supervisor of a zone</h2></center>
+
+Each zone (level, class, program, course) of the institutional structure
+should have a supervisor. This is usually a teacher, who will be given right
+to the management page of the zone.
+<p>
+By default, the supervisor of the zone is that of the parent zone.
+<p>
+However, other teachers may also have access to the management page, if they
+knows the supervisor password of the zone. The difference is that it is the
+"official" supervisor's name and email address that will be shown to the 
+participants the zone.
+
+!exit

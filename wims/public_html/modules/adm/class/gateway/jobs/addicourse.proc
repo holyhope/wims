@@ -1,0 +1,34 @@
+
+parent=prog
+!if $cancel!=$empty or $prog=$empty
+ !reset title,sup,passs,pass
+ job=prog
+ !changeto jobs/$job.proc
+!endif
+
+!readdef $classdir1/$prog/.def
+alevel=$class_level
+!if $confirm=$empty
+ pass=!defof class_password in $classdir1/$level/.def
+ passs=!defof user_password in $classdir1/$prog/supervisor
+ !read adm/class/levelname.phtml.$class_lang
+ !exit
+!endif
+
+title=!trim $title
+!if $title=$empty
+ error=empty_data
+ !exit
+!endif
+
+!read adm/gateway/addicourse $sup,$title
+
+!if $error!=$empty
+ !exit
+!endif
+
+!read adm/gateway/mkindex
+!reset title,sup,passs,alevel,confirm
+job=prog
+!changeto jobs/$job.proc
+

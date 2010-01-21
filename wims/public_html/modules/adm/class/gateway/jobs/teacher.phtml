@@ -1,0 +1,34 @@
+!if $teachercnt>0
+<p><center>
+$name_csv
+!getfile teachers.csv csv
+ $wims_name_or
+!getfile teachers.tsv tsv
+.
+!href module=adm/class/userlist&job=csv $wims_name_csv
+.
+</center> <p>
+!endif
+
+$table_header
+<caption>
+!href cmd=reply&job=addteacher $wims_name_addteacher
+</caption>
+$table_hdtr
+<th>$wims_name_Account</th>
+<th>$wims_name_name</th>
+<th>$wims_name_action</th>
+!for i=1 to $teachercnt
+ !set l=!line $i of $teacherlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td><tt>$c_</tt></td>
+ <td>
+ !href cmd=reply&job=modteacher&teacher=$c_ $l_, $f_
+ </td>
+ <td>
+ !href cmd=reply&job=delteacher&del=$c_ $wims_name_erase
+ </td>
+!next i
+$table_end
+
