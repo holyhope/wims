@@ -1,24 +1,29 @@
 #! /bin/sh
 cd `dirname $0`
-
+list="png gif"
 for j in `ls` ; do
- if [ -d "$j" ]; then rm $j/icon.css ; touch $j/icon.css ;
-     if [ -s $j/home.gif ]; then 
-      w=`identify -format \%w $j/home.gif`;
-      h=`identify -format \%h $j/home.gif`;
-     else w=20;h=20;
-     fi;
-     w=`expr $w + 5`
+ if [ -d "$j" ]; then rm $j/icon.css ; touch $j/icon.css ; w=0; h=0
+     for a in $list ; do 
+       if [ -s $j/home.$a ]; then 
+         w=`identify -format \%w $j/home.$a`;
+         h=`identify -format \%h $j/home.$a`;
+       fi;
+     done;
+     w=`expr $w + 2`
+     h=`expr $h + 0`
      echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a{
 	background-repeat:no-repeat;
-	min-height:"$h"px;	/* here you put the height of your  icon set*/
-	padding-left:"$w"px;/* and here the width*/
+	min-height:"$h"px;
+	padding-left:"$w"px;
 }" > icon.css
-     for i in `ls $j/*.gif` ; do file=`basename $i .gif` ; echo ".$file{
- background-image:url($file.gif);background-repeat:no-repeat;
- min-height:"$h"px;	/* here you put the height of your  icon set*/
- padding-left:"$w"px;/* and here the width*/
-}" >> icon.css; done ;
+     for a in $list ; do 
+       for i in `ls $j/*.$a` ; do file=`basename $i .$a` ; echo ".$file{
+ background-image:url($file.$a);background-repeat:no-repeat;
+ min-height:"$h"px;
+ padding-left:"$w"px;
+}" >> icon.css;
+       done
+     done
      mv icon.css $j ; if [ -s "$j/icon_orig.css" ]; then `cp $j/icon_orig.css $j/icon.css`; fi 
  fi;
 done
