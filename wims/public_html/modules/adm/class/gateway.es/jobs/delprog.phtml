@@ -2,16 +2,17 @@
 !read adm/title.phtml 3\
 $name_delprogram0 <em>$class_description</em>
 
-<font color=red><b>AVISO</b>.</font> ¡Esta operación es irreversible!
-¡Y <font color=red>TODO</font>
-lo que hay en este programa será borrado <font color=red>DEFINITIVAMENTE</font>:
-cursos, actividades, notas!
-<p>
-¿Está seguro de que quiere borrar este programa? 
-<p><center><font size="+1">
+!if $class_recshare=main
+  $name_warning_share
+ !href cmd=reply&job=$job $wims_name_giveup
+ !exit
+!endif
 
+!read lang/warning.phtml.es delprog
+
+<p><center>
 !href cmd=reply&job=$job&del=$del&confirm=yes $wims_name_yes
 &nbsp;&nbsp;
 !href cmd=reply&job=level&level=$level $wims_name_no
-</font></center> <p>
+</center> <p>
 
