@@ -1,0 +1,35 @@
+
+!if $datacnt<1
+ $name_warning_update
+ !exit
+!endif
+
+$table_header
+<caption>$name_updatemodule
+<a href="$w_/rss/modif.xml"><img src="gifs/rss.png" border=0 alt=rss></a></caption>
+$table_hdtr<th>$wims_name_date</th><th>$wims_name_language</th><th>$wims_name_title</th><th>$wims_name_Description</th>
+<th>$name_new</th>
+</tr>
+!for i=1 to $datacnt
+ !set l=!line $i of $data
+ !distribute words $l into d_,a_,v_
+ !set la=!module language $a_
+ !set tit=!module title_$lang $a_
+ !set desc=!module description_$lang $a_ 
+ !if $tit=
+  !set tit=!module title $a_
+ !endif
+ !if $desc=
+  !set desc=!module description $a_ 
+ !endif
+ $table_tr
+ <td align=center><small>
+ !char 1 to 8 of $d_
+ </small></td><td align=center>$la</td><td>
+ !href target=wims_test module=$a_ $tit
+ </td><td>
+ $desc
+ </td><td align=center>$v_</td></tr>
+ !reset desc tit
+!next i
+$table_end
