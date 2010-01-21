@@ -16,7 +16,7 @@ name_icourse=Cours interclasse
 
 name_dellevel0=Effacer le niveau
 name_delclass0=Effacer la classe
-name_delprogram0==Effacer le programme
+name_delprogram0=Effacer le programme
 name_delcourse0=Effacer le cours
 name_deltest0==Effacer la zone test
 name_classproperties=Propriétés de la classe
@@ -68,6 +68,7 @@ levelnames=CP,CE1,CE2,CM1,CM2,\
    !set name_course4= Voici les classes où ce programme peut encore installer des cours.\
  Cliquez sur le titre pour installer un cours.
 !endif
+
 !if $job=class
   !set name_class1=Cette classe n'a pas encore de cours.
   !set name_class2=Cours existants dans la classe
@@ -97,4 +98,36 @@ levelnames=CP,CE1,CE2,CM1,CM2,\
  !set name_prog7=Les ressources de ce programme sont partagées par d'autres programmes.
  !set name_prog8=Ce programme partage les ressources pédagogiques du programme
  !set name_prog9= Ce programme n'a pas de cours interclasse.
+!endif
+
+!if $job=backstruct
+ !set name_backstruct1=Voici le fichier de sauvegarde
+
+ !set name_backstruct2=C'est un fichier au format csv. Signification des champs :\
+<p>type, code, titre, compte-administrateur, mot-de-passe-inscription, mot-de-passe-enseignant, options.
+
+!endif
+
+!set name_warning_share= Vous ne pouvez pas effacer ce programme car ses ressources pédagogiques \
+sont partagées par d'autres programmes.
+!if $job=addclass
+!set form_titlename=Titres des nouvelles classes\
+ <br><small>(séparez les titres par des virgules si <br>\
+ vous ajoutez plusieurs classes en même temps)</small>
+!exit
+!endif
+
+!if $job=addicourse
+!set form_caption=Ajouter des cours interclasse au programme
+!set form_titlename=Titres des nouveaux cours\
+ <br><small>(séparez les titres par des virgules si vous<br>\
+ ajoutez plusieurs cours en même temps)</small>
+!exit
+!endif
+
+!if $job=addprog
+!set form_titlename=Titres des nouveaux programmes :\
+ <br><small>(séparez les titres par des virgules si vous<br>\
+ ajoutez plusieurs programmes en même temps)</small>
+!exit
 !endif
