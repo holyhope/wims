@@ -13,9 +13,9 @@
  <tt><font color=green>$file</font></tt>? <br>
  <small>($flen 字节, $facc, 最近修改时间 $fdat)</small>
  <p> <center> <font size="+2">
- !href cmd=reply&job=$job&job2=eraseconfirm 是
+ !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
- !href cmd=reply&job=fs 否
+ !href cmd=reply&job=fs $wims_name_no
  </font> <p> <hr>
  !goto end2
 !endif
@@ -57,8 +57,8 @@
  !mexec scripts/textarea.sh
 <br>
 !if $modifok=yes
- <input type=submit name=save value=保存>
- <input type=submit name=abandon value=取消>
+ <input type=submit name=save value="$wims_name_tosave">
+ <input type=submit name=abandon value="$wims_name_giveup">
 !endif
 </center>
 </form>
@@ -69,7 +69,7 @@
 !href cmd=reply&job=file&job2=download 下载文件
 . &nbsp;
 !if $modifok=yes
- !href cmd=reply&job=file&job2=erase 删除
+ !href cmd=reply&job=file&job2=erase $wims_name_erase
 . &nbsp;
 !endif
 

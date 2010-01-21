@@ -13,9 +13,9 @@
  <tt><font color=green>$file</font></tt>? <br>
  <small>($flen bytes, $facc, last modified $fdat)</small>
  <p> <center> <font size="+2">
- !href cmd=reply&job=$job&job2=eraseconfirm Yes
+ !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
- !href cmd=reply&job=fs No
+ !href cmd=reply&job=fs $wims_name_no
  </font> <p> <hr>
  !goto end2
 !endif
@@ -57,8 +57,8 @@
  !mexec scripts/textarea.sh
 <br>
 !if $modifok=yes
- <input type=submit name=save value=Save>
- <input type=submit name=abandon value=Cancel>
+ <input type=submit name=save value="$wims_name_tosave">
+ <input type=submit name=abandon value="$wims_name_giveup">
 !endif
 </center>
 </form>
@@ -69,7 +69,7 @@
 !href cmd=reply&job=file&job2=download Download the file
 . &nbsp;
 !if $modifok=yes
- !href cmd=reply&job=file&job2=erase Erase it
+ !href cmd=reply&job=file&job2=erase $wims_name_erase
 . &nbsp;
 !endif
 
