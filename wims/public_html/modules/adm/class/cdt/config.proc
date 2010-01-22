@@ -1,0 +1,35 @@
+
+!if $cf_abandon!=$empty
+ !reset cf_abandon
+ job=home
+ !read home.proc
+ !exit
+!endif
+
+!if $cf_set!=$empty
+ !reset cf_set
+ cf_title=!trim $cf_title
+ !if $cf_title=$empty
+  cf_title=$wims_name_cdt
+ !endif
+ cf_description=!singlespace $cf_description
+ cf_title=!singlespace $cf_title
+ cf_title=!char 1 to 50 of $cf_title
+ cf_link=!char 1 to 20 of $cf_link
+ test=!nospace $cf_link
+ !if $test=$empty
+  cf_link=$cdt_link
+ !endif
+ cf_description=!char 1 to 1024 of $cf_description
+ !setdef !set cdt_title=$cf_title\
+!set cdt_description=$cf_description\
+!set cdt_link=$cf_link in wimshome/log/classes/$wims_class/cdt/.def
+ cdt_description=$cf_description
+ cdt_title=$cf_title
+ cdt_link=$cf_link
+!else
+ !for k in title,description
+  cf_$k=$(cdt_$k)
+ !next k
+!endif
+

@@ -1,0 +1,96 @@
+!set lang_exists=yes
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ presso <b><font color=green>$wims_institutionname</font></b>
+
+!!!set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+
+!if $job=adddate
+  !set cdt_subtitle=Aggiungi/Modifica una data
+  !goto common
+!endif
+
+!if $job=addtodo
+  !set cdt_subtitle=Aggiungi un compito
+  !goto common
+!endif
+
+!if $job=logfile
+  !set cdt_subtitle=log
+  !set name_text=Elenco delle connnessioni all'agenda del corso
+  !goto common
+!endif
+
+!if $job=config
+  !set cdt_subtitle=File binari
+  !set name_link=Testo che compare come link nella home page del corso
+  !set name_intro=Questi sono i parametri che è possibile modificare
+  !set name_see=Visualizza
+  !set name_see2=il log delle connessioni all'agenda
+  !goto common
+!endif
+
+!if $job=file
+  !set name_erasedfile=!nosubst Il file <b>$erase</b> è stato cancellato.
+  !set name_depos=&Egrave; possibile caricare un file
+  !set name_available=File disponibili
+  !set name_erase=Elimina un file
+  !set name_nodeposit=Non è possibile inserire un nuovo file perché si è raggiunto il limite di spazio disponibile. Spiacenti.
+  !set name_explanation1=!nosubst Questi file possono essere indicati \
+  utilizzando la variabile <tt>\filedir</tt>. Per esempio, \
+  <p><center>\
+ <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
+  </center> <p>\
+  inserisce un link al file <a href="$m_filedir/$f1">$f1</a>.\
+  &Egrave; anche possibile scrivere
+
+  !set name_explanation2=per inserire nella pagina un file immagine \
+  <tt>myfile.jpg</tt>. <p>\
+  Solo gli utenti registrati possono accedere a questi file.
+
+  !set name_availablespace=Spazio disco totale disponibile per il corso,Spazio disco ancora libero a disposizione
+  !goto common
+!endif
+
+!if $job=helplink
+  !set name_Add=Per aggiungere un oggetto, cliccare sul link corrispondente.
+  !set name_exam=Esame
+  !goto common
+!endif
+
+:common
+!distribute line compiti svolti\
+compiti da svolgere\
+dal\
+al\
+Aggiungi un esame\
+Aggiungi un test di autovalutazione\
+per il\
+Compiti da svogere\
+Compiti\
+Numero di scadenze da visualizzare\
+Da completare entro il\
+Compiti svolti\
+Lezione\
+caratteri\
+nessuna informazione\
+nessuna informazione per questo giorno\
+nessuna informazione per questo periodo\
+Data\
+Materia\
+In aula\
+Assegnato il\
+Non c'è lavoro da svolgere per il\
+into name_done,name_todo,name_between,name_and,name_addexam,name_addsheet,name_for,name_worktodo,\
+name_work,name_nb_date,name_todo2,name_workdone,name_session,\
+name_character,name_noinfo1,name_noinfo2,name_noinfo3,\
+name_Day,name_discipline,name_inclass,name_giventhe,name_nowork
+
+!set name_workfor=$name_work $name_for
+
+!set name_warning1=(si può omettere la seconda data).
+
+!set name_date=!nosubst $jday/$jmonth/$jyear
+!set name_date2=!nosubst $jday2/$jmonth2/$jyear2
+
+

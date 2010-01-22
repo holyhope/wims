@@ -1,0 +1,26 @@
+!read adm/css.phtml
+!read adm/class/classlang names.phtml
+!read lang/names.phtml.$moduclass_lang
+
+!if link isin $job
+ !if $(module_title_$moduclass_lang)!=
+   !set module_title=$(module_title_$moduclass_lang)
+ !endif
+ !header
+!else
+ !header1
+!endif
+
+!if $job2=print and $job isitemof todo,work
+ !changeto print$job.phtml
+!endif
+
+!if $error=bad_class
+ !read lang/msg.phtml.$moduclass_lang $error
+ !tail
+ !exit
+!endif
+
+!read $job.phtml
+
+!tail
