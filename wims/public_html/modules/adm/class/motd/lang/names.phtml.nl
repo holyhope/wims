@@ -31,3 +31,5 @@
 alle studenten de klas.
 
 !set name_commun=Klasse bericht (voor alle studenten)
+
+!set name_status=Actif,Caché

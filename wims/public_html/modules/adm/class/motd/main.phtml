@@ -50,7 +50,7 @@ $table_header
   <th>$name_participant</th>
   <th width="65%">$name_actualmotd</th>
   <th>$wims_name_Status</th>
-  <th>$wims_name_action</th>
+  <th>$wims_name_Action</th>
  </tr>
  !for k=1 to $nbuser
   $table_tr 
@@ -63,9 +63,9 @@ $table_header
    <td>
     !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$u
     !if $test=$empty
-     Actif
+     $(name_status[1])
     !else
-     Caché &nbsp;
+     $(name_status[2])
      !href cmd=reply&job=reactivate&user=$u $name_reactive
     !endif
    </td>
