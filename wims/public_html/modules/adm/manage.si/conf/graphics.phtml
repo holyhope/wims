@@ -27,7 +27,7 @@ Check dynamic graphics (you may wish to do it with different browsers):
 This formula
 !set formula=\sqrt{x^2+y^2}=\sin(t^3)
 !instex $$$$ $formula $$$$
- uses dynamic TeX insertion. It should appear correctly, unless TeX is not
+ uses dynamic TeX insertion. It should appear correctly, unless <b>TeX</b> is not
 correctly installed on your system.
 You may change TeX font size step if they appear
 too big or too small (read the 
@@ -67,7 +67,9 @@ linewidth 2\
 levelcurve green,x^4+y^4+(cos(s*pi)*x-sin(s*pi)*y)*(sin(s*pi)*x+cos(s*pi)*y),0,-0.06,0.2,0.6,1
 </td></tr>$table_end <p>
 
-The following plot uses gnuplot. The curves should have different colors. If
+The following plot uses <b>gnuplot</b> (
+!exec insplot_about
+). The curves should have different colors. If
 this is not OK, try different graphics formats.
 <p><center>
 !set ins_border=2
@@ -76,6 +78,18 @@ this is not OK, try different graphics formats.
  x$color_1 x$color_2 x$color_3 x$color_4 x$color_5 x$color_6 x$color_7 x$color_8 x$color_9 x$color_10
 !insplot [-5:5] [-1.4:1.4] sin(x),cos(x),-sin(x),-cos(x)
 </center> <p>
+The following plot uses <b>graphviz</b>. If it does not appear, then
+!!!! no space after about ...
+!exec graphviz about
+ is not correctly installed
+<p><center>
+!set graphviz_dot=neato
+!set graph=!exec graphviz digraph test {a->b [color=red] ; b-> c; a-> é ; c-> é}
+!set graph=!line 1 of $graph
+ <img src="$graph" alt="graphviz">
+</center>
+
+<p>
 The following ray-traced picture is not affected by the above formats. If it does not
 appear, then 
 !exec povray about
