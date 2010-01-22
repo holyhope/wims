@@ -3,21 +3,22 @@
 :pass
 
 <center><h2>Aanmeldings wachtwoorden</h2></center>
+
 Er zijn twee soorten wachtwoorden voor de aanmelding (registratie):
 <p>
 Het aanmeldings wachtwoord voor het <b>portaal</b> is voor docenten.<br>
-Dit wachtwoord mag <tt><b>nooit</b></tt> worden verstrekt aan leerlingen.<br>
+Dit wachtwoord mag <tt><b>nooit</b></tt> worden verstrekt aan studenten.<br>
 Omdat iedereen die zich aanmeld bij deze portaal wordt gezien als docent (met de bijhorende bevoegdheden).
 <p>
-Het aanmeldings wachtwoord voor een <b>klas</b> of voor een cursus is bedoeld voor studenten/leerlingen.<br>
+Het aanmeldings wachtwoord voor een klas of voor een cursus is bedoeld voor studenten.<br>
 Leeringen moeten zich aanmelden voor een bepaalde klas.
-(maar een aanmelding in een bepaalde klas, geldt natuurlijk voor het gehele instituut.)
+Een aanmelding in een bepaalde klas, maakt de student automatisch deelnemer voor het gehele instituut.
 <p>
 Alleen klassen en ook sommige cursussen vereisen een aanmeldings wachtwoord,
-omdat andere zones (nivo, programma) geen leerling aanmeldings accepteren.
+omdat andere zones (leerlniveau's, lesprogramma's) geen leerling automatisch accepteren.
 <p>
-U kunt ook een aanmeldings wachtwoord vastleggen (of veranderen) voor een compleet "niveau".<br>
-Dit wachtwoord wordt dan gebruikt als het "default aanmeldings wachtwoord" voor alle cursussen en klassen.
+U kunt ook een aanmeldings wachtwoord vastleggen (of veranderen) voor een compleet leerniveau.<br>
+Dit wachtwoord wordt dan automatisch ook gebruikt als het "aanmeldings wachtwoord" voor alle cursussen en klassen onde dat leerniveau.
 <p>
 Laat het invulveld leeg wanneer U alleen enkele eigenschappen wilt veranderen (dus wanneer
 U het wachtwoord niet wilt veranderen).
@@ -30,29 +31,34 @@ U het wachtwoord niet wilt veranderen).
 
 <center><h2>Supervisor wachtwoord</h2></center>
 
-Dit wachtwoord is vereist om docenten toegang te geven tot het managen van een niveau, klas, programma of cursus.
-De default instelling is het supervisor wachtwoord van de bovengeordende zone.
+Dit wachtwoord is vereist voor docenten om supervisor bevoegdheden 
+te krijgen op leerniveau, klas, lesprogramma of cursus.
+De standaard instelling is het supervisor wachtwoord van de bovengeordende zone.
 <p>
-Laat het wachtwoord veld leeg als U nu het wachtwoord niet wilt veranderen.
+Laat het wachtwoord veld leeg 
+als U nu het wachtwoord niet wilt veranderen.
 
 !exit
 
 :progopt
 
 <center><h2>Opties voor een lesprogramma</h2></center>
-Als een programma <em>verplicht</em> is, worden alle leerlingen in een klas die deze
-kursus moeten volgen, automatisch geregistreerd bij deze kursus.
+
+Als een lesprogramma <em>verplicht</em> is, 
+worden alle studenten in een klas automatisch geregistreerd bij deze cursus.
 Dus alle cursussen zijn verplicht in alle corresponderende klassen.
 <p>
-Aan de andere kant, voor een <em>optioneel</em> programma , moeten de studenten
-zichzelf aanmelden voor de kursussen. 
+Aan de andere kant, voor een <em>optioneel</em> 
+lesprogramma , moeten de studenten
+zichzelf aanmelden voor de cursussen. 
 <p>
 Als de automatische cursusinstallatie van het lesprogramma op "ja" staat, wordt
-voor elke klas op dit niveau, de kursus aangemaakt.
-Een kursus van dit lesprogramma wordt ook -automatisch- voor elke nieuwe klas op dit niveau aangemaakt. 
+voor elke klas op dit leerniveau, de cursus aangemaakt.
+Een cursus van dit lesprogramma wordt ook automatisch 
+voor elke nieuw te maken klas op dit leerniveau aangemaakt. 
 <p>
 Wanneer de automatische cursusinstallatie van het lesprogramma op "nee" staat, moeten
-de cursussen bij dit programma -op dit niveau- handmatig worden aangemaakt. 
+de cursussen bij dit lesprogramma op dit leerniveau handmatig worden aangemaakt. 
 
 
 !exit
@@ -71,18 +77,17 @@ de cursussen bij dit programma -op dit niveau- handmatig worden aangemaakt.
 !exit
 
 :supervisor
+<center><h2>De supervisor van een zone</h2></center>
 
-
-<center><h2>
-De supervisor van een zone
-</h2></center>
-Elke zone (niveau, klas, programma, cursus) van een institutionele structuur
-(simpelweg: digitale school) heeft een supervisor.
-Dit is meestal een docent, die het gehele managment van zo'n zone gaat bepalen.  
+Elke zone (leerniveau, klas, lesprogramma, cursus) van een institutionele structuur 
+heeft een supervisor.
+Dit is meestal een docent, die toegang heeft tot de management pagina van het instituut .  
 <p>
-Uiteraard, kunnen ook andere docenten (in het bezit van het supervisor wachtwoord) deze
+De default instelling is dat de supervisor ook administrator rechten heeft voor alle onderliggende structuren.
+<p>
+Uiteraard, kunnen ook andere docenten (in het bezit van het supervisor wachtwoord) ook deze
 management zone gebruiken voor configuratie en onderhoud.
-Het verschil is dat de alleen "officiele" supervisor_naam en emailadres wordt getoond aan alle 
+Het verschil is dat de alleen "officiele" supervisor naam en emailadres wordt getoond aan alle 
 deelgebieden van deze zone.
 
 !exit
