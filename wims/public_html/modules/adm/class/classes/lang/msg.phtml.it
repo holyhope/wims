@@ -1,0 +1,25 @@
+!set wims_module_log=ERROR $error
+
+<b>Errore</b>.
+
+!if $error=bad_password
+ Password errata. Riprova tra qualche secondo.
+ <form action="#" name=chrono>
+ <b><font color=red>Attenzione</font></b>! Aspettare 5 secondi o la password
+ non sarà accettata!
+ <input size=1 name=clock> </form>
+ !exit
+!endif
+
+!if $error=in_exam
+ Non è possibile cambiare corso nel mezzo di un esame.
+ !exit
+!endif
+
+!if $error=recent_rafale
+ L'accesso è sospeso per 10 minuti a causa di attività irregolari.
+ !exit
+!endif
+
+!msg $error
+

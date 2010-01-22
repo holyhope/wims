@@ -1,0 +1,54 @@
+!read adm/language names.phtml
+!read lang/names.phtml.$modu_lang
+
+!if robot isin $session or _ isin $session
+ !exit
+!endif
+!if $error issametext bad_password
+  !read js/chrono.phtml 5
+!endif
+!set wims_html_header=$wims_html_header $header_js
+
+!read adm/css.phtml
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+
+!header
+
+!read adm/title.phtml 3\
+\
+--- $(wims_name_n_$type) ---
+
+!if $error!=$empty
+ !read lang/msg.phtml.$moduclass_lang
+ <p><hr> <p>
+!endif
+
+!read $type.phtml
+!if $wims_user=$empty or $wims_user=supervisor or $wims_class=$superclass
+ !for t in participant,supervisor,example
+  !if $t!=$type or $superclass!=$empty
+   !set wims_menu_items=!append line n_$t,1,module=$module&type=$t&keyword=$keyword\
+to $wims_menu_items
+  !! !href module=$module&type=$t&keyword=$keyword $(wims_name_n_$t)
+  !endif
+ !next t
+!endif
+!if $wims_user=$empty and $type iswordof supervisor example
+ !set wims_menu_items=!append line ,0,\
+ classcreate,1,module=adm/class/regclass\
+to $wims_menu_items
+!endif
+
+ !if $wims_theme_version=0 or $wims_theme_version=
+ <center>
+  !href target=wims_help module=help/main&chapter=3 $wims_name_Explanations
+ </center>
+ !endif
+!endif
+
+!tail
+
+!reset auth_user,auth_password,superclass,keyword
+

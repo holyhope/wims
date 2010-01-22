@@ -1,0 +1,112 @@
+!set lang_exists=yes
+!if $class_type iswordof 2 4
+   !if $class_type=2
+    !set name_classe=Bildungseinheit
+    !set name_sup=Administrator
+    !set name_classes= $name_classe
+    !set name_classesss= von $name_classe
+    !set name_classessss= $name_classe
+   !else
+    !set name_classe=Bildungsstruktur
+    !set name_sup=Administrator
+    !set name_classes= $name_classe
+    !set name_classesss= von $name_classe
+    !set name_classessss= $name_classe
+   !endif
+   !set name_classess= $name_classe
+ !else
+   !set name_classe=classe
+   !set name_classes=$name_classe
+   !set name_classess=$name_classe
+   !set name_classesss= von $name_classe
+   !set name_classessss= $name_classe
+   !set name_sup=Lehrer/Dozent
+ !endif
+ !if $splevel iswordof 1 2 3
+   !set sousclasses=!item $splevel of Klasse,Kurs
+   !set Name_level= !item $splevel of Niveau,Klasse,Kurs
+   !set Name_levels= !item $splevel of Niveaus,Klassen,Kurse
+   !set sousclasses_else=!item $splevel of entweder eine Klasse oder ein Kurs
+   !set name_level_else= !item $splevel of ein Niveau,eine Klasse,ein Kurs
+ !else
+   !set sousclasses=Teilklassen
+   !set sousclasses_else=Klasse oder Bildungsstruktur
+ !endif
+
+!set CL_Name	=Niveau,Klasse,Programm,Kurs,Klassenübergreifende Kurse,Portal,Test Zone
+!set Name_program=Programme
+!set name_program=Programm
+!set name_portalandgroup=Bildungsstrukturen und -einheiten
+!set name_independantclass=Unabhängige Klassen
+
+!distribute items Einschreiben,Anonym,Geöffnet,Geschützt,Jahr,\
+Neuer Teilnehmer,Registriert,Verbindungstyp,Up\
+into name_register,name_anonymous,name_open,name_protected,name_year,\
+name_new_participant,name_registered,name_connexion,name_up
+
+!distribute line Sie verfügen über kein Konto in anderen Klassen.\
+Klasse suchen\
+Keine andere Klasse verfügbar.\
+Keine Klasse entspricht Ihrer Suche.\
+Sie können direkt Folgendes aufrufen\
+into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
+
+!let classification=Ecole,Collège,Lycée,Université,Autre
+
+!set name_text1=Wählen Sie die Zeile der Sie betreffenden Klasse bzw. Bildungsstruktur aus.\
+ <p>\
+Wenn Sie noch nicht eingeschrieben sind, klicken Sie auf <tt>$name_register</tt>\
+(liegt der Status <tt>Geschützt</tt> vor, dann müssen Sie ein Kennwort eingeben.\
+Sie erhalten dieses vom Lehrer/Dozenten bzw. Administrator).\
+<p>Andernfalls klicken Sie auf <tt>$name_enter</tt>, um die gewünschte Seite aufzurufen.
+
+!set name_text2=Um $name_level_else $sousclasses_else aufzurufen, wählen \
+  Sie den entsprechenden Namen in der nachstehenden Tabelle aus.
+!set name_text3=Oder Sie wählen $name_level_else $sousclasses_else in der nachstehenden Tabelle aus.
+
+!set name_language=Auf dieser Website ist keine Klasse in deutscher Sprache\
+  verfügbar. Möchten Sie eine Klasse in einer anderen Sprache auswählen?
+!set name_language2=Diese Website enthält keine Klasse in deutscher Sprache.
+
+!set name_warning=<b>Fehler:</b> Sie möchten sich bei $name_classess anmelden, \
+  diese Klasse existiert jedoch nicht. Überprüfen Sie bitte Ihre Anmeldeanforderung.
+
+!set name_enter=!nosubst Um <b><font color=green>$class_description</font></b>\
+  <b><font color=green>$class_institution</font></b> aufrufen zu können, müssen \
+  Sie Ihren Benutzernamen und Ihr Kennwort eingeben.
+
+!set name_entersup=!nosubst Um $name_classes <b><font color=green>$class_description</font></b>\
+  <b><font color=green>$class_institution</font></b> als <em>$name_sup</em> aufrufen \
+   zu können, müssen Sie das zugehörige Kennwort eingeben.
+ !set name_research1=Auf dieser Website sind zahlreiche virtuelle Klassen verfügbar. \
+   Um Ihre Klasse ausfindig zu machen, geben Sie ein relevantes Suchwort ein.
+ 
+!set name_research2=Ihrem Suchwort entsprechen immer noch zu viele Klassen. Grenzen Sie\
+  Ihre Suche durch ein präziseres Suchwort ein.
+
+!set name_supervisor_text=Otherwise, you may locate your class in the following table, \
+and click on its name to get into it as supervisor.
+
+!if $type=example
+   !set name_example1=Sorry: Auf dieser Website wurde keine Beispielklasse gefunden.
+   !set name_example2=Auf dieser Website ist keine deutschsprachige Klasse vorhanden.
+   !set name_example3=!nosubst There is $clcnt example classes of English language on this site.
+   !set name_example4=Auf dieser Website sind $clcnt Beispielklassen in Deutsch vorhanden.\
+Beispielklassen illustrieren die Funktionsweise virtueller Klassen aus der\
+Sicht der Schüler/Studenten. Sie sollten Ihre eigene Klasse erstellen, um \
+die wesentlich komplexere und erweiterte Sicht des Supervisors zu erhalten.
+
+   !set name_instruction=<ul>\
+<li>Klicken Sie auf 'Anonym', um sich bei der Klasse als anonymer Besucher\
+ (Teilnehmer) anzumelden.\
+<li><p>Klicken Sie auf 'Registriert', um sich bei der Klasse mit einem\
+ registrierten Benutzernamen und dem entsprechenden Kennwort anzumelden.\
+ (Dazu müssen Sie sich zuvor registriert haben. Allerdings wird Ihre\
+ Registrierung ggf. regelmäßig vom Server gelöscht, da es sich hierbei\
+ um Beispielklassen handelt).\
+<li><p>Klicken Sie auf 'Registrieren', um sich für die Klasse zu registrieren.\
+</ul>
+  !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous pourrez ensuite importer \
+    dans votre classe et modifier.
+!endif
+ 

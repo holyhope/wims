@@ -1,0 +1,143 @@
+
+!!!####language independant
+!read search.phtml
+!if $overflow=yes
+ !exit
+!endif
+
+!if $clcnt+$sccnt+$directcnt<1
+ !if $keyword=$empty
+  $name_language
+  !href module=home&list=0 $wims_name_search
+ !else
+  $name_nofound
+ !endif
+ !exit
+!endif
+
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $superclass=$empty
+  !exit
+ !endif
+!else
+$name_text1
+
+!endif
+
+!if $sccnt>0
+ <p>$table_header
+ <caption>$name_portalandgroup</caption>
+ $table_hdtr$
+ <th>$wims_name_name<th colspan=2>$wims_name_namesstudent</th><th>$wims_name_Supervisor</th><th>$wims_name_Status</th>
+ !for i=1 to $sccnt
+  !set l=!line $i of $sclasses
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !if $superclass=$empty
+   !set show=$inst<br>$cl
+  !else 
+   show=$inst
+  !endif
+  !set supv=!item 9 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  
+  $table_tr<td align=center>
+  !!!href module=$module&type=authparticipant&class=$code 
+  $show
+  </td> <td align=center>
+  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+  </td> <td align=center>
+  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
+  </td> <td align=center>
+  $supv
+  </td> <td align=center>
+  !if $pswd=$empty
+   $name_open
+  !else
+   $name_protected
+  !endif
+ !next i
+ $table_end <p>
+!endif
+
+!if $clcnt>0
+ <p>$table_header
+ !if $superclass=$empty
+  <caption>$name_independantclass</caption>
+  $table_hdtr
+  <th>$wims_name_name</th><th colspan=2>$wims_name_namestudent</th>
+  <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
+ !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   <caption>$Name_levels ($inst)
+   !if $splevel>1
+    !href cmd=reply&type=$type&superclass2=$sparent $name_up
+   !endif
+   </caption>
+   $table_hdtr
+   <th>$wims_name_name</th><th colspan=2>$wims_name_namestudent</th>
+   <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
+   !if $superclass!=$empty and $stype=4
+    <th>+</th>
+   !endif
+ !endif
+ !for i=1 to $clcnt
+  !set l=!line $i of $classes
+  !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
+  !set supv=!item 9 of $l
+  !if $supv=$empty
+   !reset class_password
+   !defread wimshome/log/classes/$code/.def
+   !set lv=$class_level
+   !set supv=$class_supervisor
+   !set pswd=$class_password
+  !endif
+  !distribute char $lv into l_,y_
+  
+  !if $superclass=$empty
+   !set show=$inst <br>$cl
+  !else
+   !set show=$cl
+  !endif
+  $table_tr<td align=center>
+    $show
+  </td><td align=center> 
+  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+  </td> <td align=center> 
+  !if $splevel=$empty or $splevel=2
+   !href module=adm/class/reguser&class=$code $name_register
+  !else
+   <font color=grey>$name_register</font>
+  !endif
+  </td><td align=center>
+  $supv
+  </td><td align=center>$(n_$l_)<br>$name_year $y_</td>
+  <td align=center>
+  !if $pswd=$empty
+   $name_open
+  !else
+   $name_protected
+  !endif
+  </td>
+   !if $superclass!=$empty and $stype=4
+    <td>
+    !if $ty!=1
+     !href cmd=reply&type=$type&superclass2=$code $sousclasses
+    !else
+    -
+    !endif
+   !endif
+ !next i
+ $table_end <p>
+!endif
+
+

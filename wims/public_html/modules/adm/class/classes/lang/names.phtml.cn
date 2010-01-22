@@ -1,0 +1,104 @@
+!set lang_exists=yes
+!if $class_type iswordof 2 4
+   !if $class_type=2
+    !set name_classe=班级组
+    !set name_sup=教师
+   !else
+    !set name_classe=学校
+    !set name_sup=主持教师
+   !endif
+     !set name_classes=$name_classe
+     !set name_classess=$name_classe
+     !set name_classesss=$name_classe
+     !set name_classessss=$name_classe
+ !else
+   !set name_classe=班级
+   !set name_classes=$name_classe
+   !set name_classess=$name_classe
+   !set name_classesss=$name_classe
+   !set name_classessss=$name_classe
+   !set name_sup=教师
+ !endif
+
+ !if $splevel iswordof 1 2 3
+   !set sousclasses=!item $splevel of 班级,课程
+   !set Name_level= !item $splevel of 年级,班级,课程
+   !set Name_levels= !item $splevel of 年级,班级,课程
+   !set sousclasses_else=!item $splevel of 或班级,或课程
+   !set name_level_else= !item $splevel of 年级,班级,课程
+ !else
+   !set sousclasses=分班
+   !set sousclasses_else=班级或学校
+ !endif
+ 
+!set CL_Name	=年级,班级,教学计划,课程,跨班课程,文字区
+!set Name_program=教学计划
+!set name_program=教学计划
+!set name_portalandgroup=学区与班级组
+!set name_independantclass=独立班级
+
+!distribute items 注册,匿名, 开放的, 保护的,年级,\
+新参加者,已注册,连接类型, 向上\
+into name_register,name_anonymous,name_open,name_protected,name_year,\
+name_new_participant,name_registered,name_connexion,name_up
+
+!distribute line 你没有其它班级的账号.\
+    搜寻你的班级\
+  没有可用班级.\
+  没有班级与你的关键词对应.\
+你可以直接进入以下班级:\
+into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
+
+!let classification=学校,学校,高级中学,大学,其它
+
+!set name_text1= 请选一个班级进入. 在班名上单击以进入该班 (如果你是这个班级的注册参加者).\
+<p>\
+在 `注册' 上单击以在该班注册 (在保护班级注册需要一个班级密码, 该\
+密码应当在你的教师那里得到).
+
+
+
+!set name_text2=为了进入其它$name_level_else$sousclasses_else, 请在下表中选择它的名称.
+!set name_text3= 或在下表中选择$name_level_else$sousclasses_else的名称.
+
+!set name_language= 本站尚无中文版虚拟班. 可能你想找一个其他文版的班级?
+!set name_language2=本站尚无中文版的虚拟班.
+
+!set name_warning=<b>错误</b>. 你想进入的班级$name_classess是不存在的. 请检查你的请求.
+
+!set name_enter=!nosubst 为了以<em>注册学生<em>身份进入\
+<b><font color=green>$class_institution</font></b>的\
+<b><font color=green>$class_description</font></b>\
+班级, 请给出你的注册用名以及个人密码。
+
+!set name_entersup=!nosubst 为了以<em>$name_sup<em>身份进入\
+<b><font color=green>$class_institution</font></b> 的\
+<b><font color=green>$class_description</font></b>\
+$name_classes, 请给出$name_sup 的个人密码。
+
+ !set name_research1=本网站中有许多虚拟班级. 为了找到你的班级, 请输入一个搜索关键词.
+ !set name_research2=  仍然有许多班级对应于你的关键词. 请给一个更精确的词.
+
+!set name_supervisor_text=否则, 你可以在下表中找到你的班(或班级组或学校),\
+  如果你已经注册(或者是主持教师), 就请点击 <tt>$name_register</tt>,\
+  如果你想以班级组或学校的教师身份注册, 请点击 <tt>$name_register</tt>.\
+ <br>这里的注册是面向教师的.
+
+
+!if $type=example
+   !set name_example1= 抱歉, 本站未设有实例用虚拟班.
+   !set name_example2= 本站没有中文版实例虚拟班, 仅有 $clcnt 个英语版虚拟班.
+   !set name_example3=!nosubst 本站设有 $clcnt 个作实例用的中文版虚拟班.
+   !set name_example4=这些班级是用来向你展示虚拟班的学生界面是如何工作的. 虚拟班的教师界面\
+比这要复杂不少, 若你想看到教师界面, 你必须
+   !set name_instruction=ul>\
+<li>在 <tt class="d">$name_anonymous</tt> 上单击可使你以匿名参观者身份进入班级.\
+<li><p>在 <tt class="d">$name_registered</tt> 上单击可使你以注册参加者 (学生) 身份进入班级. (为此\
+你必须先行注册, 并请注意, 服务站将定期清理实例班级的注册学生名单.)\
+<li><p>在 <tt class="d">$name_register</tt> 上单击可使你在该班级注册.\
+</ul>
+
+  !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous \
+    pourrez ensuite importer dans votre classe et modifier.
+!endif
+ 

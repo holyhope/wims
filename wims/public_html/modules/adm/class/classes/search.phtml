@@ -1,0 +1,22 @@
+
+!if $overflow=yes
+ !if $keyword = $empty
+  $name_research1
+  !else
+  $name_research2
+ !endif
+ <p><center>
+ !form reply
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form></center> <p>
+!else
+ !if ($sccnt + $clcnt > 20 and $wims_user = $empty) or $keyword!=$empty
+  !form reply
+  $name_searchclass:
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form>
+ !endif
+!endif
+

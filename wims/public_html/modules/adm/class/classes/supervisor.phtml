@@ -1,0 +1,168 @@
+
+!read search.phtml
+!if $clcnt+$sccnt<1 and $keyword!=$empty
+ $name_nofound
+ <p>
+!endif
+!if $wims_user!=$empty
+ !read direct.phtml
+ !if $wims_user!=supervisor and $supervisable!=yes
+  !exit
+ !endif
+ <p>
+!else
+  !read lang/supervisor.phtml.$modu_lang
+!endif
+
+!if $overflow=yes
+ !exit
+!endif
+
+!if $clcnt+$sccnt>0
+ !if $wims_user=$empty
+   $name_supervisor_text
+ !endif
+
+ !if $sccnt>0
+  <p>
+  $table_header
+  <caption>$name_portalandgroup</caption>
+  $table_hdtr<th>$wims_name_name</th> <th colspan=2>$wims_name_nameteacher</th>
+  <th colspan=2>$wims_name_Supervisor</th> </tr>
+  !for i=1 to $sccnt
+   !set l=!line $i of $sclasses
+   !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+   !set supv=!item 9 of $l
+   !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+   $table_tr
+   <td align="center">
+   $in<br>$cl
+   </td>
+   <td align=center>
+   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+   </td> <td align=center>
+   !href module=adm/class/reguser&class=$code $name_register
+   </td>
+   <td align=center>$supv</td>
+   <td align=center>
+   !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
+  </td>
+  !next i  
+  $table_end
+ !endif
+ !if $clcnt>0 and $s_prog!=1
+  <p>
+  $table_header
+  !if $superclass=$empty
+   <caption>$name_independantclass</caption>
+   $table_hdtr<th>$wims_name_name</th><th colspan=2>$wims_name_nameteacher / $wims_name_Supervisor</th>
+  !else
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   !default Name_level=$(CL_Name[2])
+    <caption>$Name_level / $inst
+    !if $class_type>2
+    <small>
+    !href cmd=help&special_parm=$module_language/structure [$wims_name_help]
+    </small>
+    !endif
+    !if $splevel>1
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
+    !endif
+    </caption>
+    $table_hdtr<th>$Name_level</th><th>$wims_name_nameteacher</th>
+    !if $superclass!=$empty and $stype=4
+     <th>+</th>
+     !if $ty!=1 and $splevel =1
+      <th>+</th>
+     !endif
+    !endif
+   !endif
+   !for i=1 to $clcnt
+     !set l=!line $i of $classes
+     !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+     !set supv=!item 9 of $l
+     !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def
+   
+     $table_tr
+     !if $superclass=$empty
+      <td align="center">$in<br>$cl</td>
+     !else
+      <td align="center">
+      !href module=$module&type=authsupervisor&class=$code $cl
+      </td>
+     !endif
+     <td align="center">$supv</td>
+     !if $superclass!=$empty and $stype=4
+      <td>
+      !if $ty!=1
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=0 $sousclasses
+      !else
+      -
+      !endif
+      </td>
+      !if $ty!=1 and $splevel =1
+       <td>
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=1 $name_program
+       </td>
+      !endif
+     !endif
+     !if $superclass=$empty
+      <td align=center>
+      !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
+      </td>
+     !endif   
+    !next i
+   $table_end
+  !else
+!!#####################program
+   !if $clcnt_pr>0
+   !if $splevel>1
+    !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
+   !else
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
+   $table_header
+    <caption>$Name_program ($inst)
+    !if $splevel>1
+     !href cmd=reply&type=$type&superclass2=$sparent&s_prog=0 $name_up
+    !endif
+    </caption>
+    $table_hdtr<th>$wims_name_level</th><th>$wims_name_nameteacher</th><th>+</th>
+    !for i=1 to $clcnt_pr
+     !set l=!line $i of $classes_pr
+     !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
+     !set supv=!item 9 of $l
+     !default supv=!defof class_supervisor in wimshome/log/classes/$code/.def  
+     $table_tr
+     <td align="center">
+     !href module=$module&type=authsupervisor&class=$code $cl
+     </td>
+     <td align="center">$supv</td>
+     !if $superclass!=$empty and $stype=4
+      <td>
+      !if $ty!=1
+       !href cmd=reply&type=$type&superclass2=$code&s_prog=0 $sousclasses
+      !else
+       -
+      !endif
+     !endif
+    !next i
+    $table_end
+   !endif
+  !endif
+!else
+ !if $class_type=$empty and $superclass=$empty
+  ($name_language2)
+ !else
+   !if $clcnt=0
+    ($name_noavailable)
+   !endif
+ !endif
+!endif
+<p>
+
