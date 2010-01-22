@@ -1,48 +1,66 @@
 !if $clcnt<=0
- Sorry: Auf dieser Website wurde keine Beispielklasse gefunden.
+ $name_example1
  !exit
 !endif
 
 !if $lacnt<=0
- Auf dieser Website ist keine deutschsprachige Klasse vorhanden.
- <p>
+ $name_example2
+ !exit
+!else
+  $name_example3
 !endif
 
-Auf dieser Website sind $clcnt Beispielklassen in Deutsch vorhanden. 
-Beispielklassen illustrieren die Funktionsweise virtueller Klassen aus der 
-Sicht der Schüler/Studenten.
-Sie sollten Ihre eigene Klasse 
-!href module=adm/class/regclass erstellen
-, um die wesentlich komplexere und erweiterte Sicht des Supervisors 
-zu erhalten.
+$name_example4
+!href module=adm/class/regclass $wims_name_classcreate
+!let nb=!itemcnt $classification
+!bound exampletype between 1 and $nb default 3
+<p>
+<center><table summary="">
+<tbody><tr>
+ !for k=1 to $nb
+  !let titre=!item $k of $classification
+  <th>
+   !if $k=$exampletype
+    $titre
+   !else
+    !href cmd=reply&exampletype=$k $titre
+   !endif
+  </th>
+ !next k
+ </tr>
+ <tr><td colspan=$nb>
+ $table_header
+  $table_hdtr<th>$wims_name_name</th>
+  <th>$name_connexion</th><th>$name_register</th></tr>
+  !for i=1 to $clcnt
+   !set l=!line $i of $classes
+   !distribute items $l into code,expire,inst,cl
+   !defread wimshome/log/classes/$code/.def
+   !distribute char $class_level into l_,y_
+   !let clsty=!positionof item $class_level in E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,H7,U1,U2,U3,U4,U5,U6
+   !if $clsty!=$empty
+    !let clsty=!item $clsty of 1,1,1,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4
+   !endif
+   !if $exampletype=$clsty or ($clsty=$empty and $exampletype=$nb)
+    $table_tr
+     <td align=center>$cl</td>
+     <td align=center>
+      !href module=home&user=anonymous,$code,anonymous $name_anonymous
+      &nbsp;
+      !href module=$module&type=authparticipant&class=$code $name_registered
+     </td>
+     <td align=center>
+      !href module=adm/class/reguser&class=$code $name_register
+     </td>
+    </tr>
+   !endif
+  !next i
+ $table_end
+</tbody></table></center><p>
+ 
+$name_instruction
 
-<p>$table_header
-$table_hdtr<th>Name der Klasse<th>Stufe<th>Verbindungstyp<th>Registrieren
-!for i=1 to $clcnt
- !set l=!line $i of $classes
- !distribute items $l into code,expire,inst,cl
- !defread wimshome/log/classes/$code/.def
- !distribute char $class_level into l_,y_
- 
- $table_tr<td align=center>$inst<br>$cl</td>
- <td align=center>$(n_$l_)<br>Jahr $y_</td>
- <td align=center>
- !href module=home&user=anonymous,$code,anonymous Anonym
- &nbsp;
- !href module=$module&type=authparticipant&class=$code Registriert
- </td><td align=center>
- !href module=adm/class/reguser&class=$code Registrieren
- </td>
-!next i
-</tr>$table_end <p>
- 
-<ul>
-<li>Klicken Sie auf 'Anonym', um sich bei der Klasse als anonymer Besucher
- (Teilnehmer) anzumelden.
-<li><p>Klicken Sie auf 'Registriert', um sich bei der Klasse mit einem
- registrierten Benutzernamen und dem entsprechenden Kennwort anzumelden.
- (Dazu müssen Sie sich zuvor registriert haben. Allerdings wird Ihre
- Registrierung ggf. regelmäßig vom Server gelöscht, da es sich hierbei
- um Beispielklassen handelt).
-<li><p>Klicken Sie auf 'Registrieren', um sich für die Klasse zu registrieren.
-</ul>
+$name_sheet_example
+
+!href module=home&search_keywords=&search_category=S $wims_name_sheet
+

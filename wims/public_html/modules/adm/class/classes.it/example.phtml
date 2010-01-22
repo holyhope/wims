@@ -1,22 +1,17 @@
 !if $clcnt<=0
- Spiacente, questo sito non contiene esempi predisposti.
+ $name_example1
  !exit
 !endif
 
 !if $lacnt<=0
- Non ci sono esempi in italiano su questo sito, è però possibile consultare $clcnt esempi in inglese.
+ $name_example2
  !exit
 !else
- Su questo sito sono disponibili $clcnt esempi in lingua italiana.  
+  $name_example3
 !endif
 
- Su questo sito sono disponibili $clcnt esempi in lingua italiana. 
-Gli esempi mostrano come un corso interattivo virtuale appare agli studenti.
-&Egrave; possibile
-!href module=adm/class/regclass creare
- il proprio corso interattivo e accedere al men&ugrave; docenti
-ricco di molte funzioni pi&ugrave; sofisticate.
-
+$name_example4
+!href module=adm/class/regclass  $wims_name_classcreate
 !let nb=!itemcnt $classification
 !bound exampletype between 1 and $nb default 3
 <p>
@@ -37,11 +32,11 @@ ricco di molte funzioni pi&ugrave; sofisticate.
  $table_header
   $table_hdtr<th>$wims_name_name</th>
   <th>$name_connexion</th><th>$name_register</th></tr>
-!for i=1 to $clcnt
- !set l=!line $i of $classes
- !distribute items $l into code,expire,inst,cl
- !defread wimshome/log/classes/$code/.def
- !distribute char $class_level into l_,y_
+  !for i=1 to $clcnt
+   !set l=!line $i of $classes
+   !distribute items $l into code,expire,inst,cl
+   !defread wimshome/log/classes/$code/.def
+   !distribute char $class_level into l_,y_
    !let clsty=!positionof item $class_level in E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,H7,U1,U2,U3,U4,U5,U6
    !if $clsty!=$empty
     !let clsty=!item $clsty of 1,1,1,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4
@@ -49,36 +44,23 @@ ricco di molte funzioni pi&ugrave; sofisticate.
    !if $exampletype=$clsty or ($clsty=$empty and $exampletype=$nb)
     $table_tr
      <td align=center>$cl</td>
- <td align=center>
+     <td align=center>
       !href module=home&user=anonymous,$code,anonymous $name_anonymous
- &nbsp;
+      &nbsp;
       !href module=$module&type=authparticipant&class=$code $name_registered
- </td>
+     </td>
      <td align=center>
       !href module=adm/class/reguser&class=$code $name_register
      </td>
     </tr>
    !endif
-!next i
+  !next i
  $table_end
 </tbody></table></center><p>
  
-<ul>
-<li>Selezionare <tt class="d">$name_anonymous</tt> per accedere al corso senza iscrizione
-(come studente non iscritto).
+$name_instruction
 
-<li><p>Selezionare <tt class="d">$name_registered</tt> per accedere al corso come utente
-registrato con proprio login e password. (Dovete aver gi&agrave;
-provveduto alla registrazione.)(Se la registrazione fosse stata
-fatta molto tempo fa, potrebbe essere stata cancellata: questi corsi
-sono solo a titolo di esempio e le registrazioni delle attività
-degli utenti non vengono conservate.)
+$name_sheet_example
 
-<li><p>Selezionare <tt class="d">$name_register</tt> per iscriversi al corso interattivo.
-</ul>
-
-Sono disponibili
-!href module=home&search_keywords=&search_category=S qui
- test di autovalutazione già pronti che possono essere importati nel vostro
- corso e quindi modificati.
+!href module=home&search_keywords=&search_category=S $wims_name_sheet
 

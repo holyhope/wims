@@ -26,12 +26,12 @@ $name_text1
 !endif
 
 !if $sccnt>0
-<p>$table_header
+ <p>$table_header
  <caption>$name_portalandgroup</caption>
  $table_hdtr$
  <th>$wims_name_name<th colspan=2>$wims_name_namesstudent</th><th>$wims_name_Supervisor</th><th>$wims_name_Status</th>
-!for i=1 to $sccnt
- !set l=!line $i of $sclasses
+ !for i=1 to $sccnt
+  !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !if $superclass=$empty
    !set show=$inst<br>$cl
@@ -41,7 +41,7 @@ $name_text1
   !set supv=!item 9 of $l
   !if $supv=$empty
    !reset class_password
-  !defread wimshome/log/classes/$code/.def
+   !defread wimshome/log/classes/$code/.def
    !set supv=$class_supervisor
    !set pswd=$class_password
   !endif
@@ -53,20 +53,20 @@ $name_text1
   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
   </td> <td align=center>
   !href module=adm/class/reguser&class=$code&subclass=yes $name_register
-  </td>  <td align=center>
+  </td> <td align=center>
   $supv
   </td> <td align=center>
   !if $pswd=$empty
    $name_open
- !else
+  !else
    $name_protected
- !endif
-!next i
+  !endif
+ !next i
  $table_end <p>
 !endif
 
 !if $clcnt>0
-<p>$table_header
+ <p>$table_header
  !if $superclass=$empty
   <caption>$name_independantclass</caption>
   $table_hdtr
@@ -76,8 +76,8 @@ $name_text1
    !if $splevel>1
     !set inst=!defof class_description in wimshome/log/classes/$superclass2/.def
    !else
-  !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
- !endif
+    !set inst=!defof class_institution in wimshome/log/classes/$superclass/.def
+   !endif
    <caption>$Name_levels ($inst)
    !if $splevel>1
     !href cmd=reply&type=$type&superclass2=$sparent $name_up
@@ -90,13 +90,13 @@ $name_text1
     <th>+</th>
    !endif
  !endif
-!for i=1 to $clcnt
- !set l=!line $i of $classes
+ !for i=1 to $clcnt
+  !set l=!line $i of $classes
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
   !set supv=!item 9 of $l
   !if $supv=$empty
    !reset class_password
-  !defread wimshome/log/classes/$code/.def
+   !defread wimshome/log/classes/$code/.def
    !set lv=$class_level
    !set supv=$class_supervisor
    !set pswd=$class_password
@@ -121,13 +121,13 @@ $name_text1
   </td><td align=center>
   $supv
   </td><td align=center>$(n_$l_)<br>$name_year $y_</td>
- <td align=center>
+  <td align=center>
   !if $pswd=$empty
    $name_open
- !else
+  !else
    $name_protected
   !endif
- </td>
+  </td>
    !if $superclass!=$empty and $stype=4
     <td>
     !if $ty!=1
@@ -136,7 +136,7 @@ $name_text1
     -
     !endif
    !endif
-!next i
+ !next i
  $table_end <p>
 !endif
 

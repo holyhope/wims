@@ -1,20 +1,17 @@
-
 !if $clcnt<=0
- 抱歉, 本站未设有实例用虚拟班.
+ $name_example1
  !exit
 !endif
 
 !if $lacnt<=0
- 本站没有中文版实例虚拟班, 仅有 $clcnt 个英语版虚拟班.
+ $name_example2
+ !exit
 !else
- 本站设有 $clcnt 个作实例用的中文版虚拟班.
+  $name_example3
 !endif
 
-这些班级是用来向你展示虚拟班的学生界面是如何工作的. 虚拟班的教师界面
-比这要复杂不少, 若你想看到教师界面, 你必须
-!href module=adm/class/regclass 建立
- 一个你自己的班级.
-
+$name_example4
+!href module=adm/class/regclass $wims_name_classcreate
 !let nb=!itemcnt $classification
 !bound exampletype between 1 and $nb default 3
 <p>
@@ -35,11 +32,11 @@
  $table_header
   $table_hdtr<th>$wims_name_name</th>
   <th>$name_connexion</th><th>$name_register</th></tr>
-!for i=1 to $clcnt
- !set l=!line $i of $classes
- !distribute items $l into code,expire,inst,cl
- !defread wimshome/log/classes/$code/.def
- !distribute char $class_level into l_,y_
+  !for i=1 to $clcnt
+   !set l=!line $i of $classes
+   !distribute items $l into code,expire,inst,cl
+   !defread wimshome/log/classes/$code/.def
+   !distribute char $class_level into l_,y_
    !let clsty=!positionof item $class_level in E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,H7,U1,U2,U3,U4,U5,U6
    !if $clsty!=$empty
     !let clsty=!item $clsty of 1,1,1,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4
@@ -51,8 +48,6 @@
       !href module=home&user=anonymous,$code,anonymous $name_anonymous
       &nbsp;
       !href module=$module&type=authparticipant&class=$code $name_registered
-
-
      </td>
      <td align=center>
       !href module=adm/class/reguser&class=$code $name_register
@@ -63,15 +58,9 @@
  $table_end
 </tbody></table></center><p>
  
-<ul>
-<li>在 <tt class="d">$name_anonymous</tt> 上单击可使你以匿名参观者身份进入班级.
-<li><p>在 <tt class="d">$name_registered</tt> 上单击可使你以注册参加者 (学生) 身份进入班级. (为此
-你必须先行注册, 并请注意, 服务站将定期清理实例班级的注册学生名单.)
-<li><p>在 <tt class="d">$name_register</tt> 上单击可使你在该班级注册.
-</ul>
+$name_instruction
 
-你也可以
-!href module=home&search_keywords=&search_category=S 在这里
-找到练习页, 以后可以输入到你的班级并加以修改.
+$name_sheet_example
 
+!href module=home&search_keywords=&search_category=S $wims_name_sheet
 

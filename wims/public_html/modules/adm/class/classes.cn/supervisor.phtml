@@ -4,7 +4,6 @@
  $name_nofound
  <p>
 !endif
-
 !if $wims_user!=$empty
  !read direct.phtml
  !if $wims_user!=supervisor and $supervisable!=yes
@@ -12,17 +11,7 @@
  !endif
  <p>
 !else
- 虚拟班可使教师将本 WIMS 服务站的资源 (以及他自己在此创建的练习) 组织起来提供
- 给他的学生们, 并且可使其随时检查学生的进度.
- <p>
- 如果你还没有自己的虚拟班: 你可以
-在查阅了
- !href target=wims_help module=help/main&chapter=3 说明
-后
- !href module=adm/class/regclass 在此单击
- 以建立你的班, 或访问一个
- !href module=$module&type=example 实例班
-. <p>
+  !read supervisor.phtml.$lang example
 !endif
 
 !if $overflow=yes
@@ -30,11 +19,8 @@
 !endif
 
 !if $clcnt+$sccnt>0
- !if $wims_user=empty
-  否则, 你可以在下表中找到你的班(或班级组或学校), 
-  如果你已经注册(或者是主持教师), 就请点击 <tt>$name_register</tt>,
-  如果你想以班级组或学校的教师身份注册, 请点击 <tt>$name_register</tt>.
- <br>这里的注册是面向教师的.
+ !if $wims_user=$empty
+   $name_supervisor_text
  !endif
  !!!!####language independant
  !if $sccnt>0
@@ -179,5 +165,4 @@
  !endif
 !endif
 <p>
-
 
