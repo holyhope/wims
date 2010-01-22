@@ -84,6 +84,11 @@
  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3 to $1_
 !endif
 
+!if _ notin $wims_session and adm/ notin $module and home notin $module\
+	and $cmd notwordof help ref
+ !set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!endif
+
 !!********* Link #5 : "Help"
 !if $module_help!=$empty and $module_has_help=yes and $cmd notwordof intro help
  !if $module_help=popup
@@ -124,6 +129,12 @@ WIMS $module_title [$module_language]
 !endif
 
 !!********* Link #9 : "Translator(s)"
+!set mod_transl=$(module_translator_$lang)
+!if $module_transl!=$empty
+   !set module_translator=$mod_transl
+   !set module_translator_address=$(module_translator_address_$lang)
+!endif
+
 !if $module_translator!=$empty and $module_translator_address!=$empty
  !set 3_=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]

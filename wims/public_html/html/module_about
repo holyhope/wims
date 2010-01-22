@@ -14,6 +14,13 @@
 !set Lang_name_cn=ÖÐÎÄ - Chinese gb
 !set Lang_name_si=slovenski
 
+!for v_a in description,translator,translator_address,title
+  !set mod_u=$(module_$(v_a)_$lang)
+  !if $mod_u!=$empty
+   !set module_$(v_a)=$mod_u
+  !endif
+!next
+
 !set module_au=!mailurl $module_address $module_author\
 WIMS $module_title [$module_language]
 !set module_tr=!mailurl $module_translator_address $module_translator\

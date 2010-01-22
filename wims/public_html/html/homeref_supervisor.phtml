@@ -83,8 +83,8 @@
 	../adm/ notin ../$module and \
 	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
  !set wims_homeref_parm=!replace % by %25 in $module_init_parm
- !set wims_homeref_parm=!replace + by %2B in $module_init_parm
- !set wims_homeref_parm=!replace & by %26 in $module_init_parm
+ !set wims_homeref_parm=!replace + by %2B in $wims_homeref_parm
+ !set wims_homeref_parm=!replace & by %26 in $wims_homeref_parm
  !set 1_=!append line add,1,module=adm/class/addmodule&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm to $1_
 !endif
 !if $wims_user=supervisor and exam notin $session and \
@@ -102,8 +102,8 @@
 	../adm/ notin ../$module and \
 	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
   !set wims_homeref_parm=!replace % by %25 in $module_init_parm
-  !set wims_homeref_parm=!replace + by %2B in $module_init_parm
-  !set wims_homeref_parm=!replace & by %26 in $module_init_parm
+  !set wims_homeref_parm=!replace + by %2B in $wims_homeref_parm
+  !set wims_homeref_parm=!replace & by %26 in $wims_homeref_parm
   !set 1_=!append line chseries,1,module=adm/class/sheet&dir=$module&scoring=$module_scoring&iniparm=$wims_homeref_parm&job=chseries&num=$special_parm4 to $1_
  !endif
 !endif
@@ -126,6 +126,13 @@
 WIMS $module_title [$module_language]
  !set 2_=!append line author,0,$3_ $4_ to $2_
 !endif
+
+!set mod_transl=$(module_translator_$lang)
+!if $module_transl!=$empty
+   !set module_translator=$mod_transl
+   !set module_translator_address=$(module_translator_address_$lang)
+!endif
+
 !if $module_translator!=$empty and $module_translator_address!=$empty
  !set 3_=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]

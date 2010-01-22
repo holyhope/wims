@@ -17,9 +17,6 @@
   !if $w_name issametext
     !set w_name=$1_
   !endif
- !! !if $wims_theme_icon!=$empty
- !!   !set w_image=<img border=0 src="gifs/themes/$wims_theme_icon/$w_name1.gif" alt="$1_" title="$_">
- !! !endif
 !endif
 !goto $2_
 :0
@@ -43,7 +40,11 @@
  <a href="#" onclick="$3_" class="$w_name1"><span class="text_item">$w_name</span></a>
  !exit
 :4
- !set wims_ref_class=$w_name1
+!set wims_ref_class=$w_name1
+ !set wims_ref_title=$w_name
  !href target=wims_$4_ $3_ <span class="text_item">$w_name</span>
+ !exit
+:5
+ <a href="$3_" class="$w_name1">$4_</a>
  !exit
 :*

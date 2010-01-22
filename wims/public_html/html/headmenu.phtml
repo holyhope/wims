@@ -26,6 +26,7 @@
 !reset 1_
 
 !!********* Link #1 : "Close Window" or "Home"
+
 !if _ isin $wims_subsession
  !set 1_=!append line back,3,window.close() to $1_
 !else
@@ -57,7 +58,7 @@
 !!********* Link #6 : "References"
 !if _ notin $wims_session and adm/ notin $module and home notin $module\
 	and $cmd notwordof help ref
- !set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
+!! !set 1_=!append line reference,4,module=$module&cmd=ref&special_parm=$cmd,ref to $1_
 !endif
 
 !!********* Link #7 : "Help"
@@ -80,7 +81,7 @@
 	and adm notin $module and tool notin $module and home notin $module \\
 	and $cmd notwordof help intro and _exam notin $session
 	
-		!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+		!!!set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
 
 !!********* Link #10 : "WIMS Help"

@@ -1,4 +1,4 @@
-!!!!WARNING Don't use "into" in the translation ... 
+!!!!WARNING If you have to put "into" in the translation, write into$  ...
 
 !if $wims_name_home!=$empty
  !exit
@@ -77,6 +77,7 @@
 
 !! **** Module About Names ***
 !distribute items Naam,\
+	    A propos des icones,\
 	    Module Informatie,\
 	    Informatie over deze oefening,\
 	    Adres,\
@@ -99,6 +100,7 @@
 	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
 	    Hulp software<br>vereist,\
 	into wims_name_name,\
+	    wims_name_iconabout,\
         wims_name_module_infos,\
         wims_name_exo_infos,\
         wims_name_Address,\
@@ -113,7 +115,7 @@
 	wims_name_WIMS_subtitle,\
 	wims_name_Copyright,wims_name_Keywords,\
 	wims_name_tr_email,wims_name_auth_email,\
-        wims_name_Domain,wims_name_Type,wims_name_Levels,\
+	wims_name_Domain,wims_name_Type,wims_name_Levels,\
 	wims_name_Scoring,\
 	wims_name_require
 
@@ -220,13 +222,14 @@
    Datum\
    Add\
    Delete\
+   Source\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
 wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
 wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase,wims_name_action,\
-wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete
+wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete,wims_name_source
 
 !distribute line Terug naar Createxo\
    Lijst met voorbeelden\
