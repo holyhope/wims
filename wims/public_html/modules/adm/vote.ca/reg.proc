@@ -4,6 +4,7 @@ reg_title=!trim $reg_title
 reg_title=!singlespace $reg_title
 !bound reg_option within anonymous,nominative,trace default anonymous
 !bound reg_show within 0,1 default 1
+!bound reg_whovoteshow within 0,1 default 0
 !if $reg_title=$empty
  error=no_title
  :edit
@@ -23,7 +24,8 @@ reg_src=!trim $reg_src
 v_$vote=$reg_status\
 $reg_title\
 $reg_option\
-$reg_show
+$reg_show\
+$reg_whovoteshow
 
 !sh mkdir -p $wims_home/log/$Votedir
 !writefile $votedir/.votes

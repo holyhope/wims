@@ -8,27 +8,24 @@
  <p><hr> <p>
 
 !if $outfile!=$empty
- Voici le fichier <tt>
+ $name_csv1:
  !getfile $outfile $outfile
- </tt> que vous pouvez télécharger et ouvrir dans votre logiciel 
- tableur préféré.
  <p><hr> <p>
 !endif
 
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Vous désirez télécharger  
-les données du questionnaire numéro $vote : <font color=green>$vote_title</font>
+$name_csv2: <font color=green>$vote_title</font>
 <ul><li>
-format
+$name_format
 !formselect csvformat list csv,tsv
 <small>
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </small>
 </li>
 !if $vote_option!=anonymous
- <li> $name_data
+<li> $name_data
 !formradio csvoption list global,detail prompt $name_global,$name_detail
 <small>
 !href module=$module&cmd=help&special_parm=csvvotes $wims_name_help
