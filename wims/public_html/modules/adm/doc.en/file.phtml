@@ -6,51 +6,24 @@
 !endif
 
 !if $erase!=$empty
- File <b>$erase</b> has been erased.
+ $name_have_been_erased
  <p>
 !endif
 
 !if $quota_free<1
- You can no longer deposit files into this document, because its content is
- very close to, or exceeded, the limit of disk space allowance. Sorry.
+$name_warning
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- You can deposit a file into this document:
+ $name_upload:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Available files in this document:
- !for f in $flist
-  !getfile doc/$f $f
-  &nbsp;
- !next f
- <p>
- !form reply
- <input type=hidden name=job2 value=erase>
- Erase a file:
- !formselect job2 list $flist
- <input type=submit value=OK>
- </form>
- <p>
- Files in the document can be accessed using the variable <tt>\filedir</tt>
-in the document. For example, 
-<p><center>
- <tt>&lt;a&nbsp;href="\filedir/$"&gt;$f1&lt;/a&gt;</tt>
-</center> <p>
- gives a link to the file <a href="$m_filedir/$f1">$f1</a>.
- Also, you can write
-<p><center>
- <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
-</center> <p>
-to include an image file <tt>myfile.jpg</tt> in the page.
- <p>
- Files deposited to this document are only accessible by people having
- rights to read the document.
+ !read msg.phtml.$lang file
 !endif
 
 <p>

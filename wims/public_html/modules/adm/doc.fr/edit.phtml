@@ -31,12 +31,12 @@ $name_blockedition
 !set titb=!reinput $titb
 $wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
- Insérer un fichier texte: <input type=file size=35 name=wims_deposit>
+ $name_file: <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
-  <br>Ce fichier va
+  <br>$name_prompt0
   !formselect addtype list replace,append,prepend prompt\
-	remplacer le, s'ajouter à la fin du, s'ajouter au début du
-  contenu existant.
+	$name_prompt
+  $name_prompt1.
  !endif
  <br>
 !else
@@ -47,22 +47,17 @@ $wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 <input type=submit name=rEg value="$wims_name_tosave">
 <input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>
-!! Mots clés : <input size=50 name=Keyw value="$keyw"> <br>
+!! $wims_name_Keywords : <input size=50 name=Keyw value="$keyw"> <br>
 !if $block!=main
- Bloc précédent : <input size=12 name=Prev value="$prev">
- suivant : <input size=12 name=Next value="$next">
- parent : <input size=12 name=Upbl value="$upbl">
+ $name_prev <input size=12 name=Prev value="$prev">
+ $name_next <input size=12 name=Next value="$next">
+ $name_up <input size=12 name=Upbl value="$upbl">
  <br>
 !endif
-Dates de validité <small>aaaammjj</small> : de
-<input size=8 name=Dat1 value="$dat1"> à
+$name_dates <small>aaaammjj</small> : $name_from
+<input size=8 name=Dat1 value="$dat1"> $name_to
 <input size=8 name=Dat2 value="$dat2">
 </form>
-!if $edtype=file
- <p><b>Remarque</b>. Formats acceptés&nbsp;: source de document WIMS,
- fichier html ou source LaTeX. Des fichiers partiels peuvent être 
- soumis, à condition qu'ils soient bien coupés (c'est-à-dire que les coupures
- ne soient pas au milieu d'une balise html ou une formule mathématique, etc).
-!endif
+
 <p><hr> <p>
 

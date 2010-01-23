@@ -6,13 +6,12 @@
 
 !if $doccnt<1
  !if $wims_class!=$empty and $wims_user!=supervisor
-  Désolé, votre classe n'a pas encore de document. Vérifiez avec votre
-  enseignant.
+  $name_home_warning
  !else
   !if $authoring=$empty
-   Désolé, nous n'avons pas encore de document ouvert au public.
+   $name_nodocument1
   !else
-   Désolé, il n'y a pas de document de cet auteur.
+   $name_nodocument2
   !endif
  !endif
 !else
@@ -20,9 +19,9 @@
   !read scripts/table.phtml
  !else
   !if $wims_class!=$empty
-   Voici les documents de votre classe.
+   $name_listdoc1
   !else
-   Voici les documents du site auxquels vous avez accès.
+   $name_listdoc2
   !endif
   <ul>
   !for t=1 to $doccnt
@@ -46,7 +45,7 @@
 
 !if $wims_class=$empty and $wims_ismanager<2
  !form reply
- Pour vos propres documents, donnez le nom d'auteur&nbsp;:
+ $name_listauthor:
  <input size=20 name=authoring value="$authoring">
  <input type=submit value=OK>
  </form> <p>

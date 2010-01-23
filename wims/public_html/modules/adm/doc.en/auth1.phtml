@@ -1,6 +1,6 @@
 <h1 class="wims_docu_title">$tit</h1>
 
-Author of this document is
+$name_author_is
 !if $email!=$empty
  !mailurl $email $author
 .
@@ -8,10 +8,9 @@ Author of this document is
  $author.
 !endif
 !if $readauth=yes
- This document is not open to the public. To read it, you should first
- give its secret code.
+ $name_code_warning1
 !else
- To modify this document you should first give its secret code.
+ $name_code_warning2
 !endif
 <p>
 !form reply
@@ -20,15 +19,11 @@ Author of this document is
  <input type=hidden name=noedit value=yes>
 !endif
 <center>
-Secret code: <input type=password size=16 name=coder>
-<input type=submit value=OK>
+$name_secretcode <input type=password size=16 name=coder>
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p>
 !if $readauth=yes
- If you are the author of the document, please remember that you need the
- authorization of the
- !mailurl $wims_site_manager site manager\
-Ask to open WIMS document $doc
- to put the document readable by the public.
+ !read msg.phtml.$lang readauth
  <p>
 !endif
