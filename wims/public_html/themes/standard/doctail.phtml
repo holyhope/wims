@@ -73,7 +73,6 @@
 !if $wims_user=supervisor and _adm/doc notin _$module
 <div class="menuitem">
  !read oneitem.phtml adddoc,1,module=adm/class/adddoc&dir=$module
-!!!href module=adm/class/adddoc&dir=$module $wims_name_adddoc
 </div>
 !endif
 
@@ -84,7 +83,6 @@
 !if $job=exosource
 <div class="menuitem">
 !read $oneitem doch_back,1,cmd=reply&job=read
-!!!href cmd=reply&job=read $wims_name_doch_back
 </div>
 !goto end
 !endif job=exosource
@@ -92,11 +90,10 @@
 !if $job=print
 <div class="menuitem">
 !read $oneitem doch_interactive,1,cmd=reply&job=read&doc=$doc&block=$startblock
-!!href cmd=reply&job=read&doc=$doc&block=$startblock $wims_name_doch_interactive
 </div>
 !if $wims_user=supervisor and $sheetdata!=$empty
 <div class="menuitem">
- !href cmd=reply&job=exosource&block=$startblock $n_source
+ !read $oneitem source,1,cmd=reply&job=exosource&block=$startblock
  </div>
 !endif
 !goto end
