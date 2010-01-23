@@ -1,3 +1,5 @@
+
+
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
 $cdt_title
@@ -53,7 +55,7 @@ $cdt_title
   !let nbtodo=!itemcnt $date_todo
   $mem_tr
    <td rowspan=$nbtodo>
-    !read proc/date.phtml $jour
+    !read lang/date.phtml.$moduclass_lang 5,$jour
    </td>
    !if no isin $cdt_supervise
     <td rowspan=$nbtodo>$matiere</td>
@@ -66,7 +68,7 @@ $cdt_title
     !read $file todo1
     </td>
     <td>
-     !read proc/date.phtml $date_todo
+     !read lang/date.phtml.$moduclass_lang 5,$date_todo
     </td>
    !else
     <td>&nbsp;</td><td>&nbsp;</td>
@@ -88,7 +90,7 @@ $cdt_title
       </td>
       <td>
        !let tmp=!item $j of $date_todo
-       !read proc/date.phtml $tmp
+       !read lang/date.phtml.$moduclass_lang 5,$tmp
       </td>
      </tr>
     !next j
