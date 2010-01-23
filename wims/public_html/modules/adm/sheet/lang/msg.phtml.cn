@@ -1,0 +1,16 @@
+
+!set wims_module_error=error: $error
+
+<b>错误.</b>
+
+!if bad_sheet iswordof $error
+无效的页名.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+你对打印版本的请求过多了.
+ !href cmd=reply&job=read $wims_name_back2
+ !exit
+!endif
+

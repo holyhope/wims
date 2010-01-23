@@ -1,0 +1,15 @@
+
+!set wims_module_error=error: $error
+
+<b>Error.</b>
+
+!if bad_sheet iswordof $error
+ Nom de full invàlid.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ La teua sol·licitud és excessiva.
+ !href cmd=reply&job=read $wims_name_back2
+ !exit
+!endif

@@ -1,0 +1,15 @@
+
+!set wims_module_error=error: $error
+
+<b>Erreur.</b>
+
+!if bad_sheet iswordof $error
+ Nom de feuille non valable.
+ !exit
+!endif
+
+!if too_many_print iswordof $error
+ Vos requêtes pour la version imprimable sont excessives.
+ !href cmd=reply&job=read $wims_name_back2
+ !exit
+!endif

@@ -1,0 +1,59 @@
+
+# class exercise sheet
+!if $wims_read_parm > 0 && $wims_class > 0
+ s_=wimshome/log/classes/$wims_class/sheets/.sheet$wims_read_parm
+ ecnt_=!recordcnt $s_
+!endif
+
+deps=
+sessionbase=!translate _ to $ $ in $wims_sesdir
+sessionbase=!word 1 of $sessionbase
+
+depfile=wimshome/$sessionbase/exodep.$wims_read_parm
+!writefile $depfile
+!if $ecnt_<=0
+ !exit
+!endif
+
+!for i=1 to $ecnt_
+ a_$i=!word $i of $scores
+ b_$i=!word $i of $means
+ c_$i=!word $i of $requires
+!next i
+
+!for i=1 to $ecnt_
+ l_=!record $i of $s_
+ d_=!line 7 of $l_
+ d_=!trim $d_
+ C_=
+ !if $d_!=$empty
+  d_=!translate internal , to $\
+$ in $d_
+  d_=!translate internal +: to $ , in $d_
+  d_=!nonempty lines $d_
+  N_=!linecnt $d_
+  !for j=1 to $N_
+   l_=!line $j of $d_
+   !distribute items $l_ into e_,p_
+   !if $p_>0 and $p_<=100
+    e_=!words2items $e_
+    !distribute items 0,0,0 into sum_,mean_,user_,term_
+    !for e in $e_
+     !if $e>0 and $e<256
+      term_=$[$term_+10]
+      sum_=$[$sum_+$(c_$e)]
+      mean_=$[$mean_+$(b_$e)]
+      user_=$[$user_+$(a_$e)]
+     !endif
+    !next
+    !if $sum_>0 and $user_*sqrt($mean_/$term_)/$sum_*100<$p_
+     C_=!append item $e_ to $C_
+    !endif
+   !endif
+  !next j
+  C_=!listuniq $C_
+ !endif
+ !appendfile $depfile :$C_
+ deps=$deps$C_;
+!next i
+
