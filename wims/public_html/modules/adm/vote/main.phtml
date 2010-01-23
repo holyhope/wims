@@ -1,0 +1,31 @@
+!read adm/class/classlang names.phtml
+!read lang/names.phtml.$moduclass_lang
+
+!if $job!=home and $vote_title!=$empty
+ !set module_title=$vote_title
+!else
+  !if $(module_title_$moduclass_lang)!=
+   !set module_title=$(module_title_$moduclass_lang)
+  !endif
+!endif
+!if $job=edit
+ !read js/speckedit.phtml src
+!endif
+!read adm/css.phtml
+!header
+
+!if $error!=$empty
+ !read lang/msg.phtml.$moduclass_lang
+ <p>
+!endif
+
+!read $job.phtml
+
+!if $job!=home
+ !set wims_menu_items=!append line vote,1,cmd=renew&job=home\
+ to $wims_menu_items
+
+!endif
+
+!tail
+

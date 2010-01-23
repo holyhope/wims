@@ -1,0 +1,104 @@
+
+!if $vote_option=anonymous
+ $name_thisvote_anomymous
+!else
+ !if $vote_option=trace
+   $name_thisvote_trace
+ !else
+   $name_thisvote_nominatif
+ !endif
+!endif
+!if $vote_status=2
+ $name_thisvote_closed
+!endif
+
+!if $wims_user=supervisor
+ ($vcnt $name_thisvote_answer)
+ !href cmd=reply&job=edit $wims_name_change
+ 
+ !href cmd=reply&job=csv $wims_name_csv
+<p>
+!set wims_menu_items=!append line change,1,cmd=reply&job=edit\
+ csv,1,cmd=reply&job=csv\
+to $wims_menu_items
+!endif
+
+!if $whovote!=$empty and ($vote_whovoteshow=1 or $wims_user=supervisor)
+ <br><u><b>$name_whovote</b></u> : $whovote.
+ <p>
+!endif
+
+!if $vote_status=2
+ !read $votedir/$vote.def
+ !goto comments
+!endif
+
+!if $(user_vote_$Vote)!=$empty
+ !if $vote_option!=nominative
+  $name_thisvote_already1<p>
+ !else
+  $name_thisvote_already2<p>
+  !goto form
+ !endif
+!else
+ $name_give_your_choice<p>
+ :form
+ !form reply
+ <input type=hidden name=job value=vote>
+ !set m_formed=yes
+!endif
+
+!read $votedir/$vote.def
+
+!if $m_formed=yes
+ <p><center>
+ <input type=submit value="$wims_name_tosave">
+ </center></form>
+!endif
+
+:comments
+!readdef $votedir/$vote.comments 
+!if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
+<p><b>$name_comments</b>: 
+</p><p> 
+!for i=1 to $parmcnt
+ !if $(type_comment$i)=yes
+  !set comment_$i = !replace internal --- by $\
+ $<br>- in $(comment_$i)
+
+ $i : 
+ $(comment_$i)
+ !set rcnt=!recordcnt $votedir/$(vote)_$i.comments
+ !for r_j=1 to $rcnt
+ <br>-
+  !record $r_j of $votedir/$(vote)_$i.comments
+ !next
+</p><p>
+ !endif
+ </p>
+!next
+!endif
+!if $wims_user=supervisor and $vote_option!=anonymous
+ <p> $name_details
+ !for i=1 to $parmcnt
+  !for c=1 to $(choices$i)
+   !if /supervisor/ notin $c/
+    <p>$i-
+    !item $c of $(chlist$i)
+ <br> <tt>
+    !for u in $(votes_$(i)_$c)
+     !if $vote_option=nominative
+      !set U=!translate internal / to , in $u
+      !readproc adm/class/userdef classes,$U
+      !defof user_lastname, user_firstname in $userdef
+       ($u)
+       <br>
+     !else 
+       ($u) 
+     !endif
+    !next u
+   </tt>
+   !endif
+  !next c
+ !next i
+!endif

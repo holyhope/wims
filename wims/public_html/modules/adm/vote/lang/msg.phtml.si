@@ -1,0 +1,43 @@
+!set wims_module_log=error: $error
+
+<b>Napaka</b>.
+
+!if $error = not_user
+ Sistem anket je dostopen le v virtualnih uèilnicah.
+ !exit
+!endif
+
+!if $error = bad_vote
+ Anketa, ki jo i¹èete, ne obstaja.
+ !exit
+!endif
+
+!if $error = already_voted
+ Svoj glas ste ¾e oddali. V anonimni anketi veèkratno glasovanje ni dovoljeno.
+ !exit
+!endif
+
+!if $error = too_many_votes
+ V va¹i uèilnici je preveè anket.
+ <p>
+ Ali jih res potrebujete toliko?
+ !exit
+!endif
+
+!if $error = no_content
+ Anketnega vpra¹alnika niste izpolnili.
+ !exit
+!endif
+
+!if $error = no_title
+ Anketi morate dati naslov.
+ !exit
+!endif
+
+!if $error = bad_data
+ Nekatere va¹i podatki niso smiselni. Prosim, da jih popravite.
+ !exit
+!endif
+
+!msg $error
+
