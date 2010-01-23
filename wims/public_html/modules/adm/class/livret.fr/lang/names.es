@@ -36,8 +36,8 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_con
 !let name_nowork=No work
 !distribute line Which color panel is used in $name_n_paliers level\
 show result in $name_n_paliers level into name_configtext4,name_configtext5
-!let name_listscoreoption=of the class,of the booklet
-!let name_listscoreview=don't show,integer,with one digit,with two digit,with three digit,with four digit
+!let name_listscoreoption=de la clase, del cuaderno
+!let name_listscoreview=no visualización, entero, con un decimal, con dos decimales, con tres decimales, con cuatro decimales
 
 
 !!------------------------------- definición de los nombres de vínculos para wims_menu_items
