@@ -1,0 +1,41 @@
+!goto $wims_read_parm
+:file
+
+<p>Fichiers disponibles dans ce document&nbsp;:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Effacer un fichier&nbsp;:
+ !formselect job2 list $flist
+ <input type=submit value=OK>
+ </form>
+ <p>
+ Ces fichiers sont accessibles dans le document à l'aide de la variable
+ <tt>\filedir</tt>. Par exemple,
+<p><center>
+ <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+(<b>copiez ce texte après avoir chargé votre fichier</b>)
+ crée un lien vers le fichier <a href="$m_filedir/$f1">$f1</a>.
+ 
+ Vous pouvez aussi écrire
+<p><center>
+ <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+</center> <p>
+pour inclure un fichier d'image <tt>myfile.jpg</tt> dans la page.
+ <p>
+ Les fichiers déposés dans ce document sont accessibles uniquement à ceux
+ ayant le droit de lire le document.
+
+!exit
+
+:readauth
+ Si vous êtes auteur du document, sachez que vous avez besoin de 
+ l'approbation du
+ !mailurl $wims_site_manager gestionnaire du site\
+Demande d'ouverture du document WIMS $doc
+ pour rendre le document lisible par le public.
