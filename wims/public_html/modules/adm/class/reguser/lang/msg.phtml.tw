@@ -1,0 +1,102 @@
+!set wims_module_log=error: $error
+
+!if no_class=$error
+ 您所選擇的課程似乎不存在！如果不是軟體所產生的 bug ，則可能是課程已經到期或是
+ 您正在上線當中(在這種情形，您需注意您所有的活動都會被記錄下來)。
+ !exit
+!endif
+
+!if complete=$error
+ 您所選擇的課程已經額滿。抱歉，已經沒有多餘的名額。
+ !exit
+!endif
+
+!if no_real=$error
+ 您沒有輸入帳號。
+ !exit
+!endif
+
+!if bad_login=$error
+ 您所簽入的帳號含不合法的字元。<p>
+ 帳號只能為數字或字元，且不可以留空白。
+ !exit
+!endif
+
+!if bad_pass=$error
+ 您所輸入的密碼含不合法的字元。<p>
+ 密碼只能為數字或字元，且不可以留空白。
+ !exit
+!endif
+
+!if login_size=$error
+ 您的帳號太
+ Your login name is too
+ !if $n<4
+  短。
+ !else
+  長。
+ !endif
+ 必須含  4 到 16 個字元。
+ !exit
+!endif
+
+!if pass_size=$error
+ 您的密碼太
+ !if $n<4
+   短。
+ !else
+   長。
+ !endif
+  必須含  4 到 16 個字元。
+ !exit
+!endif
+
+!if bad_classpass=$error
+對於
+<b><font color=green>$institution</font></b> 的
+<b><font color=green>$description</font></b>
+課程，您所輸入的密碼不正確。因此您無權登錄到本課程，抱歉！
+ !exit
+!endif
+
+!if login_double=$error
+ 您所登錄的帳號 "<b><font color=green>$login</font></b>"
+ 已被 <b><font color=green>$institution</font></b> 的
+ <b><font color=green>$description</font></b> 所使用。
+ </center> <p>
+ 請確認您是否已經註冊；否則請選用其他帳號。
+ !exit
+!endif
+
+!if pass_error=$error
+ 您再次輸入的密碼和第一次所輸入的不符合。您的登錄請求被駁回，請再試一次！
+ !exit
+!endif
+
+!if insert_fail=$error
+ 本軟體無法將您的註冊加到資料庫中。程式內部有誤！
+ <p>
+ 請將問題回報給
+ !mailurl $wims_site_manager 網站管理者\
+user registration failure
+。謝謝！
+ !exit
+!endif
+
+!if site_complete=$error
+已註冊的使用者人數已達到本課程所容許的上限($wims_user_limit)。因此關閉註冊服務，抱歉！<p>
+您可以寫位給
+ !mailurl $wims_site_manager 網站管理者\
+site user limit
+要求他提高人數的上限，或者以
+ !href $ 匿名參觀者
+ 身份連上 WIMS。
+<p>
+ !exit
+!endif
+
+!if internal_total=$error
+ 軟體內部的錯誤：無法決定註冊人數！
+ !exit
+!endif
+
