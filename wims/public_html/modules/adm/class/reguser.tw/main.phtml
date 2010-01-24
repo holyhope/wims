@@ -7,24 +7,25 @@
 !!endif
 
 !read names.phtml
-=WIMS at $httpd_HTTP_HOST
-<p>
-參與課程的註冊
-</h1> <p><hr width="50%"> <p>
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$name_title
+
+!if $cltype iswordof 2 4 and $classcnt>0
+ <center>
+ ($name_reserved)
+ </center>
+!endif
 
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- [
- !href module=$module&cmd=new 重新註冊
- ]
- <p>
- !goto end
+ !goto end1
 !endif
 
 !if $classcnt=0
- 抱歉，本網站現在沒有任何課程，請稍候再試！
+  $name_warning1
  !goto end
 !endif
 

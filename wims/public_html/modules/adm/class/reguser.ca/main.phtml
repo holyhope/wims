@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 !read adm/css.phtml
 !header1
 
@@ -11,13 +7,15 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS a $httpd_HTTP_HOST
-<br>
-Registre a $name_classess
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$name_title
+
 !if $cltype iswordof 2 4 and $classcnt>0
- <br> (reservat als professors)
+ <center>
+ ($name_reserved)
+ </center>
 !endif
-</h1> <p>
 
 !if $error!=$empty
  <p>
@@ -27,24 +25,23 @@ Registre a $name_classess
 !endif
 
 !if $classcnt=0
- Cap classe us permet registrar-vos o encara no està oberta. Ho sento, torneu a provar més
- tard!
+  $name_warning1
  !goto end
 !endif
 
 !if $class=$empty
- Si us plau seleccioneu la classe a la qual us voleu registrar
- (cliqueu al seu nom). <p>
+ $name_inscription 
+ <p>
  $table_header
  !if $ctype=0
   $table_hdtr
-  <th>Nom<th>professor<th>nivell<th>llengua</th>
-  <th>llocs<br>disponibles<th>estat
+  <th>$wims_name_name<th>$wims_name_namesteacher<th>$wims_name_level<th>$wims_name_Language</th>
+  <th>$name_remainig<th>$wims_name_Status
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>Nom<th>professor<th>nivell
-  <th>estat
+  <th>$wims_name_name<th>$wims_name_Supervisor<th>$wims_name_level
+  <th>$wims_name_Status
  !endif
  !for cl in $classlist
   !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
@@ -61,10 +58,10 @@ Registre a $name_classess
   !mailurl $class_email $class_supervisor
   </td>
   !if $class_level=$empty
-  !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
+   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
     <td align=center>$pname</td>
- !else
-    <td align=center>$(level$l1)<br>curs $l2</td>
+  !else
+    <td align=center>$(level$l1)<br>$name_year $l2</td>
   !endif
   !if $ctype=0
    <td align=center>$(lang_$class_lang)</td>
@@ -76,75 +73,67 @@ Registre a $name_classess
    !endif
   !endif
   !if $class_password=$empty
-   <td align=center>oberta</td>
+   <td align=center>$(name_statut[1])</td>
   !else
-   <td align=center>protegida</td>
+   <td align=center>$(name_statut[2])</td>
   !endif
  !next cl
  $table_end <p>
- <b>Nota.</b> Podeu inscriure'us en classes
- obertes. Per contra, una classe protegida requereix una contrasenya
- que s'obté del professor de la classe.
+ $name_remark1
  !goto end1
 !endif class=empty
 
 !set classname=<b><font color=green>$description</font></b>\
- de <b><font color=green>$institution</font></b>
+  - <b><font color=green>$institution</font></b>
 
 !if $password!=$empty and $passverify=$empty
  !if $cltype iswordof 2 4
-  El
-  !href module=adm/class/classes&type=authparticipant&class=$class <b>portal</b>
+  $name_Portal
+  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
  !else
-  La classe
+  $name_classessss
   !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
  !endif
- de <b><font color=green>$institution</font></b>
+ (<b><font color=green>$institution</font></b>)
  !if $cltype iswordof 4 2
-  està protegida per una contrasenya i el registre directe es limita als 
-  <b>professors</b>.
+  $name_warning_protected
   !if $classcnt>0 
-  Si sou estudiants, si us plau registreu-vos
-  !href cmd=new&module=$module&class=$class&subclass=yes a la classe
-  que us interessi
+  $name_inscription_student
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
   !endif
  !else
-  està protegida per una contrasenya.
+  $name_isprotected
   !endif
- <p> Escriviu la contrasenya a fi de poder-vos registrar
+ <p> $name_writepasswd
  !if $cltype iswordof 2 4
-  com a <b>professor</b>.
+  $name_asateacher.
  !else
-  com a <b>participant</b>.
+  $name_asaparticipant.
  !endif
  !form reply
  <input type=hidden name=step value=1>
- <center> <p><label for="classpass">Contrasenya :</label>
+ <center> <p><label for="classpass">$wims_name_Password</label>
  <input type=password name=classpass id="classpass">
  <p>
- <input type=submit value="Enviar la contrasenya">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
+ <b>$wims_name_warning</b>.
  !if $cltype iswordof 2 4
-  <b>Nota</b>.
-  Si l'administrador ($supervisor)
+  $name_access1
  !else
-  <b>Nota</b>. 
-  Si el professor ($supervisor)
+  $name_access2
  !endif
- us en permet l'accés,
- ell us donarà la contrasenya.
- (
+ $name_obtainpasswd
+(
  !if $cltype iswordof 2 4
-  !mailurl $smail Escriure a l'administrador
+  !mailurl $smail $name_write_adm
  !else
-  !mailurl $smail Escriure al professor
+  !mailurl $smail $wims_name_wsup
  !endif
- )
+).
  !if $cltype iswordof 2 4
-  <p><b>PRECAUCIÓ</b>. El registre directe a $name_classe està reservat als
-  professor. Si sou estudiants, si us plau registreu-vos
-  !href cmd=new&module=$module&class=$class&subclass=yes a la classe
-  que us interessi
+  $name_warning_direct
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
   <p>
   !endif
@@ -155,17 +144,15 @@ Registre a $name_classess
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
   <input type=hidden name=step value=1>
-  <label for="search">Per trobar un participant ja inscrit en la institució,
-  introduiu una paraula en el seu nom o
-  nom d'usuari&nbsp;:</label>
+  <label for="search">$name_research:</label>
   <input size=20 name=search id="search" value="$search">
-  <input type=submit value=OK>
+  <input type=submit value="$wims_name_tosave">
   </form> <p>
   !default foundcnt=0
   !if $foundcnt>0
    $table_header
-   <caption>Cliqueu sobre un nom per registrar-lo a $name_classes.</caption>
-   $table_hdtr<th>Nom</th><th>nom d'usuari</th></tr>
+   <caption>$name_clickname</caption>
+   $table_hdtr<th>$wims_name_name</th><th>$wims_name_Login</th></tr>
    !for i=1 to $foundcnt
     !set l=!line $i of $found
     !distribute item $l into l_,f_,L_
@@ -178,112 +165,86 @@ Registre a $name_classess
    !goto end1
   !endif
   !if $search!=$empty and $foundcnt=0
-   (Cap compte de participant trobat amb <tt>$search</tt>
-   al nom o al nom d'usuari.) <p>
+   ($name_nofound) <p>
   !endif
-  Si us plau doneu la següent informació sobre el nou
-  participant a $classname.
-  !set name_Your=El seu
-  !set name_you=el participant
-  !set utilisera=el participant utilitzarà
+  $name_newparticipant
  !else
-  Per a registrar-vos com a participant
-  !if  $cltype iswordof 2 4
-  - professor
-  !endif
-  a $name_classes $classname,
-  si us plau doneu la següent informació.
-  !set name_Your=
-  !set name_you=vosaltres
-  !set utilisera=vosaltres utilitzareu
+  $name_inscription2
  !endif
   !form reply
  <input type=hidden name=step value=2>
  <ul>
- <li><label for="lastn">$name_Your Cognom</label> <input size=20 name=lastn id="lastn" value="$lastn">
-  i <label for="firstn">nom</label> <input size=20 name=firstn id="firstn" value="$firstn">
+ <li><label for="lastn">$wims_name_lastname</label> <input size=20 name=lastn id="lastn" value="$lastn">
+<label for="firstn">$wims_name_firstname</label> <input size=20 name=firstn id="firstn" value="$firstn">
   <p>
- <li><label for="login">Trieu un nom d'usuari :</label>
+ <li><label for="login">$wims_name_Login</label>
   <input size=16 name=login id="login" value="$login"> <br>
-  Aquest serà el nom que $utilisera per entrar posteriorment a $classname
-  . Si us plau, trieu una paraula que contingui entre 4 i 16
-  caràcters alfanumèrics sense accent.
+  $name_warning_login. $name_passwd_warning
   <p>
- <li><label for="pass">I una contrasenya :</label>
+ <li><label for="pass">$wims_name_Password</label>
   <input type=password size=16 name=pass id="pass"> <br>
-  La contrasenya ha de contenir entre 4 i 16 caràcters alfanumèrics
-  sense accent.
+  $name_passwd_warning
   <p>
- <li><label for="email">$name_Your Adreça electrònica (opcional) :</label><br>
+ <li><label for="email">$wims_name_email ($name_optional) :</label><br>
   <input size=60 name=email id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
-  <li>Tipus de compte :
+  <li>$name_accounttype:
   !default utype=0
-  !formradio utype list 0,1 prompt alumne,professor
+  !formradio utype list 0,1 prompt $wims_name_namesstudent,$wims_name_namesteacher
  !endif
- <center><input type=submit value="$wims_name_tosave"></center>
  </ul>
+ <center><input type=submit value="$wims_name_tosave"></center>
  </form>
  !goto end1
 !endif
 
 !if $step=2
- Hola, $firstn $lastn!<p>
- Us esteu registrant com a participant
- !if $Cltype iswordof 2 4
- - professor
- !endif
- $name_classesss $classname, amb el nom d'usuari &nbsp;
- ''<tt><b><font color=green>$login</font></b></tt>''. <p>
+ $name_hello, $name_student!<p>
+ $name_inscription3 <tt><b><font color=green>$login</font></b></tt>. <p>
  !if $email=$empty
-  No heu facilitat una adreça de correu electrònic vàlida. <p>
+  $name_passwd_nonvalid <p>
  !else
-  La vostra adreça de correu electrònic : <tt>$email</tt> <p>
+  $wims_name_email: <tt>$email</tt> <p>
  !endif
- <label for="pass2">Per a verificar que la vostra contrasenya sigui correcta, si us plau escriviu-la
- una altra vegada :</label>
+ <label for="pass2">$name_passwd_exact:</label>
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2 id="pass2">
- <p><input type=submit value="Enviar"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
 
 !if $step=3
  !if $wims_user=supervisor
-  El participant $firstn $lastn s'ha afegit a la vostra $name_classe.
+  $name_studentadded
+  <p>
   !if $wims_supertype=4
    !readproc adm/gateway/transfer $login test
    !if $transfer_test>0
     <p>
-    Aquest participant pot haver estat operant en una altra classe.
-    !href module=adm/class/userlist&job=transfer&getuser=$login Transferir les seves activitats
-    a aquesta classe.
+    $name_otheractivities
+    !href module=adm/class/userlist&job=transfer&getuser=$login $name_transfer1
     <p>
    !endif
   !endif
-  !href module=adm/class/userlist Llista de participants
-.&nbsp;
-  !href module=$module&step=1 Afegir un altre participant
-.
+ !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
+ addstudent,1,module=$module&step=1\
+ to wims_menu_items
   !goto end
  !endif
- Hola, $firstn $lastn!<p>
- Benvingut a $name_classes $classname.
- Ara sou un participant, amb el nom d'usuari
+ $name_hello, $name_student!<p>
+ $name_welcome
  <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
- Ara podeu 
+ $name_youcan 
  !if $wims_class!=$empty
-  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login \
-	anar
+  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
 .
  !else
   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
-  anar a treballar</a>. (Recordeu també de posar aquest enllaç
-  a la vostra llista d'adreces d'interès.)
- !endif
+  $name_gotowork</a>.
+  ($name_bookmark)
  !goto end
 !endif
 
@@ -293,15 +254,11 @@ Registre a $name_classess
 !endif
 <p>
 !if $cltype iswordof 2 4
-!set wims_menu_items=!append line portallist,1,module=adm/class/classes&type=supervisor\
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=supervisor\
 to $wims_menu_items
-!! !href module=adm/class/classes&type=supervisor Llista de classes i portals
-!!.
 !else
-!set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
+ !set wims_menu_items=!append line classlist,1,module=adm/class/classes&type=participant\
 to $wims_menu_items
-!! !href module=adm/class/classes&type=participant Llista de classes
-!!.
 !endif
 :end
 !tail

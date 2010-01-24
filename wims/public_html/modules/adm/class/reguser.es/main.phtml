@@ -8,7 +8,7 @@
 
 !read names.phtml
 !read adm/title.phtml 1\
-WIMS à $httpd_HTTP_HOST\
+WIMS $httpd_HTTP_HOST\
 $name_title
 
 !if $cltype iswordof 2 4 and $classcnt>0
@@ -126,16 +126,14 @@ $name_title
  $name_obtainpasswd
 (
  !if $cltype iswordof 2 4
-!mailurl $smail $name_write_adm
+  !mailurl $smail $name_write_adm
  !else
- !mailurl $smail $wims_name_wsup
+  !mailurl $smail $wims_name_wsup
  !endif
 ).
  !if $cltype iswordof 2 4
-  <p><b>ATTENTION</b>. L'inscription directe au $name_classe est réservée aux
-  enseignants. Si vous êtes élève, veuillez vous inscrire
-  !href cmd=new&module=$module&class=$class&subclass=yes dans la classe
-  qui vous concerne
+  $name_warning_direct
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
   <p>
   !endif
@@ -148,7 +146,7 @@ $name_title
   <input type=hidden name=step value=1>
   <label for="search">$name_research:</label>
   <input size=20 name=search id="search" value="$search">
-  <input type=submit value=OK>
+  <input type=submit value="$wims_name_tosave">
   </form> <p>
   !default foundcnt=0
   !if $foundcnt>0
@@ -202,10 +200,10 @@ $name_title
 !endif
 
 !if $step=2
- $name_hello, $firstn $lastn!<p>
+ $name_hello, $name_student!<p>
  $name_inscription3 <tt><b><font color=green>$login</font></b></tt>. <p>
  !if $email=$empty
-  $name_nonvalid <p>
+  $name_passwd_nonvalid <p>
  !else
   $wims_name_email: <tt>$email</tt> <p>
  !endif
@@ -245,7 +243,7 @@ $name_title
 .
  !else
   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
-  $name_gotowork</a>. 
+  $name_gotowork</a>.
   ($name_bookmark)
  !goto end
 !endif
