@@ -10,7 +10,7 @@
 !read names.phtml
 !read adm/title.phtml 3\
 WIMS à $httpd_HTTP_HOST\
- Creation of $name_classess
+$title
 
 !if $toomany=yes
  !read toomany.phtml
@@ -22,107 +22,74 @@ WIMS à $httpd_HTTP_HOST\
  !read msg.phtml
  !if $restart!=no
   <p>
-  !href module=$module&cmd=reply&step=0 Restart the operation.
+  !href module=$module&cmd=reply&step=0 $name_again
  !endif
  <p>
  !goto end
 !endif
 
 !if $step=$empty or $step=pre
- Choose the type of virtual class you want to create.
+ $name_choose
  <p>
- !href cmd=reply&step=0&cltype=0 Individual class
- to manage works of a group of students.
+ !href cmd=reply&step=0&cltype=0 $wims_name_create_class
  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
  to $wims_menu_items
  <p>
- !if $regpolicy=file
-  !set noright=(You don't have the right to do so.)
- !else
-  !set noright=(Only the site manager can do it.)
- !endif
  !if 2 isitemof $alltypes
-  !href cmd=reply&step=0&cltype=2 Entrance point
-  of a group of classes.
+  !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
  to $wims_menu_items
  !else
-  <font color=blue><strike>Entrance point</strike></font>
-  of a group of classes. $noright
+  <font color=blue><strike>$wims_name_create_superclass</strike></font> ($noright).
  !endif
  <p>
  !if 4 isitemof $alltypes
-  !href cmd=reply&step=0&cltype=4 Portal
-  for an institution structure. (For experts.)
+  !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
+  ($name_expert)
   !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
  to $wims_menu_items
  !else
-  <font color=blue><strike>Portal</strike></font>
-  of an institution structure. $noright
+  <font color=blue><strike>$wims_name_create_portal</strike></font> ($noright).
  !endif
  <p>
- <b>Help</b>. A group of classes with a same entrance point allows teachers to
- exchange or share teaching materials, and students to jump from one class to
- another without retyping the password.
- <p>
- An institution structure is a multi-level system of virtual classes
- capable of taking care
- of the need of a whole school: database of students and teachers,
- different teaching levels,
- programs and subjects, student classes, teacher responsabilities, etc.
+ !read help.phtml.$lang 1
  !goto end
 !endif
 
 !if $step=0
- The creation of
- !if $Cltype<2
-   <font color="blue">classes</font>
-   is an operation reserved to <font color="blue">teachers</font>. 
- !else
-    <font color="blue">$name_classe</font>
- is an operation reserved to a <font color="blue">supervisor</font>.
- !endif
- You will need
- a working email address for the operation. After your $name_classe is created,
- you should assume the responsibility of its maintenance. <p>
- To create your $name_classe, please fill in the following informations.
+ !read help.phtml.$lang 2
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li><label for="institution">Name of the institution (at most $instlim characters):</label>
+ <li><label for="institution">$name_Name_portal ($name_atmost $instlim $name_characters) :</label>
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
-  <input size=$instlim name=institution value="$institution" id="institution"> <p>
- <li><label for="description">Name of the $name_classesss (at most $desclim characters):</label>
-  <input size=$desclim name=description value="$description" id="description"> <p>
+  <input size=$instlim name=institution value="$institution" id="institution">
+ </li>
+ <li><label for="description">$wims_name_name $name_classesss ($name_atmost $desclim $name_characters) :</label>
+  <input size=$desclim name=description value="$description" id="description">
+ </li>
+ 
  !if $Cltype notin 24
- <li>Level of the $name_classesss:<br>
-  <center><table border=1>
-  <tr><th>year
-  !for j=1 to 6
-   <td align=center>$j</td>
-  !next j
-  </tr>
-  !for i in E,H,U
-   <tr><td align=center>$(lev_$i)</td>
-   !for j=1 to 6
-    !if $i!=U or $j<6
-     <td><input type=radio name=level
-     !if $level=$i$j
-      checked
-     !endif
-     value=$i$j></td>
+ <li><label for="level">$wims_name_level $name_classesss </label>
+  <select name=level id="level">
+   !for k=1 to $nblevel
+    !if $(levelid[$k])=$level
+     <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
     !else
-     <td>.</td>
-    !endif
-   !next j
-  !next i
-  </tr></table></center> <p>
+     <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
+    !endif   
+   !next k
+  </select>
+ </li>
  !endif
- <li><label for="supervisor">Complete name of the $name_sup of the $name_classesss (that is, you):</label>
-  <input size=$suplim name=supervisor value="$supervisor" id="supervisor"> <p>
- <li><label for="email">Email address:</label>
+
+ <li><label for="supervisor">$wims_name_firstname  $wims_name_firstname $name_sup $name_classesss</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor">
+ </li>
+
+ <li><label for="email">$wims_name_email</label>
   <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
    <br>(The operation of creation of $name_classesss will not succeed unless you give
@@ -190,7 +157,7 @@ WIMS à $httpd_HTTP_HOST\
   </small> <br>
  </li>
  </ul>
- <center><input type=submit value="Continue"></center>
+ <center><input type=submit value="$name_continue"></center>
  </form>
 
  !goto end
@@ -217,29 +184,23 @@ WIMS à $httpd_HTTP_HOST\
  please type them again. <p>
  !form reply
  <input type=hidden name=step value=2>
- <label for="passsup">Supervisor's password:</label>
- <input type=password name=passsup id="passsup"> <p>
+<label for="passsup"> $wims_name_Password ($name_sup) :</label>
+ <input type=password name=passsup id=passsup> <p>
  !if $pword!=$empty
-  <label for="password">Password of the $name_classesss:</label>
-  <input type=password name=password id="password"> <p>
+ <label for="password">$wims_name_Password ($name_classesss)</label>
+  <input type=password name=password id=password> <p>
  !endif
- <center><input type=submit value="Continue"></center>
+ <center><input type=submit value="$name_continue"></center>
  </form>
  !goto end1
 !endif
 
 !if $step=2
- Hello, $supervisor!<p>
- Now you need a code to finish the operation of creation of a new class
- under WIMS at the site $http_HTTP_HOST. <p>
- This code has just been sent to your email address
- ``<tt>$email</tt>''. Please go to verify your email box (wait a little bit
- if necessary), and read this message.
- Pick up the code in the message, and copy it below.
+ !read help.phtml.$lang step2
  !form reply
  <input type=hidden name=step value=3>
  <center><label for="typecode">Code of the class: <input size=12 name=typecode id="typecode"></label>
- <p><input type=submit value="Continue"></center>
+ <p><input type=submit value="$name_continue"></center>
  </form>
  <b>Attention</b> This code is only used once here. It cannot be used to
  connect to the $name_classe!
@@ -261,7 +222,7 @@ WIMS à $httpd_HTTP_HOST\
 
 :end1
 <p>
-!href module=$module&cmd=reply&step=0 Back to the beginning of the operation.
+!href module=$module&cmd=reply&step=0 $name_comeback
 :end
 !tail
 
