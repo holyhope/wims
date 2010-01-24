@@ -1,12 +1,12 @@
 !set lang_exists=yes
 
-!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Insérer un fichier source,\
+!! definición de los nombres para los vínculos en el menubox (définis par wims_menu_items)
+!distribute items Insertar un fichero fuente,\
 		Volver a la vista normal de la hoja,\
 		mostrar el fichero fuente, \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!set name_student1=Puede trabajar en esta hoja hasta el 
+!set name_student1=Puede trabajar en esta hoja hasta el
 !set name_student2=Esta hoja ha expirado. Puede seguir \
  trabajando en ella, pero sus puntuaciones ya no serán tenidas en cuenta.\
 !set name_student3= Por el momento no está autorizado a consultar el contenido de esta hoja.
@@ -34,5 +34,5 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 !set name_noprint=!defof name_noprint in oef/$modu_lang/names
 !set name_answers=!defof name_answers in oef/$modu_lang/names
 
-!distribute items niveau approximatif,durée \
+!distribute items nivel aproximado, duración \
 into name_level,name_duration
