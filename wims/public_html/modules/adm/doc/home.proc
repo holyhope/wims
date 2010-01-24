@@ -1,0 +1,63 @@
+
+!if $wims_class!=$empty and $wims_user!=supervisor
+ Docdir=log/classes/$wims_class
+ docdir=wimshome/$Docdir
+ doctype=class
+!endif
+
+authoring=!items2words $authoring
+authoring=!trim $authoring
+!if $authoring!=$empty
+ wims_module_log=author $authoring
+ u_=!lower $authoring
+ u_=!singlespace $u_
+ u_=!deaccent $u_
+ u_=!lower $u_
+ !distribute words $u_ into u1,u2,u3
+!else
+ !reset u1,u2,u3
+!endif
+
+!if $wims_class!=$empty
+ doccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
+ !for i=1 to $doccnt
+  l=!record $i of wimshome/log/classes/$wims_class/doc/.index
+  !distribute lines $l into s_,t_,a_,e_,g_,o_,l_,A_
+  !if $wims_user=supervisor or $o_>0
+   slist=!append line $s_ to $slist
+   tlist=!append line $t_ to $tlist
+   alist=!append line $a_ to $alist
+   elist=!append line $ $e_ to $elist
+  !endif
+ !next i
+!endif
+!if $wims_class=$empty
+doccnt=!recordcnt wimshome/public_html/bases/doc/.index
+ii=0
+!for i=1 to $doccnt
+ l=!record $i of wimshome/public_html/bases/doc/.index
+ !distribute lines $l into s_,t_,a_,e_,g_,o_,l_,A_
+ !if $wims_ismanager=2 or ($u1!=$empty and ($u1 iswordof $A_ or\
+	($u2!=$empty and $u2 iswordof $A_) or\
+	($u3!=$empty and $u3 iswordof $A_)))
+  i_=1
+  !advance ii
+ !else
+  i_=0
+ !endif
+ !if $i_=1 or ($s_>=1000 and $s_ iswordof $openlist $edlist and $o_=yes and \
+	($l_=$empty or all iswordof $l_ or $module_language iswordof $l_))
+  slist=!append line $s_ to $slist
+  tlist=!append line $t_ to $tlist
+  alist=!append line $a_ to $alist
+  elist=!append line $ $e_ to $elist
+  ilist=!append line $i to $ilist
+ !endif
+!next i
+!endif
+doccnt=!linecnt $slist
+tlist=!sort nocase lines $tlist
+slist=!line $wims_sort_order of $slist
+alist=!line $wims_sort_order of $alist
+elist=!line $wims_sort_order of $elist
+ilist=!line $wims_sort_order of $ilist

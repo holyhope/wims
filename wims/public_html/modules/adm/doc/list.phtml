@@ -1,0 +1,40 @@
+!!#language independant
+<h1 class="wims_docu_title">$tit</h1>
+
+!if $fcnt<1
+ $n_nocontent
+ !href cmd=reply&job=edit&block=main $n_begin
+.
+ <p>
+ !exit
+!endif
+
+<p>$table_header
+<caption>$n_blocklist</caption>
+$table_hdtr
+<th>$wims_name_name</th><th>$wims_name_title</th><th>$wims_name_action</th></tr>
+!for i=1 to $fcnt
+ !set s_=!line $i of $slist
+ !set t_=!line $i of $tlist
+ !set t_=!trim $t_
+ !default t_=$n_notitle
+ $table_tr
+ <td><tt>$s_</tt></td>
+ <td>$t_</td>
+ <td align=center>
+ !href cmd=reply&job=read&block=$s_ $n_read
+&nbsp;
+ !if $editable=yes
+  !href cmd=reply&job=edit&block=$s_ $wims_name_Edit
+ !endif
+</td>
+!next i
+</tr>$table_end <p>
+
+<center>
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
+</center> <p>
+!set wims_menu_items=!append line doch_upload,1,cmd=reply&job=file\
+doch_main,1, cmd=reply&job=read&block=main\
+to $wims_menu_items
