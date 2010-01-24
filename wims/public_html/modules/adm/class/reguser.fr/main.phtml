@@ -8,7 +8,7 @@
 
 !read names.phtml
 !read adm/title.phtml 1\
-WIMS à $httpd_HTTP_HOST\
+WIMS $httpd_HTTP_HOST\
 $name_title
 
 !if $cltype iswordof 2 4 and $classcnt>0
@@ -132,10 +132,8 @@ $name_title
  !endif
 ).
  !if $cltype iswordof 2 4
-  <p><b>ATTENTION</b>. L'inscription directe au $name_classe est réservée aux
-  enseignants. Si vous êtes élève, veuillez vous inscrire
-  !href cmd=new&module=$module&class=$class&subclass=yes dans la classe
-  qui vous concerne
+  $name_warning_direct
+  !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
   <p>
   !endif
@@ -245,7 +243,7 @@ $name_title
 .
  !else
   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
-  $name_gotowork</a>. 
+  $name_gotowork</a>.
   ($name_bookmark)
  !goto end
 !endif
