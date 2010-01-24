@@ -1,0 +1,47 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute line Liste de forums\
+	Authentification de gérant\
+	Authentification de participant\
+	Inscription d'utilisateur\
+	into n_list,n_authowner,n_authuser,n_register
+
+!distribute line visiteur\
+  participant\
+  gérant\
+  s'inscrire\
+  Aucun forum de discussion n'est trouvé sur ce site.\
+  Mot de passe du gérant\
+into name_visitor,name_user,name_owner,name_register,name_noforum,\
+ name_pass_owner
+
+!set name_number_message=!nosubst Nous hébergeons $ccnt forums de discussion sur ce site.\
+Repérez celui qui vous intéresse dans le tableau ci-dessous.
+	
+	
+	
+!exit
+
+:create
+Cliquez sur le type de connexion pour entrer dans le forum, ou
+cliquez sur le mot `s'inscrire' pour vous y inscrire. Vous pouvez aussi
+!href module=adm/forum/regforum créer votre forum
+ sur ce site.
+!exit
+
+:enter
+
+Pour entrer dans <b><font
+color=green>$mb_title</font></b>
+en tant que <em>participant inscrit</em>, veuillez donner votre nom de login
+et votre mot de passe personnel.
+!exit
+
+:owner
+
+Pour entrer dans <b><font
+color=green>$mb_title</font></b> comme son
+<em>gérant</em>, veuillez taper le mot de passe du gérant.
+!exit

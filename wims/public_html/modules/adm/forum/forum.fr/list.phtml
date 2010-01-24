@@ -1,12 +1,11 @@
 
 !if $ccnt<1
- Aucun forum de discussion n'est trouvé sur ce site. <p>
- !href module=home Page d'accueil WIMS
+ $name_noforum<p>
+ !href module=home $wims_name_home
  !exit
 !endif
 
-Nous hébergeons $ccnt forums de discussion sur ce site.
-Repérez celui qui vous intéresse dans le tableau ci-dessous.
+$name_number_message
 
 <p>$table_header
 $table_hdtr<th>$wims_name_title<th>Connexion<th>$wims_name_Language<th>$wims_name_Description
@@ -20,25 +19,25 @@ $table_hdtr<th>$wims_name_title<th>Connexion<th>$wims_name_Language<th>$wims_nam
  !read wimshome/$wims_sesdir/mb_user.$code
  !if $user_exists=$empty
   !if $mb_readpolicy=open
-   !href module=adm/forum/mboard&forum=$code visiteur
+   !href module=adm/forum/mboard&forum=$code $name_visitor
    &nbsp;
   !endif
-  !href cmd=reply&type=authuser&forum=$code participant
+  !href cmd=reply&type=authuser&forum=$code $name_user
   &nbsp;
-  !href cmd=reply&type=authowner&forum=$code gérant
+  !href cmd=reply&type=authowner&forum=$code $name_owner
   !if * notin $mb_password
    &nbsp;
-   !href module=adm/forum/reguser&forum=$code s'inscrire
+   !href module=adm/forum/reguser&forum=$code $name_register
   !endif
  !else
   !if $forumuser!=supervisor
-   !href module=adm/forum/mboard&forum=$code participant
+   !href module=adm/forum/mboard&forum=$code $name_user
    &nbsp;
-   !href cmd=reply&type=authowner&forum=$code gérant
+   !href cmd=reply&type=authowner&forum=$code $name_owner
   !else
-   !href cmd=reply&type=authuser&forum=$code participant
+   !href cmd=reply&type=authuser&forum=$code $name_user
    &nbsp;
-   !href module=adm/forum/mboard&forum=$code gérant
+   !href module=adm/forum/mboard&forum=$code $name_owner
   !endif
  !endif
  </td><td align=center><img src="gifs/$la.gif" alt="$la"></td>
@@ -46,8 +45,5 @@ $table_hdtr<th>$wims_name_title<th>Connexion<th>$wims_name_Language<th>$wims_nam
 !next i
 $table_end <p>
 
-Cliquez sur le type de connexion pour entrer dans le forum, ou
-cliquez sur le mot `s'inscrire' pour vous y inscrire. Vous pouvez aussi
-!href module=adm/forum/regforum créer votre forum
- sur ce site.
+!read names create
 

@@ -1,15 +1,14 @@
 
 !if $ccnt<1
- No message board has been found on this site. <p>
- !href module=home WIMS home
+ $name_noforum<p>
+ !href module=home $wims_name_home
  !exit
 !endif
 
-We host $ccnt message boards on this site.
-Find the message board which interests you in the following table.
+$name_number_message
 
 <p>$table_header
-$table_hdtr<th>Title<th>Connection<th>Language<th>Description
+$table_hdtr<th>$wims_name_title<th>Connexion<th>$wims_name_Language<th>$wims_name_Description
 !for i=1 to $ccnt
  !set l=!record $i of $indf
  !distribute items $l into code,la
@@ -20,25 +19,25 @@ $table_hdtr<th>Title<th>Connection<th>Language<th>Description
  !read wimshome/$wims_sesdir/mb_user.$code
  !if $user_exists=$empty
   !if $mb_readpolicy=open
-   !href module=adm/forum/mboard&forum=$code visitor
+   !href module=adm/forum/mboard&forum=$code $name_visitor
    &nbsp;
   !endif
-  !href cmd=reply&type=authuser&forum=$code user
+  !href cmd=reply&type=authuser&forum=$code $name_user
   &nbsp;
-  !href cmd=reply&type=authowner&forum=$code owner
+  !href cmd=reply&type=authowner&forum=$code $name_owner
   !if * notin $mb_password
    &nbsp;
-   !href module=adm/forum/reguser&forum=$code register
+   !href module=adm/forum/reguser&forum=$code $name_register
   !endif
  !else
   !if $forumuser!=supervisor
-   !href module=adm/forum/mboard&forum=$code user
+   !href module=adm/forum/mboard&forum=$code $name_user
    &nbsp;
-   !href cmd=reply&type=authowner&forum=$code owner
+   !href cmd=reply&type=authowner&forum=$code $name_owner
   !else
-   !href cmd=reply&type=authuser&forum=$code user
+   !href cmd=reply&type=authuser&forum=$code $name_user
    &nbsp;
-   !href module=adm/forum/mboard&forum=$code owner
+   !href module=adm/forum/mboard&forum=$code $name_owner
   !endif
  !endif
  </td><td align=center><img src="gifs/$la.gif" alt="$la"></td>
@@ -46,8 +45,5 @@ $table_hdtr<th>Title<th>Connection<th>Language<th>Description
 !next i
 $table_end <p>
 
-Click on the type of the connection to enter the message board, or
-click on the word `Register' to register to it. You may also
-!href module=adm/forum/regforum create your message board
- on this site.
+!read names create
 
