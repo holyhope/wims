@@ -34,26 +34,25 @@ $ in $header
     GNU自由文件许可(GNU Free Documentation License),\
     公开发布许可(Open Publication License),\
     $n_copyright2
- </td></tr><tr><td align=right>对公众开放:</td><td>
+ </td></tr><tr><td align=right>$name_public</td><td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
- 例: all en fr es it de cn</small>
+ (all en fr es it de cn ca nl)</small>
  !if $job=creat
   <tr><td align=right>$n_codedoc:</td><td nowrap>
-  <input type=password size=$codemax maxlength=$codemax name=coder> 重复一遍:
+  <input type=password size=$codemax maxlength=$codemax name=coder> $name_code5
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  <tr><td colspan=2><small>密码给你修改文件的权力,
-  它必须由 $codemin 至 $codemax 个字母或数字组成.
-  </small>
+  </td></tr><tr><td colspan=2><small>
+ $name_code4
+ </small>
  !endif
 !else
  !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
- <tr><td align=right> 参加者<td>
+ <tr><td align=right> $name_participant<td>
  !formselect docopenr list 0,1,2 prompt \
-    $U_Docstatus
- 本文件.
+	$U_Docstatus
 !endif
 
 </table>
@@ -65,12 +64,9 @@ $ in $header
 
 <p>
 !if class != $doctype
- <b>附言</b>. 你必须征得
- !mailurl $wims_site_manager 网站管理员\
-要求开放 WIMS 文件 $doc
- 的同意才能使文件被公众看到.
+!read lang/msg.phtml.$lang public
  <p>
 !else
- 本文件仅能在你的虚拟班内部被看到.
+ $name_visible
 !endif
 

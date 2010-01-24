@@ -1,6 +1,6 @@
 <h1 class="wims_docu_title">$tit</h1>
 
-本文件的作者是
+$name_author_is
 !if $email!=$empty
  !mailurl $email $author
 .
@@ -8,9 +8,9 @@
  $author.
 !endif
 !if $readauth=yes
- 本文件不向公众开放, 要阅读它, 你应该首先输入密码.
+ $name_code_warning1
 !else
- 要修改本文件, 你必须先输入密码.
+ $name_code_warning2
 !endif
 <p>
 !form reply
@@ -19,13 +19,11 @@
  <input type=hidden name=noedit value=yes>
 !endif
 <center>
-密码: <input type=password size=16 name=coder>
-<input type=submit value=提交>
+$name_secretcode <input type=password size=16 name=coder>
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p>
 !if $readauth=yes
- 如果你是文件的作者, 请记住你需要得到
- !mailurl $wims_site_manager 网站管理员\
-的授权才能使WIMS文件$doc向公众开放.
+ !read msg.phtml.$lang readauth
  <p>
 !endif

@@ -1,5 +1,4 @@
 
-
 !if $error!=$empty
  !read docu/msg.phtml
  <p><hr> <p>
@@ -7,12 +6,12 @@
 
 !if $doccnt<1
  !if $wims_class!=$empty and $wims_user!=supervisor
-  对不起, 你的班级还没有文件. 请与主持教师联系.
+  $name_home_warning
  !else
   !if $authoring=$empty
-   对不起, 没有对公众开放的文件.
+   $name_nodocument1
   !else
-   对不起, 没有这个作者的文件.
+   $name_nodocument2
   !endif
  !endif
 !else
@@ -20,9 +19,9 @@
   !read scripts/table.phtml
  !else
   !if $wims_class!=$empty
-   这是你的班级的文件.
+   $name_listdoc1
   !else
-   这是你可以看到的本网站的文件.
+   $name_listdoc2
   !endif
   <ul>
   !for t=1 to $doccnt
@@ -32,7 +31,7 @@
    !set t_=!trim $t_
    !default t_=$n_notitle
    <li>
-   !href module=$module&cmd=reply&job=read&doc=$s_&block=main $t_ 
+   !href module=$module&cmd=reply&job=read&doc=$s_&block=main $t_
    !if $wims_ismanager=2
     &nbsp;
     !href cmd=reply&job=erase&doc=$s_ $wims_name_erase
@@ -46,9 +45,9 @@
 
 !if $wims_class=$empty and $wims_ismanager<2
  !form reply
- 对于你自己的文件, 给出作者名字:
+ $name_listauthor:
  <input size=20 name=authoring value="$authoring">
- <input type=submit value=提交>
+ <input type=submit value="$wims_name_tosave">
  </form> <p>
 !endif
 

@@ -110,18 +110,22 @@
  !if $job=exosource
   <span class="menuitem">
   !read $oneitem doch_back,1,cmd=reply&job=read
+  !reset wims_ref_class
   </span><!-- menuitem-->
  !endif
  !if $doc!=$helpd and $editable=yes
   <span class="menuitem">
+ !!!ne pas utiliser oneitem, ne fonctionne pas
   !set wims_ref_class=doch_help
-  !read $oneitem doch_help,2,module=$module&cmd=new&job=read&doc=$helpd,help 
+  !href target=wims_help module=$module&cmd=new&job=read&doc=$helpd $wims_name_doch_help
+  !reset wims_ref_class
   </span><!-- menuitem-->
  !endif
   <span class="menuitem">
+  !!!ne pas utiliser oneitem
   !set wims_ref_class=doch_about
-  !read $oneitem doch_about,2,module=$module&cmd=help&special_parm=about,mhelp
-  !!!href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
+  !href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
+  !reset wims_ref_class
   </span><!-- menuitem-->
 !endif
 </div><!--end of wimsmenu  -->
