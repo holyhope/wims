@@ -6,51 +6,24 @@
 !endif
 
 !if $erase!=$empty
- De file <b>$erase</b> is gewist
+ $name_have_been_erased
  <p>
 !endif
 
 !if $quota_free<1
- U kunt geen bestanden meer toevoegen aan dit document: 
- de grens van de maximale bestands grootte op deze server is bereikt.
+$name_warning
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- U kunt een bestand invoeren in dit document&nbsp;:
+ $name_upload:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>Beschikbare files in dit document&nbsp;:
- !for f in $flist
-  !getfile doc/$f $f
-  &nbsp;
- !next f
- <p>
- !form reply
- <input type=hidden name=job2 value=erase>
- Verwijder een bestand&nbsp;:
- !formselect job2 list $flist
- <input type=submit value=OK>
- </form>
- <p>
- De bestanden in dit document kunnen worden aangeroepen met de variabele <tt>\filedir</tt>
- Bijvoorbeeld, 
-<p><center>
- <tt>&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
-</center> <p>
- geeft een link naar de file <a href="$m_filedir/$f1">$f1</a>.
- U kunt ook schrijven:
-<p><center>
- <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
-</center> <p>
-om het plaatje <tt>myfile.jpg</tt> aan deze pagina toe te voegen.
- <p>
- De gedeponeerde bestanden in dit document zijn alleen bereikbaar voor mensen
- met <em>lees_rechten</em>.
+ !read msg.phtml.$lang file
 !endif
 
 <p>

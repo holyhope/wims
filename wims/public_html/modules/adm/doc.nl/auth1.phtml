@@ -1,6 +1,6 @@
 <h1 class="wims_docu_title">$tit</h1>
 
-Schrijver van dit document is
+$name_author_is
 !if $email!=$empty
  !mailurl $email $author
 .
@@ -8,11 +8,9 @@ Schrijver van dit document is
  $author.
 !endif
 !if $readauth=yes
-Dit document is niet openbaar.<br>
-Om het te mogen lezen, moet U eerst een "geheime code" invoeren.
+ $name_code_warning1
 !else
-Om dit document te kunnen modificeren, moet U eerst de "geheime code" 
-invoeren.
+ $name_code_warning2
 !endif
 <p>
 !form reply
@@ -21,15 +19,11 @@ invoeren.
  <input type=hidden name=noedit value=yes>
 !endif
 <center>
-Geheime code: <input type=password size=16 name=coder>
-<input type=submit value=OK>
+$name_secretcode <input type=password size=16 name=coder>
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p>
 !if $readauth=yes
-Als U de schrijver bent van dit document, besef dan goed dat er goedkeuring
- van de
- !mailurl $wims_site_manager site manager\
-Maak $doc publiek toegankelijk
- nodig is om dit document op deze server publiek te maken.
+ !read msg.phtml.$lang readauth
  <p>
 !endif

@@ -6,13 +6,12 @@
 
 !if $doccnt<1
  !if $wims_class!=$empty and $wims_user!=supervisor
-Helaas, deze klas heeft nog geen documenten.
-Vraag na bij je docent.
+  $name_home_warning
  !else
   !if $authoring=$empty
-  Helaas, er is geen publiek document op deze server beschikbaar.
+   $name_nodocument1
   !else
-  Helaas, er zijn geen documenten bekend van deze schrijver.
+   $name_nodocument2
   !endif
  !endif
 !else
@@ -20,9 +19,9 @@ Vraag na bij je docent.
   !read scripts/table.phtml
  !else
   !if $wims_class!=$empty
-  Hier zijn alle documenten van deze klas
+   $name_listdoc1
   !else
-  Hier zijn alle beschikbare documenten op deze server.
+   $name_listdoc2
   !endif
   <ul>
   !for t=1 to $doccnt
@@ -46,7 +45,7 @@ Vraag na bij je docent.
 
 !if $wims_class=$empty and $wims_ismanager<2
  !form reply
- Voor Uw eigen documenten, geef de naam van de schrijver&nbsp;:
+ $name_listauthor:
  <input size=20 name=authoring value="$authoring">
  <input type=submit value=OK>
  </form> <p>
