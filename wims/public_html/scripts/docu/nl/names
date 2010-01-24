@@ -1,14 +1,14 @@
 n_access=Toegangsrechten
 n_authorhelp=Help voor auteurs
 n_begin=Maak de eerste pagina
-n_blocklist= Lijst van blokken in het document
+n_blocklist=Lijst van blokken in het document
 wims_name_blocklist=$n_blocklist
 n_blockpreview= Laat het blok zien
 n_by=Door
 n_choosedocument=Kies het document en de actie
 n_close=sluiten
-n_codechange=Verander de geheime code
-n_codedoc=Document code
+n_codechange=Verander de toegangscode
+n_codedoc=Document toegangscode
 n_copyright2=All rights reserved by the author
 n_create=Maken
 n_create2=Maak het
@@ -17,9 +17,9 @@ n_foldout=Openen
 n_formatted=geformatteerd
 n_freespace1=Totaal beschikbare schijfruimte :
 n_freespace2=Beschikbare schijfruimte:
-
+n_giveup=Annuleren
 n_header=Header
-n_help2=Hier staan de help pagina's
+n_help2=Hier staann de help pagina's
 n_helpclose=Help venster sluiten.
 n_lastmod=Laatste verandering
 n_mainedit=met het schrijven van de eerste pagina
@@ -39,17 +39,58 @@ n_unknown=Onbekende activiteit
 n_lastpage=Terug naar blok
 
 !set name_noncreate=!nosubst Het blok <tt>$block</tt> is nog  niet aangemaakt.
-!set name_noread=  Deze pagina is nog niet publiek beschikbaar. Kom later maar eens terug ! 
-!set name_expired= Deze pagina is verlopen en is dus helaas niet meer beschikbaar !
+!set name_noread=Deze pagina is nog niet publiek beschikbaar. Kom later maar eens terug ! 
+!set name_expired=Deze pagina is verlopen en is dus helaas niet meer beschikbaar !
 !set name_src=Document broncode
 
 !set name_noncreate2=!nosubst Het blok <tt>$titb</tt> is nog  niet aangemaakt.
-!set name_noexercise= Er staan geen oefeningen in deze pagina.
-!set name_exercise=Hier staan de oefeningen in werkblad formaat. Ze kunnen via "cut & paste" worden ingevoerd!set name_sheet1= in een werkblad naar keuze uit uw klas.
-!set name_sheet1= in een werkblad mnaar keuze van uw virtuele klas
-!set name_sheet2=in een werkblad van een virtuele klas onder uw verantwoording.
+!set name_noexercise=Er staan geen oefeningen in deze pagina.
+!set name_exercise=Hier staan de oefeningen in werkblad formaat. Ze kunnen via "cut & paste" worden ingevoerd
+!set name_sheet1=in een werkblad naar keuze uit deze klas
+!set name_sheet2=in een werkblad van een klas onder uw verantwoording.
 
 !set name_file=Voeg een bestand toe
 !set name_compose=Online schrijven
 !set name_blockcreation= Maken van het blok <tt>$block</tt>.
 !set name_blockedition=Modificeren van het blok <tt>$block</tt>.
+
+!distribute lines Vorige blok\
+  volgende\
+  naar boven\
+  Datum <small>aaaammjj</small> : van\
+  naar\
+  Dit bestand gaat\
+  vervangen, aanhangen, voorgaan\
+  de bestaande inhoud.\
+  Er kan een extern bestand worden toegevoegd aan dit document\
+into name_prev, name_next,name_up,name_dates,name_from,name_to,name_prompt0,\
+  name_prompt,name_prompt1,name_upload
+
+!set name_have_been_erased=!nosubst  Bestand <b>$erase</b> is verwijderd.
+
+!set name_warning=Helaas, er kunnen geen bestanden meer worden toegevoegd aan dit document.\
+De bestandsgrootte heeft de ingestelde limiet bereikt.
+ 
+!distribute lines  Er zijn geen documenten beschikbaar in deze klas. Vraag na bij je docent.\
+Er zijn nog geen openbare documenten beschikbaar in deze klas.\ 
+Er zijn geen documenten van deze auteur bekend op de server.\
+Hier zijn de beschikbare documenten uit deze klas.\
+Hier staan de openbare documenten van op deze server.\
+Geef de naam van de auteur van dit document\
+De auteur van dit document is\
+Dit document is niet openbaar.Geef de toegangscode om het te kunnen openen.\
+Geef de toegangscode om dit document te mogen wijzigen.\
+Toegangscode \
+into name_home_warning,name_nodocument1,name_nodocument2,name_listdoc1,name_listdoc2,name_listauthor,\
+name_author_is,name_code_warning1, name_code_warning2,name_secretcode
+  
+!set name_created=!nosubst Het document is aangemaakt (serie nummer: $doc).
+!set name_codechange2=De toegangscode voor dit document is aangepast.
+
+!distribute lines Geef de huidige toegangscode\
+   En de nieuwe toegangscode\
+   Herhaal de nieuwe toegangscode\
+   into name_code1,name_code2,name_code3
+   
+!set name_code4=!nosubst <p><b>Opmerking</b>. De toegangscode geeft het recht om een document te varanderen.\
+Deze code moet zijn opgebouwd uit tussen $codemin en $codemax alfa-numerieke tekens 
