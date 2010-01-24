@@ -5,8 +5,8 @@ mkdir -p $forumdir/.threads
 
 today=`date '+%Y%m%d'`
 cat <<@ >$forumdir/.def
-!set mb_title=Forum de la classe
-!set mb_description=Ici vous pouvez mener des discussions dans la classe.
+!set mb_title=$w_module_title
+!set mb_description=
 !set mb_supervisor=$w_wims_supervisor
 !set mb_email=$w_wims_supervisormail
 !set mb_lang=fr
