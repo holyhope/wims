@@ -31,12 +31,12 @@ $name_blockedition
 !set titb=!reinput $titb
 $wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 !if $edtype=file
- Inserisci un file di testo: <input type=file size=35 name=wims_deposit>
+ $name_file: <input type=file size=35 name=wims_deposit>
  !if $titb!=$empty
-  <br>Questo file
+  <br>$name_prompt0
   !formselect addtype list replace,append,prepend prompt\
-	sostituir&agrave;, sar&agrave; aggiunto in fondo a, sar&agrave; aggiunto in testa a 
-  il documento esistente.
+	$name_prompt
+  $name_prompt1.
  !endif
  <br>
 !else
@@ -47,24 +47,17 @@ $wims_name_title: <input size=50 name=Titb value="$titb"> <br>
 <input type=submit name=rEg value="$wims_name_tosave">
 <input type=submit name=abandon value="$wims_name_giveup">
 </center> <br>
-!! Key words: <input size=50 name=Keyw value="$keyw"> <br>
+!! $wims_name_Keywords : <input size=50 name=Keyw value="$keyw"> <br>
 !if $block!=main
- Blocco precedente: <input size=12 name=Prev value="$prev">
- successivo: <input size=12 name=Next value="$next">
- superiore: <input size=12 name=Upbl value="$upbl">
+ $name_prev <input size=12 name=Prev value="$prev">
+ $name_next <input size=12 name=Next value="$next">
+ $name_up <input size=12 name=Upbl value="$upbl">
  <br>
 !endif
-Valido (<small>aaaammjj</small>): dal
- <input size=8 name=Dat1 value="$dat1"> al
- <input size=8 name=Dat2 value="$dat2">
+$name_dates <small>aaaammjj</small> : $name_from
+<input size=8 name=Dat1 value="$dat1"> $name_to
+<input size=8 name=Dat2 value="$dat2">
 </form>
-!if $edtype=file
- <p><b>NOTA</b>. Formati file accettati:
- formato documenti WIMS, file html o LaTeX. Parti di file html o LaTeX
- possono essere accettati purch&eacute; siano formattate correttamente
- (in particolare non venga tagliato a met&agrave; un tag html, una
- formula matematica, e cos&igrave; via).
-!endif
-<p><hr> <p>
 
+<p><hr> <p>
 

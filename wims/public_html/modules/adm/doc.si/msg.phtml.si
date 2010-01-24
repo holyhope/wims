@@ -1,0 +1,60 @@
+!goto $wims_read_parm
+:file
+<p>V tem dokumentu so na voljo naslednje datoteke:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=erase>
+ Izbri¹ite datoteko:
+ !formselect job2 list $flist
+ <input type=submit value=OK>
+ </form>
+ <p>
+ Na datoteke v dokumentu se lahko sklicujete z uporabo spremenljivke <tt>\filedir</tt>
+v dokumentu. Primer: 
+<p><center>
+ <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ ustvari povezavo na datoteko <a href="$m_filedir/$f1">$f1</a>.
+ Zapi¹ete lahko tudi
+<center><p>
+ <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+</p></center> <p>
+in tako na stran dodate slikovno datoteko <tt>myfile.jpg</tt>.
+ <p>
+ Datoteke, ki jih dodate dokumentu, so dosegljive le uporabnikom s pravico do branja tega dokumenta.
+
+!exit
+
+:readauth
+Èe ste avtor tega dokumenta, ne pozabite, da potrebujete dovoljenje 
+ !mailurl $wims_site_manager skrbnika stre¾nika\
+Ask to open WIMS document $doc
+ da bi omogoèili javen dostop do dokumenta.
+ !exit
+ 
+:erase1
+ Iz varnostnih razlogov lahko javne dokumente bri¹e le skrbnik stre¾nika.
+ <p>
+  !mailurl $wims_site_manager Pi¹ite skrbniku stre¾nika
+, da naj za vas izbri¹e ta dokument.
+
+  !exit
+:erase2
+
+<p>
+<font color=red><b>OPOZORILO</b>!!</font> Izbrisanega dokumenta ni mogoèe obnoviti!
+<p>
+Ali ste preprièani, da ¾elite izbrisati dokument <font color=red><b>$tit</b></font>&nbsp;?
+
+!exit
+
+:public
+ 
+ <b>Opomba</b>. Pridobiti morate dovoljenje
+ !mailurl $wims_site_manager skrbnika stre¾nika,\
+da lahko naredite WIMS dokument $doc
+dostopen zunanjim uporabnikom.

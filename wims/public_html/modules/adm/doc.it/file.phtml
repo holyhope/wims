@@ -6,58 +6,29 @@
 !endif
 
 !if $erase!=$empty
- Il file <b>$erase</b> &egrave; stato cancellato.
+ $name_have_been_erased
  <p>
 !endif
 
 !if $quota_free<1
- Non &egrave; pi&ugrave; possibile inserire file in questo documento
- perch&eacute; la sua dimensione sta per superare il limite consentito.
- Spiacente!
+$name_warning
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- &Egrave; possibile inserire un file in questo documento:
+ $name_upload:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>File disponibili in questo documento:
- !for f in $flist
-  !getfile doc/$f $f
-  &nbsp;
- !next f
- <p>
- !form reply
- <input type=hidden name=job2 value=erase>
- Cancella un file:
- !formselect job2 list $flist
- <input type=submit value=OK>
- </form>
- <p>
- I file legati al documento possono essere resi visibili tramite la 
- variabile <tt>\filedir</tt>. Per esempio il comando
-<p><center>
- <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
-</center> <p>
- (<b>copiate questo testo dopo aver caricato il file</b>)
- inserisce un link al file <a href="$m_filedir/$f1">$f1</a>.
- &Egrave; anche possibile scrivere
-<p><center>
- <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
-</center> <p>
-per inserire nella pagina l'immagine contenuta nel file <tt>myfile.jpg</tt>.
- <p>
- I file inseriti in questo documento sono visibili solo da chi 
- pu&ograve; accedere al documento.
+ !read msg.phtml.$lang file
 !endif
 
 <p>
-$n_freespace1 $quota_total Mega.
-$n_freespace2 $quota_free Mega.
+$n_freespace1 $quota_total Meg.
+$n_freespace2 $quota_free Meg.
 !set wims_menu_items=!append line properties,1,cmd=reply&job=prop\
   blocklist,1,cmd=reply&job=list\
   doch_main,1,cmd=reply&job=read&block=main\

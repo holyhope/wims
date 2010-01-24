@@ -6,12 +6,12 @@
 
 !if $doccnt<1
  !if $wims_class!=$empty and $wims_user!=supervisor
-  V tej uèilnici ni na razpolago nobenega dokumenta. Obrnite se na skrbnika.
+  $name_home_warning
  !else
   !if $authoring=$empty
-  V tej uèilnici noben dokument ni na voljo uporabnikom.
+   $name_nodocument1
   !else
-  V tej uèilnici ni nobenega dokumenta izbranega avtorja.
+   $name_nodocument2
   !endif
  !endif
 !else
@@ -19,9 +19,9 @@
   !read scripts/table.phtml
  !else
   !if $wims_class!=$empty
-   Tukaj so dokumenti va¹e uèilnice.
+   $name_listdoc1
   !else
-   Tukaj so dokumenti, do katerih lahko dostopate s te strani.
+   $name_listdoc2
   !endif
   <ul>
   !for t=1 to $doccnt
@@ -45,7 +45,7 @@
 
 !if $wims_class=$empty and $wims_ismanager<2
  !form reply
- Za va¹e lastne dokumente, vpi¹ite ime avtorja.
+ $name_listauthor:
  <input size=20 name=authoring value="$authoring">
  <input type=submit value=OK>
  </form> <p>

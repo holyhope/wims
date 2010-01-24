@@ -27,33 +27,31 @@ $ in $header
 !set docopenr=$docopen
 !default docopenr=0
 !if class != $doctype
- <tr><td align=right>$n_copyright:</td><td>
+ <tr><td align=right>$wims_name_Copyright:</td><td>
  !set copyrightr=$copyright
  !default copyrightr=gnu
  !formselect copyrightr list gnu,opl,private prompt\
 	GNU Free Documentation License,\
 	Open Publication License,\
 	$n_copyright2
- <tr><td align=right>Abierto al público:</td><td>
+ </td></tr><tr><td align=right>$name_public</td><td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
- Examples: all en fr es it de cn</small>
+ (all en fr es it de cn ca nl)</small>
  !if $job=creat
   <tr><td align=right>$n_codedoc:</td><td nowrap>
-  <input type=password size=$codemax maxlength=$codemax name=coder> repítala:
+  <input type=password size=$codemax maxlength=$codemax name=coder> $name_code5
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  <tr><td colspan=2><small>La clave secreta autoriza a modificar el documento.
-  Debe estar compuesta por entre $codemin y $codemax caracteres alfanuméricos.
-  </small>
+  </td></tr><tr><td colspan=2><small>
+ $name_code4
  !endif
 !else
-!set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
- <tr><td align=right> Los participantes pueden <td>
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
+ <tr><td align=right> $name_participant<td>
  !formselect docopenr list 0,1,2 prompt \
 	$U_Docstatus
- este documento.
 !endif
 
 </table>
@@ -65,12 +63,9 @@ $ in $header
 
 <p>
 !if class != $doctype
- <b>Nota</b>. Necesita la aprobación del
- !mailurl $wims_site_manager administrador del sitio\
-Ask to open WIMS document $doc
- para permitir que el público pueda acceder al documento.
+!read lang/msg.phtml.$lang public
  <p>
 !else
- Este documento sólo es visible dentro de su clase virtual.
+ $name_visible
 !endif
 

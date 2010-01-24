@@ -6,12 +6,12 @@
 
 !if $doccnt<1
  !if $wims_class!=$empty and $wims_user!=supervisor
-  Spiacente, non sono ancora disponibili appunti. Verificate con il docente.
+  $name_home_warning
  !else
   !if $authoring=$empty
-   Spiacente, gli appunti non sono ancora pronti.
+   $name_nodocument1
   !else
-   Spiacente, non ci sono appunti con l'autore cercato.
+   $name_nodocument2
   !endif
  !endif
 !else
@@ -19,9 +19,9 @@
   !read scripts/table.phtml
  !else
   !if $wims_class!=$empty
-   Ecco gli appunti disponibili per questo corso.
+   $name_listdoc1
   !else
-   Ecco gli appunti disponibili su questo server.
+   $name_listdoc2
   !endif
   <ul>
   !for t=1 to $doccnt
@@ -45,16 +45,16 @@
 
 !if $wims_class=$empty and $wims_ismanager<2
  !form reply
- Per gli appunti da te preparati, inserisci il nome dell'autore:
+ $name_listauthor:
  <input size=20 name=authoring value="$authoring">
  <input type=submit value=OK>
  </form> <p>
 !endif
 
 !if $wims_ismanager<2 and ($wims_class=$empty or $wims_user=supervisor)
-!set wims_menu_items=!append line createdoc,1, cmd=reply&job=creat\
+  !set wims_menu_items=!append line createdoc,1, cmd=reply&job=creat\
 doctry,1,cmd=reply&job=auth2&doc=$draftd&block=main&coder=dddd\
-to $wims_menu_items
+  to $wims_menu_items
 !endif
 
 !tail

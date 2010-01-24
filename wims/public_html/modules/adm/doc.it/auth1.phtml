@@ -1,6 +1,6 @@
 <h1 class="wims_docu_title">$tit</h1>
 
-L'autore del documento &egrave;
+$name_author_is
 !if $email!=$empty
  !mailurl $email $author
 .
@@ -8,11 +8,9 @@ L'autore del documento &egrave;
  $author.
 !endif
 !if $readauth=yes
- Questo documento non &egrave; leggibile al pubblico. Per accedervi
- &egrave; necessario inserire il codice di accesso.
+ $name_code_warning1
 !else
- Per modificare questo documento &egrave; necessario inserire il
- codice di accesso.
+ $name_code_warning2
 !endif
 <p>
 !form reply
@@ -21,15 +19,11 @@ L'autore del documento &egrave;
  <input type=hidden name=noedit value=yes>
 !endif
 <center>
-Codice di accesso: <input type=password size=16 name=coder>
-<input type=submit value=OK>
+$name_secretcode <input type=password size=16 name=coder>
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p>
 !if $readauth=yes
- Se sei l'autore del documento, ricorda che &egrave; necessario chiedere
- autorizzazione al 
- !mailurl $wims_site_manager <em>Site manager</em>\
-Richiesta di pubblicare il documento WIMS $doc
- per rendere il documento accessibile a tutti.
+ !read msg.phtml.$lang readauth
  <p>
 !endif

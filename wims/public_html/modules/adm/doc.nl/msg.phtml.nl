@@ -36,3 +36,26 @@ Als schrijver van dit document moet u  toestemming aan de
  !mailurl $wims_site_manager systeem beheerder 
 
  van deze server vragen om dit document <tt>$doc</tt> openbaar te maken.
+!exit
+
+:erase1
+ Alleen "site-managers" kunnen de publieke documenten verwijderen.
+ <p>
+ Vraag
+ !mailurl $wims_site_manager de site-manager
+ om dit document te verwijderen.
+!exit
+ 
+:erase2
+<font color=red><b>WAARSCHUWING</b>!!</font> Er is hier geen "undelete", 
+dus weg is weg&nbsp;!
+<p>
+Weet U zeker dat het document<font color=red><b>$tit</b></font>&nbsp; moet worden verwijderd ?
+!exit
+
+:public
+ <b>Opmerking</b>. U moet wel toestemming vragen aan de 
+ !mailurl $wims_site_manager systeembeheerder/site-manager\
+ om dit WIMS 
+ document $doc publiek te maken.
+ !exit

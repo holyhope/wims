@@ -1,6 +1,6 @@
 <h1 class="wims_docu_title">$tit</h1>
 
-AAvtor tega dokumenta je
+$name_author_is
 !if $email!=$empty
  !mailurl $email $author
 .
@@ -8,9 +8,9 @@ AAvtor tega dokumenta je
  $author.
 !endif
 !if $readauth=yes
- Ta dokument ni odprt za vse uporabnike. Za branje morate vnesti za¹èitno geslo.
+ $name_code_warning1
 !else
- Za spreminjanje tega dokumenta je potrebno vnesti za¹èitno geslo.
+ $name_code_warning2
 !endif
 <p>
 !form reply
@@ -19,14 +19,11 @@ AAvtor tega dokumenta je
  <input type=hidden name=noedit value=yes>
 !endif
 <center>
-Za¹èitno geslo: <input type=password size=16 name=coder>
-<input type=submit value=OK>
+$name_secretcode <input type=password size=16 name=coder>
+<input type=submit value="$wims_name_tosave">
 </center></form>
 <p>
 !if $readauth=yes
- Èe ste avtor tega dokumenta, ne pozabite, da potrebujete dovoljenje 
- !mailurl $wims_site_manager skrbnika stre¾nika\
-Ask to open WIMS document $doc
- da bi omogoèili javen dostop do dokumenta.
+ !read msg.phtml.$lang readauth
  <p>
 !endif

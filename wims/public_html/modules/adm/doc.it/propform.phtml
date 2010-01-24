@@ -34,27 +34,25 @@ $ in $header
 	GNU Free Documentation License,\
 	Open Publication License,\
 	$n_copyright2
- </td></tr><tr><td align=right>Visibile da tutti:</td><td>
+ </td></tr><tr><td align=right>$name_public</td><td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
- Esempio: all en fr es it de cn</small>
+ (all en fr es it de cn ca nl)</small>
  !if $job=creat
   <tr><td align=right>$n_codedoc:</td><td nowrap>
-  <input type=password size=$codemax maxlength=$codemax name=coder> di nuovo:
+  <input type=password size=$codemax maxlength=$codemax name=coder> $name_code5
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  </td></tr><tr><td colspan=2><small>Il codice di accesso permette di modificare il documento (e va quindi tenuto segreto).
-  Deve essere formato da un minimo di $codemin ad un massimo di $codemax 
-  caratteri alfanumerici.
-  </small>
+  </td></tr><tr><td colspan=2><small>
+ $name_code4
+ </small>
  !endif
 !else
  !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
- <tr><td align=right>Gli studenti possono <td>
+ <tr><td align=right> $name_participant<td>
  !formselect docopenr list 0,1,2 prompt \
 	$U_Docstatus
- questo documento.
 !endif
 
 </table>
@@ -66,12 +64,9 @@ $ in $header
 
 <p>
 !if class != $doctype
- <b>NOTA</b>. &Egrave; necessario chiedere autorizzazione al 
- !mailurl $wims_site_manager <em>Site manager</em>\
-Richiesta di pubblicare il documento WIMS $doc
- per rendere il documento accessibile a tutti.
+!read lang/msg.phtml.$lang public
  <p>
 !else
- Questo documento è visibile solo per gli studenti del corso.
+ $name_visible
 !endif
 

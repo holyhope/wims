@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 
 d=$w_wims_home/$w_Docdir
 dd=$d/$w_doc

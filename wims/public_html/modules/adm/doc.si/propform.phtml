@@ -34,26 +34,25 @@ $ in $header
 	GNU Free Documentation License,\
 	Open Publication License,\
 	$n_copyright2
- <tr><td align=right>$wims_name_Copyright:<td>
+ </td></tr><tr><td align=right>$name_public</td><td>
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align=right>$wims_name_Language:</td><td>
  !default dlang=all
  <input size=14 name=dlangr value="$dlang"> <br><small>
- Primeri: all si en fr es it de cn</small>
+ (all en fr es it de cn ca nl)</small>
  !if $job=creat
   <tr><td align=right>$n_codedoc:</td><td nowrap>
-  <input type=password size=$codemax maxlength=$codemax name=coder> ponovite vnos:
+  <input type=password size=$codemax maxlength=$codemax name=coder> $name_code5
   <input type=password size=$codemax maxlength=$codemax name=coder2>
-  <tr><td colspan=2><small>Za¹èitno geslo omogoèa spreminjanje vsebine dokumenta.
-  Vsebovati mora najmanj $codemin in najveè $codemax alfanumeriènih znakov.
-  </small>
+  </td></tr><tr><td colspan=2><small>
+ $name_code4
+ </small>
  !endif
 !else
-!set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
- <tr><td align=right> Dovoljenja za uporabnike:<td> 
+ !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$lang
+ <tr><td align=right> $name_participant<td>
  !formselect docopenr list 0,1,2 prompt \
 	$U_Docstatus
- dokumenta.
 !endif
 
 </table>
@@ -65,12 +64,9 @@ $ in $header
 
 <p>
 !if class != $doctype
- <b>Opomba</b>. Pridobiti morate dovoljenje
- !mailurl $wims_site_manager skrbnika stre¾nika,\
-da lahko naredite WIMS dokument $doc
-dostopen zunanjim uporabnikom.
+!read lang/msg.phtml.$lang public
  <p>
 !else
- Ta dokument bo viden samo znotraj va¹e uèilnice.
+ $name_visible
 !endif
 

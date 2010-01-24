@@ -6,49 +6,24 @@
 !endif
 
 !if $erase!=$empty
- Datoteka <b>$erase</b> je bila izbrisana.
+ $name_have_been_erased
  <p>
 !endif
 
 !if $quota_free<1
- V ta dokument ne morete veè dodajati datotek, saj ste dosegli mejo dovoljenega prostora na stre¾niku.
+$name_warning
 !else
  !set wims_form_method=file
  !form reply
  <input type=hidden name=job2 value=deposit>
- V ta dokument lahko dodate datoteko:
+ $name_upload:
  <input type=file size=35 name=wims_deposit>
  <input type=submit value=OK>
  </form>
 !endif
 
 !if $flist!=$empty
- <p>V tem dokumentu so na voljo naslednje datoteke:
- !for f in $flist
-  !getfile doc/$f $f
-  &nbsp;
- !next f
- <p>
- !form reply
- <input type=hidden name=job2 value=erase>
- Izbri¹ite datoteko:
- !formselect job2 list $flist
- <input type=submit value=OK>
- </form>
- <p>
- Na datoteke v dokumentu se lahko sklicujete z uporabo spremenljivke <tt>\filedir</tt>
-v dokumentu. Primer: 
-<p><center>
- <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
-</center> <p>
- ustvari povezavo na datoteko <a href="$m_filedir/$f1">$f1</a>.
- Zapi¹ete lahko tudi
-<center><p>
- <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
-</p></center> <p>
-in tako na stran dodate slikovno datoteko <tt>myfile.jpg</tt>.
- <p>
- Datoteke, ki jih dodate dokumentu, so dosegljive le uporabnikom s pravico do branja tega dokumenta.
+ !read msg.phtml.$lang file
 !endif
 
 <p>
