@@ -1,0 +1,115 @@
+
+!if robot isin $session
+ !exit
+!endif
+!if $wims_class=
+  !read adm/language names.phtml
+!else
+  !read adm/class/classlang names.phtml 
+  !set modu_lang=$moduclass_lang
+!endif
+
+
+wims_prefix=mb class user tmp
+!defread wimshome/log/classes/$wims_class/.def
+!!! the forum in levels should be accessible from the portal
+!if $wims_class=$wims_superclass and $class_type=4
+  participate_=!defof user_participate in wimshome/log/classes/$wims_class/.users/$wims_user
+  supervise_=!defof user_supervise in wimshome/log/classes/$wims_class/.users/$wims_user
+  for_test=!replace internal classes/ by in $forum
+  !reset for_test_
+  !if ,$for_test isin ,$participate_,$supervise_
+    for_test_=yes
+    for_test=!replace internal / by , in $for_test
+    for_test=!item 2 of $for_test
+  !endif
+!endif
+!if $wims_class>0 and ($forum=$empty or $forum=classes/$wims_class or $for_test_=yes)
+ !if $for_test_!=
+   for_level=!nospace /$for_test
+ !else
+   for_level=
+ !endif
+   classname=!defof class_description in wimshome/log/classes/$wims_class$for_level/.def
+ forumdir=wimshome/log/classes/$wims_class$for_level/forum
+ Forumdir=$wims_home/log/classes/$wims_class$for_level/forum
+ forum=classes/$wims_class$level
+ !defread $forumdir/.def
+ !if $mb_defined!=yes
+ !!!FIXME ??? if wims_class is 456778/3/201, what is the value ???
+  !if $wims_class>9999
+   cfm_send=alluser
+  !else
+   cfm_send=mailuser
+  !endif
+  !mexec scripts/mkclassforum.sh
+  !defread $forumdir/.def
+ !endif
+ !if $mb_defined!=yes
+  error=forum_not_exist
+  job=list
+  !exit
+ !endif
+ forumuser=$wims_user
+!else
+ forum=!text select 0123456789 in $forum
+ !default forum=1001
+ forumdir=wimshome/log/forums/$forum
+ !defread $forumdir/.def
+ !if $mb_defined!=yes
+  error=forum_not_exist
+  job=list
+  !exit
+ !endif
+ !if $job=authuser
+  !read var.init.auth
+  job=list
+ !else
+  !defread wimshome/$wims_sesdir/mb_user.$forum
+ !endif
+!endif
+
+!mexec scripts/rmdeposit.sh
+
+!if $forumuser!=$empty
+ !if classes isin $forumdir
+  !read adm/class/userdef classes,$wims_class,$forumuser
+  !defread $userdef
+ !else
+  !defread $forumdir/.users/$forumuser
+ !endif
+ c_sender=$wims_firstname $wims_lastname
+ c_smail=$wims_email
+ !default c_sender=$user_firstname $user_lastname
+ !default c_smail=$user_email
+!endif
+
+is_owner=no
+!if $forumuser=supervisor
+ is_owner=yes
+!endif
+
+!bound mb_readpolicy within open,alluser,selecuser,owner default alluser
+rpolycode=!positionof item $mb_readpolicy in open,alluser,selecuser,owner
+!if $forumuser!=$empty
+ !if $is_owner=yes
+  read_right=1
+ !else
+  read_right=!item $rpolycode of 1,1,1,0
+ !endif
+!else
+ read_right=!item $rpolycode of 1,0,0,0
+!endif
+
+!bound mb_sendpolicy within open,mail,alluser,mailuser,selecuser,owner default alluser
+# 0: no right. 1: email verify. 2: owner check. 3: immediate.
+spolycode=!positionof item $mb_sendpolicy in open,mail,alluser,mailuser,selecuser,owner
+!if $forumuser!=$empty
+ !if $is_owner=yes
+  send_right=!item $spolycode of 3,3,3,3,3,3
+ !else
+  send_right=!item $spolycode of 3,3,3,1,3,0
+ !endif
+!else
+ send_right=!item $spolycode of 3,1,0,0,0,0
+!endif

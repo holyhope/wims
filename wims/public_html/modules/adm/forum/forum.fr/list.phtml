@@ -20,7 +20,7 @@ $table_hdtr<th>$wims_name_title<th>Connexion<th>$wims_name_Language<th>$wims_nam
  !read wimshome/$wims_sesdir/mb_user.$code
  !if $user_exists=$empty
   !if $mb_readpolicy=open
-   !href module=adm/forum/mboard.$la&forum=$code visiteur
+   !href module=adm/forum/mboard&forum=$code visiteur
    &nbsp;
   !endif
   !href cmd=reply&type=authuser&forum=$code participant
@@ -28,17 +28,17 @@ $table_hdtr<th>$wims_name_title<th>Connexion<th>$wims_name_Language<th>$wims_nam
   !href cmd=reply&type=authowner&forum=$code gérant
   !if * notin $mb_password
    &nbsp;
-   !href module=adm/forum/reguser.$la&forum=$code s'inscrire
+   !href module=adm/forum/reguser&forum=$code s'inscrire
   !endif
  !else
   !if $forumuser!=supervisor
-   !href module=adm/forum/mboard.$la&forum=$code participant
+   !href module=adm/forum/mboard&forum=$code participant
    &nbsp;
    !href cmd=reply&type=authowner&forum=$code gérant
   !else
    !href cmd=reply&type=authuser&forum=$code participant
    &nbsp;
-   !href module=adm/forum/mboard.$la&forum=$code gérant
+   !href module=adm/forum/mboard&forum=$code gérant
   !endif
  !endif
  </td><td align=center><img src="gifs/$la.gif" alt="$la"></td>

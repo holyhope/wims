@@ -1,0 +1,32 @@
+
+$name_introconfig
+
+!form reply
+<input type=hidden name=job value=config>
+<input type=hidden name=cf_set value=yes>
+<ul>
+<li><p>$wims_name_title&nbsp;:<br>
+  <input size=60 name=cf_title value="$cf_title">
+ <li><p>$wims_name_Description:<br>
+  <textarea wrap name=cf_description cols=60 rows=5>$cf_description</textarea>
+ <li><p>$name_whoread?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_readpolicy list alluser,owner prompt \
+	$name_prompt1
+ !else
+  !formselect cf_readpolicy list open,alluser,owner prompt \
+	$name_prompt2
+ !endif
+ <li><p>$name_whosend?
+ !if classes/ isin $forum or $forum>9999
+  !formselect cf_sendpolicy list alluser,mailuser,owner prompt \
+	$name_prompt3
+ !else
+  !formselect cf_sendpolicy list mail,alluser,mailuser,owner prompt \
+	$name_prompt4
+ !endif
+</ul>
+<p><center><input type=submit name=cf_set value="$wims_name_tosave">
+&nbsp;&nbsp;<input type=submit name=cf_abandon value="$wims_name_giveup">
+</center> <p></form>
+

@@ -1,0 +1,94 @@
+!set lang_exists=yes
+!set monthnames=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+!set name_wroteon=scrive il
+
+!distribute item <i>Subject:</i> <b>,</b> into subj1,subj2
+!distribute item <hr>,<hr> into body1,body2
+	
+!distribute line Messaggi ordinati per data\
+	Indice dei messaggi per argomento\
+	Leggi un messaggio\
+	Scrivi un nuovo messaggio\
+	Rispondi al messaggio\
+	Anteprima del messaggio\
+	Invia il messaggio\
+	Modifica opzioni forum\
+	Elenca gli argomenti\
+	into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subjectlist
+!set wims_name_compose=$n_compose	
+!set n_otherforums=Altri forum di discussione
+!set n_welcome=Cara/o
+!set n_list_subject_month = Indice dei messaggi nel mese
+!set n_email=email
+!set n_list_month = Messaggi inviati nel 
+!set n_most=elencando prima i più
+!set n_old=recenti,veccchi
+!set n_new=Nuovo messaggio
+!set n_archives=Archivi mensili
+!set n_following=Risposte al messaggio
+!set n_reverse=Ordine inverso
+!set n_recent=Messaggi ordinati per data
+!set n_erased=cancellati
+!set n_send=Invia il messaggio
+!set n_edit=Torna alla composizione del messaggio
+!set n_emptymsg= Il messaggio è vuoto!
+!set n_listforum=Indice dei forum di discussione attivi.
+!set n_by=di
+!set n_newfollow=Nuova risposta a
+!set n_subject=Subject
+!set n_content=Testo del messaggio
+!set n_preview=Anteprima
+!set n_send0=Invia
+!set n_origin=Messaggio originale
+!set n_help=Istruzioni
+!set n_mathhelp=su come inserire formule matematiche nel messaggio.
+!set n_yourname=Nome
+!set n_cautious=<b>Attenzione.</b> Il messaggio non sarà accettato senza\
+  un <b>VALIDO</b> indirizzo di posta elettronica.
+!set n_anonymous=Visitatore anonimo.
+!set n_emptyforum=Non ci sono ancora messaggi nel forum.
+!set n_nomessage=  Non ci sono messaggi corrispondenti alla richiesta.
+!set n_erasedmsg=Messaggio cancellato
+!set n_with=citando
+!set n_or=oppure
+!set n_without=non citando
+!set n_citation=il messaggio a cui si risponde.
+!set n_source=Codice sorgente
+!set n_format=Formattato
+!set n_follow_c=Rispondi citando
+!set n_follow_nc=Rispondi non citando
+!set n_add= Il messaggio è stato inserito nel forum.
+!set n_bydate=Indice per data
+!set n_bysubject=Indice per argomento
+!set n_prec=Precedente
+!set n_first=Prima risposta
+!set n_allfollowing=Tutte le risposte
+!set n_statusask=Questo forum non accetta messaggi anonimi. Il sistema\
+ registra l'indirizzo di posta elettronica per prevenire abusi.\
+ <p>\
+ Al fine di verificare l'esattezza dell'indirizzo di posta elettronica\
+ il sistema invier&agrave; per e-mail un codice di acesso. Copiare\
+ il codice di accesso in questo spazio:
+!set n_warning=Un messaggio è stato aggiunto nel forum. Per favore non rispondete a questa email.
+!set n_forum=Forum
+!set n_thread=Cronologia argomento
+!if $job=compose and $c_prec!=$empty
+ !set n_compose=Inserisci un nuovo messaggio
+!endif
+
+!if $job notwordof read list config
+ !set nextline= <br>--- $(n_$job) ---
+!endif
+
+!set module_title=$module_title$nextline
+
+!set name_prompt=Attività sconosciuta
+
+!distribute line Elenco delle opzioni configurabili.\
+  Chi pu&ograve; leggere i messaggi\
+  tutti, solo l'owner\
+  tutti (registrati o meno), solo utenti registrati,nessuno ecetto l'owner\
+  Chi pu&ograve; scrivere\
+  tutti,utenti registrati con email,esclusivamente l'owner\
+  partecipanti con email e utenti registrati,solo utenti registrati,utenti registrati con email,esclusivamente l'owner\
+into name_introconfig, name_whoread,name_prompt1,name_prompt2,name_whosend,name_prompt3,name_prompt4

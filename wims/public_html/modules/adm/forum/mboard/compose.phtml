@@ -1,0 +1,76 @@
+
+!if +$error iswordof +no_send_right
+ !exit
+!endif
+
+!if $c_prec!=$empty
+ $n_newfollow
+ !href cmd=reply&job=read <b>$m_subject</b>
+ $n_by 
+ !if $m_email!=$empty
+  <i><a href="mailto:$m_email">$m_from</a></i>
+ !else
+  <i>$m_from</i>
+ !endif
+ <p>
+!endif
+
+!form reply
+$n_yourname:
+ !if $forumuser=$empty
+  <input size=15 name=c_sender value="$c_sender">
+ !else
+  <tt>$c_sender</tt>&nbsp;
+ !endif
+ $n_email: <input size=30 name=c_smail value="$c_smail"> <br>
+ !if $send_right<2
+  $n_cautious<br>
+ !endif
+ $n_subject:
+ <input size=55 name=c_subject value="$c_subject"> <br>
+ $n_content:(
+ !if $speckedit=no
+   !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit>
+   !href cmd=reply&job=compose&speckedit=yes&c_quote=$c_quote  $wims_name_active
+!else
+  !set msgsrc1=<textarea cols=70 rows=18 name=wims_deposit $wims_id>
+  !href cmd=reply&job=compose&speckedit=no&c_quote=$c_quote $wims_name_desactive
+!endif
+ : <small>
+ $wims_name_speck_warning
+</small>)<br>
+ !set msgsrc2=</textarea>
+ !if $c_quote>0 and $c_prec!=$empty
+  !mexec scripts/quote.sh
+ !endif
+ !if $c_quote=0
+  !mexec scripts/msgsrc.sh
+ !endif
+ !if $c_quote<0
+  $msgsrc1$msgsrc2
+ !endif
+ !set c_quote=0
+ $tag_escaper</table>
+ <p><center>
+ <input type=submit name=c_preview value="$n_preview" $wims_on_click>
+ &nbsp;&nbsp;
+ <input type=submit name=c_send value="$n_send0" $wims_on_click>
+ &nbsp;&nbsp;
+ <input type=submit name=c_list value="$wims_name_giveup">
+ </center> <p>
+</form> <p>
+!href cmd=help $wims_name_help
+ $n_mathhelp
+
+!if $c_prec!=$empty
+ <p><hr> 
+ <div class="wims_forum_intro">
+ !href cmd=reply&job=read $m_subject $n_origin
+  $n_by <i>$m_from</i>:
+  </div>
+  <div class="wims_forum_msg">
+ !read $forumdir/$c_prec html
+ $tag_escaper </div></table></form><font size="+0">
+ <p><hr> <p>
+!endif
+

@@ -1,0 +1,105 @@
+!! This file contains error messages. It will be processed
+!! whenever the variable `error' is not empty.
+
+!set errorhead=<b>Erreur.</b>
+
+!if forum_not_exist = $error
+ $errorhead Vous avez demandé un forum qui n'existe pas. Désolé.
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_read_right = $error
+ $errorhead Vous n'avez pas le droit d'accéder à ce forum. Désolé.
+ !set fatal=yes
+ !exit
+!endif
+
+!if no_subject = $error
+ $errorhead Veuillez ajouter un sujet à votre message.
+ !exit
+!endif
+
+!if translation_fail = $error
+ $errorhead Le logiciel a rencontré une erreur interne et n'a pas pu 
+ interpréter votre message. Désolé.
+ !if $wims_exec_error!=$empty
+  <p>
+  Type d'erreur&nbsp;: <tt>$wims_exec_error</tt>
+ !endif
+ !exit
+!endif
+
+!if open_tag = $error
+ <b>Avertissement.</b>
+ Votre message semble se terminer à l'intérieur d'un tag html ouvert.
+ Veuillez vérifier votre message soigneusement. <p>
+ Le message sera lu comme fichier html. Ainsi, si vous 
+ écrivez des inégalités, veuillez ajouter un espace après le signe
+ `&lt;' ou enfermer les inégalités comme formules mathématiques
+ (par des paires \( et \) ).
+ !exit
+!endif
+
+!if bad_message = $error
+ $errorhead Le message que vous voulez lire n'existe pas dans ce forum.
+ Veuillez vérifier votre demande.
+ !exit
+!endif
+
+!if erased_message = $error
+ $errorhead Le message que vous voulez lire a été effacé.
+ !exit
+!endif
+
+!if $error=no_send_right
+ $errorhead Vous n'avez pas le droit d'envoyer des message à ce forum.
+ Désolé.
+ <p>
+ !href cmd=reply&job=list&mlist=.newlist Liste de messages.
+ !exit
+!endif
+
+!if $error=email_required
+ $errorhead Veuillez donner votre adresse électronique si vous voulez
+ poster votre message à ce forum.
+ <br>
+ <b>ATTENTION.</b> Le serveur va vérifier cette adresse&nbsp;! Donc veuillez
+ ne pas donner une fausse adresse.
+ !set job=compose
+ !exit
+!endif
+
+!if $error=bad_email
+ $errorhead Vous n'avez pas donné une adresse électronique valide. Veuillez
+ la corriger.
+ !set job=compose
+ !exit
+!endif
+
+!if $error=bad_sendcode
+ $error_head Votre message n'est pas accepté car le code secret que vous
+ avez tapé n'est pas bon.
+ <p>
+ Veuillez vérifier l'adresse électronique que vous avez donnée ci-dessous, 
+ cliquez de nouveau sur le bouton `envoyer' et attendez qu'un NOUVEAU
+ code secret arrive par email.
+ !set job=compose
+ !exit
+!endif
+
+!if $error=not_owner
+ $error_head Seul le gérant du forum a le droit de le configurer.
+ <p>
+ !set job=list
+ !exit
+!endif
+
+!if auth_failure = $error
+ $errorhead Echec d'authentification. <p>
+ !set fatal=yes
+ !exit
+!endif
+
+!msg $error
+

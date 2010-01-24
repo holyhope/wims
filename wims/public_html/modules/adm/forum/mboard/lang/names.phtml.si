@@ -1,0 +1,91 @@
+!set lang_exists=yes
+
+!set monthnames=Jjanuar,februar,marec,april,maj,junij,julij,avgust,september,oktober,november,december
+!set name_wroteon=wrote on
+
+!distribute item <i>Subject:</i> <b>,</b> into subj1,subj2
+!distribute item <hr>,<hr> into body1,body2
+	
+!distribute line Seznam zadnjih sporoèil\
+	Seznam tematskih nizov sporoèil\
+	Branje sporoèila\
+	Pisanje novega sporoèila\
+	Napi¹i odgovor\
+	Predogled sporoèila\
+	Po¹lji sporoèilo\
+	Nastavitve deske sporoèil\
+	List by subjects\
+	into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subjectlist
+!set wims_name_compose=$n_compose	
+!set n_welcome=Pozdravljeni
+!set n_otherforums=Drugi forumi
+!set n_list_subject_month = List of subjects during
+!set n_email=e-naslov
+!set n_list_month= Seznam sporoèil za obdobje
+!set n_most=najprej
+!set n_old=novej¹a, starej¹a
+!set n_new=Novo sporoèilo
+!set n_archives=Meseèni arhivi
+!set n_following=Odgovori na
+!set n_reverse=Zamenjaj vrstni red
+!set n_recent=Zadnja sporoèila
+!set n_erased=izbrisano
+!set n_send=Send the message
+!set n_edit=Nazaj k urejanju
+!set n_emptymsg=Va¹e sporoèilo je prazno
+!set n_listforum=Seznam desk sporoèil na tem stre¾niku.
+!set n_by=avtorja
+!set n_newfollow=Nov odgovor na sporoèilo
+!set n_subject=Tema
+!set n_content=Telo sporoèila
+!set n_preview=Preview
+!set n_send0=Objava
+!set n_origin=Originalno sporoèilo
+!set n_help=Help
+!set n_mathhelp= za vstavljanje matematiènih formul v sporoèila.
+!set n_yourname=Va¹e ime
+!set n_cautious=<b>Opozorilo.</b> Va¹e sporoèilo bo objavljeno le v primeru, da boste vnesli svoj veljavni e-naslov.
+!set n_anonymous=anonimni obiskovalec.
+!set n_emptyforum= Na tem forumu ni nobenega sporoèila.
+!set n_nomessage=Tukaj ni nobenega ustreznega sporoèila.
+!set n_erasedmsg=Izbrisano sporoèilo
+!set n_with=navedkom
+!set n_without=brez navedka
+!set n_citation=citation
+!set n_source=Neoblikovano
+!set n_format=Oblikovano
+!set n_erase=Zbri¹i
+!set n_follow_c=Odgovor z navedkom
+!set n_follow_nc=Odgovor brez navedka
+!set n_add=Va¹e sporoèilo je bilo dodano na desko sporoèil.
+!set n_bydate=Po datumu
+!set n_bysubject=By subject
+!set n_prec=Prej¹nje sporoèilo v nizu
+!set n_first= Naslednje sporoèilo v nizu
+!set n_allfollowing=Vsa naslednja sporoèila
+!set $n_statusask= Ta deska sporoèil ne dovoljuje anonimnih sporoèil. Uporabniki se morajo podpisati\
+z veljavnim e-naslovom.\
+ <p>\
+ Na ta naslov boste v naslednjih minutah prejeli skrivno kodo, ki jo morate vpisati v okence:
+ 
+!set n_warning=A message has been added to the forum. Please, don't answer to this email.
+ !set n_thread=Nanizaj
+!if $job=compose and $c_prec!=$empty
+ !set n_compose=Compose a new message
+!endif
+
+!if $job notwordof read list config
+ !set nextline=</b> <br>--- $(n_$job) ---
+!endif
+
+!set module_title=$module_title$nextline
+!set name_prompt=Unknown activity
+
+!distribute line Tukaj lahko spreminjate nastavitve va¹e deske sporoèil.\
+  Kdo lahko bere sporoèila\
+  vsi registrirani uporabniki, samo skrbnik\
+  vsi obiskovalci, vsi registrirani uporabniki, samo skrbnik\
+  Kdo lahko objavlja sporoèila\
+  vsi registrirani uporabniki, vsi registrirani uporabniki (preveri e-naslov), samo skrbnik\
+  vsi obiskovalci (preveri e-naslov),vsi registrirani uporabniki, vsi registrirani uporabniki (preveri e-naslov),samo skrbnik\
+into name_introconfig, name_whoread,name_prompt1,name_prompt2,name_whosend,name_prompt3,name_prompt4

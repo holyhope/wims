@@ -11,7 +11,7 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
+<h1 class="wims_title">WIMS $httpd_HTTP_HOST
 <br>
 Message board user registration
 </h1> <p><hr width="50%"> <p>
@@ -36,10 +36,10 @@ Message board user registration
  password before you can register into it.
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>Password:
+ <center> <p>$wims_name_Password
  <input type=password name=forumpass>
  <p>
- <input type=submit value="Send this password">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
  <b>Remark</b>. If the owner ($supervisor) of this message board allows you
  the access, you should be able to obtain the password from him/her.
@@ -55,28 +55,28 @@ Message board user registration
  <ul>
  !form reply
  <input type=hidden name=step value=2>
- <li>Your family name <input size=20 name=lastn value="$lastn">
-  and first name <input size=20 name=firstn value="$firstn">
+ <li>$wims_name_lastname <input size=20 name=lastn value="$lastn">
+  $wims_name_firstname <input size=20 name=firstn value="$firstn">
   <p>
- <li>Choose a login name:
+ <li>$wims_name_login
   <input size=16 name=login value="$login"> <br>
   This will be the name which you will use to log into the message board later.
   Please choose a word containing between 4 and 16 characters
   (digits or letters without accent).
   <p>
- <li>And a password:
+ <li>$wims_name_Password
   <input type=password size=16 name=pass> <br>
   the password must contain between 4 and 16 characters (digits or letters
   without accent).
   <p>
  !if $mailverif=$empty
-  <li>Your email address (optional):<br>
+  <li>$wims_name_email (optional):<br>
  !else
-  <li>Your email address:<br>
+  <li>$wims_name_email<br>
  !endif
   <input size=60 name=email value="$email">
   <p>
- <center><input type=submit value="Register"></center>
+ <center><input type=submit value="$wims_name_tosave"></center>
  </form></ul>
  !goto end1
 !endif
@@ -96,7 +96,7 @@ Message board user registration
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
- <p><input type=submit value="Send the password"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
@@ -114,9 +114,9 @@ Message board user registration
   !form reply
   <input type=hidden name=step value=3>
   <p><center><input size=10 name=vericode>
-  <input type=submit value=OK></form>
+  <input type=submit value="$wims_name_tosave"></form>
   <p>
-  !href module=adm/forum/forum Abandon the operation
+  !href module=adm/forum/forum $wims_name_giveup
   </center> <p>
   !goto end1
  !else

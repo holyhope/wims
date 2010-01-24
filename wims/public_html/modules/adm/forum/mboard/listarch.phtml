@@ -1,0 +1,24 @@
+
+!if $send_right>0
+  !set wims_menu_items=!append line compose,1,cmd=new&forum=$forum&job=compose\
+  to $wims_menu_items
+!endif
+!if $is_owner=yes
+  !set wims_menu_items=!append line config,1,cmd=reply&job=config\
+  to $wims_menu_items
+!endif
+
+!if $archlist=$empty or $mlist=$archlist
+ !exit
+!endif
+
+!set wims_menu_items=!append line $n_archives,0,$n_archives\
+to $wims_menu_items
+<p>
+!for i in $archlist
+  !set wims_menu_items=!append line $i,1,cmd=reply&job=list&mlist=$i\
+to $wims_menu_items
+!next i
+
+<p>
+

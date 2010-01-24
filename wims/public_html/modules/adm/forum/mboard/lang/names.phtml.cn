@@ -1,0 +1,98 @@
+!set lang_exists=yes
+
+!set monthnames=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
+!set name_wroteon=写在
+
+!distribute item <i>主题:</i> <b>,</b> into subj1,subj2
+!distribute item <hr>,<hr> into body1,body2
+	
+!distribute line 信息表\
+	线状信息表\
+	读取信息\
+	编写新信息\
+	写跟帖\
+	预览你的信息\
+	张贴信息\
+	设置信息板\
+	按主题列表\
+	into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subjectlist
+
+!set wims_name_compose=$n_compose
+!set n_welcome=欢迎
+!set n_otherforums=其它论坛
+!set n_list_subject_month = 此期间的主题表
+!set n_email=电邮
+!set n_list_month = 此期间的信息表
+!set n_most=最新
+!set n_old=由近及远,由远及近
+!set n_new=新信息
+!set n_archives=每月存档
+!set n_following=跟帖
+!set n_reverse=换一个顺序
+!set n_recent=最新信息
+!set n_erased=已删除
+!set n_giveup=放弃
+!set n_send=发送信息
+!set n_edit=返回编辑
+!set n_emptymsg= 你的信息是空的
+!set n_listforum=本服务器的信息板表.
+!set n_by=发自
+!set n_newfollow=加新的跟帖到
+!set n_subject=主题
+!set n_content=信息主体
+!set n_preview=预览
+!set n_send0=发送
+!set n_orig=原始信息
+!set n_origin=原始信息
+!set n_help=帮助
+!set n_mathhelp=如何在你的信息里写数学公式.
+!set n_yourname=你的姓名
+!set n_cautious=<b>警告.</b> 你的信息不能接受, 除非给出你的\
+  有效的电邮地址.
+!set n_anonymous=匿名访问者.
+!set n_emptyforum=本论坛还没有信息.
+!set n_nomessage=  没有发现你所请求的可读取的信息. 抱歉.
+!set n_erasedmsg=已删信息.
+!set n_with=带
+!set n_or=或
+!set n_without=不带
+!set n_citation=引用号
+!set n_source=未经格式化的显示
+!set n_format=格式化的显示
+!set n_erase=删除
+!set n_follow_c=带引用号的跟帖
+!set n_follow_nc=不带引用号的跟帖
+!set n_add= 你的信息已被加入此信息板.
+!set n_bydate=按日期
+!set n_bysubject=按主题
+!set n_prec=前一个
+!set n_first=第一个跟帖
+!set n_allfollowing=所有跟帖
+!set $n_statusask=本信息板不接受匿名张贴. 为防止滥用,\
+ 以你当前的电邮地址作为你的身份.\
+ <p>\
+ 为了验证你的电邮地址是否有效,\
+ 服务器会用电邮发一个密码给你. 请阅读此邮件,\
+ 并把密码复制在这里:
+
+!set n_warning=已经向论坛加了一个信息. 不要回复这个信息.
+!set n_forum=论坛
+!set n_thread=线索
+!if $job=compose and $c_prec!=$empty
+ !set n_compose=写新信息
+!endif
+
+!if $job notwordof read list
+ !set nextline=</b> <br><font size=+0>--- $(n_$job) ---</font>
+!endif
+
+!set module_title=$module_title$nextline
+
+!distribute line 这里是你可以修改的信息板参数.\
+  谁能阅读此信息\
+  每个参加者, 只有你自己\
+  任何人, 只对注册用户, 只有你自己\
+  谁能发送信息进来\
+  每个参加者, 检验电邮地址后的参加者, 只有你自己\
+  有电邮地址的访问者及用户,只对注册用户, 检验电邮地址后的用户,只有你自己\
+into name_introconfig, name_whoread,name_prompt1,name_prompt2,name_whosend,name_prompt3,name_prompt4

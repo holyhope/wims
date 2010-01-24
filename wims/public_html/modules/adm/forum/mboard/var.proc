@@ -1,0 +1,100 @@
+
+wims_trustfile=primitives.phtml
+wims_nw=Forumdir forumdir mb_readpolicy mb_sendpolicy mb_password \
+	mb_creation spolycode rpolycode mb_title mb_supervisor \
+	mb_mail send_right read_right s_hidecode is_owner forumuser \
+	user_lastname user_firstname user_email fuser fpassword \
+	month ident s_hidecode c_smail \
+	empty
+wims_nr=wims_sesrandom
+Forumdir=!replace internal ../wimshome/ by $wims_home/ in ../$forumdir
+!if robot isin $session
+ job=list
+ !exit
+!endif
+
+!if $error!=$empty or $cmd=help
+ !exit
+!endif
+
+!if $read_right=0
+ error=no_read_right
+ !exit
+!endif
+
+!if $send_right=0 and $job iswordof preview compose send
+ error=no_send_right
+ !exit
+!endif
+
+wims_multiexec=pari maxima yacas
+insmath_rawmath=yes
+insmath_slashsubst=yes
+msg2wims_primitives=draw def define comment if for while doc
+
+!for i in preview,send,list
+ !if $(c_$i)!=$empty
+  job=$i
+ !endif
+!next i
+!reset c_preview c_send c_list
+!bound job within list,thread,read,compose,preview,send,config,erase,threadlist default list
+archlist=!record 0 of $forumdir/.archives
+archlist=!words2items $archlist
+!bound mlist within .newlist,$archlist default .newlist
+
+# quote_lim: limit to number of lines in quoting.
+!distribute item 128,100,100,32,80,100 into \
+ subject_lim,list_lim,thread_lim,sender_lim,mail_lim,quote_lim
+
+wims_form_method=post
+module_title=$mb_title
+tag_escaper=<!--">--></textarea></a></pre></select></script></font></title>
+
+!if $job iswordof preview send
+ lens=!sh cd $wims_home; bin/msg2wims $wims_sesdir/user-deposit $wims_sesdir/message.wims
+ !if $wims_exec_error!=$empty
+  t=!trim $wims_exec_error
+  !if $t!=open_tag
+   error=$wims_exec_error
+   job=compose
+   !exit
+  !else
+   error=open_tag
+   job=preview
+  !endif
+ !endif
+ !distribute word $lens into srclen,msglen
+ !if $srclen=0
+  job=preview
+ !endif
+ !if ($srclen>0 and $msglen=0) or $msglen=$empty
+  error=translation_fail
+  job=compose
+  !exit
+ !endif
+ c_sender=!items2words $c_sender
+ c_sender=!char 1 to $sender_lim of $c_sender
+ c_smail=!trim $c_smail
+ c_smail=!char 1 to $mail_lim of $c_smail
+ c_subject=!char 1 to $subject_lim of $c_subject
+ c_subject=!replace < by &lt; in $c_subject
+!endif
+
+!read var.proc.$job
+
+!if $error!=$empty
+ wims_module_log=error: $error
+!else
+ wims_module_log=$job  	$forum
+ !if classes isin $forumdir and $job iswordof read list
+  now=!date '+%Y%m%d%H%M%S'
+  !if $wims_user=supervisor
+   deffile=wimshome/log/classes/$wims_class/supervisor
+  !else
+   deffile=wimshome/log/classes/$wims_class/.users/$wims_user
+  !endif
+  !setdef !set user_lastmsg=$now in $deffile
+ !endif
+!endif
+
