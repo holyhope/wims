@@ -1,0 +1,27 @@
+!if robot isin $session
+ !exit
+!endif
+
+wims_module_log=$type
+wims_prefix=mb user
+wims_helper=chapter=3
+wims_form_method=post
+#wims_ref_otherlangs=yes
+!bound type within list,authowner,authuser default list
+indf=wimshome/log/forums/.index
+ccnt=!recordcnt $indf
+!read tabletheme
+
+encnt=0
+lacnt=0
+
+!if $type iswordof authuser authowner
+ mb_defined=
+ forum=!translate ./ to __ in $forum
+ !defread wimshome/log/forums/$forum/.def
+ !if $mb_defined!=yes
+  error=forum_not_exist
+  !exit
+ !endif
+!endif
+

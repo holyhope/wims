@@ -1,0 +1,45 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute line 信息板表\
+    板主身份验证\
+    用户身份验证\
+    用户注册\
+    into n_list,n_authowner,n_authuser,n_register
+
+!distribute line 访问者\
+  用户\
+  板主\
+  注册\
+  本站没有信息板.\
+  板主密码\
+into name_visitor,name_user,name_owner,name_register,name_noforum,\
+ name_pass_owner
+
+!set name_number_message=!nosubst 本站有 $ccnt 个信息板.\
+请在下表找寻感兴趣的信息板.
+
+!exit
+
+:create
+点击连接类型以进入信息板, 或点击`注册'进入. 你也可以在本站
+!href module=adm/forum/regforum 创建你的信息板
+.
+
+!exit
+
+:enter
+为以<em>注册用户</em>身份进入<b><font color=green>$mb_title</font></b>,
+请输入登录名与个人密码.
+
+
+!exit
+
+:owner
+为以<em>板主</em>身份进入<b><font color=green>$mb_title</font></b>,
+请输入板主密码.
+
+!exit
