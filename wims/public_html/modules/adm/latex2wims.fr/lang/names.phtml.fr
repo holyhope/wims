@@ -1,0 +1,70 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute line Transférer un fichier\
+  transférer un nouveau fichier\
+  Transférez les fichiers sur le serveur\
+  la documentation\
+  la documentation en PDF\
+  Veuillez donner votre identification de développeur de Modtool\
+  fichier latex\
+  fichier de style css\
+  fichier de style latex2wims\
+  Ils vous permettront de créer un document-exemple\
+  Etape\
+  Fichiers transférés\
+  Passer à l'étape suivante\
+  Vous devez\
+  transférer au moins un fichier latex\
+  Vous pouvez encore\
+  Sélectionnez le fichier principal du document latex\
+  transféré le\
+  Si vous avez mis des exercices , choisissez le numéro de la feuille d'exercices correspondante\
+  Indiquez le nom du document de votre compte\
+  ou créez-en un nouveau dans votre compte\
+  Vous devez donner d'abord créer un document dans votre compte \
+  Vous devez sélectionner un vrai document.\
+  Lancer l'exécution\
+  Revenir aux étapes précédentes\
+  vous pouvez aussi y accéder par l'outil de gestion de\
+  Vérifier le résultat\
+into name_transfer,name_newtransfer,name_transfer_wims,name_documentation,name_pdf,name_modtool,\
+  name_latex,name_css, name_latex2wims,name_example,name_step,name_filet,name_newstep,\
+  name_youmust,name_atleast,name_youcan,name_selectmain,name_transferdate,\
+  name_sheet,name_namedocument,name_newmodule,name_createfirst,name_select_warning,\
+  name_exec,name_comeback,name_gotomodtool,name_test
+  
+  
+!set name_warning=!nosubst les fichiers du document <tt $stylett>$document</tt>\
+   seront effacés et remplacés par de nouveaux.
+!set name_select_example=Pour commencer, vous pouvez récupérer les trois fichiers\
+(fichier latex, fichier de style latex et css) 
+
+!set choix=Choisissez
+!exit
+
+
+:1
+permet de transformer un fichier latex en un document dans votre compte Modtool. 
+Vous pouvez y accéder à l'aide de votre login et mot de passe de développeur.
+Pour obtenir un bon résultat, le fichier latex doit être préparé convenablement
+et être accompagné d'un fichier de style css. Pour cela, lisez attentivement
+!exit
+:2
+Pour obtenir un compte Modtool, veuillez
+!mailurl $wims_site_manager écrire au gestionnaire du site\
+WIMS new developer
+ afin d'obtenir une identification du développeur (login, mot de passe).
+!exit
+:3
+permet de transformer un fichier latex en un document dans votre compte Modtool. 
+Pour obtenir un bon résultat, le fichier latex doit être préparé convenablement
+et être accompagné d'un fichier de style css. Pour cela, lisez attentivement
+!exit
+:4 
+les fichiers du document <tt $stylett>$document</tt> seront effacés et remplacés
+par de nouveaux. <p>Confirmez-vous : 
+!exit

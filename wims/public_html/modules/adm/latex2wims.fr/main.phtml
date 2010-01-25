@@ -1,4 +1,6 @@
-!read names 
+!read adm/language names.phtml
+
+!read lang/names.phtml.$modu_lang
 !set wims_menu_items=!append line modtool,1,module=adm/modtool\
 to $wims_menu_items
 !if robot isin $session
@@ -8,29 +10,20 @@ to $wims_menu_items
 
 <div $frame>
 !if $wims_developer=$empty
-<b>$module_title</b> permet de transformer un fichier latex en un document dans votre compte Modtool. 
-Vous pouvez y accéder à l'aide de votre login et mot de passe de développeur.
-
-<p>
-Pour obtenir un bon résultat, le fichier latex doit être préparé convenablement
-et être accompagné d'un fichier de style css. Pour cela, lisez attentivement
-la 
-!href cmd=help&special_parm=doc documentation
- ou 
- !getfile latex2wimsdoc.pdf documentation en PDF
+<b>$module_title</b> 
+!read lang/names.phtml.$modu_lang 1
+!href cmd=help&special_parm=doc $name_documentation
+ $wims_name_or 
+ !getfile latex2wimsdoc.pdf $name_pdf
 .
-
-
 <p>
-Pour obtenir un compte Modtool, veuillez
-!mailurl $wims_site_manager écrire au gestionnaire du site\
-WIMS new developer
- afin d'obtenir une identification du développeur
-(login, mot de passe).
+
+!read lang/names.phtml.$modu_lang 2
 
 
  !form reply
-Veuillez donner votre identification de développeur de Modtool
+ $name_modtool
+
 <p>
 <table align="center"> 
 <tr><td>$wims_name_Login</td><td><input type=login name=login></td></tr>
@@ -48,41 +41,40 @@ Veuillez donner votre identification de développeur de Modtool
 !endif
 
 <p>
-<b>$module_title</b> permet de transformer un fichier latex en un document dans votre compte Modtool. 
-Pour obtenir un bon résultat, le fichier latex doit être préparé convenablement
-et être accompagné d'un fichier de style css. 
-Pour cela, lisez attentivement
-la 
-!href cmd=help&special_parm=doc documentation.
+<b>$module_title</b>
+!read lang/names.phtml.$modu_lang 3
+
+!href cmd=help&special_parm=doc $name_documentation
+.
   
 !set wims_form_method=file
 !default !set execut=0
 !form reply
 !if $execut!=3
-Pour commencer, vous pouvez récupérer les trois fichiers
+$name_select_example
 (fichier latex, fichier de style latex et css) 
-  !getfile fichier_test.tex fichier latex
+  !getfile fichier_test.tex $name_latex
 ,
-  !getfile style.css fichier de style css
+  !getfile style.css $name_css
 , 
-  !getfile wims.sty fichier de style latex2wims
+  !getfile wims.sty $name_latex2wims
 , 
-  !getfile latex2wimsdoc.pdf documentation en PDF
-
+  !getfile latex2wimsdoc.pdf $name_pdf
+.
  !if $exemple!=1
-    Ils vous permettront de créer un document-exemple :
+    $name_example
       !formradio exemple list 1,2 prompt $wims_name_yes,$wims_name_no
   !endif
 !endif 
 
 <p>
 !if $execut=0
-  $hh Etape 1</h2>
-  Transférez les fichiers sur le serveur :
+  $hh $name_step 1</h2>
+  $name_transfer_wims
   <input type=file name=wims_deposit>
   <p>
 !if $test!=$empty and ($execut=0 or $cnt_fichier=1)
-  Fichiers transférés :
+  $name_filet:
   <pre $pre>
   !for i = 1 to $cnt_fichier
     $(fichiers[$i]) ($(date[$i]))
@@ -95,7 +87,7 @@ Pour commencer, vous pouvez récupérer les trois fichiers
 
    !formradio execut list 0 prompt $name_newtransfer
    </li><li>
-   !formradio execut list 1 prompt Passer à l'étape suivante
+   !formradio execut list 1 prompt $name_newstep
    </li>
    </ul>
 !endif
@@ -104,14 +96,14 @@ Pour commencer, vous pouvez récupérer les trois fichiers
 
 !if $execut=1
 
-$hh Etape 1</h2>
+$hh $name_step 1</h2>
 !if $cnt_fichier >0 
-   Vous pouvez encore
-    !formcheckbox execut list 0 prompt transférer un nouveau fichier
+   $name_youcan
+    !formcheckbox execut list 0 prompt $name_newtransfer
  !else
-   Vous devez
+   $name_youmust
    !default !set execut=0
-   !formradio execut list 0 prompt transférer au moins un fichier latex
+   !formradio execut list 0 prompt $name_atleast
    
    <center>
 <input type=submit value="$wims_name_tosave">
@@ -119,63 +111,60 @@ $hh Etape 1</h2>
 </form>
    !exit
  !endif
-$hh Etape 2</h2>
-  Sélectionnez le fichier principal du document latex
+$hh $name_step 2</h2>
+  $name_selectmain
   <ul>
     !for i = 1 to $cnt_fichier
       !set l=!item $i of $fichiers
       <li>
-        !formradio principal list $i prompt $(fichiers[$i]) (transféré le $(date[$i]))
+        !formradio principal list $i prompt $(fichiers[$i]) ($name_transferdate $(date[$i]))
       </li>
    !next 
   </ul>
-  Si vous avez mis des exercices , choisissez le numéro de la feuille
-  d'exercices correspondante : 
+  $name_sheet
   !formradio wksheet list 1,2,3,4,5,6,7,8,9
- $hh Etape 3</h2>
-!set choix=Choisissez
+ $hh $name_step 3</h2>
+
 !if $list_module!=$empty
-   Indiquez le nom du document de votre compte:  
+   $name_namedocument:  
            <p align=center>
            !formselect document list $choix,$list_module    
          </p>
-       ou créez-en un nouveau dans votre compte
+       $name_newmodule
 !else
-<i>Vous devez donner  d'abord créer un document dans votre compte </i>
+<i>$name_createfirst</i>
 !endif
-     !href target=wims_test module=adm/modtool.$module_language&cmd=reply&jobreq=create Modtool
+     !href target=wims_test module=adm/modtool&cmd=reply&jobreq=create Modtool
 
 !if $document notsametext $choix
-<p> <b>Attention</b> : les fichiers du document <tt $stylett>$document</tt>
-   seront effacés et remplacés par de nouveaux.
+<p> <b>$wims_name_warning</b> : $name_warning
 !else
-<p> <b>Attention</b> : Vous devez sélectionner un vrai document.
+<p> <b>$wims_name_warning</b> : $name_select_warning.
 !endif
-  $hh Etape 4</h2>
-     !formradio execut list 2 prompt Lancer l'exécution
+  $hh $name_step 4</h2>
+     !formradio execut list 2 prompt $name_exec
   
 !endif
 
 !if $execut=3 
   !if $confirm=
-   <p> <b>Attention</b> : les fichiers du document <tt $stylett>$document</tt>
-   seront effacés et remplacés par de nouveaux.
-   <p>Confirmez-vous : 
+   <p>
+   !read lang/names.phtml.$modu_lang 4
    !formradio confirm list 0,1 prompt $wims_name_yes,$wims_name_no
     <ul>
   !else
     !if $confirm=0
  !reset confirm
  <ul><li>
-     !href target=wims_internal module=devel/$wims_developer/$document Vérifier le résultat
- (<i> vous pouvez aussi y accéder par l'outil de gestion de
-!href target=wims_internal module=adm/modtool.fr&jobreq=flist&modreq=$document Modtool
+     !href target=wims_internal module=devel/$wims_developer/$document $name_test
+ (<i> $name_gotomodtool
+!href target=wims_internal module=adm/modtool&jobreq=flist&modreq=$document $wims_name_modtool
 </i>)
   </li>
    !endif
   !endif
    <li>
-    !formradio execut list 1 prompt Revenir aux étapes précédentes
+    !formradio execut list 1 prompt $name_comeback
   </li>
   <li>
     !formradio execut list 0 prompt $name_transfer
