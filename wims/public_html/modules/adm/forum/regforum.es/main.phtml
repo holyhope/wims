@@ -1,31 +1,20 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
-
+!read names.phtml
 !header1
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
-<h1 class="wims_title">WIMS en $httpd_HTTP_HOST
-<br>
-Creación de un foro de discusión
-</h1> <p><hr width="50%"> <p>
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$title
 
 !if $toomany=yes
  !read toomany.phtml
  !goto end
 !endif
 
-!read names.phtml
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=$module&cmd=reply&step=0 Reiniciar la operación.
+ !href module=$module&cmd=reply&step=0 $name_restart
  <p>
  !goto end
 !endif
@@ -33,93 +22,72 @@ Creación de un foro de discusión
 !if $step=$empty or $step=0
  !set password=
  !set passsup=
- Si crea un foro de discusión en este sitio WIMS,
- deberá asumir la responsabilidad de su mantenimiento. <p>
- Para crear su foro de discusión, por favor, rellene la siguiente información:
+  $name_warning
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>Nombre del foro (a lo sumo $titlelim caracteres):
+ <li>$name_name_forum
   <input size=$titlelim name=title value="$title"> <p>
- <li>Descripción (a lo sumo $desclim caracteres):
+ <li>$wims_name_Description (< $desclim $name_characters) :
   <textarea cols=65 rows=5 name=description>$description</textarea> <p>
- <li>Nombre completo del propietario (es decir, usted):
+ <li>$name_name_owner
   <input size=$suplim name=supervisor value="$supervisor"> <p>
- <li>Dirección de correo electrónico:
+ <li>$wims_name_email
   <input size=$emaillim name=email value="$email"> <br>
-  (su foro de discusión no se creará, a menos que dé una dirección de correo
-   válida y funcional en este momento).<p>
- <li>Elija la contraseña del propietario:
+  ($name_warning1)<p>
+ <li>$name_choosepass1
   <input size=16 type=password name=passsup> <br>
-  (entre 4 y 16 caracteres, dígitos o letras sin acento). <br>
-  Esta contraseña le permitirá acceder al foro de discusión como su
-  propietario. Debería ser la única persona que la conozca. <p>
- <li>Elija una contraseña para el foro de discusión:
+  ($name_instruction). <br>
+  $name_help1<p>
+ <li>$name_choosepass2
   <input size=16 type=password name=password> <br>
-  (entre 4 y 16 caracteres, dígitos o letras sin acentuar). <br>
-  Esta palabra clave será necesaria para la inscripción de los usuarios al
-  foro; por tanto, podrá proporcionársela a quienes desee
-  que participen en el foro. <p>
+  ($name_instruction). <br>
+  $name_help2<p>
  </ul>
- <center><input type=submit value="Continuar"></center>
+ <center><input type=submit value="$name_continue"></center>
  </form>
 
  !goto end
 !endif
 
 !if $step=1
- ¡Bienvenido/a, $supervisor!<p>
- Está creando el foro de discusión $forumname en el sitio WIMS
- $httpd_HTTP_HOST.
- <p>
- Si encuentra un error en la información anterior, por favor
- !href module=$module&cmd=reply&step=0 corríjala.
- <p>De lo contrario, para verificar la corrección de las contraseñas,
- por favor, vuélvalas a escribir. <p>
+ $name_hello, $supervisor!<p>
+ !read names step1<p>
  !form reply
  <input type=hidden name=step value=2>
- Contraseña del propietario:
+  $name_ownerpass
  <input type=password name=passsup> <p>
  !if $pword!=$empty
-  Contraseña del foro de discusión:
+  $name_forumpass
   <input type=password name=password> <p>
  !endif
- <center><input type=submit value="Continuar"></center>
+ <center><input type=submit value="$name_continue"></center>
  </form>
  !goto end1
 !endif
 
 !if $step=2
- ¡Bienvenido/a, $supervisor!<p>
- Ahora necesita una clave para finalizar la operación de creación de un
- nuevo foro de discusión bajo WIMS en este sitio $http_HTTP_HOST. <p>
- Esta clave se le acaba de enviar a la dirección de correo que proporcionó
- ``<tt>$email</tt>''. Por favor, compruebe su correo (espere unos minutos si
- es necesario), y lea el mensaje que se le ha enviado.
- Busque la clave incluida en el mensaje y cópiela a continuación.
+ $name_hello, $supervisor!<p>
+!read names.phtml step2
  !form reply
  <input type=hidden name=step value=3>
- <center>Clave del foro: <input size=16 name=typecode>
- <p><input type=submit value="Continuar"></center>
+ <center>$name_code : <input size=16 name=typecode>
+ <p><input type=submit value="$name_continue"></center>
  </form>
- <b>Atención</b> Esta clave es de un solo uso. ¡No puede utilizarla para
- conectarse al foro de discusión!
+ $name_warning2
  <p>
  !goto end1
 !endif
 
 !if $step=3
- ¡Bienvenido/a, $supervisor!<p>
- Se ha creado el foro de discusión $forumname. ¡Felicidades, y diviértase!<p>
- Puede acceder al foro
- !href module=adm/forum/forum desde aquí
-.
+ $name_hello, $supervisor!<p>
+!read names.phtml step3
  !goto end
 !endif
 
 :end1
 <p>
-!href module=$module&cmd=reply&step=0 Volver al principio de la operación.
+!href module=$module&cmd=reply&step=0 $wims_name_giveup
 :end
 !tail
 
