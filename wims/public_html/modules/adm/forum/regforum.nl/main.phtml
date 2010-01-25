@@ -1,28 +1,20 @@
-
+!read names.phtml
 !header1
 
-!!if $cmd=help
- !!read help.phtml
- !!goto end
-!!endif
-
-<h1 class="wims_title">WIMS op $httpd_HTTP_HOST
-<br>
-Oprichten van een forum
-</h1> <p><hr width="50%"> <p>
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$title
 
 !if $toomany=yes
  !read toomany.phtml
  !goto end
 !endif
 
-!read names.phtml
 !if $error!=$empty
  <p>
  !read msg.phtml
  <p>
- !href module=$module&cmd=reply&step=0 Herstart 
- &nbsp;deze procedure.
+ !href module=$module&cmd=reply&step=0 $name_restart
  <p>
  !goto end
 !endif
@@ -30,101 +22,72 @@ Oprichten van een forum
 !if $step=$empty or $step=0
  !set password=
  !set passsup=
- Wie een forum opricht op deze WIMS server, is ook verantwoordelijk voor het onderhoud ervan.
-  <p>
- Om een eigen forum op te richten, vul dan het onderstaande
- formulier in.
+  $name_warning
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>Naam van het forum (maximaal $titlelim karakters):
+ <li>$name_name_forum
   <input size=$titlelim name=title value="$title"> <p>
- <li>Beschrijving (maximaal $desclim karacters):
+ <li>$wims_name_Description (< $desclim $name_characters) :
   <textarea cols=65 rows=5 name=description>$description</textarea> <p>
- <li>Volledige naam van de eigenaar (U dus):
+ <li>$name_name_owner
   <input size=$suplim name=supervisor value="$supervisor"> <p>
- <li>Email adres:
+ <li>$wims_name_email
   <input size=$emaillim name=email value="$email"> <br>
-  (Dit forum kan alleen worden opgezet als er een
-  werkend emailadres wordt invult.)
-  <p>
- <li>Wachtwoord van de eigenaar:
+  ($name_warning1)<p>
+ <li>$name_choosepass1
   <input size=16 type=password name=passsup> <br>
-  (tussen 4 en 16 karakters, cijfers of letters zonder accenten). <br>
-  Dit wachtwoord geeft toegang tot configuratie van het forum,
-  U bent dus de enige die het wachtwoord mag kennen.
-   <p>
- <li>Kies het gebruikers wachtwoord voor het forum:
+  ($name_instruction). <br>
+  $name_help1<p>
+ <li>$name_choosepass2
   <input size=16 type=password name=password> <br>
-  (tussen 4 en 16 karakters, cijfers of letters zonder accenten).
- Dit wachtwoord kunt U bekend maken aan alle deelnemers van dit forum.
-  <p>
+  ($name_instruction). <br>
+  $name_help2<p>
  </ul>
- <center><input type=submit value="Versturen"></center>
+ <center><input type=submit value="$name_continue"></center>
  </form>
 
  !goto end
 !endif
 
 !if $step=1
- Hallo, $supervisor!<p>
- U bent bezig met het oprichten van een forum $forumname op WIMS server
- $httpd_HTTP_HOST.
- <p>
- Is er iets niet helemaal juist aan bovenstaande informatie, dan s.v.p.
- !href module=$module&cmd=reply&step=0 corrigeren.
- 
- <p>Om de juistheid van de wachtwoorden te controleren, 
- graag hieronder nog een keer intypen:
-  <p>
+ $name_hello, $supervisor!<p>
+ !read names step1<p>
  !form reply
  <input type=hidden name=step value=2>
- Wachtwoord van de eigenaar:
+  $name_ownerpass
  <input type=password name=passsup> <p>
  !if $pword!=$empty
-  Wachtwoord voor deelnemers:
+  $name_forumpass
   <input type=password name=password> <p>
  !endif
- <center><input type=submit value="Versturen"></center>
+ <center><input type=submit value="$name_continue"></center>
  </form>
  !goto end1
 !endif
 
 !if $step=2
- Hallo, $supervisor!<p>
- U hebt nu alleen nog de geheime code nodig om het oprichten van
- uw eigen forum op (WIMS $http_HTTP_HOST) af te kunnen ronden.
- <p>
-Deze code is net verstuurd naar het opgegeven email adres:
- ``<tt>$email</tt>''. 
-  en kopieer de verstuurde code in het onderstaande veld
+ $name_hello, $supervisor!<p>
+!read names.phtml step2
  !form reply
  <input type=hidden name=step value=3>
- <center>Geheime code : <input size=16 name=typecode>
- <p><input type=submit value="Versturen"></center>
+ <center>$name_code : <input size=16 name=typecode>
+ <p><input type=submit value="$name_continue"></center>
  </form>
- <b>Attentie</b> 
- Deze code is eenmalig en enkel bedoelt voor het oprichten van dit forum.
- En kan dus <em>niet gebruikt worden</em> om in te loggen in het forum.
+ $name_warning2
  <p>
  !goto end1
 !endif
 
 !if $step=3
- Hallo, $supervisor!<p>
- 
- Uw forum $forumname is aangemaakt.
- Gefeliciteerd en veel plezier !<p>
- U kunt uw forum altijd
- !href module=adm/forum/forum hier bereiken
-.
+ $name_hello, $supervisor!<p>
+!read names.phtml step3
  !goto end
 !endif
 
 :end1
 <p>
-Terug naar het&nbsp;
-!href module=$module&cmd=reply&step=0 begin van de procedure.
+!href module=$module&cmd=reply&step=0 $wims_name_giveup
 :end
 !tail
 
