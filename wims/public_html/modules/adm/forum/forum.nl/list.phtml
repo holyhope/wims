@@ -1,15 +1,14 @@
 
 !if $ccnt<1
-Er zijn geen forums geintialiseerd op deze site. <p>
- !href module=home WIMS home
+ $name_noforum<p>
+ !href module=home $wims_name_home
  !exit
 !endif
 
-We hebben $ccnt forums op deze site.
-Zoek in de volgende tabel:
+$name_number_message
 
 <p>$table_header
-$table_hdtr<th>Titel<th>Verbinding<th>Taal<th>Beschrijving
+$table_hdtr<th>$wims_name_title<th>$wims_name_Status<th>$wims_name_Language<th>$wims_name_Description
 !for i=1 to $ccnt
  !set l=!record $i of $indf
  !distribute items $l into code,la
@@ -20,35 +19,30 @@ $table_hdtr<th>Titel<th>Verbinding<th>Taal<th>Beschrijving
  !read wimshome/$wims_sesdir/mb_user.$code
  !if $user_exists=$empty
   !if $mb_readpolicy=open
-   !href module=adm/forum/mboard&forum=$code bezoeker
+   !href module=adm/forum/mboard&forum=$code $name_visitor
    &nbsp;
   !endif
-  !href cmd=reply&type=authuser&forum=$code gebruiker
+  !href cmd=reply&type=authuser&forum=$code $name_user
   &nbsp;
-  !href cmd=reply&type=authowner&forum=$code beheerder
+  !href cmd=reply&type=authowner&forum=$code $name_owner
   !if * notin $mb_password
    &nbsp;
-   !href module=adm/forum/reguser&forum=$code inschrijven
+   !href module=adm/forum/reguser&forum=$code $name_register
   !endif
  !else
   !if $forumuser!=supervisor
-   !href module=adm/forum/mboard&forum=$code gebruiker
+   !href module=adm/forum/mboard&forum=$code $name_user
    &nbsp;
-   !href cmd=reply&type=authowner&forum=$code beheerder
+   !href cmd=reply&type=authowner&forum=$code $name_owner
   !else
-   !href cmd=reply&type=authuser&forum=$code gebruiker
+   !href cmd=reply&type=authuser&forum=$code $name_user
    &nbsp;
-   !href module=adm/forum/mboard&forum=$code beheerder
+   !href module=adm/forum/mboard&forum=$code $name_owner
   !endif
  !endif
- </td><td align=center><img src="gifs/$la.gif" alt="la"></td>
+ </td><td align=center><img src="gifs/$la.gif" alt="$la"></td>
  <td>$mb_description</td>
 !next i
 $table_end <p>
 
-klik op "Registreren" om je aan te melden. 
-Je kunt ook
-!href module=adm/forum/regforum je eigen forum
-&nbsp;op deze wiskunde site maken.
-
-
+!read names create

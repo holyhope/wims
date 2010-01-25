@@ -1,0 +1,45 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute line Seznam desk sporoèil\
+	Vstop skrbnika\
+	Vstop uporabnika\
+	Novi uporabniki\
+	into n_list,n_authowner,n_authuser,n_register
+
+!distribute line obiskovalec\
+  uporabnik\
+  skrbnik\
+  registracija\
+  Na teh straneh ni nobene deske sporoèil.\
+  Geslo skrbnika\
+  
+into name_visitor,name_user,name_owner,name_register,name_noforum,\
+ name_pass_owner
+
+!set name_number_message=!nosubst Na teh straneh najdete naslednje deske sporoèil
+
+!exit
+
+:create
+Za vstop na desko sporoèil kliknite na ¾eljeni naèin priklopa ali pa se registrirajte kot nov uporabnik. Ustvarite lahko tudi
+!href module=adm/forum/regforum svojo lastno desko sporoèil
+.
+
+!exit
+
+:enter
+Za vstop na desko <b><font
+color=green>$mb_title</font></b>
+kot <em>registrirani uporabnik</em> vnesite svoje uporabni¹ko ime in geslo.
+
+!exit
+
+:owner
+
+Vnesite ustrezno geslo za vstop na desko <b><font
+color=green>$mb_title</font></b> kot njen
+<em>skrbnik</em>.
+
+!exit
