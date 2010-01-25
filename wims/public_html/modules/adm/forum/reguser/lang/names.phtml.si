@@ -1,0 +1,56 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set lang_fr=français
+!set lang_en=English
+!set lang_si=slovensko
+
+!set lang_es=español
+!set lang_nl=Nederlands
+
+
+!distribute lines Registracija uporabnika deske sporoèil\
+  Na tej strani trenutno ni nobene deske sporoèil.\
+  je za¹èiten forum. Registracija je mo¾na le z ustreznim geslom.\
+  Pi¹i skrbniku\
+  neobvezno\
+  Pozdravljeni\
+  Va¹ e-naslov ni veljaven.\
+  Va¹ e-naslov\
+  Da bi preverili pravilnost osebnega gesla, ga vnesite ponovno.\
+  Seznam forumov\
+into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
+  name_email1,name_email2,name_email3,name_forumlist
+
+!set name_obtain_passw=!nosubst <b>Opomba</b>. Geslo vam bi moral posredovati skrbnik\
+   ($supervisor) te deske sporoèil.
+!set name_inscription=!nosubst Da bi se registrirali za uporabo foruma $forumname, zahtevane podatke.
+
+ 
+!set name_password1=S tem imenom se boste prijavljali na forum. Ime naj vsebuje od 4 do 16 znakov (èrke ali ¹tevke).
+ 
+!set name_password2=geslo naj vsebuje od 4 do 16 ¹tevk ali èrk (brez ¹umnikov).
+
+!set name_inscription2=!nosubst  Ste v postopku registracije za uporabnika foruma\
+ $forumname. Izbrali ste si uporabni¹ko ime &nbsp;
+ 
+!exit
+
+:welcome
+ Zdaj ste uporabnik foruma $forumname z uporabni¹kim imenom
+  ``<b><font color=green>$login</font></b>''. <p>
+  Za branje sporoèil se
+  !href module=adm/forum/forum&forum=$forum&type=authuser prijavite
+  s svojim uporabni¹kim imenom in osebnim geslom.
+
+!exit
+ 
+:code
+$forumname ne dovoljuje anonimne registracije, temveè zahteva identifikacijo uporabnika s pomoèjo e-naslova.
+  <p>
+  Na e-naslov, ki ste ga vnesli, je bilo poslano elektronsko sporoèilo z geslom. Odprite svojo po¹to in vpi¹ite to geslo:
+
+!exit

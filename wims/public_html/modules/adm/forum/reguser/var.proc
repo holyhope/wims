@@ -1,0 +1,137 @@
+# Variable calculations should be done in this file.
+# It is read and interpreted by wims for all valid calls to the module.
+wims_form_method=post
+wims_prefix=mb user
+wims_helper=chapter=3
+
+!if $forum=$empty
+ error=no_forum
+ !exit
+!endif
+
+!read adm/class/authchars
+!if $forume=$empty
+ !defread wimshome/log/forums/$forum/.def
+ !if $mb_defined!=yes
+  error=bad_forum
+  !exit
+ !endif
+ !if * isin $mb_password
+  error=no_register
+  !exit
+ !endif
+ !if $mb_password=+mail
+  mailverif=yes
+ !endif
+ participants=!recordcnt wimshome/log/forums/$forum/.userlist
+ forume=$mb_password\
+$mb_title\
+$mb_description\
+$mb_supervisor\
+$mb_email
+ !distribute lines $forume into password,title,description,supervisor,smail
+ passverify=
+ !exit
+!else
+ !distribute lines $forume into password,title,description,supervisor,smail
+!endif
+
+# forum password verification.
+!if $step=1
+ forumpass=!text remove +-*/= in $forumpass
+ !if $forumpass=$password or $mailverif=yes
+  passverify=ok
+ !else
+  error=bad_forumpass
+ !endif
+ !exit
+!endif
+
+!if $step=2
+ !for i in lastn,firstn
+  $i=!translate internal ,!$$<>" to $         $ in $($i)
+  $i=!trim $($i)
+  $i=!singlespace $($i)
+  $i=!char 1 to 20 of $($i)
+ !next i
+ !if $lastn=$empty
+  error=no_real
+  !exit
+ !endif
+ email=!translate internal ',|!<>"$$ to $          $ in $email
+ email=!word -1 of $email
+ email=!char 1 to 60 of $email
+ !if $email!=$empty and (@ notin $email or . notin $email)
+  email=
+ !endif
+ !if $mailverif=yes and $email=$empty
+  error=no_email
+  !exit
+ !endif
+ tmail=$email
+ n=!charcnt $login
+ !if $n<$login_min or $n>$login_max
+  error=login_size
+  !exit
+ !endif
+ test=!text select $char_login in $login
+ !if $test!=$login
+   error=bad_login
+   !exit
+ !endif
+ n=!charcnt $pass
+ !if $n<$passwd_min or $n>$passwd_max
+  error=pass_size
+  !exit
+ !endif
+ test=!text select $char_passwd in $pass
+ !if $test!=$pass
+   error=bad_pass
+   !exit
+ !endif
+ user_exists=
+ !defread wimshome/log/forums/$forum/.users/$login
+ !if $user_exists=yes
+  error=login_double
+  !exit
+ !endif
+ !exit
+!endif
+
+!if $step=3
+ !if $pass!=$pass2
+  error=pass_error
+  !exit
+ !endif
+ user_exists=
+ !defread wimshome/log/forums/$forum/.users/$login
+ !if $user_exists=yes
+  error=login_double
+  !exit
+ !endif
+ !if $mailverif=yes
+  secode=!randint 10^5,10^8-1
+  !read lang/mail.proc.$modu_lang
+  !exit
+ !endif
+ !if $mailverif=next and $vericode!=$secode
+  error=auth_fail
+  !exit
+ !endif
+ pass=!passcrypt $pass
+ !writefile wimshome/log/forums/$forum/.users/$login !set user_lastname=$lastn\
+!set user_firstname=$firstn\
+!set user_password=$pass\
+!set user_email=$tmail\
+!set user_exists=yes
+ user_exists=
+ !defread wimshome/log/forums/$forum/.users/$login
+ !if $user_exists!=yes
+  error=insert_fail
+  !exit
+ !endif
+ !mexec mkuserlist.sh
+ wims_module_log=registered $login in $forum
+ !exit
+!endif
+

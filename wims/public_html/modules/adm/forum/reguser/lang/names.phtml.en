@@ -1,0 +1,56 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set lang_fr=français
+!set lang_en=English
+!set lang_es=español
+
+!distribute lines Message board user registration\
+  This site contains no message board for the time being. Sorry, try again later!\
+  is protected by a password. You have to type this password before you can register into it.\
+  Write to the owner\
+  optional\
+  Hello\
+  You didn't give a valid email address.\
+  Your email address\
+  In order to verify the exactness of your password, please retype it again\
+  List of message boards\
+into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
+  name_email1,name_email2,name_email3,name_forumlist
+
+!set name_obtain_passw=!nosubst <b>Remark</b>. If the owner ($supervisor) of this message board allows you\
+ the access, you should be able to obtain the password from him/her.
+ 
+!set name_inscription=!nosubst In order to register to $forumname, please fill-in the following informations.
+ 
+!set name_password1=This will be the name which you will use to log into the message board later.\
+  Please choose a word containing between 4 and 16 characters\
+  (digits or letters without accent).
+!set name_password2=the password must contain between 4 and 16 characters (digits or letters without accent).
+
+!set name_inscription2=!nosubst You are registering yourself as a participant to $forumname,\
+   with the login name
+ !exit
+
+:welcome
+ Welcome to $forumname.
+  You are now a participant of this message board, with the login name
+  ``<b><font color=green>$login</font></b>''. <p>
+  You may now
+  !href module=adm/forum/forum&forum=$forum&type=authuser login
+  to the message board.
+
+!exit
+ 
+:code
+ $forumname does not allow anonymous registration. It uses your email address
+  to keep your identity (in order to prevent abuses).
+  <p>
+  In order to verify the effectiveness of your email address, the server is
+  sending a secret code to you via email. Please read this mail, and copy this
+  code here:
+  
+!exit

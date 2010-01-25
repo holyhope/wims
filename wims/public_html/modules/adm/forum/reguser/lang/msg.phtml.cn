@@ -1,0 +1,114 @@
+!set wims_module_log=error: $error
+
+!if no_forum=$error
+你没有指出要注册的信息板.
+ <p>
+ !href module=adm/forum/forum 论坛表
+.
+ !exit
+!endif
+
+!if bad_forum=$error
+你选的信息板不存在. 如果不是软件错误, 一定是信息板过期了.
+ !exit
+!endif
+
+!if no_register=$error
+信息板<em>$em_title</em>不允许在线注册. 如果你要参加, 请
+ !mailurl $mb_email 联系板主
+.
+ !exit
+!endif
+
+!if no_real=$error
+你没有给出名字.
+ !exit
+!endif
+
+!if no_email=$error
+为了注册到此信息板, 你必须给出你的真实电邮地址.
+(服务器在证实了此地址后才给你注册!)
+ !exit
+!endif
+
+!if auth_fail=$error
+你输入的密码不匹配. 注册失败.
+ !exit
+!endif
+
+!if bad_login=$error
+你的登录名包含非法字符. <p>
+请只使用数字及英文字母, 而且中间不含空格.
+ !exit
+!endif
+
+!if auth_fail=$error
+ 你输入的密码有误. 注册失败.
+ !exit
+!endif
+
+!if bad_pass=$error
+你的密码包含非法字符. <p>
+请只使用数字及英文字母, 而且中间不含空格.
+ !exit
+!endif
+
+!if login_size=$error
+你的登录名太
+ !if $n<4
+  短.
+ !else
+  长.
+ !endif
+它必须由4至16个字符组成.
+ !exit
+!endif
+
+!if pass_size=$error
+你的密码太
+ Your password is too
+ !if $n<4
+  短.
+ !else
+  长.
+ !endif
+它必须由4至16个字符组成.
+ !exit
+!endif
+
+!if bad_forumpass=$error
+你的<b><font color=green>$title</font></b>的密码不对.
+因此你不能注册到这个信息板. 抱歉.
+ !exit
+!endif
+
+!if login_double=$error
+登录名``<b><font color=green>$login</font></b>''已经在
+ <p><center>
+ <b><font color=green>$title</font></b>
+ </center> <p>
+使用. 请查一下你是否已经注册过. 否则请另选一个登录名.
+ !exit
+!endif
+
+!if pass_error=$error
+你重输得密码不同于第一个. 你的注册被取消. 请重试.
+ !exit
+!endif
+
+!if insert_fail=$error
+由于软件内部错误, 你的注册不能录入数据库. 抱歉.
+ !exit
+!endif
+
+!if site_complete=$error
+注册用户数已经达到此信息板的极限($user_limit).
+注册服务已被关闭. 抱歉.<p>
+ !exit
+!endif
+
+!if internal_total=$error
+软件内部错误: 无法确定注册用户人数.
+ !exit
+!endif
+

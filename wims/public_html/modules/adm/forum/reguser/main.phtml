@@ -1,0 +1,122 @@
+!if $wims_class=
+  !read adm/language names.phtml
+!else
+  !read adm/class/classlang names.phtml 
+  !set modu_lang=$moduclass_lang
+!endif
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+!read lang/names.phtml.$modu_lang
+
+!header1
+
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$title
+
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$modu_lang
+ <p>
+ !goto end1
+!endif
+
+!if $forumcnt=0
+  $name_noforum
+ !goto end
+!endif
+
+!set forumname=<b><font color=green>$title</font></b>
+
+!if $password!=$empty and $passverify=$empty and $mailverif=$empty
+ $forumname
+ $name_passw
+ !form reply
+ <input type=hidden name=step value=1>
+ <center> <p>$wims_name_Password
+ <input type=password name=forumpass>
+ <p>
+ <input type=submit value="$wims_name_send">
+ </center></form> <p>
+$name_obtain_passw
+ (
+ !mailurl $smail $name_write_owner
+ )
+ !goto end1
+!endif
+
+!if $step=$empty or $step<2
+$name_inscription
+ <ul>
+ !form reply
+ <input type=hidden name=step value=2>
+ <li>$wims_name_lastname <input size=20 name=lastn value="$lastn">
+  $wims_name_firstname <input size=20 name=firstn value="$firstn">
+  <p>
+ <li>$wims_name_login
+  <input size=16 name=login value="$login"> <br>
+  $name_password1
+  <p>
+ <li>$wims_name_Password
+  <input type=password size=16 name=pass> <br>
+  $name_password2
+  <p>
+  !if $mailverif=$empty
+   <li>$wims_name_email ($name_optional)&nbsp;:<br>
+  !else
+   <li>$wims_name_email<br>
+  !endif
+  <input size=60 name=email value="$email">
+  <p>
+ <center><input type=submit value="$wims_name_tosave"></center>
+ </form></ul>
+ !goto end1
+!endif
+!default name_student=$firstn $lastn
+!if $step=2
+ $name_hello, $name_student!<p>
+ $name_inscription2
+ ``<tt><b><font color=green>$login</font></b></tt>''. <p>
+ !if $email=$empty
+  $name_email1 <p>
+ !else
+  $name_email2: <tt>$email</tt> <p>
+ !endif
+ $name_email3
+ !form reply
+ <input type=hidden name=step value=3>
+ <p><center><input type=password size=16 name=pass2>
+ <p><input type=submit value="$wims_name_send"></center>
+ </form> <p>
+ !goto end1
+!endif
+
+!if $step=3
+ $name_hello, $name_student!<p>
+ !if $mailverif=yes
+  !set mailverif=next
+  !read names.phtml code
+  !form reply
+  <input type=hidden name=step value=3>
+  <p><center><input size=10 name=vericode>
+  <input type=submit value="$wims_name_tosave"></form>
+  <p>
+  !href module=adm/forum/forum $wims_name_giveup
+  </center> <p>
+  !goto end1
+ !else
+ !read lang/names.phtml.$modu_lang welcome
+  !goto end
+ !endif
+!endif
+
+:end1
+<p>
+!href module=adm/forum/forum&type=list $name_forumlist
+:end
+!tail
+
+!set step=
+
