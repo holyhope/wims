@@ -1,6 +1,53 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
 
 !set lang_fr=français
 !set lang_en=English
 !set lang_es=español
 !set lang_it=italiano
 
+!distribute lines Registrazione\
+  Spiacente: non ci sono forum di discussione.  Riprovare pi&ugrave; tardi!\
+  &egrave; protetto da una password che &egrave; necessario conoscere per procedere alla registrazione.\
+  contattarlo\
+  opzionale\
+  Cara/o\
+  Non avete dato un indirizzo di posta elettronica.\
+  Il vostro indirizzo di posta elettronica &egrave;\
+  Inserire di nuovo la password per una ulteriore verifica\
+  Indice dei forum attivi sul sito\
+into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
+  name_email1,name_email2,name_email3,name_forumlist
+
+!set name_obtain_passw=!nosubst <b>Nota</b>. La password va richiesta al gestore ($supervisor)  di questo forum. 
+
+!set name_inscription=!nosubst Per registrarsi e accedere a `$forumname', inserire i dati seguenti.
+ 
+!set name_password1=Questo sar&agrave; il nome da utilizzare per accedere al forum.\
+  Scegliere una parola composta da almeno 4 e non pi&ugrave; di 16 caratteri  (numeri o lettere non accentate).
+!set name_password2= La password deve essere una parola composta da almeno 4 e non pi&ugrave; 
+  di 16 caratteri (numeri o lettere non accentate).
+ 
+!set name_inscription2=!nosubst Vi state registrando per accedere al forum $forumname, con login &nbsp;
+
+!exit
+
+:welcome
+ Benvenuta(o) in $forumname.
+  Puoi ora accedere al forum utilizzando il login 
+  ``<b><font color=green>$login</font></b>''. <p>
+  &Egrave; possibile 
+  !href module=adm/forum/forum&forum=$forum&type=authuser entrare
+  nel forum di discussione.
+
+!exit
+ 
+:code
+ $forumname non permette accesso anonimo. Utilizza l'indirizzo di posta
+  elettronica per garantire l'identit&agrave; di chi scrive (e prevenire abusi).
+  <p>
+  Al fine di verificare l'esattezza dell'indirizzo di posta elettronica, il
+  server invier&agrave; per e-mail un codice di attivazione che dovr&agrave;
+  poi essere inserito qui:
+!exit

@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
 !header1
 
@@ -11,9 +7,9 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS @ $httpd_HTTP_HOST
+<h1 class="wims_title">WIMS $httpd_HTTP_HOST
 <br>
-Registrazione
+$title
 </h1> <p><hr width="50%"> <p>
 
 !if $error!=$empty
@@ -24,8 +20,7 @@ Registrazione
 !endif
 
 !if $forumcnt=0
- Spiacente: non ci sono forum di discussione. 
- Riprovare pi&ugrave; tardi!
+  $name_noforum
  !goto end
 !endif
 
@@ -33,47 +28,41 @@ Registrazione
 
 !if $password!=$empty and $passverify=$empty and $mailverif=$empty
  $forumname
- &egrave; protetto da una password che &egrave; necessario conoscere
- per procedere alla registrazione.
+ $name_passw
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>Password :
+ <center> <p>$wims_name_Password
  <input type=password name=forumpass>
  <p>
- <input type=submit value="Inviare la password">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
- <b>Nota</b>. La password va richiesta al gestore ($supervisor) 
- di questo forum. 
- &Egrave; possibile 
- !mailurl $smail contattarlo
-.
+$name_obtain_passw
+ (
+ !mailurl $smail $name_write_owner
+ )
  !goto end1
 !endif
 
 !if $step=$empty or $step<2
- Per registrarsi e accedere a `$forumname',
- inserire i dati seguenti.
+$name_inscription
  <ul>
  !form reply
  <input type=hidden name=step value=2>
- <li>Nome <input size=20 name=lastn value="$firstn">
-  e cognome <input size=20 name=firstn value="$lastn">
+ <li>$wims_name_lastname <input size=20 name=lastn value="$lastn">
+  $wims_name_firstname <input size=20 name=firstn value="$firstn">
   <p>
- <li>Scegliere un login di accesso :
+ <li>$wims_name_login
   <input size=16 name=login value="$login"> <br>
-  Questo sar&agrave; il nome da utilizzare per accedere al forum.
-  Scegliere una parola composta da almeno 4 e non pi&ugrave; di 16 caratteri
-  (numeri o lettere non accentate).
+  $name_password1
   <p>
- <li>e una password :
+ <li>$wims_name_Password
   <input type=password size=16 name=pass> <br>
-  La password deve essere una parola composta da almeno 4 e non pi&ugrave; 
-  di 16 caratteri (numeri o lettere non accentate).
+  $name_password2
   <p>
   !if $mailverif=$empty
-   <li>Indirizzo di posta elettronica (opzionale):<br>
+   <li>$wims_name_email ($name_optional)&nbsp;:<br>
   !else
-   <li>Indirizzo di posta elettronica:<br>
+   <li>$wims_name_email<br>
   !endif
   <input size=60 name=email value="$email">
   <p>
@@ -81,59 +70,47 @@ Registrazione
  </form></ul>
  !goto end1
 !endif
-
+!default name_student=$firstn $lastn
 !if $step=2
- Cara/o, $firstn $lastn!<p>
- Vi state registrando per accedere al forum 
- $forumname, con login &nbsp;
+ $name_hello, $name_student!<p>
+ $name_inscription2
  ``<tt><b><font color=green>$login</font></b></tt>''. <p>
  !if $email=$empty
-  Non avete dato un indirizzo di posta elettronica. <p>
+  $name_email1 <p>
  !else
-  Il vostro indirizzo di posta elettronica &egrave; : <tt>$email</tt> <p>
+  $name_email2: <tt>$email</tt> <p>
  !endif
- Inserire di nuovo la password per una ulteriore
- verifica :
+ $name_email3
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
- <p><input type=submit value="Invio"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
 
 !if $step=3
- Cara/o, $firstn $lastn!<p>
+ $name_hello, $name_student!<p>
  !if $mailverif=yes
   !set mailverif=next
-  $forumname non permette accesso anonimo. Utilizza l'indirizzo di posta
-  elettronica per garantire l'identit&agrave; di chi scrive (e prevenire abusi).
-  <p>
-  Al fine di verificare l'esattezza dell'indirizzo di posta elettronica, il
-  server invier&agrave; per e-mail un codice di attivazione che dovr&agrave;
-  poi essere inserito qui:
+  !read names.phtml code
   !form reply
   <input type=hidden name=step value=3>
   <p><center><input size=10 name=vericode>
-  <input type=submit value=OK></form>
+  <input type=submit value="$wims_name_tosave"></form>
   <p>
-  !href module=adm/forum/forum Annulla la registrazione
+  !href module=adm/forum/forum $wims_name_giveup
   </center> <p>
   !goto end1
  !else
-  Benvenuta(o) in $forumname.
-  Puoi ora accedere al forum utilizzando il login 
-  ``<b><font color=green>$login</font></b>''. <p>
-  &Egrave; possibile 
-  !href module=adm/forum/forum&forum=$forum&type=authuser entrare
-  nel forum di discussione.
+ !read names.phtml welcome
   !goto end
  !endif
 !endif
 
 :end1
 <p>
-!href module=adm/forum/forum&type=list Indice dei forum attivi sul sito
+!href module=adm/forum/forum&type=list $name_forumlist
 :end
 !tail
 
