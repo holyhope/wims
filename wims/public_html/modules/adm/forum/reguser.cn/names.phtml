@@ -1,6 +1,51 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
 
 !set lang_fr=fran鏰is
 !set lang_en=English
 !set lang_es=espa駉l
 !set lang_cn=中文
+!set name_student=$lastn$firstn 
 
+!distribute lines 信息板用户注册\
+  本站目前没有信息板. 对不起, 请以后再来!\
+  是受密码保护的. 你需要输入密码才能注册.\
+  写信给板主\
+  可选\
+  你好\
+  你没有给出有效的电邮地址.\
+  你的电邮地址
+  为了检验你的密码的精确性, 请再输入一次:\
+  信息板表\
+into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
+  name_email1,name_email2,name_email3,name_forumlist
+
+!set name_obtain_passw=!nosubst <b>说明</b>. 如果此信息板的板主($supervisor)允许你进入,
+你应该能从他那里得到密码.
+  
+!set name_inscription=!nosubst 为了注册到$forumname, 请填写以下信息.
+ 
+!set name_password1=这是你以后登录信息板的名字. 请选择4至16个字符的词(数字及英文字母).
+!set name_password2=密码必须含4至16个字符(数字及英文字母).
+
+!set name_inscription2=!nosubst 你已经注册成为 $forumname 的参加者, 登录名为&nbsp;
+!exit
+
+:welcome
+欢迎来到$forumname.
+你现在是本信息板的参加者, 登录名为
+  ``<b><font color=green>$login</font></b>''. <p>
+你现在可以
+  !href module=adm/forum/forum&forum=$forum&type=authuser 登录
+到信息板.
+
+!exit
+ 
+:code
+ $forumname 不允许匿名注册. 它用你的电邮地址证实你的身份(以防止滥用).
+  <p>
+为了验证你的电邮地址的有效性, 服务器将用电邮发送一个密码.
+请读取此密码, 并把它输入在下面:
+
+!exit

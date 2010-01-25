@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
 !header1
 
@@ -11,9 +7,9 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS en $httpd_HTTP_HOST
+<h1 class="wims_title">WIMS $httpd_HTTP_HOST
 <br>
-Inscripción de un participante en un foro de discusión
+$title
 </h1> <p><hr width="50%"> <p>
 
 !if $error!=$empty
@@ -24,8 +20,7 @@ Inscripción de un participante en un foro de discusión
 !endif
 
 !if $forumcnt=0
- Este sitio no contiene actualmente foros de discusión. ¡Lo sentimos, inténtelo
- más adelante!
+  $name_noforum
  !goto end
 !endif
 
@@ -33,108 +28,89 @@ Inscripción de un participante en un foro de discusión
 
 !if $password!=$empty and $passverify=$empty and $mailverif=$empty
  $forumname
- está protegido por contraseña. Tiene que introducir la
- contraseña para inscribirse.
+ $name_passw
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>Contraseña:
+ <center> <p>$wims_name_Password
  <input type=password name=forumpass>
  <p>
- <input type=submit value="Enviar esta contraseña">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
- <b>Nota</b>. Si el propietario ($supervisor) de este foro 
- le permite el acceso, deberá darle la contraseña de acceso
+$name_obtain_passw
  (
- !mailurl $smail Escribir al propietario
+ !mailurl $smail $name_write_owner
  )
  !goto end1
 !endif
 
 !if $step=$empty or $step<2
- Para poder inscribirse como participante en $forumname,
- por favor, rellene la siguiente información:
+$name_inscription
  <ul>
  !form reply
  <input type=hidden name=step value=2>
- <li>Apellidos <input size=20 name=lastn value="$lastn">
-  y nombre <input size=20 name=firstn value="$firstn">
+ <li>$wims_name_lastname <input size=20 name=lastn value="$lastn">
+  $wims_name_firstname <input size=20 name=firstn value="$firstn">
   <p>
- <li>Elija un identificador de usuario (login):
+ <li>$wims_name_login
   <input size=16 name=login value="$login"> <br>
-  Este será el identificador que usará después para acceder al foro de discusión.
-  Por favor, elija una palabra que contenga entre 4 y 16 caracteres
-  (dígitos o letras sin acentuar).
+  $name_password1
   <p>
- <li>Y una contraseña:
+ <li>$wims_name_Password
   <input type=password size=16 name=pass> <br>
-  La contraseña debe contener entre 4 y 16 caracteres (dígitos o letras
-  sin acentuar).
+  $name_password2
   <p>
- !if $mailverif=$empty
-  <li>Su dirección de correo electrónico (opcional):<br>
- !else
-  <li>Su dirección de correo electrónico:<br>
- !endif
+  !if $mailverif=$empty
+   <li>$wims_name_email ($name_optional)&nbsp;:<br>
+  !else
+   <li>$wims_name_email<br>
+  !endif
   <input size=60 name=email value="$email">
   <p>
- <center><input type=submit value="Grabar"></center>
+ <center><input type=submit value="$wims_name_tosave"></center>
  </form></ul>
  !goto end1
 !endif
-
+!default name_student=$firstn $lastn
 !if $step=2
- ¡Bienvenido/a, $firstn $lastn!<p>
- Se está registrando como participante en $forumname,
- con identificador de usuario &nbsp;
+ $name_hello, $name_student!<p>
+ $name_inscription2
  ``<tt><b><font color=green>$login</font></b></tt>''. <p>
  !if $email=$empty
-  No ha dado una dirección de correo válida. <p>
+  $name_email1 <p>
  !else
-  Con dirección de correo: <tt>$email</tt> <p>
+  $name_email2: <tt>$email</tt> <p>
  !endif
- Para verificar la exactitud de su contraseña, vuélvala a escribir
- otra vez más:
+ $name_email3
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
- <p><input type=submit value="Enviar"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
 
 !if $step=3
- ¡Bienvenido/a, $firstn $lastn!<p>
+ $name_hello, $name_student!<p>
  !if $mailverif=yes
   !set mailverif=next
-  $forumname no permite la inscripción anónima. Utiliza la dirección de
-  correo electrónico que ha proporcionado para identificarle 
-  (con el objeto de prevenir abusos).
-  <p>
-  Para verificar la validez de su dirección de correo, el servidor
-  le ha enviado una clave secreta a su cuenta de correo. Por favor, lea este
-  e-mail, y copie la clave aquí:
+  !read names.phtml code
   !form reply
   <input type=hidden name=step value=3>
   <p><center><input size=10 name=vericode>
-  <input type=submit value=OK></form>
+  <input type=submit value="$wims_name_tosave"></form>
   <p>
-  !href module=adm/forum/forum Cancelar la operación
+  !href module=adm/forum/forum $wims_name_giveup
   </center> <p>
   !goto end1
  !else
-  Bienvenido/a a $forumname.
-  Ya es miembro de este foro de discusión, con identificador de 
-  usuario ``<b><font color=green>$login</font></b>''. <p>
-  Ahora puede
-  !href module=adm/forum/forum&forum=$forum&type=authuser acceder
-  al foro de discusión.
+ !read names.phtml welcome
   !goto end
  !endif
 !endif
 
 :end1
 <p>
-!href module=adm/forum/forum&type=list Lista de foros de este sitio
+!href module=adm/forum/forum&type=list $name_forumlist
 :end
 !tail
 

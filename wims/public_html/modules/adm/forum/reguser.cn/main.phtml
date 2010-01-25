@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
 !header1
 
@@ -11,9 +7,9 @@
 !!endif
 
 !read names.phtml
-<h1 class="wims_title">WIMS 位于 $httpd_HTTP_HOST
+<h1 class="wims_title">WIMS $httpd_HTTP_HOST
 <br>
-信息板用户注册
+$title
 </h1> <p><hr width="50%"> <p>
 
 !if $error!=$empty
@@ -24,107 +20,97 @@
 !endif
 
 !if $forumcnt=0
-本站目前没有信息板. 对不起, 请以后再来!
+  $name_noforum
  !goto end
 !endif
 
 !set forumname=<b><font color=green>$title</font></b>
 
 !if $password!=$empty and $passverify=$empty and $mailverif=$empty
- $forumname 是受密码保护的. 你需要输入密码才能注册.
+ $forumname
+ $name_passw
  !form reply
  <input type=hidden name=step value=1>
- <center> <p>密码:
+ <center> <p>$wims_name_Password
  <input type=password name=forumpass>
  <p>
- <input type=submit value="发送密码">
+ <input type=submit value="$wims_name_send">
  </center></form> <p>
- <b>说明</b>. 如果此信息板的板主($supervisor)允许你进入,
-你应该能从他那里得到密码.
+$name_obtain_passw
  (
- !mailurl $smail 写信给板主
+ !mailurl $smail $name_write_owner
  )
  !goto end1
 !endif
 
 !if $step=$empty or $step<2
-为了注册到$forumname,
-请填写以下信息.
+$name_inscription
  <ul>
  !form reply
  <input type=hidden name=step value=2>
- <li>你的姓 <input size=20 name=lastn value="$lastn">
-  和名 <input size=20 name=firstn value="$firstn">
+ <li>$wims_name_lastname <input size=20 name=lastn value="$lastn">
+  $wims_name_firstname <input size=20 name=firstn value="$firstn">
   <p>
- <li>选取登录名:
+ <li>$wims_name_login
   <input size=16 name=login value="$login"> <br>
-这是你以后登录信息板的名字. 请选择4至16个字符的词(数字及英文字母).
+  $name_password1
   <p>
- <li>密码:
+ <li>$wims_name_Password
   <input type=password size=16 name=pass> <br>
-密码必须含4至16个字符(数字及英文字母).
+  $name_password2
   <p>
- !if $mailverif=$empty
-  <li>你的电邮地址(可选):<br>
- !else
-  <li>你的电邮地址:<br>
- !endif
+  !if $mailverif=$empty
+   <li>$wims_name_email ($name_optional)&nbsp;:<br>
+  !else
+   <li>$wims_name_email<br>
+  !endif
   <input size=60 name=email value="$email">
   <p>
- <center><input type=submit value="注册"></center>
+ <center><input type=submit value="$wims_name_tosave"></center>
  </form></ul>
  !goto end1
 !endif
-
+!default name_student=$firstn $lastn
 !if $step=2
-你好, $lastn$firstn!<p>
-你已经注册成为 $forumname 的参加者,
-登录名为&nbsp;
+ $name_hello, $name_student!<p>
+ $name_inscription2
  ``<tt><b><font color=green>$login</font></b></tt>''. <p>
  !if $email=$empty
-你没有给出有效的电邮地址. <p>
+  $name_email1 <p>
  !else
-你的电邮地址: <tt>$email</tt> <p>
+  $name_email2: <tt>$email</tt> <p>
  !endif
-为了检验你的密码的精确性, 请再输入一次:
+ $name_email3
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
- <p><input type=submit value="发送密码"></center>
+ <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
 
 !if $step=3
-你好,  $lastn$firstn!<p>
+ $name_hello, $name_student!<p>
  !if $mailverif=yes
   !set mailverif=next
-  $forumname 不允许匿名注册. 它用你的电邮地址证实你的身份(以防止滥用).
-  <p>
-为了验证你的电邮地址的有效性, 服务器将用电邮发送一个密码.
-请读取此密码, 并把它输入在下面:
+  !read names.phtml code
   !form reply
   <input type=hidden name=step value=3>
   <p><center><input size=10 name=vericode>
-  <input type=submit value=发送></form>
+  <input type=submit value="$wims_name_tosave"></form>
   <p>
-  !href module=adm/forum/forum 放弃操作
+  !href module=adm/forum/forum $wims_name_giveup
   </center> <p>
   !goto end1
  !else
-欢迎来到$forumname.
-你现在是本信息板的参加者, 登录名为
-  ``<b><font color=green>$login</font></b>''. <p>
-你现在可以
-  !href module=adm/forum/forum&forum=$forum&type=authuser 登录
-到信息板.
+ !read names.phtml welcome
   !goto end
  !endif
 !endif
 
 :end1
 <p>
-!href module=adm/forum/forum&type=list 信息板表
+!href module=adm/forum/forum&type=list $name_forumlist
 :end
 !tail
 

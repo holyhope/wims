@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
 !header1
 
@@ -13,7 +9,7 @@
 !read names.phtml
 <h1 class="wims_title">WIMS $httpd_HTTP_HOST
 <br>
-Message board user registration
+$title
 </h1> <p><hr width="50%"> <p>
 
 !if $error!=$empty
@@ -24,7 +20,7 @@ Message board user registration
 !endif
 
 !if $forumcnt=0
- This site contains no message board for the time being. Sorry, try again later!
+  $name_noforum
  !goto end
 !endif
 
@@ -32,8 +28,7 @@ Message board user registration
 
 !if $password!=$empty and $passverify=$empty and $mailverif=$empty
  $forumname
- is protected by a password. You have to type this
- password before you can register into it.
+ $name_passw
  !form reply
  <input type=hidden name=step value=1>
  <center> <p>$wims_name_Password
@@ -41,17 +36,15 @@ Message board user registration
  <p>
  <input type=submit value="$wims_name_send">
  </center></form> <p>
- <b>Remark</b>. If the owner ($supervisor) of this message board allows you
- the access, you should be able to obtain the password from him/her.
+$name_obtain_passw
  (
- !mailurl $smail Write to the owner
+ !mailurl $smail $name_write_owner
  )
  !goto end1
 !endif
 
 !if $step=$empty or $step<2
- In order to register to $forumname,
- please fill-in the following informations.
+$name_inscription
  <ul>
  !form reply
  <input type=hidden name=step value=2>
@@ -60,39 +53,34 @@ Message board user registration
   <p>
  <li>$wims_name_login
   <input size=16 name=login value="$login"> <br>
-  This will be the name which you will use to log into the message board later.
-  Please choose a word containing between 4 and 16 characters
-  (digits or letters without accent).
+  $name_password1
   <p>
  <li>$wims_name_Password
   <input type=password size=16 name=pass> <br>
-  the password must contain between 4 and 16 characters (digits or letters
-  without accent).
+  $name_password2
   <p>
- !if $mailverif=$empty
-  <li>$wims_name_email (optional):<br>
- !else
-  <li>$wims_name_email<br>
- !endif
+  !if $mailverif=$empty
+   <li>$wims_name_email ($name_optional)&nbsp;:<br>
+  !else
+   <li>$wims_name_email<br>
+  !endif
   <input size=60 name=email value="$email">
   <p>
  <center><input type=submit value="$wims_name_tosave"></center>
  </form></ul>
  !goto end1
 !endif
-
+!default name_student=$firstn $lastn
 !if $step=2
- Hello, $firstn $lastn!<p>
- You are registering yourself as a participant to 
- $forumname,
- with the login name &nbsp;
+ $name_hello, $name_student!<p>
+ $name_inscription2
  ``<tt><b><font color=green>$login</font></b></tt>''. <p>
  !if $email=$empty
-  You didn't give a valid email address. <p>
+  $name_email1 <p>
  !else
-  Your email address: <tt>$email</tt> <p>
+  $name_email2: <tt>$email</tt> <p>
  !endif
- In order to verify the exactness of your password, please retype it again:
+ $name_email3
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
@@ -102,15 +90,10 @@ Message board user registration
 !endif
 
 !if $step=3
- Hello, $firstn $lastn!<p>
+ $name_hello, $name_student!<p>
  !if $mailverif=yes
   !set mailverif=next
-  $forumname does not allow anonymous registration. It uses your email address
-  to keep your identity (in order to prevent abuses).
-  <p>
-  In order to verify the effectiveness of your email address, the server is
-  sending a secret code to you via email. Please read this mail, and copy this
-  code here:
+  !read names.phtml code
   !form reply
   <input type=hidden name=step value=3>
   <p><center><input size=10 name=vericode>
@@ -120,19 +103,14 @@ Message board user registration
   </center> <p>
   !goto end1
  !else
-  Welcome to $forumname.
-  You are now a participant of this message board, with the login name
-  ``<b><font color=green>$login</font></b>''. <p>
-  You may now
-  !href module=adm/forum/forum&forum=$forum&type=authuser login
-  to the message board.
+ !read names.phtml welcome
   !goto end
  !endif
 !endif
 
 :end1
 <p>
-!href module=adm/forum/forum&type=list List of message boards
+!href module=adm/forum/forum&type=list $name_forumlist
 :end
 !tail
 

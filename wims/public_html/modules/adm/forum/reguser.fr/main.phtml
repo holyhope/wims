@@ -1,7 +1,3 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
 
 !header1
 
@@ -13,7 +9,7 @@
 !read names.phtml
 <h1 class="wims_title">WIMS $httpd_HTTP_HOST
 <br>
-Inscription de participation à un forum
+$title
 </h1> <p><hr width="50%"> <p>
 
 !if $error!=$empty
@@ -24,8 +20,7 @@ Inscription de participation à un forum
 !endif
 
 !if $forumcnt=0
- Ce site ne contient aucun forum pour l'instant. Désolé, essayez plus 
- tard!
+  $name_noforum
  !goto end
 !endif
 
@@ -33,8 +28,7 @@ Inscription de participation à un forum
 
 !if $password!=$empty and $passverify=$empty and $mailverif=$empty
  $forumname
- est protégé par un mot de passe. Vous devez taper ce mot de passe
- avant de pouvoir vous y inscrire.
+ $name_passw
  !form reply
  <input type=hidden name=step value=1>
  <center> <p>$wims_name_Password
@@ -42,18 +36,15 @@ Inscription de participation à un forum
  <p>
  <input type=submit value="$wims_name_send">
  </center></form> <p>
- <b>Remarque</b>. Si le gérant ($supervisor) 
- de ce forum vous autorise l'accès,
- vous devriez pouvoir obtenir ce mot de passe auprès de lui.
+$name_obtain_passw
  (
- !mailurl $smail Lui écrire
+ !mailurl $smail $name_write_owner
  )
  !goto end1
 !endif
 
 !if $step=$empty or $step<2
- Pour vous inscrire en tant que participant à $forumname,
- veuillez donner les renseignements suivants.
+$name_inscription
  <ul>
  !form reply
  <input type=hidden name=step value=2>
@@ -62,17 +53,14 @@ Inscription de participation à un forum
   <p>
  <li>$wims_name_login
   <input size=16 name=login value="$login"> <br>
-  Ce sera le nom que vous utiliserez pour entre dans la classe 
-  ultérieurement. Veuillez choisir un mot contenant entre 4 et 16
-  caractères alphanumériques sans accent uniquement.
+  $name_password1
   <p>
  <li>$wims_name_Password
   <input type=password size=16 name=pass> <br>
-  Le mot de passe doit contenir entre 4 et 16 caractères alphanumériques
-  sans accent.
+  $name_password2
   <p>
   !if $mailverif=$empty
-   <li>$wims_name_email (facultative)&nbsp;:<br>
+   <li>$wims_name_email ($name_optional)&nbsp;:<br>
   !else
    <li>$wims_name_email<br>
   !endif
@@ -82,19 +70,17 @@ Inscription de participation à un forum
  </form></ul>
  !goto end1
 !endif
-
+!default name_student=$firstn $lastn
 !if $step=2
- Bonjour, $firstn $lastn!<p>
- Vous êtes en train de vous inscrire dans
- $forumname, avec le nom de login &nbsp;
+ $name_hello, $name_student!<p>
+ $name_inscription2
  ``<tt><b><font color=green>$login</font></b></tt>''. <p>
  !if $email=$empty
-  Vous n'avez pas donné d'adresse électronique valide. <p>
+  $name_email1 <p>
  !else
-  Votre adresse électronique : <tt>$email</tt> <p>
+  $name_email2: <tt>$email</tt> <p>
  !endif
- Pour vérifier l'exactitude de votre mot de passe, veuillez le retaper
- encore une fois :
+ $name_email3
  !form reply
  <input type=hidden name=step value=3>
  <p><center><input type=password size=16 name=pass2>
@@ -104,15 +90,10 @@ Inscription de participation à un forum
 !endif
 
 !if $step=3
- Bonjour, $firstn $lastn!<p>
+ $name_hello, $name_student!<p>
  !if $mailverif=yes
   !set mailverif=next
-  $forumname ne permet pas d'inscription anonyme. Il utilise votre adresse
-  électronique pour garder votre identité (dans un but d'éviter les abus).
-  <p>
-  Afin de vérifier la validité de votre adresse électronique, le serveur vous
-  a envoyé un code secret par email. Veuillez lire ce mail, et copier ce code
-  ici&nbsp;:
+  !read names.phtml code
   !form reply
   <input type=hidden name=step value=3>
   <p><center><input size=10 name=vericode>
@@ -122,19 +103,14 @@ Inscription de participation à un forum
   </center> <p>
   !goto end1
  !else
-  Bienvenue à $forumname.
-  Vous êtes maintenant un participant de ce forum, avec le nom de login
- <tt class="d"><b><font color=green>$login</font></b></tt>. <p>
-  Vous pouvez maintenant 
-  !href module=adm/forum/forum&forum=$forum&type=authuser login
-  dans ce forum.
+ !read names.phtml welcome
   !goto end
  !endif
 !endif
 
 :end1
 <p>
-!href module=adm/forum/forum&type=list Liste de forums sur le site
+!href module=adm/forum/forum&type=list $name_forumlist
 :end
 !tail
 
