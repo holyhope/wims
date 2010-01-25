@@ -7,6 +7,11 @@
 !set lang_fr=français
 !set lang_en=English
 !set lang_nl=Nederlands
+!set lang_es=español
+!set lang_ca=Català
+!set lang_cn=ÖÐÎÄ
+!set lang_it=italiano
+!set lang_si=slovensko
 
 !distribute lines Aanmelden bij het forum\
    Helaas, deze site bevat geen forums op dit moment. Probeer het later nog maar eens!\
@@ -47,7 +52,7 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
  
 :code
  $forumname staat geen anonieme deelnemers toe.
-  Uw emailadres wordt gebruikt voor Uw identiteit
+  Uw emailadres wordt gebruikt identitificatie
   (om misbruik tegen te gaan)
   <p>
  Om het opgegeven emailadres te controleren,stuurt de server op dit moment

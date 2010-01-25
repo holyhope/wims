@@ -1,7 +1,8 @@
 !set lang_exists=yes
+!set name_user=!nosubst $wims_firstname $wims_lastname.
 !set monthnames=jan,feb,maart,apr,mei,juni,juli,aug,sept,okt,nov,dec
 !set name_wroteon=schreef op
-
+!set name_default=Forum 
 !distribute item <i>onderwerp&nbsp;:</i> <b>,</b> into subj1,subj2
 !distribute item <hr>,<hr> into body1,body2
 
@@ -15,6 +16,7 @@
 	Configuur dit forum\
 	Lijst van berichten op onderwerp\
 	into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subjectlist
+
 !set wims_name_compose=$n_compose
 !set n_otherforums=Andere forums
 !set n_welcome=Welkom
@@ -68,9 +70,8 @@
 Het bewaakt wel uw ingevulde email adres, zodat er geen misbruik van kan worden gemaakt.<br>\
 Om het opgegeven email adres te verifieren, wordt nu een code gestuurd naar dit adres.<br>\
 Vul deze code hier in&nbsp;
-
-!set n_forum=Forum
 !set n_warning=Een bericht is zojuist verstuurd naar het forum. Nier reageren op dit bericht.
+!set n_forum=Forum
 !set n_thread=De hele discussie
 !if $job=compose and $c_prec!=$empty
  !set n_compose=Beantwoorden
@@ -81,6 +82,7 @@ Vul deze code hier in&nbsp;
 !endif
 
 !set module_title=$module_title$nextline
+
 !set name_prompt=Onbekende activiteit
 
 !distribute line Hier kan het forum worden afgesteld.\

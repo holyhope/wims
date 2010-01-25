@@ -12,6 +12,6 @@ Wanneer de procedure is afgerond, is deze code en email nutteloos\
 \
 Weet U niet waar dit alles op slaat, dan heeft iemand anders\
 Uw emailadres heeft ingevuld in deze geautomatiseerde emailsoftware.\
-Dit heeft verder geen consequenties en kan deze email worden verwijdert.\
+Dit heeft verder geen consequenties en kan deze email worden verwijderd.\
 
 

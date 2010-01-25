@@ -5,11 +5,11 @@
 !endif
 
 !set name_title=naam van het forum
-!set name_description=beschrijving van het forum
+!set name_description=omschrijving van het forum
 !set name_supervisor=naam van de eigenaar
 !set name_email=email adres
-!set name_password=deelnemers wachtwoord van het forum
-!set name_passsup=wachtwoord van de forum eigenaar
+!set name_password=aanmeldings wachtwoord van het forum
+!set name_passsup=wachtwoord van de eigenaar
 
 !set forumname=<b><font color=green>$title</font></b>
 
@@ -39,8 +39,10 @@ into title_title,name_restart,name_name_owner,name_warning1,name_choosepass1,nam
 
 !set name_help2=Dit wachtwoord kunt U bekend maken aan alle deelnemers van dit forum.
 
+
 !set name_warning= Wie een forum opricht op deze WIMS server, is ook verantwoordelijk voor het onderhoud ervan.
   <p>Om een eigen forum op te richten, vul dan het onderstaande formulier in.
+
 
 !set name_warning2=<b>Attention</b> This code is only used once here. It cannot be used to\
  connect to the message board!
@@ -48,12 +50,12 @@ into title_title,name_restart,name_name_owner,name_warning1,name_choosepass1,nam
 !exit
 
 :step1
-U bent bezig met het oprichten van een forum $forumname op WIMS server
+U bent bezig met het oprichten van een forum $forumname op 
+WIMS server
  $httpd_HTTP_HOST.
  <p>
  Is er iets niet helemaal juist aan bovenstaande informatie, dan s.v.p.
- !href module=$module&cmd=reply&step=0 corrigeren.
- 
+ !href module=$module&cmd=reply&step=0 corrigeren. 
  <p>Om de juistheid van de wachtwoorden te controleren, 
  graag hieronder nog een keer intypen:
  !exit
@@ -66,7 +68,6 @@ U hebt nu alleen nog de geheime code nodig om het oprichten van
 Deze code is net verstuurd naar het opgegeven email adres:
  ``<tt>$email</tt>''. 
   en kopieer de verstuurde code in het onderstaande veld
- 
  !exit
  
  :step3
