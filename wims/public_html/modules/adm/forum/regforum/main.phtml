@@ -1,0 +1,106 @@
+
+!if $wims_class=
+  !read adm/language names.phtml
+!else
+  !read adm/class/classlang names.phtml 
+  !set modu_lang=$moduclass_lang
+!endif
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+!read lang/names.phtml.$modu_lang
+
+!header1
+
+!read adm/title.phtml 1\
+WIMS $httpd_HTTP_HOST\
+$title_title
+
+!if $toomany=yes
+ !read lang/toomany.phtml.$modu_lang
+ !goto end
+!endif
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$modu_lang
+ <p>
+ !href module=$module&cmd=reply&step=0 $name_restart
+ <p>
+ !goto end
+!endif
+
+!if $step=$empty or $step=0
+ !set password=
+ !set passsup=
+  $name_warning
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li>$name_name_forum
+  <input size=$titlelim name=title value="$title"> <p>
+ <li>$wims_name_Description (< $desclim $name_characters) :
+  <textarea cols=65 rows=5 name=description>$description</textarea> <p>
+ <li>$name_name_owner
+  <input size=$suplim name=supervisor value="$supervisor"> <p>
+ <li>$wims_name_email
+  <input size=$emaillim name=email value="$email"> <br>
+  ($name_warning1)<p>
+ <li>$name_choosepass1
+  <input size=16 type=password name=passsup> <br>
+  ($name_instruction). <br>
+  $name_help1<p>
+ <li>$name_choosepass2
+  <input size=16 type=password name=password> <br>
+  ($name_instruction). <br>
+  $name_help2<p>
+ </ul>
+ <center><input type=submit value="$name_continue"></center>
+ </form>
+
+ !goto end
+!endif
+
+!if $step=1
+ $name_hello, $supervisor!<p>
+ !read lang/names.phtml.$modu_lang step1<p>
+ !form reply
+ <input type=hidden name=step value=2>
+  $name_ownerpass
+ <input type=password name=passsup> <p>
+ !if $pword!=$empty
+  $name_forumpass
+  <input type=password name=password> <p>
+ !endif
+ <center><input type=submit value="$name_continue"></center>
+ </form>
+ !goto end1
+!endif
+
+!if $step=2
+ $name_hello, $supervisor!<p>
+!read lang/names.phtml.$modu_lang step2
+ !form reply
+ <input type=hidden name=step value=3>
+ <center>$name_code : <input size=16 name=typecode>
+ <p><input type=submit value="$name_continue"></center>
+ </form>
+ $name_warning2
+ <p>
+ !goto end1
+!endif
+
+!if $step=3
+ $name_hello, $supervisor!<p>
+!read lang/names.phtml.$modu_lang step3
+ !goto end
+!endif
+
+:end1
+<p>
+!href module=$module&cmd=reply&step=0 $wims_name_giveup
+:end
+!tail
+
+!set step=
+

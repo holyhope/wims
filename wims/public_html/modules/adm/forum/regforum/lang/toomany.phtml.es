@@ -1,0 +1,15 @@
+<p><h1 class="wims_title">Lo sentimos</h1> <p>
+El número de foros de discusión de este sitio <font color=red>$httpd_HTTP_HOST</font>
+ha alcanzado el límite asignado por el administrador, el acceso libre 
+para la creación de foros de discusión está cerrado. <p>
+
+Si es realmente importante que pueda crear el foro de discusión, puede
+!mailurl $wims_site_manager escribir al administrador del sitio\
+WIMS@$httpd_HTTP_HOST creation of forum
+pidiéndole que lo cree manualmente para usted. <p>
+
+Por favor, recuerde que puede crear un foro de discusión en cualquier sitio
+WIMS que le dé permiso. También puede
+<a href="http://wims.unice.fr/download/wims">descargar el software de WIMS</a>
+e instalarlo localmente.
+

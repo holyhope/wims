@@ -1,0 +1,80 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set name_title=nom del fòrum
+!set name_description=descripció del fòrum
+!set name_supervisor=nom del gestor del fòrum
+!set name_email=adreça electrònica
+!set name_password=contrasenya del fòrum
+!set name_passsup=contrasenya del gestor
+
+!set forumname=<b><font color=green>$title</font></b>
+
+!set months=gener,febrer,març,abril,maig,juny,juliol,agost,setembre,octubre,novembre,desembre
+
+!distribute lines Creació d'un fòrum de discussió\
+  Tornar a començar l'operatió.\
+  Cognom i nom del gestor del fòrum (és a dir vosaltres)\
+  El fòrum només es crearà si proporcioneu una adreça de correu electrònic que funcioni en aquest moment.\
+  Trieu una contrasenya de gestor\
+  Trieu una contrasenya del fòrum\
+  entre 4 i 16 caràcters, xifres o lletres sense accent\
+  Continuar\
+  Hola\
+  Contrasenya de gestor\
+  Contrasenya del fòrum\
+  Codi pel fòrum\
+  caràcters\
+into title_title,name_restart,name_name_owner,name_warning1,name_choosepass1,name_choosepass2,\
+  name_instruction,name_continue,name_hello,name_ownerpass,name_forumpass,name_code,\
+  name_characters
+
+!set name_name_forum=!nosubst Nom del fòrum (com a màxim $titlelim caràcters)
+
+!set name_help1=Aquesta contrasenya us permetrà l'accés al fòrum\
+  com a gerent. Heu de ser l'únic que la coneix.
+
+!set name_help2=La contrasenya del fòrum serà requerida per a les inscripcions\
+  dels usuaris del fòrum; podeu distribuir-la a tots els que autoritzeu a participar a les discussions.
+  
+!set name_warning=Si creeu un fòrum de discussió en aquest lloc WIMS, 
+ heu d'assumir la responsabilitat del seu manteniment. <p>
+ Per crear el fòrum, si us plau completeu la següent informació.
+ 
+!set name_warning2= <b>Atenció</b> Aquest codi s'utilitza només una vegada aquí. No es pot
+ utilitzar per connectar amb el fòrum&nbsp;!
+ 
+!exit
+
+:step1
+Esteu creant el fòrum de discussió $forumname al lloc
+ WIMS a
+ $httpd_HTTP_HOST.
+ <p>
+ Si trobeu un error en la informació, si us plau
+ !href module=$module&cmd=reply&step=0 corregiu-la.
+ <p>En cas contrari, per verificar l'exactitud de les contrasenyes,
+ si us plau, torneu-les a escriure. 
+ 
+ !exit
+ 
+:step2
+ra necessiteu un codi per completar el procés de creació d'un
+ nou fòrum de discussió a WIMS  del lloc $http_HTTP_HOST. <p>
+ Aquest codi s'ha enviat a la vostra adreça de correu electrònic
+ ''<tt>$email</tt>''. Si us plau, reviseu la bústia de correu
+ electrònic (esperaeu uns minuts si és necessari) i llegiu el missatge
+ que us han enviat.
+ Agafeu el codi que hi ha en el missatge, i copieu-lo a continuació.
+ !exit
+ 
+ :step3
+ El vostre fòrum de discussió $forumname ja està en marxa. Felicitats
+ i disfruteu&nbsp;!<p>
+ Podeu accedir al vostre fòrum 
+ !href module=adm/forum/forum a partir d'aquí
+.
+!exit
