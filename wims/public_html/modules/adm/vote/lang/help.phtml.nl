@@ -21,16 +21,15 @@ plus de volgende extra commando's <dl>
 
 <p><dt><tt>\uservar{vname,val0,val1,...}</tt>
 	<dd>
-	Register the immediately preceding choice in an individual
-	variable for the participant, under the name <tt>vname</tt>. This
-	variable will take the value <tt>val0</tt> by default, <tt>val1</tt>
-	if the participant chooses the first option, etc. <p>
-	This variable may then be used to define individualized access to
-	sheets or exams, by putting the word <tt>\vname</tt> among the
-	restrictions of the sheet or exam.
+	Registreer de keuze in een variabele <tt>vname</tt> voor elke student afzonderlijk.
+	De waarde van deze variabele is default <tt>val0</tt> , en <tt>val1</tt> 
+	als de student kiest voor de eerste optie, etc.<p>
+	Deze variabele kan worden gebruikt om de toegang tot werkbladen en toetsen
+	tot op de individuele student te regelen.
+	Vermeld de variabele <tt>\vname</tt> in de lijst met restricties van de bestreffene werkbladen of toetsen
 <p><dt><tt>\textarea</tt>
 <dd>Een tekst invoerveld, alleen te gebruiken bij een anoniem enquete.
-</dl>
+</dd>
 Een enquete mag tot 64 keuzevelden bevatten.
 
 !tail

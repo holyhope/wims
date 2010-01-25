@@ -8,7 +8,7 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !endif
 
 !if $error = bad_vote
- De stemming of enquete waar je om vroeg, bestaat niet.
+ De verkiezing / enquete waar je om vroeg, bestaat niet.
  !exit
 !endif
 
