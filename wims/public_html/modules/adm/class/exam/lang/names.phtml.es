@@ -7,7 +7,7 @@
 !set wims_name_endexam=Terminar esta sesión de examen
 !set wims_name_scoreexam=Mi puntuación
 
-!set name_mainpage=Página principal del examen
+!set wims_name_mainpage=Página principal del examen
 !set name_dependency=Dependencias de las puntuaciones&nbsp;
 !set name_Options=Opciones
 !set name_All=Todas

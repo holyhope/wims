@@ -18,7 +18,7 @@
 !set wims_name_endexam=Be&euml;indig de proefwerk sessie
 !set wims_name_scoreexam=Mijn cijfers
 
-!set name_mainpage=Hoofdpagina van het proefwerk
+!set wims_name_mainpage=Hoofdpagina van het proefwerk
 !set name_dependency=Cijfer afhankelijkheden&nbsp;
 !set name_Options=Opties
 !set name_All=Alles
