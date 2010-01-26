@@ -20,7 +20,7 @@ cdir=$wims_home/log/classes/$wims_class
   !sh mkdir -p $cdir/exolog/$checkuser\
   cp $sdir/exolog.$logsheet.$logexo $cdir/exolog/$checkuser/$wims_now-$wims_session-$logsheet.$logexo\
   rm -f $sdir/exolog.$logsheet.$logexo\
-  list=`ls -r $cdir/exolog/$checkuser | tail +$[$wims_class_exolog+1]`\
+  list=`ls -r $cdir/exolog/$checkuser | tail -n +$[$wims_class_exolog+1]`\
   if [ ! -z "$$list" ]; then rm -f $cdir/exolog/$checkuser/$$list; fi
   job=list
  !else
