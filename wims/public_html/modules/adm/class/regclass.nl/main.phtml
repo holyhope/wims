@@ -1,7 +1,4 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
@@ -12,8 +9,8 @@
 
 !read names.phtml
 !read adm/title.phtml 3\
-WIMS op $httpd_HTTP_HOST\
-Oprichten van een virtuele klas, groep klassen, school of  instituut.
+WIMS $httpd_HTTP_HOST\
+$title
 
 !if $toomany=yes
  !read toomany.phtml
@@ -25,305 +22,196 @@ Oprichten van een virtuele klas, groep klassen, school of  instituut.
  !read msg.phtml
  !if $restart!=no
   <p>
-  !href module=$module&cmd=reply&step=0 Herhaal deze procedure.
+  !href module=$module&cmd=reply&step=0 $name_again
  !endif
  <p>
  !goto end
 !endif
 
 !if $step=$empty or $step=pre
- Kies hier het soort virtuele_ruimte dat U wilt aanmaken.
+ $name_choose
  <p>
- !href cmd=reply&step=0&cltype=0 Een&nbsp;enkele&nbsp;klas.
+ !href cmd=reply&step=0&cltype=0 $wims_name_create_class
  !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
  to $wims_menu_items
  <p>
- !if $regpolicy=file
-    !set noright=(U bent hiertoe niet bevoegd.)
- !else
-    !set noright=(alleen de sitemanager is hiertoe bevoegd.)
- !endif
  !if 2 isitemof $alltypes
-  Een gemeenschappelijke ingang voor een&nbsp;
-  !href cmd=reply&step=0&cltype=2 groep&nbsp;klassen.
+  !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
   !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
-  to $wims_menu_items
- !else
-    Een gemeenschappelijke ingang voor een <font color=blue><strike>groep klassen</strike></font>. $noright
- !endif
-     <p>
- !if 4 isitemof $alltypes
-    Een kompleet&nbsp;
-    !href cmd=reply&step=0&cltype=4 virtueel institituut
-    (uitsluitend voor experts).
-    !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
  to $wims_menu_items
-    !else
-	Een portaal voor een <font color=blue><strike>virtuel instituut</strike></font>. $noright
-    !endif
-    <br>
-    <a href="javascript:void(0)" onmouseover="TagToTip('help_1',BGCOLOR,'#FFFFFF')">informatie</a></tt>.
-    <ul id="help_1">
-	<li>
-	    Een indiviuele klas is bedoeld voor een enkele docent en zijn/haar leerlingen. 
-	</li>
-	<li>
-	    Een gemeenschappelijke ingang voor een groepje klasses [een soort digi-school]<br>
-	    geeft leerlingen de mogelijkheid om zonder wachtwoorden over te stappen naar <br>
-	    andere klassen [andere vakken of cursussen].<br>
-	    Voor docenten is er de mogelijkheid om lesmateriaal te delen en samen<br>
-	    met collega&rsquo;s lesmateriaal te ontwikkelen.<br>
-	    Ook kan een docent meerdere klassen beheren.
-	</li>
-	<li>
-	    Een instituut [een soort digi_hogeschool ] is een groep multi-level klassen.<br>
-	    Op verschillende niveaus kunnen dwarsverbanden worden gecreerd tussen cursussen,<br>
-	    lesprogramma's ,lesmateriaal, docenten en studenten.<br>
-	    Op alle leerniveaus kunnen meerdere gemeenschappelijke ingangen worden gemaakt.<br>
-	    [voor verschillende vakken, cursussen examentraining  etc.]<br>
-	    Dit alles kan centraal worden beheerd.<br>
-	</li>
-    </ul>
+ !else
+  <font color=blue><strike>$wims_name_create_superclass</strike></font> ($noright).
+ !endif
+ <p>
+ !if 4 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
+  ($name_expert)
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
+ !else
+  <font color=blue><strike>$wims_name_create_portal</strike></font> ($noright).
+ !endif
+ <p>
+ <b>$wims_name_help</b>:
+ !read help.phtml.$lang 1
  !goto end
 !endif
 
 !if $step=0
-    Het oprichten van
-    !if $Cltype<2
-	een klas is voorbehouden aan een docent.
+ !read help.phtml.$lang 2
+ !form reply
+ <input type=hidden name=step value=1>
+ <ul>
+ <li><label for="institution">$name_Name_portal ($name_atmost $instlim $name_characters) :</label>
+ !if $Cltype isin 13
+  !default institution=$wims_institutionname
+ !endif
+  <input size=$instlim name=institution value="$institution" id="institution">
+ </li>
+ <li><label for="description">$wims_name_name $name_classesss ($name_atmost $desclim $name_characters) :</label>
+  <input size=$desclim name=description value="$description" id="description">
+ </li>
+ 
+ !if $Cltype notin 24
+ <li><label for="level">$wims_name_level $name_classesss</label>
+  <select name=level id="level">
+   !for k=1 to $nblevel
+    !if $(levelid[$k])=$level
+     <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
     !else
-	<font color="blue">$name_classe</font>
-	 is voorbehouden aan de administrator.
+     <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
     !endif
-    <br>
-    <small>
-	Voor deze handeling is een werkend emailadres noodzakelijk.<br>
-	Nadat uw klas $name_classe is opgericht, bent U verantwoordelijk voor het onderhoud ervan.
-    </small>
-    <p>
-    Voor het oprichten de onderstaande vragen beantwoorden:
-    !form reply
-    <input type=hidden name=step value=1>
-    <ul>
-	<li>
-	    !if $Cltype isin 13
-		!default institution=$wims_institutionname
-	    !endif
-	    Naam van de school:<input size=$instlim name=institution value="$institution">
-	    <small> 
-		(niet meer dan $instlim karakters)
-	    </small>
-	    <br>
-	</li>
-        <li>
-	    Naam $name_classess  :<input size=$desclim name=description value="$description"> 
-	    <small>
-		(niet meer dan $desclim karakters)
-	    </small>
-	    <br>
-	</li>
-    !if $Cltype notin 24
-	<li>
-	    Niveau $name_classesss : 
-	    <select name=level>
-	    !for k=1 to $nblevel
-		!if $(levelid[$k])=$level
-		    <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
-		!else
-		    <option value=$(levelid[$k])>$(leveldesc[$k])</option>
-		!endif
-	    !next k
-	    </select>
-	</li>
-    !endif
-	<li>
-	    De naam van $name_sup $name_classesss (U dus) : <input size=$suplim name=supervisor value="$supervisor"> <br>
-	</li>
-	<li>
-	    Email adres : <input size="35" name=email value="$email">
-	    !if $regpolicy=email
-		<small>
-		    (deze handeling zal alleen slagen als U een werkend emailadres invult.)
-		</small>
-	    !endif
-	    <br>
-	</li>
-        <li>
-	    Vul hier het wachtwoord in $name_sup : <input size=16 type=password name=passsup>
-	    <br>
-	    <small>
-		(tussen 4 en 16 karakters: cijfers en letters zonder accenten).<br> 
-		Dit wachtwoord geeft toegang tot het onderhoud van alle virtuele ruimtes.
-	    </small>
-	    <br>
-        </li>
-	<li>
-	    Vul hier het wachtwoord in $name_classesss :<input size=16 type=password name=password> 
-	    <br>
-	    <small>
-		(tussen 4 en 16 karakters: cijfers en letters zonder accenten).
-		Dit wachtwoord $name_classesss is nodig voor de aanmelding
-		!if $Cltype<2
-		    van leerlingen in uw klas: dit wachtwoord kunt U bekend maken aan uw leerlingen.
-		!else
-		    van docenten $name_classesss : dit wachtwoord moet U niet bekend maken aan leerlingen !
-		!endif
-	    </small>
-	    <br>
-	</li>
-	<li>
-	    Verloop datum :
-	    <select name=exp_day>
-		!for i=1 to 31
-		    <option value=$i
-		    !ifval $i=$exp_day
-			selected
-		    !endif
-		    >
-		    $i
-		!next i
-	    </select>
-	    <select name=exp_month>
-		!for i=1 to 12
-		    <option value=$i
-		    !ifval $i=$exp_month
-			selected
-		    !endif
-		    >
-		    !item $i of $months
-		!next i
-	    </select>
-	    <select name=exp_year>
-		!for i=$thisyear to $[$thisyear+1]
-		    <option value=$i
-		    !ifval $i=$exp_year
-			selected
-		    !endif
-		    >
-		    $i
-		!next i
-	    </select>
-	    <br>
-	    <small>
-		Op deze datum wordt er een gezipped archief gemaakt van de virtuele ruimte.<br>
-		Daarna wordt deze automatisch verwijdert van deze server.<br>
-		U ontvangt van te voren hierover een email.<br>
-	    </small>
-	</li>
-	<li>
-	    Het maximum aantal studenten van $name_classe : <input size=3 name=limit value="$limit">
-	    <br>
-	    <small>
-		Op deze server is het maximum:  $wims_class_user_limit studenten
-	    </small>
-	    <br>
-	</li>
-	<li>
-	    Beveiligde ip-adres $name_sup :
-	    !default secure=all
-	    <input size=30 name=secure value="$secure"> <br>
-	    !reset secure
-	    <small>
-		Alleen vanaf deze ip-adressen mag onderhoud gepleegd worden aan uw $name_classe. 
-		Als U niet zeker ben, voer dan keyword <tt>all</tt> in.
-		!if $Cltype<3
-		    [ Optioneel ]
-		!endif
-	    </small>
-	    <br>
-	</li>
-    </ul>
-    <center>
-	<input type=submit value="Doorgaan">
-    </center>
-    </form>
+   !next k
+  </select>
+ </li>
+ !endif
+
+ <li><label for="supervisor">$wims_name_firstname  $wims_name_lastname ($wims_name_supervisor)</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor">
+ </li>
+
+ <li><label for="email">$wims_name_email</label>
+  <input size=$emaillim name=email value="$email" id="email">
+  !if $regpolicy=email
+   <br>($name_regpolicy)
+  !endif
+  <br>
+ </li>
+ <li><label for="passsup">$wims_name_Password ($name_sup)</label>
+  <input size=16 type=password name=passsup id="passsup"> <small>
+  ($name_warningpass).
+  $name_help1</small> <br>
+ </li>
+
+ <li><label for="password">$wims_name_Password ($name_classesss)</label>
+  <input size=16 type=password name=password id="password">
+  <small>($name_warningpass).
+  !if $Cltype<2
+  $name_help2
+  !else
+  $name_help3
+ !endif
+ </small><br>
+ </li>
+ 
+ <li><label for="exp_day">$wims_name_expiration</label>
+ <select name=exp_day id="exp_day">
+  !for i=1 to 31
+   <option value=$i
+   !ifval $i=$exp_day
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <select name=exp_month id="exp_month">
+  !for i=1 to 12
+   <option value=$i
+   !ifval $i=$exp_month
+    selected
+   !endif
+   >
+   !item $i of $months
+  !next i
+  </select> <select name=exp_year id="exp_year">
+  !for i=$thisyear to $thisyear+1
+   <option value=$i
+   !ifval $i=$exp_year
+    selected
+   !endif
+   >$i
+  !next i
+  </select> <small>$name_help_date</small><br>
+ </li>
+
+ <li><label for="limit">$name_help_limit</label>
+  <input size=3 name=limit value="$limit" id="limit">
+  <small>(< $wims_class_user_limit.) </small><br>
+ </li>
+ 
+ <li><label for="secure">$name_secure ($name_sup)</label>
+  !default secure=all
+  <input size=30 name=secure value="$secure" id="secure"> <br>
+  !reset secure
+  <small>$name_host
+  !if $Cltype<3
+   $name_optional.
+  !endif 
+  </small> <br>
+ </li>
+ </ul>
+ <center><input type=submit value="$name_continue"></center>
+ </form>
+
  !goto end
 !endif
 
 !if $step=1
-    Hallo , $supervisor! <p>
-    U bent begonnen met het oprichten van
-    !if $Cltype<2
-	een
-    !else
-	een
-    !endif
-    $name_classe $classname op de WIMS server van $httpd_HTTP_HOST,
-    !if $Cltype iswordof 0 1
-	!let tmp=!positionof item $ilevel in $levelid
-	op leerniveau ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
-    !endif
-    en met de verloopdatum $exp_day/$exp_month/$exp_year .
-    Het maximum toegestane aantal  studenten in $classname is $ilimit . 
-    Het aanmelden van nieuwe leerlingen 
-    !if $pword!=$empty
-	is beveiligd door het wachtwoord $name_classesss.
-    !else
-	vrij. 
-	<small> weet U wel zeker dat deze site dat toestaat ?</small> 
-    !endif
-    <p>
-    U kunt deze instellingen nog steeds
-    !href module=$module&cmd=reply&step=0 corrigeren
-    .
-    <hr>
-    <p>
-    Als laatste controle: voer nog &eacute;&eacute;n keer het wachtwoord in:
-    <br>
-    !form reply
-	<input type=hidden name=step value=2>
-	Wachtwoord $name_sup : <input type=password name=passsup>
-	<p>
-	!if $pword!=$empty
-	    Wachtwoord $name_classesss : <input type=password name=password> 
-	    <p>
-	!endif
-	<center>
-	    <input type=submit value="Doorgaan">
-	</center>
-    </form>
+!read help.phtml.$lang step1
+<p>
+ !form reply
+ <input type=hidden name=step value=2>
+<label for="passsup"> $wims_name_Password ($name_sup) :</label>
+ <input type=password name=passsup id=passsup> <p>
+ !if $pword!=$empty
+ <label for="password">$wims_name_Password ($name_classesss)</label>
+  <input type=password name=password id=password> <p>
+ !endif
+ <center><input type=submit value="$name_continue"></center>
+ </form>
  !goto end1
 !endif
 
 !if $step=2
-    Welkom , $supervisor ! 
-    <p>
-    Vul nu de code in die zojuist naar het opgegeven emailadres ``<tt>$email</tt>'' is gestuurd.
-    !form reply
-	<input type=hidden name=step value=3>
-	<center>
-	    Code van $name_classe : <input size=12 name=typecode>
-	    <p>
-	    <input type=submit value="Doorgaan">
-	</center>
-    </form>
-    <small>
-	<b>Attentie</b>: Dit is een &eacute;&eacute;nmalige code, en is nergens anders voor te gebruiken !
-    </small>
-    <p>
+ !read help.phtml.$lang step2
+ !form reply
+ <input type=hidden name=step value=3>
+ <center><label for="typecode">$name_code</label> <input size=12 name=typecode id="typecode">
+ <p><input type=submit value="$name_continue"></center>
+ </form>
+ <b>$wims_name_warning</b>: $name_warning_code
+ <p>
  !goto end1
 !endif
 
 !if $step=3
-    Wederom welkom, $supervisor!<p>
-    U hebt met succes $name_classe $classname geinstalleerd !
-    <p>
-    Het aantal studenten is beperkt tot $ilimit . 
-    !if $Cltype iswordof 0 1
-	!let tmp=!positionof item $ilevel in $levelid
-	Het lesniveau is <font color=green>$(leveldesc[$tmp])</font>. 
-    !endif 
-  <p>
-  !read links.phtml
+ help.phtml.$lang step3
+ !if $Cltype iswordof 0 1
+  !let tmp=!positionof item $ilevel in $levelid
+  ($wims_name_level <font color=green>$(leveldesc[$tmp])</font>).
+ !endif
+ <p>
+ !read links.phtml
  !goto end
 !endif
 
 :end1
-<p>
 
-!href module=$module&cmd=reply&step=0 Terug
-&nbsp;naar het begin.
 :end
+!if $step>=0 and $cmd=reply
+ !set wims_menu_items=!append line back2,1,module=$module\
+ to $wims_menu_items
+!endif
+
 !tail
 
 !set step=

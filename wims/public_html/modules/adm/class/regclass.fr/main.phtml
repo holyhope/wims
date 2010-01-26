@@ -9,7 +9,7 @@
 
 !read names.phtml
 !read adm/title.phtml 3\
-WIMS à $httpd_HTTP_HOST\
+WIMS $httpd_HTTP_HOST\
 $title
 
 !if $toomany=yes
@@ -52,6 +52,7 @@ $title
   <font color=blue><strike>$wims_name_create_portal</strike></font> ($noright).
  !endif
  <p>
+ <b>$wims_name_help</b>:
  !read help.phtml.$lang 1
  !goto end
 !endif
@@ -72,14 +73,14 @@ $title
  </li>
  
  !if $Cltype notin 24
- <li><label for="level">$wims_name_level $name_classesss </label>
+ <li><label for="level">$wims_name_level $name_classesss</label>
   <select name=level id="level">
    !for k=1 to $nblevel
     !if $(levelid[$k])=$level
      <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
     !else
      <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
-    !endif   
+    !endif
    !next k
   </select>
  </li>
@@ -92,26 +93,23 @@ $title
  <li><label for="email">$wims_name_email</label>
   <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
-   <br>(L'opération de création $name_classesss ne peut aboutir que si vous fournissez
-   une adresse électronique correcte et accessible en ce moment même.)
+   <br>($name_regpolicy)
   !endif
   <br>
  </li>
-
- <li>Choisissez le <label for="passsup">mot de passe $name_sup</label> :
-  <input size=16 type=password name=passsup id="passsup"> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Ce mot de passe vous permettra d'accéder à votre $name_classe en tant
-  que responsable. Vous devez être le seul à le connaître.</small> <br>
+ <li><label for="passsup">$wims_name_Password ($name_sup)</label>
+  <input size=16 type=password name=passsup id="passsup"> <small>
+  ($name_warningpass).
+  $name_help1</small> <br>
  </li>
 
- <li>Choisissez <label for="password">le mot de passe $name_classesss :</label>
-  <input size=16 type=password name=password id="password"> <small>(entre 4 et 16 caractères, chiffres ou lettres sans accent). Le mot de passe $name_classesss sera exigé lors de l'inscription
+ <li><label for="password">$wims_name_Password ($name_classesss)</label>
+  <input size=16 type=password name=password id="password">
+  <small>($name_warningpass).
   !if $Cltype<2
- des participants de la classe ; vous pouvez donc le diffuser auprès
-  de vos étudiants/élèves. 
+  $name_help2
   !else
-des enseignants $name_classesss ;
- vous ne devez pas le diffuser auprès
-  de vos étudiants/élèves. 
+  $name_help3
  !endif
  </small><br>
  </li>
@@ -142,22 +140,21 @@ des enseignants $name_classesss ;
    !endif
    >$i
   !next i
-  </select> <small> C'est la date à laquelle votre classe sera automatiquement archivée.</small><br>
+  </select> <small>$name_help_date</small><br>
  </li>
 
- <li><label for="limit">Limite du nombre de participants de votre $name_classe :</label>
+ <li><label for="limit">$name_help_limit</label>
   <input size=3 name=limit value="$limit" id="limit">
   <small>(< $wims_class_user_limit.) </small><br>
  </li>
  
- <li><label for="secure">Accès sécurisé $name_sup</label>
+ <li><label for="secure">$name_secure ($name_sup)</label>
   !default secure=all
   <input size=30 name=secure value="$secure" id="secure"> <br>
   !reset secure
-  <small>Noms des postes à partir desquels vous effectuerez les opérations
-  sensibles sur votre $name_classe. 
+  <small>$name_host
   !if $Cltype<3
-    Facultatif.
+   $name_optional.
   !endif 
   </small> <br>
  </li>
@@ -169,33 +166,8 @@ des enseignants $name_classesss ;
 !endif
 
 !if $step=1
- Bonjour, $supervisor! <p>
- Vous êtes en train de créer 
- !if $Cltype<2
- la
-!else
- le
- !endif
- $name_classe $classname sur le site WIMS à l'adresse
- $httpd_HTTP_HOST,
- !if $Cltype iswordof 0 1
-  !let tmp=!positionof item $ilevel in $levelid
-  de niveau ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
- !endif
- qui prendra fin le $exp_day/$exp_month/$exp_year
- . Le nombre maximum de participants est de $ilimit ; 
- l'inscription est
- !if $pword!=$empty
-  protégée par le mot de passe $name_classesss.
- !else
-  ouvert à tout le monde sur l'internet (en êtes-vous sûr? Sachez que le
-  gestionnaire du site peut les refuser et les détruire).
- !endif
- <p>
- Si vous décelez une erreur dans les renseignements ci-dessus, veuillez
- !href module=$module&cmd=reply&step=0 la corriger.
- <p>Sinon, afin de vérifier l'exactitude de vos mots de passe,
- veuillez les retaper encore une fois. <p>
+!read help.phtml.$lang step1
+<p>
  !form reply
  <input type=hidden name=step value=2>
 <label for="passsup"> $wims_name_Password ($name_sup) :</label>
@@ -213,23 +185,19 @@ des enseignants $name_classesss ;
  !read help.phtml.$lang step2
  !form reply
  <input type=hidden name=step value=3>
- <center><label for="typecode">Code de votre $name_classe :</label> <input size=12 name=typecode id="typecode">
+ <center><label for="typecode">$name_code</label> <input size=12 name=typecode id="typecode">
  <p><input type=submit value="$name_continue"></center>
  </form>
- <b>Attention</b> Ce code ne sert qu'une seule fois. Il ne peut pas
- être utilisé pour vous connecter à votre $name_classe&nbsp;!
+ <b>$wims_name_warning</b>: $name_warning_code
  <p>
  !goto end1
 !endif
 
 !if $step=3
- Bonjour, $supervisor!<p>
- Votre $name_classe $classname est maintenant en place. Félicitations
- et amusez-vous bien&nbsp;!<p>
- Le nombre de participants est limité à $ilimit participants (y compris vous) 
+ help.phtml.$lang step3
  !if $Cltype iswordof 0 1
   !let tmp=!positionof item $ilevel in $levelid
-  au niveau <font color=green>$(leveldesc[$tmp])</font>.
+  ($wims_name_level <font color=green>$(leveldesc[$tmp])</font>).
  !endif
  <p>
  !read links.phtml
@@ -237,8 +205,6 @@ des enseignants $name_classesss ;
 !endif
 
 :end1
-!!<p>
-!!!href module=$module&cmd=reply&step=0 $name_comeback
 
 :end
 !if $step>=0 and $cmd=reply

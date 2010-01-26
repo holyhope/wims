@@ -1,0 +1,74 @@
+!goto $wims_read_parm
+ 
+:1
+
+Un gruppo di corsi coordinati permette ai docenti
+ di condividere materiale, e permette agli studenti di passare da un corso
+ all'altro senza reimmettere la password.
+ <p>
+ Un portale di sede è un sistema multilivello che permette di gestire 
+ globalmente i bisogni di una intera scuola: database degli studenti e
+ dei docenti, diversi livelli di insegnamento, programmi e materie, classi,
+ responsabilità dei docenti, ecc.
+ !exit
+:2
+ La creazione di 
+ !if $Cltype<2
+   <font color="blue">un corso</font>
+   è una operazione riservata ai <font color="blue">docenti</font>. 
+ !else
+    <font color="blue">$name_classe</font>
+ è una operazione riservata a un <font color="blue">$name_sup</font>.
+ !endif
+ Sarà necessario possedere un indirizzo di posta elettronica
+ funzionante. Dopo la creazione, la gestione del corso è
+ responsabilità di chi lo ha creato. <p>
+ Per creare il $name_classe, inserire i seguenti dati.
+ 
+ !exit
+ 
+:step1
+ 
+ Cara/o,  $supervisor!<p>
+ Stai creando il  $name_classe $classname sul server WIMS @ $httpd_HTTP_HOST.
+ Il corso è
+  !if $Cltype iswordof 0 1
+  !let tmp=!positionof item $ilevel in $levelid
+  di livello ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
+ !endif
+ attivo fino al $exp_day/$exp_month/$exp_year e 
+ limitato a $ilimit partecipanti.
+ !if $pword!=$empty
+  Per accedere a questo $name_classesss è necessario conoscerne la password.
+ !else
+  Hai richiesto che l'iscrizione a questo corso sia aperta a tutta Internet.
+  Questo potrebbe creare un sovraccarico del server e, in caso di problemi,
+  l'amministratore potrebbe dover sospendere o rimuovere il corso.
+ !endif
+ <p>
+ Ti preghiamo di
+ !href module=$module&cmd=reply&step=0 correggere
+ le informazioni errate. <p>Se è tutto corretto, inserisci di nuovo 
+ le password per una ulteriore verifica.
+  !exit
+
+:step2
+ 
+  Cara/o, $supervisor!<p>
+ Occorre ora inserire il codice di attivazione per il corso interattivo
+ WIMS sul server $http_HTTP_HOST. <p>
+ Il codice ti è stato spedito all'indirizzo 
+ ``<tt>$email</tt>''. Verifica la casella di posta elettronica
+ (potrebbe essere necessario un po' di tempo perché il messaggio
+ arrivi a destinazione) e inserisci il codice di attivazione in questo spazio. <p>
+
+!exit
+
+:step3
+
+Cara/o, $supervisor!<p>
+ Il $name_classe $classname è ora attivo. Congratulazioni e
+ buon lavoro!<p>
+ Il corso è limitato a $ilimit utenti (te incluso). 
+
+!exit

@@ -66,7 +66,6 @@ Bonjour, $supervisor! <p>
  <p>Sinon, afin de vérifier l'exactitude de vos mots de passe,
  veuillez les retaper encore une fois. 
  !exit
- 
 :step2
  
   Bonjour, $supervisor! <p>
@@ -78,7 +77,6 @@ Bonjour, $supervisor! <p>
  qui vous a été envoyé. Relevez le code écrit dans le message et copiez-le ci-dessous.
 
 !exit 
-
 :step3
  
  Bonjour, $supervisor!<p>
