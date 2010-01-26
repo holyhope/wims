@@ -1,0 +1,117 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ Spiacente ma la preparazione / modifica dei temi d'esame &egrave;
+ limitata ai docenti registrati.
+ !exit
+!endif
+
+!if bad_class=$error
+ Il corso selezionato non esiste!
+ !exit
+!endif
+
+!if $error=no_sheet
+ Il contenuto di un tema d'esame viene selezionato tra quello dei test
+ periodici (ancora attivi o gi&agrave; terminati). 
+ <p>
+ Il corso non contiene alcun test periodico. Occorre prima preparare 
+ un test, attivarlo e poi si pu&ograve; procedere alla 
+ creazione di un tema d'esame.
+ !exit
+!endif
+
+!if bad_exam=$error
+ Il numero del tema d'esame non &egrave; valido. Errore del software?
+ !exit
+!endif
+
+!if $error=simuchange
+ Lo status di questo tema d'esame è appena cambiato. Puoi solo
+ !href cmd=reply&job=scorereg cliccare qui
+ per terminare la sessione.
+ !exit
+!endif
+
+!if already_registered=$error
+ Il voto &egrave; gi&agrave; stato registrato.
+ !exit
+!endif
+
+!if no_more_registration=$error
+ Questo esame pu&ograve; essere ripetuto al massimo $stries volte.
+ Non &egrave; pi&ugrave; possibile registrare il voto.
+ !exit
+!endif
+
+!if bad_source=$error
+ L'elemento $bad_source nei comandi inseriti non &egrave;
+ valido.
+ !href cmd=reply&job=prep_putsource&source=$source Correggere
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ Per registrare un tema d'esame &egrave; necessario inserire il titolo.
+ Correggere.
+ !exit
+!endif
+
+!if prep_activate=$error
+ Si &egrave; richiesto di attivare il tema d'esame $sheet, cio&egrave; 
+ di renderlo accessibile agli studenti. <p>
+ Ricordiamo che un tema d'esame attivo non &egrave; pi&ugrave; modificabile.
+ Continuare?
+ <p><center>
+ !href cmd=reply&job=activate Si, attivare
+ .&nbsp;&nbsp;
+ !href cmd=resume No, annulla
+ . </center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Sicuri di voler eliminare il tema d'esame numero $exam ($title)?
+ <p><center>
+ !href cmd=reply&job=erase si; eliminare
+ .&nbsp;&nbsp;
+ !href cmd=resume No, annulla
+ . </center>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Questo esame ($title) terminer&agrave; il $expday
+ !item $expmon of $months
+ $expyear. Farlo terminare ora?
+ <p><center>
+ !href cmd=reply&job=expire Si, disattiva
+ .&nbsp;&nbsp;
+ !href cmd=resume No, annulla
+ . </center>
+ <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su un tema 
+ d'esame disattivato. I voti vengono conservati (e se ne tiene conto
+ nelle statistiche). Possono essere consultati dal
+ docente in qualsiasi momento.
+ !exit
+!endif
+
+!if nodeactivate=$error
+  The exam cannot be desactivated because
+  !if badstructure isin $deactivate
+   of the class structure.
+  !else
+   !if score isin $deactivate
+    some participants have already begun to work on this exam !
+   !else
+    your exams are shared with another class !
+   !endif
+  !endif
+!endif
+
+!if active_exam=$error
+   Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
+ !exit
+!endif 
+

@@ -1,0 +1,88 @@
+!!!### language independant
+!!
+!read lang/names.phtml.$lang
+!read js/examclock1.phtml
+!read adm/css.phtml
+!header1
+
+!if $job iswordof student score scorereg
+ !changeto $job.phtml
+!endif
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title $exam
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$lang
+ <p>
+ !href module=home $wims_name_back
+. <p>
+ !goto end
+!endif
+
+!if $job=exo or $job=cpsheet
+ !read $job.phtml
+ !goto end
+!endif
+
+!if $activetest>-1
+ <b>$name_info :</b>
+!endif
+!read examinfo.phtml
+
+!ifval $activetest=-1
+ !goto end
+!endif
+
+:end1
+<p>
+<a name=list></a>
+<b>$name_content:</b>
+!if $exocnt=0
+ <p>$name_warning<p>
+!else
+ !read examcontent.phtml
+ <p>
+!endif
+
+!!!if $exocnt=0
+!! Cet examen n'a pas encore de contenu. 
+!!else
+!! <a name=list>
+!! $name_content:</a><ol>
+!! !for i=1 to $exocnt
+!!  <li>
+!!  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+!!  !distribute lines $ex into we,ch,ti
+!!  $ti, $name_weight $we.
+!!  !if $activetest=0
+!!   &nbsp;(
+!!   !if $i>1
+!!    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
+!!    &nbsp;
+!!   !endif
+!!   !href cmd=reply&job=exo&exo=$i $wims_name_change
+!!   &nbsp;
+!!   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
+!!   )
+!!  !endif
+!! !next i
+!! </ol>
+!!endif
+
+!if $activetest=0
+ !let wims_menu_items=!append line addexo,1,cmd=reply&job=exo&exo=$[$exocnt+1]\
+addsexo,1,cmd=reply&job=cpsheet to $wims_menu_items
+!endif
+
+!if $activetest>=0
+ !let wims_menu_items=!append line ,0,\
+participantview,1,cmd=reply&job=student to $wims_menu_items
+!endif
+
+:end
+!tail
+
+!reset job,echoose,eweight,ename,edep,eopt,source

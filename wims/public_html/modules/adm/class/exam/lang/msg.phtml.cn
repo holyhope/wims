@@ -1,0 +1,105 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ ¶Ô²»Æğ, Ö»ÓĞ°à¼¶µÄ×¢²áµ¼Ê¦²ÅÓĞÈ¨ ×¼±¸/ĞŞ¸Ä ÊÔ¾í.
+ !exit
+!endif
+
+!if bad_class=$error
+ Ææ¹Ö, ÄãµÄ°à¼¶ÊÇÎŞĞ§µÄ!
+ !exit
+!endif
+
+!if $error=no_sheet
+ ÊÔ¾íµÄÄÚÈİ±ØĞëÀ´Ô´ÓÚ¼¤»î¹ıµÄ×÷ÒµÒ³ (ÈÔ±»¼¤»îµÄ»òÒÑ¾­¹ıÆÚµÄ).
+ <p>
+ ÄãµÄ°à¼¶»¹Ã»ÓĞ±»¼¤»îµÄ×÷ÒµÒ³. ÔÚĞÎ³É°à¼¶µÄÊÔ¾íÇ°, ÇëÏÈ¶¨ÒåÄãµÄ×÷ÒµÒ³, ·ÅÈë×÷Òµ²¢¼¤»îËü.
+ !exit
+!endif
+
+!if bad_exam=$error
+ ÄãµÄÊÔ¾í±àºÅÎŞĞ§. Èí¼ş´íÎó?
+ !exit
+!endif
+
+!if $error=simuchange
+ ±¾ÊÔ¾íµÄ×´Ì¬¸Õ¸Õ±»ĞŞ¸Ä. Çë
+ !href cmd=reply&job=scorereg µã»÷ÕâÀï
+ÒÔ½áÊøÕâ³¡¿¼ÊÔ.
+ !exit
+!endif
+
+!if already_registered=$error
+ ÄãµÄµÃ·ÖÒÑ¾­±»¼ÍÂ¼.
+ !exit
+!endif
+
+!if no_more_registration=$error
+ ±¾ÊÔ¾íÖ»ÄÜ¼ÍÂ¼ $stries ´ÎµÃ·Ö. Äã²»ÄÜÔÙ¼ÍÂ¼·ÖÊı.
+ !exit
+!endif
+
+!if bad_source=$error
+ Äã¸Õ²Å·¢ËÍµÄÔ´ÂëµÄÏîÄ¿ºÅ $bad_source ÎŞĞ§.
+ !href cmd=reply&job=prep_putsource&source=$source ¸ÄÕıÔ´Âë
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ ÄãÏë¼ÍÂ¼µÄÊÔ¾íÃ»ÓĞ±êÌâ, ÕâÊÇ²»ºÃµÄ. ÊÇ²Ù×÷Ê§ÎóÂğ?
+ !exit
+!endif
+
+!if prep_activate=$error
+ ÄãÒªÇó¼¤»îÊÔ¾í $exam, Ò²¾ÍÊÇËµ, Ê¹ËüÄÜ±»°à¼¶µÄ²Î¼ÓÕß´ò¿ª. <p>
+ Çë×¢Òâ, Ò»µ©±»¼¤»î, Äã¾Í²»ÔÙÄÜ¸Ä¶¯Ëü. ¼ÌĞøÂğ?
+ <p><center>
+ !href cmd=reply&job=activate ÊÇ; ¼¤»î
+ .&nbsp;&nbsp;
+ !href cmd=resume ²»; ·ÅÆú
+ .</center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ ÄãÊÇ·ñÕæµÄÒªÉ¾³ı±¾ÊÔ¾í #$exam ($title)?
+ <p><center>
+ !href cmd=reply&job=erase ÊÇ; É¾³ı
+ .&nbsp;&nbsp;
+ !href cmd=resume ²»; ·ÅÆú
+ .</center>
+ !exit
+!endif
+ 
+!if prep_expire=$error
+ ±¾ÊÔ¾í #$exam ($title) ½«ÓÚ $expday 
+ !item $expmon of $months
+ $expyear Ê§Ğ§. ÄãÒªËüÏÖÔÚ¾ÍÊ§Ğ§Âğ?
+ <p><center>
+ !href cmd=reply&job=expire ÊÇ; Ê§Ğ§
+ .&nbsp;&nbsp;
+ !href cmd=resume ²»; ·ÅÆú
+ . </center>
+ <p><b>×¢½â.</b> ÄãµÄÑ§Éú²»ÄÜÔÙ×öÒÑÊ§Ğ§µÄÊÔ¾í. µ«ËûÃÇµÄµÄÔçÏÈµÃ·Ö¼ÍÂ¼ÈÔ±»±£Áô
+(¶øÇÒÔÚÍ³¼ÆÊ±±»¼ÆÈë), ¶øÇÒÄã×ÜÊÇ¿ÉÒÔ²éÔÄÕâĞ©·ÖÊı.
+ !exit
+!endif
+
+!if nodeactivate=$error
+  ´Ë¿¼ÊÔ²»ÄÜ·ÅÆú¼¤»î, ÕâÊÇÒòÎª
+  !if badstructure isin $deactivate
+   °à¼¶½á¹¹µÄÎÊÌâ.
+  !else
+   !if score isin $deactivate
+    ÓĞĞ©²Î¼ÓÕßÒÑ¾­ÔÚ¿¼ÁË !
+   !else
+    ÄãµÄ¿¼ÊÔÊÇÓëÆäËû°à¼¶·ÖÏíµÄ !
+   !endif
+  !endif
+!endif
+!if active_exam=$error
+   Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
+ !exit
+!endif 
+

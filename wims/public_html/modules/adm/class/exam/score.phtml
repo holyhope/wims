@@ -1,0 +1,84 @@
+
+!if $job=score
+ !read adm/title.phtml 1\
+ $wims_classname, $wims_institutionname\
+ $title
+
+ !if $wims_user=supervisor
+  <center>($name_presentation)</center>
+ !endif
+ <p>$desc<p>
+!endif
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$lang
+ <p>
+ !href module=home $wims_name_back
+. <p>
+ !goto end
+!endif
+
+!if $exocnt=0
+ $name_empty
+!else
+ $table_header
+ $table_hdtr
+ <caption>$name_scoreexam</caption>
+ $table_tr<th>$wims_name_Exercise<th>$wims_name_title</th><th>$name_coeff<th>$name_Score
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into we,li,ti
+   $table_tr<td align=center>$i
+  <td align=center>$ti
+  <td align=center>$we<td align=center>
+  !if $(replied$i)>0
+   $(got$i)
+  !else
+   <small>$name_pending</small>
+  !endif
+ !next i
+  $table_tr<td align=center colspan=4>
+ !default score=$sprime
+$name_scoreexam2: <b>$score</b> <small>/ 10</small>.
+ $table_end
+!endif
+<p>
+
+!if $registered=$empty
+ $name_begin1.
+ !href cmd=reply&job=student $name_begin2
+!else
+ !if $timeleft<=0
+  $name_timeleft
+   <p>
+ !endif
+ !if $allowtype=simulation
+  $name_simulation2
+  !if $lastscore>0
+   ($name_realscore)
+  !endif
+ !else
+  $name_bestscore
+ !endif
+ <p>
+!set test=!recordcnt wimshome/$wims_sesdir/examscore.$exam
+!if $test>=2
+ !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
+ to $wims_menu_items
+!endif
+!set wims_menu_items=!append line backexam,1,cmd=reply&job=student\
+ to $wims_menu_items
+!endif
+
+!if $wims_user=supervisor
+!set wims_menu_items=!append line teacherview,1,cmd=resume\
+ to $wims_menu_items
+ </center>
+!endif
+
+:end
+!tail
+
+!reset job
+

@@ -1,0 +1,116 @@
+!set wims_module_log=error: $error
+
+!if not_supervisor=$error
+ Désolé, mais l'opération de préparation / modification d'une feuille de
+ travail est réservée aux enseignants enregistrés d'une classe.
+ !exit
+!endif
+
+!if bad_class=$error
+ Etrange, mais je trouve que votre classe n'est pas valide!
+ !exit
+!endif
+
+!if $error=no_sheet
+ Le contenu d'un examen doit être pris à partir des feuilles activées
+ (active ou périmée). 
+ <p>
+ Votre classe n'a pas encore de feuille de travail activée. Veuillez définir
+ vos feuilles, mettre  le travail dedans puis les activer, avant de définir un
+ examen pour la classe.
+ !exit
+!endif
+
+!if bad_exam=$error
+ Votre numéro d'examen n'est pas valide. Bug du logiciel?
+ !exit
+!endif
+
+!if $error=simuchange
+ Cette feuille d'examen vient de changer de statut. Veuillez
+ !href cmd=reply&job=scorereg cliquer ici
+ pour terminer votre session.
+ !exit
+!endif
+
+!if already_registered=$error
+ Votre note est déjà enregistrée.
+ !exit
+!endif
+
+!if no_more_registration=$error
+ Cet examen ne vous permet d'enregistrer vos notes que $stries fois.
+ Vous n'avez plus le droit de faire d'autres enregistrements.
+ !exit
+!endif
+
+!if bad_source=$error
+ L'article numéro $bad_source dans le source que vous venez de soumettre
+ n'est pas valable.
+ !href cmd=reply&job=prep_putsource&source=$source Corriger le source
+ .
+ !exit
+!endif
+
+!if no_title=$error
+ Vous avez voulu enregistrer une feuille sans titre, ce qui est
+ déconseillé. Erreur de manipulation?
+ !exit
+!endif
+
+!if prep_activate=$error
+ Vous demandez d'activer l'examen $exam, c'est-à-dire de le rendre 
+ accessible aux participants de la classe. <p>
+ Veuillez noter qu'une fois l'examen activé, vous ne pourrez plus le modifier.
+ Voulez-vous continuer&nbsp;?
+ <p><center>
+ !href cmd=reply&job=activate Oui; activer
+ .&nbsp;&nbsp;
+ !href cmd=resume Non; abandonner
+ . </center>
+ !exit
+!endif
+
+!if prep_erase=$error
+ Voulez-vous vraiment effacer l'examen numéro $exam ($title)?
+ <p><center>
+ !href cmd=reply&job=erase Oui; effacer
+ .&nbsp;&nbsp;
+ !href cmd=resume Non; abandonner
+ . </center>
+ !exit
+!endif
+
+!if prep_expire=$error
+ Cet examen numéro $exam ($title) expire normalement le $expday
+ !item $expmon of $months
+ $expyear. Voulez-vous le rendre périmé dès maintenant?
+ <p><center>
+ !href cmd=reply&job=expire Oui; expirer
+ .&nbsp;&nbsp;
+ !href cmd=resume Non; abandonner
+ . </center>
+ <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
+ sur un examen périmé. Mais leurs notes antérieures seront conservées 
+ (et seront prises
+ en compte dans les statistiques) et vous pouvez toujours les consulter.
+ !exit
+!endif
+
+!if nodeactivate=$error
+  L'examen ne peut pas être désactivé car
+  !if badstructure isin $deactivate
+   la structure de votre classe ne le permet pas !
+  !else
+   !if score isin $deactivate
+    des participants ont déjà commencé à travailler sur cet examen !
+   !else
+    vous partagez vos examens avec une autre classe !
+   !endif
+  !endif
+!endif
+!if active_exam=$error
+   Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
+ !exit
+!endif 
+

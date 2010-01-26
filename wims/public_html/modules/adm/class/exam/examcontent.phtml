@@ -1,0 +1,46 @@
+!!!### language independant
+!! --------------------  affiche le contenu de la feuille $sheet de la classe $wims_class
+
+$table_header
+ $table_hdtr
+  !for k=1 to 7
+   <th>$(name_extab[$k])</th>
+  !next k
+  !if $activetest=0
+   <th>$(name_extab[8])</th>
+  !endif
+ </tr>
+ !for i=1 to $exocnt
+  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
+  !distribute lines $ex into poids,content,title,dep,option,com
+  $table_tr
+   <td>$i</td>
+   <td>$title</td>
+   <td>
+    !for k in $content
+     !let t=!replace internal . by , in $k
+     !distribute item $t into s_,e_
+     !let t=!record $e_ of wimshome/log/classes/$wims_class/sheets/.sheet$s_
+     !distribute line $t into di,pa,bl,bl,bl,bl,bl
+     !href target=wims_new module=$di&cmd=new&$pa $s_.$e_
+     &nbsp;
+    !next k
+   </td>
+   <td align="center">$poids</td>
+   <td>$dep</td>
+   <td>$com</td>
+   <td>$option</td>
+   !if $activetest=0
+    <td>
+     !href cmd=reply&job=exo&exo=$i $wims_name_change
+     &nbsp;
+     !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
+     !if $i>1
+      &nbsp;
+      !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
+     !endif
+    </td>
+   !endif
+  </tr>
+ !next i
+$table_end

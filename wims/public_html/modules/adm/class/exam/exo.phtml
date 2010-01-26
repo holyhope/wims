@@ -1,0 +1,94 @@
+!!!### langage independant
+!!
+<br>
+!form reply
+<input type=hidden name=job value=exo>
+<input type=hidden name=exo value=$exo>
+
+$table_header
+ $table_tr
+  <td>$wims_name_Exercise :</td><td>$exo</td> 
+ </tr>
+ $table_tr
+  <td>$name_weight :</td><td><input size="5" name="eweight" value="$eweight"></td>
+ </tr>
+ $table_tr
+  <td>$wims_name_title :</td><td><input size="20" name="ename" value="$ename"></td>
+ </tr>
+ $table_tr
+  <td>$name_dependency [
+   !href target=wims_mhelp cmd=help&special_parm=dependency $wims_name_help
+  ]:</td>
+  <td><input size="40" name="edep" value="$edep"></td>
+ </tr>
+ $table_tr
+  <td>$name_Options [
+   !href target=wims_mhelp cmd=help&special_parm=options $wims_name_help
+  ]:</td>
+  <td>
+   !formcheckbox eopt list $optionlist
+  </td>
+ </tr>
+ $table_tr
+  <td>$wims_name_comment <small>($name_desc_comment)</small> :</td>
+  <td><textarea name="ecomment" rows="3" cols="60">$ecomment</textarea></td>
+ </tr>
+!! --------------------------- choix des exos
+ $table_tr
+  <td>$name_contenu [
+   !href target=wims_mhelp cmd=help&special_parm=contenu $wims_name_help
+  ]:</td>
+  <td>Afficher seulement les exercices de la feuille 
+ <select name="ltsheets" onchange="submit()" value="$ltsheets">
+  !if $ltsheets=$asheets
+   <option value="$asheets" selected>$name_All</option>
+  !else
+   <option value="$asheets">$name_All</option>  
+  !endif
+  !for k in $asheets
+   !if $ltsheets=$k
+    <option value="$k" selected>
+   !else
+    <option value="$k">   
+   !endif
+    !let t=!record $k of wimshome/log/classes/$wims_class/sheets/.sheets
+    $k :
+    !line 3 of $t
+   </option>
+  !next k
+ </select>
+<p>
+!for i in $ltsheets
+ !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ !for j=1 to $t
+  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $r into r1,r2,r3,r4,r5,r6
+  <input type=checkbox name=echoose value=$i.$j
+  !if $i.$j isitemof $echoose
+   checked
+  !endif
+  > $i.$j 
+  !href target=wims_new module=$r1&cmd=new&$r2 $r5
+  !if $r6!=$empty
+   <small>($r6)</small>
+  !endif
+  <br>
+ !next j
+!next i
+ </td>
+ </tr>
+!!------------------- fin de choix des exos
+
+ $table_tr
+  <td colspan="2" align="center"> 
+   <input type=submit value="$wims_name_tosave">
+   &nbsp;
+   !if $exo>$exocnt
+    !href cmd=reply $name_mainpage
+   !else
+    !href cmd=reply $wims_name_giveup
+   !endif
+  </td>
+ </tr>
+$table_end
+</form>
