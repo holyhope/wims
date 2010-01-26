@@ -9,7 +9,7 @@ name_delteacher=Borrar una cuenta de profesor
 name_addstudent=Nuevo alumno
 name_modstudent=Propiedades del alumno
 name_delstudent=Borrar un alumno
-name_portal=pórtico
+name_portal=portal
 name_level=nivel
 name_class=clase
 name_program=programas
@@ -58,8 +58,9 @@ levelnames=EPO 1,EPO 2,EPO 3,EPO 4,EPO 5,\
 !set name_supervisor2=Responsable
 !set name_Style= Estilo del programa
 !set name_style=obligatorio, optativo
-!set name_installation=Instalación automática de los cursos en todas las clases del nivel \
- <br>à toutes les classes du niveau
+!set name_installation=Instalación automática de los cursos \
+ <br>en todas las clases del nivel \
+
  !set name_visit= Visitar
 
 !if $job=addcourse
@@ -110,8 +111,8 @@ contraseña-del-profesor, opciones.
 
 !endif
 
-!set name_warning_share= Vous ne pouvez pas effacer ce programme car ses ressources pédagogiques \
-sont partagées par d'autres programmes.
+!set name_warning_share= No pueden borrar este programa ya que sus recursos pedagógicos  \
+son compartidos por otros programas.
 
 !if $job=addclass
 !set form_titlename=Títulos de las nuevas clases\
