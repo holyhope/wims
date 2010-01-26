@@ -1,13 +1,13 @@
 !set lang_exists=yes
 !set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
+ from <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
- !let wims_name_sheetadmin=Page de préparation
- !set name_title=!nosubst Préparation de l'examen $sheet
+ !let wims_name_sheetadmin=Page of preparation
+ !set name_title=!nosubst Preparation of sheet $sheet
 !else
- !let wims_name_sheetadmin=Page de gestion
- !set name_title=!nosubst Gestion de l'examen $sheet
+ !let wims_name_sheetadmin=Page of management
+ !set name_title=!nosubst Management of sheet $sheet
 !endif
 
 !read adm/lang/date.phtml.$lang
@@ -19,7 +19,7 @@
 !set wims_name_endexam=Finish this exam session
 !set wims_name_scoreexam=My score
 
-!set wims_name_mainpage=Main page of the exam
+!set name_mainpage=Main page of the exam
 !set name_dependency=Score dependencies
 !set name_Options=Options
 !set name_All=All
@@ -39,7 +39,7 @@ The exam is empty! Nothing is assigned in it. Possibly an error in the manipulat
 Assigned works in this exam\
 This exam is actually closed for your connection.\
 You can try this exam only once.\
- therefore you can no longer improve your scores.\
+therefore you can no longer improve your scores.\
 This is your last available try. Take care!\
 the count-down will start, and the number of tries will be advanced by one.\
 the count-down will start.\
@@ -55,10 +55,10 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 !set name_exam4=!nosubst  You have already tried $tried times, 
 !set name_exam6=!nosubst And you can still make $tryremain new tries.
 !set name_exam9=!nosubst You have $sdure minutes to work on this exam.\
-   When you click on an exercise above, 
+ When you click on an exercise above, 
  
-!set name_simulation=This exam is in simulation mode. It works exactly as in a true exam,\
-  except that you cannot register the score, and your try will not be counted.
+!set name_simulation=This exam runs in simulation mode. It works exactly as in a true exam,\
+ except that you cannot register the score, and your try will not be counted.
   
 !set wims_name_examremain=Time left for this exam: $
 
@@ -66,7 +66,7 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
   You have not yet started your work on the exam.\
   Go to start the work.\
 into name_pending,name_begin1,name_begin2
-!set name_simulation2=The current score is not taken into account because the exam is in simulation mode.
+!set name_simulation2=The current score is not taken into account because the exam runs in simulation mode.
 
 !set name_timeleft=!nosubst Time is up! You have used up the $sdure minutes allocated for this exam.
 !set name_realscore=!nosubst Your real score for this exam sheet is $lastscore.
@@ -76,56 +76,56 @@ into name_pending,name_begin1,name_begin2
 !! nouvelle partie 
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activer,Expirer,Désactiver,Cacher,Montrer,$wims_name_erase
+!set statutaction=Activate,Expire,Deactivate,Invisible,Visible,$wims_name_erase
 
 !! -------------- title description for file examinfo.phtml
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Texte d'explication,\
-Date d'expiration,,Enregistrement des notes,pour toutes les classes partageant l'examen :,Commentaire,Durée d'une session d'examen,Nombre d'essais par session
+Rext of explanation,\
+Expiration date,,Score registation,for all sharing classes :,Remarks,Duration of an exam session,Number of trials per exam session
 
 !! ------- value for description of option
-!set name_desc_title=!nosubst limité à $title_limit caractères
-!set name_desc_desc=!nosubst limité à $desc_limit caractères; les tags et liens html sont admis
-!set name_desc_dependancy=Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci. Par exemple, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> signifie que le participant doit avoir un succès de 50% sur l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.</small>
-!set name_desc_comment=Visible seulement par l'enseignant.
-!set name_desc_duration=en minutes
-!let name_mkexam=Créer l'examen
-!let name_allowtype=ouvert pour tous,ouvert pour simulation,fermé pour tous,ouvert pour postes (et/ou heures) suivants :
-!let name_shinfo_cutt=Heures de coupure
+!set name_desc_title=!nosubst limited to $title_limit characters
+!set name_desc_desc=!nosubst limited to $desc_limit characters; html tags and links are allowed
+!set name_desc_dependancy=Score dependencies means that a participant must get required scores in other exercises of the sheet before he/she can do this one. For example, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> means that the participant must get 50% success on exercise 1, 30% success on exercise 2,  and an average of 60% success on exercises 3,4,5.
+!set name_desc_comment=Only visible for teachers.
+!set name_desc_duration=in minutes
+!let name_mkexam=Make the exam
+!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts (and/or hours) :
+!let name_shinfo_cutt=Cut times
 
 !! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Vue des participants,\
-		Ajouter un exercice,\
-		Ajouter une série d'exercices,\
+!distribute items Participants' view,\
+		Add another exercise,\
+		add a series of exercises,\
 into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 
 
 !! différents commentaires de la page de gestion
-!distribute lines Informations générales&nbsp;\
-Contenu de l'examen&nbsp;\
-Cet examen n'a pas encore de contenu.\
-Le titre d'origine est\
-Modification de série d'exercices\
-Nombre de points demandés\
-Poids\
-Corriger le source\
-La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
-Votre requête est donc ignorée.\
+!distribute lines General information&nbsp;\
+Content of the exam&nbsp;\
+This exam has no content yet.\
+The original title is \
+Modification of the serie exercices\
+Number of point required\
+Weight\
+Correct the source\
+The sheet expiration date of the sheet must be before the class expiration date which is\
+Your request is ignored.\
 into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
 name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
-!let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+!let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 
 !if $job=student
-  !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
-  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
-  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
-  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
+  !set name_title=Worksheet $sheet<br>$title (Presentation for participants)
+  !set name_sheetempty=The sheet is empty! Nothing is assigned for you in it. Possibly an error in the manipulation by your supervisor.
+  !set name_assignedwork=Assigned works in this sheet&nbsp;
+  !set name_quality=!nosubst 0 out of $[$re] points obtained, quality
 !endif
 
-!let name_intro_exo=Cet exercice peut être pris (aléatoirement) dans une liste d'exercices\
-existants dans des feuilles de travail. Veuillez marquer parmi les exercices des\
-feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'examen.
-!set name_contenu=Choix du contenu
+!let name_intro_exo=This exercise can be (randomly) taken from a list of existing exercises in \
+worksheets. Please mark the worksheet exercises in the following list, which \
+you want to be candidate of this exam exercise.
+!set name_contenu=Choose content

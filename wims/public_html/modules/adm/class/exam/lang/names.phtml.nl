@@ -1,13 +1,13 @@
 !set lang_exists=yes
 !set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
+ van <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
- !let wims_name_sheetadmin=Page de préparation
- !set name_title=!nosubst Préparation de l'examen $sheet
+ !let wims_name_sheetadmin=Werkblad aanmaak pagina
+ !set name_title=!nosubst Aanmaken van werkblad $sheet
 !else
- !let wims_name_sheetadmin=Page de gestion
- !set name_title=!nosubst Gestion de l'examen $sheet
+ !let wims_name_sheetadmin=Werkblad beheer
+ !set name_title=!nosubst Beheer van werkblad $sheet
 !endif
 
 !read adm/lang/date.phtml.$lang
@@ -18,7 +18,7 @@
 !set wims_name_endexam=Be&euml;indig de proefwerk sessie
 !set wims_name_scoreexam=Mijn cijfers
 
-!set wims_name_mainpage=Hoofdpagina van het proefwerk
+!set name_mainpage=Hoofdpagina van het proefwerk
 !set name_dependency=Cijfer afhankelijkheden&nbsp;
 !set name_Options=Opties
 !set name_All=Alles
@@ -72,60 +72,60 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !set name_realscore=!nosubst De echte score voor deze proefwerk-sessie is $lastscore.
 !set name_bestscore =!nosubst De score voor dit proefwerk is $lastscore. (En de beste score telt !)
 
+
 !! ---------------------------
 !! nouvelle partie 
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activer,Expirer,Désactiver,Cacher,Montrer,$wims_name_erase
+!set statutaction=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
 
 !! -------------- title description for file examinfo.phtml
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Texte d'explication,\
-Date d'expiration,,Enregistrement des notes,pour toutes les classes partageant l'examen :,Commentaire,Durée d'une session d'examen,Nombre d'essais par session
+Uitleg,\
+Verloopdatum,,Cijfer registratie,voor alle klassen die aan het proefwerk meedoen :,Opmerkingen,Maximaal beschikbare tijd voor een proefwerk,Aantal pogingen per proefwerksessie
 
 !! ------- value for description of option
-!set name_desc_title=!nosubst limité à $title_limit caractères
-!set name_desc_desc=!nosubst limité à $desc_limit caractères; les tags et liens html sont admis
-!set name_desc_dependancy=Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci. Par exemple, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> signifie que le participant doit avoir un succès de 50% sur l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.</small>
-!set name_desc_comment=Visible seulement par l'enseignant.
-!set name_desc_duration=en minutes
-!let name_mkexam=Créer l'examen
-!let name_allowtype=ouvert pour tous,ouvert pour simulation,fermé pour tous,ouvert pour postes (et/ou heures) suivants :
-!let name_shinfo_cutt=Heures de coupure
+!set name_desc_title=!nosubst Maximaal $title_limit lettertekens
+!set name_desc_desc=!nosubst Maximaal $desc_limit lettertekens; html tags en links zijn toegestaan
+!set name_desc_dependancy=Score drempels : dit betekent dat een deelnemer/leerling een bepaalde hoeveelheid punten <br>moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.<br>We noemen dit toets-type een "drempel toets".<br>Bijvoorbeeld:  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> wil zeggen dat<br>de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en opdracht 3,4,5 samen gemiddeld minimaal 60%.
+
+!set name_desc_comment=Alleen zichtbaar voor docenten.
+!set name_desc_duration=in minuten
+!let name_mkexam=Proefwerk aanmaken
+!let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgend ipadressen (en/of tijdstippen) :
+!let name_shinfo_cutt=Openingstijden
 
 !! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Vue des participants,\
-		Ajouter un exercice,\
-		Ajouter une série d'exercices,\
+!distribute items Zo zien studenten deze pagina,\
+Voeg een oefening toe,\
+Voeg een serie oefeningen toe,\
 into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 
 
 !! différents commentaires de la page de gestion
-!distribute lines Informations générales&nbsp;\
-Contenu de l'examen&nbsp;\
-Cet examen n'a pas encore de contenu.\
-Le titre d'origine est\
-Modification de série d'exercices\
-Nombre de points demandés\
-Poids\
-Corriger le source\
-La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
-Votre requête est donc ignorée.\
+!distribute lines Algemene informatie&nbsp;\
+Inhoudsopgave van dit proefwerk&nbsp;\
+Dit proefwerk is leeg.\
+De titel is\
+Verande de serie oefeningen\
+Vereiste punten aantal\
+Gewicht\
+Corrigeer de broncode\
+De verloopdatum van dit werkblad moet gekozen worden voor de einddatum van de klas.\
+Het verzoek wordt daarom genegeerd.\
 into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
 name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
-!let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+!let name_extab=!nosubst No,$wims_name_title,Inhoud,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 
 !if $job=student
-  !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
-  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
-  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
-  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
+  !set name_title=Werkblad nummer $sheet<br>$title (studenten presentatie)
+  !set name_sheetempty=Dit werkblad is leeg ! Misschien een manipulatie faoutje van de docent ?
+  !set name_assignedwork=Opdrachten in dit werkblad&nbsp;
+  !set name_quality=!nosubst 0 uit $[$re] punten behaald , kwaliteit
 !endif
 
-!let name_intro_exo=Cet exercice peut être pris (aléatoirement) dans une liste d'exercices\
-existants dans des feuilles de travail. Veuillez marquer parmi les exercices des\
-feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'examen.
-!set name_contenu=Choix du contenu
+!let name_intro_exo=Een oefening kan willekeurig worden gekozen uit de lijst van bestaande oefeningen uit de werkbladen.<br>Vink de werkbladen aan in de onderstaande lijst als kandidaten voor dit proefwerk. 
+!set name_contenu=Kies de inhoud
