@@ -24,7 +24,7 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
 
 !set name_textsource= Este es el fichero fuente de la hoja. Puede importarlo a su clase \
-  simplemente mediante el sistema de recortar y pegar.
+  simplemente mediante el sistema de cortar y pegar.
 !set name_answer=Respuestas del ejercicio
 
 !set name_title=!nosubst Hoja de trabajo número $sh

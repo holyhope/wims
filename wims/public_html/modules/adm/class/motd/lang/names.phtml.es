@@ -32,4 +32,4 @@ a todos los participantes de la clase, que se mostrará en
 
 !set name_commun=Mensaje de la clase (común a todos los participantes)
 
-!set name_status=Actif,Caché
+!set name_status=Activo, Ocultado

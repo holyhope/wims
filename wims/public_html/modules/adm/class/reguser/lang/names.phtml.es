@@ -26,7 +26,7 @@
     !set name_classesss= del $name_classe
     !set name_classessss= El $name_classe
     !endif
- !else 
+ !else
    !set name_classe=clase
    !set name_classes=la clase
    !set name_classess=una clase
@@ -93,5 +93,5 @@ ninguna cuenta de participante
   por favor proporcione las informaciones siguientes
 !set name_inscription3=!nosubst Se está inscribiendo como participante $name_classesss $classname, con el identificador de usuario
 
-!set name_warning_direct=<p><b>ATTENTION</b>. L'inscription directe au $name_classe est réservée aux\
-  enseignants. Si vous êtes élève, veuillez vous inscrire
+!set name_warning_direct=<p><b>ATTENTION</b>. La inscripción directa a $name_classe se reserva a\
+  profesores. Si son alumno, inscribirse
