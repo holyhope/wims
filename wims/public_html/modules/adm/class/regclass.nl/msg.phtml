@@ -1,23 +1,8 @@
 !set wims_module_log=error: $error
 
-!if bad_secure=$error
-    Uw huidige ipadres staat niet in de door uzelf aangemaakte lijst (<tt>$secure</tt>)
-    met veilige ipadressen.
-    Dit is waarschijnlijk een typfoutje.
-    <p>
-    Lees aandachtig de onderstaande documentatie.
-    Als het niet duidelijk is, vul hier dan niets of het woord <tt>all</tt> in.
-    Bij dit laatste schakelt WIMS de controle op ipadressen voor uw virtuele ruimte uit.
-    <p>
-    <hr>
-    <p>
-    !read help/hosts.phtml
-    !reset secure
- !exit
-!endif
-
 !if no_subclass iswordof $error
-    Bij de huidige instellingen heeft U niet de rechten om <b>sub-klassen</b> op te richten.
+    Bij de huidige instellingen heeft U niet de 
+    rechten om <b>sub-klassen</b> op te richten.
   !set restart=no
  !exit
 !endif
@@ -34,99 +19,78 @@
 
 !if not_manager iswordof $error
     Helaas, maar alleen systeem-beheerder (site-manager) heeft de bevoegdheden
-    om een portaal (een digi-school of zelfs een digi-hogeschool) op te richten.
+    om een portaal op te richten.
  !exit
 !endif
 
 !if getpass iswordof $error
-    !if $sendmail!=$empty
-	<font size="+1">
-	    <center>
-		Het wachtwoord is verstuurd naar: $sendmail.
-	    </center>
-	</font>
-	<p>
-    !endif 
-    !if $regpass!=$empty
-	Helaas, Uw wachtwoord is niet juist.<br>
-	Probeer het nog eens.
-    !else
-	!set cname=!item $[$cltype+1] of virtuele klassen,,een groep virtuele klassen,,een portaal
-	Het oprichten van $cname op deze server is beschermd met een wachtwoord.<br>
-	Vul hieronder het wachtwoord in.
-    !endif
-    <p>
-    !form reply
-	<input type=hidden name=step value=0>
-	Het wachtwoord: <input size=16 name=regpass type=password>
-    </form>
-    <p>
-    Opmerking. Het wachtwoord voor het oprichten van virtuele klassen kan worden verkregen bij de 
-    !mailurl $wims_site_manager systeem-beheerder\
-    van deze WIMS server.
+ !if $sendmail!=$empty
+  <font size="+1"><center>Het wachtwoord is verstuurd naar: $sendmail.</center></font>
+  <p>
+ !endif 
+ !if $regpass!=$empty
+  Helaas, Uw wachtwoord is niet juist. Probeer het nog eens.
+ !else
+  !set cname=!item $cltype+1 of virtuele klassen,,een groep virtuele klassen,,\
+  een portaal
+  Het oprichten van $cname op deze server is beschermd met een wachtwoord.
+  Vul hieronder het wachtwoord in.
+ !endif
+ <p>
+ !form reply
+  <input type=hidden name=step value=0>
+  Het wachtwoord: <input size=16 name=regpass type=password>
+  <input type="submit" name="Envoyer" value="$wims_name_send">
+ </form><p>
+ Opmerking. Het wachtwoord voor het oprichten van virtuele klassen kan worden verkregen bij de 
+ !mailurl $wims_site_manager systeem-beheerder\
+ van deze WIMS server.
     
-    !if $regpassmail!=$empty and $sendmail=$empty
-	!form reply
-	    Geef hier het emailadres waar het wachtwoord naar verstuurd moet worden:
-	    <input type="text" name="adresse1" value="$adresse1" size="20">
-	    <input type=hidden name=step value=0>
-	    !let nbaddr=!itemcnt $regpassmail
-	    !if $nbaddr=1
-		<font size="+1">@$regpassmail</font>
-		<input type=hidden name="adresse2" value="$regpassmail">
-	    !else
-		@
-		!formselect adresse2 list $regpassmail
-	    !endif
-	    &nbsp;
-	    <input type="submit" value="Recevoir" name="Ontvangen">
-	</form>
-    !else
-	!reset sendmail
-    !endif
-    !set restart=no
+ !if $regpassmail!=$empty and $sendmail=$empty
+  !form reply
+  Geef hier het emailadres waar het wachtwoord naar verstuurd moet worden:
+  <input type="text" name="adresse1" value="$adresse1" size="20">
+  <input type=hidden name=step value=0>
+  !let nbaddr=!itemcnt $regpassmail
+   !if $nbaddr=1
+    <font size="+1">@$regpassmail</font>
+    <input type=hidden name="adresse2" value="$regpassmail">
+   !else
+    @
+    !formselect adresse2 list $regpassmail 
+   !endif
+   &nbsp;
+  <input type="submit" value="Recevoir" name="Ontvangen">
+    </form>
+   !else
+    !reset sendmail
+   !endif
+   !set restart=no
  !exit
 !endif
 
 !if getid iswordof $error
-    !if $regpass$regid!=$empty
-	Helaas, het wachtwoord was niet correct. Probeer nog een keer.
-    !else
-	Het oprichten van virtuele klassen op deze server wordt geregeld door een
-	wachtwoord beschermd aanmeldings procedure.
-    !endif
-    <p>
-    !form reply
-	<p>
-	<table border=0 cellspacing=5>
-	    <tr>
-	    <td align=right>
-		Geef de naam van uw account:
-	    </td>
-	    <td>
-	        <input size=20 name=regid>
-	    </td>
-	    </tr>
-	    <tr>
-	    <td align=right>
-		en het bijhorende wachtwoord:
-	    </td>
-	    <td>
-		<input size=16 name=regpass type=password>
-	    </td>
-	    </tr>
-	</table>
-	<input type=submit value="Versturen">
-    </form> 
-    <p>
-    <small>
-	Opmerking: Schrijf naar de systeembeheerder of
-	!mailurl $wims_site_manager site-manager\
-	voor een account
-	als U virtuele klassen op deze server wilt oprichten.
-	(dus uw klassen of zelfs uw hele school wilt laten "hosten" op deze server). 
-    </small>
-    !set restart=no
+ !if $regpass$regid!=$empty
+  Helaas, het wachtwoord was niet correct. Probeer nog een keer.
+ !else
+  Het oprichten van virtuele klassen op deze server wordt geregeld door een 
+  wachtwoord beschermde aanmeldings procedure.
+ !endif
+ <p>
+ !form reply
+  <p><table border=0 cellspacing=5 summary="">
+    <tr><td align=right>
+    Geef de naam van uw account:</td><td><input size=20 name=regid></td>
+    </tr><tr><td align=right>
+    en het bijhorende wachtwoord:</td><td><input size=16 name=regpass type=password>
+    <input type=submit value="OK"></td>
+    </tr></table>
+ </form> <p>
+ Opmerking: Schrijf naar de systeembeheerder of
+ !mailurl $wims_site_manager site-manager\
+ voor een account
+ als U virtuele klassen op deze server wilt oprichten.
+  !set restart=no
  !exit
 !endif
 
@@ -134,6 +98,21 @@
  U had het recht om $r_quota1 klassen op deze server te laten hosten.
  Het quotum is nu bereikt: er is geen plek meer voor nog een extra klas.
  !set restart=no
+ !exit
+!endif
+
+!if bad_secure=$error
+ Uw huidige ipadres staat niet in de door uzelf aangemaakte lijst (<tt>$secure</tt>)
+ met veilige ipadressen.Dit is waarschijnlijk een typfoutje.
+ <p>
+ Lees aandachtig de onderstaande documentatie.
+ Als het niet duidelijk is, vul hier dan niets of het woord <tt>all</tt> in.
+ Bij dit laatste schakelt WIMS de controle op ipadressen voor uw virtuele ruimte uit.
+ <p>
+ <hr>
+ <p>
+ !read help/hosts.phtml
+ !reset secure
  !exit
 !endif
 
@@ -153,11 +132,9 @@
  !exit
 !endif
 
-!if bad_email=$error
- Uw ingevulde email adres blijkt niet valide te zijn.
- <p>
- Denk eraan dat het oprichten van virtuele klassen op deze server alleen kan
- slagen bij een <b>echt werkend email adres<b>.
+!if anti_date=$error
+ De verloopdatum van Uw klas ligt voor vandaag...uw klas is dus verlopen <b>voor</b> dat 
+  "hij" is opgericht ;-) 
  !exit
 !endif
 
@@ -166,9 +143,11 @@
  !exit
 !endif
 
-!if anti_date=$error
- De verloopdatum van Uw klas ligt voor vandaag...uw klas is dus verlopen <b>voor</b> dat 
-  "hij" is opgericht ;-) 
+!if bad_email=$error
+ Uw ingevulde email adres blijkt niet valide te zijn.
+ <p>
+ Denk eraan dat het oprichten van virtuele klassen op deze server alleen kan
+ slagen bij een <b>echt werkend email adres<b>.
  !exit
 !endif
 
@@ -215,4 +194,6 @@ Interne serverfout (oprichten van een klas)
  !read links.phtml
  !exit
 !endif
+
+
 
