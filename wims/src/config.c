@@ -687,7 +687,8 @@ void module_index(void)
 	/* Set up a unique job identity as a 4-bytes integer */
 unsigned long create_job_ident(void)
 {
-    unsigned long it;
+/* unsigned long it; // 64-bit compatibility: take away _long_ */
+    unsigned it;
     int i;
     	/* Is this enough to guarantee uniqueness? */
     
