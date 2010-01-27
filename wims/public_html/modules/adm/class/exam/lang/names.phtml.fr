@@ -3,11 +3,11 @@
  de <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
- !let wims_name_sheetadmin=Page de préparation
- !set name_title=!nosubst Préparation de l'examen $sheet
+!! !let wims_name_sheetadmin=Page de préparation
+ !set name_title=!nosubst Préparation de l'examen $exam
 !else
- !let wims_name_sheetadmin=Page de gestion
- !set name_title=!nosubst Gestion de l'examen $sheet
+!! !let wims_name_sheetadmin=Page de gestion
+ !set name_title=!nosubst Gestion de l'examen $exam
 !endif
 
 !read adm/lang/date.phtml.$lang
@@ -23,7 +23,9 @@
 !set name_Options=Options
 !set name_All=Toutes
 !set name_title=Préparation de l'examen
-!set name_expire=Expirer maintenant l'examen
+
+!!set name_expire=Expirer maintenant l'examen
+
 !set name_done=fait
 
 !distribute items poids,coefficient,Score\
@@ -87,7 +89,9 @@ Date d'expiration,,Enregistrement des notes,pour toutes les classes partageant l
 !! ------- value for description of option
 !set name_desc_title=!nosubst limité à $title_limit caractères
 !set name_desc_desc=!nosubst limité à $desc_limit caractères; les tags et liens html sont admis
-!set name_desc_dependancy=Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci. Par exemple, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> signifie que le participant doit avoir un succès de 50% sur l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.</small>
+
+!!set name_desc_dependancy=Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci. Par exemple, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> signifie que le participant doit avoir un succès de 50% sur l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.</small>
+
 !set name_desc_comment=Visible seulement par l'enseignant.
 !set name_desc_duration=en minutes
 !let name_mkexam=Créer l'examen
@@ -105,28 +109,35 @@ into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 !distribute lines Informations générales&nbsp;\
 Contenu de l'examen&nbsp;\
 Cet examen n'a pas encore de contenu.\
-Le titre d'origine est\
-Modification de série d'exercices\
-Nombre de points demandés\
-Poids\
-Corriger le source\
-La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
-Votre requête est donc ignorée.\
-into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
-name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+into name_info,name_content,name_warning
+
+!!Le titre d'origine est\
+!!Modification de série d'exercices\
+!!Nombre de points demandés\
+!!Poids\
+!!Corriger le source\
+!!La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
+!!Votre requête est donc ignorée.\
+!!name_oldtitle,name_titlemodif,\
+!!name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
 !let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 
-!if $job=student
-  !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
-  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
-  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
-  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
-!endif
+!!!if $job=student
+!!  !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
+!!  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
+!!  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
+!!  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
+!!endif
 
-!let name_intro_exo=Cet exercice peut être pris (aléatoirement) dans une liste d'exercices\
-existants dans des feuilles de travail. Veuillez marquer parmi les exercices des\
-feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'examen.
+!!let name_intro_exo=Cet exercice peut être pris (aléatoirement) dans une liste d'exercices\
+!!existants dans des feuilles de travail. Veuillez marquer parmi les exercices des\
+!!feuilles de la liste suivante ceux que vous voulez prendre pour cet exercice d'examen.
+
 !set name_contenu=Choix du contenu
+!let name_cpsheet1=Vous allez ajouter une fois chaque série d'exercices de la feuille suivante à la suite des exercices déjà présents. Chaque exercice aura comme poids 1. Si vous ne remplissez pas le champ de saisi ci-dessous, il conservera le titre qu'il avait dans la feuille d'exercices.
+!let name_cpsheet2=Feuille
+!let name_cpsheet3=Titre d'exercice générique
+!let name_cpsheet4=les exercices seront numérotés

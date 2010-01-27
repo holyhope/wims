@@ -1,17 +1,26 @@
+!!!### language independant
+!!
+!!
 !form reply
-Vous allez ajouter une fois chaque série d'exercices de la feuille 
-!formselect numsheet list $asheets prompt $listname
-à la suite des exercices déjà présents.<br>
-Chaque exercice aura comme poids 1 et conservera le titre qu'il avait dans la feuille d'exercices 
-si vous ne remplissez pas le champ de saisi ci-dessous.
-<p>
-Titre d'exercice générique:
-<input type=text name=keytitle>
-(les exercices seront numérotés).
-<center><input type=submit value="$wims_name_Insert"></center>
+$name_cpsheet1
+$table_header
+ $table_tr
+  <td>$name_cpsheet2 :</td>
+  <td>
+   !formselect numsheet list $asheets prompt $listname
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_cpsheet3 :</td>
+  <td><input type=text name=keytitle><small>($name_cpsheet4)</small></td>
+ </tr>
+ $table_tr
+ <td colspan="2" align="center"><input type=submit value="$wims_name_Insert"></td>
+ </tr>
+$table_end
 <input type=hidden name="job" value="cpsheet">
 </form>
-<p>
+
 !set wims_menu_items=!append line back2,1,cmd=reply\
   to $wims_menu_items
 !reset numsheet

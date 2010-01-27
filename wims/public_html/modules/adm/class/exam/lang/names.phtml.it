@@ -3,10 +3,10 @@
  presso <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
- !let wims_name_sheetadmin=Page de préparation
+!! !let wims_name_sheetadmin=Page de préparation
  !set name_title=!nosubst Preparazione del tema d'esame $sheet
 !else
- !let wims_name_sheetadmin=Page de gestion
+!! !let wims_name_sheetadmin=Page de gestion
  !set name_title=!nosubst Modifica dell'esame $sheet
 !endif
 
@@ -23,7 +23,7 @@
 !set name_Options=Opzioni
 !set name_All=Tutti
 !set name_title=Preparazione del tema d'esame
-!set name_expire=Terminalo
+!!!set name_expire=Terminalo
 !set name_done=completato
 
 !distribute items peso,Peso,Punteggio\
@@ -86,7 +86,9 @@ Data di termine,,Registrazione dei voti,per tutti i corsi che condividono l'esam
 !! ------- value for description of option
 !set name_desc_title=!nosubst massimo $title_limit caratteri
 !set name_desc_desc=!nosubst massimo $desc_limit caratteri; sono ammessi link e tag html
-!set name_desc_dependancy=Uno studente deve ottenere un determinato punteggio in altri esercizi dell'esame prima di poter affrontare questo. Per esempio, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> significa che lo studente deve ottenere un 50% nell'esercizio 1, un 30% nell'esercizio 2, e una media del 60% negli esercizi 3,4,5.</small>
+
+!!set name_desc_dependancy=Uno studente deve ottenere un determinato punteggio in altri esercizi dell'esame prima di poter affrontare questo. Per esempio, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> significa che lo studente deve ottenere un 50% nell'esercizio 1, un 30% nell'esercizio 2, e una media del 60% negli esercizi 3,4,5.</small>
+
 !set name_desc_comment=visibile solo ai docenti
 !set name_desc_duration=in minuti
 !let name_mkexam=Crea il tema d'esame
@@ -104,26 +106,32 @@ into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 !distribute lines Informazioni generali\
 Contenuti\
 Questo tema d'esame non contine ancora nulla.\
-Il titolo originale è\
-Modification de série d'exercices\
-Nombre de points demandés\
-Punti\
-Corriger le source\
-La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
-Votre requête est donc ignorée.\
-into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
-name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+into name_info,name_content,name_warning
+
+!!Il titolo originale è\
+!!Modification de série d'exercices\
+!!Nombre de points demandés\
+!!Punti\
+!!Corriger le source\
+!!La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
+!!Votre requête est donc ignorée.\
+!!,name_oldtitle,name_titlemodif,\
+!!name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
 !let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 
-!if $job=student
-  !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
-  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
-  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
-  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
-!endif
+!!!if $job=student
+!! !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
+!!  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
+!!  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
+!!  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
+!!!endif
+!!!let name_intro_exo=Questo esercizio sarà scelto (casualmente) in una lista di esercizi contenuti nei test periodici. Selezionare nella lista che segue i test di autovalutazione da cui estrarre gli esercizi da inserire in questo tema d'esame. 
 
-!let name_intro_exo=Questo esercizio sarà scelto (casualmente) in una lista di esercizi contenuti nei test periodici. Selezionare nella lista che segue i test di autovalutazione da cui estrarre gli esercizi da inserire in questo tema d'esame. 
 !set name_contenu=Scelta dei contenuti
+!let name_cpsheet1=Stai per aggiungere tutti gli esercizi del test di autovalutazione in fondo all'esame. Ogno esercizio sarà aggiunto con peso 1 e avrà come titolo il titolo che hanel test si vous ne remplissez pas le champ de saisi ci-dessous.<p>
+!let name_cpsheet2=sheet
+!let name_cpsheet3=Titolo di default per l'esercizio
+!let name_cpsheet4=gli esercizi saranno numerati

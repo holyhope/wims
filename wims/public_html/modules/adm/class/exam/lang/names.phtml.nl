@@ -3,10 +3,10 @@
  van <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
- !let wims_name_sheetadmin=Werkblad aanmaak pagina
+!! !let wims_name_sheetadmin=Werkblad aanmaak pagina
  !set name_title=!nosubst Aanmaken van werkblad $sheet
 !else
- !let wims_name_sheetadmin=Werkblad beheer
+!! !let wims_name_sheetadmin=Werkblad beheer
  !set name_title=!nosubst Beheer van werkblad $sheet
 !endif
 
@@ -23,7 +23,7 @@
 !set name_Options=Opties
 !set name_All=Alles
 !set name_title=Aanmaken van een proefwerk
-!set name_expire=Laat het proefwerk nu verlopen
+!!set name_expire=Laat het proefwerk nu verlopen
 !set name_done=klaar
 
 !distribute items Gewicht,Co&euml;fficient,Cijfer\
@@ -87,7 +87,8 @@ Verloopdatum,,Cijfer registratie,voor alle klassen die aan het proefwerk meedoen
 !! ------- value for description of option
 !set name_desc_title=!nosubst Maximaal $title_limit lettertekens
 !set name_desc_desc=!nosubst Maximaal $desc_limit lettertekens; html tags en links zijn toegestaan
-!set name_desc_dependancy=Score drempels : dit betekent dat een deelnemer/leerling een bepaalde hoeveelheid punten <br>moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.<br>We noemen dit toets-type een "drempel toets".<br>Bijvoorbeeld:  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> wil zeggen dat<br>de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en opdracht 3,4,5 samen gemiddeld minimaal 60%.
+
+!!set name_desc_dependancy=Score drempels : dit betekent dat een deelnemer/leerling een bepaalde hoeveelheid punten <br>moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.<br>We noemen dit toets-type een "drempel toets".<br>Bijvoorbeeld:  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> wil zeggen dat<br>de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en opdracht 3,4,5 samen gemiddeld minimaal 60%.
 
 !set name_desc_comment=Alleen zichtbaar voor docenten.
 !set name_desc_duration=in minuten
@@ -106,26 +107,32 @@ into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 !distribute lines Algemene informatie&nbsp;\
 Inhoudsopgave van dit proefwerk&nbsp;\
 Dit proefwerk is leeg.\
-De titel is\
-Verande de serie oefeningen\
-Vereiste punten aantal\
-Gewicht\
-Corrigeer de broncode\
-De verloopdatum van dit werkblad moet gekozen worden voor de einddatum van de klas.\
-Het verzoek wordt daarom genegeerd.\
-into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
-name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+into name_info,name_content,name_warning
+
+!!De titel is\
+!!Verande de serie oefeningen\
+!!Vereiste punten aantal\
+!!Gewicht\
+!!Corrigeer de broncode\
+!!De verloopdatum van dit werkblad moet gekozen worden voor de einddatum van de klas.\
+!!Het verzoek wordt daarom genegeerd.\
+!!,name_oldtitle,name_titlemodif,\
+!!name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
 !let name_extab=!nosubst No,$wims_name_title,Inhoud,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 
-!if $job=student
-  !set name_title=Werkblad nummer $sheet<br>$title (studenten presentatie)
-  !set name_sheetempty=Dit werkblad is leeg ! Misschien een manipulatie faoutje van de docent ?
-  !set name_assignedwork=Opdrachten in dit werkblad&nbsp;
-  !set name_quality=!nosubst 0 uit $[$re] punten behaald , kwaliteit
-!endif
+!!if $job=student
+!!  !set name_title=Werkblad nummer $sheet<br>$title (studenten presentatie)
+!!  !set name_sheetempty=Dit werkblad is leeg ! Misschien een manipulatie faoutje van de docent ?
+!!  !set name_assignedwork=Opdrachten in dit werkblad&nbsp;
+!!  !set name_quality=!nosubst 0 uit $[$re] punten behaald , kwaliteit
+!!endif
+!!let name_intro_exo=Een oefening kan willekeurig worden gekozen uit de lijst van bestaande oefeningen uit de werkbladen.<br>Vink de werkbladen aan in de onderstaande lijst als kandidaten voor dit proefwerk. 
 
-!let name_intro_exo=Een oefening kan willekeurig worden gekozen uit de lijst van bestaande oefeningen uit de werkbladen.<br>Vink de werkbladen aan in de onderstaande lijst als kandidaten voor dit proefwerk. 
 !set name_contenu=Kies de inhoud
+!let name_cpsheet1=U kunt alle oefeningen van werkblad toevoegen aan het proefwerk. Elke oefening krijgt gewicht 1 en de titel van de oorspronkelijke oefening. Of geef hier generieke titel aan
+!let name_cpsheet2=Sheet
+!let name_cpsheet3=Generieke titel voor een oefening
+!let name_cpsheet4=de oefeningen zijn genummerd

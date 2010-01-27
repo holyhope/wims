@@ -1,4 +1,19 @@
+!set lang_exists=yes
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ from <b><font color=green>$wims_institutionname</font></b>
 
+!if $activetest<=0
+!! !let wims_name_sheetadmin=Page of preparation
+ !set name_title=!nosubst Preparation of sheet $sheet
+!else
+!! !let wims_name_sheetadmin=Page of management
+ !set name_title=!nosubst Management of sheet $sheet
+!endif
+
+!read adm/lang/date.phtml.$lang
+!!---------------------
+!!  old part of names.phtml
+!!
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
 
@@ -60,3 +75,69 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !set name_timeleft=!nosubst ¡Se acabó el tiempo! Ya ha usado los $sdure minutos permitidos para este examen.
 !set name_realscore=!nosubst Su puntuación real para esta hoja de examen es $lastscore
 !set name_bestscore =!nosubst Su mejor puntuación para este examen es $lastscore (la mejor puntuación es la que se tomará en cuenta).
+
+!! ---------------------------
+!! new part
+
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
+!set statutaction=Activate,Expire,Deactivate,Invisible,Visible,$wims_name_erase
+
+!! -------------- title description for file examinfo.phtml
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+Rext of explanation,\
+Expiration date,,Score registation,for all sharing classes :,Remarks,Duration of an exam session,Number of trials per exam session
+
+!! ------- value for description of option
+!set name_desc_title=!nosubst limited to $title_limit characters
+!set name_desc_desc=!nosubst limited to $desc_limit characters; html tags and links are allowed
+
+!!set name_desc_dependancy=Score dependencies means that a participant must get required scores in other exercises of the sheet before he/she can do this one. For example, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> means that the participant must get 50% success on exercise 1, 30% success on exercise 2,  and an average of 60% success on exercises 3,4,5.
+
+!set name_desc_comment=Only visible for teachers.
+!set name_desc_duration=in minutes
+!let name_mkexam=Make the exam
+!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts (and/or hours) :
+!let name_shinfo_cutt=Cut times
+
+!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Participants' view,\
+		Add another exercise,\
+		add a series of exercises,\
+into wims_name_participantview,wims_name_addexo,wims_name_addsexo
+
+
+!! différents commentaires de la page de gestion
+!distribute lines General information&nbsp;\
+Content of the exam&nbsp;\
+This exam has no content yet.\
+into name_info,name_content,name_warning
+
+!!The original title is \
+!!Modification of the serie exercices\
+!!Number of point required\
+!!Weight\
+!!Correct the source\
+!!The sheet expiration date of the sheet must be before the class expiration date which is\
+!!Your request is ignored.\
+!!,name_oldtitle,name_titlemodif,\
+!!name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+
+!! titre du tableau de contenu de l'examen (file examcontent.phtml)
+!let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+
+
+!!!if $job=student
+!!  !set name_title=Worksheet $sheet<br>$title (Presentation for participants)
+!!  !set name_sheetempty=The sheet is empty! Nothing is assigned for you in it. Possibly an error in the manipulation by your supervisor.
+!!  !set name_assignedwork=Assigned works in this sheet&nbsp;
+!!  !set name_quality=!nosubst 0 out of $[$re] points obtained, quality
+!!!endif
+!!let name_intro_exo=This exercise can be (randomly) taken from a list of existing exercises in \
+!!worksheets. Please mark the worksheet exercises in the following list, which \
+!!you want to be candidate of this exam exercise.
+
+!set name_contenu=Choose content
+!let name_cpsheet1=You will add each exercise of the sheet at the end of the exam. Each exercise will have weight put to 1 and title put to sheet exercise title or to generic word below :
+!let name_cpsheet2=Sheet
+!let name_cpsheet3=Generic title word
+!let name_cpsheet4=Exercise will be numeroted
