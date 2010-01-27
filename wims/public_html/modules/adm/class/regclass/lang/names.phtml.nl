@@ -46,7 +46,7 @@ uitsluitend voor experts\
 lettertekens\
 Terug naar het begin van de aanmelding.\
 Kies hier het soort virtuele_ruimte dat U wilt aanmaken\
-4 karakters en 16 karakters, cijfers en of letters zonder accenten\   
+4 karakters en 16 karakters, cijfers en of letters zonder accenten\
  into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
    name_characters,name_comeback,name_choose,name_warningpass
    
