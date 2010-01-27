@@ -1,0 +1,183 @@
+!set wims_module_log=error: $error
+
+!if no_subclass iswordof $error
+当前你无权创建分班.
+ !set restart=no
+ !exit
+!endif
+
+!if no_right iswordof $error
+对不起, 你无权在本网站创建虚拟班级. 请
+ !mailurl $wims_site_manager 联系网站管理员\
+虚拟班级创建
+了解详情.
+ !set restart=no
+ !exit
+!endif
+
+!if not_manager iswordof $error
+对不起, 只有网站管理员才有权创建学校的学区.
+ !exit
+!endif
+
+!if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size="+1"><center>发送到电邮地址 $sendmail 的密码.</center></font>
+  <p>
+ !endif
+ !if $regpass!=$empty
+抱歉, 你的密码不对. 请重试.
+ !else
+  !set cname=!item $cltype+1 of 虚拟班,,班级组,,\
+    学校的学区
+  在本站创建$cname受密码保护. 你必须输入密码才能继续.
+ !endif
+ <p>
+ !form reply
+  <input type=hidden name=step value=0>
+ 输入密码: <input size=16 name=regpass type=password>
+  <input type="submit" name="Envoyer" value="$wims_name_send">
+ </form> <p>
+附注. 创建虚拟班级的密码应该从 WIMS 网站的
+ !mailurl $wims_site_manager 管理员\
+虚拟班级创建密码
+那里得到.
+ !if $regpassmail!=$empty and $sendmail=$empty
+ !form reply
+  你可以从以下的电邮地址收到密码 :
+  <input type="text" name="adresse1" value="$adresse1" size="20">
+  <input type=hidden name=step value=0>
+  !let nbaddr=!itemcnt $regpassmail
+  !if $nbaddr=1
+   <font size="+1">@$regpassmail</font>
+   <input type=hidden name="adresse2" value="$regpassmail">
+  !else
+   @
+   !formselect adresse2 list $regpassmail
+  !endif
+  &nbsp;
+  <input type="submit" value="Recevoir" name="Recevoir">
+ </form>
+ !else
+  !reset sendmail
+ !endif
+ !set restart=no
+ !exit
+!endif
+
+!if getid iswordof $error
+ !if $regpass$regid!=$empty
+抱歉, 你的密码不对. 请重试.
+ !else
+在本网站上创建虚拟班级受系统身份验证的保护. 请验明你的身份.
+ !endif
+ <p>
+ !form reply
+  <p><table border=0 cellspacing=5>
+  <tr><td align=right>
+ 输入你的帐户名:</td><td><input size=20 name=regid></td>
+  </tr><tr><td align=right>
+  以及密码:</td><td><input size=16 name=regpass type=password>
+  <input type=submit value=提交></td>
+  </tr></table>
+ </form> <p>
+附注. 如果你需要创建虚拟班级的密码, 请发电邮给
+ !mailurl $wims_site_manager 网站管理员\
+虚拟班创建密码
+ !set restart=no
+ !exit
+!endif
+
+!if class_quota=$error
+你有权建立至多$r_quota1个班级. 你已经达到了; 不能再增加.
+ !set restart=no
+ !exit
+!endif
+
+!if bad_secure=$error
+ 你目前的网络位置不在你自己定义的安全连接表内 (<tt>$secure</tt>)&nbsp;! 
+ 这个错误可能就是由于对班级的接入控制所造成.
+ <p>
+ 请仔细阅读以下文件. 如果你还是搞不懂,
+ 你可以把此栏留空 (对于敏感的操作将会把一次性密码发送给你),
+ 或者填入 <tt>all</tt>
+ 以关闭这个安全措施.
+ <p><hr><p>
+ !read help/hosts.phtml
+ !reset secure
+ !exit
+!endif
+
+!if has_empty=$error
+你还没有给出创建班级所需的所有信息. 请在填全数据后再递交.
+ !exit
+!endif
+
+!if too_short=$error
+数据域 ``$(name_$error_subject)'' 似乎太短.
+ !exit
+!endif
+
+!if bad_date=$error
+你的失效期不正确.
+ !exit
+!endif
+
+!if anti_date=$error
+ 你的班级的失效日期早于今天.
+ 因此班级还没有创建就失效了!
+ !exit
+!endif
+
+!if bad_level=$error
+ 错误的年级名.
+ !exit
+!endif
+
+!if bad_email=$error
+你的电子邮件地址是无效的.
+ <p>
+请注意: 如果你不提供你本人的电子邮件的真实地址, 创建班级的工作是不可能完成的.
+ !exit
+!endif
+
+!if existing=$error
+班级$classname似乎已经存在. 你不该创建同样的班级.
+ !exit
+!endif
+
+!if pass_discord=$error
+你第二次输入的密码与第一次输入的不同. 因此你创建的班级未被录入;
+请你重试.
+ !exit
+!endif
+
+!if bad_pass=$error
+你的 $(name_$error_subject) 含有非法字符. <p>
+请使用一个只含英文字母与数字且不含空格的字符串.
+ !exit
+!endif
+
+!if bad_code=$error
+你没有给出正确的班级密码. 你给出的电子邮件地址正确吗?<p>
+此次失败已被记录.
+ !exit
+!endif
+
+!if define_fail=$error or abuse=$error
+服务站无法将你的班级插入数据库. 这是软件的内部错误.
+ <p>
+请把此问题报告给
+ !mailurl $wims_site_manager 网站管理员\
+用户登录失败
+. 谢谢!
+ !exit
+!endif
+
+!if duplicate=$error
+你想要再次创建已经存在的班级. 也许是因为你点击了 `reload' 钮?
+不管怎样, 班级 $classname 已经存在. 再次创建是无效的. <p>
+ !read links.phtml
+ !exit
+!endif
+

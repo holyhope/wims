@@ -1,0 +1,77 @@
+!set lang_exists=yes
+
+!set name_institution=学校名称
+!set name_description=班级名称
+!set name_supervisor=主持教师名
+!set name_email=电邮地址
+!set name_password=班级密码
+!set name_passsup=主持教师密码
+!set levelid=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,H7,U1,U2,U3,U4,U5,G,R
+!set leveldesc=小学一年级,小学二年级,小学三年级,小学四年级,小学五年级,小学六年级,中学一年级,中学二年级,中学三年级,中学四年级,中学五年级,中学六年级,中学七年级,大学一年级,大学二年级,大学三年级,大学四年级,大学五年级,研究生,科研
+!set nblevel=!itemcnt $levelid
+
+!set classname=<b><font color=green>$description</font></b>\
+ <b><font color=green>($institution)</font></b>
+
+!set months=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
+
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=班级组
+    !set name_sup=教师-主持教师
+   !else
+    !set name_classe=学区
+    !set name_sup=主持教师
+   !endif
+     !set name_classes=$name_classe
+     !set name_classess=$name_classe
+     !set name_classesss=$name_classe
+     !set name_classessss=$name_classe
+ !else
+   !set name_classe=班级
+   !set name_classes=$name_classe
+   !set name_classess=$name_classe
+   !set name_classesss=$name_classe
+   !set name_classessss=$name_classe
+   !set name_sup=教师
+ !endif
+
+!distribute lines 继续\
+  重新操作.\
+  创建 : 班级, 班级组, 学校\
+  学校名\
+  至多\
+  至少\
+  保留给专家\
+  字符\
+  返回到操作的起点.\
+  选择你要创建的虚拟班级的类型.\
+  4 至 16 个字符, 可以是数字或字母\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+   
+!if $regpolicy=file
+  !set noright=(你没有权限做这件事.)
+ !else
+  !set noright=(只有网站管理员才能做这件事.)
+!endif
+
+!set name_regpolicy=只有你的电邮地址现在就有效, $name_classesss的创建工作才能成功.
+
+!set name_help1=此密码使你能作为它的负责人进入$name_classe. 只有你一个人能知道此密码.
+!set name_help2=当班级的参加者注册时必须使用$name_classesss的密码;\
+ 因此你可以把它分发给你的学生.
+  
+!set name_help3=当$name_classesss的主持教师注册时必须使用$name_classesss的密码;\
+ 你不能让你的学生知道这个密码.
+
+!distribute lines 这是你的班级自动存档的日期.\
+  你的$name_classe参加者人数上限 \
+  安全入口\
+  可选的.\
+  你对$name_classe施行敏感操作的主机名.\
+  此密码只用一次. 不能用于连接$name_classe!\
+  你的$name_classe密码\
+  into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
+
+ !exit

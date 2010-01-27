@@ -1,0 +1,68 @@
+!goto $wims_read_parm
+ 
+:1
+A group of classes with a same entrance point allows teachers to
+ exchange or share teaching materials, and students to jump from one class to
+ another without retyping the password.
+ <p>
+ An institution structure is a multi-level system of virtual classes
+ capable of taking care
+ of the need of a whole school: database of students and teachers,
+ different teaching levels,
+ programs and subjects, student classes, teacher responsabilities, etc.
+ !exit
+:2
+ 
+  The creation of
+ !if $Cltype<2
+   <font color="blue">classes</font>
+   is an operation reserved to <font color="blue">teachers</font>. 
+ !else
+    <font color="blue">$name_classe</font>
+ is an operation reserved to a <font color="blue">supervisor</font>.
+ !endif
+ You will need
+ a working email address for the operation. After your $name_classe is created,
+ you should assume the responsibility of its maintenance. <p>
+ To create your $name_classe, please fill in the following informations.
+ !exit
+ 
+:step1
+ 
+ Hello, $supervisor!<p>
+ You are creating a  $name_classe $classname on the WIMS site $httpd_HTTP_HOST,
+ !if $Cltype iswordof 0 1
+ of level 
+ ``<b><font color=green>$name_level</font></b>'',
+ !endif
+ limited to $ilimit participants. Registration to this class is
+ !if $pword!=$empty
+  protected by the password of the $name_classesss.
+ !else
+  open to everybody on the internet (are you sure? Please notice that
+  the site manager may refuse and destroy unauthorized open classes!).
+ !endif
+ This class will expire on $exp_month-$exp_day-$exp_year. <p>
+ If you find an error in the above informations, please
+ !href module=$module&cmd=reply&step=0 correct it.
+ <p>Otherwise, in order to verify the exactness of your passwords,
+ please type them again.
+  !exit
+:step2
+ 
+  Hello, $supervisor!<p>
+ Now you need a code to finish the operation of creation of a new class
+ under WIMS at the site $http_HTTP_HOST. <p>
+ This code has just been sent to your email address
+ ``<tt>$email</tt>''. Please go to verify your email box (wait a little bit
+ if necessary), and read this message.
+ Pick up the code in the message, and copy it below.
+ 
+!exit
+
+:step3
+Hello, $supervisor!<p>
+ Your $name_classe $classname is now created. Congratulations, and enjoy!<p>
+ The number of participants is limited to $ilimit participants (including you)
+
+!exit

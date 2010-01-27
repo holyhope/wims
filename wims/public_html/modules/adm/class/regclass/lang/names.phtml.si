@@ -1,0 +1,80 @@
+!set lang_exists=yes
+
+!set name_institution=nom de l'établissement
+!set name_description=nom de la classe
+!set name_supervisor=nom de l'enseignant
+!set name_email=adresse électronique
+!set name_password=mot de passe de la classe
+!set name_passsup=mot de passe d'enseignant
+!set levelid=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R
+!set leveldesc=$levelid
+!set nblevel=!itemcnt $levelid
+
+!set classname=<b><font color=green>$description</font></b>\
+ of <b><font color=green>$institution</font></b>
+
+!set months=Jan,Feb,Mar,Apr,Maj,Jun,Jul,Avg,Sep,Okt,Nov,Dec
+
+!if $Cltype iswordof 2 4
+   !if $Cltype=2
+    !set name_classe=skupina uèilnic
+    !set name_sup=uèitelja-skrbnika
+   !else
+    !set name_classe=ustanova
+    !set name_sup=skrbnika
+   !endif
+   !set name_classes= the $name_classe
+   !set name_classess= a $name_classe
+   !set name_classesss= of the $name_classe
+   !set name_classessss= The $name_classe
+ !else
+   !set name_classe=uèilnica
+   !set name_classes=the $name_classe
+   !set name_classess=a $name_classe
+   !set name_classesss= of the $name_classe
+   !set name_classessss= The $name_classe
+   !set name_sup=uèitelja
+ !endif
+
+!distribute lines Continue\
+  Restart the operation.\
+  Ustvarjanje uèilnice $name_classess\
+  Nom de l'établissement\
+  at most\
+  at least\
+  za celotno ustanovo\
+  characters\
+  Back to the beginning of the operation.\
+  Izberite tip uèilnice, ki vam ustreza\
+  between 4 and 16 characters, digits or letters without accent\
+ into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
+   name_characters,name_comeback,name_choose,name_warningpass
+
+!if $regpolicy=file
+  !set noright=You don't have the right to do so.
+ !else
+  !set noright=Only the site manager can do it.
+ !endif
+ 
+ !set name_regpolicy=The operation of creation of $name_classesss will not succeed \
+   unless you give your email address which works right now.
+   
+!set name_help1=This password will allow you to access the $name_classe as its $name_sup.\
+  You should be the only person to know it.
+
+!set name_help2=The password of the $name_classesss will be required for the register of\
+  participants of the class; you can therefore diffuse it to your students. 
+  
+!set name_help3=The password of the $name_classesss will be required for the register of\
+  teachers of the $name_classesss ; you must not diffuse it to your students.
+!distribute lines C'est la date à laquelle votre classe sera automatiquement archivée.\
+  Limit of the number of participants of the $name_classe\
+  Secured access\
+  Optional\
+  Names of hosts from which you will perform sensitive operations on the $name_classe.\
+  This code is only used once here. It cannot be used to connect to the $name_classe!\
+  Code of the class\
+  into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
+
+ !exit
+ 

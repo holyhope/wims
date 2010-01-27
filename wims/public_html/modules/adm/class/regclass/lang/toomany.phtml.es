@@ -1,0 +1,15 @@
+<p><h1 class="wims_title">Lo sentimos</h1> <p>
+El número de clases de este sitio <font color=red>$httpd_HTTP_HOST</font>
+ha alcanzado el límite, y por tanto el acceso libre para la creación de clases 
+queda cerrado. <p>
+
+Si es realmente importante que pueda crear un clase, puede
+!mailurl $wims_site_manager escribir al administrador del sitio\
+WIMS@$httpd_HTTP_HOST creation of class
+ pidiéndole que cree manualmente una clase para usted. <p>
+
+Tenga en cuenta que puede crear una clase en cualquier sitio WIMS 
+que lo acepte. También tiene la posibilidad de
+<a href="http://wims.unice.fr/download/wims">descargar el software WIMS</a>
+e instalarlo en su sitio local.
+
