@@ -96,14 +96,14 @@ Verloopdatum,,Cijfer registratie,voor alle klassen die aan het proefwerk meedoen
 !let name_allowtype=open voor iedereen,in simulatiemode,gesloten voor iedereen,open voor de volgend ipadressen (en/of tijdstippen) :
 !let name_shinfo_cutt=Openingstijden
 
-!! dÃ©finition des noms pour les liens dans le menubox (dÃ©finis par wims_menu_items)
+!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
 !distribute items Zo zien studenten deze pagina,\
 Voeg een oefening toe,\
 Voeg een serie oefeningen toe,\
 into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 
 
-!! diffÃ©rents commentaires de la page de gestion
+!! différents commentaires de la page de gestion
 !distribute lines Algemene informatie&nbsp;\
 Inhoudsopgave van dit proefwerk&nbsp;\
 Dit proefwerk is leeg.\
@@ -136,3 +136,8 @@ into name_info,name_content,name_warning
 !let name_cpsheet2=Sheet
 !let name_cpsheet3=Generieke titel voor een oefening
 !let name_cpsheet4=de oefeningen zijn genummerd
+
+!set name_warning_nonfinished=Je hebt nog niet alle opgaven uit dit proefwerk gemaakt. Wanneer je \
+  er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt.\
+  Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle\
+  random (!) sommen opnieuw doen... <p>Weet je zeker dat je er mee wilt stoppen?
