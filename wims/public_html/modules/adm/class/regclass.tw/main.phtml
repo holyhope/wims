@@ -1,7 +1,4 @@
-!!<html><head>
-!!$wims_html_header
-!!</head><body $wims_htmlbody>
-!!!headmenu
+
 !read adm/css.phtml
 !header1
 
@@ -12,12 +9,8 @@
 
 !read names.phtml
 !read adm/title.phtml 3\
-WIMS at $httpd_HTTP_HOST\
-$module_title
-!!<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
-!!<br>
-!!$module_title
-!!</h1> <p><hr width="50%"> <p>
+WIMS $httpd_HTTP_HOST\
+$title
 
 !if $toomany=yes
  !read toomany.phtml
@@ -27,80 +20,119 @@ $module_title
 !if $error!=$empty
  <p>
  !read msg.phtml
- <p>
-[
- !href module=$module&cmd=reply&step=0 重新開課
- ]
+ !if $restart!=no
+  <p>
+  !href module=$module&cmd=reply&step=0 $name_again
+ !endif
  <p>
  !goto end
 !endif
 
-!if $step=$empty or $step=0
- !set password=
- !set passsup=
- 這個開課計劃是預留給教師來經營。您需要填上電子信箱以便運作，課程開出來後，您將賦予維護的責任。<p>
- 為了開設您的課程，請填寫下列資料。
+!if $step=$empty or $step=pre
+ $name_choose
+ <p>
+ !href cmd=reply&step=0&cltype=0 $wims_name_create_class
+ !set wims_menu_items=!append line create_class,1,cmd=reply&step=0&cltype=0\
+ to $wims_menu_items
+ <p>
+ !if 2 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=2 $wims_name_create_superclass
+  !set wims_menu_items=!append line create_superclass,1,cmd=reply&step=0&cltype=2\
+ to $wims_menu_items
+ !else
+  <font color=blue><strike>$wims_name_create_superclass</strike></font> ($noright).
+ !endif
+ <p>
+ !if 4 isitemof $alltypes
+  !href cmd=reply&step=0&cltype=4 $wims_name_create_portal
+  ($name_expert)
+  !set wims_menu_items=!append line create_portal,1,cmd=reply&step=0&cltype=4\
+ to $wims_menu_items
+ !else
+  <font color=blue><strike>$wims_name_create_portal</strike></font> ($noright).
+ !endif
+ <p>
+ <b>$wims_name_help</b>:
+ !read help.phtml.$lang 1
+ !goto end
+!endif
+
+!if $step=0
+ !read help.phtml.$lang 2
  !form reply
  <input type=hidden name=step value=1>
  <ul>
- <li>服務單位 (至多 $instlim 字元)：
-  <input size=$instlim name=institution value="$institution"> <p>
- <li>課程名稱 (至多 $desclim 字元)：
-  <input size=$desclim name=description value="$description"> <p>
- <li>課程等級：<br>
-  <center><table border=1>
-  <tr><th>年級
-  !for j=1 to 6
-   <td align=center>$j
-  !next j
-  !for i in E,H,U
-   <tr><td align=center>$(lev_$i)
-   !for j=1 to 6
-	!if $i!=U or $j<6
-	 <td><input type=radio name=level
-	 !if $level=$i$j
-	  checked
-	 !endif
-	 value=$i$j>
-	!else
-	 <td>.
-	!endif
-   !next j
-  !next i
-  </table></center> <p>
- <li>課程管理者(就是您)的全名：
-  <input size=$suplim name=supervisor value="$supervisor"> <p>
- <li>電子信箱：
-  <input size=$emaillim name=email value="$email"> <br>
-  (除非您確實填寫電子信箱否則開課計劃的操作無法成功。)<p>
- <li>選填管理者密碼：
-  <input size=16 type=password name=passsup> <br>
-  (4 至 16 個無意義的數字或字母)。<br>
-  這個密碼將讓您以管理者身份存取課程，應該只有您一個人知道。<p>
- <li>課程密碼 (可不填)：
-  <input size=16 type=password name=password> <br>
-  (4 至 16 個無意義的數字或字母)。<br>
-  學生登錄課程將會用到這個密碼；您應該公佈給學生知道。<br>
-  沒有密碼的課程將可被(全世界)任何人自由存取，這不是明智的作法。<p>
- <li>課程期滿日期：
-  <select name=exp_day>
+ <li><label for="institution">$name_Name_portal ($name_atmost $instlim $name_characters) :</label>
+ !if $Cltype isin 13
+  !default institution=$wims_institutionname
+ !endif
+  <input size=$instlim name=institution value="$institution" id="institution">
+ </li>
+ <li><label for="description">$wims_name_name $name_classesss ($name_atmost $desclim $name_characters) :</label>
+  <input size=$desclim name=description value="$description" id="description">
+ </li>
+ 
+ !if $Cltype notin 24
+ <li><label for="level">$wims_name_level $name_classesss</label>
+  <select name=level id="level">
+   !for k=1 to $nblevel
+    !if $(levelid[$k])=$level
+     <option selected value=$(levelid[$k])>$(leveldesc[$k])</option>
+    !else
+     <option value=$(levelid[$k])>$(leveldesc[$k])</option>    
+    !endif
+   !next k
+  </select>
+ </li>
+ !endif
+
+ <li><label for="supervisor">$wims_name_firstname  $wims_name_lastname ($wims_name_supervisor)</label>
+  <input size=$suplim name=supervisor value="$supervisor" id="supervisor">
+ </li>
+
+ <li><label for="email">$wims_name_email</label>
+  <input size=$emaillim name=email value="$email" id="email">
+  !if $regpolicy=email
+   <br>($name_regpolicy)
+  !endif
+  <br>
+ </li>
+ <li><label for="passsup">$wims_name_Password ($name_sup)</label>
+  <input size=16 type=password name=passsup id="passsup"> <small>
+  ($name_warningpass).
+  $name_help1</small> <br>
+ </li>
+
+ <li><label for="password">$wims_name_Password ($name_classesss)</label>
+  <input size=16 type=password name=password id="password">
+  <small>($name_warningpass).
+  !if $Cltype<2
+  $name_help2
+  !else
+  $name_help3
+ !endif
+ </small><br>
+ </li>
+ 
+ <li><label for="exp_day">$wims_name_expiration</label>
+ <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
    !ifval $i=$exp_day
-	selected
+    selected
    !endif
    >$i
   !next i
-  </select> <select name=exp_month>
+  </select> <select name=exp_month id="exp_month">
   !for i=1 to 12
    <option value=$i
    !ifval $i=$exp_month
-	selected
+    selected
    !endif
    >
    !item $i of $months
   !next i
-  </select> <select name=exp_year>
+  </select> <select name=exp_year id="exp_year">
   !for i=$thisyear to $thisyear+1
    <option value=$i
    !ifval $i=$exp_year
