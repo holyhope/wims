@@ -45,7 +45,7 @@
 !distribute lines Continuer\
   Reiniciar la operación\
   Creación de $name_classess\
-  Nom de l'établissement\
+  Nombre del centro educativo\
 a lo sumo\
 au moins\
   Réservé aux experts\
