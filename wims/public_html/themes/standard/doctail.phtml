@@ -64,13 +64,12 @@
   </div>
  !endif
 !endif
-
-!if $wims_user=supervisor and $sheetdata!=$empty
+!if ($wims_user=supervisor or  $wims_developer!=$empty) and $sheetdata!=$empty and $job!=exosource
 <div class="menuitem">
- !href cmd=reply&job=exosource $n_source
+ !read oneitem.phtml shsource,1,cmd=reply&job=exosource
 </div>
 !endif
-!if $wims_user=supervisor and _adm/doc notin _$module
+!if $wims_user=supervisor and _adm/doc notin _$module and $job!=exosource
 <div class="menuitem">
  !read oneitem.phtml adddoc,1,module=adm/class/adddoc&dir=$module
 </div>
