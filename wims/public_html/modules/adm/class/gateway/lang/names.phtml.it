@@ -1,0 +1,137 @@
+!set lang_exists=yes
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!
+!! ATTENZIONE: alcune terminologie sono da rivedere dopo una adeguata
+!!             verifica del funzionamento del modulo
+!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+name_supervisor=responsabile
+!!name_teacher=Account docente
+name_addteacher=Nuovo accaunt docente
+!!name_modteacher=$wims_name_modteacher
+name_delteacher=Elimina account docente
+!!name_student=Account studente
+name_addstudent=Nuovo studente
+!! modstudent --> dati studente
+name_modstudent=Opzioni account studente
+name_delstudent=Escludi uno studente
+name_portal=Portale
+name_level=Livello
+name_class=Turno/sezione
+name_program=Insegnamento/materia
+name_course=Corso
+name_icourse=Corso interclasse
+
+name_dellevel0=Elimina livello
+name_delclass0=Elimina turno/sezione
+name_delprogram0=Elimina insegnamento/materia
+name_delcourse0=Elimina il corso
+name_deltest0=Elimina la zona di prova
+name_classproperties=Configurazione turno/sezione
+name_courseproperties=Configurazione corso
+name_levelproperties=Configurazione livello
+name_programproperties=Configurazione insegnamento/materia
+name_participant=Iscritti
+name_csv=Scarica i dati: formato
+!!name_backstruct=Effettua un backup della struttura
+!set name_gestion=Accedi al corso come docente
+!set name_othergestion=Altri docenti supervisori
+!set name_addgestion=Aggiungi un docente supervisore
+
+this_level=questo livello
+this_class=questo turno/sezione
+this_prog=questo insegnamento/materia
+this_course=questo corso
+this_icourse=questo corso interclasse
+
+!! cfr. adm/class/regclass
+levellist=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R
+levelnames=E1,E2,E3,E4,E5,M1,M2,M3,Sup.1,Sup.2,Sup.3,Sup.4,Sup.5,\
+        Univ.1,Univ.2,Univ.3,Magistr.1,Magistr.2,Dottorato,Ricerca
+
+!set name_hidepass=nascondi le password
+!set name_showpass=mostra le password
+!set name_IP=Accesso da IP sicuro
+!set name_nonavailable=Non disponible
+!set name_code=Codice
+!set name_register=per l'iscrizione
+!set name_supervisor2=Docente supervisore
+!set name_Style=Stile dell'insegnamento/materia
+!set name_style=obbligatorio,opzionale
+!set name_installation=Apertura in automatico di corsi\
+ <br>per tutti i turni/sezione del livello
+!set name_visit=Visiter
+ 
+!if $job=addcourse
+   !set name_course1= Il n'y a aucun programme pouvant ajouter des cours à cette classe.
+   !set name_course2=Il n'y a aucune classe où ce programme peut installer un cours.
+   !set name_course3=Voici les programmes permettant à votre classe d'ajouter des cours. \
+   Cliquez sur le titre pour ajouter un cours.
+   !set name_course4= Voici les classes où ce programme peut encore installer des cours.\
+ Cliccare sul titolo per aprire un corso.
+!endif
+
+!if $job=class
+  !set name_class1=Questo turno/sezione non ha ancora corsi
+  !set name_class2=Corsi disponibili per questo turno/sezione
+!endif
+
+!if $job=first
+  !set name_first1=Non ci sono ancora account docente.
+  !set name_first2=Non ci sono ancora account studente.
+  !set name_first3=Non ci sono ancora livelli di insegmanto.
+  !set name_first4=Livelli di insegmaneto disponibili
+!endif
+
+!if $job=level
+  !set name_level1=Questo livello non ha ancora turni/sezioni.
+  !set name_level2=Questo livello non ha ancora insegnamenti/materie.
+  !set name_level3=Insegnamenti/materie disponibili per questo livello
+  !set name_level4=Turni/sezioni disponibili per questo livello
+!endif
+
+!if $job=prog
+ !set name_prog1=Zona di test
+ !set name_prog2=Questo insegnamento/materia non ha zone di test
+ !set name_prog3=Crea una zona di test
+ !set name_prog4=Questo insegnamento/materia non ha ancora corsi.
+ !set name_prog5=Corsi aperti per questo insegnamento/materia
+ !set name_prog6=Consividi le risorse di un altro insegnamento/materia (<b>sperimentale</b>)
+ !set name_prog7=Le risorse di questo insegnamento/materia sono condivise da altri.
+ !set name_prog8=Questo insegnamento/materia condivide le risorse pedagogiche di
+ !set name_prog9=Questo insegnamento/materia non ha corsi interclasse.
+!endif
+
+!if $job=backstruct
+ !set name_backstruct1=Questo è il file di backup
+
+ !set name_backstruct2=Si tratta di un file in formato csv. Significato dei campi:\
+<p>type, code, titre, compte-administrateur, mot-de-passe-inscription, mot-de-passe-enseignant, options.
+
+!endif
+
+!set name_warning_share= Non è possibile eliminare questo insegnamento/materia perché le sue risorse pedagogiche\
+sono condivise con altri insegnamenti/materie.
+!if $job=addclass
+!set form_titlename=Titres des nouvelles classes\
+ <br><small>(séparez les titres par des virgules si <br>\
+ vous ajoutez plusieurs classes en même temps)</small>
+!exit
+!endif
+
+!if $job=addicourse
+!set form_caption=Ajouter des cours interclasse au programme
+!set form_titlename=Titres des nouveaux cours\
+ <br><small>(séparez les titres par des virgules si vous<br>\
+ ajoutez plusieurs cours en même temps)</small>
+!exit
+!endif
+
+!if $job=addprog
+!set form_titlename=Titres des nouveaux programmes :\
+ <br><small>(séparez les titres par des virgules si vous<br>\
+ ajoutez plusieurs programmes en même temps)</small>
+!exit
+!endif
