@@ -1,0 +1,127 @@
+!read adm/class/classlang names.phtml
+!bound job within all,filter,login,select default all
+job=!items2words $job
+aim=email
+
+!if $msg issametext and $cmd notwordof new renew
+  error=empty_msg
+!endif
+
+!if $email_exists=0
+  error=$error empty_user
+!endif
+
+!if $cmd=resume
+  !reset list_user list_noemail error
+!endif
+!!!if $confirm!=$empty or $reg= or $abandon!=$empty or $msg issametext
+!! !goto end
+!!!endif
+ list_user=
+ list_noemail=
+!default job=all
+
+rac=wimshome/log/classes/$wims_class
+wims_superclass=!defof class_superclass in $rac/.def
+!default wims_superclass=$wims_class
+file=$rac/.userlist
+
+!if select iswordof $job and login iswordof $job
+   loginlist_=!listuniq $loginlist,$select_user
+!else 
+  !if login iswordof $job
+    loginlist_=$loginlist
+  !else
+    loginlist_=$select_user
+  !endif
+!endif
+!if $job=all
+  loginlist_=all
+!endif
+
+$(aim)_exists=0
+
+variable=!trim $variable
+!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!!!set list_user=
+!!!set list_noemail=
+
+ !if filter iswordof $job
+  !if $variable!=$empty
+    filter_cnt=!linecnt $variable
+    filter=
+    !for v=1 to $filter_cnt
+     line=!singlespace $(variable[$v;])
+     line =!replace $ $ by , in $line
+     filter=!append line $line to $filter
+    !next
+  !endif
+ !endif
+ !if $filter=$empty
+   filter=all
+ !endif
+ !for lu =1 to $cnt
+  test=1
+  TEST=
+  us_=!record $lu of $file
+  !distribute item $us_ into l_name_,f_name_,login
+  !defread wimshome/log/classes/$wims_superclass/.users/$login
+  !if $filter=all
+   !if $loginlist_!=all and $login notitemof $loginlist_  
+     test=0
+   !endif
+  !else
+   !if ($login isitemof $loginlist_) or $loginlist_=all
+    !for u=1 to $filter_cnt
+     test=1
+     sel=$(filter[$u;])
+     sel_cnt=!itemcnt $(filter[$u;])
+     !for j=1 to $sel_cnt
+      sel1=!replace internal = by , in $(sel[$j])
+       !if $(user__$(sel1[1]))=$(sel1[2])
+         test=!append item 1 to $test
+       !else
+         test=!append item 0 to $test
+       !endif
+     !next j
+     !if 0 notin $test
+      TEST=1
+     !endif
+   !next lu
+  !else
+   test=0
+  !endif
+ !endif
+:OK
+  !if 0 notin $test or $TEST=1
+    aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
+    !if $aim_!=
+     list_user=!append line $login,$l_name_,$f_name_,$aim_ to $list_user
+     !set $(aim)_exists=1
+    !else
+     list_noemail=!append line $login,$l_name_,$f_name_, to $list_noemail
+    !endif
+  !endif
+!next lu
+!goto end
+!endif
+!endif
+!if $job=login
+  !for lu =1 to $cnt
+   us_=!record $lu of $file
+   !distribute item $us_ into l_name_,f_name_,login
+   !if $login isitemof $loginlist
+    !defread wimshome/log/classes/$wims_superclass/.users/$login
+    aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
+    !if $aim_ !=
+     list_user=!append line $login,$l_name_,$f_name_,$ph_ to $list_user
+     !set $(aim)_exists=1
+    !else
+     list_noemail=!append line $login,$l_name_,$f_name_, to $list_noemail
+    !endif
+   !endif
+  !next lu
+ !goto end
+!endif
+
+:end
