@@ -1,15 +1,13 @@
 !!##should allow to have only one module by language
 
-
-!set lang_exists1=!defof lang_exists in names.$lang
-!set lang_exists2=!defof lang_exists in lang/names.$lang
-!set lang_exists3=!defof lang_exists in lang/names.phtml
-
-!set lang_exists=!defof lang_exists in lang/$wims_read_parm.$lang
-
-!if $lang_exists1$lang_exists2$lang_exists$lang_exists3!=
- !set modu_lang=$lang
+!let modu_lang=$lang
+!read lang/names.phtml.$modu_lang
+!if $lang_exists!=yes
+   !let modu_lang=en
+   !read lang/names.phtml.$modu_lang
 !endif
-!default modu_lang=en
+
 !set module_language=$lang
+
+
 !!########
