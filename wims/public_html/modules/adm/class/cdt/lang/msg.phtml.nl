@@ -4,7 +4,7 @@
 !exit
 
 :not_supervisor
-Erg jammer, maar alleen eendocent kan de klasse agenda wijzigen.
+Erg jammer, maar alleen een docent kan de agenda wijzigen.
 !exit
 
 :bad_class

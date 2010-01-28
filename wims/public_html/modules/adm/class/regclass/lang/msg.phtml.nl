@@ -2,23 +2,23 @@
 
 !if no_subclass iswordof $error
     Bij de huidige instellingen heeft U niet de 
-    rechten om <b>sub-klassen</b> op te richten.
+    rechten om subklassen op te richten.
   !set restart=no
  !exit
 !endif
 
 !if no_right iswordof $error
-    U heeft niet de rechten om virtuele klassen op te richten op deze WIMS-server.<br>
+    U heeft niet de rechten om klassen op te richten op deze WIMS-server.<br>
     Neem
     !mailurl $wims_site_manager contact op met de site-manager\
-    voor meer details over het oprichten van virtuele klassen
+    voor meer details over het oprichten van klassen
     op deze server.
  !set restart=no
  !exit
 !endif
 
 !if not_manager iswordof $error
-    Helaas, maar alleen systeem-beheerder (site-manager) heeft de bevoegdheden
+    Helaas, maar alleen systeembeheerder (sitemanager) heeft de bevoegdheden
     om een portaal op te richten.
  !exit
 !endif
@@ -31,7 +31,7 @@
  !if $regpass!=$empty
   Helaas, Uw wachtwoord is niet juist. Probeer het nog eens.
  !else
-  !set cname=!item $cltype+1 of virtuele klassen,,een groep virtuele klassen,,\
+  !set cname=!item $cltype+1 of klassen,,een groep klassen,,\
   een portaal
   Het oprichten van $cname op deze server is beschermd met een wachtwoord.
   Vul hieronder het wachtwoord in.
@@ -42,8 +42,8 @@
   Het wachtwoord: <input size=16 name=regpass type=password>
   <input type="submit" name="Envoyer" value="$wims_name_send">
  </form><p>
- Opmerking. Het wachtwoord voor het oprichten van virtuele klassen kan worden verkregen bij de 
- !mailurl $wims_site_manager systeem-beheerder\
+ Opmerking. Het wachtwoord voor het oprichten van klassen kan worden verkregen bij de 
+ !mailurl $wims_site_manager systeembeheerder\
  van deze WIMS server.
     
  !if $regpassmail!=$empty and $sendmail=$empty
@@ -73,7 +73,7 @@
  !if $regpass$regid!=$empty
   Helaas, het wachtwoord was niet correct. Probeer nog een keer.
  !else
-  Het oprichten van virtuele klassen op deze server wordt geregeld door een 
+  Het oprichten van klassen op deze server wordt geregeld door een 
   wachtwoord beschermde aanmeldings procedure.
  !endif
  <p>
@@ -87,9 +87,9 @@
     </tr></table>
  </form> <p>
  Opmerking: Schrijf naar de systeembeheerder of
- !mailurl $wims_site_manager site-manager\
+ !mailurl $wims_site_manager sitemanager\
  voor een account
- als U virtuele klassen op deze server wilt oprichten.
+ als U klassen op deze server wilt oprichten.
   !set restart=no
  !exit
 !endif
@@ -107,7 +107,7 @@
  <p>
  Lees aandachtig de onderstaande documentatie.
  Als het niet duidelijk is, vul hier dan niets of het woord <tt>all</tt> in.
- Bij dit laatste schakelt WIMS de controle op ipadressen voor uw virtuele ruimte uit.
+ Bij dit laatste schakelt WIMS de controle op ipadressen voor uw klassen uit.
  <p>
  <hr>
  <p>
@@ -117,7 +117,7 @@
 !endif
 
 !if has_empty=$error
-  U hebt voor het oprichten van een virtuele klas niet alle vereiste informatie ingevuld.
+  U hebt voor het oprichten van een klas niet alle vereiste informatie ingevuld.
   Graag aanvullen.
  !exit
 !endif
@@ -146,13 +146,13 @@
 !if bad_email=$error
  Uw ingevulde email adres blijkt niet valide te zijn.
  <p>
- Denk eraan dat het oprichten van virtuele klassen op deze server alleen kan
+ Denk eraan dat het oprichten van klassen op deze server alleen kan
  slagen bij een <b>echt werkend email adres<b>.
  !exit
 !endif
 
 !if existing=$error
- De virtuele klas $classname bestaat volgens mij al op deze server.
+ De klas $classname bestaat volgens mij al op deze server.
  !exit
 !endif
 

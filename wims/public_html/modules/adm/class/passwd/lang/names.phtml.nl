@@ -10,10 +10,10 @@
 !distribute line Welk type wachtwoord\
   Uw persoonlijke login wachtwoord\
   Een wachtwoord voor een leerling\
-  in dit geval hoeft U <b>niet</b> het oude wachtwoord in te typen\
+  In dit geval hoeft U <b>niet</b> het oude wachtwoord in te typen\
   Het klasse wachtwoord, voor nieuwe leerlingen: het wachtwoord nodig voor het starten van de aanmeldingprocedure in een besloten klas/school.\
-  geef het oude wachtwoord\
-  geef nu het nieuwe wachtwoord\
+  Geef het oude wachtwoord\
+  Geef nu het nieuwe wachtwoord\
   het nieuwe wachtwoord nog een keer\
   Voor persoonlijke wachtwoorden: voor wachtwoorden met een eenmalig gebruik  geef een "<b>+</b>"-teken voorafgaand aan het nieuwe wachtwoord\
   De wachtwoorden moeten worden opgebouwd uit uitsluitend alfanumerieke karakters, met een lengte tussen de 4 en 16 tekens\

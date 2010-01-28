@@ -15,10 +15,10 @@
 	    applet=1;
 	    input=document.applets[0].getLinear();
 	    input=input+'';
-	    if(input.indexOf('error')!=-1){alert(input);return;}   
+	    if(input.indexOf('error')!=-1){setAlarm(input);return;}   
 	    input=nthroot(input);if(input=="error"){return;}
-	    if(input.indexOf(',')!=-1){alert(r4);return;}
-	    v=input.length;if(v==0){alert(r1);return;}if(v>100){alert(r2); return;}if(v==0){alert(r1);return;}
+	    if(input.indexOf(',')!=-1){setAlarm(r4);return;}
+	    v=input.length;if(v==0){setAlarm(r1 + "$counter");return;}if(v>100){setAlarm(r2); return;}if(v==0){setAlarm(r1);return;}
 	    if(check_f(input)==0){return;}
 	    if(check_o(input)==0){return;}
 	    input=science(input);if(input=="error"){return;}
@@ -31,7 +31,7 @@
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
 		t1=input.indexOf("[");
-		if(t1!=-1){alert(r13);return;}
+		if(t1!=-1){setAlarm(r13);return;}
 	    }
 	    input=input.replace(/#/g,' ');
 	    total[0]=input;
@@ -68,6 +68,11 @@
 	<table summary="" border="1" width="100%">
 	    <tr>
 	    <th>
+	     <div id="alarmtext" name="alarmtext"  style="position:absolute;top:0px;left:0px;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red"></div>
+	    </th>
+	    </tr>
+	    <tr>
+	    <th>
 		<applet id="MathView" code="MathView.class" codebase="$appletdir" archive="MathView.jar" width="580" height="260">
 		    !! will default to background color of html-page/element
 		    <script language="javascript" type="text/javascript">
@@ -90,6 +95,7 @@
 		!! helptext : can display "exercise" math in the applet applettext=!nospace 1 / ( 1 + x ) =
 		<param name="wimsvars" value="$varlist">
 		!! declare varlist=x,y,z,s or varlist=x y z s
+		<param name="special_fraction" value="$special_fraction">
 		!if $mathviewpanel=$empty
 		    <param name="my_panel" value="$module_title:and:or:sqrt():+:-:*:/">
 		!else

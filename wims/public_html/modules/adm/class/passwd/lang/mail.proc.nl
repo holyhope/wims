@@ -1,13 +1,13 @@
 !mailto $user_email\
-WIMS virtuele klasse wachtwoord\
+WIMS klasse wachtwoord\
 \
 $class_supervisor,\
 \
-U bent de WIMS supervisor / docent van de virtuele klas $class_description\
+U bent de WIMS supervisor/docent van de klas $class_description\
 [ van $class_institution op  $HTTP_HOST ].\
 \
 Met dit mailtje bevestigen we de verandering van het supervisor wachtwoord\
-Deze verandering kwam tot stand in een netwerk verbinding met $REMOTE_ADDR \
+Deze verandering kwam tot stand in een netwerkverbinding met $REMOTE_ADDR \
 \
 Wanneer U dit alles nogal vreemd overkomt, heeft zeer waarschijnlijk iemand\
 het supervisor wachtwoord gestolen.\

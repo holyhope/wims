@@ -2,7 +2,8 @@
 
 !if no_pick=$error
 Kies eerst een  
- !href cmd=resume werkblad voor U op de <tt class="c">toevoegen</tt> drukt...
+ !href cmd=resume werkblad 
+ voor U op de <tt class="c">toevoegen</tt> drukt...
  !exit
 !endif
 

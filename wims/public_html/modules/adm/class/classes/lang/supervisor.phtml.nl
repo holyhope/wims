@@ -6,7 +6,7 @@ Virtuele klassen geven docenten de mogelijkheid om
  Hier kunt U een 
  !href module=adm/class/regclass nieuwe virtuele klas
   oprichten, bijvoorkeur na het lezen van
- !href target=wims_help module=help/main&chapter=3 $wims_name_help
- help pagina's , of U kunt een bezoek brengen aan &eacute;&eacute;n van de
+ !href target=wims_help module=help/main&chapter=3 help pagina's 
+  of U kunt een bezoek brengen aan &eacute;&eacute;n van de
  !href module=$module&type=example demonstratie klassen
 . <p>

@@ -12,7 +12,7 @@ Om een rangnummer te verwijderen, schrijf 0.
 
 !set name_show2=of een bestaande volgorde wijzigen. Als U activiteiten in uw klas verwijdert, moeten de pedagogische volgorde worden aangepast.
 
-!set name_config_reverse=In beginsel worden dit type lesmateriaal in chronologische volgorde getoond,\
+!set name_config_reverse=In beginsel wordt dit type lesmateriaal in chronologische volgorde getoond,\
 Laat de omgekeerde volgorde zien
 
 !set name_config_generic=Algemene benaming voor "$name_sequence"

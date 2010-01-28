@@ -19,11 +19,11 @@
 	if(applet==1){
 	    !! using the inputapplet
 	    input=document.getElementById("MathView").getLinear();input=input+'';
-	    v=input.length;if(v==0){alert(r1+"\ 1");return;}if(v>100){alert(r2); return;}
-	    if(input.indexOf('error')!=-1){alert(input);return;}
+	    v=input.length;if(v==0){setAlarm(r1+"\ 1");return;}if(v>100){setAlarm(r2); return;}
+	    if(input.indexOf('error')!=-1){setAlarm(input);return;}
 	    input=arrows(input,2,"","");if(input=="error"){return;}
 	    input=nthroot(input);if(input=="error"){return;}
-	    if(input.indexOf(',')!=-1){alert(r4);return;}
+	    if(input.indexOf(',')!=-1){setAlarm(r4);return;}
 	    if(check_f(input)==0){return;}if(check_o(input)==0){return;}
 	    if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
 	    input=science(input);if(input=="error"){return;}
@@ -33,7 +33,7 @@
 		if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
 		t1=input.indexOf("[");
-		if(t1!=-1){alert(r13);return;}
+		if(t1!=-1){setAlarm(r13);return;}
 	    }
 	    input=input.replace(/#/g,' ');
 	    total[0]=input;
@@ -44,9 +44,9 @@
 	    var inputfieldnumber=0;
 	    for(z=0;z<ml;z++){
 		input=document.mydefaultform[z].value;
-		v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
+		v=input.length;if (v==0){var qu=z+1; setAlarm(r1+"\ "+qu);return;}
 		input=nthroot(input);if(input=="error"){return;}
-		if(input.indexOf(',')!=-1){alert(r4);return;}
+		if(input.indexOf(',')!=-1){setAlarm(r4);return;}
 		input=arrows(input,2,"","");if(input=="error"){return;}
 		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
 		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
@@ -56,14 +56,14 @@
 		if(t1 !=- 1){
 		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
-		    t1=input.indexOf("[");if(t1!=-1){alert(r13);return;}
+		    t1=input.indexOf("[");if(t1!=-1){setAlarm(r13);return;}
 		}
 		input=input.replace(/#/g,' ');
 		total[inputfieldnumber+applet]=input;
 		inputfieldnumber=inputfieldnumber+1;
 	    }
 	}
-	v=total.length;if(v==0){alert(r1);return;}
+	v=total.length;if(v==0){setAlarm(r1);return;}
 	t=confirm(r0+"\n"+reply);
 	if(t==true){total=encodeURIComponent(total);URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+total ;document.location.href = URL;if(applet==1){document.getElementById("MathView").destroy();}}
     }
@@ -174,6 +174,7 @@
 			    <param name="smallfont" value="$smallfont">
 			    <param name="helptext" value="$applettext">
 			    <param name="wimsvars" value="$varlist">
+			    <param name="special_fraction" value="$special_fraction">
 			    !! declare varlist=x,y,z,s    or varlist=x y z s
 			!if $mathviewpanel=$empty
 			    <param name="my_panel" value="$module_title:and:or:sqrt():+:-:*:/">

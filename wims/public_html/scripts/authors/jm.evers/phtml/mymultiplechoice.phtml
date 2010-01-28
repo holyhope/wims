@@ -49,6 +49,11 @@
 		<td  valign="top" align="center">
 		    <table summary="" cellpadding="5" border="1">
 			<tr>
+			!if $options*$xsize>1024
+			    !set one_row=0
+			!else
+			    !set one_row=1
+			!endif
 			!set t=0
 			!for p=1 to $options
 			    !increase t
@@ -73,7 +78,7 @@
 				    !endif
 				</a>
 			    </td>
-			    !if $t=2
+			    !if $t=2 and $one_row=0
 			    	</tr><tr>
 				!set t=0
 			    !endif

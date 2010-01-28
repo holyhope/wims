@@ -1,0 +1,192 @@
+!!hotspot questions  var1 = xmin,xmax,ymin,ymax in coordinatesystem of the graph.
+!! without ISMAP
+
+!set xmin=!item 1 of $var1
+!set xmax=!item 2 of $var1
+!set ymin=!item 3 of $var1
+!set ymax=!item 4 of $var1
+<script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script> 
+<div id="mouse_coords" style="opacity:0.6;filter:alpha(opacity=60);position:absolute;z-index:100;display:block;background-color:lightgreen;top:0px;left:0px;font-size:16px;border:1px solid #ff0000"></div>
+<div id="mouse_dot_ie" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:4px;min-height:4px;max-height:4px;height:auto!important;height:4px;"><table summary="" bgcolor="red" width="4" height="4"><tr><th></th></tr></table></div>
+<div id="mouse_dot_w3c" style="position:absolute;z-index:100;display:none;background-color:red;top:0px;left:0px;width:6px;height:6px;"></div>
+
+!set n=$counter
+<p align="center">
+    <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+	<tr>
+	<td>
+	!if $(question$n) != $empty
+	    $(question$n)
+	    <br>
+	!endif
+	!if $(formula$n) != $empty
+	    !insmath $(formula$n)
+	    <br>
+	!endif
+	!if $exotext != $empty
+	    $exotex
+	!endif
+	</td>
+	!if $XSIZE>640
+	    </tr><tr>
+	!endif
+	<td>
+	!if $draw=1
+	    !! for fly
+	    !set insdraw_size=$xsize,$ysize
+	    !set ins_attr= id="myimage"
+	    <div id="mydiv">
+		!insdraw $(image$n)
+	    </div>
+	!endif
+	!if $plot=1
+	    !! for GNUplot
+	    !set ins_attr= id="myimage"
+	    !set insplot_set=$(image_settings$n)
+	    <div id="mydiv">
+		!insplot $(image$n)
+	    </div>
+	!endif
+	</td>
+	</tr>
+    </table>
+    <table summary="">
+	<tr>
+	<th>
+	    <input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send">
+	</th>
+	<th>
+	    <input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow">
+	</th>
+	</tr>
+    </table>
+</p>
+
+<script type="text/javascript">
+    var URL;
+    function dontknow(){
+	var t=confirm(r0+"\n$dontknow ?");
+	if(t==true){
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
+	    document.location.href = URL;
+	}
+    }
+    
+    function sendanswer(){
+	t=confirm(r0+"\n ("+relx+":"+rely+")");
+	if(t==true){
+	    reply=relx+","+rely;
+	    reply = encodeURIComponent(reply)
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ; 
+	    document.location.href = URL;
+	}
+    }
+    !! wims variables
+    var sizex=$xsize;
+    var sizey=$xsize;
+    var xmin=$xmin,xmax=$xmax,ymin=$ymin,ymax=$ymax;
+    var rounding=$rounding
+    var relx=0;
+    var rely=0;
+    var IE=false;
+
+    function showit(){
+	recalculate(event.x,event.y);
+    }    
+    function showitMOZ(e){
+	recalculate(e.pageX,e.pageY);
+	e.stopPropagation();	
+    }    
+    if (!document.all){
+	window.captureEvents(Event.CLICK);
+	document.getElementById('myimage').onclick=showitMOZ;
+	//document.onclick=showitMOZ;
+    }
+    else
+    { 
+	IE=true;
+	document.getElementById('myimage').onclick=showit;
+	//document.onclick=showit;
+    }
+    
+    function recalculate(x,y){
+	var xi = findPosX('myimage');
+	var yi = findPosY('myimage');
+	if(IE){xi=xi-document.body.scrollLeft ;yi=yi-document.body.scrollTop ;}
+	if(x > xi && x < xi+sizex && y > yi && y < yi+sizey){
+	    xi=x - xi;yi=y - yi;
+	    relx=px2x(xi);rely=px2y(yi);
+	    relx=(Math.round(rounding*relx))/rounding;
+	    rely=(Math.round(rounding*rely))/rounding;
+	    
+	    if(IE){
+	    // Horrible...please avoid Internet Explorer and use a W3C compliant browser...
+	    // Serious issues with mouse coordinate system...moving with scollX/scrollY...windowposition...problems with "div height"
+	    // I've spent 90% of my time for this module trying to get it working on WinXP...hacking around these issues :(
+	    // And I've only tested it on IE6...
+	    // Other WinXP browsers Opera 10 / Firefox / Safari / Google Chrome work fine !! 
+	    
+		document.getElementById('mouse_coords').style.top = y+6+document.body.scrollTop; 
+		document.getElementById('mouse_coords').style.left = x+6+document.body.scrollLeft; 
+		document.getElementById('mouse_dot_ie').style.top = y-4+document.body.scrollTop; 
+		document.getElementById('mouse_dot_ie').style.left = x-4+document.body.scrollLeft; 	    
+		document.getElementById('mouse_dot_ie').style.display = "block"
+	    }else{
+		document.getElementById('mouse_coords').style.top = y+6; 
+		document.getElementById('mouse_coords').style.left = x+6; 	    
+		document.getElementById('mouse_dot_w3c').style.top = y-3; 
+		document.getElementById('mouse_dot_w3c').style.left = x-3; 	    
+		document.getElementById('mouse_dot_w3c').style.display = "block"
+	    }
+	    document.getElementById('mouse_coords').innerHTML='<b>('+relx+':'+rely+')</b>';
+	}
+    }
+    
+    function findPosX(i){
+	obj = document.getElementById(i);
+	var curleft = 0;
+	if(obj.offsetParent){
+    	    while(1){
+        	curleft += obj.offsetLeft;
+        	if(!obj.offsetParent){break;}
+		obj = obj.offsetParent;
+    	    }
+	}
+	else
+	{
+	    if(obj.x){
+    		curleft += obj.x;
+	    }
+	}
+	return curleft;
+    }
+
+    function findPosY(i){
+	obj = document.getElementById(i);
+	var curtop = 0;
+	if(obj.offsetParent){
+    	    while(1){
+        	curtop += obj.offsetTop;
+        	if(!obj.offsetParent){break;}
+		obj = obj.offsetParent;
+    	    }
+	}
+	else
+	{
+	    if(obj.y){
+    		curleft += obj.y;
+	    }
+	}
+	return curtop;
+    }
+    
+    function px2x(px){ //pixel to x-coords                                                                                        
+        var X = eval(px*(xmax - xmin)/sizex + xmin);                                                                                         
+        return X;                                                                                                                          
+    }
+    
+    function px2y(py){ // pixel to y-coords                                                                                       
+        Y = eval(ymax -  py*(ymax - ymin)/sizey);                                                                                          
+        return Y;                                                                                                                          
+    }
+</script>

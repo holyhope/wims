@@ -5,11 +5,11 @@
  
 !set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
 
-!distribute items Exam, Sheet into name_E, name_S
+!distribute items Proefwerk,Werkblad into name_E, name_S
 
 !set name_title=Statistische gegevens
 !distribute items Totaal,vereiste<br>punten,gewicht,moeilijkheids<br>graad,\
-gemiddelde/cijfer,gemiddelde/leerling,std afwijking,tijdsduu,cijfer,\
+gemiddelde/cijfer,gemiddelde/leerling,std afwijking,tijdsduur,cijfer,\
 theoretische tijdsduur,Sum,min.,min,max\
 into name_totals,name_required_points,name_coeff,name_index,\
 name_avg_score,name_avg_participant,name_deviation,name_duration,name_score,\

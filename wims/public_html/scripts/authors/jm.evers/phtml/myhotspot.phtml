@@ -1,4 +1,15 @@
 !!hotspot questions
+<script type="text/javascript"  src="$jsdir/../lang/remarks.$taal.js"></script> 
+<script type="text/javascript">
+    var URL;
+    function dontknow(){
+	var t=confirm(r0+"\n$dontknow ?");
+	if(t==true){
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
+	    document.location.href = URL;
+	}
+    }
+</script>
 !set n=$counter
   <p align="center">
     <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
@@ -12,7 +23,7 @@
 	    !insmath $(formula$n)
 	    <br>
 	!endif
-	!if $exotext1=$empty
+	!if $exotext=$empty
 	    $exotext
 	!endif
 	</td>
@@ -23,6 +34,7 @@
 	    !if $image=2
 		<table summary="">
 		    <tr>
+		    !if $draw=1
 		    <th>
 			!set ins_attr = ismap
         		!href cmd=reply&$no_name
@@ -37,6 +49,23 @@
 			!insdraw $var2
 			</a>
 		    </th>
+		    !endif
+		    !if $plot=1
+		    <th>
+			!set ins_attr = ismap
+        		!href cmd=reply&$no_name
+			!set insplot_set=$(image_settings$n)
+			!insplot $var1
+			</a>
+		    </th>
+		    <th>
+			!set ins_attr = ismap
+        		!href cmd=reply&$no_name
+			!set insplot_set=$(image_settings$n)
+			!insplot $var2
+			</a>
+		    </th>
+		    !endif
 		    </tr>
 		</table>
 	    !else
@@ -56,6 +85,18 @@
 		!endif
 	    !endif
 	</td>
+	</tr>
+    </table>
+    <table summary="">
+	<tr>
+	!if $inputs !=0
+	<th>
+	    <input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send">
+	</th>
+	!endif
+	<th>
+	    <input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow">
+	</th>
 	</tr>
     </table>
   </p>

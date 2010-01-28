@@ -37,9 +37,9 @@
 !endif
 
 !distribute lines Doorgaan\
-  Herhaal deze procedure.\
-  Oprichten van een virtuele klas, groep klassen, school of  instituut\
-  Naan van het instituut\
+Herhaal deze procedure.\
+Oprichten van een virtuele klas, groep klassen, school of  instituut\
+Naam van het instituut\
 maximaal\
 minimaal\
 uitsluitend voor experts\
@@ -48,12 +48,12 @@ Terug naar het begin van de aanmelding.\
 Kies hier het soort virtuele_ruimte dat U wilt aanmaken\
 4 karakters en 16 karakters, cijfers en of letters zonder accenten\
  into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
-   name_characters,name_comeback,name_choose,name_warningpass
+ name_characters,name_comeback,name_choose,name_warningpass
    
 !if $regpolicy=file
-    !set noright=(U bent hiertoe niet bevoegd.)
+    !set noright=U bent hiertoe niet bevoegd.
  !else
-    !set noright=(alleen de sitemanager is hiertoe bevoegd.)
+    !set noright=alleen de sitemanager is hiertoe bevoegd.
  !endif
  
 !set name_regpolicy=!nosubst Het oprichten van $name_classesss zal niet lukken \
@@ -76,6 +76,6 @@ Optioneel\
 Lijst met adressen van waaruit de administratie voor uw $name_classe kan worden afgehandeld.\
 Dit is een &eacute;&eacute;nmalige code, en is nergens anders voor te gebruiken !\
 Code van $name_classe\
-into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
+ into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
 
 !exit

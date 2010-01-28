@@ -97,7 +97,7 @@ Alvast bedankt!
 !endif
 
 !if site_complete=$error
- Helaas , het aantal geregistreerde deelnemers heeft de ingestelde limiet ( van $wims_user_limit leerlingen) bereikt.
+ Helaas het aantal geregistreerde deelnemers heeft de ingestelde limiet ( van $wims_user_limit leerlingen) bereikt.
 <p>  
  U kunt een 
  !mailurl $wims_site_manager email sturen\

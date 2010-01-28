@@ -50,7 +50,7 @@
 		totalsize=(totalsize+cookiesize);cookiecount++;t1=t2;t2=t2+cookiesize;
 	    }
 	    if(cookiecount>maxcookies){
-		alert("construction is too big to be stored in cookies \n If the exercise is returned by WIMS for correction,\n You will have to draw it all over again...");
+		setAlarm("construction is too big to be stored in cookies \n If the exercise is returned by WIMS for correction,\n You will have to draw it all over again...");
 		cookiecount=-1;
 	    }
 	    else
@@ -71,9 +71,9 @@
 	    var inputfieldnumber=0;
 	    for(z=0;z<ml;z++){
 		input=document.mydefaultform[z].value;
-		v=input.length;if (v==0){var qu=z+1; alert(r1+"\ "+qu);return;}
+		v=input.length;if (v==0){var qu=z+1; setAlarm(r1+"\ "+qu);return;}
 		input=nthroot(input);if(input=="error"){return;}
-		if(input.indexOf(',')!=-1){alert(r4);return;}
+		if(input.indexOf(',')!=-1){setAlarm(r4);return;}
 		input=arrows(input,2,"","");if(input=="error"){return;}
 		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
 		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
@@ -83,7 +83,7 @@
 		if(t1 !=- 1){
 		    if(input.indexOf("sqrt[")!=-1){input=specialroot(input);if(input=="error"){return;}}
 		    if(input.indexOf("log[")!=-1){input=speciallog(input);if(input=="error"){return;}}
-		    t1=input.indexOf("[");if(t1!=-1){alert(r13);return;}
+		    t1=input.indexOf("[");if(t1!=-1){setAlarm(r13);return;}
 		}
 		input=input.replace(/#/g,' ');
 		extra_answer[z]=input;

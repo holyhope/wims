@@ -29,6 +29,19 @@
 // 14 keywords(t)	convert all keywords to  ' and '			: returns modified t or "error"
 // 15 upper_f(t)	converts all 'known' functions and 'and' to uppercase	: returns modified t or "error"
 
+function setAlarm(txt){
+    var h=document.documentElement.clientHeight;
+    var w=document.documentElement.clientWidth;
+    document.getElementById('alarmtext').style.display = "block"
+    document.getElementById('alarmtext').style.top = h/3.5;
+    document.getElementById('alarmtext').style.left =w/4;
+    document.getElementById('alarmtext').innerHTML='<table cellpadding=\"10\"><tr><th>'+txt+'</th></tr></table>';
+    setTimeout('resetAlarm()',4000);
+}
+	
+function resetAlarm(){
+    document.getElementById('alarmtext').style.display = "none"
+}
 
 function science(t){
     t=t.replace(/\*\*/g,'^'); 
@@ -53,7 +66,7 @@ function science(t){
 	if(c0==1 && c1==0 && t1==""){t=t.replace('e','E');}
 	t=t.replace('e','E');
 	e=t.indexOf('e');
-	trouble++;if(trouble>100){alert(r20);t="error";return t;}
+	trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
     }
     t=t.replace(/E/g,"e");
     t=t.replace(/10\^0/g,"10^");
@@ -77,13 +90,13 @@ function check_o(t){
 		    for(sa=0;sa<ld;sa++){
 			d=dingen[sa];
 		        if(t3==d || t2==d){
-			    alert(r5);return 0;
+			    setAlarm(r5);return 0;
 			}
 		    }
 		}
 	    }    
 	    t=t.replace(o,'0');t1=t.indexOf(o);
-	    trouble++;if(trouble>200){alert(r20);return 0;}
+	    trouble++;if(trouble>200){setAlarm(r20);return 0;}
 	}
     }
     return 1;
@@ -101,8 +114,8 @@ function check_f(t){
 	fun=functies[s];ismatch=t.indexOf(fun);F=fun.toUpperCase();c0=fun.length;
 	while(ismatch != -1 ){
 	    c=c0+ismatch;t1=t.substring(ismatch-1,ismatch);t2=t.substring(c,c+1);
-	    if(t2=='(' || alfabet.indexOf(t1)!=-1 || Alfabet.indexOf(t1)!=-1 || alfabet.indexOf(t2)!=-1 || Alfabet.indexOf(t2)!=-1){t=t.replace(fun,F);ismatch=t.indexOf(fun);}else{alert(r9);return 0;}
-	    trouble++;if(trouble>200){alert(r20);return 0;}
+	    if(t2=='(' || alfabet.indexOf(t1)!=-1 || Alfabet.indexOf(t1)!=-1 || alfabet.indexOf(t2)!=-1 || Alfabet.indexOf(t2)!=-1){t=t.replace(fun,F);ismatch=t.indexOf(fun);}else{setAlarm(r9);return 0;}
+	    trouble++;if(trouble>200){setAlarm(r20);return 0;}
 	}
     }
     return 1;
@@ -121,26 +134,26 @@ function check_x(t){
 	    d=dingen[s];
 	    if(t2==d){chk=chk+1;}if(t3==d){chk=chk+1;}
 	}
-	if(chk==2){alert(r7);return 0;}
+	if(chk==2){setAlarm(r7);return 0;}
 	t=t.replace('x','*');t1=t.indexOf('x');
-	trouble++;if(trouble>100){alert(r20);return 0;}
+	trouble++;if(trouble>100){setAlarm(r20);return 0;}
     }
     return 1;
 }
 
 function specialroot(t){
     var power;var sqrt;var begin;var end;var mod;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;var test;var org;
-    t2=t.indexOf("](");if(t2==-1){alert(r11);t="error";return t;}
+    t2=t.indexOf("](");if(t2==-1){setAlarm(r11);t="error";return t;}
     org=t;t=t.replace(/sqrt\(/g,"SQRT(");
     t=t.replace(/log\[/g,"LOG~");t=t.replace(/sqrt\[/g,"@[");test=t.replace(/[a-z]\[/g,"#");
-    if(test.indexOf("#")!=-1){alert(r11);t="error"; return t;}
+    if(test.indexOf("#")!=-1){setAlarm(r11);t="error"; return t;}
     t2=t.indexOf("[");var trouble=0;
     while(t2 != -1){
 	begin=t.indexOf("@");t2=t.indexOf("[");t3=t.indexOf("]");
 	if(t2==begin+1 && t3>t2){
 	    power=t.substring(t2+1,t3);
-	    if(power.length==0){alert(r16);t="error";return t;}
-	    if(power<2){alert(r16);t="error";return t;}
+	    if(power.length==0){setAlarm(r16);t="error";return t;}
+	    if(power<2){setAlarm(r16);t="error";return t;}
 	    t4="["+power+"]";t=t.replace(t4,'');
 	    tot=t.length;wait=0;got=0;end=0;
 	    for(s=begin;s<tot;s++){
@@ -154,11 +167,11 @@ function specialroot(t){
 	    begin=begin+2;
 	    sqrt=t.substring(begin,end);
 	    mod=(power % 2);
-	    if(sqrt<0 && mod!=1){alert(r16);t="error";return t;}
+	    if(sqrt<0 && mod!=1){setAlarm(r16);t="error";return t;}
 	    t=t.replace("@("+sqrt+")","("+sqrt+")^(1/("+power+"))");
 	}
 	else{t=t.replace("]","?");}
-	trouble++;if(trouble>100){alert(r20);t="error";return t;}
+	trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
     }
     t=t.replace(/SQRT\(/g,"sqrt(");t=t.replace(/LOG~/g,"log[");t=t.replace(/~/g,"[");t=t.replace(/\?/g,"]");t=t.replace(/@/g,"sqrt");
     return t;
@@ -166,7 +179,7 @@ function specialroot(t){
     
 function speciallog(t){
     var noemer;var teller;var begin;var end;var tot;var wait;var got;var chr;var t1;var t2;var t3;var t4;
-    t2=t.indexOf("](");if(t2==-1){alert(r11);t="error";return t;}
+    t2=t.indexOf("](");if(t2==-1){setAlarm(r11);t="error";return t;}
     t=t.replace(/log\(/g,'LOG(');
     t=t.replace(/log/g,"@");
     t2=t.indexOf("[");var trouble=0;
@@ -174,8 +187,8 @@ function speciallog(t){
 	begin=t.indexOf("@");t3=t.indexOf("]");
 	if(t2==begin+1 && t3>t2){
 	    grondtal=t.substring(t2+1,t3);
-	    if(grondtal=="10"){alert(r14);t="error";return t;}
-	    if(grondtal=="e" || grondtal=='E'){alert(r15);t="error";return t;}
+	    if(grondtal=="10"){setAlarm(r14);t="error";return t;}
+	    if(grondtal=="e" || grondtal=='E'){setAlarm(r15);t="error";return t;}
 	    t4="["+grondtal+"]";t=t.replace(t4,'');
 	    tot=t.length;wait=0;got=0;end=0;
 	    for(s=begin;s<tot;s++){
@@ -187,11 +200,11 @@ function speciallog(t){
 		}
 	    }
 	    begin=begin+2;teller=t.substring(begin,end);
-	    if(grondtal==teller){alert(r17);}
+	    if(grondtal==teller){setAlarm(r17);}
 	    t=t.replace("@("+teller+")","(~("+teller+")/~("+grondtal+"))");
 	}else{t=t.replace("[","%");}
 	t2=t.indexOf("[");
-	trouble++;if(trouble>100){alert(r20);t="error";return t;}
+	trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
     }
     t=t.replace(/\%/g,"[");t=t.replace(/~/g,"log");t=t.replace(/LOG\(/g,"log(");t=t.replace(/@/g,"log");
     return t;
@@ -199,7 +212,7 @@ function speciallog(t){
 
 function check_log_NaN(t){
     t=t.replace(/log\(/g,'@(');if(t.indexOf('@')==-1){return 1;}
-    if(t.indexOf('--')!=-1 || t.indexOf('++')!=-1 ){alert(r18);return 0;}
+    if(t.indexOf('--')!=-1 || t.indexOf('++')!=-1 ){setAlarm(r18);return 0;}
     dingen=['@','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
     begin=t.indexOf('@');var exp;var variable;var trouble=0;var sa;
     while(begin != -1){
@@ -217,18 +230,18 @@ function check_log_NaN(t){
 	    }
 	    begin=begin+2;exp=t.substring(begin,end);sa=0;variable=0;
 	    while(sa<27){v=dingen[sa];w=exp.indexOf(v);if(w!=-1){sa=27;variable=1;}sa++;}
-	    if(variable==0){test=eval(exp);if(test<=0){alert(r16);return 0;}}
+	    if(variable==0){test=eval(exp);if(test<=0){setAlarm(r16);return 0;}}
 	    t=t.replace('@(','log(');begin=t.indexOf('@');
 	}else{return 1;}
 	trouble++;
-	if(trouble>100){alert(r20);return 0;}
+	if(trouble>100){setAlarm(r20);return 0;}
     }
     return 1;
 }
 
 function check_sqrt_NaN(t){
     t=t.replace(/sqrt\(/g,'@(');if(t.indexOf('@')==-1){return 1;}
-    if(t.indexOf('--')!=-1 || t.indexOf('++')!=-1 ){alert(r18);return 0;}
+    if(t.indexOf('--')!=-1 || t.indexOf('++')!=-1 ){setAlarm(r18);return 0;}
     dingen=['@','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
     begin=t.indexOf('@');var exp;var variable;var trouble=0;var s;var sa;
     while(begin != -1){
@@ -246,11 +259,11 @@ function check_sqrt_NaN(t){
 	    }
 	    begin=begin+2;exp=t.substring(begin,end);exp=exp.replace(/\ /g,'');sa=0;variable=0;
 	    while(sa<27){v=dingen[sa];w=exp.indexOf(v);if(w!=-1){sa=27;variable=1;}sa++;}
-	    if(variable==0){test=eval(exp);if(test<0){alert(r16);return 0;}}
+	    if(variable==0){test=eval(exp);if(test<0){setAlarm(r16);return 0;}}
 	    t=t.replace('@(','sqrt(');begin=t.indexOf('@');
 	}else{return 1;}
 	trouble++;
-	if(trouble>100){alert(r20);return 0;}
+	if(trouble>100){setAlarm(r20);return 0;}
     }
     return 1;
 }
@@ -281,7 +294,7 @@ function nthroot(t){
 	    else{
 		variable=under.substring(0,t3);
 		exp=under.substring(t3+1,end)
-		if(exp.indexOf(',')!=-1 || variable.indexOf(',')!=-1 ){alert(r20);t="error";return t;}
+		if(exp.indexOf(',')!=-1 || variable.indexOf(',')!=-1 ){setAlarm(r20);t="error";return t;}
 		t=t.replace("@("+under+")","%"+variable+"#^%1/%"+exp+"##");
 	    }
 	}
@@ -292,7 +305,7 @@ function nthroot(t){
 	}
 	tot=t.length;
 	begin=t.indexOf('@');
-    	trouble++;if(trouble>100){alert(r20);t="error";return t;}
+    	trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
     }
     t=t.replace(/\%/g,'(');
     t=t.replace(/#/g,')');
@@ -311,7 +324,7 @@ function normalize(t){
 	str_n=normal_H[s];
 	while(t.indexOf(str_a)!=-1){
 	    t=t.replace(str_a,str_n);
-	    trouble++;if(trouble>200){alert(r20);t="error";return t;}
+	    trouble++;if(trouble>200){setAlarm(r20);t="error";return t;}
 	}
     }
     trouble=0;
@@ -320,7 +333,7 @@ function normalize(t){
 	str_n=normal_L[s];
 	while(t.indexOf(str_a)!=-1){
 	    t=t.replace(str_a,str_n);
-	    trouble++;if(trouble>200){alert(r20);t="error";return t;}
+	    trouble++;if(trouble>200){setAlarm(r20);t="error";return t;}
 	}
     }
     return t; 
@@ -340,7 +353,7 @@ function prefix(t){
 	    if(s1 != -1){t=t.replace('*'+prefix1,number);rep=1;}if(s2 != -1){t=t.replace('*'+prefix2,number);rep=1;}if(s3 != -1){t=t.replace('*'+prefix3,number);rep=1;}
 	    if(rep==0){t=t.replace(prefix1,number);t=t.replace(prefix2,number);t=t.replace(prefix3,number);}
 	    x1=t.indexOf(prefix1);x2=t.indexOf(prefix2);x3=t.indexOf(prefix3);
-	    trouble++;if(trouble>200){alert(r20);t="error";return t;}
+	    trouble++;if(trouble>200){setAlarm(r20);t="error";return t;}
 	}
     }
     if(t.charAt(0)=='*'){x4=t.length;t=t.substring(1,x4);} 
@@ -353,10 +366,10 @@ function check_s2(t){
     var x=t.indexOf('^');
     if(x != -1){
 	var x1=t.charAt(x+1);var x2=t.charAt(x+2);var x3=t.charAt(x+3);
-	if(x1 == '.' || x2 == '.' || x3 == '.'){alert(r10);t="error";return t;}
+	if(x1 == '.' || x2 == '.' || x3 == '.'){setAlarm(r10);t="error";return t;}
 	if(x1 == '0' && x2 == ''  && x3 == '' ){t=t.replace(/\*10\^0/,'*1');}
 	if(x1 == '0' && x2 != '' ){x=x.replace(/10\^0/,'10^');}
-	if(x1 == '+' && x2 == ''  && x3 == '' ){alert(r16);t="error";return t;}
+	if(x1 == '+' && x2 == ''  && x3 == '' ){setAlarm(r16);t="error";return t;}
 	if(x1 == '+' && x2 != '' ){t=t.replace(/\^\+/g,'^');}
     }
     return t;
@@ -371,7 +384,7 @@ function keywords(t){
 	a1=kwords[s];
 	while(t.indexOf(a1) != -1){
 	    t=t.replace(a1,'~');
-	    trouble++;if(trouble>100){alert(r20);t="error";return t;}
+	    trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
 	}
     }
     t=t.replace(/\~/g,' and ');
@@ -385,7 +398,7 @@ function upper_f(t){
 	fun=functies[s];FUN=fun.toUpperCase();
 	while( t.indexOf(fun) != -1 ){
 	    t=t.replace(fun,FUN);
-	    trouble++;if(trouble>100){alert(r20);t="error";return t;}
+	    trouble++;if(trouble>100){setAlarm(r20);t="error";return t;}
 	}
     }
     return t;
@@ -413,14 +426,14 @@ function arrows(t,arg1,arg2,arg3){
 	a1=ascii_arrows[s];
 	while(t.indexOf(a1) != -1){
 	    t=t.replace(a1,'@');total_arrows++;
-	    trouble++;if(trouble>100){alert(t+"\n"+r20);t="error";return t;}
+	    trouble++;if(trouble>100){setAlarm(t+"<br>"+r20);t="error";return t;}
 	}
     }
     
     // arg3>0 there should be arrows
     if(arg3){
-	if(arg3==1){if(total_arrows == 0){alert(r30+"  "+arg3);t="error";return t;}}
-	if(arg3>1){if(total_arrows < arg3){alert(r31+"  "+arg3);t="error";return t;}}
+	if(arg3==1){if(total_arrows == 0){setAlarm(r30+"  "+arg3);t="error";return t;}}
+	if(arg3>1){if(total_arrows < arg3){setAlarm(r31+"  "+arg3);t="error";return t;}}
     }
 
     // arg2 is the variable: we replace x1=,y_1=,z_9= by x=,y=,z= : just 1 variable at a time
@@ -468,8 +481,8 @@ function arrows(t,arg1,arg2,arg3){
 	if(arg2){
 	    a1=t.replace(/[\s\r\n\ ]/g,'');
 	    var x1=a1.indexOf(arg2);var is=a1.indexOf('=');
-	    if(x1==-1 || is==-1){alert(r22+"  "+a1);t="error";return t;}
-	    if(x1>is){alert(r29+"  "+a1);t="error";return t;}
+	    if(x1==-1 || is==-1){setAlarm(r22+"  "+a1);t="error";return t;}
+	    if(x1>is){setAlarm(r29+"  "+a1);t="error";return t;}
 	}
 	// if there are more arrows, skip these and alert the student about this
 	if(total_arrows>0){
@@ -478,7 +491,7 @@ function arrows(t,arg1,arg2,arg3){
 		a1=arrow_array[m];
 		rem=rem+" \u2192 "+a1;
 	    }
-	    alert("\""+rem+"\""+r32);
+	    setAlarm("\""+rem+"\""+r32);
 	}
 	return t;
     }
@@ -495,18 +508,18 @@ function arrows(t,arg1,arg2,arg3){
 	for(s=0;s<total_arrows-1;s++){
 	    a1=arrow_array[s];a1=a1.replace(/[\s\r\n\ ]/g,'');
 	    a2=arrow_array[s+1];a2=a2.replace(/[\s\r\n\ ]/g,'');
-	    if(a1 == a2){alert(r33+"\n"+a1+" \u2192 "+a2);t="error";return t;}
-	    if(a1.indexOf(arg2) == -1 && a1.indexOf('=') == -1){alert(r30+" : "+a1);t="error";return t;}
+	    if(a1 == a2){setAlarm(r33+"<br>"+a1+" \u2192 "+a2);t="error";return t;}
+	    if(a1.indexOf(arg2) == -1 && a1.indexOf('=') == -1){setAlarm(r30+" : "+a1);t="error";return t;}
 	}
 	if(arg2){
 	    // and sees if the last argument is a conclusion  : arg2=12345 and arg2=54321
 	    a1=arrow_array[total_arrows];
 	    var x1=a1.indexOf(arg2);
 	    var is=a1.indexOf('=');
-	    if(x1==-1 || is==-1){alert(r22+"  "+a1);t="error";return t;}
-	    if(x1 > is ){alert(r29+" : "+a1);t="error";return t;}
+	    if(x1==-1 || is==-1){setAlarm(r22+"  "+a1);t="error";return t;}
+	    if(x1 > is ){setAlarm(r29+" : "+a1);t="error";return t;}
 	}
 	t=t.replace(/@/g,' -> ');return t;
     }
-    alert("syntax error in function \n arrows(t,arg1,arg2,arg3)\n t is answer \n arg1=switch, arg1=0: converts ascii arrows to unified \"->\" \n arg1=1 : converts ascii arrows to unified \"\u2192\" \n arg1=2 : returns no arrows ,just the text after the last arrow\n arg1=3 : returns no arrows...the answer is an array \n arg1=4 : returns the answer ,checks on all steps\n arg2=variable name\narg3=amount if any of arrows...");
+    setAlarm("syntax error in function <br> arrows(t,arg1,arg2,arg3)<br> t is answer <br> arg1=switch, arg1=0: converts ascii arrows to unified \"->\" <br> arg1=1 : converts ascii arrows to unified \"\u2192\" <br> arg1=2 : returns no arrows ,just the text after the last arrow<br> arg1=3 : returns no arrows...the answer is an array <br> arg1=4 : returns the answer ,checks on all steps<br> arg2=variable name<br>arg3=amount if any of arrows...");
 }

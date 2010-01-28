@@ -78,7 +78,7 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 <b><font color="green">$class_institution</font></b> als de\
 <em>$name_sup</em> in te loggen, voer hier het $name_sup wachtwoord in.
  
- !set name_research1= Er zijn zeer veel virtuele klassen geinstalleerd op deze server. \
+!set name_research1= Er zijn zeer veel virtuele klassen geinstalleerd op deze server. \
    Om Uw klas te vinden, voer een zoekterm in.
  
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.

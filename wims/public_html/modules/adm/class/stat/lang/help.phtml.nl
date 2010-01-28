@@ -1,9 +1,10 @@
-Betekenis van de termen
+
+<b>Betekenis van de termen</b>
 <dl>
  <dt>gewicht
- <dd>gewicht van de oefeningen m.b.t het cijfer in een werkblad.
+ <dd>gewicht van de oefeningen mbt het eindcijfer voor een werkblad.
  <p> 
- <dt>moeilijkheids-graad
+ <dt>moeilijkheidsgraad
  <dd>Formule voor deze index: <p><center>
    !instex $$$$ \frac{4\times\sqrt{\
    (\hbox{totaal verstreken tijd})\times\

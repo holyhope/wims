@@ -8,6 +8,6 @@ Deze eenmalige wachtwoorden kunnen worden genereerd door het "<b>+</b>"-teken vo
 een lijst met wachtwoorden te zetten.
 Alle woorden in die lijst worden zo "eenmalige wachtwoorden".
 <p>
-Onthoud: elke keer wanneer U uw echte wachtwoord verandert, zijn alle ongebruikte "eenmalige wachtwoorden" verwijderd.
+Onthoud: elke keer wanneer U het echte wachtwoord verandert, zijn alle ongebruikte "eenmalige wachtwoorden" verwijderd.
 
 

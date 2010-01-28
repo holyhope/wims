@@ -1,5 +1,7 @@
 !set lang_exists=yes
-!set classname=$wims_classname - $wims_institutionname
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ de <b><font color=green>$wims_institutionname</font></b>
 
 !!!set months=january,february,march,april,may,june,july,august,september,october,november,december
 

@@ -52,29 +52,29 @@ into name_portal,name_Portal,name_asateacher,name_asaparticipant,\
 
 
 !distribute lines beschikbare<br>plekken\
-  jaar\
-  open,besloten\
-  Aanmelden voor deelnemers by $name_classess\
-  alleen voor docenten\
-  Er zijn geen klassen beschikbaar voor jou. Probeer later nog eens !\
-  Kies een klas (klik op de naam)\
-  is beschermd door een wachtwoord en een directe aanmelding is alleen voorbehouden voor <b>docenten</b>.\
-  Klik op een klasse naam om over te stappen.\
-  Dit wordt gebruikt als naam om later in $classnam in te loggen.
-  het wachtwoord moet tussen de 4 en 16 kararakter bevatten (cijfers of letters zonder accenten)\
-  Om het ingevoerde wachtwoord te kontroleren, voer het nog een keert in\
-  Je hebt geen geldig email adres opgegeven.\
-  Verplaats de activiteiten.\
-  Deze deelnemer kan ook nog activiteiten hebben in een andere klas.\
-  Schrijf naar je docent\
-  optioneel\
-  Type account\
-  Niet vergeten een bookmark van deze link te maken.\
-  Je kunt nu\
-  Dit wachtwoord is nodig voor het starten van de inschrijving\
-  je kunt dit wachtwoord bij je docent aanvragen.\
-  Hallo\
-into name_remainig, name_year,name_statut,name_title,name_reserved,name_warning1,name_inscription,\
+jaar\
+open,besloten\
+Aanmelden voor deelnemers by $name_classess\
+alleen voor docenten\
+Er zijn geen klassen beschikbaar voor jou. Probeer later nog eens !\
+Kies een klas (klik op de naam)\
+is beschermd door een wachtwoord en een directe aanmelding is alleen voorbehouden voor <b>docenten</b>.\
+Klik op een klasse naam om over te stappen.\
+Dit wordt gebruikt als naam om later in $classnam in te loggen.
+het wachtwoord moet tussen de 4 en 16 kararakter bevatten (cijfers of letters zonder accenten)\
+Om het ingevoerde wachtwoord te kontroleren, voer het nog een keert in\
+Er is geen geldig email adres opgegeven.\
+Verplaats de activiteiten.\
+Deze deelnemer kan ook nog activiteiten hebben in een andere klas.\
+Schrijf naar de docent\
+optioneel\
+Type account\
+Niet vergeten een bookmark van deze link te maken.\
+Je kunt nu\
+Dit wachtwoord is nodig voor het starten van de inschrijving\
+je kunt dit wachtwoord bij je docent aanvragen.\
+Hallo\
+ into name_remainig, name_year,name_statut,name_title,name_reserved,name_warning1,name_inscription,\
 name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,name_passwd_exact,name_passwd_nonvalid,\
 name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
 name_writepasswd,name_obtainpasswd,name_hello
@@ -94,5 +94,7 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_inscription2=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .
 !set name_inscription3=!nosubst Je bent bezig met de aanmelding bij $name_classesss $classname, met loginnaam &nbsp;
 
-!set name_warning_direct=<p><b>ATTENTION</b>. L'inscription directe au $name_classe est réservée aux\
-  enseignants. Si vous êtes élève, veuillez vous inscrire
+!set name_warning_direct=<p><b>ATTENTIE</b>.Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.\
+Ben je een leerling die zich wil aanmelden
+  
+  

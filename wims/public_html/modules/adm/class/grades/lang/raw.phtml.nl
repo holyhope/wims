@@ -9,9 +9,9 @@ Hier is de lijst van handmatig ingevoerde cijfers,
 <b>Waarschuwing.</b> 
 De WIMS server controleert niet de juistheid van de opgestuurde gegevens.
 <p>
-De regel-structuur, de speciale scheidingstekens (";" en ",") en
+De regelstructuur, de speciale scheidingstekens (";" en ",") en
 de gebruikersnamen, mogen niet worden veranderd, 
-omdat anders dit bestand onbruikbaar wordt.
+omdat anders het bestand onbruikbaar wordt.
 <p>
 <b>Structuur van dit bestand.</b> Elke regel moet met een 
 ":" karakter beginnen, behalve de tweede en derde regel.
@@ -23,7 +23,7 @@ De tweede regel is de lijst van titels van de cijfer kolommen.
 <p>
 De derde regel is het gewicht van elke kolom.
 <p>
-De andere regels zijn "komma-gescheiden" velden; 
+De andere regels zijn "komma gescheiden" velden; 
 veld 1 is de login naam , veld 2 is de echte naam van de leerling.
 en de rest zijn kolom per kolom de cijfers. 
 
