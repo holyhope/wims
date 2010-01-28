@@ -1,4 +1,11 @@
 !nocache
+!set modu_lang=$lang
+!read oef/$lang/names
+!if $lang_exists!=yes
+   !let modu_lang=en
+   !read oef/$lang/names
+!endif
+!set module_language=$lang
 
 #if you change these limits, you have to modify var.def!
 limit_var=2048
@@ -22,7 +29,7 @@ wims_noexport=$wims_noexport reply choice score oef hint fill val vsave \
 wims_multiexec=pari maxima yacas octave gap
 insmath_rawmath=yes
 wims_backslash_insmath=yes
-!read ./oef/$module_language/names
+
 # Limit Pari precision, for otherwise many computations will fail.
 proc_oef=yes
 !default precision=10000

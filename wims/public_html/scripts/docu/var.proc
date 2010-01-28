@@ -1,11 +1,18 @@
 !nocache
 doc=1
+!set modu_lang=$lang
+!read docu/$lang/names
+!if $lang_exists!=yes
+   !let modu_lang=en
+   !read docu/$lang/names
+!endif
+!set module_language=$lang
 
 wims_multiexec=pari maxima yacas octave
 module_title2=!detag $module_title
 insmath_rawmath=yes
 wims_backslash_insmath=yes
-!read docu/$module_language/names
+!read docu/$modu_lang/names
 !if $cmd=help
  !exit
 !endif
