@@ -52,3 +52,25 @@ name_backto=!nosubst Back to $otit
    restore a backup file\
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
+
+!if $job=copy
+  !distribute lines Copy,Rename,Duplicate,Rename\
+into name_choice
+!endif
+
+!if $job=auth
+  !set name_intro=This tool is for online development of regular modules\
+   under WIMS. Only registered developers can access it.\
+   <p>Please give your developer identification.
+ 
+  !distribute lines write to the site manager\
+    if you have forgotten your password\
+    If you are interested in developing WIMS modules, please\
+    Si vous désirez développer des modules d'activités WIMS,\
+    in order to get a developer identification (login, password).\
+    Note that you can also use\
+    to write simple interactive exercises in an easier way, without authentification\
+  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
+    name_createxo2
+ 
+!endif
