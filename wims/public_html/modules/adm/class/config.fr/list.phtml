@@ -7,14 +7,14 @@
 !form reply
 <input type=hidden name=up_job value=list>
 $table_header
-$table_tr<td align=right>Nom d'institution
+$table_tr<td align=right>$name_name_institution
 <td colspan=3>
 !if $supertype notin 24 or $classdepth=1
  <input size=50 name=up_institution value="$class_institution">
 !else
  $class_institution
 !endif
-$table_tr<td align=right>Nom de la classe
+$table_tr<td align=right>$name_name_class
 <td colspan=3>
 <input size=50 name=up_description value="$class_description">
 $table_tr<td align=right>$name_secure
@@ -23,19 +23,19 @@ $table_tr<td align=right>$name_secure
  </small>
 <td colspan=3>
 <input size=50 name=up_secure value="$class_secure">
-$table_tr<td align=right>Nom d'enseignant
+$table_tr<td align=right>$wims_name_nameteacher
 <small>
 !href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_supervisor value="$class_supervisor">
-$table_tr<td align=right>Adresse email d'enseignant
+$table_tr<td align=right>$wims_name_email
 <small>
 !href cmd=help&special_parm=config&special_parm2=email $wims_name_help
  </small>
 <td colspan=3>
 <input size=40 name=up_email value="$class_email">
-$table_tr<td align=right>Mots d'option
+$table_tr<td align=right>$name_optionword
 <small>
 !href cmd=help&special_parm=config&special_parm2=option $wims_name_help
  </small>
@@ -44,17 +44,17 @@ $table_tr<td align=right>Mots d'option
 </td></tr>
 !if $wims_supertype!=4 or $class_typename!=class
 $table_tr<td align=right>
-Compte Modtool
+$name_devaccount
 <small>
 !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 </small>
 </td><td colspan=3>
 !set modtoolchg=1
-!formcheckbox modtoolchg list 0 prompt Changer
+!formcheckbox modtoolchg list 0 prompt $wims_name_change
 </td></tr>
 !endif
 $table_tr<td align=right>
-Verrou de connexion
+$name_lock_level
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
@@ -62,14 +62,14 @@ Verrou de connexion
 !set up_lock=$class_lock
 !default up_lock=0
 !formselect up_lock list 0,2,3,4,5,6,7
-<td align=right>Nombre de meilleures notes
+<td align=right>$name_bestscore
 <small>
 !href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
  </small>
 !default class_topscores=0
 <td><input size=3 name=up_topscores value="$class_topscores">
 </td></tr>
-$table_tr<td align=right>Langue de la classe
+$table_tr<td align=right>$wims_name_Language
 <small>
 !href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
  </small>
@@ -79,19 +79,19 @@ $table_tr<td align=right>Langue de la classe
 !formselect up_lang list $langs
 </td>
 <td align=right>
-Niveau académique
+$name_level
 <small>
 !href cmd=help&special_parm=config&special_parm2=level $wims_name_help
  </small>
 <td>
 !set up_level=$class_level
 !formselect up_level list $levellist
-$table_tr<td align=right>Limite du nombre de participants
+$table_tr<td align=right>$name_limit
 <small>
 !href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
  </small>
 <td><input size=5 name=up_limit value="$class_limit">
-<td align=right>Date d'expiration
+<td align=right>$name_expirationdate
 <small><b>yyyymmdd</b></small>
 <small>
 !href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
@@ -102,19 +102,19 @@ $table_tr<td align=right>Limite du nombre de participants
 !else
  <tt>$class_expiration</tt>
 !endif
-$table_tr<td align=right>Enregistrement d'exercices
+$table_tr<td align=right>$name_register_exo
 <small>
 !href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
  </small>
 !default class_exolog=0
 <td><input size=3 name=up_exolog value="$class_exolog">
-<td align=right>Enregistrement d'examens
+<td align=right>$name_register_exam
 <small>
 !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
  </small>
 !default class_examlog=$wims_examlog_limit
 <input size=3 name=up_examlog value="$class_examlog">
-<td>visibles par les élèves
+<td>$name_visible
 <small>
 !href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
  </small>
@@ -135,8 +135,8 @@ $table_hdtr<td align=center colspan=4>
 $table_end <p>
 </form>
 
-Modifier l'apparence : 
-!href module=adm/light&phtml=useropts.phtml.$lang Préférences personnelles
+$name_apparence: 
+!href module=adm/light&phtml=useropts.phtml.$lang $name_pref 
 .
 !href cmd=reply&job=present $wims_name_config_present
 .
@@ -144,16 +144,14 @@ Modifier l'apparence :
 .
 <p>
 !if $class_type iswordof 2 3 4
-Répercuter les
- !href cmd=reply&job=propagate configurations aux zones dépendantes
+
+ !href cmd=reply&job=propagate Répercuter les configurations aux zones dépendantes
 .
 !endif
 <p>
-Définir des
-!href cmd=reply&job=neighbor&job2=first classes voisines
+!href cmd=reply&job=neighbor&job2=first Définir des classes voisines
 ,
-des liens vers
-!href cmd=reply&job=connect&job2=first d'autres serveurs
+!href cmd=reply&job=connect&job2=first des liens vers d'autres serveurs
 .
 <p>
 !if $classdepth<=1 
@@ -198,15 +196,15 @@ Faire une
 .
 <p>
 Configurer le
-!href module=adm/forum/mboard&job=config forum de discussion
+!href module=adm/forum/mboard&job=config $name_forum
 , le
-!href module=adm/class/motd message du jour
+!href module=adm/class/motd $name_motd
 , le 
-!href module=adm/class/cdt&job=config cahier de texte
+!href module=adm/class/cdt&job=config $name_livret
 , le 
-!href module=adm/class/livret&job=config livret de compétence
+!href module=adm/class/livret&job=config $name_livret
 , les 
-!href module=adm/class/sequence&job=config séquences
+!href module=adm/class/sequence&job=config $name_seq
 .
 <p>
 Utilisation actuelle d'espace disque : $du megaoctets. (La limite est

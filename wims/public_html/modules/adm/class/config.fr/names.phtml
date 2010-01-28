@@ -12,13 +12,14 @@
 
 !if $job=clean
  !set title=Nettoyage de la classe
+ !set name_lines=lignes dans les registres d'activité de participants.
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Classes voisines
  !distribute lines Déclaration<br>de voisinage\
-   Partage de ressource\
+   Partage de ressources\
    par vous\
    par l'autre\
    Partages mutuels actifs.\
@@ -31,8 +32,35 @@
    Partager\
    les importer tous\
    Ressources d'enseignement\
+   Importer d'autres ressources\
+   Classes pouvant partager vos ressources\
+   Ressources permises\
+   actif\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
- name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+ name_otherone,name_classsharing,name_ressourceallowed,name_active
+ !if $job2=import
+  !distribute item message du jour,\
+	exercice,feuille de travail,examen,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+ !endif
+
+ !if $job2=stopshare
+  !set title=Arrêter un partage
+  !set name_warning=Votre classe a un registre d'activités actif et les\
+ ressources partagées ne sont pas vides. Si vous arrêtez ce partage\
+ maintenant, vous ne pourrez plus les repartager plus tard.\
+ <p> Etes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
+ 
+ !set name_stop=arrêter.
+ !endif
+ !if $job2=sharelist
+  !set title= Information de partages de ressources.
+  !set name_sharelist=!nosubst Vous partagez $(name_$rec) de
+  !distribute Vous ne partagez aucune ressource d'autres classes.\
+  Vous partagez les ressources d'autres classes\
+  into name_noresource,name_resource
+  !endif
  !goto commun
 !endif
 
@@ -63,6 +91,24 @@
 
 !if $job=oefdefault
  !set title=Paramétrage par défaut des modules OEF
+ !distribute Une série aura\
+   Niveau de sévérité\
+   Chronomètre\
+   secondes\
+   Nombre de réponses affichées dans les QCM\
+   Donner une solution (si disponible) ?\
+   jamais,si la note est non maximale,toujours\
+   Toujours afficher une bonne réponse dans les QCM.\
+   Pénalité pour mauvaise réponse dans les QCM.\
+   Afficher la bonne réponse.\
+   Permettre les indications (si disponibles).\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+    
+   !set name_warning=Vous pouvez mettre deux nombres dans le chronomètre, une petite\
+     limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
+   la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+  
  !goto commun
 !endif
 
@@ -77,7 +123,77 @@
    vous désirez utiliser une authentification par un annuaire ldap.
  !goto commun
 !endif
+!if $job=import
+ 
+ !set code1=Aucun
+ !set code2=$wims_name_yes mais différent
+ !set code3=$wims_name_yes, actif et différent
+!endif
 
+!if $job=propagate
+  !if $wims_supertype=2
+   !set name_thisclass=du portail
+   !set name_subclasses=sous-classes
+  !else
+   !set name_thisclass=de la zone actuelle
+   !set name_subclasses=zones dépendantes
+  !endif
+   
+ !distribute lines Configurations envoyées aux $name_subclasses avec succès&nbsp;\
+  Vous pouvez choisir d'envoyer les configurations suivantes $name_thisclass à toutes ses $name_subclasses&nbsp;\
+ into name_propagate_succes,name_propagate_choose
+
+ !set name_warning=Notez que les $name_subclasses ne répercuteront pas les changements ultérieurs \
+   des configurations $name_thisclass. Vous devez réenvoyer les changements chaque fois \
+   que vous voulez les répercuter dans les $name_subclasses.
+
+!endif
+
+!if $job=log
+  !set name_warning_logVoici l'enregistrement de certaines activités de gestion de votre classe.\
+    Cet enregistrement vous permet de vérifier s'il y a des activités suspectes.
+!endif
+
+!if $job=index
+ !set title=Actualisation de l'index $tit
+ !set name_done=Fait.
+ !set name_result=Résultat du script
+
+  !if $job2=structure
+   !set tit=des zones
+  !endif
+  !if $job2=userlist
+   !set tit=des participants
+  !endif
+  !if $job2=teacherlist
+   !set tit=des enseignants
+  !endif
+  !if $job2=oef
+   !set tit=des exercices
+  !endif
+  !if $job2=doc
+   !set tit=des documents
+  !endif
+!endif
+
+!if $job=list
+  !distribute line  Nom de l'établissement\
+    Nom de la classe\
+    Mots d'option\
+    Compte développeur Modtool\
+    Verrou de connexion\
+    Nombre de meilleures notes\
+    Limite du nombre de participants\
+    Date d'expiration\
+    Enregistrement d'exercices\
+    Enregistrement d'examens\
+    visibles par les élèves\
+    Modifier l'apparence \
+    Préférences personnelles\
+  into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
+    name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
+    name_visible,name_apparence,name_pref
+    
 :commun
 !distribute line Authentification\
 Préférences\
@@ -98,9 +214,16 @@ wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_confi
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent
 
-!distribute items zones,participants,exercices,documents,enseignants\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+!distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
+	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
+	séquences pédagogiques,messages du forum\
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
+	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
+
+!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
 
 !distribute lines Postes sûrs\
    Feuille de style\
@@ -121,11 +244,12 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
    Image de fond des pages\
    transférer un fichier css\
    Dégradé de couleurs des scores (de 0 à 10)\
-   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
-  name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
 !set name_content_style = Contenu de la feuille de style de la classe \
 <br>(lorsque <tt>$name_css</tt>  est sur <tt>class</tt>)&nbsp;:
 
 !set name_content_style2=ou copier ici la feuille de style de la classe
+

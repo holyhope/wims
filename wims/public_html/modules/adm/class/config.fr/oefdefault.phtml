@@ -3,60 +3,59 @@
 !form reply
 $table_header
  $table_tr
-  <td align=center>Une série aura</td>
+  <td align=center>$name_series</td>
   <td>
    !set nw_qnum=$user_qnum
    !formselect nw_qnum from 1 to 9
-   exercices.
+   $wims_name_exercises.
   </td>
  </tr>
  $table_tr
-  <td align=center>Niveau de sévérité</td>
+  <td align=center>$name_severity</td>
   <td>
    !set nw_qcmlevel=$user_qcmlevel
    !formselect nw_qcmlevel from 1 to 9
   </td>
  </tr>
  $table_tr
-  <td align=center>Chronomètre </td>
+  <td align=center>$name_chrono </td>
   <td>
-   <input size=7 name=nw_scoredelay value="$user_scoredelay"> secondes.
+   <input size=7 name=nw_scoredelay value="$user_scoredelay"> $name_secondes.
   </td>
  </tr>
  $table_tr
-  <td align=center>Nombre de réponses affichées dans les QCM: </td>
+  <td align=center>$name_qcm</td>
   <td>
    !set nw_qcmpresent=$user_qcmpresent
    !formselect nw_qcmpresent list 2,3,4,5,6,7,8 
   </td>
  </tr>
  $table_tr
-  <td align=center>Donner une solution (si disponible) ? </td>
+  <td align=center>$name_solution</td>
   <td>
    !default nw_presentsol=$user_presentsol
-   !formselect nw_presentsol list 0,1,2 prompt jamais,si la note est non maximale,toujours
+   !formselect nw_presentsol list 0,1,2 prompt $name_prompt
   </td>
  </tr>
  $table_tr
   <td rowspan=4>&nbsp;</td><td>
    !set nw_check=$user_check
-   !formcheckbox nw_check list 1 prompt Toujours afficher
+   !formcheckbox nw_check list 1 prompt $name_prompt1
    une bonne réponse dans les QCM.
   </td>
  </tr>
  $table_tr
   <td align=left>
-   !formcheckbox nw_check list 2 prompt Pénalité pour mauvaise réponse dans les QCM.
+   !formcheckbox nw_check list 2 prompt $name_prompt2
+ </tr>
+ $table_tr
+  <td align=left>
+   !formcheckbox  nw_check list 3 prompt $name_prompt3
   </td>
  </tr>
  $table_tr
   <td align=left>
-   !formcheckbox  nw_check list 3 prompt Afficher la bonne réponse.
-  </td>
- </tr>
- $table_tr
-  <td align=left>
-   !formcheckbox nw_check list 4 prompt Permettre les indications (si disponibles).
+   !formcheckbox nw_check list 4 prompt $name_prompt4
    !let tmp=!replace word expert by $ in $special_parm2
   </td>
  </tr>
@@ -68,7 +67,5 @@ $table_header
 </table>
 </form>
 </center>
-<p><small>Vous pouvez mettre deux nombres dans le chronomètre, une petite
-limite suivie d'une plus grande. Dans ce cas, la première limite déclenche 
-la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+<p><small>$name_warning
 </small>

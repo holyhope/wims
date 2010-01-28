@@ -2,9 +2,6 @@
  !set wims_class_log=Import $import from $nei
 !endif
 
-!distribute item message of the day,\
-	exercise,work sheet,exam,document,participant\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 
 Importation from the class
 !href cmd=reply&job2=def $nei_description
@@ -61,7 +58,7 @@ Importation from the class
 
 Successfully transfered
 !if $itype!=user
- one $(name_$itype).
+ 1 $(name_$itype).
  !if $itype iswordof sheet exam
   (The imported $(name_$itype) is put to inactive status, so that you can
   modify it if you wish.)<p>
@@ -75,5 +72,5 @@ Successfully transfered
 
 !href $verif Verify the result
 .&nbsp;
-!href cmd=reply&job2=import Import other resources
+!href cmd=reply&job2=import $name_otherone
 .

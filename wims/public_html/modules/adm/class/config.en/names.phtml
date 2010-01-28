@@ -31,8 +31,35 @@
    Share\
    import everybody\
    Teaching resources\
+   Import other resources\
+   Classes allowed to share your resources\
+   Resource allowed\
+   active\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
- name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching
+ name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+ name_otherone,name_classsharing,name_ressourceallowed,name_active
+ !if $job2=import
+  !distribute item message du jour,\
+	exercice,feuille de travail,examen,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+ !endif
+
+ !if $job2=stopshare
+  !set title=Stop sharing
+  !set name_warning=Your class has active score register, and the shared\
+ resources are not empty. If you stop this sharing now, you \
+ cannot share them back again later.\
+ <p>Are you sure you want to definitely stop this sharing?
+ 
+ !set name_stop=stop it.
+ !endif
+ !if $job2=sharelist
+  !set title= Resource sharing information.
+  !set name_sharelist=!nosubst You are sharing $(name_$rec) originating from
+  !distribute  You are not sharing resources originating from other classes.\
+   You are sharing resources of other classes\
+  into name_noresource,name_resource
+  !endif
  !goto commun
 !endif
 
@@ -63,6 +90,24 @@
 
 !if $job=oefdefault
  !set title=Default configuration for OEF modules
+  !distribute Une série aura\
+   Niveau de sévérité\
+   Chronomètre\
+   secondes\
+   Nombre de réponses affichées dans les QCM\
+   Donner une solution (si disponible) ?\
+   jamais,si la note est non maximale,toujours\
+   Toujours afficher une bonne réponse dans les QCM.\
+   Pénalité pour mauvaise réponse dans les QCM.\
+   Afficher la bonne réponse.\
+   Permettre les indications (si disponibles).\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+    
+   !set name_warning=Vous pouvez mettre deux nombres dans le chronomètre, une petite\
+     limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
+   la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+  
  !goto commun
 !endif
 
@@ -78,6 +123,61 @@
  !goto commun
 !endif
 
+!if $job=import
+ 
+ !set code1=Aucun
+ !set code2=$wims_name_yes mais différent
+ !set code3=$wims_name_yes, actif et différent
+!endif
+
+!if $job=propagate
+  !if $wims_supertype=2
+   !set name_thisclass=du portail
+   !set name_subclasses=sous-classes
+  !else
+   !set name_thisclass=de la zone actuelle
+   !set name_subclasses=zones dépendantes
+  !endif
+   
+ !distribute lines Setups successfully sent to $name_subclasses\
+  You can choose to send the following setups of the $name_thisclass to all its $name_subclasses\
+ into name_propagate_succes,name_propagate_choose
+
+ !set name_warning=Please note that $name_subclasses will not automatically share later \
+   changes of the setups of $name_thisclass. You must send the changes each time you \
+   want them to be effective in $name_subclasses.
+
+!endif
+
+!if $job=log
+  !set name_warning_log=Voici l'enregistrement de certaines activités de gestion de votre classe.\
+    Cet enregistrement vous permet de vérifier s'il y a des activités suspectes.
+!endif
+$tit
+
+Done.
+!if $result != 
+!if $job=index
+  !set title=!nosusbt Actualisation de l'index $tit
+  !set name_done=Done
+  !set name_result=Script output
+
+  !if $job2=structure
+   !set tit=Subclass index update
+  !endif
+  !if $job2=userlist
+   !set tit=Participant index update
+  !endif
+  !if $job2=teacherlist
+   !set tit=Teacher index update
+  !endif
+  !if $job2=oef
+   !set tit=Exercise index update
+  !endif
+  !if $job2=doc
+    !set tit=Document index update
+   !endif
+!endif
 :commun
 !distribute line Authentification\
 My personal preferences\
@@ -98,30 +198,36 @@ wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_confi
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent
 
-!distribute items subclasses,participants,exercises,documents,teachers\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+!distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
+	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
+	séquences pédagogiques,messages du forum\
+	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
+	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
+!distribute item message of the day,\
+	exercise,work sheet,exam,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 
-!distribute lines Postes sûrs\
+!distribute lines Secure hosts\
    Style sheet\
    Logo of the class\
    Position of the logo\
    top left corner, top right corner\
    Style theme of the class\
    Icones\
-   Niveau académique\
-   Postes autorisés aux notes\
-   Mot de passe d'inscription\
-   Mot de passe d'enseignant\
-   Limites d'enregistrement d'exercices et d'examens\
-   Liens sur une plateforme ou une page web\
+   Academic level\
+   Hosts allowed for scores\
+   Password for participant registration\
+   Supervisor password\
+   Registration limits of exercises and exams\
+   Links on another plateform\
    Page background color\
    Menu background color\
    Menu link color\
    Background image file\
    download a css-style file\
    Dégradé de couleurs des scores (de 0 à 10) \
-   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 

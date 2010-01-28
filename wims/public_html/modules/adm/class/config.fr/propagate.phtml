@@ -1,22 +1,13 @@
 
-!if $wims_supertype=2
- !set name_thisclass=du portail
- !set name_subclasses=sous-classes
-!else
- !set name_thisclass=de la zone actuelle
- !set name_subclasses=zones dépendantes
-!endif
-
 !if $confirm!=$empty and $propagate!=$empty
- Configurations envoyées aux $name_subclasses avec succès&nbsp;: <p><b>
+$name_propagate_succes:<p><b>
  !for s in $propagate
   $(name_$s).
  !next s
  </b>
 !else
  !form reply
- Vous pouvez choisir d'envoyer les configurations suivantes $name_thisclass
- à toutes ses $name_subclasses&nbsp;: <p>
+  $name_propagate_choose: <p>
 
  !for s in $propall
   !if $(name_$s)!=$empty
@@ -29,8 +20,4 @@
  </form>
 !endif
 <p>
-Notez que les $name_subclasses ne répercuteront pas les
-changements ultérieurs des configurations $name_thisclass. Vous devez
-réenvoyer les changements chaque fois que vous voulez les répercuter
-dans les $name_subclasses.
-
+$name_warning
