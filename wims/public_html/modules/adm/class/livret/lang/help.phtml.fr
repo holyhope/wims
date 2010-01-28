@@ -1,7 +1,7 @@
-!! for translate this help you just have to copy this file with correct extension (fr en de) and traduce it !
+!! to translate this help you just have to copy this file with correct extension (fr en de) and translate it !
 !!
 
-!let help_isreaded=yes
+!let help_isread=yes
 Le livret de compétences permet d'obtenir une grille de lecture synthétique de l'ensemble du travail noté des élèves de la classe.<br>
 Le livret se compose de compétences (au maximum ....) chacune de ses compétences peut posséder plusieurs paliers (jusqu'à ....).<p>
 
