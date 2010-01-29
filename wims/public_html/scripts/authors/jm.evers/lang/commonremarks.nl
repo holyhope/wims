@@ -65,7 +65,7 @@
 : Het aantal wortels is: $testvar1<br> en niet zoals in jouw antwoord: $testvar2<br>
 : Het antwoord moest exact zijn.
 : Wissen
-: Je kunt beter geen 5<font color=red><b>x</b></font>10^12 schrijven.<br>Geef bijvoorkeur 5*10^5
+: Je kunt beter geen 5<font color=red><b>x</b></font>10^12 schrijven.<br>Geef bijvoorkeur 5*10^12
 : Deze pagina maakt gebruik van "verschuifbare" elementen.<br>Tekst en plaatjes kunnen onafhankelijk van elkaar gepositioneerd worden.<br>De layout is dus "geheel" vrij.<br>Verder kunnen (met een klein beetje geduld, d'r zit nogal wat rekenwerk voor je browser aanvast)<br> met de "shiftknop" en de muis, de elementen van grootte veranderd worden<br>Zie je <em>geen</em> plaatjes of wiskundige formules<br>geef dan een browser <b>RELOAD</b> op deze pagina 
 : Terug
 :nul,nil,zero,zip,nop,niks,niet,nada,geen,niente

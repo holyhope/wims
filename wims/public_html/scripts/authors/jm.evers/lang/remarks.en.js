@@ -20,7 +20,7 @@ var r19="Your drawing misses a few vital objects<br>See below:<br><br>";
 var r20="Your answer is unreadable and should be rewritten<br><br>";
 var r21="I'd expected something like:<br> x>123 <br> 12 < x <= 14 <br> Try again...";
 var r22="You\'ve forgotten to fill in the final answer...";
-var r23="These nice long divisions all end with the number zero (0)";
+var r23="These nice long divisions all end with the number zero (0) and not with ";
 var r24="I can not remove more pieces of the \"tail\"...";
 var r25="Question number :";
 var r26="You have some unfinished calculations...";
