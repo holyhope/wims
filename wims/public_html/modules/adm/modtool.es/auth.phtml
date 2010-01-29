@@ -1,31 +1,29 @@
 
 !set wims_form_method=post
 !form reply
- Esta herramienta es para desarrollar en línea, módulos para WIMS. Es una herramienta sofisticada y solamente
- desarrolladores registrados podrán acceder a ella. 
- <p>
- Por favor, introduzca los datos de su identificación.
- <small>(<a href="mailto:$wims_site_manager?subject=$module password">escriba
- al encargado de este servidor</a> si ha olvidado su contraseña.)</small>
+  $name_intro
+ <small>(
+ !mailurl $wims_site_manager $name_manager\
+$module password
+ $name_forget).</small>
  <p><center><table border=0>
- <tr><td align=right>Nombre de usuario: <td><input size=20 name=login value="$auth_login">
- <tr><td align=right>Contraseña: <td><input type=password size=20 name=passwd>
- </table></center>
+ <tr><td align=right>$wims_name_Login: <td><input size=20 name=login value="$auth_login">
+ <tr><td align=right>$wims_name_Password: <td><input type=password size=20 name=passwd>
+ $table_end
  <p><center>
- <input type=submit value="Enviar">
+ <input type=submit value="$wims_name_send">
  </center>
 </form>
 
-<b>Nota.</b> Si usted tiene interés en desarrollar módulos WIMS,
-por favor <a
-href="mailto:$wims_site_manager?subjet=WIMS new developer">escriba al encargado de este 
-servidor</a> para conseguir una identificación de desarrollador (usuario, contraseña).
+$name_developer
+!mailurl $wims_site_manager $name_manager\
+WIMS new developer
+$name_identification
 <p>
-También usted puede usar
-!href module=adm/createxo Createxo
- para escribir ejercicios interactivos de una manera fácil, sin necesidad de identificación.
+$name_createxo1
+!href module=adm/createxo $wims_name_createxo
+$name_createxo2.
 <p>
 
 !set wims_menu_items=!append line createxo,1,module=adm/createxo\
 to $wims_menu_items
-

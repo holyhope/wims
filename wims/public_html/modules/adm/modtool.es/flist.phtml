@@ -1,41 +1,39 @@
-
 !if ~ notin $mod
- <b>Attention</b>. This module only has a simplified address "<tt>$mod</tt>".
- An
- !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod address upgrade
- is recommended.
+ <b>$wims_name_warning</b>.
+ $name_simpl_address: "<tt>$mod</tt>".
+ !href cmd=reply&jobreq=move&original=devel/$auth_login/$mod $name_updateadress
  <p>
 !endif
 
 !set doctest1=!module category devel/$auth_login/$mod
 
-Your module 
+$name_your_module
 <em><font color=blue>$title</font></em> ($description)
 <small>
 !href cmd=reply&jobreq=index $mod
 </small>
-contains the following files. 
+$name_file2.
 !if document isin $doctest1
- (<i>For document files, click on the link <tt>Document manager</tt></i>.)
+  (<i>$name_gestion</i>)
 !endif
 
 !set table_cellpadding=1
 !set table_cellspacing=0
-!set table_center=
+!set table_center=center
 !set table_header=!replace internal <> by in $table_header
 !set table_end=!replace internal </> by in $table_end
 <p>$table_header
 $table_hdtr
-<th>Name<th>Action</th><th>Explanation
+<th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Explanations
  !for f in $files
   $table_tr
   <td align=left nowrap>$f
   <td align=center nowrap>  
-  !href cmd=reply&jobreq=showfile&fname=$f show
+  !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
   &nbsp;
-  !href cmd=reply&jobreq=edfile&fname=$f edit
+  !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
   &nbsp;
-  !href cmd=reply&jobreq=delfile&fname=$f delete
+  !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
   !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
    !set f_=!translate internal / to , in $f
    !set f_=!item -1 of $f_
@@ -53,13 +51,9 @@ $table_end
 
 !form reply
 <input type=hidden name=jobreq value=edfile>
-Add a new file:
+$name_addfile:
 <input size=20 name=fname value="$lastfname">
-<input type=submit value=OK>
-!!!href cmd=reply&jobreq=binfile Binary files
-!!&nbsp;
-!!!href target=wims_test module=tool/directexec&cmd=new Script tester
+<input type=submit value="$wims_name_tosave">
 </form>
-
 !reset fname
 

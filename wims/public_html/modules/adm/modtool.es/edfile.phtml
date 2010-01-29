@@ -1,7 +1,7 @@
 
-Edit file 
+$wims_name_edfile
 <font color=blue><em>$fname</em></font>
-in the module
+$name_in_module
 <font color=blue><em>$title</em></font>:
 
 !if $makeerror!=$empty
@@ -19,18 +19,18 @@ $makeerror
  <tr><td align=center>
 !sh content=`cat $devdir/$mod/$fname | sed 's/\&/\&amp;/g;s/</\&lt;/g'`\
  cat <<@\
-<textarea rows=20 cols=70 wrap="off" style="{white-space: pre}" name=wims_deposit>$$content\
+<textarea rows=20 cols=70 wrap="off" name=wims_deposit>$$content\
 </textarea>\
 @
 
 </td>
 <td width=20></td>
 <td valign=top>
- !href target=wims_help module=adm/createxo&+modtoolhelp=yes OEF Documentation.
+ !href target=wims_help module=adm/createxo&+modtoolhelp=yes $wims_name_docoef
  <p>
- !href target=wims_help module=help/wimsdoc&+subject=slib#slib Librairies (slib).
+ !href target=wims_help module=help/wimsdoc&+subject=slib#slib $wims_name_docslib
  <p>
- !href target=wims_help module=adm/createxo&+modtoolhelp=yes&+special_parm=reply Available answer types.
+ !href target=wims_help module=adm/createxo&+modtoolhelp=yes&+special_parm=reply $wims_name_docanswer
 </td>
 </tr>
 </table>
@@ -45,12 +45,10 @@ $makeerror
 !form reply
 <input type=hidden name=fname value="$fname">
 <input type=hidden name=register value="file_mode">
-<input type=submit value="Send">
-a file to replace it:
+<input type=submit value="$wims_name_send">
+$name_replace:
 <input type=file name=wims_deposit>
 </form>
 
-!!!href cmd=reply&jobreq=flist Back to file list
-!!.
 !set wims_menu_items=!append line back3,1,cmd=reply&jobreq=flist\
 to $wims_menu_items

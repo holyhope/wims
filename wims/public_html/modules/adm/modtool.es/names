@@ -1,3 +1,6 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
 
 name_auth=Autenticación del desarrollador
 name_prop=Propiedades
@@ -52,3 +55,108 @@ name_backto=!nosubst Volver a $otit
    Restaurar un fichero de protección\
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
+
+!if $job iswordof move copy
+  !distribute lines Copier,Renommer,Dupliquer,Renommer\
+   faites une copie\
+   Renommer le module va casser les feuilles de travail qui l'utilisent. Assurez-vous que ce n'est pas le cas\
+into name_choice,name_copy,name_warning1,name_warning2
+!set name_public_module=!nosubst le module public <em>$otit</em> (<tt>$original2</tt>) dans votre espace \
+de développement sous l'adresse 
+!set name_warning2=Renommer ou dupliquer un module d'adresse publique peut conduire à la duplication \
+  de sa publication. Soyez très prudent ! Renommer ou dupliquer un module d'adresse publique\
+  peut conduire à la duplication de sa publication. Soyez très prudent !\
+  <p>Si vous voulez faire des tests sur le module, choisissez la zone <tt>test</tt>.
+!set name_warning3=Si vous avez déjà publié ce module, veuillez changer cette adresse exactement selon \
+  son adresse publique. Sinon vous risquez une duplication de sa publication.
+!endif
+
+!if $job=auth
+  !set name_intro=Esta herramienta es para desarrollar en línea, módulos para WIMS. \
+    Es una herramienta sofisticada y solamente desarrolladores registrados podrán \
+    acceder a ella. <p> Por favor, introduzca los datos de su identificación.
+    
+  !distribute lines escriba\
+   al encargado de este servidor\
+   si ha olvidado su contraseña.\
+    Si usted tiene interés en desarrollar módulos WIMS, por favor\
+    para conseguir una identificación de desarrollador (usuario, contraseña).\
+    También usted puede usar\
+    para escribir ejercicios interactivos de una manera fácil, sin necesidad de identificación.\
+  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
+    name_createxo2
+ 
+!endif
+
+!if $job=backup
+ !set name_save=Voici le fichier de sauvegarde du module
+ !set name_internal_error= Erreur interne : impossible de générer le fichier de sauvegarde. Veuillez contacter le
+!endif
+
+!if $job=publish
+  !distribute lines Nom de votre compte de publication \
+  Type de publication\
+  version développement,version stable - modifier un module existant, version stable - ajouter un nouveau module\
+  Est-ce une traduction <br> d'un module existant <br>créé par un autre auteur ?\
+  Modificateurs autorisés\
+  Lisez ceci d'abord !\
+  Le module publié apparaîtra dans le moteur de recherche du site d'ici quelques minutes.\
+  Si c'est une erreur, veuillez demander au gestionnaire du site d'enlever manuellement le module que vous avez publié.\
+  Vous allez recevoir un mail confirmant la réception de l'envoi.\
+  D'accord, allez-y\
+ into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
+   name_local,name_error,name_emailsend,name_goahead
+
+ !set name_warning0=!nosubst Ce module a une adresse publique. Il doit donc être publié au centre de\
+   publication <tt>$centralhost</tt>. Veuillez entrer votre identification de publication.
+ !set name_warning1=Avez-vous incrémenté la version du module, si vous publiez une nouvelle version d'un \
+   module existant ? Sinon, personne ne mettra à jour votre nouvelle version.
+ !set name_warning2=Votre module a une adresse locale. Il ne peut être publié que sur l'espace local \
+   de ce serveur. Voulez-vous continuer ?
+!set name_warning3=Le principal avantage d'une publication dans l'espace local est de faire apparaitre\
+  le module dans le moteur de recherche du serveur local.
+!set name_cheat1=!nosubst Ce module déclare qu'il se contente de WIMS-$Wver2,\
+ alors qu'il a probablement été développé ou modifié sous ce serveur qui est \
+ de version $wims_version. Vous devez mettre à jour le fichier INDEX du module\
+ en modifiant la version de wims dans <tt>Propriétés</tt>.
+!set name_cheat2= Si vous êtes sûr de ce que vous faites, vous pouvez tricher\
+ pour faire croire aux serveurs que vous êtes sur un serveur ancien (OPERATION TRES RISQUEE) !
+
+!endif
+
+!if $job=diff
+  !distribute lines Aucune différence n'est trouvée entre la version de développement et la version publique du serveur.\
+  Trop de différences existent entre la version de développement et la version publique du serveur.\
+  Différences entre la version de développement et la version publique du serveur&nbsp;:\
+into name_diff1,name_diff2,name_diff3
+!endif
+
+!exit
+:del
+ Un module effacé l'est
+définitivement. 
+!href cmd=reply&jobreq=backup $wims_name_modsave
+
+<p>
+<b>Et n'oubliez pas</b> : Une classe virtuelle ou une feuille de
+travail qui référencent votre module ne fonctionneront plus si ce
+module est effacé.
+
+<p>
+Etes-vous sûr de vouloir effacer le module
+
+!exit
+:delconfirm
+Le fichier 
+ <font color=blue><em>$fname</em></font>
+ du module
+ <font color=blue><em>$title</em></font> est effacé.
+!exit
+
+:delfile
+
+Êtes-vous sûr de vouloir effacer le fichier
+<font color=blue><em>$fname</em></font>
+du module
+<font color=blue><em>$title</em></font>&nbsp;?
+!exit
