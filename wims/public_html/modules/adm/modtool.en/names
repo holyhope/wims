@@ -43,7 +43,7 @@ name_backto=!nosubst Back to $otit
 
 !set name_accountchange=Change properties of your developer's account 
 !set name_empty=leave the password field empty if you don't want to change it
- !set name_change=Your account password has been changed.
+!set name_change=Your account password has been changed.
  
 !if $job=modname
   !set name_moddevcnt=!nosubst You have $totalcnt modules under development.
@@ -56,7 +56,7 @@ name_backto=!nosubst Back to $otit
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
 
-!if $job=copy
+!if $job iswordof copy move
   !distribute lines Copy,Rename,Duplicate,Rename\
    duplicate it\
    Renaming the module will break all the worksheets referencing it. Make sure that this is not the case,\
@@ -65,10 +65,10 @@ name_backto=!nosubst Back to $otit
   development space, under the address
 !set name_warning2= Remaning or duplicating a public-address module may lead to\
   duplication of its publication. Please be very careful! <p>\
-  If you want to make tests on the module, put it into the test zone.
+  If you want to make tests on the module, put it $into the test zone.
 !set name_warning3=If you have already published this module, please change\
   its address exactly according to its public address. Otherwise its publication will be duplicated.
-
+!endif
 
 !if $job=auth
   !set name_intro=This tool is for online development of regular modules\
@@ -118,6 +118,7 @@ name_backto=!nosubst Back to $otit
    to make this correct.
   !set name_cheat2=If you are SURE of what you are doing, you can cheat the servers\
    into thinking that you are on an older server (a VERY RISKY OPERATION)!
+
 !endif
 
 !if $job=diff
@@ -126,7 +127,7 @@ name_backto=!nosubst Back to $otit
   Differences between the development version and the public version on this server:\
   into name_diff1,name_diff2,name_diff3
 !endif
-  
+
 !exit
 :del
 
