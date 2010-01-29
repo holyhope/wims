@@ -3,10 +3,8 @@
 !endif
 
 !if $originheader!=$empty and $job=move
- <b>$wims_name_warning</b> ! Renommer le module va casser les feuilles de
- travail qui l'utilisent. Assurez-vous que ce n'est pas le cas, ou
- faites une
- !href cmd=reply&jobreq=copy duplication
+ <b>$wims_name_warning</b> ! $name_warning1 $wims_name_or
+ !href cmd=reply&jobreq=copy $name_copy
 .
  <p>
 !endif
@@ -16,25 +14,19 @@
  <input type=hidden name=jobreq value="$job">
  !distribute item $name_choice into P_copy,P_move,L_copy,L_move
  !if $originheader!=$empty
-  $(L_$job) le module <em>$otit</em> (<tt>$original2</tt>) à <p>
+  $(L_$job) <em>$otit</em> (<tt>$original2</tt>): <p>
  !else
-  $(P_$job) le module public <em>$otit</em> (<tt>$original2</tt>) dans
-  votre espace de développement, sous l'adresse <p>
+  $(P_$job) $name_public_module<p>
  !endif
  !read scripts/addressform.phtml
  </form>
  !if $originheader!=$empty and $o1 isitemof $zonelist,local
   <p>
-  <b>$wims_name_warning</b>. Renommer ou dupliquer un module d'adresse publique
-  peut conduire à la duplication de sa publication. Soyez très prudent !
-  <p>
-  Si vous voulez faire des tests sur le module, mettez-le dans la zone test.
+  <b>$wims_name_warning</b>. $name_warning2
  !endif
  !if $originheader!=$empty and ~ notin $original2
   <p>
-  <b>$wims_name_warning</b>. Si vous avez déjà publié ce module, veuillez changer cette
-  adresse exactement selon son adresse publique. Sinon vous risquez
-  une duplication de sa publication.
+  <b>$wims_name_warning</b>. $name_warning3
  !endif
 !endif
 
