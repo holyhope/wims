@@ -1,3 +1,6 @@
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
 <b><font color=green>$wims_institutionname</font></b>
@@ -78,12 +81,73 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
   !goto end
 !endif
 
-!set name_direct_score=direct score listing
+!set name_direct_score=Neposredni prikaz rezultatov
 
 !if $job=transfer
    !set name_title_transfer=Activity transfer
    !distribute items Merge, Replace,Examine\
    into name_merge, name_replace,name_show
+
+ !set name_error1=<b>Error</b>. The participant has no registration in a corresponding\
+ course in the current class to receive the transfer from
+ !set name_error2=<b>Error</b> of class identification. Wrong manoeuvre or bug of the\
+  software? 
+ !set name_activities=!nosubst Detail of activities in $i (limited to 1000 lines).
+ !set name_totransfer=Here are the other courses in which the participant has activities. \
+   Click on an action to transfer them 
+
 !endif
+
+!if $job=recover
+  !set name_empty= V tej uèilnici ni zbrisanih uporabnikov.
+  !set name_click=Kliknite na uporabni¹ko ime za obnovo.
+!endif
+
+
+!if $job=delprep
+  !set name_delete=!nosubst AAli res ¾elite izbrisati uporabnika z imenom \
+    <b><em>$firstname $lastname</em></b> iz va¹e uèilnice?
+!endif
+
+!if $job=csv
+  !distribute lines Datoteko\
+    lahko shranite in odprete v svojem najljub¹em programu za preglednice.\
+    Participant informations changed\
+    Added new participants\
+    Addition of new participants ignored because there is no more available space.\
+    Participant informations are not changed because grades are uploaded.\
+    Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
+    Ignored data about erased participants\
+    The following login names do not exist in the class and cannot be added, because of unsufficient/incorrect information in the data\
+    The following login names do not exist in the class and cannot be added (bad data, or no more space)\
+    Manual grades are registered only for existing columns.\
+    No change has been found in your spreadsheet data with respect to the class record.
+    Check manual grades\
+    To download class data for your spreadsheet, please specify\
+    Format\
+    Columns\
+    To upload your spreadsheet data to the class, please specify\
+    Data file\
+    Accepted formats: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst Datoteka <tt>$wims_deposit</tt> successfully processed.
+ !endif
+
 !set name_topten=!nosubst Top $class_topscores of the class average
 :end
+!exit
+
+:transfer
+<b>Remarks</b>. <ol>
+<li>"$name_merge" means putting together the activities in two courses.
+<li>"$name_replace" means that the activities in the other cours will replace
+that of this one. This will occur only if the former is not empty.
+<li>Exam records and non-scoring activities are always merged.
+<li>Registration of details of exercises or exams is not transfered.
+<li>After the action ($name_merge ou $name_replace), the records of the participant
+in the other course will be cleaned.
+</ol>
+

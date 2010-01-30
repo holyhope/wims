@@ -5,7 +5,7 @@ $classname\
 $wims_name_csv
 
 <center><font size="-1">[
-!href cmd=reply Neposredni prikaz rezultatov
+!href cmd=reply $name_direct_score
  ]</font>
 </center> <p>
 
@@ -18,54 +18,51 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
- Datoteko <tt>
+  $name_file <tt>
  !getfile $outfile $outfile
- </tt> lahko shranite in odprete v svojem najljub¹em programu za preglednice.
+ </tt> $name_download
  <p><hr> <p>
 !endif
 
 !if $processed=yes and $error=$empty
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
-  Datoteka <tt>$wims_deposit</tt> successfully processed. <ul>
+  $name_deposit<ul>
   !if $change!=$empty
-   <li>Participant informations changed: <tt>$change</tt>
+   <li>$name_infochanged<tt>$change</tt>
   !endif
   !if $added!=$empty
-   <li>Added new participants: <tt>$added</tt>
+   <li>$name_added<tt>$added</tt>
   !endif
   !if full iswordof $remark
-   <li>Addition of new participants ignored because there is no more
-   available space.
+   <li>$name_warning1
   !endif
   !if noprop iswordof $remark
-   <li>Participant informations are not changed because grades are uploaded.
+   <li>$name_warning2
   !endif
   !if noauto iswordof $remark
-   <li>Server-computed scores (averages and worksheet/exam scores) are ignored
-   in your data because they cannot be changed.
+   <li>$name_warning3
   !endif
   !if $erased!=$empty
-   <li>Ignored data about erased participants:
+   <li>$name_warning4
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>The following login names do not exist in the class and cannot be
+   <li>
    !if full notwordof $remark
-    added, because of unsufficient/incorrect information in the data:
+    $name_nologin1
    !else
-    added (bad data, or no more space):
+    $name_nologin2
    !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes
-   <li>Manual grades are registered only for existing columns.
-   !href module=adm/class/grades Check manual grades
+   <li>$name_manual1
+   !href module=adm/class/grades $name_check
 .
   !endif
   </ul>
  !else
-  No change has been found in your spreadsheet data with respect to the
-  class record.
+ $name_data1
  !endif
  <p><hr> <p>
 !endif
@@ -73,19 +70,20 @@ $wims_name_csv
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-To <input type=submit value="$wims_name_download">
-class data for your spreadsheet, please specify: <ul>
-<li>Format
+$name_data2<ul>
+<li>$name_format
 !formselect csvformat list csv,tsv
 <small>
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </small>
-<li>Columns
+<li>$name_column
 <input type=text size=45 name=csvdownload value="$csvdownload">
 <small>
 !href module=$module&cmd=help&special_parm=csvfields $wims_name_help
 </small>
 </ul>
+<input type=submit value="$wims_name_download">
+
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
@@ -94,16 +92,16 @@ class data for your spreadsheet, please specify: <ul>
  !form reply
  <input type=hidden name=job value=csv>
  <input type=hidden name=csvtype value=upload>
- To <input type=submit value="$wims_name_send">
- your spreadsheet data to the class, please specify:
+ $name_data3
  <small>
  !href module=$module&cmd=help&special_parm=upload $wims_name_help
  </small><ul>
- <li>Data file <input type=file size=30 name=wims_deposit> <br>
-  <small>Accepted formats: .csv, .tsv, .txt
+ <li>$name_data <input type=file size=30 name=wims_deposit> <br>
+ <small>$name_format2: .csv, .tsv, .txt
  !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
  </small>
  </ul>
+ <input type=submit value="$wims_name_send">
  </form>
 !endif
 

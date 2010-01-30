@@ -1,6 +1,6 @@
 # Variable calculations should be done in this file.
 # It is read and interpreted by wims for all valid calls to the module.
-
+!read names.phtml
 wims_prefix=class user tmp n sharing sharable
 !read adm/class/authchars
 max_sheet=64
@@ -13,7 +13,9 @@ userdir=!item -1 of $wims_superclass
 userdir=log/classes/$userdir/.users
 tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
 picto=<img src="gifs/picto.gif" alt="picto">
-
+!!!can be defined in the name.phtml.$lang module in an another way
+!default name_student1=!nosubst $lastname, $firstname
+!default name_student2=!nosubst $firstname $lastname
 !if $wims_user=$empty
  error=not_supervisor
  !exit

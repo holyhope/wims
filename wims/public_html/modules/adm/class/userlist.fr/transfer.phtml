@@ -3,13 +3,12 @@ $classname\
 $name_title_transfer
 
 <center>
- !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ !href cmd=reply&job=getuser&getuser=$getuser $name_student1
  (<tt>$getuser</tt>)
 </center> <p>
 
 !if $error=no_reccourse
- <b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant
-à la classe actuelle et permettant le transfert depuis
+ $name_error1
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -19,11 +18,10 @@ $name_title_transfer
 !if $ttype=show
  !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
  !if $transferclass notitemof $tr_list or $i=$empty
-  <b>Erreur</b> d'identifiant des classes. Fausse manoeuvre ou bogue du
-  logiciel ?
+  $name_error2
   !exit
  !else
-  Détail des activités dans $i (limité à 1000 lignes).
+  $name_activities
   <p><hr>
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
@@ -38,13 +36,7 @@ $name_title_transfer
  !endif
 !endif
 
-Voici les autres cours dans lesquels le participant a eu des activités.
-Cliquez sur une action pour transférer ces activités dans
-!if $tr_typename=course
- ce cours.
-!else
- cette classe.
-!endif
+$name_totransfer
 
 $table_header
 $table_hdtr<th>$wims_name_course</th>
@@ -63,13 +55,5 @@ $table_hdtr<th>$wims_name_course</th>
 $table_end
 
 :endd
-<b>Remarques</b>. <ol>
-<li>"$name_merge" veut dire mettre ensemble les activités venant des deux cours.
-<li>"$name_replace" veut dire que les activités de l'autre cours vont écraser
-celles de ce cours. Le remplacement n'aura pas lieu si le premier est vide.
-<li>Les scores des examens et des activités non comptées sont toujours joints.
-<li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.
-<li>Après l'action ($name_merge ou $name_replace), les registres d'activités du participant dans
-l'autre cours seront effacés.
-</ol>
+!read names.phtml transfer
 
