@@ -24,9 +24,9 @@ kan ook hierop worden geselecteerd.
 
 !set name_warning=De email wordt verstuurd naar deelnemers op de onderstaande lijst. 
 
-!distribute items Epert menu,Filters&nbsp;,Lijst met loginnamen&nbsp;,Bericht&nbsp;,Onderwerp&nbsp;,Selectie&nbsp;,\
+!distribute items Expert menu,Filters&nbsp;,Lijst met loginnamen&nbsp;,Bericht&nbsp;,Onderwerp&nbsp;,Selectie&nbsp;,\
  Alle deelnemers\
 into name_menu,name_filter,name_loginlist,name_message,name_subject,name_select,name_allparticipants
 
-!set name_nosupervisoremail=Er is geen emailadres bekend voor uw account !\
- Het is dus niet mogelijk om via dit programma emails te versturen. 
+!set name_nosupervisoremail=Er is geen emailadres bekend voor uw account ! \
+Het is dus niet mogelijk om via dit programma emails te versturen. 

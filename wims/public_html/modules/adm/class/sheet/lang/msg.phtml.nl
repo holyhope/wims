@@ -140,9 +140,9 @@ Dit werkblad nummer $sheet ($title) was normaal verlopen op $expday
 !endif
 
 !if prep_putsource=$error
-Hebt U een broncode van een reeds eerder gemaakt werkblad, kunt U deze
-in het onderstaande venster invoeren. Daarna klikken op "VERSTUREN".
-Uiteraard kunt U met "knippen en plakken" werken
+Hebt U een broncode van een reeds eerder gemaakt werkblad, kan deze
+in het onderstaande venster worden ingevoerd. Daarna klikken op "Sturen".
+Uiteraard kan ook met "knippen en plakken" worden gewerkt.
   <p>
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
@@ -153,8 +153,8 @@ to $wims_menu_items
  <p><input type=submit value="$wims_name_send">
  </center></form>
  <b>WAARSCHUWING</b>. 
- Voer geen "corrupte code" handmatig in, U loopt het risico
- dat uw werkblad onbruikbaar wordt.
+ Voer geen "corrupte code" handmatig in ; het risico
+ bestaat dat het werkblad onbruikbaar wordt.
 
  !exit
 !endif

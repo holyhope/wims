@@ -77,7 +77,7 @@
 
 !! **** Module About Names ***
 !distribute items Naam,\
-	    A propos des icones,\
+	    Info over iconen,\
 	    Module Informatie,\
 	    Informatie over deze oefening,\
 	    Adres,\
@@ -172,7 +172,7 @@
     Lijst met klassen en/of instituten\
     Individuele klassen\
     Groep klassen\
-    Portaal van het Instituut\
+    Instituut\
 	into wims_name_n_supervisor,wims_name_n_participant,wims_name_n_example,\
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
@@ -218,11 +218,11 @@
    Terug\
    Wissen\
    Aktie\
-   Om dit te gebruiken moet de webbrowser Java ondersteunen.\
+   Om dit te gebruiken moet je webbrowser Java ondersteunen.\
    Datum\
-   Add\
-   Delete\
-   Source\
+   Toevoegen\
+   Verwijderen\
+   Broncode\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
@@ -233,7 +233,7 @@ wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete,wims_name_source
 
 !distribute line Terug naar Createxo\
    Lijst met voorbeelden\
-   Voorbeelden\
+   Uitgewerkte voorbeelden\
 into wims_name_backcreatexo,wims_name_modellist,wims_name_model
 
 !distribute line Test de oefening\
@@ -254,7 +254,7 @@ wims_name_downloadbinary,wims_name_replace,wims_name_exoerase
 
 !distribute line Nieuw document\
 Nieuw werkblad\
-Nieuwe overhoring\
+Nieuwe proefwerk\
 Nieuwe klas\
 Nieuwe enquete\
 Nieuw oefening\
@@ -312,9 +312,9 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !set wims_name_addstudent=Nieuwe student
 !set wims_name_modstudent=Studenten eigenschappen
 !set wims_name_delstudent=Verwijder een student
-!set wims_name_group=Portaal
-!set wims_name_portal=Portaal
-!set wims_name_level=Niveau
+!set wims_name_group=Institiuut
+!set wims_name_portal=Instituut
+!set wims_name_level=Leerniveau
 !set wims_name_class=Klas
 !set wims_name_program=Programma
 !set wims_name_course=Cursus
@@ -364,7 +364,7 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 !endif
 
 !if adm/manage isin $module
-  !distribute line Other maintenance tasks\
+  !distribute line Ander onderhoud\
   into wims_name_sitegestion
 !endif
 

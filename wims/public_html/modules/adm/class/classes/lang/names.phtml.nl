@@ -83,10 +83,9 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
  
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
 
-!set name_supervisor_text= Klik op de klas (of school of instituut) van Uw keuze.<br>\
-     <small> Als U op <tt>$name_enter</tt> klikt, bent U reeds aangemeld als docent of supervisor.<br>\
-     Klik op <tt>$name_register</tt> als U docent wilt worden in een school of instituut.<br>\
-     Deze aanmelding is dus <b>alleen</b> voor <tt>docenten</tt>.
+!set name_supervisor_text= Klik op de klas (of school of instituut) naar keuze.<br>\
+     <small>Op <tt>Inloggen</tt> klikken,  als u al als docent of supervisor ben geregistreerd.<br>\
+     Klik op <tt>Aanmelden</tt> voor registratie als docent.(dit is dus alleen voor docenten)
 
 !if $type=example
    !set name_example1=Er zijn geen openbare klassen geinstalleerd op deze server.
