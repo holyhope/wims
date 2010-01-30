@@ -1,65 +1,75 @@
 
-<center><h3>Browse by level</h3></center>
+<center><h3>$title</h3></center>
 
 !form new
 <input type=hidden name=module value=home>
 <input type=hidden name=browse_job value=level>
-<center><table border=0 cellpadding=0 cellspacing=0>
-<tr><td><tr><td>
-<tr><td align=center bgcolor="$bgcolor1"><b>Category</b>
-<td colspan=7 bgcolor="$bgcolor3">
-!formradio search_category list A,X,T,R prompt \
-		$name_A,$name_X,$name_T,$name_R
-<tr><td><tr><td>
-<tr><td align=center rowspan=6 bgcolor="$bgcolor1"><b>Level</b>
- <th bgcolor="$bgcolor2">Year
- !for i=1 to 6
-  <td align=center bgcolor="$bgcolor2">$i
+
+$table_header
+$table_tr
+<th>$wims_name_level</th>
+!for i=1 to 6
+  <th align=center>$name_year $i
  !next i
- <tr><th bgcolor="$bgcolor2">Elementary school
+<th>$name_category</th>
+ $table_tr
+<th>$name_primary
  !for i=1 to 6
-  <td align=center bgcolor="$bgcolor3">
+  <td align=center>
   <input type=checkbox name=search_keywords value=levelE$i
   !if E$i=$thislevel
    checked
   !endif
   >
  !next i
- <tr><th bgcolor="$bgcolor2">Secondary school
+ <td>
+ !formradio search_category list A prompt \
+		$name_A	
+ $table_tr<th>$name_secondary
  !for i=1 to 6
-  <td align=center bgcolor="$bgcolor3">
+  <td align=center>
   <input type=checkbox name=search_keywords value=levelH$i
   !if H$i=$thislevel
    checked
   !endif
   >
  !next i
- <tr><th bgcolor="$bgcolor2">University
+ <td>
+ !formradio search_category list X prompt $name_X		
+$table_tr<th>$name_university
  !for i=1 to 5
-  <td align=center bgcolor="$bgcolor3">
+  <td align=center>
   <input type=checkbox name=search_keywords value=levelU$i
   !if U$i=$thislevel
    checked
   !endif
   >
  !next i
-  <td align=center bgcolor="$bgcolor3">-
- <tr><th bgcolor="$bgcolor2">Graduate study
-  <td nowrap colspan=6 align=center bgcolor="$bgcolor3">
+ <td align="center">-</td>
+  <td>
+ !formradio search_category list T prompt $name_T		
+ $table_tr<th>$name_graduate
+  <td nowrap colspan=6 align=center>
   --- <input type=checkbox name=search_keywords value=levelG
   !if G=$thislevel
    checked
   !endif
   > ---
- <tr><th bgcolor="$bgcolor2">Research
-  <td nowrap colspan=6 align=center bgcolor="$bgcolor3">
+  <td>
+  <br>
+!formradio search_category list R prompt $name_R
+$table_tr<th>$name_research
+  <td nowrap colspan=6 align=center>
   --- <input type=checkbox name=search_keywords value=levelR
   !if R=$thislevel
    checked
   !endif
   > ---
-<tr><td><tr><td>
-<tr><td colspan=8 align=center bgcolor="$wims_ref_bgcolor">
-<input type=submit value="OK">
+  <td>
+  <br>
+!formradio search_category list S prompt $name_S
+$table_tr
+<td colspan=8 align=center bgcolor="$wims_ref_bgcolor">
+<input type=submit value="$wims_name_search">
 $table_end</form>
 

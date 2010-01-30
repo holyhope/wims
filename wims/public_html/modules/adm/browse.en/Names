@@ -1,7 +1,30 @@
-name_A=all
-name_X=exercises
-name_T=tools
-name_R=recreations
-name_L=references
-name_S=worksheets
-name_P=popup tools
+!set name_A=all
+!set name_X=exercises
+!set name_T=tools
+!set name_R=recreations
+!set name_L=references
+!set name_S=worksheets
+!set name_P=popup tools
+
+!if $job=subject
+  !set title=Browse by subject
+  !set name_domain=Please choose one of the following subject domains to browse.
+  
+  !set name_available=!nosubst DIn the domain <i><font color=blue>$name</font></i>, \
+    the following topics are available.
+ !set name_other=Other domains
+!endif
+
+!if $job=level
+ !set title=Browse by level
+ !distribute lines Year\
+   Category\
+   Elementary school\
+   Secondary school\
+   University\
+   Graduate study\
+   Research\
+ into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,,\
+ name_research
+ 
+ 

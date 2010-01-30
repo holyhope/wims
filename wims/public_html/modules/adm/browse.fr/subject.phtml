@@ -1,8 +1,8 @@
 
-<center><h3>Parcourir par sujet</h3></center>
+<center><h3>$title</h3></center>
 
 !if $parm=$empty
- Veuillez choisir l'un des domaines suivants.
+ $name_domain
  <ul class="wims_browse_subject_list">
  !for d in $tot_dom
   <li class="wims_browse_subject_list">
@@ -21,9 +21,8 @@
  !next d
  </ul>
 !else
- Dans le domaine <i><font color=blue>$name</font></i>, les sujets suivants
- sont disponibles.
- !href module=$module&cmd=new&job=subject Autres domaines
+ $name_available
+ !href module=$module&cmd=new&job=subject $name_other
 .
  <p><table border=0 cellpadding=2 cellspacing=1>
  !for t in $list
