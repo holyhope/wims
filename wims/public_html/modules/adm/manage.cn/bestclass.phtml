@@ -15,7 +15,7 @@
 
 <br>本服务器上有 $nbcls 个班级组或班级.
 <p> <center>
- !form reply  
+ !form reply
   !default bst_num=10
   !let tmp=!date -d '1 month ago' '+%Y%m%d'
   !default bst_since=$tmp
@@ -30,7 +30,7 @@
 <p>$table_header
 <caption>学校和班级组的表</caption>
 $table_hdtr
-<th>名称</th><th>操作</th><th><small>语言</small></th><th>主持教师</th>
+<th>$wims_name_name</th><th>$wims_name_action</th><th><small>$wims_name_Language</small></th><th>$wims_name_supervisor</th>
 <th>创建于<br><small>yyyymmdd</small></th>
 <th>失效于<br><small>yyyymmdd</small></th>
 <th>装入<sup>[1]</sup></th>
@@ -42,9 +42,9 @@ $table_hdtr
  $table_tr
  <td align=center><small>$t_<br>$d_</small>
  <td>
- !href cmd=reply&job2=erase&jobclass=$c_ 删除
+ !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
 &nbsp;
- !href cmd=reply&job2=modify&jobclass=$c_ 修改
+ !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
 &nbsp;
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager 访问
  <td align=center>$l_</td>
@@ -61,7 +61,7 @@ $table_end
 <p>$table_header
 <caption>独立班级表</caption>
 $table_hdtr
-<th>名称<th>操作<th><small>语言</small><th>主持教师
+<th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
 <th>创建于<br><small>yyyymmdd</small>
 <th>失效于<br><small>yyyymmdd</small>
 <th>装入<sup>[1]</sup></th>
@@ -73,9 +73,9 @@ $table_hdtr
  $table_tr
  <td align=center><small>$t_<br>$d_</small>
  <td>
- !href cmd=reply&job2=erase&jobclass=$c_ 删除
+ !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
 &nbsp;
- !href cmd=reply&job2=modify&jobclass=$c_ 修改
+ !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
 &nbsp;
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager 访问
  <td align=center>$l_</td>
