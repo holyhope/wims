@@ -18,6 +18,7 @@ Image file to send to the exercise:
 </form>
 
 :sendend
+
 !if $imglist=$empty
  This exercise has no image file yet.
 !else
@@ -30,7 +31,7 @@ Image file to send to the exercise:
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
    height=40 width=50>
   <td valign=middle align=center>
-  !href cmd=reply&delfile=$i Delete
+  !href cmd=reply&delfile=$i  $wims_name_erase
  !next i
  $table_end <p>
  !set example=!item 1 of $imglist
@@ -50,10 +51,4 @@ testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\
 to $wims_menu_items
 
-!!<p><center>
-!!!href cmd=resume&level=3&realtest=yes&retest=again Test the exercise
-!!!.&nbsp;
-!!!href cmd=reply&level=3 Back to menu
-!!.
-!!</center>
 

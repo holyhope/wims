@@ -25,19 +25,19 @@ words in a list,	wlist
 
 Now please enter the content of your exercise
 <font color=red><b>$oef_title</b></font>.
-!href cmd=reply&level=1 Back to the starting menu
+!href cmd=reply&level=1 $name_menuback
 . <p>
 
 !form reply
 <input type=hidden name=level value=3>
 You may define random parameters here: [
-!href target=wims_mhelp cmd=help&special_parm=parameters explanations
+!href target=wims_mhelp cmd=help&special_parm=parameters $wims_name_Explanations
  ]<br>
 !set o_parms=!reinput $oef_parms
 <textarea wrap="off" rows=6 cols=$sizex name=oef_parms>$o_parms</textarea>
 <p>
 The statement of the exercise ($oef_format format): [
-!href target=wims_mhelp cmd=help&special_parm=format explanations
+!href target=wims_mhelp cmd=help&special_parm=format $wims_name_Explanations
  ]<br>
 !set o_statement=!reinput $oef_statement
 <textarea wrap="off" rows=6 cols=$sizex name=oef_statement>$o_statement</textarea>
@@ -45,7 +45,7 @@ The statement of the exercise ($oef_format format): [
 !if $oef_answercnt>0
  <table border=1>
  <caption>Freestyle replies
- <tr><th>Name<th>Good solution<th>Type</b><small>
+ <tr><th>$wims_name_name<th>Good solution<th>$wims_name_Type</b><small>
  !href target=wims_mhelp cmd=help&special_parm=reply#freestyle [$wims_name_help]
  !for i=1 to $oef_answercnt
   !default anstype$i=default
@@ -80,7 +80,7 @@ The statement of the exercise ($oef_format format): [
 !if $oef_choicecnt>0
  <table border=1>
  <caption>Multiple choices
- <tr><th>Name<th>Good choices<th>Bad choices
+ <tr><th>$wims_name_name<th>Good choices<th>Bad choices
  !for i=1 to $oef_choicecnt
   !set p_=!reinput $(choiprompt$i)
   <tr><td> <input size=$promptlim maxlength=$promptlim name=choiprompt$i value="$p_">
@@ -93,7 +93,7 @@ The statement of the exercise ($oef_format format): [
 !endif
 
 <p><center>
-<input type=submit value="Register the content">
+<input type=submit value="$wims_name_tosave">
 </center> <p>
 You may optionally give a hint and/or a solution:
 <table border=0>

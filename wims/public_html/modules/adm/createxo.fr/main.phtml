@@ -16,28 +16,25 @@
 !endif
 
 !if $level=3 and $catsource=yes
- Voici le source de votre exercice
- <font color=red><b>$oef_title</b></font>, en format OEF (Open Exercice Format).
- Pour le sauver, coupez le texte entre les deux lignes
- horizontales et collez-le dans un fichier.
- !href cmd=resume Retourner au menu.
+ $name_save
+ !href cmd=resume $name_backmenu
  <hr>
 <pre>
 !mexec catsrc.sh
 </pre>
  <hr> <p>
  <center>
- !href cmd=resume Retour au menu
+ !href cmd=resume $name_backmenu
  </center>
  !set catsource=no
  !goto end
 !endif
 
 !if $oef_test=yes
- <center>Votre exercice sera comme suit.
+ <center>$name_realisation
  !if $wims_theme_version=0 or $wims_theme_version=
  <br>
- !href cmd=resume&realtest=no Retourner à $module_title.
+ !href cmd=resume&realtest=no $name_backmodule $module_title.
  !endif
  </center>
  <p><hr> <p>
@@ -47,7 +44,7 @@
 !if $error!=$empty
  !read msg.phtml
  <p>
- !href cmd=reply Corriger l'erreur.
+ !href cmd=reply $name_correction.
  !goto end
 !endif
 

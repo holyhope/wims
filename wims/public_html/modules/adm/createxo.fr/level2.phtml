@@ -24,19 +24,19 @@ mots dans une liste,	wlist
 
 Maintenant veuillez entrer le contenu de votre exercice 
 <font color=red><b>$oef_title</b></font>.
-!href cmd=reply&level=1 Retourner au menu de départ
+!href cmd=reply&level=1 $name_menuback
 . <p>
 
 !form reply
 <input type=hidden name=level value=3>
 Vous pouvez définir des paramètres aléatoires ici&nbsp;: [
-!href target=wims_mhelp cmd=help&special_parm=parameters explications
+!href target=wims_mhelp cmd=help&special_parm=parameters $wims_name_Explanations
  ]<br>
 !set o_parms=!reinput $oef_parms
 <textarea wrap="off" rows=6 cols=$sizex name=oef_parms>$o_parms</textarea>
 <p>
 L'énoncé de l'exercice (format $oef_format)&nbsp;: [
-!href target=wims_mhelp cmd=help&special_parm=format explications
+!href target=wims_mhelp cmd=help&special_parm=format $wims_name_Explanations
  ]<br>
 !set o_statement=!reinput $oef_statement
 <textarea wrap="off" rows=6 cols=$sizex name=oef_statement>$o_statement</textarea>
@@ -44,8 +44,8 @@ L'énoncé de l'exercice (format $oef_format)&nbsp;: [
 !if $oef_answercnt>0
  <table border=1>
  <caption>Les réponses libres
- <tr><th>Nom<th>Bonne solution<th>Type</b><small>
- !href target=wims_mhelp &cmd=help&special_parm=reply#freestyle [$wims_name_help]
+ <tr><th>$wims_name_name<th>Bonne solution<th>$wims_name_Type</b><small>
+ !href target=wims_mhelp cmd=help&special_parm=reply#freestyle [$wims_name_help]
  !for i=1 to $oef_answercnt
   !default anstype$i=default
   !set p_=!reinput $(ansprompt$i)
@@ -79,7 +79,7 @@ L'énoncé de l'exercice (format $oef_format)&nbsp;: [
 !if $oef_choicecnt>0
  <table border=1>
  <caption>Les choix multiples
- <tr><th>Nom<th>Bon choix<th>Mauvais choix
+ <tr><th>$wims_name_name<th>Bon choix<th>Mauvais choix
  !for i=1 to $oef_choicecnt
   !set p_=!reinput $(choiprompt$i)
   <tr><td> <input size=$promptlim maxlength=$promptlim name=choiprompt$i value="$p_">

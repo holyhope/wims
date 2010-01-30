@@ -1,10 +1,71 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
 !distribute lines Mode pas à pas\
-Mode brut\
-Mode fichier\
-Autres méthodes\
-modèles préparés\
-into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,name_model
+  Mode brut\
+  Mode fichier\
+  Autres méthodes\
+  modèles préparés\
+  Envoyer le fichier\
+  Source de votre exercice\
+  Retour au menu\
+  Continuer pour créer le contenu de l'exercice\
+  Modifier un exercice existant de la classe\
+  retourner à l'étape précédente\
+  Envoyer le source\
+  Vider\
+  Démo\
+  Adapter\
+  Tester l'exercice\
+  Corriger l'erreur\
+  Retourner à\
+  Votre exercice sera comme suit.\
+  Voici les modèles d'exercices disponibles. Choisissez-un.\
+  Module contenant temporairement votre exercice.\
+into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
+  name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
+  name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
+  name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module\
+  
 
 !set name_normal=!lowercase $wims_name_normalmode
 !set name_raw=!lowercase $wims_name_rawmode
 !set name_file=!lowercase $wims_name_filemode
+
+!set name_modefile1=Vous êtes en mode fichier pour la création d'exercice. Pour ce mode, vous pouvez \
+  envoyer au serveur un fichier source OEF local. Pour une première création d'exercice, prenez plutôt le
+!set name_modefile2=Pour éditer en ligne, vous pouvez aussi utiliser le
+
+!set name_first=Exercices basiques
+!set name_datalist=Exercices avec une liste de données
+!set name_save=!nosubst Voici le source de votre exercice <font color=red><b>$oef_title</b></font>,\
+   en format OEF (Open Exercice Format). Pour le sauver, coupez le texte entre les deux lignes\
+    horizontales et collez-le dans un fichier.
+!exit
+:delete
+L'exercice <em>$deltitle</em> a été retiré de la liste d'exercices de votre
+classe.
+<p>
+Si vous avez fait une mauvaise manoeuvre et voulez réparer votre
+erreur, voici le source de cet exercice que vous pouvez sauvegarder comme mesure d'urgence, 
+et plus tard copier dans
+!exit
+
+:model
+<b>Note</b>. Ces modèles ont pour but de permettre aux plus pressés de
+construire rapidement leurs exercices. Ils ont donc souvent une structure
+simplifiée et standardisée, et n'offrent pas la pleine puissance de la
+syntaxe OEF. Mais vous pouvez toujours mettre les exercices en mode brut
+pour y ajouter plus de fonctionnalités ou les modifier selon votre goût.
+!exit
+
+:register
+Votre exercice est enregistré dans le serveur avec succès. Nous vous
+remercions chaleureusement de votre contribution, au nom de tous ceux qui vont
+en bénéficier.
+<p>
+L'administrateur de ce site va vérifier votre exercice, et va décider de
+le mettre dans une catégorie appropriée ou non.
+Ceci pourrait prendre un certain nombre de jours.
+!exit

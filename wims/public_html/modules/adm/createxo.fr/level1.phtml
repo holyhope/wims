@@ -6,7 +6,7 @@ Donnez un titre à l'exercice que vous voulez créer&nbsp;:<br>
 Format de l'énoncé du problème&nbsp;:
 !formselect oef_format list tex,html
  [
- !href target=wims_mhelp cmd=help&special_parm=format aide
+ !href target=wims_mhelp cmd=help&special_parm=format $wims_name_help
  ]<p>
 Cet exercice demandera
 !formselect oef_answercnt from 0 to 10
@@ -19,15 +19,15 @@ admises.
 !formselect oef_condcnt from 0 to $condlim
 conditions seront utilisées pour tester les réponses libres.
  [
- !href target=wims_mhelp cmd=help&special_parm=reply aide
+ !href target=wims_mhelp cmd=help&special_parm=reply $wims_name_help
  ]
 <p><table border=0><tr><td align=right>
-Nom de l'auteur&nbsp;:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+$wims_name_Author<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
 <tr><td align=right>
-Adresse électronique&nbsp;:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+$wims_name_email<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
 </table>
 <p><center>
-<input type=submit value="Continuer pour créer le contenu de l'exercice">
+<input type=submit value="$name_continue">
 </center>
 </form>
 
@@ -37,9 +37,9 @@ Adresse électronique&nbsp;:<td><input size=30 maxlength=80 name=oef_email value=
   <p>
   !form new
   <input type=hidden name=module value="$module">
-  Modifier un exercice existant de la classe :
+  $name_modify
   !formselect existing list $exolist prompt $titlelist
-  <input type=submit value=OK></form>
+  <input type=submit value="$wims_name_tosave"></form>
  !endif
 !endif
 

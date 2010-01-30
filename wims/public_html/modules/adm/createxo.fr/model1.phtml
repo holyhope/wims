@@ -1,13 +1,7 @@
 
-!set name_first=Exercices basiques
-!set name_datalist=Exercices avec une liste de données
-
 !readproc model/makelist.proc
 
-Voici les modèles d'exercice disponibles. Choisissez-un, ou
-!href cmd=reply&level=0 retournez
- à la page d'accueil.
-
+$name_availablemodels
 <p>
 !for t in $types
  !default name_$t=$t
@@ -24,9 +18,9 @@ Voici les modèles d'exercice disponibles. Choisissez-un, ou
   $table_tr
   <td>$(tit_$f)</td>
   <td nowrap>
-  !href cmd=resume&level=3&mode=model&model=$f&realtest=yes Démo
+  !href cmd=resume&level=3&mode=model&model=$f&realtest=yes $name_demo
 &nbsp;
-  !href cmd=reply&level=2&mode=model&model=$f Adapter
+  !href cmd=reply&level=2&mode=model&model=$f $name_adapt
   </td>
   <td><small>$(desc_$f)
   !href target=wims_mhelp cmd=help&special_parm=model,1,$f &gt;&gt;
@@ -37,11 +31,7 @@ Voici les modèles d'exercice disponibles. Choisissez-un, ou
  <p>
 !next t
 
-<b>Note</b>. Ces modèles ont pour but de permettre aux plus pressés de
-construire rapidement leurs exercices. Ils ont donc souvent une structure
-simplifiée et standardisée, et n'offrent pas la pleine puissance de la
-syntaxe OEF. Mais vous pouvez toujours mettre les exercices en mode brut
-pour y ajouter plus de fonctionnalités ou les modifier selon votre goût.
+!read names.phtml model
 
 !reset mode
 

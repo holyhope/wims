@@ -1,4 +1,3 @@
-
 !form reply name=replyform id=replyform
 <input type=hidden name=level value=3>
 
@@ -6,9 +5,9 @@
  You are under the raw mode for the creation of exercise.
  !if $modeltest=yes
   As this exercise is based on a standard model, try the
-  !href cmd=reply&mode=model&level=2 guided mode
+  !href cmd=reply&mode=model&level=2 $name_normal
 .
-  !href cmd=reply&mode=none&level=0 Abandon
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !else
   This mode is reserved to experts or for registering an
@@ -34,20 +33,16 @@
  !endif
  !if $modeltest=yes
   As this exercise is based on a standard model, try the
-  !href cmd=reply&mode=model&level=2 guided mode
+  !href cmd=reply&mode=model&level=2 $name_normal
 .
-  !href cmd=reply&mode=none&level=0 Abandon
+  !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !endif
 !endif
 
-<a name=textarea></a>
-[<a href="#"
-onclick=".forms['replyform'].wims_deposit.value=''">Clear</a>
-] [
-!href cmd=resume Reinitiate
-].
-
+ Vous pouvez tester certains programmes externes avec le
+  !href target=wims_test module=tool/directexec&cmd=new testeur de script
+.
 <p><center>
 !mexec textarea.sh
 <p><input type=submit value="Register the source"></center>
