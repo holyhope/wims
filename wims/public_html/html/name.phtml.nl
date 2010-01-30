@@ -301,8 +301,8 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 
 !set wims_name_supervisor=administrator
 !set wims_name_Supervisor=Administrator
-!set wims_name_namesstudent=Student
-!set wims_name_namesteacher=Docent
+!set wims_name_namestudent=Student
+!set wims_name_nameteacher=Docent
 !set wims_name_teacher=Docenten accounts
 !set wims_name_addteacher=Nieuwe docent
 !set wims_name_addparticipant=Voeg een deelnemr toe

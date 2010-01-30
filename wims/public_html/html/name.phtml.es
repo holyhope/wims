@@ -299,8 +299,8 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 
 !set wims_name_supervisor=administrador
 !set wims_name_Supervisor=Administrador
-!set wims_name_namesstudent=Alumno
-!set wims_name_namesteacher=Profesor
+!set wims_name_namestudent=Alumno
+!set wims_name_nameteacher=Profesor
 !set wims_name_teacher=Cuentas de profesores
 !set wims_name_addteacher=Nueva cuenta de profesor
 !set wims_name_modteacher=Propiedades del profesor
