@@ -5,3 +5,25 @@ name_R=ontspanning
 name_L=referenties
 name_S=werkbladen
 name_P=popup hulpmiddelen
+
+!if $job=subject
+  !set title=Browsen per onderwerp
+  !set name_domain= Kies een van de volgende onderwerpen. 
+  
+  !set name_available=!nosubst In afdeling  <i><font color=blue>$name</font></i>, \
+   zijn de volgende topics aanwezig
+ !set name_other= andere afdelingen
+!endif
+
+!if $job=level
+ !set title=Browsen per Lesniveau
+ !distribute lines jaar\
+   Categorie\
+   Lagere school\
+   Middelbare school\
+   Universiteit\
+   Promovendus\
+   Research\
+ into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,,\
+ name_research
+ 
