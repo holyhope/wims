@@ -44,7 +44,7 @@ name_backto=!nosubst Back to $otit
 !set name_accountchange=Change properties of your developer's account 
 !set name_empty=leave the password field empty if you don't want to change it
 !set name_change=Your account password has been changed.
- 
+
 !if $job=modname
   !set name_moddevcnt=!nosubst You have $totalcnt modules under development.
   !set name_limited=!nosubst list limited to $maxlist items
@@ -60,7 +60,7 @@ name_backto=!nosubst Back to $otit
   !distribute lines Copy,Rename,Duplicate,Rename\
    duplicate it\
    Renaming the module will break all the worksheets referencing it. Make sure that this is not the case,\
- into name_choice,name_copy,name_warning1,name_warning2
+ into name_choice,name_copy,name_warning1
 !set name_public_module=!nosubst the public module <em>$otit</em> (<tt>$original2</tt>) to the\
   development space, under the address
 !set name_warning2= Remaning or duplicating a public-address module may lead to\
@@ -126,6 +126,32 @@ name_backto=!nosubst Back to $otit
   Too many differences exist between the development version and the public version on this server.\
   Differences between the development version and the public version on this server:\
   into name_diff1,name_diff2,name_diff3
+!endif
+
+!if $job=restore
+
+ !set name_warning1=Your file doesn't look like a module backup file!\
+ <p>You can only restore a file downloaded earlier from Modtool. Try again.
+ 
+ !distribute lines  I cannot recognize your file as a module backup. Error in the file!\
+   No difference found between the existing module (in your development space) and the backup archives.\
+   Too many differences exist between the existing module (in your development space) and the backup archives.\
+   Differences between the existing module (in your development space) and the backup archives\
+   Please give the backup file to restore\
+   only check differences with the existing module.\
+   Go to work on the module\
+   Module restored\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+    name_restored
+  
+!set name_illegal= Your archives contains files of illegal type! It cannot be restored.\
+<p>Is it an old-versioned backup? Now you have to copy the files one by one.
+!set name_warning2=Only backups saved earlier from Modtool or downloaded from the publication center \
+  <a href="$downloadsite">$downloadsite</a> will be accepted. No manual modification of \
+  the backup file should be made.
+!set name_warning_diff=!nosusbt Restoration of a backup module now completely replaces\
+ the existing module at the same address, with no possibility of recovery. But you can
+  
 !endif
 
 !exit

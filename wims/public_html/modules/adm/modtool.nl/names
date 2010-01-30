@@ -133,6 +133,34 @@ name_backto=!nosubst Terug naar $otit
   into name_diff1,name_diff2,name_diff3
 !endif
 
+!if $job=restore
+
+ !set name_warning1=Uw bestand ziet er niet uit als een module backup file ! <p>U kunt voor deze \
+   herstelprocedure alleen archieven gebruiken \
+   die eerder door <em>modtool</em> zelf zijn aangemaakt ! Probeer het opnieuw.
+ 
+ !distribute lines Ik kan in dit archief <b>geen valide</b> backup van een WIMS module ontdekken. Een fout in het bestand !\
+   Er is geen verschil gevonden tussen de bestaande module en de backup.\
+   Zeer veel verschillen tussen de bestaande module en de backup versie.\
+   Er zijn verschillen tussen de bestaande module en de backup versie\
+   Geef de backup file\
+   only check differences with the existing module.\
+   Ga aan het werk met deze module.\
+   Module hersteld\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+    name_restored
+  
+!set name_illegal=Uw archieven bevatten niet-toegestane filetypes! Ik kan geen hersteloperatie uitvoeren.\
+ <p>Is dit soms een oude type backupfile. Probeer eventueel file voor file te kopieren.
+
+!set name_warning2=Alleen backups van Modtool of gedownload van het "publicatie centrum"\
+   <a href="$downloadsite">$downloadsite</a> worden geaccepteerd.\ 
+   De backup files mogen nooit handmatig worden gewijzigd.
+!set name_warning_diff=!nosusbt Deze backup module overschrijft nu -zonder pardon- de bestaande module met het zelfde module-adres !\
+   U kunt nog wel de verschillen checken met de bestaande module 
+ 
+!endif
+
 !exit
 :del
 

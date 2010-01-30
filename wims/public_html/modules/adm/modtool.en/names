@@ -128,6 +128,32 @@ name_backto=!nosubst Back to $otit
   into name_diff1,name_diff2,name_diff3
 !endif
 
+!if $job=restore
+
+ !set name_warning1=Your file doesn't look like a module backup file!\
+ <p>You can only restore a file downloaded earlier from Modtool. Try again.
+ 
+ !distribute lines  I cannot recognize your file as a module backup. Error in the file!\
+   No difference found between the existing module (in your development space) and the backup archives.\
+   Too many differences exist between the existing module (in your development space) and the backup archives.\
+   Differences between the existing module (in your development space) and the backup archives\
+   Please give the backup file to restore\
+   only check differences with the existing module.\
+   Go to work on the module\
+   Module restored\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+    name_restored
+  
+!set name_illegal= Your archives contains files of illegal type! It cannot be restored.\
+<p>Is it an old-versioned backup? Now you have to copy the files one by one.
+!set name_warning2=Only backups saved earlier from Modtool or downloaded from the publication center \
+  <a href="$downloadsite">$downloadsite</a> will be accepted. No manual modification of \
+  the backup file should be made.
+!set name_warning_diff=!nosusbt Restoration of a backup module now completely replaces\
+ the existing module at the same address, with no possibility of recovery. But you can
+  
+!endif
+
 !exit
 :del
 

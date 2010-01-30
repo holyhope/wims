@@ -1,36 +1,27 @@
 !reset wims_deposit
 
 !if $mode=bad_fname
- Your file doesn't look like a module backup file!
- <p>
- You can only restore a file downloaded earlier from Modtool.
- Try again.
- <p>
+$name_warning <p>
 !endif
 
 !if $mode=bad_arch
- I cannot recognize your file as a module backup. Error in the file!
+ $name_norecognize
  <p>
 !endif
 
 !if $mode=illegal
- Your archives contains files of illegal type! It cannot be restored.
- <p>
- Is it an old-versioned backup? Now you have to copy the files one by one.
+$name_illegal
  <p>
 !endif
 
 !if $mode=diffcheck
  !if $diff=$empty
-  No difference found between the existing module (in your development space) and
-  the backup archives.
+  $name_diff1
  !else
   !if $diff=MANY
-   Too many differences exist between the existing module (in your development space) and
-   the backup archives.
+   $name_diff2
   !else
-   Differences between the existing module (in your development space) and
-   the backup archives:
+   $name_diff3:
    <pre>$diff</pre>
   !endif
  !endif
@@ -41,27 +32,22 @@
  !set wims_form_method=file
  !form reply
  <input type=hidden name=jobreq value=restore>
- Please give the backup file to restore:
+ $name_restore:
  <input type=file name=wims_deposit size=40>
- <input type=submit value=OK>
+ <input type=submit value="$wims_name_tosave">
  <p>
- <small>Only backups saved earlier from Modtool or downloaded
- from the publication center <a href="$downloadsite">$downloadsite</a>
- will be accepted. No manual modification of the backup file should be
- made.
+ <small>$name_warning2
  </small>
  <p>
- <b>$wims_name_warning</b>. Restoration of a backup module now completely replaces
- the existing module at the same address, with no possibility of recovery.
- But you can 
+ <b>$wims_name_warning</b>. $name_warning_diff
  <input type=checkbox name=confirm value=diffcheck>
- only check differences with the existing module.
- </form>
+ $name_show_diff
+</form>
 !else
- Module restored: <b>$ftest</b>, <small>$ftest2</small>
+ $name_restored: <b>$ftest</b>, <small>$ftest2</small>
  <br>$wims_name_Address: <tt>$restored</tt>.
  <p>
- !href cmd=reply&jobreq=flist&modreq=$restored Go to work on the module
+ !href cmd=reply&jobreq=flist&modreq=$restored $name_gotowork
 .
 !endif
 

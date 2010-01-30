@@ -1,39 +1,27 @@
 !reset wims_deposit
 
 !if $mode=bad_fname
- Uw bestand ziet er niet uit als een module backup file !
- <p>
- U kunt voor deze herstelprocedure alleen archieven gebruiken 
- die eerder door <em>modtool</em> zelf zijn aangemaakt ! Probeer het opnieuw.
- <p>
+$name_warning <p>
 !endif
 
 !if $mode=bad_arch
- Ik kan in dit archief <b>geen valide</b> backup van een WIMS module ontdekken.
- Een fout in het bestand !
+ $name_norecognize
  <p>
 !endif
 
 !if $mode=illegal
- Uw archieven bevatten niet-toegestane filetypes! 
- Ik kan geen hersteloperatie uitvoeren.
- <p>
- Is dit soms een oude type backupfile. 
- Probeer eventueel file voor file te kopieren.
+$name_illegal
  <p>
 !endif
 
 !if $mode=diffcheck
  !if $diff=$empty
- Er is geen verschil gevonden tussen de
-  bestaande module en de backup.
+  $name_diff1
  !else
   !if $diff=MANY
-   Zeer veel verschillen tussen de bestaande 
-   module en de backup versie.
+   $name_diff2
   !else
-  Er zijn verschillen tussen de bestaande module en de 
-  backup versie&nbsp;:
+   $name_diff3:
    <pre>$diff</pre>
   !endif
  !endif
@@ -44,28 +32,22 @@
  !set wims_form_method=file
  !form reply
  <input type=hidden name=jobreq value=restore>
- Geef de backup file :
+ $name_restore:
  <input type=file name=wims_deposit size=40>
- <input type=submit value=OK>
+ <input type=submit value="$wims_name_tosave">
  <p>
- <small>
- Alleen backups van Modtool of gedownload van het "publicatie centrum" 
- <a href="$downloadsite">$downloadsite</a>
- worden geaccepteerd. 
- De backup files mogen nooit handmatig worden gewijzigd.
+ <small>$name_warning2
  </small>
  <p>
- <b>WAARSCHUWING</b>. 
- Deze backup module overschrijft nu -zonder pardon- de bestaande
- module met het zelfde module-adres !
- U kunt nog wel de verschillen checken met de bestaande module 
+ <b>$wims_name_warning</b>. $name_warning_diff
  <input type=checkbox name=confirm value=diffcheck>
- 
- </form>
+ $name_show_diff
+</form>
 !else
- Module hersteld&nbsp;: <b>$ftest</b>, <small>$ftest2</small>
+ $name_restored: <b>$ftest</b>, <small>$ftest2</small>
  <br>$wims_name_Address: <tt>$restored</tt>.
  <p>
- !href cmd=reply&jobreq=flist&modreq=$restored Ga aan het werk met deze module.
+ !href cmd=reply&jobreq=flist&modreq=$restored $name_gotowork
+.
 !endif
 

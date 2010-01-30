@@ -130,6 +130,32 @@ de développement sous l'adresse
 into name_diff1,name_diff2,name_diff3
 !endif
 
+!if $job=restore
+
+ !set name_warning1=Votre fichier n'a pas l'air d'un fichier de sauvegarde d'un module&nbsp;!<p> \
+   Vous ne pouvez restaurer un fichier que s'il a été téléchargé auparavant à partir de Modtool. Réessayez.
+
+ !distribute lines  Je n'ai pas pu reconnaître votre fichier comme une sauvegarde de module. Erreur dans le fichier&nbsp;!\
+   Aucune différence n'est trouvée entre le module existant (dans votre espace de développement) et la sauvegarde.\
+   Trop de différence existe entre le module existant (dans votre espace de développement) et la sauvegarde.\
+   Differences entre le module existant (dans votre espace de développement) et la sauvegarde&nbsp;\
+   Donnez le fichier de sauvegarde à restaurer\
+   faire montrer les différences entre les modules d'abord.\
+   Aller travailler sur le module\
+   Module restauré\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+    name_restored
+  
+!set name_illegal= Votre sauvegarde contient des fichiers de types illégaux ! Restauration impossible.\
+ <p> Est-ce une sauvegarde d'une ancienne version ? Maintenant vous devez copier les fichiers un par un.\
+!set name_warning2=Seules les sauvegardes depuis Modtool ou les fichiers téléchargés\
+   depuis le centre de publication <a href="$downloadsite">$downloadsite</a>\
+   sont acceptés. Aucune modification manuelle du fichier d'archives n'est autorisée.
+!set name_warning_diff=!nosusbt Ce module va remplacer complètement le module existant à la même adresse, \
+  sans possibilité de retour. Mais vous pouvez
+  
+!endif
+
 !exit
 :del
  Un module effacé l'est

@@ -1,39 +1,27 @@
 !reset wims_deposit
 
 !if $mode=bad_fname
- Votre fichier n'a pas l'air d'un fichier de sauvegarde d'un module&nbsp;!
- <p>
- Vous ne pouvez restaurer un fichier que s'il a été téléchargé auparavant à partir de Modtool.
- Réessayez.
- <p>
+$name_warning <p>
 !endif
 
 !if $mode=bad_arch
- Je n'ai pas pu reconnaître votre fichier comme une sauvegarde de module.
- Erreur dans le fichier&nbsp;!
+ $name_norecognize
  <p>
 !endif
 
 !if $mode=illegal
- Votre sauvegarde contient des fichiers de types illégaux ! Restauration
- impossible.
- <p>
- Est-ce une sauvegarde d'une ancienne version ? Maintenant vous devez copier 
- les fichiers un par un.
+$name_illegal
  <p>
 !endif
 
 !if $mode=diffcheck
  !if $diff=$empty
-  Aucune différence n'est trouvée entre le module existant (dans votre espace
-  de développement) et la sauvegarde.
+  $name_diff1
  !else
   !if $diff=MANY
-   Trop de différence existe entre le module existant (dans votre espace
-   de développement) et la sauvegarde.
+   $name_diff2
   !else
-   Differences entre le module existant (dans votre espace de développement) et
-   la sauvegarde&nbsp;:
+   $name_diff3:
    <pre>$diff</pre>
   !endif
  !endif
@@ -44,28 +32,22 @@
  !set wims_form_method=file
  !form reply
  <input type=hidden name=jobreq value=restore>
- Donnez le fichier de sauvegarde à restaurer&nbsp;:
+ $name_restore:
  <input type=file name=wims_deposit size=40>
- <input type=submit value=OK>
+ <input type=submit value="$wims_name_tosave">
  <p>
- <small>Seules les sauvegardes depuis Modtool ou les fichiers téléchargés
- depuis le centre de publication <a href="$downloadsite">$downloadsite</a>
- sont acceptés. Aucune modification manuelle du fichier d'archives 
- n'est autorisée.
+ <small>$name_warning2
  </small>
  <p>
- <b>$wims_name_warning</b>. <tt>Restauration d'une sauvegarde</tt>
-  va remplacer complètement
- le module existant à la même adresse, sans possibilité de retour.
- Mais vous pouvez
+ <b>$wims_name_warning</b>. $name_warning_diff
  <input type=checkbox name=confirm value=diffcheck>
- faire montrer les différences entre les modules d'abord.
+ $name_show_diff
 </form>
 !else
- Module restauré&nbsp;: <b>$ftest</b>, <small>$ftest2</small>
+ $name_restored: <b>$ftest</b>, <small>$ftest2</small>
  <br>$wims_name_Address: <tt>$restored</tt>.
  <p>
- !href cmd=reply&jobreq=flist&modreq=$restored Aller travailler sur le module
+ !href cmd=reply&jobreq=flist&modreq=$restored $name_gotowork
 .
 !endif
 
