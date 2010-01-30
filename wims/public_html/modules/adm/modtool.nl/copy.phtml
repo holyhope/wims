@@ -3,10 +3,8 @@
 !endif
 
 !if $originheader!=$empty and $job=move
- <b>WAARSCHUWING</b>! Het veranderen van de modulenaam zal leiden tot problemen
- met werkbladen, repetities en documenten die deze module gebruiken.
- Als U hier niet zeker van bent , kunt U de module beter
- !href cmd=reply&jobreq=copy dupliceren
+ <b>$wims_name_warning</b> ! $name_warning1 $wims_name_or
+ !href cmd=reply&jobreq=copy $name_copy
 .
  <p>
 !endif
@@ -14,27 +12,21 @@
 !if $target=$empty
  !form reply
  <input type=hidden name=jobreq value="$job">
- !distribute item Kopie,Hernoemen,Dupliceren,Hernoemen into P_copy,P_move,L_copy,L_move
+ !distribute item $name_choice into P_copy,P_move,L_copy,L_move
  !if $originheader!=$empty
-  $(L_$job) de module <em>$otit</em> (<tt>$original2</tt>) naar <p>
+  $(L_$job) <em>$otit</em> (<tt>$original2</tt>): <p>
  !else
-  $(P_$job) de reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de
-  development afdeling, met als adres <p>
+  $(P_$job) $name_public_module<p>
  !endif
  !read scripts/addressform.phtml
  </form>
  !if $originheader!=$empty and $o1 isitemof $zonelist,local
   <p>
-  <b>Opmerking</b>. Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module
-  kan leiden tot een dubbele aanwezigheid bij later publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !
-  <p>
-  Wil U deze module uitproberen, plaats deze dan in de <tt>test zone</tt>.
+  <b>$wims_name_warning</b>. $name_warning2
  !endif
  !if $originheader!=$empty and ~ notin $original2
   <p>
-  <b>Opmerking</b>. Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module
-  <b>exact</b> overeenkomt met het adres van de reeds gepubliceerde versie.
-  <small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
+  <b>$wims_name_warning</b>. $name_warning3
  !endif
 !endif
 

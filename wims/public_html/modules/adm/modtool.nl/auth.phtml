@@ -1,14 +1,11 @@
 
 !set wims_form_method=post
 !form reply
- Dit hulpprogramma is bedoeld voor het online ontwikkelen van speciale WIMS modules,
- en is alleen toegankelijk voor gebruikers met een ontwikkelaar-account op deze server.
- <p>
- Geef hier s.v.p. uw "ontwikkelaars authentificatie".
+  $name_intro
  <small>(
- !mailurl $wims_site_manager stuur een email naar de systeembeheerder\
+ !mailurl $wims_site_manager $name_manager\
 $module password
- als u het wachtwoord vergeten bent.)</small>
+ $name_forget).</small>
  <p><center><table border=0>
  <tr><td align=right>$wims_name_Login: <td><input size=20 name=login value="$auth_login">
  <tr><td align=right>$wims_name_Password: <td><input type=password size=20 name=passwd>
@@ -18,16 +15,15 @@ $module password
  </center>
 </form>
 
-<b>Opmerking.</b> Bent U geinteresseerd in het maken van WIMS modules, 
-!mailurl $wims_site_manager schrijf dan naar de systeembeheerder\
-WIMS new developer voor een account (login naam en wachtwoord).
-
-
+$name_developer
+!mailurl $wims_site_manager $name_manager\
+WIMS new developer
+$name_identification
 <p>
- U kunt altjd vrijblijvend en <em>zonder</em> speciaal account
-!href module=adm/createxo Createxo
- gebruiken om zeer snel interactieve WIMS oefeningen te maken. 
-
+$name_createxo1
+!href module=adm/createxo $wims_name_createxo
+$name_createxo2.
 <p>
+
 !set wims_menu_items=!append line createxo,1,module=adm/createxo\
 to $wims_menu_items

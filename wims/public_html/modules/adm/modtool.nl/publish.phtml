@@ -7,92 +7,71 @@
   <pre>$rep</pre>
   <p>
   !if $m1=local
-    De veranderde versie van uw module zal vanaf morgen te vinden 
-    zijn in de database van de WIMS zoekmachine 
+   $name_local
    <p>
-   Als dit niet de bedoeling is, graag
-   !mailurl $wims_site_manager de systeembeheerder
-    van deze server</a> vragen de module handmatig te verwijderen 
-    
+   $name_error:
+   !mailurl $wims_site_manager $wims_name_manager
   !else
-    U wordt een email ter bevestiging toegestuurd.
+   $name_emailsend
   !endif
  !endif
  !exit
 !endif
 
 !if $askcheat=yes
- Deze module heeft versie WIMS-$Wver2 nodig,
- terwijl deze server versie $wims_version is.<br>
- U moet de INDEX file van de module even veranderen om dit recht te trekken.
- 
- 
+ $name_cheat1
  <p><center>
  !href cmd=help&special_parm=wimsversion $wims_name_Explanations
 .
- !href cmd=reply&vcheat=no OK, ga door
+ !href cmd=reply&vcheat=no $name_goahead
 .
  </center> <p>
-Als U zeker bent van uw zaak, kunt U de andere servers
- !href cmd=reply&vcheat=yes om de tuin leiden
- door ze te laten denken dat U met oudere versie werkt.
- (een rikante operatie...)
+ $name_cheat2 : 
+ !href cmd=reply&vcheat=yes $name_goahead
  !exit
 !endif
 
 !if $pubprep=yes
  !if $local!=yes
-  !href cmd=help&special_parm=publish Lees mij eerst !
-  Dit is een openbare / publiek-adres module en die wordt geinstalleerd op
-  de "hoofd distributie server" <tt>$centralhost</tt>.
-  Geef hier uw "publicatie id".
+  !href cmd=help&special_parm=publish $name_readhelp
+  $name_warning0
   !form reply
   <input type=hidden name=confirm value=yes>
   <input type=hidden name=vcheat value="$vcheat">
   <p><center><table border=0 cellpadding=4>
-  <tr><td align=right>Submissie id: </td>
+  <tr><td align=right>$name_publishaccount</td>
   <td><input type=text size=20 name=submitauth value="$submitauth">
   </td></tr>
-  <tr><td align=right>$wims_name_Password: </td>
+  <tr><td align=right>$wims_name_Password</td>
   <td><input type=password size=20 name=submitpass value="$submitpass">
   </td></tr>
-  <tr><td align=right>Type publicatie: </td>
+  <tr><td align=right>$name_publishtype</td>
   <td>
   !set submittype=devel
-  !formselect submittype list devel,stable,new prompt \
-	experimentele versie, \
-	stabiele versie - verander een bestaande module, \
-	stabiele versie - voeg een nieuwe module toe
+  !formselect submittype list devel,stable,new prompt $name_prompt
   </td></tr>
-  <tr><td align=right>Is deze module een vertaald ?<br>
-  en gemaakt door een ander ?
-  
+  <tr><td align=right>$name_translation
   </td><td>
   !set istranslate=no
   !formselect istranslate list yes,no prompt $wims_name_yes,$wims_name_no
   </td></tr>
-  <tr><td align=right>Toegelaten mede-auteurs:
+  <tr><td align=right>$name_authorized
   </td><td>
   <input size=40 name=modifiers value="$modifiers">
   !href cmd=help&special_parm=modifiers <sup>$wims_name_help</sup>
   </td></tr>
   <tr><td colspan=2 align=center><input type=submit value=OK>
   </tr>$table_end <p>
-  Wanneer dit een verbeterde/vernieuwde versie is van een bestaande module,
-   niet vergeten het <em>versienummer</em> van de module te verhogen.
-  <p>
- Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
+  $name_warning1
  !else
-  Uw module heeft een lokaal adres. Het kan dus alleen worden gepubliceerd
-  op deze lokale WIMS server. Wilt U toch doorgaan?
+  $name_warning2
   <p><center>
   !href cmd=reply&confirm=yes&vcheat=$vcheat $wims_name_yes
   &nbsp;
   !href cmd=reply&jobreq=flist $wims_name_giveup
   </center> <p>
-  
-  Het grote voordeel van publicatie op een lokale WIMS server is,
-  dat de module door de zoekmachine van deze lokale server kan worden
-   aangeroepen.  
+
+  $name_warning3
  !endif
 !endif
+
