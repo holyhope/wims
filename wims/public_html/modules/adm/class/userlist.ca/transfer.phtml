@@ -3,13 +3,12 @@ $classname\
 $name_title_transfer
 
 <center>
- !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ !href cmd=reply&job=getuser&getuser=$getuser $name_student1
  (<tt>$getuser</tt>)
 </center> <p>
 
 !if $error=no_reccourse
- <b>Error</b>. El participant no està registrat en un curs corresponent
-a la classe actual i no es possible la transferència
+ $name_error1
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -19,11 +18,10 @@ a la classe actual i no es possible la transferència
 !if $ttype=show
  !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
  !if $transferclass notitemof $tr_list or $i=$empty
-  <b>Error</b> d'identificació de classes. Moviment en fals o error de
-  programari ?
+  $name_error2
   !exit
  !else
-  Detall de l'activitat a $i (limitat a 1000 línies).
+  $name_activities
   <p><hr>
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
@@ -38,13 +36,7 @@ a la classe actual i no es possible la transferència
  !endif
 !endif
 
-Aquests són els altres cursos en els que el participant ha actuat.
-Cliqueu sobre una acció per transferir les seves activitats a
-!if $tr_typename=course
- aquest curs.
-!else
- aquesta classe.
-!endif
+$name_totransfer
 
 $table_header
 $table_hdtr<th>$wims_name_course</th>
@@ -63,14 +55,5 @@ $table_hdtr<th>$wims_name_course</th>
 $table_end
 
 :endd
-<b>Notes</b>. <ol>
-<li>"$name_merge" significa ajuntar les activitats de tots dos cursos.
-<li>"$name_replace" significa que les activitats dels altres cursos substituiran
-les d'aquest curs. La substitució no es produirà si el primer és buit.
-<li>Les notes dels exàmens i les activitats no comptades van sempre unides.
-<li>El registre dels detalls d'exercicis o exàmens no és transferible.
-<li>Després de fer la transferència de (sigui com a "$name_merge" i com a 
-"$name_replace"), els registres de les activitats del participant en
-els altres cursos seran eliminats.
-</ol>
+!read names.phtml transfer
 

@@ -18,57 +18,51 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
- Aquí està el fitxer <tt>
+  $name_file <tt>
  !getfile $outfile $outfile
- </tt> que podeu descarregar i obrir en el vostre programari
- de full de càlcul preferit.
+ </tt> $name_download
  <p><hr> <p>
 !endif
 
 !if $processed=yes and $error=$empty
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
-  El fitxer de full de càlcul <tt>$wims_deposit</tt> s'ha reconegut amb èxit.<ul>
+  $name_deposit<ul>
   !if $change!=$empty
-   <li>Informacions dels participants canviades&nbsp;: <tt>$change</tt>
+   <li>$name_infochanged<tt>$change</tt>
   !endif
   !if $added!=$empty
-   <li>Nous participants afegits&nbsp;: <tt>$added</tt>
+   <li>$name_added<tt>$added</tt>
   !endif
   !if full iswordof $remark
-   <li>La incorporació de nous participants s'ha ignorat perquè no hi ha prou espai
-   disponible.
+   <li>$name_warning1
   !endif
   !if noprop iswordof $remark
-   <li>No s'han canviat les informacions dels participants ja que s'han rebut notes.
+   <li>$name_warning2
   !endif
   !if noauto iswordof $remark
-   <li>Les notes calculades pel servidor (mitjanes i notes de fulls/exàmens)
-  s'ignoren en les vostres dades perquè no es poden canviar.
+   <li>$name_warning3
   !endif
   !if $erased!=$empty
-   <li>Dades ignorades corresponents als participants suprimits&nbsp;:
+   <li>$name_warning4
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>Els noms d'usuari següents no existeixen i no poden ser
+   <li>
    !if full notwordof $remark
-    afegits, a causa d'informació insuficient/incorrecta en les dades
-    envoyées&nbsp;:
+    $name_nologin1
    !else
-    afegits (dades incorrectes o classe plena)&nbsp;:
+    $name_nologin2
    !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes
-   <li>Les notes manuals s'emmagatzemen només per a les columnes ja
-   existents.
-   !href module=adm/class/grades Revisar les notes
+   <li>$name_manual1
+   !href module=adm/class/grades $name_check
 .
   !endif
   </ul>
  !else
-  No hi ha diferència entre les dades enviades i les dades
-  existents a la classe.
+ $name_data1
  !endif
  <p><hr> <p>
 !endif
@@ -76,19 +70,20 @@ $wims_name_csv
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Per <input type=submit value="$wims_name_download">
-les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu&nbsp;:<ul>
-<li>Format
+$name_data2<ul>
+<li>$name_format
 !formselect csvformat list csv,tsv
 <small>
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </small>
-<li>Columnes
+<li>$name_column
 <input type=text size=45 name=csvdownload value="$csvdownload">
 <small>
 !href module=$module&cmd=help&special_parm=csvfields $wims_name_help
 </small>
 </ul>
+<input type=submit value="$wims_name_download">
+
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
@@ -97,16 +92,16 @@ les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu&nbs
  !form reply
  <input type=hidden name=job value=csv>
  <input type=hidden name=csvtype value=upload>
- Per <input type=submit value="$wims_name_send">
- les dades del vostre full de càlcul a la classe, si us plau, especifiqueu&nbsp;:
+ $name_data3
  <small>
  !href module=$module&cmd=help&special_parm=upload $wims_name_help
  </small><ul>
- <li>Fitxer de dades <input type=file size=30 name=wims_deposit> <br>
- <small>Formats acceptats&nbsp;: .csv, .tsv, .txt
+ <li>$name_data <input type=file size=30 name=wims_deposit> <br>
+ <small>$name_format2: .csv, .tsv, .txt
  !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
  </small>
  </ul>
+ <input type=submit value="$wims_name_send">
  </form>
 !endif
 

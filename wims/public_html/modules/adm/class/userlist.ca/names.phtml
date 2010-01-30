@@ -1,3 +1,6 @@
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
@@ -86,6 +89,68 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
    !set name_title_transfer=Transferir les activitats
    !distribute items Adjuntar, Reemplaçar,Examinar\
    into name_merge, name_replace,name_show
+
+ !set name_error1=<b>Error</b>. El participant no està registrat en un curs corresponent\
+a la classe actual i no es possible la transferència
+ !set name_error2=<b>Error</b> d'identificació de classes. Moviment en fals o error de programari ?
+ 
+!set name_activities=!nosubst  Detall de l'activitat a $i (limitat a 1000 línies).
+!set name_totransfer=Aquests són els altres cursos en els que el participant ha actuat.\
+  Cliqueu sobre una acció per transferir les seves activitats
+
 !endif
+
+!if $job=recover
+  !set name_empty=No hi ha cap participar suprimit en aquesta classe.
+  !set name_click= Cliqueu sobre un nom d'usuari per restaurar el participant a la classe.
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst Esteu segurs que voleu eliminar <b><em>$lastname, $firstname</em></b>\
+de la vostra classe ?
+!endif
+
+!if $job=csv
+  !distribute lines  Aquí està el fitxer\
+    que podeu descarregar i obrir en el vostre programari de full de càlcul preferit.\
+    Informacions dels participants canviades\
+    Nous participants afegits\
+    La incorporació de nous participants s'ha ignorat perquè no hi ha prou espai disponible.\
+    No s'han canviat les informacions dels participants ja que s'han rebut notes.\
+    Les notes calculades pel servidor (mitjanes i notes de fulls/exàmens) s'ignoren en les vostres dades perquè no es poden canviar.\
+    Données ignorées concernant des participants effacés\
+    Els noms d'usuari següents no existeixen i no poden ser afegits, a causa d'informació insuficient/incorrecta en les dades envoyées\
+    Els noms d'usuari següents no existeixen i no poden ser (dades incorrectes o classe plena)\
+    Les notes manuals s'emmagatzemen només per a les columnes ja  existents.\
+    No hi ha diferència entre les dades enviades i les dades existents a la classe.\
+    Revisar les notes\
+    Per $wims_name_download, les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu\
+    Format\
+    Columness\
+    Per $wims_name_send les dades del vostre full de càlcul a la classe, si us plau, especifiqueu\
+    Fitxer de dades\
+    Formats acceptats: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst El fitxer de full de càlcul <tt>$wims_deposit</tt> s'ha reconegut amb èxit.
+ 
+!endif
+ 
 !set name_topten=!nosubst Millor $class_topscores de les mitjanes de la classe 
 :end
+!exit
+
+:transfer
+<b>Notes</b>. <ol>
+<li>"$name_merge" significa ajuntar les activitats de tots dos cursos.
+<li>"$name_replace" significa que les activitats dels altres cursos substituiran
+les d'aquest curs. La substitució no es produirà si el primer és buit.
+<li>Les notes dels exàmens i les activitats no comptades van sempre unides.
+<li>El registre dels detalls d'exercicis o exàmens no és transferible.
+<li>Després de fer la transferència de (sigui com a "$name_merge" i com a 
+"$name_replace"), els registres de les activitats del participant en
+els altres cursos seran eliminats.
+</ol>
+
