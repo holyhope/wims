@@ -1,0 +1,23 @@
+!read adm/title.phtml 1\
+$classname\
+$name_partdeleted
+
+
+!if $delcnt<1
+ $name_empty
+ <p>
+!else
+ $name_click
+ $table_header
+ $table_hdtr<th>$wims_name_Login<th>$wims_name_name
+ !for i in $deleted
+  !set names=!getdef user_lastname, user_firstname in wimshome/$userdir/.$i
+  $table_tr<td>
+  !href cmd=reply&job=recover&getuser=$i $i
+  <td>$names</td>
+ !next i
+ $table_end <p>
+!endif
+
+!set wims_menu_items=!append line part_list,1,cmd=resume\
+to $wims_menu_items

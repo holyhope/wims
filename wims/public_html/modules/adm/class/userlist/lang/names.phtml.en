@@ -1,0 +1,156 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ of <b><font color=green>$wims_institutionname</font></b>
+
+!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
+
+!distribute line Average of the class\
+Average\
+Average of positive scores\
+Global average\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage
+
+!set name_partdeleted=deleted participants
+!set wims_name_reg_ex=List of registered exercises
+!set name_transfer=Transfer his/her activities from other classes
+
+!set name_thsheet=No,Title,Required,Weights,Points<br>got,%,Quality,Severity,Score
+!set name_minmax=min/av/max of the class
+
+!set name_manualscore=Teacher attributed grades
+!set name_autoscore=Server-registered grades
+!set name_manual_notes=global,teacher,auto
+!set name_examnote=Examination scores
+
+!set name_severitylevels=Work sheets severity levels
+!set name_formula=Serial,Weight,Level
+!set name_sheetstatut=prep,active,expired,hidden
+
+!distribute items Exam,Sheet,Exercise,Start,Score,Session,Done,equiv.\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv
+
+!set name_formula_comment=You can define the severity levels and weights of work sheets in the following \
+table. The grades will be computed with maximum =
+!set name_formula2=Grades computed over a maximum of $scoremax
+!set name_pickup=Pick up sheets to show<br>averages per sheet
+!set name_warning=You have submitted an illegal request.
+
+!set name_click=Click on a name for the detail of his/her work.
+!set name_affi=quality,carried out work,grades
+!set name_workdetail=Detail of the work of
+!set name_activesession=This participant has an active exam session
+
+!distribute items Connecting host, Remaining time, Exam session of,minutes\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=This class doesn't have participant yet.
+
+!if $manual>0
+!set name_manual_explanation=<b>Explanations.</b> In the <tt>Average</tt> columns, <tt>auto</tt>\
+ means average of grades computed from scores obtained in work sheets, <tt>teacher</tt> means \
+ average of grades attributed manually by the supervisor, and <tt>global</tt> is computed \
+ from the two other averages, by the formula
+!endif
+
+!set name_title_showsheet=!nosubst details of the work on sheet $numshowsheet<br>$sh_title
+!set name_percentagegot=Percentage of carried out work
+!set name_qualitygot=Quality computed over a maximum of 10
+!set name_percentagedone=Percentage of carried out work
+!set name_post=Post
+
+!if $job=userprop
+  !distribute items Change,Registration number,Comments,Photo url, (technical) Variables,\
+  Class password,Enter the password for participant registration,\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Exam details by $user_lastname, $user_firstname
+ !set name_no_exampart=This participant has not yet done any exam.
+ !set name_exampart=  Here are the exam sessions done by this participant. Click on an exercise \
+  to see its content.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Detail of the work of $lastname, $firstname <br>(in raw data)
+  !goto end
+!endif
+
+!set name_direct_score=direct score listing
+
+!if $job=transfer
+   !set name_title_transfer=Activity transfer
+   !distribute items Merge, Replace,Examine\
+   into name_merge, name_replace,name_show
+
+ !set name_error1=<b>Error</b>. The participant has no registration in a corresponding\
+ course in the current class to receive the transfer from
+ !set name_error2=<b>Error</b> of class identification. Wrong manoeuvre or bug of the\
+  software? 
+ !set name_activities=!nosubst Detail of activities in $i (limited to 1000 lines).
+ !set name_totransfer=Here are the other courses in which the participant has activities. \
+   Click on an action to transfer them 
+
+!endif
+
+!if $job=recover
+  !set name_empty=There is no deleted participant in this class.
+  !set name_click=Click on a login name to recover the user.
+!endif
+
+
+!if $job=delprep
+  !set name_delete=!nosubst Are you sure that you want to delete <b><em>$name_student1</em></b>\
+     from your class?
+!endif
+
+!if $job=csv
+  !distribute lines Here is the file\
+    that you can download and open with your favorite spreadsheet program.\
+    Participant informations changed\
+    Added new participants\
+    Addition of new participants ignored because there is no more available space.\
+    Participant informations are not changed because grades are uploaded.\
+    Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
+    Ignored data about erased participants\
+    The following login names do not exist in the class and cannot be added, because of unsufficient/incorrect information in the data\
+    The following login names do not exist in the class and cannot be added (bad data, or no more space)\
+    Manual grades are registered only for existing columns.\
+    No change has been found in your spreadsheet data with respect to the class record.
+    Check manual grades\
+    To download class data for your spreadsheet, please specify\
+    Format\
+    Columns\
+    To upload your spreadsheet data to the class, please specify\
+    Data file\
+    Accepted formats: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst Spreadsheet file <tt>$wims_deposit</tt> successfully processed.
+!endif
+
+!set name_topten=!nosubst Top $class_topscores of the class average
+:end
+!exit
+
+:transfer
+<b>Remarks</b>. <ol>
+<li>"$name_merge" means putting together the activities in two courses.
+<li>"$name_replace" means that the activities in the other cours will replace
+that of this one. This will occur only if the former is not empty.
+<li>Exam records and non-scoring activities are always merged.
+<li>Registration of details of exercises or exams is not transfered.
+<li>After the action ($name_merge ou $name_replace), the records of the participant
+in the other course will be cleaned.
+</ol>
+

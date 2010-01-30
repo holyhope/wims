@@ -1,0 +1,157 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set classname=$wims_classname - $wims_institutionname
+
+!set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
+
+!distribute line Media del corso\
+Media\
+Media dei punteggi effettivi\
+Media globale\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage
+
+!set name_partdeleted=Studenti esclusi
+!set wims_name_reg_ex=Elenco degli esercizi salvati
+!set name_transfer=Importa la sua attività da altro corso
+
+!set name_thsheet=Numero,Titolo,Punti<br>richiesti,Peso,Punti<br>ottenuti,%,Media,Severità,Voto
+!set name_minmax=min/media/max del corso
+
+!set name_manualscore=Voti assegnati dal docente
+!set name_autoscore=Voti registrati dal server
+!set name_manual_notes=globale,docente,auto
+!set name_examnote=Voti d'esame
+
+!set name_severitylevels=Livello di severit&agrave; del test di autovalutazione
+!set name_formula=Numero,Peso,Livello
+!set name_sheetstatut=prep,in corso,terminato,nascosto
+
+!distribute items Esame,Test di autovalutazione,Esercizio,Iniziato il,Punteggio,Sessione,completato il,equivalente a\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv
+
+!set name_formula_comment=&Egrave; possibile definire il livello di severit&agrave; e il `peso' dei test di autovalutazione nella tabella che segue. \
+I voti saranno calcolati con massimo=
+!set name_formula2=Voti calcolati su un massimo di $scoremax
+!set name_pickup=Seleziona un test di autovalutazione per<br>\
+  visulizzarne i punteggi medi
+!set name_warning=La richiesta non &egrave; valida.
+
+!set name_click=Selezionare un nome per visualizzare i dettagli.
+!set name_affi=la qualità,lavoro portato a termine,voti
+!set name_workdetail=Dettagli del lavoro svolto da 
+!set name_activesession=Questo studente ha una sessione d'esame in corso
+
+!distribute items IP, Tempo rimanente, Sessione d'esame di ,minuti\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=Non ci sono ancora studenti.
+
+!if $manual>0
+ !set name_manual_explanation=<b>Spiegazione.</b> Nelle colonne <tt>media</tt>,  \
+<tt>auto</tt> indica i voti assegnati automaticamente dal sistema a partire \
+dai risultati nei test, <tt>docente</tt> indica i voti assegnati manualmente dal docente.\
+Il voto <tt>globale</tt> &egrave; calcolato utilizzando la formula seguente \
+(il coefficiente $[$manual/100] è modificabile nella pagina di inserimento \
+dei voti manuali)
+!endif
+
+!set name_title_showsheet=!nosubst Dettagli del lavoro portato a termine sul test di autovalutazione $numshowsheet<br>$sh_title
+!set name_percentagegot=Percentuale dei punti ottenuti
+!set name_qualitygot=Qualità calcolata su un massimo di 10
+!set name_percentagedone=Percentuale di lavoro portato a termine
+!set name_post=Mostra
+  
+!if $job=userprop
+  !distribute items Cambia,Matricola,Commenti,URL di una foto,Variabili (tecniche),\
+  Password pubblica del corso,Inserire la password <em>pubblica</em> del corso e cio&egrave; quella utilizzata per effettuare la prima iscrizione\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Dettagli degli esami di $user_firstname $user_lastname
+ !set name_no_exampart=Questo studente non ha ancora concluso alcun esame.
+ !set name_exampart=Queste sono le sessioni d'esame di questo studente. Seleziona un esercizio \
+  per verderne lo svolgimento.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Dettagli del lavoro svolto da $lastname, $firstname<br>(dati non elaborati)
+  !goto end
+!endif
+
+!set name_direct_score=torna alla visualizzazione dei dati
+
+!if $job=transfer
+   !set name_title_transfer=Trasferisci l'attività di
+   !distribute items Unisci, Sostituisci,Verifica\
+   into name_merge, name_replace,name_show
+ !set name_error1=<b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant\
+     à la classe actuelle, ce qui empêche le transfert depuis
+ !set name_error2=<b>Errore</b> di codice corso. Wrong manoeuvre or bug of the software?
+!set name_activities=!nosubst Dettaglio dell'attività in $i (massimo 1000 righe).
+!set name_totransfer=Questi sono i corsi in cui lo studente ha svolto attività. Clicca su\
+una opzione per trasferirla a questo
+
+!endif
+
+!if $job=recover
+  !set name_empty=Non è stato escluso alcuno studente. 
+  !set name_click= Selezionare il login dello studente da reinserire. 
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst Siete sicuri di voler escludere <b><em>$lastname, $firstname</em></b>
+   dal vostro corso?
+!endif
+
+!if $job=csv
+  !distribute lines  Questo è il file\
+    che una volta salvato pu&ograve; essere aperto con un qualsiasi foglio eletronico.\
+    Sono state modificati i dati relativi a\
+    È stato aggiunto/sono stati aggiunti\
+    Non è stato possibile inserire nuovi partecipanti perché si è superato il limite di spazio.\
+    Non sono state modificate le informazioni perché si è cercato di modificare anche i punteggi.\
+    Non sono state modificate le informazioni di media e voti di test/esami perché si tratta di voti calcolati dal server che non possono essere modificati manualmente.\
+    Sono stati ignorati i seguenti dati, relativi a partecipanti esclusi\
+    I seguenti login non esistono e non possono essere creati perché le informazioni fornite sono insufficienti o incorrette\
+    I seguenti login non esistono e non possono essere creati (dati inconsistenti e spazio esaurito)\
+    I voti manuali possono essere registrati solo per colonne che già esistono.\
+    I dati forniti coincidono con quelli già inseriti sul server.\
+    Verifica i voti manuali\
+    Per salvare i dati in formato foglio elettronico, specificare\
+    Formato\
+    Campi\
+    Per $wims_name_send sul server dati in formato foglio elettronico, specificare\
+    Nome del file\
+    Formati accettati: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst Il file <tt>$wims_deposit</tt> &egrave; elaborato con successo.
+!endif
+
+!set name_topten=!nosubst Migliori $class_topscores punteggi medi del corso
+  
+:end
+!exit
+
+:transfer
+<b>Note</b>. <ol>
+<li>"$name_merge" significa che sono unite le attività dei due corsi.
+<li>"$name_replace" significa che le attività dell'altro corso sostiuiscono 
+quelle registrate per questo (questo è possibile sole se le prime non sono
+vuote).
+<li>I punteggi d'esame e le attività che non danno luogo a punteggio sono 
+sempre unite.
+<li>La registrazione di dettagli degli esercizi non sono trasferiti.
+<li>Dopo aver effettuato il trasferimento (sia come "$name_merge" che come 
+"$name_replace"), i dati dello studente nell'altro corso sono azzerati.
+</ol>

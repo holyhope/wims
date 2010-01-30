@@ -1,0 +1,171 @@
+
+!read adm/css.phtml
+!header1
+
+!read lang/names.phtml.$moduclass_lang
+
+!read adm/title.phtml 1\
+$wims_classname - $wims_institutionname\
+$name_title_showsheet
+
+!if $error!=$empty
+ <p>
+ !read lang/msg.phtml.$moduclass_lang
+ <p>
+ !href module=home $wims_name_class_home
+. <p>
+ !goto end
+!endif
+
+!if $usercnt==0
+ $name_noyetparticipant
+!else
+ <p>$table_header
+ !bound job_affi within points,qualite default points
+ !if $job_affi=points
+  !let sign=%
+  !set sign1=100
+  <caption>$name_percentagegot</caption>
+ !else
+  !if $job_affi=qualite
+   !let sign=$empty
+   !set sign1=10
+   <caption>$name_qualitygot</caption>
+  !else
+   <caption>$name_percentagedone</caption>
+  !endif
+ !endif
+ $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
+ <th>$name_Average</th>
+ !let tot_0=0
+ !let nonzero_0=0
+ !for j=1 to $nbexo
+  !set e=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$(numshowsheet)
+  !distribute line $e into m_,n_,bidon,bidon,t_
+  <th><small>
+  !set wims_ref_title=$t_
+  !href cmd=new&module=$m_&$n_ $name_Exercise $j 
+!!<a onmouseover="Tip('$t_',$tooltip_parm)">$picto</a></small></th>
+  !let tot_$j=0
+  !let nonzero_$j=0
+ !next j
+ !for m=1 to $usercnt
+  !set uu=!record $m of wimshome/log/classes/$wims_class/.userlist
+  !distribute items $uu into lastname,firstname,uu
+  $table_tr
+  <td>
+   !href cmd=reply&job=getuser&getuser=$uu $name_student1
+  </td>
+   !let tot=!getscorepercent user=$uu sheet=$numshowsheet
+   !if $job_affi=points
+     !let t=!word 1 of $tot
+     !if $t!=0
+      !read adm/class/colors $[ceil($t/10)]
+      <td style=$style_note>
+      $t %
+     !else
+      <td align="center">--
+     !endif
+     </td>
+     !let tot_0=$[$tot_0+$t]
+    !if $t!=0
+     !increase nonzero_0
+    !endif 
+    !let tmp=!getscore user=$uu sheet=$numshowsheet
+    !for k=1 to $nbexo
+      !let t=!word $k of $tmp
+      !if $t!=0
+       !increase nonzero_$k
+      !endif 
+      !let div=!word $k of $require
+      !if $div!=0
+       !let t=$[rint($t/$div*10000)/100]
+      !else
+       !let t=100
+      !endif
+      !if $t>0
+       !read adm/class/colors $[ceil($t/10)]
+       <td style=$style_note>
+       $t %
+       !let tot_$k=$[$(tot_$k)+$t]
+      !else
+       <td align="center">--
+      !endif
+      </td>  
+    !next k
+   !else
+     !let t=!word 2 of $tot
+     !let tot_0=$[$tot_0+$t]
+     !read adm/class/colors $[ceil($t)]
+     !if $t!=0 
+      <td style=$style_note>
+      $t
+      !increase nonzero_0
+     !else
+      <td align="center">--
+     !endif
+     </td>
+     !let tmp=!getscoremean user=$uu sheet=$numshowsheet
+    !for k=1 to $nbexo
+      !let t=!word $k of $tmp
+      !if $t!=0
+       !increase nonzero_$k
+       !read adm/class/colors $[ceil($t)]
+       <td style=$style_note>
+       $t
+      !else
+       <td align="center">--
+      !endif
+      </td> 
+      !let tot_$k=$[$(tot_$k)+$t]
+    !next k
+   !endif
+  </tr>
+ !next m
+ $table_hdtr<td align="center"><b>$name_classAverage</b></td>
+ !read adm/class/colors $[ceil($tot_0/$usercnt*10)/$sign1]
+ <td style=$style_note>$[rint($tot_0/$usercnt*10)/10]$sign</td>
+ !for j=1 to $nbexo
+  !if $(tot_$j)>0
+   !read adm/class/colors $[ceil($(tot_$j)/$usercnt*10/$sign1)]
+   <td style=$style_note>$[rint($(tot_$j)/$usercnt*10)/10]$sign
+  !else
+   <td align="center">--
+  !endif
+    </td>
+ !next j
+ </tr>
+ !if $nonzero_0>0
+  $table_hdtr<td align="center"><b>$name_posAverage</b></td>
+   !read adm/class/colors $[ceil($tot_0/$nonzero_0*10/$sign1)]
+   <td style=$style_note>$[rint($tot_0/$nonzero_0*10)/10]$sign </td>
+  !for j=1 to $nbexo
+    !if $(nonzero_$j)>0
+      !read adm/class/colors $[ceil($(tot_$j)/$(nonzero_$j)*10/$sign1)]
+      <td style=$style_note>
+    $[rint($(tot_$j)/$(nonzero_$j)*10)/10]$sign
+    !else
+       <td align="center">--
+    !endif  
+   </td>
+  !next j
+  </tr>
+ !endif
+$table_end
+ <p>$name_click
+ <p>
+ !href cmd=reply&job=showsheet&numshowsheet=$numshowsheet $wims_name_refresh
+&nbsp;.&nbsp;
+   $name_post 
+    !if $job_affi=qualite
+     !href cmd=reply&job_affi=points&job=showsheet&numshowsheet=$numshowsheet $(name_affi[2])
+    !else
+     !href cmd=reply&job_affi=qualite&job=showsheet&numshowsheet=$numshowsheet $(name_affi[1])
+    !endif
+.
+<p>
+
+!set wims_menu_items=!append line part_list,1,cmd=reply&job_affi=notes\
+to $wims_menu_items
+:end
+!tail

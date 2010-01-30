@@ -1,0 +1,154 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set classname=$wims_classname - $wims_institutionname
+
+!set months=janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre
+
+!distribute line Moyenne de la classe\
+Moyenne\
+Moyenne des notes positives\
+Moyenne globale&nbsp;\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage
+
+!set name_partdeleted=Participants supprimés
+!set wims_name_reg_ex=Liste des exercices enregistrés
+!set name_transfer=Transférer ses activités des autres classes
+
+!set name_thsheet=No,Titre,Points<br>requis,Poids,Points<br>obtenus,%,Qualité&nbsp;,Sévérité,Note
+!set name_minmax=min/moy/max de la classe&nbsp;
+
+!set name_manualscore=Notes attribuées par l'enseignant
+!set name_autoscore=Notes enregistrées par le serveur
+!set name_manual_notes=globale,enseign.,auto
+!set name_examnote=Notes d'examens
+
+!set name_severitylevels=Niveaux de sévérité des feuilles de travail
+!set name_formula=No,Poids,Niveau
+!set name_sheetstatut=en préparation,active,périmée,cachée
+
+!distribute items Examen,Feuille,Exercice,Début,Notes,Session,Fait&nbsp;,équiv.\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv
+
+!set name_formula_comment=Vous pouvez définir les niveaux de sévérité et les poids des feuilles de \
+travail dans le tableau suivant. Les notes seront calculées avec un maximum =
+!set name_formula2=Notes calculées sur un maximum de $scoremax
+!set name_pickup=Sélectionnez les feuilles pour<br>montrer les résultats par feuille&nbsp;
+!set name_warning= Vous avez soumis une requête illégale.
+
+!set name_click=Cliquez sur un nom pour voir le détail de son travail.
+!set name_affi=la qualité,le travail effectué,les notes
+!set name_workdetail=Détail du travail de
+!set name_activesession=Ce participant a une session d'examen active&nbsp;
+
+!distribute items Poste de connexion, Temps restant, Session d'examen de ,minutes\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=Cette classe n'a pas encore de participant.
+
+!if $manual>0
+ !set name_manual_explanation=<b>Explications.</b> Dans les colonnes <tt>moyenne</tt>, \
+ <tt>auto</tt> veut dire moyenne\
+ des notes calculées à partir des scores obtenus dans les feuilles de travail,\
+  <tt>enseign.</tt> veut dire moyenne des notes attribuées manuellement par l'enseignant. \
+  La note <tt>globale</tt> est calculée à partir des deux autres par la formule
+!endif
+
+!set name_title_showsheet=!nosubst Détails du travail sur la feuille $numshowsheet<br>$sh_title
+!set name_percentagegot=Pourcentage des points obtenus
+!set name_qualitygot=Qualité du travail calculée sur un maximum de 10
+!set name_percentagedone=Pourcentage de travail effectué
+!set name_post=Afficher
+
+!if $job=userprop
+  !distribute items Changer,Numéro d'inscription,Commentaires,URL d'une photo,Variables (techniques),\
+  Mot de passe de la classe,Entrez le mot de passe d'inscription de participants\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Détails d'examens faits par $user_lastname, $user_firstname
+ !set name_no_exampart=Ce participant n'a pas encore fait d'examen.
+ !set name_exampart=Voici les sessions d'examen effectuées par ce participant. Cliquez sur un \
+  exercice pour voir son contenu.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Détail du travail de $name_student2<br>(en données brutes)
+  !goto end
+!endif
+
+!set name_direct_score=liste et notes en direct
+
+!if $job=transfer
+   !set name_title_transfer=Transférer les activités
+   !distribute items Joindre, Remplacer,Examiner\
+   into name_merge, name_replace,name_show
+
+ !set name_error1=<b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant\
+     à la classe actuelle, ce qui empêche le transfert depuis
+ !set name_error2=<b>Erreur</b>.<b>Erreur</b> d'identifiant des classes. \
+    Fausse manoeuvre ou bogue du logiciel ? 
+!set name_activities=!nosubst Détail des activités dans $i (limité à 1000 lignes).
+!set name_totransfer=Voici les autres cours dans lesquels le participant a eu des activités.\
+  Cliquez sur une action pour les transférer.
+
+!endif
+
+!if $job=recover
+  !set name_empty=Il n'y a pas de participant supprimé dans cette classe.
+  !set name_click=Cliquez sur un nom de login pour remettre le participant dans la classe.
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst Êtes-vous sûr de vouloir supprimer <b><em>$name_student1</em></b>\
+de votre classe ?
+!endif
+!if $job=csv
+  !distribute line Voici le fichier\
+    que vous pouvez télécharger et ouvrir dans votre logiciel tableur préféré.\
+    Informations de participants changées\
+    Participants ajoutés\
+    L'addition de nouveaux participants est ignorée car il n'y a plus de place disponible.\
+    Informations de participants inchangées car des notes sont reçues.\
+    Les notes calculées par le serveur (moyennes et notes de feuilles/examens) sont ignorées dans vos données car elles ne peuvent pas être changées\
+    Données ignorées concernant des participants effacés\
+    Les noms de login suivants n'existent pas et ne peuvent pas être ajoutés, à cause d'information insuffisante/incorrecte dans les données envoyées\
+    Les noms de login suivants n'existent pas et ne peuvent pas être ajoutés (mauvaises données ou classe pleine)\
+    Les notes manuelles sont enregistrées seulement pour des colonnes déjà existantes.\
+    Aucune différence entre les données envoyées et les données existant dans la classe.\
+    Vérifier les notes\
+    Pour charger les données de la classe dans votre tableur, veuillez préciser&nbsp\
+    Format\
+    Colonnes\
+    Pour envoyer des données de votre tableur à la classe, veuillez préciser\
+    Fichier de données\
+    Formats acceptés&nbsp;: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+  name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  !set name_deposit=!nosubst Le fichier de tableur <tt>$wims_deposit</tt> est reconnu avec succès.
+!endif
+ 
+!set name_topten=!nosubst Top $class_topscores des moyennes de la classe
+
+
+:end
+!exit
+
+:transfer
+<b>Remarques</b>. <ol>
+<li>"$name_merge" veut dire mettre ensemble les activités venant des deux cours.
+<li>"$name_replace" veut dire que les activités de l'autre cours vont écraser
+celles de ce cours. Le remplacement n'aura pas lieu si le premier est vide.
+<li>Les scores des examens et des activités non comptées sont toujours joints.
+<li>L'enregistrement des détails d'exercices ou d'examens n'est pas transféré.
+<li>Après l'action ($name_merge ou $name_replace), les registres d'activités du participant dans
+l'autre cours seront effacés.
+</ol>

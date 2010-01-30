@@ -1,0 +1,33 @@
+
+!if $special_parm!=$empty
+ !changeto lang/help.$moduclass_lang/$special_parm.phtml
+!endif
+
+!read adm/title.phtml 3\
+\
+作业页的严厉度
+<p>
+对于每个参加者在每个作业页上的工作, 服务器计算两个平均值:
+一个是实际得分关于应得分的百分比, 另一个是页面练习的得分质量.
+设 x 是百分数, y 是质量, 两者均取 0 与 1 之间的值.
+则计算总评分的公式如下所示.
+<p>$table_header
+$table_hdtr<th>严厉度<th>公式<th>解释
+$table_tr<td align=center>0<td align=center>$scoremax max(x,y)
+ <td>非常宽松: 取百分比与质量的极大值.
+$table_tr<td align=center>1<td align=center>$scoremax x
+ <td>不考虑质量. 只要完成所有作业就能得到最高的总评分.
+$table_tr<td align=center>2<td align=center>$scoremax x y<sup>0.3</sup>
+ <td>质量对总评分只有很小的影响.
+$table_tr<td align=center>3<td align=center>$scoremax x y<sup>0.5</sup>
+ <td>质量影响更多..
+$table_tr<td align=center>4<td align=center>$scoremax x y
+ <td>为得到总评的最高分, 你必须取得满分(100%), 而且不犯错(质量=1).
+$table_tr<td align=center>5<td align=center>$scoremax x<sup>2</sup> y
+ <td>未完成的作业将被倒扣分.
+$table_tr<td align=center>6<td align=center>$scoremax x<sup>2</sup> y<sup>2</sup>
+ <td>任何错误都被严惩.
+$table_end <p>
+
+
+

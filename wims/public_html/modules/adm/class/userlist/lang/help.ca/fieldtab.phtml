@@ -1,0 +1,46 @@
+
+$table_header
+<caption>Camps de dades vàlides</caption>
+$table_hdtr<th>Nom</th><th>Significat</th>
+$table_tr<td>login</td><td>$wims_name_Login</td></tr>
+!if $special_parm!=upload
+$table_tr<td>name</td><td>cognom i nom (en aquest ordre, dues columnes)</td></tr>
+!endif
+$table_tr<td>lastname</td><td>cognom</td></tr>
+$table_tr<td>firstname</td><td>nom</td></tr>
+$table_tr<td>password</td><td>contrasenya del participant, descarregada en forma
+	encriptada, però pot enviar-se al servidor sense encriptar.</td></tr>
+$table_tr<td>email</td><td>adreça electrònica</td></tr>
+$table_tr<td>regnum</td><td>numéro de registre</td></tr>
+$table_tr<td>photourl</td><td>URL d'una foto</td></tr>
+$table_tr<td>comments</td><td>comentaris referents al participant</td></tr>
+
+!if $special_parm!=upload
+$table_tr<td>allscore</td><td>totes les notes i mitjanes</td></tr>
+$table_tr<td>averages</td><td>mitjanes de notes (del servidor i manuals)</td></tr>
+$table_tr<td>average1</td><td>mitjanes de notes atribuides pel servidor</td></tr>
+$table_tr<td>average2</td><td>mitjanes de notes enviades pel professor</td></tr>
+$table_tr<td>sheets</td><td>notes de tots els fulls de treball (un després de l'altre)</td></tr>
+$table_tr<td>sheet1,sheet2,...</td><td>notes del full 1, full 2, ...</td></tr>
+$table_tr<td>exams</td><td>notes de tots els exàmens</td></tr>
+$table_tr<td>exam1,exam2,...</td><td>notes de l'examen 1, examen 2, ...</td></tr>
+$table_tr<td>manuals</td><td>totes les notes del professor (una després de l'altra)</td></tr>
+!else
+$table_tr<td>participate (en el cas de portal d'una institució únicament, 
+reservat al seu administrador)</td><td>número de classes 
+en les quals està registrat el participant en la forma abcdefg/1/101
+on abcdefg és el número del portal. Si hi ha diverses classes, separeu-les amb espais.</td></tr>
+!endif
+
+$table_tr<td>manual1,manual2,...</td><td>notes atribuides pel professor 1, 2, ...</td></tr>
+$table_tr<td>var_xxx</td><td>la variable tècnica <tt>xxx</tt></td></tr>
+
+$table_end <p>
+
+Un camp no reconegut és ignorat. Les variables tècniques poden usar-se per limitar
+de manera selectiva la durada d'obertura dels fulls de treball o dels exàmens.
+<p>
+!if $special_parm=upload
+En el cas del camp <tt>participate</tt>, és possible afegir classes, però no eliminar-ne.
+!endif
+

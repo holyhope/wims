@@ -1,0 +1,49 @@
+
+!read adm/title.phtml 1\
+$classname\
+$name_title_examcheck
+
+!if _check isin $session
+ !set error=bad_op
+ !goto msg
+!endif
+
+!if $error!=$empty
+ :msg
+ <p>
+ !read lang/msg.phtml.$moduclass_lang
+ <p>
+!else
+ !if $checksessions=$empty
+  $name_no_exampart
+  <p>
+ !else
+  $name_exampart
+  <p>$table_header
+  $table_hdtr<th>$name_Session</th><th>$name_Exam</th><th>$name_Score<small>/$scoremax</small></th>
+  <th>$name_Exercise</th><th>$name_Start</th></tr>
+  !for ses in $checksessions
+   !for x in $(exam$ses)
+    $table_tr<td><small>$ses</small></td>
+    <td align=center>$x</td>
+    <td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td><td>
+    !for i in $(exo$(ses)$x)
+     &nbsp;
+     !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $i
+    !next i
+   !next x
+   </td><td><small>
+    !read date.phtml $(start$(ses)$x)
+   </small></td>
+  !next t
+  $table_end <p>
+ !endif
+!endif
+
+!set wims_menu_items=!append line scores,1,cmd=reply&job=getuser&getuser=$checkuser\
+to $wims_menu_items
+!if $wims_user=supervisor
+ !set wims_menu_items=!append line ,0,\
+ part_list,1,cmd=resume\
+ to $wims_menu_items
+!endif

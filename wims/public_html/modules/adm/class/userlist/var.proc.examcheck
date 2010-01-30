@@ -1,0 +1,60 @@
+
+checkuser=!translate / to $ $ in $checkuser
+!read adm/class/userisinclass ,$checkuser
+!if yes notin $script_reply
+ error=bad_usercls
+ !reset job,checkuser
+ !exit
+!endif
+!read adm/class/userdef classes,$wims_class,$checkuser
+!readdef $userdef
+!if $user_exists != yes
+ error=bad_user
+ !exit
+!endif
+
+logdir=$wims_home/log/classes/$wims_class/examlog/$checkuser
+!if $checksession=$empty
+ checksessions=!sh if [ -d $logdir ]; then cd $logdir; ls; fi
+ checksessions=!words2items $checksessions
+ !for ses in $checksessions
+  exo=!sh cd $wims_home/log/classes/$wims_class/examlog/$checkuser/$ses; ls
+  exo$ses=!words2items $exo
+  exo=!words2lines $exo
+  exo=!translate . to , in $exo
+  exom=!column 1 of $exo
+  exom=!listuniq $exom
+  exam$ses=$exom
+  !for xm in $exom
+   exot=!select $exo where column 1 = $xm
+   exot=!column 2 of $exot
+   exo$(ses)$xm=!sort numeric items $exot
+  !next xm
+ !next i
+ !if $checksessions=$empty
+  !exit
+ !endif
+ sc=!record 0 of wimshome/log/classes/$wims_class/score/$checkuser.exam
+ n=!linecnt $sc
+ tses=
+ !for i=1 to $n
+  l=!line $i of $sc
+  !distribute words $l into e_,s_,t_,T_,i_,S_,t_
+  score$(S_)$e_=$s_
+  !if $s_ issametext 00
+   tses=!append item $S_ to $tses
+   start$(S_)$e_=$t_
+  !endif
+ !next i
+ checksessions=!listintersect $tses and $checksessions
+ !exit
+!endif
+
+exos=!sh if [ -d $logdir/$checksession ]; then cd $logdir/$checksession; ls; fi
+exos=!words2items $exos
+logfile=classes/$wims_class/examlog/$checkuser/$checksession/$checkexo
+
+!if _check isin $session
+ !read adm/class/exocheck
+!endif
+

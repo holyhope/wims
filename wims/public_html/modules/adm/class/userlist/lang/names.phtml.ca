@@ -1,0 +1,158 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ de <b><font color=green>$wims_institutionname</font></b>
+
+!set months=gener,febrer,març,abril,maig,juny,juliol,agost,setembre,octubre,novembre,desembre
+
+!distribute line Mitjana de la classe\
+Mitjana\
+Mitjana de notes positives\
+Mitjana globale&nbsp;\
+into name_classAverage,name_Average,name_posAverage,name_globalaverage
+
+!set name_partdeleted=Participants suprimits
+!set wims_name_reg_ex=Llista d'exercicis registrats
+!set name_transfer=Transferir les activitats d'altres classes
+
+!set name_thsheet=No,Títol,Punts<br>demanats,Pes,Punts<br>obtinguts,%,Qualitat&nbsp;,Severitat,Nota
+!set name_minmax=min/mit/max de la classe&nbsp;
+
+!set name_manualscore=Notes atribuides pel professor
+!set name_autoscore=Notes enregistrades pel servidor
+!set name_manual_notes=global,prof.,auto
+!set name_examnote=Notes d'exàmens
+
+!set name_severitylevels=Nivell de severitat dels fulls de treball
+!set name_formula=No,Pes,Nivell
+!set name_sheetstatut=prep,actiu,caducat,ocult
+
+!distribute items Examen,Full,Exercici,Inici,Notes,Sessió,Fet&nbsp;,equiv.\
+into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
+name_done,name_equiv
+
+!set name_formula_comment=Podeu definir els nivells de severitat i els pesos dels fulls de \
+treball a la taula següent. Les notes seran calculades amb un màxim =
+!set name_formula2=Notes calculades sobre un màxim de $scoremax
+!set name_pickup=Seleccioneu els fulls per<br>mostrar els resultats per full&nbsp;
+!set name_warning= Heu presentat una sol·licitud il·legal.
+
+!set name_click=Cliqueu sobre un nom per veure el detall del seu treball.
+!set name_affi=la qualitat,el treball efectuat,les notes
+!set name_workdetail=Detall del treball de
+!set name_activesession=Aquest participant té una sessió d'examen activa&nbsp;
+
+!distribute items Lloc de connexió, Temps restant, Sessió d'examen de ,minuts\
+into name_connecting,name_remaining_time,name_exam_session,name_minutes
+
+!set name_noyetparticipant=Aquesta classe no té encara cap participant.
+
+!if $manual>0
+ !set name_manual_explanation=<b>Explicacions.</b> A les columnes <tt>mitjana</tt>, \
+ <tt>auto</tt> vol dir mitjana\
+ de notes calculades a partir de les puntuacions obtingudes en els fulls de treball,\
+  <tt>professor.</tt> vol dir mitjana de notes atribuides manualment pel professor. \
+  La note <tt>global</tt> es calcula a partir de les altres dues per la fórmula
+!endif
+
+!set name_title_showsheet=!nosubst Detalls del treball en el full $numshowsheet<br>$sh_title
+!set name_percentagegot=Percentatge de punts obtinguts
+!set name_qualitygot=Qualitat del treball calculat sobre un màxim de 10
+!set name_percentagedone=Percentatge de treball efectuat
+!set name_post=Afficher
+
+!if $job=userprop
+  !distribute items Canviar, Número de registre, Comentaris, URL d'una foto, Variables (tècniques),\
+  Contrasenya de la classe,Entreu la contrasenya de registre de participants\
+  into name_change,name_regnum,name_comments,name_photourl,name_vars,\
+  name_classpassword,name_enterpassword
+  !goto end
+!endif
+
+!if $job=examcheck
+ !set name_title_examcheck=!nosubst Detalls d'exàmens fets per $user_lastname, $user_firstname
+ !set name_no_exampart=Aquest participant encora no ha fet cap examen.
+ !set name_exampart=Aquestes són les sessions d'examen realitzades per aquest participant. Feu clic a \
+  exercici per veure el seu contingut.
+ !goto end
+!endif
+!if $job=getraw
+  !set name_title_getraw=!nosubst Detall del treball de $lastname, $firstname<br>(en dades brutes)
+  !goto end
+!endif
+
+!set name_direct_score=llista i notes directament
+
+!if $job=transfer
+   !set name_title_transfer=Transferir les activitats
+   !distribute items Adjuntar, Reemplaçar,Examinar\
+   into name_merge, name_replace,name_show
+
+ !set name_error1=<b>Error</b>. El participant no està registrat en un curs corresponent\
+a la classe actual i no es possible la transferència
+ !set name_error2=<b>Error</b> d'identificació de classes. Moviment en fals o error de programari ?
+ 
+!set name_activities=!nosubst  Detall de l'activitat a $i (limitat a 1000 línies).
+!set name_totransfer=Aquests són els altres cursos en els que el participant ha actuat.\
+  Cliqueu sobre una acció per transferir les seves activitats
+
+!endif
+
+!if $job=recover
+  !set name_empty=No hi ha cap participar suprimit en aquesta classe.
+  !set name_click= Cliqueu sobre un nom d'usuari per restaurar el participant a la classe.
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst Esteu segurs que voleu eliminar <b><em>$lastname, $firstname</em></b>\
+de la vostra classe ?
+!endif
+
+!if $job=csv
+  !distribute lines  Aquí està el fitxer\
+    que podeu descarregar i obrir en el vostre programari de full de càlcul preferit.\
+    Informacions dels participants canviades\
+    Nous participants afegits\
+    La incorporació de nous participants s'ha ignorat perquè no hi ha prou espai disponible.\
+    No s'han canviat les informacions dels participants ja que s'han rebut notes.\
+    Les notes calculades pel servidor (mitjanes i notes de fulls/exàmens) s'ignoren en les vostres dades perquè no es poden canviar.\
+    Données ignorées concernant des participants effacés\
+    Els noms d'usuari següents no existeixen i no poden ser afegits, a causa d'informació insuficient/incorrecta en les dades envoyées\
+    Els noms d'usuari següents no existeixen i no poden ser (dades incorrectes o classe plena)\
+    Les notes manuals s'emmagatzemen només per a les columnes ja  existents.\
+    No hi ha diferència entre les dades enviades i les dades existents a la classe.\
+    Revisar les notes\
+    Per $wims_name_download, les dades de la classe en el vostre full de càlcul, si us plau, especifiqueu\
+    Format\
+    Columness\
+    Per $wims_name_send les dades del vostre full de càlcul a la classe, si us plau, especifiqueu\
+    Fitxer de dades\
+    Formats acceptats: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst El fitxer de full de càlcul <tt>$wims_deposit</tt> s'ha reconegut amb èxit.
+ 
+!endif
+ 
+!set name_topten=!nosubst Millor $class_topscores de les mitjanes de la classe 
+:end
+!exit
+
+:transfer
+<b>Notes</b>. <ol>
+<li>"$name_merge" significa ajuntar les activitats de tots dos cursos.
+<li>"$name_replace" significa que les activitats dels altres cursos substituiran
+les d'aquest curs. La substitució no es produirà si el primer és buit.
+<li>Les notes dels exàmens i les activitats no comptades van sempre unides.
+<li>El registre dels detalls d'exercicis o exàmens no és transferible.
+<li>Després de fer la transferència de (sigui com a "$name_merge" i com a 
+"$name_replace"), els registres de les activitats del participant en
+els altres cursos seran eliminats.
+</ol>
+

@@ -1,0 +1,109 @@
+
+!set wims_form_method=post
+!read adm/title.phtml 1\
+$classname\
+$wims_name_csv
+
+<center><font size="-1">[
+!href cmd=reply $name_direct_score
+ ]</font>
+</center> <p>
+
+!if $error!=$empty
+ !read lang/msg.phtml.$moduclass_lang
+ !if $error iswordof not_secure not_superclass
+  !exit
+ !endif
+ <p><hr> <p>
+!endif
+
+!if $outfile!=$empty
+  $name_file <tt>
+ !getfile $outfile $outfile
+ </tt> $name_download
+ <p><hr> <p>
+!endif
+
+!if $processed=yes and $error=$empty
+ !if $remark$change$added$missing$erased!=$empty or $manual=yes
+  $name_deposit<ul>
+  !if $change!=$empty
+   <li>$name_infochanged<tt>$change</tt>
+  !endif
+  !if $added!=$empty
+   <li>$name_added<tt>$added</tt>
+  !endif
+  !if full iswordof $remark
+   <li>$name_warning1
+  !endif
+  !if noprop iswordof $remark
+   <li>$name_warning2
+  !endif
+  !if noauto iswordof $remark
+   <li>$name_warning3
+  !endif
+  !if $erased!=$empty
+   <li>$name_warning4
+   <tt>$erased</tt>
+  !endif
+  !if $missing!=$empty
+   <li>
+   !if full notwordof $remark
+    $name_nologin1
+   !else
+    $name_nologin2
+   !endif
+   <tt>$missing</tt>
+  !endif
+  !if $manual=yes
+   <li>$name_manual1
+   !href module=adm/class/grades $name_check
+.
+  !endif
+  </ul>
+ !else
+ $name_data1
+ !endif
+ <p><hr> <p>
+!endif
+
+!form reply
+<input type=hidden name=job value=csv>
+<input type=hidden name=csvtype value=download>
+$name_data2<ul>
+<li>$name_format
+!formselect csvformat list csv,tsv
+<small>
+!href module=$module&cmd=help&special_parm=csvformats $wims_name_help
+</small>
+<li>$name_column
+<input type=text size=45 name=csvdownload value="$csvdownload">
+<small>
+!href module=$module&cmd=help&special_parm=csvfields $wims_name_help
+</small>
+</ul>
+<input type=submit value="$wims_name_download">
+
+</form>
+
+!if $classtype notin 13 or $typename iswordof class course
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ $name_data3
+ <small>
+ !href module=$module&cmd=help&special_parm=upload $wims_name_help
+ </small><ul>
+ <li>$name_data <input type=file size=30 name=wims_deposit> <br>
+ <small>$name_format2: .csv, .tsv, .txt
+ !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+ </small>
+ </ul>
+ <input type=submit value="$wims_name_send">
+ </form>
+!endif
+
+!set wims_menu_items=!append line back2,1,cmd=resume\
+to $wims_menu_items

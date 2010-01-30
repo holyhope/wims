@@ -1,0 +1,84 @@
+!set wims_module_log=error: $error
+
+<b>Error</b>.
+
+!if not_supervisor=$error
+ Ho sento, però l'operació de preparació / modificació d'un full de
+ treball està reservada als professors registrats d'una classe.
+ !exit
+!endif
+
+!if not_superclass=$error
+ Operació prohibida perquè sou són part d'un grup de classes. Només
+ pot fer això el gestor del grup.
+ !exit
+!endif
+
+!if bad_class=$error
+ És estrany, però penso que la vostra classe no és vàlida!
+ !exit
+!endif
+
+!if bad_classpass=$error
+ Ho sento, però no heu proporcionat la contrasenya correcta de la classe.
+ No teniu dret a modificar la informació dels participants.
+ !exit
+!endif
+
+!if no_login iswordof $error
+ Les dades enviades han de tenir necessàriament una columna corresponent
+ als noms d'usuari dels participants.
+ !exit
+!endif
+
+!if bad_filename iswordof $error
+ El vostre fitxer no sembla ser un fitxer de full de càlcul en format text.
+ :csvformat
+ Si us plau, deseu les vostres dades en un format de text (separats per coma o tab,
+ amb extensions .csv, .tsv o .txt) abans d'enviar-lo a la classe.
+ !exit
+!endif
+
+!if binary_upload iswordof $error
+ Les vostres dades de full de càlcul estan en format binari&nbsp;! Això no és
+ reconegut, ho sento.
+ <p>
+ !goto csvformat
+!endif
+
+!if no_manual iswordof $error
+ Si us plau primer
+ !href module=adm/class/grades creeu una columna de notes manuals
+ abans de l'enviar de dades a la mateixa.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ La comunicació de dades de fulls de càlcul només està disponible per
+ les connexions des d'un lloc segur. Si us plau, reviseu la configuració de
+ la vostra classe.
+ !exit
+!endif
+
+!if bad_user=$error
+ Error de crida : el participant <tt>$checkuser</tt> no existeix.
+ !exit
+!endif
+
+!if bad_exo=$error
+ Article a revisar no existent.
+ !exit
+!endif
+
+!if bad_op=$error
+ Operació incorrecta. Tanqueu la finestra.
+ !exit
+!endif
+
+!if bad_usercls=$error
+ Estrany! sembla que aquest usuari no està registrat a la vostra classe!
+ !exit
+!endif
+
+!msg $error
+
