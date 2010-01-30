@@ -38,14 +38,14 @@ name_done,name_equiv
 De cijfers worden berekend met maximum = 
 !set name_formula2=Cijfers berekenen met als maximum $scoremax
 !set name_pickup=Kies een werkblad<br>om het gemiddelde cijfer per<br>werkblad te laten zien: 
-!set name_warning=U opdracht voor de server is ongeldig en kan niet worden uitgevoerd.
+!set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 
 !set name_click=Klik op de naam van een student om zijn/haar werk gedetailleerd te bestuderen. 
 !set name_affi=kwaliteit,uitgevoerde opdrachten,cijfers
 !set name_workdetail=Detail van het werk van
-!set name_activesession=Deze student heeft een nog actieve proefwerk [exam] sessie
+!set name_activesession=Deze student heeft een nog actieve proefwerk sessie
 
-!distribute items Verbonden server,Resterende tijd,Proefwerk sessie,minuten\
+!distribute items Netwerkadres,Resterende tijd,Proefwerk sessie,minuten\
 into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
@@ -53,7 +53,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !if $manual>0
 !set name_manual_explanation=<b>Uitleg.</b> In de kolom <tt>Gemiddelde</tt> , <tt>auto</tt> \
 betekend het gemiddelde cijfer voor de server geregistreerde oefeningen en opdrachten in werkbladen,\
-<tt>Docent</tt> betekend het gemiddelde cijfer over de handmatig ingevoerde scores door de docent/supervisor,\
+<tt>docent</tt> betekend het gemiddelde cijfer over de handmatig ingevoerde scores door de docent/supervisor,\
 en <tt>globaal</tt> wordt berekend aan de hand van de formule
 
 !endif
@@ -90,66 +90,63 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
    !set name_title_transfer=Verplaatsen van activiteiten
    !distribute items Samenvoegen, Vervangen,Bekijken\
    into name_merge, name_replace,name_show
-!set name_error1=<b>Error</b>. The participant has no registration in a corresponding\
- course in the current class to receive the transfer from
- !set name_error2=<b>Error</b> of class identification. Wrong manoeuvre or bug of the\
-  software? 
- !set name_activities=!nosubst Detail of activities in $i (limited to 1000 lines).
- !set name_totransfer=Here are the other courses in which the participant has activities. \
-   Click on an action to transfer them 
+!set name_error1=<b>Fout</b>. Deze student is niet geregistreerd bij de andere cursus en\
+kan dus niet worden overgezet van
+ !set name_error2=<b>Fout</b> in de klas identificatie. Verkeerde handeling of een software fout?
+ !set name_activities=!nosubst Details van de aktiviteiten in $i (beperkt tot 1000 regels).
+ !set name_totransfer=Hier staan de andere cursussen waarin deze student werk heeft uitgevoerd.\
+ Klik om het werk over te hevelen
 
 !endif
 
 !if $job=recover
-  !set name_empty=There is no deleted participant in this class.
-  !set name_click=Click on a login name to recover the user.
+  !set name_empty=Er is geen verwijderde student in deze klas.
+  !set name_click=Klik op de loginnaam om het account te herstellen.
 !endif
 
 
 !if $job=delprep
-  !set name_delete=!nosubst Are you sure that you want to delete <b><em>$name_student1</em></b>\
-     from your class?
+  !set name_delete=!nosubst Zeker weten de <b><em>$name_student1</em></b>\
+     uit deze klas verwijderd moet worden ?
 !endif
 
 !if $job=csv
-  !distribute lines Here is the file\
-    that you can download and open with your favorite spreadsheet program.\
-    Participant informations changed\
-    Added new participants\
-    Addition of new participants ignored because there is no more available space.\
-    Participant informations are not changed because grades are uploaded.\
-    Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
-    Ignored data about erased participants\
-    The following login names do not exist in the class and cannot be added, because of unsufficient/incorrect information in the data\
-    The following login names do not exist in the class and cannot be added (bad data, or no more space)\
-    Manual grades are registered only for existing columns.\
-    No change has been found in your spreadsheet data with respect to the class record.
-    Check manual grades\
-    To download class data for your spreadsheet, please specify\
-    Format\
-    Columns\
-    To upload your spreadsheet data to the class, please specify\
-    Data file\
-    Accepted formats: .csv, .tsv, .txt\
+  !distribute lines Hier is het bestand\
+    dat kan worden geopend met een spreadsheet programma.\
+    Student informatie is aangepast\
+    Nieuwe studenten toegevoegd\
+    Het toevoegen van nieuwe studenten is mislukt :er is geenv geheugenruimte meer beschikbaar.\
+    Student informatie is niet aangepast omdat de cijfers zijn geupload.\
+    Server berekende cijfers (de gemiddelden en werkblad/proefwerk scores) zijn niet aangepast : deze kunnen niet worden veranderd.\
+    Niet aangepaste gegevens over verwijderde studenten \
+    De volgende loginnamen zijn niet aangepast in verband met onvolledige of incorrecte data\
+    De volgende loginnamen zijn niet aanwezig in deze klas en kunnen niet wordn toegevoegd (incorrecte data of te weinig ruimte)\
+    Handmatig ingevoerde cijfers zijn alleen opgenomen voor bestaande kolommen.\
+    Er zijn geen verschillen gevonden tussen uw spreadsheet data en de klasses gegevens\
+    Kontroleer handmatig de gegevens\
+    Om klasse gegevens te downloaden voor gebruik in een spreadsheet programma ,specificeer \
+    Formaat\
+    Kolommen\
+    Om klasse gegevens in spreadsheet formaat te uploaden naar de klas, specificeer \
+    Data bestand\
+    Geaccepteerde formaten: .csv, .tsv, .txt\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
     name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
   
-  !set name_deposit=!nosubst Spreadsheet file <tt>$wims_deposit</tt> successfully processed.
+  !set name_deposit=!nosubst Spreadsheet bestand <tt>$wims_deposit</tt> met succes verwerkt.
 !endif
 
-!set name_topten=!nosubst Top $class_topscores van deze clas
+!set name_topten=!nosubst Top $class_topscores van deze klas
 :end
 !exit
 
 :transfer
-<b>Remarks</b>. <ol>
-<li>"$name_merge" means putting together the activities in two courses.
-<li>"$name_replace" means that the activities in the other cours will replace
-that of this one. This will occur only if the former is not empty.
-<li>Exam records and non-scoring activities are always merged.
-<li>Registration of details of exercises or exams is not transfered.
-<li>After the action ($name_merge ou $name_replace), the records of the participant
-in the other course will be cleaned.
+<b>Opmerkingen</b>. <ol>
+<li>"$name_merge" wil zeggen : het samenvoegen van de activiteiten van twee cursussen.
+<li>"$name_replace" wil zeggen : de activiteiten in de andere cursus gaan de activiteiten in deze cursus vervangen/
+<li>Proefwerk cijfers en alle niet_scorende activiteiten worden altijd samengevoegd.
+<li>De verbatim opgeslagen proefwerk &amp; oefeningen worden niet overgezet.
+<li>Na de handeling ($name_merge of $name_replace), worden deze gegevens van de student in de andere cursus gewist.
 </ol>
 

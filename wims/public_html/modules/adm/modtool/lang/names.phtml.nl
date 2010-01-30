@@ -60,7 +60,7 @@
 
 !if $job iswordof copy move
   !distribute lines Kopie,Hernoemen,Dupliceren,Hernoemen\
-  dupliceren\
+  maak eeb kopie\
   Het veranderen van de modulenaam zal leiden tot problemen met werkbladen, repetities en documenten die deze module gebruiken.\
  into name_choice,name_copy,name_warning1
 !set name_public_module=!nosubstde reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de\
@@ -70,21 +70,20 @@
   het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <tt>test zone</tt>.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
-  <b>exact</b> overeenkomt met het adres van de reeds gepubliceerde versie.\
-  <small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
- !endif
+  <b>exact</b> overeenkomt met het adres van de reeds gepubliceerde versie.<small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
+!endif
 
 !if $job=auth
   !set name_intro=Dit hulpprogramma is bedoeld voor het online ontwikkelen van speciale WIMS modules,\
  en is alleen toegankelijk voor gebruikers met een ontwikkelaar-account op deze server.\
- <p> Geef hier s.v.p. uw "ontwikkelaars authentificatie".
+ <p> Geef hier s.v.p. uw modtool loginnaam.
  
   !distribute lines stuur een email naar de systeembeheerder\
     als u het wachtwoord vergeten bent.\
     Bent U geinteresseerd in het maken van WIMS modules,\
-    WIMS new developer voor een account (login naam en wachtwoord).\
+    WIMS new developer voor een account (loginnaam en wachtwoord).\
     U kunt altjd vrijblijvend en <em>zonder</em> speciaal account\
-   gebruiken om zeer snel interactieve WIMS oefeningen te maken.\
+    interactieve WIMS oefeningen te maken.\
  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
  
@@ -92,16 +91,15 @@
 
 !if $job=backup
  !set name_save= Hier is de backup file van de module
- !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup \
-   archief te maken.<br> Neem s.v.p. kontakt op met de 
+ !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup archief te maken.<br> Neem s.v.p. kontakt op met de 
  !endif
 
 !if $job=publish
-  !distribute lines Submissie id\
+  !distribute lines Modtool submissie id\
   Type publicatie\
   experimentele versie,stabiele versie - verander een bestaande module,stabiele versie - voeg een nieuwe module toe\
-  Is deze module een vertaald ? en gemaakt door een ander ? \
-  Toegelaten mede-auteurs\
+  Is deze module een vertaald<br>en gemaakt door een ander ? \
+  Toegelaten mede auteurs\
   Lees mij eerst !\
   De veranderde versie van uw module zal vanaf morgen te vinden zijn in de database van de WIMS zoekmachine\
   Als dit niet de bedoeling is, graag de systeembeheerder van deze server vragen de module handmatig te verwijderen\

@@ -1,4 +1,5 @@
 
+
 !if $special_parm!=$empty
  !changeto lang/help.$moduclass_lang/$special_parm.phtml
 !endif
@@ -19,18 +20,19 @@ $table_tr<td align=center>0<td align=center>$scoremax max(x,y)
  <td>Heel soepel: het maximum van percentage en kwaliteit.
 $table_tr<td align=center>1<td align=center>$scoremax x
  <td>Geen rekening houden met het gemiddelde cijfer.
-  You get maximum of grade once all the required work is done.
+ Als alle werk is afgerond wordt de maximale score getoond.
 $table_tr<td align=center>2<td align=center>$scoremax x y<sup>0.3</sup>
- <td>Average of scores has only slight effect over the grade.
+ <td> Het gemiddelde van alle scores heeft een klein effect op het cijfer.
 $table_tr<td align=center>3<td align=center>$scoremax x y<sup>0.5</sup>
- <td>More effect of average of scores.
+ <td> Meer effect van de gemiddelde score.
 $table_tr<td align=center>4<td align=center>$scoremax x y
- <td>To have a grade of $scoremax, you must gather all required points
-  (100%) without making any error (average=10).
+ <td>
+ Om een cijfer $scoremax te behalen moeten alle vereiste punten worden behaalt (100%)
+ en geen enkele fout (gemiddelde = 10).
 $table_tr<td align=center>5<td align=center>$scoremax x<sup>2</sup> y
- <td>Unfinished work is over-punished.
+ <td>Onafgerond werk wordt extra zwaar bestraft.
 $table_tr<td align=center>6<td align=center>$scoremax x<sup>2</sup> y<sup>2</sup>
- <td>Any mistake is over-punished.
+ <td>Elke fout wordt extra zwaar bestraft.
 $table_end <p>
 
 

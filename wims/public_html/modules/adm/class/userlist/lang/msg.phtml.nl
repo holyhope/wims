@@ -7,10 +7,13 @@ Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld.
  
  !exit
 !endif
+
 !if not_superclass=$error
  Deze handeling kan alleen door de administrator van de digischool worden uitgevoerd.
+
  !exit
- !endif
+!endif
+
 !if bad_class=$error
 Vreemd, ik zie hier dat uw klas niet geldig is!
  !exit
@@ -28,21 +31,22 @@ loginnaam van de student.
  !exit
 !endif
 
+!if bad_filename iswordof $error
+Het opgestuurde bestand lijkt niet op "spreadsheet data in tekstformaat"
+:csvformat
+
+Bewaar spreadsheet data als een tekstformaat.
+(dus komma_gescheiden of tab_gescheiden lijsten (met als extensie: *.csv *.tsv *.txt)
+ voor dat ze naar deze server worden gestuurd.
+ !exit
+!endif
+
 !if binary_upload iswordof $error
 Uw spreadsheet data zijn in binair formaat en wordt uiteraard niet geaccepteerd.
  <p>
  !goto csvformat
 !endif
 
-!if bad_filename iswordof $error
-Het opgestuurde bestand lijkt niet op "spreadsheet data in tekstformaat"
-:csvformat
-
-S.V.P. bewaar spreadsheet data als een tekstformaat.
-(dus komma_gescheiden of tab_gescheiden lijsten, met als mime-extensie: <tt>*.csv</tt> <tt>*.tsv</tt> of <tt>*.txt</tt<)
- voor dat ze naar deze WIMS-server worden gestuurd.
- !exit
-!endif
 
 
 !if no_manual iswordof $error
