@@ -23,6 +23,6 @@ En este servidor, usted puede encontrar<ul class="wims_home_list">
 
 !!exit
 También puede
-!href module=adm/browse.es&$browse_parm realizar una visita guiada
+!href module=adm/browse&$browse_parm realizar una visita guiada
  a este sitio.
 

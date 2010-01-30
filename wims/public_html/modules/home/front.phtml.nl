@@ -31,7 +31,7 @@ Bezoek:
 !!exit
 !if $wims_theme_version=0
 Je kunt ook deze website
-!href module=adm/browse.en&$browse_parm browsen
+!href module=adm/browse&$browse_parm browsen
 .
 !endif
 
