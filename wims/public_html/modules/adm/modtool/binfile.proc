@@ -1,0 +1,59 @@
+!read scripts/getindex $modreq
+!if $title=$empty and $inddef=$empty
+ job=modname
+ modreq=
+ !changeto $job.proc
+!endif
+
+dir=binary,data,images,help,anstype,slib
+cattest=!module category devel/$auth_login/$mod
+!if document isin $cattest
+ dir=$dir,doc/1/files
+!endif
+!if oef isin $cattest
+ test=!defof common_images in wimshome/public_html/$devdir/$mod/var.proc
+ !if $test!=yes and datamodule/ notin $test
+  oefs=!sh cd $devdir/$mod/src\
+   ls *.oef | grep -v '\*' | sed 's/\.oef$$//' | awk '{print "images/"$$1}'
+  oefs=!lines2items $oefs
+  dir=$dir,$oefs
+ !endif
+!endif
+
+!bound bin_dir within $dir default $
+
+!if $bin_job=erase and $fname!=$empty
+ check=!translate internal / to , in $fname
+ check=!item 1 to -2 of $check
+ check=!nospace $check
+ check=!translate internal , to / in $check
+ !if $check!=$empty and $check isitemof $dir and .. notin $fname
+  src=cd $devdir/$mod; rm -f $fname
+  !if ../images/ isin ../$check/
+   src=$src\
+    exec imgindex
+  !endif
+  !sh $src
+ !endif
+!endif
+
+!if $wims_deposit!=$empty and $wims_deposit!=noname.file \
+	and $bin_job=deposit and $bin_dir!=$empty \
+	and / notin $wims_deposit and .. notin $wims_deposit
+ src=mkdir $devdir/$mod/$bin_dir\
+   mv $wims_home/$wims_sesdir/user-deposit $devdir/$mod/$bin_dir/$wims_deposit
+ !if ../images/ isin ../$bin_dir/
+  src=$src\
+   cd $devdir/$mod\
+   exec imgindex
+ !endif
+ !sh $src
+!endif
+
+dirs=!items2words $dir
+bfiles=!sh cd $devdir/$mod\
+	dd=`find $dirs -type f -name '*'| sort | uniq  2>/dev/null`\
+	[ -z "$$dd" ] && exit\
+	ls -l $$dd | awk '{print $$9","$$5}'
+
+bcnt=!linecnt $bfiles

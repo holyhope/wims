@@ -1,0 +1,65 @@
+!!!readproc lang/names.phtml.$modu_lang
+<p>
+!if $totalcnt>0
+ !if $totalcnt>=$sellist
+$name_moddevcnt
+!href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
+  <p>
+  !form reply
+  $name_browselist
+  <input type=text size=30 name=selectshow value="$selectshow">
+  <input type=submit value=OK>
+  !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
+  </form> <p>
+ !endif
+ $table_header
+ <caption>$name_clicktitle
+ !if $totalcnt>=$maxlist and $existcnt>=$maxlist
+  <br>($name_limited)
+ !endif
+ </caption>
+ $table_hdtr<th>$wims_name_Address</th><th>$wims_name_title</th><th>$wims_name_action</th><th>$wims_name_Description</th>
+ </tr>
+ !for n in $existing
+  !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
+  $table_tr<td><small>
+  !replace internal ~ by ~ $ in $n $
+  !if ~ notin $n
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename]
+  !endif
+  </small></td><td>
+  !href cmd=reply&jobreq=flist&modreq=$n $title
+  <td align=center><small>
+  !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
+
+  !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
+  </small></td><td><small>$description</small></td>
+  </tr>
+ !next n
+ $table_end
+ !set wims_menu_items=!append line createnew,1,cmd=reply&jobreq=create\
+ restore,1,cmd=reply&jobreq=restore\
+ latex2wims,1,cmd=new&module=adm/latex2wims\
+ to $wims_menu_items
+!set test_quicktool=!defof exists in wimshome/public_html/modules/adm/quicktool.fr/version
+!if $test_quicktool=yes
+ !set wims_menu_items=!append line quicktool,1,cmd=new&module=adm/quicktool\
+ to $wims_menu_items
+!else
+ !set wims_menu_items=!append line $name_noquicktool,0,$name_noquicktool\
+ to $wims_menu_items
+!endif
+!else
+$name_nomodule
+ !href cmd=reply&jobreq=create $name_create
+ $wims_name_or
+ !href cmd=reply&jobreq=restore $name_restore
+.
+!endif
+
+!set wims_menu_items=!append line ,0,\
+account_property,1,cmd=reply&jobreq=prop\
+to $wims_menu_items
+
+!reset target target1 target2 target3 target4 selectshow
+

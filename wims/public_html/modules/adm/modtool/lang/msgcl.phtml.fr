@@ -1,0 +1,185 @@
+
+<b>Error</b>.
+!distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
+!if $w1 iswordof antiwversion badauth badcategory badhour badlang \
+	badname badtar badtype badversion badwimsversion \
+	doublelang empty nochange noindex nolocalright \
+	nongnu nooriginal noreply noright notallow robot \
+	symlink toolong unpublishable
+ !goto $w1
+!else
+ !default $wims_read_parm=Une erreur technique est apparue.
+ $wims_read_parm
+ !exit
+!endif
+
+:antiwversion
+ Votre module nécessite WIMS-$w2 pour fonctionner. Ce serveur n'est qu'à
+ la version $wims_version. Veuillez corriger.
+!exit
+
+:badauth
+ Erreur d'authentification. Accès refusé.
+!exit
+
+:badauthhost
+ Erreur d'authentification. Vous n'avez pas l'autorisation de publier ce 
+ numéro IP. Accès refusé.
+!exit
+
+:badcategory
+ !if / isin $w2
+  La zone <tt>$w2</tt> de votre module soumis est inconnue.
+  !set w3=!word 3 to -1 of $wims_read_parm
+  !set w0=!translate / to , in $w2
+  Les catégories actuellement disponibles dans la zone <b><tt>$(w0[1])</tt></b>
+  sont&nbsp;:
+  <p>
+  <tt>$w3</tt>
+  <p>
+  Veuillez écrire au
+  !mailurl $sysadmin gestionnaire de publication
+  si vous voulez ajouter une nouvelle catégorie.
+ !else
+  La zone <tt>$w2</tt> de votre module soumis est inconnue. Veuillez
+  rapporter votre problème au
+  !mailurl $sysadmin gestionnaire de publication
+.
+ !endif
+!exit
+
+:badhour
+ Ce n'est pas le moment de publier !
+ <p>
+ Veuillez choisir un moment où le serveur est plus calme. Evitez de publier
+ des modules durant les heures suivantes :
+ <p>
+ $nopublish
+!exit
+
+:badlang
+ Désolé mais la langue <tt>$w2</tt> n'existe pas encore sur WIMS. 
+ Quelqu'un doit d'abord traduire WIMS dans cette langue avant qu'un 
+ module puisse être publié.
+!exit
+
+:badname
+ Le nom du module <tt>$w2</tt> n'est pas bon : trop long, trop court, ou
+ caractères non-admis.
+!exit
+
+:badtar
+ Une erreur a été détectée pendant la transmission. Veuillez vérifier votre
+ manoeuvre et essayer encore.
+!exit
+
+:badtype
+ Mauvais type d'envoi :
+ !if $w2=new
+  votre module n'est pas nouveau.
+ !else
+  vous ne pouvez pas modifier un module inexistant.
+ !endif
+ Avez-vous mis une mauvaise adresse à ce module ?
+!exit
+
+:badversion
+ La version <tt>$w2</tt> de votre module est mal formatée. Veuillez corriger.
+!exit
+
+:badwimsversion
+ La déclaration de wims_version de votre module doit être une version WIMS 
+ existante entre 3.36 et la dernière sortie.
+ Ce n'est apparemment pas le cas. Veuillez corriger.
+!exit
+
+:doublelang
+ Confusion dans la définition de langue du module : le fichier INDEX dit
+ <tt>language=$w3</tt>, alors que l'adresse du module a une extension
+ <tt>$w2</tt>. Veuillez corriger.
+!exit
+
+:empty
+ Envoi vide ignoré.
+!exit
+
+:nochange
+ Le module <font color=blue><tt>$w2</tt></font>
+ n'a pas été modifié depuis la dernière publication. Envoi ignoré.
+!exit
+
+:noindex
+ Mauvais contenu : le fichier INDEX du module est introuvable ou
+ cassé.
+!exit
+
+:nolocalright
+ Pour pouvoir installer votre module dans l'espace local du serveur,
+ vous devez d'abord demander au gestionnaire du site de vous en 
+ donner le droit.
+!exit
+
+:nongnu
+ Vous n'avez pas déclaré le droit d'auteur du module comme étant GNU GPL.
+ Envoi refusé.
+!exit
+
+:nooriginal
+ Le centre de publiction n'arrive pas à trouver le module d'origine
+ à partir duquel ce module est traduit.
+ Avez-vous mis une mauvaise adresse à ce module ?
+!exit
+
+:noreply
+ Erreur de connexion avec le centre de publication $centralhost.
+!exit
+
+:noright
+ Vous n'êtes pas reconnu comme l'auteur ou le traducteur de
+ <tt>$w2</tt>. Vous pouvez envoyer un fichier de
+ !href cmd=reply&jobreq=backup sauvegarde
+ de votre modification à l'auteur
+ !set au=!line 2 of $wims_read_parm
+ !distribute items $au into w3,w4
+ <a href="mailto:$w4?subject=Your WIMS module $w2">$w3</a>
+ qui le publiera s'il le désire.
+!exit
+
+:notallow
+ Vous n'avez pas encore le droit d'ajouter un nouveau module
+ dans $D1/$D2. Essayez de le publier en version développement ou
+ adressez-vous à quelqu'un ayant ce droit pour le publier pour vous !
+!exit
+
+:robot
+ Accès robot détecté : erreur technique interne, veuillez rapporter.
+!exit
+
+:symlink
+ Les liens symboliques ne sont plus admis dans les nouveaux modules.
+ Si c'est un module OEF ancienne version, vous pouvez le traduire en 
+ nouvelle version ne contenant pas de lien symbolique.
+!exit
+
+:toolong
+ Désolé mais votre module est trop gros pour un envoi automatique.
+ Vous pouvez l'envoyez manuellement au gestionnaire de publication. Merci !
+!exit
+
+:unpublishable
+ Ce module a une adresse qui n'est pas publiable. Il doit d'abord être
+ !href cmd=reply&jobreq=move&modreq=$mod renommé
+ ou
+ !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod dupliqué
+ pour être publiable. 
+ !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
+ En effet, votre module étant déclaré comme un module d'exercices OEF,
+  son nom doit commencer par <tt>oef</tt>.
+ !endif
+ !if doc iswordof  $w1 $w2 $w3 $w4 $w5 $w6
+  En effet, votre module étant déclaré comme un document,
+  son nom doit commencer par <tt>doc</tt>.
+!endif
+  
+!exit
+

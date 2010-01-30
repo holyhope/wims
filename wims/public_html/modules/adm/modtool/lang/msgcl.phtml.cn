@@ -1,0 +1,161 @@
+
+<b>错误</b>.
+!distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
+!if $w1 iswordof antiwversion badauth badcategory badhour badlang \
+    badname badtar badtype badversion badwimsversion \
+    doublelang empty nochange noindex nolocalright \
+    nongnu nooriginal noreply noright notallow robot \
+    symlink toolong unpublishable
+ !goto $w1
+!else
+ !default $wims_read_parm=发生了技术错误.
+ $wims_read_parm
+ !exit
+!endif
+
+:antiwversion
+你的模块需要 WIMS-$w2? 本服务器的版本只有 $wims_version. 请纠正.
+!exit
+
+:badauth
+身份验证错. 拒绝进入.
+!exit
+
+:badauthhost
+身份验证错. 你无权从这个 IP 地址发表. 拒绝进入.
+!exit
+
+:badcategory
+ !if / isin $w2
+你提交的模块的范畴<tt>$w2</tt>未知.
+  !set w3=!word 3 to -1 of $wims_read_parm
+  !set w0=!translate / to , in $w2
+区域<b><tt>$(w0[1])</tt></b>内目前可用的范畴为:
+  <p>
+  <tt>$w3</tt>
+  <p>
+如果你要添加新范畴, 请写信给
+  !mailurl $sysadmin 发布管理人
+.
+ !else
+你提交的模块的范畴<tt>$w2</tt>未知.
+请把你的问题报告
+  !mailurl $sysadmin 发布管理人
+.
+ !endif
+!exit
+
+:badhour
+现在不是发布本地模块的时候!
+ <p>
+请选择服务器空闲的时候. 不要在以下时段发布模块:
+ <p>
+ $nopublish
+!exit
+
+:badlang
+对不起, WIMS还没有语言<tt>$w2</tt>. 
+在提交模块前需要有人把WIMS翻译到这种语言.
+!exit
+
+:badname
+模块名<tt>$w2</tt>不合要求: 太长, 太短或含非法字符.
+!exit
+
+:badtar
+传送出错. 请检查你的操作或再试一次.
+!exit
+
+:badtype
+错误的提交类型:
+ !if $w2=new
+你的模块不是新的.
+ !else
+你不能修改不存在的模块.
+ !endif
+你给此模块的地址是错的?
+!exit
+
+:badversion
+你的模块的版本号<tt>$w2</tt>的格式不正确. 请纠正.
+!exit
+
+:badwimsversion
+你的模块的WIMS版本必须是介于3.36至最新版本的已有WIMS版本.
+请改正.
+!exit
+
+:doublelang
+模块语言定义混乱: INDEX文件声明 <tt>language=$w3</tt>, 
+而目录的后缀是 <tt>$w2</tt>. 请改正.
+!exit
+
+:empty
+空的提交被忽略.
+!exit
+
+:nochange
+从最新提交后模块 <font color=blue><tt>$w2</tt></font>
+没有修改过. 提交被忽略.
+!exit
+
+:noindex
+错误的内容: 模块的 INDEX 文件没有或已损坏.
+!exit
+
+:nolocalright
+为把你的模块安装到服务器的本地空间, 
+你首先应该要求网站管理员给你授权.
+!exit
+
+:nongnu
+你没有声明模块的版权是 GNU GPL. 提交被拒绝.
+!exit
+
+:nooriginal
+发布中心找不到此翻译模块的原始模块. 
+你是否给了错误的地址?
+!exit
+
+:noreply
+连接发布中心 $centralhost 时出错.
+!exit
+
+:noright
+你不是<tt>$w2</tt>的作者或翻译者. 
+你可以把你的修改的
+ !href cmd=reply&jobreq=backup 备份档案
+发给作者
+ !set au=!line 2 of $wims_read_parm
+ !distribute items $au into w3,w4
+ <a href="mailto:$w4?subject=Your WIMS module $w2">$w3</a>
+他知道如何发布它.
+!exit
+
+:notallow
+你不能在 $D1/$D2 内作新的发布. 请试试发布开发版,
+或找一位有权代你发布的人!
+!exit
+
+:robot
+检测到自动软件进入: 内部技术错误, 请报告.
+!exit
+
+:symlink
+在新模块里不允许符号链接. 如果你有旧版OEF模块,
+你可以把它翻译成不含符号链接的新版.
+!exit
+
+:toolong
+对不起, 你的模块对于自动提交来说太大了. 
+你可以手工发送给发布管理人. 谢谢!
+!exit
+
+:unpublishable
+本模块没有可发布的地址. 如果你要发布它, 先要
+ !href cmd=reply&jobreq=move&modreq=$mod 改名
+或
+ !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod 复制
+它.
+!exit
+

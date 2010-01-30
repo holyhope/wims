@@ -1,0 +1,48 @@
+!if $special_parm!=$empty
+ !read help/$special_parm.phtml
+ !goto end
+!endif
+
+!if $login=$empty
+本工具用于在线创建或发展自由格式的WIMS活动模块.
+ <p>
+这样的模块可以是全功能的练习(不像OEF练习, 易于开发, 但功能有限. 参见
+ !href module=adm/createxo 创建练习
+ )或是复杂的计算工具. 它们将用WIMS的语言写成, 详见
+ !href target=wims_help module=help/wimsdoc.cn WIMS技术文件
+.
+ <p>
+如果你有兴趣, 你可以要求
+ !mailurl $wims_site_manager 此WIMS网站的管理员\
+WIMS Modtool id
+给你开发者的登录名/密码, 以得到用此工具开发的资格.
+ !exit
+!endif
+
+!if $mod=$empty
+为了开发模块, 你首先要创建它. 为创建一个新模块, 
+请点击适当的链接并填写一个表格.
+ <p>
+!endif
+
+关于WIMS模块的结构、句法及其内容结构, 请参看
+ !href target=wims_help module=help/wimsdoc.cn WIMS技术文件
+.
+
+<p>
+你在这里可以看到
+href target=wims_help module=adm/createxo 在线 OEF 说明文件
+
+<p>
+特别提示:
+<ol>
+<li><p>为了方便纠错, 可在此文件里加一行
+<pre>
+$!debug ...
+</pre>
+其中 ... 可以是任何文字序列. 当你测试模块时, 将在这一行停止,
+并显示 ... 的文字. 如果 ... 包含变量, 这些变量将会按照WIMS的变量替换规则被替换.
+
+</ol>
+
+:end
