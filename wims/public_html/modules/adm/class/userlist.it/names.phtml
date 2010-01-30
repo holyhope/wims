@@ -1,3 +1,6 @@
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
 
 !set classname=$wims_classname - $wims_institutionname
 
@@ -87,6 +90,66 @@ dei voti manuali)
    !set name_title_transfer=Trasferisci l'attività di
    !distribute items Unisci, Sostituisci,Verifica\
    into name_merge, name_replace,name_show
+ !set name_error1=<b>Erreur</b>. Le participant n'est pas inscrit dans un cours correspondant\
+     à la classe actuelle, ce qui empêche le transfert depuis
+ !set name_error2=<b>Errore</b> di codice corso. Wrong manoeuvre or bug of the software?
+!set name_activities=!nosubst Dettaglio dell'attività in $i (massimo 1000 righe).
+!set name_totransfer=Questi sono i corsi in cui lo studente ha svolto attività. Clicca su\
+una opzione per trasferirla a questo
+
 !endif
+
+!if $job=recover
+  !set name_empty=Non è stato escluso alcuno studente. 
+  !set name_click= Selezionare il login dello studente da reinserire. 
+!endif
+
+!if $job=delprep
+  !set name_delete=!nosubst Siete sicuri di voler escludere <b><em>$lastname, $firstname</em></b>
+   dal vostro corso?
+!endif
+
+!if $job=csv
+  !distribute lines  Questo è il file\
+    che una volta salvato pu&ograve; essere aperto con un qualsiasi foglio eletronico.\
+    Sono state modificati i dati relativi a\
+    È stato aggiunto/sono stati aggiunti\
+    Non è stato possibile inserire nuovi partecipanti perché si è superato il limite di spazio.\
+    Non sono state modificate le informazioni perché si è cercato di modificare anche i punteggi.\
+    Non sono state modificate le informazioni di media e voti di test/esami perché si tratta di voti calcolati dal server che non possono essere modificati manualmente.\
+    Sono stati ignorati i seguenti dati, relativi a partecipanti esclusi\
+    I seguenti login non esistono e non possono essere creati perché le informazioni fornite sono insufficienti o incorrette\
+    I seguenti login non esistono e non possono essere creati (dati inconsistenti e spazio esaurito)\
+    I voti manuali possono essere registrati solo per colonne che già esistono.\
+    I dati forniti coincidono con quelli già inseriti sul server.\
+    Verifica i voti manuali\
+    Per salvare i dati in formato foglio elettronico, specificare\
+    Formato\
+    Campi\
+    Per $wims_name_send sul server dati in formato foglio elettronico, specificare\
+    Nome del file\
+    Formati accettati: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst Il file <tt>$wims_deposit</tt> &egrave; elaborato con successo.
+!endif
+
 !set name_topten=!nosubst Migliori $class_topscores punteggi medi del corso
+  
 :end
+!exit
+
+:transfer
+<b>Note</b>. <ol>
+<li>"$name_merge" significa che sono unite le attività dei due corsi.
+<li>"$name_replace" significa che le attività dell'altro corso sostiuiscono 
+quelle registrate per questo (questo è possibile sole se le prime non sono
+vuote).
+<li>I punteggi d'esame e le attività che non danno luogo a punteggio sono 
+sempre unite.
+<li>La registrazione di dettagli degli esercizi non sono trasferiti.
+<li>Dopo aver effettuato il trasferimento (sia come "$name_merge" che come 
+"$name_replace"), i dati dello studente nell'altro corso sono azzerati.
+</ol>

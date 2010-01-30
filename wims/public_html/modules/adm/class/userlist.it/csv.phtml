@@ -18,59 +18,51 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
- Questo &egrave; il file <tt>
+  $name_file <tt>
  !getfile $outfile $outfile
- </tt> che una volta salvato pu&ograve; essere aperto con un qualsiasi foglio
- eletronico.
+ </tt> $name_download
  <p><hr> <p>
 !endif
 
 !if $processed=yes and $error=$empty
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
-  Il file <tt>$wims_deposit</tt> &egrave; elaborato con successo. <ul>
+  $name_deposit<ul>
   !if $change!=$empty
-   <li>Sono state modificati i dati relativi a: <tt>$change</tt>
+   <li>$name_infochanged<tt>$change</tt>
   !endif
   !if $added!=$empty
-   <li>&Egrave; stato aggiunto/sono stati aggiunti: <tt>$added</tt>
+   <li>$name_added<tt>$added</tt>
   !endif
   !if full iswordof $remark
-   <li>Non &egrave; stato possibile inserire nuovi partecipanti perch&eacute;
-   si &egrave; superato il limite di spazio.
+   <li>$name_warning1
   !endif
   !if noprop iswordof $remark
-   <li>Non sono state modificate le informazioni perch&eacute; si &egrave; 
-    cercato di modificare anche i punteggi.
+   <li>$name_warning2
   !endif
   !if noauto iswordof $remark
-   <li>Non sono state modificate le informazioni di media e voti di 
-   test/esami perch&eacute; si tratta di voti calcolati dal server che
-   non possono essere modificati manualmente.
+   <li>$name_warning3
   !endif
   !if $erased!=$empty
-   <li>Sono stati ignorati i seguenti dati, relativi a partecipanti
-   esclusi:
+   <li>$name_warning4
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>I seguenti login non esistono e non possono essere 
+   <li>
    !if full notwordof $remark
-    creati perch&eacute; le informazioni fornite sono insufficienti o
-    incorrette:
+    $name_nologin1
    !else
-    creati (dati inconsistenti e spazio esaurito):
+    $name_nologin2
    !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes
-   <li>I voti manuali possono essere registrati solo per colonne che
-   gi&agrave; esistono.
-   !href module=adm/class/grades Verifica i voti manuali
+   <li>$name_manual1
+   !href module=adm/class/grades $name_check
 .
   !endif
   </ul>
  !else
-  I dati forniti coincidono con quelli gi&agrave; inseriti sul server.
+ $name_data1
  !endif
  <p><hr> <p>
 !endif
@@ -78,38 +70,39 @@ $wims_name_csv
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Per <input type=submit value="salvare">
-i dati in formato foglio elettronico, specificare: <ul>
-<li>Formato
+$name_data2<ul>
+<li>$name_format
 !formselect csvformat list csv,tsv
 <small>
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </small>
-<li>Campi
+<li>$name_column
 <input type=text size=45 name=csvdownload value="$csvdownload">
 <small>
 !href module=$module&cmd=help&special_parm=csvfields $wims_name_help
 </small>
 </ul>
+<input type=submit value="$wims_name_download">
+
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
-<hr>
-!set wims_form_method=file
-!form reply
-<input type=hidden name=job value=csv>
-<input type=hidden name=csvtype value=upload>
-Per <input type=submit value="$wims_name_send">
-sul server dati in formato foglio elettronico, specificare:
-<small>
+ <hr>
+ !set wims_form_method=file
+ !form reply
+ <input type=hidden name=job value=csv>
+ <input type=hidden name=csvtype value=upload>
+ $name_data3
+ <small>
  !href module=$module&cmd=help&special_parm=upload $wims_name_help
-</small><ul>
-<li>Nome del file <input type=file size=30 name=wims_deposit> <br>
- <small>Formati accettati: .csv, .tsv, .txt
-!href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
-</small>
-</ul>
-</form>
+ </small><ul>
+ <li>$name_data <input type=file size=30 name=wims_deposit> <br>
+ <small>$name_format2: .csv, .tsv, .txt
+ !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
+ </small>
+ </ul>
+ <input type=submit value="$wims_name_send">
+ </form>
 !endif
 
 !set wims_menu_items=!append line back2,1,cmd=resume\

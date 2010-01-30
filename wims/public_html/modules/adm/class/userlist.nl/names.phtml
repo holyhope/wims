@@ -1,3 +1,6 @@
+!if $wims_read_parm!=
+ !goto $wims_read_parm
+!endif
 
 !set classname=$wims_classname - $wims_institutionname
  
@@ -85,6 +88,66 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
    !set name_title_transfer=Verplaatsen van activiteiten
    !distribute items Samenvoegen, Vervangen,Bekijken\
    into name_merge, name_replace,name_show
+!set name_error1=<b>Error</b>. The participant has no registration in a corresponding\
+ course in the current class to receive the transfer from
+ !set name_error2=<b>Error</b> of class identification. Wrong manoeuvre or bug of the\
+  software? 
+ !set name_activities=!nosubst Detail of activities in $i (limited to 1000 lines).
+ !set name_totransfer=Here are the other courses in which the participant has activities. \
+   Click on an action to transfer them 
+
 !endif
+
+!if $job=recover
+  !set name_empty=There is no deleted participant in this class.
+  !set name_click=Click on a login name to recover the user.
+!endif
+
+
+!if $job=delprep
+  !set name_delete=!nosubst Are you sure that you want to delete <b><em>$name_student1</em></b>\
+     from your class?
+!endif
+
+!if $job=csv
+  !distribute lines Here is the file\
+    that you can download and open with your favorite spreadsheet program.\
+    Participant informations changed\
+    Added new participants\
+    Addition of new participants ignored because there is no more available space.\
+    Participant informations are not changed because grades are uploaded.\
+    Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
+    Ignored data about erased participants\
+    The following login names do not exist in the class and cannot be added, because of unsufficient/incorrect information in the data\
+    The following login names do not exist in the class and cannot be added (bad data, or no more space)\
+    Manual grades are registered only for existing columns.\
+    No change has been found in your spreadsheet data with respect to the class record.
+    Check manual grades\
+    To download class data for your spreadsheet, please specify\
+    Format\
+    Columns\
+    To upload your spreadsheet data to the class, please specify\
+    Data file\
+    Accepted formats: .csv, .tsv, .txt\
+  into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
+    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+    name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
+  
+  !set name_deposit=!nosubst Spreadsheet file <tt>$wims_deposit</tt> successfully processed.
+!endif
+
 !set name_topten=!nosubst Top $class_topscores van deze clas
 :end
+!exit
+
+:transfer
+<b>Remarks</b>. <ol>
+<li>"$name_merge" means putting together the activities in two courses.
+<li>"$name_replace" means that the activities in the other cours will replace
+that of this one. This will occur only if the former is not empty.
+<li>Exam records and non-scoring activities are always merged.
+<li>Registration of details of exercises or exams is not transfered.
+<li>After the action ($name_merge ou $name_replace), the records of the participant
+in the other course will be cleaned.
+</ol>
+
