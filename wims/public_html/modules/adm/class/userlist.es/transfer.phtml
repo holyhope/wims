@@ -3,13 +3,12 @@ $classname\
 $name_title_transfer
 
 <center>
- !href cmd=reply&job=getuser&getuser=$getuser $lastname, $firstname
+ !href cmd=reply&job=getuser&getuser=$getuser $name_student1
  (<tt>$getuser</tt>)
 </center> <p>
 
 !if $error=no_reccourse
- <b>Error</b>. El participante no está inscrito en ningún curso que corresponda
- a la clase actual y que pueda recibir la transferencia desde
+ $name_error1
  !defof class_description in wimshome/log/classes/$transferclass/.def
 .
  <p>
@@ -19,11 +18,10 @@ $name_title_transfer
 !if $ttype=show
  !set i=!defof class_description in wimshome/log/classes/$transferclass/.def
  !if $transferclass notitemof $tr_list or $i=$empty
-  <b>Erreur</b> d'identifiant des classes. Fausse manoeuvre ou bogue du
-  logiciel ?
+  $name_error2
   !exit
  !else
-  Détail des activités dans $i (limité à 1000 lignes).
+  $name_activities
   <p><hr>
   <small><pre>
   !sh cat $wims_home/log/classes/$transferclass/*score/$getuser | sort | head -1000
@@ -38,13 +36,7 @@ $name_title_transfer
  !endif
 !endif
 
-Estos son los otros cursos en los que ha realizado actividades el participante.
-Pulse sobre una acción para hacer la transferencia a
-!if $tr_typename=course
- este curso.
-!else
- esta clase.
-!endif
+$name_totransfer
 
 $table_header
 $table_hdtr<th>$wims_name_course</th>
@@ -63,13 +55,5 @@ $table_hdtr<th>$wims_name_course</th>
 $table_end
 
 :endd
-<b>Notas</b>. <ol>
-<li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.
-<li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar 
-completamente las de este. La sustitución no se realizará si el primero está vacío.
-<li>Las puntuaciones de los exámenes y las actividades no puntuadas siempre se unifican.
-<li>El registro de los detalles de los ejercicios o de los exámenes no se transfiere.
-<li>Después de la operación (de unir o sustituir), se borrarán los registros de las
-actividades del participante en el otro curso.
-</ol>
+!read names.phtml transfer
 

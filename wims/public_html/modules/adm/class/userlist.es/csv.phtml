@@ -18,53 +18,51 @@ $wims_name_csv
 !endif
 
 !if $outfile!=$empty
- Este es el fichero <tt>
+  $name_file <tt>
  !getfile $outfile $outfile
- </tt> que puede descargar y abrir con su hoja de cálculo 
- preferida.
+ </tt> $name_download
  <p><hr> <p>
 !endif
 
 !if $processed=yes and $error=$empty
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
-  El fichero de hoja de cálculo <tt>$wims_deposit</tt> ha sido reconocido correctamente.
-  <ul>
+  $name_deposit<ul>
   !if $change!=$empty
-   <li>Cambios en la información sobre los participantes: <tt>$change</tt>
+   <li>$name_infochanged<tt>$change</tt>
   !endif
   !if $added!=$empty
-   <li>Nuevos participantes añadidos: <tt>$added</tt>
+   <li>$name_added<tt>$added</tt>
   !endif
   !if full iswordof $remark
-   <li>La incorporación de nuevos participantes será ignorada porque no queda espacio
-   libre.
+   <li>$name_warning1
   !endif
   !if noprop iswordof $remark
-   <li>La información sobre los participantes no se ha modificado porque se han enviado 
-   calificaciones.
+   <li>$name_warning2
   !endif
   !if noauto iswordof $remark
-   <li>Se han ignorado en sus datos las notas calculadas por el servidor (medias y 
-    puntuaciones de hojas de trabajo/exámenes) porque no pueden ser modificadas.
+   <li>$name_warning3
   !endif
   !if $erased!=$empty
-   <li>Datos ignorados relativos a los participantes borrados:
+   <li>$name_warning4
    <tt>$erased</tt>
   !endif
   !if $missing!=$empty
-   <li>Los identificadores de usuario siguientes no existen y no pueden ser añadidos
-   a causa de errores o insuficiencia de información en los datos enviados:
+   <li>
+   !if full notwordof $remark
+    $name_nologin1
+   !else
+    $name_nologin2
+   !endif
    <tt>$missing</tt>
   !endif
   !if $manual=yes
-   <li>Sólo se graban calificaciones manuales para las columnas existentes.
-   !href module=adm/class/grades Comprobar estas notas
+   <li>$name_manual1
+   !href module=adm/class/grades $name_check
 .
   !endif
   </ul>
  !else
-  No se ha producido ningún cambio en los datos enviados con respecto a
-  los datos existentes en la clase.
+ $name_data1
  !endif
  <p><hr> <p>
 !endif
@@ -72,19 +70,20 @@ $wims_name_csv
 !form reply
 <input type=hidden name=job value=csv>
 <input type=hidden name=csvtype value=download>
-Para <input type=submit value="$wims_name_download">
-los datos de la clase en la hoja de cálculo, especifique:<ul>
-<li>El formato
+$name_data2<ul>
+<li>$name_format
 !formselect csvformat list csv,tsv
 <small>
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </small>
-<li>Columnas
+<li>$name_column
 <input type=text size=45 name=csvdownload value="$csvdownload">
 <small>
 !href module=$module&cmd=help&special_parm=csvfields $wims_name_help
 </small>
 </ul>
+<input type=submit value="$wims_name_download">
+
 </form>
 
 !if $classtype notin 13 or $typename iswordof class course
@@ -93,16 +92,16 @@ los datos de la clase en la hoja de cálculo, especifique:<ul>
  !form reply
  <input type=hidden name=job value=csv>
  <input type=hidden name=csvtype value=upload>
- Para <input type=submit value="$wims_name_send">
- los datos de su hoja de cálculo a la clase, especifique:
+ $name_data3
  <small>
  !href module=$module&cmd=help&special_parm=upload $wims_name_help
  </small><ul>
- <li>El fichero de datos <input type=file size=30 name=wims_deposit> <br>
- <small>Formatos aceptados: .csv, .tsv, .txt
+ <li>$name_data <input type=file size=30 name=wims_deposit> <br>
+ <small>$name_format2: .csv, .tsv, .txt
  !href module=$module&cmd=help&special_parm=csvformats2 $wims_name_help
  </small>
  </ul>
+ <input type=submit value="$wims_name_send">
  </form>
 !endif
 
