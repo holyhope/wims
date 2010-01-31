@@ -60,124 +60,122 @@
 !endif
 
 !if $job iswordof copy move
-  !distribute lines Copy,Rename,Duplicate,Rename\
-   duplicate it\
-   Renaming the module will break all the worksheets referencing it. Make sure that this is not the case,\
+  !distribute lines 复制,改名,复制,改名\
+   复制\
+   模块改名后会影响到所有用到它的作业页. 请确认这种情况不会发生,\
  into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst the public module <em>$otit</em> (<tt>$original2</tt>) to the\
-  development space, under the address
-!set name_warning2= Remaning or duplicating a public-address module may lead to\
-  duplication of its publication. Please be very careful! <p>\
-  If you want to make tests on the module, put it $into the test zone.
-!set name_warning3=If you have already published this module, please change\
-  its address exactly according to its public address. Otherwise its publication will be duplicated.
+!set name_public_module=!nosubst 供公众使用的模块 <em>$otit</em> (<tt>$original2</tt>)到开发空间,\
+  地址为
+!set name_warning2=改名或复制公共地址的模块会导致重复发布.\
+  请小心行事! <p>\
+ 如果你要测试此模块, 请把它放到测试区.
+!set name_warning3=如果你已经发布过此模块, 请你把它的地址改成已发布的地址.\
+  否则就会造成重复发布.
 !endif
 
 !if $job=auth
-  !set name_intro=This tool is for online development of regular modules\
-   under WIMS. Only registered developers can access it.\
-   <p>Please give your developer identification.
+  !set name_intro=这个工具用于在 WIMS 里在线开发正规模块.\
+   只有已注册的开发者才能进入.\
+   <p>请给出你的开发者身份.
  
-  !distribute lines write to the site manager\
-    if you have forgotten your password\
-    If you are interested in developing WIMS modules, please\
-    in order to get a developer identification (login, password).\
-    Note that you can also use\
-    to write simple interactive exercises in an easier way, without authentification\
+  !distribute lines 给网站管理员发电邮\
+    如果你忘记了你的密码\
+    如果你想开发 WIMS 模块, 请\
+    为了得到开发者身份 (登录名, 密码).\
+    注意你也可以使用\
+    以写出简单的互动式练习, 并且不需要身份验证\
   into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
  
 !endif
 
 !if $job=backup
- !set name_save=Here is the backup file of the module
- !set name_internal_error=  Internal error: impossible to generate the backup file. Please contact the
+ !set name_save=这里是模块的备份文件
+ !set name_internal_error=内部错误: 不能生成备份文件. 请联系
 !endif
 
 !if $job=publish
-  !distribute lines Submission id\
-  Type of publication\
-  development version,stable version - modify an existing module,stable version - add a new module\
-  Is this module a translation <br> from another language?\
-  Authorized modifiers\
-  Read me first!\
-  The published module will appear in the site's search engin within a few minutes.\
-  If this is an error, please ask the site manager to remove your published module by hand.\
-  You will receive a mail confirming the submission\
-  OK, go ahead\
+  !distribute lines 发布者帐号\
+  发布类型\
+  开发版,稳定版 - 修改已有模块,稳定版 - 添加新模块\
+  是其它语言版本<br> 的翻译吗?\
+  授权的修改者\
+  先看这里!\
+  已发布的模块将在几分钟后出现在网站的搜索引擎里.\
+  如果这是一个错误, 请要求网站管理员手工除去你的已发布的模块.\
+  你将收到一个确认你的发布的电邮\
+  好的, 请继续\
  into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
    name_local,name_error,name_emailsend,name_goahead
 
- !set name_warning0=!nosubst This is a public-address module that should be published to the
-  publication center <tt>$centralhost</tt>. Please enter your publication identifier.
- !set name_warning1=Have you incremented the version number of the module, if you are publishing
-  a new version of an existing module? If you haven't, nobody will be upgrading to your new version.
- !set name_warning2= Your module has a local address. It can only be published on the local space of this server. \
-   Do you want to continue?
-!set name_warning3=The main advantage of a publication in the local space is to make the module visible by \
-  the search engine of the local server.
-  !set name_cheat1=!nosubst This module declares that it only needs WIMS-$Wver2 to run, while it has \
-   probably modified on this server of version $wims_version. You should update the module's INDEX file\
-   to make this correct.
-  !set name_cheat2=If you are SURE of what you are doing, you can cheat the servers\
-   into thinking that you are on an older server (a VERY RISKY OPERATION)!
+ !set name_warning0=!nosubst 这是一个公众地址的模块, \
+  它将发布在中心 <tt>$centralhost</tt> 上. 请输入你的发布身份.
+ !set name_warning1=如果你是发布一个已有模块的新版本的话, \
+ 有没有增加版本号? 如果没有, 就不会有人升级到你的新版本.
+ !set name_warning2=你的模块有一个局部地址. 它只能发布在本服务器的局部空间里. \
+   要继续吗?
+!set name_warning3=发布在局部空间里的主要优点是能被本地服务器的搜索引擎看到.
+  !set name_cheat1=!nosubst 这个模块声称只需 WIMS-$Wver2 就能运行, \
+   而它已经在这个版本为 $wims_version 的服务器上修改过.\
+   你应该修改模块的 INDEX 文件使它反映正确的版本.
+  !set name_cheat2=如果你<b>确实</b>知道你在做些什么, you can cheat the servers\
+   你可以欺骗服务器使它以为这是一个老版本的服务器 (<b>风险很大</b>)!
 
 !endif
 
 !if $job=diff
-  !distribute lines No difference found between the development version and the public version on this server.\
-  Too many differences exist between the development version and the public version on this server.\
-  Differences between the development version and the public version on this server:\
+  !distribute lines 在此服务器的开发版与公开版之间没有发现差别.\
+  此服务器的开发版与公开版之间有很大不同.\
+  此服务器的开发版与公开版之间的差别为:\
   into name_diff1,name_diff2,name_diff3
 !endif
 
 !if $job=restore
 
- !set name_warning1=Your file doesn't look like a module backup file!\
- <p>You can only restore a file downloaded earlier from Modtool. Try again.
+ !set name_warning1=你的文件不像是模块备份文件!\
+ <p>你只能恢复以前从模块创建工具下载的文件. 请再试.
  
- !distribute lines  I cannot recognize your file as a module backup. Error in the file!\
-   No difference found between the existing module (in your development space) and the backup archives.\
-   Too many differences exist between the existing module (in your development space) and the backup archives.\
-   Differences between the existing module (in your development space) and the backup archives\
-   Please give the backup file to restore\
-   only check differences with the existing module.\
-   Go to work on the module\
-   Module restored\
+ !distribute lines  你的文件不像是模块备份文件, 文件有错!\
+   在(开发空间里的)已有模块与备份档案间没有差别.\
+   (开发空间里的)已有模块与备份档案间差别很大.\
+   (开发空间里的)已有模块与备份档案间的差别是\
+   请给出备份文件以恢复\
+   只检查与现有模块的区别.\
+   返回模块继续工作\
+   恢复的模块\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
     name_restored
   
-!set name_illegal= Your archives contains files of illegal type! It cannot be restored.\
-<p>Is it an old-versioned backup? Now you have to copy the files one by one.
-!set name_warning2=Only backups saved earlier from Modtool or downloaded from the publication center \
-  <a href="$downloadsite">$downloadsite</a> will be accepted. No manual modification of \
-  the backup file should be made.
-!set name_warning_diff=!nosusbt Restoration of a backup module now completely replaces\
- the existing module at the same address, with no possibility of recovery. But you can
+!set name_illegal=你的档案含有非法类型的文件! 不能恢复.\
+<p>是旧版的备份吗? 你只能一个一个文件复制.
+!set name_warning2=只能接受以前用创建模块工具备份的文件或从发布中心 \
+  <a href="$downloadsite">$downloadsite</a> \
+  下载的文件. 备份文件不能作手工修改.
+!set name_warning_diff=!nosusbt  备份模块的恢复将完全取代同一地址的已有模块, 不能再复原. \
+不过你可以
   
 !endif
 
 !exit
 :del
 
-Deleted modules are definitely gone.
-!href cmd=reply&jobreq=backup Make a backup
- first!
-<b>Don't forget</b>: if there are any virtual classes or worksheets
-referencing your module, these will be broken if the module is deleted.
+ 被删的模块不能再恢复. 请先
+!href cmd=reply&jobreq=backup 做备份!
+<b>别忘记</b>: 如果有虚拟班或作业引用你的模块,
+模块删除后, 作业将不可用!
 
-Are you sure to delete the module
+你肯定要删除模块
 !exit
 
 :delconfirm
- The file 
+文件 
  <font color=blue><em>$fname</em></font>
- is deleted from the module <font color=blue><em>$title</em></font>.
+已从模块 <font color=blue><em>$title</em></font>删除.
 !exit
 
 :delfile
-Are you sure to delete the file 
+你肯定要从模块
+<font color=blue><em>$title</em></font>
+删除文件
 <font color=blue><em>$fname</em></font>
-from the module
-<font color=blue><em>$title</em></font>?
 !exit

@@ -88,52 +88,48 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
    !set name_title_transfer=的活动转移 
    !distribute items 合并, 替换, 检查\
    into name_merge, name_replace,name_show
- !set name_error1=<b>Error</b>. The participant has no registration in a corresponding\
- course in the current class to receive the transfer from
- !set name_error2=<b>Error</b> of class identification. Wrong manoeuvre or bug of the\
-  software? 
- !set name_activities=!nosubst Detail of activities in $i (limited to 1000 lines).
- !set name_totransfer=Here are the other courses in which the participant has activities. \
-   Click on an action to transfer them 
+ !set name_error1=<b>错误</b>. 参加者没有在当前班级里注册过以下要转移的课程
+ !set name_error2=<b>错误</b> 班级名称错. 由于操作错误或软件漏洞?
+ !set name_activities=!nosubst 第 $i 行的活动详情 (限1000行).
+ !set name_totransfer=这里是参加者有活动的其它课程. 点击一个动作以转移
 
 !endif
 
 !if $job=recover
-  !set name_empty=There is no deleted participant in this class.
-  !set name_click=Click on a login name to recover the user.
+  !set name_empty=这个班级里没有被删的参加者.
+  !set name_click=在登录名上点击以恢复此用户.
 !endif
 
 
 !if $job=delprep
-  !set name_delete=!nosubst Are you sure that you want to delete <b><em>$name_student1</em></b>\
-     from your class?
+  !set name_delete=!nosubst 你能肯定要从班级中删除 <b><em>$name_student1</em></b>?
 !endif
 
 !if $job=csv
-  !distribute lines Here is the file\
-    that you can download and open with your favorite spreadsheet program.\
-    Participant informations changed\
-    Added new participants\
-    Addition of new participants ignored because there is no more available space.\
-    Participant informations are not changed because grades are uploaded.\
-    Server-computed scores (averages and worksheet/exam scores) are ignored in your data because they cannot be changed.\
-    Ignored data about erased participants\
-    The following login names do not exist in the class and cannot be added, because of unsufficient/incorrect information in the data\
-    The following login names do not exist in the class and cannot be added (bad data, or no more space)\
-    Manual grades are registered only for existing columns.\
-    No change has been found in your spreadsheet data with respect to the class record.
-    Check manual grades\
-    To download class data for your spreadsheet, please specify\
-    Format\
-    Columns\
-    To upload your spreadsheet data to the class, please specify\
-    Data file\
-    Accepted formats: .csv, .tsv, .txt\
+  !distribute lines 你可以下载下列文件\
+     并用你喜欢的电子表格软件打开它.\
+    参加者信息已改变\
+    添加新参加者\
+    不能添加新参加者, 因为没有可用空间了.\
+    参加者信息没有改变, 因为总评分已经上传.\
+    在你的数据里, 服务器计算的得分(平均分以及作业页/考试的得分)将被忽略, 因为它们不能修改.\
+    被删除的参加者的不被考虑的数据\
+    班级内没有以下的登录名, 而且不能添加, 这是因为数据内有不充分/不正确的信息\
+    班级内没有以下的登录名, 而且不能添加,  这是因为数据损坏或没有空间了\
+    只对已有的栏目记录人工总评分.\
+    你的电子表格数据与班级的记录相比没有发现改变.\
+    检查人工评分\
+    为你的电子表格下载班级数据, 请选定\
+    格式\
+    栏目\
+    为把你的电子表格数据上传到班级, 请选定\
+    数据文件\
+    可接受的格式: .csv, .tsv, .txt\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
     name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
   
-  !set name_deposit=!nosubst Spreadsheet file <tt>$wims_deposit</tt> successfully processed.
+  !set name_deposit=!nosubst 电子表格文件 <tt>$wims_deposit</tt> 处理成功.
 !endif
 
 !set name_topten=!nosubst 班级的平均分最高 $class_topscores 人
@@ -141,13 +137,11 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !exit
 
 :transfer
-<b>Remarks</b>. <ol>
-<li>"$name_merge" means putting together the activities in two courses.
-<li>"$name_replace" means that the activities in the other cours will replace
-that of this one. This will occur only if the former is not empty.
-<li>Exam records and non-scoring activities are always merged.
-<li>Registration of details of exercises or exams is not transfered.
-<li>After the action ($name_merge ou $name_replace), the records of the participant
-in the other course will be cleaned.
+<b>说明</b>. <ol>
+<li>"$name_merge"意为把两个课程的活动放在一起.
+<li>"$name_replace"意为其它课程的活动将替代此课程的活动. 仅当前者非空时才发生.
+<li>考试记录以及不计分的活动总是被合并的.
+<li>练习或考试的详情记录不被转移.
+<li>在$name_merge或$name_replace后, 参加者在其它课程的记录将被清除.
 </ol>
 
