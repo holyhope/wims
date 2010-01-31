@@ -22,7 +22,7 @@ Neem desgewenst contact op met de docent.
 !set name_scoreclose=De cijfer registratie is voor jouw netwerkverbinding gesloten.
 
 !set name_textsource=Hier staat de broncode van het werkblad. U kunt deze via \
-knippen en plakken in uw eigen kals importeren.
+knippen en plakken in uw eigen klas importeren.
 !set name_answer=Antwoord op oefening
 
 !set name_title=!nosubst  Werkblad #$sh
@@ -32,5 +32,5 @@ knippen en plakken in uw eigen kals importeren.
 !set name_noprint=!defof name_noprint in oef/$modu_lang/names
 !set name_answers=!defof name_answers in oef/$modu_lang/names
 
-!distribute items niveau approximatif,durée \
+!distribute items leerniveau,tijdsduur \
 into name_level,name_duration

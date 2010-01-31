@@ -32,7 +32,7 @@
 !endif
 
 !if illegal_filedesc iswordof $error
-    U kunt niets anders dan een omschrijving in de  "filedesc"  
+    U kunt niets anders dan een omschrijving in de "filedesc"  
     vermelden.
  !exit
 !endif
@@ -49,7 +49,7 @@
 
 !if badtarget iswordof $error
  Het adres van de module is niet goed: te lang,te kort, inkompleet
-  of niet toegestane karacters
+  of niet toegestane lettertekens
  !exit
 !endif
 

@@ -14,19 +14,20 @@
  Deze modules worden geschreven in de <b>WIMS programeertaal</b> [phtml] zoals beschreven in de
  !href target=wims_help module=help/wimsdoc WIMS technische documentatie
 .
+
  <p>
- Als U geinteresseerd bent, kunt U de 
- !mailurl $wims_site_manager de systeembeheerder van deze WIMS site\
-WIMS Modtool id
- verzoeken om een ontwikkelaars account (login naam en wachtwoord)
- voor U aan te maken.
+ Als U geinteresseerd bent, kan via  
+ !mailurl $wims_site_manager de systeembeheerder\
+ WIMS Modtool id
+ 
+ een ontwikkelaars account (login naam en wachtwoord) worden aangevraagd.
  !exit
 !endif
 
 !if $mod=$empty
  Om aan een module te kunnen werken, moeten we er wel eerst eentje aanmaken.<br>
- Voor het maken van een nieuwe module, moet U dus op de juiste hyperlinks klikken
- en alle benodigde gegevens invoeren. 
+ Voor het maken van een nieuwe module, moet U dus op de juiste links klikken
+ en alle benodigde modules administratie invoeren. 
  <p>
 !endif
 

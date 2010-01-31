@@ -60,10 +60,10 @@
 
 !if $job iswordof copy move
   !distribute lines Kopie,Hernoemen,Dupliceren,Hernoemen\
-  maak eeb kopie\
+  maak een kopie\
   Het veranderen van de modulenaam zal leiden tot problemen met werkbladen, repetities en documenten die deze module gebruiken.\
  into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubstde reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de\
+!set name_public_module=!nosubst de reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de\
   development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\
   kan leiden tot een dubbele aanwezigheid bij later publikatie. Wees dus voorzichtig met \
@@ -111,18 +111,14 @@
  !set name_warning0=!nosubst Dit is een openbare / publiek-adres module en die wordt geinstalleerd op\
   de "hoofd distributie server" <tt>$centralhost</tt>. Geef hier uw "publicatie id".
  !set name_warning1= Wanneer dit een verbeterde/vernieuwde versie is van een bestaande module,\
-   niet vergeten het <em>versienummer</em> van de module te verhogen.\
-  <p>Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
-
-  !set name_warning2=  Uw module heeft een lokaal adres. Het kan dus alleen worden gepubliceerd\
-    op deze lokale WIMS server. Wilt U toch doorgaan?
-  !set name_warning3=Het grote voordeel van publicatie op een lokale WIMS server is,\
-    dat de module door de zoekmachine van deze lokale server kan worden aangeroepen.  
-  !set name_cheat1=!nosubst Deze module heeft versie WIMS-$Wver2 nodig,terwijl deze server versie \
-   $wims_version is.<br>U moet de INDEX file van de module even veranderen \
-   om dit recht te trekken.
-  !set name_cheat2=Als U zeker bent van uw zaak, kunt U de andere servers om de tuin leiden \
-    door ze te laten denken dat U met oudere versie werkt. (een rikante operatie...)
+ niet vergeten het <em>versienummer</em> van de module te verhogen.Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
+ !set name_warning2=Uw module heeft een lokaal adres. Het kan dus alleen worden gepubliceerd op deze lokale WIMS server. Wilt U toch doorgaan?
+ !set name_warning3=Het grote voordeel van publicatie op een lokale WIMS server is,\
+ dat de module gewoon door de zoekmachine van deze lokale server kan worden aangeroepen.
+ !set name_cheat1=!nosubst Deze module heeft versie WIMS-$Wver2 nodig,terwijl deze server versie $wims_version is. \
+ U moet de INDEX file van de module even veranderen om dit recht te trekken.
+ !set name_cheat2=Als U zeker bent van uw zaak, kunt U de andere servers om de tuin leiden \
+ door ze te laten denken dat U met oudere versie werkt. (een rikante operatie...)
 
 !endif
 
