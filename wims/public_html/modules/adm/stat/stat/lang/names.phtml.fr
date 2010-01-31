@@ -1,0 +1,45 @@
+!set lang_exists=yes
+
+!distribute items jour(s),semaine(s),mois,année(s),Requêtes, Séances,Sites visiteurs,\
+  Nombre,total,moyenne<br>par jour,moyenne<br>par semaine,moyenne<br>par mois,moyenne<br>par année,\
+  moyenne<br>par site,moyenne<br>hebdo,Type de tracé,par jour,le début\
+into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Visitors,\
+   name_cnt,name_total,name_avgday,name_avgweek,name_avgmonth,name_avgyear,\
+   name_avgsite,name_avghebdo,name_plot,name_byday
+
+!set name_requests=!lowercase $name_Requests
+!set name_sessions=!lowercase $name_Sessions
+!set name_visitors=!lowercase $name_Visitors
+
+!distribute lines Choisissez une période pour la statistique: depuis\
+  Montrer aussi les détails par module.\
+  Montrer les statistiques\
+  Détails par module\
+  Nombre de visites\
+  de\
+  à\
+  installé le\
+  Sous-total\
+into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_visits,name_from,\
+  name_to,name_installed,name_subtotal
+!set title=Statistique de fréquentation
+!set name_sum=!nosubst somme sur $laps jours
+
+!set name_prompt=requêtes<br>totales,requêtes<br>par site,sites<br>totaux
+!set name_explanations=<ul>\
+<li>Le nombre de requêtes compte uniquement les requêtes pour pages.\
+ Les requêtes pour les modules en développement ne sont pas comptées.\
+<li>Le nombre de sites visiteurs est compté par jour.\
+<li>Le nombre de visiteurs se situe entre le nombre de sites et le nombre de séances.\
+</ul>
+
+!set name_warning=Le compte de fréquentation n'est pas en place sur ce site. Pas de statistique\
+ disponible. Désolé.
+ 
+!set name_numberclass=!nosubst Il y a $classcnt portails et classes individuelles sur ce serveur, avec\
+  $usercnt comptes d'utilisateur au total.
+  
+
+!set format1=%d%m
+!set format2=%d%m
+!set format3=%m%y
