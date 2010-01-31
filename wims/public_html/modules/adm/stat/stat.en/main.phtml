@@ -1,9 +1,4 @@
-!!<html><head>
-!!$wims_html_header
-!!</head>
-!!<body $wims_htmlbody>
-!!!headmenu
-!header1
+!header
 
 !if $cmd=help and $special_parm=about
  !read about.phtml
@@ -15,27 +10,27 @@
  !goto end
 !endif
 
-<h1 class="wims_title">WIMS at $httpd_HTTP_HOST
-<br>Usage statistics</h1>
+<h1 class="wims_title">WIMS @ $httpd_HTTP_HOST
+<br>$title</h1>
 <p><hr> <p>
 
 !if $sitestart=$empty
- The usage accounting is not active on this site. No statistics is available.
- Sorry. <p>
+$name_warning
+<p>
  !goto end
 !endif
 
 !if $show=yes and $total_site>0 and $laps>0
-!!if $show=yes
- !href cmd=resume Back to menu
+ !!if $show=yes
+ !href cmd=resume $wims_name_menuback
  <p>
  !read answer.phtml
- !href cmd=resume Back to menu
+ !set wims_menu_items=!append line back2,1,cmd=resume\
+ to $wims_menu_items
  <p>
 !else
  !if $usercnt>0
-  There are $classcnt portals and individual classes on this server, with
-  $usercnt total user accounts.
+  $name_numberclass
   <p>
  !endif
  !read menu.phtml

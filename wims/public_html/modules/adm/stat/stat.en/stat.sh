@@ -6,6 +6,7 @@ cd $w_wims_home/log/account
 
 site_start=19980101
 site_end=`date '+%Y%m%d'`
+
 if [ -z "$w_stat_module" ]; then w_stat_module=00access.act; fi
 
 start=$w_date1

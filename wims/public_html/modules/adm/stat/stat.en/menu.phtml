@@ -1,14 +1,15 @@
-
+!read names.phtml
 !form reply
- !set s_day=day(s)
- !set s_week=week(s)
- !set s_month=month(s)
- !set s_year=year(s)
- !set s_beginning=the beginning $start_month-$start_day-$start_year
- !set name2=requests
- !set name3=sessions
- !set name4=visiting sites
- Choose a period for usage statistics: since
+ !set s_day=$name_day
+ !set s_week=$name_week
+ !set s_month=$name_month
+ !set s_year=$name_year
+ !read adm/date.phtml date,$start_year,$start_month,$start_day
+ !set s_beginning=$name_beginning $c_date_out
+ !set name2=$name_requests
+ !set name3=$name_sessions
+ !set name4=$name_visitors
+$name_choose
  <select name=cnt>
  !for i=1 to 15
   <option value=$i
@@ -26,7 +27,7 @@
   >$(s_$i)
  !next i
  </select>. <p>
- Type of the plot :
+ $name_plot
  !for i=2 to 4
   <input type=radio name=plot_type value=$i
   !if $i=$plot_type
@@ -39,10 +40,9 @@
  !if $modules=yes
   checked
  !endif
- > Show per module details too.
+ >$name_details.
  <p>
- <center><input type=submit value="Show the statistics"></center>
+ <center><input type=submit value="$name_showstat"></center>
 </form>
 
 !set modules=
-
