@@ -7,6 +7,10 @@
 !set title=Configuration et Maintenance
 !if $job=arch
  !set title=Sauvegarde et Restauration
+ !set name_intro=Vous pouvez télécharger une copie de sauvegarde de votre classe, en format   
+ !set name_tosend=Pour envoyer une sauvegarde dans votre classe
+ !set name_namefile=veuillez donner le nom du fichier de sauvegarde&nbsp;
+ !set name_help=on vous demandera de sélectionner les ressources de la classe à restaurer
  !goto commun
 !endif
 
@@ -50,16 +54,40 @@
   !set name_warning=Votre classe a un registre d'activités actif et les\
  ressources partagées ne sont pas vides. Si vous arrêtez ce partage\
  maintenant, vous ne pourrez plus les repartager plus tard.\
- <p> Etes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
+ <p> Êtes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
  
  !set name_stop=arrêter.
  !endif
  !if $job2=sharelist
   !set title= Information de partages de ressources.
   !set name_sharelist=!nosubst Vous partagez $(name_$rec) de
-  !distribute Vous ne partagez aucune ressource d'autres classes.\
+  !distribute lines Vous ne partagez aucune ressource d'autres classes.\
   Vous partagez les ressources d'autres classes\
   into name_noresource,name_resource
+  !endif
+  
+  !if $job2=addshare
+  !set title=Partager les ressources d'une classe
+  !set name_class_share=La classe <em><font color=blue>$nei_description</font></em> \
+      vous permet de partager ses ressources suivantes.
+  !distribute lines disponible(s)\
+    Vous êtes en cours de partage.\
+    Vous ne pouvez pas les partager car vous partagez déjà celles d'une autre classe.\
+    nettoyer vos propres ressources\
+    (si c'est possible).\
+    Il est très dangereux de partager le compte d'enseignant&nbsp;!\
+  into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
+    name_dangerous
+  
+  !set name_warning1=Vous ne pouvez pas les partager car vous permettez à d'autres classes\
+   de partager VOS ressources du même type. Les partages en cascade ne sont pas\
+   autorisés. Donc vous devez d'abord arrêter les permissions de partage\
+   avec l'autre classe avant de pouvoir partager celles de la classe 
+  !set name_warning2=!nosubst Vous ne pouvez pas les partager car vos propres $(name_$r) ne sont pas\
+   vides. Avant le partage, vous devez d'abord
+  !set name_warning_erase=!nosubst Le partage va EFFACER vos $(name_$r) existant(es)&nbsp;! \
+     Elles seront définitivement perdues si vous n'avez pas de sauvegarde.
+   
   !endif
  !goto commun
 !endif
@@ -71,11 +99,6 @@
 
 !if $job=access
  !set title=Configuration de l'accès aux ressources
- !goto commun
-!endif
-
-!if $job2=addshare
- !set title=Partager les ressources d'une classe
  !goto commun
 !endif
 
@@ -104,7 +127,7 @@
    Permettre les indications (si disponibles).\
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
-    
+
    !set name_warning=Vous pouvez mettre deux nombres dans le chronomètre, une petite\
      limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
    la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
@@ -193,7 +216,7 @@
   into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref
-    
+!endif   
 :commun
 !distribute line Authentification\
 Préférences\

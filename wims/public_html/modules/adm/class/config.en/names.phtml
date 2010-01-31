@@ -7,6 +7,11 @@
 !set title=Configuration and Maintenance
 !if $job=arch
  !set title=Backup and Restoration
+ !set name_intro=You can download a backup copy of your class, in the following format 
+ !set name_tosend=To upload backup archives into your class, please give the backup file name
+ !set name_namefile=veuillez donner le nom du fichier de sauvegarde
+ !set name_help=You will be prompted for the selection of resources to restore to your class.
+
  !goto commun
 !endif
 
@@ -60,6 +65,28 @@
    You are sharing resources of other classes\
   into name_noresource,name_resource
   !endif
+  !if $job2=addshare
+    !set title=Share resources on class 
+    !set name_class_share=This class <em><font color=blue>$nei_description</font></em>\
+      allows you to share its following resources.
+  !distribute lines available\
+    You are actually sharing them.\
+    You cannot share them because you are already sharing that of another class.\
+    clean your own resources\
+    if it is possible\
+    Sharing supervisor account is VERY dangerous! \
+  into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
+    name_dangerous
+  
+  !set name_warning1=You cannot share them because you are allowing other \
+    classes to share such resources from you. Cascaded sharing is not \
+    supported. So you must stop allowing these shares before you can share from others.
+  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.
+   Before sharing can be made, you should first
+  !set name_warning_erase=!nosubst This will ERASE your own existing $(name_$r)! They will be definitely\
+     lost if you have no backup.
+   
+  !endif
  !goto commun
 !endif
 
@@ -70,11 +97,6 @@
 
 !if $job=access
  !set title=Resource access configuration
- !goto commun
-!endif
-
-!if $job2=addshare
- !set title=Share resources on class 
  !goto commun
 !endif
 
@@ -90,23 +112,22 @@
 
 !if $job=oefdefault
  !set title=Default configuration for OEF modules
-  !distribute Une série aura\
-   Niveau de sévérité\
-   Chronomètre\
-   secondes\
-   Nombre de réponses affichées dans les QCM\
-   Donner une solution (si disponible) ?\
-   jamais,si la note est non maximale,toujours\
-   Toujours afficher une bonne réponse dans les QCM.\
-   Pénalité pour mauvaise réponse dans les QCM.\
-   Afficher la bonne réponse.\
-   Permettre les indications (si disponibles).\
+  !distribute One series will have\
+   Level of severity\
+   Time limit\
+   seconds\
+   Number of items shown in multiple choices\
+   Give solution (if available) ?\
+   never,if the score is not maximal,always\
+   Always contain good reply\
+   Penalty for bad replies in multiple choices.\
+   Show good reply.\
+   Allow hint (if available).\
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
-    
-   !set name_warning=Vous pouvez mettre deux nombres dans le chronomètre, une petite\
-     limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
-   la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+
+   !set name_warning=ou can put two numbers into the time limit,a smaller limit followed by a bigger one.\
+In this case, the first limit starts score reduction, which will got to 0 if the second limit is reached.
   
  !goto commun
 !endif
@@ -150,13 +171,10 @@
 !endif
 
 !if $job=log
-  !set name_warning_log=Voici l'enregistrement de certaines activités de gestion de votre classe.\
-    Cet enregistrement vous permet de vérifier s'il y a des activités suspectes.
+  !set name_warning_log=Here is the log of certain managing activities of your class. This log\
+allows you to verify whether there are suspicious activities.
 !endif
-$tit
 
-Done.
-!if $result != 
 !if $job=index
   !set title=!nosusbt Actualisation de l'index $tit
   !set name_done=Done
@@ -178,6 +196,25 @@ Done.
     !set tit=Document index update
    !endif
 !endif
+!if $job=list
+  !distribute line Institution name\
+    Class name\
+    Option words\
+    Modtool Account\
+    Connection lock level\
+    Number of the best scores\
+    Participant number limit\
+    Expiration date\
+    Registration of exercises\
+    Registration of exams\
+    visible by students\
+    Other configurations\
+    Préférences personnelles\
+  into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
+    name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
+    name_visible,name_apparence,name_pref
+!endif 
+
 :commun
 !distribute line Authentification\
 My personal preferences\

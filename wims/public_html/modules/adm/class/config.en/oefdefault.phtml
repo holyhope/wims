@@ -3,59 +3,58 @@
 !form reply
 $table_header
  $table_tr
-  <td align=center>One series will have</td>
+  <td align=center>$name_series</td>
   <td>
    !set nw_qnum=$user_qnum
    !formselect nw_qnum from 1 to 9
-   exercices.
+   $wims_name_exercises.
   </td>
  </tr>
  $table_tr
-  <td align=center>Level of severity</td>
+  <td align=center>$name_severity</td>
   <td>
    !set nw_qcmlevel=$user_qcmlevel
    !formselect nw_qcmlevel from 1 to 9
   </td>
  </tr>
  $table_tr
-  <td align=center>Time limit </td>
+  <td align=center>$name_chrono </td>
   <td>
-   <input size=7 name=nw_scoredelay value="$user_scoredelay"> seconds.
+   <input size=7 name=nw_scoredelay value="$user_scoredelay"> $name_secondes.
   </td>
  </tr>
  $table_tr
-  <td align=center>Number of items shown in multiple choices : </td>
+  <td align=center>$name_qcm</td>
   <td>
    !set nw_qcmpresent=$user_qcmpresent
    !formselect nw_qcmpresent list 2,3,4,5,6,7,8 
   </td>
  </tr>
  $table_tr
-  <td align=center>Give solution (if available) ? </td>
+  <td align=center>$name_solution</td>
   <td>
    !default nw_presentsol=$user_presentsol
-   !formselect nw_presentsol list 0,1,2 prompt never,if the score is not maximal,always
+   !formselect nw_presentsol list 0,1,2 prompt $name_prompt
   </td>
  </tr>
  $table_tr
   <td rowspan=4>&nbsp;</td><td>
    !set nw_check=$user_check
-   !formcheckbox nw_check list 1 prompt Always contain good reply.
+   !formcheckbox nw_check list 1 prompt $name_prompt1
   </td>
  </tr>
  $table_tr
   <td align=left>
-   !formcheckbox nw_check list 2 prompt Penalty for bad replies in multiple choices.
+   !formcheckbox nw_check list 2 prompt $name_prompt2
+ </tr>
+ $table_tr
+  <td align=left>
+   !formcheckbox  nw_check list 3 prompt $name_prompt3
   </td>
  </tr>
  $table_tr
   <td align=left>
-   !formcheckbox  nw_check list 3 prompt Show good reply.
-  </td>
- </tr>
- $table_tr
-  <td align=left>
-   !formcheckbox nw_check list 4 prompt Allow hint (if available).
+   !formcheckbox nw_check list 4 prompt $name_prompt4
    !let tmp=!replace word expert by $ in $special_parm2
   </td>
  </tr>
@@ -67,6 +66,5 @@ $table_header
 </table>
 </form>
 </center>
-<p><small>You can put two numbers into the time limit,a smaller limit followed by a bigger one.
-In this case, the first limit starts score reduction, which will got to 0 if the second limit is reached.
+<p><small>$name_warning
 </small>

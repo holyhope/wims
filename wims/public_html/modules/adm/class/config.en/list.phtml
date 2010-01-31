@@ -7,14 +7,14 @@
 !form reply
 <input type=hidden name=up_job value=list>
 $table_header
-$table_tr<td align=right>Institution name
+$table_tr<td align=right>$name_name_institution
 <td colspan=3>
 !if $supertype notin 24 or $classdepth=1
  <input size=50 name=up_institution value="$class_institution">
 !else
  $class_institution
 !endif
-$table_tr<td align=right>Class name
+$table_tr<td align=right>$name_name_class
 <td colspan=3>
 <input size=50 name=up_description value="$class_description">
 $table_tr<td align=right>$name_secure
@@ -35,7 +35,7 @@ $table_tr<td align=right>$wims_name_email
  </small>
 <td colspan=3>
 <input size=40 name=up_email value="$class_email">
-$table_tr<td align=right>Option words
+$table_tr<td align=right>$name_optionword
 <small>
 !href cmd=help&special_parm=config&special_parm2=option $wims_name_help
  </small>
@@ -44,7 +44,7 @@ $table_tr<td align=right>Option words
 </td></tr>
 !if $wims_supertype!=4 or $class_typename!=class
 $table_tr<td align=right>
-Modtool Account
+$name_devaccount
 <small>
 !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 </small>
@@ -53,7 +53,8 @@ Modtool Account
 !formcheckbox modtoolchg list 0 prompt $wims_name_change
 </td></tr>
 !endif
-$table_tr<td align=right>Connection lock level
+$table_tr<td align=right>
+$name_lock_level
 <small>
 !href cmd=help&special_parm=config&special_parm2=lock $wims_name_help
 </small>
@@ -61,8 +62,7 @@ $table_tr<td align=right>Connection lock level
 !set up_lock=$class_lock
 !default up_lock=0
 !formselect up_lock list 0,2,3,4,5,6,7
-</td>
-<td align=right>Number of the best scores
+<td align=right>$name_bestscore
 <small>
 !href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
  </small>
@@ -86,12 +86,12 @@ $name_level
 <td>
 !set up_level=$class_level
 !formselect up_level list $levellist
-$table_tr<td align=right>Participant number limit
+$table_tr<td align=right>$name_limit
 <small>
 !href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
  </small>
 <td><input size=5 name=up_limit value="$class_limit">
-<td align=right>Expiration date
+<td align=right>$name_expirationdate
 <small><b>yyyymmdd</b></small>
 <small>
 !href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
@@ -102,19 +102,19 @@ $table_tr<td align=right>Participant number limit
 !else
  <tt>$class_expiration</tt>
 !endif
-$table_tr<td align=right>Registration of exercises
+$table_tr<td align=right>$name_register_exo
 <small>
 !href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
  </small>
 !default class_exolog=0
 <td><input size=3 name=up_exolog value="$class_exolog">
-<td align=right>Registration of exams
+<td align=right>$name_register_exam
 <small>
 !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
  </small>
 !default class_examlog=$wims_examlog_limit
 <input size=3 name=up_examlog value="$class_examlog">
-<td>visible by students
+<td>$name_visible
 <small>
 !href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
  </small>
@@ -122,7 +122,7 @@ $table_tr<td align=right>Registration of exercises
 !set up_examshow=$class_examshow
 !formselect up_examshow list no,yes prompt $wims_name_no,$wims_name_yes
 !set up_ent=$class_ent
-$table_tr<td align=right>Other platform link
+$table_tr<td align=right>$wims_name_config_ent
 <small>
 !href cmd=help&special_parm=config&special_parm2=ent $wims_name_help
  </small>
@@ -135,64 +135,79 @@ $table_hdtr<td align=center colspan=4>
 $table_end <p>
 </form>
 
-Other configurations:
-!href cmd=reply&job=present Appearances
+$name_apparence: 
+!href module=adm/light&phtml=useropts.phtml.$lang $name_pref 
 .
-!href cmd=reply&job=neighbor&job2=first Class neighbors
+!href cmd=reply&job=present $wims_name_config_present
 .
-!href cmd=reply&job=connect&job2=first Other servers
+!href cmd=reply&job=oefdefault $wims_name_config_oef
 .
-!href module=adm/class/passwd Passwords
-.
-!if $classdepth<=1 
- !href cmd=reply&job=authtype Type d'authentification
-.
-!endif
-!href module=adm/forum/mboard&job=config Message board
-.
-!href module=adm/doc Documents
-.
-!href module=adm/class/motd Message of the day
-.
-!href cmd=reply&job=access Resource restrictions
-.
-!href cmd=reply&job=oefdefault OEF default configuration
-.
+<p>
 !if $class_type iswordof 2 3 4
- !href cmd=reply&job=propagate Send setups to subclasses
+
+ !href cmd=reply&job=propagate Répercuter les configurations aux zones dépendantes
 .
 !endif
 <p>
-!href cmd=reply&job=security Security management
+!href cmd=reply&job=neighbor&job2=first Définir des classes voisines
+,
+!href cmd=reply&job=connect&job2=first des liens vers d'autres serveurs
 .
-!href cmd=reply&job=arch&job2=first Backup and restoration
-.
-!href cmd=reply&job=clean Selective cleanup
-.
-<br>
-Rebuild indices<sup>
+<p>
+!if $classdepth<=1 
+Utiliser une 
+!href cmd=reply&job=authtype authentification
+ des participants par annuaire ldap.
+ <p>
+!endif
+
+Actualiser les index<sup>
 !href cmd=help&special_parm=index $wims_name_help
 </sup>:
 !if $class_type=4
-!href cmd=reply&job=index&job2=structure subclasses
+!href cmd=reply&job=index&job2=structure $wims_name_zones
 ,
 !endif
 !if $class_type=4 or $class_type=2
-!href cmd=reply&job=index&job2=teacherlist teachers
+!href cmd=reply&job=index&job2=teacherlist $wims_name_teachers
 ,
 !endif
-!href cmd=reply&job=index&job2=userlist participants
+!href cmd=reply&job=index&job2=userlist $wims_name_participants
 ,
-!href cmd=reply&job=index&job2=oef exercises
+!href cmd=reply&job=index&job2=oef $wims_name_exercises
 ,
-!href cmd=reply&job=index&job2=doc documents
+!href cmd=reply&job=index&job2=doc $wims_name_docs
 .
 <p>
-!href module=adm/light&phtml=useropts.phtml.$lang My personal preferences
-.
-
+!href cmd=reply&job=security $wims_name_config_secure
+ (dont le changement de 
+!href module=adm/class/passwd $wims_name_config_passwd
+).
 <p>
-Current disk space use of the class: $du megabytes. (The allowance is
+Faire une 
+!href cmd=reply&job=arch&job2=first sauvegarde ou restauration
+ de la classe, 
+!href cmd=reply&job=access restreindre les ressources
+ accessibles, 
+ !href cmd=reply&job=grestrict restreindre les sites 
+ pour lequels les scores sont enregistrés,
+ faire un 
+!href cmd=reply&job=clean nettoyage sélectif
+.
+<p>
+Configurer le
+!href module=adm/forum/mboard&job=config $name_forum
+, le
+!href module=adm/class/motd $name_motd
+, le 
+!href module=adm/class/cdt&job=config $name_livret
+, le 
+!href module=adm/class/livret&job=config $name_livret
+, les 
+!href module=adm/class/sequence&job=config $name_seq
+.
+<p>
+Utilisation actuelle d'espace disque : $du megaoctets. (La limite est
 $wims_class_quota.)
 
 
