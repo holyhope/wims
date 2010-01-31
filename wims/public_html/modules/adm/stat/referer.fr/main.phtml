@@ -21,25 +21,24 @@
  !goto end
 !endif
 
-<h1 class="wims_title">WIMS à $httpd_HTTP_HOST
-<p>Liste de liens inverses</h1>
+<h1 class="wims_title">WIMS @ $httpd_HTTP_HOST
+<p>$title</h1>
 <p><hr> <p>
 
 !if $sitestart=$empty
- Le comptage de référence n'est pas actif sur ce site. Pas de liste de 
- liens inverses disponible, désolé. <p>
+$name_warning
  !goto end
 !endif
 
 !if $show=yes and $ref!=$empty and $laps>0
 !!if $show=yes
  <center>
- !href cmd=resume Retour au menu
+ !href cmd=resume $wims_name_menuback
  &nbsp;&nbsp;
  !href module=home WIMS home
  </center> <p>
  !read answer.phtml
- !href cmd=resume Retour au menu
+ !href cmd=resume $wims_name_menuback
  <p>
 !else
  !read menu.phtml

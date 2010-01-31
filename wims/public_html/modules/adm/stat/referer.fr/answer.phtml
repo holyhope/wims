@@ -3,17 +3,15 @@
 !set year_min=200
 
 !set n=!linecnt $ref
-!set name_site=le site
-!set name_stem=une page sour l'adresse
-!set name_uniq=la page
-!set names_site=sites
-!set names_stem=répertoires de sites
-!set names_uniq=pages
-Liste de $(names_$type) web dirigeant des visiteurs vers nous, pendant la 
-période de
-$day1/$month1/$year1 à $day2/$month2/$year2 (somme sur $laps jours).
-<br>La première colonne donne le nombre de nos visiteurs qui ont suivi un lien
-dans $(name_$type) en deuxième colonne.
+
+$name_list1
+!read adm/date.phtml date,$year1,$month1,$day1
+$s_date_out
+$name_to
+!read adm/date.phtml date,$year2,$month2,$day2
+$s_date_out
+($name_sum).
+<br>$name_list2
 <p>
 <table border=0 cellspacing=1>
 !set total=0
@@ -31,7 +29,7 @@ dans $(name_$type) en deuxième colonne.
  !endif
 !next i
 <tr><td align=right>$total<td>&nbsp;&nbsp;
-<td>personnes nous ont visité via des liens dans ces $totall $(names_$type).
+<td>$name_visit1 $totall $(names_$type).
 </table> <p>
 
 !if $auto>0

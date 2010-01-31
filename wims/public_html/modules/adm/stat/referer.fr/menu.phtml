@@ -1,22 +1,15 @@
-En général, une page web amenant beaucoup de visiteurs vers nous est aussi un
-endroit intéressant pour nos autres visiteurs. Donc si vous cherchez des 
-ressources sur web liées à ce serveur, une liste de ces pages est juste ce
-qu'il vous faut.
-<p>
-D'autre part, si vous êtes l'auteur d'une page contenant des lien(s) vers nous, 
-cette liste vous permet de mesurer l'efficacité de votre lien. Il constitue
-aussi notre manière de vous remercier pour le lien.
-<p>
-Notre liste de liens inverses est générée dynamiquement, suivant les
-paramètres que vous pouvez choisir dans le menu suivant.
+!read names.phtml
+
+!read names.phtml intro
 
 !form reply
- !set s_day=jour(s)
- !set s_week=semaine(s)
- !set s_month=mois
- !set s_year=année(s)
- !set s_beginning=le début $start_month-$start_day-$start_year
- Période d'activité : depuis
+ !set s_day=$name_day
+ !set s_week=$name_week
+ !set s_month=$name_month
+ !set s_year=$name_year
+ !read adm/date.phtml date,$start_year,$start_month,$start_day
+ !set s_beginning=$name_beginning $c_date_out
+$name_choose
  <select name=cnt>
  !for i=1 to 15
   <option value=$i
@@ -34,10 +27,10 @@ paramètres que vous pouvez choisir dans le menu suivant.
   >$(s_$i)
  !next i
  </select>. <p>
- La liste peut être groupée par
- !set i_site=nom de site,
- !set i_stem=répertoire de base, ou
- !set i_uniq=adresse complète
+ $name_listlink
+ !set i_site=$name_site1,
+ !set i_stem=$name_stem, ou
+ !set i_uniq=$name_uniq
  !for i in site,stem,uniq
   <input type=radio name=type value=$i
   !if $type=$i
@@ -45,7 +38,7 @@ paramètres que vous pouvez choisir dans le menu suivant.
   !endif
   > $(i_$i)
  !next i
- de la page web, et est limitée aux <select name=reflim>
+ $name_limited <select name=reflim>
  !for i in 10,20,30,50,70,100,150,200
   <option value=$i
   !if $i=$reflim
@@ -53,20 +46,18 @@ paramètres que vous pouvez choisir dans le menu suivant.
   !endif
   >$i
  !next i
- </select> premières adresses. Les adresses des moteurs de recherche peuvent être
- <input type=radio name=search value=yes
+ </select>$name_searchengine <input type=radio name=search value=yes
  !if $search=yes
   checked
  !endif
- > incluses ou <input type=radio name=search value=no
+ > $name_included <input type=radio name=search value=no
  !if $search=no
   checked
  !endif
- > excluses dans la liste.
- <p>Facultativement, vous pouvez restreindre la liste aux sites/pages 
- contenant un mot :
+ > $name_excluded.
+ <p>$name_option
  <input size=15 name=key value="$key">
- <p><center><input type=submit value="Montrer la liste"></center>
+ <p><center><input type=submit value="$wims_name_Show"></center>
 </form>
 
 !set key=

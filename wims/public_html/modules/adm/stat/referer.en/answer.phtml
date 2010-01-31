@@ -3,16 +3,15 @@
 !set year_min=200
 
 !set n=!linecnt $ref
-!set name_site=the site
-!set name_stem=a page under the address
-!set name_uniq=the page
-!set names_site=sites
-!set names_stem=site directories
-!set names_uniq=pages
-List of web $(names_$type) bringing visitors to us, within the period of 
-$month1-$day1-$year1 to $month2-$day2-$year2 (sum over $laps days).
-<br>The first column gives the number of our visitors who followed
-a link in $(name_$type) on the second column.
+
+$name_list1
+!read adm/date.phtml date,$year1,$month1,$day1
+$s_date_out
+$name_to
+!read adm/date.phtml date,$year2,$month2,$day2
+$s_date_out
+($name_sum).
+<br>$name_list2
 <p>
 <table border=0 cellspacing=1>
 !set total=0
@@ -30,12 +29,13 @@ a link in $(name_$type) on the second column.
  !endif
 !next i
 <tr><td align=right>$total<td>&nbsp;&nbsp;
-<td>people have visited us through links in these $totall $(names_$type).
+<td>$name_visit1 $totall $(names_$type).
 </table> <p>
 
 !if $auto>0
- At least $auto other visitors didn't specify public referring pages. Referring pages
- within $httpd_HTTP_HOST are not counted.
+ Au moins $auto autres visiteurs n'ont pas précisé une page de référence
+ publique.
+ Les pages de référence dans $httpd_HTTP_HOST ne sont pas comptées.
  <p>
 !endif
 

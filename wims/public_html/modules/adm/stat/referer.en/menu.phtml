@@ -1,22 +1,15 @@
-In general, a web page who brings many visitors to us is also an interesting 
-place for our other visitors. Therefore if you are
-looking for web resources related to this server, a list of such pages is
-what you need.
-<p>
-On the other hand, if you are the author of a page containing link(s) to us,
-this list allows you to measure the efficiency of your link. It
-is also our manner to thank you for the link.
-<p>
-Our backward link list is dynamically generated, according to the parameters
-which you can choose in the following menu.
+!read names.phtml
+
+!read names.phtml intro
 
 !form reply
- !set s_day=day(s)
- !set s_week=week(s)
- !set s_month=month(s)
- !set s_year=year(s)
- !set s_beginning=the beginning $start_month-$start_day-$start_year
- Listing period: since
+ !set s_day=$name_day
+ !set s_week=$name_week
+ !set s_month=$name_month
+ !set s_year=$name_year
+ !read adm/date.phtml date,$start_year,$start_month,$start_day
+ !set s_beginning=$name_beginning $c_date_out
+$name_choose
  <select name=cnt>
  !for i=1 to 15
   <option value=$i
@@ -34,10 +27,10 @@ which you can choose in the following menu.
   >$(s_$i)
  !next i
  </select>. <p>
- The links can be listed by 
- !set i_site=site name,
- !set i_stem=base directory, or 
- !set i_uniq=complete address
+ $name_listlink
+ !set i_site=$name_site1,
+ !set i_stem=$name_stem, ou
+ !set i_uniq=$name_uniq
  !for i in site,stem,uniq
   <input type=radio name=type value=$i
   !if $type=$i
@@ -45,7 +38,7 @@ which you can choose in the following menu.
   !endif
   > $(i_$i)
  !next i
- of the web page, and the list is limited to the first <select name=reflim>
+ $name_limited <select name=reflim>
  !for i in 10,20,30,50,70,100,150,200
   <option value=$i
   !if $i=$reflim
@@ -53,19 +46,18 @@ which you can choose in the following menu.
   !endif
   >$i
  !next i
- </select> addresses. Search engine addresses can be
- <input type=radio name=search value=yes
+ </select>$name_searchengine <input type=radio name=search value=yes
  !if $search=yes
   checked
  !endif
- > included or <input type=radio name=search value=no
+ > $name_included <input type=radio name=search value=no
  !if $search=no
   checked
  !endif
- > excluded in the list.
- <p>Optionally, you may restrict the list to sites/pages containing a word:
+ > $name_excluded.
+ <p>$name_option
  <input size=15 name=key value="$key">
- <p><center><input type=submit value="Show the list"></center>
+ <p><center><input type=submit value="$wims_name_Show"></center>
 </form>
 
 !set key=
