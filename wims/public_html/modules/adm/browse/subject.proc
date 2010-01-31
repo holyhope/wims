@@ -1,0 +1,27 @@
+
+!read List
+
+!if $parm=$empty
+ !exit
+!endif
+
+name=$(name_$parm)
+!if $name=$empty
+ parm=
+ !exit
+!endif
+
+list=$(list_$parm)
+!for d in $(dom_$parm)
+ l=$(list_$d)
+ list=!append item $l to $list
+!next d
+
+list=!sort nocase items $list
+!if $parm!=misc
+ list=!nonempty items $name,$list
+!else
+ list=!nonempty items $list
+!endif
+list=!listuniq $list
+

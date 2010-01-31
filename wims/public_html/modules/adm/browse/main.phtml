@@ -1,0 +1,29 @@
+!if robot isin $session
+ <html><body $wims_htmlbody>
+ This page is not accessible to robots.
+ </body></html>
+ !exit
+!endif
+
+!set wims_html_onload=!append word window.focus(); to $wims_html_onload
+!header1
+
+<h1 class="wims_title">
+<font color=red>W</font>WW
+<font color=red>I</font>nteractive
+<font color=red>M</font>ultipurpose
+<font color=red>S</font>erver<br>
+<font size="-1">@ <a href="/">$httpd_HTTP_HOST</a></font>
+</h1>
+
+!read $job.phtml
+
+!if $job!=home
+ <p>
+!set wims_menu_items=!append line browse,1,module=$module&cmd=new&job=home\
+to $wims_menu_items
+
+!endif
+
+!tail
+

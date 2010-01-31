@@ -1,10 +1,12 @@
-name_A=todos
-name_X=ejercicios
-name_T=herramientas
-name_R=matemáticas recreativas
-name_L=referencias
-name_S=hojas de ejercicios
-name_P=herramientas emergentes
+!set lang_exists=yes
+
+!set name_A=todos
+!set name_X=ejercicios
+!set name_T=herramientas
+!set name_R=matemáticas recreativas
+!set name_L=referencias
+!set name_S=hojas de ejercicios
+!set name_P=herramientas emergentes
 
 !if $job=subject
   !set title=Parcourir par sujet
@@ -26,3 +28,5 @@ name_P=herramientas emergentes
    Recherche\
  into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,,\
  name_research
+  
+!endif

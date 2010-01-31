@@ -1,0 +1,31 @@
+!set lang_exists=yes
+
+!set name_A=全部
+!set name_X=练习
+!set name_T=工具
+!set name_R=娱乐
+!set name_L=参考资料
+!set name_S=作业
+!set name_P=弹出工具
+
+!if $job=subject
+  !set title=按主题浏览
+  !set name_domain=请从以下主题中选一个浏览. 
+  
+  !set name_available=!nosubst  在<i><font color=blue>$(chname_$parm)</font></i>领域里, 有以下科目可供选择.
+ !set name_other=其它领域
+!endif
+
+!if $job=level
+ !set title=根据学习阶段浏览
+ !distribute lines 年级\
+   类型\
+   小学\
+   中学\
+   大学\
+   研究生\
+   科学研究\
+ into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,\
+ name_research
+  
+!endif
