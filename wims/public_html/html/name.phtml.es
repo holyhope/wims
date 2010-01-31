@@ -41,7 +41,8 @@
 		Notas,\
 		Notas,\
 		Examen,\
-		Parcourir le site\
+		Parcourir le site,\
+		Volver al menú,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -57,7 +58,7 @@
 	wims_name_yes,wims_name_no,wims_name_download,wims_name_send,wims_name_detail,\
 	wims_name_Show,wims_name_Edit,wims_name_warning,wims_name_Congratulations,wims_name_or,\
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
-	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse
+	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\

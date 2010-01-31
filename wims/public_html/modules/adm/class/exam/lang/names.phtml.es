@@ -84,7 +84,7 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 !! -------------- title description for file examinfo.phtml
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Rext of explanation,\
+Text of explanation,\
 Expiration date,,Score registation,for all sharing classes :,Remarks,Duration of an exam session,Number of trials per exam session
 
 !! ------- value for description of option
