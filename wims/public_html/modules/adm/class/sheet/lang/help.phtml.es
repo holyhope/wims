@@ -29,3 +29,24 @@
  (fin). Las fechas y horas deben estar indicadas en tiempo local del SERVIDOR
  y estas palabras deber ir separadas unas de otras por espacios.
 
+
+:sheetpage
+
+<center><b>Using a document block for worksheet presentation</b></center>
+
+You may put the address of a document block
+(such as <tt>c1/main</tt>) to be the presentation page of the work sheet.
+The document itself need not be readable by participants.
+<p>
+Leave this field blank if you want to use the standard presentation page.
+<p>
+Links to individual exercises should be defined using the command
+<tt>\exercise</tt>.
+You can use the following pre-defined variables:<ul>
+ <li><tt>\scorerequire</tt> Required points of each exercise
+ <li><tt>\scoregot</tt> Participant's point achievements on each exercise
+ <li><tt>\scoremean</tt> Participant's average score on each exercise
+ <li><tt>\expiration</tt> Expiration date of the sheet, yyyymmdd
+ <li><tt>\today</tt> Date of today, yyyymmdd
+
+</ul>
