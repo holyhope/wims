@@ -2,32 +2,28 @@
 <input type=hidden name=level value=3>
 
 !if $existing=$empty
- Vous êtes en mode brut de création d'exercices.
+$name_brut
  !if $modeltest=yes
-  Puisque cet exercice est basé sur un modèle standard, essayez le
+ $name_try
   !href cmd=reply&mode=model&level=2 $name_normal
 .
   !href cmd=reply&mode=none&level=0 $wims_name_giveup
 .
  !else
-  Entrez le source entier (
+ $name_allsource (
   !href target=wims_mhelp cmd=help&special_parm=oef format OEF
   )
-  (pour enregistrer un fichier source existant, copiez le fichier dans 
-  la fenêtre.)
+  ($name_copy).
  !endif
 !else
 
  !if $catmodule=$empty
-  Voici le source d'un exercice existant de votre classe.
-  Vous pouvez le modifier dans la fenêtre ci-dessous.
+  $name_source2
  !else
-  Voici le source d'un exercice public que vous voulez importer.
-  Vous pouvez le modifier dans la fenêtre ci-dessous avant de le mettre
-  dans la classe.
+  $name_modify_window
  !endif
  !if $modeltest=yes
-  Puisque cet exercice est basé sur un modèle standard, essayez aussi le
+  $name_public
   !href cmd=reply&mode=model&level=2 $name_normal
 .
   !href cmd=reply&mode=none&level=0 $wims_name_giveup
@@ -35,8 +31,8 @@
  !endif
 !endif
 
- Vous pouvez tester certains programmes externes avec le
-  !href target=wims_test module=tool/directexec&cmd=new testeur de script
+ $name_test_extern
+  !href target=wims_test module=tool/directexec&cmd=new $name_testerscript
 .
 <p><center>
 !mexec textarea.sh
