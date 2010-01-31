@@ -29,7 +29,7 @@
  (fin). Las fechas y horas deben estar indicadas en tiempo local del SERVIDOR
  y estas palabras deber ir separadas unas de otras por espacios.
 
-
+!exit
 :sheetpage
 
 <center><b>Using a document block for worksheet presentation</b></center>

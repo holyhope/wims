@@ -27,6 +27,7 @@ toe te voegen:
 Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheiden van de andere instellingen.
 </small>
 
+!exit
 :sheetpage
 
 <center><b>Het gebruik van een document als werkblad presentatie pagina</b></center>
