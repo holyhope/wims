@@ -2,26 +2,17 @@
 !! (list of months in suitable language). If it is non empty,
 !! gives the date of the form 13 janvier 2009 (according to language)
 !! to be completed
+!!return c_date_out , l_date_out or $months
 
-!if $wims_read_parm!=
- !let day=!char 7 to 8 of $wims_read_parm
- !let month=!char 5 to 6 of $wims_read_parm
- !let year=!char 1 to 4 of $wims_read_parm
- !set c_date=$year/$month/$day
- !read adm/lang/date.phtml.$lang
- !if $months=
-   !read adm/lang/date.phtml.en
- !endif
- !set l_m=!item $month of $months
- !if $lang=fr
-  !set l_date=$day $l_m $year
+!if $wims_read_parm=months or $wims_read_parm=$empty
+  !read adm/lang/date.phtml.$lang months
   !exit
- !endif
- 
- !set l_date=$year, $l_m, $day 
-!else
- !read adm/lang/date.phtml.$lang
 !endif
+!distribute items $wims_read_parm into 1_,_year,_month,_day
 
-
- 
+!if $_month$_day=$empty
+ !let _day=!char 7 to 8 of $wims_read_parm
+ !let _month=!char 5 to 6 of $wims_read_parm
+ !let _year=!char 1 to 4 of $wims_read_parm
+!endif
+ !read adm/lang/date.phtml.$lang date,$_year,$_month,$_day

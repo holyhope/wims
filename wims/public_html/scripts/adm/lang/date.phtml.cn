@@ -1,1 +1,19 @@
+!distribute items $wims_read_parm into record,_year,_month,_day
+
 !set months=一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月
+
+!goto $record
+
+:date
+!set c_date=!nospace __$_year/$_month/$_day __
+!set c_date=!replace internal __/ by in $c_date
+!set c_date_out=!replace internal /__ by in $c_date
+!set c_date_out=!replace internal __ by in $c_date_out
+
+!set l_m=!item $_month of $months
+!set l_date_out=$_year, $l_m, $_date
+
+!exit
+
+:months
+!exit
