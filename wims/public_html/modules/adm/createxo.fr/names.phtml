@@ -26,8 +26,7 @@
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
-  name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module\
-  
+  name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module
 
 !set name_normal=!lowercase $wims_name_normalmode
 !set name_raw=!lowercase $wims_name_rawmode
@@ -39,9 +38,95 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 
 !set name_first=Exercices basiques
 !set name_datalist=Exercices avec une liste de données
+
 !set name_save=!nosubst Voici le source de votre exercice <font color=red><b>$oef_title</b></font>,\
    en format OEF (Open Exercice Format). Pour le sauver, coupez le texte entre les deux lignes\
     horizontales et collez-le dans un fichier.
+
+!distribute lines Nombre de paramètres\
+  Nombre de réponses\
+  Déposer un fichier (image, pdf, ...) dans l'exercice.\
+  Ou modifier le fichier source de\
+  Mettre cet exercice dans votre classe\
+  pour remplacer l'ancien\
+  pour en faire un nouveau\
+  le réenvoyer\
+  Le mettre dans le module de développement\
+  Sauver le source\
+  de cet exercice sur votre ordinateur !\
+into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
+name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
+ 
+!set name_success=Le logiciel a reconnu votre exercice avec succès
+
+!if $level=1
+!distribute lines Donnez un titre à l'exercice que vous voulez créer\
+  Format de l'énoncé du problème\
+  Cet exercice demandera\
+  réponses libres et\
+  réponses en choix multiples\
+  Les réponses numériques non calculées (telle <tt>3*5-sin(pi/3)</tt>)\
+  sont, ne sont pas admises\
+  conditions seront utilisées pour tester les réponses libres.\
+into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
+name_nonnumeric,name_prompt,name_condition
+!endif
+
+!if $level=2
+ !set types=!sort nocase lines \
+auto,			default\
+expression littérale,	litexp\
+expression algébrique,	algexp\
+expression formelle,	formal\
+texte approximatif,	atext\
+texte converti en minuscules,nocase\
+texte exact,		case\
+texte brut,		raw\
+equation,		equation\
+ensemble fini,		set\
+matrice,		matrix\
+nombre,			numeric\
+nombre avec zone,	range\
+nombre avec unité,	units\
+fonction numérique,	function\
+vecteur,		vector\
+mots dans une liste,	wlist
+
+!distribute lines Maintenant veuillez entrer le contenu de votre exercice \
+  Vous pouvez définir des paramètres aléatoires ici\
+ L'énoncé de l'exercice \
+ Les réponses libres\
+ Bonne solution\
+ Précision exigée des réponses numériques\
+ Les fonctions (numériques) seront comparées dans l'intervalle\
+ Conditions d'analyse des réponses (numériques)\
+Nom de la condition\
+Définition de la condition\
+Les choix multiples\
+Bon choix\
+Mauvais choix\
+Vous pouvez facultativement donner une indication et/ou une solution\
+Indication<br>(format html)\
+Solution<br>(format html)\
+into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
+ name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
+ name_option,name_indication,name_solution
+
+!endif
+
+!if $level=4
+  !set name_update1=!nosubst L'exercice <tt>$existing.oef</tt> est bien mis à jour avec succès dans le module
+  !set name_update2=Echec de mise a jour de l'exercice <tt>$existing</tt> dans le module 
+  !set name_update3=Votre exercice est mis en place avec succès.
+  !set name_update4=Nous avons trouvé un exercice identique dans votre classe. Cet enregistrement est donc ignoré.
+  !set name_update5=Cet exercice sera accessible uniquement aux participants de votre classe et uniquement si vous le\
+ mettez dans une feuille de travail.
+  !distribute lines Vous pouvez maintenant\
+    consulter les exercices de la classe\
+    et éventuellement en mettre dans vos feuilles de travail\
+ into name_youcan, name_consult,name_sheet
+!endif
+
 !exit
 :delete
 L'exercice <em>$deltitle</em> a été retiré de la liste d'exercices de votre
@@ -50,8 +135,8 @@ classe.
 Si vous avez fait une mauvaise manoeuvre et voulez réparer votre
 erreur, voici le source de cet exercice que vous pouvez sauvegarder comme mesure d'urgence, 
 et plus tard copier dans
-!exit
 
+!exit
 :model
 <b>Note</b>. Ces modèles ont pour but de permettre aux plus pressés de
 construire rapidement leurs exercices. Ils ont donc souvent une structure

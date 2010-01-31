@@ -1,9 +1,10 @@
 !if $wims_developer!=$empty and ..devel/ isin ..$catmodule
  !if $reg1=success
-  The exercise <tt>$existing.oef</tt> in the module 
-  <tt>$catmodule</tt> is successfully updated.
+  $name_update1
+  <tt>$catmodule</tt>
+  
  !else
-  Failed to update <tt>$existing</tt> in the module
+ $name_update2
   <tt>$catmodule</tt>.
   <pre>$wims_exec_error</pre>
  !endif
@@ -16,23 +17,22 @@
  !read level5.phtml
 !else
  !if $already!=yes
-  Your exercise has been successfully installed.
+  $name_update3
  !else
-  We have found an identical exercise in your class. The double registration
-  is therefore ignored. <p>
+  $name_update4 <p>
  !endif
- This exercise will be accessible only to participants of your class, and 
- this only if you put it into a worksheet.
+ $name_update5
  <p>
  !if $wims_user!=supervisor
-  Now you can
-  !href module=classes/$lang&special_parm=.nocache. Consult the exercises of the class.
+  $name_youcan
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+.
  !else
-  Now you can:
+  $name_youcan
   <ul>
   <li><p>
-  !href module=classes/$lang&special_parm=.nocache. Consult the exercises of your class.
-  (And eventually put them into your worksheets.)
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+  ($name_sheet).
   <li><p>
   !href cmd=reply&level=3&success=1 $name_prevstep.
   </ul>

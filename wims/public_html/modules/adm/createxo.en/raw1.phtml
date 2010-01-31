@@ -23,12 +23,11 @@
   !href target=wims_test module=tool/directexec&cmd=new Script tester
  !endif
 !else
- Here is the source of
  !if $catmodule=$empty
-  an existing exercise for your class. You can modify it
+ Here is the source of an existing exercise for your class. You can modify it
   in the window below.
  !else
-  a public exercise that you have imported.
+ Here is the source of a public exercise that you have imported.
   You can modify it in the window below, before putting it into the class.
  !endif
  !if $modeltest=yes
@@ -45,6 +44,15 @@
 .
 <p><center>
 !mexec textarea.sh
-<p><input type=submit value="Register the source"></center>
+
+<p><input type=submit value="$name_sendsource"></center>
+<center><a name=textarea></a>
+[
+<a href="#"
+onclick="document.forms['replyform'].wims_deposit.value=''">$name_clean</a>
+] [
+!href cmd=resume $wims_name_giveup
+].
+</center>
 </form>
 

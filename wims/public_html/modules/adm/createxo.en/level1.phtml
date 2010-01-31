@@ -1,23 +1,22 @@
 
 !form reply
 <input type=hidden name=level value=2>
-Give a title to the exercise you want to create:<br>
+$name_givetitle<br>
 <input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
-Format of the statement of the problem:
+$name_giveformat
 !formselect oef_format list tex,html
  [
  !href target=wims_mhelp cmd=help&special_parm=format $wims_name_help
  ]<p>
-This exercise will ask for
+$name_exo
 !formselect oef_answercnt from 0 to 10
-freestyle replies and
+$name_answer1
 !formselect oef_choicecnt from 0 to 10
-multiple-choice replies.
-Non-computed numerical replies (such as <tt>3*5-sin(pi/3)</tt>) will be
-!formselect oef_computeanswer list yes,no prompt accepted,refused
-.
+$name_answer2.
+$name_nonnumeric
+!formselect oef_computeanswer list yes,no prompt $name_prompt
 !formselect oef_condcnt from 0 to $condlim
-conditions will be used to test freestyle replies.
+$name_condition
  [
  !href target=wims_mhelp cmd=help&special_parm=reply $wims_name_help
  ]

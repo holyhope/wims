@@ -1,27 +1,27 @@
 
-The software have successfully recognized your exercise, with the following
-informations. (Please verify with what you have defined.)
-<table bgcolor="#d0d0d0">
-<tr><td align=right>$wims_name_title<td><td>$title
-<tr><td align=right>Number of parameters<td><td>$varcnt
-<tr><td align=right>Number of freestyle replies<td><td>$replycnt
-<tr><td align=right>Number of multiple choices<td><td>$choicecnt
-</table>
+$name_success
+!set rr=$[$replycnt+$choicecnt]
+$table_header
+$table_tr<td width=50%>$wims_name_title</td><td>$title</td>
+$table_tr<td>$name_parameter_cnt</td><td>$varcnt</td>
+$table_tr<td>$name_answer_cnt</td><td>$rr</td>
+$table_end
+<p>
+
 <ul><li>
-Now you can
-!href cmd=resume&realtest=yes&retest=again test your exercise
+!href cmd=resume&realtest=yes&retest=again $wims_name_testexo
 .
 !if $mode!=file
-<li><p>
+ <li><p>
 !!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
  !if $to_ia_qcm=-1
-   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 retourner à confia2qcm
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 $wims_name_backconfia2qcm
  !endif
  !if $to_ia_qcm=-2
-   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 retourner à createqcm
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 $wims_name_backcreateqcm
  !endif
  !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
-   !href cmd=reply&level=2 modifier le source de l'exercice
+   !href cmd=reply&level=2 $wims_name_exomodify
  !endif
 !!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 .
@@ -30,8 +30,8 @@ Now you can
  !form reply
  <input type=hidden name=level value=3>
  <li><p>
- Or modify the source file then
- <input type=submit value="send again">:
+ $name_modify
+ <input type=submit value="$name_sendagain">
  <input type=file name=wims_deposit>
  </form>
  <li><p>
@@ -39,37 +39,35 @@ Now you can
 .
 !endif
 !if $wims_user!=$empty
- <li><p>You can also
- !href cmd=reply&level=6 send an image file
- to the exercise.
+ <li><p>
+ !href cmd=reply&level=6 $name_deposit
  !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
  to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
  !if $success!=1 and $regout!=fail
- <li><p>
- Once everything is correct, you can
- !if $existing!=$empty
-  !if ..devel/ notin ..$catmodule
-   !if $catmodule=$empty
-   put this exercise into your class, either
-   !href cmd=reply&level=4 to replace the old one
-   or
-   !href cmd=reply&level=4&newone=1 as a new exercise
-   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
- newversion,1,cmd=reply&level=4&newone=1\
- to $wims_menu_items
+    <li><p>
+  !if $existing!=$empty
+   !if ..devel/ notin ..$catmodule
+    !if $catmodule=$empty
+    $name_putinclass
+    !href cmd=reply&level=4 $name_replace
+   $wims_name_or
+    !href cmd=reply&level=4&newone=1 $name_new
+    !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+  newversion,1,cmd=reply&level=4&newone=1\
+    to $wims_menu_items
     !else
-     !href cmd=reply&level=4 put this exercise into your class
+     !href cmd=reply&level=4 $name_putinclass
      !reset catmodule
     !endif
    !else
-    !href cmd=reply&level=4 put it to the development module
+    !href cmd=reply&level=4 $name_developer
     !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
     to $wims_menu_items
    !endif
   !else
-   !href cmd=reply&level=4 mettre cet exercice dans votre classe
+   !href cmd=reply&level=4 $name_putinclass
    !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
@@ -79,9 +77,8 @@ Now you can
 !endif
 !if $mode!=file
  <li><p>
- Finally, don't forget to 
- !getfile submit.oef save the source
- of the exercise!
+ !getfile submit.oef $name_savesource
+ $name_download
 !endif
 </ul>
 !set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\

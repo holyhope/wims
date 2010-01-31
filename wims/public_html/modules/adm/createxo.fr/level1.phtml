@@ -1,23 +1,22 @@
 
 !form reply
 <input type=hidden name=level value=2>
-Donnez un titre à l'exercice que vous voulez créer&nbsp;:<br>
+$name_givetitle<br>
 <input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
-Format de l'énoncé du problème&nbsp;:
+$name_giveformat
 !formselect oef_format list tex,html
  [
  !href target=wims_mhelp cmd=help&special_parm=format $wims_name_help
  ]<p>
-Cet exercice demandera
+$name_exo
 !formselect oef_answercnt from 0 to 10
-réponses libres et
+$name_answer1
 !formselect oef_choicecnt from 0 to 10
-réponses en choix multiples.
-Les réponses numériques non calculées (telle <tt>3*5-sin(pi/3)</tt>)
-!formselect oef_computeanswer list yes,no prompt sont, ne sont pas
-admises.
+$name_answer2.
+$name_nonnumeric
+!formselect oef_computeanswer list yes,no prompt $name_prompt
 !formselect oef_condcnt from 0 to $condlim
-conditions seront utilisées pour tester les réponses libres.
+$name_condition
  [
  !href target=wims_mhelp cmd=help&special_parm=reply $wims_name_help
  ]

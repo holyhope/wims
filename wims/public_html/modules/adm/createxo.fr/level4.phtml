@@ -1,10 +1,10 @@
 !if $wims_developer!=$empty and ..devel/ isin ..$catmodule
  !if $reg1=success
-  L'exercice <tt>$existing.oef</tt> est bien mis à jour dans le module 
+  $name_update1
   <tt>$catmodule</tt>
-  avec succès.
+  
  !else
-  Echec de mise a jour de l'exercice <tt>$existing</tt> dans le module 
+ $name_update2
   <tt>$catmodule</tt>.
   <pre>$wims_exec_error</pre>
  !endif
@@ -17,24 +17,22 @@
  !read level5.phtml
 !else
  !if $already!=yes
-  Votre exercice est mis en place avec succès.
+  $name_update3
  !else
-  Nous avons trouvé un exercice identique dans votre classe. Cet
-  enregistrement est donc ignoré. <p>
+  $name_update4 <p>
  !endif
- Cet exercice sera accessible
- uniquement aux participants de votre classe et uniquement si vous le
- mettez dans une feuille de travail.
+ $name_update5
  <p>
  !if $wims_user!=supervisor
-  Vous pouvez maintenant
-  !href module=classes/$lang&special_parm=.nocache. consulter les exercices de la classe.
+  $name_youcan
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+.
  !else
-  Vous pouvez maintenant&nbsp;:
+  $name_youcan
   <ul>
   <li><p>
-  !href module=classes/$lang&special_parm=.nocache. consulter les exercices de la classe.
-  (et éventuellement en mettre dans vos feuilles de travail.)
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+  ($name_sheet).
   <li><p>
   !href cmd=reply&level=3&success=1 $name_prevstep.
   </ul>
