@@ -1,8 +1,8 @@
 !set lang_exists=yes
 
-!distribute items day(s),week(s),month(s),year(s),Requests,Sessions,Visiting sites,\
-  Number,total,average<br>per jour,average<br>per week,average<br>per month,average<br>per ann閑,\
-  average<br>per site,Weekly<br>average,Type of the plot,Daily,the beginning\
+!distribute items 天,周,月,年,请求,会话,访问站点,\
+  次数,总数,日平均,周平均,月平均,年平均,\
+  按站平均,周平均,图表类型,每日\
 into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Visitors,\
    name_cnt,name_total,name_avgday,name_avgweek,name_avgmonth,name_avgyear,\
    name_avgsite,name_avghebdo,name_plot,name_byday
@@ -11,35 +11,32 @@ into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Vi
 !set name_sessions=!lowercase $name_Sessions
 !set name_visitors=!lowercase $name_Visitors
 
-!distribute lines Choose a period for usage statistics: since\
-  Show per module details\
-  Show the statistics\
-  Per module details\
-  Number of visits\
-  from\
-  to\
-  Date of<br>installation\
-  Sub-total\
+!distribute lines 选择统计的时期: 从\
+  显示按月细分表\
+  显示统计数\
+  按模块细分\
+  访问次数\
+  从\
+  至\
+  建立日期\
+  分类合计\
 into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_visits,name_from,\
   name_to,name_installed,name_subtotal
-!set title=Usage statistics
-!set name_sum=!nosubst sum over $laps days
+!set title=使用统计
+!set name_sum=!nosubst 共 $laps 天总和
 
-!set name_prompt=total<br>requests,requests<br>per site,total<br>sites
+!set name_prompt=总请求数,按站请求数,总站数
 !set name_explanations=<ul>\
-<li>The request number counts only requests for pages.\
- Requests for modules under development are not counted.\
-<li>The number of visiting sites is counted on a daily basis.\
-<li>The number of (daily) visitors is between the site number and \
- the session number.\
+<li>请求数只计算对网页的请求.\
+ 由此而展开的对模块的请求不计在内.\
+<li>访问的站点数是按日计数的.\
+<li>每天的访问人数应介于站点数与会话数之间.\
 </ul>
 
-!set name_warning=The usage accounting is not active on this site. No statistics is available. Sorry.
+!set name_warning=本站的使用统计未被激活. 无统计数据可用. 抱歉.
  
-!set name_numberclass=!nosubst There are $classcnt portals and individual classes on this server, with\
-  $usercnt total user accounts.
-  
+!set name_numberclass=!nosubst   本服务器有 $classcnt 个学区和班级, 总共 $usercnt 个用户帐户.
   
 !set format1=%m%d
 !set format2=%m%d
-!set format3=%m%y
+!set format3=%y%m
