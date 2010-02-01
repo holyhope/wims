@@ -4,46 +4,45 @@
   !goto $wims_read_parm
 !endif
 
-!set name_site=the site
-!set name_stem=a page under the address
-!set name_uniq=the page
-!set names_site=sites
-!set names_stem=site directories
-!set names_uniq=pages
+!set name_site=de website
+!set name_stem=een pagina met adres
+!set name_uniq=de pagina
+!set names_site=websites
+!set names_stem=site directory's
+!set names_uniq=pagina's
 
-!distribute items day(s),week(s),month(s),year(s)\
+!distribute items dagen,weken,maanden,jaren\
   into name_day,name_week,name_month,name_year
    
-!distribute lines site name\
-  base directory\
-  complete address\
-  The links can be listed by \
-  of the web page, and the list is limited to the first\
-  addresses. Search engine addresses can be\
-  included or\
-  excluded in the list\
- Optionally, you may restrict the list to sites/pages containing a word\
+!distribute lines website naam\
+  hoofd directory\
+  compleet adres\
+  De links kunnen worden gesorteerd op \
+  van de webpagina, en het overzicht is beperkt tot de eerste\
+  adressen. Zoek machine adressen kunnen \
+  worden toegevoegd\
+  uitgesloten van het overzicht\
+  Optioneel: het overzicht kan worden beperkt tot websites/pagina's met daarin het woord\
  into name_site1,name_stem,name_uniq,name_listlink,name_limited,name_searchengine,\
  name_included,name_excluded,name_option
 
-!set name_list1=!nosubst List of web $(names_$type) bringing visitors to us, within the period of
+!set name_list1=!nosubst Overzicht van webpaginas $(names_$type) van waaruit onze site wordt bezocht,in de periode 
 
-!set name_sum=!nosubst sum over $laps days
+!set name_sum=!nosubst totaal over $laps dagen
 
-!set name_list2=The first column gives the number of our visitors who followed\
-a link in $(name_$type) on the second column.
+!set name_list2=De eerste kolom laat het aantal bezoekers zien dat via een\
+link $(name_$type) uit de tweede kolom ons bezocht.
 
-!set name_visit1=people have visited us through links in these $totall
-!set name_visit2=!nosubst At least $auto other visitors didn't specify public referring pages.\
-  Referring pages within $httpd_HTTP_HOST are not counted.
+!set name_visit1=bezoekers via links $totall
+!set name_visit2=!nosubst Ten minste $auto bezoekers gaven geen referenties.\
+Referentie pagina's vanuit $httpd_HTTP_HOST worden niet meegeteld.
  
- !set title=Backward link list
+!set title=Overzicht bezoekers via website
  
-!set name_warning=The referer accounting is not active on this site. No backward link list\
- is available. Sorry.
+!set name_warning=Het overzicht van "bezoekers via website" is op deze server helaas uitgeschakeld.
    
  
-!set name_choose=Période d'activité : depuis
+!set name_choose=Periode overzicht van : 
 
 :exit
 :intro

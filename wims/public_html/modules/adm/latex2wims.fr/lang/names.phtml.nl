@@ -4,23 +4,23 @@
   !goto $wims_read_parm
 !endif
 
-!distribute line Transférer un fichier\
+!distribute line Stuur een bestand\
   een nieuw bestand opsturen\
   Kopieer de bestanden naar de server\
-  WIMS-doc\
+  de documentatie\
   PDF documentatie\
   Login voor Modtool\
   het latex bestand\
-  het css bestand\
+  het css style bestand\
   het latex2wims sty bestand\
   Een voorbeeld document maken ?\
   Stap\
   Opgestuurde bestanden\
   Naar de volgende stap\
   U kunt\
-  een LaTeX bestand opsturen.\
+  een latex bestand opsturen.\
   U moet\
-  Kies het LaTeX bestand\
+  Kies het latex bestand\
   opgestuurd op\
   Als er oefeningen zijn, kies dan het werkblad nummer\
   Geef de naam van het document uit uw Modtool account\
@@ -40,8 +40,7 @@ into name_transfer,name_newtransfer,name_transfer_wims,name_documentation,name_p
   
 !set name_warning=!nosubst de bestanden van het document  <tt $stylett>$document</tt>\
     worden gewist en vervangen door de nieuwe.
-
-!set name_select_example=Om verder te gaan, kunt U de drie bestanden ophalen\
+!set name_select_example=Om verder te gaan, kunt u de drie bestanden ophalen\
 (latex code [*.tex], latex style [*.sty] en een html [*.css]) 
 
 !set choix=Kies
@@ -49,7 +48,7 @@ into name_transfer,name_newtransfer,name_transfer_wims,name_documentation,name_p
 
 
 :1
- maakt van een LaTeX bestand een WIMS document binnen Modtool.
+ maakt van een latex bestand een WIMS document binnen Modtool.
 En is alleen te gebruiken door docenten met een modtool account.
 <p>
 Voor een goed resultaat moet ook een css bestand worden gebruikt.
@@ -64,7 +63,7 @@ WIMS new developer
 
 !exit
 :3
-maakt van een LaTeX bestand een WIMS document binnen Modtool.
+maakt van een latex bestand een WIMS document binnen Modtool.
 <br>En is alleen te gebruiken door docenten met een modtool account.
 <p>
 Voor een goed resultaat moet ook een css bestand worden gebruikt.

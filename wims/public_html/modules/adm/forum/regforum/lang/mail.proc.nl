@@ -11,7 +11,7 @@ forum.\
 Om in te loggen in Uw forum, dient u een wachtwoord \
 in te vullen.\
 \
-weet U niet waar dit alles op slaat: dan heeft vermoedelijk iemand \
-Uw email adres opgegeven aan deze emailsoftware\
+weet u niet waar dit alles op slaat: dan heeft vermoedelijk iemand \
+uw email adres opgegeven aan deze emailsoftware\
 In dat geval kun U dit bericht gerust negeren. \
 

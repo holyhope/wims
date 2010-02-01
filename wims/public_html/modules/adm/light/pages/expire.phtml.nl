@@ -1,8 +1,9 @@
+
 !!INDEX
 !let module_author	=XIAO Gang
 !let module_address	=xiao@unice.fr
 !let module_title	=KLASSE EINDDATUM
-!let module_description	=Verander de uiterste-gebruiksdatum van Uw klas
+!let module_description	=Verander de einddatum van Uw klas
 !let module_version	=1.10
 !let module_wims_version=1.50
 !let module_language	=nl
@@ -26,14 +27,14 @@
 !header1
 
 !if $wims_user!=supervisor
- <p>Nee, deze pagina is alleen beschikbaar voor de supervisor.
+ <p>Nee, deze pagina is alleen beschikbaar voor de docent/supervisor.
  !tail
  !exit
 !endif
 
 <hr width=1>
 <center><h3>$wims_classname, $wims_institutionname</h3>
-<p><h1>Expiration date of the class</h1></center> <p>
+<p><h1>Einddatum van de klas</h1></center> <p>
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,October,November,December
 !set today=!char 1 to 8 of $wims_now
 !set thisyear=!char 1 to 4 of $today
@@ -85,9 +86,9 @@ Nieuwe einddatum van de klas:
 . <p><center>
 <input type=submit value="$wims_name_tosave">
 </center></form>
-<p>Een einddatum gesteld op vandaag sluit deze klas. (effectief van af morgen).
+<p>Een einddatum gesteld op vandaag sluit de klas. (effectief van af morgen).
 <p><b>Attentie.</b>
- De geldigheids/houdbaarheids duur van een klas kan niet langer zijn dan 1 jaar
+ Een klas kan nooit ouder zijn dan 1 jaar
 (van af morgen).
 !tail
 

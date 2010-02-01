@@ -23,18 +23,18 @@
 
 !header
 
-U kunt downloaden 
+U kunt 
 <ul><li>
-de laatste stabiele versie van WIMS
+de laatste stabiele versie van WIMS ophalen
 <ul><li>
-van de server van <a target="wims_external" href="http://wims.unice.fr/download/wims/">Nice</a> ;
+vanaf de server <a target="wims_external" href="http://wims.unice.fr/download/wims/">Nice</a> ;
 </li>
 <li>
-van de SVN ontwikkelings server:
+via de SVN ontwikkelings 
 <a target="wims_external" href="http://sourcesup.cru.fr/frs/?group_id=379">
-sourcesup
+server sourcesup
 </a>
-waar nu het WIMS project is gehuisvest;
+WIMS ophalen. Het WIMS project is daar gehuisvest.
 </li>
 </ul></li><li>
 de laatste beta versie van <a target="wims_external" href="http://sourcesup.cru.fr/frs/?group_id=379">

@@ -1,3 +1,4 @@
+
 !!INDEX
 !! Erase the above line to hide your page from wims search engine.
 !! Line starting with double exclamations are comment lines.
@@ -11,8 +12,8 @@
 !! Put every definition in ONE LINE!!
 !let module_author	=XIAO, Gang
 !let module_address	=xiao@unice.fr
-!let module_title	=Mirror Sites
-!let module_description	=lijst van alle bereikbare WIMS servers. 
+!let module_title	=Mirrors
+!let module_description	=lijst van WIMS mirrors. 
 !let module_version	=2.08
 !let module_wims_version=2.08
 
@@ -55,7 +56,7 @@
 <font size="-1">op <a href="/">$httpd_HTTP_HOST</a></font> <br>
 $module_title</h1> <p>
 
-!set mir=wimshome/public_html/html/mirrors.en
+!set mir=wimshome/public_html/html/mirrors.nl
 !set thissite=!tolower $httpd_SERVER_NAME
 !set n=!recordcnt $mir
 !set c=
@@ -73,19 +74,18 @@ $ in $l_
 !next i_
 !set n=!itemcnt $c
 !if $n<1
- This WIMS site does not keep a list of mirror sites. Sorry.
+    Deze WIMS server heeft helaas geen lijst met actieve mirrors geinstalleerd.
  <p>
 !else
- Here are the other WIMS sites known to be open to the general public.
- If you use WIMS regularly in your work, we suggest
- that you bookmark at least some of these addresses, so that if your favorite
- site becomes temporarily unavailable, you won't see your work disrupted.
+    Hier is een lijst met WIMS servers die open staan voor publiek.
+    Bij regelmatig WIMS gebruik en geen eigen server, is het verstandig een bookmark 
+    van deze adressen lijst te maken.
  <p>$table_header
- $table_hdtr<th>Site</th>
- <th>Location</th>
- <th>Country</th>
- <th>Supported<br>languages</th>
- <th>Comments</th>
+ $table_hdtr<th>Website</th>
+ <th>Locatie</th>
+ <th>Land</th>
+ <th>Ondersteund <br>de talen</th>
+ <th>Opmerkingen</th>
  </tr>
  !for i_=1 to $n
   !set j_=!item $i_ of $c
@@ -107,17 +107,18 @@ $ in $l_
 !endif
 
 :end
-Heeft U een WIMS server geinstalleerd op internet, en wilt Uw adres opgenomen in
+
+Hebt u een WIMS server geinstalleerd op internet en u wil adres opgenomen zien in
 deze lijst, 
-!mailurl xiao@unice.fr schrijf me\
+!mailurl xiao@unice.fr mail me\
 wims mirror
 .
 <p>
-WIMS is software die vrij beschikbaar is, en kan worden 
+WIMS is vrije software en kan gratis worden 
 <a href="http://wims.unice.fr/download/wims/">gedownload</a>,
-en geinstalleerd op GNU/LinuX systemen.
+en geinstalleerd alle op GNU/Linux systemen.
 <p>
-Lees het README bestand in de download directory voor meer details m.b.t de installatie.
+Lees het README bestand in de download directory voor meer details mbt de installatie.
 
 
 !tail

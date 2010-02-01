@@ -1,8 +1,8 @@
 !!INDEX
 !let module_author	=XIAO, Gang
 !let module_address	=xiao@unice.fr
-!let module_title	=Instelen van Uw voorkeur-instellingen voor WIMS
-!let module_description	=definieer de voorkeurs-instellingen
+!let module_title	=Persoonlijke voorkeurs instellingen WIMS
+!let module_description	=definieer de voorkeurs instellingen
 !let module_version	=1.00
 !let module_wims_version=0.13
 !let module_language	=nl
@@ -25,12 +25,14 @@
 !endif
 
 !header
-Deze pagina geeft U toegang tot het instellen van diverse eigenschappen van WIMS sessies.
+
+Deze pagina geeft toegang tot het fijnafstellen van een WIMS sessies.
+
 <p>
 Deze instellingen zijn:
 <ul>
 !if $wims_user=$empty
- <li><p>De standaard taal.
+ <li><p>De taal.
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
    !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
@@ -60,28 +62,28 @@ Deze instellingen zijn:
   of
   !href cmd=resume&useropts=$ts2$texalign$useropt2 vergroten
   teneinde ze redelijk te laten (in)passen by de tekst.
-  Al de uitdrukking
+  Als de uitdrukking
  
   !insmath (x+y)/(x^2+y^2)
   te
   !if $texalign=1
   hoog is ten opzichte van de tekstregel,
    !href cmd=resume&useropts=$(texsize)0$useropt2 klik dan hier
-   om de insert van het plaatje te verlagen.
+   om de positie van het wiskunde symbool (plaatje) te verlagen.
   !else
   laag is ten opzichte van de tekstregel,
    !href cmd=resume&useropts=$(texsize)1$useropt2 klik dan hier
-    om de insert van het plaatje te verhogen. 
+    om de positie van het wiskunde symbool (plaatje) te verhogen. 
   !endif
 </ul>
 
 !if $wims_user=$empty
-Wanneer alles volgens uw wens is , voeg dan  
+Wanneer alles inorde is , voeg dan  
  <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"
- title="WIMS">deze link</a> toe aan uw bookmarks, zodat bij het later bezoeken van deze site
- de instellingen wat gemakkelijker verlopen.
+ title="WIMS">deze link</a> toe aan uw bookmarks.
+ Bij een volgend bezoek worden deze instellingen automatisch gebruikt.
 !else
- Uw instellingen worden bewaard voor deze klas.
+ Deze instellingen worden bewaard voor uw klas.
 !endif
 
 :end

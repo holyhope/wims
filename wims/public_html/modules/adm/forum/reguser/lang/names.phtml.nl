@@ -27,22 +27,22 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
   name_email1,name_email2,name_email3,name_forumlist
 
 !set name_obtain_passw=!nosubst <b>Opmerking</b>.\
-  Het aanmeldings wachtwoord is verkrijgbaar bij de eigenaar ($supervisor) van dit forum.
+  Het aanmeldings wachtwoord is verkrijgbaar bij de houder ($supervisor) van dit forum.
 
-!set name_inscription=!nosubst Om deel te nemen aan $forumname, vul dan de volgende informatievelden in
+!set name_inscription=!nosubst Voor deelname aan $forumname, eerst de volgende informatievelden invullen
  
-!set name_password1=Deze login naam gebruikt U later om in te loggen in het message board\
- Kies hiertoe een woord tussen de 4 en 16 karakters (cijfers en letters zonder accenten of spaties)
+!set name_password1=Deze loginnaam moet later worden gebruik om in te loggen\
+ Kies hiertoe een woord tussen de 4 en 16 lettertekens (cijfers en letters zonder accenten of spaties)
 
-!set name_password2=Kies hiertoe een woord tussen de 4 en 16 karakters (cijfers en letters zonder accenten of spaties)
+!set name_password2=Kies hiertoe een woord tussen de 4 en 16 lettertekens (cijfers en letters zonder accenten of spaties)
  
-!set name_inscription2=!nosubst U bent zich nu aan het aanmelden voor $forumname,\
- met de login naam &nbsp;
+!set name_inscription2=!nosubst U bent bezig zich aan te melden bij $forumname,\
+ met loginnaam &nbsp;
  !exit
 
 :welcome
  Welkom op $forumname.
-  U bent nu een deelnemer aan dit forum, met de login naam
+  U bent nu een deelnemer aan dit forum, met de loginnaam
   ``<b><font color=green>$login</font></b>''. <p>
   U kunt nu
   !href module=adm/forum/forum&forum=$forum&type=authuser inloggen
@@ -52,7 +52,7 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
  
 :code
  $forumname staat geen anonieme deelnemers toe.
-  Uw emailadres wordt gebruikt identitificatie
+  Het emailadres wordt gebruikt identitificatie
   (om misbruik tegen te gaan)
   <p>
  Om het opgegeven emailadres te controleren,stuurt de server op dit moment

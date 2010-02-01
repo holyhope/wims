@@ -2,7 +2,7 @@
 !set errorhead=<b>Fout.</b>
 
 !if forum_not_exist = $error
- $errorhead Je hebt om een niet bestaand forum opgevraagd.
+ $errorhead Dit formum bestaat hier niet (meer).
 
  !set fatal=yes
  !exit

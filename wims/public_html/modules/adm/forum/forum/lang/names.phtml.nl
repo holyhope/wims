@@ -4,17 +4,17 @@
   !goto $wims_read_parm
 !endif
 
-!distribute line List of forums\
+!distribute line Lijst van forums\
 	Beheerders authentificatie\
 	Gebruikers authentificatie\
-	Gebruikers aanmelden\
+	Gebruikers aanmelding\
 	into n_list,n_authowner,n_authuser,n_register
 
 !distribute line bezoeker\
   gebruiker\
   beheerder\
   inschrijven\
-  Er zijn geen forums geintialiseerd op deze site.\
+  Er zijn geen forums geinstalleerd op deze site.\
   Wachtwoord van de beheerder\
 into name_visitor,name_user,name_owner,name_register,name_noforum,\
  name_pass_owner
@@ -27,14 +27,14 @@ Zoek in de volgende tabel:
 klik op "Registreren" om je aan te melden. 
 Je kunt ook
 !href module=adm/forum/regforum je eigen forum
-&nbsp;op deze wiskunde site maken.
+&nbsp;maken.
 
 !exit
 
 :enter
 Om naar binnen te gaan als <b><font color=green>$mb_title</font></b>
 een <em>geregistreerde gebruiker</em>, 
-geef s.v.p. je login_naam en wachtwoord:
+geef s.v.p. je loginnaam en wachtwoord:
 
 !exit
 

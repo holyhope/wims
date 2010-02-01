@@ -10,7 +10,8 @@ U hebt niet opgegeven aan wel forum U wilt deelnemen
 
 !if bad_forum=$error
 Het forum dat U hebt uitgezocht bestaat niet!
-Als dit geen software fout is, dan is dat forum verlopen, of U bent aan het spelen met deze server (bedenk dat alle handelingen worden gelogd!)
+Als dit geen software fout is, dan is het forum verlopen, 
+of U bent aan het spelen met deze server (bedenk goed dat alle handelingen worden gelogd!)
 !endif
 
 !if no_register=$error
@@ -38,7 +39,7 @@ De code die U heeft ingegeven klopt niet: aanmelding mislukt!
 !endif
 
 !if bad_login=$error
-Uw login naam bevat niet toegestane karakters. <p>
+Uw login naam bevat niet toegestane lettertekens. <p>
 Gebruik alleen woorden bestaande uit cijfers en/of letters, zonder
 accenten of spaties. 
 

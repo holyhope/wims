@@ -4,19 +4,19 @@
 !set errorhead=<b>Fout.</b>
 
 !if forum_not_exist = $error
- $errorhead U hebt een niet bestaand forum opgevraagd, Sorry.
+ $errorhead Dat forum bestaat hier niet (meer).
  !set fatal=yes
  !exit
 !endif
 
 !if no_read_right = $error
- $errorhead U hebt geen toegang tot dit forum.
+ $errorhead Je hebt geen toegang tot dit forum.
  !set fatal=yes
  !exit
 !endif
 
 !if no_subject = $error
- $errorhead Voer het onderwerp van Uw bericht in.
+ $errorhead Voer het onderwerp van een bericht in.
  !exit
 !endif
 
