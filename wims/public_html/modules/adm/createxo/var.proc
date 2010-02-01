@@ -1,0 +1,381 @@
+!read adm/language names.phtml
+
+wims_helper=chapter=4&open=4_oef#oef
+wims_form_method=post
+wims_nw=existing catmodule newone oef_fname level vsave \
+	delete deltitle mode realtest deffile wims_noexport \
+	empty wims_module_log class_header
+wims_nr=wims_sesrandom
+wims_trustfile=oef/embed.phtml oef/special.phtml oef/togetfile.proc
+slib/circuits/draw slib/circuits/drawcomp slib/circuits/range\
+slib/circuits/comppos
+
+!distribute item 100,30,10,40 into answerlim,choicelim,condlim,promptlim
+!bound mode within raw,file,model default $
+!read tabletheme
+
+!if $wims_user!=$empty or $wims_developer!=$empty
+ !default oef_author=!trim $wims_firstname $wims_lastname
+ !default oef_email=$wims_email
+ !if $wims_developer!=$empty
+  !read adm/getdeveloper
+  !default oef_author=$dv_name
+  !default oef_email=$dv_email
+ !endif
+ !if $newone=1
+  existing=
+  newone=
+ !endif
+ !if (..devel/ notin ..$catmodule or $wims_developer=$empty) and \
+	$existing!=$empty and $wims_user!=supervisor \
+	and ..*/$wims_user. notin ..*/$existing
+  existing=
+ !endif
+ !if $existing!=$empty and $level=$empty
+  !if $catmodule!=$empty
+   !if ..devel/ isin ..$catmodule and ($wims_developer= or \
+	..devel/$wims_developer notin ..$catmodule)
+    !goto nonexist
+   !endif
+   !if .. isin $catmodule or ..adm/ isin ..$catmodule or \
+	..classes/ isin ..$catmodule
+    !goto nonexist
+   !endif
+  !endif
+  src=!mexec catexisting.sh $existing
+  !if $src!=$empty
+   mode=raw
+   level=1
+  !else
+   :nonexist
+   error=not_exist
+   del=$existing
+   exiting=
+   !exit
+  !endif
+ !endif
+!else
+ existing=
+!endif
+
+!if $cmd=help
+ !if $realtest=yes
+  !changeto oef/var.proc
+ !endif
+ !exit
+!endif
+
+!if $delete!=$empty
+ !if $wims_class==$empty
+  error=not_class
+  !exit
+ !endif
+ !if $wims_user!=supervisor
+  error=not_supervisor
+  !exit
+ !endif
+ del=!word 1 of $delete
+ delete=
+ deleted=!mexec delexo.sh $del
+ !if $deleted=$empty
+  error=not_exist
+ !else
+  wims_module_log=delete $wims_class/$del
+ !endif
+ !exit
+!endif
+
+!if $mode=model and $model!=$empty
+ model=!text select abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 in $model
+ !sh cp -f modules/$module/model/src/$model.oef $wims_home/sessions/$wims_session/user-deposit\
+   cp -f $wims_home/sessions/$wims_session/user-deposit $wims_home/sessions/$wims_session/submit.oef
+ !if $level=3 and $realtest=yes
+  !mexec makedef.sh
+ !endif
+ !reset status
+ model=
+!endif
+
+!if $level=2 and $mode=model
+ !read model/cut.proc
+ !if $cnt<6 or $sps=$empty or $parms=$empty or $desc=$empty or\
+	$model_type=$empty or statementrec=$empty
+  mode=
+  !goto nomodel
+ !endif
+!endif
+
+!if $level=2 and $mode=$empty
+ !read model/cut.proc
+ !if $cnt>=6 and $sps!=$empty and $parms!=$empty and $desc!=$empty and\
+	$model_type!=$empty and statementrec>1
+  mode=model
+  rawinp=
+ !endif
+!endif
+
+:nomodel
+!if $level=3 and $realtest=yes
+ oef_test=yes
+ !changeto oef/var.proc
+!else
+ !if $realtest=no
+  question=
+  hint=
+  solution=
+  status=
+  varcnt=0
+  replycnt=0
+  choicecnt=0
+  score=
+  !if $mode=model
+   !for i=1 to 100
+    reply$i=
+   !next i
+  !endif
+ !endif
+ !reset status realtest retest
+!endif
+
+!if $rawinp!=$empty
+ mode=raw
+ level=1
+ rawinp=
+!endif
+
+!if $mode=raw and $level<=2
+ modeltest=!recordcnt wimshome/sessions/$wims_session/submit.oef
+ !if $modeltest>6
+  modeltest=!record 0 of wimshome/sessions/$wims_session/submit.oef
+  modeltest=!getopt type in $modeltest
+  !if $modeltest!=$empty
+   modeltest=yes
+   !sh cd $wims_home/sessions/$wims_session\
+    [ -s user-deposit ] || cp -f submit.oef user-deposit
+  !endif
+ !endif
+!endif
+
+!bound oef_format within tex,html default html
+!bound oef_answercnt between integer 0 and $answerlim default 1
+!bound oef_choicecnt between integer 0 and $choicelim default 0
+!bound oef_condcnt   between integer 0 and $condlim   default 0
+!bound oef_precision within 100,1000,10000,100000,1000000 default 10000
+!bound oef_computeanswer within yes,no default no
+!bound level between integer 0 and 6 default 0
+!if $level=6 and $wims_user!=supervisor
+ level=1
+!endif
+
+!for i in l,r
+ oef_range$i=!trim $(oef_range$i)
+ !if $(oef_range$i)!=$empty
+  oef_range$i=$[$(oef_range$i)]
+  !if NaN isin $(oef_range$i)] or Inf isin $(oef_range$i)
+   oef_range$i=
+  !endif
+ !endif
+!next i
+!default oef_rangel=-5
+!default oef_ranger=5
+!if $oef_rangel=$oef_ranger
+ oef_rangel=-5
+ oef_ranger=5
+!endif
+!if $oef_rangel>$oef_ranger
+ range=$oef_rangel
+ oef_rangel=$oef_ranger
+ oef_ranger=$range
+!endif
+
+!if $level>1 and $mode=$empty
+ oef_title=!trim $oef_title
+ !if $oef_title=$empty and $level>1
+  error=no_title
+  !exit
+ !endif
+# !if $oef_answercnt+$oef_choicecnt<=0
+#  error=no_answer
+#  !exit
+# !endif
+!endif
+
+!if $level=3
+ !if $mode=$empty
+  header=\language{$lang}\
+\range{$oef_rangel..$oef_ranger}
+  !for i in author,email,computeanswer,format,precision
+   oef_$i=!trim $(oef_$i)
+   !if $(oef_$i)!=$empty
+    header=!append line \$i{$(oef_$i)} to $header
+   !endif
+  !next i
+  oef_statement=!trim $oef_statement
+  !if $oef_statement=$empty
+   error=no_statement
+   !exit
+  !endif
+  answers=
+  !for i=1 to $oef_answercnt
+   ansprompt$i=!trim $(ansprompt$i)
+   prompt=!char 1 to $promptlim of $(ansprompt$i)
+   ansgood$i=!trim $(ansgood$i)
+   !if $prompt!=$empty and $(ansgood$i)!=$empty
+    !default anstype$i=default
+    answers=!append line \answer{$prompt}{$(ansgood$i)}{type=$(anstype$i)} to $answers
+   !endif
+  !next i
+  replycnt=!linecnt $answers
+  choices=
+  !for i=1 to $oef_choicecnt
+   choiprompt$i=!trim $(choiprompt$i)
+   prompt=!char 1 to $promptlim of $(choiprompt$i)
+   choigood$i=!trim $(choigood$i)
+   choibad$i=!trim $(choibad$i)
+   !if $prompt!=$empty and $(choigood$i)!=$empty and $(choibad$i)!=$empty
+    choices=!append line \choice{$prompt}{$(choigood$i)}{$(choibad$i)} to $choices
+   !endif
+  !next i
+  choicecnt=!linecnt $choices
+  conditions=
+  !for i=1 to $oef_condcnt
+   cn=!trim $(Condname$i)
+   ct=!trim $(Condtest$i)
+   !if $cn!=$empty and $ct!=$empty
+    conditions=!append line \condition{$cn}{$ct} to $conditions
+   !endif
+  !next i
+#  !ifval $replycnt+$choicecnt=0
+#   error=no_reply2
+#   !exit
+#  !endif
+  oef_hint=!trim $oef_hint
+  !if $oef_hint!=$empty
+   hints=\hint{$oef_hint}
+  !endif
+  oef_solution=!trim $oef_solution
+  !if $oef_solution!=$empty
+   solutions=\solution{$oef_solution}
+  !endif
+  source=!mexec makedef.sh
+ !else
+  !if $mode=model
+   !read model/cutback.proc
+  !endif
+  !mexec makedef.sh
+ !endif mode=$empty
+ status=waiting
+ oef2wims_out=!record 0 of wimshome/$wims_sesdir/oef2wims.out
+ !if ERROR iswordof $oef2wims_out
+  :diagerror
+  test=!line 1 of $oef2wims_out
+  !if ERROR notin $test
+   oef2wims_out=!line 2 to -1 of $oef2wims_out
+  !endif
+  error=def_fail
+  !exit
+ !endif
+ replycnt=
+ choicecnt=
+ varcnt=
+ !read wimshome/$wims_sesdir/submit.def
+ !if $replycnt=$empty or $choicecnt=$empty or $varcnt=$empty
+  !goto diagerror
+  !exit
+ !endif
+ title=!trim $title
+ !if $title=$empty
+  error=empty_title
+  !exit
+ !endif
+ oef_fname=
+ titlen=!charcnt $title
+ !for i=1 to $titlen
+  c=!char $i of $title
+  !if $c isin 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_
+   oef_fname=$oef_fname$c
+  !endif
+ !next i
+ oef_fname=!char 1 to 14 of $oef_fname
+ !if $wims_user!=$empty and $wims_user!=supervisor
+  oef_fname=$wims_user.$oef_fname
+ !endif
+!endif
+
+!if $level=4 and $wims_user!=$empty
+ regout=!mexec regclass.sh
+ reg1=!word 1 of $regout
+ !if $reg1=success
+  fnamebase=!word 2 of $regout
+  existing=$fnamebase
+  success=1
+ !else
+  error=!word 2 of $regout
+  !if $error!=already
+   !exit
+  !else
+   error=
+   already=yes
+  !endif
+ !endif
+ !if $wims_user!=supervisor and ..devel/ notin ..$catmodule
+  prefix=$wims_user.
+ !else
+  prefix=
+ !endif
+ wims_module_log=Regclass $wims_class $mode $prefix$oef_title
+!endif
+
+!if $level=4 and $wims_developer!=$empty and ..devel/ isin ..$catmodule and \
+	.. notin $catmodule $existing
+ wims_exec_error=
+ !sh cp $wims_home/sessions/$wims_session/submit.oef modules/$catmodule/src/$existing.oef\
+    cd modules/$catmodule; src2def
+ !reset already regout prefix
+ !if $wims_exec_error=$empty
+  reg1=success
+  regout=$existing
+ !else
+  reg1=fail
+ !endif
+ wims_module_log=Regdev $catmodule $existing
+ !goto l4end
+!endif
+
+!if ($level=4 and $wims_user=$empty) or $level=5
+ regout=!mexec regpub.sh
+ reg1=!word 1 of $regout
+ !if $reg1=success
+  fnamebase=!word 2 of $regout
+ !else
+  error=!word 2 of $regout
+  !exit
+ !endif
+ wims_module_log=Regpub $mode $oef_title
+!endif
+
+:l4end
+!if $level=6
+ !if $wims_deposit!=$empty and .. notin $wims_deposit and / notin $wims_deposit
+  !read adm/du $wims_home/log/classes/$wims_class
+  !if $du>=$wims_class_quota-1
+   quota=yes
+  !else
+   !sh cd $wims_home/$wims_sesdir\
+	mkdir -p getfile/oefimg\
+	mv user-deposit getfile/oefimg/$wims_deposit\
+	cp oefdeposit user-deposit 2>/dev/null
+  !endif
+  imgfname=$wims_deposit
+  wims_deposit=
+ !else
+  !sh cd $wims_home/$wims_sesdir\
+	if [ -f user-deposit ]; then cp user-deposit oefdeposit; fi
+  !if $delfile!=$empty and .. notin $delfile
+   !sh rm -f $wims_home/$wims_sesdir/getfile/oefimg/$delfile
+  !endif
+ !endif
+ imglist=!filelist $wims_home/$wims_sesdir/getfile/oefimg
+ imglist=!words2items $imglist
+!endif
+

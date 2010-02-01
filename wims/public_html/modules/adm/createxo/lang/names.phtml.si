@@ -1,0 +1,171 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute lines  vodeni naèin\
+  neposredni naèin\
+  datoteèni naèin\
+  Other methods\
+  prepared models\
+  Po¹lji datoteko\
+  Datoteka s kodo va¹e vaje\
+  Nazaj na zaèetno stran\
+  Naprej na vsebino vaje\
+  Za spreminjanje ¾e obstojeèe vaje jo izberite s seznama\
+  prej¹nji korak\
+  Send the source file\
+  Clean\
+  Demo\
+  Adapter\
+  Test the exercise\
+  Popravi napako.\
+  Nazaj na zaèetni meni \
+  Tak¹na bo izvedba va¹e vaje\
+  Here are the available exercise models. Choose one.\
+  Module temporarily containing your exercise.\
+into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
+  name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
+  name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
+  name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module
+
+!set name_normal=!lowercase $wims_name_normalmode
+!set name_raw=!lowercase $wims_name_rawmode
+!set name_file=!lowercase $wims_name_filemode
+
+!set name_modefile1= Ste v datoteènem naèinu ustvarjanja vaj. V tem naèinu lahko na stre¾nik prenesete ¾e pripravljeno
+OEF datoteko z vajo. Za zaèetnike je ustreznej¹i
+!set name_modefile2= ustvarjanja vaj. Za izku¹ene uporabnike pa je na voljo tudi
+!set name_first=Basic exercises
+!set name_datalist=Exercises with a data list
+
+!set name_save=!nosubst Tukaj je koda va¹e vaje za naslovom\
+ <font color=red><b>$oef_title</font></b> v OEF formatu (Open Exercise Format).\
+ Èe ¾elite, lahko besedilo med èrtama prenesete v svoj najljub¹i urejevalnik in ga \
+ shranite na disk ali drug medij.
+ 
+
+!distribute lines ©tevilo parametrov\
+  ©tevilo odgovorov\
+  Send an image file to the exercise.\
+  ali pa spremenite datoteko s kodo in jo ponovno\
+  Put this exercise $into your class\
+  to replace the old one\
+  as a new exercise\
+  po¹ljite\
+  Put it to the development module\
+  Save the source\
+  of the exercise on your computer!\
+into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
+name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
+
+!set name_success=Stre¾nik je sprejel va¹o vajo, v kateri je razpoznal naslednje podatke: (preverite, èe se ujemajo z naèrtovanimi)
+
+!if $level=1
+!distribute lines Vpi¹ite naslov vaje, ki jo ¾elite ustvariti\
+  Izberite naèin oblikovanja\
+  ©tevilo prostih odgovorov,\
+  ki jih zahteva vaja, naj bo\
+  ¹tevilo odgovorov izbirnega tipa pa\
+  Nepoenostavljeni numerièni odgovori (npr. <tt>3*5-sin(pi/3)</tt>) bodo\
+  sprejeti,zavrnjeni\
+  ©tevilo pogojev za preverjanje prostih odgovorov\
+into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
+name_nonnumeric,name_prompt,name_condition
+!endif
+
+!if $level=2
+ !set types=!sort nocase lines \
+avtomatièna zaznava,	default\
+algebraièni izraz,	algexp\
+besedilo (pribli¾no),	atext\
+besedilo (velikost èrk nepomembna),	nocase\
+besedilo (velikost èrk pomembna),	case\
+mno¾ica znakov,		chset\
+enaèba,			equation\
+konèna mno¾ica,		set\
+formalni izraz,		formal\
+dobesedni izraz,	litexp\
+matrika,		matrix\
+¹tevilo,		numeric\
+¹tevilo z obsegom,	range\
+¹tevilo z enotami,	units\
+numerièna funkcija,	function\
+vektor,			vector\
+besede v seznamu,	wlist
+
+!distribute lines Vnesite vsebino va¹e vaje z naslovom\
+  Tukaj definirate spremenljivke in nakljuène parametre\
+  Tukaj vpi¹ete besedilo naloge\
+  Prosti odgovori\
+  Pravi odgovor\
+  Zahtevana natanènost pri numeriènih odgovorih\
+  Vrednosti numeriènih funkcij bodo primerjane na intervalu\
+  Pogoji za analizo numeriènih odgovorov\
+  Ime pogoja\
+  Definicija pogoja\
+  Odgovori izbirnega tipa\
+  Dobri odgovori\
+  Slabi odgovori\
+  Èe ¾elite, lahko nalogi dodate tudi namig ali re¹itev:\
+  Namig<br>(html format)\
+  Re¹itev<br>(html format)\
+into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
+ name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
+ name_option,name_indication,name_solution
+
+!endif
+
+!if $level=4
+  !set name_update1=!nosubst The exercise <tt>$existing.oef</tt> is successfully updated in the module
+  !set name_update2=Failed to update <tt>$existing</tt> in the module
+  !set name_update3= Va¹a vaja je bila uspe¹no name¹èena.
+  !set name_update4=  V va¹i uèilnici ¾e obstaja povsem enaka vaja, zato (ponovna) namestitev ni bila izvedena.<p>
+  !set name_update5=Ta vaja bo dostopna le uporabnikom va¹e uèilnice in to le v primeru, èe jo boste objavili na katerem od delovnih listov.
+  !distribute lines Zdaj se lahko vrnete na\
+    vaje va¹e uèilnice\
+    in jih razporedite na delovne liste\
+ into name_youcan, name_consult,name_sheet
+!endif
+
+!distribute lines  You are under the raw mode for the creation of exercise.\
+  da bi registrirali ¾e pripravljeno kodo, jo skopirajte v okence\
+  Enter the entire source\
+  to register an existing source file, copy the file $into the text window.\
+  Here is the source of an existing exercise for your class.\
+  You can modify it in the window below.\
+  Here is the source of a public exercise that you have imported. You can modify it in the window below, before putting it $into the class.\
+  As this exercise is based on a standard model, try the\
+  testeur de script\
+ into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
+
+
+!exit
+:delete
+Vaja z naslovom <em>$deltitle</em> je izbrisana s seznama vaj va¹e uèilnice.
+<p>
+Èe je do tega pri¹lo po pomoti, imate zdaj zadnjo mo¾nost, da napako popravite. V tem primeru si shranite spodnjo kodo in jo s pomoèjo modula
+!href module=adm/createxo&mode=raw $wims_name_createxo
+ zopet registrirate.
+ 
+!exit
+:model
+<b>Note</b>. These models are prepared to allow people to construct rapidly
+their exercises. Hence they are often with a simplified and standardised
+structure, and don't offer the full power of the OEF syntax. But you can
+always put the exercises in raw mode to add more functionalities or modify
+them according to your need.
+
+!exit
+
+:register
+
+Your exercise has been successfully registered in this server. We warmly thank
+you for your contribution, in the name of all those who will benefit from it.
+<p>
+The administrator of this site will verify your exercise, and decide on whether
+or not to put it in an appropriate category.
+This may take a certain number of days.
+
+!exit

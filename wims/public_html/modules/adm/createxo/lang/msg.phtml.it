@@ -1,0 +1,95 @@
+!set wims_module_log=error: $error
+!set level=$[$level-1]
+
+<center><h3>Errore</h3></center> <p>
+
+!if no_title iswordof $error
+ Dare un titolo all'esercizio in preparazione.
+ !exit
+!endif
+
+!if empty_title iswordof $error
+ Il sistema non trova il titolo dell'esercizio. 
+ &Egrave; stato definito?
+ !exit
+!endif
+
+!if no_answer iswordof $error
+ L'esercizio proposto non richiede una risposta (di alcun tipo:
+ libera o scelta multipla).
+ !exit
+!endif
+
+!if no_statement iswordof $error
+ Il contenuto dell'esercizio &egrave; incompleto: manca 
+ l'enunciato.
+ !exit
+!endif
+
+!if no_reply2 iswordof $error
+ Il contenuto dell'esercizio &egrave; incompleto: la richiesta di risposte
+ non &egrave; valida. (Occorre riempire tutti
+  i campi.)
+ !exit
+!endif
+
+!if def_fail iswordof $error
+ Il sistema non &egrave; stato in grado di generare un esercizio valido
+ dai dati forniti. Ci sono errori nelle definizioni.
+ <p><pre>$oef2wims_out</pre> <p>
+ !if $mode!=$empty
+  !set level=1
+ !else
+  !set level=2
+ !endif
+ !exit
+!endif
+
+!if name_exhaust iswordof $error
+ Ci sono gi&agrave; numerosi esercizi nel corso che hanno lo stesso titolo
+ di quello appena creato. Se gli esercizi sono diversi, &egrave; 
+ preferibile scegliere un titolo diverso e 
+ riproporre l'esercizio.
+ !exit
+!endif
+
+!if name_exhaustpub iswordof $error
+ Ci sono gi&agrave; numerosi esercizi nel corso che hanno lo stesso titolo
+ di quello appena creato. Se si tratta di esercizi diversi, &egrave; 
+ preferibile scegliere un titolo diverso e 
+ riproporre l'esercizio.
+ !exit
+!endif
+
+!if unknown iswordof $error
+ Il salvataggio dell'esercizio non &egrave; andato a buon fine per un errore.
+ !exit
+!endif
+
+!if already iswordof $error
+ L'esercizio che si vuole salvare &egrave; gi&agrave; salvato.
+ !exit
+!endif
+
+!if not_class iswordof $error
+ La richiesta non &egrave; ammissibile.
+ !exit
+!endif
+
+!if not_supervisor iswordof $error
+ Hmm... Solo i docenti possono cancellare esercizi da 
+ un corso!
+ <p>La richiesta non &egrave; ammessa.
+ !exit
+!endif
+
+!if not_exist iswordof $error
+ !if $catmodule!=$empty
+  L'esercizio <tt>$del</tt> del modulo <tt>$catmodule</tt>
+  che volete importare non esiste, o non siete autorizzati a importarlo.
+ !else
+  L'esercizio <tt>$del</tt> che volete modificare/cancellare non esiste.
+ !endif
+ !exit
+!endif
+

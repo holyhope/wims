@@ -1,0 +1,25 @@
+!! This file can contain contents which go to the end of the page.
+
+!if $wims_exec_error!=$empty
+<small><pre>*******************************************************
+$wims_exec_error
+*******************************************************</pre></small>
+!reset wims_exec_error
+!endif
+
+!set wims_menu_items=!append line backcreatexo,1,cmd=resume&realtest=no\
+to $wims_menu_items
+!if $mode=model
+!set wims_menu_items=!append line modellist,1,cmd=reply&level=1&mode=model\
+to $wims_menu_items
+!endif
+!if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
+   !set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+   to $wims_menu_items  
+!endif
+
+!if $wims_user!=$empty
+ !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
+ to $wims_menu_items
+!endif
+

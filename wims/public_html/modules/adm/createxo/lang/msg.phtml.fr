@@ -1,0 +1,97 @@
+!set wims_module_log=error: $error
+!set level=$[$level-1]
+
+<center><h3>Erreur</h3></center> <p>
+
+!if no_title iswordof $error
+ Veuillez donner un titre à votre exercice en préparation.
+ !exit
+!endif
+
+!if empty_title iswordof $error
+ Le logiciel n'a pas trouvé de titre pour votre exercice. L'avez-vous
+ défini?
+ !exit
+!endif
+
+!if no_answer iswordof $error
+ Votre exercice doit demander au moins une réponse (numérique, fonctionnelle
+ ou choix multiples).
+ !exit
+!endif
+
+!if no_statement iswordof $error
+ Le contenu de votre exercice est incomplet&nbsp;: vous n'avez pas défini
+ l'énoncé de l'exercice.
+ !exit
+!endif
+
+!if no_reply2 iswordof $error
+ Le contenu de votre exercice est incomplet&nbsp;: pas de demande de réponse 
+ valable. (Une demande de réponse n'est valable que si tous les champs sont
+ remplis.)
+ !exit
+!endif
+
+!if def_fail iswordof $error
+ Le logiciel n'a pas pu générer un exercice valable à partir de ce que vous
+ avez soumis. Il y a des erreurs dans vos définitions.
+ <p><pre>$oef2wims_out</pre> <p>
+ !if $mode!=$empty
+  !set level=1
+ !else
+  !set level=2
+ !endif
+ !exit
+!endif
+
+!if name_exhaust iswordof $error
+ Il y a déjà plusieurs exercices de votre classe qui portent
+ le même titre que celui que vous voulez créer. Si ces exercices sont VRAIMENT
+ différents, choisissez un autre titre pour votre exercice actuel avant
+ de l'enregistrer.
+ !exit
+!endif
+
+!if name_exhaustpub iswordof $error
+ Il y a déjà plusieurs exercices soumis qui portent
+ le même titre que celui que vous voulez créer. Si vous n'avez pas soumis le
+ même exercice plusieurs fois, choisissez un autre titre pour votre exercice 
+ actuel avant de l'enregistrer.
+ !exit
+!endif
+
+!if unknown iswordof $error
+ L'enregistrement de votre exercice a échoué pour une raison inconnue. Désolé.
+ !exit
+!endif
+
+!if already iswordof $error
+ L'exercice que vous voulez enregistrer est déjà en place.
+ !exit
+!endif
+
+!if not_class iswordof $error
+ Votre demande est illégale.
+ !exit
+!endif
+
+!if not_supervisor iswordof $error
+ Hmm... Bien sûr il n'y a que l'enseignant qui peut effacer un exercice de la
+ classe&nbsp;!
+ <p>Votre demande est refusée.
+ !exit
+!endif
+
+!if not_exist iswordof $error
+ !if $catmodule!=$empty
+  L'exercice <tt>$del</tt> de <tt>$catmodule</tt>
+  que vous voulez importer n'existe pas ou vous n'êtes pas autorisé à 
+l'importer.
+ !else
+  L'exercice <tt>$del</tt> que vous voulez modifier/effacer n'existe
+  pas dans votre classe.
+ !endif
+ !exit
+!endif
+

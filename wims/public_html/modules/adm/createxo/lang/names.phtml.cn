@@ -1,0 +1,176 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!distribute lines 一步步\
+  源码模式\
+  文件模式\
+  其它方式\
+  现成模式\
+  Send the file\
+  Source file of your exercise\
+  Back to the menu\
+  Continue to the content of the exercise\
+  Modify an existing exercise of the class\
+  Back to the preceeding step.\
+  Send the source file\
+  Clean\
+  D閙o\
+  Adapter\
+  Test the exercise\
+  Correct the error\
+  Back to \
+  The realisation of your exercise will be as follows.\
+  Here are the available exercise models. Choose one.\
+  Module temporarily containing your exercise.\
+into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
+  name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
+  name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
+  name_correction,name_backmodule,name_realisation,name_availablemodels,name_temp_module
+
+!set name_normal=!lowercase $wims_name_normalmode
+!set name_raw=!lowercase $wims_name_rawmode
+!set name_file=!lowercase $wims_name_filemode
+
+!set name_modefile1=You are under the file mode for the creation of exercise. \
+  Under this mode, you can send a local OEF source file to the server. For a first creation of exercise, prefer the
+!set name_modefile2=To edit online, you can also use the
+
+!set name_first=Basic exercises
+!set name_datalist=Exercises with a data list
+
+!set name_save=!nosubst Voici le source de votre exercice <font color=red><b>$oef_title</b></font>,\
+   en format OEF (Open Exercice Format). Pour le sauver, coupez le texte entre les deux lignes\
+    horizontales et collez-le dans un fichier.
+
+!distribute lines Number of parameters\
+  Number of replies\
+  Send an image file to the exercise.\
+  Or modify the source file then\
+  Put this exercise $into your class\
+  to replace the old one\
+  as a new exercise\
+  send it again\
+  Put it to the development module\
+  Save the source\
+  of the exercise on your computer!\
+into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
+name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
+
+!set name_success=The software have successfully recognized your exercise.
+
+!if $level=1
+!distribute lines Give a title to the exercise you want to create\
+  Format of the statement of the problem:\
+  This exercise will ask for\
+  freestyle replies and\
+  multiple-choice replies\
+  LNon-computed numerical replies (such as <tt>3*5-sin(pi/3)</tt>) will be\
+  accepted,refused\
+  conditions will be used to test freestyle replies.\
+into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
+name_nonnumeric,name_prompt,name_condition
+!endif
+
+!if $level=2
+ !set types=!sort nocase lines \
+auto,			default\
+algebraic expression,	algexp\
+approximative text,	atext\
+case-nonsensitive text,	nocase\
+case-sensitive text,	case\
+raw text,		raw\
+character set, 		chset\
+equation,		equation\
+finite set,		set\
+formal expression,	formal\
+literal expression,	litexp\
+matrix,			matrix\
+number,			numeric\
+number with range,	range\
+number with units,	units\
+numerical function,	function\
+vector,			vector\
+words in a list,	wlist
+
+!distribute lines Now please enter the content of your exercise \
+  You may define random parameters here\
+  The statement of the exercise\
+  Freestyle replies\
+  Good solution\
+  Required precision of numerical replies\
+  (Numerical) functions will be compared in the interval\
+  Conditions for analysis of (numerical) replies\
+  Name of the condition\
+  Definition of the condition\
+  Multiple choices\
+  Good choices\
+  Bad choices\
+  You may optionally give a hint and/or a solution\
+  Indication<br>(html format)\
+  Solution<br>(html format)\
+into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
+ name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
+ name_option,name_indication,name_solution
+
+!endif
+
+!if $level=4
+  !set name_update1=!nosubst The exercise <tt>$existing.oef</tt> is successfully updated in the module
+  !set name_update2=Failed to update <tt>$existing</tt> in the module
+  !set name_update3=Your exercise has been successfully installed.
+  !set name_update4= We have found an identical exercise in your class. The double registration is therefore ignored. <p>
+  !set name_update5=This exercise will be accessible only to participants of your class, and \
+    this only if you put it into a worksheet.
+
+  !distribute lines Now you can\
+    consult the exercises of your class\
+    and eventually put them $into your worksheets\
+ into name_youcan, name_consult,name_sheet
+!endif
+
+!distribute lines  You are under the raw mode for the creation of exercise.\
+  As this exercise is based on a standard model, try the\
+  Enter the entire source\
+  to register an existing source file, copy the file $into the text window.\
+  Here is the source of an existing exercise for your class.\
+  You can modify it in the window below.\
+  Here is the source of a public exercise that you have imported.You can modify it in the window below, before putting it $into the class.\
+  As this exercise is based on a standard model, try the\
+  testeur de script\
+ into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
+
+
+!exit
+:delete
+The exercise <em>$deltitle</em> has been removed from the list of exercises of your
+class.
+<p>
+In case you have made a wrong manoeuvre and would like to recover your error,
+here is the source of this exercise which you can save as an emergency
+measure, and later copy to 
+!href module=adm/createxo&mode=raw $wims_name_createxo
+<p>
+
+!exit
+:model
+<b>Note</b>. These models are prepared to allow people to construct rapidly
+their exercises. Hence they are often with a simplified and standardised
+structure, and don't offer the full power of the OEF syntax. But you can
+always put the exercises in raw mode to add more functionalities or modify
+them according to your need.
+
+!exit
+
+:register
+
+Your exercise has been successfully registered in this server. We warmly thank
+you for your contribution, in the name of all those who will benefit from it.
+<p>
+The administrator of this site will verify your exercise, and decide on whether
+or not to put it in an appropriate category.
+This may take a certain number of days.
+
+!exit

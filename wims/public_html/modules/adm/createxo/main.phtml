@@ -1,0 +1,85 @@
+
+!if $oef_test=yes
+ !set wims_html_header=!append line $header_js to $wims_html_header
+!endif
+!read adm/css.phtml
+!header
+
+!if $modtoolhelp=yes
+ !read help.phtml
+ !goto end
+!endif
+
+!if $deleted!=$empty
+ !read delete.phtml
+ !goto end
+!endif
+
+!if $level=3 and $catsource=yes
+ $name_save
+ !href cmd=resume $name_menuback
+ <hr>
+<pre>
+!mexec catsrc.sh
+</pre>
+ <hr> <p>
+ <center>
+ !href cmd=resume $name_menuback
+ </center>
+ !set catsource=no
+ !goto end
+!endif
+
+!if $oef_test=yes
+ <center>$name_realisation
+ !if $wims_theme_version=0 or $wims_theme_version=
+ <br>
+ !href cmd=resume&realtest=no $name_backmodule $module_title.
+ !endif
+ </center>
+ <p><hr> <p>
+ !changeto oef/Main.phtml
+!endif
+
+!if $error!=$empty
+ !read msg.phtml
+ <p>
+ !href cmd=reply $name_correction.
+ !goto end
+!endif
+
+!if $mode!=$empty and $level<=2
+ !read $mode$level.phtml
+!else
+ !read level$level.phtml
+!endif
+
+:end
+!if $level notwordof 0 6
+ !set wims_menu_items=!append line createxo,1,module=adm/createxo\
+to $wims_menu_items
+!else
+ !set wims_menu_items=createxo,0,Createxo\
+to $wims_menu_items
+!endif
+!if $level iswordof 0 1
+!set wims_menu_items=!append line model,1,cmd=reply&mode=model&level=1\
+normalmode,1,cmd=reply&mode=normal&level=1\
+rawmode,1,cmd=reply&rawinp=yes&level=1\
+filemode,1,cmd=reply&mode=file&level=1\
+ to $wims_menu_items
+ 
+!set wims_menu_items=!append line ,0,\
+othermethods,0,$wims_name_othermethods\
+Createqcm,1,module=adm/auth/createqcm\
+Confia2qcm,1,module=adm/auth/confia2qcm\
+modtool,1,module=adm/modtool\
+quicktool,1,module=adm/quicktool\
+latex2wims,1,module=adm/latex2wims\
+ to $wims_menu_items
+!endif
+
+!tail
+
+!reset wims_deposit, delfile
+
