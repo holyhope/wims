@@ -8,21 +8,21 @@
   Altri metodi\
   modelli già pronti\
   Send the file\
-  Source file of your exercise\
-  Back to the menu\
-  Continue to the content of the exercise\
-  Modify an existing exercise of the class\
-  Back to the preceeding step.\
-  Send the source file\
-  Clean\
-  Démo\
-  Adapter\
-  Test the exercise\
-  Correct the error\
-  Back to \
-  The realisation of your exercise will be as follows.\
-  Here are the available exercise models. Choose one.\
-  Module temporarily containing your exercise.\
+  Nome del file OEF contenente l'esercizio\
+  Torna al menù di partenza\
+  Continua per creare il contenuto dell'esercizio\
+  Modifica un esercizio del corso già esistente\
+  Torna al passaggio precedente\
+  Invia il file\
+  cancella\
+  Demo\
+  Modifica\
+  provare l'esercizio\
+  Correggi l'errore\
+  Torna a \
+  La realizzazione dell'esercizio sarà come segue.\
+  Questi sono i modelli di esercizi disponibili. &Egrave; possibile selezionarne\
+  Modulo temporaneo contenente l'esercizio.\
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
@@ -32,83 +32,83 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 !set name_raw=!lowercase $wims_name_rawmode
 !set name_file=!lowercase $wims_name_filemode
 
-!set name_modefile1=You are under the file mode for the creation of exercise. \
-  Under this mode, you can send a local OEF source file to the server. For a first creation of exercise, prefer the
-!set name_modefile2=To edit online, you can also use the
+!set name_modefile1 Sei nel modo <em>file</em> per la creazione dell'esercizio. Questo modo ti \
+   permette di copiare sul server un file OEF creato in locale contenente il testo dell'esercizio.\
+   Per creare un nuovo esercizio da zero si consiglia il
+ !set name_modefile2=&Egrave; anche possibile utilizzare il
 
-!set name_first=Basic exercises
-!set name_datalist=Exercises with a data list
+!set name_first=Esercizi di base
+!set name_datalist=Esercizi con liste di dati
 
-!set name_save=!nosubst Voici le source de votre exercice <font color=red><b>$oef_title</b></font>,\
-   en format OEF (Open Exercice Format). Pour le sauver, coupez le texte entre les deux lignes\
-    horizontales et collez-le dans un fichier.
+!set name_save=!nosubst  Questo è il codice sorgente dell'esercizio\
+ <font color=red><b>$oef_title</b></font>, in formato OEF (<em>Open Exercice Format</em>).\
+ Per salvarlo, copiare il testo compreso tra le due righe orizzontali, e salvarlo in un file.
 
-!distribute lines Number of parameters\
-  Number of replies\
-  Send an image file to the exercise.\
-  Or modify the source file then\
-  Put this exercise $into your class\
-  to replace the old one\
-  as a new exercise\
-  send it again\
-  Put it to the development module\
-  Save the source\
-  of the exercise on your computer!\
+!distribute lines Numero di parametri definiti\
+  Numero di risposte\
+  inserire un file (immagine, documento pdf, ...) nell'esercizio\
+  O modificare direttamente il file sorgente\
+  inserire l'esercizio nella pagine del corso, sia\
+  sostituendo il vecchio esercizio\
+  creandone uno nuovo\
+  invia di nuovo\
+  inserirlo tra i moduli in modtool\
+  salvare il codice sorgente\
+  dell'esercizio!\
 into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
 
-!set name_success=The software have successfully recognized your exercise.
+!set name_success=Il server ha salvato l'esercizio con i seguenti parametri
 
 !if $level=1
-!distribute lines Give a title to the exercise you want to create\
-  Format of the statement of the problem:\
-  This exercise will ask for\
-  freestyle replies and\
-  multiple-choice replies\
-  LNon-computed numerical replies (such as <tt>3*5-sin(pi/3)</tt>) will be\
-  accepted,refused\
-  conditions will be used to test freestyle replies.\
+!distribute lines Dare un titolo all'esercizio\
+  Enunciato del problema\
+  L'esercizio chiederà\
+  risposte libere e \
+  risposte a scelta multipla\
+  Risposte numeriche non calcolate (tipo <tt>3*5-sin(pi/3)</tt>)\
+  saranno, non saranno accettate\
+ condizioni speciali saranno utilizzate per verificare risposte libere (numeriche).\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
 name_nonnumeric,name_prompt,name_condition
 !endif
 
 !if $level=2
- !set types=!sort nocase lines \
+!set types=!sort nocase lines \
 auto,			default\
-algebraic expression,	algexp\
-approximative text,	atext\
-case-nonsensitive text,	nocase\
-case-sensitive text,	case\
+espressione algebrica,	algexp\
+espressione letterale,	litexp\
+espressione formale,	formal\
+testo approssimativo,	atext\
+testo (non dist. M/m),	nocase\
+testo (dist. M/m),	case\
 raw text,		raw\
-character set, 		chset\
-equation,		equation\
-finite set,		set\
-formal expression,	formal\
-literal expression,	litexp\
-matrix,			matrix\
-number,			numeric\
-number with range,	range\
-number with units,	units\
-numerical function,	function\
-vector,			vector\
-words in a list,	wlist
+equazione,		equation\
+insieme (finito),	set\
+matrice,		matrix\
+numero,			numeric\
+numero in un intervallo,	range\
+numero con unità di misura,	units\
+funzione numerica,	function\
+vettore,		vector\
+parola in una lista,	wlist
 
-!distribute lines Now please enter the content of your exercise \
-  You may define random parameters here\
-  The statement of the exercise\
-  Freestyle replies\
-  Good solution\
-  Required precision of numerical replies\
-  (Numerical) functions will be compared in the interval\
-  Conditions for analysis of (numerical) replies\
-  Name of the condition\
-  Definition of the condition\
-  Multiple choices\
-  Good choices\
-  Bad choices\
-  You may optionally give a hint and/or a solution\
-  Indication<br>(html format)\
-  Solution<br>(html format)\
+!distribute lines Inserire ora il contenuto dell'esercizio\
+  Parametri dell'esercizio. Si possono utilizzare parametri `random'\
+  Enunciato dell'esercizio\
+  Risposte libere\
+  Soluzione esatta\
+  Precisione richiesta nelle risposte numeriche\
+  Le funzioni (numeriche) saranno valutate nell'intervallo\
+  Condizioni di analisi delle risposte (numeriche)\
+  Nome della condizione\
+  Definizione della condizione\
+  Scelte multiple\
+  Risposta esatta\
+  Risposte errate\
+  &Egrave; possibile dare un suggerimento o inserire la soluzione\
+  Suggerimento<br>(formato html)\
+  Soluzione<br>(formato html)\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution
@@ -116,59 +116,59 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst The exercise <tt>$existing.oef</tt> is successfully updated in the module
-  !set name_update2=Failed to update <tt>$existing</tt> in the module
-  !set name_update3=Your exercise has been successfully installed.
-  !set name_update4= We have found an identical exercise in your class. The double registration is therefore ignored. <p>
-  !set name_update5=This exercise will be accessible only to participants of your class, and \
-    this only if you put it into a worksheet.
+  !set name_update1=!nosubst  L'esercizio <tt>$existing.oef</tt> è stato salvato con successo in
+  !set name_update2=Non è stato possibile modificare <tt>$existing</tt> del module
+  !set name_update3= L'esercizioè stato salvato con successo.
+  !set name_update4= C'eè già un esercizio uguale nel corso. La seconda registrazioneè ignorata. <p>
+  !set name_update5= L'esercizio sarà visibile solo dagli studenti del corso, e solo\
+ nel momento in cui verrà inserito in un test di autovalutazione.
 
-  !distribute lines Now you can\
-    consult the exercises of your class\
-    and eventually put them $into your worksheets\
+  !distribute lines A questo punto potete\
+    Consultare l'elenco degli esercizi del corso.\
+    Ed eventualmente inserirli in un test di autovalutazione\
  into name_youcan, name_consult,name_sheet
 !endif
 
-!distribute lines  You are under the raw mode for the creation of exercise.\
-  As this exercise is based on a standard model, try the\
-  Enter the entire source\
-  to register an existing source file, copy the file into the text window.\
-  Here is the source of an existing exercise for your class.\
-  You can modify it in the window below.\
-  Here is the source of a public exercise that you have imported.You can modify it in the window below, before putting it into the class.\
-  As this exercise is based on a standard model, try the\
-  testeur de script\
+!distribute lines Questo è il modo `esperti' per la creazione di un esercizio.\
+  Dal momento che questo esercizio è costruito seguendo un modello standard, si consiglia \
+  Inserire il codice sorgente\
+  per inserire il contenuto di un file già esistente, fare un copia&amp;incolla da un editor di testow.\
+  Questo è il codice sorgente di  un esercizio già esistente. &Egrave; possibile modificarlo nella finestra sottostante.\
+  Questo è il codice sorgente di un esercizio <em>pubblico</em> del sito, importabile nel corso.&Egrave; possibile modificarlo nella finestra sottostante, prima di inserirlo tra gli esercizi privati del corso.\
+  Dal momento che questo esercizio è costruito seguendo un modello standard, si consiglia \
+  Potete anche 
+  verificare il codice\
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
 
 
 !exit
 :delete
-The exercise <em>$deltitle</em> has been removed from the list of exercises of your
-class.
+L'esercizio <em>$deltitle</em> è stato tolto dagli esercizi del
+corso.
 <p>
-In case you have made a wrong manoeuvre and would like to recover your error,
-here is the source of this exercise which you can save as an emergency
-measure, and later copy to 
-!href module=adm/createxo&mode=raw $wims_name_createxo
-<p>
+In caso si tratti di un errore e si voglia recuperare il testo, questo
+è il codice sorgente dell'esercizio, che può essere salvato,
+conservato e poi reinserito in 
+
 
 !exit
 :model
-<b>Note</b>. These models are prepared to allow people to construct rapidly
-their exercises. Hence they are often with a simplified and standardised
-structure, and don't offer the full power of the OEF syntax. But you can
-always put the exercises in raw mode to add more functionalities or modify
-them according to your need.
+<b>Nota</b>. Questi modelli sono stati preparati per permettere una facile
+creazione di nuovi esercizi. Si tratta però di esercizi estremamente 
+semplificati e standardizzati e non sono pienamente mostrate le potenzialità 
+del linguaggio OEF. Naturalmente è sempre possibile passare al modo esperti 
+e aggiungere le funzionalità via via necessarie.
 
 !exit
 
 :register
 
-Your exercise has been successfully registered in this server. We warmly thank
-you for your contribution, in the name of all those who will benefit from it.
+L'esercizio è stato salvato con successo dal server. Ringraziamo vivamente \
+per il contributo, in nome di tutti quelli che 
+lo potranno così utilizzare.
 <p>
-The administrator of this site will verify your exercise, and decide on whether
-or not to put it in an appropriate category.
-This may take a certain number of days.
+L'amministratore del server verificherà l'esercizio e deciderà
+se inserirlo e in quale categoria.
+Questo potrà richiedere qualche giorno.
 
 !exit

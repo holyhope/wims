@@ -1,15 +1,15 @@
-
-!set name_title=Titolo
-!set name_author=Autore
-!set name_email=Indirizzo e-mail
+!!useful ???
+!set name_title=$wims_name_title
+!set name_author=$wims_name_Author
+!set name_email=$wims_name_email
 
 !form reply name=replyform id=replyform
 <input type=hidden name=level value=3>
 $table_header
 <caption><b>$model_title<sup>
-!href cmd=reply&rawinp=yes Modo esperti
+!href cmd=reply&rawinp=yes $wims_name_rawmode
 &nbsp;
-!href cmd=reply&level=1&mode=model Elenco dei modelli
+!href cmd=reply&level=1&mode=model $wims_name_modellist
 </sup>
 </b>
 <br>$desc<sup>
@@ -69,7 +69,7 @@ $table_end <p>
   <a name=textarea$i></a>
   $(title$i)
   !set val=!reinput $(val$i)
-  <small><a href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">cancella</a>
+  <small><a href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
   !if $(help$i)!=$empty
    &nbsp;
    !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
@@ -87,7 +87,7 @@ $table_end <p>
 <center>
 <input type=submit value="$wims_name_tosave">
 &nbsp;
-!href cmd=reply&level=1 Annulla le modifiche
+!href cmd=reply&level=1 $wims_name_giveup
 .
 </center>
 

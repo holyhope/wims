@@ -16,25 +16,26 @@
 !endif
 
 !if $level=3 and $catsource=yes
- Tukaj je koda va¹e vaje za naslovom
- <font color=red><b>$oef_title</font></b> v OEF formatu (Open Exercise Format).
- Èe ¾elite, lahko besedilo med èrtama prenesete v svoj najljub¹i urejevalnik in ga shranite na disk ali drug medij.
- !href cmd=resume Nazaj na meni.
+ $name_save
+ !href cmd=resume $name_menuback
  <hr>
 <pre>
 !mexec catsrc.sh
 </pre>
  <hr> <p>
  <center>
- !href cmd=resume Nazaj na meni.
+ !href cmd=resume $name_menuback
  </center>
  !set catsource=no
  !goto end
 !endif
 
 !if $oef_test=yes
- <center>Tak¹na bo izvedba va¹e vaje:
- !href cmd=resume&realtest=no Nazaj na $module_title.
+ <center>$name_realisation
+ !if $wims_theme_version=0 or $wims_theme_version=
+ <br>
+ !href cmd=resume&realtest=no $name_backmodule $module_title.
+ !endif
  </center>
  <p><hr> <p>
  !changeto oef/Main.phtml
@@ -43,7 +44,7 @@
 !if $error!=$empty
  !read msg.phtml
  <p>
- !href cmd=reply Popravi napako.
+ !href cmd=reply $name_correction.
  !goto end
 !endif
 
@@ -62,7 +63,7 @@ to $wims_menu_items
 to $wims_menu_items
 !endif
 !if $level iswordof 0 1
-!set wims_menu_items=!append line  model,1,cmd=reply&mode=model&level=1\
+!set wims_menu_items=!append line model,1,cmd=reply&mode=model&level=1\
 normalmode,1,cmd=reply&mode=normal&level=1\
 rawmode,1,cmd=reply&rawinp=yes&level=1\
 filemode,1,cmd=reply&mode=file&level=1\

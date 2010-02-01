@@ -1,23 +1,16 @@
 
-!set name_first=Esercizi di base
-!set name_datalist=Esercizi con liste di dati
-
 !readproc model/makelist.proc
 
-Questi sono i modelli di esercizi disponibili. &Egrave; possibile selezionarne
-uno oppure 
-!href cmd=reply&level=0 tornare
- alla pagina iniziale.
-
+$name_availablemodels
 <p>
 !for t in $types
  !default name_$t=$t
  $table_header
  <caption>$(name_$t)</caption>
  $table_hdtr
- <th>Tipo</th>
- <th>Azione</th>
- <th>Descrizione</th>
+ <th>$wims_name_Type</th>
+ <th>$wims_name_Action</th>
+ <th>$wims_name_Description</th>
  </tr>
  !for f in $(type_$t)
   !set r=!record 1 of model/src/$f.oef
@@ -25,9 +18,9 @@ uno oppure
   $table_tr
   <td>$(tit_$f)</td>
   <td nowrap>
-  !href cmd=resume&level=3&mode=model&model=$f&realtest=yes Demo
+  !href cmd=resume&level=3&mode=model&model=$f&realtest=yes $name_demo
 &nbsp;
-  !href cmd=reply&level=2&mode=model&model=$f Modifica
+  !href cmd=reply&level=2&mode=model&model=$f $name_adapt
   </td>
   <td><small>$(desc_$f)
   !href target=wims_mhelp cmd=help&special_parm=model,1,$f &gt;&gt;
@@ -38,11 +31,7 @@ uno oppure
  <p>
 !next t
 
-<b>Nota</b>. Questi modelli sono stati preparati per permettere una facile
-creazione di nuovi esercizi. Si tratta però di esercizi estremamente 
-semplificati e standardizzati e non sono pienamente mostrate le potenzialità 
-del linguaggio OEF. Naturalmente è sempre possibile passare al modo esperti 
-e aggiungere le funzionalità via via necessarie.
+!read names.phtml model
 
 !reset mode
 

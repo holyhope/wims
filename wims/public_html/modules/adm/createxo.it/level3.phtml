@@ -1,27 +1,27 @@
 
-Il server ha salvato l'esercizio con i seguenti parametri
-(per favore verificarli).
-<table bgcolor="#d0d0d0">
-<tr><td align=right>Titre<td><td>$title
-<tr><td align=right>Numero di parametri definiti<td><td>$varcnt
-<tr><td align=right>Numero di risposte libere<td><td>$replycnt
-<tr><td align=right>Numero di risposte a scelta multipla<td><td>$choicecnt
-</table>
-&Egrave; ora possibile
+$name_success
+!set rr=$[$replycnt+$choicecnt]
+$table_header
+$table_tr<td width=50%>$wims_name_title</td><td>$title</td>
+$table_tr<td>$name_parameter_cnt</td><td>$varcnt</td>
+$table_tr<td>$name_answer_cnt</td><td>$rr</td>
+$table_end
+<p>
+
 <ul><li>
-!href cmd=resume&realtest=yes&retest=again provare l'esercizio
-. 
+!href cmd=resume&realtest=yes&retest=again $wims_name_testexo
+.
 !if $mode!=file
-<li><p>
+ <li><p>
 !!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
  !if $to_ia_qcm=-1
-   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 retourner à confia2qcm
+   !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 $wims_name_backconfia2qcm
  !endif
  !if $to_ia_qcm=-2
-   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 retourner à createqcm
+   !href module=adm/auth/createqcm&cmd=new&chexo=2&exo=1&to_ia_qcm=2 $wims_name_backcreateqcm
  !endif
  !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
-!href cmd=reply&level=2 modificare il sorgente del vostro esercizio.
+   !href cmd=reply&level=2 $wims_name_exomodify
  !endif
 !!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 .
@@ -30,58 +30,55 @@ Il server ha salvato l'esercizio con i seguenti parametri
  !form reply
  <input type=hidden name=level value=3>
  <li><p>
- O modificare direttamente il file sorgente
- <input type=submit value="invia di nuovo">:
+ $name_modify
+ <input type=submit value="$name_sendagain">
  <input type=file name=wims_deposit>
- </form>  
+ </form>
  <li><p>
- !href cmd=reply&level=1&mode=normal Torna al menù di partenza
+ !href cmd=reply&level=1&mode=normal $name_menuback
 .
 !endif
 !if $wims_user!=$empty
- <li><p>&Egrave; anche possibile
- !href cmd=reply&level=6 inserire un file (immagine, documento pdf, ...)
- nell'esercizio.
+ <li><p>
+ !href cmd=reply&level=6 $name_deposit
  !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
  to $wims_menu_items
 !endif
 !if $wims_user!=$empty or $existing!=$empty
  !if $success!=1 and $regout!=fail
- <li><p>
- Una volta che tutto &egrave; corretto, &egrave; possibile
- !if $existing!=$empty
-  !if ..devel/ notin ..$catmodule
+    <li><p>
+  !if $existing!=$empty
+   !if ..devel/ notin ..$catmodule
     !if $catmodule=$empty
-   inserire l'esercizio nella pagine del corso, sia
-   !href cmd=reply&level=4 sostituendo il vecchio esercizio
-,  che
-   !href cmd=reply&level=4&newone=1 creandone uno nuovo
-   !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
- newversion,1,cmd=reply&level=4&newone=1\
- to $wims_menu_items
-  !else
-   !href cmd=reply&level=4 inserirlo tra i moduli del corso
+    $name_putinclass
+    !href cmd=reply&level=4 $name_replace
+   $wims_name_or
+    !href cmd=reply&level=4&newone=1 $name_new
+    !set wims_menu_items=!append line replace,1,cmd=reply&level=4\
+  newversion,1,cmd=reply&level=4&newone=1\
+    to $wims_menu_items
+    !else
+     !href cmd=reply&level=4 $name_putinclass
      !reset catmodule
     !endif
    !else
-    !href cmd=reply&level=4 inserirlo tra i moduli in modtool
-   !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+    !href cmd=reply&level=4 $name_developer
+    !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
+    to $wims_menu_items
+   !endif
+  !else
+   !href cmd=reply&level=4 $name_putinclass
+   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
    to $wims_menu_items
   !endif
- !else
-  !href cmd=reply&level=4 inserire l'esercizio nella pagine del corso
-   !set wims_menu_items=!append line putclass,1,cmd=reply&level=4\
- to $wims_menu_items
- !endif
 .
-!endif
+ !endif
  !reset success
 !endif
 !if $mode!=file
  <li><p>
- Come ultima cosa pu&ograve; essere utile 
- !getfile submit.oef salvare il codice sorgente
- dell'esercizio!
+ !getfile submit.oef $name_savesource
+ $name_download
 !endif
 </ul>
 !set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\

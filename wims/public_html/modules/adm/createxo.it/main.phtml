@@ -16,28 +16,25 @@
 !endif
 
 !if $level=3 and $catsource=yes
- Questo &egrave; il codice sorgente dell'esercizio
- <font color=red><b>$oef_title</b></font>, in formato OEF (<em>Open Exercice Format</em>).
- Per salvarlo, copiare il testo compreso tra le due righe orizzontali, e 
- salvarlo in un file.
- !href cmd=resume Torna al menu
+ $name_save
+ !href cmd=resume $name_menuback
  <hr>
 <pre>
 !mexec catsrc.sh
 </pre>
  <hr> <p>
  <center>
- !href cmd=resume Torna al menu
+ !href cmd=resume $name_menuback
  </center>
  !set catsource=no
  !goto end
 !endif
 
 !if $oef_test=yes
- <center>La realizzazione dell'esercizio sar&agrave; come segue.
+ <center>$name_realisation
  !if $wims_theme_version=0 or $wims_theme_version=
  <br>
- !href cmd=resume&realtest=no Torna a $module_title.
+ !href cmd=resume&realtest=no $name_backmodule $module_title.
  !endif
  </center>
  <p><hr> <p>
@@ -47,7 +44,7 @@
 !if $error!=$empty
  !read msg.phtml
  <p>
- !href cmd=reply Correggi l'errore.
+ !href cmd=reply $name_correction.
  !goto end
 !endif
 
@@ -66,7 +63,7 @@ to $wims_menu_items
 to $wims_menu_items
 !endif
 !if $level iswordof 0 1
-!set wims_menu_items=!append line  model,1,cmd=reply&mode=model&level=1\
+!set wims_menu_items=!append line model,1,cmd=reply&mode=model&level=1\
 normalmode,1,cmd=reply&mode=normal&level=1\
 rawmode,1,cmd=reply&rawinp=yes&level=1\
 filemode,1,cmd=reply&mode=file&level=1\

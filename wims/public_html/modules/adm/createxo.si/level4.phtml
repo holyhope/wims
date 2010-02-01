@@ -1,25 +1,40 @@
+!if $wims_developer!=$empty and ..devel/ isin ..$catmodule
+ !if $reg1=success
+  $name_update1
+  <tt>$catmodule</tt>
+  
+ !else
+ $name_update2
+  <tt>$catmodule</tt>.
+  <pre>$wims_exec_error</pre>
+ !endif
+ <p>
+ !href cmd=reply&level=3 $name_prevstep
+ !exit
+!endif
+
 !if $wims_user=$empty
  !read level5.phtml
 !else
  !if $already!=yes
-  Va¹a vaja je bila uspe¹no name¹èena.
+  $name_update3
  !else
-  V va¹i uèilnici ¾e obstaja povsem enaka vaja, zato (ponovna) namestitev ni bila izvedena.<p>
+  $name_update4 <p>
  !endif
- Ta vaja bo dostopna le uporabnikom va¹e uèilnice in to le v primeru, èe jo boste objavili na katerem od delovnih listov.
+ $name_update5
  <p>
  !if $wims_user!=supervisor
-  Zdaj se lahko vrnete na
-  !href module=classes/$lang&special_parm=.nocache. vaje va¹e uèilnice.
+  $name_youcan
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+.
  !else
-  Zdaj se lahko vrnete na:
+  $name_youcan
   <ul>
   <li><p>
-  !href module=classes/$lang&special_parm=.nocache. vaje va¹e uèilnice
-  in jih razporedite na delovne liste.
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+  ($name_sheet).
   <li><p>
-  !href cmd=reply&level=3&success=1 prej¹nji korak
-.
+  !href cmd=reply&level=3&success=1 $name_prevstep.
   </ul>
  !endif
 !endif

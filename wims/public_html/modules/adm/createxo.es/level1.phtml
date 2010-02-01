@@ -1,34 +1,32 @@
 
 !form reply
 <input type=hidden name=level value=2>
-Dele un título al ejercicio que quiere crear:<br>
+$name_givetitle<br>
 <input size=40 maxlength=40 name=oef_title value="$oef_title"> <p>
-Formato del enunciado del problema:
+$name_giveformat
 !formselect oef_format list tex,html
  [
- !href target=wims_mhelp cmd=help&special_parm=format ayuda
+ !href target=wims_mhelp cmd=help&special_parm=format $wims_name_help
  ]<p>
-Este ejercicio pedirá
+$name_exo
 !formselect oef_answercnt from 0 to 10
-respuestas libres y 
+$name_answer1
 !formselect oef_choicecnt from 0 to 10
-respuestas de opciones múltiples.
-Las respuestas numéricas no calculadas (como <tt>3*5-sin(pi/3)</tt>) serán
-!formselect oef_computeanswer list yes,no prompt aceptadas,rechazadas
-.
-Se usarán
+$name_answer2.
+$name_nonnumeric
+!formselect oef_computeanswer list yes,no prompt $name_prompt
 !formselect oef_condcnt from 0 to $condlim
-condiciones especiales para corregir las respuestas libres.
+$name_condition
  [
- !href target=wims_mhelp cmd=help&special_parm=reply ayuda
+ !href target=wims_mhelp cmd=help&special_parm=reply $wims_name_help
  ]
 <p><table border=0><tr><td align=right>
-Nombre del autor:<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
+$wims_name_Author<td><input size=30 maxlength=60 name=oef_author value="$oef_author">
 <tr><td align=right>
-Dirección de correo electrónico:<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
+$wims_name_email<td><input size=30 maxlength=80 name=oef_email value="$oef_email">
 </table>
 <p><center>
-<input type=submit value="Continuar al contenido del ejercicio">
+<input type=submit value="$name_continue">
 </center>
 </form>
 
@@ -38,9 +36,9 @@ Dirección de correo electrónico:<td><input size=30 maxlength=80 name=oef_email v
   <p>
   !form new
   <input type=hidden name=module value="$module">
-  Modificar un ejercicio existente de la clase:
+  $name_modify
   !formselect existing list $exolist prompt $titlelist
-  <input type=submit value=OK></form>
+  <input type=submit value="$wims_name_tosave"></form>
  !endif
 !endif
 

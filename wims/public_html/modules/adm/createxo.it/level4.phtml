@@ -1,14 +1,15 @@
 !if $wims_developer!=$empty and ..devel/ isin ..$catmodule
  !if $reg1=success
-  L'esercizio <tt>$existing.oef</tt> del modulo
-  <tt>$catmodule</tt> è stato salvato con successo.
+  $name_update1
+  <tt>$catmodule</tt>
+  
  !else
-  Non è stato possibile modificare <tt>$existing</tt> del module
+ $name_update2
   <tt>$catmodule</tt>.
   <pre>$wims_exec_error</pre>
  !endif
  <p>
- !href cmd=reply&level=3 Torna al passo precedente.
+ !href cmd=reply&level=3 $name_prevstep
  !exit
 !endif
 
@@ -16,27 +17,25 @@
  !read level5.phtml
 !else
  !if $already!=yes
-  L'esercizio &egrave; stato salvato con successo.
+  $name_update3
  !else
-  C'e&egrave; gi&agrave; un esercizio uguale nel corso. La seconda
-  registrazione &egrave; ignorata. <p>
+  $name_update4 <p>
  !endif
- L'esercizio sar&agrave; visibile solo dagli studenti del corso, e solo
- nel momento in cui verr&agrave; inserito in un test di 
- autovalutazione.
+ $name_update5
  <p>
  !if $wims_user!=supervisor
-  A questo punto potete
-  !href module=classes/$lang&special_parm=.nocache. Consultare l'elenco degli esercizi del corso.
+  $name_youcan
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+.
  !else
- A questo punto potete:
- <ul>
- <li><p>
- !href module=classes/$lang&special_parm=.nocache. Consultare l'elenco degli esercizi.
- (Ed eventualmente inserirli in un test di autovalutazione.)
- <li><p>
- !href cmd=reply&level=3&success=1 Torna al punto precedente.
- </ul>
+  $name_youcan
+  <ul>
+  <li><p>
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+  ($name_sheet).
+  <li><p>
+  !href cmd=reply&level=3&success=1 $name_prevstep.
+  </ul>
  !endif
 !endif
 

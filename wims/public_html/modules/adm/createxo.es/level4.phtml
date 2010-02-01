@@ -1,26 +1,40 @@
+!if $wims_developer!=$empty and ..devel/ isin ..$catmodule
+ !if $reg1=success
+  $name_update1
+  <tt>$catmodule</tt>
+  
+ !else
+ $name_update2
+  <tt>$catmodule</tt>.
+  <pre>$wims_exec_error</pre>
+ !endif
+ <p>
+ !href cmd=reply&level=3 $name_prevstep
+ !exit
+!endif
+
 !if $wims_user=$empty
  !read level5.phtml
 !else
  !if $already!=yes
-  Su ejercicio se ha instalado con éxito.
+  $name_update3
  !else
-  Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros 
-  dobles. <p>
+  $name_update4 <p>
  !endif
- Este ejercicio será accesible únicamente a los participantes de su clase, y
- solamente si lo pone en una hoja de trabajo.
+ $name_update5
  <p>
  !if $wims_user!=supervisor
-  Ahora puede
-  !href module=classes/$lang&special_parm=.nocache. Consultar los ejercicios de clase.
+  $name_youcan
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+.
  !else
-  Ahora puede:
- <ul>
+  $name_youcan
+  <ul>
   <li><p>
-  !href module=classes/$lang&special_parm=.nocache. Consultar los ejercicios de su clase
-   (y eventualmente añadirlos a las hojas de trabajo).
+  !href module=classes/$lang&special_parm=.nocache. $name_consult
+  ($name_sheet).
   <li><p>
-   !href cmd=reply&level=3&success=1 Volver a la etapa anterior.
+  !href cmd=reply&level=3&success=1 $name_prevstep.
   </ul>
  !endif
 !endif
