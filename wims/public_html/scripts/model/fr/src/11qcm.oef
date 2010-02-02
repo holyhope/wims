@@ -1,0 +1,130 @@
+type=first
+textarea="datatrue datafalse explain"
+
+:Une question à choix multiples avec permutation aléatoire.
+
+QCM classique, avec un bon choix qui ne dépend pas du texte.
+Mais les choix ainsi que leur ordre peuvent être mis en aléatoire.
+<p>
+Auteur du modèle : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'entete ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Choix multiple}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Nombre de choix à présenter. Au plus 10.
+Vous devez définir suffisamment de choix. Sinon l'exercice affichera
+seulement ce qui est disponible.
+\integer{tot=5}
+
+:Le nombre de bons choix dans chaque exercice. Ne doit pas depasser le total.
+\integer{givetrue=2}
+
+:Nombre de mauvais choix "obligatoires".
+Par exemple si ce nombre est 2, les deux premiers mauvais choix dans la
+liste seront toujours présentés dans les exercices générés.
+<p> Dans le doute, mettez 0.
+\integer{minfalse=0}
+
+:Le texte qui explique ce qu'il faut faire.
+$embraced_randitem
+\text{explain=
+Voici un modèle de question à choix multiples. L'ordre des choix est
+aléatoire, ainsi que les choix s'il y en a suffisamment qui sont définis.
+Changez les textes, et vous aurez votre question à choix multiples.
+<p>
+Prenez le bon choix.
+Quand il y a plusieurs bons choix, il suffit d'en choisir n'importe lequel.
+}
+
+:Le(s) bon(s) choix, un par ligne.
+On peut en placer plusieurs (un par ligne) pour tirer au hasard.
+Evitez les phrases trop longues ! Aucun point-virgule dans la phrase.
+$embraced_randitem
+\matrix{datatrue=
+Le bon choix 1.
+Le bon choix 2.
+Le bon choix 3.
+Le bon choix 4.
+}
+
+:Les mauvais choix, un par ligne.
+Vous pouvez en donner plus que ce qu'il faut tirer au hasard.
+Evitez les phrases trop longues ! Aucun point-virgule dans la phrase.
+$embraced_randitem
+\matrix{datafalse=
+Le mauvais choix 1.
+Le mauvais choix 2.
+Le mauvais choix 3.
+Le mauvais choix 4.
+Le mauvais choix 5.
+Le mauvais choix 6.
+Le mauvais choix 7.
+Le mauvais choix 8.
+}
+
+:Mots d'option : "checkbox", "split".
+Ajouter le mot "checkbox" s'il y a plusieurs bonnes réponses et si l'élève
+doit choisir toutes les bonnes réponses (au lieu d'une seule). Dans ce cas, 
+ajouter aussi le mot "split" si on autorise une note partielle quand seulement une
+partie des bonnes réponses sont choisies.
+\text{option=}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{datatrue=wims(nonempty rows \datatrue)}
+\text{datafalse=wims(nonempty rows \datafalse)}
+\integer{truecnt=rows(\datatrue)}
+\integer{falsecnt=rows(\datafalse)}
+\integer{givetrue=\givetrue<1?1}
+\integer{givetrue=\givetrue>\truecnt?\truecnt}
+\integer{tot=\tot > \falsecnt+\givetrue?\falsecnt+\givetrue}
+\integer{givetrue=\givetrue>\tot-1?\tot-1}
+\integer{minfalse=\minfalse>\tot-\givetrue?\tot-\givetrue}
+\text{tsh=shuffle(\truecnt)}
+\text{true=row(\tsh,\datatrue)}
+\if{\minfalse>0}{
+ \text{false1=row(1..\minfalse,\datafalse);}
+ \text{false2=row(\minfalse+1..\falsecnt,\datafalse)}
+}{
+ \integer{minfalse=0}
+ \text{false1=}
+ \text{false2=\datafalse}
+}
+\text{fsh=shuffle(\falsecnt)}
+\text{false2=row(\fsh,\false2)}
+\text{pick=row(1..\givetrue,\true);\false1 row(1..\tot-\givetrue-\minfalse,\false2)}
+\text{ind=wims(makelist 1 for x=1 to \givetrue),wims(makelist 0 for x=1 to \tot-\givetrue)}
+
+\text{sh=shuffle(\tot)}
+\text{ind=item(\sh,\ind)}
+\text{pick=row(\sh,\pick)}
+\text{pick=wims(embraced randitem \pick)}
+\text{explain=wims(embraced randitem \explain)}
+\text{ans=positionof(1,\ind)}
+\text{list=item(1..\tot,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z)}
+\text{anstype=checkbox iswordof \option?checkbox:radio}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+\statement{
+\explain
+\for{i=1 to \tot}{
+	<p class="oefreply"><label><strong>\embed{reply 1,\i}-</strong> \pick[\i;]</label></p>
+}
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+
+\answer{La réponse}{\ans;\list}{type=\anstype}{option=\option}
+

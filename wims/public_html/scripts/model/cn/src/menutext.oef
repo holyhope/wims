@@ -1,0 +1,121 @@
+type=datalist
+textarea="data"
+
+:在随机选取的文字中嵌入多重选择的问题.
+
+本练习给你一段文字, 其中嵌入一些多重选择的内容.
+<p>
+为了构造这样的练习, 只需输入多段文字.
+然后再把多重选择题嵌进去.
+<p>
+模块作者 : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      注       意      %%%%%%%%%%%%%%%%%%%%
+
+如果你删去了本范例中的标签 (即跟随在冒号 ':' 后面的那几行),
+那么也请删去这个头部, 否则有可能回不到 Createxo.
+
+:%%%%%%%%%%%%%%%%%   被重新定义的参数示例   %%%%%%%%%%%%%%%%%%
+
+:\title{多个带选择的文本}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:要素.
+每一段落的最后用分号 ';' 隔开, 
+因此段落里面不能使用分号.<p>
+提出的问题应该放在双问号 "??" 里面.
+同一句子可以提出多个问题 (不超过 20).
+正确的回答放在第一位.
+如果一个问题有好几个正确的回答,
+那么这些正确回答间用竖线 '|' 分隔.
+$embraced_randitem
+\text{data=
+中国最后一个 ??清,明,宋,唐?? 皇朝的最后一个皇帝
+??溥仪,溥杰,慈禧,袁世凯?? 是在 ??1911,1917,1937,1945,1949??
+年被 ??武昌起义,日本侵略,工农红军,农民起义?? 推翻的.
+他因 ??病,自杀,遇刺?? 而在 ??1967,1911,1918,1945,1950,1960?? 
+年于北京去世.;
+
+经过 ??激烈,轻松?? 战斗后, 日军于
+??1937,1932,1938,1940,1941,1942?? 年侵占上海.
+当时上海有西方国家的租界. 直至 ??1941,1939,1942,1945?? 年,
+日本占领军 ??部分,完全,毫不?? 遵守租界的中立性.
+取消租界是 ??汪伪,国民党,新中国?? 政府首先在
+??1943,1945,1949,1960?? 年正式宣布的.;
+
+第一次鸦片战争是由
+??英国,法国,美国,八国?? 对 ??中国,印度?? 于 ??1839,{1739,1741,1756},1841,1856??
+年发动的, 目的是为了 ??保护,禁止?? 鸦片贸易. 这个战争历时
+??3,2,4,5,8?? 年以 ??中国,印度?? 的失败告终,
+并签订了 ??南京,北京,广州,马关,天津??.;
+}
+
+:开场白, 可以留空.
+$embraced_randitem
+\text{pre=请选择 : <p>}
+
+:结束语, 可以留空.
+$embraced_randitem
+\text{post=}
+
+:%%%%%%%%%%%%%%       不要改动下面这段命令          %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=min(20,floor(rows(\data)/2))}
+
+\text{good=}
+\text{field=}
+\for{i=1 to \qs}{
+ \text{f=\data[2*\i;]}
+ \text{g=\f[1]}
+ \text{f=wims(sort items \f)}
+ \text{g=positionof(\g,\f)}
+ \text{good=\good\g,}
+ \text{field=\field\f;}
+}
+
+\text{pre=wims(embraced randitem \pre)}
+\text{post=wims(embraced randitem \post)}
+\text{qlist=wims(makelist reply x for x=1 to \qs)}
+\steps{\qlist}
+
+:%%%%%%%%%%%%% 现在可以用 html 格式填入问题的陈述  %%%%%%%%%%%%%%%%%%%%%%%%%
+
+::一般情况下没有必要改动它
+
+\statement{\pre
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r \k,\len} \data[2*\k+1;]
+}
+\post
+}
+
+:%%%%%%%%%%%%%      不要改动以下的命令        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\answer{Champ 1}{\good[1];\field[1;]}{type=menu}
+\answer{Champ 2}{\good[2];\field[2;]}{type=menu}
+\answer{Champ 3}{\good[3];\field[3;]}{type=menu}
+\answer{Champ 4}{\good[4];\field[4;]}{type=menu}
+\answer{Champ 5}{\good[5];\field[5;]}{type=menu}
+\answer{Champ 6}{\good[6];\field[6;]}{type=menu}
+\answer{Champ 7}{\good[7];\field[7;]}{type=menu}
+\answer{Champ 8}{\good[8];\field[8;]}{type=menu}
+\answer{Champ 9}{\good[9];\field[9;]}{type=menu}
+\answer{Champ 10}{\good[10];\field[10;]}{type=menu}
+\answer{Champ 11}{\good[11];\field[11;]}{type=menu}
+\answer{Champ 12}{\good[12];\field[12;]}{type=menu}
+\answer{Champ 13}{\good[13];\field[13;]}{type=menu}
+\answer{Champ 14}{\good[14];\field[14;]}{type=menu}
+\answer{Champ 15}{\good[15];\field[15;]}{type=menu}
+\answer{Champ 16}{\good[16];\field[16;]}{type=menu}
+\answer{Champ 17}{\good[17];\field[17;]}{type=menu}
+\answer{Champ 18}{\good[18];\field[18;]}{type=menu}
+\answer{Champ 19}{\good[19];\field[19;]}{type=menu}
+\answer{Champ 20}{\good[20];\field[20;]}{type=menu}
+

@@ -1,0 +1,141 @@
+type=datalist
+textarea="data"
+
+:标出文字中的错误.
+
+练习给出一段文字, 其中某些词是"可标记的".
+你应该按照练习的要求把它们标出来.
+<p>
+为构造此类练习, 只要输入对象的表并修改解释.
+<p>
+模块作者: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      注       意      %%%%%%%%%%%%%%%%%%%%
+
+如果你删去了本范例中的标签 (即跟随在冒号 ':' 后面的那几行),
+那么也请删去这个头部, 否则有可能回不到 Createxo.
+
+:%%%%%%%%%%%%%%%%%   被重新定义的参数示例   %%%%%%%%%%%%%%%%%%
+
+:\title{标记一段文字}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:练习中应被标记的词的最少个数, 至少是 1.
+\integer{minmark=1}
+
+:应被标记的词的最大个数.
+\integer{maxmark=8}
+
+:主要数据.
+一行定义一个问题, 行与行用分号分隔.
+(因此文字中间不应出现分号.) <p>
+应被标记的词用一对双问号 "??" 括起来.
+每个栏中应该包括几个用逗号分隔的词.
+最后显示的文字将从这个词表中随机选择一个.
+如果出现的是表中的第一个词, 就是应该标注的词.
+否则就不需标注.
+<p>
+每个句子中可插入一百个标注词.
+$embraced_randitem
+
+\text{data=
+{Jack,Jean,Louis,Michel,Pierre} ??et,est?? forain, il 
+??{tien,tiens},tient?? ??un,une?? baraque de tir ??a,\`a?? la noix de coco.
+??Ont,On?? ??trouvent,trouve?? des ??Baraque,Baraques?? Noix de Coco dans 
+??tous,toutes?? les foires. Les ??,gens?? ??arrive,arrivent??,
+??donne,donnent?? des ??,sous??
+??est,et?? ??envoie,envoient?? des ??,boules?? sur une noix de coco 
+??{poser,pos\'e},pos\'ee?? en haut d'une ??,colonne??.
+Ceux qui ??fait,font??
+??{d\'egringol\'e,deegringol\'ee},d\'egringoler?? une noix de coco 
+??{peu,peut,peux},peuvent?? ??{le,les},la??
+??{gard\'ee,gard\'e},garder??.
+;
+
+??{Quel,Quels,Quelles},Quelle??
+id\'ee ??est-je,ai-je??
+??{d'achet\'e,d'achet\'ee,d'achet\'es},d'acheter?? ??{cept,cette,ces,ce},cet??
+oiseau ? L'oiselier me dit : "??{S'est,Cet},C'est?? un ??{mal,malle},m\^ale??.
+??Attender,Attendez?? une ??,semaine?? qu'il 
+??{s'abitue,s'abituent,s'habituent},s'habitue??, ??est,et?? il chantera".
+??Hors,Or??, l'oiseau ??sobstine,s'obstine?? ??a,\`a?? ??ce,se?? 
+??tait,taire?? et il ??fais,fait?? ??tous,tout?? de ??{traver,travert},travers??.
+;
+
+Les ??d\'esert,d\'eserts?? de ??sables,sable?? ??occupe,occupent?? de
+??large,larges?? parties {de la plan\`ete,du monde,de la Terre}.
+Il n'y ??{pleu,pleus,pleuvent},pleut??
+presque ??,pas??. Trees ??peut,peu?? de plantes et ??,d'animaux?? y
+??vit,vivent??. Les ??,dunes?? ??son,sont?? des collines de
+??,sable?? que le vent ??\`a,a??
+??{construit,construits,construite},construites??. Les 
+??grains,graines?? de ??{certain,certaine,certains},certaines??
+plantes ??reste,restent?? sous le ??sole,sol?? du d\'esert pendant
+des ann\'ees. ??{Ils,Elle},Elles?? ??ce,se?? ??met,mettent??
+??a,aa?? ??{pouss\'ees,pouss\'ee,pouss\'es},pousser?? d\`es qu'il y a
+??une,un?? orage.
+;
+
+}
+
+:待标文字前面的说明. 可以使用 html 标注.
+$embraced_randitem
+\text{pre=请把下面一段法文中的错词标记出来. <p>
+}
+
+:待标文字后面的说明. 可以使用 html 标注.
+\text{post=}
+
+:选项
+如果学生只选取了其中一部分正确答案也能给分的话, 请加上选项 "split".
+\text{option=split}
+
+:%%%%%%%%%%%%%%       不要改动下面这段命令          %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=floor(rows(\data)/2)}
+\text{list=}
+\text{ind=}
+\for{i=1 to \qs}{
+ \text{d=\data[2*\i;]}
+ \text{list=\list \d;}
+ \if{\d[1] issametext }{\text{ind=\ind[]2,}}{\text{ind=\ind[]1,}}
+}
+
+\text{can=positionof(1,\ind)}
+\text{cancnt=items(\can)}
+\integer{tomark=randint(min(\minmark,\cancnt)..min(\maxmark,\cancnt))}
+\text{can=\cancnt>1?shuffle(\can)}
+\text{good=item(1..\tomark,\can)}
+\text{good=wims(sort numeric items \good)}
+
+\text{show=}
+\for{i=1 to \qs}{
+ \text{d=\i isitemof \good?\list[\i;1]:\list[\i;2]}
+ \text{show=\show[]\d,}
+}
+
+\text{pre=wims(embraced randitem \pre)}
+
+:%%%%%%%%%%%%% 现在可以用 html 格式填入问题的陈述  %%%%%%%%%%%%%%%%%%%%%%%%%
+
+::一般情况下没有必要改动它
+
+\statement{\pre
+
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r1,\k} \data[2*\k+1;]
+}
+\post
+}
+
+:%%%%%%%%%%%%%      不要改动以下的命令        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\answer{Field 1}{\good;\show}{type=mark}{option=\option}
+

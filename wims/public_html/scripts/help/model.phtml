@@ -1,0 +1,34 @@
+
+!set field=!item 2 of $special_parm
+
+!if $field=$empty
+ !exit
+!endif
+
+!read help/$lang/model.phtml
+
+!if $(special_parm[3])!=$empty
+ !readproc model/cut.proc model/$lang/src/$(special_parm[3]).oef
+ !set title$field=$model_title
+!else
+ !readproc model/cut.proc
+ !set title1=$model_title
+!endif
+
+<center><h2>$(title$field)</h2></center>
+
+!if $field=1
+ <center><b>$desc</b></center> <p>
+!endif
+
+$(help$field)
+
+!if $(name$field) iswordof $model_random
+ $name_random
+!endif
+
+!if $(name$field) iswordof $model_computed $model_random
+ <p>
+ !href cmd=help&special_parm=parameters $name_detail_parm
+!endif
+
