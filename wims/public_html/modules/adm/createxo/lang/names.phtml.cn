@@ -9,22 +9,22 @@
   文件模式\
   其它方式\
   现成模式\
-  Send the file\
-  Source file of your exercise\
-  Back to the menu\
-  Continue to the content of the exercise\
-  Modify an existing exercise of the class\
-  Back to the preceeding step.\
-  Send the source file\
-  Clean\
-  D閙o\
-  Adapter\
-  Test the exercise\
-  Correct the error\
-  Back to \
-  The realisation of your exercise will be as follows.\
-  Here are the available exercise models. Choose one.\
-  Module temporarily containing your exercise.\
+  发送文件\
+  你的练习的源码\
+  返回菜单\
+  返回到练习内容\
+  修改班级的已有练习\
+  返回上一步.\
+  发送源文件\
+  清除\
+  演示\
+  改编\
+  测试练习\
+  改正错误\
+  返回\
+  你的练习将如下实现.\
+  以下是可用的练习范例. 请选择一个.\
+  暂时包含你的练习的模块.\
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
@@ -34,83 +34,84 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 !set name_raw=!lowercase $wims_name_rawmode
 !set name_file=!lowercase $wims_name_filemode
 
-!set name_modefile1=You are under the file mode for the creation of exercise. \
-  Under this mode, you can send a local OEF source file to the server. For a first creation of exercise, prefer the
-!set name_modefile2=To edit online, you can also use the
+!set name_modefile1= 你现在处于创建练习的文本模式.\
+ 在此模式下你可以把本地OEF源码送到服务器.\
+ 对于首次创建练习的人, 请选用
+!set name_modefile2=为在线编辑, 你也可以使用
 
-!set name_first=Basic exercises
-!set name_datalist=Exercises with a data list
+!set name_first=基础练习
+!set name_datalist=带数据表的练习
 
-!set name_save=!nosubst Voici le source de votre exercice <font color=red><b>$oef_title</b></font>,\
-   en format OEF (Open Exercice Format). Pour le sauver, coupez le texte entre les deux lignes\
-    horizontales et collez-le dans un fichier.
+!set name_save=!nosubst 这是你的练习<font color=red><b>$oef_title</font></b>的源文件,\
+ 格式为OEF(开放练习格式 Open Exercice Format).\
+ 为保存它, 请截取两条水平线中间的文本, 然后将它粘贴在一个文件里.
 
-!distribute lines Number of parameters\
-  Number of replies\
-  Send an image file to the exercise.\
-  Or modify the source file then\
-  Put this exercise $into your class\
-  to replace the old one\
-  as a new exercise\
-  send it again\
-  Put it to the development module\
-  Save the source\
-  of the exercise on your computer!\
+!distribute lines 参数个数\
+  回答个数\
+  发送图象文件到练习里.\
+  修改以下班级的已有练习\
+  把这个练习放到你的班级里\
+  以替换旧的\
+  作为新练习\
+  再次发送\
+  放入开发中模块\
+  保存练习的源码\
+  到你的计算机!\
 into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
 
 !set name_success=The software have successfully recognized your exercise.
 
 !if $level=1
-!distribute lines Give a title to the exercise you want to create\
-  Format of the statement of the problem:\
-  This exercise will ask for\
-  freestyle replies and\
-  multiple-choice replies\
-  LNon-computed numerical replies (such as <tt>3*5-sin(pi/3)</tt>) will be\
-  accepted,refused\
-  conditions will be used to test freestyle replies.\
+!distribute lines 给出你要创建的练习的标题:\
+  叙述问题的格式:\
+  这个练习的回答应该是\
+  个自由格式的回答和\
+  个多重选择的回答\
+  未经计算的数值回答 (例如<tt>3*5-sin(pi/3)</tt>) 将被\
+  接受,拒绝\
+  个条件将用来测试(数值的)自由格式的回答.\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
 name_nonnumeric,name_prompt,name_condition
 !endif
 
 !if $level=2
- !set types=!sort nocase lines \
-auto,			default\
-algebraic expression,	algexp\
-approximative text,	atext\
-case-nonsensitive text,	nocase\
-case-sensitive text,	case\
-raw text,		raw\
-character set, 		chset\
-equation,		equation\
-finite set,		set\
-formal expression,	formal\
-literal expression,	litexp\
-matrix,			matrix\
-number,			numeric\
-number with range,	range\
-number with units,	units\
-numerical function,	function\
-vector,			vector\
-words in a list,	wlist
+!set types=!sort nocase lines \
+自动,           default\
+代数表达式, algexp\
+近似文本,   atext\
+不分大小写的文本,   nocase\
+区分大小写的文本,   case\
+纯文本,       raw\
+字符集,         chset\
+方程,       equation\
+有限集,     set\
+形式表达式, formal\
+文字表达式, litexp\
+矩阵,           matrix\
+数,         numeric\
+区间你的数, range\
+带单位的数, units\
+数值函数,   function\
+向量,           vector\
+词表,   wlist
 
-!distribute lines Now please enter the content of your exercise \
-  You may define random parameters here\
-  The statement of the exercise\
-  Freestyle replies\
-  Good solution\
-  Required precision of numerical replies\
-  (Numerical) functions will be compared in the interval\
-  Conditions for analysis of (numerical) replies\
-  Name of the condition\
-  Definition of the condition\
-  Multiple choices\
-  Good choices\
-  Bad choices\
-  You may optionally give a hint and/or a solution\
-  Indication<br>(html format)\
-  Solution<br>(html format)\
+!distribute lines 现在请输入你以下练习的内容\
+  在这里你可以定义随机参数: \
+  练习的陈述\
+  自由格式的回答\
+  正确解\
+  数值回答的精度要求\
+  数值函数将在以下区间内被比较:\
+  (数值)回答分析的条件\
+  条件名\
+  条件的定义\
+  多重选择\
+  正确的选择\
+  错误的选择\
+  需要时你也可以给出一个提示与(或)一个解答:\
+  提示<br>(html格式)\
+  解答<br>(html格式)\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution
@@ -118,59 +119,53 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst The exercise <tt>$existing.oef</tt> is successfully updated in the module
-  !set name_update2=Failed to update <tt>$existing</tt> in the module
-  !set name_update3=Your exercise has been successfully installed.
-  !set name_update4= We have found an identical exercise in your class. The double registration is therefore ignored. <p>
-  !set name_update5=This exercise will be accessible only to participants of your class, and \
-    this only if you put it into a worksheet.
+  !set name_update1=!nosubst 以下模块中的练习 <tt>$existing.oef</tt> 已被成功更新
+  !set name_update2=!nosubst 以下模块中的练习 <tt>$existing.oef</tt> 更新失败
+  !set name_update3=你的练习已被成功地建立.
+  !set name_update4=在你的班级里发现了一个完全相同的练习. 重复纪录已被忽略.
+  !set name_update5=仅当你将此练习放入作业页后, 你班级的参加者(也只有他们)才能接触此练习. 
 
-  !distribute lines Now you can\
-    consult the exercises of your class\
-    and eventually put them $into your worksheets\
+  !distribute lines 现在你可以\
+    查看你班级的练习\
+    或将它们放入作业页.\
  into name_youcan, name_consult,name_sheet
 !endif
 
-!distribute lines  You are under the raw mode for the creation of exercise.\
-  As this exercise is based on a standard model, try the\
-  Enter the entire source\
-  to register an existing source file, copy the file $into the text window.\
-  Here is the source of an existing exercise for your class.\
-  You can modify it in the window below.\
-  Here is the source of a public exercise that you have imported.You can modify it in the window below, before putting it $into the class.\
-  As this exercise is based on a standard model, try the\
-  testeur de script\
+!distribute lines  你处于创建练习的源码模式.\
+  由于这个练习是以标准模型为基础的, 请试试\
+  请输入你的练习的完整源码\
+  为纪录一个已经存在的源码文件, 把这个文件复制到文本窗口内.\
+  这里是你的班级已有练习的源码. 你可在以下窗口里修改它.\
+  这里是你要引入的公开练习的源码. 在把它放到班级里之前, 你可在以下窗口里修改它.\
+  由于这个练习是以标准模型为基础的, 请试试\
+  对于某些外部程序的测试可使用\
+  脚本测试程序\
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
 
 
 !exit
 :delete
-The exercise <em>$deltitle</em> has been removed from the list of exercises of your
-class.
+练习<em>$deltitle</em>已从班级的练习清单上删除.
 <p>
-In case you have made a wrong manoeuvre and would like to recover your error,
-here is the source of this exercise which you can save as an emergency
-measure, and later copy to 
+如果你因误操作而想恢复原来原状的话, 这里有练习的源码, 你可以保存下来作为
+应急之用, 以后只要将它复制到
 !href module=adm/createxo&mode=raw $wims_name_createxo
+ 即可恢复原有的练习.
 <p>
 
 !exit
 :model
-<b>Note</b>. These models are prepared to allow people to construct rapidly
-their exercises. Hence they are often with a simplified and standardised
-structure, and don't offer the full power of the OEF syntax. But you can
-always put the exercises in raw mode to add more functionalities or modify
-them according to your need.
+<b>注</b>. 这些范例是用来帮助人们快速上手制作自己的练习的.
+因此它们都有简化的、标准化的结构, 而且没有发挥 OEF 句法的最大威力.
+但是你总可以先做一个原始形式的练习, 然后再根据需要添加更多功能.
 
 !exit
 
 :register
 
-Your exercise has been successfully registered in this server. We warmly thank
-you for your contribution, in the name of all those who will benefit from it.
+你的练习已被成功地纪录入本服务器. 我们谨以由此受益的人的名义衷心感谢你的贡献.
 <p>
-The administrator of this site will verify your exercise, and decide on whether
-or not to put it in an appropriate category.
-This may take a certain number of days.
+网站管理员将验看你的练习, 以确定是否将它放到适当的领域中去.
+这将耗费好几天.
 
 !exit
