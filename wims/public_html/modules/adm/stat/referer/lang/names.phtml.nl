@@ -46,14 +46,13 @@ Referentie pagina's vanuit $httpd_HTTP_HOST worden niet meegeteld.
 
 :exit
 :intro
-In general, a web page who brings many visitors to us is also an interesting 
-place for our other visitors. Therefore if you are
-looking for web resources related to this server, a list of such pages is
-what you need.
+Een webpagina met links naar ons systeem is mogelijk ook een interessante plek
+voor WIMS gebruikers.
+De lijst met "bezoekers via website" geeft daarover enige informatie.
 <p>
-On the other hand, if you are the author of a page containing link(s) to us,
-this list allows you to measure the efficiency of your link. It
-is also our manner to thank you for the link.
+Anderzijds als u linkst naar WIMS plaatst op uw eigen webpagina's is het
+handig te weten of er ook daadwerkelijk gebruik van wordt gemaakt.
+En het is onze manier om te bedanken voor het plaatsen van een link naar WIMS.
 <p>
-Our backward link list is dynamically generated, according to the parameters
-which you can choose in the following menu.
+De lijst met "bezoekers via website" wordt speciaal aangemaakt aan de hand van de
+instelparameters, welke gekozen kunnen worden in het volgende menu.
