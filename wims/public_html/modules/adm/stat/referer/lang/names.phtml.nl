@@ -11,8 +11,8 @@
 !set names_stem=site directory's
 !set names_uniq=pagina's
 
-!distribute items dagen,weken,maanden,jaren\
-  into name_day,name_week,name_month,name_year
+!distribute items dagen,weken,maanden,jaren,to\
+  into name_day,name_week,name_month,name_year,name_to
    
 !distribute lines website naam\
   hoofd directory\

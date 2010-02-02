@@ -10,8 +10,8 @@
 !set names_stem=directorio de sitios
 !set names_uniq=páginas
 
-!distribute items día(s),semana(s),mes(es),año(s),el inicio\
-  into name_day,name_week,name_month,name_year,name_begining
+!distribute items día(s),semana(s),mes(es),año(s),el inicio,à\
+  into name_day,name_week,name_month,name_year,name_begining,name_to
   
 !distribute lines sitio\
   directorio base\
