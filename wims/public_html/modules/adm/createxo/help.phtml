@@ -1,0 +1,33 @@
+
+!if $realtest=yes
+ !changeto oef/help.phtml
+!endif
+
+!set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
+	feedback,math,draw,draw_example,oefadv,if,symtext,model,slib
+
+!set s_=!item 1 of $special_parm
+!if $s_=all
+ !for sj in $helplist
+  <p>
+  !read help/$lang/$sj.phtml
+ !next sj
+ !exit
+!endif
+!if $s_!=$empty
+ !read help/$lang/$s_.phtml
+ !set wims_menu_items=!append line back2,1,cmd=help\
+ to $wims_menu_items
+ !exit
+!endif
+
+!set record_cnt=!recordcnt lang/help.phtml.$modu_lang
+<ul>
+!for s_=2 to $record_cnt
+  !set ss_=!record $s_ of lang/help.phtml.$modu_lang
+<li><p>
+!href cmd=help&special_parm=$(ss_[1]) $(ss_[2])
+ $(ss_[3])
+</li>
+!next s_
+!endif
