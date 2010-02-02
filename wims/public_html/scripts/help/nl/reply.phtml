@@ -1,0 +1,191 @@
+!set typelist1=!trim\
+default,Auto,automatische herkenning van antwoord types\
+raw,ruwe tekst,de antwoord controle kan worden ingetuned door opties\
+numeric,Numeriek, met tollerantie optie\
+function,Numerieke functie, vergelijkt antwoord (een functie) m.b.v. numerieke tests\
+exp,Wiskundige formule, wordt formeel algebraisch vergeleken\
+text,Tekst, betekenisvolle woorden of zinnen \
+multiple,Meerkeuze vragen,klikken of slepen etc.\
+
+
+!set typelist2=!trim\
+atext,Tekst bij benadering, met identificatie voor meervoud enkelvoud etc.\
+chembrut,Raw formula of a molecule,in chemistry\
+chemdraw,Draw a molecule,with Java applet\
+chemeq,Chemische vergelijking, met massa/electronen/ladings balans analyse\
+clickfill,Drag 'n drop objecten,tekst en afbeelding [ook van wiskundige TeX formules]\
+clicktile,Click and color tiles, need java\
+compose,Compositie, gebruikt allerlei componenten\
+coord,Hot spot, herkent de klik op een coordinaten of divers gevormde gebieden\
+correspond,Overeenkomst, controlleerd paarsgewijze overeenkomst tussen diverse objecten \
+chset,Setje karakters,\
+geogebra,Dynamisch geometrie,gebruikt de applet GeoGebra\
+javacurve,Tekenen in een javaapplet,\
+jmolclick,Click on 3D atoms, use applet Jmol\
+matrix,Matrix, wiskundig\
+numexp,Rationale getallen, hat antwoord is een getal in R\
+range,Getal in een bereik, alle getallen binnen het antwoord_bereik zijn correct\
+reorder,Hergroepeer, een gegeven lijst\
+set,Finite set,literal, formal or approximative\
+sigunits,Eenheden,een getal met een eenheid en nauwkeurigheid\
+symtext,Symtext,advanceerde tekst herkenning\
+units,Getal met een eenheid, voor natuur en scheikunde\
+vector,Vector,formele vergelijking van alle componenten\
+wlist,Lijst met significante woorden,\
+
+
+!set namelist=Basis types, Specifieke of geavanceerde types
+!set symtextlist=text atext raw compose
+
+
+<center><h3>Antwoorden op een OEF</h3></center> <p>
+
+Er zijn twee hoofdgroepen antwoord modellen in een OEF oefening:
+de meerkeuze model en het open_antwoord model [freestyle]
+Bij alle modellen kan
+!href cmd=help&special_parm=feedback feedback
+ worden gegeven, als het antwoord van de leerling aan bepaalde condities voldoet.
+
+<p><h4>Multiple choices</h4> <p>
+Een meerkeuze vraag wordt bepaald door een lijst met goede keuzes [1 of meer] 
+en door een lijst met foutieve keuzes.<p>
+Er kunnen gelijktijdig tot $choicelim meerkeuze vragen worden gesteld in een enkele OEF.
+Het aantal goede of foute keuzes is bijna onbeperkt.
+De enige -instelbare- limiet is de lengte van een variabele binnen WIMS. 
+<p>
+Zie ook 
+!href cmd=help&special_parm=oef help bij OEF formaat
+ voor de syntax bij het meerkeuze vraag type.
+
+<p><h4>Freestyle antwoorden</h4> <p>
+Een freestyle antwoord [open antwoord] wordt door de leerling zelf ingetypt.
+Er kunnen op deze server gelijktijdig $answerlim freestyle vragen worden gesteld binnen een enkele OEF
+<p>
+De algemene syntax is als volgt:
+<tt>\answer{Tekst}{\antwoord}{type=...}{option=...}{weight=...}</tt>
+<br>
+(de laatste drie velden zijn optioneel)
+<p>
+
+<a name=freestyle></a>
+Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het onderstaande types zijn:
+
+!for i=1 to 2
+ <p><b>$(namelist[$i])</b>
+ !set n=!linecnt $(typelist$i)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$i)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <li><p><a name="_$name"></a>
+   !read help/anstype/$name.phtml
+   !if $name iswordof $symtextlist
+    <p>
+    <b>Opmerking</b>.
+    Dis antwoord model accepteerd de <tt>symtext</tt> option.
+    Wanneer <tt>option=symtext</tt> wordt gebruikt wordt de analyse
+    van het antwoord overgedragen aan
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+    .
+   !endif
+   <p>
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<tt>$name</tt>) $desc.
+  !endif
+ !next j
+ </ul>
+!next i
+
+<p>
+De meest gebruikte [gemakkelijkste...]  optie voor open antwoorden is:<tt>default</tt>. 
+Deze antwoord model accepteerd ook nog een extra sleutel <tt><font color=green>default="default_value"</font></tt>. 
+Wanneer de leerling een leeg antwoord invult, wordt verder gerekend met de "default_value"
+<p><h4>Test condities</h4> <p>
+Onder bepaalde omstandigheden, is het wenselijk een open antwoord aan extra te testen te onderwerpen.<br>
+Bijvoorbeeld als er meerdere goede oplossingen zijn [wortels van een vierkantsvergelijking enz.] of antwoorden
+die in de vorm van een ongelijkheid worden geformuleerd.
+<p>
+Het leerling antwoord wordt in de OEF code voorgesteld als een ongedefinieerde variabele.
+Als de leerling een antwoord inleverd, krijgt deze variabele de waarde van het antwoord.
+Deze kunnen we onderwerpen aan diverse testen.
+Het cijfer voor de oefening wordt dan ook bepaald door het aantal testcriteria  waaraan is voldaan,
+en niet alleen of het leerling antwoord overeenkomt met het correcte antwoord
+<p>
+Op deze server kunnen tot $condlim condities worden geformuleerd in een enkele OEF.
+De Syntax is als volgt:
+<p><tt>
+\condition{prompt tekst}{test condities}{weight=...}
+</tt>
+(het laatste veld is niet verplicht.)
+<p>
+Hier zijn enkele voorbeelden:
+(<tt>\ans1</tt> en <tt>\ans2</tt> zijn de ongedefinieerde variabelen.)
+<small>
+Hier staat een
+!href target=wims_mhelp cmd=help&special_parm=if komplete lijst 
+ met condities.
+</small>
+<p>
+$table_header
+$table_hdtr<th>Conditie<th>betekend
+$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
+    <td>Goed als <tt>ans1</tt> ligt in het interval [0,1].
+$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
+    <td>Goed als <tt>ans1</tt> gelijk is aan 1, 3 of 5.
+$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
+    <td>Goed als <tt>ans1</tt> en <tt>ans2</tt> de twee wortels zijn van de functie  x<sup>2</sup>-5x+6.
+$table_tr<td><tt>sin(\ans1)=0</tt>
+    <td>Goed als <tt>ans1</tt> een veelvoud is van $m_pi.
+$table_end <p>
+Zie ook de help pagina's over de syntax van de OEF 
+!href cmd=help&special_parm=oef antwoord modellen
+.
+
+
+<h4>De optionele parameter <tt>weight</tt></h4>
+<a name=weight></a>
+Het is mogelijk de antwoorden binnen een enkele OEF een weging
+mee te geven.
+<p>
+Bijvoorbeeld : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+</p>
+
+
+Er kunnen ook variabelen worden gebruikt als <tt>weight</tt>. 
+Hierdoor kan het scorings mechanisme verder worden getuned.
+<p>
+Voorbeeld :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+</p>
+
+<h4>De optionele parameter <tt>option</tt></h4>
+ <a name=option></a>
+De toegestane option parameters voor <tt>\answer</tt>
+of <tt>\condition</tt> zijn
+<ul>
+<li>
+<tt>option=split</tt> : By het antwoordtype type = <tt>correspond</tt>, <tt>checkbox</tt> of <tt>mark</tt>,
+wordt er een gedeelde score behaald. 
+</li>
+<li>
+<tt>option=nonstop</tt> : 
+In het geval van een OEF met stappen, wordt de volgende vraag gesteld, ook al is het vorige antwoord fout.
+</li>
+<li>Een optionele parameter bij <tt>condition</tt> : <tt>option=hide</tt> :
+De conditie wordt gebruikt om te analyseren. 
+En bij option=hide worden de resultaten van de test niet geprint en zijn dus niet zichtbaar voor de leerling,
+</li>
+
+</ul>
+

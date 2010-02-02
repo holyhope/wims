@@ -1,0 +1,183 @@
+!set typelist1=!trim\
+default,自动,自动确定某些基本类型\
+raw,纯文本,用于选项的比较\
+numeric,数,精确到设定精度\
+function,数值函数,用于将回答与标准答案比较\
+equation,数值方程,比较计算出数值的相等\
+exp,数学表达式,作形式上比较\
+text,文字,词或句\
+multiple,可控多重选择,按钮或菜单\
+
+
+!set typelist2=!trim\
+atext,近似文字,不区分单复数等\
+chembrut,化学分子式\
+chemeq,化学方程式,有平衡分析\
+clickfill,用已给对象填充的回答栏,文字或图形\
+clicktile,点击地砖以着色,需要java\
+compose,用已给成分组成的句子,用已给成分\
+coord,在一个图形上点击,获取坐标或区域\
+correspond,对应,对象的一一对应\
+chset,字符集合\
+geogebra,动态几何,使用GeoGebra\
+javacurve,Java作图\
+jmolclick,点击 3D 原子, 使用 applet Jmol\
+matrix,矩阵,数学\
+numexp,有理数,可写成分数\
+range,区间内的数\
+reorder,重排,给出对象的表\
+set,有限集合,按字面区别的、形式的或近似的\
+sigunits,带单位量,指定有效数字位数的物理量\
+symtext,符号化文字,文字比较的高级工具\
+units,带单位的数,物理用\
+vector,向量,按分量比较\
+wlist,词表\
+
+
+!set namelist=基本类型,特殊或高级类型
+!set symtextlist=text atext raw compose
+
+
+<center><h3>用户对练习的回答</h3></center> <p>
+
+OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
+用户的回答根据其类型被分析. 当答案符合某些特定条件时, 有可能显示一个
+!href cmd=help&special_parm=feedback 反馈信息
+(例如对典型错误的警告).
+
+<p><h4>多重选择</h4> <p>
+多重选择用一个正确选择表(含一个或几个元素)与一个错误选择表来定义. <p>
+目前一个练习中最多可以同时提出$choicelim个多重选择问题.
+一个多重选择题中的正确与错误选择的个数只受到WIMS中字符串长度的限制.
+<p>
+至于定义多重选择的语法可参看 
+!href cmd=help&special_parm=oef 关于OEF格式的帮助.
+
+<a name=freestyle></a>
+<p><h4>自由格式的回答</h4> <p>
+自由格式的回答就是用户自己键入的回答.
+目前一个练习中最多可以同时提出$answerlim个自由回答的问题. <p>
+其语法如下:
+<tt>\answer{名称}{\reponse}{type=...}{option=...}{weight=...}</tt>
+<br>
+(后面3栏是可选的.)
+<p>
+<h4>参数 <tt>type</tt></h4>
+每个自由格式的回答可以互相独立地取下列类型之一.
+
+!for i=1 to 2
+ <p><b>$(namelist[$i])</b>
+ !set n=!linecnt $(typelist$i)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$i)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <li><p><a name="_$name"></a>
+   !read help/anstype.$lang/$name.phtml
+   !if $name iswordof $symtextlist
+    <p>
+    <b>注</b>.
+    此类型的回答可接受 symtext 的选项. 如果在回答选项里声明了
+    <tt>symtext</tt>, 将按
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+   对回答作分析, 特别是对文本不作预处理. 在这种情形,
+   symtext 的所有选项都能使用.
+   !endif
+   <p>
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<tt>$name</tt>) $desc.
+  !endif
+ !next j
+ </ul>
+!next i
+
+<p>
+自由格式回答的常用选项是 <tt>default</tt>. 此选项可写成
+<tt><font color=green>default="默认值"</font></tt> 的形式.
+如果用户的回答是空的, 将用此<b>默认值</b>取代.
+
+<p>
+插入一个回答栏可使用命令 <tt>embed</tt>, 
+!href cmd=help&special_parm=embedans 参看这里. 
+
+<p><h4>测试条件</h4> <p>
+在目前情况下, 希望自由回答能利用特殊的条件(如具有多重正确答案的问题,
+要求举例的练习, 由不等式确定的答案等等)被判定. 这可用以下方式来实现. <p>
+如果自由格式问题的正确答案是一个未经定义的变量, 那么这个问题的答案
+就被赋予这个变量. 后者可被用作测试条件. 练习的评分是由被满足的测试条件
+的个数所确定的, 这比计算正确答案的个数好.
+<p>
+目前对于一个练习最多可同时定义$condlim个条件, 而且只有数值条件才能如此测试. 其语法如下.
+<p><tt>
+\condition{提示文字}{测试条件}{weight=...}
+</tt>
+(最后一栏是可选的.)
+<p>
+这里是一些测试条件的例. (<tt>\ans1</tt> 和 <tt>\ans2</tt> 是出现在自由格式解答中的未定义变量.)
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if 全部关系式表
+</small>
+<p>
+$table_header
+$table_hdtr<th>条件<th>意义
+$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
+    <td> 若 <tt>ans1</tt> 位于区间 [0,1] 内则判为正确.
+$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
+    <td>若 <tt>ans1</tt> 是 1, 3 或 5 则判为正确.
+$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
+    <td>若 <tt>ans1</tt> 与 <tt>ans2</tt> 是多项式
+    x<sup>2</sup>-5x+6的两个根则判为正确.
+$table_tr<td><tt>sin(\ans1)=0</tt>
+    <td>若 <tt>ans1</tt> 是 $m_pi 的倍数则判为正确.
+$table_end <p>
+关于定义回答的语法请参看
+!href cmd=help&special_parm=oef 关于 OEF 格式的帮助.
+
+<h4>选项参数 <tt>weight</tt></h4>
+<a name=weight></a>
+可对回答加权.
+<p>
+例: 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+
+权重会影响计算的严厉度以及百分比.
+
+可以用变量作为 <tt>weight</tt> 的参数. 
+<p>
+例:
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+</p>
+
+<h4>选项参数 <tt>option</tt></h4>
+ <a name=option></a>
+在 <tt>\answer</tt> 或 <tt>\condition</tt> 里允许的 option 有
+<ul>
+<li>
+<tt>option=split</tt> : 当类型 = <tt>correspond</tt>, <tt>checkbox</tt> 或 <tt>mark</tt> 时,
+允许对回答拆分给分. 
+</li>
+<li>
+<tt>option=nonstop</tt> : 在分步给出的练习中,
+即使这个问题答错了, 仍然给出下一个问题.
+</li>
+<li><tt>option=noanalyzeprint</tt> : 不打印对回答自动分析的文字.
+而由作者提供合适的反馈. 这适用于某些特殊的类型, 例如 <tt>mark</tt>,
+此时自动设置的分析文字往往不合适. 注意: 对条件的分析也不再打印. 
+只有得分仍被打印.</li>
+<li>在 <tt>condition</tt> 后面: 
+<tt>option=hide</tt> : 此条件用于对回答的分析, 但不被打印.
+</li>
+
+</ul>
+
+

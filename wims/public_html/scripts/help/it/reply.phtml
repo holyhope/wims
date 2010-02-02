@@ -1,0 +1,198 @@
+
+!set typelist1=!trim\
+default,Auto,automatic determination of some basic types\
+raw,raw text,control of comparison by options\
+numeric,Number, with tolerance of precision\
+function,Numerical function, function with numerical tests\
+equation,Equation numérique,equation avec test numérique\
+exp,Mathematical expression, with formal comparison\
+text,Text, parole o frasi\
+multiple,Controlable multiple choices,buttons or menus\
+
+
+!set typelist2=!trim\
+atext,Approximative text, with identification of singular and plural etc.\
+chembrut,Formule brute d'une molécule,en chimie\
+chemdraw,Dessiner une molécule,avec une aplet Java\
+chemeq,Chemical equation, with balance analysis\
+clickfill,Drag-and-drop objets,text and image\
+clicktile,Click and color tiles, need java\
+compose,Compose, using given components\
+coord,Click on image, recognition of coordinates and various regions\
+correspond,Correspondance, establish the correspondance between pairs of objects\
+chset,Set of characters,\
+geogebra,Geometria dinamica,utilizza applet GeoGebra\
+javacurve,Java draw,\
+jmolclick,Click on 3D atoms, use applet Jmol\
+keyboard,Texte, avec clavier adapté\
+matrix,Matrix, mathematical\
+numexp,Rational numbers, fractional writing\
+range,Number within a given range, anything within the range is accepted\
+reorder,Reordering, given list of objects\
+set,Finite set,literal, formal or approximative\
+sigunits,Sigunits,number with unit and significant digits\
+symtext,Symtext,advanced tool of text identification\
+units,Number with unit, for physics\
+vector,Vector,formal comparison of components\
+wlist,List of words,\
+
+
+!set namelist=Basic types, Specific or advanced types
+!set symtextlist=text atext raw compose
+
+<center><h3>Réponses à un exercice</h3></center> <p>
+
+There are two basic ways in which an OEF exercise accepts user replies:
+multiple choices and freestyle replies. User answers will be analyzed
+according to the nature of the types. It is also possible to show
+!href cmd=help&special_parm=feedback feedbacks
+ to the user when the answer meeds a specified condition (usually to warn a
+typical error).
+
+<p><h4>Multiple choices</h4> <p>
+A multiple choice is defined by giving a list of good choices (one or
+several) and another list of bad choices. <p>
+Up to $choicelim simultaneous multiple choice questions can be asked for
+one exercise, under the current implementation. The number of good and bad
+choices within one multiple choice question is unlimited (except a limit on
+the length of the string imposed by WIMS).
+<p>
+See 
+!href cmd=help&special_parm=oef help on OEF format
+ for the syntax to define a multiple choice.
+<p><h4>Freestyle answers</h4> <p>
+A freestyle answer is one which is typed by the user.
+Up to $answerlim simultaneous freestyle answers can be asked for one
+exercise, under the current implementation. <p>
+The syntax is as follows:
+<tt>\answer{Texte}{\reponse}{type=...}{option=...}{weight=...}</tt>
+<br>
+(The last 3 fields are optional.)
+<p>
+<h5>Il parametro <tt>type</tt></h5>
+Each freestyle answer can independently take one of the following types.
+
+!for i=1 to 2
+ <p><b>$(namelist[$i])</b>
+ !set n=!linecnt $(typelist$i)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$i)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <li><p><a name="_$name"></a>
+   !read help/anstype.$lang/$name.phtml
+   !if $name iswordof $symtextlist
+    <p>
+    <b>Remarque</b>.
+    Ce type de réponse accepte l'option symtext. Si le mot <tt>symtext</tt> est
+    déclaré dans l'option de la réponse, l'analyse de la réponse sera exactement
+    comme pour
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+, in particular with no preliminary processing of the texts. And all the
+symtext options will be understood in this case.
+   !endif
+   <p>
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<tt>$name</tt>) $desc.
+  !endif
+ !next j
+ </ul>
+!next i
+
+<p>
+Common option to freestyle answers: <tt>default</tt>. This option can take
+the form <tt><font color=green>default="default_value"</font></tt>. If the
+user gives an empty reply, it is the default_value that will take place.
+
+<p><h4>Testing conditions</h4> <p>
+Under certain circumstances, it is desired that freestyle answers be tested
+by special conditions (questions with multiple good answers, exercises 
+asking for examples, answers determined by inequalities, etc). This can be
+done in the following way. <p>
+If the good answer to a freestyle question is an undefined variable, the
+answer to this question will be fed into this variable. The latter can then
+be used to implement testing conditions. The score given to the exercise is
+then determined by the number of testing conditions which are met, rather
+than the number of answers which meet the good answers.
+<p>
+Up to $condlim simultaneous conditions can be defined for one
+exercise, under the current implementation. The syntax is as follows.
+<p><tt>
+\condition{prompt text}{testing conditions}{weight=...}
+</tt>
+(The last field is optional.)
+<p>
+Here are some examples of testing conditions. (<tt>\ans1</tt> and
+<tt>\ans2</tt> are undefined variables appearing in freestyle answers, as
+described above.)
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if Complete list of relations
+</small>
+<p>
+$table_header
+$table_hdtr<th>Condition<th>meaning
+$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
+    <td>Good if <tt>ans1</tt> is within the interval [0,1].
+$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
+    <td>Good if <tt>ans1</tt> is 1, 3 or 5.
+$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
+    <td>Good if <tt>ans1</tt> and <tt>ans2</tt> are the two 
+    roots of the polynomial x<sup>2</sup>-5x+6.
+$table_tr<td><tt>sin(\ans1)=0</tt>
+    <td>Good if <tt>ans1</tt> is a multiple of $m_pi.
+$table_end <p>
+See
+!href cmd=help&special_parm=oef help on oef format
+ for the syntax for defining replies.
+
+<h4>The optional parameter <tt>weight</tt></h4>
+<a name=weight></a>
+It is possible to give a weight to answers.
+<p>
+Example : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+
+Le niveau de sévérité  sera aussi pris en compte lors du 
+calcul fait et le pourcentage sera pris sur un pourcentage fixé
+par le niveau de sévérité. 
+
+One can put variables in <tt>weight</tt>. 
+<p>
+Example :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+
+<h4>The optional parameter <tt>option</tt></h4>
+ <a name=option></a>
+The allowed options for <tt>\answer</tt>
+or <tt>\condition</tt> are
+<ul>
+<li>
+<tt>option=split</tt> : In case of type = <tt>correspond</tt>, <tt>checkbox</tt> or <tt>mark</tt>,
+there will be partial score. 
+</li>
+<li>
+<tt>option=nonstop</tt> : In case of step exercises,
+following questions are asked even if the answer is false.
+</li>
+<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+Seul le score subsiste.</li>
+<li>Following <tt>condition</tt> : 
+<tt>option=hide</tt> : The condition is used to analyze the
+answer but will not be printed.
+</li>
+
+</ul>
+

@@ -1,0 +1,96 @@
+
+<center><h3>The format OEF</h3></center> <p>
+
+OEF means ``online exercise format'', a format for mathematical exercises
+destinated to computer-aided teaching systems. The goal of the creation
+of this format is to help the exchanges of content between different
+systems. Therefore this format only contains mathematical informations of
+the exercise.
+<p>
+The advantage of the OEF format is that exercises under it are very easy
+to create. But it should be said that these exercises, in particular those
+created by $module_title, are not as performing as native exercises of a
+system such as WIMS. It is hard to imagine, at least for the time being,
+the WIMS exercises such as Q-Puzzle, the Coincidence series or again the
+Shoot series, be transformed into oef format.
+<p>
+Please refer also to 
+!href cmd=help&special_parm=examples the examples
+ to have an idea of the structure of an OEF file. <p>
+<h4>Basic syntax</h4> <p>
+The format of a OEF file is very similar to LaTeX. It is composed of
+directives followed by one or more parameters. A directive is a word
+preceeded by the character <tt><b><font color=green>\</font></b></tt>,
+and the parameters are enclosed in braces.
+For example, in the following sentence
+<pre>
+   \choice{The answer is}{yes}{no}
+</pre>
+there is a directive named <tt>choice</tt>, 
+which has 3 parameters, namely, <tt>The answer is</tt>, <tt>yes</tt>
+and <tt>no</tt>.
+<p><h4>List of directives</h4> <p>
+Here is a brief list of directives recognized by the OEF manager of WIMS.
+See also 
+!href cmd=help&special_parm=parameters help on parameters
+ for the syntax to define parameters.
+<p>$table_header
+$table_hdtr<th>directive<th>number of<br>parameters<th>description
+$table_tr<td>title<td align=center>1<td>defines the title of the exercise
+$table_tr<td>language<td align=center>1<td>the language of the exercise, such as 
+<tt>en</tt> or <tt>fr</tt>
+$table_tr<td>author<td align=center>1<td>defines the author of the exercise
+$table_tr<td>email<td align=center>1<td>defines the author's email
+$table_tr<td>format<td align=center>1<td>format of the statement: see
+!href cmd=help&special_parm=format help on formats
+.
+$table_tr<td>css</td><td align=center>1</td><td>defines css style</td></tr>
+$table_tr<td>precision<td align=center>1<td>precision in comparing user's reply
+with the solution. Give a positive integer n here: the comparison will
+be done to the precision of 1/n.
+$table_tr<td>range<td align=center>1<td>variable range when evaluating a function
+supplied by the user. Should be given in the form <tt>n1..n2</tt>, where 
+n1 is the start point, n2 is the end point.
+<tr>
+$table_tr<td>statement<td align=center>1<td>the parameter is the statement of the exercise
+$table_tr<td>plot<td align=center>?<td>a dynamic plot. (Still under construction.)
+<tr>
+$table_tr<td>answer<td align=center>2-5<td>defines a freestyle answer. The first
+parameter is the prompt of the answer, and the second is the good answer. 
+Such an answer can be tested according to many different types: number,
+function, text, etc. 
+!href module=$module&cmd=help&special_parm=reply Detail
+.
+<p>
+Optional parameters: <tt>type</tt>, <tt>option</tt>, <tt>weight</tt>.
+$table_tr<td>choice<td align=center>3-5<td>defines a multiple choice. The first
+parameter is the prompt of the choice, the second the good choice(s), and the
+third the other choice(s). The last two parameters may (should) be a
+comma-separated list. Multiple good choices are allowed. If a choice appears
+in both good and bad choice lists, it will be taken as good.
+<p>
+Optional parameters: <tt>option</tt>, <tt>weight</tt>.
+<p>
+Recognized option words: <tt>shuffle</tt>, <tt>noidontknow</tt>.
+$table_tr<td>condition<td align=center>2-4<td>defines a special condition for the
+evaluation of freestyle answers. See 
+!href cmd=help&special_parm=reply help on replies
+ for details.
+<p>
+Optional parameters: <tt>option</tt>, <tt>weight</tt>.
+<tr>
+$table_tr<td>solution<td align=center>1<td>gives the solution of the exercise with
+explanation. The OEF manager may decide on whether to show this explained
+solution to the user, according to the user setup of the difficulty level.
+$table_tr<td>hint<td align=center>1<td>gives a hint of the exercise. The OEF
+manager may decide on whether to show the hint, according to the user setup
+of the difficulty level.
+$table_tr<td>help<td align=center>1<td>gives a help to the exercise. This help
+will always be accessible to the user, in a popup window.
+$table_tr<td>feedback<td align=center>2<td>gives a feedback warning to the user
+when the answer meeds a specified condition. Usually to warn of a typical
+error.
+!href cmd=help&special_parm=feedback Detail
+.
+</table>
+
