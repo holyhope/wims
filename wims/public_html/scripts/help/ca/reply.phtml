@@ -1,0 +1,206 @@
+
+!set typelist1=!trim\
+default,Auto,détermination automatique de certains types de base\
+raw,Texte brut,contrôle de comparaison par options\
+numeric,Nombre,nombre avec tolérance de précision\
+function,Fonction numérique,fonction avec test numérique\
+exp,Expression mathématique,comparaison formelle\
+text,Texte,des mots ou des phrases\
+multiple,Choix multiples contrôlables,boutons ou menus\
+
+
+!set typelist2=!trim\
+atext,Texte approximatif,avec identification de singulier et pluriel etc.\
+chemeq,Equation chimique,avec analyse d'équilibre\
+clickfill,Objets à glisser-déposer,texte et image\
+clicktile,Mettre en couleur des pavés, nécessite java\
+compose,Composer,en utilisant des composantes fournies\
+coord,Clic sur image,reconnaissance de coordonnées et régions diverses\
+correspond,Correspondance,établir la correspondance de paires d'objets\
+chset,Ensemble de caractères,\
+geogebra,Géométrie dynamique,utilisation de l'applet GeoGebra\
+javacurve,Dessin Java, possibilité de dessins soit libres soit avec des formes prédéfinies\
+jmolclick,Click on 3D atoms, use applet Jmol\
+matrix,Matrix, mathématique\
+numexp,Nombre rationnel, écriture fractionnaire\
+range,Nombres dans une zone,tout ce qui est dans la zone est accepté\
+reorder,Mise en ordre, d'une liste d'objets\
+set,Ensemble fini,textuel, formel ou approximatif\
+sigunits,Sigunits,nombre avec unité et chiffre significatif\
+symtext,Symtext,outil avancé d'identification de textes\
+units,Nombre avec unité, pour la physique\
+vector,Vecteur,comparaison formelle des composantes\
+wlist,Liste de mots,\
+
+
+!set namelist=Types de base,Types spécifiques ou avancés
+!set symtextlist=text atext raw compose
+
+<center><h3>Réponses à un exercice</h3></center> <p>
+
+Il y a principalement deux façons dont un exercice OEF accepte les réponses
+d'utilisateur&nbsp;: choix multiples ou réponses libres.
+La réponse donnée par l'utilisateur sera analysée selon la nature du type.
+Il est aussi possible d'afficher des
+!href cmd=help&special_parm=feedback commentaires ciblés
+ quand la réponse tombe sous une certaine condition (pour
+avertir d'une erreur typique par exemple).
+
+<p><h4>Choix multiples</h4> <p>
+Un choix multiple est défini en donnant une liste de bons choix (un ou
+plusieurs), et une autre liste pour tous les choix (les bons choix y sont automatiquement ajoutés). <p>
+Jusqu'à $choicelim choix multiples simultanés peuvent être demandés pour un
+exercice, sous l'implémentation actuelle. Le nombre de bons ou mauvais choix
+dans une question à choix multiple n'est pas limité (sauf une limite sur la
+longueur de texte imposée par WIMS).
+<p>
+Voir 
+!href cmd=help&special_parm=oef aide sur le format OEF
+ pour la syntaxe de définition d'un choix multiple.
+
+<a name=freestyle></a>
+<p><h4>Réponses libres</h4> <p>
+Une réponse libre est une réponse où le texte est tapé par l'utilisateur.
+Jusqu'à $answerlim réponses libres simultanées peuvent être demandées dans
+un exercice sous l'implémentation actuelle. <p>
+La syntaxe est la suivante : 
+<tt>\answer{Texte}{\reponse}{type=...}{option=...}{weight=...}</tt>
+<br>
+(Les 3 derniers champs sont optionnels.)
+<p>
+<h5>Le paramètre <tt>type</tt></h5>
+Chaque réponse libre peut prendre indépendamment l'un des types suivants.
+
+!for i=1 to 2
+ <p><b>$(namelist[$i])</b>
+ !set n=!linecnt $(typelist$i)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$i)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <li><p><a name="_$name"></a>
+   !read help/anstype.fr/$name.phtml
+   !if $name iswordof $symtextlist
+    <p>
+    <b>Remarque</b>.
+    Ce type de réponse accepte l'option symtext. Si le mot <tt>symtext</tt> est
+    déclaré dans l'option de la réponse, l'analyse de la réponse sera exactement
+    comme pour
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+, en particulier sans aucun traitement préalable des textes. Et toutes les
+    options symtext seront comprises dans ce cas.
+   !endif
+   <p>
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<tt>$name</tt>) $desc
+  !endif
+ !next j
+ </ul>
+!next i
+
+<p>
+Option commune à toutes les réponses libres : <tt>default</tt> Cette option
+peut prendre la forme <tt><font color=green>default="valeur_par_défaut"</font>
+</tt>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
+qui remplace.
+
+<p>
+Pour insérer les champs de réponses dans le texte par la commande <tt>embed</tt>, 
+!href cmd=help&special_parm=embedans voir ici. 
+
+<h4>Conditions de test</h4>
+Dans certaines circonstances, il est souhaitable que les réponses libres
+soient testées par des conditions spéciales (questions avec plusieurs bonnes
+réponses, exercices demandant des exemples, réponses déterminées par des
+inégalités, etc). Ceci peut être réalisé de la façon suivante. <p>
+Si la bonne réponse à une question libre est une variable non définie
+auparavant, la réponse à cette question sera stockée dans cette variable.
+Cette variable peut ensuite être utilisée pour implémenter des conditions de
+test. Le score de l'exercice est alors calculé selon le nombre de conditions
+de test qui sont satisfaites, au lieu du nombre de réponses qui coïncident
+avec les bonnes réponses. <p>
+
+Jusqu'à $condlim conditions simultanées peuvent être définies dans
+un exercice, sous l'implémentation actuelle. Seules les réponses numériques
+peuvent être ainsi testées. La syntaxe est&nbsp;
+<p><tt>
+\condition{texte d'affichage}{conditions de test}{weight=...}
+</tt>
+<br>
+(Le dernier champ est optionnel.)
+<p>
+Voici quelques exemples de conditions de test. (<tt>\rep1</tt> et
+<tt>\rep2</tt> sont des variables non définies qui apparaissent dans des
+définitions de réponses libres, comme décrit ci-dessus.)
+<small>
+!href target=wims_mhelp cmd=help&special_parm=if Liste complète des relations
+</small>
+<p>
+$table_header
+$table_hdtr<th>Condition<th>signification
+$table_tr<td><tt>\rep1>=0 and \rep1<=1</tt>
+    <td>Bon si <tt>rep1</tt> est dans l'intervalle [0,1].
+$table_tr<td><tt>\rep1=1 or \rep1=3 or \rep1=5</tt>
+    <td>Bon si <tt>rep1</tt> est 1, 3 ou 5.
+$table_tr<td><tt>(\rep1)*(\rep2)=6 and (\rep1)+(\rep2)=5</tt>
+    <td>Bon si <tt>rep1</tt> et <tt>rep2</tt> sont les deux racines 
+    du polynôme x<sup>2</sup>-5x+6.
+$table_tr<td><tt>sin(\rep1)=0</tt>
+    <td>Bon si <tt>rep1</tt> est un multiple de $m_pi.
+$table_end <p>
+Voir
+!href cmd=help&special_parm=oef aide sur le format oef
+ pour la syntaxe de définition des réponses.
+ 
+<h4>Le paramètre optionnel <tt>weight</tt></h4>
+<a name=weight></a>
+Il permet d'imposer un poids aux questions posées.
+<p>
+Exemple : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+
+Le niveau de sévérité  sera aussi pris en compte lors du 
+calcul fait et le pourcentage sera pris sur un pourcentage fixé
+par le niveau de sévérité. 
+
+Il est possible de mettre des variables dans <tt>weight</tt>. 
+<p>
+Exemple :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+
+<h4>Le paramètre optionnel <tt>option</tt></h4>
+ <a name=option></a>
+Les options possibles à la suite d'une instruction <tt>\answer</tt>
+ou <tt>\condition</tt> sont
+<ul>
+<li>
+<tt>option=split</tt> : Dans le cas d'une réponse dont
+le type est <tt>correspond</tt>, <tt>checkbox</tt> ou <tt>mark</tt>, la notation
+tient compte des réponses justes, même si elles ne le sont pas toutes. 
+</li>
+<li>
+<tt>option=nonstop</tt> : Dans le cas d'un exercice à étapes, les questions
+suivantes sont posées même en cas de réponses fausses.
+</li>
+<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+Seul le score subsiste.</li>
+<li>A la suite d'une instruction <tt>condition</tt>, 
+<tt>option=hide</tt> : La condition sera utilisée pour l'analyse
+de la réponse mais ne sera pas  affichée. 
+</li>
+
+</ul>
+
