@@ -15,7 +15,11 @@
  !exit
 !endif
 !if $s_!=$empty
- !read help/$lang/$s_.phtml
+ !if $s_=symtext
+   !read help/symtext/symtext.phtml
+ !else
+  !read help/$lang/$s_.phtml
+ !endif
  !set wims_menu_items=!append line back2,1,cmd=help\
  to $wims_menu_items
  !exit
