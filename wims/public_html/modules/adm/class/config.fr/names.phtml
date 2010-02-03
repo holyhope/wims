@@ -1,9 +1,19 @@
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
 
 !set months=Jan,Fév,Mar,Avr,Mai,Jun,Jul,Aoû,Sep,Oct,Nov,Dec
-
+!distribute item message du jour,\
+	exercice,feuille de travail,examen,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!distribute item messages du jour,\
+	exercices,feuilles de travail,examens,documents,participants\
+	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
+	
+	
 !set title=Configuration et Maintenance
 !if $job=arch
  !set title=Sauvegarde et Restauration
@@ -11,17 +21,83 @@
  !set name_tosend=Pour envoyer une sauvegarde dans votre classe
  !set name_namefile=veuillez donner le nom du fichier de sauvegarde&nbsp;
  !set name_help=on vous demandera de sélectionner les ressources de la classe à restaurer
+ !set name_no_restore=Impossible de restaurer car vous partagez les ressources d'une autre\
+	classe. La restauration ne peut être faite que par la classe maître du partage.
+ !set name_deposit=!nosubst Votre fichier de sauvegarde <tt>$wims_deposit</tt> contient les ressources\
+  suivantes. Marquez ce que vous voulez restaurer dans votre classe.
+  
+ !distribute lines Aucune ressource à restaurer n'est sélectionnée.\
+   Restaurer tout sauf la configuration de la classe et le compte d'enseignant.\
+   <font color=red>Danger!</font> <small>Voir ci-dessous.</small>\
+   Configuration de la classe.\
+   Compte d'enseignant (y compris votre mot de passe)\
+   comptes de participants\
+   Comptes existants\
+   documents\
+   Documents existants\
+   exercices\
+   exercices existants\
+   feuilles de travail\
+   Implique la restauration des exercices\
+   Feuilles existantes\
+   feuilles d'examen\
+   Implique la restauration de feuilles de travail et d'exercices\
+   Examens existants\
+   messages de discussion\
+   Messages existants\
+   Registre d'activités de participants et scores automatiques. Implique la restauration de comptes de participants.\
+   Notes entrées par l'enseignant\
+   Notes existantes\
+   un agenda de la classe\
+   un agenda existant\
+   Un livret de compétences\
+   un livret existant\
+   Séquences pédagogiques\
+   Implique la restauration de feuilles de travail, d'exercices, des examens et des documents\
+   Séquences existantes\
+   Méthode de restauration\
+   Remplacement\
+remplacer les ressources existantes par les ressources restaurées\
+   Fusion\
+remplacer les ressources existantes excepté les comptes de  participants et les exercices de la classe. Pour ces derniers, ceux ayant mêmes noms seront remplacés par les données restaurées et les autres seront gardés\
+   Restaurer les ressources sélectionnées\
+   into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
+   name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
+   name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
+   name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
+   name_selectrestore
+   
+!distribute lines Ressources de sauvegarde restaurées dans la classe&nbsp;\
+   La restauration des comptes de participants (et des registres d'activité) est refusée car il n'y a plus d'espace disponible.\
+   La date d'expiration de la classe a été modifiée après la restauration, car la date restaurée est\
+ into name_restore1,name_restore2,name_restore3
+
+ !distribute items méconnaissable, trop tôt, trop tard into ebad,eearly,elate
+ 
  !goto commun
 !endif
 
 !if $job=clean
  !set title=Nettoyage de la classe
  !set name_lines=lignes dans les registres d'activité de participants.
+ !set name_empty=Votre classe est vide&nbsp;!<p>\
+ Il n'y a pas de ressources dans votre classe pouvant être effacées.
+ !set name_no_erase=Ne peuvent pas être nettoyés car vous partagez ceux d'une autre classe.
+  !distribute lines Nettoyer tout ce qui peut être nettoyé\
+   Les registres d'activité seront aussi effacés\
+   Les feuilles d'examen seront aussi effacées\
+   sauvegardez la classe\
+   Les ressources actuelles de votre classe\
+ into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
+  !set name_warning_clean=Les ressources effacées par cette page ne peuvent pas être \
+ récupérées &nbsp;! Avant d'effacer quoi que ce soit,
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Classes voisines
+  !set name_noclass=Vous ne pouvez pas définir des classes voisines car il n'y a aucune autre\
+ classe sur ce site.
  !distribute lines Déclaration<br>de voisinage\
    Partage de ressources\
    par vous\
@@ -40,14 +116,12 @@
    Classes pouvant partager vos ressources\
    Ressources permises\
    actif\
+   Liste d'autres classes\
+   Information partage de ressources\
+   Afficher les classes d'exemple du serveur\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
- name_otherone,name_classsharing,name_ressourceallowed,name_active
- !if $job2=import
-  !distribute item message du jour,\
-	exercice,feuille de travail,examen,document,participant\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
- !endif
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
 
  !if $job2=stopshare
   !set title=Arrêter un partage
@@ -89,11 +163,17 @@
      Elles seront définitivement perdues si vous n'avez pas de sauvegarde.
    
   !endif
+  
+  !distribute items ---,<small>enseignant</small>,\
+	<small>participants</small>,\
+	<small>enseignant et participants</small> into n_n0, n_n1, n_n2, n_n3
+	
  !goto commun
 !endif
 
 !if $job=connect
  !set title=Se connecter aux autres serveurs / plate-formes
+ !set name_listserver=Liste de connexions des serveurs
  !goto commun
 !endif
 
@@ -111,6 +191,7 @@
  !set title=Configuration de l'apparence de la classe.
  !goto commun
 !endif
+
 
 !if $job=oefdefault
  !set title=Paramétrage par défaut des modules OEF
@@ -216,7 +297,8 @@
   into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref
-!endif   
+!endif
+
 :commun
 !distribute line Authentification\
 Préférences\
@@ -276,3 +358,71 @@ name_sheets
 
 !set name_content_style2=ou copier ici la feuille de style de la classe
 
+!exit
+:arch
+
+ Vous avez envoyé des ressources sauvegardées à partir d'une autre classe.
+ Si vous restaurez des ressources incompatibles avec votre classe, elle va
+ être simplement détruite.
+ !href cmd=help&special_parm=dependencies Pourquoi&nbsp;?
+ <p>
+ !href cmd=reply&job=list Arrêtez
+ si vous n'êtes pas complètement sûr de ce que vous faites. (Dans tous les
+ cas, gardez une sauvegarde de l'état actuel avant de continuer.)
+ 
+ :arch_end
+ 
+ <p><b>IMPORTANT</b>. <ul><li>Il n'y a pas de vérification des données que vous avez
+envoyées et le système n'autorise pas la modification manuelle des archives
+de sauvegarde. Les erreurs introduites par une modification manuelle des
+archives peuvent entraîner des comportements imprévisibles de votre classe.
+
+<li> Sauf dans des cas d'absolue nécessité, évitez de restaurer
+<font color=red>la configuration de la classe</font> et
+<font color=red>le compte d'enseignant</font>.
+Les erreurs dans les données envoyées pour ces deux champs peuvent vous faire
+perdre complètement le contrôle de votre classe.
+<li> Vous pouvez utiliser la sauvegarde d'une classe pour en installer une
+nouvelle. Dans ce cas, évitez de restaurer les registres d'activités et les
+notes (manuelles et automatiques). Ces deux types de ressources ne peuvent
+pas être effacés une fois installés (mesure de sécurité). Et beaucoup
+d'opérations de maintenance de la classe sont impossibles quand la
+classe contient des notes.
+</ul>
+!exit
+
+:clean
+Vous ne pouvez pas effacer des ressources de la classe
+ quand les activités de participants ont déjà commencé.
+ <p>
+ Ceci est une mesure de sécurité importante. Si vous avez envie
+ d'outrepasser cette restriction, pensez aux deux aspects suivants.
+ <p>
+ D'un côté, supposons qu'un étudiant vole votre mot de passe. S'il vient dans
+ cette page pour tout effacer, les étudiants honnêtes vont beaucoup souffrir,
+ et vos activités d'enseignement seront considérablement perturbées.
+ <p>
+ D'un autre côté, les différentes ressources de la classe sont inter-dépendantes.
+ Si vous effacez certaines ressources sans effacer celles qui en dépendent,
+ votre classe ne fonctionnera plus.
+ !href cmd=help&special_parm=dependencies Exemples.
+ <p>
+ De toute façon, si vous voulez vraiment nettoyer cette classe, vous pouvez
+ toujours l'effacer (en mettant sa date d'expiration à aujourd'hui&nbsp;
+ la classe disparaîtra demain matin), ou
+ <a href="mailto:$wims_site_manager?subject=Please erase my class">demander
+ au gestionnaire du site</a> de l'effacer pour vous.
+ !exit
+ 
+ :clean2
+ <p><b>Remarques</b>. 1. Cette page est accessible seulement au moment où la
+classe est en préparation. Une fois que les activités de participants ont
+commencé, il  n'est plus possible d'effacer des ressources.
+<p>
+2. Les ressources partagées par plusieurs classes peuvent seulement être
+effacées à partir de la classe maître du partage. Les autres classes doivent
+d'abord
+!href cmd=reply&job=neighbor&job2=sharelist $name_stopsharing
+ des ressources avant de les effacer.
+
+!endif

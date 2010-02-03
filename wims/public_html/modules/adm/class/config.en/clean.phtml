@@ -1,60 +1,36 @@
 
 !if $cl_reccnt<1
- Your class is empty!
- <p>
- There is no resource in your class that can be cleaned up.
+ $name_empty
  !exit
 !endif
 
 !if $cl_testcnt>0
- <b>ATTENTION</b>. You cannot erase resources of the class
- when participant activities have already started.
- <p>
- This is an important security measure. If you feel that it is an
- inconvenience, think of the following two aspects.
- <p>
- On the one hand, suppose that a student steals your password. If (s)he
- comes to this page and erases everything, honest students will
- suffer a lot, and your teaching activities will be greatly disturbed.
- <p>
- On the other hand, different resources of the class are inter-dependent.
- If you
- erase some resources without erasing those depending on them, your class
- will no longer work.
- !href cmd=help&special_parm=dependencies Examples.
- <p>
- Anyway, if you really want to clean this class, you can always expire it
- (by setting its expiration date to today; the class will disappear the next
- morning), or
- <a href="mailto:$wims_site_manager?subject=Please erase my class">ask
- the site manager</a> to erase it for you.
+ <b>$wims_name_warning</b>. 
+ !read names.phtml clean
  !exit
 !endif
-
-!set no_erase=Cannot be cleaned because you are sharing those of another\
-	class.
-<b>WARNING</b>. Resources erased by this page cannot be recovered!
-!href cmd=reply&job=arch&job2=first Backup the class
- before any cleaning.
+<b>$wims_name_warning</b>. $name_warning_clean
+!href cmd=reply&job=arch&job2=first $name_saveclass
+ 
 <p>
-Actual resources in your class:
+$name_ressource:
 <ul>
  <li>
- !href cmd=reply&job=clean&clean=all Clean up everything cleanable
+ !href cmd=reply&job=clean&clean=all $name_cleanall
 .
 !if $cl_usercnt>0
  <li>$cl_usercnt $wims_name_student.
  !if $sharing_user!=$empty
-  $no_erase
+  $name_no_erase
  !else
   !href cmd=reply&job=clean&clean=user $wims_name_erase.
   !if $cl_scorecnt>0
-   (Will also erase activity register.)
+   ($name_erase1)
   !endif
  !endif
 !endif
 !if $cl_doccnt>0
- <li>$cl_doccnt documents.
+ <li>$cl_doccnt $name_docs.
  !if $sharing_doc!=$empty
   $no_erase
  !else
@@ -64,7 +40,7 @@ Actual resources in your class:
  !endif
 !endif
 !if $cl_exocnt>0
- <li>$cl_exocnt $name_exo.
+ <li>$cl_exocnt $name_exos.
  !if $sharing_exo!=$empty
   $no_erase
  !else
@@ -80,12 +56,12 @@ Actual resources in your class:
   !href cmd=reply&job=clean&clean=sheet $wims_name_erase
 .
   !if $cl_examcnt>0
-   (Will also erase exam sheets.)
+   ($name_warning_exam.)
   !endif
  !endif
 !endif
 !if $cl_examcnt>0
- <li>$cl_examcnt exam sheets.
+ <li>$cl_examcnt $name_exams.
  !if $sharing_exam!=$empty
   $no_erase
  !else
@@ -94,7 +70,7 @@ Actual resources in your class:
  !endif
 !endif
 !if $cl_forumcnt>0
- <li>$cl_forumcnt $name_forum_messages
+ <li>$cl_forumcnt $name_forum_messages.
  !if $sharing_forum!=$empty
   $no_erase
  !else
@@ -103,17 +79,10 @@ Actual resources in your class:
  !endif
 !endif
 !if $cl_scorecnt>0
- <li>$cl_scorecnt participant activity lines.
+ <li>$cl_scorecnt $name_lines.
  !href cmd=reply&job=clean&clean=score $wims_name_erase
 .
 !endif
 </ul>
 
-<p><b>Remark</b>. 1. This page is only available when the class is being set
-up. Once student activity has started, cleaning will no longer be possible.
-<p>
-2. Shared resources can only be cleaned from the class
-originating the sharing. The other class should first
-!href cmd=reply&job=neighbor&job2=sharelist stop the sharing
- of the resources before erasing them.
-
+!read names.phtml clean2

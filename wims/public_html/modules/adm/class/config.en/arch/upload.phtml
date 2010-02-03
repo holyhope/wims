@@ -4,7 +4,7 @@
 !endif
 
 !if $no_selection!=$empty
- <b>Attention</b>. Nothing is selected for restoration.
+ <b>$wims_name_warning</b>. $name_noselect
  <p>
 !endif
 
@@ -12,43 +12,35 @@
  !set test=bad
 !endif
 !if $test=bad
- <font color=red><b>WARNING!!!</b></font>
- You have uploaded resources backed up from another class. If you
- restore incompatible resources to your class, it will simply be destroyed.
- !href cmd=help&special_parm=dependencies Why?
- <p>
- !href cmd=reply&job=list Stop
- if you are not completely sure of what you are doing. (In any case, keep a
- backup of the current status before continuing.)
+<font color=red><b>$wims_name_warning!</b></font>
+
+!read names.phtml arch
+
  <p><hr> <p> 
 !endif
 
-!set no_restore=Cannot be restored because you are sharing resources of\
-	another class. Restoration can only be done on the class originating\
-	the sharing.
 !form reply
 <input type=hidden name=job value="$job">
 <input type=hidden name=job2 value=restore>
-Your backup file <tt>$wims_deposit</tt> contains the following resources.
-Please check those you want to restore to your class.
+$name_deposit
 <ul>
  <li><input type=checkbox name=selection value=all>
- Restore everything except class configuration and supervisor account.
+ $name_all
 !if $new_defcnt>0
  <li><input type=checkbox name=selection value=def>
- Class configuration setup.
- <font color=red>Danger!</font> <small>See notes below.</small>
+ $name_config.
+ $name_danger.
 !endif
 !if $new_supcnt>0
  <li>
  !if $sharing_sup=$empty
   <input type=checkbox name=selection value=sup>
  !endif
- Supervisor account (including your password).
+ $name_teacher.
  !if $sharing_sup!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  <font color=red>Danger!</font> <small>See notes below.</small>
+  $name_danger.
  !endif
 !endif
 !if $new_usercnt>0
@@ -56,11 +48,11 @@ Please check those you want to restore to your class.
  !if $sharing_user=$empty
   <input type=checkbox name=selection value=user>
  !endif
- $new_usercnt participant accounts. 
+ $new_usercnt $name_part.
  !if $sharing_user!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  <small>(Existing accounts: $old_usercnt.)</small>
+  <small>($name_part1: $old_usercnt)</small>.
  !endif
  </li>
 !endif
@@ -69,11 +61,11 @@ Please check those you want to restore to your class.
  !if $sharing_doc=$empty
   <input type=checkbox name=selection value=doc>
  !endif
- $new_doccnt documents. 
+ $new_doccnt $name_doc. 
  !if $sharing_doc!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  <small>(Existing documents: $old_doccnt.)</small>
+  <small>($name_doc1: $old_doccnt)</small>.
  !endif
  </li>
 !endif
@@ -82,11 +74,11 @@ Please check those you want to restore to your class.
  !if $sharing_exo=$empty
   <input type=checkbox name=selection value=exo>
  !endif
- $new_exocnt exercises.
+ $new_exocnt $name_exo.
  !if $sharing_exo!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  <small>(Existing exercises: $old_exocnt.)</small>
+  <small>($name_exo1: $old_exocnt)</small>.
  !endif
  </li>
 !endif
@@ -95,100 +87,86 @@ Please check those you want to restore to your class.
  !if $sharing_sheet=$empty
   <input type=checkbox name=selection value=sheet>
  !endif
- $new_sheetcnt work sheets. 
+ $new_sheetcnt $name_sheet.
  !if $sharing_sheet!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  Implies restoration of class exercises.
-  <small>(Existing sheets: $old_sheetcnt.)</small>
+$name_sheet0
+  <small>($name_sheet1: $old_sheetcnt)</small>.
  !endif
+ </li>
 !endif
 !if $new_examcnt>0
  <li>
  !if $sharing_exam=$empty
   <input type=checkbox name=selection value=exam>
  !endif
- $new_examcnt exam sheets.
+ $new_examcnt $name_exam.
  !if $sharing_exam!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  Implies restoration of work sheets and exercises.
-  <small>(Existing exams: $old_examcnt.)</small>
+  $name_exam0.
+  <small>($name_exam1: $old_examcnt)</small>.
  !endif
+ </li>
 !endif
 !if $new_forumcnt>0
  <li>
  !if $sharing_forum=$empty
   <input type=checkbox name=selection value=forum>
  !endif
- $new_forumcnt forum messages.
+ $new_forumcnt $name_forum.
  !if $sharing_forum!=$empty
-  $no_restore
+  $name_no_restore
  !else
-  <small>(Existing messages: $old_forumcnt.)</small>
+  <small>($name_forum1: $old_forumcnt)</small>.
  !endif
+ </li>
 !endif
 !if $new_scorecnt>0
  <li><input type=checkbox name=selection value=score>
- Participant activity register and server-computed scores. Implies restoration
- of participant accounts.
+ $name_activity
+ </li>
 !endif
 !if $new_manualcnt>0
  <li><input type=checkbox name=selection value=manual>
- $new_manualcnt teacher-defined grades. <small>(Existing grades:
- $old_manualcnt.)</small>
+ $new_manualcnt $name_manual. <small>($name_manual1&nbsp;:
+ $old_manualcnt)</small>.
+ </li>
 !endif
 !if $new_cdtcnt>0
  <li><input type=checkbox name=selection value=cdt>
- un agenda de la classe. 
+ $name_cdt. 
  !if $old_cdtcnt>0
-  <small>(un agenda existant.)</small>
+  <small>($name_cdt1)</small>
  !endif
  </li>
 !endif
 !if $new_livretcnt>0
  <li><input type=checkbox name=selection value=livret>
- Un livret de compétences.
+ $name_livret.
  !if $old_livretcnt>0
-  <small>(un livret existant.)</small>
+  <small>($name_livret1)</small>
  !endif
  </li>
 !endif
 !if $new_seqcnt>0
  <li><input type=checkbox name=selection value=seq>
- Séquences pédagogiques. Implique la restauration de feuilles de travail, d'exercices, des examens et des documents
- <small>(Séquences existantes&nbsp;:
- $old_seqcnt.)</small>
+ $name_seq.
+ $name_seq0
+ <small>($name_seq1 $old_seqcnt)</small>.
  </li>
 !endif
 </ul>
-Restoration method:<ul>
+$name_method&nbsp;:<ul>
 <li><input type=radio name=restore value=replace checked>
- Replacement: replace existing corresponding resources by restored ones.
+ $name_replace <i>($name_replace1)</i>.</li>
 <li><input type=radio name=restore value=merge>
- Merge: replace existing corresponding resources except participant accounts and
- class exercises; for the latter, those with the same name will be replaced by
- restored data, while the others will remain.
+ $name_merge <i>($name_merge1)</i>.</li>
 </ul>
-<input type=submit value="Restore the selected resources">
-!href cmd=reply&job=list Abandon the restoration
+<input type=submit value="$name_selectrestore">
+!href cmd=reply&job=list $wims_name_giveup
 .
 </form>
 
-<p><b>IMPORTANT</b>. 1. There is no check of integrity in your uploaded data,
-and manual modification of the backup archives is not supported by the
-system. Errors introduced by manual modification of archives will result
-in unpredictable behavior of your class.
-<p>
-2. Whenever possible, avoid restoring 
-<font color=red>class configuration</font> and
-<font color=red>supervisor account</font>.
-Errors in the uploaded data for these two fields may make you
-completely lose control of your class.
-<p>
-3. You can use the backup of a class to install a new one. In this case,
-avoid restoring scores and grades (server-computed and manual). These two
-resources cannot be erased once they are installed (security measure).
-And many class maintenance operations will be unavailable if there are
-non-empty score data.
-
+!read names.phtml arch_end

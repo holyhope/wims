@@ -1,21 +1,16 @@
 
 !if $classcnt1+$classcnt2<1 and $kw = $empty
- You cannot define class neighbors because there is no other class on this
- site.
+ $name_noclass
  !exit
 !endif
 
 !if $job2!=first
- !distribute items exercises,work sheets,exams,documents,votes,agenda,\
-	participant accounts,supervisor account,forum messages,message of the day,competences,pedagogic sequences\
-	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
-	name_user,name_sup,name_forum,name_motd,name_livret,name_seq
  !read neighbor/$job2.phtml
  <p><center>
- !href cmd=reply&job2=first List of other classes
+ !href cmd=reply&job2=first $name_listclass
  !if $job2!=sharelist
   &nbsp;
-  !href cmd=reply&job2=sharelist Resource sharing info
+  !href cmd=reply&job2=sharelist $name_info
  !endif
  </center>
  !exit
@@ -51,10 +46,6 @@
  !endif
  !exit
 !endif
-
-!distribute items ---,<small>supervisor</small>,\
-	<small>participants</small>,\
-	<small>everybody</small> into n_n0, n_n1, n_n2, n_n3
 
 Neighboring relations between virtual classes allow resource exchange and/or
 inter-class travel. <small>[&nbsp;
