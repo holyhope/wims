@@ -1,0 +1,55 @@
+!set lang_exists=yes
+
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
+!set name_site=網站
+!set name_stem=本位址下的網頁
+!set name_uniq=網頁
+!set names_site=網站
+!set names_stem=網站目錄
+!set names_uniq=網頁
+
+!distribute items day(s),week(s),month(s),year(s),to\
+  into name_day,name_week,name_month,name_year,name_to
+   
+!distribute lines 網站名稱，\
+   站台目錄，或\
+   絕對位址\
+  The links can be listed by \
+  的順序，並列出前\
+  個位置。 搜尋引擎\
+  包含\
+  (不包含)在列表中\
+ 您也可以選擇性地限制列出綱站/綱頁所包含的關鍵字：\
+ into name_site1,name_stem,name_uniq,name_listlink,name_limited,name_searchengine,\
+ name_included,name_excluded,name_option
+
+!set name_list1=!nosubst List of web $(names_$type) bringing visitors to us, within the period of
+
+!set name_sum=!nosubst 超過 $laps 天
+
+!set name_list2=來自 站台  $(names_$type) 連線的參觀者列表。 \
+第一欄為參觀者人數，第二欄為來自參觀者連線的網頁 $(name_$type) 。
+
+!set name_visit1=people have visited us through links in these $totall
+!set name_visit2=!nosubst At least $auto other visitors didn't specify public referring pages.\
+  Referring pages within $httpd_HTTP_HOST are not counted.
+ 
+ !set title=往後連結列表
+ 
+!set name_warning= 抱歉，本網站參考計數並未運作，沒有適當的往後連結列表。
+   
+ 
+!set name_choose= 列表期間：從
+
+:exit
+:intro
+通常一個本站的網頁將很多參觀者送到其他參觀者所感興趣的地方。因此，如果您正在
+尋找關於本站的網頁資源時，這類網頁的列表正是您所需要的。<p>
+<p>
+另一方面，如果您是連結到本站的網頁作者，這個網頁列表允許您測量連結的效率。對於您的連結
+這也是我們對於您連結到本站的禮遇。
+<p>
+我們的往回連結是根據您在下列選單中所選定的參數動態生成的。
