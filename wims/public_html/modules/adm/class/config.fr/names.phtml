@@ -152,7 +152,35 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
+ 
+ !distribute lines Relation de voisinage\
+   n'a pas déclaré votre classe comme voisine\
+   vous accepte comme classe voisine pour\
+   avec\
+   Vous partagez déjà les ressources suivantes de la classe\
+   n'a pas de ressources que vous pouvez importer\
+   a les ressources importables suivantes\
+   Même titre dans votre classe\
+   Vide\
+   en préparation\
+   Remplacer\
+   Login déjà utilisé dans votre classe\
+   Participant effacé existant dans votre classe\
+   Importation à partir de la classe\
+   Transféré avec succès\
+   comptes de participants de la classe voisine\
+   Vérifier le résultat\
+ into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+   name_neigh_account,name_verify
+ 
+ !set name_inactif=!subst Le(a) $(name_$itype) est mis(e) en état inactif pour vous permettre de le\
+  modifier si vous le voulez.
 
+ !set name_accept=!nosubst Acceptez-vous la classe <em><font color=blue> $nei_description</font></em>\
+   comme votre voisine pour
+   
  !if $job2=stopshare
   !set title=Arrêter un partage
   !set name_warning=Votre classe a un registre d'activités actif et les\
@@ -395,10 +423,11 @@ Zones dépendantes\
 Apparence\
 Restriction des scores\
 Adresse d'une plateforme\
+de\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score,wims_name_config_ent
+wims_name_config_score,wims_name_config_ent,name_of
 
 !distribute lines Postes sûrs\
    Feuille de style\
@@ -517,3 +546,34 @@ This WIMS server has not declared any connectable remote server. In order
  declare site connections.)
  
  !exit
+ 
+:import2
+ La feuille de travail que vous voulez importer peut utiliser des exercices
+   définis dans la classe voisine.
+   <p>
+   Si les mêmes exercices n'existent pas dans la vôtre, la feuille importée
+   ne fonctionnera pas correctement. Veuillez vérifier soigneusement que tous
+   les exercices de la classe voisine ont un duplicata dans la vôtre.
+!exit
+:import3
+  Les feuilles d'examen sont basées sur les feuilles
+   de travail pour constituer leurs contenus. <p>
+   Importer une feuille d'examen n'a de sens que si vous avez exactement les
+   mêmes feuilles de travail que la classe voisine et si ces feuilles sont
+   rangées dans le même ordre dans les deux classes.
+   <p>
+   Si ce n'est pas le cas, la feuille d'examen importée ne pourra qu'avoir
+   des comportements erratiques.
+!exit 
+:import4
+
+Vous êtes sur le point de remplacer un(e) $(name_$itype)
+  existant(e) de votre classe par la ressource importée. Il n'y aura aucune
+  possibilité de retour en arrière après cette opération.
+
+!exit
+:import5
+ Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
+ classe est pleine (et s'il y a encore de la place dans le site pour ajouter
+ de nouveaux participants).
+!exit

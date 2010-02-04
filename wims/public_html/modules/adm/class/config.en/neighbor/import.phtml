@@ -1,22 +1,13 @@
 
-!distribute item message of the day,\
-	exercise,work sheet,exam,document,participant\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
-!set code1=None
-!set code2=$wims_name_yes but different
-!set code3=$wims_name_yes, active and different
-
-The class
 !href cmd=reply&job2=def $nei_description
- of
-<em><font color=blue>$nei_institution</font></em>
+ (<em><font color=blue>$nei_institution</font></em>)
 !if $newcnt1+$newcnt2<1
- has no importable resources for you.
+ $name_no_ressource.
  !href cmd=reply&job2=def $wims_name_back2
 .
  !exit
 !endif
-has the following importable resources.
+$name_importable.
 <small>
 !href cmd=help&special_parm=import $wims_name_help
 </small>
@@ -25,8 +16,8 @@ has the following importable resources.
  <p>$table_header
  <caption>$name_teaching</caption>
  $table_hdtr<th>$wims_name_Type<th>$wims_name_title<th><small>$wims_name_name</small>
- <th><small>Content</small>
- <th>Same title in your class<th>$wims_name_action
+ <th><small>$name_ressourceallowed</small>
+ <th>$name_same_title<th>$wims_name_action
  !for i=1 to $newcnt1
   !set l=!line $i of $newrec
   !set ll=!words2items $l
@@ -39,9 +30,9 @@ has the following importable resources.
   <td align=center>
   !if $(rstat$i)=0 or $(rcnt$i)=0
    !if $(rcnt$i)=0
-    Empty
+    $name_empty
    !else
-    <small>under preparation</small>
+    <small>$name_inpreparation</small>
    !endif
   !else
    !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
@@ -49,7 +40,7 @@ has the following importable resources.
    !endif
    !if $(rcode$i)=2
     &nbsp;
-    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) Replace
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) $name_replace
    !endif
   !endif
  !next i
@@ -73,9 +64,9 @@ has the following importable resources.
    !href cmd=reply&job2=import2&import=user,$(ulogin$i) $wims_name_import
   !else
    !if $(ucode$i)=2
-    Login name is in use in your class
+    $name_existinglogin
    !else
-    Erased user exists in your class
+    $name_part_erased
    !endif
   !endif
  !next i

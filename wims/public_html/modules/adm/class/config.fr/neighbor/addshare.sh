@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# ne semble plus utilisÃ© remplacÃ© par adm/class/addshare
+# ne semble plus utilisé remplacé par adm/class/addshare
 # ajout du exit le 29/6/2009
 
 exit;

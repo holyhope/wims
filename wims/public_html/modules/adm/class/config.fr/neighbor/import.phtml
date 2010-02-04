@@ -1,15 +1,13 @@
 
-La classe
 !href cmd=reply&job2=def $nei_description
- de
-<em><font color=blue>$nei_institution</font></em>
+ (<em><font color=blue>$nei_institution</font></em>)
 !if $newcnt1+$newcnt2<1
- n'a pas de ressources que vous pouvez importer.
+ $name_no_ressource.
  !href cmd=reply&job2=def $wims_name_back2
 .
  !exit
 !endif
-a les ressources importables suivantes.
+$name_importable.
 <small>
 !href cmd=help&special_parm=import $wims_name_help
 </small>
@@ -18,8 +16,8 @@ a les ressources importables suivantes.
  <p>$table_header
  <caption>$name_teaching</caption>
  $table_hdtr<th>$wims_name_Type<th>$wims_name_title<th><small>$wims_name_name</small>
- <th><small>Contenu</small>
- <th>Même titre dans votre classe<th>$wims_name_action
+ <th><small>$name_ressourceallowed</small>
+ <th>$name_same_title<th>$wims_name_action
  !for i=1 to $newcnt1
   !set l=!line $i of $newrec
   !set ll=!words2items $l
@@ -32,9 +30,9 @@ a les ressources importables suivantes.
   <td align=center>
   !if $(rstat$i)=0 or $(rcnt$i)=0
    !if $(rcnt$i)=0
-    Vide
+    $name_empty
    !else
-    <small>en préparation</small>
+    <small>$name_inpreparation</small>
    !endif
   !else
    !if $(rcode$i)!=2 or $(rtype$i) notwordof motd exo
@@ -42,7 +40,7 @@ a les ressources importables suivantes.
    !endif
    !if $(rcode$i)=2
     &nbsp;
-    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) Remplacer
+    !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) $name_replace
    !endif
   !endif
  !next i
@@ -66,9 +64,9 @@ a les ressources importables suivantes.
    !href cmd=reply&job2=import2&import=user,$(ulogin$i) $wims_name_import
   !else
    !if $(ucode$i)=2
-    Login en utilisation dans votre classe
+    $name_existinglogin
    !else
-    Participant effacé existant dans votre classe
+    $name_part_erased
    !endif
   !endif
  !next i

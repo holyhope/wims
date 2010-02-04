@@ -141,7 +141,35 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
+ 
+ !distribute lines Neighboring relations\
+   has not declared yours as its neighbor\
+   accepts yours as its neighbor for\
+   with\
+   You are sharing the following resources originating from the class\
+   has no importable resources for you\
+   has the following importable resources\
+   Same title in your class\
+   Empty\
+   under preparation\
+   Replace\
+   Login name already in use in your class\
+   Erased user exists in your class\
+   Importation from the class\
+   Successfully transfered\
+   participant accounts from the neighbor\
+   Verify the result\
+ into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+   name_neigh_account,name_verify
 
+ !set name_inactif=!subst The imported $(name_$itype) is put to inactive status, so that you can
+  modify it if you wish.
+ 
+ !set name_accept=!nosubstDo you accept the class <em><font color=blue>\
+   $nei_description</font></em> as your neighbor for?
+   
  !if $job2=stopshare
   !set title=Stop sharing
   !set name_warning=Your class has active score register, and the shared\
@@ -279,10 +307,9 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 !endif
 
 !if $job=import
- 
- !set code1=Aucun
- !set code2=$wims_name_yes mais différent
- !set code3=$wims_name_yes, actif et différent
+ !set code1=None
+ !set code2=$wims_name_yes but different
+ !set code3=$wims_name_yes, active and different
 !endif
 
 !if $job=propagate
@@ -502,3 +529,30 @@ This WIMS server has not declared any connectable remote server. In order
  declare site connections.)
  
  !exit
+ 
+:import2
+ The work sheet you want to import may use exercises defined in the
+   neighboring class.
+   <p>
+   If the same exercises do not exist in your class, the imported worksheet
+   won't work correctly. Please verify carefully whether all the class
+   exercises in the neighbor are duplicated in your class.
+:import3
+   Exam sheets are based on work sheets to make up their
+   contents. <p>
+   Importing an exam sheet makes sense only if you have exactly the same 
+   active work sheets as your neighbor, and only if these sheets are in the
+   same order within the two classes.
+   <p>
+   If this is not the case, the imported exam sheet will almost certainly
+   behave erratically.
+!exit 
+:import4
+
+You are about to replace an existing $(name_$itype)
+  in your class by
+  the imported resource. No recovery will be possible after this
+  operation, and your existing $(name_$itype), which is different from the
+  imported one, will be definitely lost.
+!exit
+  

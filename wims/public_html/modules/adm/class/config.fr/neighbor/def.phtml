@@ -1,32 +1,29 @@
 !read adm/title.phtml 3\
-Relations avec la classe <em><font color=blue>$nei_description</font></em> de <em><font color=blue>$nei_institution</font></em>\
+$name_neighbor_relation $name_with <em><font color=blue>$nei_description</font></em> (<em><font color=blue>$nei_institution</font></em>)\
 ($wims_name_nameteacher: <a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
 <p>
-<b>Relation de voisinage. </b> <small>[
+<b>$name_neighbor_relation. </b> <small>[
 !href cmd=help&special_parm=neibordecl $wims_name_help
  ]</small> 
- <p>La classe <em><font color=blue>
-$nei_description</font></em>
+ <p>
 !if $wims_class notitemof $nei_sup,$nei_part
- n'a pas déclaré la vôtre comme voisine.
+ <em><font color=blue> $nei_description</font></em> $name_text1.
 !else
- vous accepte comme voisine,
+ <em><font color=blue>$nei_description</font></em> $name_text2
  !if $wims_class isitemof $nei_sup and $wims_class isitemof $nei_part
-  pour enseignant et participants.
+   $n_n3.
  !else
   !if $wims_class isitemof $nei_sup
-   pour enseignant.
+    $n_n_1.
   !else
-   pour participants.
+    $n_n_2.
   !endif
  !endif
 !endif
 <p>
 !form reply
-Acceptez-vous la classe <em><font color=blue>
-$nei_description</font></em> comme votre voisine&nbsp;?
-!formselect nlevel from 0 to 3 prompt $wims_name_no, Pour enseignant,\
-	Pour participants, Pour enseignant et participants
+$name_accept
+!formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
 <input type=submit value=$wims_name_tosave> <small>[
 !href cmd=help&special_parm=neibordecl $wims_name_help
  ]</small>
@@ -71,7 +68,7 @@ $nei_description</font></em> vous <b>autorise</b> à partager ses
 !endif
 
 !if $nei isitemof $sharing_all
- Vous partagez déjà les ressources suivantes de la classe <em><font color=blue>
+ $name_sharealready <em><font color=blue>
 $nei_description</font></em>&nbsp;:<ul>
  !for r in $sharelist
   !if $(sharing_$r)=$nei
