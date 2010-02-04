@@ -1,0 +1,197 @@
+!bound job2 within first,def,addshare,stopshare,sharelist,\
+	import,import2 default first
+
+!if $keyword=*
+ !reset keyword
+!endif
+
+!if $wims_superclass=$empty
+ clfile=wimshome/log/classes/.index
+ cllimit=50
+!else
+ cllimit=300
+ supertype=!defof class_type in wimshome/log/classes/$wims_superclass/.def
+ !if $supertype=4 and / isin $wims_class
+  !reset excls
+  cterms=!translate / to , in $wims_class
+  clevel=!itemcnt $cterms
+  !if $clevel>=3
+   cls=!record 0 of wimshome/log/classes/$class_parent/classes
+   prog=!record 0 of wimshome/log/classes/$class_parent/programs
+   !if $clevel=3
+    crs=!record 0 of wimshome/log/classes/$wims_class/courses
+    hastest=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
+    !if $hastest issametext yes
+     testzone=$(cterms[2])/$(cterms[3])/0
+    !endif
+   !else
+    crs=!record 0 of wimshome/log/classes/$class_parent/courses
+   !endif
+   clist1=!column 1 of $testzone\
+$cls\
+$prog\
+$crs
+   clist1=!nonempty items $clist1
+   clist1=!makelist $wims_superclass/xx for xx in $clist1
+   clist1=!listcomplement $wims_class in $clist1
+   !if $clevel>3
+    clist1=!append item $clist1 to $class_parent
+   !endif
+   clfile=nonexistent
+  !endif
+ !else
+  scl=!item 1 of $wims_superclass
+  !if yes isin $excls
+   clfile=wimshome/log/classes/.index
+  !else
+   clfile=wimshome/log/classes/$scl/.subclasses
+  !endif
+ !endif
+!endif
+
+classcnt=!recordcnt $clfile
+clgot=0
+keyword=!trim $keyword
+kw=!items2words $keyword
+kw=!trim $kw
+kw=!singlespace $kw
+kw=!deaccent $kw
+kw=!tolower $kw
+!if $keyword!=$empty
+ !reset excls
+!endif
+
+!if $classcnt>1 and ($clist1$clist2=$empty or $keyword != $save_keyword or yes isin $excls)
+ !reset clist1 clist2
+ save_keyword=$keyword
+ !for c=1 to $classcnt
+  l_=!record $c of $clfile
+  n_=!item 1 of $l_
+  !if yes isin $excls
+   !if $n_<10000
+    ln=!defof class_lang in wimshome/log/classes/$n_/.def
+    !if $ln=$class_lang
+     clist1=!append item $n_ to $clist1
+    !else
+     clist2=!append item $n_ to $clist2    
+    !endif
+   !endif  
+  !else
+   !if $kw != $empty
+    L_=!singlespace $l_
+    L_=!deaccent $L_
+    L_=!tolower $L_
+   !endif
+   !if $kw isin $L_ or $kw=$empty
+    ln=!defof class_lang in wimshome/log/classes/$n_/.def
+    !if $ln=$class_lang
+     !if $n_!=$wims_class
+      clist1=!append item $n_ to $clist1
+      !advance clgot
+     !endif
+    !else
+     !if $ln!=$empty
+      clist2=!append item $n_ to $clist2
+      !advance clgot
+     !endif
+    !endif
+    !if $clgot > $cllimit
+     toomany=yes
+     !break
+    !endif
+   !endif
+  !endif
+ !next c
+!endif
+
+classcnt1=!itemcnt $clist1
+classcnt2=!itemcnt $clist2
+clist=!append item $clist2 to $clist1
+
+!readdef wimshome/log/classes/$wims_class/neighbors
+!reset sharable_all,sharing_all,sharable,sharing
+!for rec in $sharelist
+ sharing_$rec=!listintersect $(sharing_$rec) and $clist
+ sharable_$rec=!listintersect $(sharable_$rec) and $clist
+ !if $(sharing_$rec)!=$empty
+  sharing_all=!append item $(sharing_$rec) to $sharing_all
+  sharing=!append item $rec to $sharing
+  sharable_$rec=
+ !else
+  sharable_$rec=!listintersect $(sharable_$rec) and $n_sup
+  !if $(sharable_$rec)!=$empty
+   sharable_all=!append item $(sharable_$rec) to $sharable_all
+   sharable=!append item $rec to $sharable
+  !endif
+ !endif
+!next rec
+sharable_all=!listuniq $sharable_all
+sharing_all=!listuniq $sharing_all
+
+!if $job2 notwordof first sharelist
+ !if $nei=$empty or $nei notitemof $clist1,$clist2
+  job2=first
+  !exit
+ !endif
+ D_=!defof n_sup\
+n_part\
+sharable_exo\
+sharable_sheet\
+sharable_exam\
+sharable_doc\
+sharable_user\
+sharable_forum\
+sharable_sup\
+sharable_motd\
+sharable_vote\
+sharable_cdt\
+sharable_livret\
+sharable_seq\
+sharing_exo\
+sharing_sheet\
+sharing_exam\
+sharing_doc\
+sharing_user\
+sharing_forum\
+sharing_sup\
+sharing_motd\
+sharing_vote\
+sharing_cdt\
+sharing_livret\
+sharing_seq\
+sharable_all\
+sharing_all in wimshome/log/classes/$nei/neighbors
+ !distribute lines $D_ into nei_sup,nei_part,\
+	nsharable_exo,nsharable_sheet,nsharable_exam,nsharable_doc,\
+	nsharable_user,nsharable_forum,nsharable_sup,nsharable_motd,nsharable_vote,\
+	nsharable_cdt,nsharable_livret,nsharable_seq,\
+	nsharing_exo,nsharing_sheet,nsharing_exam,nsharing_doc,\
+	nsharing_user,nsharing_forum,nsharing_sup,nsharing_motd,nsharing_vote,\
+	nsharing_cdt,nsharing_livret,nsharing_seq,\
+	nsharable_all,nsharing_all
+ !reset nsharable,nsharing
+ !for rec in $sharelist
+  !if $(nsharing_$rec)!=$empty
+   !if $wims_class isitemof $(nsharing_$rec)
+    nsharing=!append item $rec to $nsharing
+   !endif
+  !else
+   nsharable_$rec=!listintersect $(nsharable_$rec) and $nei_sup
+   !if $wims_class isitemof $(nsharable_$rec) and\
+	$wims_class isitemof $nei_sup
+    nsharable=!append item $rec to $nsharable
+   !endif
+  !endif
+ !next rec
+ nsharable=!nospace $nsharable
+ nsharing=!nospace $nsharing
+ D_=!defof class_institution\
+class_description\
+class_supervisor\
+class_email\
+class_lang in wimshome/log/classes/$nei/.def
+ !distribute lines $D_ into nei_institution, nei_description,nei_supervisor,\
+	nei_email,nei_lang
+ !read neighbor/$job2.proc
+!endif
+

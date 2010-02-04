@@ -1,0 +1,77 @@
+
+!set wims_module_log=error: $error $wims_class
+
+<b>Error</b>.
+
+!if not_supervisor iswordof $error
+ Sorry, this module can only be accessed by the supervisor of a virtual class.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ !if $code!=$empty
+  Incorrect secret code.
+ !else
+  This module is accessible only from secure hosts.
+ !endif
+ Access refused.
+ !exit
+!endif
+
+!if checkhost iswordof $error
+ Your current connection is not among the new definition of secure
+ hosts. This is probably an error that may make you lose control of the
+ class. Therefore, secure hosts definition is not changed.
+ !exit
+!endif
+
+!if bad_file iswordof $error
+ Sorry, but I cannot recognize <em>$wims_deposit</em> as a class backup file.
+ Either you have sent a wrong file, or it is corrupt.
+ !exit
+!endif
+
+!if empty_file iswordof $error
+ No class resources have been found in your backup file <tt>$wims_deposit</tt>.
+ !exit
+!endif
+
+!if no_upload iswordof $error
+ Uploaded data has expired: bad manoeuvre. Please try again.
+ !exit
+!endif
+
+!if remote_sharing iswordof $error
+ Your neighbor class is actively sharing your resources. Until it stops
+ sharing from its side, you cannot disallow it from continuing to share, nor
+ remove it from your neighbor list.
+ !exit
+!endif
+
+!if share_dep iswordof $error
+ Resource sharing must respect dependencies: You must share exercises of
+ the same class if you want to share work sheets of it, and you must
+ share work sheets of the same class if you want to share exams of it.
+ !exit
+!endif
+
+!if not_neighbor iswordof $error
+ You have tried an operation with a class that is not your effective neighbor.
+ <p>
+ Remember that a class is your effective neighbor only if mutual neighborhood
+ is declared BOTH by you and by the other class.
+ !exit
+!endif
+
+!if localmirror iswordof $error
+ Mirror a class on the same server does not make sense.
+ !exit
+!endif
+
+!if toobigfile iswordof $error
+ La taille de votre fichier est trop importante : la limite est de 12K.
+ !exit
+!endif
+
+!msg $error
+

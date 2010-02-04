@@ -1,0 +1,20 @@
+!read adm/title.phtml 3\
+\
+$wims_name_classtest
+
+!read connect/remote.phtml
+<p>
+$name_check: $connclass.
+!if $error!=$empty
+ !href cmd=reply&job2=del1 $wims_name_erase
+ !exit
+!endif
+
+<p>
+$name_data
+!href cmd=reply&job2=mod1 $wims_name_properties
+&nbsp;
+!href cmd=reply&job2=del1 $wims_name_erase
+<pre>
+$cn_data
+</pre>

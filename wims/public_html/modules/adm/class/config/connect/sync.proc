@@ -1,0 +1,70 @@
+
+job2=mod1
+!read connect/mod1.proc
+!if $cn_status!=OK
+ !exit
+!endif
+
+!bound connclasstype within local,remote default $
+!if $connclasstype=$empty
+ !exit
+!endif
+
+!bound connsync within def,user,avg,score,rec default $
+!if $connsync=$empty
+ !exit
+!endif
+
+id=$connident $connclass
+cn_sync=yes
+!goto $(connclasstype)$connsync
+
+:localdef
+ !read adm/connect/main.proc getclass $id
+ !read adm/connect/main.proc getuser $id supervisor
+!exit
+
+:localuser
+ cn_option=login,lastname,firstname,password,email
+ !read adm/connect/main.proc getcsv $id
+!exit
+
+:localavg
+ cn_option=login,averages
+ !read adm/connect/main.proc getcsv $id
+!exit
+
+:localscore
+ cn_option=login,allscore
+ !read adm/connect/main.proc getcsv $id
+!exit
+
+:localrec
+ !read adm/connect/main.proc getclasstgz $id
+!exit
+
+:remotedef
+ cn_option=class
+ !read adm/connect/main.proc update $id
+!exit
+
+:remoteuser
+ cn_option=users
+ !read adm/connect/main.proc update $id
+!exit
+
+:remoteavg
+ cn_option=scores
+ !read adm/connect/main.proc update $id
+!exit
+
+:remotescore
+ cn_option=scores
+ !read adm/connect/main.proc update $id
+!exit
+
+:remoterec
+ cn_option=files
+ !read adm/connect/main.proc update $id
+!exit
+

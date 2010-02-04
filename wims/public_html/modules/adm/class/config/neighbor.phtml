@@ -1,0 +1,89 @@
+
+!if $classcnt1+$classcnt2<1 and $kw = $empty
+ $name_noclass
+ !exit
+!endif
+
+!if $job2!=first
+ !read neighbor/$job2.phtml
+ <p><center>
+ !href cmd=reply&job2=first $name_listclass
+ !if $job2!=sharelist
+  &nbsp;
+  !href cmd=reply&job2=sharelist $name_info
+ !endif
+ </center>
+ !exit
+!endif
+
+!if $toomany = yes
+ !form reply
+ !if $kw=$empty
+  $name_toomany
+ !else
+   $name_toomany2
+ !endif
+ <p><center>
+ <input size=20 name=keyword value="$keyword">
+ <input type=submit value=OK>
+ </form> </center> <p>
+!else
+ !if $kw != $empty or $classcnt1 + $classcnt2 > 20
+  !form reply
+  $name_research
+  <input size=20 name=keyword value="$keyword">
+  <input type=submit value=OK>
+  </form> <p>
+ !endif
+!endif
+!if $classcnt1 + $classcnt2 < 1
+ $name_noclass
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+ !endif
+ !exit
+!endif
+
+
+$name_help
+<small>[&nbsp;
+!href cmd=help&special_parm=neighbor $wims_name_help
+&nbsp;
+!href cmd=help&special_parm=neiexample $name_example
+&nbsp;]</small><p>
+
+!if $toomany=yes
+ !if $excls!=yes and $supertype!=4
+  <p>
+  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+ !endif
+ !exit
+!endif
+
+$name_changeneigh
+
+<p>
+!if $classcnt1>0
+ !set clst=$clist1
+ $table_header
+  <caption>$name_samelanguage</caption>
+  !read neighbor/clist.phtml
+ $table_end
+!endif
+
+!if $classcnt2>0
+ <p>
+ !set clst=$clist2
+ $table_header
+  <caption>$name_otherlanguage</caption>
+  !read neighbor/clist.phtml
+  $table_end
+  <p><center>
+  !href cmd=reply&job2=sharelist $name_info
+  </center>
+!endif
+!if $excls!=yes and $supertype!=4
+ <p>
+ !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+!endif

@@ -1,0 +1,58 @@
+!if $result=success
+ !set wims_class_log=Import $import from $nei
+!endif
+
+$name_import
+!href cmd=reply&job2=def $nei_description
+(<em><font color=blue>$nei_institution</font></em>)
+<p>
+
+!if $result=confirm
+ !if dep iswordof $cfm
+  !if $itype=sheet
+   <b>$wims_name_warning</b>.
+   !read lang/names.phtml.$moduclass_lang import2
+  !endif
+  !if $itype=exam
+   <b>$wims_name_warning</b>! 
+   !read lang/names.phtml.$moduclass_lang import3
+  !endif 
+  <p>
+ !endif
+ !if replace iswordof $cfm
+  <b>$wims_name_warning</b>. Vous êtes sur le point de remplacer un(e) $(name_$itype)
+  existant(e) de votre classe par la ressource importée. Il n'y aura aucune
+  possibilité de retour en arrière après cette opération.
+  <p>
+ !endif
+ <p><center><font size="+1">
+ !href cmd=reply&job2=import2&import=$import&impmethod=$impmethod&confirm=yes $wims_name_tosave
+ &nbsp;
+ !href cmd=reply&job2=import $wims_name_giveup
+ </font></center> <p>
+ !exit
+!endif
+
+!if $result=none
+!read lang/names.phtml.$moduclass_lang import5
+ <p>
+ !exit
+!endif
+
+$name_transfered
+!if $itype!=user
+ 1 $(name_$itype).
+ !if $itype iswordof sheet exam
+  ($name_inactif)<p>
+ !endif
+!else
+ $importedcnt $name_neigh_account
+ <p><tt>
+ $imported
+ </tt> <p>
+!endif
+
+!href $verif $name_verify
+.&nbsp;
+!href cmd=reply&job2=import $name_otherone
+.

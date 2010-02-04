@@ -1,0 +1,96 @@
+
+!set wims_module_log=error: $error $wims_class
+
+<b>错误</b>.
+
+!if not_supervisor iswordof $error
+对不起, 只有虚拟班的主持教师才能进入此模块.
+ !exit
+!endif
+
+!if not_secure iswordof $error
+ !if $code!=$empty
+密码不对.
+ !else
+只能从安全主机进入本模块.
+ !endif
+拒绝进入.
+ !exit
+!endif
+
+!if checkhost iswordof $error
+你当前的连接不在新定义的安全主机范围内.
+这可能是一个错误会导致你失去班级的控制.
+所有安全主机的定义没有改变.
+ !exit
+!endif
+
+!if bad_file iswordof $error
+对不起, <em>$wims_deposit</em> 不像是班级的备份文件.
+或者是你送出了一个错误的文件, 或者是文件已损坏.
+ !exit
+!endif
+
+!if empty_file iswordof $error
+在你的备份文件 <tt>$wims_deposit</tt> 里没有发现班级资源.
+ !exit
+!endif
+
+!if no_upload iswordof $error
+上传数据超时: 操作失败. 请重试.
+ !exit
+!endif
+
+!if remote_sharing iswordof $error
+你的相邻班正在共享你的资源. 除非那边停止共享,
+你既不能中止共享, 也不能从你的相邻表内删除.
+ !exit
+!endif
+
+!if share_dep iswordof $error
+资源共享要顾及相关性: 
+ !if sheet iswordof $error
+  如果你要共享作业页, 就先要共享练习.
+ !else
+  !if exam iswordof $error
+  若要共享考试, 则先要共享练习与作业页.
+  !else
+   !if livret iswordof $error
+  若要共享技能记录本, 则先要共享练习与作业页.
+   !endif
+  !endif    
+ !endif
+ !exit
+!endif
+
+!if stopshare_dep iswordof $error
+资源共享要顾及相关性: 
+ !if sheet iswordof $error
+  如果你要停止共享作业页, 就要先停止共享考试与技能记录本.
+ !else
+  !if exo iswordof $error
+  如果你要停止共享练习, 就要先停止共享作业页.
+  !endif    
+ !endif
+ !exit
+!endif
+
+!if not_neighbor iswordof $error
+你尝试操作的班级不是有效相邻的班级.
+ <p>
+仅当双方互相声明对方是相邻班时, 才能建立有效的相邻关系.
+ !exit
+!endif
+
+!if localmirror iswordof $error
+在同一服务器上作班级的镜像是没有意义的.
+ !exit
+!endif
+
+!if toobigfile iswordof $error
+ 你的文件太大了, 不能超过 12K.
+ !exit
+!endif
+
+!msg $error
+

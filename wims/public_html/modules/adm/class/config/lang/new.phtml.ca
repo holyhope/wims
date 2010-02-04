@@ -1,0 +1,70 @@
+<p>
+!if $backdays>7
+ !if $backdays>100
+  Votre classe n'a pas été sauvegardée depuis plus de 100 jours.
+ !else
+  Dernière sauvegarde de votre classe : il y a $backdays jours.
+ !endif
+ !if backup iswordof $warn
+  <p><font color=red><b>ATTENTION.</b></font>
+  C'est la responsabilité des enseignants de sauvegarder leurs ressources
+  pédagogiques&nbsp;! Ne comptez jamais sur la sauvegarde du serveur pour
+  récupérer votre travail perdu. De plus, les classes virtuelles qui ne sont
+  pas sauvegardées régulièrement seront considérées par le logiciel comme
+  étant inactives et sans importance, et peuvent être effacées à tout
+  moment pour laisser la place aux autres.
+ !else
+  <p> Protégez-vous contre les incidents du serveur&nbsp;!
+ !endif
+ !href cmd=reply&job=arch Sauvegardez la classe
+ régulièrement.
+ <p>
+!endif
+
+!if creation iswordof $warn
+ <p><b>ATTENTION</b>. Votre classe virtuelle est trop vieille&nbsp;! Elle a
+ déjà $creatdays jours.
+ <p>
+ Il est vivement recommandé de recréer une nouvelle structure de classe
+ virtuelle au début de chaque nouvelle année scolaire. Continuer à utiliser
+ une vieille classe virtuelle pendant des années conduira inexorablement à
+ un débordement des fichiers de registre et du quota d'espace disque, ce qui
+ risque de bloquer l'accès à votre classe à un moment crucial.
+ !if $class_type notin 13
+  <p>
+  Voici comment recréer votre classe virtuelle sans refaire vos ressources
+  pédagogiques.
+  <ol>
+  <li><p>
+  !href cmd=reply&job=arch Sauvegarder
+  votre classe à la fin de l'année scolaire.
+  <li><p>
+  <a href="$wims_ref_name?lang=$lang&module=adm/class/regclass">Créer</a>
+  une nouvelle classe virtuelle (ou groupe de classe ou portail
+  d'établissement) au début de l'année scolaire suivante.
+  <li><p>Restaurer les ressources pédagogiques (exercices, feuilles, examens,
+  documents) que vous avez sauvegardées dans la nouvelle classe.
+  (Sans restaurer les comptes d'élèves et les activités qui sont caduques.)
+  </ol>
+ !else
+  <p>
+  Veuillez en informer l'administrateur du groupe de classe auquel votre 
+  classe appartient.
+  <p>
+  Vous pouvez
+  !href cmd=reply&job=arch sauvegarder
+  les ressources pédagogiques de votre classe actuelle puis les restaurer
+  dans la nouvelle.
+ !endif
+!endif
+
+!if $warn=$empty
+ !set job=list
+ <p>
+ !changeto list.phtml
+!else
+ <p><center>
+ !href cmd=reply&job=list Continuer avec la maintenance de la classe.
+ </center>
+!endif
+

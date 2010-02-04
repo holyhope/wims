@@ -1,0 +1,29 @@
+!read adm/title.phtml 3\
+\
+$wims_name_connectmanage
+
+!read connect/remote.phtml
+
+<p>
+$name_remoteclass: $connclass.
+
+!if $error=$empty
+ (<font color=blue>$description</font> of 
+ <font color=blue>$institution</font>)
+ <p>
+ !form reply
+ <input type=hidden name=job2 value=sync>
+ $name_synchronize
+ !formselect connclasstype list local,remote prompt\
+	$name_prompt1
+ $name_withotherone
+ !formselect connsync list def,user,avg,score,rec prompt\
+	$name_prompt2
+ <input type=submit value="$wims_name_save">
+ </form> <p>
+!else
+
+
+!endif
+
+

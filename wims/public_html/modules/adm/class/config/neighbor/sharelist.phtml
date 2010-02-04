@@ -1,0 +1,53 @@
+
+$title
+<small>
+!href cmd=help&special_parm=share $wims_name_help
+</small>
+<p>
+
+!if $sharing_all=$empty
+ $name_noresource
+!else
+ $name_resource <ul>
+ !for rec in $sharelist
+  !if $(sharing_$rec)!=$empty
+   <li>$name_sharelist
+   !set D_=!defof class_institution\
+class_description\
+class_supervisor in wimshome/log/classes/$(sharing_$rec)/.def
+   !distribute lines $D_ into i_,d_,s_
+   <em>$d_</em> of <em>$i_</em> (by <em>$s_</em>).
+   !href cmd=reply&job2=stopshare&nei=$(sharing_$rec)&stoprec=$rec $name_stopsharing
+. <small>
+   !href cmd=help&special_parm=stopshare $wims_name_help
+   </small>
+  !endif
+ !next rec
+ </ul>
+!endif
+
+<hr>
+
+!if $sharable_all!=$empty
+ <p>$table_header
+ <caption>$name_classsharing</caption>
+ $table_hdtr<th>$name_ressourceallowed<th>$wims_name_class<th>$wims_name_status
+ !for r in $sharable
+  !for cl in $(sharable_$r)
+   $table_tr<td align=center>$(name_$r)
+   !set D_=!defof class_institution\
+class_description in wimshome/log/classes/$cl/.def
+   !distribute lines $D_ into i_,d_
+   <td align=center>
+   !href cmd=reply&job2=def&nei=$cl $i_<br>$d_
+   !set s_=!defof $(sharing_$r) in wimshome/log/classes/$cl/neighbors
+   !if $s_=$wims_class
+    <td align=center>$name_active
+   !else
+    <td align=center>---
+   !endif
+  !next cl
+ !next r
+ $table_end <p>
+!endif
+

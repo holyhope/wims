@@ -1,0 +1,32 @@
+
+!if $job2!=first
+ !changeto arch/$job2.phtml
+!endif
+
+$name_intro
+
+!href cmd=reply&job=arch&job2=download&selection=all&format=zip zip
+,
+!href cmd=reply&job=arch&job2=download&selection=all&format=tgz tgz
+ $wims_name_or
+!href cmd=reply&job=arch&job2=download&selection=all&format=tar.gz tar.gz
+.
+<small>[
+!href cmd=help&special_parm=download $wims_name_help
+ ]</small>
+<p><hr> <p>
+
+!set wims_form_method=file
+!form reply
+<input type=hidden name=job value=arch>
+<input type=hidden name=job2 value=upload>
+$name_tosend,<sup><small>
+!href cmd=help&special_parm=upload $wims_name_help
+</small></sup>, $name_namefile:
+<p>
+<input type=file name=wims_deposit size=40>
+
+<p> <input type=submit value="$wims_name_tosave">
+($name_help).
+</form> <p>
+

@@ -1,0 +1,272 @@
+
+!set sp2=$special_parm2
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
+	bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,examshow,option\
+	default $
+
+!if $sp2=$empty
+ !exit
+!endif
+
+!goto $sp2
+
+:secure
+<b>Postes sûrs</b>.
+Envisagez la possibilité d'une fuite du mot de passe d'enseignant&nbsp;: 
+quand vous vous connectez à la classe en tant qu'enseignant dans une salle
+d'enseignement, un étudiant peut vous regarder taper par dessus votre épaule,
+ou même installer un logiciel de capture de clavier pour enregistrer tout ce
+que vous tapez (y compris le mot de passe). Croyez-moi&nbsp;: si vous gardez
+des notes réelles dans votre classe virtuelle, le mot de passe d'enseignant
+devient un objet très convoité.
+<p>
+La conséquence d'une telle fuite peut être catastrophique pour la classe&nbsp;:
+les données peuvent être endommagées, les notes peuvent être modifiées ou
+vous pouvez même perdre votre accès d'enseignant si l'étudiant change votre
+mot de passe.
+<p>
+La définition de postes sûrs ajoute une couche supplémentaire de
+sécurité&nbsp;: des manipulations sensibles telles que la configuration de la
+classe, le changement de mot de passe ou la modification de notes ne peuvent être effectuées qu'à partir d'un <em>poste sûr</em> pré-défini si vous
+êtes sûr que vos étudiants n'ont pas accès à ces postes. Donc même si un
+étudiant vole votre mot de passe, il n'y a pas grand-chose qu'il puisse
+faire à la classe.
+<p>
+!read help/hosts.phtml
+<p>
+A ce propos, si vous êtes obligé d'entrer votre mot de passe dans un
+environnement très hostile (par exemple au milieu d'ordinateurs
+d'étudiants), vous devez aussi envisager l'utilisation de mots de passe
+jetables (voir la page de changement de mot de passe).
+!exit
+
+:supervisor
+ <b>Nom d'enseignant</b>. Entrez ici votre nom, sous n'importe quelle forme.
+!exit
+
+:email
+ <b>Adresse email d'enseignant</b>.
+ Des notifications importantes (codes secrets, notice d'expiration, etc.)
+ seront envoyées à cette adresse. C'est aussi à cette adresse que les participants vont
+ vous envoyer les messages. Donc vous DEVEZ donner votre adresse email active,
+ sinon vous pouvez perdre le contrôle de votre classe.
+!exit
+
+:option
+ <b>Mots d'option de la classe</b>. Les mots suivants peuvent être utilisés
+ ici : <ul>
+ <li><tt>showshexpire</tt>. Montre la date d'expiration des feuilles de
+  travail dans la page d'entrée des participants.
+ <li><tt>showexexpire</tt>. Montre la date d'expiration des feuilles 
+  d'examen dans la page d'entrée des participants.
+ <li><tt>showshweight</tt>. Montre le coefficient des feuilles
+  dans la page d'entrée des participants.
+ </ul> 
+!exit
+
+:lang
+ Langues disponibles : <ul>
+ <li>cn (Chinois gb)
+ <li>en (Anglais)
+ <li>es (Espagnol)
+ <li>fr (Français)
+ <li>it (Italien)
+ <li>nl (Néerlandais)
+ <li>tw (Chinois big5)
+</ul>
+!exit
+
+:level
+ Significations des niveaux : <ul>
+ <li>E1 - E6: Enseignement primaire, année 1 à 6.
+ <li>H1 - H6: Enseignement secondaire, année 1 à 6.
+ <li>U1 - U5: Enseignement Universitaire, année 1 à 5.
+ <li>G: Université, troisième cycle.
+ <li>R: Recherche.
+</ul>
+!exit
+
+:limit
+ <b>Limite du nombre de participants</b>. L'inscription de nouveaux participants
+ sera refusée si cette limite est atteinte. Il y a une limite définie par le
+ site ($wims_class_user_limit) qui ne peut pas être dépassée.
+!exit
+
+:expiration
+ <b>Date d'expiration</b>. Cette classe sera fermée quand elle atteint la date
+ d'expiration. Vous pouvez changer cette date à tout moment, mais une
+ extension au-delà d'un an à partir de la date où l'opération d'extension a
+ lieu sera refusée.
+<p>
+ Si vous voulez étendre cette date à plus d'une année, vous pouvez le faire 
+ au fur et à mesure ou 
+ <a href="mailto:$wims_site_manager?subject=Virtual class extension
+ demand">demander au gestionnaire du site</a> de le faire pour vous.
+ <p>
+ Cette date doit être entrée sous forme de 8 chiffres (aaaammjj).
+ Exemple: 20120523 signifie 23 mai 2012.
+!exit
+
+:bgcolor
+ <b>Couleurs de fond des pages et des menus</b>. Ces deux couleurs peuvent
+ vous aider à repérer rapidement les pages à l'intérieur de votre classe
+ virtuelle. Les valeurs de ces champs doivent être des noms de couleur
+ valides au sens html.
+ <p>
+ Valeurs par défaut : fond de page = white, fond de menu = #D0C080
+!exit
+
+:homepage
+ <b>Page d'accueil des participants</b>. Vous pouvez mettre l'adresse d'un bloc de
+ document (telle que <tt>c1/main</tt>) comme  page d'accueil de la classe
+ pour les participants. Le document lui-même n'a pas besoin d'être lisible
+ par les participants.
+ <p>
+ Laissez un champ blanc si vous voulez utiliser la page d'accueil standard.
+ <p>
+ Tous les liens dans le bloc doivent être définis par la commande <tt>\adm</tt>.
+ Vous pouvez utiliser les variables pré-définies ci-dessous&nbsp;:<ul>
+ <li><tt>\firstname</tt> Prénom du participant</li>
+ <li><tt>\lastname</tt> Nom de famille du participant.</li>
+ <li><tt>\scores</tt> Résumé des notes du participant. C'est une liste de
+ nombres. Chaque couple de nombres correspond à une feuille : le pourcentage
+ de points obtenus plus la qualité des points.</li>
+ <li><tt>\newmsgcnt</tt> Nombre de nouveaux messages dans le forum de la 
+ classe.</li>
+ <li><tt>\today</tt> Date d'aujourd'hui, yyyymmdd.</li>
+ <li><tt>\sheets</tt> Nombre de feuilles de travail.</li>
+ <li><tt>\exams</tt> Nombre d'examens.</li>
+ <li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
+ Date d'expiration de feuille 1, feuille 2, examen 1, ..., yyyymmdd.
+ <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
+ Etat de feuille 1, feuille 2, examen 1, ... C'est un entier non négatif ;
+ 0 = en préparation, 1 = active, 2 = périmée, 3 = cachée.</li>
+ </ul>
+!exit
+
+:bgimg
+ Fichier de l'image de fond (tuile) pour les pages dans la classe. Vous pouvez
+ utiliser toute adresse URL valide. Il y a aussi des fichiers d'images préparés du site 
+ que vous pouvez utiliser sans ajouter de préfixe d'adresse&nbsp;:<p>
+ <tt>$bgimgs</tt>
+!exit
+
+:theme
+Le thème de style de votre classe.
+!exit
+
+:theme_icon
+The icons in the menu
+!exit
+
+:css
+La feuille de style s'applique sur presque toutes les pages de votre classe.
+<p>
+Choisissez `<tt>----</tt>' pour désactiver la feuille de style .
+<p>
+Choisissez `<tt>-theme-</tt>' pour utiliser la feuille de style correspondant
+au thème de la classe.
+<p>
+Choisissez `<tt>class</tt>' pour utiliser la feuille de style (css) définie par
+vous-même. Veuillez consulter les documents de css pour la syntaxe.
+
+<p><b>Remarque</b>. Si vous définissez votre propre css, veuillez le tester
+avec TOUS les navigateurs que vos participants peuvent utiliser pour
+déceler des incompatibilités éventuelles&nbsp;!
+Vous pouvez utiliser vos propres classes de style. Les classes de style suivantes
+qui changeront le style peuvent être redéfinies : 
+<pre>
+!read  wimshome/public_html/bases/sys/css_classes
+</pre>
+<p>
+Les autres choix correspondent aux styles pré-définis sur ce site WIMS.
+!exit
+
+:logo
+Le logo de la classe est un fichier graphique qui est montré en haut de
+la page d'accueil de la classe à la fois pour l'enseignant et pour les participants.
+Ce logo peut être mis soit en haut à gauche soit en haut à droite.
+<p>
+Choisissez `<tt>none</tt>' si vous ne voulez pas de logo.
+<p>
+Si vous choisissez un texte vide ou `<tt>wims</tt>', le logo de WIMS sera
+utilisé.
+<p>
+Sinon, vous pouvez mettre l'adresse URL d'un fichier graphique de votre choix.
+!exit
+
+:lock
+Le verrou de connexion aide au traçage des utilisateurs et peut contribuer
+à faire échouer les tentatives de fraude. Il y a 8 niveaux. <ul>
+
+<li><p>0: Aucun verrou n'est activé.
+
+<li><p>1: Le cookie est activé. Les connexions sans retour de cookie seront
+refusées.
+
+<li><p>2: Une connexion sécurisée (https) est requise. Les connexions avec des
+requêtes http ordinaires seront refusées. Vous devez vous assurer d'abord que
+le serveur web sur ce site WIMS accepte les connexions https.
+
+<li><p>3: Le verrouillage du poste de connexion est activé. Les participants
+n'ont pas le droit de changer son adresse IP durant une session. Ceci peut
+entrainer des difficultés quand les connexions sont faites par des numéros
+IP attribués dynamiquement.
+
+<li><p>4: Cookie + https.
+<li><p>5: Cookie + verrouillage du poste.
+<li><p>6: Toutes les méthodes sont activées.
+<li><p>7: La classe est fermée. Aucune connexion de participants n'est acceptée.
+</ul> <p>
+!exit
+
+:exolog
+Nombre d'enregistrement d'exercices (limité à $wims_exolog_limit)
+<p>
+C'est le nombre maximal d'exercices dont chaque participant peut enregistrer
+les détails.
+<p>
+Ces détails permettent aux participants et à l'enseignant de revoir le
+déroulement de l'exercice et de discuter dessus.
+<p>
+Le détail d'un exercice n'est enregistré  que si le participant en donne
+l'ordre. Quand le nombre maximal est dépassé, les enregistrements les plus
+anciens sont effacés.
+!goto logs
+
+:examlog
+Nombre d'enregistrement d'examens (limité à $wims_examlog_limit)
+<p>
+C'est le nombre maximal de sessions d'examen qui peuvent être enregistrées
+en détail pour chaque participant.
+<p>
+Ces détails permettent aux participants et à l'enseignant de revoir le
+déroulement de l'examen exercice par exercice.
+<p>
+L'enregistrement d'examen est automatique. Quand le nombre maximal est dépassé,
+les enregistrements les plus anciens seront effacés.
+!exit
+
+:logs
+<p>
+Mettez ce nombre à 0 pour désactiver cet enregistrement.
+<b>ATTENTION</b>:  les enregistrements d'exercices et d'examens peuvent prendre
+beaucoup de place ! Si vous permettez des limites trop grandes, votre classe
+risque de dépasser le quota du disque.
+!exit
+
+:examshow
+Dans le cas où cette option est mise sur <tt>Non</tt>, les élèves ne peuvent
+pas revoir les enregistrements d'examens. Seul l'enseignant le peut.
+!exit
+
+:ent
+<b>Liens sur une plateforme ou sur une page web</b> :
+Vous pouvez indiquer le lien sur une plateforme ou sur une page web sous la forme
+<pre> titre_du_lien,adresse_du_lien</pre>
+Par exemple ,
+<pre>Dokeos,http://----</pre>
+Si vous désirez mettre plusieurs liens, séparez-les par des points virgules.
+
+!exit
+:end

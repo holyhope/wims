@@ -1,0 +1,241 @@
+!set sp2=$special_parm2
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
+	bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,examshow,option\
+	default $
+
+!if $sp2=$empty
+ !exit
+!endif
+
+!goto $sp2
+
+:secure
+<b>Secure hosts</b>.
+Bedenk de mogelijkheid van het "weglekken" van Uw supervisor wachtwoord:
+Stel U logt in als supervisor en een leerling kijkt mee over Uw schouder.
+U moet dus ,wanneer er echte cijfers worden behaald op uw server,
+voorziching omgaan met het wachtwoord.
+<p>
+De consequentie van het wegleken van dit wachtwoord kan zijn, dat alle confidenti&euml;le data
+op de server onbetrouwbaar worden. En U zelfs niet meer kunt inloggen.
+<p>
+Het vastleggen van secure hosts zorgt dus voor een extra beveilingslaag: alle server gevoelige
+handelingen zijn alleen bereikbaar vanaf deze <em>secure hosts</em>.
+Zelfs het weglekken van een wachtwoord hoeft dan geen desastreuze consequenties meer te hebben.
+<p>
+!read help/hosts.phtml
+<p>
+Overigens , wanneer U supervisor moet worden in een "vijandige" omgeving, is het gebruik
+van &eacute;&eacute;nmalige wachtwoorden een goede oplossing.
+Zie hieroor de wachtwoord-pagina
+!exit
+
+:supervisor
+ <b>Supervisor naam</b>. Geef hier gewoon een naam.
+!exit
+
+:email
+ <b>Supervisor email</b>.
+ Alle belangrijke berichten (geheime aanmeldingscodes, beindigingsdata van uw klassen enz.)
+ worden naar dit adres gestuurd. U moet dus een bestaand en actief emailadres opgeven, anders
+ kunt U zelfs de controle verliezen over Uw klas.
+!exit
+
+:lang
+ ondersteunde talen: <ul>
+ <li>cn (Chinees gb)
+ <li>en (Engels)
+ <li>es (Spaans)
+ <li>fr (Frans)
+ <li>it (Italiaas)
+ <li>tw (Chinees big5)
+ <li>nl (Nerderlands)
+ <li>ca (Catalaans)
+</ul>
+!exit
+
+:level
+ Betekenis van de diverse niveaus: <ul>
+ <li>E1 - E6: Lagere school, klas 1 tot 6.
+ <li>H1 - H6: Middelbare school, klas 1 tot 6.
+ <li>U1 - U5: Universiteit, jaar 1 tot 5.
+ <li>G: Universiteit, Afstudeer-richting.
+ <li>R: Onderzoek.
+</ul>
+!exit
+
+:limit
+ <b>Deelnemer limiet</b>. 
+ De aanmelding van nieuwe deelnemers of leerlingen wordt geweigerd als deze limiet is bereikt.
+ Deze server heeft een harde limiet van ($wims_class_user_limit) welke niet kan worden overschreden.
+!exit
+
+:expiration
+ <b>Verloop datum</b>. De klas wordt opgeheven wanneer deze datum is bereikt.
+ U kunt deze datum altijd verlengen.
+<p>
+Als U deze klas langer dan een jaar wilt gebruiken, zijn er dus een tweetal opties:
+Of U verlengt deze datum regelmatig op de normale manier, of U richt een 
+ <a href="mailto:$wims_site_manager?subject=Verzoek tot verlenging  van een virtuele Klas">email</a> aan de systeem administrator. 
+ <p>
+ Deze datum moet dan  worden opgegeven in de 8-digit vorm (yyyymmdd).
+ Bijvoorbeeld: 20120523 betekend  23 Mei 2012.
+!exit
+
+:bgcolor
+ <b>Pagina achtergrond & menu kleur</b>.
+ Deze twee kleuren kunnen U helpen de herkenbaarheid van uw virtuele leeromgeving te vergroten.
+ Deze kleurwaarden moeten standaard HTML kleurcodes zijn.
+ <p>
+Standaard waarden: achtergrond kleur = white, menu kleur = #D0C080
+!exit
+
+:homepage
+ <b>Deelnemer homepage</b>.
+ U kunt hier het adres van een "wims document-blok" invoeren
+ (zoals <tt>c1/main</tt>) als homepagina.
+ Het document zelf hoeft niet leesbaar te zijn voor leerlingen.
+ <p>
+ Laat dit veld leeg als U de standaard layout wilt gebruiken.
+ <p>
+ Alle links in dit document-blok moeten worden gedefinieerd met het <tt>\adm</tt> commando.
+ U kunt de volgende voorgedefinieerde wims-variabelen gebruiken:<ul>
+ <li><tt>\firstname</tt>Voornaam van de leerling/deelnemer
+ <li><tt>\lastname</tt>Achternaam van de leerling/deelnemer 
+ <li><tt>\scores</tt>Score informatie van deze deelnemer. 
+ Dit is dus een lijst getallen, corresponderende met &eacute;&eacute;n werkblad: percentage of punten
+  en een gemiddelde score
+ <li><tt>\newmsgcnt</tt> Ongelezen berichten in het klasse forum.
+ <li><tt>\today</tt> Datum van vandaag, yyyymmdd.
+ <li><tt>\sheets</tt> Aantal beschikbare werkbladen
+ <li><tt>\exams</tt> Aantal digi-toetsen/tentamens.
+ <li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
+ uiterste datum van werkblad 1, werkblad 2, tentamen 1, ..., yyyymmdd.
+ <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
+ Status van werkblad 1, werkblad 2, tentamen 1, ... dit is een niet negatief geheel getal; 0
+ = nog niet klaar voor gebruik, 1 = actief, 2 = verlopen, 3 = onzichtbaar.
+ </ul>
+!exit
+
+:bgimg
+ Achtergrond plaatje (tegel) voor de pagina's in de digi-klas.
+ U kunt elke valide URL gebruiken.
+ Er zijn ook reeds ge&iuml;nstalleerde achtergrond plaatjes, die U kunt gebruiken zonder url-adres:<p>
+ <tt>$bgimgs</tt>
+!exit
+
+:theme
+Het stijl-thema van een klas.
+!exit
+
+:theme_icon
+The icons in the menu
+!exit
+
+:css
+Het style sheet beinvloed bijna alle pagina's van een klas.
+<p>
+Kies `<tt>----</tt>' om de stylesheets uit te schakelen.
+<p>
+Kies `<tt>class</tt>' om Uw eigen  style sheet (css) te gebruiken.
+Gebruik de standaard css-syntax.
+ <b>Opmerking</b>. 
+ Wanneer U uw eigen css wilt gebruiken, test deze dan uitvoerig op 
+ <b>alle</b> beschikbare browsers ,om zo compatibiliteits problemen te vermijden
+<p>
+De andere keuzes zijn voor-ingestelde styles van deze WIMS server.
+!exit
+
+:logo
+Het logo van de klas is een plaatje dat wordt links of rechts bovenaan de pagina geplaatst.
+(Zowel op de leerlingpagina als ook op de supervisor pagina.)
+<p>
+Kies `<tt>none</tt>' als U geen logo wenst.
+<p>
+Als U niets of `<tt>wims</tt>' invult, wordt het standaard WIMS logo gebruikt.
+<p>
+Elke plaatje met een geldige URL kan worden gebruikt. 
+!exit
+
+:lock
+Connection lock helpt gebruikers te traceren, en kan helpen server-misbruik te achterhalen.
+Er zijn 7 lock niveaus. <ul>
+<li><p>0: Geen connection lock wordt gebruikt.
+
+<li><p>1: Cookie-tracking is geactiveerd. Verbindingen zonder correct antwoord cookie worden geweigerd.
+
+<li><p>2: Secure (https) verbinding is vereist. 
+De verbindsingsopbouw gebruikt het https protocol. 
+HTTP verzoeken zullen worden geweigerd.
+Kontroleer wel eerst of de server https ondersteund !
+
+<li><p>3: Host IP-adres lock is geactiveerd. 
+Deelnemers mogen binnen een sessie niet van IP-adres veranderen.
+Er kunnen zich dus problemen voordoen bij dynamische IP adressen.
+
+<li><p>4: Cookie-tracking + https.
+<li><p>5: Cookie-tracking + Host lock.
+<li><p>6: Alle methodes geactiveerd.
+</ul> <p>
+!exit
+
+:exolog
+Het maximale aantal gelogde oefeningen (beperkt tot $wims_exolog_limit)
+<p>
+Dit is het maximale aantal gelogde oefeningen die een leerling kan laten bewaren op deze server. 
+<p>
+Deze lijst gegevens kan als basis dienen voor "studie vorderings gesprekken" tussen leerling en docent.
+<br>
+Bij overschrijding van de toegestane hoeveelheid gelogde oefeningen, wordt de oudste oefening gewist.
+!goto logs
+
+:examlog
+Aantal tentamen registraties (beperkt tot $wims_examlog_limit)
+<p>
+Dit is het maximum aantal examensessies dat wordt vastgelegd/bewaard op deze server voor een elke leerling.
+<p>
+Deze logfiles geven het precieze verloop van een tentamen sessie weer, oefening voor oefening.
+En kan worden gebruikt voor het naspelen van een kompleet tentamen.
+<p>
+De registratie/vastlegging van tentamen-sessies verloopt automatisch.
+Wanneer het maximum is bereikt , wordt het oudste tentamen gewist.
+!exit
+
+:logs
+<p>
+Geef een 0 als U geen registratie wenst.
+
+<b>ATTENTIE</b> 
+Dit type registratie kan een zeer groot beslag leggen op de harde schijf ruimte.
+Bij een te hoge instelwaarde loopt U het risico dat Uw diskquotum wordt overschreden !
+!exit
+
+:option
+ <b>Option words of the class</b>. The following words can be used here:
+ <ul>
+ <li><tt>showshexpire</tt>. Show the expiration date of worksheets in the
+  home page of participants.
+ <li><tt>showexexpire</tt>. Show the expiration date of exam sheets in the
+  home page of participants.
+  <li><tt>showshweight</tt>. Show sheet weight in the
+  home page of participants.
+ </ul> 
+!exit
+
+:examshow
+Als deze optie op <tt>nee</tt> staat, kunnen de studenten de resultaten van een tentamen niet zien.
+De docent natuurlijk wel.
+!exit
+
+:ent
+<b>Links on another plateform</b> :
+You may add a link on another plateform :
+<pre> link_title,link_adress</pre>
+For example,
+<pre>Dokeos,http://-------</pre>
+If you need more than one link, they must be seperate by ";". 
+
+!exit
+
+:end
+

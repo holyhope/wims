@@ -1,0 +1,26 @@
+!bound format within zip,tgz,tar.gz default zip
+
+sel=!listintersect $selection and $reclist
+!default sel=$reclist
+select=!listcomplement score,forum in $sel
+selw=!items2words $sel
+dictionary=$module_dir/arch/recdep
+dep=!exec translator $selw
+dictionary=$module_dir/arch/recdir
+dirs=!exec translator $selw $dep
+dirs=!words2items $dirs
+dirs=!listuniq $dirs
+dirs=!items2words $dirs
+
+dictionary=$module_dir/lang/recnames.$moduclass_lang
+tot=!replace , by , $ in $reclist
+tot=!exec translator $tot
+
+fname=!translate internal / to ~ in $wims_class
+fsize=!mexec arch/pack.sh
+wims_class_log=Backup created
+!if $fsize!=$empty
+ fsize=$[ceil($fsize/1024)]
+ !setdef !set class_backup=$today in wimshome/log/classes/$wims_class/.def
+!endif
+
