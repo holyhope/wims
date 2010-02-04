@@ -1,30 +1,17 @@
 !set job2=first
 
-Server / platform connection allows your class to directly communicate with
-one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
-<p>
-In particular, you can mirror this class to a remote WIMS server,
-so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+!read names.phtml connect_first_info
 <p>
 !if $ccnt<1
- This WIMS server has not declared any connectable remote server. In order
- to use this connection feature, the
- <a href="mailto:$wims_site_manager?subject=server connection">site
- manager</a> must declare such remote server, and the remote server must also
- declare this WIMS server as connectable.
  !set basedir=!sh cd ..; pwd
- (The site manager can refer to the file
- <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
- declare site connections.)
+ !read names.phtml connect_first
  !exit
 !endif
 
-Actually, this WIMS server has the following connectable servers.
+$name_listserver
 <p>$table_header
-$table_hdtr<th>Name
-<th>Description<th>Address<th>Type<th>Action
+$table_hdtr<th>$wims_name_name
+<th>$wims_name_Description<th>$wims_name_Address<th>$wims_name_Type<th>$wims_name_action
 !for s in $Clist
  
  $table_tr
@@ -33,23 +20,23 @@ $table_hdtr<th>Name
  <td align=center><a href="$(url_$s)">$(site_$s)</a>
  <td align=center>$(type_$s)
  <td align=center nowrap><small>
- !href cmd=reply&job2=testserver&connident=$s Test
+ !href cmd=reply&job2=testserver&connident=$s $wims_name_test
  &nbsp;
- !href cmd=reply&job2=add1&connident=$s Add a connection
+ !href cmd=reply&job2=add1&connident=$s $wims_name_addconnection
  </small>
 !next s
 $table_end <p>
 
 !if $clcnt<1
- This class has no connections to other servers.
+ $name_noconnection
  !exit
 !endif
 
-You have declared the following connections to other servers.
+$name_declaration
 <p>
 !distribute items yes,no into io1,io0
 $table_header
-$table_hdtr<th>Server<th>Class
+$table_hdtr<th>$wims_name_server<th>$wims_name_class
 <th>-<th>-<th>-<th>-
 !for clc in $cllist
  !distribute words $clc into n_,c_,o_,i_
@@ -57,13 +44,13 @@ $table_hdtr<th>Server<th>Class
  $table_tr
  <td>$n_<td align=center>$c_
  <td>
- !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ Test
+ !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ $wims_name_test
  <td>
- !href cmd=reply&job2=mod1&connident=$n_&connclass=$c_ Manage
+ !href cmd=reply&job2=mod1&connident=$n_&connclass=$c_ $wims_name_Manage
  <td>
- !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ Delete
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ $wims_name_erase
  <td>
- !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy Destroy remote class
+ !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy $wims_name_destroy
 !next clc
 $table_end <p>
 

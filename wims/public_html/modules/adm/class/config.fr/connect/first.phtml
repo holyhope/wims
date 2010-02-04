@@ -1,27 +1,14 @@
 !set job2=first
 
-Server / platform connection allows your class to directly communicate with
-one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
-<p>
-In particular, you can mirror this class to a remote WIMS server,
-so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+!read names.phtml connect_first_info
 <p>
 !if $ccnt<1
- This WIMS server has not declared any connectable remote server. In order
- to use this connection feature, the
- <a href="mailto:$wims_site_manager?subject=server connection">site
- manager</a> must declare such remote server, and the remote server must also
- declare this WIMS server as connectable.
  !set basedir=!sh cd ..; pwd
- (The site manager can refer to the file
- <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
- declare site connections.)
+ !read names.phtml connect_first
  !exit
 !endif
 
-Actually, this WIMS server has the following connectable servers.
+$name_listserver
 <p>$table_header
 $table_hdtr<th>$wims_name_name
 <th>$wims_name_Description<th>$wims_name_Address<th>$wims_name_Type<th>$wims_name_action
@@ -41,15 +28,15 @@ $table_hdtr<th>$wims_name_name
 $table_end <p>
 
 !if $clcnt<1
- This class has no connections to other servers.
+ $name_noconnection
  !exit
 !endif
 
-You have declared the following connections to other servers.
+$name_declaration
 <p>
 !distribute items yes,no into io1,io0
 $table_header
-$table_hdtr<th>Server<th>$wims_name_class
+$table_hdtr<th>$wims_name_server<th>$wims_name_class
 <th>-<th>-<th>-<th>-
 !for clc in $cllist
  !distribute words $clc into n_,c_,o_,i_

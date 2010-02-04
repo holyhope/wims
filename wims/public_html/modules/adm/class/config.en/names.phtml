@@ -18,7 +18,7 @@
 !distribute item messages of the day,\
 	exercises,worksheets,exams,documents,participants\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
-	
+
 !if $job=arch
  !set title=Backup and Restoration
  !set name_intro=You can download a backup copy of your class, in the following format 
@@ -216,10 +216,16 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   If the remote class is empty, the server will create a new class on the remote server, duplicating the properties of this one.\
   Automatically update the remote class for changes made on this one\
   Allow the remote class to modify this one\
+  This class has no connections to other servers.\
+  You have declared the following connections to other servers.\
+  Server\
+  Actually, this WIMS server has the following connectable servers.\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
-   name_toconnect,name_identifier,name_help,name_automatically,name_allow
+   name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
+   wims_name_server,name_listserver
+
  !goto commun
 !endif
 
@@ -475,3 +481,24 @@ originating the sharing. The other class should first
 !href cmd=reply&job=neighbor&job2=sharelist stop the sharing
  of the resources before erasing them.
 
+:connect_first_info
+Server / platform connection allows your class to directly communicate with
+one on another WIMS server or another web e-learning platform. Participants
+can transparently navigate between the connected classes.
+<p>
+In particular, you can mirror this class to a remote WIMS server,
+so that if this server becomes momentarily unavailable, work
+may continue on the mirror class. Scores on the mirror can be merged later.
+!exit
+:connect_first
+
+This WIMS server has not declared any connectable remote server. In order
+ to use this connection feature, the
+ <a href="mailto:$wims_site_manager?subject=server connection">site
+ manager</a> must declare such remote server, and the remote server must also
+ declare this WIMS server as connectable. 
+ (The site manager can refer to the file
+ <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
+ declare site connections.)
+ 
+ !exit
