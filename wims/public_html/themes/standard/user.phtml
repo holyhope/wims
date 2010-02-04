@@ -79,7 +79,7 @@ $wims_classname <small>($(wims_name_$class_typename))</small>
  !if $r_!=$empty and $s_!=$ws and $t_>$now and $sm!=#
   $U_examworking
   !if $h_=$httpd_REMOTE_ADDR
-   !href session=$s_&module=adm/class/exam.$lang&job=student&exam=$n_ $U_examcont
+   !href session=$s_&module=adm/class/exam&job=student&exam=$n_ $U_examcont
   !else
    $U_examdouble
    !sh rm -f ../sessions/$ws/var.stat >/dev/null
@@ -217,7 +217,7 @@ $U_greet
    !set s_=!line $i of $ds_list
    !set t_=!line $i of $dt_list
    <tr class="wims_user_doc"><td class="wims_user_doc_type">$U_Doc</td><td colspan=3>
-   !href module=adm/doc.$lang?job=read&doc=$s_&block=main $t_
+   !href module=adm/doc?job=read&doc=$s_&block=main $t_
    </td></tr>
   !next i
   </table>
