@@ -1,3 +1,5 @@
+!set lang_exists=yes
+
 !if $wims_read_parm!=
   !goto $wims_read_parm
 !endif
@@ -14,6 +16,14 @@
 	séquences pédagogiques,messages du forum\
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
+
+!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
+
+!distribute item messages of the day,\
+	exercise,worksheet,exam,document,participant\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user	
 
 !distribute item messages of the day,\
 	exercises,worksheets,exams,documents,participants\
@@ -317,9 +327,8 @@ In this case, the first limit starts score reduction, which will got to 0 if the
  Other security setups in the\ 
  class configuration\
  into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
-!goto commun
+ !goto commun
 !endif
-
 
 !if $job=authtype
  !set title=Ldap authentification
@@ -599,9 +608,12 @@ the code, and type it below.
 is stolen or leaked, damages to your class will be limited.
 Defining correct secure hosts will simplify the class
 configuration procedure, while keeping a high security level.
+!exit
 
 :download
 <b>Remark</b>. Depending on the class activities, usually it is participant
 activities, forum messages and class documents that are of large size. You
 may also consider the possibility of making several selective backups for
 different resources.
+
+!exit
