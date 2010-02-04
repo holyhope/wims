@@ -19,11 +19,9 @@
 !if $toomany = yes
  !form reply
  !if $kw=$empty
-  There are too many virtual classes on this site. Please give a keyword
-  to search for classes that you want:
+  $name_toomany
  !else
-  There are too many classes corresponding to your search. Please
-  give a more precise keyword.
+   $name_toomany2
  !endif
  <p><center>
  <input size=20 name=keyword value="$keyword">
@@ -32,45 +30,45 @@
 !else
  !if $kw != $empty or $classcnt1 + $classcnt2 > 20
   !form reply
-  Search for a class:
+  $name_research
   <input size=20 name=keyword value="$keyword">
   <input type=submit value=OK>
   </form> <p>
  !endif
 !endif
 !if $classcnt1 + $classcnt2 < 1
- No class is found for your search. Try again.
+ $name_noclass
  !if $excls!=yes and $supertype!=4
   <p>
-  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
  !endif
  !exit
 !endif
 
-Neighboring relations between virtual classes allow resource exchange and/or
-inter-class travel. <small>[&nbsp;
+
+$name_help
+<small>[&nbsp;
 !href cmd=help&special_parm=neighbor $wims_name_help
 &nbsp;
-!href cmd=help&special_parm=neiexample Examples
+!href cmd=help&special_parm=neiexample $name_example
 &nbsp;]</small><p>
 
 !if $toomany=yes
  !if $excls!=yes and $supertype!=4
   <p>
-  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
  !endif
  !exit
 !endif
 
-
-Click on a class name to change your neighboring properties with it.
+$name_changeneigh
 
 <p>
 !if $classcnt1>0
  !set clst=$clist1
  $table_header
- <caption>Classes in the same language as yours</caption>
- !read neighbor/clist.phtml
+  <caption>$name_samelanguage</caption>
+  !read neighbor/clist.phtml
  $table_end
 !endif
 
@@ -78,14 +76,14 @@ Click on a class name to change your neighboring properties with it.
  <p>
  !set clst=$clist2
  $table_header
-  <caption>Classes in other languages</caption>
+  <caption>$name_otherlanguage</caption>
   !read neighbor/clist.phtml
   $table_end
   <p><center>
-  !href cmd=reply&job2=sharelist Resource sharing information of your class
+  !href cmd=reply&job2=sharelist $name_info
   </center>
 !endif
 !if $excls!=yes and $supertype!=4
  <p>
- !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+ !href cmd=reply&keyword=*&excls=yes $name_exampleclass
 !endif

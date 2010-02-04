@@ -19,11 +19,9 @@
 !if $toomany = yes
  !form reply
  !if $kw=$empty
-  Il y a trop de classes virtuelles sur le site. Donnez un mot clé pour
-  rechercher les classes qui vous concernent&nbsp;:
+  $name_toomany
  !else
-  Il y a encore trop de classes correspondant à votre recherche. Veuillez
-  donner un mot clé plus précis.
+   $name_toomany2
  !endif
  <p><center>
  <input size=20 name=keyword value="$keyword">
@@ -32,28 +30,27 @@
 !else
  !if $kw != $empty or $classcnt1 + $classcnt2 > 20
   !form reply
-  Rechercher une classe :
+  $name_research
   <input size=20 name=keyword value="$keyword">
   <input type=submit value=OK>
   </form> <p>
  !endif
 !endif
 !if $classcnt1 + $classcnt2 < 1
- Aucune classe n'est trouvée pour votre recherche. Réessayez.
+ $name_noclass
  !if $excls!=yes and $supertype!=4
   <p>
-  !href cmd=reply&keyword=*&excls=yes Afficher les classes d'exemple du serveur
+  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
  !endif
  !exit
 !endif
 
 
-Les relations de voisinage entre des classes virtuelles permettent l'échange de
-ressources et/ou déplacement entre les classes.
+$name_help
 <small>[&nbsp;
 !href cmd=help&special_parm=neighbor $wims_name_help
 &nbsp;
-!href cmd=help&special_parm=neiexample Exemples
+!href cmd=help&special_parm=neiexample $name_example
 &nbsp;]</small><p>
 
 !if $toomany=yes
@@ -64,14 +61,13 @@ ressources et/ou déplacement entre les classes.
  !exit
 !endif
 
-Cliquez sur le nom d'une classe pour changer vos relations de voisinage avec
-elle.
+$name_changeneigh
 
 <p>
 !if $classcnt1>0
  !set clst=$clist1
  $table_header
-  <caption>Classes dans la même langue que la vôtre</caption>
+  <caption>$name_samelanguage</caption>
   !read neighbor/clist.phtml
  $table_end
 !endif
@@ -80,7 +76,7 @@ elle.
  <p>
  !set clst=$clist2
  $table_header
-  <caption>Classes dans une autre langue</caption>
+  <caption>$name_otherlanguage</caption>
   !read neighbor/clist.phtml
   $table_end
   <p><center>

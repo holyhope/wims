@@ -145,23 +145,22 @@ $name_apparence:
 <p>
 !if $class_type iswordof 2 3 4
 
- !href cmd=reply&job=propagate Répercuter les configurations aux zones dépendantes
-.
+ !href cmd=reply&job=propagate $name_dependant_zone
 !endif
 <p>
-!href cmd=reply&job=neighbor&job2=first Définir des classes voisines
+!href cmd=reply&job=neighbor&job2=first $name_neigh
 ,
-!href cmd=reply&job=connect&job2=first des liens vers d'autres serveurs
+!href cmd=reply&job=connect&job2=first $name_link
 .
 <p>
 !if $classdepth<=1 
-Utiliser une 
-!href cmd=reply&job=authtype authentification
- des participants par annuaire ldap.
+
+!href cmd=reply&job=authtype $name_useauth
+$name_ldap.
  <p>
 !endif
 
-Actualiser les index<sup>
+$name_index<sup>
 !href cmd=help&special_parm=index $wims_name_help
 </sup>:
 !if $class_type=4
@@ -180,22 +179,20 @@ Actualiser les index<sup>
 .
 <p>
 !href cmd=reply&job=security $wims_name_config_secure
- (dont le changement de 
+ $name_change
 !href module=adm/class/passwd $wims_name_config_passwd
 ).
 <p>
-Faire une 
-!href cmd=reply&job=arch&job2=first sauvegarde ou restauration
- de la classe, 
-!href cmd=reply&job=access restreindre les ressources
- accessibles, 
- !href cmd=reply&job=grestrict restreindre les sites 
- pour lequels les scores sont enregistrés,
- faire un 
-!href cmd=reply&job=clean nettoyage sélectif
+!href cmd=reply&job=arch&job2=first $name_load
+, 
+!href cmd=reply&job=access $name_restriction1
+, 
+ !href cmd=reply&job=grestrict $name_restriction2 
+$name_score,
+!href cmd=reply&job=clean $name_clean
 .
 <p>
-Configurer le
+$name_config
 !href module=adm/forum/mboard&job=config $name_forum
 , le
 !href module=adm/class/motd $name_motd
@@ -207,8 +204,7 @@ Configurer le
 !href module=adm/class/sequence&job=config $name_seq
 .
 <p>
-Utilisation actuelle d'espace disque : $du megaoctets. (La limite est
-$wims_class_quota.)
+$name_disk: $du megaoctets. ($name_limit $wims_class_quota.)
 
 
 !reset up_institution, up_description, up_supervisor, up_email, \
