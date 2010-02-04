@@ -10,7 +10,7 @@ Graag geheel ingevuld opsturen.
 Je hebt al eens een antwoord ingeleverd bij deze opgave.<br>
 Dat antwoord is reeds geanalyseerd en verwerkt in je score.<br>
 Herhaalde antwoorden worden genegeerd.
-<small> gebruik nooit de "reload" knop van je browser om antwoorden in te leveren!</small> 
+Gebruik nooit de "reload" knop van je browser om antwoorden in te leveren!
  !exit
 !endif
 

@@ -43,7 +43,7 @@ function resetAlarm(){
     document.getElementById('alarmtext').style.display = "none"
 }
 
-function science(t){
+function science(t){// corrected: startvalue+3 != startvalu*10^3 :)
     t=t.replace(/\*\*/g,'^'); 
     t=t.replace(/x10/g,'*10')
     e=t.indexOf('e');
@@ -56,10 +56,6 @@ function science(t){
 	c0=0;c1=0;
 	for(s=0;s<10;s++){a=cc[s];if(t0==a){c0=1;}}
 	for(s=0;s<10;s++){a=cc[s];if(t1==a){c1=1;}}
-	if(c0==0 && c1==1){t=t.replace('e','10^');}
-	if(c0==0 && c1==0 && t1=="+"){t=t.replace('e+','10^');}
-	if(c0==0 && c1==0 && t1=="-"){t=t.replace('e-','10^-');}
-	if(c0==0 && c1==0 && t1==""){t=t.replace('e','E');}
 	if(c0==1 && c1==1){t=t.replace('e','*10^');}
 	if(c0==1 && c1==0 && t1=="+"){t=t.replace('e+','*10^');}
 	if(c0==1 && c1==0 && t1=="-"){t=t.replace('e-','*10^-');}

@@ -1,0 +1,374 @@
+# number with range and/or significant digits
+# correct answer format: number1,number2,number3...
+# var1=2,-1,0,5 : significant digits in reply. empty or -1 to indicate no significant digits 
+# var2=min1:max1,min2:max2,min3:max3,min4:max4.var2 is the range for the correct answer.
+# var2 may be assymetrical , or empty 
+# optional a unit. if pupil ignores this ,the unit of correct answer is assumed
+# var3 -1,kg,-1,m,-1,mol : optional unit of the correct answer : -1 for nonexisting or leave empty
+# 1/2/2020
+n=$counter
+!if $(reply$n)=?
+    goback=0
+    maxscore=0
+    remark$n=$NOK
+    !exit
+!endif
+errortext=$empty
+goback=0
+!if $rounding != -1
+    errortext=Rounding (rounding=$rounding) needs to be deactivated in the answer type.<br>\
+    Set rounding=-1 ;roundingtext=$empty or a remark on the accuracy of the expected reply<br>\
+    Use var1 to declare significan digits <br>\
+    Use var2 to declare the range of the number min1:max1,min2:max2...
+    goback=1
+    !exit 
+!endif
+ # var1 is number of significant digits 1,3,4,5
+tg=!itemcnt $(answer$n)
+!if $var1 != $empty
+    p=!itemcnt $var1
+    !if $p!=$tg
+	# als var2 perongeluk voor iets anders is bestemd
+	errortext=var1=1,-1,6 : var1 is reserved and used for expected digits in answer.
+	goback=1
+	!exit
+    !endif
+    checkdigits=1
+!else
+    checkdigits=-1
+!endif
+
+!if $var2 != $empty
+    p=!itemcnt $var2
+    !if $p!=$tg
+	# als var2 perongeluk voor iets anders is bestemd
+	errortext=var2 is reserved : range min1:max1,min2:max2... per answer<br>dus net zoveel "items" als in't goede antwoord $(answer$$n) : let op gebruik dezelfde eenheid !!
+	goback=1
+	!exit
+    !endif
+    range=1
+!else
+    range=0
+!endif
+
+!if $var3 != $empty
+    checkunits=1
+!else
+    checkunits=0
+!endif
+
+
+ta=!itemcnt $(reply$n)
+tg=!itemcnt $(answer$n)
+
+!if $ta != $tg
+    ex=!record 38 of $remarkdir/commonremarks.$taal
+    errortext=$(reply$n) ... <br>$ex
+    maxscore=$[$P6*$maxscore]
+    goback=1
+ !exit
+!endif
+
+yourreply=$empty
+extra=$empty
+reply$n=!singlespace $(reply$n)
+AAA=!lower $(reply$n)
+aaa=$empty
+!for p=1 to $ta
+    # check on: distance = 1233.3443
+    A=!item $p of $AAA
+    test=!replace internal = by , in $A
+    t=!itemcnt $test
+    !if $t>1
+        A=!item 2 of $test
+	ex=!record 95 of $remarkdir/commonremarks.$taal
+	extra=!append line $ex ($A) to $extra
+    !endif
+    unitsfilter$p=-1
+    aaa=!append line $A to $aaa
+!next p
+AAA=!lines2items $aaa
+ta=!itemcnt $AAA
+AAA=!lower $AAA
+GGG=$(answer$n)
+!if $checkunits=1
+    # translate common SI "prefixes" into number notation...
+    # this could also called in "precheck.js" [called prefix()]
+    PREFIX=*10^-1,*10^1,*10^6,*10^12,*10^15,*10^18,*10^15,*10^12,*10^9,*10^6,*10^3,*10^2,*10^1,*10^-1,*10^-2,*10^-3,*10^-6,*10^-9,*10^-12,*10^-15,*10^-18 
+    prefix=déci,déca,méga,téra,péta,exa,peta,tera,giga,mega,kilo,hecto,deca,deci,centi,milli,micro,nano,pico,femto,atto 
+
+    AAA=!replace internal ** by ^ in $AAA
+    !for p=1 to 21
+	!if $(prefix[$p]) isin $AAA
+    	    AAA=!replace internal $(prefix[$p]) by $(PREFIX[$p]) $ in $AAA
+	!endif
+    !next p
+    AAA=!replace internal ** by * in $AAA
+    aaa=$empty
+    !for p=1 to $ta
+	A=!item $p of $AAA
+	t1=!char 1 of $A
+	!if $t1=*
+	    A=!char 2 to -1 of $A
+	!endif
+	aaa=!append line $A to $aaa
+    !next p
+    AAA=!lines2items $aaa
+    aaa=$empty
+    ggg=$empty
+    !for p=1 to $ta
+	A=!item $p of $AAA
+	A=!nospace $A
+	G=!item $p of $GGG
+	unit_g=!item $p of $var3
+	!if $unit_g != -1
+	    rep=$A
+	    !if NaN isin $[1*($A)]
+		# A= 14 kg : pupils uses a unit
+		A1=!replace [a-z] by @ in $A
+		t1=!positionof char @ in $A1                                                                                             
+                t1=!item 1 of $t1
+		number=!char 1 to $[$t1-1] of $A                                                                                      
+                unit_a=!char $t1 to -1 of $A
+		number=!lower $number
+		number=$[1*($number)]
+		!if NaN isin $number
+		    errortext=!record 89 of $remarkdir/commonremarks.$taal
+		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
+		    maxscore=$[$P4*$maxscore]
+		    goback=1
+		    !exit
+		!endif
+		a=!exec units-filter $number $unit_a
+		!if ERROR isin $a
+		    errortext=!record 89 of $remarkdir/commonremarks.$taal
+		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
+		    maxscore=$[$P4*$maxscore]
+		    goback=1
+		    !exit
+		!endif
+		A=!word 1 of $a
+		g=!exec units-filter $G $unit_g
+		!if ERROR isin $g
+		    errortext=The correct answer $G $unit_g is wrong: $g
+		    goback=1
+		    !exit
+		!endif
+		!if $unit_g != $unit_a		
+		    ex=!record 92 of $remarkdir/commonremarks.$taal
+		    extra=!append line $ex to $extra
+		!endif
+		factor=!charcnt $[ceil($number/$G)]
+		!if $factor>2
+		    ex=!record 100 of $remarkdir/commonremarks.$taal
+		    #@Je antwoord verondersteld een veel te hoge nauwkeurigheid !
+		    maxscore=$[$maxscore*$P5]
+		    extra=!append line $ex to $extra
+		!else
+		    !if $factor>1
+			ex1=!record 101 of $remarkdir/commonremarks.$taal
+			#@Je antwoord verondersteld een iets te hoge nauwkeurigheid !<br>$digits decimalen was beter geweest.
+			maxscore=$[$maxscore*$P2]
+			extra=!append line $ex to $extra
+		    !endif
+		!endif
+		G=!word 1 of $g	    
+		unitsfilter$p=1
+	    !endif
+	!else
+	    # no unit used by pupil: that's fine too
+	    # assuming unit of answer
+	    !if NaN isin $[1*$A]
+		# some bugus text present....preserve basic math
+		!for p in sin,cos,tan,sqrt,log,ln,pi
+		    P=!toupper $p
+		    A=!replace internal $p by $P in $A
+		!next p
+		A=!replace [a-z\~\!\@\#\$\%\&\_\"\:\;] by $empty in $A
+		A=!lower $A
+		!if NaN isin $[1*($A)]
+		    errortext=!record 26 of $remarkdir/commonremarks.$taal
+		    goback=1
+		    maxscore=$[$P6*$maxscore]
+		    !exit
+		!endif
+	    !endif
+	!endif
+	aaa=!append line $A to $aaa
+	ggg=!append line $G to $ggg
+    !next p
+    AAA=!lines2items $aaa
+    GGG=!lines2items $ggg
+!else
+    # no units to check: remove all bogus text, but preserve basic maths
+    !for p in sin,cos,tan,sqrt,log,ln,pi
+	P=!toupper $p
+	AAA=!replace internal $p by $P in $AAA
+    !next p
+    AAA=!replace [a-z\~\!\@\#\$\%\&\_\"\:\;] by $empty in $AAA
+    AAA=!tolower $AAA
+!endif
+
+ta=!itemcnt $AAA
+tg=!itemcnt $GGG
+!if $tg>1
+    li=<li>
+    end_li=</li>
+    ul=<ul>
+    end_ul=</ul>
+    br=$empty
+!else
+    li=$empty
+    end_li=$empty
+    ul=$empty
+    end_ul=$empty
+    br=<br>
+!endif
+
+score=0
+!for p=1 to $tg
+    A=!item $p of $AAA
+    G=!item $p of $GGG
+    
+    !if ? isin $A
+	yourreply=!append line $li<font color=red>$dontknow</font>$end_li to $yourreply
+    !else
+	k=green
+	k2=green
+	k3=green
+	score1=1
+    	ex1=$empty
+    	ex2=$empty
+	!if $range=1
+	    ra=!item $p of $var2
+	    ra=!replace internal : by , in $ra
+	    range1=!item 1 of $ra
+	    range2=!item 2 of $ra
+	!endif
+	!if $checkdigits=1 and $(unitsfilter$p)=-1
+	    # unitsfilter will mess up the digits 1.000 km == 1000 m 
+	    # and the digits are already checked in the unitsfilter part
+	    digits=!item $p of $var1
+	!else
+	    digits=-1
+	!endif
+	!if $digits != -1
+	    !if . notin $A
+		!if $digits !=0
+		    # geen digits
+		    k3=orange
+		    ex1=!record 98 of $remarkdir/commonremarks.$taal
+		    #@<br>Ik verwachtte eigenlijk een antwoord met $digits decimalen...
+		    maxscore=$[$maxscore*$P3]
+		!else
+		    k3=green
+		    ex1=!record 99 of $remarkdir/commonremarks.$taal
+		    #@<br>Heel goed, het juiste aantal decimalen !
+		!endif
+	    !else
+		t=!replace internal . by , in $A
+		t2=!item 2 of $t
+		t2=!charcnt $t2
+		t1=$[$t2 - $digits]
+		!if $t1 = 0
+		    k3=green
+		    ex1=!record 99 of $remarkdir/commonremarks.$taal
+		    #@<br>Heel goed, het juiste aantal decimalen !
+		!else
+		    !if $t1>0
+			!if $t1>3
+			    k3=red
+			    ex1=!record 100 of $remarkdir/commonremarks.$taal
+			    #@Je antwoord verondersteld een veel te hoge nauwkeurigheid !
+			    maxscore=$[$maxscore*$P4]
+			!else
+			    !if $t1=1
+				k3=orange
+				maxscore=$[$maxscore*$P1]
+				ex1=!record 101 of $remarkdir/commonremarks.$taal
+				#@Je antwoord verondersteld een iets te hoge nauwkeurigheid !<br>$digits decimalen was beter geweest.
+			    !else
+				k3=orange
+				maxscore=$[$maxscore*$P3]
+				ex1=!record 102 of $remarkdir/commonremarks.$taal
+				#@Je antwoord verondersteld een te hoge nauwkeurigheid !<br>$digits decimalen was beter geweest.
+			    !endif
+			!endif
+		    !else
+			maxscore=$[$maxscore*$P3]
+			ex1=!record 103 of $remarkdir/commonremarks.$taal
+			#@Je antwoord mocht wel wat nauwkeuriger worden opgegeven.<br>$digits decimalen was beter geweest.
+		    !endif
+		!endif
+	    !endif
+	!endif
+	!if $range=1
+	    !ifval $G=$A
+		k=green
+		k2=green
+	    !else
+		!ifval $A <= $[$G+$range1] and $A >= $[$G-$range2]
+	    	    ex2=!record 96 of $remarkdir/commonremarks.$taal
+		    k2=green
+		    k=green
+		!else
+		    !ifval $A <= $[$G + 1.5*$range1] and $A >= $[$G - 1.5*$range2]
+			ex2=!record 97 of $remarkdir/commonremarks.$taal
+			k2=orange
+			k=orange
+			score1=$P5
+		    !else
+			k2=red
+			k=red
+			score1=0
+		    !endif
+		!endif
+	    !endif
+	!else
+	    !ifval $G=$A
+		k=green
+		k2=green
+	    !else
+		!ifval $[round(10*($A))] = $[round(10*($G))]
+		    ex2=!record 29 of $remarkdir/commonremarks.$taal
+		    k2=red
+		    k=orange
+		    score1=$P3
+		!else
+		    k=red
+		    k2=red
+		    score1=0
+		!endif
+	    !endif
+	!endif
+	!ifval $[-1*($G)] = $A
+	    ex2=!record 27 of $remarkdir/commonremarks.$taal
+	    score1=$P4
+	    k1=red
+	!endif
+	yourreply=!append line $ $li<font color=$k>$A</font><font color=$k2>$ex2</font><font color=$k3>$ex1</font> $end_li $ to $yourreply
+	score=$[$score + $score1]
+    !endif
+!next p
+
+maxscore=$[$maxscore*$score/$tg]
+modulescore=$[$modulescore+$maxscore]
+
+!if $maxscore>0.9
+    remark$n=$OK
+!else
+    !if $maxscore>0.5
+	remark$n=$BOK
+    !else
+	remark$n=$NOK
+    !endif
+!endif 
+
+goback=0
+reply$n=$ul $yourreply $end_ul  $br <small>($(reply$n))</small>
+
+!if $extra != $empty
+    remark$n=!append line $ <br>$extra $ to $(remark$n)
+!endif
+
+!exit

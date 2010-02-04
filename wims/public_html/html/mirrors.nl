@@ -79,7 +79,7 @@ Commercial server
 :wims.math.leidenuniv.nl/wims/
 Universiteit Leiden
 Nederland
-en fr cn es it nl
+en fr cn es ca si it de nl
 wims@math.leidenuniv.nl
 wims@math.leidenuniv.nl
 :https://wims.ofset.org/wims/

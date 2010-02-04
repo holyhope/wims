@@ -85,7 +85,7 @@ prefix=déci,déca,méga,téra,péta,exa,peta,tera,giga,mega,kilo,hecto,deca,deci,cen
     p=!itemcnt $var2
     !if $p!=$tg
 	# als var2 perongeluk voor iets anders is bestemd
-	errortext=var2 moet de range min1:max1,min2:max2... per antwoord zijn<br>dus net zoveel "items" als in't goede antwoord $(answer$$n)
+	errortext=var2 moet de range min1:max1,min2:max2... per antwoord zijn<br>dus net zoveel "items" als in't goede antwoord $(answer$$n) : let op gebruik dezelfde eenheid !!
 	goback=1
 	!exit
     !endif
@@ -102,7 +102,9 @@ prefix=déci,déca,méga,téra,péta,exa,peta,tera,giga,mega,kilo,hecto,deca,deci,cen
     prec2=10^-6
     prec3=10^-4
     decimals=10
+    rnd=1000000
 !else
+    rnd=$rounding
     prec1=$[1/$rounding]
     prec2=$[10/$rounding]
     !if $rounding>1000
@@ -124,7 +126,12 @@ score=0
     ex4=$empty
     ex5=$empty
     ex6=$empty
-
+    !if $range=1
+	ra=!item $p of $var2
+	ra=!replace internal : by , in $ra
+	range1=!item 1 of $ra
+	range2=!item 2 of $ra
+    !endif
     k=$empty    
     found=0
     correct_unit=1
@@ -260,19 +267,19 @@ score=0
 		!exit
 	    !endif
 	    number_r=!rawmath $number_r
-	    !if $rounding>0
+	    !if $rnd>0
 		!if . isin $number_r
 		    # check the number of decimals
 		    dec=!replace internal . by , in $number_r
 		    dec=!item 2 of $dec
 		    dec=!charcnt $dec
 		    !if $dec>$decimals
-			score1=$[$score1*0.95]
+			score1=$[$score1*0.99]
 			ex4=!record 94 of $remarkdir/commonremarks.$taal
 		    !endif
 		!endif
-		number_r=$[(round($rounding*($number_r)))/$rounding]
-		number_a=$[(round($rounding*($number_a)))/$rounding]
+		number_r=$[(round($rnd*($number_r)))/$rnd]
+		number_a=$[(round($rnd*($number_a)))/$rnd]
 	    !else
 		number_r=$[1.0*($number_r)]
 		number_a=$[1.0*($number_a)]
@@ -298,6 +305,12 @@ score=0
 		!endif
 	    !endif
 	    G=!exec units-filter $[$number_a] $unit_a
+	    !if $range=1
+		range1=!exec units-filter $range1 $unit_a
+		range2=!exec units-filter $range2 $unit_a
+		range1=!word 1 of $range1
+		range2=!word 1 of $range2
+	    !endif
 	    !if ERROR isin $G
 		errortext=Error in this exercise<br>The correct answer has a non SI unit $unit_a
 		goback=1
@@ -316,17 +329,24 @@ score=0
 ########### $ans is !item $p of $(answer$n)
 ########### $org is !item $p of $(reply$n)
 	    A1=!replace [a-z]*.[a-z] by $empty in $org
+	    B1=!replace [a-z] by $empty in $org
 	    A1=!lower $A1
 	    # SQRT(12) -> sqrt(12)
 	    A1=$[1.0*($A1)]
 	    !if NaN isin $A1
-		testvar=$org
-		errortext=!record 26 of $remarkdir/commonremarks.$taal
-		maxscore=$[$P4*$maxscore]
-		goback=1
-		!exit
+		B1=!lower $B1
+		B1=$[1.0*($B1)]
+		!if NaN isin $B1
+		    testvar=$org
+		    errortext=!record 26 of $remarkdir/commonremarks.$taal
+		    maxscore=$[$P4*$maxscore]
+		    goback=1
+		    !exit
+		!else
+		    A1=$B1
+		!endif
 	    !endif
-	    !if $rounding>0
+	    !if $rnd>0
 		!if . isin $A1
 		    # check the number of decimals
 		    dec=!replace internal . by , in $A1
@@ -337,8 +357,8 @@ score=0
 			ex4=!record 94 of $remarkdir/commonremarks.$taal
 		    !endif
 		!endif
-		A1=$[(round($rounding*($A1)))/$rounding]
-		G1=$[(round($rounding*($ans)))/$rounding]
+		A1=$[(round($rnd*($A1)))/$rnd]
+		G1=$[(round($rnd*($ans)))/$rnd]
 	    !else
 		G1=$[1.0*($ans)]
     	    !endif
@@ -352,29 +372,23 @@ score=0
 	    !ifval $A1 = $G1
 		k=green
 	    !else
-		ra=!item $p of $var2
-		ra=!replace internal : by , in $ra
-		ra1=!item 1 of $ra
-		ra2=!item 2 of $ra
-		!ifval $ra1 <= $A1 and $A1 <= $ra2
-		    ex1=!record 29 of $remarkdir/commonremarks.$taal
-		    #@je hebt een afrondingsfoutje gemaakt...
-		    k=#7cff00
-		    score1=$[$score*$P6]
+		!ifval $range1 <= $A1 and $A1 <= $range2
+		    k=green
+		    ex1=!record 96 of $remarkdir/commonremarks.$taal
 		!else
-		    !ifval $[$ra1-$prec1] <= $A1 and $A1 <= $[$ra2+$prec1]
+		    !ifval $[$range1-$prec1] <= $A1 and $A1 <= $[$range2+$prec1]
 			ex1=!record 29 of $remarkdir/commonremarks.$taal
 		        #@je hebt een afrondingsfoutje gemaakt...
 			k=#ffc900
 			score1=$[$score1*$P7]
 		    !else
-			!ifval $[$ra1-$prec2] <= $A1 and $A1 <= $[$ra2+$prec2]
+			!ifval $[$range1-$prec2] <= $A1 and $A1 <= $[$range2+$prec2]
 			    ex1=!record 29 of $remarkdir/commonremarks.$taal
 			    #@je hebt een afrondingsfoutje gemaakt...
 			    k=#ff7c00
 			    score1=$[$score1*$P8]
 			!else
-			    !ifval $[$ra1-$prec3] <= $A1 and $A1 <= $[$ra2+$prec3]
+			    !ifval $[$range1-$prec3] <= $A1 and $A1 <= $[$range2+$prec3]
 				ex1=!record 30 of $remarkdir/commonremarks.$taal
 				#@je hebt een afrondingsfoutje gemaakt...
 				k=#ff3e00

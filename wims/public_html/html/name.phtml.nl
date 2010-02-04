@@ -306,7 +306,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !set wims_name_nameteacher=Docent
 !set wims_name_teacher=Docenten accounts
 !set wims_name_addteacher=Nieuwe docent
-!set wims_name_addparticipant=Voeg een deelnemr toe
+!set wims_name_addparticipant=Voeg een deelnemer toe
 !set wims_name_modteacher=Docent eigenschappen
 !set wims_name_delteacher=Verwijder een docent
 !set wims_name_student=Studenten accounts
@@ -370,7 +370,7 @@ wims_name_delprep,wims_name_rawdata,wims_name_passwd,wims_name_getraw,wims_name_
 !endif
 
 !if $wims_user=supervisor
- !distribute line Terug naar de supervisor mode\
+ !distribute line Terug naar de supervisor pagina\
  into wims_name_backteacher
 !endif
 

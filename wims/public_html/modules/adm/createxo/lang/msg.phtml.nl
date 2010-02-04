@@ -4,18 +4,18 @@
 <center><h3>Fout</h3></center> <p>
 
 !if no_title iswordof $error
-Geef de oefening eerst een naam.
+Geef de oefening eerst een titel.
  !exit
 !endif
 
 !if empty_title iswordof $error
- De software kan geen naam vinden voor uw oefening.<br>Ga na of de oefening wel een geldige naam heeft.
+ De software kan geen titel vinden voor uw oefening.<br>Ga na of de oefening wel een geldige titel heeft.
 
  !exit
 !endif
 
 !if no_answer iswordof $error
- Deze oefening moet op zijn minst 1 antwoord vragen.(freestyle of multiple choices).
+ Deze oefening moet op zijn minst 1 antwoord vragen.(open antwoord of meerkeuze).
 
  !exit
 !endif

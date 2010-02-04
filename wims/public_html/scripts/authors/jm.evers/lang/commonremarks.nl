@@ -65,7 +65,7 @@
 : Het aantal wortels is: $testvar1<br> en niet zoals in jouw antwoord: $testvar2<br>
 : Het antwoord moest exact zijn.
 : Wissen
-: Je kunt beter geen 5<font color=red><b>x</b></font>10^12 schrijven.<br>Geef bijvoorkeur 5*10^12
+: Je kunt beter geen 5<font color=red><b>x</b></font>10^12 schrijven.<br>Geef bijvoorkeur 5*10^5
 : Deze pagina maakt gebruik van "verschuifbare" elementen.<br>Tekst en plaatjes kunnen onafhankelijk van elkaar gepositioneerd worden.<br>De layout is dus "geheel" vrij.<br>Verder kunnen (met een klein beetje geduld, d'r zit nogal wat rekenwerk voor je browser aanvast)<br> met de "shiftknop" en de muis, de elementen van grootte veranderd worden<br>Zie je <em>geen</em> plaatjes of wiskundige formules<br>geef dan een browser <b>RELOAD</b> op deze pagina 
 : Terug
 :nul,nil,zero,zip,nop,niks,niet,nada,geen,niente
@@ -93,3 +93,12 @@
 : <br>Je hebt geen eenheid vermeld.<br>Ik neem dus maar aan $unit_a !
 : <br>Je hebt je antwoord in $dec decimalen opgegeven...<br>dat is een te hoge precisie ... $decimals decimalen was gevraagd
 : <br>Ik gebruik alleen het laatste gedeelte van je antwoord...
+: <br>Je antwoord is binnen de tollerantie grenzen...
+: <br>Je antwoord valt buiten de tollerantie grenzen...
+: <br>Ik verwachtte eigenlijk een antwoord met $digits decimalen...
+: <br>Heel goed, het juiste aantal decimalen !
+: <br>Je antwoord verondersteld een veel te hoge nauwkeurigheid ! 
+: <br>Je antwoord verondersteld een iets te hoge nauwkeurigheid !
+: <br>Je antwoord verondersteld een te hoge nauwkeurigheid !
+: <br>Je antwoord mocht wel wat nauwkeuriger worden opgegeven.
+

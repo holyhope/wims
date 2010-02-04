@@ -5,9 +5,9 @@ Binaire Bestanden voor oefeningen
 
 !if $quota=yes
  <b>Fout</b>.<br>
- Er is voor Uw klas niet genoeg ruimte meer beschikbaar op de harde schijf.
+ Er is helaat voor Uw klas niet genoeg ruimte meer 
+ beschikbaar op de harde schijf.
  <p>
- 
  !goto sendend
 !endif
 
@@ -15,7 +15,7 @@ Binaire Bestanden voor oefeningen
  U kunt diverse bestandstypes opsturen (plaatjes , mp3 ,pdf, ...)
 
 !form reply
-Het toe tevoegen  bestand voor deze oefening:
+Het bestand voor deze oefening:
 <input type=file name=wims_deposit>
 <input type=submit value=OK>
 </form>
@@ -76,6 +76,3 @@ testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\
 to $wims_menu_items
 
-!!!href cmd=resume&level=3&realtest=yes&retest=again Tester l'exercice
-!!.&nbsp;
-!!!href cmd=reply&level=3 Retour au menu

@@ -5,26 +5,26 @@
 !endif
 
 !distribute lines Beginners mode \
-  Expert mode\
-  File mode\
-  Andere methoden\
-  Voorbeelden\
-  Stuur het bestand\
-  Broncode van de oefening\
-  Terug naar het menu\
-  Doorgaan met het maken van de oefening\
-  Varander een bestaande oefening uit uw klas\
-  Terug naar het vorige menu.\
-  Stuur de broncode\
-  Wissen\
-  Demonstatie\
-  Aanpassen\
-  Test de oefening\
-  Corrigeer de fout\
-  Terug naar \
-  Uw oefening is nu als volgt: \
-  Hier staan de beschikbare voorbeelden. Kies er &eacute;&eacute;n.\
-  De module waarin uw oefening tijdelijk is opgenomen.\
+Expert mode\
+File mode\
+Andere methoden\
+Voorbeelden\
+Stuur het bestand\
+Broncode van de oefening\
+Terug naar het menu\
+Doorgaan met het maken van de oefening\
+Verander een bestaande oefening uit uw klas\
+Terug naar het vorige menu.\
+Stuur de broncode\
+Wissen\
+Demonstatie\
+Aanpassen\
+Test de oefening\
+Corrigeer de fout\
+Terug naar \
+Uw oefening is nu als volgt: \
+Hier staan de beschikbare voorbeelden. Kies er &eacute;&eacute;n.\
+De module waarin uw oefening tijdelijk is opgenomen.\
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
   name_prevstep,name_sendsource,name_clean,name_demo,name_adapt,name_testexo,\
@@ -34,8 +34,7 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 !set name_raw=!lowercase $wims_name_rawmode
 !set name_file=!lowercase $wims_name_filemode
 
-!set name_modefile1=U werkt nu in de filemode van Createxo.
-In deze mode kunt u lokaal geschreven OEF oefeningen opsturen naar de server.\
+!set name_modefile1=U werkt nu in de filemode van Createxo.In deze mode kunt u lokaal geschreven OEF oefeningen opsturen naar de server.\
 Beginners kunnen beter
 !set name_modefile2=Om online te bewerken kan ook gebruik worden gemaakt van
 
@@ -99,7 +98,7 @@ words in a list,	wlist
 !distribute lines Geef de inhoud van de oefening \
 Hier kunnen de random parameters worden gedeclareerd \
 Het statement van de oefening\
-Freestyle antwoordmodel\
+Open antwoordmodel\
 Correcte antwoord\
 Vereiste precisie bij getalsmatige antwoorden\
 Getalsmatige antwoorden worden vergeleken in het interval\
@@ -124,19 +123,17 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
   !set name_update3=Uw oefening is met succes geinstalleerd.
   !set name_update4= Er is een identieke oefening in uw klas aangetroffen. De laatste toevoeging worde genegeerd.<p>
   !set name_update5=Deze oefening is alleen bereikaar voor studenten \
-  in uw eigen klas en alleen dan als de oefening is \
-  opgenomen in een werkblad.
-
+  in uw eigen klas en alleen dan als de oefening is opgenomen in een werkblad.
   !distribute lines U kunt nu \
   de oefeningen uit uw eigen klas bekijken \
-  en deze opnemen in werkbladen.
- into name_youcan, name_consult,name_sheet
+  en deze opnemen in werkbladen.\
+  into name_youcan, name_consult,name_sheet
 !endif
 
 !distribute lines  U werkt nu in de expert mode van Createxo.\
 Deze oefening is gebaseerd op een standaard model, probeer de\
 Voeg de complete broncode toe\
-om een bestaand broncode bestand te registreren, kopieer daartoe het bestand in het tekst venster.\
+om een bestaand broncode bestand te registreren, kopieer daartoe het bestand in het tekstvenster.\
 Hier is de code van een bestaande oefening uit uw klas.\
 Deze kan worden veranderd in het onderstaande venster.\
 Hier is de code van uw geimporteerde publieke oefening. U kunt deze desgewenst nog aanpassen in het onderstaande venster.\
@@ -147,10 +144,10 @@ script tester\
 
 !exit
 :delete
-De oefening <em>$deltitle</em> is verwijdert uit de lijst met oefeningen uit uw klas.
+De oefening <em>$deltitle</em> is uit de lijst met oefeningen uit uw klas verwijderd.
 <p>
 Hier staat de broncode van de oefening, voor het geval u deze nog wilt bewaren voor later.
-Gebruik hiervoor de expert mode van Createxo:
+Gebruik daarvoor de expert mode van Createxo:
 !href module=adm/createxo&mode=raw $wims_name_createxo
 <p>
 

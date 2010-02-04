@@ -39,7 +39,7 @@ Andere beschikbare hulpmiddelen:
   !href module=adm/auth/confia2qcm Confia2qcm
 , 
 !href module=adm/auth/createqcm Createqcm
-    voor het online aanmaken van verschillende multiple choice oefeningen
+    voor het online aanmaken van verschillende meerkeuze oefeningen
 <li>    
 !href module=adm/modtool $wims_name_modtool 
     voor het online maken en organiseren van alle types OEF oefeningen en interactieve documenten.
