@@ -296,8 +296,17 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 
 !if $job=security
  !set title=Available security management activities
- !goto commun
+ !set name_see_activity2=You should be the origin of all these activities; if this is not \
+   the case, you should verify where there is a leak of your supervisor's password.
+ !set name_see_activity1=See the log file of management activities of your class. 
+ !distribute lines Set up the class-wide restriction\
+ of sites allowed to get scores.\
+ Other security setups in the\ 
+ class configuration\
+ into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
+!goto commun
 !endif
+
 
 !if $job=authtype
  !set title=Ldap authentification
@@ -410,10 +419,11 @@ Send setups to subclasses\
 Appearances\
 Score restriction\
 Platform address\
+of\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score,wims_name_config_ent
+wims_name_config_score,wims_name_config_ent,name_of
 
 !distribute lines Secure hosts\
    Style sheet\
@@ -472,8 +482,8 @@ resources cannot be erased once they are installed (security measure).
 And many class maintenance operations will be unavailable if there are
 non-empty score data.
 </ul>
-
 !exit
+
 :clean
 You cannot erase resources of the class
  when participant activities have already started.
