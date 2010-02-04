@@ -7,9 +7,9 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
 
-!set months=Jan,Fév,Mar,Avr,Mai,Jun,Jul,Aoû,Sep,Oct,Nov,Dec
+!set months=En,Feb,Mar,Abr,May,Jun,Jul,Ag,Sept,Oct,Nov,Dic
 
-!set title=Configuration et Maintenance
+!set title=Configuración y Administración
 
 !distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
 	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
@@ -17,9 +17,9 @@
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
-name_sheets
+!distribute items zonas,participantes,ejercicios, documentos, profesores\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+
 
 !distribute item message du jour,\
 	exercice,feuille de travail,examen,document,participant\
@@ -30,7 +30,7 @@ name_sheets
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
- !set title=Sauvegarde et Restauration
+ !set title=Copias de seguridad y Recuperación
  !set name_intro=Vous pouvez télécharger une copie de sauvegarde de votre classe, en format   
  !set name_tosend=Pour envoyer une sauvegarde dans votre classe
  !set name_namefile=veuillez donner le nom du fichier de sauvegarde&nbsp;
@@ -105,7 +105,7 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
 !endif
 
 !if $job=clean
- !set title=Nettoyage de la classe
+ !set title=Eliminación de la clase
  !set name_lines=lignes dans les registres d'activité de participants.
  !set name_empty=Votre classe est vide&nbsp;!<p>\
  Il n'y a pas de ressources dans votre classe pouvant être effacées.
@@ -123,7 +123,7 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
 !endif
 
 !if $job=neighbor
- !set title=Classes voisines
+ !set title=Clases vecinas
   !set name_noclass=Vous ne pouvez pas définir des classes voisines car il n'y a aucune autre\
  classe sur ce site.
  !set name_toomany=Il y a trop de classes virtuelles sur le site. Donnez un mot clé pour\
@@ -142,16 +142,16 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
- !distribute lines Déclaration<br>de voisinage\
-   Partage de ressources\
-   par vous\
-   par l'autre\
-   Partages mutuels actifs.\
-   Vous partagez ses ressources.\
-   Partage vos ressources.\
-   Permissions mutuelles de partage.\
-   A le droit de partager vos ressources.\
-   Vous permet de partager ses ressources.\
+ distribute lines Declaración<br>vecindad\
+   Compartir un recurso\
+   por usted\
+   por otro\
+   Relaciones mutuas de compartir activas.\
+   Usted comparte sus recursos.\
+   Comparte sus recursos.\
+   Permisos mutuos para compartir.\
+   Tiene permiso para compartir sus recursos.\
+   Le permite compartir sus recursos.\
    Arrêter le partage\
    Partager\
    les importer tous\
@@ -213,7 +213,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !endif
   
   !if $job2=addshare
-  !set title=Partager les ressources d'une classe
+  !set title=Compartir los recursos de una clase
   !set name_class_share=La classe <em><font color=blue>$nei_description</font></em> \
       vous permet de partager ses ressources suivantes.
   !distribute lines disponible(s)\
@@ -244,7 +244,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=connect
- !set title=Se connecter aux autres serveurs / plate-formes
+ !set title=Conectar a otros servidores / plataformas
  !set name_listserver=Liste de connexions des serveurs
 
  !distribute Test a server connection\
@@ -284,22 +284,22 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=access
- !set title=Configuration de l'accès aux ressources
+ !set title=Configuración del acceso a los recursos
  !goto commun
 !endif
 
 !if $job=grestrict
- !set title=Restriction de l'accès aux scores
+ !set title=Restricción del acceso a la puntuación
  !goto commun
 !endif
 
 !if $job=present
- !set title=Configuration de l'apparence de la classe.
+ !set title=Configuración de la apariencia de la clase
  !goto commun
 !endif
 
 !if $job=oefdefault
- !set title=Paramétrage par défaut des modules OEF
+ !set title=Parametrización por defecto de los módulos OEF
  !distribute Une série aura\
    Niveau de sévérité\
    Chronomètre\
@@ -322,7 +322,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=security
- !set title=Activités de gestion de sécurité disponibles
+ !set title=Actividades de gestión de seguridad disponibles
  !set name_see_activity2=Vous devez être l'origine de toutes ces activités&nbsp;; si ce \
    n'est pas le cas, il faut vérifier s'il n'y a pas une fuite de votre mot de passe d'enseignant.
  !set name_see_activity1=Voir l'enregistrement d'activité de gestion de votre classe
@@ -335,7 +335,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=authtype
- !set title=Authentification par un annuaire ldap
+ !set title=Autenticación por un anuario ldap
  !set name_intro_authtype=Sélectionnez <tt>ldap</tt> et remplissez cette page si \
    vous désirez utiliser une authentification par un annuaire ldap.
  !goto commun
@@ -430,53 +430,52 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 :commun
-!distribute line Authentification\
-Préférences\
-Restriction d'accès\
-Paramétrage OEF\
-Classes voisines\
-Gestion de sécurité\
-Nettoyage sélectif\
-Actualiser\
-Autres serveurs\
-Mots de passe\
-Zones dépendantes\
-Apparence\
-Restriction des scores\
-Adresse d'une plateforme\
-de\
+!distribute line Autenticación\
+Preferencias\
+Restricción de acceso\
+Parametrización OEF\
+Clases vecinas\
+Gestión de la seguridad\
+Eliminación selectiva\
+Actualisar\
+Otros servidores\
+Contraseñas\
+zonas inferiores\
+Apariencia\
+Restricción de la puntuación\
+Dirección de una plataforma\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score,wims_name_config_ent,name_of
+wims_name_config_score,wims_name_config_ent
 
-!distribute lines Postes sûrs\
-   Feuille de style\
-   Logo\
-   Position du logo\
-   en haut à gauche, en haut à droite\
-   Thème de style\
-   Jeu d'icones\
-   Niveau académique\
-   Postes autorisés aux notes\
-   Mot de passe d'inscription\
-   Mot de passe d'enseignant\
-   Limites d'enregistrement d'exercices et d'examens\
-   Liens sur une plateforme ou une page web\
-   Couleur de fond des pages\
-   Couleur de fond des menus\
-   Couleur des liens dans les menus\
-   Image de fond des pages\
-   transférer un fichier css\
-   Dégradé de couleurs des scores (de 0 à 10)\
-  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+!distribute lines Estaciones de trabajo seguras\
+   Hoja de estilo\
+   Logo de la clase\
+   Posición del logo\
+   arriba a la izquierda, arriba a la derecha\
+   Tema de estilo de la clase\
+   Juego de iconos\
+   Nivel académico\
+   Ordenadores autorizados a las notas\
+   Contraseña de inscripción\
+   Contraseña de profesor\
+   Límites de registro de ejercicios y exámenes\
+   Vínculos sobre una plataforma o una página Internet\
+   Color de fondo de las páginas\
+   Color de fondo de los menús\
+   Couleur des liens dans les menús\
+   Imagen de fondo de las páginas\
+   transferir un fichero css\
+   Gama de colores de los resultados (de 0 a 10)\
+   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
-!set name_content_style = Contenu de la feuille de style de la classe \
+!set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
 <br>(lorsque <tt>$name_css</tt>  est sur <tt>class</tt>)&nbsp;:
 
-!set name_content_style2=ou copier ici la feuille de style de la classe
+!set name_content_style2=o copiar aquí la hoja de estilo de la clase
 
 !exit
 :arch

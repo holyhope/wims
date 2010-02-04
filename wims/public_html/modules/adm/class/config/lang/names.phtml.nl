@@ -7,9 +7,8 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  of <b><font color=green>$wims_institutionname</font></b>
 
-!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
-
-!set title=Configuration and Maintenance
+!set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
+!set title=Configuratie en Onderhoud
 
 !distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
 	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
@@ -17,9 +16,9 @@
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
-name_sheets
+!distribute items subklassen,deelnemers,oefeningen,documenten,docenten\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+
 
 !distribute item messages of the day,\
 	exercise,worksheet,exam,document,participant\
@@ -30,7 +29,7 @@ name_sheets
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
- !set title=Backup and Restoration
+ !set title=Backup en Herstel
  !set name_intro=You can download a backup copy of your class, in the following format 
  !set name_tosend=To upload backup archives into your class, please give the backup file name
  !set name_namefile=veuillez donner le nom du fichier de sauvegarde
@@ -107,7 +106,7 @@ into name_restore1,name_restore2,name_restore3
 !endif
 
 !if $job=clean
- !set title=Clean up the class
+ !set title=Opschonen van een klas
  !set name_lines=participant activity lines
  !set name_empty=Your class is empty!<p> There is no resource in your class that can be cleaned up.
  !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
@@ -123,7 +122,7 @@ into name_restore1,name_restore2,name_restore3
 !endif
 
 !if $job=neighbor
- !set title=Class neighbors
+ !set title=Buurklassen
  !set name_noclass=You cannot define class neighbors because there is no other class on this site.
  !set name_toomany=here are too many virtual classes on this site. Please give a keyword\
   to search for classes that you want.
@@ -140,20 +139,20 @@ into name_restore1,name_restore2,name_restore3
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
- !distribute lines Neighborhood<br>declaration\
-   Resource sharing\
-   by you\
-   by the other\
-   Active mutually sharing.\
-   You are sharing its resources.\
-   Sharing your resources.\
-   Mutually allowing sharings.\
-   Allowed to share your resources.\
-   Allows you to share its resources.\
-   Stop this sharing\
-   Share\
-   import everybody\
-   Teaching resources\
+ !distribute lines Buurklassen<br>definieren\
+   Delen van materiaal\
+   door u\
+   door een ander\
+   Wederzijds gedeeld.\
+   U deelt.\
+   U leent.\
+   Wederzijds goedkeuring.\
+   Geeft U permissie om te lenen.\
+   U heeft permissie om te lenen.\
+   Stop de deling\
+   Delen\
+   Importeer alle deelnemers\
+   Lesmateriaal\
    Import other resources\
    Classes allowed to share your resources\
    Resource allowed\
@@ -211,7 +210,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !endif
   
   !if $job2=addshare
-    !set title=Share resources on class 
+    !set title=Delen van lesmateriaal met andere klassen
     !set name_class_share=This class <em><font color=blue>$nei_description</font></em>\
       allows you to share its following resources.
   !distribute lines available\
@@ -241,7 +240,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=connect
- !set title=Connect to other servers / platforms
+ !set title=Verbinding met andere servers / platformen
  !set name_listserver=List of server connections
 
  !distribute Test a server connection\
@@ -281,22 +280,22 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=access
- !set title=Resource access configuration
+ !set title=Configuratie toegangsbeleid
  !goto commun
 !endif
 
 !if $job=grestrict
- !set title=Score restriction
+ !set title=Score restricties
  !goto commun
 !endif
 
 !if $job=present
- !set title=Configuration of appearances of the class.
+ !set title=Configuratie van het uiterlijk van de virtuele klas
  !goto commun
 !endif
 
 !if $job=oefdefault
- !set title=Default configuration for OEF modules
+ !set title=Configuratie voor OEF modules<br>[Online Exercise Format] 
   !distribute One series will have\
    Level of severity\
    Time limit\
@@ -318,7 +317,7 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 !endif
 
 !if $job=security
- !set title=Available security management activities
+ !set title=Beschikbare beveiligings instellingen voor virtuele Klassen
  !set name_see_activity2=You should be the origin of all these activities; if this is not \
    the case, you should verify where there is a leak of your supervisor's password.
  !set name_see_activity1=See the log file of management activities of your class. 
@@ -332,8 +331,8 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 
 !if $job=authtype
  !set title=Ldap authentification
- !set name_intro_authtype=Select <tt>ldap</tt> and fill in this page if \
-   you use an authentification by ldap.
+ !set name_intro_authtype=Kies <tt>ldap</tt> en vul dit formulier in \
+  als u een ldap server gebruikt voor authentificatie.
  !goto commun
 !endif
 
@@ -427,53 +426,53 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 :commun
-!distribute line Authentification\
-My personal preferences\
-Resource restrictions\
-OEF configuration\
-Class neighbors\
+!distribute lines Authentificatie\
+Persoonlijke instellingen\
+Toegangsbeleid\
+OEF configuratie\
+Buur klassen\
 Security management\
-Selective cleanup\
-Rebuild\
-Other servers\
-Passwords\
-Send setups to subclasses\
-Appearances\
-Score restriction\
-Platform address\
+Selectieve opschoning\
+Actualiseer de index\
+Andere servers\
+Wachtwoorden\
+Andere zones\
+Uiterlijk\
+Score instellingen\
+Platform adressen\
 of\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent,name_of
 
-!distribute lines Secure hosts\
+!distribute lines Toegestane adressen\
    Style sheet\
-   Logo of the class\
-   Position of the logo\
-   top left corner, top right corner\
-   Style theme of the class\
-   Icones\
-   Academic level\
-   Hosts allowed for scores\
-   Password for participant registration\
-   Supervisor password\
-   Registration limits of exercises and exams\
-   Links on another plateform\
-   Page background color\
-   Menu background color\
-   Menu link color\
-   Background image file\
-   download a css-style file\
-   Dégradé de couleurs des scores (de 0 à 10) \
-  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+   Logo van de klas\
+   Positie van het logo\
+   links boven, rechts boven\
+   Style theme van de klas\
+   Iconen\
+   Leerniveau\
+   Toegangsbeleid voor registeren van cijfers\
+   Inschrijvings wachtwoord (klasse wachtwoord)\
+   Wachtwoord docent\
+   Configureer de opslag van toetsresultaten\
+   Links naar andere leerplatformen of webpagina's\
+   Pagina achtergrond kleur\
+   Menu achtergrond kleur\
+   Menu link kleur\
+   Achtergrond plaatje\
+   download een css-style bestand\
+   Score kleuren (de 0  10) \
+   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
-!set name_content_style = You can define your class-wide stylesheet here\
-<br>(when <tt>$name_css</tt> is on <tt>class</tt>)&nbsp;:
+!set name_content_style = U kunt een algemeen stylesheet definieren\
+<br>(als <tt>$name_css</tt> op <tt>klas</tt> is gezet)&nbsp;:
 
-!set name_content_style2=or copy here the css stylesheet
+!set name_content_style2=of kopieer hier een css-stylesheet
 
 !exit
 :arch

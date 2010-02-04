@@ -7,9 +7,8 @@
 !set classname=<b><font color=green>$wims_classname</font></b>\
  of <b><font color=green>$wims_institutionname</font></b>
 
-!set months=Ò»ÔÂ,¶şÔÂ,ÈıÔÂ,ËÄÔÂ,ÎåÔÂ,ÁùÔÂ,ÆßÔÂ,°ËÔÂ,¾ÅÔÂ,Ê®ÔÂ,Ê®Ò»ÔÂ,Ê®¶şÔÂ
-
-!set title=ÅäÖÃÓëÎ¬»¤
+!set months=Gen,Feb,Mar,Abr,Mai,Jun,Jul,Ago,Set,Oct,Nov,Des
+!set title=Configuració i Manteniment
 
 !distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
 	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
@@ -17,9 +16,8 @@
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items ·Ö°à,²Î¼ÓÕß,Á·Ï°,ÎÄ¼ş,½ÌÊ¦\
+!distribute items subclasses,participants,exercicis,documents,professors\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
-
 
 !distribute item messages of the day,\
 	exercise,worksheet,exam,document,participant\
@@ -30,7 +28,7 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
- !set title=±¸·İÓë»Ö¸´
+ !set title=Còpia de seguretat i Restauració
  !set name_intro=You can download a backup copy of your class, in the following format 
  !set name_tosend=To upload backup archives into your class, please give the backup file name
  !set name_namefile=veuillez donner le nom du fichier de sauvegarde
@@ -107,7 +105,7 @@ into name_restore1,name_restore2,name_restore3
 !endif
 
 !if $job=clean
- !set title=Çå³ı°à¼¶
+ !set title=Manteniment de la classe
  !set name_lines=participant activity lines
  !set name_empty=Your class is empty!<p> There is no resource in your class that can be cleaned up.
  !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
@@ -123,7 +121,7 @@ into name_restore1,name_restore2,name_restore3
 !endif
 
 !if $job=neighbor
- !set title=ÏàÁÚ°à
+ !set title=Classes veïnes
  !set name_noclass=You cannot define class neighbors because there is no other class on this site.
  !set name_toomany=here are too many virtual classes on this site. Please give a keyword\
   to search for classes that you want.
@@ -140,20 +138,20 @@ into name_restore1,name_restore2,name_restore3
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
- !distribute lines !distribute lines ÏàÁÚ¹ØÏµ<br>ÉùÃ÷\
-   ×ÊÔ´¹²Ïí\
-   ±»Äã\
-   ±»ËûÈË\
-   ¼¤»î»¥Ïà¹²Ïí.\
-   ÄãÕıÔÚ¹²ÏíËüµÄ×ÊÔ´.\
-   ¹²ÏíÄãµÄ×ÊÔ´.\
-   »¥ÏàÔÊĞí¹²Ïí.\
-   ÔÊĞí¹²ÏíÄãµÄ×ÊÔ´.\
-   ÔÊĞíÄã¹²ÏíËüµÄ×ÊÔ´.\
-   Í£Ö¹´Ë¹²Ïí\
-   ¹²Ïí\
-   µ¼ÈëËùÓĞµÄÈË\
-   ½ÌÑ§×ÊÔ´\
+ !distribute lines Declaració<br>de veïnatge\
+   Intercanvi de recursos\
+   per tu\
+   per l'altra\
+   Activar compartir mutuament.\
+   Vostè comparteix els seus recursos.\
+   Compartir els seus recursos.\
+   Permetre compartir mutuament. \
+   El dret a compartir els seus recursos.\
+   Vostè pot compartir els recursos.\
+   Stop Compartir\
+   Compartir\
+   importar-los tots\
+   Recursos d'ensenyament\
    Import other resources\
    Classes allowed to share your resources\
    Resource allowed\
@@ -211,7 +209,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !endif
   
   !if $job2=addshare
-    !set title=·ÖÏí°à¼¶×ÊÔ´
+    !set title=Compartir els recursos d'una classe
     !set name_class_share=This class <em><font color=blue>$nei_description</font></em>\
       allows you to share its following resources.
   !distribute lines available\
@@ -241,7 +239,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=connect
- !set title=Á¬½Óµ½ÆäËü·şÎñÆ÷/Æ½Ì¨
+ !set title=Connectar a altres servidors/plataformes
  !set name_listserver=List of server connections
 
  !distribute Test a server connection\
@@ -281,22 +279,22 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=access
- !set title=×ÊÔ´´æÈ¡ÅäÖÃ
+ !set title=Configuració de l'accés als recursos
  !goto commun
 !endif
 
 !if $job=grestrict
- !set title=µÃ·ÖÏŞÖÆ
+ !set title=Restricció de l'accés a les notes
  !goto commun
 !endif
 
 !if $job=present
- !set title=°à¼¶Íâ¹ÛµÄÅäÖÃ
+ !set title=Configuració de l'apparença de la classe.
  !goto commun
 !endif
 
 !if $job=oefdefault
- !set title=OEF Ä£¿éµÄÄ¬ÈÏÉèÖÃ
+ !set title=Escenari per defecte dels mòduls OEF
   !distribute One series will have\
    Level of severity\
    Time limit\
@@ -318,7 +316,7 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 !endif
 
 !if $job=security
- !set title=¿ÉÓÃµÄ°²È«¹ÜÀí»î¶¯
+ !set title=Activitats de gestió de seguretat disponibles
  !set name_see_activity2=You should be the origin of all these activities; if this is not \
    the case, you should verify where there is a leak of your supervisor's password.
  !set name_see_activity1=See the log file of management activities of your class. 
@@ -331,9 +329,9 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 !endif
 
 !if $job=authtype
-  !set title=Ldap Éí·İÑéÖ¤
- !set name_intro_authtype=Èç¹ûÄãÊ¹ÓÃ ldap ÑéÖ¤,\
- ÇëÑ¡ <tt>ldap</tt> ²¢ÌîĞ´´ËÒ³.
+ !set title=Autentificació ldap
+ !set name_intro_authtype=Seleccionar <tt>ldap</tt> i completar aquesta pàgina si \
+   voleu utilitzar l'autenticació ldap.
  !goto commun
 !endif
 
@@ -427,53 +425,53 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 :commun
-!distribute line Éí·İÑéÖ¤\
-ÎÒµÄ¸öÈËÏ²ºÃ\
-×ÊÔ´ÏŞÖÆ\
-OEF ²ÎÊı\
-ÏàÁÚ°à\
-°²È«¹ÜÀí\
-Ñ¡ÔñĞÔÇå³ı\
-ÖØ½¨Ë÷Òı\
-ÆäËü·şÎñÆ÷\
-ÃÜÂë\
-´«ËÍÅäÖÃµ½·Ö°à\
-Íâ¹Û\
-µÃ·ÖÏŞÖÆ\
-Æ½Ì¨µØÖ·\
+!distribute line Autentificació\
+Preferències\
+Restriccions d'accés\
+Configuració OEF\
+Classes veïnes\
+Gestió de seguretat\
+Manteniment\
+Actualitzar\
+Altres servidors\
+Contrasenyes\
+Enviar les configuracions a les subclasses\
+Aspecte\
+Restricció de notes\
+Adreça d'una plataforma\
 of\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent,name_of
 
-!distribute lines °²È«Ö÷»ú\
-   ¸ñÊ½Ò³\
-   °à¼¶Í¼±ê\
-   Í¼±êÎ»ÖÃ\
-   ×óÉÏ½Ç,ÓÒÉÏ½Ç\
-   °à¼¶µÄ¸ñÊ½Ö÷Ìâ\
-   Í¼±ê\
-   ³Ì¶È\
-   ÊÚÈ¨¼ÇÂ¼·ÖÊıµÄÖ÷»ú\
-   ×¢²áÃÜÂë\
-   ½ÌÊ¦ÃÜÂë\
-   Á·Ï°Óë¿¼ÊÔµÄ×¢²áÏŞÖÆ\
-   µ½Æ½Ì¨»òÍøÒ³µÄÁ¬½Ó\
-   Ò³µÄ±³¾°É«\
-   ²Ëµ¥µÄ±³¾°É«\
-   ²Ëµ¥µÄÁ´½ÓµÄÑÕÉ«\
-   ±³¾°Í¼ÏñÎÄ¼ş\
-   ÏÂÔØ css ¸ñÊ½ÎÄ¼ş\
-   ·ÖÊıÑÕÉ«µÄ±ä»¯ÂÊ (´Ó 0 ÖÁ 10)\
+!distribute lines Secure hosts\
+   Style sheet\
+   Logo of the class\
+   Position of the logo\
+   top left corner, top right corner\
+   Style theme of the class\
+   Icones\
+   Academic level\
+   Hosts allowed for scores\
+   Password for participant registration\
+   Supervisor password\
+   Registration limits of exercises and exams\
+   Links on another plateform\
+   Page background color\
+   Menu background color\
+   Menu link color\
+   Background image file\
+   download a css-style file\
+   Dégradé de couleurs des scores (de 0 à 10) \
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
-!set name_content_style = Äã¿ÉÒÔÔÚÕâÀï¶¨ÒåÄãµÄ°à¼¶·¶Î§µÄ¸ñÊ½Ò³\
-<br>(µ± <tt>$name_css</tt> ÊÇÔÚ <tt>class</tt>)&nbsp;:
+!set name_content_style = Contingut del full d'estils de la classe \
+<br>(quan <tt>$name_css</tt>  és a <tt>class</tt>)&nbsp;:
 
-!set name_content_style2=»ò°Ñ¸ñÊ½Ò³¸´ÖÆÔÚÕâÀï
+!set name_content_style2=o copiar ací el full d'estils de la classe
 
 !exit
 :arch
