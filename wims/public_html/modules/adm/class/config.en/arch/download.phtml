@@ -1,13 +1,13 @@
 
 !if $fsize=$empty
- Sorry, we have failed to archive your class.
+ $name_download1
  !exit
 !endif
 
-Here is the backup file of your class:
+$name_download2
 !getfile $fname.$format $fname.$format
  ($fsize K).
-<p>
+ $name_download3<p>
 
 !if $fsize<50 and all isitemof $selection
  !exit
@@ -16,23 +16,20 @@ Here is the backup file of your class:
 !form reply
 <input type=hidden name=job value=$job>
 <input type=hidden name=job2 value=$job2>
-!if $fsize<200
- You can also make a
+!if $fsize<500
+ $name_download4
 !else
- This backup file may be too big to be sent back to the server (which limits
- the size of file it accepts). In order to reduce the backup size, you can
- make a
+ $name_download5
+ $name_selective1 <input type=submit value="$name_selective2">
+$name_selective3
+
 !endif
 
-<input type=submit value="selective backup">:
 <p>
 !set selection=$select
 !formcheckbox selection list $reclist prompt $tot
 <p>
-<b>Remark</b>. Depending on the class activities, usually it is participant
-activities, forum messages and class documents that are of large size. You
-may also consider the possibility of making several selective backups for
-different resources.
+!read names.phtml download
 </form>
 
 

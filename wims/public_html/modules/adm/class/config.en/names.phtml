@@ -29,7 +29,7 @@
  !set name_deposit=!nosubst Your backup file <tt>$wims_deposit</tt> contains the following resources.
 Please check those you want to restore to your class.
  
- !set no_restore=Cannot be restored because you are sharing resources of\
+ !set name_no_restore=Cannot be restored because you are sharing resources of\
 	another class. Restoration can only be done on the class originating\
 	the sharing.
   !distribute lines Nothing is selected for restoration.\
@@ -80,6 +80,19 @@ into name_restore1,name_restore2,name_restore3
 
  !distribute items unrecognizable, too early, too late into ebad,eearly,elate
  
+ !distribute lines Sorry, we have failed to archive your class.\
+   Here is the backup file of your class\
+  Cliquez dessus pour l'enregistrer sur votre ordinateur.\
+  You can also make a \
+  selective backup\
+  to modify the backup file and save it.\
+ into name_download1,name_download2,name_download3,name_download4,name_download5,\
+   name_selective1,name_selective2,name_selective3
+
+ !set name_download5=This backup file may be too big to be sent back to the server (which limits
+ the size of file it accepts). In order to reduce the backup size, you can
+ make a selective backup
+  
  !goto commun
 !endif
 
@@ -586,3 +599,9 @@ the code, and type it below.
 is stolen or leaked, damages to your class will be limited.
 Defining correct secure hosts will simplify the class
 configuration procedure, while keeping a high security level.
+
+:download
+<b>Remark</b>. Depending on the class activities, usually it is participant
+activities, forum messages and class documents that are of large size. You
+may also consider the possibility of making several selective backups for
+different resources.

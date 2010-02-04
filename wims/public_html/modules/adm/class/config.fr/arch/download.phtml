@@ -1,13 +1,13 @@
 
 !if $fsize=$empty
- Désolé, l'archivage de votre classe n'a pas abouti. Erreur interne.
+ $name_download1
  !exit
 !endif
 
-Voici le fichier de sauvegarde de votre classe :
+$name_download2
 !getfile $fname.$format $fname.$format
  ($fsize K).
- Cliquez dessus pour l'enregistrer sur votre ordinateur.<p>
+ $name_download3<p>
 
 !if $fsize<50 and all isitemof $selection
  !exit
@@ -17,25 +17,19 @@ Voici le fichier de sauvegarde de votre classe :
 <input type=hidden name=job value=$job>
 <input type=hidden name=job2 value=$job2>
 !if $fsize<500
- Vous pouvez aussi sélectionner les données à sauvegarder :
+ $name_download4
 !else
- Ce fichier de sauvegarde a une taille qui peut dépasser la limite autorisée
- pour un envoi au serveur. Pour réduire la taille du fichier, vous pouvez aussi
- sélectionner les données à sauvegarder :
-!endif
+ $name_download5
+ $name_selective1 <input type=submit value="$name_selective2">
+$name_selective3
 
+!endif
 
 <p>
 !set selection=$select
 !formcheckbox selection list $reclist prompt $tot
 <p>
-Cliquez alors sur <input type=submit value="Sauvegarde sélective">
-pour modifier le fichier de sauvegarde ci-dessus et enregistrez-le.
-
-<p><b>Remarque</b>. Ce sont d'habitude les
-registres d'activités de participants, messages de discussion et les
-documents de la classe qui forment l'essentiel de la taille du fichier. Vous pouvez
-faire plusieurs sauvegardes sélectives pour différentes ressources.
+!read names.phtml download
 </form>
 
 
