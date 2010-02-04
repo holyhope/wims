@@ -16,62 +16,18 @@
 !endif
 !if $s_!=$empty and $s_ isitemof $helplist
  !read help/$s_.phtml
- !!<p><center>
-!! !href cmd=help Autres sujets d'aide.
-!! &nbsp;&nbsp;
-!! !href cmd=resume Retour au travail.
-!! </center>
  !set wims_menu_items=!append line back2,1,cmd=help\
  to $wims_menu_items
  !exit
 !endif
 
-Sujets d'aide&nbsp;:<ul>
-<li><p>
-!href cmd=help&special_parm=oef Explication sur le format OEF.
-</p></li>
-!!<li><p>
-!!href cmd=help&special_parm=examples Exemples d'exercices.
-<li><p>
-!href cmd=help&special_parm=format Les formats de l'énoncé
- de l'exercice.
-</p></li>
-<li><p> 
-!href cmd=help&special_parm=parameters Paramètres aléatoires
- dans un exercice interactif.
-</p></li>
-<li><p>
-!href cmd=help&special_parm=math Formules mathématiques
- dans des exercices.
-</p></li>
-<li><p>Inclure des
-!href cmd=help&special_parm=draw dessins dynamiques
- dans les exercices.
-</p></li>
-<li><p>
-Comment un utilisateur peut
-!href cmd=help&special_parm=reply répondre à un exercice
- (types de réponses).
-</p></li>
-<li><p>
-!href cmd=help&special_parm=feedback Messages ciblés
- aux erreurs typiques dans les réponses.
-</p></li>
-<li><p>
-!href cmd=help&special_parm=oefadv Possibilités avancées
-.
-</p></li>
-<li><p>
-  !href cmd=help&special_parm=slib&slib_cmd=help Bibliothèque de routines
- (slib).
-</p></li>
-<li><p>
-!href cmd=help&special_parm=all La totalité de l'aide
-.</p></li></ul>
 
-!!!if $modtoolhelp!=yes
-!! <center>
-!!!href cmd=resume Retour au travail.
-!! </center>
-!!!endif
-!!</div>
+!set record_cnt=!recordcnt lang/help.phtml.$modu_class
+<ul>
+!for s_=2 to $record_cnt
+  !set ss_=!record $s_ of lang/help.phtml.$modu_class
+<li><p>
+!href cmd=help&special_parm=$(ss_[1]) $(ss_[2])
+</li>
+!next s_
+!endif
