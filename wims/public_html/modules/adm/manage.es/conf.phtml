@@ -23,7 +23,7 @@ $table_header
   !set D_=$($n_)
   $table_tr
   <td>$b_<td align=center><small>
-  !href cmd=help&help_subject=conf&help_conf=$i ayuda
+  !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
   !if $c_ iswordof free int
    <br>
    <a href="#" onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">por defecto</a>
@@ -47,8 +47,8 @@ $ in $e_
  !endif
 !next i
 $table_end <p><center>
-<input type=submit name=save value=Guardar>
-<input type=submit name=abandon value=Cancelar>
+<input type=submit name=save value="$wims_name_tosave">
+<input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
 <p><b>Nota</b>. Los parámetros con un asterisco `*' en su título son importantes.
@@ -60,4 +60,3 @@ volverá a empezar con una configuración por defecto. También puede recuperar
 las configuraciones guardadas en el directorio log.
 <p>
 !read conf/$catname.phtml
-

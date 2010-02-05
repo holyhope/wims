@@ -1,20 +1,20 @@
 !if $modifcnt+$newcnt<=0
   <p>
-  No module publication found corresponding to your search.
+  $name_check1
   !exit
 !endif
 
-Click on the address of a module to check/install/update it.
+$name_click
 <p>
 !if $modifcnt>0
  $table_header
- <caption>Found new versions &nbsp;
- !href cmd=reply&job2=all&muauto=update update all
+ <caption>$name_foundv &nbsp;
+ !href cmd=reply&job2=all&muauto=update name_all_u
  </caption>
  $table_hdtr<th>$wims_name_Address
- <th><small>updated<br>by</small>
- <th><small>New<br>version</small>
- <th><small>Server<br>version</small>
+ <th><small>$name_updated</small>
+ <th><small>$name_newv</small>
+ <th><small>$name_server</small>
  !for i=1 to $modifcnt
   
   !set l=!line $i of $modif
@@ -31,11 +31,11 @@ Click on the address of a module to check/install/update it.
 
 !if $newcnt>0
  $table_header
- <caption>Found new modules &nbsp;
- !href cmd=reply&job2=all&muauto=install install all
+ <caption>$name_newm &nbsp;
+ !href cmd=reply&job2=all&muauto=install $name_all_i
  </caption>
  $table_hdtr<th>$wims_name_Address
- <th><small>published<br>by</small>
+ <th><small>$name_published</small>
  <th><small>$wims_name_Version</small>
  !for i=1 to $newcnt
   

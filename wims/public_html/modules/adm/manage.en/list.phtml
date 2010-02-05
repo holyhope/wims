@@ -1,62 +1,62 @@
 !if yes isin $sectest
- <b><font color=red>WARNING!</font> Security setup should be
- established after compilation. Please execute bin/wrapuid by root!
+ <b><font color=red>$name_warning!</font> $name_warning
  </b>
  <p>
 !endif
 
-Here is the list of tasks you may perform online.<ul>
-<li><p>Configuration:
+$name_online<ul>
+<li><p>$name_configuration:
 !set catcnt=!recordcnt conf/cat
 !for i=1 to $catcnt
- !if $i notwordof 5 11
  !set l=!record $i of conf/cat
  !distribute lines $l into x_,y_
+ !distribute lines $l into x_$i,y_$i
+ !if $i notwordof 5 11
  !href cmd=reply&job=conf&confcat=$i $y_
 &nbsp;&nbsp;
 !endif
 !next i
+!set cat1cnt=!recordcnt conf/cat1
+!for i=1 to $cat1cnt
+ !set l=!record $i of conf/cat1
+ !distribute lines $l into x1_$i,y1_$i
+!next i
 
-<li><p>System checklist:
+<li><p>$name_checklist:
 support softwares for
-!href cmd=reply&job=conf&confcat=5#check graphics
+!href cmd=reply&job=conf&confcat=5#check $(y_5)
  and
-!href cmd=reply&job=conf&confcat=11#check computation
+!href cmd=reply&job=conf&confcat=11#check $(y_11)
 ,
-!href cmd=reply&job=attrib file permissions
+!href cmd=reply&job=attrib $(y1_1)
 .
 
-</li><li><p>Check/maintain
-!href cmd=reply&job=class&job2=first virtual classes
+</li><li><p>$name_checkmaintain
+!href cmd=reply&job=class&job2=first $(y_2)
 ,
-!!<u>forums</u> (planned)
-!!,
-!href module=adm/doc documents
+!href module=adm/doc $(y_3)
 ,
-!href cmd=reply&job=activ current server activities
-!! and
-!!<u>message of the day</u> (planned)
-.
-</li><li><p>Create/maintain
-!href cmd=reply&job=developer&job2=first module developer accounts
- (Modtool)
-</li><li><p>
-!href cmd=reply&job=modules&job2=first Modules
- management.
+!href cmd=reply&job=activ $(y1_2)
 
-!href cmd=reply&job=mkindex Rebuild resource index
- (to be run after each addition of new resources as modules, sheets, ... to the
-server.)
-</li><li><p>
-!href cmd=reply&job=backup&job2=first Backup
- management.
-!href cmd=reply&job=upload Upload
- resources to the server.
-!href cmd=reply&job=update&job2=first Server software update
 .
-!href cmd=reply&job=otherdownload Download other ressources
+</li><li><p>$name_createmaintain
+!href cmd=reply&job=developer&job2=first $(y1_3)
+ ($wims_name_modtool)
+</li><li><p>
+!href cmd=reply&job=modules&job2=first  $(y1_4)
+
+!href cmd=reply&job=mkindex $(y1_5)
+ ($name_mkindex)
+</li><li><p>
+!href cmd=reply&job=backup&job2=first $(y1_6)
+.
+!href cmd=reply&job=upload $(y1_7)
+.
+!href cmd=reply&job=update&job2=first $(y1_8)
+.
+!href cmd=reply&job=otherdownload $(y1_9)
 ,
-!href cmd=reply&job=fs&job2= Direct file management
+!href cmd=reply&job=fs&job2= $(y1_10)
 
 </li>
 </ul>

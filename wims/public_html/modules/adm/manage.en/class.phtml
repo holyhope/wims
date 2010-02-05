@@ -1,12 +1,10 @@
 
-
-
 !if $job2!=first
  !changeto class/$job2.phtml
 !endif
 <p>
-!href cmd=reply&job=conf&confcat=2 Click here
- to configure the site's access policies to virtual classes.
+!href cmd=reply&job=conf&confcat=2 $name_click
+ $name_config
 
 !read class/search.phtml
 !if $overflow=yes
@@ -15,18 +13,18 @@
 
 !if $sccnt+$clcnt<1
  <p>
- There is no virtual class corresponding to your search. 
+ $name_noclass
  !reset keyword
  !exit
 !endif
 
 !if $sccnt>0
 <p>$table_header
-<caption>List of institutions and class groups</caption>
+<caption>$name_list</caption>
 $table_hdtr
 <th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
-<th>created<br><small>yyyymmdd</small>
-<th>expires<br><small>yyyymmdd</small>
+<th>$name_created<br><small>yyyymmdd</small>
+<th>$name_expire<br><small>yyyymmdd</small>
 !if $actives=yes
  <th>load<sup>[1]</sup></th>
 !endif
@@ -102,13 +100,13 @@ $table_end
  <p> <center>
  !form reply 
  <small><b>[1]</b>. ``<em>load</em>'' 
- means the number of cumulative connection hours since
+$name_cumul
  <input type=text name="bst_since" value="$bst_since" onchange="submit()">format <font color=blue>yyyymmdd</font></small>.
  <input type=hidden name="keyword" value="$keyword">
  </form>
  !href cmd=reply&job=bestclass&keyword=$keyword $wims_name_Show
  !default bst_num=10
- $bst_num best class activity on this period.
+ $bst_num $name_best.
  </center> <p>
 !endif
 

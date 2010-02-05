@@ -12,7 +12,7 @@ De volgende hulpmiddelen staan op deze server ter beschikking.
   <a href=$wims_pedia_address?module=adm/enc&cmd=new>Distributed Encyclopedia of Sciences</a>
   ($wims_pedia_address)
  !else
-  !href module=adm/enc.en Distributed Encyclopedia of Sciences
+  !href module=adm/enc Distributed Encyclopedia of Sciences
  !endif
  bevat lijsten van de beste internet bronnen over elk onderwerp.
 

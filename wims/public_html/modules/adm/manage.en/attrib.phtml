@@ -1,37 +1,33 @@
 
 !read adm/title.phtml 3\
 \
-File permission verification
+$title
 
 !if $bad$writable$execable$baduser$bad_wrapper$noexec=$empty
- The access permissions of this WIMS installation are all in secure mode.
+ $name_attrib1
  !sh rm -f $wims_home/log/unsecure
 !else
  <b><font color=red>$wims_name_warning</font></b>
  !if $bad!=$empty
-  The following files/directories are readable
-  by others, while they should not:
+  $name_attrib2
 <pre>
 !words2lines $bad
 </pre> <p>
  !endif
  !if $writable!=$empty
   !if $writcnt>=50
-   There are a huge number of files/directories writable by others, while
-   they should not. <p>
-   The problem is only partially fixed. Please
-   !href cmd=reply repeat the process
-   once again (until there is no longer files/directories with bad
-   permissions).
-   <p>List of fixed permissions this time:
+   $name_attrib3<p>
+   $name_attrib4
+   !href cmd=reply $name_repeat
+   once again ($name_attrib5).
+   <p>$name_attrib6
 <pre>
 !words2lines $writable
 
 ......
 </pre>
   !else
-   The following files/directories are writable by others, while they should
-   not:
+   $name_attrib7
 <pre>
 !words2lines $writable
 </pre>
@@ -40,21 +36,18 @@ File permission verification
  !endif
  !if $execable!=$empty
   !if $execnt>=50
-   There are a huge number of files/directories executable by others, while
-   they should not. <p>
-   The problem is only partially fixed. Please
-   !href cmd=reply repeat the process
-   once again (until there is no longer files/directories with bad
-   permissions).
-   <p>List of fixed permissions this time:
+   $name_attrib8<p>
+   $name_attrib4
+   !href cmd=reply $name_repeat
+   once again ($name_attrib5).
+   <p>$name_attrib6:
 <pre>
 !words2lines $execable
 
 ......
 </pre>
   !else
-   The following files/directories are executable by others, while they should
-   not:
+   $name_attrib8
 <pre>
 !words2lines $execable
 </pre>
@@ -63,50 +56,38 @@ File permission verification
  !endif
  !if $baduser!=$empty
   !if $usercnt>=50
-   There are a huge number of files/directories not owned by WIMS.
-   <p>Partial list below.
+   $name_attrib9
 <pre>
 !words2lines $baduser
 
 ......
 </pre>
   !else
-   The following files/directories are not owned by WIMS.
+   $name_attrib10
 <pre>
 !words2lines $baduser
 </pre>
   !endif
   <p>
-  WIMS directories should not contain files belonging to others.
-  Now you MUST manually check the origin of these files, and either erase
-  them, or change their ownership.
+  $name_warning1
   <p>
  !endif
  !if $bad_wrapper=true
-  Important security recommendation: please make correct changes
-  of the owner of the files <tt>public_html/bin/ch..root</tt>,
-  <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.
-  This is crucial for the security of your installation. To do so, you
-  should execute the script bin/wrapuid as root.
+  $name_warning2
   <p>
   !writefile wimshome/log/unsecure yes
  !else
   !sh rm -f $wims_home/log/unsecure
  !endif
  !if $noexec!=$empty
-  The following directories/files should be world executable, while they are
-  not.
+  $name_attrib11
   <pre>
 !words2lines $noexec
 </pre>
   <p>
  !endif
  !if $writcnt<50 and $execnt<50 and $usercnt<1 and $bad_wrapper=$empty
-  These wrong permissions represent a security risk to your installation. This has
-  been fixed for the time being, but you should be alerted and verify access
-  permissions more regularly. If the same problem reappears, you should check
-  the possibility of an intrusion to your system, and data on this server
-  might be compromised.
+  $name_warning3
  !endif
 !endif
 

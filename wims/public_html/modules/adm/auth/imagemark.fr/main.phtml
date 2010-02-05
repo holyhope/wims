@@ -1,10 +1,11 @@
+!read names.phtml.$lang
 !header
 
 !if $error!=$empty
  !read msg.phtml
  <p><hr><p>
 !endif
-
+$fx $fy
 !if $fname=$empty
 
 !set wims_form_method=file
@@ -12,15 +13,16 @@
 <input type=file name=wims_deposit>
 <input type=submit value="OK">
 <p>
-Taille d'affichage (e.g. 640x480, optionnelle) :
+$name_size
 <input name=size size=12>
 </form>
 
 !else
+
  <p><center>
  <img width=$fx height=$fy src="$imgsrc" alt=image>
  </center>
- !href cmd=new&module=$module Changer d'image.
+ !href cmd=new&module=$module $name_change.
 !endif
 
 <p>

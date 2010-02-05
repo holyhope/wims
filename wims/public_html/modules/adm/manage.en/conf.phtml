@@ -1,13 +1,12 @@
 !read adm/title.phtml 3\
 \
-Configuration of $cattit
+$title
 
 !if $save!=$empty
  !if $changed<1
-  Configuration not changed because you have made no modifications.
+  $name_config
  !else
-  The file <tt>wims.conf</tt> is updated. You can recover the old
-  configuration information from <tt>$backdir/wims.conf.old</tt>.
+  $name_updated
  !endif
  <p>
 !endif
@@ -26,7 +25,7 @@ $table_header
   !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
   !if $c_ iswordof free int
    <br>
-   <a href="#" onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">default</a>
+   <a href="#" onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">$default</a>
   !endif
   </small>
   <td nowrap>
@@ -51,11 +50,6 @@ $table_end <p><center>
 <input type=submit name=abandon value="$wims_name_giveup">
 </center>
 </form>
-<p><b>Remark</b>. Parameters with a `*' in their titles are important ones. 
-Those with a `!' may damage the installation if you mess up.
-<br>
-Anyway, remember that erasing the file <tt>log/wims.conf</tt> will
-allow you to restart from a default configuration set. Saved configurations
-can also be recovered from log directory.
+$name_warning
 <p>
 !read conf/$catname.phtml

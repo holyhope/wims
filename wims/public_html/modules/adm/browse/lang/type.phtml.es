@@ -12,7 +12,7 @@ Lecciones y referencias:<br>
   <a href=$wims_pedia_address?module=adm/enc&cmd=new>Distributed Encyclopedia of Sciences</a>
   ($wims_pedia_address)
  !else
-  !href module=adm/enc.en Distributed Encyclopedia of Sciences
+  !href module=adm/enc Distributed Encyclopedia of Sciences
  !endif
  contiene listas de los mejores recursos en línea sobre cada tema. Permite búsquedas
  por palabras clave y exploración.

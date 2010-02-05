@@ -1,31 +1,28 @@
 
 !read adm/title.phtml 3\
 \
-Rebuild resource index
+$title
 
 !if $atdate!=$empty
- Resource index rebuilding is scheduled. 
- You will receive a mail containing the
- result of resource rebuilding.
+ $name_scheduled
  !goto end
 !endif
 
-<b><font color=red>$wims_name_warning</font></b> Rebuilding resource index takes server 
-resources, so should better be avoided when the server is very busy.
+<b><font color=red>$wims_name_warning</font></b> $name_rebuilding
 <p>
 !if $lastdate!=$empty
  :result
- Result of last resource index building at $lastdate:
+ $name_result:
  <p><pre>
  $output
  </pre>
  <p>
- !href cmd=reply&job2=run Click here
- to restart a resource index rebuilding (you shouldn't).
+ !href cmd=reply&job2=run $name_click
+ $name_restart
 !else
 <p>
- !href cmd=reply&job2=run Click here
- to start resource index rebuilding.
+ !href cmd=reply&job2=run $name_click
+ $name_start
 !endif
 :end
 !reset job2

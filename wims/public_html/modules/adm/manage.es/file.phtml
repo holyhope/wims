@@ -13,9 +13,9 @@
  <tt><font color=green>$file</font></tt>? <br>
  <small>($flen bytes, $facc, modificado por última vez $fdat)</small>
  <p> <center> <font size="+2">
- !href cmd=reply&job=$job&job2=eraseconfirm Sí
+ !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
- !href cmd=reply&job=fs No
+ !href cmd=reply&job=fs $wims_name_no
  </font> <p> <hr>
  !goto end2
 !endif
@@ -57,8 +57,8 @@
  !mexec scripts/textarea.sh
 <br>
 !if $modifok=yes
- <input type=submit name=save value=Guardar>
- <input type=submit name=abandon value=Cancelar>
+ <input type=submit name=save value="$wims_name_tosave">
+ <input type=submit name=abandon value="$wims_name_giveup">
 !endif
 </center>
 </form>
@@ -69,12 +69,12 @@
 !href cmd=reply&job=file&job2=download Descargar el fichero
 . &nbsp;
 !if $modifok=yes
- !href cmd=reply&job=file&job2=erase Borrarlo
+ !href cmd=reply&job=file&job2=erase $wims_name_erase
 . &nbsp;
 !endif
 
 :end2
-!href cmd=reply&job=fs Volver al directorio
+!href cmd=reply&job=fs $wims_name_back2
 .
 
 </center>
