@@ -11,18 +11,18 @@
 
 !set title=Configuración y Administración
 
-!distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
-	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
-	séquences pédagogiques,messages du forum\
+!distribute items ejercicios,hojas de trabajo,exámenes,documentos,encuestas,agenda,\
+	cuentas de los participantes,cuenta del profesor,mensajes de un foro de discusión,mensaje del día,livret de compétences,\
+	sequences pédagogiques,messges du forum\
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
-	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
+	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_lsg
 
 !distribute items zonas,participantes,ejercicios, documentos, profesores\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
 
 
-!distribute item message du jour,\
-	exercice,feuille de travail,examen,document,participant\
+!distribute item mensaje del día,\
+	ejercicio,hoja de trabajo,examen,documento,participante\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 
 !distribute item messages du jour,\
@@ -31,37 +31,37 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
 
 !if $job=arch
  !set title=Copias de seguridad y Recuperación
- !set name_intro=Vous pouvez télécharger une copie de sauvegarde de votre classe, en format   
- !set name_tosend=Pour envoyer une sauvegarde dans votre classe
- !set name_namefile=veuillez donner le nom du fichier de sauvegarde&nbsp;
- !set name_help=on vous demandera de sélectionner les ressources de la classe à restaurer
- !set name_no_restore=Impossible de restaurer car vous partagez les ressources d'une autre\
-	classe. La restauration ne peut être faite que par la classe maître du partage.
- !set name_deposit=!nosubst Votre fichier de sauvegarde <tt>$wims_deposit</tt> contient les ressources\
-  suivantes. Marquez ce que vous voulez restaurer dans votre classe.
+ !set name_intro=Puede descargar una copia de seguridad de su clase, en formato   
+ !set name_tosend=Para enviar una copia de seguridad de su clase, 
+ !set name_namefile=introduzca por favor el nombre del fichero de seguridad
+ !set name_help=se le pedirá que seleccione los recursos que quiere recuperar en la clase
+ !set name_no_restore=I!set no_restore=Imposible hacer la recuperación porque usted comparte las de otra\
+	clase. Sólo la clase que originó la participación puede efectuar la recuperación.
+	!set name_deposit=!nosubst Su copia de seguridad <tt>$wims_deposit</tt> contiene los recursos\
+siguientes. Marque lo que quiera recuperar en su clase.
 
- !distribute lines Aucune ressource à restaurer n'est sélectionnée.\
-   Restaurer tout sauf la configuration de la classe et le compte d'enseignant.\
-   <font color=red>Danger!</font> <small>Voir ci-dessous.</small>\
-   Configuration de la classe.\
-   Compte d'enseignant (y compris votre mot de passe)\
-   comptes de participants\
-   Comptes existants\
-   documents\
-   Documents existants\
-   exercices\
-   exercices existants\
-   feuilles de travail\
-   Implique la restauration des exercices\
-   Feuilles existantes\
-   feuilles d'examen\
-   Implique la restauration de feuilles de travail et d'exercices\
-   Examens existants\
-   messages de discussion\
-   Messages existants\
-   Registre d'activités de participants et scores automatiques. Implique la restauration de comptes de participants.\
-   Notes entrées par l'enseignant\
-   Notes existantes\
+ !distribute lines No ha seleccionado nada que recuperar.\
+    Recuperar todo salvo la configuración de la clase y la cuenta del profesor.\
+    <font color=red>¡Peligro!</font> <small>Ver más abajo.</small>\
+   Configuración de la clase.\
+   Cuenta del profesor (incluida su contraseña)\
+   cuentas de los participantes\
+   Cuentas existentes\
+   documentos\
+   Documentos existentes\
+   ejercicios\
+   Ejercicios existentes\
+   hojas de trabajo\
+   Implica la recuperación de los ejercicios.\
+   Hojas existentes\
+   hojas de examen\
+   Implica la recuperación de hojas de trabajo y de ejercicios\
+   Exámenes existentes\
+   mensajes de discusión\
+   Mensajes existentes\
+  Registro de las actividades de los participantes y puntuaciones automáticas. Implica la recuperación de cuentas de participantes.\
+   Notas introducidas por el profesor\
+  Notas existentes\
    un agenda de la classe\
    un agenda existant\
    Un livret de compétences\
@@ -69,9 +69,9 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
    Séquences pédagogiques\
    Implique la restauration de feuilles de travail, d'exercices, des examens et des documents\
    Séquences existantes\
-   Méthode de restauration\
+   Método de recuperación\
    Remplacement\
-remplacer les ressources existantes par les ressources restaurées\
+Recuperar los recursos seleccionados\
    Fusion\
 remplacer les ressources existantes excepté les comptes de  participants et les exercices de la classe. Pour ces derniers, ceux ayant mêmes noms seront remplacés par les données restaurées et les autres seront gardés\
    Restaurer les ressources sélectionnées\
@@ -81,51 +81,49 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore
    
-!distribute lines Ressources de sauvegarde restaurées dans la classe&nbsp;\
-   La restauration des comptes de participants (et des registres d'activité) est refusée car il n'y a plus d'espace disponible.\
-   La date d'expiration de la classe a été modifiée après la restauration, car la date restaurée est\
+!distribute lines Backup resources restored to the class\
+   Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
+   Class expiration date has been modified after restoration, because the uploaded date is\
  into name_restore1,name_restore2,name_restore3
 
- !distribute items méconnaissable, trop tôt, trop tard into ebad,eearly,elate
- 
- !distribute lines Désolé, l'archivage de votre classe n'a pas abouti. Erreur interne.\
-  Voici le fichier de sauvegarde de votre classe\
+ !distribute items unrecognizable, too early, too late into ebad,eearly,elate
+
+ !distribute lines Lo sentimos, no se ha podido guardar su clase. Error interno.\
+  Este es el fichero en el que ha guardado su clase\
   Cliquez dessus pour l'enregistrer sur votre ordinateur.\
-  Vous pouvez aussi sélectionner les données à sauvegarder. Cliquez alors sur\
-  Sauvegarde sélective\
+  También puede hacer una\
+  El tamaño de este fichero de seguridad puede superar el límite autorizado  para su envío al servidor. Para reducir el tamaño del fichero, puede hacer una\
+  Copia selectiva de seguridad\
   pour modifier le fichier de sauvegarde ci-dessus et enregistrez-le.\
- into name_download1,name_download2,name_download3,\
+ into name_download1,name_download2,name_download3,download4\
    name_selective1,name_selective2,name_selective3
 
- !set name_download5=Ce fichier de sauvegarde a une taille qui peut dépasser la limite autorisée\
-  pour un envoi au serveur. Pour réduire la taille du fichier, vous pouvez aussi\
-  sélectionner les données à sauvegarder
+ !set name_download5= El tamaño de este fichero de seguridad puede superar el límite autorizado\
+ para su envío al servidor. Para reducir el tamaño del fichero, puede hacer una
  
  !goto commun
 !endif
 
 !if $job=clean
  !set title=Eliminación de la clase
- !set name_lines=lignes dans les registres d'activité de participants.
- !set name_empty=Votre classe est vide&nbsp;!<p>\
- Il n'y a pas de ressources dans votre classe pouvant être effacées.
- !set name_no_erase=Ne peuvent pas être nettoyés car vous partagez ceux d'une autre classe.
+ !set name_lines=líneas en los registros de actividad de participantes.
+ !set name_empty=¡Su clase está vacía! No hay recursos en su clase que puedan borrarse.
+ !set name_no_erase=No se pueden eliminar porque usted está compartiendo los de otra clase.
 
- !distribute lines Nettoyer tout ce qui peut être nettoyé\
-   Les registres d'activité seront aussi effacés\
-   Les feuilles d'examen seront aussi effacées\
-   sauvegardez la classe\
+ !distribute lines Eliminar todo lo que se pueda eliminar\
+   También se borrarán los registros de actividad\
+   También se borrarán las hojas de examen\
+   Hacer una copia de seguridad de la clase\
    Les ressources actuelles de votre classe\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
-  !set name_warning_clean=Les ressources effacées par cette page ne peuvent pas être \
- récupérées &nbsp;! Avant d'effacer quoi que ce soit,
+  !set name_warning_clean=¡Los recursos borrados desde esta página no se pueden recuperar!
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Clases vecinas
-  !set name_noclass=Vous ne pouvez pas définir des classes voisines car il n'y a aucune autre\
- classe sur ce site.
+  !set name_noclass=No puede definir clases vecinas porque no hay ninguna otra clase en\
+ este sitio.
  !set name_toomany=Il y a trop de classes virtuelles sur le site. Donnez un mot clé pour\
   rechercher les classes qui vous concernent&nbsp;
  !set name_toomany2=Il y a encore trop de classes correspondant à votre recherche. Veuillez\
@@ -136,9 +134,9 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
   Afficher les classes d'exemple du serveur\
   Les relations de voisinage entre des classes virtuelles permettent l'échange de ressources et/ou déplacement entre les classes.\
   Cliquez sur le nom d'une classe pour changer vos relations de voisinage avec elle.\
-  Classes dans la même langue que la vôtre\
-  Classes dans une autre langue\
-  Exemples\
+  Clases en el mismo idioma que la suya\
+  Clases en otro idioma\
+  Ejemplos\
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
@@ -152,133 +150,132 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Permisos mutuos para compartir.\
    Tiene permiso para compartir sus recursos.\
    Le permite compartir sus recursos.\
-   Arrêter le partage\
-   Partager\
+   Detener la relación de compartir.\
+   Compartir\
    les importer tous\
    Ressources d'enseignement\
    Importer d'autres ressources\
-   Classes pouvant partager vos ressources\
-   Ressources permises\
-   actif\
-   Liste d'autres classes\
-   Information partage de ressources\
+   Clases que pueden compartir los recursos de su clase\
+   Recurso permitido\
+   Activo\
+   Lista de otras clases\
+   Info recursos compartidos\
    Afficher les classes d'exemple du serveur\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
  
- !distribute lines Relation de voisinage\
-   n'a pas déclaré votre classe comme voisine\
-   vous accepte comme classe voisine pour\
+ !distribute lines Relaciones con la clase\
+   no ha declarado la suya como vecina\
+   le acepta como vecina\
    avec\
-   Vous partagez déjà les ressources suivantes de la classe\
-   n'a pas de ressources que vous pouvez importer\
-   a les ressources importables suivantes\
-   Même titre dans votre classe\
-   Vide\
-   en préparation\
-   Remplacer\
-   Login déjà utilisé dans votre classe\
-   Participant effacé existant dans votre classe\
-   Importation à partir de la classe\
-   Transféré avec succès\
-   comptes de participants de la classe voisine\
-   Vérifier le résultat\
+   Comparte ya los recursos siguientes de la clase\
+   no tiene recursos que usted pueda importar\
+   tiene los siguientes recursos importables\
+   Mismo título en la clase destino\
+   Vacía\
+   en preparación\
+   Sustituir\
+   Este login ya se está usando en su clase\
+   Un participante borrado sigue existiendo en su clase\
+   Importación a partir de la clase\
+   Transferido con éxito\
+   cuentas de participantes de la clase vecina\
+   Comprobar el resultado\
  into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
    name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
    name_neigh_account,name_verify
  
- !set name_inactif=!subst Le(a) $(name_$itype) est mis(e) en état inactif pour vous permettre de le\
-  modifier si vous le voulez.
+ !set name_inactif=!subst El(la) $(name_$itype) ha sido puesto(a) en estado inactivo para permitirle \
+  modificarlo si lo desea.
 
- !set name_accept=!nosubst Acceptez-vous la classe <em><font color=blue> $nei_description</font></em>\
-   comme votre voisine pour
+ !set name_accept=!nosubst ¿Acepta usted la clase <em><font color=blue>\
+$nei_description</font></em> como vecina suya?
    
  !if $job2=stopshare
-  !set title=Arrêter un partage
-  !set name_warning=Votre classe a un registre d'activités actif et les\
- ressources partagées ne sont pas vides. Si vous arrêtez ce partage\
- maintenant, vous ne pourrez plus les repartager plus tard.\
- <p> Êtes-vous sûr de vouloir définitivement arrêter ce partage&nbsp;?
- 
- !set name_stop=arrêter.
+  !set title=Dejar de compartir un recurso
+  !set name_warning=Su clase tiene un registro de actividades activo y los\
+ recursos compartidos no están vacíos. Si deja de compartir este recurso\
+ ahora, ya no podrá volver a compartirlo más tarde. <p>\
+ ¿Está seguro de querer dejar de compartir definitivamente este recurso?
+ !set name_stop=dejar de compartirlo.
  !endif
  !if $job2=sharelist
-  !set title= Information de partages de ressources.
-  !set name_sharelist=!nosubst Vous partagez $(name_$rec) de
-  !distribute lines Vous ne partagez aucune ressource d'autres classes.\
-  Vous partagez les ressources d'autres classes\
+  !set title= Información sobre recursos compartidos.
+  !set name_sharelist=!nosubst Comparte $(name_$rec) de
+  !distribute lines No comparte ningún recurso de otras clases.\
+  Comparte recursos de otras clases\
   into name_noresource,name_resource
   !endif
   
   !if $job2=addshare
   !set title=Compartir los recursos de una clase
-  !set name_class_share=La classe <em><font color=blue>$nei_description</font></em> \
-      vous permet de partager ses ressources suivantes.
-  !distribute lines disponible(s)\
-    Vous êtes en cours de partage.\
-    Vous ne pouvez pas les partager car vous partagez déjà celles d'une autre classe.\
-    nettoyer vos propres ressources\
-    (si c'est possible).\
-    Il est très dangereux de partager le compte d'enseignant&nbsp;!\
+  !set name_class_share=La clase <em><font color=blue>$nei_description</font></em></b>\
+   le permite compartir sus recursos siguientes.
+  !distribute lines disponible\
+    Ya está compartiendo.\
+    No puede compartirlos porque ya comparte los de otra clase.\
+     limpiar sus propios recursos\
+    si es posible.\
+     ¡Es muy peligroso compartir la cuenta del profesor!\
   into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
     name_dangerous
   
-  !set name_warning1=Vous ne pouvez pas les partager car vous permettez à d'autres classes\
-   de partager VOS ressources du même type. Les partages en cascade ne sont pas\
-   autorisés. Donc vous devez d'abord arrêter les permissions de partage\
-   avec l'autre classe avant de pouvoir partager celles de la classe 
-  !set name_warning2=!nosubst Vous ne pouvez pas les partager car vos propres $(name_$r) ne sont pas\
-   vides. Avant le partage, vous devez d'abord
-  !set name_warning_erase=!nosubst Le partage va EFFACER vos $(name_$r) existant(es)&nbsp;! \
-     Elles seront définitivement perdues si vous n'avez pas de sauvegarde.
+  !set name_warning1=No puede compartirlos porque ha permitido a otras clases compartir\
+   SUS recursos del mismo tipo. No está autorizado compartir en cascada. Por tanto debe \
+   primero poner fin a los permisos para compartir por\
+   parte de la otra clase antes de poder compartir los de la clase
+  !set name_warning2=!nosubst No puede compartirlos porque sus propios $(name_$r) no están vacíos.\
+   Antes de compartir, debe primero
+  !set name_warning_erase=!nosubst  ¡Al compartir va a BORRAR sus $(name_$r) existentes!\
+     Se perderán definitivamente si no tiene una copia de seguridad.
    
   !endif
   
-  !distribute items ---,<small>enseignant</small>,\
-	<small>participants</small>,\
-	<small>enseignant et participants</small> into n_n0, n_n1, n_n2, n_n3
+  !distribute items ---,<small>el profesor</small>,\
+	<small>los participantes</small>,\
+	<small>profesor y participantes</small> into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun
 !endif
 
 !if $job=connect
  !set title=Conectar a otros servidores / plataformas
- !set name_listserver=Liste de connexions des serveurs
-
- !distribute Test a server connection\
-   Test a connected class\
-   Add a connecting class\
-   Manage a connected class\
+ !set name_listserver=Lista de conexiones de los servidores
+ 
+ !distribute Probar una conexión a servidor\
+   Probar una clase conectada\
+   Añadir la conexión a un servidor\
+   Administrar una clase conectada\
    local class, remote class\
    class definition, user list, score averages, score details,all but class definition\
-   Remote class\
-   Remote server\
+   Clase remota\
+   Servidor remoto\
    Synchronize\
-   (with the other one) for\
-   Manage\
-   Destroy remote class\
-   This connection to the remote server is working.\
-   The connection has been added to your class, but the remote server returns an error message\
-   The remote server does not reply. Please report to the\
-  The connection is rejected by the remote server. Error message\
-  Checked remote class\
-  This connection is working. Data returned from the remote class\
-  To connect to a class on the above server, please specify\
-  Identifier of the remote class\
-  If the remote class is empty, the server will create a new class on the remote server, duplicating the properties of this one.\
-  Automatically update the remote class for changes made on this one\
-  Allow the remote class to modify this one\
+ (with the other one) for\
+   Administrar\
+   Eliminar \
+   La conexión al servidor remoto funciona.\
+   Se ha añadido la conexión a su clase, pero el servidor remoto devuelve un mensaje de error\
+  Esta clase no tiene conexiones a otros servidores.\
+  La conexión ha sido rechazada por el servidor remoto. Mensaje de error\
+  Clase remota a prueba\
+  La conexión funciona. La clase remota devuelve datos\
+  Para conectarse a una clase en el servidor de más arriba, por favor especifique\
+  Identificador de la clase remota\
+  Si la clase remota está vacía, el servidor creará una nueva clase en el servidor remoto, duplicando las propiedades de esta.\
+  Actualizar automáticamente la clase remota con los cambios efectuados\
+  Permitir que la clase remota modifique esta\
   This class has no connections to other servers.\
-  You have declared the following connections to other servers.\
-  Server\
-  Actually, this WIMS server has the following connectable servers.\
+  Ha declarado las siguientes conexiones a otros servidores.\
+  Servidor\
+  En estos momentos, este servidor WIMS permite conexiones desde los siguientes servidores.\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver
+   wims_name_server,name_listserver1
 
  !goto commun
 !endif
@@ -321,15 +318,26 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !goto commun
 !endif
 
+ de la actividad de gestión de su clase (usted debe ser el origen de toda
+esta actividad; de lo contrario, será necesario comprobar que no se ha 
+producido una filtración de su contraseña de profesor).
+
+<li><p>Configurar las
+!href cmd=renew&job=grestrict restricciones a nivel de clase
+ de los sitios que tienen acceso a las calificaciones.
+
+<li><p>Otras definiciones de seguridad en
+!href cmd=renew&job=list la configuración de la clase
+.
 !if $job=security
  !set title=Actividades de gestión de seguridad disponibles
- !set name_see_activity2=Vous devez être l'origine de toutes ces activités&nbsp;; si ce \
-   n'est pas le cas, il faut vérifier s'il n'y a pas une fuite de votre mot de passe d'enseignant.
- !set name_see_activity1=Voir l'enregistrement d'activité de gestion de votre classe
- !distribute lines Configurer la restriction par classe\
- des sites ayant accès aux scores.\
- Autres définitions de sécurité dans\
- la configuration de la classe\
+ !set name_see_activity2=usted debe ser el origen de toda esta actividad; de lo contrario, \
+  será necesario comprobar que no se ha producido una filtración de su contraseña de profesor
+ !set name_see_activity1=Ver el registro
+ !distribute lines Configurar las restricciones a nivel de clase\
+  de los sitios que tienen acceso a las calificaciones.\
+ Otras definiciones de seguridad en\
+ la configuración de la clase\
  into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
  !goto commun
 !endif
@@ -355,19 +363,19 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    !set name_subclasses=zones dépendantes
   !endif
    
- !distribute lines Configurations envoyées aux $name_subclasses avec succès&nbsp;\
-  Vous pouvez choisir d'envoyer les configurations suivantes $name_thisclass à toutes ses $name_subclasses&nbsp;\
+ !distribute lines Las configuraciones han sido enviadas a las $name_subclasses con éxito\
+  Puede elegir enviar las configuraciones siguientes $name_thisclass a todas sus $name_subclasses\
  into name_propagate_succes,name_propagate_choose
 
- !set name_warning=Notez que les $name_subclasses ne répercuteront pas les changements ultérieurs \
-   des configurations $name_thisclass. Vous devez réenvoyer les changements chaque fois \
-   que vous voulez les répercuter dans les $name_subclasses.
+ !set name_warning=Note que las $name_subclasses no repercutirán los cambios posteriores de las\
+  configuraciones $name_thisclass. Debe volver a enviar los cambios cada vez que quiera \
+  que se apliquen a las $name_subclasses.
 
 !endif
 
 !if $job=log
-  !set name_warning_log=Voici l'enregistrement de certaines activités de gestion de votre classe.\
-    Cet enregistrement vous permet de vérifier s'il y a des activités suspectes.
+  !set name_warning_log=Aquí se encuentra el registro de ciertas actividades de administración de\
+su clase. Este registro le permite comprobar si hay actividades sospechosas.
 !endif
 
 !if $job=index
@@ -393,34 +401,34 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=list
-  !distribute line  Nom de l'établissement\
-    Nom de la classe\
-    Mots d'option\
-    Compte développeur Modtool\
-    Verrou de connexion\
+  !distribute line Nombre del Centro\
+    Nombre de la clase\
+    Opciones\
+    Modtool Account\
+    Bloqueo de conexión\
     Nombre de meilleures notes\
-    Limite du nombre de participants\
-    Date d'expiration\
-    Enregistrement d'exercices\
-    Enregistrement d'examens\
+    Límite del número de participantes\
+    Fecha de expiración\
+    Grabación de los ejercicios\
+    Grabación de los exámenes\
     visibles par les élèves\
     Modifier l'apparence \
-    Préférences personnelles\
-    Répercuter les configurations aux zones dépendantes\
-    Définir des classes voisines\
-    des liens vers d'autres serveurs\
+    Preferencias personales\
+    Enviar las configuraciones a las zonas inferiores\
+    Clases vecinas\
+    Otros servidores\
     Utiliser une authentification\
     des participants par annuaire ldap\
     Actualiser les index\
    dont le changement de\
     Faire une sauvegarde ou restauration de la classe\
-    restreindre les ressources accessibles\
+    Restricciones de recursos\
     restreindre les sites \
     pour lequels les scores sont enregistrés\
-    faire un nettoyage sélectif\
+    Eliminación selectiva\
    Configurer les\
-    Utilisation actuelle d'espace disque\
-    La limite est\
+    Utilización actual del espacio de disco\
+    el límite es\
   into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
@@ -479,145 +487,149 @@ wims_name_config_score,wims_name_config_ent
 
 !exit
 :arch
-
- Vous avez envoyé des ressources sauvegardées à partir d'une autre classe.
- Si vous restaurez des ressources incompatibles avec votre classe, elle va
- être simplement détruite.
- !href cmd=help&special_parm=dependencies Pourquoi&nbsp;?
+ Ha enviado unos recursos guardados a partir de otra clase.
+ Si usted recupera recursos incompatibles en su clase, quedará inutilizable.
+ !href cmd=help&special_parm=dependencies ¿Por qué?
  <p>
- !href cmd=reply&job=list Arrêtez
- si vous n'êtes pas complètement sûr de ce que vous faites. (Dans tous les
- cas, gardez une sauvegarde de l'état actuel avant de continuer.)
+ !href cmd=reply&job=list Deténgase
+ si no está completamente seguro de lo que está haciendo (en todo caso, 
+ guarde una copia del estado actual antes de continuar).
  
  :arch_end
  
- <p><b>IMPORTANT</b>. <ul><li>Il n'y a pas de vérification des données que vous avez
-envoyées et le système n'autorise pas la modification manuelle des archives
-de sauvegarde. Les erreurs introduites par une modification manuelle des
-archives peuvent entraîner des comportements imprévisibles de votre classe.
+<p><b>IMPORTANTE</b>. 
+1. No hay verificación de los datos que ha enviado y el sistema no
+autoriza la modificación manual de los archivos de copia de seguridad.
+Los errores introducidos por una modificación manual de los archivos
+puede ocasionar comportamientos imprevisibles en su clase.
+<p>
+2. Salvo en caso de absoluta necesidad, evite recuperar
+<font color=red>la configuración de la clase</font> y
+<font color=red>la cuenta del profesor</font>.
+Los errores en los datos enviados para estos dos campos pueden hacer
+perder por completo el control de su clase.
+<p>
+3. Puede utilizar la copia de seguridad de una clase para instalar una
+nueva. En este caso, evite recuperar los registros de la actividades y las
+notas y puntuaciones (manuales y automáticas). Estos dos tipos de recursos 
+no pueden borrarse una vez instalados (medida de seguridad). Y muchas 
+operaciones de mantenimiento de la clase son imposibles cuando la clase 
+contiene calificaciones.
 
-<li> Sauf dans des cas d'absolue nécessité, évitez de restaurer
-<font color=red>la configuration de la classe</font> et
-<font color=red>le compte d'enseignant</font>.
-Les erreurs dans les données envoyées pour ces deux champs peuvent vous faire
-perdre complètement le contrôle de votre classe.
-<li> Vous pouvez utiliser la sauvegarde d'une classe pour en installer une
-nouvelle. Dans ce cas, évitez de restaurer les registres d'activités et les
-notes (manuelles et automatiques). Ces deux types de ressources ne peuvent
-pas être effacés une fois installés (mesure de sécurité). Et beaucoup
-d'opérations de maintenance de la classe sont impossibles quand la
-classe contient des notes.
-</ul>
 !exit
 
 :clean
-Vous ne pouvez pas effacer des ressources de la classe
- quand les activités de participants ont déjà commencé.
+<b>ATENCIÓN</b>. No puede borrar recursos de la clase
+ cuando ya han comenzado las actividades de los participantes.
  <p>
- Ceci est une mesure de sécurité importante. Si vous avez envie
- d'outrepasser cette restriction, pensez aux deux aspects suivants.
+ Esta es una medida de seguridad importante. Si no le gusta
+ esta limitación, piense en los dos siguientes aspectos:
  <p>
- D'un côté, supposons qu'un étudiant vole votre mot de passe. S'il vient dans
- cette page pour tout effacer, les étudiants honnêtes vont beaucoup souffrir,
- et vos activités d'enseignement seront considérablement perturbées.
+ Por un lado supongamos que un estudiante le roba la contraseña. Si entra
+ en esta página para borrarlo todo, los otros estudiantes que no tienen
+ culpa de nada lo van a pasar mal, y las actividades pedagógicas que había
+ preparado usted resultarán muy perjudicadas.
  <p>
- D'un autre côté, les différentes ressources de la classe sont inter-dépendantes.
- Si vous effacez certaines ressources sans effacer celles qui en dépendent,
- votre classe ne fonctionnera plus.
- !href cmd=help&special_parm=dependencies Exemples.
+ Por otro lado, los diferentes recursos de la clase son interdependientes.
+ Si borra ciertos recursos sin borrar los que dependen de ellos, la
+ clase ya no funcionará.
+ !href cmd=help&special_parm=dependencies Ejemplos.
  <p>
- De toute façon, si vous voulez vraiment nettoyer cette classe, vous pouvez
- toujours l'effacer (en mettant sa date d'expiration à aujourd'hui&nbsp;
- la classe disparaîtra demain matin), ou
- <a href="mailto:$wims_site_manager?subject=Please erase my class">demander
- au gestionnaire du site</a> de l'effacer pour vous.
+ De todas formas, si quiere hacer desaparecer de verdad esta clase, siempre puede
+ borrarla (poniendo como fecha de expiración la de hoy la clase desaparecerá
+ mañana por la mañana), o
+ <a href="mailto:$wims_site_manager?subject=Por favor borre mi clase">pedir
+ al administrador del sitio</a> que la borre por usted.
  !exit
  
  :clean2
- <p><b>Remarques</b>. 1. Cette page est accessible seulement au moment où la
-classe est en préparation. Une fois que les activités de participants ont
-commencé, il  n'est plus possible d'effacer des ressources.
+ <p><b>Observaciones</b>. 1. Sólo se puede acceder a esta página mientras 
+la página está en preparación. Una vez que han comenzado las actividades de 
+los participantes, ya no es posible borrar los recursos.
 <p>
-2. Les ressources partagées par plusieurs classes peuvent seulement être
-effacées à partir de la classe maître du partage. Les autres classes doivent
-d'abord
-!href cmd=reply&job=neighbor&job2=sharelist $name_stopsharing
- des ressources avant de les effacer.
+2. Los recursos compartidos por varias clases sólo pueden borrarse
+desde la clase maestra que comparte. Las otras clases deben
+primero
+!href cmd=reply&job=neighbor&job2=sharelist dejar de compartir
+ los recursos antes de borrarlos.
+
 !exit
 
 :connect_first_info
-Server / platform connection allows your class to directly communicate with
-one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
+La conexión a servidores/plataformas permite que su clase se comunique directamente con
+una clase en otro servidor WIMS u otra plataforma web de e-learning. Los participantes
+pueden navegar de forma transparente entre las clases conectadas.
 <p>
-In particular, you can mirror this class to a remote WIMS server,
-so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+En particular, puede crear una réplica de esta clase en un servidor WIMS remoto,
+de forma que si el servidor local queda inutilizable momentáneamente, el trabajo
+puede continuar en la clase espejo. Las puntuaciones logradas en la réplica 
+pueden fusionarse más tarde.
 !exit
 :connect_first
 
-This WIMS server has not declared any connectable remote server. In order
- to use this connection feature, the
- <a href="mailto:$wims_site_manager?subject=server connection">site
- manager</a> must declare such remote server, and the remote server must also
- declare this WIMS server as connectable. 
- (The site manager can refer to the file
- <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
- declare site connections.)
- 
+Este servidor WIMS no ha declarado ningún servidor remoto que admita 
+ conexiones. Para utilizar esta capacidad de conexión, el
+ <a href="mailto:$wims_site_manager?subject=conexión a servidor">administrador
+ del sitio</a> debe declarar el servidor remoto, y el servidor remoto debe también
+ declarar que este servidor WIMS tiene permiso de conexión.
+ (El administrador del sitio puede consultar el fichero
+ <tt>$basedir/log/classes/.connections/myself</tt> en busca de detalles de
+ cómo declarar conexiones a sitios).
  !exit
  
 :import2
- La feuille de travail que vous voulez importer peut utiliser des exercices
-   définis dans la classe voisine.
+  La hoja de trabajo que quiere importar puede utilizar ejercicios
+   definidos en la clase vecina.
    <p>
-   Si les mêmes exercices n'existent pas dans la vôtre, la feuille importée
-   ne fonctionnera pas correctement. Veuillez vérifier soigneusement que tous
-   les exercices de la classe voisine ont un duplicata dans la vôtre.
+   Si los mismos ejercicios no existen en la suya, la hoja importada
+   no funcionará correctamente. Por favor verifique con cuidado que todos
+   los ejercicios de la clase vecina tiene su réplica en la suya.
 !exit
 :import3
-  Les feuilles d'examen sont basées sur les feuilles
-   de travail pour constituer leurs contenus. <p>
-   Importer une feuille d'examen n'a de sens que si vous avez exactement les
-   mêmes feuilles de travail que la classe voisine et si ces feuilles sont
-   rangées dans le même ordre dans les deux classes.
+ Las hojas de examen se basan en las hojas
+   de trabajo para constituir sus contenidos. <p>
+   Importar una hoja de examen no tiene sentido si no tiene exactamente las
+   mismas hojas de trabajo que la clase vecina y si estas hojas no están
+   dispuestas en el mismo orden en las dos clases.
    <p>
-   Si ce n'est pas le cas, la feuille d'examen importée ne pourra qu'avoir
-   des comportements erratiques.
+   De no ser así, con seguridad la hoja de examen importada tendrán 
+   comportamientos erráticos.
 !exit 
 :import4
 
-Vous êtes sur le point de remplacer un(e) $(name_$itype)
-  existant(e) de votre classe par la ressource importée. Il n'y aura aucune
-  possibilité de retour en arrière après cette opération.
+Está a punto de sustituir un(a) $(name_$itype)
+  present(e) en su clase por el recurso importado. No habrá ninguna
+  oportunidad de volver atrás tras esta operación.
 
 !exit
 :import5
- Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
- classe est pleine (et s'il y a encore de la place dans le site pour ajouter
- de nouveaux participants).
+  No se ha añadido a su clase ninguna cuenta de participante. Compruebe
+ si su clase está llena (y si queda espacio en el sitio web para añadir
+ nuevos participantes).
 !exit
 
 :auth1
-Cet outil de configuration est seulement accessible aux postes sûrs.
+A esta herramienta de configuración sólo puede accederse desde las 
+estaciones de trabajo seguras.
 <p>
-Comme vous n'avez pas défini de poste sûr, nous vérifions votre
-authentification en vous envoyant un code secret à votre adresse électronique.
-Veuillez lire vos mails, prendre le code, et le taper ci-dessous&nbsp;:
-<p>
-
+Como no ha definido ninguna estación de trabajo segura, vamos a
+realizar la autentificación enviándole un código secreto a su dirección 
+de correo electrónico.
+Por favor lea el correo, busque el código y tecléelo debajo.
 !exit
 :auth2
-<b>Notes</b>. Cette authentification sert à assurer que même si votre mot
-de passe est volé ou perdu, les dommages à votre classe seront limités. 
-La procédure d'authentification est simplifiée si vous définissez des
-postes sûrs correctement, tout en gardant un haut niveau de sécurité.
+<b>Notas</b>. Esta autentificación sirve para asegurarse de que aunque
+se perdiera o robaran su contraseña, los daños a su clase serían limitados.
+El proceso de autentificación es mucho más sencillo si define estaciones
+de trabajo seguras de forma correcta, conservando un alto nivel de seguridad.
+
 !exit
 
 :download
-<p><b>Remarque</b>. Ce sont d'habitude les
-registres d'activités de participants, messages de discussion et les
-documents de la classe qui forment l'essentiel de la taille du fichier. Vous pouvez
-faire plusieurs sauvegardes sélectives pour différentes ressources.
+<b>Nota</b>. Según las actividades de la clase, normalmente son los 
+registros de las actividades de los participantes, los mensajes de 
+discusión y los documentos de la clase los que componen la mayor parte 
+del tamaño. Puede plantearse la posibilidad de hacer varias copias 
+selectivas de seguridad para los diferentes recursos.
 
 !exit
