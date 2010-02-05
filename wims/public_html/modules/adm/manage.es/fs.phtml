@@ -1,5 +1,5 @@
 
-Directorio actual: <tt>
+$name_current <tt>
 !href cmd=reply&fsdir=/ $base
 !set t=
 !for d in $dd
@@ -14,7 +14,7 @@ Directorio actual: <tt>
  !form reply
  <input type=hidden name=job value="$job">
  <input type=hidden name=job2 value=add>
- Añadirle un nuevo fichero:
+ $name_add:
  <input type=file name=wims_deposit size=40>
  <input type=submit value="$wims_name_tosave">
  </form>
@@ -22,7 +22,7 @@ Directorio actual: <tt>
 <p>
 
 !if $dirs!=$empty
- Subdirectorios (pulse para ir): <tt>
+ $name_sub <tt>
  !for f in $dirs
   !if / notin $f
    !href cmd=reply&fsdir=$fsdir/$f $f
@@ -33,14 +33,14 @@ Directorio actual: <tt>
 !endif
 
 !if $links!=$empty
-<p>Enlaces simbólicos:
+<p>$name_symbolic
  !for f in $links
   $f
  !next f
 !endif
 
 !if $files!=$empty
- <p>Ficheros: <br>
+ <p>$name_files: <br>
  <tt>
  !for f in $files
   !href cmd=reply&job=file&job2=first&file=$fsdir/$f $f
@@ -48,6 +48,6 @@ Directorio actual: <tt>
  !next f
  </tt>
 !else
- <p>No hay ningún fichero normal en este directorio.
+ <p>$name_file
 !endif
 

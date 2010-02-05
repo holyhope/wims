@@ -46,11 +46,6 @@
 into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
   name_attrib11
-  <p>
-  WIMS directories should not contai n files belonging to others.
-  Now you MUST manually check the origin of these files, and either erase
-  them, or change their ownership.
-
   
   !set name_warning1=WIMS directories should not contain files belonging to others.\
   Now you MUST manually check the origin of these files, and either erase\
@@ -84,7 +79,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !if $job=badconf
   
   !set name_warning1=!nosubst The file $fname is world readable!\
-    There is a serious risk that your site manager setup and/or password have
+    There is a serious risk that your site manager setup and/or password have\
    leaked. Now you MUST change the file attribute of $fname by making them readable only by the owner,
   !set name_warning2=and make more secure definitions in it whenever possible.
   !set name_warning3=and define a new manager password.
@@ -134,9 +129,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
      default\
    into name_config,default
      
-  
-  
-  !set name_updated=!nosubst The file <tt>wims.conf</tt> is updated. You can recover the old\
+ !set name_updated=!nosubst The file <tt>wims.conf</tt> is updated. You can recover the old\
   configuration information from <tt>$backdir/wims.conf.old</tt>.
   
   !set name_warning=<b>Remark</b>. Parameters with a `*' in their titles are important ones. \
@@ -180,6 +173,23 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
   subdirectory: (enter login names)
 
  !exit
+!endif
+
+!if $job=file
+  !distribute lines Here is the file for download\
+     Do you really want to erase the file\
+     last modified\
+     bytes\
+     is an image\
+      is a binary file\
+     is too long to be shown or edited.\
+     This file belongs to the distribution, it should not be modified.\
+     Download the file\
+     Content of\
+   into name_file,name_erase,name_last,name_bytes,name_image,name_binary,name_toolong,\
+   name_distrib,name_download,name_content
+     
+!exit
 !endif
 
 !if $job=fs
@@ -252,7 +262,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 !exit
 !endif
 
-!if $job=modify
+!if $job iswordof modify erase
   !set title=
   !distribute lines Important properties of the virtual class\
      of\
@@ -266,9 +276,12 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
     notify the supervisor\
     of the class of your changes.\
     Other classes\
+    Limit of participants\
+    Are you sure you want to erase this class?\
   into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
-    name_warning,name_secure,name_expire,name_notify,name_change,name_other
-  
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase
+  !set name_creation=!nosubst is created on $class_creation and
+  !set name_expires=expires on
   !set name_remark=<b>Remark</b>. Changes to these fields only make sense when asked for by\
      the supervisor of the class (who has lost the control of the class). And you should probably
 !exit
@@ -298,8 +311,14 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
       Changes\
       New version of\
       New module\
+      You need to\
+      after module update\
+      Click here\
+      to configure daily automatic module update.\
+      You can also update\
     into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
-      name_Update,name_versus,name_Changes,name_version,name_newmodule
+      name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
+      name_click,name_automatic,name_rss
 !exit
 !endif
 

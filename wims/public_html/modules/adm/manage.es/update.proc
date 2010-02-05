@@ -14,14 +14,20 @@ logcheck=!sh head -10 ../log/update.log 2>/dev/null
 !endif
 testing=!sh if [ -d ../testing ]; then echo true; fi
 
-thisversion=!translate abcdefghi to 123456789 in $wims_version
+subv=!text select jklmnopqr in $wims_version
+subv=!translate jklmnopqr to 123456789 in $subv
+thisversion=!translate abcdefghijklmnopq to 123456789999999999 in $wims_version
+thisversion=$thisversion$subv
 pubversion=!exec webget $download/wims/version
 check=!wordcnt $pubversion
 !if $check>2
  pubversion=
 !endif
 pubversion=!word 1 of $pubversion
-recentversion=!translate abcdefghi to 123456789 in $pubversion
+subv=!text select jklmnopqr in $pubversion
+subv=!translate jklmnopqr to 123456789 in $subv
+recentversion=!translate abcdefghijklmnopq to 123456789999999999 in $pubversion
+recentversion=$recentversion$subv
 
 !if $recentversion<=$thisversion
  !exit
@@ -34,13 +40,19 @@ type=tgz
 atdate=!date -d '70 seconds' '+%H:%M'
 
 !sh cat >../log/update.log <<@\
-$wims_now: System update will start on $atdate:00 via "at".\
+$wims_now: System update scheduled for execution within one minute.\
 @
 
 !sh cd ..\
 rm -f update.sh\
 echo at >log/update.lock\
-at $atdate <<V\
+dir=`pwd`\
+rm -f tmp/log/update.do\
+cat >tmp/log/update.prep <<V\
+#! /bin/sh\
+# Automatically generated update script.\
+\
+cd $$dir\
 echo download >log/update.lock\
 loadversion=$pubversion\
 loadtype=tgz\
@@ -63,7 +75,14 @@ echo update.sh >log/update.lock\
 echo Executing update.sh. >>log/update.log\
 ./update.sh >>log/update.log 2>&1\
 rm -f log/update.lock\
-[ -d /wsys ] && touch /wsys/wims/timestamp
+[ -d /wsys ] && touch /wsys/wims/timestamp\
+V
+
+!appendfile wimshome/log/wimslogd.exec if [ -f tmp/log/update.prep ] && [ ! -f tmp/log/update.do ]; then\
+ mv tmp/log/update.prep tmp/log/update.do\
+ chmod u+x tmp/log/update.do\
+ exec tmp/log/update.do\
+fi
 
 lockcheck=at
 

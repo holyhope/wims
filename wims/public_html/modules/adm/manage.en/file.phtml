@@ -1,7 +1,7 @@
 !set MAX=102400
 
 !if $download=yes
- Here is the file for download ($flen bytes):
+$name_file ($flen $name_bytes):
  <p><center>
  !getfile $fname $file
  <p>
@@ -9,9 +9,9 @@
 !endif
 
 !if $erase=ask
- Do you really want to erase the file
+$name_erase
  <tt><font color=green>$file</font></tt>? <br>
- <small>($flen bytes, $facc, last modified $fdat)</small>
+ <small>($flen bytes, $facc, $name_last $fdat)</small>
  <p> <center> <font size="+2">
  !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
@@ -21,8 +21,8 @@
 !endif
 
 !if $ftype=image
- <tt><font color=green>$file</font></tt> is an image. ($flen bytes,
- $facc, last modified $fdat)
+ <tt><font color=green>$file</font></tt> $name_image. ($flen bytes,
+ $facc, $name_last $fdat)
  !if $pubimg!=$empty
   <p><center>
   <img border=2 src=$pubimg>
@@ -32,14 +32,15 @@
 !endif
 
 !if $ftype=binary
- <tt><font color=green>$file</font></tt> is a binary file. ($flen bytes,
- $facc, last modified $fdat)
+ <tt><font color=green>$file</font></tt> $name_binary. ($flen bytes,
+ $facc, $name_last $fdat)
  !goto end
 !endif
 
 !if $flen>$MAX
- <tt><font color=green>$file</font></tt> is too long ($flen bytes) 
- to be shown or edited.
+ <tt><font color=green>$file</font></tt> ($flen bytes) 
+ $name_toolong 
+
  !goto end
 !endif
  
@@ -48,10 +49,10 @@
 <input type=hidden name=job value=file>
 <input type=hidden name=job2 value=first>
 <center>
- Content of <tt><font color=green>$file</font></tt> <br>
- <small>($flen bytes, $facc, last modif. $fdat)</small> <br>
+ $name_content <tt><font color=green>$file</font></tt> <br>
+ <small>($flen bytes, $facc, $name_last $fdat)</small> <br>
  !if $modifok!=yes
-  This file belongs to the distribution, it should not be modified. <br>
+  $name_distrib <br>
   !set textarea_ro=readonly
  !endif
  !mexec scripts/textarea.sh
@@ -66,7 +67,7 @@
 :end
 
 <p> <center>
-!href cmd=reply&job=file&job2=download Download the file
+!href cmd=reply&job=file&job2=download $name_download
 . &nbsp;
 !if $modifok=yes
  !href cmd=reply&job=file&job2=erase $wims_name_erase

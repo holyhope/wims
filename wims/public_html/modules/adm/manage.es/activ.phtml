@@ -1,20 +1,20 @@
 
 !read adm/title.phtml 3\
 \
-Actividades actuales del servidor
+$title
 
-<p>Hora del servidor: $nowtime.
+<p>$name_servor_time: $nowtime.
 !if $load15!=$empty
- Media de carga: $load1% (último minuto), $load5% (últimos 5 minutos),
- $load15% (últimos 15 minutos).
+ $name_load: $load1% ($name_last 1 $name_min), $load5% ($name_last 5 $name_mins),
+ $load15% ($name_last 15 $name_mins).
 !endif
 <p>$table_header
-<caption>Número de peticiones</caption>
+<caption>$name_requests</caption>
 $table_hdtr
-<th>últimos 10 min</th>
-<th>últimos 30 min</th>
-<th>última hora</th>
-<th>últimas 3 horas</th></tr>
+<th>$name_since 10 $name_mins</th>
+<th>$name_since 30 $name_mins</th>
+<th>$name_since 1 $name_hour</th>
+<th>$name_since 3 $name_hours</th></tr>
 $table_tr
 <td align=center>$access10m</td>
 <td align=center>$access30m</td>
@@ -24,15 +24,15 @@ $table_end
 
 <p><a name=sessions></a>
 $table_header
-<caption>Sesiones activas en los últimos 10 minutos
+<caption>$name_activesessions
 <small>[
 !href cmd=reply#sessions $wims_name_refresh
  ]</small>
 </caption>
 $table_hdtr<th>#</th>
-<th>Sesión</th><th>IP del cliente</th>
-<th>Peticiones</th>
-<th>Módulo</th><th>Clase</th></tr>
+<th>Session</th><th>$name_IP</th>
+<th>$name_Requests</th>
+<th>$name_module</th><th>$wims_name_class</th></tr>
 !set n=!linecnt $ses
 !set k=1
 !for i=1 to $n

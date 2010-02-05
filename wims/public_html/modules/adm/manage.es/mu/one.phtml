@@ -1,6 +1,6 @@
 
 !if $title=$empty
- Error en la descarga del módulo <tt><b>$addr</b></tt>.
+ $name_error1 <tt><b>$addr</b></tt>.
  !href cmd=reply&job2=first $wims_name_back2
 .
  !exit
@@ -8,13 +8,13 @@
 
 !if $muauto iswordof update install
  !if $output!=ok
-  Error al instalar/actualizar <tt><b>$addr</b></tt>.
+  $name_error2 <tt><b>$addr</b></tt>.
  !else
-  Instalación/actualización de <tt><b>$addr</b></tt>: éxito.
-  !href target=wims_test module=$addr probarlo
+  $name_install <tt><b>$addr</b></tt>: $name_successful.
+  !href target=wims_test module=$addr $name_test
 .
-  Deberá
-  !href cmd=reply&job=mkindex reconstruir el índice de módulos
+  $name_need
+  !href cmd=reply&job=mkindex $name_rebuild
 .
  !endif
  !href cmd=reply&job2=first $wims_name_sitegestion
@@ -26,11 +26,11 @@
 $table_header
 <caption>
 !if $vtest=$empty
- Módulo nuevo <tt><b>$addr</b></tt> <br>
- !href cmd=reply&job2=one&muauto=install Instalar
+ $name_newmodule <tt><b>$addr</b></tt> <br>
+ !href cmd=reply&job2=one&muauto=install $name_Install
 !else
- Nueva versión de <tt><b>$addr</b></tt> <br>
- !href cmd=reply&job2=one&muauto=update Actualizar
+ $name_version <tt><b>$addr</b></tt> <br>
+ !href cmd=reply&job2=one&muauto=update $name_Update
 !endif
 &nbsp;&nbsp;&nbsp;
 !href cmd=reply&job2=first $wims_name_giveup
@@ -40,7 +40,7 @@ $table_tr<th align=right>$wims_name_Description<td>$description
 $table_tr<th align=right>$wims_name_Type<td>$category
 $table_tr<th align=right>$wims_name_Version<td>$version
 !if $vtest!=$empty
- (contra $vtest)
+ ($name_versus $vtest)
 !endif
 $table_tr<th align=right>$wims_name_Language<td>$language
 $table_tr<th align=right>$wims_name_Author<td>
@@ -52,7 +52,7 @@ $table_tr<th align=right>$wims_name_Author<td>
 !endif
 $table_tr<th align=right>$wims_name_require<td>$require
 !if $news!=$empty
- $table_tr<th align=right bgcolor="$table_bgcolor">Cambios:<td>
+ $table_tr<th align=right>$name_Changes<td>
  <small><pre>$news</pre></small>
 !endif
 $table_end <p>

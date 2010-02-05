@@ -1,29 +1,35 @@
 
-!if $classcnt<1
- No hay ninguna clase virtual en este sitio. Por tanto no hay nada que pueda
- administrar en este sentido.
- <p>
- !exit
-!endif
-
 !if $job2!=first
  !changeto class/$job2.phtml
 !endif
 <p>
-!href cmd=reply&job=conf&confcat=2 Pulse aquí
- para configurar la normativa de acceso del sitio con respecto a las clases virtuales.
+!href cmd=reply&job=conf&confcat=2 $name_click
+ $name_config
 
-<p>$table_header
-<caption>Lista de clases de este sitio</caption>
-$table_hdtr
-<th>nombre<th>acción<th><small>idioma</small><th>supervisor
-<th>creada<br><small>aaaammdd</small>
-<th>expira<br><small>aaaammdd</small>
-!if $actives=yes
- <th>carga<sup>[1]</sup></th>
+!read class/search.phtml
+!if $overflow=yes
+ !exit
 !endif
-!for i=1 to $classcnt
- !set l=!record $i of wimshome/log/classes/.index
+
+!if $sccnt+$clcnt<1
+ <p>
+ $name_noclass
+ !reset keyword
+ !exit
+!endif
+
+!if $sccnt>0
+<p>$table_header
+<caption>$name_list</caption>
+$table_hdtr
+<th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
+<th>$name_created<br><small>yyyymmdd</small>
+<th>$name_expire<br><small>yyyymmdd</small>
+!if $actives=yes
+ <th>load<sup>[1]</sup></th>
+!endif
+!for i=1 to $sccnt
+ !set l=!line $i of $sclasses
  !distribute items $l into c_,e_,t_,d_
  !set l=!defof class_lang\
 class_supervisor\
@@ -34,14 +40,14 @@ class_creation in wimshome/log/classes/$c_/.def
  $table_tr
  <td align=center><small>$t_<br>$d_</small>
  <td>
- !href cmd=reply&job2=erase&jobclass=$c_ borrar
-  &nbsp;
- !href cmd=reply&job2=modify&jobclass=$c_ modificar
-  &nbsp;
- !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visitar
+ !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
  <td align=center>$l_</td>
  <td align=center><small>
- <a href="mailto:$m_?subject=Su clase virtual WIMS">$s_</a></small>
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
  <td align=center>$f_<td align=center>$e_
  !if $actives=yes
   !default activ_$c_=-
@@ -49,10 +55,59 @@ class_creation in wimshome/log/classes/$c_/.def
  !endif
 !next i
 $table_end
-!if $actives=yes 
+!endif
+
+!if $clcnt>0
+<p>$table_header
+<caption>List of independent classes</caption>
+$table_hdtr
+<th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
+<th>created<br><small>yyyymmdd</small>
+<th>expires<br><small>yyyymmdd</small>
+!if $actives=yes
+ <th>load<sup>[1]</sup></th>
+!endif
+!for i=1 to $clcnt
+ !set l=!line $i of $classes
+ !distribute items $l into c_,e_,t_,d_
+ !set l=!defof class_lang\
+class_supervisor\
+class_email\
+class_creation in wimshome/log/classes/$c_/.def
+ !distribute lines $l into l_,s_,m_,f_
+ !default f_=--
+ $table_tr
+ <td align=center><small>$t_<br>$d_</small>
+ <td>
+ !href cmd=reply&job2=erase&jobclass=$c_ $wims_name_erase
+&nbsp;
+ !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
+&nbsp;
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ <td align=center>$l_</td>
+ <td align=center><small>
+ <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <td align=center>$f_<td align=center>$e_
+ !if $actives=yes
+  !default activ_$c_=-
+  <td align=center>$(activ_$c_)</td>
+ !endif
+!next i
+$table_end
+!endif
+
+!if $actives=yes
  <p> <center>
- <small><b>[1]</b>. ``<em>carga</em>'' se refiere al número de horas
- de conexión acumuladas en el último mes.</small>
+ !form reply 
+ <small><b>[1]</b>. ``<em>load</em>'' 
+$name_cumul
+ <input type=text name="bst_since" value="$bst_since" onchange="submit()">format <font color=blue>yyyymmdd</font></small>.
+ <input type=hidden name="keyword" value="$keyword">
+ </form>
+ !href cmd=reply&job=bestclass&keyword=$keyword $wims_name_Show
+ !default bst_num=10
+ $bst_num $name_best.
  </center> <p>
 !endif
 
+!reset keyword

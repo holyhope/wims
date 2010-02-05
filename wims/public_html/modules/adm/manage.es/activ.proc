@@ -6,9 +6,13 @@ start1h=!date -d '1 hours ago' '+%Y%m%d.%H:%M:%S'
 start3h=!date -d '3 hours ago' '+%Y%m%d.%H:%M:%S'
 
 ses=!sh cat $wims_home/log/access.log.old1 $wims_home/log/access.log 2>/dev/null |\
- awk '$$1 >= "$start10" && ! /_error/ {print substr($$2,1,4)" "$$3" "$$1" "$$5" "$$6}' |\
- sort -r | uniq -w4 -c | sort -k3 -n |\
- awk '{print $$1" "$$2" "$$3" "$$5" "$$6}'
+ awk '$$1 >= "$start10" && ! /_error/ {print substr($$2,1,4)" "$$3" "$$5" "$$6}' |\
+ sort -r |\
+ awk '{if (x[$$1] == "") {x[$$1] = 1};  print x[$$1]" "$$0; x[$$1] += 1;}'|\
+ sort -n -r|\
+ awk '{if (y[$$2] != "") {next}  print $$0; y[$$2] = 1;}'|\
+ sort  -n  
+
 load=!sh uptime
 load=!word -3 to -1 of $load
 load=!translate , to $ $ in $load

@@ -1,33 +1,28 @@
 
 !read adm/title.phtml 3\
 \
-Reconstrucción del índice de recursos
+$title
 
 !if $atdate!=$empty
- Se ha planificado la reconstrucción del índice de recursos.
- Recibirá un correo electrónico con el resultado
- de la reconstrucción.
- 
+ $name_scheduled
  !goto end
 !endif
 
-<b><font color=red>¡AVISO!</font></b> 
-La reconstrucción del índice de recursos ocupa muchos recursos del servidor,
-y debe ser evitada cuando el servidor se encuentre muy ocupado.
+<b><font color=red>$wims_name_warning</font></b> $name_rebuilding
 <p>
 !if $lastdate!=$empty
  :result
- Resultado de la última reconstrucción del índice de recursos, el $lastdate:
+ $name_result $lastdate:
  <p><pre>
  $output
  </pre>
  <p>
- !href cmd=reply&job2=run Pulse aquí
- para reiniciar una reconstrucción del índice de recursos (no debería).
+ !href cmd=reply&job2=run $name_click
+ $name_restart
 !else
 <p>
- !href cmd=reply&job2=run Pulse aquí
- para iniciar la reconstrucción del índice de recursos.
+ !href cmd=reply&job2=run $name_click
+ $name_start
 !endif
 :end
 !reset job2

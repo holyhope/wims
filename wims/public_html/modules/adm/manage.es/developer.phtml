@@ -1,5 +1,3 @@
-!set wims_name_adddevel=Añadir una nueva cuenta de desarrollador
-!set wims_name_develaccount=Lista de cuentas de desarrolladores
 
 !if $job2 iswordof mod1 mod2 del1
  !read developer/$job2.phtml
@@ -9,7 +7,7 @@ to $wims_menu_items
 !endif
 
 <p>$table_header
-<caption>Desarrolladores de módulos registrados en este servidor</caption>
+<caption>$name_dev</caption>
 $table_hdtr
 <th>$wims_name_Login<th>$wims_name_name<th>$wims_name_action
 !for d=1 to $devcnt
@@ -23,7 +21,7 @@ $table_hdtr
 &nbsp;
  !href cmd=reply&job2=mod1&devno=$d $wims_name_properties
 &nbsp;
- !href module=adm/modtool&login=$login&passwd=$passwd&jobreq=modname Visitar
+ !href module=adm/modtool&login=$login&passwd=$passwd&jobreq=modname $name_visit
 </small>
 !next d
 $table_end <p>
@@ -33,8 +31,7 @@ to $wims_menu_items
 
 !form reply
 <input type=hidden name=job2 value=pub>
-Desarrolladores a los que se les permite instalar módulos en el subdirectorio
-local del sitio (escriba sus identificadores de usuario): <br>
+$name_allowed <br>
 <input size=50 name=devpublisher value="$devpublisher">
 <input type=submit value="$wims_name_tosave">
 </form>
