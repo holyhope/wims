@@ -328,7 +328,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_see_activity1=Voir l'enregistrement d'activité de gestion de votre classe
  !distribute lines Configurer la restriction par classe\
  des sites ayant accès aux scores.\
- Autres définitions de sécurité dans\ 
+ Autres définitions de sécurité dans\
  la configuration de la classe\
  into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
  !goto commun
