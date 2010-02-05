@@ -1,3 +1,4 @@
+!read update.phtml.en
 
 !read adm/title.phtml 3\
 \
@@ -5,21 +6,19 @@ WIMS server software update
 
 !if $error!=$empty
  !if $error=no_script
-  Sorry, we have failed to download the new WIMS version from
-  <tt>$download</tt>. Please try again later.
+ $name_sorry
  !endif
  
  !goto end
 !endif
 
 !if true iswordof $testing
-<font color=red><em>Testing mode.
-Will only write to the testing directory.</font></em>
+<font color=red><em>$name_test</font></em>
 <p>
 !endif
 
 !if $lockcheck != $empty
- WIMS system update is under way. Here is the current script output summary.
+ $name_warning
  <small><pre>
  !sh cat ../log/update.log
  </pre></small>
@@ -30,8 +29,7 @@ Will only write to the testing directory.</font></em>
 !endif
 
 !if $job2=check
- Summary of the last update:
- (Please send it to $wims_maintainer in case of error.)
+ $name_summary
  <small><pre>
  !sh cat ../log/update.log
  </pre></small>
@@ -39,8 +37,7 @@ Will only write to the testing directory.</font></em>
 !endif
 
 !if $job2=check2
- Detailed output of the last update: 
- (Please send it to $wims_maintainer in case of error.)
+ $name_detailed
  <small><pre>
  !mexec scripts/cat_update2.sh
  </pre></small>
@@ -48,42 +45,31 @@ Will only write to the testing directory.</font></em>
 !endif
 
 !if $pubversion=$empty
- Sorry, the WIMS download site <tt>$download</tt> is unreachable.
+ $name_sorry2
  !goto end
 !endif
 
-This WIMS site is currently under version $wims_version.
+$name_version
 
 !if $pubversion=$wims_version
- It is the most recent public version of the software. You don't need to
- update.
+ $name_mostrecent
  !goto check
 !endif
 
-The most recent public version is $pubversion.
+$name_mostrecent2 $pubversion.
 !if $recentversion<$thisversion
- You are more recent than the public version! Nothing to update to.
+$name_morerecent
  !goto check
 !endif
 
 <p>
-!href cmd=reply&job=update&job2=confirm Click here
- to download WIMS $pubversion from <tt>$download</tt> and update the
-server. <b><font color=red>$wims_name_warning</font></b> This will create
-momentary unavailabilities of the server.
-<em>Don't update when the server is busy.</em>
-<p>
-<b>Note</b>. Updating the server will not disturb your local resources on it
-(classes, exercises, documents, modules under development).
-<p>
-<b><font color=red>IMPORTANT</font></b> You must make a file permissions
-check after the software update!
-
+!href cmd=reply&job=update&job2=confirm $name_click
+ !read update.phtml.en update
 :check
 !if $logcheck!=$empty
 <p>
- Output of last update:
- !href cmd=resume&job2=check summary
+ $name_output:
+ !href cmd=resume&job2=check $name_summary
 ,
  !href cmd=resume&job2=check2 $wims_name_detail
 .
