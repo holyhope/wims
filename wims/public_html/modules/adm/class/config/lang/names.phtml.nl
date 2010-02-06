@@ -10,132 +10,131 @@
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
 !set title=Configuratie en Onderhoud
 
-!distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
-	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
-	séquences pédagogiques,messages du forum\
+!distribute items oefeningen,werkbladen,proefwerken,documenten,vragenlijsten,huiswerk agenda,\
+	studenten accounts,docenten accounts,discussie forum,bericht van de dag,raport boekje,\
+	pedagogische werkvolgorde,forum berichten\
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items subklassen,deelnemers,oefeningen,documenten,docenten\
+!distribute items subklassen,studentens,oefeningen,documenten,docenten\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
 
 
-!distribute item messages of the day,\
-	exercise,worksheet,exam,document,participant\
+!distribute item bericht van de dag,\
+	oefening,werkblad,proefwerk,document,student\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user	
 
-!distribute item messages of the day,\
-	exercises,worksheets,exams,documents,participants\
+!distribute item berichten van de dag,\
+	oefeningen,werkbladen,proefwerken,documenten,studenten\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
  !set title=Backup en Herstel
- !set name_intro=You can download a backup copy of your class, in the following format 
- !set name_tosend=To upload backup archives into your class, please give the backup file name
- !set name_namefile=veuillez donner le nom du fichier de sauvegarde
- !set name_help=You will be prompted for the selection of resources to restore to your class.
+ !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat
+ !set name_tosend=Om de klas te herstellen via een backup archief; geef de backup archief naam
+ !set name_namefile=Geef de naam van het backup archief
+ !set name_help=Er wordt gevraagd naar de specifiek te herstellen onderdelen van uw klas.
  
- !set name_deposit=!nosubst Your backup file <tt>$wims_deposit</tt> contains the following resources.
-Please check those you want to restore to your class.
+ !set name_deposit=!nosubst Het backup archief <tt>$wims_deposit</tt> bevar de volgend onderdelen.\
+ Geef aan welke items moeten worden gebruikt voor het herstel van uw klas.
  
- !set name_no_restore=Cannot be restored because you are sharing resources of\
-	another class. Restoration can only be done on the class originating\
-	the sharing.
-  !distribute lines Nothing is selected for restoration.\
-   Restore everything except class configuration and supervisor account.\
- <font color=red>Danger!</font> <small>See notes below.</small>\
-   Class configuration setup.\
-    Supervisor account (including your password)\
-   participant accounts\
-   Existing accounts\
-   documents\
-   Existing documents\
-   exercices\
-   Existing exercises\
-   worksheets\
-   Implies restoration of class exercises\
-   Existing sheets\
-   exam sheets\
-   Implies restoration of work sheets and exercises\
-   Existing exams\
-   forum messages\
-   Existing messages\
-   Participant activity register and server-computed scores. Implies restoration participant accounts.\
-   Teacher-defined grades\
-   Existing grades\
-   un agenda de la classe\
-   un agenda existant\
-   Un livret de compétences\
-   un livret existant\
-   Séquences pédagogiques\
-   Implique la restauration de feuilles de travail, d'exercices, des examens et des documents\
-   Séquences existantes\
-   Restoration method\
-   Replacement\
-   replace existing corresponding resources by restored ones.\
-   Merge\
-   replace existing corresponding resources except participant accounts and class exercises; for the latter, those with the same name will be replaced byrestored data, while the others will remain\
-   Restore the selected resources\
- into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
+ !set name_no_restore=De herstelprocedure wordt afgebroken: er is gedeeld materiaal van een andere klas aanwezig.\
+ Herstel kan alleen worden uitgevoerd op het originele materiaal van af de uitlenende klas.
+
+ !distribute lines Er is niets geselecteerd voor het herstel.\
+ Herstel alles behalve de klas configuratie en het supervisor account.\
+ <font color=red>Opgelet !</font> <small>Zie opmerkingen hieronder.</small>\
+   Klas configuratie.\
+   Supervisor account (inclusief uw wachtwoord)\
+   Studenten accounts\
+   Aanwezige accounts\
+   documenten\
+   Aanwezige documenten\
+   oefeningen\
+   Aanwezige oefeningen\
+   werkbladen\
+   Impliceerd herstel van alle oefeningen uit de klas\
+   Aanwezige werkbladen\
+   proefwerken\
+   Impliceerd herstel van alle werkbladen en oefeningen\
+   Aanwezige proefwerken\
+   forum berichten\
+   Aanwezige berichten\
+   Studenten activiteit registratie en server cijfers. Impliceerd herstel van studenten accounts.\
+   Handmatig ingevoerde cijfers\
+   Aanwezige cijfers\
+   de klasse agenda\
+   De aanwezige klasse agenda\
+   Raport boekje\
+   Bestaande raport boekje\
+   Pedagogische werkvolgorde\
+   Impliceerd het herstel van werkbladen, oefeningen, proefwerken en documenten\
+   Aanwezige werkvolgorde\
+   Herstel methode\
+   Vervangine\
+   vervang aanwezig materiaal door de backup.\
+   Samenvoegen\
+   vervang al het aanwezige materiaal, behalve de studenten accounts en de klasse oefeningen; bij deze klasse oefeningen worden alles met een gelijke naam overschreven.\
+   Vervang en herstel het aangegeven materiaal\
+   into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore
    
-!distribute lines Backup resources restored to the class\
-  Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
-  Class expiration date has been modified after restoration, because the uploaded date is\
+!distribute lines Backup archief hersteld klas\
+Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
+De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 into name_restore1,name_restore2,name_restore3
 
- !distribute items unrecognizable, too early, too late into ebad,eearly,elate
+ !distribute items onherkenbaar is, te vroeg is, te laat is into ebad,eearly,elate
  
- !distribute lines Sorry, we have failed to archive your class.\
-   Here is the backup file of your class\
-  Cliquez dessus pour l'enregistrer sur votre ordinateur.\
-  You can also make a \
-  selective backup\
-  to modify the backup file and save it.\
+ !distribute lines Helaas, het maken van een backup archief is mislukt. Een interne fout.\
+ Hier is het backup archief van uw klas\
+ Klik hier voor het downloaden\
+ Er kan ook een selectieve backup worden aangemaakt. Klik op\
+ Selectieve backup\
+ \
+ Verander en bewaar het backup archief.\
  into name_download1,name_download2,name_download3,name_download4,name_download5,\
-   name_selective1,name_selective2,name_selective3
+ name_selective1,name_selective2,name_selective3
 
- !set name_download5=This backup file may be too big to be sent back to the server (which limits\
- the size of file it accepts). In order to reduce the backup size, you can\
- make a selective backup
+ !set name_download5=Het backup archief is misschien te groot om naar deze sever te sturen.\
+ Om (meerdere) kleinere archieven aan te leggen kunt u gebruik maken van een selectieve backup.
   
  !goto commun
 !endif
 
 !if $job=clean
  !set title=Opschonen van een klas
- !set name_lines=participant activity lines
- !set name_empty=Your class is empty!<p> There is no resource in your class that can be cleaned up.
- !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
+ !set name_lines=Studenten activeiten
+ !set name_empty=Deze klas is leeg!<p> Er staat dus ook niets in  dat opgeschoond kan worden.
+ !set name_no_erase=Kan niet worden opgeschoond omdat er materiaal wordt gedeeld met een andere klas.
 
- !distribute lines Clean up everything cleanable\
-   Will also erase activity register\
-   Will also erase exam sheets\
-   Backup the class\
-   Actual resources in your class\
+ !distribute lines Opschonen\
+   Dit verwijdert ook de activiteiten registratie\
+   Dit verwijdert ook de proefwerken\
+   Maak een backup van de klas\
+   Aanwezig materiaal in de klas\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
-  !set name_warning_clean=Resources erased by this page cannot be recovered!
+  !set name_warning_clean=Let op: er is geen undelete op dit systeem !
+
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Buurklassen
- !set name_noclass=You cannot define class neighbors because there is no other class on this site.
- !set name_toomany=here are too many virtual classes on this site. Please give a keyword\
-  to search for classes that you want.
- !set name_toomany2= There are too many classes corresponding to your search. Please\
-  give a more precise keyword.
+ !set name_noclass=Er kunnen geen buurklassen worden gedefinieerd omdater er geen andere klasses zijn.
+ !set name_toomany=Er zijn te veel klassen op deze server geinstalleerd. Geef een zoekterm om naar een klas te zoeken.
+ !set name_toomany2=Er zijn te veel klassen gevonden .Geef een betere zoekterm in.
 
- !distribute lines Search for a class\
-  No class is found for your search. Try again.\
-  Neighboring relations between virtual classes allow resource exchange and/or inter-class travel.\
- Click on a class name to change your neighboring properties with it.\
- Classes in the same language as yours\
-  Classes in other languages\
-  Examples\
+ !distribute lines Zoek naar een klas\
+ Er zijn geen klassen gevonden. Probeer opnieuw.\
+ Het aanmaken van buurklassen geeft de mogelijkheid om gemeenschappelijk materiaal te gebruiken.\
+ Klik op een klas om de procedure te starten.\
+ Klassen met een zelfde taal\
+ Klassen met een andere taal\
+ Voorbeelden\
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
@@ -153,101 +152,95 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Delen\
    Importeer alle deelnemers\
    Lesmateriaal\
-   Import other resources\
-   Classes allowed to share your resources\
-   Resource allowed\
-   active\
-   List of other classes\
-   Resource sharing info\
-   Afficher les classes d'exemple du serveur\
+   Importeer ander materiaal\
+   Klassen die uw materiaal mogen lenen\
+   Materiaal met toestemming\
+   actief\
+   Lijst van andere klassen\
+   Gedeeld materiaal info\
+   Demonstratie klassen op deze server\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
  
- !distribute lines Neighboring relations\
-   has not declared yours as its neighbor\
-   accepts yours as its neighbor for\
-   with\
-   You are sharing the following resources originating from the class\
-   has no importable resources for you\
-   has the following importable resources\
-   Same title in your class\
-   Empty\
-   under preparation\
-   Replace\
-   Login name already in use in your class\
-   Erased user exists in your class\
-   Importation from the class\
-   Successfully transfered\
-   participant accounts from the neighbor\
-   Verify the result\
- into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
-   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
-   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
-   name_neigh_account,name_verify
+ !distribute lines Buurklassen\
+    heeft uw klas nog nioet geaccepteerd als buur\
+    accepteerd u als buur voor
+    met \
+    U deelt het onderstaande materiaal afkomstig uit klas\
+    heeft geen uitleenbaar metariaal\
+    heeft het onderstaande materiaal om uit te lenen\
+    De zelfde naam in uw klas\
+    Leeg\
+    niet klaar voor gebruik\
+    Vervang\
+    Deze loginnaam bestaat al in uw klas\
+    Verwijderde student bestaat in uw klas\
+    Importeren uit klas\
+    Met succes overgezet\
+    Studenten accounts uit de buurklas\
+    Kontroleer het resultaat\
+    into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+    name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+    name_neigh_account,name_verify
 
- !set name_inactif=!subst The imported $(name_$itype) is put to inactive status, so that you can\
-  modify it if you wish.
+ !set name_inactif=!subst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
+ zodat u het naar uw eigen wensen kunt aanpassen.
  
- !set name_accept=!nosubstDo you accept the class <em><font color=blue>\
-   $nei_description</font></em> as your neighbor for?
+ !set name_accept=!nosubst Accepteerd u de klas <em><font color=blue>$nei_description</font></em> als buurklas ?
    
  !if $job2=stopshare
-  !set title=Stop sharing
-  !set name_warning=Your class has active score register, and the shared\
- resources are not empty. If you stop this sharing now, you \
- cannot share them back again later.\
- <p>Are you sure you want to definitely stop this sharing?
- 
- !set name_stop=stop it.
+  !set title=Stop de deling
+  !set name_warning=Uw klas heeft een aciteve cijfer registratie en de gedeelde bronnen zijn niet leeg.\
+  Als u nu stop met lenen kan hier later niet meer op worden terug gekomen.<p>\
+  U wilt definitef stoppen met delen ?
+ !set name_stop=Stoppen
  !endif
  !if $job2=sharelist
-  !set title= Resource sharing information.
-  !set name_sharelist=!nosubst You are sharing $(name_$rec) originating from
-  !distribute  You are not sharing resources originating from other classes.\
-   You are sharing resources of other classes\
+  !set title= informatie over gedeeld materiaal.
+  !set name_sharelist=!nosubst Uw klas deelt $(name_$rec) afkomstig uit 
+  !distribute lines U deelt geen materiaal uit andere klassen.\
+  U deelt materiaal uit andere klassen\
   into name_noresource,name_resource
   !endif
   
   !if $job2=addshare
     !set title=Delen van lesmateriaal met andere klassen
-    !set name_class_share=This class <em><font color=blue>$nei_description</font></em>\
-      allows you to share its following resources.
-  !distribute lines available\
-    You are actually sharing them.\
-    You cannot share them because you are already sharing that of another class.\
-    clean your own resources\
-    if it is possible\
-    Sharing supervisor account is VERY dangerous! \
+    !set name_class_share=De klas <em><font color=blue>$nei_description</font></em>\
+    heeft het onderstaande materiaal voor uitlening beschikbaar.
+  !distribute lines beschikbaar\
+    Uw klas deelt dit materiaal daadwerkelijk.\
+    Dit materiaal kan niet worden gedeeld omdat dit materiaal uit een andere klas afkomstig is.\
+    Opschonen van uw materiaal\
+    mits mogelijk\
+    Het supervisor account delen is niet verstandig ! \
   into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
     name_dangerous
   
-  !set name_warning1=You cannot share them because you are allowing other \
-    classes to share such resources from you. Cascaded sharing is not \
-    supported. So you must stop allowing these shares before you can share from others.
-  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.
-   Before sharing can be made, you should first
-  !set name_warning_erase=!nosubst This will ERASE your own existing $(name_$r)! They will be definitely\
-     lost if you have no backup.
+  !set name_warning1=Dit materiaal kan niet worden uitgeleend: omdat uw klas het materiaal leent uit een andere klas.\
+  !set name_warning2=!nosubst U kunt dit materiaal niet delen om dat uw eigen $(name_$r) niet leeg zijn.\
+  Voor dat met een deling kan worden begonnen moet u eerst
+  !set name_warning_erase=!nosubst Dit verwijdert dus al uw bestaande $(name_$r)! En zonder backup is dit definitef weg.
    
   !endif
   
   !distribute items ---,<small>supervisor</small>,\
-	<small>participants</small>,\
-	<small>everybody</small> into n_n0, n_n1, n_n2, n_n3
+	<small>student</small>,\
+	<small>iedereen</small> into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun
 !endif
 
 !if $job=connect
  !set title=Verbinding met andere servers / platformen
- !set name_listserver=List of server connections
+ !set name_listserver=Lijst met bestaande server verbindingen
 
- !distribute Test a server connection\
-   Test a connected class\
-   Add a connecting class\
-   Manage a connected class\
-   local class, remote class\
+ !distribute Test de server verbinding\
+   Test een verbinding met een klas\
+   Voeg een verbinding met een klas toe\
+   Onderhoud van de verbonden klas\
+   lokale klas, klas op een andere server\
    class definition, user list, score averages, score details,all but class definition\
    Remote class\
    Remote server\
