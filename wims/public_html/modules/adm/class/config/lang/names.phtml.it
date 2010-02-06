@@ -5,44 +5,45 @@
 !endif
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
- of <b><font color=green>$wims_institutionname</font></b>
+ presso <b><font color=green>$wims_institutionname</font></b>
 
-!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
+!set months=gennaio,febbraio,marzo,aprile,maggio,giugno,luglio,agosto,settembre,ottobre,novembre,dicembre
 
-!set title=Configuration and Maintenance
+!set title=Configurazione e gestione
 
-!distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
-	comptes des participants,compte d'enseignant,forum de discussion,message du jour,livret de compétences,\
-	séquences pédagogiques,messages du forum\
+!distribute items esercizi,test di autovalutazione,temi d'esame,documenti,questionari,agenda,\
+	account studenti,account docenti,forum di discussione,messaggio del giorno,registro delle competenze,\
+	percorsi pedagogici,messaggi del forum\
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
+!distribute items zone,iscritti,esercizi,documenti,docenti,test di autovalutazione\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
-!distribute item messages of the day,\
-	exercise,worksheet,exam,document,participant\
+!distribute item messaggio del giorno,\
+	esercizio,test di autovalutazione,tema d'esame,documento,studente\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
 
-!distribute item messages of the day,\
-	exercises,worksheets,exams,documents,participants\
+!distribute item messaggi del giorno,\
+	esercizi,test di autovalutazione,temi d'esame,documenti,studenti\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
- !set title=Backup and Restoration
- !set name_intro=You can download a backup copy of your class, in the following format 
- !set name_tosend=To upload backup archives into your class, please give the backup file name
- !set name_namefile=veuillez donner le nom du fichier de sauvegarde
- !set name_help=You will be prompted for the selection of resources to restore to your class.
- 
- !set name_deposit=!nosubst Your backup file <tt>$wims_deposit</tt> contains the following resources.
+ !set title=Backup e ripristino
+ !set name_intro=Potete scaricare un backup del vostro corso, nei formati
+ !set name_tosend=Per ripristinare una copia di backup del vostro corso
+ !set name_namefile=indicate il nome del file di backup
+ !set name_help=Il seguito della procedura richiederà quali risorse del corso si vuole effettivamente ripristinare
+ !set name_no_restore=Impossible de restaurer car vous partagez les ressources d'une autre\
+	classe. La restauration ne peut être faite que par la classe maître du partage.
+  !set name_deposit=!nosubst Your backup file <tt>$wims_deposit</tt> contains the following resources. \
 Please check those you want to restore to your class.
  
  !set name_no_restore=Cannot be restored because you are sharing resources of\
 	another class. Restoration can only be done on the class originating\
 	the sharing.
-  !distribute lines Nothing is selected for restoration.\
+  !distribute lines Non sono state selezionate risorse da ripristinare.\
    Restore everything except class configuration and supervisor account.\
  <font color=red>Danger!</font> <small>See notes below.</small>\
    Class configuration setup.\
@@ -84,30 +85,31 @@ Please check those you want to restore to your class.
    name_selectrestore
    
 !distribute lines Backup resources restored to the class\
-  Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
-  Class expiration date has been modified after restoration, because the uploaded date is\
+  Il ripristino degli account degli studenti (e dei registri delle attività) non è stato possibile per mancanza di spazio.\
+ La data di termine del corso è stata modificata dopo il ripristino, poiché la data impostata nel file di backup è\
 into name_restore1,name_restore2,name_restore3
 
- !distribute items unrecognizable, too early, too late into ebad,eearly,elate
+ !distribute items incomprensibile, troppo presto, troppo tardi late into ebad,eearly,elate
  
- !distribute lines Sorry, we have failed to archive your class.\
-   Here is the backup file of your class\
-  Cliquez dessus pour l'enregistrer sur votre ordinateur.\
-  You can also make a \
-  selective backup\
-  to modify the backup file and save it.\
- into name_download1,name_download2,name_download3,name_download4,name_download5,\
+ !distribute lines Spiacente, il salvataggio del vostro corso non è andato a buon fine.\
+   Ecco il file di backup del vostro corso:\
+  Cliccare qui sopra per salvare il backup sul vostro computer.\
+  &Egrave; anche possibile fare una selezione delle risorse da salvare. Cliccate su \
+  Backup selettivo\
+  \
+  per modificare e salvare il file di backup già generato.\
+ into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
- !set name_download5=This backup file may be too big to be sent back to the server (which limits\
- the size of file it accepts). In order to reduce the backup size, you can\
- make a selective backup
+ !set name_download5=Questo file di backup è troppo grande e supera il limite per \
+ un ripristino sul server. &Egrave; necessario ridurre le dimensioni del file, \
+ per fare ciò è possibile fare un backup selettivo
   
  !goto commun
 !endif
 
 !if $job=clean
- !set title=Clean up the class
+ !set title=Manutenzione (pulizia) del corso
  !set name_lines=participant activity lines
  !set name_empty=Your class is empty!<p> There is no resource in your class that can be cleaned up.
  !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
@@ -123,7 +125,7 @@ into name_restore1,name_restore2,name_restore3
 !endif
 
 !if $job=neighbor
- !set title=Class neighbors
+ !set title=Corsi vicini
  !set name_noclass=You cannot define class neighbors because there is no other class on this site.
  !set name_toomany=here are too many virtual classes on this site. Please give a keyword\
   to search for classes that you want.
@@ -140,36 +142,36 @@ into name_restore1,name_restore2,name_restore3
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
- !distribute lines Neighborhood<br>declaration\
-   Resource sharing\
-   by you\
-   by the other\
-   Active mutually sharing.\
-   You are sharing its resources.\
-   Sharing your resources.\
-   Mutually allowing sharings.\
-   Allowed to share your resources.\
-   Allows you to share its resources.\
-   Stop this sharing\
-   Share\
-   import everybody\
+ !distribute lines Configurazione<br>di vicinato\
+   Condivisione risorse\
+   per voi\
+   per l'altro corso\
+   Condivisione reciproca attiva.\
+   Voi condividete le sue risorse.\
+   Condividete le vostre risorse.\
+   Permesso reciproco di condivisione.\
+   Ha il permesso di condividere le vostre risorse.\
+   Vi permette di condividere le sue risorse.\
+   Interrompi la condivisione\
+   Condividere\
+   importare tutti\
    Teaching resources\
    Import other resources\
    Classes allowed to share your resources\
    Resource allowed\
    active\
-   List of other classes\
-   Resource sharing info\
+   Elenco di altri corsi\
+   Importazione delle risorse\
    Afficher les classes d'exemple du serveur\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
  
- !distribute lines Neighboring relations\
-   has not declared yours as its neighbor\
-   accepts yours as its neighbor for\
-   with\
-   You are sharing the following resources originating from the class\
+ !distribute lines Relazioni di vicinato\
+   non ha dichiarato rapporti di vicinato con il vostro corso\
+   vi ha accettato come vicino per\
+   con\
+   Voi state condividendo le risorse di altri corsi\
    has no importable resources for you\
    has the following importable resources\
    Same title in your class\
@@ -190,15 +192,14 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_inactif=!subst The imported $(name_$itype) is put to inactive status, so that you can\
   modify it if you wish.
  
- !set name_accept=!nosubstDo you accept the class <em><font color=blue>\
-   $nei_description</font></em> as your neighbor for?
+ !set name_accept=!nosubst Accettate il corso <em><font color=blue>$nei_description</font></em> come vostro vicino?
    
  !if $job2=stopshare
   !set title=Stop sharing
-  !set name_warning=Your class has active score register, and the shared\
- resources are not empty. If you stop this sharing now, you \
- cannot share them back again later.\
- <p>Are you sure you want to definitely stop this sharing?
+  !set name_warning=Il vostro corso ha attività in corso e le risorso condivise \
+   non sono vuote. Se si interrompe la condivisione, non sarà più possibile \
+   ripristinarla. \
+ <p>Siete sicuri di voler interrompere definitivamente questa condivisione? 
  
  !set name_stop=stop it.
  !endif
@@ -211,7 +212,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !endif
   
   !if $job2=addshare
-    !set title=Share resources on class 
+    !set title=Condividi le risorse del corso
     !set name_class_share=This class <em><font color=blue>$nei_description</font></em>\
       allows you to share its following resources.
   !distribute lines available\
@@ -233,9 +234,9 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    
   !endif
   
-  !distribute items ---,<small>supervisor</small>,\
-	<small>participants</small>,\
-	<small>everybody</small> into n_n0, n_n1, n_n2, n_n3
+  !distribute items ---,<small>per il docente</small>,\
+	<small>per gli studenti</small>,\
+	<small>per tutti</small> into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun
 !endif
@@ -281,33 +282,33 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=access
- !set title=Resource access configuration
+ !set title=Definizione dell'accesso alle resorse
  !goto commun
 !endif
 
 !if $job=grestrict
- !set title=Score restriction
+ !set title=Limitazione dell'accesso ai punteggi
  !goto commun
 !endif
 
 !if $job=present
- !set title=Configuration of appearances of the class.
+ !set title=Configurazione dell'aspetto del corso
  !goto commun
 !endif
 
 !if $job=oefdefault
- !set title=Default configuration for OEF modules
-  !distribute One series will have\
-   Level of severity\
-   Time limit\
-   seconds\
-   Number of items shown in multiple choices\
-   Give solution (if available) ?\
-   never,if the score is not maximal,always\
-   Always contain good reply\
-   Penalty for bad replies in multiple choices.\
-   Show good reply.\
-   Allow hint (if available).\
+ !set title=Parametri di default per moduli di esercizi OEF
+  !distribute Una sessione contiene\
+   Livello di difficoltà\
+   Limite di tempo\
+   secondi\
+   Numero di risposte multiple da cui scegliere\
+   Dare la soluzione (se disponibile)?\
+   mai,se il punteggio non è massimo,sempre\
+   Le scelte multiple contengono sempre la risposta giusta\
+    Le risposte sbagliate nelle scelte multiple sono penalizzate.\
+   Mostra la risposta giusta.\
+   Mostra suggerimenti (se disponibili).\
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
@@ -318,7 +319,7 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 !endif
 
 !if $job=security
- !set title=Available security management activities
+ !set title=Configurazioni di sicurezza disponibili
  !set name_see_activity2=You should be the origin of all these activities; if this is not \
    the case, you should verify where there is a leak of your supervisor's password.
  !set name_see_activity1=See the log file of management activities of your class. 
@@ -331,12 +332,11 @@ In this case, the first limit starts score reduction, which will got to 0 if the
 !endif
 
 !if $job=authtype
- !set title=Ldap authentification
- !set name_intro_authtype=Select <tt>ldap</tt> and fill in this page if \
-   you use an authentification by ldap.
+ !set title=Autenticazione attraverso un server LDAP
+ !set name_intro_authtype=Selezionare <tt>ldap</tt> e compilare con i dati del \
+   server ldap che si vuole utilizzare.
  !goto commun
 !endif
-
 !if $job=import
  !set code1=None
  !set code2=$wims_name_yes but different
@@ -352,13 +352,14 @@ In this case, the first limit starts score reduction, which will got to 0 if the
    !set name_subclasses=zones dépendantes
   !endif
    
- !distribute lines Setups successfully sent to $name_subclasses\
-  You can choose to send the following setups of the $name_thisclass to all its $name_subclasses\
+ !distribute lines L'invio della configurazione a $name_subclasses ha avuto successo:\
+  Potete scegliere di inviare le configurazioni seguenti $name_thisclass a tutti $name_subclasses\
  into name_propagate_succes,name_propagate_choose
 
- !set name_warning=Please note that $name_subclasses will not automatically share later \
-   changes of the setups of $name_thisclass. You must send the changes each time you \
-   want them to be effective in $name_subclasses.
+ !set name_warning=Si noti che $name_subclasses non riceveranno automaticamente le \
+ulteriori modifiche della configurazione $name_thisclass. &Egrave; \
+necessario reinviare le modifiche ogni volta che volete trasmettere \
+le modifiche a $name_subclasses.
 
 !endif
 
@@ -368,56 +369,56 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 !if $job=index
-  !set title=!nosusbt Actualisation de l'index $tit
-  !set name_done=Done
-  !set name_result=Script output
+  !set title=!nosubst Aggiornamento dell'elenco $tit
+  !set name_done=Completato
+  !set name_result=Risultato dello script
 
   !if $job2=structure
-   !set tit=Subclass index update
+   !set tit=delle zone
   !endif
   !if $job2=userlist
-   !set tit=Participant index update
+   !set tit=degli iscritti
   !endif
   !if $job2=teacherlist
-   !set tit=Teacher index update
+   !set tit=dei docenti
   !endif
   !if $job2=oef
-   !set tit=Exercise index update
+   !set tit=degli esercizi
   !endif
   !if $job2=doc
-    !set tit=Document index update
+    !set tit=dei documenti
    !endif
 !endif
 
 !if $job=list
-  !distribute line Institution name\
-    Class name\
-    Option words\
-    Modtool Account\
-    Connection lock level\
-    Number of the best scores\
+  !distribute line Nome dell'istituzione\
+    Nome del corso\
+    Opzioni avanzate\
+    Accesso a Modtool\
+    Tipo di connessione\
+    Numero di voti migliori\
     Participant number limit\
-    Expiration date\
-    Registration of exercises\
-    Registration of exams\
-    visible by students\
-    Other configurations\
-    Préférences personnelles\
-    Répercuter les configurations aux zones dépendantes\
-    Définir des classes voisines\
-    des liens vers d'autres serveurs\
-    Utiliser une authentification\
-    des participants par annuaire ldap\
-    Actualiser les index\
-   dont le changement de\
-    Faire une sauvegarde ou restauration de la classe\
-    restreindre les ressources accessibles\
-    restreindre les sites \
-    pour lequels les scores sont enregistrés\
-    faire un nettoyage sélectif\
-   Configurer les\
-    Utilisation actuelle d'espace disque\
-    La limite est\
+    Data di termine del corso\
+    Esercizi salvati\
+    Esami salvati\
+    visibili per gli studenti\
+    Altre configurazioni\
+    Opzioni personali\
+    Trasmettere le configurazioni alle zone dipendenti\
+    Dichiarazione dei corsi vicini\
+    connessioni verso altri server\
+    Utilizzo di una autenticazione\
+    degli iscritti attraverso un server ldap\
+    Aggiorna gli elenchi\
+   tra cui \
+    Effettua un backup o un ripristino del corso\
+    seleziona gli strumenti accessibili\
+    definisci le postazioni \
+    abilitate alla registrazione dei voti\
+    effettua una manutenzione selettiva\
+   Configura il\
+    Utilizzo spazio disco\
+    Numero massimo di iscritti\
   into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
@@ -427,64 +428,65 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 :commun
-!distribute line Authentification\
-My personal preferences\
-Resource restrictions\
-OEF configuration\
-Class neighbors\
-Security management\
-Selective cleanup\
-Rebuild\
-Other servers\
-Passwords\
-Send setups to subclasses\
-Appearances\
-Score restriction\
-Platform address\
-of\
+!distribute line Autenticazione\
+Opzioni\
+Accesso agli strumenti\
+Parametri di default per esercizi OEF\
+Corsi vicini\
+Opzioni di sicurezza\
+Pulizia selettiva\
+Actualiser\
+Altri server\
+Modifica password\
+Zone dipendenti\
+Aspetto\
+Registrazione dei voti\
+Indirizzo di una piattaforma esterna\
+di\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
 wims_name_config_score,wims_name_config_ent,name_of
 
-!distribute lines Secure hosts\
-   Style sheet\
-   Logo of the class\
-   Position of the logo\
-   top left corner, top right corner\
-   Style theme of the class\
-   Icones\
-   Academic level\
-   Hosts allowed for scores\
-   Password for participant registration\
-   Supervisor password\
-   Registration limits of exercises and exams\
-   Links on another plateform\
-   Page background color\
-   Menu background color\
-   Menu link color\
-   Background image file\
-   download a css-style file\
-   Dégradé de couleurs des scores (de 0 à 10) \
-  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+!distribute lines Accesso da IP sicuro\
+  Foglio stile (css)		\
+   Logo\
+   Posizione del logo\
+   in alto a sinistra,in alto a destra\
+   Tema\
+   Set di icone\
+   Livello accademico\
+   Postazioni abilitate alla registrazione dei voti\
+   Password di iscrizione al corso\
+   Password di gestione del corso\
+   Numero massimo di esercizi e esami salvabili\
+   Link verso una piattaforma o una pagina web\
+   Colore dello sfondo delle pagine\
+   Colore dello sfondo dei menu\
+   Colore dei link nei menu\
+   Immagine di sfondo delle pagine\
+   carica un file css\
+   Scala dei colori dei voti (da 0 a 10)\
+   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
-   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
+  name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
-!set name_content_style = You can define your class-wide stylesheet here\
-<br>(when <tt>$name_css</tt> is on <tt>class</tt>)&nbsp;:
+!set name_content_style = Contenuto del foglio stile del corso \
+<br>(quando <tt>$name_css</tt>  è sulla <tt>class</tt>)&nbsp;:
 
-!set name_content_style2=or copy here the css stylesheet
+!set name_content_style2=o copia qui i comandi css delle pagine del corso
 
 !exit
 :arch
 
- You have uploaded resources backed up from another class. If you
- restore incompatible resources to your class, it will simply be destroyed.
- !href cmd=help&special_parm=dependencies Why?
+ State ripristinando risorse che appartengono ad un altro corso.
+  Se ripristinate risorse incompatibili con il vostro corso, elle va
+ être simplement détruite.
+ !href cmd=help&special_parm=dependencies Perché?
  <p>
- !href cmd=reply&job=list Stop
- if you are not completely sure of what you are doing. (In any case, keep a
- backup of the current status before continuing.)
+ !href cmd=reply&job=list Fermatevi
+  se non siete totalmente sicuri di quello che sate facendo. (E in ogni caso
+  fate un backup dello stato attuale prima di continuare.)
  
  :arch_end
  <p><b>IMPORTANT</b>. <ul><li> There is no check of integrity in your uploaded data,
@@ -586,8 +588,8 @@ You are about to replace an existing $(name_$itype)
   the imported resource. No recovery will be possible after this
   operation, and your existing $(name_$itype), which is different from the
   imported one, will be definitely lost.
-!exit
 
+!exit
 :import5
  Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
  classe est pleine (et s'il y a encore de la place dans le site pour ajouter
@@ -611,9 +613,28 @@ configuration procedure, while keeping a high security level.
 !exit
 
 :download
-<b>Remark</b>. Depending on the class activities, usually it is participant
-activities, forum messages and class documents that are of large size. You
-may also consider the possibility of making several selective backups for
-different resources.
+<p><b>Atenzione</b>. Di solito le parti che occupano più spazio sono l'attività
+degli iscritti, i messaggi del forum e i documetni del corso. &egrave; possibile
+fare più backup diversi per ognuna di queste risorse.
 
 !exit
+
+restore
+Le seguenti risorse contenute nel file di backup del corso sono state ripristinate: $restored.
+
+download
+Cliccare su <input type=submit value="Backup selettivo">
+per modificare le risorse salvate nel file di backup di cui sopra. 
+
+
+Utilizzo spazio disco: $du mega. (Il limite è
+$wims_class_quota.)
+
+def.phtml
+
+<b>Condivisione risorses.</b> 
+  Non c'`e alcuna (nuova) risorsa nel corso
+  <em><font color=blue>
+$nei_description</font></em> che siete autorizzati a condividere.
+Cliccare qui per accettare
+.
