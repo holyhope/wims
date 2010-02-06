@@ -1,0 +1,51 @@
+!if $modifcnt+$newcnt<=0
+  <p>
+  $name_check1
+  !exit
+!endif
+
+$name_click_adress
+<p>
+!if $modifcnt>0
+ $table_header
+ <caption>$name_foundv &nbsp;
+ !href cmd=reply&job2=all&muauto=update name_all_u
+ </caption>
+ $table_hdtr<th>$wims_name_Address
+ <th><small>$name_updated</small>
+ <th><small>$name_newv</small>
+ <th><small>$name_server</small>
+ !for i=1 to $modifcnt
+  
+  !set l=!line $i of $modif
+  !distribute items $l into w_,a_,v_,t_
+  $table_tr<td>
+  !href cmd=reply&job2=one&muauto=check&mupack=$w_~$a_ $a_
+  <td align=center>$t_<td align=center>$v_
+  <td align=center>
+  !module version $a_
+  </tr>
+ !next i
+ $table_end <p>
+!endif
+
+!if $newcnt>0
+ $table_header
+ <caption>$name_newm &nbsp;
+ !href cmd=reply&job2=all&muauto=install $name_all_i
+ </caption>
+ $table_hdtr<th>$wims_name_Address
+ <th><small>$name_published</small>
+ <th><small>$wims_name_Version</small>
+ !for i=1 to $newcnt
+  
+  !set l=!line $i of $new
+  !distribute items $l into w_,a_,v_,t_
+  $table_tr<td>
+  !href cmd=reply&job2=one&muauto=check&mupack=$w_~$a_ $a_
+  <td align=center>$t_<td align=center>$v_
+  </tr>
+ !next i
+ $table_end <p>
+!endif
+

@@ -1,0 +1,79 @@
+!read lang/update.phtml.$modu_lang
+
+!read adm/title.phtml 3\
+\
+$title
+
+!if $error!=$empty
+ !if $error=no_script
+ $name_sorry
+ !endif
+ 
+ !goto end
+!endif
+
+!if true iswordof $testing
+<font color=red><em>$name_test</font></em>
+<p>
+!endif
+
+!if $lockcheck != $empty
+ $name_warning
+ <small><pre>
+ !sh cat ../log/update.log
+ </pre></small>
+ <a name=updateend></a>
+ !href cmd=resume#updateend $wims_name_refresh
+.
+ !goto end
+!endif
+
+!if $job2=check
+ $name_summary
+ <small><pre>
+ !sh cat ../log/update.log
+ </pre></small>
+ !goto check
+!endif
+
+!if $job2=check2
+ $name_detailed
+ <small><pre>
+ !mexec scripts/cat_update2.sh
+ </pre></small>
+ !goto check
+!endif
+
+!if $pubversion=$empty
+ $name_sorry2
+ !goto end
+!endif
+
+$name_version
+
+!if $pubversion=$wims_version
+ $name_mostrecent
+ !goto check
+!endif
+
+$name_mostrecent2 $pubversion.
+!if $recentversion<$thisversion
+$name_morerecent
+ !goto check
+!endif
+
+<p>
+!href cmd=reply&job=update&job2=confirm $name_click
+ !read lang/update.phtml.$modu_lang update
+:check
+!if $logcheck!=$empty
+<p>
+ $name_output:
+ !href cmd=resume&job2=check $name_summary
+,
+ !href cmd=resume&job2=check2 $wims_name_detail
+.
+!endif
+:end
+!reset job2
+

@@ -1,0 +1,31 @@
+
+<center>
+!form reply
+Please give your site manager's password:<p>
+<input size=24 type=password name=auth>
+<input type=submit value="$wims_name_tosave">
+</form></center>
+
+!if $passone!=$empty
+ As you have not defined a manager password, the server has generated a one-time
+ password for this session. You can find it in the file 
+ <tt>$wims_home/$oncename</tt> in the WIMS server account. Please read that
+ file and type the content in the field above.
+ <p>
+ If you want to define a permanent password (this is convenient but is less
+ secure than a one-time password), you can put it into a file named
+ <tt>$wims_home/log/.wimspass</tt>. But you <b>MUST</b> make this file readable only
+ by you!
+!else
+ You have defined a permanent site manager password. Please notice that
+ you may also use one-time passwords, which is more secure.
+ <p>
+ In order to switch to one-time password mode, you have simply to erase the
+ file <tt>$wims_home/log/.wimspass</tt> in the WIMS server account.
+!endif
+
+<p>
+In any case, please be EXTREMELY careful when you manipulate the site
+manager password. An intrusion as a site manager may compromise ALL the data
+on your server!
+

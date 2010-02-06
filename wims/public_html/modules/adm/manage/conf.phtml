@@ -1,0 +1,56 @@
+!read adm/title.phtml 3\
+\
+$title
+
+!if $save!=$empty
+ !if $changed<1
+  $name_config
+ !else
+  $name_updated
+ !endif
+ <p>
+!endif
+
+!form reply
+$table_header
+
+!for i=1 to $confcnt
+ !set r_=!record $i of lang/confdata.$modu_lang
+ !set t_=!word 1 of $r_
+ !if $catname isitemof $t_
+  !distribute lines $r_ into a_,b_,c_,e_
+  !distribute words $a_ into t_,n_,N_
+  !set D_=$($n_)
+  $table_tr
+  <td>$b_<td align=center><small>
+  !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
+  !if $c_ iswordof free int
+   <br>
+   <a href="#" onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">$name_default</a>
+  !endif
+  </small>
+  <td nowrap>
+  !if $c_=free
+   <input size=40 name=conf_$i value="$D_">
+  !endif
+  !if $c_=int
+   <input size=10 name=conf_$i value="$D_">
+  !endif
+  !if $c_=choice
+   !set conf_$i=$D_
+   !set e_=!translate ; to $\
+$ in $e_
+   !distribute lines $e_ into x_,y_
+   !formselect conf_$i list $x_ prompt $y_
+  !endif
+  !set g_=!trim $g_
+ !endif
+!next i
+$table_end <p><center>
+<input type=submit name=save value="$wims_name_tosave">
+<input type=submit name=abandon value="$wims_name_giveup">
+</center>
+</form>
+$name_warning
+<p>
+!read conf/$catname.phtml

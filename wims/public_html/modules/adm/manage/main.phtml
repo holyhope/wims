@@ -1,0 +1,31 @@
+$job
+!if $cmd=help and $wims_ismanager=2
+  !if $help_subject iswordof conf
+   !changeto conf/help-$help_subject.phtml
+  !endif
+  !if $help_subject iswordof soft
+   !changeto lang/help-$help_subject.phtml.$modu_lang
+  !endif
+!endif
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
+!header
+
+!if $wims_ismanager iswordof -1 1
+$name_intromain
+ <tt>log/wims.conf</tt>. <p>
+!endif
+
+!if $job!=$empty
+ !read $job.phtml
+!endif
+!if $wims_ismanager=2 and $job!=list
+ !set wims_menu_items=!append line sitegestion,1,cmd=reply&job=list\
+ to $wims_menu_items
+
+!endif
+
+!tail
+
+!reset auth,save,abandon

@@ -1,0 +1,82 @@
+!set MAX=102400
+
+!if $download=yes
+$name_file ($flen $name_bytes):
+ <p><center>
+ !getfile $fname $file
+ <p>
+ !goto end2
+!endif
+
+!if $erase=ask
+$name_erase
+ <tt><font color=green>$file</font></tt>? <br>
+ <small>($flen bytes, $facc, $name_last $fdat)</small>
+ <p> <center> <font size="+2">
+ !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
+ &nbsp;&nbsp;
+ !href cmd=reply&job=fs $wims_name_no
+ </font> <p> <hr>
+ !goto end2
+!endif
+
+!if $ftype=image
+ <tt><font color=green>$file</font></tt> $name_image. ($flen bytes,
+ $facc, $name_last $fdat)
+ !if $pubimg!=$empty
+  <p><center>
+  <img border=2 src=$pubimg>
+  </center>
+ !endif
+ !goto end
+!endif
+
+!if $ftype=binary
+ <tt><font color=green>$file</font></tt> $name_binary. ($flen bytes,
+ $facc, $name_last $fdat)
+ !goto end
+!endif
+
+!if $flen>$MAX
+ <tt><font color=green>$file</font></tt> ($flen bytes) 
+ $name_toolong 
+
+ !goto end
+!endif
+ 
+!set wims_form_method=post
+!form reply
+<input type=hidden name=job value=file>
+<input type=hidden name=job2 value=first>
+<center>
+ $name_content <tt><font color=green>$file</font></tt> <br>
+ <small>($flen bytes, $facc, $name_last $fdat)</small> <br>
+ !if $modifok!=yes
+  $name_distrib <br>
+  !set textarea_ro=readonly
+ !endif
+ !mexec scripts/textarea.sh
+<br>
+!if $modifok=yes
+ <input type=submit name=save value="$wims_name_tosave">
+ <input type=submit name=abandon value="$wims_name_giveup">
+!endif
+</center>
+</form>
+
+:end
+
+<p> <center>
+!href cmd=reply&job=file&job2=download $name_download
+. &nbsp;
+!if $modifok=yes
+ !href cmd=reply&job=file&job2=erase $wims_name_erase
+. &nbsp;
+!endif
+
+:end2
+!href cmd=reply&job=fs $wims_name_back2
+.
+
+</center>
+

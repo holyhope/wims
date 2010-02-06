@@ -1,0 +1,29 @@
+
+!read adm/title.phtml 3\
+\
+$title
+
+!if $atdate!=$empty
+ $name_scheduled
+ !goto end
+!endif
+
+<b><font color=red>$wims_name_warning</font></b> $name_rebuilding
+<p>
+!if $lastdate!=$empty
+ :result
+ $name_result $lastdate:
+ <p><pre>
+ $output
+ </pre>
+ <p>
+ !href cmd=reply&job2=run $name_click
+ $name_restart
+!else
+<p>
+ !href cmd=reply&job2=run $name_click
+ $name_start
+!endif
+:end
+!reset job2
+
