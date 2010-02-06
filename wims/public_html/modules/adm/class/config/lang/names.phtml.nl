@@ -71,8 +71,8 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
    Impliceerd het herstel van werkbladen, oefeningen, proefwerken en documenten\
    Aanwezige werkvolgorde\
    Herstel methode\
-   Vervangine\
-   vervang aanwezig materiaal door de backup.\
+   Vervanging\
+   vervang het aanwezig materiaal door de backup.\
    Samenvoegen\
    vervang al het aanwezige materiaal, behalve de studenten accounts en de klasse oefeningen; bij deze klasse oefeningen worden alles met een gelijke naam overschreven.\
    Vervang en herstel het aangegeven materiaal\
@@ -82,7 +82,7 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore
    
-!distribute lines Backup archief hersteld klas\
+!distribute lines Backup archief herstel klas\
 Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
 De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 into name_restore1,name_restore2,name_restore3
@@ -124,7 +124,7 @@ into name_restore1,name_restore2,name_restore3
 
 !if $job=neighbor
  !set title=Buurklassen
- !set name_noclass=Er kunnen geen buurklassen worden gedefinieerd omdater er geen andere klasses zijn.
+ !set name_noclass=Er kunnen geen buurklassen worden gedefinieerd omdat er er geen andere klasses zijn.
  !set name_toomany=Er zijn te veel klassen op deze server geinstalleerd. Geef een zoekterm om naar een klas te zoeken.
  !set name_toomany2=Er zijn te veel klassen gevonden .Geef een betere zoekterm in.
 
@@ -179,7 +179,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Importeren uit klas\
     Met succes overgezet\
     Studenten accounts uit de buurklas\
-    Kontroleer het resultaat\
+    Controleer het resultaat\
     into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
     name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
     name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
@@ -188,12 +188,12 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_inactif=!subst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
  
- !set name_accept=!nosubst Accepteerd u de klas <em><font color=blue>$nei_description</font></em> als buurklas ?
+ !set name_accept=!nosubst Accepteert u de klas <em><font color=blue>$nei_description</font></em> als buurklas ?
    
  !if $job2=stopshare
   !set title=Stop de deling
   !set name_warning=Uw klas heeft een aciteve cijfer registratie en de gedeelde bronnen zijn niet leeg.\
-  Als u nu stop met lenen kan hier later niet meer op worden terug gekomen.<p>\
+  Als u nu stopt met lenen kan hier later niet meer op worden terug gekomen.<p>\
   U wilt definitef stoppen met delen ?
  !set name_stop=Stoppen
  !endif
@@ -237,33 +237,33 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_listserver=Lijst met bestaande server verbindingen
 
  !distribute Test de server verbinding\
-   Test een verbinding met een klas\
-   Voeg een verbinding met een klas toe\
-   Onderhoud van de verbonden klas\
-   lokale klas, klas op een andere server\
-   class definition, user list, score averages, score details,all but class definition\
-   Remote class\
-   Remote server\
-   Synchronize\
-   (with the other one) for\
-   Manage\
-   Destroy remote class\
-   This connection to the remote server is working.\
-   The connection has been added to your class, but the remote server returns an error message\
-   The remote server does not reply. Please report to the\
-  The connection is rejected by the remote server. Error message\
-  Checked remote class\
-  This connection is working. Data returned from the remote class\
-  To connect to a class on the above server, please specify\
-  Identifier of the remote class\
-  If the remote class is empty, the server will create a new class on the remote server, duplicating the properties of this one.\
-  Automatically update the remote class for changes made on this one\
-  Allow the remote class to modify this one\
-  This class has no connections to other servers.\
-  You have declared the following connections to other servers.\
-  Server\
-  Actually, this WIMS server has the following connectable servers.\
- into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
+   Test de netwerkverbinding met een klas\
+   Voeg een netwerkverbinding met een klas toe\
+   Onderhoud van de klas op een netwerkverbonden server\
+   lokale klas, klas op een netwerkverbonden server\
+   klas configuratie, lijst met studenten, gemiddelde cijfers, cijfer details, alles behalve klas configuratie\
+   KIas op de netwerkverbonden server\
+   Netwerkverbonden server\
+   Synchroniseren\
+   (met de andere klas) van\
+   Onderhoud\
+   Verwijder de klas op de verbonden server\
+   De verbinding met de verbonden server werkt.\
+   De verbinding is toegevoegd aan uw klas, maar de verbonden server geeft een foutmelding\
+   De andere server reageert niet. Raporteer dit aan de\
+   De verbinding met de verbonden server is geweigerd. Foutmelding\
+   Gecontroleer de andere klas \
+   De verbinding werkt. Date ontvangen van de verbonden server\
+   Voor het maken van een verbinding met bovenstaande server, specificeer \
+   Identifier of the remote class\
+   Als de klas op de verbonden server leeg is, zal deze server een nieuwe klas aanmaken. De eigenschappen van die klas worden gebaseerd op deze klas\
+   Voer veranderingen aan deze klas automatisch door aan de klas op de verbonden server\
+   Sta de klas op de verbonden server toe deze klas te wijzigen\
+   Deze klas heeft geen connecties met andere servers.\
+   U hebt de volgende verbindingen gedeclareerd met andere servers.\
+   Server\
+   Op dit moment herkend deze WIMS server de volgende servers.\
+   into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
@@ -283,134 +283,134 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=present
- !set title=Configuratie van het uiterlijk van de virtuele klas
+ !set title=Configuratie klas opmaak
  !goto commun
 !endif
 
 !if $job=oefdefault
  !set title=Configuratie voor OEF modules<br>[Online Exercise Format] 
-  !distribute One series will have\
-   Level of severity\
-   Time limit\
-   seconds\
-   Number of items shown in multiple choices\
-   Give solution (if available) ?\
-   never,if the score is not maximal,always\
-   Always contain good reply\
-   Penalty for bad replies in multiple choices.\
-   Show good reply.\
-   Allow hint (if available).\
-  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+  !distribute een serie oefeningen heeft\
+  Moeilijkheidsgraad\
+   Tijs limiet\
+   seconden\
+   AAntal items voor een meerkeuze vraag\
+   Toon de uitgewerkte oplossing (mits aanwezig) ?\
+   nooit,als de score niet maximaal is,altijd\
+   Altijd het correcte antwoord tonen\
+   Strapfunten voor foute antwoorden in meerkeuze vragen.\
+   Toon het correcte antwoord.\
+   Geef een hint (mits aanwezig).\
+   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
-   !set name_warning=ou can put two numbers into the time limit,a smaller limit followed by a bigger one.\
-In this case, the first limit starts score reduction, which will got to 0 if the second limit is reached.
+   !set name_warning=U kunt twee getallen vermelden in de tijdlimiet.\
+   Het eerste getal geeft de tijd aan wanneer de score reductie begint.\
+   Het tweede (grotere) getal geeft het tijdstip aan wanneer de score 0 moet worden.
   
  !goto commun
 !endif
 
 !if $job=security
- !set title=Beschikbare beveiligings instellingen voor virtuele Klassen
- !set name_see_activity2=You should be the origin of all these activities; if this is not \
-   the case, you should verify where there is a leak of your supervisor's password.
- !set name_see_activity1=See the log file of management activities of your class. 
- !distribute lines Set up the class-wide restriction\
- of sites allowed to get scores.\
- Other security setups in the\
- class configuration\
+ !set title=Beschikbare beveiligings instellingen
+ !set name_see_activity2=Deze veranderingen mogen alleen van af uw adres worden doorgevoerd.\
+ Zo niet controleer of uw supervisor wachtwoord is misbruikt.
+ !set name_see_activity1=Bekijk de logfile van uw klas naar eventuele aanwijzingen.
+ !distribute lines Configureer het toegangsbeleid\
+  tot het score systeem van deze klas.\
+  Andere beveiligings instellingen bij de \
+  klas configuratie
  into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
  !goto commun
 !endif
 
 !if $job=authtype
- !set title=Ldap authentification
+ !set title=Ldap authentificatie
  !set name_intro_authtype=Kies <tt>ldap</tt> en vul dit formulier in \
   als u een ldap server gebruikt voor authentificatie.
  !goto commun
 !endif
 
 !if $job=import
- !set code1=None
- !set code2=$wims_name_yes but different
- !set code3=$wims_name_yes, active and different
+ !set code1=Geen
+ !set code2=$wims_name_yes maar anders
+ !set code3=$wims_name_yes, actief en anders
 !endif
 
 !if $job=propagate
   !if $wims_supertype=2
-   !set name_thisclass=du portail
-   !set name_subclasses=sous-classes
+   !set name_thisclass=van het portaal
+   !set name_subclasses=subklas
   !else
-   !set name_thisclass=de la zone actuelle
-   !set name_subclasses=zones dépendantes
+   !set name_thisclass=van deze actuele zone
+   !set name_subclasses=onafhankelijke zones
   !endif
    
- !distribute lines Setups successfully sent to $name_subclasses\
-  You can choose to send the following setups of the $name_thisclass to all its $name_subclasses\
+ !distribute lines De configuratie is met succes geinstalleerd in  $name_subclasses\
+ De volgende configuraties  van $name_thisclass kunnen worden geinstalleerd in alle $name_subclasses\
  into name_propagate_succes,name_propagate_choose
 
- !set name_warning=Please note that $name_subclasses will not automatically share later \
-   changes of the setups of $name_thisclass. You must send the changes each time you \
-   want them to be effective in $name_subclasses.
+ !set name_warning=Opmerking: de configuratie instellingen van $name_subclasses worden niet automatisch\
+ bijgewerkt als de instellingen voor $name_thisclass worden veranderd. 
 
 !endif
 
 !if $job=log
-  !set name_warning_log=Here is the log of certain managing activities of your class. This log\
-allows you to verify whether there are suspicious activities.
+  !set name_warning_log=Hier is de logfile met onderhouds activiteiten van deze klas.\
+  Aan de hand van dit bestand kan worden nagetrokken of het onderhoud wel door supervisor zelf is uitgevoerd.  
 !endif
 
 !if $job=index
-  !set title=!nosusbt Actualisation de l'index $tit
-  !set name_done=Done
-  !set name_result=Script output
+  !set title=!nosusbt Actualiseer de index van $tit
+  !set name_done=Klaar
+  !set name_result=Resultaat
 
   !if $job2=structure
-   !set tit=Subclass index update
+   !set tit=Subklas index vernieuwen
   !endif
   !if $job2=userlist
-   !set tit=Participant index update
+   !set tit=Student index vernieuwen
   !endif
   !if $job2=teacherlist
-   !set tit=Teacher index update
+   !set tit=Docenten index vernieuwen
   !endif
   !if $job2=oef
-   !set tit=Exercise index update
+   !set tit=Oefeningen index vernieuwen
   !endif
   !if $job2=doc
-    !set tit=Document index update
+    !set tit=Documenten index vernieuwen
    !endif
 !endif
 
 !if $job=list
-  !distribute line Institution name\
-    Class name\
-    Option words\
+  !distribute line Naam van het instituut\
+    Naam van de klas\
+    Opties \
     Modtool Account\
-    Connection lock level\
-    Number of the best scores\
-    Participant number limit\
-    Expiration date\
-    Registration of exercises\
-    Registration of exams\
-    visible by students\
-    Other configurations\
-    Préférences personnelles\
-    Répercuter les configurations aux zones dépendantes\
-    Définir des classes voisines\
-    des liens vers d'autres serveurs\
-    Utiliser une authentification\
-    des participants par annuaire ldap\
-    Actualiser les index\
-   dont le changement de\
-    Faire une sauvegarde ou restauration de la classe\
-    restreindre les ressources accessibles\
-    restreindre les sites \
-    pour lequels les scores sont enregistrés\
-    faire un nettoyage sélectif\
-   Configurer les\
-    Utilisation actuelle d'espace disque\
-    La limite est\
-  into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
+    Beveiliging\
+    Aantal hoogste scores\
+    Aantal studenten limiet\
+    Einddatum\
+    Registratie van oefeningen\
+    Registratie van toetsen\
+    zichtbaar voor studenten\
+    Andere configuraties\
+    Persoonlijke instellingen\
+    Configuratie onafhankelijke zones\
+    Definieer buurklassen\
+    verbinding met andere servers\
+    Gebruik authentificatie\
+    voor deelnemers met ldap\
+    Actualiseer de indexen\
+    waarvan verandering\
+    Backup en herstel \
+    Restricties mbt lesmateriaal\
+    Andere restricties \
+    voor welke scores zijn opgenomen\
+    Selectieve opruiming\
+    Configureer de\
+    Huidige geheugen gebruik\
+    De limiet\
+    into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
@@ -427,12 +427,12 @@ Buur klassen\
 Security management\
 Selectieve opschoning\
 Actualiseer de index\
-Andere servers\
+Netwerkverbonden servers\
 Wachtwoorden\
 Andere zones\
 Uiterlijk\
 Score instellingen\
-Platform adressen\
+Netwerkverbonden Server adressen\
 of\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
@@ -456,8 +456,8 @@ wims_name_config_score,wims_name_config_ent,name_of
    Menu achtergrond kleur\
    Menu link kleur\
    Achtergrond plaatje\
-   download een css-style bestand\
-   Score kleuren (de 0  10) \
+   download een css style bestand\
+   Score kleuren (van 0 tot 10) \
    into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
@@ -469,143 +469,134 @@ wims_name_config_score,wims_name_config_ent,name_of
 
 !exit
 :arch
-
- You have uploaded resources backed up from another class. If you
- restore incompatible resources to your class, it will simply be destroyed.
- !href cmd=help&special_parm=dependencies Why?
+U hebt een backup archief van een andere klas opgestuurd.
+Als er conflicten zijn, wordt uw klas mogelijk onherstelbaar beschadigd.
+ !href cmd=help&special_parm=dependencies Waarom?
  <p>
  !href cmd=reply&job=list Stop
- if you are not completely sure of what you are doing. (In any case, keep a
- backup of the current status before continuing.)
+ als u er niet zeker van bent van de gevolgen. 
+ (In elk geval bewaar een backup van de huidige situatie voor dat u verder gaat)
  
  :arch_end
- <p><b>IMPORTANT</b>. <ul><li> There is no check of integrity in your uploaded data,
-and manual modification of the backup archives is not supported by the
-system. Errors introduced by manual modification of archives will result
-in unpredictable behavior of your class.
+ <p><b>BELANGRIJK</b>. <ul><li> 
+ De integriteit van de opgestuurde data wordt niet gecontroleerd.
+ Een handmatige bijwerking van een backup archief wordt door het systeem niet toegestaan.
 
-<li> Whenever possible, avoid restoring 
-<font color=red>class configuration</font> and
+<li> Indien mogelijk vermijdt herstel van
+<font color=red>klas configuratie</font> en
 <font color=red>supervisor account</font>.
-Errors in the uploaded data for these two fields may make you
-completely lose control of your class.
+Fouten in deze bestanden maken uw klas stuurloos.
 
-<li> You can use the backup of a class to install a new one. In this case,
-avoid restoring scores and grades (server-computed and manual). These two
-resources cannot be erased once they are installed (security measure).
-And many class maintenance operations will be unavailable if there are
-non-empty score data.
+<li> U kunt een backup archief gebruiken voor het snel installeren van een nieuwe klas.
+In dit geval vermijdt gebruik van scores en cijferregistratie (server of handmatig)
+Deze twee kunnen -ivm bewaking van de cijfers- niet meer worden gewist uit een werkende klas.
 </ul>
 !exit
 
 :clean
-You cannot erase resources of the class
- when participant activities have already started.
+ <b>ATTENTIE</b>.
+ U kunt geen lesmateriaal verwijderen waar leerlingen op dit moment nog aan kunnen werken.  
  <p>
- This is an important security measure. If you feel that it is an
- inconvenience, think of the following two aspects.
+ Bedenk de volgende zaken:
  <p>
- On the one hand, suppose that a student steals your password. If (s)he
- comes to this page and erases everything, honest students will
- suffer a lot, and your teaching activities will be greatly disturbed.
+ Ten eerste, stel een slimme leerling steelt het supervisor wachtwoord.
+ wanneer deze leerling de gehele klas kan verwijderen, hebben
+ de goede leerlingen daar toch behoorlijk veel last van (...)
  <p>
- On the other hand, different resources of the class are inter-dependent.
- If you
- erase some resources without erasing those depending on them, your class
- will no longer work.
- !href cmd=help&special_parm=dependencies Examples.
+ Ten tweede, alle bronnen die tezamen de virtuele klas vormen, zijn uiteraard van
+ elkaar afhankelijk, gedeeltelijk verwijderen verbreekt waarschijnlijk een hoop dwarsverbanden
+ in de digitale werk/leer omgeving.
+  
+ !href cmd=help&special_parm=dependencies Voorbeelden.
  <p>
- Anyway, if you really want to clean this class, you can always expire it
- (by setting its expiration date to today; the class will disappear the next
- morning), or
- <a href="mailto:$wims_site_manager?subject=Please erase my class">ask
- the site manager</a> to erase it for you.
- 
+ In elk geval, wanneer U werkelijk deze klas wilt opschonen, kan beter
+ de verloopdatum van de klas op "vandaag" zetten.
+ Deze klas is dan morgen gewoon verdwenen.
+ Of
+ <a href="mailto:$wims_site_manager?subject=Verwijder mijn klas"</a>
+ vraag de site-manager om je klas te verwijderen.
+
  !exit
  
  :clean2
-<b>Remark</b>. 1. This page is only available when the class is being set
-up. Once student activity has started, cleaning will no longer be possible.
+<p><b>Opmerking</b>. 
+1. Deze pagina is alleen beschikbaar tijdens het opzetten
+van een digitale klas. Wanneer er leerlingen aan het werk zijn, 
+is dit wissen niet meer mogelijk.
+
 <p>
-2. Shared resources can only be cleaned from the class
-originating the sharing. The other class should first
-!href cmd=reply&job=neighbor&job2=sharelist stop the sharing
- of the resources before erasing them.
+2. Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist
+Deze klas moet dan wel eerst 
+!href cmd=reply&job=neighbor&job2=sharelist $name_stopsharing
+ van lesmateriaal voor dat er gewist kan worden.
+
 
 :connect_first_info
-Server / platform connection allows your class to directly communicate with
-one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
+De server / platform verbinding geeft een klas de mogelijkheid om rechtstreeks
+met een andere WIMS server of een andere ELO
+(Electronische Leer Omgeving) te communiceren.<br>
+De leerlingen kunnen zonder problemen door de klassen op beide servers navigeren.  
 <p>
-In particular, you can mirror this class to a remote WIMS server,
-so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+In het bijzonder, kunt kan een klas worden "gespiegeld" op een andere WIMS server,
+zodat er continuiteit kan onstaan in het aanbod van lesmateriaal.<br>
+Lesmateriaal, studenten en de behaalde cijfers kunnen worden gesynchroniseerd. 
+<p>
 !exit
+
 :connect_first
 
-This WIMS server has not declared any connectable remote server. In order
- to use this connection feature, the
- <a href="mailto:$wims_site_manager?subject=server connection">site
- manager</a> must declare such remote server, and the remote server must also
- declare this WIMS server as connectable. 
- (The site manager can refer to the file
- <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
- declare site connections.)
+Deze WIMS server heeft geen netwerkverbonden servers gedeclareerd.
+Om deze mogelijkheid te gebruiken, schrijf naar de 
+<a href="mailto:$wims_site_manager?subject=server connection">sitemanager</a> 
+om een dergelijke voorziening te treffen.<br>
+En deze andere server moet uw server wel erkennen.
+De site manager kan hier leren hoe het een en ander  
+ <tt>$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
  
- !exit
+!exit
  
 :import2
- The work sheet you want to import may use exercises defined in the
-   neighboring class.
+
+Het werkblad dat u wilt importeren bevat mogelijk oefeningen die alleen bestaan in de buurklas.
    <p>
-   If the same exercises do not exist in your class, the imported worksheet
-   won't work correctly. Please verify carefully whether all the class
-   exercises in the neighbor are duplicated in your class.
+Als deze oefeningen niet aanwezig zijn in uw klas, zal het geimporteerde werkblad niet naar behoren functioneren/
+Kontroleer nauwkeurig of alle oefeningen uit de andere klas zijn gekopieerd naar uw eigen klas.
+
 :import3
-   Exam sheets are based on work sheets to make up their
-   contents. <p>
-   Importing an exam sheet makes sense only if you have exactly the same 
-   active work sheets as your neighbor, and only if these sheets are in the
-   same order within the two classes.
-   <p>
-   If this is not the case, the imported exam sheet will almost certainly
-   behave erratically.
+Proefwerken zijn gebaseerd op werkbladen.
+Het importeren van proefwerken is alleen zinvol als alle werkbladen precies synchroon zijn met de andere klas.
+<p>
+Als dit niet het geval is zal het proefwerk niet kunnen functioneren.
 !exit 
 :import4
-
-You are about to replace an existing $(name_$itype)
-  in your class by
-  the imported resource. No recovery will be possible after this
-  operation, and your existing $(name_$itype), which is different from the
-  imported one, will be definitely lost.
+U bent van plan een bestaande $(name_$itype) in uw eigen klas te vervangen door een geimporteerde versie.
+Er is geen herstel mogelijk na deze operatie
 !exit
 
 :import5
- Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
- classe est pleine (et s'il y a encore de la place dans le site pour ajouter
- de nouveaux participants).
+Er kon geen student of deelnemer aan uw klas worden toegevoegd.
+Mogelijk is uw klas of instituut quotum vol en is er geen ruimte meer beschikbaar
 !exit
 
 :auth1
-This configuration tool is only accessible to secure hosts.
+Deze configuratie stap is alleen bereikbaar vanaf een toegestaan veilig  adres.
 <p>
-As you haven't defined any secure hosts, we are checking your authentification
-by sending a secret code to your email address. Please check your mail, pick
-the code, and type it below.
+Er zijn geen veilige adressen gedefinieerd voor uw klas.
+We controleren nu uw identiteit door een code te sturen naar uw email adres.
+Voer de toegestuurde code hieronder in.
 
 !exit
 :auth2
 
-<b>Note</b>. This authentification is to ensure that even if your password
-is stolen or leaked, damages to your class will be limited.
-Defining correct secure hosts will simplify the class
-configuration procedure, while keeping a high security level.
+<b>Opmerking</b>. 
+Deze maatregel is noodzakelijk om te verhinderen dat het weklekken van een supervisor wachtwoord
+grotere gevolgen heeft voor uw klas.
+Het is veel betere een beveiligde verbinding [ip adres] te definieren voor deze configuratie stap.
 !exit
 
 :download
-<b>Remark</b>. Depending on the class activities, usually it is participant
-activities, forum messages and class documents that are of large size. You
-may also consider the possibility of making several selective backups for
-different resources.
+<b>Opmerking</b>. 
+Normaal zijn de opgeslagen oefeningen en proefwerken van studenten, forumberichten en documenten in een klas de grootste bestanden.
+U kunt overwegen diverse kleinere  selectieve backuparchieven aan te maken voor deze data
 
 !exit
