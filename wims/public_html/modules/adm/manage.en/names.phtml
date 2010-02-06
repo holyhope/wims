@@ -1,5 +1,22 @@
+!set lang_exists=yes
+
 !set name_intromain=This tool allows site manager to maintain this WIMS installation online. Its\
  access is strictly controled by definitions in the configuration file
+
+!!list
+ !distribute lines Security setup should be established after compilation. Please execute bin/wrapuid by root!\
+   Here is the list of tasks you may perform online.\
+   Configuration\
+   System checklist\
+   to be run after each addition of new resources as modules, sheets, ... to the server\
+   Check/maintain\
+   Create/maintain\
+into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
+  name_createmaintain
+
+!!help
+
+!set name_warning_help=Please use specific help links for the various help subjects.
 
 !if $job=access
  !set title=Access policy configuration
@@ -88,24 +105,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
  !exit
 !endif
 
-!if $job=check
-  !distribute lines No module publication found corresponding to your search.\
-    Click on the address of a module to check/install/update it.\
-    Found new versions\
-    Found new modules\
-    update all\
-    installed all\
-    updated<br>by\
-    New<br>version\
-    Server<br>version\
-    published<br>by\
-  into name_check1,name_click,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
-  
- !exit
-!endif
-
-
-!if $job=class
+!if $job iswordof class bestclass
   !set title=
   !distribute lines Click here\
    to configure the site's access policies to virtual classes.\
@@ -115,11 +115,18 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     expires\
     means the number of cumulative connection hours since\
     best class activity on this period.\
-  into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best
+    Participant\
+    List of independent classes\
+    means cumulative hour.student connexion since\
+    best class of cumulative connection hours since\
+    Your WIMS virtual class\
+    List of classes
+  into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
+  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass
  
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
-
+  !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
  !exit
 !endif
 
@@ -129,7 +136,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set title=!nosubst Configuration of $cattit
   !distribute lines Configuration not changed because you have made no modifications.\
      default\
-   into name_config,default
+   into name_config,name_default
      
  !set name_updated=!nosubst The file <tt>wims.conf</tt> is updated. You can recover the old\
   configuration information from <tt>$backdir/wims.conf.old</tt>.
@@ -172,7 +179,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
   !set name_dev=Registered module developers on this server
   !set name_visit=Visit
   !set name_allowed=Developers who are allowed to install modules in the site's local\
-  subdirectory: (enter login names)
+  subdirectory (enter login names):
 
  !exit
 !endif
@@ -206,11 +213,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
  !exit
 !endif
 
-!if $job=help
-!set name_warning=Please use specific help links for the various help subjects.
- !exit
-!endif
-
 !if $job=housekeep
  !distribute lines Click here\
    for backup management and\
@@ -220,19 +222,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
  !exit
 !endif
 
-!if $job=list
-
- !distribute lines Security setup should be established after compilation. Please execute bin/wrapuid by root!\
-   Here is the list of tasks you may perform online.\
-   Configuration\
-   System checklist\
-   to be run after each addition of new resources as modules, sheets, ... to the server\
-   Check/maintain\
-   Create/maintain\
-into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
-  name_createmaintain
-!exit
-!endif
 
 !if $job=mkindex
   !set title=Rebuild resource index
@@ -259,8 +248,6 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
   !set name_modification=Modification of properties of a developer account. (Leave the password field\
  empty if you don't want to change the old password.)
  !set name_add=To add a new developer account, please specify: (All the fields are mandatory)
-
-  
 !exit
 !endif
 
@@ -290,7 +277,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 !endif
 
 
-!if $job=module
+!if $job=modules
   !set name_scheduled=!nosubst Your $auto command is scheduled for execution. The result will be sent to\
     you by email.  Please do not repeat this command before the execution is completed.
   !distribute lines in module publication\
@@ -321,6 +308,22 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
     into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
       name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
       name_click,name_automatic,name_rss
+
+!!check
+  !distribute lines No module publication found corresponding to your search.\
+    Click on the address of a module to check/install/update it.\
+    Found new versions\
+    Found new modules\
+    update all\
+    installed all\
+    updated by\
+    New version\
+    New modules\
+    Server<br>version\
+    published<br>by\
+  into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
+  
+
 !exit
 !endif
 

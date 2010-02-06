@@ -2,7 +2,22 @@
  de la instalación WIMS. El acceso a ella está controlado estrictamente mediante\
  definiciones en el fichero de configuración 
 
-!if $job=access
+!!!list
+ !distribute lines Tras la compilación es necesario configurar la seguridad de la instalación. ¡Por favor ejecute bin/wrapuid como root!\
+   Lista de tareas que puede realizar en línea\
+   Configuración\
+   Chequeo del sistema\
+   tras la adición de nuevos recursos (módulos, hojas de trabajo) al servidor.\
+   Check/maintain\
+   Create/maintain\
+into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
+  name_createmaintain
+
+!!help
+
+!set name_warning_help=Por favor use los enlaces de ayuda específicos de los distintos temas de ayuda.
+
+if $job=access
  !set title=Configuración de la normativa de acceso
  !set name_subtitle=Definición de la normativa de acceso
  !exit
@@ -90,25 +105,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
  !exit
 !endif
 
-!if $job=check
-  !distribute lines No se ha hallado ningún anuncio de módulo que se corresponda con su búsqueda.\
-    Pulse en la dirección de un módulo para comprobar/instalar/actualizarlo.\
-    Se han hallado versiones nuevas\
-    Se han hallado versiones nuevas\
-    actualizar todo\
-    instalar todos\
-    actualizado<br>por\
-    Nueva<br>versión\
-    Hallados módulos nuevos\
-    Versión del<br>servidor
-    hecho público<br>por\
-  into name_check1,name_click,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
-  
- !exit
-!endif
-
-
-!if $job=class
+!if $job isword class bestclass
   !set title=
   !distribute lines Pulse aquí\
    para configurar la normativa de acceso del sitio con respecto a las clases virtuales.\
@@ -118,9 +115,18 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     expira\
     se refiere al número de horas de conexión acumuladas en el último mes.\
     best class activity on this period.\
-  into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best
+    Participant\
+    List of independent classes\
+    means cumulative hour.student connexion since\
+    best class of cumulative connection hours since\
+    Your WIMS virtual class\
+    List of classes
+  into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
+  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass
  
-  
+  !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
+  !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
+  !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
  !exit
 !endif
 
@@ -206,12 +212,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
  !exit
 !endif
 
-!if $job=help
-!set name_warning=Por favor use los enlaces de ayuda específicos de los distintos temas de ayuda.
-
- !exit
-!endif
-
 !if $job=housekeep
  !distribute lines Click here\
    for backup management and\
@@ -221,19 +221,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
  !exit
 !endif
 
-!if $job=list
-
- !distribute lines Tras la compilación es necesario configurar la seguridad de la instalación. ¡Por favor ejecute bin/wrapuid como root!\
-   Lista de tareas que puede realizar en línea\
-   Configuración\
-   Chequeo del sistema\
-   tras la adición de nuevos recursos (módulos, hojas de trabajo) al servidor.\
-   Check/maintain\
-   Create/maintain\
-into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
-  name_createmaintain
-!exit
-!endif
 
 !if $job=mkindex
   !set title=Reconstrucción del índice de recursos
@@ -324,6 +311,20 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
       name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
       name_click,name_automatic,name_rss
 
+!!check
+!distribute lines No se ha hallado ningún anuncio de módulo que se corresponda con su búsqueda.\
+    Pulse en la dirección de un módulo para comprobar/instalar/actualizarlo.\
+    Se han hallado versiones nuevas\
+    Se han hallado versiones nuevas\
+    actualizar todo\
+    instalar todos\
+    actualizado<br>por\
+    Nueva<br>versión\
+    Hallados módulos nuevos\
+    Versión del<br>servidor
+    hecho público<br>por\
+  into name_check1,name_click,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
+ 
 !exit
 !endif
 
@@ -342,7 +343,6 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
  
 !if $job=sess
   !set title=Sesión de usuario
-  
   !distribute lines Contenido de la sesión\
     Contenido del fichero de variables de la sesión\
     Contenido del fichero\

@@ -13,8 +13,9 @@ $title
 
 !form reply
 $table_header
+
 !for i=1 to $confcnt
- !set r_=!record $i of conf/confdata
+ !set r_=!record $i of lang/confdata.$modu_lang
  !set t_=!word 1 of $r_
  !if $catname isitemof $t_
   !distribute lines $r_ into a_,b_,c_,e_
@@ -25,7 +26,7 @@ $table_header
   !href cmd=help&help_subject=conf&help_conf=$i $wims_name_help
   !if $c_ iswordof free int
    <br>
-   <a href="#" onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">$default</a>
+   <a href="#" onClick="document.forms[0].conf_$i.value='$(DF_$n_)'">$name_default</a>
   !endif
   </small>
   <td nowrap>

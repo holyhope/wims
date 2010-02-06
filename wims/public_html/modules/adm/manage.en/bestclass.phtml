@@ -1,25 +1,25 @@
 
 <p>
-!href cmd=reply&job=conf&confcat=2 Click here
- to configure the site's access policies to virtual classes.
+!href cmd=reply&job=conf&confcat=2 $name_click
+ $name_config
 
 !if $sccnt+$clcnt<1
  <p>
- There is no virtual class corresponding to your search. 
+ $name_noclass
  !reset keyword
  <p>
- !href cmd=reply&job=class List of classes
+ !href cmd=reply&job=class $name_listclass
  .
  !exit
 !endif
 
-<br>There are $nbcls class groups or classes in this serveur.
+<br>$name_total
 <p> <center>
  !form reply
   !default bst_num=10
   !let tmp=!date -d '1 month ago' '+%Y%m%d'
   !default bst_since=$tmp
-  <input type=text name="bst_num" value="$bst_num" size="4"> best class of cumulative connection hours since <input type="text" name="bst_since" value="$bst_since" size="7"><small>format <font color=blue>yyyymmdd</font></small>.
+  <input type=text name="bst_num" value="$bst_num" size="4">$name_bestcumul <input type="text" name="bst_since" value="$bst_since" size="7"><small>format <font color=blue>yyyymmdd</font></small>.
   <input type=hidden name=job value=bestclass>
   <input type=submit value="Rafra&icirc;chir">
  </form>
@@ -28,13 +28,13 @@
 
 !if $sccnt>0
 <p>$table_header
-<caption>List of institutions and class groups</caption>
+<caption>$name_list</caption>
 $table_hdtr
 <th>$wims_name_name</th><th>$wims_name_action</th><th><small>$wims_name_Language</small></th><th>$wims_name_supervisor</th>
-<th>created<br><small>yyyymmdd</small></th>
-<th>expires<br><small>yyyymmdd</small></th>
+<th>$name_created<br><small>yyyymmdd</small></th>
+<th>$name_expire<br><small>yyyymmdd</small></th>
 <th>load<sup>[1]</sup></th>
-<th>Participant</th> 
+<th>$name_part</th> 
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
  !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
@@ -46,7 +46,7 @@ $table_hdtr
 &nbsp;
  !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
 &nbsp;
- !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  <td align=center>$l_</td>
  <td align=center><small>
  <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
@@ -59,13 +59,13 @@ $table_end
 
 !if $clcnt>0
 <p>$table_header
-<caption>List of independent classes</caption>
+<caption>$name_listindependant</caption>
 $table_hdtr
 <th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
 <th>created<br><small>yyyymmdd</small>
 <th>expires<br><small>yyyymmdd</small>
 <th>load<sup>[1]</sup></th>
-<th>Participant</th> 
+<th>$name_part</th> 
 !for i=1 to $clcnt
  !set l=!line $i of $classes
  !distribute items $l into c_,l_,s_,m_,f_,e_,d_,t_,load_,u_
@@ -80,15 +80,15 @@ $table_hdtr
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
  <td align=center>$l_</td>
  <td align=center><small>
- <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small>
  <td align=center>$f_<td align=center>$e_
  <td align=center>$load_</td>
  <td align=center>$u_</td>
 !next i
 $table_end
 !endif
-<center><b>[1]</b> <i>"load" means cumulative hour.student connexion since $bst_since.</i></center>
+<center><b>[1]</b> <i>"load" $name_cumul_student $bst_since.</i></center>
 <center>
-!href cmd=reply&job=class Return to list of classes
+!href cmd=reply&job=class $wims_back2
 </center>
 
