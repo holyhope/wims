@@ -6,8 +6,8 @@
 !set wims_ref_anchor=#searchform
 !form new
 <input type=hidden name=module value=home>
-<center>
 
+$wims_accessright
 !if $wims_accessright!=$empty
  <table border=0 cellpadding=0 cellspacing=0 bgcolor="$bgcolor2">
  !set bgcolort=#808080
@@ -31,14 +31,11 @@
  !next d 
  </tr></table>
 !endif
-
-<table border=0 cellpadding=6 cellspacing=0 bgcolor="$bgcolor2">
-<tr><td nowrap>
-<input type=submit value=$N_Search class="wims_home_button">
-<input size=20 name=search_keywords value="$search_keywords" class="wims_home_form">
-$N_within
+ <div style="background-color:$wims_ref_bgcolor;" class="wims_search_engine" >
+ <input type=submit value=$N_Search class="wims_home_button">
+ <input size=20 name=search_keywords value="$search_keywords" class="wims_home_form">
+ $N_within
 !formselect search_category list $slist prompt $plist
-</td><td nowrap align=center>
 !if $s_keywords!=$empty or $gotcnt>0
  !href session=$wims_session.1&list=clear $N_clear
  !if $has_browse=yes
@@ -48,8 +45,7 @@ $N_within
 !if $has_browse=yes and $wims_theme_version=0
  !href module=adm/browse&$browse_parm $N_browse
 !endif
-</td></tr>
-</table></center></form> <p>
+</div></form> <p>
 
 !set srchl=$search_keywords
 !reset search_category, search_keywords
