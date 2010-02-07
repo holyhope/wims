@@ -16,7 +16,7 @@
  <input type=hidden name=job2 value=erase>
  Verwijder een bastand:
  !formselect job2 list $flist
- <input type=submit value=OK>
+ <input type=submit value="$wims_name_tosave">
  </form>
  <p>
  Bestanden kunnen worden opgeroepen in een document door de variabele

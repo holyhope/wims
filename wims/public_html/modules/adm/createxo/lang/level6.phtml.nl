@@ -17,7 +17,7 @@ Binaire Bestanden voor oefeningen
 !form reply
 Het bestand voor deze oefening:
 <input type=file name=wims_deposit>
-<input type=submit value=OK>
+<input type=submit value="$wims_name_tosave">
 </form>
 
 :sendend
