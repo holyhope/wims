@@ -11,7 +11,7 @@ $name_file ($flen $name_bytes):
 !if $erase=ask
 $name_erase
  <tt><font color=green>$file</font></tt>? <br>
- <small>($flen bytes, $facc, $name_last $fdat)</small>
+ <small>($flen $name_bytes, $facc, $name_last $fdat)</small>
  <p> <center> <font size="+2">
  !href cmd=reply&job=$job&job2=eraseconfirm $wims_name_yes
  &nbsp;&nbsp;
@@ -21,7 +21,7 @@ $name_erase
 !endif
 
 !if $ftype=image
- <tt><font color=green>$file</font></tt> $name_image. ($flen bytes,
+ <tt><font color=green>$file</font></tt> $name_image. ($flen $name_bytes,
  $facc, $name_last $fdat)
  !if $pubimg!=$empty
   <p><center>
@@ -32,13 +32,13 @@ $name_erase
 !endif
 
 !if $ftype=binary
- <tt><font color=green>$file</font></tt> $name_binary. ($flen bytes,
+ <tt><font color=green>$file</font></tt> $name_binary. ($flen $name_bytes,
  $facc, $name_last $fdat)
  !goto end
 !endif
 
 !if $flen>$MAX
- <tt><font color=green>$file</font></tt> ($flen bytes) 
+ <tt><font color=green>$file</font></tt> ($flen $name_bytes) 
  $name_toolong 
 
  !goto end
@@ -50,7 +50,7 @@ $name_erase
 <input type=hidden name=job2 value=first>
 <center>
  $name_content <tt><font color=green>$file</font></tt> <br>
- <small>($flen bytes, $facc, $name_last $fdat)</small> <br>
+ <small>($flen $name_bytes, $facc, $name_last $fdat)</small> <br>
  !if $modifok!=yes
   $name_distrib <br>
   !set textarea_ro=readonly

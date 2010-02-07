@@ -19,7 +19,7 @@
   !default bst_num=10
   !let tmp=!date -d '1 month ago' '+%Y%m%d'
   !default bst_since=$tmp
-  <input type=text name="bst_num" value="$bst_num" size="4">$name_bestcumul <input type="text" name="bst_since" value="$bst_since" size="7"><small>format <font color=blue>yyyymmdd</font></small>.
+  <input type=text name="bst_num" value="$bst_num" size="4">$name_bestcumul <input type="text" name="bst_since" value="$bst_since" size="7"><small>$name_format <font color=blue>yyyymmdd</font></small>.
   <input type=hidden name=job value=bestclass>
   <input type=submit value="Rafra&icirc;chir">
  </form>
@@ -33,7 +33,7 @@ $table_hdtr
 <th>$wims_name_name</th><th>$wims_name_action</th><th><small>$wims_name_Language</small></th><th>$wims_name_supervisor</th>
 <th>$name_created<br><small>yyyymmdd</small></th>
 <th>$name_expire<br><small>yyyymmdd</small></th>
-<th>load<sup>[1]</sup></th>
+<th>$name_load<sup>[1]</sup></th>
 <th>$name_part</th> 
 !for i=1 to $sccnt
  !set l=!line $i of $sclasses
@@ -49,7 +49,7 @@ $table_hdtr
  !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  <td align=center>$l_</td>
  <td align=center><small>
- <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small>
  <td align=center>$f_<td align=center>$e_
  <td align=center>$load_</td>
  <td align=center>$u_</td>
@@ -62,9 +62,9 @@ $table_end
 <caption>$name_listindependant</caption>
 $table_hdtr
 <th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
-<th>created<br><small>yyyymmdd</small>
-<th>expires<br><small>yyyymmdd</small>
-<th>load<sup>[1]</sup></th>
+<th>$name_created<br><small>yyyymmdd</small>
+<th>$name_expire<br><small>yyyymmdd</small>
+<th>$name_load<sup>[1]</sup></th>
 <th>$name_part</th> 
 !for i=1 to $clcnt
  !set l=!line $i of $classes
@@ -77,7 +77,7 @@ $table_hdtr
 &nbsp;
  !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
 &nbsp;
- !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  <td align=center>$l_</td>
  <td align=center><small>
  <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small>
@@ -87,8 +87,8 @@ $table_hdtr
 !next i
 $table_end
 !endif
-<center><b>[1]</b> <i>"load" $name_cumul_student $bst_since.</i></center>
+<center><b>[1]</b> <i>"$name_load" $name_cumul_student $bst_since.</i></center>
 <center>
-!href cmd=reply&job=class $wims_back2
+!href cmd=reply&job=class $wims_name_back2
 </center>
 

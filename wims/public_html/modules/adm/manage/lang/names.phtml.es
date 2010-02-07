@@ -19,6 +19,8 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 
 !set name_warning_help=Por favor use los enlaces de ayuda específicos de los distintos temas de ayuda.
 
+!set name_visit=Visitar
+
 if $job=access
  !set title=Configuración de la normativa de acceso
  !set name_subtitle=Definición de la normativa de acceso
@@ -41,7 +43,7 @@ if $job=access
     IP del cliente\
     Peticiones\
     Módulo\
-  into name_servor_time,name_load,name_min,name,name_hour,name_hours,name_last,name_since,\
+  into name_servor_time,name_Load,name_min,name,name_hour,name_hours,name_last,name_since,\
    name_requests,name_activesessions,name_session,name_IP,name_Requests,name_module
  !exit
 !endif
@@ -123,8 +125,11 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     best class of cumulative connection hours since\
     Your WIMS virtual class\
     List of classes\
+    carga\
+    format\
   into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
-  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass
+  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
+  name_load,name_format
  
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
@@ -273,8 +278,11 @@ de este sitio. No está autorizado a acceder a este módulo.
      Otras clases\
      Limit of participants\
     Are you sure you want to erase this class?\
+    Your WIMS virtual class\
+    WIMS class modification\
   into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
-    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
+    name_yourclass,name_yourclassmod
   !set name_creation=!nosubst is created on $class_creation and
   !set name_expires=expires on
   

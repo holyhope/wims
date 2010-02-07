@@ -44,10 +44,10 @@ class_creation in wimshome/log/classes/$c_/.def
 &nbsp;
  !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
 &nbsp;
- !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  <td align=center>$l_</td>
  <td align=center><small>
- <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
+ <a href="mailto:$m_?subject=$name_yourclass">$s_</a></small>
  <td align=center>$f_<td align=center>$e_
  !if $actives=yes
   !default activ_$c_=-
@@ -59,11 +59,11 @@ $table_end
 
 !if $clcnt>0
 <p>$table_header
-<caption>List of independent classes</caption>
+<caption>$name_listindependant</caption>
 $table_hdtr
 <th>$wims_name_name<th>$wims_name_action<th><small>$wims_name_Language</small><th>$wims_name_Supervisor
-<th>created<br><small>yyyymmdd</small>
-<th>expires<br><small>yyyymmdd</small>
+<th>$name_created<br><small>yyyymmdd</small>
+<th>$name_expire<br><small>yyyymmdd</small>
 !if $actives=yes
  <th>load<sup>[1]</sup></th>
 !endif
@@ -83,7 +83,7 @@ class_creation in wimshome/log/classes/$c_/.def
 &nbsp;
  !href cmd=reply&job2=modify&jobclass=$c_ $wims_name_change
 &nbsp;
- !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager visit
+ !href module=adm/class/classes&type=authsupervisor&class=$c_&auth_user=supervisor&auth_password=*wims_site_manager $name_visit
  <td align=center>$l_</td>
  <td align=center><small>
  <a href="mailto:$m_?subject=Your WIMS virtual class">$s_</a></small>
@@ -101,7 +101,7 @@ $table_end
  !form reply 
  <small><b>[1]</b>. ``<em>load</em>'' 
 $name_cumul
- <input type=text name="bst_since" value="$bst_since" onchange="submit()">format <font color=blue>yyyymmdd</font></small>.
+ <input type=text name="bst_since" value="$bst_since" onchange="submit()">$name_format <font color=blue>yyyymmdd</font></small>.
  <input type=hidden name="keyword" value="$keyword">
  </form>
  !href cmd=reply&job=bestclass&keyword=$keyword $wims_name_Show
