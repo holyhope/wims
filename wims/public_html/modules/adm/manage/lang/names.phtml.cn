@@ -1,22 +1,22 @@
 !set lang_exists=yes
 
-!set name_intromain=This tool allows site manager to maintain this WIMS installation online. Its\
- access is strictly controled by definitions in the configuration file
+!set name_intromain=本工具允许网站管理员在线维护 WIMS 的安装.\
+ 其准入权限由以下设置文件严格控制
 
 !!list
- !distribute lines Security setup should be established after compilation. Please execute bin/wrapuid by root!\
-   Here is the list of tasks you may perform online.\
-   Configuration\
-   System checklist\
-   to be run after each addition of new resources as modules, sheets, ... to the server\
-   Check/maintain\
-   Create/maintain\
+ !distribute lines  经编译后应采取安全措施. 请以 root 执行 bin/wrapuid!\
+   这里是可以在线执行的任务表.\
+   设置\
+   系统检查表\
+   在向服务器加入新资源(模块, 页面等)后再执行.\
+   检查/维护\
+   创建/维护\
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
   name_createmaintain
 
 !!help
 
-!set name_warning_help=Please use specific help links for the various help subjects.
+!set name_warning_help=请对不同主题使用不同帮助链接.
 
 !if $job=access
  !set title=设置准入原则
@@ -28,138 +28,131 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
   !set title=当前服务器的活动
   !distribute lines 服务器时间\
     平均载入量\
-    minute\
-    minutes\
-    hour\
-    hours\
-    last\
-    since\
+    分钟\
+    分钟\
+    小时\
+    小时\
+    最近\
+    最近\
     请求数\
-    最近10分钟内活动的会话\
+    最近 10 分钟内活动的会话\
     会话\
     客户IP\
     请求\
     模块
-  into name_servor_time,name_load,name_min,name,name_hour,name_hours,name_last,name_since,\
+  into name_servor_time,name_load,name_min,name_mins,name_hour,name_hours,name_last,name_since,\
    name_requests,name_activesessions,name_session,name_IP,name_Requests,name_module
  !exit
 !endif
 
 !if $job=attrib
-  !set title=File permission verification
+  !set title=验证文件的准许权限
   
-  !distribute lines the access permissions of this WIMS installation are all in secure mode.\
-  The following files/directories are readable by others, while they should not\
-  There are a huge number of files/directories writable by others, while they should not.\
-  The problem is only partially fixed. Please\
-   repeat the process once again\
-   until there is no longer files/directories with bad permissions\
-   List of fixed permissions this time\
-   The following files/directories are writable by others, while they should not\
-   The following files/directories are executable by others, while they should not\
-   There are a huge number of files/directories not owned by WIMS. Partial list below.\
-   The following files/directories are not owned by WIMS.\
-   The following directories/files should be world executable, while they are not.\
+  !distribute lines  WIMS 是按安全模式设置文件的准入权限.\
+   下列文件或目录可被他人读取, 而它们应该是不可读取的:\
+   有大量文件或目录可被他人执行, 而它们应该是不可执行的.\
+   此问题只是部分被纠正. 请\
+   重复此过程\
+   直至不再有文件或目录具有错误的准入权限\
+   本次被改正的准许权限表:\
+   下列文件或目录可被他人写入, 而它们应该是不可写入的:\
+   有大量文件或目录可被他人执行, 而它们应该是不可执行的.\
+   有大量文件或目录不是 WIMS 拥有的. 下面列举了一部分.\
+   以下文件或目录不是WIMS拥有的.\
+   以下的文件或目录可被任何人执行, 这是不可以的.\
 into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
   name_attrib11
   
-  !set name_warning1=WIMS directories should not contain files belonging to others.\
-  Now you MUST manually check the origin of these files, and either erase\
-  them, or change their ownership.
-  !set name_warning2=Important security recommendation: please make correct changes\
-  of the owner of the files <tt>public_html/bin/ch..root</tt>,\
-  <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.\
-  This is crucial for the security of your installation. To do so, you\
-  should execute the script bin/wrapuid as root.
- !set name_warning3=These wrong permissions represent a security risk to your installation. This has\
-  been fixed for the time being, but you should be alerted and verify access\
-  permissions more regularly. If the same problem reappears, you should check\
-  the possibility of an intrusion to your system, and data on this server\
-  might be compromised.
+  !set name_warning1=WIMS目录内不能有属于其他人的文件.\
+  你必须检查这些文件的来源, 然后删除它们或改变它们的拥有者.
+  !set name_warning2=重要安全提示: 请给文件 <tt>public_html/bin/ch..root</tt>,\
+  <tt>public_html/bin/wrap..exec</tt>, <tt>bin/wimsd</tt> 以正确的拥有者.\
+  这对安全性十分重要. 为此你应该作为 root 执行 bin/wrapuid.
+ !set name_warning3=这些错误的权限使你的机器有安全隐患. 目前这些问题已被纠正,\
+  然而你仍需经常检查准入权限. 如果同类问题再次出现, 你应该检查你的系统是否被入侵过,\
+  服务器的数据是否被做了手脚.
  !exit
 !endif
 
 !if $job=backup
 
- !distribute lines Data backup is not active on this server.\
- Click here\
- to set up the automatic daily data backup.\
- Last data backup\
- Download the backup files\
-To restore an old backup file, give the file name (it must be a *.tgz file)\
-You need a fast connection if the file to upload is big.\
+ !distribute lines 本服务器没有激活数据备份.\
+ 点击这里\
+ 以设立每日自动数据备份.\
+ 最近数据备份\
+ 下载备份文件s\
+ 为恢复旧的备份文件, 请给出文件名 (必须是*.tgz文件)\
+ 如果上传的文件太大, 则你需要有一个高速连接.\
 into name_backup,name_click,name_daily,name_last,name_download,name_restore,name_fast
  !exit
 !endif
 
 !if $job=badconf
   
-  !set name_warning1=!nosubst The file $fname is world readable!\
-    There is a serious risk that your site manager setup and/or password have\
-   leaked. Now you MUST change the file attribute of $fname by making them readable only by the owner,
-  !set name_warning2=and make more secure definitions in it whenever possible.
-  !set name_warning3=and define a new manager password.
-  !set name_warning4=Once you have done this, try this page again.
+  !set name_warning1=!nosubst 文件 $fname 能被任何人读取!\
+  很有可能你的管理员设置或密码已经泄漏.\
+  现在你必须修改文件 $fname 的权限, 使它只能被拥有者读取,
+  !set name_warning2=而且作其它必要的修改.
+  !set name_warning3=而且定义新的管理员密码.
+  !set name_warning4=这些做完后, 请再次浏览本页.
 
  !exit
 !endif
 
 !if $job iswordof class bestclass
   !set title=
-  !distribute lines Click here\
-   to configure the site's access policies to virtual classes.\
-    There is no virtual class corresponding to your search. \
-    List of institutions and class groups\
-    created\
-    expires\
-    means the number of cumulative connection hours since\
-    best class activity on this period.\
-    Participant\
-    List of independent classes\
-    means cumulative hour.student connexion since\
-    best class of cumulative connection hours since\
-    Your WIMS virtual class\
-    List of classes\
+  !distribute lines 点击这里\
+    以设置本服务站对于虚拟班级的存取策略.\
+    没有与你的搜索对应的虚拟班.\
+    学校和班级组表\
+    创建于\
+    失效于\
+    指从下列时间以来累计的连接小时数:\
+    个这段时间的最佳班级活动.\
+    参加者\
+    独立班级表\
+    指从下列时间以来累计的小时数乘学生连接数:\
+    个累计连接小时数最多的班级, 从以下时间算起:\
+    你的 WIMS 虚拟班\
+    班级表\
   into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
   name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass
  
-  !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
-  !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
-  !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
+  !set name_search1=本服务器有许多虚拟班. 为寻找一个班级, 请输入一个关键词.
+  !set name_search2=还是有太多班级与你的关键词对应. 请给出更精确的关键词.
+  !set name_total=!nosubst 这个服务器上有 $nbcls 个班级或班级组.
  !exit
 !endif
 
 
 
 !if $job=conf
-  !set title=!nosubst Configuration of $cattit
-  !distribute lines Configuration not changed because you have made no modifications.\
-     default\
+  !set title=!nosubst  $cattit 的设置
+  !distribute lines 设置没有变动过, 因为你并未修改.\
+     默认值\
    into name_config,name_default
      
- !set name_updated=!nosubst The file <tt>wims.conf</tt> is updated. You can recover the old\
-  configuration information from <tt>$backdir/wims.conf.old</tt>.
+ !set name_updated=!nosubst 文件 <tt>wims.conf</tt> 已更新. 你可从文件 <tt>$backdir/wims.conf.old</tt> 找到旧的配置信息.
   
-  !set name_warning=<b>Remark</b>. Parameters with a `*' in their titles are important ones. \
-Those with a `!' may damage the installation if you mess up.<br>\
-Anyway, remember that erasing the file <tt>log/wims.conf</tt> will\
-allow you to restart from a default configuration set. Saved configurations\
-can also be recovered from log directory.
+  !set name_warning=<b>附注</b>. 名称上打星号 `*' 的是重要参数. \
+如果你设错了带 `!' 号的参数有可能损坏你的安装.<br>\
+只要删去文件 <tt>log/wims.conf</tt> 就能在重启后回到默认配置.\
+被保存的配置也可在 log 目录里找到.
 
  !exit
 !endif
 
 
 !if $job=crontab
-  !set title=Automatic daily maintenances
- !distribute  Manually installed crontab found. You should either continue to manage cron jobs manually, or erase your manual crontab before switching to this online tool.\
-   Never use this tool if you have a personalized crontab!\
-   Strange error: I cannot recover my working directory. Check your installation: it is not working normally.\
-   Available maintenance works\
-   Daily data backup at\
-   Choose a time when the server is not busy.\
-   Activity accounting (necessary for site statistics)\
+  !set title=每日自动维护
+ !distribute lines 发现了手工设置的 crontab. 你可以继续手工管理 cron 任务, 如果你想转到这个在线工具, 则请删除你的手工的 crontab.\
+   如果你有个人设置的 crontab, 则千万不要使用本工具!\
+   奇怪的错误: 我不能恢复我的工作目录. 请检查你的安装: 它的工作不正常.\
+   可选的维护工作:\
+   在以下时刻做每日数据备份\
+   选择服务器的空闲时间.\
+   活动的计数 (用于网站统计)\
 into name_manually,name_warning,name_strange,name_available,name_daily,name_notbusy,name_accounting
 
 
@@ -167,34 +160,33 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
 !endif
 
 !if $job=del1
-  !set name_warning=Are you sure to erase the developer account
+  !set name_warning=你肯定要删除开发者帐户吗
   
  !exit
 !endif
 
 !if $job=developer
   !set title=
-  !set wims_name_adddevel=Add a new developer account
-  !set wims_name_develaccount=List of developer accounts
-  !set name_dev=Registered module developers on this server
-  !set name_visit=Visit
-  !set name_allowed=Developers who are allowed to install modules in the site's local\
-  subdirectory (enter login names):
+  !set wims_name_adddevel=添加新开发者帐户
+  !set wims_name_develaccount=开发者帐户表
+  !set name_dev=本服务器上注册的模块开发者
+  !set name_visit=访问
+  !set name_allowed=允许在服务器的本地子目录里建立模块的开发者 (输入登录名):
 
  !exit
 !endif
 
 !if $job=file
-  !distribute lines Here is the file for download\
-     Do you really want to erase the file\
-     last modified\
-     bytes\
-     is an image\
-      is a binary file\
-     is too long to be shown or edited.\
-     This file belongs to the distribution, it should not be modified.\
-     Download the file\
-     Content of\
+  !distribute lines 这是供下载的文件\
+     你确实要删除此文件\
+     最近修改时间\
+     字节\
+     是图像\
+     是二进制文件\
+     太长, 不能显示或编辑.\
+     此文件是被发布的, 不应修改.\
+     下载文件\
+     以下文件的内容\
    into name_file,name_erase,name_last,name_bytes,name_image,name_binary,name_toolong,\
    name_distrib,name_download,name_content
      
@@ -202,129 +194,125 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
 !endif
 
 !if $job=fs
-!distribute lines Current directory\
-  Subdirectories (click to go)\
-  Symbolic links\
-  Add a new file to it\
-  Files\
-  No regular file in this directory.\
+!distribute lines 当前目录\
+  子目录 (点击即进入):\
+  符号链接\
+  添加一个新文件\
+  文件\
+  本目录内没有正常的文件.\
 into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 
  !exit
 !endif
 
 !if $job=housekeep
- !distribute lines Click here\
-   for backup management and\
-   here\
-  for manual module management.\
+ !distribute lines 点击这里\
+  以进行备份管理, 与\
+  这里\
+  以进行手工模块管理.\
  into name_click,name_backup,name_here,name_manual
  !exit
 !endif
 
 !if $job=no_right
-  !set name_warning=Sorry but you are not recognized as manager of this site. You don't have\
-right to access this module.
+  !set name_warning=对不起, 你不是本站的管理员. 你无权进入此模块.
 !exit
 !endif
 !if $job=mkindex
-  !set title=Rebuild resource index
-  !distribute lines Resource index rebuilding is scheduled. You will receive a mail containing the result of resource rebuilding.\
-    Rebuilding resource index takes server resources, so should better be avoided when the server is very busy.\
-    Result of last resource index building at\
-    Click here\
-    to restart a resource index rebuilding (you shouldn't).\
-    to start resource index rebuilding.\
+  !set title=重建资源索引
+  !distribute lines  资源索引重建已经列入计划任务. 你将收到包含重建结果的邮件.\
+    重建资源索引会占用服务器资源, 应该在服务器空闲时执行.\
+    以下时刻的最新资源索引重建的结果\
+    点击这里\
+    开始资源索引重建 (小心).\
+    开始建立资源索引.\
   into name_scheduled,name_rebuilding,name_result,name_click,name_restart,name_start
 !exit
 !endif
 
 !if $job=mod2
-  !set name_error1=!nosubst <b>Error</b>. The login name <tt>$devlogin</tt> is already in use by another\
- account. Please choose a different name.
-  !set name_error2=!nosubst <b>Error</b>. The <tt>$badfield</tt> field is not correctly entered. Please\
- correct it.
+  !set name_error1=!nosubst <b>错误</b>. 登录名tt>$devlogin</tt>经被使用. 请另选一个.
+  !set name_error2=!nosubst <b>错误</b>. 区域 <tt>$badfield</tt> 输入内容不对. 请改正.
   
 !exit
 !endif
 
 !if $job=modform
-  !set name_modification=Modification of properties of a developer account. (Leave the password field\
- empty if you don't want to change the old password.)
- !set name_add=To add a new developer account, please specify: (All the fields are mandatory)
+  !set name_modification=开发者帐户性质的修改. (如果不改变原来的密码, 则让密码栏留空.)
+ !set name_add=为加入一个新的开发者帐户, 请输入: (所有栏目均应填写)
 !exit
 !endif
 
 !if $job iswordof modify erase
   !set title=
-  !distribute lines Important properties of the virtual class\
-     of\
-     serial number\
-     This class comes with WIMS distribution.\
-     Supervisor password\
-     Password for participant registration\
-     Erasing this password makes the class world-accessible.\
-     Secure hosts\
-    Expiration date\
-    notify the supervisor\
-    of the class of your changes.\
-    Other classes\
-    Limit of participants\
-    Are you sure you want to erase this class?\
+  !distribute lines 虚拟班级的重要性质:\
+     属于\
+     序列号\
+     本班级来自 WIMS 的发布.\
+     主持教师密码\
+     参加者注册密码\
+     删除此密码会使人人都能进入此班级.\
+     安全主机\
+     失效日期\
+     通知主持教师\
+    .\
+    其它班级\
+    参加者人数限制\
+    你确定要删除此班级?\
   into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
     name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase
-  !set name_creation=!nosubst is created on $class_creation and
-  !set name_expires=expires on
-  !set name_remark=<b>Remark</b>. Changes to these fields only make sense when asked for by\
-     the supervisor of the class (who has lost the control of the class). And you should probably
+  !set name_creation=!nosubst 创立在 $class_creation 且于
+  !set name_expires=!nosubst $class_expiration 到期.
+  !set name_remark=<b>附注</b>. 只有当班级的主持教师提出请求时 (他本人失去了控制) 时才能改变上述内容,\
+而且你应该把你作的改变
 !exit
 !endif
 
 
 !if $job=modules
-  !set name_scheduled=!nosubst Your $auto command is scheduled for execution. The result will be sent to\
-    you by email.  Please do not repeat this command before the execution is completed.
-  !distribute lines in module publication\
-    for modules in zone\
-    and category\
-    changed at least\
-    days ago\
+  !set name_scheduled=!nosubst 你的 $auto 是列入计划执行的. 结果会用电邮发给你.\
+ 在执行完成前请勿重复此命令.
+  !distribute lines 模块发布网站\
+    模块的范围\
+    领域\
+    最近改动\
+    天前\
   into name_mod,name_zone,name_cat,name_change,name_ago
   
-  !distribute lines Error fetching the module \
-      Error installing/updating\
-      Installing/updating\
-      You will need to\
-      successful\
-      test it\
-      rebuild module index\
-      Install\
-      Update\
-      versus\
-      Changes\
-      New version of\
-      New module\
-      You need to\
-      after module update\
-      Click here\
-      to configure daily automatic module update.\
-      You can also update\
+  !distribute lines 提取模块时出错\
+      安装/更新时出错\
+      安装/更新\
+      成功\
+      你需要\
+      测试\
+      重建模块索引\
+      安装\
+      更新\
+      对\
+      修改\
+      新版本\
+      新模块\
+      你需要在模块更新后\
+      \
+      点击这里\
+      配置每天的自动模块更新.\
+      你也可以更新\
     into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
       name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
       name_click,name_automatic,name_rss
 
 !!check
-  !distribute lines No module publication found corresponding to your search.\
-    Click on the address of a module to check/install/update it.\
-    Found new versions\
-    Found new modules\
-    update all\
-    installed all\
-    updated by\
-    New version\
-    New modules\
-    Server<br>version\
-    published<br>by\
+  !distribute lines 没有你要搜索的模块发布.\
+    点击模块的地址以检查/安装/更新.\
+    找到新的版本\
+    找到新模块\
+    更新所有的\
+    安装所有的\
+    更新于\
+    新版本\
+    新模块\
+    服务器<br>版本\
+    发布者\
   into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
  
 
@@ -332,38 +320,37 @@ right to access this module.
 !endif
 
 !if $job=ressources
-  !set name_click=Click here
-  !set name_config_site=to configure the site's access restriction policy.
+  !set name_click=点击这里
+  !set name_config_site=以设置网站的准入限制策略.
   
 !exit
 !endif
 !if $job=restore
 
-   !set name_warning1=Wrong archive file: no compatible content found in it.
-   !set name_warning2=Data in following directories are successfully restored/installed
+   !set name_warning1=错误的档案文件: 其中没有发现相应的内容.
+   !set name_warning2=以下目录里的数据已被成功恢复/安装
  !exit
 !endif
  
 !if $job=sess
-  !set title=User session
-  !distribute lines Content of the session\
-    Content of the session variable file\
-    Content of the file\
-    List of active sessions\
+  !set title=用户会话
+  !distribute lines 会话内容\
+    以下会话变量文件的内容\
+    以下文件的内容\
+    激活的会话表\
   into name_content_s,name_content_v,name_content_f,name_listsessions
 !exit
 !endif
 
 !if $job=upload
- !set name_warning=To upload resources to the server, insert the cd-rom or usb key containing\
-   the resource into your computer, and find a file named "wims-resource.tgz" or "wimsres-*.tgz"\
-  in the following input field
- !set name_need=You need a fast connection if the file to upload is big.
+ !set name_warning=为更新服务器的资源, 请把包含资源的光盘或 usb 存储插入计算机,\
+同时在以下的输入区域内找出 "wims-resource.tgz" 或 "wimsres-*.tgz": 
+ !set name_need=当上传文件很大时, 你需要有一个高速的连接.
 !exit
 !endif
 
 !if $job=wrongpass
-  !set name_warning=<b>Error</b>. You have given a wrong password.
-  !set name_try=Try again
+  !set name_warning=<b>错误</b>. 你的密码是错的.
+  !set name_try=再试一次
 !exit
 !endif
