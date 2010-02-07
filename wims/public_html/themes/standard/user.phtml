@@ -13,6 +13,7 @@
 !set wims_name_U_oclass=$U_oclass
 !set wims_name_V_Chpref=$V_Chpref
 !set wims_name_passwd=$V_Chpass
+!set wims_name_mail=$V_Wsup
 !!!!
 
 !set home_theme=yes
@@ -66,9 +67,8 @@ $wims_classname <small>($(wims_name_$class_typename))</small>
  !read ./tools.phtml
  !goto end
 !endif
-
-!set supmail=!mailurl $wims_supervisormail $wims_supervisor
-
+!set supmail=!mailurl $wims_supervisormail $wims_name_mail
+!set supmail=!replace internal <a by <a class="mail" in $supmail
 !if $n_>=4
  !distribute words $etest into h_,s_,t_,n_
  !set r_=!record 0 of wimshome/sessions/$s_/examreg.$n_
@@ -398,7 +398,8 @@ $U_greet
 !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=participant
 </span><!-- menuitem-->
 <span class="menuitem">
-!read ./adm/oneitem.phtml mail,5,$wims_supervisormail,$V_Wsup
+$supmail
+!!!read ./adm/oneitem.phtml mail,5,$wims_supervisormail,$V_Wsup
 </span><!-- menuitem-->
 </div><!--end menublock-->
 <div class="menublock">
