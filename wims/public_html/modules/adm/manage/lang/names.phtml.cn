@@ -127,6 +127,35 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set name_search1=本服务器有许多虚拟班. 为寻找一个班级, 请输入一个关键词.
   !set name_search2=还是有太多班级与你的关键词对应. 请给出更精确的关键词.
   !set name_total=!nosubst 这个服务器上有 $nbcls 个班级或班级组.
+  
+  !if $job2 iswordof modify erase
+  !set title=
+  !distribute lines 虚拟班级的重要性质:\
+     属于\
+     序列号\
+     本班级来自 WIMS 的发布.\
+     主持教师密码\
+     参加者注册密码\
+     删除此密码会使人人都能进入此班级.\
+     安全主机\
+     失效日期\
+     通知主持教师\
+    .\
+    其它班级\
+    参加者人数限制\
+    你确定要删除此班级?\
+    Your WIMS virtual class\
+    WIMS class modification\
+  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
+    name_yourclass,name_yourclassmod
+  !set name_creation=!nosubst 创立在 $class_creation 且于
+  !set name_expires=!nosubst $class_expiration 到期.
+  !set name_remark=<b>附注</b>. 只有当班级的主持教师提出请求时 (他本人失去了控制) 时才能改变上述内容,\
+而且你应该把你作的改变
+   !exit
+ !endif
+
  !exit
 !endif
 
@@ -144,7 +173,15 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 如果你设错了带 `!' 号的参数有可能损坏你的安装.<br>\
 只要删去文件 <tt>log/wims.conf</tt> 就能在重启后回到默认配置.\
 被保存的配置也可在 log 目录里找到.
-
+!!confcat=6
+ !distribute lines 点击这里\
+  以进行备份管理, 与\
+  这里\
+  以进行手工模块管理.\
+ into name_click,name_backup,name_here,name_manual
+ 
+!!ressource
+!set name_config_site=以设置网站的准入限制策略.
  !exit
 !endif
 
@@ -210,15 +247,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
  !exit
 !endif
 
-!if $job=housekeep
- !distribute lines 点击这里\
-  以进行备份管理, 与\
-  这里\
-  以进行手工模块管理.\
- into name_click,name_backup,name_here,name_manual
- !exit
-!endif
-
 !if $job=no_right
   !set name_warning=对不起, 你不是本站的管理员. 你无权进入此模块.
 !exit
@@ -247,35 +275,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
  !set name_add=为加入一个新的开发者帐户, 请输入: (所有栏目均应填写)
 !exit
 !endif
-
-!if $job iswordof modify erase
-  !set title=
-  !distribute lines 虚拟班级的重要性质:\
-     属于\
-     序列号\
-     本班级来自 WIMS 的发布.\
-     主持教师密码\
-     参加者注册密码\
-     删除此密码会使人人都能进入此班级.\
-     安全主机\
-     失效日期\
-     通知主持教师\
-    .\
-    其它班级\
-    参加者人数限制\
-    你确定要删除此班级?\
-    Your WIMS virtual class\
-    WIMS class modification\
-  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
-    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
-    name_yourclass,name_yourclassmod
-  !set name_creation=!nosubst 创立在 $class_creation 且于
-  !set name_expires=!nosubst $class_expiration 到期.
-  !set name_remark=<b>附注</b>. 只有当班级的主持教师提出请求时 (他本人失去了控制) 时才能改变上述内容,\
-而且你应该把你作的改变
-!exit
-!endif
-
 
 !if $job=modules
   !set name_scheduled=!nosubst 你的 $auto 是列入计划执行的. 结果会用电邮发给你.\
@@ -327,12 +326,6 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 !exit
 !endif
 
-!if $job=ressources
-  !set name_click=点击这里
-  !set name_config_site=以设置网站的准入限制策略.
-  
-!exit
-!endif
 !if $job=restore
 
    !set name_warning1=错误的档案文件: 其中没有发现相应的内容.

@@ -132,6 +132,36 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
   !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
+  
+  !if $job2 iswordof modify erase
+  !set title=
+  !distribute lines Important properties of the virtual class\
+     of\
+     serial number\
+     This class comes with WIMS distribution.\
+     Supervisor password\
+     Password for participant registration\
+     Erasing this password makes the class world-accessible.\
+     Secure hosts\
+    Expiration date\
+    notify the supervisor\
+    of the class of your changes.\
+    Other classes\
+    Limit of participants\
+    Are you sure you want to erase this class?\
+    Your WIMS virtual class\
+    WIMS class modification\
+  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
+    name_yourclass,name_yourclassmod
+  !set name_creation=!nosubst is created on $class_creation and
+  !set name_expires=expires on
+  !set name_remark=<b>Remark</b>. Changes to these fields only make sense when asked for by\
+     the supervisor of the class (who has lost the control of the class). And you should probably
+!exit
+!endif
+
+
  !exit
 !endif
 
@@ -151,7 +181,15 @@ Those with a `!' may damage the installation if you mess up.<br>\
 Anyway, remember that erasing the file <tt>log/wims.conf</tt> will\
 allow you to restart from a default configuration set. Saved configurations\
 can also be recovered from log directory.
+!!confcat=6
+ !distribute lines Click here\
+   for backup management and\
+   here\
+  for manual module management.\
+ into name_click,name_backup,name_here,name_manual
 
+!!ressources
+  !set name_config_site=to configure the site's access restriction policy.
  !exit
 !endif
 
@@ -215,15 +253,6 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
   No regular file in this directory.\
 into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 
- !exit
-!endif
-
-!if $job=housekeep
- !distribute lines Click here\
-   for backup management and\
-   here\
-  for manual module management.\
- into name_click,name_backup,name_here,name_manual
  !exit
 !endif
 
@@ -339,12 +368,6 @@ right to access this module.
 !exit
 !endif
 
-!if $job=ressources
-  !set name_click=Click here
-  !set name_config_site=to configure the site's access restriction policy.
-  
-!exit
-!endif
 !if $job=restore
 
    !set name_warning1=Wrong archive file: no compatible content found in it.

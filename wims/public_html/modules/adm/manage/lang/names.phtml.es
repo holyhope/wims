@@ -134,10 +134,39 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
   !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
- !exit
+  
+  if $job2 iswordof modify erase
+  !set title=
+  !distribute lines Propiedades importantes de la clase virtual \
+     de\
+     número de serie\
+     Esta clase viene con la distribución de WIMS.\
+     Contraseña del profesor\
+     Contraseña para la inscripción de participantes\
+     Borrar esta contraseña hace que todo el mundo pueda acceder a la clase.\
+     Estaciones de trabajo seguras\
+     Fecha de expiración\
+     notificar al superviso\
+     de la clase acerca de sus cambios.\
+     Otras clases\
+     Limit of participants\
+    Are you sure you want to erase this class?\
+    Your WIMS virtual class\
+    WIMS class modification\
+  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
+    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
+    name_yourclass,name_yourclassmod
+  !set name_creation=!nosubst is created on $class_creation and
+  !set name_expires=expires on
+  
+  !set name_remark=<b>Nota</b>. Los cambios en estos campos sólo tienen sentido si es el \
+     profesor responsable de la clase el que los solicita (y ha perdido el  control de la clase).\
+     Usted probablemente debería
+!exit
 !endif
 
-
+ !exit
+!endif
 
 !if $job=conf
   !set title=!nosubst Configuración de $cattit
@@ -153,7 +182,14 @@ Los que tienen un signo de peligro `!' pueden dañar la instalación si comete alg
 De todas formas recuerde que si borra el fichero <tt>log/wims.conf</tt>\
 volverá a empezar con una configuración por defecto. También puede recuperar\
 las configuraciones guardadas en el directorio log.
-
+!!confcat=6
+ !distribute lines Click here\
+   for backup management and\
+   here\
+  for manual module management.\
+ into name_click,name_backup,name_here,name_manual
+!!ressources
+  !set name_config_site=para configurar las normas de restricción de acceso del sitio.
  !exit
 !endif
 
@@ -216,15 +252,6 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
   No hay ningún fichero normal en este directorio.\
 into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 
- !exit
-!endif
-
-!if $job=housekeep
- !distribute lines Click here\
-   for backup management and\
-   here\
-  for manual module management.\
- into name_click,name_backup,name_here,name_manual
  !exit
 !endif
 
@@ -342,12 +369,6 @@ de este sitio. No está autorizado a acceder a este módulo.
 !exit
 !endif
 
-!if $job=ressources
-  !set name_click=Pulse aquí
-  !set name_config_site=para configurar las normas de restricción de acceso del sitio.
-  
-!exit
-!endif
 !if $job=restore
 
    !set name_warning1=Archivo comprimido en mal estado: no se ha encontrado ningún contenido en él.
