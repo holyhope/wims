@@ -158,7 +158,7 @@
  !set wims_name_sequences=secuencias
 !endif
 
-!if adm/class isin $module
+!if adm/class isin $module or adm/manage isin $module
  !distribute line Zona de los Profesores \
 	Zona de los estudiantes\
 	Clases de ejemplo\

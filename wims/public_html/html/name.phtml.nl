@@ -160,7 +160,7 @@
  !set wims_name_sequences=werkvolgorde
 !endif
 
-!if adm/class isin $module
+!if adm/class isin $module or adm/manage isin $module
  !distribute line Docenten \
 	Studenten \
 	Demonstratie klassen\
