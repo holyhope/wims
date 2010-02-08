@@ -190,6 +190,50 @@ las configuraciones guardadas en el directorio log.
  into name_click,name_backup,name_here,name_manual
 !!ressources
   !set name_config_site=para configurar las normas de restricción de acceso del sitio.
+
+!!graphics and software 
+   !distribute line para comprobar los efectos de la nueva configuración.\
+   Compruebe las aplicaciones de cálculo utilizadas por numerosos módulos de WIMS\
+   si quiere comprobar las aplicaciones gráficas\
+   orden\
+   importancia\
+   disponibilidad\
+   No disponible\
+   Ejemplo de módulos que dependen de él\
+   to check the effect of the new setup\
+   Este software va normalmente incluido en la distribución de WIMS. Quizás  haya fallado su compilación o usted la ha excluido deliberadamente.\
+ into name_check,name_checksoftware,name_checkgraphics,name_command,name_importance,\
+   name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
+   
+   
+!set name_warning_program=WIMS no ha podido encontrar los siguientes programas que usan algunos de sus\
+ módulos. Estas aplicaciones o bien no están instaladas en el sistema\
+ (en cuyo caso por favor instálelas) o bien están instaladas en un directorio\
+ que no está incluido en el parámetro PATH (ruta) en
+
+!set name_imagemagick=<b>ERROR</b>! No hemos encontrado una instancia funcional de ImageMagick en su sistema.\
+ Sin este paquete la mayoría de las imágenes y animaciones de WIMS estarán mal.\
+ En consecuencia le recomendamos vivamente que instale ImageMagick antes de continuar.
+ 
+!set name_dynamic=Comprobar las imágenes dinámicas (puede plantearse hacerlo en distintos navegadores)
+
+!set name_tex=Esta fórmula usa una inserción dinámica escrita en TeX. Debería verse correctamente, a no ser \
+ que TeX no esté instalado correctamente en su sistema.\
+ Puede cambiar la escala de cambio del tamaño de los tipos de letra TeX si aparecen\
+ demasiado grandes o demasiado pequeños
+
+!set name_drawing=Las siguientes dos imágenes han sido generadas por la utilidad interna\
+  de dibujo dinámico. La primera es una imagen estática, la segunda es animada.\
+  ¿Las ve correctamente? De lo contrario pruebe otros formatos gráficos y de animación.
+
+
+!set name_gnuplot1=La siguiente representación gráfica usa gluplot.
+!set name_gnuplot2= Las curvas deben tener colores 
+diferentes. Si el resultado no es correcto pruebe con distintos formatos gráficos.
+!set name_povray1=La siguiente imagen de traza de rayos es independiente de los formatos anteriores. \
+Si no aparece, entonces
+!set name_povray2=no está correctamente instalado.
+
  !exit
 !endif
 

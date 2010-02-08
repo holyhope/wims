@@ -1,20 +1,20 @@
+
 !if $save!=$empty and $changed>0
- !href cmd=reply#check Click here
- to check the effect of the new setup.
+ !href cmd=reply#check $name_click
+$name_check
  <p>
  !exit
 !endif
 
 <p><hr> <p>
 <a name=check></a>
-Check computational softwares used by various
-WIMS modules (
-!href cmd=reply&confcat=5#check click here
- to check graphics softwares.)
+$name_checksoftware (
+!href cmd=reply&confcat=5#check $name_click
+ $name_checkgraphics.)
 
 <p>$table_header
 $table_hdtr
-<th>$wims_name_name<th>command<th><small>importance</small><th>.<th>availability
+<th>$wims_name_name<th>$name_command<th><small>name_importance</small><th>.<th>name_availability
 
 !distribute items PARI/GP,Maxima,MuPAD,GAP,Octave,\
 	Macaulay 2,Yacas\
@@ -47,22 +47,20 @@ $table_hdtr
  !if $av!=$empty and $res=$r_
   $wims_name_yes: $av
  !else
-  Unavailable.
+  $name_Unavailable.
  !endif
 !next sw
 
 $table_end <p>
 
 !if $othermiss!=$empty
- WIMS is unable to find the following programs which are used by some of its
- modules. These programs are either not installed in the system (in which
- case please install them), or are installed in a directory not included in
- the searching path of WIMS (in which case you can add the directory to
- the PATH parameter in
- !href cmd=reply&job=conf&confcat=12 technical topics
+ $name_warning_program
+ !set ll=record 12 of lang/cat.$modu_lang
+ !set ll=!line 2 of $ll
+ !href cmd=reply&job=conf&confcat=12 $ll
 ).
  <p>$table_header
- $table_hdtr<th>$wims_name_name<th>Example of modules depending on it
+ $table_hdtr<th>$wims_name_name<th>$name_dependingonit
  !for other in $othermiss
   
   !set o=!replace internal units-filter by units in $other
@@ -77,9 +75,7 @@ $table_end <p>
    Lots of modules
   !endif
   !if $other iswordof chemeq units-filter
-   <small>This software is usually attached to WIMS distribution. Its
-   compilation may have failed, or you have deliberatedly excluded
-   the compilation of it.</small>
+   <small>$name_fail.</small>
   !endif
   </td></tr>
  !next other
