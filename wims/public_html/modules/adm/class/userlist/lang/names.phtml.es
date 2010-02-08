@@ -81,7 +81,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
  !goto end
 !endif
 !if $job=getraw
-  !set name_title_getraw=!nosubst Detalles del trabajo de $lastname, $firstname</br>(datos en bruto)
+  !set name_title_getraw=!nosubst Detalles del trabajo de $name_student1 <br>(datos en bruto)
   !goto end
 !endif
 
