@@ -398,3 +398,9 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
   !set name_try=Vuelva a intentarlo
 !exit
 !endif
+
+!if $job=rss
+   !set title= Rebuild RSS feed
+   !set name_start=to start RSS Feed rebuilding.
+ !exit
+!endif
