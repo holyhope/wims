@@ -1,0 +1,21 @@
+adresse=packs.shtooka.net
+swac_list=deu-balm-alexandra,\
+dut-wcp,\
+eng-balm-verbs,\
+eng-wcp-us,\
+fra-balm-conjug,\
+fra-balm-voc,\
+fra-vocf,\
+swe-balm-voc
+
+swac_list=!sh ls -d $wims_home/public_html/scripts/data/swac/*/
+swac_list=!replace internal / by , in $swac_list
+swac_list=!column -2 of $swac_list
+
+packs=!items2words $swac_list
+
+!if $job2=add
+  log=!mexec scripts/swac.sh $packs 
+!endif
+
+!reset job2
