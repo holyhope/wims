@@ -527,7 +527,7 @@ is dit wissen niet meer mogelijk.
 <p>
 2. Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist
 Deze klas moet dan wel eerst 
-!href cmd=reply&job=neighbor&job2=sharelist $name_stopsharing
+!href cmd=reply&job=neighbor&job2=sharelist stop de deling
  van lesmateriaal voor dat er gewist kan worden.
 
 
