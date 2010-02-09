@@ -1,6 +1,7 @@
+
 !set sp2=$special_parm2
-!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
-	bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,examshow,option\
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,topscores\
 	default $
 
 !if $sp2=$empty
@@ -39,6 +40,18 @@ Zie hieroor de wachtwoord-pagina
  Alle belangrijke berichten (geheime aanmeldingscodes, beindigingsdata van uw klassen enz.)
  worden naar dit adres gestuurd. U moet dus een bestaand en actief emailadres opgeven, anders
  kunt U zelfs de controle verliezen over Uw klas.
+!exit
+
+:option
+ <b>Option words of the class</b>. The following words can be used here:
+ <ul>
+ <li><tt>showshexpire</tt>. Show the expiration date of worksheets in the
+  home page of participants.
+ <li><tt>showexexpire</tt>. Show the expiration date of exam sheets in the
+  home page of participants.
+ <li><tt>showshweight</tt>. Show sheet weight in the
+  home page of participants.
+ </ul> 
 !exit
 
 :lang
@@ -114,8 +127,10 @@ Standaard waarden: achtergrond kleur = white, menu kleur = #D0C080
  <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
  Status van werkblad 1, werkblad 2, tentamen 1, ... dit is een niet negatief geheel getal; 0
  = nog niet klaar voor gebruik, 1 = actief, 2 = verlopen, 3 = onzichtbaar.
+ <li><tt>\daymessage</tt> : message du jour de la classe.</li>
+ <li><tt>\userdaymessage</tt> : message du jour individuel de chaque participant.</li>
  </ul>
-!exit
+!goto end
 
 :bgimg
  Achtergrond plaatje (tegel) voor de pagina's in de digi-klas.
@@ -176,6 +191,7 @@ Er kunnen zich dus problemen voordoen bij dynamische IP adressen.
 <li><p>4: Cookie-tracking + https.
 <li><p>5: Cookie-tracking + Host lock.
 <li><p>6: Alle methodes geactiveerd.
+<li><p>7: The class is closed. No participant connection accepted.
 </ul> <p>
 !exit
 
@@ -210,23 +226,37 @@ Dit type registratie kan een zeer groot beslag leggen op de harde schijf ruimte.
 Bij een te hoge instelwaarde loopt U het risico dat Uw diskquotum wordt overschreden !
 !exit
 
-:option
- <b>Option words of the class</b>. The following words can be used here:
- <ul>
- <li><tt>showshexpire</tt>. Show the expiration date of worksheets in the
-  home page of participants.
- <li><tt>showexexpire</tt>. Show the expiration date of exam sheets in the
-  home page of participants.
-  <li><tt>showshweight</tt>. Show sheet weight in the
-  home page of participants.
- </ul> 
-!exit
-
 :examshow
 Als deze optie op <tt>nee</tt> staat, kunnen de studenten de resultaten van een tentamen niet zien.
 De docent natuurlijk wel.
 !exit
 
+:authtype
+<b>Type d'authentification</b> : 
+Vous pouvez utiliser une authentification par ldap ou l'authentification par wims.
+Dans le cas où l'authentification par ldap ne réussit pas, l'authentification
+par la procédure interne de wims est essayée.
+<p>
+Exemple de paramètres pour une authentification ldap :
+<pre>
+ldap_host=ldap.u-psud.fr
+ldap_port=389
+ldap_version=3
+ldap_base=ou=people,dc=u-psud,dc=fr
+ldap_branch=ou=people,dc=u-psud,dc=fr
+ldap_uid=uid
+ldap_login=supannAliasLogin
+</pre>
+!exit
+
+:modtoolchg
+<b>Compte Modtool</b> : 
+Une fois que vous êtes entré dans Modtool par la classe, votre compte Modtool
+est enregistré. Vous pouvez ici effacer cet enregistrement si vous avez besoin
+d'utiliser un autre compte Modtool. Vous devez ensuite passer par le lien <tt>Modtool</tt>
+sur la page d'accueil.
+
+!exit
 :ent
 <b>Links on another plateform</b> :
 You may add a link on another plateform :
@@ -234,6 +264,17 @@ You may add a link on another plateform :
 For example,
 <pre>Dokeos,http://-------</pre>
 If you need more than one link, they must be seperate by ";". 
+
+!exit
+
+:topscores
+<center><b>Meilleures notes</b></center>
+<p> Si ce nombre n est au moins 1, lorsqu'un 
+participant demande ses notes, il verra également la liste des
+n participants ayant les meilleures moyennes.<p>
+Ces moyennes ne tiennent pas compte des notes manuelles, donc laisser 0 s'il y a de telles notes.
+<p>
+Défaut=0
 
 !exit
 

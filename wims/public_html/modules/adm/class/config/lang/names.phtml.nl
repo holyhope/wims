@@ -236,7 +236,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set title=Verbinding met andere servers / platformen
  !set name_listserver=Lijst met bestaande server verbindingen
 
- !distribute Test de server verbinding\
+ !distribute lines Test de server verbinding\
    Test de netwerkverbinding met een klas\
    Voeg een netwerkverbinding met een klas toe\
    Onderhoud van de klas op een netwerkverbonden server\
@@ -289,7 +289,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 
 !if $job=oefdefault
  !set title=Configuratie voor OEF modules<br>[Online Exercise Format] 
-  !distribute een serie oefeningen heeft\
+  !distribute lines een serie oefeningen heeft\
   Moeilijkheidsgraad\
    Tijs limiet\
    seconden\

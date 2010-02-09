@@ -1,7 +1,7 @@
 
 !set sp2=$special_parm2
-!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
-	bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,examshow,option\
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,topscores\
 	default $
 
 !if $sp2=$empty
@@ -141,7 +141,7 @@ debe plantearse también la utilización de contraseñas desechables
  Estado de la hoja 1, hoja 2, examen 1, ... Es un entero no negativo;
  0 = en preparación, 1 = activa, 2 = caducada, 3 = oculta.</li>
  </ul>
-!exit
+!goto end
 
 :bgimg
  Fichero de la imagen de fondo (o pieza de mosaico) para las páginas de la 
@@ -155,7 +155,7 @@ El tema de estilo de su clase.
 !exit
 
 :theme_icon
-The icons in the menu
+Les icones qui apparaissent dans les menus
 !exit
 
 :css
@@ -251,19 +251,54 @@ corre el riesgo de superar la cuota de disco.
 :examshow
 Dans le cas où cette option est mise sur <tt>Non</tt>, les élèves ne peuvent
 pas revoir les enregistrements d'examens. Seul l'enseignant le peut.
+!exit
+
+:authtype
+<b>Type d'authentification</b> : 
+Vous pouvez utiliser une authentification par ldap ou l'authentification par wims.
+Dans le cas où l'authentification par ldap ne réussit pas, l'authentification
+par la procédure interne de wims est essayée.
+<p>
+Exemple de paramètres pour une authentification ldap :
+<pre>
+ldap_host=ldap.u-psud.fr
+ldap_port=389
+ldap_version=3
+ldap_base=ou=people,dc=u-psud,dc=fr
+ldap_branch=ou=people,dc=u-psud,dc=fr
+ldap_uid=uid
+ldap_login=supannAliasLogin
+</pre>
+!exit
+
+:modtoolchg
+<b>Compte Modtool</b> : 
+Une fois que vous êtes entré dans Modtool par la classe, votre compte Modtool
+est enregistré. Vous pouvez ici effacer cet enregistrement si vous avez besoin
+d'utiliser un autre compte Modtool. Vous devez ensuite passer par le lien <tt>Modtool</tt>
+sur la page d'accueil.
 
 !exit
 
 :ent
-<b>Links on another plateform</b> :
-You may add a link on another plateform :
-<pre> link_title,link_adress</pre>
-For example,
-<pre>Dokeos,http://-------</pre>
-If you need more than one link, they must be seperate by ";". 
+<b>Liens sur une plateforme ou sur une page web</b> :
+Vous pouvez indiquer le lien sur une plateforme ou sur une page web sous la forme
+<pre> titre_du_lien,adresse_du_lien</pre>
+Par exemple ,
+<pre>Dokeos,http://----</pre>
+Si vous désirez mettre plusieurs liens, séparez-les par des points virgules.
 
 !exit
 
-:end
+:topscores
+<center><b>Meilleures notes</b></center>
+<p> Si ce nombre n est au moins 1, lorsqu'un 
+participant demande ses notes, il verra également la liste des
+n participants ayant les meilleures moyennes.<p>
+Ces moyennes ne tiennent pas compte des notes manuelles, donc laisser 0 s'il y a de telles notes.
+<p>
+Défaut=0
+
+!exit
 
 :end

@@ -1,7 +1,7 @@
 
 !set sp2=$special_parm2
-!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,\
-	bgcolor,homepage,bgimg,theme,theme_icon,css,logo,lock,exolog,examlog,examshow,option\
+!bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
+	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,topscores\
 	default $
 
 !if $sp2=$empty
@@ -59,14 +59,16 @@ jetables (voir la page de changement de mot de passe).
   travail dans la page d'entrée des participants.
  <li><tt>showexexpire</tt>. Montre la date d'expiration des feuilles 
   d'examen dans la page d'entrée des participants.
- <li><tt>showshweight</tt>. Montre le coefficient des feuilles
+  <li><tt>showshweight</tt>. Montre le coefficient des feuilles
   dans la page d'entrée des participants.
  </ul> 
 !exit
 
 :lang
  Langues disponibles : <ul>
+ <li>ca (Catalan)
  <li>cn (Chinois gb)
+ <li>de (Allemand)
  <li>en (Anglais)
  <li>es (Espagnol)
  <li>fr (Français)
@@ -141,8 +143,10 @@ jetables (voir la page de changement de mot de passe).
  <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
  Etat de feuille 1, feuille 2, examen 1, ... C'est un entier non négatif ;
  0 = en préparation, 1 = active, 2 = périmée, 3 = cachée.</li>
+ <li><tt>\daymessage</tt> : message du jour de la classe.</li>
+ <li><tt>\userdaymessage</tt> : message du jour individuel de chaque participant.</li>
  </ul>
-!exit
+!goto end
 
 :bgimg
  Fichier de l'image de fond (tuile) pour les pages dans la classe. Vous pouvez
@@ -156,7 +160,7 @@ Le thème de style de votre classe.
 !exit
 
 :theme_icon
-The icons in the menu
+Les icones qui apparaissent dans les menus
 !exit
 
 :css
@@ -260,6 +264,33 @@ Dans le cas où cette option est mise sur <tt>Non</tt>, les élèves ne peuvent
 pas revoir les enregistrements d'examens. Seul l'enseignant le peut.
 !exit
 
+:authtype
+<b>Type d'authentification</b> : 
+Vous pouvez utiliser une authentification par ldap ou l'authentification par wims.
+Dans le cas où l'authentification par ldap ne réussit pas, l'authentification
+par la procédure interne de wims est essayée.
+<p>
+Exemple de paramètres pour une authentification ldap :
+<pre>
+ldap_host=ldap.u-psud.fr
+ldap_port=389
+ldap_version=3
+ldap_base=ou=people,dc=u-psud,dc=fr
+ldap_branch=ou=people,dc=u-psud,dc=fr
+ldap_uid=uid
+ldap_login=supannAliasLogin
+</pre>
+!exit
+
+:modtoolchg
+<b>Compte Modtool</b> : 
+Une fois que vous êtes entré dans Modtool par la classe, votre compte Modtool
+est enregistré. Vous pouvez ici effacer cet enregistrement si vous avez besoin
+d'utiliser un autre compte Modtool. Vous devez ensuite passer par le lien <tt>Modtool</tt>
+sur la page d'accueil.
+
+!exit
+
 :ent
 <b>Liens sur une plateforme ou sur une page web</b> :
 Vous pouvez indiquer le lien sur une plateforme ou sur une page web sous la forme
@@ -269,4 +300,16 @@ Par exemple ,
 Si vous désirez mettre plusieurs liens, séparez-les par des points virgules.
 
 !exit
+
+:topscores
+<center><b>Meilleures notes</b></center>
+<p> Si ce nombre n est au moins 1, lorsqu'un 
+participant demande ses notes, il verra également la liste des
+n participants ayant les meilleures moyennes.<p>
+Ces moyennes ne tiennent pas compte des notes manuelles, donc laisser 0 s'il y a de telles notes.
+<p>
+Défaut=0
+
+!exit
+
 :end

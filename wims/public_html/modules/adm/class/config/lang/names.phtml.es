@@ -244,7 +244,7 @@ $nei_description</font></em> como vecina suya?
  !set title=Conectar a otros servidores / plataformas
  !set name_listserver=Lista de conexiones de los servidores
  
- !distribute Probar una conexión a servidor\
+ !distribute lines Probar una conexión a servidor\
    Probar una clase conectada\
    Añadir la conexión a un servidor\
    Administrar una clase conectada\
@@ -297,7 +297,7 @@ $nei_description</font></em> como vecina suya?
 
 !if $job=oefdefault
  !set title=Parametrización por defecto de los módulos OEF
- !distribute Une série aura\
+ !distribute lines Une série aura\
    Niveau de sévérité\
    Chronomètre\
    secondes\
