@@ -8,6 +8,7 @@
  of <b><font color=green>$wims_institutionname</font></b>
 
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
+
 !set title=Configuratie en Onderhoud
 
 !distribute items oefeningen,werkbladen,proefwerken,documenten,vragenlijsten,huiswerk agenda,\
@@ -34,7 +35,7 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
  !set name_tosend=Om de klas te herstellen via een backup archief; geef de backup archief naam
  !set name_namefile=Geef de naam van het backup archief
  !set name_help=Er wordt gevraagd naar de specifiek te herstellen onderdelen van uw klas.
- 
+
  !set name_deposit=!nosubst Het backup archief <tt>$wims_deposit</tt> bevar de volgend onderdelen.\
  Geef aan welke items moeten worden gebruikt voor het herstel van uw klas.
  
@@ -76,7 +77,7 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
    Samenvoegen\
    vervang al het aanwezige materiaal, behalve de studenten accounts en de klasse oefeningen; bij deze klasse oefeningen worden alles met een gelijke naam overschreven.\
    Vervang en herstel het aangegeven materiaal\
-   into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
+ into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
@@ -85,7 +86,7 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
 !distribute lines Backup archief herstel klas\
 Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
 De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
-into name_restore1,name_restore2,name_restore3
+ into name_restore1,name_restore2,name_restore3
 
  !distribute items onherkenbaar is, te vroeg is, te laat is into ebad,eearly,elate
  
@@ -96,8 +97,8 @@ into name_restore1,name_restore2,name_restore3
  Selectieve backup\
  \
  Verander en bewaar het backup archief.\
- into name_download1,name_download2,name_download3,name_download4,name_download5,\
- name_selective1,name_selective2,name_selective3
+ into name_download1,name_download2,name_download3,name_download4,\
+   name_selective1,name_selective2,name_selective3
 
  !set name_download5=Het backup archief is misschien te groot om naar deze sever te sturen.\
  Om (meerdere) kleinere archieven aan te leggen kunt u gebruik maken van een selectieve backup.
@@ -180,10 +181,10 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Met succes overgezet\
     Studenten accounts uit de buurklas\
     Controleer het resultaat\
-    into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
-    name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
-    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
-    name_neigh_account,name_verify
+ into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
+   name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
+   name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
+   name_neigh_account,name_verify
 
  !set name_inactif=!subst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
@@ -195,6 +196,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_warning=Uw klas heeft een aciteve cijfer registratie en de gedeelde bronnen zijn niet leeg.\
   Als u nu stopt met lenen kan hier later niet meer op worden terug gekomen.<p>\
   U wilt definitef stoppen met delen ?
+ 
  !set name_stop=Stoppen
  !endif
  !if $job2=sharelist
@@ -263,7 +265,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    U hebt de volgende verbindingen gedeclareerd met andere servers.\
    Server\
    Op dit moment herkend deze WIMS server de volgende servers.\
-   into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
+ into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
@@ -300,7 +302,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Strapfunten voor foute antwoorden in meerkeuze vragen.\
    Toon het correcte antwoord.\
    Geef een hint (mits aanwezig).\
-   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
    !set name_warning=U kunt twee getallen vermelden in de tijdlimiet.\
@@ -410,7 +412,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Configureer de\
     Huidige geheugen gebruik\
     De limiet\
-    into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
+  into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
@@ -458,7 +460,7 @@ wims_name_config_score,wims_name_config_ent,name_of
    Achtergrond plaatje\
    download een css style bestand\
    Score kleuren (van 0 tot 10) \
-   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
@@ -553,7 +555,7 @@ En deze andere server moet uw server wel erkennen.
 De site manager kan hier leren hoe het een en ander  
  <tt>$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
  
-!exit
+ !exit
  
 :import2
 

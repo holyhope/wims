@@ -15,10 +15,11 @@
 	cuentas de los participantes,cuenta del profesor,mensajes de un foro de discusión,mensaje del día,livret de compétences,\
 	sequences pédagogiques,messges du forum\
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
-	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_lsg
+	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items zonas,participantes,ejercicios, documentos, profesores\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+!distribute items zonas,participantes,ejercicios, documentos, profesores,feuilles d'exercices\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
 
 
 !distribute item mensaje del día,\
@@ -35,10 +36,12 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
  !set name_tosend=Para enviar una copia de seguridad de su clase, 
  !set name_namefile=introduzca por favor el nombre del fichero de seguridad
  !set name_help=se le pedirá que seleccione los recursos que quiere recuperar en la clase
+
+ !set name_deposit=!nosubst Su copia de seguridad <tt>$wims_deposit</tt> contiene los recursos\
+siguientes. Marque lo que quiera recuperar en su clase.
+
  !set name_no_restore=I!set no_restore=Imposible hacer la recuperación porque usted comparte las de otra\
 	clase. Sólo la clase que originó la participación puede efectuar la recuperación.
-	!set name_deposit=!nosubst Su copia de seguridad <tt>$wims_deposit</tt> contiene los recursos\
-siguientes. Marque lo que quiera recuperar en su clase.
 
  !distribute lines No ha seleccionado nada que recuperar.\
     Recuperar todo salvo la configuración de la clase y la cuenta del profesor.\
@@ -92,10 +95,10 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
   Este es el fichero en el que ha guardado su clase\
   Cliquez dessus pour l'enregistrer sur votre ordinateur.\
   También puede hacer una\
-  El tamaño de este fichero de seguridad puede superar el límite autorizado  para su envío al servidor. Para reducir el tamaño del fichero, puede hacer una\
   Copia selectiva de seguridad\
+  \
   pour modifier le fichier de sauvegarde ci-dessus et enregistrez-le.\
- into name_download1,name_download2,name_download3,download4\
+ into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
  !set name_download5= El tamaño de este fichero de seguridad puede superar el límite autorizado\
@@ -186,7 +189,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
    name_neigh_account,name_verify
- 
+
  !set name_inactif=!subst El(la) $(name_$itype) ha sido puesto(a) en estado inactivo para permitirle \
   modificarlo si lo desea.
 
@@ -275,7 +278,7 @@ $nei_description</font></em> como vecina suya?
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver1
+   wims_name_server,name_listserver
 
  !goto commun
 !endif
@@ -348,6 +351,7 @@ producido una filtración de su contraseña de profesor).
    vous désirez utiliser une authentification par un annuaire ldap.
  !goto commun
 !endif
+
 !if $job=import
  !set code1=Aucun
  !set code2=$wims_name_yes mais différent
@@ -452,10 +456,11 @@ zonas inferiores\
 Apariencia\
 Restricción de la puntuación\
 Dirección de una plataforma\
+de\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score,wims_name_config_ent
+wims_name_config_score,wims_name_config_ent,name_of
 
 !distribute lines Estaciones de trabajo seguras\
    Hoja de estilo\
@@ -476,7 +481,7 @@ wims_name_config_score,wims_name_config_ent
    Imagen de fondo de las páginas\
    transferir un fichero css\
    Gama de colores de los resultados (de 0 a 10)\
-   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
+  into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
 
@@ -600,8 +605,8 @@ Este servidor WIMS no ha declarado ningún servidor remoto que admita
 Está a punto de sustituir un(a) $(name_$itype)
   present(e) en su clase por el recurso importado. No habrá ninguna
   oportunidad de volver atrás tras esta operación.
-
 !exit
+
 :import5
   No se ha añadido a su clase ninguna cuenta de participante. Compruebe
  si su clase está llena (y si queda espacio en el sitio web para añadir

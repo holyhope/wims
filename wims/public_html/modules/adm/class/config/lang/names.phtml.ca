@@ -8,6 +8,7 @@
  of <b><font color=green>$wims_institutionname</font></b>
 
 !set months=Gen,Feb,Mar,Abr,Mai,Jun,Jul,Ago,Set,Oct,Nov,Des
+
 !set title=Configuració i Manteniment
 
 !distribute items exercices,feuilles de travail,examens,documents,questionnaires,cahier de texte,\
@@ -16,8 +17,9 @@
 	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
 	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
 
-!distribute items subclasses,participants,exercicis,documents,professors\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
+!distribute items subclasses,participants,exercicis,documents,professors,worksheets\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
 
 !distribute item messages of the day,\
 	exercise,worksheet,exam,document,participant\
@@ -40,6 +42,7 @@ Please check those you want to restore to your class.
  !set name_no_restore=Cannot be restored because you are sharing resources of\
 	another class. Restoration can only be done on the class originating\
 	the sharing.
+
   !distribute lines Nothing is selected for restoration.\
    Restore everything except class configuration and supervisor account.\
  <font color=red>Danger!</font> <small>See notes below.</small>\
@@ -93,8 +96,9 @@ into name_restore1,name_restore2,name_restore3
   Cliquez dessus pour l'enregistrer sur votre ordinateur.\
   You can also make a \
   selective backup\
+  \
   to modify the backup file and save it.\
- into name_download1,name_download2,name_download3,name_download4,name_download5,\
+ into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
  !set name_download5=This backup file may be too big to be sent back to the server (which limits\
@@ -188,7 +192,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_inactif=!subst The imported $(name_$itype) is put to inactive status, so that you can\
   modify it if you wish.
  
- !set name_accept=!nosubstDo you accept the class <em><font color=blue>\
+ !set name_accept=!nosubst Do you accept the class <em><font color=blue>\
    $nei_description</font></em> as your neighbor for?
    
  !if $job2=stopshare
