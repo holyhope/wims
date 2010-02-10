@@ -11,11 +11,11 @@
 
 !set title=Configuración y Administración
 
-!distribute items ejercicios,hojas de trabajo,exámenes,documentos,encuestas,agenda,\
-	cuentas de los participantes,cuenta del profesor,mensajes de un foro de discusión,mensaje del día,livret de compétences,\
+!distribute items encuestas,agenda,\
+	cuenta del profesor,mensajes de un foro de discusión,livret de compétences,\
 	sequences pédagogiques,messges du forum\
-	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
-	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
+	into name_vote,name_cdt,\
+	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
 
 !distribute items zonas,participantes,ejercicios, documentos, profesores,feuilles d'exercices\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\

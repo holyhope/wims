@@ -11,11 +11,11 @@
 
 !set title=Configuratie en Onderhoud
 
-!distribute items oefeningen,werkbladen,proefwerken,documenten,vragenlijsten,huiswerk agenda,\
-	studenten accounts,docenten accounts,discussie forum,bericht van de dag,raport boekje,\
+!distribute items vragenlijsten,huiswerk agenda,\
+	docenten accounts,discussie forum,raport boekje,\
 	pedagogische werkvolgorde,forum berichten\
-	into name_exo,name_sheet,name_exam,name_doc,name_vote,name_cdt,\
-	name_user,name_sup,name_forum,name_motd,name_livret,name_seq,name_forum_mesg
+	into name_vote,name_cdt,\
+	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
 
 !distribute items subklassen,studentens,oefeningen,documenten,docenten\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
