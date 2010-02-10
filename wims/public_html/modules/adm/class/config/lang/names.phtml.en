@@ -11,13 +11,13 @@
 
 !set title=Configuration and Maintenance
 
-!distribute items questionnaires,cahier de texte,\
-	compte d'enseignant,forum de discussion,livret de compétences,\
-	séquences pédagogiques,messages du forum\
+!distribute items votes,agenda,\
+	teacher account,forum,skills booklet,\
+	teaching sequences,forum messages\
 	into name_vote,name_cdt,\
 	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
 
-!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
+!distribute items subclasses,participants,exercises,documents,teachers,worksheets\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
@@ -33,7 +33,7 @@ name_sheets
  !set title=Backup and Restoration
  !set name_intro=You can download a backup copy of your class, in the following format 
  !set name_tosend=To upload backup archives into your class, please give the backup file name
- !set name_namefile=veuillez donner le nom du fichier de sauvegarde
+ !set name_namefile=please enter the name of backup file
  !set name_help=You will be prompted for the selection of resources to restore to your class.
  
  !set name_deposit=!nosubst Your backup file <tt>$wims_deposit</tt> contains the following resources.\
@@ -52,7 +52,7 @@ name_sheets
    Existing accounts\
    documents\
    Existing documents\
-   exercices\
+   exercises\
    Existing exercises\
    worksheets\
    Implies restoration of class exercises\
@@ -65,13 +65,13 @@ name_sheets
    Participant activity register and server-computed scores. Implies restoration participant accounts.\
    Teacher-defined grades\
    Existing grades\
-   un agenda de la classe\
-   un agenda existant\
-   Un livret de compétences\
-   un livret existant\
-   Séquences pédagogiques\
-   Implique la restauration de feuilles de travail, d'exercices, des examens et des documents\
-   Séquences existantes\
+   an agenda for the class\
+   an existing agenda\
+   A skills booklet\
+   an existing booklet\
+   teaching sequences\
+   implies restoring worksheets, exercises, exams and documents\
+   Existing sequences\
    Restoration method\
    Replacement\
    replace existing corresponding resources by restored ones.\
@@ -93,7 +93,7 @@ into name_restore1,name_restore2,name_restore3
  
  !distribute lines Sorry, we have failed to archive your class.\
    Here is the backup file of your class\
-  Cliquez dessus pour l'enregistrer sur votre ordinateur.\
+  Click on it to save it on your computer.\
   You can also make a \
   selective backup\
   \
@@ -127,7 +127,7 @@ into name_restore1,name_restore2,name_restore3
 !if $job=neighbor
  !set title=Class neighbors
  !set name_noclass=You cannot define class neighbors because there is no other class on this site.
- !set name_toomany=here are too many virtual classes on this site. Please give a keyword\
+ !set name_toomany=there are too many virtual classes on this site. Please give a keyword\
   to search for classes that you want.
  !set name_toomany2= There are too many classes corresponding to your search. Please\
   give a more precise keyword.
@@ -162,7 +162,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    active\
    List of other classes\
    Resource sharing info\
-   Afficher les classes d'exemple du serveur\
+   Show example classes of this server\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
@@ -293,7 +293,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=present
- !set title=Configuration of appearances of the class.
+ !set title=Configuration of class appearances.
  !goto commun
 !endif
 
@@ -370,7 +370,7 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 !if $job=index
-  !set title=!nosusbt Actualisation de l'index $tit
+  !set title=!nosusbt Index update $tit
   !set name_done=Done
   !set name_result=Script output
 
@@ -397,29 +397,29 @@ allows you to verify whether there are suspicious activities.
     Option words\
     Modtool Account\
     Connection lock level\
-    Number of the best scores\
+    Number of best scores\
     Participant number limit\
     Expiration date\
     Registration of exercises\
     Registration of exams\
     visible by students\
     Other configurations\
-    Préférences personnelles\
-    Répercuter les configurations aux zones dépendantes\
-    Définir des classes voisines\
-    des liens vers d'autres serveurs\
-    Utiliser une authentification\
-    des participants par annuaire ldap\
-    Actualiser les index\
-   dont le changement de\
-    Faire une sauvegarde ou restauration de la classe\
-    restreindre les ressources accessibles\
-    restreindre les sites \
-    pour lequels les scores sont enregistrés\
-    faire un nettoyage sélectif\
-   Configurer les\
-    Utilisation actuelle d'espace disque\
-    La limite est\
+    Personal preferences\
+    Pass configuration to depending subclasses\
+    Define neighboring classes\
+    links to other servers\
+    Use authentication\
+    of participants via ldap directory\
+    Refresh index\
+including change of \
+    Save or restore the class\
+    restrict accessible resources\
+    restrict sites \
+    for which scores are recorded\
+    make a selective cleanup\
+    Configure\
+    Current disk space usage\
+    The limit is\
   into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
@@ -565,7 +565,7 @@ This WIMS server has not declared any connectable remote server. In order
  !exit
  
 :import2
- The work sheet you want to import may use exercises defined in the
+ The worksheet you want to import may use exercises defined in the
    neighboring class.
    <p>
    If the same exercises do not exist in your class, the imported worksheet
@@ -591,9 +591,8 @@ You are about to replace an existing $(name_$itype)
 !exit
 
 :import5
- Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
- classe est pleine (et s'il y a encore de la place dans le site pour ajouter
- de nouveaux participants).
+ No participant account has been added to your class. Check if your class is full
+ (and if the site still accepts more participants).
 !exit
 
 :auth1

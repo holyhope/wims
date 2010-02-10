@@ -13,7 +13,7 @@
 
 !distribute items encuestas,agenda,\
 	cuenta del profesor,mensajes de un foro de discusión,livret de compétences,\
-	sequences pédagogiques,messges du forum\
+	sequences pédagogiques,messages du forum\
 	into name_vote,name_cdt,\
 	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
 
