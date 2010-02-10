@@ -4,47 +4,45 @@
 !endif
 
 !if $login=$empty
- This tool is for online creation and 
- development of free style WIMS activity modules.
+ Esta herramienta permite la creación y el desarrollo en línea de módulos de actividades WIMS ordinarios.
  <p>
- Such a module may be a full-power exercise (compared with OEF exercises
- which are easier to develop but have limited capacities; see
+Tal módulo puede ser un ejercicio de plena potencia (comparado a los ejercicios OEF que son más fáciles de escribir pero tienen capacidades limitadas&nbsp;; ver
  !href module=adm/createxo Createxo
- ) or a sophisticated computational tool. It should be written in the WIMS
- interpreted language as explained in
+ ) or a sophisticated computational tool. o una herramienta de cálculo sofisticada. Deben escribirle en la lengua interpretada de WIMS, tal como se explica en
  !href target=wims_help module=help/wimsdoc WIMS technical documentation
 .
  <p>
- If you are interested, you can ask
+ Si se interesan, se puede pedir a
  !mailurl $wims_site_manager the manager of this WIMS site\
 WIMS Modtool id
- for a developper's login/password pair to get the
- authentification for working with this tool.
+ una identificación de acceso/contraseña de desarrollador que les permitirá utilizar esta herramienta.
  !exit
 !endif
 
 !if $mod=$empty
- In order to work on a module, you should first create it. To create a
- new module, please click on the appropriate links and fill-in the forms
- for this purpose.
+ Para trabajar sobre un módulo, deben en primer lugar crearlo. Para crear un
+ nuevo módulo, hay que presionar los vínculos convenientes y luego llenar los formularios
+ a tal efecto.
  <p>
 !endif
 
-Please refer to
+Quiere consultar
  !href target=wims_help module=help/wimsdoc WIMS technical documentation
- for the structure of a WIMS module and the syntax and format of its content.
+ con el fin de conocer la estructura de un módulo WIMS así como el sintaxis y el formato de su contenido.
 
+Encontrarán aquí la
+!href target=wims_help module=adm/createxo $wims_name_docoef
 <p>
-Special hints:
+Indicaciones especiales&nbsp;:
 <ol>
-<li><p>In order to debug a file, you can place a line
+<li><p>Para eliminar errores de un fichero, pueden colocar una línea
 <pre>
 $!debug ...
 </pre>
-in that file, where ... can be any text string. When you test your module, the
-execution will stop at this line, with the content of ... shown to you. If
-... includes variables, the latter will be substituted according to the usual
-WIMS variable substitution rules.
+en este fichero, donde… puede ser cualquier cadena de texto. Cuando
+prueban su módulo, la ejecución va a par a esta línea y el contenido de… se les mostrará. Si… incluye variables,
+se substituyen estos últimos según las normas
+habituales de sustitución de variables de WIMS.
 
 </ol>
 
