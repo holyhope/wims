@@ -1,0 +1,85 @@
+\matrix{PHRASE=}
+\matrix{PRELIMINAIRE=}
+\for{i=1 to \MAX}{
+ \text{phrase=wims(randrecord randitem(\file))}
+ \text{phrase=wims(embraced randitem \phrase)}
+ \text{preliminaire_test=\phrase}
+ \text{preliminaire_test=row(1,\phrase)}
+ \text{inst_audio=wims(getopt audio in \preliminaire_test)}
+ \text{inst_image=wims(getopt image in \preliminaire_test)}
+ \text{inst_title=wims(getopt title in \preliminaire_test)}
+ \text{inst_intro=wims(getopt intro in \preliminaire_test)}
+ \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+ \text{rab_inst=}
+ \text{rab_inst=\inst_title notsametext ?\rab_inst<p align="center">\inst_title</p>}
+ \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
+ \text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt=""></p>}
+ \if{\inst_audio notsametext }{
+     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+       slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
+     \text{rab_inst=\rab_inst <p align="center">\rab_inst1[1;1]</p>}
+   }
+ \text{preliminaire=\test_inst=1  ? \rab_inst:}
+ \text{phrase=\test_inst=1 ? wims(line 2 of \phrase)}
+ \text{phrase=wims(replace internal / by , in  \phrase)}
+ \matrix{PHRASE=\PHRASE
+ \phrase}
+ \matrix{PRELIMINAIRE=\PRELIMINAIRE
+ \preliminaire}
+}
+
+\text{STEP = wims(makelist r x for x = 1 to \MAX)}
+\text{U = pari(divrem(\MAX,\N)~)}
+\integer{cnt_step = \U[1] + 1}
+\matrix{STEPS = }
+\for{ u = 1 to \cnt_step -1}{
+   \matrix{STEPS =\STEPS
+wims(makelist r x for x = (\u -1)*\N +1 to \N*\u)}
+}
+\matrix{STEPS = \STEPS
+ wims(makelist r x  for x = \N*(\cnt_step-1)+1 to \MAX)}
+\steps{\STEPS}
+
+
+\statement{\nopaste\style \instruction  
+  \if{\reading notsametext }{\special{help reading,READING}}
+  \if{\image notsametext }{\special{help image,IMAGES}}
+  \audio\video
+  \for{ h = 1 to  \N}{
+  \if{\PRELIMINAIRE[\h;] notsametext}{<div class="reponse">\PRELIMINAIRE[\h;]</div>}
+  
+  <div class="question"> \embed{reply \STEPS[\step; \h],\size} </div>
+
+  }
+}
+
+\answer{}{\PHRASE[1;]}{type=compose}
+\answer{}{\PHRASE[2;]}{type=compose}
+\answer{}{\PHRASE[3;]}{type=compose}
+\answer{}{\PHRASE[4;]}{type=compose}
+\answer{}{\PHRASE[5;]}{type=compose}
+\answer{}{\PHRASE[6;]}{type=compose}
+\answer{}{\PHRASE[7;]}{type=compose}
+\answer{}{\PHRASE[8;]}{type=compose}
+\answer{}{\PHRASE[9;]}{type=compose}
+\answer{}{\PHRASE[10;]}{type=compose}
+\answer{}{\PHRASE[11;]}{type=compose}
+\answer{}{\PHRASE[12;]}{type=compose}
+\answer{}{\PHRASE[13;]}{type=compose}
+\answer{}{\PHRASE[14;]}{type=compose}
+\answer{}{\PHRASE[15;]}{type=compose}
+\answer{}{\PHRASE[16;]}{type=compose}
+\answer{}{\PHRASE[17;]}{type=compose}
+\answer{}{\PHRASE[18;]}{type=compose}
+\answer{}{\PHRASE[19;]}{type=compose}
+\answer{}{\PHRASE[20;]}{type=compose}
+\answer{}{\PHRASE[21;]}{type=compose}
+\answer{}{\PHRASE[22;]}{type=compose}
+\answer{}{\PHRASE[23;]}{type=compose}
+\answer{}{\PHRASE[24;]}{type=compose}
+\answer{}{\PHRASE[25;]}{type=compose}
+\answer{}{\PHRASE[26;]}{type=compose}
+\answer{}{\PHRASE[27;]}{type=compose}
+\answer{}{\PHRASE[28;]}{type=compose}
+\answer{}{\PHRASE[29;]}{type=compose}
+

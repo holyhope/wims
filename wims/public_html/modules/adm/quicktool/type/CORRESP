@@ -1,0 +1,82 @@
+\text{QUEST=wims(randrecord \file)}
+\text{QUEST=wims(embraced randitem \QUEST)}
+\text{preliminaire_test=\QUEST}
+\text{preliminaire_test=row(1,\preliminaire_test)}
+\if{\preliminaire_test notsametext }{
+ \text{inst_audio=wims(getopt audio in \preliminaire_test)}
+ \text{inst_image=wims(getopt image in \preliminaire_test)}
+ \text{inst_title=wims(getopt title in \preliminaire_test)}
+ \text{inst_intro=wims(getopt intro in \preliminaire_test)}
+ \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+ \text{rab_inst=}
+ \text{rab_inst=\inst_title notsametext ?\rab_inst<p align="center">\inst_title</p>}
+ \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
+ \text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt=""></p>}
+ \if{\inst_audio notsametext }{
+     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+       slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
+     \text{rab_inst=\rab_inst <p align="center">\rab_inst1[1;1]</p>}
+ }
+ \text{preliminaire=\test_inst=1  ? \rab_inst:&nbsp;}
+}{\integer{test_inst=2}}
+
+ \matrix{QUEST=\test_inst=1 or \test_inst=2 ? wims(line 2 to -1 of \QUEST):\QUEST}
+\integer{cnt_QUEST = rows(\QUEST)}
+\integer{M=\M issametext all ? \cnt_QUEST:min(\cnt_QUEST,\M)}
+\text{choix=shuffle(\cnt_QUEST)}
+\matrix{QUEST=\QUEST[\choix[1..\M];]}
+matrix{QUEST = wims(replace internal _imagedir by \imagedir in \QUEST)}
+\text{gauche=}
+\text{droite=}
+\for{ im = 1 to \M}{
+    \if{.mp3 isin \QUEST[\im;2] or .jpg isin \QUEST[\im;2] or .gif isin \QUEST[\im;2] or .png isin \QUEST[\im;2]}{
+     \if{.mp3 isin \QUEST[\im;2]}{
+      \text{Image=wims(nospace \QUEST[\im;2])}
+      \text{Image=slib(media/audio \imagedir/\QUEST[\im;2],\player_option,player=\player)}
+      }
+      \if{.jpg isin \QUEST[\im;2] or .gif isin \QUEST[\im;2] or .png isin \QUEST[\im;2]}{
+        \text{Image=wims(nospace \QUEST[\im;2])}
+        \text{Image=wims(replace internal image= by in \Image)}
+        \text{Image=wims(replace internal imag= by in \Image)}
+        \text{Image=imgrename(\imagedir/\Image )}
+      }
+   }
+   {##recherche dans swac -- rajouter ensuite les images
+   \text{ audiocorr=wims(getopt audio in \QUEST[\im;2])}  
+    \if{\audiocorr notsametext }{ 
+      \text{Image=slib(lang/swac \audiocorr,\packs,player=\player,\player_option)}
+      \text{Image=\Image[1;1]}
+    }{\text{Image= \QUEST[\im;2]}}
+   }
+   \text{droite = wims(append item \Image to \droite)}
+}
+\for{ im = 1 to \M}{
+  \if{.mp3 isin \QUEST[\im;1] or .jpg isin \QUEST[\im;1] or .gif isin \QUEST[\im;1] or .png isin \QUEST[\im;1]}{
+    \if{.mp3 isin \QUEST[\im;1]}{
+      \text{Image=wims(nospace \QUEST[\im;1])}
+      \text{Image=slib(media/audio \imagedir/\QUEST[\im;1],\player_option,player=\player)}
+    }
+    \if{.jpg isin \QUEST[\im;1] or .gif isin \QUEST[\im;1] or .png isin \QUEST[\im;1]}{
+      \text{Image=wims(nospace \QUEST[\im;1])}
+      \text{Image=wims(replace internal image= by in \Image)}
+      \text{Image=wims(replace internal imag= by in \Image)}
+      \text{Image=imgrename(\imagedir/\Image )}
+    }
+  }
+  {##recherche dans swac -- rajouter ensuite les images
+   \text{ audiocorr=wims(getopt audio in \QUEST[\im;1])}  
+    \if{\audiocorr notsametext }{ 
+      \text{Image=slib(lang/swac \audiocorr,\packs,player=\player,\player_option)}
+      \text{Image=\Image[1;1]}
+    }{\text{Image= \QUEST[\im;1]}}
+  }
+    \text{gauche = wims(append item \Image to \gauche)}
+}
+\statement{\nopaste\style \instruction \preliminaire 
+  \if{\reading notsametext }{\special{help reading,READING}}
+  \if{\image notsametext }{\special{help image,IMAGES}}
+  \audio\video
+  <div class="question"><center>\embed{reply1,\size}</center></div>
+}
+
+\answer{}{\gauche; \droite}{type=correspond}{option=\partialscore}

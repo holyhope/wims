@@ -1,0 +1,122 @@
+
+Si le nom du fichier  n'est pas présent : 
+le_mot_deaccentué.mp3
+Si il y a un nom de fichier global, alea=no et
+fichier audio global. 
+
+On en prend alors un certain nombre mais dans l'ordre (pas tous)
+
+text{battage=\alea issametext no ?wims(sort numeric items \battage)}
+\text{Rep=}
+\text{Mot2=}
+\text{Syllabe=}
+\text{Audio=}
+\text{cnt_syl=}
+\text{etape_step=0}
+\text{etape=0}
+\for{i= 1 to \MAX}{
+  \matrix{data = wims(record \battage[\i] of \file0)}
+  \integer{cnt_data=rows(\data)}
+  \integer{cnt_data=pari(ceil(\cnt_data/3))}
+  \text{ordre=shuffle(\cnt_data)}
+  \for{ h = 1 to \cnt_data}{
+    \integer{v = -3+3*\ordre[\h]}
+    \text{mot=\data[1+\v;]}
+    \matrix{Rep=\Rep
+      \data[2+\v;]}
+    \text{mot2=wims(nospace wims(replace internal / by  in \mot))}
+    \matrix{Mot2 = \Mot2
+     \mot2}
+    \text{syllabe=wims(nonempty items wims(replace internal / by ,  in \mot))}
+    \matrix{Syllabe =\Syllabe
+      \syllabe}
+    \text{cnt_syl=\cnt_syl, items(\syllabe)}
+    \if{\audio_file issametext no}{
+      \text{audi=\data[3+\v;]}
+      \text{audi=\audi issametext ? wims(deaccent \mot2).mp3}
+      \text{Audio = \Audio,slib(media/audio \imagedir/\audi)}
+    }
+  }
+  \integer{etape=\etape + \cnt_data}
+ \text{etape_step=\etape_step,\etape}
+}
+Je n'ai pas tenu compte du N 
+\integer{cnt_step=items(\etape_step)-1}
+\text{cnt_qu=rows(\Rep)}
+\text{cnt_syl=wims(nonempty items \cnt_syl)}
+\text{Audio=wims(nonempty items \Audio)}
+\text{STEP=wims(makelist r x for x=1 to \cnt_qu)}
+\matrix{STEPS = }
+\matrix{CNT = }
+\integer{u=1}
+\integer{T = \etape_step[1]}
+\while{ \T notsametext }{
+   \matrix{STEPS = \STEPS
+wims(makelist r x for x = \etape_step[\N*(\u-1)+1]+1  to \etape_step[\N*\u+1])}
+   \matrix{CNT =\CNT
+wims(makelist x for x = \etape_step[\N*(\u-1)+1]+1  to \etape_step[\N*\u+1])}
+   \integer{u = \u + 1}
+   \text{T = \etape_step[\N*(\u-1)+1]}
+}
+
+matrix{STEPS = \STEPS
+   wims(makelist r x  for x = \etape_step[\cnt_step+1] to \MAX)}
+matrix{CNT = \CNT
+ wims(makelist x  for x = \etape_step[\cnt_step+1] to \MAX)}
+
+\steps{\STEPS}
+\statement{\nopaste\style \instruction
+  \if{\reading notsametext }{\special{help reading,READING}}
+  \if{\image notsametext }{\special{help image,IMAGES}}
+  \audio\video
+  \if{\cnt_qu=1}{<center>\Audio[1] 
+   \for{ s = 1 to \cnt_syl[1]}{\embed{reply 1,\s}}
+   </center>}
+   {<ol>
+     \for{t in  \CNT[\step;]}{ <li> \Audio[\t] 
+        \for{ s = 1 to \cnt_syl[\t]}{\embed{reply \t,\s}} 
+        </li>}
+     </ol>
+   }
+}
+
+\answer{}{\Rep[1;];\Syllabe[1;]}{type=mark}
+\answer{}{\Rep[2;];\Syllabe[2;]}{type=mark}
+\answer{}{\Rep[3;];\Syllabe[3;]}{type=mark}
+\answer{}{\Rep[4;];\Syllabe[4;]}{type=mark}
+\answer{}{\Rep[5;];\Syllabe[5;]}{type=mark}
+\answer{}{\Rep[6;];\Syllabe[6;]}{type=mark}
+\answer{}{\Rep[7;];\Syllabe[7;]}{type=mark}
+\answer{}{\Rep[8;];\Syllabe[8;]}{type=mark}
+\answer{}{\Rep[9;];\Syllabe[9;]}{type=mark}
+\answer{}{\Rep[10;];\Syllabe[10;]}{type=mark}
+\answer{}{\Rep[11;];\Syllabe[11;]}{type=mark}
+\answer{}{\Rep[12;];\Syllabe[12;]}{type=mark}
+\answer{}{\Rep[13;];\Syllabe[13;]}{type=mark}
+\answer{}{\Rep[14;];\Syllabe[14;]}{type=mark}
+\answer{}{\Rep[15;];\Syllabe[15;]}{type=mark}
+\answer{}{\Rep[16;];\Syllabe[16;]}{type=mark}
+\answer{}{\Rep[17;];\Syllabe[17;]}{type=mark}
+\answer{}{\Rep[18;];\Syllabe[18;]}{type=mark}
+\answer{}{\Rep[19;];\Syllabe[19;]}{type=mark}
+\answer{}{\Rep[20;];\Syllabe[20;]}{type=mark}
+\answer{}{\Rep[21;];\Syllabe[21;]}{type=mark}
+\answer{}{\Rep[22;];\Syllabe[22;]}{type=mark}
+\answer{}{\Rep[23;];\Syllabe[23;]}{type=mark}
+\answer{}{\Rep[24;];\Syllabe[24;]}{type=mark}
+\answer{}{\Rep[25;];\Syllabe[25;]}{type=mark}
+\answer{}{\Rep[26;];\Syllabe[26;]}{type=mark}
+\answer{}{\Rep[27;];\Syllabe[27;]}{type=mark}
+\answer{}{\Rep[28;];\Syllabe[28;]}{type=mark}
+\answer{}{\Rep[29;];\Syllabe[29;]}{type=mark}
+\answer{}{\Rep[30;];\Syllabe[30;]}{type=mark}
+\answer{}{\Rep[31;];\Syllabe[31;]}{type=mark}
+\answer{}{\Rep[32;];\Syllabe[32;]}{type=mark}
+\answer{}{\Rep[33;];\Syllabe[33;]}{type=mark}
+\answer{}{\Rep[34;];\Syllabe[34;]}{type=mark}
+\answer{}{\Rep[35;];\Syllabe[35;]}{type=mark}
+\answer{}{\Rep[36;];\Syllabe[36;]}{type=mark}
+\answer{}{\Rep[37;];\Syllabe[37;]}{type=mark}
+\answer{}{\Rep[38;];\Syllabe[38;]}{type=mark}
+\answer{}{\Rep[39;];\Syllabe[39;]}{type=mark}
+\answer{}{\Rep[40;];\Syllabe[40;]}{type=mark}

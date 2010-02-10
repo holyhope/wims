@@ -1,0 +1,280 @@
+!!@#language independant 
+!read adm/language names.phtml
+!read tabletheme
+!set example_dir=lang/example.$modu_lang
+wims_prefix=class user tmp
+!if robot isin $session
+  !exit
+!endif
+
+!readproc auth
+   !if $wims_developer=$empty
+    !exit
+   !endif
+ sesdir=!translate internal _ to $ $ in $wims_sesdir
+ sesdir=!word 1 of $sesdir
+!default author=$wims_name
+!default email=$wims_email
+!if $cmd iswordof reply new resume renew
+   error=
+   dossier=type
+   !if $example=0 or $example=
+      !if $debut=1
+         !reset mtype
+         !reset N
+         !reset M
+         !reset source
+          compute=no
+      !else
+          !for a in title,author,email,file,source
+              !if $($a)=$empty
+                 error= $error $a
+              !endif
+          !next
+           compute=yes
+      !endif       
+   !else
+      !for a in type_exo,title,author,email,file,N,MAX1,M,try,\
+        instruction,instruction2,answer_given,alea,choice,format,\
+        percent,pos_rep,common,second_step,first_step,\
+        file, reading_file, audio_file,image_file,video_file,size,source,\
+        style_question,style_reponse,style_oef,style_css,\
+        reading_tag,image_tag,video_tag,qcm_prompt1,qcm_prompt2,\
+        sens,aucune,raw,partialscore,paste,specialhelp1,specialhelp2,\
+        specialhelp3,helpprompt,reaccent,packs,player,player_option,\
+        good_answer_text,bad_answer_text,incomplete_answer_text,\
+    
+        $(a) =!getdef $a in $example_dir/$TYPE/$example
+      !next
+      !if $type_exo iswordof CORRESP
+        taille_corr=$size
+      !endif
+      !if $type_exo iswordof ORDONNE \
+         or ($type_exo iswordof SELECTWORD SELECTWORDA GAP and ($format iswordof dragfill clickfill)) 
+         taille_drag=$size
+      !endif
+      !if $type_exo iswordof SELECTWORD SELECTWORDA GAP and $format=case
+         taille_case=$size
+      !endif
+      !if $type_exo iswordof COMPOSE
+         taille_compose=$size
+      !endif
+      
+      !if $type_exo iswordof TRUEFALSE
+         choice_tf=$choice
+      !endif
+      !if $type_exo iswordof GAP
+         choice_gap=$choice
+      !endif
+      !if $type_exo iswordof QUIFAITQUOI
+        choice_qq=$choice
+      !endif
+      !if $type_exo iswordof QCMIII
+         choice_fd=$choice
+      !endif
+      
+      !for a in reading,audio,image,video
+        !if $($(a)_file) notsametext no and $($(a)_file)!=$empty
+          $(a)_file0=$($(a)_file)
+          $(a)_file1=yes
+        !else
+          $(a)_file1=no
+         !endif
+      !next
+      compute=no
+     example=
+       
+   !endif example
+   !readproc values
+   !if $N issametext all
+      N=\cnt_question
+   !endif
+   !if $MAX1 issametext all or $MAX1=
+      MAX = \cnt_question
+   !else
+      MAX=$MAX1
+   !endif
+   !if $type_exo iswordof CORRESP  
+      size=$taille_corr
+   !endif
+   !if $type_exo iswordof ORDONNE \
+     or ($type_exo iswordof SELECTWORD SELECTWORDA GAP and ($format iswordof dragfill clickfill))
+      size=$taille_drag
+   !endif
+   !if $type_exo iswordof SELECTWORD SELECTWORDA GAP and $format=case
+      size=$taille_case
+   !endif
+   !if $type_exo iswordof COMPOSE
+      size=$taille_compose
+   !endif
+
+   !if $type_exo iswordof TRUEFALSE
+     choice=$choice_tf
+   !endif
+   !if $type_exo iswordof GAP
+     choice=$choice_gap
+   !endif
+   !if $type_exo iswordof QUIFAITQUOI
+     choice=$taille_qq
+   !endif
+   !if $type_exo iswordof QCMIII
+      choice=$choice_fd
+   !endif
+
+   liste = 
+   !for a in reading, audio, image, video
+      !if $($(a)_file1)=no
+        $(a)_file=no
+      !else 
+        $(a)_file=!trim $($(a)_file0)
+      !endif
+   !next
+   Type_exo = $type_exo
+   !for a in file,source,reading_file,audio_file,image_file,video_file
+      $a=!nospace $($a)
+      $a=!deaccent $($a)
+   !next
+    modele=!record 0 of $dossier/COMMUN
+date=!date '+%c'
+   modele= $name_warning\
+%% $date\
+\
+$modele
+
+   !for a in $Type_exo
+     mod=!record 0 of $dossier/$a
+     modele =$modele\
+     $mod   
+   !next
+   
+   modele=!replace internal IMAGES by $image_tag in  $modele
+   modele=!replace internal VIDEO by $video_tag in  $modele
+   modele=!replace internal READING by $reading_tag in  $modele
+   modele=!replace internal _image_dir by \imagedir in  $modele
+   
+   !for a in title,email,author
+     b=!trim $($a)
+     modele=!replace internal \$a{} by \$a{$b} in  $modele
+   !next
+  !setdef quick_title=$title in wimshome/$sesdir/var.stat
+  !setdef quick_source=$source in wimshome/$sesdir/var.stat
+   !for a in file, reading_file, audio_file, image_file, video_file,N, M, MAX,try,alea,style_question,\
+      style_reponse,style_oef,style_css,instruction,instruction2,\
+      choice,answer_given,format,common,second_step,first_step,pos_rep,percent,\
+      size,qcm_prompt1,qcm_prompt2,sens,aucune,partialscore,paste,\
+      specialhelp1,specialhelp2,specialhelp3,helpprompt,reaccent,packs,player,player_option,\
+        good_answer_text,bad_answer_text,incomplete_answer_text
+     b=!trim $($a)
+     !setdef quick_$a=$b in wimshome/$sesdir/var.stat
+     modele=!replace internal \text{$a=} by \text{$a=$b} in  $modele
+   !next
+
+   modele=!replace internal \text{instruction=asis()} by \text{instruction=asis($instruction)} in  $modele
+   modele=!replace internal \text{instruction2=asis()} by \text{instruction2=asis($instruction2)} in  $modele
+   modele=!replace internal \text{file=randitem()} by \text{file=randitem($($file))} in  $modele
+   !if yes iswordof $reading_file1 $image_file1
+     help = !record 0 of $dossier/HELP
+     !if $raw=1
+       help=!replace internal RAW(reading) by \special{expandlines \reading} in  $help
+     !else
+       help=!replace internal RAW(reading) by \reading in  $help
+     !endif
+   !endif
+   modele = $modele $help 
+   exo=$modele
+   exo1 = !replace internal & by &amp; in $exo
+   
+   example=
+   !if $wims_developer!=$empty
+       list_mod=!sh ls $wims_home/public_html/modules/devel/$wims_developer
+       list_mod=!words2items $list_mod
+       list_module=
+       !for a in $list_mod
+        !!  category = !defof category in wimshome/public_html/modules/devel/$wims_developer/$a/INDEX
+          category = !module category devel/$wims_developer/$a
+         
+         !if oef isin $category
+            list_module=!append item $a to $list_module
+          !endif
+       !next
+       !if $list_module=$empty
+         error = $error oefempty
+       !endif
+       !if $target issametext choisissez
+         target=$empty
+       !endif
+   !endif
+
+   !if $transfert=yes and $target!=$empty
+      !if / isin $target or .. isin $target
+        error=$error nom_fichier     
+       !exit
+      !endif
+      !if / isin $source or .. isin $source
+        error=$error nom_fichier
+        !exit
+      !endif
+      dir=$wims_home/public_html/modules/devel/$wims_developer/$target
+      !setdef common_images=yes\
+      class_importation=no in wimshome/public_html/modules/devel/$wims_developer/$target/var.proc
+     !! !debug $modele
+      !filewrite getfile/$source.oef $modele
+      !sh rm $dir/src/.oef\
+       find $dir -name .DS_Store -exec rm {} \; \
+       cp $wims_home/$wims_sesdir/getfile/$source.oef $dir/src\
+       cd $dir\
+       src2def
+       
+      !readproc listefile
+      !if  / isin $wims_deposit or .. isin $wims_deposit
+        !exit
+      !endif
+     !if $type_fichier > 0
+      !if $wims_deposit!=noname.file and $wims_deposit!=$empty \
+         and $wims_deposit!=.oef and $type_fichier > 0
+        !if $type_fichier=1
+          file_transfert=$file
+        !endif
+        !if $type_fichier=2
+          file_transfert=$reading_file
+        !endif
+        !if $type_fichier=3
+          file_transfert=images/$image_file 
+        !endif
+        !if $type_fichier=4
+          file_transfert=images/$audio_file
+        !endif
+        !if $type_fichier=5
+        !sh cd $wims_home/$wims_sesdir\
+             mv user-deposit getfile/$wims_deposit\
+             cp getfile/$wims_deposit $dir/images/$wims_deposit
+        !else
+          !if $type_fichier<=2
+           !sh cd $wims_home/$wims_sesdir\
+             mv user-deposit getfile/$wims_deposit\
+             cd getfile\
+             dos2unix -o $wims_deposit\
+             cd ..\
+             cp getfile/$wims_deposit $dir/$file_transfert
+          !else
+           !sh cd $wims_home/$wims_sesdir\
+             mv user-deposit getfile/$wims_deposit\
+             cp getfile/$wims_deposit $dir/$file_transfert
+          !endif                     
+        !endif      
+       !reset type_fichier
+            dir=$wims_home/public_html/modules/devel/$wims_developer/$target
+  !readproc listefile
+      
+      !endif
+    !reset file_transfert
+   !endif
+   !endif transfert
+!endif
+
+
+class_importation=no
+
+wims_module_log= $cmd $Type_exo
+
+

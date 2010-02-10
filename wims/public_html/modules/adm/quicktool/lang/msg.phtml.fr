@@ -1,0 +1,66 @@
+!!@# translate between !!@# et !!#@
+!if nom_fichier iswordof $error
+  <font color="red">
+!!@#
+Votre nom de fichier n'est pas valable, il ne doit y avoir ni 
+  <tt>..</tt> ni <tt> / </tt> dans les noms de fichier.
+!!#@
+</font>
+  !exit
+!endif
+!if bad_data iswordof $error
+!!@#
+<b>Erreur.</b> Je n'ai pas pu évaluer les valeurs que vous avez soumises. Erreur de frappe ?
+!!#@
+ !exit
+!endif
+ 
+!if $error!=$empty
+  !if target iswordof error
+    <font color="red">
+!!@#
+ Choisissez le module.
+!!#@
+</font> 
+    !exit
+  !endif
+<font color="red">
+!!@#
+N'oubliez pas de remplir les champs obligatoires marqués par *. 
+!!#@
+</font>
+!endif
+!if type_exo iswordof $error or file iswordof $error
+!!@#
+En particulier : 
+!!#@
+<dl> 
+!if type_exo iswordof $error
+ <dt>
+!!@#
+Vous devez choisir le type du QCM.
+!!#@
+ </dt>
+!endif
+
+!if file iswordof $error
+  <dt>
+!!@#
+Cet exercice dépend de données que vous devez mettre dans un fichier sous le format 
+indiqué dans l'aide. Sinon, il ne fonctionnera pas. Vous devez à cette étape 
+indiquer le nom que vous allez donner à ce fichier.
+!!#@
+</dt>
+!endif
+</dl>
+!if oefempty iswordof $error and $transfert=yes
+!!@#
+Vous devez d'abord créer un module d'exercices OEF dans votre compte Modtool
+!!#@
+!endif 
+!exit
+
+
+!msg $error
+
+

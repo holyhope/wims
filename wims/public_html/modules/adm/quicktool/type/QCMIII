@@ -1,0 +1,114 @@
+QCMIII Faire MAX=1 sinon, on ne va pas s'en sortir avec les feedback
+\matrix{question=}
+\matrix{explication=}
+\matrix{rep=}
+\matrix{verite1=}
+\text{CNT_choix= }
+\matrix{CHOIX=}
+\for{i= 1 to \MAX}{
+   \text{QUEST=wims(record \battage[\i] of \file0)}
+   \matrix{QUEST=wims(embraced randitem \QUEST)}
+   \text{Quest=wims(replace internal , by &#44; in \QUEST[1;])}
+   \matrix{question =\question
+   \Quest}
+   \text{n = \QUEST[2;]}
+   \text{CNT_choix=\CNT_choix,\n}
+   \text{Rep = \QUEST[3;]}
+   \matrix{rep=\rep
+   \Rep}
+   \text{choixetfeed = \QUEST[4..-1;]}
+   \text{choix = \choixetfeed[1..\n;]}
+   \text{verite = \choix[\reponse;]}
+   \text{choix = wims(replace internal ; by , in \choix)}
+   \matrix{CHOIX=\CHOIX
+     \choix}
+   \text{feed = \choixetfeed[\n+1..-1;]}
+   \text{feed = wims(replace internal ; by , in \feed)}
+   \matrix{verite1 =\verite1
+   <ul><li type=A>wims(replace internal ; by </li><li type=A> in  \verite)</li></ul>}
+}
+\text{CNT_choix=wims(nonempty items \CNT_choix)}
+\text{STEP = wims(makelist r x for x = 1 to \MAX)}
+\text{U = pari(divrem(\MAX,\N)~)}
+\integer{cnt_step = \U[1] + 1}
+\matrix{STEPS = }
+\for{ u = 1 to \cnt_step -1}{
+   \matrix{STEPS =\STEPS
+wims(makelist r x for x = \N*\u -\N+1 to \N*\u)
+   }
+}
+ \matrix{STEPS = \STEPS
+ wims(makelist r x  for x = \N*\cnt_step-\N+1 to \MAX)
+}
+\steps{\STEPS}
+
+
+\statement{\style\instruction
+\if{\reading notsametext }{\special{help reading,READING}
+}
+\if{\image notsametext }{\special{help image,IMAGES}}
+\audio\video
+<ul>
+  \for{ t = 1 to \N}{
+  <li> <b>\question[\N*(\step-1) + \t;]</b>
+ <div class="question"> <ol>
+   \for{s=1 to \CNT_choix[\N*(\step-1) + \t]}{
+   <li>\embed{\STEPS[\step;\t] , \s }</li>
+   }
+   </ol>
+   </div>
+   </li>
+ }
+</ul>
+}
+
+\answer{}{\rep[1;];\CHOIX[1;]}{type=checkbox}{option=split}
+\answer{}{\rep[2;];\CHOIX[2;]}{type=checkbox}{option=split}
+\answer{}{\rep[3;];\CHOIX[3;]}{type=checkbox}{option=split}
+\answer{}{\rep[4;];\CHOIX[4;]}{type=checkbox}{option=split}
+\answer{}{\rep[5;];\CHOIX[5;]}{type=checkbox}{option=split}
+\answer{}{\rep[6;];\CHOIX[6;]}{type=checkbox}{option=split}
+\answer{}{\rep[7;];\CHOIX[7;]}{type=checkbox}{option=split}
+\answer{}{\rep[8;];\CHOIX[8;]}{type=checkbox}{option=split}
+\answer{}{\rep[9;];\CHOIX[9;]}{type=checkbox}{option=split}
+\answer{}{\rep[10;];\CHOIX[10;]}{type=checkbox}{option=split}
+\answer{}{\rep[11;];\CHOIX[11;]}{type=checkbox}{option=split}
+\answer{}{\rep[12;];\CHOIX[12;]}{type=checkbox}{option=split}
+
+
+solution{\verite1}
+\text{commentaire=}
+\matrix{reponse=\reply1
+\reply2
+\reply3
+\reply4
+\reply5
+\reply6
+\reply7
+\reply8
+\reply9
+\reply10
+\reply11
+\reply12}
+
+\for{t = 1 to \N}{
+   \text{commentaire=\commentaire <div class="reponse"> 
+   <b>\question[\t;]</b><ol>}
+  \for{s=1 to \CNT_choix[\N*(\step-1) + \t]}{
+    \text{commentaire = \commentaire <li> - \CHOIX[\t;\s] :}
+    \text{c =  \CHOIX[\t;\s]}
+    \if{ (\c isin \reply) and \s isitemof \reponse[\t;] }{
+       \text{ajout = <i>\choice[1]</i>}
+     }{ 
+       \if{ (\c isin \reponse[\t;] or \t isitemof \reponse)}{
+          \text{ajout = <i>\feed[\t]</i>}
+        }{
+        \text{ajout = <i>\choice[2]</i>}
+        }
+     }
+    \text{commentaire = \commentaire \ajout </li>}
+    }
+    \text{commentaire = \commentaire </ol></div>}
+} 
+\feedback{1=1}{\commentaire }
+

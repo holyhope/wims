@@ -1,0 +1,56 @@
+!!@#language independant
+!if robot isin $session
+  !exit
+!endif
+!!!reset wims_html_header
+!! !read js/keyboard.phtml notepad
+!! $wims_html_header
+ 
+!header
+!if $compute=yes
+  !if $error!=$empty
+    !if $mtype!=$empty
+     !read msg.phtml
+    !endif
+    !read menu.phtml
+    !goto end
+  !else
+    !if $transfert issametext or $transfert=yes
+      !set wims_form_method=file
+      !read transfert.phtml
+    !else
+      !read menu.phtml
+    !endif
+  !endif 
+!else
+  !read menu.phtml
+!endif compute=yes?
+ 
+:end
+
+!if $type_exo!=$empty
+  !set wims_menu_items=!append line modtool,1,module=adm/modtool\
+  intro,1,module=$module\
+  ,0,\
+   to $wims_menu_items
+!else
+ !set wims_menu_items=!append line modtool,1,module=adm/modtool\
+  ,0,\
+  to $wims_menu_items
+!endif
+
+
+!if $wims_developer!= and $type_exo=
+!set u = !linecnt $name      
+!for i = 1 to $u
+   !set cnt=!itemcnt $(name[$i;])
+   !for a =1 to $cnt
+     !set wims_menu_items=!append line $(name[$i;$a]),1,cmd=reply&type_exo=$(name[$i;$a])\
+    to $wims_menu_items
+   !next a
+!next
+!endif
+!tail
+
+!reset wims_exec_error wims_deposit
+

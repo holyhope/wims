@@ -1,0 +1,70 @@
+!set st=style="color:#CC0000; font:bold;"
+!set Type_exo = $(type_exo)
+!set my_dir=lang/answer.$modu_lang
+<div $frame>
+!set wims_form_method=file
+!form reply
+
+<center><input type=submit $balise_obl  value="$wims_name_back2"></center>
+  <p>
+!record 1 of lang/answer.$lang
+!!@#Voici le source de votre exercice!!#@
+ $(type_exo)
+<ul>
+  <li>
+!record 2 of lang/answer.$lang
+!!@#Copiez le source dans un module Modtool sous le nom!!#@
+  <tt $st>src/$file.oef</tt> 
+  </li>
+!if $file notsametext 
+  <li>
+!record 3 of $my_dir
+!!@#Copiez votre fichier de données dans le fichier!!#@
+  <tt $st>$file</tt> 
+  !href cmd=help&special_parm=$(Type_exo[1]) [$wims_name_help]
+  </li> 
+!endif
+!if $reading_file notsametext  and $reading_file notsametext no 
+  <li>
+!record 4 of $my_dir
+!!@#Copiez votre texte à lire dans le fichier!!#@
+  <tt $st>$reading_file</tt> 
+  </li>
+!endif
+!if $audio_file notsametext  and $audio_file notsametext no
+  <li>
+!record 5 of $my_dir
+!!@#Chargez le fichier !!#@
+  <tt $st>images/$audio_file</tt>
+!record 6 of $my_dir
+!!@#dans le dossier!!#@
+  <tt $st>images</tt></li>
+!endif
+!if $image_file notsametext and $image_file notsametext no
+  <li>
+!record 5 of $my_dir
+!!@#Chargez le fichier image!!#@
+   <tt $st>images/$image_file</tt> 
+!record 6 of $my_dir
+!!@#dans le dossier!!#@
+   <tt $st>images</tt></li>
+!endif
+!if http notwordof $video_file and $video_file notsametext  and $video_file notsametext no
+  <li>
+!record 5 of $my_dir
+!!@#Chargez le fichier video!!#@
+    <tt $st>$video_file</tt>
+!record 6 of $my_dir
+!!@# dans le dossier !!#@
+   <tt $st>images</tt></li>
+!endif
+</ul>
+!href target=wims_test module=adm/modtool&modreq=$target $wims_name_modtool
+
+!href session=$wims_session&lang=fr&module=adm/modtool&modreq=$target $name_sup_file
+<center>
+<textarea rows=30 cols=70 readonly>$exo</textarea></center>
+</center>
+
+<center><input type=submit $balise_obl  value="$wims_name_back2"></center>
+</div>

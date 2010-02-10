@@ -1,0 +1,82 @@
+\matrix{question=}
+\matrix{explication=}
+\text{juste=}
+\matrix{numero=}
+\matrix{analyse=}
+\text{cnt=}
+\for{i= 1 to \MAX}{
+  \matrix{QUEST = wims(record \battage[\i] of \file)}
+  \text{texte=\QUEST[1;]}
+  \text{texte=wims(embraced randitem \texte)}
+  \matrix{explication=\explication
+  \QUEST[2;]}
+
+  \matrix{Analyse=slib(text/markerror \texte)}
+  \matrix{analyse=\analyse
+  \Analyse[2;]}
+  \text{cnt=\cnt,\Analyse[4;]}
+  \text{juste=\juste,\Analyse[3;]}
+  \matrix{numero=\numero
+  \Analyse[1;]}
+}
+\text{cnt = wims(nonempty items \cnt)}
+\text{juste = wims(nonempty items \juste)}
+\text{STEP = wims(makelist r x for x = 1 to \MAX)}
+\text{U = pari(divrem(\MAX,\N)~)}
+\integer{cnt_step = \U[1] + 1}
+\matrix{STEPS = }
+\for{ u = 1 to \cnt_step -1}{
+   \matrix{STEPS =\STEPS
+wims(makelist r x for x = 2*(\u -1)*\N +1 to 2*\N*\u)}
+}
+\matrix{STEPS = \STEPS
+ wims(makelist r x  for x = 2*\N*(\cnt_step-1)+1 to 2*\MAX)}
+\steps{\STEPS}
+
+%%%%%%%%%%%
+
+\statement{\nopaste\style <p>\instruction</p>
+  \if{\reading notsametext }{\special{help reading,READING}}
+  \if{\image notsametext }{\special{help image,IMAGES}}
+  \audio\video
+  \for{s= 1 to \N}{
+    <div class="question">
+    \for{h=1 to \cnt[(\step - 1)*\N + \s]}{
+      \embed{reply \STEPS[\step;2*\s -1],\h} 
+    }
+    </div>
+    \instruction2 : 
+    <div>\embed{reply \STEPS[\step;2*\s]}</div>
+  }
+}
+
+
+\answer{incorrect}{\numero[1;];\analyse[1;]}{type=mark}
+\answer{correction}{\juste[1]}{type=case}
+\answer{incorrect}{\numero[2;];\analyse[2;]}{type=mark}
+\answer{correction}{\juste[2]}{type=case}
+\answer{incorrect}{\numero[3;];\analyse[3;]}{type=mark}
+\answer{correction}{\juste[3]}{type=case}
+\answer{incorrect}{\numero[4;];\analyse[4;]}{type=mark}
+\answer{correction}{\juste[4]}{type=case}
+\answer{incorrect}{\numero[5;];\analyse[5;]}{type=mark}
+\answer{correction}{\juste[5]}{type=case}
+\answer{incorrect}{\numero[6;];\analyse[6;]}{type=mark}
+\answer{correction}{\juste[6]}{type=case}
+\answer{incorrect}{\numero[7;];\analyse[7;]}{type=mark}
+\answer{correction}{\juste[7]}{type=case}
+\answer{incorrect}{\numero[8;];\analyse[8;]}{type=mark}
+\answer{correction}{\juste[8]}{type=case}
+\answer{incorrect}{\numero[9;];\analyse[9;]}{type=mark}
+\answer{correction}{\juste[9]}{type=case}
+\answer{incorrect}{\numero[10;];\analyse[10;]}{type=mark}
+\answer{correction}{\juste[10]}{type=case}
+
+
+\feedback{1=1}{
+  \for{s = 1 to \MAX}{
+     \if{\explication[\s;] notsametext }{
+        <div class="reponse">\explication[\s;]</div>
+      }
+   }
+}   

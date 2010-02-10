@@ -1,0 +1,187 @@
+\integer{coupure=17}
+
+\matrix{question=}
+\matrix{explication=}
+\text{juste=}
+\matrix{numero=}
+\matrix{analyse=}
+\text{cnt=}
+\text{texte=wims(record \battage[1] of \file0)}
+ \text{preliminaire_test=row(1,\texte)}
+ \text{inst_audio=wims(getopt audio in \preliminaire_test)}
+ \text{inst_image=wims(getopt image in \preliminaire_test)}
+ \text{inst_title=wims(getopt title in \preliminaire_test)}
+ \text{inst_intro=wims(getopt intro in \preliminaire_test)}
+ \integer{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+ \text{rab_inst=}
+ \text{rab_inst=\inst_title notsametext ?\rab_inst<p align="center">\inst_title</p>}
+ \text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
+ \text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt=""></p>}
+ \if{\inst_audio notsametext }{
+     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+       slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
+     \text{rab_inst=\rab_inst <p align="center">\rab_inst1[1;1]</p>}
+ }
+ \text{preliminaire=\test_inst=1  ? \rab_inst:}
+ \text{texte=\test_inst=1 ? wims(line 2 to -1 of \texte)}
+\if{\N >=2}{
+  \for{i= 2 to \N}{
+  \text{texte1= wims(record \battage[\i] of \file0)}
+  \text{preliminaire_test=row(1,\texte1)}
+  \text{inst_audio=wims(getopt audio in \preliminaire_test)}
+  \text{inst_image=wims(getopt image in \preliminaire_test)}
+  \text{inst_title=wims(getopt title in \preliminaire_test)}
+  \text{inst_intro=wims(getopt intro in \preliminaire_test)}
+  \text{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+  \text{texte1=\test_inst=1 ? wims(line 2 to -1 of \texte1)}
+  \text{texte = \texte <p> \texte1</p>}
+ }
+}
+\text{texte=wims(embraced randitem \texte)}
+\text{texte=wims(replace internal ??| by ??&nbsp;| in \texte)}
+\text{texte=wims(replace internal ?? | by ??&nbsp;| in \texte)}
+\matrix{texte=slib(text/markgroup \texte)}
+\matrix{numero=\texte[1..-4;]}
+\text{traduction=\texte[-2;]}
+\text{traduction=wims(replace internal || by | in \traduction)}
+\text{cnt_mot = rows(\numero)}
+\text{Numero = wims(rows2lines \numero)}
+\text{Numero = wims(lines2items \Numero)}
+\text{prem_numero=wims(column 1 of \numero)}
+\text{texte = \texte[-3;]}
+\text{cnt = items(\texte)}
+\text{Texte=wims(items2words \texte)}
+
+    
+\text{rep_compose = }
+\for{ i = 1 to \cnt_mot}{
+ \text{nom_compose= \texte[\numero[\i;]]}
+ \text{nom_compose =wims(items2words \nom_compose)}
+\text{rep_compose = \rep_compose,\nom_compose}
+}
+\text{rep_compose= wims(nonempty items \rep_compose)}
+
+\text{STEP = wims(makelist r x for x = 2 to \cnt_mot+1)}
+\text{position=}
+\integer{a=0}
+\for{t = 1 to \cnt}{
+  \if{\t isitemof \prem_numero}{
+    \integer{a =\a+1}
+    \text{position=\position,\a}
+  }{
+    \text{position=\position,0}
+  }
+ }
+\text{position=wims(nonempty items \position)}
+
+\text{STEP1=\first_step=1?r1}
+\text{STEP1=\second_step issametext yes ? \STEP1
+\STEP
+}
+
+\steps{\STEP1}
+
+
+\integer{reste=\cnt%\coupure}
+\integer{quo=(\cnt-\reste)/\coupure}
+\integer{quo=\reste=0? \quo-1}
+\text{nombre=wims(makelist x for x = 1 to \cnt)}
+%%%%%%%%%%%
+
+\statement{\nopaste\style <p>\instruction</p>
+\preliminaire
+  \if{\reading notsametext }{\special{help reading,READING}}
+  \if{\image notsametext }{\special{help image,IMAGES}}
+  \audio\video
+  \if{\step=\first_step}{
+    <div class="question">
+    \for{h=1 to \cnt}{
+      \embed{reply 1,\h} 
+    }
+    </div>
+   }
+ \if{\step >=1+\first_step}{
+   \if{\pos_rep=outside}{
+     <div class="reponse">
+     \for{s = 1 to \cnt}{
+      \if{\s notitemof \Numero}{\texte[\s]}{
+      \if{\s isitemof \Numero}{
+      <font size=+1 color=blue>\texte[\s]</font>}
+      }
+    }
+    </div>
+     <p>\instruction2</p>
+    <div class="question">
+   \for{s= 1 to \cnt_mot}{
+         <br> \rep_compose[\s] : \embed{reply \STEP[\s],\size
+         \autocompletion}  
+   }
+   </div>
+ }
+ \if{\pos_rep=inside}{
+    <p>\instruction2</p>
+    <div class="question">
+    \for{s = 1 to \cnt}{
+      \if{\s notitemof \Numero}{\texte[\s]}{
+      \if{\s isitemof \prem_numero}{
+      \embed{\STEP[\position[\s]], \size
+      \autocompletion}
+      }
+      <font size="-1" color=red>\texte[\s]</font>}
+    }
+   </div>
+  }
+  \if{\pos_rep=under}{
+    <div class="question">
+    \for{u = 0 to \quo}{<table border=0>
+    <tr>
+    \for{ v = 1 to \coupure}{<td align="center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+         or \nombre[\coupure*\u+\v] notitemof \Numero}{}
+       \if{\coupure*\u+\v <= \cnt}{ 
+         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<font color=blue>}
+           \texte[\coupure*\u+\v]}{&nbsp;}
+          \if{\nombre[\coupure*\u+\v] isitemof \Numero}{</font>}
+       </td>
+      }
+     </tr><tr>
+     \for{ v = 1 to \coupure}{
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+         or \nombre[\coupure*\u+\v] notitemof \Numero}{}
+        <td align="center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{ 
+         \embed{\STEP[\position[\nombre[\coupure*\u+\v]]], \size
+         \autocompletion}
+      }{&nbsp;}
+      </td>
+     }
+    </tr><tr><td colspan=\coupure><hr></td></tr>
+       </table> }
+
+   </div>
+  }
+ }
+}
+
+\answer{}{\Numero;\texte}{type=mark}{option=\partialscore}
+\answer{\rep_compose[1]}{\traduction[1];\choix}{type=\format}
+\answer{\rep_compose[2]}{\traduction[2]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[3]}{\traduction[3]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[4]}{\traduction[4]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[5]}{\traduction[5]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[6]}{\traduction[6]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[7]}{\traduction[7]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[8]}{\traduction[8]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[9]}{\traduction[9]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[10]}{\traduction[10]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[11]}{\traduction[11]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[12]}{\traduction[12]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[13]}{\traduction[13]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[14]}{\traduction[14]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[15]}{\traduction[15]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[16]}{\traduction[16]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[17]}{\traduction[17]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[18]}{\traduction[18]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[19]}{\traduction[19]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[20]}{\traduction[20]}{type=\format}{option=\option_reaccent}
+

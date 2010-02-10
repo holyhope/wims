@@ -1,0 +1,24 @@
+!!@#language independant
+ !! image_files=!sh cd $dir/images\
+ !!	dd=`find . -type f -name '*' 2>/dev/null`\
+ !!	[ -z "$$dd" ] && exit\
+ !!	ls -l $$dd | awk '{print $$9}'
+ !!    image_files=!replace internal ./ by $ in $image_files
+	
+image_files=!sh find $dir/images -type f \! -perm +100 | sed 's!^$dir/images/!!' | sort
+
+data_files=!sh find $dir -type f \! -perm +100 | sed 's!^$dir/!!' | sort
+df=!words2items $data_files
+data_files=
+!for f in $df
+   !if .htaccess notin $f and $f!=INDEX and $f!=COPYING and\
+	      $ Ex notin $ $f and \
+	         (/ notin $f) and $ NEWS notin $ $f and $ README notin $ $f \
+	      and  .phtml notin $f  and  $ . notin $ $f and  content.html notin $f\
+	      and $ var.proc notin $ $f 
+      data_files=!append line $f to $data_files
+    !endif
+!next f
+
+
+oef_files=!sh find $dir/src -type f \! -perm +100 | sed 's!^$dir/src/!!' | sort

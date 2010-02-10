@@ -1,0 +1,205 @@
+!set my_dir=lang/transfert.$modu_lang
+!set submit=submit
+!set wims_form_method=file
+!form reply
+  <p>
+!set transf=$frame
+!!!$hh
+!!!href cmd=reply&debut=1&compute=yes&transfert= $wims_name_back2
+!set wims_menu_items=!append line back2,1,module=$module&type_exo=$(type_exo)\
+to $wims_menu_items
+!!</h2>
+!if $transfert!=yes or $target=$empty
+     <div $transf>
+!record 1 of $my_dir
+!!@#     Le source de votre exercice a été créé!!#@
+ ($(type_exo)).
+!record 2 of $my_dir
+!!@#     Copiez le source dans un module Modtool sous le nom!!#@
+ <tt $st>src/$source.oef</tt>
+!record 3 of $my_dir
+!!@#     ou transférez-le automatiquement.!!#@
+    !if $wims_developer!=$empty
+         !if $list_module!=$empty
+   <ul><li>
+!record 4 of $my_dir
+!!@#   Choisissez le module!!#@
+           <p align=center>
+           !formselect target list $name_choice,$list_module
+         </p>
+      </li><li>
+      !formcheckbox transfert list yes prompt $name_transfer
+      </li>
+      </ul>
+         !set submit=submit
+         !else
+  !href target=wims_new module=adm/modtool&cmd=new&jobreq=create $name_newmodule
+         !endif
+    !endif
+    <center><input type=$submit $balise_obl  value="$wims_name_tosave"></center>
+    </div>
+ !else
+    <div $transf>
+    !if $type_fichier=$empty or $type_fichier=0
+!record 7 of $my_dir
+!!@#      Le fichier !!#@
+  <tt $st>src/$source.oef</tt>
+!record 8 of $my_dir
+!!@# a été transféré dans le module!!#@
+  <tt $st>$target</tt>.
+      <p>
+!record 9 of $my_dir
+!!@#      Vous devez maintenant transférer les autres fichiers nécessaires au bon fonctionnement de l'exercice!!#@
+ <tt $st>$source.oef</tt></p>
+      <ul>
+       <li>
+         !formradio type_fichier list 1 prompt $name_name_data
+          <tt $st>$file</tt>
+       </li>
+         !if $reading_file notsametext no and $reading_file notsametext
+       <li>
+         !formradio type_fichier list 2 prompt $name_reading
+         ( <tt $st>$reading_file</tt>)
+       </li>
+        !endif
+        !if $image_file notsametext no and $image_file notsametext
+         <li>
+         !formradio type_fichier list 3 prompt $name_image
+          <tt $st>$image_file</tt>
+         </li>
+        !endif
+        !if $audio_file notsametext no and $audio_file notsametext
+         <li>
+         !formradio type_fichier list 4 prompt $name_audio
+          <tt $st>$audio_file</tt>
+         </li>
+        !endif
+        <li>
+         !formradio type_fichier list 5 prompt $name_backlist.
+        </li>
+      </ul>
+       !endif
+       !if $file notsametext and $type_fichier=1
+         <p>
+!record 10 of $my_dir
+!!@#         Transférez le fichier de données!!#@
+ <input type=file name=wims_deposit>
+         <p>
+!record 11 of $my_dir
+!!@#        Il sera sauvé dans le module!!#@
+  <tt $st>$target</tt>
+!record 12 of $my_dir
+!!@#sous le nom!!#@
+ <tt $st>$file</tt>
+         !href cmd=help&special_parm=$type_exo [$wims_name_help]
+      <p>
+       !formcheckbox type_fichier list 0 prompt $name_backlist.
+       !endif
+       !if $reading_file notsametext no and $reading_file notsametext and $type_fichier=2
+        <p>
+!record 13 of $my_dir
+!!@#        Transférez le fichier de lecture!!#@
+ <input type=file name=wims_deposit>
+         <p>
+!record 14 of $my_dir
+!!@#         Il sera sauvé dans le module!!#@
+ <tt $st>$target</tt>
+!record 15 of $my_dir
+!!@#sous le nom!!#@
+  <tt $st>$reading_file</tt>
+       <p>
+       !formcheckbox type_fichier list 0 prompt $name_backlist.
+       !endif
+       !if $image_file notsametext no and $image_file notsametext and $type_fichier=3
+        <p>
+!record 16 of $my_dir
+!!@#       Transférez le fichier image!!#@
+ <input type=file name=wims_deposit>
+        <p>
+!record 17 of $my_dir
+!!@#        Il sera sauvé dans le module!!#@
+ <tt $st>$target</tt>
+!record 18 of $my_dir
+!!@#sous le nom!!#@
+  <tt $st>$image_file</tt>
+       <p>
+       !formcheckbox type_fichier list 0 prompt $name_backlist.
+       !endif
+       !if $audio_file notsametext no and $audio_file notsametext and $type_fichier=4
+        <p>
+!record 19 of $my_dir
+!!@#        Transférez le fichier audio!!#@
+ <input type=file name=wims_deposit>
+        <p>
+!record 20 of $my_dir
+!!@#        Il sera sauvé dans le module!!#@
+ <tt $st>$target</tt>
+!record 21 of $my_dir
+!!@#sous le nom!!#@
+  <tt $st>$audio_file</tt>
+       <p>
+       !formcheckbox type_fichier list 0 prompt $name_backlist.
+       !endif
+       !if $type_fichier=5
+        <p>
+!record 22 of $my_dir
+!!@#        Transférez d'autres fichiers!!#@
+ <input type=file name=wims_deposit>
+        <p>
+!record 23 of $my_dir
+!!@#        Ils seront sauvés dans le module!!#@
+ <tt $st>$target</tt>
+!record 24 of $my_dir
+!!@#       sous leur nom d'origine (répertoire!!#@
+  <tt $st>images</tt>)
+       <p>
+        !formcheckbox type_fichier list 0 prompt $name_backlist.
+       !endif
+     <center><input type=submit $balise_obl  value="$wims_name_tosave"></center>
+     <p>
+!!!record 25 of $my_dir
+!!@#     Une fois que vous avez transféré tous les fichiers nécessaires,!!#@
+
+!href target=wims_test module=devel/$wims_developer/$target&exo=$source&cmd=new $wims_name_testexo
+   </div>
+!endif
+!if $wims_developer notsametext and $target!=$empty
+<div $transf>
+!record 26 of $my_dir
+!!@#Fichiers existant déjà dans le module!!#@
+  <tt $st>$target</tt> (
+!href target=wims_new module=adm/modtool $wims_name_modtool
+)
+ <table width="90%" align="center" border=1>
+ <tr><th>
+ !record 27 of $my_dir
+!!@#Fichiers de source (src)!!#@
+ </th><th>
+!record 28 of $my_dir
+!!@# Fichiers de données et de texte!!#@
+ </th><th align=left>
+!record 29 of $my_dir
+!!@# Fichiers images, audio!!#@
+ </th></tr>
+ <tr><td valign=top>
+    <pre $st>
+$oef_files
+     </pre>
+</td>
+<td valign=top>
+ <pre $st>
+$data_files
+     </pre>
+</td><td valign=top>
+     <pre $st>
+$image_files
+     </pre>
+</td></tr></table>
+</div>
+!endif
+!if $transfert!=yes or $target=$empty
+  <center>
+  <textarea readonly rows=10 cols=70>$exo1</textarea></center>
+  </center>
+!endif
+</form>

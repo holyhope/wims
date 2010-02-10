@@ -1,0 +1,108 @@
+\text{aucune=\aucune issametext ? aucune de ces possibilités}
+\text{texte=wims(randrecord \file)}
+\text{texte=wims(embraced randitem \texte)}
+\text{bat=shuffle(\cnt_qual)}
+\text{sens=}
+\text{preliminaire_test=row(1,\texte)}
+\text{inst_audio=wims(getopt audio in \preliminaire_test)}
+\text{inst_image=wims(getopt image in \preliminaire_test)}
+\text{inst_title=wims(getopt title in \preliminaire_test)}
+\text{inst_intro=wims(getopt intro in \preliminaire_test)}
+\text{test_inst=\inst_audio\inst_image\inst_title\inst_intro  notsametext ? 1 : 0}
+\text{rab_inst=}
+\text{rab_inst=\inst_title notsametext ?\rab_inst<p align="center">\inst_title</p>}
+\text{rab_inst=\inst_intro notsametext ?\rab_inst \inst_intro}
+\text{rab_inst=\inst_image notsametext ? \rab_inst <p align="center"><img src="\imagedir/\inst_image" alt=""></p>}
+\if{\inst_audio notsametext }{
+     \text{rab_inst1= . isin \inst_audio or \packs= ? 
+       slib(media/audio \imagedir/\inst_audio,\player_option,player=\player):slib(lang/swac \inst_audio,\packs,player=\player,\player_option)}
+     \text{rab_inst=\rab_inst <p align="center">\rab_inst1[1;1]</p>}
+}
+\text{preliminaire=\test_inst=1  ? \rab_inst:}
+\matrix{texte=\test_inst=1 ? wims(line 2 to -1 of \texte)}
+\text{premiereligne=\texte[1;]}
+\text{test=wims(text remove 1234567890 in \premiereligne)}
+\if{\test issametext }{
+  \integer{nombre= \premiereligne+1}
+  \text{commentaire=wims(rows2lines \texte[\nombre+1..-1;])}
+  \matrix{texte=\texte[2..\nombre;]}
+}
+{
+  \integer{nombre= \texte[2;]+2}
+  \text{choix=\texte[1;]}
+  \text{commentaire=wims(rows2lines \texte[\nombre+1..-1;])}
+  \matrix{texte=\texte[3..\nombre;]}
+}
+
+
+\integer{sens=\sens notwordof 1 2 ? randint(1..2)}
+
+\text{qual=\texte[;1]}
+\text{qual=\sens=1?\qual,\aucune}
+\text{liste=\sens=1 ? \choix:\qual}
+
+\text{qual=\sens=2?\choix:\qual}
+\text{qual=wims(nonempty items \qual)}
+\text{cnt_qual=items(\qual)}
+\text{cnt_qual1=\sens=1?\cnt_qual-1:\cnt_qual}
+
+\text{cnt_liste=items(\liste)}
+\matrix{R = \texte[;2..-1]}
+
+\if{\sens=1}{reponse pour chaque personne : 
+\matrix{reponse=}
+\for{ i= 1 to \cnt_liste}{
+  \text{rep=}
+  \for{ j = 1 to  \cnt_qual1}{
+    \if{\i isitemof \R[\j;]}{
+     \text{rep =\rep, \j}
+    }
+   }
+    \text{rep=wims(nonempty items \rep)}
+   \text{rep= \rep issametext ? \cnt_qual}
+  \matrix{reponse=\reponse
+  \rep}
+}
+}
+{\text{reponse=\R}}
+
+\text{STEP=wims(makelist r x for x = 1 to \cnt_liste)}
+
+\steps{\STEP}
+\statement{
+\style \instruction
+\preliminaire
+
+\if{\commentaire notsametext }{
+ <div class="question">\commentaire</div>
+}
+  \if{\reading notsametext }{\special{help reading,READING}}
+  \if{\image notsametext }{\special{help image,IMAGES}}
+  \audio\video
+
+<ol>
+\for{u = 1 to \cnt_liste}{ 
+<li> \liste[\u] : <ol>
+ \for{ v = 1 to \cnt_qual}{
+ <li>
+   \embed{reply \u , \v }
+</li>
+  }
+   </ol>
+ }
+ </ol>
+ }
+ \answer{}{\reponse[1;];\qual}{type=checkbox}
+ \answer{}{\reponse[2;];\qual}{type=checkbox}
+ \answer{}{\reponse[3;];\qual}{type=checkbox}
+ \answer{}{\reponse[4;];\qual}{type=checkbox}
+ \answer{}{\reponse[5;];\qual}{type=checkbox}
+ \answer{}{\reponse[6;];\qual}{type=checkbox}
+ \answer{}{\reponse[7;];\qual}{type=checkbox}
+ \answer{}{\reponse[8;];\qual}{type=checkbox}
+ \answer{}{\reponse[9;];\qual}{type=checkbox}
+ \answer{}{\reponse[10;];\qual}{type=checkbox}
+ \answer{}{\reponse[11;];\qual}{type=checkbox}
+ \answer{}{\reponse[12;];\qual}{type=checkbox}
+ \answer{}{\reponse[13;];\qual}{type=checkbox}
+ \answer{}{\reponse[14;];\qual}{type=checkbox}

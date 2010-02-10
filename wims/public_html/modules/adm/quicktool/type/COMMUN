@@ -1,0 +1,94 @@
+###################
+\title{}
+\author{}
+\email{}
+\language{fr}
+\computeanswer{no}
+\format{html}
+\text{file=}
+\text{notepad=slib(utilities/notepad Notepad,small)}
+\text{instruction=asis()}
+\text{instruction2=asis()}
+\text{choice=}
+\text{common=}
+\text{audio_file=}
+\text{reading_file=}
+\text{image_file=}
+\text{video_file=}
+\text{alea=}
+\text{size=}
+\text{partialscore=}
+\text{percent=}
+\text{aucune=}
+\text{format=}
+\text{specialhelp1=}
+\text{specialhelp2=}
+\text{specialhelp3=}
+\text{helpprompt=}
+\text{reaccent=}
+\text{style_question=}
+\text{style_reponse=}
+\text{style_oef=}
+\text{style_css=}
+\text{paste=}
+\text{pos_rep=}
+\text{second_step=}
+\text{first_step=}
+\text{answer_given=}
+\text{try=}
+\text{packs=}
+\text{player=}
+\text{player_option=}
+#####################
+
+\text{file0=randitem(\file)}
+\integer{cnt_question= wims(recordcnt \file0)}
+
+################
+\text{MAX=}
+\text{N=}
+\text{M=}
+################
+\text{autocompletion=\format iswordof case ? autocomplete=off}
+\text{player=wims(replace internal - by in \player)}
+\text{specialhelp=\specialhelp1,\specialhelp2,\specialhelp3}
+\text{helpprompt=\helpprompt = ?++>}
+\integer{first_step=\first_step notwordof 0 ? 1}
+\text{option_reaccent=\reaccent!=yes ? noreaccent:}
+\text{nopaste=\paste issametext no ? slib(utilities/nopaste )}
+
+\text{instruction=\instruction issametext ? wims(getdef instruction in \file0)}
+\text{instruction2=\instruction2 issametext ? wims(getdef instruction2 in \file0)}
+\text{size=\size issametext ? wims(getdef size in \file0)}
+\text{reading_file=\reading_file issametext ? wims(getdef reading_file in \file0)}
+\text{reading = wims(record 0 of \reading_file)}
+
+\text{audio_file = \audio_file issametext ? wims(getdef audio_file in \file0)}
+\text{audio=\audio_file notsametext  and  \audio_file notsametext no? 
+<p align="center">slib(media/audio \imagedir/\audio_file,\player_option,player=\player)</p>}
+
+\text{image_file=\image_file issametext ? wims(getdef image_file in \file0)}
+\text{image=\image_file notsametext  and  \image_file notsametext no? 
+wims(makelist <img src="\imagedir/x " alt=""> for x in \image_file)}
+
+\text{video_file=\video_file issametext ? wims(getdef video_file in \file0)}
+\if{\video_file notsametext  and  \video_file notsametext no}{ 
+  \text{video_file=http notin \video_file ? \imagedir/\video_file}
+\text{video=\video_file notsametext ? <a wims_target=external href="\video_file">VIDEO</a></p>}
+}
+\text{choix=\choice issametext ? wims(getdef choice in \file0):\choice}
+
+\text{style = <style type="text/css">
+ .question {\style_question}
+ .reponse {\style_reponse}
+ .oefstatement{\style_oef}
+ \style_css
+ </style>
+ }
+
+\text{try =\try notwordof 1 2 3 4 5 6 7 8 9 10 ? 1}
+\text{size=\format iswordof dragfill clickfill ? \size x 1}
+\integer{N = min(\cnt_question,\N)}
+\integer{MAX=min(\N*\MAX,\cnt_question)}
+\text{battage=\alea issametext yes ? shuffle(\cnt_question) :
+wims(makelist x for x = 1 to \cnt_question)}

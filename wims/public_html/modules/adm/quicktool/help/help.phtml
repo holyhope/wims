@@ -1,0 +1,308 @@
+!!@#language independant
+!!!set example_dir=example.$modu_lang
+!if $wims_developer!=
+!set wims_menu_items=!append line doch_up,1,cmd=help \
+  to $wims_menu_items
+!for EXO in QCM,TRUEFALSE,SELECTWORD, SELECTWORDA, GAP , ORDONNE, COMPOSE , CORRESP , QUIFAITQUOI, TONIC
+ !set wims_menu_items=!append line $EXO,1,cmd=help#$EXO\
+to $wims_menu_items
+!next
+!else
+!goto intro
+!endif
+!set my_dir=lang/help.$modu_lang
+!set hr=<hr style="color: #663366;\
+background-color: #663366;\
+height: 5px;">
+
+!set hh=<h2 style="color:$wims_ref_menucolor; \
+background-color: $wims_ref_bgcolor;\
+text-align:center;">
+
+!set hh3=<h3 style="color:$wims_ref_menucolor; \
+background-color: $wims_ref_bgcolor;\
+text-align:left;">
+
+!set pre=style="\
+    background-color:white;\
+    font-weight: bold ;\
+        font-size: 12px;\
+        border-style: solid;\
+        border-width: 2pt;\
+        margin: 3% 3% 3% 3%;\
+        padding : 3%;"
+
+!set tt=style="background-color:white;\
+   font-weight: bold ;\
+   padding : 0% 1% 0% 1%;"
+   
+!set desc = $hh3 $wims_name_Description</h3>
+!set help_parm=$special_parm
+!default help_parm=$parmhelp
+!set help_cnt_parm=!itemcnt $help_parm
+
+
+!if $special_parm!=$empty
+ !goto $special_parm
+!endif
+!if $special_parm1 !=$empty
+  !read lang/help.$modu_lang/special_help.phtml
+ !exit
+!endif
+
+<a name=commun></a>
+<div $frame>
+!if $help_cnt_parm >1 
+$desc
+!record 0 of $my_dir/commun
+!endif
+!if $help_cnt_parm >0 
+		!for t = 1 to $help_cnt_parm
+			!set help_parm_tmp=!item $t of $help_parm
+			!goto $help_parm_tmp
+:suite
+		!next t
+!endif
+
+:QCM
+!set EXO=QCM
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+
+!record 0 of $my_dir/$EXO
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:TRUEFALSE
+!set EXO=TRUEFALSE
+
+
+<p>
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:SELECTWORD
+!set EXO=SELECTWORD
+
+<p>
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:SELECTWORDA
+!set EXO=SELECTWORDA
+
+<p>
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:GAP
+!set EXO=GAP
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2>
+$desc 
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data GAP</h3> 
+!set a=!record 1 to -1 of $example_dir/GAP/format
+!set b=!record 0 of $example_dir/GAP/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:ORDONNE
+!set EXO=ORDONNE
+
+<p>
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:COMPOSE 
+!set EXO=COMPOSE
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:CORRESP 
+!set EXO=CORRESP
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+!goto end
+
+:QUIFAITQUOI
+!set EXO=QUIFAITQUOI
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2> 
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+ 
+!goto end
+
+:TONIC
+!set EXO=TONIC
+
+<p>
+<a name=$EXO></a>
+<p>
+$hh $EXO</h2>
+$desc
+!record 0 of $my_dir/$EXO
+
+$hh3 $name_format_data $EXO</h3> 
+!set a=!record 1 to -1 of $example_dir/$EXO/format
+!set b=!record 0 of $example_dir/$EXO/format
+<pre $pre>
+$b
+!replace internal : by &#58; in :$a
+</pre>
+
+!goto end
+
+:end
+
+!if $help_cnt_parm =1
+<p><hr>
+$hh  $name_commun</h3>
+$desc
+ !record 0 of $my_dir/commun
+!endif
+  !if $t<$help_cnt_parm
+		!goto suite
+	!endif
+	!set gloss_parm=$empty
+	!exit
+!endif
+</div>
+<p><center>
+!href cmd=resume $wims_name_resume
+</center>
+
+!exit
+
+:intro
+!read adm/language names.phtml
+!read values
+ $table_header
+    $table_tr<th>$wims_name_Type</th><th>$wims_name_Description</th><th>$name_Example</th>
+   !set u = !linecnt $name 
+   !for i = 1 to $u
+     $table_tr<td width="12%">
+     !set cnt=!itemcnt $(name[$i;])
+     !for a =1 to $cnt
+        <br>
+         $(name[$i;$a])
+     !next a
+     </td><td width="25%">$(explication[$i;])</td>
+     <td>
+     !for j = 1 to $(nb_example[$i]) 
+     !set ex_data = !getdef file in $example_dir/$(name_example[$i])/$j
+     !set ex_title = !getdef title in $example_dir/$(name_example[$i])/$j
+     !set ex_data=!nospace $ex_data
+  
+!href target=wims_test module=$module_test&exo=$ex_source&cmd=new <i>$ex_title</i>
+&nbsp;
+!href target=wims_mhelp cmd=help&special_parm=example&special_parm2=$(name_example[$i])/$ex_data $name_data
+&nbsp;
+!if $j < $(nb_example[$i])
+  <br><hr>
+!endif
+!next j
+</td></tr>
+ !next u
+$table_end
+
