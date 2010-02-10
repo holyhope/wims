@@ -48,8 +48,8 @@
 !set name_change=Se cambió la contraseña de su cuenta.
 
 !if $job=modname
-  !set name_moddevcnt=!nosubst Vous avez $totalcnt modules en développement.
-  !set name_limited=!nosubst liste limitée à $maxlist modules
+  !set name_moddevcnt=!nosubst Tienen $totalcnt módulos en desarrollo.
+  !set name_limited=!nosubst lista limitada a $maxlist módulos
 
   !distribute lines No mostrar más que los módulos cuya dirección contiene\
   Presione el título de un módulo para trabajar\
@@ -59,25 +59,25 @@
 !endif
 
 !if $job iswordof move copy
-  !distribute lines Copier,Renommer,Dupliquer,Renommer\
-   faites une copie\
-   Renommer le module va casser les feuilles de travail qui l'utilisent. Assurez-vous que ce n'est pas le cas\
+  !distribute lines Copiar, cambiar nombre, duplicar, cambiar nombre\
+   Hacer una copia\
+   Cambiar el nombre del módulo va a romper las hojas de trabajo que lo utilizan. Garantizan que no es el caso\
 into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst le module public <em>$otit</em> (<tt>$original2</tt>) dans votre espace \
-de développement sous l'adresse 
-!set name_warning2=Renommer ou dupliquer un module d'adresse publique peut conduire à la duplication \
-  de sa publication. Soyez très prudent ! Renommer ou dupliquer un module d'adresse publique\
-  peut conduire à la duplication de sa publication. Soyez très prudent !\
-  <p>Si vous voulez faire des tests sur le module, choisissez la zone <tt>test</tt>.
-!set name_warning3=Si vous avez déjà publié ce module, veuillez changer cette adresse exactement selon \
-  son adresse publique. Sinon vous risquez une duplication de sa publication.
+!set name_public_module=!nosubst el módulo público<tt>$original2</tt>) en su espacio \
+de desarrollo bajo la dirección
+!set name_warning2=Cambiar el nombre o duplicar un módulo de dirección pública puede conducir a la duplicación \
+  de su publicación. ¡Sea muy prudente! Cambiar el nombre o duplicar un módulo de dirección pública\
+  puede conducir a la duplicación de su publicación. ¡Sea muy prudente!\
+  <p>Si quieren hacer pruebas sobre el módulo, eligen la zona <tt>pruebas/tt>.
+!set name_warning3=Si ya publicaron este módulo, quiere cambiar esta dirección exactamente según \
+  su dirección pública. Si no arriesgan una duplicación de su publicación.
 !endif
 
 !if $job=auth
   !set name_intro=Esta herramienta es para desarrollar en línea, módulos para WIMS. \
     Es una herramienta sofisticada y solamente desarrolladores registrados podrán \
     acceder a ella. <p> Por favor, introduzca los datos de su identificación.
-    
+
   !distribute lines escriba\
    al encargado de este servidor\
    si ha olvidado su contraseña.\
@@ -87,104 +87,104 @@ de développement sous l'adresse
     para escribir ejercicios interactivos de una manera fácil, sin necesidad de identificación.\
   into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
- 
+
 !endif
 
 !if $job=backup
- !set name_save=Voici le fichier de sauvegarde du module
- !set name_internal_error= Erreur interne : impossible de générer le fichier de sauvegarde. Veuillez contacter le
+ !set name_save=Ahí tienes el fichero de protección del módulo
+ !set name_internal_error= Error interno: imposible de generar el fichero de protección. Quiere contactar el
 !endif
 
 !if $job=publish
-  !distribute lines Nom de votre compte de publication \
-  Type de publication\
-  version développement,version stable - modifier un module existant, version stable - ajouter un nouveau module\
-  Est-ce une traduction <br> d'un module existant <br>créé par un autre auteur ?\
-  Modificateurs autorisés\
-  Lisez ceci d'abord !\
-  Le module publié apparaîtra dans le moteur de recherche du site d'ici quelques minutes.\
-  Si c'est une erreur, veuillez demander au gestionnaire du site d'enlever manuellement le module que vous avez publié.\
-  Vous allez recevoir un mail confirmant la réception de l'envoi.\
-  D'accord, allez-y\
+  !distribute lines Nombre de su cuenta de publicación \
+  Tipo de publicación\
+  versión desarrollo, versión estable - modificar un módulo existente, versión estable - añadir un nuevo módulo\
+  Es una traducción <br> ¿de un módulo que existe <br> creado por otro autor?\
+  Modificantes autorizados\
+  ¡Lea esto en primer lugar!\
+  El módulo publicado aparecerá en el motor de búsqueda del sitio de aquí a algunos minutos.\
+  Si es un error, quiere pedir al gestor del lugar retirar manualmente el módulo que publicaron.\
+  Van a recibir un correo electrónico que confirma la recepción del envío.\
+  De acuerdo, ande\
  into name_publishaccount,name_publishtype,name_prompt,name_translation,name_authorized,name_readhelp,\
    name_local,name_error,name_emailsend,name_goahead
 
- !set name_warning0=!nosubst Ce module a une adresse publique. Il doit donc être publié au centre de\
-   publication <tt>$centralhost</tt>. Veuillez entrer votre identification de publication.
- !set name_warning1=Avez-vous incrémenté la version du module, si vous publiez une nouvelle version d'un \
-   module existant ? Sinon, personne ne mettra à jour votre nouvelle version.
- !set name_warning2=Votre module a une adresse locale. Il ne peut être publié que sur l'espace local \
-   de ce serveur. Voulez-vous continuer ?
-!set name_warning3=Le principal avantage d'une publication dans l'espace local est de faire apparaitre\
-  le module dans le moteur de recherche du serveur local.
-!set name_cheat1=!nosubst Ce module déclare qu'il se contente de WIMS-$Wver2,\
- alors qu'il a probablement été développé ou modifié sous ce serveur qui est \
- de version $wims_version. Vous devez mettre à jour le fichier INDEX du module\
- en modifiant la version de wims dans <tt>Propriétés</tt>.
-!set name_cheat2= Si vous êtes sûr de ce que vous faites, vous pouvez tricher\
- pour faire croire aux serveurs que vous êtes sur un serveur ancien (OPERATION TRES RISQUEE) !
+ !set name_warning0=!nosubst Este módulo tiene una dirección pública. Deben publicarle pues en el centro de\
+   publicación <tt>$centralhost</tt>. Quiere entrar su identificación de publicación.
+ !set name_warning1=¿Incrementaron la versión del módulo, si publican una nueva versión de un  \
+   módulo existente? Si no, nadie pondrá al día su nueva versión..
+ !set name_warning2=Su módulo tiene una dirección local. No pueden publicarle sino sobre el espacio local  \
+   de este servidor. ¿Quieren seguir?
+!set name_warning3=La principal ventaja de una publicación en el espacio local es evidenciar \
+  el módulo en el motor de búsqueda del servidor local.
+!set name_cheat1=!nosubst Este módulo declara que se satisface con WIMS-$Wver2,\
+ mientras que se desarrolló probablemente o modificado bajo este servidor que es  \
+ de versión $wims_version. Deben poner al día el fichero ÍNDICE del módulo \
+ modificando la versión de wims en <tt> Propiedades< /tt>.
+!set name_cheat2= ¡Si están seguros de lo que hicieron, pueden engañar \
+ para hacer creer a los servidores que están en un servidor antiguo (OPERACIÓN MUY ARRIESGADA)!
 
 !endif
 
 !if $job=diff
-  !distribute lines Aucune différence n'est trouvée entre la version de développement et la version publique du serveur.\
-  Trop de différences existent entre la version de développement et la version publique du serveur.\
-  Différences entre la version de développement et la version publique du serveur&nbsp;:\
+  !distribute lines Ninguna diferencia se encuentra entre la versión de desarrollo y la versión pública del servidor.\
+  Demasiadas diferencias existen entre la versión de desarrollo y la versión pública del servidor.\
+  Diferencias entre la versión de desarrollo y la versión pública del servidor&nbsp;:\
 into name_diff1,name_diff2,name_diff3
 !endif
 
 !if $job=restore
 
- !set name_warning1=Votre fichier n'a pas l'air d'un fichier de sauvegarde d'un module&nbsp;!<p> \
-   Vous ne pouvez restaurer un fichier que s'il a été téléchargé auparavant à partir de Modtool. Réessayez.
+ !set name_warning1=Su fichero no tiene el aire de un fichero de protección de un módulo&nbsp;!<p> \
+   No pueden restaurar un fichero sino si fue telecargado antes a partir de Modtool. Vuelva a intentar.
 
- !distribute lines  Je n'ai pas pu reconnaître votre fichier comme une sauvegarde de module. Erreur dans le fichier&nbsp;!\
-   Aucune différence n'est trouvée entre le module existant (dans votre espace de développement) et la sauvegarde.\
-   Trop de différence existe entre le module existant (dans votre espace de développement) et la sauvegarde.\
-   Differences entre le module existant (dans votre espace de développement) et la sauvegarde&nbsp;\
-   Donnez le fichier de sauvegarde à restaurer\
-   faire montrer les différences entre les modules d'abord.\
-   Aller travailler sur le module\
-   Module restauré\
+ !distribute lines  No pude reconocer su fichero como una protección de módulo. Error en el fichero&nbsp;!\
+   Ninguna diferencia se encuentra entre el módulo existente (en su espacio de desarrollo) y lo salvaguarda.\
+   Demasiada diferencia existe entre el módulo existente (en su espacio de desarrollo) y la salvaguarda.\
+   Diferencias entre el módulo existente (en su espacio de desarrollo) y la salvaguarda&nbsp;\
+   Dé el fichero de protección que debe restaurarse\
+   hacer mostrar las diferencias entre los módulos en primer lugar.\
+   Ir a trabajar sobre el módulo\
+   Módulo restaurado\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
     name_restored
-  
-!set name_illegal= Votre sauvegarde contient des fichiers de types illégaux ! Restauration impossible.\
- <p> Est-ce une sauvegarde d'une ancienne version ? Maintenant vous devez copier les fichiers un par un.
-!set name_warning2=Seules les sauvegardes depuis Modtool ou les fichiers téléchargés\
-   depuis le centre de publication <a href="$downloadsite">$downloadsite</a>\
-   sont acceptés. Aucune modification manuelle du fichier d'archives n'est autorisée.
-!set name_warning_diff=!nosusbt Ce module va remplacer complètement le module existant à la même adresse, \
-  sans possibilité de retour. Mais vous pouvez
-  
+
+!set name_illegal= ¡Su protección contiene ficheros de tipos ilegales! Restauración imposible.\
+ <p> ¿Es una protección de una antigua versión? Ahora deben copiar los ficheros uno a uno
+!set name_warning2=Solas las protecciones desde Modtool o los ficheros cargados a distancia \
+   desde el centro de publicación  <a href="$downloadsite">$downloadsite</a>\
+   se aceptan. Ninguna modificación manual del fichero de archivos se autoriza.
+!set name_warning_diff=!nosusbt Este módulo va a sustituir completamente al módulo existente a la misma dirección,  \
+  sin posibilidad de vuelta. Pero pueden
+
 !endif
 
 !exit
 :del
- Un module effacé l'est
-définitivement. 
+ Un módulo borrado
+lo es definitivamente.
 !href cmd=reply&jobreq=backup $wims_name_modsave
 
 <p>
-<b>Et n'oubliez pas</b> : Une classe virtuelle ou une feuille de
-travail qui référencent votre module ne fonctionneront plus si ce
-module est effacé.
+<b>Y no olvidan</b> : Una clase virtual o una hoja de
+trabajo que hace referencia a su módulo no funcionarán
+ya si se borra este módulo.
 
 <p>
-Etes-vous sûr de vouloir effacer le module
+Está  seguro de querer borrar el módulo
 
 !exit
 :delconfirm
-Le fichier 
+El fichero
  <font color=blue><em>$fname</em></font>
- du module
- <font color=blue><em>$title</em></font> est effacé.
+ del módulo
+ <font color=blue><em>$title</em></font> esta borrado.
 !exit
 
 :delfile
 
-Êtes-vous sûr de vouloir effacer le fichier
+Está  seguro de querer borrar el módulo
 <font color=blue><em>$fname</em></font>
-du module
+del módulo
 <font color=blue><em>$title</em></font>&nbsp;?
 !exit
