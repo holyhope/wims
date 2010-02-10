@@ -3,57 +3,57 @@
 <b>Error</b>.
 
 !if bad_auth iswordof $error
- Authentification failed. Please try again.
+ Fracaso de autenticación. Vuelve a intentar.
  !exit
 !endif
 
 !if bad_pass iswordof $error
- Bad password: it must contain only letters and digits, between
- 4 and 16 characters. And the repeat password should be equal to the
- first one! Try again.
+ Mala contraseña: debe tener entre 4 y 16 caracteres,
+ cartas y cifras solamente. ¡Y la contraseña repetida debe ser idéntica
+ primero! Intente aún.
  !exit
 !endif
 
 !if empty_data iswordof $error
- Please fill in the definition of
+ Quiere cumplir la definición de
  <b><em><font color=red>$(name_$empty_data)</font></em></b>
- of your module.
+ de su módulo.
  !exit
 !endif
 
 !if bad_fname iswordof $error
- Illegal file name. Please choose another name for your file.
+ Nombre de fichero ilegal. Quiere elegir otro nombre para su fichero.
  !exit
 !endif
 
 !if binary_file iswordof $error
- Binary file is not allowed here.
+ Fichero binario prohibido.
  !exit
 !endif
 
 !if illegal_filedesc iswordof $error
- You cannot put anything else than straightforward definitions in filedesc.
+ No pueden poner sino definiciones directas en filedesc.
  !exit
 !endif
 
 !if badoriginal iswordof $error
- This module cannot be copied.
+ Este módulo no puede copiarse.
  !exit
 !endif
 
 !if clash iswordof $error
- Target module already exists.
+ El módulo de destino ya existe.
  !exit
 !endif
 
 !if badtarget iswordof $error
- Target module address is bad: too long, too short, incomplete, or illegal
- characters.
+ La dirección de destino no es buena: demasiado larga, demasiado corta,
+ incompleta o caracteres no admitidos.
  !exit
 !endif
 
 !if symlink iswordof $error
- The source module cannot be copied because it contains symbolic links.
+ Imposible de copiar el módulo fuente, ya que contiene vínculos simbólicos.
  !exit
 !endif
 
