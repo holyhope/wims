@@ -320,7 +320,7 @@ de este sitio. No está autorizado a acceder a este módulo.
 !if $job=mod2
   !set name_error1=!nosubst <b>Error</b>. El identificador de usuario (login) <tt>$devlogin</tt> \
  está ya siendo usado por otra cuenta. Por favor escoja otro identificador.
-  !set name_error2=!nosubst <b>Error</b>. No ha introducido el campo <tt>$badfield</tt> correctamente.\ 
+  !set name_error2=!nosubst <b>Error</b>. No ha introducido el campo <tt>$badfield</tt> correctamente.\
  Por favor corríjalo.
   
 !exit
@@ -464,7 +464,7 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
 If you don't, these modules will look for the mp3 of the site http://shtooka.net\
 \
 To download the collections, do it by line command  with the script\
-<tt>$wims_home/bin/swac </tt>. It will install some swac packs at the right space.\ 
+<tt>$wims_home/bin/swac </tt>. It will install some swac packs at the right space.\
 <p><small>Because of the fact that the files of wims are encoded iso-latin, it's not\
 yet possible to use the cyrillic packs.</small>
 !exit
