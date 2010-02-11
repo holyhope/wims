@@ -20,6 +20,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 !set name_warning_help=Por favor use los enlaces de ayuda específicos de los distintos temas de ayuda.
 
 !set name_visit=Visitar
+!set name_click=Pulse aquí
 
 if $job=access
  !set title=Configuración de la normativa de acceso

@@ -112,7 +112,7 @@ de desarrollo bajo la dirección
  !set name_warning0=!nosubst Este módulo tiene una dirección pública. Deben publicarle pues en el centro de\
    publicación <tt>$centralhost</tt>. Quiere entrar su identificación de publicación.
  !set name_warning1=¿Incrementaron la versión del módulo, si publican una nueva versión de un  \
-   módulo existente? Si no, nadie pondrá al día su nueva versión..
+   módulo existente? Si no, nadie pondrá al día su nueva versión.
  !set name_warning2=Su módulo tiene una dirección local. No pueden publicarle sino sobre el espacio local  \
    de este servidor. ¿Quieren seguir?
 !set name_warning3=La principal ventaja de una publicación en el espacio local es evidenciar \
