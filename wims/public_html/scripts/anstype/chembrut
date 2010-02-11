@@ -147,12 +147,12 @@ reply_$i=$(reply$i)
  !if $ans_order_score=1
   diareply$i=good
   !advance freegot
-  sc_reply=1
+  m_sc_reply$i=1
  !else
    partialgood$i=yes
   diareply$i=good
   freegot=$[$freegot + 0.8]
-  sc_reply=0.5
+  m_sc_reply$i=0.5
  !endif
 !else
  ans_w_=!itemcnt $score
@@ -160,6 +160,6 @@ reply_$i=$(reply$i)
  score=$[rint(min(10,7*($score)/$ans_w_))/10]
  freegot=$[$freegot+$score]
  diareply$i=bad
- sc_reply=0
+ m_sc_reply$i=0
 !endif
 
