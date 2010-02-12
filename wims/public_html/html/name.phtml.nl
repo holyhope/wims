@@ -110,6 +110,7 @@
         wims_name_Version,\
         wims_name_Required_WIMS_version,\
         wims_name_Language,\
+        Server Time,\
 	wims_name_Author,\
 	wims_name_Translator,\
 	wims_name_This_is_a_module,\
@@ -118,7 +119,7 @@
 	wims_name_tr_email,wims_name_auth_email,\
 	wims_name_Domain,wims_name_Type,wims_name_Levels,\
 	wims_name_Scoring,\
-	wims_name_require
+	wims_name_require,wims_name_server_time
 
 
 !! **** Class Relative Names ***

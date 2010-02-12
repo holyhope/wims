@@ -99,6 +99,7 @@
 		Nivel(x),\
 		Mecanismo de puntuación <br><small>(ejercicio/recreación)</small>,\
 		Programas informáticos de apoyo<br>nécessaires,\
+		Server Time,\
 	into wims_name_name,\
 	wims_name_module_infos,\
 	wims_name_exo_infos,\
@@ -116,7 +117,7 @@
 	wims_name_tr_email,wims_name_auth_email,\
 	wims_name_Domain,wims_name_Type,wims_name_Levels,\
 	wims_name_Scoring,\
-	wims_name_require
+	wims_name_require,wims_name_server_time
 
 
 !! **** Class Relative Names ***
