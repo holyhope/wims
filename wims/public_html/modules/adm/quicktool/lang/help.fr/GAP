@@ -29,4 +29,60 @@ selon différentes méthodes :
    Cette liste peut aussi être donnée dans la 
    variable <tt>choice</tt> dans le fichier de données (voir le second exemple).
    Elle apparaitra dans chaque menu, que l'option choix commun ait été ou non 
-activée. 
+activée.
+
+:format
+<font color=green>
+:Je suis ??là,la,l'a?? !
+:Cet élève-??là,la,l'a?? n'est pas très sage, 
+??la,là,l'a?? maîtresse n'est pas très contente.
+:Cette voiture ??là,la,l'a??-bas, dans ??la,là,l'a?? 
+cour, est ??la,là,l'a??  mienne.
+:C'est ??là,la,l'a?? où je vais.
+</font>
+<i><font color=black>Syntaxe générale</font></i>
+<font color=green>
+:texte ??trou1,mauvais_choix1, mauvais_choix2?? texte ??trou2,mauvais_choix3?? texte
+??trou3,mauvais_choix4? texte 
+??trou4,mauvais_choix5,mauvais_choix6??
+</font>
+<i><font color=black>Remarque</font></i>: Pour simplifier, dans le cas où il n'y 
+a que quelques réponses possibles, il est possible de l'indiquer au début du 
+fichier dans la variable <tt>choice</tt>. C'est aussi ici qu'on écrira aussi 
+les mots perturbateurs.
+<font color=green>
+choice= trou1,trou2,trou3,perturbateur1
+:texte ??trou1?? texte ??trou2?? texte
+??trou3?? texte ??trou2??
+</font>
+<i><font color=black>Remarque</font></i> : Afin d'augmenter le nombre de phrases 
+différentes que l'élève verra, on peut écrire plusieurs mots ou groupes de mots 
+entre accolades séparés par des virgules, un seul sera pris au hasard. Dans ce cas, 
+il faut remplacer les virgules du texte par leur code html (&amp;#44;)
+<font color=green>
+:{Je suis,Il est} ??là?? !
+:{Cet élève,Cet étudiant}-??là?? n'est pas très sage, 
+{??la?? maîtresse n'est pas très contente., 
+??le?? maître va se mettre en colère.}
+:Cette voiture ??là??-bas, dans ??la?? cour, est ??la?? 
+mienne.
+:C'est ??là?? où je vais.
+:Il s'est caché ??là??.
+:C'est ??là?? qu'il faut aller.
+</font>
+
+<i><font color=black>Remarque</font></i> : Lorsque plusieurs bonnes réponses sont possibles, 
+les séparer par | . Par exemple,
+<font color=green>
+:une bonne réponse possible|deuxième bonne réponse possible|troisième bonne réponse possible,perturbateur??
+:The ??organisation|organization;organize?? of this meeting is difficult.
+:Beaucoup de ??gens|personnes;chiens?? en France ont un téléphone portable.
+</font>
+En cas de réponse fausse, c'est la première réponse qui est indiquée (par exemple, ici <tt>organisation</tt>)
+
+<i><font color=black>Remarque</font></i> : Préférences relatives à un jeu de données.
+Dans le cas où on souhaite ajouter des documents audio, un titre, une introduction différents 
+pour chaque jeu de données, la première ligne doit être de la forme (champs facultatifs)
+<font color=green>
+:audio=nom.mp3 image=nomim.jpg title="titre" intro="ma consigne" 
+</font>
