@@ -1,4 +1,5 @@
 !read adm/css.phtml
+!read tabletheme
 !header1
 
 !!if $cmd=help
@@ -60,19 +61,19 @@ $title
  !read lang/help.phtml.$modu_lang 2
  !form reply
  <input type=hidden name=step value=1>
- <ul>
- <li><label for="institution">$name_Name_portal ($name_atmost $instlim $name_characters) :</label>
+ $table_header
+ $table_tr<td><label for="institution">$name_Name_portal</label></td><td>
  !if $Cltype isin 13
   !default institution=$wims_institutionname
  !endif
-  <input size=$instlim name=institution value="$institution" id="institution">
- </li>
- <li><label for="description">$wims_name_name $name_classesss ($name_atmost $desclim $name_characters) :</label>
-  <input size=$desclim name=description value="$description" id="description">
- </li>
+  <input size=$instlim name=institution value="$institution" id="institution"> ($name_atmost $instlim $name_characters)
+ </td></tr>
+ $table_tr<td><label for="description">$wims_name_name $name_classesss</label></td><td>
+  <input size=$desclim name=description value="$description" id="description">($name_atmost $desclim $name_characters)
+ </td></tr>
  
  !if $Cltype notin 24
- <li><label for="level">$wims_name_level $name_classesss</label>
+ $table_tr<td><label for="level">$wims_name_level $name_classesss</label></td><td>
   <select name=level id="level">
    !for k=1 to $nblevel
     !if $(levelid[$k])=$level
@@ -82,29 +83,30 @@ $title
     !endif
    !next k
   </select>
- </li>
+ </td></tr>
  !endif
 !set suplim2 =$[rint(2*$suplim/3)]
- <li>$wims_name_Supervisor : <label for="firstname">$wims_name_firstname</label>
-  <input size=$suplim2 name=firstname value="$firstname" id="firstname">
+ $table_tr<td>$wims_name_Supervisor</td><td>
+ <label for="firstname">$wims_name_firstname</label>
+ <input size=$suplim2 name=firstname value="$firstname" id="firstname">
   <label for="lastname">$wims_name_lastname</label>
   <input size=$suplim2 name=lastname value="$lastname" id="lastname">
- </li>
+ </td></tr>
 
- <li><label for="email">$wims_name_email</label>
+ $table_tr<td><label for="email">$wims_name_email</label></td><td>
   <input size=$emaillim name=email value="$email" id="email">
   !if $regpolicy=email
    <br>($name_regpolicy)
   !endif
   <br>
- </li>
- <li><label for="passsup">$wims_name_Password ($name_sup)</label>
+ </td></tr>
+ $table_tr<td><label for="passsup">$wims_name_Password ($name_sup)</label></td><td>
   <input size=16 type=password name=passsup id="passsup"> <small>
   ($name_warningpass).
-  $name_help1</small> <br>
- </li>
+  $name_help1</small>
+ </td></tr>
 
- <li><label for="password">$wims_name_Password ($name_classesss)</label>
+ $table_tr<td><label for="password">$wims_name_Password ($name_classesss)</label></td><td>
   <input size=16 type=password name=password id="password">
   <small>($name_warningpass).
   !if $Cltype<2
@@ -112,10 +114,10 @@ $title
   !else
   $name_help3
  !endif
- </small><br>
- </li>
+ </small>
+ </td></tr>
  
- <li><label for="exp_day">$wims_name_expiration</label>
+ $table_tr<td><label for="exp_day">$wims_name_expiration</label></td><td>
  <select name=exp_day id="exp_day">
   !for i=1 to 31
    <option value=$i
@@ -141,26 +143,28 @@ $title
    !endif
    >$i
   !next i
-  </select> <small>$name_help_date</small><br>
- </li>
+  </select> <small>$name_help_date</small>
+ </td></tr>
 
- <li><label for="limit">$name_help_limit</label>
+ $table_tr<td><label for="limit">$name_help_limit</label></td><td>
   <input size=3 name=limit value="$limit" id="limit">
-  <small>(< $wims_class_user_limit.) </small><br>
- </li>
+  <small>(< $wims_class_user_limit.) </small>
+ </td></tr>
  
- <li><label for="secure">$name_secure ($name_sup)</label>
+ $table_tr<td><label for="secure">$name_secure ($name_sup)</label></td><td>
   !default secure=all
-  <input size=30 name=secure value="$secure" id="secure"> <br>
+  <input size=30 name=secure value="$secure" id="secure">
   !reset secure
   <small>$name_host
   !if $Cltype<3
    $name_optional.
   !endif 
-  </small> <br>
- </li>
- </ul>
- <center><input type=submit value="$name_continue"></center>
+  </small>
+ </td></tr>
+$table_tr<td colspan="2" align="center">
+ <input type=submit value="$name_continue">
+ </td></tr>
+ $table_end
  </form>
 
  !goto end
@@ -171,7 +175,7 @@ $title
 <p>
  !form reply
  <input type=hidden name=step value=2>
-<label for="passsup"> $wims_name_Password ($name_sup) :</label>
+<label for="passsup"> $wims_name_Password ($name_sup)</label> 
  <input type=password name=passsup id=passsup> <p>
  !if $pword!=$empty
  <label for="password">$wims_name_Password ($name_classesss)</label>
