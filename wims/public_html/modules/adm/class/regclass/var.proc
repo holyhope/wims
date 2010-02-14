@@ -1,4 +1,4 @@
-!read adm/class/classlang names.phtml
+!read adm/language names.phtml
 
 wims_prefix=class user tmp n sharing sharable
 !read adm/class/limits
@@ -45,7 +45,7 @@ wims_helper=chapter=3&open=3_creat#creat
   !exit
  !endif
  !default name_supervisorname=$wims_firstname $wims_lastname
- !default supervisor=$wims_firstname $wims_lastname
+ supervisor=$name_supervisorname
  !if $wims_user!=supervisor
   !default email=!defof user_email in $userdef
  !endif
@@ -172,7 +172,7 @@ thisday=!char 7,8 of $today
  !if $Cltype isin 24
   !reset level,checklist
  !endif
- !for i in lastname,$(checklist)institution,description,firstname,email,password,passsup
+ !for i in $(checklist)institution,description,firstname,lastname,email,password,passsup
   $i=!translate ,!$$"< to $     $ in $($i)
   $i=!singlespace $($i)
   $i=!trim $($i)
@@ -332,7 +332,7 @@ $email
  mask=!text mark $char_lower in $check
  check=!text select $char_lower in $check
  check=!text expand $check using $mask
- dictionary=bases/sys/abuse.$module_language
+ dictionary=bases/sys/abuse.$lang
  check=!exec translator $check
  !if abuse iswordof $check
   error=abuse
