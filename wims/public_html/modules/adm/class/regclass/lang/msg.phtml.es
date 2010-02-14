@@ -170,7 +170,7 @@ user registration failure
  Ha intentado volver a crear una clase ya creada. ¿Quizás ha hecho click
  en el botón <tt>actualizar</tt>? En todo caso ya existe su clase
  $classname y esta segunda tentativa de creación se ha ignorado. <p>
- !read links.phtml
+ !read lang/links.phtml.$modu_lang
  !exit
 !endif
 

@@ -191,7 +191,7 @@ Interne serverfout (oprichten van een klas)
  Hebt U op de <b>reload</b>-knop van uw browser geklikt?
  In elk geval: Uw klas $classname bestaat gewoon op deze server, 
  en deze poging wordt dus genegeerd.<p>
- !read links.phtml
+ !read lang/links.phtml.$modu_lang
  !exit
 !endif
 
