@@ -156,7 +156,7 @@ Netwerkfout : kon geen verbinding maken met de centrale publicatie server $centr
 !exit
 
 :symlink
- Symbolische links zijn in de nieuwe modules niet meer toegestaan.
+ Symbolische links zijn in modules niet meer toegestaan.
  Wanneer u een oude versie OEF module heeft, kunt u deze vertalen naar de nieuwe versie;
  deze heeft geen symbolische links meer.
 !exit

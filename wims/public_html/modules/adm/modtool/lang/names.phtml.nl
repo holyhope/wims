@@ -17,7 +17,7 @@
 	<tt><font size="+0">$mod</font></tt>
 
 !set name_file=Aanwezige binaire bestanden
-!set name_nofile=Geen binaire bestanden aanwzeig in deze module.
+!set name_nofile=Geen binaire bestanden aanwezig in deze module.
 !set name_depos=Stuur een binair bestand op
 !set name_in_module=in de module
 !set name_replace=een vervangend bestand&nbsp;
@@ -26,14 +26,14 @@
 !set name_your_module=Uw module
 !set name_file2=bevat de volgende bestanden.
 !set name_updateadress=Vernieuw het adres
-!set name_simpl_address=Deze module heeft slecht een enkelvoudig adres
+!set name_simpl_address=Deze module heeft slechts een enkelvoudig adres
 !set gnu=&copy; $year (<a href=COPYING>GNU GPL</a>)
 
 !set name_type=oefening, hulpmiddel, document, recreatie, OEF, Deductio
 !set name_zone=Zone
 !set name_category=Categorie
 !set name_createnew=Maak een nieuwe module
-!set name_noquicktool=Quicktool is niet geinstallerd op deze server.
+!set name_noquicktool=Quicktool is niet geinstalleerd op deze server.
 !set name_rename=hernoemen
 !set name_duplicate=dupliceren
 !set name_increment=Niet vergeten het versie nummer te verhogen bij publicatie !
@@ -48,12 +48,12 @@
 !set name_change=Uw wachtwoord is veranderd.
 
 !if $job=modname
-  !set name_moddevcnt=!nosubst U hebt $totalcnt modules in bewerking.
+  !set name_moddevcnt=!nosubst U heeft $totalcnt modules in bewerking.
   !set name_limited=!nosubst lijst beperkt tot $maxlist items
   
   !distribute lines Laat alleen modules zien waarvan het adres bevat\
-   Klik op de titel van een module, om deze te gaan bewerken.\
-   U hebt geen modules onder ontwikkeling. S.v.p. klik hier \
+  Klik op de titel van een module, om deze te gaan bewerken.\
+   U hebt geen modules in ontwikkeling. S.v.p. klik hier \
    zet een backup-file terug\
   into name_browselist,name_clicktitle,name_nomodule,name_restore
 !endif
@@ -66,7 +66,7 @@
 !set name_public_module=!nosubst de reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de\
   development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\
-  kan leiden tot een dubbele aanwezigheid bij later publikatie. Wees dus voorzichtig met \
+  kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met \
   het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <tt>test zone</tt>.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
@@ -140,14 +140,14 @@
    Zeer veel verschillen tussen de bestaande module en de backup versie.\
    Er zijn verschillen tussen de bestaande module en de backup versie\
    Geef de backup file\
-   only check differences with the existing module.\
+   controleer verschillend met de bestaande module.\
    Ga aan het werk met deze module.\
    Module hersteld\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
     name_restored
   
-!set name_illegal=Uw archieven bevatten niet-toegestane filetypes! Ik kan geen hersteloperatie uitvoeren.\
- <p>Is dit soms een oude type backupfile. Probeer eventueel file voor file te kopieren.
+!set name_illegal=De getuurde archieven bevatten niet-toegestane bestands types! Ik kan geen hersteloperatie uitvoeren.\
+ <p>Is dit soms een oude backupfile. Probeer bestand voor bestand te kopieren.
 
 !set name_warning2=Alleen backups van Modtool of gedownload van het "publicatie centrum"\
    <a href="$downloadsite">$downloadsite</a> worden geaccepteerd.\

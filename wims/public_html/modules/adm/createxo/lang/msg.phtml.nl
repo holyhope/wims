@@ -9,13 +9,13 @@ Geef de oefening eerst een titel.
 !endif
 
 !if empty_title iswordof $error
- De software kan geen titel vinden voor uw oefening.<br>Ga na of de oefening wel een geldige titel heeft.
+ De software kan geen titel vinden voor uw oefening.<br>Ga na of deze oefening wel een geldige titel heeft.
 
  !exit
 !endif
 
 !if no_answer iswordof $error
- Deze oefening moet op zijn minst 1 antwoord vragen.(open antwoord of meerkeuze).
+ Deze oefening moet op z'n minst 1 vraag stellen...(open antwoord of meerkeuze).
 
  !exit
 !endif

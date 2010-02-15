@@ -300,7 +300,7 @@ Het sessienummer ``$session'' is niet (of niet langer) geldig.
 Niet spelen met de oefeningen !
  <p>
  Je kan beter even nadenken en proberen een oplossing te vinden voor 
- deze oefening, in plaats an keer op keer een  nieuwe aan te vragen.
+ deze oefening...in plaats van keer op keer een nieuwe variant aan te vragen.
  
  !href cmd=resume Vergeet het laatste verzoek
 .
@@ -360,7 +360,7 @@ Probeer je een andermans sessie te benaderen?
 !endif
 
 !if no_access iswordof $wims_user_error
-  Door het toegangsbeleid op deze site kan Uw verzoek niet worden behandeld.<br>
+  Door het toegangsbeleid op deze site kan uw verzoek niet worden behandeld.<br>
   Onze excuses.
   !goto end
 !endif

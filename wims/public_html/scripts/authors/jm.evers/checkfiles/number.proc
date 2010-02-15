@@ -547,8 +547,8 @@ omgedraaid=0
 	    !endif
 	    # 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
     	    parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0))<1.0*10^-15 ,1,0) to $parivraag0
-	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1) ,1,0) to $parivraag1
-	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2) ,1,0) to $parivraag2
+	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1),1,0) to $parivraag1
+	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2),1,0) to $parivraag2
 	!else
 	    parivraag0=!append line if(1==0,1,0) to $parivraag0
 	    parivraag1=!append line if(1==0,1,0) to $parivraag1
@@ -556,36 +556,39 @@ omgedraaid=0
 	!endif
     !next p
     mx=$t1
-!else    
-    !for p=1 to $t1
-	g0=!item $p of $G0
-	g1=!item $p of $G1
-	g2=!item $p of $G2
-	!for s=1 to $t2
-	    a0=!item $s of $A0
-	    a1=!item $s of $A1
-	    a2=!item $s of $A2
-	    !ifval ( $[-1*$a1] = $g1 ) and ( $[-1*$g1] notitemof $G1 )
-		!increase omgedraaid
+!else
+    # volgorde van antwoord 10,100 == 100,10  is niet belangrijk
+    foundit=$empty
+    !for s=1 to $t2
+	a0=!item $s of $A0
+	a1=!item $s of $A1
+	a2=!item $s of $A2
+	!for p=1 to $t1
+	    !if $p notin $foundit
+		g0=!item $p of $G0
+		g1=!item $p of $G1
+		g2=!item $p of $G2
+		!ifval ( $[-1*$a1] = $g1 ) and ( $[-1*$g1] notitemof $G1 )
+		    !increase omgedraaid
+		!endif
+		!ifval $a0 = $g0
+		    foundit=!append item $p to $foundit
+		!endif
+		# 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
+    		parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0)) < 1.0*10^-15 ,1,0) to $parivraag0
+		parivraag1=!append line if( abs(($g1) - ($a1)) < 1/(10*$afr1) ,1,0) to $parivraag1
+		parivraag2=!append line if( abs(($g2) - ($a2)) < 1/(10*$afr2) ,1,0) to $parivraag2
 	    !endif
-	    # 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
-    	    parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0))<1.0*10^-15 ,1,0) to $parivraag0
-	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1) ,1,0) to $parivraag1
-	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2) ,1,0) to $parivraag2
-	!next s
-    !next p
+	!next p
+    !next s
     mx=$[$t1*$t2]
-!endif    
+!endif
 
 dryrun=!exec pari if(log(5)/log(2)==log(5)/log(2),1,0)
 # i.v.m. pari precision "bug"
 tot0=!exec pari $parivraag0
 tot1=!exec pari $parivraag1
 tot2=!exec pari $parivraag2
-
-#errortext=  rounding=$rounding   p0=1.0*($p) p1=(round($afr1*(n$p)))/$afr1 p2=(round($afr2*($p)))/$afr2<br> $parivraag0 <br>$parivraag1 <br>$parivraag2<br> $tot0<br>$tot1<br>$tot2
-#goback=1
-#!exit    
 
 !if $wims_exec_error != $empty
     maxscore=$[$P4*$maxscore]

@@ -9,9 +9,9 @@ U hebt niet opgegeven aan wel forum U wilt deelnemen
 !endif
 
 !if bad_forum=$error
-Het forum dat U hebt uitgezocht bestaat niet!
+Het forum dat u hebt uitgezocht bestaat niet!
 Als dit geen software fout is, dan is het forum verlopen, 
-of U bent aan het spelen met deze server (bedenk goed dat alle handelingen worden gelogd!)
+of u bent aan het spelen met deze server (bedenk goed dat alle handelingen worden gelogd!)
 !endif
 
 !if no_register=$error

@@ -18,9 +18,9 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !endif
 
 !if $error = too_many_votes
- Er zijn te veel enquetes in Uw klas.
+ Er zijn te veel enquetes in deze klas.
  <br>
- Waarom heeft U er zoveel nodig?
+ Waarom heeft u er zoveel nodig?
  !exit
 !endif
 
@@ -30,7 +30,7 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !endif
 
 !if $error = no_title
-  Geef de verkiezing /enquete eerst een naam.
+  Geef de verkiezing / enquete eerst een naam.
  !exit
 !endif
 

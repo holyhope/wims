@@ -4,6 +4,7 @@
 !endif
 
 !goto $wims_read_parm
+
 :file
 
 <p>Aanwezige bestanden in dit document:
@@ -14,7 +15,7 @@
  <p>
  !form reply
  <input type=hidden name=job2 value=erase>
- Verwijder een bastand:
+ Verwijder een bastand&nbsp;:
  !formselect job2 list $flist
  <input type=submit value="$wims_name_tosave">
  </form>

@@ -1,4 +1,4 @@
-
+!exit
 !!INDEX
 !let module_author	=XIAO Gang
 !let module_address	=xiao@unice.fr
@@ -35,7 +35,7 @@
 <hr width=1>
 <center><h3>$wims_classname, $wims_institutionname</h3>
 <p><h1>Einddatum van de klas</h1></center> <p>
-!set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,October,November,December
+!set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
 !set today=!char 1 to 8 of $wims_now
 !set thisyear=!char 1 to 4 of $today
 !set thismonth=!char 5,6 of $today

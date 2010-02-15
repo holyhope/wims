@@ -7,7 +7,7 @@
 !set name_publish=publiceren
 !set name_publish2=publiceren
 !set name_hide=verbergen
-!set name_hide2=verbergen
+!set name_hide2=verborgen
 !set name_nominative=op naam gesteld [niet anoniem]
 !set name_anonymous=anoniem
 !set name_trace=anoniem en traceerbaar

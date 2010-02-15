@@ -5,7 +5,8 @@
 # var2 may be assymetrical , or empty 
 # optional a unit. if pupil ignores this ,the unit of correct answer is assumed
 # var3 -1,kg,-1,m,-1,mol : optional unit of the correct answer : -1 for nonexisting or leave empty
-# 1/2/2020
+# 
+# 1/2/2010
 n=$counter
 !if $(reply$n)=?
     goback=0
@@ -70,7 +71,6 @@ tg=!itemcnt $(answer$n)
 !endif
 
 yourreply=$empty
-extra=$empty
 reply$n=!singlespace $(reply$n)
 AAA=!lower $(reply$n)
 aaa=$empty
@@ -117,19 +117,27 @@ GGG=$(answer$n)
     aaa=$empty
     ggg=$empty
     !for p=1 to $ta
+	rem$p=$empty
 	A=!item $p of $AAA
 	A=!nospace $A
 	G=!item $p of $GGG
-	unit_g=!item $p of $var3
-	!if $unit_g != -1
+	unit_a=!item $p of $var3
+	!if ($unit_a != -1) and (euro notin $unit_a)
 	    rep=$A
 	    !if NaN isin $[1*($A)]
-		# A= 14 kg : pupils uses a unit
+		# A= 34 kg : pupils uses a unit ... allowing sqrt(34^2) kg 
 		A1=!replace [a-z] by @ in $A
 		t1=!positionof char @ in $A1                                                                                             
                 t1=!item 1 of $t1
 		number=!char 1 to $[$t1-1] of $A                                                                                      
-                unit_a=!char $t1 to -1 of $A
+                unit_r=!char $t1 to -1 of $A
+		!if euro isin $unit_r
+		    testvar=123 $unit_a
+		    errortext=!record 53 of $remarkdir/commonremarks.$taal
+		    maxscore=$[$maxscore*$P1]
+		    goback=1
+		    !exit
+		!endif
 		number=!lower $number
 		number=$[1*($number)]
 		!if NaN isin $number
@@ -139,7 +147,7 @@ GGG=$(answer$n)
 		    goback=1
 		    !exit
 		!endif
-		a=!exec units-filter $number $unit_a
+		a=!exec units-filter $number $unit_r
 		!if ERROR isin $a
 		    errortext=!record 89 of $remarkdir/commonremarks.$taal
 		    #@Ik kan je antwoord <b>$rep</b> niet kontroleren<br>Geef je antwoord in een geldige <b>SI</b> eenheid...<br>Je "eenheid" <b>$unit ...</b> geeft natuurlijk problemen met nakijken.
@@ -148,32 +156,36 @@ GGG=$(answer$n)
 		    !exit
 		!endif
 		A=!word 1 of $a
-		g=!exec units-filter $G $unit_g
+		g=!exec units-filter $G $unit_a
 		!if ERROR isin $g
-		    errortext=The correct answer $G $unit_g is wrong: $g
+		    errortext=The correct answer $G $unit_a is wrong: $g
 		    goback=1
 		    !exit
 		!endif
-		!if $unit_g != $unit_a		
+		!if $unit_a != $unit_r		
 		    ex=!record 92 of $remarkdir/commonremarks.$taal
-		    extra=!append line $ex to $extra
+		    rem$p=!append line $ex to $(rem$p)
 		!endif
 		factor=!charcnt $[ceil($number/$G)]
 		!if $factor>2
 		    ex=!record 100 of $remarkdir/commonremarks.$taal
 		    #@Je antwoord verondersteld een veel te hoge nauwkeurigheid !
-		    maxscore=$[$maxscore*$P5]
-		    extra=!append line $ex to $extra
+		    maxscore=$[$maxscore*$P3]
+		    $(rem$p)=!append line $ex to $(rem$p)
 		!else
 		    !if $factor>1
-			ex1=!record 101 of $remarkdir/commonremarks.$taal
+			ex=!record 101 of $remarkdir/commonremarks.$taal
 			#@Je antwoord verondersteld een iets te hoge nauwkeurigheid !<br>$digits decimalen was beter geweest.
 			maxscore=$[$maxscore*$P2]
-			extra=!append line $ex to $extra
+			rem$p=!append line $ex to $(extra$p)
 		    !endif
 		!endif
 		G=!word 1 of $g	    
 		unitsfilter$p=1
+	    !else
+		ex=!record 93 of $remarkdir/commonremarks.$taal
+		rem$p=!append line $ex to $(rem$p)
+		#@<br>Je hebt geen eenheid vermeld.<br>Ik neem dus maar aan $unit_a !  
 	    !endif
 	!else
 	    # no unit used by pupil: that's fine too
@@ -184,7 +196,7 @@ GGG=$(answer$n)
 		    P=!toupper $p
 		    A=!replace internal $p by $P in $A
 		!next p
-		A=!replace [a-z\~\!\@\#\$\%\&\_\"\:\;] by $empty in $A
+		A=!replace [a-z\~\!\@\#\$\%\&\_\"\:\;\'\`] by $empty in $A
 		A=!lower $A
 		!if NaN isin $[1*($A)]
 		    errortext=!record 26 of $remarkdir/commonremarks.$taal
@@ -216,20 +228,18 @@ tg=!itemcnt $GGG
     end_li=</li>
     ul=<ul>
     end_ul=</ul>
-    br=$empty
 !else
     li=$empty
     end_li=$empty
     ul=$empty
     end_ul=$empty
-    br=<br>
 !endif
 
 score=0
 !for p=1 to $tg
     A=!item $p of $AAA
     G=!item $p of $GGG
-    
+    org=!item $p of $(reply$n)
     !if ? isin $A
 	yourreply=!append line $li<font color=red>$dontknow</font>$end_li to $yourreply
     !else
@@ -307,12 +317,12 @@ score=0
 		k=green
 		k2=green
 	    !else
-		!ifval $A <= $[$G+$range1] and $A >= $[$G-$range2]
+		!ifval $A >= $[$G - $range1] and $A <= $[$G + $range2]
 	    	    ex2=!record 96 of $remarkdir/commonremarks.$taal
 		    k2=green
 		    k=green
 		!else
-		    !ifval $A <= $[$G + 1.5*$range1] and $A >= $[$G - 1.5*$range2]
+		    !ifval $A >= $[$G - 1.5*$range1] and $A <= $[$G + 1.5*$range2]
 			ex2=!record 97 of $remarkdir/commonremarks.$taal
 			k2=orange
 			k=orange
@@ -346,7 +356,7 @@ score=0
 	    score1=$P4
 	    k1=red
 	!endif
-	yourreply=!append line $ $li<font color=$k>$A</font><font color=$k2>$ex2</font><font color=$k3>$ex1</font> $end_li $ to $yourreply
+	yourreply=!append line $ $li<font color=$k>$org</font>$(rem$p)<font color=$k2>$ex2</font><font color=$k3>$ex1</font> $end_li $ to $yourreply
 	score=$[$score + $score1]
     !endif
 !next p
@@ -365,10 +375,8 @@ modulescore=$[$modulescore+$maxscore]
 !endif 
 
 goback=0
-reply$n=$ul $yourreply $end_ul  $br <small>($(reply$n))</small>
-
+reply$n=$ul $yourreply $end_ul 
 !if $extra != $empty
-    remark$n=!append line $ <br>$extra $ to $(remark$n)
+    remark$n=!append line $extra to $(remark$n)
 !endif
-
 !exit

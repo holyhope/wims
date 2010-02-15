@@ -64,7 +64,7 @@ name_euclgeom=euclidische geometrie
 list_euclgeom=lijnen, cirkel, vierkanten, polygonen,\
 	hoeken, driehoeken, passer en lineaal
 
-name_anageom=analytisch geometrie
+name_anageom=analytische geometrie
 list_anageom=oppervlakken, kurves, parametrische kurves, polaire kurves,\
 	kegelsneden, parabolen, hyperbolen, ellipsen, cirkels, Lissajous figuren
 

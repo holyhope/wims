@@ -7,7 +7,7 @@
  !tail
  !exit
 !endif
-De inhoud van de stemming/verkiezing kan een HTML-text zijn,
+De inhoud van de stemming / verkiezing kan een HTML tekst zijn,
  met dezelfde WIMS uitbreidingen als voor de "forum-berichten", 
 plus de volgende extra commando's <dl>
 <p><dt><tt>\menu{JA,NEE}</tt>

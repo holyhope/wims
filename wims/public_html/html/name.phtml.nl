@@ -39,11 +39,11 @@
 		Account,\
 		Inloggen,\
 		Cijfers,\
-		Cijfers,\
+		Mijn cijfers,\
 		Proefwerk,\
 		Browse,\
-		Back to the menu,\
-		Expiration date,\
+		Terug naar het menu,\
+		Eind datum,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -84,7 +84,6 @@
 !set wims_name_display3=!nosubst $wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site
 !set wims_name_permalink1=!nosubst $wims_name_permalink $wims_name_for $wims_name_this_module
 
-
 !! **** Module About Names ***
 !distribute items Naam,\
 	    Info over iconen,\
@@ -109,6 +108,7 @@
 	    Niveau(s),\
 	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
 	    Hulp software<br>vereist,\
+	    Server tijd,\
 	into wims_name_name,\
 	    wims_name_iconabout,\
         wims_name_module_infos,\
@@ -215,16 +215,16 @@
    Publiceren\
    Nieuwe module\
    Lijst van modules\
-   Binary bestanden\
+   Bestanden\
    Backup van de module\
    Eigenschappen van account\
    Script tester\
    OEF Documentatie \
    Script bibiliotheek\
-   Mogelijjke antwoord modellen\
+   Mogelijke antwoord modellen\
    Doc technisch\
    Terug naar de bestanden lijst\
-   Bewerken\
+   Bewerken het bestand\
    Veranderen\
    Terug\
    Wissen\
@@ -254,7 +254,7 @@ Verander de broncode\
 Bewaar deze testmodule\
 Bewaar in uw klas\
 Bewaar als een nieuwe oefening\
-Stuur een bestand (plaatje)\
+Stuur een plaatje\
 Vervang de bestaande\
 Verwijder de oefening\
 into wims_name_testexo,wims_name_backconfia2qcm,wims_name_backcreateqcm,wims_name_exomodify,\
@@ -273,7 +273,7 @@ Oefeningen van deze klas\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
 
-!!! for documents
+!!! for documents en particulier..
 
 !distribute item WIMS,Klas,Docs,Up,Vorige,Volgende,Hist.,Vernieuwen,\
 	Interactieve versie,Printbare versie,\
@@ -301,11 +301,11 @@ Toevoegen\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 
- !distribute line Toevoegen een datum\
-   Toevoegen een bestand\
+ !distribute line Een datum toegvoegen\
+   Een bestand toevoegen\
    Bewerk de ToDo lijst\
    Configureren\
-   Herstellen\
+   Annulereren\
    Agenda\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
@@ -362,7 +362,7 @@ wims_name_csv
 
 !if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lijst van alle studenten \
-Cijfers \
+Cijfers\
 Beeindig deze tentamen sessie\
 Details van het werk\
 Schors deze student\

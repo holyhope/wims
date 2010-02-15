@@ -44,7 +44,7 @@ into title_title,name_restart,name_name_owner,name_warning1,name_choosepass1,nam
   <p>Om een eigen forum op te richten, vul dan het onderstaande formulier in.
 
 
-!set name_warning2=<b>Opmarking</b> Deze code is &eacute;&eacute;nmalig. En kan hierna niet meer worden gebruikt !
+!set name_warning2=<b>Opmerking</b> Deze code is &eacute;&eacute;nmalig. En kan hierna niet meer worden gebruikt !
  
 !exit
 

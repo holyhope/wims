@@ -59,17 +59,17 @@ in OEF formaat (Open Exercice Format).\
  into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
 
-!set name_success=The software have successfully recognized your exercise.
+!set name_success=De softawre heeft de oefening met succes verwerkt.
 
 !if $level=1
-!distribute lines Give a title to the exercise you want to create\
-  Format of the statement of the problem:\
-  This exercise will ask for\
-  freestyle replies and\
-  multiple-choice replies\
-  LNon-computed numerical replies (such as <tt>3*5-sin(pi/3)</tt>) will be\
-  accepted,refused\
-  conditions will be used to test freestyle replies.\
+!distribute lines Geef de oefening een titel\
+Formaat van het statement van de oefening:\
+Deze oefening vraag naar\
+open antwoorden en\
+meerkeuze vragen\
+Niet berekende uitdrukkingen als <tt>3*5-sin(pi/3)</tt>) worden\
+toegestaan,niet toegestaan\
+conditites worden gebruikt op de open antwoorden te controleren.\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
 name_nonnumeric,name_prompt,name_condition
 !endif
@@ -77,7 +77,9 @@ name_nonnumeric,name_prompt,name_condition
 !if $level=2
  !set types=!sort nocase lines \
 auto,			default\
+literal expression,	litexp\
 algebraic expression,	algexp\
+formal expression,	formal\
 approximative text,	atext\
 case-nonsensitive text,	nocase\
 case-sensitive text,	case\
@@ -85,8 +87,6 @@ raw text,		raw\
 character set, 		chset\
 equation,		equation\
 finite set,		set\
-formal expression,	formal\
-literal expression,	litexp\
 matrix,			matrix\
 number,			numeric\
 number with range,	range\

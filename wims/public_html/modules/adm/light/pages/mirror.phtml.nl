@@ -108,7 +108,7 @@ $ in $l_
 
 :end
 
-Hebt u een WIMS server geinstalleerd op internet en u wil adres opgenomen zien in
+Heeft u een WIMS server geinstalleerd op internet en u wilt dit adres opgenomen zien in
 deze lijst, 
 !mailurl xiao@unice.fr mail me\
 wims mirror

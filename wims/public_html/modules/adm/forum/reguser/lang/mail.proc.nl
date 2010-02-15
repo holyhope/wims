@@ -5,9 +5,9 @@ Hier is de geheimecode van $title:\
 \
 		$secode\
 \
-Kopieerd nu deze code in het formulier.\
+Kopieer nu deze code in het formulier.\
 \
-Onthoud dat deze code eenmalig is.\
+Let op: deze code is eenmalig.\
 Wanneer de procedure is afgerond, is deze code en email nutteloos\
 \
 Weet u niet waar dit alles op slaat, dan heeft iemand anders\

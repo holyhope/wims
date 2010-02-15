@@ -18,16 +18,16 @@ N_at		=bij
 N_or		=of
 N_import	=import
 N_Mboard	=Forum
-N_hide		=Hide
+N_hide		=Verbergen
 
 #S_tip		=<b>TIP</b>. Searching for empty string in some categories\
 #gives you the list of most popular resources.
 
 V_title		=WWW Interactieve Multipurpose Server
 V_cls		=Virtuele klaslokalen
-V_stu		=studenten bereik
-V_sup		=docenten bereik
-V_ex		=demonstratie klassen
+V_stu		=Studenten bereik
+V_sup		=Docenten bereik
+V_ex		=Demonstratie klassen
 V_Quit		=Weg uit de klas
 V_Wsup		=Schrijf naar de docent
 V_Chpref	=Verander de voorkeurs instellingen 

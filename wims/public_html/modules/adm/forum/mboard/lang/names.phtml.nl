@@ -7,15 +7,15 @@
 !distribute item <hr>,<hr> into body1,body2
 
 !distribute line Lijst van berichten op datum\
-	Lijst van berichten op discussie volgorde\
-	Lees bericht\
-	Nieuw bericht\
-	Schrijf een reactie \
-	Bekijk het concept bericht\
-	Stuur een bericht\
-	Configuur dit forum\
-	Lijst van berichten op onderwerp\
-	into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subjectlist
+Lijst van berichten op discussie volgorde\
+Lees bericht\
+Nieuw bericht\
+Schrijf een reactie\
+Bekijk het concept bericht\
+Stuur een bericht\
+Configuur dit forum\
+Lijst van berichten op onderwerp\
+into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subjectlist
 
 !set wims_name_compose=$n_compose
 !set n_otherforums=Andere forums
@@ -86,7 +86,7 @@ Vul deze code hier in&nbsp;
 !set name_prompt=Onbekende activiteit
 
 !distribute line Hier kan het forum worden afgesteld.\
-  Wie mag deze berichten lezen&nbsp;\
+Wie mag deze berichten lezen&nbsp;\
   alle deelnemers, alleen ikzelf\
   iedereen,deelnemers,alleen ikzelf\
   Wie mag berichten schrijven&nbsp;\

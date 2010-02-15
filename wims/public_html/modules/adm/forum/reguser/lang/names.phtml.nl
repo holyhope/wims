@@ -14,15 +14,15 @@
 !set lang_si=slovensko
 
 !distribute lines Aanmelden bij het forum\
-   Helaas, deze site bevat geen forums op dit moment. Probeer het later nog maar eens!\
-   Aanmelding is beschermd door een wachtwoord.\
-   Schrijf naar de eigenaar/houder\
-   niet verplicht\
-   Hallo\
-   U hebt geen emailadres ingevuld.\
-   Uw emailadres\
-   Om de juistheid van Uw wachtwoord te kontroleren, graag nog een keer invullen:\
-   Lijst van alle forums.\
+Helaas, deze site bevat geen forums op dit moment. Probeer het later nog maar eens!\
+Aanmelding is beschermd door een wachtwoord.\
+Schrijf naar de eigenaar/houder\
+niet verplicht\
+Hallo\
+U hebt geen emailadres ingevuld.\
+Uw emailadres\
+Om de juistheid van uw wachtwoord te kontroleren, graag nog een keer invullen:\
+Lijst van alle forums.\
 into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
   name_email1,name_email2,name_email3,name_forumlist
 
@@ -52,10 +52,9 @@ into title,name_noforum,name_passw,name_write_owner,name_optional,name_hello,\
  
 :code
  $forumname staat geen anonieme deelnemers toe.
-  Het emailadres wordt gebruikt identitificatie
+  Het emailadres wordt gebruikt voor identitificatie.
   (om misbruik tegen te gaan)
   <p>
  Om het opgegeven emailadres te controleren,stuurt de server op dit moment
- een (eenmalige) code naar opgegeven emailadres.
- Haal deze mail nu op, en vul de code hieronder in:
+ een (eenmalige) code. Haal deze mail nu op; en vul de code hieronder in:
 !exit

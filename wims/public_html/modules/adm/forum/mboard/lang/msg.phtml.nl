@@ -45,7 +45,7 @@
 !endif
 
 !if erased_message = $error
- $errorhead Dat bericht is verwijdert uit dit forum.
+ $errorhead Dat bericht is verwijderd uit dit forum.
  !exit
 !endif
 

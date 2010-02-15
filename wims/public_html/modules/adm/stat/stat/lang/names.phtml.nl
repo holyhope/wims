@@ -29,12 +29,12 @@ into name_choose,name_details,name_showstat,wims_name_statdetail,name_number_vis
 !set name_explanations=<ul>\
 <li>Bij de berekening van de totale aanvragen wordt geen rekening gehouden met \
 ontwikkelings modules.\
-<li>Het aantal "bezoeken via website" wordt dageljks bij gehouden.\
+<li>Het aantal "bezoeken via website" wordt dageljks bijgehouden.\
 <li>Een indicatie van het dagelijks aantal bezoekers is een getal tussen \
 het aantal websites en het aantal opgestarte sessies. \
 </ul>
 
-!set name_warning=De gebruiks statistieken op deze server worden helaas niet bij gehouden.
+!set name_warning=De gebruiks statistieken op deze server worden helaas niet bijgehouden.
  
 !set name_numberclass=!nosubst Er zijn $classcnt klassen en/of scholen op deze server in gebruik,\
 met in totaal $usercnt gebruikers.
