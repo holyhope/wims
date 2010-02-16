@@ -589,12 +589,13 @@ free
 Available languages: 
 ca (Catalan),
 cn (Chinese gb),
+de (German),
 en (English),
 es (Spanish),
 fr (French), 
 it (Italian),
-nl (Deutch),
-si (Slovene),
+nl (Dutch),
+si (Slovenian),
 tw (Chinese gib5).
 
 List them separated by white spaces.
