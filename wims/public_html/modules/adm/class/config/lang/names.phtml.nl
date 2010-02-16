@@ -389,7 +389,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Opties \
     Modtool Account\
     Beveiliging\
-    Aantal hoogste scores\
+    Best scores (number / anonymity)\
     Aantal studenten limiet\
     Einddatum\
     Registratie van oefeningen\

@@ -62,12 +62,19 @@ one-time passwords (see the password page).
 !exit
 
 :lang
- Supported languages: <ul>
+You may choose the class language among those supported 
+by your wims site. Your class will then appear in the corresponding list of classes 
+of the student's and teacher's areas.<br>
+Abbreviations used : <ul>
+ <li>ca (Catalan)
  <li>cn (Chinese gb)
+ <li>de (German)
  <li>en (English)
  <li>es (Spanish)
  <li>fr (French)
  <li>it (Italian)
+ <li>nl (Dutch)
+ <li>si (Slovenian)
  <li>tw (Chinese big5)
 </ul>
 !exit
@@ -107,7 +114,12 @@ exceeding one year from the actual date will be refused.
  quickly recognize pages within your virtual class. The values of these
  fields must be valid html color names.
  <p>
- Default value: background color = white, menu color = #D0C080
+ <b>Link color in menus and tables</b>. You may adapt the link color to the
+    menu background color. If you choose this option, it is wise to fill in explicitely 
+    the table background color even if it is the same as the default one (in case the 
+default would change).
+ <p>
+ Default values are those defined for the general site pages.
 !exit
 
 :homepage
@@ -133,8 +145,8 @@ and score quality.
  <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
  Status of sheet 1, sheet 2, exam 1, ... This is a non-negative integer; 0
  = under preparation, 1 = active, 2 = expired, 3 = hidden.
- <li><tt>\daymessage</tt> : message du jour de la classe.</li>
- <li><tt>\userdaymessage</tt> : message du jour individuel de chaque participant.</li>
+ <li><tt>\daymessage</tt> : message of the day for the class.</li>
+ <li><tt>\userdaymessage</tt> : individual message of the day message for each participant.</li>
  </ul>
 !goto end
 
@@ -281,13 +293,14 @@ If you need more than one link, they must be seperate by ";".
 !exit
 
 :topscores
-<center><b>Meilleures notes</b></center>
-<p> Si ce nombre n est au moins 1, lorsqu'un 
-participant demande ses notes, il verra également la liste des
-n participants ayant les meilleures moyennes.<p>
-Ces moyennes ne tiennent pas compte des notes manuelles, donc laisser 0 s'il y a de telles notes.
+<center><b>Best scores, number and anonymity</b></center>
+<p> If this number n is at least 1, then  when a participant asks for 
+its score, he will see also the list of n participants having the best scores
+(with their names if anonymity=yes, with numbers only if anonymity=no).<p>
+These means do not take into account the manual scores, hence leave n=0 if there are manual 
+scores.
 <p>
-Défaut=0
+Default=0/$wims_name_yes
 
 !exit
 

@@ -410,7 +410,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
     Opciones\
     Modtool Account\
     Bloqueo de conexión\
-    Nombre de meilleures notes\
+    Best scores (number / anonymity)\
     Límite del número de participantes\
     Fecha de expiración\
     Grabación de los ejercicios\
