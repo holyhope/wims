@@ -3,47 +3,22 @@ version=1.0
 
 ##this script transfer swac-shtooka ressources at the good place
 ##author Bernadette Perrin-Riou
-packs="deu-balm-alexandra
-deu-balm-ulrike-verbs
-deu-wims-math
-deu-wims-num
-eng-balm-verbs
-eng-wcp-us
-eng-balm-emmanuel
-eng-balm-verbs
-eng-balm-judith
-eng-wims-mary
-eng-wims-mary-conversation
-eng-wims-mary-num
-fra-balm-conjug
-fra-balm-flora-expr
-fra-balm-flora-num
-fra-balm-tnitot
-fra-balm-voc
-fra-wims-voc
-fra-wims-lettres
-ita-balm-marta
-nld-wcp
-por-wims-num
-por-wims-voc
-spa-wims-octavio
-swe-balm-num
-swe-balm-voc
-wol-balm-voc
-"
+
 adresse=download.shtooka.net
  
 cd `dirname $0`/..
 wimshome=`pwd`
 swac=$wimshome/public_html/scripts/data/swac
-cd $swac ;
+cd $swac ; 
+packs=`ls -d */`
 echo "$version" > version.tmp;
 for i in $packs; do
-  j=${i}_mp3 ;
-  wget http://$adresse/$j.tar; echo "wget $adresse/$j.tar" ;
-  tar xf $j.tar;
-  mkdir -p $swac/$i; cd $j ; cp -r * $swac/$i/ ; cd $swac ; rm $j.tar ; rm -r $j;
-  echo "$i" >> version.tmp ;
+  u=`basename $i` ;
+  j=${u}_mp3 ;
+  wget http://$adresse/$j.tar; echo "wget $adresse/$u.tar" ;
+  tar xf $u.tar;
+  mkdir -p $swac/$u; cd $j ; cp -r * $swac/$u/ ; cd $swac ; rm $j.tar ; rm -r $j;
+  echo "$u" >> version.tmp ;
 done ;
 
 cd $swac ; cp version.tmp version ; rm version.tmp; 
