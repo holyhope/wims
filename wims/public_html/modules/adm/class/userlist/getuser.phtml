@@ -87,10 +87,15 @@ $name_workdetail
  $table_header$table_hdtr<th colspan=2>$name_topten</td></tr>
  !for i=1 to $class_topscores 
   !set L=!line $i of   $TT
-  !set name=!item 1 of $L
-  !set firstname=!item 2 of $L
+  !if $class_anonymtopscores=yes
+   !set name=$i
+  !else
+   !set name=!item 1 of $L
+   !set firstname=!item 2 of $L
+   !set name=$name $firstname
+  !endif
   !set avg=!item 4 of $L
-$table_tr<td align=right><b><small>$name $firstname&nbsp;</small></b><td align=left><small>&nbsp;$avg</small>
+$table_tr<td align=right><b><small>$name &nbsp;</small></b><td align=left><small>&nbsp;$avg</small>
  !next i
  $table_end<p>
  </center> 
