@@ -8,6 +8,17 @@
 <script language="javascript" type="text/javascript">
 var chem;
 
+
+function ReadAtomSelection(){
+    var selection=document.molapplet.ReadAtomSelection();
+    document.js.moltext.value=selection;
+}  
+
+function ReadBondSelection(){
+    var selection=document.molapplet.ReadBondSelection();
+    document.js.moltext.value=selection;
+}  
+
 function Set_Some_Chemical_A(){
     <!-- picking a random chemical from the database include...stored in array question_A[] -->
     <!-- the database is made of javascript strings in Native WIMSchem fileformat -->
@@ -125,10 +136,6 @@ function CompareNative_B(){
 	<!--    "\n"+feedback+		reply[11] -->
 	<!--    "\n@"+Student_answer+	rest[0] -->
 	<!--    "\n@"+Correct_answer+	rest[2] -->
-	
-
-    document.js.a_reply.value="Your Score ="+reply[0]+"\nYour formula:"+reply[3]+"\nMy formula:"+reply[4]+"\nFeedback:"+reply[11];
-    showhtml.innerHTML = "<hr noshade>Your answer: "+reply[5]+"  [Molweight="+reply[1]+"  "+reply[7]+"]<hr noshade>Correct answer:"+reply[6]+"  [Molweight="+reply[2]+"   "+reply[8]+"]";
 }
 
 </script>
@@ -141,50 +148,34 @@ function CompareNative_B(){
 <h1>WIMSchem Applet</h1>
 <table>
     <th valign="top">
-	<div id="notify" style="visibility:visible"><blink><font color="red">CHECKING JAVA PLUGIN VERSION</font></blink></div>
-	<applet id="CheckApplet" name="CheckApplet" code="WIMSchem/CheckVersion.class" archive="WIMSchem.jar" width="1" height="1" MAYSCRIPT></applet>
-	    
-	<script language="javascript" type="text/javascript">
-	    var VERSION_REQUIRED =150;
-	    var javaVersion;
-	    try { javaVersion = document.getElementById("CheckApplet").getVersion();} catch(e){ javaVersion = 0;}
-	    if(javaVersion >= VERSION_REQUIRED){
-		alert(" Found usable Java plugin....version : "+javaVersion);
-	    }
-	    else
-	    {	    
-		if( javaVersion < VERSION_REQUIRED ){
-		    var t=confirm("You must go to the java download page to get the latest JavaPlugin...\nVersion at least :"+VERSION_REQUIRED);
-		    if(t){window.open("http://java.sun.com/javase/downloads/index.jsp","","status=1,toolbar=1,width=600,height=480");}
-		}
-		else
-		{
-		    alert(" It seems your browser does not support Java - Javascript communication.\n Continue at own risk...");
-		}
-	    }
-	                
-	    if(document.getElementById){
-		document.getElementById("notify").style.visibility = "hidden";
-	    }
-	    else
-	    {
-		if (document.layers) {
-		    document.notify.visibility = "hidden";
-		}
-		else
-		{
-		    document.all.notify.style.visibility = "hidden";
-		}
-	    }
-	</script>
-	<applet name="molapplet" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="550" height="550">
+	<applet name="molapplet" code="WIMSchem.MainApplet" archive="dist/WIMSchem.jar" width="550" height="550">
 	    <param name="language" value="fr">
 	    <!-- nl,fr,en  default en -->
 	    
 	    <param name="atoms" value="C,N,O,S,Mn,Ni,Mg">
 	    <!-- allowed separators :;,[space] -->
 	    
-	    <param name="file" value="file:/root/JAVA/WIMSchem/test.mol">
+	    <param name="user_selection" value="yes"><!-- optional: default no. If set to yes/1 user atom/bond selection will be coloured/marked and stored --->
+
+	    <!-- these color values are in R,G,B ... R:G:B ... R;G;B -->
+	    <param name="color_alpha" value="250"><!-- optional for all colors Atoms & Bonds : default 100 -->
+	    <param name="default_atom_select_color" value="255,255,0"><!-- optional : default 255,0,0 [red] -->
+	    <param name="default_bond_select_color" value="255,255,0"><!-- optional : default 255,0,0 [red] -->
+	    
+            <!-- atoms -->                                                                                                                               
+	    <param name="select_atoms" value="1,2,3"><!-- line numbers in loaded MDLMol file -->
+	    <param name="select_atom_color1" value="255,0,0"><!-- optional : default colors = red or default_select_color -->
+	    <param name="select_atom_color2" value="0,255,0"><!-- optional : default colors = red or default_select_color -->
+	    <param name="select_atom_color3" value="0,0,255"><!-- optional : default colors = red or default_select_color -->
+
+            <!-- bonds -->                                                                                                                               
+            <param name="select_bonds" value="1,2,"><!-- line numbers in loaded MDLMol file -->                                        
+            <param name="select_bond_color1" value="255,0,0"><!-- optional : default colors = red or default_select_color -->              
+            <param name="select_bond_color2" value="255,0,0"><!-- optional : default colors = red or default_select_color -->              
+
+	    <param name="rotation" value="-123.12345"> <!-- optional : angle in degrees -->	    
+	    
+	    <param name="file" value="test.mol">
 	    <!-- or <param name="file" value="file:../../modules/H4/mymodule/data/molecule1.mol">  needs signed jar-->
 	    <!-- or <param name="file" value="http://this_server/123.mol"> -->
 	    
@@ -194,16 +185,16 @@ function CompareNative_B(){
 	    <param name="show_hydrogen" value="yes">
 	    <!-- or <param name="show_hydrogen" value="no"> do not show explicit hydrogens -->
 
-	    <param name="show_carbon" value="no">
+	    <param name="show_carbon" value="yes">
 	    <!-- or <param name="show_carbon" value="no"> do not show carbonatoms; only the bonding skeleton -->
 
-	  <param name="template1" value="">
-	   <!--  <param name="template2" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=2.el">
-	    -->
+	    <param name="template1" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=1.mol">
+	    <param name="template2" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=2.el">
 	    <!-- MDLMol / Native -format accepted, same syntax as for "file" parameter -->
 	    <!-- if param not present or invalid, the jar-based templates will be used -->
 	    
 	    <!-- the lefthand tool button bar -->
+	    <param name="TOOL_UNSELECT" value="yes">
 	    <param name="TOOL_CURSOR" value="yes">
 	    <param name="TOOL_ROTATOR" value="yes">
 	    <param name="TOOL_ERASOR" value="yes">
@@ -229,8 +220,8 @@ function CompareNative_B(){
 	    <param name="MENU_SELECT" value="yes">
 	    <param name="MENU_TRANSFORM" value="yes">
 	    <param name="MENU_ZOOM" value="yes">
-	    <param name="MENU_SHOW" value="no">
-	    <param name="MENU_HYDROGEN" value="no>
+	    <param name="MENU_SHOW" value="yes">
+	    <param name="MENU_HYDROGEN" value="yes">
 	    <param name="MENU_STEREO" value="yes">
 	    <param name="MENU_HELP" value="yes">
 	    (java unavailable)
@@ -245,7 +236,7 @@ function CompareNative_B(){
 		    <textarea name="a_reply" rows="2" cols="50"></textarea>
 		    <div name="showhtml" id="showhtml"></div>
 		</form>
-		    <ul>
+		<ul>
 		    <li><a onClick="javascript:Set_Some_Chemical_A()">Show me a random question chemical [Native fileformat]</a>
 			<br><small> using a javascript include file</small>
 		    <li><a onClick="javascript:Set_Some_Chemical_B()">Show me a random question chemical [MDLMol fileformat]</a> 
@@ -256,19 +247,13 @@ function CompareNative_B(){
 		    <li><a onClick="javascript:SetMoleculeMDLMol()">Set drawing from textarea [MDLMol]</a>
 		    <!-- <li><a onClick="javascript:LoadMDLMol()">Load Javascript MDMOL string</a> -->
 		    <li><a onClick="javascript:ReadApplet()">info about the correct drawing</a>
-		    </ul>
+		    <li><a onClick="javascript:ReadAtomSelection()">Read selected atoms</a>
+		    <li><a onClick="javascript:ReadBondSelection()">Read selected bonds</a>
+		</ul>
 	    </td>
 	    <tr>
-		<td align=left>
-		    <button type="button" onClick="CompareNative_A()">COMPARE DRAWING WITH URL LOADED MOLECULE</button>
-		</td>
-		<tr>
-		<td align=left>
-		    <button type="button" onClick="CompareNative_B()">COMPARE DRAWING WITH STRING LOADED MOLECULE </button>
-		</td>
-		<tr>                                                                                                                       
-                <td>
-		    <small>
+            <td>
+		<small>
 		    When signature [jar sign]  is accepted, the applet will become a standalone application<br>
 		    if the <em>new window</em> is clicked in the menu.<br>
 		    The browser will not communicate with this standalone java application window.<br>
@@ -276,8 +261,8 @@ function CompareNative_B(){
 		    It could be used to draw [question] chemicals and save them in Native of MDLmol format.<br>
 		    Or use the "export to javascript" to generate a Native/MDLMol javascript string.
 		    [see "jm.evers module" on chemistry].
-            	    </small>
-		</td>            
+            	</small>
+	    </td>            
 	    </table>	
 	</form>
     </th>

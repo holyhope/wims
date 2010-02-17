@@ -130,8 +130,11 @@ score=0
     k=$empty    
     found=0
     correct_unit=1
+    ans=!item $p of $(answer$n)
     unit=!item $p of $var1
     !if $unit != 1
+	# optional answer$n=1.234 km , 2.444 , 3.444 cm
+	# var1 = 1,0,1
 	unit=0
     !endif
     org=!item $p of $AAA
@@ -145,7 +148,6 @@ score=0
 	ex6=$ex6 <br>$org --> $nw 
 	org=$nw
     !endif
-    ans=!item $p of $(answer$n)
     
     !if ? isin $org
 	yourreply=!append line $li<font color=red>$dontknow</font>$end_li to $yourreply
@@ -273,12 +275,9 @@ score=0
 			ex4=!record 94 of $remarkdir/commonremarks.$taal
 		    !endif
 		!endif
-		number_r=$[(round($rnd*($number_r)))/$rnd]
-		number_a=$[(round($rnd*($number_a)))/$rnd]
-	    !else
-		number_r=$[1.0*($number_r)]
-		number_a=$[1.0*($number_a)]
-    	    !endif
+	    !endif
+	    number_r=$[1.0*($number_r)]
+	    number_a=$[1.0*($number_a)]
 	    !if NaN isin $number_r
 		errortext=!record 89 of $remarkdir/commonremarks.$taal
 	        goback=1
@@ -313,6 +312,10 @@ score=0
 	    !endif	
 	    A1=!word 1 of $A
     	    G1=!word 1 of $G
+	    !if $rnd>0
+		A1=$[(round($rnd*($A1)))/$rnd]
+	        A1=$[(round($rnd*($A1)))/$rnd]
+	    !endif
 	    !if e isin $A1
 		A1=!replace internal e+ by *10^ in $A1
 		A1=!replace internal e- by *10^- in $A1
@@ -341,6 +344,9 @@ score=0
 		    A1=$B1
 		!endif
 	    !endif
+	    # maybe answer$n=1.234 km,2.4,3.12 cm ... avoid NaN
+	    # 		var1=0,0,0
+	    ans=!word 1 of $ans
 	    !if $rnd>0
 		!if . isin $A1
 		    # check the number of decimals
@@ -426,6 +432,7 @@ score=0
 		!endif
 	    !endif
 	!endif
+
 	!if $unit=1
 	    t1=!wordcnt $G
 	    !for p=2 to $t1
@@ -442,16 +449,16 @@ score=0
 		score1=0
 		k=red
 	    !else
-		!if $unit_a != $unit_r
-		    !if $k=green
-			ex5=<font color="blue" size="-1"><br>Je hebt de eenheid <tt>$unit_r</tt> gebruikt i.p.v. de voorgeschreven eenheid <tt>$unit_a</tt>...ook goed !</font>
-		    !endif
+		!if $unit_r != $unit_a
+		    k=orange
+		    score1=$[$P3*$score1]
+		    ex5=!record 92 of $remarkdir/commonremarks.$taal
+		    #@<br>je hebt een verkeerde eenheid gebruikt !<br><em>$unit_r</em> ipv <font color=green><em>$unit_a</em></font>
 		!endif
 	    !endif
 	!endif
-	
+
 	!if $teaching=1 and $k=red
-	    #found=0
 	    !if $A1=$[-1*($G1)] and $correct_unit=1
 		ex3=!record 27 of $remarkdir/commonremarks.$taal
 		score1=$P8
@@ -459,10 +466,11 @@ score=0
 	    !else
 		!for factor in 1/10000,1/1000,1/100,1/10,10,100,1000,10000,60,3600,1/60,1/3600
 		    !if $found=0
-			!ifval $[1.0*($A1)]=$[($factor)*($G1)]
+			!ifval $[1.0*($A1)] = $[($factor)*($G1)]
 			    f=$factor
 			    ex3=!record 90 of $remarkdir/commonremarks.$taal
 			    #@<br>je zit er een factor <b>$f</b> naast !!
+			    score1=$[$P9*$score1]
 			    found=1
 			!endif
 		    !endif
@@ -471,7 +479,7 @@ score=0
 	!endif
 	#rep=!htmlmath $number_r $unit_r
 	
-	yourreply=!append line $li <tt><font color=$k>$org</tt> <em>$ex1 $ex2 $ex3 $ex4 $ex6</em></font>$ex5 $end_li to $yourreply
+	yourreply=!append line $li <tt><font color=$k>$org</tt></font><em>$ex1 $ex2 $ex3 $ex4 $ex6 $ex5</em> $end_li to $yourreply
     
     !endif
     score=$[$score+$score1]
