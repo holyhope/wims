@@ -1,0 +1,112 @@
+ans_appletdir=java/WIMSchem
+
+!set oef_applet_option=!replace internal $	$ by $\
+$ in $inputsize
+!set oef_applet_option=!replace internal ; by $\
+$ in $oef_applet_option
+!set oef_applet_option=!nonempty lines $oef_applet_option
+!set oef_applet_option=!line 2 to -1 of $oef_applet_option
+!set ans_image=!getopt image in  $(replyoption$i)
+!set ans_show_hydrogen=!getopt show_hydrogen in $oef_applet_option
+!set ans_show_carbon=!getopt show_hydrogen in $oef_applet_option
+!default ans_show_hydrogen=yes
+!default ans_show_carbon=no
+
+good_select=$(replygood$i[1;])
+
+ans_list_feedback=!getopt feedback in $(replyoption$i)
+ans_list_feedback=!words2items $ans_list_feedback
+
+good_select=$(replygood$i[1;])
+ans_molecule=$(reply$i)
+ans_select=!line 1 of $ans_molecule
+ans_molecule=!line 2 to -1 of $ans_molecule
+
+!set ans_newtime=$(wims_nowseconds)_$i
+!set replyfichier=r_$ans_newtime.mol
+
+!readproc oef/togetfile.proc $replyfichier new\
+$ans_molecule
+
+
+!set replyfile=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$replyfichier
+
+!if $wims_read_parm=nocompare
+  !goto end
+!endif
+
+:good
+ans_test1=!listcomplement $ans_select in $good_select
+ans_test2=!listcomplement $good_select in $ans_select
+ans_test3=!listintersect $good_select and $ans_select
+ans_total=!nonempty items $ans_select,$good_select
+ans_total=!listuniq $ans_total
+ans_total=!sort numeric items $ans_total
+!if $ans_test1= and $ans_test2=
+ diareply$i=good
+ !advance freegot
+ ans_image=
+!else
+ diareply$i=bad
+!endif
+
+:end
+
+!set xsize=320
+!set ysize=240
+
+!set ans_colors=<param name="select_atoms" value="$ans_total">
+!for x in $ans_test1
+  ans_colors=!append line <param name="select_color$x" value="0,0,250""> to $ans_colors
+!next
+!for x in $ans_test2
+  ans_colors=!append line <param name="select_color$x" value="250,0,0"> to $ans_colors
+!next
+!for x in $ans_test3
+  ans_colors=!append line <param name="select_color$x" value="0,250,0"> to $ans_colors
+!next
+
+reply_$i =<p>\
+<applet name="WIMSchem" codebase="$ans_appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">\
+	    <param name="showfile" value="yes">\
+	    <param name="language" value="en">\
+	    <param name="formattype" value="latex">\
+	    <param name="TOOL_CURSOR" value="no">\
+	    <param name="TOOL_ROTATOR" value="no">\
+	    <param name="TOOL_ERASOR" value="no">\
+	    <param name="TOOL_DIALOG" value="no">\
+	    <param name="TOOL_EDIT" value="no">\
+	    <param name="TOOL_SETATOM" value="no">\
+	    <param name="TOOL_SINGLE" value="no">\
+	    <param name="TOOL_DOUBLE" value="no">\
+	    <param name="TOOL_TRIPLE" value="no">\
+	    <param name="TOOL_ZERO" value="no">\
+	    <param name="TOOL_INCLINED" value="no">\
+	    <param name="TOOL_DECLINED" value="no">\
+	    <param name="TOOL_UNKNOWN" value="no">\
+	    <param name="TOOL_CHARGE" value="no">\
+	    <param name="TOOL_UNDO" value="no">\
+	    <param name="TOOL_REDO" value="no">\
+	    <param name="TOOL_TEMPLATE" value="no">\
+	    <param name="TOOL_CUT" value="no">\
+	    <param name="TOOL_COPY" value="no">\
+	    <param name="TOOL_PASTE" value="no">\
+	    <param name="MENU_BLOCK" value="no">\
+	    <param name="MENU_SELECT" value="no">\
+	    <param name="MENU_TRANSFORM" value="no">\
+	    <param name="MENU_ZOOM" value="no">\
+	    <param name="MENU_SHOW" value="no">\
+	    <param name="MENU_HYDROGEN" value="no">\
+	    <param name="MENU_STEREO" value="no">\
+	    <param name="MENU_HELP" value="no">\
+	    <param name="file" value="$replyfile">\
+	    <param name="show_hydrogen" value="$ans_show_hydrogen">\
+	    <param name="show_carbon" value="$ans_show_carbon">\
+	    $ans_colors\
+	    <param name="select_alpha" value="130">\
+</applet>
+
+m_reply$i=$ans_select
+reply$i=
+replyGood$i=
+
