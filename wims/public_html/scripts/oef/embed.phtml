@@ -8,7 +8,8 @@
   !set inputsize1=$inputsize
 !endif
 !if $printing=yes or $cmd=hint
- !set replystyle$i=!defof anstyle in anstype/$(replytype$i).input
+ !readproc anstype/$(replytype$i).input def
+ !set replystyle$i=$anstyle
  !if mc iswordof $(replystyle$i)
   !if $inputsize1>0 
    !if $prompt_=$empty
@@ -23,7 +24,8 @@
     !set prompt_=$g_
    !endif
   !endif
-  !imgrename <u>$prompt_</u>
+  !set prompt_=!replace internal , by  </u>$  $ / $ $<u> in <u>$prompt_</u>
+  !imgrename <i>$prompt_</i>
  !else
   ___________
  !endif
