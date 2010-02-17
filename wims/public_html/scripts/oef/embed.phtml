@@ -27,7 +27,13 @@
   !set prompt_=!replace internal , by  </u>$  $ / $ $<u> in <u>$prompt_</u>
   !imgrename <i>$prompt_</i>
  !else
-  ___________
+  !if $(replytype$i)=compose
+   !set prompt_=!shuffle $(replygood$i)
+   !set prompt_=!replace internal , by $ $ / $ $ in $prompt_
+   $prompt_
+  !else
+    ___________
+  !endif
  !endif
  !exit
 !endif
