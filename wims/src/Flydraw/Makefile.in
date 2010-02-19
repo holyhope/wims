@@ -10,7 +10,7 @@ defines=@DEFINES@
 rpath=
 libtype=static
 lopt=$(libpath) $(libs)
-
+language=fr cn
 all: nametab.c flydraw
 
 clean:
@@ -29,7 +29,7 @@ flydraw: *.c *.h gd/libgd.a htmldoc.sh commands commands.* ../Lib/libwims.*
 	cp flydraw ../../other/bin/flydraw
 	chmod a+x ../../other/bin/flydraw
 	./htmldoc.sh >../../public_html/scripts/help/en/flydraw.phtml
-	for i in fr cn ; do ./htmldoc.sh $$i >../../public_html/scripts/help/$$i/flydraw.phtml ; done
+	for i in $(language) ; do ./htmldoc.sh $$i >../../public_html/scripts/help/$$i/flydraw.phtml ; done
 
 
 nametab.c: nametab.sh colors
