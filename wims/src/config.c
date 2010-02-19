@@ -560,6 +560,8 @@ char *modindex[]={
       "keywords",
       "language",
       "level",
+      "maintainer",
+      "maintainer_address",
       "mode",
       "require",
       "scoring",
@@ -688,7 +690,7 @@ void module_index(void)
 unsigned long create_job_ident(void)
 {
 /* unsigned long it; // 64-bit compatibility: take away _long_ */
-    unsigned it;
+    unsigned long it;
     int i;
     	/* Is this enough to guarantee uniqueness? */
     
@@ -697,8 +699,8 @@ unsigned long create_job_ident(void)
     it=it^0x5a3c9671;
     for(i=0;i<MAX_SESRANDOM;i++) sesrandomtab[i]=random();
     /* ensure that the result will be a 4-bytes integer gives random problem on 32 bits
-    return it & 0xffff;*/
-    return it;
+    return it;*/
+    return it & 0xffffffff;
 }
 
 	/* Setup a job identifier */

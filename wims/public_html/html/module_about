@@ -24,7 +24,7 @@
 !set module_au=!mailurl $module_address $module_author\
 WIMS $module_title [$module_language]
 !set module_tr=!mailurl $module_translator_address $module_translator\
-WIMS $module_title [$module_language]
+WIMS $module_title [$lang]
 
 !!******** PERMALINK / EMBEDDABLE PLAYER ADD 
 
@@ -49,7 +49,12 @@ WIMS $module_title [$module_language]
 
 !!******** END OF PERMALINK / EMBEDDABLE PLAYER ADD
   !if $module_tr!=$empty and $(module_translator_address)!=$empty
-   !set module_about_tr=!nosubst $table_tr<th>$$wims_name_Translator</th><td>$module_tr</a></td></tr>
+   !set module_about_tr=!nosubst $table_tr<th>$$wims_name_Translator</th><td>$module_tr</td></tr>
+  !endif
+  !if $(module_maintainer)!=$empty
+    !set module_about_mt=!mailurl $module_maintainer_address $module_maintainer\
+WIMS $module_title [$module_language]
+    !set module_about_maintainer=!nosubst $table_tr<th>$$wims_name_Maintainer</th><td>$module_about_mt</td></tr>
   !endif
   !set module_about=$module_about \
    $$wims_name_This_is_a_module $$wims_name_WIMS_subtitle (<a href="$wims_ref_name?module=help/main.fr&amp;chapter=1&amp;open=1_intro" target="_blank" title="Web Interactive Multipurpose Server">WIMS</a>).<br>\
@@ -67,6 +72,7 @@ WIMS $module_title [$module_language]
    $table_tr<th>$$wims_name_Required_WIMS_version</th><td>$m_ge $module_wims_version</td></tr>\
    $table_tr<th>$$wims_name_Language</th><td>$$Lang_name_$module_language</td></tr>\
    $table_tr<th>$$wims_name_Author</th><td>$module_au</td></tr>\
+   $module_about_maintainer\
    $module_about_tr\
    $table_tr<th>$$wims_name_Copyright</th><td>$module_copyright</td></tr>\
    $table_end<br>\
