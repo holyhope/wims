@@ -200,7 +200,7 @@ Adapted 1.html
 <param name="rotation" value="-123.12345"> <!-- optional : angle in degrees -->
 
 17/1/2010
-Right_mouse_click selects bonds & atoms.
+>>> Right_mouse_click <<< selects bonds & atoms.
 Functions
 ReadAtomSelection();
 ReadBondSelection();
@@ -219,6 +219,7 @@ Changed from expensive int[] to cheap boolean[] to store clicks.
 If set to yes/1 user atom/bond selection will be coloured/marked and stored --->
 
 18/1/2010
+
 Added iconbutton & menuitem "unselect" for clearing the userbased right_mouse_click_selection of atoms & bonds
 <param name="TOOL_UNSELECT" value="yes">
 The same functionality in the menubar subitem "select" --> "Unselect all your..."
@@ -226,4 +227,83 @@ The same functionality in the menubar subitem "select" --> "Unselect all your...
 18/1/2010
 Corrected selecting invisible C's 
 
+19/2/2010
+Just as a reminder:
+all params:
 
+<applet name="WIMSchem" id="WIMSchem" code="WIMSchem.MainApplet" archive="dist/WIMSchem.jar" width="550" height="550">
+ <param name="language" value="fr"><!-- optional fr,nl,en  default en -->
+ <param name="atoms" value="C,N,O,S,Mn,Ni,Mg">
+ 
+ <param name="file" value="./test.mol">
+ <param name="showfile" value="yes"><!-- if 1/yes loaded file (MDLMol/Native) is shown -->
+ 
+ <param name="user_selection" value="1"><!-- allow student to select bonds & atoms -->
+ <!-- optional for all colors Atoms & Bonds : default 100 -->
+ <param name="color_alpha" value="100"><!-- needed otherwise atoms will be hidden by solid disk -->
+ <param name="default_atom_select_color" value="255,255,0"><!-- optional : default 255,0,0 [red] -->
+ <param name="default_bond_select_color" value="255,255,0"><!-- optional : default 255,0,0 [red] -->
+ <param name="select_atoms" value="1,2,3"><!-- line numbers in server loaded MDLMol file -->
+ <param name="select_bonds" value="1,2,"><!-- line numbers in server loaded MDLMol file --> <param name="select_bond_color1" value="255,0,0"><!-- optional : default colors = red or default_select_color --> <param name="select_bond_color2" value="255,0,0"><!-- optional : default colors = red or default_select_color --> 
+    <!-- colors used for showing server selected atoms and bonds -->
+ <param name="select_atom_color1" value="255,0,0"><!-- optional : default colors = red or default_select_color -->
+ <param name="select_atom_color9" value="0,255,0"><!-- optional : default colors = red or default_select_color -->
+ <param name="select_atom_color12" value="0,0,255"><!-- optional : default colors = red or default_select_color -->
+ <param name="select_atom_color23" value="0,0,255"><!-- optional : default colors = red or default_select_color -->
+ 
+ <param name="select_bond_color1" value="255,0,0"><!-- optional : default colors = red or default_select_color -->
+ <param name="select_bond_color4" value="0,255,0"><!-- optional : default colors = red or default_select_color -->
+ <param name="select_bond_color8" value="0,0,255"><!-- optional : default colors = red or default_select_color -->
+ <param name="select_bond_color45" value="0,0,255"><!-- optional : default colors = red or default_select_color -->
+ 
+ <param name="show_hydrogen" value="no">
+ <param name="show_carbon" value="1">
+
+ <param name="rotation" value="20.12345"> <!-- optional : angle in degrees -->
+
+ <param name="template1" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=1.mol">
+ <param name="template2" value="$wims_ref_name?session=$session&cmd=getfile&special_parm=2.el">
+
+ <!-- the lefthand tool button bar -->
+ <param name="TOOL_CURSOR" value="yes"><!-- needed for mouse action -->
+ <param name="TOOL_UNSELECT" value="yes"> <!--unselect studen drawing -->
+ <param name="TOOL_ROTATOR" value="yes">
+ <param name="TOOL_ERASOR" value="yes">
+ <param name="TOOL_DIALOG" value="mo">
+ <param name="TOOL_EDIT" value="no">
+ <param name="TOOL_SETATOM" value="yes">
+ <param name="TOOL_SINGLE" value="yes">
+ <param name="TOOL_DOUBLE" value="yes">
+ <param name="TOOL_TRIPLE" value="yes">
+ <param name="TOOL_ZERO" value="yes">
+ <param name="TOOL_INCLINED" value="yes">
+ <param name="TOOL_DECLINED" value="yes">
+ <param name="TOOL_CHARGE" value="yes">
+ <param name="TOOL_UNDO=" value="yes">
+ <param name="TOOL_REDO=" value="yes">
+ <param name="TOOL_TEMPLATE" value="no">
+ <param name="TOOL_CUT" value="no">
+ <param name="TOOL_COPY" value="no">
+ <param name="TOOL_PASTE" value="no">
+ <!-- the top menu -->
+ <param name="MENU_BLOCK" value="yes">
+ <param name="MENU_SELECT" value="yes">
+ <param name="MENU_TRANSFORM" value="yes">
+ <param name="MENU_ZOOM" value="yes">
+ <param name="MENU_SHOW" value="yes">
+ <param name="MENU_HYDROGEN" value="yes">
+ <param name="MENU_STEREO" value="yes">
+ <param name="MENU_HELP" value="yes">
+ (java unavailable)
+ </applet>
+
+All public function in the applet [there are more but not interesting right now]
+
+[ use : document.GetElementById('WIMSchem').APPLETFUNCTION() ]
+ReadAtomSelection();
+ReadBondSelection()
+GetMoleculeMDLMol()
+SetMoleculeMDLMol(wimschem_file)
+GetMoleculeNative()
+SetMoleculeNative(str)
+GetMoleculeMDLMol()
