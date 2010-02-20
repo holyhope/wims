@@ -110,24 +110,23 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 <script language="javascript" type="text/javascript">
  function GetMoleculeMDLMol(){
     <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
-    var input1=document.WIMSchem.GetMoleculeMDLMol();
+   var input1=document.WIMSchem.GetMoleculeMDLMol();
    var result=document.WIMSchem.ReadApplet();
    var input2=result.split('\n');
    document.getElementById('WIMSchemreply').value = input2[1] + '\n' + input1;
-   document.applets[0].destroy();
+   document.WIMSchem.destroy();
 }
 </script>
 
  !form reply
 <input type=hidden name="reply$i" id="WIMSchemreply" value="">
 
-<applet name="WIMSchem" codebase="$appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
+<applet name="WIMSchem" id="WIMSchem" codebase="$appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
 	    <param name="showfile" value="$showfile">
 	    <param name="show_hydrogen" value="$show_hydrogen">
         <param name="show_carbon" value="$show_carbon">
         $templ
 	    $atoms
-	    <param name="formattype" value="latex">
 	    $params
 	    $File
 </applet>

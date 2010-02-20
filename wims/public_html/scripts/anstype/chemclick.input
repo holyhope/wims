@@ -1,8 +1,7 @@
 !set appletdir=java/WIMSchem
-!set oef_js_submit=ReadThis()
-
 !set anstype=yes
 !set anstyle=dprompt
+!set oef_js_submit=ReadThis()
 !if $wims_read_parm=def
  !exit
 !endif
@@ -58,32 +57,47 @@ $temp
  !set temp_cnt=!itemcnt $template
  !for s_=1 to $temp_cnt
   !if $(template[$s_]) notsametext cyclo
-   !set temp_mol=!record 0 of data/$dir/$(template[$s_])
+   !set temp_mol=!record 0 of data/$(template[$s_])
    !if $temp_mol=
      !set temp_mol=!record 0 of data/chem/templ/$(template[$s_]).el
    !endif
-   !readproc oef/togetfile.proc $(template[$s_]) new\
+   !set temp_file=!replace internal / by _ in $(template[$s_]) 
+   !readproc oef/togetfile.proc $temp_file new\
 $temp_mol
    !set cnt_=$[$cnt_+1]
    !set templ=$templ\
-   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(template[$s_])">
+   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$temp_file">
   !endif
  !next
 !endif
 
 !set file=!rows2lines $(replygood$i)
-!set file=!line 2 of $file
+!set file=!replace internal ; by $\
+$ in $file
+
+!set file=!line 2 to -1 of $file
+!set file=!replace internal $	$ by $\
+$ in $file
+!set test_file=!linecnt $file
 !set File=
- !if $file!=
+
+!if $file!= and $test_file=1
    !set file=!words2items $file
    !for files in $file
-   !set temp=!record 0 of $files
-   !set file0=!replace internal / by , in $files
-   !readproc oef/togetfile.proc $(file0[-1]) new\
+    !set temp=!record 0 of $files
+    !set file0=!replace internal / by , in $files
+    !readproc oef/togetfile.proc $(file0[-1]) new\
 $temp
   !set File=!append line <param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])"> to $File
   !next
- !endif
+ !else
+  !if $test_file>1
+   !set file1=jmol_$wims_nowseconds_$i
+  !readproc oef/togetfile.proc $file1 new\
+$file
+  !set File=!append line <param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$file1"> to $File
+  !endif
+!endif
 
 !set list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
 TOOL_SETATOM,TOOL_SINGLE,TOOL_DOUBLE,TOOL_TRIPLE,TOOL_ZERO,\
@@ -109,37 +123,31 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
  !set params=!append line <param name="$a__" value="$b_"> to $params
 !next
 <script language="javascript" type="text/javascript">
- function GetMoleculeMDLMol(){
-   <!-- reading the WIMSchem  file format from a drawing and display it in textarea "moltext" -->
-    var input1=document.WIMSchem.GetMoleculeMDLMol();
-    var result=document.WIMSchem.ReadApplet();
-    var input2=result.split('\n');
-    document.getElementById('WIMSchemreply').value = input2[1] + '\n' + input1;
-    document.applets[0].destroy();
-}
+function ReadThis(){
+	    var mol=document.WIMSchem.GetMoleculeMDLMol();
+		var atoms=document.WIMSchem.ReadAtomSelection();
+		var bonds=document.getElementById('WIMSchem').ReadBondSelection();
+		document.getElementById('WIMSchemreply').value = atoms +';' + bonds + '\n'+ mol;
+		document.WIMSchem.destroy();
+	 }
 </script>
-<script language="javascript" type="text/javascript">
-  function ReadThis(){                                                                                                               
-       var selection=document.applets[0].ReadSelection(); 
-	     var mol = document.WIMSchem.GetMoleculeMDLMol(); 
-	     if(selection.length==0){ document.getElementById('WIMSchemreply').value='' ; }
-	     else { document.getElementById('WIMSchemreply').value = selection +'\n'+mol;}
-         document.applets[0].destroy();
-  }
-</script>	    
 !if $File!=$empty
   !set parm_angle=!randitem 0,30,45,60,90,120,135,150,180,-30,-45,-60,-90,-120,-135,-150,-180
   !set parm_angle=<param name="rotation" value="$parm_angle">
 !endif
 <input type=hidden name="reply$i" id="WIMSchemreply" value="">
+
 <applet name="WIMSchem" id="WIMSchem" codebase="$appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
 	    <param name="showfile" value="$showfile">
 	    <param name="show_hydrogen" value="$show_hydrogen">
         <param name="show_carbon" value="$show_carbon">
+        <param name="user_selection" value="1">
+        <param name="color_alpha" value="100">
+        <param name="default_atom_select_color" value="255,0,255">
         $templ
 	    $atoms
 	    $params
-	    <param name="default_select_color" value="0,255,0">
+	    <param name="default_bond_select_color" value="255,0,255">
 	    $parm_angle
 	    $File
 </applet>

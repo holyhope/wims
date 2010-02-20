@@ -4,6 +4,7 @@ default,Auto,détermination automatique de certains types de base\
 raw,Texte brut,contrôle de comparaison par options\
 numeric,Nombre,nombre avec tolérance de précision\
 function,Fonction numérique,fonction avec test numérique\
+equation,Equation numérique,equation avec test numérique\
 exp,Expression mathématique,comparaison formelle\
 text,Texte,des mots ou des phrases\
 multiple,Choix multiples contrôlables,boutons ou menus\
@@ -11,6 +12,9 @@ multiple,Choix multiples contrôlables,boutons ou menus\
 
 !set typelist2=!trim\
 atext,Texte approximatif,avec identification de singulier et pluriel etc.\
+chembrut,Formule brute d'une molécule,en chimie\
+chemdraw,Dessiner une molécule,avec une aplet Java\
+chemclick,Sélectionner des atomes ou des liaisons d'une molécule,avec une aplet Java\
 chemeq,Equation chimique,avec analyse d'équilibre\
 clickfill,Objets à glisser-déposer,texte et image\
 clicktile,Mettre en couleur des pavés, nécessite java\
@@ -20,7 +24,8 @@ correspond,Correspondance,établir la correspondance de paires d'objets\
 chset,Ensemble de caractères,\
 geogebra,Géométrie dynamique,utilisation de l'applet GeoGebra\
 javacurve,Dessin Java, possibilité de dessins soit libres soit avec des formes prédéfinies\
-jmolclick,Click on 3D atoms, use applet Jmol\
+jmolclick,Clic sur des atomes en 3D, nécessite l'applet Jmol\
+keyboard,Texte, avec clavier adapté\
 matrix,Matrix, mathématique\
 numexp,Nombre rationnel, écriture fractionnaire\
 range,Nombres dans une zone,tout ce qui est dans la zone est accepté\
@@ -81,7 +86,7 @@ Chaque réponse libre peut prendre indépendamment l'un des types suivants.
   !set desc=!item 3 to -1 of $l
   !if $name isitemof $special_parm or all isitemof $special_parm
    <li><p><a name="_$name"></a>
-   !read help/anstype.fr/$name.phtml
+   !read help/anstype.$lang/$name.phtml
    !if $name iswordof $symtextlist
     <p>
     <b>Remarque</b>.
@@ -96,7 +101,7 @@ Chaque réponse libre peut prendre indépendamment l'un des types suivants.
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name</tt>) $desc
+   (<tt>$name</tt>) $desc.
   !endif
  !next j
  </ul>
@@ -157,8 +162,7 @@ Voir
  pour la syntaxe de définition des réponses.
  
 <h4>Le paramètre optionnel <tt>weight</tt></h4>
-<a name=weight></a>
-Il permet d'imposer un poids aux questions posées.
+<a name=weight></a> Il permet d'imposer un poids aux questions posées.
 <p>
 Exemple : 
 <pre>\answer{}{1}{type=numeric}{weight=8}

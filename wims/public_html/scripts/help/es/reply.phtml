@@ -1,3 +1,44 @@
+!set typelist1=!trim\
+default,Auto,détermination automatique de certains types de base\
+raw,Texte brut,contrôle de comparaison par options\
+numeric,Nombre,nombre avec tolérance de précision\
+function,Fonction numérique,fonction avec test numérique\
+equation,Equation numérique,equation avec test numérique\
+exp,Expression mathématique,comparaison formelle\
+text,Texte,des mots ou des phrases\
+multiple,Choix multiples contrôlables,boutons ou menus\
+
+
+!set typelist2=!trim\
+atext,Texte approximatif,avec identification de singulier et pluriel etc.\
+chembrut,Formule brute d'une molécule,en chimie\
+chemdraw,Dessiner une molécule,avec une aplet Java\
+chemclick,Sélectionner des atomes ou des liaisons d'une molécule,avec une aplet Java\
+chemeq,Equation chimique,avec analyse d'équilibre\
+clickfill,Objets à glisser-déposer,texte et image\
+clicktile,Mettre en couleur des pavés, nécessite java\
+compose,Composer,en utilisant des composantes fournies\
+coord,Clic sur image,reconnaissance de coordonnées et régions diverses\
+correspond,Correspondance,établir la correspondance de paires d'objets\
+chset,Ensemble de caractères,\
+geogebra,Géométrie dynamique,utilisation de l'applet GeoGebra\
+javacurve,Dessin Java, possibilité de dessins soit libres soit avec des formes prédéfinies\
+jmolclick,Clic sur des atomes en 3D, nécessite l'applet Jmol\
+keyboard,Texte, avec clavier adapté\
+matrix,Matrix, mathématique\
+numexp,Nombre rationnel, écriture fractionnaire\
+range,Nombres dans une zone,tout ce qui est dans la zone est accepté\
+reorder,Mise en ordre, d'une liste d'objets\
+set,Ensemble fini,textuel, formel ou approximatif\
+sigunits,Sigunits,nombre avec unité et chiffre significatif\
+symtext,Symtext,outil avancé d'identification de textes\
+units,Nombre avec unité, pour la physique\
+vector,Vecteur,comparaison formelle des composantes\
+wlist,Liste de mots,\
+
+
+!set namelist=Types de base,Types spécifiques ou avancés
+!set symtextlist=text atext raw compose
 
 <center><h3>Respuestas de los usuarios a un ejercicio</h3></center> <p>
 
@@ -35,150 +76,47 @@ La sintaxis es la siguiente:
 Cada respuesta libre puede tomar independientemente uno de los siguientes
 tipos:
 <ol>
- <li><p>
- <b>Auto.</b> (nombre: <tt>default</tt>)<br>
- El programa puede determinar el tipo de la respuesta analizando la respuesta
- correcta proporcionada. Esta capacidad de determinación automática es bastante
- limitada y únicamente puede distinguir funciones numéricas/números/ecuaciones/textos,
- por tanto en la medida en que sea posible es preferible precisar el tipo.
+!for i=1 to 2
+ <p><b>$(namelist[$i])</b>
+ !set n=!linecnt $(typelist$i)
+ <ul>
+ !for j=1 to $n
+  !set l=!line $j of $(typelist$i)
+  !distribute item $l into name,title
+  !set desc=!item 3 to -1 of $l
+  !if $name isitemof $special_parm or all isitemof $special_parm
+   <li><p><a name="_$name"></a>
+   !read help/anstype.$lang/$name.phtml
+   !if $name iswordof $symtextlist
+    <p>
+    <b>Remarque</b>.
+    Ce type de réponse accepte l'option symtext. Si le mot <tt>symtext</tt> est
+    déclaré dans l'option de la réponse, l'analyse de la réponse sera exactement
+    comme pour
+    !href cmd=help&special_parm=reply,symtext#_symtext symtext
+, en particulier sans aucun traitement préalable des textes. Et toutes les
+    options symtext seront comprises dans ce cas.
+   !endif
+   <p>
+  !else
+   <li>
+   !href cmd=help&special_parm=reply,$name#_$name $title
+   (<tt>$name</tt>) $desc.
+  !endif
+ !next j
+ </ul>
+!next i
+<p>
+Option commune à toutes les réponses libres : <tt>default</tt> Cette option
+peut prendre la forme <tt><font color=green>default="valeur_par_défaut"</font>
+</tt>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
+qui remplace.
 
- <li><p>
- !read help/anstype/atext.phtml
+<p>
+Pour insérer les champs de réponses dans le texte par la commande <tt>embed</tt>, 
+!href cmd=help&special_parm=embedans voir ici. 
 
- <li><p>
- !read help/anstype/clickfill.phtml
-
- <li><p>
- !read help/anstype/coord.phtml
-
- <li><p>
- !read help/anstype/compose.phtml
-
- <li><p>
- !read help/anstype/correspond.phtml
-
- <li><p>
- <b>Conjunto finito.</b> (nombre: <tt>set</tt>) <br>
- Es una lista de elementos (textuales) separados por comas,
- donde el orden no es importante.
- No se hace ninguna evaluación de los elementos antes de la comparación
- (por tanto 2 y 1+1 no son el mismo elemento).
-
- <li><p>
- <b>Conjunto formal.</b> (nombre: <tt>fset</tt>)<br>
- Como el <em>conjunto finito</em>, pero los elementos son evaluados
- como <em>expresiones formales</em>.
-
- <li><p>
- <b>Conjunto aproximativo.</b> (nombre: <tt>aset</tt>)<br>
- Como el <em>conjunto finito</em>, pero los elementos son evaluados
- como <em>expresiones aproximativas</em>.
-
- <li><p>
- <b>Conjunto de caracteres.</b> (nombre: <tt>chset</tt>) <br>
- Se trata de una lista de caracteres alfanuméricos en los que el orden no
- tiene importancia, ni si son mayúsculas o minúsculas. <p>
- Se puede utilizar para crear respuestas para opciones múltiples, en las que
- el número de opciones presentes debe ser fijo y en las que es posible que haya
- varias respuestas correctas y el usuario deba encontrarlas todas.
-
- <li><p>
- <b>Expresión algebraica.</b> (nombre: <tt>algexp</tt>)<br>
- Es una expresión algebraica formal con identificaciones limitadas
- para la comparación. Por ejemplo, no se aceptará (x+1)(x-1) 
- cuando la respuesta correcta es x^2-1. Y tampoco sin(x)^2+cos(x)^2 frente a 1.
- Por contra, x-y*y y -y^2+x serán consideradas idénticas. <p>
- Es útil para obligar a los estudiantes a realizar ellos mismos las
- simplificaciones de las expresiones. <p>
- Se pueden poner varias respuestas correctas separadas por comas.
-
- <li><p>
- <b>Expresión literal.</b> (nombre: <tt>litexp</tt>)<br>
- Es una expresión matemática formal que se comparará literalmente
- con la respuesta correcta dada, sin ninguna simplificación algebraica. Por
- ejemplo, x+y no se reconocerá como idéntico a y+x, ni 3/2 a 6/4. Sin
- embargo 2x y 2*x serán vistos como idénticos, 
- y los espacios se eliminarán antes de la comparación. <p>
- Es útil para obligar a los estudiantes a realizar ellos mismos las
- simplificaciones de las expresiones. <p>
- Se pueden poner varias respuestas correctas separadas por comas.
-
- <li><p>
- <b>Expresión formal.</b> (nombre: <tt>formal</tt>)<br>
- Como las expresiones numéricas, pero no se permite la aproximación. <p>
- Es posible poner varias respuestas correctas separándolas con comas.
-
-<li><p>
- <b>Expresión numérica.</b> (nombre: <tt>function</tt>) <br>
- La respuesta se evaluará como una función y la 
- comparación se hace para los valores de las variables definidas en el 
- intervalo definido por el autor, con la precisión
- definida por él mismo. <p>
-
- <li><p>
- <b>Matriz.</b> (nombre: <tt>matrix</tt>)<br>
- Como para las respuestas vectoriales, cada coeficiente es evaluado y comparado
- con el coeficiente correspondiente de la respuesta correcta.
-
- <li><p>
- <b>Numérica.</b> (nombre: <tt>numeric</tt>)<br>
- Comparación de números reales hasta la precisión definida por el autor.
-
- <li><p>
- <b>Numérica con intervalo.</b> (nombre: <tt>range</tt>)<br>
- Comparación de números reales en un intervalo: la respuesta correcta está compuesta
- por dos números, m y n, separados por una coma, siendo m&lt;n. Se aceptará
- cualquier entrada comprendida entre m y n (inclusives).
-
- <li><p>
- <b>Numérica con unidad.</b> (nombre: <tt>units</tt>) <br>
- Normalmente es una cantidad física vinculada a una unidad. La respuesta se evaluará
- como tal, por lo tanto, por ejemplo, <tt>1.5 cm</tt> y <tt>15 mm</tt>
- tendrán el mismo significado. El requerimiento de precisión es como para
- la expresión numérica.
-
- <li><p>
- !read help/anstype/sigunits.phtml
-
-!! <li><p>
-!! !read help/anstype/reorder.phtml
-!!
- <li><p>
- !read help/anstype/text.phtml
-
- <li><p>
- <b>Vector.</b> (nombre: <tt>vector</tt>)<br>
- Cada coeficiente se evalúa y compara con el coeficiente correspondiente
- de la respuesta correcta. Por lo tanto, sólo se pueden usar vectores 
- numéricos. La respuesta así como la respuesta correcta pueden tener o no
- paréntesis que los rodeen.
-
- <li><p>
- !read help/anstype/wlist.phtml
-
- <li><p><b>Opciones múltiples controlables por el autor</b>: <tt>checkbox</tt>,
- <tt>click</tt>, <tt>menu</tt>, <tt>radio</tt>, <tt>mark</tt><br>.
- Pueden utilizarse para sustituir a la entrada estándar de opción múltiple
- (<tt>\choice</tt>), pues proporcionan mayor control sobre la presentación.
- La respuesta correcta debe contener dos campos, separados por un punto y coma
- ``<tt>;</tt>''. El segundo campo (tras el punto y coma) es la lista de textos
- de la opción, mientras que el primero es una lista con los números de las opciones 
- correctas. En el caso de la <tt>checkbox</tt>, el usuario debe escoger 
- exactamente todas las opciones correctas. En los casos restantes bastará
- escoger cualquier opción correcta.
- <p>
- En estos casos no se aplica ninguna permutación aleatoria automática,
- y el número de opciones no está limitado.
- <p>
- <tt>click</tt> debe usarse únicamente en el caso de que no haya más 
- respuestas u opciones.
- <p>
- <tt>mark</tt> funciona como <tt>checkbox</tt>, con la diferencia de que, en 
- lugar de un botón, es el elemento elegido el que cambia de color para
- indicar la elección. Por tanto es útil principalmente para el texto del
- enunciado.
-</ol>
-
+ 
 <p><h4>Condiciones de comprobación</h4> <p>
 Bajo ciertas circunstancias, es deseable que las respuestas de estilo libre
 se corrijan según condiciones especiales (preguntas con múltiples respuestas
@@ -225,4 +163,51 @@ $table_end <p>
 Ver la
 !href cmd=help&special_parm=oef ayuda sobre el formato OEF
  para ver la sintaxis de la definición de las respuestas.
+
+<h4>Le paramètre optionnel <tt>weight</tt></h4>
+<a name=weight></a> Il permet d'imposer un poids aux questions posées.
+<p>
+Exemple : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+
+Le niveau de sévérité  sera aussi pris en compte lors du 
+calcul fait et le pourcentage sera pris sur un pourcentage fixé
+par le niveau de sévérité. 
+
+Il est possible de mettre des variables dans <tt>weight</tt>. 
+<p>
+Exemple :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+
+<h4>Le paramètre optionnel <tt>option</tt></h4>
+ <a name=option></a>
+Les options possibles à la suite d'une instruction <tt>\answer</tt>
+ou <tt>\condition</tt> sont
+<ul>
+<li>
+<tt>option=split</tt> : Dans le cas d'une réponse dont
+le type est <tt>correspond</tt>, <tt>checkbox</tt> ou <tt>mark</tt>, la notation
+tient compte des réponses justes, même si elles ne le sont pas toutes. 
+</li>
+<li>
+<tt>option=nonstop</tt> : Dans le cas d'un exercice à étapes, les questions
+suivantes sont posées même en cas de réponses fausses.
+</li>
+<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+Seul le score subsiste.</li>
+<li>A la suite d'une instruction <tt>condition</tt>, 
+<tt>option=hide</tt> : La condition sera utilisée pour l'analyse
+de la réponse mais ne sera pas  affichée. 
+</li>
+
+</ul>
 

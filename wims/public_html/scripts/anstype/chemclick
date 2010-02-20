@@ -12,15 +12,27 @@ $ in $oef_applet_option
 !default ans_show_hydrogen=yes
 !default ans_show_carbon=no
 
-good_select=$(replygood$i[1;])
-
 ans_list_feedback=!getopt feedback in $(replyoption$i)
 ans_list_feedback=!words2items $ans_list_feedback
 
 good_select=$(replygood$i[1;])
+!for u_ in bonds, atoms
+  good_select=!replace internal $u_: by $\
+$u_, in $good_select
+!next
+!set good_atoms_select=!select $good_select where column 1 = atoms
+!set good_atoms_select=!item 2 to -1 of $good_atoms_select
+!set good_atoms_select=!nonempty items $good_atoms_select
+!set good_bonds_select=!select $good_select where column 1=bonds
+!set good_bonds_select=!item 2 to -1 of $good_bonds_select
+!set good_bonds_select=!nonempty items $good_bonds_select
+
 ans_molecule=$(reply$i)
-ans_select=!line 1 of $ans_molecule
+
+!distribute line $ans_molecule into ans_select
 ans_molecule=!line 2 to -1 of $ans_molecule
+!set ans_atoms_select=$(ans_select[1;])
+!set ans_bonds_select=$(ans_select[2;])
 
 !set ans_newtime=$(wims_nowseconds)_$i
 !set replyfichier=r_$ans_newtime.mol
@@ -36,13 +48,36 @@ $ans_molecule
 !endif
 
 :good
-ans_test1=!listcomplement $ans_select in $good_select
-ans_test2=!listcomplement $good_select in $ans_select
-ans_test3=!listintersect $good_select and $ans_select
-ans_total=!nonempty items $ans_select,$good_select
-ans_total=!listuniq $ans_total
-ans_total=!sort numeric items $ans_total
-!if $ans_test1= and $ans_test2=
+!if $good_atoms_select!=
+ans_atoms_test1=!listcomplement $ans_atoms_select in $good_atoms_select
+ans_atoms_test2=!listcomplement $good_atoms_select in $ans_atoms_select
+ans_atoms_test3=!listintersect $good_atoms_select and $ans_atoms_select
+ans_atoms_total=!nonempty items $ans_atoms_select,$good_atoms_select
+ans_atoms_total=!listuniq $ans_atoms_total
+ans_atoms_total=!sort numeric items $ans_atoms_total
+
+!set score_bonds=1
+!set core_atoms=1
+ !if $ans_atoms_test1= and $ans_atoms_test2=
+   score_atoms=1
+ !else
+   score_atoms=0
+ !endif
+!endif
+!if $good_bonds_select!=
+ ans_bonds_test1=!listcomplement $ans_bonds_select in $good_bonds_select
+ ans_bonds_test2=!listcomplement $good_bonds_select in $ans_bonds_select
+ ans_bonds_test3=!listintersect $good_bonds_select and $ans_bonds_select
+ ans_bonds_total=!nonempty items $ans_bonds_select,$good_bonds_select
+ ans_bonds_total=!listuniq $ans_bonds_total
+ ans_bonds_total=!sort numeric items $ans_bonds_total
+ !if $ans_bonds_test1= and $ans_bonds_test2=
+   score_bonds=1
+ !else
+   score_bonds=0
+ !endif
+!endif
+!if $score_bonds=1 and $score_atoms=1
  diareply$i=good
  !advance freegot
  ans_image=
@@ -55,18 +90,29 @@ ans_total=!sort numeric items $ans_total
 !set xsize=320
 !set ysize=240
 
-!set ans_colors=<param name="select_atoms" value="$ans_total">
-!for x in $ans_test1
-  ans_colors=!append line <param name="select_color$x" value="0,0,250""> to $ans_colors
+!set ans_atoms_colors=<param name="select_atoms" value="$ans_atoms_total">
+!for x in $ans_atoms_test1
+  ans_atoms_colors=!append line <param name="select_atom_color$x" value="0,0,250""> to $ans_atoms_colors
 !next
-!for x in $ans_test2
-  ans_colors=!append line <param name="select_color$x" value="250,0,0"> to $ans_colors
+!for x in $ans_atoms_test2
+  ans_atoms_colors=!append line <param name="select_atom_color$x" value="250,0,0"> to $ans_atoms_colors
 !next
-!for x in $ans_test3
-  ans_colors=!append line <param name="select_color$x" value="0,250,0"> to $ans_colors
+!for x in $ans_atoms_test3
+  ans_atoms_colors=!append line <param name="select_atom_color$x" value="0,250,0"> to $ans_atoms_colors
 !next
 
-reply_$i =<p>\
+!set ans_bonds_colors=<param name="select_bonds" value="$ans_bonds_total">
+!for x in $ans_bonds_test1
+  ans_bonds_colors=!append line <param name="select_bond_color$x" value="0,0,250""> to $ans_bonds_colors
+!next
+!for x in $ans_bonds_test2
+  ans_bonds_colors=!append line <param name="select_bond_color$x" value="250,0,0"> to $ans_bonds_colors
+!next
+!for x in $ans_atoms_test3
+  ans_bonds_colors=!append line <param name="select_bond_color$x" value="0,250,0"> to $ans_bonds_colors
+!next
+!!debug $ans_bonds_colors $ans_atoms_colors
+reply_$i=<p>\
 <applet name="WIMSchem" codebase="$ans_appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">\
 	    <param name="showfile" value="yes">\
 	    <param name="language" value="en">\
@@ -102,8 +148,9 @@ reply_$i =<p>\
 	    <param name="file" value="$replyfile">\
 	    <param name="show_hydrogen" value="$ans_show_hydrogen">\
 	    <param name="show_carbon" value="$ans_show_carbon">\
-	    $ans_colors\
-	    <param name="select_alpha" value="130">\
+	    <param name="color_alpha" value="100">\
+	    $ans_atoms_colors\
+	    $ans_bonds_colors\
 </applet>
 
 m_reply$i=$ans_select

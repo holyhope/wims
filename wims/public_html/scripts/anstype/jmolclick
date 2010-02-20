@@ -1,90 +1,52 @@
+
+!set appletdir=$imagedir
 !set appletdir=java/jmol
 
-rgood=$(replygood$i)
-rgood=!rows2lines $rgood
-rgood=!lines2items $rgood
-r=$(reply$i)
-correct=!listintersect $rgood and $(r[;1])
+!distribute lines $(reply$i) into score,selgood,selbad,selforget,ans_sc1,ans_orient
+!for j in selgood,selbad,selforget
+  !set $j=!translate {()} to $ $ $ $ $ in $($j)
+  !set $j=!singlespace $($j)
+  !set $j=!words2items $($j)
+  !set $j=!values x+1 for x in $($j)
+!next
+!set for_feedback=$selgood;$selbad;$selforget
 
-poscnt3=!itemcnt $rgood
-poscnt1=!itemcnt $(r[;1])
-poscnt2=!itemcnt $correct
+nbsel=!getopt nbsel in $(replyoption$i)
 
-!if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i)
- !if $poscnt1=$poscnt2 and $poscnt1=$poscnt3
-  diareply$i=good
-  !advance freegot
- !else
-  !if eqweight iswordof $(replyoption$i)
-   diaratio=$[2*$poscnt2 - $poscnt1]
-  !else
-   diaratio=$[3*$poscnt2 - 2*$poscnt1]
-  !endif
-  !if $diaratio > 0
-   diareply$i=good
-   partialgood$i=yes
-   freegot=$[$freegot+ max(0,$diaratio/max($poscnt3,1))]
-  !else
-   diareply$i=bad
-  !endif
- !endif
-!else
- !if $poscnt1=$poscnt2 and $poscnt1=$poscnt3
-  diareply$i=good
-  !advance freegot
- !else
-  diareply$i=bad
- !endif
-!endif
+!distribute lines $oef_applet_option into size,file,ans_sc0,ans_sc2
 
 !if $wims_read_parm=nocompare
   reply$i=$(m_reply$i)
+  !set for_feedback=$selbad
   !goto applet
+!endif
+
+!if $score=1 
+ diareply$i=good
+ !advance freegot
+!else
+   diareply$i=bad
+   freegot=$[$freegot+$score]
 !endif
  
 :applet
-!set size=!line 1 of $oef_applet_option
-!distribute items $size into xsize,ysize
-!set file=!line 2 of $oef_applet_option
 
-!set temp=!record 0 of $file
-!set file0=!replace internal / by , in $file
-!readproc oef/togetfile.proc $(file0[-1]) new\
-$temp
+reply_$i=<script type="text/javascript" src="$appletdir/Jmol.js"></script>
+reply_$i=$(reply_$i)
 
-!set file1=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
-
-repjm=({
-!for j in $(r[;1])
- repjm=$repjm $[$j-1]
-!next
-repjm=$repjm})
-
-repg=({
-!for j in $rgood
- repg=$repg $[$j-1]
-!next
-repg=$repg})
-
-!set oef_applet_option=!line 2 to -1 of $oef_applet_option
-!set oef_applet_option_cnt=!linecnt $oef_applet_option
-
-reply_$i=<script type="text/javascript" src="$appletdir/Jmol.js"></script>\
- <script type="text/javascript">\
- jmolInitialize('$appletdir','JmolApplet.jar');\
- jmolSetAppletColor("white");\
- jmolApplet([$xsize,$ysize]);\
- var jmolscript='load $file1;';\
- jmolscript= jmolscript +'select $repjm; color stars black;stars 1.0 ;';\
- jmolscript= jmolscript +' color selectionHalo green ;selectionhalos on; select $repg; ';\
- jmolscript= jmolscript +'set picking off;';\
- jmolscript= jmolscript +'set disablePopupMenu on;';
- !for s_=2 to $oef_applet_option_cnt
-   !set opt_=!line $s_ of $oef_applet_option
-   reply_$i=$(reply_$i)\
-   jmolscript= jmolscript +'$opt_';
- !next
- reply_$i=$(reply_$i)\
-  jmolScriptWait(jmolscript);\
+reply_$i=$(reply_$i)<script type="text/javascript">\
+    jmolInitialize('$appletdir','JmolApplet.jar');\
+    jmolSetAppletColor("white");\
+    jmolSetCallback("menuFile", "$appletdir/Jmol.mnu");\
+    var sc0='$ans_sc0';\
+    var sc2='$ans_sc2';\
+    var sc1='$ans_sc1';\
+    var orient='$ans_orient';\
+    var jscr='load $file;';\
+    jscr= jscr +'selectionhalos on;select none;set frank off;';\
+    retcode=jmolApplet([$size],jscr+sc1+sc2+sc0+orient);\
 </script>
-reply__$i=&nbsp;
+
+!set reply_$i=$(reply_$i)
+!set m_reply$i=$for_feedback
+!set reply$i=

@@ -1,19 +1,62 @@
-!set appletdir=java/jmol
+!set ans_warning1=Vous devez en selectionner un
+!set ans_warning2=Vous devez en selectionner un seul
+!set ans_warning3=!nosubst Vous devez en sélectionner $nbsel\nalors que vous en avez sélectionné $ $
 
+!set appletdir=$imagedir
+!set appletdir=java/jmol
 !set anstype=yes
 !set anstyle=dprompt
-!set oef_js_submit=analyse()
-
+!set oef_js_submit=finalise()
 !if $wims_read_parm=def
  !exit
 !endif
 !!########################
-!!###traitement des options (qui se trouvent dans \embed)
+!!########################
+
+
+!set nbsel=!getopt nbsel in $(replyoption$i)
+
+!!############################
+
+!default nbsel=0
+!!#### pas de message d'erreur si nbsel=0
+
+!set nosel=!getopt noselect in $(replyoption$i)
+!default nosel=(none)
+!if $nosel==\nosel
+  !set nosel=(none)
+!endif
+!!############################
+
+!set file1=!rows2lines $(replygood$i)
+!set file1=!replace internal ; by $\
+$ in $file1
+
+!distribute line $file1 into rg
+!set file1=!line 2 to -1 of $file1
+!!! tester si c'est un fichier à charger ou une variable
+!set test_file=!linecnt $file1
+!if $test_file=1 and | notin $file1
+  !if __data isin __$file1
+    !set temp=!record 0 of $file1
+    !set file0=!replace internal / by , in $file1
+    !readproc oef/togetfile.proc $(file0[-1]) new\
+$temp
+    !set file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
+  !else
+   !set file=$file1
+  !endif
+!else
+  !set file=jmol_$wims_nowseconds_$i
+  !readproc oef/togetfile.proc $file new\
+$file1
+   !set file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$file
+
+!endif
+
+!!############# traitement des options (qui se trouvent dans \embed)
 !set oef_applet_option=!replace internal $	$ by $\
 $ in $inputsize
-
-!set oef_applet_option=!replace internal ; by $\
-$ in $oef_applet_option
 !set oef_applet_option=!nonempty lines $oef_applet_option
 !set Inputsize=!line 1 of $oef_applet_option
 !set test=!text remove 0123456789x in $Inputsize
@@ -23,59 +66,200 @@ $ in $oef_applet_option
  !set oef_applet_option=!declosing $oef_applet_option
  !distribute items $Inputsize into xsize,ysize
 !endif
-
-!set oef_applet_option=!translate [] to $  $ in $oef_applet_option
-!set file=!getopt file in $oef_applet_option
-
-!set temp=!record 0 of $file
-!set file0=!replace internal / by , in $file
-!readproc oef/togetfile.proc $(file0[-1]) new\
-$temp
-!set file0=!imgrename $file0
-
-!set file1=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
-
-!set other_options=!line 2 to -1 of $oef_applet_option
-!set other_options_cnt=!linecnt $other_options
+!distribute lines $oef_applet_option into ans_sc0,ans_sc1,ans_sc2
 !!
-!default xsize=480
-!default ysize=480
+!default Inputsize=400,400
 
-!!############################
-!!####partie importante
-!! !form reply
+!!###on garde les options pour le retour, variable de nom imposée oef_applet_option
+!set oef_applet_option=$Inputsize\
+$file\
+$ans_sc0\
+$ans_sc2
+
+!!############################ fin du traitement des options
+!set test=!text remove 1234567890,| in $rg
+!if $test issametext
+  !set rg=!replace internal | by $\
+ $ in $rg
+  !set R_=
+  !set rg_cnt=!linecnt $rg
+ 
+  !for u_ = 1 to $rg_cnt
+    !set l_=!line $u_ of $rg
+    !set l_=!trim $l_
+    !set l_=!nospace $l_
+    !set l_=!replace internal , by $ $ or atomno= in atomno=$l_
+    !set Rg=!append line $l_ to $Rg
+  !next
+  !set rg=!replace internal $\
+$ by | in $Rg
+!endif
+
+!set rg=!replace internal | by ',' in '$rg'
+
+!!pas d'analyse!!
+!if ?analyze isin $rg
+  !set red=yellow
+!else
+  !set red=red
+!endif
 <input type=hidden name="reply$i" id="Clickjmolreply" value="">
-
 <script type="text/javascript" src="$appletdir/Jmol.js"></script> 
 
 <script language="javascript" type="text/javascript">
-function analyse() {
- var atsel = jmolGetPropertyAsArray('AtomInfo','(selected)');
- var chaine=atsel[0].atomno+','+atsel[0].sym;
- for(at=1;at<atsel.length;at++){
-  chaine=chaine+ ';'+atsel[at].atomno+','+atsel[at].sym;
+function finalise(){
+var score=0;
+var best=0;
+var selgood='';
+var selbad='';
+ var  nbselected=0;
+ var ch=analysesel();
+ if(ch!=''){
+  jmolScriptWait('select '+ch+' ;');
+  var nbselected = jmolGetPropertyAsArray('AtomInfo',ch).length;
+  var tabrep=new Array()
+tab_rg= new Array($rg);
+//alert(tab_rg.join()+'     '+ch)
+for(irep=0;irep<tab_rg.length;irep++){
+  tabrep=analyserep(ch,tab_rg[irep],'$nbsel');
+  if(score<=tabrep[3]){
+//alert(tabrep.join())
+   selgood=tabrep[0];
+   selbad=tabrep[1];
+   selforget=tabrep[2];
+   score=tabrep[3];
+   best=irep;
  }
-  document.getElementById('Clickjmolreply').value=chaine;
 }
+  sc_in_out=affich_rep(selgood,selbad,selforget);
+
+  orient=jmolSaveOrientation()
+  orient=orient.replace(/1\.0/,"0")
+  document.getElementById('Clickjmolreply').value=score+'\n'+ feedback +'\n'+sc_in_out+'\n'+orient;
+  //alert (document.getElementById('Clickjmolreply').value) ; 
+ }else{
+  document.getElementById('Clickjmolreply').value='';
+ }
+ !!#########
+ if(nbselected>=$nbsel || $nbsel==0){
+  document.forms[0].submit();
+ }else{
+  if($nbsel==1){
+   if(nbselected==0){
+    alert('$ans_warning1');
+   }else{
+    alert('$ans_warning2');
+   }
+  }else{
+   alert('$ans_warning3'+nbselected);
+  }
+  document.getElementById('Clickjmolreply').value='';
+ }
+}
+
+function analyse(inout,nbsel) {
+ var atingood = jmolGetPropertyAsArray('AtomInfo',inout[0]);
+ var atoutgood = jmolGetPropertyAsArray('AtomInfo',inout[0]);
+
+}
+
+function analysesel(arg,arg2) {
+ var atsel = jmolGetPropertyAsArray('AtomInfo','((selected) and not ($nosel))');
+ if(atsel.length>0){
+  var chaine='({'+atsel[0]._ipt;
+  for(at=1;at<atsel.length;at++){
+   chaine=chaine+ ' '+atsel[at]._ipt;
+  }
+  chaine=chaine+'})';
+ }else{
+  chaine='';
+ }
+ return chaine;
+}
+
+function analyserep(repetu,repgood,nbsel){
+ var atominfo=new Array()
+ atomgood=jmolGetPropertyAsArray("atominfo", repgood);
+ atometu=jmolGetPropertyAsArray("atominfo", repetu);
+
+ atom_good=jmolGetPropertyAsArray("atominfo", "(("+repgood+") AND ("+repetu+"))");
+ atom_bad=jmolGetPropertyAsArray("atominfo", "(("+repetu+") AND (NOT ("+repgood+")))");
+ atom_forget=jmolGetPropertyAsArray("atominfo", "(("+repgood+") AND (NOT ("+repetu+")))");
+natgood=atomgood.length;
+if ($nbsel>0) { natgood=nbsel}
+nat_good=atom_good.length;
+nat_bad=atom_bad.length;
+ selbad='({';
+ for(i=0;i<atom_bad.length;i++){
+  selbad=selbad+' '+atom_bad[i]._ipt;
+ }
+ selbad=selbad+'})';
+ selgood='({';
+ for(i=0;i<atom_good.length;i++){
+  selgood=selgood+' '+atom_good[i]._ipt;
+ }
+ selgood=selgood+'})';
+ selforget='({';
+ for(i=0;i<atom_forget.length;i++){
+  selforget=selforget+' '+atom_forget[i]._ipt;
+ }
+ selforget=selforget+'})';
+
+feedback=selgood + '\n' + selbad  + '\n' + selforget
+
+/*if(typrep=='onlyin'){
+ selforget='none'
+ if(nat_good==nbsel && nat_bad==0){
+  score=1;
+ }else{
+  score=0;
+ }
+}*/
+!if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i)
+ !if eqweight iswordof $(replyoption$i)
+   coeff=1
+ !else
+   coeff=2
+ !endif
+!else
+ coeff=1
+!endif
+if(nat_good-coeff*nat_bad <= 0) { score=0 }
+  else {
+    score=Math.min(1,(nat_good-coeff*nat_bad)/natgood);
+}
+
+ var tabret=new Array(selgood,selbad,selforget,score)
+ return tabret;
+}
+
+function affich_rep(selgood,selbad,selforget){
+chscript='define ~good '+selgood+';select ~good; halos 25%;color halos green;';
+chscript=chscript+'define ~bad '+selbad+';select ~bad; halos 25%;color halos $red;';
+chscript=chscript+'define ~forget '+selforget+';select ~forget; halos 25%;color halos orange;';
+return chscript;
+}
+
+
 </script>
+
 <script type="text/javascript">       
       jmolInitialize('$appletdir','JmolApplet.jar');
       jmolSetAppletColor("white");
-      jmolSetCallback("menuFile", "$appletdir/Jmol.mnu");
-      jmolApplet([$xsize,$ysize]);
-      alert('OK');
- !!jmolLoadInline(struct)
- var jmolscript='load $file1;';
- jmolscript= jmolscript +'selectionhalos on;select none;set frank off;';
- jmolscript= jmolscript +'set picking select atom;';
- jmolscript= jmolscript +'set disablePopupMenu on;';
-  !for s_=1 to $other_options_cnt
-   !set opt_=!line $s_ of $other_options
-   jmolscript= jmolscript +'$opt_';
- !next
- jmolScriptWait(jmolscript);
+//      jmolSetCallback("MessageCallback", "alert")
+      jmolSetCallback("menuFile", "$appletdir/Jmol.mnu")
+//      jmolSetCallback("PickCallback", "alert")
+
+var sc0='$ans_sc0';
+var sc1='$ans_sc1';
+var jscr='load $file;';
+    jscr= jscr +'selectionhalos on;select none;set frank off;set DisablePopupMenu FALSE;';
+    jscr= jscr +'set picking select atom;';
+var retcode=jmolApplet([$Inputsize],jscr+sc0+sc1);
+    document.getElementById('Clickjmolreply').value=retcode;
+    jmolScriptWait('select none;');
 </script>
-!!###on garde les options pour le retour, variable de nom imposé oef_applet_option
-!set oef_applet_option=$Inputsize\
-$file
-$other_options
+
+!!#####
+
+
