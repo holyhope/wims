@@ -247,8 +247,9 @@ score=0
 	k2=green
 	k3=green
 	score1=1
-    	ex1=$empty
-    	ex2=$empty
+    	ex1=&nbsp;
+    	ex2=&nbsp;
+	ex3=&nbsp;
 	!if $range=1
 	    ra=!item $p of $var2
 	    ra=!replace internal : by , in $ra
@@ -352,11 +353,16 @@ score=0
 	    !endif
 	!endif
 	!ifval $[-1*($G)] = $A
-	    ex2=!record 27 of $remarkdir/commonremarks.$taal
-	    score1=$P4
-	    k1=red
+	    ex3=!record 27 of $remarkdir/commonremarks.$taal
+	    score1=$P6
+	    k=red
 	!endif
-	yourreply=!append line $ $li<font color=$k>$org</font>$(rem$p)<font color=$k2>$ex2</font><font color=$k3>$ex1</font> $end_li $ to $yourreply
+	!ifval ($[1/($G)] = $A) and $score1=0
+	    ex3=<br><font color=red>$A</font>&nbsp;&nbsp;<font size="+2" color=black>&#191;</font>&nbsp;&nbsp;<font color=green>$G</font>
+	    score1=$P9
+	    k=red
+	!endif
+	yourreply=!append line $ $li<font color=$k>$org</font>$(rem$p)&nbsp;$ex3&nbsp;<font color=$k2>$ex2</font><font color=$k3>$ex1</font> $end_li $ to $yourreply
 	score=$[$score + $score1]
     !endif
 !next p

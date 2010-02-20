@@ -109,14 +109,16 @@ t=!positionof char o in $aaa
 	    !for p in $t
 		t1=!char $[$p-1] of $aaa
 		t2=!char $[$p+1] of $aaa
-		!if $t1 isin $nummers and $t2 isin $nummers
-		    maxscore=$[0.95*$maxscore]
-		    !if $teaching=1
-			errortext=!record 25 of $remarkdir/commonremarks.$taal
-			goback=1
-			!exit
+		!if $t1 != $empty and $t2 != $empty
+		    !if $t1 isin $nummers and $t2 isin $nummers
+			maxscore=$[0.95*$maxscore]
+		        !if $teaching=1
+		    	    errortext=!record 25 of $remarkdir/commonremarks.$taal
+			    goback=1
+			    !exit
+			!endif
+			!goto READY1
 		    !endif
-		    !goto READY1
 		!endif
 	    !next p
 	!endif
