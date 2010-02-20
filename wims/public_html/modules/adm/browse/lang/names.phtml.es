@@ -14,7 +14,7 @@
   
   !set name_available=!nosubst Dans le domaine <i><font color=blue>$name</font></i>, les sujets suivants\
  sont disponibles.
- !set name_other=Autres domaines
+ !set wims_name_other=Autres domaines
 !endif
 
 !if $job=level

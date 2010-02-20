@@ -3,30 +3,34 @@
 
 !if $parm=$empty
  $name_domain
- <ul class="wims_browse_subject_list">
- !for d in $tot_dom
-  <li class="wims_browse_subject_list">
+$table_header
+ !for t in $Tot_dom
+ $table_tr  <th colspan=2>$(name_$t)</th>
+  !for d in $(tot_dom_$t)
+  $table_tr<td>
    !set l_=$(dom_$d)
     !href module=$module&cmd=new&job=$job&parm=$d <b>$(name_$d)</b>
    !if $l_=$empty
-    .
+    <td>
    !else
-    $ :
+    <td>
     !for v in $l_
      !href module=$module&cmd=new&job=$job&parm=$v $(name_$v)
      &nbsp;
     !next v
    !endif
-   </li>
- !next d
- </ul>
+   </tr>
+  !next d
+ 
+ !next $t
+ $table_end
 !else
  $name_available
- !href module=$module&cmd=new&job=subject $name_other
-.
- <p><table border=0 cellpadding=2 cellspacing=1>
+!set wims_menu_items=!append line other,1,module=$module&cmd=new&job=subject\
+  to $wims_menu_items
+ <p>$table_header
  !for t in $list
-  <tr>
+  $table_tr
   <td align=left nowrap><b>$t</b></td>
   !if $has_enc=yes
    <td nowrap><small>
@@ -34,12 +38,19 @@
    </small></td>
   !endif
   !set key=$t
-  !for i in T,P,X,S
+  !for i in A,T,P,X,S
    !set cat=$i
-   <td nowrap><small>
+   <td nowrap>
+   !if $i!=A
+   <small>
    !href $search_addr $(name_$i)
-   </small></td>
+   </small>
+   !else
+   !href $search_addr $(name_$i)
+   !endif
+  </td>
   !next i
+
   !next t
  </table> <p>
 !endif

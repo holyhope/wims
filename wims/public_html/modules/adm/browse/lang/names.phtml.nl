@@ -14,7 +14,7 @@
   
   !set name_available=!nosubst In afdeling  <i><font color=blue>$name</font></i>, \
    zijn de volgende topics aanwezig
- !set name_other= andere afdelingen
+ !set wims_name_other= andere afdelingen
 !endif
 
 !if $job=level
