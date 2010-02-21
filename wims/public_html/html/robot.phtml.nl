@@ -25,7 +25,7 @@ wims <font size=-1>at <a href=/>$httpd_HTTP_HOST</a></font></H1></CENTER>
 <HR width="50%"><p>
 <center><h3>Robots Stop Hier!</center></h3>
 <p>
-WIMS is niet instaat uw web browser te identificeren.
+WIMS kan uw webbrowser niet identificeren.
 <p>
 !form
 <input type=hidden name=module value=$module>
@@ -34,9 +34,9 @@ Om jouw browser te testen, typ het woord <tt>wims</tt> hier in:
 <input size=6 name=special_parm> en klik ``Enter''.
 </form>
 <p>
-Besef goed dat deze WIMS pagina's interactief zijn, en geen normale statische HTML pagina's.
-Ze moeten dus ook ONLINE worden gebruikt, en zijn kompleet nutteloos wanneer je ze 
-verzameld met een "download robot"
+Besef goed dat deze WIMS pagina's interactief zijn en geen statische HTML pagina's.
+De pagina's op deze server moeten dan ook ook ONLINE worden gebruikt en zijn kompleet nutteloos wanneer ze 
+verzameld worden met een "download robot"
 
 </BODY>
 </HTML>

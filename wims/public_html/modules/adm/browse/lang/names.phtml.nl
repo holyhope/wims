@@ -12,13 +12,13 @@
   !set title=Browsen per onderwerp
   !set name_domain= Kies een van de volgende onderwerpen. 
   
-  !set name_available=!nosubst In afdeling  <i><font color=blue>$name</font></i>, \
-   zijn de volgende topics aanwezig
- !set wims_name_other= andere afdelingen
+  !set name_available=!nosubst Op domein  <i><font color=blue>$name</font></i>, \
+  zijn de volgende onderwerpen aanwezig
+ !set wims_name_other= Andere domeinen
 !endif
 
 !if $job=level
- !set title=Browsen per Lesniveau
+ !set title=Browsen op leerniveau
  !distribute lines jaar\
    Categorie\
    Lagere school\

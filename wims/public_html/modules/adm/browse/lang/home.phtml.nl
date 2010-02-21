@@ -19,7 +19,7 @@ $ : lagere school, middelbare school, universiteit, etc.
 </li>
 <li class="wims_browse_list">
  !href module=adm/new&cmd=new&job=new Datum
-$ : laatste nieuwtjes van deze server
+$ : laatste nieuwtjes op deze server
 
 </li>
 <li class="wims_browse_list">

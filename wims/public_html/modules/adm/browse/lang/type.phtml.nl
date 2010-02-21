@@ -118,7 +118,7 @@ zoals bijvoorbeeld:
   !reset key
   !href $search_addr OEF oefeningen
   (Open Exercise Format)
-  Dit is een verzameling  online-ontwikkelde oefeningen.
+  Dit is een verzameling  online ontwikkelde oefeningen.
   De vragen kunnen random zijn , de antwoorden  kunnen multiple choice, getallen
   functies ,text enz zijn.
    

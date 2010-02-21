@@ -10,7 +10,7 @@ Graag geheel ingevuld opsturen.
 Je hebt al eens een antwoord ingeleverd bij deze opgave.<br>
 Dat antwoord is reeds geanalyseerd en verwerkt in je score.<br>
 Herhaalde antwoorden worden genegeerd.
-Gebruik nooit de "reload" knop van je browser om antwoorden in te leveren!
+Gebruik nooit de "reload &amp; back" knop van je browser !
  !exit
 !endif
 
@@ -20,5 +20,5 @@ Raadpleeg desgewenst eerst de documentatie van uw <tt>ldap</tt> server.
  !exit
 !endif
 
-Soort foutmelding: $wims_error $wims_error_parm.
+Soort foutmelding&nbsp;: $wims_error $wims_error_parm.
 

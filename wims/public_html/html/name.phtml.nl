@@ -110,7 +110,7 @@
 	    Hulp software<br>vereist,\
 	    Server tijd,\
 	into wims_name_name,\
-	    wims_name_iconabout,\
+	wims_name_iconabout,\
         wims_name_module_infos,\
         wims_name_exo_infos,\
         wims_name_Address,\
@@ -119,7 +119,6 @@
         wims_name_Version,\
         wims_name_Required_WIMS_version,\
         wims_name_Language,\
-        Server Time,\
 	wims_name_Author,\
 	wims_name_Translator,\
 	wims_name_This_is_a_module,\
@@ -133,7 +132,7 @@
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Homepagina van je klas,Toevoegen aan het werkblad,\
+ !distribute items Homepagina van je klas,Toevoegen aan werkblad,\
 		Schrijf naar je docent,Uitloggen,\
 		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
 		Je hebt het behalen van cijfers opgeschort,\
@@ -169,12 +168,12 @@
  !default wims_name_sequence=Werkvolgorde
  !set wims_name_sequences=werkvolgorde
  
- !set wims_name_exceeded=Your class has exceeded disk space allowance on the server. Class\
-  management is no longer available. Sorry!<p>We suggest that you ask the site manager \
-  to increase the disk space allowance for virtual classes.
+ !set wims_name_exceeded=Uw klas is groter dan de ingestelde limiet op deze server.<p>\
+ Klasse management is hierdoor niet meer bereikbaar.\
+ We adviseren dat u de website manager vraagt de limiet voor deze klas te verhogen.
  
- !set wims_name_reaching_limit=Your class is reaching the limit of disk space allowance.\
-  Once this limit is exceeded, class management will be locked!
+ !set wims_name_reaching_limit=De grootte van deze klas nadert de ingestelde server limiet.\
+ Als deze limiet is bereikt , wordt het klasse management geblokkeerd ! 
 !endif
 
 !if adm/class isin $module or adm/manage isin $module
@@ -218,7 +217,7 @@
    Andere bestanden\
    Eigenschappen\
    Opslaan\
-   Conroleer verschil\
+   Verschillen\
    Publiceren\
    Nieuwe module\
    Lijst van modules\
@@ -236,7 +235,7 @@
    Terug\
    Wissen\
    Aktie\
-   Om dit te gebruiken moet je webbrowser Java ondersteunen.\
+   Hiervoor moet je webbrowser Java ondersteunen.\
    Datum\
    Toevoegen\
    Verwijderen\
@@ -299,10 +298,10 @@ wims_name_add_exo,wims_name_classexo
 !distribute line Document\
 Onzichtbaar,Zichtbaar\
 Titel\
-Organiseer\
+Reorganiseren\
 Toevoegen aan klas\
 Maak een nieuw document\
-Bewerk een draft document\
+Bewerk een document\
 Status\
 Toevoegen\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
@@ -363,14 +362,14 @@ wims_name_login,wims_name_chzone
 Globale activiteiten van de deelnemers\
 Verander de moeilijkheidsgraad\
 Handmatig ingevoerde cijfers\
-spreadsheet data\
+Spreadsheet data\
 into wims_name_class_stat,wims_name_activity,wims_name_formula,wims_name_grades,\
 wims_name_csv
 
 !if adm/class isin $module or reguser isin $module or $wims_class!=$empty
 !distribute line Lijst van alle studenten \
 Cijfers\
-Beeindig deze tentamen sessie\
+Beeindig deze proefwerk sessie\
 Details van het werk\
 Schors deze student\
 Ruwe gegevens\
