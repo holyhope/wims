@@ -1,6 +1,8 @@
 # subject list
+Tot_dom=bio,chim,language,math,phys
 
-tot_dom=number,algebra,analysis,geom,probstat,misc
+name_math=Mathematics
+tot_dom_math=number,algebra,analysis,geom,probstat,misc
 dom_algebra=prealg,elemalg,linalg,absalg,code
 dom_analysis=precalc,calc
 dom_geom=euclgeom,anageom,affgeom
