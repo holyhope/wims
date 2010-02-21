@@ -41,9 +41,9 @@
 		Notas,\
 		Notas,\
 		Examen,\
-		Parcourir le site,\
+		Recorrer el sitio,\
 		Volver al menú,\
-		Date d'expiration,\
+		Fecha de expiración,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -108,7 +108,7 @@
 		Tipo,\
 		Nivel(x),\
 		Mecanismo de puntuación <br><small>(ejercicio/recreación)</small>,\
-		Programas informáticos de apoyo<br>nécessaires,\
+		Programas informáticos de apoyo<br>necesarios,\
 		Server Time,\
 	into wims_name_name,\
 	wims_name_module_infos,\
@@ -167,13 +167,13 @@
  !set wims_name_sequence=!defof sequence_Title in wimshome/log/classes/$wims_class/seq/.def
  !default wims_name_sequence=Secuencia
  !set wims_name_sequences=secuencias
- 
- !set wims_name_exceeded=Your class has exceeded disk space allowance on the server. Class\
-  management is no longer available. Sorry!<p>We suggest that you ask the site manager \
-  to increase the disk space allowance for virtual classes.
- 
- !set wims_name_reaching_limit=Your class is reaching the limit of disk space allowance.\
-  Once this limit is exceeded, class management will be locked!
+
+ !set wims_name_exceeded=Su clase superó el espacio disco autorizado en el servidor.\
+  La gestión de la clase no está ya disponible. ¡Afligido!<p>Les sugerimos interrogar al administrador del sitio\
+  para aumentar el espacio disco autorizado para las clases virtuales.
+
+ !set wims_name_reaching_limit=Su clase alcanza el límite de espacio disco autorizado.\
+  Una vez este límite pasado, se bloqueará la gestión de la clase!
 !endif
 
 !if adm/class isin $module or adm/manage isin $module
@@ -279,7 +279,7 @@ Ejercicios de la clase \
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
 
-!!! for documentos  en particular...
+!!! para documentos  en particular...
 
 !distribute items WIMS,Clase,Docs,Arriba,Atras,Sig.,Hist.,Recargar,\
 	Versión interactiva,Versión para imprimir,\
