@@ -37,7 +37,7 @@ V_shs		=hoja de trabajo
 V_exam		=examen
 
 CR_1		=Crear mis propios
-CR_OEF		=ejercicios interactivos sencillos
+CR_OEF		=ejercicios interactivos
 CR_mod		=módulos a toda potencia
 
 E_doc		=documentación técnica
