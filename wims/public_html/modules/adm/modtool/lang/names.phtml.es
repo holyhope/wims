@@ -154,7 +154,7 @@ into name_diff1,name_diff2,name_diff3
 !set name_warning2=Solas las protecciones desde Modtool o los ficheros cargados a distancia \
    desde el centro de publicación  <a href="$downloadsite">$downloadsite</a>\
    se aceptan. Ninguna modificación manual del fichero de archivos se autoriza.
-!set name_warning_diff=!nosusbt Este módulo va a sustituir completamente al módulo existente a la misma dirección,  \
+!set name_warning_diff=!nosubst Este módulo va a sustituir completamente al módulo existente a la misma dirección,  \
   sin posibilidad de vuelta. Pero pueden
 
 !endif

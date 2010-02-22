@@ -152,7 +152,7 @@
 !set name_warning2=Alleen backups van Modtool of gedownload van het "publicatie centrum"\
    <a href="$downloadsite">$downloadsite</a> worden geaccepteerd.\
    De backup files mogen nooit handmatig worden gewijzigd.
-!set name_warning_diff=!nosusbt Deze backup module overschrijft nu -zonder pardon- de bestaande module met het zelfde module-adres !\
+!set name_warning_diff=!nosubst Deze backup module overschrijft nu -zonder pardon- de bestaande module met het zelfde module-adres !\
    U kunt nog wel de verschillen checken met de bestaande module 
  
 !endif
