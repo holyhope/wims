@@ -1,69 +1,69 @@
 
-<b>Clic sur une image.</b>
-(nom : <tt>coord</tt>)
+<b>Clic sobre una imagen.</b>
+(nombre : <tt>coord</tt>)
 <br>
-Ce type de réponse permet à l'utilisateur de cliquer sur une image,
-et peut analyser la position du clic suivant divers critères de zone.
+Este tipo de respuesta permite al usuario presionar una imagen,
+y puede analizar la posición del clic siguiente distintos criterios de zona.
 <p>
-La bonne réponse doit être donnée sous la forme d'une matrice (le
-séparateur de lignes est le point-virgule `;'). La première ligne est
-l'URL de l'image.
+La buena respuesta debe darse en forma de una matriz (el
+separador de líneas es el punto y coma  `;'). La primera línea es
+el URL de la imagen.
 </p><p>
-La seconde ligne est la position des critères permettant de
-considérer les coordonnées du clic comme correctes.  Et à partir de la
-troisième ligne éventuelle, chacune peut contenir des critères
-(mauvaises positions).
+La segunda línea es la posición de los criterios que permiten
+dar los datos del clic por correctas.  Y a partir de
+la tercera posible línea, cada una puede contener criterios
+(malas posiciones).
 </p><p>
-La réponse de l'utilisateur est considérée comme bonne lorsque les
-conditions de la deuxième ligne sont remplies. Sinon, si les critères
-de mauvaises positions existent (à partir de la 3ème ligne), la
-réponse est mauvaise si l'une de ces mauvaises conditions est remplie, et
-ambigue si aucune condition n'est remplie (dans ce dernier cas,
-l'utilisateur devra réessayer de répondre). S'il n'y a pas de critère
-de mauvaise position, toute réponse ne remplissant pas les conditions
-de la deuxième ligne sera jugée mauvaise.
+La respuesta del usuario se da por buena cuando
+se cumplen las condiciones de la segunda línea. Si no, si los criterios
+de malas posiciones existen (a partir de la 3.a línea),
+la respuesta es mala si una de estas malas condiciones se cumple,
+y ambigua si ninguna condición se cumple (en este último caso,
+el usuario deberá volver a intentar de responder). Si no hay criterio de mala posición,
+toda respuesta por la que no se cumplen las condiciones
+de la segunda línea se juzgará mala.
 </p><p>
-Le numéro de la première des lignes en accord avec la réponse de
-l'utilisateur, diminué de 1, est stocké dans une variable
-<tt>\result</tt><em>n</em>, où <em>n</em> est le numéro du champ de
-réponse, et peut être utilisé dans un \feedback.
+El número de la primera de las líneas de acuerdo con la respuesta
+del usuario, disminuido en 1, se almacena en una variable
+<tt>\result</tt><em>n</em>, donde <em>n</em> es el número del campo de
+respuesta, y puede utilizarse en un \feedback.
 </p><p>
-$table_header 
-<caption>Liste des conditions disponibles pour tester le clic de l'utilisateur</caption>
-$table_tr<th>Syntaxe</th><th>Signification</th>
+$table_header
+<caption>Lista de las condiciones disponibles para probar el clic del usuario</caption>
+$table_tr<th>Sintaxis</th><th>Significado</th>
 $table_tr
-<td><tt>point,x,y</tt><td>Point en (x,y). C'est un point ``épais'', de largeur fixe.
+<td><tt>point,x,y</tt><td>Punto en (x,y). Es un punto "grueso", de anchura fija.
 </td></tr>
 $table_tr
-<td><tt>rectangle,x1,y1,x2,y2</tt></td><td> L'intérieur d'un rectangle
-de diagonale (x1,y1)---(x2,y2).</td></tr>
+<td><tt>rectangle,x1,y1,x2,y2</tt></td><td> El interior de un rectángulo
+de diagonal (x1,y1)---(x2,y2).</td></tr>
 $table_tr
-<td><tt>circle,x,y,d</tt></td><td> L'intérieur d'un cercle de centre (x,y)
-et diamètre d.</td></tr>
+<td><tt>circle,x,y,d</tt></td><td> El interior un círculo de centro  (x,y)
+y diámetro  d.</td></tr>
 $table_tr
-<td><tt>ellipse,x,y,w,h</tt></td><td> L'intérieur d'une ellipse de centre
-(x,y), largeur w, et hauteur h.</td></tr>
+<td><tt>ellipse,x,y,w,h</tt></td><td> El interior de una elipse de centro
+(x,y), anchura w, y altura h.</td></tr>
 $table_tr
-<td><tt>polygon,x1,y1,x2,y2,x3,y3,...</tt></td><td> L'intérieur d'un polygone
-engendré par les points (x1,y1), (x2,y2), (x3,y3), ...</td></tr>
+<td><tt>polygon,x1,y1,x2,y2,x3,y3,...</tt></td><td> El interior de un polígono
+generado por los puntos (x1,y1), (x2,y2), (x3,y3), ...</td></tr>
 $table_tr
-<td><tt>bound,NOMFIC,x,y</tt></td><td> zone définie dans le fichier image
-NOMFIC, qui doit être de la même taille que l'image cliquée (mais peut
-être une image différente). La condition est remplie si (x,y) est dans
-la même zone de remplissage que le clic de l'utilisateur.</td></tr>
+<td><tt>bound,NOMFIC,x,y</tt></td><td> Zona definida en el fichero imagen
+NOMFIC, que debe ser del mismo tamaño que la imagen pulsada (pero puede
+ser una diferente imagen). La condición se llena si (x, y)
+está en la misma zona de relleno que el clic del usuario.</td></tr>
 $table_tr
-<td><tt>bound,NOMFIC</tt></td><td> comme ci-dessus, mais la condition est remplie si 
-le clic de l'utilisateur a une couleur DIFFERENTE du 
-pixel du coin en haut à gauche de NOMFIC.</td></tr>
+<td><tt>bound,NOMFIC</tt></td><td> como arriba, pero la condición se llena si
+el clic del usuario tiene un color DIFERENTE del
+pixel de la esquina en cumbre a la izquierda de NOMFIC.</td></tr>
 </table>
 </center><p>
-Plusieurs conditions peuvent être combinées dans la même ligne, en
-utilisant les connecteurs logiques
-`&' (intersection), `|' (union), `^' (complémentaire), ainsi que les
-parenthèses.
+Varias condiciones pueden combinarse en la misma línea,
+utilizando los conectores lógicos
+`&' (intersección), `|' (unión), `^' (complementario), así como
+los paréntesis.
 </p><p>
-Il est recommandé d'insérer ce champ de réponse dans l'énoncé. Il ne
-peut pas coexister avec d'autres champs de réponse, pour la raison
-évidente que tout clic de l'utilisateur sur une image enverra le
-formulaire de réponse.
+Se recomienda insertar este campo de respuesta en la declaración.
+No puede coexistir con otros campos de respuesta, por la razón
+evidente que todo clic del usuario sobre una imagen
+enviará el formulario de respuesta.
 </p>
