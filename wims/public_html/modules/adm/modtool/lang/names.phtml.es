@@ -24,7 +24,7 @@
 !set name_addfile=Añadir otro fichero&nbsp;
 !set name_gestion=para ver los ficheros del documento, pulsen el vínculo <tt>$wims_name_docgestion</tt>
 !set name_your_module=Su módulo
-!set name_file2=contiene los ficheros siguientes.
+!set name_file2=contiene los ficheros siguientes
 !set name_updateadress=Ponga la dirección al día
 !set name_simpl_address=La dirección de este módulo es una dirección simplificada
 !set gnu=&copy; $year (<a href=COPYING>GNU GPL</a>)

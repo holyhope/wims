@@ -24,7 +24,7 @@
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
 !set name_gestion=Voor documenten klik op de link <tt>$wims_name_docgestion</tt>
 !set name_your_module=Uw module
-!set name_file2=bevat de volgende bestanden.
+!set name_file2=bevat de volgende bestanden
 !set name_updateadress=Vernieuw het adres
 !set name_simpl_address=Deze module heeft slechts een enkelvoudig adres
 !set gnu=&copy; $year (<a href=COPYING>GNU GPL</a>)
