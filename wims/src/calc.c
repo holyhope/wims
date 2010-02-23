@@ -727,6 +727,7 @@ void calc_append(char *p)
     p3=wordchr(p2,"to");
     if(p3==NULL) goto synterr;
     for(p4=p3-1;p4>p2 && isspace(*(p4-1));p4--);
+    if(p4<=p2) goto synterr;
     *p4=0;p3=find_word_start(p3+strlen("to"));
     memmove(tmplbuf,p2,p4-p2); tmplbuf[p4-p2]=0; strcpy(p,p3);
     substit(tmplbuf);substit(p);
