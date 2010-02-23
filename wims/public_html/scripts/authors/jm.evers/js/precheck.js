@@ -28,6 +28,8 @@
 //
 // 14 keywords(t)	convert all keywords to  ' and '			: returns modified t or "error"
 // 15 upper_f(t)	converts all 'known' functions and 'and' to uppercase	: returns modified t or "error"
+// 16 is_number(t)	checks if no text is present				: returns 0 or 1  (0=error,1=success)
+// 17 is_real_number(t)	checks if real number: no sqrt or e+ allowed			: returns 0 or 1  (0=error,1=success)
 
 function setAlarm(txt){
     var h=document.documentElement.clientHeight;
@@ -518,4 +520,25 @@ function arrows(t,arg1,arg2,arg3){
 	t=t.replace(/@/g,' -> ');return t;
     }
     setAlarm("syntax error in function <br> arrows(t,arg1,arg2,arg3)<br> t is answer <br> arg1=switch, arg1=0: converts ascii arrows to unified \"->\" <br> arg1=1 : converts ascii arrows to unified \"\u2192\" <br> arg1=2 : returns no arrows ,just the text after the last arrow<br> arg1=3 : returns no arrows...the answer is an array <br> arg1=4 : returns the answer ,checks on all steps<br> arg2=variable name<br>arg3=amount if any of arrows...");
+}
+
+function is_number(t){
+    t=science(t);
+    var s=t.toLowerCase();
+    var functies=['log','ln','abs','sqrt','sin','cos','tan','atan','acos','sinh','cosh','tanh','pi'];
+    var f;var F;
+    for(var p=0;p<functies.length;p++){
+	f=functies[p];
+	F=f.toUpperCase();
+	s=s.replace(f,F);
+    }
+    s=s.replace(/[a-z\~\!\@\#\$\&\_\=\:\;]/g,'');
+    if(s.length != t.length){setAlarm(r37+" "+t); return 0;}else{return 1;}
+}
+
+function is_real_number(t){
+    t=science(t);
+    var s=t.toLowerCase();
+    s=s.replace(/[a-z\~\!\@\#\$\&\_\=\:\;]/g,'');
+    if(s.length != t.length){setAlarm(r37+" "+t) ; return 0;}else{return 1;}
 }

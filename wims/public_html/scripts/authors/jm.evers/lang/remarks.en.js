@@ -34,3 +34,4 @@ var r33="If I send this answer to WIMS<br>it will most likely be rejected... ";
 var r34="You will receive a small penalty, because You\'ve used too many objects ";                                                               
 var r35="You\'ve constructed :";                                                                                                          
 var r36="I expected some number with a unit...";                                  
+var r37="I was expecting a number and not :";

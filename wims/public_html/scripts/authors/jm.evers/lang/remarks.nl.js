@@ -34,3 +34,4 @@ var r33="Als ik je antwoord opstuur , wordt dat waarschijnlijk fout gerekend..."
 var r34="Je krijgt strafpunten, omdat je constructie te veel objecten bevat";
 var r35="Je hebt geconstrueerd:";
 var r36="Ik verwacht een getal met een eenheid";
+var r37="Ik verwacht hier eigenlijk gewoon een getal en niet : ";

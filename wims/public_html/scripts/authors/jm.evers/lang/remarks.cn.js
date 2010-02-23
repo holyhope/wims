@@ -34,3 +34,4 @@ var r33="如果我把这个回答发送给 WIMS<br>它多半会被退回... ";
 var r34="你将会被扣分, 因为使用了过多东西 ";                                                               
 var r35="你作出了 :";                                                                                                          
 var r36="我希望看到有单位的数...";                                  
+var r37="I was expecting a number and not :";
