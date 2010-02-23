@@ -31,6 +31,13 @@ n=!itemcnt $exo
 M=0
 m_step=1
 test_print=0
+!if $wims_developer!= or $wims_user=supervisor
+  latex_exists=0
+  !readproc oef/latex.proc begin
+!else
+  latex_exists=-1
+!endif
+
 !for i=1 to $n
  question_$i=
  e_=!item $i of $exo
@@ -141,4 +148,10 @@ $ in $rg_
  !endif
  !endif
 !reset introcheck
+!if $latex_exists>=0
+ !readproc oef/latex.proc exo
+!endif
 !next i
+!if $latex_exists>=1
+  !readproc oef/latex.proc end
+!endif

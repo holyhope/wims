@@ -17,11 +17,12 @@
 
 enum {pt_int, pt_rat, pt_real, pt_complex, pt_func, pt_text, pt_matrix};
 int prepcnt;
-int ex_statement=0, ex_hint=0, ex_help=0, ex_solution=0;
+int ex_statement=0, ex_hint=0, ex_help=0, ex_solution=0, ex_latex=0;
 char vbuf_statement[MAX_LINELEN+1];
 char vbuf_hint[MAX_LINELEN+1];
 char vbuf_help[MAX_LINELEN+1];
 char vbuf_solution[MAX_LINELEN+1];
+char vbuf_latex[MAX_LINELEN+1];
 char vbuf_css[MAX_LINELEN+1];
 
 #include "sp.c"
@@ -183,6 +184,19 @@ void p_solution(char *p[MAX_PARM])
 	singlespace(vbuf_solution);
 	fprintf(outf,"solution=!nosubst %s\n\n", vbuf_solution);
     }
+}
+
+void p_latex(char *p[MAX_PARM])
+{
+    if(ex_latex<0) return;
+    if(ex_latex>0 || p==NULL) {
+	out_exec(vbuf_latex,"latex");
+	ex_latex=-1; return;
+    }
+    snprintf(vbuf_latex,sizeof(vbuf_latex),"%s",p[0]); 
+    subst(vbuf_latex);
+	singlespace(vbuf_latex);
+	fprintf(outf,"latex=!nosubst %s\n\n", vbuf_latex);
 }
 
 enum {typ_default, typ_num, typ_func, typ_units, typ_text,

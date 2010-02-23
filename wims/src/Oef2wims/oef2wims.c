@@ -62,7 +62,7 @@ char outfname[1024];
 #include "process.c"
 
 enum {t_tit, t_head, t_def, t_wims, t_form, t_main, t_plot, t_hint, 
-      t_ans, t_choi, t_cond, t_cond2, t_sol, t_feedback, t_help, t_step};
+      t_ans, t_choi, t_cond, t_cond2, t_sol, t_feedback, t_help, t_step, t_latex};
 
 struct {
     char *name;
@@ -91,6 +91,7 @@ struct {
       {"int",		t_def ,2,	p_int},
       {"integer",	t_def ,2,	p_int},
       {"language",	t_head,1,	p_language},
+      {"latex",	    t_latex, 1,	p_latex},
       {"matrix",	t_def ,2,	p_matrix},
       {"mdef",		t_def, 2,	p_mdef},
       {"next",		t_def,0,	p_next},
@@ -369,12 +370,14 @@ val5=$confparm4\n\n\
     _out(t_hint);
     _out(t_help);
     _out(t_sol);
+    _out(t_latex);
     fprintf(outf,"\n!goto stat\n");
 	/* second run to output execution codes */
     p_statement(NULL);
     p_hint(NULL);
     p_help(NULL);
     p_solution(NULL);
+    p_latex(NULL);
     if(post) {
 	fprintf(outf,"\n!exit\n\n:postdef\n"); _out(t_def);
     }

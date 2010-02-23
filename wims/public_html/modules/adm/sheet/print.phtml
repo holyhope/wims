@@ -9,7 +9,12 @@ $sheet_title
  !changeto lang/msg.phtml.$modu_lang
 !endif
 
-!for i=1 to $n
+!if ($wims_developer!= or $wims_supervisor!= ) and $latex_exists=1
+  <center>
+  !read oef/latex.proc print
+  </center>
+!endif
+!for i=1 to $N
  <p>
  <b>$name_exo</b> $i.
  !if $(question_$i)=$empty
@@ -39,7 +44,7 @@ $sheet_title
 
 <div class="wims_solution"><hr>
 <center><h3>$wims_name_answer</h3></center> <p>
-!for i=1 to $n
+!for i=1 to $N
  !set t=!linecnt $(ans_$i)
  !if $t>0
   <p><b>$name_answer $i.</b><ul>

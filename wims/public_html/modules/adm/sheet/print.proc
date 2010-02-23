@@ -17,11 +17,17 @@ wims_backslash_insmath=yes
 wims_multiexec=pari maxima yacas octave gap
 M=0
 m_step=1
-!for i=1 to $n
- question_$i=
- l=!record $i of $data
- !distribute lines $l into m_,p_,r_,w_,title_$i,d_
- module_$i=$m_
+!if $wims_developer!= or $wims_supervisor!=
+  latex_exists=0
+  !readproc oef/latex.proc begin
+!else
+  latex_exists=-1
+!endif
+!set i=1
+!for j=1 to $n
+ l=!record $j of $data
+ !distribute lines $l into m_,p_,r_,w_,title_$j,d_
+ module_$j=$m_
  !read imagedir.proc
  test=!module category $m_
  test2=!filelist $(Class_header)src/*.oef
@@ -30,11 +36,15 @@ m_step=1
 $ $ in $p_
   t_=!linecnt $p_
   e=
+  qnum=
   !for k=1 to $t_
    l_=!line $k of $p_
    !distribute words $l_ into n_,v_
    !if $n_=exo
     e=!append item $v_ to $e
+   !endif
+   !if $n_=qnum
+    qnum=$v_
    !endif
   !next k
   !if $e=$empty
@@ -43,11 +53,17 @@ $ $ in $p_
    e=$exolist
   !endif
   !if $e!=$empty
-   e_=!randitem $e
-   e_$i=$e_
+    e_=!shuffle $e
+    !default e_=$e
+    e_cnt=!itemcnt $e_
+   !for l=1 to $qnum
+     module_$i=$(module_$j)
+     title_$i=$(title_$j)
+     question_$i=
+     e_$i=$(e_[$[$l%$e_cnt + 1]])
    !reset question testcondition format
    !readproc imagedir.proc
-   varcnt=!defof varcnt in $(class_header)def/$e_.def
+   varcnt=!defof varcnt in $(class_header)def/$(e_$i).def
    !default varcnt=0
    !for v=2 to $varcnt+5
     val$v=
@@ -56,12 +72,12 @@ $ $ in $p_
    wims_prefix=
  !! hack for declaring not printable exercise if the commande !getdef (equivalent defof) is used
  !! should be better to allow this command as in the printable version outside a class
-   testgetdef=!sh grep !getdef $(Class_header)def/$e_.def
+   testgetdef=!sh grep !getdef $(Class_header)def/$(e_$i).def
    !if $testgetdef !=
     question=
-   !else
-    !read $(class_header)def/$e_.def
-   !endif
+  !else
+    !read $(class_header)def/$(e_$i).def
+  !endif
    wims_prefix=$wims_prefix2
    !if $format=html
     question_$i=$question
@@ -146,4 +162,14 @@ $ in $rg_
    !endif
   !endif
  !endif
-!next i
+!if $latex_exists>=0
+ !readproc oef/latex.proc exo
+!endif
+!set i=$[$i+1]
+!next l
+!next j
+!if $latex_exists>=1
+  !readproc oef/latex.proc end
+!endif
+
+!set N=$[$i-1]
