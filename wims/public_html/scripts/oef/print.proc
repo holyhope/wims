@@ -10,6 +10,7 @@ printmax=40
 printing=yes
 exo=!listintersect $exo and $exolist
 !default exo=$defaultlist
+wims_intro_parm=$exo
 !default exo=$exolist
 exo_cnt=!itemcnt $exo
 !!at least 1 exercise of each type
@@ -19,9 +20,7 @@ qnum1=$[$qnum-$exo_cnt]
  exo__=!randint 1,$exo_cnt repeat $qnum1
  exo_=$exo_,$exo__
 !endif
-exo_=$(exo_[1..$qnum])
 exo=$(exo[$(exo_)])
-wims_intro_parm=$exo
 exo=!item 1 to $printmax of $exo
 n=!itemcnt $exo
 
@@ -143,4 +142,3 @@ $ in $rg_
  !endif
 !reset introcheck
 !next i
-
