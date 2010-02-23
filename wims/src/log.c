@@ -207,7 +207,7 @@ void user_log(char *c)
 	if(simuxam==0) {		/* not simulation */
 	    if(sc>0) {
 		snprintf(logbuf,sizeof(logbuf),
-			 "%s %.2f -1 %u %s %s\n",
+			 "%s %.5f -1 %u %s %s\n",
 			 sh,Sc,(unsigned int) nowtime,ip,sess);
 		accessfile(logbuf,"a","%s/score/%s.exam",
 			   class_dir,user);
