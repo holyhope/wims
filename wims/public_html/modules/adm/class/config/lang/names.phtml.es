@@ -383,7 +383,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
 !endif
 
 !if $job=index
- !set title=Actualisation de l'index $tit
+ !set title=!nosubst Actualisation de l'index $tit
  !set name_done=Fait.
  !set name_result=Résultat du script
 

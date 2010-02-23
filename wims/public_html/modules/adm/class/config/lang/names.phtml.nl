@@ -362,7 +362,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=index
-  !set title=!nosusbt Actualiseer de index van $tit
+  !set title=!nosubst Actualiseer de index van $tit
   !set name_done=Klaar
   !set name_result=Resultaat
 
