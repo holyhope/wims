@@ -1,5 +1,5 @@
 !set name_Solution=Solution
-!if ($wims_developer= and $wims_user!=supervisor)
+!if $wims_developer= and $wims_supervisor=
  !exit
 !endif
 !set filename=sheet
@@ -16,6 +16,10 @@
 \usepackage{amsmath,amssymb,amsfonts,thm}\
 \usepackage[latin1]{inputenc}\
 \usepackage[T1]{fontenc}\
+\usepackage{xlop}\
+\usepackage{xkeyval,array,multirow}\
+\usepackage{tikz,arrows}\
+\usepackage[np,autolanguage]{numprint}\
 \theoremstyle{plain}\
 \newtheorem{statement}{$name_exo}\
 \theoremstyle{definition}\
@@ -34,7 +38,7 @@
 
 !exit
 :exo
-
+\begin{statement}[2,5 points]
 !readproc $deffile latex
 !set wims_backslash_insmath1=$wims_backslash_insmath
 !set wims_backslash_insmath=no
