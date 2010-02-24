@@ -6,8 +6,8 @@
 !read adm/lang/date.phtml.$lang
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
-!set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
+!set statutaction=!nosubst Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
+!set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
 !! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
 !distribute items Broncode toevoegen,\
@@ -15,7 +15,7 @@
 		Broncode van het werkblad \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,$wims_name_title,$wims_name_Description,Punten,Weging,Afhankelijkheden,$wims_name_comment,$wims_name_action,Parameters
+!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Punten,Weging,Afhankelijkheden,$wims_name_comment,$wims_name_action,Parameters
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Werkblad aanmaakpagina

@@ -6,8 +6,8 @@
 !set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
-!set seriesaction=$wims_name_change,$wims_name_erase,$wims_name_up
+!set statutaction=!nosubst Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
+!set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
 !! definición de los nombres para los enlaces en el menubox (definidos por wims_menu_items)
 !distribute items insertar un archivo fuente,\
@@ -15,7 +15,7 @@
 		Obtener el código fuente de la hoja \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!let name_shtab=No,$wims_name_title,$wims_name_Description,Puntos,Peso,Dépendancias,$wims_name_comment,Acciones
+!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Puntos,Peso,Dépendancias,$wims_name_comment,Acciones
 
 !if $activetest<=0
  !let wims_name_sheetadmin=página de preparación
