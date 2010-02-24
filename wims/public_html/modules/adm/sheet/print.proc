@@ -24,6 +24,7 @@ m_step=1
   latex_exists=-1
 !endif
 !set i=1
+
 !for j=1 to $n
  l=!record $j of $data
  !distribute lines $l into m_,p_,r_,w_,title_$j,d_
@@ -47,9 +48,12 @@ $ $ in $p_
     qnum=$v_
    !endif
   !next k
+  !default qnum=1
   !if $e=$empty
    !reset exolist
+    wims_prefix=
    !read $(class_header)Exindex
+   wims_prefix=$wims_prefix2
    e=$exolist
   !endif
   !if $e!=$empty
@@ -162,11 +166,11 @@ $ in $rg_
    !endif
   !endif
  !endif
-!if $latex_exists>=0
- !readproc oef/latex.proc exo
-!endif
-!set i=$[$i+1]
-!next l
+ !if $latex_exists>=0
+  !readproc oef/latex.proc exo
+ !endif
+ !set i=$[$i+1]
+ !next l
 !next j
 !if $latex_exists>=1
   !readproc oef/latex.proc end
