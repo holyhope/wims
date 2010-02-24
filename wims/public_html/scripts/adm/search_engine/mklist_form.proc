@@ -1,7 +1,7 @@
 !!   ce fichier est une partie du fichier search.proc du module home
 !!   il est nécessaire à la définition des mots utilisés dans la form html 
 !!   permettant de définir les mots clés de recherche
-
+!set search_lang=$wims_read_parm
 rel_A=D,S
 rel_T=X,D,R
 rel_D=X,T,S,R
@@ -12,14 +12,14 @@ rel_O=X,S,T,D,R
 rel_S=X,R,T,D
 
 slist=A D T X R P O S
-!set my_lang=$wims_read_parm
+
 module_P=wimshome/public_html/modules/tool/popup
-wims_trustfile=$module_P.$my_lang/search.phtml $module_P.$my_lang/search.proc
-test=!record 0 of $module_P.$my_lang/.test
+wims_trustfile=$module_P.$search_lang/search.phtml $module_P.$search_lang/search.proc
+test=!record 0 of $module_P.$search_lang/.test
 !if yes notin $test
  slist=!translate P to $ $ in $slist
 !endif
-cnt=!record 0 of wimshome/public_html/bases/sheet/index/count.$my_lang
+cnt=!record 0 of wimshome/public_html/bases/sheet/index/count.$search_lang
 !if $cnt<=0
  slist=!translate S to $ $ in $slist
 !endif
