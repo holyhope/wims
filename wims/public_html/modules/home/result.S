@@ -10,7 +10,7 @@
  !set t_=!line $i of $gott
  !set d_=!line $i of $gotd
  <li class="wims_home_result_list">
- !href module=adm/sheet&job=read&sh=$lang/$m_ $t_
+ !href module=adm/sheet&job=read&sh=$search_lang/$m_ $t_
 , $d_
 </li>
 !next i

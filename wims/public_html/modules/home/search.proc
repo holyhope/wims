@@ -1,4 +1,5 @@
-# Processing search request.
+
+Processing search request.
 !nocache
 !if $wims_referer!=$empty and $wims_user=$empty and $wims_new_session=yes
  refcut=!replace internal :// by $ $ in $wims_referer
@@ -139,8 +140,8 @@ search_category=!char 1 of $search_category
  srch=!replace , by , $ in $srch
  srch=!deaccent $srch
  srch=!lower $srch
- dictionary=bases/sys/words.$lang
- suffix_dictionary=bases/sys/suffix.$lang
+ dictionary=bases/sys/words.$search_lang
+ suffix_dictionary=bases/sys/suffix.
  translator_unknown=leave
  srch=!exec translator $srch
  srch=!trim $srch
@@ -150,13 +151,13 @@ search_category=$search_category\
 search_domain=$search_domain\
 search_keywords=$search_keywords\
 package=$search_package\
-search_lang=$lang
+search_lang=$search_lang
 
 !if $search_category isin LPS
  !changeto search.$search_category
 !endif
 
-!read search.ker
+!read search.ker $search_lang
 :bailout
 
 translator_switch=leaveline
@@ -165,8 +166,8 @@ list_start=$[$list_batch*floor($list_start/$list_batch)]
 !if $gotcnt=0
  gottype=popular
  # sp=!replace internal wimshome/public_html/ by $ in $search_package1
- # gotM=!sh head -c 10000 $sp/pop/$search_category.$lang
- gotM=!record 0 of $search_package1/pop/$search_category.$lang
+ # gotM=!sh head -c 10000 $sp/pop/$search_category.$search_lang
+ gotM=!record 0 of $search_package1/pop/$search_category.$search_lang
  gotM=!line 1 to $gotlim of $gotM
  list_cc=!linecnt $gotM
  !if $list_start>$list_cc

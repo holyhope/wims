@@ -15,3 +15,4 @@ N_browse2	=Explorar este sitio
 N_Search	=Buscar
 N_search	=buscar
 
+name_language_choice=chercher dans le langage

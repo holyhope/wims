@@ -1,4 +1,4 @@
-!! ----------------------------------------     ce fichier est une copie intégrale du fichier form.phtml du module home.
+!! --------- ce fichier est une copie intégrale du fichier form.phtml du module home.
 !! ---------
 
 <p>
@@ -31,11 +31,12 @@ $wims_accessright
  !next d 
  </tr></table>
 !endif
- <div style="background-color:$wims_ref_bgcolor;" class="wims_search_engine" >
+ <div style="background-color:$wims_ref_bgcolor;" class="wims_search_engine">
  <input type=submit value=$N_Search class="wims_home_button">
  <input size=20 name=search_keywords value="$search_keywords" class="wims_home_form">
  $N_within
 !formselect search_category list $slist prompt $plist
+
 !if $s_keywords!=$empty or $gotcnt>0
  !href session=$wims_session.1&list=clear $N_clear
  !if $has_browse=yes
@@ -45,7 +46,13 @@ $wims_accessright
 !if $has_browse=yes and $wims_theme_version=0
  !href module=adm/browse&$browse_parm $N_browse
 !endif
-</div></form> <p>
+
+!default search_lang=$lang
+!set L_language=!words2items $wims_site_languages
+<br><center>
+$name_language_choice
+!formselect search_lang list $L_language
+</center></div></form> <p>
 
 !set srchl=$search_keywords
 !reset search_category, search_keywords

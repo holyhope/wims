@@ -30,6 +30,7 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
 
 !if $wims_user=$empty or $wims_user=supervisor or _tool isin $wims_session
  !read search.proc
+ s_lang=$search_lang
  s_category=$search_category
  s_keywords=$search_keywords
  !if $s_keywords!=$empty and $s_category!=V and $readback!=yes
@@ -38,9 +39,9 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
    c=0
   !endif
   !read wimshome/$s2dir/home_lastsearch
-  !if $lang,$s_category,$s_keywords!=$lastsearch
-   wims_module_log=$(lang)_$s_category=$c: $s_keywords
-   !writefile wimshome/$s2dir/home_lastsearch lastsearch=$lang,$s_category,$s_keywords
+  !if $s_lang,$s_category,$s_keywords!=$lastsearch
+   wims_module_log=$(s_lang)_$s_category=$c: $s_keywords
+   !writefile wimshome/$s2dir/home_lastsearch lastsearch=$s_lang,$s_category,$s_keywords
   !endif
  !endif
 !endif
