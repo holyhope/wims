@@ -8,15 +8,15 @@ une indication à l'exercice. Pour cacher ce nom d'image, vous pouvez écrire
 
 <pre>\img{\imagedir/picture.jpg align=middle alt="picture"}</pre>
 
-Ainsi dans le source de la page htmp, l'étudiant pourra voir
+Ainsi dans le source de la page html, l'étudiant pourra voir
 
 <pre>&lt;img src="a_random_unrelated_file_name" align=middle alt="picture"&gt;</pre>
 
 Le vrai nom de l'image est ainsi caché.
 
-<p><b>Note</b>. Don't use directly the WIMS command <em>rename</em> to
-process the file name, or the exercise won't work correctly under saved
-environment.
+<p><b>remarque</b>. N'utilisez pas directement la commande WIMS <em>rename</em> pour
+traiter le nom de fichier, sinon l'exercice ne fonctionnera pas correctement dans
+l'environnement sauvegardé.
 
 <h3>Exercices à plusieurs étapes</h3>
 Des exercices à plusieurs étapes peuvent être conçus grâce à la commande
@@ -34,7 +34,7 @@ la seconde proposant un choix multiple et deux réponses de type <tt>reply</tt>, 
 
 L'argument de <tt>\steps</tt> accepte des paramètres définis auparavant aussi bien que des définitions
 conditionnelles de la même manière que pour la définition de paramètres. Cela permet
-de présenter des champs de réponses sélectivement selon des variations alétaoires de
+de présenter des champs de réponses sélectivement selon des variations aléatoires de
 paramètres, même dans le cas où il n'y a qu'une seule étape.
 <p>
 Il faut noter que si une erreur est faite à une étape, les étapes suivantes ne sont pas
@@ -65,7 +65,7 @@ Commandes disponibles:
 \if{condition}{contenu conditionnel}
 \if{condition}{contenu_conditionnel}{autre_contenu_conditionnel}
 \for{var=n1 to n2}{contenu_de_la_boucle}
-\while{condition}{ontenu_de_la_boucle}  (uniquement dans l'environnement principal)
+\while{condition}{contenu_de_la_boucle}  (uniquement dans l'environnement principal)
 </pre>
 
 Les commandes de branchements conditionnels et de boucles peuvent être utilisées  
@@ -102,30 +102,29 @@ Syntaxe générale : <tt>\special{$special_parm2 <i>parameters</i>}</tt> <p>
 !read oef/special/$special_parm2.phtml help
 !endif
 
-<h3>Preprocessed sources</h3>
+<h3>Fichiers source prétraités</h3>
 
-This feature is not available for Createxo. You can use it if you write OEF
-(and Deductio) exercises under Modtool.
+Cette fonctionnalité n'est pas disponible pour Createxo. Vous pouvez 
+l'utiliser si vous écrivez des exercices OEF (et Deductio) sous Modtool.
 <p>
-It allows you to include common portions of codes into several oef files.
-You can also use it to make batch generation of several oefs from one
-pre-source, each differing from the others by some macro definitions.
+Elle vous permet d'inclure des parties de codes communes dans plusieurs fichiers OEF.
+Vous pouvez également l'utiliser pour fabriquer par lots plusieurs oef à partir d'un
+pré-source, chacun différant des autres par quelques définitions de macros.
 <p>
-To use this feature, a subdirectory cpp/ should be created under src. Put
-into it pre-source files with extension .cpp. In these files, you can add
-cpp directives like <tt>#include</tt> or <tt>#if</tt>. (Please refer to cpp
-manual and c specification for details of the syntax.)
+Pour utiliser cette possibilité, un sous-répertoire cpp/ doit être créée sous src. Y mettre
+les fichiers de pré-source d'extension .cpp. Dans ces fichiers, vous pouvez ajouter
+des directives cpp comme <tt>#include</tt> ou <tt>#if</tt>. (Veuillez vous référer aux 
+manuels cpp et aux spécifications c pour les détails de la syntaxe.)
 <p>
-The first line of the cpp file must define a list of targets, in the format
+La première ligne du fichier cpp doit définir une liste de cibles (targets), dans le format
 <pre>
 target=targ1 targ2 targ3 ...
 </pre>
-This line means that this cpp file should generate targ1.oef, targ2.org, etc.
-(the extension .oef will be
-appended to the output names). When generating the target file <em>targ1</em>, the
-predicate <tt>#TARGET</tt> will be defined as <em>targ1</em>. (And a macro
-<em>TARGET_targ1</em> is also defined.)
-Therefore in the cpp source file, you can add lines like
+Cette ligne indique que ce fichier cpp doit fabriquer targ1.oef, targ2.oef, etc
+(l'extension. OEF sera ajoutée aux noms de sortie). Lors de la génération du fichier 
+cible <em>targ1</em>, le prédicat <tt>#TARGET</tt> sera défini comme <em>targ1</em> 
+(Et une macro <em>TARGET_targ1</em> est également définie.)
+Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 <pre>
 #if #TARGET (targ1)
  \title{Exercise 1}
@@ -138,20 +137,20 @@ Therefore in the cpp source file, you can add lines like
  \text{t1=this is target 2}
 #endif
 </pre>
-in order to make the contents target-dependent.
+afin de rendre le contenu dépendant de la cible.
 <p>
-Include files should also be put into the src/cpp directory, with extension
-.inc. And a line
+Les fichiers <tt>include</tt> doivent également être placés dans le répertoire src/cpp, avec extension
+.inc. Et une ligne
 <pre>
 #include "common.inc"
 </pre>
-will insert the content of common.inc into the generated oef file.
-Please note that for security reasons, it is prohibited to specify
-directories of include files.
+va insérer le contenu de common.inc dans le fichier généré OEF.
+Veuillez noter que pour des raisons de sécurité, il est interdit de 
+spécifier des répertoires de fichiers include.
 <p>
-A special remark: cpp gets confused when your file contains single or double
-quotes in the text that are not closed. In this case, you can protect the
-commands containing such texts by c comments (<tt>/* ... */</tt>).
+Une remarque spéciale: cpp s'embrouille lorsque votre fichier contient dans le texte
+des apostrophes ou guillemets qui ne sont pas fermés. Dans ce cas, vous pouvez protéger la
+les commandes contenant ces textes par des commentaires C (<tt>/* ... */</tt>).
 
 <h3>Environnement dans un exercice</h3>
 La variable spéciale  <tt>\oefenv</tt> est utilisée pour tester un exercice
