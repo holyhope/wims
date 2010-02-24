@@ -2,10 +2,9 @@
 !if robot isin $session
   !exit
 !endif
-!!!reset wims_html_header
-!! !read js/keyboard.phtml notepad
-!! $wims_html_header
- 
+!if $(module_title_$modu_lang)!=
+  !set module_title=$(module_title_$modu_lang)
+!endif
 !header
 !if $compute=yes
   !if $error!=$empty
@@ -30,22 +29,23 @@
 
 !if $type_exo!=$empty
   !set wims_menu_items=!append line modtool,1,module=adm/modtool\
-  intro,1,module=$module\
+  back2,1,module=$module\
   ,0,\
    to $wims_menu_items
 !else
  !set wims_menu_items=!append line modtool,1,module=adm/modtool\
-  ,0,\
   to $wims_menu_items
 !endif
 
 
 !if $wims_developer!= and $type_exo=
+!set wims_menu_items=!append line  ,0,\
+   to $wims_menu_items
 !set u = !linecnt $name      
 !for i = 1 to $u
    !set cnt=!itemcnt $(name[$i;])
    !for a =1 to $cnt
-     !set wims_menu_items=!append line $(name[$i;$a]),1,cmd=reply&type_exo=$(name[$i;$a])\
+     !set wims_menu_items=!append line quick_$(name[$i;$a]),1,cmd=reply&type_exo=$(name[$i;$a])\
     to $wims_menu_items
    !next a
 !next
