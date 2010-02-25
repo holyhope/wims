@@ -157,7 +157,9 @@ Access policy for modules under development
 choice
 open,close
 If set to close, modules under development cannot be accessed without
-authentication.
+authentication. In particular exercises cannot be inserted into a
+worksheet of a class since a participant is not authenticated as modtool 
+developper.
 <p>
 It is highly recommended that you choose <tt>close</tt>, in order
 to avoid future problems. Module developers should be encouraged to
@@ -492,15 +494,15 @@ detail).
 Link color in menus and reference table. 
 free
 You can choose the color menu link  here. This is possible only
-for "new themes", so not for default, column, columnb and classic themes.
+for "new themes", so not for default theme.
 Choose it according to the table background color
 
 :appearances theme wims_theme
 Presentation theme
 choice
 $themelist
-You can choose the presentation theme here : <tt>default, classic, column, columnb</tt>
-are the original themes. The theme <tt>standard</tt> allows a more configurable css style
+You can choose the presentation theme here : <tt>default</tt>
+is the original theme. The theme <tt>standard</tt> allows a more configurable css style
 and icon theme.
 
 :appearances theme_icon wims_theme_icon
@@ -508,7 +510,7 @@ Icon theme
 choice
 $iconlist
 You can choose the icon presentation theme here. This is possible only
-for "new themes", so not for default, column, columnb and classic themes.
+for "new themes", so not for default theme.
 
 
 :appearances css wims_css
