@@ -1,16 +1,16 @@
 !set wims_module_log=error: $error
-<b>Erreur : </b>
+<b>Fout : </b>
 !goto $error
 !exit
 
 :bad_class
- Etrange mais je trouve que votre classe n'est pas valide !!!
+ Vreemd , maar ik zie hier dat je klas niet geldig is ?!
 !exit
 
 :toomanycomp
- Vous ne pouvez plus ajouter de compétences, la limite est de $maxcomp !
+    Er kunnen geen nieuwe vaardigheden meer worden toegevoegd : de limiet is $maxcomp ! 
 !exit
 
 :nouser
- Etrange mais le participant ne semble pas exister !!!!
+    Vreemd , maar ik geloof dat deze student niet bestaat ?!
 !exit

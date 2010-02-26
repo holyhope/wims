@@ -5,10 +5,10 @@
 
 !read adm/lang/date.phtml.$lang
 
-!distribute items Bekwaamheid,\
-bekwaamheid,\
-Bekwaamheden,\
-bekwaamheden,\
+!distribute items Vaardigheid,\
+vaardigheid,\
+Vaardigheden,\
+vaardigheden,\
 Prestiatieniveau,\
 Prestatieniveaus,\
 prestatieniveau,\
