@@ -34,6 +34,7 @@ en WIMS.
 Estas preferencias son:
 <ul>
  <li>El lenguaje predeterminado.
+  !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
    !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
