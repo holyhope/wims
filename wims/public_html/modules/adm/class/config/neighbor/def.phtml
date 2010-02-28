@@ -6,14 +6,14 @@ $name_neighbor_relation $name_with <em><font color=blue>$nei_description</font><
 !href cmd=help&special_parm=neibordecl $wims_name_help
  ]</small> 
  <p>
-!if $wims_class notitemof $nei_sup,$nei_part
+!if $wims_class notitemof $nei_sup,$nei_part and all notwordof $nei_sup $nei_part
  <em><font color=blue> $nei_description</font></em> $name_text1.
 !else
  <em><font color=blue>$nei_description</font></em> $name_text2
- !if $wims_class isitemof $nei_sup and $wims_class isitemof $nei_part
+ !if ($wims_class isitemof $nei_sup and $wims_class isitemof $nei_part) or (all iswordof $nei_sup and all iswordof $nei_part)
    $n_n3.
  !else
-  !if $wims_class isitemof $nei_sup
+  !if $wims_class isitemof $nei_sup or all iswordof $nei_sup
     $n_n1.
   !else
     $n_n2.
@@ -21,13 +21,16 @@ $name_neighbor_relation $name_with <em><font color=blue>$nei_description</font><
  !endif
 !endif
 <p>
+!if all notwordof $nei_sup $nei_part
 !form reply
 $name_accept
 !formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
 <input type=submit value=$wims_name_tosave> <small>[
 !href cmd=help&special_parm=neibordecl $wims_name_help
  ]</small>
-</form> <p>
+</form> 
+!endif
+<p>
 
 !if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
    all isitemof $nei_sup,$nei_part
