@@ -1,46 +1,57 @@
-Les exercices de type CORRESP sont des exercice de correspondance. 
-Une liste de trois (ou de N à décider) objets et des objets  
-correspondants est prise au hasard parmi un des jeux de données. 
- 
-Il est possible d'utiliser des audio de la base swac. Pour cela, après avoir
-vérifié que le texte en question existe, écrire pour les objets en question
-<tt> audio="texte"</tt>.
+CORRESP type exercises are matching exercises.
+A list of 3 ( or N number of) items (words, audio recordings, pictures) 
+and matching items (words, audio recordings, pictures) are randomly selected from 
+among the data set.
 
-La taille des étiquettes est modifiable (par exemple
-si vous avez des phrases longues) : elle est de la forme
-V x LG x LD (taille verticale, largeur de la colonne de 
-gauche, largeur de la colonne de droite).
+Audio recordings from the swac audio collection can be included in matching exercises. 
+If you wish to include audio recordings from the swac audio collection, you have to first 
+check if the recording is available in the swac collection. If it is, 
+use the following format for the item in the matching exercise 
+<tt> audio="word"</tt> or <tt>audio="expression"</tt>. 
+Be careful to use the same spelling that is provided in the swac audio collection, 
+otherwise QUICKTOOL will not recognise the word or expression.
+
+The size of the labels can be modified (for example when you have long sentences as an item) 
+by changing the parameters in V x LG x LD ( height, width of left column, width of right column) 
 
 :format
 <font color=green>
-:gauche,left
-droite,right
-haut,top
-bas,bottom
-milieu,middle
+:your brother,your father's son
+your sister,your father's daughter
+your cousin,your grandmother's grandchild
+your uncle,your grandmother's son
+your aunt,your grandmother's daughter
 </font>
-<i><font color=black>Syntaxe générale</font></i>
+<i><font color=black>Genral syntax</font></i>
 <font color=green>
-:gauche1,droite1
-gauche2,droite2
-gauche3,droite3
+:1st word(s)on the left,1 st word(s) on the right 
+2nd word(s)on the left, 2nd word(s) on the right 
+3rd word(s)on the left, 3rd word(s) on the right 
+nth word(s)on the left, nth word(s) on the right 
 </font>
 
-<i><font color=black>Remarque</font></i> : Préférences relatives à un jeu de données.
-Dans le cas où on souhaite ajouter des documents audio, un titre, une introduction différents 
-pour chaque jeu de données, la première ligne doit être de la forme (champs facultatifs)
+<i><font color=black>Remark</font></i>: Preferences for a data set .
+If you wish to add a different audio recording, a different title (i.e. text) 
+or a different introduction to each data set (i.e. exercise), the first line 
+must have the following format
+
 <font color=green>
-:audio=nom.mp3 image=nomim.jpg title="titre" intro="ma consigne" 
+:audio=name_of_audio_file.mp3 image=name_of_picture_file.jpg title="your text" intro="your instructions" 
+
 </font>
-On peut aussi mettre des audio ou des images dans les objets de correspondance,
-soit sous la forme <tt>"nom.mp3"</tt> s'il se trouve dans le dossier <tt>images</tt>
-soit sous la forme <tt>"audio="le mot"</tt> ; dans ce dernier cas, le logiciel cherche si 
-<tt>le_mot.mp3</tt> se trouve dans le dossier <tt>images</tt>, puis va chercher dans la base swac
-dans le language qui doit être précisé au moment où l'exercice est conçu.
-On DOIT alors laisser la première ligne blanche si on ne désire pas mettre 
-de documents audio, titre ... pour le jeu de données.
-Dans l'exemple suivant, l'audio <tt>father.mp3</tt> doit être dans le dossier 
-<tt>images</tt> (remarquer la ligne blanche)
+Each individual item in the data set (i.e. in the exercise) can be either a word (or several words), an audio recording or a picture. 
+If you wish to use different audio recordings or pictures as items, the following format is required
+ <tt>"name_of_recording_file.mp3"</tt> if your file is in the <tt>images</tt> folder
+or <tt>"audio="the_word(s)"</tt> ; in this latter case the software program will first check 
+if the file
+<tt>the_word(s).mp3</tt> is in the <tt>images</tt> folder, if it is not, the software 
+program will retrieve it from the swac audio recordings data base.
+If you do not wish to add an audio recording, a title ... in the data set the first 
+line of the data set 
+(i.e. the line following :) must be left blank.
+
+In the example below the audio recording called <tt>father.mp3</tt> must be in the
+<tt>images</tt> folder (notice the blank line)
 
 <font color=green>
 :
@@ -50,9 +61,8 @@ frère,father.mp3
 </font>
 
 <font color=green>
-:instruction="mes instructions"
+:instruction="my instructions"
 mère,audio=mother
 soeur,audio=sister
 frère,father.mp3
 </font>
-
