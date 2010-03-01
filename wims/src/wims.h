@@ -45,7 +45,7 @@
 	/* Number of session random numbers */
 #define MAX_SESRANDOM 64
   /* Limit of output length. This can be configured. */
-#define OUTPUT_LENGTH_LIMIT 600000
+#define OUTPUT_LENGTH_LIMIT (1024*1024)
   /* limit of items in value lists */
 #define MAX_VALUE_LIST 2048
 	/* file to hold last output */
