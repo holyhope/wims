@@ -20,13 +20,18 @@ mname=$m3
  !changeto $job.proc
 !endif
 
-wver1=!text select 0123456789abcdefghijklmnopqrstuvwxyz. in $wims_version
-wver1=!translate internal abcdefghijklmnopqrstuvwxyz to \
-			  12345678999999999999999999 in $wver1
+tmp=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+tmp2=!items2words $tmp
+tmp2=!nospace $tmp2
+wver1=$wims_version
 Wver2=!module wims_version devel/$auth_login/$mod
-wver2=!text select 0123456789abcdefghijklmnopqrstuvwxyz. in $Wver2
-wver2=!translate internal abcdefghijklmnopqrstuvwxyz to \
-			  12345678999999999999999999 in $wver2
+wver2=$Wver2
+!for k=1 to 2
+  l0=!text select $tmp2 in $(wver$k)
+  l=!positionof item $l0 in $tmp
+  l=$[100+$l]
+  wver$k=!replace internal $l0 by $l in $(wver$k)
+!next k
 !bound vcheat within yes,no default $
 !if $wver2<$wver1
  !if $vcheat=$empty
