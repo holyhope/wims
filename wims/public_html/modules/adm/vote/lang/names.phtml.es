@@ -49,13 +49,13 @@ name_cnt_votes
 into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
    name_thisvote_closed,name_thisvote_answer,name_thisvote_already1,\
    name_thisvote_already2,name_give_your_choice,name_details,name_comments
-   
-!set name_whovote=Liste des votants
 
-!set name_csv1=Voici le fichier que vous pouvez télécharger et ouvrir dans votre logiciel \
- tableur préféré&nbsp;
+!set name_whovote=Lista de los votantes
 
-!set name_csv2=!nosubst Vous désirez télécharger les données du questionnaire numéro $vote &nbsp;
-!set name_format=format
+!set name_csv1=Ahí tienes el fichero que pueden cargar a distancia y abrir en su programa informático \
+hoja de cálculo preferida&nbsp;
+
+!set name_csv2=!nosubst Desean cargar a distancia los datos del cuestionario número $vote &nbsp;
+!set name_format=formato
 
 
