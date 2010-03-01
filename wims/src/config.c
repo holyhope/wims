@@ -161,7 +161,7 @@ int examlog_limit=7;		/* number of logged exam sessions for each student */
 char *mu_auto="none";
 char *mu_cat="all";
 char *mu_delay="20";
-char *mu_site="http://wims.unice.fr/download/modules";
+char *mu_site="http://download.winsedu.info/publish/modules";
 char *mu_zone="all";
 
   /* keywords destinated to robots */
