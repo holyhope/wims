@@ -16,7 +16,23 @@
  !exit
 !endif
 
-!if $toomany = yes
+$name_help
+<small>[&nbsp;
+!href cmd=help&special_parm=neighbor $wims_name_help
+&nbsp;
+!href cmd=help&special_parm=neiexample $name_example
+&nbsp;]</small><p>
+
+!if $excls!=yes and $supertype!=4
+<p><center>
+  !href cmd=reply&job2=sharelist $name_info
+</center>
+<p> <center>
+ !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+</center>
+!endif
+
+!if $toomany=yes
  !form reply
  !if $kw=$empty
   $name_toomany
@@ -38,31 +54,14 @@
 !endif
 !if $classcnt1 + $classcnt2 < 1
  $name_noclass
- !if $excls!=yes and $supertype!=4
-  <p>
-  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
- !endif
  !exit
 !endif
 
-
-$name_help
-<small>[&nbsp;
-!href cmd=help&special_parm=neighbor $wims_name_help
-&nbsp;
-!href cmd=help&special_parm=neiexample $name_example
-&nbsp;]</small><p>
-
 !if $toomany=yes
- !if $excls!=yes and $supertype!=4
-  <p>
-  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
- !endif
  !exit
 !endif
 
 $name_changeneigh
-
 <p>
 !if $classcnt1>0
  !set clst=$clist1
@@ -78,13 +77,5 @@ $name_changeneigh
  $table_header
   <caption>$name_otherlanguage</caption>
   !read neighbor/clist.phtml
-  $table_end
-  <p><center>
-  !href cmd=reply&job2=sharelist $name_info
-  </center>
-!endif
-
-!if $excls!=yes and $supertype!=4
- <p>
- !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+ $table_end
 !endif

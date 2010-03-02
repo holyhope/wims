@@ -4,15 +4,15 @@
 !if $keyword=*
  !reset keyword
 !endif
-
+!reset clist1 clist2
 !if $wims_superclass=$empty
  clfile=wimshome/log/classes/.index
- cllimit=50
+ cllimit=60
 !else
  cllimit=300
  supertype=!defof class_type in wimshome/log/classes/$wims_superclass/.def
  !if $supertype=4 and / isin $wims_class
-  !reset excls
+  !!reset excls
   cterms=!translate / to , in $wims_class
   clevel=!itemcnt $cterms
   !if $clevel>=3
@@ -48,7 +48,6 @@ $crs
   !endif
  !endif
 !endif
-
 classcnt=!recordcnt $clfile
 clgot=0
 keyword=!trim $keyword
@@ -60,7 +59,6 @@ kw=!tolower $kw
 !if $keyword!=$empty
  !reset excls
 !endif
-
 !if $classcnt>1 and ($clist1$clist2=$empty or $keyword != $save_keyword or yes isin $excls)
  !reset clist1 clist2
  save_keyword=$keyword
@@ -103,11 +101,9 @@ kw=!tolower $kw
   !endif
  !next c
 !endif
-
 classcnt1=!itemcnt $clist1
 classcnt2=!itemcnt $clist2
 clist=!append item $clist2 to $clist1
-
 !readdef wimshome/log/classes/$wims_class/neighbors
 !reset sharable_all,sharing_all,sharable,sharing
 !for rec in $sharelist
@@ -194,4 +190,3 @@ class_lang in wimshome/log/classes/$nei/.def
 	nei_email,nei_lang
  !read neighbor/$job2.proc
 !endif
-
