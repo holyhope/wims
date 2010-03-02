@@ -143,7 +143,7 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
- distribute lines Declaración<br>vecindad\
+ distribute lines Declaración vecindad\
    Compartir un recurso\
    por usted\
    por otro\
@@ -166,7 +166,22 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Afficher les classes d'exemple du serveur\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
- name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,,name_exampleclass,\
+ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+ 
+ !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
+  <em><font color=blue>$nei_description</font></em> qu'elle vous autorise à partager. 
+
+ !set name_newres=!nosubst La classe <em><font color=blue>\
+  $nei_description</font></em> vous <b>autorise</b> à partager ses
+
+ !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe <em><font color=blue>\
+  $nei_description</font></em> à partager&nbsp; (<i>sélectionnez puis cliquez sur <tt>$wims_name_tosave</tt></i>)
+
+ !set name_warning_authorized=!nosubst La classe <em><font color=blue>$nei_description</font></em>\
+  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
+  sous peine de confusion. Commencez par vous entendre avec elle et avec toutes les classes avec lesquelles vous\
+  voulez partager des ressources.
  
  !distribute lines Relaciones con la clase\
    no ha declarado la suya como vecina\
@@ -457,10 +472,11 @@ Apariencia\
 Restricción de la puntuación\
 Dirección de una plataforma\
 de\
+External authentification\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score,wims_name_config_ent,name_of
+wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 
 !distribute lines Estaciones de trabajo seguras\
    Hoja de estilo\

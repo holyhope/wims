@@ -11,19 +11,16 @@
 
 !set title=Configuration et Maintenance
 
-!distribute items questionnaires,le cahier de texte,\
-	compte d'enseignant,le forum de discussion,le livret de compétences,\
-	les séquences pédagogiques,messages du forum\
-	into name_vote,name_cdt,\
-	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
-
 !distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
-!distribute item le message du jour,\
-	exercice,feuille de travail,examen,document,participant\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+!distribute item message du jour,exercices,feuilles de travail,examens,documents,\
+    participants,séquences pédagogiques,livret de compétences,questionnaires,\
+    cahier de texte,compte d'enseignant,forum de discussion\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
+	name_user,name_seq,name_livret,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
 
 !distribute item messages du jour,\
 	exercices,feuilles de travail,examens,documents,participants\
@@ -145,7 +142,7 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
- !distribute lines Déclaration<br>de voisinage\
+ !distribute lines Déclaration de voisinage\
    Partage de ressources\
    par vous\
    par l'autre\
@@ -166,10 +163,29 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Liste d'autres classes\
    Information partage de ressources\
    Afficher les classes d'exemple du serveur\
+   importer des ressources\
+   Vous pouvez\
+   de la classe\
+   Cliquez ici pour accepter\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
- name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass
+ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
+ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
+ !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
+  <em><font color=blue>$nei_description</font></em> qu'elle vous autorise à partager. 
+
+ !set name_newres=!nosubst La classe <em><font color=blue>\
+  $nei_description</font></em> vous <b>autorise</b> à partager ses
+
+ !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe <em><font color=blue>\
+  $nei_description</font></em> à partager&nbsp; (<i>sélectionnez puis cliquez sur <tt>$wims_name_tosave</tt></i>)
+
+ !set name_warning_authorized=!nosubst La classe <em><font color=blue>$nei_description</font></em>\
+  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
+  sous peine de confusion. Commencez par vous entendre avec elle et avec toutes les classes avec lesquelles vous\
+  voulez partager des ressources. 
+
  !distribute lines Relation de voisinage\
    n'a pas déclaré votre classe comme voisine\
    vous accepte comme classe voisine pour\
@@ -210,8 +226,8 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !if $job2=sharelist
   !set title= Information de partages de ressources.
   !set name_sharelist=!nosubst Vous partagez $(name_$rec) de
-  !distribute lines Vous ne partagez aucune ressource d'autres classes.\
-  Vous partagez les ressources d'autres classes\
+  !distribute lines Vous ne partagez pas de ressource avec d'autres classes.\
+  Vous partagez des ressources d'autres classes\
   into name_noresource,name_resource
   !endif
   
@@ -449,10 +465,11 @@ Apparence\
 Restriction des scores\
 Adresse d'une plateforme\
 de\
+Authentification externe\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
-wims_name_config_score,wims_name_config_ent,name_of
+wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 
 !distribute lines Postes sûrs\
    Feuille de style\
@@ -475,7 +492,8 @@ wims_name_config_score,wims_name_config_ent,name_of
    Dégradé de couleurs des scores (de 0 à 10)\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
-   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore,\
+   name_external_auth
 
 !set name_content_style = Contenu de la feuille de style de la classe \
 <br>(lorsque <tt>$name_css</tt>  est sur <tt>class</tt>)&nbsp;:
