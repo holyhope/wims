@@ -22,6 +22,10 @@
  Authentification error. Access refused.
 !exit
 
+:badauthhost
+Authentification error. You have no right to publish with this IP number. Access refused.
+!exit
+
 :badcategory
  !if / isin $w2
   The category <tt>$w2</tt> of your submitted module is unknown.
