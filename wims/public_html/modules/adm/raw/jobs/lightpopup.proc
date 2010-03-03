@@ -1,0 +1,10 @@
+wims_writable=wims_hm_cnt wims_hm
+!setdef wims_lightpopup=yes in wimshome/sessions/$wims_session/var.stat
+parm=!replace internal ; by & in $parm
+!!debug $emod\
+!!$parm\
+!!$wims_session
+!bound ecmd within new,renew,intro
+wims_hm_cnt=0
+wims_hm=$empty
+!restart cmd=new&module=$emod&$parm
