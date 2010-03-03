@@ -7,8 +7,8 @@
 !if $job2!=first
  !read neighbor/$job2.phtml
  <p><center>
- !href cmd=reply&job2=first $name_listclass
- !if $job2!=sharelist
+ !href cmd=reply&job2=first $wims_name_back2
+ !if $job2!=sharelist and $excls!=yes
   &nbsp;
   !href cmd=reply&job2=sharelist $name_info
  !endif
@@ -19,16 +19,21 @@
 $name_help
 <small>[&nbsp;
 !href cmd=help&special_parm=neighbor $wims_name_help
-&nbsp;
+&nbsp;&nbsp;
 !href cmd=help&special_parm=neiexample $name_example
 &nbsp;]</small><p>
 
 !if $excls!=yes and $supertype!=4
 <p><center>
   !href cmd=reply&job2=sharelist $name_info
-</center>
-<p> <center>
+&nbsp;&nbsp;
  !href cmd=reply&keyword=*&excls=yes $name_exampleclass
+</center>
+!endif
+
+!if $excls=yes
+<p> <center>
+ !href cmd=reply&job=neighbor&excls=no $name_listclass
 </center>
 !endif
 
