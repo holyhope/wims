@@ -1,4 +1,6 @@
-
+!if $job=lightpopup
+ !changeto jobs/lightpopup.proc
+!endif
 wims_prefix=class user tmp n sharing sharable ident
 !if $job=help
  wims_module_log=help
@@ -15,9 +17,7 @@ code=!word 1 of $code
 # le script autchars permet de definir les listes de caracteres alphanumeriques et de ponctuation
 # il definit egalement la fourchette de longueur autorise des login/mdp
 !read adm/class/authchars
-!if $job!=lightpopup
- !read var.check
-!endif
+!read var.check
 
 !if $error=$empty
  !read jobs/$job.proc
