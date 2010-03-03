@@ -1,5 +1,5 @@
 # subject list
-Tot_dom=bio,chim,language,math,phys
+Tot_dom=bio,chim,Lang,math,phys
 
 name_math=Mathematics
 tot_dom_math=number,algebra,analysis,geom,probstat,misc
@@ -11,52 +11,52 @@ dom_probstat=proba,stat
 dom_misc=combi,logic
 
 name_code=coding theory
-list_code=codes, cryptology, Hamming distance, error correcting codes,\
-	error detection, entropy
+list_code=codes, cryptology, Hamming_distance, error_correcting_codes,\
+	error_detection, entropy
 
 name_absalg=abstract algebra
 list_absalg=groups, rings, fields
 
 name_linalg=linear algebra
-list_linalg=matrices, determinant, linear systems, vectors, vector spaces,\
-	linear maps
+list_linalg=matrices, determinant, linear_systems, vectors, vector_spaces,\
+	linear_maps
 
 name_prealg=pre-algebra
 list_prealg=fractions, decimals, percents, equations, proportionality
 
 name_elemalg=elementary algebra
-list_elemalg=equations, polynomials, roots, complex numbers,\
+list_elemalg=equations, polynomials, roots, complex_numbers,\
 	factorization
 
 name_algebra=algebra
 
 name_precalc=pre-calculus
 list_precalc=inequalities, functions, roots, equations, trigonometry,\
-	real numbers, intervals, limits
+	real_numbers, intervals, limits
 
 name_calc=calculus
-list_calc=derivatives, integrals, primitives, definite integrals,\
+list_calc=derivatives, integrals, primitives, definite_integrals,\
 	continuity, differentiability, sequences, series,\
-	Taylor expansion, Taylor series, Fourier series,\
-	Laplase transforms, Fourier transforms, limits,\
-	ODE, differential equations
+	Taylor_expansion, Taylor_series, Fourier_series,\
+	Laplace_transforms, Fourier_transforms, limits,\
+	ODE, differential_equations
 
 name_analysis=analysis
 
 name_arith=arithmetic
-list_arith=integers, modular arithmetic, gcd lcm, factorization,\
-	Bezout algorithm, congruence, primes, euclidean algorithm,\
-	Diophantine equations, Goldbach
+list_arith=integers, modular_arithmetic, gcd_lcm, factorization,\
+	Bezout_algorithm, congruence, primes, euclidean_algorithm,\
+	Diophantine_equations, Goldbach
 
 name_number=numbers
-list_number=complex numbers, continued fraction, real numbers,\
-	numbering systems
+list_number=complex_numbers, continued_fraction, real_numbers,\
+	numbering_systems
 
 name_proba=probability
-list_proba=distribution, entropy, events, Markov chains, probability, random, simulation
+list_proba=distribution, entropy, events, Markov_chains, probability, random, simulation
 
 name_stat=statistics
-list_stat=statistical data, diagram,distribution,estimation, histogram, mean, percentage, simulation,\
+list_stat=statistical_data, diagram,distribution,estimation, histogram, mean, percentage, simulation,\
 statistics, test
 
 name_probstat=probability-statistics
@@ -66,10 +66,10 @@ list_affgeom=lines, planes, hyperplanes
 
 name_euclgeom=euclidean geometry
 list_euclgeom=lines, circles, rectangles, polygons,\
-	angles, triangles, ruler and compass
+	angles, triangles, ruler_and_compass
 
 name_anageom=analytic geometry
-list_anageom=surfaces, curves, parametric curves, polar curves,\
+list_anageom=surfaces, curves, parametric_curves, polar_curves,\
 	conics, parabola, hyperbola, ellipse, circle, Lissajous
 
 name_geom=geometry
@@ -85,33 +85,55 @@ name_misc=miscellaneous
 
 name_bio=Biologie
 tot_dom_bio=biology
-dom_biology=biology,botanics, histology, immunology, medecine, mycology,phylogenetics
+dom_biology=biology
+name_biology=biologie
+list_biology=botanics,histology,immunology,medecine,mycology,phylogenetics
 
-name_biology=Biologie
-name_botanics=Botanique
-name_histology=Histologie
-name_immunology=Immunologie
-name_medecine=Médecine
-name_mycology=Mycologie
-name_phylogenetics=Phylogénétique
+list_tmp=!replace internal , by ,name_ in name_ $list_combi
+list_tmp=!nospace $list_tmp
 
+!!!### names
+!distribute items Botanique,Histologie,Immunologie,Médecine,Mycologie,Phylogénétique\
+into $list_tmp
 
-name_chim=Chimie
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
+
+name_chim=Chemistry
 tot_dom_chim=chemistry
-dom_chemistry=chemistry,organics,thermodynamics
-name_chemistry=Chimie
-name_organics=chimie organique
-name_thermodynamics=thermo
+dom_chemistry=chemistry
+name_chemistry=chemistry
+list_chemistry=organics_chemistry,thermodynamics
 
-name_language=Langues
-tot_dom_language=Lang
-name_Lang=Langage
-dom_Lang=listening,grammar,technical,phonetics
-name_grammar=grammaire
-name_listening=écoute
-name_technical=technique
-name_phonetics=phonétique
+list_tmp=!replace internal , by ,name_ in name_ $list_chemistry
+list_tmp=!nospace $list_tmp
+
+!!!### names
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items thermo,organics\
+into $list_tmp
+!!!###
+
+
+tot_dom_Lang=Lang
+name_language=language
+dom_language=language
+list_Lang=Lang,listening,grammar,technical,phonetics
+list_tmp=!replace internal , by ,name_ in name_ $list_Lang
+list_tmp=!nospace $list_tmp
+!!!### names
+!distribute items language,listening,grammar,technical language,phonetics\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 tot_dom_phys=physics
-name_physics=physique
-name_phys=Physique
+name_physics=physics
+name_phys=Physics

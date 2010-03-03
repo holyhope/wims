@@ -1,5 +1,5 @@
-
-<center><h3>$title</h3></center>
+!read adm/title.phtml 3\
+$title
 
 !if $parm=$empty
  $name_domain
@@ -31,13 +31,10 @@ $table_header
  <p>$table_header
  !for t in $list
   $table_tr
-  <td align=left nowrap><b>$t</b></td>
-  !if $has_enc=yes
-   <td nowrap><small>
-   !href target=wims_ref module=adm/enc&dom=math&job=search&search=$t $name_L
-   </small></td>
-  !endif
-  !set key=$t
+    !set key=$(keywords_$t)
+    !default name_$t=!replace internal _ by $ $  in $t
+    !default key=!replace internal _ by $ $  in $t
+  <td align=left nowrap><b>$(name_$t)</b></td>
   !for i in A,T,P,X,S
    !set cat=$i
    <td nowrap>

@@ -1,23 +1,13 @@
+!read adm/title.phtml 3\
+Browsen langs de naslagwerken en alle andere hulpmiddelen\
+op deze server
 
-<center><h3>Browsen langs de naslagwerken en alle andere hulpmiddelen<br>
-op deze server</h3></center>
-<p>
+
 De volgende hulpmiddelen staan op deze server ter beschikking. 
 
 
 <ol class="wims_browse_type_list">
-<li class="wims_browse_type_list">Naslagwerk:<br>
- The
- !if $wims_pedia_type=1 and $wims_pedia_address!=$empty
-  <a href=$wims_pedia_address?module=adm/enc&cmd=new>Distributed Encyclopedia of Sciences</a>
-  ($wims_pedia_address)
- !else
-  !href module=adm/enc Distributed Encyclopedia of Sciences
- !endif
- bevat lijsten van de beste internet bronnen over elk onderwerp.
-
-
-</li><li class="wims_browse_type_list">Online rekenmachines en functieplotters: onder andere, 
+<li class="wims_browse_type_list">Online rekenmachines en functieplotters: onder andere, 
  <ul>
  <li class="wims_browse_type_list">
   !set cat=T

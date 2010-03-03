@@ -1,22 +1,9 @@
-
-<center><h3>Explorar por tipo de recursos</h3></center>
+!read adm/title.phtml 3\
+Explorar por tipo de recursos
 
 Los tipos de recursos siguientes están disponibles en este servidor.
 
 <ol class="wims_browse_type_list">
-!goto skip
-<li class="wims_browse_type_list">
-Lecciones y referencias:<br>
- La
- !if $wims_pedia_type=1 and $wims_pedia_address!=$empty
-  <a href=$wims_pedia_address?module=adm/enc&cmd=new>Distributed Encyclopedia of Sciences</a>
-  ($wims_pedia_address)
- !else
-  !href module=adm/enc Distributed Encyclopedia of Sciences
- !endif
- contiene listas de los mejores recursos en línea sobre cada tema. Permite búsquedas
- por palabras clave y exploración.
-:skip
 <li class="wims_browse_type_list">
 Calculadoras y generadoras de gráficas en línea: entre otras, puede echar un vistazo a
  <ul class="wims_browse_type_list">

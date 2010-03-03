@@ -1,5 +1,5 @@
 # subject list
-Tot_dom=bio,chim,language,math,phys
+Tot_dom=bio,chim,Lang,math,phys
 
 name_math=Mathématiques
 tot_dom_math=number,algebra,analysis,geom,probstat,misc
@@ -11,108 +11,352 @@ dom_probstat=proba,stat
 dom_misc=combi,logic
 
 name_code=théorie de code
-list_code=codes, cryptologie, distance Hamming, code correcteur d'erreur,\
-	détection d'erreur, entropie
+list_code=code, cryptology, hamming, error_correcting_codes,\
+	error_detection, entropy
+!!!### names
+
+list_tmp=!replace internal , by ,name_ in name_ $list_code
+list_tmp=!nospace $list_tmp
+
+!distribute items codes, cryptologie, distance de Hamming, code correcteur d'erreur, \
+	détection d'erreur, entropie\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!### keywords
 
 name_absalg=algèbre abstraite
-list_absalg=groupes, anneaux, corps
+list_absalg=group, ring, field
+list_tmp=!replace internal , by ,name_ in name_ $list_absalg
+list_tmp=!nospace $list_tmp
 
+!!!### names
+!distribute items groupes, anneaux, corps\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 name_linalg=algèbre linéaire
-list_linalg=matrices, déterminant, systèmes linéaires, vecteurs, \
-	espaces vectoriels, applications linéaires
+list_linalg=matrice, determinant, linear_systems, vectors, vector_space,\
+
+list_tmp=!replace internal , by ,name_ in name_ $list_linalg
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items matrices, déterminant, systèmes linéaires, vecteurs, \
+	espaces vectoriels, applications linéaires\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_prealg=pré-algèbre
-list_prealg=fractions, décimaux, pourcentages, équations, proportionnalité
+list_prealg=fractions, decimals, percents, equations, proportionality
 
+list_tmp=!replace internal , by ,name_ in name_ $list_prealg
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items fractions, décimaux, pourcentages, équations, proportionnalité\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 name_elemalg=algèbre élémentaire
-list_elemalg=équations, polynômes, racines, nombres complexes,\
-	factorisation
+list_elemalg=equations, polynomials, roots, complex_numbers,\
+	factorization
+
+list_tmp=!replace internal , by ,name_ in name_ $list_elemalg
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items équations, polynômes, racines, nombres complexes, factorisation\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_algebra=algèbre
 
 name_precalc=pré-analyse
-list_precalc=inégalités, fonctions, racines, équations, trigonométrie,\
-	nombres réels intervalles, limites
+list_precalc=inequalities, functions, roots, equations, trigonometry,\
+	real_numbers, intervals, limits
+list_tmp=!replace internal , by ,name_ in name_ $list_precalc
+list_tmp=!nospace $list_tmp
+!!!### names
+!distribute items inégalités, fonctions, racines, équations, trigonométrie,\
+   nombres réels, intervalles, limites\
+into $list_tmp	
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
+
+	
 
 name_calc=analyse
-list_calc=dérivées, intégrales, primitives, intégrales définies,\
+list_calc=derivatives, integrals, primitives, definite_integrals,\
+	continuity, differentiability, sequences, series,\
+	Taylor_expansion, Taylor_series, Fourier_series,\
+	Laplace_transforms, Fourier_transforms, limits,\
+	ODE, differential_equations
+
+list_tmp=!replace internal , by ,name_ in name_ $list_calc
+list_tmp=!nospace $list_tmp
+!!!### names
+!distribute items dérivées, intégrales, primitives, intégrales définies,\
 	continuité, dérivabilité, suites, séries,\
 	développements limités, séries de Taylor, séries de Fourier,\
 	transformés de Laplace, transformés de Fourier, limites,\
-	EDO, équations différentielles
+	EDO, équations différentielles\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_analysis=analyse
 
+
 name_arith=arithmétique
-list_arith=entiers, arithmétique modulaire, pgcd ppcm, factorisation,\
+list_arith=integers, modular_arithmetic, gcd_lcm, factorization,\
+	Bezout_algorithm, congruence, primes, euclidean_algorithm,\
+	Diophantine_equations, Goldbach
+
+!!!### names
+list_tmp=!replace internal , by ,name_ in name_ $list_arith
+list_tmp=!nospace $list_tmp
+!distribute items entiers, arithmétique modulaire, pgcd ppcm, factorisation,\
 	relation de Bézout, congruence, nombres premiers, \
-	division euclidienne, équations diophantines, Goldbach
+	division euclidienne, équations diophantines, Goldbach\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_number=nombres
-list_number=nombres complexes, fraction continue, nombres réels
+list_number=complex_numbers, continued_fraction, real_number,\
+	numbering_system
+
+!!!### names	
+list_tmp=!replace internal , by ,name_ in name_ $list_number
+list_tmp=!nospace $list_tmp
+!distribute items nombres complexes,fraction continue, nombres réels,système de numération\
+into $list_tmp	
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
+
+!distribute items complexe,fraction continue,réel,numération\
+into $list_tmp
 
 name_proba=probabilités
-list_proba=arbres de probabilité, chaines de Markov,distributions, entropie,
-événements, lois, probabilités,simulation
+list_proba=distribution, entropy, events, Markov_chains, probability, random, simulation
+
+!!!### names
+list_tmp=!replace internal , by ,name_ in name_ $list_proba
+list_tmp=!nospace $list_tmp
+!distribute items arbres de probabilité, chaines de Markov,distributions, entropie,\
+événements, lois, probabilités,simulation\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_stat=statistique
-list_stat=diagramme, données statistiques,estimation, histogramme, moyenne, pourcentage,\
-régression, simulation, statistiques, test statistique
+list_stat=statistical_data, diagram,distribution,estimation, histogram, mean, percentage, simulation,\
+statistics, test
+
+list_tmp=!replace internal , by ,name_ in name_ $list_stat
+list_tmp=!nospace $list_tmp
+
+!!!### names!distribute items diagramme, données statistiques,estimation, histogramme, moyenne, pourcentage,\
+régression, simulation, statistiques, test statistique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_probstat=probabilités-statistique
 
 name_affgeom=géométrie affine
-list_affgeom=droites, plans, hyperplans
+list_affgeom=line, plane, hyperplane
+
+list_tmp=!replace internal , by ,name_ in name_ $list_affgeom
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items droites, plans, hyperplans\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_euclgeom=géométrie euclidienne
-list_euclgeom=droites, cercles, rectangles, polygones,\
-	angles, triangles, règle et compas
+list_euclgeom=lines, circles, rectangles, polygons,\
+	angles, triangles, ruler_and_compass
+
+list_tmp=!replace internal , by ,name_ in name_ $list_euclgeom
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items droites, cercles, rectangles, polygones,\
+	angles, triangles, règle et compas\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_anageom=géométrie analytique
-list_anageom=surfaces, courbes, courbes paramétrées, courbes polaires,\
-	coniques, parabole, hyperbole, ellipse, Lissajous
+list_anageom=surfaces, curves, parametric_curves, polar_curves,\
+	conics, parabola, hyperbola, ellipse, circle, Lissajous
+	
+list_tmp=!replace internal , by ,name_ in name_ $list_anageom
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items surfaces, courbes, courbes paramétrées, courbes polaires,\
+	coniques, parabole, hyperbole, ellipse, Lissajous\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_geom=géométrie
-list_geom=graphe, trigonométrie
+list_geom=graphing, trigonometry,geometry
+
+list_tmp=!replace internal , by ,name_ in name_ $list_geom
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items graphe, trigonométrie,géométrie\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_combi=combinatoire
-list_combi=factoriel, combinaison, permutation
+list_combi=factorial, combination, permutation
+
+list_tmp=!replace internal , by ,name_ in name_ $list_combi
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items factoriel, combinaison, permutation\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_logic=logique
-list_logic=ensembles, applications
+list_logic=sets, maps
+list_tmp=!replace internal , by ,name_ in name_ $list_combi
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items ensembles, applications\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
+
 
 name_misc=autres
 
 
 name_bio=Biologie
 tot_dom_bio=biology
-dom_biology=biology,botanics, histology, immunology, medecine, mycology,phylogenetics
+dom_biology=biology
+name_biology=biologie
+list_biology=botanics,histology,immunology,medecine,mycology,phylogenetics
 
-name_biology=Biologie
-name_botanics=Botanique
-name_histology=Histologie
-name_immunology=Immunologie
-name_medecine=Médecine
-name_mycology=Mycologie
-name_phylogenetics=Phylogénétique
+list_tmp=!replace internal , by ,name_ in name_ $list_combi
+list_tmp=!nospace $list_tmp
 
+!!!### names
+!distribute items Botanique,Histologie,Immunologie,Médecine,Mycologie,Phylogénétique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_chim=Chimie
 tot_dom_chim=chemistry
-dom_chemistry=chemistry,organics,thermodynamics
-name_chemistry=Chimie
-name_organics=chimie organique
-name_thermodynamics=thermo
+dom_chemistry=chemistry
+name_chemistry=chimie
+list_chemistry=organics_chemistry,thermodynamics
 
-name_language=Langues
-tot_dom_language=Lang
-name_Lang=Langage
-dom_Lang=listening,grammar,technical,phonetics
-name_grammar=grammaire
-name_listening=écoute
-name_technical=technique
-name_phonetics=phonétique
+list_tmp=!replace internal , by ,name_ in name_ $list_chemistry
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items Thermodynamique,Chimie organique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items thermo,organics\
+into $list_tmp
+!!!###
+
+
+tot_dom_Lang=Lang
+name_language=langues
+dom_language=language
+list_Lang=Lang,listening,grammar,technical,phonetics
+list_tmp=!replace internal , by ,name_ in name_ $list_Lang
+list_tmp=!nospace $list_tmp
+!!!### names
+!distribute items langues,Ecoute,Grammaire,Langue technique,Phonétique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items language,listening,grammaire,technical,phonétique\
+into $list_tmp
+
+!!!###
 
 tot_dom_phys=physics
 name_physics=physique
 name_phys=Physique
+
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
