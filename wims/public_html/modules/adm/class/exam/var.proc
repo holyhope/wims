@@ -389,7 +389,8 @@ duration=$sdure
  !bound $exo between integer 1 and $exocnt+1 default $exocnt+1
  ee=!record $exo of wimshome/log/classes/$wims_class/exams/.exam$exam
  !distribute lines $ee into w_,c_,n_,d_,o_,co_
- !if $echoose$ename$eweight!=$empty
+!! !if $echoose$ename$eweight!=$empty
+ !if $save!=$empty
   !bound eweight between 0,10 default 0
   ename=!singlespace $ename
   ename=!char 1 to $etitle_limit of $ename
@@ -404,6 +405,8 @@ $eopt\
 $ecomment
   update_field=0
   !read update.exo
+  !reset job,sasheets
+  !changeto var.proc
  !else
   eweight=$w_
   echoose=$c_

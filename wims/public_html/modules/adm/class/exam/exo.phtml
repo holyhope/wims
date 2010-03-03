@@ -58,21 +58,23 @@ $table_header
   !next k
  </select>
 <p>
-!for i in $ltsheets
+!for i in $asheets
  !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  !for j=1 to $t
-  !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
-  !distribute line $r into r1,r2,r3,r4,r5,r6
-  <input type=checkbox name=echoose value=$i.$j
-  !if $i.$j isitemof $echoose
-   checked
+  !if $i isitemof $ltsheets or $i.$j isitemof $echoose
+   !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
+   !distribute line $r into r1,r2,r3,r4,r5,r6
+   <input type=checkbox name=echoose value=$i.$j
+   !if $i.$j isitemof $echoose
+    checked
+   !endif
+   > $i.$j 
+   !href target=wims_new module=$r1&cmd=new&$r2 $r5
+   !if $r6!=$empty
+    <small>($r6)</small>
+   !endif
+   <br>
   !endif
-  > $i.$j 
-  !href target=wims_new module=$r1&cmd=new&$r2 $r5
-  !if $r6!=$empty
-   <small>($r6)</small>
-  !endif
-  <br>
  !next j
 !next i
  </td>
@@ -81,7 +83,7 @@ $table_header
 
  $table_tr
   <td colspan="2" align="center"> 
-   <input type=submit value="$wims_name_tosave">
+   <input type=submit value="$wims_name_tosave" name="save">
    &nbsp;
    !if $exo>$exocnt
   !set wims_menu_items=!append line mainpage,1, cmd=reply \
@@ -94,3 +96,4 @@ $table_header
  </tr>
 $table_end
 </form>
+!reset save
