@@ -15,4 +15,4 @@ N_browsesite	=browse deze website
 N_Search	=Zoeken
 N_search	=zoeken
 
-name_language_choice=search in the language
+name_language_choice=zoeken in taal

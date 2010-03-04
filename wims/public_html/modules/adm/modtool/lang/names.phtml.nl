@@ -124,7 +124,7 @@
 
 !if $job=diff
   !distribute lines Er is geen verschil gevonden tussen deze ontwikkelings versie en de reeds gepubliceerde versie van deze module op de server.\
-    Er zijn veel te veel verschillen tussen de ontwikkelings versie en de reeds gepubliceerde versie van de module op deze server.\
+  Er zijn veel te veel verschillen tussen de ontwikkelings versie en de reeds gepubliceerde versie van de module op deze server.\
     De verschillen tussen de ontwikkelings versie en de reeds gepubliceerde versie op deze server zijn&nbsp;:\
   into name_diff1,name_diff2,name_diff3
 !endif
@@ -132,11 +132,11 @@
 !if $job=restore
 
  !set name_warning1=Uw bestand ziet er niet uit als een module backup file ! <p>U kunt voor deze \
-   herstelprocedure alleen archieven gebruiken \
+ herstelprocedure alleen archieven gebruiken \
    die eerder door <em>modtool</em> zelf zijn aangemaakt ! Probeer het opnieuw.
  
  !distribute lines Ik kan in dit archief <b>geen valide</b> backup van een WIMS module ontdekken. Een fout in het bestand !\
-   Er is geen verschil gevonden tussen de bestaande module en de backup.\
+ Er is geen verschil gevonden tussen de bestaande module en de backup.\
    Zeer veel verschillen tussen de bestaande module en de backup versie.\
    Er zijn verschillen tussen de bestaande module en de backup versie\
    Geef de backup file\

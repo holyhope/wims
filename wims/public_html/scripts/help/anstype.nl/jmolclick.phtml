@@ -1,0 +1,60 @@
+!!!Don't translate for the moment
+
+<b>Clic sur des atomes d'une molécule en 3D</b> (nécessite java) (nom : <tt>jmolclick</tt>)
+
+Une molécule est présentée dans l'applet jmol et on doit cliquer sur certains des atomes. 
+Ce type de réponse doit être utilisé avec la commande <tt>\embed{}</tt>. 
+<p>
+La bonne réponse est formée de deux lignes (séparateur ; ) : la première est la
+bonne réponse, la seconde indique la molécule à montrer : le fichier de la molécule (dans un 
+format reconnu par jmol) peut 
+être dans un répertoire <tt>data</tt> du module, 
+dans le répertoire data de la distribution wims (adresse <tt>data/xxx</tt>) ou 
+dans un module de données dans modules/data (dans ce cas, l'adresse est de la forme 
+datamodule/xxx) ou dans le répertoire images (l'adresse est alors <tt>\imagedir/xxx</tt>).
+On peut aussi mettre le texte décrivant la molécule.
+<p>
+La première partie de la bonne réponse est donnée par 
+la liste des numéros des atomes à cliquer (comme dans le fichier) ou par une commande du type
+jmol (des exemples sont donnés ci-dessous). Ainsi, <tt>1,2,3</tt> est équivalent à 
+ <tt>atomno=1 or atomno=2 or atomno=3</tt> ou encore avec  <tt>{0,1,2}</tt> (les deux dernières étant
+ en syntaxe jmol).
+ <p>
+ Il est possible de donner plusieurs réponses possibles ; dans ce cas-là, elles doivent être séparées
+ par un <tt>|</tt>. 
+<p>
+La première ligne de la commande <tt>\embed</tt> est formée de la taille en pixels de l'applet
+X x Y. Sur les trois lignes suivantes, des scripts jmol peuvent être mis : le premier sera exécuté 
+à la première requête de l'exercice, le troisième sera exécuté lors de la réponse, le
+second sera utilisé les deux fois.
+<p>
+Des options sont possibles : 
+
+$table_header
+$table_tr<td>split ou partialscore</td><td>
+$table_tr<td>eqweight</td><td>
+$table_tr<td>noselect="liste de numéros d'atomes"</td><td>les atomes en question ne pourront
+pas être sélectionnés. 
+$table_end
+
+La variable <tt>reply</tt>n contient trois listes séparées par des points-virgule : 
+la liste des bonnes réponses de l'étudiant; la liste des réponses fausses; la liste des réponses
+des atomes oubliés. 
+
+Dans le cas où le premier champ de la bonne réponse est une variable de contenu vide, la variable
+<tt>reply</tt>n contient simplement la liste des atomes cliqués.
+
+
+$table_header
+<caption>Exemple de scripts de réponse</caption
+$table_tr<td>atomno=1 or atomno=2
+  </td><td> listes d'atomes à sélectionner
+$table_tr<td>
+  </td><td>
+$table_tr<td>
+  </td><td>
+  
+
+$table_end
+
+
