@@ -132,6 +132,19 @@ $table_tr<td align=right>$wims_name_config_ent
  </small>
 <td colspan=3>
 <input size=50 name=up_ent value="$class_ent">
+!if $class_type iswordof 0 4
+!set up_external_auth=$class_external_auth
+$table_tr<td align=right>$wims_name_external_auth
+<small>
+!href cmd=help&special_parm=config&special_parm2=external_auth $wims_name_help
+ </small>
+<td colspan=3>
+<textarea name=up_external_auth cols=50 rows=6>$class_external_auth</textarea>
+!!<input size=50 name=up_external_auth value="$class_external_auth">
+!set up_mixed_external_auth=$class_mixed_external_auth
+!default up_mixed_external_auth=0
+!formradio up_mixed_external_auth list 0,1,2 prompt $wims_name_no, $name_mix_auth, $wims_name_yes
+!endif
 $table_hdtr<td align=center colspan=4>
 <input type=submit name=save value="$wims_name_tosave">
 &nbsp;
@@ -208,11 +221,11 @@ $name_config
 !href module=adm/class/sequence&job=config $name_seq
 .
 <p>
-$name_disk: $du megaoctets. ($name_limit $wims_class_quota.)
+$name_disk: $du MB. ($name_limit2 $wims_class_quota.)
 
 
 !reset up_institution, up_description, up_supervisor, up_email, \
 	up_lang, up_level, up_limit, up_topscores, up_anonymtopscores, up_expiration, up_secure, up_lock,\
-	up_option,up_exolog,up_examlog,up_examshow,up_ent\
+	up_option,up_exolog,up_examlog,up_examshow,up_ent,up_external_auth,up_mixed_external_auth,\
 	pr_homepage, pr_bgcolor, pr_refcolor, pr_ref_menucolor,pr_bgimg, pr_css, pr_theme, pr_theme_icon
 

@@ -45,6 +45,9 @@ Nuevo participante,inscrito,Tipo de conexión,Up\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
 name_new_participant,name_registered,name_connexion,name_up
 
+!set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
+ ne fonctionne pas.
+ 
 !distribute line  No tiene cuenta en otras clases.\
 Buscar su clase\
 no hay ninguna clase disponible\
