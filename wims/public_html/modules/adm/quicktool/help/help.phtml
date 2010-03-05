@@ -1,10 +1,10 @@
 !!@#language independant
-!!!set example_dir=example.$modu_lang
+!read lang/names.phtml.$modu_lang
 !if $wims_developer!=
  !set wims_menu_items=!append line help,1,cmd=help \
   to $wims_menu_items
  !for EXO in QCM,TRUEFALSE,SELECTWORD, SELECTWORDA, GAP , ORDONNE, COMPOSE , CORRESP , QUIFAITQUOI, TONIC
-  !set wims_menu_items=!append line quick_$EXO,1,cmd=help&special_parm=$EXO\
+  !set wims_menu_items=!append line help_$EXO,1,cmd=help&special_parm=$EXO\
  to $wims_menu_items
  !next
  !reset EXO
@@ -45,11 +45,11 @@ text-align:left;">
 
 !if $special_parm!=$empty
  !set EXO=$special_parm
- $hh $EXO</h2> 
+ $hh $(wims_name_quick_$EXO)</h2> 
 $desc
 
 !record 0 of lang/help.$modu_lang/$EXO
-$hh3 $name_format_data $EXO</h3> 
+$hh3 $name_format_data $(wims_name_quick_$EXO)</h3> 
 !set a=!record 2 to -1 of lang/help.$modu_lang/$EXO
 !set b=!record 1 of lang/help.$modu_lang/$EXO
 !set b=!line 2 to -1 of $b
@@ -76,11 +76,11 @@ $desc
   !for t = 1 to $help_cnt_parm
      !set EXO=!item $t of $help_parm
    <p>
-$hh $EXO</h2> 
+$hh $(wims_name_quick_$EXO)</h2> 
 $desc
 
 !record 0 of lang/help.$modu_lang/$EXO
-$hh3 $name_format_data $EXO</h3> 
+$hh3 $name_format_data $(wims_name_quick_$EXO)</h3> 
 !set a=!record 2 to -1 of lang/help.$modu_lang/$EXO
 !set b=!record 1 of lang/help.$modu_lang/$EXO
 !set b=!line 2 to -1 of $b
