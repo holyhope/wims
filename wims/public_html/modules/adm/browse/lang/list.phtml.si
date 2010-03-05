@@ -84,34 +84,65 @@ name_misc=miscellaneous
 
 name_bio=Biologie
 tot_dom_bio=biology
-dom_biology=biology,botanics, histology, immunology, medecine, mycology,phylogenetics
+dom_biology=biology
+name_biology=biologie
+list_biology=botanics,histology,immunology,medecine,mycology,phylogenetics
 
-name_biology=Biologie
-name_botanics=Botanique
-name_histology=Histologie
-name_immunology=Immunologie
-name_medecine=Médecine
-name_mycology=Mycologie
-name_phylogenetics=Phylogénétique
+list_tmp=!replace internal , by ,name_ in name_ $list_biology
+list_tmp=!nospace $list_tmp
 
+!!!### names
+!distribute items botanique,histologie,immunologie,médecine,mycologie,phylogénétique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
 
 name_chim=Chimie
 tot_dom_chim=chemistry
-dom_chemistry=chemistry,organics,thermodynamics
-name_chemistry=Chimie
-name_organics=chimie organique
-name_thermodynamics=thermo
+dom_chemistry=chemistry
+name_chemistry=chimie
+list_chemistry=thermodynamics,organics_chemistry
 
-name_language=Langues
-tot_dom_language=Lang
-name_Lang=Langage
-dom_Lang=listening,grammar,technical,phonetics
-name_grammar=grammaire
-name_listening=écoute
-name_technical=technique
-name_phonetics=phonétique
+list_tmp=!replace internal , by ,name_ in name_ $list_chemistry
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items Thermodynamique,Chimie organique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items thermo,organics\
+into $list_tmp
+!!!###
+
+
+tot_dom_Lang=Lang
+name_language=langues
+dom_language=language
+list_Lang=Lang,listening,grammar,technical,phonetics
+list_tmp=!replace internal , by ,name_ in name_ $list_Lang
+list_tmp=!nospace $list_tmp
+!!!### names
+!distribute items langues,Ecoute,Grammaire,Langue technique,Phonétique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items language,listening,grammaire,technical,phonétique\
+into $list_tmp
+
+!!!###
 
 tot_dom_phys=physics
 name_physics=physique
 name_phys=Physique
 
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###

@@ -1,5 +1,5 @@
 # subject list
-Tot_dom=bio,chim,language,math,phys
+Tot_dom=bio,chim,Lang,math,phys
 
 name_math=Mathematics
 tot_dom_math=number,algebra,analysis,geom,probstat,misc
@@ -82,3 +82,67 @@ list_logic=conjuntos, aplicaciones
 
 name_misc=miscelánea
 
+name_bio=Biologie
+tot_dom_bio=biology
+dom_biology=biology
+name_biology=biologie
+list_biology=botanics,histology,immunology,medecine,mycology,phylogenetics
+
+list_tmp=!replace internal , by ,name_ in name_ $list_biology
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items botanique,histologie,immunologie,médecine,mycologie,phylogénétique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
+
+name_chim=Chimie
+tot_dom_chim=chemistry
+dom_chemistry=chemistry
+name_chemistry=chimie
+list_chemistry=thermodynamics,organics_chemistry
+
+list_tmp=!replace internal , by ,name_ in name_ $list_chemistry
+list_tmp=!nospace $list_tmp
+
+!!!### names
+!distribute items Thermodynamique,Chimie organique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items thermo,organics\
+into $list_tmp
+!!!###
+
+
+tot_dom_Lang=Lang
+name_language=langues
+dom_language=language
+list_Lang=Lang,listening,grammar,technical,phonetics
+list_tmp=!replace internal , by ,name_ in name_ $list_Lang
+list_tmp=!nospace $list_tmp
+!!!### names
+!distribute items langues,Ecoute,Grammaire,Langue technique,Phonétique\
+into $list_tmp
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+!distribute items language,listening,grammaire,technical,phonétique\
+into $list_tmp
+
+!!!###
+
+tot_dom_phys=physics
+name_physics=physique
+name_phys=Physique
+
+
+!!!### keywords
+list_tmp=!replace internal name_ by keywords_ in $list_tmp
+
+!!!###
