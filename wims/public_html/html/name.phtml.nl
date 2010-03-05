@@ -109,6 +109,7 @@
 	    Scorings mechanisme<br><small>(oefening / ontspanning)</small>,\
 	    Hulp software<br>vereist,\
 	    Server tijd,\
+	    Data module,\
 	into wims_name_name,\
 	wims_name_iconabout,\
         wims_name_module_infos,\
@@ -127,7 +128,7 @@
 	wims_name_tr_email,wims_name_auth_email,\
 	wims_name_Domain,wims_name_Type,wims_name_Levels,\
 	wims_name_Scoring,\
-	wims_name_require,wims_name_server_time
+	wims_name_require,wims_name_server_time,wims_name_datamodule
 
 
 !! **** Class Relative Names ***

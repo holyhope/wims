@@ -38,7 +38,6 @@
 !set name_duplicate=dupliceren
 !set name_increment=Niet vergeten het versie nummer te verhogen bij publicatie !
 !set name_backto=!nosubst Terug naar $otit
-!set name_datamodule=Data module
 !set name_this1=uw nieuwe module
 !set name_this2=de module in bewerking
 !set name_levellist=E: lagere school; H: middelbare school; U: universiteit; <br>G:promotie ; R: onderzoek

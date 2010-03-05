@@ -38,7 +38,6 @@
 !set name_duplicate=duplicar
 !set name_increment=¡No olvidan incrementarlo cuando publican una nueva versión!
 !set name_backto=!nosubst Volver a $otit
-!set name_datamodule=Data module
 !set name_this1=de se nuevo módulo
 !set name_this2=del módulo actualmente en desarrollo
 !set name_levellist=E: escuela primaria; H: escuela secundaria; U: universidad; <br>G: estudio doctoral; R: investigación
