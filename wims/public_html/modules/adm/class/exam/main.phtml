@@ -16,8 +16,14 @@ $name_title $exam
  <p>
  !read lang/msg.phtml.$moduclass_lang
 
- !set wims_menu_items=!append line back2,1,module=home \
+ !if $error iswordof prep_noexercise  
+  !set wims_menu_items=!append line back2,1,cmd=resume&error=$empty \
    to $wims_menu_items
+   !reset save
+ !else
+  !set wims_menu_items=!append line back2,1,module=home \
+   to $wims_menu_items
+ !endif
  <p>
  !goto end
 !endif

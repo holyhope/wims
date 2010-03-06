@@ -391,7 +391,11 @@ duration=$sdure
  !distribute lines $ee into w_,c_,n_,d_,o_,co_
 !! !if $echoose$ename$eweight!=$empty
  !if $save!=$empty
-  !bound eweight between 0,10 default 0
+  !if $echoose=$empty
+    error=prep_noexercise
+    !exit
+  !endif
+  !bound eweight between 0,10 default 1
   ename=!singlespace $ename
   ename=!char 1 to $etitle_limit of $ename
   !default ename=Ex

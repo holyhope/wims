@@ -131,3 +131,7 @@
  !exit
 !endif 
 
+!if $error=prep_noexercise
+  Le contenu de l'exercice $exo de l'examen est vide. Recommencez.
+  !exit
+!endif
