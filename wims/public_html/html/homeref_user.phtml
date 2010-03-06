@@ -1,9 +1,16 @@
-!if _check isin $session or yes isin $wims_lightpopup
+!if _check isin $session
  !exit
 !endif
 
 !read name.phtml.$module_language
 !default wims_homeref_bgcolor=$wims_ref_bgcolor
+
+!if yes isin $wims_lightpopup
+  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+  !set wims_rm_1=$1_
+  !goto rmend
+!endif
+
 !if exam isin $wims_session
  !set wims_hr_r=$[max(0,$wims_exam_remain)]
  !set wims_hr_rm=$[floor($wims_hr_r/60)]
