@@ -5,29 +5,27 @@
 !endif
 
 !set classname=<b><font color=green>$wims_classname</font></b>\
- of <b><font color=green>$wims_institutionname</font></b>
+ van <b><font color=green>$wims_institutionname</font></b>
 
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
 
 !set title=Configuratie en Onderhoud
 
-!distribute items vragenlijsten,huiswerk agenda,\
-	docenten accounts,discussie forum,raport boekje,\
-	pedagogische werkvolgorde,forum berichten\
-	into name_vote,name_cdt,\
-	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
+!distribute items zones,studenten,oefeningen,documenten,docenten,werkbladen\
+into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
+name_sheets
 
-!distribute items subklassen,studentens,oefeningen,documenten,docenten\
-into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers
-
+!distribute item bericht van de dag,oefeningen,werkbladen,proefwerken,documenten,\
+studenten,pedagogische volgorde,huiswerk agenda,vragenlijsten,\
+raport boekje,docenten account,discussie forum\
+into name_motd,name_exo,name_sheet,name_exam,name_doc,\
+name_user,name_seq,name_livret,name_vote,\
+name_cdt,name_sup,name_forum,name_forum_mes
 
 !distribute item bericht van de dag,\
-	oefening,werkblad,proefwerk,document,student\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user	
+oefeningen,werkbladen,proefwerken,documenten,studenten\
+into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
-!distribute item berichten van de dag,\
-	oefeningen,werkbladen,proefwerken,documenten,studenten\
-	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
 !if $job=arch
  !set title=Backup en Herstel
@@ -102,6 +100,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 
  !set name_download5=Het backup archief is misschien te groot om naar deze sever te sturen.\
  Om (meerdere) kleinere archieven aan te leggen kunt u gebruik maken van een selectieve backup.
+
   
  !goto commun
 !endif
@@ -109,7 +108,8 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 !if $job=clean
  !set title=Opschonen van een klas
  !set name_lines=Studenten activeiten
- !set name_empty=Deze klas is leeg!<p> Er staat dus ook niets in  dat opgeschoond kan worden.
+ !set name_empty=Deze klas is leeg!<p>\
+ Er staat dus ook niets in  dat opgeschoond kan worden.
  !set name_no_erase=Kan niet worden opgeschoond omdat er materiaal wordt gedeeld met een andere klas.
 
  !distribute lines Opschonen\
@@ -118,18 +118,23 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
    Maak een backup van de klas\
    Aanwezig materiaal in de klas\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
-  !set name_warning_clean=Let op: er is geen undelete op dit systeem !
+  !set name_warning_clean=Let op:\
+  er is geen undelete op dit systeem !
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Buurklassen
- !set name_noclass=Er kunnen geen buurklassen worden gedefinieerd omdat er er geen andere klasses zijn.
- !set name_toomany=Er zijn te veel klassen op deze server geinstalleerd. Geef een zoekterm om naar een klas te zoeken.
- !set name_toomany2=Er zijn te veel klassen gevonden .Geef een betere zoekterm in.
+ !set name_noclass=Er kunnen geen buurklassen worden gedefinieerd \
+ omdat er er geen andere klasses zijn.
+ !set name_toomany=Er zijn te veel klassen op deze server geinstalleerd. \
+ Geef een zoekterm om naar een klas te zoeken.
+ !set name_toomany2=Er zijn te veel klassen gevonden .\
+ Geef een betere zoekterm in.
 
  !distribute lines Zoek naar een klas\
  Er zijn geen klassen gevonden. Probeer opnieuw.\
+ Bekijk de demonstratie klassen op deze server
  Het aanmaken van buurklassen geeft de mogelijkheid om gemeenschappelijk materiaal te gebruiken.\
  Klik op een klas om de procedure te starten.\
  Klassen met een zelfde taal\
@@ -150,7 +155,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    U heeft permissie om te lenen.\
    Stop de deling\
    Delen\
-   Importeer alle deelnemers\
+   Importeer alle studenten\
    Lesmateriaal\
    Importeer ander materiaal\
    Klassen die uw materiaal mogen lenen\
@@ -159,24 +164,27 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Lijst van andere klassen\
    Gedeeld materiaal info\
    Demonstratie klassen op deze server\
- into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
- name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
- name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
- name_import_resource,name_youcan,name_fromtheclass,name_click_ok
+   materiaal importeren\
+   U kunt\
+   van de klas\
+   Accepteren\
+into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
+name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
+name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
+name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
- !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
-  <em><font color=blue>$nei_description</font></em> qu'elle vous autorise à partager. 
+ !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas
+  <em><font color=blue>$nei_description</font></em> dat gedeeld kan worden.
 
- !set name_newres=!nosubst La classe <em><font color=blue>\
-  $nei_description</font></em> vous <b>autorise</b> à partager ses
+ !set name_newres=!nosubst De klas <em><font color=blue>\
+  $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
 
- !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe <em><font color=blue>\
-  $nei_description</font></em> à partager&nbsp; (<i>sélectionnez puis cliquez sur <tt>$wims_name_tosave</tt></i>)
+ !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color=blue>\
+ $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <tt>$wims_name_tosave</tt></i>)
 
- !set name_warning_authorized=!nosubst La classe <em><font color=blue>$nei_description</font></em>\
-  vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
-  sous peine de confusion. Commencez par vous entendre avec elle et avec toutes les classes avec lesquelles vous\
-  voulez partager des ressources. 
+ !set name_warning_authorized=!nosubst De klas <em><font color=blue>$nei_description</font></em>\
+ geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
+ Ga alleen door als zeker weey dat die niet van toepassing is.
   
  !distribute lines Buurklassen\
     heeft uw klas nog nioet geaccepteerd als buur\
@@ -203,18 +211,20 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_inactif=!subst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
  
- !set name_accept=!nosubst Accepteert u de klas <em><font color=blue>$nei_description</font></em> als buurklas ?
+ !set name_accept=!nosubst Accepteert u de klas \
+ <em><font color=blue>$nei_description</font></em> als buurklas ?
    
  !if $job2=stopshare
   !set title=Stop de deling
-  !set name_warning=Uw klas heeft een aciteve cijfer registratie en de gedeelde bronnen zijn niet leeg.\
-  Als u nu stopt met lenen kan hier later niet meer op worden terug gekomen.<p>\
-  U wilt definitef stoppen met delen ?
+  !set name_warning=Uw klas heeft een aciteve cijfer \
+  registratie en de gedeelde bronnen zijn niet leeg.\
+  Als u nu stopt met lenen kan hier later niet meer op worden teruggekomen.\
+  <p>U wilt definitef stoppen met delen ?
  
- !set name_stop=Stoppen
+ !set name_stop=stoppen.
  !endif
  !if $job2=sharelist
-  !set title= informatie over gedeeld materiaal.
+  !set title= Informatie over gedeeld materiaal.
   !set name_sharelist=!nosubst Uw klas deelt $(name_$rec) afkomstig uit 
   !distribute lines U deelt geen materiaal uit andere klassen.\
    U deelt materiaal uit andere klassen\
@@ -235,9 +245,13 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     name_dangerous
   
   !set name_warning1=Dit materiaal kan niet worden uitgeleend: omdat uw klas het materiaal leent uit een andere klas.\
+  
+  
+  
   !set name_warning2=!nosubst U kunt dit materiaal niet delen om dat uw eigen $(name_$r) niet leeg zijn.\
   Voor dat met een deling kan worden begonnen moet u eerst
-  !set name_warning_erase=!nosubst Dit verwijdert dus al uw bestaande $(name_$r)! En zonder backup is dit definitef weg.
+  !set name_warning_erase=!nosubst Dit verwijdert dus al uw bestaande $(name_$r)! \
+  En zonder backup is dit definitef weg.
    
   !endif
   
@@ -365,7 +379,8 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  De volgende configuraties  van $name_thisclass kunnen worden geinstalleerd in alle $name_subclasses\
  into name_propagate_succes,name_propagate_choose
 
- !set name_warning=Opmerking: de configuratie instellingen van $name_subclasses worden niet automatisch\
+ !set name_warning=Opmerking: de configuratie instellingen \
+ van $name_subclasses worden niet automatisch\
  bijgewerkt als de instellingen voor $name_thisclass worden veranderd. 
 
 !endif
@@ -381,19 +396,19 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   !set name_result=Resultaat
 
   !if $job2=structure
-   !set tit=Subklas index vernieuwen
+   !set tit=de zones
   !endif
   !if $job2=userlist
-   !set tit=Student index vernieuwen
+   !set tit=Student
   !endif
   !if $job2=teacherlist
-   !set tit=Docenten index vernieuwen
+   !set tit=Docenten
   !endif
   !if $job2=oef
-   !set tit=Oefeningen index vernieuwen
+   !set tit=Oefeningen
   !endif
   !if $job2=doc
-    !set tit=Documenten index vernieuwen
+    !set tit=Documenten
    !endif
 !endif
 
@@ -415,7 +430,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     Definieer buurklassen\
     verbinding met andere servers\
     Gebruik authentificatie\
-    voor deelnemers met ldap\
+    voor studenten met ldap\
     Actualiseer de indexen\
     waarvan verandering\
     Backup en herstel \
@@ -487,8 +502,10 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 
 !exit
 :arch
+
 U hebt een backup archief van een andere klas opgestuurd.
-Als er conflicten zijn, wordt uw klas mogelijk onherstelbaar beschadigd.
+Als er conflicten zijn, 
+wordt uw klas mogelijk onherstelbaar beschadigd.
  !href cmd=help&special_parm=dependencies Waarom?
  <p>
  !href cmd=reply&job=list Stop
