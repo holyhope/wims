@@ -2,7 +2,7 @@
  !goto proc
 !endif
 slib_title=Write on a spirale
-slib_parms=1\
+slib_parms=2\
 ,texte
 slib_author=Bernadette Perrin-Riou
 slib_out=code for flydraw: text written on a spirale
@@ -30,15 +30,12 @@ slib_point=0,0
 slib_dessin=$slib_dessin\
 text black,$slib_point,giant,
 slib_Point=$slib_point
-slib_Pointpix=$slib_Size/2,$slib_Size/2
 
 !for slib_k=1+$slib_init to $slib_N+$slib_init
      slib_tr=$(slib_deplac[$slib_c1+1;])
      slib_point = !exec pari [$slib_point] + [$slib_tr]
      slib_Point=$slib_Point\
      $slib_point
-     !!slib_Pointpix=$slib_test=1?$slib_Pointpix
-     !!slib(draw/convpixel $slib_point,$slib_Size,$slib_size,$slib_size,10,pixels)
    
      slib_l=!char $slib_k of $slib_texte
      slib_dessin=$slib_dessin\
