@@ -1,0 +1,123 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Dessin d'une molécule en 2D
+slib_parms=2\
+,MDMol file or adress (internal in wims)\
+,option as in the anstype chemdraw
+slib_author=Bernadette PERRIN-RIOU
+slib_out=applet code for inserting WIMSChem
+slib_comment=it is recommanded to write something on the first line of the MDMol\
+file.
+
+slib_example=
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_file,slib_option
+
+!set slib_appletdir=java/WIMSchem
+
+!default slib_xsize=540
+!default slib_ysize=450
+!for slib_opt in show_carbon,show_hydrogen,showfile
+  !set $slib_opt=!getopt $slib_opt in $slib_option
+!next
+
+!default slib_show_hydrogen=yes
+!default slib_show_carbon=no
+!default slib_showfile=yes
+
+!set slib_template=!getopt template in $slib_option
+!if $slib_template notsametext
+  !set slib_templ=
+  !set slib_cnt_=0
+  !if cyclo iswordof $slib_template
+   !set cyclo=cyclopropane,cyclobutane,cyclopentane,cyclohexane,cycloheptane,cyclooctane
+   !for t_=1 to 6
+    !set slib_temp=!record 0 of data/chem/templ/$(cyclo[$t_]).el
+    !readproc oef/togetfile.proc $(cyclo[$t_]).el new\
+$slib_temp
+   !set slib_templ=$slib_templ\
+ <param name="template$t_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(cyclo[$t_]).el">
+  !next
+  !set slib_cnt_=$[$slib_cnt_+6]
+ !endif
+ !set slib_template=!words2items $slib_template
+ !set slib_temp_cnt=!itemcnt $slib_template
+ !for slib_s_=1 to $slib_temp_cnt
+  !if $(slib_template[$slib_s_]) notsametext cyclo
+   !set slib_temp_mol=!record 0 of data/$dir/$(slib_template[$slib_s_])
+   !if $slib_temp_mol=
+     !set slib_temp_mol=!record 0 of data/chem/templ/$(slib_template[$slib_s_]).el
+   !endif
+   !readproc oef/togetfile.proc $(slib_template[$slib_s_]) new\
+$slib_temp_mol
+   !set cnt_=$[$cnt_+1]
+   !set slib_templ=$slib_templ\
+   <param name="template$cnt_" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(slib_template[$slib_s_])">
+  !endif
+ !next
+!endif
+
+!set slib_file=!replace internal $	$ by $\
+$ in $slib_file
+!set slib_file=\
+$slib_file
+
+!set slib_test=!linecnt $slib_file
+!if $slib_test=1
+  !set slib_temp=!record 0 of $slib_file
+  !set slib_file0=!replace internal / by ~ in $slib_file
+!else
+  slib_temp=$slib_file
+  !set slib_file0=!randint 1000..5000
+!endif
+
+!readproc oef/togetfile.proc $slib_file0 new\
+$slib_temp
+!set slib_File=<param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0">
+
+
+
+!set slib_list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
+TOOL_SETATOM,TOOL_SINGLE,TOOL_DOUBLE,TOOL_TRIPLE,TOOL_ZERO,\
+TOOL_INCLINED,TOOL_DECLINED,TOOL_UNKNOWN,TOOL_CHARGE,TOOL_UNDO,TOOL_REDO,\
+TOOL_TEMPLATE,TOOL_CUT,TOOL_COPY,TOOL_PASTE,\
+MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STEREO
+!set slib_list_m=!lower $slib_list
+!set slib_list_default=1,1,1,0,0,\
+0,1,1,1,0,\
+1,1,0,1,1,1,\
+1,0,0,0,\
+1,1,1,1,1,1,1
+!set slib_listcnt=!itemcnt $slib_list
+!set slib_params=
+!for slib_u =1 to $slib_listcnt
+ !set slib_a=$(slib_list_m[$slib_u])
+ !set slib_a_=$(slib_list[$slib_u])
+ !set slib_b=!getopt $slib_a in $slib_option
+ !bound $slib_b within yes, no, 1, 0
+ !if $slib_b=
+   !set slib_b=$(slib_list_default[$slib_u])
+ !endif
+ !set slib_params=!append line <param name="$slib_a_" value="$slib_b"> to $slib_params
+!next
+
+!if $slib_File!=$empty
+  !set slib_parm_angle=!randitem 0,30,45,60,90,120,135,150,180,-30,-45,-60,-90,-120,-135,-150,-180
+  !set slib_parm_angle=<param name="rotation" value="$slib_parm_angle">
+!endif
+slib_out=\
+<applet name="WIMSchem" codebase="$slib_appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$slib_xsize" height="$slib_ysize">\
+	    <param name="showfile" value="$slib_showfile">\
+	    <param name="slib_show_hydrogen" value="$slib_show_hydrogen">\
+        <param name="slib_show_carbon" value="$slib_show_carbon">\
+        $slib_templ\
+	    $slib_atoms\
+	    $slib_params\
+	    <param name="default_select_color" value="0,255,0">\
+	    $slib_parm_angle\
+	    $slib_File\
+</applet>

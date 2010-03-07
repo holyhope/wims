@@ -1,0 +1,56 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Molecule in Jmol
+slib_parms=4\
+,MDMol file or adress (internal in wims)\
+500,xsize\
+400,ysize\
+,jmol script
+slib_author=Bernadette PERRIN-RIOU
+slib_out=applet code for inserting jmol applet
+slib_comment=it is recommanded to write something on the first line of the MDMol\
+file.
+
+slib_example=
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_file,slib_xsize,slib_ysize,slib_script
+
+!set slib_appletdir=java/jmol
+
+!default slib_xsize=500
+!default slib_ysize=400
+
+!set slib_file=!replace internal $	$ by $\
+$ in $slib_file
+!set slib_file=\
+$slib_file
+
+!set slib_test=!linecnt $slib_file
+!if $slib_test=1
+  !set slib_temp=!record 0 of $slib_file
+  !set slib_file0=!replace internal / by ~ in $slib_file
+!else
+  slib_temp=$slib_file
+  !set slib_file0=!randint 1000..5000
+!endif
+!if $slib_script!=
+  slib_script=+'$slib_script'
+!endif
+!readproc oef/togetfile.proc $slib_file0 new\
+$slib_temp
+
+!set slib_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0
+!set slib_out=<script type="text/javascript" src="$slib_appletdir/Jmol.js"></script> \
+<script language="javascript" type="text/javascript">\
+      jmolInitialize('$slib_appletdir','JmolApplet.jar');\
+      jmolSetAppletColor("white");\
+      jmolSetCallback("menuFile", "$slib_appletdir/Jmol.mnu")\
+   var jscr='load $slib_file;';\
+    jscr= jscr +'selectionhalos on;select none;set frank off;set DisablePopupMenu TRUE;';\
+    jscr=jscr $slib_script\
+     jmolApplet([$slib_xsize,$slib_ysize],jscr);\
+</script>
+!!debug $slib_out $wims_read_parm
