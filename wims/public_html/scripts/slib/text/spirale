@@ -1,0 +1,58 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Write on a spirale
+slib_parms=1\
+,texte
+slib_author=Bernadette Perrin-Riou
+slib_out=code for flydraw: text written on a spirale
+slib_example=voici un essai
+!exit
+
+:proc
+slib_color=
+slib_texte=$wims_read_parm
+slib_cnt=!charcnt $slib_texte
+slib_N=$[(round(sqrt($slib_cnt))+1)^2]
+slib_init=0
+
+slib_c1=0
+slib_c2=1
+slib_c3=1
+slib_size=$[round(sqrt($slib_N)/2)+2]
+slib_size=-$slib_size,$slib_size
+slib_Size=400,400
+slib_dessin=xrange $slib_size\
+yrange $slib_size\
+linewidth 4
+slib_deplac=1,0;0,1;-1,0;0,-1
+slib_point=0,0
+slib_dessin=$slib_dessin\
+text black,$slib_point,giant,
+slib_Point=$slib_point
+slib_Pointpix=$slib_Size/2,$slib_Size/2
+
+!for slib_k=1+$slib_init to $slib_N+$slib_init
+     slib_tr=$(slib_deplac[$slib_c1+1;])
+     slib_point = !exec pari [$slib_point] + [$slib_tr]
+     slib_Point=$slib_Point\
+     $slib_point
+     !!slib_Pointpix=$slib_test=1?$slib_Pointpix
+     !!slib(draw/convpixel $slib_point,$slib_Size,$slib_size,$slib_size,10,pixels)
+   
+     slib_l=!char $slib_k of $slib_texte
+     slib_dessin=$slib_dessin\
+text black, $slib_point, giant,$slib_l
+     !if $slib_c3=$slib_c2
+       !if $slib_c1%2!=0
+         slib_c2=$[$slib_c2+1]
+       !endif
+       slib_c1=$[($slib_c1+1)%4]
+       slib_c3=1
+    !else
+       slib_c3=$[$slib_c3+1]
+    !endif
+!next
+slib_out=$slib_dessin
+
+
