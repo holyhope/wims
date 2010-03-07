@@ -329,7 +329,7 @@ $nei_description</font></em> como vecina suya?
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
-   !set name_warning=Vous pouvez mettre deux nombres dans le chronomètre, une petite\
+   !set name_warning=Pour la limite de temps, vous pouvez mettre deux nombres dans le chronomètre, une petite\
      limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
    la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
   
