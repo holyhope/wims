@@ -9,40 +9,9 @@ $name_job
 $name_title_palier : <input type=text name=cf_title value="$name_palier" size=40><br>
 $name_cocher
 <p>
-$name_see
- <select name="ltsheets" onchange="submit()">
-  !if $ltsheets=$asheets"
-   <option value="$asheets" selected="">$name_all</option>
-  !else
-   <option value="$asheets">$name_all</option>  
-  !endif
-  !for k in $asheets
-   !if $ltsheets=$k
-    <option value="$k" selected="">
-   !else
-    <option value="$k">   
-   !endif
-    !let t=!record $k of  wimshome/log/classes/$wims_class/sheets/.sheets
-    $k :
-    !line 3 of $t
-   </option>
-  !next k
- </select>
-<p>
-!for i in $ltsheets
- !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
- !for j=1 to $t
-  <input type=checkbox name=echoose value=$i.$j
-  !if $i.$j isitemof $eold
-   checked
-  !endif
-  > $i.$j 
-  !line $j of $(sheet$i)
-  <br>
- !next j
-!next i
-<p>
-<input type=submit value="$wims_name_tosave" name="cf_set">
+ !let echoose=$eold
+ !read adm/class/transfertexo.phtml
+ <center><input type=submit value="$wims_name_tosave" name="cf_set"></center>
 </form>
 
 !set wims_menu_items=!append line back2,1,cmd=reply&job=home\

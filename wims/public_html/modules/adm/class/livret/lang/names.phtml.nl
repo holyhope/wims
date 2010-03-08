@@ -14,7 +14,7 @@ Prestatieniveaus,\
 prestatieniveau,\
 prestatieniveaus,\
 Alle,\
-into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_all
+into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All
 
 !set name_no_competence=Er staat geen enkele $name_competence vermeld in dit rapport !
 !set name_noyetparticipant=Deze klas heeft geen studenten.
@@ -23,7 +23,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_color=De kleur van de prestaties van $name_n_palier &nbsp;
 !set name_score_modify=Cijfers voor oefeningen uit de volgende werkbladen, benodigd voor de berekening van de prestatieniveaus van $name_n_paliers &nbsp;
 !set name_cocher=Controleer de gegevens die gebruikt moeten worden in het overzicht van $name_n_palier.
-!set name_see=Toon alleen de werkblad oefeningen.
+!set name_selectsheet=Toon alleen de werkblad oefeningen.
 !let name_nowork=Geen activiteit                                                                                                            
 !let name_listscoreoption=van de klas,van het raport                                                                                           
 !let name_listscoreview=niet laten zien,integer,met &eacute;&eacute;n decimaal,met twee decimalen,met drie decimalen,met vier decimalen 
@@ -65,5 +65,4 @@ Rapport van $name_competences\
 !if $job=user
   !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
 !endif
-
 
