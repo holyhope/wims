@@ -20,7 +20,7 @@
 #define VARBUF_LEN	(256*1024)
 #define VARBUF_NUM	16
 #define VARNAME_LEN	32768
-#define VARNUM_LIMIT	2048
+#define VARNUM_LIMIT	4096
 #define vb_internal	1
 #define vb_ro		2
 #define vb_dirty	4
