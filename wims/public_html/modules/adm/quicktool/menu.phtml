@@ -77,7 +77,7 @@ WIMS modtool
      !set cnt=!itemcnt $(name[$i;])
      !for a =1 to $cnt
         <br>
-        !formradio type_exo list $(name[$i;$a]) prompt $(name[$i;$a])
+        !formradio type_exo list $(name[$i;$a]) prompt $(wims_name_quick_$(name[$i;$a]))
      !next a
      </td><td width="25%">$(explication[$i;])</td>
      <td>
@@ -108,7 +108,8 @@ $table_end
     !! !set title=
    !else
     !! !if  $transfert!=yes
-       Vous avez choisi $type_exo [
+       !record 4 of $my_dir
+       $(wims_name_quick_$type_exo) [
        !href cmd=help&special_parm=$(Type_exo[1]) $wims_name_help 
 ] 
 !!(<i>
