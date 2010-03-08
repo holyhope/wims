@@ -15,9 +15,9 @@ echo "$version" > version.tmp;
 for i in $packs; do
   u=`basename $i` ;
   j=${u}_mp3 ;
-  wget http://$adresse/$j.tar; echo "wget $adresse/$u.tar" ;
-  tar xf $u.tar;
-  mkdir -p $swac/$u; cd $j ; cp -r * $swac/$u/ ; cd $swac ; rm $j.tar ; rm -r $j;
+  wget http://$adresse/$j.tar;
+  tar xf $j.tar;
+  mkdir -p $swac/$u; cp -r $swac/$j/* $swac/$u ; rm $swac/$j.tar ; rm -r $swac/$j;
   echo "$u" >> version.tmp ;
 done ;
 
