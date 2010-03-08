@@ -141,3 +141,5 @@ into name_info,name_content,name_warning
   er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt.\
   Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle\
   random (!) sommen opnieuw doen... <p>Weet je zeker dat je er mee wilt stoppen?
+
+!let name_selectsheet=Show only exercice of sheet

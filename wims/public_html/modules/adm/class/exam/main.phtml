@@ -1,6 +1,9 @@
 !!!### language independant
-
 !read js/examclock1.phtml
+!if $job=exo
+ !set js=!record 0 of js/chooselist.js
+ !set wims_html_header=!append line $js to $wims_html_header
+!endif
 !read adm/css.phtml
 !header1
 
@@ -92,3 +95,5 @@ participantview,1,cmd=reply&job=student to $wims_menu_items
 !tail
 
 !reset job,echoose,eweight,ename,edep,eopt,source
+
+

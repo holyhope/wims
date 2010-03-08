@@ -146,3 +146,5 @@ into name_info,name_content,name_warning
   ahora congelará la puntuación y consumirá una oportunidad de hacer\
   el examen, y tendrá que empezar desde el principio la próxima vez.<p>\
   ¿Seguro que quiere terminarlos?
+
+!let name_selectsheet=Show only exercice of sheet

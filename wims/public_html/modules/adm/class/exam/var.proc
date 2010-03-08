@@ -382,18 +382,18 @@ duration=$sdure
   job=$empty
   !exit
  !endif
- ltsheets=!listintersect $asheets and $ltsheets
- !if $ltsheets=$empty
-  ltsheets=$asheets
- !endif
  !bound $exo between integer 1 and $exocnt+1 default $exocnt+1
  ee=!record $exo of wimshome/log/classes/$wims_class/exams/.exam$exam
  !distribute lines $ee into w_,c_,n_,d_,o_,co_
 !! !if $echoose$ename$eweight!=$empty
  !if $save!=$empty
   !if $echoose=$empty
-    error=prep_noexercise
-    !exit
+    !if $c_!=$empty
+     echoose=$c_
+    !else
+     error=prep_noexercise
+     !exit
+    !endif
   !endif
   !bound eweight between 0,10 default 1
   ename=!singlespace $ename

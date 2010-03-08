@@ -33,54 +33,13 @@ $table_header
   <td>$wims_name_comment <small>($name_desc_comment)</small></td>
   <td><textarea name="ecomment" rows="3" cols="60">$ecomment</textarea></td>
  </tr>
-!! --------------------------- choix des exos
  $table_tr
   <td>$name_contenu [
    !href target=wims_mhelp cmd=help&special_parm=contenu $wims_name_help
   ]</td>
-  <td>Afficher seulement les exercices de la feuille 
- <select name="ltsheets" onchange="submit()" value="$ltsheets">
-  !if $ltsheets=$asheets
-   <option value="$asheets" selected>$name_All</option>
-  !else
-   <option value="$asheets">$name_All</option>  
-  !endif
-  !for k in $asheets
-   !if $ltsheets=$k
-    <option value="$k" selected>
-   !else
-    <option value="$k">   
-   !endif
-    !let t=!record $k of wimshome/log/classes/$wims_class/sheets/.sheets
-    $k :
-    !line 3 of $t
-   </option>
-  !next k
- </select>
-<p>
-!for i in $asheets
- !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
- !for j=1 to $t
-  !if $i isitemof $ltsheets or $i.$j isitemof $echoose
-   !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
-   !distribute line $r into r1,r2,r3,r4,r5,r6
-   <input type=checkbox name=echoose value=$i.$j
-   !if $i.$j isitemof $echoose
-    checked
-   !endif
-   > $i.$j 
-   !href target=wims_new module=$r1&cmd=new&$r2 $r5
-   !if $r6!=$empty
-    <small>($r6)</small>
-   !endif
-   <br>
-  !endif
- !next j
-!next i
- </td>
- </tr>
-!!------------------- fin de choix des exos
-
+  <td>
+   !read adm/class/transfertexo.phtml
+  </td>
  $table_tr
   <td colspan="2" align="center"> 
    <input type=submit value="$wims_name_tosave" name="save">
