@@ -1,0 +1,98 @@
+
+!if $gotcnt=0
+ !if $srch=$empty
+  !exit
+ !endif
+ !if $module!=home
+  Sorry, nothing has been found for <em><font color=red>
+  $search</font></em>.
+ <p>
+ !endif
+ This database of popup calculator forms 
+ is still in its preliminary status. The server has
+ registered your failed request, so that the authors will see what people
+ are asking for, and add things according to the demand. Thanks for your
+ patience.
+ !exit
+!endif
+
+!set gotm=!item 1 to 20 of $gotm
+!if .. isin $gotm
+ !reset gotm
+!endif
+
+!for s in $gotm
+ !set vars=!record 5 of $formdir/$s.def
+ !set vars=!nonempty lines $vars
+ !if $vars!=$empty
+  !set n_=!linecnt $vars
+  !for i=1 to $n_
+   !set l_=!line $i of $vars
+   !set var_$i=!randitem $l_
+  !next i
+ !endif
+ 
+ !set ops=!record 2 of $formdir/$s.def
+ !set submits=!record 3 of $formdir/$s.def
+ !set content=!record 4 of $formdir/$s.def
+ 
+ !set ops=!nonempty lines $ops
+ !set ocnt=!linecnt $ops
+ !reset oplist
+ !for op=1 to $ocnt
+  !set ol=!line $op of $ops
+  !distribute items $ol into n_,v_
+  !set n_=!word 1 of $n_
+  !if $n_!=$empty and $v_!=$empty
+   !set op_$n_=$v_
+   !set oplist=!append item $n_ to $oplist
+  !endif
+ !next op
+ !set oplist=!listcomplement module,size,color,precision in $oplist
+ 
+ !set submits=!translate internal " to $ $ in $submits
+ !set submits=!nonempty lines $submits
+ !set scnt=!linecnt $submits
+ !for su=1 to $scnt
+  !set sl=!line $su of $submits
+  !distribute items $sl into n_,v_
+  !set n_=!word 1 of $n_
+  !if $v_!=$empty
+   !if $n_!=$empty
+    !set N_=NAME=$n_
+   !else
+    !reset N_
+   !endif
+   !set submit$su=<INPUT TYPE=SUBMIT $N_ VALUE="$v_" $jsdef>
+  !endif
+ !next su
+
+ !default op_size=$default_size
+ !default op_module=$default_module
+ !default op_color=$default_color
+ !default op_precision=$default_precision
+ !set content=!nonempty lines $content
+ <!--     Independent calculator form: $s     -->
+ <FORM TARGET=$winname NAME=calcform ACTION="$wims_ref_name">
+ <INPUT TYPE=HIDDEN NAME=session VALUE=popup> $sizeinput
+ <INPUT TYPE=HIDDEN NAME=module VALUE=$op_module>
+ <INPUT TYPE=HIDDEN NAME=precision VALUE=$op_precision>
+ !for o in $oplist
+ <INPUT TYPE=HIDDEN NAME=$o VALUE="$(op_$o)">
+ !next o
+ <TABLE WIDTH="90%" BORDER=0 CELLSPACING=0 CELLPADDING=3 BGCOLOR="$op_color">
+ <TR>$content 
+ </TD></TR></TABLE></FORM>
+ !reset op_module, op_color, op_size, op_precision
+!next s
+
+!if noremark notwordof $wims_read_parm
+ <p><small><b>Remark.</b>
+ All the above forms are independent from the Wims server
+ and from each other. So that they will also work within your own web pages
+ (but only online). You can save this page, open its source, and copy the forms
+ you want into your own page, possibly with modifications.
+ </small>
+!endif 
+<p>
+

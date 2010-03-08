@@ -1,0 +1,134 @@
+type=datalist
+textarea="datatrue datafalse explain"
+
+:Choisir les phrases vraies parmi une liste proposée.
+Un certain nombre de phrases sont proposées dans une liste. Il faut repérer
+et noter celles qui sont vraies. Les bonnes et les mauvaises phrases sont
+tirées au hasard parmi des listes respectives. Le nombre de bonnes phrases
+dans chaque présentation n'est pas forcément fixe.
+<p>
+Plus les données (les phrases) sont abondantes, plus l'exercice est
+aléatoire et répétable. Mais vous pouvez aussi faire des exercices avec
+juste ce qu'il faut comme phrases mais pas plus. Ce sera dans ce cas un QCM
+avec plusieurs bons choix.
+<p>
+Auteur du modèle : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'entete ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Vrai/faux multiple}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Nombre de phrases à présenter.
+\integer{tot=4}
+
+:Minimum de phrases vraies dans chaque exercice présenté. Au moins 1.
+\integer{mintrue=1}
+
+:Minimum de phrases fausses dans chaque exercice présenté. Au moins 1.
+\integer{minfalse=1}
+
+:Les phrases vraies. Une phrase par ligne, point-virgule non-admis.
+Evitez les phrases trop longues !
+$embraced_randitem
+\matrix{datatrue=
+A tension égale, le courant passant par un résistor est inversement proportionnel à sa résistance.
+A courant égal, la tension sur un résistor est proportionnelle à sa résistance.
+Le courant passant par un résistor est proportionnel à la tension appliquée.
+La puissance dissipée par un résistor est proportionnelle au carré de la tension appliquée.
+La puissance dissipée par un résistor est proportionnelle au carré du courant.
+A tension alternative égale, le courant passant par un condensateur est proportionnel à la capacité.
+A courant égal, la tension alternative sur un condensateur est inversement proportionnelle à la capacité.
+A tension alternative égale, le courant passant par un solénoïde est inversement proportionnel à l'inductance.
+A courant égal, la tension alternative sur un solénoïde est proportionnelle à l'inductance.
+Un condensateur idéal ne consomme pas d'énergie.
+Un solénoïde idéal ne consomme pas d'énergie.
+}
+
+:Les phrases fausses. Une phrase par ligne, point-virgule non-admis.
+Evitez les phrases trop longues !
+$embraced_randitem
+\matrix{datafalse=
+A tension égale, le courant passant par un résistor est proportionnel à sa résistance.
+A courant égal, la tension sur un résistor est inversement proportionnelle à sa résistance.
+A courant égal, la tension sur un résistor est indépendante de sa résistance.
+A tension égale, le courant passant par un résistor est indépendant de sa résistance.
+Le courant passant par une diode est proportionnel à la tension appliquée.
+La puissance dissipée par un résistor est proportionnelle à la tension appliquée.
+La puissance dissipée par un résistor est proportionnelle au courant.
+A tension alternative égale, le courant passant par un condensateur est inversement proportionnel à la capacité.
+A courant égal, la tension alternative sur un condensateur est proportionnelle à la capacité.
+A tension alternative égale, le courant passant par un condensateur est indépendant de la capacité.
+A tension continue égale, le courant passant par un condensateur est proportionnel à la capacité.
+A courant égal, la tension continue sur un condensateur est inversement proportionnelle à la capacité.
+A courant égal, la tension alternative sur un condensateur est indépendante de la capacité.
+A tension alternative égale, le courant passant par un solénoïde est proportionnel à l'inductance.
+A courant égal, la tension alternative sur un solénoïde est inversement proportionnelle à l'inductance.
+La puissance dissipée par un condensateur est proportionnelle {à,au carré de} la tension appliquée.
+La puissance dissipée par un condensateur est proportionnelle {au,au carré du} courant.
+La puissance dissipée par un solénoïde idéal est proportionnelle {à,au carré de} la tension appliquée.
+La puissance dissipée par un solénoïde idéal est proportionnelle {au,au carré du} courant.
+}
+
+:Mots d'option.
+Ajoutez le mot "split" à la définition si vous voulez donner une note
+partielle pour des réponses partiellement correctes.
+\text{option=split}
+
+:Le texte qui explique ce qu'il faut faire.
+$embraced_randitem
+\text{explain=Parmi les affirmations suivantes, lesquelles sont vraies ? Marquez-les.}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{datatrue=wims(nonempty rows \datatrue)}
+\text{datafalse=wims(nonempty rows \datafalse)}
+\integer{truecnt=rows(\datatrue)}
+\integer{falsecnt=rows(\datafalse)}
+\integer{tot=\tot > min(\truecnt,\falsecnt)?min(\truecnt,\falsecnt)}
+\integer{mintrue=\mintrue<1?1}
+\integer{minfalse=\minfalse<1?1}
+\integer{mintrue=\mintrue>\tot-1?\tot-1}
+\integer{minfalse=\minfalse>\tot-1?\tot-1}
+\integer{tot<\mintrue+\minfalse?\mintrue+\minfalse}
+\text{tsh=shuffle(\truecnt)}
+\text{fsh=shuffle(\falsecnt)}
+\text{true=row(\tsh,\datatrue)}
+\text{false=row(\fsh,\datafalse)}
+\integer{truepick=randint(\mintrue..\tot-\minfalse)}
+\text{pick=row(1..\truepick,\true);row(1..\tot-\truepick,\false)}
+\text{ind=wims(makelist 1 for x=1 to \truepick),wims(makelist 0 for x=1 to \tot-\truepick)}
+
+\text{sh=shuffle(\tot)}
+\text{ind=item(\sh,\ind)}
+\text{pick=row(\sh,\pick)}
+\text{pick=wims(embraced randitem \pick)}
+\text{ans=positionof(1,\ind)}
+\text{list=wims(values x for x=1 to \tot)}
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+\statement{\explain
+
+<p><center><table border=0 cellspacing=4>
+\for{i=1 to \tot}{
+ <tr><td nowrap>\embed{reply 1,\i}.</td>
+ <td>\pick[\i;]</td></tr>
+}
+</table></center>
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+
+\answer{La réponse}{\ans;\list}{type=checkbox}{option=\option}
+

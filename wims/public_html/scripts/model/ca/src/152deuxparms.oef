@@ -1,0 +1,57 @@
+type=first
+textarea="explain"
+random="x y"
+computed="ans"
+
+:Une question numérique avec deux paramètres aléatoires.
+
+La réponse numérique est calculée en fonction des valeurs aléatoires de deux
+paramètres, suivant différentes formules.
+<p>
+Auteur du modèle : Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'entete ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Deux paramètres}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Premier paramètre \x.
+\real{x=randint(5..20)*20}
+
+:Deuxième paramètre \y.
+\real{y=randitem(20,25,30,35,40,60)}
+
+:La bonne réponse calculée.
+Toutes les fonctions usuelles sont reconnues. On utilise \x et \y pour
+désigner les paramètres aléatoires définis en haut.
+\real{ans=\x*(100-\y)/100}
+
+:Le texte qui explique ce qu'il faut faire.
+$embraced_randitem
+\text{explain=
+Un vêtement de mode coûte \x euros en temps normal dans un magasin. Pendant
+la période de solde, le magasin affiche une baisse de \y pourcents sur la
+pièce. Quel est le prix soldé (en euros) ?
+}
+
+:%% Calculs à ne pas modifier
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+\statement{\explain
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+
+\answer{Ma réponse}{\ans}{type=number}
+
