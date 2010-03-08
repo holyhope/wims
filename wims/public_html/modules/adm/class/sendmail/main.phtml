@@ -13,7 +13,7 @@ $module_title\
  to $wims_menu_items
  
 !if $error!=$empty
-  !read lang/msg.phtml.$moduclass_lang
+  !read msg.phtml
   !set job=
 !endif
 !if $cmd!=reply or $error!=$empty
@@ -59,30 +59,12 @@ $name_expert0
 <p>
 !formradio job list select prompt <b>$name_select</b>:
 $name_expert1
-!set  select_option=style="width: 225px;" multiple="multiple" size="10" 
 
-<center><table border="0" cellpadding="10" cellspacing="0"><tr>
-  <td valign="top">
-  <select  $select_option name="select_user1" ondblclick="moveSelections(this.form.elements['select_user1'], this.form.elements['select_user2'], this.form.elements['select_user'], 'add')">
-  $option
-</select></td>
-  <td align="center">
-<input name="add" value=" &gt;&gt; " type="button" 
-  onclick="moveSelections(this.form.elements['select_user1'], this.form.elements['select_user2'], this.form.elements['select_user'], 'add'); return false;"
->
-<br>
-<input name="remove" value=" &lt;&lt; " type="button" onclick="moveSelections(this.form.elements['select_user1'], this.form.elements['select_user2'], this.form.elements['select_user'], 'remove'); return false;"
->
-</td>
-<td valign="top">
-  <select $select_option name="select_user2" ondblclick="moveSelections(this.form.elements['select_user1'], this.form.elements['select_user2'], this.form.elements['select_user'], 'remove')">
-$option_select
-</select>
-<select style="overflow: hidden; visibility: hidden; width: 1px; height: 0;" name="select_user" multiple="multiple" size="10">
-	$option
-</select></td>
-</tr>
-</table>
+!set wims_chooselist_select=$option
+!set wims_chooselist_checked=$option_select
+
+<center>
+!read js/chooselist.phtml select_user1,select_user2,select_user
 </center>
 
 <p>
@@ -107,7 +89,7 @@ $name_expert3
 !endif
 !if $confirm=$empty and $reg!=
  !if $email_exists=0
- $list_user$list_noemail
+!! $list_user$list_noemail
   !if $list_user$list_noemail notsametext
   $name_noemail
   ($wims_name_Login : $(list_noemail[3]))
@@ -115,7 +97,8 @@ $name_expert3
    $name_nouser
   !endif
   <p>
-  !href cmd=resume $wims_name_back2
+  !set wims_menu_items=!append line back2,1,cmd=resume\
+ to $wims_menu_items
   !goto end
  !endif
 $name_warning
@@ -129,6 +112,7 @@ $msg
 <pre>
 $list_user
 </pre>
+<p>
 !if $list_noemail notsametext
 $name_noemail2
 <pre>

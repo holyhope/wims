@@ -1,0 +1,31 @@
+!!! wims_chooselist_checked
+!!! wims_chooselist_select
+!!! wims_chooselist_option
+!!! select : names of the three variables left form, right form, invisible form
+!set select_=!words2items $wims_read_parm
+
+!set cnt_chooselist=!linecnt $wims_chooselist_select
+!default wims_chooselist_option=style="width:200px;" multiple="multiple" size="$[max(min($cnt_chooselist,15),2)]" 
+<table id=wims_chooselist border="0" cellpadding="10" cellspacing="0">
+ <tr>
+  <td valign="top">
+   <select  $wims_chooselist_option name="$(select_[1])"
+   ondblclick="moveSelections(this.form.elements['$(select_[1])'], this.form.elements['$(select_[2])'], this.form.elements['$(select_[3])'], 'add')">
+  $wims_chooselist_select
+  </select>
+  </td>
+  <td align="center">
+  <input name="add" value=" &gt;&gt; " type="button" onclick="moveSelections(this.form.elements['$(select_[1])'], 
+   this.form.elements['$(select_[2])'], this.form.elements['$(select_[3])'], 'add'); return false;">
+<br>
+   <input name="remove" value=" &lt;&lt; " type="button" onclick="moveSelections(this.form.elements['$(select_[1])'], 
+   this.form.elements['$(select_[2])'], this.form.elements['$(select_[3])'], 'remove'); return false;">
+  </td>
+  <td valign="top">
+   <select $wims_chooselist_option name="$(select_[2])" ondblclick="moveSelections(this.form.elements['$(select_[1])'], 
+   this.form.elements['$(select_[2])'], this.form.elements['$(select_[3])'], 'remove')">$wims_chooselist_checked</select>
+   <select style="overflow: hidden; visibility: hidden; width: 1px; height: 0;" name="$(select_[3])" 
+   multiple="multiple" size="10">$wims_chooselist_checked</select>
+  </td>
+ </tr>
+</table>
