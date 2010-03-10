@@ -272,10 +272,10 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    Onderhoud van de klas op een netwerkverbonden server\
    lokale klas, klas op een netwerkverbonden server\
    klas configuratie, lijst met studenten, gemiddelde cijfers, cijfer details, alles behalve klas configuratie\
-   KIas op de netwerkverbonden server\
-   Netwerkverbonden server\
    Synchroniseren\
    (met de andere klas) van\
+   KIas op de netwerkverbonden server\
+   Netwerkverbonden server\
    Onderhoud\
    Verwijder de klas op de verbonden server\
    De verbinding met de verbonden server werkt.\
@@ -297,7 +297,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver
+   wims_name_server,name_listserver1
 
  !goto commun
 !endif

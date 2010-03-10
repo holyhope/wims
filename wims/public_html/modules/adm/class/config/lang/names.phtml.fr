@@ -264,41 +264,42 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
 !endif
 
 !if $job=connect
- !set title=Se connecter aux autres serveurs / plate-formes
- !set name_listserver=Liste de connexions des serveurs
+ !set title=Se connecter à d'autres serveurs / plate-formes
+ !set name_listserver=Liste des serveurs
 
- !distribute lines Test a server connection\
-   Test a connected class\
-   Add a connecting class\
-   Manage a connected class\
-   local class, remote class\
-   class definition, user list, score averages, score details,all but class definition\
-   Remote class\
-   Remote server\
-   Synchronize\
+ !distribute lines Tester une connexion avec un serveur\
+   Tester la connexion avec la classe distante\
+   Ajouter une classe distante\
+   Gérer une classe distante\
+   classe locale, classe distante\
+   définition de la classe,liste des participants, moyenne de notes, détails des notes,tout sauf la definition de la classe\
+   Synchroniser\
    (with the other one) for\
-   Manage\
-   Destroy remote class\
-   This connection to the remote server is working.\
-   The connection has been added to your class, but the remote server returns an error message\
-   The remote server does not reply. Please report to the\
-  The connection is rejected by the remote server. Error message\
-  Checked remote class\
-  This connection is working. Data returned from the remote class\
-  To connect to a class on the above server, please specify\
-  Identifier of the remote class\
-  If the remote class is empty, the server will create a new class on the remote server, duplicating the properties of this one.\
-  Automatically update the remote class for changes made on this one\
-  Allow the remote class to modify this one\
-  This class has no connections to other servers.\
-  You have declared the following connections to other servers.\
-  Server\
-  Actually, this WIMS server has the following connectable servers.\
+   Classe distante\
+   Serveur distant\
+   Gérer\
+   Détruire une classe distante\
+   La connexion avec le serveur distant est établie.\
+   Une connexion a été ajoutée à votre classe, mais le serveur distant a renvoyé un message d'erreur\
+   Le serveur distant ne répond pas. Faire un rapport à\
+   La connexion a été rejetée par le serveur distant. Message d'erreur\
+   Classe distante vérifiée\
+   La connexion a été établie. Données envoyées par la classe distante\
+   Pour se connecter à une classe sur le serveur choisi, indiquer\
+   Identifiant de la classe distante\
+   Si la classe distante n'existe pas, le serveur créera une nouvelle classe sur le serveur distant, en utilisant les propriétés de votre classe.\
+   Mettre à jour automatiquement la classe distante en cas de changements dans votre classe\
+   Permettre à la classe distante de modifier votre classe\
+   Cette classe n'a pas de connexion avec l'un de ces serveurs.\
+   Vous avez établi les connexions suivantes avec d'autres serveurs.\
+   Serveur\
+   Ce serveur WIMS peut établir des connexions avec les serveurs suivants.\
+   Actions sur la connexion\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver
+   wims_name_server,name_listserver1,name_connexion_action
 
  !goto commun
 !endif
@@ -566,30 +567,30 @@ commencé, il  n'est plus possible d'effacer des ressources.
 2. Les ressources partagées par plusieurs classes peuvent seulement être
 effacées à partir de la classe maître du partage. Les autres classes doivent
 d'abord
-!href cmd=reply&job=neighbor&job2=sharelist  arrêter le partage
+!href cmd=reply&job=neighbor&job2=sharelist arrêter le partage
  des ressources avant de les effacer.
 !exit
 
 :connect_first_info
-Server / platform connection allows your class to directly communicate with
-one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
+La connexion avec d'autres serveurs / platformes permet à votre classe de communiquer directement avec
+une autre classe sur un autre serveur WIMS ou sur une autre plateforme e-learning. Les participants
+peuvent alors naviguer de manière transparente entre les classes connectées.
 <p>
-In particular, you can mirror this class to a remote WIMS server,
-so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+Par exemple, vous pouvez faire un miroir de cette classe sur un autre serveur WIMS distant,
+de manière à ce que si ce serveur est momentanément indisponible, le travail puisse continuer 
+miroir. Les notes sur le miroir seront ensuite rassemblées plus tard.
 !exit
 
 :connect_first
 
-This WIMS server has not declared any connectable remote server. In order
- to use this connection feature, the
- <a href="mailto:$wims_site_manager?subject=server connection">site
- manager</a> must declare such remote server, and the remote server must also
- declare this WIMS server as connectable. 
- (The site manager can refer to the file
- <tt>$basedir/log/classes/.connections/myself</tt> for details of how to
- declare site connections.)
+Ce serveur WIMS n'a pas établi de connexions avec un serveur distant. Pour utiliser la possibilité
+de connexion, le
+ <a href="mailto:$wims_site_manager?subject=server connection">gestionnaire du site</a>
+ doit déclarer un serveur distant et le serveur distant doit aussi déclarer ce serveur WIMS 
+ comme pouvant être connecté. 
+ (Le gestionnaire du site peut se référer au fichier
+ <tt>$basedir/log/classes/.connections/myself</tt> pour les détails surla manière de déclarer des
+ serveurs distants.)
  
  !exit
  
