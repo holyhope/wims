@@ -1,7 +1,8 @@
 
 !set sp2=$special_parm2
 !bound sp2 within secure,supervisor,email,lang,level,limit,expiration,modtoolchg,\
-	bgcolor,homepage,bgimg,theme,css,theme_icon,logo,lock,exolog,examlog,examshow,ent,option,authtype,topscores\
+	bgcolor,homepage,bgimg,theme,css,icon,logo,lock,exolog,examlog,examshow,ent,option,\
+	authtype,topscores,external_auth\
 	default $
 
 !if $sp2=$empty
@@ -38,27 +39,29 @@ one-time passwords (see the password page).
 !exit
 
 :supervisor
- <b>Supervisor name</b>. Enter here your name, in the way you like.
+ <b>Docente</b>. Inserire il proprio nome, come si vuole che appaia.
 !exit
 
 :email
- <b>Supervisor email</b>.
- Important notifications (secret codes, expiration notice, etc.) will be sent
- to this address. This is also where student will send you messages. So you
- MUST give your active email address, otherwise you may even lose control of
- your class.
+ <b>Indirizzo email docente</b>.
+ Informazioni importanti (codici di attivazioni, avvisi di termine,
+ ecc.) vengono spediti all'indrizzo email del docente. &Egrave; anche
+ l'indrizzo a cui gli studenti possono rivolgersi. &Egrave; quindi
+ necessario dare un indirizzo funzionante, altrimenti si può correre
+ il rischio di perdere letteralmente il controllo del corso.
 !exit
 
 :option
- <b>Option words of the class</b>. The following words can be used here:
+ <b>Opzioni avanzate</b>. Si possono utilizzare le seguenti parole chiave:
  <ul>
- <li><tt>showshexpire</tt>. Show the expiration date of worksheets in the
-  home page of participants.
- <li><tt>showexexpire</tt>. Show the expiration date of exam sheets in the
-  home page of participants.
- <li><tt>showshweight</tt>. Show sheet weight in the
-  home page of participants.
- </ul> 
+ <li><tt>showshexpire</tt>. Per mostrare nella home page studenti le
+  date di termine dei test di autovalutazione.</li>
+  <li><tt>showexexpire</tt>. Per mostrare nella home page studenti le
+  date di termine dei temi d'esame.</li>
+  <li><tt>showshweight</tt>. Per mostrare nella home page studenti i
+  pesi assegnati a ciascun compito nel calcolo del punteggio.
+  compito nel calcolo automatico.</li>
+	  </ul> 
 !exit
 
 :lang
@@ -76,33 +79,39 @@ one-time passwords (see the password page).
 !exit
 
 :level
- Meanings of the levels: <ul>
- <li>E1 - E6: Elementary school, year 1 to 6.
- <li>H1 - H6: Secondary school, year 1 to 6.
- <li>U1 - U5: University, year 1 to 5.
- <li>G: University, Graduate study.
- <li>R: Research.
+ Significato dei livelli: <ul>
+ <li>E1 - E6: Elementare, anni scolastici da 1 a 6.
+ <li>H1 - H6: Secondario, anni scolastici da 1 a 6.
+ <li>U1 - U5: Università, anni da 1 a 5.
+ <li>G: Università, studi post-laurea.
+ <li>R: Ricerca.
 </ul>
+<p>NOTA: come si vede i livelli <em>elementare</em> e <em>secondario</em> non
+  combaciano esattamente con la convenzione italiana.</p>
 !exit
 
 :limit
- <b>Participant number limit</b>. Registration of new participants will be
-refused if this limit is reached. This site has defined a hard limit
-($wims_class_user_limit) that cannot be exceeded.
+ <b>Numero massimo di iscritti</b>. Non sarà possibile l'iscrizione di
+ nuovo studenti una volta che questo limite viene raggiunto. Si noti
+ che questo sito impone un massimo di $wims_class_user_limit che non
+ può essere superato.
 !exit
 
 :expiration
- <b>Expiration date</b>. The class will be closed when it reaches the
-expiration date. You may extend this date at any moment, but extensions
-exceeding one year from the actual date will be refused.
+ <b>Data di termine del corso</b>. Il corso sarà automaticamente
+ chiuso e archiviato quando si arriverà alla data indicata. Il docente
+ può incrementare la durata del corso in qualsiasi momento, ma deve
+ inserire una data che sia distante  meno di un anno dal momento in
+ cui effettua la modifica. 
 <p>
- If you want to extend this date to more than one year, you may do it
- in several times at regular intervals, or
- <a href="mailto:$wims_site_manager?subject=Virtual class extension
- demand">ask the site manager</a> to do it for you.
+ Se si ha necessità di estendere la durata del corso oltre un anno, si
+ può fare a più riprese ad intervalli regolari, oppure si puo
+ richiedere una 
+ <a href="mailto:$wims_site_manager?subject=Estensione della durata del corso
+ demand">al gestore del sito</a>.
  <p>
- This date must be entered in 8-digit form (yyyymmdd).
- Example: 20120523 means May 23, 2012.
+ La data deve essere inserita in forma di una stringa di 8 numeri (yyyymmdd).
+ Ad esempio: 20120523 significa 23 maggio 2012.
 !exit
 
 :bgcolor
@@ -147,18 +156,18 @@ and score quality.
 !goto end
 
 :bgimg
- Background image file (tile) for pages in the class. You may use any valid URL.
- There are also prepared background image files which you can use without
- adding any address prefix:<p>
+ Immagine di sfondo per le pagine del corso. Si può inserire un
+ qualsiasi URL o utilizzare una delle seguenti immagini disponibili
+ inserendone il nome come riportato qui di seguito:<p>
  <tt>$bgimgs</tt>
 !exit
 
 :theme
-Le thème de style de votre classe.
+Il tema del corso.
 !exit
 
-:theme_icon
-Les icones qui apparaissent dans les menus
+:icon
+Le icone che appaiono nei menu.
 !exit
 
 :css
