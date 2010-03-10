@@ -11,80 +11,79 @@
 
 !set title=Configurazione e gestione
 
-!distribute items questionari,agenda,\
-	account docenti,forum di discussione,registro delle competenze,\
-	percorsi pedagogici,messaggi del forum\
-	into name_vote,name_cdt,\
-	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
-
 !distribute items zone,iscritti,esercizi,documenti,docenti,test di autovalutazione\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
 !distribute item messaggio del giorno,\
-	esercizio,test di autovalutazione,tema d'esame,documento,studente\
-	into name_motd,name_exo,name_sheet,name_exam,name_doc,name_user
+	esercizio,test di autovalutazione,tema d'esame,documento,\
+	studente,percorsi pedagogici,registro delle competenze,questionari,\
+	agenda,docente,forum di discussione,messaggi del forum\
+	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
+        name_user,name_seq,name_livret,name_vote,\
+	name_cdt,name_sup,name_forum,name_forum_mesg
 
-!distribute item messaggi del giorno,\
+!distribute item messaggio del giorno,\
 	esercizi,test di autovalutazione,temi d'esame,documenti,studenti\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
+
 !if $job=arch
  !set title=Backup e ripristino
- !set name_intro=Potete scaricare un backup del vostro corso, nei formati
+ !set name_intro=Potete creare un backup del vostro corso, nei formati
  !set name_tosend=Per ripristinare una copia di backup del vostro corso
  !set name_namefile=indicate il nome del file di backup
- !set name_help=Il seguito della procedura richiederà quali risorse del corso si vuole effettivamente ripristinare
+ !set name_help=La procedura proseguirà con la richiesta di selezionare quali risorse del corso si vuole effettivamente ripristinare
 
- !set name_deposit=!nosubst Your backup file <tt>$wims_deposit</tt> contains the following resources. \
-Please check those you want to restore to your class.
+ !set name_deposit=!nosubst Il file di backup inviato <tt>$wims_deposit</tt> contiene le seguenti risorse. \
+Selezionate quelle che volete ripristinare.
  
  !set name_no_restore=Cannot be restored because you are sharing resources of\
 	another class. Restoration can only be done on the class originating\
 	the sharing.
 
   !distribute lines Non sono state selezionate risorse da ripristinare.\
-   Restore everything except class configuration and supervisor account.\
- <font color=red>Danger!</font> <small>See notes below.</small>\
-   Class configuration setup.\
-    Supervisor account (including your password)\
-   participant accounts\
-   Existing accounts\
-   documents\
-   Existing documents\
-   exercises\
-   Existing exercises\
-   worksheets\
-   Implies restoration of class exercises\
-   Existing sheets\
-   exam sheets\
-   Implies restoration of work sheets and exercises\
-   Existing exams\
-   forum messages\
-   Existing messages\
-   Participant activity register and server-computed scores. Implies restoration participant accounts.\
-   Teacher-defined grades\
-   Existing grades\
-   un agenda de la classe\
-   un agenda existant\
-   Un livret de compétences\
-   un livret existant\
-   Séquences pédagogiques\
-   Implique la restauration de feuilles de travail, d'exercices, des examens et des documents\
-   Séquences existantes\
-   Restoration method\
-   Replacement\
-   replace existing corresponding resources by restored ones.\
-   Merge\
-   replace existing corresponding resources except participant accounts and class exercises; for the latter, those with the same name will be replaced byrestored data, while the others will remain\
-   Restore the selected resources\
+   Ripristina tutto eccetto la configurazione del corso e l'account docente.\
+ <font color="red">Pericolo!</font> <small>Vedi nota più avanti.</small>\
+   Configurazione del corso.\
+   Account docente (compresa la password)\
+   account studenti\
+   Account esistenti\
+   documenti\
+   Documenti esistenti\
+   esercizi\
+   Esercizi esistenti\
+   test di autovalutazione\
+   Implica il ripristino degli esercizi del corso\
+   Test esistenti\
+   temi d'esame\
+   Implica il ripristino dei test di autovalutazione e degli esercizi del corso\
+   Temi d'esame esistenti\
+   messaggi del forum\
+   Messaggi esistenti\
+   Attività studenti e voti attribuiti dal server. Implica il ripristino degli account degli studenti.\
+   Voti assegnati dal docente\
+   Voti esistenti\
+   Agenda del corso\
+   L'agenda esiste\
+   Registro delle competenze\
+   Il registro esiste\
+   Percorsi pedagogici\
+   Implica il ripristino dei test, degli esercizi, dei temi d'esame e dei documenti\
+   Percorsi esistenti\
+   Metodo di ripristino\
+   Sostituisci\
+   sostituisce le risorse pedagogiche esistenti con quelle contenute nel file di backup\
+   Unisci\
+   sostituire le risorse esistenti eccetto gli account degli studenti e gli esercizi del corso; riguardo a questi ultimi, gli esercizi con lo stesso nome saranno sostituiti dai dati contenuti nel file di backup, mentre gli altri resteranno invariati\
+   Ripristina le risorse selezionate\
  into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore
    
-!distribute lines Backup resources restored to the class\
+!distribute lines Le risorse contenute nel backup sono state ripristinate\
   Il ripristino degli account degli studenti (e dei registri delle attività) non è stato possibile per mancanza di spazio.\
  La data di termine del corso è stata modificata dopo il ripristino, poiché la data impostata nel file di backup è\
 into name_restore1,name_restore2,name_restore3
@@ -93,17 +92,17 @@ into name_restore1,name_restore2,name_restore3
  
  !distribute lines Spiacente, il salvataggio del vostro corso non è andato a buon fine.\
    Ecco il file di backup del vostro corso:\
-  Cliccare qui sopra per salvare il backup sul vostro computer.\
-  &Egrave; anche possibile fare una selezione delle risorse da salvare. Cliccate su \
-  Backup selettivo\
-  \
-  per modificare e salvare il file di backup già generato.\
+  Cliccare sul nome per salvare il backup sul vostro computer.\
+  &Egrave; anche possibile fare una selezione delle risorse da salvare nell'elenco seguente: \
+  <br>Backup selettivo:\
+  seleziona risorse\
+  e modifica il file di backup già generato.\
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
- !set name_download5=Questo file di backup è troppo grande e supera il limite per \
- un ripristino sul server. &Egrave; necessario ridurre le dimensioni del file, \
- per fare ciò è possibile fare un backup selettivo
+ !set name_download5=Attenzione: il file di backup creato è troppo grande e supera le dimensioni per permettere \
+ un futuro ripristino sul server. &Egrave; necessario ridurre le dimensioni del file, \
+ per fare ciò è possibile fare un backup selettivo, scegliendo qui di seguito quali risorse includere nel backup
   
  !goto commun
 !endif
@@ -111,14 +110,14 @@ into name_restore1,name_restore2,name_restore3
 !if $job=clean
  !set title=Manutenzione (pulizia) del corso
  !set name_lines=participant activity lines
- !set name_empty=Your class is empty!<p> There is no resource in your class that can be cleaned up.
- !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
+ !set name_empty=Il corso è vuoto!<p> Non ci sono risorse del corso che possono essere cancellate.
+ !set name_no_erase=Non si può effettuare la pulizia perché le risorse sono condivise da (from) un altro corso.
 
- !distribute lines Clean up everything cleanable\
-   Will also erase activity register\
-   Will also erase exam sheets\
-   Backup the class\
-   Actual resources in your class\
+ !distribute lines Elimina tutto quello che può essere eliminato\
+   Si eliminerà anche il registro delle attività degli studenti\
+   Si elimineranno anche i temi d'esame\
+   Esegui un backup del corso\
+   Risorse effettivamente presenti nel corso\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
   !set name_warning_clean=Resources erased by this page cannot be recovered!
  !goto commun
@@ -185,7 +184,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
   sous peine de confusion. Commencez par vous entendre avec elle et avec toutes les classes avec lesquelles vous\
   voulez partager des ressources. 
-  
+ 
  !distribute lines Relazioni di vicinato\
    non ha dichiarato rapporti di vicinato con il vostro corso\
    vi ha accettato come vicino per\
@@ -464,7 +463,7 @@ Aspetto\
 Registrazione dei voti\
 Indirizzo di una piattaforma esterna\
 di\
-External authentification\
+Autenticazione esterna\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
@@ -502,31 +501,33 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 :arch
 
  State ripristinando risorse che appartengono ad un altro corso.
-  Se ripristinate risorse incompatibili con il vostro corso, elle va
- être simplement détruite.
- !href cmd=help&special_parm=dependencies Perché?
+ Se ripristinate risorse incompatibili con il vostro corso, correte il rischio
+ che vada letteralmente distrutto.
+ !href cmd=help&special_parm=dependencies Perché questo avviene?
  <p>
  !href cmd=reply&job=list Fermatevi
-  se non siete totalmente sicuri di quello che sate facendo. (E in ogni caso
+  se non siete sicuri di quello che sate facendo. (E in ogni caso
   fate un backup dello stato attuale prima di continuare.)
  
  :arch_end
- <p><b>IMPORTANT</b>. <ul><li> There is no check of integrity in your uploaded data,
-and manual modification of the backup archives is not supported by the
-system. Errors introduced by manual modification of archives will result
-in unpredictable behavior of your class.
+ <p><b>IMPORTANTE</b>. <ul><li> Non viene effettuato alcun controllo 
+  sull'integrità dei date che state caricando sul server, modifiche manulai 
+  del file di backup non sono supportate dal sistema. Eventuali errori nelle
+  modifiche manuali possono portare conseguenze imprevedibili.
 
-<li> Whenever possible, avoid restoring 
-<font color=red>class configuration</font> and
-<font color=red>supervisor account</font>.
-Errors in the uploaded data for these two fields may make you
-completely lose control of your class.
+<li>Evitare nei limiti del possibile di ripristinare 
+<font color=red>opzioni di configurazione</font> e 
+<font color=red>account di gestione</font>.
+Errori nel file di ripristino per questi due campi possono
+farvi perdere ogni possibilità di accedere e gestire il vostro corso.
 
-<li> You can use the backup of a class to install a new one. In this case,
-avoid restoring scores and grades (server-computed and manual). These two
-resources cannot be erased once they are installed (security measure).
-And many class maintenance operations will be unavailable if there are
-non-empty score data.
+<li> &Egrave; possibile utilizare il backup di un vecchio corso per 
+impostarne uno nuovo. In questo caso evitare di ripristinare i voti (sia
+quelli assegnati automaticamente dal server, che quelli assegnati manualmente
+dal docente). Si tenga presente che se queste due risorse vengono ripristinate
+poi non possono più essere cancellate (per motivi di sicurezza) e che se
+sono presenti dei voti, alcune funzioni di gestione del corso non sono
+disponibili.
 </ul>
 !exit
 
@@ -623,14 +624,14 @@ You are about to replace an existing $(name_$itype)
 :auth1
 This configuration tool is only accessible to secure hosts.
 <p>
-As you haven't defined any secure hosts, we are checking your authentification
+As you haven't defined any secure hosts, we are checking your autenticazione
 by sending a secret code to your email address. Please check your mail, pick
 the code, and type it below.
 
 !exit
 :auth2
 
-<b>Note</b>. This authentification is to ensure that even if your password
+<b>Note</b>. This autenticazione is to ensure that even if your password
 is stolen or leaked, damages to your class will be limited.
 Defining correct secure hosts will simplify the class
 configuration procedure, while keeping a high security level.
@@ -666,3 +667,6 @@ def.phtml
 $nei_description</font></em> che siete autorizzati a condividere.
 Cliccare qui per accettare
 .
+
+!exit
+
