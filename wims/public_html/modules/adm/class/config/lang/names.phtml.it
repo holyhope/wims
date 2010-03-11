@@ -17,7 +17,7 @@ name_sheets
 
 !distribute item messaggio del giorno,\
 	esercizio,test di autovalutazione,tema d'esame,documento,\
-	studente,percorsi pedagogici,registro delle competenze,questionari,\
+	studenti,percorsi pedagogici,registro delle competenze,questionari,\
 	agenda,docente,forum di discussione,messaggi del forum\
 	into name_motd,name_exo,name_sheet,name_exam,name_doc,\
         name_user,name_seq,name_livret,name_vote,\
@@ -38,9 +38,7 @@ name_sheets
  !set name_deposit=!nosubst Il file di backup inviato <tt>$wims_deposit</tt> contiene le seguenti risorse. \
 Selezionate quelle che volete ripristinare.
  
- !set name_no_restore=Cannot be restored because you are sharing resources of\
-	another class. Restoration can only be done on the class originating\
-	the sharing.
+ !set name_no_restore=Non può essere ripristinato perché state condividendo risorse di un altro corso. Il ripristino può essere effettuato solo a partire dal corso da cui hanno origine le risorse condivise.
 
   !distribute lines Non sono state selezionate risorse da ripristinare.\
    Ripristina tutto eccetto la configurazione del corso e l'account docente.\
@@ -119,25 +117,25 @@ into name_restore1,name_restore2,name_restore3
    Esegui un backup del corso\
    Risorse effettivamente presenti nel corso\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
-  !set name_warning_clean=Resources erased by this page cannot be recovered!
+  !set name_warning_clean=Attezione: le risorse elimitate con questa procedura non possono più essere ripristinate!
  !goto commun
 !endif
 
 !if $job=neighbor
  !set title=Corsi vicini
- !set name_noclass=You cannot define class neighbors because there is no other class on this site.
+ !set name_noclass=Non è possibile definire un rapporto di vicinato perché su questo sito non ci sono altri corsi.
  !set name_toomany=there are too many virtual classes on this site. Please give a keyword\
   to search for classes that you want.
  !set name_toomany2= There are too many classes corresponding to your search. Please\
   give a more precise keyword.
 
- !distribute lines Search for a class\
-  No class is found for your search. Try again.\
-  Neighboring relations between virtual classes allow resource exchange and/or inter-class travel.\
- Click on a class name to change your neighboring properties with it.\
- Classes in the same language as yours\
-  Classes in other languages\
-  Examples\
+ !distribute lines Cerca un corso\
+  Nessun corso trovato. Riprova.\
+  Le relazioni di vicinato tra corsi virguali permettono lo scambio di risorse o la condivisione del lavoro tra i corsi.\
+  Seleziona un corso per modificare la relazione di vicinato con tale corso.\
+  Corsi nella stessa lingua del vostro\
+  Corsi in altre lingue\
+  Esempi\
 into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   name_samelanguage,name_otherlanguage,name_example
 
@@ -147,7 +145,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    per l'altro corso\
    Condivisione reciproca attiva.\
    Voi condividete le sue risorse.\
-   Condividete le vostre risorse.\
+   Avete messo in condivisione le vostre risorse.\
    Permesso reciproco di condivisione.\
    Ha il permesso di condividere le vostre risorse.\
    Vi permette di condividere le sue risorse.\
@@ -155,30 +153,30 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    Condividere\
    importare tutti\
    Teaching resources\
-   Import other resources\
-   Classes allowed to share your resources\
-   Resource allowed\
-   active\
-   Elenco di altri corsi\
-   Importazione delle risorse\
-   Afficher les classes d'exemple du serveur\
-   import resources\
-   You can\
-   of the class\
-   Click here to accept\
+   Importa altre risorse\
+   Corsi autorizzati a condividere le vostre risorse\
+   Risorse di cui autorizzate la condivisione\
+   attive\
+   Elenca tutti i corsi\
+   Informazioni sulla condivisione delle risorse\
+   Mostra gli esempi di corso presenti sul server\
+   importare risorse\
+   Puoi\
+   del corso\
+   Clicca qui per selezionare le risorse da accettare in condivisione\
  into name_declaration,name_sharing,name_byyou,name_other,name_actif,name_share1,name_share2,\
  name_permit1,name_permit2,name_permit3,name_stopsharing,name_share,name_everybodyimport,name_teaching,\
  name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass,name_info,name_exampleclass,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
- !set name_nonewres=!nosubst Il n'y a aucun (nouveau) type de ressources dans la classe \
-  <em><font color=blue>$nei_description</font></em> qu'elle vous autorise à partager. 
+ !set name_nonewres=!nosubst Non ci sono (nuove) risorse nel corso \
+  <em><font color=blue>$nei_description</font></em> che voi siete autorizzati a condividere.
 
  !set name_newres=!nosubst La classe <em><font color=blue>\
   $nei_description</font></em> vous <b>autorise</b> à partager ses
 
- !set name_chooseres=!nosubst Choisissez les ressources que vous <b>autorisez</b> la classe <em><font color=blue>\
-  $nei_description</font></em> à partager&nbsp; (<i>sélectionnez puis cliquez sur <tt>$wims_name_tosave</tt></i>)
+ !set name_chooseres=!nosubst Scegliete i tipi di risorse che <b>mettete a disposizione</b> per il corso <em><font color=blue>\
+  $nei_description</font></em> per una condivizione (<i>selezionate ciascun tipo, quindi cliccate su <tt>$wims_name_tosave</tt></i>)
 
  !set name_warning_authorized=!nosubst La classe <em><font color=blue>$nei_description</font></em>\
   vous autorise à partager certaines ressources. Vous ne devez pas l'autoriser à partager les mêmes ressources \
@@ -190,55 +188,53 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    vi ha accettato come vicino per\
    con\
    Voi state condividendo le risorse di altri corsi\
-   has no importable resources for you\
-   has the following importable resources\
-   Same title in your class\
-   Empty\
-   under preparation\
-   Replace\
-   Login name already in use in your class\
-   Erased user exists in your class\
-   Importation from the class\
-   Successfully transfered\
-   participant accounts from the neighbor\
-   Verify the result\
+   non ha risorse che voi potete importare\
+   vi permette di importare le seguenti risorse\
+   Presenti nel vostro corso con lo stesso titolo\
+   Niente\
+   in preparazione\
+   Sostituisci\
+   Il login è già in uso nel vostro corso\
+   Lo studente escluso è invece presente nel vostro corso\
+   Importazione dal corso\
+   Trasferiti con successo\
+   account studente dal corso vicino\
+   Verifica i risultati\
  into name_neighbor_relation,name_text1,name_text2,name_with,name_sharealready,\
    name_no_ressource,name_importable,name_same_title,name_empty,name_inpreparation,\
    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
    name_neigh_account,name_verify
 
- !set name_inactif=!subst The imported $(name_$itype) is put to inactive status, so that you can\
-  modify it if you wish.
+ !set name_inactif=!subst La risorsa importata $(name_$itype) è <em>in preparazione</em> in modo da poter essere modificata.
  
- !set name_accept=!nosubst Accettate il corso <em><font color=blue>$nei_description</font></em> come vostro vicino?
+ !set name_accept=!nosubst Voi accettate il corso <em><font color=blue>$nei_description</font></em> come vostro vicino per
    
  !if $job2=stopshare
-  !set title=Stop sharing
+  !set title=Interompi la condivisione
   !set name_warning=Il vostro corso ha attività in corso e le risorso condivise \
-   non sono vuote. Se si interrompe la condivisione, non sarà più possibile \
-   ripristinarla. \
+   non sono vuote. Se si interrompe la condivisione ora, non sarà più possibile \
+   ripristinarla in setuigo. \
  <p>Siete sicuri di voler interrompere definitivamente questa condivisione? 
  
- !set name_stop=stop it.
+ !set name_stop=interrompi.
  !endif
  !if $job2=sharelist
-  !set title= Resource sharing information.
-  !set name_sharelist=!nosubst You are sharing $(name_$rec) originating from
-  !distribute lines You are not sharing resources originating from other classes.\
-   You are sharing resources of other classes\
+  !set title= Informazioni sulla condivisione delle risorse.
+  !set name_sharelist=!nosubst Stai condividendo $(name_$rec) che ha origine da
+  !distribute lines Non stai condividendo risorse che hanno origine da altri corsi.\
+   Stai condividendo risorse che hanno origine da altri corsi\
   into name_noresource,name_resource
   !endif
   
   !if $job2=addshare
     !set title=Condividi le risorse del corso
-    !set name_class_share=This class <em><font color=blue>$nei_description</font></em>\
-      allows you to share its following resources.
-  !distribute lines available\
-    You are actually sharing them.\
-    You cannot share them because you are already sharing that of another class.\
-    clean your own resources\
-    if it is possible\
-    Sharing supervisor account is VERY dangerous! \
+    !set name_class_share=Il corso <em><font color=blue>$nei_description</font></em> ti permette la condivisione delle risorse seguenti.
+  !distribute lines disponibile/i\
+    State condividendo.\
+    Non le puoi condividere perché stai condividendo le risorse analoghe da un altro corso.\
+    elimina le risorse del tuo corso\
+    se è possibile\
+    La condivisione dell'acount docente è una cosa MOLTO pericolosa! \
   into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
     name_dangerous
   
@@ -290,11 +286,12 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   You have declared the following connections to other servers.\
   Server\
   Actually, this WIMS server has the following connectable servers.\
+  Azioni sulla connessione\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver1
+   wims_name_server,name_listserver1,name_connexion_action
 
  !goto commun
 !endif
