@@ -1,10 +1,19 @@
 
 !if ..classes/ isin ..$m_ and $wims_user!=$empty
- imagedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=oefimages/$e_
- Imagedir=oefimages/$e_
+ imagedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=oefimages/$thisexo
+ Imagedir=oefimages/$thisexo
  class_header=wimshome/log/classes/$wims_class/
 !else
- imagedir=modules/$m_/images/$e_
+ !set common_images=!defof common_images in wimshome/public_html/modules/$m_/var.proc
+ !if $common_images=yes
+   imagedir=modules/$m_/images
+ !else
+  !if ../datamodule/ isin ../$common_images
+    imagedir=!replace internal datamodule/ by modules/data/ in $common_images
+  !else
+    imagedir=modules/$m_/images/$thisexo
+  !endif
+ !endif
  Imagedir=$httpd_PWD/$imagedir
  class_header=wimshome/public_html/modules/$m_/
 !endif

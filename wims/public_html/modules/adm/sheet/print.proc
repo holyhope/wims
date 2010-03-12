@@ -23,6 +23,7 @@ m_step=1
 !else
   latex_exists=-1
 !endif
+
 !set i=1
 
 !for j=1 to $n
@@ -53,19 +54,21 @@ $ $ in $p_
    !reset exolist
     wims_prefix=
    !read $(class_header)Exindex
-   wims_prefix=$wims_prefix2
-   e=$exolist
+    wims_prefix=$wims_prefix2
+    e=$exolist
   !endif
   !if $e!=$empty
-    e_=!shuffle $e
-    !default e_=$e
-    e_cnt=!itemcnt $e_
-   !for l=1 to $qnum
+    e__=!shuffle $e
+  !endif
+  !default e__=$e
+  e_cnt=!itemcnt $e__
+  !for l=1 to $qnum
      module_$i=$(module_$j)
      title_$i=$(title_$j)
      question_$i=
-     e_$i=$(e_[$[$l%$e_cnt + 1]])
+     e_$i=$(e__[$[$l%$e_cnt + 1]])
    !reset question testcondition format
+   thisexo=$(e_$i)
    !readproc imagedir.proc
    varcnt=!defof varcnt in $(class_header)def/$(e_$i).def
    !default varcnt=0
@@ -163,17 +166,15 @@ $ in $rg_
     !endif
     rep=!imgrename $rep
     ans_$i=!trim $rep
+    !if $latex_exists>=0
+     !readproc oef/latex.proc exo
+    !endif
+    !if $latex_exists>=1
+      !readproc oef/latex.proc end
+    !endif
    !endif
-  !endif
- !endif
- !if $latex_exists>=0
-  !readproc oef/latex.proc exo
+  !next l
  !endif
  !set i=$[$i+1]
- !next l
 !next j
-!if $latex_exists>=1
-  !readproc oef/latex.proc end
-!endif
-
 !set N=$[$i-1]

@@ -5,6 +5,8 @@ $sheet_title
 
 <div class="wims_sheet_desc">$sheet_desc</div><p>
 
+$sheet_remark
+
 !if $error!=$empty
  !changeto lang/msg.phtml.$modu_lang
 !endif
@@ -22,6 +24,7 @@ $sheet_title
  !else
   !if __EXECUTED_ isin $(question_$i) and _EXERCISE__ isin $(question_$i)
    !set e_=$(e_$i)
+   !set thisexo=$e_
    !set m_=$(module_$i)
    !readproc imagedir.proc
    !for k=1 to $(varcnt_$i)+5
