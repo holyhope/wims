@@ -1,11 +1,11 @@
 
-<b>Error</b>.
+<b>$wims_name_Error</b>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
 	doublelang empty nochange noindex nolocalright \
-	nongnu nooriginal noreply noright notallow robot \
-	symlink toolong unpublishable
+	nongnu nooriginal noreply noright noright_translate notallow robot \
+	symlink toolong unpublishable please-update-module-version lengthlimit
  !goto $w1
 !else
  !default $wims_read_parm=A technical error occurred.
@@ -100,6 +100,13 @@ Authentification error. You have no right to publish with this IP number. Access
  Empty submission ignored.
 !exit
 
+:lengthlimit
+  La taille du module dépasse la limite permise. Aussi, ce module ne peut être installé 
+  par cette interface. Vous pouvez vous adresser directement au centre de publication
+  !mailurl $sysadmin $centralhost
+  afin qu'une installation manuelle soit faite.
+!exit
+
 :nochange
  The module <font color=blue><tt>$w2</tt></font>
  is not modified since the last submission.
@@ -147,6 +154,10 @@ Authentification error. You have no right to publish with this IP number. Access
  it for you!
 !exit
 
+:please-update-module-version
+You must increase the module version when you update it. You should also write which modifications
+have been done in the file NEWS.
+!exit
 :robot
  Robot access detected: internal technical error, please report.
 !exit

@@ -1,14 +1,14 @@
 
-<b>Error</b>.
+<b>$wims_name_Error</b>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
 	doublelang empty nochange noindex nolocalright \
-	nongnu nooriginal noreply noright notallow robot \
-	symlink toolong unpublishable
+	nongnu nooriginal noreply noright noright_translate notallow robot \
+	symlink toolong unpublishable please-update-module-version lengthlimit
  !goto $w1
 !else
- !default $wims_read_parm=Une erreur technique est apparue.
+ !default wims_read_parm=Une erreur technique est apparue.
  $wims_read_parm
  !exit
 !endif
@@ -103,6 +103,13 @@
  Envoi vide ignoré.
 !exit
 
+:lengthlimit
+  La taille du module dépasse la limite permise. Aussi, ce module ne peut être installé 
+  par cette interface. Vous pouvez vous adresser directement au centre de publication
+  !mailurl $sysadmin $centralhost
+  afin qu'une installation manuelle soit faite.
+!exit
+
 :nochange
  Le module <font color=blue><tt>$w2</tt></font>
  n'a pas été modifié depuis la dernière publication. Envoi ignoré.
@@ -120,7 +127,8 @@
 !exit
 
 :nongnu
- Vous n'avez pas déclaré le droit d'auteur du module comme étant GNU GPL.
+ Vous n'avez pas déclaré le droit d'auteur du module comme étant GNU GPL
+ ou Creative Commons.
  Envoi refusé.
 !exit
 
@@ -145,10 +153,26 @@
  qui le publiera s'il le désire.
 !exit
 
+:noright_translate
+ Ce module est une traduction d'un autre module. Vous devez donc indiquer qu'il s'agit d'une traduction.
+ Vous pouvez envoyer un fichier de
+ !href cmd=reply&jobreq=backup sauvegarde
+ de votre modification à l'auteur
+ !set au=!line 2 of $wims_read_parm
+ !distribute items $au into w3,w4
+ <a href="mailto:$w4?subject=Your WIMS module $w2">$w3</a>
+ qui le publiera s'il le désire.
+!exit
+
 :notallow
  Vous n'avez pas encore le droit d'ajouter un nouveau module
  dans $D1/$D2. Essayez de le publier en version développement ou
  adressez-vous à quelqu'un ayant ce droit pour le publier pour vous !
+!exit
+
+:please-update-module-version
+Vous devez changer la version du module dont vous faites une mise à jour
+(il est aussi conseillé d'indiquer les modifications faites dans le fichier NEWS).
 !exit
 
 :robot

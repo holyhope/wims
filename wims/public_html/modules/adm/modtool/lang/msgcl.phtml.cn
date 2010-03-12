@@ -1,11 +1,11 @@
 
-<b>错误</b>.
+<b>$wims_name_Error</b>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
     badname badtar badtype badversion badwimsversion \
     doublelang empty nochange noindex nolocalright \
-    nongnu nooriginal noreply noright notallow robot \
-    symlink toolong unpublishable
+    nongnu nooriginal noreply noright noright_translate notallow robot \
+    symlink toolong unpublishable please-update-module-version lengthlimit
  !goto $w1
 !else
  !default $wims_read_parm=发生了技术错误.
@@ -94,6 +94,13 @@
 空的提交被忽略.
 !exit
 
+:lengthlimit
+  The module size is too big. So, you cannot install it by this interface. You must contact directly
+  the publication center
+  !mailurl $sysadmin $centralhost
+  to manage a manual installation.
+!exit
+
 :nochange
 从最新提交后模块 <font color=blue><tt>$w2</tt></font>
 没有修改过. 提交被忽略.
@@ -135,6 +142,11 @@
 :notallow
 你不能在 $D1/$D2 内作新的发布. 请试试发布开发版,
 或找一位有权代你发布的人!
+!exit
+
+:please-update-module-version
+You must increase the module version when you update it. You should also write which modifications
+have been done in the file NEWS.
 !exit
 
 :robot

@@ -1,11 +1,11 @@
 
-<b>Fout</b>.
+<b>$wims_name_Error</b>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
 	doublelang empty nochange noindex nolocalright \
-	nongnu nooriginal noreply noright notallow robot \
-	symlink toolong unpublishable
+	nongnu nooriginal noreply noright noright_translate notallow robot \
+	symlink toolong unpublishable please-update-module-version lengthlimit
  !goto $w1
 !else
  !default $wims_read_parm=Er deed zich een technische storing voor.
@@ -103,6 +103,13 @@
  De lege module wordt genegeerd !
 !exit
 
+:lengthlimit
+  The module size is too big. So, you cannot install it by this interface. You must contact directly
+  the publication center
+  !mailurl $sysadmin $centralhost
+  to manage a manual installation.
+!exit
+
 :nochange
  De  module <font color=blue><tt>$w2</tt></font> is niet veranderd sinds de laatste keer dan U de module hebt opgestuurd.
  De upload wordt dus genegeerd.
@@ -149,6 +156,11 @@ Netwerkfout : kon geen verbinding maken met de centrale publicatie server $centr
  U kunt geen nieuwe publicaties in $D1/$D2 maken.
  Probeer het onder "ontwikkelings versie" te publiceren, of zoek iemand die
  wel over de juiste rechten beschikt en die deze publicatie ter hand wil nemen.
+!exit
+
+:please-update-module-version
+You must increase the module version when you update it. You should also write which modifications
+have been done in the file NEWS.
 !exit
 
 :robot
