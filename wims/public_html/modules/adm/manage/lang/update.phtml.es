@@ -2,32 +2,33 @@
   !goto $wims_read_parm
 !endif
 
-!distribute lines Testing mode. Will only write to the testing directory.\
-  WIMS system update is under way. Here is the current script output summary.\
-  It is the most recent public version of the software. You don't need to update.\
-  The most recent public version is\
-  You are more recent than the public version! Nothing to update to.\
-  Output of last update\
-  summary\
-  Click here\
+!distribute lines Método de prueba. Escribirá solamente en el directorio prueba. \
+La actualización del sistema Wims está en curso. Ahí tienes el resumen de la escritura de salida actual. \
+Es la versión pública más reciente del programa informático. No necesitan actualización. ¡\
+La versión pública más reciente es \
+Ustedes son más reciente que la versión pública!  Ninguna actualización pendiente. \
+Salida de la última actualización \
+resumen \
+Pulsan aquí \
+
 into name_test,name_warning, name_mostrecent,name_mostrecent2,name_morerecent,\
   name_output,name_summary,name_click
-  
-!set name_sorry=!subst Sorry, we have failed to download the new WIMS version from <tt>$download</tt>. Please try again later.
-!set name_summary=!subst Summary of the last update: (Please send it to $wims_maintainer in case of error.)
-!set name_detailed=!subst Detailed output of the last update: (Please send it to $wims_maintainer in case of error.)
-!set name_sorry2=!subst Sorry, the WIMS download site <tt>$download</tt> is unreachable.
-!set name_version=!subst This WIMS site is currently under version $wims_version.
+
+!set name_sorry=!subst Afligido, la carga a distancia de la nueva versión de Wims a partir <de tt> $download< /tt> ha fallado. Intente más tarde, por favor.
+!set name_summary=!subst Resumen de la última actualización: (Enviar lo a $wims_maintainer en caso de error.)
+!set name_detailed=!subst Salida detallada de la última actualización: (Enviar lo a $wims_maintainer en caso de error.)
+!set name_sorry2=!subst Afligido, el lugar de carga a distancia <tt> $download< /tt> es  inaccesible.
+!set name_version=!subst Este sitio WIms está actualmente en versión $wims_version.
 
 !exit
 :update
-to download WIMS $pubversion from <tt>$download</tt> and update the
-server. <b><font color=red>$wims_name_warning</font></b> This will create
-momentary unavailabilities of the server.
-<em>Don't update when the server is busy.</em>
+para cargar a distencia WIMS $pubversion de <tt>$download</tt> y poner al dia
+el servidor. <b><font color=red>$wims_name_warning</font></b> Eso creará
+indisponibilidades momentáneas del servidor.
+<em>No ponen al día si el servidor está ocupado.</em>
 <p>
-<b>Note</b>. Updating the server will not disturb your local resources on it
-(classes, exercises, documents, modules under development).
+<b>Note</b>. La actualización del servidor no modificará sus recursos locales
+(clases, ejercicios, documentos, módulos en desarrollo).
 <p>
-<b><font color=red>IMPORTANT</font></b> You must make a file permissions
-check after the software update!
+<b><font color=red>IMPORTANTE</font></b> ¡Deben comprobar
+los derechos sobre los ficheros después de las actualizaciones!
