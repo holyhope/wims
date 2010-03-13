@@ -72,6 +72,16 @@ wims_prefix=$wims_prefix2
   !distribute words $l into c_,n_,w_
   v_=$($n_)
   !if $catname isitemof $c_
+   !!! check the download center
+   !if housekeep iswordof $catname and $i=35
+     webget_output=test_exists_site
+     !exec webget $(conf_$i)/index.gz
+     download_site_exists=!record 0 of wimshome/sessions/$wims_session/$webget_output
+     !if HTTP 404 isin $download_site_exists or $download_site_exists=$empty
+       error=no_download_sites
+       !exit
+     !endif HTTP
+   !endif housekeep
    v_=$(conf_$i)
    v_=!trim $v_
    v_=!singlespace $v_
