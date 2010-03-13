@@ -56,6 +56,9 @@ WIMS $module_title [$lang]
 WIMS $module_title [$module_language]
     !set module_about_maintainer=!nosubst $table_tr<th>$$wims_name_Maintainer</th><td>$module_about_mt</td></tr>
   !endif
+  !if $module_data!=$empty
+    !set module_data_tr=$table_tr<th>$$wims_name_datamodule</th><td>$module_data</td></tr>
+  !endif
   !set module_about=$module_about \
    $$wims_name_This_is_a_module $$wims_name_WIMS_subtitle (<a href="$wims_ref_name?module=help/main.fr&amp;chapter=1&amp;open=1_intro" target="_blank" title="Web Interactive Multipurpose Server">WIMS</a>).<br>\
    $table_header\
@@ -75,6 +78,6 @@ WIMS $module_title [$module_language]
    $module_about_maintainer\
    $module_about_tr\
    $table_tr<th>$$wims_name_Copyright</th><td>$module_copyright</td></tr>\
-   $table_tr<th>$$wims_name_datamodule</th><td>$module_data</td></tr>\
+   $module_data_tr\
    $table_end<br>\
    
