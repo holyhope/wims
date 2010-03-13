@@ -42,8 +42,13 @@
 !readproc $deffile latex
 !set wims_backslash_insmath1=$wims_backslash_insmath
 !set wims_backslash_insmath=no
-!set latex_src=!replace internal &#36; by $ $$$$$$$$$$$$$$$$ $  in $latex
+!set latex_src=!replace internal $  $ by $\
+$ in $latex
+!set latex_src=!replace internal $ $\ by $\
+$\  in $latex_src
 
+!set latex_src=!replace internal &#36; by $ $$$$$$$$$$$$$$$$ $  in $latex_src
+!!debug $latex_src
 !if $latex_src!= 
   !set latex_exists=1
 !endif
@@ -52,7 +57,7 @@
 \
 $latex_src\
 
-!set wims_backslash_insmath=$$wims_backslash_insmath1
+!set wims_backslash_insmath=$wims_backslash_insmath1
 !exit
 :end 
 
