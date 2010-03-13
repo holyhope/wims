@@ -2,7 +2,7 @@
 
 !set name_intromain=Esta utilidad le permite al administrador del sitio llevar en línea el mantenimiento\
  de la instalación WIMS. El acceso a ella está controlado estrictamente mediante\
- definiciones en el fichero de configuración 
+ definiciones en el fichero de configuración
 
 !!!list
  !distribute lines Tras la compilación es necesario configurar la seguridad de la instalación. ¡Por favor ejecute bin/wrapuid como root!\
@@ -35,9 +35,9 @@ if $job=access
     minuto\
     minutos\
     hora\
-    houras\
+    horas\
     últimos\
-    since\
+    desde\
     Número de peticiones\
     Sesiones activas en los últimos 10 minutos\
     Sesión\
@@ -51,7 +51,7 @@ if $job=access
 
 !if $job=attrib
   !set title=Comprobación de los permisos de los ficheros
-  
+
   !distribute lines  Todos los permisos de acceso de esta instalación de WIMS están en modo seguro.\
   Los siguientes archivos/directorios pueden ser leídos por otros y no deberían\
   Hay un número muy grande de ficheros y directorios legibles por otros, lo que no debería de ocurrir.\
@@ -67,7 +67,7 @@ if $job=access
 into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
   name_attrib11
-  
+
   !set name_warning1=WIMS directories should not contain files belonging to others.\
   Now you MUST manually check the origin of these files, and either erase\
   them, or change their ownership.
@@ -98,7 +98,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !endif
 
 !if $job=badconf
-  
+
   !set name_warning1=!nosubst ¡El fichero $fname tiene permisos de lectura por todo el mundo!\
    Hay un riesgo serio de que se haya producido una filtración de la configuración \
    del administración del sitio y/o su contraseña. DEBE cambiar ahora mismo las \
@@ -114,28 +114,28 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set title=
   !distribute lines Pulse aquí\
    para configurar la normativa de acceso del sitio con respecto a las clases virtuales.\
-    There is no virtual class corresponding to your search. \
+    No hay clase virtual correspondiente a su búsqueda. \
     Lista de clases de este sitio\
     creada\
     expira\
     se refiere al número de horas de conexión acumuladas en el último mes.\
-    best class activity on this period.\
-    Participant\
-    List of independent classes\
-    means cumulative hour.student connexion since\
-    best class of cumulative connection hours since\
-    Your WIMS virtual class\
-    List of classes\
+    mejor actividad de clase, en este período.\
+    Participante\
+    Lista de clases independientes\
+    significa la conexión del alumno acumulativa de hora desde\
+    mejor clase de horas de conexión acumulativa desde\
+    Su clase virtual de WIMS\
+    Lista de clases\
     carga\
-    format\
+    formato\
   into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
   name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
   name_load,name_format
- 
+
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
   !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
-  
+
   if $job2 iswordof modify erase
   !set title=
   !distribute lines Propiedades importantes de la clase virtual \
@@ -150,16 +150,16 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
      notificar al superviso\
      de la clase acerca de sus cambios.\
      Otras clases\
-     Limit of participants\
-    Are you sure you want to erase this class?\
-    Your WIMS virtual class\
-    WIMS class modification\
+     Límite de participantes\
+    ¿Está seguro de querer borrar esta clase?\
+    Su clase virtual de WIMS\
+    Modificación de una clase de Wims\
   into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
     name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
     name_yourclass,name_yourclassmod
   !set name_creation=!nosubst is created on $class_creation and
   !set name_expires=expires on
-  
+
   !set name_remark=<b>Nota</b>. Los cambios en estos campos sólo tienen sentido si es el \
      profesor responsable de la clase el que los solicita (y ha perdido el  control de la clase).\
      Usted probablemente debería
@@ -174,25 +174,25 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !distribute lines La configuración no ha cambiado porque no ha hecho modificaciones.\
      por defecto\
    into name_config,name_default
- 
+
   !set name_updated=!nosubst   El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar \
   la información de configuración antigua en <tt>$backdir/wims.conf.old</tt>.
-  
+
   !set name_warning=<<b>Nota</b>. Los parámetros con un asterisco `*' en su título son importantes.\
 Los que tienen un signo de peligro `!' pueden dañar la instalación si comete algún error.\
 De todas formas recuerde que si borra el fichero <tt>log/wims.conf</tt>\
 volverá a empezar con una configuración por defecto. También puede recuperar\
 las configuraciones guardadas en el directorio log.
 !!confcat=6
- !distribute lines Click here\
-   for backup management and\
-   here\
-  for manual module management.\
+ !distribute lines Pulsar aquí \
+   para administrar las protecciones y \
+   aquí\
+  para administrar su módulo manualmente.\
  into name_click,name_backup,name_here,name_manual
 !!ressources
   !set name_config_site=para configurar las normas de restricción de acceso del sitio.
 
-!!graphics and software 
+!!graphics and software
    !distribute line para comprobar los efectos de la nueva configuración.\
    Compruebe las aplicaciones de cálculo utilizadas por numerosos módulos de WIMS\
    si quiere comprobar las aplicaciones gráficas\
@@ -201,12 +201,12 @@ las configuraciones guardadas en el directorio log.
    disponibilidad\
    No disponible\
    Ejemplo de módulos que dependen de él\
-   to check the effect of the new setup\
+   Para comprobar los efectos del nuevo ajuste\
    Este software va normalmente incluido en la distribución de WIMS. Quizás  haya fallado su compilación o usted la ha excluido deliberadamente.\
  into name_check,name_checksoftware,name_checkgraphics,name_command,name_importance,\
    name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
-   
-   
+
+
 !set name_warning_program=WIMS no ha podido encontrar los siguientes programas que usan algunos de sus\
  módulos. Estas aplicaciones o bien no están instaladas en el sistema\
  (en cuyo caso por favor instálelas) o bien están instaladas en un directorio\
@@ -215,7 +215,7 @@ las configuraciones guardadas en el directorio log.
 !set name_imagemagick=<b>ERROR</b>! No hemos encontrado una instancia funcional de ImageMagick en su sistema.\
  Sin este paquete la mayoría de las imágenes y animaciones de WIMS estarán mal.\
  En consecuencia le recomendamos vivamente que instale ImageMagick antes de continuar.
- 
+
 !set name_dynamic=Comprobar las imágenes dinámicas (puede plantearse hacerlo en distintos navegadores)
 
 !set name_tex=Esta fórmula usa una inserción dinámica escrita en TeX. Debería verse correctamente, a no ser \
@@ -229,7 +229,7 @@ las configuraciones guardadas en el directorio log.
 
 
 !set name_gnuplot1=La siguiente representación gráfica usa gluplot.
-!set name_gnuplot2= Las curvas deben tener colores 
+!set name_gnuplot2= Las curvas deben tener colores
 diferentes. Si el resultado no es correcto pruebe con distintos formatos gráficos.
 !set name_povray1=La siguiente imagen de traza de rayos es independiente de los formatos anteriores. \
 Si no aparece, entonces
@@ -244,7 +244,7 @@ Si no aparece, entonces
  !distribute  Se ha encontrado una tarea cron (crontab) instalada a mano. Debe o bien continuar admnistrando las tareas de cron de forma manual o bien borrar este fichero crontab antes de pasar a utilizar la herramienta en línea. ¡Nunca use esta herramienta si tiene un crontab personalizado!\
     Error extraño: no pudo recuperar mi directorio de trabajo. Compruebe su instalación: no funciona normalmente.\
    Trabajos de mantenimiento disponibles\
-   Copia de seguridad de los datos a last\
+   Copia de seguridad de los datos a las\
    elija una hora en la que el servidor no esté ocupado\
    Contabilidad de la actividad (necesaria para las estadísticas del sitio)\
 into name_manually,name_warning,name_strange,name_available,name_daily,name_notbusy,name_accounting
@@ -255,7 +255,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
 
 !if $job=del1
   !set name_warning=¿Está seguro de que quiere borrar la cuenta de desarrollador
-  
+
  !exit
 !endif
 
@@ -276,7 +276,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
       ¿De verdad quiere borrar el fichero\
      modificado por última vez\
      bytes\
-     es una image\
+     es una imagen\
      es un fichero binario\
      es demasiado largo para poder mostrarlo o editarlo.\
      Este fichero pertenece a la distribución, no debería ser modificado.\
@@ -284,7 +284,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
      Contenido de\
    into name_file,name_erase,name_last,name_bytes,name_image,name_binary,name_toolong,\
    name_distrib,name_download,name_content
-     
+
 !exit
 !endif
 
@@ -322,7 +322,7 @@ de este sitio. No está autorizado a acceder a este módulo.
  está ya siendo usado por otra cuenta. Por favor escoja otro identificador.
   !set name_error2=!nosubst <b>Error</b>. No ha introducido el campo <tt>$badfield</tt> correctamente.\
  Por favor corríjalo.
-  
+
 !exit
 !endif
 
@@ -348,16 +348,16 @@ de este sitio. No está autorizado a acceder a este módulo.
      notificar al superviso\
      de la clase acerca de sus cambios.\
      Otras clases\
-     Limit of participants\
-    Are you sure you want to erase this class?\
-    Your WIMS virtual class\
-    WIMS class modification\
+     Limite de participantes\
+    ¿Está seguro de querer borrar esta clase?\
+    Su classe virtual de Wims\
+    Modificación de una clase Wims\
   into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
     name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
     name_yourclass,name_yourclassmod
   !set name_creation=!nosubst is created on $class_creation and
   !set name_expires=expires on
-  
+
   !set name_remark=<b>Nota</b>. Los cambios en estos campos sólo tienen sentido si es el \
      profesor responsable de la clase el que los solicita (y ha perdido el  control de la clase).\
      Usted probablemente debería
@@ -374,7 +374,7 @@ de este sitio. No está autorizado a acceder a este módulo.
     modificados al menos hace\
     días\
   into name_mod,name_zone,name_cat,name_change,name_ago
-  
+
   !distribute lines Error en la descarga del módulo \
       Error al instalar/actualizar\
       Instalación/actualización de\
@@ -388,11 +388,11 @@ de este sitio. No está autorizado a acceder a este módulo.
        Cambios\
        Nueva versión de\
        Módulo nuevo\
-        Tiene que\
+       Tiene que\
       después de una actualización de módulos.\
       Pulse aquí\
       para configurar la actualización diaria automática de módulos.\
-      You can also update\
+      Pueden también poner al día\
     into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
       name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
       name_click,name_automatic,name_rss
@@ -420,7 +420,7 @@ de este sitio. No está autorizado a acceder a este módulo.
    !set name_warning2=Se han recuperado/instalado con éxito datos en los siguientes directorios
  !exit
 !endif
- 
+
 !if $job=sess
   !set title=Sesión de usuario
   !distribute lines Contenido de la sesión\
@@ -445,27 +445,27 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
 !endif
 
 !if $job=rss
-   !set title= Rebuild RSS feed
-   !set name_start=to start RSS Feed rebuilding.
+   !set title= Reconstruir la conexión RSS
+   !set name_start=Comenzar a reconstruir la conexión RSS.
  !exit
 !endif
 
 !if $job=otherdownload
-  !set name_text1=Other ressources can be download manually.
-  !set name_shtooka=Download Shtooka ressources (words audio)
+  !set name_text1=Otros recursos pueden cargarse a distancia manualmente.
+  !set name_shtooka=Cargar a distancia los recursos Shtooka (palabras audio)
 
 !exit
 !endif
 
 !if $job=swac
   !set name_mkindex=Make the index
-  !set name_text_swac= You may download the mp3 files of some packages of the Shtooka project.\
-<p>If the modules which call them are intensively used by the wims server, you should do it.\
-If you don't, these modules will look for the mp3 of the site http://shtooka.net\
+  !set name_text_swac= Pueden cargar a distancia los ficheros MP3 de algunos volúmenes del proyecto Shtooka.\
+<p>Si los módulos que los llaman son muy solicitados por el servidor WIms, deberían hacerlo.\
+Si no, estos módulos irán a buscar los ficheros MP3 sobre el sitio http://shtooka.net\
 \
-To download the collections, do it by line command  with the script\
-<tt>$wims_home/bin/swac </tt>. It will install some swac packs at the right space.\
-<p><small>Because of the fact that the files of wims are encoded iso-latin, it's not\
-yet possible to use the cyrillic packs.</small>
+Para cargar a distancia las colecciones, hagan lo por línea de pedido con el script\
+<tt>$wims_home/bin/swac </tt>. Instalará algunos paquetes swac al buen lugar.\
+<p><small>Porque los ficheros wims se cifran ISOlatino, no es aún \
+posible utilizar los paquetes cirílicos.</small>
 !exit
 !endif
