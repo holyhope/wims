@@ -1,11 +1,14 @@
 
 wims_maintainer=wimsdev@cru.fr
-wims_prefix=class mb user DF
+wims_prefix=class mb user DF mu
 wims_prefix2=$wims_prefix
-mu_sites1=!defof downloadsites in wimshome/public_html/bases/sys/publishdata
+mu_sites=!defof downloadsites in wimshome/public_html/bases/sys/publishdata
+!readdef wimshome/log/wims.conf
 !readdef wimshome/src/defaults.conf
-mu_sites=$DF_mu_site
-mu_sitesw=!listuniq $mu_sites,$mu_sites1
+!default mu_site=$DF_mu_site
+musite=$mu_site
+!!for list in help
+mu_sitesw=!listuniq $mu_sites,$DF_mu_site
 mu_sitesw=!items2lines $mu_sitesw
 
 !if $job=tohttps
