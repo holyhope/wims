@@ -8,7 +8,12 @@ wims_helper=chapter=3
  error=no_forum
  !exit
 !endif
-
+!if $wims_class=
+  !read adm/language names.phtml
+!else
+  !read adm/class/classlang names.phtml 
+  !set modu_lang=$moduclass_lang
+!endif
 !read adm/class/authchars
 !if $forume=$empty
  !defread wimshome/log/forums/$forum/.def
