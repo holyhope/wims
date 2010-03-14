@@ -30,26 +30,26 @@
 !set name_expire=Darlo por expirado ahora mismo
 !set name_done=hecho
 
-!distribute items poids,Coeficiente,Puntuación
+!distribute items poids,Coeficiente,Puntuación\
 into name_weight,name_coeff,name_Score
 
 !distribute lines Terminar esta sesión de examen\
 Volver a trabajar en el examen\
 Punto de vista del profesor sobre el examen\
 Presentación a los participantes\
-Detalle de la puntuación actual
-¡Este examen está vacío! No se le ha asignado nada. Posiblemente un error de manipulación de su supervisor.Contenido del examen
-Contenido del examen
-Actualmente, este examen está cerrado a su conexión.
-Solo puede realizar una vez este examen.
-por lo tanto no puede mejorar su puntuación.
-Es su último intento disponible. ¡Preste atención!
-la cuenta atrás comenzará, y se incrementará en 1 el número de intentos.
-la cuenta atrás comenzará.
-Requiere el éxito sobre otros ejercicios
-Puntuación de esta sesión del examen
-into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,
-name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,
+Detalle de la puntuación actual\
+¡Este examen está vacío! No se le ha asignado nada. Posiblemente un error de manipulación de su supervisor.Contenido del examen\
+Contenido del examen\
+Actualmente, este examen está cerrado a su conexión.\
+Solo puede realizar una vez este examen.\
+por lo tanto no puede mejorar su puntuación.\
+Es su último intento disponible. ¡Preste atención!\
+la cuenta atrás comenzará, y se incrementará en 1 el número de intentos.\
+la cuenta atrás comenzará.\
+Requiere el éxito sobre otros ejercicios\
+Puntuación de esta sesión del examen\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
+name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
 !set name_exam2=!nosubst Puede registrar hasta $stries puntuaciones en este examen.
@@ -65,10 +65,10 @@ que el examen verdadero pero no se puede guardar la puntuación y el intento no s
 
 !set wims_name_examremain=Tiempo restante de examen: $
 
-!distribute lines pendiente
- Todavía no ha comenzado a trabajar en este examen.
- Comenzar a trabajar.
- La puntuación actual no se tomará en cuenta, porque el examen está en modo simulación.
+!distribute lines pendiente\
+ Todavía no ha comenzado a trabajar en este examen.\
+ Comenzar a trabajar.\
+ La puntuación actual no se tomará en cuenta, porque el examen está en modo simulación.\
 into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set name_timeleft=!nosubst ¡Se acabó el tiempo! Ya ha usado los $sdure minutos permitidos para este examen.
