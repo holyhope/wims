@@ -11,6 +11,7 @@
 # declare: complex=1
 # in no real answers/solutions: answer$n=nil
 # set var1=yes if the sequence of answers matters
+# wijziging afronden 15/3/2010
 goback=0
 errortext=$empty
 n=$counter
@@ -506,8 +507,8 @@ A2=$empty
 
 !for p=1 to $t1
     g=!item $p of $GGG
-    g1=$[(round($afr1*($g)))/$afr1]
-    g2=$[(round($afr2*($g)))/$afr1]
+    g1=(round($afr1*($g)))
+    g2=(round($afr2*($g)))
     G0=!append item $g to $G0
     G1=!append item $g1 to $G1
     G2=!append item $g2 to $G2
@@ -515,8 +516,8 @@ A2=$empty
 
 !for p=1 to $t2
     a=!item $p of $AAA
-    a1=$[(round($afr1*($a)))/$afr1]
-    a2=$[(round($afr2*($a)))/$afr1]
+    a1=(round($afr1*($a)))
+    a2=(round($afr2*($a)))
     A0=!append item $a to $A0
     A1=!append item $a1 to $A1
     A2=!append item $a2 to $A2
@@ -546,9 +547,9 @@ omgedraaid=0
 		!increase omgedraaid
 	    !endif
 	    # 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
-    	    parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0))<1.0*10^-15 ,1,0) to $parivraag0
-	    parivraag1=!append line if( abs(($g1) - ($a1))<1/(10*$afr1),1,0) to $parivraag1
-	    parivraag2=!append line if( abs(($g2) - ($a2))<1/(10*$afr2),1,0) to $parivraag2
+    	    parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0))<=1.0*10^-15 ,1,0) to $parivraag0
+	    parivraag1=!append line if( abs(($g1) - ($a1)) < 1,1,0) to $parivraag1
+	    parivraag2=!append line if( abs(($g2) - ($a2)) < 1,1,0) to $parivraag2
 	!else
 	    parivraag0=!append line if(1==0,1,0) to $parivraag0
 	    parivraag1=!append line if(1==0,1,0) to $parivraag1
@@ -575,9 +576,9 @@ omgedraaid=0
 		    foundit=!append item $p to $foundit
 		!endif
 		# 1.0* ivm paribug grote getallen: if( abs(1.234*10^45 - 1.234*10^45) <10^-15,1,0) == 0 
-    		parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0)) < 1.0*10^-15 ,1,0) to $parivraag0
-		parivraag1=!append line if( abs(($g1) - ($a1)) < 1/(10*$afr1) ,1,0) to $parivraag1
-		parivraag2=!append line if( abs(($g2) - ($a2)) < 1/(10*$afr2) ,1,0) to $parivraag2
+    		parivraag0=!append line if( abs(1.0*($g0) - 1.0*($a0)) <= 1.0*10^-15 ,1,0) to $parivraag0
+		parivraag1=!append line if( abs(($g1) - ($a1)) < 1,1,0) to $parivraag1
+		parivraag2=!append line if( abs(($g2) - ($a2)) < 1,1,0) to $parivraag2
 	    !endif
 	!next p
     !next s
@@ -590,6 +591,9 @@ tot0=!exec pari $parivraag0
 tot1=!exec pari $parivraag1
 tot2=!exec pari $parivraag2
 
+#errortext= $parivraag0<br>$parivraag1 <br>$parivraag2<br>$tot0<br>$tot1<br>$tot2<p>$kut
+#goback=1
+#!exit
 !if $wims_exec_error != $empty
     maxscore=$[$P4*$maxscore]
     goback=1
@@ -613,6 +617,13 @@ tussenscore2=0
     
 !if $rounding < 1
     tussenscore=$tussenscore0
+    !if $tussenscore = 0
+	!if $tussenscore1 = $mx or $tussenscore2 = $mx
+	    tussenscore =$mx/3
+	    ex=!record 66 of $remarkdir/commonremarks.$taal
+	    extra=!append line <br>$ex to $extra
+	!endif
+    !endif
 !else	
     !if $tussenscore2>$tussenscore1
 	ex=!record 29 of $remarkdir/commonremarks.$taal
