@@ -35,9 +35,21 @@ export target=$whome/transfer
 mkdir -p $target
 rm -Rf $target/*
 
-echo export svn in  $target/wims
-svn export . $target/wims
+#echo export svn in  $target/wims
+#svn export . $target/wims
+#cd $target/wims
 
+cd /home/wimsexportmodif
+tar cvzf /home/wims/download/w2834modif.tgz .
+mkdir -p $target/wims
+cd $target/wims
+tar xzf /home/wims/download/w2834modif.tgz 
+
+# call script for permissions
+bin/changepermissions
+
+
+echo "insert current version number in README.template"
 #on met le numéro de version où il faut
 ed $target/wims/README.template <<@
  ,s/WIMS_VERSION/$version/
@@ -50,13 +62,11 @@ ed $target/wims/src/configure.in <<@
  ,s/WIMS_VERSION/$version/
 w
 @
-#j'enlève le fichier configure.in de la distribution car il ne sert pas
-#sert à générer par autoconf configure qui lui reste
-#il reste bien sûr dans le svn. Sinon, il va y avoir une confusion avec la version 
-#svn ; sinon faire un template comme pour le README ?
 
+echo "create configure file using autoconf"
 cd $target/wims/src ; autoconf configure.in > configure ; chmod a+x configure ;
-#rm $target/wims/src/configure.in
+# configure.in might be removed after autoconf, but we leave it in the distribution ;
+# may be useful for exceptional uses (debian distr. for instance)
 
 echo enlève les fichiers générés par autoconf
 rm -Rf *.cache *.log 2>/dev/null
