@@ -20,17 +20,33 @@ $name_title_examcheck
  !else
   $name_exampart
   <p>$table_header
-  $table_hdtr<th>$name_Session</th><th>$name_Exam</th><th>$name_Score<small>/$scoremax</small></th>
-  <th>$name_Exercise</th><th>$name_Start</th></tr>
+  $table_hdtr<th rowspan="2">$name_Session</th><th rowspan="2">$name_Exam</th><th rowspan="2">$name_Score<small>/$scoremax</small></th>
+  <th colspan="$maxexo">$name_Exercise </th><th rowspan="2">$name_Start</th></tr>
+  $table_hdtr
+   !for i=1 to $maxexo
+    <th>$i</th>
+   !next i
+  </tr>
   !for ses in $checksessions
    !for x in $(exam$ses)
     $table_tr<td><small>$ses</small></td>
     <td align=center>$x</td>
-    <td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td><td>
-    !for i in $(exo$(ses)$x)
-     &nbsp;
-     !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $i
+    <td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td>
+    !let nbx=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$x
+    !for i=1 to $nbx
+     <td align="center">
+      !if $i isitemof $(exo$(ses)$x)
+       !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $[rint($(score$ses$i)*$scoremax)/10]
+      !else
+       &nbsp;
+      !endif
+     </td>
     !next i
+    !if $nbx<$maxexo
+     !for i=$[$nbx+1] to $maxexo
+      <td>&nbsp;</td>
+     !next i
+    !endif
    !next x
    </td><td><small>
     !read date.phtml $(start$(ses)$x)
