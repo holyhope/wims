@@ -69,3 +69,8 @@ Cuaderno de $name_competences \
 !endif
 
 
+
+!if $job=delpalier
+ !let name_delpalier=!nosubst Etes vous certain de vouloir supprimer le palier $palier ( $mem_palier ) de la compétence $comp ( $mem_title ) du livret de compétence ?
+ !exit
+!endif

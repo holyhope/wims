@@ -1,0 +1,36 @@
+
+!bound comp between 1 and $livret_nbcomp default $empty
+!if $comp=$empty
+ !reset cf_abandon
+ job=addcomp
+ !read addcomp.proc
+ !exit
+!endif
+
+tmp=!record $comp of $livret_dir/.comps
+!distribute line $tmp into mem_title,mem_nbpalier
+mem_palier=!record $palier of $livret_dir/.comp$comp
+!distribute line $mem_palier into mem_palier,bla
+
+!if $cf_set!=$empty
+ donnees=$empty
+ !for k=1 to $mem_nbpalier
+  d=!record $k of $livret_dir/.comp$comp
+  !if $k!=$palier
+   donnees=!append line :$d to $donnees
+  !endif
+ !next k
+ !writefile $livret_dir/.comp$comp $d
+ donnees=$empty
+ !for k=1 to $livret_nbcomp
+  d=!record $k of $livret_dir/.comps
+  !if $k=$comp
+   d=!replace line number 2 by $[$mem_nbpalier-1] in $d
+  !endif
+  donnees=!append line :$d to $donnees
+ !next k
+ !writefile $livret_dir/.comps $donnees
+ job=addcomp
+ !reset cf_set
+ !read addcomp.proc
+!endif

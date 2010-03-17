@@ -66,3 +66,8 @@ Rapport van $name_competences\
   !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
 !endif
 
+
+!if $job=delpalier
+ !let name_delpalier=!nosubst Etes vous certain de vouloir supprimer le palier $palier ( $mem_palier ) de la compétence $comp ( $mem_title ) du livret de compétence ?
+ !exit
+!endif
