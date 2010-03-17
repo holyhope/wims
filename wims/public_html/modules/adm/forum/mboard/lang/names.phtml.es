@@ -9,11 +9,11 @@ Volver a editarlo
 &nbsp;&nbsp;
 !href cmd=reply&job=send Enviar el mensaje	
 !distribute line Lista de mensajes.\
-	Threaded message list\
-	Read a message\
+	Lista de los mensajes por hilo\
+	Leer un mensaje\
 	Componer un nuevo mensaje\
 	Escribir una contestación\
-	Preview of your message\
+	Reseña de su mensaje\
 	Enviar el mensaje\
 	Configurar el foro\
 	List by subjects\
@@ -24,7 +24,7 @@ Volver a editarlo
 !set n_otherforums=Otros foros de discusión
 !set n_list_subject_month =Lista de mensajes del mes de
 !set n_email=correo electrónico
-!set n_list_month = List of messages during
+!set n_list_month = Lista de mensajes del mes de
 !set n_most=los más
 !set n_old=recientes primero,antiguos primero
 !set n_new=Nuevo mensaje
@@ -33,7 +33,7 @@ Volver a editarlo
 !set n_reverse=Orden inverso
 !set n_recent=Últimos mensajes
 !set n_erased=borrado
-!set n_send=Send the message
+!set n_send=Enviar el mensaje
 !set n_edit=Volver a editarlo
 !set n_emptymsg= ¡Su mensaje está vacío!
 !set n_listforum=Lista de foros de discusión accesibles en este servidor.
@@ -44,7 +44,7 @@ Volver a editarlo
 !set n_preview=Vista previa
 !set n_send0=Enviar
 !set n_origin=Mensaje original
-!set n_help=Help
+!set n_help=Ayuda
 !set n_mathhelp=sobre cómo escribir fórmulas matemáticas en sus mensajes.
 !set n_yourname= Nombre
 !set n_cautious=<b>Atención.</b> Su mensaje no será aceptado, a menos que dé una \
@@ -64,10 +64,10 @@ Volver a editarlo
 !set n_follow_nc=Contestación sin cita
 !set n_add= Su mensaje se ha añadido al foro.
 !set n_bydate=Por fechas
-!set n_bysubject=By subject
+!set n_bysubject=Por tema
 !set n_prec=Anterior
 !set n_first=Primero que sigue
-!set n_allfollowing=All followups
+!set n_allfollowing=Todas las contestaciones
 !set $n_statusask= Este foro de discusión no acepta mensajes anónimos. Utiliza la \
  dirección de correo electrónico actual que usted ha proporcionado\
  para verificar su identidad, con objeto de evitar abusos.\
@@ -75,10 +75,10 @@ Volver a editarlo
  Para verificar la validez de su dirección de correo, el servidor le ha\
  enviado una clave secreta por correo. Por favor lea ese e-mail,\
  y copie la clave aquí:
-!set n_warning=A message has been added to the forum. Please, don't answer to this email.
+!set n_warning=Se añadió un mensaje al foro. No responder a este mensaje.
  !set n_thread=Por hilos
 !if $job=compose and $c_prec!=$empty
- !set n_compose=Compose a new message
+ !set n_compose=Contestar
 !endif
 
 !if $job notwordof read list config
@@ -86,7 +86,7 @@ Volver a editarlo
 !endif
 
 !set module_title=$module_title$nextline
-!set name_prompt=Unknown activity
+!set name_prompt=Actividad desconocida
 
 !distribute line Parámetros del foro de discusión que puede cambiar.\
   ¿Quién puede leer los mensajes\

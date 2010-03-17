@@ -11,9 +11,9 @@
 !endif
 
 !if no_read_right = $error
- $errorhead No está autorizado a acceder a este foro de discusión. 
+ $errorhead No está autorizado a acceder a este foro de discusión.
  Lo siento.
- !set fatal=yes
+ !set fatal=si
  !exit
 !endif
 
@@ -23,7 +23,7 @@
 !endif
 
 !if translation_fail = $error
- $errorhead El software haencontrado un error interno y es incapaz de 
+ $errorhead El software haencontrado un error interno y es incapaz de
  interpretar su mensaje. Lo sentimos.
  !if $wims_exec_error!=$empty
   <p>
@@ -38,13 +38,13 @@
  favor, compruebe el texto que escribe con cuidado. <p>
  Su mensaje se mostrará como un archivo html. Así, si está escribiendo
  desigualdades, por favor ponga un espacio después del signo `&lt;', o
- proteja las desigualdades como fórmulas matemáticas 
+ proteja las desigualdades como fórmulas matemáticas
  (encerrándolas entre el par de paréntesis \( y \) ).
  !exit
 !endif
 
 !if bad_message = $error
- $errorhead El mensaje que quería leer no existe en este foro de 
+ $errorhead El mensaje que quería leer no existe en este foro de
  discusión. Por favor, compruebe su petición.
  !exit
 !endif
