@@ -339,35 +339,6 @@ de este sitio. No está autorizado a acceder a este módulo.
 !exit
 !endif
 
-!if $job iswordof modify erase
-  !set title=
-  !distribute lines Propiedades importantes de la clase virtual \
-     de\
-     número de serie\
-     Esta clase viene con la distribución de WIMS.\
-     Contraseña del profesor\
-     Contraseña para la inscripción de participantes\
-     Borrar esta contraseña hace que todo el mundo pueda acceder a la clase.\
-     Estaciones de trabajo seguras\
-     Fecha de expiración\
-     notificar al superviso\
-     de la clase acerca de sus cambios.\
-     Otras clases\
-     Limite de participantes\
-    ¿Está seguro de querer borrar esta clase?\
-    Su classe virtual de Wims\
-    Modificación de una clase Wims\
-  into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
-    name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
-    name_yourclass,name_yourclassmod
-  !set name_creation=!nosubst is created on $class_creation and
-  !set name_expires=expires on
-
-  !set name_remark=<b>Nota</b>. Los cambios en estos campos sólo tienen sentido si es el \
-     profesor responsable de la clase el que los solicita (y ha perdido el  control de la clase).\
-     Usted probablemente debería
-!exit
-!endif
 
 
 !if $job=modules
