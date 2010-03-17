@@ -22,7 +22,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 !set name_visit=Visitar
 !set name_click=Pulse aquí
 
-if $job=access
+!if $job=access
  !set title=Configuración de la normativa de acceso
  !set name_subtitle=Definición de la normativa de acceso
  !exit
@@ -44,7 +44,7 @@ if $job=access
     IP del cliente\
     Peticiones\
     Módulo\
-  into name_servor_time,name_Load,name_min,name,name_hour,name_hours,name_last,name_since,\
+  into name_servor_time,name_Load,name_min,name_mins,name_hour,name_hours,name_last,name_since,\
    name_requests,name_activesessions,name_session,name_IP,name_Requests,name_module
  !exit
 !endif
@@ -134,9 +134,9 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
-  !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
+  !set name_total=!nosubst There are $nbcls class groups or classes in this server.
 
-  if $job2 iswordof modify erase
+  !if $job2 iswordof modify erase
   !set title=
   !distribute lines Propiedades importantes de la clase virtual \
      de\
@@ -231,6 +231,11 @@ las configuraciones guardadas en el directorio log.
 !set name_gnuplot1=La siguiente representación gráfica usa gluplot.
 !set name_gnuplot2= Las curvas deben tener colores
 diferentes. Si el resultado no es correcto pruebe con distintos formatos gráficos.
+
+!set name_graphviz1=The following colored horizontal graph uses <b>graphviz</b> and is not affected by the above formats. \
+  If it does not appear, then
+!set name_graphviz2=is not correctly installed.
+
 !set name_povray1=La siguiente imagen de traza de rayos es independiente de los formatos anteriores. \
 Si no aparece, entonces
 !set name_povray2=no está correctamente instalado.
@@ -365,7 +370,7 @@ de este sitio. No está autorizado a acceder a este módulo.
 !endif
 
 
-!if $job=module
+!if $job=modules
   !set name_scheduled=!nosubst  Se ha recibido la petición de ejecutar su orden $auto. El resultado \
    se le enviará por correo electrónico.<p> Por favor no repita la orden hasta que se haya completado su ejecución.
   !distribute lines  entre los anuncios de módulos\
@@ -407,9 +412,9 @@ de este sitio. No está autorizado a acceder a este módulo.
     actualizado<br>por\
     Nueva<br>versión\
     Hallados módulos nuevos\
-    Versión del<br>servidor
+    Versión del<br>servidor\
     hecho público<br>por\
-  into name_check1,name_click,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
+  into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
 
 !exit
 !endif
@@ -472,6 +477,6 @@ posible utilizar los paquetes cirílicos.</small>
 
 !if $job=sendmail
  !distribute item Subject,Message into name_subject,name_message
- !let name_dest=Destinataire,Serveur administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
+ !let name_dest=Recipient,Server administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
  !exit
 !endif

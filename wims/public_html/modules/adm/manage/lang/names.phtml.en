@@ -20,6 +20,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 
 !set name_visit=Visit
 !set name_click=Click here
+
 !if $job=access
  !set title=Access policy configuration
  !set name_subtitle=Access policy definition
@@ -42,7 +43,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
     Client IP\
     Requests\
     Module\
-  into name_servor_time,name_Load,name_min,name,name_hour,name_hours,name_last,name_since,\
+  into name_servor_time,name_Load,name_min,name_mins,name_hour,name_hours,name_last,name_since,\
    name_requests,name_activesessions,name_session,name_IP,name_Requests,name_module
  !exit
 !endif
@@ -126,12 +127,12 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     load\
     format\
   into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
-  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,
+  name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
   name_load,name_format
 
   !set name_search1=There are many virtual classes on this site. To find a class, please type a search keyword.
   !set name_search2=There are still too many classes corresponding to your search word. Please give a more precise word.
-  !set name_total=!nosubst There are $nbcls class groups or classes in this serveur.
+  !set name_total=!nosubst There are $nbcls class groups or classes in this server.
 
   !if $job2 iswordof modify erase
   !set title=
@@ -161,11 +162,8 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !exit
 !endif
 
-
  !exit
 !endif
-
-
 
 !if $job=conf
   !set title=!nosubst Configuration of $cattit
@@ -179,7 +177,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set name_warning=<b>Remark</b>. Parameters with a `*' in their titles are important ones. \
 Those with a `!' may damage the installation if you mess up.<br>\
 Anyway, remember that erasing the file <tt>log/wims.conf</tt> will\
-allow you to restart from a default configuration set. Saved configurations\
+allows you to restart from a default configuration set. Saved configurations\
 can also be recovered from log directory.
 !!confcat=6
  !distribute lines Click here\
@@ -229,6 +227,10 @@ correctly? If not, try different graphics/animation formats.
 !set name_gnuplot1=The following plot uses <b>gnuplot</b>
 !set name_gnuplot2=The curves should have different colors. If this is not OK, try different graphics formats.
 
+!set name_graphviz1=The following colored horizontal graph uses <b>graphviz</b> and is not affected by the above formats. \
+  If it does not appear, then
+!set name_graphviz2=is not correctly installed.
+
 !set name_povray1=The following ray-traced picture is not affected by the above formats. \
   If it does not appear, then
 !set name_povray2=is not correctly installed.
@@ -252,7 +254,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
 !endif
 
 !if $job=del1
-  !set name_warning=Are you sure to erase the developer account
+  !set name_warning=Are you sure you want to erase the developer account
 
  !exit
 !endif
@@ -448,8 +450,8 @@ right to access this module.
 !endif
 
 !if $job=otherdownload
-  !set name_text1=Other ressources can be downloaded manually.
-  !set name_shtooka=Download Shtooka ressources (words audio)
+  !set name_text1=Other resources can be downloaded manually.
+  !set name_shtooka=Download Shtooka resources (audio words)
 
 !exit
 !endif
@@ -461,7 +463,7 @@ right to access this module.
 If you don't, these modules will look for the mp3 of the site http://shtooka.net\
 \
 To download the collections, do it by line command  with the script\
-<tt>$wims_home/bin/swac </tt>. It will install some swac packs at the right space.\
+<tt>$wims_home/bin/swac </tt>. It will install some swac packs at the right place.\
 <p><small>Because of the fact that the files of wims are encoded iso-latin, it's not\
 yet possible to use the cyrillic packs.</small>
 !exit
@@ -469,6 +471,6 @@ yet possible to use the cyrillic packs.</small>
 
 !if $job=sendmail
  !distribute item Subject,Message into name_subject,name_message
- !let name_dest=Destinataire,Serveur administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
+ !let name_dest=Recipient,Server administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
  !exit
 !endif
