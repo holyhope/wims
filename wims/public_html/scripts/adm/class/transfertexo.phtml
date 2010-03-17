@@ -38,30 +38,38 @@
    </option>
   !next k
  </select>
-  !reset wims_chooselist_checked
-  !reset wims_chooselist_select
-
+!let checked=$empty
+!set  select_option=style="width: 400px;" multiple="multiple" size="15" 
+<center><table border="0" cellpadding="10" cellspacing="0">
+ <tr>
+  <td valign="top">
+   <select  $select_option name="select_sheet1" ondblclick="moveSelections(this.form.elements['select_sheet1'], this.form.elements['select_sheet2'], this.form.elements['echoose'], 'add')">
   !for i in $asheets
    !set t=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
    !for j=1 to $t
     !if $i.$j isitemof $echoose
      !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
      !distribute line $r into r1,r2,r3,r4,r5,r6
-     !let wims_chooselist_checked=!append line <option value="$i.$j">$i.$j : $r5</option> to $wims_chooselist_checked
+     !let checked=!append line <option value="$i.$j">$i.$j : $r5</option> to $checked
     !else
      !if $i isitemof $ltsheets
       !set r=!record $j of wimshome/log/classes/$wims_class/sheets/.sheet$i
       !distribute line $r into r1,r2,r3,r4,r5,r6
-      !let wims_chooselist_select=!append line <option value="$i.$j">$i.$j : $r5</option> to $wims_chooselist_select
+      <option value="$i.$j">$i.$j : $r5 </option>
      !endif
     !endif
    !next j
   !next i
- !set cnt_chooselist=!linecnt $wims_chooselist_checked\
- $wims_chooselist_select
- !set wims_chooselist_option=style="width:200px;" multiple="multiple" size="$[max(min($cnt_chooselist,15),2)]" 
- <center>
-!read js/chooselist.phtml select_sheet1,select_sheet2,echoose
-</center>
-
-
+  </select>
+  </td>
+  <td align="center">
+   <input name="add" value=" &gt;&gt; " type="button" onclick="moveSelections(this.form.elements['select_sheet1'], this.form.elements['select_sheet2'], this.form.elements['echoose'], 'add'); return false;">
+   <br>
+   <input name="remove" value=" &lt;&lt; " type="button" onclick="moveSelections(this.form.elements['select_sheet1'], this.form.elements['select_sheet2'], this.form.elements['echoose'], 'remove'); return false;">
+  </td>
+  <td valign="top">
+   <select $select_option name="select_sheet2" ondblclick="moveSelections(this.form.elements['select_sheet1'], this.form.elements['select_sheet2'], this.form.elements['echoose'], 'remove')">$checked</select>
+   <select style="overflow: hidden; visibility: hidden; width: 1px; height: 0;" name="echoose" multiple="multiple" size="10">$checked</select>
+  </td>
+ </tr>
+</table></center>
