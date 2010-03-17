@@ -472,6 +472,6 @@ posible utilizar los paquetes cirílicos.</small>
 
 !if $job=sendmail
  !distribute item Subject,Message into name_subject,name_message
- !let name_dest=Destinataire,Serveur administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teatcher of a superclass,Teatcher of a portal
+ !let name_dest=Destinataire,Serveur administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
  !exit
 !endif
