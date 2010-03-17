@@ -19,7 +19,7 @@ import=!trim $import
 !bound impmethod within add,replace default add
 !distribute items $import into itype,iname
 imported=1
-!if $itype notitemof motd,exo,sheet,exam,doc,user
+!if $itype notitemof motd,exo,sheet,exam,doc,user,livret
  !goto noimp
 !endif
 
@@ -28,6 +28,33 @@ imported=1
  !if $itype!=user
   !goto noimp
  !endif
+!endif
+
+!if $itype=livret
+ nbnei=!recordcnt wimshome/log/classes/$nei/livret/.comps
+ !if $impmethod=replace
+  nb=0
+  comps=$empty
+ !else
+  comps=!sh cat $wims_home/log/classes/$wims_class/livret/.comps;
+  nb=!recordcnt wimshome/log/classes/$nei/livret/.comps
+ !endif
+ !for k=1 to $[min(20-$nb,$nbnei)]
+  d=!record $k of wimshome/log/classes/$nei/livret/.comps
+  comps=!append line :$d to $comps
+  r=!record $k of wimshome/log/classes/$nei/livret/.comp$k
+  comp=$empty
+  !for l=1 to $k
+   d=!record $l of wimshome/log/classes/$nei/livret/.comp$k
+   d=!line 1 of $d
+   comp=!append line :$d\
+  to $comp
+  !next l
+  !writefile wimshome/log/classes/$wims_class/livret/.comp$[$nb+$k] $comp
+ !next k
+ !writefile wimshome/log/classes/$wims_class/livret/.comps $comps
+ verif=module=adm/class/livret
+ !exit
 !endif
 
 !if $itype=motd

@@ -17,6 +17,10 @@
 !endif
 
 newrec=!mexec neighbor/newrec.sh
+li=!recordcnt wimshome/log/classes/$nei/livret/.comps
+!if $li>0
+ newrec=!append line livret $li 1 to $newrec
+!endif
 newcnt1=!linecnt $newrec
 
 !reset doctit,sheettit,examtit
@@ -43,6 +47,13 @@ newcnt1=!linecnt $newrec
  rcode$i=$c_
  rstat$i=1
  rcnt$i=1
+ !if $t_=livret
+  rName$i=---
+  rname$i=$n_ $name_competence
+  rstat$i=---
+  rccnt$i=---
+  rcode$i=2
+ !endif
  !if $t_=motd
   rName$i=---
   rname$i=---

@@ -16,10 +16,10 @@ into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,w
 name_sheets
 
 !distribute item bericht van de dag,oefeningen,werkbladen,proefwerken,documenten,\
-studenten,pedagogische volgorde,huiswerk agenda,vragenlijsten,\
+studenten,pedagogische volgorde,huiswerk agenda,huiswerk,vragenlijsten,\
 raport boekje,docenten account,discussie forum\
 into name_motd,name_exo,name_sheet,name_exam,name_doc,\
-name_user,name_seq,name_livret,name_vote,\
+name_user,name_seq,name_livret,name_competence,name_vote,\
 name_cdt,name_sup,name_forum,name_forum_mes
 
 !distribute item bericht van de dag,\

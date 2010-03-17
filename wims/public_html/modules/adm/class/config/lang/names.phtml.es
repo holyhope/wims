@@ -12,10 +12,10 @@
 !set title=Configuración y Administración
 
 !distribute items encuestas,agenda,\
-	cuenta del profesor,mensajes de un foro de discusión,livret de compétences,\
+	cuenta del profesor,mensajes de un foro de discusión,livret de compétences,compétence(s)\
 	séquences pédagogiques,messages du forum\
 	into name_vote,name_cdt,\
-	name_sup,name_forum,name_livret,name_seq,name_forum_mesg
+	name_sup,name_forum,name_livret,name_competence,name_seq,name_forum_mesg
 
 !distribute items zonas,participantes,ejercicios, documentos, profesores,feuilles d'exercices\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
