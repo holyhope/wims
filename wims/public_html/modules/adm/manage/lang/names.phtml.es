@@ -469,3 +469,9 @@ Para cargar a distancia las colecciones, hagan lo por línea de pedido con el scr
 posible utilizar los paquetes cirílicos.</small>
 !exit
 !endif
+
+!if $job=sendmail
+ !distribute item Subject,Message into name_subject,name_message
+ !let name_dest=Destinataire,Serveur administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teatcher of a superclass,Teatcher of a portal
+ !exit
+!endif

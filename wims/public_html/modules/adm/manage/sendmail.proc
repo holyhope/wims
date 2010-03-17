@@ -1,0 +1,22 @@
+check_list=!item 2 to -1 of $name_dest
+tmp=!itemcnt $check_list
+val_list=!values v for v=1 to $tmp
+
+!if $sendmail_reg!=$empty
+ sendmail_dest=!listintersect $sendmail_dest and $val_list
+ file=!item $sendmail_dest of ,.teatcher-cls,.supervisor-supercls,.supervisor-portal,.teatcher-supercls,.teatcher-portal
+ file=!items2words $file
+ list=!sh cd $wims_home/log/classes; \
+cat $file | cut -d"," -f3 | sort | uniq
+ list=!lines2items $list
+ !if 1 isitemof $sendmail_dest
+  list=!append item $wims_site_manager to $list
+ !endif
+ !for us in $list
+  !mailto $us\
+[Wims $wims_serveurname] $sendmail_subject\
+$sendmail_msg
+ !next us
+!else
+ !reset sendmail_reg,sendmail_msg,sendmail_subject,sendmail_dest
+!endif

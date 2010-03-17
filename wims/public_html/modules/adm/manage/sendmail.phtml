@@ -1,0 +1,25 @@
+
+!!if $error!=$empty
+!!  !read msg.phtml
+!!  !set job=
+!!endif
+
+ !form reply
+  $table_header
+   $table_tr
+    <td>$name_subject</td>
+    <td><input name="sendmail_subject" size="45" value="$subject">
+   </tr>
+   $table_tr
+    <td>$name_message</td>
+    <td><textarea name="sendmail_msg" cols="80" rows="10">$msg</textarea>
+   </tr>
+   $table_tr
+    <td>$(name_dest[1])</td>
+    <td>
+     !formcheckbox sendmail_dest list $val_list prompt $check_list
+    </td>
+  </table>
+  <input type=submit name="sendmail_reg" value="$wims_name_send">
+  </center>
+ </form>

@@ -18,3 +18,5 @@ Actualización del software del servidor
 Download other ressources
 :fs
 Gestión directa de ficheros
+:sendmail
+Send Mail
