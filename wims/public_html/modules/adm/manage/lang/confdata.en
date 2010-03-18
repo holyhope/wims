@@ -696,7 +696,7 @@ which helps tracking the user.
 Note that cookies are not mandatory: even if
 the visitor disables cookies, he will still be able to work normally on WIMS.
 The main difference is that cookies can help them to keep their
-personal preferences longuer, and can improve server performance by
+personal preferences longer, and can improve server performance by
 eliminating unnecessary session creations.
 <p>
 The use of cookies for works in virtual classes is not affected by this
