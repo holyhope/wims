@@ -13,7 +13,7 @@
 !if no_read_right = $error
  $errorhead No está autorizado a acceder a este foro de discusión.
  Lo siento.
- !set fatal=si
+ !set fatal=yes
  !exit
 !endif
 
