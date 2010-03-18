@@ -134,7 +134,7 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
 
  !distribute lines Zoek naar een klas\
  Er zijn geen klassen gevonden. Probeer opnieuw.\
- Bekijk de demonstratie klassen op deze server
+ Bekijk de demonstratie klassen op deze server\
  Het aanmaken van buurklassen geeft de mogelijkheid om gemeenschappelijk materiaal te gebruiken.\
  Klik op een klas om de procedure te starten.\
  Klassen met een zelfde taal\
@@ -188,7 +188,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
   
  !distribute lines Buurklassen\
     heeft uw klas nog nioet geaccepteerd als buur\
-    accepteerd u als buur voor
+    accepteerd u als buur voor\
     met \
     U deelt het onderstaande materiaal afkomstig uit klas\
     heeft geen uitleenbaar metariaal\
@@ -348,7 +348,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  !distribute lines Configureer het toegangsbeleid\
   tot het score systeem van deze klas.\
   Andere beveiligings instellingen bij de \
-  klas configuratie
+  klas configuratie\
  into name_restriction1,name_restriction2,name_otherrestriction1,name_otherrestriction2
  !goto commun
 !endif
