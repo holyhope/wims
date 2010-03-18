@@ -27,6 +27,7 @@
  !goto rm2
 !endif
 !reset 1_
+
 !if _ isin $wims_subsession
  !set 1_=!append line back2,3,window.close() to $1_
 !else
@@ -34,11 +35,20 @@
 !endif
 !if $wims_sheet>0 or P isin $wims_sheet
  !if $wims_sequence>0
-  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet&seq=$wims_sequence to $1_
+  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&seq=$wims_sequence
  !else
-  !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet& to $1_
+  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&
+ !endif
+ !set 1_=!append line $tmp_ to $1_
+ !let wims_menu_items=!append line $tmp_ to $wims_menu_items
+ !if $wims_exo>1
+  !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
+ !endif
+ !if $wims_exo<$wims_sheetmax
+  !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
  !endif
 !endif
+
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
@@ -104,4 +114,7 @@ $module_title
 </div>
 !read themes.phtml tail
 !robottrap
+
+
+
 

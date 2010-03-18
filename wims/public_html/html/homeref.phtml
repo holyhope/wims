@@ -75,7 +75,19 @@
 
 !!********* Link #2 : "Sheet"
 !if $wims_sheet>0 or P isin $wims_sheet
- !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
+ !if $wims_sequence>0
+  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&seq=$wims_sequence
+ !else
+  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&
+ !endif
+ !set 1_=!append line $tmp_ to $1_
+ !let wims_menu_items=!append line $tmp_ to $wims_menu_items
+ !if $wims_exo>1
+  !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
+ !endif
+ !if $wims_exo<$wims_sheetmax
+  !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
+ !endif
 !endif
 
 !!********* Link #3 : "Resume"
@@ -176,4 +188,5 @@ WIMS $module_title [$module_language]
 
 !read themes.phtml tail
 !robottrap
+
 
