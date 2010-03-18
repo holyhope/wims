@@ -14,7 +14,7 @@
 !endif
 
 !if no_answer iswordof $error
- Su ejercicio debe pedir al menos una respuesta (numérica, funcional 
+ Su ejercicio debe pedir al menos una respuesta (numérica, funcional
  u opciones múltiples).
  !exit
 !endif
@@ -26,14 +26,14 @@
 !endif
 
 !if no_reply2 iswordof $error
- El contenido de su ejercicio está incompleto: no hay peticiones válidas de 
- respuestas (una petición de respuesta es válida solamente si se han 
+ El contenido de su ejercicio está incompleto: no hay peticiones válidas de
+ respuestas (una petición de respuesta es válida solamente si se han
  completado todos los campos).
  !exit
 !endif
 
 !if def_fail iswordof $error
- El software no podido generar un ejercicio válido a partir de los
+ El software no ha podido generar un ejercicio válido a partir de los
  datos que ha introducido. Hay errores en lo que ha escrito.
  <p><pre>$oef2wims_out</pre> <p>
  !if $mode!=$empty
@@ -46,7 +46,7 @@
 
 !if name_exhaust iswordof $error
  Hay ya varios ejercicios en su clase que tienen el mismo título que el
- que acaba de crear. Si estos ejercicios son REALMENTE diferentes, 
+ que acaba de crear. Si estos ejercicios son REALMENTE diferentes,
  elija otro título para el ejercicio ejercicio actual antes de grabarlo.
  !exit
 !endif

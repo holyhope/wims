@@ -4,7 +4,7 @@
 Ficheros de imagen para el ejercicio
 
 !if $quota=yes
- <b>Error</b>. No puede añadir más ficheros a su clase porque su contendido 
+ <b>Error</b>. No puede añadir más ficheros a su clase porque su contendido
  ha igualado o superado el espacio de disco autorizado.
  Lo sentimos.
  <p>
@@ -20,7 +20,7 @@ Fichero de imagen que se va a enviar en el ejercicio:
 
 :sendend
 !if $imglist=$empty
- Ete ejercicio no tiene aún ningún fichero de imagen.
+ Este ejercicio no tiene aún ningún fichero de imagen.
 !else
  Lista de ficheros de imagen del ejercicio:
  <p><center><table border=2>

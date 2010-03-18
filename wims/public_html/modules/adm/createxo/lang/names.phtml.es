@@ -15,15 +15,15 @@
   Continuar al contenido del ejercicio\
   Modificar un ejercicio existente de la clase\
    Volver a la etapa precedente\
-  Envoyer le source\
-  Vider\
-  Démo\
-  Adapter\
-  Tester l'exercice\
+  Enviar el código fuente\
+  Vaciar\
+  Demostración\
+  Adaptar\
+  Probar el ejercicio\
   Corregir el error\
   Volver a\
   La realización de su ejercicio será como sigue.\
-  Voici les modèles d'exercices disponibles. Choisissez-un.\
+  Ahí tienes los modelos de ejercicios disponibles. Elija uno.\
  Módulo que contiene temporalmente su ejercicio\
 into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_othermethods,\
   name_model,name_sendfile,name_source,name_menuback,name_continue,name_modify,\
@@ -37,10 +37,10 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 !set name_modefile1=Está en modo fichero para la creación de ejercicios.\
   Bajo este modo puede enviar un fichero fuente OEF local al servidor.\
  Para crear un ejercicio desde cero preferirá el
- !set name_modefile2=Pour éditer en ligne, vous pouvez aussi utiliser le
+ !set name_modefile2=Para corregir en línea, pueden también utilizar el
 
-!set name_first=Exercices basiques
-!set name_datalist=Exercices avec une liste de données
+!set name_first=Ejercicios básicos
+!set name_datalist=Ejercicios con una lista de datos
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
  <font color=red><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).\
@@ -55,12 +55,12 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
   para sustituir al antiguo\
   para hacer de él uno nuevo\
   reenviarlo\
-  Le mettre dans le module de développement\
+  Ponerlo en el módulo de desarrollo\
   hacer una copia \
   de seguridad del código fuente !\
 into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
- 
+
 !set name_success=El software ha reconocido su ejercicio como válido
 
 !if $level=1
@@ -79,22 +79,22 @@ name_nonnumeric,name_prompt,name_condition
 !if $level=2
  !set types=!sort nocase lines \
 auto,			default\
-expression littérale,	litexp\
-expression algébrique,	algexp\
-expression formelle,	formal\
-texte approximatif,	atext\
-texte converti en minuscules,nocase\
-texte exact,		case\
-texte brut,		raw\
-equation,		equation\
-ensemble fini,		set\
-matrice,		matrix\
-nombre,			numeric\
-nombre avec zone,	range\
-nombre avec unité,	units\
-fonction numérique,	function\
-vecteur,		vector\
-mots dans une liste,	wlist
+expresión literal,	litexp\
+expresión algebraica,	algexp\
+expresión formal,	formal\
+texto aproximado,	atext\
+texto convertido en minúsculas,nocase\
+texto exacto,		case\
+texto bruto,		raw\
+ecuación,		equation\
+conjunto finito,		set\
+matriz,		matrix\
+número,			numeric\
+número con zona,	range\
+número con unidad,	units\
+función numérica,	function\
+vector,		vector\
+palabras en una lista,	wlist
 
 !distribute lines Ahora, por favor, introduce el contenido de tu ejercicio \
  Puedes definir los parámetros aleatorios aquí\
@@ -110,8 +110,8 @@ mots dans une liste,	wlist
  Elecciones correctas\
  Elecciones incorrectas\
  Puedes dar opcionalemente una nota y/o solución\
- Hint<br>(Formato html)\
- Solution<br>(Formato html)\
+ Indicación<br>(Formato html)\
+ Solución<br>(Formato html)\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
  name_condition_numeric,name_name_condition,name_definition,name_multiple,name_goodchoice,name_badchoice,\
  name_option,name_indication,name_solution
@@ -120,7 +120,7 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 
 !if $level=4
   !set name_update1=!nosubst L'exercice <tt>$existing.oef</tt> est bien mis à jour avec succès dans le module
-  !set name_update2=Echec de mise a jour de l'exercice <tt>$existing</tt> dans le module 
+  !set name_update2=Echec de mise a jour de l'exercice <tt>$existing</tt> dans le module
   !set name_update3=Su ejercicio se ha instalado con éxito.
    !set name_update4= Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros   dobles.\
   !set name_update5=Este ejercicio será accesible únicamente a los participantes de su clase, \
@@ -131,17 +131,17 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
  into name_youcan, name_consult,name_sheet
 !endif
 
-!distribute lines Vous êtes en mode brut de création d'exercices.\
-  Puisque cet exercice est basé sur un modèle standard, essayez le\
-  Entrez le source entier\
-  pour enregistrer un fichier source existant, copiez le fichier dans la fenêtre.\
-  Voici le source d'un exercice existant de votre classe.\
-  Vous pouvez le modifier dans la fenêtre ci-dessous.\
-  Voici le source d'un exercice public que vous voulez importer. Vous pouvez le modifier dans la fenêtre ci-dessous avant de le mettre dans la classe.\
-  Vous pouvez tester certains programmes externes avec le\
-  testeur de script\
+!distribute lines Están en método bruto de creación de ejercicios. \
+  Puesto que este ejercicio se basa en un modelo normal, intentelo \
+  Entre la fuente en totalidad \
+  para registrar un fichero fuente que existe, copian el fichero en la ventana.\
+ Ahí tienes la fuente de un ejercicio existente de su clase. \
+  Pueden modificarlo en la ventana siguiente. \
+  Ahí tienes la fuente de un ejercicio público que quieren importar. Pueden modificarlo en la ventana siguiente antes de ponerlo en la clase. \
+Pueden probar algunos programas externos con el \
+probador de escritura \
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
- 
+
 !exit
 :delete
 El ejercicio <em>$deltitle</em> se ha eliminado de la lista de ejercicios de la
@@ -149,20 +149,20 @@ clase.
 <p>
 En el caso en que haya sido un error y desee repararlo, aquí tiene
 el código fuente del ejercicio, que puede guardar como medida de seguridad,
-y copiarlo posteriormente en 
+y copiarlo posteriormente en
 
 !exit
 :model
-<b>Note</b>. Ces modèles ont pour but de permettre aux plus pressés de
-construire rapidement leurs exercices. Ils ont donc souvent une structure
-simplifiée et standardisée, et n'offrent pas la pleine puissance de la
-syntaxe OEF. Mais vous pouvez toujours mettre les exercices en mode brut
-pour y ajouter plus de fonctionnalités ou les modifier selon votre goût.
+<b>Note</b>. Estos modelos tienen por objeto permitir a los más apremiados construir
+rápidamente sus ejercicios. Tienen pues a menudo una estructura simplificada
+y estandarizada, y no ofrecen la plena potencia de la sintaxis OEF.
+Pero pueden siempre poner los ejercicios en método bruto para añadir más
+funcionalidades o modificarlos según su gusto.
 !exit
 
 :register
-Su ejercicio se ha registrado con éxito en este servidor. Le agradecemos 
-sinceramente su contribución, en nombre de todos aquellos que se 
+Su ejercicio se ha registrado con éxito en este servidor. Le agradecemos
+sinceramente su contribución, en nombre de todos aquellos que se
 beneficiarán de él.
 <p>
 El administrador de este sitio verificará su ejercicio, y decidirá si ponerlo
