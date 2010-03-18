@@ -158,7 +158,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
     name_yourclass,name_yourclassmod
   !set name_creation=!nosubst is created on $class_creation and
-  !set name_expires=expires on
+  !set name_expires=!nosubst expires on $class_expiration
 
   !set name_remark=<b>Nota</b>. Los cambios en estos campos sólo tienen sentido si es el \
      profesor responsable de la clase el que los solicita (y ha perdido el  control de la clase).\
