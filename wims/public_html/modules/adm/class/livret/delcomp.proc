@@ -1,0 +1,29 @@
+
+!bound comp between 1 and $livret_nbcomp default $empty
+!if $comp=$empty
+ !reset cf_abandon
+ job=userlist
+ !read userlist.proc
+ !exit
+!endif
+
+tmp=!record $comp of $livret_dir/.comps
+!distribute line $tmp into mem_title,mem_nbpalier
+
+!if $cf_set!=$empty
+ donnees=$empty
+ !for k=1 to $livret_nbcomp
+  d=!record $k of $livret_dir/.comps
+  !if $k!=$comp
+   donnees=!append line :$d to $donnees
+  !endif
+  !if $k>$comp
+   !sh cp $Livret_dir/.comp$k $Livret_dir/.comp$[$k-1];
+  !endif
+ !next k
+ !writefile $livret_dir/.comps $donnees
+ livret_nbcomp=$[$livret_nbcomp-1]
+ job=userlist
+ !reset cf_set
+ !read userlist.proc
+!endif
