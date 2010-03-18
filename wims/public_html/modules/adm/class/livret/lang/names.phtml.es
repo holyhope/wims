@@ -6,14 +6,15 @@
 
 !distribute items Competencia,\
 competencia,\
-Competencias\
-competencias\
+Competencias,\
+competencias,\
 Nivel,\
 Niveles,\
 nivel,\
 niveles,\
 Todas,\
-into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All
+skills booklet,\
+into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All,name_livret
 
 !set name_no_competence=No hay ninguna  $name_competence en este cuaderno !
 !set name_noyetparticipant=Esta clase no tiene participante todavía.
@@ -68,9 +69,12 @@ Cuaderno de $name_competences \
   !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
 !endif
 
-
-
 !if $job=delpalier
- !let name_delpalier=!nosubst Etes vous certain de vouloir supprimer le palier $palier ( $mem_palier ) de la compétence $comp ( $mem_title ) du livret de compétence ?
+ !let name_delpalier=!nosubst Are you sure you want to erase the $name_n_palier $palier ( $mem_palier ) of the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !exit
+!endif
+
+!if $job=delcomp
+ !let name_delcomp=!nosubst Are you sure you want to erase the $name_competence $comp ( $mem_title ) from the $name_livret ?
  !exit
 !endif

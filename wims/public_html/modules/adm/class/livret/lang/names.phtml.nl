@@ -14,7 +14,8 @@ Prestatieniveaus,\
 prestatieniveau,\
 prestatieniveaus,\
 Alle,\
-into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All
+skills booklet,\
+into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All,name_livret
 
 !set name_no_competence=Er staat geen enkele $name_competence vermeld in dit rapport !
 !set name_noyetparticipant=Deze klas heeft geen studenten.
@@ -67,11 +68,11 @@ Rapport van $name_competences\
 !endif
 
 !if $job=delpalier
- !let name_delpalier=!nosubst Etes vous certain de vouloir supprimer le palier $palier ( $mem_palier ) de la compétence $comp ( $mem_title ) du livret de compétence ?
+ !let name_delpalier=!nosubst Are you sure you want to erase the $name_n_palier $palier ( $mem_palier ) of the $name_competence $comp ( $mem_title ) from the $name_livret ?
  !exit
 !endif
 
 !if $job=delcomp
- !let name_delcomp=!nosubst Etes vous certain de vouloir supprimer la compétence $comp ( $mem_title ) du livret de compétence ?
+ !let name_delcomp=!nosubst Are you sure you want to erase the $name_competence $comp ( $mem_title ) from the $name_livret ?
  !exit
 !endif
