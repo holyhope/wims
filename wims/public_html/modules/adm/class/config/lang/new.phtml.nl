@@ -11,7 +11,7 @@
   Deze server computer zal standaard geen backups van virtuele klassen aanmaken.
  !else
   <p>
-  Bescherm Uw virtuele klassen tegen onvoorziene "data calamiteiten" !
+  Bescherm Uw virtuele klassen tegen onvoorzien data verlies !
  !endif
  !href cmd=reply&job=arch Backup uw klassen 
  regelmatig

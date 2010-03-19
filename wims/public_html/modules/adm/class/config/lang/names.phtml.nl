@@ -319,23 +319,23 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
 !if $job=oefdefault
  !set title=Configuratie voor OEF modules<br>[Online Exercise Format] 
-  !distribute lines een serie oefeningen heeft\
-  Moeilijkheidsgraad\
-   Tijs limiet\
-   seconden\
-   AAntal items voor een meerkeuze vraag\
-   Toon de uitgewerkte oplossing (mits aanwezig) ?\
-   nooit,als de score niet maximaal is,altijd\
-   Altijd het correcte antwoord tonen\
-   Strapfunten voor foute antwoorden in meerkeuze vragen.\
-   Toon het correcte antwoord.\
-   Geef een hint (mits aanwezig).\
-  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
-    name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
-
-   !set name_warning=U kunt twee getallen vermelden in de tijdlimiet.\
-   Het eerste getal geeft de tijd aan wanneer de score reductie begint.\
-   Het tweede (grotere) getal geeft het tijdstip aan wanneer de score 0 moet worden.
+ !distribute lines een serie oefeningen heeft\
+ Moeilijkheidsgraad\
+ Tijd limiet\
+ seconden\
+ Aantal items voor een meerkeuze vraag\
+ Toon de uitgewerkte oplossing (mits aanwezig) ?\
+ nooit,als de score niet maximaal is,altijd\
+ Altijd het correcte antwoord tonen\
+ Strafpunten voor foute antwoorden in meerkeuze vragen.\
+ Toon het correcte antwoord.\
+ Geef een hint (mits aanwezig).\
+ into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
+ name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
+ 
+ !set name_warning=U kunt twee getallen vermelden in de tijdlimiet.\
+ Het eerste getal geeft de tijd aan wanneer de score reductie begint.\
+ Het tweede (grotere) getal geeft het tijdstip aan wanneer de score 0 moet worden.
   
  !goto commun
 !endif
@@ -553,7 +553,7 @@ Deze twee kunnen -ivm bewaking van de cijfers- niet meer worden gewist uit een w
 
  !exit
  
- :clean2
+:clean2
 <p><b>Opmerking</b>. 
 1. Deze pagina is alleen beschikbaar tijdens het opzetten
 van een digitale klas. Wanneer er leerlingen aan het werk zijn, 
@@ -588,7 +588,7 @@ En deze andere server moet uw server wel erkennen.
 De site manager kan hier leren hoe het een en ander  
  <tt>$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
  
- !exit
+!exit
  
 :import2
 
@@ -611,7 +611,7 @@ Er is geen herstel mogelijk na deze operatie
 
 :import5
 Er kon geen student of deelnemer aan uw klas worden toegevoegd.
-Mogelijk is uw klas of instituut quotum vol en is er geen ruimte meer beschikbaar
+Mogelijk is uw klas of instituut vol en is er geen ruimte meer beschikbaar
 !exit
 
 :auth1
@@ -633,6 +633,6 @@ Het is veel betere een beveiligde verbinding [ip adres] te definieren voor deze 
 :download
 <b>Opmerking</b>. 
 Normaal zijn de opgeslagen oefeningen en proefwerken van studenten, forumberichten en documenten in een klas de grootste bestanden.
-U kunt overwegen diverse kleinere  selectieve backuparchieven aan te maken voor deze data
+U kunt overwegen diverse kleinere  selectieve backup archieven aan te maken voor deze data.
 
 !exit

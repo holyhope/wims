@@ -68,11 +68,11 @@ Rapport van $name_competences\
 !endif
 
 !if $job=delpalier
- !let name_delpalier=!nosubst Are you sure you want to erase the $name_n_palier $palier ( $mem_palier ) of the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !let name_delpalier=!nosubst Weet u zeker dat $name_n_palier $palier ( $mem_palier ) van  $name_competence $comp ( $mem_title ) verwijderd moet worden uit de $name_livret ?
  !exit
 !endif
 
 !if $job=delcomp
- !let name_delcomp=!nosubst Are you sure you want to erase the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !let name_delcomp=!nosubst Weet u zeker dat $name_competence $comp ( $mem_title ) verwijderd moet worden uit $name_livret ?
  !exit
 !endif

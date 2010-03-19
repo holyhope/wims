@@ -115,6 +115,6 @@ Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
 !endif 
 
 !if $error=prep_noexercise
-  The content of the exercise $exo of the exam is empty. Try again.
+    De oefening $exo uit dit proefwerk is leeg. Probeer opnieuw.
   !exit
 !endif
