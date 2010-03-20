@@ -1,12 +1,12 @@
 
-listfile=model/$lang/list
+listfile=wimshome/public_html/scripts/model/$lang/list
 !reset list_exists
 !read $listfile
 !if $list_exists=yes
  !exit
 !endif
 
-src=!sh cd model/$lang/src; ls *.oef | sed 's/.oef$$//'
+src=!sh cd $wims_home/public_html/scripts/model/$lang/src; ls *.oef | sed 's/.oef$$//'
 src=!words2items $src
 
 !writefile $listfile
