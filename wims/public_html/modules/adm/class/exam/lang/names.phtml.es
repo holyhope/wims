@@ -112,29 +112,8 @@ Content of the exam&nbsp;\
 This exam has no content yet.\
 into name_info,name_content,name_warning
 
-!!The original title is \
-!!Modification of the serie exercices\
-!!Number of point required\
-!!Weight\
-!!Correct the source\
-!!The sheet expiration date of the sheet must be before the class expiration date which is\
-!!Your request is ignored.\
-!!,name_oldtitle,name_titlemodif,\
-!!name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
-
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
 !let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
-
-
-!!!if $job=student
-!!  !set name_title=Worksheet $sheet<br>$title (Presentation for participants)
-!!  !set name_sheetempty=The sheet is empty! Nothing is assigned for you in it. Possibly an error in the manipulation by your supervisor.
-!!  !set name_assignedwork=Assigned works in this sheet&nbsp;
-!!  !set name_quality=!nosubst 0 out of $[$re] points obtained, quality
-!!!endif
-!!let name_intro_exo=This exercise can be (randomly) taken from a list of existing exercises in \
-!!worksheets. Please mark the worksheet exercises in the following list, which \
-!!you want to be candidate of this exam exercise.
 
 !set name_contenu=Choose content
 !let name_cpsheet1=You will add each exercise of the sheet at the end of the exam. Each exercise will have weight put to 1 and title put to sheet exercise title or to generic word below :
@@ -147,4 +126,4 @@ into name_info,name_content,name_warning
   el examen, y tendrá que empezar desde el principio la próxima vez.<p>\
   ¿Seguro que quiere terminarlos?
 
-!let name_selectsheet=Show only exercice of sheet
+!let name_selectsheet=Afficher seulement les exercices de la feuille
