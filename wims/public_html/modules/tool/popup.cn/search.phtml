@@ -5,19 +5,18 @@
  !endif
  !if $module!=home
   抱歉, 没有有关 <em><font color=red>$search</font></em> 的内容.
- <p>
  !endif
+  <p>
  此弹出计算器表格的数据库尚在试验阶段. 服务器已经把这次失败记录下来,
  使得作者知道用户的需求, 以便以后改进. 感谢你的耐心.
  !exit
 !endif
-
-!set gotm=!item 1 to 20 of $gotm
-!if .. isin $gotm
+!set gotm1=!lines2items $gotm
+!set gotm1=!item 1 to 20 of $gotm1
+!if .. isin $gotm1
  !reset gotm
 !endif
-
-!for s in $gotm
+!for s in $gotm1
  !set vars=!record 5 of $formdir/$s.def
  !set vars=!nonempty lines $vars
  !if $vars!=$empty
@@ -88,6 +87,6 @@
  所以它们也能在你自己的网页内正常工作 (但是你的机器必须在线).
  你可以把这个页面保存下来, 根据需要修改, 也可以把其中的内容截取下来放到自己的网页上.
  </small>
-!endif 
+!endif
 <p>
 
