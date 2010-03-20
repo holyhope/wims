@@ -124,10 +124,6 @@ Plouffe: Plouffe.c
 	$(cc) $(cflags) Plouffe.c -lm -o $@
 	$(STRIP) $@
 	rm -f $(PUBDIR)/$@; cp $@ $(PUBDIR)
-	case "$$defines" in \
-	  *CASE_INSENSITIVE*) ;;\
-	  *) cd $(PUBDIR); rm -f plouffe; ln -s Plouffe plouffe;;\
-	esac
 
 translator: translator.c suffix.c
 	$(cc) $(cflags) translator.c @STATIC_LIB@ -o translator
