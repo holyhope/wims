@@ -36,13 +36,27 @@ $slib_file
   slib_temp=$slib_file
   !set slib_file0=!randint 1000..5000
 !endif
-!if $slib_script!=
-  slib_script=+'$slib_script'
-!endif
 !readproc oef/togetfile.proc $slib_file0 new\
 $slib_temp
 
 !set slib_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0
+
+!if .spt__  isin $(slib_script)__ and __data isin __$slib_script
+    !set temp=!record 0 of $(slib_script)
+    !set slib_script_file0=!replace internal / by , in $(slib_script)
+    !readproc oef/togetfile.proc $(file0[-1]) new\
+$temp
+    !set slib_script_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
+    !reset slib_script
+!endif
+!if $slib_script!= 
+  slib_script=+'$slib_script'
+!endif
+!if $slib_script_file!= 
+  faire quelque chose
+  
+!endif
+
 !set slib_out=<script type="text/javascript" src="$slib_appletdir/Jmol.js"></script> \
 <script language="javascript" type="text/javascript">\
       jmolInitialize('$slib_appletdir','JmolApplet.jar');\

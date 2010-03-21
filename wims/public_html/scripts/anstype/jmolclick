@@ -14,6 +14,15 @@
 nbsel=!getopt nbsel in $(replyoption$i)
 
 !distribute lines $oef_applet_option into size,file,ans_sc0,ans_sc2
+!if ? isin $ans_sc0
+  ans_file0=$ans_sc0
+  !reset ans_sc0
+!endif
+
+!if ? isin $ans_sc2
+  ans_file2=$ans_sc2
+  !reset ans_sc2
+!endif
 
 !if $wims_read_parm=nocompare
   reply$i=$(m_reply$i)
@@ -44,7 +53,16 @@ reply_$i=$(reply_$i)<script type="text/javascript">\
     var orient='$ans_orient';\
     var jscr='load $file;';\
     jscr= jscr +'selectionhalos on;select none;set frank off;';\
-    retcode=jmolApplet([$size],jscr+sc1+sc2+sc0+orient);\
+    retcode=jmolApplet([$size],jscr+sc1+sc2+sc0+orient);
+!if $ans_file0!=$empty
+    reply_$i=$(reply_$i)\
+    jmolScriptWait('script $ans_file0;');
+!endif
+!if $ans_file0!=$empty
+    reply_$i=$(reply_$i)\
+    jmolScriptWait('script $ans_file2;');
+!endif
+reply_$i=$(reply_$i)\
 </script>
 
 !set reply_$i=$(reply_$i)
