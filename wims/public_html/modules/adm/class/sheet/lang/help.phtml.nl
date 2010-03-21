@@ -28,23 +28,3 @@ Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheid
 </small>
 
 !exit
-:sheetpage
-
-<center><b>Het gebruik van een document als werkblad presentatie pagina</b></center>
-
-Het is ook mogelijk het adres van een document blok
-(zoals <tt>c1/main</tt>) als presentatie pagina voor een werkblad te gebruiken.
-Het document zelf hoeft niet op "leesbaar" voor studenten te staan.
-<p>
-Dit veld niet invullen als de standaard werkblad presentatie wordt gebruikt.
-<p>
-Links naar de individuele oefeningen moeten worden gedefinieerd met het commando
-<tt>\exercise</tt>.
-De volgende variabelen zijn ook bruikbaar :
-<ul>
- <li><tt>\scorerequire</tt> Het minimaal vereiste punten aantal voor een oefening
- <li><tt>\scoregot</tt> Het aantal verkregen punten van de student voor elke oefening
- <li><tt>\scoremean</tt> De gemiddelde score van de student voor elke oefening
- <li><tt>\expiration</tt> De einddatum van dit werkblad , yyyymmdd
- <li><tt>\today</tt> De datum [vandaag], yyyymmdd
-</ul>
