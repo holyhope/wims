@@ -1,6 +1,6 @@
 
 WIMS is designed with multi-language support. Several languages are currently
-available, including English, French and Chinese.
+available, including English, French, Nederlands, Italian and Chinese.
 <p>
 Efforts have been made in order to make translation possible even by people
 not knowing much of computer programming. But due to the huge amount of
@@ -11,8 +11,9 @@ On the other hand, because of the educational vocation of WIMS, translating
 it to your native language may represent an important service for the younger
 generation of your country.
 <p>
-If you are interested in translating WIMS into your native language, please
-!mailurl wimsdev@cru.fr contact us
+Si vous désirez traduire WIMS dans votre langue native, contactez l'équipe de développement
+à l'adresse 
+!mailurl wimsdev@cru.fr wimsdev@cru.fr
 . 
 
 <p>
@@ -22,8 +23,9 @@ Il faudra aussi avoir un petit drapeau national pour le représenter.
 
 <p>Il faut aussi choisir le codage des fichiers html et le déclarer dans src/wims.h.
 Malheureusement, nous ne gérons pas pour l'instant l'unicode. 
-Comme exemple, actuellement, en, fr, es, de, it, nl sont déclarés "iso-8859-1",
-si est déclaré "iso-8859-2", ru pourrait être déclarer iso-8859-5. 
+Comme exemple, actuellement, <tt>en</tt>, <tt>fr</tt>, <tt>es</tt>, <tt>de</tt>, <tt>it</tt>, 
+<tt>nl</tt> sont déclarés <tt>iso-8859-1</tt>,
+<tt>si</tt> est déclaré <tt>iso-8859-2</tt>, <tt>ru</tt> pourrait être déclarer <tt>iso-8859-5</tt>. 
 
 <p>
 Nous allons appeler la nouvelle langue <tt>xx</tt>.
@@ -53,10 +55,10 @@ public_html/msg/warn_rawmatrix.phtml.en
 </pre>
 Les dossiers <tt>public_html/modules/template/doc.xx</tt>, <tt>public_html/modules/template/exercise.xx</tt>
 <tt>public_html/modules/template/oef.xx</tt>, <tt>public_html/modules/template/tool.xx</tt>,
-public_html/modules/classes/xx</tt>
+<tt>public_html/modules/classes/xx</tt>
 doivent être créés.
 <p>
-
+Ensuite, les modules <tt>public_html/modules/adm</tt> sont à traduire. 
 Dans chaque module du répertoire  <tt>public_html/modules/adm</tt>, les fichiers à traduire se
 trouvent dans le répertoire lang. Copiez tous les fichiers ayant l'extension <tt>.en</tt>
 en leur donnant l'extension <tt>.xx</tt> et traduisez-les. 
@@ -64,6 +66,8 @@ Mais, tant que vous ne les avez pas traduits, c'est la version anglaise qui appa
 Afin de faciliter les modifications éventuelles, ne recopiez le fichier <tt>names.phtml.xx</tt> que
 lorsque vous l'avez traduit. Par contre, dès que celui-ci existe, il est nécessaire de créer aussi les
 autres fichiers du répertoire <tt>lang</tt> avec l'extension <tt>.xx</tt>.
+Voici la liste des modules actuels
+
 <pre>public_html/adm/browse
 public_html/adm/class/activity
 public_html/adm/class/adddoc
@@ -112,28 +116,36 @@ Beaucoup moins essentiels sont les répertoires
 <tt>public_html/scripts/scenario/xx</tt>, <tt>public_html/scripts/scenario/xx</tt>,
 <tt>public_html/scripts/dialog/xx</tt> et <tt>public_html/scripts/deduc/xx</tt>.
 
-Voir aussi 
+Vous devez créer le dossiers  
 <pre>public_html/scripts/help/xx
-public_html/scripts/help/anstype.xx
-public_html/scripts/adm/lang/date.phtml.xx
 </pre>
-qui vous permettront de choisir le format
+Si vous ne traduisez pas tout de suite, il est conseillé de créer les fichiers 
+et d'écrire à l'intérieur
+<pre>!changeto help/en/yyy.phtml</pre>
+si <tt>yyy.phtml</tt> est le nom du fichier. Ainsi, en attendant votre traduction,
+la documentation sera présente en anglais.
+
+Le fichier <tt>public_html/scripts/adm/lang/date.phtml.xx</tt>
+ vous permet de choisir le format
 de la date.
 
-There are also a small number of multi-language files that should be
-modified, (but it is not absolutely necessary):
+Il est conseillé de créer 
+<pre>public_html/scripts/help/anstype.xx</pre>
+à moins que vous n'ayez pas traduit le fichier <tt>public_html/scripts/help/xx/reply.phtml
+</tt>. Vous pouvez toujours faire comme précédement et écrire momentanément
+<pre>!changeto help/anstype/yyy.phtml</pre>
+pour avoir la version anglaise.
+
+Il y a aussi quelques fichiers multi-language à modifier (mais ce n'est pas indispensable): 
 
 <pre>
-modules/home/askcookie.phtml
-scripts/about.phtml
-scripts/related.phtml
-scripts/tool.phtml
+public_html/modules/home/askcookie.phtml
+public_html/scripts/about.phtml
+public_html/scripts/related.phtml
+public_html/scripts/tool.phtml
 </pre>
 
-
-<p>And apart from the system, you can translate some resource modules that
-interest you.
-
-</pre>
+<p>Et bien sûr, vous pouvez aussi traduire les modules de ressources qui vous intéressent.
 
 
+<h3>Quelques indications ou conseils</h3>
