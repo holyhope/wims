@@ -34,6 +34,8 @@ $ in $file1
 
 !distribute line $file1 into rg
 !set file1=!line 2 to -1 of $file1
+!set file1=!replace internal $	$ by $\
+$ in $file1
 !!! tester si c'est un fichier à charger ou une variable
 !set test_file=!linecnt $file1
 !if $test_file=1 and | notin $file1
@@ -51,7 +53,6 @@ $temp
   !readproc oef/togetfile.proc $file new\
 $file1
    !set file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$file
-
 !endif
 
 !!############# traitement des options (qui se trouvent dans \embed)
@@ -70,11 +71,21 @@ $ in $inputsize
 !!
 !default Inputsize=400,400
 
+!for j=0 to 2
+  !if .spt__  isin $(ans_sc$j)__ and __data isin __$(ans_sc$j)
+    !set temp=!record 0 of $(ans_sc$j)
+    !set file0=!replace internal / by , in $(ans_sc$j)
+    !readproc oef/togetfile.proc $(file0[-1]) new\
+$temp
+    !set ans_file$j=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
+    !reset ans_sc$j
+  !endif
+!next
 !!###on garde les options pour le retour, variable de nom imposée oef_applet_option
 !set oef_applet_option=$Inputsize\
 $file\
-$ans_sc0\
-$ans_sc2
+$ans_sc0$ans_file0\
+$ans_sc2$ans_file2
 
 !!############################ fin du traitement des options
 !set test=!text remove 1234567890,| in $rg
@@ -258,6 +269,8 @@ var jscr='load $file;';
 var retcode=jmolApplet([$Inputsize],jscr+sc0+sc1);
     document.getElementById('Clickjmolreply').value=retcode;
     jmolScriptWait('select none;');
+    jmolScriptWait('script $ans_file0;');
+    jmolScriptWait('script $ans_file1;');
 </script>
 
 !!#####
