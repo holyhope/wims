@@ -61,7 +61,7 @@ Para elegir su trabajo, tienen una de las posibilidades siguientes
   !set name_quality=0 de $[$re] puntos obtenidos, calidad
 !endif
 
-!set name_regmodif=Modification enregistrée
+!set name_regmodif=Modificación registrada
 !! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
-!!set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims
+!!set name_helpprog=Ayudarse de esta correspondencia orientativa, entre los programas de la enseñanza francesa y los ejercicios Wims
 !set name_helpprog=$empty

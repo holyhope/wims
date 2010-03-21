@@ -93,9 +93,9 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
    into name_merge, name_replace,name_show
  !set name_error1=<b>Error</b>. El participante no está inscrito en ningún curso que corresponda\
      a la clase actual y que pueda recibir la transferencia desde
- !set name_error2=<b>Erreur</b>.<b>Erreur</b> d'identifiant des classes. \
-    Fausse manoeuvre ou bogue du logiciel ? 
-!set name_activities=!nosubst Détail des activités dans $i (limité à 1000 lignes).
+ !set name_error2=<b>Error</b>.<b>Error</b> de identificador de las clases. \
+    Falsa maniobra o error del programa informático ?
+!set name_activities=!nosubst Detalle de las actividades en $i (limitado a 1000 líneas).
 !set name_totransfer=Estos son los otros cursos en los que ha realizado actividades el participante.\
   Pulse sobre una acción para hacer la transferencia.
 
@@ -114,7 +114,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
 !if $job=csv
   !distribute lines  Este es el fichero\
     que puede descargar y abrir con su hoja de cálculo\
-    que vous pouvez télécharger et ouvrir dans votre logiciel tableur préféré.\
+    que pueden cargar a distancia y abrirse en su programa informático hoja de cálculo preferido.\
     Cambios en la información sobre los participantes\
     Nuevos participantes \
     La incorporación de nuevos participantes será ignorada porque no queda espacio libre.\
@@ -135,7 +135,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
     name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
-  
+
 
   !set name_deposit=!nosubst  El fichero de hoja de cálculo <tt>$wims_deposit</tt> ha sido reconocido correctamente.
 !endif
@@ -147,7 +147,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
 :transfer
 <b>Notas</b>. <ol>
 <li>"Unir" quiere decir unificar los conjuntos de actividades de los dos cursos.
-<li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar 
+<li>"Sustituir" se refiere  a que las actividades del otro curso van a eliminar
 completamente las de este. La sustitución no se realizará si el primero está vacío.
 <li>Las puntuaciones de los exámenes y las actividades no puntuadas siempre se unifican.
 <li>El registro de los detalles de los ejercicios o de los exámenes no se transfiere.
