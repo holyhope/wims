@@ -49,10 +49,10 @@
 !header1
 
 <h1 class="wims_title">
-<font color=red>W</font>WW
-<font color=red>I</font>nteractieve
-<font color=red>M</font>ultipurpose
-<font color=red>S</font>erver<br>
+<font size=+2>W</font>WW
+<font size=+2>I</font>nteractieve
+<font size=+2>M</font>ultipurpose
+<font size=+2>S</font>erver<br>
 <font size="-1">op <a href="/">$httpd_HTTP_HOST</a></font> <br>
 $module_title</h1> <p>
 
