@@ -1,31 +1,31 @@
 
-WIMS is designed with multi-language support. Several languages are currently
-available, including English, French, Nederlands, Italian and Chinese.
+WIMS est conçu pour être un système multilingue. Plusieurs langues sont actuellement
+disponibles, dont l'anglais, le français, le néerlandais, l'italien et le chinois.
 <p>
-Efforts have been made in order to make translation possible even by people
-not knowing much of computer programming. But due to the huge amount of
-content in the system as well as its constant development, translating WIMS
-into a new language means a big amount of work.
+Des efforts ont été faits pour rendre la traduction possible, même par des personnes
+sans grande pratique de programmation informatique. La traduction de WIMS dans une 
+nouvelle langue représente néanmoins une grande quantité de travail en raison de 
+l'abondance de contenu du système ainsi que de son évolution constante.  
 <p>
-On the other hand, because of the educational vocation of WIMS, translating
-it to your native language may represent an important service for the younger
-generation of your country.
+D'autre part, en raison de la vocation éducative de WIMS, sa traduction dans 
+votre langue natale peut représenter un service important pour la jeune
+génération de votre pays.
 <p>
-Si vous désirez traduire WIMS dans votre langue native, contactez l'équipe de développement
+Si vous désirez traduire WIMS dans votre langue natale, contactez l'équipe de développement
 à l'adresse 
 !mailurl wimsdev@cru.fr wimsdev@cru.fr
 . 
 
 <p>
-Vous devez d'abord choisir l'extension qui va représenter le langage 
-(comme 'en' pour Anglais, 'fr' pour Francais, 'it' pour Italien, etc.)
-Il faudra aussi avoir un petit drapeau national pour le représenter.
+Il nous faudra convenir de l'extension à deux lettres qui va représenter le langage 
+(comme 'en' pour anglais, 'fr' pour francais, 'it' pour italien, etc.).
+Il faudra aussi avoir une petite image du drapeau national pour le représenter.
 
-<p>Il faut aussi choisir le codage des fichiers html et le déclarer dans src/wims.h.
+<p>Il faut aussi choisir le codage des fichiers html (à déclarer dans src/wims.h par les développeurs).
 Malheureusement, nous ne gérons pas pour l'instant l'unicode. 
 Comme exemple, actuellement, <tt>en</tt>, <tt>fr</tt>, <tt>es</tt>, <tt>de</tt>, <tt>it</tt>, 
 <tt>nl</tt> sont déclarés <tt>iso-8859-1</tt>,
-<tt>si</tt> est déclaré <tt>iso-8859-2</tt>, <tt>ru</tt> pourrait être déclarer <tt>iso-8859-5</tt>. 
+<tt>si</tt> est déclaré <tt>iso-8859-2</tt>, <tt>ru</tt> pourrait être déclaré <tt>iso-8859-5</tt>. 
 
 <p>
 Nous allons appeler la nouvelle langue <tt>xx</tt>.
@@ -34,93 +34,77 @@ Nous allons appeler la nouvelle langue <tt>xx</tt>.
 Les premiers modules à traduire sont <tt>public_html/modules/home</tt>, 
  <tt>public_html/html</tt> et <tt>public_html/msg</tt>.
 Dans chacun de ces modules, il faut créer des fichiers correspondant aux fichiers ayant une extension
-<tt>.en</tt> avec l'extension choisie.
-Actuellement, il s'agit des fichiers
-<pre>
-public_html/html/href.xx html/mirrors.xx 
-public_html/html/msg.phtml.xx 
-public_html/html/name.phtml.xx 
-public_html/html/robot.phtml.xx
-</pre>
-(le dernier doit exister mais n'a pas besoin d'être traduit forcément)
-<pre>
-public_html/modules/home/front.phtml.xx 
-public_html/modules/home/names.xx
-</pre>
-
-<pre>public_html/msg/module_error.msg.en
-public_html/msg/user_error.phtml.en
-public_html/msg/warn_rawmath.phtml.en
-public_html/msg/warn_rawmatrix.phtml.en
-</pre>
-Les dossiers <tt>public_html/modules/template/doc.xx</tt>, <tt>public_html/modules/template/exercise.xx</tt>
-<tt>public_html/modules/template/oef.xx</tt>, <tt>public_html/modules/template/tool.xx</tt>,
-<tt>public_html/modules/classes/xx</tt>
-doivent être créés.
+<tt>.en</tt> avec l'extension <tt>.xx</tt> choisie.
+Actuellement, il s'agit des fichiers suivants : 
+<ul><li>Dans le répertoire <tt>public_html/html/</tt>, les fichiers
+<tt>href.xx ,mirrors.xx, msg.phtml.xx, name.phtml.xx, robot.phtml.xx</tt> (ce
+dernier doit exister mais n'a pas besoin d'être traduit forcément)
+<li>Dans le répertoire <tt>public_html/modules/home/</tt>, les fichiers
+<tt>front.phtml.xx, names.xx</tt>
+<li>Dans le répertoire <tt>public_html/msg/</tt>, les fichiers
+<tt>module_error.msg.xx, user_error.phtml.xx, warn_rawmath.phtml.xx, warn_rawmatrix.phtml.xx</tt>
+</ul>
 <p>
-Ensuite, les modules <tt>public_html/modules/adm</tt> sont à traduire. 
-Dans chaque module du répertoire  <tt>public_html/modules/adm</tt>, les fichiers à traduire se
-trouvent dans le répertoire lang. Copiez tous les fichiers ayant l'extension <tt>.en</tt>
-en leur donnant l'extension <tt>.xx</tt> et traduisez-les. 
+A l'intérieur de <tt>public_html/modules/</tt>, on doit créer des répertoires <tt>template/doc.xx, 
+  template/exercise.xx, template/oef.xx, template/tool.xx, classes/xx</tt>.
+<p>
+Il faut ensuite traduire les modules du répertoire <tt>public_html/modules/adm</tt>. 
+Pour chacun d'eux, les fichiers à traduire se trouvent dans le sous-répertoire
+<tt>lang</tt>. Copiez tous les fichiers ayant l'extension <tt>.en</tt>
+en leur donnant l'extension <tt>.xx</tt> et traduisez ces copies. 
 Mais, tant que vous ne les avez pas traduits, c'est la version anglaise qui apparaîtra.
 Afin de faciliter les modifications éventuelles, ne recopiez le fichier <tt>names.phtml.xx</tt> que
 lorsque vous l'avez traduit. Par contre, dès que celui-ci existe, il est nécessaire de créer aussi les
 autres fichiers du répertoire <tt>lang</tt> avec l'extension <tt>.xx</tt>.
-Voici la liste des modules actuels
+  Voici la liste des modules actuels (on omet la partie <tt>public_html/adm/</tt> du chemin)
 
-<pre>public_html/adm/browse
-public_html/adm/class/activity
-public_html/adm/class/adddoc
-public_html/adm/class/addmodule
-public_html/adm/class/cdt
-public_html/adm/class/classes
-public_html/adm/class/config
-public_html/adm/class/exam
-public_html/adm/class/exolog
-public_html/adm/class/gateway
-public_html/adm/class/grades
-public_html/adm/class/livret
-public_html/adm/class/motd
-public_html/adm/class/passwd
-public_html/adm/class/photoboard
-public_html/adm/class/regclass
-public_html/adm/class/reguser
-public_html/adm/class/sendmail
-public_html/adm/class/sequence
-public_html/adm/class/sheet
-public_html/adm/class/stat
-public_html/adm/class/userlist
-public_html/adm/createxo
-public_html/adm/doc
-public_html/adm/forum/forum
-public_html/adm/forum/mboard
-public_html/adm/forum/regforum
-public_html/adm/forum/reguser
-public_html/adm/latex2wims
-public_html/adm/manage
-public_html/adm/modtool
-public_html/adm/new
-public_html/adm/publish
-public_html/adm/quicktool
-public_html/adm/sheet
-public_html/adm/stat/referer
-public_html/adm/stat/stat
-public_html/adm/vote
+<pre>browse
+class/activity
+class/adddoc
+class/addmodule
+class/cdt
+class/classes
+class/config
+class/exam
+class/exolog
+class/gateway
+class/grades
+class/livret
+class/motd
+class/passwd
+class/photoboard
+class/regclass
+class/reguser
+class/sendmail
+class/sequence
+class/sheet
+class/stat
+class/userlist
+createxo
+doc
+forum/forum
+forum/mboard
+forum/regforum
+forum/reguser
+latex2wims
+manage
+modtool
+new
+publish
+quicktool
+sheet
+stat/referer
+stat/stat
+vote
 </pre>
 
-Créez aussi les répertoires <pre>
-public_html/scripts/oef/xx
-public_html/scripts/docu/xx
-</pre>
-Beaucoup moins essentiels sont les répertoires 
-<tt>public_html/scripts/scenario/xx</tt>, <tt>public_html/scripts/scenario/xx</tt>,
-<tt>public_html/scripts/dialog/xx</tt> et <tt>public_html/scripts/deduc/xx</tt>.
+A l'intérieur de <tt>public_html/scripts/</tt>, créez aussi les répertoires <tt>
+oef/xx, docu/xx</tt> et <tt>help/xx</tt>, ainsi que (mais de façon beaucoup moins essentielle)
+<tt>scenario/xx, dialog/xx</tt> et <tt>deduc/xx</tt>.
 
-Vous devez créer le dossiers  
-<pre>public_html/scripts/help/xx
-</pre>
-Si vous ne traduisez pas tout de suite, il est conseillé de créer les fichiers 
-et d'écrire à l'intérieur
+<p>
+Si vous ne traduisez pas tout de suite les fichiers de <tt>help/xx</tt>, il est conseillé de créer les fichiers 
+et d'écrire à l'intérieur, en première ligne
 <pre>!changeto help/en/yyy.phtml</pre>
 si <tt>yyy.phtml</tt> est le nom du fichier. Ainsi, en attendant votre traduction,
 la documentation sera présente en anglais.
