@@ -3,12 +3,8 @@ textarea="data explain"
 
 :Marquer les objets selon leurs propriétés.
 
-On présente une liste d'objets, et il faut marquer ceux qui possèdent une
-certaine propriété selon la demande de l'exercice.
-<p>
-Pour construire un exercice avec ce modèle, il suffit de donner la liste
-d'objets et leurs propriétés.
-<p>
+On présente une liste d'objets, et il faut marquer ceux qui possèdent une certaine propriété selon la demande de l'exercice.<br/>
+Pour construire un exercice avec ce modèle, il suffit de donner la liste d'objets et leurs propriétés.<br/>
 Auteur du modèle : Gang Xiao <xiao@unice.fr>
 
 :%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
@@ -24,8 +20,7 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\email{xiao@unice.fr}
 
 :Nombre d'objets à marquer par exercice. Jusqu'à 100.
-Il faut avoir défini suffisamment d'objets dans les données
-principales !
+Il faut avoir défini suffisamment d'objets dans les données principales !
 \integer{tot=12}
 
 :Le nombre minimal de bons objets à marquer. Au moins 1.
@@ -38,10 +33,8 @@ principales !
 \text{prop=française,italienne,allemande}
 
 :Données principales.
-Définir un objet par ligne, d'abord le nom,
-ensuite la propriété, séparés par une virgule.
-<p> Il vaut mieux définir des données en quantité abondante pour chaque
-propriété.
+Définir un objet par ligne, d'abord le nom, ensuite la propriété, séparés par une virgule.<br/>
+Il vaut mieux définir des données en quantité abondante pour chaque propriété.
 \matrix{data=
 Fabien Barthez,francaise
 Grégory Coupet,francaise
@@ -125,6 +118,11 @@ Ajoutez le mot "split" à la définition si vous voulez donner une note
 partielle pour des réponses partiellement correctes.
 \text{option=split}
 
+:Options de Présentation.
+Ajoutez ici le mot "liste" si vous voulez afficher les objets sous forme de liste 
+\text{presentation=}
+
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
 
 \text{prop=randitem(\prop)}
@@ -150,14 +148,28 @@ partielle pour des réponses partiellement correctes.
 \text{ind=item(\sh,\ind)}
 \text{tomark=positionof(1,\ind)}
 
+:%% Choix de la presentation : sous forme lineaire par defaut, ou sous forme de liste à puces.
+\if{liste iswordof \presentation}
+{
+ \text{pre=<ul>}
+ \text{separatorL=<li>}
+ \text{separatorR=</li>}
+ \text{post=</ul>}
+}
+{
+ \text{pre=<p>}
+ \text{separatorL=<span>}
+ \text{separatorR=</span>}
+ \text{post=</p>}
+}
+
 :%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
 
 :Le texte pour expliquer ce qu'il faut faire.
 Pour évoquer la propriété tirée, écrire <tt>\prop</tt>.
 $embraced_randitem
 \text{explain=
-Parmi les joueurs ci-dessous qui ont participé à la coupe du monde
-de football 2006, marquez ceux qui sont dans l'équipe \prop.
+Parmi les joueurs ci-dessous qui ont participé à la coupe du monde de football 2006, marquez ceux qui sont dans l'équipe \prop.
 }
 
 :%% Calculs à ne pas modifier
@@ -165,11 +177,12 @@ de football 2006, marquez ceux qui sont dans l'équipe \prop.
 
 ::On n'a pas besoin de modifier l'énoncé directement en général.
 
-\statement{\explain
-<p>
-\for{k=1 to \tot-1}{\embed{r1,\k},}
-\embed{r1,\tot}.
-<p>
+\statement{
+<p>\explain</p>
+\pre
+ \for{k=1 to \tot-1}{\separatorL \embed{r1,\k},\separatorR }
+ \separatorL \embed{r1,\tot}.\separatorR
+\post
 }
 
 :%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
