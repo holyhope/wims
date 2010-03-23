@@ -104,16 +104,15 @@ $ in $l_
 :end
 Si tiene una instalación WIMS y quiere que aparezca en este listado,
 por favor
-!mailurl xiao@unice.fr escríbame\
+!mailurl wimsdev@cru.fr escríbame\
 wims mirror
 .
 <p>
 WIMS se puede 
-<a href="http://wims.unice.fr/download/wims/">descargar</a>
-gratuitamente,
+!href module=adm/light&phtml=download.phtml.$lang descargar
+ gratuitamente,
 y puede instalarse sobre sistemas operativos Linux.
-Por favor, lea el archivo README que se encuentra en el directorio 
-download/ para obtener más información sobre cómo instalar WIMS.
+Por favor, lea el archivo <a href="README">README</a>  para obtener más información sobre cómo instalar WIMS.
 
 !tail
 
