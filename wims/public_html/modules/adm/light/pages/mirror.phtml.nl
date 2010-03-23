@@ -108,18 +108,18 @@ $ in $l_
 
 :end
 
-Heeft u een WIMS server geinstalleerd op internet en u wilt dit adres opgenomen zien in
-deze lijst, 
-!mailurl xiao@unice.fr mail me\
+Heeft u een WIMS server geinstalleerd op internet en wilt dit adres opgenomen zien in
+deze lijst, schrijf een email naar de
+!mailurl wimsdev@cru.fr ontwikkelings afdeling\
 wims mirror
 .
 <p>
 WIMS is vrije software en kan gratis worden 
-<a href="http://wims.unice.fr/download/wims/">gedownload</a>,
+!href module=adm/light&phtml=download.phtml.$lang verkregen
 en geinstalleerd alle op GNU/Linux systemen.
 <p>
-Lees het README bestand in de download directory voor meer details mbt de installatie.
-
+Lees het <a href="README">README</a> bestand in de download directory voor 
+meer details mbt de installatie.
 
 !tail
 

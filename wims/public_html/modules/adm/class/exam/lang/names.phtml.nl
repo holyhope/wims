@@ -23,7 +23,9 @@
 !set name_Options=Opties
 !set name_All=Alles
 !set name_title=Aanmaken van een proefwerk
+
 !!set name_expire=Laat het proefwerk nu verlopen
+
 !set name_done=klaar
 
 !distribute items Gewicht,Co&euml;fficient,Cijfer\
@@ -129,7 +131,10 @@ into name_info,name_content,name_warning
 !!  !set name_assignedwork=Opdrachten in dit werkblad&nbsp;
 !!  !set name_quality=!nosubst 0 uit $[$re] punten behaald , kwaliteit
 !!endif
+
 !!let name_intro_exo=Een oefening kan willekeurig worden gekozen uit de lijst van bestaande oefeningen uit de werkbladen.<br>Vink de werkbladen aan in de onderstaande lijst als kandidaten voor dit proefwerk. 
+
+
 
 !set name_contenu=Kies de inhoud
 !let name_cpsheet1=U kunt alle oefeningen van werkblad toevoegen aan het proefwerk. Elke oefening krijgt gewicht 1 en de titel van de oorspronkelijke oefening. Of geef hier generieke titel aan
