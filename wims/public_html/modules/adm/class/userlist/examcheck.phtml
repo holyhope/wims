@@ -34,9 +34,10 @@ $name_title_examcheck
     <td align=center>$[rint($(score$(ses)$x)*$scoremax)/10]</td>
     !let nbx=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$x
     !for i=1 to $nbx
-     <td align="center">
+      <td align="center">
       !if $i isitemof $(exo$(ses)$x)
-       !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $[rint($(score$ses$i)*$scoremax)/10]
+       !let s=!defof w_module_score in wimshome/log/classes/$wims_class/examlog/$checkuser/$ses/$x.$i
+       !href target=wims_check module=$module&cmd=new&job=examcheck&checkuser=$checkuser&checksession=$ses&checkexo=$x.$i&checkstep=1 $[rint($s*$scoremax)/10]
       !else
        &nbsp;
       !endif
@@ -44,7 +45,7 @@ $name_title_examcheck
     !next i
     !if $nbx<$maxexo
      !for i=$[$nbx+1] to $maxexo
-      <td>&nbsp;</td>
+      <td align="center" style="background-image:url(gifs/bg/crossgrey.gif)">&nbsp;</td>
      !next i
     !endif
    !next x

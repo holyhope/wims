@@ -13,16 +13,18 @@ checkuser=!translate / to $ $ in $checkuser
  !exit
 !endif
 
+maxexo=0
+!for k in $activexams
+ tmp=!recordcnt wimshome/log/classes/$wims_class/exams/.exam$k
+ maxexo=$[max($maxexo,$tmp)]
+!next k
 logdir=$wims_home/log/classes/$wims_class/examlog/$checkuser
 !if $checksession=$empty
  checksessions=!sh if [ -d $logdir ]; then cd $logdir; ls; fi
  checksessions=!words2items $checksessions
- maxexo=0
  !for ses in $checksessions
   exo=!sh cd $wims_home/log/classes/$wims_class/examlog/$checkuser/$ses; ls
   exo$ses=!words2items $exo
-  tmp=!itemcnt $(exo$ses)
-  maxexo=$[max($maxexo,$tmp)]
   exo=!words2lines $exo
   exo=!translate . to , in $exo
   exom=!column 1 of $exo
