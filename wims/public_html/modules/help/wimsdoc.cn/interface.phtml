@@ -1,3 +1,82 @@
+本文件尚未完成 ...
+WIMS 提供一些必须单独安装的软件包的界面. 
 
-本节尚未准备好, 抱歉.
+!read tabletheme
+!set cnt=!recordcnt interface0
+!for j=1 to $cnt
+  !set interf=!record $j of interface0
+$table_header
+$table_tr
+<th width="150">$wims_name_name</th><td>
+!line 1 of $interf
+</td>
+$table_tr
+<th>$wims_name_Author</th><td>
+!line 2 of $interf
+!!!exec $name about
+</td>
+$table_tr
+<th>$wims_name_Address</th><td>
+!line 3 of $interf
+</td>
+$table_tr
+<th>用途</th><td>
+!line 4 of $interf
+</td>
+$table_end
+<p>
+!next
 
+<h2>WIMS 内部软件</h2>
+!set cnt=!recordcnt interface1
+!for j=1 to $cnt
+  !set interf=!record $j of interface1
+$table_header
+$table_tr
+<th width="150">$wims_name_name</th><td>
+!set name=!line 1 of $interf
+!line 1 of $interf
+</td>
+$table_tr<th>$wims_name_Author</th>
+<td>
+!line 2 of $interf
+!!!exec $name about
+</td>
+$table_tr<th>用途</th>
+<td>
+!line 3 of $interf
+</td>
+$table_tr<th>输入数据</th>
+<td>
+!line 4 of $interf
+</td>
+$table_tr<th>输出数据</th>
+<td>
+!line 5 of $interf
+</td>
+$table_tr<th>例</th><td>
+!set example=!line 7 of $interf
+!if $example!=
+!set example=!replace internal \\ by $\
+$ in $example
+!set example=!replace internal xx by in $example
+!set example0=!line 6 of $interf
+!set example0=!replace internal \\ by $\
+$ in $example0
+!set u=!linecnt $example0
+!for a=1 to $u
+  !set a1=!replace internal = by , in $a1
+  !set $(a1[1])=$(a1[2])
+!next
+<pre>
+<font color="green">$example0
+$name $example</font></pre>
+ <br>
+ <pre>
+ !exec $name $example
+ </pre>
+!endif
+$table_tr
+$table_end
+<p>
+!next
