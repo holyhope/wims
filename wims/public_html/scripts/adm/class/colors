@@ -7,12 +7,12 @@
  !set style_note="background-color: $(class_scorecolor[$t0_+1]);font-weight:bold;text-align:center;border;solid 1px;"
 !else
  !let t_=!charcnt $t0_
- !if $t_>1
+ !if $t_>1 or ($t_=1 and $t0_>0)
   !let t_=$t0_+0.0000001
  !else
   !let t_=0
  !endif
- <td style="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);font-weight:bold;text-align:center;border;solid 1px;"> 
+ <td style="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);font-weight:bold;text-align:center;border;solid 1px;">
   !if $wims_scoreview>=0 and $t_>0
    $[rint(($t0_)*10^($wims_scoreview))/10^($wims_scoreview)]
   !else
