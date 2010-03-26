@@ -45,3 +45,18 @@ $livret_scoreview into wims_scorecolor,wims_scoreview
 !if class isin $livret_scoreoption
  wims_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
 !endif
+
+convert_table=$empty
+tmp=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
+ntmp=!linecnt $tmp
+cpt=1
+!for k=1 to $ntmp
+ t=!line $k of $tmp
+ !if $t!=$empty
+  t=$cpt
+  !increase cpt
+ !else
+  t=$empty
+ !endif
+ convert_table=!append item $t to $convert_table
+!next k
