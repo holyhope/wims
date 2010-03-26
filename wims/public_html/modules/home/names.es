@@ -148,3 +148,7 @@ ER_expression	=<b>Atención.</b> ¿Busca usted una expresión matemática? \
 !else
  U_oclass	=Otras clases
 !endif
+!set name_deps=Tiene que mejorar sus puntuaciones en los ejercicios
+!set name_dep=Tiene que mejorar su puntuación en el ejercicio
+!set name_dep2= antes de recibir puntuaciones en este.
+!set name_dep3=return to worksheet.

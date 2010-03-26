@@ -139,3 +139,7 @@ Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch.
 !else
  U_oclass       =Andere klassen
 !endif
+!set name_deps=Je cijfers voor deze oefeningen moeten verbeterd worden
+!set name_dep=Je cijfer voor deze oefening moet verbeterd worden
+!set name_dep2=voor dat je deze oefening mag proberen.
+!set name_dep3=return to worksheet.

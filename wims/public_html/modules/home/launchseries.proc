@@ -1,0 +1,32 @@
+#### !language independant
+###
+### this job allow to launch series of exercices with menu items link
+
+directworksheet=!replace internal . by , in $directworksheet
+!distribute item $directworksheet into sh,exo
+!if P isin $sh
+ sh=!char 2 to -1 of $sh
+ don=!record 0 of wimshome/$wims_sesdir/.sheets
+ don=!line $sh of $don
+ file=wimshome/public_html/bases/sheet/$don.def
+!else
+ maxsh=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ !bound sh between 1 and $maxsh default $empty
+ file=wimshome/log/classes/$wims_class/sheets/.sheet$sh
+!endif
+maxexo=!recordcnt $file
+!bound exo between 1 and $maxexo default $empty
+!if $sh!=$empty and $exo!=$empty
+ requires=!getscorerequire sheet=$sh
+ means=!getscoremean sheet=$sh
+ scores=!getscore sheet=$sh
+ !readproc adm/mkdepsheet.proc $sh
+ dep=!row $exo of $deps
+ dep=!trim $dep
+ !if $dep!=$empty
+  !exit
+ !endif
+ d=!record $exo of $file
+ !distribute line $d into r1,r2,r3
+ !restart module=$r1&cmd=new&worksheet=$(directworksheet[1])&$r2
+!endif
