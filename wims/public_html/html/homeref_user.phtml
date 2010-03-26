@@ -33,14 +33,15 @@
 !else
  !set 1_=!append line class_home,1,session=$wims_session.1 to $1_
 !endif
-!if $wims_sheet>0 or P isin $wims_sheet
- !if $wims_sequence>0
-  !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&seq=$wims_sequence
+!if $wims_sheet>0 or P isin $wims_sheet or $wims_sequence>0
+ !if $wims_sequence>0 and $wims_sheet=$empty
+  !set tmp_=sequence,1,module=home&seq=$wims_sequence
  !else
   !set tmp_=sheet,1,module=adm/sheet&sh=$wims_sheet&
  !endif
- !set 1_=!append line $tmp_ to $1_
  !let wims_menu_items=!append line $tmp_ to $wims_menu_items
+!endif
+!if $wims_sheet>0 or P isin $wims_sheet
  !if $wims_exo>1
   !let wims_menu_items=!append line previousseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo-1] to $wims_menu_items
  !endif
