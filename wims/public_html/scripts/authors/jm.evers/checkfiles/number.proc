@@ -507,8 +507,8 @@ A2=$empty
 
 !for p=1 to $t1
     g=!item $p of $GGG
-    g1=(round($afr1*($g)))
-    g2=(round($afr2*($g)))
+    g1=(round(1.0*$afr1*($g)))
+    g2=(round(1.0*$afr2*($g)))
     G0=!append item $g to $G0
     G1=!append item $g1 to $G1
     G2=!append item $g2 to $G2
@@ -516,8 +516,8 @@ A2=$empty
 
 !for p=1 to $t2
     a=!item $p of $AAA
-    a1=(round($afr1*($a)))
-    a2=(round($afr2*($a)))
+    a1=(round(1.0*$afr1*($a)))
+    a2=(round(1.0*$afr2*($a)))
     A0=!append item $a to $A0
     A1=!append item $a1 to $A1
     A2=!append item $a2 to $A2
@@ -619,7 +619,7 @@ tussenscore2=0
     tussenscore=$tussenscore0
     !if $tussenscore = 0
 	!if $tussenscore1 = $mx or $tussenscore2 = $mx
-	    tussenscore =$mx/3
+	    tussenscore =$[$mx/3]
 	    ex=!record 66 of $remarkdir/commonremarks.$taal
 	    extra=!append line <br>$ex to $extra
 	!endif
