@@ -767,9 +767,9 @@ void define_html_header(void)
 	    pc=getvar("wims_class");
 	    if(pc!=NULL && *pc!=0 && strcmp(cp,"class")==0) {
 		 nbuf=mkfname(NULL,"%s/%s/css",class_base,pc);
-		th=getvar("class_theme");ti=getvar("class_theme_icon") ;
-		if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
-		if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
+		 th=getvar("class_theme");ti=getvar("class_theme_icon") ;
+		 if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
+		 if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
 	    }
 	    else {
 		nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
@@ -777,24 +777,29 @@ void define_html_header(void)
 		ti=getvar("wims_theme_icon");
 	    }
 	    if(strcmp(cp,"-theme-")==0 && strchr(th,'.')==NULL) {
-		if(th==NULL || *th==0) th="default";
-		nbuf=mkfname(NULL,"html/themes/%s/css.css",th);
+		  if(th==NULL || *th==0) th="default";
+		  nbuf=mkfname(NULL,"html/themes/%s/css.css",th);
 	    }
 	    if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
+	    }
+	    else {
+	     th=getvar("wims_theme");
+		 nbuf=mkfname(NULL,"html/themes/%s/css.css",th);
+		}
+		if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
 	      if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
 %s\n\
 --></style>",tmplbuf); }
 		  else {
 		  snprintf(buf,sizeof(buf),"<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\">\n\
 		  <link href=\"gifs/themes/%s/icon.css\" rel=\"stylesheet\" type=\"text/css\">",nbuf,ti);
-		}
+		 }
 		setvar("wims_CSS",buf);
 	    }
 	    else {
-		
-		
+	    
 	    }
-	}
+	  }
     }
     if(readfile(html_header,buf,sizeof(buf))) setvar("wims_html_header",buf);
 }
