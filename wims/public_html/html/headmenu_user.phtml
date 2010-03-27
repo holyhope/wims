@@ -81,7 +81,7 @@
 !endif
 !if $wims_sequence>0 and adm/ isin $module
  !if $wims_user=supervisor
- !set 1_=!append line sequence,1,module=adm/class/sequence&seq=$wims_sequence to $1_
+  !set 1_=!append line sequence,1,module=adm/class/sequence&seq=$wims_sequence to $1_
  !else
   !set 1_=!append line sequence,1,module=home&seq=$wims_sequence to $1_
  !endif
@@ -100,7 +100,7 @@
   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
-!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home and _exam notin $wims_session
+!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home and _exam notin $wims_session and ($wims_user=$empty or $wims_user=supervisor)
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
 !if $wims_theme_version=0
