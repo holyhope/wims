@@ -33,17 +33,17 @@ V_Wsup		=Schrijf naar de docent
 V_Chpref	=Verander de voorkeurs instellingen 
 V_Chpass	=Verander het wachtwoord
 V_sh		=Werkblad
-V_shs       =Werkbladen
+V_shs       	=Werkbladen
 V_exam		=proefwerk
 
-CR_1		=maak je eigen
-CR_OEF		=simpele interactieve oefeningen
-CR_mod		=full-power modules
+CR_1		=Maak je eigen
+CR_OEF		=Simpele interactieve oefeningen
+CR_mod		=Full-power modules
 
-E_doc		=tech doc
-E_src		=download
-E_ref		=backward links
-E_stat		=gebruiks statistieken
+E_doc		=Technische  documentatie
+E_src		=Download
+E_ref		=Backward links
+E_stat		=Gebruiks statistieken
 E_comp		=gecompileerd op
 E_manager	=Site manager:
 E_faq      	=FAQ
@@ -57,6 +57,7 @@ RE_pop2		=!nosubst $gotcnt $tt op volgorde van populariteit\
 RE_try		=Probeer
 
 U_greet		=!nosubst Hallo, $wims_firstname $wims_lastname !
+
 U_newmsg	=Er zijn $$newmsgcnt nieuwe bericht(en) in het message board.
 U_nosheet	=Deze klas heeft (op dit moment)  nog geen werkbladen\
 Probeer het later nog eens, als de docent wat werk heeft samengesteld.
@@ -83,11 +84,13 @@ U_weight    	=weging
 U_gotoclass1	=Ga naar een klas als leerling:
 U_gotoclass3	=Ga naar een klas als supervisor:
 U_gotoclass	=Je klassen :
+
 U_inscription1	=Meld je aan bij een klas:
 U_inscription2	=Aanmelden in een andere klas.
 U_clickhere	=Klik hier
 U_supervise	=om naar een andere klas te gaan als supervisor.
 U_creatclass	=Maak een nieuwe klas.
+
 
 SU_greet	=!nosubst Hallo, $wims_firstname $wims_lastname!<br>\
 Welkom op de Onderhouds pagina van uw klas.<br>
@@ -128,6 +131,7 @@ ADD_3		=Toevoegen:
 ADD_cdt         =Agenda
 
 CL_Names	=Niveaus ,Klassen ,Programma's ,Cursussen ,Interklas cursussen
+CL_Name =niveau,klas,programma,cursus,interklas cursus
 CL_Test		=Test zone
 CL_otherNames=Andere $(CL_Names[2]),$(CL_Names[3]),$(CL_Names[4]) van de klas
 
@@ -139,7 +143,8 @@ Zoek je een wiskundige uitdrukking? Dat is op deze plek niet echt logisch.
 !else
  U_oclass       =Andere klassen
 !endif
+
 !set name_deps=Je cijfers voor deze oefeningen moeten verbeterd worden
 !set name_dep=Je cijfer voor deze oefening moet verbeterd worden
 !set name_dep2=voor dat je deze oefening mag proberen.
-!set name_dep3=return to worksheet.
+!set name_dep3=terug naar werkblad.
