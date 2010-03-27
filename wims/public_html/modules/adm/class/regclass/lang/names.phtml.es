@@ -42,20 +42,20 @@
    !set name_sup=del profesor
  !endif
 
-!distribute lines Continuer\
+!distribute lines Seguir\
   Reiniciar la operación\
   Creación de $name_classess\
   Nombre del centro educativo\
 a lo sumo\
-au moins\
-  Réservé aux experts\
-  caractères\
-  Revenir au début de l'opération.\
+a lo menos\
+  Reservado a los expertos\
+  caracteres\
+  Volver de nuevo al principio de la operación.\
   Seleccione el tipo de clase virtual que desea crear.\
   entre 4 y 16 caracteres, dígitos o letras sin acentuar\
  into name_continue,name_again,title,name_Name_portal,name_atmost,name_atleast,name_expert,\
    name_characters,name_comeback,name_choose,name_warningpass
-   
+
 !if $regpolicy=file
   !set noright=(no está autorizado para hacer eso).
  !else
@@ -69,12 +69,12 @@ au moins\
   Debe ser la única persona que la conozca.
 
 !set name_help2=La contraseña $name_classesss se requerirá para la inscripción\
-   de los participantes en la clase; así que deberá comunicársela a sus estudiantes. 
-  
+   de los participantes en la clase; así que deberá comunicársela a sus estudiantes.
+
 !set name_help3=La contraseña $name_classesss se requerirá para la inscripción\
    de los profesores $name_classesss; sus estudiantes y alumnos no deben conocerla.
 
-!distribute lines C'est la date à laquelle votre classe sera automatiquement archivée.\
+!distribute lines Es la fecha a la cual se archivará automáticamente su clase.\
   Límite de participantes de la $name_classe\
   Acceso seguro\
   Opcional\

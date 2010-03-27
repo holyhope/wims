@@ -6,7 +6,7 @@
 !endif
 
 !if no_class=$error
- ¡La clase que ha escogido parece no existir! 
+ ¡La clase que ha escogido parece no existir!
  Si no se trata de un fallo del programa, entonces es que la clase ha
  expirado o usted está jugando con el sitio (y en tal caso sepa que todas sus
  acciones están siendo registradas).
@@ -14,9 +14,7 @@
 !endif
 
 !if complete=$error
- La classe que vous avez choisie est complète. Il n'y a plus de place
- disponible pour vous. Désolé.
- La clase que ha elegido está al completo. No quedan plazas disponibles.
+La clase que ha elegido está al completo. No quedan plazas disponibles.
  Lo sentimos.
  !exit
 !endif
@@ -42,7 +40,7 @@
 !endif
 
 !if login_size=$error
- su identificador de usuario es demasiado 
+ su identificador de usuario es demasiado
  !if $n<4
   corto.
  !else
@@ -105,7 +103,7 @@ user registration failure
  El número de usuarios inscritos ha alcanzado el límite autorizado por
  este sitio ($wims_user_limit). El servicio de inscripción se ha cerrado,
  lo sentimos. <p>
- Puede 
+ Puede
  !mailurl $wims_site_manager escribir al administador del sitio\
 site user limit
  para pedirle que aumente este límite o que le

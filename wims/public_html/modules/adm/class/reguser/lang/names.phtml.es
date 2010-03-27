@@ -35,7 +35,7 @@
    !set name_sup=del profesor
  !endif
 
-!distribute lines le portail\
+!distribute lines el portal\
   El portal\
   como <b>profesor</b>\
   como <b>participante</b>\
