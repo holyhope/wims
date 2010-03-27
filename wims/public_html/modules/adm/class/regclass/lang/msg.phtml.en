@@ -21,6 +21,10 @@ Virtual class creation
 !endif
 
 !if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size="+1"><center>The password has beedn send by email to the adress
+  <p>
+ !endif
  !if $regpass!=$empty
   Sorry, your password is not correct. Please try again.
  !else
@@ -74,12 +78,6 @@ Virtual class creation password
  !exit
 !endif
 
-!if has_empty=$error
- You haven't given all the necessary informations for the creation of a 
- class. Please complete your data before submitting them.
- !exit
-!endif
-
 !if bad_secure=$error
  Your current host does not fit your definition of secure access
  (<tt>$secure</tt>)! This is probably an error which would make you unable
@@ -95,6 +93,12 @@ Virtual class creation password
  !exit
 !endif
 
+!if has_empty=$error
+ You haven't given all the necessary informations for the creation of a 
+ class. Please complete your data before submitting them.
+ !exit
+!endif
+
 !if too_short=$error
  The data field ``$(name_$error_subject)'' seems to be too short.
  !exit
@@ -105,11 +109,9 @@ Virtual class creation password
  !exit
 !endif
 
-!if bad_email=$error
- Your email address is apparently not valid.
- <p>
- Please be aware that your creation of class will not succeed, unless
- you submit a REAL email address of YOUR OWN.
+!if anti_date=$error
+ Your class has an expiration date before today. It would be expired before
+ being created!
  !exit
 !endif
 
@@ -118,9 +120,11 @@ Virtual class creation password
  !exit
 !endif
 
-!if anti_date=$error
- Your class has an expiration date before today. It would be expired before
- being created!
+!if bad_email=$error
+ Your email address is apparently not valid.
+ <p>
+ Please be aware that your creation of class will not succeed, unless
+ you submit a REAL email address of YOUR OWN.
  !exit
 !endif
 

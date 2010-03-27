@@ -27,7 +27,7 @@
  !if $sendmail!=$empty
   <font size="+1"><center>Het wachtwoord is verstuurd naar: $sendmail.</center></font>
   <p>
- !endif 
+ !endif
  !if $regpass!=$empty
   Helaas, Uw wachtwoord is niet juist. Probeer het nog eens.
  !else
@@ -57,7 +57,7 @@
     <input type=hidden name="adresse2" value="$regpassmail">
    !else
     @
-    !formselect adresse2 list $regpassmail 
+    !formselect adresse2 list $regpassmail
    !endif
    &nbsp;
   <input type="submit" value="Recevoir" name="Ontvangen">
@@ -194,6 +194,4 @@ Interne serverfout (oprichten van een klas)
  !read lang/links.phtml.$modu_lang
  !exit
 !endif
-
-
 

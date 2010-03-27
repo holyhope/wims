@@ -1,20 +1,5 @@
 !set wims_module_log=error: $error
 
-!if bad_secure=$error
- Your current host does not fit your definition of secure access
- (<tt>$secure</tt>)! This is probably an error which would make you unable
- to control your class.
- <p>
- Please read attentively the documentation below. If you still don't
- understand, leave this field empty (you will be sent temporary secret codes
- for sensitive operations), or put the word <tt>all</tt> to disable this
- security measure.
- <p><hr><p>
- !read help/hosts.phtml
- !reset secure
- !exit
-!endif
-
 !if no_subclass iswordof $error
  No está autorizado para crear subclases en la situación actual.
  !set restart=no
@@ -38,6 +23,10 @@ Creación de una clase virtual
 !endif
 
 !if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size="+1"><center>Le mot de passe a été envoyé à l'adresse électronique $sendmail.</center></font>
+  <p>
+ !endif
  !if $regpass!=$empty
   Lo sentimos, su contraseña no es correcta. Vuelva a intentarlo.
  !else
@@ -90,6 +79,21 @@ Contraseña para la creación de clases virtuales
  Está autorizado a instalar hasta un total de $r_quota1 clases. Ha llegado
  al total; ya no puede añadir más.
  !set restart=no
+ !exit
+!endif
+
+!if bad_secure=$error
+ Your current host does not fit your definition of secure access
+ (<tt>$secure</tt>)! This is probably an error which would make you unable
+ to control your class.
+ <p>
+ Please read attentively the documentation below. If you still don't
+ understand, leave this field empty (you will be sent temporary secret codes
+ for sensitive operations), or put the word <tt>all</tt> to disable this
+ security measure.
+ <p><hr><p>
+ !read help/hosts.phtml
+ !reset secure
  !exit
 !endif
 

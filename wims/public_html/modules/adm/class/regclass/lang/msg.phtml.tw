@@ -1,5 +1,83 @@
 !set wims_module_log=error: $error
 
+!if no_subclass iswordof $error
+ You have no right to create subclasses under the current circumstances.
+ !set restart=no
+ !exit
+!endif
+
+!if no_right iswordof $error
+ Sorry, you have no right to create virtual classes on this site. Please
+ !mailurl $wims_site_manager contact the site manager\
+Virtual class creation
+ for more details.
+ !set restart=no
+ !exit
+!endif
+
+!if not_manager iswordof $error
+ Sorry but only the site manager has the right to create institution portals.
+ !exit
+!endif
+
+!if getpass iswordof $error
+ !if $sendmail!=$empty
+  <font size="+1"><center>The password has beedn send by email to the adress
+  <p>
+ !endif
+ !if $regpass!=$empty
+  Sorry, your password is not correct. Please try again.
+ !else
+  !set cname=!item $cltype+1 of virtual classes,,groups of classes,,\
+	institution portals
+  The creation of $cname on this site is protected by a password.
+  You must enter this password before continuing.
+ !endif
+ <p>
+ !form reply
+  <input type=hidden name=step value=0>
+  Enter the password: <input size=16 name=regpass type=password>
+ </form> <p>
+ Remark. The password for creation of virtual classes should be obtained from
+ !mailurl $wims_site_manager the manager\
+Virtual class creation password
+ of this WIMS site.
+ !set restart=no
+ !exit
+!endif
+
+!if getid iswordof $error
+ !if $regpass$regid!=$empty
+  Sorry, your password is not correct. Please try again.
+ !else
+  The creation of virtual classes on this site is protected by a system of
+  authentication. Please identify yourself.
+ !endif
+ <p>
+ !form reply
+  <p><table border=0 cellspacing=5>
+  <tr><td align=right>
+  Entrez the name of your account:</td><td><input size=20 name=regid></td>
+  </tr><tr><td align=right>
+  And the password:</td><td><input size=16 name=regpass type=password>
+  <input type=submit value="$wims_name_tosave"></td>
+  </tr></table>
+ </form> <p>
+ Remark. Please write to
+ !mailurl $wims_site_manager the site manager\
+Virtual class creation password
+ if you want an account for creating virtual classes.
+ !set restart=no
+ !exit
+!endif
+
+!if class_quota=$error
+ You have the right to install up to $r_quota1 classes. You've had all;
+ no room for more.
+ !set restart=no
+ !exit
+!endif
+
 !if bad_secure=$error
  Your current host does not fit your definition of secure access
  (<tt>$secure</tt>)! This is probably an error which would make you unable
@@ -36,13 +114,21 @@
  !exit
 !endif
 
+!if anti_date=$error
+ 您所設定的期滿日期比今天還早，課程在開設前即已到期！
+ !exit
+!endif
+
 !if bad_level=$error
  不適當的等級數值！
  !exit
 !endif
 
-!if anti_date=$error
- 您所設定的期滿日期比今天還早，課程在開設前即已到期！
+!if bad_email=$error
+ Your email address is apparently not valid.
+ <p>
+ Please be aware that your creation of class will not succeed, unless
+ you submit a REAL email address of YOUR OWN.
  !exit
 !endif
 
@@ -65,14 +151,6 @@
 !if bad_code=$error
  您沒有輸入正確的課程碼！您所給的電子信箱正確嗎？<p>
  如果您想遨遊本站台，請在意您的活動記錄。
- !exit
-!endif
-
-!if bad_email=$error
- Your email address is apparently not valid.
- <p>
- Please be aware that your creation of class will not succeed, unless
- you submit a REAL email address of YOUR OWN.
  !exit
 !endif
 
