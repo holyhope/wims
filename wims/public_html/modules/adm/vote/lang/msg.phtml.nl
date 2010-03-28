@@ -35,11 +35,12 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !endif
 
 !if $error = bad_data
- Enkele van Uw definities zijn ongeldig, graag corrigeren.
+ Enkele van definities zijn ongeldig, graag corrigeren.
  !exit
 !endif
+
 !if $error = not_secure
- De gegevens zijn niet bereikbaar vanaf uw "onveilige" netwerkadres.
+ De gegevens zijn niet bereikbaar vanaf je netwerkadres.
 !exit
 !endif
 

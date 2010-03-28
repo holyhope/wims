@@ -45,7 +45,7 @@
 		Terug naar het menu,\
 		Eind datum,\
 		Fout,\
-		Next series,Previous series\
+		Volgende serie,Vorige serie\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -177,6 +177,7 @@
  
  !set wims_name_reaching_limit=De grootte van deze klas nadert de ingestelde server limiet.\
  Als deze limiet is bereikt , wordt het klasse management geblokkeerd ! 
+
 !endif
 
 !if adm/class isin $module or adm/manage isin $module
@@ -332,7 +333,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !set wims_name_addstudent=Nieuwe student
 !set wims_name_modstudent=Studenten eigenschappen
 !set wims_name_delstudent=Verwijder een student
-!set wims_name_group=Institiuut
+!set wims_name_group=Instituut
 !set wims_name_portal=Instituut
 !set wims_name_level=Leerniveau
 !set wims_name_class=Klas

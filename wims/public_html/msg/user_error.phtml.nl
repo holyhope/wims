@@ -25,7 +25,7 @@ padding-left: 3%; padding-right: 3%;}
  <hr width=50%><p>
  Deze WIMS server <font color=blue>$httpd_HTTP_HOST</font> 
  is op dit moment belast door een zeer groot aantal aanvragen,
- en neemt voor dit moment geen nieuwe opdrachten meer aan.
+ en neemt geen nieuwe opdrachten meer aan.
  Kom later terug, of maak gebruik van een WIMS mirror site 
  <p>We hopen U spoedig  weer van dienst te kunnen zijn. 
  !read mirror.phtml.en

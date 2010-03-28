@@ -11,7 +11,8 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
  worden gewerkt , maar de behaalde cijfers worden niet meer geregistreerd.
 !set name_student3= Dit werkblad mag op dit moment nog niet worden ingezien.\
 Neem desgewenst contact op met je docent.
-!set name_student4= Dit werkblad is leeg ! Er staat geen werk in vermeld : misschien een foutje van je docent ?
+!set name_student4= Dit werkblad is leeg ! \
+Er staat geen werk in vermeld : misschien een foutje van je docent ?
 !set name_score=!nosubst $[$got] uit $[$require] punten behaald, kwaliteit
 !set name_score2=!nosubst $[$require] punten vereist.
 !set name_deps=Je cijfers voor deze oefeningen moeten verbeterd worden
@@ -20,6 +21,7 @@ Neem desgewenst contact op met je docent.
 !set name_scoresuspend=De cijfer registratie is door jezelf opgeschort. 
 !set name_scoreopen=De cijfer registratie is open.
 !set name_scoreclose=De cijfer registratie is voor jouw netwerkverbinding gesloten.
+
 
 !set name_textsource=Hier staat de broncode van het werkblad. U kunt deze via \
 knippen en plakken in uw eigen klas importeren.

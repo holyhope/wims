@@ -42,8 +42,8 @@
 !set name_this2=de module in bewerking
 !set name_levellist=E: lagere school; H: middelbare school; U: universiteit; <br>G:promotie ; R: onderzoek
 
-!set name_accountchange=Verander Uw ontwikkelaars account
-!set name_empty=laat het wachtwoord veld leeg ,als U het niet wilt veranderen
+!set name_accountchange=Verander uw ontwikkelaars account
+!set name_empty=laat het wachtwoord veld leeg ,als u het niet wilt veranderen
 !set name_change=Uw wachtwoord is veranderd.
 
 !if $job=modname
@@ -65,11 +65,10 @@
 !set name_public_module=!nosubst de reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de\
   development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\
-  kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met \
-  het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
+  kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
   <p>Wil U deze module uitproberen, plaats deze dan in de <tt>test zone</tt>.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
-  <b>exact</b> overeenkomt met het adres van de reeds gepubliceerde versie.<small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
+  exact overeenkomt met het adres van de reeds gepubliceerde versie.<small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
 !endif
 
 !if $job=auth
@@ -81,7 +80,7 @@
     als u het wachtwoord vergeten bent.\
     Bent U geinteresseerd in het maken van WIMS modules,\
     WIMS new developer voor een account (loginnaam en wachtwoord).\
-    U kunt altjd vrijblijvend en <em>zonder</em> speciaal account\
+    U kunt altjd vrijblijvend en zonder speciaal account\
     interactieve WIMS oefeningen te maken.\
  into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
     name_createxo2
@@ -91,7 +90,7 @@
 !if $job=backup
  !set name_save= Hier is de backup file van de module
  !set name_internal_error=  Er is een interne fout opgetreden : het is onmogelijk een backup archief te maken.<br> Neem s.v.p. kontakt op met de 
- !endif
+!endif
 
 !if $job=publish
   !distribute lines Modtool submissie id\
@@ -111,11 +110,14 @@
   de "hoofd distributie server" <tt>$centralhost</tt>. Geef hier uw "publicatie id".
  !set name_warning1= Wanneer dit een verbeterde/vernieuwde versie is van een bestaande module,\
  niet vergeten het <em>versienummer</em> van de module te verhogen.Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
- !set name_warning2=Uw module heeft een lokaal adres. Het kan dus alleen worden gepubliceerd op deze lokale WIMS server. Wilt U toch doorgaan?
+ !set name_warning2=Uw module heeft een lokaal adres.\
+ Het kan dus alleen worden gepubliceerd op deze lokale WIMS server. Wilt U toch doorgaan?
  !set name_warning3=Het grote voordeel van publicatie op een lokale WIMS server is,\
  dat de module gewoon door de zoekmachine van deze lokale server kan worden aangeroepen.
- !set name_cheat1=!nosubst Deze module heeft versie WIMS-$Wver2 nodig,terwijl deze server versie $wims_version is. \
- U moet de INDEX file van de module even veranderen om dit recht te trekken.
+ !set name_cheat1=!nosubst Deze module heeft versie WIMS-$Wver2 nodig,\
+ terwijl deze server versie $wims_version is. \
+ U moet de INDEX file van de module even veranderen\
+  om dit recht te trekken.
  !set name_cheat2=Als U zeker bent van uw zaak, kunt U de andere servers om de tuin leiden \
  door ze te laten denken dat U met oudere versie werkt. (een rikante operatie...)
 
@@ -131,8 +133,7 @@
 !if $job=restore
 
  !set name_warning1=Uw bestand ziet er niet uit als een module backup file ! <p>U kunt voor deze \
- herstelprocedure alleen archieven gebruiken \
-   die eerder door <em>modtool</em> zelf zijn aangemaakt ! Probeer het opnieuw.
+ herstelprocedure alleen archieven gebruiken die eerder door Modtool zelf zijn aangemaakt ! Probeer het opnieuw.
  
  !distribute lines Ik kan in dit archief <b>geen valide</b> backup van een WIMS module ontdekken. Een fout in het bestand !\
  Er is geen verschil gevonden tussen de bestaande module en de backup.\
@@ -147,7 +148,6 @@
   
 !set name_illegal=De getuurde archieven bevatten niet-toegestane bestands types! Ik kan geen hersteloperatie uitvoeren.\
  <p>Is dit soms een oude backupfile. Probeer bestand voor bestand te kopieren.
-
 !set name_warning2=Alleen backups van Modtool of gedownload van het "publicatie centrum"\
    <a href="$downloadsite">$downloadsite</a> worden geaccepteerd.\
    De backup files mogen nooit handmatig worden gewijzigd.
@@ -158,18 +158,19 @@
 
 !exit
 :del
-
 Verwijderde modules zijn definitief weg !
 Maak dus eerst een
 !href cmd=reply&jobreq=backup  backup
-!
+
 <p>
 <b>Attentie</b>: wanneer deze module nog in gebruik is in werkbladen, repetities of documenten
  wordt dit lesmateriaal dus onbruikbaar !
 
-Weet U zeker dat deze module verwijderd moet worden?
-!exit
 
+<p>
+Weet U zeker dat deze module verwijderd moet worden?
+
+!exit
 :delconfirm
   Het bestand 
  <font color=blue><em>$fname</em></font>
@@ -178,9 +179,9 @@ Weet U zeker dat deze module verwijderd moet worden?
 !exit
 
 :delfile
+
 Weet U zeker dat deze file 
 <font color=blue><em>$fname</em></font>
 verwijderd moet worden uit module
 <font color=blue><em>$title</em></font>&nbsp;?
-
 !exit

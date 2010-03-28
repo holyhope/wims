@@ -58,5 +58,5 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 !set name_csv1=Hier is het bestand. Het kan geopend worden met een spreadsheet\
  programma naar keuze
 
-!set name_csv2=!nosubst U wilt de gegevens downloaden uit de vragenlijst nummer $vote
+!set name_csv2=!nosubst U wilt de gegevens downloaden uit de vragenlijst nummer $vote&nbsp;
 !set name_format=formaat

@@ -129,6 +129,7 @@
 :nongnu
 U hebt geen <b>GNU GPL</b> copyright aangegeven in uw module. 
 De installatie van uw module wordt geweigerd. 
+
 !exit
 
 :nooriginal
@@ -159,8 +160,8 @@ Netwerkfout : kon geen verbinding maken met de centrale publicatie server $centr
 !exit
 
 :please-update-module-version
-You must increase the module version when you update it. You should also write which modifications
-have been done in the file NEWS.
+Het versienummer van de module moet worden verhoogd bij publicatie.
+Alle veranderingen aan de module moeten worden genoteerd in het bestanhd NEWS.
 !exit
 
 :robot
@@ -179,17 +180,18 @@ have been done in the file NEWS.
 !exit
 
 :unpublishable
-Deze module heeft een niet geldig publicatie adres.
-Om verder te gaan kunt U de module
+Deze module heeft een niet geldig publicatie adres. Om verder te gaan kunt U de module
 !href cmd=reply&jobreq=move&modreq=$mod hernoemen
 of
 !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod dupliceren
 .
 !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
-En omdat deze module gemaakt is als een OEF, dient de naam te beginnen met <tt>oef</tt>.
+En omdat deze module gemaakt is als een OEF, 
+moet de naam te beginnen met <tt>oef</tt>.
 !endif
 !if doc iswordof  $w1 $w2 $w3 $w4 $w5 $w6
-En omdat deze module gemaakt is als een wims document , dient de naam te beginnen met <tt>doc</tt>.
+En omdat deze module gemaakt is als een wims document , 
+moet de naam te beginnen met <tt>doc</tt>.
 !endif
 !exit
 

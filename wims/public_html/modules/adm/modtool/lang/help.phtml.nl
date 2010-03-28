@@ -8,13 +8,13 @@
  <p>
  Een dergelijke module kan een "full-power" oefening zijn 
  (vergeleken met de Createxo OEF oefeningen; welke gemakkelijker te maken zijn,
-  maar hierdoor natuurlijk ook iets aan mogelijkheden inboeten. Zie hiervoor
+  maar hierdoor natuurlijk ook iets aan mogelijkheden inboeten. 
+  Zie hiervoor
  !href module=adm/createxo Createxo
  ) of bijvoorbeeld een zeer speciale wiskundige toepassing.
  Deze modules worden geschreven in de <b>WIMS programeertaal</b> [phtml] zoals beschreven in de
  !href target=wims_help module=help/wimsdoc WIMS technische documentatie
 .
-
  <p>
  Als U geinteresseerd bent, kan via  
  !mailurl $wims_site_manager de systeembeheerder\
@@ -25,9 +25,9 @@
 !endif
 
 !if $mod=$empty
- Om aan een module te kunnen werken, moeten we er wel eerst eentje aanmaken.<br>
+ Om aan een module te kunnen werken, moeten we er wel eerst eentje aanmaken.
  Voor het maken van een nieuwe module, moet U dus op de juiste links klikken
- en alle benodigde modules administratie invoeren. 
+ en alle benodigde module administratie invoeren. 
  <p>
 !endif
 
