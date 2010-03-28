@@ -1,4 +1,3 @@
-
 !let lang_exists=yes
 !set classname=<b><font color=green>$wims_classname</font></b>\
  van <b><font color=green>$wims_institutionname</font></b>
@@ -39,11 +38,11 @@ Gebruik kleuren om het prestatieniveau aan te geven,\
 Gebruik cijfers om het prestatieniveau aan te geven,\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5
 
-!!------------------------------- définition des noms de liens pour wims_menu_items
+!!------------------------------- definition des noms de liens pour wims_menu_items
 
 !if $wims_user=supervisor
  !let tmp=!defof SE_list in wimshome/public_html/modules/home/names.$lang
-!else 
+!else
  !let tmp=!defof U_myscore in wimshome/public_html/modules/home/names.$lang
 !endif
 
