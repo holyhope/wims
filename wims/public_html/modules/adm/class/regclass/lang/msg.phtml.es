@@ -24,7 +24,7 @@ Creación de una clase virtual
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <font size="+1"><center>Le mot de passe a été envoyé à l'adresse électronique $sendmail.</center></font>
+  <font size="+1"><center>La contraseña se envió a la dirección electrónica $sendmail.</center></font>
   <p>
  !endif
  !if $regpass!=$empty
@@ -40,7 +40,7 @@ Creación de una clase virtual
   <input type=hidden name=step value=0>
   Introduzca la contraseña: <input size=16 name=regpass type=password>
  </form> <p>
- Nota. Puede solicitar la contraseña necesaria para la creación 
+ Nota. Puede solicitar la contraseña necesaria para la creación
  de clases virtuales al
  !mailurl $wims_site_manager administrador\
 Contraseña para la creación de clases virtuales
@@ -83,14 +83,15 @@ Contraseña para la creación de clases virtuales
 !endif
 
 !if bad_secure=$error
- Your current host does not fit your definition of secure access
- (<tt>$secure</tt>)! This is probably an error which would make you unable
- to control your class.
+ ¡Su puesto actual no forma parte de su definición de acceso
+asegurado (<tt>$secure</tt>)&nbsp;! Es un error probablemente
+que tendría la consecuencia de prohibirles el acceso de control de su clase.
  <p>
- Please read attentively the documentation below. If you still don't
- understand, leave this field empty (you will be sent temporary secret codes
- for sensitive operations), or put the word <tt>all</tt> to disable this
- security measure.
+Lea atentamente la documentación siguiente. Si no comprenden todavía,
+dejan este campo vacío (se les enviarán códigos secretos temporales
+para las operaciones sensibles), o ponen la palabra <tt>all< /tt>
+para desactivar esta medida de seguridad.
+
  <p><hr><p>
  !read help/hosts.phtml
  !reset secure
@@ -127,13 +128,13 @@ Contraseña para la creación de clases virtuales
 !if bad_email=$error
  Su dirección de correo electrónico es visiblemente inválida.
  <p>
-La creación de clases sólo puede tener éxito si 
+La creación de clases sólo puede tener éxito si
  proporciona SU VERDADERA dirección de correo.
  !exit
 !endif
 
 !if existing=$error
- La clase $classname parece que ya existe. No puede volver a crear la 
+ La clase $classname parece que ya existe. No puede volver a crear la
  misma clase.
  !exit
 !endif
