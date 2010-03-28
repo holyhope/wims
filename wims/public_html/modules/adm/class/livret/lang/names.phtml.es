@@ -30,13 +30,13 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 Título del $name_n_palier&nbsp;,\
 Número de $name_n_paliers&nbsp;,\
 de la clase,\
-minimal score for validing an item\
+Nota mínima para considerar el ejercicio como acervo\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3
 
 !! ----------------------------------------------   ajout pour la version 1.04
-!let name_nowork=No work
-!distribute line Which color panel is used in $name_n_paliers level\
-show result in $name_n_paliers level\
+!let name_nowork=No hay trabajo
+!distribute line Paleta de color utilizada en el $name_n_paliers nivel\
+Muestra el resultado en $name_n_paliers nivel\
 into name_configtext4,name_configtext5
 !let name_listscoreoption=de la clase, del cuaderno
 !let name_listscoreview=no visualización, entero, con un decimal, con dos decimales, con tres decimales, con cuatro decimales
@@ -71,11 +71,11 @@ Cuaderno de $name_competences \
 !endif
 
 !if $job=delpalier
- !let name_delpalier=!nosubst Are you sure you want to erase the $name_n_palier $palier ( $mem_palier ) of the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !let name_delpalier=!nosubst ¿Está seguro de querer suprimir el  $name_n_palier $palier ( $mem_palier ) de $name_competence $comp ( $mem_title ) del $name_livret ?
  !exit
 !endif
 
 !if $job=delcomp
- !let name_delcomp=!nosubst Are you sure you want to erase the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !let name_delcomp=!nosubst ¿Está seguro de querer suprimir el  $name_competence $comp ( $mem_title ) del $name_livret ?
  !exit
 !endif

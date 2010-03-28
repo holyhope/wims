@@ -12,6 +12,6 @@
 !endif
 
 !if bad_user=$error
- Etrange, mais je ne trouve pas ce participant dans cette classe !
+ ¡Extraño, no encuentro a este participante en esta clase!
  !exit
 !endif
