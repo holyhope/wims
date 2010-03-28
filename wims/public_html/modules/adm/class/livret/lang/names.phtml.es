@@ -24,23 +24,18 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !set name_score_modify=Los resultados de los ejercicios de las hojas de trabajo siguientes se neutralizan para el cálculo de los niveles de adquisición de los $name_n_paliers &nbsp;
 !set name_cocher=Por  favor seleccione  los ejercicios que desean utilizar para este $name_n_palier.
 !set name_selectsheet=Indicar solamente los ejercicios de la hoja
-
+!let name_nowork=No hay trabajo
+!let name_listscoreoption=de la clase, del cuaderno
+!let name_listscoreview=no visualización, entero, con un decimal, con dos decimales, con tres decimales, con cuatro decimales
 
  !distribute items Título de la $name_competence&nbsp;,\
 Título del $name_n_palier&nbsp;,\
 Número de $name_n_paliers&nbsp;,\
 de la clase,\
-Nota mínima para considerar el ejercicio como acervo\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3
-
-!! ----------------------------------------------   ajout pour la version 1.04
-!let name_nowork=No hay trabajo
-!distribute line Paleta de color utilizada en el $name_n_paliers nivel\
-Muestra el resultado en $name_n_paliers nivel\
-into name_configtext4,name_configtext5
-!let name_listscoreoption=de la clase, del cuaderno
-!let name_listscoreview=no visualización, entero, con un decimal, con dos decimales, con tres decimales, con cuatro decimales
-
+Nota mínima para considerar el ejercicio como acervo,\
+Paleta de color utilizada en el $name_n_paliers nivel,\
+Muestra el resultado en $name_n_paliers nivel,\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,,name_configtext4,name_configtext5
 
 !!------------------------------- definición de los nombres de vínculos para wims_menu_items
 
