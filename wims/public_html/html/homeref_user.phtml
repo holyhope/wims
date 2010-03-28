@@ -86,6 +86,7 @@ $module_title
 !set 2_=you,0,$wims_name_you\
  class,0,$wims_classname ($wims_institutionname)\
  wsup,0,$3_
+!reset 4_
 !if $wims_sheet>0
  !set wims_homeref_scorestat=!getscorestatus sheet=$wims_sheet
  !if $wims_homeref_scorestat=yes and $wims_exodep!=pending
@@ -94,24 +95,25 @@ $module_title
    !set wims_homeref_got=!getscore sheet=$wims_sheet work=$wims_exo
    !set wims_homeref_mean=!getscoremean sheet=$wims_sheet work=$wims_exo
    !set wims_name_score=!singlespace $wims_name_score
-   !set 2_=!append line score,0,$wims_name_score to $2_
+   !set 4_=!append line score,0,$wims_name_score to $4_
   !else
-   !set 2_=!append line score,0,$wims_name_scoresuspend to $2_
+   !set 4_=!append line score,0,$wims_name_scoresuspend to $2_
   !endif
  !else
-  !set 2_=!append line score,0,$wims_name_scoreclose to $2_
+  !set 4_=!append line score,0,$wims_name_scoreclose to $4_
  !endif
  !if $module_score!=$empty and $wims_class_exolog>0 and E notin $wims_sheet
   !set wims_rm_0=!append line exolog,1,module=adm/class/exolog&cmd=new&job=log&logsheet=$wims_sheet&logexo=$wims_exo to $wims_rm_0
  !endif
 !endif
 !set wims_rm_2=$2_
-
+!set wims_rm_4=$4_
 :rmend
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2
 !set wims_homeref_n0=!linecnt $wims_rm_0
 !set wims_homeref_n3=!linecnt $wims_rm_3
+!set wims_homeref_n4=!linecnt $wims_rm_4
 </div>
 !read themes.phtml tail
 !robottrap

@@ -28,9 +28,9 @@
 !! Permalien / lecteur exportable : ces lignes permettent d'integrer facilement la page courante a un autre site :
 
 !set current_module=!replace / by , in $module
-!set module_path= !item 1 of $current_module
 
-!if $module_path notitemof home,adm,classes and _exam notin $session and $module_init_parm == $empty and $wims_lightpopup!=yes
+!set module_path= !item 1 of $current_module	
+!if $module_path notitemof home,adm,classes and _exam notin $session and $wims_lightpopup!=yes and ($wims_user=supervisor or $wims_user=$empty)
 	!set permalien=$wims_ref_name?module=$module
 
 <div class="topmenuitem" id="header_export">

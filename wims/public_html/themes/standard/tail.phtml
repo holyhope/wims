@@ -26,6 +26,16 @@
   !endif
  !next i_
 </div><!--wimsmenu-->
+!if $wims_homeref_n4>0
+<div class="wimstail">
+!for i_=1 to $wims_homeref_n4
+ <div class="tailitem">
+ !set 1_=!line $i_ of $wims_rm_4
+ !read oneitem.phtml $1_
+ </div><!--tailitem-->
+!next i_
+</div><!--wimstail-->
+!endif
 </div><!--wimsmenumodubox-->
 !endif
 !if $wims_homeref_n3>0
@@ -42,7 +52,7 @@
     !endif
   !next i_
   </div><!--wimsmenu-->
-  </div><!--wimsmenumodubox-->
+  </div><!--wimsmenutab-->
 !endif
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
@@ -56,17 +66,20 @@
 </div><!--wimsmenubox-->
 </div><!--wimsbodybox-->
 
-!!<div id="wimstailbox">
-!!<div class="wimstail">
-!!!for i_=1 to $wims_homeref_n2
-!! <div class="tailitem">
-!! !set 1_=!line $i_ of $wims_rm_2
-!! !read oneitem.phtml $1_
-!! </div><!--tailitem-->
-!!!next i_
-!!</div><!--wimstail-->
-!!</div><!--wimstailbox-->
+<div id="wimstailbox">
+<div class="wimstail">
+!for i_=1 to $wims_homeref_n2
+ <div class="tailitem">
+ !set 1_=!line $i_ of $wims_rm_2
+ !read oneitem.phtml $1_
+ </div><!--tailitem-->
+!next i_
+</div><!--wimstail-->
+</div><!--wimstailbox-->
+!endif
+
 !if help isin $wims_session
 </div><!--wims_mhelp-->
-<!-- end of tail.phtml -->
 !endif
+
+<!-- end of tail.phtml -->
