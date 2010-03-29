@@ -50,6 +50,9 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Deze klas heeft nog geen studenten.
 
+!set name_warning_no_sequence=You have configured the sequences to appear but have not defined any\
+sequences. So no score can appear.
+
 !if $manual>0
 !set name_manual_explanation=<b>Uitleg.</b> In de kolom <tt>Gemiddelde</tt> , <tt>auto</tt> \
 betekend het gemiddelde cijfer voor de server geregistreerde oefeningen en opdrachten in werkbladen,\

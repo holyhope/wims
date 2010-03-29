@@ -51,6 +51,9 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 
 !set name_noyetparticipant=Esta clase no tiene ningún participante aún.
 
+!set name_warning_no_sequence=You have configured the sequences to appear but have not defined any\
+sequences. So no score can appear.
+
 !if $manual>0
  !set name_manual_explanation=<b>Explicaciones.</b> En las columnas de <tt>media</tt>,\
 <tt>auto</tt>  se refiere a la media
