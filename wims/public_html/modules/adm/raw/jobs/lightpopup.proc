@@ -1,6 +1,15 @@
+!default option=about
+!if _noabout isin _$option 
+ option=!replace internal noabout by in $option
+!endif
+option=!listuniq $option
+
 !setdef wims_lightpopup=yes in wimshome/sessions/$wims_session/var.stat
+!setdef wims_lightpopup_option=$option in wimshome/sessions/$wims_session/var.stat
 !setdef w_wims_lightpopup=yes in wimshome/sessions/$wims_session/var
+!setdef w_wims_lightpopup_option=$option in wimshome/sessions/$wims_session/var
 parm=!replace internal ; by & in $parm
 !restart session=$wims_session&cmd=new&module=$emod&$parm
 
 
+!!exemple http://127.0.0.1/wims/wims.cgi?module=adm/raw&job=lightpopup&option=noabout&emod=H3/analysis/oeflinf.fr&parm=exo=fnctlin1

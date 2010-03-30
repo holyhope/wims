@@ -5,10 +5,17 @@
 !! 2nd set contains informations about author(s), and mail links to them.
 
 !! **********************************************
-!if yes isin $wims_lightpopup
-  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+ !if yes isin $wims_lightpopup
+ !if $wims_lightpopup_option=$empty
+  </div>
+  !exit
+ !else
+  !if about isitemof $wims_lightpopup_option
+   !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
+  !endif
   !set wims_rm_1=$1_
   !goto rmend
+ !endif
 !endif
 
 !if robot isin $session or _check isin $session
