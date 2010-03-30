@@ -1,11 +1,14 @@
-!bound error within no_download_sites default $
-!if $error=$empty
-  !exit
+!let wims_module_log=error: $error
+<b>Error:</b>
+
+!if $error=no_download_sites
+The adresss given is not the address of a valid WIMS modules download center. So the configuration has not been changed.
+ !exit
 !endif
 
-!goto $error
+!if $error=bad_mail
+Your message or your subject is empty
+ !exit
+!endif
 
-:no_download_sites
-The adresss given is not the address of a valid WIMS modules download center. So the configuration
-has not been changed.
-!exit
+$error

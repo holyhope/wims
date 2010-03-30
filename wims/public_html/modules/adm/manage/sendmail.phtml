@@ -1,18 +1,17 @@
+!if $error!=$empty
+  !read lang/msg.phtml.en
+!endif
 
-!!if $error!=$empty
-!!  !read msg.phtml
-!!  !set job=
-!!endif
-!if $sendmail_reg=$empty
+!if $step=$empty
  !form reply
   $table_header
    $table_tr
     <td>$name_subject</td>
-    <td><input name="sendmail_subject" size="45" value="$subject"></td>
+    <td><input name="sendmail_subject" size="45" value="$sendmail_subject"></td>
    </tr>
    $table_tr
     <td>$name_message</td>
-    <td><textarea name="sendmail_msg" cols="80" rows="10">$msg</textarea></td>
+    <td><textarea name="sendmail_msg" cols="80" rows="10">$sendmail_msg</textarea></td>
    </tr>
    $table_tr
     <td>$(name_dest[1])</td>
@@ -23,7 +22,8 @@
     </td>
    $table_tr
     <td colspan="2" align="center">
-     <input type=submit name="sendmail_reg" value="$wims_name_send">
+     <input type="hidden" name="step" value="1">
+     <input type="submit" name="sendmail_reg" value="$wims_name_tosave">
     </td>
    </tr>
   $table_end
@@ -32,18 +32,29 @@
   $table_header
    $table_tr
     <td>$name_subject</td>
-    <td>$sendmail_subject</td>
+    <td>$save_subject</td>
    </tr>
    $table_tr
     <td>$name_message</td>
-    <td><div style="height:100px;overflow:auto;">$sendmail_msg</div></td>
+    <td>$save_msg</td>
    </tr>
    $table_tr
     <td>$(name_dest[1])</td>
-    <td><div style="height:100%; overflow:auto;">
-     !replace internal , by <br> in $list
-    </div></td>
+    <td>
+     !replace internal , by <br> in $save_list
+    </td>
    </tr>
+   !if $step=1
+    $table_tr
+     <td colspan="2" align="center">
+     !form reply
+      <input type="hidden" name="step" value="2">
+      <input type=submit name="sendmail_reg" value="$wims_name_send"> &nbsp;
+      !href cmd=renew $wims_name_cancel
+     </form>
+     </td>
+    </tr>
+   !endif
   $table_end
 !endif
 !reset sendmail_subject,sendmail_dest,sendmail_reg,sendmail_msg

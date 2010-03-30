@@ -2,28 +2,40 @@ check_list=!item 2 to -1 of $name_dest
 nbcheck_list=!itemcnt $check_list
 val_list=!values v for v=1 to $nbcheck_list
 
-!if $sendmail_reg=$empty
- !!reset sendmail_msg,sendmail_subject,sendmail_dest,list
+!if $step=$empty
  output=!sh cd $wims_home/log/classes; \
 for file in .teacher-cls .supervisor-supercls .supervisor-portal .teacher-supercls .teacher-portal; do \
 cat $$file | cut -d"," -f3 | sort | uniq | awk 'END{print NR }'; \
 done;
  output=!lines2items $output
  cnt_list=1,$output
-!else
+ !exit
+!endif
+
+!if $step=1
  sendmail_dest=!listintersect $sendmail_dest and $val_list
  file=!item $sendmail_dest of ,.teacher-cls,.supervisor-supercls,.supervisor-portal,.teacher-supercls,.teacher-portal
  file=!items2words $file
  list=!sh cd $wims_home/log/classes; \
 cat $file | cut -d"," -f3 | sort | uniq
  list=!lines2items $list
- list=!nonempty item $list
+ save_list=!nonempty item $list
  !if 1 isitemof $sendmail_dest
-  list=!append item $wims_site_manager to $list
+  save_list=!append item $wims_site_manager to $save_list
  !endif
- !for us in $list
+ save_subject=!char 1 to 100 of $sendmail_subject
+ save_msg=!char 1 to 1000 of $sendmail_msg
+ !if $sendmail_subject=$empty or $sendmail_msg=$empty
+  error=bad_mail
+  step=$empty
+ !endif
+ !exit
+!endif
+
+!if $step=2
+ !for us in $save_list
   !mailto $us\
-[Wims $wims_serveurname] $sendmail_subject\
-$sendmail_msg
+[Wims $wims_serveurname] $save_subject\
+$save_msg
  !next us
 !endif
