@@ -5,7 +5,7 @@ main=`pwd`;
 rm -f .IND1 .IND2 .IND4 .IND2a .IND4a 2>/dev/null
 clist=`ls -d [0-9]* 2>/dev/null`
 for cls in $clist; do
-# if [ $cls > 9999 ]; then
+ if [ $cls -gt 9999 ]; then
   supv=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' $cls/.def`
   type=`awk -F'=' '$1=="!set class_type" {print $2; exit}' $cls/.def`
   email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' $cls/.def`
@@ -41,7 +41,7 @@ for cls in $clist; do
      cd $main
     fi;
   fi;
-# fi
+fi;
 done
 env LC_COLLATE=POSIX LANG=POSIX LC_CTYPE=fr_FR.UTF-8 sort -t ',' -f -k 2 <.IND1 >.teacher-cls 2>/dev/null
 env LC_COLLATE=POSIX LANG=POSIX LC_CTYPE=fr_FR.UTF-8 sort -t ',' -f -k 2 <.IND2 >.supervisor-supercls 2>/dev/null
