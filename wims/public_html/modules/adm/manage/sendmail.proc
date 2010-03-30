@@ -1,14 +1,23 @@
 check_list=!item 2 to -1 of $name_dest
-tmp=!itemcnt $check_list
-val_list=!values v for v=1 to $tmp
+nbcheck_list=!itemcnt $check_list
+val_list=!values v for v=1 to $nbcheck_list
 
-!if $sendmail_reg!=$empty
+!if $sendmail_reg=$empty
+ !!reset sendmail_msg,sendmail_subject,sendmail_dest,list
+ output=!sh cd $wims_home/log/classes; \
+for file in .teacher-cls .supervisor-supercls .supervisor-portal .teacher-supercls .teacher-portal; do \
+cat $$file | cut -d"," -f3 | sort | uniq | awk 'END{print NR }'; \
+done;
+ output=!lines2items $output
+ cnt_list=1,$output
+!else
  sendmail_dest=!listintersect $sendmail_dest and $val_list
  file=!item $sendmail_dest of ,.teacher-cls,.supervisor-supercls,.supervisor-portal,.teacher-supercls,.teacher-portal
  file=!items2words $file
  list=!sh cd $wims_home/log/classes; \
 cat $file | cut -d"," -f3 | sort | uniq
  list=!lines2items $list
+ list=!nonempty item $list
  !if 1 isitemof $sendmail_dest
   list=!append item $wims_site_manager to $list
  !endif
@@ -17,6 +26,4 @@ cat $file | cut -d"," -f3 | sort | uniq
 [Wims $wims_serveurname] $sendmail_subject\
 $sendmail_msg
  !next us
-!else
- !reset sendmail_reg,sendmail_msg,sendmail_subject,sendmail_dest
 !endif

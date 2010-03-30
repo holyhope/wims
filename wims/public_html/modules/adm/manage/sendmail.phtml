@@ -3,23 +3,47 @@
 !!  !read msg.phtml
 !!  !set job=
 !!endif
-
+!if $sendmail_reg=$empty
  !form reply
   $table_header
    $table_tr
     <td>$name_subject</td>
-    <td><input name="sendmail_subject" size="45" value="$subject">
+    <td><input name="sendmail_subject" size="45" value="$subject"></td>
    </tr>
    $table_tr
     <td>$name_message</td>
-    <td><textarea name="sendmail_msg" cols="80" rows="10">$msg</textarea>
+    <td><textarea name="sendmail_msg" cols="80" rows="10">$msg</textarea></td>
    </tr>
    $table_tr
     <td>$(name_dest[1])</td>
     <td>
-     !formcheckbox sendmail_dest list $val_list prompt $check_list
+     !for k=1 to $nbcheck_list
+      <input type="checkbox" name="sendmail_dest" value="$k">$(check_list[$k]) ($(cnt_list[$k]))<br>
+     !next k
     </td>
-  </table>
-  <input type=submit name="sendmail_reg" value="$wims_name_send">
-  </center>
+   $table_tr
+    <td colspan="2" align="center">
+     <input type=submit name="sendmail_reg" value="$wims_name_send">
+    </td>
+   </tr>
+  $table_end
  </form>
+!else
+  $table_header
+   $table_tr
+    <td>$name_subject</td>
+    <td>$sendmail_subject</td>
+   </tr>
+   $table_tr
+    <td>$name_message</td>
+    <td><div style="height:100px;overflow:auto;">$sendmail_msg</div></td>
+   </tr>
+   $table_tr
+    <td>$(name_dest[1])</td>
+    <td><div style="height:100%; overflow:auto;">
+     !replace internal , by <br> in $list
+    </div></td>
+   </tr>
+  $table_end
+!endif
+!reset sendmail_subject,sendmail_dest,sendmail_reg,sendmail_msg
