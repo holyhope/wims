@@ -12,9 +12,10 @@
 </div><!--id wimsexam-->
  !exit
 !endif
-!if $wims_homeref_n0>0
+!if $wims_homeref_n0+$wims_homeref_n4>0
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
-<div class="wimsmenu">
+ !if $wims_homeref_n0>0
+ <div class="wimsmenu">
  !for i_=1 to $wims_homeref_n0
   !set 1_=!line $i_ of $wims_rm_0
   !if $(1_[1])=
@@ -26,6 +27,7 @@
   !endif
  !next i_
 </div><!--wimsmenu-->
+!endif wims_homeref_n0
 !if $wims_homeref_n4>0
 <div class="wimstail">
 !for i_=1 to $wims_homeref_n4
@@ -35,9 +37,9 @@
  </div><!--tailitem-->
 !next i_
 </div><!--wimstail-->
-!endif
+!endif wims_homeref_n4
 </div><!--wimsmenumodubox-->
-!endif
+!endif wims_homeref_n0+wims_homeref_n4
 !if $wims_homeref_n3>0
   <div id="wimsmenutab">
   <div class="wimsmenu"> 
@@ -54,6 +56,7 @@
   </div><!--wimsmenu-->
   </div><!--wimsmenutab-->
 !endif
+!if $wims_homeref_n1>0
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 !for i_=1 to $wims_homeref_n1
@@ -64,8 +67,9 @@
 !next i_
 </div><!--wimsmenu-->
 </div><!--wimsmenubox-->
+!endif
 </div><!--wimsbodybox-->
-
+!if $wims_homeref_n2>0
 <div id="wimstailbox">
 <div class="wimstail">
 !for i_=1 to $wims_homeref_n2
@@ -77,9 +81,14 @@
 </div><!--wimstail-->
 </div><!--wimstailbox-->
 !endif
+!endif
 
 !if help isin $wims_session
 </div><!--wims_mhelp-->
+!endif
+!if $wims_lightpopup=yes
+ </div> <!--wimslightpopup-->
+ </div>
 !endif
 
 <!-- end of tail.phtml -->
