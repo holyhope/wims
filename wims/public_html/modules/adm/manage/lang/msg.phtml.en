@@ -1,5 +1,5 @@
 !let wims_module_log=error: $error
-<b>$wims_name_Error</b>
+<b>$wims_name_Error.</b>
 
 !if $error=no_download_sites
 The adresss given is not the address of a valid WIMS modules download center. So the configuration has not been changed.
@@ -7,7 +7,11 @@ The adresss given is not the address of a valid WIMS modules download center. So
 !endif
 
 !if $error=bad_mail
-Your message or your subject is empty
+Your message or your subject is empty.
+ !exit
+!endif
+!if $error=bad_list
+Forget to select the recipients ?
  !exit
 !endif
 
