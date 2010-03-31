@@ -3,11 +3,11 @@
  from <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
-!! !let wims_name_sheetadmin=Page of preparation
- !set name_title=!nosubst Preparation of sheet $sheet
+!! !let wims_name_sheetadmin=Página de preparación
+ !set name_title=!nosubst Preparación del exament $sheet
 !else
-!! !let wims_name_sheetadmin=Page of management
- !set name_title=!nosubst Management of sheet $sheet
+!! !let wims_name_sheetadmin=Página de gestión
+ !set name_title=!nosubst Gestión del examen $sheet
 !endif
 
 !read adm/lang/date.phtml.$lang
@@ -60,7 +60,7 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 !set name_exam9=!nosubst Tiene $sdure minutos para trabajar en el examen.
      Cuando pulse en un ejercicio de los anteriores,
 
-!set name_simulation=Este examen está en modo simulación. Funciona exactamente igual 
+!set name_simulation=Este examen está en modo simulación. Funciona exactamente igual
 que el examen verdadero pero no se puede guardar la puntuación y el intento no se tendrá en cuenta.
 
 !set wims_name_examremain=Tiempo restante de examen: $
@@ -77,53 +77,53 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 
 !! ---------------------------
-!! new part
+!! nueva parte
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activate,Expire,Deactivate,Invisible,Visible,$wims_name_erase
+!set statutaction=Activar, expirar, desactivar, ocultar, mostrar,$wims_name_erase
 
 !! -------------- title description for file examinfo.phtml
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Text of explanation,\
-Expiration date,,Score registation,for all sharing classes :,Remarks,Duration of an exam session,Number of trials per exam session
+Texto de explicación, \
+Fecha de expiración, Registro de las notas, para todas las clases compartiendo el examen: , Comentario, Duración de un examen, Número de pruebas por sesión
 
 !! ------- value for description of option
-!set name_desc_title=!nosubst limited to $title_limit characters
-!set name_desc_desc=!nosubst limited to $desc_limit characters; html tags and links are allowed
+!set name_desc_title=!nosubst limitado a  $title_limit caracteres
+!set name_desc_desc=!nosubst limitado a $desc_limit caracteres; se admiten los tags y vínculos HTML
 
-!!set name_desc_dependancy=Score dependencies means that a participant must get required scores in other exercises of the sheet before he/she can do this one. For example, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> means that the participant must get 50% success on exercise 1, 30% success on exercise 2,  and an average of 60% success on exercises 3,4,5.
+!!set name_desc_dependancy=Un participante debe en primer lugar adquirir puntos en otros ejercicios de la hoja, antes de poder trabajar sobre éste. Por ejemplo,  <font color=blue><tt>1:50,2: 30,3+4+5: 60</tt></font> significa que el participante debe tener un éxito del  50% sobre el ejercicio 1, 30% sobre el ejercicio 2, y una media de éxito del 60% sobre los ejercicios 3, 4, 5.
 
-!set name_desc_comment=Only visible for teachers.
-!set name_desc_duration=in minutes
-!let name_mkexam=Make the exam
-!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts (and/or hours) :
-!let name_shinfo_cutt=Cut times
+!set name_desc_comment=Visible solamente por el profesor.
+!set name_desc_duration=en minutos
+!let name_mkexam=Crear el examen
+!let name_allowtype=abierto para todos, abierto para simulación, cerrado para todos, abierto para siguientes puestos (y/o horas):
+!let name_shinfo_cutt=Horas de corte
 
-!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Participants' view,\
-		Add another exercise,\
-		add a series of exercises,\
+!! definición de los nombres para los vínculos en el menubox (definidos por wims_menu_items)
+!distribute items Vista de los participantes,\
+		Añadir un ejercicio,\
+		Añadir una serie de ejercicios,\
 into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 
 
-!! différents commentaires de la page de gestion
-!distribute lines General information&nbsp;\
-Content of the exam&nbsp;\
-This exam has no content yet.\
+!! distintos comentarios de la página de gestión
+!distribute lines Información general&nbsp;\
+Contenido del examen&nbsp;\
+Este examen no tiene aún contenido.\
 into name_info,name_content,name_warning
 
-!! titre du tableau de contenu de l'examen (file examcontent.phtml)
+!! título del cuadro de contenido del examen (file examcontent.phtml)
 !let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
-!set name_contenu=Choose content
-!let name_cpsheet1=You will add each exercise of the sheet at the end of the exam. Each exercise will have weight put to 1 and title put to sheet exercise title or to generic word below :
-!let name_cpsheet2=Sheet
-!let name_cpsheet3=Generic title word
-!let name_cpsheet4=Exercise will be numeroted
+!set name_contenu=Elección del contenido
+!let name_cpsheet1=Van a añadir una vez cada serie de ejercicios de la hoja siguiente tras los ejercicios ya presentes. Cada ejercicio tendrá como peso 1. Si no llenan el campo de texto abajo, conservará el título que tenía en la hoja de ejercicios.
+!let name_cpsheet2=Hoja
+!let name_cpsheet3=Título de ejercicio genérico
+!let name_cpsheet4=se numerarán los ejercicios
 
 !set name_warning_nonfinished=Todavía no ha completado todos los ejercicios de este examen. Si los acaba\
   ahora congelará la puntuación y consumirá una oportunidad de hacer\
   el examen, y tendrá que empezar desde el principio la próxima vez.<p>\
   ¿Seguro que quiere terminarlos?
 
-!let name_selectsheet=Afficher seulement les exercices de la feuille
+!let name_selectsheet=Indicar solamente los ejercicios de la hoja
