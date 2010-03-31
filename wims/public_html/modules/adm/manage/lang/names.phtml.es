@@ -449,5 +449,6 @@ posible utilizar los paquetes cirílicos.</small>
 !if $job=sendmail
  !distribute item Subject,Message into name_subject,name_message
  !let name_dest=Recipient,Server administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
+ !let name_sending=Your message has been send to all recipient
  !exit
 !endif

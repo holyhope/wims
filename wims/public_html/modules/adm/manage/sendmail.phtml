@@ -44,17 +44,20 @@
      !replace internal , by <br> in $save_list
     </td>
    </tr>
-   !if $step=1
-    $table_tr
-     <td colspan="2" align="center">
+   $table_tr
+    <td colspan="2" align="center">
+    !if $step=1
      !form reply
       <input type="hidden" name="step" value="2">
       <input type=submit name="sendmail_reg" value="$wims_name_send"> &nbsp;
       !href cmd=renew $wims_name_cancel
      </form>
-     </td>
-    </tr>
-   !endif
+    !else
+     $name_sending
+     !reset step
+    !endif
+    </td>
+   </tr>
   $table_end
 !endif
 !reset sendmail_subject,sendmail_dest,sendmail_reg,sendmail_msg
