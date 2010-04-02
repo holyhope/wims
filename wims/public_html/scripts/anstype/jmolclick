@@ -1,6 +1,8 @@
-
-!set appletdir=$imagedir
-!set appletdir=java/jmol
+!set appletdir=!getopt applet in $(replyoption$i)
+!if $appletdir issametext imagedir
+  !set appletdir=$imagedir
+!endif
+!default appletdir=java/jmol
 
 !distribute lines $(reply$i) into score,selgood,selbad,selforget,ans_sc1,ans_orient
 !for j in selgood,selbad,selforget
@@ -11,15 +13,15 @@
 !next
 !set for_feedback=$selgood;$selbad;$selforget
 
-nbsel=!getopt nbsel in $(replyoption$i)
+nbsel=!getopt nb_select in $(replyoption$i)
 
 !distribute lines $oef_applet_option into size,file,ans_sc0,ans_sc2
-!if ? isin $ans_sc0
+!if __http isin __$ans_sc0
   ans_file0=$ans_sc0
   !reset ans_sc0
 !endif
 
-!if ? isin $ans_sc2
+!if __http isin __$ans_sc2
   ans_file2=$ans_sc2
   !reset ans_sc2
 !endif
@@ -30,14 +32,14 @@ nbsel=!getopt nbsel in $(replyoption$i)
   !goto applet
 !endif
 
-!if $score=1 
+!if $score=1
  diareply$i=good
  !advance freegot
 !else
    diareply$i=bad
    freegot=$[$freegot+$score]
 !endif
- 
+
 :applet
 
 reply_$i=<script type="text/javascript" src="$appletdir/Jmol.js"></script>
@@ -45,20 +47,19 @@ reply_$i=$(reply_$i)
 
 reply_$i=$(reply_$i)<script type="text/javascript">\
     jmolInitialize('$appletdir','JmolApplet.jar');\
-    jmolSetAppletColor("white");\
-    jmolSetCallback("menuFile", "$appletdir/Jmol.mnu");\
+    jmolSetAppletColor('white');\
     var sc0='$ans_sc0';\
     var sc2='$ans_sc2';\
     var sc1='$ans_sc1';\
     var orient='$ans_orient';\
     var jscr='load $file;';\
-    jscr= jscr +'selectionhalos on;select none;set frank off;';\
-    retcode=jmolApplet([$size],jscr+sc1+sc2+sc0+orient);
+    jscr= jscr + 'selectionhalos on;select none;set frank off;';\
+    jmolApplet([$size],jscr+sc0+orient+sc1+sc2);
 !if $ans_file0!=$empty
     reply_$i=$(reply_$i)\
     jmolScriptWait('script $ans_file0;');
 !endif
-!if $ans_file0!=$empty
+!if $ans_file2!=$empty
     reply_$i=$(reply_$i)\
     jmolScriptWait('script $ans_file2;');
 !endif

@@ -1,9 +1,10 @@
-!set ans_warning1=Vous devez en selectionner un
-!set ans_warning2=Vous devez en selectionner un seul
-!set ans_warning3=!nosubst Vous devez en sélectionner $nbsel\nalors que vous en avez sélectionné $ $
+!read lang/jmolclick.phtml.$lang
 
-!set appletdir=$imagedir
-!set appletdir=java/jmol
+!set appletdir=!getopt applet in $(replyoption$i)
+!if $appletdir issametext imagedir
+  !set appletdir=$imagedir
+!endif
+!default appletdir=java/jmol
 !set anstype=yes
 !set anstyle=dprompt
 !set oef_js_submit=finalise()
@@ -14,7 +15,7 @@
 !!########################
 
 
-!set nbsel=!getopt nbsel in $(replyoption$i)
+!set nbsel=!getopt nb_select in $(replyoption$i)
 
 !!############################
 
@@ -80,6 +81,10 @@ $temp
     !set ans_file$j=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
     !reset ans_sc$j
   !endif
+  !if __http isin __$(ans_sc$j)
+    !set ans_file$j=$(ans_sc$j)
+    !reset ans_sc$j
+  !endif
 !next
 !!###on garde les options pour le retour, variable de nom imposée oef_applet_option
 !set oef_applet_option=$Inputsize\
@@ -94,7 +99,7 @@ $ans_sc2$ans_file2
  $ in $rg
   !set R_=
   !set rg_cnt=!linecnt $rg
- 
+
   !for u_ = 1 to $rg_cnt
     !set l_=!line $u_ of $rg
     !set l_=!trim $l_
@@ -115,7 +120,7 @@ $ by | in $Rg
   !set red=red
 !endif
 <input type=hidden name="reply$i" id="Clickjmolreply" value="">
-<script type="text/javascript" src="$appletdir/Jmol.js"></script> 
+<script type="text/javascript" src="$appletdir/Jmol.js"></script>
 
 <script language="javascript" type="text/javascript">
 function finalise(){
@@ -140,19 +145,20 @@ for(irep=0;irep<tab_rg.length;irep++){
    selforget=tabrep[2];
    score=tabrep[3];
    best=irep;
+   feedback=selgood + '\n' + selbad  + '\n' + selforget
  }
 }
   sc_in_out=affich_rep(selgood,selbad,selforget);
 
-  orient=jmolSaveOrientation()
+  var orient=jmolSaveOrientation()
   orient=orient.replace(/1\.0/,"0")
   document.getElementById('Clickjmolreply').value=score+'\n'+ feedback +'\n'+sc_in_out+'\n'+orient;
-  //alert (document.getElementById('Clickjmolreply').value) ; 
+  //alert (document.getElementById('Clickjmolreply').value) ;
  }else{
   document.getElementById('Clickjmolreply').value='';
  }
  !!#########
- if(nbselected>=$nbsel || $nbsel==0){
+ if(nbselected==$nbsel || $nbsel==0){
   document.forms[0].submit();
  }else{
   if($nbsel==1){
@@ -189,10 +195,14 @@ function analysesel(arg,arg2) {
 }
 
 function analyserep(repetu,repgood,nbsel){
+ yy=jmolScriptWait('print ('+repgood+')');
+ var tyy=new Array()
+ tyy=yy.split(",");
+ repgood2=tyy[tyy.length-1];
+ if(repgood2.substr(0,2)=="({"){repgood=repgood2.substr(0,repgood2.length-1)}
  var atominfo=new Array()
  atomgood=jmolGetPropertyAsArray("atominfo", repgood);
  atometu=jmolGetPropertyAsArray("atominfo", repetu);
-
  atom_good=jmolGetPropertyAsArray("atominfo", "(("+repgood+") AND ("+repetu+"))");
  atom_bad=jmolGetPropertyAsArray("atominfo", "(("+repetu+") AND (NOT ("+repgood+")))");
  atom_forget=jmolGetPropertyAsArray("atominfo", "(("+repgood+") AND (NOT ("+repetu+")))");
@@ -200,32 +210,22 @@ natgood=atomgood.length;
 if ($nbsel>0) { natgood=nbsel}
 nat_good=atom_good.length;
 nat_bad=atom_bad.length;
- selbad='({';
+ var selbad='({';
  for(i=0;i<atom_bad.length;i++){
   selbad=selbad+' '+atom_bad[i]._ipt;
  }
  selbad=selbad+'})';
- selgood='({';
+ var selgood='({';
  for(i=0;i<atom_good.length;i++){
   selgood=selgood+' '+atom_good[i]._ipt;
  }
  selgood=selgood+'})';
- selforget='({';
+ var selforget='({';
  for(i=0;i<atom_forget.length;i++){
   selforget=selforget+' '+atom_forget[i]._ipt;
  }
  selforget=selforget+'})';
 
-feedback=selgood + '\n' + selbad  + '\n' + selforget
-
-/*if(typrep=='onlyin'){
- selforget='none'
- if(nat_good==nbsel && nat_bad==0){
-  score=1;
- }else{
-  score=0;
- }
-}*/
 !if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i)
  !if eqweight iswordof $(replyoption$i)
    coeff=1
@@ -245,32 +245,48 @@ if(nat_good-coeff*nat_bad <= 0) { score=0 }
 }
 
 function affich_rep(selgood,selbad,selforget){
-chscript='define ~good '+selgood+';select ~good; halos 25%;color halos green;';
-chscript=chscript+'define ~bad '+selbad+';select ~bad; halos 25%;color halos $red;';
-chscript=chscript+'define ~forget '+selforget+';select ~forget; halos 25%;color halos orange;';
-return chscript;
+ chscript='define ~good '+selgood+';select ~good; halos 25%;color halos green;';
+ chscript=chscript+'define ~bad '+selbad+';select ~bad; halos 25%;color halos $red;';
+ chscript=chscript+'define ~forget '+selforget+';select ~forget; halos 25%;color halos orange;';
+ return chscript;
 }
 
+function cb(trash,mm){
+ jmolScriptWait('ispicked("'+mm+'","$nosel")');
+}
 
 </script>
 
-<script type="text/javascript">       
+!if $ans_file0!=$empty
+   !set ans_0=jmolScriptWait('script $ans_file0;');
+!endif
+!if $ans_file1!=$empty
+   !set ans_1=jmolScriptWait('script $ans_file1;');
+!endif
+<script type="text/javascript">
       jmolInitialize('$appletdir','JmolApplet.jar');
-      jmolSetAppletColor("white");
-//      jmolSetCallback("MessageCallback", "alert")
-      jmolSetCallback("menuFile", "$appletdir/Jmol.mnu")
-//      jmolSetCallback("PickCallback", "alert")
+      jmolSetAppletColor('white');
+      jmolSetCallback("PickCallback", 'jmolscript:pic={atomIndex = _atomPicked}; if(pic.selected==1){select selected and not pic and not {$nosel}}else{select selected or ( pic and not {$nosel})};message "";')
 
 var sc0='$ans_sc0';
 var sc1='$ans_sc1';
 var jscr='load $file;';
-    jscr= jscr +'selectionhalos on;select none;set frank off;set DisablePopupMenu TRUE;';
-    jscr= jscr +'set picking select atom;';
+    jscr= jscr +'selectionhalos on;select none; color selectionHalos blue;';
+    jscr= jscr +'set frank on;set DisablePopupMenu FALSE; hover off; \n';
+    jscr= jscr +'set picking;\n';
+    jscr= jscr +'function ispicked(mess,nosel){\n';
+    jscr= jscr +' picked=mess.split(" ")[1];\n'
+    jscr= jscr +' picked={(@picked)};\n'
+    jscr= jscr +' nosel={(@nosel)};\n'
+    jscr= jscr +' if(picked.selected==1){\n'
+    jscr= jscr +'  select selected and not picked;aa=false;\n'
+    jscr= jscr +' }else{\n'
+    jscr= jscr +'  select (selected or picked) and not nosel;aa=true;\n'
+    jscr= jscr +' }\n'
+    jscr= jscr +'}\n';
 var retcode=jmolApplet([$Inputsize],jscr+sc0+sc1);
-    document.getElementById('Clickjmolreply').value=retcode;
-    jmolScriptWait('select none;');
-    jmolScriptWait('script $ans_file0;');
-    jmolScriptWait('script $ans_file1;');
+    $ans_0
+    $ans_1
 </script>
 
 !!#####

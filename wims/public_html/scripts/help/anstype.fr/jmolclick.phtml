@@ -1,60 +1,183 @@
-!!!Don't translate for the moment
-
-<b>Clic sur des atomes d'une molécule en 3D</b> (nécessite java) (nom : <tt>jmolclick</tt>)
-
-Une molécule est présentée dans l'applet jmol et on doit cliquer sur certains des atomes. 
-Ce type de réponse doit être utilisé avec la commande <tt>\embed{}</tt>. 
+<b>Sélectionner des atomes d'une molécule en 3D</b> (nécessite java) (nom : <tt>jmolclick</tt>)
+<p>
+Une molécule est présentée dans l'applet <b>Jmol</b> et certains des atomes doivent être sélectionnés.
+Ce type de réponse doit être utilisé avec la commande <tt>\embed{}</tt>.
+D'autres objets que des molécules peuvent être représentés selon les capacités de <b>Jmol</b>
 <p>
 La bonne réponse est formée de deux lignes (séparateur ; ) : la première est la
-bonne réponse, la seconde indique la molécule à montrer : le fichier de la molécule (dans un 
-format reconnu par jmol) peut 
-être dans un répertoire <tt>data</tt> du module, 
-dans le répertoire data de la distribution wims (adresse <tt>data/xxx</tt>) ou 
-dans un module de données dans modules/data (dans ce cas, l'adresse est de la forme 
-datamodule/xxx) ou dans le répertoire images (l'adresse est alors <tt>\imagedir/xxx</tt>).
-On peut aussi mettre le texte décrivant la molécule.
+bonne réponse, la seconde indique la molécule à montrer : le fichier de structure de la molécule (dans un
+format reconnu par <b>Jmol</b>) peut
+être dans un répertoire <tt>data</tt> du module,
+dans le répertoire data de la distribution WIMS (adresse <tt>data/xxx</tt>) ou
+dans un module de données dans <tt>modules/data</tt> (dans ce cas, l'adresse est de la forme
+<tt>datamodule/xxx</tt>) ou dans le répertoire <tt>images</tt> (l'adresse est alors <tt>\imagedir/xxx</tt>).
+On peut aussi mettre simplement le texte décrivant la molécule.
 <p>
-La première partie de la bonne réponse est donnée par 
-la liste des numéros des atomes à cliquer (comme dans le fichier) ou par une commande du type
-jmol (des exemples sont donnés ci-dessous). Ainsi, <tt>1,2,3</tt> est équivalent à 
- <tt>atomno=1 or atomno=2 or atomno=3</tt> ou encore avec  <tt>{0,1,2}</tt> (les deux dernières étant
- en syntaxe jmol).
- <p>
- Il est possible de donner plusieurs réponses possibles ; dans ce cas-là, elles doivent être séparées
- par un <tt>|</tt>. 
+La première partie de la bonne réponse est donnée par
+la liste des numéros des atomes à sélectionner (comme dans le fichier de structure) ou par une commande dans la syntaxe
+<b>Jmol</b> (des exemples sont donnés ci-dessous). Ainsi, <tt>1, 2, 3</tt> est équivalent à
+<tt>atomno=1 or atomno=2 or atomno=3</tt> ou encore à <tt>({0,1,2})</tt> (les deux dernières étant
+en syntaxe <b>Jmol</b>).
 <p>
-La première ligne de la commande <tt>\embed</tt> est formée de la taille en pixels de l'applet
-X x Y. Sur les trois lignes suivantes, des scripts jmol peuvent être mis : le premier sera exécuté 
+Il est possible de donner plusieurs réponses possibles ; dans ce cas-là, elles doivent être séparées
+par un <tt>|</tt>.
+<p>
+La première ligne de la commande <tt>\embed</tt> est formée de la taille X x Y en pixels de l'applet.
+Sur les trois lignes suivantes, des scripts <b>Jmol</b> peuvent être mis : le premier sera exécuté
 à la première requête de l'exercice, le troisième sera exécuté lors de la réponse, le
 second sera utilisé les deux fois.
+Il est aussi possible de donner l'adresse d'un fichier contenant un script. Les mêmes règles sont applicables
+que pour le fichier de structure de la molécule (<tt>data/scriptsimple.spt</tt>). Pour être reconnu,
+le fichier doit avoir l'extension <tt>.spt</tt>. Il est aussi possible  lorsque
+ce script est créé par l'exercice (par exemple, il contient des variables aléatoires) d'utiliser
+le slib <tt>oef/newfile</tt> (exemple : 
+<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
+où la variable <tt>text_script</tt> contient le texte du script. La variable <tt>filescript</tt> contient l'adresse
+du fichier créé.
+
+<p><b>Exemples</b>: 
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  script \filescript ; select ({5}); spacefill 0.1;select none;
+  set echo top left; echo "avant la réponse";
+  set echo bottom right; echo "après la réponse";}
+}
+</pre>
+ou
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  \filescript}
+}
+</pre>
+
+
+Ne pas oublier les points virgules de Jmolscript.
 <p>
-Des options sont possibles : 
+Les options suivantes du type de réponse <tt>jmolclick</tt> sont possibles :
 
 $table_header
-$table_tr<td>split ou partialscore</td><td>
-$table_tr<td>eqweight</td><td>
-$table_tr<td>noselect="liste de numéros d'atomes"</td><td>les atomes en question ne pourront
-pas être sélectionnés. 
+$table_tr<td><tt>
+split</tt> ou <tt>partialscore
+</tt></td><td>
+Le score tient compte d'une réponse bonne partielle.
+$table_tr<td><tt>
+eqweight
+</tt></td><td>
+les bonnes réponses partielles ont même poids dans le score
+$table_tr<td><tt>
+noselect="liste de numéros d'atomes"
+</tt></td><td>
+les atomes en question ne pourront
+pas être sélectionnés.
+$table_tr<td><tt>
+nb_select=</tt>m</td><td>Contraint à ce que le nombre d'atomes sélectionnés soit exactement <tt>m</tt>.
+Un message d'alerte invite à corriger dans le cas contraire.</td>
+$table_tr<td><tt>
+applet=imagedir</tt></dd><td>Pour experts : l'applet utilisée sera celle mise dans le
+répertoire <tt>images</tt> du module. N'utilisez cette solution que si vous avez réellement besoin d'une version
+plus récente de <b>Jmol</b>.
 $table_end
 
-La variable <tt>reply</tt>n contient trois listes séparées par des points-virgule : 
-la liste des bonnes réponses de l'étudiant; la liste des réponses fausses; la liste des réponses
-des atomes oubliés. 
+La variable <tt>reply</tt>n contient trois listes séparées par des points-virgule :
+la liste des bonnes réponses de l'étudiant; la liste des réponses fausses; la liste des atomes oubliés.
 
 Dans le cas où le premier champ de la bonne réponse est une variable de contenu vide, la variable
-<tt>reply</tt>n contient simplement la liste des atomes cliqués.
-
+<tt>reply</tt>n contient simplement la liste des atomes sélectionnés.
 
 $table_header
-<caption>Exemple de scripts de réponse</caption
-$table_tr<td>atomno=1 or atomno=2
-  </td><td> listes d'atomes à sélectionner
-$table_tr<td>
-  </td><td>
-$table_tr<td>
-  </td><td>
-  
-
+<caption>Exemples de réponses Jmol (première ligne du deuxième champ de <tt>answer</tt>)</caption>
+$table_tr<td><tt>
+atomno=1 
+<tt></td><td> l'atome numéro 1
+$table_tr<td><tt>
+({1})
+</tt></td><td>
+l'atome numéro 2 (attention au décalage de 1).
+$table_tr<td><tt>
+atomno=1 or atomno=2 or atomno=5
+</tt></td><td>
+les atomes 1, 2 et 5
+$table_tr<td> <tt>
+({0 1 4})
+</tt></td><td>
+les atomes 1, 2 et 5 (attention au décalage de 1).
+$table_tr<td> <tt>
+({0 1 4:7})
+</tt></td><td>
+les atomes 1, 2 et les atomes de 5 à 8 (attention au décalage de 1).
+$table_tr<td><tt>
+_C
+</tt></td><td>
+tous les atomes de carbone (on peut aussi mettre <tt>carbon</tt> ou utiliser le numéroatomique <tt>elemno=6</tt>)
+$table_tr<td><tt>
+connected(2)
+</tt></td><td>
+tous les atomes ayant deux liaisons (quelque soit le type de liaisons)
+$table_tr<td><tt>
+connected(2,4)
+</tt></td><td>
+tous les atomes ayant entre 2 et 4 liaisons (quelque soit le type de liaisons)
+$table_tr<td><tt>
+connected(double)
+</tt></td><td>
+tous les atomes ayant une liaison double (on peut aussi mettre <tt>single</tt>, <tt>triple</tt> ou <tt>aromatic</tt>)
+$table_tr<td><tt>
+connected(atomno=5)
+</tt></td><td>
+tous les atomes connectés à l'atome numéro 5
+$table_tr<td><tt>
+connected(2,nitrogen)
+</tt></td><td>
+tous les atomes connectés exactement à deux atomes d'azote (ils peuvent être connectés à d'autres types d'atomes)
+$table_tr<td><tt>
+within(2.1,atomno=4)
+</tt></td><td>
+tous les atomes à une distance de moins de 2.1 Å de l'atome numéro 4
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+tous les atomes à moins de 2.1 Å du plan défini par les atomes numéro 3, 4 et 5 (attention, il s'agit d'une mesure algébrique)
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})}) or within(-2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+tous les atomes à moins de 2.1 Å du plan défini par les atomes numéro 3, 4 et 5.
 $table_end
+<p>
+Les conditions peuvent être combinées dans <b>Jmol</b> par les opérateurs d'ensembles 
+<tt>OR</tt>, <tt>AND</tt> et <tt>NOT</tt>. Pour plus de détails, voir la 
+<a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">documentation de Jmol</a>.
+<p>
+$table_header
+<caption>Exemples de scripts Jmol</caption>
+$table_tr<td><tt>
+
+connect (({4}) ({5}) double modifyorcreate;
+</tt></td><td>
+Crée une liaison double entre les atomes numéro 4 et 5
+$table_tr<td><tt>
+connect (({4}) ({5}) delete;
+</tt></td><td>
+Détruit les liaisons entre les atomes numéro 4 et 5
+$table_tr<td><tt>
+connect (_C) delete;
+</tt></td><td>
+Détruit les liaisons entre les atomes de carbone
+$table_tr<td><tt>
+select (_N); color atoms green; select none;</tt><td>
+Colorie en vert les atomes d'azote
+$table_tr<td><tt>
+select ({5}); spacefill 0.1; select none;</tt><td>
+réduit la taille de l'atome numéro 5
+$table_end
+
+<p>
+Des slibs sur Jmol sont accessibles.
+!href module=help/wimsdoc&+subject=slib#slib slib
 
 

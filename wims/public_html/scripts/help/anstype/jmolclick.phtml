@@ -1,0 +1,181 @@
+<b>Select atoms in 3D</b> (java required) (name: <tt>jmolclick</tt>)
+<p>
+A molecule is showed in the <b>Jmol</b> applet and some atoms must be selected.
+This reply type must be used in link with the command <tt>\embed{}</tt>.
+Other objects than molecule can be represented according to the capacity of 
+<b>Jmol</b>.
+<p>
+The good answer has two lignes (separated by  ; ) : the first one is the
+good answer, the seconde one is the molecule to show: the structure file (in a valid
+format for <b>Jmol</b>) can be in a directory <tt>data</tt> of the module,
+in the data directory of the distribution WIMS (address <tt>data/xxx</tt>) or
+in a data module in <tt>modules/data</tt> (in this case, the address is of the form
+<tt>datamodule/xxx</tt>) or in the directory <tt>images</tt> (the address is then <tt>\imagedir/xxx</tt>).
+One can also put directly the structure of the molecule.
+<p>
+The first part of the good answer is given by
+the list of atom numbers to select (as they are in the structure file) or by a command in the 
+<b>Jmol</b> syntax (some examples are given below). So, <tt>1, 2, 3</tt> is equivalent to
+<tt>atomno=1 or atomno=2 or atomno=3</tt> or to <tt>({0,1,2})</tt> (the two last forms are in
+<b>Jmol</b> syntax).
+<p>
+Several good answers may be given ; they must be separated by a <tt>|</tt>.
+<p>
+The first line of the command <tt>\embed</tt> is the size X x Y (in pixels) of the applet. 
+On the next three lines, <b>Jmol</b> scripts can be given : the first one is executed at the first request
+of the exercise, the third one is executed when the answer is send, the second one is used in both cases.
+
+One can also give the address of a file containing a script. The rules are the same as in the case of the
+structure of the molecule (<tt>data/scriptsimple.spt</tt>). To be valid,
+the file must have <tt>.spt</tt> as extension. When this script is created by the 
+exercise (for example, it contains random variables) one can also use
+the slib <tt>oef/newfile</tt> (example : 
+<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
+where the variable <tt>text_script</tt> contains the script.
+It gives the url address of the created file.
+
+<p><b>Example</b>: 
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  script \filescript ; select ({5}); spacefill 0.1;select none;
+  set echo top left; echo "before the answer";
+  set echo bottom right; echo "after the answer";}
+}
+</pre>
+or
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  \filescript}
+}
+</pre>
+
+Don't forget the semi-colons of Jmolscript.
+<p>
+The following options of the reply type <tt>jmolclick</tt> are available:
+
+$table_header
+$table_tr<td><tt>
+split</tt> or <tt>partialscore
+</tt></td><td>
+The score takes in account a partially good answer.
+$table_tr<td><tt>
+eqweight
+</tt></td><td>
+the partial good answer have the same weight for the score
+$table_tr<td><tt>
+noselect="list of atoms numbers"
+</tt></td><td>
+the atoms in the list can't be selected.
+$table_tr<td><tt>
+nb_select=</tt>m</td><td>the number of selected atoms must be exactly <tt>m</tt>.
+An alert message asks to correct if it is not true.</td>
+$table_tr<td><tt>
+applet=imagedir</tt></dd><td>For experts: the used applet will be in the
+directory <tt>images</tt> of the module. Don't use this solution except if you really need 
+a more recent version of <b>Jmol</b>.
+$table_end
+
+The variable <tt>reply</tt>n has three lists separated by semi-colons :
+the list of the good answers of the students; the list of his/her bad  answers; the list of the forgotten
+atoms.
+
+In the case where the first field of the good answer is an empty variable, the variable
+<tt>reply</tt>n is simply the list of the selected atoms.
+
+$table_header
+<caption>Jmol answer example  (first line of the second field of <tt>answer</tt>)</caption>
+$table_tr<td><tt>
+atomno=1 
+<tt></td><td> the atom number 1
+$table_tr<td><tt>
+({1})
+</tt></td><td>
+the atom number 2 (attention au décalage de 1).
+$table_tr<td><tt>
+atomno=1 or atomno=2 or atomno=5
+</tt></td><td>
+the atoms 1, 2 and 5
+$table_tr<td> <tt>
+({0 1 4})
+</tt></td><td>
+the atoms 1, 2 and 5 (pay attention at the shift of 1).
+$table_tr<td> <tt>
+({0 1 4:7})
+</tt></td><td>
+the atoms 1, 2 and the atoms from 5 to 8 (pay attention at the shift of 1).
+$table_tr<td><tt>
+_C
+</tt></td><td>
+all the atoms de carbone (one can also write <tt>carbon</tt> or use the atomic number <tt>elemno=6</tt>)
+$table_tr<td><tt>
+connected(2)
+</tt></td><td>
+all the atoms with two bonds (whatever the type of bonds)
+$table_tr<td><tt>
+connected(2,4)
+</tt></td><td>
+all the atoms with 2 and 4 bonds (for all types of bonds)
+$table_tr<td><tt>
+connected(double)
+</tt></td><td>
+all the atoms with a double bond (one can also ask <tt>single</tt>, <tt>triple</tt> or <tt>aromatic</tt>)
+$table_tr<td><tt>
+connected(atomno=5)
+</tt></td><td>
+all the atoms connected to the atom number 5
+$table_tr<td><tt>
+connected(2,nitrogen)
+</tt></td><td>
+all the atoms connected exactly to two nitrogen atoms (they may be connected to other atoms types)
+$table_tr<td><tt>
+within(2.1,atomno=4)
+</tt></td><td>
+all the atoms to a distance less than 2.1 Å from the atom number 4
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+all the atoms to a distance less than 2.1 Å of the plane defined by the atoms number 3, 4 and 5 (it is an algebraic measure)
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})}) or within(-2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+all the atoms to a distance less than 2.1 Å of the plane defined by the atoms number 3, 4 and 5.
+$table_end
+<p>
+The conditions may be mixed in <b>Jmol</b> by the set operations 
+<tt>OR</tt>, <tt>AND</tt> and <tt>NOT</tt>. For details, see 
+<a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
+<p>
+$table_header
+<caption>Jmol scripts examples</caption>
+$table_tr<td><tt>
+
+connect (({4}) ({5}) double modifyorcreate;
+</tt></td><td>
+Create a double bond between the atoms number 4 and 5
+$table_tr<td><tt>
+connect (({4}) ({5}) delete;
+</tt></td><td>
+Delete the bonds between the atoms number 4 and 5
+$table_tr<td><tt>
+connect (_C) delete;
+</tt></td><td>
+Delete the bonds between the carbon atoms
+$table_tr<td><tt>
+select (_N); color atoms green; select none;</tt><td>
+Draw in green the nitrogen atoms
+$table_tr<td><tt>
+select ({5}); spacefill 0.1; select none;</tt><td>
+reduce the size of the atom number 5
+$table_end
+
+<p>
+Some slib on Jmol are or will be available :
+!href module=help/wimsdoc&+subject=slib#slib slib
+
+
