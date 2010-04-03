@@ -1,0 +1,179 @@
+<b>选取 3D 分子里的原子</b> (需要 java) (名称: <tt>jmolclick</tt>)
+<p>
+在 java 的小工具 <b>Jmol</b> 里显示一个分子, 要求选取一些原子.
+这个回答类型必须与命令 <tt>\embed{}</tt> 配合使用.
+根据 <b>Jmol</b> 的能力, 也可以展示分子以外的对象.
+<p>
+正确的答案含两行 (用分号 ; 分隔) : 第一行是正确的答案,
+第二行是要显示的分子: 结构文件 (以 <b>Jmol</b> 的有效格式)
+可放在模块的 <tt>data</tt> 子目录下,
+或放在 WIMS 的数据目录下 (地址 <tt>data/xxx</tt>),
+或在 <tt>modules/data</tt> 中的一个数据模块里 (在这种情形, 其地址为
+<tt>datamodule/xxx</tt>) 或在目录 <tt>images</tt> 下 (地址为 <tt>\imagedir/xxx</tt>).
+也可以直接放在模块的结构中.
+<p>
+正确答案的第一部分给出所选取的原子个数的列表
+(如同在结构文件中所使用的) 或者使用符合
+<b>Jmol</b> 语法里的命令 (见后面的例). 所以 <tt>1, 2, 3</tt> 等价于
+<tt>atomno=1 or atomno=2 or atomno=3</tt> 或 <tt>({0,1,2})</tt> 
+(后面两个是符合 <b>Jmol</b> 语法的).
+<p>
+可以给出几个正确答案, 不过要用 <tt>|</tt> 分隔.
+<p>
+命令 <tt>\embed</tt> 的第一行是小工具的大小 X x Y (像素). 
+在接着的 3 行里, 可给出 <b>Jmol</b> 脚本 : 第一行是在练习的第一个请求里执行的,
+第三行是在送出回答后执行的, 第二行同时用于上述两种情形.
+<p>
+也可以给出含有脚本的文件. 规则如同分子结构的情形
+(<tt>data/scriptsimple.spt</tt>). 
+此文件的扩展名必须是 <tt>.spt</tt> 才能生效. 当此脚本由练习创建时
+(例如, 它含有随机变量), 我们也可以使用脚本库
+<tt>oef/newfile</tt> (例如 : 
+<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
+其中的变量 <tt>text_script</tt> 包含有脚本.
+它给出所创建文件的 url 地址.
+
+<p><b>例</b>: 
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  script \filescript ; select ({5}); spacefill 0.1;select none;
+  set echo top left; echo "回答之前";
+  set echo bottom right; echo "回答之后";}
+}
+</pre>
+或
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  \filescript}
+}
+</pre>
+
+不要忘记 Jmolscript 里的分号.
+<p>
+回答类型 <tt>jmolclick</tt> 可使用下列选项:
+
+$table_header
+$table_tr<td><tt>
+split</tt> 或 <tt>partialscore
+</tt></td><td>
+部分正确的回答也给分.
+$table_tr<td><tt>
+eqweight
+</tt></td><td>
+部分正确的回答在得分里有同样的权重
+$table_tr<td><tt>
+noselect="原子编号表"
+</tt></td><td>
+不能选取列表里的原子.
+$table_tr<td><tt>
+nb_select=</tt>m</td><td>所选的原子数必须等于 <tt>m</tt>.
+如果不符合, 则会发警告信息.</td>
+$table_tr<td><tt>
+applet=imagedir</tt></dd><td>供专家使用: 使用的小工具在模块的
+<tt>images</tt> 目录里. 除非你使用更新版本的 
+<b>Jmol</b>, 最好不要使用此选项.
+$table_end
+
+变量 <tt>reply</tt>n 含有三个用分号分隔的表 :
+学生的正确回答的表; 他的错误回答的表; 遗漏原子的表.
+<p>
+如果第一栏正确回答是空的, 那末变量
+<tt>reply</tt>n 就是所选原子的表.
+
+$table_header
+<caption>Jmol 回答的例 (<tt>answer</tt> 的第二栏的第一行)</caption>
+$table_tr<td><tt>
+atomno=1 
+<tt></td><td>第 1 号原子
+$table_tr<td><tt>
+({1})
+</tt></td><td>
+第 2 号原子 (注意相差 1).
+$table_tr<td><tt>
+atomno=1 or atomno=2 or atomno=5
+</tt></td><td>
+第 1, 2 及 5 号原子
+$table_tr<td> <tt>
+({0 1 4})
+</tt></td><td>
+第 1, 2 及 5 号原子 (注意相差 1).
+$table_tr<td> <tt>
+({0 1 4:7})
+</tt></td><td>
+第 1, 2 及 5 至 8 号原子 (注意相差 1).
+$table_tr<td><tt>
+_C
+</tt></td><td>
+所有碳原子 (也可写成 <tt>carbon</tt> 或使用原子个数 <tt>elemno=6</tt>)
+$table_tr<td><tt>
+connected(2)
+</tt></td><td>
+所有两个键的原子 (不管键的类型)
+$table_tr<td><tt>
+connected(2,4)
+</tt></td><td>
+所有 2 或 4 个键的原子 (不管键的类型)
+$table_tr<td><tt>
+connected(double)
+</tt></td><td>
+所有双键的原子 (也可要求 <tt>single</tt>, <tt>triple</tt> 或 <tt>aromatic</tt>)
+$table_tr<td><tt>
+connected(atomno=5)
+</tt></td><td>
+所有与 5 号原子相连的原子
+$table_tr<td><tt>
+connected(2,nitrogen)
+</tt></td><td>
+所有恰好与 2 个氮原子相连的原子 (它们可与其它类型原子相连)
+$table_tr<td><tt>
+within(2.1,atomno=4)
+</tt></td><td>
+所有与 4 号原子的距离小于 2.1&Aring; 的原子 
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+所有与第 3, 4, 5 号原子所确定的平面的距离小于 2.1&Aring; 的原子 (代数测度)
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})}) or within(-2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+所有与第 3, 4, 5 号原子所确定的平面的距离小于 2.1&Aring; 的原子
+$table_end
+<p>
+在 <b>Jmol</b> 中的条件可以利用集合运算 
+<tt>OR</tt>, <tt>AND</tt> 及 <tt>NOT</tt> 加以组合. 详情请参见 
+<a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
+<p>
+$table_header
+<caption>Jmol 脚本的例</caption>
+$table_tr<td><tt>
+
+connect (({4}) ({5}) double modifyorcreate;
+</tt></td><td>
+在第 4, 5 号原子间创立双键
+$table_tr<td><tt>
+connect (({4}) ({5}) delete;
+</tt></td><td>
+删除第 4, 5 号原子间的键
+$table_tr<td><tt>
+connect (_C) delete;
+</tt></td><td>
+删除碳原子间的键
+$table_tr<td><tt>
+select (_N); color atoms green; select none;</tt><td>
+把氮原子画成绿色
+$table_tr<td><tt>
+select ({5}); spacefill 0.1; select none;</tt><td>
+缩小第 5 号原子的大小
+$table_end
+
+<p>
+某些 Jmol 的脚本库可供使用 :
+!href module=help/wimsdoc&+subject=slib#slib slib
+
+

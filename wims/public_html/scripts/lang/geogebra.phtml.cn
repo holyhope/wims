@@ -1,0 +1,198 @@
+!set lang_exists=yes
+!!INPUT
+!set inp0=构建的对象太多 : 你最多只能用 
+!set inp1=个对象. 请再试...
+!set inp2=发送
+!set inp3=我不知道
+
+!!GEOGEBRA
+!set pointnocoord=!nosubst 点 $(M_objet[1])
+!set vectornocoord=!nosubst 向量 $(M_objet[1])
+!set circlenocoord=!nosubst 圆 $(M_objet[1])
+!set linenocoord=!nosubst 直线 $(M_objet[1])
+!set curvenocoord=!nosubst 多项式曲线 $(M_objet[1])
+!set conicnocoord=!nosubst 圆锥曲线 $(M_objet[1])
+!set parabolanocoord=!nosubst 抛物线 $(M_objet[1])
+!set ellipsenocoord=!nosubst 椭圆 $(M_objet[1])
+!set hyperbolanocoord=!nosubst 双曲线 $(M_objet[1])
+!set anglenocoord=!nosubst 角 $(M_objet[1])
+!set textnocoord=!nosubst 文字 $(M_objet[1])
+!set numericnocoord=!nosubst 数值变量 $(M_objet[1])
+!set segmentnocoord=!nosubst 线段 $(M_objet[1])
+!set polygonnocoord=!nosubst 多边形 $(M_objet[1])
+!set functionnocoord=!nosubst 曲线 $(M_objet[1])
+!set raynocoord=!nosubst 射线 $(M_objet[1])
+
+!set pointcoord=!nosubst 坐标 ($(M_objet[3..4])) 的点 $(M_objet[1]) 坐标 ($(M_objet[3..4]))
+!set vectorcoord=!nosubst 坐标 ($(M_objet[3..4])) 的向量 $(M_objet[1])
+!set circlecoord=!nosubst 方程为 \($(M_objet[3..-1])) 的圆 $(M_objet[1]) 
+!set linecoord=!nosubst 方程为 \($(M_objet[3..-1])) 的直线 $(M_objet[1])
+!set curvecoord=!nosubst 方程为 \($(M_objet[3..-1])) 的多项式曲线 $(M_objet[1])
+!set coniccoord=!nosubst 方程为 \($(M_objet[3..-1])) 的圆锥曲线 $(M_objet[1])
+!set parabolacoord=!nosubst 方程为 \($(M_objet[3..-1])) 的抛物线 $(M_objet[1])
+!set ellipsecoord=!nosubst 方程为 \($(M_objet[3..-1])) 的椭圆 $(M_objet[1])
+!set hyperbolacoord=!nosubst 方程为 \($(M_objet[3..-1])) 的双曲线 $(M_objet[1])
+!set anglecoord=!nosubst 度量(单位: 度)为 $(M_objet[3..-1]) 的角 $(M_objet[1]) 
+!set textcoord=!nosubst 文字: $(M_objet[1])
+!set numericcoord=!nosubst 值为 $(M_objet[3..-1]) 的变量 $(M_objet[1]) 
+!set segmentcoord=!nosubst 长度为 $(M_objet[3..-1]) 的线段 $(M_objet[1]) 
+!set polygoncoord=!nosubst 面积为 $(M_objet[3..-1]) 的多边形 $(M_objet[1]) 
+!set functioncoord=!nosubst 方程为 y=$(M_objet[1]) 且 \($(M_objet[1]) = $(M_objet[3..-1])) 的曲线
+!set raycoord=!nosubst 直线方程为 \($(M_objet[3..-1])) 的射线 $(M_objet[1]) 
+
+
+!!!! commande anglicis閑 + type des param鑤res + formal
+!!!! si un param鑤re risque de manquer on le remplace par _
+
+!set anglepointpointpointformal=!nosubst 角 $(M_objet[3])$(M_objet[4])$(M_objet[5])
+!set angle_point_formal=!nosubst 点 $(M_objet[4]) 的角
+
+!set bisectorlinelineformal=!nosubst 直线 $(M_objet[3]) 与 $(M_objet[4]) 的角平分线 $(M_objet[1]) 
+!set bisectorpointpointpointformal=!nosubst 角 $(M_objet[3])$(M_objet[4])$(M_objet[5]) 的平分线 $(M_objet[1]) 
+
+!set centercircleformal=!nosubst 圆 $(M_objet[3]) 的中心 $(M_objet[1]) 
+!set centersegmentformal=!nosubst 线段 $(M_objet[3]) 的中点 $(M_objet[1]) 
+!set centerpointpointformal=!nosubst 点 $(M_objet[3]) 与 $(M_objet[4]) 的中点 $(M_objet[1]) 
+
+!set circle__formal=!nosubst 圆 $(M_objet[1])
+!set circlepoint_formal=!nosubst 中心为 $(M_objet[3]) 的圆 $(M_objet[1]) 
+!set circlepointnumericformal=!nosubst 中心为 $(M_objet[3]) 半径为 $(M_objet[4]) 的圆 $(M_objet[1]) 
+!set circle_pointformal=!nosubst 通过 $(M_objet[4]) 的圆 $(M_objet[1]) 
+!set circle_numericformal=!nosubst 半径为 $(M_objet[4]) 的圆 $(M_objet[1]) 
+!set circlepointpointformal=!nosubst 中心为 $(M_objet[3]) 通过 $(M_objet[4]) 的圆 $(M_objet[1]) 
+!set circlepointpointpointformal=!nosubst 通过 $(M_objet[3]), $(M_objet[4]) 及 $(M_objet[5]) 的圆 $(M_objet[1]) 
+
+!set conicpointpointpointpointpointformal=!nosubst 通过点 $(M_objet[3]), $(M_objet[4]), $(M_objet[5]), $(M_objet[6]) 及 $(M_objet[7]) 的圆锥曲线 $(M_objet[1])
+!set conicpointpointpointpoint_formal=!nosubst 通过点 $(M_objet[3]), $(M_objet[4]), $(M_objet[5]) 及 $(M_objet[6]) 的圆锥曲线 $(M_objet[1])
+!set conicpointpointpoint__formal=!nosubst 通过点 $(M_objet[3]), $(M_objet[4]) 及 $(M_objet[5]) 的圆锥曲线 $(M_objet[1])
+!set conicpointpoint___formal=!nosubst 通过点 $(M_objet[3]) 及 $(M_objet[4]) 的圆锥曲线 $(M_objet[1])
+
+!set curveformal=!nosubst 多项式曲线
+!set ellipseformal=!nosubst 椭圆
+!set functionformal=!nosubst 方程为 y = $(M_objet[1]) 的曲线
+!set hyperbolaformal=!nosubst 双曲线
+
+!set intersectionlinelineformal=!nosubst $(M_objet[3]) 和 $(M_objet[4]) 的交点 $(M_objet[1]) 
+!set intersectioncirclecircleformal=!nosubst $(M_objet[3]) 和 $(M_objet[4]) 的交点 $(M_objet[1])
+!set intersectioncirclecirclenumericformal=!nosubst $(M_objet[3]) 和 $(M_objet[4]) 的交点 $(M_objet[1])
+
+!set line__formal=!nosubst 直线 $(M_objet[1])
+!set linepoint_formal=!nosubst 通过 $(M_objet[3]) 的直线 $(M_objet[1])
+!set line_pointformal=!nosubst 通过 $(M_objet[4]) 的直线 $(M_objet[1])
+!set linepointlineformal=!nosubst 通过 $(M_objet[3]) 且平行于 $(M_objet[4]) 的直线 $(M_objet[1])
+!set line_lineformal=!nosubst 平行于 $(M_objet[4]) 的直线 $(M_objet[1])
+!set linepointpointformal=!nosubst 通过 $(M_objet[3]) 与 $(M_objet[4]) 的直线 $(M_objet[1])
+!set linepointvectorformal=!nosubst 通过 $(M_objet[3]) 向量方向为 $(M_objet[4]) 的直线 $(M_objet[1])
+
+!set midperpendicularsegmentformal=!nosubst 线段 $(M_objet[3]) 的垂直平分线 $(M_objet[1])
+!set midperpendicularpointpointformal=!nosubst 线段 [$(M_objet[3]), $(M_objet[4])] 的垂直平分线 $(M_objet[1])
+
+!set numericformal=!nosubst 值为 $(M_objet[3]) 的变量 $(M_objet[1])
+!set parabolaformal=!nosubst 抛物线
+
+!set perpendicularpointlineformal=!nosubst 垂直于 $(M_objet[4]) 且通过 $(M_objet[3]) 的直线 $(M_objet[1])
+
+!!defaut
+!set pointnumericformal=!nosubst $(M_objet[3]) 上的点 $(M_objet[1])
+!set point_formal=!nosubst 点 $(M_objet[1])
+!set pointformal=!nosubst 点 $(M_objet[1])
+!set pointlineformal=!nosubst 直线 $(M_objet[3]) 上的点 $(M_objet[1])
+!set pointcircleformal=!nosubst 圆 $(M_objet[3]) 上的点 $(M_objet[1])
+!set pointsegmentformal=!nosubst 线段 $(M_objet[3]) 上的点 $(M_objet[1])
+!set pointpointnumericformal=!nosubst 与 $(M_objet[3]) 距离$(M_objet[4]) 的点 $(M_objet[1])
+!set pointpolygonformal=!nosubst 多边形 $(M_objet[3]) 上的点 $(M_objet[1])
+
+!set polygonpointpointnumericformal=!nosubst 以 $(M_objet[5]) 以及 $(M_objet[3])$(M_objet[4]) 为边的正多边形
+!set polygon4formal=!nosubst 以 $(M_objet[3])$(M_objet[4]) 为边的正方形
+!set polygon3formal=!nosubst 以 $(M_objet[3])$(M_objet[4]) 为边的正三角形
+!set polygon5formal=!nosubst 以 $(M_objet[3])$(M_objet[4]) 为边的正五边形
+!set polygon6formal=!nosubst 以 $(M_objet[3])$(M_objet[4]) 为边的正六边形
+!set polygon7formal=!nosubst 以 $(M_objet[3])$(M_objet[4]) 为边的正七边形
+!set polygon8formal=!nosubst 以 $(M_objet[3])$(M_objet[4]) 为边的正八边形
+
+
+!set polygonpointpointpointformal=!nosubst $(M_objet[1]) 即三角形 $(M_objet[3])$(M_objet[4])$(M_objet[5]) 
+!set polygonpoint4formal=!nosubst $(M_objet[1]) 即四边形 $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])
+!set polygonpoint5formal=!nosubst $(M_objet[1]) 即五边形 $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])$(M_objet[7])
+!set polygonpoint6formal=!nosubst $(M_objet[1]) 即六边形 $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])$(M_objet[7])$(M_objet[8])
+!set polygonpoint7formal=!nosubst $(M_objet[1]) 即七边形 $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])$(M_objet[7])$(M_objet[8])$(M_objet[9])
+!set polygonpoint8formal=!nosubst $(M_objet[1]) 即八边形 $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])$(M_objet[7])$(M_objet[8])$(M_objet[9])$(M_objet[10])
+!set polygonpointformal=!nosubst $(M_objet[1]) 即多边形 $(M_objet[3])$(M_objet[4])$(M_objet[5])$(M_objet[6])$(M_objet[7])$(M_objet[8])$(M_objet[9])$(M_objet[10])$(M_objet[11])$(M_objet[12])$(M_objet[13])$(M_objet[14]) ...
+
+
+!set raypointpointformal=!nosubst 从 $(M_objet[3]) 通过 $(M_objet[4]) 的射线 $(M_objet[1])
+!set raypoint_formal=!nosubst 通过 $(M_objet[3]) 的射线 $(M_objet[1])
+!set ray_pointformal=!nosubst 通过 $(M_objet[4]) 的射线 $(M_objet[1])
+!set raypointvectorformal=!nosubst 从 $(M_objet[3]) 方向向量为 $(M_objet[4]) 的射线 $(M_objet[1])
+!set ray_vectorformal=!nosubst 从 $(M_objet[3]) 方向向量为 $(M_objet[4]) 的射线 $(M_objet[1])
+
+!set rotationlinenumericpointformal=!nosubst 直线 $(M_objet[3]) 绕 $(M_objet[5]) 旋转角度 $(M_objet[4]) 后的象 $(M_objet[1])
+!set rotationpointnumericpointformal=!nosubst 点 $(M_objet[3]) 绕 $(M_objet[5]) 旋转角度 $(M_objet[4]) 后的象 $(M_objet[1])
+!set rotationvectornumericpointformal=!nosubst 向量 $(M_objet[3]) 绕 $(M_objet[5]) 旋转角度 $(M_objet[4]) 后的象 $(M_objet[1])
+
+!set segmentpoint_formal=!nosubst 终点为 $(M_objet[3]) 的线段 $(M_objet[1])
+!set segment_pointformal=!nosubst 终点为 $(M_objet[3]) 的线段 $(M_objet[1])
+!set segmentpointnumericformal=!nosubst 终点为 $(M_objet[3]) 长度为 $(M_objet[4]) 的线段 $(M_objet[1])
+!set segmentpointpointformal=!nosubst 端点为 $(M_objet[3]) 与 $(M_objet[4]) 的线段 $(M_objet[1])
+!set segmentpointpointpolygonformal=!nosubst 端点为 $(M_objet[3]) 与 $(M_objet[4]) 且属于多边形 $(M_objet[5]) 的线段 $(M_objet[1])
+
+!set symetrylinelineformal=!nosubst 直线 $(M_objet[3]) 关于直线 $(M_objet[4]) 的对称象 $(M_objet[1])
+!set symetrylinepointformal=!nosubst 直线 $(M_objet[3]) 关于点 $(M_objet[4]) 的对称象 $(M_objet[1])
+!set symetrypointlineformal=!nosubst 点 $(M_objet[3]) 关于直线 $(M_objet[4]) 的对称象 $(M_objet[1])
+!set symetrypointpointformal=!nosubst 点 $(M_objet[3]) 关于点 $(M_objet[4]) 的对称象 $(M_objet[1])
+
+!set tangentpointcircleformal=!nosubst 圆 $(M_objet[4]) 的过 $(M_objet[3]) 的切线 $(M_objet[1])
+
+!set textformal=!nosubst 文字 $(M_objet[1])
+
+!set translationlinevectorformal=!nosubst 直线 $(M_objet[3]) 用向量 $(M_objet[4]) 作平移 $(M_objet[1])
+!set translationpointvectorformal=!nosubst 点 $(M_objet[3]) 用向量 $(M_objet[4]) 作平移 $(M_objet[1])
+!set translationvectorpointformal=!nosubst 过点 $(M_objet[4]) 方向为 $(M_objet[3]) 的向量 $(M_objet[1])
+
+!set vectorpointpointformal=!nosubst 从 $(M_objet[3]) 到 $(M_objet[4]) 的向量 $(M_objet[1])
+!set vector_pointformal=!nosubst 终点为 $(M_objet[4]) 的向量 $(M_objet[1])
+!set vectorpoint_formal=!nosubst 从 $(M_objet[3]) 发出的向量 $(M_objet[1])
+!set vectorpointnumericformal=!nosubst 起点为 $(M_objet[3]) 长度为 $(M_objet[4]) 的向量 $(M_objet[1])
+!set vectorpointformal=!nosubst 从 O 到 $(M_objet[3]) 的向量 $(M_objet[1])
+
+!!first should be the language term in small letters ans with no accent
+!set typelangue= 点=point \
+相交=intersection \
+点圆=pointcircle \
+直线=line \
+线段=segment \
+圆=circle \
+函数=function \
+多项式=polynomial \
+圆锥曲线=conic \
+椭圆=ellipse \
+双曲线=hyperbola \
+抛物线=parabola \
+向量=vector \
+角=angle\
+垂直=perpendicular \
+对称=symetry\
+垂直平分线=midperpendicular\
+切线=tangent\
+中心=center\
+射线=ray\
+中点=middle\
+圆心=center\
+旋转=rotation\
+平移=translation\
+位似=homothety\
+多边形=polygon\
+角平分线=bisector\
+角几何=anglegeom
+
+
+!set w_penalty=因为有太多对象, 你将被扣分.
+!set w_analyze=你已经构建了:
+!set w_NO= 不. 你本应构建
+!set w_OK= 对. 你已经构建
+!set w_yes= 是.
+!set w_no= 不.
+!set w_and=和
+!set w_uname= 对象命名错
+!set w_ARC=Cercle DemiCercle ArcCercle ArcCercleCirconscrit
+
