@@ -79,9 +79,9 @@
  .</center>
  !exit
 !endif
- 
+
 !if prep_expire=$error
- Este examen nº $exam ($title) normalmente expira el $expday
+ Este examen número $exam ($title) normalmente expira el $expday
  !item $expmon of $months
  $expyear. ¿Quiere hacerlo expirar ahora?
  <p><center>
@@ -108,30 +108,30 @@
  <textarea cols=55 rows=10 name=source>$source</textarea>
  <p><input type=submit value="Enviar">
  </center></form>
- <b>Advertencia</b>. ¡No inserte fuentes modificados! Corre el riesgo de 
+ <b>Advertencia</b>. ¡No inserte fuentes modificados! Corre el riesgo de
  inutilizar su examen.
  !exit
 !endif
 
 !if nodeactivate=$error
-  The exam cannot be desactivated because
+  ¡Desactivarse el examen no puede ya que
   !if badstructure isin $deactivate
-   of the class structure.
+  la  estructura de su clase no lo permite!.
   !else
    !if score isin $deactivate
-    some participants have already begun to work on this exam !
+    participantes ya comenzaron a trabajar sobre este examen!
    !else
-    your exams are shared with another class !
+    comparten sus exámenes con otra clase !
    !endif
   !endif
 !endif
 
 !if active_exam=$error
-   Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
- !exit
-!endif 
+   Afligido, este examen esta activado, por lo tanto no modificable. No se pueden cambiar más los ejercicios dentro.
+!exit
+!endif
 
 !if $error=prep_noexercise
-  Le contenu de l'exercice $exo de l'examen est vide. Recommencez.
+  El contenido del ejercicio $exo del examen es vacío. Empiece de nuevo.
   !exit
 !endif
