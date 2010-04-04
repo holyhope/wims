@@ -11,8 +11,10 @@ white,color\
 slib_author=Yves Noël et Bernadette Perrin-Riou
 slib_out=applet code for inserting jmol applet
 slib_comment=
-
-slib_example=
+!!exemple à changer ensuite mais sert de test.
+slib_example=data/molecule_pdb/reseau1.pdb\
+data/molecule_pdb/xeo2f2.pdb\
+datamodule/chemistry/mol2D.fr/data/60_18_4.mol
 !exit
 
 :proc
@@ -29,7 +31,6 @@ $slib_file
 
 !set slib_file=!replace internal ; by $\
 \$ in $slib_file
-
 !set slib_test=!linecnt $slib_file
 !if $slib_test=1
   !if __http isin __$slib_file
@@ -39,8 +40,8 @@ $slib_file
   !endif
 !else
   slib_temp=$slib_file
-  !set slib_file0=!randint 1000,5000
 !endif
+!set slib_file0=!randint 1000,5000
 !readproc oef/togetfile.proc $slib_file0 new\
 $slib_temp
 !set slib_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0
