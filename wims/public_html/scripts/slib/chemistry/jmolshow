@@ -1,70 +1,78 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=Molecule in Jmol
-slib_parms=4\
-,MDMol file or adress (internal in wims)\
+slib_title=Jmol Applet
+slib_parms=5\
+,MDMol file or address (internal in wims)\
 500,xsize\
 400,ysize\
+white,color\
 ,jmol script
-slib_author=Bernadette PERRIN-RIOU
+slib_author=Yves Noël et Bernadette Perrin-Riou
 slib_out=applet code for inserting jmol applet
-slib_comment=it is recommanded to write something on the first line of the MDMol\
-file.
+slib_comment=
 
 slib_example=
 !exit
 
 :proc
-!distribute items $wims_read_parm into slib_file,slib_xsize,slib_ysize,slib_script
-
+!distribute items $wims_read_parm into slib_file,slib_xsize,slib_ysize,slib_color,slib_script
 !set slib_appletdir=java/jmol
 
 !default slib_xsize=500
 !default slib_ysize=400
-
+!default slib_color=white
 !set slib_file=!replace internal $	$ by $\
 $ in $slib_file
 !set slib_file=\
 $slib_file
 
+!set slib_file=!replace internal ; by $\
+\$ in $slib_file
+
 !set slib_test=!linecnt $slib_file
 !if $slib_test=1
-  !set slib_temp=!record 0 of $slib_file
-  !set slib_file0=!replace internal / by ~ in $slib_file
+  !if __http isin __$slib_file
+   !goto begin
+  !else
+   !set slib_temp=!record 0 of $slib_file
+  !endif
 !else
   slib_temp=$slib_file
-  !set slib_file0=!randint 1000..5000
+  !set slib_file0=!randint 1000,5000
 !endif
 !readproc oef/togetfile.proc $slib_file0 new\
 $slib_temp
-
 !set slib_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0
+!endif
+
+:begin
+
+!default slib_DisablePopupMenu=TRUE
+!default slib_hover=on
 
 !if .spt__  isin $(slib_script)__ and __data isin __$slib_script
     !set temp=!record 0 of $(slib_script)
     !set slib_script_file0=!replace internal / by , in $(slib_script)
-    !readproc oef/togetfile.proc $(file0[-1]) new\
+    !readproc oef/togetfile.proc $(slib_script_file0[-1]) new\
 $temp
-    !set slib_script_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(file0[-1])
+    !set slib_script_file=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(slib_script_file0[-1])
     !reset slib_script
 !endif
 !if $slib_script!= 
   slib_script=+'$slib_script'
 !endif
 !if $slib_script_file!= 
-  faire quelque chose
-  
+  slib_script_file=jmolScriptWait('script $slib_script_file;');
 !endif
 
 !set slib_out=<script type="text/javascript" src="$slib_appletdir/Jmol.js"></script> \
 <script language="javascript" type="text/javascript">\
       jmolInitialize('$slib_appletdir','JmolApplet.jar');\
-      jmolSetAppletColor("white");\
-      jmolSetCallback("menuFile", "$slib_appletdir/Jmol.mnu")\
+      jmolSetAppletColor('$slib_color');\
    var jscr='load $slib_file;';\
-    jscr= jscr +'selectionhalos on;select none;set frank off;set DisablePopupMenu TRUE;';\
-    jscr=jscr $slib_script\
-     jmolApplet([$slib_xsize,$slib_ysize],jscr);\
+    jscr= jscr +'selectionhalos on;select none;set picking off; set frank on;set DisablePopupMenu $slib_DisablePopupMenu; hover $slib_hover;';\
+    jscr=jscr $slib_script;\
+    jmolApplet([$slib_xsize,$slib_ysize],jscr);\
+    $slib_script_file\
 </script>
-!!debug $slib_out $wims_read_parm

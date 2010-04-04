@@ -1,0 +1,27 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Save a text in a file
+slib_parms=2\
+,texte\
+,extension
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=URL of the new file
+slib_comment= 
+!exit
+
+:proc
+!default slib_cnt_=0
+slib_cnt_= $[$slib_cnt_ +1]
+slib_n=!randint 1000,3000
+!distribute items $wims_read_parm into slib_text,slib_ext
+!if $slib_ext!=
+  slib_ext=.$slib_ext
+!endif
+slib_name=file_$(slib_n)_$(slib_cnt_)$slib_ext
+!readproc oef/togetfile.proc $slib_name new\
+$slib_text
+
+slib_out=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_name
+
