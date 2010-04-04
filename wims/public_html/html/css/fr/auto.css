@@ -11,6 +11,7 @@
 #wimspagebox {
   padding: 0px;
   margin: 0px;
+  min-height:15em;
 }
 
 #wimstailbox {
@@ -26,14 +27,24 @@
   right:auto;
   text-align:right;
   -moz-border-radius : 20px 20px 20px 0px;
+  -webkit-border-top-right-radius:20px;
+  -webkit-border-top-left-radius:20px;
+  -webkit-border-bottom-right-radius:20px;
 }
 #wimsmenubox {
   margin-top: 1px;
   margin-left: 10px;
   margin-right: 10px;
   background-color:white;
-  -moz-border-radius : 20px 20px 20px 20px;
+  -moz-border-radius : 0px 20px 20px 20px;
+  -webkit-border-top-right-radius:20px;
+  -webkit-border-bottom-left-radius:20px;
+  -webkit-border-bottom-right-radius:20px;
 }
+/*#wimsbodybox #wimspagebox .wimsbody {
+height: auto;
+min-height: 300px;
+}*/
 
 /**********************/
 /* WIMS MENU MODU BOX */
@@ -43,14 +54,14 @@
   margin-left: 10px;
   margin-right: 0%;
   padding:0px;
-  background-color:white;
   position: fixed;
-  top:80px;
+  _position:absolute;
+  top:50px;
   width:170px;
   left: auto;
   text-align:left;
-  -moz-border-radius: 0 0 20px 20px;
-}
+ }
+
 #wimsmhelp #wimsmenumodubox {
   visibility:hidden;
 }
@@ -65,6 +76,12 @@
   text-decoration: none;
   color: #ffffff;
 }
+
+ #wimstopbox .wimsmenu .topmenuitem a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
 #wimstopbox a:hover,#wimsmenumodubox .wimsmenu .menuitem a:hover {
   text-decoration:underline;
 }
@@ -81,7 +98,7 @@
 .wimsmenu #wimslogo {
   position: absolute;
   top:0px;
-  left:6%;
+  right:6%;
 }
 
 #wimslogoleft {
@@ -130,6 +147,20 @@ top:0px;}
   padding-right : 20px;
   margin-left : 170px;
 }
+#wimslightpopup #wimsbodybox #wimspagebox .wimsbody {
+padding-left : 20px;
+  padding-right : 20px;
+  margin-left : 0px;
+}
+
+#wimslightpopup #wimstailbox .wimstail .tailitem {
+padding-right:20px;
+text-align:right;
+color:#555555;
+font-weight:bold;
+font-size:90%;
+}
+
 #wimsmhelp .wimsbody {
   padding-left : 10%;
   padding-right : 10%;
@@ -148,10 +179,20 @@ top:0px;}
   margin-left : 0px;
 }
 
-.wimstail {
+#wimsmenumodubox .wimstail {
+  text-align: left;
+  font-size:80%;
+  padding:10px;
+  margin:10px;
+  -moz-border-radius : 20px 20px 20px 20px;
+
+}
+#wimstailbox .wimstail {
   text-align: center;
   font-size:80%;
-}
+ }
+
+
 div.tailsepdoc {
   display: inline-block;
 }
@@ -170,6 +211,7 @@ div.wimsmenu .topmenuitem {
 }
 div.wimsmenu .menuitem {
   display: inline-block;
+  _display: inline;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 1px;
@@ -177,13 +219,13 @@ div.wimsmenu .menuitem {
 }
 div.menublock .menuitem {
   display: block;
-  padding-left: 10px;
-  padding-right: 10px;
+  _display: inline;
   padding-top: 1px;
   padding-bottom: 1px;
 }
 div.menublock {
   display: inline-block;
+  _display: block;
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -230,7 +272,6 @@ div.tailitem {
   margin-left:30%;
   padding-bottom:5px;
 }
-.wims_title {}
 
 #wims_modu_title2 .wims_subtitle {
   font-size:small;
@@ -333,13 +374,44 @@ font-weight:bold;
 /*    TABLES STYLES */
 
 table.wimstable {
-  width:100%;
+  width:90%;
+  border-collapse:collapse;
+  border: 1px solid #999;
 }
-.odd td{
+table.wimstable th {
+  border-collapse:collapse;
+  border: 1px solid #999;
+  color:white;
+}
+table.wimstable td{
   background-color:white;
+  border: 1px solid #999;
+  padding: 6px;
 }
-.even td{
+table.wimstable .odd td{
+  background-color:white;
+  border: 1px solid #999;
+  padding: 6px;
+}
+table.wimstable .even td{
   background-color:#DFDFDF;
+  border: 1px solid #999;
+  padding: 6px;
+}
+
+table.wimstable th a {
+  display: inline-block;
+  padding: 5px 5px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+table.wimstable a:hover {
+  text-decoration:underline;
+}
+
+a:hover {
+  text-decoration:none;
 }
 
 /********************/
@@ -426,10 +498,21 @@ div.wims_sheet {
   padding-bottom: 0pt;
   padding-left: 3pt;
   margin-top: 10pt;
-  margin-right: 10%;
+  margin-right: 0%;
   margin-bottom: 3pt;
 }
 .wims_home_form {
+padding: 5px;width:150px;
+}
+
+table.wims_search_engine {
+ padding-top: 3pt;
+ background-color:#cccccc;
+ background: -webkit-gradient( linear, left top, left bottom, from(white), to(#999999) ); 
+ background: -moz-linear-gradient( top center, white,#999999);
+}
+table.wims_search_engine td {
+text-align:center;
 }
 .wims_home_button {
 }
@@ -501,7 +584,7 @@ ul.wims_home_result_list li {
   padding-right: 5px;
   padding-bottom: 10px;
   padding-left: 5px;
-  overflow: scroll;
+  margin-bottom:5px;
   background-color:#FFFFFF;
   text-align:center;}
 .wims_classes_direct_type {color:#A52A2A;
@@ -688,13 +771,12 @@ table.wims_exam td {
   background-color:#FFFFFF;
 }
 .empty {width:5%;}
+#wims_empty {min-height:100px;padding:20px;margin:20px;}
 .wims_docu_titleb {
 }
 
 div.wims_solution {
 }
-
-
 
 /************* PRINTER FRIENDLY **********/
 @media print {
@@ -720,10 +802,19 @@ div.wims_solution {
 #wimsbodybox {
   background:white;
 }
-.wimsmenu {
+#wimsbodybox #wimsmenumodubox{
   visibility: hidden;
 }
-#wimsmenumodubox, #wimsmenubox, #wimstailbox, #wimstopbox{
+
+.wimsmenu, .wimmenuitem {
   visibility: hidden;
 }
+#wimstailbox .wimstail .tailitem {visibility: hidden;}
+
+table.wimstable th,table.wimstable a {
+  color: #000000;
+  background-color:white;
+}
+
+ 
 }

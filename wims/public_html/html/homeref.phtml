@@ -7,8 +7,10 @@
 !! **********************************************
  !if yes isin $wims_lightpopup
  !if $wims_lightpopup_option=$empty
-  </div>
-  !exit
+ !set 1_=!append line ,0, $wims_name_devwims to $1_
+ !set 1_=!append line ,0, $wims_name_Author: $module_author to $1_
+ !set wims_rm_2=$1_
+  !goto rmend
  !else
   !if about isitemof $wims_lightpopup_option
    !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
