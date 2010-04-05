@@ -3,9 +3,9 @@
 
 :allowtype
 
-<center><b>Indication sur l'enregistrement des notes.</b> </center>
+<center><b>Indicación sobre el registro de las notas.</b> </center>
                              En modo selectivo, puede imponer una
- restricción en el tiempo de registro de las notas añadiendo las 
+ restricción en el tiempo de registro de las notas añadiendo las
  palabras
  <font color=blue><b>
  <tt>&gt;aaaammjj.hh:mm</tt></b></font>
@@ -26,7 +26,7 @@
 
 :dependency
  <center><b>dependencias de puntuaciones</b></center>
-La expresión ``dependencias de puntuaciones'' 
+La expresión ``dependencias de puntuaciones''
   se refiere a que un participante debe primero lograr puntos
   en otros ejercicios de la hoja, antes de poder trabajar en este.
   Por ejemplo,
@@ -38,10 +38,10 @@ La expresión ``dependencias de puntuaciones''
 
 :options
  <center><b>Options.</b></center>
- Une seule option est pour l'instant disponible
+ Una única opción está disponible por el momento
   <ul>
-   <li><em>autogen</em> veut dire que l'exercice est généré automatiquement même si l'utilisateur ne clique pas dessus. Pour qu'il puisse consulter l'exercice enregistré quand la session est fermée. Formellement déconseillé
-  sauf pour exercices à correction manuelle.</li>
+   <li><em>autogen</em> quiere decir que se genera el ejercicio automáticamente aunque el usuario no pulsa arriba. Para que pueda consultar el ejercicio registrado cuando se cierra la sesión.
+Formalmente desaconsejado excepto para ejercicios a corrección manual.</li>
   </ul>
 !exit
 
@@ -49,6 +49,6 @@ La expresión ``dependencias de puntuaciones''
  <center><b>Contenu d'un exercice</b></center>
 Este ejercicio se puede elegir (aleatoriamente) de una lista de ejercicios
 existentes en las hojas de trabajo. Por favor, marque los ejercicios de la
-hoja de trabajo de la siguiente lista, los cuales serán candidatos 
+hoja de trabajo de la siguiente lista, los cuales serán candidatos
 a ejercicio de este examen.
 !exit
