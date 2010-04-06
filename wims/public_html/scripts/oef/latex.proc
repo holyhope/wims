@@ -5,13 +5,13 @@
 !set filename=sheet
 !if $wims_read_parm!=
   !goto $wims_read_parm
-!exit
+!else
+  !exit
+!endif
 
 :begin
 
 !readproc oef/togetfile.proc $filename.tex new\
-\batchmode\
-\mag 1200\
 \documentclass{article}\
 \usepackage{amsmath,amssymb,amsfonts,thm}\
 \usepackage[latin1]{inputenc}\
@@ -54,6 +54,7 @@ $\  in $latex_src
 \
 \
 $latex_src
+!reset latex latex_src
 !endif
 
 !set wims_backslash_insmath=$wims_backslash_insmath1
