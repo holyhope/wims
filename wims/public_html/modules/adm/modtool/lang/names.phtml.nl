@@ -107,7 +107,7 @@
    name_local,name_error,name_emailsend,name_goahead
 
  !set name_warning0=!nosubst Dit is een openbare / publiek-adres module en die wordt geinstalleerd op\
-  de "hoofd distributie server" <tt>$centralhost</tt>. Geef hier uw "publicatie id".
+  de "hoofd distributie server" $publishname (<tt>$centralhost</tt>). Geef hier uw "publicatie id".
  !set name_warning1= Wanneer dit een verbeterde/vernieuwde versie is van een bestaande module,\
  niet vergeten het <em>versienummer</em> van de module te verhogen.Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
  !set name_warning2=Uw module heeft een lokaal adres.\
