@@ -98,7 +98,7 @@ de desarrollo bajo la dirección
   !distribute lines Nombre de su cuenta de publicación \
   Tipo de publicación\
   versión desarrollo, versión estable - modificar un módulo existente, versión estable - añadir un nuevo módulo\
-  Es una traducción <br> ¿de un módulo que existe <br> creado por otro autor?\
+  Es una traducción ¿de un módulo que existe <br> creado por otro autor?\
   Modificantes autorizados\
   ¡Lea esto en primer lugar!\
   El módulo publicado aparecerá en el motor de búsqueda del sitio de aquí a algunos minutos.\

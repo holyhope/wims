@@ -368,6 +368,12 @@ $mu_sitesw
 If you choose automatic module update with very small delay (0 or 1 day),
 you should set the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
 
+:housekeep mu_publish_site
+$wims_name_publish_center
+checkbox
+$mu_publishsitesw
+You can here choose the publication center for ressource modules.
+
 :housekeep mu_delay
 Delay in automatic module update
 choice
@@ -381,9 +387,6 @@ your delay.
 <p>
 If you choose a very small number here (0 or 1), you should set
 the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
-<p>
-!!This feature won't work (delay=0) on Mac OS-X, due to lack of commands on
-!!this platform.
 
 :housekeep mu_zone
 Zones for automatic module update

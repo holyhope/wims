@@ -1,8 +1,16 @@
 !read adm/language names.phtml
 
-!!! prevoir de rajouter l'identifiant du centre de publication choisie à la fin de la ligne 
-!!! suivante, par defaut unice.
+!readdef wimshome/log/wims.conf
+
+!set publish_site=$submitpublish_site
+!default publish_site=$mu_publish_site
+
+!! read the list of publication centers
 !read wimshome/public_html/bases/sys/publishdata
+
+!! read the specification of $publish_site
+!read wimshome/public_html/bases/sys/publishdata $publish_site
+
 wims_nw=job mod existing serial_number auth_login auth_passwd \
 	original2 originalheader empty devdir fname target
 wims_nr=wims_sesrandom
