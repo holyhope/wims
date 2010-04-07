@@ -2,7 +2,7 @@ var r0="Voulez-vous envoyer cette réponse ?\n";
 var r1="Vous n\'avez pas répondu à la question numéro ";
 var r2="Votre réponse n\'est pas réaliste...<br>Je ne la vérifie pas.";
 var r3="J\'ai réécrit la syntaxe sqrt[a](b) pour la racine <br>en une syntaxe b^(1/a)."; 
-var r4="Votre réponse contient une virgule<br>Utiliser la notation avec un point décimal pour les nombres réels...<br> Si vous voulez donner plusieurs réponses, utilisez des mots comme \"and\" et \"or\" "
+var r4="Votre réponse contient une virgule<br>Utilisez un point décimal pour les nombres réels...<br> Si vous voulez donner plusieurs réponses, utilisez des mots comme \"and\" et \"or\" "
 var r5="Vous devriez remplacer le caractère \"o\" par le nombre \"0\".";
 var r6="Vous essayez de me raconter une histoire.<br> Formulez plutôt votre réponse plus sérieusement...";
 var r7="Vous utilisez la lettre  \"x\" comme symbole de multiplication<br>Utilisez plutôt un symbole normal comme \"*\" pour cela ...<br>Ou en cas de réponses multiples, écrivez quelque chose comme:<br> x1=123 et x2=456";
@@ -27,11 +27,11 @@ var r26=" Vous devriez refaire vos calculs...";
 var r27="Dans cet exercice, le pourcentage ne peut être supérieur à 100% ..."
 var r28="Dans cet exercice, le pourcentage ne peut être inférieur à 0% ..."
 var r29="J\'espérais (finalement) quelque chose comme:<br> x = 123 ...ou quelque chose comme celà <br> Essayez encore ";
-var r30="Votre réponse devrait au moins contenir quelques \"flèches\" pour indiquer les étapes de votre \"déduction\"<br> Regardez les pages d\'aide pour plus d\'info...";
+var r30="Votre réponse devrait au moins contenir quelques \"flèches\" pour indiquer les étapes de votre \"raisonnement\"<br> Regardez les pages d\'aide pour plus d\'info...";
 var r31="Le nombre minimal d\'étapes [ flèches ->] doit être : ";
 var r32="<br>... ce \"texte\" a été retiré de votre réponse.<br> Dans cet exerice, il n\'y en a pas besoin pour déduire la réponse correcte...";
 var r33="Si j\'envoie cette réponse à WIMS<br>elle sera très probablement rejetée... ";
 var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets.";    
 var r35="Vous avez construit:";
 var r36="Je m\'attendais à un nombre avec une unité...";
-var r37="I was expecting a number and not :";
+var r37="J\'attendais un nombre et pas :";
