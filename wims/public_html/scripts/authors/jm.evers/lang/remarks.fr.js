@@ -34,4 +34,4 @@ var r33="Si j\'envoie cette réponse à WIMS<br>elle sera très probablement rejeté
 var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets.";    
 var r35="Vous avez construit:";
 var r36="Je m\'attendais à un nombre avec une unité...";
-var r37="J\'attendais un nombre et pas :";
+var r37="J\'attendais à un nombre et pas à :";
