@@ -91,9 +91,9 @@ De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
  !distribute lines Helaas, het maken van een backup archief is mislukt. Een interne fout.\
  Hier is het backup archief van uw klas\
  Klik hier voor het downloaden\
- Er kan ook een selectieve backup worden aangemaakt. Klik op\
+ Er kan ook een selectieve backup worden aangemaakt. \
+ Klik op\
  Selectieve backup\
- \
  Verander en bewaar het backup archief.\
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3

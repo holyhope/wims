@@ -93,11 +93,11 @@ remplacer les ressources existantes excepté les comptes de  participants et les 
 
  !distribute lines Lo sentimos, no se ha podido guardar su clase. Error interno.\
   Este es el fichero en el que ha guardado su clase\
-  Cliquez dessus pour l'enregistrer sur votre ordinateur.\
+  pour l'enregistrer sur votre ordinateur.\
   También puede hacer una\
-  Copia selectiva de seguridad\
-  \
-  pour modifier le fichier de sauvegarde ci-dessus et enregistrez-le.\
+  puis cliquez sur \
+  Sauvegarde sélective\
+  pour modifier le fichier de sauvegarde ci-dessus et enregistrez le fichier sur votre ordinateur.\
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
