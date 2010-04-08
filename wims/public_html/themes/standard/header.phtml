@@ -65,6 +65,24 @@
 !endif
 !if $module!=home or $wims_user!=
 <div id="wimsbodybox">
+!if $wims_homeref_n3>0
+  <div id="wimsmenutab">
+  <div class="wimsmenu"> 
+  !for i_=1 to $wims_homeref_n3
+    !set 1_=!line $i_ of $wims_rm_3
+    !if $(1_[1])!=
+      <div class="itemsep">toto</div>
+    !else
+     <div class="menuitem">
+     toto
+     !read oneitem.phtml $1_
+     </div>
+    !endif
+  !next i_
+  </div><!--wimsmenu-->
+  </div><!--wimsmenutab-->
+!endif
+
 <div id="wimspagebox">
 !endif
 <!-- end of header.phtml -->
