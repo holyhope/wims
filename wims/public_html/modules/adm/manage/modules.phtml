@@ -15,16 +15,34 @@
 !form reply
 <input type=hidden name=muauto value=check>
 <center>
-<table border=0>
-<tr><td align=right>
-<input type=submit value="$wims_name_search"> $name_mod
-<td><input size=40 name=musite value="$musite" readonly>
-<tr><td align=right>$name_zone
-<td><input size=40 name=muzone value="$muzone">
-<tr><td align=right>$name_cat
-<td><input size=40 name=mucat value="$mucat">
-<tr><td align=right>$name_change
-<td><input size=4 name=mudelay value="$mudelay"> $name_ago
+$table_header
+ <tr>
+  <td align=right><input type=submit value="$wims_name_search"> $name_mod</td>
+  <td>
+   !let nb=!itemcnt $mu_downloadcentername
+   !if $nb>1
+    <ul>
+    !for k=1 to $nb
+     <li>$(mu_downloadcentername[$k]) ($(mu_download_site[$k]))</li>
+    !next depot
+   </ul>
+  !else
+   $mu_downloadcentername ($mu_download_site)
+  !endif
+  </td>
+ </tr>
+ <tr>
+  <td align=right>$name_zone</td>
+  <td><input size=40 name=muzone value="$muzone"></td>
+ </tr>
+ <tr>
+  <td align=right>$name_cat</td>
+  <td><input size=40 name=mucat value="$mucat"> </td>
+ </tr>
+ <tr>
+  <td align=right>$name_change</td>
+  <td><input size=4 name=mudelay value="$mudelay"> $name_ago</td>
+ </tr>
 $table_end
 </form>
 

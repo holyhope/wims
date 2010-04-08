@@ -357,10 +357,10 @@ Method of automatic daily module update. <dl>
    <dd>Install new modules and update existing ones.
 </dl>
 
-:housekeep mu_site
+:housekeep mu_download_site
 Download site for module update
-free
-
+checkbox
+$mu_publishsitesw
 Choose a download site for module update. Known mirror sites:
 <pre>
 $mu_sitesw

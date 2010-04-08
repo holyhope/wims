@@ -1,14 +1,23 @@
 !bound job2 within all,one,first default first
 
-!for t in site,cat,zone,delay
+!for t in site,cat,zone,delay,download_site
  mu_$t=!defof mu_$t in wimshome/log/wims.conf
  !default mu_$t=!defof DF_mu_$t in wimshome/src/defaults.conf
 !next t
 
-!if $mu_site=random or $mu_site=$empty
- mu_site=!defof downloadsites in wimshome/public_html/bases/sys/downloaddata
- mu_site=!randitem $mu_site
-!endif
+mu_downloadcentername=$empty
+!for depot in $mu_download_site
+ tmp=!defof publishname in wimshome/public_html/bases/sys/publishcenter/$depot
+ tmp=!replace internal , by &#44; in $tmp
+ !default tmp=$depot
+ mu_downloadcentername=!append item $tmp to $mu_downloadcentername
+!next depot
+
+!! inutile puisque de toute façon mu_site vaut la valeur de defaults.conf
+!!if $mu_site=random or $mu_site=$empty
+!! mu_site=!defof downloadsites in wimshome/public_html/bases/sys/downloaddata
+!! mu_site=!randitem $mu_site
+!!endif
 
 !if $job2=one
  !changeto mu/one.proc
@@ -44,6 +53,7 @@ w_mu_add="$mu_add"\
 export scripttest wims_home w_wims_version w_mu_add\
 $wims_home/bin/modupdate mail
 !endif
+
 check=!nonempty lines $modupdate
 n=!linecnt $check
 !reset mode,modif,new
@@ -57,7 +67,7 @@ n=!linecnt $check
   mode=new
  !endif
  t=!itemcnt $l
- !if / isin $l and $t=3 and $mode!=$empty
+ !if / isin $l and $t=4 and $mode!=$empty
   $mode=!append line $l to $($mode)
  !endif
 !next i

@@ -86,6 +86,7 @@ fi
 today=`date '+%Y%m%d'`
 wday=`date '+%w'`
 defaults
+
 if [ -z "$mu_delay" ]; then mu_delay=0; fi
 if [ -z "$mu_auto" ] || [ "$mu_auto" = "none" ]; then exit; fi
 if [ $mu_delay -gt 7 ] && [ "$wday" != "0" ] && [ -z "$w_wims_session" ]; then exit; fi
@@ -100,6 +101,11 @@ if [ -z "$w_wims_version" ]; then
  w_wims_version=`cd public_html; ./wims version`
 fi
 site_languages=`singlespace "$site_languages" | tr ' ' '|'`
+
+mu_download_site=`echo "$mu_download_site" | tr ',' ' '`;
+for depot in $mu_download_site; do
+mu_site=`awk -F'=' '$1=="mu_site" {print $2;exit}' $sys/publishcenter/$depot`;
+
 wims_exec_parm=$mu_site/$indexfile
 zone=`translate $mu_zone`
 cat=`translate $mu_cat`
@@ -137,8 +143,8 @@ else
  mv $tmpdir/published $tmpdir/published2
 fi
 mix=`join -a2 -11 -21 $tmpdir/existing $tmpdir/published2`
-new=`echo "$mix" | awk 'NF==4 {print $4"@"$1","$2","$3}' | tr '@/' '/~' | head -100`
-modif=`echo "$mix" | awk 'NF==5 && $3>$2 {print $5"@"$1","$3","$4}' | tr '@/' '/~' | head -100`
+new=`echo "$mix" | awk -v center="$depot" 'NF==4 {print $4"@"$1","$2","$3","center}' | tr '@/' '/~' | head -100`
+modif=`echo "$mix" | awk -v center="$depot" 'NF==5 && $3>$2 {print $5"@"$1","$3","$4","center}' | tr '@/' '/~' | head -100`
 
 rm -fR download/modules
 mkdir -p download/modules
@@ -146,11 +152,11 @@ rm -f $outfile
 
 hostname=`hostname`
 if [ -n "$modif" ]; then
- modif1=`echo "Modules updated in the publication:
+ modif1=`echo "Modules updated in the publication :
 $modif"`
 fi
 if [ -n "$new" ]; then
- new1=`echo "Modules added to the publication:
+ new1=`echo "Modules added to the publication :
 $new"`
 fi
 
@@ -167,7 +173,7 @@ case "$mu_auto" in
   if [ -z "$tot" ]; then exit; fi
   echo "
 WIMS server on $hostname: checking new modules from 
-publication center (no real update is done).
+publication center $mu_site (no real update is done).
 
 $tot" >>$outfile
  ;;
@@ -175,7 +181,7 @@ $tot" >>$outfile
  install)
   if [ -n "$new" ]; then
    echo "
-WIMS server on $hostname: installing new modules.
+WIMS server on $hostname: installing new modules from $mu_site.
 " >>$outfile
    for l in $new; do installone $l Install new >>$outfile; done
    [ -d /wsys ] && touch /wsys/wims/timestamp
@@ -185,7 +191,7 @@ WIMS server on $hostname: installing new modules.
  update)
   if [ -n "$modif" ]; then
    echo "
-WIMS server on $hostname: updating existing modules.
+WIMS server on $hostname: updating existing modules from $mu_site.
 " >>$outfile
    for l in $modif; do installone $l Update modif >>$outfile; done
    [ -d /wsys ] && touch /wsys/wims/timestamp
@@ -196,14 +202,14 @@ WIMS server on $hostname: updating existing modules.
   modd=
   if [ -n "$new" ]; then
    echo "
-WIMS server on $hostname: installing new modules.
+WIMS server on $hostname: installing new modules from $mu_site.
 " >>$outfile
    for l in $new; do installone $l Install new >>$outfile; done
    modd=yes
   fi
   if [ -n "$modif" ]; then
    echo "
-WIMS server on $hostname: updating existing modules.
+WIMS server on $hostname: updating existing modules from $mu_site.
 " >>$outfile
    for l in $modif; do installone $l Update modif >>$outfile; done
    modd=yes
@@ -212,6 +218,9 @@ WIMS server on $hostname: updating existing modules.
  ;;
 
 esac
+
+done;
+
 
 if [ -s "$outfile" ]; then
  if [ "$1" = "mail" ]; then

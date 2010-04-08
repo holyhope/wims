@@ -8,6 +8,13 @@ addr=!translate internal ~ to , in $mupack
 addr=!item 2 of $addr
 vtest=!module version $addr
 
+!bound mudownload within $mu_publish_center
+tmp_site=!defof mu_site\
+publishname in wimshome/public_html/bases/sys/publishcenter/$mudownload
+!distribute line $tmp_site into tmp_site,mu_name
+!default tmp_site=$mu_site
+mu_site=$tmp_site
+
 !if $muauto=check
  webget_output=module.tgz
  !exec webget $mu_site/$package.tgz
