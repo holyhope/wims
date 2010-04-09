@@ -2,16 +2,27 @@
 
 !readdef wimshome/log/wims.conf
 
-!set publish_site=$submitpublish_site
-!default publish_site=$mu_publish_site
+publish_site=$submitpublish_site
+!!default publish_site=$mu_publish_site
 
 !! read the list of publication centers
-!read wimshome/public_html/bases/sys/publishdata
-!default publish_site=$(publishsites[1])
+publishsites=!sh cd $wims_home/public_html/bases/sys/publishcenter/;\
+grep publishcenter=yes * | cut -d":" -f1
+publishsites=!lines2items $publishsites
+!bound publish_site within $publishsites default $(publishsites[1])
+publishsitesname=$empty
+!for name in $publishsites
+ tmp=!defof publishname in wimshome/public_html/bases/sys/publishcenter/$name
+ tmp=!replace internal , by &#44; in $tmp
+ publishcentersname=!append item $tmp to $publishcentersname
+!next name
+!!read wimshome/public_html/bases/sys/publishdata
+
+!!default publish_site=$(publishsites[1])
 !default mu_publish_site=$publish_site
 
 !! read the specification of $publish_site
-!read wimshome/public_html/bases/sys/publishdata $publish_site
+!read wimshome/public_html/bases/sys/publishcenter/$publish_site
 
 wims_nw=job mod existing serial_number auth_login auth_passwd \
 	original2 originalheader empty devdir fname target
@@ -121,3 +132,4 @@ jobreq=
 !endif
 
  
+
