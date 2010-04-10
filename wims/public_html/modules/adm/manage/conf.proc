@@ -77,24 +77,20 @@ wims_prefix=$wims_prefix2
   !if $catname isitemof $c_
    !!! check the download center
    !if housekeep iswordof $catname and $i=35
-!! ancien test d'existence d'un depot. Cependant faut-il encore vérifier tous les depots ? ou simplement vérifier que la liste est incluse dans les dépots connus du serveur.
-!!
-!!     webget_output=test_exists_site
-!!     !exec webget $(conf_$i)/index.gz
-!!     download_site_exists=!record 0 of wimshome/sessions/$wims_session/$webget_output
-!!     !if HTTP 404 isin $download_site_exists or $download_site_exists=$empty
-!!       error=no_download_sites
-!!       !exit
-!!     !endif HTTP
-!! nouveau test
-     test=!listintersect $(conf_$i) and $mu_publishsitesw
-     t1=!itemcnt $test
-     t2=!itemcnt $(conf_$i)
-     !if $t1!=$t2
-       error=no_download_sites
-       !exit
-     !endif
-!! fin de nouveau test
+    !reset error_list
+    !for depot in $(conf_$i)
+     addr=!defof mu_site in wimshome/public_html/bases/sys/publishcenter/$depot
+     webget_output=test_exists_site
+     !exec webget $addr/index.gz
+     download_site_exists=!record 0 of wimshome/sessions/$wims_session/$webget_output
+     !if HTTP 404 isin $download_site_exists or $download_site_exists=$empty
+       error_list=!append item $depot to $error_list
+     !endif HTTP
+    !next depot
+    !if $error_list!=$empty
+     error=no_download_sites
+     !exit
+    !endif
    !endif housekeep
    v_=$(conf_$i)
    v_=!trim $v_
