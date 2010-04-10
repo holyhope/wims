@@ -360,10 +360,10 @@ Method of automatic daily module update. <dl>
 :housekeep mu_download_site
 Download site for module update
 checkbox
-$mu_publishsitesw
+$mu_downloadsites
 Choose a download site for module update. Known mirror sites:
 <pre>
-$mu_sitesw
+$help_downloadsites
 </pre> <p>
 If you choose automatic module update with very small delay (0 or 1 day),
 you should set the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
@@ -373,6 +373,7 @@ $wims_name_publish_center
 checkbox
 $mu_publishsitesw
 You can here choose the publication center for ressource modules.
+$help_publishsites
 
 :housekeep mu_delay
 Delay in automatic module update

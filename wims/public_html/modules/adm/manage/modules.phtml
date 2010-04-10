@@ -14,20 +14,19 @@
 
 !form reply
 <input type=hidden name=muauto value=check>
-<center>
 $table_header
  <tr>
   <td align=right><input type=submit value="$wims_name_search"> $name_mod</td>
   <td>
-   !let nb=!itemcnt $mu_downloadcentername
+   !let nb=!itemcnt $mu_download_site
    !if $nb>1
     <ul>
-    !for k=1 to $nb
-     <li>$(mu_downloadcentername[$k]) ($(mu_download_site[$k]))</li>
+    !for k in $mu_download_site
+     <li>$(depotname_$k) ($k)</li>
     !next depot
    </ul>
   !else
-   $mu_downloadcentername ($mu_download_site)
+   $(depotname_$(mu_download_site)) ($mu_download_site)
   !endif
   </td>
  </tr>

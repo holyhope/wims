@@ -1,23 +1,11 @@
 !bound job2 within all,one,first default first
 
-!for t in site,cat,zone,delay,download_site
+!for t in site,cat,zone,delay
  mu_$t=!defof mu_$t in wimshome/log/wims.conf
  !default mu_$t=!defof DF_mu_$t in wimshome/src/defaults.conf
 !next t
 
-mu_downloadcentername=$empty
-!for depot in $mu_download_site
- tmp=!defof publishname in wimshome/public_html/bases/sys/publishcenter/$depot
- tmp=!replace internal , by &#44; in $tmp
- !default tmp=$depot
- mu_downloadcentername=!append item $tmp to $mu_downloadcentername
-!next depot
-
-!! inutile puisque de toute façon mu_site vaut la valeur de defaults.conf
-!!if $mu_site=random or $mu_site=$empty
-!! mu_site=!defof downloadsites in wimshome/public_html/bases/sys/downloaddata
-!! mu_site=!randitem $mu_site
-!!endif
+!readproc mu/publishdownload.def
 
 !if $job2=one
  !changeto mu/one.proc
