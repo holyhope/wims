@@ -4,7 +4,7 @@
 slib_title=The conjugation of a French verb
 slib_parms=1\
 ,the verb (infinitif)
-slib_author=Gang Xiao
+slib_author=Gang Xiao (corrected by Bernadette Perrin-Riou)
 slib_out=the conjugations: multi-line format. \
  présent, imparfait, futur, conditionnel, impératif, \
  passé simple, subjonctif, subjonctif imparfait, \
@@ -13,7 +13,18 @@ slib_example= mordre
 !exit
 
 :proc
-slib_inf=!word 1 of $wims_read_parm
+slib_pr=!word 1 of $wims_read_parm
+!if $slib_pr=se
+  slib_type=pr1
+  slib_inf=!word 2 of $wims_read_parm
+!else
+  slib_inf=!word 1 of $wims_read_parm
+  !if  __s' isin __$slib_inf
+    slib_inf=!replace internal __s' by in __$slib_inf
+    slib_type=pr2
+  !endif
+!endif
+
 slib_out=
 !if $slib_inf=$empty
  !exit
@@ -48,6 +59,7 @@ slib_r=!char 1 to $slib_n-$slib_m of $slib_inf
 !for slib_k=2 to 10
  slib_$slib_k=!replace internal , by ,$slib_r in $slib_r$(slib_$slib_k)
 !next slib_k
+
 slib_s3=ais,ais,ait,ions,iez,aient
 slib_s4=rai,ras,ra,rons,rez,ront
 slib_s5=rais,rais,rait,rions,riez,raient
@@ -126,5 +138,43 @@ $slib_10
    slib_out=!replace internal $(slib_r)$slib_c by $(slib_ra)$slib_c in $slib_out
   !next slib_c
  !endif
+!endif
+
+!if pr isin $slib_type
+  !if $slib_type=pr1
+    slib_pref=me,te,se,nous,vous,se
+  !else
+    slib_pref=m',t',s',nous $ $ $,vous $ $ $ $,s'
+  !endif
+  !for slib_k in 1,2, 3, 4, 6, 7, 8
+   slib_pre=!line $slib_k of $slib_out
+   slib_pre1=
+   !for slib_j_=1 to 6
+    slib_prefi=!item $(slib_j_) of $slib_pref
+    !if $slib_j_ iswordof 4 5 or $slib_type=pr1
+      slib_sep=$ $
+    !else
+      slib_sep=
+    !endif
+    slib_pre1=!append item $slib_prefi$slib_sep$(slib_pre[$slib_j_]) to $(slib_pre1)
+    slib_out=!replace line number $slib_k by $(slib_pre1) in $slib_out
+   !next
+  !next
+ !!imperatif
+  slib_pre=!line 5 of $slib_out
+   slib_pre1=
+   slib_pref=-toi,-nous,-vous
+   !for slib_j_=1 to 3
+    slib_pre1=!append item $(slib_pre[$slib_j_])$(slib_pref[$slib_j_]) to $(slib_pre1)
+    slib_out=!replace line number 5 by $(slib_pre1) in $slib_out
+   !next
+ !!participe present
+  slib_pre=!line 10 of $slib_out
+  !if $slib_type=pr1
+    slib_pre1=se $slib_pre
+  !else
+    slib_pre1=s'$slib_pre
+  !endif
+   slib_out=!replace line number 10 by $(slib_pre1) in $slib_out
 !endif
 
