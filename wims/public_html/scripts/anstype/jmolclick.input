@@ -251,9 +251,6 @@ function affich_rep(selgood,selbad,selforget){
  return chscript;
 }
 
-function cb(trash,mm){
- jmolScriptWait('ispicked("'+mm+'","$nosel")');
-}
 
 </script>
 
@@ -272,17 +269,11 @@ var sc0='$ans_sc0';
 var sc1='$ans_sc1';
 var jscr='load $file;';
     jscr= jscr +'selectionhalos on;select none; color selectionHalos blue;';
-    jscr= jscr +'set frank on;set DisablePopupMenu FALSE; hover off; \n';
+    jscr= jscr +'set frank on;set DisablePopupMenu TRUE; hover off; \n';
     jscr= jscr +'set picking;\n';
-    jscr= jscr +'function ispicked(mess,nosel){\n';
-    jscr= jscr +' picked=mess.split(" ")[1];\n'
-    jscr= jscr +' picked={(@picked)};\n'
-    jscr= jscr +' nosel={(@nosel)};\n'
-    jscr= jscr +' if(picked.selected==1){\n'
-    jscr= jscr +'  select selected and not picked;aa=false;\n'
-    jscr= jscr +' }else{\n'
-    jscr= jscr +'  select (selected or picked) and not nosel;aa=true;\n'
-    jscr= jscr +' }\n'
+    jscr= jscr +'function getnosel(){\n';
+    jscr= jscr +' varnosel={$nosel};\n'
+    jscr= jscr +' return @varnosel ;\n'
     jscr= jscr +'}\n';
 var retcode=jmolApplet([$Inputsize],jscr+sc0+sc1);
     $ans_0
