@@ -4,8 +4,8 @@
 !let help_isread=yes
 El cuaderno de competencias permite obtener una rejilla de lectura sintética del conjunto
 del trabajo tenido en cuenta de los alumnos de la clase.
-< br> El cuaderno consta como máximo de competencias (….) cada una de sus competencias
-puede poseer varios grados (hasta….).
+< br> El cuaderno consta como máximo de competencias (… $maxcomp.) cada una de sus competencias
+puede poseer varios grados (hasta… $maxpalier.).
 <p>
 Para cada grado, el profesor puede definir la lista de las series de ejercicios de la clase
 para los cuales el resultado va a producir en el cálculo del nivel de adquisición del grado.

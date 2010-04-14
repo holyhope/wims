@@ -20,24 +20,6 @@ Livret_dir=$wims_home/log/classes/$wims_class/livret
  !readdef $livret_dir/.def
 !endif
 
-!if $livret_supervise=yes
- sh=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
- !for i=1 to $sh
-  l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
-  l=!word 1 of $l
-  !if $l>0
-   asheets=!append item $i to $asheets
-  !endif
-  nbs=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
-  sheet$i=$empty
-  !for k=1 to $nbs
-   d=!record $k of wimshome/log/classes/$wims_class/sheets/.sheet$i
-   !distribute line $d into bla,bla,bla,bla,r5,r6
-   sheet$i=!append line <b>$r5</b> <small>$r6</small> to $(sheet$i)
-  !next k
- !next i
-!endif
-
 !distribute line $livret_scorecolor\
 $livret_scoreview into wims_scorecolor,wims_scoreview
 !default wims_scorecolor=,red,red,red,orange,orange,orange,yellow,yellow,green,green
@@ -45,6 +27,22 @@ $livret_scoreview into wims_scorecolor,wims_scoreview
 !if class isin $livret_scoreoption
  wims_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
 !endif
+
+shcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+!for i=1 to $shcnt
+ l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+ l=!word 1 of $l
+ !if $l>0
+  asheets=!append item $i to $asheets
+ !endif
+ nbs=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
+ sheet$i=$empty
+ !for k=1 to $nbs
+  d=!record $k of wimshome/log/classes/$wims_class/sheets/.sheet$i
+  !distribute line $d into bla,bla,bla,bla,r5,r6
+  sheet$i=!append line <b>$r5</b> <small>$r6</small> to $(sheet$i)
+ !next k
+!next i
 
 convert_table=$empty
 tmp=!record 0 of wimshome/log/classes/$wims_class/sheets/.weight
@@ -58,5 +56,10 @@ cpt=1
  !else
   t=$empty
  !endif
- convert_table=!append item $t to $convert_table
+ convert_table=$convert_table,$t
 !next k
+convert_table=!item 2 to -1 of $convert_table
+convert_table=!nospace $convert_table
+
+v=!values v for v=1 to $shcnt
+nasheets=!listcomplement $asheets in $v
