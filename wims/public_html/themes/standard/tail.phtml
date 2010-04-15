@@ -3,6 +3,7 @@
 !nocache
 !set wims_theme_tail=yes
 </div><!--end of wimspagebox or wimsbody-->
+</div><!--end of wimspagebox or wimsbody-->
 !if $wims_homeref_special!=$empty
  </div><!--end of wimspagebox -->
  <div class="wimsmenu"> 
@@ -40,7 +41,22 @@
 !endif wims_homeref_n4
 </div><!--wimsmenumodubox-->
 !endif wims_homeref_n0+wims_homeref_n4
-
+!if $wims_homeref_n3>0
+  <div id="wimsmenutab">
+  <div class="wimsmenu"> 
+  !for i_=1 to $wims_homeref_n3
+    !set 1_=!line $i_ of $wims_rm_3
+    !if $(1_[1])=
+      <div class="itemsep"></div>
+    !else
+     <div class="menuitem">
+     !read oneitem.phtml $1_
+     </div>
+    !endif
+  !next i_
+  </div><!--wimsmenu-->
+  </div><!--wimsmenutab-->
+!endif
 !if $wims_homeref_n1>0
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
