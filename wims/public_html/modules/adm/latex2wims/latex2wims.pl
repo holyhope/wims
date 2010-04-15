@@ -1223,10 +1223,10 @@ sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ 
     $CHEMIN_up . '<table class="doc_table"><tr>'
    . (($toc_g) ? '<td valign=top><div class="left_toc"><p>' . $toc_g 
    . $index . '</div></td>' : '')
-   . '<td valign=top align=left width="100%"><div class="wimsdoc">'
+   . '<td valign="top" align="left" width="100%"><div class="wimsdoc">'
    . $text
    . '</div>' .  $CHEMIN_down . ' </td>'
-   . (($toc_d) ? '<td valign=top align=right> <div class="right_toc"><p>'
+   . (($toc_d) ? '<td valign="top" align="right"> <div class="right_toc"><p>'
    . $toc_d
    . '</div><center>'
    . $LOAD

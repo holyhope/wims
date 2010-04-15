@@ -37,16 +37,16 @@ $table_end
  $table_hdtr<th>$wims_name_Type<th>$wims_name_class<th>$wims_name_Supervisor<th>$wims_name_Status
  !for r in $sharable
   !for cl in $(sharable_$r)
-   $table_tr<td align=center>$(name_$r)
+   $table_tr<td align="center">$(name_$r)
    !set D_=!defof class_institution\
 class_description\
 class_supervisor in wimshome/log/classes/$cl/.def
    !distribute lines $D_ into i_,d_,s_
-   <td align=center>
+   <td align="center">
    !href cmd=reply&job2=def&nei=$cl $i_<br>$d_
-   <td align=center>$s_</td>
+   <td align="center">$s_</td>
    !set s_=!defof $(sharing_$r) in wimshome/log/classes/$cl/neighbors
-   <td align=center>
+   <td align="center">
    !if $s_=$wims_class
     $name_active
    !else

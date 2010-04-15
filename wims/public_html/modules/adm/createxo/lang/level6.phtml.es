@@ -14,7 +14,7 @@ Ficheros de imagen para el ejercicio
 !set wims_form_method=file
 !form reply
 Fichero de imagen que se va a enviar en el ejercicio:
-<input type=file name=wims_deposit>
+<input type=file name="wims_deposit">
 <input type=submit value="$wims_name_tosave">
 </form>
 
@@ -26,11 +26,11 @@ Fichero de imagen que se va a enviar en el ejercicio:
  <p><center><table border=2>
  <th>Nombre del fichero<th>Vista<th>-
  !for i in $imglist
-  <tr><td valign=middle align=center>$i
-  <td valign=middle align=center>
+  <tr><td valign="middle" align="center">$i
+  <td valign="middle" align="center">
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
    height=40 width=50>
-  <td valign=middle align=center>
+  <td valign="middle" align="center">
   !href cmd=reply&delfile=$i Borrar
  !next i
  $table_end <p>

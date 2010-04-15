@@ -50,24 +50,24 @@ $name_title
   !defread wimshome/log/classes/$cl/.def
   !distribute char $class_level into l1,l2
   !set part=!recordcnt wimshome/log/classes/$cl/.userlist
-  $table_tr<td align=center>
+  $table_tr<td align="center">
   !if $ctype=0
    !href module=$module&cmd=reply&class=$cl $class_institution<br>$class_description
   !else
    !href module=$module&cmd=reply&class=$cl $class_description
   !endif
-  <td align=center>
+  <td align="center">
   !mailurl $class_email $class_supervisor
   </td>
   !if $class_level=$empty
    !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
-    <td align=center>$pname</td>
+    <td align="center">$pname</td>
   !else
-    <td align=center>$(level$l1)<br>$name_year $l2</td>
+    <td align="center">$(level$l1)<br>$name_year $l2</td>
   !endif
   !if $ctype=0
-   <td align=center>$(lang_$class_lang)</td>
-   <td align=right>
+   <td align="center">$(lang_$class_lang)</td>
+   <td align="right">
    !if $class_limit-$part>$site_dispo
     $site_dispo
    !else
@@ -75,9 +75,9 @@ $name_title
    !endif
   !endif
   !if $class_password=$empty
-   <td align=center>$(name_statut[1])</td>
+   <td align="center">$(name_statut[1])</td>
   !else
-   <td align=center>$(name_statut[2])</td>
+   <td align="center">$(name_statut[2])</td>
   !endif
  !next cl
  $table_end <p>
@@ -114,9 +114,9 @@ $name_title
   $name_asaparticipant.
  !endif
  !form reply
- <input type=hidden name=step value=1>
+ <input type=hidden name="step" value=1>
  <center> <p><label for="classpass">$wims_name_Password</label>
- <input type=password name=classpass id="classpass">
+ <input type=password name="classpass" id="classpass">
  <p>
  <input type=submit value="$wims_name_send">
  </center></form> <p>
@@ -146,9 +146,9 @@ $name_title
 !if $step=$empty or $step<2
  !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
   !form reply
-  <input type=hidden name=step value=1>
+  <input type=hidden name="step" value=1>
   <label for="search">$name_research:</label>
-  <input size=20 name=search id="search" value="$search">
+  <input size=20 name="search" id="search" value="$search">
   <input type=submit value="$wims_name_tosave">
   </form> <p>
   !default foundcnt=0
@@ -175,21 +175,21 @@ $name_title
   $name_inscription2
  !endif
   !form reply
- <input type=hidden name=step value=2>
+ <input type=hidden name="step" value=2>
  <ul>
- <li><label for="lastn">$wims_name_lastname</label> <input size=20 name=lastn id="lastn" value="$lastn">
-<label for="firstn">$wims_name_firstname</label> <input size=20 name=firstn id="firstn" value="$firstn">
+ <li><label for="lastn">$wims_name_lastname</label> <input size=20 name="lastn" id="lastn" value="$lastn">
+<label for="firstn">$wims_name_firstname</label> <input size=20 name="firstn" id="firstn" value="$firstn">
   <p>
  <li><label for="login">$wims_name_Login</label>
-  <input size=16 name=login id="login" value="$login"> <br>
+  <input size=16 name="login" id="login" value="$login"> <br>
   $name_warning_login. $name_passwd_warning
   <p>
  <li><label for="pass">$wims_name_Password</label>
-  <input type=password size=16 name=pass id="pass"> <br>
+  <input type=password size=16 name="pass" id="pass"> <br>
   $name_passwd_warning
   <p>
  <li><label for="email">$wims_name_email ($name_optional) :</label><br>
-  <input size=60 name=email id="email" value="$email">
+  <input size=60 name="email" id="email" value="$email">
   <p>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>$name_accounttype:
@@ -212,8 +212,8 @@ $name_title
  !endif
  <label for="pass2">$name_passwd_exact:</label>
  !form reply
- <input type=hidden name=step value=3>
- <p><center><input type=password size=16 name=pass2 id="pass2">
+ <input type=hidden name="step" value=3>
+ <p><center><input type=password size=16 name="pass2" id="pass2">
  <p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1

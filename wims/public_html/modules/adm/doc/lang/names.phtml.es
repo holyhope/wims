@@ -11,7 +11,7 @@
  !next f
  <p>
  !form reply
- <input type=hidden name=job2 value=erase>
+ <input type=hidden name="job2" value=erase>
  Borrar un fichero:
  !formselect job2 list $flist
  <input type=submit value="$wims_name_tosave">

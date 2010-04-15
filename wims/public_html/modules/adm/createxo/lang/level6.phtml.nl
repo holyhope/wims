@@ -16,7 +16,7 @@ Binaire Bestanden voor oefeningen
 
 !form reply
 Het bestand voor deze oefening:
-<input type=file name=wims_deposit>
+<input type=file name="wims_deposit">
 <input type=submit value="$wims_name_tosave">
 </form>
 
@@ -29,11 +29,11 @@ Het bestand voor deze oefening:
  <p><center><table border=2>
  <th>Bestandsnaam<th>thumbnail<th>-
  !for i in $imglist
-  <tr><td valign=middle align=center>$i
-  <td valign=middle align=center>
+  <tr><td valign="middle" align="center">$i
+  <td valign="middle" align="center">
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
    height=40 width=50>
-  <td valign=middle align=center>
+  <td valign="middle" align="center">
   !href cmd=reply&delfile=$i  $wims_name_erase
  !next i
  $table_end <p>

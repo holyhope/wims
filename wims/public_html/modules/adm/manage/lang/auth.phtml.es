@@ -2,7 +2,7 @@
 <center>
 !form reply
 Por favor introduzca la contraseña de administrador del sitio:<p>
-<input size=24 type=password name=auth>
+<input size=24 type=password name="auth">
 <input type=submit value="$wims_name_tosave">
 </form></center>
 

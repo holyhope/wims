@@ -47,7 +47,7 @@ $name_title $exam
 
 :end1
 <p>
-<a name=list></a>
+<a name="list"></a>
 <b>$name_content:</b>
 !if $exocnt=0
  <p>$name_warning<p>
@@ -55,31 +55,6 @@ $name_title $exam
  !read examcontent.phtml
  <p>
 !endif
-
-!!!if $exocnt=0
-!! Cet examen n'a pas encore de contenu. 
-!!else
-!! <a name=list>
-!! $name_content:</a><ol>
-!! !for i=1 to $exocnt
-!!  <li>
-!!  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
-!!  !distribute lines $ex into we,ch,ti
-!!  $ti, $name_weight $we.
-!!  !if $activetest=0
-!!   &nbsp;(
-!!   !if $i>1
-!!    !href cmd=reply&job=moveup&moveup=$i#list $wims_name_up
-!!    &nbsp;
-!!   !endif
-!!   !href cmd=reply&job=exo&exo=$i $wims_name_change
-!!   &nbsp;
-!!   !href cmd=reply&job=delete&delete=$i#list $wims_name_erase
-!!   )
-!!  !endif
-!! !next i
-!! </ol>
-!!endif
 
 !if $activetest=0
  !let wims_menu_items=!append line addexo,1,cmd=reply&job=exo&exo=$[$exocnt+1]\

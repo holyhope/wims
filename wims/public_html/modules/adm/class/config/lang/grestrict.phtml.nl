@@ -1,6 +1,6 @@
 
 !form reply
- <input type=hidden name=job value=grestrict>
+ <input type=hidden name="job" value=grestrict>
  Hier kunt aangeven welke computer netwerkadressen
  mogen deelnemen aan Uw virtuele klas.<br> 
  Deze instellingen blijven van kracht, en hebben een hogere prioriteit dan
@@ -8,13 +8,13 @@
 
  <p>
  <table border=0>
- <tr><td align=right>Toegestane adressen&nbsp;:
- <td><input size=35 name=allow value="$allow">
- <tr><td align=right>Uitgezonderd&nbsp;:
- <td><input size=35 name=except value="$except">
+ <tr><td align="right">Toegestane adressen&nbsp;:
+ <td><input size=35 name="allow" value="$allow">
+ <tr><td align="right">Uitgezonderd&nbsp;:
+ <td><input size=35 name="except" value="$except">
  </table> <p>
- <input type=submit name=save value="$wims_name_tosave">&nbsp;&nbsp;&nbsp;
- <input type=submit name=abandon value="$wims_name_giveup">
+ <input type=submit name="save" value="$wims_name_tosave">&nbsp;&nbsp;&nbsp;
+ <input type=submit name="abandon" value="$wims_name_giveup">
 </form>
 
 <p>

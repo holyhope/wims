@@ -41,9 +41,9 @@ WIMS modtool
 !!@#       Veuillez donner votre identification de développeur de Modtool!!#@
        <p>
        <table align="center">
-         <tr><td>$wims_name_Login</td><td><input type=text name=login></td></tr>
+         <tr><td>$wims_name_Login</td><td><input type=text name="login"></td></tr>
          <tr><td>$wims_name_Password</td><td>
-          <input type=password name=passwd>
+          <input type=password name="passwd">
          </td></tr></table>
         !set submit=submit
     !endif
@@ -123,20 +123,20 @@ $table_header
 $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosave"><th>
 !!       <table align="center"><tr bgcolor="$c_obl"><td>
 
-         $table_tr<td><label for="title">$wims_name_title*</label></td><td><input size=20 name=title value="$title"></td></tr>
-         $table_tr<td><label for="author">$wims_name_Author*</label></td><td> <input size=20 name=author id="author" value="$author"></td></tr>
-         $table_tr<td><label for="email">$wims_name_email*</label></td><td> <input size=20 name=email id="email" value="$email"></td></tr>
+         $table_tr<td><label for="title">$wims_name_title*</label></td><td><input size=20 name="title" value="$title"></td></tr>
+         $table_tr<td><label for="author">$wims_name_Author*</label></td><td> <input size=20 name="author" id="author" value="$author"></td></tr>
+         $table_tr<td><label for="email">$wims_name_email*</label></td><td> <input size=20 name="email" id="email" value="$email"></td></tr>
          $table_tr<td><label for="file">$name_name_data*</label> [
 !href target=wims_mhelp cmd=help&special_parm1=data_file$type_exo $wims_name_help
 ]
-        </td><td> <input size=15 name=file id="file" value="$file"> </td></tr>
+        </td><td> <input size=15 name="file" id="file" value="$file"> </td></tr>
          $table_tr<td><label for="source">
 !record 9 of $my_dir
 !!@#         Nom du fichier source de l'exercice à créer!!#@
 *</label> [
 !href target=wims_mhelp cmd=help&special_parm1=file $wims_name_help
 ]
-        </td><td> <input size=15 name=source id="source" value="$source"></td></tr>
+        </td><td> <input size=15 name="source" id="source" value="$source"></td></tr>
        !if $type_exo notwordof CORRESP ORDONNE QUIFAITQUOI
          $table_tr<td><label for="N">
 !record 10 of $my_dir
@@ -329,7 +329,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
         !formradio specialhelp2 list 0,1,2,3 prompt $name_listhelp
 <br><label for="specialhelp3">Essai 3 :</label>
         !formradio specialhelp3 list 0,1,2,3 prompt $name_listhelp
-<br><label for="helpprompt">$name_prompt : </label><input size=5 name=helpprompt id="helpprompt" value="$helpprompt">    
+<br><label for="helpprompt">$name_prompt : </label><input size=5 name="helpprompt" id="helpprompt" value="$helpprompt">    
         </td></tr>
       !endif
       !if $type_exo iswordof TRUEFALSE GAP QUIFAITQUOI QCMIII
@@ -342,12 +342,12 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
          !href target=wims_mhelp cmd=help&special_parm1=choice $wims_name_help
 
  !!!default choice_tf=vrai,faux
-           </td><td><input size=35 name=choice_tf id="choice_tf" value="$choice_tf"></td></tr>
+           </td><td><input size=35 name="choice_tf" id="choice_tf" value="$choice_tf"></td></tr>
         !endif
         !!!if $type_exo iswordof QUIFAITQUOI
        !!    Les différents "qui"  </i>
 !!!default choice_qq=Premier Personnage, Deuxième Personnage
-      !!     </td><td><input size=35 name=choice_qq id="choice_qq" value="$choice_qq"></td></tr>
+      !!     </td><td><input size=35 name="choice_qq" id="choice_qq" value="$choice_qq"></td></tr>
       !! !endif
        !if $type_exo iswordof GAP
        $table_tr<td><i><label for="choice_gap">
@@ -357,12 +357,12 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
            !href target=wims_mhelp cmd=help&special_parm1=choice2 $wims_name_help
            ]
 </label>
-           </td><td><input size=35 name=choice_gap id="choice_gap" value="$choice_gap"></td></tr>
+           </td><td><input size=35 name="choice_gap" id="choice_gap" value="$choice_gap"></td></tr>
        !endif
        !!if $type_exo iswordof QCMIII
        !!   Texte pour le feedback  </i>
        !!!default choice_fd=Vrai en effet, Faux en effet
-       !!   </td><td><input size=35 name=choice_fd id="choice_fd" value="$choice_fd"></td></tr>
+       !!   </td><td><input size=35 name="choice_fd" id="choice_fd" value="$choice_fd"></td></tr>
        !!!endif
      !endif
      !if $type_exo iswordof QUIFAITQUOI
@@ -377,7 +377,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
  
          !href target=wims_mhelp cmd=help&special_parm1=aucune $wims_name_help
          </td><td>
-         <input size=35 name=aucune id="aucune" value="$aucune">
+         <input size=35 name="aucune" id="aucune" value="$aucune">
          </td></tr>
      !endif
     !if $type_exo iswordof CORRESP
@@ -386,7 +386,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !!@#       Taille des étiquettes !!#@
 </label> [
 !href target=wims_mhelp cmd=help&special_parm1=taille_corr $wims_name_help
-]</td><td><input size=15 name=taille_corr id="taille_corr" value="$taille_corr"></td></tr>
+]</td><td><input size=15 name="taille_corr" id="taille_corr" value="$taille_corr"></td></tr>
     !endif
     !if $type_exo iswordof GAP SELECTWORD SELECTWORDA SELECTWORDB
        $table_tr<td><label for="taille_case">
@@ -402,7 +402,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
        [
 !href target=wims_mhelp cmd=help&special_parm1=taille_case $wims_name_help
 ]
-       </td><td><input size=15 name=taille_case id="taille_case" value="$taille_case"></td></tr>
+       </td><td><input size=15 name="taille_case" id="taille_case" value="$taille_case"></td></tr>
     !endif
     !if $type_exo iswordof COMPOSE
        $table_tr<td><label for="taille_compose">
@@ -411,7 +411,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 </label> [
 !href target=wims_mhelp cmd=help&special_parm1=taille_compose $wims_name_help
 ]
-       </td><td><input size=15 name=taille_compose id="taille_compose" value="$taille_compose"></td></tr>
+       </td><td><input size=15 name="taille_compose" id="taille_compose" value="$taille_compose"></td></tr>
     !endif
     !if $type_exo iswordof ORDONNE GAP SELECTWORD SELECTWORDA SELECTWORDB
        $table_tr<td><label for="taille_drag">
@@ -431,7 +431,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !href target=wims_mhelp cmd=help&special_parm1=supplement $wims_name_help
 ]
        !endif
-       </td><td><input size=15 name=taille_drag id="taille_drag" value="$taille_drag"></td></tr>
+       </td><td><input size=15 name="taille_drag" id="taille_drag" value="$taille_drag"></td></tr>
     !endif
     $table_tr<td><i><label for="instruction">
 !record 36 of $my_dir
@@ -441,13 +441,13 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !href target=wims_mhelp cmd=help&special_parm1=instruction $wims_name_help
 ]
         </td><td>
-    <textarea nowrap rows=4 cols=30 name=instruction id="instruction">$instruction</textarea> </td></tr>
+    <textarea nowrap rows=4 cols=30 name="instruction" id="instruction">$instruction</textarea> </td></tr>
     !if $type_exo iswordof SELECTWORDB SELECTWORD
       $table_tr<td><i><label for="instruction2">
 !record 37 of $my_dir
 !!@#      Consigne de l'exercice (si question supplémentaire)!!#@
  </label></i></td><td>
-    <textarea nowrap rows=4 cols=30 name=instruction2 id="instruction2">$instruction2</textarea> </td></tr>
+    <textarea nowrap rows=4 cols=30 name="instruction2" id="instruction2">$instruction2</textarea> </td></tr>
     !endif
     !!if $type_exo iswordof GAP
     $table_tr<td><i><label for="packs">
@@ -473,9 +473,9 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
     </td><td> 
     <table border=0>
      <tr>
-      <td><i><label for="reading_file0">$name_name_file</label></i></td><td><input size=15 name=reading_file0 id="reading_file0" value="$reading_file0"></td></tr>
+      <td><i><label for="reading_file0">$name_name_file</label></i></td><td><input size=15 name="reading_file0" id="reading_file0" value="$reading_file0"></td></tr>
      <tr>
-      <td><label for="reading_tag">$name_click</label></td><td><input size=8 name=reading_tag id="reading_tag" value="$reading_tag"></td>
+      <td><label for="reading_tag">$name_click</label></td><td><input size=8 name="reading_tag" id="reading_tag" value="$reading_tag"></td>
      </tr>
     <tr>
       <td colspan=2>
@@ -501,7 +501,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !record 41 of $my_dir
 !!@#        nom du fichier!!#@
  
-        </i></td><td><input size=15 name=audio_file0 id="audio_file0" value="$audio_file0"></td>
+        </i></td><td><input size=15 name="audio_file0" id="audio_file0" value="$audio_file0"></td>
        </tr>
      </table>
     </td></tr>
@@ -517,8 +517,8 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !record 43 of $my_dir
 !!@#    adresse url de la video!!#@
  
-</label></i> </td><td><input size=15 name=video_file0 id="video_file0" value="$video_file0">
-    </td><tr><td><label for="video_tag">$name_click</label></td><td> <input size=8 name=video_tag id="video_tag" value="$video_tag"></td></tr>
+</label></i> </td><td><input size=15 name="video_file0" id="video_file0" value="$video_file0">
+    </td><tr><td><label for="video_tag">$name_click</label></td><td> <input size=8 name="video_tag" id="video_tag" value="$video_tag"></td></tr>
     </table></td></tr>
     $table_tr<td><label for="image_file1">
 !record 44 of $my_dir
@@ -533,10 +533,10 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !!@#     nom du fichier!!#@
  
 </label></i></td><td>
-     <input size=15 name=image_file0 id="image_file0" value="$image_file0">
+     <input size=15 name="image_file0" id="image_file0" value="$image_file0">
     </td><tr><td><label for="image_tag">
     $name_click</label>
-</td><td><input size=8 name=image_tag id="image_tag" value="$image_tag"></td></tr>
+</td><td><input size=8 name="image_tag" id="image_tag" value="$image_tag"></td></tr>
     </table></td></tr>
 
     $table_tr<td><label for="style_question">
@@ -545,7 +545,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 </label> [
 !href target=wims_mhelp cmd=help&special_parm1=css $wims_name_help
 ]</td><td>
-    <textarea nowrap rows=2 cols=30 name=style_question id="style_question">$style_question</textarea> 
+    <textarea nowrap rows=2 cols=30 name="style_question" id="style_question">$style_question</textarea> 
     </td></tr>
     $table_tr<td><label for="style_reponse">
 !record 47 of $my_dir
@@ -553,16 +553,16 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 </label> [
 !href target=wims_mhelp cmd=help&special_parm1=css $wims_name_help
 ]</td><td>
-    <textarea nowrap rows=2 cols=30 name=style_reponse id="style_reponse">$style_reponse</textarea></td></tr>
+    <textarea nowrap rows=2 cols=30 name="style_reponse" id="style_reponse">$style_reponse</textarea></td></tr>
  !!   <tr bgcolor="$c_expert"><td><label for="style_oef">Style css général de l'exercice [.oefstatement]</td><td>
- !!   <textarea nowrap rows=2 cols=30 name=style_oef id="style_oef">$style_oef</textarea> </td></tr>
+ !!   <textarea nowrap rows=2 cols=30 name="style_oef" id="style_oef">$style_oef</textarea> </td></tr>
     $table_tr<td><label for="style_css">
 !record 48 of $my_dir
 !!@#    Style css  !!#@
 </label> [
 !href target=wims_mhelp cmd=help&special_parm1=css1 $wims_name_help
 ] </td><td>
-    <textarea nowrap rows=2 cols=30 name=style_css id="style_css">$style_css</textarea> </td></tr>
+    <textarea nowrap rows=2 cols=30 name="style_css" id="style_css">$style_css</textarea> </td></tr>
    !if $type_exo iswordof GAP SELECTWORD SELECTWORDA SELECTWORDB 
     $table_tr<td><label for="paste">
 !record 49 of $my_dir
@@ -581,11 +581,11 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
 !href target=wims_mhelp cmd=help&special_parm1=prompts $wims_name_help
 ]
        </td><td>
-        <textarea nowrap rows=1 cols=20 name=qcm_prompt1 id="qcm_prompt1">$qcm_prompt1</textarea>
-        <textarea nowrap rows=1 cols=20 name=qcm_prompt2 id="qcm_prompt2">$qcm_prompt2</textarea>
-        <textarea nowrap rows=1 cols=20 name=good_answer_text id="good_answer_text">$good_answer_text</textarea>
-        <textarea nowrap rows=1 cols=20 name=bad_answer_text id="bad_answer_text">$bad_answer_text</textarea>
-        <textarea nowrap rows=1 cols=20 name=incomplete_answer_text id="incomplete_answer_text">$incomplete_answer_text</textarea>
+        <textarea nowrap rows=1 cols=20 name="qcm_prompt1" id="qcm_prompt1">$qcm_prompt1</textarea>
+        <textarea nowrap rows=1 cols=20 name="qcm_prompt2" id="qcm_prompt2">$qcm_prompt2</textarea>
+        <textarea nowrap rows=1 cols=20 name="good_answer_text" id="good_answer_text">$good_answer_text</textarea>
+        <textarea nowrap rows=1 cols=20 name="bad_answer_text" id="bad_answer_text">$bad_answer_text</textarea>
+        <textarea nowrap rows=1 cols=20 name="incomplete_answer_text" id="incomplete_answer_text">$incomplete_answer_text</textarea>
        </td></tr>
      !endif   
      $table_tr<td><label for="player_option">
@@ -598,7 +598,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
       !formselect player list $list_player
 !record 51 of $my_dir
 !!@# Taille du lecteur!!#@ 
-      <input size=20 name=player_option id="player_option" value="$player_option">
+      <input size=20 name="player_option" id="player_option" value="$player_option">
       </td></tr>
     $table_end
     !set transfert=

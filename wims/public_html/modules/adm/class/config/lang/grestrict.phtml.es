@@ -1,19 +1,19 @@
 
 !form renew
- <input type=hidden name=job value=grestrict>
+ <input type=hidden name="job" value=grestrict>
  Desde aquí puede configurar las restricciones a nivel de clase de los sitios
  a los que se les permita recibir calificaciones. Estas restricciones 
  se aplicarán siempre independientemente de la configuración individual
  de las hojas.
  <p>
  <table border=0>
- <tr><td align=right>Sitios a los que se les permite recibir calificaciones:
- <td><input size=35 name=allow value="$allow">
- <tr><td align=right>Exceptuados:
- <td><input size=35 name=except value="$except">
+ <tr><td align="right">Sitios a los que se les permite recibir calificaciones:
+ <td><input size=35 name="allow" value="$allow">
+ <tr><td align="right">Exceptuados:
+ <td><input size=35 name="except" value="$except">
  </table> <p>
- <input type=submit name=save value=Guardar>&nbsp;&nbsp;&nbsp;
- <input type=submit name=abandon value=Cancelar>
+ <input type=submit name="save" value=Guardar>&nbsp;&nbsp;&nbsp;
+ <input type=submit name="abandon" value=Cancelar>
 </form>
 
 <p>

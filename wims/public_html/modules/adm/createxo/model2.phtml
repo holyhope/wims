@@ -3,8 +3,8 @@
 !set name_author=$wims_name_Author
 !set name_email=$wims_name_email
 
-!form reply name=replyform id=replyform
-<input type=hidden name=level value=3>
+!form reply name="replyform" id=replyform
+<input type=hidden name="level" value=3>
 $table_header
 <caption><b>$model_title<sup>
 !href cmd=reply&rawinp=yes $wims_name_rawmode
@@ -50,9 +50,9 @@ $table_header
    !set l_=!charcnt $val
    !if $l_ > 50
     !set val=!reinput $val
-    <textarea name=reply$i cols=$len rows=3>$val</textarea>
+    <textarea name="reply$i" cols=$len rows=3>$val</textarea>
    !else
-    <input size=$len name=reply$i value="$val">
+    <input size=$len name="reply$i" value="$val">
    !endif
   !endif
   </td>
@@ -66,7 +66,7 @@ $table_end <p>
 
 !if $ta!=$empty
  !for i in $ta
-  <a name=textarea$i></a>
+  <a name="textarea$i"></a>
   $(title$i)
   !set val=!reinput $(val$i)
   <small><a href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
@@ -76,7 +76,7 @@ $table_end <p>
   !endif
   </small>
   <br>
-  <textarea name=reply$i cols=65 rows=10
+  <textarea name="reply$i" cols=65 rows=10
   !if $(type$i) iswordof matrix
    wrap="off"
   !endif

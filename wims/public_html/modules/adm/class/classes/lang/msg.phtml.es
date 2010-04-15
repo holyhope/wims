@@ -4,10 +4,10 @@
 
 !if $error=bad_password
  Contraseña no reconocida. Por favor vuelva a intentarlo pasados unos segundos.
- <form action="#" name=chrono>
+ <form action="#" name="chrono">
  ¡<b><font color=red>Atención</font></b>! ¡Cualquier contraseña enviada en los próximos 5 segundos
  será rechazada!
- <input size=1 name=clock> </form>
+ <input size=1 name="clock"> </form>
  !exit
 !endif
 

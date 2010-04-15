@@ -22,6 +22,7 @@ parms=!word 2 to -1 of $option
 !if $method iswordof user score
  !read scripts/check.user
  !if $error!=$empty
+  error=bad $method
   !exit
  !endif
 !endif
@@ -48,10 +49,9 @@ parm_file=getclassfile
 parm_files=getclasstgz
 
 !readproc adm/connect/main.proc $(parm_$method) $ident $rclass $quser
-
-!if $cn_status!=OK
+!if $cn_status=$empty
  :backerror
- error=back calling error: $cn_data
+ error=back calling error: $cn_data $cn_status ---$(parm_$method) $ident $rclass -- $qclass $method
  !exit
 !endif
 

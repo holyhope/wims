@@ -10,7 +10,7 @@
  !read adm/date.phtml date,$start_year,$start_month,$start_day
  !set s_beginning=$name_beginning $c_date_out
 $name_choose
- <select name=cnt>
+ <select name="cnt">
  !for i=1 to 15
   <option value=$i
   !if $i=$cnt
@@ -18,7 +18,7 @@ $name_choose
   !endif
   >$i
  !next i
- </select><select name=style>
+ </select><select name="style">
  !for i in day,week,month,year,beginning
   <option value=$i
   !if $i=$style or ($i=month and $style=$empty)
@@ -32,13 +32,13 @@ $name_choose
  !set i_stem=$name_stem, $wims_name_or
  !set i_uniq=$name_uniq
  !for i in site,stem,uniq
-  <input type=radio name=type value=$i
+  <input type=radio name="type" value=$i
   !if $type=$i
    checked
   !endif
   > $(i_$i)
  !next i
- $name_limited <select name=reflim>
+ $name_limited <select name="reflim">
  !for i in 10,20,30,50,70,100,150,200
   <option value=$i
   !if $i=$reflim
@@ -46,17 +46,17 @@ $name_choose
   !endif
   >$i
  !next i
- </select>$name_searchengine <input type=radio name=search value=yes
+ </select>$name_searchengine <input type=radio name="search" value=yes
  !if $search=yes
   checked
  !endif
- > $name_included <input type=radio name=search value=no
+ > $name_included <input type=radio name="search" value=no
  !if $search=no
   checked
  !endif
  > $name_excluded.
  <p>$name_option
- <input size=15 name=key value="$key">
+ <input size=15 name="key" value="$key">
  <p><center><input type=submit value="$wims_name_Show"></center>
 </form>
 

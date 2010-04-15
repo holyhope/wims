@@ -37,8 +37,8 @@ Creación de una clase virtual
  !endif
  <p>
  !form reply
-  <input type=hidden name=step value=0>
-  Introduzca la contraseña: <input size=16 name=regpass type=password>
+  <input type=hidden name="step" value=0>
+  Introduzca la contraseña: <input size=16 name="regpass" type=password>
  </form> <p>
  Nota. Puede solicitar la contraseña necesaria para la creación
  de clases virtuales al
@@ -59,10 +59,10 @@ Contraseña para la creación de clases virtuales
  <p>
  !form reply
   <p><table border=0 cellspacing=5>
-  <tr><td align=right>
-  Introduzca el nombre de su cuenta:</td><td><input size=20 name=regid></td>
-  </tr><tr><td align=right>
-  Y la contraseña:</td><td><input size=16 name=regpass type=password>
+  <tr><td align="right">
+  Introduzca el nombre de su cuenta:</td><td><input size=20 name="regid"></td>
+  </tr><tr><td align="right">
+  Y la contraseña:</td><td><input size=16 name="regpass" type=password>
   <input type=submit value=De acuerdo></td>
   </tr></table>
  </form> <p>
