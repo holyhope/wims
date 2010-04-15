@@ -94,7 +94,7 @@ char *show_ip="yes";
   /* busy hours definition */
 char *busyhours="";
   /* Presentation theme */
-char *theme="default";
+char *theme="standard";
   /* directory of session files */	
 char session_dir[MAX_FNAME+1], s2_dir[MAX_FNAME+1];
   /* standardised header model for modules' output. Will be stored
