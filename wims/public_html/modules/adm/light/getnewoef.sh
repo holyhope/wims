@@ -1,3 +1,4 @@
+!exit
 #! /bin/sh
 # Get list of new OEF to the site.
 

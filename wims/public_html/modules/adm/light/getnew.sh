@@ -1,3 +1,5 @@
+!exit
+
 #! /bin/sh
 # Get list of new additions to the site.
 # Reads the file modules/Changelog.
