@@ -2,7 +2,7 @@
 !! ce fichier utilise des mots définis dans le fichier names.phtml du module adm/sheet.$lang
 
 !form reply
- <input type=hidden name=job value=text>
+ <input type=hidden name="job" value=text>
  $table_header
   $table_tr
    <td>$(name_shinfo[1])</td>
@@ -70,7 +70,7 @@
   </tr>
   !if $activetest>0
    $table_tr
-    <input type=hidden name=allow value=yes>
+    <input type=hidden name="allow" value=yes>
     <td>
      $(name_shinfo[6])&nbsp;
      <small>
@@ -79,20 +79,20 @@
     </td>
     <td>
      !formselect allowtype list all, none, select prompt $name_allowtype 
-     <br><input size=50 name=IPlist value="$IPlist"> <br>
+     <br><input size=50 name="IPlist" value="$IPlist"> <br>
      !set allowshare=0
      !if $sharers!=$empty
       ( $(name_shinfo[7])
       !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
       )
      !else
-      <input type=hidden name=allowshare value=0>
+      <input type=hidden name="allowshare" value=0>
      !endif
     </td>
    </tr>
   !endif
   $table_tr
-   <td colspan="2" align=center>
+   <td colspan="2" align="center">
     !ifval $activetest=-1
      <input type=submit value="$name_mksheet">
     !else
