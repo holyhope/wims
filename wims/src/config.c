@@ -115,9 +115,9 @@ char *home_referer="homeref.phtml";
 char *home_referer_user="homeref_user.phtml";
 char *home_referer_supervisor="homeref_supervisor.phtml";
   /* background color in standard reference tables */
-char *ref_bgcolor="#d0c080";
+char *ref_bgcolor="#777777";
   /* background link color in standard reference tables */
-char *ref_menucolor="blue";
+char *ref_menucolor="white";
   /* module log disabled by default */
 int modlog=0;
   /* name of the variable definition file for every module. 
@@ -163,6 +163,8 @@ char *mu_cat="all";
 char *mu_delay="20";
 char *mu_site="http://wims.unice.fr/download/modules";
 char *mu_zone="all";
+char *mu_download_site="wimsedu";
+char *mu_publish_site="unice";
 
   /* keywords destinated to robots */
 char *site_keywords="interactive mathematics, interactive math, server side interactivity";
@@ -236,6 +238,8 @@ CONFIG_DATA main_config[]={
       {"mu_auto",		0, &mu_auto},
       {"mu_cat",		0, &mu_cat},
       {"mu_delay",		0, &mu_delay},
+      {"mu_download_site",		0, &mu_download_site},
+      {"mu_publish_site",		0, &mu_publish_site},
       {"mu_site",		0, &mu_site},
       {"mu_zone",		0, &mu_zone},
       {"mupad_command",		2, &mupad_command},
