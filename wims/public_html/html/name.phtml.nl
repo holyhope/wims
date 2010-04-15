@@ -98,6 +98,7 @@
 	    Vereiste <br>WIMS versie,\
 	    Taal,\
 	    Schrijver,\
+	    Maintainer,\
 	    Vertaler,\
 	    Dit is een module van,\
 	    WWW Interactive Multipurpose Server,\
@@ -125,6 +126,7 @@
         wims_name_Required_WIMS_version,\
         wims_name_Language,\
 	wims_name_Author,\
+	wims_name_Maintainer,\
 	wims_name_Translator,\
 	wims_name_This_is_a_module,\
 	wims_name_WIMS_subtitle,\
