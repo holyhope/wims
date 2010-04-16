@@ -16,3 +16,4 @@ N_Search	=Buscar
 N_search	=buscar
 
 name_search_engine=Search Engine
+name_search_help=Tips for searching

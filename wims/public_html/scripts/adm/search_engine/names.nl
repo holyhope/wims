@@ -17,3 +17,4 @@ N_search	=zoeken
 
 !!name_language_choice=zoeken in taal
 name_search_engine=Search Engine
+name_search_help=Tips for searching
