@@ -35,3 +35,11 @@ var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets.
 var r35="Vous avez construit:";
 var r36="Je m\'attendais à un nombre avec une unité...";
 var r37="J\'attendais à un nombre et pas à :";
+var r38="give inputfield";
+var r39="remove inputfield";
+var r40="Just click the button \"remove inputfield\" ...";                                                                           
+var r41="Just click the button \"give inputfield\" ...";                                                                                
+var r42="All inputfields are removed...";                                                                                                
+var r43="Why do you need so many inputfields ?";                                                                                       
+var r44="There is an unused inputfield...";
+ 
