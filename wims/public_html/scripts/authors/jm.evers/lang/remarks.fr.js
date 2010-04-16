@@ -6,14 +6,14 @@ var r4="Votre réponse contient une virgule<br>Utilisez un point décimal pour les
 var r5="Vous devriez remplacer le caractère \"o\" par le nombre \"0\".";
 var r6="Vous essayez de me raconter une histoire.<br> Formulez plutôt votre réponse plus sérieusement...";
 var r7="Vous utilisez la lettre  \"x\" comme symbole de multiplication<br>Utilisez plutôt un symbole normal comme \"*\" pour cela ...<br>Ou en cas de réponses multiples, écrivez quelque chose comme:<br> x1=123 et x2=456";
-var r9="Ecrivez une fonction avec des parenthèses. <br>Ainsi, écrivez: sqrt() sin() etc()";
+var r9="Ecrivez les fonctions avec des parenthèses. <br>Ainsi, écrivez: sqrt() sin() etc()";
 var r10="Vous n\'avez pas utilisé la bonne notation scientifique...<br> 5*10^03 == 5*10^3 <br> 5*10^2 == 5e+2<br> 5*10^-6 == 5e-6<br>Pas d\'exposants fractionaires ...";
 var r11="Une syntaxe spéciale doit être utilisée pour les racines d'ordre supérieure:<br>sqrt[3](11) = \u221B(17) <br> sqrt[4](23) = \u221C(23)";
 var r12="J\'ai réécrit votre log[a](b) avec le log en base 10:<br> log(b)/log(a)";
 var r13="Je ne veux pas traiter les crochets pour un autre usage que sqrt[] et log[]...[?]<br>Essayez de réécrire votre réponse ";
 var r14="Vous devriez réécrire log[10](a) comme log(a).<br>Je vais interpréter log(a) comme un logarithme en base 10.";
 var r15="Vous devriez réécrire log[e](a) comme ln(a).<br>Je vais interpréter ln(a) comme un logarithme en base e.";
-var r16="votre réponse n\'a pas de sens..<br>et n\'est pas acceptée.";
+var r16="votre réponse n\'a pas de sens...<br>et n\'est pas acceptée.";
 var r17="c\'est bien sûr :<br> log(a)/log(a) = 1<br> Je ne l\'envoie pas...";
 var r18="Essayez de formuler votre réponse plus précisément :<br>quelque chose comme \"sqrt(5++5)\" ou \"log(5--5)\" peut être écrit beaucoup plus simplement...";
 var r19="Dans votre dessin,vous avez oublié quelques objets fondamentaux.<br>Voir plus bas:<br><br>"; 
@@ -35,11 +35,11 @@ var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets.
 var r35="Vous avez construit:";
 var r36="Je m\'attendais à un nombre avec une unité...";
 var r37="J\'attendais à un nombre et pas à :";
-var r38="give inputfield";
-var r39="remove inputfield";
-var r40="Just click the button \"remove inputfield\" ...";                                                                           
-var r41="Just click the button \"give inputfield\" ...";                                                                                
-var r42="All inputfields are removed...";                                                                                                
-var r43="Why do you need so many inputfields ?";                                                                                       
-var r44="There is an unused inputfield...";
+var r38="ajouter un champ";
+var r39="enlever un champ";
+var r40="Cliquez sur le bouton \"enlever un champ\" ...";                                                                           
+var r41="Cliquez sur le bouton \"ajouter un champ\" ...";                                                                                
+var r42="Tous les champs de réponses ont été enlevés ...";                                                                                                
+var r43="Pourquoi avez-vous besoin de tant de champs de réponses ?";                                                                                       
+var r44="Un des champs de réponses est inutilisé..";
  
