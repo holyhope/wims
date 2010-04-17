@@ -6,17 +6,20 @@
 !read scripts/progform.phtml
 <p><center>
 !if $hastest=yes
- $name_prog1<sup>
+ $name_prog1
+ &nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#test $wims_name_help
- </sup>:
  !href module=adm/class/classes&type=authsupervisor&class=$wims_superclass/$prog/0 $name_visit
 . 
  !href cmd=reply&job=deltest $wims_name_erase
 .
 !else
- $name_prog2<sup>
+ $name_prog2
+ &nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#test $wims_name_help
- </sup>.
+&nbsp;
  !href cmd=reply&job=addtest $name_prog3
 .
 !endif
@@ -24,16 +27,19 @@
 !if $coursecnt=0
  $name_prog4
  !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
-.<sup>
+&nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#course $wims_name_help
- </sup>
+&nbsp;
 !else
  $table_header
- <caption>$name_prog5<sup>
+ <caption>$name_prog5
+ &nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#course $wims_name_help
- </sup> 
+&nbsp;
  !href cmd=reply&cparent=prog&job=addcourse $wims_name_addcourse
- </small></caption>
+ </caption>
  $table_hdtr
  <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  <th><small>$name_participant</small></th>
@@ -68,16 +74,19 @@
 !if $icoursecnt=0
 $name_prog9
  !href cmd=reply&cparent=prog&job=addicourse $wims_name_addicourse
-.<sup>
+&nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#icourse $wims_name_help
- </sup>
+&nbsp;
 !else
  $table_header
- <caption>$wims_name_icourse<sup>
+ <caption>$wims_name_icourse
+ &nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=structure#icourse $wims_name_help
- </sup>
+ &nbsp;
  !href cmd=reply&cparent=prog&job=addicourse $wims_name_addcourse
- </small></caption>
+ </caption>
  $table_hdtr
  <th>$name_code<th>$wims_name_name</th><th>$wims_name_action</th><th>$name_supervisor2</th>
  <th><small>$name_participant</small></th>

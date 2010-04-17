@@ -27,9 +27,10 @@ $cdt_subtitle
 !distribute item $[$jday],$[$jmonth],$[$jyear] into jday,jmonth,jyear
 !read lang/date.phtml.$moduclass_lang 1
 <p>
-$name_workdone (< $desc_limit $name_character) : [ 
+$name_workdone (< $desc_limit $name_character) : 
+&nbsp;
+    !set wims_ref_class=wims_button_help
 !href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
- ] 
 <br>
 <textarea rows=10 cols=65 name="jdesc" wrap>
 !replace internal \( by &#92;( in $jdesc
@@ -58,9 +59,10 @@ $name_nb_date:
    !distribute item $[$(dday$i)],$[$(dmonth$i)],$[$(dyear$i)] into dday$i,dmonth$i,dyear$i
    !read lang/date.phtml.$moduclass_lang 2
    &#58;
-   [ 
+   &nbsp;
+    !set wims_ref_class=wims_button_help
    !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help
-    ]
+   
 <br><textarea rows=3 cols=65 name="ddesc"$i>
 !replace internal \( by &#92;( in $(ddesc$i)
 </textarea>
