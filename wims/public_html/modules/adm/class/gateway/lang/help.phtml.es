@@ -67,13 +67,13 @@ al programa.
 :sechost
 !reset wims_prefix
 !set special_parm2=secure
-!read wimshome/public_html/modules/adm/class/config.$lang/help/config.phtml
+!read wimshome/public_html/modules/adm/class/config/lang/help.$moduclass_lang/config.phtml
 
 !exit
 
 :structure
 
-!read lang/structure.phtml.$moduclass_lang
+!read help/$moduclass_lang/structure.phtml
 
 !exit
 
