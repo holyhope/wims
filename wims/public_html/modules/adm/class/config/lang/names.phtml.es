@@ -498,9 +498,14 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Imagen de fondo de las páginas\
    transferir un fichero css\
    Gama de colores de los resultados (de 0 a 10)\
+   Couleur de fond des boutons\
+   Couleur du texte dans les boutons\
+   Couleur de fond des boutons d'aide\
+   Couleur du texte dans les boutons d'aide\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
-   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color
 
 !set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
 <br>(lorsque <tt>$name_css</tt>  est sur <tt>class</tt>)&nbsp;:

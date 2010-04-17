@@ -491,9 +491,14 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Achtergrond plaatje\
    download een css style bestand\
    Score kleuren (van 0 tot 10) \
+   Button background color\
+   Button text color\
+   Help button background color\
+   Help button text color\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
-   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,name_colorscore
+   name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color
 
 !set name_content_style = U kunt een algemeen stylesheet definieren\
 <br>(als <tt>$name_css</tt> op <tt>klas</tt> is gezet)&nbsp;:

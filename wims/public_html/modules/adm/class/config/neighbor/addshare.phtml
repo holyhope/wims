@@ -12,9 +12,10 @@ relations">$nei_supervisor</a>)
 </center>
 <p>
 $name_class_share
-<small>
+&nbsp;
+!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=share $wims_name_help
-</small>
+
 <ul>
 !for r in $nsharable
  <li><p><em>$(name_$r)</em> ($(it_$(r)cnt) $name_available).
@@ -23,9 +24,9 @@ $name_class_share
    !if $(sharing_$r)=$nei
     $name_actually_sharing
     !href cmd=reply&job2=stopshare&stoprec=$r $name_stopsharing
-. <small>
+.&nbsp;
+!set wims_ref_class=wims_button_help
     !href cmd=help&special_parm=stopshare $wims_name_help
-    </small>
    !else
     $name_nosharing
    !endif
@@ -45,6 +46,8 @@ $name_class_share
     <b><font color=red>$wims_name_warning</font></b>.
     !if $r=sup
      $name_dangerous
+     &nbsp;
+!set wims_ref_class=wims_button_help
      !href cmd=help&special_parm=supshare $wims_name_detail
     !else
      $name_warning_erase

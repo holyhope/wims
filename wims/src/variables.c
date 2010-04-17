@@ -156,6 +156,16 @@ void get_static_session_var(void)
     classlock();
     p3=getvar("wims_class_refcolor"); if(p3!=NULL && *p3!=0)
       force_setvar("wims_ref_bgcolor",p3);
+    p3=getvar("wims_class_ref_menucolor"); if(p3!=NULL && *p3!=0)
+      force_setvar("wims_ref_menucolor",p3);
+    p3=getvar("wims_class_ref_button_color"); if(p3!=NULL && *p3!=0)
+      force_setvar("wims_ref_button_color",p3);
+    p3=getvar("wims_class_ref_button_bgcolor"); if(p3!=NULL && *p3!=0)
+      force_setvar("wims_ref_button_bgcolor",p3);
+    p3=getvar("wims_class_ref_button_help_bgcolor"); if(p3!=NULL && *p3!=0)
+      force_setvar("wims_ref_button_help_bgcolor",p3);
+    p3=getvar("wims_class_ref_button_help_color"); if(p3!=NULL && *p3!=0)
+      force_setvar("wims_ref_button_help_color",p3);
     p2=getvar(ro_name[ro_module]);
     if(p2==NULL || strncmp(p2,"classes/",strlen("classes/"))!=0) return;
     mkfname(sbuf,"classes/%s",lang);

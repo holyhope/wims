@@ -1,5 +1,6 @@
 
-!for ttt in homepage, bgcolor, bgimg, refcolor, ref_menucolor, logo, logoside
+!for ttt in homepage, bgcolor, bgimg, refcolor, ref_menucolor, ref_button_help_bgcolor, \
+   ref_button_help_color, ref_button_bgcolor, ref_button_color,logo, logoside
  pr_$ttt=!word 1 of $(pr_$ttt)
 !next ttt
 pr_sccolor=$empty
@@ -15,6 +16,10 @@ pr_sccolor=!item 2 to -1 of $pr_sccolor
 !set class_bgcolor=$pr_bgcolor\
 !set class_refcolor=$pr_refcolor\
 !set class_ref_menucolor=$pr_ref_menucolor\
+!set class_ref_button_bgcolor=$pr_ref_button_bgcolor\
+!set class_ref_button_color=$pr_ref_button_color\
+!set class_ref_button_help_bgcolor=$pr_ref_button_help_bgcolor\
+!set class_ref_button_help_color=$pr_ref_button_help_color\
 !set class_bgimg=$pr_bgimg\
 !set class_theme=$pr_theme\
 !set class_theme_icon=$pr_theme_icon\
@@ -53,4 +58,32 @@ pr_cssfile=!trim $pr_cssfile
   wims_ref_menucolor=$pr_ref_menucolor
  !endif
  !setdef wims_class_ref_menucolor=$pr_ref_menucolor in wimshome/$wims_sesdir/var.stat
+!endif
+
+!if $pr_ref_button_color!=$wims_class_ref_button_color
+ !if $pr_ref_button_color!=$empty
+  wims_ref_button_color=$pr_ref_button_color
+ !endif
+ !setdef wims_class_ref_button_color=$pr_ref_button_color in wimshome/$wims_sesdir/var.stat
+!endif
+
+!if $pr_ref_button_bgcolor!=$wims_class_ref_button_bgcolor
+ !if $pr_ref_button_bgcolor!=$empty
+  wims_ref_button_bgcolor=$pr_ref_button_bgcolor
+ !endif
+ !setdef wims_class_ref_button_bgcolor=$pr_ref_button_bgcolor in wimshome/$wims_sesdir/var.stat
+!endif
+
+!if $pr_ref_button_help_color!=$wims_class_ref_button_help_color
+ !if $pr_ref_button_help_color!=$empty
+  wims_ref_button_help_color=$pr_ref_button_help_color
+ !endif
+ !setdef wims_class_ref_button_help_color=$pr_ref_button_help_color in wimshome/$wims_sesdir/var.stat
+!endif
+
+!if $pr_ref_button_help_bgcolor!=$wims_class_ref_button_help_bgcolor
+ !if $pr_ref_button_help_bgcolor!=$empty
+  wims_ref_button_help_bgcolor=$pr_ref_button_help_bgcolor
+ !endif
+ !setdef wims_class_ref_button_help_bgcolor=$pr_ref_button_help_bgcolor in wimshome/$wims_sesdir/var.stat
 !endif

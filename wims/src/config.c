@@ -118,8 +118,16 @@ char *home_referer_user="homeref_user.phtml";
 char *home_referer_supervisor="homeref_supervisor.phtml";
   /* background color in standard reference tables */
 char *ref_bgcolor="#777777";
-  /* background link color in standard reference tables */
+  /* link color in standard reference tables */
 char *ref_menucolor="white";
+  /* background help button color */
+char *ref_button_help_bgcolor="green";
+  /* background help button color */
+char *ref_button_help_color="white";
+  /* button background color */
+char *ref_button_bgcolor="#777777";
+  /* button color */
+char *ref_button_color="white";
   /* module log disabled by default */
 int modlog=0;
   /* name of the variable definition file for every module. 
@@ -252,6 +260,10 @@ CONFIG_DATA main_config[]={
       {"priority",		0, &priority},
       {"rafale_level",		1, &rafalvl},
       {"ref_bgcolor",		0, &ref_bgcolor},
+      {"ref_button_bgcolor",		0, &ref_button_bgcolor},
+      {"ref_button_color",		0, &ref_button_color},
+      {"ref_button_help_bgcolor",		0, &ref_button_help_bgcolor},
+      {"ref_button_help_color",		0, &ref_button_help_color},
       {"ref_menucolor",		0, &ref_menucolor},
       {"rlimit_cpu",		1, &rlimit_cpu},
       {"show_author",		0, &show_author},
@@ -502,6 +514,11 @@ struct {
       {"wims_css",		0, &pagecss},
       {"wims_print_precision", 	1, &DEFAULT_PRINT_PRECISION},
       {"wims_ref_bgcolor",	0, &ref_bgcolor},
+      {"wims_ref_button_bgcolor",		0, &ref_button_bgcolor},
+      {"wims_ref_button_color",		0, &ref_button_color},
+      {"wims_ref_button_help_bgcolor",		0, &ref_button_help_bgcolor},
+      {"wims_ref_button_help_color",		0, &ref_button_help_color},
+      {"wims_ref_menucolor",		0, &ref_menucolor},
       {"wims_ref_menucolor",	0, &ref_menucolor},
       {"wims_show_author",	0, &show_author},
       {"wims_show_ip",		0, &show_ip},
@@ -804,6 +821,10 @@ void define_html_header(void)
 	    }
 	    else {
 	    
+	    }
+	    if (th) {
+	       nbuf=mkfname(NULL,"html/themes/%s/htmlheader.phtml",th) ;
+	       if (readfile(nbuf,tmplbuf,sizeof(tmplbuf))) html_header=nbuf ;
 	    }
 	  }
     }

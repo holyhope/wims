@@ -2,9 +2,11 @@
 $name_neighbor_relation $name_with <em><font color=blue>$nei_description</font></em> (<em><font color=blue>$nei_institution</font></em>)\
 ($wims_name_nameteacher: <a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
 <p>
-<b>$name_neighbor_relation. </b> <small>[
+<b>$name_neighbor_relation. </b> 
+&nbsp;
+!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
- ]</small> 
+ 
  <p>
 !if $wims_class notitemof $nei_sup,$nei_part and all notwordof $nei_sup $nei_part
  <em><font color=blue> $nei_description</font></em> $name_text1.
@@ -25,18 +27,22 @@ $name_neighbor_relation $name_with <em><font color=blue>$nei_description</font><
 !form reply
 $name_accept
 !formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
-<input type=submit value=$wims_name_tosave> <small>[
+<input type=submit value=$wims_name_tosave> 
+&nbsp;
+!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
- ]</small>
+
 </form> 
 !endif
 <p>
 
 !if ($nei isitemof $n_sup,$n_part and $wims_class isitemof $nei_sup,$nei_part) or \
    all isitemof $nei_sup,$nei_part
- <p><b>$name_info </b> <small>[
+ <p><b>$name_info </b> 
+ &nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=import $wims_name_help
- ]</small>
+
  <p>$name_youcan
  !href cmd=reply&job2=import $name_import_resource
  $name_fromtheclass <em><font color=blue>
@@ -47,9 +53,10 @@ $nei_description</font></em>.
 !if  $nei isitemof $n_sup
 <p>
 <b>$name_declaration.</b> 
-<small>[
+&nbsp;
+!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=share $wims_name_help
-]</small>
+
 <ul>
 !endif
 
@@ -74,9 +81,9 @@ $nei_description</font></em>&nbsp;:<ul>
   !if $(sharing_$r)=$nei
    <li><b><em>$(name_$r)</em></b>. 
    !href cmd=reply&job2=stopshare&stoprec=$r $name_stopsharing
-. <small>[
+. &nbsp;
+!set wims_ref_class=wims_button_help
    !href cmd=help&special_parm=stopshare $wims_name_help
-   ]</small>
   !endif
  !next r 
  </ul>
@@ -87,9 +94,10 @@ $nei_description</font></em>&nbsp;:<ul>
 <li>
  !form reply
  <input type=hidden name="changeshare" value=yes>
-$name_chooseres: <small>[
+$name_chooseres: 
+&nbsp;
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=sharable $wims_name_help
- ]</small>
 <p>
  !set sh=!nospace $sharablelist
  !set sh=!replace , by , $$name_ in $$name_$sharablelist
