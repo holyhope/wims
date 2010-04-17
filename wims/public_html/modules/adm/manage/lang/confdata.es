@@ -363,7 +363,7 @@ checkbox
 $mu_downloadsites
 Choose a download site for module update. Known mirror sites:
 <pre>
-$help_downloadsites
+$help_publishsites
 </pre> <p>
 If you choose automatic module update with very small delay (0 or 1 day),
 you should set the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
@@ -372,8 +372,10 @@ you should set the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
 $wims_name_publish_center
 checkbox
 $mu_publishsitesw
-You can here choose the publication center for ressource modules.
-$help_publishsites
+You can here choose the publication centers for ressource modules.
+<pre>
+$help_downloadsites
+</pre>
 
 :housekeep mu_delay
 Delay in automatic module update
@@ -501,6 +503,31 @@ You can choose the color menu link  here. This is possible only
 for "new themes", so not for default theme.
 Choose it according to the table background color
 
+:appearances ref_button_bgcolor wims_ref_button_bgcolor
+Button background color
+free
+You can choose the background color action buttons here. This is possible only
+for "new themes", so not for default theme.
+Choose it according to the table background color
+
+:appearances ref_button_color wims_ref_button_color
+Button color
+free
+You can choose the color of the text of action buttons here. This is possible only
+for "new themes", it does not work perfectly for default theme.
+
+:appearances ref_button_help_bgcolor wims_ref_button_help_bgcolor
+Help button background color
+free
+You can choose the  background color of help link buttons here. This is possible only
+for "new themes", it does not work perfectly for default theme.
+
+:appearances ref_button_help_color wims_ref_button_help_color
+Help button color
+free
+You can choose the color of the text of most of help link buttons here. This is possible only
+for "new themes", it does not work perfectly for default theme.
+
 :appearances theme wims_theme
 Presentation theme
 choice
@@ -562,7 +589,7 @@ morning, by putting it into crontab.
 :housekeep site_accounting
 Activity accounting
 choice
-0,1; no (0), yes (1)
+0,1; no, yes
 Enable or disable daily activity accounting. This is necessary for site
 activity statistics, as well as for virtual class connection time accounting.
 
