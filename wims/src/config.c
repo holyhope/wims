@@ -98,7 +98,9 @@ char *theme="standard";
   /* directory of session files */	
 char session_dir[MAX_FNAME+1], s2_dir[MAX_FNAME+1];
   /* standardised header model for modules' output. Will be stored
-   * into the variable $wims_html_header. */
+   * into the variable $wims_html_header. If the theme contains 
+   * a file 'head.phtml', html_header will be defined by the address 
+   * of this file  in subroutine define_html_header */
 char *html_header="html/header.phtml";
   /* standardised about table for modules */
 char *module_about_file="html/module_about";
