@@ -66,10 +66,9 @@ WIMS modtool
 !record 7 of $my_dir
 !!@#sélectionnez le type d'exercice que vous désirez créer, puis cliquez sur!!#@
  
-<p>
-   !! <table align="center" border=1 bgcolor="$c_menu">
+
    $table_header
-    $table_hdtr<th colspan="3"><input type=submit $balise_obl value="$wims_name_tosave"></tr>
+    $table_hdtr<td colspan="3" align="center"><input type=submit $balise_obl value="$wims_name_tosave"></td></tr>
     $table_tr<th>$wims_name_Type</th><th>$wims_name_Description</th><th>$name_Example</th>
    !set u = !linecnt $name 
    !for i = 1 to $u
@@ -109,7 +108,7 @@ $table_end
    !else
     !! !if  $transfert!=yes
        !record 4 of $my_dir
-       $(wims_name_quick_$type_exo) &nbsp;
+     <b>$(wims_name_quick_$type_exo)</b>. &nbsp;
        !set wims_ref_class=wims_button_help
        !href cmd=help&special_parm=$(Type_exo[1]) $wims_name_help 
 &nbsp; 
@@ -119,9 +118,9 @@ $table_end
 
        <p>
 !record 8 of $my_dir
+<input type=submit $balise_obl value="$wims_name_tosave">
 !!@#Donnez les renseignements suivants (les astérisques indiquent un champ obligatoire ; <i>les rubriques en italique peuvent être remplies dans le fichier de données, dans ce cas, effacez et remplacez par un blanc.</i>) puis cliquer sur !!#@
 $table_header
-$table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosave"><th>
 !!       <table align="center"><tr bgcolor="$c_obl"><td>
 
          $table_tr<td><label for="title">$wims_name_title*</label></td><td><input size=20 name="title" value="$title"></td></tr>
@@ -493,7 +492,7 @@ $table_hdtr<th colspan="2"><input type=submit $balise_obl value="$wims_name_tosa
      !set wims_formselect_switch=
      </td></tr>
     !!endif
-    $table_tr<th colspan=2 align="center"><a name="expert"></a>$name_expert $type_exo</th></tr>
+    $table_tr<th colspan=2 align="center"><a name="expert"></a>$name_expert <i>$(wims_name_quick_$type_exo)</i></th></tr>
     $table_tr<td><label for="reading_file1">
 !record 39 of $my_dir
 !!@#    Fichier de lecture !!#@
