@@ -32,6 +32,11 @@ Uw werkblad nummer is niet geldig. Een bug in de software?
  !exit
 !endif
 
+!if bad_maxsheet=$error
+ The number of sheets is limited to $max_sheet. You may not create another sheet.
+ !exit
+!endif
+
 !if no_title=$error
     U wilt een werkblad registreren zonder titel, dat is niet handig
     Foutje of misbruik?

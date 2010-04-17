@@ -63,11 +63,15 @@ expyear=!char -4 to -1 of $[abs(floor($expyear))+100000]
    !endif
 !endif
 
-!if $sheet<1 or $sheet>$max_sheet
- error=bad_sheet
+!if $sheet>$max_sheet
+ error=bad_maxsheet
  !exit
 !endif
 
+!if $sheet<1
+ error=bad_sheet
+ !exit
+!endif
 # menu preparation
 !if $job!=$empty and $job iswordof \
 	prep_activate prep_erase prep_expire prep_putsource prep_modify
