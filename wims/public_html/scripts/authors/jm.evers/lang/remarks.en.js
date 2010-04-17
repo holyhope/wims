@@ -8,7 +8,7 @@ var r6="that\'s some story you try to tell<br> But please formulate your answer 
 var r7="You are using the letter \"x\" as multiplication symbol<br>Please use a normal symbol like \"*\" for that...<br>Or in case of multiple answers, write something like:<br> x1=123 and x2=456";
 var r9="Please write a function with parenthesis<br> So write: sqrt() sin() etc()";
 var r10="You do not use the correct syntax for scientific notation...<br> 5*10^03 == 5*10^3 <br> 5*10^2 == 5e+2<br> 5*10^-6 == 5e-6<br>No \"broken\" exponents...";
-var r11="A special syntax may be used for the higer roots:<br>sqrt[3](11) = \u221B(17) <br> sqrt[4](23) = \u221C(23)";
+var r11="A special syntax may be used for the higher roots:<br>sqrt[3](11) = \u221B(17) <br> sqrt[4](23) = \u221C(23)";
 var r12="I've rewritten your log[a](b) to the corresponding 10log :<br> log(b)/log(a)";
 var r13="I can\'t handle square brackets in other usage as sqrt[] and log[]...[?]<br>Try to rewrite your answer ";
 var r14="You should rewrite log[10](a) as log(a)<br>I\'ll interpret log(a) as a logaritm with base 10";
@@ -34,7 +34,6 @@ var r33="If I send this answer to WIMS<br>it will most likely be rejected... ";
 var r34="You will receive a small penalty, because You\'ve used too many objects ";                                                               
 var r35="You\'ve constructed :";                                                                                                          
 var r36="I expected some number with a unit...";                                  
-var r37="I was expecting a number and not :";
 var r37="I was expecting a number and not :";
 var r38="give inputfield";
 var r39="remove inputfield";
