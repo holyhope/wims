@@ -14,29 +14,36 @@
    !ifval $activetest>-1
     !if $activetest=0
      !if $exocnt>0
+     !set wims_ref_class=wims_button
       !href cmd=reply&job=prep_activate $(statutaction[1])
      !endif
     !else
      !if $activetest=1
       &nbsp;
+      !set wims_ref_class=wims_button
       !href cmd=reply&job=expire $(statutaction[2])
       &nbsp;
+      !set wims_ref_class=wims_button
       !href cmd=reply&job=deactivate $(statutaction[3])
      !else
       &nbsp;
+      !set wims_ref_class=wims_button
       !if $activetest=2
        !href cmd=reply&job=hide $(statutaction[4])
       !else
        !href cmd=reply&job=expire $(statutaction[5])
       !endif
       &nbsp;
+      !set wims_ref_class=wims_button
       !href cmd=reply&job=reactivate $(statutaction[1])
       &nbsp;
+      !set wims_ref_class=wims_button
       !href cmd=reply&job=deactivate $(statutaction[3])
      !endif
     !endif
     !if $erasable=yes
      &nbsp;
+     !set wims_ref_class=wims_button
      !href cmd=reply&job=prep_erase $(statutaction[6])
     !endif
    !endif
@@ -61,10 +68,8 @@
   </tr>
   $table_tr
    <td>$(name_shinfo[5])&nbsp;
-    <small>
+    !set wims_ref_class=wims_button_help
      !href target=wims_mhelp cmd=help&special_parm=sheetpage $wims_name_help
-    </small>
-    
    </td>
    <td><input size="30" name="prpage" value="$prpage"></td>
   </tr>
@@ -73,9 +78,8 @@
     <input type=hidden name="allow" value=yes>
     <td>
      $(name_shinfo[6])&nbsp;
-     <small>
+     !set wims_ref_class=wims_button_help
       !href target=wims_mhelp cmd=help&special_parm=allowtype $wims_name_help
-     </small>
     </td>
     <td>
      !formselect allowtype list all, none, select prompt $name_allowtype 

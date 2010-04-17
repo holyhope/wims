@@ -30,17 +30,21 @@ $table_hdtr
  !for f in $files
   $table_tr
   <td align="left" nowrap>$f
-  <td align="center" nowrap>  
+  <td align="center" nowrap>
+  !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=showfile&fname=$f $wims_name_Show
   &nbsp;
+  !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=edfile&fname=$f $wims_name_change
   &nbsp;
+  !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=delfile&fname=$f $wims_name_erase
   !if oef isin $doctest1 and ../src/ isin ../$f and .oef/.. isin $f/..
    !set f_=!translate internal / to , in $f
    !set f_=!item -1 of $f_
    !set f_=!replace internal .oef.. by in $f_..
    &nbsp;
+   !set wims_ref_class=wims_button
    !href target=wims_test module=adm/createxo&catmodule=devel/$auth_login/$mod&existing=$f_ Createxo
   !endif
 &nbsp;</td><td align="left">

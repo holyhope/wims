@@ -17,8 +17,10 @@ $table_tr<th align="right" nowrap>$wims_name_Address
  <td>
  !if $title!=$empty and $modreq!=.new
   <tt>$modreq</tt>&nbsp;
+  !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=move&original=devel/$auth_login/$modreq $name_rename
 &nbsp;
+!set wims_ref_class=wims_button
   !href cmd=reply&jobreq=copy&original=devel/$auth_login/$modreq $name_duplicate
  !else
   !set modreq=.new
@@ -45,9 +47,8 @@ $table_tr<th align="right" nowrap><label for="i_label">$wims_name_Type</label>
 $table_tr<th align="right" nowrap><label for="i_domain">$wims_name_Domain</label>
  <td>
  <input size=$size name=i_domain id="i_domain" value="$i_domain">
-<small>
+!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=domain $wims_name_help
-</small>
 $table_tr<th align="right" nowrap><label for="i_level">$wims_name_Levels</label>
  <td>
  !formcheckbox i_level list $levellist
@@ -67,9 +68,8 @@ $table_tr<th align="right" nowrap><label for="i_wims_version">$wims_name_Require
  <td>
  !default i_wims_version=$wims_version
  <input type=text size=6 name=i_wims_version id="i_wims_version" value="$i_wims_version">&nbsp;
-<small>
+!set wims_ref_class=wims_button_help
  !href cmd=help&special_parm=wimsversion $wims_name_help
-</small>
 
 $table_tr<th align="right" nowrap><label for="i_author">$wims_name_Author</label>
  <td>
@@ -96,9 +96,8 @@ $table_tr<th align="right" nowrap><label for="i_require">$wims_name_require</lab
 $table_tr<th align="right" nowrap><label for="i_data">$wims_name_datamodule</label>
  <td>
  <input size=$size name=i_data id="i_data" value="$i_data">
-<small>
+!set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=datamodule $wims_name_help
-</small>
 
 $table_tr<th align="right" nowrap><label for="i_keywords">$wims_name_Keywords</label>
  <td><input size=$size name=i_keywords id="i_keywords" value="$i_keywords">
@@ -108,7 +107,7 @@ $table_tr<th align="right" nowrap><label for="i_copyright">$wims_name_Copyright<
  !set wims_formselect_switch=
  !formselect i_copyright list gnu prompt GNU General Public License
 
-$table_hdtr<th align="center" nowrap colspan=2>
+$table_hdtr<td align="center" nowrap colspan=2>
 <input type=submit name=inddef value="$wims_name_tosave">
 &nbsp;&nbsp;
 <input type=submit value="$wims_name_giveup">
