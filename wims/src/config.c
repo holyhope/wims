@@ -117,7 +117,11 @@ char *home_referer="homeref.phtml";
 char *home_referer_user="homeref_user.phtml";
 char *home_referer_supervisor="homeref_supervisor.phtml";
   /* background color in standard reference tables */
-char *ref_bgcolor="#777777";
+char *ref_bgcolor="#666666";
+  /* link color */
+char *link_color="#004077";
+  /* vlink color */
+char *vlink_color="#004077";
   /* link color in standard reference tables */
 char *ref_menucolor="white";
   /* background help button color */
@@ -125,7 +129,7 @@ char *ref_button_help_bgcolor="green";
   /* background help button color */
 char *ref_button_help_color="white";
   /* button background color */
-char *ref_button_bgcolor="#777777";
+char *ref_button_bgcolor="#666666";
   /* button color */
 char *ref_button_color="white";
   /* module log disabled by default */
@@ -239,6 +243,7 @@ CONFIG_DATA main_config[]={
       {"idle_time2",		1, &idle_time2},
       {"idle_time3",		1, &idle_time3},
       {"insdraw_processor",	0, &insdraw_processor},
+      {"link_color",		0, &link_color},
       {"mail_opt",		0, &mail_opt},
       {"manager_https",		1, &manager_https},
       {"manager_site",		0, &manager_site},
@@ -285,6 +290,7 @@ CONFIG_DATA main_config[]={
       {"usecookie",		0, &usecookie},
       {"user_limit",		1, &user_limit},
       {"var_def_length_limit",	1, &VAR_DEF_LENGTH_LIMIT},
+      {"vlink_color",		0, &vlink_color},
       {"workfile_limit",	1, &WORKFILE_LIMIT}
 };
 #define MAIN_CONFIG_NO (sizeof(main_config)/sizeof(main_config[0]))
@@ -512,6 +518,7 @@ struct {
       {"wims_bgcolor",		0, &bgcolor},
       {"wims_bgimg",		0, &bgimg},
       {"wims_css",		0, &pagecss},
+      {"wims_link_color",	0, &link_color},
       {"wims_print_precision", 	1, &DEFAULT_PRINT_PRECISION},
       {"wims_ref_bgcolor",	0, &ref_bgcolor},
       {"wims_ref_button_bgcolor",		0, &ref_button_bgcolor},
@@ -533,6 +540,7 @@ struct {
       {"wims_tmp_debug",	0, &tmp_debug},
       {"wims_usecookie",	0, &usecookie},
       {"wims_user_limit",	1, &user_limit},
+      {"wims_vlink_color",	0, &vlink_color},
       {"wims_superclass_quota", 1, &superclass_quota}
 };
 #define MODULE_DEFAULT_NO (sizeof(module_default)/sizeof(module_default[0]))
