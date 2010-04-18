@@ -33,10 +33,10 @@
 
 !if $readtype=html
 !set wims_ref_class=wims_button
- !href cmd=reply&readtype=source [$n_source]
+ !href cmd=reply&readtype=source $n_source
 !else
 !set wims_ref_class=wims_button
- !href cmd=reply&readtype=html [$n_format]
+ !href cmd=reply&readtype=html $n_format
 !endif
 !if $forumuser=supervisor
  &nbsp;
@@ -55,15 +55,23 @@
 
 <hr></ul></ol></dl></form> <p><center>
 !if $readtype=html
- !href cmd=reply&readtype=source [$n_source]
+&nbsp;
+!set wims_ref_class=wims_button
+ !href cmd=reply&readtype=source $n_source
+ 
 !else
- !href cmd=reply&readtype=html [$n_format]
+&nbsp;
+!set wims_ref_class=wims_button
+ !href cmd=reply&readtype=html $n_format
 !endif
+
 &nbsp;
-!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 [$n_follow_c]
+!set wims_ref_class=wims_button
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=1 $n_follow_c
 &nbsp;
-!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 [$n_follow_nc]
-<p>
+!set wims_ref_class=wims_button
+!href cmd=reply&job=compose&c_prec=$r_month/$r_ident&c_quote=-1 $n_follow_nc
+<p></p>
 !read readref.phtml
-</center> <p>
+</center> <p></p>
 

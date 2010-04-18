@@ -87,8 +87,8 @@ $name_inscription
  $name_email3
  !form reply
  <input type=hidden name="step" value=3>
- <p><center><input type=password size=16 name="pass2">
- <p><input type=submit value="$wims_name_send"></center>
+ <p></p><center><input type=password size=16 name="pass2">
+<p></p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
@@ -100,11 +100,13 @@ $name_inscription
   !read lang/names.phtml.$modu_lang code
   !form reply
   <input type=hidden name="step" value=3>
-  <p><center><input size=10 name="vericode">
+  <p></p><center><input size=10 name="vericode">
   <input type=submit value="$wims_name_tosave"></form>
-  <p>
+  <p></p>
+ &nbsp;
+ !set wims_ref_class=wims_button
   !href module=adm/forum/forum $wims_name_giveup
-  </center> <p>
+  </center> <p></p>
   !goto end1
  !else
  !read lang/names.phtml.$modu_lang welcome
@@ -113,7 +115,9 @@ $name_inscription
 !endif
 
 :end1
-<p>
+<p></p>
+ &nbsp;
+ !set wims_ref_class=wims_button
 !href module=adm/forum/forum&type=list $name_forumlist
 :end
 !tail

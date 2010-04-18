@@ -4,13 +4,15 @@
  !if $totalcnt>=$sellist
 $name_moddevcnt
 !href cmd=reply&jobreq=prop <small>$wims_name_account_property</small>
-  <p>
+  <p></p>
   !form reply
   $name_browselist
   <input type=text size=30 name="selectshow" value="$selectshow">
   <input type=submit value="$wims_name_tosave">
-  !href cmd=help&special_parm=regex <sup>$wims_name_help</sup>
-  </form> <p>
+    &nbsp;
+  !set wims_ref_class=wims_button_help
+  !href cmd=help&special_parm=regex $wims_name_help
+  </form> <p></p>
  !endif
  $name_clicktitle
  !if $totalcnt>=$maxlist and $existcnt>=$maxlist
@@ -28,11 +30,12 @@ $name_moddevcnt
   !endif
   </small></td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
-  <td align="center"><small>
+  <td align="center">
+  !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
 !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
-  </small></td><td><small>$description</small></td>
+  </td><td><small>$description</small></td>
   </tr>
  !next n
  $table_end

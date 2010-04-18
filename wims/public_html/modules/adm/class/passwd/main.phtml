@@ -9,11 +9,11 @@ $wims_classname - $wims_institutionname\
 $module_title
 
 !if $error!=$empty
- <p>
+ <p></p>
  !read lang/msg.phtml.$moduclass_lang
- <p>
+<p></p>
  !href module=home $wims_name_back2
-. <p>
+. <p></p>
  !goto end
 !endif
 
@@ -23,28 +23,31 @@ $module_title
  $name_passwdtype: <ul>
  !default job=user
  !set ch_$job=checked
- <li><input type=radio name="job" $ch_user value=user> $name_persopasswd<br>
+ <li><input type=radio name="job" $ch_user value=user> $name_persopasswd
+ </li>
  !if $part!=$empty and $job=part
   <li><input type=radio name="job" $ch_part value=part> $name_partpasswd
-  <tt>$part</tt> ($name_warning1).
+  <tt>$part</tt> ($name_warning1).</li>
  !endif
  <li><input type=radio name="job" $ch_class value=class> $name_classpasswd 
  ($name_warning1).
+ </li>
  </ul>
 !else
  <input type=hidden name="job" value=user>
 !endif
 <table>
-<tr><td align=right>$name_actualpasswd:
-	<td><input type=password size=16 name="old">
-<tr><td align="right">$name_newpasswd:
-	<td><input type=password size=42 name="pw1">
-<tr><td align="right">$name_newpasswd2:
-	<td><input type=password size=42 name="pw2">
+<tr><td align=right>$name_actualpasswd</td>
+	<td><input type=password size=16 name="old"></td></tr>
+<tr><td align="right">$name_newpasswd</td>
+	<td><input type=password size=42 name="pw1"></td></tr>
+<tr><td align="right">$name_newpasswd2</td>
+	<td><input type=password size=42 name="pw2"></td></tr>
 </table>
-<input type=submit value="$wims_name_tosave"> <p>
+<input type=submit value="$wims_name_tosave"> <p></p>
 <small>$name_jetable
-!href target=wims_mhelp cmd=help $wims_name_detail
+!set wims_ref_class=wims_button_help
+!href target=wims_mhelp cmd=help $wims_name_help
 </small>
 </form>
 <p>
@@ -52,7 +55,7 @@ $name_alphanumer
 !if $wims_user=supervisor
  ($name_emptypasswd).
 !endif
-
+</p>
 !endif
 :end
 !tail
