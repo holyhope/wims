@@ -117,7 +117,7 @@ char *home_referer="homeref.phtml";
 char *home_referer_user="homeref_user.phtml";
 char *home_referer_supervisor="homeref_supervisor.phtml";
   /* background color in standard reference tables */
-char *ref_bgcolor="#666666";
+char *ref_bgcolor="#777777";
   /* link color */
 char *link_color="#004077";
   /* vlink color */
