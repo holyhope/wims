@@ -363,7 +363,7 @@ checkbox
 $mu_downloadsites
 Choose a download site for module update. Known mirror sites:
 <pre>
-$help_publishsites
+$help_downloadsites
 </pre> <p>
 If you choose automatic module update with very small delay (0 or 1 day),
 you should set the download site to the primary mirror <tt>$(mu_sites[1])</tt>.
@@ -374,7 +374,7 @@ checkbox
 $mu_publishsitesw
 You can here choose the publication centers for ressource modules.
 <pre>
-$help_downloadsites
+$help_publishsites
 </pre>
 
 :housekeep mu_delay

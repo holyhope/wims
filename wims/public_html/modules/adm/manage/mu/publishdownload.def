@@ -9,13 +9,13 @@ mu_downloadsites=!lines2items $mu_downloadsites
 !reset mu_publishsitesw,help_publishsites,help_publishcenter
 !for depot in $mu_downloadsites
  tmp=!defof publishname\
+downloadname\
 publishcenter in wimshome/public_html/bases/sys/publishcenter/$depot
- !distribute line $tmp into depotname_$depot,tmp
+ !distribute line $tmp into publishname_$depot,depotname_$depot,tmp
  !default depotname_$depot=$depot
  !if yes isin $tmp
-  help_publishsites=!append line $(depotname_$depot) ($depot) to $help_publishsites
+  help_publishsites=!append line $(publishname_$depot) ($depot) to $help_publishsites
   mu_publishsitesw=!append item $depot to $mu_publishsitesw
  !endif
  help_downloadsites=!append line $(depotname_$depot) ($depot) to $help_downloadsites
 !next depot
-
