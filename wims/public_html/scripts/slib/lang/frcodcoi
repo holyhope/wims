@@ -2,25 +2,32 @@
  !goto proc
 !endif
 slib_title=Find a random complement of a French verb
-slib_parms=1\
+slib_parms=2\
 ,the verb (infinitif)
+,cod or coi (optional)
 slib_author=Gang Xiao
 slib_out=a random complement
-slib_example= chanter
+slib_example=manger
 !exit
 
 :proc
-slib_inf=!word 1 of $wims_read_parm
+!distribute items $wims_read_parm into $slib_inf,slib_co
+slib_inf=!word 1 of $slib_inf
 !if $slib_inf=$empty
  !exit
 !endif
 slib_1=!char 1 of $slib_inf
 slib_1=!lower $slib_1
 slib_1=!deaccent $slib_1
+!if $slib_co iswordof cod coi
+  slib_out=!lookup $slib_inf in bases/dic/fr/$slib_co/$slib_1
+!goto continue
+!endif
 slib_out=!lookup $slib_inf in bases/dic/fr/cod/$slib_1
 !if $slib_out=$empty
  slib_out=!lookup $slib_inf in bases/dic/fr/coi/$slib_1
 !endif
+:continue
 slib_out=!lines2items $slib_out
 slib_out=!nonempty items $slib_out
 slib_out=!randitem $slib_out
