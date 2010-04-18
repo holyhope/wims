@@ -369,9 +369,10 @@ de este sitio. No está autorizado a acceder a este módulo.
       Pulse aquí\
       para configurar la actualización diaria automática de módulos.\
       Pueden también poner al día\
+      Here you can update / download modules.\
     into name_error1,name_error2,name_install,name_successful,name_need,name_test,name_rebuild,name_Install,\
       name_Update,name_versus,name_Changes,name_version,name_newmodule,name_youneed,name_after,\
-      name_click,name_automatic,name_rss
+      name_click,name_automatic,name_rss,name_canupdate
 
 !!check
 !distribute lines No se ha hallado ningún anuncio de módulo que se corresponda con su búsqueda.\

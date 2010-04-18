@@ -1,3 +1,6 @@
+!read adm/title.phtml 3\
+\
+$title
 
 !if $job2=one
  !read mu/one.phtml
@@ -9,22 +12,31 @@
  $name_scheduled
  <p> <hr width="70%"> <p>
  !set job2=first
- !reset auto muauto
+ $!reset auto muauto
 !endif
+
+$name_canupdate
+!href cmd=reply&job=conf&confcat=6 $name_click
+ $name_automatic
+  &nbsp;
+  !set wims_ref_class=wims_button_help
+  !href cmd=help&help_subject=publication $wims_name_help
 
 !form reply
 <input type=hidden name="muauto" value=check>
 $table_header
  <tr>
-  <td align="right"><input type=submit value="$wims_name_search"> $name_mod</td>
+  <td align="right"><input type=submit value="$wims_name_search"> $name_mod
+
+  </td>
   <td>
    !let nb=!itemcnt $mu_download_site
    !if $nb>1
-    <ul>
+    <ol>
     !for k in $mu_download_site
      <li>$(depotname_$k) ($k)</li>
     !next depot
-   </ul>
+   </ol>
   !else
    $(depotname_$(mu_download_site)) ($mu_download_site)
   !endif
@@ -50,8 +62,6 @@ $table_end
 $name_youneed
 !href cmd=reply&job=mkindex $name_rebuild
  $name_after.
-!href cmd=reply&job=conf&confcat=6 $name_click
- $name_automatic
 
 $name_rss
 !href cmd=reply&job=rss RSS. 
