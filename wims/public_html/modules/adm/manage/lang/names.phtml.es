@@ -119,7 +119,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     creada\
     expira\
     se refiere al número de horas de conexión acumuladas en el último mes.\
-    mejor actividad de clase, en este período.\
+    mejor actividad de clase, en este período\
     Participante\
     Lista de clases independientes\
     significa la conexión del alumno acumulativa de hora desde\
