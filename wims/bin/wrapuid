@@ -31,8 +31,12 @@ do
   chmod a+s $f
  fi
 done
+uname=`uname | tr '[A-Z]' '[a-z]'`
+case "$uname" in
+  darwin) chown root:Admin public_html/bin/ch..root;;
+  *)      chown root:root public_html/bin/ch..root;;
+esac
 
-chown root:root public_html/bin/ch..root
 chmod a+s public_html/bin/ch..root
 rm -f log/unsecure
 
