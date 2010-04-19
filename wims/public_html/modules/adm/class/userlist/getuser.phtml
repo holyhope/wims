@@ -20,7 +20,7 @@ $name_workdetail
    <img src="$user_photourl" width=100 style="position:absolute;top:50px;right:5%;" alt="$name_student2">
   !endif
 !if $eremain>0
- <p>
+ <div class="emptyline">&nbsp;</div>
  $name_activesession:
  !href cmd=reply&job=userexam&getuser=$getuser $esession
 !else
@@ -31,7 +31,7 @@ $name_workdetail
   !endif
  !endif
 !endif
- <p>
+ <div class="emptyline">&nbsp;</div>
 
 !if $manual>0 and $gcnt>0 and $teacher!=$empty
  $table_header
@@ -51,7 +51,7 @@ $name_workdetail
      <td align="center">100%</td>
      !read adm/class/colors $[ceil(10*$globalav/$scoremax)]
      <td style=$style_note>$globalav</td>
- $table_end<p>
+ $table_end
  $table_header$table_hdtr<th colspan=3>$name_manualscore
  !if $wims_user=supervisor
   <br>
@@ -68,7 +68,7 @@ $name_workdetail
  $table_hdtr<td colspan=2>$name_Average</td>
  !read adm/class/colors $[ceil(10*$mav/$scoremax)]
  <td style=$style_note>$mav</td>
- $table_end <p>
+ $table_end
 !else
  <center>
  $name_globalaverage: <b>$per</b> / $scoremax.
@@ -76,14 +76,15 @@ $name_workdetail
   <br><small>$name_minmax:
   $min_glob/$mean_glob/$max_glob</small>
  !endif
- </center> <p>
+ </center>
+ <div class="emptyline">&nbsp;</div>
 !endif
 
 
 !!readdef wimshome/log/classes/$wims_class/.def
 !!default class_topscores=0
 !if $class_topscores>0
- <center>
+
  $table_header$table_hdtr<th colspan=2>$name_topten</td></tr>
  !for i=1 to $class_topscores 
   !set L=!line $i of   $TT
@@ -97,8 +98,8 @@ $name_workdetail
   !set avg=!item 4 of $L
 $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><small>&nbsp;$avg</small>
  !next i
- $table_end<p>
- </center> 
+ $table_end
+
 !endif
 
 !if $eactivecnt>0
@@ -122,7 +123,7 @@ $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><s
    <td align="center">--
   !endif
  !next i
- $table_end <p>
+ $table_end
 !endif
 
 !for i=1 to $activecnt
@@ -150,6 +151,8 @@ $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><s
  !else
   !set hat=$wims_name_sequence $(t_[1])&nbsp;: $(t_[2..-1])
  !endif
+ <a name="sheet$n_"></a>
+ <div class="emptyline">&nbsp;</div>
  $table_header$table_hdtr<th colspan=7>$hat
  <small>$(name_thsheet[4]) $A_, $(name_thsheet[8]) $B_<br>
  !set A_=!line $n_ of $percents
@@ -205,7 +208,7 @@ $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><s
   !endif
    </td>
  !next j
- $table_end <p>
+ $table_end
  :next
 !next i
 
@@ -214,7 +217,7 @@ $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><s
  to $wims_menu_items
 !endif
 
-<p>
+
 !if $wims_user=supervisor
  !set wims_menu_items=!append line rawdata,1,cmd=reply&job=getraw&getraw=$getuser\
  delprep,1,cmd=reply&job=delprep&delprep=$getuser\
@@ -230,5 +233,5 @@ to $wims_menu_items
   !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
  !endif
 !endif
- <p>
+ <div class="emptyline">&nbsp;</div>
 
