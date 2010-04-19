@@ -18,8 +18,8 @@ $table_header
    <th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
    !for k=1 to $livret_nbcomp
     <th valign="middle" colspan=$(nbpalier_$k)>
+     !set wims_ref_title=$(title_$k)
      !href cmd=renew&job=addcomp&comp=$k $(name_icompetence)$k
-     <a onmouseover="Tip('$(title_$k)',$tooltip_parm)"><img src="gifs/picto.gif" alt="picto"></a>
     </th>
     !if $k<$livret_nbcomp
      <td width="3" rowspan="$[2+$usercnt]"></td>
@@ -31,7 +31,9 @@ $table_header
    !for j=1 to $(nbpalier_$k)
     !let desc=!record $j of $livret_dir/.comp$k
     !let desc=!line 1 of $desc
-    <th valign="middle">$(name_ipalier)$j<a onmouseover="Tip('$desc',$tooltip_parm)"><img src="gifs/picto.gif" alt="picto"></a></th>
+    !let desc=!replace internal ' by \' in $desc
+    <th valign="middle">
+    <a onmouseover="Tip('$desc',$tooltip_parm)">$(name_ipalier)$j</a></th>
    !next j
   !next k
  </tr>    

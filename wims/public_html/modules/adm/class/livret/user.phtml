@@ -24,13 +24,15 @@ $table_header
  !for k=1 to $livret_nbcomp
   $table_tr
    <td>
-    $(title_$k)
+    <b>$k</b> : $(title_$k)
    </td>
    !for j=1 to $(nbpalier_$k)
     !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comp$k
     !let desc=!line 1 of $desc
+    !let desc=!replace internal ' by \' in $desc
     !read adm/class/colors $(l_$(k)_$(j))\
-<a onmouseover="Tip('$desc',$tooltip_parm)"><img src="gifs/picto.gif"></a>
+</a>\
+<a onmouseover="Tip('$desc',$tooltip_parm)">
    !next j
    !for j=$(nbpalier_$k)+1 to $maxnbpalier
      <td align="center" style="background-image:url(gifs/bg/crossgrey.gif);">&nbsp;</td>

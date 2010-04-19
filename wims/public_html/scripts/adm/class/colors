@@ -1,4 +1,4 @@
-!distribute line $wims_read_parm into t0_,t1_
+!distribute line $wims_read_parm into t0_,t1_,t2_
 !if livret notin $module
  !if $class_scorecolor=$empty
   !set class_scorecolor=!defof class_scorecolor in wimshome/log/classes/$wims_class/.def
@@ -13,6 +13,7 @@
   !let t_=0
  !endif
  <td style="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);font-weight:bold;text-align:center;border;solid 1px;">
+  $t2_
   !if $wims_scoreview>=0 and $t_>0
    $[rint(($t0_)*10^($wims_scoreview))/10^($wims_scoreview)]
   !else
