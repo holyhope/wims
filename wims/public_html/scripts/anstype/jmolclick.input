@@ -96,7 +96,7 @@ $ans_sc2$ans_file2
 !!############################ fin du traitement des options
 !set test=!text remove 1234567890,| in $rg
 !if $test issametext
-  !set rg=!replace internal | by $\
+  !set rg=!replace internal ||| by $\
  $ in $rg
   !set R_=
   !set rg_cnt=!linecnt $rg
@@ -109,10 +109,9 @@ $ans_sc2$ans_file2
     !set Rg=!append line $l_ to $Rg
   !next
   !set rg=!replace internal $\
-$ by | in $Rg
+$ by ||| in $Rg
 !endif
-
-!set rg=!replace internal | by ',' in '$rg'
+!set rg=!replace internal ||| by ',' in '$rg'
 
 !!pas d'analyse!!
 !if ?analyze isin $rg
@@ -227,19 +226,22 @@ nat_bad=atom_bad.length;
  }
  selforget=selforget+'})';
 
-!if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i)
+!if split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i) or eqweight iswordof $(replyoption$i)
  !if eqweight iswordof $(replyoption$i)
    coeff=1
  !else
    coeff=2
  !endif
 !else
- coeff=1
+ coeff=0
 !endif
-if(nat_good-coeff*nat_bad <= 0) { score=0 }
-  else {
-    score=Math.min(1,(nat_good-coeff*nat_bad)/natgood);
-}
+if( coeff==0 ) {
+   if (nat_bad == 0 && nat_good == natgood ) { score=10 } else  {score=0}
+ }
+ else {
+    score=Math.max(0, Math.min(1,(nat_good-coeff*nat_bad)/natgood));
+ }
+
 
  var tabret=new Array(selgood,selbad,selforget,score)
  return tabret;

@@ -3,7 +3,7 @@
 Une molécule est présentée dans l'applet <b>Jmol</b> et certains des atomes doivent être sélectionnés.
 Ce type de réponse doit être utilisé avec la commande <tt>\embed{}</tt>.
 D'autres objets que des molécules peuvent être représentés selon les capacités de <b>Jmol</b>
-<p>
+</p><p>
 La bonne réponse est formée de deux lignes (séparateur ; ) : la première est la
 bonne réponse, la seconde indique la molécule à montrer : le fichier de structure de la molécule (dans un
 format reconnu par <b>Jmol</b>) peut
@@ -12,16 +12,22 @@ dans le répertoire data de la distribution WIMS (adresse <tt>data/xxx</tt>) ou
 dans un module de données dans <tt>modules/data</tt> (dans ce cas, l'adresse est de la forme
 <tt>datamodule/xxx</tt>) ou dans le répertoire <tt>images</tt> (l'adresse est alors <tt>\imagedir/xxx</tt>).
 On peut aussi mettre simplement le texte décrivant la molécule.
-<p>
+</p><p>
 La première partie de la bonne réponse est donnée par
 la liste des numéros des atomes à sélectionner (comme dans le fichier de structure) ou par une commande dans la syntaxe
 <b>Jmol</b> (des exemples sont donnés ci-dessous). Ainsi, <tt>1, 2, 3</tt> est équivalent à
 <tt>atomno=1 or atomno=2 or atomno=3</tt> ou encore à <tt>({0,1,2})</tt> (les deux dernières étant
 en syntaxe <b>Jmol</b>).
-<p>
+</p><p>
 Il est possible de donner plusieurs réponses possibles ; dans ce cas-là, elles doivent être séparées
-par un <tt>|</tt>.
-<p>
+par un <tt>|||</tt> (afin de ne pas confondre avec le <tt>|</tt> qui peut être utilisé dans la syntaxe 
+<b>Jmol</b>).
+
+Attention : si <tt>no_select=2</tt>, <tt>_O ||| 1|2|4</tt> signifie qu'on doit sélectionner deux atomes
+d'oxygène (exactement) ou deux des atomes parmi les numéros 1, 2 et 4. 
+
+
+</p><p>
 La première ligne de la commande <tt>\embed</tt> est formée de la taille X x Y en pixels de l'applet.
 Sur les trois lignes suivantes, des scripts <b>Jmol</b> peuvent être mis : le premier sera exécuté
 à la première requête de l'exercice, le troisième sera exécuté lors de la réponse, le
@@ -35,7 +41,7 @@ le slib <tt>oef/newfile</tt> (exemple :
 où la variable <tt>text_script</tt> contient le texte du script. La variable <tt>filescript</tt> contient l'adresse
 du fichier créé.
 
-<p><b>Exemples</b>: 
+</p><b>Exemples</b>: 
 <pre>
 \text{filescript=wims(record 0 of data/scriptsimple.spt)}
 \text{filescript=slib(oef/newfile spt,\filescript)}
@@ -56,20 +62,20 @@ ou
 }
 </pre>
 
-
-Ne pas oublier les points virgules de Jmolscript.
 <p>
+Ne pas oublier les points virgules de Jmolscript.
+</p><p>
 Les options suivantes du type de réponse <tt>jmolclick</tt> sont possibles :
-
+</p>
 $table_header
 $table_tr<td><tt>
 split</tt> ou <tt>partialscore
 </tt></td><td>
-Le score tient compte d'une réponse bonne partielle.
+Le score tient compte d'une réponse bonne partielle, mais surpénalise les mauvaises réponses.
 $table_tr<td><tt>
 eqweight
 </tt></td><td>
-les bonnes réponses partielles ont même poids dans le score
+les mauvaises réponses ont le même poids que les bonnes réponses.
 $table_tr<td><tt>
 noselect="liste de numéros d'atomes"
 </tt></td><td>
@@ -79,7 +85,7 @@ $table_tr<td><tt>
 nb_select=</tt>m</td><td>Contraint à ce que le nombre d'atomes sélectionnés soit exactement <tt>m</tt>.
 Un message d'alerte invite à corriger dans le cas contraire.</td>
 $table_tr<td><tt>
-applet=imagedir</tt></dd><td>Pour experts : l'applet utilisée sera celle mise dans le
+applet=imagedir</tt></td><td>Pour experts : l'applet utilisée sera celle mise dans le
 répertoire <tt>images</tt> du module. N'utilisez cette solution que si vous avez réellement besoin d'une version
 plus récente de <b>Jmol</b>.
 $table_end
@@ -94,7 +100,7 @@ $table_header
 <caption>Exemples de réponses Jmol (première ligne du deuxième champ de <tt>answer</tt>)</caption>
 $table_tr<td><tt>
 atomno=1 
-<tt></td><td> l'atome numéro 1
+</tt><td> l'atome numéro 1
 $table_tr<td><tt>
 ({1})
 </tt></td><td>
@@ -114,7 +120,8 @@ les atomes 1, 2 et les atomes de 5 à 8 (attention au décalage de 1).
 $table_tr<td><tt>
 _C
 </tt></td><td>
-tous les atomes de carbone (on peut aussi mettre <tt>carbon</tt> ou utiliser le numéroatomique <tt>elemno=6</tt>)
+tous les atomes de carbone (on peut aussi mettre <tt>carbon</tt> ou utiliser le numéro 
+atomique <tt>elemno=6</tt>)
 $table_tr<td><tt>
 connected(2)
 </tt></td><td>
@@ -152,7 +159,7 @@ $table_end
 Les conditions peuvent être combinées dans <b>Jmol</b> par les opérateurs d'ensembles 
 <tt>OR</tt>, <tt>AND</tt> et <tt>NOT</tt>. Pour plus de détails, voir la 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">documentation de Jmol</a>.
-<p>
+</p>
 $table_header
 <caption>Exemples de scripts Jmol</caption>
 $table_tr<td><tt>
@@ -179,5 +186,4 @@ $table_end
 <p>
 Des slibs sur Jmol sont accessibles.
 !href module=help/wimsdoc&+subject=slib#slib slib
-
-
+</p>
