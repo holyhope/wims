@@ -3,7 +3,10 @@
 !set name_intromain=Esta utilidad le permite al administrador del sitio llevar en línea el mantenimiento\
  de la instalación WIMS. El acceso a ella está controlado estrictamente mediante\
  definiciones en el fichero de configuración
-
+ 
+!set name_warning_wrongpass=Ha introducido una contraseña errónea.
+!set name_try_wrongpass=Vuelva a intentarlo
+  
 !!!list
  !distribute lines Tras la compilación es necesario configurar la seguridad de la instalación. ¡Por favor ejecute bin/wrapuid como root!\
    Lista de tareas que puede realizar en línea\
@@ -415,11 +418,6 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
 !exit
 !endif
 
-!if $job=wrongpass
-  !set name_warning=Ha introducido una contraseña errónea.
-  !set name_try=Vuelva a intentarlo
-!exit
-!endif
 
 !if $job=rss
    !set title= Reconstruir la conexión RSS
