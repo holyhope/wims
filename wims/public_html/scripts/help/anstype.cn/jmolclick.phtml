@@ -3,7 +3,7 @@
 在 java 的小工具 <b>Jmol</b> 里显示一个分子, 要求选取一些原子.
 这个回答类型必须与命令 <tt>\embed{}</tt> 配合使用.
 根据 <b>Jmol</b> 的能力, 也可以展示分子以外的对象.
-<p>
+</p><p>
 正确的答案含两行 (用分号 ; 分隔) : 第一行是正确的答案,
 第二行是要显示的分子: 结构文件 (以 <b>Jmol</b> 的有效格式)
 可放在模块的 <tt>data</tt> 子目录下,
@@ -11,15 +11,19 @@
 或在 <tt>modules/data</tt> 中的一个数据模块里 (在这种情形, 其地址为
 <tt>datamodule/xxx</tt>) 或在目录 <tt>images</tt> 下 (地址为 <tt>\imagedir/xxx</tt>).
 也可以直接放在模块的结构中.
-<p>
+</p><p>
 正确答案的第一部分给出所选取的原子个数的列表
 (如同在结构文件中所使用的) 或者使用符合
 <b>Jmol</b> 语法里的命令 (见后面的例). 所以 <tt>1, 2, 3</tt> 等价于
 <tt>atomno=1 or atomno=2 or atomno=3</tt> 或 <tt>({0,1,2})</tt> 
 (后面两个是符合 <b>Jmol</b> 语法的).
 <p>
-可以给出几个正确答案, 不过要用 <tt>|</tt> 分隔.
-<p>
+可以给出几个正确答案, 不过要用 <tt>|||</tt> 分隔.
+
+
+注意 : 如果 <tt>no_select=2</tt>, <tt>_O ||| 1|2|4</tt> 意为必须恰好选择 2 个氧原子
+或者 1, 2 与 4 中的 2 个原子. 
+
 命令 <tt>\embed</tt> 的第一行是小工具的大小 X x Y (像素). 
 在接着的 3 行里, 可给出 <b>Jmol</b> 脚本 : 第一行是在练习的第一个请求里执行的,
 第三行是在送出回答后执行的, 第二行同时用于上述两种情形.
@@ -33,7 +37,7 @@
 其中的变量 <tt>text_script</tt> 包含有脚本.
 它给出所创建文件的 url 地址.
 
-<p><b>例</b>: 
+</p><p><b>例</b>: 
 <pre>
 \text{filescript=wims(record 0 of data/scriptsimple.spt)}
 \text{filescript=slib(oef/newfile spt,\filescript)}
@@ -53,20 +57,20 @@
   \filescript}
 }
 </pre>
-
-不要忘记 Jmolscript 里的分号.
 <p>
+不要忘记 Jmolscript 里的分号.
+</p><p>
 回答类型 <tt>jmolclick</tt> 可使用下列选项:
-
+</p>
 $table_header
 $table_tr<td><tt>
 split</tt> 或 <tt>partialscore
 </tt></td><td>
-部分正确的回答也给分.
+部分正确的回答也给分并且错误回答的权重大于正确回答的权重.
 $table_tr<td><tt>
 eqweight
 </tt></td><td>
-部分正确的回答在得分里有同样的权重
+部分正确的回答在得分里有同样的权重.
 $table_tr<td><tt>
 noselect="原子编号表"
 </tt></td><td>
@@ -75,7 +79,7 @@ $table_tr<td><tt>
 nb_select=</tt>m</td><td>所选的原子数必须等于 <tt>m</tt>.
 如果不符合, 则会发警告信息.</td>
 $table_tr<td><tt>
-applet=imagedir</tt></dd><td>供专家使用: 使用的小工具在模块的
+applet=imagedir</tt></td><td>供专家使用: 使用的小工具在模块的
 <tt>images</tt> 目录里. 除非你使用更新版本的 
 <b>Jmol</b>, 最好不要使用此选项.
 $table_end
@@ -90,7 +94,7 @@ $table_header
 <caption>Jmol 回答的例 (<tt>answer</tt> 的第二栏的第一行)</caption>
 $table_tr<td><tt>
 atomno=1 
-<tt></td><td>第 1 号原子
+</tt></td><td>第 1 号原子
 $table_tr<td><tt>
 ({1})
 </tt></td><td>
@@ -148,7 +152,7 @@ $table_end
 在 <b>Jmol</b> 中的条件可以利用集合运算 
 <tt>OR</tt>, <tt>AND</tt> 及 <tt>NOT</tt> 加以组合. 详情请参见 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
-<p>
+</p>
 $table_header
 <caption>Jmol 脚本的例</caption>
 $table_tr<td><tt>
@@ -175,5 +179,5 @@ $table_end
 <p>
 某些 Jmol 的脚本库可供使用 :
 !href module=help/wimsdoc&+subject=slib#slib slib
-
+</p>
 
