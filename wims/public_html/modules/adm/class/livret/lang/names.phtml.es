@@ -35,7 +35,9 @@ de la clase,\
 Nota mínima para considerar el ejercicio como acervo,\
 Paleta de color utilizada en el $name_n_paliers nivel,\
 Muestra el resultado en $name_n_paliers nivel,\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5
+Show skill booklet to participant,\
+Show empty skill to participant,\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5,name_configtext6,name_configtext7
 
 !!------------------------------- definición de los nombres de vínculos para wims_menu_items
 

@@ -224,13 +224,15 @@ $table_tr<td align="right"><b><small>$name &nbsp;</small></b><td align="left"><s
 passwd,1,module=adm/class/passwd&job=part&part=$getuser\
 part_list,1,cmd=resume\
 to $wims_menu_items
- !if ($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)
+ !if (($wims_supertype<3 and $wims_typename=class) or ($wims_supertype=4 and $wims_typename=course)) and $wims_showlivret!=no
   !set wims_menu_items=!append line livret,1,module=adm/class/livret&job=user&user=$getuser to $wims_menu_items
  !endif
 !else
+ !if $wims_showlivret!=no
   !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
- !if $livret_nbcomp >0
-  !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+  !if $livret_nbcomp >0
+   !set wims_menu_items=!append line livret,1,module=adm/class/livret to $wims_menu_items
+  !endif
  !endif
 !endif
  <div class="emptyline">&nbsp;</div>

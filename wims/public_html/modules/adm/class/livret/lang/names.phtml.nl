@@ -36,7 +36,9 @@ van de klas,\
 minimale score voor dit onderdeel,\
 Gebruik kleuren om het prestatieniveau aan te geven,\
 Gebruik cijfers om het prestatieniveau aan te geven,\
-into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5
+Show skill booklet to participant,\
+Show empty skill to participant,\
+into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5,name_configtext6,name_configtext7
 
 !!------------------------------- definition des noms de liens pour wims_menu_items
 

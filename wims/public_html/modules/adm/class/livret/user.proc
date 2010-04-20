@@ -18,6 +18,7 @@ user_lastname in wimshome/log/classes/$wims_superclass/.users/$user
 !endif
 score=!getscoremean user=$user
 !for k=1 to $livret_nbcomp
+ nbit_$k=0
  !for l=1 to $livret_nbpalier
     l_$(k)_$(l)=0
  !next l
@@ -40,18 +41,21 @@ maxnbpalier=0
    !endif
   !next it
   nbit=!linecnt $list2
-  !for m=1 to $nbit
-   t=!line $m of $list2
-   s=!line $(convert_table[$(t[1])]) of $score
-   s=!word $(t[2]) of $s
-   !if $s>=$livret_minac
-    l_$(k)_$(l)=$(l_$(k)_$(l))+$s/$nbit
-   !else
-    !if $s>0
-     l_$(k)_$(l)=$(l_$(k)_$(l))+0
-    !endif    
-   !endif
-  !next it
+  !if $nbit>0
+   !increase nbit_$k
+   !for m=1 to $nbit
+    t=!line $m of $list2
+    s=!line $(convert_table[$(t[1])]) of $score
+    s=!word $(t[2]) of $s
+    !if $s>=$livret_minac
+     l_$(k)_$(l)=$(l_$(k)_$(l))+$s/$nbit
+    !else
+     !if $s>0
+      l_$(k)_$(l)=$(l_$(k)_$(l))+0
+     !endif    
+    !endif
+   !next it
+  !endif
  !next l
 !next k
 

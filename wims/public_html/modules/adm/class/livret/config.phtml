@@ -10,53 +10,99 @@ $name_param_change
  !href target=wims_mhelp cmd=help $wims_name_help
 
 !form reply
-<input type="hidden" name="job" value="config">
-<ul>
- <li>$wims_name_title&nbsp;:<br>
-  <input size="60" name="cf_title" value="$cf_title">
- <li>$wims_name_Description&nbsp;:<br>
-  <textarea wrap name="cf_description" cols=60 rows=5>$cf_description</textarea></li>
- <li>$name_color : <br>
-  <table border=1>
-   <tr>
-   <td style="background-color: $(livret_scorecolor[1])">$name_nowork</td>
-   !for k=2 to 11
-    <td style="background-color: $(livret_scorecolor[$k])" align="center">$[($k-1)*10] %</td>
-   !next k
-   </tr>
-   <tr>
-   !for k=1 to 11
-    <td><input type="text" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8"></td>
-   !next k
-   </tr>
-  </table>
- <li>$name_configtext4 :
-  !formselect cf_scoreoption list class,livret prompt $name_listscoreoption
- </li>
- <li>$name_configtext5 :
-  !formselect cf_scoreview list -1,0,2,3,4 prompt $name_listscoreview
- </li>
- <li>$name_configtext3 <input type="text" name="cf_minac" value="$livret_minac" size="5"></li>
- <li>$name_score_modify: <br>
- !for i in $asheets
-   <input type="checkbox" name="cf_nonactivesheet" value="$i"
-  !if $i isitemof $cf_nonactivesheet
-   checked
-  !endif
-  >
-  !let t=!record $i of  wimshome/log/classes/$wims_class/sheets/.sheets
-  $i :
-  !line 3 of $t
-  <br>
- !next i
- </li>
-</ul>
-<p><center><input type="submit" name="cf_set" value="$wims_name_tosave">
-&nbsp;&nbsp;<input type="submit" name="cf_abandon" value="$wims_name_giveup">
-</center></form>
+ <input type="hidden" name="job" value="config">
+ $table_header
+ $table_tr
+  <td>$wims_name_title&nbsp;:</td>
+  <td><input size="60" name="cf_title" value="$cf_title"></td>
+ </tr>
+ $table_tr
+  <td>$wims_name_Description&nbsp;:</td>
+  <td><textarea wrap name="cf_description" cols=60 rows=5>$cf_description</textarea></td>
+ </tr>
+ $table_tr
+  <td colspan=2>$name_color : <br>
+   <center><table border=1>
+    <tr>
+    <td style="background-color: $(livret_scorecolor[1])">$name_nowork</td>
+    !for k=2 to 6
+     <td style="background-color: $(livret_scorecolor[$k])" align="center">$[($k-1)*10] %</td>
+    !next k
+    </tr>
+    <tr>
+    !for k=1 to 6
+     <td><input type="text" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8"></td>
+    !next k
+    </tr>
+    <tr>
+     <td rowspan="2">&nbsp;</td>
+     !for k=7 to 11
+      <td style="background-color: $(livret_scorecolor[$k])" align="center">$[($k-1)*10] %</td>
+     !next k
+    </tr>
+    <tr>
+     !for k=7 to 11
+      <td><input type="text" value="$(livret_scorecolor[$k])" name="cf_scorecolor$k" size="8"></td>
+     !next k
+    </tr>
+   </table></center>
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_configtext6 :</td>
+  <td>
+   !let cf_show2user=$class_showlivret
+   !formselect cf_show2user list yes,no prompt $wims_name_yes,$wims_name_no
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_configtext7 :</td>
+  <td>
+   !let cf_showempty=$livret_showempty
+   !formselect cf_showempty list yes,no prompt $wims_name_yes,$wims_name_no
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_configtext4 :</td>
+  <td>
+   !formselect cf_scoreoption list class,livret prompt $name_listscoreoption
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_configtext5 :</td>
+  <td>
+   !formselect cf_scoreview list -1,0,2,3,4 prompt $name_listscoreview
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_configtext3 </td>
+  <td><input type="text" name="cf_minac" value="$livret_minac" size="5"></td>
+ </tr>
+ $table_tr
+  <td>$name_score_modify: </td>
+  <td>
+   !for i in $asheets
+    <input type="checkbox" name="cf_nonactivesheet" value="$i"
+    !if $i isitemof $cf_nonactivesheet
+     checked
+    !endif
+    >
+    !let t=!record $i of  wimshome/log/classes/$wims_class/sheets/.sheets
+    $i :
+    !line 3 of $t
+    <br>
+   !next i
+  </td>
+ </tr>
+ $table_tr
+  <td colspan="2" align="center">
+   <input type="submit" name="cf_set" value="$wims_name_tosave">
+   &nbsp;&nbsp;
+   <input type="submit" name="cf_abandon" value="$wims_name_giveup">
+  </td>
+ </tr>
+$table_end
+</form>
 
-
-!!set wims_menu_items=!append line cls_livret,1,cmd=reply&job=home\
-!! to $wims_menu_items
 
 !reset cf_nonactivesheet,cf_set,cf_title,cf_description

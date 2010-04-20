@@ -22,21 +22,23 @@ $table_header
   !next j
  </tr>
  !for k=1 to $livret_nbcomp
-  $table_tr
-   <td>
-    <b>$k</b> : $(title_$k)
-   </td>
-   !for j=1 to $(nbpalier_$k)
-    !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comp$k
-    !let desc=!line 1 of $desc
-    !let desc=!replace internal ' by \' in $desc
-    !read adm/class/colors $(l_$(k)_$(j))\
-</a>\
-<a onmouseover="Tip('$desc',$tooltip_parm)">
-   !next j
-   !for j=$(nbpalier_$k)+1 to $maxnbpalier
-     <td align="center" style="background-image:url(gifs/bg/crossgrey.gif);">&nbsp;</td>
-   !next j
-  </tr>
+  !if $(nbit_$k)>0 or $livret_showempty!=no
+   $table_tr
+    <td>
+     <b>$k</b> : $(title_$k)
+    </td>
+    !for j=1 to $(nbpalier_$k)
+     !let desc=!record $j of wimshome/log/classes/$wims_class/livret/.comp$k
+     !let desc=!line 1 of $desc
+     !let desc=!replace internal ' by \' in $desc
+     !read adm/class/colors $(l_$(k)_$(j))\
+ </a>\
+ <a onmouseover="Tip('$desc',$tooltip_parm)">
+    !next j
+    !for j=$(nbpalier_$k)+1 to $maxnbpalier
+      <td align="center" style="background-image:url(gifs/bg/crossgrey.gif);">&nbsp;</td>
+    !next j
+   </tr>
+  !endif
  !next k 
 $table_end

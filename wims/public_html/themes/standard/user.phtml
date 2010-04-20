@@ -358,12 +358,14 @@ $U_greet
 <div class="menuitem">
 !read ./adm/oneitem.phtml myscore,1,module=adm/class/userlist
 </div><!--menuitem-->
+ !if $wims_showlivret!=no
   !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
- !if $livret_nbcomp >0
-<div class="menuitem">
-!read ./adm/oneitem.phtml livret,1,module=adm/class/livret
-</div><!--menuitem-->
+  !if $livret_nbcomp >0
+   <div class="menuitem">
+   !read ./adm/oneitem.phtml livret,1,module=adm/class/livret
+   </div><!--menuitem-->
   !endif
+ !endif
 <div class="itemsep"></div><!--itemsep-->
 !endif
 !if $class_type isin 013

@@ -19,6 +19,8 @@
  cf_nonactivesheet=!nospace $cf_nonactivesheet
  cf_nonactivesheet=!listintersect $cf_nonactivesheet and $asheets
  !bound cf_scoreoption within class,livret default $livret_scoreoption
+ !bound cf_show2user within yes,no default $class_showlivret
+ !bound cf_showempty within yes,no default $livret_showempty
  cf_scoreview=$[rint($cf_scoreview)]
  !bound cf_scoreview between -1 and 4 default $livret_scoreview
  !bound cf_minac between 0 and 10 default 9
@@ -28,8 +30,10 @@
 !set livret_scoreview=$cf_scoreview\
 !set livret_scorecolor=$cf_scorecolor1,$cf_scorecolor2,$cf_scorecolor3,$cf_scorecolor4,$cf_scorecolor5,$cf_scorecolor6,$cf_scorecolor7,$cf_scorecolor8,$cf_scorecolor9,$cf_scorecolor10,$cf_scorecolor11\
 !set livret_scoreoption=$cf_scoreoption\
-!set livret_minac=$cf_minac in $livret_dir/.def
-!readdef $livret_dir/.def
+!set livret_minac=$cf_minac\
+!set livret_showempty=$cf_showempty in $livret_dir/.def
+ !setdef class_showlivret=$cf_show2user in wimshome/log/classes/$wims_class/.def
+ !readdef $livret_dir/.def
 !else
  !for k in title,description,nonactivesheet,minacquis,scoreoption,scoreview,scorecolor1,scorecolor2,scorecolor3,scorecolor4,scorecolor5,scorecolor6,scorecolor7,scorecolor8,scorecolor9,scorecolor10,scorecolor11
   cf_$k=$(livret_$k)
