@@ -84,6 +84,7 @@ w_wims_session_start_time=$wims_session_start_time\
     qstr=!append line $l to $qstr
    !endif
   !next i
+  qstr=!replace $checksession[\._a-z0-9]* by $wims_session in $qstr 
   qstr=!translate $\
 $ to & in $qstr
   !restart module=$checkmodule&cmd=reply&special_parm=$checkstep&$qstr
