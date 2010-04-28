@@ -1,0 +1,25 @@
+!!CLEANCLASS permet de nettoyer sa classe de toute trace des travaux effectues par les apprenants
+!!ainsi, on peut reutiliser une meme classe facilement.
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!sh cd $wims_home/log/classes\
+  tar -czf ../$qclass.tgz $qclass\
+  cd $qclass\
+  rm -f .log.auth\
+  rm -f .userlist\
+  rm -f .scoreavg\
+  rm -f scoreavg\
+  rm -f .grades\
+  rm -f .users/*\
+  rm -f $wims_home/log/classes/$qclass/score/*\
+  rm -f $wims_home/log/classes/$qclass/noscore/*\
+
+
+
+!! bizarrement, cette ligne ne fonctionne pas bien si elle est ajoutee aux precedentes
+!sh cd $wims_home/log/classes/$qclass\
+    rm -Rf examlog
