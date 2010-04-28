@@ -5,8 +5,7 @@ textarea="datatrue datafalse explain"
 
 QCM classique, avec un bon choix qui ne dépend pas du texte.
 Mais les choix ainsi que leur ordre peuvent être mis en aléatoire.
-<p>
-Auteur du modèle : Gang Xiao <xiao@unice.fr>
+<p>Auteur du modèle : Gang Xiao <xiao@unice.fr></p>
 
 :%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
 
@@ -21,28 +20,24 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 :\email{xiao@unice.fr}
 
 :Nombre de choix à présenter. Au plus 10.
-Vous devez définir suffisamment de choix. Sinon l'exercice affichera
-seulement ce qui est disponible.
+Vous devez définir suffisamment de choix. Sinon l'exercice affichera seulement ce qui est disponible.
 \integer{tot=5}
 
 :Le nombre de bons choix dans chaque exercice. Ne doit pas depasser le total.
 \integer{givetrue=2}
 
 :Nombre de mauvais choix "obligatoires".
-Par exemple si ce nombre est 2, les deux premiers mauvais choix dans la
-liste seront toujours présentés dans les exercices générés.
-<p> Dans le doute, mettez 0.
+Par exemple si ce nombre est 2, les deux premiers mauvais choix dans la liste seront toujours présentés dans les exercices générés.
+<p> Dans le doute, mettez 0.</p>
 \integer{minfalse=0}
 
 :Le texte qui explique ce qu'il faut faire.
 $embraced_randitem
 \text{explain=
-Voici un modèle de question à choix multiples. L'ordre des choix est
-aléatoire, ainsi que les choix s'il y en a suffisamment qui sont définis.
-Changez les textes, et vous aurez votre question à choix multiples.
-<p>
-Prenez le bon choix.
-Quand il y a plusieurs bons choix, il suffit d'en choisir n'importe lequel.
+Voici un modèle de question à choix multiples. L'ordre des choix est aléatoire, ainsi que les choix s'il y en a suffisamment qui sont définis.
+Changez les textes, et vous aurez votre question à choix multiples.<br/>
+Prenez le bon choix.<br/>
+Quand il y a plusieurs bons choix, il suffit d'en choisir un, peu importe lequel.
 }
 
 :Le(s) bon(s) choix, un par ligne.
@@ -72,13 +67,34 @@ Le mauvais choix 8.
 }
 
 :Mots d'option : "checkbox", "split".
-Ajouter le mot "checkbox" s'il y a plusieurs bonnes réponses et si l'élève
-doit choisir toutes les bonnes réponses (au lieu d'une seule). Dans ce cas, 
-ajouter aussi le mot "split" si on autorise une note partielle quand seulement une
-partie des bonnes réponses sont choisies.
+Ajouter le mot "checkbox" s'il y a plusieurs bonnes réponses et si l'élève doit choisir toutes les bonnes réponses (au lieu d'une seule).
+Dans ce cas, ajouter aussi le mot "split" si on autorise une note partielle quand seulement une partie des bonnes réponses sont choisies.
 \text{option=}
 
+:Feedback G&eacute;n&eacute;ral
+Ce texte s'affichera apr&egrave;s la r&eacute;ponse de l'apprenant, qu'elle soit juste ou fausse.
+\text{feedback_general=}
+
+:Feedback en cas de bonne r&eacute;ponse
+Ce texte s'affichera apr&egrave;s la r&eacute;ponse de l'apprenant, en cas de bonne reponse ou de reponse partielle.
+\text{feedback_bon=}
+
+:Feedback en cas de mauvaise r&eacute;ponse
+Ce texte s'affichera apr&egrave;s la r&eacute;ponse de l'apprenant, s'il a coch&eacute; au moins une mauvaise r&eacute;ponse.
+\text{feedback_mauvais=}
+
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{empty=}
+\if{\feedback_general != \empty}{
+  \text{feedback_general=<p class="feedback">\feedback_general</p>}
+}
+\if{\feedback_bon != \empty}{
+  \text{feedback_bon=<p class="feedback good_answer">\feedback_bon</p>}
+}
+\if{\feedback_mauvais != \empty}{
+  \text{feedback_mauvais=<p class="feedback bad_answer">\feedback_mauvais</p>}
+}
 
 \text{datatrue=wims(nonempty rows \datatrue)}
 \text{datafalse=wims(nonempty rows \datafalse)}
@@ -128,3 +144,6 @@ partie des bonnes réponses sont choisies.
 
 \answer{La réponse}{\ans;\list}{type=\anstype}{option=\option}
 
+\feedback{1=1}{\feedback_general}
+\feedback{\reply1 isitemof \list[\ans]}{\feedback_bon}
+\feedback{\reply1 notitemof \list[\ans]}{\feedback_mauvais}
