@@ -67,6 +67,7 @@ w_wims_session_start_time=$wims_session_start_time\
    vars=!replace $loggedsessiondcl[\._a-z0-9]* by $wimssessiondcl in $vars
   !endif
   !appendfile wimshome/$wims_sesdir/var $vars
+!!!must be careful if we replace & by &amp;
   checkqstr=!replace &+ by & in $checkqstr
   checkqstr=!translate & to $\
  $ in $checkqstr
@@ -84,7 +85,9 @@ w_wims_session_start_time=$wims_session_start_time\
     qstr=!append line $l to $qstr
    !endif
   !next i
-  qstr=!replace $checksession[\._a-z0-9]* by $wims_session in $qstr 
+ !if $loggedsessiondcl isin $qstr
+   qstr=!replace $loggedsessiondcl[\._a-z0-9]* by $wimssessiondcl in $qstr
+ !endif
   qstr=!translate $\
 $ to & in $qstr
   !restart module=$checkmodule&cmd=reply&special_parm=$checkstep&$qstr
