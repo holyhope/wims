@@ -23,6 +23,18 @@
  vars=!trim $vars
  !distribute lines $vars into checkqstr,checkmodule,checkcmd
  vars=!line 4 to -1 of $vars
+ memchecksession=$checksession
+ !if $checksession=$empty
+  checksession=!replace internal QUERY_STRING= by $empty in $checkqstr
+  checksession=!replace &+ by & in $checksession
+  checksession=!translate & to $\
+ $ in $checksession
+  checksession=!replace internal = by , in $checksession
+  checksession=!replace internal . by , in $checksession
+  tmp=!column 1 of $checksession
+  tmp=!positionof item session in $tmp
+  checksession=$(checksession[$tmp;2])
+ !endif
  loggedsessiondcl=session=$checksession
  wimssessiondcl=session=$wims_session
  !if $loggedsessiondcl isin $vars
@@ -55,7 +67,7 @@ w_wims_session_start_time=$wims_session_start_time\
 
  !if $checkcmd iswordof new renew next
   !appendfile wimshome/$wims_sesdir/var $vars
-  !setdef wims_check=$module,$checkuser,$checksession,$checkexo,$steps,$score in wimshome/sessions/$session1/var.stat
+  !setdef wims_check=$module,$checkuser,$memchecksession,$checkexo,$steps,$score in wimshome/sessions/$session1/var.stat
   !restart module=$checkmodule&special_parm=$checkstep&cmd=resume
  !else
   vars=!record $checkstep-1 of $logfile
