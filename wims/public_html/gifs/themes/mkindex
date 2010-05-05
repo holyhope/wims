@@ -1,6 +1,16 @@
 #! /bin/sh
 cd `dirname $0`
 list="png gif"
+
+if [ ! -s wimsedu1/home.png ] ;
+ then
+    cd wimsedu ;
+    for i in `ls *.png`; do convert -resize 30 $i ../wimsedu2/$i; done
+    for i in `ls *.png`; do convert -resize 18 $i ../wimsedu1/$i; done
+fi;
+
+cd .. ; 
+
 for j in `ls` ; do
  if [ -d "$j" ]; then rm $j/icon.css ; touch $j/icon.css ; w=0; h=0
      for a in $list ; do 
