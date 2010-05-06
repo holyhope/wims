@@ -102,7 +102,7 @@
 	    Vertaler,\
 	    Dit is een module van,\
 	    WWW Interactive Multipurpose Server,\
-	    Copyright\
+	    Copyright,\
 	    Zoektermen,\
 	    Emailadres vertaler,\
 	    Emailadres auteur,\
@@ -117,14 +117,14 @@
 	    Publication center,\
 	into wims_name_name,\
 	wims_name_iconabout,\
-        wims_name_module_infos,\
-        wims_name_exo_infos,\
-        wims_name_Address,\
-        wims_name_Link_for_bookmark,\
-        wims_name_Description,\
-        wims_name_Version,\
-        wims_name_Required_WIMS_version,\
-        wims_name_Language,\
+	wims_name_module_infos,\
+	wims_name_exo_infos,\
+	wims_name_Address,\
+	wims_name_Link_for_bookmark,\
+	wims_name_Description,\
+	wims_name_Version,\
+	wims_name_Required_WIMS_version,\
+	wims_name_Language,\
 	wims_name_Author,\
 	wims_name_Maintainer,\
 	wims_name_Translator,\
