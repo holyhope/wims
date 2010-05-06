@@ -177,7 +177,7 @@ char *mu_cat="all";
 char *mu_delay="20";
 char *mu_site="http://wims.unice.fr/download/modules";
 char *mu_zone="all";
-char *mu_download_site="wimsedu";
+char *mu_download_site="unice,wimsedu";
 char *mu_publish_site="unice";
 
   /* keywords destinated to robots */
