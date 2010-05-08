@@ -64,7 +64,7 @@ $ to $	$ in $(val$v)
     var_$i=$(var_$i)\
 $v_
    !next v
-  !endif
+  !endif  __EXECUTED_
   !ifval $replycnt=0 and $choicecnt=1
    rep=!item 1 to 6 of $choicebad1
    rep=!append item $choicegood1 to $rep
@@ -75,12 +75,12 @@ $v_
    test_print=1
   !else
    chce_$i=
-  !endif
+  !endif replycnt=0 and choicecnt=1
   rep=
 !if 3 isin $intro_check or $intro_check=$empty
   !for k=1 to $choicecnt
    !if $(choicename$k)!=
-   rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
+    rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
    !else
     rep=!append line $(choicegood$k) to $rep
    !endif   
@@ -89,40 +89,40 @@ $v_
   !for k=1 to $replycnt
    !if noanalyzeprint notwordof $(replyoption$k)
     thisstep=!line 1 of $oefsteps
-    !if r$k isitemof $thisstep
-    rg_=$(replygood$k)
-    !if $(replytype$k) iswordof checkbox mark click menu radio
-     rg_=!translate internal ; to $\
+    !if r$k isitemof $thisstep or $oefsteps=$empty
+     rg_=$(replygood$k)
+     !if $(replytype$k) iswordof checkbox mark click menu radio
+      rg_=!translate internal ; to $\
 $ in $rg_
-     rg1_=!line 1 of $rg_
-     rg2_=!line 2 to -1 of $rg_
-     rg2_=!translate internal $\
+      rg1_=!line 1 of $rg_
+      rg2_=!line 2 to -1 of $rg_
+      rg2_=!translate internal $\
 $ to ; in $rg2_
-     rg_=!item $rg1_ of $rg2_
-    !endif
-    !if $(replytype$k) iswordof atext wlist nocase case
-     rg_=!translate internal ;| to $\
+      rg_=!item $rg1_ of $rg2_
+     !endif checkbox 
+     !if $(replytype$k) iswordof atext wlist nocase case
+      rg_=!translate internal ;| to $\
 \
 $ in $rg_
-     rg_=!line 1 of $rg_
-    !endif
-    !if $(replytype$k) iswordof function default equation
-     rg_=!item 1 of $rg_
-    !endif
-    !if $(replytype$k) iswordof imgcomp textcomp compose reorder \
+      rg_=!line 1 of $rg_
+     !endif atext
+     !if $(replytype$k) iswordof function default equation
+      rg_=!item 1 of $rg_
+     !endif function
+     !if $(replytype$k) iswordof imgcomp textcomp compose reorder \
 	dragfill clickfill
-     rg_=!translate internal | to $\
+      rg_=!translate internal | to $\
 $ in $rg_
-     rg_=!rows2lines $rg_
-     rg_=!line 1 of $rg_
-     !if $(replytype$k)=imgcomp
-      rg_=!item 2 to -1 of $rg_
-      rg_=!nospace $rg_
-      rg_=!replace , by ><img src="$imagedir/ in <img src="$imagedir/$rg_">
-     !else
-      rg_=!translate , to $ $ in $rg_
-     !endif
-    !endif
+      rg_=!rows2lines $rg_
+      rg_=!line 1 of $rg_
+      !if $(replytype$k)=imgcomp
+       rg_=!item 2 to -1 of $rg_
+       rg_=!nospace $rg_
+       rg_=!replace , by ><img src="$imagedir/ in <img src="$imagedir/$rg_">
+      !else
+       rg_=!translate , to $ $ in $rg_
+      !endif  imgcomp  
+     !endif imgcomp textcomp
     !if $(replyname$k)$rg_ !=
      !if http isin $(replyname$k)$rg_
       rep=!append line $name_noprint to $rep
@@ -131,22 +131,23 @@ $ in $rg_
         rep=!append line <em>$(replyname$k)</em>: <tt>$rg_</tt> to $rep
       !else
         rep=!append line <tt>$rg_</tt> to $rep
-      !endif 
-     !endif
+      !endif replyname$k nonempty
+     !endif http
     !else
      rep=
-    !endif
-   !endif
+    !endif $(replyname$k)$rg_
+   !endif r$k isitemof $thisstep
    !reset replyoption$k
+   !endif noanalyzeprint
   !next k
-!endif
+ !endif conditioncnt
+!endif intro_check 
   rep=!imgrename $rep
   ans_$i=!trim $rep
   !if  $(ans_$i)!=
    test_print=1
   !endif
- !endif
- !endif
+ !endif html
 !reset introcheck
 !if $latex_exists>=0
  !readproc oef/latex.proc exo
