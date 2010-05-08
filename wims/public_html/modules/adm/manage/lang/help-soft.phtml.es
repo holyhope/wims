@@ -8,9 +8,7 @@ su gran velocidad, es la herramienta de cálculo  ideal para muchas de las necesi
 de cálculo  de WIMS. Muchos módulos lo utilizan, incluidos numerosos ejercicios de
 álgebra lineal. Si este programa no está disponible gran parte del servidor
 funcionará de forma deficiente.
-<p>
-Versión recomendada: 2.1.* (otras versiones pueden presentar problemas de
-compatibilidad).
+
 !goto end
 
 :mupad
