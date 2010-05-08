@@ -40,6 +40,7 @@ Beginners kunnen beter
 
 !set name_first=Basis oefeningen
 !set name_datalist=Oefeningen die werken met een data lijst
+!set name_chemistry=Exercises for chemistry
 
 !set name_save=!nosubst hier is de broncode van <font color=red><b>$oef_title</b></font>,\
 in OEF formaat (Open Exercice Format).\

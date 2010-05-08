@@ -41,6 +41,7 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 
 !set name_first=Ejercicios básicos
 !set name_datalist=Ejercicios con una lista de datos
+!set name_chemistry=Exercises for chemistry
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
  <font color=red><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).\
