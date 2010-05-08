@@ -1,6 +1,6 @@
+
 !set parm=!replace internal \ by $$m_ in $wims_read_parm
 !distribute items $parm into t_,inputsize,prompt_
-
 !set inputsize1=!word 1 of $inputsize
 !if $(replytype$i) iswordof flashcard
   !set inputsize1=!word 1 of $inputsize
@@ -8,35 +8,52 @@
   !set inputsize1=$inputsize
 !endif
 !if $printing=yes or $cmd=hint
- !readproc anstype/$(replytype$i).input def
- !set replystyle$i=$anstyle
- !if mc iswordof $(replystyle$i)
-  !if $inputsize1>0 
+!!i__ est le numero de la question
+ !set i__=!replace internal reply by in $t_
+ !set i__=!replace internal r by in $i__
+ !set i__=!trim $i__
+ !set replytype$i__=!item $i__ of $(Replytype$i)
+ !set replystyle$i__=!item $i__ of $(Replystyle$i)
+ !readproc anstype/$(replytype$i__).input def
+ !default replystyle$i__=$anstyle
+ !if mc iswordof $(replystyle$i__) or $(replytype$i__) iswordof dragfill clickfill
+  !if $inputsize1>0
    !if $prompt_=$empty
-    !set g_=!rows2lines $(replygood$i)
-    !set g_=!line 2 of $g_
-    !set prompt_=!item $inputsize1 of $g_
+    !!set g_=!rows2lines $(replygood$i__)
+    !!set g_=!line 2 of $g_
+    !set prompt_=!line $i__ of $(Rg$i)
+    !set prompt_=!item $inputsize1 of $prompt_
    !endif
   !else
    !if $prompt_=$empty
-    !set g_=!rows2lines $(replygood$i)
+    !set g_=!rows2lines $(replygood$i__)
     !set g_=!line 2 of $g_
     !set prompt_=$g_
+    !set prompt_=!line $i__ of $(Rg$i)
+    !set prompt_=!replace internal , by  </u>$  $ / $ $<u> in <u>$prompt_</u>
    !endif
   !endif
-  !set prompt_=!replace internal , by  </u>$  $ / $ $<u> in <u>$prompt_</u>
-  !imgrename <i>$prompt_</i>
+  <i>$prompt_</i>
  !else
-  !if $(replytype$i)=compose
-   !set prompt_=!shuffle $(replygood$i)
-   !set prompt_=!replace internal , by $ $ / $ $ in $prompt_
+  !if $(replytype$i__) iswordof compose correspond
+   !if $(replytype$i__)=compose
+    !set prompt_=!line $i__ of $(Rg$i)
+    !set prompt_cnt=!wordcnt $prompt
+    !set prompt_=!shuffle $prompt_
+    !set prompt_=!replace internal , by $ $ / $ $ in $prompt_
    $prompt_
+   !endif
+   !if $(replytype$i__)=correspond
+    !set prompt_=!line $i__ of $(Rg$i)
+    $prompt_
+   !endif
   !else
-    ___________
+   ___________
   !endif
  !endif
  !exit
 !endif
+!!end of print section
 
 !if $wims_read_parm=$empty
  !exit
@@ -117,7 +134,7 @@
    !if $inputsize1 notitemof $tv
     !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashback
      !set cl = $colorr_forget
-     !imgrename <b><tt><u><font color=$cl>$p_</font></u></tt></b>
+     !imgrename <b><tt><u><font color="$cl">$p_</font></u></tt></b>
     !else
      !imgrename <b><tt><u>$p_</u></tt></b>
     !endif
@@ -148,7 +165,7 @@
  !endif
  !if $(replytype$i) notwordof correspond
   !set instex_color=$cl
-  !imgrename <b><tt><font color=$cl>$p_</font></tt></b><sup><small>[$embcnt]</small></sup>
+  !imgrename <b><tt><font color="$cl">$p_</font></tt></b><sup><small>[$embcnt]</small></sup>
   !else
   !imgrename $p_<sup><small>[$embcnt]</small></sup> 
  !endif 

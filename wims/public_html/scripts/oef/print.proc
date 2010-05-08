@@ -78,20 +78,20 @@ $v_
   !endif replycnt=0 and choicecnt=1
   rep=
 !if 3 isin $intro_check or $intro_check=$empty
-  !for k=1 to $choicecnt
-   !if $(choicename$k)!=
+ !for k=1 to $choicecnt
+  !if $(choicename$k)!=
     rep=!append line <em>$(choicename$k)</em>: $(choicegood$k) to $rep
-   !else
+  !else
     rep=!append line $(choicegood$k) to $rep
-   !endif   
-  !next k
- !if $conditioncnt<1
-  !for k=1 to $replycnt
-   !if noanalyzeprint notwordof $(replyoption$k)
-    thisstep=!line 1 of $oefsteps
-    !if r$k isitemof $thisstep or $oefsteps=$empty
+  !endif   
+ !next k
+ !for k=1 to $replycnt
+   thisstep=!line 1 of $oefsteps
+   !if r$k isitemof $thisstep or $oefsteps=$empty
      rg_=$(replygood$k)
-     !if $(replytype$k) iswordof checkbox mark click menu radio
+     Replytype$i=!append item $(replytype$k) to $(Replytype$i)
+     Replystyle$i=!append item $anstyle to $(Replystyle$i)
+     !if $(replytype$k) iswordof checkbox mark click menu radio clickfill dragfill
       rg_=!translate internal ; to $\
 $ in $rg_
       rg1_=!line 1 of $rg_
@@ -99,6 +99,7 @@ $ in $rg_
       rg2_=!translate internal $\
 $ to ; in $rg2_
       rg_=!item $rg1_ of $rg2_
+      Rg$i=!append line $rg2_ to $(Rg$i)
      !endif checkbox 
      !if $(replytype$k) iswordof atext wlist nocase case
       rg_=!translate internal ;| to $\
@@ -108,6 +109,7 @@ $ in $rg_
      !endif atext
      !if $(replytype$k) iswordof function default equation
       rg_=!item 1 of $rg_
+      Rg$i=!append line to $(Rg$i)
      !endif function
      !if $(replytype$k) iswordof imgcomp textcomp compose reorder \
 	dragfill clickfill
@@ -118,11 +120,29 @@ $ in $rg_
       !if $(replytype$k)=imgcomp
        rg_=!item 2 to -1 of $rg_
        rg_=!nospace $rg_
-       rg_=!replace , by ><img src="$imagedir/ in <img src="$imagedir/$rg_">
+       rg_=!replace , by >,<img src="$imagedir/ in <img src="$imagedir/$rg_">
+       rg__=!shuffle $rg_
+       Rg$i=!append line $rg__ to $(Rg$i)
       !else
-       rg_=!translate , to $ $ in $rg_
-      !endif  imgcomp  
-     !endif imgcomp textcomp
+       rg_cnt_=!itemcnt $rg_
+       rg__=!shuffle $rg_cnt_
+       Rg$i=!append line $(rg_[$rg__]) to $(Rg$i)
+      !endif  imgcomp
+      rg_=!translate , to $ $ in $rg_
+    !endif imgcomp textcomp
+    !if $(replytype$k) iswordof correspond
+     !set rg__=!replace internal ; by $\
+$ in $rg_
+     !distribute lines $rg__ into rg1__,rg2__
+     !set rg__cnt=!wordcnt $rg1__
+     !set rg_2_=!shuffle $rg__cnt
+     !set rg__=!replace internal , by </td><td> in <table border=1><tr><td align="center">$rg1__</tr><tr><td align="center">$(rg2__[$rg_2_])</td></tr></table>
+     !set rg_=!replace internal , by </td><td> in <table border=1><tr><td align="center">$(rg_[1;])</tr><tr><td align="center">$(rg_[2;])</td></tr></table>
+   $prompt_
+     Rg$i=!append line $(rg__) to $(Rg$i)
+   !endif
+  !if $conditioncnt<1
+   !if noanalyzeprint notwordof $(replyoption$k)
     !if $(replyname$k)$rg_ !=
      !if http isin $(replyname$k)$rg_
       rep=!append line $name_noprint to $rep
@@ -136,11 +156,14 @@ $ in $rg_
     !else
      rep=
     !endif $(replyname$k)$rg_
-   !endif r$k isitemof $thisstep
-   !reset replyoption$k
    !endif noanalyzeprint
-  !next k
- !endif conditioncnt
+  !endif conditioncnt
+ !else
+   Replytype$i=!append item $(replytype$k) to $(Replytype$i)
+   Replystyle$i=!append item $(replystyle$k) to $(Replystyle$i)
+ !endif r$k isitemof $thisstep
+  !reset replyoption$k
+!next k
 !endif intro_check 
   rep=!imgrename $rep
   ans_$i=!trim $rep
@@ -152,7 +175,9 @@ $ in $rg_
 !if $latex_exists>=0
  !readproc oef/latex.proc exo
 !endif
+Rg$i=!imgrename $(Rg$i)
 !next i
 !if $latex_exists>=1
   !readproc oef/latex.proc end
 !endif
+
