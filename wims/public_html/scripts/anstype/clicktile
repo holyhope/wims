@@ -38,6 +38,7 @@ color_g=!listuniq $color_g
 diag=1
 score=
 color_rg=!listintersect $color_r and  $color_g
+!if $color_rg!=$empty
 !for a_ in $color_rg
    g$a_=!listcomplement $($(a_)_r) in $($(a_)_g)
    h$a_=!listcomplement $($(a_)_g) in $($(a_)_r)
@@ -52,7 +53,9 @@ color_rg=!listintersect $color_r and  $color_g
      score=!append item 1 to $score
    !endif
 !next
-
+!else
+ score=0
+!endif
 analyse sans les couleurs :
 g_tot=
 !for a_ in $color_g
@@ -78,7 +81,6 @@ sg_tot=!listcomplement $g_tot in $r_tot
 !else
      score=!append item 1 to $score
 !endif
-
 !if 0 notin $score
  diareply$i=good
  !advance freegot
