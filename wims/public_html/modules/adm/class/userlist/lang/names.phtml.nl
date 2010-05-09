@@ -36,7 +36,7 @@ name_done,name_equiv
 
 !set name_formula_comment=U kunt de moelijkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
 De cijfers worden berekend met maximum = 
-!set name_formula2=Cijfers berekenen met als maximum $scoremax
+!set name_formula2=!nosubst Cijfers berekenen met als maximum $scoremax
 !set name_pickup=Kies een werkblad<br>om het gemiddelde cijfer per<br>werkblad te laten zien: 
 !set name_warning=U verzoek is ongeldig en kan niet worden uitgevoerd.
 

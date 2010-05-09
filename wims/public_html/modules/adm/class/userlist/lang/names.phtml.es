@@ -37,7 +37,7 @@ name_done,name_equiv
 
 !set name_formula_comment=Puede definir los niveles de severidad y los pesos de las hojas de trabajo\
 en la tabla siguiente. Las notas serán calculadas con un máximo =
-!set name_formula2=Notas calculadas sobre un máximo de $scoremax
+!set name_formula2=!nosubst Notas calculadas sobre un máximo de $scoremax
 !set name_pickup=Seleccione las hojas para <br>mostrar los resultados por hoja&nbsp;
 !set name_warning= Ha efectuado una petición ilegal.
 
