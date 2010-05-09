@@ -5,13 +5,20 @@
 	badname badtar badtype badversion badwimsversion \
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
-	symlink toolong unpublishable please-update-module-version lengthlimit
+	symlink toolong unpublishable please-update-module-version lengthlimit \
+	already_exists
  !goto $w1
 !else
  !default $wims_read_parm=A technical error occurred.
  $wims_read_parm
  !exit
 !endif
+
+:already_exists
+ Un module de même nom existe déjà sur un autre serveur miroir. Si vous en êtes l'auteur,
+ vous devez le publier sur l'autre serveur ou demander au serveur de publication de
+ transférer vos droits. Si vous n'en êtes pas l'auteur, veuillez changer le nom de votre module.
+!exit
 
 :antiwversion
  Your module requires WIMS-$w2 to run? This server is only of version

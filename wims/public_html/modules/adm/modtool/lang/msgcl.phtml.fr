@@ -5,13 +5,20 @@
 	badname badtar badtype badversion badwimsversion \
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
-	symlink toolong unpublishable please-update-module-version lengthlimit
+	symlink toolong unpublishable please-update-module-version lengthlimit \
+	already_exists
  !goto $w1
 !else
  !default wims_read_parm=Une erreur technique est apparue.
  $wims_read_parm
  !exit
 !endif
+
+:already_exists
+ Un module de même nom existe déjà sur un autre serveur miroir. Si vous en êtes l'auteur,
+ vous devez le publier sur l'autre serveur ou demander au serveur de publication de
+ transférer vos droits. Si vous n'en êtes pas l'auteur, veuillez changer le nom de votre module.
+!exit
 
 :antiwversion
  Votre module nécessite WIMS-$w2 pour fonctionner. Ce serveur n'est qu'à
@@ -29,7 +36,7 @@
 
 :badcategory
  !if / isin $w2
-  La zone <tt>$w2</tt> de votre module soumis est inconnue.
+  La zone <tt>$w2</tt> du module soumis est inconnue.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
   Les catégories actuellement disponibles dans la zone <b><tt>$(w0[1])</tt></b>
@@ -41,7 +48,7 @@
   !mailurl $sysadmin gestionnaire de publication
   si vous voulez ajouter une nouvelle catégorie.
  !else
-  La zone <tt>$w2</tt> de votre module soumis est inconnue. Veuillez
+  La zone <tt>$w2</tt> du module soumis est inconnue. Veuillez
   rapporter votre problème au
   !mailurl $sysadmin gestionnaire de publication
 .
@@ -191,11 +198,16 @@ Vous devez changer la version du module dont vous faites une mise à jour
 !exit
 
 :unpublishable
- Ce module a une adresse qui n'est pas publiable. Il doit d'abord être
+ Ce module a une adresse qui n'est pas publiable
+ !if $unpublishable_site!=
+ sur le serveur 
+ <tt>$unpublishable_site</tt>.
+ !endif 
+ Il doit d'abord être
  !href cmd=reply&jobreq=move&modreq=$mod renommé
  ou
  !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod dupliqué
- pour être publiable. 
+ pour être publiable sur ce serveur. 
  !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
  En effet, votre module étant déclaré comme un module d'exercices OEF,
   son nom doit commencer par <tt>oef</tt>.
