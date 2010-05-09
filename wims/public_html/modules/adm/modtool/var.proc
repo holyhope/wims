@@ -1,29 +1,26 @@
 !read adm/language names.phtml
 
 !readdef wimshome/log/wims.conf
+!default mu_publish_site=!defof DF_mu_publish_site in wimshome/public_html/bases/sys/defaults.conf
 
+!! when the selection of the site is done by the developpers
 publish_site=$submitpublish_site
-!!default publish_site=$mu_publish_site
+!default publish_site=$mu_publish_site
 
-!! read the list of publication centers
-publishsites=!sh cd $wims_home/public_html/bases/sys/publishcenter/;\
-grep publishcenter=yes * | cut -d":" -f1
-publishsites=!lines2items $publishsites
-!bound publish_site within $publishsites default $(publishsites[1])
 publishsitesname=$empty
-!for name in $publishsites
+!for name in $mu_publish_site
  tmp=!defof publishname in wimshome/public_html/bases/sys/publishcenter/$name
  tmp=!replace internal , by &#44; in $tmp
  publishcentersname=!append item $tmp to $publishcentersname
+ tmp=!defof zonepublish,levellist in wimshome/public_html/bases/sys/publishcenter/$name
+ zonepublishs=!append item $tmp to $zonepublishs
 !next name
-!!read wimshome/public_html/bases/sys/publishdata
-
-!!default publish_site=$(publishsites[1])
-!default mu_publish_site=$publish_site
 
 !! read the specification of $publish_site
-!read wimshome/public_html/bases/sys/publishcenter/$publish_site
-
+!if $submitpublish_site!=$empty
+ !read wimshome/public_html/bases/sys/publishcenter/$submitpublish_site
+  zonepublishs=$zonepublish
+!endif
 wims_nw=job mod existing serial_number auth_login auth_passwd \
 	original2 originalheader empty devdir fname target
 wims_nr=wims_sesrandom
