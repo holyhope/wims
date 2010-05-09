@@ -5,7 +5,7 @@ explicaciones de abajo).
 <p>
 !form reply
 !mexec catraw.sh
-<p><input type=submit name="reg" value=Grabar>
+<p><input type=submit name="reg" value="$wims_name_tosave">
 </form> <p>
 <b>Atención.</b>¡El servidor no comprueba los datos que envía para su grabación!
 <p>
