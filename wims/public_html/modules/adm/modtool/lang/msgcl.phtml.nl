@@ -6,7 +6,7 @@
 	doublelang empty nochange noindex nolocalright \
 	nongnu nooriginal noreply noright noright_translate notallow robot \
 	symlink toolong unpublishable please-update-module-version lengthlimit \
-	already_exists
+	mirror_exists
  !goto $w1
 !else
  !default $wims_read_parm=Er deed zich een technische storing voor.
@@ -14,7 +14,7 @@
  !exit
 !endif
 
-:already_exists
+:mirror_exists
  A module with the same name already exists on another mirror publication servor.
  If you are its author, you must publish at the same publication servor or ask 
  a transfer of your rights. If you are not the other one, please change the name of your module.
