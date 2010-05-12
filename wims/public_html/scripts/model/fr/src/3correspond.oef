@@ -1,0 +1,99 @@
+type=datalist
+textarea="data explain"
+
+:Etablir la correspondance entre paires d'objets, avec audio Shtooka. 
+
+On présente des paires d'objets dans un tableau à deux colonnes. Il faut
+rétablir la bonne correspondance dans les paires en modifiant la colonne à
+droite, par glisser-déposer ou click avec la souris.
+Les objets de gauche
+sont obligatoirement des audio pris dans la base shtooka. Pour 
+vérifier s'ils existent, utiliser l'outil Swac.
+<p>
+</p><p>
+Pour construire un exercice avec ce modèle, il suffit de taper la liste de
+paires d'objets.
+</p><p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:\title{Correspondance avec audio préenregistrés}
+:\author{Bernadette Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+
+:Nombre de (paires) d'objets à faire correspondre.
+\integer{tot=3}
+
+:La taille verticale des cases en pixels.
+Pensez aux gens qui augmentent la taille de polices de leurs navigateurs !
+Ne mettez pas les cases trop petites.
+\integer{sizev=50}
+
+:La taille horizontale des cases à gauche en pixels.
+\integer{sizel=250}
+
+:La taille horizontale des cases à droite en pixels.
+\integer{sizer=250}
+
+:Language audio : les choix possibles sont actuellement <tt>fra</tt>,  <tt>eng</tt>,  <tt>dut</tt>
+(et d'autres avec moins de possibilités  <tt>pol</tt>,  <tt>wol</tt>,  <tt>deu</tt>,  <tt>swe</tt>.)
+\text{lang=fra}
+:Données principales.
+Définir une paire d'objets correspondants par ligne, séparés par une virgule.
+\matrix{data=
+village,ville
+maison,immeuble
+père,mère
+rue,autoroute
+bleu,vert
+}
+
+:Le texte qui explique ce qu'il faut faire.
+$embraced_randitem
+\text{explain=Etablissez la correspondance de sens entre les mots écrits et les mots parlés.}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\integer{datacnt=rows(\data)}
+\integer{tot=\tot>\datacnt?\datacnt}
+
+\text{shuf=item(1..\tot,shuffle(\datacnt))}
+\text{data=row(\shuf,\data)}
+\text{datal=column(1,\data)}
+\text{datar1=column(2,\data)}
+\text{datar=}
+\for{k =1 to \tot}{
+  \text{audio=\datar1[\k]}
+  \text{audio=slib(lang/swac \audio,fra,player=player)}
+  \text{audio=\audio[1;1]}
+  \text{datar=wims(append item \audio to \datar)}
+}
+\text{size=\sizev[]x\sizel[]x\sizer}
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Maintenant l'énoncé en code html. %%%%%%%%%%%%%%%%%%%%
+
+::Vous n'avez pas besoin de modifier ceci en général.
+
+La commande pour afficher le tableau de correspondance,
+c'est \embed{reply 1,\size}
+
+\statement{\explain
+
+<p><center>
+\embed{reply 1,\size}
+</center>
+
+}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+
+\answer{La réponse}{\datal;\datar}{type=correspond}
+
