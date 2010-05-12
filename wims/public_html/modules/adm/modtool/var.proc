@@ -8,13 +8,18 @@ publish_site=$submitpublish_site
 !default publish_site=$mu_publish_site
 
 publishsitesname=$empty
+zonelist=$empty
 !for name in $mu_publish_site
  tmp=!defof publishname in wimshome/public_html/bases/sys/publishcenter/$name
  tmp=!replace internal , by &#44; in $tmp
  publishcentersname=!append item $tmp to $publishcentersname
  tmp=!defof zonepublish,levellist in wimshome/public_html/bases/sys/publishcenter/$name
  zonepublishs=!append item $tmp to $zonepublishs
+ tmp=!defof zonelist,levellist in wimshome/public_html/bases/sys/publishcenter/$name
+ zonelist=!append item $tmp to $zonelist
 !next name
+zonelist=!listuniq $zonelist
+zonepublishs=!listuniq $zonepublishs
 
 !! read the specification of $publish_site
 !if $submitpublish_site!=$empty
