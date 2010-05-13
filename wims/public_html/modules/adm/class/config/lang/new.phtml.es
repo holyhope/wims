@@ -1,56 +1,58 @@
 <p>
 !if $backdays>7
  !if $backdays>100
-  Your class is not backed up for more than 100 days.
+  Su clase no se salvaguardó desde más de 100 días.
  !else
-  Last backup of your class: $backdays days ago.
+  Última protección de su clase: hace $backdays días.
  !endif
  !if backup iswordof $warn
   <p><font color=red><b>WARNING.</b></font>
-  It is the teachers' responsability to backup their own teaching resources!
-  Don't count on the server's backup for your lost work. Moreover,
-  virtual classes not regularly
-  backed up will be considered as inactive and unimportant by the software,
-  and may be erased at any time to make space for others.
+  ¡Es la responsabilidad de los profesores de salvaguardar sus recursos pedagógicos!
+No cuentan nunca con la protección del servidor para recuperar su trabajo perdido.
+Además, las clases virtuales que no son   salvaguardadas regularmente se considerarán
+por el programa informático como siendo inactivas y sin importancia,
+y pueden borrarse a cada momento para dejar lugar a los otros.
+
  !else
-  <p> Protect yourself against server incidents!
+  <p> ¡Protegen se contra los incidentes del servidor!
  !endif
- !href cmd=reply&job=arch Backup the class
- regularly.
+ !href cmd=reply&job=arch Salvaguarde la clase regularmente.
  <p>
 !endif
 
 !if creation iswordof $warn
- <p><b>WARNING</b>. Your virtual class is too old! It already has $creatdays days.
+ <p><b>WARNING</b>. ¡Su clase virtual es demasiado vieja! Ya tiene $creatdays días.
  <p>
- It is highly recommended that you regenerate a new virtual class structure at
- the end of each academic year. Continue using an old virtual class structure over
- the years will result in registry file and disk quota overflow, which risks
- to block access to your class at crucial moments.
+ Se recomienda vivamente reconstruir una nueva estructura de clase virtual
+a principios de cada nuevo año escolar. Seguir utilizando una vieja clase virtual
+durante años conducirá inexorablemente a un desbordamiento de los ficheros
+de registro y la cuota de espacio disco, lo que corre el riesgo de bloquear
+el acceso a su clase en un momento crucial.
+
  !if $class_type notin 13
   <p>
-  Here is how to regerate your virtual class without recreating your teaching
-  resources.
+  Ahí tienes cómo reconstruir su clase virtual sin rehacer sus recursos pedagógicos.
   <ol>
   <li><p>
-  !href cmd=reply&job=arch Backup
-  your class at the end of the academic year.
+  !href cmd=reply&job=arch Salvaguardar su clase al fin del año escolar.
   <li><p>
-  <a href="$wims_ref_name?lang=$lang&module=adm/class/regclass">Create</a>
-  a new virtual class (or class group or institution gateway) at the beginning
-  of the next academic year.
-  <li><p>Restore the teaching resources you backed up to the new class.
-  (Without restoring student accounts and activities that are obsolete.)
+  <a href="$wims_ref_name?lang=$lang&module=adm/class/regclass">Crear</a>
+una nueva clase virtual (o grupo de clase o pórtico de
+establecimiento) a principios del año escolar siguiente.
+<li><p> restaurar los recursos pedagógicos (ejercicios, hojas, exámenes,
+documentos) que salvaguardaron en la nueva clase.
+(Sin restaurar las cuentas de alumnos y las actividades que son caducas.
+)
   </ol>
  !else
   <p>
-  Please tell this to the administrator of the class group gateway to which
-  your class belongs.
+  Por favor informa al administrador del grupo de clases a cual
+su clase pertenece.
   <p>
-  You can
-  !href cmd=reply&job=arch backup
-  the teaching resources of your current class then retore them to the newly
-  created one.
+  Pueden
+  !href cmd=reply&job=arch salvaguardar
+  los recursos pedagógicos de su clase actual luego restaurarlos
+en la nueva.
  !endif
 !endif
 
@@ -60,7 +62,7 @@
  !changeto list.phtml
 !else
  <p><center>
-  !href cmd=reply&job=list Continue with class maintenance.
+  !href cmd=reply&job=list Seguir con el mantenimiento de la clase.
  </center>
 !endif
 
