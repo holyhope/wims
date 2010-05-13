@@ -176,7 +176,8 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set title=!nosubst Configuración de $cattit
   !distribute lines La configuración no ha cambiado porque no ha hecho modificaciones.\
      por defecto\
-   into name_config,name_default
+     Module download\
+   into name_config,name_default,wims_name_download_module
 
   !set name_updated=!nosubst   El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar \
   la información de configuración antigua en <tt>$backdir/wims.conf.old</tt>.
@@ -352,7 +353,8 @@ de este sitio. No está autorizado a acceder a este módulo.
     y categoría\
     modificados al menos hace\
     días\
-  into name_mod,name_zone,name_cat,name_change,name_ago
+    Download configuration\
+  into name_mod,name_zone,name_cat,name_change,name_ago,wims_name_config_module
 
   !distribute lines Error en la descarga del módulo \
       Error al instalar/actualizar\
