@@ -6,7 +6,7 @@
   Última protección de su clase: hace $backdays días.
  !endif
  !if backup iswordof $warn
-  <p><font color=red><b>WARNING.</b></font>
+  <p><font color=red><b>$wims_name_warning</b></font>
   ¡Es la responsabilidad de los profesores de salvaguardar sus recursos pedagógicos!
 No cuentan nunca con la protección del servidor para recuperar su trabajo perdido.
 Además, las clases virtuales que no son   salvaguardadas regularmente se considerarán
@@ -21,7 +21,7 @@ y pueden borrarse a cada momento para dejar lugar a los otros.
 !endif
 
 !if creation iswordof $warn
- <p><b>WARNING</b>. ¡Su clase virtual es demasiado vieja! Ya tiene $creatdays días.
+ <p><b>$wims_name_warning</b>. ¡Su clase virtual es demasiado vieja! Ya tiene $creatdays días.
  <p>
  Se recomienda vivamente reconstruir una nueva estructura de clase virtual
 a principios de cada nuevo año escolar. Seguir utilizando una vieja clase virtual
