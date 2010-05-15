@@ -132,7 +132,7 @@
     !next r_
    !endif
    !if $inputsize1 notitemof $tv
-    !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashback
+    !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashcard
      !set cl = $colorr_forget
      !imgrename <b><tt><u><font color="$cl">$p_</font></u></tt></b>
     !else
@@ -150,13 +150,13 @@
   !set tt=!word 1 of $(replygood$i)
   !if $tt!=?analyze
    !set cl=$(colorr_$(diareply$i))
-   !!!if $(replytype$i) iswordof mark
-   !! !if $inputsize isitemof $ts
-   !!   !set cl = $colorr_good
-   !! !else
-   !! !set cl = $colorr_bad
-   !! !endif
-   !! !endif
+   !if $(replytype$i) iswordof mark flashcard
+    !if $inputsize isitemof $ts
+      !set cl = $colorr_good
+    !else
+    !set cl = $colorr_bad
+    !endif
+   !endif
   !else
    !set embedded_analyze=!append item $i to $embedded_analyze
    !set embedded_bracket=$embedded_bracket [$embcnt]
