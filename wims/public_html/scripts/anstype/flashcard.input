@@ -1,6 +1,8 @@
+
 !reset option2 option1 nb_form
 !set anstype=yes
 !set anstyle=mc
+!set oef_js_submit=fieldsend()
 !if $wims_read_parm=def
  !exit
 !endif
@@ -13,8 +15,8 @@ $ in $inputsize
 !set option2=!line 2 of $inputoption
 !default option2=$option1
 !distribute items #9999CC,#FF6699 into color1,color2
-!default option1=style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:$color1;"
-!default option2=style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:$color2;"
+!default option1=style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:$color1;font-size:24px;text-align:center;"
+!default option2=style="display:inline-block;min-width:30px;min-height:30px;padding-top:10px;padding-bottom:5px;background-color:$color2;font-size:24px;text-align:center;"
 
 !set oef_fill_option=$option1\
 $option2
@@ -39,12 +41,15 @@ $ in $input_rg
  !set input_1=!sort items $input_1
 !endif
 
+!if show iswordof $(replyoption$i)
+  !set show=yes
+!endif
+!default show=no
 
 !default prompt=??
 
 !default nb_form=0
 !if $nb_form=0 or $input_no=$empty
-!form reply onsubmit="javascript:fieldsend();"
 <script language="javascript" type="text/javascript">
 var n=$input_icnt;
 var click=0;
@@ -68,7 +73,19 @@ function flashcard_on(s){
    fieldsend();
 }
 
-function fieldsend(){
+!if $show=yes
+  function fieldsend(){
+    	var rep;var reply=''; var click_for_wims='';
+	    for(var p=0;p<n;p++){
+	    var p1=p+1;
+	    rep=document.getElementById('flashcard'+p).innerHTML;
+		if (rep=='$prompt') { if (reply !='' ){ reply=reply+',';} ; reply=reply+p1;}
+		if (click_for_wims !='' ){click_for_wims=click_for_wims+','} ; click_for_wims=click_for_wims+click[p];
+     }
+      document.getElementById('oefvar').value=reply+';'+click_for_wims;  
+  }
+!else
+  function fieldsend(){
     	var rep;var reply=''; var click_for_wims='';
 	    for(var p=0;p<n;p++){
 	    var p1=p+1;
@@ -78,35 +95,26 @@ function fieldsend(){
      }
       document.getElementById('oefvar').value=reply+';'+click_for_wims;  
   }
-
+!endif
 </script>
 <input type=hidden name="reply$i" id="oefvar" value="">
 !endif
 
 !if $input_no!=$empty and $input_no<=$input_icnt
 !! !default prompt_=!item $input_no of $input_rg
-!increase nb_form
-!if $nb_form>1
-  <form>
- !endif
+ !increase nb_form
+ !if $show=yes
+  <div id="flashcard$[$input_no-1]" onclick="flashcard_on('$[$input_no-1]')" $option2>$(input_1[$input_no])</div>
+ !else
   <div id="flashcard$[$input_no-1]" onclick="flashcard_on('$[$input_no-1]')" $option2>$prompt</div>
-  !if $nb_form>$input_icnt
-  </form>
-  !endif
+ !endif
 !else
  !for s_=0 to $[$input_icnt-1]
-   <div id="flashcard$s_" onclick="flashcard_on('$s_')" $option2>$prompt</div>&nbsp;
+  !if $show=yes
+   <div id="flashcard$[$input_no-1]" onclick="flashcard_on('$s_')" $option2>$(input_1[$s_+1])</div>
+  !else
+  <div id="flashcard$[$input_no-1]" onclick="flashcard_on('$s_')" $option2>$prompt</div>
+ !endif
+   &nbsp;
  !next
- </form>
 !endif
-
-!!<p><center>
-!!<input type=submit style="font-weight:normal;text-align:center" 
-!!onclick="javascript:fieldsend();" name="button1" value="$wims_name_send">
-!!</center>
-!!<script type="text/javascript">
-!!    try{document.onload=refill();}catch(e){}
-!!</script>
-
-!!set oef_formnosubmit=yes
-
