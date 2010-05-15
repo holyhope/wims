@@ -163,16 +163,16 @@ $modele
       style_reponse,style_oef,style_css,instruction,instruction2,\
       choice,answer_given,format,common,second_step,first_step,pos_rep,percent,\
       size,qcm_prompt1,qcm_prompt2,sens,aucune,partialscore,paste,\
-      specialhelp1,specialhelp2,specialhelp3,helpprompt,reaccent,packs,player,player_option,\
+      specialhelp1,specialhelp2,specialhelp3,helpprompt,reaccent,packs,player,\
         good_answer_text,bad_answer_text,incomplete_answer_text
      b=!trim $($a)
      !setdef quick_$a=$b in wimshome/$sesdir/var.stat
      modele=!replace internal \text{$a=} by \text{$a=$b} in  $modele
    !next
-
-   modele=!replace internal \text{instruction=asis()} by \text{instruction=asis($instruction)} in  $modele
-   modele=!replace internal \text{instruction2=asis()} by \text{instruction2=asis($instruction2)} in  $modele
-   modele=!replace internal \text{file=randitem()} by \text{file=randitem($($file))} in  $modele
+   modele=!replace internal \text{player_option=} by \text{player_option=$player_option autostart="false" loop="false"} in $modele
+   modele=!replace internal \text{instruction=asis()} by \text{instruction=asis($instruction)} in $modele
+   modele=!replace internal \text{instruction2=asis()} by \text{instruction2=asis($instruction2)} in $modele
+   modele=!replace internal \text{file=randitem()} by \text{file=randitem($($file))} in $modele
    !if yes iswordof $reading_file1 $image_file1
      help = !record 0 of $dossier/HELP
      !if $raw=1
