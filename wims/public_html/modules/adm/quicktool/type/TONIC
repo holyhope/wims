@@ -33,8 +33,12 @@ text{battage=\alea issametext no ?wims(sort numeric items \battage)}
     \text{cnt_syl=\cnt_syl, items(\syllabe)}
     \if{\audio_file issametext no}{
       \text{audi=\data[3+\v;]}
-      \text{audi=\audi issametext ? wims(deaccent \mot2).mp3}
-      \text{Audio = \Audio,slib(media/audio \imagedir/\audi)}
+      \text{audi1=\audi=?slib(lang/swac \mot2,eng)}
+      \if{\audi1=}{
+        \text{audi1=wims(deaccent \mot2).mp3}
+        \text{audi1=slib(media/audio \imagedir/\audi1)}
+      }
+     \text{Audio=\Audio,\audi1[1;1]}
     }
   }
   \integer{etape=\etape + \cnt_data}
