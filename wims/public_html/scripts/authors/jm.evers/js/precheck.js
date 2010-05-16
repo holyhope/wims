@@ -30,6 +30,18 @@
 // 15 upper_f(t)	converts all 'known' functions and 'and' to uppercase	: returns modified t or "error"
 // 16 is_number(t)	checks if no text is present				: returns 0 or 1  (0=error,1=success)
 // 17 is_real_number(t)	checks if real number: no sqrt or e+ allowed			: returns 0 or 1  (0=error,1=success)
+    
+function SetTexAppSize(){
+    if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
+	var p = 1;var size = new Array(2);
+	while ( document.getElementById('TexApp'+p) ){
+    	    size = document.getElementById('TexApp'+p).getPrefferedSize();                                                                   
+    	    document.getElementById('TexApp'+p).width = size[0];                                                                             
+    	    document.getElementById('TexApp'+p).height = size[1];
+	    p++;
+	} 
+    }                                                 
+}
 
 function setAlarm(txt){
     var h=document.documentElement.clientHeight;

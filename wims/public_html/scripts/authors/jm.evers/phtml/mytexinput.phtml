@@ -1,0 +1,211 @@
+!set n=$counter
+<script type="text/javascript">
+    var URL;
+    
+    function dontknow(){
+	var t=confirm(r0+"\n$dontknow ?");
+	if(t==true){
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n=%3F' ;
+	    document.location.href = URL;
+	}
+    }
+    
+    function TexAppInputs(num){
+	if( document.getElementById('TexApp1') ){ // starts with 1
+	    var p = 1;
+    	    while ( document.getElementById('TexApp'+p) ){
+		document.getElementById('TexApp'+p).changeInputfields(num);
+		p++;
+	    }
+	}
+    }
+    
+    function sendanswer(){
+	var reply = new Array();var show ="";
+	var p = 1;var tmp;var tmp1;var cnt = 0;var ans = new Array();
+	if( document.getElementById('TexApp1') ){ // starts with 1
+    	    while ( document.getElementById('TexApp'+p) ){ 
+		tmp1 = document.getElementById('TexApp'+p).ReadApplet()+"";
+		ans = tmp1.split(',');
+		for(var s = 0; s < ans.length; s++){
+		    tmp = ans[s];
+		    if(tmp.length == 0){setAlarm(r1+" "+eval(cnt+1));return;}
+		    if(tmp.indexOf(',')!=-1){setAlarm(r4);return;}
+		    if(check_x(tmp) == 0){return;}
+		    if(tmp.indexOf('error')!=-1){setAlarm(tmp);return;}
+		    tmp = science(tmp);if(tmp == "error"){return;}
+		    if(tmp.indexOf("[") != -1){
+			if(tmp.indexOf("sqrt[")!=-1){tmp = specialroot(tmp);if(tmp == "error"){return;}}
+			if(tmp.indexOf("log[") !=-1){tmp = speciallog(tmp) ;if(tmp == "error"){return;}}
+		        if(tmp.indexOf("[") != -1){setAlarm(r13);return;}
+		    }
+		    tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
+		    reply[cnt] = tmp; 
+		    show = show + "\n"+eval(cnt+1)+") "+tmp; 
+		    cnt++;
+        	}
+		p++;
+    	    }
+	}
+	var num_applets = p;
+	if( document.getElementById('mydefaultform') ){
+	    var m = document.getElementById('mydefaultform').length;
+	    for( var s = 0; s < m ; s++ ){
+		tmp = document.getElementById('mydefaultform')[s].value;
+		if(tmp.length == 0){setAlarm(r1+" "+eval(cnt+1));return;}
+		if(tmp.indexOf(',')!=-1){setAlarm(r4);return;}
+		if(check_x(tmp) == 0){return;}
+		if(tmp.indexOf('error')!=-1){setAlarm(tmp);return;}
+		tmp = science(tmp);if(tmp == "error"){return;}
+		if(tmp.indexOf("[") != -1){
+		    if(tmp.indexOf("sqrt[")!=-1){tmp = specialroot(tmp);if(tmp == "error"){return;}}
+		    if(tmp.indexOf("log[") !=-1){tmp = speciallog(tmp) ;if(tmp == "error"){return;}}
+		    if(tmp.indexOf("[") != -1){setAlarm(r13);return;}
+		}
+		tmp = arrows(tmp,2,"","");if(tmp == "error"){return;}
+		reply[cnt] = tmp;
+		show = show + "\n"+eval(cnt+1)+") "+tmp; 
+		cnt++;p++;
+	    }
+	}
+	var t=confirm(r0+"\n"+show);
+	if(t == true){ 
+	    reply = encodeURIComponent(reply);
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
+	    for(var s = 1; s < num_applets ; s++){
+		document.getElementById("TexApp"+s).destroy();
+	    }
+	    document.location.href = URL;
+	}
+    }
+</script>
+
+<div align="center">
+    <table summary="" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+	<tr valign="top" >
+	<td align="left">
+	    !if $(question$n) != $empty
+		$(question$n)
+	    !endif
+	    !if $exotext != $empty
+		$exotext
+	    !endif
+	    !if $(formula$n) != $empty
+		!if $embed = 1
+		    <table summary="" cellpadding="1">
+			<tr valign="middle">
+			<td>
+			    !insmath $(formula$n)
+			</td>
+			<td>
+			    <form id="mydefaultform" name="mydefaultform" action="">
+				<table summary="" cellpadding="1">
+				!for p=1 to $inputs
+				    <tr valign="middle">
+				    <td>
+					$m_rightarrow
+				    </td>
+				    <td>
+					!if $wims_user=supervisor
+					    !set deelantwoord=!item $p of $(answer$n)
+					!else
+					    !set deelantwoord=!item $p of $(reply$n)
+					!endif
+					<input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
+				    </td>
+				    </tr>
+				!next p
+				</table>
+			    </form>
+			</td>
+			</tr>
+		    </table>
+		!else
+		    !insmath $(formula$n)		
+		!endif
+	    !endif
+	</td>
+	    !if $image=1
+		!if $XSIZE > 450 
+		    </tr>
+		    <tr valign="top">
+		!endif
+		<td align="center">
+		    !if $draw=1
+			!set insdraw_size=$XSIZE,$YSIZE
+			!insdraw $(image$n)
+		    !endif
+		    !if $plot=1
+			!set insplot_set=$(image_settings$n)
+			!insplot $(image$n)
+		    !endif
+		</td>
+	    !endif
+	    !if $applet=1
+		!if $XSIZE > 450
+		    </tr><tr valign="top">
+		!endif
+		<td align="center">
+		    $(object$n)
+		</td>
+	    !endif
+	    !if $inputs > 0 && $embed != 1
+		!if $XSIZE > 450 
+		    </tr>
+		    <tr valign="top">
+		!endif
+		<td nowrap>
+		    <form id="mydefaultform" name="mydefaultform" action="">
+			!if $inputs = 1
+			    !if $wims_user=supervisor
+		    		<textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(answer$n)</textarea>
+        		    !else
+				<textarea  id="myinput0" style=$textareastyle cols="$cols" rows="$rows" name="reply">$(reply$n)</textarea>
+			    !endif
+			!else
+			    <table summary="" cellpadding="1">
+			    !for p=1 to $inputs
+				<tr>
+				<td>
+				    $(inputtext$p)
+				</td>
+				<td>
+				    $m_rightarrow
+				</td>
+				<td>
+				    !if $wims_user=supervisor
+					!set deelantwoord=!item $p of $(answer$n)
+				    !else
+					!set deelantwoord=!item $p of $(reply$n)
+				    !endif
+				    <input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
+				</td>
+				</tr>
+			    !next p
+			    </table>
+			!endif
+		    </form>
+		</td>
+	    !endif
+	</tr>
+    </table>
+    <table summary="">
+	<tr>
+	<th>
+    	    <input type="button" style="$mybuttonstyle" onclick="javascript:sendanswer();" value="$send">
+    	</th>
+	<th>
+	    <input type="button" style="$mybuttonstyle" onclick="javascript:dontknow();" name="but2" value="$dontknow">
+	</th>
+	!if $control_inputs = 1
+	    <th>
+		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(1)" name="but3" value="+">
+	    </th>	
+	    <th>
+		<input type="button" style="color:black;background-color:orange;font-weight:normal;font-size:14px;text-align:center;" onclick="javascript:TexAppInputs(-1);" name="but4" value="&minus;">
+	    </th>	
+	!endif
+	</tr>
+    </table>
+</div>
+!exit
