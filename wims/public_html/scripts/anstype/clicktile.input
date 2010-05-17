@@ -1,4 +1,4 @@
-!reset xsize ysize background_color=black return_all_objects
+!reset xsize ysize background_color return_all_objects
 !set appletdir=java/Clicktile
 !set anstype=yes
 !set anstyle=dprompt
@@ -23,7 +23,13 @@ $ in $oef_applet_option
  !distribute items $Inputsize into xsize,ysize
 !endif
 !set oef_applet_option=!translate [] to $  $ in $oef_applet_option
+!default background_color=green
+!default oef_applet_option=xrange 0,10\
+yrange 0,1\
+colors red,blue\
+background_color $background_color
 !set oef_applet_option_cnt=!linecnt $oef_applet_option
+
 !set applet_parm=
 !set cnt_square=0
 !for a=1 to $oef_applet_option_cnt
@@ -52,9 +58,9 @@ $ in $oef_applet_option
   !endif
 !next
 
-!default xsize=480
-!default ysize=480
-!default background_color=black
+!default xsize=200
+!default ysize=30
+!default Inputsize=$xsize,$ysize
 !default return_all_objects=no
 !!############################
 !!####partie importante
