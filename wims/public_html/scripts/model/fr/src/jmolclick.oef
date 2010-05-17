@@ -80,6 +80,12 @@ EXTRACT: visible
   1 10  1
 }
 
+:La taille de l'applet, en pixels, largeur x hauteur.
+\text{size1=200x200}
+
+:Texte avant l'applet
+\text{pre=Sélectionner tous les atomes}
+
 :Les atomes sur lequels il faut cliquer (une des lignes sera prise au hasard)
 \matrix{atom=_N
 _O
@@ -90,26 +96,29 @@ _C}
 d'oxygène.
 de carbone.}
 
-:La taille de l'applet, en pixels, x fois y.
-
-\text{size1=200x200}
-
-
-:Texte avant l'applet
-\text{pre=Sélectionner tous les atomes}
-
 :Texte après l'applet
-\text{post=<i>Vérifiez que le zoom de votre navigateur est sur la taille normale.
-</i>}
+\text{post=<i>Vérifiez que le zoom de votre navigateur est sur la taille normale.</i>}
 
-%%%%%
+:le script Jmol à effectuer lors de la présentation de l'exercice.
+\text{scriptinput=select all;color atoms yellow; select none;}
+
+:le script Jmol à effectuer lors de la présentation de la réponse
+\text{scriptouput=}
+
+
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
 \text{cnt=\atom[;1]}
 \integer{cnt=items(\cnt)}
 \text{sel=randint(1..\cnt)}
 \text{atom=\atom[\sel;]}
 \statement{\pre \instruction[\sel;]
 <center>
-\embed{reply 1, \size}
+\embed{reply 1, \size1
+
+\scriptinput
+\scriptouput}
 </center>
 \post
 }
