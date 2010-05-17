@@ -23,6 +23,8 @@ SLIB=$WIMS_HOME/public_html/scripts/slib
 SWAC=$WIMS_HOME/public_html/scripts/data/swac
 DATA=$WIMS_HOME/public_html/scripts/data
 ICONES=$WIMS_HOME/public_html/gifs/themes
+MODEL=$WIMS_HOME/public_html/scripts/model
+
 # MAX_LINELEN
 linelen=15000
 
@@ -187,5 +189,12 @@ rm -f index.log
 $BASES/doc/.build-index
 $DATA/qpuzzle/makepieces
 $DATA/spuzzle/makepieces
-$ICONES/mkindex
+
+cd $ICONES 
+./mkindex > index.log
+
+
+#model list
+for i in fr en cn ca it ; do rm -f $MODEL/$i/list ; done 
+
 
