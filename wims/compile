@@ -52,34 +52,20 @@ if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
 
    WIMS compile options (the letter in the bracket is the default)
 
-1. This package includes an independent program, 'units-filter',
-   which is used in physics/chemistry exercises for unit recognition.
-   Its compilation requires flex.
+1. You want to use root password or sudo
 @
- echo $n "   -- Compile units-filter (y/n)? [y] " $c
+ echo $n "   -- root password (y/n)? [y] " $c
  read ans
  if [ "$ans" = "n" ] || [ "$ans" = "N" ]; then
-  options="$options --without-units"
+  sudo=sudo
+  msg='sudo password'
  else
-  options="$options --with-units"
+  sudo="su root -c"
+   msg='root password'
  fi
  cat <<@
 
-2. This package includes an independent program, 'chemeq',
-   which is used in physics/chemistry exercises for checking balancing
-   conditions in chemical equations.
-   Its compilation requires GNU C++ compiler and flex.
-@
- echo $n "   -- Compile chemeq (y/n)? [y] " $c
- read ans
- if [ "$ans" = "n" ] || [ "$ans" = "N" ]; then
-  options="$options --without-chemeq"
- else
-  options="$options --with-chemeq"
- fi
- cat <<@
-
-3. This package includes a stand-alone http server, 'wimsd',
+2. This package includes a stand-alone http server, 'wimsd',
    which is known to have compatibility problems on some architectures
 @
  echo $n "   -- Compile wimsd (y/n)? [y] " $c
@@ -93,7 +79,7 @@ if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
 
 -----------------------------------------------------------------------
 
-   Options: $options
+   Options: $options $msg
 
 @
  echo $n "   Now press [Enter] to start compilation, or Ctrl-C to abort. " $c
@@ -109,12 +95,7 @@ cp src/defaults.conf public_html/bases/sys/defaults.conf
 bin/mkindex
 #bin/changepermissions
 
-echo "Please give the root password (sudo password for macosx) to setup WIMS."
-uname=`uname | tr '[A-Z]' '[a-z]'`
-case "$uname" in
-  darwin) sudo=sudo;;
-  *)      sudo="su root -c";;
-esac
+echo "Please give the $msg to setup WIMS."
 $sudo bin/wrapuid || exit
 cat <<@
 
