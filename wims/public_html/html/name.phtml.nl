@@ -113,9 +113,9 @@
 	    Hulp software<br>vereist,\
 	    Server tijd,\
 	    Data module,\
-	    Developped on WIMS,\
-	    Publication center,\
-        Download center,\
+	    Ontwikkeld op WIMS,\
+	    Publicatie centrum,\
+        Download centrum,\
 	into wims_name_name,\
 	wims_name_iconabout,\
 	wims_name_module_infos,\

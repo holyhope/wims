@@ -65,7 +65,7 @@ Voor het selecteren van oefening zijn de volgende opties beschikbaar
 !set name_desc_comment=Alleen zichtbaar voor docenten.
 !set name_getsource=Hier staat de broncode van dit werkblad.U kunt deze kopieren (tussen de twee regels met "****") en hergebruiken voor een ander werkblad.                                                                                                      
 
-!set name_regmodif=Modification enregistrée
+!set name_regmodif=Modificatie geregistreerd
 !! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
 !set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims
 !set name_helpprog=$empty

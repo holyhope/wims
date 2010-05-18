@@ -33,7 +33,7 @@ U kunt niet twee keer dezelfde datum gebruiken voor het huiswerk.
 
 :same_devoir2
 U kunt niet twee keer dezelfde datum gebruiken voor het huiswerk.
-Gebruik deze link hiervoor:
+Gebruik deze link:
  !href cmd=new&job=adddate&filename=$jyear$jmonth$jday verander een datum
  .
 !exit

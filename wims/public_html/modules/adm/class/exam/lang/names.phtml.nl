@@ -46,7 +46,7 @@ het aftellen begint en het aantal beschikbare proefwerk pogingen wordt met 1 ver
 begin het aftellen .\
 Vereist een goed cijfer bij de vorige opgaven\
 Cijfer voor deze proefwerk sessie&nbsp;\
-into wims_name_endexam,wims_name_backexam,name_teacherview,name_presentation,\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
 name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
@@ -72,7 +72,7 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set name_timeleft=!nosubst De beschikbare tijd is verlopen! Je hebt de toegestane $sdure minuten verbruikt.
 !set name_realscore=!nosubst De echte score voor deze proefwerk-sessie is $lastscore.
-!set name_bestscore =!nosubst De score voor dit proefwerk is $lastscore. (En de beste score telt !)
+!set name_bestscore=!nosubst De score voor dit proefwerk is $lastscore. (En de beste score telt !)
 
 
 !! ---------------------------

@@ -1,7 +1,7 @@
 !set lang_exists=yes
 !set name_title=Individuele activiteiten
 !set name_noparticipant=Deze klas heeft geen deelnemers/leerlingen
-!set name_lastconnexion=Laatste verbinding
+!set name_lastconnexion=Laatste ip-verbinding
 !set name_total=tijdsduur
 !set name_click=Klik op een naam voor details
 !set name_nbsessions=Aantal sessies

@@ -2,7 +2,7 @@
 
 !if not_supervisor=$error
     Helaas, deze handeling is alleen toegestaan 
-    voor de superisor van een klas.
+    voor de supervisor van een klas.
  !exit
 !endif
 

@@ -46,8 +46,7 @@ name_new_participant,name_registered,name_connexion,name_up
 
 !set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
  ne fonctionne pas.
- 
-!distribute line U heeft geen account in een andere klas.\
+ !distribute line U heeft geen account in een andere klas.\
 Zoek mijn klassen\
 Geen andere klassen aanwezig.\
 Geen klas gevonden.\

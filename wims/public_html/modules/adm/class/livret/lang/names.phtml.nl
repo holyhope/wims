@@ -13,7 +13,7 @@ Prestatieniveaus,\
 prestatieniveau,\
 prestatieniveaus,\
 Alle,\
-skills booklet,\
+vaardigheden boekje,\
 into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All,name_livret
 
 !set name_no_competence=Er staat geen enkele $name_competence vermeld in dit rapport !

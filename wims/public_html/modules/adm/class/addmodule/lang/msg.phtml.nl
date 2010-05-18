@@ -21,7 +21,7 @@ Vreemd, maar uw klas staat hier niet (meer?) geregistreerd !
 
 !if no_sheet=$error
 Uw klas heeft -nog- geen werkbladen in voorbereiding .<br> 
-Lesmateriaal of oefeningen kun je alleen toevoegen aan een nog <b>niet geactiveerd werkblad</b>.
+Lesmateriaal of oefeningen kun men alleen toevoegen aan een nog <b>niet geactiveerd werkblad</b>.
  
  !href module=adm/class/sheet&sheet=$[$sheettot+1] Maak een nieuw Werkblad
 ?

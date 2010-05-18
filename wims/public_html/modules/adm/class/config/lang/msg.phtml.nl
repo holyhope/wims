@@ -11,7 +11,7 @@ Helaas, maar deze module is alleen voor de supervisor van een klas bedoeld.
 
 !if not_secure iswordof $error
  !if $code!=$empty
- Incorrecte beveilingings code.
+ Incorrecte geheime code.
  !else
  Deze module is alleen bereikbaar voor een "secure host".
  !endif

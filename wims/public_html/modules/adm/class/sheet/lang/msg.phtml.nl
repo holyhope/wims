@@ -185,7 +185,7 @@ to $wims_menu_items
 !endif
 
 !if $error=srcnoexo
- Dit werkblad bevat geen enkele oefeningm, en is daardoor leeg.<br>
+ Dit werkblad bevat geen enkele oefening en is daardoor leeg...<br>
  !href cmd=resume terug naar de werkblad aanmaak pagina
  !exit
 !endif

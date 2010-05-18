@@ -25,3 +25,6 @@ waarin
   !insmath \delta_i is 1 als het werkblad <i>i</i> niet is gedeactiveerd boor de berekening van het vaardigheids niveau per periode. Een werkblad dat is gedeactiveerd heeft waarde <i>0</i>.
  <li> NM(a) is <i>1</i> als <i>a</i> groter is dan de minimaal vereiste score ; anders <i>0</i> (zet deze minimale score op <i>0</i> om deze optie ongedaan te maken)</li>
 </ul>
+<p>
+<b><u>Opmerking</u></b>: 
+Als de status van een werkblad wordt veranderd moeten er op dat moment geen leerlingen met de vaardigheden boekje bezig zijn.
