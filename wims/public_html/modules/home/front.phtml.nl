@@ -23,7 +23,7 @@ Bezoek:
 <li class="wims_home_list">
 !href module=adm/doc Interactieve Documenten.
  en                                                                                                                                        
-!href module=help/teacher/faq.fr FAQ [Frans]
+!href module=help/teacher/faq FAQ [Frans]
 .</li>
 !endif
 </ul>
