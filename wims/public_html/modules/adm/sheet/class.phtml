@@ -13,7 +13,7 @@ $wims_classname - $wims_institutionname\
 $name_title\
 $sheet_title
 
-<div class="wims_sheet_desc">$sheet_desc</div><p>
+<div class="wims_sheet_desc">$sheet_desc</div>
 
 !if $sheet_expiration!=$empty and $sheet_active=1
  !set expday=!char 7,8 of $sheet_expiration
@@ -21,14 +21,15 @@ $sheet_title
  !set expyear=!char 1 to 4 of $sheet_expiration
  !read adm/date.phtml
  !set expmon=!item $expmon of $months
- $name_student1
  <p>
+ $name_student1
+ </p>
 !endif
 
 !if $sheet_active=2
- <b><font color=red>$wims_name_warning</font></b>
+ <p><b><font color=red>$wims_name_warning</font></b>
  $name_student2
- <p>
+ </p>
 !endif
 !if $n=0
  !if $sheet_active=$empty
@@ -57,7 +58,7 @@ to $wims_menu_items
  $name_scoreclose
  !endif
  <div class="wims_sheet">
- <p><ul class="wims_sheet_list">
+ <ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -65,13 +66,13 @@ to $wims_menu_items
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
-  <li class="wims_sheet_list">$i. 
+  <li class="wims_sheet_list">$i.
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
 , $de
    !if $require>0
     <small>$name_score
-    $[$mean]/10. </small>
+    $[$mean]/10.</small>
    !endif
   !else
    <font color=red><b>$ti</b></font>, $de

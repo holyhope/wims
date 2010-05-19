@@ -11,18 +11,17 @@ $name_title
  $wims_name_sheetempty
 !else
  $name_assignedwork:
- <div class="wims_sheet"><p><ul class="wims_sheet_list">
+ <div class="wims_sheet"><ul class="wims_sheet_list">
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !distribute lines $ex into di,pa,re,we,ti,de,dep
-  <li class="wims_sheet_list"><p>$i. 
+  <li class="wims_sheet_list">$i.
   !href module=$di&cmd=new&worksheet=$parm1&$pa $ti
 , $de
   !if $re>0
    <small>$name_quality
    0/10. </small>
   !endif
-  </p>
   </li>
  !next i
  </ul>
@@ -30,6 +29,7 @@ $name_title
 !endif
 <p>
 !homeref
+</p>
 !set wims_menu_items=!append line ,0,\
 backteacher,1,cmd=resume\
 to $wims_menu_items

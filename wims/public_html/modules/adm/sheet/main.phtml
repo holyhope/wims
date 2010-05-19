@@ -19,8 +19,9 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
+<p>
 $name_textsource
- <p><hr><pre>
+</p><hr><pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
@@ -43,19 +44,19 @@ $name_level $(intro[5;]), $name_duration $duration mn ($year)<br>$(intro[8;])\
 <div class="wims_sheet_desc">$sheet_desc</div> <p>
 
 $sheet_remark
-<p>
+</p>
 
 !if $n=0
  $name_empty
 !else
  <div class="wims_sheet">
- <p><ul class="wims_sheet_list">
+ <ul class="wims_sheet_list">
  !for i=1 to $n
   !set ex=!record $i of $data
   !distribute lines $ex into di,pa,require,we,ti,de
   !set got=!word $i of $scores
   !set mean=!word $i of $means
-  <li class="wims_sheet_list"><p>$i. 
+  <li class="wims_sheet_list">$i.
   !href module=$di&cmd=new&worksheet=$public$shn&$pa $ti
 , $de
  </li>
