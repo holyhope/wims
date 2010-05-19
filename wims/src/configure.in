@@ -158,6 +158,19 @@ if test "$with_units" = "yes"; then
   -lfl) BUILD_UNITS=units-filter;;
   *) with_units=no; echo "Wait ... flex is not available, Compile units : no";;
   esac
+  for dir in /usr /usr/pkg /usr/local /usr/local/gmp /opt/local /opt/local/gmp /usr/lib/gmp /usr/gmp; do
+     AC_CHECK_HEADER($dir/include/gmp.h, ac_cv_gmp=yes, ac_cv_gmp=no)
+     if test $ac_cv_gmp = yes ; then
+       CFLAGS="$CFLAGS -I$dir/include -L$dir/lib"
+       AC_DEFINE(HAVE_GMP_H, [], [Define if you have "gmp.h"])
+       break
+    fi
+  done
+  if test $ac_cv_gmp = no ; then
+     AC_MSG_ERROR([No GNU MP installation found])
+  fi
+  AC_CHECK_LIB(gmp, __gmpz_export)
+  # FIXME return ERROR if no lib
 fi
 
 AC_ARG_WITH(chemeq,[  --without-chemeq	  Don't compile chemeq (chemical equation analyzer)],echo Compile chemeq: $with_chemeq, with_chemeq=yes; echo Compile chemeq: yes)
