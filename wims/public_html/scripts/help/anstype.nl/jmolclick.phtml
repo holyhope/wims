@@ -1,1 +1,204 @@
-!changeto help/anstype/jmolclick.phtml
+<b>Markeer en selecteer atoms [3D : java vereist]</b> (naam: <tt>jmolclick</tt>)
+<p>
+Een molecuul wordt getoond in de <b>Jmol</b> java applet waarin atomen kunnen worden gemarkeerd.
+Dit type antwoord model moet in combinatie met het commando <tt>\embed{}</tt> worden gebruikt.
+Andere objecten kunnen ook worden getoond door de <b>Jmol</b> applet.
+</p><p>
+Het correcte antwoord bevat twee regels (gescheiden door ; ).
+De eerste regel is het correcte antwoord.
+De tweede regel bevat het te tonen molecuul.
+Het molecuul moet in een voor <b>Jmol</b> geschikt formaat op de server aanwezig zijn.
+Mogelijke locaties voor dit bestand zijn:
+<ul>
+<li>in een directory genaamd <tt>data</tt> in uw module: het adres is dan <tt>data/xxx</tt></li>
+<li>in een directory genaamd <tt>images/tt> in uw module: het adres is dan <tt>\imagedir/xxx</tt> </li>
+<li>in de <tt>modules/data</tt> directory van de wims server: het adres is dan <tt>datamodule/xxx</tt></li>
+</ul>
+Er kan ook rechtstreeks een structuur aan de applet worden door gegeven.
+</p><p>
+
+Het eerste gedeelte van het correcte antwoord is gegeven door een lijst met nummers van atomen
+zoals deze in de datafile van het molecuul voorkomen, of door een commando in de <b>Jmol</b> syntax.
+(zie hieronder voor enkele voorbeelden)
+Ingegeven kan worden:
+<ul>
+<li>
+<tt>1, 2, 3</tt>
+</li>
+<li>
+<tt>atomno=1 or atomno=2 or atomno=3</tt>
+</li>
+<li>
+ <tt>({0,1,2})</tt> 
+</li>
+</ul>
+De laatste twee zijn in de <b>Jmol</b> syntax.
+</p><p>
+Meerdere correcte antwoorden zijn mogelijk: ze moeten worden gescheiden door een <tt>|||</tt>
+Let op: <tt>no_select=2</tt>, <tt>_O ||| 1|2|4</tt> 
+betekend dat de student precies twee zuurstof atomen <b>of<b> twee atomen uit de nummers 1,2 en 4 moet worden geselecteerd
+
+De eerste regel van het commando <tt>\embed</tt> is de grootte in pixes van de applet in X&times;Y .
+OP de volgende drie regels kunnen  <b>Jmol</b> scripts worden gegeven : 
+de eerste wordt uitgevoerd bij het aanroepen van de applet,
+de derde regel wordt uitgevoerd als het antwoord wordt verstuurd naar wims; 
+de tweede wordt in beide gevallen uitgevoerd.
+
+Er kan ook het adres van een jmol scriptbestand worden aangegeven.
+De adressen van dit script zijn gelijk aan de locaties voor de molecuul bestanden.
+Vijvoorbeeld: <tt>data/scriptsimple.spt</tt>). 
+Deze scriptfiles moeten de uitgang <tt>.spt</tt> hebben.
+Als dit script automatisch door wims wordt gegenereerd in uw module, kunnen er ook random variabelen in worden aangebracht.
+In dit geval kan gebruik worden gemaakt  van de bibliotheek <tt>oef/newfile</tt> 
+(bijvoorbeeld : 
+<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
+waarin de variabel <tt>text_script</tt>
+De bibliotheek retourneerd het adres van het aangemaakte bestand.
+
+</p><b>Voorbeelden</b>: 
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  script \filescript ; select ({5}); spacefill 0.1;select none;
+  set echo top left; echo "before the answer";
+  set echo bottom right; echo "after the answer";}
+}
+</pre>
+of
+<pre>
+\text{filescript=wims(record 0 of data/scriptsimple.spt)}
+\text{filescript=slib(oef/newfile spt,\filescript)}
+\statement{
+  \embed{r1, 300x300
+  \filescript}
+}
+</pre>
+<p>
+Let op: niet vergeten puntkomma's te gebruiten in het Jmolscript.
+</p><p>
+De onderstaande opties zijn aanwezig voor het antwoord model <tt>jmolclick</tt>:
+</p>
+$table_header
+$table_tr<td><tt>
+split</tt> or <tt>partialscore
+</tt></td><td>
+The score takes in account a partially good answer and the weight of bad answers are greater than the 
+weight of the good answers.
+$table_tr<td><tt>
+eqweight
+</tt></td><td>
+the partial good answer have the same weight for the score and the bad answers have the same weight
+as the bad ones.
+$table_tr<td><tt>
+noselect="list of atoms numbers"
+</tt></td><td>
+the atoms in the list can't be selected.
+$table_tr<td><tt>
+nb_select=</tt>m</td><td>the number of selected atoms must be exactly <tt>m</tt>.
+An alert message asks to correct if it is not true.</td>
+$table_tr<td><tt>
+applet=imagedir</tt></td><td>For experts: the used applet will be in the
+directory <tt>images</tt> of the module. Don't use this solution except if you really need 
+a more recent version of <b>Jmol</b>.
+$table_end
+
+The variable <tt>reply</tt>n has three lists separated by semi-colons :
+the list of the good answers of the students; the list of his/her bad  answers; the list of the forgotten
+atoms.
+
+In the case where the first field of the good answer is an empty variable, the variable
+<tt>reply</tt>n is simply the list of the selected atoms.
+
+$table_header
+<caption>Jmol answer example  (first line of the second field of <tt>answer</tt>)</caption>
+$table_tr<td><tt>
+atomno=1 
+</tt></td><td> the atom number 1
+$table_tr<td><tt>
+({1})
+</tt></td><td>
+the atom number 2 (attention au décalage de 1).
+$table_tr<td><tt>
+atomno=1 or atomno=2 or atomno=5
+</tt></td><td>
+the atoms 1, 2 and 5
+$table_tr<td> <tt>
+({0 1 4})
+</tt></td><td>
+the atoms 1, 2 and 5 (pay attention at the shift of 1).
+$table_tr<td> <tt>
+({0 1 4:7})
+</tt></td><td>
+the atoms 1, 2 and the atoms from 5 to 8 (pay attention at the shift of 1).
+$table_tr<td><tt>
+_C
+</tt></td><td>
+all the atoms de carbone (one can also write <tt>carbon</tt> or use the atomic number <tt>elemno=6</tt>)
+$table_tr<td><tt>
+connected(2)
+</tt></td><td>
+all the atoms with two bonds (whatever the type of bonds)
+$table_tr<td><tt>
+connected(2,4)
+</tt></td><td>
+all the atoms with 2 and 4 bonds (for all types of bonds)
+$table_tr<td><tt>
+connected(double)
+</tt></td><td>
+all the atoms with a double bond (one can also ask <tt>single</tt>, <tt>triple</tt> or <tt>aromatic</tt>)
+$table_tr<td><tt>
+connected(atomno=5)
+</tt></td><td>
+all the atoms connected to the atom number 5
+$table_tr<td><tt>
+connected(2,nitrogen)
+</tt></td><td>
+all the atoms connected exactly to two nitrogen atoms (they may be connected to other atoms types)
+$table_tr<td><tt>
+within(2.1,atomno=4)
+</tt></td><td>
+all the atoms to a distance less than 2.1 Å from the atom number 4
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+all the atoms to a distance less than 2.1 Å of the plane defined by the atoms number 3, 4 and 5 (it is an algebraic measure)
+$table_tr<td><tt>
+within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})}) or within(-2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
+</tt></td><td>
+all the atoms to a distance less than 2.1 Å of the plane defined by the atoms number 3, 4 and 5.
+$table_end
+
+<p>The conditions may be mixed in <b>Jmol</b> by the set operations 
+<tt>OR</tt>, <tt>AND</tt> and <tt>NOT</tt>. For details, see 
+<a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
+</p>
+$table_header
+<caption>Jmol scripts examples</caption>
+$table_tr<td><tt>
+
+connect (({4}) ({5}) double modifyorcreate;
+</tt></td><td>
+Create a double bond between the atoms number 4 and 5
+$table_tr<td><tt>
+connect (({4}) ({5}) delete;
+</tt></td><td>
+Delete the bonds between the atoms number 4 and 5
+$table_tr<td><tt>
+connect (_C) delete;
+</tt></td><td>
+Delete the bonds between the carbon atoms
+$table_tr<td><tt>
+select (_N); color atoms green; select none;</tt><td>
+Draw in green the nitrogen atoms
+$table_tr<td><tt>
+select ({5}); spacefill 0.1; select none;</tt><td>
+reduce the size of the atom number 5
+$table_end
+
+<p>
+Hier staan enkele bibliotheken geschikt voor Jmol:
+!href module=help/wimsdoc&+subject=slib#slib slib
+</p>
+
