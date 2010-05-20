@@ -9,7 +9,7 @@
 
 CC=gcc
 AR=ar
-CFLAGS=-g -O2 -I/usr/include -L/usr/lib
+CFLAGS=-g -O2
 RANLIB=ranlib
 LIBS=-L./ -lgd -lm
 
