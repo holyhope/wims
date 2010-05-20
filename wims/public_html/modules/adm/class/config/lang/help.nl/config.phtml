@@ -43,31 +43,31 @@ Zie hieroor de wachtwoord-pagina
 !exit
 
 :option
- <b>Option words of the class</b>. The following words can be used here:
+ <b>Tonen configuratie opties op homepagina van klas </b>. 
+ De volgende 'woorden' kunnen worden gebruikt:
  <ul>
- <li><tt>showshexpire</tt>. Show the expiration date of worksheets in the
-  home page of participants.
- <li><tt>showexexpire</tt>. Show the expiration date of exam sheets in the
-  home page of participants.
- <li><tt>showshweight</tt>. Show sheet weight in the
-  home page of participants.
+ <li><tt>showshexpire</tt>. 
+ Laat de einddatum van werkbladen zien aan studenten.
+ <li><tt>showexexpire</tt>.
+ Laat de einddatum van proefwerken [examens] zien aan studenten.
+ <li><tt>showshweight</tt>. 
+ Laat het gewicht van een werkblad zien aan studenten
  </ul> 
 !exit
 
 :lang
-Vous pouvez choisir la langue de la classe parmi celles installées sur
-votre site wims. Votre classe apparaîtra alors dans la liste des classes correspondante
-des zones d'élèves et d'enseignants.<br>
-Abréviations utilisées : <ul>
+Kies de taal waarin deze klas moet worden getoond.
+Afhankelijk van de ondersteuning op deze wims server kan gekozen worden uit
+de talen: <ul>
  <li>ca (Catalaans)
  <li>cn (Chinees gb)
- <li>de (Allemand)
+ <li>de (Duits)
  <li>en (Engels)
  <li>es (Spaans)
  <li>fr (Frans)
  <li>it (Italiaas)
  <li>nl (Nerderlands)
- <li>si (Slovène)
+ <li>si (Sloveens)
  <li>tw (Chinees big5)
 </ul>
 !exit
@@ -242,51 +242,43 @@ De docent natuurlijk wel.
 !exit
 
 :authtype
-<b>Type d'authentification</b> : 
-Vous pouvez utiliser une authentification par ldap ou l'authentification par wims.
-Dans le cas où l'authentification par ldap ne réussit pas, l'authentification
-par la procédure interne de wims est essayée.
+<b>Soort authentificatie</b> : 
+Er kan worden gekozen tussen authentificatie via <tt>ldap>/tt> of via het wims eigen authentificatie systeem.
+In het geval dat een inloggen cia <tt>ldap</tt> mislukt wordt geprobeerd een wims authentificatie op te starten..
 <p>
-Exemple de paramètres pour une authentification ldap :
+Voorbeeld <tt>ldap</tt> configuratie:
 <pre>
-ldap_host=ldap.u-psud.fr
+ldap_host=ldap.schaersvoorde.nl
 ldap_port=389
 ldap_version=3
-ldap_base=ou=people,dc=u-psud,dc=fr
-ldap_branch=ou=people,dc=u-psud,dc=fr
+ldap_base=ou=people,dc=schaersvoorde,dc=nl
+ldap_branch=ou=people,dc=schaersvoorde,dc=nl
 ldap_uid=uid
 ldap_login=supannAliasLogin
 </pre>
 !exit
 
 :modtoolchg
-<b>Compte Modtool</b> : 
-Une fois que vous êtes entré dans Modtool par la classe, votre compte Modtool
-est enregistré. Vous pouvez ici effacer cet enregistrement si vous avez besoin
-d'utiliser un autre compte Modtool. Vous devez ensuite passer par le lien <tt>Modtool</tt>
-sur la page d'accueil.
+<b>Modtool account</b> :
+Wanneer u -ingelogd- op de link <tt>modtool</tt> klikt wordt er een account aangemaakt.
 
 !exit
 :ent
-<b>Links on another plateform</b> :
-You may add a link on another plateform :
-<pre> link_title,link_adress</pre>
-For example,
-<pre>Dokeos,http://-------</pre>
-If you need more than one link, they must be seperate by ";". 
-
+<b>Verbinding met andere digitale leerplatformen</b> :
+Hier kan een link worden geplaatst naar een andere ELO:
+<pre> link_titel,link_adres</pre>
+Bijvoorbeeld,
+<pre>It's learning ,http://-------</pre>
+Zijn er meerdere links gewenst, scheidt deze dan van elkaar door een ";".
 !exit
 
 :external_auth
-<b>Adresse dans le cas d'une authentification externe</b> : <i>Ceci est pour experts
-et permet d'utiliser par exemple une authentification CAS. </i>
-Vous pouvez indiquer le lien sur une authentification externe à wims sous la forme
-(cette adresse devra alors directement faire entrer dans la classe). 
-Vous devez mettre l'adresse complète en html :<tt>&lt;a href="http:...">Lien&lt;/a></tt>.
-
-Il est par exemple possible de mettre l'adresse dans un "frame" : 
-<tt>&lt;iframe https:...." width="100%" height="400">&lt;/iframe></tt>. 
-
+<b>Adres ingeval van een externe authentificatie</b> : 
+<i>
+Dit is voor experts en het maakt het mogelijk om bijv. een CAS-authenticatie te gebruiken. </ I>
+Het adres moet in de html zijn: <tt>&lt;a href="http:...">link naam &lt;/a&gt;</tt>.
+Het adres kan ook worden geplaatst in een htmle frame :
+<tt>&lt;iframe https:...." width="100%" height="400">&lt;/iframe&gt;</tt>. 
 <p>Vous pouvez désactiver cette option tout en gardant le texte en cliquant sur <tt>Non</tt>.
 Si vous cochez <tt>$name_mix_auth</tt>, l'adresse html que vous avez donné apparaîtra mais
 aussi l'authentification propre à wims comme une alternative. 
@@ -298,8 +290,10 @@ vous assurez que l'authentification externe permet d'entrer dans votre classe.
 
 
 :topscores
-<center><b>Meilleures notes, nombre et anonymat</b></center>
-<p> Si ce nombre n est au moins 1, lorsqu'un 
+<center><b>Hoogste cijfers, anoniem of op naam</b></center>
+<p> 
+
+Si ce nombre n est au moins 1, lorsqu'un 
 participant demande ses notes, il verra également la liste des
 n participants ayant les meilleures moyennes 
 (avec leurs noms si l'anonymat est configuré sur non, juste un numéro 
