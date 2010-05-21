@@ -76,8 +76,10 @@ Cuaderno de $name_competences \
  !let name_delcomp=!nosubst ¿Está seguro de querer suprimir el  $name_competence $comp ( $mem_title ) del $name_livret ?
  !exit
 !endif
-!let wims_name_save=Save and restore
+
 !if $job=save
- name_get=you can download source file to get structure of your skill booklet for example to restore it in an other class.
- name_put=write name of a skill booklet archive file. Wims will add skill of the files to yours.
+ name_get=You can download the source file to get structure of your skill booklet \
+  for example to restore it in an other class.
+ name_put=Write the address of a skill booklet archive file on your computer. The skills of the file \
+ will be add to those already in your skill booklet.
 !endif

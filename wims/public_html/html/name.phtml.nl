@@ -351,11 +351,10 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !if config isin $module
  !distribute line Hoofdpagina klassen onderhoud\
  Instituut administratie\
- Backup en herstel\
-into wims_name_config, wims_name_struct,wims_name_save
-
+into wims_name_config, wims_name_struct
 !endif
 
+!set wims_name_save=Backup en herstel
 !set wims_name_backgateway=Beheer van
 
 !distribute line Een cursus toevoegen\

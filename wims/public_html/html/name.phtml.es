@@ -349,11 +349,10 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
 !if config isin $module
  !distribute line Página principal de configuración\
  Gestión de la estructura\
- Copias de seguridad y recuperación\
-into wims_name_config, wims_name_struct,wims_name_save
-
+into wims_name_config, wims_name_struct
 !endif
 
+!set wims_name_save=Copias de seguridad y recuperación
 !set wims_name_backgateway= Gestión de
 
 !distribute line Añadir un curso \
