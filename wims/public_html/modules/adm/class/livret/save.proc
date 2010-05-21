@@ -1,0 +1,61 @@
+
+donnees=$empty
+!for k=1 to $livret_nbcomp
+ title=!record $k of wimshome/log/classes/$wims_class/livret/.comps
+ title=!line 1 of $title
+ donnees=$donnees\
+:$title
+ nb=!recordcnt wimshome/log/classes/$wims_class/livret/.comp$k
+ !for l=1 to $nb
+  t=!record $l of wimshome/log/classes/$wims_class/livret/.comp$k
+  t=!line 1 of $t
+  donnees=$donnees\
+$t
+ !next l
+!next k
+file=wimshome/sessions/$wims_session/getfile/livret
+!writefile $file $donnees
+file=livret
+
+!if $wims_deposit!=$empty
+ nbcompnews=!recordcnt wimshome/sessions/$wims_session/user-deposit
+ test=$[$maxcomp-$livret_nbcomp]
+ !if $test>0 and $nbcompnews>0
+  max=$[min($test,$nbcompnews)]
+  !for k=1 to $max
+   don=!record $k of wimshome/sessions/$wims_session/user-deposit
+   tit=!line 1 of $don
+   don=!line 2 to -1 of $don
+   nb=!linecnt $don
+   don=!replace internal $\
+$ by $\
+$: in $don
+   !appendfile wimshome/log/classes/$wims_class/livret/.comps :$tit\
+$nb
+   !writefile wimshome/log/classes/$wims_class/livret/.comp$[$livret_nbcomp+$k] :$don
+  !next k
+  livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
+ !else
+  error=toomanycomp
+ !endif
+ !reset job
+ !read var.proc
+!endif
+
+
+!exit
+
+reclist=user,exo,sheet,exam,doc,sup,def,neighbor,log,forum,score,manual,cdt,vote,livret,seq
+!bound job2 within first,upload,download,restore default first
+
+!if $job2=upload and $wims_deposit=$empty
+ job2=first
+!endif
+
+!if $job2!=first
+ !read arch/$job2.proc
+!endif
+
+!if $job2 iswordof upload restore and $error!=$empty
+ job2=first
+!endif

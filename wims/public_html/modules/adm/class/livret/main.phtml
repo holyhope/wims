@@ -15,10 +15,9 @@
 
 !headmenu
 
-!if $error=bad_class
+!if $error!=$empty
  !read lang/msg.phtml.$moduclass_lang $error
- !tail
- !exit
+ !reset job
 !endif
 
 !read $job.phtml
@@ -27,10 +26,15 @@
  !if config notin $job
   !set wims_menu_items=!append line config,1,cmd=renew&job=config to $wims_menu_items
  !endif
+ !if save notin $job
+  !set wims_menu_items=!append line save,1,cmd=renew&job=save to $wims_menu_items
+ !endif
  !if userlist notin $job
   !set wims_menu_items=!append line cls_livret,1,cmd=renew&job=userlist to $wims_menu_items
  !endif
- !set wims_menu_items=!append line add_competence,1,cmd=renew&job=addcomp&comp=$[$livret_nbcomp+1] to $wims_menu_items
+ !if $livret_nbcomp<$maxcomp
+  !set wims_menu_items=!append line add_competence,1,cmd=renew&job=addcomp&comp=$[$livret_nbcomp+1] to $wims_menu_items
+ !endif
 !endif
 !set wims_menu_items=!append line refresh,1,cmd=reply\
 ,0,\
