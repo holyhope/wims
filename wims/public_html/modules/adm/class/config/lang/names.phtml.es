@@ -87,10 +87,10 @@ into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_
 !distribute lines Recursos de protección restaurados en la clase\
    Se rechaza la restauración de las cuentas de participantes (y registros de actividad) ya que no hay más espacio disponible. \
 La fecha de expiración de la clase se modificó después de la restauración, ya que la fecha restaurada es \
-
  into name_restore1,name_restore2,name_restore3
 
- !distribute items irreconocible, demasiado pronto, demasiado tarde into ebad,eearly,elate
+ !distribute items irreconocible, demasiado pronto, demasiado tarde \
+ into ebad,eearly,elate
 
  !distribute lines Lo sentimos, no se ha podido guardar su clase. Error interno.\
   Este es el fichero en el que ha guardado su clase\
@@ -99,7 +99,6 @@ La fecha de expiración de la clase se modificó después de la restauración, ya qu
   luego presionan \
 Protección selectiva \
 para modificar el fichero de protección aquí arriba y registran el fichero sobre su ordenador.\
-
  into name_download1,name_download2,name_download3,name_download4,\
    name_selective1,name_selective2,name_selective3
 
