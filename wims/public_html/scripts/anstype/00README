@@ -1,5 +1,5 @@
 
-How to add a new anstype:
+How to add a new anstype (called here _name):
 
 Each anstype contains two files, "_name.input" is the input form element, and
 "_name" is the answer processing file.
@@ -9,6 +9,9 @@ subdirectory "anstype" in the module, then put the files there. Any name
 will do, but we recommend that module-specific anstypes use a specific
 prefix for its names, like "mynumeric", "myfunction", ..., in order to avoid
 possible confusions.
+In an oef exercise, the anstype is called by the line
+  \answer{xxx}{yyy}{type=_name}{option=zzz}
+see later for the intern variables corresponding to the values.
 
 The input file should contain the following two definitions.
 
@@ -21,7 +24,8 @@ words to declare in this variable.
     mc          multiple choice style.
     symtext     allows symtext processing.
     numeric     the data is numeric.
-    dprompt     good answer prompt given under double-underlined variable (internal).
+    dprompt     good answer prompt given under double-underlined variable (internal reply__$i) ;
+       in this mode, the good answer is not present by default.
     nogood     never present good answer (because there cannot be).
 
 These scripts accept the following input variables.
@@ -30,13 +34,16 @@ These scripts accept the following input variables.
 	replyname$i	The prompt of the form element.
 	reply$i		The answer given by the student.
 	replygood$i	The good answer given by the author.
+	     so the value of the second field of \answer{}{}.
 	replyoption$i	Option words. Anstypes are more or less free to
-			define their own recognized option words.
-	inputsize	The size of the form element. Its format
-			depends on the type of the reply. This is defined in the command \embed{}
+			define their own recognized option words. In oef exercises, it
+			correspond to the value zzz in {option=zzz}
+	inputsize	the second item of the field \embed{} (the first one is 
+	       r$i ou reply$i). In general, it contains the size of the form 
+	       element.
 
 Moreover, if no comparison is wanted, the answer processing file can have a
-calling parameter "nocompare".
+calling parameter "nocompare" (not useful in oef exercices).
 
 Output variables of the answer processing file:
 
@@ -55,17 +62,22 @@ Output variables of the answer processing file:
 			by 1 if the answer is 100% OK, none if it is false,
 			or anything between 0 and 1 for partially good answer.
 			It is not recommended to decrement this value, nor to 
-			increment it more than 1.
+			increment it more than 1. The real score is computed using it.
 	
 There are also some optional output variables (they can be left empty).
 
 	replyGood$i	This variable can be defined for the good answer
 			shown to the students after replying to the exercise,
 			if it should be different than the real replygood$i.
+            It is not shown in the analysis of the answer for false student 
+            answer if dprompt is declared in anstyle.
 	m_reply$i	This variable can be defined for the answer shown back
 			to the students, if it should be different than the
 			real answer typed in.
-	reply__$i	A special prompt to show when dprompt is declared in anstyle.
+    reply_$i	The answer of the student shown in the html page in place
+            of \embed{} or in the analysis zone (for oef exercises).
+	reply__$i	A special prompt in the analysis of the answer
+	   to show when dprompt is declared in anstyle.
 
 There are also some variables which can be used (new/2009)
      oef_formnosubmit:  if yes, no "Send answer" button appear.
