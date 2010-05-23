@@ -1,4 +1,12 @@
 
+!if comma iswordof $(replyoption$i)
+  !if , isin $(reply$i)
+   test_comma=yes
+   reply$i=!replace internal , by . in $(reply$i)
+   replyGood$i=!replace internal . by ,  in $(replygood$i)
+  !endif
+!endif
+
 reply$i=!rawmath $(reply$i)
 reply$i=!trim $(reply$i)
 parleft=(
@@ -17,6 +25,11 @@ c=!char 1 of $dd
 !endif
 
 m_reply$i=$(reply$i)
+!if $test_comma=yes
+  m_reply$i=!replace internal . by , in $(m_reply$i)
+  reply_$i= $(m_reply$i)
+!endif
+
 !if $wims_read_parm=nocompare
  !if NaN isin $test
   !exit
