@@ -12,7 +12,7 @@ $livret_title
  !exit
 !endif
 !default note=0
-<p>
+<p></p>
 $table_header
  $table_hdtr
    <th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
@@ -20,6 +20,9 @@ $table_header
     <th valign="middle" colspan=$(nbpalier_$k)>
      !set wims_ref_title=$(title_$k)
      !href cmd=renew&job=addcomp&comp=$k $(name_icompetence)$k
+     !set wims_ref_class=wims_button
+     &nbsp;
+     !href cmd=renew&job=addcomp&comp=$k $wims_name_change
     </th>
     !if $k<$livret_nbcomp
      <td width="3" rowspan="$[2+$usercnt]"></td>
@@ -51,5 +54,4 @@ $table_header
   </tr>
  !next i
 $table_end
-<p>
-
+<p></p>
