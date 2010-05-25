@@ -158,25 +158,6 @@ if test "$with_units" = "yes"; then
   -lfl) BUILD_UNITS=units-filter;;
   *) with_units=no; echo "Wait ... flex is not available, Compile units : no";;
   esac
-  AC_CHECK_HEADER(/usr/include/gmp.h, ac_cv_gmp=yes, ac_cv_gmp=no)
-  if test $ac_cv_gmp = yes ; then
-    AC_DEFINE(HAVE_GMP_H, [], [Define if you have "gmp.h"])
-  else
-    for dir in /usr /usr/pkg /usr/local /usr/local/gmp /opt/local /opt/local/gmp /usr/lib/gmp /usr/gmp; do
-      AC_CHECK_HEADER($dir/include/gmp.h, ac_cv_gmp=yes, ac_cv_gmp=no)
-      if test $ac_cv_gmp = yes ; then
-        CFLAGS_GMP="-I$dir/include"
-	LIBS_GMP="-L$dir/lib"
-        AC_DEFINE(HAVE_GMP_H, [], [Define if you have "gmp.h"])
-        break
-      fi
-    done
-  fi
-  if test $ac_cv_gmp = no ; then
-     AC_MSG_ERROR([No GNU MP installation found])
-  fi
-  AC_CHECK_LIB(gmp, __gmpz_export)
-  # FIXME return ERROR if no lib
 fi
 
 AC_ARG_WITH(chemeq,[  --without-chemeq	  Don't compile chemeq (chemical equation analyzer)],echo Compile chemeq: $with_chemeq, with_chemeq=yes; echo Compile chemeq: yes)
@@ -219,8 +200,6 @@ AC_SUBST(ALLSETENV_OBJS)
 AC_SUBST(NETLIBS)
 AC_SUBST(FLEXLIB)
 AC_SUBST(CRYPTLIB)
-AC_SUBST(CFLAGS_GMP)
-AC_SUBST(LIBS_GMP)
 
 AC_CONFIG_FILES([Flydraw/gd/Makefile
 		 Flydraw/Makefile
