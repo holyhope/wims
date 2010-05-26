@@ -15,7 +15,7 @@
 goback=0
 errortext=$empty
 n=$counter
-!if ? isin $(reply$n)
+!if $(reply$n)=?
     remark$n=$NOK
     goback=0
     maxscore=0
@@ -414,63 +414,67 @@ tot=$empty
 AAA=!nospace $AAA
 !for p=1 to $t2 	
     A=!item $p of $AAA
-    a=!char -1 of $A
-    !if $a=*
-	A=!char 1 to -2 of $A
-    !endif	
-    a=!char 1 of $A
-    !if $a=*
-	A=!char 2 to -1 of $A
-    !endif	
-    !if NaN isin $[1*($A)] and $complex!=1
-	# test op sqrt(-4)
-	!if (sqrt isin $A) or (log isin $A) or (ln isin $A)
-	    test=!replace internal sqrt( by @ in $A
-	    test=!replace internal log( by @ in $test
-	    test=!replace internal ln( by @ in $test
-	    p1=!positionof char @ in $test
-	    p2=!positionof char ) in $test
-	    h=!itemcnt $p2
-	    k=!itemcnt $p1
-	    chars=$empty
-	    !if $h=1 and $k=1
-		!for s=$[$p1+1] to $[$p2-1]
-		    ch=!char $s of $test
-		    chars=!append word $ch to $chars
-		!next s
-	    !else
-		klaar=0
-		!if $k=1
-		    !for w in $p2
-			kkk=!append line w=$w<br> to $kkk
-			!if $w>$p1 and $klaar=0
-			    !for s=$[$p1+1] to $[$w-1]
-				ch=!char $s of $test
-				chars=!append word $ch to $chars
-			    !next s
-			    klaar=1
-			!endif
-		    !next w
+    !if ? isin $A
+	A=123456789
+    !else
+	a=!char -1 of $A
+	!if $a=*
+	    A=!char 1 to -2 of $A
+	!endif	
+	a=!char 1 of $A
+	!if $a=*
+	    A=!char 2 to -1 of $A
+	!endif	
+	!if NaN isin $[1*($A)] and $complex!=1
+	    # test op sqrt(-4)
+	    !if (sqrt isin $A) or (log isin $A) or (ln isin $A)
+		test=!replace internal sqrt( by @ in $A
+	        test=!replace internal log( by @ in $test
+	        test=!replace internal ln( by @ in $test
+	        p1=!positionof char @ in $test
+	        p2=!positionof char ) in $test
+	        h=!itemcnt $p2
+	        k=!itemcnt $p1
+	        chars=$empty
+	        !if $h=1 and $k=1
+		    !for s=$[$p1+1] to $[$p2-1]
+			ch=!char $s of $test
+			chars=!append word $ch to $chars
+		    !next s
 		!else
-		    # meerdere sqrt's in 1 antwoord... wordt erg onwaarschijnlijk en niet echt interessant
-		    chars=1
+		    klaar=0
+		    !if $k=1
+			!for w in $p2
+			    kkk=!append line w=$w<br> to $kkk
+			    !if $w>$p1 and $klaar=0
+				!for s=$[$p1+1] to $[$w-1]
+				    ch=!char $s of $test
+				    chars=!append word $ch to $chars
+				!next s
+				klaar=1
+			    !endif
+			!next w
+		    !else
+			# meerdere sqrt's in 1 antwoord... wordt erg onwaarschijnlijk en niet echt interessant
+			chars=1
+		    !endif
 		!endif
-	    !endif
-	    chars=!nospace $chars
-	    testvar=$[1*$chars]
+		chars=!nospace $chars
+		testvar=$[1*$chars]
 
-	    !ifval $testvar<0
-		# hehe negatieve wortel
-		errortext=!record 88 of $remarkdir/commonremarks.$taal
-	    !else	
+		!ifval $testvar<0
+		    # hehe negatieve wortel
+		    errortext=!record 88 of $remarkdir/commonremarks.$taal
+		!else	
+		    errortext=!record 26 of $remarkdir/commonremarks.$taal
+		!endif
+	    !else
 		errortext=!record 26 of $remarkdir/commonremarks.$taal
 	    !endif
-	!else
-	    errortext=!record 26 of $remarkdir/commonremarks.$taal
+	    maxscore=$[$P5*$maxscore]
+	    goback=1
+	    !exit
 	!endif
-	maxscore=$[$P5*$maxscore]
-	goback=1
-	!exit
     !endif
     tot=!append item $A to $tot
 !next p
