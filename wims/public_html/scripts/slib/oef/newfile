@@ -15,7 +15,8 @@ slib_comment=
 !default slib_cnt_=0
 slib_cnt_= $[$slib_cnt_ +1]
 slib_n=!randint 1000,3000
-!distribute items $wims_read_parm into slib_text,slib_ext
+!distribute items $wims_read_parm into slib_ext,slib_text
+
 !if $slib_ext!=
   slib_ext=.$slib_ext
 !endif
@@ -24,4 +25,3 @@ slib_name=file_$(slib_n)_$(slib_cnt_)$slib_ext
 $slib_text
 
 slib_out=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_name
-
