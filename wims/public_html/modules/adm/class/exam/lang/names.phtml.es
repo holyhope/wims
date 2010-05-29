@@ -80,7 +80,6 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !! nueva parte
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activar, expirar, desactivar, ocultar, mostrar,$wims_name_erase
 
 !! -------------- title description for file examinfo.phtml
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\

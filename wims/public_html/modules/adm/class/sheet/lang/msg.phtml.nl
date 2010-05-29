@@ -64,7 +64,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  <p>
   Doorgaan met de procedure?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
@@ -89,7 +89,7 @@ Deze operatie mag alleen worden uitgevoerd van af een veilig ip-adres.
  Alle behaalde cijfers voor dit werblad worden verwijderd, indien U het deactiveerd.
  Doorgaan ?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
@@ -109,7 +109,7 @@ Onthoud dat een eenmaal geactiveerd werkblad, niet meer kan worden gewijzigd !
 
 Wilt U doorgaan?
  <p><center>
- !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  .</center>
@@ -133,7 +133,7 @@ Dit werkblad nummer $sheet ($title) was normaal verlopen op $expday
  U wilt het <b>nu</b> laten verlopen?
 
  <p><center>
- !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
+ !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </center>

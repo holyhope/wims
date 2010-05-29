@@ -79,7 +79,6 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 !! nouvelle partie 
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=Activeren,Verlopen,Deactiveren,Verbergen,Tonen,$wims_name_erase
 
 !! -------------- title description for file examinfo.phtml
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\

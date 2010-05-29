@@ -6,7 +6,6 @@
 !set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 
 !set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
-!set statutaction=!nosubst Activar,expirar,desactivar,Ocultar,Mostrar,$wims_name_erase
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
 !! definición de los nombres para los enlaces en el menubox (definidos por wims_menu_items)

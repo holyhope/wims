@@ -53,7 +53,7 @@
  <p>
  ¿De verdad quiere desactivar la hoja?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
 . </center>
@@ -84,7 +84,7 @@
  Todas las puntuaciones obtenidas en el trabajo en esta hoja quedarán borradas
  si la desactiva. ¿Está usted seguro de querer hacerlo?
  <p><center>
- !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(statutaction[3])
+ !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
 .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
 . </center> <p>
@@ -108,7 +108,7 @@
  <p>
  ¿Desea continuar?
  <p><center>
- !href cmd=reply&job=activate $wims_name_yes; $(statutaction[1])
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
@@ -130,7 +130,7 @@
  !item $expmon of $months
  $expyear. ¿Quiere hacerla expirar ahora?
  <p><center>
- !href cmd=reply&job=expire $wims_name_yes ; $(statutaction[2])
+ !href cmd=reply&job=expire $wims_name_yes ; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </center>

@@ -422,6 +422,7 @@ $ecomment
  !endif
 !endif
 
+erasable=no
 !if $[$activetest]=0
  erasable=yes
  scnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
@@ -432,6 +433,10 @@ $ecomment
    erasable=no
   !endif
  !next s
+!endif
+
+!if $back=1 and $error=$empty
+ !restart module=home
 !endif
 
 !if $job iswordof scorereg renew cpsheet

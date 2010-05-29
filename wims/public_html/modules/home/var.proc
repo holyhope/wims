@@ -54,7 +54,23 @@ test=!record 0 of wimshome/public_html/modules/adm/browse/index
  docpubliccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.docindex
  doccnt=!recordcnt wimshome/log/classes/$wims_class/doc/.index
  sheetcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+ min_sheet_erasable=0
+ !for k=1 to $sheetcnt
+  t=!record $k of wimshome/log/classes/$wims_class/sheets/.sheets
+  t=!line 1 of $t
+  !if $t>0
+   min_sheet_erasable=$k
+  !endif
+ !next k
  examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+ min_exam_erasable=0
+ !for k=1 to $examcnt
+  t=!record $k of wimshome/log/classes/$wims_class/exams/.exams
+  t=!line 1 of $t
+  !if $t>0
+   min_exam_erasable=$k
+  !endif
+ !next k
  votecnt=!recordcnt wimshome/log/classes/$wims_class/vote/.votes
  !read wimshome/log/classes/$wims_class/Exindex
  !read ./adm/du $wims_home/log/classes/$wims_class

@@ -1,0 +1,43 @@
+!! generate link for action on sheet in a class
+!! wims_read_parm=linkmodule,sheetnumber,statutsheet,flag(after action 1 return to home 0 stay in linkmodule)
+!distribute item $wims_read_parm into m_,sh_,st_,home_
+!let exocnt_=!recordcnt wimshome/log/classes/$wims_class/$(m_)s/.$(m_)$(sh_)
+!if $home_=1
+ !let li_=cmd=new&$m_=$sh_&back=$home_&module=adm/class/$(m_)
+!else
+ !let li_=cmd=reply
+!endif
+ !if $st_=0
+  !if $exocnt_>0
+   !set wims_ref_class=wims_button
+   !href $li_&job=prep_activate $(wims_name_actionlist[1])
+   &nbsp;
+  !endif
+  !if $erasable=yes or ($sh_>$(min_$(m_)_erasable) and $home_=1)
+   !set wims_ref_class=wims_button
+   !href $li_&job=prep_erase $(wims_name_actionlist[6])
+   &nbsp;
+  !endif
+ !else
+  !if $st_=1
+   !set wims_ref_class=wims_button
+   !href $li_&job=expire $(wims_name_actionlist[2])
+   &nbsp;
+   !set wims_ref_class=wims_button
+   !href $li_&job=deactivate $(wims_name_actionlist[3])
+  !else
+   !set wims_ref_class=wims_button
+   !if $st_=2
+    !href $li_&job=hide $(wims_name_actionlist[4])
+   !else
+    !href $li_&job=expire $(wims_name_actionlist[5])
+   !endif
+   &nbsp;
+   !set wims_ref_class=wims_button
+   !href $li_&job=reactivate $(wims_name_actionlist[1])
+   &nbsp;
+   !set wims_ref_class=wims_button
+   !href $li_&job=deactivate $(wims_name_actionlist[3])
+  !endif
+ !endif
+

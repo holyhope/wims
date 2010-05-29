@@ -17,8 +17,6 @@ wims_helper=chapter=3
  !exit
 !endif
 !if $job=chseries
-!! num=!replace internal . by , in $num
-!! !distribute item $num into sheet,modif
  !changeto chseries.proc
 !endif
 !readproc adm/search_engine/names.$lang
@@ -373,3 +371,6 @@ $mod_comment
  !next s
 !endif
 
+!if $back=1 and $error=$empty
+ !restart module=home
+!endif

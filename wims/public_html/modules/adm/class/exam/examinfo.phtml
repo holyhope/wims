@@ -13,33 +13,7 @@
    <td>$(name_shinfo[2]) </td>
    <td>$(statutname[$activetest+2]) &nbsp;
    !ifval $activetest>-1
-    !if $activetest=0
-     !if $exocnt>0
-      !href cmd=reply&job=prep_activate $(statutaction[1])
-     !endif
-    !else
-     !if $activetest=1
-      &nbsp;
-      !href cmd=reply&job=expire $(statutaction[2])
-      &nbsp;
-      !href cmd=reply&job=deactivate $(statutaction[3])
-     !else
-      &nbsp;
-      !if $activetest=2
-       !href cmd=reply&job=hide $(statutaction[4])
-      !else
-       !href cmd=reply&job=expire $(statutaction[5])
-      !endif
-      &nbsp;
-      !href cmd=reply&job=reactivate $(statutaction[1])
-      &nbsp;
-      !href cmd=reply&job=deactivate $(statutaction[3])
-     !endif
-    !endif
-    !if $erasable=yes and $activetest=0
-     &nbsp;
-     !href cmd=reply&job=prep_erase $(statutaction[6])
-    !endif
+    !read adm/sheet/sheetaction.phtml exam,$exam,$activetest,0
    !endif
    </td>
   </tr>
