@@ -31,7 +31,6 @@
 #include "gdfontl.h"
 #include "gdfontg.h"
 
-#define MAX_LINELEN 16383
 #define MAX_NAMELEN 63
 #define MAX_PARMS   8192
 #define MAX_SIZE    4096
