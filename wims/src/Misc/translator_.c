@@ -46,8 +46,8 @@ char *unknown, unkbuf[1024];
 int compare(int i1, const char *s2)
 {
     int k;
-    if(nocase) k=strncasecmp(entry[i1].original,s2,entry[i1].olen);
-    else k=strncmp(entry[i1].original,s2,entry[i1].olen);
+    if(nocase) k=strncasecmp((char*)entry[i1].original,s2,entry[i1].olen);
+    else k=strncmp((char*)entry[i1].original,s2,entry[i1].olen);
     if(k==0 && (isalnum(*(s2+entry[i1].olen)) || (*(s2+entry[i1].olen)&128)!=0)) return -1;
     else return k;
 }
@@ -141,14 +141,15 @@ void prepare_dic(char *fname)
 	    for(p=p1;*p!=0 && p<pp && !isdigit(*p);p++);
 	    if(isdigit(*p)) has_digits=1;
 	}
-	entry[i].original=p1; entry[i].replace=pp; 
+	entry[i].original=(unsigned char*)p1; 
+        entry[i].replace=(unsigned char*)pp; 
 	entry[i].olen=l=strlen(p1); entry[i].earlier=-1;
 	if(i>0) {
 	    int l1,l2;
 	    l1=entry[i-1].earlier; if(l1>=0) l2=entry[l1].olen;
 	    else {l2=entry[i-1].olen;l1=i-1;}
 	    if(l>l2 && isspace(p1[l2])
-	       && strncmp(entry[l1].original,p1,l2)==0) 
+	       && strncmp((char*)entry[l1].original,p1,l2)==0) 
 	      entry[i].earlier=entry[i-1].earlier=l1;
 	}
 	i++;
@@ -191,9 +192,9 @@ void translate(char *p)
 	    }
 	    continue;
 	}
-	string_modify(outbuf,p1,p1+strlen(entry[t].original),
-		      entry[t].replace);
-	p2=find_word_start(p1+strlen(entry[t].replace));
+	string_modify(outbuf,p1,p1+strlen((char*)entry[t].original),
+		      (char*)entry[t].replace);
+	p2=find_word_start(p1+strlen((char*)entry[t].replace));
     }
     snprintf(p,MAX_LINELEN,"%s",outbuf);
 }

@@ -1005,7 +1005,7 @@ void calc_hex(char *p)
     char *p2;
     char *hex="0123456789ABCDEF";
     
-    mystrncpy(orig,p,MAX_LINELEN);
+    mystrncpy((char*)orig,p,MAX_LINELEN);
     for(p1=orig, p2=p; *p1 && p2-p<MAX_LINELEN-2; p1++) {
 	*p2++=hex[(*p1>>4)&15]; *p2++=hex[*p1&15];
     }

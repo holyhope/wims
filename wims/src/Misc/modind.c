@@ -89,7 +89,7 @@ char *acctab="çéèêëúùûüáàâäãóòôöõíìïîñıÇÉÈÊËÚÙÛÜÁÀÂÃÄÓÒÔÖÕÍÌÏÎÑİ",
 	/* fold accented letters to unaccented */
 void deaccent(char *p)
 {
-    signed char *sp;
+    char *sp;
     char *v;
     for(sp=p;*sp;sp++) {
 	if(*sp<0 && (v=strchr(acctab,*sp))!=NULL)

@@ -45,10 +45,10 @@ int sufcomp(int t, const unsigned char *s2)
 	/* searches a list. Returns index if found, -1 if nomatch. 
 	 * This routine is faster than naive one by one comparisons, 
 	 * and is especially suited for large lists. */
-int suffix_list(void *list, int items, size_t item_size, const char *str)
+int suffix_list(void *list, int items, size_t item_size, const unsigned char *str)
 {
     int i1,i2,j,k,t,v;
-    char c,d;
+    unsigned char c,d;
     
     if(items<=0) return -1;
     k=sufcomp(0,str);
@@ -70,7 +70,7 @@ int suffix_list(void *list, int items, size_t item_size, const char *str)
 	j>=0 && suf[j].original[0]==c && suf[j].olen>t
 	&& suf[j].original[t-1]==d;j--);
     if(j>=0 && suf[j].original[0]==c && 
-       strncmp(suf[j].original,suf[v].original,suf[j].olen)==0)
+       strncmp((char*)suf[j].original,(char*)suf[v].original,suf[j].olen)==0)
       return j;
     else goto backcheck;
 }
@@ -99,9 +99,9 @@ void suffix_dic(char *sdicname)
 	singlespace(p1);
 	p1=find_word_start(p1); pp=find_word_start(pp);
 	if(*p1==0) continue;
-	suf[i].original=p1; suf[i].olen=l=strlen(p1);
+	suf[i].original=(unsigned char*)p1; suf[i].olen=l=strlen(p1);
 	if(l<sufminlen) sufminlen=l;
-	suf[i].replace=pp; i++;
+	suf[i].replace=(unsigned char*)pp; i++;
     }
     suffixcnt=i;
 }
@@ -119,10 +119,10 @@ void suffix_translate(char *p)
 	for(p2=p1;isalpha(*p2);p2++);
 	if(*p2!=0 && strchr(" ,.?!'\"\n`:;()[]{}<>",*p2)==NULL) continue;
 	sufwordlen=p2-p1;
-	t=suffix_list(suf,suffixcnt,sizeof(suf[0]),p1);
+	t=suffix_list(suf,suffixcnt,sizeof(suf[0]),(unsigned char*)p1);
 	if(t<0) continue;
-	string_modify(p,p2-suf[t].olen,p2,suf[t].replace);
-	p2=p2-suf[t].olen+strlen(suf[t].replace);
+	string_modify(p,p2-suf[t].olen,p2,(char*)suf[t].replace);
+	p2=p2-suf[t].olen+strlen((char*)suf[t].replace);
     }
     p[MAX_LINELEN]=0;
 }

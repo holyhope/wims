@@ -15,7 +15,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-unsigned char t_buf[4][MAX_LINELEN+1];
+char t_buf[4][MAX_LINELEN+1];
 char maskbuf[MAX_LINELEN+1];
 
 	/* internal routine. */
@@ -205,7 +205,8 @@ void text_max(char *p)
     else j=1;
     for(i=k=0; i<min; i++) {
 	if(maskbuf[i]=='0') continue;
-	if(t_buf[0][i]>t_buf[1][i]) p[k++]=t_buf[0][i];
+	if((unsigned char)t_buf[0][i]>(unsigned char)t_buf[1][i])
+          p[k++]=t_buf[0][i];
 	else p[k++]=t_buf[1][i];
     }
     for(;i<max;i++) {
@@ -227,7 +228,8 @@ void text_min(char *p)
     }
     for(i=k=0; i<min; i++) {
 	if(maskbuf[i]=='0') continue;
-	if(t_buf[0][i]<t_buf[1][i]) p[k++]=t_buf[0][i];
+	if((unsigned char)t_buf[0][i]< (unsigned char)t_buf[1][i])
+          p[k++]=t_buf[0][i];
 	else p[k++]=t_buf[1][i];
     }
     p[k]=0;
@@ -237,12 +239,12 @@ void text_min(char *p)
 void text_occur(char *p)
 {
     int i,j,n;
-    unsigned char *pp;
     char buf[MAX_LINELEN+1];
     memset(buf,0,sizeof(buf));
     _text_cut(p,"in");
     n=strlen(t_buf[1]);
     for(i=0;i<n;i++) {
+        char *pp;
 	if(maskbuf[i]=='0') continue;
 	pp=strchr(t_buf[0],t_buf[1][i]);
 	if(pp!=NULL) buf[pp - t_buf[0]]=1;
