@@ -29,6 +29,7 @@ manger,fra,tag=baseform player=player
 !reset slib_out slib_son slib_Son slib_son_mod
 
 !distribute items $wims_read_parm into slib_word,slib_packs,slib_option,slib_optionhtml
+
 slib_son_mod=!singlespace $slib_word
 slib_son_mod=!replace internal $ $ by _ in $slib_son_mod
 slib_son_mod=!nospace $slib_son_mod
@@ -49,7 +50,6 @@ slib_tag=!word 1 of $slib_tag
 !default slib_tag=text
 slib_packs= !declosing $slib_packs
 slib_packs=!words2items $slib_packs
-
 slib_pcnt=!itemcnt $slib_packs
 slib_audio=
 !for slib_w = 1 to $slib_word_cnt
@@ -75,6 +75,7 @@ slib_audio=
   !endif
   slib_audio=!append item $slib_au to $slib_audio
 !next slib_pa
+slib_audio=!nonempty items $slib_audio
 slib_son=!randitem $slib_audio
 !if $slib_son!=
  slib_son1=!replace internal / by , in $slib_son
@@ -99,15 +100,14 @@ slib_son=$slib_Son
 slib_player=!getopt player in $slib_option
 !if $slib_son!=
  !read slib/media/audio $slib_son,$slib_optionhtml,player=$slib_player
-  slib_wo=!getopt swac_text in $slib_word
+  slib_wo=!getopt swac_text in $slib_Word
  !if $slib_wo=
    slib_wo=$slib_word
  !endif
  !if $slib_word_cnt =1
   slib_out=$slib_out,$slib_wo\
-  $slib_word
+  $slib_Word
  !endif
 !else
 slib_out=
 !endif
-
