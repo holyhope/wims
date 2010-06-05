@@ -67,6 +67,16 @@ to $wims_menu_items
  to $wims_menu_items
 !endif
 
+!if $job=edfile
+  !set wims_menu_items=!append line back3,1,cmd=reply&jobreq=flist\
+to $wims_menu_items
+
+  !set wims_menu_items=!append line ,0,\
+   docoef,4,module=adm/createxo&+modtoolhelp=yes,help\
+   docslib,4,module=help/wimsdoc&+subject=slib#slib,help\
+   docanswer,4,module=adm/createxo&+modtoolhelp=yes&+special_parm=reply,help\
+ to $wims_menu_items
+!endif
 !tail
 
 !reset confirm target1 target2 target3 target4 vcheat \
