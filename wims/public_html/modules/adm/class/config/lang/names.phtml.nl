@@ -208,7 +208,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
    name_neigh_account,name_verify
 
- !set name_inactif=!subst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
+ !set name_inactif=!nosubst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
  
  !set name_accept=!nosubst Accepteert u de klas \

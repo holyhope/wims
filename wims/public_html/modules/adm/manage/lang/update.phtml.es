@@ -14,11 +14,11 @@ Pulsan aquí \
 into name_test,name_warning, name_mostrecent,name_mostrecent2,name_morerecent,\
   name_output,name_summary,name_click
 
-!set name_sorry=!subst Afligido, la carga a distancia de la nueva versión de Wims a partir <de tt> $download< /tt> ha fallado. Intente más tarde, por favor.
-!set name_summary=!subst Resumen de la última actualización: (Enviar lo a $wims_maintainer en caso de error.)
-!set name_detailed=!subst Salida detallada de la última actualización: (Enviar lo a $wims_maintainer en caso de error.)
-!set name_sorry2=!subst Afligido, el lugar de carga a distancia <tt> $download< /tt> es  inaccesible.
-!set name_version=!subst Este sitio WIms está actualmente en versión $wims_version.
+!set name_sorry=!nosubst Afligido, la carga a distancia de la nueva versión de Wims a partir <de tt> $download< /tt> ha fallado. Intente más tarde, por favor.
+!set name_summary=!nosubst Resumen de la última actualización: (Enviar lo a $wims_maintainer en caso de error.)
+!set name_detailed=!nosubst Salida detallada de la última actualización: (Enviar lo a $wims_maintainer en caso de error.)
+!set name_sorry2=!nosubst Afligido, el lugar de carga a distancia <tt> $download< /tt> es  inaccesible.
+!set name_version=!nosubst Este sitio WIms está actualmente en versión $wims_version.
 
 !exit
 :update

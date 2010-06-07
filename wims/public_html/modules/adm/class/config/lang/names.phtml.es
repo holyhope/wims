@@ -207,7 +207,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    name_replace,name_existinglogin,name_part_erased,name_import,name_transfered,\
    name_neigh_account,name_verify
 
- !set name_inactif=!subst El(la) $(name_$itype) ha sido puesto(a) en estado inactivo para permitirle \
+ !set name_inactif=!nosubst El(la) $(name_$itype) ha sido puesto(a) en estado inactivo para permitirle \
   modificarlo si lo desea.
 
  !set name_accept=!nosubst ¿Acepta usted la clase <em><font color=blue>\
