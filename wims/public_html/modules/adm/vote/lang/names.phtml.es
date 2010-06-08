@@ -59,3 +59,6 @@ hoja de cálculo preferida&nbsp;
 !set name_format=formato
 
 
+!set name_type=Type
+!set name_option=Options
+!set name_value=Values

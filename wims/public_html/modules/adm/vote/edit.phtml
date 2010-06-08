@@ -1,31 +1,59 @@
 
 !set wims_form_method=post
 !form reply
+<b>
 !if $vote_title=$empty
  $name_creation
 !else
  $name_edition
 !endif
+</b>
 <br>
-$wims_name_title: <input size=50 name="reg_title" value="$vote_title"> <br>
-$wims_name_Status:
-!set reg_status=$vote_status
-!set reg_option=$vote_option
-!set reg_show=$vote_show
-!set reg_whovoteshow=$vote_whovoteshow
-!formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
-$wims_name_Status:
-!formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
-$name_result:
-!formselect reg_show list 1,0 prompt $name_publish,$name_hide
-$name_whovote :
-!formselect reg_whovoteshow list 1,0 prompt $name_publish2,$name_hide2
-<br> $name_content: 
+$table_header
+ $table_hdtr
+  <th>$name_option</th><th>$name_value</th>
+ </tr>
+ $table_tr<td>$wims_name_title :</td><td><input size="50" name="reg_title" value="$vote_title"> </td></tr>
+ $table_tr<td>$name_type :</td>
+  !set reg_status=$vote_status
+  !set reg_option=$vote_option
+  !set reg_show=$vote_show
+  !set reg_whovoteshow=$vote_whovoteshow
+  <td>
+   !formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
+  </td>
+ </tr>
+ $table_tr
+  <td>$wims_name_Status :</td>
+  <td>
+   !formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_result :</td>
+  <td>
+   !formselect reg_show list 1,0 prompt $name_publish,$name_hide
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_whovote :</td>
+  <td>
+   !formselect reg_whovoteshow list 1,0 prompt $name_publish2,$name_hide2
+  </td>
+ </tr>
+ $table_tr
+  <td colspan="2" align="center">
+   <input type="submit" name="rEg" value="$wims_name_tosave" onclick="javascript:editthis();">
+   &nbsp;<input type=submit name="abandon" value="$wims_name_giveup">
+  </td>
+ </tr>
+$table_end
+<p><b> $name_content </b>:
 &nbsp;
 !set wims_ref_class=wims_button
 !href cmd=help $wims_name_help
-<br>
-(
+</p>
+<center>(
 !if $speckedit=no
    !set msgsrc1=<textarea id=src name="reg_src" cols=80 rows=20>$src</textarea>
    !href cmd=reply&job=edit&speckedit=yes  $wims_name_active
@@ -36,7 +64,7 @@ $name_whovote :
 - <small>$wims_name_speck_warning</small>)
  
 $msgsrc1
-<center>
+
 <input type=submit name="rEg" value="$wims_name_tosave" onclick="javascript:editthis();">
 <input type=submit name="abandon" value="$wims_name_giveup">
 </center>
