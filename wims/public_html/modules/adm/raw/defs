@@ -1,34 +1,46 @@
 # header returned by the module
 header=Content-Type: text/plain\
 
-# List of some special jobs 
-#lightpopup
+# header returned by the module within xmlformat
+header_xml=Content-Type: text/xml\
+
+# encoding
+encoding=iso-8859-1
 
 # List of allowed file-mode jobs
-allowed_file_jobs= getcsv, getclassfile, getclasstgz
+allowed_file_jobs= getcsv, getclassfile, getclasstgz, download, getexofile
 
 # List of jobs allowed to make some actions on wims classes
 allowed_actions_jobs=checkclass, addclass, modclass, delclass, getclass, cleanclass,\
 	checkuser, adduser, moduser, deluser, recuser, getuser,\
 	getscore, getlog, putcsv, getclassmodif, search, getexo,\
 	checkident, update, authuser, gettime, listmodules, getmodule,\
-	addsheet, listsheets, delsheet, getsheet, checksheet, addcontent,\
-       listclasses,getclassesuser
+	addsheet, listsheets, delsheet, getsheet, checksheet, modsheet,\
+	putexo, listexams, addexam, getexam, checkexam, linkexo,\
+	modexam, delexam, listlinks, getscores, addexo, delexo,\
+	getexamlog, addcontent, listclasses, getclassesuser
+	
+# List of jobs allowed without athentication
+allowed_jobs_without_auth=listmodules, getmodule
+
 
 #List class descriptions
 classdefs=password, supervisor, description, institution, \
 	email, lang, limit, level, secure, expiration,\
 	homepage, bgcolor, refcolor, bgimg, theme, css,\
-	userlist, usercount, exotitlelist, exocount,\
-	type,typename,\
-	programs,courses,classes,levels,icourses,subclasses
+	userlist, usercount, exotitlelist, exocount, examcount,\
+	creation, expiration, sheetcount, type, typename,\
+	programs, courses, classes, levels, icourses, subclasses
 
 #List of user descriptions
-userdefs=firstname, lastname, password, email, comments, regnum, photourl, \
-participate,courses,classes
+userdefs=firstname, lastname, password, email, comments, regnum,\
+photourl, participate, courses,classes
 
 #List of module descriptions
 moduledefs=title,description,language,category,domain,level,keywords,require,scoring,copyright,author,address,version,wims_version,vardef,translator,translator_address
 
 #List of sheet descriptions
-sheetdefs=expiration,title,description
+sheetdefs=status,expiration,title,description
+
+#List of exam descriptions
+examdefs=status,expiration,duration,allowed_attempts,title,description,cut_hours

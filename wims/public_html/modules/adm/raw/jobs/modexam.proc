@@ -1,0 +1,52 @@
+#Modification de l'examen $qexam
+
+type=exams
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+exocnt=!recordcnt $qfile
+
+data1=!nonempty lines $data1
+n=!linecnt $data1
+nbdefs=0
+
+!for i=1 to $n
+  l=!line $i of $data1
+  l=!translate = to $\
+$ in $l
+  !distribute lines $l into n_,v_
+  n_=!word 1 of $n_
+  v_=!trim $v_
+  nbtot=!itemcnt $examdefs
+  !for j=1 to $nbtot
+    defcur=!item $j of $examdefs
+    !if $n_ = $defcur
+      !if $defcur = status
+        #attention : on ne modifie plus un examen qui a ete active
+        #Ici il faudrait verifier qu'il ny a aucun eleve dans la classe avant de repasser un examen en statut 0
+        #le statut est forcement >0 et <4
+   	    !ifval $v_<1 or $v_>4
+   	      error=bad status. You can't deactive an exam.
+   	      !exit
+        !endif
+        #Autre verification importante : on n'active pas un examen vide !
+        !ifval $exocnt<=0
+   	      error=Empty Exam. You can't active an exam with no exercice !
+   	      !exit
+        !endif
+      !endif
+      !advance nbdefs
+      update_field=$j
+      update_content=$v_
+
+      !read scripts/update.proc
+    !endif
+  !next j
+!next i
+
+!if $nbdefs<1
+ error=nothing done
+ !exit
+!endif

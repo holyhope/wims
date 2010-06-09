@@ -1,3 +1,4 @@
+!if $ident_type != xmlformat
 
 !shortout $header\
 ERROR\
@@ -7,4 +8,27 @@ $wims_read_parm\
 wims_mode=popup
 wims_module_log=Error $wims_read_parm $job/$ident/$qclass
 
+!else
 
+
+!shortout $header_xml\
+<?xml version="1.0" encoding="iso-8859-15"?>\
+<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
+<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
+   <fault>\
+      <value>\
+         <struct>\
+            <member>\
+               <name>faultCode</name>\
+               <value><int>0</int></value>\
+            </member>\
+            <member>\
+               <name>message</name>\
+               <value><string>$wims_read_parm</string></value>\
+            </member>\
+         </struct>\
+      </value>\
+   </fault>\
+</methodResponse>\
+
+!endif

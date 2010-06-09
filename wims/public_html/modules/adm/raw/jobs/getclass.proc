@@ -28,7 +28,7 @@ class_exocount=!itemcnt $class_exotitlelist
 !if $class_type=2
   class_subclasses=!record 0 of wimshome/log/classes/$qclass/.subclasses
 !endif
-option=!listintersect $option and $classdefs,$supp
+option=!listintersect $option and $classdefs,$supp,hidden_sheets
 !if $option=$empty
  option=$classdefs,$supp
 !endif
@@ -39,4 +39,9 @@ option=!listcomplement $class_typename$suff,$class_typename$suff1 in $option
   option=!listcomplement subclasses in $option
 !else
   option=!listcomplement programs,courses,classes in $option
+!endif
+
+!if hidden_sheets isin $option
+ list_type=sheets
+ !read scripts/listing.proc
 !endif

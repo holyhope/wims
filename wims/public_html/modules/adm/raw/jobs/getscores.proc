@@ -1,0 +1,197 @@
+
+!bound format within csv, tsv, xls default xls
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $classdeffile
+usercnt=!recordcnt wimshome/log/classes/$qclass/.userlist
+
+!default option=login,name,allscores
+
+quote="
+
+
+dl=!singlespace $option
+dl=!lower $dl
+!for t in average,sheet,exam,manual
+ dl=!replace $t $ by $t in $dl
+!next t
+dl=!items2words $dl
+dl=!replace word names by name in $dl
+dl=!replace grade by manual in $dl
+dl=!replace word allscores by allscore in $dl
+dl=!replace word name by lastname firstname in $dl
+dl=!replace word allscore by averages sheets exams manuals in $dl
+
+good=login password lastname firstname email regnum comments
+scnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+activesh=
+!for i=1 to $scnt
+ l=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
+ l=!word 1 of $l
+ !if $l>0
+  activesh=!append item $i to $activesh
+ !endif
+!next i
+sheetcnt=!itemcnt $activesh
+sh=
+!for i in $activesh
+ sh=$sh sheet$i
+ l=!record $i of wimshome/log/classes/$qclass/sheets/.sheets
+ name=!line 3 of $l
+ name_sheet$i=$quote$name$quote
+!next i
+good=$good $sh
+
+scnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+activexams=
+!for i=1 to $scnt
+ l=!record $i of wimshome/log/classes/$qclass/exams/.exams
+ l=!word 1 of $l
+ !if $l>0
+  activexams=!append item $i to $activexams
+ !endif
+!next i
+examcnt=!itemcnt $activexams
+ex=
+!for i in $activexams
+ ex=$ex exam$i
+ l=!record $i of wimshome/log/classes/$qclass/exams/.exams
+ name=!line 4 of $l
+ name_exam$i=$quote$name$quote
+!next i
+good=$good $ex
+
+l=!record 1 of wimshome/log/classes/$qclass/.grades
+!distribute lines $l into manual,titles,weights
+gcnt=!itemcnt $titles
+gcnt=$[max(0,$gcnt-2)]
+ma=
+!for i=1 to $gcnt
+ ma=$ma manual$i
+ name=!item $i+2 of $titles
+ name_manual$i=$quote$name$quote
+!next i
+good=$good $ma
+
+av=
+!if $sheetcnt+$examcnt>0 and $gcnt>0
+ av=$av average0
+!endif
+!if $sheetcnt+$examcnt>0
+ av=$av average1
+!endif
+!if $gcnt>0
+ av=$av average2
+!endif
+good=$good $av
+
+dl=!replace word averages by $av in $dl
+dl=!replace word sheets by $sh in $dl
+dl=!replace word exams by $ex in $dl
+dl=!replace word manuals by $ma in $dl
+dl=!words2items $dl
+dl=!listuniq $dl
+good=!words2items $good
+dl=!listintersect $dl and $good
+dl=!nospace $dl
+dlcnt=!itemcnt $dl
+!if $dlcnt=0
+ error=nothing done
+ !exit
+!endif
+
+!if $gcnt>0
+ mwtot=0
+ !for g=1 to $gcnt
+   w$g=!item $g+2 of $weights
+   mwtot=$[$mwtot+$(w$g)]
+ !next g
+ uucnt=!recordcnt wimshome/log/classes/$qclass/.grades
+ !for i=2 to $uucnt
+   l=!record $i of wimshome/log/classes/$qclass/.grades
+   n=!item 1 of $l
+   g=!item 3 to -1 of $l
+   Manual_$n=$g
+   mm=0
+   !for i=1 to $gcnt
+    g_=!item $i of $g
+    mm=$[$mm+($(w$i))*($g_)]
+   !next i
+   manual_$n=$[rint(100*$mm/$mwtot)/100]
+ !next i
+!endif
+
+sep_csv=,
+sep_xls=;
+sep_tsv=$	$
+sep=$(sep_$format)
+dl2=!replace , by ,user_ in user_$dl
+dl2=!translate , to $sep in $dl2
+tit=!replace , by $quote,$quote in $quote$tit$quote
+tit=!translate , to $sep in $dl
+!for n in login,password,lastname,firstname,email,regnum,comments
+ dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
+!next n
+dl3=!replace user_ by $$name_ in $dl2
+dl2=!replace user_ by $$user_ in $dl2
+
+scores=no
+!if average isin $dl or manual isin $dl or sheet isin $dl or exam isin $dl
+ scores=yes
+!endif
+
+!read names.$lang
+
+
+
+s=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
+scoremax=!line 1 of $s
+!default scoremax=20
+
+!read scripts/sheetweights
+
+!for u=1 to $usercnt
+ l=!record $u of wimshome/log/classes/$qclass/.userlist
+ user_login=!item 3 of $l
+ !defread wimshome/log/classes/$qclass/.users/$user_login
+ !if $scores=yes
+  uu=$user_login
+  !read scripts/userscore $user_login
+  user_average1=$per
+  user_average2=$(manual_$user_login)
+  !if average0 isitemof $dl
+   user_average0=$[rint($manual*$user_average2+(100-$manual)*($per))/100]
+  !endif
+  !for i=1 to $sheetcnt
+   !if sheet$i isitemof $dl
+    p_=!line $i of $percents
+    !distribute words $p_ into p1,p2
+    !if $p2!=$empty
+     !distribute item $[$p1/100],$[$p2/10] into x_,y_
+     user_sheet$i=$[rint(100*$scoremax*$(f_$i))/100]
+
+    !else
+     user_sheet$i=0
+    !endif
+   !endif
+  !next i
+  !for i=1 to $examcnt
+   !if exam$i isitemof $dl
+    user_exam$i=$[rint(10*$scoremax*$(es_$i))/100]
+   !endif
+  !next i
+  !for i=1 to $gcnt
+   !if manual$i isitemof $dl
+    user_manual$i=!item $i of $(Manual_$user_login)
+    !default user_manual$i=0
+   !endif
+  !next i
+ !endif
+ data_scores=$data_scores$dl2
+ data_csv=!append line $dl2 to $data_csv  
+!next u
+

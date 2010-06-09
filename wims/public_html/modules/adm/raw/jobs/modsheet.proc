@@ -1,0 +1,77 @@
+#Modification de la feuille $qsheet
+
+
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+data1=!nonempty lines $data1
+n=!linecnt $data1
+nbdefs=0
+
+listfile=wimshome/log/classes/$qclass/exams/.exams
+examcnt=!recordcnt $listfile
+listexos=wimshome/log/classes/$qclass/sheets/.sheet$qsheet
+exocnt=!recordcnt $listexos
+
+!for i=1 to $n
+  l=!line $i of $data1
+  l=!translate = to $\
+$ in $l
+  !distribute lines $l into n_,v_
+  n_=!word 1 of $n_
+  v_=!trim $v_
+  nbtot=!itemcnt $sheetdefs
+  
+  !for numfield=1 to $nbtot
+
+    defcur=!item $numfield of $sheetdefs
+    !if $n_ = $defcur
+      !if $defcur = status
+        ####################
+        # il faudrait verifier qu'il n'y a aucune note sur cette feuille avant de la repasser en preparation
+        ###################
+             
+        #le statut d'une feuille est forcement >=0 et <4
+   	    !if $v_<0 or $v_>4
+   	      error=bad status
+   	      !exit
+        !endif
+        
+        #attention : avant de definir le statut a 0, il faut verifier qu'aucun examen ne fait appel a cette feuille
+        !if $v_=0
+        #cas ou on desactive une feuille
+          !for x=1 to $examcnt
+            qexam=$x
+
+            !read scripts/listlinks.proc
+   	        !if $nblink>0
+   	          error=Some exercices($nblink) in this sheet($qsheet) are in an exam($qexam).You can't deactiv this sheet.
+   	          !exit
+            !endif
+          !next x
+        !else
+        #cas ou on active une feuille
+          !if $exocnt<1
+            error=you can't active an empty sheet
+            !exit
+          !endif
+        !endif
+      !endif
+      !advance nbdefs
+      update_field=$numfield
+      update_content=$v_
+      !read scripts/update.proc
+    !endif
+  !next numfield
+!next i
+
+!if $nbdefs<1
+ error=nothing done
+ !exit
+!endif
+
+type=sheets
+!read scripts/build_index.proc

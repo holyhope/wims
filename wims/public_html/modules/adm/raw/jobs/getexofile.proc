@@ -1,0 +1,33 @@
+
+#si le parametre qexo contient un caractere special, on abandonne
+qexo=!translate internal ./,;?* to $             $ in $qexo
+!if $ $ isin $qexo
+ qexo=
+!endif
+
+!if $qexo=$empty
+ error=undefined qexo
+ !exit
+!endif
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+fname=log/classes/$qclass/src/$qexo.oef
+
+
+file_not_exist=No such file or directory
+
+test=!sh cd $wims_home/log/classes/$qclass/src\
+	ls $qexo.oef
+
+
+!if $qexo.oef notin $test
+error=Exercice id : $qexo\
+\
+Sorry, this excercice does not exists in your class !\
+Cet exercice est introuvable dans votre classe.
+ !exit
+!endif

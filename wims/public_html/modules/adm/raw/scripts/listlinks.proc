@@ -1,0 +1,37 @@
+#############      listlinks.proc      ##################
+#permet de lister le nombre d'exercices de la feuille qsheet lies a l'examen qexam 
+#Pre-requis : $qsheet et $qexam existent
+
+##############################
+#FORMAT of an EXO in an EXAM :
+#:WEIGHT
+#IDSCHEET.IDEXO,IDSCHEET.IDEXO
+#TITLE_EXO
+#DEPENDENCES
+#autogen
+
+exam_file=wimshome/log/classes/$qclass/exams/.exam$qexam
+
+nblink=0
+listlinks=$empty
+exo_in_exam_cnt=!recordcnt $exam_file
+
+!for aa=1 to $exo_in_exam_cnt
+ record=!record $aa of $exam_file
+ list_exo=!line 2 of $record
+ cnt2=!itemcnt $list_exo 
+ !for bb=1 to $cnt2
+  exo=!item $bb of $list_exo
+  #On separe $exo au "." (on remplace les points par des virgules)
+  exo_l=!translate . to , in $exo
+  exo_sheet=!item 1 of $exo_l
+  !if $exo_sheet=$qsheet
+   !increase nblink
+   !if $listlinks=$empty
+    listlinks=$exo
+   !else
+    listlinks=$listlinks,$exo
+   !endif
+  !endif
+ !next bb
+!next aa

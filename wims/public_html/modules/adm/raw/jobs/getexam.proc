@@ -1,0 +1,54 @@
+type=exams
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+exocnt=!recordcnt $qfile
+exam_properties=!lines2items $qproperties\
+
+opening_file=$wims_home/log/classes/$qclass/.E$qexam
+exam_opening=!sh cat $opening_file
+exam_properties=$exam_opening,$exam_properties,
+
+#exam_status = !line 1 of $qproperties
+#exam_expiration = !line 2 of $qproperties
+#line3 = !line 3 of $qproperties
+#exam_duration= !word 1 of $line3
+#exam_attempts = !word 2 of $line3
+#exam_title = !line 4 of $qproperties
+#exam_description = !line 5 of $qproperties
+#exam_cut_hours = !line 6 of $qproperties
+
+########################
+#FORMAT OF exam_properties :
+#exam_properties=opening,status,expiration,Duration & Attempts,Title,Description,cut hours
+#######################
+#FORMAT of an EXO in an EXAM :
+#:WEIGHT
+#IDSCHEET.IDEXO, IDSCHEET.IDEXO, IDSCHEET.IDEXO, ...
+#TITLE_EXO
+#DEPENDENCES
+#autogen
+
+!for i=1 to $exocnt
+ exo=!record $i of $qfile
+ exo_weight=!line 1 of $exo
+ exo_ids=!line 2 of $exo
+ exo_title=!line 3 of $exo
+ exo_dependences=!line 4 of $exo
+ exo_autogen=!line 5 of $exo
+ 
+ !if $exolist!=$empty
+  exolist=$exolist,$i
+  exotitlelist=$exotitlelist$separator$i:$exo_title
+ !else 
+  exolist=$i
+  exotitlelist=$i:$exo_title
+ !endif
+!next i
+
+option=!listintersect $option and $examdefs
+!if $option=$empty
+ option=$examdefs
+!endif

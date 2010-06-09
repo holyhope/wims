@@ -12,6 +12,9 @@
 wims_mode=
 !readdef $classdeffile
 
+!default class_typename=class
+!default class_type=0
+
 !writefile wimshome/$wims_sesdir/var.stat wims_class=$qclass\
 wims_user=$quser\
 wims_firstname=$user_firstname\
@@ -26,4 +29,11 @@ wims_theme=$class_theme\
 wims_participate=$user_participate\
 wims_superclass=$qclass\
 wims_supervise=$user_supervise
+wims_supertype=$class_type\
+wims_typename=$class_typename
 
+
+
+!sh mkdir $wims_home/$wims_sesdir/getfile
+
+!sh ln -s $wims_home/log/classes/$qclass/src/images $wims_home/$wims_sesdir/getfile/oefimages

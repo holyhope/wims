@@ -1,0 +1,66 @@
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#################################
+FORMAT OF THE /exams/.exams INDEX FILE : 
+#:EXAM STATUS
+#EXPIRATION DATE
+#DURATION & ALLOWED_ATTEMPTS
+#EXAM TITLE
+#EXAM DESCRIPTION
+#CUT Hours
+
+##################################
+#FORMAT of an /exams/.examN File :
+#:WEIGHT
+#IDSCHEET.IDEXO
+#TITLE_EXO
+#DEPENDENCES
+#autogen
+#################################
+# Format of an /.E(n) FILE (Opening restrictions for exam n )
+# #     - open for simulation
+# empty - open for all
+# none  - closed for all
+# IP/Hours/Both - open for IP and/or hours defined
+######################################################
+
+
+data1=!nonempty lines $data1
+n1=!linecnt $data1
+!for i=1 to $n1
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ exam_$n_=$v_
+!next i
+
+exam_creation=!char 1 to 8 of $wims_now
+exam_creation=!eval $exam_creation
+!default exam_expiration=$[$exam_creation+10000]
+!default exam_duration=90
+!default exam_attempts=1
+!default exam_title=Examen #$n
+!default exam_description= Vous &ecirc;tes dans l'examen #$n 
+!default exam_cut_hours=$empty
+!default exam_opening=$empty
+
+#Si le fichier .exams n'existe pas, appendfile le cree.
+!appendfile wimshome/log/classes/$qclass/exams/.exams \
+:0\
+$exam_expiration\
+$exam_duration $exam_attempts\
+$exam_title\
+$exam_description\
+$exam_cut_hours
+
+examcnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+
+
+!writefile wimshome/log/classes/$qclass/exams/.exam$examcnt
+!writefile wimshome/log/classes/$qclass/.E$examcnt $exam_opening
+
+wims_exam=$examcnt

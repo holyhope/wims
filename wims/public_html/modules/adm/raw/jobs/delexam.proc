@@ -1,0 +1,42 @@
+#Suppression de l'examen qexam
+
+type=exams
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+state=!line 1 of $qproperties
+
+#ici on verifie que l'examen est "En préparation"
+#STATUS FORMAT :
+#0 = EN PREPARATION
+#1 = ACTIF
+#2 = EXPIRE (PERIME)
+#3 = CACHE (PERIME+cache)
+
+!if $state!=0
+ error=Exam #$qexam has been activated.
+ !exit
+!endif
+
+dir=$wims_home/log/classes/$qclass
+
+!sh cd $dir\
+rm .E$qexam\
+cd $type\
+rm .exam$qexam
+
+
+n=$[$qexam+1]
+
+!while $n <= $cnt
+ !sh mv $dir/$type/.sheet$n $dir/$type/.sheet$[$n-1]
+ !sh mv $dir/.E$n $dir/.E$[$n-1]
+ !increase n
+!endwhile
+
+# Les fichiers sont supprimés, reste à corriger le contenu du fichier d'index .exams
+
+update_field=0
+!read scripts/update.proc

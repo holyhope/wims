@@ -65,13 +65,16 @@ langs=!words2items $wims_site_languages
 !bound cl_lang within $langs default en
 !default cl_level=H4
 
-!writefile wimshome/log/classes/$cd/.def !set class_connections=$ident/$rclass+\
+!writefile wimshome/log/classes/$cd/.def !set class_connections=$ident/$rclass+$(cl_connections)+\
 !set class_defined=yes
-!for t in supervisor,email,password,description,institution,lang,creation,\
-	expiration,limit,level,\
-	homepage,bgcolor,refcolor,bgimg,css,secure,theme
+
+!default cl_typename = class
+!default cl_type = 0
+
+!for t in $classdefs
  !appendfile wimshome/log/classes/$cd/.def !set class_$t=$(cl_$t)
 !next t
+
 
 !writefile wimshome/log/classes/$cd/supervisor !set user_lastname=$su_lastname\
 !set user_firstname=$su_firstname\
@@ -88,3 +91,4 @@ langs=!words2items $wims_site_languages
 !endif
 
 !sh cd $wims_home/log/classes; ./.build-index
+

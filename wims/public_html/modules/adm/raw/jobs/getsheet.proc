@@ -1,13 +1,15 @@
-!read scripts/check.sheet
+type=sheets
+!read scripts/check.proc
 !if $error!=$empty
  !exit
 !endif
 
-sheet_properties=!lines2items $sheet_properties
-exocnt=!recordcnt $sheet_file
+sheet_properties=!lines2items $qproperties\
+
+exocnt=!recordcnt $qfile
 
 !for i=1 to $exocnt
- exo=!record $i of $sheet_file
+ exo=!record $i of $qfile
  exo_module=!line 1 of $exo
  exo_params=!line 2 of $exo
  exo_points=!line 3 of $exo
@@ -16,11 +18,11 @@ exocnt=!recordcnt $sheet_file
  exo_description=!line 6 of $exo
  
  !if $exolist!=$empty
-  exolist=$exolist,$exo_module
-  exotitlelist=$exotitlelist,$exo_module:$exo_params:$exo_title
+  exolist=$exolist,$i
+  exotitlelist=$exotitlelist$separator$exo_module:$exo_title:$exo_params:$i
  !else 
-  exolist=$exo_module
-  exotitlelist=$exo_module:$exo_params:$exo_title
+  exolist=$i
+  exotitlelist=$exo_module:$exo_title:$exo_params:$i
  !endif
 !next i
 

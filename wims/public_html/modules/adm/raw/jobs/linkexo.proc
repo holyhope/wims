@@ -1,0 +1,63 @@
+#permet d'ajouter du contenu (un exercice) a un examen de ma classe
+
+#pour commencer, on verifie que la feuille $qsheet existe.
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+#On verifie que la feuille n'est pas "EN PREPARATION"
+sheet_status=!line 1 of $qproperties
+!ifval $sheet_status <1
+ error=sheet $qsheet must be active
+ !exit
+!endif
+
+#Ensuite, on verifie que l'examen $qexam existe.
+type=exams
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+#On verifie que l'examen n'est pas "Actif"
+exam_status=!line 1 of $qproperties
+!ifval $exam_status >0
+ error=exam $qexam mustn't be active
+ !exit
+!endif
+
+!read scripts/check.exo
+
+data1=!nonempty lines $data1
+n1=!linecnt $data1
+!for i=1 to $n1
+ l=!line $i of $data1
+ l=!translate = to $\
+$ in $l
+ !distribute lines $l into n_,v_
+ exo_$n_=$v_
+!next i
+
+##############################
+#FORMAT of an EXO in an EXAM :
+#:WEIGHT
+#IDSCHEET.IDEXO,IDSCHEET.IDEXO
+#TITLE_EXO
+#DEPENDENCES
+#autogen
+
+# par defaut,  exo_weight est pioche dans la feuille
+exo_id=$qsheet.$qexo
+# par defaut,  exo_title est pioche dans la feuille
+!default exo_dependences=$empty
+!default exo_autogen=$empty
+
+
+!appendfile wimshome/log/classes/$qclass/exams/.exam$qexam \
+:$exo_weight\
+$exo_id\
+$exo_title\
+$exo_dependences\
+$exo_autogen\

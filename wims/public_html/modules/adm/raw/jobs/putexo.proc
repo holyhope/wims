@@ -1,0 +1,59 @@
+#permet d'ajouter du contenu (un exercice existant) a une feuille de ma classe
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+#On verifie que la feuille n'est pas "Active"
+sheet_status=!line 1 of $qproperties
+!ifval $sheet_status >0
+ error=sheet mustn't be active
+ !exit
+!endif
+
+!if $data1=$empty
+ error=no data found
+ !exit
+!endif
+
+data1=!nonempty lines $data1
+n1=!linecnt $data1
+!for i=1 to $n1
+ v_=$empty
+ l=!line $i of $data1
+ l2=!translate = to $,$ in $l
+ n_=!item 1 of $l2
+ n2=!itemcnt $l2
+ v_=!item 2 of $l2
+ !if $n2>2
+  !for j=3 to $n2
+    courrant=!item $j of $l2
+    v_=$v_=$courrant
+  !next j
+ !endif
+ sh_$n_=$v_
+!next i
+
+####Attention : ici il faudra peut etre modifier le parametre "exo" dans le cas ou on voudrait ajouter toute une ligne de parametres, ne commencant pas par "exo="
+########
+
+!for t in sh_module, sh_exo
+ !if $($t) = $empty
+  error=incomplete data $t
+  !exit
+ !endif
+!next t
+
+!default sh_weight=1
+!default sh_points=10
+!default sh_title=nouvel exercice
+!default sh_description=nouvel exercice
+
+!appendfile wimshome/log/classes/$qclass/sheets/.sheet$qsheet \
+:$sh_module\
+exo=$sh_exo\
+$sh_points\
+$sh_weight\
+$sh_title\
+$sh_description

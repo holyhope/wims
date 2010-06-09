@@ -1,0 +1,58 @@
+# delExo :
+#permet de supprimer l'exercice qexo de la classe qclass
+
+#On ne commence que si la classe existe
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#Si le parametre qexo contient des caracteres illegaux, on abandonne
+badchars=!text select ?*#~!@ in $qexo
+!if .. isin $qexo or $badchars!=$empty
+ error=illegal file name for qexo
+ !exit
+!endif
+
+#Si le parametre qexo n'existe pas, on abandonne
+!if $qexo=$empty
+ error=undefined qexo
+ !exit
+!endif
+
+#reste a verifier que l'exo existe
+#ici wims m'empeche de traiter le fichier Exindex. On contourne donc en listant les fichiers du dossier def/
+# !readdef wimshome/log/classes/$qclass/Exindex
+# (au passage, on crée le dossier def/ (s'il n'existe pas deja) : on s'assure ainsi de lister le bon dossier:
+!sh mkdir $wims_class_dir/def
+exolist=!sh cd $wims_class_dir/def; ls | sort
+exolist=!translate .def to $$ in $exolist
+
+!if $qexo notlineof $exolist
+ error=$qexo NOT exists in this Class !
+ !exit
+!endif
+
+
+#######
+
+# On supprime notre fichier d'exercice dans la classe :
+# rm -f : Pas de confirmation d'effacement, pas de diagnostic, pas de code d'erreur lorsqu'un fichier n'existe pas. 
+# rm -R Efface recursivement les sous-repertoires.
+
+!sh rm -f $wims_class_dir/src/$qexo.oef
+!sh rm -f $wims_class_dir/def/$qexo.def
+!sh rm -fR $wims_class_dir/src/images/$qexo
+
+# puis on supprime les indexes
+!sh rm $wims_class_dir/Exindex
+!sh rm $wims_class_dir/Extitles
+
+# et on les reconstruit : 
+compilation = !sh cd $wims_class_dir;. $wims_home/public_html/scripts/oef/mkindex
+compilation=!lines2items $compilation
+
+##########
+# on aurait aussi pu utiliser : (dans ce cas, la suppression des index et du fichier .def devrait etre auto) A tester et comparer
+# !sh cd modules/classes/$w_lang ; src2def oef
+##########

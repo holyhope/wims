@@ -1,0 +1,44 @@
+#getModule Permet d'obtenir les infos concernant le module specifie par "option"
+
+!if $ident_type=$empty and $format != $empty
+	ident_type=$format
+!endif
+
+!read scripts/check.option
+!if $error!=$empty
+ !exit
+!endif
+
+!if $option=$empty
+ error=no module defined
+ !exit
+!endif
+
+
+# !module
+#Type: both execution and variable command
+#Syntax: !module defname modname
+#Meaning: Returns the definition for defname of the module modname. The most common use of this #command is to get the title of a module ( defname=title).
+#The INDEX file of the module modname will be parsed to look for the definition of defname.
+
+title= !module title $option
+description= !module description $option
+language= !module language $option
+category= !module category $option
+domain= !module domain $option
+level= !module level $option
+keywords= !module keywords $option
+require= !module require $option
+scoring= !module scoring $option
+copyright= !module copyright $option
+author= !module author $option
+address= !module address $option
+version= !module version $option
+required_wims_version= !module wims_version $option
+vardef= !module vardef $option
+translator= !module translator $option
+translator_address= !module translator_address $option
+data= !module data $option
+maintainer= !module maintainer $option
+maintainer_address= !module maintainer_address $option
+translation_language= !module translation_language $option

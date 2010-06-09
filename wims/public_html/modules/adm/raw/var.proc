@@ -1,23 +1,29 @@
 !if $job=lightpopup
  !changeto jobs/lightpopup.proc
 !endif
+
 wims_prefix=class user tmp n sharing sharable ident
 !if $job=help
  wims_module_log=help
  !exit
 !endif
+
 !read defs
 
 job=!lower $job
-!bound job within $allowed_actions_jobs,$allowed_file_jobs default $
+!bound job within $allowed_actions_jobs,$allowed_file_jobs,$allowed_jobs_without_auth default $
 option=!items2words $option
 option=!words2items $option
 code=!word 1 of $code
 
-# le script autchars permet de definir les listes de caracteres alphanumeriques et de ponctuation
-# il definit egalement la fourchette de longueur autorise des login/mdp
-!read adm/class/authchars
-!read var.check
+
+!if $job notin $allowed_jobs_without_auth or $ident != $empty
+	# le script autchars permet de definir les listes de caracteres alphanumeriques et de ponctuation
+	# il definit egalement la fourchette de longueur autorise des login/mdp
+	!read adm/class/authchars
+	# Le script var.check verifie l'authentification de l'utilisateur
+	!read var.check	
+!endif
 
 !if $error=$empty
  !read jobs/$job.proc
@@ -29,12 +35,37 @@ code=!word 1 of $code
 !endif
 
 !if $code=$empty
- ok=OK
+  !if $ident_type != xmlformat
+	ok=OK
+  !else
+  	ok=<?xml version="1.0" encoding="$encoding"?>\
+<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
+<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
+<params><param><value><string>OK</string></value></param>
+  !endif
 !else
- ok=OK $code
+  !if $ident_type != xmlformat
+	ok=OK $code$ident_type
+  !else
+  	ok=<?xml version="1.0" encoding="$encoding"?>\
+<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
+<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
+	<params><param><value><struct><member>\
+		<name>code</name>\
+		<value><string>$code</string></value>\
+	</member>\
+
+  !endif
 !endif
 
-!shortout $header\
+!if $ident_type != xmlformat
+	!shortout $header\
+
+!else
+	!shortout $header_xml\
+
+!endif
+
 
 
 !if $job isitemof $allowed_actions_jobs
