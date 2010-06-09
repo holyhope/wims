@@ -58,7 +58,5 @@ hoja de cálculo preferida&nbsp;
 !set name_csv2=!nosubst Desean cargar a distancia los datos del cuestionario número $vote &nbsp;
 !set name_format=formato
 
-
-!set name_type=Type
 !set name_option=Options
 !set name_value=Values
