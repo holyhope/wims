@@ -1,9 +1,28 @@
-
 !readproc tabletheme
 
-!if $lang iswordof ca cn es fr it nl si
- !read help/$lang/if.phtml
-!exit
+!if $lang notwordof es de
+  !set ll=$lang
+!else
+  !set ll=en
 !endif
 
-!read help/en/if.phtml
+!record 0 of help/$ll/if.phtml
+
+$table_header
+!set caption=!record 1 of help/$ll/if.phtml
+<caption>$caption</caption>
+!set header=!record 2 of help/$ll/if.phtml
+$table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+
+!set cnt_record=!recordcnt help/$ll/if.phtml
+!for u= 3 to $cnt_record
+  !set l_=!record $u of help/$ll/if.phtml
+$table_tr<td><tt>
+!line 1 of $l_
+</tt></td><td>
+!line 2 of $l_
+</td></tr>
+!next
+$table_end
+
+!exit

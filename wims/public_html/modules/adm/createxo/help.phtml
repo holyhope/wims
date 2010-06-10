@@ -4,13 +4,13 @@
 !endif
 
 !set helplist=oef,examples,format,parameters,oefparm,reply,embedans,\
-	feedback,math,draw,draw_example,oefadv,if,symtext,model,slib
+	feedback,math,draw,draw_example,oefadv,if,symtext,model,slib,command
 
 !set s_=!item 1 of $special_parm
 !if $s_=all
  !for sj in $helplist
-  <p>
-  !read help/$lang/$sj.phtml
+ <div class="emptyline">&nbsp;</div>
+  !read help/$sj.phtml
  !next sj
  !exit
 !endif
@@ -22,7 +22,7 @@
  !if $s_ iswordof slib model
   !read help/$s_.phtml $special_parm
  !else
-  !read help/$lang/$s_.phtml
+  !read help/$s_.phtml
  !endif
  !set wims_menu_items=!append line back2,1,cmd=help\
  to $wims_menu_items
@@ -33,9 +33,10 @@
 <ul>
 !for s_=2 to $record_cnt
   !set ss_=!record $s_ of lang/help.phtml.$modu_lang
-<li><p>
+<li>
 !href cmd=help&special_parm=$(ss_[1]) $(ss_[2])
  $(ss_[3])
 </li>
 !next s_
+</ul>
 !endif

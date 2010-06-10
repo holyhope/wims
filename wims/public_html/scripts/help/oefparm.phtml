@@ -1,5 +1,29 @@
-!if $lang iswordof ca cn es fr it nl si
-  !read help/$lang/oefparm.phtml
- !exit
+!if $lang notwordof es de ca it
+  !set ll=$lang
+!else
+  !set ll=en
 !endif
-!read help/en/oefparm.phtml
+!readproc tabletheme
+
+!for j=0 to 4
+ $table_header
+ !set caption=!record 1 of help/$ll/oefparm$j.phtml
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$ll/oefparm$j.phtml
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th><th>$(header[3])</th></tr>
+
+  !set cnt_record=!recordcnt help/$ll/oefparm$j.phtml
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$ll/oefparm$j.phtml
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td><tt>
+!line 2 of $l_
+    </tt></td><td>
+!line 3 of $l_
+    </td></tr>
+  !next
+$table_end
+!next j
+!exit
+

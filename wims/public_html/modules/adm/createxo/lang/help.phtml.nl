@@ -9,4 +9,7 @@
 :feedback,Hoe geef ik interactieve feedback,op de antwoorden
 :oefadv,Geavanceerde mogelijkheden
 :slib&slib_cmd=help,Bibliotheek met routines,(slib)
+:command,Liste de commandes
+:parameters%2Coefparm#list,Liste des fonctions
+:if,Liste complète des relations conditionnelles
 :all,Alle help pagina's

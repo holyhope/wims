@@ -1,0 +1,46 @@
+!readproc tabletheme
+
+!if $lang notwordof de ca it si
+  !set ll=$lang
+!else
+  !set ll=en
+!endif
+
+!set p=command
+!record 0 of help/$ll/$p.phtml
+
+$table_header
+!set caption=!record 1 of help/$ll/$p.phtml
+<caption>$caption</caption>
+!set header=!record 2 of help/$ll/$p.phtml
+$table_tr<th>$(header[1])</th><th>$(header[2])</th><th>$(header[3])</th>
+<th>$(header[4])</th><th>$(header[5])</th></tr>
+
+!set cnt_record=!recordcnt help/$ll/$p.phtml
+!for u= 3 to $cnt_record
+  !set l_=!record $u of help/$ll/$p.phtml
+  !set help=!getopt help in $l_
+$table_tr<td><tt>
+ !set l_1=!line 1 of $l_
+ !if $help!=$empty and $l_1!=help
+   !href module=$module&cmd=help&special_parm=$help $l_1
+ !else
+   !line 1 of $l_
+ !endif
+</tt></td><td align="center">
+!line 2 of $l_
+</td><td>
+!line 3 of $l_
+</td>
+</td><td><tt>
+!line 4 of $l_
+</tt>
+</td>
+</td><td><tt>
+!line 5 of $l_
+</tt></td></tr>
+!next
+$table_end
+
+!exit
+!endif
