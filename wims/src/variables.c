@@ -1132,8 +1132,8 @@ void phtml_put_base(char *fname,int cache)
 	/* Read main.phtml, process it, and write to stdout. */
 void main_phtml_put(char *mname)
 {
-    char *p, buf[1024], txbuf[256], bgbuf[256];
-    char *bcolor, *refcolor, *bg, *tx, *vlink, *link;
+    char *p, buf[1024], txbuf[256], dirnbuf[256], bgbuf[256];
+    char *bcolor, *refcolor, *bg, *tx, *dirn, *vlink, *link;
     define_html_header(); readnest=0;
     nph_header(200);
     p=getvar("wims_backslash_insmath");
@@ -1176,9 +1176,14 @@ void main_phtml_put(char *mname)
 	snprintf(txbuf,sizeof(txbuf),"text=\"%s\"",tx);
     }
     else txbuf[0]=0;
+    dirn=getvar("wims_main_dirn");     /* "rtl" for arabic writing ; on pourrait laisser vide pour les autres ? */
+    if(dirn!=NULL && *dirn!=0 && strchr(dirn,'\"')==NULL) {
+	snprintf(dirnbuf,sizeof(dirnbuf),"dir=\"%s\"",dirn);
+    }
+    else dirnbuf[0]=0;
     snprintf(buf,sizeof(buf),
-	     "bgcolor=\"%s\" %s %s link=\"%s\" vlink=\"%s\"",
-	     bcolor,txbuf, bgbuf,link,vlink);
+	     "bgcolor=\"%s\" %s %s %s link=\"%s\" vlink=\"%s\"",
+	     bcolor,txbuf,  bgbuf, dirnbuf,link,vlink);
     setvar("wims_htmlbody",buf);
     phtml_put(mname,0);
 }

@@ -438,6 +438,15 @@ void determine_font(char *l)
     if(i<charname_no) setvar("wims_main_font",charname[i].font);
 }
 
+void determine_dirn(char *l)
+{
+    int i;
+    
+    if(l==NULL || *l==0) return;
+    for(i=0;i<dirnname_no && memcmp(dirnname[i].name,l,2);i++);
+    if(i<dirnname_no) setvar("wims_main_dirn",dirnname[i].dirn);
+}
+
 void predetermine_language(void)
 {
     char *p;
@@ -468,7 +477,7 @@ void predetermine_language(void)
     for(i=0;i<available_lang_no && memcmp(p,available_lang[i],2)!=0;i++);
     if(i<available_lang_no) {
 	lend:	memmove(lang,p,2); lang[2]=0;
-	lend2:	determine_font(lang);
+	lend2:	determine_font(lang);determine_dirn(lang);
     }
 }
 
@@ -476,6 +485,7 @@ void predetermine_language(void)
 void put_special_page(char *pname)
 {
     determine_font(lang);
+    determine_dirn(lang);
     phtml_put_base(mkfname(NULL,"%s.phtml.%s",pname,lang),0);
     write_logs();free(var_str);
 }
@@ -797,6 +807,7 @@ void special_cmds(void)
 	    }
 	    force_setvar("wims_protocol",protocol);
 	    determine_font(lang);
+	    determine_dirn(lang);
 	    main_phtml_put(intro_file); debug_output();
 	    introend: write_logs();free(var_str);
 	    delete_pid(); exit(0);
@@ -810,6 +821,7 @@ void special_cmds(void)
 		else trap_check(p);
 	    }
 	    determine_font(lang);
+	    determine_dirn(lang);
 	    main_phtml_put(ref_file); goto introend;
 	}
 	case cmd_getins: {
@@ -1167,6 +1179,7 @@ int main(int argc, char *argv[], char *envp[])
     access_check(0);
     set_variables();
     determine_font(getvar("module_language"));
+    determine_dirn(getvar("module_language"));
     if(!robot_access && session_prefix[0]!=0 && cmd_type!=cmd_help && !ismhelp)
       lastout_file=creat(mkfname(NULL,"%s/%s",s2_prefix,lastout),
 			 S_IRUSR|S_IWUSR);
