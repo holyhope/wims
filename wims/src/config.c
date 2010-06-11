@@ -751,7 +751,7 @@ void set_job_ident(void)
 	/* define the variable $wims_html_header */
 void define_html_header(void)
 {
-    char *expir, *sp, *cp, *mp;
+  char *expir, *sp, *cp, *ladirection, *mp;
     char buf[MAX_LINELEN+1],ebuf[128];
     char *nocache="<meta http-equiv=\"Pragma\" content=\"no-cache\">\n\
 <meta http-equiv=\"Cache-Control\" content=\"no-cache\">\n";
@@ -790,6 +790,8 @@ void define_html_header(void)
     }
     css: setvar("wims_CSS","");
     cp=getvar("wims_css");
+    ladirection=getvar("wims_main_dirn");
+    if (strcmp(ladirection,"ltr")==0) ladirection="";
     if(!robot_access && cp!=NULL && *cp!=0 && strstr(cp,"---")==NULL) {
 	char *nbuf;
 	cp=find_word_start(cp);
@@ -802,20 +804,20 @@ void define_html_header(void)
 		 if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
 		 if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
 	    }
-	    else {
+	    else {/* Il faut peut-être changer là aussi pour direction */
 		nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
 		th=getvar("wims_theme");
 		ti=getvar("wims_theme_icon");
 	    }
 	    if(strcmp(cp,"-theme-")==0 && strchr(th,'.')==NULL) {
 		  if(th==NULL || *th==0) th="default";
-		  nbuf=mkfname(NULL,"html/themes/%s/css.css",th);
+		  nbuf=mkfname(NULL,"html/themes/%s/css%s.css",th,ladirection);
 	    }
 	    if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
 	    }
 	    else {
 	     th=getvar("wims_theme");
-		 nbuf=mkfname(NULL,"html/themes/%s/css.css",th);
+	     nbuf=mkfname(NULL,"html/themes/%s/css%s.css",th,ladirection);
 		}
 		if(readfile(nbuf,tmplbuf,sizeof(tmplbuf))) {
 	      if (st) {snprintf(buf,sizeof(buf),"<style type=\"text/css\"><!--\n\
