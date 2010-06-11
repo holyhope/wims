@@ -154,9 +154,11 @@ fi
 echo "$titlist" >$tmp1
 echo "$list" >$tmp2
 llist=`$LL paste $tmp1 $tmp2 | $LL sort -t '	' -f -k 1,1`
+list1=`echo "$llist" | awk -F'\11' 'length()>2 {print $2}' | $LL tr '\n' ' '`
 list=`echo "$llist" | awk -F'\11' 'length()>2 {print $2}' | $LL tr '\n' ','`
 titlist=`echo "$llist" | awk -F'\11' 'length()>2 {print $1}' | $LL tr '\n' ','`
 
+rm -f $tmp1 $tmp2
 cat >$exindex <<@
 !set exolist  =!char 1 to -2 of $list
 !set titlelist=!char 1 to -2 of $titlist
@@ -164,8 +166,19 @@ cat >$exindex <<@
 
 @
 
-rm -f $tmp1 $tmp2
-
+transl_lang=`grep translation_language INDEX | awk -F= '{print $2}'`; 
+for lang in $transl_lang ; do
+  for ex in $list1; do 
+    a=`grep title_$lang def/$ex.def | awk -F= '{print $2}'`; 
+    if [ -z "$a" ] ; then a=`grep "!set title" def/$ex.def | awk -F= '{print $2}'` ;  fi 
+    echo $a>>tmp1
+  done
+  titlist2=`cat $tmp1 | $LL tr '\n' ','` ;
+  rm -f $tmp1
+  cat >>$exindex <<@
+!set titlelist_$lang=!char 1 to -2 of $titlist2
+@
+done
 [ -n "$class_header" ] && exit
 
 # Datafiles

@@ -108,6 +108,13 @@ struct {
       {"steps",		t_step, 1,	p_steps},
       {"text",		t_def ,2,	p_text},
       {"title",		t_tit ,1,	empty},
+      {"title_ca",	t_head ,1,	p_title_ca},
+      {"title_cn",	t_head ,1,	p_title_cn},
+      {"title_en",	t_head ,1,	p_title_en},
+      {"title_es",	t_head ,1,	p_title_es},
+      {"title_it",	t_head ,1,	p_title_it},
+      {"title_nl",	t_head ,1,	p_title_nl},
+      {"title_si",	t_head ,1,	p_title_si},
       {"variable",	t_def ,2,	p_parm},
       {"while",		t_def,1,	p_while},
       {"wims",		t_wims,1,	p_wims}

@@ -24,6 +24,7 @@ char vbuf_help[MAX_LINELEN+1];
 char vbuf_solution[MAX_LINELEN+1];
 char vbuf_latex[MAX_LINELEN+1];
 char vbuf_css[MAX_LINELEN+1];
+const size_t MAX_KEY_LEN=128;
 
 #include "sp.c"
 
@@ -36,6 +37,21 @@ void p_author(char *p[MAX_PARM])
     if(strlen(p[0])>128) p[0][128]=0;
     fprintf(outf,"author=%s\n",p[0]);
 }
+
+static void p_keyword(char *p[MAX_PARM], const char *key)
+{
+    p[0]=find_word_start(p[0]);
+    if(strlen(p[0])>MAX_KEY_LEN) p[0][MAX_KEY_LEN]=0;
+    fprintf(outf,"%s=%s\n", key, p[0]);
+}
+
+void p_title_ca(char *p[MAX_PARM]) { p_keyword(p, "title_ca"); }
+void p_title_cn(char *p[MAX_PARM]) { p_keyword(p, "title_cn"); }
+void p_title_en(char *p[MAX_PARM]) { p_keyword(p, "title_en"); }
+void p_title_es(char *p[MAX_PARM]) { p_keyword(p, "title_es"); }
+void p_title_it(char *p[MAX_PARM]) { p_keyword(p, "title_it"); }
+void p_title_nl(char *p[MAX_PARM]) { p_keyword(p, "title_nl"); }
+void p_title_si(char *p[MAX_PARM]) { p_keyword(p, "title_si"); }
 
 void p_email(char *p[MAX_PARM])
 {
