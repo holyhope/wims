@@ -1,0 +1,61 @@
+!exit
+
+<p><hr width="35%">
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set qcnt=8
+!if $qcnt>$exocnt
+ !set qcnt=$exocnt
+!endif
+!if $exocnt<1
+ $name_noexercise
+ !exit
+!endif
+!if $exocnt=1
+ $name_oneexercise, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo $name_tryit.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value="$module">
+<center><table border=0><tr>
+<td align=center>$name_chooseexo:<td>
+!if $exocnt>6
+ !set selsize=6
+!else
+ !set selsize=$exocnt
+!endif
+!set wims_formselect_switch=multiple size=$selsize
+!set exo=$special_parm
+!if $exo!=$empty
+ !set exolist=!listuniq $exo,$exolist
+ !set exolist=!replace , by , $ in $exolist
+ !set dictionary=$module_dir/Extitles
+ !set translator_unknown=leave
+ !set titlelist=!exec translator $exolist
+!endif
+!formselect exo list $exolist prompt $titlelist
+!set wims_formselect_switch=
+<tr><td align=center>$name_oneserie<td>
+!set qnum=1
+!formselect qnum from 1 to $qcnt
+$name_exercises.
+<tr><td align=center>$name_levelseverity<td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 8
+!read introhook.phtml
+</table> <p>
+<input type=submit value="$wims_name_work">
+</center>
+</form>
+$name_remarkintro1
+<p>
+!if * isin $titlelist
+ <p>$name_remarkintro2
+!endif
+

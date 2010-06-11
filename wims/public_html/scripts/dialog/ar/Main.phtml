@@ -1,0 +1,92 @@
+!exit
+!set renewlink=cmd=renew&worksheet=$worksheet&$module_init_parm
+!set module_title=$module_title: $title
+
+!header
+
+!if $title=$empty
+  $name_emptytitle
+ <p><center>
+ !href module=$module $name_restart
+ , $wims_name_or
+ !href $ $wims_name_giveup
+ . </center>
+ !goto end
+!endif
+
+:tester
+!read dialog/present.phtml
+
+<p><hr width="50%"> <p>
+
+!if $cmd=hint
+ !read dialog/hint.phtml
+ !goto end
+!endif
+
+!if $status=waiting
+ !if $error!=$empty
+  !read dialog/msg.phtml
+  <p><hr width="50%"> <p>
+ !endif
+ !read dialog/form.phtml
+ <p>
+ !if $hint!=$empty and $givehint>0
+  !href cmd=hint $name_Hint
+.
+ !endif
+ !if $qnum<=1
+  !href $renewlink $name_exo_renew
+.
+ !else
+  $name_serie_exo
+  !href $renewlink $name_serie_renew
+.
+ !endif
+!else
+ !if $error!=$empty
+  !read dialog/msg.phtml
+  <p><hr width="50%"> <p>
+ !endif
+ !read dialog/answer.phtml
+ <p>
+ !if $status!=$empty
+  $name_serie_exo2 <p>
+  !href cmd=next $name_serie_nextexo
+, $wims_name_or
+  !href $renewlink name_exo_renew
+. $name_serie_new2
+ !else
+  !if $qnum>1
+   $name_serie_score
+   !ifval $score>9.8
+    $wims_name_Congratulations
+   !endif
+   <p>
+   !href exo_Again
+.
+   !if $wims_sheet=$empty
+    !href exo_Intro
+.
+   !endif
+  !else
+   $name_exo_score
+   !ifval $score>9.8
+    $wims_name_Congratulations
+   !endif
+   <p>
+   !href exo_Again
+.
+   !if $wims_sheet=$empty and $oef_test!=yes
+    !href exo_Intro
+.
+   !endif
+  !endif
+ !endif
+!endif
+
+!read endhook.phtml
+:end
+
+!tail
+

@@ -1,0 +1,37 @@
+!exit
+<a name=ans></a>
+!if $badask=yes
+ !if $comment!=$empty
+  $name_illegal1:
+  $comment 
+ !else
+  $name_illegal2
+ !endif
+ <p>$name_illegal3
+ !exit
+!endif
+
+!if $speculate=yes
+ $name_speculate
+ !exit
+!else
+ !read $deffile ans
+!endif
+
+!if $solution!=$empty and ($presentsol>1 or ($presentsol=1 and $thisscore<0.7))
+ <p><b>$name_Solution.</b> $solution
+!endif
+
+<p>
+!if $gotcnt>$minask
+ !if $minask>1
+  $name_minasks
+ !else
+  $name_minasks
+ !endif
+!endif
+
+!if $uselesscnt>0
+ $name_useless: <b>$useless</b>.
+!endif
+

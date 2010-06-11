@@ -1,0 +1,134 @@
+!set wims_module_log=error: $error
+
+<b>$wims_name_Error</b>.
+
+!if $error = doc_not_exist
+ The document you asked for does not (no longer) exist.
+ !exit
+!endif
+
+!if $error = abuse
+ Your document has a strange title! Are you sure that you want to create a
+ serious document?
+ <p>
+ <b>Attention</b> ! Those abusing the server will be refused access.
+ !exit
+!endif
+
+!if $error = quota
+ You can no longer modify this document, because its content has exceeded
+ the disk space allowance.
+ !exit
+!endif
+
+!if $error = quota_file
+ File deposit is not accepted because there is not enough available disk
+ space for your document.
+ !exit
+!endif
+
+!if $error = no_tit
+ Please give a title to your document.
+ !exit
+!endif
+
+!if $error = no_author
+ You haven't defined the author of the document.
+ !exit
+!endif
+
+!if $error = bad_email
+ Your email address does not seem to be valid! Please correct it.
+ !exit
+!endif
+
+!if $error = bad_code
+ Sorry, but the secret code doesn't match. You don't have the right to
+ read/write the document you asked for.
+ <p>
+ Please
+ !mailurl $wims_site_manager write to the site manager\
+Forgotten document code
+ if you have forgotten the secret code of your
+ document.
+ !exit
+!endif
+
+!if $error = unauthorized
+ You don't have the right to read/write the document you asked for.
+ !exit
+!endif
+
+!if $error = bad_data
+ Some of your definitions are not correct. Please correct.
+ !exit
+!endif
+
+!if $error = class_no_right
+ Sorry but your request is not allowed. Please verify with the supervisor
+ of this class.
+ !exit
+!endif
+
+!if $error = small_code
+ The secret code is too short.
+ !exit
+!endif
+
+!if $error = big_code
+ The secret code is too long.
+ !exit
+!endif
+
+!if $error = code_discord
+ <b>Attention</b>. You have typed two different secret codes in two times.
+ Please try again.
+ !exit
+!endif
+
+!if $error = bad_newcode
+ Your secret code contains forbidden characters. Please use only
+ alpha-numeric characters.
+ !exit
+!endif
+
+!if $error = bad_oldcode
+ You haven't given the correct old secret code. Please try again.
+ !exit
+!endif
+
+!if $error = deposit_fail
+ Sorry but I have got no valid file from you. Verify your filename.
+ !exit
+!endif
+
+!if $error = deposit_binary
+ You have submitted a binary file <tt>$wims_deposit</tt>!
+ I cannot use it. Please send a good text file.
+ !exit
+!endif
+
+!if $error = src_too_long
+ Your block <tt>$block</tt> cannot be accepted because it has exceeded length
+ limit ($max_blocklen bytes). You can cut it into several blocks.
+ !exit
+!endif
+
+!if $error = file_too_long
+ Your LaTeX file cannot be accepted because it has exceeded length
+ limit ($max_texlen bytes).
+ However, you can cut it into parts, and submit
+ them one by one into different blocks.
+ !exit
+!endif
+
+!if $error = no_latex2html
+ Sorry, but the submission of LaTeX files cannot be done on this server, 
+ because the software LaTeX2HTML is not installed on the server.
+ Please try to run LaTeX2HTML on your local computer, 
+ then submit the resulting html file.
+ !exit
+!endif
+
+!msg $error
+
