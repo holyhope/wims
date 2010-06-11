@@ -1,0 +1,59 @@
+!if $option iswordof newcase
+ !changeto deduc/$module_language/form$option.phtml
+!endif
+
+!if $casefinished!=$empty
+ The case
+ !htmlmath $casefinished
+ is over.
+!endif
+
+!if $casecnt>1
+ !if $casecnt<3
+  !if $casefinished!=$empty
+   It remains the
+  !else
+   It is your
+  !endif
+  last case to process:
+ !else
+  !if $casefinished!=$empty
+   It remains
+  !else
+   You have
+  !endif
+  !href cmd=reply&opt=newcase $[$casecnt-1] cases
+  to process. Current case:
+ !endif
+ !htmlmath $caseid
+ <p>
+!endif
+
+!form reply
+!if $currstep=1
+ You must solve this exercise step by step, using the step methods presented
+ in the menu.
+ Method for the first step:
+!else
+ Method for step $currstep:
+!endif
+ <small>[
+ !href cmd=help&help_subject=methall&special_parm=$thisexo help
+ ]
+ !set random1=!randint 1,10^6
+ !set random2=!randint 1,10^6
+ !set random=$random1.$random2
+ [
+ !href cmd=help&help_subject=status&special_parm=$random status of the exercise
+ ]</small> <br>
+!set n_=!linecnt $m_context
+!reset l_,t_
+!if $n_>10 and prf/cleanhyp notitemof $mthlist
+ !set l_=,prf/cleanhyp
+ !set t_=,Erase useless hypotheses
+!endif
+!formselect method list -,$mthlist$l_ prompt $ch_choose,$mtitles$t_
+<input type=submit value=Continue>
+
+</form>
+

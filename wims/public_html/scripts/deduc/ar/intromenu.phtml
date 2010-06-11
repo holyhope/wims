@@ -1,0 +1,66 @@
+<p><center><hr width="35%"></center> <p>
+
+!read Exindex
+!set exocnt=!itemcnt $exolist
+!set Askresult=0
+!set Askcontext=0
+!if $exocnt<1
+ Sorry, this module has no available exercise for the time being. Come back
+ later!
+ !exit
+!endif
+!if $exocnt=1
+ This module contains actually only one exercise, <b>
+ !item 1 of $titlelist
+ </b>.
+ !set exoo=!item 1 of $exolist
+ !href cmd=new&module=$module&exo=$exoo Try it.
+ !exit
+!endif
+
+!form new
+<input type=hidden name=module value="$module">
+<center><table border=0><tr>
+!set special_parm=!trim $special_parm
+!if $special_parm2=select and $special_parm!=$empty
+ <td align=center>Exercises containing<br>
+ <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+!else
+ <td align=center>Choose the exercises:<td>
+!endif
+!read deduc/select.phtml
+<tr><td align=center>Level of severity <td>
+!set qcmlevel=3
+!formselect qcmlevel from 1 to 9
+<tr><td align=center>Ask for application <br>
+conditions of methods
+<td>
+!formselect Askcontext list -1,0,1 prompt Never, According to the exercises, Always
+<tr><td align=center>Ask the result <br>
+of methods
+<td>
+!formselect Askresult list -1,0,1 prompt Never, According to the exercises, Always
+!read introhook.phtml
+</table> <p>
+<input type=submit value="Go to work">
+</center>
+</form>
+
+!if $exocnt>10
+ !form intro
+ <input type=hidden name=special_parm2 value=select>
+ <input type=hidden name=module value="$module">
+ Select titles containing word
+ <input size=12 maxlength=12 name=special_parm value="$oldparm">
+ <input type=submit value=OK>
+ </form>
+!endif
+
+<b>Remarks</b>. The exercises will be randomly taken among your choice
+(or among all the available exercises if your choice is empty).
+
+!if * isin $titlelist
+ <p>Exercises marked by a * are in general harder than the others.
+!endif
+
+

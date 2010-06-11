@@ -1,0 +1,59 @@
+!set contextcnt=!linecnt $m_context
+!set goalcnt=!linecnt $m_goal
+!set equivcnt=!linecnt $m_equivalence
+!set casecnt=!linecnt $allcases
+
+<p><center><h4>Current status of the exercise</h4></center> <p>
+
+!if $tolerance<=0
+ You should solve this exercise in $m_minsteps steps in order to have a
+ maximal score.
+!else
+ This exercise can be solved with $m_minsteps steps, but in its current
+ status you can make up to $[$m_minsteps+$tolerance] steps and still have
+ a maximal score.
+!endif
+!if $status=waiting
+ You are now on the step number $currstep.
+!else
+ You have finished at the end of $[$currstep-1] steps.
+!endif
+<p>
+
+!if $casecnt>1
+ !if $casecnt>2
+  You still have $[$casecnt-1] cases to process. Current case: <p>
+  \($caseid).
+ !else
+  This is your last case to process: \($caseid).
+ !endif
+ <p>
+!endif
+
+!if $goalcnt>0
+ Still to prove: <ol>
+ !for i=1 to $goalcnt
+  !set l=!line $i of $m_goal
+  <li>\($l).
+ !next i
+ </ol> <p>
+!else
+ !if $equivcnt>0
+  Objects to transform: <ol>
+  !for i=1 to $equivcnt
+   !set l=!line $i of $m_equivalence
+   <li>\($l).
+  !next i
+  </ol> <p>
+ !endif
+!endif
+
+!if $contextcnt>0
+ Usable hypotheses: <ol>
+ !for i=1 to $contextcnt
+  !set l=!line $i of $m_context
+  <li>\($l).
+ !next i
+ </ol> <p>
+!endif
+

@@ -1,0 +1,33 @@
+!set email=!trim $email
+!set author=!trim $author
+
+!if $author!=$empty
+ Author of this exercise:
+ !if $email!=$empty
+  !mailurl $email $author
+.
+ !else
+ $author.
+!endif
+!if $solution!=$empty and $hint!=$empty
+ This exercise contains both an methexped solution and a hint.
+!endif
+!if $solution!=$empty and $hint=$empty
+ This exercise has an methexped solution but no hint.
+!endif
+!if $solution=$empty and $hint!=$empty
+ This exercise contains a hint but no methexped solution.
+!endif
+!if $solution$hint=$empty
+ This exercise has neither methexped solution nor hint.
+!endif
+<p>
+Information about this collection of exercises. <p>
+$module_about
+<p>
+The copyright of the exercises belong to their respective authors.
+Any installation of the sources of the exercises on a server
+requires expresse permission from the authors.
+
+!tail
+
