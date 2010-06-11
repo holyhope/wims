@@ -1,0 +1,68 @@
+!set lang_exists=yes
+
+!set classname=<b><font color=green>$wims_classname</font></b>\
+ of <b><font color=green>$wims_institutionname</font></b>
+ 
+!read adm/lang/date.phtml.$moduclass_lang
+
+!set statutname=!defof SU_Uprep,SU_Uprep,SU_Ac,SU_Ex,SU_Hi in wimshome/public_html/modules/home/names.$lang
+!set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
+
+!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Insert a source file,\
+		Participants' view of the sheet,\
+		Source of the sheet \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Points,Weight,Dependencies,$wims_name_comment,$wims_name_action,Paramètres de la série
+
+!if $activetest<=0
+ !let wims_name_sheetadmin=Page of preparation
+ !set name_title=!nosubst Preparation of sheet $sheet
+!else
+ !let wims_name_sheetadmin=Page of management
+ !set name_title=!nosubst Management of sheet $sheet
+!endif
+
+!let name_shinfo=!nosubst $wims_name_title <small>(limited to 80 characters)</small>,$wims_name_Status,\
+$wims_name_Description <br></small>(limited to $desc_limit characters; tags and html link allowed)</small>,\
+Expiration date,Presentation page,Registration of scores,for all sharing classes,$wims_name_comment
+!let name_allowtype=open to all,closed to all, open to the following hosts (and/or times) :
+!let name_mksheet=Create the sheet
+
+!distribute lines Sheet information\
+Content of the sheet\
+This sheet has no content yet.\
+The original title is\
+Modification of exercise\
+Number of points asked\
+of weight \
+Correct the source\
+The sheet expiration date of the sheet must be before the class expiration date which is\
+Your request is ignored.\
+into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
+name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+
+!set name_text1=To add a work (exercise, course, tool, etc.) to a sheet, you have to choose it (see below), choose its level of difficulty. Then use the link at the end of the page\
+of this exercise to add it to the sheet.
+
+!set name_text2= use search engine
+!set name_text3=Find an exercise amongst
+!set name_text4=Find an exercise in your account
+
+!if $job=student
+  !set name_title=Worksheet $sheet<br>$title (Presentation for participants)
+  !set name_sheetempty=The sheet is empty! Nothing is assigned for you in it. Possibly an \
+ error in the manipulation by your supervisor.
+  !set name_assignedwork=Assigned works in this sheet
+  !set name_quality=0 out of $[$re] points obtained, quality
+!endif
+
+!set name_desc_dependancy=Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci. Par exemple, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> signifie que le participant doit avoir un succès de 50% sur l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.</small>
+!set name_desc_comment=Visible seulement par l'enseignant.
+!set name_getsource=Voici le source de cette feuille. Vous pouvez copier ce source (entre les deux lignes composées de `*'; utilisez le presse-papier) dans un fichier, ce qui vous permettra de réutiliser le contenu dans une autre feuille ultérieurement. 
+
+!set name_regmodif=Modification enregistrée
+!! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
+!!set name_helpprog=Vous aider de cette, correspondance indicative, entre les programmes de l'enseignement français et les exercices Wims
+!set name_helpprog=$empty

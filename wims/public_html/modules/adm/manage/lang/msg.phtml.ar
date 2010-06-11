@@ -1,0 +1,24 @@
+!let wims_module_log=error: $error
+<b>$wims_name_Error.</b>
+
+!if $error=no_download_sites
+One adresss given is not the address of a valid WIMS modules download center. The server with a problem is : $error_list.<br>
+This can provide from
+<ul>
+<li>interruption of download center : wait server is on !</li>
+<li>an error in the define file of the download center on your server : contact administrator of the download center to get a correct define file.</li>
+</ul>
+So the configuration has not been changed.
+ !exit
+!endif
+
+!if $error=bad_mail
+Your message or your subject is empty.
+ !exit
+!endif
+!if $error=bad_list
+Forget to select the recipients ?
+ !exit
+!endif
+
+$error

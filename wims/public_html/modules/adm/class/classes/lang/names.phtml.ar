@@ -1,0 +1,107 @@
+!set lang_exists=yes
+!if $class_type iswordof 2 4
+   !if $class_type=2
+    !set name_classe=group of classes
+    !set name_sup=teacher
+   !else
+    !set name_classe=institution
+    !set name_sup=supervisor
+   !endif
+     !set name_classes= the $name_classe
+     !set name_classess= a $name_classe
+     !set name_classesss= of a $name_classe
+     !set name_classessss= The $name_classe
+ !else
+   !set name_classe=class
+   !set name_classes=the $name_classe
+   !set name_classess=a $name_classe
+   !set name_classesss= of the $name_classe
+   !set name_classessss= the $name_classe
+   !set name_sup=teacher
+ !endif
+
+ !if $splevel iswordof 1 2 3
+   !set sousclasses=!item $splevel of class,course
+   !set Name_level= !item $splevel of Level,Class,Course
+   !set Name_levels= !item $splevel of Levels,Classes,Courses
+   !set sousclasses_else=!item $splevel of or a class, or a course
+   !set name_level_else= !item $splevel of a level,a class,a course
+ !else
+   !set sousclasses=sub-classes
+   !set sousclasses_else=a class or an institution
+ !endif
+ 
+!set CL_Name	=Level,Class,Program,Course,Course interclasses,Test Zone
+!set Name_program=Programs
+!set name_program=program
+!set name_portalandgroup=Institutions and class groups
+!set name_independantclass=Independant classes
+
+!distribute items Register,Anonymous,open,protected,Year,\
+New participant,Registered,Connection Type,Up\
+into name_register,name_anonymous,name_open,name_protected,name_year,\
+name_new_participant,name_registered,name_connexion,name_up
+
+!set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
+ ne fonctionne pas.
+
+!distribute line Vous n'avez pas de compte dans d'autres classes.\
+  Search for your class\
+  No class available.\
+No class found corresponding to your search.\
+You can directly change to\
+into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
+
+!let classification=Ecole,Collège,Lycée,Université,Autre
+
+!set name_text1= Click on the name of a class to enter. Click on the name of the class to go \
+to work in it (if you are registered participant of that class).\
+<p>Click on the word `$name_register' to register to the class (you will\
+need a class password for protected classes, which should be obtained from your teacher).
+
+!set name_text2=To go to another $name_level_else $sousclasses_else, choose its name in the table below.
+!set name_text3=Or choose $name_level_else $sousclasses_else name in the table below.
+
+!set name_language=There is no English language classes on this site. Perhaps you are looking\
+  for a class of another language
+!set name_language2=This site does not yet contain any class in English language.
+
+!set name_warning= <b>Error</b>. You asked to log to $name_classess which does not exist.\
+Please verify your request.
+
+!set name_enter=!nosubst In order to get into the class <b><font color=green>$class_description</font></b> of\
+<b><font color=green>$class_institution</font></b> as a <em>registered participant</em>, \
+please give your login name and personal password.
+
+!set name_entersup=!nosubst In order to get into $name_classes \
+ <b><font color=green>$class_description</font></b> of <b><font color=green>$class_institution</font></b>\
+ as its <em>supervisor</em>, please enter supervisor's password.
+ 
+ !set name_research1=There are many virtual classes on this site. To find your class, please type\
+  a search keyword.
+!set name_research2=  There are still too many classes corresponding to your search word. Please\
+  give a more precise word.
+
+!set name_supervisor_text=Otherwise, you may locate your class in the following table, \
+and click on its name to get into it as supervisor.
+
+!if $type=example
+   !set name_example1=Sorry, no example class has been found on this site.
+   !set name_example2= Sorry, There is no example class of English language on this site.
+   !set name_example3=!nosubst There is $clcnt example classes of English language on this site.
+   !set name_example4=They intend to  to show you how virtual classes work from a students'side.\
+     If you want to experiment  with a virtual class as a supervisor, you will first have to create\
+      one. Click on the link and follow the instructions
+   !set name_instruction=<ul>\
+<li>To enter the class as an anonymous visitor (participant), click on <tt>Anonymous</tt>.\
+<li><p>If you wish to use your own user name and password in the example classes,\
+you will first have to register. Click on <tt>Registered</tt> to do this.\
+<li><p>Once you have registered, you can enter the class by clicking\
+on <tt>Registered</tt>. Please note : Registration data are regularly erased\
+from the server in example classes.\
+</ul>
+
+  !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous pourrez ensuite importer \
+    dans votre classe et modifier.
+!endif
+ 

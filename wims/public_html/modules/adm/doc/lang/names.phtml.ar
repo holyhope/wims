@@ -1,0 +1,70 @@
+!set lang_exists=yes
+!if $wims_read_parm=$empty
+ !exit
+!endif
+
+!goto $wims_read_parm
+:file
+
+<p>Available files in this document:
+ !for f in $flist
+  !getfile doc/$f $f
+  &nbsp;
+ !next f
+ <p>
+ !form reply
+ <input type=hidden name="job2" value=erase>
+ Erase a file:
+ !formselect job2 list $flist
+ <input type=submit value="$wims_name_tosave">
+ </form>
+ <p>
+ Files in the document can be accessed using the variable <tt>\filedir</tt>
+in the document. For example, 
+<p><center>
+ <tt>&lt;a&nbsp;href="\filedir/$"&gt;$f1&lt;/a&gt;</tt>
+</center> <p>
+ gives a link to the file <a href="$m_filedir/$f1">$f1</a>.
+ Also, you can write
+<p><center>
+ <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+</center> <p>
+to include an image file <tt>myfile.jpg</tt> in the page.
+ <p>
+ Files deposited to this document are only accessible by people having
+ rights to read the document.
+
+!exit
+
+:readauth
+ If you are the author of the document, please remember that you need the
+ authorization of the
+ !mailurl $wims_site_manager site manager\
+Ask to open WIMS document $doc
+ to put the document readable by the public.
+
+!exit
+
+:erase1
+ For security reasons, only site managers can erase public documents.
+ <p>
+ Please
+ !mailurl $wims_site_manager ask the site manager
+ to erase this document for you.
+ 
+!exit
+
+:erase2
+<font color=red><b>ATTENTION</b>!!</font> An erased document cannot be recovered!
+<p>
+Are you sure you want to erase the document <font color=red><b>$tit</b></font>?
+
+!exit
+:public
+
+<b>Remark</b>. You must ask the approval of the
+ !mailurl $wims_site_manager site manager\
+Ask to open WIMS document $doc
+ to make the document accessible by le public.
+
+!exit
