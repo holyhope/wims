@@ -1,0 +1,39 @@
+La methode spéciale <tt>help</tt> accepte deux paramètres. Le premier est un identificateur
+ qui sera dans la variable <tt>\help_subject</tt> à l'intérieur de la commande <tt>\help</tt>
+ et le second est le texte du lien.
+ 
+Si <tt>\special{help}</tt> est mis dans l'énoncé ou le feedback d'un exercice, 
+ l'aide sera de type popup, contrairement à l'aide usuelle.
+
+Tout le contenu de l'aide doit être mis dans le source de l'exercice oef. 
+Aucune facilité n'est prévue pour l'aide au niveau du module, car le principe
+est que l'indépendance des fichiers oef n e doit pas être détruit par les aides.
+Cependant, si vous avez plusieurs exercices partageant les mêmes textes d'aide
+vous pouvez utiliser cpp.
+<p>
+
+<b>Exemple:</b>
+ <pre>
+ \title{Deviner}
+ \statement{ Deviner un mot :  
+   \special{help test1,Premier indice}
+ }
+ \answer{1}{Singe}
+ \help{
+   Voici l'aide: help subject=\help_subject
+   <p>
+   \if{\help_subject issametext or \help_subject issametext none}{
+     \special{help test0,ici}
+   }
+   \if{\help_subject issametext test1}{
+     La première lettre est <b>S</b>. Vous pouvez trouver un nouvel indice
+     \special{help test2,ici}
+   }
+  \if{\help_subject issametext test2}{Voici le second indice. 
+    La deuxième lettre est <b>i</b>
+   }
+  \if{\help_subject issametext test0}{Voici
+    \special{help test1,l'aide 1}, \special{help test2,l'aide 2}
+   }
+ }
+ </pre>
