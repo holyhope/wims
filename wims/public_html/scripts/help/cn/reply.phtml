@@ -4,9 +4,9 @@ raw,纯文本,用于选项的比较\
 numeric,数,精确到设定精度\
 function,数值函数,用于将回答与标准答案比较\
 equation,数值方程,比较计算出数值的相等\
-exp,数学表达式,作形式上比较\
-text,文字,词或句\
-multiple,可控多重选择,按钮或菜单\
+exp|algexp litexp formal,数学表达式,作形式上比较\
+text|case nocase,文字,词或句\
+multiple|checkbox click menu radio mark flashcard,可控多重选择,按钮或菜单\
 
 
 !set typelist2=!trim\
@@ -14,7 +14,7 @@ atext,近似文字,不区分单复数等\
 chembrut,化学分子式\
 chemdraw,画分子,使用 Java applet\
 chemeq,化学方程式,有平衡分析\
-clickfill,用已给对象填充的回答栏,文字或图形\
+clickfill|clickfill dragfill,用已给对象填充的回答栏,文字或图形\
 clicktile,点击地砖以着色,需要java\
 compose,用已给成分组成的句子,用已给成分\
 coord,在一个图形上点击,获取坐标或区域\
@@ -27,7 +27,7 @@ matrix,矩阵,数学\
 numexp,有理数,可写成分数\
 range,区间内的数\
 reorder,重排,给出对象的表\
-set,有限集合,按字面区别的、形式的或近似的\
+set|set fset aset,有限集合,按字面区别的、形式的或近似的\
 sigunits,带单位量,指定有效数字位数的物理量\
 symtext,符号化文字,文字比较的高级工具\
 units,带单位的数,物理用\
@@ -74,6 +74,10 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
   !set l=!line $j of $(typelist$i)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
+  !set name=!replace internal | by , in $name
+  !set name1=!item 2 to -1 of $name
+  !set name=!item 1 of $name
+  !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
    <li><p><a name="_$name"></a>
    !read help/anstype.$lang/$name.phtml
@@ -90,7 +94,7 @@ OEF练习有两种基本的方式接受用户的回答: 多重选择或自由格式的回答.
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name</tt>) $desc.
+   (<tt>$name1</tt>) $desc.
   !endif
  !next j
  </ul>

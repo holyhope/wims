@@ -1,12 +1,12 @@
 !set typelist1=!trim\
 default,Auto,automatic determination of some basic types\
-raw,raw text,control of comparison by options\
+raw,Raw text,control of comparison by options\
 numeric,Number, with tolerance of precision\
 function,Numerical function, function with numerical tests\
 equation,Numerical equation,equation with numerical tests\
-exp,Mathematical expression, with formal comparison\
-text,Text, words or sentences\
-multiple,Controlable multiple choices,buttons or menus\
+exp|algexp litexp formal,Mathematical expression, with formal comparison\
+text|case nocase,Text, words or sentences\
+multiple|checkbox click menu radio mark flashcard,Controlable multiple choices,buttons or menus\
 
 
 !set typelist2=!trim\
@@ -15,7 +15,7 @@ chembrut,Raw formula of a molecule,in chemistry\
 chemdraw,Draw a molecule,with Java applet\
 chemclick,Select atoms or bonds in a molecule,with Java applet\
 chemeq,Chemical equation, with balance analysis\
-clickfill,Drag-and-drop objets,text and image\
+clickfill|clickfill dragfill,Drag-and-drop objets,text and image\
 clicktile,Click and color tiles, need java\
 compose,Compose, using given components\
 coord,Click on image, recognition of coordinates and various regions\
@@ -29,7 +29,7 @@ matrix,Matrix, mathematical\
 numexp,Rational numbers, fractional writing\
 range,Number within a given range, anything within the range is accepted\
 reorder,Reordering, given list of objects\
-set,Finite set,literal, formal or approximative\
+set|set fset aset,Finite set,literal, formal or approximative\
 sigunits,Sigunits,number with unit and significant digits\
 symtext,Symtext,advanced tool of text identification\
 units,Number with unit, for physics\
@@ -82,6 +82,10 @@ Each freestyle answer can independently take one of the following types.
   !set l=!line $j of $(typelist$i)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
+  !set name=!replace internal | by , in $name
+  !set name1=!item 2 to -1 of $name
+  !set name=!item 1 of $name
+  !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
    <li><p><a name="_$name"></a>
    !read help/anstype/$name.phtml
@@ -99,7 +103,7 @@ symtext options will be understood in this case.
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name</tt>) $desc.
+   (<tt>$name1</tt>) $desc.
   !endif
  !next j
  </ul>

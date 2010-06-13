@@ -4,9 +4,9 @@ raw,ruwe tekst,de antwoord controle kan worden ingetuned door opties\
 numeric,Numeriek, met tollerantie optie\
 function,Numerieke functie, vergelijkt antwoord (een functie) m.b.v. numerieke tests\
 equation,Numerical equation,equation with numerical tests\
-exp,Wiskundige formule, wordt formeel algebraisch vergeleken\
-text,Tekst, betekenisvolle woorden of zinnen \
-multiple,Meerkeuze vragen,klikken of slepen etc.\
+exp|algexp litexp formal,Wiskundige formule, wordt formeel algebraisch vergeleken\
+text|case nocase,Tekst, betekenisvolle woorden of zinnen \
+multiple|checkbox click menu radio mark flashcard,Meerkeuze vragen,klikken of slepen etc.\
 
 
 !set typelist2=!trim\
@@ -15,7 +15,7 @@ chembrut,Raw formula of a molecule,in chemistry\
 chemdraw,Draw a molecule,with Java applet\
 chemclick,Select atoms or bonds in a molecule,with Java applet\
 chemeq,Chemische vergelijking, met massa/electronen/ladings balans analyse\
-clickfill,Drag 'n drop objecten,tekst en afbeelding [ook van wiskundige TeX formules]\
+clickfill|clickfill dragfill,Drag 'n drop objecten,tekst en afbeelding [ook van wiskundige TeX formules]\
 clicktile,Click and color tiles, need java\
 compose,Compositie, gebruikt allerlei componenten\
 coord,Hot spot, herkent de klik op een coordinaten of divers gevormde gebieden\
@@ -24,11 +24,12 @@ chset,Setje karakters,\
 geogebra,Dynamisch geometrie,gebruikt de applet GeoGebra\
 javacurve,Tekenen in een javaapplet,\
 jmolclick,Click on 3D atoms, use applet Jmol\
+keyboard,Texte, tapé à partir du clavier proposé\
 matrix,Matrix, wiskundig\
 numexp,Rationale getallen, hat antwoord is een getal in R\
 range,Getal in een bereik, alle getallen binnen het antwoord_bereik zijn correct\
 reorder,Hergroepeer, een gegeven lijst\
-set,Finite set,literal, formal or approximative\
+set|set fset aset,Finite set,literal, formal or approximative\
 sigunits,Eenheden,een getal met een eenheid en nauwkeurigheid\
 symtext,Symtext,advanceerde tekst herkenning\
 units,Getal met een eenheid, voor natuur en scheikunde\
@@ -80,6 +81,10 @@ Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het 
   !set l=!line $j of $(typelist$i)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
+  !set name=!replace internal | by , in $name
+  !set name1=!item 2 to -1 of $name
+  !set name=!item 1 of $name
+  !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
    <li><p><a name="_$name"></a>
    !read help/anstype.$lang/$name.phtml
@@ -96,7 +101,7 @@ Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het 
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name</tt>) $desc.
+   (<tt>$name1</tt>) $desc.
   !endif
  !next j
  </ul>

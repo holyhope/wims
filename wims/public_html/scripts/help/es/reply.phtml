@@ -1,39 +1,38 @@
 !set typelist1=!trim\
 default,Auto,détermination automatique de certains types de base\
-raw,Texte brut,contrôle de comparaison par options\
-numeric,Nombre,nombre avec tolérance de précision\
-function,Fonction numérique,fonction avec test numérique\
-equation,Equation numérique,equation avec test numérique\
-exp,Expression mathématique,comparaison formelle\
-text,Texte,des mots ou des phrases\
-multiple,Choix multiples contrôlables,boutons ou menus\
-
+raw,Texte brut, la comparaison se fait par des options\
+numeric,Nombre,la comparison se fait numériquement avec une précision fixée\
+function,Fonction numérique,la comparaison se fait numériquement\
+equation,Equation numérique,la comparaison se fait numériquement\
+exp|algexp litexp formal,Expression mathématique,comparaison formelle\
+text|case nocase,Texte,des mots ou des phrases\
+multiple|checkbox click menu radio mark flashcard,réponse à choix multiples\
 
 !set typelist2=!trim\
-atext,Texte approximatif,avec identification de singulier et pluriel etc.\
+atext,Texte approximatif, la comparaison tolère les différences du type singulier/pluriel ...\
 chembrut,Formule brute d'une molécule,en chimie\
 chemdraw,Dessiner une molécule,avec une applet Java\
 chemclick,Sélectionner des atomes ou des liaisons d'une molécule,avec une applet Java\
 chemeq,Equation chimique,avec analyse d'équilibre\
-clickfill,Objets à glisser-déposer,texte et image\
+clickfill|clickfill dragfill,Objets à glisser-déposer, qui peuvent être du texte, des images\
 clicktile,Mettre en couleur des pavés, nécessite java\
 compose,Composer,en utilisant des composantes fournies\
-coord,Clic sur image,reconnaissance de coordonnées et régions diverses\
-correspond,Correspondance,établir la correspondance de paires d'objets\
+coord,Clic sur une image, dans une zone prédéfinie\
+correspond,Correspondance,entre deux listes d'objets\
 chset,Ensemble de caractères,\
 geogebra,Géométrie dynamique,utilisation de l'applet GeoGebra\
-javacurve,Dessin Java, possibilité de dessins soit libres soit avec des formes prédéfinies\
+javacurve,Dessin utilisant Java, permettant des tracés avec des formes prédéfinies ou libres\
 jmolclick,Clic sur des atomes en 3D, nécessite l'applet Jmol\
-keyboard,Texte, avec clavier adapté\
-matrix,Matrix, mathématique\
-numexp,Nombre rationnel, écriture fractionnaire\
+keyboard,Texte, tapé à partir du clavier proposé\
+matrix,Matrix numérique, au sens mathématique ; la comparaison se fait numériquement coefficient par coefficient\
+numexp,Nombre rationnel, la comparison se fait de façon formelle\
 range,Nombres dans une zone,tout ce qui est dans la zone est accepté\
 reorder,Mise en ordre, d'une liste d'objets\
-set,Ensemble fini,textuel, formel ou approximatif\
-sigunits,Sigunits,nombre avec unité et chiffre significatif\
-symtext,Symtext,outil avancé d'identification de textes\
+set|set fset aset,Ensemble fini,avec une analyse textuelle ou numérique\
+sigunits,Nombre,avec possibilité de demander une unité et un nombre de chiffres significatifs\
+symtext,Texte,outil avancé d'identification de textes\
 units,Nombre avec unité, pour la physique\
-vector,Vecteur,comparaison formelle des composantes\
+vector,Vecteur,comparaison numérique des composantes\
 wlist,Liste de mots,\
 
 
@@ -75,7 +74,7 @@ La sintaxis es la siguiente:
 <p>
 Cada respuesta libre puede tomar independientemente uno de los siguientes
 tipos:
-<ol>
+
 !for i=1 to 2
  <p><b>$(namelist[$i])</b>
  !set n=!linecnt $(typelist$i)
@@ -84,6 +83,10 @@ tipos:
   !set l=!line $j of $(typelist$i)
   !distribute item $l into name,title
   !set desc=!item 3 to -1 of $l
+  !set name=!replace internal | by , in $name
+  !set name1=!item 2 to -1 of $name
+  !set name=!item 1 of $name
+  !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
    <li><p><a name="_$name"></a>
    !read help/anstype.$lang/$name.phtml
@@ -101,11 +104,12 @@ tipos:
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name</tt>) $desc.
+   (<tt>$name1</tt>) $desc.
   !endif
  !next j
  </ul>
 !next i
+
 <p>
 Option commune à toutes les réponses libres : <tt>default</tt> Cette option
 peut prendre la forme <tt><font color=green>default="valeur_par_défaut"</font>
@@ -115,7 +119,6 @@ qui remplace.
 <p>
 Pour insérer les champs de réponses dans le texte par la commande <tt>embed</tt>, 
 !href cmd=help&special_parm=embedans voir ici. 
-
  
 <p><h4>Condiciones de comprobación</h4> <p>
 Bajo ciertas circunstancias, es deseable que las respuestas de estilo libre
