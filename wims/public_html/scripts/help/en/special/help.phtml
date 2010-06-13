@@ -1,0 +1,38 @@
+ The \special method "help" accepts two parameters. The first is a key 
+ which will be put to the variable \help_subject within the help text, 
+ and the second is the text of the link.
+ 
+ If the \special{help} is put into statement or feedback of an exercise, 
+ the help will use popup mode, unlike the usual "help" link in the module.
+
+ All the help content should be put into the oef source. No facility is 
+ planned for module-level help, as the principle is that the independency 
+ of oef files should not be destroyed by helps. However, if you have 
+ several exercises sharing the same help texts, you may consider using cpp.
+<p>
+
+<b>Example:</b>
+ <pre>
+ \title{Guess}
+ \statement{ Guess a word :  
+   \special{help test1,First clue}
+ }
+ \answer{1}{Monk}
+ \help{
+   This is the help: help subject=\help_subject
+   <p>
+   \if{\help_subject issametext or \help_subject issametext none}{
+     \special{help test0,here}
+   }
+   \if{\help_subject issametext test1}{
+     The first letter is <b>M</b>. You can find another clue
+     \special{help test2,here}
+   }
+  \if{\help_subject issametext test2}{Here is the second clue. 
+    The second letter is <b>o</b>
+   }
+  \if{\help_subject issametext test0}{Here is the  
+    \special{help test1,clue 1}, \special{help test2,clue 2}
+   }
+ }
+ </pre>

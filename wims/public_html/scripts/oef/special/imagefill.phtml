@@ -2,45 +2,10 @@
  !exit
 !endif
 !if $wims_read_parm=help
- !if $lang=cn
-  把拖拉填充(<tt>dragfill</tt>)或点击填充(<tt>clickfill</tt>)的栏放进一个大的图形里.
- 用于OEF练习的陈述. 例如:
-  <pre>
- \special{imagefill \imagedir/myphoto.jpg,450x350,40x40
- reply 1,120x250
- reply 3,300x50
- reply 4,10x15
- }
- </pre>
-这个例子把一个大的图形(<tt>\imagedir/myphoto.jpg</tt>)放在陈述里,
-大小是 450x350, 有 3 个 40x40 的拖拉-放置栏.
-3个栏的正确答案分别是 1,3,4(必须是点击填充或拖拉填充类型的),
-它们在大图中的位置分别是 120x250, 300x50, 10x15.
- <p> 大图会自动伸展以填满指定的区域.
- <p> 可以有多重回答. 在命令中加入第 3 个参数
- <tt>reply 1,120x250x4</tt> 后, 会显示长度等于 4 的放置栏.
- !exit
+  !read help/$lang/special/imagefill.phtml
+  !exit
 !endif
- Put dragfill or clickfill fields into a big image. To be used in the
- statement of an OEF exercise. Example:
- <pre>
-\special{imagefill \imagedir/myphoto.jpg,450x350,40x40
-reply 1,120x250
-reply 3,300x50
-reply 4,10x15
-}
-</pre>
- This example puts a big image (<tt>\imagedir/myphoto.jpg</tt>) in the
- statement, of size
- 450x350, with 3 embedded drag-and-drop fields of size 40x40. The 3 fields
- are respectively answers 1,3 and 4 (which must be of clickfill or dragfill
- type), and at respective positions 120x250, 300x50, 10x15 within the big
- image.
- <p> The big image will be stretched to fit exactly the specified size.
- <p> It is possible to have multiple answers. Add a third integer parameter to the size
- <tt>reply 1,120x250x4</tt> will show a field of length 4.
- !exit
-!endif
+
 !set parm=!replace internal $	$ by $ ; $ in $wims_read_parm
 !set parm1=!row 1 of $parm
 !distribute items $parm1 into imgurl,bigsize,smallsize
