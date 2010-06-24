@@ -317,38 +317,29 @@ $nei_description</font></em> como vecina suya?
 
 !if $job=oefdefault
  !set title=Parametrización por defecto de los módulos OEF
- !distribute lines Une série aura\
-   Niveau de sévérité\
-   Chronomètre\
-   secondes\
-   Nombre de réponses affichées dans les QCM\
-   Donner une solution (si disponible) ?\
-   jamais,si la note est non maximale,toujours\
-   Toujours afficher une bonne réponse dans les QCM.\
-   Pénalité pour mauvaise réponse dans les QCM.\
-   Afficher la bonne réponse.\
-   Permettre les indications (si disponibles).\
+ !distribute lines Una serie tendrá \
+Nivel de severidad \
+Cronómetro \
+segundos \
+Numeró de respuestas indicadas en los QCM \
+¿Dar una solución (si disponible)? \
+nunca, si la nota no es máxima, siempre \
+Siempre indicar una buena respuesta en los QCM. \
+Penalización para mala respuesta en los QCM. \
+Indicar la buena respuesta. \
+Permitir las indicaciones (si  disponibles). \
+
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
-   !set name_warning=Pour la limite de temps, vous pouvez mettre deux nombres dans le chronomètre, une petite\
-     limite suivie d'une plus grande. Dans ce cas, la première limite déclenche \
-   la réduction du score, qui sera à  0 quand la seconde limite est atteinte.
+   !set name_warning=Para el límite de tiempo, pueden poner dos números en el cronómetro,un pequeño \
+límite seguido de uno mayor. En ese caso, el primer límite desencadena \
+la reducción del resultado, que será de 0 cuando se alcanza el segundo límite.
+
 
  !goto commun
 !endif
 
- de la actividad de gestión de su clase (usted debe ser el origen de toda
-esta actividad; de lo contrario, será necesario comprobar que no se ha
-producido una filtración de su contraseña de profesor).
-
-<li><p>Configurar las
-!href cmd=renew&job=grestrict restricciones a nivel de clase
- de los sitios que tienen acceso a las calificaciones.
-
-<li><p>Otras definiciones de seguridad en
-!href cmd=renew&job=list la configuración de la clase
-.
 !if $job=security
  !set title=Actividades de gestión de seguridad disponibles
  !set name_see_activity2=usted debe ser el origen de toda esta actividad; de lo contrario, \
@@ -364,24 +355,24 @@ producido una filtración de su contraseña de profesor).
 
 !if $job=authtype
  !set title=Autenticación por un anuario ldap
- !set name_intro_authtype=Sélectionnez <tt>ldap</tt> et remplissez cette page si \
-   vous désirez utiliser une authentification par un annuaire ldap.
+ !set name_intro_authtype=Seleccione < tt>ldap</tt> y llenan esta página si \
+desean utilizar una autenticación por un anuario ldap.
  !goto commun
 !endif
 
 !if $job=import
- !set code1=Aucun
- !set code2=$wims_name_yes mais différent
- !set code3=$wims_name_yes, actif et différent
+ !set code1=Ningún
+ !set code2=$wims_name_yes pero diferente
+ !set code3=$wims_name_yes, activo y diferente
 !endif
 
 !if $job=propagate
   !if $wims_supertype=2
-   !set name_thisclass=du portail
-   !set name_subclasses=sous-classes
+   !set name_thisclass=del pórtico
+   !set name_subclasses=subclases
   !else
-   !set name_thisclass=de la zone actuelle
-   !set name_subclasses=zones dépendantes
+   !set name_thisclass=de la zona actual
+   !set name_subclasses=zonas dependientes
   !endif
 
  !distribute lines Las configuraciones han sido enviadas a las $name_subclasses con éxito\
