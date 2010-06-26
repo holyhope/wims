@@ -5,8 +5,8 @@ list="png gif"
 if [ ! -s wimsedu1/home.png ] ;
  then
     cd wimsedu ;
-    for i in `ls *.png`; do convert -resize 30 $i ../wimsedu2/$i; done
-    for i in `ls *.png`; do convert -resize 18 $i ../wimsedu1/$i; done
+    for i in `ls *.png 2>/dev/null`; do convert -resize 30 $i ../wimsedu2/$i; done
+    for i in `ls *.png 2>/dev/null`; do convert -resize 18 $i ../wimsedu1/$i; done
     cd .. ; 
 fi;
 
@@ -26,7 +26,7 @@ for j in `ls` ; do
 	padding-left:"$w"px;
 }" > icon.css
      for a in $list ; do 
-       for i in `ls $j/*.$a` ; do file=`basename $i .$a` ; echo ".$file{
+       for i in `ls $j/*.$a 2>/dev/null` ; do file=`basename $i .$a` ; echo ".$file{
  background-image:url($file.$a);background-repeat:no-repeat;
  min-height:"$h"px;
  padding-left:"$w"px;
