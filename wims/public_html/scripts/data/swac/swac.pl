@@ -61,7 +61,8 @@ while ($_ = shift(@ARGV)) {
     usage(); # includes --help !
   }
 }
-%hash=(swac_alphaidx => swac_baseform) ; 
+%hash=(swac_alphaidx => swac_baseform,
+swac_text => swac_baseform,) ; 
 
 my %ALLTAGS = ('swac_text' => {}) ; 
 push @dir, glob("$lang-*") if ($lang) ;
@@ -73,9 +74,10 @@ InitFromFiles($ALLTAGS, (@dir) ? @dir : ".") ;
 for $field (keys %hash) { $field2=$hash{$field} ; 
    for my $k (sort @KEYS) {
     if( !($ALLTAGS->{$field2}{$k}) ) {
-       $l = $ALLTAGS->{$field}{$k} ; 
-       $l = traite_francais($l) ; 
-      $ALLTAGS->{$field2}{$k}= $l
+      if( ($ALLTAGS->{$field}{$k})) { $l = $ALLTAGS->{$field}{$k} ;
+       $l = traite_francais($l) ;
+       $ALLTAGS->{$field2}{$k}= $l
+      }
     }
   }
 }
@@ -85,6 +87,7 @@ sub traite_francais { my ($a) = @_ ;
    $a =~ s/\best-à-dire/c'est-à-dire/ ; 
    $a =~ s /plaire\|\(conversation\)/s'il vous plaît/;
    $a =~ s/\((\w+)\)// ;
+   $a =~ s /^|//;
    $a}
 #### problème avec s'il te pl
 out(":" . join( "\n:",  @KEYS), canon2("")) ; 
