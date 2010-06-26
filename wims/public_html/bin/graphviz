@@ -23,7 +23,8 @@ if [ -z "$w_graphviz_format" ]; then w_graphviz_format="dot"; fi ;
 if [ "$w_graphviz_format" != 'dot' -a "$w_graphviz_format" != 'neato'  -a "$w_graphviz_format" != 'circo' -a "$w_graphviz_format" != 'fdp' -a "$w_graphviz_format" != 'twopi' ];  then w_graphviz_format='dot'; fi
 mkdir -p $s2_dir/graphviz
 i=1 ;
-for file in `ls $s2_dir/graphviz/*.$w_graphviz_output`
+lsout=`ls $s2_dir/graphviz/*.$w_graphviz_output 2>/dev/null`
+for file in $lsout
 do
   num=`basename $file .$w_graphviz_output`
   if [ $i -le $num ]; then i=$(( $num+1 )) ; fi
