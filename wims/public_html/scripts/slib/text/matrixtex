@@ -1,13 +1,13 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title= Matrix in Tex
+slib_title= Matrix in Latex
 slib_parms=3\
 ,matrix between brackets\
 (,  lbrace, rbrack,..\
 ),  lbrace, rbrack,..
 slib_author=Bernadette PERRIN-RIOU
-slib_out=tex matrix with  options (lbrace,lbrack,..., or nothing)
+slib_out=tex matrix with  options (lbrace,lbrack,..., or .)
 slib_comment= no transformation is made on the elements of the matrix
 slib_example= [1,2;x^2,y;e_1,e_2],lbrace,rbrack
 !exit
@@ -23,13 +23,13 @@ slib_opt2=!item 3 of $wims_read_parm
 slib_data=!declosing $slib_data
 slib_data=!replace internal , by & in $slib_data
  
- !if $slib_opt1 notwordof  (  )
+!if $slib_opt1 notwordof  (  ) .
  slib_opt1= \$slib_opt1
- !endif
+!endif
  
- !if $slib_opt2 notwordof  (  )
-slib_opt2= \$slib_opt2
- !endif
+!if $slib_opt2 notwordof  (  ) .
+  slib_opt2= \$slib_opt2
+!endif
 
 slib_data=!replace internal ;  by  $\
 $\\  in $slib_data
