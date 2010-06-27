@@ -391,24 +391,24 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
 !endif
 
 !if $job=index
- !set title=!nosubst Actualisation de l'index $tit
- !set name_done=Fait.
- !set name_result=Résultat du script
+ !set title=!nosubst Actualización del índice $tit
+ !set name_done=Hecho
+ !set name_result=Résultado del script
 
-  !if $job2=structure
-   !set tit=des zones
+  !if $job2=estructura
+   !set tit=de las zonas
   !endif
   !if $job2=userlist
-   !set tit=des participants
+   !set tit=de los participantes
   !endif
   !if $job2=teacherlist
-   !set tit=des enseignants
+   !set tit=de los profesores
   !endif
   !if $job2=oef
-   !set tit=des exercices
+   !set tit=de los ejercicios
   !endif
   !if $job2=doc
-   !set tit=des documents
+   !set tit=de los documentos
   !endif
 !endif
 
@@ -416,29 +416,29 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
   !distribute line Nombre del Centro\
     Nombre de la clase\
     Opciones\
-    Modtool Account\
+    Cuenta Modtool \
     Bloqueo de conexión\
-    Best scores (number / anonymity)\
+    Mejor notas (número/anonimato)\
     Límite del número de participantes\
     Fecha de expiración\
     Grabación de los ejercicios\
     Grabación de los exámenes\
-    visibles par les élèves\
-    Modifier l'apparence \
+    visible por los alumnos \
+    Modificar la aparición\
     Preferencias personales\
     Enviar las configuraciones a las zonas inferiores\
     Clases vecinas\
     Otros servidores\
-    Utiliser une authentification\
-    des participants par annuaire ldap\
-    Actualiser les index\
-   dont le changement de\
-    Faire une sauvegarde ou restauration de la classe\
+    Utilizar una autenticación \
+    participantes por anuario ldap \
+    Actualizar los índices \
+    uno de los cuales cambio de \
+    Hacer una protección o restauración de la clase\
     Restricciones de recursos\
-    restreindre les sites \
-    pour lequels les scores sont enregistrés\
+    limitar los sitios \
+    para cuáles se registran los resultados\
     Eliminación selectiva\
-   Configurer les\
+    Configurar los\
     Utilización actual del espacio de disco\
     el límite es\
     Mix\
@@ -487,14 +487,15 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Vínculos sobre una plataforma o una página Internet\
    Color de fondo de las páginas\
    Color de fondo de los menús\
-   Couleur des liens dans les menús\
+   Color de los vínculos en los menús\
    Imagen de fondo de las páginas\
    transferir un fichero css\
    Gama de colores de los resultados (de 0 a 10)\
-   Couleur de fond des boutons\
-   Couleur du texte dans les boutons\
-   Couleur de fond des boutons d'aide\
-   Couleur du texte dans les boutons d'aide\
+   Color de fondo de los botones \
+   Color del texto en los botones \
+   Color de fondo de los botones de ayuda \
+   Color del texto en los botones de ayuda \
+
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
