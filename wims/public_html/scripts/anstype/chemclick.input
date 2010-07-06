@@ -1,5 +1,4 @@
 !reset xsize ysize show_hydrogen show_carbon showfile
-
 !set appletdir=java/WIMSchem
 !set anstype=yes
 !set anstyle=dprompt
@@ -17,7 +16,8 @@ $ in $oef_applet_option
 !set oef_applet_option=!nonempty lines $oef_applet_option
 !set Inputsize=!line 1 of $oef_applet_option
 !set test=!text remove 0123456789x in $Inputsize
-!if $test=$empty
+
+!if $test issametext $empty
  !set Inputsize=!replace internal x by , in $Inputsize
  !set oef_applet_option=!line 2 to -1 of $oef_applet_option
  !distribute items $Inputsize into xsize,ysize
@@ -105,13 +105,16 @@ $file
 TOOL_SETATOM,TOOL_SINGLE,TOOL_DOUBLE,TOOL_TRIPLE,TOOL_ZERO,\
 TOOL_INCLINED,TOOL_DECLINED,TOOL_UNKNOWN,TOOL_CHARGE,TOOL_UNDO,TOOL_REDO,\
 TOOL_TEMPLATE,TOOL_CUT,TOOL_COPY,TOOL_PASTE,\
-MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STEREO
+MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STEREO,\
+TOOL_SELECT,TOOL_UNSELECT
 !set list_m=!lower $list
 !set list_default=1,0,0,0,0,\
 0,0,0,0,0,\
 0,0,0,0,0,0,\
 0,0,0,0,\
-0,0,0,0,0,0,0
+0,0,0,0,0,0,0,\
+1,1
+
 !set listcnt=!itemcnt $list
 !set params=
 !for u_ =1 to $listcnt
@@ -126,11 +129,11 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 !next
 <script language="javascript" type="text/javascript">
 function ReadThis(){
-	    var mol=document.WIMSchem.GetMoleculeMDLMol();
-		var atoms=document.WIMSchem.ReadAtomSelection();
+	    var mol=document.getElementById('WIMSchem').GetMoleculeMDLMol();
+		var atoms=document.getElementById('WIMSchem').ReadAtomSelection();
 		var bonds=document.getElementById('WIMSchem').ReadBondSelection();
 		document.getElementById('WIMSchemreply').value = atoms +';' + bonds + '\n'+ mol;
-		document.WIMSchem.destroy();
+		document.getElementById('WIMSchem').destroy();
 	 }
 </script>
 !if $File!=$empty
@@ -144,7 +147,7 @@ function ReadThis(){
 	    <param name="show_hydrogen" value="$show_hydrogen">
         <param name="show_carbon" value="$show_carbon">
         <param name="user_selection" value="1">
-        <param name="color_alpha" value="100">
+        <param name="color_alpha" value="255">
         <param name="default_atom_select_color" value="255,0,255">
         $templ
 	    $atoms
@@ -153,3 +156,6 @@ function ReadThis(){
 	    $parm_angle
 	    $File
 </applet>
+
+!set oef_applet_option=$Inputsize\
+$oef_applet_option
