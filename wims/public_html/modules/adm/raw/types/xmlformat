@@ -10,23 +10,16 @@
 :deluser
 :adduser
 :recuser
-
-!exit
-
 :listexams
+
+!goto footer
+
 :listsheets
  !shortout queryclass=$qclass\
-count=$cnt\
-titlelist=$titles\
+nbsheet=$sheetcnt\
+sheettitlelist=$sheettitles\
 
-!exit
-
-
-:listlinks
-!shortout nblinks=$nblink\
-listlinks=$listlinks\
-
-!exit
+!goto footer
 
 :getsheet
  !shortout queryclass=$qclass\
@@ -35,16 +28,16 @@ sheet_properties=$sheet_properties\
 exocnt=$exocnt\
 exotitlelist=$exotitlelist\
 
-!exit
+!goto footer
 
 :addsheet
  !shortout queryclass=$qclass\
 sheet_id=$qsheet
-!exit
+!goto footer
 
 :addclass
  !shortout $cd
-!exit
+!goto footer
 
 :getclass
 !shortout <class>\
@@ -57,11 +50,11 @@ sheet_id=$qsheet
 
 !next d
 !shortout </class>
-!exit
+!goto footer
 
 :getclassmodif
 !shortout $modif
-!exit
+!goto footer
 
 :getuser
 !shortout queryclass=$qclass\
@@ -71,7 +64,7 @@ queryuser=$quser\
  !shortout $d=$(user_$d)\
 
 !next d
-!exit
+!goto footer
 
 :getscore
 !for v in examscore, weights, requires, persheet, gotdetail, meandetail
@@ -84,20 +77,14 @@ $ in $($v)
 !shortout queryclass=$qclass\
 queryuser=$quser\
 scoremax=$scoremax\
-\
 examscores=$examscore\
-\
 weights=$weights\
-\
 requirepoints=$requires\
-\
 sheetsummaries=$persheet\
-\
 gotpoints=$gotdetail\
-\
 scoreaverages=$meandetail\
 
-!exit
+!goto footer
 
 :getlog
 
@@ -108,11 +95,11 @@ scoreaverages=$meandetail\
  !sh cd $wims_home/log/classes/$qclass\
 	cat score/$quser noscore/$quser 2>/dev/null | sort
 !endif
-!exit
+!goto footer
 
 :gettime
  !shortout $now_year$now_month$now_day.$now_hour:$now_min:$now_sec
-!exit
+!goto footer
 
 :authuser
  !shortout $wims_session
@@ -123,41 +110,136 @@ scoreaverages=$meandetail\
  courses=$wims_class
 
 :listclasses
-# listclasse represente les couples qclass,rclass pour chaque classe
-# accessible d'un serveur donne
-list_cnt=!linecnt $listclasses
-index=1
-
+list_cnt=!itemcnt $listclasses
 !shortout <list>\
-
-!while $index <= $list_cnt
-	!read jobs/getclass.proc
-	
-	!shortout <class>\
-	<qclass>$(listclasses[$index;1])</qclass>\
-	<connection>\
-        	<rclass>$(listclasses[$index;2])</rclass>\
-          	<ident>$ident</ident>\
-	</connection>\
- 
-	!for d in $option
-		!shortout \
-	<$d>$(class_$d)</$d>\
-
-	!next d
-	
-	!shortout \
-</class>\
-
-	!increase index
-!endwhile
   
+!for i = 1 to $list_cnt
+   qclass=!item $i of $listclasses
+   !read jobs/getclass.proc
+   !shortout  <class>\
+	<qclass>$qclass</qclass>\
+        <connection>\
+         <rclass>$rclass</rclass>\
+         <ident>$ident</ident>\
+        </connection>\
+         
+   !for d in $option
+ !shortout   \
+        <$d>$(class_$d)</$d>\
+
+  
+   !next d
+!shortout </class>\
+  
+!next i
 !shortout \
 </list>
+!goto footer
 
-!exit
+:listmodules
 
-:getclassesuser
-!shortout $listclassesuser\
+!shortout <member>\
+		<name>base_directory</name>\
+		<value><string>$option</string></value>\
+	</member>
 
+list_cnt=!itemcnt $levellist
+!shortout <member><name>levellist</name><value><array><data>\
+
+!for i = 1 to $list_cnt
+	level=!item $i of $levellist
+	!shortout <value><string>$level</string></value>\
+	
+!next i
+!shortout </data></array></value></member>\
+
+list_cnt=!itemcnt $levelnames
+!shortout <member><name>levelnames</name><value><array><data>\
+
+!for i = 1 to $list_cnt
+	name=!item $i of $levelnames
+	!shortout <value><string>$name</string></value>\
+	
+!next i
+!shortout </data></array></value></member>\
+
+list_cnt=!itemcnt $llist
+!shortout <member><name>llist</name><value><array><data>\
+
+!for i = 1 to $list_cnt
+	name=!item $i of $llist
+	!shortout <value><string>$name</string></value>\
+	
+!next i
+!shortout </data></array></value></member>\
+
+list_cnt=!itemcnt $lnamelist
+!shortout <member><name>lnamelist</name><value><array><data>\
+
+!for i = 1 to $list_cnt
+	name=!item $i of $lnamelist
+	!shortout <value><string>$name</string></value>\
+	
+!next i
+!shortout </data></array></value></member>\
+
+!shortout <member><name>nbelement</name><value><int>$n</int></value></member>\
+
+list_cnt=!itemcnt $listContent
+!shortout <member><name>listContent</name><value><array><data>\
+
+!for i = 1 to $list_cnt
+	name=!item $i of $listContent
+	!shortout <value><string>$name</string></value>\
+	
+!next i
+!shortout </data></array></value></member>\
+
+!shortout <member><name>listContentNames</name><value><array><data>\
+
+!for i = 1 to $list_cnt
+	name=!item $i of $listContent
+	module_url=$option/$name
+	title= !module title $module_url
+	!shortout <value><string><![CDATA[$title]]></string></value>\
+	
+!next i
+!shortout </data></array></value></member>\
+
+!goto footer
+
+:getmodule
+
+!shortout <member><name>index_url</name><value><string>$wims_ref_name?module=$option</string></value></member>\
+<member><name>module_metadatas</name><value><string><![CDATA[$module_metadatas ]]></string></value></member>
+
+!shortout \
+<member><name>module_id</name><value><string>$option</string></value></member>\
+<member><name>title</name><value><string>$title</string></value></member>\
+<member><name>description</name><value><string>$description</string></value></member>\
+<member><name>language</name><value><string>$language</string></value></member>\
+<member><name>category</name><value><string>$category</string></value></member>\
+<member><name>domain</name><value><string>$domain</string></value></member>\
+<member><name>level</name><value><string>$level</string></value></member>\
+<member><name>keywords</name><value><string>$keywords</string></value></member>\
+<member><name>require</name><value><string>$require</string></value></member>\
+<member><name>scoring</name><value><string>$scoring</string></value></member>\
+<member><name>copyright</name><value><string><![CDATA[$copyright]]></string></value></member>\
+<member><name>author</name><value><string>$author</string></value></member>\
+<member><name>address</name><value><string>$address</string></value></member>\
+<member><name>version</name><value><string>$version</string></value></member>\
+<member><name>required_wims_version</name><value><string>$required_wims_version</string></value></member>\
+<member><name>vardef</name><value><string>$vardef</string></value></member>\
+<member><name>translator</name><value><string>$translator</string></value></member>\
+<member><name>translator_address</name><value><string>$translator_address</string></value></member>\
+<member><name>data</name><value><string>$data</string></value></member>\
+<member><name>maintainer</name><value><string>$maintainer</string></value></member>\
+<member><name>maintainer_address</name><value><string>$maintainer_address</string></value></member>\
+<member><name>translation_language</name><value><string>$translation_language</string></value></member>\
+
+!goto footer
+
+
+:footer
+!shortout    </struct></value></param></params></methodResponse>
 !exit
