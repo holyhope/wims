@@ -17,7 +17,7 @@ $ in $oef_applet_option
 !set oef_applet_option=!nonempty lines $oef_applet_option
 !set Inputsize=!line 1 of $oef_applet_option
 !set test=!text remove 0123456789x in $Inputsize
-!if $test=$empty
+!if $test issametext $empty
  !set Inputsize=!replace internal x by , in $Inputsize
  !set oef_applet_option=!line 2 to -1 of $oef_applet_option
  !distribute items $Inputsize into xsize,ysize
@@ -25,7 +25,7 @@ $ in $oef_applet_option
 
 !default xsize=540
 !default ysize=380
-!for opt in show_carbon, show_hydrogen,showfile
+!for opt in show_carbon,show_hydrogen,showfile
   !set $opt=!getopt $opt in $oef_applet_option
 !next
 
