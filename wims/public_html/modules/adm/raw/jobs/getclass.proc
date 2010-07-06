@@ -28,6 +28,15 @@ class_exocount=!itemcnt $class_exotitlelist
 !if $class_type=2
   class_subclasses=!record 0 of wimshome/log/classes/$qclass/.subclasses
 !endif
+
+class_sheetcount=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+class_examcount=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+
+# cette option permet d'economiser du temps processeur en evitant un listsheets a chaque getclass()
+!if all_even_hidden isin $option
+ option=$classdefs,$supp,hidden_sheets
+!endif
+
 option=!listintersect $option and $classdefs,$supp,hidden_sheets
 !if $option=$empty
  option=$classdefs,$supp
