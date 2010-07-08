@@ -1,0 +1,328 @@
+!set phtmldir=authors/jm.evers/phtml
+!set jsdir=scripts/authors/jm.evers/js
+!set gifdir=scripts/authors/jm.evers/gifs
+
+!set max_s=40
+!header
+!form new
+!set talen=en nl cn fr it
+!if $lang notin $talen
+    !set taal=en
+    !set translated=0
+!else
+    !set translated=1
+    !set taal=$lang
+!endif
+!set s=0
+!for p=1 to 100
+    !set competence=!record $[-1*$p] of lang/remarks.$taal
+    !if $competence=$empty
+	!goto READY
+    !else    
+	!increase s
+	!if # isin $competence
+	    !set competence=!replace internal # by $empty in $competence
+	    !set selecttext=!append line <option value="$s"></option> to $selecttext
+	!endif
+	!set sum=!append word <li>$competence</li> to $sum
+	!set selecttext=!append line <option value="$s">$competence</option> to $selecttext
+    !endif
+!next p
+:READY
+    <input type=hidden name=module value="$module">
+    <hr width="50%">
+	<p align="center">
+	    <font color="red">
+		<em>
+		    <a onmouseover="return escape('$module_title<br> è un modulo WIMS olandese creato da <em>SCHAERSVOORDE AALTEN</em></b><br><img src=$gifdir/schaersvoorde.jpg>')">
+			Opzioni 
+		    </a>
+		</em>
+	    </font>
+	</p>
+    <hr width="50%">
+    <div align="center">
+	<table bgcolor=$bgcolor2>
+	    <tr>
+	    <td>
+		<p align="left">
+		!if $translated=0
+		    !! mylanguages are defined in the actual module (intro.phtml)
+		    <a onmouseover="return escape('Sorry<br>No support for $lang')">
+			<small>
+			    <em>
+				<font color="red">
+				Spiacente,<br>
+				ma il modulo è disponibile solo nelle seguenti lingue: <b>$talen</b><br>
+				In questo momento non è diponibile in <b>$lang</b><br>
+                                Il modulo originale è olandese, ma di default viene mostrato in inglese.
+				</font>
+			    </em>
+			</small>
+		    </a>
+		    !set taal=en
+		!endif
+		<p align="left">
+		     <a onmouseover="return escape('<ol>$sum</ol><br>Questo modulo contiene $s diverse tipologie di esercizio<br>solitamente ognuna ha 4 livelli di difficoltà')">
+	    		Su quale <font color="blue">argomento</font> vuoi lavorare?:
+		    </a>
+		    <select name="subject">
+			!for p=1 to $s
+			    !line $p of $selecttext
+			!next p
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Ogni tipologia di esercizio può avere 4 livelli di difficoltà <br>e il livello di default è <em>progressivo</em>')">
+			Scegli <font color="blue">il livello di difficoltà</font> dell' esercizio:
+		    </a>
+		    <select name="level">
+	    		<option value=0>livello progressivo</option>
+			<option value=1>facile</option>
+	    		<option value=2>normale</option>
+	    		<option value=3>difficile</option>
+	    		<option value=4>molto difficile</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Tutte le tipologie di esercizio sono composte da una sequenza di massimo 10 quesiti per assegnare un punteggio')">
+			Scegli <font color="blue">il numero</font> degli esercizi:
+		    </a>
+		    <input size=10 name="total_exos" value=3>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Che precisione desideri per quanto riguarda le riposte numeriche?<br><em>Precisione matematica</em> significa che <em>1.4142</em> non sarà accettato al pari di <em>&radic;2</em></em><br>Di default troverai <em>non applicabile</em> che significa: lascia decidere all\'esercizio ...<br>Nota bene: il modulo potrebbe comunque ignorare le tue scelte')">
+			<font color="blue">Precisione</font> della risposta?
+		    </a>
+		    <select name="rounding">
+			<option value=-1>non applicabile</option>
+			<option value=0>precisione matematica</option>
+	    		<option value=100000>5 decimali</option>
+	    	    	<option value=10000>4 decimali</option>
+			<option value=1000>3 decimali</option>
+	    		<option value=100>2 decimali</option>
+	    		<option value=10>1 decimale</option>
+	    		<option value=1>interi</option>
+		    </select>
+		</p>
+		!if $usage=$empty
+		<p align="left">
+		    <a onmouseover="return escape('Permette di assegnare alcune <em>impostazioni di default</em><ul><li><font color=green><b>esame</b></font> ovvero una valutazione severa delle risposte e, alla fine, la pubblicazione <em>solo del punteggio</em> ottenuto <li><font color=green><b>simulazione d\'esame</b></font> ovvero una valutazione meno severa delle risposte, ma comunque, alla fine del test, la pubblicazione del solo punteggio ottenuto, senza soluzioni<li><font color=green><b>esercitazione</b></font> questa modalità fornisce tutti i possibili aiuti nel corso dello svolgimento dell\'esercizio e, alla fine del test, mostra la risposta corretta, a volte corredata con ulteriori spiegazioni <li><font color=red><b>opzioni avanzate</b></font> permette di accedere ad un <em>nuovo menu</em> che fornisce ulteriori possibili specifiche<br>come Mathpreview, TeXsize, immagini, calcolatrice , limiti di tempo, <br>con l\'opportunità di creare dei link HTML a queste impostazioni specifiche scelte per l\'esercizio che si sta considerando<li><font color=blue><b>versione stampabile</b></font> permette di accedere ad un <em>nuovo menu</em> <br>dove puoi modificare e adattare l\'esercizio per un esame scritto</ul> ')">
+			Scegli <font color="blue">come vuoi utilizzare</font> l'esercizio:
+		    </a>
+		    <select name="usage">
+			<option value=2>esercitazione :)</option>
+			<option value=4>opzioni avanzate</option>
+			<option value=3>versione stampabile</option>
+			<option value=1>simulazione d'esame</option>
+	    		<option value=0>esame</option>
+	    		<option value=6>mostra tutti i possibili link HTML per questo modulo</option>
+		    </select>
+		</p>
+		!endif
+		<div align="center">
+	    	    <table>
+			<tr>
+			<th>
+			    <p>
+				<input type="hidden" name="taal" value="$taal">
+				<input style="color:black;background-color:lightgreen;font-weight:normal;font-size:14px" type="submit"  value="CONFIGURAZIONE OK">
+			    </p>
+			</th>
+			</tr>
+		    </table>
+		</div>
+	    </td>
+	    !if $usage=3 or $usage=4
+	    <input type="hidden" name="usage" value="5">
+	    </tr><tr>
+	    <td>
+	    <hr width="50%">
+		!if devel isin $module_dir
+		<p align="left">
+		    Domande aperte ,Scelta multipla ,Drag&Drop? 
+		    <a onmouseover="return escape('Questa variabile può essere impostata in modo diverso <br>o singolarmente in un file exo.<br>Non è detto che ogni modulo di domande aperte possa essere trasformato in un modulo a scelta multipla scegliendo qui $$questiontype <br><br>Tuttavia un modulo che usa GeoGebra per un certo $$subject continuerà a farlo<br>indipendetemente da ciò che viene scelto qui...')">
+			<font color=blue>o GeoGebra</font>
+		    </a>
+		    <select name="questiontype">
+			<option value=0>Domande aperte</option>
+		    	<option value=1>Scelta multipla</option>
+		    	<option value=2>Drag & Drop</option>
+		    	<option value=3>Hotspot</option>
+			<option value=0></option>
+			<option value=0></option>
+			<option value=0></option>
+		    	<option value=4>GeoGebra</option>
+		    	<option value=5>GeoGebra+image</option>
+		    	<option value=6>Scelta manuale
+			(sono incluse alcune inducazioni su come fare)
+			</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Se stai usando questo modello per lo sviluppo di un modulo jm.evers <br>e vuoi alcune informazioni sulle variabili utilizzate dal modulo... <br>Puoi trovare queste informazioni nelle pagine di aiuto (help-pages)')">
+			<font color="blue">Informazioni sulla messa a punto</font> nelle help-pages
+		    </a>
+		    <select name="debug">
+			<option value=0>no</option>
+			<option value=1>sì</option>
+		    </select>
+		</p>
+		!endif
+		<p align="left">
+		    <a onmouseover="return escape('C\'è un limite massimo di 100.<br>Se il numero di risposte ad un esercizio, a causa di errori di sintassi, supera questo valore, il punteggio sarà uguale a <b>1</b>')">
+			Imposta il <font color="blue">numero massimo di tentativi </font> disponibili per errori di sintassi:
+		    </a>
+		    <input size=5 name="maxtry" value=5>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Se impostato sì, i piccoli errori verranno sottoposti all\'attenzione dello studente affinché questo li possa coreggere.<br> Potrebbero inoltre essere rese disponibili alcune pagine di aiuto.<br>Ove possibile e utile, verrà sempre mostrato un grafico o una figura.<br>Il valore di default è <em>sì</em>')">
+			Alcuni <font color="blue">aiuti</font> per lo studente
+		    </a>
+		    <select name="teaching">
+			<option value=1>sì</option>
+			<option value=0>no</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Se l\'esercizio dispone di un\'immagine, che non è essenziale alla risoluzione dello stesso, la si deve mostrare?<br>Il valore di default è <b>sì</b>')">
+			Mostrare <font color="blue">le figure</font> ?
+		    </a>
+		    <select name="image">
+	    		<option value=1>sì</option>
+			<option value=0>no</option>
+		    </select>
+		</p>
+		!if $usage=3
+		    <input type="hidden" name="printexo" value="1">
+		!endif
+		!if $usage=4
+		<p align="left">
+		    <a onmouseover="return escape('questa variabile può essere ignorata dall\'esercizio, e c\'è un massimo stabilito per il suo valore...')">
+			In caso di scelta multipla o Drag&Drop, quante <font color="blue">opzioni</font>?
+		    </a>
+		    <input size=5 name="options" value=4>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Se si imposta <b>sì</b> sarà mostrato allo studente un \"OK\", ogni volta che questo risponderà correttamente ad una domanda <img src=$gifdir/ok.gif> <img src=$gifdir/bok.gif> <img src=$gifdir/nok.gif><br>E\' inoltre possibile scegliere se mostrare oppure no un (a volte) simpatico commento di incoraggiamento. ')">
+			Mostrare <font color="blue">OK oppure ERRATO</font> tra una domanda e l'altra in una serie di esercizi?
+		    </a>
+		    <select name="goodbadsign">
+			<option value=2>sì con commento</option>
+			<option value=1>sì</option>
+			<option value=0>no</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Vuoi mostrare la <em>risposta corretta</em> alla fine del test? <br>Il valore di default è <em>sì</em>')">
+			Mostrare la risposta corretta <font color="blue">al termine</font> dell'esercizio?
+		    </a>
+		    <select name="showanswer">
+	    		<option value=1>sì</option>
+			<option value=0>no</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Vuoi mettere a disposizione una calcolatrice Javascript?<br><img src=$gifdir/basic.jpg><img src=$gifdir/science.jpg>')">
+			Vuoi una <font color="blue"> calcolatrice Javascript?</font>
+		    </a>
+		    <select name="calculator">
+			<option value=1>modello base</option>
+			<option value=2>modello "scientifico"</option>
+			<option value=3>applet con linea di comando</option>
+			<option value=0>niente calcolatrici</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Vuoi fornire un blocco note, per esempio per svolgere i calcoli? ')">
+			Vuoi un <font color="blue">blocco note?</font>
+		    </a>
+		    <select name="scribbling">
+			<option value=1>sì</option>
+			<option value=0>no</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Mostra un piccolissimo orologio')">
+			Vuoi un piccolo <font color="blue">orologio Javascript?</font>
+		    </a>
+		    <select name="time">
+			<option value=1>sì</option>
+			<option value=0>niente orologio</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('The time limit is not yet implemented')">
+			<font color="blue">Tempo limite</font> per esercizio
+		    </a>
+		    <input size=15 name="duration" value="not implemented"> minuti
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('<img src=$gifdir/math.jpg><br>Ci sono <b>due</b> opzioni.<ol><li>Usare un'applicazione Java.</li><li>Usare la funzione insmath di WIMS che fornisce un\'immagine gif della formula.</li></ol>Entrambe le opzioni inviano immediatamente la risposta al server WIMS.<br>Su server lenti o affollati, è preferibile l\'applet.')">
+			Desideri un campo per inserire le formule matematiche?
+		    </a>
+		    <select name="mathview">
+			<option value=0>No, usa la normale area di testo</option>			
+			<option value=3>Sì, usa l'applicazione JAVA</option>			
+			<option value=2>Opzione : JAVA Applet</option>
+			<option value=1>Opzione : WIMS Math</option>
+		    </select>
+		</p>
+		<p align="left">
+		    <a onmouseover="return escape('Qui puoi controllare la dimensione delle formule matematiche.<br>Il modulo potrebbe sempre ignorare questo valore. <ul><li><img src=$gifdir/4.gif>+4</li><li><img src=$gifdir/3.gif>+3</li><li><img src=$gifdir/2.gif>+2</li><li><img src=$gifdir/1.gif>+1</li><li><img src=$gifdir/0.gif>0</li><li><img src=$gifdir/-1.gif>-1</li><li><img src=$gifdir/-2.gif>-2</li><li><img src=$gifdir/-3.gif>-3</li><li><img src=$gifdir/-4.gif>-4</li></ul>')">
+			Modificare la dimensione del testo <font color="blue">LaTeX Math</font> ?
+		    </a>
+		    <select name="mytexsize">
+			<option value="0">lasciare invariata</option>
+			<option value="+4">+4</option>
+			<option value="+3">+3</option>
+			<option value="+2">+2</option>
+			<option value="+1">+1</option>
+			<option value="-1">-1</option>
+			<option value="-2">-2</option>
+			<option value="-3">-3</option>
+			<option value="-4">-4</option>
+		    </select>
+		</p>
+	
+		<p align="left">
+		    <a onmouseover="return escape('Se impostato su <em>sì</em> disabilita l\'uso di <em>taglia e incolla</em> dalla pagina all\'area di input.<br>A volte utile, per costringere gli studenti a scrivere le risposte...')">
+			Disabilitare <font color="blue">taglia e incolla</font> ?
+		    </a>
+		    <select name="noselect">
+			<option value=1>sì</option>
+			<option value=0>no</option>
+		    </select>
+		</p>
+
+		<p align="left">
+		    <a onmouseover="return escape('Se impostato su <em>sì</em> saranno generati una serie di link verso l\'esercizio,<br>con </b>tutti</b> le specifiche che hai deciso.<br>Con un semplice <em>copia e incolla</em> puoi quindi inserire i link agli esercizi con tali impostazioni nella tua homepage, nel sito della tua scuola, ecc... ')">
+			Vuoi generare <font color="blue">link</font> a questo specifico esercizio?
+		    </a>
+		    <select name="printexo">
+			<option value=0>no</option>
+			<option value=2>sì</option>
+		    </select>
+		</p>
+		!endif
+	    </td>
+	    !endif
+	    !if $usage=6
+		</tr><tr>
+		<td>
+		    <hr>
+		    <hr>
+			!changeto lang/module.$taal.phtml
+		    <hr>
+		    <hr>
+		</td>
+	    !endif
+	</tr>
+    </table>
+    </div>
+    <script type="text/javascript" src="$jsdir/wz_tooltip.js"></script>
+</form>
+
+
+
+			

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head></head>
+    <body>
+	<style>
+	    a:hover{color:red; font-weight:bold; font-size:10%; }
+	</style>
+	<table summary="">
+	    <th>
+		<H2>$module_title</H2>
+		<p>
+		<font color=blue size="+1">
+		!record $[-1*$subject] of lang/remarks.$taal
+		</font>
+		</p>
+	    </th>
+	    </tr><tr>
+	    <td>
+		<ul>
+		    !set levels=facile,normale,difficile,molto difficile
+		    !for p=1 to 4
+			!set ll=!item $p of $levels
+			<li>
+			    Link attivi:<br>
+			    <a onclick="javascript:window.open('$wims_ref_name?module=$module&+cmd=new&+taal=$taal&+level=$p&+usage=5&+total_exos=1&+teaching=$teaching&+image=$image&+options=$options&+rounding=$rounding&+mathview=$mathview&+calculator=$calculator&+scribling=$scribling&+time=1&+noselect=$noselect&+maxtry=$maxtry&+goodbadsign=$goodbadsign&+showanswer=$showanser&+mytexsize=$mytexsize&+printexo=0&+subject=$subject','','width=800,height=600,left=0,top=0');">
+				Esercizio di livello $ll 
+			    </a>
+			    <ul>
+				<li>Copia e incolla nella tua pagina HTML:<br>
+				    <input style="border:0" type="text" size="110" name="$p" onmouseover="javascript:select();" value="<a http://$wims_ref_name?module=$module&+cmd=new&+taal=$taal&+level=$p&+usage=5&+total_exos=1&+teaching=$teaching&+image=$image&+options=$options&+rounding=$rounding&+mathview=$mathview&+calculator=$calculator&+scribling=$scribling&+time=1&+noselect=$noselect&+maxtry=$maxtry&+goodbadsign=$goodbadsign&+showanswer=$showanser&+mytexsize=$mytexsize&+printexo=0&+subject=$subject>$rem</a>($ll)">
+				</li>
+			    </ul>
+			</li>
+		    !next p
+		</ul>
+	    </td>
+	    </tr>
+	</table>
+	!href module=$module&+session=$session&cmd=intro 
+	Torna </a>alla pagina di presentazione di "$module_title" 
+    </body>
+</html>
