@@ -1,0 +1,40 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Transform a matrix into html table
+slib_parms=1\
+1,matrix in wims form
+slib_author=Bernadette Perrin-Riou
+slib_out=the html code for the table
+slib_example=[1,2;allo;mer]
+!exit
+
+:proc
+!distribute items $wims_read_parm into slib_matrix
+slib_matrix=!declosing $slib_matrix
+slib_out=<table class="wims_matrix">
+
+slib_matrix1=!replace internal ; by $\
+$ in $slib_matrix
+slib_cnt=
+slib_colcnt=0
+slib_rowcnt=!linecnt $slib_matrix1
+!for slib_a =1 to $slib_rowcnt
+  slib_cnt_p=!itemcnt $(slib_matrix[$slib_a;])
+  slib_cnt=!append item $slib_cnt_p to $slib_cnt
+  slib_colcnt=$[max($slib_colcnt,$slib_cnt_p)]
+!next
+
+!for slib_a =1 to $slib_rowcnt
+  slib_out_p=
+  !for slib_b=1 to $slib_colcnt
+    slib_out_p=!append word <td class="wims_matrix">$(slib_matrix[$slib_a;$slib_b])</td> to $slib_out_p
+  !next
+  slib_out=$slib_out\
+  <tr>$slib_out_p</tr>
+!next
+
+slib_out=$slib_out\
+</table>
+
+  
