@@ -12,6 +12,7 @@ $ in $oef_applet_option
 !set ans_image=!getopt image in  $(replyoption$i)
 !set ans_show_hydrogen=!getopt show_hydrogen in $oef_applet_option
 !set ans_show_carbon=!getopt show_hydrogen in $oef_applet_option
+!set ans_rotation=!getopt rotation in $oef_applet_option
 !default ans_show_hydrogen=yes
 !default ans_show_carbon=no
 
@@ -23,7 +24,7 @@ good_select=$(replygood$i[1;])
   good_select=!replace internal $u_: by $\
 $u_, in $good_select
 !next
-!set good_atoms_select=!select $good_select where column 1 = atoms
+!set good_atoms_select=!select $good_select where column 1=atoms
 !set good_atoms_select=!item 2 to -1 of $good_atoms_select
 !set good_atoms_select=!nonempty items $good_atoms_select
 !set good_bonds_select=!select $good_select where column 1=bonds
@@ -163,6 +164,7 @@ reply_$i=<p>\
 	    <param name="file" value="$replyfile">\
 	    <param name="show_hydrogen" value="$ans_show_hydrogen">\
 	    <param name="show_carbon" value="$ans_show_carbon">\
+	    <param name="rotation" value="$ans_rotation">\
 	    <param name="color_alpha" value="255">\
 	    $ans_atoms_colors\
 	    $ans_bonds_colors\

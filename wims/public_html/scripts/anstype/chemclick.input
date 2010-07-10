@@ -25,7 +25,7 @@ $ in $oef_applet_option
 
 !default xsize=540
 !default ysize=380
-!for opt in show_carbon, show_hydrogen,showfile
+!for opt in show_carbon, show_hydrogen,showfile,rotation
   !set $opt=!getopt $opt in $oef_applet_option
 !next
 
@@ -137,8 +137,9 @@ function ReadThis(){
 	 }
 </script>
 !if $File!=$empty
-  !set parm_angle=!randitem 0,30,45,60,90,120,135,150,180,-30,-45,-60,-90,-120,-135,-150,-180
-  !set parm_angle=<param name="rotation" value="$parm_angle">
+  !default rotation=!randitem 0,30,45,60,90,120,135,150,180,-30,-45,-60,-90,-120,-135,-150,-180
+  !set parm_angle=<param name="rotation" value="$rotation">
+  !set oef_applet_option=!append line rotation=$rotation to $oef_applet_option
 !endif
 <input type=hidden name="reply$i" id="WIMSchemreply" value="">
 
