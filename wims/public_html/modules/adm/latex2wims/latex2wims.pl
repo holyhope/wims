@@ -363,8 +363,8 @@ for my $tag (keys %{$hash{text}}) {
   my $CHEMIN = chemin($tag, \%hash);
   #J'ai enlevé $LOAD
   $CHEMIN = ($dotoc_up || $dotoc_down)  && ($CHEMIN =~ $FLECHE) ? $CHEMIN : '';
-  my $CHEMIN_up=($dotoc_up) ? $CHEMIN : '' ;
-  my $CHEMIN_down=($dotoc_down) ? $CHEMIN : '' ; 
+  my $CHEMIN_up=($dotoc_up) ? "<div id=\"up_toc\">$CHEMIN</div>": '' ;
+  my $CHEMIN_down=($dotoc_down) ? "<div id=\"down_toc\">$CHEMIN</div>" : '' ; 
   my @Chemin = split(',', $hash{chemin}{$tag});
   my $TOCg = $dotoc_left ? selection($hash{toc}{main}, 'left_selection', @Chemin) : '';
   my $TOCd = ($dotoc_right && $tagupbl ne 'main') ? selection($hash{toc}{$tagupbl}, 'right_selection', @Chemin) : '';
@@ -696,18 +696,18 @@ sub tabular { my ( $b, $style ) = @_;
   my @v = extract_bracketed ($b, '{}') ; 
   my $stylerow = $style . "_row";
   my $stylecell = $style . "_cell";
-  $b =  "<table class=\"$style\"><tr class=\"$stylerow\"><td class=$stylecell>" . $v[1] . '</table>';
-  $b =~ s|\&|&nbsp;</td><td class=$stylecell>&nbsp;|g;
+  $b =  "<table class=\"$style\"><tr class=\"$stylerow\"><td class=\"$stylecell\">" . $v[1] . '</table>';
+  $b =~ s|\&|&nbsp;</td><td class=\"$stylecell\">&nbsp;|g;
   $b =~ s/\\hline//g;
   $b =~ s|\\\\\s*</table>|</td></tr></table>|g;
   my $par="\\\\\\(|\\\\\\)" ;
   my @dectab = split(/$par/, $b) ; 
   $b = $dectab[0] ; 
-  $b =~ s|\\\\|</td></tr><tr class=$stylerow><td class=$stylecell>|g;
+  $b =~ s|\\\\|</td></tr><tr class=\"$stylerow\"><td class=\"$stylecell\">|g;
   my $cnt = 0; $b = '' ; 
   while ($cnt <= $#dectab/2) { 
      my $c = $dectab[2*$cnt] ; 
-     $c =~ s|\\\\|</td></tr><tr class=$stylerow><td class=$stylecell>|g;
+     $c =~ s|\\\\|</td></tr><tr class=\"stylerow\"><td class=\"$stylecell\">|g;
      $b .=  $c . (($dectab[2*$cnt+1]) ? "\\(" . $dectab[2*$cnt+1] .  "\\)" : '' )  ; 
      $cnt ++ ; 
  };
@@ -1221,14 +1221,14 @@ sub store_ref { my ($link, $titre, $anchor, $ref_bloc) = @_;
 sub toc_HTML {my ($text, $toc_g, $toc_d, $CHEMIN_up, $CHEMIN_down, $index) = @_ ;
   if (($toc_g) || ($toc_d)) {
     $CHEMIN_up . '<table class="doc_table"><tr>'
-   . (($toc_g) ? '<td valign=top><div class="left_toc"><p>' . $toc_g 
-   . $index . '</div></td>' : '')
+   . (($toc_g) ? '<td class="left_toc" id="left_toc">'. $toc_g 
+   . $index . '</td>' : '')
    . '<td valign="top" align="left" width="100%"><div class="wimsdoc">'
    . $text
    . '</div>' .  $CHEMIN_down . ' </td>'
-   . (($toc_d) ? '<td valign="top" align="right"> <div class="right_toc"><p>'
+   . (($toc_d) ? '<td class="right_toc" id="right_toc">'
    . $toc_d
-   . '</div><center>'
+   . '<center>'
    . $LOAD
    . '</center></td>' : '') 
    . '</tr></table>'  }
@@ -1320,7 +1320,7 @@ sub clean { my ($text, $ref) = @_;
 sub store_tip { my ($tag,$ref)=@_ ; 
   my $tip = $ref->{toctip}{$tag} ;
   $tip =~ s/'/\\'/g if ($tip) ; 
-  $ref->{toctip}{$tag} ?  "<span class=tip><a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a><\/span>" : '' ; 
+  $ref->{toctip}{$tag} ?  "<span class=\"tip\"><a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a><\/span>" : '' ; 
 }
 
 sub chemin { my ($tag, $ref) = @_;

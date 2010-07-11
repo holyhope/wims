@@ -1,8 +1,10 @@
 %%%%%%%%%%%%%%%    Première partie (rien à changer)
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{verbatim}
 \usepackage{comment}
 \excludecomment{wimsonly}
 \includecomment{latexonly}
-\usepackage{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\wimsentre#1{}
 \def\wimsinclude#1{}
@@ -31,7 +33,7 @@
 \def\doc#1#2{\href{http://wims.auto.u-psud.fr/wims/wims.cgi?#1&cmd=new}{WIMS : #2}}
 %%%si nécessaire
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\wimsinclude{style.css,embed=} % mettre l'adresse du fichier de style
+\wimsinclude{style.css} % mettre l'adresse du fichier de style
 %%%%%%%%%%%%%%%%   Options %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%  definition des styles css (même style que le premier de la liste)
 \samestyle{defn,defin,rems,NB,remF,definF,footnote}                                                 
@@ -43,7 +45,7 @@
 \typefold{sol,proof,dem,cas,suite,exF,remF,definF,propF,algoF,enum_item}
 %%%%%%%%%  environnements de type link
 \typelink{link,thebibliography}
-%%%%%%
+%%%%%%%%%
 \listwims{liste}
 \listwims{enum}
 \listwims{desc}
@@ -69,17 +71,19 @@
 \defwims\textbf#1{<b>#1</b>}
 \defwims\uline#1{<u>#1</u>}
 \defwims\textit#1{<i>#1</i>}
-\defwims\emph#1{<em><font color="green">#1</font></em>}
+\defwims\emph#1{<span class="emph">#1</span>}
 \defwims\guill#1{<em>#1</em>}
-\defwims\defn#1{<em><font color="green">#1</font></em>}
+\defwims\defn#1{<span class="defn">#1</span>}
 \defwims\footnote#1{<div class=\"footnote\">#1</div>}
 %%%%%  exemple de redéfinition perso d'environnement
-\environmentwims{footnote}[1]{Remarque}{<font size="-1">}{</font>}
+\environmentwims{minipage}[1]{}{<br>}{<br>}
+\environmentwims{footnote}[1]{Footnote}{<div class=\"footnote\">}{</div>}
 \environmentwims{quote}[1]{Citation}{}{}
 \environmentwims{proof}[1]{Démonstration}{<div class="dem">}%
-    {</div> <div class="fin"> Fin de la démonstration</div>}
+    {</div> <div class="fin">Fin de la démonstration</div>}
 \environmentwims{center}[1]{}{<div class="center">}{</div>}
 \environmentwims{flushright}[1]{}%
   {<table><tr><td>&nbsp;</td><td align=right>}%
   {</td></tr></table>}
 
+\defwims\texttt#1{<tt class="tt">#1</tt>}
