@@ -31,7 +31,8 @@
 
 !set name_type=ejercicio, herramienta, documento, recreación, OEF, deducción
 !set name_zone=Zona
-!set name_category=Categoría
+!set name_Category=Categoría
+!set name_category=!nosubst $wims_name_Type
 !set name_createnew=Nuevo módulo
 !set name_noquicktool=Quicktool no esta instalado en este servidor
 !set name_rename=cambiar nombre

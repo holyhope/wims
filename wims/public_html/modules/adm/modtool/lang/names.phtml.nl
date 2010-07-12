@@ -31,7 +31,8 @@
 
 !set name_type=oefening, hulpmiddel, document, recreatie, OEF, Deductio
 !set name_zone=Zone
-!set name_category=Categorie
+!set name_Category=Categorie
+!set name_category=!nosubst $wims_name_Type
 !set name_createnew=Maak een nieuwe module
 !set name_noquicktool=Quicktool is niet geinstalleerd op deze server.
 !set name_rename=hernoemen
