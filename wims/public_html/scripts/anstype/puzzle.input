@@ -1,0 +1,112 @@
+!set anstype=yes
+!set anstyle=dprompt
+!set oef_js_submit=sendanswer()
+!set author=Bernadette Perrin-Riou
+!if $wims_read_parm=def
+ !exit
+!endif
+
+!set answer=!lines2rows $(replygood$i)
+!set answer=!lines2rows $answer
+!set N=!replace internal x by , in $(answer[2;])
+!set image=$(answer[1;])
+!distribute items $N into ny, nx, width
+!default nx=3
+!default ny=3
+!set nb_im=$[$nx*$ny]
+!set taille=!replace internal x by , in $inputsize
+!default taille=500,500
+!set cutx=!values $(taille[1])/$nx*x for x=0 to $nx
+!set cuty=!values $(taille[2])/$ny*x for x=0 to $ny
+!set cutx=!exec pari round([$cutx])
+!set cuty=!exec pari round([$cuty])
+!default width=$(cutx[2])
+!set list=!makelist x for x=1 to $[($nx)*($ny)]
+!set Zshuf=!shuffle $list
+!set Zurl=
+!set Zurl2=$list
+!set Z2=$list
+!set img_nb=!itemcnt $image
+!if $img_nb=1
+!for t=1 to $nb_im
+  !set s=$(Zshuf[$t])
+  !set x=$[$s%$nx]
+  !if $x=0
+    !set x=$nx
+  !endif
+  !set y=$[($s-$x)/$nx+1]
+  !readproc oef/draw.phtml $(cutx[2]),$(cuty[2])\
+    copy 0,0,$(cutx[$x]),$(cuty[$y]),$(cutx[$x+1]),$(cuty[$y+1]),$image
+  !set Zurl=!append item $ins_url to $Zurl
+  !set Zurl2=!replace internal item number $s by $ins_url in $Zurl2
+  !set Z2=!replace internal item number $s by $t in $Z2
+!next
+!else
+ !set Zurl2=!makelist $imagedir/x for x in $image
+ !set Zurl=!makelist $imagedir/x for x in $image
+!endif
+!set oef_applet_option=$Z2\
+$Zurl2\
+$ny,$nx,$width
+
+:shuffle
+!set scramble=!shuffle $list
+!if $scramble issametext $list
+ !goto shuffle
+!endif
+<table cellspacing=1 cellpadding=0 border=0>
+!for y=1 to $ny
+ <tr>
+ !for x=1 to $nx
+ !set t=$[$x+($y-1)*($nx)]
+ !set t_=!item $x+($y-1)*($nx) of $scramble
+  <td id="$t">
+   <a href="javascript:click($t);"><img id="img_$(x)_$(y)" src="$(Zurl[$t_])" width="$width"></a>
+  </td>
+ !next x
+</tr>
+!next y
+</table>
+<script type="text/javascript">
+var fl_clic=false;
+var tableurl=Array() ; var table=Array() ; 
+!for t=1 to $nb_im
+  tableurl[$t]='$(Zurl[$(scramble[$t])])'
+  table[$t]=$(scramble[$t])
+!next 
+var nb_clic=0
+function click(n)
+{ 
+  if (!fl_clic) //pour mémoriser le 1er click.. 
+     {
+      fl_clic=true;
+      n_memo=n;
+      document.getElementById(n).style.opacity = '0.45';
+     }
+  else {
+        newurl=tableurl[n];number=table[n];
+        tableurl[n]=tableurl[n_memo]; table[n]=table[n_memo];
+        tableurl[n_memo]=newurl;table[n_memo]=number;
+        document.getElementById(n_memo).style.opacity = '1';
+        fl_clic=false;
+        if(n != n_memo){ nb_clic ++}
+        for(var x=1;x<=$nx;x++) {
+          for(var y=1;y<=$ny;y++) { 
+            document.images['img_' + x + '_' + y].src=tableurl[x + (y-1)*($nx)];
+          }
+       }
+    }
+}
+function sendanswer() 
+  { var reply=table[1] ; var replyurl=tableurl[1] ; 
+     if (nb_clic < 2 ) {document.getElementById('oefvar').value=''}
+     else {
+       for (var t = 2 ; t <= $nb_im ; t ++){
+         reply = reply + ',' + table[t] ;
+         replyurl = replyurl + ',' + tableurl[t] ;
+       } 
+       document.getElementById('oefvar').value=reply + ';' + replyurl + ';' + nb_clic
+     }
+  }
+</script>
+<input type=hidden name="reply$i" id="oefvar" value="">
