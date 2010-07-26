@@ -27,7 +27,7 @@
 !set name_file2=bevat de volgende bestanden
 !set name_updateadress=Vernieuw het adres
 !set name_simpl_address=Deze module heeft slechts een enkelvoudig adres
-!set gnu=&copy; $year (<a href=COPYING>GNU GPL</a>)
+!set gnu=!nosubst &copy; $year (<a href=COPYING>GNU GPL</a>)
 
 !set name_type=oefening, hulpmiddel, document, recreatie, OEF, Deductio
 !set name_zone=Zone
