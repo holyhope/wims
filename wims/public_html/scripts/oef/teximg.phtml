@@ -1,0 +1,15 @@
+!if $wims_read_parm=$empty
+ !exit
+!endif
+!if $savedrawcnt>0
+ !set savetex$savedrawcnt=$wims_read_parm
+ !increase savedrawcnt
+!endif
+
+!set pp=!trim $wims_read_parm
+
+!default instex_filebase=non_existent_subdirectory
+!!!set instex_color=black
+
+!!set headerfile
+!instex $pp

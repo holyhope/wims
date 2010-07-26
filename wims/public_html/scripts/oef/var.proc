@@ -13,6 +13,7 @@ limit_reply=100
 limit_choice=30
 testnum=10
 savedrawcnt=1
+savetexcnt=1
 proc=oef
 !if $cmd=new and $allow_missing_data != yes
  module_checkdata=!checkdata
@@ -120,6 +121,7 @@ m_oefenv=!replace word debug by $ in $m_oefenv
  !reset solution, hint, help, oefsteps, oefstepcnt, latex
  !for i=1 to 16
   savedraw$i=
+  savetex$i=
  !next i
 !endif
 
@@ -149,6 +151,10 @@ m_oefenv=!replace word debug by $ in $m_oefenv
   !for i=1 to 16
    !if $(savedraw$i)!=$empty
     !read oef/draw.phtml $(savedraw$i)
+   !else
+    !if $(savetex$i)!=$empty
+     !read oef/teximg.phtml $(savetex$i)
+    !endif
    !endif
   !next i
  !endif
@@ -417,3 +423,4 @@ function formcheck() {\
 !endif
 
 savedrawcnt=0
+savetexcnt=0

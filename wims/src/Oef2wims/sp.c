@@ -94,6 +94,12 @@ void sp_htmlmath(char *p, int ptype)
     fprintf(outf,"%stmp%d=!htmlmath %s\n\n",setpre,prepcnt,p);
 }
 
+void sp_teximg(char *p, int ptype)
+{
+    fprintf(outf,"!readproc %s/teximg.phtml %s \n\
+%stmp%d=$ins_url\n", primitive_dir, p, setpre,prepcnt);
+}
+
 void sp_texmath(char *p, int ptype)
 {
     fprintf(outf,"%stmp%d=!texmath %s\n\n",setpre,prepcnt,p);
@@ -311,6 +317,7 @@ struct {
       {"simplify",	sp_simplify},
       {"slib",		sp_slib},
       {"solve",		sp_solve},
+      {"teximg",		sp_teximg},
       {"texmath",	sp_texmath},
       {"wims",		sp_wims},
       {"yacas",		sp_yacas}
