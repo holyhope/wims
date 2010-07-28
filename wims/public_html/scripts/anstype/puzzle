@@ -1,23 +1,26 @@
-!set name_lookfor=... cherchez un peu plus
+!!!set name_lookfor=... cherchez un peu plus
 
 !if $wims_read_parm=nocompare
  !exit
 !endif
+
 reply=$(reply$i)
 replyurl=$(reply[2;])
 reply$i=$(reply[1;])
 repclic=$(reply[3;])
+
 !set answer=!lines2rows $(replygood$i)
 !set answer=!lines2rows $answer
-!set N=!line 3 of $(oef_applet_option)
-!distribute items $N into ny,nx,width
+!set N=!line 3 of $(oef_answer_option$i)
+!distribute items $N into ny,nx,width,height
 !set nb_im=$[$nx*$ny]
-!set test=!line 1 of $(oef_applet_option)
+!set test=!line 1 of $(oef_answer_option$i)
 !set rep=$(reply$i)
-!set good_url=!line 2 of $(oef_applet_option)
+!set good_url=!line 2 of $(oef_answer_option$i)
 
 !set test=!nospace $test
 !set rep=!nospace $rep
+
 !set diff=
 !for a = 1 to $nb_im
   !if $(test[$a])=$(rep[$a])
@@ -39,24 +42,24 @@ repclic=$(reply[3;])
  !for x=1 to $nx
   !set t_=!item $[$x+($y-1)*($nx)] of $replyurl
   !set r_out=$r_out\
-  <td><img id="img_$(x)_$(y)" src="$t_" width="$width"></td>
+  <td width="$width" height="$height" align="center" bgcolor="lightblue"><div>$t_</div></td>
   !set t=!item $[$x+($y-1)*($nx)] of $good_url
   !set g_out=$g_out\
-  <td><img id="img_$(x)_$(y)" src="$t" width="$width"></td>  
+  <td width="$width" align="center" bgcolor="lightblue"><div>$t</div></td>
  !next x
  r_out=$r_out </tr>
  g_out=$g_out </tr>
 !next y
 r_out=$r_out </table>
 g_out=$g_out </table>
-
 m_reply$i=$diff
 
 reply_$i=$r_out
-!if $repclic > 4
+!if $repclic > 2
  replyGood$i=$g_out
 !else
- replyGood$i=$name_lookfor
+ replyGood$i=&nbsp;
+ !!$name_lookfor
 !endif
 reply__$i=&nbsp;
 !if $score=1
@@ -65,4 +68,3 @@ reply__$i=&nbsp;
 !else
  diareply$i=bad
 !endif
-

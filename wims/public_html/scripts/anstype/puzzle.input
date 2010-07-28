@@ -1,11 +1,10 @@
 !set anstype=yes
-!set anstyle=dprompt
-!set oef_js_submit=sendanswer()
+!!set anstyle=dprompt
+!set oef_js_submit=$oef_js_submit; sendanswer$i()
 !set author=Bernadette Perrin-Riou
 !if $wims_read_parm=def
  !exit
 !endif
-
 !set answer=!lines2rows $(replygood$i)
 !set answer=!lines2rows $answer
 !set N=!replace internal x by , in $(answer[2;])
@@ -21,6 +20,7 @@
 !set cutx=!exec pari round([$cutx])
 !set cuty=!exec pari round([$cuty])
 !default width=$(cutx[2])
+!set height=$[round($(cuty[2])/$(cutx[2])*$width)]
 !set list=!makelist x for x=1 to $[($nx)*($ny)]
 !set Zshuf=!shuffle $list
 !set Zurl=
@@ -37,76 +37,81 @@
   !set y=$[($s-$x)/$nx+1]
   !readproc oef/draw.phtml $(cutx[2]),$(cuty[2])\
     copy 0,0,$(cutx[$x]),$(cuty[$y]),$(cutx[$x+1]),$(cuty[$y+1]),$image
-  !set Zurl=!append item $ins_url to $Zurl
-  !set Zurl2=!replace internal item number $s by $ins_url in $Zurl2
+  !set Zurl=!append item <img src="$ins_url" width="$width"> to $Zurl
+  !set Zurl2=!replace internal item number $s by <img src="$ins_url" width="$width"> in $Zurl2
   !set Z2=!replace internal item number $s by $t in $Z2
 !next
 !else
- !set Zurl2=!makelist $imagedir/x for x in $image
- !set Zurl=!makelist $imagedir/x for x in $image
+ !if text notwordof $(replyoption$i)
+  !set Zurl2=!makelist <img src="$imagedir/x" width="$width"> for x in $image
+  !set Zurl=!makelist <img src="$imagedir/x" width="$width"> for x in $image
+ !else
+  !set Zurl2=!makelist x for x in $image
+  !set Zurl=!makelist x for x in $image
+ !endif
 !endif
-!set oef_applet_option=$Z2\
+!set oef_answer_option$i=$Z2\
 $Zurl2\
-$ny,$nx,$width
+$ny,$nx,$width,$height
 
 :shuffle
 !set scramble=!shuffle $list
 !if $scramble issametext $list
  !goto shuffle
 !endif
-<table cellspacing=1 cellpadding=0 border=0>
+<table cellspacing=1 cellpadding=0 border=1>
 !for y=1 to $ny
  <tr>
  !for x=1 to $nx
  !set t=$[$x+($y-1)*($nx)]
  !set t_=!item $x+($y-1)*($nx) of $scramble
-  <td id="$t">
-   <a href="javascript:click($t);"><img id="img_$(x)_$(y)" src="$(Zurl[$t_])" width="$width"></a>
+  <td id="$(i)_$t" onclick="javascript:click$i($t);" width="$width" height="$height" align=center bgcolor="lightblue">
+  <div id="img$(i)_$(x)_$(y)">$(Zurl[$t_])</div>
   </td>
  !next x
 </tr>
 !next y
 </table>
 <script type="text/javascript">
-var fl_clic=false;
-var tableurl=Array() ; var table=Array() ; 
+var fl_clic$i=false;
+var tableurl$i=Array() ; var table$i=Array() ; 
 !for t=1 to $nb_im
-  tableurl[$t]='$(Zurl[$(scramble[$t])])'
-  table[$t]=$(scramble[$t])
+  tableurl$i[$t]='$(Zurl[$(scramble[$t])])'
+  table$i[$t]=$(scramble[$t])
 !next 
-var nb_clic=0
-function click(n)
+var nb_clic$i=0
+function click$i(n)
 { 
-  if (!fl_clic) //pour mémoriser le 1er click.. 
+  if (!fl_clic$i) //pour mémoriser le 1er click.. 
      {
-      fl_clic=true;
-      n_memo=n;
-      document.getElementById(n).style.opacity = '0.45';
+      fl_clic$i=true;
+      n_memo$i=n;
+      document.getElementById('$(i)_' + n).style.opacity = '0.45';
      }
   else {
-        newurl=tableurl[n];number=table[n];
-        tableurl[n]=tableurl[n_memo]; table[n]=table[n_memo];
-        tableurl[n_memo]=newurl;table[n_memo]=number;
-        document.getElementById(n_memo).style.opacity = '1';
-        fl_clic=false;
-        if(n != n_memo){ nb_clic ++}
+        newurl=tableurl$i[n];number=table$i[n];
+        tableurl$i[n]=tableurl$i[n_memo$i]; table$i[n]=table$i[n_memo$i];
+        tableurl$i[n_memo$i]=newurl;table$i[n_memo$i]=number;
+        document.getElementById('$(i)_' + n_memo$i).style.opacity = '1';
+        fl_clic$i=false;
+        if(n != n_memo$i){ nb_clic$i ++}
         for(var x=1;x<=$nx;x++) {
           for(var y=1;y<=$ny;y++) { 
-            document.images['img_' + x + '_' + y].src=tableurl[x + (y-1)*($nx)];
+            document.getElementById('img$(i)_' + x + '_' + y).innerHTML=tableurl$i[x + (y-1)*($nx)];
           }
        }
     }
 }
-function sendanswer() 
-  { var reply=table[1] ; var replyurl=tableurl[1] ; 
-     if (nb_clic < 2 ) {document.getElementById('oefvar').value=''}
+function sendanswer$i() 
+  { var reply=table$i[1] ; var replyurl=tableurl$i[1] ; 
+     if (nb_clic$i < 1 ) {document.getElementById('oefvar$i').value=''}
      else {
        for (var t = 2 ; t <= $nb_im ; t ++){
-         reply = reply + ',' + table[t] ;
-         replyurl = replyurl + ',' + tableurl[t] ;
+         reply = reply + ',' + table$i[t] ;
+         replyurl = replyurl + ',' + tableurl$i[t] ;
        } 
-       document.getElementById('oefvar').value=reply + ';' + replyurl + ';' + nb_clic
+       document.getElementById('oefvar$i').value=reply + ';' + replyurl + ';' + nb_clic$i
      }
   }
 </script>
-<input type=hidden name="reply$i" id="oefvar" value="">
+<input type=hidden name="reply$i" id="oefvar$i" value="">
