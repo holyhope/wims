@@ -17,33 +17,29 @@
 用户的回答中满足第二行中的条件数减去1将被保存在变量
  <tt>\result</tt><em>n</em> 内, 其中 <em>n</em> 是要回答的栏目数,
 这个变量可用在 \feedback.
- <p>
-$table_header
-<caption>测试用户点击的可用条件</caption>
-$table_tr<th>语法</th><th>意义</th>
-$table_tr
-<td><tt>point,x,y</tt></td><td>在(x,y)的点. 这是一个有固定宽度的``大''点.</td></tr>
-$table_tr
-<td><tt>rectangle,x1,y1,x2,y2</tt></td><td>对顶点 (x1,y1) 与 (x2,y2) 的矩形内部.</td></tr>
-$table_tr
-<td><tt>circle,x,y,d</tt></td><td>中心在 (x,y), 直径为 d 的圆的内部. </td></tr>
-$table_tr
-<td><tt>ellipse,x,y,w,h</tt></td><td>中心在 (x,y), 宽度为 w, 高度为 h 的椭圆的内部. </td></tr>
- $table_tr
-<td><tt>polygon,x1,y1,x2,y2,x3,y3,...</tt></td><td>顶点为 (x1,y1), (x2,y2), (x3,y3), ...
-的多边形的内部. </td></tr>
-$table_tr
-<td><tt>bound,FNAME,x,y</tt></td><td>由图形文件 FNAME 定义的边界, 
-此图形必须和被点击的图形一样大, 如果用户点击处与 (x,y) 位于同一填充区域里, 
-就认为条件满足. </td></tr>
-$table_tr
-<td><tt>bound,FNAME</tt></td><td>同上, 如果用户点击处的颜色不同于 FNAME 的左上角像素的颜色,
-就认为条件满足. </td></tr>
- </table></center>
+ 
  <p>
 同一行里的几个条件可以用
  `&' (交), `|' (并), `^' (补) 等符号加上必要的括号连接起来.
- <p>
+ </p><p>
 建议把这个输入栏嵌入陈述中间. 显然它不能与其它输入栏共存,
 因为用户一点击图形, 此表单就给发送出去了.
+</p>
 
+!set p=anstype.$lang/coord
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 to -1 of $l_
+   </td>
+  !next
+$table_end

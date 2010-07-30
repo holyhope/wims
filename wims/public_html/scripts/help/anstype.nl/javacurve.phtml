@@ -10,20 +10,24 @@ Het correcte antwoord is gegeven als een matrix, met als rij-scheidingsteken een
 De eerste rij van het goede antwoord is de URL van het [achtergrond] plaatje.
 De volgende rij is de test-conditie voor de leerling_tekening, zoals:
 
-<ul>
-<li><tt>points,x1,y1,x2,y2,...</tt> Punten  (x1,y1), (x2,y2), .... 
- Een "vette" punt met vastgestelde grootte.</li>
-<li><tt>line,x1,y1,x2,y2</tt> Rechte lijn door (x1,y1), (x2,y2).</li>
-<li><tt>sline,x1,y1,x2,y2</tt> Halve-line van (x1,y1) door (x2,y2).</li>
-<li><tt>polygon,x1,y1,x2,y2,...</tt> Veelhoek met hoekpunten (x1,y1), (x2,y2), ... .</li>
-<li><tt>rectangle,x1,y1,x2,y2</tt> Rechthoek van linksonder (x1,y1) naar rechtsboven (x2,y2).</li>
-<li><tt>rectangle,x1,y1,x2,y2,x3,y3,x4,y4</tt> Rechthoek  
-van (x1,y1) naar (x2,y2) naar (x3,y3) naar (x4,y4).</li>
-<li><tt>segment,x1,y1,x2,y2</tt> Segment tussen (x1,y1) en (x2,y2).</li>
-<li><tt>vector,x1,y1,x2,y2</tt> Vector van punt (x1,y1) naar (x2,y2).</li>
-<li><tt>circle,x1,y1,r</tt> Cirkel met als centrum (x1,y1) en straal r.</li>
-</ul>
-</p><p>
+!set p=anstype.$lang/javacurve
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 to -1 of $l_
+   </td>
+  !next
+$table_end
+<p>
 Het is verstandig dit invoerveld via \embed{} in het \statement{} te verwerken.
 Dit antwoord_type is incompatible met andere antwoord invoervelden.
 </p>

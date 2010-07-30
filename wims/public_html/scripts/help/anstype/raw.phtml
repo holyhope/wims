@@ -9,20 +9,21 @@
  So be careful when use this type: by default, the answer will be considered
  false even if there is just one more space character! It is provided
  mainly for authors who want to manually process the answers.
- <p>
- $table_header
- <caption>Options</caption>
- $table_tr<th>Syntax</th><th>Meaning</th>
- $table_tr<td><tt>noaccent</tt></td><td>remove accents on letters.</td></tr>
- $table_tr<td><tt>nocase</tt></td><td>fold letters to lower case.</td></tr>
- $table_tr<td><tt>nodigit</tt></td><td>replace digits by spaces.</td></tr>
- $table_tr<td><tt>nomathop</tt></td><td>replace math operators by spaces.</td></tr>
- $table_tr<td><tt>noparentheses</tt></td><td>replace parentheses by spaces.</td></tr>
- $table_tr<td><tt>nopunct</tt></td><td>replace punctuations by spaces.</td></tr>
- $table_tr<td><tt>noquote</tt></td><td>replace quotes (single and double) by spaces.</td></tr>
- $table_tr<td><tt>nospace</tt></td><td>remove all space characters (including those
-  transformed from other letters).</td></tr>
- $table_tr<td><tt>reaccent</tt></td><td>allow escaped accented letters.</td></tr>
- $table_tr<td><tt>singlespace</tt></td><td>treat all chains of space characters as one space.</td></tr>
+ 
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
 $table_end
-

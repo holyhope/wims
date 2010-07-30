@@ -1,4 +1,4 @@
- <b>Raw text.</b>
+ <b>Texte brut.</b>
  (nom: <tt>raw</tt>)
  <br> Un texte à comparer avec la bonne réponse donnée. 
   Les options suivantes permettent de contrôler comment le texte
@@ -10,21 +10,21 @@ par défaut, la réponse est considérée comme fausse même s'il y a
 un espace de différence. Ce type est destiné aux auteurs désirant
 analyser eux-même la réponse. 
 <p>
- $table_header
- <caption>Options</caption>
- $table_tr<th>Syntaxe</th><th>Signification</th>
- $table_tr<td><tt>noaccent</tt></td><td> enlève les accents sur les lettres.</td></tr>
- $table_tr<td><tt>nocase</tt></td><td>transforme les lettres en minuscule.</td></tr>
- $table_tr<td><tt>nodigit</tt></td><td>remplace les chiffres par des espaces.</td></tr>
- $table_tr<td><tt>nomathop</tt></td><td>remplace les opérateurs mathématiques par 
-des espaces</td></tr>
- $table_tr<td><tt>noparenthesis</tt></td><td>remplace les parenthèses par des espaces.</td></tr>
- $table_tr<td><tt>nopunct</tt></td><td>remplace les ponctuations par des espaces.</td></tr>
- $table_tr<td><tt>noquote</tt></td><td>remplace les apostrophes ou guillemets
- (simple et double)  par des espaces.</td></tr>
- $table_tr<td><tt>nospace</tt></td><td>enlève tous les caractères d'espace 
- (y compris ceux provenant de remplacement d'autres caractères). </td></tr>
- $table_tr<td><tt>reaccent</tt></td><td>permet les lettres accentuées précédées de \</td></tr>
- $table_tr<td><tt>singlespace</tt></td><td> traite toutes les chaînes de caractères
- d'espaces comme un seul espace. </td></tr>
+
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
 $table_end

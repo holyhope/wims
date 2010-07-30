@@ -27,36 +27,8 @@ Le numéro de la première des lignes en accord avec la réponse de
 l'utilisateur, diminué de 1, est stocké dans une variable
 <tt>\result</tt><em>n</em>, où <em>n</em> est le numéro du champ de
 réponse, et peut être utilisé dans un \feedback.
-</p><p>
-$table_header 
-<caption>Liste des conditions disponibles pour tester le clic de l'utilisateur</caption>
-$table_tr<th>Syntaxe</th><th>Signification</th>
-$table_tr
-<td><tt>point,x,y</tt><td>Point en (x,y). C'est un point ``épais'', de largeur fixe.
-</td></tr>
-$table_tr
-<td><tt>rectangle,x1,y1,x2,y2</tt></td><td> L'intérieur d'un rectangle
-de diagonale (x1,y1)---(x2,y2).</td></tr>
-$table_tr
-<td><tt>circle,x,y,d</tt></td><td> L'intérieur d'un cercle de centre (x,y)
-et diamètre d.</td></tr>
-$table_tr
-<td><tt>ellipse,x,y,w,h</tt></td><td> L'intérieur d'une ellipse de centre
-(x,y), largeur w, et hauteur h.</td></tr>
-$table_tr
-<td><tt>polygon,x1,y1,x2,y2,x3,y3,...</tt></td><td> L'intérieur d'un polygone
-engendré par les points (x1,y1), (x2,y2), (x3,y3), ...</td></tr>
-$table_tr
-<td><tt>bound,NOMFIC,x,y</tt></td><td> zone définie dans le fichier image
-NOMFIC, qui doit être de la même taille que l'image cliquée (mais peut
-être une image différente). La condition est remplie si (x,y) est dans
-la même zone de remplissage que le clic de l'utilisateur.</td></tr>
-$table_tr
-<td><tt>bound,NOMFIC</tt></td><td> comme ci-dessus, mais la condition est remplie si 
-le clic de l'utilisateur a une couleur DIFFERENTE du 
-pixel du coin en haut à gauche de NOMFIC.</td></tr>
-</table>
-</center><p>
+</p>
+
 Plusieurs conditions peuvent être combinées dans la même ligne, en
 utilisant les connecteurs logiques
 `&' (intersection), `|' (union), `^' (complémentaire), ainsi que les
@@ -67,3 +39,21 @@ peut pas coexister avec d'autres champs de réponse, pour la raison
 évidente que tout clic de l'utilisateur sur une image enverra le
 formulaire de réponse.
 </p>
+
+!set p=anstype.$lang/coord
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 to -1 of $l_
+   </td>
+  !next
+$table_end

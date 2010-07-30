@@ -10,17 +10,23 @@
 Een leerling antwoord met 1 spatie te veel -ergens in een zin- is dan dus fout !
 <br>
 Dit antwoord type is vooral geschikt voor auteurs die zelf het leerling antwoord verder willen beoordelen.<br>  
-De volgende opties kunnen worden ingezet:<br>
-<ul>
- <li><tt>noaccent</tt>: verwijder accenten van letters.
- <li><tt>nocase</tt>: transformeer het antwoord naar kleine letters.
- <li><tt>nodigit</tt>: vervang de cijfers 1234567890 door spaties.
- <li><tt>nomathop</tt>: vervang wiskunde operatoren *,/,+,- door spaties.
- <li><tt>noparentheses</tt>: vervang haakjes door spaties.
- <li><tt>nopunct</tt>: vervang punctuatie door spaties.
- <li><tt>noquote</tt>: vervang aanhalingtekens (enkel en dubbel) door spaties.
- <li><tt>nospace</tt>: verwijder alle spaties.
- <li><tt>reaccent</tt>: sta "escaped" karakters met accenten toe.
- <li><tt>singlespace</tt>: vervang meerdere spaties door 1 spatie.
- </ul>
+De volgende opties kunnen worden ingezet:
+
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
+$table_end
 

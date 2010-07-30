@@ -6,19 +6,22 @@
 用于与正确答案比较的文本. 下面的选项决定了在进行比较前需要作怎样的变换.
 如果没有给出选项, 则只除去首尾的空格. 使用这个格式要小心, 在默认情形,
 多一个空格就被认为不同的! 这主要用于作者手工打分.
- <p>
- $table_header
- <caption>选项/caption>
- $table_tr<th>语法</th><th>意义</th>
- $table_tr<td><tt>noaccent</tt></td><td>除去字母的重音号.</td></tr>
- $table_tr<td><tt>nocase</tt></td><td>全部转化成小写字母.</td></tr>
- $table_tr<td><tt>nodigit</tt></td><td>把数字用空格代替.</td></tr>
- $table_tr<td><tt>nomathop</tt></td><td>把数学运算符用空格代替.</td></tr>
- $table_tr<td><tt>noparentheses</tt></td><td>把括号用空格代替.</td></tr>
- $table_tr<td><tt>nopunct</tt></td><td>把标点用空格代替.</td></tr>
- $table_tr<td><tt>noquote</tt></td><td>把引号(单或双)用空格代替.</td></tr>
- $table_tr<td><tt>nospace</tt></td><td>除去所有空格(包括其它字符转换过来的空格).</td></tr>
- $table_tr<td><tt>reaccent</tt></td><td>允许前面加 \ 的重音字母.</td></tr>
- $table_tr<td><tt>singlespace</tt></td><td>把连续的空格看作一个空格.</td></tr>
-$table_end
 
+
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
+$table_end

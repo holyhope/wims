@@ -96,92 +96,49 @@ la liste des bonnes réponses de l'étudiant; la liste des réponses fausses; la li
 Dans le cas où le premier champ de la bonne réponse est une variable de contenu vide, la variable
 <tt>reply</tt>n contient simplement la liste des atomes sélectionnés.
 
+<p></p>
+!set p=anstype.fr/jmolclick1
+!readproc tabletheme
 $table_header
-<caption>Exemples de réponses Jmol (première ligne du deuxième champ de <tt>answer</tt>)</caption>
-$table_tr<td><tt>
-atomno=1 
-</tt><td> l'atome numéro 1
-$table_tr<td><tt>
-({1})
-</tt></td><td>
-l'atome numéro 2 (attention au décalage de 1).
-$table_tr<td><tt>
-atomno=1 or atomno=2 or atomno=5
-</tt></td><td>
-les atomes 1, 2 et 5
-$table_tr<td> <tt>
-({0 1 4})
-</tt></td><td>
-les atomes 1, 2 et 5 (attention au décalage de 1).
-$table_tr<td> <tt>
-({0 1 4:7})
-</tt></td><td>
-les atomes 1, 2 et les atomes de 5 à 8 (attention au décalage de 1).
-$table_tr<td><tt>
-_C
-</tt></td><td>
-tous les atomes de carbone (on peut aussi mettre <tt>carbon</tt> ou utiliser le numéro 
-atomique <tt>elemno=6</tt>)
-$table_tr<td><tt>
-connected(2)
-</tt></td><td>
-tous les atomes ayant deux liaisons (quelque soit le type de liaisons)
-$table_tr<td><tt>
-connected(2,4)
-</tt></td><td>
-tous les atomes ayant entre 2 et 4 liaisons (quelque soit le type de liaisons)
-$table_tr<td><tt>
-connected(double)
-</tt></td><td>
-tous les atomes ayant une liaison double (on peut aussi mettre <tt>single</tt>, <tt>triple</tt> ou <tt>aromatic</tt>)
-$table_tr<td><tt>
-connected(atomno=5)
-</tt></td><td>
-tous les atomes connectés à l'atome numéro 5
-$table_tr<td><tt>
-connected(2,nitrogen)
-</tt></td><td>
-tous les atomes connectés exactement à deux atomes d'azote (ils peuvent être connectés à d'autres types d'atomes)
-$table_tr<td><tt>
-within(2.1,atomno=4)
-</tt></td><td>
-tous les atomes à une distance de moins de 2.1 Å de l'atome numéro 4
-$table_tr<td><tt>
-within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
-</tt></td><td>
-tous les atomes à moins de 2.1 Å du plan défini par les atomes numéro 3, 4 et 5 (attention, il s'agit d'une mesure algébrique)
-$table_tr<td><tt>
-within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})}) or within(-2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
-</tt></td><td>
-tous les atomes à moins de 2.1 Å du plan défini par les atomes numéro 3, 4 et 5.
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
 $table_end
+
 <p>
 Les conditions peuvent être combinées dans <b>Jmol</b> par les opérateurs d'ensembles 
 <tt>OR</tt>, <tt>AND</tt> et <tt>NOT</tt>. Pour plus de détails, voir la 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">documentation de Jmol</a>.
 </p>
-$table_header
-<caption>Exemples de scripts Jmol</caption>
-$table_tr<td><tt>
 
-connect (({4}) ({5}) double modifyorcreate;
-</tt></td><td>
-Crée une liaison double entre les atomes numéro 4 et 5
-$table_tr<td><tt>
-connect (({4}) ({5}) delete;
-</tt></td><td>
-Détruit les liaisons entre les atomes numéro 4 et 5
-$table_tr<td><tt>
-connect (_C) delete;
-</tt></td><td>
-Détruit les liaisons entre les atomes de carbone
-$table_tr<td><tt>
-select (_N); color atoms green; select none;</tt><td>
-Colorie en vert les atomes d'azote
-$table_tr<td><tt>
-select ({5}); spacefill 0.1; select none;</tt><td>
-réduit la taille de l'atome numéro 5
+!set p=anstype.fr/jmolclick2
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
 $table_end
+
 
 <p>
 Des slibs sur Jmol sont accessibles.
