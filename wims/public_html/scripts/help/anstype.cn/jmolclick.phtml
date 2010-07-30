@@ -90,90 +90,47 @@ $table_end
 如果第一栏正确回答是空的, 那末变量
 <tt>reply</tt>n 就是所选原子的表.
 
+
+!set p=anstype.cn/jmolclick1
+!readproc tabletheme
 $table_header
-<caption>Jmol 回答的例 (<tt>answer</tt> 的第二栏的第一行)</caption>
-$table_tr<td><tt>
-atomno=1 
-</tt></td><td>第 1 号原子
-$table_tr<td><tt>
-({1})
-</tt></td><td>
-第 2 号原子 (注意相差 1).
-$table_tr<td><tt>
-atomno=1 or atomno=2 or atomno=5
-</tt></td><td>
-第 1, 2 及 5 号原子
-$table_tr<td> <tt>
-({0 1 4})
-</tt></td><td>
-第 1, 2 及 5 号原子 (注意相差 1).
-$table_tr<td> <tt>
-({0 1 4:7})
-</tt></td><td>
-第 1, 2 及 5 至 8 号原子 (注意相差 1).
-$table_tr<td><tt>
-_C
-</tt></td><td>
-所有碳原子 (也可写成 <tt>carbon</tt> 或使用原子个数 <tt>elemno=6</tt>)
-$table_tr<td><tt>
-connected(2)
-</tt></td><td>
-所有两个键的原子 (不管键的类型)
-$table_tr<td><tt>
-connected(2,4)
-</tt></td><td>
-所有 2 或 4 个键的原子 (不管键的类型)
-$table_tr<td><tt>
-connected(double)
-</tt></td><td>
-所有双键的原子 (也可要求 <tt>single</tt>, <tt>triple</tt> 或 <tt>aromatic</tt>)
-$table_tr<td><tt>
-connected(atomno=5)
-</tt></td><td>
-所有与 5 号原子相连的原子
-$table_tr<td><tt>
-connected(2,nitrogen)
-</tt></td><td>
-所有恰好与 2 个氮原子相连的原子 (它们可与其它类型原子相连)
-$table_tr<td><tt>
-within(2.1,atomno=4)
-</tt></td><td>
-所有与 4 号原子的距离小于 2.1&Aring; 的原子 
-$table_tr<td><tt>
-within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
-</tt></td><td>
-所有与第 3, 4, 5 号原子所确定的平面的距离小于 2.1&Aring; 的原子 (代数测度)
-$table_tr<td><tt>
-within(2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})}) or within(-2.1,plane,@{plane({atomno=3},{atomno=4},{atomno=5})})
-</tt></td><td>
-所有与第 3, 4, 5 号原子所确定的平面的距离小于 2.1&Aring; 的原子
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
 $table_end
+
 <p>
 在 <b>Jmol</b> 中的条件可以利用集合运算 
 <tt>OR</tt>, <tt>AND</tt> 及 <tt>NOT</tt> 加以组合. 详情请参见 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
 </p>
-$table_header
-<caption>Jmol 脚本的例</caption>
-$table_tr<td><tt>
 
-connect (({4}) ({5}) double modifyorcreate;
-</tt></td><td>
-在第 4, 5 号原子间创立双键
-$table_tr<td><tt>
-connect (({4}) ({5}) delete;
-</tt></td><td>
-删除第 4, 5 号原子间的键
-$table_tr<td><tt>
-connect (_C) delete;
-</tt></td><td>
-删除碳原子间的键
-$table_tr<td><tt>
-select (_N); color atoms green; select none;</tt><td>
-把氮原子画成绿色
-$table_tr<td><tt>
-select ({5}); spacefill 0.1; select none;</tt><td>
-缩小第 5 号原子的大小
+!set p=anstype.cn/jmolclick2
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
 $table_end
 
 <p>
