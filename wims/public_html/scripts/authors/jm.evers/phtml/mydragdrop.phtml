@@ -1,15 +1,15 @@
-!! multiplechoice=2 the same as =1 (just 1 option is good) but than drag and drop 
-!! $hpx , $wpx give the width and height of the drag div.
 <script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
 !set DHTML=$empty
-!if $wpx=$empty
-    !set wpx=100
+!if $draw=1
+    !set insdraw_size=$xsize,$ysize
+!else
+    !if $plot=1
+	!set insplot_set=$(image_settings$n)
+    !endif
 !endif
-!if $hpx=$empty
-    !set hpx=50
-!endif
+
 <div align="center">
- <table summary="" border="1" width="100%"  bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+ <table summary="" border="0" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
     <tr>
     <td valign="top" align="left">
 	$(question$n)
@@ -24,88 +24,89 @@
     </td>
     </tr><tr>
     <td valign="top" align="center">
-	<table summary="" border="1" width="100%">
+	<table summary="" >
 	    <tr>
-	    <td valign="top" align="left" width="40%">
-		!if $draw=1
-		    !set insdraw_size=$XSIZE,$YSIZE
-		!endif
-		!if $plot=1
-		    !set insplot_set=$(image_settings$n)
-		!endif
-		!for p=1 to $options
-		    <div id="div$p" name="div$p" style="position:relative;border:thin solid red;">
-			<br><br>
-			!if $multiimage=1
-			    !if $draw=1
-				!insdraw $(ex$p)
-			    !else
-				!insplot $(ex$p)
-			    !endif
-			!else
-			    !if $math=0
-				$(ex$p)
-			    !else
-				!insmath $(ex$p)
-			    !endif
+	    <td>
+		<table summary="">
+		    <tr>
+		    !for p=1 to $options
+			<td bgcolor="#82bbff">
+			    <div id="div$p" style="position:relative;border:2px solid red;width:$[$xsize+2];height:$[$ysize+2]">
+				!if $multiimage=1
+				    !if $draw=1
+					!insdraw $(ex$p)
+				    !else
+					!if $plot=1
+					    !insplot $(ex$p)
+					!endif
+				    !endif
+				!else
+				    !if $math=0
+					$(ex$p)
+				    !else
+					!insmath $(ex$p)
+				    !endif
+				!endif
+			    </div>
+			    !set DHTML=!append item "div$p" to $DHTML
+			</td>
+			!if $XSIZE > 450
+			    <tr>
 			!endif
-			!set DHTML=!append item "div$p" to $DHTML
-			<br><br>
-		    </div>
-		!next p
-		    <div id="?"  name="?" style="position:relative;border:thin solid blue">
-		    <br><br>
-			$dontknow
-			!set DHTML=!append item "?" to $DHTML
-		    </div>
+		    !next p
+			<td bgcolor="#ff1338">
+			    <div id="dontknow" style="position:relative;border:thin solid blue;width:$xsize;heigth:$ysize">
+				<font size="+1">$dontknow</font>
+			    </div>
+			    !set DHTML=!append item "dontknow" to $DHTML
+			</td>
+		    </tr>
+		</table>
 	    </td>
-	    <td>    
-		<div id="target" name="target" style="padding:20px; border:thin solid green; margin:25px;">
+	    <td>
+		<div id="target" style="background-color:#60ff71;padding:2px; border:thin solid green; margin:2px;width:$xsize;heigth:$ysize">
 		    !if $(formula$n) != $empty
 			!insmath $(formula$n)
-		    !endif
-		    !if $image=1
-			!if $(image$n)!=$empty
-			    !if $draw=1
-				!set insdraw_size=$xsize,$ysize
-				!insdraw $(image$n)
-			    !else
-				!set insplot_set=$(image_settings$n),size $xsize,$ysize
-				!insplot $(image$n)
+		    !else
+			!if $image=1
+			    !if $(image$n)!=$empty
+				!if $draw=1
+				    !set insdraw_size=$xsize,$ysize
+				    !insdraw $(image$n)
+				!else
+				    !set insplot_set=$(image_settings$n),size $xsize,$ysize
+				    !insplot $(image$n)
+				!endif
 			    !endif
+			!else
+			    <img src="$jsdir/transparentpixel.gif" width=$xsize height=$ysize alt="no alt">
 			!endif
 		    !endif	
 		    !set DHTML=!append item "target" to $DHTML
     		</div>
 	    </td>
 	    </tr>
-	    </table>
-	</td>
-	</tr>
-    </table>
+	</table>
+    </td>
+    </tr>
+ </table>
 </div>
 
 <script type="text/javascript">
     SET_DHTML( CURSOR_MOVE , $DHTML);	
 </script>
 <script type="text/javascript">
-    function my_DropFunc()
-    {
-    var delta=100;
-    var X=dd.elements.target.x;
-    var Y=dd.elements.target.y;
-    !! var W=dd.elements.target.w;
-    !! var H=dd.elements.target.h;
-    var answer=dd.obj.name;
-    var x=dd.obj.x;
-    var y=dd.obj.y;
-    if(x<X+delta && x>X-delta && y>Y-delta && y<Y+3*delta)
-	{
-	    !! dd.obj.moveTo(dd.elements.target.x, dd.elements.target.y);
-	    dd.obj.moveTo(X,Y-50);
-	    !!dd.obj.setBgColor('lightgreen');
-	    answer=answer.replace(/[a-z]/g,'');
-	    answer=encodeURIComponent( answer );
+    function my_DropFunc(){
+	var delta=100;
+	var X=dd.elements.target.x;
+	var Y=dd.elements.target.y;
+        var answer=dd.obj.id;
+	var x=dd.obj.x;
+        var y=dd.obj.y;
+	if(x<X+delta && x>X-delta && y>Y-delta && y<Y+3*delta){
+	    dd.obj.moveTo(X,Y);
+	    if(answer == "dontknow"){answer="%3F";}
+	    answer=answer.replace(/div/g,'');
 	    var URL = '$wims_refname?session=$session&module=$module&cmd=reply&+reply$n='+answer
 	    document.location.href = URL;
 	    !if $debug=1
@@ -113,8 +114,8 @@
 	    !endif
 	}
 	else
-	{
-	    dd.obj.moveTo(dd.obj.defx,dd.obj.defy);
+        {
+    	    dd.obj.moveTo(dd.obj.defx,dd.obj.defy);
 	}
 	dd.obj='null';
     }
