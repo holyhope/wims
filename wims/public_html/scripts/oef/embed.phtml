@@ -159,15 +159,22 @@
    !endif
   !else
    !set embedded_analyze=!append item $i to $embedded_analyze
-   !set embedded_bracket=$embedded_bracket [$embcnt]
+   !if noanalyzeprint notwordof $(replyoption$i)
+    !set embedded_bracket=$embedded_bracket [$embcnt]
+   !endif
   !endif
   !set replyname$i=[$embcnt]
  !endif
+ !if noanalyzeprint notwordof $(replyoption$i)
+  !set embcnt1=&nbsp;<sup><small>[$embcnt]</small></sup>
+ !else
+  !reset embcnt1
+ !endif
  !if $(replytype$i) notwordof correspond
   !set instex_color=$cl
-  !imgrename <b><font color="$cl">$p_</font></b>&nbsp;<sup><small>[$embcnt]</small></sup>
+  !imgrename <b><font color="$cl">$p_</font></b>$embcnt1
   !else
-  !imgrename $p_ &nbsp;<sup><small>[$embcnt]</small></sup> 
+  !imgrename $p_ $embcnt1
  !endif 
  !set instex_color=black
  !if $(replytype$i) iswordof correspond
