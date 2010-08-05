@@ -1,0 +1,56 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Balloons
+slib_parms=5\
+[texte],text inside brackets\
+antiquewhite,color\
+250,dimension\
+3,p [x-paramètre de l'ellipse]\
+1,q [y-paramètre de l'ellipse]
+slib_author=Bernadette PERRIN-RIOU
+slib_out= url html for a Balloon with text
+slib_comment=need wims_version 4.01 - in experimentation - the size of the text can't be choosen.
+slib_example= [Que vaut \(\frac{1}{2}\) de 6 ?],lightblue,300,3,1\
+ [J'ai \(\frac{1}{2}\) d'une pomme.],lightgreen,300,3,0.5\
+ [Abracadabra éùôç]\
+ [Abracadabra],,200
+slib_wims_version=4.01
+!exit
+
+:proc
+slib_out=
+!distribute items $wims_read_parm into slib_text,slib_color,slib_width,slib_q,slib_option
+!default slib_width=250
+slib_text=!declosing $slib_text
+
+!!wims_backslash_instex=yes
+slib_t=$slib_width*0.4
+!default slib_color=antiquewhite
+!default slib_q=1/3
+slib_p=3
+slib_q=$[3*$slib_q]
+slib_t1=$[round($slib_p*$slib_t*0.4)]
+
+!!slib_text=!replace internal &#36;&#36; by $$$$$ in $slib_text
+
+!read oef/teximg.phtml \begin{minipage}{$slib_t1 pt}\centering{ $slib_text }\end{minipage}
+
+slib_dialog=$ins_filename
+!if rectangle iswordof $slib_option
+ slib_out=xrange 0,$slib_p*$slib_t\
+  yrange 0,$slib_q*$slib_t+50\
+  frectangle 0,50,$slib_p*$slib_t,$slib_q*$slib_t+50,$slib_color\
+  ftriangle 0,0,0,$slib_t,$slib_t*0.1*$slib_p/3+10,$slib_t,$slib_color\
+  copy ($slib_p*$slib_t)/2-$slib_t1*1.1,20+$slib_q*$slib_t,-1,-1,-1,-1,$slib_dialog
+!else
+slib_out=xrange 0,$slib_p*$slib_t+20\
+  yrange 0,$slib_q*$slib_t\
+  fellipse $slib_t*$slib_p/2+10,$slib_q*$slib_t/2,10+$slib_p*$slib_t,$slib_q*$slib_t,$slib_color\
+  ftriangle 0,0,5,$slib_t*$slib_q/2,$slib_t*0.1*$slib_p+10+3,$slib_t*0.5+3,$slib_color\
+  copy 20+($slib_p*$slib_t)/2-$slib_t1*1.1,$slib_q*$slib_t*0.7,-1,-1,-1,-1,$slib_dialog
+!endif
+!set insdraw_size=$[round($slib_p*$slib_t+20)],$[round($slib_q*$slib_t)]
+!insdraw $slib_out
+
+slib_out=<img src="$ins_url" width="$slib_width">
