@@ -35,12 +35,12 @@ function SetTexAppSize(){
     if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
 	var p = 1;var size = new Array(2);
 	while ( document.getElementById('TexApp'+p) ){
-    	    size = document.getElementById('TexApp'+p).getPrefferedSize();                                                                   
     	    try{
+    		size = document.getElementById('TexApp'+p).getPrefferedSize();                                                                   
 		document.getElementById('TexApp'+p).width = size[0];                                                                             
     		document.getElementById('TexApp'+p).height = size[1];
-	    }catch(e){}// problems on opera/safari
-	    p++;
+		p++;
+	    }catch(e){return;}// problems on opera/safari
 	} 
     }                                                 
 }
