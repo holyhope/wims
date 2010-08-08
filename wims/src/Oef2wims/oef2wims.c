@@ -17,7 +17,7 @@
 
  /* This program translates oef format exercises into wims internal data format. */
 
-#define MAX_TITLEN  40
+#define MAX_TITLEN  60
 #define MAX_PROMPTLEN 40
 #define MAX_PARM    10
 #define MAX_PARAM   1024
