@@ -20,14 +20,14 @@
 
 !if checkhost iswordof $error
  Su conexión actual no forma parte de las definidas como estaciones de
- trabajo seguras. Se trata probablemente de un error que puede hacerle perder 
+ trabajo seguras. Se trata probablemente de un error que puede hacerle perder
  el control de la clase. En consecuencia no se ha modificado la relación de
  estaciones de trabajo seguras.
  !exit
 !endif
 
 !if bad_file iswordof $error
- Lo sentimos pero no reconocemos <em>$wims_deposit</em> 
+ Lo sentimos pero no reconocemos <em>$wims_deposit</em>
  como copia de seguridad de una clase. Es posible que haya enviado un fichero
  incorrecto o que haya sido dañado.
  !exit
@@ -45,9 +45,9 @@
 !endif
 
 !if remote_sharing iswordof $error
- La clase vecina comparte sus recursos. Antes de que deje de compartirlos,
+ Una clase vecina comparte sus recursos. Antes de que deje de compartirlos,
  usted ni puede negarse a que siga compartiéndolos ni puede eliminarla de
- su lista de vecinas. 
+ su lista de vecinas.
  !exit
 !endif
 
@@ -73,7 +73,7 @@
 !endif
 
 !if toobigfile iswordof $error
- La taille de votre fichier est trop importante : la limite est de 12K.
+ El tamaño de su fichero es demasiado importante: el límite es de 12K.
  !exit
 !endif
 

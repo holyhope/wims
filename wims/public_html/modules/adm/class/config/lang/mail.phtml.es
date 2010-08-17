@@ -1,19 +1,18 @@
 
 !mailto $sup_email\
-Code for class configuration\
+Código de configuración de la clase\
 \
-You have requested for configuration of your virtual class\
+Pidieron a configurar su clase virtual\
 $wims_classname on $httpd_HTTP_HOST,\
-but have not defined secure hosts.\
+pero no precisaron huéspedes asegurados.\
 \
-Here is your secret code (valid only once and immediately) for\
-this purposes: $code\
+Ahí tienes su código secreto (válido inmediatamente y una única vez) para \
+este uso: $code\
 \
-You can copy this code to the configuration tool in order to get access to it.\
+Pueden copiar este código en la herramienta de configuración con el fin de acceder.\
 \
-If you don't know what this is about, then probably the supervisor password\
-of your class has leaked or been stolen. Please change this password as soon\
-as possible.\
+Si no comprenden de que se trata, es probable que la contraseña supervisora\
+de su clase tiene huye o se ha ocultado. POR FAVOR cambian esta contraseña lo antes posible.\
 \
 $wims_site_manager\
 
