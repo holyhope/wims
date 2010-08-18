@@ -1,0 +1,114 @@
+!if $wims_read_parm=nocompare
+ !exit
+!endif
+!set name_vertical=Verticalement
+!set name_horizontal=Horizontalement
+
+!!!!analyse
+
+reply=!replace internal $\
+$ by ; in $(reply$i)
+!distribute item $(oef_answer_option$i) into MotC,defH,defV,ligne_cnt,col_cnt,Mpos,style
+analyse=
+MotC=!declosing $MotC
+MotC=!replace internal $\
+$ by ; in $MotC
+defH=!declosing $defH
+defV=!declosing $defV
+Mpos=!declosing $Mpos
+
+r_style=<style type="text/css">\
+.cw_good {border:0;color:green;font-size:20px;text-align:center;}\
+.cw_bad {border:0;color:red;font-size:20px;text-align:center;}\
+.cw_ans {font-size:12px;color:green;text-align:right;vertical-align:bottom;}\
+$style\
+</style>
+
+r_help=<div style="display:inline;"><div class="cw_HV">$name_horizontal</div>
+!for k = 1 to $ligne_cnt
+  !set u =  !line $k of $defH
+  !if $u <> $empty
+    !set u=!replace internal : by , in $u
+    u_=!replace internal H by in $(u[1])
+   r_help=$r_help \
+   <div style="display:block;color:black;">$u_ : $(u[2..-1])</div>
+    !endif
+!next k
+
+r_help=$r_help\
+</div><div style="display:inline;"><div class="cw_HV">$name_vertical</div>
+
+!for k = 1 to $col_cnt
+ !set u =  !line $k of $defV
+   !if $u <> $empty
+     !set u=!replace internal : by , in $u
+     u_=!replace internal V by in $(u[1])
+    r_help=$r_help\
+    <div style="display:block;color:black;">$u_ : $(u[2..-1])</div>
+   !endif
+!next k
+
+r_help=$r_help</div>
+r_out=<table align="center" border="1">
+!for k = 1 to $ligne_cnt
+r_out=$r_out<tr>
+  !for j = 1 to $col_cnt 
+    !if  $(MotC[$k;$j]) = $empty
+      r_out=$r_out\
+      <td class="cw_black"></td>
+    !else
+     !set colornb=blue
+     !set m=$(MotC[$k;$j])
+     !if $m issametext $(reply[$k;$j])
+       anal=1
+       cw_answer=cw_good
+     !else
+       anal=0
+       cw_answer=cw_bad
+     !endif
+       analyse=!append item $anal to $analyse
+       r_out=$r_out\
+      <td class="cw_case">
+      !if $(Mpos[$k;$j])!=0
+       r_out=$r_out\
+        <span class="cw_no">$(Mpos[$k;$j])</span>
+      !else
+        r_out=$r_out\
+        &nbsp;
+      !endif
+       r_out=$r_out\
+        <div class="$cw_answer">$(reply[$k;$j])
+     !if $anal=0
+       r_out=$r_out \
+       <span class="cw_ans">$m</span>
+     !endif 
+      r_out=$r_out</div></td>
+     !reset m
+    !endif
+    r_out=$r_out
+ !next j
+r_out=$r_out\
+</tr>
+!next k
+
+r_out=$r_out\
+</table>
+score=$analyse
+
+score_cnt=!itemcnt $score
+Score=!replace internal , by + in $score
+Score_per=$[($Score)/$score_cnt]
+!if $Score_per=1
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+ !if $Score_per>0.5
+   freegot=$[$freegot + round(10*$Score_per)/10]
+ !endif
+!endif
+
+reply_$i=$r_style\
+<table><tr><td>$r_out</td><td style="padding:30px;">$r_help</td></tr></table>
+reply__$i=&nbsp;
+replyGood$i=&nbsp;

@@ -1,0 +1,209 @@
+!set anstype=yes
+!set anstyle=dprompt
+!set oef_js_submit=sendanswer()
+!set author=Bernadette Perrin-Riou
+!if $wims_read_parm=def
+ !exit
+!endif
+!set name_vertical=Verticalement
+!set name_horizontal=Horizontalement
+
+!set dir=!randint 2
+!set dir=1
+!set color=!getopt color in $(replyoption$i)
+!set color=!declosing $color
+!set color=!words2items $color
+
+!default color=orange,black,white
+!set style=.cw_case {background-color:$(color[1]);text-align:left;width:35px;height:35px;font-size:90%;}\
+.cw_input {background-color:$(color[1]);border:0;text-align:center;font-size:20px;}\
+.cw_no {color:blue;float:left;background-color:$(color[3])}\
+.cw_black {background-color:black;}\
+.cw_HV {font-weight:bold;color:$(color[2]);}
+
+<style type="text/css">$style</style>
+!distribute item $(replygood$i) into MotC,def
+
+!set MotC=!declosing $MotC
+!set MotC=!replace internal $	$ by $\
+$ in $(MotC)
+!set MotC=!replace internal ; by $\
+$ in $MotC
+
+!set def=!declosing $def
+!set def=!replace internal $	$ by $\
+$ in $def
+!set def=!replace internal ; by $\
+$ in $def
+
+!set ligne_cnt= !linecnt $MotC
+!set col_cnt = 1
+!for j = 1 to $ligne_cnt
+  !set col = !itemcnt $(MotC[$j;])
+  !set col_cnt=!sort numeric item $col_cnt, $col
+  !set col_cnt=!item 2 of $col_cnt
+!next j
+!if $dir = 2 
+  !set MotCT=$empty
+  !for a = 1 to $col_cnt
+    !set V =!column $a of $MotC
+    !set MotCT= !append line $V to $MotCT
+  !next a
+  !set MotC =$MotCT
+  !set col1 = $ligne_cnt
+  !set ligne_cnt=$col_cnt
+  !set col_cnt=$col1
+!endif
+!set Mpos=!exec pari  Mpos=matrix($ligne_cnt,$col_cnt)
+
+!!je cherche les mots et mets des numéros.
+!set cnt=0
+!set listemot=
+!set listepos=
+!for k = 1 to $ligne_cnt
+  !for j = 1 to $col_cnt
+   !if $(MotC[$k;$j]) != $empty and ($(MotC[$k;$j-1])=$empty or $(MotC[$k-1;$j])=$empty)
+      !if $(Hseen$(k)x$j) !=1
+        !set j_=$j
+        !while $(MotC[$k;$j_])!=$empty
+        !set motH=!append item $(MotC[$k;$j_]) to $motH
+        !set Hseen$(k)x$j_=1
+        !increase j_
+       !endwhile
+      !endif
+      !if $(Vseen$(k)x$j) !=1
+       !set k_=$k
+       !while $(MotC[$k_;$j])!=$empty
+        !set motV=!append item $(MotC[$k_;$j]) to $motV
+        !set Vseen$(k_)x$j=1
+        !increase k_
+       !endwhile
+      !endif
+      !if $j_>$j+1 or $k_>$k+1
+       !increase cnt
+       !set listepos=!append line $k,$j to $listepos
+       !set  Mpos=!exec pari Mpos[$k,$j]=$cnt ; Mpos
+       !if $j_>$j+1
+        !set motH=!replace internal , by in $motH
+        !set listemot=!append line H$cnt,$motH to $listemot
+       !endif
+       !if $k_>$k+1
+        !set motV=!replace internal , by in $motV
+        !set listemot=!append line V$cnt,$motV to $listemot
+       !endif
+      !endif
+      !reset j_ k_ motH motV
+    !endif
+  !next
+!next
+!for k = 1 to $ligne_cnt
+  !for j = 1 to $col_cnt 
+    !if  $(MotC[$k;$j]) != $empty 
+     !set js=!append line table[$[$k+$ligne_cnt*$j]]=1; to $js
+    !else
+     !set js=!append line table[$[$k+$ligne_cnt*$j]]=0; to $js
+    !endif
+  !next
+!next
+!set oef_answer_option$i=[$MotC]
+!set def=!embraced randitem $def
+!reset defH defV
+!set listemotV=!select $listemot where V isin column 1
+!set listemotH=!select $listemot where H isin column 1 
+!set def=!replace internal ; by $\
+$ in $def
+!set listemotV_cnt=!linecnt $listemotV
+!set listemotH_cnt=!linecnt $listemotH
+!for s_ = 1 to $(listemotV_cnt)
+  !set l_=!line $s_ of $listemotV
+  !set def_mot= !select $def where column 1 issametext  $(l_[2])
+  !set defV=!append line $(l_[1]), $(def_mot[2]) to $defV
+!next
+!for s_ = 1 to $(listemotH_cnt)
+  !set l_=!line $s_ of $listemotH
+  !set def_mot=!select $def where column 1 issametext  $(l_[2])
+  !set defH=!append line $(l_[1]), $(def_mot[2]) to $defH
+!next
+!set oef_answer_option$i=$(oef_answer_option$i),[$defH],[$defV],$ligne_cnt,$col_cnt,[$Mpos],$style
+!set help=
+!set cnt=0
+!for k = 1 to $listemotH_cnt
+  !set u = !line $k of $defH
+  !if $u <> $empty
+    !increase cnt
+    !set u=!replace internal : by , in $u
+    !set un=!replace internal H by in $(u[1])
+    !set help=$help\
+    <div id="$(u[1])" style="display:none;"><div class="cw_HV">$name_horizontal</div>$un : $(u[2..-1])</div>
+    !endif
+!next k
+!for k = 1 to $listemotV_cnt
+ !set u = !line $k of $defV
+   !if $u <> $empty
+     !increase cnt
+     !set u=!replace internal : by , in $u
+     !set un=!replace internal V by in $(u[1])
+      !set help=$help\
+      <div id="$(u[1])" style="display:none;"><div class="cw_HV">$name_vertical</div>$un : $(u[2..-1])</div>
+   !endif
+!next k
+
+<script type="text/javascript">
+  function showdef(n)
+  {
+   for (var j=1 ; j <= $cnt ;j++) {
+    var defV = document.getElementById('V' + j)
+    if (defV) {
+      defV.style.display ='none';
+      if (j==n) {defV.style.display = 'block';}
+    }
+    var defH=document.getElementById('H' + j)
+    if (defH) {
+      defH.style.display = 'none';
+      if (j==n) {defH.style.display = 'block';}
+    }
+  }
+}
+var table=Array();
+$js
+function sendanswer() 
+  { var test=0;
+    var reply='';
+       for (var t = 1 ; t <= $ligne_cnt ; t ++){
+         for (var s = 1 ; s <= $col_cnt ; s ++){
+          cell=document.getElementById('case_' + t + '_' + s)
+          if (cell.value == '') {if (table[t + $ligne_cnt * s]==1) { test=1 ; break} };
+          if (cell.value != '' && cell.value != undefined) {reply=reply + cell.value + ','} else {reply=reply + ','};
+          }
+          reply = reply + '\n';
+        }
+        if (test==1 ) {reply=''}
+     document.getElementById('oefvar$i').value=reply
+  }
+</script>
+<table><tr><td style="text-align:center;">
+<table border="1">
+!for k = 1 to $ligne_cnt
+<tr>
+  !for j = 1 to $col_cnt 
+    !if  $(MotC[$k;$j]) = $empty
+     <td class="cw_black"><div id="case_$(k)_$(j)"></div></td>
+    !else
+       <td class="cw_case" onclick="document.getElementById('case_$(k)_$(j)').focus();">
+        !set m=$(MotC[$k;$j])
+        !if $(Mpos[$k;$j])!=0
+        <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]))">$(Mpos[$k;$j])</span>
+       !else
+        &nbsp;
+       !endif
+      <input value="" size="1" class="cw_input"
+      id="case_$(k)_$(j)" autocomplete="off" onchange="document.getElementById('case_$[$k+1]_$(j)').focus();"></td>
+    !endif
+ !next j
+</tr>
+!next k
+</table>
+</td>
+<td style="padding:30px;">$help</td></tr></table>
+
+<input type=hidden name="reply$i" id="oefvar$i" value="">
