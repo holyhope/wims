@@ -38,9 +38,12 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 Beginners kunnen beter
 !set name_modefile2=Om online te bewerken kan ook gebruik worden gemaakt van
 
-!set name_first=Basis oefeningen
-!set name_datalist=Oefeningen die werken met een data lijst
 !set name_chemistry=Exercises for chemistry
+!distribute lines Basis oefeningen\
+Oefeningen die werken met een data lijst\
+Exercises for chemistry\
+Games\
+into name_first,name_datalist,name_chemistry,name_game
 
 !set name_save=!nosubst hier is de broncode van <font color=red><b>$oef_title</b></font>,\
 in OEF formaat (Open Exercice Format).\

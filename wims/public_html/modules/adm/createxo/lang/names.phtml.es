@@ -39,9 +39,11 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
  Para crear un ejercicio desde cero preferirá el
  !set name_modefile2=Para corregir en línea, pueden también utilizar el
 
-!set name_first=Ejercicios básicos
-!set name_datalist=Ejercicios con una lista de datos
-!set name_chemistry=Exercises for chemistry
+!distribute line Ejercicios básicos\
+Ejercicios con una lista de datos\
+Exercises for chemistry\
+Games\
+into name_first,name_datalist,name_chemistry,name_game
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
  <font color=red><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).\
