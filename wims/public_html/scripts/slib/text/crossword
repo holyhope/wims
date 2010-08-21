@@ -1,0 +1,140 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Crossword
+slib_parms=1\
+,words,clues
+
+slib_comment=one word by line ; accents will be deleted ; the words can be numeric, but\
+in this case, all words must be numeric. Some words can be not used.
+
+slib_author=Bernadette PERRIN-RIOU
+slib_out=Crossword in the form it is asked in the answer type crossword (see example).
+
+slib_example=deux,2;trois,3,quatre,4;cinq,5;six,6;sept,7\
+121,square of 11;144,square of 12;169,square of 13;196,square of 14;400, square of 20\
+1a;2b;3c
+
+slib_wims_version=4.01
+!exit
+
+:proc
+
+slib_def=$wims_read_parm
+slib_def=!replace internal ; by $\
+$ in $slib_def
+slib_def=!replace internal $	$ by $\
+$ in $slib_def
+
+slib_word=!column 1 of $slib_def
+slib_word=!replace internal - by Z in $slib_word
+slib_word=!replace internal , by $\
+$ in $slib_word
+slib_word=!deaccent $slib_word
+slib_word=!lowercase $slib_word
+!if $slib_word issametext $empty
+ slib_out=
+ !goto end
+!endif
+slib_alphabet=a,b,c,d,e,f,g,h,i,j,k,k,l,l,m,n,o,p,q,r,s,t,u,u,v,w,w,x,y,z
+slib_crossword=crossword
+slib_number_test=!text select 0123456789 in $slib_word
+slib_alpha_test=!text select abcdefghijklmnopqrstuvwxyz in $slib_word
+
+!if $slib_number_test!=$empty
+  !if $slib_alpha_test=$empty
+    slib_number_test=1
+    !for slib_c=0 to 9
+      slib_word=!replace internal $slib_c by $(slib_alphabet[$slib_c+1]) in $slib_word
+    !next
+  !else
+   slib_out=
+   !goto end
+  !endif
+!endif
+slib_word_cnt=!linecnt $slib_word
+!if slib_word_cnt=0
+  slib_out=
+  !goto end
+!endif
+!if $slib_word_cnt >20
+  slib_word_cnt=!shuffle $slib_word_cnt
+  slib_word=!line $slib_word_cnt of $slib_word
+  slib_word_cnt=20
+!endif
+
+!set slib_file=!randint 1000
+!set slib_file=cw_$wims_nowseconds$slib_file
+
+!readproc oef/togetfile.proc $slib_file new\
+$slib_word
+
+!set sess=!replace internal . by , in $session
+!set slib_file=$wims_home/sessions/$(sess[1])/getfile/$slib_file
+slib_cw=!exec $slib_crossword $slib_file
+
+!!!cleanup
+slib_test=0
+slib_i=1
+slib_cw=!replace internal $ $ by $\
+$ in $slib_cw
+!while $slib_test=0
+  slib_line=!line $slib_i of $slib_cw
+  slib_line=!nonempty items $slib_line
+  !if $slib_line!=$empty
+    slib_test=1
+  !else
+    !increase slib_i
+  !endif
+!endwhile
+slib_cw=!line $slib_i to -1 of $slib_cw
+
+slib_test=0
+slib_i=1
+!while $slib_test=0
+  slib_line=!line -$slib_i of $slib_cw
+  slib_line=!nonempty items $slib_line
+  !if $slib_line!=$empty
+    slib_test=1
+  !else
+    !increase slib_i
+  !endif
+!endwhile
+slib_cw=!line 1 to -$slib_i of $slib_cw
+
+slib_test=0
+slib_i=1
+!while $slib_test=0
+  slib_line=!column $slib_i of $slib_cw
+  slib_line=!nonempty items $slib_line
+  !if $slib_line!=$empty
+    slib_test=1
+  !else
+    !increase slib_i
+  !endif
+!endwhile
+slib_cw=!column $slib_i to -1 of $slib_cw
+
+slib_test=0
+slib_i=1
+!while $slib_test=0
+  slib_line=!column -$slib_i of $slib_cw
+  slib_line=!nonempty items $slib_line
+  !if $slib_line!=$empty
+    slib_test=1
+  !else
+    !increase slib_i
+  !endif
+!endwhile
+slib_cw=!column 1 to -$slib_i of $slib_cw
+
+!if $slib_number_test=1
+   !for slib_c=0 to 9
+      slib_cw=!replace internal $(slib_alphabet[$slib_c+1]) by $slib_c in $slib_cw
+    !next
+!endif
+slib_out=!replace internal ,$ $ by , in $slib_cw
+
+slib_out=[$slib_out],[$slib_def]
+
+:end

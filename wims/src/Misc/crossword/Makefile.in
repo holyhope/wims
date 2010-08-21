@@ -1,0 +1,17 @@
+# @configure_input@
+
+wims_home=../../..
+cc=@CC@
+cflags=@CFLAGS@ -Wall
+defines=@DEFINES@
+lopt=-lm
+
+LDFLAGS =
+
+all: crossword
+
+clean:
+	rm -f *.o *.core *.stackdump crossword
+
+crossword: crossword.c
+	$(cc) $(cflags) $(LDFLAGS) -o crossword crossword.c

@@ -5,8 +5,8 @@
 !if $wims_read_parm=def
  !exit
 !endif
-!set name_vertical=Verticalement
-!set name_horizontal=Horizontalement
+!set name_vertical=<img src="gifs/arrows/down1.32.gif" alt="vertical">
+!set name_horizontal=<img src="gifs/arrows/right1.32.gif" alt="horizontal">
 
 !set dir=!randint 2
 !set color=!getopt color in $(replyoption$i)
@@ -16,11 +16,15 @@
 !default color=orange,black,white
 !set style=.cw_case {background-color:$(color[1]);text-align:left;width:33px;height:33px;font-size:90%;}\
 .cw_input {background-color:$(color[1]);border:0;text-align:center;font-size:20px;}\
-.cw_no {color:blue;float:left;background-color:$(color[3])}\
+.cw_no {color:blue;float:left;padding:5;background-color:$(color[3])}\
+.cw_no2 {color:white;float:left;right-margin:4;background-color:blue;}\
 .cw_black {background-color:black;}\
-.cw_HV {font-weight:bold;color:$(color[2]);}
+.cw_HV {font-weight:bold;color:$(color[2]);display:inline;}
 
 <style type="text/css">$style</style>
+!if tooltip iswordof $(replyoption$i)
+!read primitives/tooltip.phtml
+!endif
 !distribute item $(replygood$i) into MotC,def
 
 !set MotC=!declosing $MotC
@@ -124,6 +128,8 @@ $ in $def
   !set defH=!append line $(l_[1]), $(def_mot[2]) to $defH
 !next
 !set oef_answer_option$i=$(oef_answer_option$i),[$defH],[$defV],$ligne_cnt,$col_cnt,[$Mpos],$style
+<script type="text/javascript">
+!if tooltip notwordof $(replyoption$i)
 !set help=
 !set cnt=0
 !for k = 1 to $listemotH_cnt
@@ -147,7 +153,6 @@ $ in $def
    !endif
 !next k
 
-<script type="text/javascript">
   function showdef(n)
   {
    for (var j=1 ; j <= $cnt ;j++) {
@@ -163,6 +168,8 @@ $ in $def
     }
   }
 }
+
+!endif
 var table=Array();
 $js
 function sendanswer() 
@@ -190,8 +197,23 @@ function sendanswer()
     !else
        <td class="cw_case" onclick="document.getElementById('case_$(k)_$(j)').focus();">
         !set m=$(MotC[$k;$j])
+        !reset u_
         !if $(Mpos[$k;$j])!=0
-        <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]))">$(Mpos[$k;$j])</span>
+         !if tooltip iswordof $(replyoption$i)
+          !set u = !select $defH where column 1 issametext H$(Mpos[$k;$j])
+          !if $u!=$empty
+           !set u_=$name_horizontal $(u[2..-1])
+          !endif
+          !set u = !select $defV where column 1 issametext V$(Mpos[$k;$j])
+          !if $u!=$empty
+           !set u_=$u_<p>\
+           $name_vertical $(u[2..-1])</p>
+          !endif
+          !readproc slib/utilities/tooltip $(Mpos[$k;$j]),[ABOVE,'true',STICKY,'true',FONTSIZE, '12pt'],$u_
+          <span class="cw_no">$slib_out</span>
+         !else
+          <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]))">$(Mpos[$k;$j])</span>
+         !endif
        !else
         &nbsp;
        !endif
@@ -203,6 +225,9 @@ function sendanswer()
 !next k
 </table>
 </td>
-<td style="padding:30px;vertical-align:top;">$help</td></tr></table>
+!if tooltip notwordof $(replyoption$i)
+<td style="padding:30px;vertical-align:top;">$help</td>
+!endif
+</tr></table>
 
 <input type=hidden name="reply$i" id="oefvar$i" value="">

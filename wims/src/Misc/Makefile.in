@@ -22,12 +22,13 @@ chemeq=@BUILD_CHEMEQ@
 bioinfo=C_etat_civil.o tab1d.o tab2d.o test_cond.o
 Otherbin=$(units) $(chemeq) passcrypt whirlgif
 checkmol=checkmol matchmol
+crossword=crossword
 
 OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb
+all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword
 
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
@@ -61,6 +62,10 @@ lceb::
 	cd lceb ; make && $(STRIP) lceb_dynopt
 	cp $@/lceb_dynopt $(OTHERDIR)
 	
+crossword::
+	cd crossword ; make && $(STRIP) crossword
+	cp $@/crossword $(OTHERDIR)
+	
 clean:
 	rm -f $(progs2)
 	cd mathexp; make clean
@@ -71,6 +76,8 @@ clean:
 	cd bioinfo; make clean
 	cd checkmol; make clean
 	cd symtext; make clean
+	cd lceb; make clean
+	cd crossword ; make clean
 
 distclean:
 	rm -f $(progs2)
@@ -80,7 +87,7 @@ distclean:
 	cd bioinfo; make distclean
 	cd units-filter/src; make clean
 	cd chemeq/src; make clean
-	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) 
+	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) $(crossword)
 	cd $(BINDIR); rm -f $(Homebin)
 	cd $(PUBDIR); rm -f $(Publicbin2) $(namechange)
 	rm -f Makefile
