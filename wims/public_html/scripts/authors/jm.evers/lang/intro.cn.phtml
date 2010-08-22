@@ -4,7 +4,14 @@
 !set max_s=40
 !header
 !form new
+!set talen=en nl cn fr it
+!if $lang notin $talen
+    !set taal=en
+    !set translated=0
+!else
+    !set translated=1
     !set taal=$lang
+!endif
 !set s=0
 !for p=1 to 100
     !set competence=!record $[-1*$p] of lang/remarks.$taal
