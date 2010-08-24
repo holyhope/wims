@@ -1,5 +1,11 @@
-/* J.M.Evers 17/2/2009 
- This is all amateur scriblings ... No Copyrights
+/* B. Perrin-Riou & J.M.Evers 17/2/2009 
+*********************************************************************************
+* This is all amateur scriblings... So no copyrights.				*
+* This source code file, and compiled classes derived from it,			*         
+* can be used and distributed without restriction, including for commercial use	*
+* No warrenty whatsoever 							*
+*********************************************************************************
+
  Example html page:
 <html>
     <body>
