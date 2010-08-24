@@ -1,29 +1,36 @@
-// no copyrights defined bij the original author:
-// toshio-t@tcp-ip.or.jp
-// added a public function ReadApplet() and some applet-params
-// Applet returns String S=number_of_squares+","+used_squares+","+used_objects+","+total_perimeter_of_all_objects;
-//<html>                                                                                                                                     
-//<body>                                                                                                                                     
-//<script language="javascript" type="text/javascript">                                                                                      
-//function lees(){                                                                                                                           
-// var input=document.applets[0].ReadApplet();                                                                                               
-// alert(input);                                                                                                                             
-// }                                                                                                                                         
-//</script>                                                                                                                                  
-//        <applet id="MathView" code="Pento.class" codebase="." archive="Pento.jar" width="640" height="480">                                                                                                                          
-//            <param name="objects" value="0,1:1,0,0,0,1:0,0,0,0,0:1,1,1,1,1@1,1,1,1,1:0,1,1,1,0@1,1,1:0,1,1:0,0,1@1,1,1,1@1:1:1">                                                                                                                                                                              
-//            <param name="helptext" value="what ever">                                                                                                                                                                              
-//        </applet>                                                                                                                          
-//        <p>                                                                                                                                
-//        <input type="button" name=".....TEST......" value=".....TEST....." onclick="javascript:lees();">                                   
-//</body>                                                                                                                                    
-//</html>  
-//
+
+/*
+*********************************************************************************
+* J.M. Evers 19/11/2009								*
+* This is all amateur scriblings... So no copyrights.				*
+* This source code file, and compiled classes derived from it,			*
+* can be used and distributed without restriction, including for commercial use	*
+* No warrenty whatoever								*
+*********************************************************************************
+added a public function ReadApplet() and some applet-params
+Applet returns String S=number_of_squares+","+used_squares+","+used_objects+","+total_perimeter_of_all_objects;
+<html>                                                                                                                                     
+    <body>                                                                                                                                     
+    <script language="javascript" type="text/javascript">                                                                                      
+	    function lees(){                                                                                                                           
+		var input=document.applets[0].ReadApplet();                                                                                               
+		alert(input);                                                                                                                             
+	    }                                                                                                                                         
+	</script>                                                                                                                                  
+	<applet id="MathView" code="Pento.class" codebase="." archive="Pento.jar" width="640" height="480">                                                                                                                          
+    	    <param name="objects" value="0,1:1,0,0,0,1:0,0,0,0,0:1,1,1,1,1@1,1,1,1,1:0,1,1,1,0@1,1,1:0,1,1:0,0,1@1,1,1,1@1:1:1">                                                                                                                                                                              
+	    <param name="helptext" value="what ever">                                                                                                                                                                              
+	</applet>                                                                                                                          
+	<p>                                                                                                                                
+	<input type="button" name=".....TEST......" value=".....TEST....." onclick="javascript:lees();">                                   
+    </body>                                                                                                                                    
+</html>  
+
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
+*/
 
 public class Pento extends Applet implements Runnable{
 	/**

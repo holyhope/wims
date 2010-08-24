@@ -1,59 +1,66 @@
-// J.M.Evers 16/2/2008 
-// This is all amateur scriblings...so No Copyrights
-// the applet presents a simple grid...E6/H1 pupils will be asked to
-// determine the perimetre and surface area (or ratio of these) of a "freestyle" figure
-// build from at least $x squares...
-// In the non-interactive mode, a random figure will be shown.
-// size_x and size_y may be different: the perimetre will be a float : calulated with x=1 y=size_y/size_x 
+/*
+*********************************************************************************
+* J.M. Evers 19/11/2009								*
+* This is all amateur scriblings... So no copyrights.				*
+* This source code file, and compiled classes derived from it,			*
+* can be used and distributed without restriction, including for commercial use	*
+* No warrenty whatoever								*
+*********************************************************************************
+ This is all amateur scriblings...so No Copyrights
+ the applet presents a simple grid...E6/H1 pupils will be asked to
+ determine the perimetre and surface area (or ratio of these) of a "freestyle" figure
+ build from at least $x squares...
+ In the non-interactive mode, a random figure will be shown.
+ size_x and size_y may be different: the perimetre will be a float : calulated with x=1 y=size_y/size_x 
 
-// example html page:
-//<html>
-//	<body>
-//		<script language="javascript" type="text/javascript">
-//			function lees(){
-// 				var input=document.applets[0].ReadApplet(); 
-// 				alert(input);
-//    				//<--- applet returns: String S=total+","+original+","+changed+","+cnt;
-//    				//!! total squares,left original squares,changed squares,perimetre of changed squares
-//    				//-->
-// 			}
-//		</script>
-//		<applet id="MathView" code="rooster.class" codebase="." archive="rooster.jar" width="640" height="480">
-//	    		<param name="max_x" value="5">
-//	    		<param name="max_y" value="5">	    
-//	    		<param name="size_x" value="25">
-//	    		<param name="size_y" value="50">
-//	    		<param name="color1" value="25:100:76">
-//	    		<param name="color2" value="orange">
-//	    		<param name="interactive" value="0/1">
-//	    		<param name="level" value="$level">
-//	    		<param name="percentage" value="0/1">
-//		</applet>
-//		<p>
-//		<input type="button" name=".....TEST......" value=".....TEST....." onclick="javascript:lees();">
-//	</body>
-//</html>
-// 
-// color1="background"
-// color2="clicked" in "interactive"=1
-// color2="questioncolor" in "interactive"=0
-// color may also be "red","green","blue","orange","yellow"
+ example html page:
+<html>
+	<body>
+		<script language="javascript" type="text/javascript">
+			function lees(){
+ 				var input=document.applets[0].ReadApplet(); 
+ 				alert(input);
+    				<--- applet returns: String S=total+","+original+","+changed+","+cnt;
+    				!! total squares,left original squares,changed squares,perimetre of changed squares
+    				-->
+ 			}
+		</script>
+		<applet id="rooster" code="rooster.class" codebase="." archive="rooster.jar" width="640" height="480">
+	    		<param name="max_x" value="5">
+	    		<param name="max_y" value="5">	    
+	    		<param name="size_x" value="25">
+	    		<param name="size_y" value="50">
+	    		<param name="color1" value="25:100:76">
+	    		<param name="color2" value="orange">
+	    		<param name="interactive" value="0/1">
+	    		<param name="level" value="$level">
+	    		<param name="percentage" value="0/1">
+		</applet>
+		<p>
+		<input type="button" name=".....TEST......" value=".....TEST....." onclick="javascript:lees();">
+	</body>
+</html>
+ 
+ color1="background"
+ color2="clicked" in "interactive"=1
+ color2="questioncolor" in "interactive"=0
+ color may also be "red","green","blue","orange","yellow"
 
-// 21/3/2008 added:
-// level: integer 0,1,2,3 only interesting when "interactive=0" (and not of importance for "percentage")
-// level=0 will produce somewhat easier random figures: level=3 will give maximum randomness.
+ 21/3/2008 added:
+ level: integer 0,1,2,3 only interesting when "interactive=0" (and not of importance for "percentage")
+ level=0 will produce somewhat easier random figures: level=3 will give maximum randomness.
 
-// percentage: only activated when "interactive=0" . Will give a random figure : but a non-random placement of the coloured squares.
-// thus an very easy reading of a "percentage coloured" surface. Use together with max_x and max_y to build easy exercises.
-// percentage=1 and level>0 will produce alternating coloures
-// percentage=1 and level=0 will produce a coloured block
+ percentage: only activated when "interactive=0" . Will give a random figure : but a non-random placement of the coloured squares.
+ thus an very easy reading of a "percentage coloured" surface. Use together with max_x and max_y to build easy exercises.
+ percentage=1 and level>0 will produce alternating coloures
+ percentage=1 and level=0 will produce a coloured block
 
-// 22/3/2008 added
-// color names : lightgreen,lightblue,brown,pink,cyan,salmon
+ 22/3/2008 added
+ color names : lightgreen,lightblue,brown,pink,cyan,salmon
 
-// for both params level/percentage a full coloured figure is inhibited (so never 0% coloured or 100% coloured)
+ for both params level/percentage a full coloured figure is inhibited (so never 0% coloured or 100% coloured)
 
-
+*/
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;                                                                                                                        
