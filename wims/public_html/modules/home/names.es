@@ -1,4 +1,3 @@
-
 N_manage	=Administración de WIMS en línea
 N_best		=los mejores
 N_new		=lo nuevo
@@ -46,6 +45,8 @@ E_ref		=lista de enlaces inversos
 E_stat		=estadísticas del sitio
 E_comp		=compilada el
 E_manager	=Administrador del sitio:
+E_faq      =FAQ
+E_dochelp  =Documents d'aide
 
 RE_found	=!nosubst Encontrados $gotcnt $tt para su búsqueda
 RE_nomatch	=!nosubst Su búsqueda no dio ningún resultado
@@ -56,8 +57,6 @@ RE_try		=Pruebe
 
 U_greet		=!nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a\
 a $wims_classname, moderada por $supmail.
-
-
 
 U_newmsg	=Hay $$newmsgcnt nuevo(s) mensajes(s) en el foro de la clase.
 U_nosheet	=Esta clase no tiene aún hojas de trabajo. Por favor, vuelva a entrar\
@@ -119,7 +118,7 @@ SU_Bprogram=Vuelta al programa
 SE_list		=Participantes y puntuaciones
 SE_part		=Página inicial para el participante
 SE_mod		=Mensaje del día
-SE_prop		=Config./Mantenim.
+SE_config	=Config./Mantenim.
 SE_secu		=Administración de seguridad
 
 ADD_1		=Añadir un
@@ -132,8 +131,6 @@ ADD_class	=clase
 ADD_2		=	
 ADD_3           =Añadir una
 ADD_cdt         =cuaderno de texto
-
-
 
 CL_Names	=Niveles,Clases,Programas,Cursos,Cursos interclase
 CL_Name	=nivel, clase,programa,Curso,Curso interclase
