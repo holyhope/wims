@@ -59,7 +59,7 @@ alleen voor docenten\
 Er zijn geen klassen beschikbaar voor jou. Probeer later nog eens !\
 Kies een klas (klik op de naam)\
 is beschermd door een wachtwoord en een directe aanmelding is alleen voorbehouden voor <b>docenten</b>.\
-Klik op een klasse naam om over te stappen.\
+Klik op de naam van de student om deze over te zetten.\
 Dit wordt gebruikt als naam om later in $classnam in te loggen.\
 het wachtwoord moet tussen de 4 en 16 kararakter bevatten (cijfers of letters zonder accenten)\
 Om het ingevoerde wachtwoord te kontroleren, voer het nog een keert in\
