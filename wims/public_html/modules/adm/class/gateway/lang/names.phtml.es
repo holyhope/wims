@@ -90,7 +90,7 @@ levelnames=EPO 1,EPO 2,EPO 3,EPO 4,EPO 5,\
   !set name_level4=Clases disponibles en este nivel
 !endif
 
-!if $job=prog
+!if $job iswordof prog addtest deltest
  !set name_prog1=Zona de pruebas
  !set name_prog2= Este programa no tiene una zona de pruebas
  !set name_prog3=Instalar una zona de pruebas

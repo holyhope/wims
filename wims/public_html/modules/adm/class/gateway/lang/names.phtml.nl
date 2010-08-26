@@ -100,7 +100,7 @@ levelnames=Lagere school leerjaar 1,\
   !set name_level4=Klassen op dit leerniveau
 !endif
 
-!if $job=prog
+!if $job iswordof prog addtest deltest
  !set name_prog1=Test zone
  !set name_prog2=Dit lesprogramma heeft geen testzone
  !set name_prog3=Installeer een testzone
