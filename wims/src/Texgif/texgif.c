@@ -71,7 +71,8 @@ void tex(void)
     checktextype(src);
     snprintf(fbuf,sizeof(fbuf),"%s/texgif.tex",tmpdir);
     if(*headerfile) {
-	if(strstr(headerfile,".tex")==NULL)
+     if (strstr(headerfile,".latex")!=NULL) {textype=tt_latex; texname="latex";}
+	 if(strstr(headerfile,".tex")==NULL && strstr(headerfile,".latex")==NULL)
 	  snprintf(nbuf,sizeof(nbuf),"%s.%s",headerfile,texname);
 	else
 	  snprintf(nbuf,sizeof(nbuf),"%s",headerfile);
