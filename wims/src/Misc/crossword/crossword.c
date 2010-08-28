@@ -324,7 +324,7 @@ node *d;
     freenode = d->next;
 
   if (d == NULL) {
-    fprintf (stderr, "Out of memory after %d nodes (%d bytes)\n", nummalloc, nummalloc*sizeof(node));
+    fprintf (stderr, "Out of memory after %d nodes (%lo bytes)\n", nummalloc, nummalloc*sizeof(node));
     dump_grid (&solution);
     exit(0);
   }
