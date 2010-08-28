@@ -1168,6 +1168,7 @@ void exec_instex(char *p)
     if(ismhelp) mh="mh"; else mh="";
     fix_tex_size(); f="gif";
     setenv("texgif_style",instex_style,1);
+    tc=getvar("instex_texheader"); if (tc) { setenv("texgif_texheader",tc,1);}
     setenv("texgif_tmpdir",tmp_dir,1);
     setenv("texgif_src",p,1);
     if(ins_alt[0]==0) mystrncpy(ins_alt,p,sizeof(ins_alt));
