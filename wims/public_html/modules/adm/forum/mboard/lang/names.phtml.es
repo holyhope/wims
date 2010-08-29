@@ -1,13 +1,12 @@
 !set lang_exists=yes
-
+!set name_user=!nosubst $wims_firstname $wims_lastname.
 !set monthnames=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
 !set name_wroteon=wrote on
+!set name_default=Forum de la classe
 
 !distribute item <i>Subject:</i> <b>,</b> into subj1,subj2
 !distribute item <hr>,<hr> into body1,body2
-Volver a editarlo
-&nbsp;&nbsp;
-!href cmd=reply&job=send Enviar el mensaje	
+
 !distribute line Lista de mensajes.\
 	Lista de los mensajes por hilo\
 	Leer un mensaje\
@@ -86,6 +85,7 @@ Volver a editarlo
 !endif
 
 !set module_title=$module_title$nextline
+
 !set name_prompt=Actividad desconocida
 
 !distribute line Parámetros del foro de discusión que puede cambiar.\
