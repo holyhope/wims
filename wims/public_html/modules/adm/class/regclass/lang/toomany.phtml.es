@@ -1,5 +1,5 @@
 <p><h1 class="wims_title">Lo sentimos</h1> <p>
-El número de clases de este sitio <font color=red>$httpd_HTTP_HOST</font>
+El número de clases de este sitio <font color="red">$httpd_HTTP_HOST</font>
 ha alcanzado el límite, y por tanto el acceso libre para la creación de clases 
 queda cerrado. <p>
 

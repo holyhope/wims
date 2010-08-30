@@ -45,7 +45,7 @@ siguientes. Marque lo que quiera recuperar en su clase.
 
  !distribute lines No ha seleccionado nada que recuperar.\
     Recuperar todo salvo la configuración de la clase y la cuenta del profesor.\
-    <font color=red>¡Peligro!</font> <small>Ver más abajo.</small>\
+    <font color="red">¡Peligro!</font> <small>Ver más abajo.</small>\
    Configuración de la clase.\
    Cuenta del profesor (incluida su contraseña)\
    cuentas de los participantes\
@@ -524,8 +524,8 @@ Los errores introducidos por una modificación manual de los archivos
 puede ocasionar comportamientos imprevisibles en su clase.
 <p>
 2. Salvo en caso de absoluta necesidad, evite recuperar
-<font color=red>la configuración de la clase</font> y
-<font color=red>la cuenta del profesor</font>.
+<font color="red">la configuración de la clase</font> y
+<font color="red">la cuenta del profesor</font>.
 Los errores en los datos enviados para estos dos campos pueden hacer
 perder por completo el control de su clase.
 <p>

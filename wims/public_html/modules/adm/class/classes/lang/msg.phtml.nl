@@ -5,7 +5,7 @@
 !if $error=bad_password
 Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br> 
  <form action="#" name="chrono">
- <b><font color=red>Attentie</font></b>! 
+ <b><font color="red">Attentie</font></b>! 
  Elk wachtwoord dat binnen de volgende 5 seconden wordt ingevuld, wordt afgekeurd !
  
  <input size=1 name="clock"> </form>

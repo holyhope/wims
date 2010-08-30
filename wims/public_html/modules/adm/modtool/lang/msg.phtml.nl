@@ -16,7 +16,7 @@
 
 !if empty_data iswordof $error
  Vul het definitieveld 
- <b><em><font color=red>$(name_$empty_data)</font></em></b>
+ <b><em><font color="red">$(name_$empty_data)</font></em></b>
  van uw module in. 
  !exit
 !endif

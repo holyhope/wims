@@ -1,5 +1,5 @@
 <p>
-<font color=red><b>Fout.</b>
+<font color="red"><b>Fout.</b>
 !if fichier iswordof $error
  U moet wel tenminste &eacute;&eacute;n latex bestand invoeren.
 !endif

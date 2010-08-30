@@ -46,7 +46,7 @@ Games\
 into name_first,name_datalist,name_chemistry,name_game
 
 !set name_save=!nosubst  Aquí está el código fuente de su ejercicio\
- <font color=red><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).\
+ <font color="red"><b>$oef_title</font></b>, en formato OEF (Open Exercice Format).\
  Para guardarlo, corte el texto situado entre las dos líneas horizontales, y \
  péguelo en un archivo.
 

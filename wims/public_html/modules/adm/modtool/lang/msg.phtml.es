@@ -16,7 +16,7 @@
 
 !if empty_data iswordof $error
  Quiere cumplir la definición de
- <b><em><font color=red>$(name_$empty_data)</font></em></b>
+ <b><em><font color="red">$(name_$empty_data)</font></em></b>
  de su módulo.
  !exit
 !endif

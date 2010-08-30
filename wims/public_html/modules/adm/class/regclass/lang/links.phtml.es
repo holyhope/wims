@@ -28,7 +28,7 @@
   de trabajo que prepare les serán accesibles desde esta página de inicio.
   <p>
  </ul>
- <p><b><font color=red>Importante.</font></b> 
+ <p><b><font color="red">Importante.</font></b> 
  ¡Guarde estos enlaces antes de salir de esta página!
  También le aconsejamos que anote el número de la clase.
 

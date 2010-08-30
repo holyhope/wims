@@ -32,6 +32,6 @@
   Uw lesmateriaal staat daar voor hen ter beschikking
   <p>
  </ul>
- <p><b><font color=red>Belangrijk.</font></b>
+ <p><b><font color=="red">Belangrijk.</font></b>
  Bookmark deze links voordat U dit venster sluit !!<br>
  Het is ook handig het klassenummer  <font color=green>$code</font> even te noteren.

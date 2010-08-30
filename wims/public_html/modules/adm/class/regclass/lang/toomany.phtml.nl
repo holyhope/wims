@@ -1,5 +1,5 @@
 <p><h1 class="wims_title">Helaas</h1> <p>
-Het aantal klassen op deze WIMS-server <font color=red>$httpd_HTTP_HOST</font>
+Het aantal klassen op deze WIMS-server <font color="red">$httpd_HTTP_HOST</font>
 heeft zijn maximum reeds bereikt.
 <br> 
 Hierdoor is het aanmaken van een nieuwe virtuele ruimte geweigerd<p>

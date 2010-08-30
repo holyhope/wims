@@ -74,7 +74,7 @@ Dat werkblad/document bestaat niet.
 !endif 
  
 !if bad_op=$error
-<font color=red><b>Ongeldige bewerking.</b></font>
+<font color="red"><b>Ongeldige bewerking.</b></font>
 Sluit dit venster.
 !exit 
 !endif 

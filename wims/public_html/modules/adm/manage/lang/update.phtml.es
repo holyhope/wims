@@ -30,5 +30,5 @@ indisponibilidades momentáneas del servidor.
 <b>Note</b>. La actualización del servidor no modificará sus recursos locales
 (clases, ejercicios, documentos, módulos en desarrollo).
 <p>
-<b><font color=red>IMPORTANTE</font></b> ¡Deben comprobar
+<b><font color="red">IMPORTANTE</font></b> ¡Deben comprobar
 los derechos sobre los ficheros después de las actualizaciones!

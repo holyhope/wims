@@ -6,7 +6,7 @@
     De laatste backup van uw klas was $backdays geleden.
  !endif
  !if backup iswordof $warn
-  <p><font color=red><b>WAARSCHUWING.</b></font>
+  <p><font color="red"><b>WAARSCHUWING.</b></font>
   Het is de verantwoordelijkheid van de individuele docent een backup te maken van de virtuele ruimte.<br>
   Deze server computer zal -zonder contact met systeembeheer- geen backups van virtuele klassen aanmaken.
  !else

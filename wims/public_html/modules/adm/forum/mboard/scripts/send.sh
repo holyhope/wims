@@ -18,7 +18,7 @@ cat >$msgfile <<@
 !set m_date=$w_month$w_day
 !set m_time=$w_time
 !set m_from=$w_c_sender
-!set m_sender_ip=$REMOTE_ADDR
+!set m_sender_ip=$httpd_REMOTE_ADDR
 !set m_sender_id=$w_wims_user
 !set m_sender_class=$w_wims_class
 !set m_email=$w_c_smail

@@ -1,5 +1,5 @@
 <p><center><h3>Helaas</h3></center> <p>
-Het aantal forums op deze site <font color=red>$httpd_HTTP_HOST</font>
+Het aantal forums op deze site <font color="red">$httpd_HTTP_HOST</font>
 heeft het -door de systeembeheerder ingestelde- maximum bereikt.
 Er kan er dus niet nog &eacute;&eacute;n bij.
  <p>

@@ -60,10 +60,10 @@ Ask to open WIMS document $doc
  que borre este documento por usted.
 !exit
 :erase2
-<font color=red><b>ATENCIÓN</b>!!</font> 
+<font color="red"><b>ATENCIÓN</b>!!</font> 
 ¡Una vez borrados los documentos no se pueden recuperar!
 <p>
-¿Está seguro de que quiere borrar el documento <font color=red><b>$tit</b></font>?
+¿Está seguro de que quiere borrar el documento <font color="red"><b>$tit</b></font>?
 
 !exit
 

@@ -42,7 +42,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
  !distribute lines Er is niets geselecteerd voor het herstel.\
  Herstel alles behalve de klas configuratie en het supervisor account.\
- <font color=red>Opgelet !</font> <small>Zie opmerkingen hieronder.</small>\
+ <font color="red">Opgelet !</font> <small>Zie opmerkingen hieronder.</small>\
    Klas configuratie.\
    Supervisor account (inclusief uw wachtwoord)\
    Studenten accounts\
@@ -523,8 +523,8 @@ wordt uw klas mogelijk onherstelbaar beschadigd.
  Een handmatige bijwerking van een backup archief wordt door het systeem niet toegestaan.
 
 <li> Indien mogelijk vermijdt herstel van
-<font color=red>klas configuratie</font> en
-<font color=red>supervisor account</font>.
+<font color="red">klas configuratie</font> en
+<font color="red">supervisor account</font>.
 Fouten in deze bestanden maken uw klas stuurloos.
 
 <li> U kunt een backup archief gebruiken voor het snel installeren van een nieuwe klas.
