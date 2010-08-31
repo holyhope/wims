@@ -132,6 +132,11 @@ $ in $def
 !if tooltip notwordof $(replyoption$i)
 !set help=
 !set cnt=0
+!if allhelp iswordof $(replyoption$i)
+  !set none=block
+!else
+  !set none=none
+!endif
 !for k = 1 to $listemotH_cnt
   !set u = !line $k of $defH
   !if $u <> $empty
@@ -139,7 +144,7 @@ $ in $def
     !set u=!replace internal : by , in $u
     !set un=!replace internal H by in $(u[1])
     !set help=$help\
-    <div id="$(u[1])" style="display:none;"><div class="cw_HV">$name_horizontal</div>$un : $(u[2..-1])</div>
+    <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_horizontal</div>$un : $(u[2..-1])</div>
     !endif
 !next k
 !for k = 1 to $listemotV_cnt
@@ -149,10 +154,10 @@ $ in $def
      !set u=!replace internal : by , in $u
      !set un=!replace internal V by in $(u[1])
       !set help=$help\
-      <div id="$(u[1])" style="display:none;"><div class="cw_HV">$name_vertical</div>$un : $(u[2..-1])</div>
+      <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_vertical</div>$un : $(u[2..-1])</div>
    !endif
 !next k
-
+ !if allhelp  notwordof $(replyoption$i)
   function showdef(n)
   {
    for (var j=1 ; j <= $cnt ;j++) {
@@ -168,7 +173,24 @@ $ in $def
     }
   }
 }
-
+ !else
+ function showdef(n)
+  {
+   for (var j=1 ; j <= $cnt ;j++) {
+    var defV = document.getElementById('V' + j)
+    if (defV) {
+      defV.style.color ='black';
+      if (j==n) {defV.style.color = 'green';}
+    }
+    var defH=document.getElementById('H' + j)
+    if (defH) {
+      defH.style.color = 'black';
+      if (j==n) {defH.style.color = 'green';}
+    }
+  }
+}
+  
+ !endif
 !endif
 var table=Array();
 $js
