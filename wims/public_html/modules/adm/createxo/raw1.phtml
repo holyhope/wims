@@ -1,19 +1,19 @@
-!form reply name=replyform id=replyform
-<input type=hidden name="level" value=3>
-
+<div id="editeur">
+!form reply name="replyform" id="replyform"
+<input type="hidden" name="level" value="3">
+<p>
 !if $existing=$empty
-$name_brut
+$name_brut<br/>
  !if $modeltest=yes
  $name_try
   !href cmd=reply&mode=model&level=2 $name_normal
-.
+.<br/>
   !href cmd=reply&mode=none&level=0 $wims_name_giveup
-.
+.<br/>
  !else
  $name_allsource (
   !href target=wims_mhelp cmd=help&special_parm=oef format OEF
-  )
-  ($name_copy).
+  ) ($name_copy).<br/>
  !endif
 !else
 
@@ -25,28 +25,106 @@ $name_brut
  !if $modeltest=yes
   $name_public
   !href cmd=reply&mode=model&level=2 $name_normal
-.
+.<br/>
   !href cmd=reply&mode=none&level=0 $wims_name_giveup
-.
+.<br/>
  !endif
 !endif
 
  $name_test_extern
   !href target=wims_test module=tool/directexec&cmd=new $name_testerscript
 .
-<p><center>
-!mexec textarea.sh
-</center>
+</p>
+<a name="textarea"></a>
+<div id="textarea">
+ <div id="textDiv">
+  !mexec textarea2.sh
+  <div id="handleCorner" style="left: 600px; top: 222px;"></div>
+  <div id="handleBottom" style="width: 100%; top: 222px;"></div>
+ </div>
 
-<div class="emptyline">&nbsp;</div>
-<center><input type=submit value="$name_sendsource"></center>
-<center><a name="textarea"></a>
-<a class="wims_button" href="#"
-onclick="document.forms['replyform'].wims_deposit.value=''">$name_clean</a>
-&nbsp;
-!set wims_ref_class=wims_button
-!href cmd=resume $wims_name_giveup
-
-</center>
+ <div id="textarea_buttons">
+  <input type="submit" value="$name_sendsource"><br/>
+  <a class="wims_button" href="#" onclick="document.forms['replyform'].wims_deposit.value=''">$name_clean</a>
+  &nbsp;
+  !set wims_ref_class=wims_button
+  !href cmd=resume $wims_name_giveup
+ </div>
+</div>
 </form>
 
+
+
+<div id="bloc-droit" class="container"><h4> Liste d'instructions :</h4>
+        <div class="content">
+        <a onClick="changerListeInstruction()" href="javascript:void(0);">changer la liste des instructions</a>
+        <div id="divoptions"> Pour afficher la liste des instructions, vous devez activer le javascript sur votre navigateur. </div>
+        </div>
+        
+      </div>
+<script>
+		markdown_toolbar = new Control.TextArea.ToolBar.Markdown('wims_deposit_id');
+		markdown_toolbar.toolbar.container.id = 'markdown_toolbar';
+			
+		function afficherHud(lId) {
+			clearInterval(chrono);			
+			if (navigateurEstIncompatible()) return false;
+			element = document.getElementById(lId);
+			if (element) {
+				elementId = element.id;
+				hudCentrerElement(element);
+				this._setOverlay();
+				document.getElementById('overlay').style.opacity = '0.75';
+				document.getElementById('overlay').style.display = 'block';
+				setTimeout("hudAnimationOuverture(elementId)", 500);
+			}
+		}	
+	 anime();	
+	</script>
+    <!--
+	<a href="#aide" onClick='afficheaide("fr");'><img src='styles/fr.gif'></a>&nbsp; &nbsp;
+	<a href="#aide" onClick='afficheaide("eng");'><img src='styles/eng.gif'></a>
+	 -->
+    <div class="_spacer"><br/>
+    </div>
+    <div id="help_container" class="container">
+    <h4 id="titre_aide"> Aide :</h4>
+    <div id="aide" class="content"> <img src='gifs/editor/bouton_infos.gif' height="40" /> <strong>Mode d'emploi de l'&eacute;diteur interactif :</strong>
+      <ul>
+        <li> Cliquez simplement dans la liste sur une fonction pour afficher ici l'aide qui lui est associ&eacute;e...</li>
+        <li> ... et cliquez sur <em>ins&eacute;rer la s&eacute;lection</em> pour l'ins&eacute;rer dans votre source. </li>
+        <li> Pour redimensionner le champ d'&eacute;criture, tirez sur le bord du champ. </li>
+        <li> Pour plus d'informations sur l'&eacute;diteur wims, choisissez dans le menu horizontal le bouton d'aide. (C'est le dernier bouton &agrave; droite) </li>
+      </ul>
+    </div>
+    </div>
+    <div id="hud_video_intro" class="hud_element">
+    Choisissez la liste d'instructions :
+      <ul>
+        <li><a onClick="changerListeInstruction2(cities)" href="javascript:void(0);">wims</a></li>
+        <li><a onClick="changerListeInstruction2(liste_func_latec)" href="javascript:void(0);">latex</a> </li>
+        <li><a onClick="changerListeInstruction2(ifffff)" href="javascript:void(0);">'if'</a> </li>
+        <li><a onClick="changerListeInstruction2(special)" href="javascript:void(0);">'special'</a></li>
+        <li><a onClick="changerListeInstruction2(oef0)" href="javascript:void(0);">'oef0'</a> </li>
+        <li><a onClick="changerListeInstruction2(oefparm1)" href="javascript:void(0);">'oef1'</a></li>
+        <li><a onClick="changerListeInstruction2(oefparm2)" href="javascript:void(0);">'oef2'</a></li>
+        <li><a onClick="changerListeInstruction2(oefparm4)" href="javascript:void(0);">'oef4'</a></li>
+        <li><a onClick="changerListeInstruction2(oefparm5)" href="javascript:void(0);">'oef5'</a> </li>
+      </ul>
+    </div>
+    <div id="overlay" style="display:none"></div>
+    <script type="text/javascript">
+	var wims_deposit_id_id = document.getElementById("wims_deposit_id");
+	var redim_div=document.getElementById("wims_deposit_id");
+	var textDiv = document.getElementById("textDiv");
+	var enev_menu = document.getElementById("enev_menu");
+	
+	//var handleRight = document.getElementById("handleRight");
+	//var handleCorner = document.getElementById("handleCorner");
+	var handleBottom = document.getElementById("handleBottom");
+	
+	//new dragObject(handleRight, null, new Position(15, 0), new Position(800, 0), null, RightMove, null, false);
+	new dragObject(handleBottom, null, new Position(0, 50), new Position(0, 500), null, BottomMove, null, false);
+	//new dragObject(handleCorner, null, new Position(15, 15), new Position(800, 800), null, CornerMove, null, false);
+</script>
+</div>
