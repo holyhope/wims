@@ -1,0 +1,59 @@
+type=game
+textarea="data"
+
+:Mots croisés
+Un mot croisé est proposé à partir de mots et de leurs définitions.
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+:\title{Mots croisés}
+:\author{Bernadette Perrin-Riou}
+:Consigne
+\text{instruction=}
+:Nombre de mots maximum
+\text{N=7}
+:Si le paramètre est "allhelp", toutes les définitions apparaissent. Si le paramètre est "tooltip", les définitions apparaîtront
+en "pop-up" en cliquant sur le numéro. Mettre un blanc pour qu'elles apparaissent 
+une par une sur le côté.
+\text{none=allhelp}
+:Données principales.
+Mettre dans la première colonne les mots en minuscules et dans la deuxième une indication éventuelle
+\text{data=bit,Plus petite unité d'information manipulable par un ordinateur ayant la valeur 1 ou 0, appartenant au système de numérotation binaire.
+octet,Ensemble ordonné de huit éléments binaires traités comme un tout. 
+kibioctet, en deux mots. Unité de mesure correspondant à 2<sup>10</sup> octets soit 1024 octets.
+megaoctet, en deux mots. Unité de mesure correspondant à 10<sup>6</sup> octets soit 1 million d'octets   
+mebioctet, en deux mots. Unité de mesure correspondant à 2<sup>20</sup> octets soit à 1 048 576 octets. 
+gibioctet, en deux mots. Unité de mesure correspondant à 2<sup>30</sup> octets soit 1 073 741 824 octets. 
+RAM, Random Access Memory
+ROM, Read Only Memory
+Modem, Appareil assurant l'adaptation des signaux échangés entre un appareil terminal numérique, par exemple un ordinateur, et une ligne téléphonique analogique. 
+ADSL, Acronyme. Technique de communication qui permet d'utiliser une ligne téléphonique pour transmettre et recevoir des données numériques à des débits élevés
+FAI, Acronyme. Fournisseurs d'accès Internet
+WIFI,Wireless Internet access
+Bluetooth, Technologie sans fil qui permet à des ordinateurs portatifs ou des téléphones mobiles d'échanger des messages vocaux ou des données sur une courte distance, par liaison radio,. 
+PC,Ordinateur individuel
+Netbook, Mini-ordinateur portatif
+PDA, Assistant numérique communicant
+Smartphone, Téléphone mobile couplé à un assistant numérique personnel (PDA).
+Internet, Réseau informatique mondial constitué d'un ensemble de réseaux nationaux, régionaux et privés, qui sont reliés par le protocole de communication TCP-IP. 
+WWW,world wide web}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{cnt=rows(\data)}
+\text{cnt=shuffle(\cnt)}
+\text{choix=\cnt[1..\N]}
+\matrix{data=\data}
+\text{data=\data[\choix;]}
+
+\text{data=slib(text/crossword \data) }
+
+\statement{ \embed{r1} }
+\answer{}{\data}{type=crossword}{option=\none}

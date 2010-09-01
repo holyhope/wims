@@ -1,0 +1,106 @@
+type=game
+textarea="data"
+
+:Frise chronologique
+Evénements à classer du type frise chronologique.
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+:\title{Frise chronologique}
+:\author{Bernadette Perrin-Riou}
+:Consigne
+\text{instruction=Mettre les dates en bas et les événements correspondants sur la ligne du haut.}
+:Nombre de mots maximum (maximum 10)
+\text{N=5}
+:couleur de la flèche
+\text{couleur=orange}
+:Largeur des étiquettes
+\text{facteur=100}
+:Hauteur des étiquettes
+\integer{height=100}
+:Données principales.
+\text{data=1515,Bataille de Marignan
+1680,Création de la Comédie Française
+1789,Révolution française
+1830,Les Trois Glorieuses
+1831,Révolte des Canuts à Lyon
+1848,Décret abolissant l'esclavage
+1889,Inauguration de la tour Eiffel à Paris
+1944,Les femmes acquièrent le droit de vote
+1981,Abolition de la peine de mort}
+
+:%%%%%%%%%%%%%% Rien à modifier ensuite %%%%%%%%%%%%%%%%
+
+\real{M=\N-0.3}
+\text{xrange=-1,\N+1}
+\text{yrange=-5,5}
+
+\text{cnt=rows(\data)}
+\text{shu=shuffle(\cnt)}
+\text{shu=\shu[1..\N]}
+\text{shu=wims(sort numeric item \shu)}
+\text{data=row([\shu],\data)}
+\matrix{rep=\data}
+\integer{size=(1.5*\facteur)*(\M+1)}
+\integer{height2=4*\height}
+\text{size=\size,\height2}
+\text{fleche=xrange \xrange
+yrange \yrange
+lines \couleur,\M,1,-1,1,-1,-1,\M,-1,\M,-2,\N+0.5,0,\M,2,\M,1
+fill 0,0,\couleur
+}
+
+\text{STEP=wims(makelist r x for x=1 to 2*\N)}
+\steps{\STEP}
+\text{positionbas=}
+\text{positionhaut=}
+\for{j=0 to \N-1}{
+  \text{fleche=\fleche
+  line \j-0.1,-1,\j-0.1,-2,\couleur
+  line \j-0.1,0.7,\j-0.1,2,\couleur}
+  \text{ans=pari([2*\j+1,2*\j+2])}
+ \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
+ \text{positionbas=\positionbas
+ r\ans[1],\v[1] x \v[2]}
+ \text{v=slib(draw/convpixel \j-0.5,4,\size,\xrange,\yrange,0,pixels)}
+ \text{positionhaut=\positionhaut
+r\ans[2],\v[1] x \v[2]}
+ }
+ \text{position=\positionbas
+ \positionhaut}
+ \text{urlfleche=draw(\size
+\fleche)}
+\statement{\instruction
+<center>
+\special{imagefill \urlfleche,\size[1]x\size[2],\facteur x \height
+\position}
+</center>
+}
+\positionbas
+\answer{}{\rep[1;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[1;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[2;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[2;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[3;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[3;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[4;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[4;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[5;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[5;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[6;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[6;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[7;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[7;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[8;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[8;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[9;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[9;2]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[10;1]}{type=clickfill}{option=shuffle}
+\answer{}{\rep[10;2]}{type=clickfill}{option=shuffle}
