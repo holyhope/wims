@@ -1,3 +1,5 @@
+!read js_editor/names.phtml.$lang
+
 <div id="editeur">
 !form reply name="replyform" id="replyform"
 <input type="hidden" name="level" value="3">
@@ -54,14 +56,14 @@ $name_brut<br/>
 </form>
 
 
+<div id="bloc-droit" class="container">
+	<h4> $name_instruction_list :</h4>
+    <div class="content">
+    	<a class="wims_button" onClick="changerListeInstruction()" href="javascript:void(0);">$name_changeList</a>
+        <div id="divoptions"> $name_javascript_required </div>
+    </div>
+</div>
 
-<div id="bloc-droit" class="container"><h4> Liste d'instructions :</h4>
-        <div class="content">
-        <a onClick="changerListeInstruction()" href="javascript:void(0);">changer la liste des instructions</a>
-        <div id="divoptions"> Pour afficher la liste des instructions, vous devez activer le javascript sur votre navigateur. </div>
-        </div>
-        
-      </div>
 <script>
 		markdown_toolbar = new Control.TextArea.ToolBar.Markdown('wims_deposit_id');
 		markdown_toolbar.toolbar.container.id = 'markdown_toolbar';
@@ -80,36 +82,29 @@ $name_brut<br/>
 			}
 		}	
 	 anime();	
-	</script>
-    <!--
-	<a href="#aide" onClick='afficheaide("fr");'><img src='styles/fr.gif'></a>&nbsp; &nbsp;
-	<a href="#aide" onClick='afficheaide("eng");'><img src='styles/eng.gif'></a>
-	 -->
-    <div class="_spacer"><br/>
-    </div>
-    <div id="help_container" class="container">
-    <h4 id="titre_aide"> Aide :</h4>
-    <div id="aide" class="content"> <img src='gifs/editor/bouton_infos.gif' height="40" /> <strong>Mode d'emploi de l'&eacute;diteur interactif :</strong>
-      <ul>
-        <li> Cliquez simplement dans la liste sur une fonction pour afficher ici l'aide qui lui est associ&eacute;e...</li>
-        <li> ... et cliquez sur <em>ins&eacute;rer la s&eacute;lection</em> pour l'ins&eacute;rer dans votre source. </li>
-        <li> Pour redimensionner le champ d'&eacute;criture, tirez sur le bord du champ. </li>
-        <li> Pour plus d'informations sur l'&eacute;diteur wims, choisissez dans le menu horizontal le bouton d'aide. (C'est le dernier bouton &agrave; droite) </li>
-      </ul>
+</script>
+
+<div class="_spacer"><br/></div>
+
+<div id="help_container" class="container">
+    <h4 id="titre_aide"> $wims_name_help :</h4>
+    <div id="aide" class="content"> 
+     <h3 style="margin-top:0;"><img src='gifs/editor/bouton_infos.gif' height="40" /> $name_how_to_use_editor :</h3>
+      $name_editor_help
     </div>
     </div>
     <div id="hud_video_intro" class="hud_element">
-    Choisissez la liste d'instructions :
+    $name_choose_list
       <ul>
-        <li><a onClick="changerListeInstruction2(cities)" href="javascript:void(0);">wims</a></li>
-        <li><a onClick="changerListeInstruction2(liste_func_latec)" href="javascript:void(0);">latex</a> </li>
+        <li><a onClick="changerListeInstruction2(cities)" href="javascript:void(0);">Wims</a></li>
+        <li><a onClick="changerListeInstruction2(liste_func_latec)" href="javascript:void(0);">LaTeX</a> </li>
         <li><a onClick="changerListeInstruction2(ifffff)" href="javascript:void(0);">'if'</a> </li>
         <li><a onClick="changerListeInstruction2(special)" href="javascript:void(0);">'special'</a></li>
-        <li><a onClick="changerListeInstruction2(oef0)" href="javascript:void(0);">'oef0'</a> </li>
-        <li><a onClick="changerListeInstruction2(oefparm1)" href="javascript:void(0);">'oef1'</a></li>
-        <li><a onClick="changerListeInstruction2(oefparm2)" href="javascript:void(0);">'oef2'</a></li>
-        <li><a onClick="changerListeInstruction2(oefparm4)" href="javascript:void(0);">'oef4'</a></li>
-        <li><a onClick="changerListeInstruction2(oefparm5)" href="javascript:void(0);">'oef5'</a> </li>
+        <li><a onClick="changerListeInstruction2(oef0)" href="javascript:void(0);">'oef 0'</a> </li>
+        <li><a onClick="changerListeInstruction2(oefparm1)" href="javascript:void(0);">'oef 1'</a></li>
+        <li><a onClick="changerListeInstruction2(oefparm2)" href="javascript:void(0);">'oef 2'</a></li>
+        <li><a onClick="changerListeInstruction2(oefparm4)" href="javascript:void(0);">'oef 4'</a></li>
+        <li><a onClick="changerListeInstruction2(oefparm5)" href="javascript:void(0);">'oef 5'</a> </li>
       </ul>
     </div>
     <div id="overlay" style="display:none"></div>

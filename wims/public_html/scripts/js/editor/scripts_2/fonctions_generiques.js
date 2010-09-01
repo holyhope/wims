@@ -161,16 +161,16 @@ function initlist() {
 	for (var i = 0; i < n2; i++) {
 		liste = liste + "<OPTION>" + instructionsss[i] + "</OPTION>";
 	}
-	formselect.innerHTML = "<FORM NAME='formu' onClick='afficheaide();'><SELECT ondblclick='inser()' id='select' NAME='sel' SIZE='10'>" + liste + "</SELECT><br><input type='button' value='insérer la sélection' onclick='inser()' /></FORM>";
+	formselect.innerHTML = "<FORM NAME='formu' onClick='afficheaide();'><SELECT ondblclick='inser()' id='select' NAME='sel' SIZE='10'>" + liste + "</SELECT><br><input type='button' value='"+names["insert_selection"]+"' onclick='inser()' /></FORM>";
 
 }
 function changerListeInstruction() {
-afficherHud('hud_video_intro');
+	afficherHud('hud_video_intro');
 }
 
 function changerListeInstruction2(nomdutabo) {
-instructionsss=nomdutabo;
-hudAnimationFermeture('hud_video_intro');
-initlist();
+	instructionsss=nomdutabo;
+	hudAnimationFermeture('hud_video_intro');
+	initlist();
 }
 
