@@ -1,3 +1,9 @@
+/***************************************************************************************
+JSEditor est un produit développé par Enev Zhelyaz <enevzhelyaz@gmail.com>
+à l'occasion d'un stage pour le service TICE de l'université de Nice Sophia Antipolis http://tice.unice.fr
+Il utilise textarea.2.0.0.RC1, basé sur la librairie Prototype (http://livepipe.net/control/textarea )
+*****************************************************************************************/
+
 function include(fileName){
 	document.write("<script type='text/javascript' src='scripts/js/editor/"+fileName+"'></script>" );
 	/*var head = document.getElementsByTagName('head')[0];
@@ -25,7 +31,7 @@ var chrono2 = null;
 Nom_Browser = navigator.appName;
 Version_Browser = navigator.appVersion;
 
-include('scripts_2/names_'+version+'.js');
+include('names_'+version+'.js');
 include('scripts_1/prototype.js');
 
 /* NB : scriptaculous est un tres bon addon graphique pour Prototype : http://script.aculo.us/ 
