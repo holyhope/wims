@@ -33,7 +33,7 @@ name_sheets
 !if $job=arch
  !set title=Copias de seguridad y Recuperación
  !set name_intro=Puede descargar una copia de seguridad de su clase, en formato
- !set name_tosend=Para enviar una copia de seguridad de su clase,
+ !set name_tosend=Para enviar una copia de seguridad de su clase
  !set name_namefile=introduzca por favor el nombre del fichero de seguridad
  !set name_help=se le pedirá que seleccione los recursos que quiere recuperar en la clase
 
