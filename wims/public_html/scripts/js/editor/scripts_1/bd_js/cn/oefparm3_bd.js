@@ -92,14 +92,10 @@ chaine_aide='<code>\\real{a=e^2}</code>'+
 	////******************** 
 
 	case 'erf' :
-chaine_aide=""
-case 'erfc' :
-chaine_aide="";
-case 'EULER Euler euler' :
-chaine_aide="";
-case 'exp' :
-chaine_aide="";
-case 'factorial' :
+chaine_aide=case 'erfc' :
+chaine_aide=case 'EULER Euler euler' :
+chaine_aide=case 'exp' :
+chaine_aide=case 'factorial' :
 chaine_aide='<code>\\integer{a=factorial(4)}</code>'+
 'factorielle'+
 '' ; return chaine_aide;

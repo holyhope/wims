@@ -31,72 +31,72 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		}
 
 		//buttons
-		this.toolbar.addButton('Italics',function(){
+		this.toolbar.addButton(names["Italics"],function(){
 			this.wrapSelection('<em>','</em>');
 		},{
 			id: 'markdown_italics_button'
 		});
 		
-		this.toolbar.addButton('Bold',function(){
+		this.toolbar.addButton(names["Bold"],function(){
 			this.wrapSelection('<strong>','</strong>');
 		},{
 			id: 'markdown_bold_button'
 		});
 		
-		this.toolbar.addButton('Link',function(){
+		this.toolbar.addButton(names["Link"],function(){
 			var selection = this.getSelection();
-			var response = prompt('Enter Link URL','');
+			var response = prompt(names["Enter_Link_URL"],'http://');
 			if(response == null)
 				return;
-			this.replaceSelection('<a href="'+response+'">' + (selection == '' ? 'Link Text' : selection) + '</a>' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
+			this.replaceSelection('\n<a href="'+response+'">' + (selection == '' ? names["Link_Text"] : selection) + '</a>' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
 		},{
 			id: 'markdown_link_button'
 		});
 		
-		this.toolbar.addButton('Image',function(){
+		/*this.toolbar.addButton(names["Image"],function(){
 			var selection = this.getSelection();
 			afficherHud('hud_video_intro');
 			var response=null;
 			if(response == null)
 				return;
-			this.replaceSelection('\\img{'+response+'}' + (selection == '' ? '{alt="Image manquante"}' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
+			this.replaceSelection('\\img{'+response+'}' + (selection == '' ? '{alt="'+names["image_alt"]+'"}' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
+		},{
+			id: 'markdown_image_button'
+		});*/
+		
+		this.toolbar.addButton(names["Image"],function(){
+			var selection = this.getSelection();
+			//afficherHud('hud_video_intro');
+			var response = prompt(names["Enter_img_URL"],'test.jpg');
+
+			//if(response == null)
+				//return;
+			this.replaceSelection('\\img{'+response+'}' + (selection == '' ? '{alt="'+names["image_alt"]+'"}' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
 		},{
 			id: 'markdown_image_button'
 		});
 		
-		//this.toolbar.addButton('Heading',function(){
-			//var selection = this.getSelection();
-			//if(selection == '')
-				//selection = 'Heading';
-			//var str = '';
-			//(Math.max(5,selection.length)).times(function(){
-				//str += '-';
-			//});
-			//this.replaceSelection("\n" + selection + "\n" + str + "\n");
-		//},{
-			//id: 'markdown_heading_button'
-		//});
-		
-		this.toolbar.addButton('Heading',function(){
-			this.wrapSelection('<h1>','</h1>');
+
+		this.toolbar.addButton(names["Heading"],function(){
+			this.wrapSelection('\n<h1>','</h1>');
 		},{
 			id: 'markdown_heading_button'
 		});
 		
 		
-		this.toolbar.addButton('Unordered List',function(){
-			this.wrapSelection('<ul>','</ul>');
+		this.toolbar.addButton(names["Unordered_List"],function(){
+			this.wrapSelection('\n<ul><li>','</li></ul>');
 		},{
 			id: 'markdown_unordered_list_button'
 		});
 		
-		this.toolbar.addButton('Ordered List',function(){
-			this.wrapSelection('<li>','</li>');
+		this.toolbar.addButton(names["Ordered_List"],function(){
+			this.wrapSelection('\n<ol><li>','</li></ol>');
 		},{
 			id: 'markdown_ordered_list_button'
 		});
 		
-		this.toolbar.addButton('espace',function(event){
+		this.toolbar.addButton('',function(event){
 			this.injectEachSelectedLine(function(lines,line){
 				lines.push((event.shiftKey ? line.replace(/^\> /,'') : '' + line));
 				return lines;
@@ -104,16 +104,16 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_espace_button'
 		});
-		this.toolbar.addButton('title',function(){
+		this.toolbar.addButton(names["title"],function(){
 			this.wrapSelection('\n\\title{}','');
 		},{
 			id: 'markdown_title_button'
 		});
 		
 		
-		this.toolbar.addButton('Help',function(){
+		this.toolbar.addButton(names["User_guide"],function(){
 			function help_url(){
-				var url="?session="+document.getElementById("help_url").innerHTML+"&lang=fr&module=adm/createxo.fr&cmd=help&special_parm=enev";
+				var url="?session="+document.getElementById("session_wims").innerHTML+"&lang="+version+"&module=adm/createxo&cmd=help&special_parm=enev";
 
 				return url;
 				}
@@ -123,12 +123,12 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'markdown_help_button'
 		});
-		this.toolbar.addButton('auteur',function(){
+		this.toolbar.addButton(names["author"],function(){
 			this.wrapSelection('\n\\author{}','');
 		},{
 			id: 'markdown_auteur_button'
 		});
-		this.toolbar.addButton('range',function(){
+		this.toolbar.addButton(names["range"],function(){
 			this.wrapSelection("\n\\range{}",'');
 		},{
 			id: 'markdown_range_button'
@@ -136,49 +136,49 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		
 		
 		
-		this.toolbar.addButton('espace2',function(){
+		this.toolbar.addButton('',function(){
 			this.wrapSelection('','');
 		},{
 			id: 'markdown_espace2_button'
 		});
-		this.toolbar.addButton('statem',function(){
+		this.toolbar.addButton(names["statement"],function(){
 			this.wrapSelection('\n\\statement{}','');
 		},{
 			id: 'markdown_statem_button'
 		});
-		this.toolbar.addButton('hint',function(){
+		this.toolbar.addButton(names["hint"],function(){
 			this.wrapSelection('\n\\hint{}','');
 		},{
 			id: 'markdown_hint_button'
 		});
-		this.toolbar.addButton('help',function(){
+		this.toolbar.addButton(names["help"],function(){
 			this.wrapSelection('\n\\help{}','');
 		},{
 			id: 'help'
 		});
-		this.toolbar.addButton('espace3',function(){
+		this.toolbar.addButton("espace3",function(){
 			this.wrapSelection('','');
 		},{
 			id: 'markdown_espace3_button'
 		});
-		this.toolbar.addButton('answer',function(){
+		this.toolbar.addButton(names["answer"],function(){
 			this.wrapSelection('\n\\answer{}{}{type=}','');
 		},{
 			id: 'markdown_answer_button'
 		});
 		
 		
-		this.toolbar.addButton('feed',function(){
+		this.toolbar.addButton(names["feedback"],function(){
 			this.wrapSelection('\n\\feedback{}{}','');
 		},{
 			id: 'markdown_feed_button'
 		});
-		this.toolbar.addButton('condition',function(){
+		this.toolbar.addButton(names["condition"],function(){
 			this.wrapSelection('\n\\condition{}{}','');
 		},{
 			id: 'markdown_condition_button'
 		});
-		this.toolbar.addButton('solution',function(){
+		this.toolbar.addButton(names["solution"],function(){
 			this.wrapSelection('\n\\solution{}','');
 		},{
 			id: 'markdown_solution_button'

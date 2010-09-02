@@ -323,11 +323,11 @@ function bdlatec(instruction, version){
 	
 	
 var a = [ 
-"<img src='images/t1.gif'>",
-"<img src='images/t2.gif'>",
-"<img src='images/t3.gif'>",
-"<img src='images/t4.gif'>",
-"<img src='images/t5.gif'>"
+"<img src='gifs/editor/t1.gif'>",
+"<img src='gifs/editor/t2.gif'>",
+"<img src='gifs/editor/t3.gif'>",
+"<img src='gifs/editor/t4.gif'>",
+"<img src='gifs/editor/t5.gif'>"
 ];
 
 return a[index2];

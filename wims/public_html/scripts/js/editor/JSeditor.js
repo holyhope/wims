@@ -1,7 +1,7 @@
 /***************************************************************************************
-JSEditor est un produit développé par Enev Zhelyaz <enevzhelyaz@gmail.com>
-à l'occasion d'un stage pour le service TICE de l'université de Nice Sophia Antipolis http://tice.unice.fr
-Il utilise textarea.2.0.0.RC1, basé sur la librairie Prototype (http://livepipe.net/control/textarea )
+JSEditor est un produit developpe par Enev Zhelyaz <enevzhelyaz@gmail.com>
+a l'occasion d'un stage pour le service TICE de l'universite Nice Sophia Antipolis http://tice.unice.fr
+Il utilise textarea.2.0.0.RC1, base sur la librairie Prototype (http://livepipe.net/control/textarea )
 *****************************************************************************************/
 
 function include(fileName){
@@ -35,16 +35,16 @@ include('names_'+version+'.js');
 include('scripts_1/prototype.js');
 
 /* NB : scriptaculous est un tres bon addon graphique pour Prototype : http://script.aculo.us/ 
-textarea.2.0.0.RC1, basé sur la librairie Prototype, permet d'afficher la barre d'outils du textarea -cf http://livepipe.net/control/textarea */
+textarea.2.0.0.RC1, base sur la librairie Prototype, permet d'afficher la barre d'outils du textarea -cf http://livepipe.net/control/textarea */
 
 include('scripts_2/control.textarea.2.0.0.RC1.js');
-include('scripts_2/control.textarea.markdown_'+version+'.js');
+include('scripts_2/control.textarea.markdown.js');
 /* gfcursor.js : Librairie de gestion du curseur dans un textearea  */
 /* permet d'ajouter l'instruction selectionnee au niveau du curseur par exemple   */
 include('scripts_2/gfcursor.js');
 
 // bd.js contient les textes d'aides pour chaque instruction
-include('scripts_1/bd.js');
+include('scripts_1/bd_js/'+version+'/wims.js');
 include('scripts_1/bd-latex.js');
 include('scripts_1/bd_js/'+version+'/oefparm0_bd.js');
 include('scripts_1/bd_js/'+version+'/oefparm1_bd.js');

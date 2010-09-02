@@ -8,7 +8,6 @@ var cities = [
 
 
 function bd(instruction, version){
-	// les indices &agrave; partir de 19 correspondent aux instructions latex
 	var index2="";
 	switch(instruction)
 	{
@@ -120,8 +119,6 @@ function bd(instruction, version){
 	}
 	
 	
-	if(version=="fr"){
-
 var a = [ 
 "",
 "",
@@ -209,30 +206,6 @@ var a = [
 "\\answer{}{\\b}{type=...}\n"+
 "\\answer{}{\\c}{type=...}</code></pre></div>\n"
 ];
-}
-else{
-var a = [
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible",
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible",
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible", 
-		"la version anglaise n'est pas disponible"
-];
 
-}
 return a[index2];
 }
