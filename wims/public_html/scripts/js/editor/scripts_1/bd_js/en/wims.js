@@ -19,7 +19,7 @@ function bd(instruction, version){
 	break;
 	//********************
 	case "\\author{}" :
-		chaine_aide="<code>\\author {...}</code>" + names["not_available"] +
+		chaine_aide="<code>\\author {...}</code> " +
 		"<div class='exemple'><div class='title'>Example :</div><code>\\author{Sophie Lemaire}</code></div>\n";
 
 	break;

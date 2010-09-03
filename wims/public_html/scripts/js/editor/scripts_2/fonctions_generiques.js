@@ -31,7 +31,7 @@ function parcoursTab(instructionwims, indice) {
 		compter++;
 		if (liste == "-") {
 			var div_aide = document.getElementById("aide");
-			div_aide.innerHTML = "<strong>Aide contextuelle</strong> - tapez antislash suivi d'une lettre en minuscule!";
+			div_aide.innerHTML = "<h3>"+names["contextual_help"]+"</h3> - "+names["contextual_help_desc"];
 			initlist();
 		}
 		else {
@@ -42,7 +42,7 @@ function parcoursTab(instructionwims, indice) {
 			compter = 0;
 			liste = "-";
 			var div_aide = document.getElementById("aide");
-			div_aide.innerHTML = "<strong>Aide contextuelle</strong> - tapez antislash suivi d'une lettre en minuscule!";
+			div_aide.innerHTML = "<h3>"+names["contextual_help"]+"</h3> - "+names["contextual_help_desc"];
 		}
 	}
 }
@@ -64,11 +64,9 @@ function image() {
 	var description = document.getElementById("description").value;
 	hudAnimationFermeture('hud_video_intro');
 	if (description == "") {
-		var image = "\\img{" + url + "}{alt='description manquante'}";
+		description=names["image_alt"];
 	}
-	else {
-		var image = "\\img{" + url + "}{alt='" + description + "'}";
-	}
+    var image = "\\img{" + url + "}{alt='" + description + "'}";
 	Cursor_AddTexte('wims_deposit_id', image);
 }
 
@@ -84,56 +82,53 @@ function afficheaide(langue) {
 	if (langue == "eng") version = "eng";
 	if (langue == "fr") version = "fr";
 	
+	var titre_bd="";
+	var text="";
+	
 	switch(instructionsss)
 	{
 	case cities :
-	var text = bd(instruction, version);
-	break;
+		text = bd(instruction, version);
+		titre_bd= names["wims_instruction"];
+		break;
 	case liste_func_latec :
-	var text = bdlatec(instruction, version);
-	break;
+		text = bdlatec(instruction, version);
+		titre_bd= names["latex_instruction"];
+		break;
 	case ifffff :
-	var text = iffffffun(instruction, version);
-	break;
+		text = iffffffun(instruction, version);
+		titre_bd= names["if_instruction"];
+		break;
 	case special :
-	var text = specialfun(instruction, version);
-	break;
+		text = specialfun(instruction, version);
+		titre_bd= names["special_instruction"];
+		break;
 	case oef0 :
-	var text = oef0fun(instruction, version);
-	break;
+		text = oef0fun(instruction, version);
+		titre_bd= names["oef0_instruction"];
+		break;
 	case oefparm1 :
-	var text = oef1fun(instruction, version);
-	break;
+		text = oef1fun(instruction, version);
+		titre_bd= names["oef1_instruction"];
+		break;
 	case oefparm2 :
-	var text = oef2fun(instruction, version);
-	break;
+		text = oef2fun(instruction, version);
+		titre_bd= names["oef2_instruction"];
+		break;
 	case oefparm4 :
-	var text = oef4fun(instruction, version);
-	break;
+		text = oef4fun(instruction, version);
+		titre_bd= names["oef4_instruction"];
+		break;
 	case oefparm5 :
-	var text = oef5fun(instruction, version);
-	break;
+		text = oef5fun(instruction, version);
+		titre_bd= names["oef5_instruction"];
+		break;
 	
 	}
 
-	if (text == "<img src='images/t1.gif'>" || text == "<img src='images/t2.gif'>" || text == "<img src='images/t3.gif'>" || text == "<img src='images/t4.gif'>" || text == "<img src='images/t5.gif'>") {
-		div_aide.innerHTML = "<p><strong>" + instruction + " -instruction latex</strong></p><div>" + text + "</div>";
-	}
-	else {
 
-		div_aide.innerHTML = "<p><strong>" + instruction + " -instruction wims</strong></p><div>" + text + "</div>";
-
-	}
-
-	//var mytool_array = text.split("\n");
-	//var lignes = mytool_array.length;
-	//if (lignes < 5) lignes = 0;
-	//div_aide.style.marginBottom="44px";
-	//div_aide.style.marginBottom = ""+lignes+"em";
-	//if(text=="<img src='images/t1.gif'>") div_aide.style.marginBottom ="222px";
-	//if(text=="<img src='images/t2.gif'>") div_aide.style.marginBottom ="200px";
-	//if(text=="<img src='images/t3.gif'>") div_aide.style.marginBottom ="144px";
-	//alert(text);
+	div_aide.innerHTML = "<h3 style='display:inline-block;margin-top:0;'>" + instruction + "</h3> - <span class='subtitle'>" + titre_bd + "</span><div class='description'>" + text + "</div>";
+	
 }
 
 //enregistrer() :
@@ -164,6 +159,7 @@ function initlist() {
 	formselect.innerHTML = "<FORM NAME='formu' onClick='afficheaide();'><SELECT ondblclick='inser()' id='select' NAME='sel' SIZE='10'>" + liste + "</SELECT><br><input type='button' value='"+names["insert_selection"]+"' onclick='inser()' /></FORM>";
 
 }
+
 function changerListeInstruction() {
 	afficherHud('hud_video_intro');
 }
@@ -173,4 +169,3 @@ function changerListeInstruction2(nomdutabo) {
 	hudAnimationFermeture('hud_video_intro');
 	initlist();
 }
-

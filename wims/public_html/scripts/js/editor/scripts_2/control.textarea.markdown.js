@@ -113,7 +113,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		
 		this.toolbar.addButton(names["User_guide"],function(){
 			function help_url(){
-				var url="?session="+document.getElementById("session_wims").innerHTML+"&lang="+version+"&module=adm/createxo&cmd=help&special_parm=enev";
+				var url="?session="+document.getElementById("session_wims").innerHTML+"&lang="+version+"&module=adm/createxo&cmd=help&special_parm=JS_editor";
 
 				return url;
 				}

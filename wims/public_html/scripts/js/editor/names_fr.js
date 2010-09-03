@@ -3,6 +3,18 @@ var names= new Array();
 names["lang_name"]="Française";
 names["insert_selection"]="insérer la sélection";
 names["not_available"]="La version "+names["lang_name"]+" n'est pas encore disponible.";
+names["contextual_help"]="Aide contextuelle (autocompletion)";
+names["contextual_help_desc"]="Tapez antislash (<code>\\</code>) suivi d'une lettre en minuscule pour activer l'autocompletion. La liste des instructions sera alors filtrée par votre texte.";
+
+names["wims_instruction"]="Instruction OEF";
+names["latex_instruction"]="Instruction LaTeX";
+names["if_instruction"]="operateur de comparaison";
+names["special_instruction"]="Instruction spéciale";
+names["oef0_instruction"]="Liste d'instructions OEF 0";
+names["oef1_instruction"]="Liste d'instructions OEF 1";
+names["oef2_instruction"]="Liste d'instructions OEF 2";
+names["oef4_instruction"]="Liste d'instructions OEF 4";
+names["oef5_instruction"]="Liste d'instructions OEF 5";
 
 
 /** HTML entities ***/
