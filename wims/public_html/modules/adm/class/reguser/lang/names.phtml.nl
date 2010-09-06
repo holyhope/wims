@@ -88,7 +88,7 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_nofound=!nosubst Er is geen deelnemer met <tt>$search</tt> in echte naam of loginnaam gevonden.
 
 !set name_student=!nosubst $firstn $lastn!
-!set name_studentadded=De deelnemer $name_student is toegevoegd aan $name_classe.
+!set name_studentadded=De deelnemer $firstn $lastn is toegevoegd aan $name_classe.
 !set name_welcome=!nosubst Je bent nu een geregistreerde deelnemer aan $classname, met loginnaam
 !set name_newparticipant=!nosubst Vul het onderstaande formulier in over de nieuwe deelnemer aan $classname.
 !set name_inscription2=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .
