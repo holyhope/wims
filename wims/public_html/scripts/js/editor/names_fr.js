@@ -37,7 +37,7 @@ names["Ordered_List"]="Liste numérotée";
 names["title"]="Titre";
 names["User_guide"]="Mode d'emploi";
 names["author"]="Auteur";
-names["range"]="Intervale";
+names["range"]="Intervalle";
 
 /** WIMS 'during' instructions  **/ 
 names["statement"]="&Eacute;nonc&eacute;";
