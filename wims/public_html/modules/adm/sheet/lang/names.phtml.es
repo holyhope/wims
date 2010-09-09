@@ -6,7 +6,7 @@
 		mostrar el fichero fuente, \
 into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 
-!set name_student1=Puede trabajar en esta hoja hasta el
+!set name_student1=!nosubst Puede trabajar en esta hoja hasta el $expday $expmon $expyear.
 !set name_student2=Esta hoja ha expirado. Puede seguir \
  trabajando en ella, pero sus puntuaciones ya no serán tenidas en cuenta.\
 !set name_student3= Por el momento no está autorizado a consultar el contenido de esta hoja.
