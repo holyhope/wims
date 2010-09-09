@@ -148,7 +148,7 @@
 		Activar el registro, suspender el registro,\
 		Usted es el profesor de la clase,\
 		Registrar los detalles de este ejercicio,\
-		Página de gestión de la hoja de trabajo\
+		Página de gestión de la hoja de trabajo,\
 		Añadir una secuencia,\
 	into wims_name_class_home,wims_name_add,\
 	wims_name_wsup,wims_name_visitor,\
