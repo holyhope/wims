@@ -1,12 +1,12 @@
 #! /bin/sh
 #
 
-#Je n'ai pas réglé le problème des images dont on a changé le nom ...
-#C'est un problème dans un module
+#Je n'ai pas rÃ©glÃ© le problÃ¨me des images dont on a changÃ© le nom ...
+#C'est un problÃ¨me dans un module
 # Make distribution tgz packages
 #on execute le script dans le dossier wims
 
-#ligne à changer
+#ligne Ã  changer
 # 3.63a = r256
 # 3.63b = r468
 # 3.63c = r677
@@ -33,7 +33,7 @@
 # 4.01a  = r3378
 version=4.01a
 
-#on mettra la version intermédiaire dans $target
+#on mettra la version intermÃ©diaire dans $target
 export whome=$HOME
 export target=$whome/transfer
 
@@ -43,7 +43,8 @@ mkdir -p $target
 rm -Rf $target/*
 
 # Puis on y exporte la version SVN
-echo "export svn in  $target/wims"
+echo "** Export svn in  $target/wims"
+cd `dirname $0`
 svn export . $target/wims
 cd $target/wims
 
@@ -53,7 +54,7 @@ bin/changepermissions
 
 
 echo "insert current version number in README.template"
-#on met le numéro de version où il faut
+#on met le numÃ©ro de version oÃ¹ il faut
 ed $target/wims/README.template <<@
  ,s/WIMS_VERSION/$version/
 w
@@ -67,30 +68,33 @@ ed $target/wims/src/configure.in <<@
 w
 @
 
-echo "create configure file using autoconf"
+echo "**Create configure file using autoconf"
 cd $target/wims/src ; autoconf configure.in > configure ; chmod a+x configure ;
 # configure.in might be removed after autoconf, but we leave it in the distribution ;
 # may be useful for exceptional uses (debian distr. for instance)
 
-echo enlève les fichiers générés par autoconf
+echo ** EnlÃ¨ve les fichiers gÃ©nÃ©rÃ©s par autoconf
 rm -Rf *.cache *.log 2>/dev/null
 
-echo on enlève le mkdistsvn de la nouvelle version
+echo ** On enlÃ¨ve le mkdistsvn de la nouvelle version
 rm $target/wims/mkdistsvn
 
-echo on enlève les fichiers parasites
+echo ** On enlÃ¨ve les fichiers parasites
 find $target/wims -name .DS_Store -exec rm '{}' \;
 find $target/wims -name \._* -exec rm '{}' \;
 
-echo on crée le fichier version 
+echo ** On crÃ©e le fichier version 
 echo $version >$target/wims/version
-# problème avec forall, je l'ai enlevé du svn
+# problÃ¨me avec forall, je l'ai enlevÃ© du svn
 mkdir -m 777 $target/dist/tmp/forall
 
-echo Archiving WIMS package...
+echo ** Archiving WIMS package...
 cd $target/wims ; tar -czf ../wims-$version.tgz --exclude=CVS .
 
-######FIN DU FICHIER, le reste est l'ancien script que Xiao nous a donné
+echo $version >$target/version
+
+
+######FIN DU FICHIER, le reste est l'ancien script que Xiao nous a donnÃ©
 
 #je ne comprends pas trop si la suite est utile. Il me semble que non
 # export whome=/home/wdev
@@ -125,8 +129,7 @@ cd $target/wims ; tar -czf ../wims-$version.tgz --exclude=CVS .
 # echo "
 # </dl>" >>$whome/$categories
 #
-
-### Pour l'instant tout cela est créé dans svn 
+### Pour l'instant tout cela est crÃ©Ã© dans svn 
 # mkdir $target/dist/tmp
 # mkdir -m 700 $target/dist/tmp/log
 # mkdir -m 777 $target/dist/tmp/forall
@@ -235,9 +238,8 @@ cd $target/wims ; tar -czf ../wims-$version.tgz --exclude=CVS .
 # tar -czf $target/wims-contrib-$version.tgz public_html/modules/contrib
 # 
 # cd $target
-
 # 
- echo $version >$target/version
+# echo $version >$target/version
 # chmod a-x $target/update.sh
 # cd $target
 # stat -t *.tgz *.sh [A-Z]* version | cut -d ' ' -f 1,2 >filesizes
