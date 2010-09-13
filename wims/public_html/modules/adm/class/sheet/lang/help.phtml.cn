@@ -1,5 +1,6 @@
-!goto $wims_read_parm
-!exit
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
 
 :dependancies
 
@@ -8,7 +9,10 @@
 参加者应该先在作业页的其它练习得到成绩, 然后才能做这个练习.
 例如, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> 意为参加者应在练习 1 得到 50% 的应得分,
 练习 2 得到 30%, 练习 3, 4, 5 的平均得到 60%.
-!exit
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :allowtype
 

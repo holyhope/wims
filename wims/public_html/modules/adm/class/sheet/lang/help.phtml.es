@@ -1,5 +1,6 @@
-!goto $wims_read_parm
-!exit
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
 
 :dependancies
 
@@ -12,7 +13,9 @@
   30% en el ejercicio 2, y una media de éxito del 60% en los ejercicios
   3, 4 y 5.
 
-!exit
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :allowtype
 

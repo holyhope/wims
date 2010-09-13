@@ -1,5 +1,6 @@
-!goto $wims_read_parm
-!exit
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
 
 :dependancies
 
@@ -11,7 +12,10 @@
   <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font>
   betekend: de student moet 50% van de opdracht 1 goed hebben,
   30$ van opdracht 2 en een gemiddelde score van 60% over de opdrachtwn 3,4 en 5
-!exit
+
+!if $wims_read_parm!=$empty
+ !exit
+!endif
 
 :allowtype
 <center><b>Informatie over het scoringssysteem</b></center> 
