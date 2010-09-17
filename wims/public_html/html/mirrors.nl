@@ -94,8 +94,8 @@ Spain
 es en fr it nl cn
 Juan-Rafael Fernandez
 jrfern@gmail.com
-:http://iesbaixpenedes.xtec.cat/wims
-IES Baix Penedès. El Vendrell
+:http://insbaixpenedes.xtec.cat/wims
+Institut Baix Penedès. El Vendrell
 Spain
 ca en fr es it nl
 Manel Querol
