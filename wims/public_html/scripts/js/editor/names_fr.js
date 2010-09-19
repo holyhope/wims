@@ -8,13 +8,15 @@ names["contextual_help_desc"]="Tapez antislash (<code>\\</code>) suivi d'une let
 
 names["wims_instruction"]="Instruction OEF";
 names["latex_instruction"]="Instruction LaTeX";
-names["if_instruction"]="operateur de comparaison";
-names["special_instruction"]="Instruction spéciale";
-names["oef0_instruction"]="Liste d'instructions OEF 0";
-names["oef1_instruction"]="Liste d'instructions OEF 1";
-names["oef2_instruction"]="Liste d'instructions OEF 2";
-names["oef4_instruction"]="Liste d'instructions OEF 4";
-names["oef5_instruction"]="Liste d'instructions OEF 5";
+names["if_instruction"]="Operateur de comparaison";
+names["special_instruction"]="Instruction spéciale de l'énoncé";
+names["oef0_instruction"]="Commandes OEF";
+names["oef1_instruction"]="Fonctions OEF";
+names["oef2_instruction"]="Fonctions OEF";
+names["oef4_instruction"]="Fonctions OEF";
+names["oef3_instruction"]="Fonctions mathématiques";
+names["oef5_instruction"]="Variables prédéfinies";
+names["slib_instruction"]="Bibliothèque de macros";
 
 
 /** HTML entities ***/
@@ -40,7 +42,7 @@ names["author"]="Auteur";
 names["range"]="Intervalle";
 
 /** WIMS 'during' instructions  **/ 
-names["statement"]="&Eacute;nonc&eacute;";
+names["statement"]="Énoncé";
 names["hint"]="Indice";
 names["help"]="Aide";
 

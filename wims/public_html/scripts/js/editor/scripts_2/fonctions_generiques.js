@@ -55,7 +55,7 @@ function anime() {
 
 //anime2 :
 function anime2() {
-	if (chrono2 == null) chrono2 = setInterval("instruction()", 10);
+	if (chrono2 == null) chrono2 = setInterval("instruction()", 15);
 }
 
 //image :
@@ -82,55 +82,86 @@ function afficheaide(langue) {
 	if (langue == "eng") version = "eng";
 	if (langue == "fr") version = "fr";
 	
-	var titre_bd="";
 	var text="";
 	
-	switch(instructionsss)
+    switch(instructionsss)
 	{
-	case cities :
-		text = bd(instruction, version);
-		titre_bd= names["wims_instruction"];
+	case oefcommand :
+		text = oefcommandfun(instruction);
 		break;
-	case liste_func_latec :
-		text = bdlatec(instruction, version);
-		titre_bd= names["latex_instruction"];
+	case latex :
+		text = latexfun(instruction);
 		break;
-	case ifffff :
-		text = iffffffun(instruction, version);
-		titre_bd= names["if_instruction"];
+	case iff :
+		text = ifffun(instruction);
 		break;
 	case special :
-		text = specialfun(instruction, version);
-		titre_bd= names["special_instruction"];
+		text = specialfun(instruction);
 		break;
-	case oef0 :
-		text = oef0fun(instruction, version);
-		titre_bd= names["oef0_instruction"];
+	case oefparm0 :
+		text = oefparm0fun(instruction);
 		break;
 	case oefparm1 :
-		text = oef1fun(instruction, version);
-		titre_bd= names["oef1_instruction"];
+		text = oefparm1fun(instruction);
 		break;
 	case oefparm2 :
-		text = oef2fun(instruction, version);
-		titre_bd= names["oef2_instruction"];
+		text = oefparm2fun(instruction);
+		break;
+	case oefparm3 :
+		text = oefparm3fun(instruction);
 		break;
 	case oefparm4 :
-		text = oef4fun(instruction, version);
-		titre_bd= names["oef4_instruction"];
+		text = oefparm4fun(instruction);
 		break;
 	case oefparm5 :
-		text = oef5fun(instruction, version);
-		titre_bd= names["oef5_instruction"];
+		text = oefparm5fun(instruction);
+	case slib :
+		text = slibfun(instruction);
 		break;
 	
 	}
-
-
-	div_aide.innerHTML = "<h3 style='display:inline-block;margin-top:0;'>" + instruction + "</h3> - <span class='subtitle'>" + titre_bd + "</span><div class='description'>" + text + "</div>";
+	div_aide.innerHTML = "<h3 style='display:inline-block;margin-top:0;'>" + instruction + "</h3><div class='description'>" + text + "</div>";
 	
 }
 
+function toto() {
+switch(instructionsss)
+	{
+	case oefcommand :
+		titre_bd= oefcommandname;
+		break;
+	case latex :
+		titre_bd= latexname;
+		break;
+	case iff :
+		titre_bd= iffname;
+		break;
+	case special :
+		titre_bd= specialname;
+		break;
+	case oefparm0 :
+		titre_bd=oefparm0name;
+		break;
+	case oefparm1 :
+		titre_bd=oefparm1name;
+		break;
+	case oefparm2 :
+		titre_bd=oefparm2name;
+		break;
+	case oefparm3 :
+		titre_bd=oefparm3name;
+		break;
+	case oefparm4 :
+		titre_bd=oefparm4name;
+		break;
+	case oefparm5 :
+		titre_bd=oefparm5name;
+	case slib :
+		titre_bd= slibname;
+		break;
+	
+	}
+}
 //enregistrer() :
 function enregistrer() {
 	var chaine = document.forms['replyform'].wims_deposit.value;
@@ -138,7 +169,7 @@ function enregistrer() {
 }
 
 //initlist() :
-instructionsss=cities;
+instructionsss=oefcommand;
 function initlist() {
 //alert('initlist');
 	liste = "-";
@@ -150,14 +181,14 @@ function initlist() {
 
 	//ie error    alert(document.forms['replyform'].wims_deposit.value;);
 	var formselect = document.getElementById("divoptions");
-
+toto();
 	var n2 = instructionsss.length;
 	var liste = "";
 	for (var i = 0; i < n2; i++) {
-		liste = liste + "<OPTION>" + instructionsss[i] + "</OPTION>";
+		liste = liste + "<option>" + instructionsss[i] + "</option>";
 	}
-	formselect.innerHTML = "<FORM NAME='formu' onClick='afficheaide();'><SELECT ondblclick='inser()' id='select' NAME='sel' SIZE='10'>" + liste + "</SELECT><br><input type='button' value='"+names["insert_selection"]+"' onclick='inser()' /></FORM>";
-
+	formselect.innerHTML = "<form name='formu' onClick='afficheaide();'><select ondblclick='inser()' id='select' name='sel' size='10'>" + liste + "</select><br><input type='button' value='"+names["insert_selection"]+"' onclick='inser()' /></form>";
+    document.getElementById("name_list_instruction").innerHTML = titre_bd ; 
 }
 
 function changerListeInstruction() {

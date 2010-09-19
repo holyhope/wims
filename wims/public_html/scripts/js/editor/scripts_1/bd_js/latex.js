@@ -1,4 +1,5 @@
-var liste_func_latec = [
+var latexname='Latex';
+var latex = [
 	"\\alpha","\\beta","\\gamma","\\delta", "\\epsilon", "\\varepsilon", "\\zeta", "\\eta", "\\Gamma",
 	"\\Delta","\\Theta","\\theta","\\vartheta","\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\pi",
 	"\\varpi","\\rho","\\varrho","\\sigma","\\varsigma", "\\Sigma", "\\Upsilon", "\\Phi", "\\tau", "\\upsilon",
@@ -18,7 +19,7 @@ var liste_func_latec = [
 	];
 	
 
-function bdlatec(instruction, version){
+function latexfun(instruction, version){
 	// les indices &agrave; partir de 19 correspondent aux instructions latex
 	var index2="";
 	switch(instruction)

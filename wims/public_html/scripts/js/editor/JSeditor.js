@@ -44,15 +44,17 @@ include('scripts_2/control.textarea.markdown.js');
 include('scripts_2/gfcursor.js');
 
 // bd.js contient les textes d'aides pour chaque instruction
-include('scripts_1/bd_js/'+version+'/wims.js');
-include('scripts_1/bd-latex.js');
+include('scripts_1/bd_js/'+version+'/oefcommand.js');
+include('scripts_1/bd_js/latex.js');
 include('scripts_1/bd_js/'+version+'/oefparm0_bd.js');
 include('scripts_1/bd_js/'+version+'/oefparm1_bd.js');
 include('scripts_1/bd_js/'+version+'/oefparm2_bd.js');
+include('scripts_1/bd_js/'+version+'/oefparm3_bd.js');
 include('scripts_1/bd_js/'+version+'/oefparm4_bd.js');
 include('scripts_1/bd_js/'+version+'/oefparm5_bd.js');
-include('scripts_1/bd_js/'+version+'/if_bd.js');
+include('scripts_1/bd_js/'+version+'/iff_bd.js');
 include('scripts_1/bd_js/'+version+'/special_bd.js');
+include('scripts_1/bd_js/'+version+'/slib_bd.js');
 
 // javascript_002.js et Redimensionne.js doivent permettre de redimensionner dynamiquement le textarea
 include('scripts_2/javascript_002.js');

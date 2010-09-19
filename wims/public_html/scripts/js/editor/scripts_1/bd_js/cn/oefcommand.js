@@ -1,4 +1,5 @@
-var cities = [
+var oefcommandname='Commandes OEF';
+var oefcommand = [
 	"\\answer{}{}{}", "\\author{}", "\\computeanswer{}", "\\condition{}{}", "\\conditions{}", "\\email{}", "\\embed{}", "\\feedback{}{}",
 	"\\function{}", "\\help{}", "\\hint{}", "\\integer{}", "\\language{}", "\\matrix{}",
 	"\\precision{}", "\\solution{}", "\\special{}", "\\statement{}",
@@ -7,9 +8,8 @@ var cities = [
 	
 
 
-function bd(instruction, version){
-	// les indices &agrave; partir de 19 correspondent aux instructions latex
-	var chaine_aide="";
+function oefcommandfun(instruction){
+	var index2="";
 	switch(instruction)
 	{
 	//********************
@@ -19,7 +19,7 @@ function bd(instruction, version){
 	break;
 	//********************
 	case "\\author{}" :
-		chaine_aide="<code>\\author {...}</code> " +
+		chaine_aide="<code>\\author {...}</code>" + names["not_available"] +
 		"<div class='exemple'><div class='title'>Example :</div><code>\\author{Sophie Lemaire}</code></div>\n";
 
 	break;
