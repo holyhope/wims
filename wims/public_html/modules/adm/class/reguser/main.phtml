@@ -37,13 +37,13 @@ $name_title
  $table_header
  !if $ctype=0
   $table_hdtr
-  <th>$wims_name_name<th>$wims_name_nameteacher<th>$wims_name_level<th>$wims_name_Language</th>
-  <th>$name_remainig<th>$wims_name_Status
+  <th>$wims_name_name</th><th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Language</th>
+  <th>$name_remainig</th><th>$wims_name_Status</th>
  !else
   <caption>$institution_name</caption>
   $table_hdtr
-  <th>$wims_name_name<th>$wims_name_Supervisor<th>$wims_name_level
-  <th>$wims_name_Status
+  <th>$wims_name_name</th><th>$wims_name_Supervisor</th><th>$wims_name_level</th>
+  <th>$wims_name_Status</th></tr>
  !endif
  !for cl in $classlist
   !reset class_supervisor,class_email,class_level,class_lang,class_institution,class_description,class_password,class_limit
@@ -56,7 +56,7 @@ $name_title
   !else
    !href module=$module&cmd=reply&class=$cl $class_description
   !endif
-  <td align="center">
+  </td><td align="center">
   !mailurl $class_email $class_supervisor
   </td>
   !if $class_level=$empty
@@ -73,12 +73,14 @@ $name_title
    !else
     $[$class_limit-$part]
    !endif
+   </td>
   !endif
   !if $class_password=$empty
    <td align="center">$(name_statut[1])</td>
   !else
    <td align="center">$(name_statut[2])</td>
   !endif
+  </tr>
  !next cl
  $table_end <p>
  $name_remark1
@@ -213,8 +215,8 @@ $name_title
  <label for="pass2">$name_passwd_exact:</label>
  !form reply
  <input type=hidden name="step" value=3>
- <p><center><input type=password size=16 name="pass2" id="pass2">
- <p><input type=submit value="$wims_name_send"></center>
+ <p></p><center><input type=password size=16 name="pass2" id="pass2">
+ <p></p><input type=submit value="$wims_name_send"></center>
  </form> <p>
  !goto end1
 !endif
