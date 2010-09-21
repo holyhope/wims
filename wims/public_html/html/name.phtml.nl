@@ -321,7 +321,7 @@ wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
    Een bestand toevoegen\
    Bewerk de ToDo lijst\
    Configureren\
-   Annulereren\
+   Annuleren\
    Agenda\
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
