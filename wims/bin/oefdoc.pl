@@ -4,18 +4,29 @@ use locale;
 ##$/ = undef; # slurp
 ##lancer du répertoire scipts/help
 
-$name_explanation="Explication" ; 
-$name_example="Exemple" ;
-$name_special="Méthodes spéciales";
-$name_syntax="Syntaxe";
-$name_slib='SLIB';
+my %name = (
+  ) ; 
+$name = \%name;
+$name->{'explanation'}{'fr'}="Explication" ; 
+$name->{'example'}{'fr'}="Exemple" ;
+$name->{'special'}{'fr'}="Méthodes spéciales<br>(énoncé)";
+$name->{'syntax'}{'fr'}="Syntaxe";
+$name->{'slib'}{'fr'}='SLIB';
+
+$name->{'explanation'}{'en'}="Explanation" ; 
+$name->{'example'}{'en'}="Example" ;
+$name->{'special'}{'en'}="Special method<br>(statement)";
+$name->{'syntax'}{'en'}="Syntax";
+$name->{'slib'}{'en'}='SLIB';
+
+
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
-my @Lang=('fr','en', 'cn', 'nl') ;
+my @Lang=('en','fr','cn', 'nl') ;
 #@Lang=('en') ; 
 system(`mkdir -p $DOSSIER`) ;
-my @table=("if", "oefparm0","oefparm1","oefparm2","oefparm3","oefparm4","oefparm5") ; 
+my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','command') ; 
 
 my %Command = (
   ) ; 
@@ -47,14 +58,28 @@ for my $tag (@phtml) {
 }
 
 ##### generation
-for my $lang (@Lang) {print "oefdoc.pl $lang" ;  system(`mkdir -p $DOSSIER/$lang`) ;
- for my $file (@table) { tableau ($file,$lang,3) ;} ;
- phtml("$helpdir/$lang/special",$lang,"special",@phtml) ; 
- slib($lang) ;
-}
+#for my $lang (@Lang) {print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
+ #for my $file (@table) { tableau ($file,$lang,3) ;} ;
+ #phtml("$helpdir/$lang/special",$lang,"special",@phtml) ; 
+ #slib($lang) ;
+#}
+### ne pas faire de double boucle ... ????
+for my $lang (@Lang) { 
+   print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
+   tableau('if',$lang) ; 
+   tableau('oefparm0',$lang) ;
+   tableau('oefparm1',$lang) ;
+   tableau('oefparm2',$lang) ;
+   tableau('oefparm3',$lang) ;
+   tableau('oefparm4',$lang) ;
+   tableau('oefparm5',$lang);
+   phtml("$helpdir/$lang/special",$lang,"special",@phtml) ; 
+   slib($lang) ;
+};
 
-sub slib {my ($lang)=@_ ;
- my $Text = "var slibname='$name_slib';\n" ;
+
+sub slib {my ($lang)= @_ ;
+ my $Text = "var slibname='$name->{'slib'}{$lang}';\n" ;
  @list_keyword=();
  my %HASH = (
   ) ; 
@@ -64,9 +89,7 @@ for my $file (glob("$slibdir/*/*")) {
  $file =~s/$slibdir\///;
  my $text='';
  open (IN, "$slibdir/$file"); 
- 
-    while (<IN>) {my $line=$_;
-     
+ while (<IN>) {my $line=$_;
     if  ($line=~/^ *!exit/) { last ;}
     if ($line=~ s/^ *slib_(\w+) *=//){
      $tag=$1;
@@ -108,13 +131,13 @@ for my $file (glob("$slibdir/*/*")) {
   my $example='';
   for my $ex (@examples) { 
     next if !($ex) ; 
-    $example .="<div class=\"exemple\"><div class=\"title\">$name_example</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code></div>" ;
+    $example .="<div class=\"exemple\"><div class=\"title\">$name->{'example'}{$lang}</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code></div>" ;
  }
   $text.=begin_js("$Command->{'begin'}{'slib'}$file$Command->{'end'}{'slib'}") 
            . title_js($HASH->{'title'}{$file},'title')
-           . syntax_js("<font color=\"red\">slib($file</font> "  . $HASH->{'parms'}{$file} . " <font color=\"red\">)</font>")
-           . middle_js($HASH->{'out'}{$file},'out' )
-           . middle1_js (cleanup($example))
+           . syntax_js("<font color=\"red\">slib($file</font> "  . $HASH->{'parms'}{$file} . " <font color=\"red\">)</font>",$lang)
+           . middle_js($HASH->{'out'}{$file},'out',$lang)
+           . middle1_js (cleanup($example),$lang)
            . end_js() ;
   $text =cleanup2($text) ; 
  }
@@ -131,7 +154,8 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
   ) ; 
  $HASH = \%HASH ; 
  my $text='';
- my $Text="var specialname= '$name_special';\n";
+ my $tag='';
+ my $Text="var specialname= '$name->{'special'}{$lang}';\n";
  for my $meth (@file) {
     open (IN, "$dir/$meth.phtml"); 
     while (<IN>) {my $line=$_;
@@ -147,11 +171,34 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
   }
 }
  $var=join (" }\', \'\\\\special{", @phtml) ;
-  $Text .= "var special= [ '\\\\special{$var }' ];\n" ; 
+ ### cas particulier
+ my $meth='embed';
+ $embd='\\\\embed{r  }' ;
+   open (IN, "$helpdir/$lang/embedans.phtml"); 
+    while (<IN>) {my $line=$_;
+    next if !($line) ;
+    if ($line =~ /^:/) {
+    chomp $line;
+       $tag=$line; $tag=~ s/://;
+    } 
+    else
+    {
+     $HASH->{$tag}{$meth} .= cleanup($line) . "\\n" ;
+    }
+  }
+  close IN ;
+
+  $Text .= "var special= [ '$embd', '\\\\special{$var }'];\n" ;
+  $text = begin_js("$embd") 
+        . syntax_js("\\\\embed{r i, option }")
+        . (($HASH->{'signification'}{$meth}) ? middle_js($HASH->{'signification'}{$meth},'title',$lang) : '')
+        . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title') : '')
+        . end_js() ;
+  ## fin cas particulier embed
   for $meth (@phtml) {
    $text .= begin_js("\\\\special{$meth }")
            . syntax_js("\\\\special{$meth }") 
-           . (($HASH->{'signification'}{$meth}) ? middle_js($HASH->{'signification'}{$meth},'title' ) : '')
+           . (($HASH->{'signification'}{$meth}) ? middle_js($HASH->{'signification'}{$meth},'title',$lang ) : '')
            . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title') : '')
            . end_js() ;
     
@@ -162,60 +209,62 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
 
 }
 ##file : nom du fichier, n nombre de lignes dans chaque record
-sub tableau { my ($file,$lang,$n)=@_ ;
+sub tableau { my ($file, $lang) = @_ ;
 ### mettre $file à la place ensuite
-my $file1="$helpdir/$lang/$file";
-my $cities=$file ;
-if ($file =~ /if/){$cities .= 'f' } ; 
-my @list_keyword;
-my $text='';
+  my $file1="$helpdir/$lang/$file";
+  my $cities=$file ;
+  if ($file =~ /if/){ $cities .= 'f' } ; 
+  my @list_keyword;
+  my $text='';
 ##bug s'il n'y a pas de documentation
   open (IN, $file1);
   my $cnt=0 ;
-  my $Text ='' ; 
-  while (<IN>) {my $line=$_;
-  chomp $line ;
+  my $Text = '' ; 
+  while (<IN>) { my $line=$_;
+   chomp $line ;
    next if !($line) ; 
-   if ($line =~s /^://) {
+   if ($line =~ s /^://) {
      $cnt ++ ;
-     if ($cnt ==1 ) { $Text = "var $cities" . "name= '$line';\n ";  }
-     next if $cnt<3 ;
+     if ($cnt == 1 ) { $Text = "var $cities" . "name= '$line';\n ";  }
+     next if $cnt < 3 ;
+     $line =~ s/:// ;
+     $text .= begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ;
+     push @list_keyword, $line;
      my $nl=1;
-     chomp $line ; $line=~s/:// ;
-     $text.= begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ;
-     push @list_keyword, $line; }
+     }
      else  {
        next if $cnt<3 ; 
-       $nl ++ ; 
-       $line= cleanup($line);
-       if($nl==1){ $text .= syntax_js($line) ; }
-         else  { $text .= "'<div class=\"explication\"><div class=\"title\">$name_explanation</div>$line</div>'+\n" ;
+       $nl ++ ;
+       $line = cleanup($line); if ($line =~ /help=/) { $line = '' ;}
+       if($nl==1){
+         if ($line) { $text .= syntax_js($line,$lang) ; } }
+       else {
+         if ($line) { $text .= middle_js($line,1 ,$lang) ; }
          $text .= end_js() ;
-         $nl=0;
-	}
-	}
+         $nl = 0 ; 
+	   }
+	 }
    }
   close IN ;
-  my $b ;
-  $var=join ("$Command->{'end'}{$file}\', \'$Command->{'begin'}{$file}", @list_keyword) ;
+  my $var=join ("$Command->{'end'}{$file}\', \'$Command->{'begin'}{$file}", @list_keyword) ;
   $Text .="var $cities= [ \'$Command->{'begin'}{$file}$var$Command->{'end'}{$file}\' ];\n" 
   . function_js($text,$cities) ;
-out ("$DOSSIER/$lang/$cities" . "_bd\.js",$Text) ;
+  out ("$DOSSIER/$lang/$cities" . "_bd\.js",$Text) ;
 }
 
 sub begin_js {my ($t)= @_ ;
 "case \'$t\' \:\nchaine_aide="
 }
-sub syntax_js {($line)=@_ ;
- "\'<div class=\"syntax\"><div class=\"title\">$name_syntax</div><code>$line</code></div>\'+\n"
+sub syntax_js {($line,$lang)=@_ ;
+ "\'<div class=\"syntax\"><div class=\"title\">$name->{'syntax'}{$lang}</div><code>$line</code></div>\'+\n"
 }
-sub middle_js {($line,$tag)=@_ ;
- if ($tag) { $line="<div class=\"title\">$name_explanation</div>$line" }
+sub middle_js {($line,$tag,$lang)=@_ ;
+ if ($tag) { $line="<div class=\"title\">$name->{'explanation'}{$lang}</div>$line" }
  "\'<div class=\"explication\">$line</div>\'+\n";
 }
 
-sub middle1_js {($line,$tag)=@_ ;
- if ($tag) { $line="<div class=\"title\">$name_example</div>$line" }
+sub middle1_js {($line,$tag,$lang)=@_ ;
+ if ($tag) { $line="<div class=\"title\">$name->{'example'}{$lang}</div>$line" }
  "\'<div class=\"exemple\">$line</div>\'+\n";
 }
 

@@ -15,7 +15,7 @@ function oefcommandfun(instruction){
 	//********************
 	case "\\answer{}{}{}" :
 		chaine_aide="La commande <code>\answer{texte}{\A}{type=un_type}{option=}{weight=}</code> exécute en général les actions suivantes&nbsp;:"+
-		"<ul><li> formatage de la présentation html sous la forme sous laquelle la question va &ecirc;tre posée : zone de texte à écrire, étiquettes à déplacer, zone à cliquer </li>"+
+		"<ul><li> formatage de la présentation html sous la forme sous laquelle la question va être posée : zone de texte à écrire, étiquettes à déplacer, zone à cliquer </li>"+
 		"<li> récupération des données transmises par l'utilisateur </li>"+
 		"<li> analyse de la réponse en la comparant à la réponse donnée par le développeur de manière différente selon </li>"+
 		"qu'il s'agit de nombres, de matrices, ou de tout autre format </li>"+
@@ -35,7 +35,7 @@ function oefcommandfun(instruction){
 	//********************
 	case "\\computeanswer{}" :
 		chaine_aide="<code>\\computeanswer{a}</code><br/> Selon la valeur <code>yes</code> ou <code>no</code> donnée à <code>a</code>, l'utilisateur pourra entrer une réponse numérique en donnant une formule sans l'évaluer ou devra entrer un nombre.<br/>"+
-		"La commande <code>\computeanswer{ no }</code> précise que l'utilisateur doit lui-m&ecirc;me faire les calculs et entrer la valeur finale.<br/>"+
+		"La commande <code>\computeanswer{ no }</code> précise que l'utilisateur doit lui-même faire les calculs et entrer la valeur finale.<br/>"+
 		" Si par contre, on met <code>\computeanswer{ yes }</code>, l'utilisateur peut entrer une formule comme <code>5*5</code>, laissant à l'ordinateur le soin de faire les calculs.";
 		return chaine_aide;
 		break;
@@ -43,12 +43,12 @@ function oefcommandfun(instruction){
 	case "\\condition{}{}" :
 		chaine_aide="<code>\\condition{commentaire}{conditions portant sur \\var}{option=}{weight=}</code><br/>"+
 		"Dans la première accolade, on peut mettre un texte qui sera affiché lors de l'analyse de la réponse.<br/>"+
-		"Dans la seconde accolade, on met la liste des conditions que la réponse de l'utilisateur contenue dans <code>\\var</code> doit satisfaire pour &ecirc;tre considérée comme bonne.";
+		"Dans la seconde accolade, on met la liste des conditions que la réponse de l'utilisateur contenue dans <code>\\var</code> doit satisfaire pour être considérée comme bonne.";
 		return chaine_aide;
 		break;
 	//********************
 	case "\\conditions{}" :
-		chaine_aide="On désire ici reposer la question si la réponse est fausse. Il faut analyser soi-m&ecirc;me la réponse à l'aide de\n"+
+		chaine_aide="On désire ici reposer la question si la réponse est fausse. Il faut analyser soi-même la réponse à l'aide de\n"+
 		"\condition et éventuellement de \conditions.\n"+
 		"<div class='exemple'><div class='title'>Exemple :</div> \n"+
 		"Dans l'exemple ci-dessous, on demande le carré d'un entier ; l'utilisateur a le droit à deux essais.<br/><pre>"+
@@ -181,15 +181,15 @@ var a = [
 "}\n"+
 "\\answer{}{\\bonchoix1; \\listechoix}{type=clickfill}\n"+
 "\\answer{}{\\bonchoix2}{type=clickfill}</code></pre>"+
-"<p><strong>Pour aller un peu plus loin : </strong> Pour faire la m&ecirc;me chose sur une figure construite avec la commande <code>\\text{dessin = draw(625,320 [...]instructions de dessin[...] )}</code>, "+
+"<p><strong>Pour aller un peu plus loin : </strong> Pour faire la même chose sur une figure construite avec la commande <code>\\text{dessin = draw(625,320 [...]instructions de dessin[...] )}</code>, "+
 "il suffit de remplacer <code>\\imagedir/nom_photo.jpg</code> par <code>\\dessin</code> dans les lignes de code précédentes.</p></div>", 
 
 //STATEMENT
 "<code>\\statement{...}</code> pour écrire l'énoncé (cette commande doit apparaître une seule fois dans l'exercice)",
 
 //STEPS
-"Une seule des deux commandes <code>\\steps</code> ou <code>\\nextstep</code> peut &ecirc;tre utilisée dans un exercice.<br/>"+
-"<p>On utilise <code>\\steps</code> lorsque les questions qui vont &ecirc;tre posées pendant tout l'exercice sont fixées avant l'apparition de l'énoncé.</p>"+
+"Une seule des deux commandes <code>\\steps</code> ou <code>\\nextstep</code> peut être utilisée dans un exercice.<br/>"+
+"<p>On utilise <code>\\steps</code> lorsque les questions qui vont être posées pendant tout l'exercice sont fixées avant l'apparition de l'énoncé.</p>"+
 "<p>On utilise <code>\\nextstep</code> au lieu de <code>\\steps</code> si on veut pouvoir poser des questions différentes en fonction de la réponse de l'utilisateur à une étape précédente.</p>"+
 "La variable <code>\\step</code> est créée automatiquement avec la valeur <code>1</code> dès qu'une des commandes <code>\\steps</code> ou <code>\\nextstep</code> est exécutée.<br/>"+
 "Sa valeur augmente de 1 à chaque fois que l'utilisateur clique sur <em>'Envoyer votre réponse'</em>.<br/>"+

@@ -6,19 +6,6 @@ names["not_available"]="La version "+names["lang_name"]+" n'est pas encore dispo
 names["contextual_help"]="Aide contextuelle (autocompletion)";
 names["contextual_help_desc"]="Tapez antislash (<code>\\</code>) suivi d'une lettre en minuscule pour activer l'autocompletion. La liste des instructions sera alors filtrée par votre texte.";
 
-names["wims_instruction"]="Instruction OEF";
-names["latex_instruction"]="Instruction LaTeX";
-names["if_instruction"]="Operateur de comparaison";
-names["special_instruction"]="Instruction spéciale de l'énoncé";
-names["oef0_instruction"]="Commandes OEF";
-names["oef1_instruction"]="Fonctions OEF";
-names["oef2_instruction"]="Fonctions OEF";
-names["oef4_instruction"]="Fonctions OEF";
-names["oef3_instruction"]="Fonctions mathématiques";
-names["oef5_instruction"]="Variables prédéfinies";
-names["slib_instruction"]="Bibliothèque de macros";
-
-
 /** HTML entities ***/
 names["Italics"]="Italique";
 names["Bold"]="Gras";
@@ -40,6 +27,7 @@ names["title"]="Titre";
 names["User_guide"]="Mode d'emploi";
 names["author"]="Auteur";
 names["range"]="Intervalle";
+names["email"]="Courriel";
 
 /** WIMS 'during' instructions  **/ 
 names["statement"]="Énoncé";
