@@ -115,6 +115,7 @@ function afficheaide(langue) {
 		break;
 	case oefparm5 :
 		text = oefparm5fun(instruction);
+		break;
 	case slib :
 		text = slibfun(instruction);
 		break;
@@ -156,6 +157,7 @@ switch(instructionsss)
 		break;
 	case oefparm5 :
 		titre_bd=oefparm5name;
+        break;
 	case slib :
 		titre_bd= slibname;
 		break;
