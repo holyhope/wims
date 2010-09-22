@@ -44,7 +44,7 @@ include('scripts_2/control.textarea.markdown.js');
 include('scripts_2/gfcursor.js');
 
 // bd.js contient les textes d'aides pour chaque instruction
-include('scripts_1/bd_js/'+version+'/oefcommand.js');
+include('scripts_1/bd_js/'+version+'/oefcommand_bd.js');
 include('scripts_1/bd_js/latex.js');
 include('scripts_1/bd_js/'+version+'/oefparm0_bd.js');
 include('scripts_1/bd_js/'+version+'/oefparm1_bd.js');

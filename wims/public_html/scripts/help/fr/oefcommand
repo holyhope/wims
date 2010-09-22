@@ -1,5 +1,5 @@
 
-:Liste d'instructions
+:Instructions
 :instruction,nombre de paramètres,description,paramètres optionnels,mots d'option reconnus
 :title
 1
@@ -7,12 +7,15 @@ définit le titre de l'exercice
 :language
 1
 définit la langue de l'exercice, comme <tt>en</tt> ou <tt>fr</tt>
+
 :author
 1
 définit l'auteur de l'exercice
+
 :email
 1
 définit l'adresse électronique de l'auteur
+
 :format
 1
 format de l'énoncé
@@ -22,12 +25,19 @@ help=format
 :css
 1
 définit le style css
+
 :precision
 1
 précision en comparant la réponse de l'utilisateur avec la solution. Donnez un nombre positif n ici&nbsp;: la comparaison sera effectuée avec une tolérance de 1/n.
+
 :range
 1
 zone de variables pour l'évaluation de fonction fournie par l'utilisateur. Doit être donnée sous forme <tt>n1..n2</tt>, où n1 est le point de départ, n2 le point d'arrivée.
+
+
+:computeanswer
+1
+La commande <tt>\computeanswer{ no }</tt> précise que l'utilisateur doit lui-même faire les calculs et entrer la valeur finale. Si par contre, on met <tt>\computeanswer{ yes }</tt>, l'utilisateur peut entrer une formule comme <tt>5*5</tt>, laissant à l'ordinateur le soin de faire les calculs.
 
 :statement
 1
@@ -39,32 +49,39 @@ définit une réponse libre. Le premier paramètre est le message pour la réponse, 
 type option weight
 reorder shuffle nonstop
 help=reply
+
 :choice
 3-5
 définit un choix multiple. Le premier paramètre est le message pour le choix, le second les bons choix, et le troisième les mauvais choix. Les deux derniers paramètres peuveut (doivent) être une liste d'objets séparés par des virgules. Il est permis d'avoir plusieurs bons choix. Si un choix apparait à la fois comme bon et mauvais, il est pris pour bon.
 option weight
 noidontknow shuffle
+
 :condition
 2-4
-définit une condition spéciale pour l'évaluation de réponses libres.
+définit une condition spéciale pour l'évaluation de réponses libres. Le premier argument est un texte qui sera affiché lors de l'analyse de la réponse. Le second argument, on met la liste des conditions que la réponse de l'utilisateur doit satisfaire pour être considérée comme bonne.	
 option weight
 
 help=reply
+
 :solution
 1
 donne une solution expliquée de l'exercice. Le gestionnaire OEF peut décider de montrer la solution ou pas à l'utilisateur, suivant le choix du niveau de difficulté pris par l'utilisateur.
+
 :hint
 1
 donne une indication de l'exercice. Le gestionnaire OEF peut décider de montrer l'indication ou non, suivant le niveau de difficulté.
+
 :help
 1
 donne une aide à l'exercice. Cette aide sera toujours accessible à l'utilisateur, dans une fenêtre `popup'.
+
 :feedback
 2
 affiche un commentaire quand la réponse tombe sous une certaine condition. Peut normalement être utilisé pour avertir d'une erreur typique.
 
 
 help=feedback
+
 :steps
 1
 sert à définir les questions apparaissant à chaque étape ; doit être mis avant la commande <tt>statement</tt>(voir la variable </tt>\step</tt>).

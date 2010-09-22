@@ -26,23 +26,29 @@ my $helpdir="public_html/scripts/help";
 my @Lang=('en','fr','cn', 'nl') ;
 #@Lang=('en') ; 
 system(`mkdir -p $DOSSIER`) ;
-my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','command') ; 
+my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
 
 my %Command = (
   ) ; 
 $Command = \%Command ;
 $Command->{'begin'}{'if'}= "  " ; 
 $Command->{'end'}{'if'}= "  " ; 
-$Command->{'begin'}{'oefparm0'}= '\\\\' ; 
+$Command->{'begin'}{'oefparm0'}= '\n\\\\' ; 
 $Command->{'end'}{'oefparm0'}= "\{  =  \}" ;
+$Command->{'begin'}{'oefcommand'}= '\n\\\\' ; 
+$Command->{'end'}{'oefcommand'}= "\{  \}" ;
 
 for my $tag ("oefparm4") {
    $Command->{'begin'}{$tag}= "" ; 
    $Command->{'end'}{$tag}= "\(  \)" ;
 }
+for my $tag ("oefparm2", "oefparm3") {
+   $Command->{'begin'}{$tag}= " " ; 
+   $Command->{'end'}{$tag}= " " ;
+}
 
 for my $tag ("oefparm5") {
-   $Command->{'begin'}{$tag}= "\\\\" ; 
+   $Command->{'begin'}{$tag}= '\n\\\\' ; 
    $Command->{'end'}{$tag}= " " ;
 }
 
@@ -53,7 +59,7 @@ for my $tag ("slib") {
 
 my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip") ; 
 for my $tag (@phtml) {
-   $Command->{'begin'}{$tag}= "\\special\{" ; 
+   $Command->{'begin'}{$tag}= "\n\\special\{" ; 
    $Command->{'end'}{$tag}= " \}" ;
 }
 
@@ -72,7 +78,8 @@ for my $lang (@Lang) {
    tableau('oefparm2',$lang) ;
    tableau('oefparm3',$lang) ;
    tableau('oefparm4',$lang) ;
-   tableau('oefparm5',$lang);
+   tableau('oefparm5',$lang) ;
+   tableau('oefcommand',$lang) ;
    phtml("$helpdir/$lang/special",$lang,"special",@phtml) ; 
    slib($lang) ;
 };
@@ -195,7 +202,7 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
         . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title') : '')
         . end_js() ;
   ## fin cas particulier embed
-  for $meth (@phtml) {
+  for my $meth (@phtml) {
    $text .= begin_js("\\\\special{$meth }")
            . syntax_js("\\\\special{$meth }") 
            . (($HASH->{'signification'}{$meth}) ? middle_js($HASH->{'signification'}{$meth},'title',$lang ) : '')
@@ -228,24 +235,25 @@ sub tableau { my ($file, $lang) = @_ ;
      if ($cnt == 1 ) { $Text = "var $cities" . "name= '$line';\n ";  }
      next if $cnt < 3 ;
      $line =~ s/:// ;
-     $text .= begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ;
+     if($text) { $text .= end_js() ;}
+       $text .= begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ;
      push @list_keyword, $line;
-     my $nl=1;
+     $nl=0;
      }
      else  {
-       next if $cnt<3 ; 
+       next if $cnt<3 ; if ($line =~ /^(\d)/) { $arg=$1 ; next }  
        $nl ++ ;
        $line = cleanup($line); if ($line =~ /help=/) { $line = '' ;}
-       if($nl==1){
-         if ($line) { $text .= syntax_js($line,$lang) ; } }
-       else {
-         if ($line) { $text .= middle_js($line,1 ,$lang) ; }
-         $text .= end_js() ;
-         $nl = 0 ; 
+       if ($nl==1 && !($file=~/oefcommand/)){ 
+         if ($line) { $text .= syntax_js($line,$lang) ; }
+        }
+        else {
+         if ($line) { $text .= middle_js($line,1,$lang) ; }
 	   }
 	 }
    }
   close IN ;
+  	 $text .= end_js() ;
   my $var=join ("$Command->{'end'}{$file}\', \'$Command->{'begin'}{$file}", @list_keyword) ;
   $Text .="var $cities= [ \'$Command->{'begin'}{$file}$var$Command->{'end'}{$file}\' ];\n" 
   . function_js($text,$cities) ;
@@ -255,20 +263,20 @@ sub tableau { my ($file, $lang) = @_ ;
 sub begin_js {my ($t)= @_ ;
 "case \'$t\' \:\nchaine_aide="
 }
-sub syntax_js {($line,$lang)=@_ ;
+sub syntax_js {my ($line,$lang)=@_ ;
  "\'<div class=\"syntax\"><div class=\"title\">$name->{'syntax'}{$lang}</div><code>$line</code></div>\'+\n"
 }
-sub middle_js {($line,$tag,$lang)=@_ ;
+sub middle_js {my ($line,$tag,$lang)=@_ ;
  if ($tag) { $line="<div class=\"title\">$name->{'explanation'}{$lang}</div>$line" }
  "\'<div class=\"explication\">$line</div>\'+\n";
 }
 
-sub middle1_js {($line,$tag,$lang)=@_ ;
+sub middle1_js {my ($line,$tag,$lang)=@_ ;
  if ($tag) { $line="<div class=\"title\">$name->{'example'}{$lang}</div>$line" }
  "\'<div class=\"exemple\">$line</div>\'+\n";
 }
 
-sub title_js {($line,$tag)=@_ ;
+sub title_js {my ($line,$tag)=@_ ;
  "\'<div class=\"title\">$line</div>\'+\n";
 }
 

@@ -125,7 +125,7 @@ function afficheaide(langue) {
 	
 }
 
-function toto() {
+function funcname() {
 switch(instructionsss)
 	{
 	case oefcommand :
@@ -183,7 +183,7 @@ function initlist() {
 
 	//ie error    alert(document.forms['replyform'].wims_deposit.value;);
 	var formselect = document.getElementById("divoptions");
-toto();
+	funcname();
 	var n2 = instructionsss.length;
 	var liste = "";
 	for (var i = 0; i < n2; i++) {

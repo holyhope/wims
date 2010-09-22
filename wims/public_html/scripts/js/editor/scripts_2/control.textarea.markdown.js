@@ -131,7 +131,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		this.toolbar.addButton(names["email"],function(){
 			this.wrapSelection("\n\\email{ }",'');
 		},{
-			id: 'markdown_range_button'
+			id: 'markdown_email_button'
 		});
 		
 		
@@ -162,7 +162,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			id: 'markdown_espace3_button'
 		});
 		this.toolbar.addButton(names["answer"],function(){
-			this.wrapSelection('\n\\answer{ }{ }{type= }{option= }\n','');
+			this.wrapSelection('\n\\answer{ }{ }{type= }{option= }{weight= }\n','');
 		},{
 			id: 'markdown_answer_button'
 		});
