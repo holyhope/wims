@@ -53,7 +53,7 @@ cd $target/wims
 bin/changepermissions
 
 
-echo "insert current version number in README.template"
+echo "** Insert current version number in README.template"
 #on met le numéro de version où il faut
 ed $target/wims/README.template <<@
  ,s/WIMS_VERSION/$version/
@@ -68,27 +68,27 @@ ed $target/wims/src/configure.in <<@
 w
 @
 
-echo "**Create configure file using autoconf"
+echo "** Create configure file using autoconf"
 cd $target/wims/src ; autoconf configure.in > configure ; chmod a+x configure ;
 # configure.in might be removed after autoconf, but we leave it in the distribution ;
 # may be useful for exceptional uses (debian distr. for instance)
 
-echo ** Enlève les fichiers générés par autoconf
+echo "** Enlève les fichiers générés par autoconf"
 rm -Rf *.cache *.log 2>/dev/null
 
-echo ** On enlève le mkdistsvn de la nouvelle version
+echo "** On enlève le mkdistsvn de la nouvelle version"
 rm $target/wims/mkdistsvn
 
-echo ** On enlève les fichiers parasites
+echo "** On enlève les fichiers parasites"
 find $target/wims -name .DS_Store -exec rm '{}' \;
 find $target/wims -name \._* -exec rm '{}' \;
 
-echo ** On crée le fichier version 
+echo "** On crée le fichier version "
 echo $version >$target/wims/version
 # problème avec forall, je l'ai enlevé du svn
 mkdir -m 777 $target/dist/tmp/forall
 
-echo ** Archiving WIMS package...
+echo "** Archiving WIMS package…"
 cd $target/wims ; tar -czf ../wims-$version.tgz --exclude=CVS .
 
 echo $version >$target/version
