@@ -119,6 +119,9 @@ function afficheaide(langue) {
 	case slib :
 		text = slibfun(instruction);
 		break;
+    case anstype :
+		text = anstypefun(instruction);
+		break;
 	
 	}
 	div_aide.innerHTML = "<h3 style='display:inline-block;margin-top:0;'>" + instruction + "</h3><div class='description'>" + text + "</div>";
@@ -160,6 +163,9 @@ switch(instructionsss)
         break;
 	case slib :
 		titre_bd= slibname;
+		break;
+    case anstype :
+		titre_bd= anstypename;
 		break;
 	
 	}

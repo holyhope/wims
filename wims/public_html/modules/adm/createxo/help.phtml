@@ -22,10 +22,16 @@
  !if $s_ iswordof slib model
   !read help/$s_.phtml $special_parm
  !else
-  !read help/$s_.phtml
+   !if $s_ iswordof reply and $modtoolhelp=yes
+     !read help/$s_.phtml $(special_parm[2])
+   !else
+     !read help/$s_.phtml
+   !endif
  !endif
- !set wims_menu_items=!append line back2,1,cmd=help\
+ !if $modtoolhelp!=yes
+  !set wims_menu_items=!append line back2,1,cmd=help\
  to $wims_menu_items
+ !endif
  !exit
 !endif
 

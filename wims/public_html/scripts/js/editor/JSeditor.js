@@ -55,6 +55,7 @@ include('scripts_1/bd_js/'+version+'/oefparm5_bd.js');
 include('scripts_1/bd_js/'+version+'/iff_bd.js');
 include('scripts_1/bd_js/'+version+'/special_bd.js');
 include('scripts_1/bd_js/'+version+'/slib_bd.js');
+include('scripts_1/bd_js/'+version+'/anstype_bd.js');
 
 // javascript_002.js et Redimensionne.js doivent permettre de redimensionner dynamiquement le textarea
 include('scripts_2/javascript_002.js');

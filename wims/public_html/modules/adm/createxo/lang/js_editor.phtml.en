@@ -24,5 +24,6 @@ Predefinite variables\
 Macro Library\
 Relations and conditions\
 Special Methods (statement)\
+Answer types\
 into name_editor_command,name_editor_oefparm0,name_editor_oefparm1, name_editor_oefparm2,name_editor_oefparm3,name_editor_oefparm4,name_editor_oefparm5,\
- name_editor_slib,name_editor_iff,name_editor_special
+ name_editor_slib,name_editor_iff,name_editor_special,name_editor_anstype
