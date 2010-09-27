@@ -1,5 +1,3 @@
-!sh cd $wims_home/log/classes/$wims_class/cdt/def;\
-grep date_todo= * | awk -F":!set date_todo=" '{if($$2!="") print $$1","$$2;}' | awk -F"," '{i=2; while(i<=NF) {print $$i","$$1;i++;};}' >$wims_home/log/classes/$wims_class/cdt/index;
 nbdate=!sh cd $wims_home/log/classes/$wims_class/cdt/def;\
 t1=`ls -1 | awk 'END {print FNR;}'`;\
 t2=`ls -1 | cut -c1-6 | sort | uniq `;\
@@ -8,6 +6,15 @@ echo "$$t2";
 cdt_nbdate=!line 1 of $nbdate
 cdt_ltmonth=!line 2 to -1 of $nbdate
 cdt_ltmonth=!lines2items $cdt_ltmonth
+!if $cdt_nbdate<2
+ !writefile wimshome/log/classes/$wims_class/cdt/def/10000101 !set date_todo=
+ !sh cd $wims_home/log/classes/$wims_class/cdt/def;\
+grep date_todo= * | sed 's/:!set date_todo=/,/g' | awk -F"," '$$2!=""{i=2; while(i<=NF) {print $$i","$$1;i++;};}' >$wims_home/log/classes/$wims_class/cdt/index;\
+rm -f $wims_home/log/classes/$wims_class/cdt/def/10000101;
+ !else
+ !sh cd $wims_home/log/classes/$wims_class/cdt/def;\
+grep date_todo= * | sed 's/:!set date_todo=/,/g' | awk -F"," '$$2!=""{i=2; while(i<=NF) {print $$i","$$1;i++;};}' >$wims_home/log/classes/$wims_class/cdt/index;
+ !endif
 !setdef !set cdt_nbdate=$cdt_nbdate\
 !set cdt_ltmonth=$cdt_ltmonth in wimshome/log/classes/$wims_class/cdt/.def
 cdt_nbmonth=!itemcnt $cdt_ltmonth
