@@ -19,7 +19,22 @@ $name->{'example'}{'en'}="Example" ;
 $name->{'special'}{'en'}="Special method<br>(statement)";
 $name->{'syntax'}{'en'}="Syntax";
 $name->{'slib'}{'en'}='SLIB';
-$name->{'anstype'}{'fr'}='Answer types' ; 
+$name->{'anstype'}{'en'}='Answer types' ;
+
+$name->{'explanation'}{'cn'}="Explanation" ; 
+$name->{'example'}{'cn'}="Example" ;
+$name->{'special'}{'cn'}="Special method<br>(statement)";
+$name->{'syntax'}{'cn'}="Syntax";
+$name->{'slib'}{'cn'}='SLIB';
+$name->{'anstype'}{'cn'}='Answer types' ;
+
+$name->{'explanation'}{'nl'}="Explanation" ; 
+$name->{'example'}{'nl'}="Example" ;
+$name->{'special'}{'nl'}="Special method<br>(statement)";
+$name->{'syntax'}{'nl'}="Syntax";
+$name->{'slib'}{'nl'}='SLIB';
+$name->{'anstype'}{'nl'}='Answer types' ; 
+
 
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $slibdir="public_html/scripts/slib/";
