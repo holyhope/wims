@@ -75,15 +75,15 @@ for my $tag (@phtml) {
 ### ne pas faire de double boucle ... ????
 for my $lang (@Lang) { 
    print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
-   #tableau('if',$lang) ; 
-  # tableau('oefparm0',$lang) ;
-  # tableau('oefparm1',$lang) ;
-  # tableau('oefparm2',$lang) ;
-  # tableau('oefparm3',$lang) ;
-  # tableau('oefparm4',$lang) ;
- #  tableau('oefparm5',$lang) ;
- #  tableau('oefcommand',$lang) ;
- #  phtml("$helpdir/$lang/special",$lang,"special",@phtml) ;
+   tableau('if',$lang) ; 
+   tableau('oefparm0',$lang) ;
+  tableau('oefparm1',$lang) ;
+  tableau('oefparm2',$lang) ;
+  tableau('oefparm3',$lang) ;
+  tableau('oefparm4',$lang) ;
+  tableau('oefparm5',$lang) ;
+  tableau('oefcommand',$lang) ;
+  phtml("$helpdir/$lang/special",$lang,"special",@phtml) ;
    anstype($lang) ; 
    #slib($lang) ;
 };
