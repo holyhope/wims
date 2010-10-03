@@ -304,7 +304,6 @@ public class Clicktile extends Applet implements Runnable{
     }
 
     public void paint(Graphics g){
-        if(bg!=null) g.drawImage(bg,copy_x,copy_y,this);
         drawing.setColor(Color.white);
         drawing.fillRect(0,0,xsize,ysize);
         int k;
@@ -341,7 +340,9 @@ public class Clicktile extends Applet implements Runnable{
 		drawing.drawLine(xpoints[lim], ypoints[lim], xpoints[0],ypoints[0]);
 	}
 	g.drawImage(canvas,0,0,this); // draw this square on canvas
-
+// THIS CODE SHOULD BE LAST: paint on top of image
+// jm.evers 3/10/2010
+        if(bg!=null) g.drawImage(bg,copy_x,copy_y,this);
      }
 
    public void start(){
