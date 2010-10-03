@@ -34,6 +34,7 @@ auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
 ##### end of LDAP connection - part 1 #####
 # now we can run the script
 
+auth_user_orig=$auth_user
 auth_user=!translate internal . to @ in $auth_user
 auth_user=!text select $char_login in $auth_user
 auth_password=!text select $char_passwd in $auth_password
@@ -90,6 +91,7 @@ pass=!passcrypt $pass
 !if $pass=$empty
  passwd=????
  !appendfile $logfile $logline
+ auth_user=$auth_user_orig
  error=bad_password
  !exit
 !endif
@@ -119,6 +121,7 @@ cps=!passcrypt $current_pass
 !if $auth_password notwordof $pass
  passwd=??????
  !appendfile $logfile $logline
+ auth_user=$auth_user_orig
  error=bad_password
  !exit
 !endif
