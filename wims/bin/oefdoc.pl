@@ -106,7 +106,10 @@ for my $lang (@Lang) {
 sub anstype { my ($lang)=@_ ;
  my %HASH = (
   ) ; 
- $HASH = \%HASH ; 
+ $HELP = \%HELP ;
+ my %HELP = (
+  ) ; 
+ $HELP = \%HELP ; 
  open (IN, "$helpdir/$lang/reply.phtml") ;
    while (<IN>) {my $line = $_;
     next if ($line =~ /^\!set/) ;
@@ -116,7 +119,7 @@ sub anstype { my ($lang)=@_ ;
       my $t1 = $L[0] ; $t1=~ s/\|/,/ ;
       my @ta=split(',',$t1) ;
       if ($ta[1]) {@t=split(' ',$ta[1]) ; } else { @t=($L[0])};
-      for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . $L[2]); } 
+      for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . $L[2]); $HELP{$tag}=$ta[0] ;} 
      }
    }
  close IN ;
@@ -128,7 +131,7 @@ sub anstype { my ($lang)=@_ ;
      $text .=begin_js("$Command->{'begin'}{'anstype'}$tag$Command->{'end'}{'anstype'}") 
            . title_js($tag,'title')
            . middle_js($HASH{$tag},'out',$lang)
-           . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$tag\">++++</a>") ;
+           . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++++</a>") ;
    }
    $Text .= function_js($text,'anstype') ;
   out ("$DOSSIER/$lang/anstype" . "_bd\.js",$Text) ;
