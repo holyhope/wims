@@ -31,7 +31,7 @@ $ in $l
     !if $n_ = $defcur
       !if $defcur = status
         ####################
-        # il faudrait verifier qu'il n'y a aucune note sur cette feuille avant de la repasser en preparation
+        # il faudrait verifier qu'il n'y a aucune note sur cette feuille avant de la repasser en preparation. si c'est le cas, il faut nasculer les notes en question du dossier /score vers /noscore avec les options "deact noscore" en plus.
         ###################
              
         #le statut d'une feuille est forcement >=0 et <4
@@ -58,6 +58,7 @@ $ in $l
             error=you can't active an empty sheet
             !exit
           !endif
+          !read scripts/writeweights
         !endif
       !endif
       !advance nbdefs

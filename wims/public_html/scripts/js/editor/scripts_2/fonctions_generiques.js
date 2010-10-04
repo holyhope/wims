@@ -195,7 +195,7 @@ function initlist() {
 	for (var i = 0; i < n2; i++) {
 		liste = liste + "<option>" + instructionsss[i] + "</option>";
 	}
-	formselect.innerHTML = "<form name='formu' onClick='afficheaide();'><select ondblclick='inser()' id='select' name='sel' size='10'>" + liste + "</select><br><input type='button' value='"+names["insert_selection"]+"' onclick='inser()' /></form>";
+	formselect.innerHTML = "<form name='formu' onClick='afficheaide();'><select ondblclick='inser()' id='select' name='sel' size='10'>" + liste + "</select><br><input type='button' class='wims_button' value='"+names["insert_selection"]+"' onclick='inser()' /></form>";
     document.getElementById("name_list_instruction").innerHTML = titre_bd ; 
 }
 
