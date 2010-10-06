@@ -1,2 +1,51 @@
-!!provisoire --to translate
-!changeto help/fr/sheetpage.phtml
+!!class/
+<H3>Utilizzare un documento per fare una presentazione di un test di autovalutazione</H3>
+
+<p>Potete mettere l'indirizzo di un blocco di un documento (ad esempio 
+<tt>c1/main</tt>). Tale blocco sarà utilizzato come pagina di presentazione
+del test di autovalutazione.
+Non è necessario rendere il documento visibile per gli studenti.
+<p>
+Lasciate il campo vuoto se volete utilizzare la pagina di presentazione
+standard.
+<p>
+Per inserire i link agli esercizi occorre utilizzare il comando
+<tt>\exercise</tt>.
+Sono anche disponibili le seguenti varibili predefinite:
+<ul>
+ <li><tt>\scorerequire</tt> 
+   Numero di punti richiesti per ciascun esercizio.
+ </li>
+ <li><tt>\scoregot</tt> 
+   Numero di punto ottenuti dallo studente per ciascun esercizio.
+ </li>
+ <li><tt>\scoremean</tt> 
+   Punteggio medio per ciascun esercizio
+ </li>
+ <li><tt>\expiration</tt> 
+   Data di termine del test di autovalutazione nel formato yyyymmdd (aaaammgg)
+ </li>
+ <li><tt>\today</tt>
+   Data nel formato yyyymmdd (aaaammgg)
+ </li>
+</ul>
+I valori delle variabili relative ai punteggi sono <em>liste</em> di numeri,
+ciascun termine di tali liste corrisponde al punteggio relativo all'esercizio
+in quella posizione nel test.
+
+<p>
+<b>Esempio</b>: se state creando la pagina di presentazione del test di 
+autovalutazione numero 5. Nel blocco </tt>c1/main</tt> del documento potete
+ad esempio scrivere
+<pre>
+\exercise{5/1}: Punti richiesti: \scorerequire[1] 
+                Punti ottenuti: \scoregot[1]
+
+\exercise{5/2}: Punti richiesti: \scorerequire[2]
+                Punti ottenuti: \scoregot[2]
+
+\exercise{5/3}{Un titolo}: Punti richiesti \scorerequire[3]; 
+                Punti ottenuti \scoregot[3]
+</pre>
+
+
