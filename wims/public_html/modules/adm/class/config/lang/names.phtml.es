@@ -328,7 +328,6 @@ Siempre indicar una buena respuesta en los QCM. \
 Penalización para mala respuesta en los QCM. \
 Indicar la buena respuesta. \
 Permitir las indicaciones (si  disponibles). \
-
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
