@@ -35,12 +35,19 @@ $name->{'syntax'}{'nl'}="Syntax";
 $name->{'slib'}{'nl'}='SLIB';
 $name->{'anstype'}{'nl'}='Answer types' ; 
 
+$name->{'explanation'}{'it'}="Spiegazione" ; 
+$name->{'example'}{'it'}="Esempio" ;
+$name->{'special'}{'it'}="Metodi speciali<br>(enunciato)";
+$name->{'syntax'}{'it'}="Sintassi";
+$name->{'slib'}{'it'}='SLIB';
+$name->{'anstype'}{'it'}='Tipi di risposte' ; 
+
 
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
 
-my @Lang=('en','fr','cn', 'nl') ;
+my @Lang=('en','fr','cn', 'nl','it') ;
 #@Lang=('en') ; 
 system(`mkdir -p $DOSSIER`) ;
 my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
