@@ -3,13 +3,13 @@
  !if $substep=0
   !if $all_steps=0
    !form reply
-   Qual &egrave; il <em>primo</em> termine errato in questa serie?
+   Qual è il <em>primo</em> termine errato in questa serie?
    !formselect badstep from 0 to $stepcnt
    (La risposta 0 significa che tutto &egrave; corretto.)
    <p><center><input type=submit value="Invia la risposta"></center>
   !else
    Selezionare <em>tutti</em> i passaggi sbagliati e
-   <input type=submit value="cliccare qui">.
+   <input type="submit" value="cliccare qui">.
   !endif
   </form>
  !else
@@ -24,16 +24,17 @@
   !if $expstep!=$empty
    <p>Alcune spiegazioni.<ul>
    !for i in $expstep
-    <p><li> Il passaggio $i
+    <li> Il passaggio $i
     !if $i isitemof $badstep
-     &egrave; corretto.
+     è corretto.
      !line $i of $remarks
     !else
      !set j=!positionof item $i in $bad_steps
      !set e=!item $j of $bad_reasons
-     non &egrave; corretto.
+     non è corretto.
      !read reasons/$e.det
     !endif
+   </li>
    !next i   
    </ul>
   !endif
@@ -57,13 +58,13 @@
    Il passaggio corretto sar&agrave;<p><center>
    <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
    !line $step of $good
-   </table> </center>
+   </td></tr></table> </center>
   !endif
   <p>
   !if $step<$stepcnt
    !href cmd=reply&ans=next Passaggio successivo.
   !else
-   L'esercizio &egrave; terminato. Punteggio ottenuto: $module_score/10.
+   L'esercizio è terminato. Punteggio ottenuto: $module_score/10.
   !endif
  !endif
 !endif

@@ -1,5 +1,3 @@
-!! On pose les questions dans ce fichier. D'habitude, c'est par
-!! des forms. Voici un exemple de conception de la forme de réponse.
 
 !if $sstyle=1
  !if $substep=0
@@ -8,10 +6,10 @@
    Quelle est la <em>première</em> étape erronée de cette série&nbsp;?
    !formselect badstep from 0 to $stepcnt
    (0 voudra dire que tout est juste.)
-   <p><center><input type=submit value="Envoyer la réponse"></center>
+   <p><center><input type="submit" value="Envoyer la réponse"></center>
   !else
-   Marque <em>toutes</em> les mauvaises étapes ci-dessus, puis
-   <input type=submit value="clique ici">.
+   Marquer <em>toutes</em> les mauvaises étapes ci-dessus, puis
+   <input type="submit" value="cliquer ici">.
   !endif
   </form>
  !else
@@ -22,11 +20,11 @@
     En effet, la première mauvaise étape est le numéro $badstep.
    !endif
   !endif
-  Ta note&nbsp;: $module_score/10.
+  Votre note&nbsp;: $module_score/10.
   !if $expstep!=$empty
    <p>Quelques explications.<ul>
    !for i in $expstep
-    <p><li> Etape $i
+    <li> Etape $i
     !if $i isitemof $badstep
      est correcte.
      !line $i of $remarks
@@ -36,6 +34,7 @@
      n'est pas bonne.
      !read reasons/$e.det
     !endif
+   </li>
    !next i   
    </ul>
   !endif
@@ -43,7 +42,7 @@
 !else
  !if $substep=0
   !form reply
-  Que penses-tu de la <em>dernière</em> étape&nbsp;?
+  Que pensez-vous de la <em>dernière</em> étape&nbsp;?
   !formselect ans list --,OK,$bad_reasons prompt Je ne sais pas,\
   	Oui : cette étape est correcte,$bad_rnames
   <input type=submit value="Envoyer">
@@ -51,7 +50,7 @@
  !endif
  
  !if $substep=2
-  Tu as raison&nbsp;:
+  Vous avez raison&nbsp;:
   !if $step_reason=OK
    la dernière étape est correcte.
   !else
@@ -59,13 +58,13 @@
    La bonne étape sera<p><center>
    <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
    !line $step of $good
-   </table> </center>
+   </td></tr></table> </center>
   !endif
   <p>
   !if $step<$stepcnt
    !href cmd=reply&ans=next Passer à l'étape suivante.
   !else
-   Cet exercice est terminé. Ta note&nbsp;: $module_score/10.
+   Cet exercice est terminé. Votre note&nbsp;: $module_score/10.
   !endif
  !endif
 !endif

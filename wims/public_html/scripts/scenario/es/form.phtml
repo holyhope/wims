@@ -1,5 +1,3 @@
-!! On pose les questions dans ce fichier. D'habitude, c'est par
-!! des forms. Voici un exemple de conception de la forme de réponse.
 
 !if $sstyle=1
  !if $substep=0
@@ -8,10 +6,10 @@
    ¿Cual es el <em>primer</em> paso erróneo de esta serie?
    !formselect badstep from 0 to $stepcnt
    (0 significaría que todos los pasos son correctos).
-   <p><center><input type=submit value="Enviar la respuesta"></center>
+   <p><center><input type="submit" value="Enviar la respuesta"></center>
   !else
    Marque a continuación <em>todos</em> los pasos erróneos, y después
-   <input type=submit value="pulse aquí">.
+   <input type="submit" value="pulse aquí">.
   !endif
   </form>
  !else
@@ -26,7 +24,7 @@
   !if $expstep!=$empty
    <p>Algunas explicaciones.<ul>
    !for i in $expstep
-    <p><li> Paso $i
+    <li> Paso $i
     !if $i isitemof $badstep
      es correcto.
      !line $i of $remarks
@@ -36,6 +34,7 @@
      no es correcto.
      !read reasons/$e.det
     !endif
+   </li>
    !next i   
    </ul>
   !endif
@@ -46,7 +45,7 @@
   ¿Qué piensa del <em>último</em> paso?
   !formselect ans list --,OK,$bad_reasons prompt No sé,\
   	Sí: este paso es correcto,$bad_rnames
-  <input type=submit value="Enviar">
+  <input type="submit" value="Enviar">
   </form>
  !endif
  
@@ -59,7 +58,7 @@
    El paso correcto sería<p><center>
    <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
    !line $step of $good
-   </table> </center>
+   </td></tr></table> </center>
   !endif
   <p>
   !if $step<$stepcnt

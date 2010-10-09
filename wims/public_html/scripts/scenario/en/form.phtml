@@ -6,10 +6,10 @@
    Which is the <em>first</em> wrong step of this series?
    !formselect badstep from 0 to $stepcnt
    (0 would mean that every step is correct.)
-   <p><center><input type=submit value="Send the reply"></center>
+   <p><center><input type="submit" value="Send the reply"></center>
   !else
    Mark <em>all</em> bad steps above, then
-   <input type=submit value="click here">.
+   <input type="submit" value="click here">.
   !endif
   </form>
  !else
@@ -24,7 +24,7 @@
   !if $expstep!=$empty
    <p>Some explanations.<ul>
    !for i in $expstep
-    <p><li> Step $i
+    <li> Step $i
     !if $i isitemof $badstep
      is correct.
      !line $i of $remarks
@@ -34,6 +34,7 @@
      is not good.
      !read reasons/$e.det
     !endif
+   </li>
    !next i   
    </ul>
   !endif
@@ -57,7 +58,7 @@
    The good step will be<p><center>
    <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
    !line $step of $good
-   </table> </center>
+   </td></tr></table> </center>
   !endif
   <p>
   !if $step<$stepcnt

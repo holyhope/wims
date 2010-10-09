@@ -6,10 +6,10 @@
    在此过程中, <em>最早</em>出错的是哪一步?
    !formselect badstep from 0 to $stepcnt
    (0意指全部正确.)
-   <p><center><input type=submit value="提交答案"></center>
+   <p><center><input type="submit" value="提交答案"></center>
   !else
    标出上面<em>所有的</em>错误之处, 然后
-   <input type=submit value="点击这里">.
+   <input type="submit" value="点击这里">.
   !endif
   </form>
  !else
@@ -24,7 +24,7 @@
   !if $expstep!=$empty
    <p>解释.<ul>
    !for i in $expstep
-    <p><li>第$i步
+    <li>第$i步
     !if $i isitemof $badstep
      是对的.
      !line $i of $remarks
@@ -34,6 +34,7 @@
      不好.
      !read reasons/$e.det
     !endif
+   </li>
    !next i   
    </ul>
   !endif
@@ -57,7 +58,7 @@
    正确的应是<p><center>
    <table border=0 bgcolor="#d0c0d0" width="80%"><tr><td align=center>
    !line $step of $good
-   </table> </center>
+   </td></tr></table> </center>
   !endif
   <p>
   !if $step<$stepcnt
