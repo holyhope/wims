@@ -1,1 +1,29 @@
-!changeto  help/anstype.fr/raw.phtml
+
+ <b>Testo `raw'.</b>
+ (nome: <tt>raw</tt>)
+ <br>
+ Un testo da confrontare con la risposta corretta. Le seguenti opzioni impostano 
+ quale conversione eseguire sul testo inserito dall'utente prima di effettuare la
+ verifica. Se non sono date opzioni, di default vengono tolti gli spazi bianchi 
+ all'inizio e alla fine della stringa. Attenzione all'uso di questo tipo di 
+ risposta: di default basterà anche un solo spazio di troppo perché la risposta
+ venga considerata non corretta! Se ne consiglia l'utilizzo solo nel caso
+ si voglia programmare nei dettagli la verifica della correttezza della risposta.
+ 
+!set p=anstype.$lang/raw
+!readproc tabletheme
+$table_header
+!set caption=!record 1 of help/$p
+  <caption>$caption</caption>
+  !set header=!record 2 of help/$p
+  $table_tr<th>$(header[1])</th><th>$(header[2])</th></tr>
+  !set cnt_record=!recordcnt help/$p
+  !for u= 3 to $cnt_record
+    !set l_=!record $u of help/$p
+    $table_tr<td><tt>
+!line 1 of $l_
+    </tt></td><td>
+!line 2 of $l_
+   </td>
+  !next
+$table_end

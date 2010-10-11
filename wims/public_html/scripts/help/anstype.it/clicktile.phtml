@@ -1,1 +1,91 @@
-!changeto  help/anstype.fr/clicktile.phtml
+
+<b>Click in tiles (richiede Java).</b>
+(nome: <tt>clicktile</tt>)
+<br>
+
+Una animazione mostra una serie di quadretti colorati. Possono essere disegnati dei poligoni
+o un punto (l'uno o l'altro). Si richiede all'utente di colorare i quadretti, seguendo una qualche
+regola, cliccandoci sopra.
+
+<p>Deve essere inserita nell'enunciato con un comando <tt>\embed</tt>. I quadretti sono indicati
+dando le cordinate del vertice in alto a sinistra nella forma <tt>intero:intero</tt>.
+La prima riga del comando <tt>\embed</tt> è la dimensione X x Y in pixels dell'animazione.
+La seconda riga, tra parentesi quadre <tt>[</tt> <tt>]</tt> contiene comandi che precisano
+i colori dei quadretti che vengono mostrati all'utente (e che <b>non</b> possono essere
+modificati dallo studente). Per esempio
+<pre>
+\embed{r1, 200 x 200
+[xrange -5,5
+yrange -5,5
+background_color yellow
+square blue,1:1,1:2,1:3
+square green,2:3,2:4
+point red,0:0]}
+</pre>
+Gli estremi (<tt>xrange</tt> e <tt>yrange</tt>) devono essere interi.
+La risposta corretta è data da righe del tipo
+<tt>color,a:b,c:d</tt>
+La posizione dei quadretti deve essere data nella forma <tt>a:b</tt>
+con <tt>a</tt> e <tt>b</tt> interi.
+
+Per presentare all'utente un disegno/una costruzione può essere utilizzato uno dei
+seguenti elementi
+<pre>
+polygon white,0:0,0:1,1:1
+point red,0:0
+line white,-5:0,5:0
+</pre><br>
+&Egrave; anche possibile presentare all'utente un'immagine di sfondo.
+<pre>copy,x,y,url</pre>
+Se questa immagine viene costruita con flydraw, l'url deve essere quello prodotto 
+dalla fuzione <tt>draw()</tt>. Si raccomanda in questo caso di utilizzare gli stessi
+valori per <tt>xrange</tt> e <tt>yrange</tt>. 
+
+La variabile <tt>reply</tt><em>n</em> è la matrice dei quadretti selezionati dall'utente
+(una riga per ciascun colore)
+Se la seconda riga del comando <tt>\embed</tt> è
+<pre>
+return_all_objects yes
+</pre>
+allora la variabile <tt>reply</tt><em>n</em> registrerà la costruzione completa.
+La variabile <tt>sc_reply</tt><em>n</em> assume valore 0.5 se i quadretti selezionati 
+dall'utente sono quelli corretti, ma non del colore corretto.
+
+<p>&Egrave; anche possibile utilizzare una variabile vuota come risposta corretta nel comando
+<tt>\answer</tt>. In questo caso occorre programmare la verifica della correttezza della 
+risposta con opportune <tt>\condition</tt>.
+case.
+</p>
+<p>
+<b>Esempio</b>: 
+<pre>
+\statement{
+  \embed{r1,200 x 200
+  [xrange -5,5
+   yrange -5,5
+   background_color yellow
+   square blue,1:1,1:2,1:3
+   square green,2:3,2:4
+   line white,-5:0,5:0
+  ]}
+}
+\answer{}{blue,1:0,1:-1,1:-2; green,2:-2,2:-3}{type=clicktile}
+</pre>
+$table_header
+$table_hdtr<th></th><th>Spiegazione</th></tr>
+$table_tr<td>xrange x1,x2</td><td></td></tr>
+$table_tr<td>yrange y1,y2</td><td></td></tr>
+$table_tr<td>background_color [color]</td><td></td></tr>
+$table_tr<td>square [color],x1:y1,x2:y2,...</td><td></td></tr>
+$table_tr<td>segment [color],x1:y1,x2:y2</td><td></td></tr>
+$table_tr<td>polygon [color],x1:y1,x2:y2,x2:y2,...</td><td></td></tr>
+$table_tr<td>return_all_objects yes/no</td><td></td></tr>
+$table_tr<td>colors</td><td>List of colors</td></tr>
+</table>
+</center>
+
+I colori possibili sono
+<tt>white,red, green, blue, orange, yellow, purple, lightgreen, lightblue, cyan,
+brown, salmon, pink</tt>.
+
+
