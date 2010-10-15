@@ -53,3 +53,4 @@ function DoWidth(x, element)
   handleBottom.style.width = x + 'px';
 
   wims_deposit.style.width = (x - 5) + 'px';
+}
