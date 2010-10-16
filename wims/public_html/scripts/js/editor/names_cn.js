@@ -4,7 +4,7 @@ names["lang_name"]="中文";
 names["insert_selection"]="插入选择";
 names["not_available"]=names["lang_name"]+"版尚不可用";
 names["contextual_help"]="与上下文相关的帮助 (自动完成)";
-names["contextual_help_desc"]="输入反斜杠 (<code>\</code>), 然后一个小写字母以激活自动完成功能. 命令表会自动过滤出与你的文本相关的命令.";
+names["contextual_help_desc"]="输入反斜杠 (<code>\</code>), 后接一个小写字母以激活自动完成功能. 命令表会自动过滤出与你的字母匹配的命令.";
 
 
 /** HTML entities ***/
