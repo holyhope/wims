@@ -99,7 +99,7 @@ void _form_menus(char *p,int kind)
 	else pc="";
 	switch(kind) {
 	    case FORM_SELECT:
-	    output("<option value=\"%s\"%s>%s\n",p0,pc,plist[i]);
+	    output("<option value=\"%s\"%s>%s</option>\n",p0,pc,plist[i]);
 	    break;
 	    
 	    case FORM_RADIO:

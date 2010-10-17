@@ -1143,8 +1143,8 @@ void calc_instexst(char *p)
     pt=getvar("wims_ins_alt"); if(pt==NULL) pt="";
     if(ins_alt[0] && strcmp(pt,"none")!=0)
       snprintf(altbuf,sizeof(altbuf)," alt=\"%s\"",ins_alt);
-    else altbuf[0]=0;
-    snprintf(p,MAX_LINELEN,"%s<img src=\"%s\" border=%d vspace=%d %s %s%s>%s",
+    else  snprintf(altbuf,sizeof(altbuf)," alt=\"\"");
+    snprintf(p,MAX_LINELEN,"%s<img src=\"%s\" border=\"%d\" vspace=\"%d\" %s %s%s>%s",
 	     md1,urlbuf,border,vspace,at,buf2,altbuf,md2);
     setvar("ins_attr",""); ins_alt[0]=0;
     setvar("ins_url",urlbuf);
