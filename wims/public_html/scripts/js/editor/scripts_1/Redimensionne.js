@@ -17,7 +17,7 @@ function CornerMove(newPos, element)
 
 function DoHeight(y, element)
 {
-  textDiv.style.height = (y + 5) + 'px';
+  //textDiv.style.height = (y + 5) + 'px';
 
   //if(element != handleCorner)
     //handleCorner.style.top = y + 'px';
