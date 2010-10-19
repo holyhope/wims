@@ -19,20 +19,20 @@ Creació de classes virtuals
 
 !if not_manager iswordof $error
  Ho sento, només l'administrador del lloc té el dret de crear un portal
- d'institució.
+ de centre.
  !exit
 !endif
 
 !if getpass iswordof $error
  !if $sendmail!=$empty
-  <font size="+1"><center>Le mot de passe a été envoyé à l'adresse électronique $sendmail.</center></font>
+  <font size="+1"><center>La contrasenya s'ha enviat per email a l'adreça $sendmail.</center></font>
   <p>
  !endif
  !if $regpass!=$empty
   Ho sento, la contrasenya és incorrecta. Si us plau, torneu-ho a provar.
  !else
-  !set cname=!item $cltype+1 de classes virtuals,,grups de classes,,\
-        portals d'institucions
+  !set cname=!item $cltype+1 of classes virtuals,,grups de classes,,\
+        portals de centre
   La creació de $cname en aquest lloc està protegit per una
   contrasenya. Heu d'introduir aquesta contrasenya abans de continuar.
  !endif
@@ -41,7 +41,7 @@ Creació de classes virtuals
   <input type=hidden name="step" value=0>
   Entreu la contrasenya : <input size=16 name="regpass" type=password>
  </form> <p>
- Nota. La contrasenya necessària per crear classes virtuals pot obtenir-se a partir de
+ Nota. La contrasenya necessària per crear classes virtuals pot obtenir-se a partir del
  !mailurl $wims_site_manager gestor\
 Contrasenya per a la creació de classes virtuals
  d'aquest lloc WIMS.
@@ -113,7 +113,7 @@ Contrasenya per a la creació de classes virtuals
 !endif
 
 !if anti_date=$error
- La vostra classe té una data de caducitat aanterior a avui. Estaria per tant
+ La vostra classe té una data de caducitat anterior a avui. Estaria per tant
  caducada abans de ser creada!
  !exit
 !endif
@@ -132,7 +132,7 @@ La creació de la classe només pot tenir èxit si
 !endif
 
 !if existing=$error
- La classe $classname ja sembla existir. No podeu tornar a crear
+ Sembla que la classe $classname ja existeix. No podeu tornar a crear
  la mateixa classe.
  !exit
 !endif
