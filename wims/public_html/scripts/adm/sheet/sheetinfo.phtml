@@ -27,10 +27,11 @@
   $table_tr
    <td>$(name_shinfo[4])&nbsp;</td>
    <td>
-    !distribute item $[$expday],$[$expmon] into expday,expmon
+    !distribute item $[$expday],$[$expmon],$[$expyear] into expday,expmon,expyear
+    !set listexpyear=!listuniq $expyear,$thisyear,$[$thisyear+1]
     !formselect expday from 1 to 31
     !formselect expmon from 1 to 12 prompt $months
-    !formselect expyear from $thisyear to $thisyear+1
+    !formselect expyear list $listexpyear
    </td>
   </tr>
   $table_tr
