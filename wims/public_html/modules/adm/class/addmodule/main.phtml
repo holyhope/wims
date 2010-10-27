@@ -18,7 +18,10 @@ $name_title
 !if $cmd=new or $cmd=resume
  $name_insert <tt>$dir</tt>
  !if $iniparm!=$empty
-  $name_parm <tt>$iniparm</tt>
+  $name_parm 
+  <code>
+  !replace internal & by &amp; in $iniparm
+  </code>
  !endif
 . <p>
 
@@ -30,9 +33,9 @@ $name_title
   !set se=!item 1 of $sh
   !set ti=!item 2 to -1 of $sh
   !if $se=$sheetcnt
-   <option value=$se selected>$wims_name_Sheet $se: $ti
+   <option value="$se selected">$wims_name_Sheet $se: $ti</option>
   !else
-   <option value=$se>$wims_name_Sheet $se: $ti
+   <option value="$se">$wims_name_Sheet $se: $ti</option>
   !endif
  !next i
  </select>
@@ -50,7 +53,7 @@ $name_title
  $wims_name_Description: <textarea name="new_desc" rows=5 cols=50>$desc</textarea>
  !if $scoring=yes
   <p>$name_required:
-  <input size=4 name="require" value="$require">
+  <input size="4" name="require" value="$require">
   <small>
   ($name_repeat)
   </small><p>
