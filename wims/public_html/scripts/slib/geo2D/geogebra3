@@ -1,4 +1,4 @@
-!!compatible avec geogebra3
+!!compatible avec geogebra3.2
 
 !if $wims_read_parm!=slib_header
  !goto proc
@@ -10,13 +10,16 @@ slib_author=Paul BYACHE et Bernadette PERRIN-RIOU
 slib_out=
 
 slib_comment=the available applet commands are either the definition of an object\
-<br>or the following javascript methods\
-<tt>evalCommand setValue setCoords setColor setVisible \
-  setLabelVisible setLabelStyle setFixed setTrace\
-  setAxesVisible setGridVisible setCoordSystem</tt>\
-  <br>For syntax details, you can report to the GeoGebra help page : \
+<br>or javascript methods. For syntax details on how to create objects, you can report to the GeoGebra help page : \
 <a target=wims_external href=http://www.geogebra.org/help/docufr/> www.geogebra.org/help/docufr </a>\
-<br>Allowed options are the followings:\
+There are a lot of available javascript methods : for example, \
+<tt>evalCommand setValue setColor setVisible \
+  setLabelVisible setFixed setTrace\
+  setAxesVisible setGridVisible setCoordSystem\
+  deleteObject renameObject setLayerVisible\
+  setLineStyle setAnimationSpeed startAnimation</tt>\
+The complete list <a target=wims_external href=http://www.geogebra.org/en/wiki/index.php/GeoGebra_JavaScript_Methods> is here.</a>\
+<br><br>Allowed options are the followings. See <a target=wims_external href=http://www.geogebra.org/en/wiki/index.php/GeoGebra_Applet_Parameters> here for details.</a>\
 <br><tt>height</tt> default 300\
 <br><tt>width</tt> default 300\
 <br><tt>file</tt> default none&#46; Be careful &#58; the &#46;ggb file must be in the "image" \
@@ -35,6 +38,9 @@ reset the applet, but without the construction done from wims)\
 <br><tt>enableRightClick</tt> default true (Be careful : by right-clicking \
 on an object, the student can modify all the objects in the construction !)\
 <br><tt>language</tt> default fr\
+<br><tt>enableLabelDrags</tt> default true\
+<br><tt>enableShiftDragZoom</tt> default true\
+<br><tt>errorDialogsActive</tt> default true\
 <br><tt>debug</tt> default false\
 <br><tt>number</tt> number of the applet in the html page (default 1)
 <br><tt>EXAMPLE\
@@ -62,6 +68,9 @@ A=(0,3);B=(0,4);C=(2,3);s=Segment[A,C];Angle[C,A,B];a=Droite[C,B];D=Point[a];b=3
 !exit
 
 :proc
+!set name_clickgeogebra_fr=Initialiser
+
+!default name_clickgeogebra_$lang=Init
 
 !default slib_cnt=0
 slib_cnt= $[$slib_cnt +1]
@@ -91,7 +100,7 @@ slib_extra = !rows2lines $slib_extra
 slib_data=$slib_data\
 $slib_extra
 
-slib_list_ap = file,showToolBar,showAlgebraView,showMenuBar,showResetIcon,showToolBarHelp,enableRightClick,showAlgebraInput,customToolBar,language,debug,number
+slib_list_ap = enableLabelDrags,enableShiftDragZoom,errorDialogsActive,file,showToolBar,showAlgebraView,showMenuBar,showResetIcon,showToolBarHelp,enableRightClick,showAlgebraInput,customToolBar,language,debug,number
 slib_list_ap1=!items2words $slib_list_ap
 
 !for slib_a in width,height,language,$slib_list_ap
@@ -113,6 +122,9 @@ slib_customToolBar= !items2words  $slib_customToolBar
 !default slib_showResetIcon=false
 !default slib_showAlgebraInput=false
 !default slib_language=$module_language
+!default slib_enableLabelDrags=true
+!default slib_enableShiftDragZoom=true
+!default slib_errorDialogsActive=true
 !default slib_debug=false
 !default slib_customToolBar=
 !default slib_number=1
@@ -120,7 +132,11 @@ slib_number=$[$slib_number -1]
 
 slib_js_parm=evalCommand setValue setCoords setColor setVisible \
   setLabelVisible setLabelStyle setFixed setTrace\
-  setAxesVisible setGridVisible setCoordSystem
+  setAxesVisible setGridVisible setCoordSystem setUndoPoint\
+  deleteObject renameObject setLayer setLayerVisible\
+  setLineStyle setThickness setPointStyle setPointSize\
+  setFilling setAnimating setAnimationSpeed\
+  startAnimation stopAnimation isAnimationRunning
 
 slib_cnt=!linecnt $slib_data
 
@@ -131,16 +147,18 @@ slib_data1=!replace internal ( by , in $slib_data1
 slib_appletcommand=
 slib_appletoption=
 slib_geogebracommand=
-slib_out=<applet codebase=java/geogebra3 code=geogebra.GeoGebraApplet archive=geogebra.jar width=$slib_width height=$slib_height>\
+
+slib_out=$slib_out\
+<applet name="applet$slib_number" codebase="java/geogebra3_2" code="geogebra.GeoGebraApplet" archive="geogebra.jar" width="$slib_width" height="$slib_height" MAYSCRIPT>\
 <param name="framePossible" value="false">\
-<param name=language value=$slib_language>\
+<param name=language value="$slib_language">\
 <param name="showToolBar" value="$slib_showToolBar">\
 <param name="showToolBarHelp" value="$slib_showToolBarHelp">\
 <param name="showResetIcon" value="$slib_showResetIcon">\
 <param name="enableRightClick" value="$slib_enableRightClick">\
 <param name="showMenuBar" value="$slib_showMenuBar">\
 <param name="showAlgebraInput" value="$slib_showAlgebraInput">\
-
+<param name="showAlgebraView" value="false">
 !for slib_u=1 to $slib_cnt
   slib_line=!line $slib_u of $slib_data
   slib_line=!nospace $slib_line
@@ -156,11 +174,11 @@ slib_out=<applet codebase=java/geogebra3 code=geogebra.GeoGebraApplet archive=ge
     !endif
   !else 
     !if $slib_first iswordof $slib_js_parm
-      slib_appletcommand=!append line  document.applets[$slib_number].$slib_line to $slib_appletcommand
+      slib_appletcommand=!append line  myapplet.$slib_line; to $slib_appletcommand
       slib_geogebracommand=!append line $slib_line to $slib_geogebracommand
     !else
       !if $slib_first notwordof height width
-        slib_appletcommand=!append line document.applets[$slib_number].evalCommand("$slib_line") to $slib_appletcommand
+        slib_appletcommand=!append line myapplet.evalCommand("$slib_line"); to $slib_appletcommand
         slib_geogebracommand=!append line $slib_line to $slib_geogebracommand
       !endif
     !endif
@@ -182,28 +200,42 @@ slib_out=<applet codebase=java/geogebra3 code=geogebra.GeoGebraApplet archive=ge
   !default slib_image_dir=$module_dir
   
  slib_out=$slib_out\
-<param name="filename" value="../../$slib_image_dir/$slib_file">
+<param name="filename" value="$slib_image_dir/$slib_file">
 !endif
+
 !if $slib_customToolBar!=$empty
   slib_out=$slib_out \
 <param name="customToolBar" value="$slib_customToolBar">
 !endif
 slib_out=$slib_out\
 Sorry - the GeoGebra Applet could not be started. Please make sure that Java 1.4.2 (or later) is installed and activated. (<a href="http://java.sun.com/getjava">click here to install Java now</a>)\
-</applet>\
-<script language="JavaScript">\
-$slib_appletcommand\
+</applet>
+
+!if $slib_appletcommand!=
+ slib_out=<input type="button" style="background-color:$wims_ref_button_bgcolor;color:$wims_ref_button_color;" value="$(name_clickgeogebra_$lang)" onclick="Construction();">\
+ $slib_out\
+ <script type="text/javascript">\
+ function Construction() {\
+ var myapplet = document.applet$slib_number; \
+ myapplet.setRepaintingActive(false); \
+ $slib_appletcommand\
+ myapplet.setRepaintingActive(true);\
+}\
 </script>
 
-!!var ch=new String(document.applets[0].getXML())\
-!!var alg1=new String("algebraView=\"true\"")\
-!!var alg2=new String("algebraView=\"false\"")\
-!!ch=ch.replace(alg1,alg2)\
-!!ch=ch.replace('splitDivider loc=\"250\"','splitDivider loc=\"0\"')\
-!!document.applets[0].setXML(ch)\
-
+!endif
 slib_z1=$wims_read_parm
 !if $slib_debug=true
   slib_out=$slib_out \
 <br><br>Parameters read by the applet : $slib_z1<br><br>The slib_data : $slib_z2 --> $slib_data
 !endif
+
+
+!!function algebraview() {\
+!! var myapplet = document.applet$slib_number; \
+!! var ch=new String(myapplet.getXML());\
+!! var alg1=new String('<show algebraView=\"true\" auxiliaryObjects=\"false\" algebraInput=\"true\" cmdList=\"true\"/>');\
+!! var alg2=new String('<show algebraView=\"false\" auxiliaryObjects=\"false\" algebraInput=\"false\" cmdList=\"false\"/>');\
+!! ch=ch.replace(alg1,alg2);\
+!! myapplet.setXML(ch);\
+!!}\
