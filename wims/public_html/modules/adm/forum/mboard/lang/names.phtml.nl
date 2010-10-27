@@ -77,12 +77,6 @@ Vul deze code hier in&nbsp;
  !set n_compose=Beantwoorden
 !endif
 
-!if $job notwordof read list config
- !set nextline=</b> <br>--- $(n_$job) ---
-!endif
-
-!set module_title=$module_title$nextline
-
 !set name_prompt=Onbekende activiteit
 
 !distribute line Hier kan het forum worden afgesteld.\

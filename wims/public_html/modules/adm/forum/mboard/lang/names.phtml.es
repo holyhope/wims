@@ -80,12 +80,6 @@
  !set n_compose=Contestar
 !endif
 
-!if $job notwordof read list config
- !set nextline=</b> <br>--- $(n_$job) ---
-!endif
-
-!set module_title=$module_title$nextline
-
 !set name_prompt=Actividad desconocida
 
 !distribute line Parámetros del foro de discusión que puede cambiar.\

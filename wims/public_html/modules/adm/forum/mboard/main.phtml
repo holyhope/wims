@@ -13,10 +13,17 @@
 !if $job=compose
   !read js/speckedit.phtml name_deposit
 !endif
+!if $job notwordof read list config
+ !set nextline= $(n_$job)
+!else
+  !reset nextline
+!endif
+
 !header1
 !read adm/title.phtml 1\
 $wims_classname - $wims_institutionname\
-$module_title
+$module_title\
+$nextline
 
 !if $error!=$empty
  !read lang/msg.phtml.$modu_lang
