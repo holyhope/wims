@@ -1862,7 +1862,7 @@ void calc_imgrename(char *p)
 	p2=find_word_start(p2); p4=find_word_end(p2);
 	memmove(buf,p2,p4-p2); buf[p4-p2]=0;
 	calc_rename(buf); *p3=0;
-	snprintf(buf2,sizeof(buf2),"<img src=\"%s\"%s>",buf, p4);
+	snprintf(buf2,sizeof(buf2),"<img src=\"%s\"%s alt=\"\">",buf, p4);
 	*p3=')'; p3++;
 	string_modify(p,p1,p3,"%s",buf2);
 	p1+=strlen(buf2);
