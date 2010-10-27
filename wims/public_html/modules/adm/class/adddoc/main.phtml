@@ -19,7 +19,7 @@ $module_title
  !set block=!getopt block in $iniparm1
 $table_header
 $table_tr
-<th>$wims_name_title</th><td colspan=2> <input size=50 name="title" value="$title"></td>
+<th>$wims_name_title</th><td colspan=2> <input size="50" name="title" value="$title"></td>
 $table_tr <th>$wims_name_Status</th>
  <td>
  !formselect status list 0,1 prompt $wims_name_status
@@ -27,17 +27,19 @@ $table_tr <th>$wims_name_Status</th>
   !if $doc>0
   !formcheckbox update list 0 prompt $wims_name_erase
  !endif
- <td><tt>$dir</tt>
+ </td><td>
+ <code>
+!replace internal & by &amp; in $dir
  !if $iniparm!=$empty
- <tt>&$iniparm</tt>
+!replace internal & by &amp; in &$iniparm
  !endif
+ </code>
  </td> 
-$table_tr <th>$wims_name_Description</th><td colspan=2><textarea name="desc" rows=5 cols=50>$desc</textarea></td>
+$table_tr<th>$wims_name_Description</th><td colspan="2"><textarea name="desc" rows="5" cols="50">$desc</textarea></td></tr>
 
-$table_tr<th></th><td colspan=2><center><input type=submit value="$wims_name_tosave"></center></td>
- 
- </form>
+$table_tr<th></th><td colspan="2"><center><input type="submit" value="$wims_name_tosave"></center></td></tr>
 $table_end
+ </form>
 !endif
 
 :end
