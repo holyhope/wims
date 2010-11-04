@@ -25,6 +25,8 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 \text{facteur=100}
 :Hauteur des étiquettes
 \integer{height=100}
+:utilise les deux items des données principales (0), seulement la première colonne (1), seulement la deuxième colonne (2)
+\text{choix=0}
 :Données principales.
 \text{data=1515,Bataille de Marignan
 1680,Création de la Comédie Française
@@ -40,8 +42,8 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 
 \real{M=\N-0.3}
 \text{xrange=-1,\N+1}
-\text{yrange=-5,5}
-
+\text{yrange=\choix=0 ? -5,5:-2,5}
+\text{yrange=\choix=1 ? -5,2}
 \text{cnt=rows(\data)}
 \text{shu=shuffle(\cnt)}
 \text{shu=\shu[1..\N]}
@@ -54,16 +56,20 @@ Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
 \text{fleche=xrange \xrange
 yrange \yrange
 lines \couleur,\M,1,-1,1,-1,-1,\M,-1,\M,-2,\N+0.5,0,\M,2,\M,1
-fill 0,0,\couleur
+fill 0,\0,\couleur
 }
 
-\text{STEP=wims(makelist r x for x=1 to 2*\N)}
+\text{STEP=\choix=0 ? wims(values x for x=1 to 2*\N)}
+\text{STEP=\choix=1 ? wims(values 2*x-1 for x=1 to \N)}
+\text{STEP=\choix=2 ? wims(values 2*x for x=1 to \N)}
+\text{STEP=wims(makelist r x for x in  \STEP)}
 \steps{\STEP}
 \text{positionbas=}
 \text{positionhaut=}
 \for{j=0 to \N-1}{
-  \text{fleche=\fleche
-  line \j-0.1,-1,\j-0.1,-2,\couleur
+  \text{fleche=\choix=0 or \choix=1 ? \fleche
+  line \j-0.1,-1,\j-0.1,-2,\couleur}
+  \text{fleche=\choix=0 or \choix=2 ? \fleche
   line \j-0.1,0.7,\j-0.1,2,\couleur}
   \text{ans=pari([2*\j+1,2*\j+2])}
  \text{v=slib(draw/convpixel \j-0.5,-2,\size,\xrange,\yrange,0,pixels)}
@@ -73,7 +79,10 @@ fill 0,0,\couleur
  \text{positionhaut=\positionhaut
 r\ans[2],\v[1] x \v[2]}
  }
- \text{position=\positionbas
+ \text{position=\choix=1 or \choix=0? \positionbas}
+ \text{position=\choix=2 or \choix=0? \position
+ \positionhaut}
+ text{position=\positionbas
  \positionhaut}
  \text{urlfleche=draw(\size
 \fleche)}
@@ -83,7 +92,7 @@ r\ans[2],\v[1] x \v[2]}
 \position}
 </center>
 }
-\positionbas
+
 \answer{}{\rep[1;1]}{type=clickfill}{option=shuffle}
 \answer{}{\rep[1;2]}{type=clickfill}{option=shuffle}
 \answer{}{\rep[2;1]}{type=clickfill}{option=shuffle}
