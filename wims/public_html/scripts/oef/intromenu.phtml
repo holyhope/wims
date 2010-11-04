@@ -73,70 +73,68 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
  $name_oneexercise, <b>
  !item 1 of $titlelist
  </b>.
- !set exoo=!item 1 of $exolist
- !href cmd=new&module=$module&exo=$exoo $name_tryit
 !endif
 
 !form new
-<input type=hidden name="module" value="$module">
-<center><table border=0>
+<input type="hidden" name="module" value="$module">
+<center><table border="0">
 !if $exocnt>1
 <tr>
  !set special_parm=!trim $special_parm
  !if select iswordof $special_parm2 and $special_parm!=$empty
-  <td align=center>$name_exercisescontaining<br>
-  <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+  <td align="center">$name_exercisescontaining<br>
+  <em><font color="blue">$special_parm</font></em>&nbsp;:<td>
  !else
-  <td align=center>$name_chooseexo:<td>
+  <td align="center">$name_chooseexo:<td>
  !endif
  !read oef/select.phtml
 !endif
-<tr><td align=center>$name_oneserie<td>
+<tr><td align="center">$name_oneserie<td>
 !default qnum=1
 !formselect qnum from 1 to 9
  $name_exercises.
-<tr><td align=center>$name_levelseverity<td>
+<tr><td align="center">$name_levelseverity<td>
 !default qcmlevel=3
 !formselect qcmlevel from 1 to 9
-<tr><td align=center>$name_chrono<td>
-<input size=7 name=scoredelay value="$scoredelay"> $name_secondes.
+<tr><td align="center">$name_chrono<td>
+<input size="7" name="scoredelay" value="$scoredelay"> $name_secondes.
 </td></tr>
 !read introhook.phtml
 !if expert iswordof $special_parm2
-   <tr><td align=center>
+   <tr><td align="center">
    $name_qcmanswer: </td><td>
    !default intro_qcmpresent=4
    !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
    </td></tr>
-   <tr><td align=center>$name_solutiongiven? </td><td>
+   <tr><td align="center">$name_solutiongiven? </td><td>
    !default intro_presentsol=1
    !formselect intro_presentsol list 0,1,2 prompt $name_choice
-   <tr><td rowspan=4>&nbsp;</td><td>
+   <tr><td rowspan="4">&nbsp;</td><td>
    !default intro_check=1,2,3,4
    !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
    une bonne réponse dans les QCM.
    </td></tr>
-   <tr><td align=left>
+   <tr><td align="left">
    !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
    </td></tr>
-   <tr><td align=left>
+   <tr><td align="left">
    !formcheckbox  intro_check list 3 prompt $(name_choice_check[3])
    </td></tr>
-   <tr><td align=left>
+   <tr><td align="left">
    !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
    !let tmp=!replace word expert by $ in $special_parm2
-    <input type=hidden name=intro_expert value=yes>
+    <input type="hidden" name="intro_expert" value="yes">
     </td></tr>
-   <tr><td colspan=2 align=center>
+   <tr><td colspan="2" align="center">
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_simplifiedmenu
 !else
-   <tr><td colspan=2 align=center>
+   <tr><td colspan="2" align="center">
    !let tmp=$special_parm2 expert
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_expertmenu
 !endif
 </table></center> <p><center>
-<input type=submit value="$wims_name_work">&nbsp;
-<input type=submit name=print value="$name_print">
+<input type="submit" value="$wims_name_work">&nbsp;
+<input type="submit" name="print" value="$name_print">
 <input type="hidden" name="special_parm2" value="$special_parm2">
 <input type="hidden" name="special_parm4" value="$special_parm4">
 </center>
