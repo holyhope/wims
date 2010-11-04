@@ -16,8 +16,8 @@
 !default color=orange,black,white
 !set style=.cw_case {background-color:$(color[1]);text-align:left;width:33px;height:33px;font-size:90%;}\
 .cw_input {background-color:$(color[1]);border:0;text-align:center;font-size:20px;}\
-.cw_no {color:blue;float:left;padding:5;background-color:$(color[3])}\
-.cw_no2 {color:white;float:left;right-margin:4;background-color:blue;}\
+.cw_no {color:blue;padding:4;background-color:$(color[3]);}\
+.cw_no2 {color:blue;padding:4;}\
 .cw_black {background-color:black;}\
 .cw_HV {font-weight:bold;color:$(color[2]);display:inline;}
 
@@ -144,7 +144,7 @@ $ in $def
     !set u=!replace internal : by , in $u
     !set un=!replace internal H by in $(u[1])
     !set help=$help\
-    <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_horizontal</div>$un : $(u[2..-1])</div>
+    <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_horizontal</div><span class="cw_no2">$un</span> $(u[2..-1])</div>
     !endif
 !next k
 !for k = 1 to $listemotV_cnt
@@ -154,7 +154,7 @@ $ in $def
      !set u=!replace internal : by , in $u
      !set un=!replace internal V by in $(u[1])
       !set help=$help\
-      <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_vertical</div>$un : $(u[2..-1])</div>
+      <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_vertical</div><span class="cw_no2">$un</span> $(u[2..-1])</div>
    !endif
 !next k
  !if allhelp  notwordof $(replyoption$i)
