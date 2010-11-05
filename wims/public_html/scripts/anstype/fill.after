@@ -43,7 +43,7 @@ $ by ',' in '$Objs'
 !set align_option=!getopt align in $wims_fill_option
 !set align_option=!tolower $align_option
 !bound align_option within left,right,center default center
-!set crleft='<table border=0 cellpadding=0 cellspacing=0 width="100%" height=$fill_sy><tr><td align=$align_option>'
+!set crleft='<table border="0" cellpadding="0" cellspacing="0" width="100%" height="$fill_sy"><tr><td align="$align_option">'
 !set crright='<\/td><\/tr><\/table>'
 !set wims_ins_alt=none
 !set tolx=$[round($fill_sx*2/3)]
@@ -70,26 +70,26 @@ $ by ',' in '$Objs'
   !set reposition_x=!append item $rx to $reposition_x
   !set reposition_y=!append item $ry to $reposition_y
  !next i
- f_reposition_x=new Array($reposition_x,0)
- f_reposition_y=new Array($reposition_y,0)
+ var f_reposition_x=new Array($reposition_x,0);
+ var f_reposition_y=new Array($reposition_y,0);
 !endif
 
- f_objs=new Array($objs,'?');
- f_Objs=new Array($Objs,'?');
- f_starts=new Array($fillstarts,$filltotal);
- f_cut=new Array($fillcutpoints,0);
- f_curr=new Array($fillstarts);
- f_fillnames=new Array($fill_namelist,0);
- f_major=new Array($filltotal);
- f_minor=new Array($filltotal);
- f_det=new Array($filltotal);
- f_lyr=new Array($filltotal);
- f_lbis=new Array($objcnt2);
- f_fields=new Array($formfields);
- f_xrel=new Array($filltotal);
- f_yrel=new Array($filltotal);
+ var f_objs=new Array($objs,'?');
+ var f_Objs=new Array($Objs,'?');
+ var f_starts=new Array($fillstarts,$filltotal);
+ var f_cut=new Array($fillcutpoints,0);
+ var f_curr=new Array($fillstarts);
+ var f_fillnames=new Array($fill_namelist,0);
+ var f_major=new Array($filltotal);
+ var f_minor=new Array($filltotal);
+ var f_det=new Array($filltotal);
+ var f_lyr=new Array($filltotal);
+ var f_lbis=new Array($objcnt2);
+ var f_fields=new Array($formfields);
+ var f_xrel=new Array($filltotal);
+ var f_yrel=new Array($filltotal);
  var f_dstartx, f_dstarty;
- f_rcolor=new Array($objcnt2);
+ var f_rcolor=new Array($objcnt2);
  var f_cll=-1;
  var f_clr=-1;
 
@@ -289,10 +289,10 @@ function f_cright(n) {
 <p style="text-align: left">
 !for i_=1 to $objcnt2
  !set l_=!item $i_ of $wims_fill_list
- <sup><img width=$fill_sx height=$[$fill_sy+10] src="gifs/transparent.gif" alt=transparent
- border=0 align="top"><a name="fillobj$i_" id=fillobj$i_><img
- width=1 height=1 src="gifs/transparent.gif" alt=transparent
- border=0 align="top"></a></sup>
+ <sup><img width="$fill_sx" height="$[$fill_sy+10]" src="gifs/transparent.gif" alt="transparent"
+ border="0" align="top"><a name="fillobj$i_" id="fillobj$i_"><img
+ width="1" height="1" src="gifs/transparent.gif" alt="transparent"
+ border="0" align="top"></a></sup>
 !next i_
 </p><p>
 
