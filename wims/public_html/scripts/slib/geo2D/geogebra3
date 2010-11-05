@@ -194,11 +194,10 @@ slib_out=$slib_out\
     slib_image_dir=$imagedir
   !endif
   !if adm iswordof $slib_mod
-    slib_image_dir=!replace internal wimshome/public_html/ by in $docdir
-    slib_image_dir=$slib_image_dir/$doc/files
+    slib_image_dir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
   !endif
   !default slib_image_dir=$module_dir
-  
+
  slib_out=$slib_out\
 <param name="filename" value="$slib_image_dir/$slib_file">
 !endif
