@@ -88,7 +88,7 @@ for s in `find . -path '*/sheets/.sheets' -type f`; do
 # in temporary file, then overwrite old file with new one
    if [ ! -z "$test" ]; then
     awk 'BEGIN {a=0; v=0};
-	a==1 {a=0; if($1>='$today' || v>1) {print t} else {print ":2"};}
+	a==1 {a=0; if($1>='$today' || v!=1) {print t} else {print ":2"};}
 	substr($1,1,1)!=":" {print};
 	substr($1,1,1)==":" {a=1; t=$1; v=substr(t,2)};' $s >.sheets
     mv -f .sheets $s
