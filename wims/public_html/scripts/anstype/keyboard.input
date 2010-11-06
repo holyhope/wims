@@ -49,9 +49,11 @@ autocomplete=off
 !bound sizev between integer 1 and 20 default 1
 
 
-!if $keyboard=universal
+!if universal isin $keyboard
+ !set key_lang=!replace internal _ by , in $keyboard
+ !set key_lang=!item 2 of $key_lang
 !reset wims_html_header
- !read js/keyboard.phtml key$i
+ !read js/keyboard.phtml $key_lang
  $wims_html_header
   !goto universal
 !endif
