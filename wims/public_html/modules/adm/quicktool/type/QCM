@@ -116,7 +116,7 @@ text{testexp=wims(nospace \testexp)}
 \integer{cnt_juste=0}
 \real{v = 10}
 \statement{\nopaste
-\style\instruction
+\instruction
 \if{\reading notsametext }{\special{help reading,READING}}
 \if{\image notsametext }{\special{help image,IMAGES}}
 \audio\video
@@ -143,7 +143,7 @@ text{testexp=wims(nospace \testexp)}
          \if{\TEST[\h;3]>0}{<font color="red">\bad_answer_text</font>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<font color="green">\good_answer_text</font>}
          \if{\answer_given=yes}{
-         <br> \qcm_prompt2 <font color=green><b>\CHOIX[\h;\rep[\h;]]</font></b>}
+         <br> \qcm_prompt2 <font color="green"><b>\CHOIX[\h;\rep[\h;]]</font></b>}
       \if{\explication[\h;] notsametext }{<br>\explication[\h;]}     
      </div>
    }
@@ -279,7 +279,7 @@ feedback{1=1}{
      <div class="reponse"><ol>
       \for{w = 1 to \MAX}{
         \if{\explication[\w;] notsametext }
-         {<li style="list-style:decimal;" value=\w>\explication[\w;] </li>}
+         {<li style="list-style:decimal;" value="\w">\explication[\w;] </li>}
      }
      </ol>
     </div>
@@ -288,7 +288,7 @@ feedback{1=1}{
 {<ol>
   \for{ t = 1 to \N}{
     \if{\CNT[\step;\t] != }{
-  <li style="list-style:decimal;" value=\CNT[\step;\t]> <b>\question[\N*(\step-1) + \t;]</b>
+  <li style="list-style:decimal;" value="\CNT[\step;\t]"> <b>\question[\N*(\step-1) + \t;]</b>
   <div class="question"><ol>
    \for{s=1 to \CNT_choix[\N*(\step-1) + \t]}{
    <li>\embed{\STEPS[\step;\t] , \s }</li>
