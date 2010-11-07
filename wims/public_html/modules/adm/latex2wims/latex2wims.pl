@@ -74,7 +74,7 @@ $FILE = $_;
 $DIR = $DIR . '/' if ($DIR) ;
 $doc_DIR = $doc_DIR . '/' if ($doc_DIR) ; 
 my $LOAD = '\reload{<img src="gifs/doc/etoile.gif" alt="rechargez" width="20" height="20" border=0>}';
-my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border=0 valign="bottom">';
+my $FLECHE = '<img src="gifs/arrows/right3.32.gif" alt=" ---> " width="25" height="15" border=0>';
 $linkout = "\\doc{module=$linkout}" . $FLECHE if ($linkout) ; 
 
 ##################################
@@ -428,7 +428,7 @@ sub analyse_texte { my ($TEXT, $ref, $Id, $niveau, $niveau_max, $Toc) = @_;
     $ref->{toctip}{$Id} .= $ref->{tittoc}{$id} ;
     $tp = "ZZZZZ$id" ; }
     $ref->{toc}{$Id} .= "\n<XXXX=$id>\\link{$id}{$ref->{tittoc}{$id}
-    $tp }<YYYY=$id>\n";
+    }$tp <YYYY=$id>\n";
   }
  #maintenant, ce qui reste dans $text est exactement ce qu'on doit mettre dans le hash->{text}{$Id}
   $ref->{text}{$Id} = $text;
@@ -530,6 +530,7 @@ for my $rubrique (@liste_env_tabular) {
   if ($TEXT =~ /\\begin\{\s*(\w*)\s*\}/g) {
      warn " ATTENTION : environnement non répertorié : $1" if $1 ne 'matrix';
   }
+  $TEXT =~ s,<li>\n+</li>,<li></li>,g;
   $TEXT;
 }
 
@@ -1319,8 +1320,8 @@ sub clean { my ($text, $ref) = @_;
 
 sub store_tip { my ($tag,$ref)=@_ ; 
   my $tip = $ref->{toctip}{$tag} ;
-  $tip =~ s/'/\\'/g if ($tip) ; 
-  $ref->{toctip}{$tag} ?  "<span class=\"tip\"><a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a><\/span>" : '' ; 
+  $tip =~ s/'/\\\\'/g if ($tip) ; 
+  $ref->{toctip}{$tag} ?  "<a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a>" : '' ; 
 }
 
 sub chemin { my ($tag, $ref) = @_;
