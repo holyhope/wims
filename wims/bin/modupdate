@@ -97,6 +97,7 @@ site=$bases/site
 sys=$bases/sys
 tmpdir=tmp/log
 outfile=$tmpdir/modupdate.out
+rm -f $outfile
 if [ -z "$w_wims_version" ]; then
  w_wims_version=`cd public_html; ./wims version`
 fi
@@ -148,7 +149,6 @@ modif=`echo "$mix" | awk -v center="$depot" 'NF==5 && $3>$2 {print $5"@"$1","$3"
 
 rm -fR download/modules
 mkdir -p download/modules
-rm -f $outfile
 
 hostname=`hostname`
 if [ -n "$modif" ]; then
