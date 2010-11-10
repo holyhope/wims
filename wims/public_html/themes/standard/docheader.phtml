@@ -11,7 +11,7 @@
 
 !!!if $wims_developer= and $wims_user!=supervisor
 !if $job=read
- <div id=wimsdoc>
+ <div id="wimsdoc">
 !endif
 !!!endif
 <div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
@@ -78,17 +78,20 @@
   </span><!-- menuitem-->
  !endif
 !endif
+
 !if $job=read
+  !set wims_name_nexthist=&gt;&gt;
+  !set wims_name_backhist=&lt;&lt;
  !if $blocklast$blocknext!=$empty
   <span class="menuitem">
   [
   !if $blocklast!=$empty
-   !href cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 &lt;&lt;
+  !read $oneitem backhist,1,cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 
   !endif
    &nbsp;$wims_name_doch_hist
   !if $blocknext!=$empty
    &nbsp;
-   !href cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1 &gt;&gt;
+    !read $oneitem nexthist,1,cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1
   !endif
   ]
   </span><!-- menuitem-->
@@ -130,7 +133,63 @@
 !endif
 </div><!--end of wimsmenu  -->
 </div><!--end of wimstopbox  -->
-
  <div id="wimsbodybox">
  <div id="wimspagebox">
+ !if $job=read
+ <div class="wimsdocleftmenu"> 
+!if $blocklast!=$empty
+  <div class="menuitem">
+   !read $oneitem backhist,6,cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 
+  </div>
+  !endif
+  !if $blocknext!=$empty
+  <div class="menuitem">
+  !read $oneitem nexthist,6,cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1
+  </div>
+  !endif
+ !if $block!=main and $job=read
+  <div class="menuitem">
+ !read $oneitem doch_up,6,cmd=reply&doc=$doc&block=$upbl
+ </div>
+ !endif
+ !if $prev!=$empty and $prev!=$upbl and $job=read
+  <div class="menuitem">
+  !read $oneitem doch_prev,6,cmd=reply&doc=$doc&block=$prev
+  </div><!-- menuitem-->
+  !endif
+  !if $next!=$empty and $next!=$upbl and $job=read
+   <div class="menuitem">
+  !read $oneitem doch_next,6,cmd=reply&doc=$doc&block=$next
+  </div><!-- menuitem-->
+ !endif
+ </div><!-- wimsdocleftmenu-->
+ <div class="wimsdocrightmenu">
+ !if $block!=main and $job=read
+  !if $blocklast!=$empty
+  <div class="menuitem">
+   !read $oneitem backhist,6,cmd=reply&doc=$doclast&block=$blocklast&readcntadv=-1 
+  </div>
+  !endif
+  !if $blocknext!=$empty
+  <div class="menuitem">
+  !read $oneitem nexthist,6,cmd=reply&doc=$docnext&block=$blocknext&readcntadv=1
+  </div>
+  !endif
+  <div class="menuitem">
+ !read $oneitem doch_up,6,cmd=reply&doc=$doc&block=$upbl
+ </div>
+ !endif
+  !if $prev!=$empty and $prev!=$upbl
+  <div class="menuitem">
+  !read $oneitem doch_prev,6,cmd=reply&doc=$doc&block=$prev
+   </div><!-- menuitem-->
+  !endif
+  !if $next!=$empty and $next!=$upbl
+   <div class="menuitem">
+  !read $oneitem doch_next,6,cmd=reply&doc=$doc&block=$next
+   </div><!-- menuitem-->
+  !endif
+  </div><!-- wimsdocrightmenu-->
+  !endif
+ 
 <!-- end of docheader.phtml -->
