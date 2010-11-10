@@ -1320,8 +1320,10 @@ sub clean { my ($text, $ref) = @_;
 
 sub store_tip { my ($tag,$ref)=@_ ; 
   my $tip = $ref->{toctip}{$tag} ;
+  my $title=$ref->{tittoc}{$tag} ;
   $tip =~ s/'/\\\\'/g if ($tip) ; 
-  $ref->{toctip}{$tag} ?  "<a onmouseover=\"Tip('$tip')\">$tooltip_prompt<\/a>" : '' ; 
+   $title =~ s/'/\\\\'/g if ($title) ; 
+  $ref->{toctip}{$tag} ?  "<a onmouseover=\"Tip('$tip',TITLE,'$title',TITLEBGCOLOR,'',width,'200px')\" onmouseout=\"UnTip()\">$tooltip_prompt<\/a>" : '' ; 
 }
 
 sub chemin { my ($tag, $ref) = @_;
