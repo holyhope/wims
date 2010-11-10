@@ -2,7 +2,7 @@
 $name_success
 !set rr=$[$replycnt+$choicecnt]
 $table_header
-$table_tr<td width=50%>$wims_name_title</td><td>$title</td>
+$table_tr<td width="50%">$wims_name_title</td><td>$title</td>
 $table_tr<td>$name_parameter_cnt</td><td>$varcnt</td>
 $table_tr<td>$name_answer_cnt</td><td>$rr</td>
 $table_end
@@ -11,8 +11,9 @@ $table_end
 <ul><li>
 !href cmd=resume&realtest=yes&retest=again $wims_name_testexo
 .
+</li>
 !if $mode!=file
- <li><p>
+ <li>
 !!!!!!!!!!!!! début de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
  !if $to_ia_qcm=-1
    !href module=adm/auth/confia2qcm&cmd=new&chexo=2&exo=1&to_ia_qcm=1 $wims_name_backconfia2qcm
@@ -25,22 +26,26 @@ $table_end
  !endif
 !!!!!!!!!!!!! fin de modifs JY pour le module confia2qcm !!!!!!!!!!!!!
 .
+</li>
 !else
  !set wims_form_method=file
+  <li>
  !form reply
  <input type="hidden" name="level" value="3">
- <li><p>
+
  $name_modify
  <input type="submit" value="$name_sendagain">
  <input type="file" name="wims_deposit">
  </form>
- <li><p>
+</li><li>
  !href cmd=reply&level=1&mode=normal $name_menuback
 .
+</li>
 !endif
 !if $wims_user!=$empty
  <li>
  !href cmd=reply&level=6 $name_deposit
+ </li>
  !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
  to $wims_menu_items
 !endif
@@ -76,9 +81,10 @@ $table_end
  !reset success
 !endif
 !if $mode!=file
- <li><p>
+ <li>
  !getfile submit.oef $name_savesource
  $name_download
+ </li>
 !endif
 </ul>
 !set wims_menu_items=!append line testexo,1,cmd=resume&realtest=yes&retest=again\
