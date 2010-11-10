@@ -22,10 +22,11 @@
 !endif
 !if $parm1 != $empty
  !set text=!replace internal ' by \' in $text
+ !set text=!replace internal " by &#quot; in $text
  !set text=!replace internal $\
 $ by  $  in  $text
  !set special_out=$special_out\
- <span class=tooltip><a onmouseover="Tip('$text', $option)">$parm1</a></span>
+ <span class=tooltip><a onmouseover="Tip('$text', $option)" onmouseout="UnTip()">$parm1</a></span>
  !else 
  !set special_out=$text
  !endif
