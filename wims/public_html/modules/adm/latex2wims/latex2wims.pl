@@ -1136,8 +1136,8 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/~(:|;|\?|\!)/&nbsp;$1/g;
  #utiliser verb uniquement dans le cas d'un mot
 #FIXME:  $TEXT =~ s/\verb"([^"]+)"/<tt class=verb>$1<\/tt>/g;
-  $TEXT =~ s/\\includegraphics\s*\[(.*)\]\s*{(.*)}/<img src=\\filedir\/$2 $1>/g;
-  $TEXT =~ s/\\includegraphics\s*{(.*)}/<img src=$1>/g;
+  $TEXT =~ s/\\includegraphics\s*\[(.*)\]\s*{(.*)}/<img src=\"\\filedir\/$2\" $1 alt=\"\">/g;
+  $TEXT =~ s/\\includegraphics\s*{(.*)}/<img src=\"$1\" alt=\"\">/g;
   $TEXT =~ s/\\(begin|end){document}/\\document /g;
   $TEXT =~ s/\\exercise{module=([^\&]+)\&([^}]+)}{([^}]+)}/store_sheet($1,$2,$3,$worksheet)/eg ; 
   $TEXT =~ s/\\xspace//g;
