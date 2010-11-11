@@ -57,11 +57,12 @@ my %Command = (
 $Command = \%Command ;
 $Command->{'begin'}{'if'}= "  " ; 
 $Command->{'end'}{'if'}= "  " ; 
-$Command->{'begin'}{'oefparm0'}= '\n\\\\' ; 
+$Command->{'begin'}{'oefparm0'}= '\\\\' ; 
 $Command->{'end'}{'oefparm0'}= "\{  =  \}" ;
-$Command->{'begin'}{'oefcommand'}= '\n\\\\' ; 
+$Command->{'begin'}{'oefcommand'}= '\\\\' ; 
 $Command->{'end'}{'oefcommand'}= "\{  \}" ;
-$Command->{'begin'}{'anstype'}='\n\\\\answer\{  \}\{  \}\{type=' ;
+##$Command->{'begin'}{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
+$Command->{'begin'}{'anstype'}='' ;
 $Command->{'end'}{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
 for my $tag ("oefparm4") {
    $Command->{'begin'}{$tag}= "" ; 
@@ -73,7 +74,7 @@ for my $tag ("oefparm2", "oefparm3") {
 }
 
 for my $tag ("oefparm5") {
-   $Command->{'begin'}{$tag}= '\n\\\\' ; 
+   $Command->{'begin'}{$tag}= '\\\\' ;
    $Command->{'end'}{$tag}= "" ;
 }
 
@@ -84,7 +85,7 @@ for my $tag ("slib") {
 
 my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip") ; 
 for my $tag (@phtml) {
-   $Command->{'begin'}{$tag}= "\n\\special\{" ; 
+   $Command->{'begin'}{$tag}= "\\special\{" ; 
    $Command->{'end'}{$tag}= " \}" ;
 }
 
