@@ -100,15 +100,13 @@
 				    !else
 					<table summary="" cellspacing="1">
 					!for p=1 to $inputs
-					    <tr>
 					    !if $wims_user=supervisor
 						!set deelantwoord=!item $p of $(answer$n)
-						<th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th>
+						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th><th>$(ex$p)&nbsp;</th></tr>
         				    !else
 						!set deelantwoord=!item $p of $(reply$n)
-						<th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th>
+						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th><th>$(ex$p)&nbsp;/tr>
 					    !endif
-					    </th>
 					!next p
 					</table>
 				    !endif
@@ -235,6 +233,10 @@
 				!set deelantwoord=!item $p of $(reply$n)
 			    !endif
 				<input id="myinput$[$p-1]" style=$inputstyle  size="$cols" name="reply" value="$deelantwoord">
+			    </td>
+			    <td>
+				$(ex$p)
+				&nbsp;
 			    </td>
 			    </tr>
 			!next p

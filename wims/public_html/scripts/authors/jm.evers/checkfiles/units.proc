@@ -312,6 +312,9 @@ score=0
 	    !endif	
 	    A1=!word 1 of $A
     	    G1=!word 1 of $G
+#    	    errortext=wims_exec_error=$wims_exec_error A1=$A1 G1=$G G=$G A=$A $number_r $unit_r answer$n=$(answer$n) AAA=$AAA
+#    	    goback=1
+#    	    !exit
 	    !if $rnd>0
 		A1=$[(round($rnd*($A1)))/$rnd]
 	        A1=$[(round($rnd*($A1)))/$rnd]
@@ -407,7 +410,13 @@ score=0
 	    tot=!exec pari if(abs($A1 - $G1) < $prec1,1,0)\
 	    if(abs($A1 - $G1) < $prec2,1,0)\
 	    if(abs($A1 - $G1) < $prec3,1,0)
-	
+	    
+	    !if $wims_exec_error!=$empty
+		errortext=Something went wrong...contact the systems administrator
+		errortext=A1=$A1 G1=$G1 range=$range<br> unit=$unit <br>answer$n =$(answer$n)<br>reply$n=$(reply$n)<br>if(abs($A1 - $G1) < $prec1,1,0)
+		goback=1
+		!exit
+	    !endif
 	    r1=!line 1 of $tot
 	    r2=!line 2 of $tot
 	    r3=!line 3 of $tot
@@ -489,7 +498,7 @@ score=0
 maxscore=$[$maxscore*$score/$tg]
 modulescore=$[$modulescore+$maxscore]
 
-!if $maxscore>0.9
+!if $maxscore>0.8
     remark$n=$OK
 !else
     !if $maxscore>0.5

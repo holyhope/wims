@@ -1,0 +1,299 @@
+# Hello Joke,
+# 
+# thank you for that interesting question.
+# 
+# J.M. Evers a écrit :
+# > Is it true that it  impossible to  "feed" chemeq something like
+# > HCl + H2O -> Cl^- + H3O^+
+# >
+# > and the pupil needs to write the 'seq' protolyse like
+# > HCl -> Cl^- + H^+
+# >
+# > There is no way to include the solvent H2O into the reaction scheme?
+# 
+# chemeq features two interesting operators: # and ~ which can be
+# understood like "plus" and "minus". Those operators admit chemical
+# balanced reaction schemes as operands and return a reaction scheme as a
+# result.
+# 
+# Here are a few examples :
+# 
+# --------------------8<-------------------------
+# georges:~$ echo "HCl + H2O -> Cl^- + H3O^+" | chemeq -n
+# ClH_aq + H2O -> Cl^-_aq + H3O^+_aq
+#
+# georges:~$ echo "HCl + H2O -> Cl^- + H3O^+ ~ H2O + H^+ -> H3O^+" |
+# chemeq -n
+# ClH_aq -> Cl^-_aq + H^+_aq
+# 
+#georges:~$ echo "HCl -> H^+ + Cl^-" | chemeq -n
+# ClH_aq -> Cl^-_aq + H^+_aq
+# 
+# georges:~$ echo "HCl -> H^+ + Cl^- # H2O + H^+ -> H3O^+" | chemeq -n
+# ClH_aq + H2O -> Cl^-_aq + H3O^+_aq
+#--------------------8<-------------------------
+# 
+# Thus as you can either "add" or "substract" the reaction scheme "H2O + H^+
+# -> H3O^+", you can build a system to test the equivalence between the
+# schemes "HCl + H2O -> Cl^- + H3O^+" and "HCl -> H^+ + Cl^-".
+# 
+# By the way, I introducted the operators # and ~ to allow the
+# construction of many reactions schemes by using a small database of
+# hemireactions, like you can find in acido-basic or oxydo-reductional
+# reaction schemes. In the latter case, the hemireactions can be fed in
+# with standard potential values, and the resulting redox reactions scheme
+# will come with an equilibrium constant (for the Gulder-Vaage equation).
+# 
+# An example for that:
+# 
+# --------------------8<-------------------------
+# georges:~$ echo  "MnO4^- + 8H3O^+ + 5e- --> Mn^2+ + 12 H2O (1.51 V) ~
+# 5Fe^3+  +  5e^-  ->  5Fe^2+ (0.77 V)" | chemeq -l
+#  5\,Fe^{2+}\,+\,8\,H_{3}O^{+}\,+\,MnO_{4}^{-}\,\rightarrow\,5\,Fe^{3+}\,+\,12\,H_{2}O\,+\,Mn^{2+}\,(3.50866\times 10^{+62})
+# --------------------8<-------------------------
+# 
+# 
+# Best regards,                   Georges.
+#
+
+# ChemInputApplet: 3 replys ascii,html,latex
+# answer$n is the correct chemical equasion
+goback=0
+errortext=$empty
+n=$counter
+!if ? isin $(reply$n)
+    remark$n=$NOK
+    goback=0
+    maxscore=0
+    !exit
+!endif
+
+# reply formula
+Af=!item 1 of $(reply$n)
+# html version of $Af
+Ah=!item 2 of $(reply$n)
+# latex version of $Af
+Al=!item 3 of $(reply$n)
+
+
+ta=!itemcnt $(answer$n)
+chemeq_option=n
+Gn1=!exec chemeq $(answer$n)
+chemeq_option=c
+Gc=!exec chemeq $(answer$n)
+
+!if $wims_exec_error != $empty
+    !if $Gc = OK
+	remark$n=Sorry, there seems to be an error in the chemistry of the correct answer !
+    !else
+	remark$n=Sorry, there is an error in the balans of the correct answer equasion !
+    !endif
+    goback=0
+    maxscore=1
+    modulescore=$[$modulescore + $maxscore]
+    !exit
+!endif
+
+# hmmm ,convert arrows to #
+Af=!replace internal ---> by # in $Af
+Af=!replace internal --> by # in $Af
+Af=!replace internal -> by # in $Af
+Af=!replace internal ===> by # in $Af
+Af=!replace internal ==> by # in $Af
+Af=!replace internal => by # in $Af
+Af=!replace internal < by $empty in $Af
+
+found_arrow=0
+!if # notin $Af
+    errortext=!record 104 of $remarkdir/commonremarks.$taal
+    #@Ik geloof dat je even in de help-pagina van deze som moet kijken<br>Want ik kan geen "echte" reactie vergelijking ontdekken in :<br><b>$Ah</b>
+    maxscore=$[$P1*$maxscore]
+    goback=1
+    !exit
+!else
+    found_arrow=1
+!endif
+
+# too many arrows?
+test=!replace internal # by , in $Af
+t1=!itemcnt $test
+!if $t1 !=2
+    errortext=!record 106 of $remarkdir/commonremarks.$taal
+    #@Je maakt een syntaxfoutje<br>Kijk in de Help-pagina's voor een paar tips...
+    maxscore=$[$P1*$maxscore]
+    goback=1
+    !exit
+!endif    
+
+
+Af=!replace [\&\%\$\@\!\~\`\"\'\:\;\?\,\.\_\] by $empty in $Af
+
+Af=!nospace $Af
+Af=!replace internal + by @+@ in $Af
+# arrows are all converted to #
+Af=!replace internal - by @-@ in $Af
+
+#### riskant maar i.v.m. chemeq noodzakelijk
+charge=0
+!if ^ isin $Af
+    charge=1
+    Af=!replace internal ^@-@-@- by ^-3 in $Af
+    Af=!replace internal ^@-@- by ^-2 in $Af
+    Af=!replace internal ^@+@+@+ by ^+2+ in $Af
+    
+    !for p=1 to 6
+	# O^2- O^2@-@
+	Af=!replace internal ^$p@+ by ^$p+ in $Af
+	Af=!replace internal ^$p@- by ^$p- in $Af
+	# O^-2 O^@-@2
+	Af=!replace internal ^@+@$p@+ by ^$p+@+@ in $Af
+	Af=!replace internal ^@-@$p@+ by ^$p-@+@ in $Af
+    !next p
+    # whitespace is last
+    end=!char -2 of $Af
+    !if $end isin +-
+	Af=!char 1 to -2 of $Af
+    !else
+	end=!char -1 of $Af
+    !endif
+    # Al^3+3Cl^-  --> syntaxfout (+ vergeten Al^3+ + 3Cl^-) 
+    # moeten de leerling daar op te wijzen...
+    plussen=!positionof char + in $Af
+    cijfers=0 1 2 3 4 5 6 7 8 9
+    alph=A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+    !for p in $plussen
+	p0=!char $[$p-2] of $Af
+	p1=!char $[$p-1] of $Af
+	p2=!char $[$p+1] of $Af
+	!if $p0=^ and $eind!=+
+	    !if $p1 isin $cijfers and ($p2 isin $cijfers or $p2 isin $alph)
+    		errortext=!record 105 of $remarkdir/commonremarks.$taal
+		#@Een syntaxfoutje, je bent een "+" vergeten...<br>Kijk even in de helppagina's voor de syntaxregeltjes
+		maxscore=$[$P1*$maxscore]
+		goback=1
+		!exit
+	    !endif
+	!endif
+    !next p    	
+    # nog wat correcties nodig om chemeq niet te laten stijgeren...
+    Af=!replace internal ^@+ by ^+ in $Af
+    Af=!replace internal ^@- by ^- in $Af
+!else
+    Af=!replace internal ++ by + in $Af
+    Af=!replace internal + by @+@ in $Af
+!endif
+
+test=!replace internal = by % in $Af
+# testen op CH4 +2O2 = CO2 + 2H2O ipv  CH4 +2O2 -> CO2 + 2H2O
+!if % isin $test and $found_arrow=0
+    check=0
+    dingen=<,>
+    t=!positionof char = in $Af
+    !for p in $t
+	t1=!char $[$p-1] of $Af
+	t2=!char $[$p+1] of $Af
+	!if $t1 notin $dingen and $t2 notin $dingen
+	    !increase check 
+	!endif
+    !next p
+    !if $check>0
+	errortext=!record 106 of $remarkdir/commonremarks.$taal
+	#@Nee je moet natuurlijk wel de goede equivalentie pijlen gebruiken...<br>A + B -> C <br> A + B <-> C <br>Kijk maar eventjes in de help-pagina's	
+	goback=1
+	maxscore=$[$P1*$maxscore]
+	!exit
+    !endif	    
+!endif
+
+# unified arrow    
+Af=!replace internal # by $ -> $ in $Af
+
+!if $charge=0
+    # syntax CO2+ +H2O vergeven -> CO2 ++ H2O -> CO2 + H2O 
+    !if +@+ isin $Af
+	Af=!replace internal +@+ by + in $Af
+    !endif
+!endif    	
+
+Af=!replace internal @ by $  $ in $Af
+Af=!singlespace $Af
+# mass / charge balance check
+chemeq_option=c
+Ac=!exec chemeq $Af
+
+!if $wims_exec_error != $empty
+    ex=!record 104 of $remarkdir/commonremarks.$taal
+    remark$n=$NOK<br/>$ex
+    goback=0
+    maxscore=0
+    !exit
+!endif
+
+score=0
+!if $Ac=$Gc
+    # balance is fine...check for correct answer
+    chemeq_option=n
+    # check for water as solvent: don't care if it was asked or not
+    An1=!exec chemeq $Af
+    An2=!exec chemeq $Af ~ H2O + H^+ -> H3O^+
+    An3=!exec chemeq $Af # H2O + H^+ -> H3O^+
+    Gn2= !exec chemeq $(answer$n) ~ H2O + H^+ -> H3O^+
+    Gn3= !exec chemeq $(answer$n) # H2O + H^+ -> H3O^+
+    !for p=1 to 3
+	!if $score=0
+	    !for s=1 to 3
+		!if $score=0
+		    !if $(An$p)=$(Gn$s)
+			score=1
+		    !endif
+		!endif
+	    !next s
+	!endif
+    !next p
+    !if $score=1
+	k=green
+    !else
+	score=0.3
+	k=orange
+	extra=!record 108 of $remarkdir/commonremarks.$taal
+	#@<br>Maar je massa- en ladingsbalans is in wel orde !
+    !endif
+!else
+    # balance is wrong
+    k=red
+    error=!exec chemeq_error $Af
+    !if $error != $empty
+	error=!replace internal ERROR by $empty in $error
+	error=!replace internal : by $ in $error
+	error=!replace internal / by , in $error
+    	links=!item 1 of $error
+    	rechts=!item 2 of $error
+	extra=!record 107 of $remarkdir/commonremarks.$taal
+	#@<br>De <b>massabalans</b> is niet inorde...<br><em>Links en rechts van de pijl zijn verschillen:<br>Het linker gedeelte was: $links<br>Het rechter gedeelte was: $rechts</em><br>
+    !endif
+!endif
+
+!if $math=1
+    reply$n=$Al
+!else
+    reply$n=<font color=$k>$Ah</font>
+!endif
+
+maxscore=$[$maxscore*$score]
+modulescore=$[$modulescore + $maxscore]
+
+!if $maxscore>0.9
+    remark$n=$OK
+!else
+    !if $maxscore >0.5
+	remark$n=$BOK
+    !else
+	remark$n=$NOK
+    !endif
+!endif
+    
+!if $extra != $empty
+    remark$n=!append line $ <br>$extra $ to $(remark$n)
+!endif
+
+goback=0

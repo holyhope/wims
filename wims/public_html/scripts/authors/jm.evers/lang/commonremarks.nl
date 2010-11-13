@@ -101,4 +101,8 @@
 : <br>Je antwoord verondersteld een iets te hoge nauwkeurigheid !
 : <br>Je antwoord verondersteld een te hoge nauwkeurigheid !
 : <br>Je antwoord mocht wel wat nauwkeuriger worden opgegeven.
-
+: Ik geloof dat je even in de help-pagina van deze som moet kijken<br>Want ik kan geen "echte" reactie vergelijking ontdekken in :<br><b>$Ah</b>
+: Een syntaxfoutje, je bent in de reactievergelijking een "+" vergeten...<br>Kijk even in de helppagina's voor de syntaxregeltjes
+: Nee, je moet natuurlijk wel een correcte reactie vergelijking invoeren ...<br>A + B -&gt; C + D<br> A + B &lt;-&gt; C + D <br>Kijk maar eventjes in de help-pagina's
+: <br>De <b>massabalans</b> is niet inorde...<br><em>Links en rechts van de pijl zijn verschillen:<br>Het linker gedeelte was: $links<br>Het rechter gedeelte was: $rechts</em><br>
+: <br>Maar je massa- en ladingsbalans is in wel orde ! 
