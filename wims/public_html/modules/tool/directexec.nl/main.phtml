@@ -6,16 +6,16 @@
  !else
   Antwoord van <em>$SW</em> :
   !if $sw=draw
-   <img align=middle src="$swout">
+   <img align="middle" src="$swout">
    !goto after
   !endif
   !if $sw=povray
-   <img align=middle src="$swout">
+   <img align="middle" src="$swout">
    !goto after
   !endif
-<pre>
+<pre><code style="font-weight:bold;font-family:Courier New,Courier,mono;overflow:auto;color:blue;">
 $swout
-</pre>
+</code></pre>
  !endif
 !else
  Met dit hulpprogramma kunnen commando's voor bijna alle software , waarvoor bij WIMS een interface bestaat ,
@@ -38,14 +38,15 @@ $swout
 !if $msg!=$empty
  <p><hr> <p>
  Foutmelding van <em>$SW</em> :
-<pre style="color:red;font-size:80%">>
+<pre><code style="color:red;font-size:80%">
 $msg
+</code>
 </pre>
 !endif
 
 <p><hr> <p>
 !form reply
-<input type=submit value=uitvoeren>
+<input type="submit" value="uitvoeren">
 de volgende regels code
 !default sw=sh
 !formselect sw list $swlist prompt $swname
@@ -61,7 +62,8 @@ $ :
 <br>
 !set src=!reinput $src
 !set src=!replace internal &amp;#36; by &#36; in $src
-<textarea wrap=off cols=70 rows=15 name=src>$src</textarea>
+!set src=!replace internal &amp; by & in $src
+<textarea wrap=off cols="70" rows="15" name="src">$src</textarea>
 </form>
 
 !tail

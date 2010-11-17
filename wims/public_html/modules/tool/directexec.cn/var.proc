@@ -39,8 +39,12 @@ src1=!replace internal &#36; by $$$$ in $src
 !endif
 
 swout=!exec $sw $src1
-!if $sw=pari
+!if $sw iswordof pari
   swout=!replace internal $ $ $ by $\
+$ in $swout
+!endif
+!if $sw iswordof maxima
+  swout=!replace internal $ $ $ $ $ $ $ $   by $\
 $ in $swout
 !endif
 !if $sw=povray
