@@ -281,6 +281,7 @@ my @cnt = (0) x ($#SECTIONS + 1);
 my ($secpattern) = join('|', @SECTIONS);
 $TEXT =~ s/\\begin\s*{($secpattern)\s*}/cnt_section($1,\@cnt)/eg;
 $TEXT =~ s/\\end\s*{\s*($secpattern)\s*}/<\/$1>/g;
+$TEXT =~ s/\\wimsentre{($secpattern)}/\\wimsentre$1/g;
 $TEXT =~ s/\\(wimsentre)?($secpattern)\b\*?/open_close($2,\@cnt,$1)/eg;
 $TEXT =~ s|</document>.*||s;
 $TEXT =~ s|.*<document>||s;
