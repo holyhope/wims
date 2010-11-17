@@ -4,26 +4,25 @@ Content-type: text/html; charset=iso-8859-1
 Cache-Control: no-cache
 Pragma: no-cache
 
-<HTML><HEAD>
+<html><head>
 <meta http-equiv=expires content="1 Jan 1990">
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 !if exam_ isin $wims_user_error
-<STYLE TYPE="text/css"><!--
+<style type="text/css"><!--
 body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
---></STYLE>
-</HEAD><BODY onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<H1 align=center>FOUT</H1>
+--></style>
+</head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
+<h1 align="center">FOUT</h1>
 !goto examerr
 !endif
-</HEAD><BODY>
-
+</head><body>
 !if threshold iswordof $wims_user_error
- <hr width=1>
- <H1 align=center>We zijn te druk</H1>
- <hr width=50%><p>
- Deze WIMS server <font color=blue>$httpd_HTTP_HOST</font> 
+ <hr width="1">
+ <H1 align="center">We zijn te druk</H1>
+ <hr width="50%"><p>
+ Deze WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is op dit moment belast door een zeer groot aantal aanvragen,
  en neemt geen nieuwe opdrachten meer aan.
  Kom later terug, of maak gebruik van een WIMS mirror site 
@@ -34,20 +33,20 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width=1>
- <H1 align=center>SORRY</H1>
+ <hr width="1">
+ <h1 align="center">SORRY</h1>
  Uw verzoek is geblokkeerd door deze WIMS server: maximum aantal verbindingen is bereikt.
  </body></html>
  !exit
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width=1>
- <H1 align=center>Sorry</H1>
- <hr width=50%><p>
+ <hr width="1">
+ <h1 align="center">Sorry</h1>
+ <hr width="50%"><p>
  WIMS heeft het software pakket
  !set miss=!upper $missing_software
- <b><font color=red>$miss</font></b>
+ <b><font color="red">$miss</font></b>
  nodig om aan Uw verzoek te voldoen, helaas is dit pakket niet 
  beschikbaar (of niet zichtbaar voor WIMS)  op deze server.
  <p>
@@ -55,16 +54,16 @@ padding-left: 3%; padding-right: 3%;}
  <a href="mailto:$wims_site_manager?subject=$missing_software niet beschikbaar op WIMS">
  website beheerder</a> om deze te informeren over dit probleem, of een
  mirror site kiezen uit de onderstaande tabel.
- <a href=wims.cgi>WIMS homepage</a>.
+ <a href="wims.cgi">WIMS homepage</a>.
  !read mirror.phtml.en
  </body></html>
  !exit
 !endif
 
 !if trapped iswordof $wims_user_error
- <H1 align=center>Stop!</H1><hr>
+ <H1 align="center">Stop!</H1><hr>
  Het materiaal op
- <A HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
+ <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
  is niet geschikt voor het automaitsch downloaden.
  De pagina's worden interactief gegenereerd, en zijn ongeschikt voor offline gebruik
  </body>
@@ -72,7 +71,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit 
 !endif
 
-<H1 align=center>WIMS error</H1><hr>
+<h1 align="center">WIMS error</h1><hr><p>
 
 Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
 
@@ -98,12 +97,12 @@ Er is een fout geconstateerd in Uw verzoek aan deze WIMS server.<p>
  Gebruikt U soms een geautomatiseerd download programma om deze site te benaderen?
  :unblock
  !form new
- <input type=hidden name=module value="home">
- <input type=hidden name=deblockparm value="$[randint(10000000)+1000000]">
+ <input type="hidden" name="module" value="home">
+ <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]">
  Hebt U per ongeluk op de `Terug' knop van de browser geklikt,
  typ dan s.v.p. het woord "wims" hier:
- <input size=8 name=special_parm> en dan
- <input type=submit value="opsturen naar de server">.</form>
+ <input size="8" name="special_parm"> en dan
+ <input type="submit" value="opsturen naar de server">.</form>
  <p>
  Besef goed dat deze WIMS pagina's dynamisch worden gegenereerd, en kunnen
  dus <b>alleen</b> online gebruikt worden, via een normale browser.
@@ -177,7 +176,7 @@ Vereenvoudig Uw verzoek, s.v.p.
 De server is nog steeds bezig met Uw <b>vorige opdracht</b>.  
 <p>
 Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan  
- <font color=red><b>$wims_cpu_limit seconden</b></font>
+ <font color="red"><b>$wims_cpu_limit seconden</b></font>
  tot de vorige opdracht is afgehandeld, en dan
  !href cmd=resume klik hier
  om terug te gaan naar uw werk.
@@ -247,13 +246,13 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
   !for i in module,special_parm,worksheet
    !if $($i)!=$empty
     !set value=!translate " to $ $ in $($i)
-    <input type=hidden name=$i value="$value">
+    <input type="hidden" name="$i" value="$value">
    !endif
   !next i
   !for i=0 to $user_var_no-1
    !if $i!=$bad_parentheses
     !set value=!translate " to $ $ in $(value$i)
-    <input type=hidden name=$(name$i) value="$value">
+    <input type="hidden" name="$(name$i)" value="$value">
    !endif
   !next i
   !set value=!translate " to $ $ in $(value$bad_parentheses)
@@ -265,16 +264,16 @@ Het aantal parameters is groter dan het op deze WIMS site toegestane limiet
    !else
     !set len=59
    !endif
-   <input size=$len name=$(name$bad_parentheses) value="$value"><p>
+   <input size="$len" name="$(name$bad_parentheses)" value="$value"><p>
   !else
    !if $n>10
     !set n=10
    !endif
-   <textarea rows=$n cols=50 name=$(name$bad_parentheses)>$value</textarea>
+   <textarea rows="$n" cols="50" name="$(name$bad_parentheses)">$value</textarea>
    <p>
   !endif
   en vervolgens
-  <input type=submit value="verstuur de gecorrigeerde text.">
+  <input type="submit" value="verstuur de gecorrigeerde text.">
   </form><p><hr><p><center>
   !href cmd=resume Laat maar zitten
 , or
@@ -304,6 +303,11 @@ Niet spelen met de oefeningen !
  
  !href cmd=resume Vergeet het laatste verzoek
 .
+ !if $wims_user!=$empty and $wims_user!=supervisor
+  <p><b><font color="red">ATTENTION</font></b>! Don't repeat this error!
+  Irregular activities may give you bad scores even when score registration is
+  closed.
+ !endif
  !goto end2
 !endif
 
@@ -336,8 +340,12 @@ Je hebt deze oefening reeds afgerond met een $wims_exo_lastscore als resultaat.
 !if expired_exam iswordof $wims_user_error
 Je hebt geen tijd meer over om het examen af te maken.
   :examend
+  !set pses=!translate _ to , in $wims_session
+  !set pses=!item 1 of $pses
+  !set pser=!randint 1,999
+  !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
   <p><center>
-  <a href=# onclick=window.close();>Sluit dit venster</a>.
+  <a href=# "window.close();$wims_opener">Sluit dit venster</a>.
   </center><p>
   !exit
 !endif
@@ -354,7 +362,7 @@ Uw verzoek geeft een "gebruikers identificatie" fout.
 Probeer je een andermans sessie te benaderen?  
  <p>
  s.v.p.
- <a href=wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]>maak een nieuwe sessie</a>.
+ <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">maak een nieuwe sessie</a>.
  </body></html>
  !exit
 !endif
@@ -363,8 +371,8 @@ Probeer je een andermans sessie te benaderen?
   Door het toegangsbeleid op deze site kan uw verzoek niet worden behandeld.<br>
   Onze excuses.
   !goto end
-!endif
-     
+!endif  
+
 !if class_closed iswordof $wims_user_error
   Sorry.
   <p>

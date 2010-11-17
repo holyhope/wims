@@ -4,26 +4,25 @@ Content-type: text/html; charset=iso-8859-1
 Cache-Control: no-cache
 Pragma: no-cache
 
-<HTML><HEAD>
+<html><head>
 <meta http-equiv=expires content="1 Jan 1990">
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 !if exam_ isin $wims_user_error
-<STYLE TYPE="text/css"><!--
+<style type="text/css"><!--
 body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
---></STYLE>
-</HEAD><BODY onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<H1 align=center>ERROR</H1>
+--></style>
+</head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
+<h1 align="center">ERROR</h1>
 !goto examerr
 !endif
-</HEAD><BODY>
-
+</head><body>
 !if threshold iswordof $wims_user_error
- <hr width=1>
- <H1 align=center>We are too busy</H1>
- <hr width=50%><p>
- This WIMS server <font color=blue>$httpd_HTTP_HOST</font> 
+ <hr width="1">
+ <h1 align="center">We are too busy</h1>
+ <hr width="50%"><p>
+ This WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
  is currently overloaded by a large number of requests, and
  can no longer satisfy further users. Please come back later, 
  or look for another wims mirror site.
@@ -35,20 +34,20 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width=1>
- <H1 align=center>SORRY</H1>
+ <hr width="1">
+ <h1 align="center">SORRY</h1>
  Your request is blocked by this WIMS server: connection quota exceeded.
  </body></html>
  !exit
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width=1>
- <H1 align=center>Sorry</H1>
- <hr width=50%><p>
+ <hr width="1">
+ <h1 align="center">Sorry</h1>
+ <hr width="50%"><p>
  WIMS needs a software
  !set miss=!upper $missing_software
- <b><font color=red>$miss</font></b>
+ <b><font color="red">$miss</font></b>
  to process your request, but that software is not available (or not visible
  to WIMS) on this server.
  <p>
@@ -56,16 +55,16 @@ padding-left: 3%; padding-right: 3%;}
  <a href="mailto:$wims_site_manager?subject=$missing_software unavailable on WIMS">write 
  to the site manager</a> to inform him/her of the problem, or choose a
  mirror site from the table below.
- <a href=wims.cgi>WIMS homepage</a>.
+ <a href="wims.cgi">WIMS homepage</a>.
  !read mirror.phtml.en
  </body></html>
  !exit
 !endif
 
 !if trapped iswordof $wims_user_error
- <H1 align=center>Stop!</H1><hr>
+ <h1 align=center>Stop!</h1><hr>
  The content of 
- <A HREF=http://$httpd_HTTP_HOST>$httpd_HTTP_HOST</a> is not compatible
+ <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> is not compatible
  with automatic page gathering programs and `web accelerators'.
  <p>
  To access WIMS activities on this site, please use an ordinary web
@@ -77,7 +76,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<H1 align=center>WIMS error</H1><hr>
+<h1 align="center">WIMS error</h1><hr><p>
 
 There is an error in your request to this WIMS site.<p>
 
@@ -104,12 +103,12 @@ There is an error in your request to this WIMS site.<p>
  Are you using an automatic program to access this site?
  :unblock
  !form new
- <input type=hidden name=module value="home">
- <input type=hidden name=deblockparm value="$[randint(10000000)+1000000]">
+ <input type="hidden" name="module" value="home">
+ <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]">
  If you have simply clicked on the `back' button of your browser,
  please type the word `wims' here:
- <input size=8 name=special_parm> then
- <input type=submit value="send to the server">.</form>
+ <input size="8" name="special_parm"> then
+ <input type="submit" value="send to the server">.</form>
  <p>
  Please bear in mind that pages on this site are dynamically generated.
  They can therefore only be used online, 
@@ -178,7 +177,7 @@ There is an error in your request to this WIMS site.<p>
  This request arrived while the process of another request from you is 
  still under way.<p>
  If you have been double clicking, now please wait 
- <font color=red><b>$wims_cpu_limit seconds</b></font>
+ <font color="red"><b>$wims_cpu_limit seconds</b></font>
  for the process of your old request to terminate, then
  !href cmd=resume click here
  to get back to your work. (And please be more patient the next time
@@ -254,7 +253,7 @@ There is an error in your request to this WIMS site.<p>
   !for i=0 to $user_var_no-1
    !if $i!=$bad_parentheses
     !set value=!translate " to $ $ in $(value$i)
-    <input type=hidden name=$(name$i) value="$value">
+    <input type="hidden" name="$(name$i)" value="$value">
    !endif
   !next i
   !set value=!translate " to $ $ in $(value$bad_parentheses)
@@ -266,16 +265,16 @@ There is an error in your request to this WIMS site.<p>
    !else
     !set len=59
    !endif
-   <input size=$len name=$(name$bad_parentheses) value="$value"><p>
+   <input size="$len" name="$(name$bad_parentheses)" value="$value"><p>
   !else
    !if $n>10
     !set n=10
    !endif
-   <textarea rows=$n cols=50 name=$(name$bad_parentheses)>$value</textarea>
+   <textarea rows="$n" cols="50" name="$(name$bad_parentheses)">$value</textarea>
    <p>
   !endif
   Then
-  <input type=submit value="send the corrected request.">
+  <input type="submit" value="send the corrected request.">
   </form><p><hr><p><center>
   !href cmd=resume Cancel the last request
 , or
@@ -302,6 +301,11 @@ There is an error in your request to this WIMS site.<p>
  correctly, instead of ask new ones over and over again.
  !href cmd=resume Cancel the last request
 .
+ !if $wims_user!=$empty and $wims_user!=supervisor
+  <p><b><font color="red">ATTENTION</font></b>! Don't repeat this error!
+  Irregular activities may give you bad scores even when score registration is
+  closed.
+ !endif
  !goto end2
 !endif
 
@@ -353,7 +357,7 @@ There is an error in your request to this WIMS site.<p>
  to somebody else's session?
  <p>
  Please
- <a href=wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]>make a new connection</a>.
+ <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">make a new connection</a>.
  </body></html>
  !exit
 !endif
@@ -387,7 +391,7 @@ under which the error has occurred.
 :end2
 <hr><p>
 <center>
-!href module=home&cmd=new Homepage
+!href module=home&cmd=new Home page
 </center>
 
 </body></html>

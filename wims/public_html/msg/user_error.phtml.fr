@@ -19,8 +19,8 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
- <hr width=1>
- <h1 align=center>Nous sommes trop occupés</h1>
+ <hr width="1">
+ <h1 align="center">Nous sommes trop occupés</h1>
  <hr width="50%"><p>
  Ce serveur WIMS <font color=blue>$httpd_HTTP_HOST</font>
  est actuellement surchargé par un grand nombre de requêtes,
@@ -34,8 +34,8 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if overload iswordof $wims_user_error
- <hr width=1>
- <h1 align=center>DESOLE</h1>
+ <hr width="1">
+ <h1 align="center">DESOLÉ</h1>
  Votre requête est bloquée par ce serveur WIMS : dépassement de quota
  de connexions.
  </body></html>
@@ -43,12 +43,12 @@ padding-left: 3%; padding-right: 3%;}
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
- <hr width=1>
- <h1 align=center>Désolé</h1>
+ <hr width="1">
+ <h1 align="center">Désolé</h1>
  <hr width="50%"><p>
  WIMS a besoin d'un logiciel
  !set miss=!upper $missing_software
- <b><font color=red>$miss</font></b>
+ <b><font color="red">$miss</font></b>
  pour traiter votre requête, mais ce logiciel n'est pas disponible (ou pas
  visible à WIMS) sur ce serveur.
  <p>
@@ -56,16 +56,16 @@ padding-left: 3%; padding-right: 3%;}
  <a href="mailto:$wims_site_manager?subject=$missing_software indisponible sur WIMS">écrire
  au gestionnaire du site</a> pour l'informer de ce problème, ou choisir un
  site miroir du tableau ci-dessous.
- <a href=wims.cgi>WIMS sommaire</a>.
+ <a href="wims.cgi">WIMS sommaire</a>.
  !read mirror.phtml.fr
  </body></html>
  !exit
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align=center>Stop&nbsp;!</h1><hr>
+ <h1 align="center">Stop&nbsp;!</h1><hr>
  Le contenu de
- <A HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> n'est pas compatible
+ <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> n'est pas compatible
  avec un programme de ramassage de pages web ou un `accélérateur d'accès'.
  <p>
  Pour accéder aux activités WIMS de ce site, veuillez utiliser un navigateur
@@ -77,7 +77,7 @@ padding-left: 3%; padding-right: 3%;}
  !exit
 !endif
 
-<h1 align=center>WIMS erreur</h1><hr><p>
+<h1 align="center">WIMS erreur</h1><hr><p>
 
 Il y a une erreur dans votre requête à ce site WIMS.<p>
 
@@ -105,12 +105,12 @@ Il y a une erreur dans votre requête à ce site WIMS.<p>
  site&nbsp;?
  :unblock
  !form new
- <input type=hidden name=module value="home">
- <input type=hidden name=deblockparm value="$[randint(10000000)+1000000]">
+ <input type="hidden" name="module" value="home">
+ <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]">
  Si vous avez simplement cliqué sur le bouton `retour' de votre navigateur,
  veuillez taper le mot `wims' ici&nbsp;:
- <input size=8 name=special_parm> puis
- <input type=submit value="l'envoyer au serveur">.</form>
+ <input size="8" name="special_parm"> puis
+ <input type="submit" value="l'envoyer au serveur">.</form>
  <p>
  Veuillez noter que les pages de ce site sont générées dynamiquement. 
  Elle peuvent donc uniquement être utilisées
@@ -175,7 +175,7 @@ Il y a une erreur dans votre requête à ce site WIMS.<p>
  Cette requête est arrivée alors que le traitement d'une autre requête de 
  votre part est toujours en cours.<p>
  Si vous avez double-cliqué, maintenant veuillez attendre 
- <font color=red><b>$wims_cpu_limit secondes</b></font>
+ <font color="red"><b>$wims_cpu_limit secondes</b></font>
  que le traitement de votre ancienne requête soit terminé, puis
  !href cmd=resume cliquez ici
  pour retourner à votre travail. (Et veuillez avoir un peu plus de patience
@@ -243,7 +243,7 @@ Il y a une erreur dans votre requête à ce site WIMS.<p>
   !for i=0 to $user_var_no-1
    !if $i!=$bad_parentheses
     !set value=!translate " to $ $ in $(value$i)
-    <input type=hidden name=$(name$i) value="$value">
+    <input type="hidden" name="$(name$i)" value="$value">
    !endif
   !next i
   !set value=!translate " to $ $ in $(value$bad_parentheses)
@@ -253,9 +253,9 @@ Il y a une erreur dans votre requête à ce site WIMS.<p>
   !else
    !set len=59
   !endif
-  <input size=$len name=$(name$bad_parentheses) value="$value"><p>
+  <input size="$len" name="$(name$bad_parentheses)" value="$value"><p>
   Puis
-  <input type=submit value="envoyer la requête corrigée.">
+  <input type="submit" value="envoyer la requête corrigée.">
   </form><p><hr><p><center>
   !href cmd=resume Abandonner la dernière requête
 , ou
@@ -281,7 +281,7 @@ Il y a une erreur dans votre requête à ce site WIMS.<p>
  !href cmd=resume Annuler la dernière demande
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
-  <p><b><font color=red>ATTENTION</font></b> ! Ne répétez pas cette erreur !
+  <p><b><font color="red">ATTENTION</font></b> ! Ne répétez pas cette erreur !
   Les activités irrégulières peuvent vous donner de mauvaises notes même quand
   l'enregistrement des notes est fermé.
  !endif
@@ -337,7 +337,7 @@ Il y a une erreur dans votre requête à ce site WIMS.<p>
  quelqu'un d'autre&nbsp;?
  <p>
  Veuillez
- <a href=wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]>initier une nouvelle connexion</a>.
+ <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">initier une nouvelle connexion</a>.
  </body></html>
  !exit
 !endif
