@@ -97,12 +97,12 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
    !set name_example4=U kunt ook een eigen klas maken om te zien hoe een docenten account er echt uitziet
    !set name_instruction=<ul>\
 <li>Klik op <tt class="d">$name_anonymous</tt> om in te loggen anls anonieme student (deelnemer).\
-<li><p>Klik op <tt class="d">$name_registered</tt> op in te loggen als reeds geregistreerde student.\
+</li><li>Klik op <tt class="d">$name_registered</tt> op in te loggen als reeds geregistreerde student.\
 (Je moet jezelf natuurlijk dan wel eerder hebben aangemeld; wat niet wil zeggen\
 dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op gezette tijden\
   verwijdert de server deze "bezoekers accounts")\
-<li><p>Klik op <tt class="d">$name_register</tt> voor het aanmelden in een openbare klas.\
-</ul>
+</li><li>Klik op <tt class="d">$name_register</tt> voor het aanmelden in een openbare klas.\
+</li></ul>
 
   !set name_sheet_example=U kunt ook de gebruikte werkbladen importeren [en modificeren] in uw eigen klas.
 !endif

@@ -37,7 +37,7 @@ Lees eerst de
 <p>
 Speciale hints:
 <ol>
-<li><p>Om een file te kunnen debuggen, plaats dan de regel
+<li>Om een file te kunnen debuggen, plaats dan de regel
 <pre>
 $!debug ...
 </pre>
@@ -46,6 +46,6 @@ Wanneer U nu deze module uittest, stopt de uitvoering van Uw programma precies
 op deze regel, en laat U dan de inhoud van <b>...</b> zien.
 Is <b>...</b> een variabele, wordt deze gesubstitueerd volgens de normale WIMS substitutieregels.
 
-</ol>
+</li></ol>
 
 :end

@@ -40,7 +40,7 @@ Estas preferencias son:
    !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
- <li><p>El tamaño de los símbolos matemáticos y las fórmulas. Use la siguiente
+ </li><li>El tamaño de los símbolos matemáticos y las fórmulas. Use la siguiente
   línea para comparar los tamaños de los símbolos y los textos.
   <p>
   Letras griegas $m_alpha,$m_pi. Expresiones matemáticas 
@@ -74,7 +74,7 @@ Estas preferencias son:
    !href cmd=resume&useropts=$(texsize)1$useropt2 pulse aquí
    para agrandarla.
   !endif
-</ul>
+</li></ul>
 
 Cuando todo corresponda exactamente con lo que quiera, ponga
 <a href="$wims_ref_name?lang=$lang&+useropts=$texsize$texalign$useropt2"

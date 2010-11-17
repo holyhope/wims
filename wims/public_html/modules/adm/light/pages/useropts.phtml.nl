@@ -32,15 +32,16 @@ Deze pagina geeft toegang tot het fijnafstellen van een WIMS sessies.
 Deze instellingen zijn:
 <ul>
 !if $wims_user=$empty
- <li><p>De taal.
+ <li>De taal.
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
    !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
+  </li>
 !endif
- <li><p>
+ <li>
  De grootte van wiskundige symbolen en formules. 
  Gebruik de onderstaande regel voor de instellingen.
   <p>
@@ -76,7 +77,7 @@ Deze instellingen zijn:
    !href cmd=resume&useropts=$(texsize)1$useropt2 klik dan hier
     om de positie van het wiskunde symbool (plaatje) te verhogen. 
   !endif
-</ul>
+</li></ul>
 
 !if $wims_user=$empty
 Wanneer alles inorde is , voeg dan  

@@ -34,15 +34,16 @@ il lavoro su WIMS.
 Le opzioni modificabili sono:
 <ul>
 !if $wims_user=$empty
- <li><p>Lingua:
+ <li>Lingua:
   !set wims_language_cnt=!wordcnt $wims_site_languages
   !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
    !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
+  </li>
 !endif
- <li><p>La dimensione dei simboli e delle formule
+ <li>La dimensione dei simboli e delle formule
  matematiche. Basandosi sugli esempi della riga seguente  
   <blockquote>
   Lettere greche $m_alpha,$m_pi. Espressioni matematiche
@@ -77,7 +78,7 @@ Le opzioni modificabili sono:
    !href cmd=resume&useropts=$(texsize)1$useropt2 clicca qui
    per alzarlo.
   !endif
-</ul>
+</li></ul>
 
 !if $wims_user=$empty
  Una volta selezionate le opzioni, per salvarle inserire 

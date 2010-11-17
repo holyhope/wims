@@ -35,7 +35,7 @@ Encontrarán aquí la
 <p>
 Indicaciones especiales&nbsp;:
 <ol>
-<li><p>Para eliminar errores de un fichero, pueden colocar una línea
+<li>Para eliminar errores de un fichero, pueden colocar una línea
 <pre>
 $!debug ...
 </pre>
@@ -44,6 +44,6 @@ prueban su módulo, la ejecución va a par a esta línea y el contenido de… se les 
 se substituyen estos últimos según las normas
 habituales de sustitución de variables de WIMS.
 
-</ol>
+</li></ol>
 
 :end

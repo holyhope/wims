@@ -97,12 +97,12 @@ las clases virtuales desde el punto de vista del estudiante. Debería crear\
  que es mucho más completo.   
    !set name_instruction=<ul>\
 <li>Pulse en <tt class="d">anónimo</tt> para conectarse a una clase como invitado anónimo.\
-<li><p>Pulse en <tt class="d">inscrito</tt> para conectarse a la clase como usuario\
+</li><li>Pulse en <tt class="d">inscrito</tt> para conectarse a la clase como usuario\
  dado de alta con identificador y clave (debe haberse inscrito anteriormente, y\
  es probable que su registro se elimine regularmente del servidor, porque son clases de\
  ejemplo).\
-<li><p>Pulse en <tt class="d">Inscribirse</tt> para darse de alta en la clase.\
-</ul>
+</li><li>Pulse en <tt class="d">Inscribirse</tt> para darse de alta en la clase.\
+</li></ul>
   !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous pourrez ensuite importer \
     dans votre classe et modifier.
  !endif

@@ -31,15 +31,15 @@ Ta stran vam omogoèa nastavitev dela s stre¾nikom WIMS po va¹ih ¾eljah.
 Nastavite lahko:
 <ul>
 !if $wims_user=$empty
- <li><p>Privzeti jezik.
+ <li>Privzeti jezik.
    !set wims_language_cnt=!wordcnt $wims_site_languages
    !for l=1 to $wims_language_cnt
    !let la=!word $l of $wims_site_languages
    !href cmd=resume&phtml=useropts.phtml.$la&lang=$la <img src="gifs/$la.gif" alt="$la.gif" border=1>$(lang_name_$la)
    &nbsp;&nbsp;
   !next l
+  </li>
 !endif
- <p>
 <li>Velikost matematiènih simbolov.
   !let ts1=!eval $texsize-1
   !let ts2=!eval $texsize+1
@@ -61,7 +61,7 @@ Nastavite lahko:
   <center>| $m_a + $m_b | $m_le $m_varepsilon + 123.45.</center>
   
  
- <li> Polo¾aj formul. Èe se izraz
+ </li><li> Polo¾aj formul. Èe se izraz
   !insmath (x+y)/(x^2+y^2)
   !if $texalign=1
    izri¹e previsoko, ga 
@@ -72,7 +72,7 @@ Nastavite lahko:
    !href cmd=resume&useropts=$(texsize)1$useropt2 s klikom
    zvi¹ate.
   !endif
-</ul>
+</li></ul>
 
 !if $wims_user=$empty
  Ko najdete ustrezne nastavitve, shranite

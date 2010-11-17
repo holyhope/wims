@@ -33,17 +33,17 @@ el acceso a su clase en un momento crucial.
   <p>
   Ahí tienes cómo reconstruir su clase virtual sin rehacer sus recursos pedagógicos.
   <ol>
-  <li><p>
+  <li>
   !href cmd=reply&job=arch Salvaguardar su clase al fin del año escolar.
-  <li><p>
+  </li><li>
   <a href="$wims_ref_name?lang=$lang&module=adm/class/regclass">Crear</a>
 una nueva clase virtual (o grupo de clase o pórtico de
 establecimiento) a principios del año escolar siguiente.
-<li><p> restaurar los recursos pedagógicos (ejercicios, hojas, exámenes,
+</li><li> restaurar los recursos pedagógicos (ejercicios, hojas, exámenes,
 documentos) que salvaguardaron en la nueva clase.
 (Sin restaurar las cuentas de alumnos y las actividades que son caducas.
 )
-  </ol>
+  </li></ol>
  !else
   <p>
   Por favor informa al administrador del grupo de clases a cual
