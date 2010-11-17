@@ -154,9 +154,9 @@ fi
 echo "$titlist" >$tmp1
 echo "$list" >$tmp2
 llist=`$LL paste $tmp1 $tmp2 | $LL sort -t '	' -f -k 1,1`
-list1=`echo "$llist" | awk -F'\11' 'length()>2 {print $2}' | $LL tr '\n' ' '`
-list=`echo "$llist" | awk -F'\11' 'length()>2 {print $2}' | $LL tr '\n' ','`
-titlist=`echo "$llist" | awk -F'\11' 'length()>2 {print $1}' | $LL tr '\n' ','`
+list1=`echo "$llist" | $LL awk -F'\11' 'length()>2 {print $2}' | $LL tr '\n' ' '`
+list=`echo "$llist" | $LL awk -F'\11' 'length()>2 {print $2}' | $LL tr '\n' ','`
+titlist=`echo "$llist" | $LL awk -F'\11' 'length()>2 {print $1}' | $LL tr '\n' ','`
 
 rm -f $tmp1 $tmp2
 cat >$exindex <<@
