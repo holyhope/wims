@@ -304,9 +304,9 @@ Niet spelen met de oefeningen !
  !href cmd=resume Vergeet het laatste verzoek
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
-  <p><b><font color="red">ATTENTION</font></b>! Don't repeat this error!
-  Irregular activities may give you bad scores even when score registration is
-  closed.
+  <p><b><font color="red">ATTENTIE</font></b>! 
+  Deze gebruikersfout niet herhalen ! 
+  Dit kan aanleiding geven tot zeer slechte scoreresultaten...zelfs als de cijferregistratie gesloten is.
  !endif
  !goto end2
 !endif

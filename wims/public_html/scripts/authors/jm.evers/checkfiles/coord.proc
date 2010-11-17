@@ -48,7 +48,6 @@ n=$counter
 	!exit
     !endif
 !endif
-
 goback=0
 errortext=$empty
 test=!wordcnt $(reply$n)
@@ -350,7 +349,7 @@ Ya=$empty
 !next p	
     
 paritest1=$empty
-paritest2=$empty
+#paritest2=$empty
 
 !for p=1 to $t1 step 2
     x=!item $p of $(answer$n)
@@ -363,22 +362,16 @@ paritest2=$empty
 	xa=!item $s of $Xa
 	ya=!item $s of $Ya
 	paritest1=!append line if( ((1.0*($x)) == (1.0*($xa))) && ((1.0*($y) == (1.0*($ya)))),1,0) to $paritest1
-	paritest2=!append line if( ((1.0*($x)) == (1.0*($xa))) || ((1.0*($y) == (1.0*($ya)))),1,0) to $paritest2
     !next s
 !next p
     
 tot1=!exec pari $paritest1
-tot2=!exec pari $paritest2
 coord=$[$t1/2]
 tt=!linecnt $tot1
-totaal1=0
-totaal2=0
-
+totaal=0
 !for p=1 to $tt
     s=!line $p of $tot1
-    totaal1=$[$totaal1+$s]
-    s=!line $p of $tot2
-    totaal2=$[$totaal2+$s]
+    totaal=$[$totaal+$s]
 !next p
 
 factor=1
@@ -386,10 +379,10 @@ factor=1
     # minder coordinaten/punten ingevuld, of meer?
     !if $t1 > $t2
 	factor=$t2/$t1
-	testvar1=$[$t1-$t2]
+	testvar1=$[($t1-$t2)/2]
 	ex=!record 21 of $remarkdir/commonremarks.$taal
     !else
-	testvar1=$[$t2-$t1]
+	testvar1=$[($t2-$t1)/2]
 	ex=!record 20 of $remarkdir/commonremarks.$taal
 	factor=$t1/$t2
     !endif
@@ -400,11 +393,10 @@ factor=1
     !endif
 !endif
 
-!if ($totaal1 != $coord) and ($factor=1)
+!if ($totaal != $coord) and ($factor=1)
     # niet alles was goed :alleen als het juiste aantal coordinaten paren is ingevuld [factor=1]
-    !if $coord >1
-	testvar2=$coord
-        testvar1=$[$coord-$totaal1]
+    testvar2=$coord
+    testvar1=$[$coord - $totaal]
 	ex=!record 22 of $remarkdir/commonremarks.$taal
 	!if $extra=$empty
 	    extra=$ex
@@ -412,11 +404,9 @@ factor=1
 	    extra=!append line $ <br>$ex $ to $extra
 	!endif
     !endif	
-    # minder dan de helft aan punten voor een x/y-coordinaat fout
-    totaal1=$[($totaal2)/3]
 !endif
 
-score=$[($totaal1*($factor))/$coord]
+score=$[$totaal*($factor)/$coord]
 maxscore=$[$maxscore*$score]
 modulescore=$[$modulescore+$maxscore]
 

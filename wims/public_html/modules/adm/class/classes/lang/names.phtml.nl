@@ -44,9 +44,9 @@ Nieuwe deelnemer,aanmelden,Inloggen,Up\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
 name_new_participant,name_registered,name_connexion,name_up
 
-!set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
- ne fonctionne pas.
- !distribute line U heeft geen account in een andere klas.\
+!set name_warning_external=Gebruik de formulier niet: de onderstaande link is niet correct.
+
+!distribute line U heeft geen account in een andere klas.\
 Zoek mijn klassen\
 Geen andere klassen aanwezig.\
 Geen klas gevonden.\
