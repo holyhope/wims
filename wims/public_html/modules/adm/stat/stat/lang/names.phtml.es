@@ -12,7 +12,7 @@ into name_day,name_week,name_month,name_year,name_Requests,name_Sessions,name_Vi
 !set name_visitors=!lowercase $name_Visitors
 
 !distribute lines Elija un período para las estadísticas: a partir de \
-  Mostrar también los detalles por módulos.\
+  Mostrar también los detalles por módulos\
   Mostrar las estadísticas\
   Detalles por módulos\
   Número de visitas desde\
