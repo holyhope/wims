@@ -132,3 +132,11 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 	    $File
 </applet>
 
+!if help isin $(replyoption$i)
+ !set help_option=!getopt help in $(replyoption$i)
+ !set help_option=!replace internal help by in $help_option
+ !set help_option=!declosing $help_option
+ !set help_option=!words2items $help_option
+ !set help_option=!nonempty items $help_option
+ !read anstype/chemdraw.inc $help_option
+!endif
