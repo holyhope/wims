@@ -48,9 +48,13 @@ $slib_temp
 !endif
 
 :begin
+!if DisablePopupMenu notin $slib_script
+  slib_DisablePopupMenu=set DisablePopupMenu TRUE;
+!endif
 
-!default slib_DisablePopupMenu=TRUE
-!default slib_hover=on
+!if hover notin $slib_script
+  slib_hover= hover off;
+!endif
 
 !if .spt__  isin $(slib_script)__ and __data isin __$slib_script
     !set temp=!record 0 of $(slib_script)
@@ -72,7 +76,7 @@ $temp
       jmolInitialize('$slib_appletdir','JmolApplet.jar');\
       jmolSetAppletColor('$slib_color');\
    var jscr='load $slib_file;';\
-    jscr= jscr +'selectionhalos on;select none;set picking off; set frank on;set DisablePopupMenu $slib_DisablePopupMenu; hover $slib_hover;';\
+    jscr= jscr +'selectionhalos on;select none;set picking off; set frank on;$slib_DisablePopupMenu $slib_hover';\
     jscr=jscr $slib_script;\
     jmolApplet([$slib_xsize,$slib_ysize],jscr);\
     $slib_script_file\
