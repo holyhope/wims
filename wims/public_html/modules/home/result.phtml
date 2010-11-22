@@ -9,7 +9,10 @@
  !if $wims_user=$empty
   !read ./wimshome/log/motd.phtml.$lang
   <p>
-  !read ./front.phtml.$lang
+  !read wimshome/log/front.phtml.$lang
+  !if yes notin $front_exist
+   !read ./front.phtml.$lang
+  !endif
   <p>
  !endif
  !exit
