@@ -6,6 +6,10 @@
 !set home_theme=!text select 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/ in $wims_theme
 !default home_theme=default
 
+!let site_logo=!defof site_logo\
+site_logolink in wimshome/log/wims.conf
+!distribute line $site_logo into site_logo,site_logolink
+
 !read themes/$home_theme/$wims_read_parm.phtml
 !if $home_theme!=yes and $home_theme!=default
  !read themes/default/$wims_read_parm.phtml
