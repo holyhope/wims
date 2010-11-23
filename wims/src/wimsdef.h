@@ -39,7 +39,7 @@
 #define MAX_SESSIONLEN 23
 	/* max number of exercises in a class (sheets and exams) */
 #define MAX_CLASSEXOS 2048
-	/* max number of exercises in a sheet; not modifiable */
+	/* max number of exercises in a sheet or exam; not modifiable */
 #define MAX_EXOS 64
 	/* max number of sheets; not modifiable */
 #define MAX_SHEETS 64

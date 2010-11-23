@@ -364,7 +364,7 @@ void calc_getscorestatus(char *p)
     else strcpy(p,"no");
 }
 
-double exam_scoredata[64];
+double exam_scoredata[MAX_EXOS];
 
 	/* get current exam score */
 void exam_currscore(int esh)
