@@ -142,6 +142,17 @@ function ReadThis(){
   !set oef_applet_option=!append line rotation=$rotation to $oef_applet_option
 !endif
 <input type=hidden name="reply$i" id="WIMSchemreply" value="">
+!if help isin $(replyoption$i)
+ !set help_option=!getopt help in $(replyoption$i)
+ !set help_option=!replace internal help by in $help_option
+ !set help_option=!declosing $help_option
+ !set help_option=!words2items $help_option
+ !set help_option=!nonempty items $help_option
+ !default help_option=select_atom,select_bond
+ <div style="text-align:right; width:60%">
+ !read anstype/chemdraw.inc $help_option
+ </div>
+!endif
 
 <applet name="WIMSchem" id="WIMSchem" codebase="$appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$xsize" height="$ysize">
 	    <param name="showfile" value="$showfile">
@@ -161,12 +172,4 @@ function ReadThis(){
 !set oef_applet_option=$Inputsize\
 $oef_applet_option
 
-!if help isin $(replyoption$i)
- !set help_option=!getopt help in $(replyoption$i)
- !set help_option=!replace internal help by in $help_option
- !set help_option=!declosing $help_option
- !set help_option=!words2items $help_option
- !set help_option=!nonempty items $help_option
- !default help_option=select_atom select_bond
- !read anstype/chemdraw.inc $help_option
-!endif
+
