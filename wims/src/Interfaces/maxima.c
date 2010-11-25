@@ -39,7 +39,7 @@ rombergtol:1.E-6;\n\
 rombergit:13;\n\
 simpsum:true;\n\
 triginverses:true; logabs:true;\n\
-e:%e;pi:%PI;Pi:%PI;PI:%PI;I:%I;i:%I;\n\
+e:%e;pi:%pi;Pi:%pi;PI:%pi;I:%i;i:%i;\n\
 ln:log;sh:sinh;ch:cosh;th:tanh;\n\
 arctan:atan;arcsin:asin;arccos:acos;\n\
 tg:tan;arctg:atan;\n\
