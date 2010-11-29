@@ -7,6 +7,8 @@
 # var3 -1,kg,-1,m,-1,mol : optional unit of the correct answer : -1 for nonexisting or leave empty
 # 
 # 1/2/2010
+# 11/2010 corrected flaw in range when using derived si-units
+
 n=$counter
 !if $(reply$n)=?
     goback=0
@@ -48,6 +50,7 @@ tg=!itemcnt $(answer$n)
 	!exit
     !endif
     range=1
+    new_range=$empty
 !else
     range=0
 !endif
@@ -116,6 +119,7 @@ GGG=$(answer$n)
     AAA=!lines2items $aaa
     aaa=$empty
     ggg=$empty
+
     !for p=1 to $ta
 	rem$p=$empty
 	A=!item $p of $AAA
@@ -185,7 +189,23 @@ GGG=$(answer$n)
 	    !else
 		ex=!record 93 of $remarkdir/commonremarks.$taal
 		rem$p=!append line $ex to $(rem$p)
+		#unitfilter$p = -1
 		#@<br>Je hebt geen eenheid vermeld.<br>Ik neem dus maar aan $unit_a !  
+	    !endif
+	    !if $range = 1 and $(unitsfilter$p)=1
+		rng=!item $p of $var2
+	        rng=!replace internal : by , in $rng
+	        r1=!item 1 of $rng
+	        r2=!item 2 of $rng
+	        r1=!exec units-filter $r1 $unit_a
+	        r2=!exec units-filter $r2 $unit_a
+		!if ERROR isin $r2$r1
+		    range=0
+		!else
+		    r1=!word 1 of $r1
+		    r2=!word 1 of $r2
+		    new_range=!append item $r1:$r2 to $new_range
+		!endif
 	    !endif
 	!else
 	    # no unit used by pupil: that's fine too
@@ -209,6 +229,9 @@ GGG=$(answer$n)
 	aaa=!append line $A to $aaa
 	ggg=!append line $G to $ggg
     !next p
+    !if $new_range != $empty
+	var2=$new_range
+    !endif
     AAA=!lines2items $aaa
     GGG=!lines2items $ggg
 !else
@@ -221,6 +244,9 @@ GGG=$(answer$n)
     AAA=!tolower $AAA
 !endif
 
+#errortext=AAA=$AAA GGG=$GGG var2=$var2 range=$range
+#goback=1
+#!exit
 ta=!itemcnt $AAA
 tg=!itemcnt $GGG
 !if $tg>1
