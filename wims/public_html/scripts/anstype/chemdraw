@@ -1,3 +1,11 @@
+test_empty=!line 3 of $(reply$i)
+test_empty=!word 1 of $(test_empty[1;1])
+!if $test_empty=0
+ test=NaN chemdraw_empty_data
+ error=chemdraw_empty_data
+ !exit
+!endif
+
 !reset ans_show_hydrogen ans_show_carbon
 ans_appletdir=java/WIMSchem
 !set oef_applet_option=!replace internal $	$ by $\
