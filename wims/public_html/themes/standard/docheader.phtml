@@ -14,6 +14,9 @@
  <div id="wimsdoc">
 !endif
 !!!endif
+!if $wims_lightpopup=yes 
+  !goto end1
+!endif
 <div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 !if help notin $wims_session
@@ -66,7 +69,6 @@
   <span class="menuitem">
  !read $oneitem doch_up,1,cmd=reply&doc=$doc&block=$upbl
   </span><!-- menuitem-->
- !! <img src="gifs/arrows/up2.32.gif" alt=up>
  !if $prev!=$empty and $prev!=$upbl
   <span class="menuitem">
   !read $oneitem doch_prev,1,cmd=reply&doc=$doc&block=$prev
@@ -133,6 +135,13 @@
 !endif
 </div><!--end of wimsmenu  -->
 </div><!--end of wimstopbox  -->
+:end1
+!if $wims_lightpopup=yes
+  <div id="wimslightpopup">
+   <div id="wimsbodybox">
+   <div id="wimspagebox">
+  !exit
+!endif
  <div id="wimsbodybox">
  <div id="wimspagebox">
  !if $job=read
@@ -190,6 +199,5 @@
    </div><!-- menuitem-->
   !endif
   </div><!-- wimsdocrightmenu-->
-  !endif
- 
+  !endif 
 <!-- end of docheader.phtml -->

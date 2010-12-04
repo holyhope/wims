@@ -8,6 +8,25 @@
 !endif
 </div><!--end of wimsbody-->
 </div><!--end of wimspagebox-->
+!if $wims_lightpopup=yes
+   <div id="wimstailbox">
+   <div class="wimstail">
+   <div class="tailitem">
+   </div><!--tailitem-->
+ <div class="tailitem">
+  $wims_name_devwims
+ </div><!--tailitem-->
+ <div class="tailitem">
+  $wims_name_Author: $module_author
+ </div><!--tailitem-->
+</div><!--wimstail-->
+</div><!--wimstailbox-->
+</div> <!-- end of wimsbodybox-->
+</div> <!-- end of wimslightpopup-->
+</div> <!-- end of wimsdoc-->
+  !exit
+!endif
+
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 !if $job=read
@@ -26,7 +45,7 @@
  </div>
  !goto end
 !endif
-!if $wims_rm_0!=$empty0
+!if $wims_rm_0!=$empty
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
  !for i_=1 to $wims_homeref_n0
@@ -65,7 +84,7 @@
   </div>
  !endif
 !endif
-!if ($wims_user=supervisor or  $wims_developer!=$empty) and $sheetdata!=$empty and $job!=exosource
+!if ($wims_user=supervisor or $wims_developer!=$empty) and $sheetdata!=$empty and $job!=exosource
 <div class="menuitem">
  !read oneitem.phtml shsource,1,cmd=reply&job=exosource
 </div>
