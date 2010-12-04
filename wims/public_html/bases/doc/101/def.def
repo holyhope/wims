@@ -1,6 +1,6 @@
 !set titb=Using Variables in a Document
 !set keyw=
-!set datm=20090521
+!set datm=20101204
 !set prev=draw
 !set next=classdoc
 !set upbl=main
@@ -19,7 +19,7 @@ You can define variables in your documents, and call them later (within a
 same page), thus making your document more dynamic.
 <p>
 For example, the following line defines a variable under the name of
-<font color=blue><b>x1</b></font>, whose value will be a random integer
+<font color="blue"><b>x1</b></font>, whose value will be a random integer
 between -10 and 10 (inclusive)&#58;
 <pre>
 \def{integer x1=random(-10..10)}
@@ -57,44 +57,50 @@ $m_x1*$m_y1=$m_xy. You may
 
 !read primitives.phtml 2, help, module=adm/doc.en&job=help&help_subject=oefparm, [Complete list] 
 
-<table border=2 bgcolor=bisque>
-<tr><th>Definition<th>Effect
+<table border=2 bgcolor="bisque">
+<tr><th>Definition<th>Effect</th></tr>
 <tr><td><tt>\def{real x=random(-5..5)}</tt>
-    <td>\x will be a random real number<br>between -5 and 5
+    <td>\x will be a random real number<br>between -5 and 5</td></tr>
 <tr><td><tt>\def{real a=random(-5,-3,0.3,4)}</tt>
     <td>\a will be a real number taken randomly<br>among -5,-3,0.3 and 4
+    </td></tr>
 <tr><td><tt>\def{complex z=(1+2*i)^3}</tt>
     <td>\z will be the complex number z=
 !insmath (1+2*i)^3
 
+    </td></tr>
 <tr><td><tt>\def{text sign=random(+,-)}</tt>
     <td>\sign will be a random sign&#58; + ou -
+    </td></tr>
 <tr><td><tt>\def{integer n=3*exp(\a)}</tt>
     <td>\n will be the closest integer to 3*e<sup>\a</sup><br>(it
     depends on the value of \a)
+    </td></tr>
 <tr><td><tt>\def{function f=random<br>(x^2+1,sin(x),log(x))}</tt>
     <td>\f will be a random function&#58; either 
 !insmath x^2+1
 ,<br>or sin(x), or log(x)
+    </td></tr>
 <tr><td><tt>\def{text s=shuffle(6)}</tt>
     <td>$m_s will be a list of 6 integers 1,2,...,6, in random order.
+    </td></tr>
 <tr><td><tt>\def{text s=shuffle(a,b,c,d,e)}</tt>
-    <td>$m_s will be the letters {a,b,c,d,e} in random order.
+    <td>$m_s will be the letters {a,b,c,d,e} in random order.</td></tr>
 <tr><td><tt>\def{real a=evalue(x^2+sin(y),x=3,y=4)}</tt>
     <td>Evaluation of the function 
 !insmath x^2+sin(y)
 ,<br>
-    for x=3, y=4
+    for x=3, y=4</td></tr>
 <tr><td><tt>\def{real r=solve(x^3-3*x+1,x=0..1)}</tt>
     <td>\r will the the simple root of 
 !insmath x^3-3x+1
- between 0 and 1
+ between 0 and 1</td></tr>
 <tr><td><tt>\def{function h=simplify(x^5*y^3*x^2/y)}</tt>
     <td>Simplified expression&#58; 
 !insmath x^7*y^2
-
+</td></tr>
 <tr><td><tt>\def{function g=diff(sin(x)+cos(y),x)}</tt>
-    <td>\g will the the derivative of sin(x)+cos(y) with respect to x
+    <td>\g will the the derivative of sin(x)+cos(y) with respect to x</td></tr>
 <tr><td><tt>\def{function F=int(x^2+3*x+1,x)}</tt>
     <td>\F will an antiderivative of 
 !insmath x^2+3*x+1
@@ -102,20 +108,20 @@ $m_x1*$m_y1=$m_xy. You may
      the constant term being not garanteed to be always the same
 
 !read primitives.phtml 3, comment, <tr><td><tt>\\def{function F=int(t^2+3*t+1,t=1..x)}</tt>	    <td>\\F will the antiderivative of \(x^2+3*x+1) such that F(1)=0 
-
+</td></tr>
 <tr><td><tt>\def{real a=int(t^2+3*t+1,t=0..1)}</tt>
     <td>$m_a will the numerical integral of 
 !insmath x^2+3*x+1
-, from 0 to 1
+, from 0 to 1</td></tr>
 <tr><td><tt>\def{text f=htmlmath(2*x^2+3*x)}</tt>
     <td>\f will be rendered in html as&#58; 
 !insmath 2x^2+3x
-
+</td></tr>
 <tr><td><tt>\def{text f=texmath(2*x^2+3*x)}</tt>
-    <td>\f will be the TeX source for the expression.
+    <td>\f will be the TeX source for the expression.</td></tr>
 <tr><td><tt>\def{matrix m=1,2,3<br>4,5,6<br>7,8,9}</tt>
     <td>\m will be the matrix of 3 rows and 3 columns.
-<p>
+</td></tr>
 </table></center><p> 
 Conditional parameters&#58; You may write<p>
 <tt>\def{text ttt=_condition?_def1}</tt> or <br>
