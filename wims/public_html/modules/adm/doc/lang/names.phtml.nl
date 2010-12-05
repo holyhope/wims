@@ -24,7 +24,7 @@
  <tt>\filedir</tt>. 
  Bijvoorbeeld,
 <p><center>
- <tt>&lt;a&nbsp;href="\filedir/$"&gt;$f1&lt;/a&gt;</tt>
+ <tt>&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
  geeft de link naar het bestand <a href="$m_filedir/$f1">$f1</a>.
  Er kan ook worden geschreven:
