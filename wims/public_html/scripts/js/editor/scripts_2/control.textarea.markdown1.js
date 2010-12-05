@@ -71,7 +71,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 
 			//if(response == null)
 				//return;
-			this.replaceSelection('\\img{'+response+'}' + (selection == '' ? '{alt="'+names["image_alt"]+'"}' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
+			this.replaceSelection('<img src="\\filedir/'+response+'"' + (selection == '' ? ' alt="'+names["image_alt"]+'">' : selection) + '' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
 		},{
 			id: 'markdown_image_button'
 		});
@@ -91,7 +91,13 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		});
 		
 		this.toolbar.addButton(names["Ordered_List"],function(){
-			this.wrapSelection('\n<ol>\n <li>','\n </li></ol>');
+			this.wrapSelection('\n<ol>\n <li>','\n </li>\n</ol>');
+		},{
+			id: 'markdown_ordered_list_button'
+		});
+		
+		this.toolbar.addButton(names["List_item"],function(){
+			this.wrapSelection('<li> \n','\n </li>');
 		},{
 			id: 'markdown_ordered_list_button'
 		});
@@ -103,84 +109,6 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			});
 		},{
 			id: 'markdown_espace_button'
-		});
-		this.toolbar.addButton(names["title"],function(){
-			this.wrapSelection('\n\\title{ ','}');
-		},{
-			id: 'markdown_title_button'
-		});
-		
-		
-		this.toolbar.addButton(names["User_guide"],function(){
-			function help_url(){
-				var url="?session="+document.getElementById("session_wims").innerHTML+"&lang="+version+"&module=adm/createxo&cmd=help&special_parm=JS_editor";
-
-				return url;
-				}
-			var help_url=help_url();
-
-			window.open(help_url);
-		},{
-			id: 'markdown_help_button'
-		});
-		this.toolbar.addButton(names["author"],function(){
-			this.wrapSelection('\n\\author{ ','}');
-		},{
-			id: 'markdown_auteur_button'
-		});
-		this.toolbar.addButton(names["email"],function(){
-			this.wrapSelection('\n\\email{',' }');
-		},{
-			id: 'markdown_email_button'
-		});
-		
-		
-		
-		this.toolbar.addButton('',function(){
-			this.wrapSelection('','');
-		},{
-			id: 'markdown_espace2_button'
-		});
-		this.toolbar.addButton(names["statement"],function(){
-			this.wrapSelection('\n\\statement{\n','\n}');
-		},{
-			id: 'markdown_statem_button'
-		});
-		this.toolbar.addButton(names["hint"],function(){
-			this.wrapSelection('\n\\hint{\n','\n}');
-		},{
-			id: 'markdown_hint_button'
-		});
-		this.toolbar.addButton(names["help"],function(){
-			this.wrapSelection('\n\\help{\n','\n}');
-		},{
-			id: 'help'
-		});
-		this.toolbar.addButton("espace3",function(){
-			this.wrapSelection('','');
-		},{
-			id: 'markdown_espace3_button'
-		});
-		this.toolbar.addButton(names["answer"],function(){
-			this.wrapSelection('\n\\answer{ }{ }{type= ','}{option= }{weight= }\n');
-		},{
-			id: 'markdown_answer_button'
-		});
-		
-		this.toolbar.addButton(names["feedback"],function(){
-			this.wrapSelection('\n\\feedback{ }{\n','\n}');
-		},{
-			id: 'markdown_feed_button'
-		});
-		this.toolbar.addButton(names["condition"],function(){
-			this.wrapSelection('\n\\condition{ ',' }{ }');
-		},{
-			id: 'markdown_condition_button'
-		});
-		this.toolbar.addButton(names["solution"],function(){
-			this.wrapSelection('\n\\solution{\n','\n}');
-		},{
-			id: 'markdown_solution_button'
 		});
 	}
 });

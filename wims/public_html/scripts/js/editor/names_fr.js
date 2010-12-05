@@ -21,6 +21,7 @@ names["Enter_img_URL"]="Entrez le nom de votre fichier image :";
 names["Heading"]="Entête n°1";
 names["Unordered_List"]="Liste à puces";
 names["Ordered_List"]="Liste numérotée";
+names["List_item"]="Item d'une liste";
 
 /** WIMS 'before' instructions **/
 names["title"]="Titre";

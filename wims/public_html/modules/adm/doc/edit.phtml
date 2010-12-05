@@ -1,4 +1,3 @@
-
 <h1 class="wims_docu_title">$tit</h1>
 
 !if $error!=$empty
@@ -12,8 +11,8 @@
  !set wims_form_method=post
 !endif
 !form reply
-<input type=hidden name="doc" value="$doc">
-<input type=hidden name="block" value="$block">
+<input type="hidden" name="doc" value="$doc">
+<input type="hidden" name="block" value="$block">
 
 !if $titb=$empty
 $name_blockcreation
@@ -29,9 +28,9 @@ $name_blockedition
 <br>
 
 !set titb=!reinput $titb
-$wims_name_title: <input size=50 name="Titb" value="$titb"> <br>
+$wims_name_title: <input size="50" name="Titb" value="$titb"> <br>
 !if $edtype=file
- $name_file: <input type=file size=35 name="wims_deposit">
+ $name_file: <input type="file" size="35" name="wims_deposit">
  !if $titb!=$empty
   <br>$name_prompt0
   !formselect addtype list replace,append,prepend prompt\
@@ -40,23 +39,31 @@ $wims_name_title: <input size=50 name="Titb" value="$titb"> <br>
  !endif
  <br>
 !else
- !mexec scripts/textarea.sh
+<a name="textarea"></a>
+ <div id="textDiv">
+  !mexec scripts/textarea.sh
+!!  <div id="handleBottom" style="width: 100%; top: 222px;"></div>
+ </div>
+<script>
+  markdown_toolbar = new Control.TextArea.ToolBar.Markdown('wims_deposit_id');
+  markdown_toolbar.toolbar.container.id = 'markdown_toolbar';
+</script>
 !endif
 <center>
-<input type=submit name="preview" value="$n_preview">
-<input type=submit name="rEg" value="$wims_name_tosave">
-<input type=submit name="abandon" value="$wims_name_giveup">
+<input type="submit" name="preview" value="$n_preview">
+<input type="submit" name="rEg" value="$wims_name_tosave">
+<input type="submit" name="abandon" value="$wims_name_giveup">
 </center> <br>
-!! $wims_name_Keywords : <input size=50 name="Keyw" value="$keyw"> <br>
+!! $wims_name_Keywords : <input size="50" name="Keyw" value="$keyw"> <br>
 !if $block!=main
- $name_prev <input size=12 name="Prev" value="$prev">
- $name_next <input size=12 name="Next" value="$next">
- $name_up <input size=12 name="Upbl" value="$upbl">
+ $name_prev <input size="12" name="Prev" value="$prev">
+ $name_next <input size="12" name="Next" value="$next">
+ $name_up <input size="12" name="Upbl" value="$upbl">
  <br>
 !endif
 $name_dates <small>aaaammjj</small> : $name_from
-<input size=8 name="Dat1" value="$dat1"> $name_to
-<input size=8 name="Dat2" value="$dat2">
+<input size="8" name="Dat1" value="$dat1"> $name_to
+<input size="8" name="Dat2" value="$dat2">
 </form>
 
 <p><hr> <p>
