@@ -1,0 +1,45 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Young diagram drawing
+slib_parms=1\
+,
+slib_author=Bernadette Perrin-Riou
+slib_out=
+slib_comment=
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_partition, slib_size,slib_width,slib_height
+!default slib_size=30
+!default slib_width=0
+!default slib_height=0
+slib_w=$[ceil($slib_width/$slib_size)]
+slib_h=$[ceil($slib_height/$slib_size)]
+slib_partition=!declosing $slib_partition
+slib_partition=!sort reverse numeric item $slib_partition
+slib_K=!item 1 of $slib_partition
+slib_K=$[$slib_K+2]
+slib_s=!itemcnt $slib_partition
+slib_M=$[$slib_s+2]
+slib_y=$[$slib_s]
+slib_x=1
+slib_dessinpart=
+!for slib_v=1 to $slib_s
+    slib_y=$[$slib_y-1]
+    slib_z=!item $slib_v of $slib_partition
+    !for slib_x = 1 to $slib_z
+      slib_dessinpart=$slib_dessinpart \
+      rectangle $slib_x,$slib_y,$[$slib_x+1],$[$slib_y+1], black
+    !next
+!next
+slib_K=$[max($slib_K,$slib_w)]
+slib_M=$[max($slib_M,$slib_h)]
+slib_dessin=xrange -1,$[$slib_K]\
+yrange -1,$slib_M\
+$slib_dessinpart
+insdraw_size=$[($slib_K)*$slib_size],$[($slib_M)*$slib_size]
+
+!insdraw $slib_dessin
+slib_out=<img src="$ins_url" alt="">,$insdraw_size

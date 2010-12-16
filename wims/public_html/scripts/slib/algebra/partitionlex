@@ -1,0 +1,21 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Next partition in the lexicographic decreasing order
+slib_parms=1\
+,partition (inside bracket)
+slib_author=Bernadette Perrin-Riou
+slib_out= the next partition in lexicographic decreasing order
+slib_comment=
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_partition
+slib_partition=!declosing $slib_partition
+slib_partition=!sort reverse numeric item $slib_partition
+
+slib_out=!exec pari p=[$slib_partition] ;  n=sum(i=1,#p,p[i]) ;\
+    L=listcreate(n) ; test=0 ;\
+    for( a = 1, #p, if( a <#p && p[a+1] > 1 ,listput(L,p[a]), listput(L, p[a]-1) ; test=1 ; N=#p-a +1; s=divrem(N,p[a]-1)~;for(j=1 , s[1], listput(L,p[a]-1)) ; if(s[2]!=0, listput(L,s[2]) ) ; return(Vec(L)) ; break))
+
