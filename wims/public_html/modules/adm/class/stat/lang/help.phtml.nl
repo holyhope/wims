@@ -5,13 +5,13 @@
  <dd>gewicht van de oefeningen mbt het eindcijfer voor een werkblad.
  <p> 
  <dt>moeilijkheidsgraad
- <dd>Formule voor deze index: <p><center>
+ <dd>Formule voor deze factor: <p><center>
    !instex $$$$ \frac{4\times\sqrt{\
    (\hbox{totaal verstreken tijd})\times\
    (\hbox{aantal opgestarte oefeningen})}}\
-   {(\hbox{aantal beindigde oefeningen})} $$$$
+   {(\hbox{aantal voltooide oefeningen})} $$$$
   </center> <p>
-  Een normale oefening heeft een "moeilijkheids index" tussen 0.5 en 3.
+  Een normale oefening heeft een "moeilijkheids-factor" tussen 0.5 en 3.
   <p>
  <dt>nieuw
  <dd>Telling van het aantal opgestarte oefeningen.

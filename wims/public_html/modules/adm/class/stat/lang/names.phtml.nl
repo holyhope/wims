@@ -10,10 +10,10 @@
 !set name_title=Statistische gegevens
 !distribute items Totaal,vereiste<br>punten,gewicht,moeilijkheids<br>graad,\
 gemiddelde/cijfer,gemiddelde/leerling,std afwijking,tijdsduur,cijfer,\
-theoretische tijdsduur,Sum,min.,min,max\
+theoretische tijdsduur,Totaal,min.,min,max,niveau,punten\
 into name_totals,name_required_points,name_coeff,name_index,\
 name_avg_score,name_avg_participant,name_deviation,name_duration,name_score,\
-name_theoric,name_sum,name_minute,name_min,name_max
+name_theoric,name_sum,name_minute,name_min,name_max,name_new,name_points
 
 !distribute line Statistische gegevens van\
 Type data\
