@@ -126,7 +126,7 @@ class inp_panel extends Panel implements MouseListener, MouseMotionListener {
     public static final int CURVE=0, RECT=1, CIRCLE=2, LINES=3, LINE=4,
      SLINE=5,SEG=6,POLY=7,POINTS=8,VEC=9;
     public static int ctype;
-    static int ll=4;
+    static int ll=8;
     Image bg;
     Vector lines=new Vector(16384);
     int x1,y1;
