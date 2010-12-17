@@ -23,6 +23,7 @@ import java.applet.*;
 import java.util.Vector;
 
 public class input extends Applet{
+    private static final long serialVersionUID = 1;
     inp_panel panel;
     inp_controls controls;
     Image bg;
@@ -107,7 +108,7 @@ public class input extends Applet{
 	input.start();
 
 	f.add("Center", input);
-	f.show();
+	f.setVisible(true);
     }
 
     public void replyback() {
@@ -123,6 +124,7 @@ public class input extends Applet{
 }
 
 class inp_panel extends Panel implements MouseListener, MouseMotionListener {
+    private static final long serialVersionUID = 1;
     public static final int CURVE=0, RECT=1, CIRCLE=2, LINES=3, LINE=4,
      SLINE=5,SEG=6,POLY=7,POINTS=8,VEC=9;
     public static int ctype;
@@ -405,6 +407,7 @@ class inp_panel extends Panel implements MouseListener, MouseMotionListener {
 
 
 class inp_controls extends Panel implements ActionListener {
+    private static final long serialVersionUID = 1;
    input ci;
    inp_panel targ;
    Button retry, ok;
