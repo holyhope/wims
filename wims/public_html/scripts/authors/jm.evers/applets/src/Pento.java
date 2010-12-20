@@ -26,11 +26,11 @@ Applet returns String S=number_of_squares+","+used_squares+","+used_objects+","+
     </body>                                                                                                                                    
 </html>  
 
+*/
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-*/
 
 public class Pento extends Applet implements Runnable{
 	/**
