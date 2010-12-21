@@ -1,0 +1,134 @@
+<html>
+ <body>
+     <script type="text/javascript">
+        function ReadThis(){
+
+    	    var wims_reply = document.getElementById('InvulGrid').ReadApplet("0"); 
+	    alert("wims : this can send to wims for correction:\n"+wims_reply); 
+	    
+	    var js_alert_show= document.getElementById('InvulGrid').ReadApplet("1"); 
+	    alert("javascript : this can be the confirmbox for the pupil:\n"+js_alert_show); 
+	    
+	    var html_show= document.getElementById('InvulGrid').ReadApplet("2"); 
+	    document.getElementById('html_reply').innerHTML="this is a html-table representation<br>"+html_show;
+	    
+	    var latex_show= document.getElementById('InvulGrid').ReadApplet("3"); 
+	    alert("latex : this is an latex array of the answer:\n Usable via !insmath\n"+latex_show);
+	}
+    </script>. 
+    <table>
+    <tr>
+    <th>
+    <applet id="InvulGrid" codebase="dist" archive="InvulGrid.jar"  code="InvulGrid.class"  width="400" height="400">
+	<param name="fontsize" value="50"><!-- optional: actual fontsize will be determined according xlines/ylines -- xsize/ysize -->
+	<param name="pencolor" value="0,0,255,150"><!-- optional: typing color -->
+	<param name="bgcolor" value="255,255,255"><!-- optional: canvas bgcolor;default white ; R,G,B,alpha -->
+	<param name="markcolor" value="10,255,10,60"><!-- optional:  active field color -->
+	<param name="linecolor" value="200,10,60,150"><!-- optional:  user drawn lines in applet  --> 
+	<param name="linewidth" value="2"><!-- linewidth of user drawn lines -->
+	<param name="pointsize" value="6"><!-- size of points -->
+
+	<param name="exercise" value=",     1.235,      4.34,---|x">
+	
+	<param name="xlines" value="12"><!-- default 10 ; number of vertical lines : determines fontsize -->
+	<param name="ylines" value="12"><!-- default 10 ; number of horizontal lines  -->
+	<param name="showgrid" value="1"><!-- show xlines and ylines as grid in gridcolor -->
+	<param name="gridcolor" value="0,0,255,40"><!-- color of grid  -->
+	<param name="reverse" value="no"><!-- default false ; force editing from right to left  --> 
+	<param name="language" value="nl"><!-- default en ; nl , fr -->
+	<!-- optional: is an itemlist, spaces matter .-->
+	<!-- Optional horizontal lines: ---|x|-|+|:  -->
+	<!-- bug in java plugin's stringtokenizer: first token blancspace is stripped off... -->
+	<!-- in applet viewer this works fine -->
+	<!-- to produce an space before the first number, add a "," like-->
+	<!-- spaces matter  !! -->
+	
+	<!-- use first row of grid for user scribbling: this will not be send to wims -->
+	<param name="scribling_pencolor" value="255,200,0,170"><!-- optional -->
+	<param name="scribling_row" value="no"><!-- scribling row , default yes -->
+	<!-- if param buttons is empty or not set : only a 'clear all; button will be shown -->
+	<param name="buttons" value="+,-,:,x"><!-- user draws lines with +,-,x,&divide; symbols ; do not use too many!  --> 
+    </applet>
+    <br> 
+    <input type="button" name="InvulGrid" value="Read " onclick="javascript:ReadThis();"> 
+    </th>
+    <th>
+	<div id="html_reply"></div>
+    </th>
+    </tr>
+    <table>
+    <hr>
+<pre>
+/*
+jm.evers 9/2010
+
+Applet for simple adding, subtracting,dividing and multiplying by pupils.
+The result can be checked by WIMS.
+
+************************************************************************************
+*                                                                                  *
+* This is all amateur scriblings... So no copyrights.                              *
+* This source code file, and compiled classes derived from it,                     *
+* can be used and distributed without restriction, including for commercial use... *
+* No warrenty whatsoever.                                                          *
+*                                                                                  *
+************************************************************************************
+*/
+     &lt;script type="text/javascript"&gt;
+        function ReadThis(){
+
+    	    var wims_reply = document.getElementById('InvulGrid').ReadApplet("0"); 
+	    alert("this can send to wims for correction:\n"+wims_reply); 
+	    
+	    var js_alert_show= document.getElementById('InvulGrid').ReadApplet("1"); 
+	    alert("this can be the confirmbox for the pupil:\n"+js_alert_show); 
+	    
+	    var html_show= document.getElementById('InvulGrid').ReadApplet("2"); 
+	    document.getElementById('html_reply').innerHTML="this is a html-table representation<br>"+html_show;
+	    
+	    var latex_show= document.getElementById('InvulGrid').ReadApplet("3"); 
+	    alert("this is an latex array of the answer:\n Usable via !insmath\n"+latex_show);
+	}
+    &lt;/script&gt; 
+    &lt;applet id="InvulGrid" name="InvulGrid" code="InvulGrid.class"  width="400" height="400"&gt;
+	&lt;param name="fontsize" value="50"&gt;&lt;!-- optional: actual fontsize will be determined according xlines/ylines -- xsize/ysize --&gt;
+	&lt;param name="pencolor" value="0,0,255,125"&gt;&lt;!-- optional: typing color --&gt;
+	&lt;param name="bgcolor" value="245,240,240"&gt;&lt;!-- optional: canvas bgolor;default white ; R,G,B,alpha --&gt;
+	&lt;param name="markcolor" value="10,255,10,100"&gt;&lt;!-- optional:  active field color --&gt;
+	&lt;param name="linecolor" value="255,10,100"&gt;&lt;!-- optional:  user drawn lines in applet  --&gt; 
+	&lt;param name="linewidth" value="6"&gt;&lt;!-- linewidth of user drawn lines --&gt;
+	&lt;param name="xlines" value="10"&gt;&lt;!-- default 10 ; number of vertical lines : determines fontsize --&gt;
+	&lt;param name="ylines" value="10"&gt;&lt;!-- default 10 ; number of horizontal lines  --&gt;
+	&lt;param name="showgrid" value="true"&gt;&lt;!-- show xlines and ylines as grid in gridcolor --&gt;
+	&lt;param name="gridcolor" value="0,0,255,100"&gt;&lt;!-- color of grid  --&gt; 
+	&lt;param name="language" value="nl"&gt;&lt;!-- default en ; nl , fr --&gt;	
+	&lt;param name="reverse" value="yes"&gt;&lt;!-- default false ; force editing from right to left  --&gt; 
+	&lt;!-- optional: is an itemlist, spaces matter .Optional horizontal lines: ---|x|-|+|:  --&gt;
+	&lt;!-- bug in java plugin's stringtokenizer: first token blancspace is stripped off... --&gt;
+	&lt;!-- in applet viewer this works fine --&gt;
+	&lt;!-- to produce an space before the first number, add a "," like--&gt;
+	&lt;param name="exercise" value=",   1234,   5678,    456, ---|+"&gt;
+	&lt;!-- use first row of grid for user scribbling:.will not be send to wims --&gt;
+	&lt;param name="scribling_pencolor" value="255,10,0,200"&gt;&lt;!-- optional --&gt;
+
+	&lt;param name="exercisecolor" value="0,255,100,120"&gt;
+	&lt;!-- left upper corner UNDER SCRIBLING LINE of grid is 0:0 --&gt;
+	&lt;!-- right under corner of grid is xlines:ylines --&gt;
+	&lt;param name="segment1" value="2,1,6,1"&gt;&lt;!-- draw a segment x1,y1--x2,y2 --&gt;
+	&lt;param name="color1" value="255,0,0,250"&gt;&lt;!-- color for segment 1  --&gt;	
+	&lt;param name="segment2" value="2,1,2,6"&gt;&lt;!-- draw a segment x1,y1--x2,y2 --&gt;
+	&lt;param name="color2" value="0,255,0,100"&gt;&lt;!-- color for segment 2  --&gt;	
+	&lt;param name="segment3" value="2,6,6,6"&gt;&lt;!-- draw a segment x1,y1--x2,y2 --&gt;
+	&lt;param name="color3" value="0,120,155,100"&gt;&lt;!-- color for segment 3  --&gt;	
+	&lt;param name="segment4" value="6,6,6,1"&gt;&lt;!-- draw a segment x1,y1--x2,y2 --&gt;
+	&lt;param name="color4" value="130,120,155,100"&gt;&lt;!-- color for segment 4  --&gt;	
+	
+	&lt;!-- if param buttons is empty or not set : only a 'clear all; button will be shown --&gt;
+	&lt;param name="buttons" value="+,x"&gt;&lt;!-- user draws lines with +,-,x,&divide; symbols ; do not use too many!  --&gt; 
+	
+    &lt;/applet
+    &lt;br&gt; 
+    &lt;input type="button" name="InvulGrid" value="Read " onclick="javascript:ReadThis();"&gt; 
+    </pre>
+ </body>
+</html>

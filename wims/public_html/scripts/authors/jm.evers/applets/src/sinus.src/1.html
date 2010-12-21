@@ -1,0 +1,39 @@
+<html>
+    <body>
+	<script language="javascript" type="text/javascript">
+	    function sendanswer(){
+		var data=document.applets[0].ReadApplet();
+	        var test=data.indexOf("error");
+	        if(test!=-1){alert("Your answer will not be send...\nthe next objects could not be detected in your drawing...\n\n:"+data); return;}
+		else{
+		var answer=data.split(',');
+		alert("technical answer: \n"+answer[0]);
+		alert("unicode answer: \n"+answer[1]);
+		alert("unicode answer: \n"+answer[2]);
+		    <!-- confirm("Send this ?\n"+data);
+		    if(t==true){
+		        data=encodeURIComponent(data);
+			var URL = '$wims_ref_name?session=$session&+moudule=$module&+cmd=reply&+reply$n='+data ;document.location.href = URL
+		        -->
+		    }
+		}
+	    }                                                                                                                                          
+	</script>
+	
+	<p align=center>
+
+	    <applet id="sinus" codebase="dist" archive="sinus.jar" code="sinus.class" WIDTH="800" HEIGHT="400" ALIGN="CENTER" MAYSCRIPT>
+		<param name="language" value="en">                                                                                                  
+		<param name="show_curve" value="yes">
+		<param name="degrees" value="degrees">                                                                                                  
+		<param name="Xaxis_units" value="yes">
+		<param name="functiontype" value="sin">                                                                 
+		<param name="start" value="80">                                                                                                       
+		<param name="end" value="720">
+		No java
+	    </applet>
+	<br> 
+	    <input type="button" onclick="javascript:sendanswer()" name="TEST" value="TEST TEST">
+	</p>
+    </body>
+</html>
