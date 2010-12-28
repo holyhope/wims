@@ -161,7 +161,7 @@ public class Clicktile extends Applet implements Runnable,MouseListener, MouseMo
 		tmpcolors[p]=GetInternalColorCode( k, 0 );
 	    }
 	}
-	if(maxcolors>0){this_color=1;}
+	if(maxcolors>0){this_color=maxcolors;}
 	// get the square
 	tmpcolors[maxcolors]=color[0];
 	for(obj=1 ; obj<=objects ;obj++){
@@ -293,7 +293,7 @@ public class Clicktile extends Applet implements Runnable,MouseListener, MouseMo
 		System.out.println("Change color : "+this_color);
 		if(this_color > used_colors.length - 1){this_color=0;}
 		Clicktile[dy][dx] = used_colors[this_color];
-		repaint();
+		process_mouse(dx,dy);
 	    }
 	}
     }
@@ -305,7 +305,7 @@ public class Clicktile extends Applet implements Runnable,MouseListener, MouseMo
 	    this_color++;
 	    if(this_color > used_colors.length - 1){this_color=0;}
 	    Clicktile[dy][dx] = used_colors[this_color];
-	    repaint();
+	    process_mouse(dx,dy);
 	}
     }
     
