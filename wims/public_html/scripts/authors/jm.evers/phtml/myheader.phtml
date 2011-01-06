@@ -62,30 +62,26 @@
 	    <tr>
 	!if $viewlogo=1
 	    <td valign="top" align="right">
-		<a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
-		    <div>
+		<div>
+		    <a onmouseover="this.T_OPACITY=70;this.T_PADDING=10;this.T_BORDERCOLOR='red';this.T_BORDERWIDTH=1;return escape('$logotext')">
 			$logo
-		    </div>
-		</a>
+		    </a>
+		</div>
 	    </td>
 	!endif
 	!if $questiontype isin 0,7
 	    !if $mathview isin 1,2
 		<td valign="top" align="right">
-		    <a onmouseover="return escape('$mathchecktext')">
-			<div>
-			!if exam isin $session
-			    !! hope this is not interfering with something important...
-			    !href target=wims_mhelp session=$session&+module=$module&+cmd=help&+myvar4=$session
-			!else
-			    !set stupid_fix=!replace internal . by , in $session
-			    !set stupid_fix=!item 1 of $stupid_fix
-			    !set stupid_fix=!nospace $stupid_fix _ mhelp
-			    !href target=wims_mhelp session=$stupid_fix&+module=$module&+cmd=help&+myvar4=$session
-			!endif
-				<img src="$gifdir/math.jpg" alt="mathematical inputfield" border="0">
-			    </a>
-			</div>
+		    !if exam isin $session
+			!! hope this is not interfering with something important...
+			!set help_session=!nospace $session _mhelp
+		    !else
+			!set help_session=!replace internal . by , in $session
+			!set help_session=!item 1 of $help_session
+			!set help_session=!nospace $help_session _ mhelp
+		    !endif
+		    <a onmouseover="return escape('$mathchecktext')" onClick="wims_help=window.open('$wims_ref_name?wims_window=new&+lang=nl&+session=$help_session&+module=$module&+cmd=help&+myvar4=$session','wims_help','status=no,toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes')"
+			<img src="$gifdir/math.jpg" alt="mathematical inputfield" border="0"></a>
 		    </a>
 		</td>
 	    !endif
@@ -162,9 +158,6 @@
 		<table summary="">
 		    <tr>
 		    <td valign="top" align="right">
-		!!	<script language="JavaScript">var clps = 0;function update() {if(clps) {clearTimeout(clps);clps  = 0;}var t = new Date();document.clock.time.value = ""  + t.getHours() + ":"  + t.getMinutes() + ":" + t.getSeconds();clps = setTimeout("update()", 1000);}function startclock() {clps = setTimeout("update()", 500);}
-		!!	</script>
-		!!	<body onload="javascript:startclock();">
 			<form name="clock" action="">
 			    <input style="text-align:center;background-color:$bgcolor1;color:green;font-size:100%;" type="text" name="time" size="9">
 			</form>
@@ -205,7 +198,9 @@
 	</center>
     !endif
 </p>
-<center><div id="alarmtext" style="opacity:0.6;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red;width:300px"></div></center>
+<center>
+    <div id="alarmtext" style="opacity:0.6;z-index:100;display:none;background-color:orange;font-size:16px;border:2px solid red;width:300px"></div>
+</center>
 <p align="left">
 !if $total_exos>1
     <small>
