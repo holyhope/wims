@@ -1,0 +1,249 @@
+!goto $job
+
+:checkuser
+:checkident
+:checkclass
+:checksheet
+:checkexam
+:getexam
+:getexo
+:getscores
+:modclass
+:delclass
+:delsheet
+:deluser
+:adduser
+:recuser
+:listexams
+:listlinks
+:search
+
+!goto footer
+
+:listsheets
+ !shortout "queryclass":"$qclass",\
+"nbsheet":"$sheetcnt",\
+"sheettitlelist":"$sheettitles"\
+
+!goto footer
+
+:getsheet
+ !shortout "queryclass":"$qclass",\
+"querysheet":"$qsheet",\
+"sheet_properties":"$sheet_properties",\
+"exocnt":"$exocnt",\
+"exotitlelist":"$exotitlelist"\
+
+!goto footer
+
+:addsheet
+ !shortout "queryclass":"$qclass",\
+"sheet_id":"$qsheet"\
+
+!goto footer
+
+:addclass
+ !shortout "cd":"$cd"\
+ 
+!goto footer
+
+:getclass
+!shortout "queryclass":"$qclass",\
+  "rclass":"$rclass",\
+
+!for d in $option
+ !shortout "$d":"$(class_$d)",\
+
+!next d
+!goto footer
+
+:getclassmodif
+!shortout "modifs":"$modif"
+!goto footer
+
+:getuser
+!shortout "queryclass":"$qclass",\
+"queryuser":"$quser",\
+
+!for d in $option
+ !shortout "$d":"$(user_$d)",\
+
+!next d
+!goto footer
+
+:getscore
+!for v in examscore, weights, requires, persheet, gotdetail, meandetail
+ $v=!trim $($v)
+ $v=!replace internal $\
+$ by \\
+$ in $($v)
+!next v
+
+!shortout "queryclass":"$qclass",\
+"queryuser":"$quser",\
+"scoremax":"$scoremax",\
+"examscores":"$examscore",\
+"weights":"$weights",\
+"requirepoints":"$requires",\
+"sheetsummaries":"$persheet",\
+"gotpoints":"$gotdetail",\
+"scoreaverages":"$meandetail",\
+
+!goto footer
+
+:getlog
+
+!if $option=score or $option=noscore
+ !sh cd $wims_home/log/classes/$qclass\
+	cat $option/$quser 2>/dev/null
+!else
+ !sh cd $wims_home/log/classes/$qclass\
+	cat score/$quser noscore/$quser 2>/dev/null | sort
+!endif
+!goto footer
+
+:gettime
+ !shortout "server_time":"$now_year$now_month$now_day.$now_hour:$now_min:$now_sec"
+!goto footer
+
+:authuser
+ !shortout "wims_session":"$wims_session"
+!goto footer
+
+:getcourse
+ !shortout "queryclass":"$qprogram",\
+ "courses":"$wims_class"\
+
+
+:listclasses
+list_cnt=!itemcnt $listclasses
+!shortout "listContent":[\
+
+!for i = 1 to $list_cnt
+   qclass=!item $i of $listclasses
+   !read jobs/getclass.proc
+   !shortout  {"qclass":"$qclass",\
+         "rclass":"$rclass",\
+         "ident":"$ident",\
+         
+   !for d in $option
+	!shortout   "$d":"$(class_$d)",\
+
+   !next d
+   
+	shortout  }
+	!if  $i < $list_cnt
+		!shortout ,\
+			
+	!endif
+   
+!next i
+!shortout ]\
+
+!goto footer
+
+:listmodules
+base_directory=$option
+
+!shortout "base_directory":"$base_directory",\
+
+!if $base_directory issametext /
+list_cnt=!itemcnt $llist
+!shortout "listContent":[\
+
+!for i = 1 to $list_cnt
+	level=!item $i of $llist
+	name=!item $i of $lnamelist
+	!shortout  {"id":"$level","title":"$name","module_path":"/$level"}
+	
+	!if  $i < $list_cnt
+		!shortout ,		
+	!endif
+!next i
+!shortout ]
+
+!else
+
+!shortout "nbelement":$n,"listContent":[\
+
+list_cnt=!itemcnt $listContent
+!for i = 1 to $list_cnt
+	id=!item $i of $listContent
+	option=$base_directory/$id
+	!read jobs/getmodule.proc
+	
+	!shortout  {"id":"$id",\
+	"module_path":"$option",\
+	"title":"$title"
+	
+	!if $title notsametext
+		!shortout ,"description":"$description",\
+		"index_url" : "$wims_ref_name?module=$option&lang=$language",\
+		"language":"$language",\
+		"category" : "$category",\
+		"domain" : "$domain",\
+		"level" : "$level",\
+		"keywords" : "$keywords",\
+		"require" : "$require",\
+		"scoring" : "$scoring",\
+		"copyright" : "$copyright",\
+		"author" : "$author",\
+		"author_address" : "$address",\
+		"version" : "$version",\
+		"required_wims_version" : "$required_wims_version",\
+		"vardef" : "$vardef",\
+		"translator" : "$translator",\
+		"translator_address" : "$translator_address",\
+		"data" : "$data",\
+		"maintainer" : "$maintainer",\
+		"maintainer_address" : "$maintainer_address",\
+		"translation_language" : "$translation_language"\
+		
+	!endif
+
+!shortout }
+
+	!if  $i < $list_cnt
+		!shortout ,		
+	!endif
+	
+!next i
+!shortout ]\
+
+!endif
+
+!goto footer
+
+:getmodule
+
+!shortout "index_url" : "$wims_ref_name?module=$option",\
+"module_metadatas" : "$module_metadatas",\
+"module_id" : "$option",\
+"title" : "$title",\
+"description" : "$description",\
+"language" : "$language",\
+"category" : "$category",\
+"domain" : "$domain",\
+"level" : "$level",\
+"keywords" : "$keywords",\
+"require" : "$require",\
+"scoring" : "$scoring",\
+"copyright" : "$copyright",\
+"author" : "$author",\
+"author_address" : "$address",\
+"version" : "$version",\
+"required_wims_version" : "$required_wims_version",\
+"vardef" : "$vardef",\
+"translator" : "$translator",\
+"translator_address" : "$translator_address",\
+"data" : "$data",\
+"maintainer" : "$maintainer",\
+"maintainer_address" : "$maintainer_address",\
+"translation_language" : "$translation_language"\
+
+!goto footer
+
+
+:footer
+!shortout    }]
+!exit

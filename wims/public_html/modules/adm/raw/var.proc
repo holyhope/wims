@@ -34,35 +34,55 @@ code=!word 1 of $code
  !changeto error.proc $error
 !endif
 
+
+notplaintext = xmlformat json
+
 !if $code=$empty
-  !if $ident_type != xmlformat
+  !if $ident_type notwordof $notplaintext
 	ok=OK
   !else
-  	ok=<?xml version="1.0" encoding="$encoding"?>\
-<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
-<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
-<params><param><value><string>OK</string></value></param>
+  	!if $ident_type=xmlformat
+  	  	ok=<params><param><value><string>OK</string></value></param>
+  	!endif
+  	!if $ident_type=json
+  	  	ok=[{"status" : "OK"
+  	!endif
   !endif
 !else
-  !if $ident_type != xmlformat
+  !if $ident_type notwordof $notplaintext
 	ok=OK $code$ident_type
   !else
-  	ok=<?xml version="1.0" encoding="$encoding"?>\
-<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
-<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
-	<params><param><value><struct><member>\
-		<name>code</name>\
-		<value><string>$code</string></value>\
-	</member>\
+  	!if $ident_type=xmlformat
+  	 ok=<params><param><value><struct>\
+  	 <member>\
+	 	<name>code</name>\
+	 	<value><string>$code</string></value>\
+	 </member>\
 
+	!endif
+	!if $ident_type=json
+  	  	ok=[{"status" : "OK","code":"$code",
+  	!endif
   !endif
 !endif
 
-!if $ident_type != xmlformat
+
+
+!if $ident_type notwordof $notplaintext
 	!shortout $header\
 
 !else
+ !if $ident_type iswordof xmlformat
 	!shortout $header_xml\
+<?xml version="1.0" encoding="$encoding"?>\
+<!DOCTYPE methodResponse PUBLIC "XML9-RPC" "http://ticewims.unice.fr/xml-rpc/xml-rpc.dtd">\
+<methodResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ticewims.unice.fr/xml-rpc/xml-rpc.xsd">\
+
+ !endif
+ !if $ident_type=json
+ 	!shortout $header_json\
+ 
+ !endif
 
 !endif
 
