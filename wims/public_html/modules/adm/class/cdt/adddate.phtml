@@ -1,6 +1,6 @@
 
 !read adm/css.phtml
-
+ 
 !header1
 
 !read adm/title.phtml 1\
@@ -14,8 +14,8 @@ $cdt_subtitle
 !endif
 
 !form reply
-<input type=hidden name="job" value=adddate>
-<input type=hidden name="job2" value=save>
+<input type=hidden name="job" value="adddate">
+<input type=hidden name="job2" value="save">
 <p>$name_session:
 !if $jyear=$empty
  !let jyear=!char 1 to 4 of $wims_now
@@ -32,7 +32,8 @@ $name_workdone (< $desc_limit $name_character) :
     !set wims_ref_class=wims_button_help
 !href target=wims_help cmd=new&module=$module&job=helplink&cible=jdesc $wims_name_help
 <br>
-<textarea rows=10 cols=65 name="jdesc" wrap>
+
+<textarea $wims_id0 rows=10 cols=65 name="jdesc" wrap>
 !replace internal \( by &#92;( in $jdesc
 </textarea>
 <p>
@@ -42,9 +43,9 @@ $name_nb_date:
 <select  name="nbredevoir" onchange="submit()">
 !for i=0 to $max_todo
  !if $i=$nbredevoir
-  <option value=$i selected>$i</option>
+  <option value="$i" selected>$i</option>
  !else
-  <option value=$i>$i</option>
+  <option value="$i">$i</option>
  !endif
 !next i
 </select>
@@ -62,13 +63,12 @@ $name_nb_date:
    &nbsp;
     !set wims_ref_class=wims_button_help
    !href target=wims_help cmd=new&module=$module&job=helplink&cible=ddesc$i $wims_name_help
-   
-<br><textarea rows=3 cols=65 name="ddesc$i">
+<br><textarea $(wims_id$i) rows=6 cols=65 name="ddesc$i">
 !replace internal \( by &#92;( in $(ddesc$i)
 </textarea>
  !next i
 <center><hr width="30%">
-<p><input type=submit value="$wims_name_tosave">
+<p><input type=submit value="$wims_name_tosave" $wims_on_click>
 </center>
 </form>
 
