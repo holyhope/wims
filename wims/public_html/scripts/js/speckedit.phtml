@@ -3,17 +3,24 @@
  !set wims_html_header= !append line <link href="scripts/js/speck/speck.css" rel="stylesheet" type="text/css">\
  <script type="text/javascript" src="scripts/js/speck/speck.js"></script>\
  <script language="javascript" type="text/javascript">\
-  function editthis(){ var input=iEdit['$wims_read_parm'].html();\
-  document.getElementById('$wims_read_parm').innerHTML=input;\
- }\
- </script> to $wims_html_header
+ to $wims_html_header
+ !set speck_keyword=!words2items $wims_read_parm
+ !set speck_keyword_cnt=!itemcnt $speck_keyword
+ !for speck_i=0 to $speck_keyword_cnt -1  
+  !set wims_html_header= !append line function editthis$speck_i(){ var input=iEdit['$(speck_keyword[$speck_i+1])'].html();\
+  document.getElementById('$(speck_keyword[$speck_i+1])').innerHTML=input;\
+  }\
+  to $wims_html_header
+  !set wims_id$speck_i=id="$(speck_keyword[$speck_i+1])" class="iEdit"
+  !set wims_on_click_prov=$wims_on_click_prov editthis$speck_i();
+ !next
+ !set wims_html_header= !append line </script> to $wims_html_header
+ !set wims_on_click=onclick="javascript:$wims_on_click_prov"
+  !set wims_id=$wims_id0
+!endif
 
-  !set wims_id=!append word id="$wims_read_parm" class="iEdit" to $wims_id
-  !set wims_on_click=!append word onclick="javascript:editthis();" to $wims_on_click
- !endif
- 
  !default wims_id=
  !default wims_on_click=
-
+ 
 
 
