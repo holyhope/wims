@@ -5,9 +5,11 @@
 
 src=`awk 'BEGIN {a=0};
  $0=="!exit" {a=10000};
- a>1 && a<'$w_quote_lim'+2 {if(substr($0,1,4)!="> > ") {print "> " $0; a++} };
+ a>1 && a<'$w_quote_lim'+2 {if(substr($0,1,4)!="> > ") {print "<br> " $0; a++} };
  a==1 && $0=="<pre>" {a=2};
  $0==":source" {a=1};
 ' $w_Forumdir/$w_c_prec | sed 's!<pre>!!g;s!</pre>!!g;s!&lt;!<!g;s!&gt;!>!g;s!<br>!!g;'`
 echo "$w_msgsrc1$w_t_from $w_name_wroteon $w_t_date, $w_t_time:
-$src$w_msgsrc2"
+<div class=\"wims_forum_blockquote\">$src</div>
+<hr>
+$w_msgsrc2"
