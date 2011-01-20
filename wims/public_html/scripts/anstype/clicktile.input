@@ -2,7 +2,7 @@
 !set appletdir=java/Clicktile
 !set anstype=yes
 !set anstyle=dprompt
-!set oef_js_submit=readthis()
+!set oef_js_submit=$oef_js_submit;readthis$i()
 !if $wims_read_parm=def
  !exit
 !endif
@@ -65,22 +65,22 @@ background_color $background_color
 !!############################
 !!####partie importante
 
-<input type=hidden name="reply$i" id="Clicktilereply" value="">
+<input type=hidden name="reply$i" id="Clicktilereply$i" value="">
 
 <script language="javascript" type="text/javascript">
- function readthis(){
-  var input=document.Clicktile.ReadApplet(); 
+ function readthis$i(){
+  var input=document.Clicktile$i.ReadApplet(); 
   !!alert(input);
-  document.getElementById("Clicktilereply").value=input;
+  document.getElementById("Clicktilereply$i").value=input;
   }
 </script>
-<applet id="Clicktile" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">
+<applet id="Clicktile$i" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">
 <param name="language" value="en">
 <param name="return_all_objects" value="$return_all_objects">
 <param name="status" value="waiting">
 $applet_parm
 </applet>
 !!###on garde les options pour le retour, variable de nom imposé oef_applet_option
-!set oef_applet_option=$Inputsize\
+!set oef_answer_option$i=$Inputsize\
 $oef_applet_option
 
