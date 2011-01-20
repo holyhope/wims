@@ -67,16 +67,24 @@ test2=!line 2 to -1 of $test
 
 !if $i_=1
  ball=greenball
+ colfill=green
 !else
  ball=redball
+ colfill=red
 !endif
 
-!insdraw existing $ifile\
-copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
-$test2
+!if fill iswordof $(replyoption$i) and bound isitemof $tester
+ !insdraw existing $ifile\
+ fill $x,$y,$colfill\
+ $test2
+!else
+ !insdraw existing $ifile\
+ copy $x-7,$y-7,-1,-1,-1,-1,$ball.gif\
+ $test2
+!endif
 
 !if analysenofig notitemof $(replyoption$i)
- reply_$i=<img src="$ins_url" alt="$ins_url" align="middle" vspace=5 hspace=5 border=0>
+ reply_$i=<img src="$ins_url" alt="$ins_url" align="middle" vspace="5" hspace="5" border="0">
 !else
  reply_$i=&nbsp;
 !endif
