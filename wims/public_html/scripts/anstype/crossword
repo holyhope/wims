@@ -19,24 +19,26 @@ Mpos=!declosing $Mpos
 
 r_style=<style type="text/css">\
 .cw_good {border:0;color:green;font-size:20px;text-align:center;}\
-.cw_bad {border:0;color:red;font-size:20px;text-align:center;}\
+.cw_bad {border:0;color:red;font-size:20px;text-align:center; float:top;}\
 .cw_ans {font-size:12px;color:green;text-align:right;vertical-align:bottom;}\
+.cw_answer {font-size:12px;color:green;text-align:right;vertical-align:bottom;}\
+.cw_help {color:black;}\
 $style\
 </style>
 
-r_help=<div style="display:inline;"><div class="cw_HV">$name_horizontal</div>
+r_help=
 !for k = 1 to $ligne_cnt
   !set u =  !line $k of $defH
   !if $u <> $empty
     !set u=!replace internal : by , in $u
     u_=!replace internal H by in $(u[1])
    r_help=$r_help \
-   <div style="display:block;color:black;"><span class="cw_no2">&nbsp;$u_&nbsp;</span> $(u[2..-1])</div>
+   <div class="cw_help"><div class="cw_HV">$name_horizontal</div>$u_: $(u[2..-1])</div>
     !endif
 !next k
 
 r_help=$r_help\
-</div><div style="display:inline;"><div class="cw_HV">$name_vertical</div>
+</div>
 
 !for k = 1 to $col_cnt
  !set u =  !line $k of $defV
@@ -44,12 +46,12 @@ r_help=$r_help\
      !set u=!replace internal : by , in $u
      u_=!replace internal V by in $(u[1])
     r_help=$r_help\
-    <div style="display:block;color:black;"><span class="cw_no2">&nbsp;$u_&nbsp;</span> $(u[2..-1])</div>
+    <div class="cw_help"><div class="cw_HV">$name_vertical</div>$u_: $(u[2..-1])</div>
    !endif
 !next k
 
-r_help=$r_help</div>
-r_out=<table align="center" border="1">
+r_help=$r_help
+r_out=<table class="cw_grille">
 !for k = 1 to $ligne_cnt
 r_out=$r_out<tr>
   !for j = 1 to $col_cnt 
