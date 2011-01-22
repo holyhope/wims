@@ -9,14 +9,13 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <math.h>
 #include <string.h>
 
-main( int argc , char *argv[]){
+int main( int argc , char *argv[]){
     /* test for correct argument */
     if( argc != 2){
-	fprintf(stdout,"error !\nusage:\n!exec moneyprint $your_wims_item_list\nexample:\nmoney=!exec moneyprint 1.2,30.1,.4,-.23123456\nThe result is a comma separated list: 1.20,30.10,0.40,-0.23\nNote: no calculations are done.\nNote: all numbers will be rounded to 2 decimals.\n",argc - 1);
+	fprintf(stdout,"error !\nusage:\n!exec moneyprint $your_wims_item_list\nexample:\nmoney=!exec moneyprint 1.2,30.1,.4,-.23123456\nThe result is a comma separated list: 1.20,30.10,0.40,-0.23\nNote: no calculations are done.\nNote: all numbers will be rounded to 2 decimals.\n");
 	exit(0);
     }
     /* test for illegal characters */
