@@ -10,7 +10,7 @@
 # for instance: the simplify  \frac{4x^{3}}{2x^{\frac{-1}{2}}}
 #  varlist=x 
 # var1=4*x^3/(2*x^(-1/2))
-
+# 1/2011 added !exec toascii $param1,$param2...
 
 goback=0
 errortext=$empty
@@ -211,6 +211,7 @@ c1=!lower $(answer$n)
 c1=!rawmath $c1
 c1=!nospace $c1
 
+
 !if $c1!=$o1
     !if $o1 issametext $a1
 	ex=!record 73 of $remarkdir/commonremarks.$taal
@@ -252,48 +253,24 @@ c2=!nospace $c2
     !endif
 !endif
 
-testname=!lower $module_dir
-# assuming toascii/2ascii is installed on myserver
-!if my isin $testname
-    o3=!exec toascii $o2
-    c3=!exec toascii $c2
-    !ifval $o3!=$c3
-	a3=!exec toascii $a2
-	!ifval $a3=$o3
-	    ex=!record 73 of $remarkdir/commonremarks.$taal
-	    !if $teaching=1
-		goback=1
-		errortext=$ex
-		maxscore=$[$P5*$maxscore]
-	    !else
-		# this answer will be wrong !!! no consideration
-		remark$n=$NOK<br>$ex
-		goback=0
-		maxscore=0
-	    !endif
-    	    !exit
+tot=!exec toascii $o2,$c2,$a2
+o3=!line 1 of $tot
+c3=!line 2 of $tot
+!ifval $o3!=$c3
+    a3=!line 3 of $tot
+    !ifval $a3=$o3
+	ex=!record 73 of $remarkdir/commonremarks.$taal
+	!if $teaching=1
+	    goback=1
+	    errortext=$ex
+	    maxscore=$[$P5*$maxscore]
+	!else
+	    # this answer will be wrong !!! no consideration
+	    remark$n=$NOK<br>$ex
+	    goback=0
+	    maxscore=0
 	!endif
-    !endif
-!else
-    # very expensive wakeup octave
-    o3=!exec octave sum(toascii("$o2"))
-    c3=!exec octave sum(toascii("$c2"))
-    !ifval $o3!=$c3
-	a3=!exec octave sum(toascii("$a2"))
-	!ifval $a3=$o3
-	    ex=!record 73 of $remarkdir/commonremarks.$taal
-	    !if $teaching=1
-		goback=1
-		errortext=$ex
-		maxscore=$[$P5*$maxscore]
-	    !else
-		# this answer will be wrong !!! no consideration
-		remark$n=$NOK<br>$ex
-		goback=0
-		maxscore=0
-	    !endif
-    	    !exit
-	!endif
+    	!exit
     !endif
 !endif
 

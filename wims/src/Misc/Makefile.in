@@ -25,12 +25,13 @@ checkmol=checkmol matchmol
 crossword=crossword
 lceb=lceb_dynopt
 moneyprint=moneyprint
+toascii=toascii
 
 OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint
+all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint toascii
 
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
@@ -72,6 +73,10 @@ moneyprint::
 	cd moneyprint ; make && $(STRIP) moneyprint
 	cp $@/moneyprint $(OTHERDIR)
 
+toascii::
+	cd toascii ; make && $(STRIP) toascii
+	cp $@/toascii $(OTHERDIR)
+
 clean:
 	rm -f $(progs2)
 	cd mathexp; make clean
@@ -85,6 +90,7 @@ clean:
 	cd lceb; make clean
 	cd crossword ; make clean
 	cd moneyprint ; make clean
+	cd toascii ; make clean
 
 distclean: clean
 	rm -f $(progs2)
@@ -94,7 +100,7 @@ distclean: clean
 	cd bioinfo; make distclean
 	cd units-filter/src; make clean
 	cd chemeq/src; make clean
-	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) $(lceb) $(crossword) $(moneyprint)
+	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) $(lceb) $(crossword) $(moneyprint) $(toascii)
 	cd $(BINDIR); rm -f $(Homebin)
 	cd $(PUBDIR); rm -f $(Publicbin2) $(namechange)
 	rm -f Makefile
