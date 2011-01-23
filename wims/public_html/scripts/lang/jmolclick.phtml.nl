@@ -1,2 +1,3 @@
-!!erase this line once translated the file lang/jmolclick.phtml.en
-!changeto lang/jmolclick.phtml.en
+!set ans_warning1=Je moet een object selecteren
+!set ans_warning2=Je moest exact 1 object selecteren
+!set ans_warning3=!nosubst Je moest precies $nbsel objecten selecteren\nMaar je hebt er geslecteerd $ $
