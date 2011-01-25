@@ -1,12 +1,12 @@
-single:Maakt een bindingingen door  het icoontje <img src='gifs/Wimschem/BSingle.png' alt='BSingle'> te activeren
+single:Maak bindingen door het icoontje <img src='gifs/Wimschem/BSingle.png' alt='BSingle'> te activeren
 
-atom:Rechter muisklik; selecteer het gewenste atoom <img src='gifs/Wimschem/ASelMenu.png' alt='ASelMenu'> \
+atom:Rechter muisklik; selecteer een atoom <img src='gifs/Wimschem/ASelMenu.png' alt='ASelMenu'> \
 en klik op de gewenste positie (er verschijnt een cirkeltje op die plek).
 
 double:Maak een enkelvoudige binding door te klikken op het icoontje <img src='gifs/Wimschem/BSingle.png' alt='BSingle'> \
 gevolgt door het klikken op een atoom.\
-Om de enkele binding om te bouwen toteen dubbele binding, selecteer het icoontje <img src='gifs/Wimschem/BDouble.png' alt='BDouble'>\
-en klk daarna op de gewenste binding.
+Om de enkele binding om te bouwen tot een dubbele binding, selecteer het icoontje <img src='gifs/Wimschem/BDouble.png' alt='BDouble'>\
+en klik daarna op de gewenste binding.
 
 erasor:Om bindingen en/of atomen te verwijderen , activeer het icoontje \
 <img src='gifs/Wimschem/Erasor.png' alt='Erasor'> en wis de gewenste onderdelen.(niet vergeten losse atomen te wissen).
