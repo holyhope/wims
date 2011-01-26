@@ -42,7 +42,7 @@ wims_prefix=class user tmp
         style_question,style_reponse,style_oef,style_css,\
         reading_tag,image_tag,video_tag,qcm_prompt1,qcm_prompt2,\
         sens,aucune,raw,partialscore,paste,specialhelp1,specialhelp2,\
-        specialhelp3,helpprompt,reaccent,packs,player,player_option,\
+        specialhelp3,specialhelp4,helpprompt,reaccent,packs,player,player_option,\
         good_answer_text,bad_answer_text,incomplete_answer_text,\
     
         $(a) =!getdef $a in $example_dir/$TYPE/$example
@@ -163,7 +163,7 @@ $modele
       instruction,instruction2,\
       choice,answer_given,format,common,second_step,first_step,pos_rep,percent,\
       size,qcm_prompt1,qcm_prompt2,sens,aucune,partialscore,paste,\
-      specialhelp1,specialhelp2,specialhelp3,helpprompt,reaccent,packs,player,\
+      specialhelp1,specialhelp2,specialhelp3,specialhelp4,helpprompt,reaccent,packs,player,\
         good_answer_text,bad_answer_text,incomplete_answer_text
      b=!trim $($a)
      !setdef quick_$a=$b in wimshome/$sesdir/var.stat
@@ -198,17 +198,15 @@ $ by 	 in $($a)
        list_mod=!words2items $list_mod
        list_module=
        !for a in $list_mod
-        !!  category = !defof category in wimshome/public_html/modules/devel/$wims_developer/$a/INDEX
-          category = !module category devel/$wims_developer/$a
-         
+          category = !module category devel/$wims_developer/$a  
          !if oef isin $category
             list_module=!append item $a to $list_module
-          !endif
+         !endif
        !next
        !if $list_module=$empty and $transfert=yes
          error = $error oefempty
        !endif
-       !if $target issametext choisissez
+       !if $target issametext $name_choice
          target=$empty
        !endif
    !endif

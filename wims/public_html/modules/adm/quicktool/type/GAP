@@ -44,8 +44,12 @@
 \matrix{specialhelp1=}
 \matrix{specialhelp2=}
 \matrix{specialhelp3=}
+\matrix{specialhelp4=}
 \for{i = 1 to \cntQ}{
   \text{trou0=\texte[2*\i;]}
+  \text{trou0=wims(replace internal // by ; in \trou0)}
+  \text{sp_help= wims(embraced randitem wims(getopt help in \trou0[2;]))}
+  \text{trou0=\trou0[1;]}
   \integer{cnt = items(\trou0)}
   \matrix{trou=\trou
   \trou0[1]}
@@ -82,6 +86,11 @@
   \matrix{specialhelp1=\specialhelp1,\spec1}
   \matrix{specialhelp2=\specialhelp2,\spec2}
   \matrix{specialhelp3=\specialhelp3,\spec3}
+  \if{4 isitemof \specialhelp}{
+    \text{sp_help=\sp_help= ? no help}
+    \text{sp_help=wims(replace internal , by &#44; in \sp_help)}
+    \text{specialhelp4=wims(append item \sp_help to \specialhelp4)}
+  }
 %%%%%%%%% fin pour l'aide
 
   \text{trou0= wims(listuniq wims(singlespace \trou0,\choix))}
@@ -130,9 +139,12 @@
 \text{specialhelp1=wims(nonempty items \specialhelp1)&nbsp;}
 \text{specialhelp2=wims(nonempty items \specialhelp2)&nbsp;}
 \text{specialhelp3=wims(nonempty items \specialhelp3)&nbsp;}
+\text{specialhelp4=wims(nonempty items \specialhelp4)&nbsp;}
+
 \matrix{Specialhelp=\specialhelp1
 \specialhelp2
-\specialhelp3}
+\specialhelp3
+\specialhelp4}
 
 \matrix{rep=\format iswordof clickfill dragfill raw case ? \trou}
 \matrix{rep=\format iswordof case raw? wims(replace internal &#44; by , in \rep)}
@@ -157,7 +169,7 @@
    \for{k = 1 to \cntQ}{
     \texte[2*\k-1;]  \if{r \k isitemof \nstep}{\embed{\STEP[\k],\size
     \autocompletion}
-     \if{\specialhelp[\step] iswordof 1 2}{
+     \if{\specialhelp[\step] iswordof 1 2 4}{
        \special{tooltip <font color=brown>[\helpprompt]</font>,,\Specialhelp[\specialhelp[\step];\k]}}
      \if{\specialhelp[\step]=3}{
        \Specialhelp[3;\k]}
