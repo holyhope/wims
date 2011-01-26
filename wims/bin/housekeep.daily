@@ -77,8 +77,14 @@ for l in `find . -name examlog -type d`; do
    if [ -n "$list" ]; then echo rm -Rf $list; fi
  done
 done
+# check if all compulsory directories are here
+for s in `ls -d */` ; do
+  for d in sheets exams doc score noscore vote cdt src def livret seq ; do
+   mkdir -p $s$d
+   echo $s$d
+  done
+done
 # Sheet expiration management. This should be activated during summer vacation.
-
 for s in `find . -path '*/sheets/.sheets' -type f`; do
 # quick test : any sheet to expire now ?
    test=`awk 'BEGIN {a=0};
