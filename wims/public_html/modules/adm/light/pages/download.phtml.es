@@ -23,5 +23,4 @@
 
 !header
 
-!!don't translate for the moment. There will be modifications !
 !read pages/download.phtml.en

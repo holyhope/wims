@@ -13,5 +13,6 @@ WIMS@$httpd_HTTP_HOST aanmaken van klassen
 U kunt natuurlijk op elke andere WIMS server ,die U als docent accepteerd, een klas aanmaken.
 <br>
 Verder kun U de 
-<a href="http://wims.unice.fr/download/wims"> WIMS software</a> downloaden en gewoon zelf een server installeren.
+<a target="wims_external" href="http://sourcesup.cru.fr/frs/?group_id=379">
+WIMS software</a> downloaden en gewoon zelf een server installeren.
 
