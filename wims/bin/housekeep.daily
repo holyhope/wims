@@ -77,12 +77,13 @@ for l in `find . -name examlog -type d`; do
    if [ -n "$list" ]; then echo rm -Rf $list; fi
  done
 done
-# check if all compulsory directories are here
-for s in `ls -d */` ; do
-  for d in sheets exams doc score noscore vote cdt src def livret seq ; do
-   mkdir -p $s$d
-   echo $s$d
-  done
+# check if all compulsory directories are here (only in non example classes)
+cd $WIMS_HOME/log/classes
+list=`find [0-9][0-9][0-9][0-9][0-9]* -type d -maxdepth 0` ;
+for s in $list ; do
+   for d in .users sheets exams doc score noscore vote cdt src def livret seq ; do
+    mkdir -p $s/$d 
+   done
 done
 # Sheet expiration management. This should be activated during summer vacation.
 for s in `find . -path '*/sheets/.sheets' -type f`; do
