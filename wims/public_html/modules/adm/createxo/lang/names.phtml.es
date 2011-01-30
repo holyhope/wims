@@ -122,7 +122,7 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst L'exercice <tt>$existing.oef</tt> est bien mis à jour avec succès dans le module
+  !set name_update1=!nosubst L'exercice <tt>$existing.oef</tt> a été mis à jour avec succès dans le module
   !set name_update2=Echec de mise a jour de l'exercice <tt>$existing</tt> dans le module
   !set name_update3=Su ejercicio se ha instalado con éxito.
    !set name_update4= Hemos encontrado un ejercicio idéntico en su clase. Se ignoran los registros   dobles.\
@@ -132,6 +132,12 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
     Consultar los ejercicios de clase\
     y eventualmente añadirlos a las hojas de trabajo\
  into name_youcan, name_consult,name_sheet
+!endif
+
+!if $level=7
+ name_warning_empty=Veuillez choisir le nom du fichier source.
+ name_choice_module=Sélectionner un module
+ name_choice_filename=Nom du fichier source de l'exercice (n'utiliser que des symboles alphanumérique)
 !endif
 
 !distribute lines Están en método bruto de creación de ejercicios. \

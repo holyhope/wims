@@ -133,6 +133,11 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
   en deze opnemen in werkbladen.\
   into name_youcan, name_consult,name_sheet
 !endif
+!if $level=7
+ name_warning_empty=Please choose the source file name.
+ name_choice_module=Select a module
+ name_choice_filename=Nameof the exercise source file (only alphanumeric symbols are allowed).
+!endif
 
 !distribute lines  U werkt nu in de expert mode van Createxo.\
 Deze oefening is gebaseerd op een standaard model, probeer de\
@@ -144,7 +149,6 @@ Hier is de code van uw geimporteerde publieke oefening. U kunt deze desgewenst n
 Omdat deze oefening is gebaseerd op een standaard model, probeer de\
 script tester\
  into name_brut,name_try,name_allsource,name_copy,name_source2,name_modify_window,name_public,name_test_extern,name_testerscript
-
 
 !exit
 :delete

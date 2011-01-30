@@ -2,7 +2,7 @@
 
 wims_helper=chapter=4&open=4_oef#oef
 wims_form_method=post
-wims_nw=existing catmodule newone oef_fname level vsave \
+wims_nw=existing catmodule catmodule1 newone oef_fname level vsave \
 	delete deltitle mode realtest deffile wims_noexport \
 	empty wims_module_log class_header
 wims_nr=wims_sesrandom
@@ -132,10 +132,10 @@ slib/circuits/comppos
    !for i=1 to 100
     reply$i=
    !next i
-  !endif
- !endif
+  !endif model
+ !endif realtest
  !reset status realtest retest
-!endif
+!endif level=3
 
 !if $rawinp!=$empty
  mode=raw
@@ -162,7 +162,7 @@ slib/circuits/comppos
 !bound oef_condcnt   between integer 0 and $condlim   default 0
 !bound oef_precision within 100,1000,10000,100000,1000000 default 10000
 !bound oef_computeanswer within yes,no default no
-!bound level between integer 0 and 6 default 0
+!bound level between integer 0 and 7 default 0
 !if $level=6 and $wims_user!=supervisor
  level=1
 !endif
@@ -198,6 +198,21 @@ slib/circuits/comppos
 #  error=no_answer
 #  !exit
 # !endif
+!endif
+!if $level=7 and $wims_developer!=$empty
+  !reset file_name_src
+   list_mod=!sh ls $wims_home/public_html/modules/devel/$wims_developer
+   list_mod=!words2items $list_mod
+   list_mod_oef=
+   !for a in $list_mod
+     category = !module category devel/$wims_developer/$a  
+    !if oef isin $category
+       list_mod_oef=!append item $a to $list_mod_oef
+    !endif
+   !next
+   !if $list_mod_oef=$empty
+     error = $error oefempty
+   !endif
 !endif
 
 !if $level=3
@@ -326,8 +341,19 @@ slib/circuits/comppos
  wims_module_log=Regclass $wims_class $mode $prefix$oef_title
 !endif
 
+!if $level=4
+ !if $catmodule1 != 
+  catmodule=devel/$wims_developer/$catmodule1
+  !reset catmodule1
+ !endif
+
+existing_new=!replace internal .oef by in $file_name_src 
+!set existing_new=!text select ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_1234567890 in $existing_new
+!if $existing_new != $empty
+  existing=$existing_new
+!endif
 !if $level=4 and $wims_developer!=$empty and ..devel/ isin ..$catmodule and \
-	.. notin $catmodule $existing
+   .. notin $catmodule $existing
  wims_exec_error=
  !sh cp $wims_home/sessions/$wims_session/submit.oef modules/$catmodule/src/$existing.oef\
     cd modules/$catmodule; src2def
