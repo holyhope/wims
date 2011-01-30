@@ -49,6 +49,14 @@ $table_end
  !set wims_menu_items=!append line downloadbinary,1,cmd=reply&level=6\
  to $wims_menu_items
 !endif
+!if $wims_developer!=$empty
+   <li>
+    !href cmd=reply&level=7 $name_developer
+   !if $existing!=$empty
+    $name_new
+   !endif
+   </li>
+!endif
 !if $wims_user!=$empty or $existing!=$empty
  !if $success!=1 and $regout!=fail
     <li>
@@ -68,6 +76,8 @@ $table_end
     !endif
    !else
     !href cmd=reply&level=4 $name_developer
+
+    $name_replace (<tt>$catmodule/src/$existing.oef</tt>)
     !set wims_menu_items=!append line putmodtool,1,cmd=reply&level=4\
     to $wims_menu_items
    !endif
