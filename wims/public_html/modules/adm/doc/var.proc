@@ -25,7 +25,7 @@ wims_backslash_insmath=yes
 !endif
 
 !bound job within home,auth,auth2,read,print,edit,prop,source,creat,recode,list,\
-	erase,openclose,help,file,exosource default home
+	erase,openclose,help,file,exosource,transfer default home
 readjobs=read source list print exosource
 editjobs=edit prop erase openclose file
 !if robot isin $session
@@ -66,6 +66,9 @@ doctype=doc
  !else
   editable=no
   readable=yes
+ !endif
+ !if $wims_developer!=$empty
+  transferable=yes
  !endif
  !if $job=source and $wims_user!=supervisor
   job=read

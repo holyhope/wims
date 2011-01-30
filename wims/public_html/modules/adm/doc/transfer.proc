@@ -1,0 +1,23 @@
+!!read defs 
+!if $transfer=yes
+  mod_dir=$wims_home/public_html/modules/devel
+  !if $catmodule!=$empty 
+   !sh cp -r $wims_home/log/classes/$wims_class/doc/$doc/* $mod_dir/$wims_developer/$catmodule/doc/1/ ;\
+    cd $mod_dir/$wims_developer/$catmodule ; src2def
+   transfer=done
+  !endif
+!else
+   !reset file_name_src
+   list_mod=!sh ls $wims_home/public_html/modules/devel/$wims_developer
+   list_mod=!words2items $list_mod
+   list_mod_doc=
+   !for a in $list_mod
+     category = !module category devel/$wims_developer/$a  
+    !if document isin $category
+       list_mod_doc=!append item $a to $list_mod_doc
+    !endif
+   !next
+   !if $list_mod_doc=$empty
+     error = $error docempty
+   !endif
+!endif

@@ -296,11 +296,12 @@ wims_name_add_exo,wims_name_classexo
 	Depósito de archivos,\
 	Volver a la lista de archivos,\
 	Página de entrada del documento\
+	Transfert,\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
 	wims_name_doch_interactive,wims_name_doch_printable,\
 	wims_name_doch_back,wims_name_doch_help,wims_name_doch_about,\
-	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main
+	wims_name_doch_upload,wims_name_doch_filelist,wims_name_doch_main,wims_name_doch_transfer
 
 !! for sequence et document
 

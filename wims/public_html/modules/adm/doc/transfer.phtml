@@ -1,0 +1,29 @@
+<h1 class="wims_docu_title">$wims_name_doch_transfer: $tit ($doc)</h1>
+
+!if $transfer=$empty
+<p>$name_transfer_modtool <tt>$wims_developer</tt> :
+<center>
+!form reply
+
+!formselect catmodule list $list_mod_doc
+</center>
+<center>
+<input type="submit" value="OK">
+!set wims_ref_class=wims_button
+!href cmd=reply&job=prop $wims_name_giveup
+</center>
+<input type="hidden" name="transfer" value="yes">
+</form>
+!endif
+
+!if $transfer=done
+  $name_transfer_done $wims_developer/$catmodule
+  !set wims_ref_class=wims_button
+  <center>
+  !href module=adm/modtool $wims_name_modtool
+  </center>
+  !reset transfer
+!endif
+
+!set wims_menu_items=!append line doch_main,1, cmd=reply&job=read&block=main\
+to $wims_menu_items
