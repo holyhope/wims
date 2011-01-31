@@ -134,9 +134,9 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
   into name_youcan, name_consult,name_sheet
 !endif
 !if $level=7
- name_warning_empty=Please choose the source file name.
- name_choice_module=Select a module
- name_choice_filename=Nameof the exercise source file (only alphanumeric symbols are allowed).
+ name_warning_empty=SVP de naam van het broncode bestand aangeven.
+ name_choice_module=Selecteer een module
+ name_choice_filename=Naam van de broncode (alleen alphanumeriek is toegestaan).
 !endif
 
 !distribute lines  U werkt nu in de expert mode van Createxo.\

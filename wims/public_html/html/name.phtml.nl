@@ -297,7 +297,7 @@ wims_name_add_exo,wims_name_classexo
 	Bestand opsturen,\
 	Terug naar de bestanden lijst,\
 	Hoofdpagina van dit document\
-	Transfert,\
+	Transfer,\
 	into wims_name_doch_wims,wims_name_doch_class,wims_name_doch_docs,wims_name_doch_up,\
 	wims_name_doch_prev,wims_name_doch_next,wims_name_doch_hist,wims_name_doch_reload,\
 	wims_name_doch_interactive,wims_name_doch_printable,\
