@@ -1,29 +1,47 @@
 <h1 class="wims_docu_title">$wims_name_doch_transfer: $tit ($doc)</h1>
+!if $transfer=fail
+  $name_transfer_fail
+  !if $transferable=yes
+  !set wims_menu_items=!append line doch_transfer,1,cmd=reply&job=transfer\
+   to $wims_menu_items
+!endif
+  !reset transfer
+  !exit
+!endif
 
 !if $transfer=$empty
-<p>$name_transfer_modtool <tt>$wims_developer</tt> :
-<center>
+ !if $list_mod_doc!=$empty
+ <p>$name_transfer_modtool <tt>$wims_developer</tt> :
+ <center>
 !form reply
-
 !formselect catmodule list $list_mod_doc
 </center>
-<center>
+<div style="text-align:center; padding:30px;">
 <input type="submit" value="OK">
 !set wims_ref_class=wims_button
 !href cmd=reply&job=prop $wims_name_giveup
-</center>
+</div>
 <input type="hidden" name="transfer" value="yes">
 </form>
+ !else
+ $name_list_mod_doc_empty :
+ !set wims_ref_class=wims_button
+ <div style="text-align:center; padding:30px;">
+  !href module=adm/modtool $wims_name_modtool
+  </div>
+!endif
 !endif
 
 !if $transfer=done
-  $name_transfer_done $wims_developer/$catmodule
+  $name_transfer_done <tt>$wims_developer/$catmodule</tt>.
   !set wims_ref_class=wims_button
-  <center>
+  <div style="text-align:center; padding:30px;">
   !href module=adm/modtool $wims_name_modtool
-  </center>
+  </div>
   !reset transfer
 !endif
+
+:end
 
 !set wims_menu_items=!append line doch_main,1, cmd=reply&job=read&block=main\
 to $wims_menu_items

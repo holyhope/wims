@@ -1,10 +1,16 @@
-!!read defs 
+$wims_exec_error
 !if $transfer=yes
   mod_dir=$wims_home/public_html/modules/devel
-  !if $catmodule!=$empty 
+  !if $catmodule!=$empty
+   wims_exec_error=
+   success=
    !sh cp -r $wims_home/log/classes/$wims_class/doc/$doc/* $mod_dir/$wims_developer/$catmodule/doc/1/ ;\
     cd $mod_dir/$wims_developer/$catmodule ; src2def
-   transfer=done
+   !if $wims_exec_error=$empty
+     transfer=done
+   !else
+     transfer=fail
+   !endif
   !endif
 !else
    !reset file_name_src
