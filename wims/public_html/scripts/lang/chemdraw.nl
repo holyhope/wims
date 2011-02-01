@@ -1,4 +1,4 @@
-single:Maak bindingen door het icoontje <img src='gifs/Wimschem/BSingle.png' alt='BSingle'> te activeren
+single:Maak bindingen door het icoontje <img src='gifs/Wimschem/BSingle.png' alt='BSingle'> te activeren.
 
 atom:Rechter muisklik; selecteer een atoom <img src='gifs/Wimschem/ASelMenu.png' alt='ASelMenu'> \
 en klik op de gewenste positie (er verschijnt een cirkeltje op die plek).
@@ -9,11 +9,13 @@ Om de enkele binding om te bouwen tot een dubbele binding, selecteer het icoontj
 en klik daarna op de gewenste binding.
 
 erasor:Om bindingen en/of atomen te verwijderen , activeer het icoontje \
-<img src='gifs/Wimschem/Erasor.png' alt='Erasor'> en wis de gewenste onderdelen.(niet vergeten losse atomen te wissen).
+<img src='gifs/Wimschem/Erasor.png' alt='Erasor'> en wis de gewenste onderdelen \
+(niet vergeten losse atomen te wissen).\
+Use <img src='gifs/Wimschem/Undo.png' alt='Undo'> to reverse the process.
 
 template:Er zijn enkele ingewikkelde moleculen voor getekend: om deze te gebruiken activeer met een rechter muisklik\
 <img src='gifs/Wimschem/Template.png' alt='Template'> en selecteer het gewenste molecuul. \
-Plaats deze op  de gewenste plek.Klik daarna op de <img src='gifs/Wimschem/Cursor.png' alt='Cursor'> om terug te keren naar de normale edit mode.
+Plaats deze op  de gewenste plek. Klik daarna op de <img src='gifs/Wimschem/Cursor.png' alt='Cursor'> om terug te keren naar de normale edit mode.
 
 select_atom:Om atomen te selecteren, klik op het icoontje <img src='gifs/Wimschem/Select.png' alt='Select'>.\
 De geselecteerde atomen worden in een andere kleur getoond.\
