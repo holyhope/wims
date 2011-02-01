@@ -11,7 +11,7 @@ en klik daarna op de gewenste binding.
 erasor:Om bindingen en/of atomen te verwijderen , activeer het icoontje \
 <img src='gifs/Wimschem/Erasor.png' alt='Erasor'> en wis de gewenste onderdelen \
 (niet vergeten losse atomen te wissen).\
-Use <img src='gifs/Wimschem/Undo.png' alt='Undo'> to reverse the process.
+Gebruik <img src='gifs/Wimschem/Undo.png' alt='Undo'> om dit ongedaan te maken.
 
 template:Er zijn enkele ingewikkelde moleculen voor getekend: om deze te gebruiken activeer met een rechter muisklik\
 <img src='gifs/Wimschem/Template.png' alt='Template'> en selecteer het gewenste molecuul. \
