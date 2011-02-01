@@ -456,6 +456,49 @@ public class Clicktile extends Applet implements Runnable,MouseListener, MouseMo
 	if(reply.length() == 0){reply="ERROR: YOU DID NOT CLICK ANYTHING";}
 	return reply;
     }
+    // jm.evers 1/2/2011
+    // returns only: x-values +"\n"+y_values 
+    // e.g. no color information
+    public String ReadXY(){// public function to be issued by Javascript...and send to WIMS
+	String c=getParameter("return_all_objects");
+	boolean return_all=false;
+	boolean do_print=true;
+	if(c.equalsIgnoreCase("yes") || c.equals("1")){return_all=true;} 
+	String reply_x="";String reply_y="";boolean fnd=false;int repx=0;int repy=0;int k;
+	for(int x=0; x<Rx; x++){
+	    for(int y=0;y<Ry;y++){
+		k=Clicktile[y][x];
+		// back to coordinates
+		repx=(int)(xmin+x*Rx/(xmax - xmin));
+		repy=(int)(Ry + (y - ymin)*(ymax-ymin)/(-1*Ry));
+		if(return_all){ // <param name="return_all" value="0">
+		    if( k != color[0] ){// no background
+			if(fnd){ reply_x = reply_x+","+repx; reply_y = reply_y+","+repy; }
+			else { fnd=true; reply_x=""+repx;reply_y=""+repy; }
+		    }
+		}
+		else
+		{  // <param name="return_all" value="1">
+		    do_print=true;
+		    for(int obj=0;obj<=objects;obj++){
+			for(int p=0;p<length[obj];p++){
+			    if(xcoords[p][obj]==x && ycoords[p][obj]==y){// exclude the square from params stored in xcoords[] ycoords[]
+				do_print=false;
+			    }
+			}
+		    }
+		    if(do_print){
+			if( k != color[0] ){// no background
+			    if(fnd){ reply_x=reply_x+","+repx;reply_y=reply_y+","+repy; }
+			    else { fnd=true; reply_x=""+repx;reply_y=""+repy; }
+			}
+		    }
+		}
+	    }
+	}
+	if(reply_x.length() == 0){reply_x="ERROR: YOU DID NOT CLICK ANYTHING";}
+	return reply_x+"\n"+reply_y;
+    }
     
     public int GetInternalColorCode(String c , int defaultcode){
 	int colorcode=defaultcode;
