@@ -66,7 +66,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
 !set name_qualitygot=质量 (最大值 10)
 !set name_percentagedone=已做作业的百分比
 !set name_post=公布作业页的
-  
+
 !if $job=userprop
   !distribute items 修改,注册号,注解,照片的url,变量 (技术的),\
   班级口令,输入参加者注册的口令,\
@@ -104,11 +104,9 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
   !set name_click=在登录名上点击以恢复此用户.
 !endif
 
-
 !if $job=delprep
   !set name_delete=!nosubst 你能肯定要从班级中删除 <b><em>$name_student1</em></b>?
 !endif
-
 !if $job=csv
   !distribute lines 你可以下载下列文件\
      并用你喜欢的电子表格软件打开它.\
@@ -118,6 +116,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
     参加者信息没有改变, 因为总评分已经上传.\
     在你的数据里, 服务器计算的得分(平均分以及作业页/考试的得分)将被忽略, 因为它们不能修改.\
     被删除的参加者的不被考虑的数据\
+    The following login names are not added because the login is too short\
     班级内没有以下的登录名, 而且不能添加, 这是因为数据内有不充分/不正确的信息\
     班级内没有以下的登录名, 而且不能添加,  这是因为数据损坏或没有空间了\
     只对已有的栏目记录人工总评分.\
@@ -130,7 +129,7 @@ into name_connecting,name_remaining_time,name_exam_session,name_minutes
     数据文件\
     可接受的格式\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
-    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
   
   !set name_deposit=!nosubst 电子表格文件 <tt>$wims_deposit</tt> 处理成功.

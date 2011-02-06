@@ -52,7 +52,12 @@ logtest=
     !!!!donc il n'y a pas de confusion possible    
    !endif
    dep_$ltest=$l
-   loglist=!append item $ltest to $loglist
+   ltest_cnt=!charcnt $ltest
+   !if $ltest_cnt<4
+     bad_login=!append item $ltest to $bad_login
+   !else
+     loglist=!append item $ltest to $loglist
+   !endif
   !endif
  !else
   !if $i>3
@@ -98,7 +103,7 @@ types_cnt=!itemcnt $types
 gotcnt=!itemcnt $loglist
 propcnt=0
 gradecnt=0
-!reset missing erased bad added change
+!reset missing erased bad added change badlogin
 processed=yes
 loglist_cnt=!itemcnt $loglist
 !for i = 1 to $loglist_cnt

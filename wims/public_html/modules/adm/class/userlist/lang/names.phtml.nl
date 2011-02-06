@@ -66,7 +66,7 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
 !set name_qualitygot=Kwaliteit berekend over een maximum van 10
 !set name_percentagedone=Percentage van het afgeronde werk
 !set name_post=Laat zien&nbsp;:
-  
+
 !if $job=userprop
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
    Klasse wachtwoord,Geef het klasse wachtwoord\
@@ -122,6 +122,7 @@ kan dus niet worden overgezet van
     Student informatie is niet aangepast omdat de cijfers zijn geupload.\
     Server berekende cijfers (de gemiddelden en werkblad/proefwerk scores) zijn niet aangepast : deze kunnen niet worden veranderd.\
     Niet aangepaste gegevens over verwijderde studenten \
+    The following login names are not added because the login is too short\
     De volgende loginnamen zijn niet aangepast in verband met onvolledige of incorrecte data\
     De volgende loginnamen zijn niet aanwezig in deze klas en kunnen niet wordn toegevoegd (incorrecte data of te weinig ruimte)\
     Handmatig ingevoerde cijfers zijn alleen opgenomen voor bestaande kolommen.\
@@ -134,7 +135,7 @@ kan dus niet worden overgezet van
     Data bestand\
     Geaccepteerde formaten\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
-    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
   
   !set name_deposit=!nosubst Spreadsheet bestand <tt>$wims_deposit</tt> met succes verwerkt.

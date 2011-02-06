@@ -124,6 +124,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
     La información sobre los participantes no se ha modificado porque se han enviado calificaciones.\
     Se han ignorado en sus datos las notas calculadas por el servidor (medias y puntuaciones de hojas de trabajo/exámenes) porque no pueden ser modificadas.\
     Datos ignorados relativos a los participantes borrados\
+    Les noms de login suivants ne peuvent pas être ajoutés car le login est trop court\
     Los identificadores de usuario siguientes no existen y no pueden ser añadidos a causa de errores o insuficiencia de información en los datos enviados\
     Los identificadores de usuario siguientes no existen y no pueden ser añadidos a causa de errores o insuficiencia de información en los datos enviados\
     Sólo se graban calificaciones manuales para las columnas existentes.\
@@ -136,7 +137,7 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
     El fichero de datos\
     Formatos aceptados\
   into name_file,name_download,name_infochanged,name_added,name_warning1,name_warning2,\
-    name_warning3,name_warning4,name_nologin1,name_nologin2,name_manual1,name_data1,\
+  name_warning3,name_warning4,name_badlogin,name_nologin1,name_nologin2,name_manual1,name_data1,\
     name_check,name_data2,name_format,name_column,name_data3,name_data,name_format2
 
 

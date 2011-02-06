@@ -28,23 +28,26 @@ $wims_name_csv
  !if $remark$change$added$missing$erased!=$empty or $manual=yes
   $name_deposit<ul>
   !if $change!=$empty
-   <li>$name_infochanged<tt>$change</tt>
+   <li>$name_infochanged <tt>$change</tt></li>
   !endif
   !if $added!=$empty
-   <li>$name_added<tt>$added</tt>
+   <li>$name_added <tt>$added</tt></li>
+  !endif
+   !if $bad_login!=$empty
+   <li>$name_badlogin <tt>$bad_login</tt></li>
   !endif
   !if full iswordof $remark
-   <li>$name_warning1
+   <li>$name_warning1</li>
   !endif
   !if noprop iswordof $remark
-   <li>$name_warning2
+   <li>$name_warning2</li>
   !endif
   !if noauto iswordof $remark
-   <li>$name_warning3
+   <li>$name_warning3</li>
   !endif
   !if $erased!=$empty
    <li>$name_warning4
-   <tt>$erased</tt>
+   <tt>$erased</tt></li>
   !endif
   !if $missing!=$empty
    <li>
@@ -55,10 +58,11 @@ $wims_name_csv
    !endif
    <tt>$missing</tt>
   !endif
+  </li>
   !if $manual=yes
    <li>$name_manual1
    !href module=adm/class/grades $name_check
-.
+.</li>
   !endif
   </ul>
  !else
