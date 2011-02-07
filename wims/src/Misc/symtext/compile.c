@@ -155,7 +155,7 @@ void strfold(char *p)
     
 fend:
     singlespace(p);strip_trailing_spaces(p);
-    if(myisspace(*p)) strcpy(p,find_word_start(p));
+    if(myisspace(*p)) ovlstrcpy(p,find_word_start(p));
 }
 
 	/* at entry p must point to an atom start! */

@@ -19,6 +19,7 @@
 	 * used to index modules for search engine. */
 
 #include "../wims.h"
+#include "../Lib/basicstr.c"
 
 #define MAX_LANGS	MAX_LANGUAGES
 #define MAX_MODULES	65536
@@ -192,7 +193,7 @@ void detag(char *p)
     for(pp=strchr(p,'<'); pp!=NULL; pp=strchr(pp,'<')) {
 	p2=find_tag_end(pp);
 	if(*p2==0) {*pp=0; return; }
-	strcpy(pp,p2);
+	ovlstrcpy(pp,p2);
     }
 }
 
@@ -207,7 +208,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
       return;
     strcat(buf,bad_end);
-    strcpy(bad_beg,buf);
+    ovlstrcpy(bad_beg,buf);
 }
 
 void _getdef(char buf[], char *name, char value[])
@@ -280,7 +281,7 @@ void prep(void)
     }
     s=getenv("mlist"); if(s==NULL) exit(1);
     l=strlen(s); if(l<0 || l>100*MAX_LINELEN) exit(1);
-    mlist=xmalloc(l+16); strcpy(mlist,s); old="";
+    mlist=xmalloc(l+16); ovlstrcpy(mlist,s); old="";
     for(i=0;i<langcnt;i++) {
 	snprintf(buf,sizeof(buf),"%s/%s.%s",dicdir,ignoredic,lang[i]);
 	f=fopen(buf,"r"); if(f==NULL) continue;
@@ -348,7 +349,7 @@ void sprep(void)
     modcnt=0;
     s=getenv("slist"); if(s==NULL) return;
     l=strlen(s); if(l<0 || l>100*MAX_LINELEN) return;
-    mlist=xmalloc(l+16); strcpy(mlist,s);
+    mlist=xmalloc(l+16); ovlstrcpy(mlist,s);
     for(p1=find_word_start(mlist); *p1 && modcnt<MAX_MODULES; p1=find_word_start(p2)) {
 	p2=find_word_end(p1);
 	l=p2-p1; if(*p2) *p2++=0;
@@ -424,7 +425,7 @@ int module_index(const char *name)
     if(isalpha(*p) && isalpha(*(p+1))) {
 	memmove(module_language,p,2); module_language[2]=0;
     }
-    else strcpy(module_language,"en");
+    else ovlstrcpy(module_language,"en");
     return 0;
 }
 
@@ -451,7 +452,7 @@ int sheet_index(int serial)
     else *p2=0;
     p1=find_word_start(p1); strip_trailing_spaces(p1);
     for(p2=p1;*p2;p2++) if(*p2=='\n') *p2=' ';
-    strcpy(sindbuf[s_remark],p1);
+    ovlstrcpy(sindbuf[s_remark],p1);
     return 0;
 }
 
@@ -474,7 +475,7 @@ void appenditem(char *word, int lind, int serial, int weight, char *l)
     if(ll==2 && (!isdigit(word[0]) || !isalpha(word[1]))) return;
     for(p=word;*p;p++) if(!isalnum(*p) && *p!=' ') return;
     taken[takenlen++]=' '; taken[takenlen++]=' ';
-    strcpy(taken+takenlen,word);
+    ovlstrcpy(taken+takenlen,word);
     takenlen+=ll; tweight+=weight;
     snprintf(buf,sizeof(buf),"%s:%d?%d\n",word,serial,weight);
     for(i=0;i<catcnt;i++) {
@@ -533,7 +534,7 @@ void onemodule(const char *name, int serial, int lind)
 	translate(indbuf[trlist[i]]);
     }
     taken[0]=0; takenlen=tweight=0;
-    strcpy(buf,indbuf[i_title]); towords(buf);
+    ovlstrcpy(buf,indbuf[i_title]); towords(buf);
     for(p1=find_word_start(buf);*p1;
 	p1=find_word_start(p2)) {
 	p2=find_word_end(p1); if(*p2) *p2++=0;
@@ -551,7 +552,7 @@ void onemodule(const char *name, int serial, int lind)
     entrycount=gentrycount; dicbuf=gdicbuf;
     memmove(entry,gentry,gentrycount*sizeof(entry[0]));
     unknown_type=unk_delete;
-    strcpy(buf,indbuf[i_title]); translate(buf);
+    ovlstrcpy(buf,indbuf[i_title]); translate(buf);
     for(p1=find_word_start(buf); *p1;
 	p1=find_word_start(p2)) {
 	p2=strchr(p1,',');
@@ -571,7 +572,7 @@ void onemodule(const char *name, int serial, int lind)
 	appenditem(p1,lind,serial,2,module_language);
     }
     snprintf(buf,sizeof(buf),"%s",indbuf[i_level]);
-    strcpy(lbuf,"level");
+    ovlstrcpy(lbuf,"level");
     for(p1=buf; *p1; p1++) if(!isalnum(*p1)) *p1=' ';
     for(p1=find_word_start(buf); *p1;
 	p1=find_word_start(p2)) {
@@ -582,7 +583,7 @@ void onemodule(const char *name, int serial, int lind)
 	   (*(p1+1)!=0 && *(p1+2)!=0))
 	  continue;
 	*p1=tolower(*p1);
-	strcpy(lbuf+strlen("level"),p1);
+	ovlstrcpy(lbuf+strlen("level"),p1);
 	appenditem(lbuf,lind,serial,2,module_language);
     }
     fprintf(weightf,"%d:%d\n",serial,tweight);
@@ -641,7 +642,7 @@ void sappenditem(char *word, int lind, int serial, int weight)
     if(ll==2 && (!isdigit(word[0]) || !isalpha(word[1]))) return;
     for(p=word;*p;p++) if(!isalnum(*p) && *p!=' ') return;
     taken[takenlen++]=' ';taken[takenlen++]=' ';
-    strcpy(taken+takenlen,word);
+    ovlstrcpy(taken+takenlen,word);
     takenlen+=ll; tweight+=weight;
     fprintf(indf,"%s:%d?%d\n",word,serial,weight);
 }
@@ -670,7 +671,7 @@ void onesheet(int serial, int lind)
 	translate(sindbuf[trlist[i]]);
     }
     taken[0]=0; takenlen=tweight=0;
-    strcpy(buf,sindbuf[s_title]); towords(buf);
+    ovlstrcpy(buf,sindbuf[s_title]); towords(buf);
     for(p1=find_word_start(buf);*p1;
 	p1=find_word_start(p2)) {
 	p2=find_word_end(p1); if(*p2) *p2++=0;
@@ -688,7 +689,7 @@ void onesheet(int serial, int lind)
     entrycount=gentrycount; dicbuf=gdicbuf;
     memmove(entry,gentry,gentrycount*sizeof(entry[0]));
     unknown_type=unk_delete;
-    strcpy(buf,sindbuf[s_title]); translate(buf);
+    ovlstrcpy(buf,sindbuf[s_title]); translate(buf);
     for(p1=find_word_start(buf); *p1;
 	p1=find_word_start(p2)) {
 	p2=strchr(p1,',');

@@ -128,7 +128,7 @@ void out_exec(char *s1, char *s2)
 		if(pe2 && *pp2=='{' && *pe2=='}') {
 		    pp++; pp2++; *p=*pe=*pe2=0;
 		    while((pt=strstr(pp2,"$val1/"))!=NULL) 
-		      strcpy(pt,pt+strlen("$val1/"));
+		      ovlstrcpy(pt,pt+strlen("$val1/"));
 		    fprintf(outf,"%s \n\
 !read oef/draw.phtml %s \\\n%s \n$()", ps,pp,pp2);
 		    ps=p=pe2; ps++; continue;
@@ -178,7 +178,7 @@ void out_exec(char *s1, char *s2)
 	    *p++=0; fprintf(outf,"%s$m_",ps); ps=p; continue;
 	}
 	if(c=='\\') {
-	    strcpy(p,p+1); continue;
+	    ovlstrcpy(p,p+1); continue;
 	}
 	if(c=='(') {
 	    p2=find_matching(p+2,')'); p3=strstr(p,"\\)");

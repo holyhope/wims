@@ -26,6 +26,9 @@
 
 /***************** Nothing should need change hereafter *****************/
 
+#include "../Lib/basicstr.c"
+
+
 char inpbuf[MAX_LINELEN+1], outbuf[2*MAX_LINELEN+2];
 char *dicbuf;
 struct entry {
@@ -90,11 +93,11 @@ void singlespace(char *p)
     for(pp=p;*pp;pp++) {
 	if(!isspace(*pp)) continue;
 	if(leaveline) {
-	    if(*pp==13) strcpy(pp,pp+1);
+	    if(*pp==13) ovlstrcpy(pp,pp+1);
 	    if(*pp=='\n') {
 		pp++;
 		gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
-		if(p2>pp) strcpy(pp,p2); pp--;
+		if(p2>pp) ovlstrcpy(pp,p2); pp--;
 	    }
 	    else {
 		pp++; if(!isspace(*pp) || *pp=='\n') continue;
@@ -105,7 +108,7 @@ void singlespace(char *p)
 	    if(*pp!=' ') *pp=' ';
 	    if(!isspace(*(pp+1))) continue;
 	    for(pp++,p2=pp;isspace(*p2);p2++);
-	    strcpy(pp,p2); pp--;
+	    ovlstrcpy(pp,p2); pp--;
 	}
     }
 }
@@ -182,7 +185,7 @@ void translate(char *p)
 	    switch(unknown_type) {
 		case unk_leave: break;
 		case unk_delete: {
-		    strcpy(p1,find_word_start(pp)); p2=p1;
+		    ovlstrcpy(p1,find_word_start(pp)); p2=p1;
 		    break;
 		}
 		case unk_replace: {

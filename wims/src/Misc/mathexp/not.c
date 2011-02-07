@@ -47,7 +47,7 @@ void _not(char *p)
     switch(_type(buf1,commas,&cmcnt)) {
 	case exp_paren: {
 	    if(buf1[0]=='(' && find_matching(buf1+1,')')==buf1+strlen(buf1)-1) {
-		buf1[strlen(buf1)-1]=0; strcpy(buf1,find_word_start(buf1+1));
+		buf1[strlen(buf1)-1]=0; ovlstrcpy(buf1,find_word_start(buf1+1));
 		goto retype;
 	    }
 	    snprintf(p,MAX_LINELEN,"not %s",buf1); return;

@@ -55,12 +55,12 @@ int instex_ready(char *p, char *n)
     for(i=0;i<oldtexcnt;i++) {
 	if(oldinstex[i].size==current_tex_size &&
 	   strcmp(oldinstex[i].src,buf)==0) {
-	    strcpy(n,oldinstex[i].name); return 1;
+	    ovlstrcpy(n,oldinstex[i].name); return 1;
 	}
     }
     if(strlen(n)>=128 || oldtexcnt>=100) return 0;
-    strcpy(oldinstex[oldtexcnt].src,buf);
-    strcpy(oldinstex[oldtexcnt].name,n);
+    ovlstrcpy(oldinstex[oldtexcnt].src,buf);
+    ovlstrcpy(oldinstex[oldtexcnt].name,n);
     oldinstex[oldtexcnt].size=current_tex_size;
     oldtexcnt++; return 0;
 }
@@ -86,7 +86,7 @@ void __insmath(char *p)
     char *f, *pp, *pe, *p1, buf[MAX_LINELEN+1], nbuf[256];
     int ts, n, rawmathready;
 
-    strcpy(buf,p); strip_trailing_spaces(buf);
+    ovlstrcpy(buf,p); strip_trailing_spaces(buf);
     p1=getvar("insmath_slashsubst");
     if(p1!=NULL && strstr(p1,"yes")!=NULL) slashsubst(buf);
     f=instex_check_static(buf); substit(buf);

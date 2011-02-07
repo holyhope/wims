@@ -337,7 +337,7 @@ void parmprep(char *p,int ptype)
 	    for(i=0;i<30 && (isalnum(pp[i]) || pp[i]=='_');i++) namebuf[i]=pp[i];
 	    namebuf[i]=0; p2=find_word_start(pp+i);
 	    if((pp>p && isalnum(*(pp-1))) || *p2!='(') {
-		/* if(*p2=='\\' && *(p2+1)=='(') strcpy(p2,p2+1); */
+		/* if(*p2=='\\' && *(p2+1)=='(') ovlstrcpy(p2,p2+1); */
 		pp=p2-1; continue;
 	    }
 	    pn=pp; pp=p2+1; p2=find_matching(pp,')');

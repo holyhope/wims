@@ -275,7 +275,7 @@ void getparms(void)
 	if(buf[0]) snprintf(lbuf,sizeof(lbuf),"%2s",buf);
     }
     lbuf[2]=0;
-    if(!myisalpha(lbuf[0]) || !myisalpha(lbuf[1])) strcpy(lbuf,"en");
+    if(!myisalpha(lbuf[0]) || !myisalpha(lbuf[1])) ovlstrcpy(lbuf,"en");
     styledir[0]=defbuf[0]=optionbuf[0]=buf[0]=0;
     if(*style) {
 	p=getenv("module_dir");

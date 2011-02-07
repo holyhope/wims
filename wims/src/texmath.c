@@ -653,11 +653,11 @@ void texmath(char *p)
     }
     	/* remove spaces */
     for(pp=p; *pp; pp++) {
-	if(isspace(*pp)) {strcpy(pp,pp+1); pp--;}
+	if(isspace(*pp)) {ovlstrcpy(pp,pp+1); pp--;}
     }
     	/* replace ** by ^ */
     for(pp=strstr(p,"**"); pp!=NULL; pp=strstr(pp,"**")) {
-      *pp='^'; strcpy(pp+1,pp+2);
+      *pp='^'; ovlstrcpy(pp+1,pp+2);
     }
     if(check_parentheses(p,1)!=0) module_error("unmatched_parentheses");
     texmathbuf[0]=0; t_onestring(p);

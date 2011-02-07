@@ -53,7 +53,7 @@ void setvar(char *p, double v)
     if(i<varcnt) {vartab[i].value=v; return;}
     else {
 	if(varcnt>=MAX_VARS || varnameptr>=varnamebuf+sizeof(varnamebuf)-1) return;
-	strcpy(varnameptr,p);
+	ovlstrcpy(varnameptr,p);
 	vartab[varcnt].name=varnameptr; vartab[varcnt].value=v;
 	varnameptr+=strlen(varnameptr)+1; (varcnt)++;
     }
@@ -82,7 +82,7 @@ void collapse_item(char *p, int n)
     if(n<1) return;
     for(i=1,pp=strchr(p,','); i<n && pp!=NULL; i++,pp=strchr(pp+1,','));
     if(pp==NULL) *p=0;
-    else strcpy(p,pp+1);
+    else ovlstrcpy(p,pp+1);
 }
 
 int getcolor(int r, int g, int b)

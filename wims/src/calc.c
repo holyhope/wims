@@ -357,7 +357,7 @@ void calc_mathsubst(char *p)
     char *expr, *val, *nam, *pp;
     char buf[MAX_LINELEN+1];
     expr=wordchr(p,"in"); if(expr==NULL) goto error;
-    strcpy(buf,find_word_start(expr+strlen("in")));substit(buf);
+    ovlstrcpy(buf,find_word_start(expr+strlen("in")));substit(buf);
     *expr=0; substit(p);
     val=strchr(p,'=');
     if(val==NULL) {
@@ -373,7 +373,7 @@ void calc_mathsubst(char *p)
 	string_modify(buf,pp,pp+strlen(nam),"%s",val);
 	pp+=strlen(val);
     }
-    strcpy(p,buf);
+    ovlstrcpy(p,buf);
 }
 
 	/* substitute and evaluate. */
@@ -520,10 +520,10 @@ void calc_randperm(char *p)
     else {
 	v=evalue(pp); n=v; type=0;
     }
-    if(n==1 && !finite(v)) {strcpy(p,pp); goto shorder;}
+    if(n==1 && !finite(v)) {ovlstrcpy(p,pp); goto shorder;}
     if(n<=0) {*p=0; return;}
     if(n==1 && type==0) {
-	strcpy(p,"1"); 
+	ovlstrcpy(p,"1"); 
 	shorder: force_setvar("wims_shuffle_order","1"); return;
     }
     if(n>MAX_RANDPERM) n=MAX_RANDPERM;
@@ -642,7 +642,7 @@ void _blockof(char *p,
 	    if(l+(po-obuf)>=MAX_LINELEN-3) {
 		too_long: user_error("cmd_output_too_long"); return;
 	    }
-	    if(started) {strcpy(po,append_char); po+=strlen(po);}
+	    if(started) {ovlstrcpy(po,append_char); po+=strlen(po);}
 	    memmove(po,pp,l); po+=l; *po=0; started++;
 	}
     }
@@ -657,7 +657,7 @@ void _blockof(char *p,
 	    if(i>t || i<0) continue;
 	    pp=_blockof_one(buf,t,fnd_fn,i,bbuf);l=strlen(pp);
 	    if(l+(po-obuf)>=MAX_LINELEN-3) goto too_long;
-	    if(started) {strcpy(po,append_char); po+=strlen(po);}
+	    if(started) {ovlstrcpy(po,append_char); po+=strlen(po);}
 	    memmove(po,pp,l); po+=l; *po=0; started++;
 	}
     }
@@ -729,7 +729,7 @@ void calc_append(char *p)
     for(p4=p3-1;p4>p2 && isspace(*(p4-1));p4--);
     if(p4<=p2) goto synterr;
     *p4=0;p3=find_word_start(p3+strlen("to"));
-    memmove(tmplbuf,p2,p4-p2); tmplbuf[p4-p2]=0; strcpy(p,p3);
+    memmove(tmplbuf,p2,p4-p2); tmplbuf[p4-p2]=0; ovlstrcpy(p,p3);
     substit(tmplbuf);substit(p);
     l1=strlen(p); l2=strlen(tmplbuf);
     if(l1+l2>=MAX_LINELEN-1) user_error("cmd_output_too_long");
@@ -815,7 +815,7 @@ void calc_pos(char *p)
     if(p2==NULL) module_error("syntax_error");
     *p2=0;p2=find_word_start(p2+strlen("in"));
     strip_trailing_spaces(p1);
-    strcpy(buf[0],p1);*find_word_end(buf[0])=0; style=0;
+    ovlstrcpy(buf[0],p1);*find_word_end(buf[0])=0; style=0;
     if(strcmp(buf[0],"word")==0) style=1;
     else {
 	if(strcmp(buf[0],"item")==0) style=2;
@@ -827,7 +827,7 @@ void calc_pos(char *p)
 	}
     }
     if(style>0) p1=find_word_start(find_word_end(p1));
-    strcpy(buf[0],p1); strcpy(buf[1],p2);
+    ovlstrcpy(buf[0],p1); ovlstrcpy(buf[1],p2);
     substit(buf[0]); substit(buf[1]); *p=0;
     switch(style) {
 	case 0: {	/* string */
@@ -869,7 +869,7 @@ void _obj_replace(char *orig, char *by, char *in, int num,
     int i;
     char *p1, *p2;
     
-    strcpy(result,in);
+    ovlstrcpy(result,in);
     if(num!=0) {
 	num=objnum(in); i=evalue(orig);
 	if(i==0) module_error("bad_index");
@@ -1095,7 +1095,7 @@ void calc_instexst(char *p)
 	char mbuf[MAX_LINELEN+1];
 	if(*p2!=0) *p2++=0;
 	p2=find_word_start(p2);
-	strcpy(mbuf,p1); substit(mbuf);
+	ovlstrcpy(mbuf,p1); substit(mbuf);
 	if(strstr(mbuf,parent_dir_string)!=NULL) {
 	    setvar(error_data_string,mbuf);
 	    module_error("illegal_fname"); return;
@@ -1202,7 +1202,7 @@ void calc_nonempty(char *p)
 	}
 	default: break;
     }
-    strcpy(p,out+1);
+    ovlstrcpy(p,out+1);
 }
 
 	/* returns a list with unique items */
@@ -1219,7 +1219,7 @@ void calc_listuniq(char *p)
 	    strcat(lout,",");strcat(lout,ll);
 	}
     }
-    strcpy(p,lout+1);
+    ovlstrcpy(p,lout+1);
 }
 
 	/* returns intersection of 2 lists */
@@ -1232,7 +1232,7 @@ void calc_listintersect(char *p)
     
     pp=wordchr(p,"and");
     if(pp==NULL) module_error("syntax_error");
-    *pp=0;strcpy(l1,p); strcpy(l2,pp+strlen("and"));
+    *pp=0;ovlstrcpy(l1,p); ovlstrcpy(l2,pp+strlen("and"));
     lout[0]=lout[1]=0; substit(l1); substit(l2);
     n=cutitems(l1,cut,MAX_LIST); if(n<=0) {*p=0; return;}
     for(i=0;i<n;i++) {
@@ -1242,7 +1242,7 @@ void calc_listintersect(char *p)
 	    strcat(lout,",");strcat(lout,ll);
 	}
     }
-    strcpy(p,lout+1);
+    ovlstrcpy(p,lout+1);
 }
 
 	/* returns union of 2 lists */
@@ -1255,7 +1255,7 @@ void calc_listunion(char *p)
     
     pp=wordchr(p,"and");
     if(pp==NULL) module_error("syntax_error");
-    *pp=0;strcpy(l1,p); strcpy(l2,pp+strlen("and"));
+    *pp=0;ovlstrcpy(l1,p); ovlstrcpy(l2,pp+strlen("and"));
     lout[0]=lout[1]=0; substit(l1); substit(l2);
     n=cutitems(l1,cut,MAX_LIST); for(i=0;i<n;i++) {
 	ll=cut[i];
@@ -1271,7 +1271,7 @@ void calc_listunion(char *p)
 	    strcat(lout,",");strcat(lout,ll);
 	}
     }
-    strcpy(p,lout+1);
+    ovlstrcpy(p,lout+1);
 }
 
 	/* returns items of list2 not in list1 */
@@ -1284,7 +1284,7 @@ void calc_listcomplement(char *p)
     
     pp=wordchr(p,"in");
     if(pp==NULL) module_error("syntax_error");
-    *pp=0;strcpy(l1,p); strcpy(l2,pp+strlen("in"));
+    *pp=0;ovlstrcpy(l1,p); ovlstrcpy(l2,pp+strlen("in"));
     lout[0]=lout[1]=0; substit(l1); substit(l2);
     n=cutitems(l2,cut,MAX_LIST); if(n<=0) {*p=0; return;}
     for(i=0;i<n;i++) {
@@ -1294,7 +1294,7 @@ void calc_listcomplement(char *p)
 	    strcat(lout,",");strcat(lout,ll);
 	}
     }
-    strcpy(p,lout+1);
+    ovlstrcpy(p,lout+1);
 }
 
 	/* Consult a dictionary to translate a string */
@@ -1307,7 +1307,7 @@ void calc_dictionary(char *p)
     pp=wordchr(p,"for");
     if(pp==NULL || pp<=p) module_error("syntax_error");
     *(find_word_end(pp-1))=0; 
-    strcpy(name,p); substit(name);
+    ovlstrcpy(name,p); substit(name);
     pp=find_word_start(pp+strlen("for")); t=0;
     if(memcmp(pp,"word",strlen("word"))==0 && 
        (isspace(*(pp+strlen("word"))) || 
@@ -1328,7 +1328,7 @@ void calc_dictionary(char *p)
     if(memcmp(pp,"item",strlen("item"))==0 && isspace(*(pp+strlen("item")))) {
 	pp=find_word_start(pp+strlen("item"));
     }
-    strcpy(str,pp); substit(str);
+    ovlstrcpy(str,pp); substit(str);
     switch(t) {
 	case 1: {
 	    calc_words2items(str); break;
@@ -1394,7 +1394,7 @@ void calc_detag(char *p)
     char *p1, *p2;
     for(p1=strchr(p,'<'); p1!=NULL; p1=strchr(p1,'<')) {
 	p2=strchr(p1,'>'); if(p2==NULL) p1++;
-	else strcpy(p1,p2+1);
+	else ovlstrcpy(p1,p2+1);
     }
 }
 
@@ -1431,7 +1431,7 @@ void calc_defof(char *p)
 void calc_checkhost(char *p)
 {
     int t;
-    if(robot_access || !trusted_module()) strcpy(p,"0");
+    if(robot_access || !trusted_module()) ovlstrcpy(p,"0");
     else {
 	t=checkhost(p); mystrncpy(p,int2str(t),MAX_LINELEN);
     }
@@ -1451,7 +1451,7 @@ void calc_select(char *p)
     p2=find_word_start(p2); strip_trailing_spaces(p2);
     p1=find_word_start(p) ; strip_trailing_spaces(p1);
     if(*p1==0 || *p2==0) module_error("syntax_error");
-    strcpy(buf1,p1); strcpy(buf2,p2); sep='\n';
+    ovlstrcpy(buf1,p1); ovlstrcpy(buf2,p2); sep='\n';
 	/* buf1: data; buf2: condition. */
     substit(buf1); 
     if(strstr(buf2,"column")!=NULL) {	/* matrix */
@@ -1476,7 +1476,7 @@ void calc_select(char *p)
 		snprintf(nbuf,sizeof(nbuf),"wims_select_col_%d",j);
 		fnd_item(p1,j,ibuf); force_setvar(nbuf,ibuf);
 	    }
-	    strcpy(ibuf,buf2); if(compare(ibuf,0,0)) {
+	    ovlstrcpy(ibuf,buf2); if(compare(ibuf,0,0)) {
 		snprintf(bufp,MAX_LINELEN-(bufp-buf),"%s%c",p1,sep);
 		bufp+=strlen(bufp);
 	    }
@@ -1502,7 +1502,7 @@ void calc_columnof(char *p)
     p1=find_word_start(p) ; strip_trailing_spaces(p1);
     if(*p1==0) module_error("syntax_error");
     if(*p2==0) {*p=0; return;}
-    strcpy(buf1,p1); strcpy(buf2,p2); sep='\n';
+    ovlstrcpy(buf1,p1); ovlstrcpy(buf2,p2); sep='\n';
 	/* buf1: number(s); buf2: matrix. */
     substit(buf1); substit(buf2); 
     if(rows2lines(buf2)) sep=';';
@@ -1568,7 +1568,7 @@ void calc_solve(char *p)
 	    else {d2=d3; v2=v3;}
 	}
 	float2str(v3,vbuf); if(pp-p+strlen(vbuf)<MAX_LINELEN-1) {
-	    if(pp>p) *pp++=','; strcpy(pp,vbuf);
+	    if(pp>p) *pp++=','; ovlstrcpy(pp,vbuf);
 	    pp+=strlen(pp);
 	}
 	else break;
@@ -1607,7 +1607,7 @@ void _values(char *p, int type)
     for(k=0; k<fcnt; k++) {
 	fnd_item(buf,k+1,vbuf); evalue_compile(vbuf);
 	if(pp-fbuf+strlen(vbuf)<MAX_LINELEN-1) {
-	    f[k]=pp; strcpy(pp,vbuf); pp+=strlen(pp)+1;
+	    f[k]=pp; ovlstrcpy(pp,vbuf); pp+=strlen(pp)+1;
 	}
 	else f[k]="";
     }
@@ -1640,11 +1640,11 @@ void _values(char *p, int type)
 		float2str(v,vbuf); ps=vbuf;
 	    }
 	    else ps=forstruct.pos[i];
-	    strcpy(buf2,buf); l=strlen(ps);ln=strlen(EV_X);
+	    ovlstrcpy(buf2,buf); l=strlen(ps);ln=strlen(EV_X);
 	    for(pt=varchr(buf2,EV_X);pt!=NULL;pt=varchr(pt+l,EV_X)) 
 	      string_modify(buf2,pt,pt+ln,"%s",ps);
 	    if(pp-p+strlen(buf2)>=MAX_LINELEN-1) return;
-	    if(pp>p) *pp++=','; strcpy(pp,buf2);
+	    if(pp>p) *pp++=','; ovlstrcpy(pp,buf2);
 	    pp+=strlen(pp);
 	}
 	return;
@@ -1659,7 +1659,7 @@ void _values(char *p, int type)
 		case 1: {	/* values */
 		    float2str(dd,vbuf);
 		    if(pp-p+strlen(vbuf)<MAX_LINELEN-1) {
-			if(pp>p) *pp++=','; strcpy(pp,vbuf);
+			if(pp>p) *pp++=','; ovlstrcpy(pp,vbuf);
 			pp+=strlen(pp);
 		    }
 		    v0=dd; break;
@@ -1751,11 +1751,11 @@ void calc_leveldata(char *p)
     for(i=0, pp=p; i<ld.datacnt && pp<p+MAX_LINELEN-16; i++) {
 	float2str(ld.xdata[i],buf);
 	if(pp-p+strlen(buf)<MAX_LINELEN-1) {
-	    if(pp>p) *pp++=';'; strcpy(pp,buf); pp+=strlen(pp);
+	    if(pp>p) *pp++=';'; ovlstrcpy(pp,buf); pp+=strlen(pp);
 	}
 	float2str(ld.ydata[i],buf);
 	if(pp-p+strlen(buf)<MAX_LINELEN-1) {
-	    if(pp>p) *pp++=','; strcpy(pp,buf); pp+=strlen(pp);
+	    if(pp>p) *pp++=','; ovlstrcpy(pp,buf); pp+=strlen(pp);
 	}
     }
 }
@@ -1814,7 +1814,7 @@ void calc_rename(char *p)
     if(robot_access || strstr(p,"getfile")!=NULL) return;
     p1=find_word_start(p); *find_word_end(p1)=0;
     if(strncmp(p1,ref_name,strlen(ref_name))==0) p1+=strlen(ref_name);
-    if(p1>p) strcpy(p,p1);
+    if(p1>p) ovlstrcpy(p,p1);
     if(strstr(p,parent_dir_string)!=NULL ||
        strncmp(p,"modules/adm/",strlen("modules/adm/"))==0) {
 	badfile: force_setvar("wims_error_data",p); module_error("illegal_cmd");
@@ -1900,7 +1900,7 @@ void calc_passcrypt(char *p)
 	else
 	  snprintf(pp,MAX_LINELEN-(pp-buf),"%s*%s",s,crypt(p1,saltstr));
     }
-    strcpy(p,buf);
+    ovlstrcpy(p,buf);
 #endif
 }
 
@@ -1993,7 +1993,7 @@ void calc_embraced(char *p)
     if(*p2==0) {*p=0; return;}
     *p2++=0; p2=find_word_start(p2);
     mystrncpy(buf,p2,sizeof(buf)); substit(buf);
-    if(p1>p) strcpy(p,p1); substit(p);
+    if(p1>p) ovlstrcpy(p,p1); substit(p);
     if(strcmp(p,"randitem")==0) {_embraced(buf,calc_randitem); goto end;}
     if(strcmp(p,"extract")==0) {
 	p1=strchr(buf,'{'); if(p1!=NULL) {
@@ -2009,7 +2009,7 @@ void calc_embraced(char *p)
     if(strcmp(p,"delete")==0) {
 	for(p1=strchr(buf,'{'); p1; p1=strchr(p1,'{')) {
 	    p2=find_matching(p1+1,'}');
-	    if(p2) strcpy(p1,p2+1); else p1++;
+	    if(p2) ovlstrcpy(p1,p2+1); else p1++;
 	}
 	goto end;
     }

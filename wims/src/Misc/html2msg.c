@@ -25,6 +25,7 @@
 /***************** Nothing should need change hereafter *****************/
 
 #include "../wims.h"
+#include "../Lib/basicstr.c"
 #include "../hmname.c"
 
 char fn1[1024]="", fn2[1024]="";
@@ -120,7 +121,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
 	return;
     }
     strcat(buf,bad_end);
-    strcpy(bad_beg,buf);
+    ovlstrcpy(bad_beg,buf);
 }
 
 void cutamp(char *p)
@@ -128,13 +129,13 @@ void cutamp(char *p)
     char *pp;
     for(pp=strchr(p,'&'); pp; pp=strchr(pp+1,'&')) {
 	if(strncmp(pp,"&amp;",5)==0) {
-	    strcpy(pp+1,pp+5); continue;
+	    ovlstrcpy(pp+1,pp+5); continue;
 	}
 	if(strncmp(pp,"&lt;",4)==0) {
-	    *pp='<'; strcpy(pp+1,pp+4); continue;
+	    *pp='<'; ovlstrcpy(pp+1,pp+4); continue;
 	}
 	if(strncmp(pp,"&gt;",4)==0) {
-	    *pp='>'; strcpy(pp+1,pp+4); continue;
+	    *pp='>'; ovlstrcpy(pp+1,pp+4); continue;
 	}
 	
     }
@@ -177,7 +178,7 @@ void getmath(char *p)
     insmath: if(pv-pt>=MAX_LINELEN-256) return;
     memmove(mathbuf,pt,pv-pt); mathbuf[pv-pt]=0;
     if(strstr(mathbuf,"...\n...")!=NULL) {
-	strcpy(mathbuf,"......"); return;
+	ovlstrcpy(mathbuf,"......"); return;
     }
     cutamp(mathbuf); latex2html=1;
     for(p1=strstr(mathbuf,"\\mathbb");p1;p1=strstr(p1+1,"\\mathbb")) {
@@ -199,18 +200,18 @@ void getmath(char *p)
 	if(*p2!='}' || isalnum(*(p2+1))) continue;
 	memmove(buf,p1+1,p2-p1-1); buf[p2-p1-1]='\\'; buf[p2-p1]=0;
 	if(strstr(hmsame,buf)==NULL) continue;
-	strcpy(p2,p2+1); strcpy(p1,p1+1);
+	ovlstrcpy(p2,p2+1); ovlstrcpy(p1,p1+1);
     }
     if(strstr(mathbuf,"\\begin{")!=NULL) return;
     for(p1=strchr(mathbuf,'{'); p1; p1=strchr(p1+1,'{')) {
 	if((p1>mathbuf && isalpha(*(p1-1))) ||
 	   !isalnum(*(p1+1)) || *(p1+2)!='}') continue;
-	*p1=*(p1+1); strcpy(p1+1,p1+3);
+	*p1=*(p1+1); ovlstrcpy(p1+1,p1+3);
     }
     if(strchr(mathbuf,'[')!=NULL) {
         char mbuf[MAX_LINELEN+1];
 	snprintf(mbuf,sizeof(mbuf),"{%s}",mathbuf);
-	strcpy(mathbuf,mbuf);
+	ovlstrcpy(mathbuf,mbuf);
     }
 	/* try to simplify */
     if(strchr(mathbuf,'{')==NULL && strchr(mathbuf,'\\')!=NULL) {
@@ -302,7 +303,7 @@ int main(int argc, char *argv[])
     if(pp<=p || pp-p>sizeof(fn1)-1) return 1;
     memmove(fn1,p,pp-p); fn1[pp-p]=0;
     p=find_word_start(pp); pp=find_word_end(p);
-    if(pp<=p || pp-p>sizeof(fn2)-1) strcpy(fn2,fn1); 
+    if(pp<=p || pp-p>sizeof(fn2)-1) ovlstrcpy(fn2,fn1); 
     else {memmove(fn2,p,pp-p); fn2[pp-p]=0;}
     prepare_file();
     output();

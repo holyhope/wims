@@ -26,21 +26,21 @@ void rawmatrix(char *p)
     int n, i, c=0, change=0;
 
     obuf[0]=0;
-    p1=find_word_start(p); if(p1>p) strcpy(p,p1);
+    p1=find_word_start(p); if(p1>p) ovlstrcpy(p,p1);
     strip_enclosing_par(p); strip_trailing_spaces(p);
     if(*p==0) return;
     rows2lines(p); n=linenum(p);
     if(itemnum(p)<=1 && wordnum(p)>=2*n) change=1;
     for(i=1;i<=n;i++) {
 	fnd_line(p,i,lbuf);
-	p1=find_word_start(lbuf); if(p1>lbuf) strcpy(lbuf,p1);
+	p1=find_word_start(lbuf); if(p1>lbuf) ovlstrcpy(lbuf,p1);
 	strip_enclosing_par(lbuf);
 	if(lbuf[0]==0) continue;
 		/* Uniformize column separator to comma */
 	if(change) words2items(lbuf);
 	rawmath(lbuf);
 	if(i==1) {
-	    strcpy(obuf,lbuf);
+	    ovlstrcpy(obuf,lbuf);
 	    c=itemnum(lbuf);
 	}
 	else {
@@ -54,6 +54,6 @@ void rawmatrix(char *p)
 		     "\n%s",lbuf);
 	}
     }
-    strcpy(p,obuf);
+    ovlstrcpy(p,obuf);
 }
 

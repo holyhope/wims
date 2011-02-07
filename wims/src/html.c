@@ -61,7 +61,7 @@ void _form_menus(char *p,int kind)
 	if(strcmp(li,"list")==0) {
 	    p1=find_word_start(pp);
 	    pp=wordchr(p1,"prompt"); if(pp!=NULL && pp>p1) *(pp-1)=0;
-	    strcpy(vbuf,p1);substit(vbuf);
+	    ovlstrcpy(vbuf,p1);substit(vbuf);
 	    itemcnt=cutitems(vbuf,vlist,MAX_MENU_ITEMS);
 	    type=1;
 	}
@@ -70,10 +70,10 @@ void _form_menus(char *p,int kind)
     for(i=0;i<itemcnt;i++) plist[i]=NULL;
     if(pp!=NULL) {
 	p1=find_word_start(pp+strlen("prompt"));
-	strcpy(pbuf,p1);substit(pbuf);
+	ovlstrcpy(pbuf,p1);substit(pbuf);
 	cutitems(pbuf,plist,MAX_MENU_ITEMS);
     }
-    strcpy(nbuf,n);substit(nbuf);
+    ovlstrcpy(nbuf,n);substit(nbuf);
     if(kind==FORM_SELECT) {
 	char *pp;
 	pp=getvar("wims_formselect_switch"); if(pp==NULL) pp="";

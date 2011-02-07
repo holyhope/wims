@@ -25,10 +25,10 @@ void float2str(double d, char *p)
     char buf[16];
     int i;
     if(d==0) {
-	strcpy(p,"0"); return;
+	ovlstrcpy(p,"0"); return;
     }
     if(!finite(d)) { /* isinf, isnan possibly not available */
-	if (d == d) strcpy(p, (d > 0)? "Inf": "-Inf"); else strcpy(p,"NaN");
+	if (d == d) ovlstrcpy(p, (d > 0)? "Inf": "-Inf"); else ovlstrcpy(p,"NaN");
 	return;
     }
     if(d<1000000 && d>-1000000 && d==floor(d)) {
@@ -44,7 +44,7 @@ void float2str(double d, char *p)
 	buf[2]='0'+i; buf[3]='g'; buf[4]=0;
     }
     snprintf(p,MAX_LINELEN,buf,(double) d);
-    if(isspace(*p)) strcpy(p,find_word_start(p));
+    if(isspace(*p)) ovlstrcpy(p,find_word_start(p));
 }
 
 	/* substitute variable names by their environment strings
@@ -90,7 +90,7 @@ char *substit(char *p)
 		    module_error("unmatched_parentheses");
 		    *p=0; return p;
 		}
-		*p2=0; strcpy(buf,pp+2); oldnext=p2+1;
+		*p2=0; ovlstrcpy(buf,pp+2); oldnext=p2+1;
 		substnest++; substit(buf); substnest--;
 		d=evalue(buf); float2str(d,buf);
 		goto replace;
@@ -110,7 +110,7 @@ char *substit(char *p)
 	    if(pt1==NULL) {
 		if(*find_word_start(p2)==0) {*p2=0; goto noarray;}
 		snprintf(tbuf,sizeof(tbuf),"%s of $%s",p2,buf);
-		calc_itemof(tbuf); strcpy(buf,tbuf); goto replace;
+		calc_itemof(tbuf); ovlstrcpy(buf,tbuf); goto replace;
 	    }
 	    else {
 		*pt1++=0; p2=find_word_start(p2);
@@ -125,7 +125,7 @@ char *substit(char *p)
 		    snprintf(buf,sizeof(buf),"%s of %s",pt1,tbuf);
 		    calc_columnof(buf); goto replace;
 		}
-		else strcpy(buf,tbuf);
+		else ovlstrcpy(buf,tbuf);
 		goto replace;
 	    }
 	}

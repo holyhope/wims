@@ -766,7 +766,7 @@ void tohttpquery(char *p)
 	if(strchr(trlist,*pp)==NULL) continue;
 	if(*pp=='+' && pp>p && *(pp-1)=='&') continue;
 	if(pp>p && *(pp-1)=='\\') {
-	    strcpy(pp-1,pp);pp--;continue;
+	    ovlstrcpy(pp-1,pp);pp--;continue;
 	}
 	if(*pp=='\n') {
 	    string_modify(p,pp,pp+1,"%%0D%%0A");pp+=5;
@@ -1161,8 +1161,8 @@ void setdef(char *fname, char *name)
 	if(isspace(*p1) && *p1!=' ' && *p1!='\n') *p1=' ';
 	if(*p1==' ') {
 	    for(p2=p1+1; isspace(*p2) && *p2!='\n'; p2++);
-	    if(p2>p1+1) strcpy(p1+1,p2);
-	    p2=p1+1; if(*p2=='=' || *p2=='\n') strcpy(p1,p2);
+	    if(p2>p1+1) ovlstrcpy(p1+1,p2);
+	    p2=p1+1; if(*p2=='=' || *p2=='\n') ovlstrcpy(p1,p2);
 	}
     }
     if(readfile(fname,buf,sizeof(buf))==NULL) buf[0]=0;
@@ -1224,7 +1224,7 @@ int checkhostt(char bf2[])
 	if(p2-p3!=14) continue;
 	p3[8]='.'; p3[11]=':'; if(*p2) *p2++=0;
 	if(strncmp(nowstr,p3,14)<0) return 0;
-	strcpy(p1-1,p2); p1-=2;
+	ovlstrcpy(p1-1,p2); p1-=2;
     }
 	/* compare with ending time */
     for(p1=strchr(bf2,'<'); p1!=NULL; p1=strchr(p1+1,'<')) {
@@ -1233,7 +1233,7 @@ int checkhostt(char bf2[])
 	if(p2-p3!=14) continue;
 	p3[8]='.'; p3[11]=':'; if(*p2) *p2++=0;
 	if(strncmp(nowstr,p3,14)>0) return 0;
-	strcpy(p1-1,p2); p1-=2;
+	ovlstrcpy(p1-1,p2); p1-=2;
     }
     p1=find_word_start(bf2); if(*p1==0) return 1;
     return checkhost(p1);

@@ -1233,7 +1233,7 @@ int parse_parms(char *p,objparm *pm,struct objtab *o)
 	pm->color[0]=widthcolor(width,pm->color[0]);
     }
     pm->fill=o->fill_tag;
-    strcpy(pm->str,p); return 0;
+    ovlstrcpy(pm->str,p); return 0;
 }
 
 	/* Execute a command. Returns 0 if OK. */
@@ -1264,7 +1264,7 @@ int obj_main(char *p)
     if(image==NULL && (objtab[i].color_pos || objtab[i].required_parms>2)) {
 	error("image_not_defined"); return 1;
     }
-    strcpy(tbuf2,pp);
+    ovlstrcpy(tbuf2,pp);
     if(objtab[i].color_pos || objtab[i].routine==obj_setstyle) {
 	substit(tbuf2);
     }

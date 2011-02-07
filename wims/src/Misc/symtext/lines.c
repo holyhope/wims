@@ -17,6 +17,9 @@
 	/* line input / output routines */
 
 #include <stdarg.h>
+#include "../../Lib/basicstr.c"
+
+
 #define int_buf_size 40
 
 	/* this is rapid. Output string will be erased at the next call. */
@@ -569,21 +572,21 @@ void strip_enclosing_par(char *p)
     if(*p=='(') {
 	p1=find_matching(p+1,')');
 	if(p1 && *(p1+1)==0) {
-	    *p1=0; strcpy(p,find_word_start(p+1));
+	    *p1=0; ovlstrcpy(p,find_word_start(p+1));
 	    goto partest;
 	}
     }
     if(*p=='[') {
 	p1=find_matching(p+1,']');
 	if(p1 && *(p1+1)==0) {
-	    *p1=0; strcpy(p,find_word_start(p+1));
+	    *p1=0; ovlstrcpy(p,find_word_start(p+1));
 	    goto partest;
 	}
     }
     if(*p=='{') {
 	p1=find_matching(p+1,'}');
 	if(p1 && *(p1+1)==0) {
-	    *p1=0; strcpy(p,find_word_start(p+1));
+	    *p1=0; ovlstrcpy(p,find_word_start(p+1));
 	    goto partest;
 	}
     }
@@ -685,7 +688,7 @@ void reaccent(char *p)
 	sp--; ap=strchr(reaccentl,*sp); if(ap==NULL) {sp++; continue;}
 	k=ap-reaccentl;
 	c=reaccentab[k*strlen(reaccents)+i];
-	if(c!=*sp) {*sp=c; strcpy(sp+1,sp+2);}
+	if(c!=*sp) {*sp=c; ovlstrcpy(sp+1,sp+2);}
 	else sp++;
     }
 }

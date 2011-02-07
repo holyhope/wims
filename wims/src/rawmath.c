@@ -75,7 +75,7 @@ void getuservar(void)
     rm_uservars=rm_userfns=0;
     p=getvar("wims_rawmath_variables");
     if(p!=NULL && *p!=0) {
-	strcpy(rm_vbuf,p);
+	ovlstrcpy(rm_vbuf,p);
 	for(p=rm_vbuf;*p;p++) if(*p==',') *p=' ';
 	for(p1=find_word_start(rm_vbuf);*p1;p1=find_word_start(p2)) {
 	    rm_uservar[rm_uservars++]=p1;
@@ -85,7 +85,7 @@ void getuservar(void)
     }
     p=getvar("wims_rawmath_functions");
     if(p!=NULL && *p!=0) {
-	strcpy(rm_fbuf,p);
+	ovlstrcpy(rm_fbuf,p);
 	for(p=rm_fbuf;*p;p++) if(*p==',') *p=' ';
 	for(p1=find_word_start(rm_fbuf);*p1;p1=find_word_start(p2)) {
 	    rm_userfn[rm_userfns++]=p1;
@@ -155,7 +155,7 @@ void rawmath(char *p)
     if(strncmp(p,"1-1+",strlen("1-1+"))==0) user_prohibited=1;
     p1=find_word_start(p);if(*p1==0) return;
     while(*p1=='+') p1++;
-    if(p1>p) strcpy(p,p1);
+    if(p1>p) ovlstrcpy(p,p1);
     	/* translate ** into ^ */
     while((p1=strstr(p,"**"))!=NULL) {
 	string_modify(p,p1,p1+strlen("**"),"^");
@@ -193,7 +193,7 @@ void rawmath(char *p)
 	}
 	if(redundant && *p2!='>' && strncmp(p2,"&gt;",4)!=0) {
 	    if(sign==1) *p1='+'; else *p1='-';
-	    strcpy(p1+1,p2);
+	    ovlstrcpy(p1+1,p2);
 	    modified++;
 	}
     }
@@ -216,7 +216,7 @@ void rawmath(char *p)
 	if(p1>p && myisdigit(*(p1-1)) && myisdigit(*(p1+1))) continue;
 		/* Non-digit dangling '.' is removed */
 	if((p1<=p || !myisdigit(*(p1-1))) && !myisdigit(*(p1+1))) {
-	    strcpy(p1,p1+1); p1--; continue;
+	    ovlstrcpy(p1,p1+1); p1--; continue;
 	}
 	if(p1==p || !myisdigit(*(p1-1))) {
 	    string_modify(p,p1,p1,"0"); p1++;
@@ -266,7 +266,7 @@ void rawmath(char *p)
 			}
 			else p3=find_mathvar_end(p3);
 			memmove(hatbuf+1,p2,p3-p2);hatbuf[p3-p2+1]=0;
-			strcpy(p2,p3);
+			ovlstrcpy(p2,p3);
 			while(*p2==' ') p2++;
 			if(*p2=='*' || *p2=='/') {
 			    p1--;continue;
@@ -314,7 +314,7 @@ void rawmath(char *p)
 		      if(*p3!='c' && *p3!='s' && *p3!='t' && 
 			 *p3!='C' && *p3!='S' && *p3!='T') break;
 		      ambiguous=1;
-		      strcpy(p2,p3); p1--; continue;
+		      ovlstrcpy(p2,p3); p1--; continue;
 		}
 	    }
 	    i=search_list(hmname,hmname_no,sizeof(hmname[0]),buf);
@@ -439,12 +439,12 @@ void htmlmath(char *p)
 	if(p1==p) p3="+"; 
 	else for(p3=p1-1;p3>p && isspace(*p3);p3--);
 	if(*p2=='*' && *p3!='/') {
-	    strcpy(p1,p2+1);continue;
+	    ovlstrcpy(p1,p2+1);continue;
 	}
 	if(isalpha(*p2) && *p3!='/') {
-	    strcpy(p1,p2);continue;
+	    ovlstrcpy(p1,p2);continue;
 	}
-	if(*p3=='/' && *p2!='<') strcpy(p3,p2);
+	if(*p3=='/' && *p2!='<') ovlstrcpy(p3,p2);
 
     }
 	/* exponents of 10, or greek letters */
@@ -498,7 +498,7 @@ void htmlmath(char *p)
 	if(p1>p && (isalpha(*(p1-1)) || *(p1-1)==')' || *(p1-1)=='>')
 	   && (isalnum(*pq) || *pq=='$')) *p1=' ';
 	else {
-	    strcpy(p1,p1+1);p1--;
+	    ovlstrcpy(p1,p1+1);p1--;
 	}
     }
 	/* <=, >=, ->, =>, <=> */

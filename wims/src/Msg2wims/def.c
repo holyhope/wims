@@ -110,7 +110,7 @@ void parm(char *p[MAX_PARM], int ptype)
     for(pp=p[0];*pp;pp++) if(!isalnum(*pp) && *pp!='_') {
 	/* bad name and security risk */
 	if(!isspace(*pp)) return;
-	strcpy(pp,pp+1); pp--;
+	ovlstrcpy(pp,pp+1); pp--;
     }
     p[1]=find_word_start(p[1]);
     snprintf(vbuf,sizeof(vbuf),"%s",p[1]); subst(vbuf);

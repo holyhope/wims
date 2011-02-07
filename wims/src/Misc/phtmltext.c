@@ -53,7 +53,7 @@ void processbuf(void)
     for(p=filebuf; *p; p++) *p=tolower(*p);
     for(p=strpbrk(filebuf,"'-"); p!=NULL; p=strpbrk(p+1,"'-")) *p=' ';
     for(p=strstr(filebuf,"&nbsp;"); p!=NULL; p=strstr(p+1,"&nbsp;")) {
-	*p=' '; strcpy(p+1,p+6);
+	*p=' '; ovlstrcpy(p+1,p+6);
     }
 }
 

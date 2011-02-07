@@ -159,7 +159,7 @@ void output(char *p)
 	for(pt=strchr(pp,'b');pt!=NULL; pt=strchr(pt+1,'b')) {
 	    if(pt>pp && isdigit(*(pt-1)) && 
 	       (*(pt+1)=='-' || isdigit(*(pt+1)))) {
-		if(*(pt+1)=='0' && !isdigit(*(pt+2))) strcpy(pt,pt+2);
+		if(*(pt+1)=='0' && !isdigit(*(pt+2))) ovlstrcpy(pt,pt+2);
 		else *pt='E';
 	    }
 	}

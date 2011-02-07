@@ -709,7 +709,7 @@ void parse_query_string(int len, int type)
 	    if(j==ro_lang) {
 		if(strlen(p)!=2) continue;
 		for(i=0;i<available_lang_no && strcmp(available_lang[i],p)!=0;i++);
-		if(i<available_lang_no) {user_lang=1; strcpy(lang,p);}
+		if(i<available_lang_no) {user_lang=1; ovlstrcpy(lang,p);}
 		else continue;
 	    }
 	    /* strip leading and trailing '/'s in module name */
@@ -884,7 +884,7 @@ Content-length: %ld\r\n\r\n",fmt,l);
 		char *p1;
 		char mime[MAX_LINELEN+1];
 		for(p1=c+strlen(c);p1>c && isalpha(*(p1-1)); p1--);
-		strcpy(mime,"application/octet-stream");
+		ovlstrcpy(mime,"application/octet-stream");
 		if(p1>c && *(p1-1)=='.') {
 		    setvar("translator_unknown",mime);
 		    setvar("dictionary","bases/sys/mime");

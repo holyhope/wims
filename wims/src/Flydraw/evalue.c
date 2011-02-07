@@ -21,13 +21,13 @@ void float2str(double d, char *p)
     char buf[64], *pp;
     int i;
     if(d==0) {
-	strcpy(p,"0"); return;
+	ovlstrcpy(p,"0"); return;
     }
     i=10; /* simple precision cookup */
     snprintf(buf,sizeof(buf),"%%.%dg",i);
     snprintf(p,MAX_LINELEN,buf,(double) d);
     pp=p;while(isspace(*pp)) pp++;
-    if(pp>p) strcpy(p,pp);
+    if(pp>p) ovlstrcpy(p,pp);
 }
 
 	/* substitute variable names by their environment strings

@@ -131,13 +131,13 @@ void req_extract(void)
     if(i>=exptypeno) error("Bad extraction type.");
     if(logdir!=0) nopart=1;
     while((p=wordchr(objline[0],"nopart"))!=NULL) {
-	nopart=1; strcpy(p,p+strlen("nopart"));
+	nopart=1; ovlstrcpy(p,p+strlen("nopart"));
     }
     while((p=wordchr(objline[0],"nonesting"))!=NULL) {
-	nonesting=1; strcpy(p,p+strlen("nonesting"));
+	nonesting=1; ovlstrcpy(p,p+strlen("nonesting"));
     }
     while((p=wordchr(objline[0],"nocomma"))!=NULL) {
-	nocomma=1; strcpy(p,p+strlen("nocomma"));
+	nocomma=1; ovlstrcpy(p,p+strlen("nocomma"));
     }
     getregex(objline[0]);
     expl1=exptype[i].lvl1; expl2=exptype[i].lvl2;

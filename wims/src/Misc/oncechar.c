@@ -23,6 +23,7 @@
 	 * Words entered by stdin. Output to stdout. */
 
 #include "../wims.h"
+#include "../Lib/basicstr.c"
 #define MAX_WORDLEN 1023
 
 char wbuf[MAX_WORDLEN+1];
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
     p=getenv("oncechar"); if(p==NULL || *p==0) return 0;
     snprintf(selbuf,sizeof(selbuf),"%s",p);
     for(p=selbuf; *p; p++) 
-      if(isspace(*p) || strchr("^?*.${}[]()\\",*p)!=NULL) strcpy(p,p+1);
+      if(isspace(*p) || strchr("^?*.${}[]()\\",*p)!=NULL) ovlstrcpy(p,p+1);
     do{
 	c=getword(); checkword();
     }

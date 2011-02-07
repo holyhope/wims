@@ -359,10 +359,10 @@ void p_answer(char *p[MAX_PARM])
 	if(i<1) {	/* unused name; the answer should be analyzed */
 	    char *pm;
 	    pm=xmalloc(MAX_NAMELEN+2);
-	    strcpy(pm,vbuf); param[varcnt].name=pm;
+	    ovlstrcpy(pm,vbuf); param[varcnt].name=pm;
 	    if(pt) {
 		*pt=';'; 
-		strcpy(vbuf,pt); subst(vbuf); pt=vbuf;
+		ovlstrcpy(vbuf,pt); subst(vbuf); pt=vbuf;
 	    }
 	    else pt="";
 	    param[varcnt].type=pt_real;
@@ -499,7 +499,7 @@ void parm(char *p[MAX_PARM], int ptype)
     for(pp=p[0];*pp;pp++) if(!isalnum(*pp) && *pp!='_') {
 	/* bad name and security risk */
 	if(!isspace(*pp)) return;
-	strcpy(pp,pp+1); pp--;
+	ovlstrcpy(pp,pp+1); pp--;
     }
     for(i=1;i<varcnt && strcmp(p[0],param[i].name)!=0;i++);
     p[1]=find_word_start(p[1]);
@@ -624,14 +624,14 @@ void p_plot(char *p[MAX_PARM])
 	    p2=find_word_start(p[i]);
 	    if(*p2=='x' || *p2=='X') xr=i;
 	    else if (*p2=='y' || *p2=='Y') yr=i;
-	    strcpy(p[i],pp);
+	    ovlstrcpy(p[i],pp);
 	}
     }
 /*    if(xr>=0 && (pp=strstr(p[xr],".."))!=NULL) {
 	
     }
 */    if(f<0) return;
-    strcpy(buf, p[f]);
+    ovlstrcpy(buf, p[f]);
     prepcnt=0; parmprep(buf,pt_func);
     fprintf(outf,"plot_fn=!rawmath %s\n",buf);
     

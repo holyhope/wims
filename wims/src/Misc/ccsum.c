@@ -19,6 +19,7 @@
 
 #include "../wimsdef.h"
 #include "../includes.h"
+#include "../Lib/basicstr.c"
 
 	/* The maximal number of sessions within one day */
 #define MAX_SESSIONS (128*1024)
@@ -124,7 +125,7 @@ void mkdirs(char *s)
     if(stat(s,&st)==-1) {
 	if(strrchr(s,'/')!=NULL) {
 	    buf=xmalloc(strlen(s)+1);
-	    strcpy(buf,s); *strrchr(buf,'/')=0;
+	    ovlstrcpy(buf,s); *strrchr(buf,'/')=0;
 	    mkdirs(buf); free(buf);
 	}
 	mkdir(s,-1);

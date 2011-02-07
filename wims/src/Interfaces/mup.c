@@ -111,7 +111,7 @@ void output(char *p)
 	    p3=strchr(p2,'\n');
 	      /* patch for stupidities in mupad tex output */
 	    if(p3>pp && *(p3-1)=='\\' && (p3==pp+1 || *(p3-2)!='\\')) {
-		strcpy(p3-1,p3+1); continue;
+		ovlstrcpy(p3-1,p3+1); continue;
 	    }
 	    if(p3!=NULL) *p3=0;
 	    if(strstr(p2,"Warning")!=NULL || strstr(p2,"Error")!=NULL) {

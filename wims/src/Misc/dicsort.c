@@ -29,6 +29,7 @@ char sepchar=':', grpchar=0;
 /***************** Nothing should need change hereafter *****************/
 
 #include "../wims.h"
+#include "../Lib/basicstr.c"
 
 char inpbuf[MAX_LINELEN+1], outbuf[2*MAX_LINELEN+2];
 char *dicbuf;
@@ -100,7 +101,7 @@ void string_modify(char *start, char *bad_beg, char *bad_end, char *good,...)
     if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
       return;	/* this is an error situation. */
     strcat(buf,bad_end);
-    strcpy(bad_beg,buf);
+    ovlstrcpy(bad_beg,buf);
 }
 
 	/* change all spaces into ' ', and collapse multiple occurences */
@@ -110,11 +111,11 @@ void singlespace(char *p)
     for(pp=p;*pp;pp++) {
 	if(!isspace(*pp)) continue;
 	if(leaveline) {
-	    if(*pp==13) strcpy(pp,pp+1);
+	    if(*pp==13) ovlstrcpy(pp,pp+1);
 	    if(*pp=='\n') {
 		pp++;
 		gopt: for(p2=pp; isspace(*p2) && *p2!='\n'; p2++);
-		if(p2>pp) strcpy(pp,p2); pp--;
+		if(p2>pp) ovlstrcpy(pp,p2); pp--;
 	    }
 	    else {
 		pp++; if(!isspace(*pp) || *pp=='\n') continue;
@@ -125,7 +126,7 @@ void singlespace(char *p)
 	    if(*pp!=' ') *pp=' ';
 	    pp++; if(!isspace(*pp)) continue;
 	    for(p2=pp;isspace(*p2);p2++);
-	    strcpy(pp,p2); pp--;
+	    ovlstrcpy(pp,p2); pp--;
 	}
     }
 }

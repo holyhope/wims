@@ -87,7 +87,7 @@ void collapse_item(char *p, int n)
     if(n<1) return;
     for(i=1,pp=strchr(p,','); i<n && pp!=NULL; i++,pp=strchr(pp+1,','));
     if(pp==NULL) *p=0;
-    else strcpy(p,pp+1);
+    else ovlstrcpy(p,pp+1);
 }
 
 	/* modify a string. Bufferlen must be ast least MAX_LINELEN */
@@ -101,7 +101,7 @@ void string_modify2(char *start, char *bad_beg, char *bad_end, char *good,...)
     if(strlen(start)-(bad_end-bad_beg)+strlen(buf)>=MAX_LINELEN)
       bailout(inlen,0,"string too long");
     strcat(buf,bad_end);
-    strcpy(bad_beg,buf);
+    ovlstrcpy(bad_beg,buf);
 }
 
 	/* strcmp() to be used within qsort(). */

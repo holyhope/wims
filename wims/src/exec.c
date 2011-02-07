@@ -388,7 +388,7 @@ void other_langs(void)
 	mystrncpy(pbuf,phtml,sizeof(pbuf));
 	j=strlen(pbuf)-3;
 	if(pbuf[j]!='.') return;
-	j++; strcpy(lbuf,pbuf+j); pbuf[j]=0;
+	j++; ovlstrcpy(lbuf,pbuf+j); pbuf[j]=0;
 	j=strlen(namebuf);
 	snprintf(namebuf+j,MAX_FNAME-j-10,"/pages/%s",pbuf);
 	j=strlen(namebuf);
@@ -405,7 +405,7 @@ void other_langs(void)
     }
     if(j>0 && namebuf[j]=='.') {
 	setvar("wims_light_module","");
-	j++; strcpy(lbuf,namebuf+j); namebuf[j]=0;
+	j++; ovlstrcpy(lbuf,namebuf+j); namebuf[j]=0;
 	for(i=k=0;i<available_lang_no;i++) {
 	    if(strcmp(lbuf,available_lang[i])==0) continue;
 	    snprintf(namebuf+j,MAX_FNAME-j,"%s/main.phtml",
@@ -567,8 +567,8 @@ void _header(char *p, int option)
 	char *s=getvar("special_parm");
 	if(s==NULL) s="";
 	m_file.linepointer=m_file.linecnt;
-	if(strcmp(s,"about")==0) strcpy(hbuf,"about.phtml");
-	else strcpy(hbuf,"help.phtml");
+	if(strcmp(s,"about")==0) ovlstrcpy(hbuf,"about.phtml");
+	else ovlstrcpy(hbuf,"help.phtml");
 	exec_read(hbuf); exec_tail(p); /* param of exec_...() must be readable */
 	return;
     }
@@ -687,7 +687,7 @@ void href_find_target(char *p)
 	if(strncasecmp(pp,"target=wims_",strlen("target=wims_"))!=0) continue;
 	memmove(buf1,pp,pe-pp); buf1[pe-pp]=0; substit(buf1);
 	if(strncasecmp(buf1,"target=wims_mhelp",strlen("target=wims_mhelp"))==0) {
-	    if(*pe!=0) *pe++=0; strcpy(href_target,"wims_help");
+	    if(*pe!=0) *pe++=0; ovlstrcpy(href_target,"wims_help");
 	    ref_mhelp=1;
 	}
 	else {
@@ -695,13 +695,13 @@ void href_find_target(char *p)
 	    mystrncpy(href_target,buf1+strlen("target="),sizeof(href_target));
 	}
 	snprintf(jsbuf,sizeof(jsbuf),jsstr,href_target,href_target);
-	strcpy(pp,pe);return;
+	ovlstrcpy(pp,pe);return;
     }
     pp=getvar("module_help");
     if(href_target[0]==0 && pp!=NULL && strcmp(pp,"popup")==0 &&
        (pe=strstr(p,"cmd=help"))!=NULL) {
 	if(pe==p || *(pe-1)=='&') {
-	    strcpy(href_target,"wims_help"); ref_mhelp=1;
+	    ovlstrcpy(href_target,"wims_help"); ref_mhelp=1;
 	    snprintf(jsbuf,sizeof(jsbuf),jsstr,href_target,href_target);
 	}
     }
@@ -916,7 +916,7 @@ void exec_robottrap(char *p)
 {
     char buf[MAX_LINELEN+1];
     if(robot_access) return;
-    strcpy(buf,"session=$wims_session.1&module=adm/trap");
+    ovlstrcpy(buf,"session=$wims_session.1&module=adm/trap");
     _output_("<!-- >"); exec_href(buf);
     _output_("Robot trapper, do not click!</a> < -->");
     exec_href(buf); _output_("<font></font></a>");
@@ -930,7 +930,7 @@ void exec_setdef(char *p)
     if(robot_access || !trusted_module() || is_class_module) return;
     p1=wordchr(p,"in"); if(p1==NULL) module_error("syntax_error");
     *p1=0; p1=find_word_start(p1+strlen("in"));
-    strcpy(nbuf,p);
+    ovlstrcpy(nbuf,p);
     mystrncpy(tbuf,p1,sizeof(tbuf));
     substit(nbuf); substit(tbuf);
     if(find_module_file(tbuf,fbuf,1)) return;
@@ -1273,11 +1273,11 @@ void prepare_insplot_parm(char *p)
 	while(i>0 && isspace(tbuf[i])) i--;
 	if(tbuf[i]==';') tbuf[i]=0;
 	gnuplot_patch(tbuf,0);pp=tbuf;
-	strcpy(setbuf,"set "); j=strlen("set ");
+	ovlstrcpy(setbuf,"set "); j=strlen("set ");
 	for(i=0; *(pp+i)!=0 && j<MAX_LINELEN; i++) {
 	    if(*(pp+i)=='\n') {setbuf[j++]=' '; continue;}
 	    if(*(pp+i)!=';') {setbuf[j++]=*(pp+i); continue;}
-	    strcpy(setbuf+j,"\nset "); j+=strlen("\nset ");
+	    ovlstrcpy(setbuf+j,"\nset "); j+=strlen("\nset ");
 	}
 	setbuf[j]=0;
 	setenv("insplot_set",setbuf,1);
@@ -1390,7 +1390,7 @@ void exec_bound(char *p)
     if(*p2==0) {
 	syntax: module_error("syntax_error");
     }
-    *p2=0; strcpy(nbuf,p1);substit(nbuf); p1=find_word_start(p2+1);
+    *p2=0; ovlstrcpy(nbuf,p1);substit(nbuf); p1=find_word_start(p2+1);
     p2=getvar(nbuf);if(p2==NULL) p2="";
     mystrncpy(vbuf,find_word_start(p2),sizeof(vbuf));
     strip_trailing_spaces(vbuf);
@@ -1400,7 +1400,7 @@ void exec_bound(char *p)
     if(p3!=NULL) {
 	*p3=0; defaulted=1;
 	p3=find_word_start(p3+strlen("default"));
-	strcpy(dbuf,p3); substit(dbuf);
+	ovlstrcpy(dbuf,p3); substit(dbuf);
     }
     else defaulted=0;
     if(strcmp(p1,"between")==0) {
@@ -1432,7 +1432,7 @@ void exec_bound(char *p)
 	    if(!doub) setvar(nbuf,vbuf);
 	    *p=0; return;
 	}
-	if(defaulted) strcpy(p,dbuf);
+	if(defaulted) ovlstrcpy(p,dbuf);
 	else {
 	    if(!doub) {
 		d1=ceil(d1);d2=floor(d2);
@@ -1445,7 +1445,7 @@ void exec_bound(char *p)
     }
     else {
 	if(strcmp(p1,"within")==0 || strcmp(p1,"among")==0) {
-	    strcpy(lbuf,p2);substit(lbuf);
+	    ovlstrcpy(lbuf,p2);substit(lbuf);
 	    bcnt=cutitems(lbuf,blist,2048);
 	    if(bcnt<=0) {
 		*p=0; return;
@@ -1455,7 +1455,7 @@ void exec_bound(char *p)
 		    *p=0; return;
 		}
 	    }
-	    if(defaulted) strcpy(p,dbuf); else strcpy(p,blist[0]);
+	    if(defaulted) ovlstrcpy(p,dbuf); else ovlstrcpy(p,blist[0]);
 	    setvar(nbuf,p); *p=0;
 	    return;
 	}
@@ -1950,7 +1950,7 @@ void exec_main(char *p)
     if((untrust&4)!=0 && (j=(exec_routine[i].tag&0xffff))!=EXEC_SET) {
 	tbuf2[0]=0; exec_exit(tbuf2);
     }
-    strcpy(tbuf2,pp); j=exec_routine[i].tag;
+    ovlstrcpy(tbuf2,pp); j=exec_routine[i].tag;
     if(j&EXEC_SUBST) substit(tbuf2);
     if(j&EXEC_USECALC) {
 	if(!outputing && (j&EXEC_PROCTOO)==0) return;

@@ -922,7 +922,7 @@ void elim_parm(char *str, char *parm)
 	    if(p1>str) *(p1-1)=0; else *p1=0;
 	    return;
 	}
-	strcpy(p1,p2+1); p1--;
+	ovlstrcpy(p1,p2+1); p1--;
     }
 }
 
@@ -933,10 +933,10 @@ void prep_init_parm(char rqv[])
     char *p;
 
     for(p=strstr(rqv,"&+"); p!=NULL; p=strstr(++p,"&+"))
-      strcpy(p+1,p+2);
+      ovlstrcpy(p+1,p+2);
     for(i=0;i<RO_NAME_NO;i++) elim_parm(rqv,ro_name[i]);
     if(strlen(rqv)>=MAX_LINELEN) rqv[0]=0;
-    while(rqv[0]=='&') strcpy(rqv,rqv+1);
+    while(rqv[0]=='&') ovlstrcpy(rqv,rqv+1);
     while(rqv[0]!=0 && rqv[strlen(rqv)-1]=='&') rqv[strlen(rqv)-1]=0;
 }
 
@@ -989,13 +989,13 @@ void set_init_parm(void)
 	}
 	if(readfile(nbuf,buf,sizeof(buf))==NULL) return;
 	for(p1=strstr(buf,"&+");p1!=NULL;p1=strstr(++p1,"&+"))
-	    strcpy(p1+1,p1+2);
+	    ovlstrcpy(p1+1,p1+2);
 	if(strncmp(m,"classes/",strlen("classes/"))==0) {
 	    m="classes/";
 	    for(p1=strstr(buf,":classes/");p1;p1=strstr(p1+1,":classes/")) {
 		if(p1==buf || *(p1-1)=='\n') {
 		    p1+=strlen(":classes/");
-		    p2=find_word_end(p1); if(p2>p1 && *p2=='\n') strcpy(p1,p2);
+		    p2=find_word_end(p1); if(p2>p1 && *p2=='\n') ovlstrcpy(p1,p2);
 		}
 	    }
 	}
@@ -1123,7 +1123,7 @@ void phtml_put_base(char *fname,int cache)
     char modsave[MAX_FNAME+1];
     memmove(&save,&m_file,sizeof(WORKING_FILE));
     mystrncpy(modsave,module_prefix,sizeof(modsave));
-    strcpy(module_prefix,"html");
+    ovlstrcpy(module_prefix,"html");
     phtml_put(fname,cache);
     mystrncpy(module_prefix,modsave,sizeof(module_prefix));
     memmove(&m_file,&save,sizeof(WORKING_FILE));

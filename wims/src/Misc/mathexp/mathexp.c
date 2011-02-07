@@ -69,10 +69,10 @@ void parm()
     if(objlinecnt<1) error("Empty input data.");
     logdir=0;
     if((p=wordchr(objline[0],"<"))!=NULL) {
-	logdir=-1; strcpy(p,p+1);
+	logdir=-1; ovlstrcpy(p,p+1);
     }
     if((p=wordchr(objline[0],">"))!=NULL) {
-	logdir=1; strcpy(p,p+1);
+	logdir=1; ovlstrcpy(p,p+1);
     }
     p=find_word_start(objline[0]); pp=find_word_end(p); if(*pp) *pp++=0;
     objline[0]=pp;

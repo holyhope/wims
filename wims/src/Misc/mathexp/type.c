@@ -26,7 +26,7 @@ void req_type(void)
     int commacnt;
     if(objlinecnt<2) return;
     while((p=wordchr(objline[0],"nocomma"))!=NULL) {
-	nocomma=1; strcpy(p,p+strlen("nocomma"));
+	nocomma=1; ovlstrcpy(p,p+strlen("nocomma"));
     }
     for(i=1;i<objlinecnt;i++) {
 	thisobjline=i; p=find_word_start(objline[i]);

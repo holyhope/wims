@@ -132,7 +132,7 @@ void _scoreparm(char *p)
 	    case 4: /* exam */
 	      score_isexam=1; break;
 	}
-	*pf=sav; strcpy(pn, pf);
+	*pf=sav; ovlstrcpy(pn, pf);
     }
     *p=0;
     if((*score_class!=0 || score_user[0]!=0) && !trusted_module()) {
@@ -226,7 +226,7 @@ void calc_getscorepercent(char *p)
     if(getscoreuser(score_class,score_user)<0) return;
     for(p1=p,i=0;i<totsheets && p1-p<MAX_LINELEN-32;i++) {
 	if(scoresum[i]==0) {
-	    strcpy(p1,"0 0\n"); p1+=strlen(p1); continue;
+	    ovlstrcpy(p1,"0 0\n"); p1+=strlen(p1); continue;
 	}
 	if(score_sheet!=0 && i!=score_sheet-1) continue;
 	if(scoresum[i]<=0) *p1++='\n';
@@ -286,7 +286,7 @@ int _subword(char bf2[])
 	  mkfname(fbuf,"%s/%s/supervisor",class_base,classp);
 	else
 	  mkfname(fbuf,"%s/%s/.users/%s",class_base,classp2,userp);
-	getdef(fbuf,buf,buf2); if(buf2[0]==0) strcpy(buf2,"none");
+	getdef(fbuf,buf,buf2); if(buf2[0]==0) ovlstrcpy(buf2,"none");
 	string_modify(bf2,p1,p2,buf2);
 	p1+=strlen(buf2);
     }
@@ -360,8 +360,8 @@ void calc_getscorestatus(char *p)
         *p=0; return;
     }
     if(getscorestatus(score_class, score_sheet))
-      strcpy(p,"yes");
-    else strcpy(p,"no");
+      ovlstrcpy(p,"yes");
+    else ovlstrcpy(p,"no");
 }
 
 double exam_scoredata[MAX_EXOS];

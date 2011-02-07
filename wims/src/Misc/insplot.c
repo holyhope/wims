@@ -176,11 +176,11 @@ void prepare_insplot_parm(char *p)
 	while(i>0 && isspace(tbuf[i])) i--;
 	if(tbuf[i]==';') tbuf[i]=0;
 	gnuplot_patch(tbuf,0);pp=tbuf;
-	strcpy(setbuf,"set "); j=strlen("set ");
+	ovlstrcpy(setbuf,"set "); j=strlen("set ");
 	for(i=0; *(pp+i)!=0 && j<MAX_LINELEN; i++) {
 	    if(*(pp+i)=='\n') {setbuf[j++]=' '; continue;}
 	    if(*(pp+i)!=';') {setbuf[j++]=*(pp+i); continue;}
-	    strcpy(setbuf+j,"\nset "); j+=strlen("\nset ");
+	    ovlstrcpy(setbuf+j,"\nset "); j+=strlen("\nset ");
 	}
 	setbuf[j]=0;
 	setenv("insplot_set",setbuf,1);
@@ -238,7 +238,7 @@ void strip_zeros(char *p)
 	if(*(p2-1)=='.' && p2<numend) p2++; 
 	
 	if(p2<numend) {
-	    strcpy(p2,numend);numend=p2;
+	    ovlstrcpy(p2,numend);numend=p2;
 	}
 	pp=numend-1;
     }

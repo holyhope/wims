@@ -167,7 +167,7 @@ void _translate(char *p, int i)
 	    switch(dic[i].unknown_type) {
 		case unk_leave: break;
 		case unk_delete: {
-		    strcpy(p1,find_word_start(pp)); p2=p1;
+		    ovlstrcpy(p1,find_word_start(pp)); p2=p1;
 		    break;
 		}
 		case unk_replace: {

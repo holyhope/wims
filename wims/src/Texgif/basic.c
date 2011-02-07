@@ -16,6 +16,7 @@
  */
 
 /* dvi 2 gif driver, tex standard */
+#include "../Lib/basicstr.c"
 
 void error(char *s)
 {
@@ -169,7 +170,7 @@ void mkdirs(char *s)
     if(stat(s,&st)==-1) {
 	if(strrchr(s,'/')!=NULL) {
 	    buf=xmalloc(strlen(s)+1);
-	    strcpy(buf,s); *strrchr(buf,'/')=0;
+	    ovlstrcpy(buf,s); *strrchr(buf,'/')=0;
 	    mkdirs(buf); free(buf);
 	}
 	mkdir(s,-1);

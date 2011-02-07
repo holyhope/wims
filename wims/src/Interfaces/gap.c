@@ -74,7 +74,7 @@ void output(char *p)
     char *pp, *pe, *pt;
 
     pp=strstr(p,gapprompt); if(pp==NULL) return;
-    while((pt=strstr(pp,"\\\n"))!=NULL) strcpy(pt,pt+2);
+    while((pt=strstr(pp,"\\\n"))!=NULL) ovlstrcpy(pt,pt+2);
     while(pp!=NULL) {
 	pp+=strlen(gapprompt);
 	pe=strstr(pp,gapprompt);

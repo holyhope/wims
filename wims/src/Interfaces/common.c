@@ -16,6 +16,7 @@
  */
 
 	/* Common routines in interfaces */
+#include "../Lib/basicstr.c"
 
 #define ch_root "bin/ch..root"
 
@@ -230,7 +231,7 @@ void rmpid(int pid)
     accessfile(buf,"r",pidfname);
     p=wordchr(buf,pidbuf);
     if(p!=NULL) {
-	strcpy(p,find_word_start(find_word_end(p)));
+	ovlstrcpy(p,find_word_start(find_word_end(p)));
 	accessfile(buf,"w",pidfname);
     }
 }
@@ -351,7 +352,7 @@ void strip_zeros(char *p)
 	if(*(p2-1)=='.' && p2<numend) p2++; 
 	
 	if(p2<numend) {
-	    strcpy(p2,numend);numend=p2;
+	    ovlstrcpy(p2,numend);numend=p2;
 	}
 	pp=numend-1;
     }
@@ -462,7 +463,7 @@ int readabout(void)
 	fseek(ff,0,SEEK_END); l=ftell(ff); fseek(ff,0,SEEK_SET);
 	l=fread(aboutbuf,1,aboutlen-10,ff); fclose(ff);
 	if(l>0 && l<aboutlen) aboutbuf[l]=0; else aboutbuf[0]=0;
-	p=find_word_start(aboutbuf); if(p>aboutbuf) strcpy(aboutbuf,p);
+	p=find_word_start(aboutbuf); if(p>aboutbuf) ovlstrcpy(aboutbuf,p);
     }
     return strlen(aboutbuf);
 }
@@ -543,7 +544,7 @@ void dopipes(void)
 	    char *pp;
 	    pp=strstr(lbuf,startstring);
 	    if(pp!=NULL) {
-		active=1; strcpy(lbuf,pp); lp=lbuf+strlen(lbuf);
+		active=1; ovlstrcpy(lbuf,pp); lp=lbuf+strlen(lbuf);
 	    }
 	}
 	if(active!=0 && strstr(lbuf,linebyline)!=NULL) {
