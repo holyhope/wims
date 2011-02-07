@@ -346,11 +346,12 @@ slib/circuits/comppos
   catmodule=devel/$wims_developer/$catmodule1
   !reset catmodule1
  !endif
-
-existing_new=!replace internal .oef by in $file_name_src 
-!set existing_new=!text select ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_1234567890 in $existing_new
-!if $existing_new != $empty
+ 
+ existing_new=!replace internal .oef by in $file_name_src 
+ !set existing_new=!text select ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_1234567890 in $existing_new
+ !if $existing_new != $empty
   existing=$existing_new
+ !endif
 !endif
 !if $level=4 and $wims_developer!=$empty and ..devel/ isin ..$catmodule and \
    .. notin $catmodule $existing
