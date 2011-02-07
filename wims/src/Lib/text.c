@@ -24,7 +24,7 @@ void _text_cut(char *p, char *w)
     char *p1, *p2;
     p1=wordchr(p,w); if(p1==NULL) error2("syntax_error");
     *p1=0; p2=find_word_start(p1+strlen(w));
-    strcpy(t_buf[0],p); strcpy(t_buf[1],p2);
+    ovlstrcpy(t_buf[0],p); ovlstrcpy(t_buf[1],p2);
     strip_trailing_spaces(t_buf[0]);
     substitute(t_buf[0]); substitute(t_buf[1]);
 }
@@ -315,7 +315,7 @@ void text_reverse(char *p)
     n=strlen(t_buf[0]); if(n>MAX_LINELEN) n=MAX_LINELEN;
     for(i=0;i<n;i++) buf[i]=t_buf[0][n-1-i];
     buf[n]=0;
-    strcpy(p,buf);
+    ovlstrcpy(p,buf);
 }
 
 	/* remove characters of buf[1] not in buf[0]. */
@@ -397,6 +397,6 @@ void text(char *p)
     }
     else zeromask: memset(maskbuf,0,sizeof(maskbuf));
     text_proc[i].routine(buf);
-    buf[MAX_LINELEN]=0;strcpy(p,buf);
+    buf[MAX_LINELEN]=0;ovlstrcpy(p,buf);
 }
 

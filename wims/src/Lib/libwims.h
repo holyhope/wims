@@ -40,6 +40,7 @@ char *int2str(int i);
 void *xmalloc(size_t n);
 int msleep(int ms);	/* millisecond sleeper */
 void _tolinux(char *p);		/* dos/mac to unix/linux translation */
+void ovlstrcpy(char *dest, char *src);	/* strcpy of possibly overlapping strings (64 bits problem)*/
 void mystrncpy(char *dest, char *src, int lim);	/* optimized and secured strncpy */
         /* find matching parenthesis.
 	 * The entrance point should be after the opening parenthesis.

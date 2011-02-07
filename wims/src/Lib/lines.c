@@ -17,6 +17,10 @@
 	/* line input / output routines */
 
 #include <stdarg.h>
+
+#include "basicstr.c"
+
+
 #define int_buf_size 40
 
 	/* this is rapid. Output string will be erased at the next call. */
@@ -68,6 +72,7 @@ void _tolinux(char *p)
     }
     *p1=0;
 }
+
 
 	/* optimized and secure strcpy */
 void mystrncpy(char *dest, char *src, int lim)
@@ -569,21 +574,21 @@ void strip_enclosing_par(char *p)
     if(*p=='(') {
 	p1=find_matching(p+1,')');
 	if(p1 && *(p1+1)==0) {
-	    *p1=0; strcpy(p,find_word_start(p+1));
+	    *p1=0; ovlstrcpy(p,find_word_start(p+1));
 	    goto partest;
 	}
     }
     if(*p=='[') {
 	p1=find_matching(p+1,']');
 	if(p1 && *(p1+1)==0) {
-	    *p1=0; strcpy(p,find_word_start(p+1));
+	    *p1=0; ovlstrcpy(p,find_word_start(p+1));
 	    goto partest;
 	}
     }
     if(*p=='{') {
 	p1=find_matching(p+1,'}');
 	if(p1 && *(p1+1)==0) {
-	    *p1=0; strcpy(p,find_word_start(p+1));
+	    *p1=0; ovlstrcpy(p,find_word_start(p+1));
 	    goto partest;
 	}
     }
