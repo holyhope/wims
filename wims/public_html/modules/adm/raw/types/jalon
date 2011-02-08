@@ -1,0 +1,316 @@
+#Ce document permet de personnaliser l'affichage des requetes.
+#Pour Jalon, la variable "message=" donne une description de la tache accomplie
+
+!goto $job
+
+:getexamlog
+!shortout message=user $quser exists\
+nbexamslogs=$nbeleves\
+sessionslist[$quser]=$sessionslist\
+nbsessions[$quser]=$nbsessions\
+nbexos[session1]=$nbexos\
+
+!exit
+
+:checkuser
+!shortout message=user $quser exists\
+
+!exit
+
+:getscores
+!shortout titles=$tit\
+longtitles=$dl3\
+datas=$data_scores\
+totweight=$totweight\
+percents (last user)=$percents\
+
+!exit
+
+
+:listlinks
+!shortout nblinks=$nblink\
+listlinks=$listlinks\
+
+!exit
+
+:modsheet
+!shortout  queryclass=$qclass\
+querysheet=$qsheet\
+message=Modifications Done on sheet $qsheet.
+!exit
+
+:modexam
+!shortout  queryclass=$qclass\
+queryexam=$qexam\
+message=Modifications Done on exam $qexam.
+!exit
+
+:search
+!shortout list_cats=A:$C_A,X:$C_X,T:$C_T,R:$C_R,O:$C_O,S:$C_S,D:$C_D,P:$C_P,F:$C_F\
+message=shearching of "$search_keywords" in $search_category ($(C_$search_category)) succeeded\
+search_keywords=$search_keywords\
+search_package=$search_package\
+dictionary=$dictionary\
+gottype=$gottype\
+plist=$plist\
+list=$list\
+
+!exit
+
+:getmodule
+ !shortout querymodule=$option\
+index_url=$wims_ref_name?module=$option\
+random_url=$wims_ref_name?cmd=new&module=$option\
+
+ #exolist=$exolist\titlelist=$titlelist\exototal=$exototal
+ #!shortout -------------------------------------------
+ #!sh cat $wims_home/public_html/modules/$option/Exindex
+ #!shortout -------------------------------------------
+ !sh cat $wims_home/public_html/modules/$option/INDEX
+ #!shortout -------------------------------------------
+!exit
+
+
+:delsheet
+ sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+ !shortout message=sheet #$qsheet of class $qclass correctly deleted\
+sheet_count=$sheetcnt
+!exit
+
+:delclass
+ !shortout message=class $qclass correctly deleted
+!exit
+
+:cleanclass
+ !shortout message=class $qclass correctly cleaned
+!exit
+
+:addsheet
+ !shortout message=sheet #$wims_sheet correctly added\
+queryclass=$qclass\
+sheet_id=$wims_sheet
+!exit
+
+:addexam
+ !shortout message=exam #$wims_exam correctly added\
+queryclass=$qclass\
+exam_id=$wims_exam
+!exit
+
+:linkexo
+ exocnt=!recordcnt wimshome/log/classes/$qclass/exams/.exam$qexam
+ !shortout message=exercice correctly added in exam #$qexam\
+queryclass=$wims_class\
+querysheet=$wims_sheet\
+queryexo=$qexo\
+queryexam=$qexam\
+exo_count=$exocnt
+!exit
+
+:putexo
+ exocnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheet$wims_sheet
+ !shortout message=exercice correctly added in sheet #$wims_sheet\
+queryclass=$wims_class\
+querysheet=$wims_sheet\
+exo_count=$exocnt
+!exit
+
+:recuser
+ !shortout message=user $quser correctly recovered
+!exit
+
+:deluser
+ !shortout message=user $quser correctly deleted
+!exit
+
+:adduser
+ !shortout message=user $quser correctly added
+!exit
+
+:modclass
+ !shortout message=Modifications Done on class $qclass
+!exit
+
+:checkident
+ !shortout message=Connection accepted\
+wims_sesdir=$wims_sesdir\
+separator=$separator
+!exit
+
+:checkclass
+ !shortout message=Class $qclass exists
+!exit
+
+:checksheet
+ !shortout queryclass=$qclass\
+message=sheet $qsheet exists
+!exit
+
+:checkexam
+ !shortout queryclass=$qclass\
+message=exam $qexam exists
+!exit
+
+:addclass
+ !shortout class_id=$cd
+!exit
+
+:getclass
+class_userlist = !replace , by $separator in $class_userlist
+class_exotitlelist = !replace , by $separator in $class_exotitlelist
+
+!shortout queryclass=$qclass\
+
+!if hidden_sheets isin $option
+    class_hidden_sheets=$nb_hidden
+    class_not_hidden_sheets= $[$cnt-$nb_hidden]
+    option=$option,not_hidden_sheets
+!endif
+  
+!for d in $option
+  !shortout $d=$(class_$d)\
+
+!next d
+!exit
+
+:getclassmodif
+ !if $modif==$empty
+	!shortout message=no modification found
+ !else
+	!shortout $modif
+ !endif
+!exit
+
+:getuser
+!shortout queryclass=$qclass\
+queryuser=$quser\
+
+!for d in $option
+ !shortout $d=$(user_$d)\
+
+!next d
+!exit
+
+:getscore
+!for v in examscore, weights, requires, persheet, gotdetail, meandetail
+ $v=!trim $($v)
+ $v=!replace internal $\
+$ by \\
+$ in $($v)
+!next v
+
+!shortout queryclass=$qclass\
+queryuser=$quser\
+scoremax=$scoremax\
+\
+examscores=$examscore\
+\
+weights=$weights\
+\
+requirepoints=$requires\
+\
+sheetsummaries=$persheet\
+\
+gotpoints=$gotdetail\
+\
+scoreaverages=$meandetail\
+
+!exit
+
+:getlog
+
+!if $option==score or $option==noscore
+ !sh cd $wims_home/log/classes/$qclass\
+	cat $option/$quser 2>/dev/null
+!else
+ !sh cd $wims_home/log/classes/$qclass\
+	cat score/$quser noscore/$quser 2>/dev/null | sort
+!endif
+!exit
+
+:gettime
+ !shortout server_time=$now_year$now_month$now_day.$now_hour:$now_min:$now_sec
+!exit
+
+:listexams
+ !shortout queryclass=$qclass\
+nbexam=$cnt\
+examlist=$list\
+examtitlelist=$titles\
+
+!exit
+
+:listsheets
+nohidden= $[$cnt-$nb_hidden]
+ !shortout queryclass=$qclass\
+nbsheet=$cnt\
+sheetlist=$list\
+sheettitlelist=$titles\
+separator=$separator\
+hidden_sheets=$nb_hidden\
+not_hidden_sheets=$nohidden\
+
+!exit
+
+:listmodules
+!shortout levellist=$levellist\
+levelnames=$levelnames\
+llist=$llist\
+lnamelist=$lnamelist\
+nbelement=$n\
+list=$listContent
+!exit
+
+:getsheet
+!shortout queryclass=$qclass\
+querysheet=$qsheet\
+sheet_properties=$sheet_properties\
+exocnt=$exocnt\
+exolist=$exolist\
+exotitlelist=$exotitlelist\
+
+!exit
+
+:getexam
+ !shortout queryclass=$qclass\
+queryexam=$qexam\
+exam_properties=$exam_properties\
+exocnt=$exocnt\
+exolist=$exolist\
+exotitlelist=$exotitlelist\
+
+!exit
+
+:getexo
+!shortout queryclass=$qclass\
+querysheet=$qsheet\
+queryexo=$qexo\
+exo_module=$exo_module\
+exo_params=$exo_params\
+exo_points=$exo_points\
+exo_weight=$exo_weight\
+exo_title=$exo_title\
+exo_description=$exo_description\
+
+!exit
+
+:authuser
+ !shortout session=$wims_session\
+
+ !shortout home=$wims_ref_name?session=$wims_session.1
+ #home : &module=home
+!exit
+
+
+:addexo
+!shortout message=exercice $qexo successfully $action\
+exo_id=$qexo\
+compilation_result=$compilation
+!exit
+
+:delexo
+!shortout message=exercice $qexo successfully deleted\
+exo_id=$qexo\
+compilation_result=$compilation\
+more_infos=$more_infos
+!exit
