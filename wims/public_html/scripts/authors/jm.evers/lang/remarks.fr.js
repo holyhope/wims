@@ -29,7 +29,7 @@ var r28="Dans cet exercice, le pourcentage ne peut être inférieur à 0% ..."
 var r29="J\'espérais (finalement) quelque chose comme:<br> x = 123 ...ou quelque chose comme celà <br> Essayez encore ";
 var r30="Votre réponse devrait au moins contenir quelques \"flèches\" pour indiquer les étapes de votre \"raisonnement\"<br> Regardez les pages d\'aide pour plus d\'info...";
 var r31="Le nombre minimal d\'étapes [ flèches ->] doit être : ";
-var r32="<br>... ce \"texte\" a été retiré de votre réponse.<br> Dans cet exerice, il n\'y en a pas besoin pour déduire la réponse correcte...";
+var r32="<br>... ce \"texte\" a été retiré de votre réponse.<br> Dans cet exercice, il n\'y en a pas besoin pour déduire la réponse correcte...";
 var r33="Si j\'envoie cette réponse à WIMS<br>elle sera très probablement rejetée... ";
 var r34="Vous avez été pénalisé car votre construction utilisait trop d\'objets.";    
 var r35="Vous avez construit:";
