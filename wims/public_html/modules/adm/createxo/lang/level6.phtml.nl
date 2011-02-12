@@ -16,8 +16,8 @@ Binaire Bestanden voor oefeningen
 
 !form reply
 Het bestand voor deze oefening:
-<input type=file name="wims_deposit">
-<input type=submit value="$wims_name_tosave">
+<input type="file" name="wims_deposit">
+<input type="submit" value="$wims_name_tosave">
 </form>
 
 :sendend
@@ -26,16 +26,17 @@ Het bestand voor deze oefening:
     Deze oefening bevat geen binaire bestanden.
 !else
     Hier staat de lijst van verwerkte bestanden.
- <p><center><table border=2>
- <th>Bestandsnaam<th>thumbnail<th>-
+ <p><center><table border="2">
+ <th>Bestandsnaam</th><th>thumbnail</th><th>-</th>
  !for i in $imglist
-  <tr><td valign="middle" align="center">$i
+  <tr><td valign="middle" align="center">$i</td>
   <td valign="middle" align="center">
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height=40 width=50>
+   height="40" width="50"></td>
   <td valign="middle" align="center">
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase
+  </td>
  !next i
  $table_end <p>
  !if $imgfname!=
@@ -72,8 +73,10 @@ Het bestand voor deze oefening:
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
 
+Sauvez l'exercice pour que les fichiers ajoutés le soient de manière
+permanente.
+
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\
 to $wims_menu_items
-

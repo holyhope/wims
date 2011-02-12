@@ -14,31 +14,33 @@
 
 !form reply
 发送到练习的文件 :
-<input type=file name="wims_deposit">
-<input type=submit value="发送">
+<input type="file" name="wims_deposit">
+<input type="submit" value="$wims_name_tosave">
 </form>
 
 :sendend
+
 !if $imglist=$empty
  此练习尚无二进制文件.
 !else
  这里是本练习的文件表.
- <p><center><table border=2>
- <th>文件名<th>概要<th>-
+ <p><center><table border="2">
+ <th>文件名</th><th>概要</th><th>-</th>
  !for i in $imglist
-  <tr><td valign="middle" align="center">$i
+  <tr><td valign="middle" align="center">$i</td>
   <td valign="middle" align="center">
   <img src="$wims_ref_name?cmd=getfile&+session=$wims_session&+special_parm=oefimg/$i" alt=""
-   height=40 width=50>
+   height="40" width="50"></td>
   <td valign="middle" align="center">
   !set wims_ref_class=wims_button
   !href cmd=reply&delfile=$i  $wims_name_erase
+  </td>
  !next i
  $table_end <p>
  !if $imgfname!=
    !set example=$imgfname
  !else
- !set example=!item 1 of $imglist
+  !set example=!item 1 of $imglist
  !endif
  $wims_deposit $imgfname
 在练习陈述中使用内部参数 \imagedir 可以引用这些文件. 
@@ -68,13 +70,11 @@
 <p>对于其他类型的文件, 可以使用 html 的命令 :
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
+
+Sauvez l'exercice pour que les fichiers ajout閟 le soient de mani鑢e
+permanente.
+
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\
 backcreatexo,1,cmd=reply&level=3\
 to $wims_menu_items
-
-!!!href cmd=resume&level=3&realtest=yes&retest=again 测试此练习
-
-!!.&nbsp;
-!!!href cmd=reply&level=3 返回菜单
-
