@@ -1,12 +1,13 @@
 #!/usr/bin/perl
 
 use locale;
+use strict;
 ##$/ = undef; # slurp
 ##lancer du répertoire scipts/help
 
 my %name = (
   ) ; 
-$name = \%name;
+my $name = \%name;
 $name->{'explanation'}{'fr'}="Explication" ; 
 $name->{'example'}{'fr'}="Exemple" ;
 $name->{'special'}{'fr'}="Méthodes spéciales<br>(énoncé)";
@@ -54,7 +55,7 @@ my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oe
 
 my %Command = (
   ) ; 
-$Command = \%Command ;
+my $Command = \%Command ;
 $Command->{'begin'}{'if'}= "  " ; 
 $Command->{'end'}{'if'}= "  " ; 
 $Command->{'begin'}{'oefparm0'}= '\\\\' ; 
@@ -114,26 +115,25 @@ for my $lang (@Lang) {
 sub anstype { my ($lang)=@_ ;
  my %HASH = (
   ) ; 
- $HELP = \%HELP ;
  my %HELP = (
   ) ; 
- $HELP = \%HELP ; 
+ my $HELP = \%HELP ; 
  open (IN, "$helpdir/$lang/reply.phtml") ;
-   while (<IN>) {my $line = $_;
+   while (<IN>) {my $line = $_; my @t=();
     next if ($line =~ /^\!set/) ;
     next if !($line) ;
     if ($line =~ /\\\n/) {
-      @L= split( ',', $line) ;
+      my @L= split( ',', $line) ;
       my $t1 = $L[0] ; $t1=~ s/\|/,/ ;
       my @ta=split(',',$t1) ;
-      if ($ta[1]) {@t=split(' ',$ta[1]) ; } else { @t=($L[0])};
+      if ($ta[1]) {@t=split(' ',$ta[1]) ; } else {@t=($L[0])};
       for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . $L[2]); $HELP{$tag}=$ta[0] ;} 
      }
    }
  close IN ;
  my $text ='';
  my $Text = "var anstypename='$name->{'anstype'}{$lang}';\n" ;
-   $var=join ("$Command->{'end'}{'anstype'}\',\'$Command->{'begin'}{'anstype'}", sort keys(%HASH)) ;
+   my $var=join ("$Command->{'end'}{'anstype'}\',\'$Command->{'begin'}{'anstype'}", sort keys(%HASH)) ;
    $Text .="var anstype = [ '$Command->{'begin'}{'anstype'}$var$Command->{'end'}{'anstype'}' ];\n" ;
    for my $tag (keys(%HASH)){
      $text .=begin_js("$Command->{'begin'}{'anstype'}$tag$Command->{'end'}{'anstype'}") 
@@ -146,19 +146,19 @@ sub anstype { my ($lang)=@_ ;
 }
 sub slib {my ($lang)= @_ ;
  my $Text = "var slibname='$name->{'slib'}{$lang}';\n" ;
- @list_keyword=();
+ my @list_keyword=();
  my %HASH = (
   ) ; 
- $HASH = \%HASH ; 
+ my $HASH = \%HASH ; 
 for my $file (glob("$slibdir/*/*")) {
 #for my $file (glob("$slibdir/function/integrate")) {
  $file =~s/$slibdir\///;
- my $text='';
+ my $text=''; my $tag='';
  open (IN, "$slibdir/$file"); 
  while (<IN>) {my $line=$_;
     if  ($line=~/^ *!exit/) { last ;}
     if ($line=~ s/^ *slib_(\w+) *=//){
-     $tag=$1;
+     my $tag=$1;
      $line=cleanup($line) ;
      if ($tag=~/parms/) {
        $line=~s/\\//;
@@ -171,7 +171,7 @@ for my $file (glob("$slibdir/*/*")) {
        next if !($tag) ; 
        if ($tag=~/parms/) {
         chomp $line ;
-        @parm=split(",", $line) ;
+        my @parm=split(",", $line) ;
         if ($parm[1] =~ s/\\//) {
           $HASH->{$tag}{$file}.= cleanup3($parm[1]) . ",";
          }
@@ -189,8 +189,9 @@ for my $file (glob("$slibdir/*/*")) {
   push @list_keyword, $file if ($HASH->{'title'}{$file});
  $tag='';
  }
- $var=join ("$Command->{'end'}{'slib'}\',\'$Command->{'begin'}{'slib'}", @list_keyword) ;
+ my $var=join ("$Command->{'end'}{'slib'}\',\'$Command->{'begin'}{'slib'}", @list_keyword) ;
  $Text .="var slib = [ '$Command->{'begin'}{'slib'}$var$Command->{'end'}{'slib'}' ];\n" ; 
+ my $text;
  for my $file (@list_keyword) {
   next if !($HASH->{'title'}{$file}) ; 
   my @examples=split("\\\\",$HASH->{'example'}{$file}) ;
@@ -218,7 +219,7 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
   signification => {},
   syntaxe => {},
   ) ; 
- $HASH = \%HASH ; 
+ my $HASH = \%HASH ; 
  my $text='';
  my $tag='';
  my $Text="var specialname= '$name->{'special'}{$lang}';\n";
@@ -236,10 +237,10 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
     }
   }
 }
- $var=join (" }\', \'\\\\special{", @phtml) ;
+ my $var=join (" }\', \'\\\\special{", @phtml) ;
  ### cas particulier
  my $meth='embed';
- $embd='\\\\embed{r  }' ;
+ my $embd='\\\\embed{r  }' ;
    open (IN, "$helpdir/$lang/embedans.phtml"); 
     while (<IN>) {my $line=$_;
     next if !($line) ;
@@ -284,7 +285,7 @@ sub tableau { my ($file, $lang) = @_ ;
   my $text='';
 ##bug s'il n'y a pas de documentation
   open (IN, $file1);
-  my $cnt=0 ;
+  my $cnt=0 ;my $nl;
   my $Text = '' ; 
   while (<IN>) { my $line=$_;
    chomp $line ;
@@ -300,7 +301,7 @@ sub tableau { my ($file, $lang) = @_ ;
      $nl=0;
      }
      else  {
-       next if $cnt<3 ; if ($line =~ /^(\d)/) { $arg=$1 ; next }  
+       next if $cnt<3 ; if ($line =~ /^(\d)/) { my $arg=$1 ; next }  
        $nl ++ ;
        $line = cleanup($line); if ($line =~ /help=/) { $line = '' ;}
        if ($nl==1 && !($file=~/oefcommand/)){ 
@@ -358,7 +359,7 @@ sub cleanup { my ($txt)=@_ ;
   $txt=~ s,\\,\\\\,g ; 
   $txt=~ s/'/\\'/g ;
   $txt=~ s/\n/ /g ;
-  $text=~ s/\\(\w)/\\\\\1/g ;
+  #$txt=~ s/\\(\w)/\\\\\1/g ;
   return $txt ; 
 }
 sub cleanup2 {my ($txt)=@_ ;
