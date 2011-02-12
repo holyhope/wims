@@ -1,7 +1,14 @@
 !! This file contains error messages. It will be processed
 !! whenever the variable `error' is not empty.
 
-!set errorhead=<b>错误.</b>
+!set errorhead=<b>$wims_name_Error</b>.
+
+!if prohibited = $error
+  $errorhead Your message contains prohibited words. For example, you
+  can not put some javascript in the message. Attention, this error 
+  is registered by the server.
+  !exit
+!endif
 
 !if forum_not_exist = $error
  $errorhead 你要的信息板不存在. 抱歉.
@@ -58,7 +65,7 @@
 !if $error=email_required
  $errorhead 为了在此信息板张贴, 你必须给出你的电邮地址.
  <br>
- <b>警告.</b> 服务器将验证此地址! 因此不要给出虚假地址.
+ <b>$wims_name_warning</b>. 服务器将验证此地址! 因此不要给出虚假地址.
  !set job=compose
  !exit
 !endif
@@ -70,7 +77,7 @@
 !endif
 
 !if $error=bad_sendcode
- $error_head 因为你输入的密码不匹配, 你的信息没有接受.
+ $errorhead 因为你输入的密码不匹配, 你的信息没有接受.
  <p>
 请检查下面你给出的电邮地址, 再按'发送'按钮, 然后等待电邮发给你新密码.
  !set job=compose
@@ -78,7 +85,7 @@
 !endif
 
 !if $error=not_owner
- $error_head 只有信息板的板主有权配置.
+ $errorhead 只有信息板的板主有权配置.
  <p>
  !set job=list
  !exit

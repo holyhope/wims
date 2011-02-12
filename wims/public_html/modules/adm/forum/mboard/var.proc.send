@@ -95,6 +95,14 @@ c_subject=!trim $c_subject
  !endif
 
  msg=!mexec scripts/msgsrc.sh
+ 
+ !for a in $prohibited_words
+   !if $a isin $msg
+     error=prohibited
+     !exit
+   !endif
+ !next
+
  !mailto $m_supervisor\
  "WIMS $n_forum $c_desc"\
  $n_warning\

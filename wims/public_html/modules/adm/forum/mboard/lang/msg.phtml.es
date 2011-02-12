@@ -1,18 +1,23 @@
 !! This file contains error messages. It will be processed
 !! whenever the variable `error' is not empty.
 
-!set errorhead=<b>Error.</b>
+!set errorhead=<b>$wims_name_Error</b>.
+
+!if prohibited = $error
+  $errorhead Votre message contient des mots non permis. Par exemple, vous ne 
+  pouvez pas mettre du javascript dans le message. Attention, cette erreur 
+  est enregistrée par le serveur.
+  !exit
+!endif
 
 !if forum_not_exist = $error
- $errorhead Ha solicitado un foro de discusión que no existe.
- Lo sentimos.
+ $errorhead Ha solicitado un foro de discusión que no existe. Lo sentimos.
  !set fatal=yes
  !exit
 !endif
 
 !if no_read_right = $error
- $errorhead No está autorizado a acceder a este foro de discusión.
- Lo siento.
+ $errorhead No está autorizado a acceder a este foro de discusión. Lo siento.
  !set fatal=yes
  !exit
 !endif
@@ -33,7 +38,7 @@
 !endif
 
 !if open_tag = $error
- <b>Aviso.</b>
+ <b>$wims_name_warning</b>.
  Su mensaje parecer acabar en una etiqueta html no cerrada. Por
  favor, compruebe el texto que escribe con cuidado. <p>
  Su mensaje se mostrará como un archivo html. Así, si está escribiendo
@@ -66,7 +71,7 @@
  $errorhead Debe dar su dirección de correo para poder enviar un mensaje
  a este panel.
  <br>
- <b>ATENCIÓN.</b> ¡El servidor verificará esta dirección! Por lo tanto, no
+ <b>$wims_name_warning</b>. ¡El servidor verificará esta dirección! Por lo tanto, no
  dé una dirección falsa.
  !set job=compose
  !exit
@@ -80,7 +85,7 @@
 !endif
 
 !if $error=bad_sendcode
- $error_head Su mensaje no ha sido aceptado porque la clave secreta que
+ $errorhead Su mensaje no ha sido aceptado porque la clave secreta que
  escribió no es correcta.
  <p>
  Por favor, verifique la dirección de correo que ha dado, pulse en el botón
@@ -91,7 +96,7 @@
 !endif
 
 !if $error=not_owner
- $error_head Solamente el propietario de un foro de discusión está autorizado a
+ $errorhead Solamente el propietario de un foro de discusión está autorizado a
  configurarlo.
  <p>
  !set job=list

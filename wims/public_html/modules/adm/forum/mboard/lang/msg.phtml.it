@@ -1,7 +1,14 @@
 !! This file contains error messages. It will be processed
 !! whenever the variable `error' is not empty.
 
-!set errorhead=<b>Errore.</b>
+!set errorhead=<b>$wims_name_Error</b>.
+
+!if prohibited = $error
+  $errorhead Your message contains prohibited words. For example, you
+  can not put some javascript in the message. Attention, this error 
+  is registered by the server.
+  !exit
+!endif
 
 !if forum_not_exist = $error
  $errorhead Il forum di discussione non esistse. Spiacente.
@@ -21,7 +28,7 @@
 !endif
 
 !if translation_fail = $error
- $errorhead Errore interno: il server non &egrave; in grado di 
+ $errorhead Errore interno: il server non è in grado di 
  interpretare il mesagio
  !if $wims_exec_error!=$empty
   <p>
@@ -35,7 +42,7 @@
  Il messaggio sembra contenere codice html non valido (un tag non
  si chiude). Verificare!<p>
  Si tenga presente che il messaggio viene interpretato come codice html, 
- quindi se si scrivono diseguaglianze &egrave; necessario far seguire
+ quindi se si scrivono diseguaglianze è necessario far seguire
  uno spazio ad ogni segno `&lt;', o inserire le diseguaglianze come formule
  matematiche (delimitate da coppie di \( e \) ).
  !exit
@@ -61,25 +68,25 @@
 !endif
 
 !if $error=email_required
- $errorhead Per scrivere in questo forum &egrave; necessario un indirizzo
+ $errorhead Per scrivere in questo forum è necessario un indirizzo
  di posta elettronica.
  <br>
- <b>ATTENZIONE.</b> Il server effettuer&agrave; una verifica. &Egrave; 
+ <b>$wims_name_warning</b>. Il server effettuerà una verifica. è 
  perfettamente inutile dare un indirizzo falso o non funzionante.
  !set job=compose
  !exit
 !endif
 
 !if $error=bad_email
- $errorhead L'indirizzo di posta elettronica dato non &egrave; valido.
+ $errorhead L'indirizzo di posta elettronica dato non è valido.
  Per favore verificare e correggere.
  !set job=compose
  !exit
 !endif
 
 !if $error=bad_sendcode
- $error_head Il messaggio non &egrave; stato accettato perch&eacute; il
- codice di acesso inserito &egrave; sbagliato.
+ $errorhead Il messaggio non è stato accettato perché il
+ codice di acesso inserito è sbagliato.
  <p>
  Verificare l'indirizzo di posta elettronica, selezionare di nuovo
  `invio' e attendere l'invio per e-mail di un NUOVO codice
@@ -89,7 +96,7 @@
 !endif
 
 !if $error=not_owner
- $error_head Solo l'owner del forum pu&ograve; modificare le opzioni.
+ $errorhead Solo l'owner del forum pu&ograve; modificare le opzioni.
  <p>
  !set job=list
  !exit

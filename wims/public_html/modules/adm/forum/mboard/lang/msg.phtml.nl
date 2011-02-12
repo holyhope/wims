@@ -1,7 +1,14 @@
 !! This file contains error messages. It will be processed
 !! whenever the variable `error' is not empty.
 
-!set errorhead=<b>Fout.</b>
+!set errorhead=<b>$wims_name_Error</b>.
+
+!if prohibited = $error
+  $errorhead Your message contains prohibited words. For example, you
+  can not put some javascript in the message. Attention, this error 
+  is registered by the server.
+  !exit
+!endif
 
 !if forum_not_exist = $error
  $errorhead Dat forum bestaat hier niet (meer).
@@ -30,7 +37,7 @@
 !endif
 
 !if open_tag = $error
- <b>Waarschuwing.</b>
+ <b>$wims_name_warning</b>.
  Uw bericht bevat een niet afgesloten html-tag.<br>
  Graag controleren en verbeteren.
   <p>
@@ -59,7 +66,7 @@
 !if $error=email_required
  $errorhead U moet een werkend emailadres invullen om een bericht te kunnen opsturen.
  <br>
- <b>WAARSCHUWING.</b> De server zal het opgegeven adres kontroleren.
+ <b>$wims_name_warning</b>. De server zal het opgegeven adres kontroleren.
  !set job=compose
  !exit
 !endif
@@ -72,7 +79,7 @@
 !endif
 
 !if $error=bad_sendcode
- $error_head Het bericht kan niet worden opgenomen in het forum, omdat de
+ $errorhead Het bericht kan niet worden opgenomen in het forum, omdat de
  geheime code niet correct is ingevuld.
  <p>
 Kontroleer het opgegeven emailadres, klik op de "versturen knop" en haal dan
@@ -82,7 +89,7 @@ per email de <b>nieuwe</b> geheime code op.
 !endif
 
 !if $error=not_owner
- $error_head Alleen de eigenaar van dit forum mag het configureren
+ $errorhead Alleen de eigenaar van dit forum mag het configureren
  <p>
  !set job=list
  !exit

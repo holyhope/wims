@@ -1,7 +1,14 @@
 !! This file contains error messages. It will be processed
 !! whenever the variable `error' is not empty.
 
-!set errorhead=<b>Napaka.</b>
+!set errorhead=<b>$wims_name_Error</b>.
+
+!if prohibited = $error
+  $errorhead Your message contains prohibited words. For example, you
+  can not put some javascript in the message. Attention, this error 
+  is registered by the server.
+  !exit
+!endif
 
 !if forum_not_exist = $error
  $errorhead I¹èete desko sporoèil, ki ne obstaja.
@@ -31,7 +38,7 @@
 !endif
 
 !if open_tag = $error
- <b>Opozorilo.</b>
+ <b>$wims_name_warning</b>.
  Zdi se, da va¹e sporoèilo vsebuje nezakljuèene html znaèke. Preverite.<p>
  Your message will be shown as an html file. So
  if you are writing inequalities, please put a space after the `&lt;' sign, or
@@ -60,7 +67,7 @@
 !if $error=email_required
  $errorhead Da bi lahko objavljali sporoèila na tej deski, morate vnesti svoj veljaven e-naslov.
  <br>
- <b>Opozorilo.</b> The server will verify this address! So please don't
+ <b>$wims_name_warning</b>. The server will verify this address! So please don't
  give a fake or false address.
  !set job=compose
  !exit
@@ -73,7 +80,7 @@
 !endif
 
 !if $error=bad_sendcode
- $error_head Your message has not been accepted because the secret code
+ $errorhead Your message has not been accepted because the secret code
  you typed did not match.
  <p>
  Please verify the email address you have given below, click on the
@@ -84,7 +91,7 @@
 !endif
 
 !if $error=not_owner
- $error_head Only the owner of the message board has the right to
+ $errorhead Only the owner of the message board has the right to
  configure it.
  <p>
  !set job=list

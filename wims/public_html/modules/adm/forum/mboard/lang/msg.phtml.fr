@@ -1,7 +1,14 @@
 !! This file contains error messages. It will be processed
 !! whenever the variable `error' is not empty.
 
-!set errorhead=<b>Erreur.</b>
+!set errorhead=<b>$wims_name_Error</b>.
+
+!if prohibited = $error
+  $errorhead Votre message contient des mots non permis. Par exemple, vous ne 
+  pouvez pas mettre du javascript dans le message. Attention, cette erreur 
+  est enregistrée par le serveur.
+  !exit
+!endif
 
 !if forum_not_exist = $error
  $errorhead Vous avez demandé un forum qui n'existe pas. Désolé.
@@ -31,7 +38,7 @@
 !endif
 
 !if open_tag = $error
- <b>Avertissement.</b>
+ <b>$wims_name_warning</b>.
  Votre message semble se terminer à l'intérieur d'un tag html ouvert.
  Veuillez vérifier votre message soigneusement. <p>
  Le message sera lu comme fichier html. Ainsi, si vous 
@@ -64,7 +71,7 @@
  $errorhead Veuillez donner votre adresse électronique si vous voulez
  poster votre message à ce forum.
  <br>
- <b>ATTENTION.</b> Le serveur va vérifier cette adresse&nbsp;! Donc veuillez
+ <b>$wims_name_warning</b>. Le serveur va vérifier cette adresse&nbsp;! Donc veuillez
  ne pas donner une fausse adresse.
  !set job=compose
  !exit
@@ -78,7 +85,7 @@
 !endif
 
 !if $error=bad_sendcode
- $error_head Votre message n'est pas accepté car le code secret que vous
+ $errorhead Votre message n'est pas accepté car le code secret que vous
  avez tapé n'est pas bon.
  <p>
  Veuillez vérifier l'adresse électronique que vous avez donnée ci-dessous, 
@@ -89,7 +96,7 @@
 !endif
 
 !if $error=not_owner
- $error_head Seul le gérant du forum a le droit de le configurer.
+ $errorhead Seul le gérant du forum a le droit de le configurer.
  <p>
  !set job=list
  !exit
