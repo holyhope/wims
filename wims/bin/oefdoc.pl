@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 
 use locale;
-use strict;
+#use warnings;
+#use strict;
 ##$/ = undef; # slurp
 ##lancer du répertoire scipts/help
 
@@ -43,7 +44,6 @@ $name->{'syntax'}{'it'}="Sintassi";
 $name->{'slib'}{'it'}='SLIB';
 $name->{'anstype'}{'it'}='Tipi di risposte' ; 
 
-
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
 my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
@@ -64,7 +64,8 @@ $Command->{'begin'}{'oefcommand'}= '\\\\' ;
 $Command->{'end'}{'oefcommand'}= "\{  \}" ;
 ##$Command->{'begin'}{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
 $Command->{'begin'}{'anstype'}='' ;
-$Command->{'end'}{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
+##$Command->{'end'}{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
+$Command->{'end'}{'anstype'}='' ;
 for my $tag ("oefparm4") {
    $Command->{'begin'}{$tag}= "" ; 
    $Command->{'end'}{$tag}= "\(  \)" ;
@@ -72,6 +73,10 @@ for my $tag ("oefparm4") {
 for my $tag ("oefparm2", "oefparm3") {
    $Command->{'begin'}{$tag}= " " ; 
    $Command->{'end'}{$tag}= " " ;
+}
+for my $tag ( "oefparm1") {
+   $Command->{'begin'}{$tag}= "" ; 
+   $Command->{'end'}{$tag}= "" ;
 }
 
 for my $tag ("oefparm5") {
@@ -127,7 +132,7 @@ sub anstype { my ($lang)=@_ ;
       my $t1 = $L[0] ; $t1=~ s/\|/,/ ;
       my @ta=split(',',$t1) ;
       if ($ta[1]) {@t=split(' ',$ta[1]) ; } else {@t=($L[0])};
-      for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . $L[2]); $HELP{$tag}=$ta[0] ;} 
+      for my $tag (@t) { $HASH{$tag} = cleanup3($L[1] . ' ' . (($L[2]) ? $L[2]: '')); $HELP{$tag}=$ta[0] ;} 
      }
    }
  close IN ;
@@ -139,7 +144,7 @@ sub anstype { my ($lang)=@_ ;
      $text .=begin_js("$Command->{'begin'}{'anstype'}$tag$Command->{'end'}{'anstype'}") 
            . title_js($tag,'title')
            . middle_js($HASH{$tag},'out',$lang)
-           . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++++</a>") ;
+           . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++>></a>") ;
    }
    $Text .= function_js($text,'anstype') ;
   out ("$DOSSIER/$lang/anstype" . "_bd\.js",$Text) ;
@@ -149,16 +154,16 @@ sub slib {my ($lang)= @_ ;
  my @list_keyword=();
  my %HASH = (
   ) ; 
- my $HASH = \%HASH ; 
+ my $HASH = \%HASH ;
 for my $file (glob("$slibdir/*/*")) {
 #for my $file (glob("$slibdir/function/integrate")) {
  $file =~s/$slibdir\///;
  my $text=''; my $tag='';
  open (IN, "$slibdir/$file"); 
- while (<IN>) {my $line=$_;
+ while (<IN>) {my $line=$_; 
     if  ($line=~/^ *!exit/) { last ;}
     if ($line=~ s/^ *slib_(\w+) *=//){
-     my $tag=$1;
+     $tag=$1;
      $line=cleanup($line) ;
      if ($tag=~/parms/) {
        $line=~s/\\//;
@@ -171,16 +176,17 @@ for my $file (glob("$slibdir/*/*")) {
        next if !($tag) ; 
        if ($tag=~/parms/) {
         chomp $line ;
+        next if ($line) ; 
         my @parm=split(",", $line) ;
-        if ($parm[1] =~ s/\\//) {
+        if (($parm[1]) && ($parm[1] =~ s/\\//)) {
           $HASH->{$tag}{$file}.= cleanup3($parm[1]) . ",";
          }
          else
-         {  $HASH->{$tag}{$file}.=cleanup3($parm[1]) ;
+         {  $HASH->{$tag}{$file}= (($HASH->{$tag}{$file})? $HASH->{$tag}{$file}:' ') . (($parm[1]) ? cleanup3($parm[1]):'') ;
          }
        # $HASH->{$tag}{$file} .= "\[$parm[0]\]" if ($parm[0]);
        }
-       else { 
+       else {
          $HASH->{$tag}{$file} .= cleanup($line);
        }
      }
@@ -191,22 +197,22 @@ for my $file (glob("$slibdir/*/*")) {
  }
  my $var=join ("$Command->{'end'}{'slib'}\',\'$Command->{'begin'}{'slib'}", @list_keyword) ;
  $Text .="var slib = [ '$Command->{'begin'}{'slib'}$var$Command->{'end'}{'slib'}' ];\n" ; 
- my $text;
+ my $text='' ;
  for my $file (@list_keyword) {
   next if !($HASH->{'title'}{$file}) ; 
-  my @examples=split("\\\\",$HASH->{'example'}{$file}) ;
+  my @examples=split("\\\\",$HASH->{'example'}{$file}) if ($HASH->{'example'}{$file});
   my $example='';
-  for my $ex (@examples) { 
-    next if !($ex) ; 
-    $example .="<div class=\"exemple\"><div class=\"title\">$name->{'example'}{$lang}</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code></div>" ;
- }
+  for my $ex (@examples) {
+    next if !($ex) ;
+    $example .="<div class=\"title\">$name->{'example'}{$lang}</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code>" ;
+  }
   $text.=begin_js("$Command->{'begin'}{'slib'}$file$Command->{'end'}{'slib'}") 
            . title_js($HASH->{'title'}{$file},'title')
-           . syntax_js("<font color=\"red\">slib($file</font> " . $HASH->{'parms'}{$file} . " <font color=\"red\">)</font>",$lang)
+           . syntax_js("<font color=\"red\">slib($file</font> " . ($HASH->{'parms'}{$file}  ? $HASH->{'parms'}{$file} : '') . " <font color=\"red\">)</font>",$lang)
            . middle_js($HASH->{'out'}{$file},'out',$lang)
-           . middle1_js (cleanup($example),$lang)
-           . end_js() ;
-  $text =cleanup2($text) ; 
+           . middle1_js (cleanup($example),'',$lang)
+           . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&special_parm=slib&+slibdet=$file#slib\">++>></a>") ;
+ $text =cleanup2($text) ; 
  }
  $Text .= function_js($text,'slib') ;
   out ("$DOSSIER/$lang/slib" . "_bd\.js",$Text) ;
@@ -254,20 +260,19 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
     }
   }
   close IN ;
-
   $Text .= "var special= [ '$embd', '\\\\special{$var }'];\n" ;
   $text = begin_js("$embd") 
-        . syntax_js("\\\\embed{r i, option }")
+        . syntax_js("\\\\embed{r i, option }",$lang)
         . (($HASH->{'signification'}{$meth}) ? middle_js($HASH->{'signification'}{$meth},'title',$lang) : '')
-        . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title') : '')
-        . end_js() ;
+        . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title',$lang) : '')
+        . end_js("") ;
   ## fin cas particulier embed
   for my $meth (@phtml) {
    $text .= begin_js("\\\\special{$meth }")
-           . syntax_js("\\\\special{$meth }") 
+           . syntax_js("\\\\special{$meth }",$lang) 
            . (($HASH->{'signification'}{$meth}) ? middle_js($HASH->{'signification'}{$meth},'title',$lang ) : '')
-           . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title') : '')
-           . end_js() ;
+           . (($HASH->{'example'}{$meth}) ? middle1_js ($HASH->{'example'}{$meth},'title',$lang) : '')
+           . end_js("") ;
     
   }
   $Text .= function_js($text,'special') ;
@@ -295,8 +300,10 @@ sub tableau { my ($file, $lang) = @_ ;
      if ($cnt == 1 ) { $Text = "var $cities" . "name= '$line';\n ";  }
      next if $cnt < 3 ;
      $line =~ s/:// ;
-     if($text) { $text .= end_js() ;}
-       $text .= begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ;
+     if($text) { $text .= end_js("") ;}
+       if ($text) {$text .= begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ;}
+        else
+       { $text = begin_js($Command->{'begin'}{$file} . $line . $Command->{'end'}{$file}) ; };
      push @list_keyword, $line;
      $nl=0;
      }
@@ -313,7 +320,7 @@ sub tableau { my ($file, $lang) = @_ ;
 	 }
    }
   close IN ;
-  	 $text .= end_js() ;
+  	 $text .= end_js("") ;
   my $var=join ("$Command->{'end'}{$file}\', \'$Command->{'begin'}{$file}", @list_keyword) ;
   $Text .="var $cities= [ \'$Command->{'begin'}{$file}$var$Command->{'end'}{$file}\' ];\n" 
   . function_js($text,$cities) ;
@@ -340,11 +347,11 @@ sub title_js {my ($line,$tag)=@_ ;
  "\'<div class=\"title\">$line</div>\'+\n";
 }
 
-sub end_js {my ($text)=@_ ; 
-"\'$text\' ; return chaine_aide;
+sub end_js {my ($text)=@_ ;
+  "\'$text\' ; return chaine_aide;
 	   break;
 	////******************** \n
-	";
+	"
 }
 sub function_js {my ($text,$tag)=@_ ;
  "function $tag" . "fun(instruction){
@@ -356,6 +363,7 @@ sub function_js {my ($text,$tag)=@_ ;
 }
 
 sub cleanup { my ($txt)=@_ ;
+  return $txt if !($txt) ;
   $txt=~ s,\\,\\\\,g ; 
   $txt=~ s/'/\\'/g ;
   $txt=~ s/\n/ /g ;
@@ -363,11 +371,11 @@ sub cleanup { my ($txt)=@_ ;
   return $txt ; 
 }
 sub cleanup2 {my ($txt)=@_ ;
-  $txt=~ s/\\\\ / /g ;
+  $txt=~ s/\\\\ / /g if ($txt) ;
   return $txt;
 }
 sub cleanup3 {my ($txt)=@_ ;
-  $txt=~ s/'/\\'/g ;
+  $txt=~ s/'/\\'/g if ($txt);
   return $txt;
 }
 sub htmltex { my ($TEXT) = @_ ;
