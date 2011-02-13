@@ -554,7 +554,7 @@ The available stylesheet (css) files are in
 <tt>public_html/html/css/$lang</tt>. If you
 want more stylesheets, you can put new css files into this directory.
 <p>
-If you chose css=<tt>-theme-</tt>, the stylesheet of the current theme
+If you choose css=<tt>-theme-</tt>, the stylesheet of the current theme
 will be used. No stylesheet will be loaded if css=<tt>----</tt>.
 
 :resources rlimit_cpu
