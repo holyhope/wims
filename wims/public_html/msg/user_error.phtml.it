@@ -14,15 +14,15 @@ body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
 </head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<h1 align="center">ERREUR</h1>
+<h1 align="center">ERRORE</h1>
 !goto examerr
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
  <hr width="1">
- <H1 align="center">We are too busy</H1>
+ <h1 align="center">We are too busy</h1>
  <hr width="50%"><p>
- Queseto server WIMS <font color="blue">$httpd_HTTP_HOST</font>
+ Questo server WIMS <font color="blue">$httpd_HTTP_HOST</font>
  è sovraccarico e non è in grado di accettare altri
  utenti. Si prega di ritornare più tardi o di utilizzare un
  altro server WIMS.
@@ -44,7 +44,7 @@ padding-left: 3%; padding-right: 3%;}
 
 !if ++++missing_ isin ++++$wims_user_error
  <hr width="1">
- <h1 align="center">Sorry</h1>
+ <h1 align="center">Spiacenti</h1>
  <hr width="50%"><p>
  WIMS needs a software
  !set miss=!upper $missing_software
@@ -57,18 +57,29 @@ padding-left: 3%; padding-right: 3%;}
  to the site manager</a> to inform him/her of the problem, or choose a
  mirror site from the table below.
  <a href="wims.cgi">WIMS homepage</a>.
- !read mirror.phtml.en
+ !read mirror.phtml.it
  </body></html>
  !exit
 !endif
 
 !if trapped iswordof $wims_user_error
  <h1 align="center">Stop!</h1><hr>
+ Le contenu de
+ <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> n'est pas compatible
+ avec un programme de ramassage de pages web ou un `accélérateur d'accès'.
+ <p>
+ Pour accéder aux activités WIMS de ce site, veuillez utiliser un navigateur
+ ordinaire sans `accélérateur d'accès' installé derrière.
+ <p>
+ Sachez que les pages WIMS sont générées de façon dynamique. Elles ne peuvent
+ qu'être utilisées en ligne de toute façon.
+ </body></html>
+ !exit
 !endif
 
-<h1 align="center">Errore WIMS</h1><hr>
+<h1 align="center">Errore WIMS</h1>
 
-C'è un errore nella richiesta effettuata.<p>
+<p>C'è un errore nella richiesta effettuata.<p>
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
@@ -121,7 +132,6 @@ C'è un errore nella richiesta effettuata.<p>
 !if allow_violation iswordof $wims_user_error
   Non è permesso definire la variabile ``$wims_error_data''
   tramite il comando ``$cmd''.
-  !goto end
 !endif
 
 !if bad_command iswordof $wims_user_error
@@ -139,7 +149,6 @@ C'è un errore nella richiesta effettuata.<p>
   POTREBBERO cambiare a connessione attiva. 
   In questo caso dovete chiedere al docente di cambiare la modalità 
   di accesso.
-  !goto end
 !endif
 
 !if need_https iswordof $wims_user_error
@@ -156,14 +165,12 @@ C'è un errore nella richiesta effettuata.<p>
  !else
   Il nome del file da inserire dinamicamente non è valido.
  !endif
- !goto end
 !endif
 
 !if cmd_output_too_long iswordof $wims_user_error
   &Egrave; stato raggiunto il limite di potenza di calcolo utilizzabile.
   La richiesta è eccessivamente complicata e laboriosa. 
   Si prega di rivedere i dati inseriti.
-  !goto end
 !endif
 
 !if double_click iswordof $wims_user_error
@@ -184,17 +191,14 @@ C'è un errore nella richiesta effettuata.<p>
 !if invalid_char_in_query_string iswordof $wims_user_error
   La sostituzione ``$wims_error_data'' nei parametri non è
   ammessa.
-  !goto end
 !endif
 
 !if name_conflict iswordof $wims_user_error
   ``$wims_error_data'' è un nome riservato per WIMS.
-  !goto end
 !endif
 
 !if no_command iswordof $wims_user_error
   Non è un comando.
-  !goto end
 !endif
 
 !if no_insnum iswordof $wims_user_error
@@ -203,34 +207,28 @@ C'è un errore nella richiesta effettuata.<p>
  !else
   Richiesta di inserimento automatico senza indicarne il numero.
  !endif
- !goto end
 !endif
 
 !if no_module_name iswordof $wims_user_error
   Richiesta di una sessione senza indicare un modulo.
-  !goto end
 !endif
 
 !if no_session iswordof $wims_user_error
   Manca il codice della sessione.
-  !goto end
 !endif
   
 !if parm_too_long iswordof $wims_user_error
   Si sono inseriti troppi parametri. Questo non è permesso
   per ragioni di sicurezza.
-  !goto end
 !endif
 
 !if string_too_long iswordof $wims_user_error
   La definizione di una variabile è troppo lunga.
-  !goto end
 !endif
 
 !if too_many_variables iswordof $wims_user_error
   Il numero di paramtri inseriti eccede il limite massimo permesso
   da questa installazione di WIMS.
-  !goto end
 !endif
 
 !if unmatched_parentheses iswordof $wims_user_error
@@ -247,28 +245,19 @@ C'è un errore nella richiesta effettuata.<p>
   !for i=0 to $user_var_no-1
    !if $i!=$bad_parentheses
     !set value=!translate " to $ $ in $(value$i)
-    <input type="hidden" name=$(name$i) value="$value">
+    <input type="hidden" name="$(name$i)" value="$value">
    !endif
   !next i
   !set value=!translate " to $ $ in $(value$bad_parentheses)
   !set len=!charcnt $value
-  !set n=!linecnt $value
-  !if $n<=1
   !if $len<55
    !set len=$[$len+3]
   !else
    !set len=59
   !endif
   <input size="$len" name="$(name$bad_parentheses)" value="$value"><p>
-  !else
-   !if $n>10
-    !set n=10
-   !endif
-   <textarea rows="$n" cols="50" name="$(name$bad_parentheses)">$value</textarea>
-   <p>
-  !endif
   Quindi
-  <input type="submit" value="inviare la richiesta corretta.">
+  <input type="submit" value="inviare la risposta corretta.">
   </form><p><hr><p><center>
   !href cmd=resume Annullare
 , oppure
@@ -279,13 +268,11 @@ C'è un errore nella richiesta effettuata.<p>
   
 !if wrong_module iswordof $wims_user_error
   Il modulo ``$module'' richiesto non esiste su questo server.
-  !goto end
 !endif
 
 !if wrong_session iswordof $wims_user_error
   La sessione numero ``$session'' non è (più) valida.
   <a href="wims.cgi">Comincia una nuova sessione</a>.
-  !goto end
 !endif
 
 !if rafale iswordof $wims_user_error
