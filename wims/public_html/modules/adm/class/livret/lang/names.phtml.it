@@ -1,4 +1,3 @@
-
 !let lang_exists=yes
 !set classname=<b><font color=green>$wims_classname</font></b>\
  de <b><font color=green>$wims_institutionname</font></b>
@@ -14,7 +13,7 @@ Traguardi,\
 traguardo,\
 traguardi,\
 Tutti,\
-skills booklet,\
+registro delle competenze,\
 into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All,name_livret
 
 !set name_no_competence=Non è stata definita alcuna $name_competence in questo registro!
@@ -37,15 +36,15 @@ del corso,\
 punteggio minimo per considerare acquisito l'esercizio,\
 Utilizzo dei colori per i livelli dei $name_n_paliers,\
 Visibilità dei risultati numerici nei livelli,\
-Show skill booklet to participant,\
-Show empty skill to participant,\
+Mostra il registro agli studenti,\
+Mostra un registro vuoto agli studenti,\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5,name_configtext6,name_configtext7
 
 !!------------------------------- définition des noms de liens pour wims_menu_items
 
 !if $wims_user=supervisor
  !let tmp=!defof SE_list in wimshome/public_html/modules/home/names.$lang
-!else
+!else 
  !let tmp=!defof U_myscore in wimshome/public_html/modules/home/names.$lang
 !endif
 
@@ -66,22 +65,22 @@ Registro delle $name_competences\
 !endif
 
 !if $job=user
-  !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
+  !set name_job=!nosubst <font color="green">$user_firstname $user_lastname</font>
 !endif
 
 !if $job=delpalier
- !let name_delpalier=!nosubst Are you sure you want to erase the $name_n_palier $palier ( $mem_palier ) of the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !let name_delpalier=!nosubst Siete sicuri di voler cancellare da questo registro il $name_n_palier $palier ( $mem_palier ) della $name_competence $comp ($mem_title)?
  !exit
 !endif
 
 !if $job=delcomp
- !let name_delcomp=!nosubst Are you sure you want to erase the $name_competence $comp ( $mem_title ) from the $name_livret ?
+ !let name_delcomp=!nosubst Siete sicuri di voler cancellare la $name_competence $comp ($mem_title) dal $name_livret?
  !exit
 !endif
 
 !if $job=save
- name_get=You can download the source file to get structure of your skill booklet \
-  for example to restore it in an other class.
- name_put=Write the address of a skill booklet archive file on your computer. The skills of the file \
- will be add to those already in your skill booklet.
+ name_get=&Egrave; possibile salvare su file la struttura del registro delle competenze \
+  ad esempio per ripristinarle in un altro corso.
+ name_put=Scrivere il nome del file in cui si è salvato un registro. Le competenze \
+ contenute nel file saranno aggiunte a quelle già presenti nel registro del corso.
 !endif
