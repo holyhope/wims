@@ -1,0 +1,68 @@
+$wims_name_quick_CORRESP type exercises are matching exercises.
+A list of 3 (or N number of) items (words, audio recordings, pictures) 
+and matching items (words, audio recordings, pictures) are randomly selected from 
+among the data set.
+
+Audio recordings from the swac audio collection can be included in matching exercises. 
+If you wish to include audio recordings from the swac audio collection, you have to first 
+check if the recording is available in the swac collection. If it is, 
+use the following format for the item in the matching exercise 
+<tt> audio="word"</tt> or <tt>audio="expression"</tt>. 
+Be careful to use the same spelling that is provided in the swac audio collection, 
+otherwise QUICKTOOL will not recognise the word or expression.
+
+The size of the labels can be modified (for example when you have long sentences as an item) 
+by changing the parameters in V x LG x LD ( height, width of left column, width of right column) 
+
+:format
+<font color="green">
+:your brother,your father's son
+your sister,your father's daughter
+your cousin,your grandmother's grandchild
+your uncle,your grandmother's son
+your aunt,your grandmother's daughter
+</font>
+<i><font color="black">General syntax</font></i>
+<font color="green">
+:1st word(s) on the left, 1st word(s) on the right 
+2nd word(s) on the left, 2nd word(s) on the right 
+3rd word(s) on the left, 3rd word(s) on the right 
+nth word(s) on the left, nth word(s) on the right 
+</font>
+
+<i><font color=black>Remark</font></i>: Preferences for a data set.
+If you wish to add a different audio recording, a different title (i.e. text) 
+or a different introduction to each data set (i.e. exercise), the first line 
+must have the following format
+
+<font color="green">
+:audio=audio_file.mp3 image=picture_file.jpg title="your text" intro="instructions"
+</font>
+Each individual item in the data set (i.e. in the exercise) can be either a word 
+(or several words), an audio recording or a picture. 
+If you wish to use different audio recordings or pictures as items, the following format is required
+ <tt>"nameofrecordingfile.mp3"</tt> if your file is in the <tt>images</tt> folder
+or <tt>"audio="word"</tt> ; in this latter case the software program will first check 
+if the file
+<tt>tword.mp3</tt> is in the <tt>images</tt> folder, if it is not, the software 
+program will retrieve it from the swac audio recordings data base.
+If you do not wish to add an audio recording, a title ... in the data set the first 
+line of the data set 
+(i.e. the line following :) must be left blank.
+
+In the example below the audio recording called <tt>father.mp3</tt> must be in the
+<tt>images</tt> folder (notice the blank line)
+
+<font color=green>
+:
+mère,audio=mother
+soeur,audio=sister
+frère,father.mp3
+</font>
+
+<font color=green>
+:instruction="my instructions"
+mère,audio=mother
+soeur,audio=sister
+frère,father.mp3
+</font>
