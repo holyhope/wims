@@ -1,12 +1,12 @@
 #! /bin/sh
 #
 
-#Je n'ai pas rÃ©glÃ© le problÃ¨me des images dont on a changÃ© le nom ...
-#C'est un problÃ¨me dans un module
+#Je n'ai pas réglé le problème des images dont on a changé le nom ...
+#C'est un problème dans un module
 # Make distribution tgz packages
 #on execute le script dans le dossier wims
 
-#ligne Ã  changer
+#ligne à changer
 # 3.63a = r256
 # 3.63b = r468
 # 3.63c = r677
@@ -37,11 +37,11 @@
 
 version=4.01e
 
-#on mettra la version intermÃ©diaire dans $target
+#on mettra la version intermédiaire dans $target
 export whome=$HOME
 export target=$whome/transfer
 
-#pense-bÃªte
+#pense-bête
 echo  "Did you check your wims package (by hand, checkwims or test suite...)"
 echo  "and agree to continue this script ? (y/n)? [n] "
 read ans
@@ -66,7 +66,7 @@ bin/changepermissions
 
 
 echo "** Insert current version number in README.template"
-#on met le numÃ©ro de version oÃ¹ il faut
+#on met le numéro de version où il faut
 ed $target/wims/README.template <<@
  ,s/WIMS_VERSION/$version/
 w
@@ -85,28 +85,28 @@ cd $target/wims/src ; autoconf configure.in > configure ; chmod a+x configure ;
 # configure.in might be removed after autoconf, but we leave it in the distribution ;
 # may be useful for exceptional uses (debian distr. for instance)
 
-echo "** EnlÃ¨ve les fichiers gÃ©nÃ©rÃ©s par autoconf"
+echo "** Enlève les fichiers générés par autoconf"
 rm -Rf *.cache *.log 2>/dev/null
 
-echo "** On enlÃ¨ve le mkdistsvn de la nouvelle version"
+echo "** On enlève le mkdistsvn de la nouvelle version"
 rm $target/wims/mkdistsvn
 
-echo "** On enlÃ¨ve les fichiers parasites"
+echo "** On enlève les fichiers parasites"
 find $target/wims -name .DS_Store -exec rm '{}' \;
 find $target/wims -name \._* -exec rm '{}' \;
 
-echo "** On crÃ©e le fichier version "
+echo "** On crée le fichier version "
 echo $version >$target/wims/version
-# problÃ¨me avec forall, je l'ai enlevÃ© du svn
+# problème avec forall, je l'ai enlevé du svn
 mkdir -m 777 $target/dist/tmp/forall
 
-echo "** Archiving WIMS packageâ€¦"
+echo "** Archiving WIMS package..."
 cd $target/wims ; tar -czf ../wims-$version.tgz --exclude=CVS .
 
 echo $version >$target/version
 
 
-######FIN DU FICHIER, le reste est l'ancien script que Xiao nous a donnÃ©
+######FIN DU FICHIER, le reste est l'ancien script que Xiao nous a donné
 
 #je ne comprends pas trop si la suite est utile. Il me semble que non
 # export whome=/home/wdev
@@ -141,7 +141,7 @@ echo $version >$target/version
 # echo "
 # </dl>" >>$whome/$categories
 #
-### Pour l'instant tout cela est crÃ©Ã© dans svn 
+### Pour l'instant tout cela est créé dans svn 
 # mkdir $target/dist/tmp
 # mkdir -m 700 $target/dist/tmp/log
 # mkdir -m 777 $target/dist/tmp/forall
