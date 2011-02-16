@@ -70,13 +70,13 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 !set name_warning=<b>Error</b>. Ha pedido conectarse a $name_classess que no existe.\
  Por favor verifique su petición.
  
-!set name_enter=!nosubst Para poder entrar en la clase <b><font color=green>$class_description</font></b> de\
-<b><font color=green>$class_institution</font></b> como un\
+!set name_enter=!nosubst Para poder entrar en la clase <b><font color="green">$class_description</font></b> de\
+<b><font color="green">$class_institution</font></b> como un\
 <em>participante dado de alta</em>, introduzca por favor su nombre de usuario\
 y su contraseña personal.
 
-!set name_entersup=!nosubst Para entrar en la clase <b><font color=green>$class_description</font></b> de\
-<b><font color=green>$class_institution</font></b> como su\
+!set name_entersup=!nosubst Para entrar en la clase <b><font color="green">$class_description</font></b> de\
+<b><font color="green">$class_institution</font></b> como su\
 <em>$name_sup</em>, por favor introduzca la contraseña del $name_sup.
 
 !set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Pour retrouver la vôtre,\

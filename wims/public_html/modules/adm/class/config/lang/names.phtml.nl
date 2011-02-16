@@ -4,8 +4,8 @@
   !goto $wims_read_parm
 !endif
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- van <b><font color=green>$wims_institutionname</font></b>
+!set classname=<b><font color="green">$wims_classname</font></b>\
+ van <b><font color="green">$wims_institutionname</font></b>
 
 !set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
 
@@ -174,15 +174,15 @@ name_otherone,name_classsharing,name_ressourceallowed,name_active,name_listclass
 name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  
  !set name_nonewres=!nosubst Er is geen enkel (nieuw) materiaal in de klas
-  <em><font color=blue>$nei_description</font></em> dat gedeeld kan worden.
+  <em><font color="blue">$nei_description</font></em> dat gedeeld kan worden.
 
- !set name_newres=!nosubst De klas <em><font color=blue>\
+ !set name_newres=!nosubst De klas <em><font color="blue">\
   $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
 
- !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color=blue>\
+ !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color="blue">\
  $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <tt>$wims_name_tosave</tt></i>)
 
- !set name_warning_authorized=!nosubst De klas <em><font color=blue>$nei_description</font></em>\
+ !set name_warning_authorized=!nosubst De klas <em><font color="blue">$nei_description</font></em>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
  Ga alleen door als zeker weey dat die niet van toepassing is.
   
@@ -212,7 +212,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  zodat u het naar uw eigen wensen kunt aanpassen.
  
  !set name_accept=!nosubst Accepteert u de klas \
- <em><font color=blue>$nei_description</font></em> als buurklas ?
+ <em><font color="blue">$nei_description</font></em> als buurklas ?
    
  !if $job2=stopshare
   !set title=Stop de deling
@@ -233,7 +233,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
   
   !if $job2=addshare
     !set title=Delen van lesmateriaal met andere klassen
-    !set name_class_share=De klas <em><font color=blue>$nei_description</font></em>\
+    !set name_class_share=De klas <em><font color="blue">$nei_description</font></em>\
     heeft het onderstaande materiaal voor uitlening beschikbaar.
   !distribute lines beschikbaar\
     Uw klas deelt dit materiaal daadwerkelijk.\
@@ -257,7 +257,8 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
   
   !distribute items ---,<small>supervisor</small>,\
 	<small>student</small>,\
-	<small>iedereen</small> into n_n0, n_n1, n_n2, n_n3
+	<small>iedereen</small>\
+  into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun
 !endif

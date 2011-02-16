@@ -71,15 +71,14 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   name_attrib5,name_attrib6,name_attrib7,name_attrib8,name_attrib9,name_attrib10,
   name_attrib11
 
-  !set name_warning1=WIMS directories should not contain files belonging to others.\
-  Now you MUST manually check the origin of these files, and either erase\
-  them, or change their ownership.
+  !set name_warning1=Les dossiers de WIMS ne doivent pas contenir des fichiers appartenant à d'autres.\
+  Vous devez vérifier l'origine de ces fichiers et les effacer ou changer leur appartenance.
   !set name_warning2=Recommandation importante de sécurité: merci de changer les droits du propriétaire \
   des fichiers suivants <tt>public_html/bin/ch..root</tt>,\
   <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.\
   Cela est crucial pour la sécurité de votre installation. Pour cela,\
   vous devez exécuter le script <tt>bin/wrapuid</tt> comme <tt>root</tt>.
- !set name_warning3=These wrong permissions represent a security risk to your installation. This has\
+ !set name_warning3=Les mauvaises permissions suivants sont un risque pour votre installation. Cela a\
   been fixed for the time being, but you should be alerted and verify access\
   permissions more regularly. If the same problem reappears, you should check\
   the possibility of an intrusion to your system, and data on this server\
@@ -89,13 +88,13 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
 
 !if $job=backup
 
- !distribute lines Data backup is not active on this server.\
+ !distribute lines La sauvegarde des données n'est pas activée sur ce serveur.\
  Cliquez ici\
- to set up the automatic daily data backup.\
+ pour configurer la sauvegarde quotidienne des données.\
  Dernière sauvegarde des données\
  Télécharger les fichiers de sauvegarde\
- To restore an old backup file, give the file name (it must be a *.tgz file)\
- You need a fast connection if the file to upload is big.\
+ Pour restaurer un fichier de sauvegarde ancien, donnez le nom du fichier (cela doit être un fichier *.tgz)\
+ Vous avez besoin d'une connexion rapide si le fichier à télécharger est gros.\
 into name_backup,name_click,name_daily,name_last,name_download,name_restore,name_fast
  !exit
 !endif
@@ -115,20 +114,20 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !if $job iswordof class bestclass
   !set title=
   !distribute lines Cliquez ici\
-   to configure the site's access policies to virtual classes.\
-    There is no virtual class corresponding to your search. \
+   pour configurer la politique d'accès aux classes virtuelles.\
+    Il n'y a pas de classe virtuelle correspondant à votre recherche. \
     Liste des établissements et groupements de classes\
     créé\
     expire\
     means the number of cumulative connection hours since\
-    best class activity on this period\
+   meilleure activité de classe pendant cette période\
     Participant\
     Liste des classes individuelles\
-    means cumulative hour.student connection since\
-    best class of cumulative connection hours since\
+    signifie les connections cumulées d'heures-participants depuis\
+    Classe ayant le plus d'heures de connexion cumulées depuis\
     Votre classe virtuelle WIMS\
     Liste des classes\
-    load\
+    charge\
     format\
   into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
   name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
@@ -159,8 +158,8 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   into name_prop,name_of,name_serial,name_distrib,name_supervisor_p,name_supervisor_r,\
     name_warning,name_secure,name_expire,name_notify,name_change,name_other,name_limit,name_erase,\
     name_yourclass,name_yourclassmod
-  !set name_creation=!nosubst is created on $class_creation and
-  !set name_expires=!nosubst expires on $class_expiration
+  !set name_creation=!nosubst est créé le $class_creation et
+  !set name_expires=!nosubst expire le $class_expiration
   !set name_remark=<b>Remark</b>. Changes to these fields only make sense when asked for by\
      the supervisor of the class (who has lost the control of the class). And you should probably
 !exit
@@ -176,10 +175,10 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
      Module download\
    into name_config,name_default,wims_name_download_module
 
- !set name_updated=!nosubst The file <tt>wims.conf</tt> is updated. You can recover the old\
-  configuration information from <tt>$backdir/wims.conf.old</tt>.
+ !set name_updated=!nosubst Le fichier <tt>wims.conf</tt> est mis à jour. Les informations sur l'ancienne\
+   configuration sont dans le fichier <tt>$backdir/wims.conf.old</tt>.
 
-  !set name_warning=<b>Remark</b>. Parameters with a `*' in their titles are important ones. \
+  !set name_warning=<b>$wims_name_warning</b>. Les paramètres avec une `*' dans le titre sont importants. \
 Those with a `!' may damage the installation if you mess up.<br>\
 Anyway, remember that erasing the file <tt>log/wims.conf</tt> will\
 allows you to restart from a default configuration set. Saved configurations\
@@ -413,7 +412,7 @@ right to access this module.
  !set name_warning=To upload resources to the server, insert the cd-rom or usb key containing\
    the resource into your computer, and find a file named "wims-resource.tgz" or "wimsres-*.tgz"\
   in the following input field
- !set name_need=You need a fast connection if the file to upload is big.
+ !set name_need=Vous avez besoin d'une connexion rapide si le fichier à télécharger est gros.
 !exit
 !endif
 

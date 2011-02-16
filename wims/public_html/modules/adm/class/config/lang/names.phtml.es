@@ -4,8 +4,8 @@
   !goto $wims_read_parm
 !endif
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
+!set classname=<b><font color="green">$wims_classname</font></b>\
+ de <b><font color="green">$wims_institutionname</font></b>
 
 !set months=En,Feb,Mar,Abr,May,Jun,Jul,Ag,Sept,Oct,Nov,Dic
 
@@ -171,15 +171,15 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
  !set name_nonewres=!nosubst No hay ningún (nuevo) tipo de recursos en la clase \
-  <em><font color=blue>$nei_description</font></em> que les autoriza a compartir.
+  <em><font color="blue">$nei_description</font></em> que les autoriza a compartir.
 
- !set name_newres=!nosubst La clase <em><font color=blue>\
+ !set name_newres=!nosubst La clase <em><font color="blue">\
   $nei_description</font></em> les <b>autoriza</b> a compartir sus
 
- !set name_chooseres=!nosubst Elija los recursos que <b> autorizan</b> la clase <em><font color=blue>\
+ !set name_chooseres=!nosubst Elija los recursos que <b> autorizan</b> la clase <em><font color="blue">\
   $nei_description</font></em> a compartir&nbsp; (<i>seleccione luego presionan <tt>$wims_name_tosave</tt></i>)
 
- !set name_warning_authorized=!nosubst La clase <em><font color=blue>$nei_description</font></em>\
+ !set name_warning_authorized=!nosubst La clase <em><font color="blue">$nei_description</font></em>\
   les autoriza a compartir algunos recursos. No deben autorizarla a compartir los mismos recursos \
   al riesgo de confusión. Comience por hablar con ella y con todas las clases con las cuales ustedes \
   quiere compartir recursos.
@@ -210,7 +210,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !set name_inactif=!nosubst El(la) $(name_$itype) ha sido puesto(a) en estado inactivo para permitirle \
   modificarlo si lo desea.
 
- !set name_accept=!nosubst ¿Acepta usted la clase <em><font color=blue>\
+ !set name_accept=!nosubst ¿Acepta usted la clase <em><font color="blue">\
 $nei_description</font></em> como vecina suya?
 
  !if $job2=stopshare
@@ -231,7 +231,7 @@ $nei_description</font></em> como vecina suya?
 
   !if $job2=addshare
   !set title=Compartir los recursos de una clase
-  !set name_class_share=La clase <em><font color=blue>$nei_description</font></em></b>\
+  !set name_class_share=La clase <em><font color="blue">$nei_description</font></em></b>\
    le permite compartir sus recursos siguientes.
   !distribute lines disponible\
     Ya está compartiendo.\
@@ -255,7 +255,8 @@ $nei_description</font></em> como vecina suya?
 
   !distribute items ---,<small>el profesor</small>,\
 	<small>los participantes</small>,\
-	<small>profesor y participantes</small> into n_n0, n_n1, n_n2, n_n3
+	<small>profesor y participantes</small>\
+  into n_n0, n_n1, n_n2, n_n3
 	
  !goto commun
 !endif
