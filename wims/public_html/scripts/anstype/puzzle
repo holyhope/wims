@@ -1,4 +1,8 @@
-!!!set name_lookfor=... cherchez un peu plus
+!if $lang=fr
+ !set name_searchmore=... cherchez un peu plus
+!else
+ !set name_searchmore=... you should search a little more
+!endif
 
 !if $wims_read_parm=nocompare
  !exit
@@ -34,8 +38,8 @@ repclic=$(reply[3;])
 !else
  score=0
 !endif
-!set r_out=<table cellspacing=1 cellpadding=0 border=1>
-!set g_out=<table cellspacing=1 cellpadding=0 border=1>
+!set r_out=<table cellspacing="1" cellpadding="0" border="1">
+!set g_out=<table cellspacing="1" cellpadding="0" border="1">
 !for y=1 to $ny
  r_out=$r_out <tr>
   g_out=$g_out <tr>
@@ -59,7 +63,7 @@ reply_$i=$r_out
  replyGood$i=$g_out
 !else
  replyGood$i=&nbsp;
- !!$name_lookfor
+ $name_searchmore
 !endif
 reply__$i=&nbsp;
 !if $score=1
