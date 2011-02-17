@@ -34,7 +34,7 @@ into name_classAverage,name_Average,name_posAverage,name_globalaverage
 into name_Exam,name_Sheet,name_Exercise,name_Start,name_Score,name_Session,\
 name_done,name_equiv
 
-!set name_formula_comment=U kunt de moelijkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
+!set name_formula_comment=U kunt de moeiljkheidsgraad en weging van de werkbladen vastleggen in de onderstaande tabel.\
 De cijfers worden berekend met maximum = 
 !set name_formula2=!nosubst Cijfers berekenen met als maximum $scoremax
 !set name_pickup=Kies een werkblad<br>om het gemiddelde cijfer per<br>werkblad te laten zien: 

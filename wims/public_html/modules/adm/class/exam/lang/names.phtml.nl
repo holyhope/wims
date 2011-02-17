@@ -39,7 +39,7 @@ Details van de score\
 Dit proefwerk is leeg&nbsp;! Dit zal een foutje zijn van de docent.\
 Inhoudsopgave van dit proefwerk&nbsp;\
 Dit proefwerk is niet bereikbaar voor computers met uw IP adres.\
-U mag dit proefwerk nog &eacute;&eactue;n keer maken.\
+U mag dit proefwerk nog &eacute;&eacute;n keer maken.\
 Dus het cijfer voor dit proefwerk kan niet meer worden verbeterd.\
 Opgelet : dit is de laatste proefwerk poging.\
 het aftellen begint en het aantal beschikbare proefwerk pogingen wordt met 1 verminderd.\

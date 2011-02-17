@@ -20,7 +20,7 @@ into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subje
 !set wims_name_compose=$n_compose
 !set n_otherforums=Andere forums
 !set n_welcome=Welkom
-!set n_list_subject_month =Lijst van onderwerpen uit maand
+!set n_list_subject_month =Lijst met onderwerpen uit maand
 !set n_email=email
 !set n_list_month = Berichten van deze maand
 !set n_most=het meest
@@ -67,10 +67,10 @@ into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subje
 !set n_first=eerste reactie
 !set n_allfollowing=alle reacties
 !set n_statusask=Dit forum accepteerd geen anonieme berichten.<br>\
-Het bewaakt wel uw ingevulde email adres, zodat er geen misbruik van kan worden gemaakt.<br>\
+Het beschermd wel uw ingevulde email adres, zodat er geen misbruik van kan worden gemaakt.<br>\
 Om het opgegeven email adres te verifieren, wordt nu een code gestuurd naar dit adres.<br>\
 Vul deze code hier in&nbsp;
-!set n_warning=Een bericht is zojuist verstuurd naar het forum. Nier reageren op dit bericht.
+!set n_warning=Een bericht is zojuist verstuurd naar het forum. Niet reageren op dit bericht.
 !set n_forum=Forum
 !set n_thread=De hele discussie
 !if $job=compose and $c_prec!=$empty
