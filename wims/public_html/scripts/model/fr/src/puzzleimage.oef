@@ -1,0 +1,51 @@
+type=datalist
+textarea="data"
+
+:Reconstituer une image (type puzzle).
+
+Une image est coupée en morceaux et les morceaux sont mis dans le désordre.
+Il s'agit de reconstituer l'image.
+On ne peut qu'échanger deux étiquettes : pour cela,
+cliquer sur la première puis sur la seconde.
+
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+:\title{Puzzle d'images}
+:\author{Bernadette Perrin-Riou}
+:Consigne
+\text{instruction=Mettre l'image dans l'ordre. 
+Pour échanger deux cartes, cliquer sur la première puis sur la seconde.}
+
+:Données principales.
+Chaque ligne correspond à une image. Le premier item est le nom de l'image
+(dans le dossier images de l'exercice). Le deuxième item est la taille de l'image.
+Le troisième item est facultatif et peut être une indication ou le nom de l'image
+
+\text{data=photos/bird.gif,320x240,4 x 3,il s'agit d'un oiseau.
+photos/bloom.gif,320x240,3 x 4
+}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+
+\text{data=randrow(\data)}
+
+\text{v=wims(replace internal x by , in \data[3])}
+\integer{taille=80*\v[1]}
+
+\statement{<div style="padding:10px;">
+\instruction
+\if{\data[4] !=}{
+  <p><b>\data[4]</b></p>
+}
+</div>
+  <center>\embed{r 1, \data[2]}</center>
+}
+\answer{1}{\data[1];\data[3] x 80}{type=puzzle}{option=nonstop}
