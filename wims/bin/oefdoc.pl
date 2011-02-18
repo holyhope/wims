@@ -188,6 +188,7 @@ for my $file (glob("$slibdir/*/*")) {
        }
        else {
          $HASH->{$tag}{$file} .= cleanup($line);
+         $tag='' if !($line=~/\\$/) ; 
        }
      }
    }
@@ -199,8 +200,8 @@ for my $file (glob("$slibdir/*/*")) {
  $Text .="var slib = [ '$Command->{'begin'}{'slib'}$var$Command->{'end'}{'slib'}' ];\n" ; 
  my $text='' ;
  for my $file (@list_keyword) {
-  next if !($HASH->{'title'}{$file}) ; 
-  my @examples=split("\\\\",$HASH->{'example'}{$file}) if ($HASH->{'example'}{$file});
+  next if !($HASH->{'title'}{$file}) ;
+  my @examples=split("\\\\\\\\",$HASH->{'example'}{$file}) if ($HASH->{'example'}{$file});
   my $example='';
   for my $ex (@examples) {
     next if !($ex) ;
@@ -364,10 +365,12 @@ sub function_js {my ($text,$tag)=@_ ;
 
 sub cleanup { my ($txt)=@_ ;
   return $txt if !($txt) ;
+  $txt=~ s/\\\b/&#92;/g ;
+  $txt=~ s/\\\(/&#92;(/g ;
+  $txt=~ s/\\\)/&#92;)/g ;
   $txt=~ s,\\,\\\\,g ; 
   $txt=~ s/'/\\'/g ;
   $txt=~ s/\n/ /g ;
-  #$txt=~ s/\\(\w)/\\\\\1/g ;
   return $txt ; 
 }
 sub cleanup2 {my ($txt)=@_ ;
@@ -378,6 +381,8 @@ sub cleanup3 {my ($txt)=@_ ;
   $txt=~ s/'/\\'/g if ($txt);
   return $txt;
 }
+
+
 sub htmltex { my ($TEXT) = @_ ;
 $TEXT =~ s/<tt>\\/\\ttb{/g;
 $TEXT =~ s/_/\\_/g;
