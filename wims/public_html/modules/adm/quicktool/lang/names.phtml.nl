@@ -20,7 +20,7 @@
 !set name_click=klik op het woord
 !set name_name_data=Data bestand
 !set name_name_file=Broncode bestand
-!set name_sup_file=Kontoleer en stuur de resterende bestanden op.
+!set name_sup_file=Kontroleer en stuur de resterende bestanden op.
 !set name_newmodule=Maak een nieuwe module
 !set name_choice=kies
 !set name_transfer=verplaats

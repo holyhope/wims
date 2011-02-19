@@ -46,7 +46,7 @@
 		Eind datum,\
 		Fout,\
 		Volgende serie,Vorige serie,\
-		Example,\
+		Voorbeeld,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -251,7 +251,7 @@
    Toevoegen\
    Verwijderen\
    Broncode\
-   Logout\
+   Uitloggen\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
