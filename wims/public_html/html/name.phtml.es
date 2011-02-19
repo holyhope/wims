@@ -66,7 +66,6 @@
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
 	wims_name_Example
 
-
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
 		Indicar, en su sitio,\
@@ -89,9 +88,9 @@
 !set wims_name_display3=!nosubst $wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site
 !set wims_name_permalink1=!nosubst $wims_name_permalink $wims_name_for $wims_name_this_module
 
-
 !! **** Module About Names ***
 !distribute items Nombre,\
+        À propos des icones,\
 		Información sobre este módulo,\
 		Información sobre este ejercicio,\
 		dirección,\
@@ -120,6 +119,7 @@
 		Publication center,\
         Download center,\
 	into wims_name_name,\
+	wims_name_iconabout,\
 	wims_name_module_infos,\
 	wims_name_exo_infos,\
 	wims_name_Address,\
@@ -251,13 +251,15 @@
    Añadir\
    Suprimir\
    Source\
+   Salir\
  into wims_name_test,wims_name_docgestion,wims_name_modcontent,wims_name_otherfiles,\
 wims_name_properties,wims_name_modsave,wims_name_checkdiff,wims_name_publish,wims_name_createnew,\
 wims_name_modlist,wims_name_binfile,wims_name_restore,\
 wims_name_account_property,\
 wims_name_scripttest,wims_name_docoef,wims_name_docslib,wims_name_docanswer,wims_name_doctec,\
 wims_name_back3,wims_name_edfile,wims_name_change,wims_name_up,wims_name_erase,wims_name_action,\
-wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete,wims_name_source
+wims_name_nojava,wims_name_date,wims_name_add0,wims_name_delete,wims_name_source,\
+wims_name_visitor
 
 !distribute line Volver a la página de creación de ejercicios \
    Lista de modelos \
