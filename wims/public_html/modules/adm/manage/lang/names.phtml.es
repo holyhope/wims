@@ -262,7 +262,7 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
  !exit
 !endif
 
-!if $job=del1
+!if $job2=del1
   !set name_warning=¿Está seguro de que quiere borrar la cuenta de desarrollador
 
  !exit
