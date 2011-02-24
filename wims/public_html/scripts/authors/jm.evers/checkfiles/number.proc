@@ -15,6 +15,7 @@
 # "improved presentation" multiple answers (html)(12/2010)
 # declare var10=10,1000,10000,1,0 : 
 # as list of roundings when using multiple answers (12/2010)
+# 2/2011 presentation without <ul> list when single answer
 
 goback=0
 errortext=$empty
@@ -690,7 +691,11 @@ score=0
 score0=0
 score1=0
 score2=0
-rep=<ul>
+!if $ta>1
+    rep=<ul>
+!else
+    rep=$empty
+!endif
 
 c=1
 i=1
@@ -728,12 +733,12 @@ i=1
 	!endif
     !endif	
     !increase i
-    rep=!append line <li><font color="$k">$arg<b>$a</b></font></li> to $rep
+    !if $ta>1
+	rep=!append line <li><font color="$k">$arg<b>$a</b></font></li> to $rep
+    !else
+	rep=<font color="$k">$arg<b>$a</b></font>
+    !endif
 !next p
-
-#errortext=rep=$rep <br>kut=$kut<br>sum0=$score0<br>sum1=$score1<br>sum2=$score2
-#goback=1
-#!exit
 
 !if $multiple_roundings=0
     !if $rounding < 1
@@ -777,9 +782,12 @@ modulescore=$[$modulescore + $maxscore]
 !endif
 # no !insmath : using html-list and colours.
 math=0
-#!if $math=0
+
+!if $ta>1
     reply$n=!append word </ul> to $rep
-#!endif
+!else
+    reply$n=$rep
+!endif
 
 !if $extra != $empty
     remark$n=!append line $ <br>$extra $ to $(remark$n)
