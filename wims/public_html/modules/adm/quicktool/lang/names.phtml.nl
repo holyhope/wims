@@ -12,7 +12,7 @@
 !set name_position2=tussen de regels van de tekst, buiten de tekst
 !set name_e=Er mag een e' worden ingevoerd inplaats van een é ...
 !set name_format=Antwoordtype
-!set name_listhelp=geen help, aantal letters in een woord, een paar letters van het woord, audio opname, indiviuele help
+!set name_listhelp=geen help, aantal letters in een woord, een paar letters van het woord, audio opname, indiviuele help,shown answer
 !set name_prompt=Prompt
 !set name_quifaitquoi=Wie doet wat,Wat word gedaan door wie,willekeurig door elkaar
 !set name_expert=Expert menu
