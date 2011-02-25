@@ -79,10 +79,10 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   Cela est crucial pour la sécurité de votre installation. Pour cela,\
   vous devez exécuter le script <tt>bin/wrapuid</tt> comme <tt>root</tt>.
  !set name_warning3=Les mauvaises permissions suivants sont un risque pour votre installation. Cela a\
-  been fixed for the time being, but you should be alerted and verify access\
-  permissions more regularly. If the same problem reappears, you should check\
-  the possibility of an intrusion to your system, and data on this server\
-  might be compromised.
+  pu été réparé mais vous devez en être conscient et vérifier les permissions d'accès\
+  plus régulièrement. Si ce problème réapparait, vous devriez vérifier\
+  la possibilité d'intrusion sur votre système, car les données du serveur\
+  pourraient être abimées.
  !exit
 !endif
 
@@ -101,12 +101,12 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 
 !if $job=badconf
 
-  !set name_warning1=!nosubst The file $fname is world readable!\
-    There is a serious risk that your site manager setup and/or password have\
-   leaked. Now you MUST change the file attribute of $fname by making them readable only by the owner,
-  !set name_warning2=and make more secure definitions in it whenever possible.
-  !set name_warning3=and define a new manager password.
-  !set name_warning4=Once you have done this, try this page again.
+  !set name_warning1=!nosubst Le fichier $fname est lisible par le monde entier!\
+    Il y un très grand risque que les réglages du site et/ou le mot de passe soient\
+    piratés. Aussi vous devez changer les permissions de fichiers $fname de pour le rendre lisible uniquement par son propriétaire
+  !set name_warning2=et mettre des définitions de sécurité dès que possible.
+  !set name_warning3=et définir un nouveau mot de passe d'administrateur.
+  !set name_warning4=Une fois que cela a été fait, essayez de nouveau.
 
  !exit
 !endif
@@ -119,7 +119,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     Liste des établissements et groupements de classes\
     créé\
     expire\
-    means the number of cumulative connection hours since\
+    signifie le nombre d'heures de connection cumulées depuis\
    meilleure activité de classe pendant cette période\
     Participant\
     Liste des classes individuelles\
@@ -148,8 +148,8 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
      Effacer ce mot de passe rend la classe accessible par tout le monde.\
      Postes sûrs\
     Date d'expiration\
-    notify the supervisor\
-    of the class of your changes.\
+    prévenir l'administrateur\
+    de la classe des changements faits.\
     Autres classes\
     Limite du nombre de participants\
     Êtes-vous sûr que vous désirez effacer cette classe?\
@@ -160,8 +160,8 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
     name_yourclass,name_yourclassmod
   !set name_creation=!nosubst est créé le $class_creation et
   !set name_expires=!nosubst expire le $class_expiration
-  !set name_remark=<b>Remark</b>. Changes to these fields only make sense when asked for by\
-     the supervisor of the class (who has lost the control of the class). And you should probably
+  !set name_remark=<b>Remarque</b>. Changer ces champs n'a de sens que si cela est demandé par\
+     l'administrateur de la classe (qui a perdu le contrôle de la classe). Et vous devez certainement
 !exit
 !endif
 
@@ -305,18 +305,18 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 !endif
 
 !if $job=no_right
-  !set name_warning=Sorry but you are not recognized as manager of this site. You don't have\
-right to access this module.
+  !set name_warning=Désolé mais vous n'êtes pas reconnu comme l'administrateur du site.\
+  Vous n'avez pas le droit d'accéder à ce module.
 !exit
 !endif
 !if $job=mkindex
-  !set title=Rebuild resource index
-  !distribute lines Resource index rebuilding is scheduled. You will receive a mail containing the result of resource rebuilding.\
-    Rebuilding resource index takes server resources, so should better be avoided when the server is very busy.\
-    Result of last resource index building at\
+  !set title=Indexation des ressources
+  !distribute lines L'indexation des ressources est programmée. Vous recevrez un courriel contenant le résultat.\
+    L'indexation des ressources utilise du temps serveur, aussi évitez de le faire quand le serveur est très occupé.\
+    Résultat de la dernière indexation des ressources à\
     Cliquez ici\
-    to restart a resource index rebuilding (you shouldn't).\
-    to start resource index rebuilding.\
+    pour lancer l'indexation des ressources (vous ne devriez pas).\
+    pour relancer l'indexation des ressources.\
   into name_scheduled,name_rebuilding,name_result,name_click,name_restart,name_start
 !exit
 !endif
@@ -393,8 +393,8 @@ right to access this module.
 
 !if $job=restore
 
-   !set name_warning1=Wrong archive file: no compatible content found in it.
-   !set name_warning2=Data in following directories are successfully restored/installed
+   !set name_warning1=Mauvaise archive : le contenu n'est pas compatible.
+   !set name_warning2=Les données des dossiers suivants ont été restaurées/installées avec succès
  !exit
 !endif
 
@@ -409,9 +409,9 @@ right to access this module.
 !endif
 
 !if $job=upload
- !set name_warning=To upload resources to the server, insert the cd-rom or usb key containing\
-   the resource into your computer, and find a file named "wims-resource.tgz" or "wimsres-*.tgz"\
-  in the following input field
+ !set name_warning=Pour charger des ressources sur le serveur, insérez le cd-rom ou la clé usb contenant\
+   la ressource sur votre ordinateur et trouver un fichier nommé <tt>wims-resource.tgz</tt>\
+   ou <tt>wimsres-*.tgz</tt> dans le champ suivant
  !set name_need=Vous avez besoin d'une connexion rapide si le fichier à télécharger est gros.
 !exit
 !endif
