@@ -1,0 +1,142 @@
+type=datalist
+textarea="data"
+
+:Classer les objets selon leurs propriétés dans un tableau.
+
+On présente une liste d'objets et une liste d'attributs (propriétés). Il faut remplir 
+un tableau selon que les objets vérifient ou non les propriétés en cochant ou non dans la case.
+
+<p>
+Pour construire un exercice avec ce modèle, il suffit d'entrer la liste
+des attributs et une liste d'objets en indiquant s'ils vérifient ou non
+les propriétés dans le même ordre que les attributs (avec un 0 ou un 1)
+<p>
+Cet exercice peut facilement être transformé pour être inclus dans un module OEF
+si l'on désire mettre les données dans un fichier auxiliaire.
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+
+:
+\title{Tableau à remplir (checkbox)}
+:
+\author{Bernadette Perrin-Riou}
+:
+\email{bpr@math.u-psud.fr}
+:Instruction
+\text{instruction= Remplir le tableau.}
+
+:Nombre d'objets tirés au sort
+\integer{N=3}
+:Nom du fichier
+ne remplir que si vous désirez utiliser un fichier de données (dans un module OEF).
+\text{file=}
+du type
+####
+poils,plumes,quatre membres,ailes
+:pie,0,1,1,1
+:boeuf,1,0,1,0
+####
+
+:Liste des attributs
+\text{attribut=poils,plumes,quatre membres,ailes}
+:Données
+une ligne par objets.
+\text{data=pie,0,1,1,1
+boeuf,1,0,1,0
+chat,1,0,1,0
+moustique,0,0,0,1}
+:Textes pour la réponse
+le premier sera affiché si la case doit (ou a été cochée), le second si la 
+case ne doit pas être cochée.
+\text{ouinon=X,--}
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\if{\file issametext }{
+\text{attribut=poils,plumes,quatre membres,ailes}
+\text{data=pie,0,1,1,1
+boeuf,1,0,1,0
+chat,1,0,1,0
+moustique,0,0,0,1}
+}
+maximum 40 cases à remplir
+
+\text{size=50,50}
+\integer{w=\size[1]+10}
+\text{couleur=#FFFFCC}
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   table.tableau {border:solid 1px;
+    border-collapse:collapse;}
+    table.tableau td, th {background-color:#FFFFCC;text-align:center;border:solid 1px;width:55px;}
+   ol li {list-style: upper-alpha; }
+    table.tableau th { background-color:#CCCFFF;}
+ </style>}
+\if{\file notsametext}{
+  \text{attribut=wims(record 0 of \file)}
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+   }
+  }{
+  \text{objet_cnt=rows(\data)}
+  \integer{N=min(\N,\objet_cnt)}
+}
+\integer{attribut_cnt=items(\attribut)}
+\text{bat=shuffle(\objet_cnt)}
+\text{bat=\bat[1..\N]}
+\matrix{data=\data}
+\text{data=\data[\bat;]}
+\text{Data=}
+\text{R=}
+\for{u=1 to \N}{
+  \for{v=2 to \attribut_cnt+1}{
+    \integer{uu=(\u-1)*\attribut_cnt + \v -1}
+    \text{Data=\data[\u;\v]=1? wims(append item \uu to \Data)}
+  }
+}
+\text{C=wims(makelist x for x=1 to \N*\attribut_cnt)}
+\text{C1=wims(makelist x for x=1 to \N*\attribut_cnt)}
+\text{nstep=r1}
+\nextstep{\nstep}
+\statement{\file
+<div class="question"> \instruction
+<center>
+<table class="tableau"><tr> <th></th>
+\for{k=1 to \attribut_cnt}{<th>\attribut[\k]</th>}
+<tr>
+\for{j=1 to \N}{ 
+  <tr><th>\data[\j;1]</th>
+   \for{k=1 to \attribut_cnt}{
+    \if{\step=1}{ <td><font color="\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</font></td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
+    }
+  </tr>
+}
+</table>
+</center>
+</div>
+}
+\answer{}{\Data;\C1}{type=checkbox}{option=split noanalyzeprint nonstop}
+\text{nstep=}
+\text{C=}
+\for{u=1 to \N}{
+  \for{v=2 to \attribut_cnt+1}{
+    \integer{uu=(\u-1)*\attribut_cnt + \v -1}
+    \text{C=\uu isitemof \reply1 and \uu isitemof \Data ? wims(append item  <span style="color:green;font-size:20pt;font-style:bold;">\ouinon[1]</span> to \C)}
+    \text{C=\uu isitemof \reply1 and \uu notitemof \Data ? wims(append item  <span style="color:red;font-size:20pt;font-style:bold;">\ouinon[1]</span> to \C)}
+    \text{C=\uu notitemof \reply1 and \uu isitemof \Data ? wims(append item <span style="color:red;font-size:20pt;font-style:bold;">\ouinon[2]</span> to \C)}
+    \text{C=\uu notitemof \reply1 and \uu notitemof \Data ? wims(append item <span style="color:green;font-size:20pt;font-style:bold;">\ouinon[2]</span> to \C)}
+  }
+}
