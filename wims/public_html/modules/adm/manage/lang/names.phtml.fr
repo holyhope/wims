@@ -75,7 +75,7 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   Vous devez vérifier l'origine de ces fichiers et les effacer ou changer leur appartenance.
   !set name_warning2=Recommandation importante de sécurité: merci de changer les droits du propriétaire \
   des fichiers suivants <tt>public_html/bin/ch..root</tt>,\
-  <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.\
+  <tt>public_html/bin/wrap..exec</tt> et <tt>bin/wimsd</tt>.\
   Cela est crucial pour la sécurité de votre installation. Pour cela,\
   vous devez exécuter le script <tt>bin/wrapuid</tt> comme <tt>root</tt>.
  !set name_warning3=Les mauvaises permissions suivants sont un risque pour votre installation. Cela a\
@@ -172,7 +172,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set title=!nosubst Configuration de $cattit
   !distribute lines La configuration n'a pas changé car vous n'avez pas fait de modifications.\
      défaut\
-     Module download\
+     Téléchargement des modules\
    into name_config,name_default,wims_name_download_module
 
  !set name_updated=!nosubst Le fichier <tt>wims.conf</tt> est mis à jour. Les informations sur l'ancienne\
@@ -207,11 +207,11 @@ dans le dossier <tt>log</tt>.
    name_availability,name_Unavailable,name_dependingonit,name_fail,name_refresh
 
 
-!set name_warning_program=WIMS is unable to find the following programs which are used by some of its\
- modules. These programs are either not installed in the system (in which\
- case please install them), or are installed in a directory not included in\
- the searching path of WIMS (in which case you can add the directory to\
- the PATH parameter in
+!set name_warning_program=WIMS ne trouve pas les programmes suivants utilisés dans certains \
+de ses modules. Il est possible que ces programmes ne sont pas installés dans le système\
+(dans ce cas, faites-le) ou qu'ils soient installés dans un dossier qui n'est pas\
+dans le chemin de recherche de WIMS. Dans ce cas, ajoutez le nom du dossier \
+au paramètre PATH dans
 
 !set name_imagemagick=<b>$wims_name_Error</b>! Nous n'avons pas trouvé ImageMagick dans le système.\
  Sans ce logiciel, la plupart des images et animations WIMS ne seront pas disponibles. \
@@ -235,7 +235,7 @@ Si non, essayez d'autres formats d'image.
   S'il n'apparaît pas,
 !set name_graphviz2=n'est pas installé correctement.
 
-!set name_povray1=TLe dessin tracé avec Povray suivant est indépendant des autres formats de dessin. \
+!set name_povray1=Le dessin tracé avec Povray suivant est indépendant des autres formats de dessin. \
   S'il n'apparaît pas,
 !set name_povray2=n'est pas installé correctement.
  !exit
@@ -244,13 +244,13 @@ Si non, essayez d'autres formats d'image.
 
 !if $job=crontab
   !set title=Maintenance quotidienne automatique
- !distribute  Manually installed crontab found. You should either continue to manage cron jobs manually, or erase your manual crontab before switching to this online tool.\
-   Never use this tool if you have a personalized crontab!\
-   Erreur bizarre : I cannot recover my working directory. Check your installation: it is not working normally.\
-   Available maintenance works\
+ !distribute  Une installation manuelle de crontab a été trouvée. Vous devriez  continuer à administrer les tâches manuellement ou effacer le crontab manuel avant de passer à l'outil en ligne.\
+   N'utilisez pas cet outil si vous avez un crontab personnalisé!\
+   Erreur bizarre : Je ne retrouve pas le dossier de travail.Vérifiez votre installation : elle ne fonctionne pas normalement.\
+   Maintenance disponible\
    Sauvegarde quotidienne à\
    Choisissez une heure où le serveur est peu occupé.\
-   Activity accounting (necessary for site statistics)\
+   Comptage des activités (nécessaire pour les statistiques du site)\
 into name_manually,name_warning,name_strange,name_available,name_daily,name_notbusy,name_accounting
 
 
@@ -278,8 +278,8 @@ into name_manually,name_warning,name_strange,name_available,name_daily,name_notb
 !if $job=file
   !distribute lines Voici le fichier à télécharger\
      Voulez-vous vraiment effacer le fichier\
-     last modified\
-     bytes\
+     dernière modification\
+     bits\
      est une image\
       est un fichier binaire\
      est trop long pour être montré ou édité.\
@@ -354,8 +354,8 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
       Erreur d'installation/mise à jour\
       Installation/Mise à jour\
       successful\
-      You will need to\
-      test it\
+      Vous avez besoin de\
+      le tester\
       reconstruire l'index des modules\
       Installer\
       Mise à jour\
@@ -374,7 +374,7 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
       name_click,name_automatic,name_rss,name_canupdate
 
 !!check
-  !distribute lines No module publication found corresponding to your search.\
+  !distribute lines Aucune publication de module ne correspond à votre recherche.\
     Cliquez sur l'adresse d'un module pour le vérifier/l'installer/le mettre à jour.\
     Nouvelles versions de modules\
     Nouveaux modules\
@@ -431,14 +431,14 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 
 !if $job=swac
   !set name_mkindex=Refaire l'index
-  !set name_text_swac= You may download the mp3 files of some packages of the Shtooka project.\
-<p>If the modules which call them are intensively used by the wims server, you should do it.\
-If you don't, these modules will look for the mp3 of the site http://shtooka.net\
+  !set name_text_swac= Vous pouvez télécharger les fichiers mp3 de quelques paquets \
+  du projet Shtooka.<p>Si les modules qui les appellent sont beaucoup utilisés sur le\
+  serveur wims, vous devriez le faire. Si non, ces modules iront chercher les mp3 du site http://shtooka.net\
 \
-To download the collections, do it by line command  with the script\
-<tt>$wims_home/bin/swac </tt>. It will install some swac packs at the right place.\
-<p><small>Because of the fact that the files of wims are encoded iso-latin, it's not\
-yet possible to use the cyrillic packs.</small>
+Pour charger les collections, utilisez le script <tt>$wims_home/bin/swac </tt> \
+en ligne de commande. Il installera quelques paquets swac à la bonne place.\
+<p><small>Comme les fichiers de wims sont codés en iso-latin, il n'est pas possible \
+actuellement d'utiliser les paquets cyrilliques.</small>
 !exit
 !endif
 
