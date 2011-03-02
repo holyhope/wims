@@ -16,7 +16,7 @@ m_reply$i=$(reply$i)
  !exit
 !endif
 
-tf=$(reply$i)-($rg1)
+tf=$(reply$i)
 gf=$rg1
 test=0
 !for t=1 to $testnum
@@ -35,8 +35,10 @@ test=0
   Test=bad $i
   !exit
  !endif
- test=$[$test+abs($tt)]
+tt=$[$tt]
+test=$[$test+abs($tt-$gt)]
 !next t
+
 test=$[$test/$testnum]
 
 !if NaN notin $test
