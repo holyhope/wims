@@ -94,7 +94,7 @@ cat <<@ >index.phtml
 @
 
 cnt=0
-for f in `find . -type f | sed 's!^\./!!g' | grep ./ | sort`
+for f in `find . -type f | sed 's!^\./!!g' | grep ./ |  egrep -v '\/\.svn\/' | sort`
 do
  tit=`awk -F= '$1=="slib_title" {print $2; exit}' $f`
  if [ -n "$tit" ]; then
