@@ -8,7 +8,6 @@ exp|algexp litexp formal,Mathematical expression, with formal comparison\
 text|case nocase,Text, words or sentences\
 multiple|checkbox click menu radio mark flashcard,Controlable multiple choices,buttons or menus\
 
-
 !set typelist2=!trim\
 atext,Approximative text, with identification of singular and plural etc.\
 chembrut,Raw formula of a molecule,in chemistry\
@@ -42,7 +41,6 @@ wlist,List of words,\
 !set namelist=Basic types, Specific or advanced types
 !set symtextlist=text atext raw compose
 
-
 <center><h3>User replies to an exercise</h3></center> <p>
 
 There are two basic ways in which an OEF exercise accepts user replies:
@@ -63,6 +61,8 @@ the length of the string imposed by WIMS).
 See 
 !href cmd=help&special_parm=oef help on OEF format
  for the syntax to define a multiple choice.
+
+<a name="freestyle"></a>
 <p><h4>Freestyle answers</h4> <p>
 A freestyle answer is one which is typed by the user.
 Up to $answerlim simultaneous freestyle answers can be asked for one
@@ -72,8 +72,7 @@ The syntax is as follows:
 <br>
 (The last 3 fields are optional.)
 <p>
-
-<a name=freestyle></a>
+<h5>The parameter <tt>type</tt></h5>
 Each freestyle answer can independently take one of the following types.
 
 !for i=1 to 2
@@ -111,10 +110,63 @@ symtext options will be understood in this case.
  </ul>
 !next i
 
+!read help/$lang/embedans.phtml
+
+<h4>The optional parameter <tt>weight</tt></h4>
+<a name="weight"></a>
+It is possible to give a weight to answers.
 <p>
-Common option to freestyle answers: <tt>default</tt>. This option can take
+Example : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+
+Le niveau de sévérité  sera aussi pris en compte lors du 
+calcul fait et le pourcentage sera pris sur un pourcentage fixé
+par le niveau de sévérité. 
+
+One can put variables in <tt>weight</tt>. 
+<p>
+Example :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+
+<h4>Le paramètre optionnel <tt>option</tt></h4>
+ <a name="option"></a>
+ Dans le cas de plusieurs options, elles sont séparées par des espaces. 
+ For example, <tt>option=default noanalyzeprint</tt>
+ 
+Les options possibles à la suite d'une instruction <tt>\answer</tt>
+ou <tt>\condition</tt> sont
+<ul>
+<li>option=<tt>default</tt> : The option <tt>default</tt> is common for all free answers : 
+This option can take
 the form <tt><font color=green>default="default_value"</font></tt>. If the
 user gives an empty reply, it is the default_value that will take place.
+</li>
+<li>
+<tt>option=split</tt> : In case of type = <tt>correspond</tt>, <tt>checkbox</tt> or <tt>mark</tt>,
+there will be partial score. 
+</li>
+<li>
+<tt>option=nonstop</tt> : In case of step exercises,
+following questions are asked even if the answer is false.
+</li>
+<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+Seul le score subsiste.</li>
+<li>Following the instruction <tt>condition</tt>, 
+<tt>option=hide</tt> :The condition is used to analyze the
+answer but will not be printed.
+</li>
+</ul>
+D'autres options peuvent être utilisables dans des types particuliers de réponses.
+<p>
 
 <p><h4>Testing conditions</h4> <p>
 Under certain circumstances, it is desired that freestyle answers be tested
@@ -132,6 +184,7 @@ exercise, under the current implementation. The syntax is as follows.
 <p><tt>
 \condition{prompt text}{testing conditions}{weight=...}
 </tt>
+<br>
 (The last field is optional.)
 <p>
 Here are some examples of testing conditions. (<tt>\ans1</tt> and
@@ -142,57 +195,18 @@ described above.)
 </small>
 <p>
 $table_header
-$table_hdtr<th>Condition<th>meaning
-$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt>
-    <td>Good if <tt>ans1</tt> is within the interval [0,1].
-$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt>
-    <td>Good if <tt>ans1</tt> is 1, 3 or 5.
-$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt>
+$table_hdtr<th>Condition</th><th>meaning</th></tr>
+$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt></td>
+    <td>Good if <tt>ans1</tt> is within the interval [0,1].</td></tr>
+$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt></td>
+    <td>Good if <tt>ans1</tt> is 1, 3 or 5.</td></tr>
+$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt></td>
     <td>Good if <tt>ans1</tt> and <tt>ans2</tt> are the two 
-    roots of the polynomial x<sup>2</sup>-5x+6.
-$table_tr<td><tt>sin(\ans1)=0</tt>
-    <td>Good if <tt>ans1</tt> is a multiple of $m_pi.
+    roots of the polynomial x<sup>2</sup>-5x+6.</td></tr>
+$table_tr<td><tt>sin(\ans1)=0</tt></td>
+    <td>Good if <tt>ans1</tt> is a multiple of $m_pi.</td></tr>
 $table_end <p>
 See
 !href cmd=help&special_parm=oef help on oef format
  for the syntax for defining replies.
-
-<h4>The optional parameter <tt>weight</tt></h4>
-<a name=weight></a>
-It is possible to give a weight to answers.
-<p>
-Example : 
-<pre>\answer{}{1}{type=numeric}{weight=8}
-\answer{}{1}{type=numeric}{weight=2}
-</pre>
-
-
-One can put variables in <tt>weight</tt>. 
-<p>
-Example :
-<pre>
-\text{w = \t = 1 ? 1 : 2}
-\answer{}{1}{type=numeric}{weight=\t}
-\answer{}{1}{type=numeric}{weight=3}
-</pre>
-
-<h4>The optional parameter <tt>option</tt></h4>
- <a name=option></a>
-The allowed options for <tt>\answer</tt>
-or <tt>\condition</tt> are
-<ul>
-<li>
-<tt>option=split</tt> : In case of type = <tt>correspond</tt>, <tt>checkbox</tt> or <tt>mark</tt>,
-there will be partial score. 
-</li>
-<li>
-<tt>option=nonstop</tt> : In case of step exercises,
-following questions are asked even if the answer is false.
-</li>
-<li>Following <tt>condition</tt> : 
-<tt>option=hide</tt> : The condition is used to analyze the
-answer but will not be printed.
-</li>
-
-</ul>
 

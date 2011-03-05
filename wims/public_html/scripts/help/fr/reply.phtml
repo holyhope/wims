@@ -73,7 +73,7 @@ La syntaxe est la suivante :
 <br>
 (Les 3 derniers champs sont optionnels.)
 <p>
-<h5>Le paramètre <tt>type</tt></h5>
+<h4>Le paramètre <tt>type</tt></h4>
 Chaque réponse libre peut prendre indépendamment l'un des types suivants.
 
 !for i=1 to 2
@@ -111,15 +111,64 @@ Chaque réponse libre peut prendre indépendamment l'un des types suivants.
  </ul>
 !next i
 
+!read help/$lang/embedans.phtml
+
+<h4>Le paramètre optionnel <tt>weight</tt></h4>
+<a name="weight"></a> 
+Il permet d'imposer un poids aux questions posées.
 <p>
-Option commune à toutes les réponses libres : <tt>default</tt> Cette option
+Exemple : 
+<pre>\answer{}{1}{type=numeric}{weight=8}
+\answer{}{1}{type=numeric}{weight=2}
+</pre>
+
+Le niveau de sévérité  sera aussi pris en compte lors du 
+calcul fait et le pourcentage sera pris sur un pourcentage fixé
+par le niveau de sévérité. 
+
+Il est possible de mettre des variables dans <tt>weight</tt>. 
+<p>
+Exemple :
+<pre>
+\text{w = \t = 1 ? 1 : 2}
+\answer{}{1}{type=numeric}{weight=\t}
+\answer{}{1}{type=numeric}{weight=3}
+</pre>
+
+<h4>Le paramètre optionnel <tt>option</tt></h4>
+ <a name="option"></a>
+ Dans le cas de plusieurs options, elles sont séparées par des espaces. 
+ Par exemple, <tt>option=default noanalyzeprint</tt>
+ 
+Les options possibles à la suite d'une instruction <tt>\answer</tt>
+ou <tt>\condition</tt> sont
+<ul>
+<li>option=<tt>default</tt> : L'option <tt>default</tt> est commune à toutes les réponses libres :  cette option
 peut prendre la forme <tt><font color="green">default="valeur_par_défaut"</font>
 </tt>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
 qui remplace.
-
+</li>
+<li>
+<tt>option=split</tt> : Dans le cas d'une réponse dont
+le type est <tt>correspond</tt>, <tt>checkbox</tt> ou <tt>mark</tt>, la notation
+tient compte des réponses justes, même si elles ne le sont pas toutes. 
+</li>
+<li>
+<tt>option=nonstop</tt> : Dans le cas d'un exercice à étapes, les questions
+suivantes sont posées même en cas de réponses fausses.
+</li>
+<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
+Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
+Seul le score subsiste.</li>
+<li>A la suite d'une instruction <tt>condition</tt>, 
+<tt>option=hide</tt> : La condition sera utilisée pour l'analyse
+de la réponse mais ne sera pas  affichée. 
+</li>
+</ul>
+D'autres options peuvent être utilisables dans des types particuliers de réponses.
 <p>
-Pour insérer les champs de réponses dans le texte par la commande <tt>embed</tt>, 
-!href cmd=help&special_parm=embedans voir ici. 
 
 <h4>Conditions de test</h4>
 Dans certaines circonstances, il est souhaitable que les réponses libres
@@ -150,65 +199,17 @@ définitions de réponses libres, comme décrit ci-dessus.)
 </small>
 <p>
 $table_header
-$table_hdtr<th>Condition<th>signification
-$table_tr<td><tt>\rep1>=0 and \rep1<=1</tt>
-    <td>Bon si <tt>rep1</tt> est dans l'intervalle [0,1].
-$table_tr<td><tt>\rep1=1 or \rep1=3 or \rep1=5</tt>
-    <td>Bon si <tt>rep1</tt> est 1, 3 ou 5.
-$table_tr<td><tt>(\rep1)*(\rep2)=6 and (\rep1)+(\rep2)=5</tt>
+$table_hdtr<th>Condition<th>signification</th></tr>
+$table_tr<td><tt>\rep1>=0 and \rep1<=1</tt></td>
+    <td>Bon si <tt>rep1</tt> est dans l'intervalle [0,1].</td></tr>
+$table_tr<td><tt>\rep1=1 or \rep1=3 or \rep1=5</tt></td>
+    <td>Bon si <tt>rep1</tt> est 1, 3 ou 5.</td></tr>
+$table_tr<td><tt>(\rep1)*(\rep2)=6 and (\rep1)+(\rep2)=5</tt></td>
     <td>Bon si <tt>rep1</tt> et <tt>rep2</tt> sont les deux racines 
-    du polynôme x<sup>2</sup>-5x+6.
-$table_tr<td><tt>sin(\rep1)=0</tt>
-    <td>Bon si <tt>rep1</tt> est un multiple de $m_pi.
+    du polynôme x<sup>2</sup>-5x+6.</td></tr>
+$table_tr<td><tt>sin(\rep1)=0</tt></td>
+    <td>Bon si <tt>rep1</tt> est un multiple de $m_pi.</td></tr>
 $table_end <p>
 Voir
 !href cmd=help&special_parm=oef aide sur le format oef
  pour la syntaxe de définition des réponses.
- 
-<h4>Le paramètre optionnel <tt>weight</tt></h4>
-<a name="weight"></a> Il permet d'imposer un poids aux questions posées.
-<p>
-Exemple : 
-<pre>\answer{}{1}{type=numeric}{weight=8}
-\answer{}{1}{type=numeric}{weight=2}
-</pre>
-
-Le niveau de sévérité  sera aussi pris en compte lors du 
-calcul fait et le pourcentage sera pris sur un pourcentage fixé
-par le niveau de sévérité. 
-
-Il est possible de mettre des variables dans <tt>weight</tt>. 
-<p>
-Exemple :
-<pre>
-\text{w = \t = 1 ? 1 : 2}
-\answer{}{1}{type=numeric}{weight=\t}
-\answer{}{1}{type=numeric}{weight=3}
-</pre>
-
-<h4>Le paramètre optionnel <tt>option</tt></h4>
- <a name="option"></a>
-Les options possibles à la suite d'une instruction <tt>\answer</tt>
-ou <tt>\condition</tt> sont
-<ul>
-<li>
-<tt>option=split</tt> : Dans le cas d'une réponse dont
-le type est <tt>correspond</tt>, <tt>checkbox</tt> ou <tt>mark</tt>, la notation
-tient compte des réponses justes, même si elles ne le sont pas toutes. 
-</li>
-<li>
-<tt>option=nonstop</tt> : Dans le cas d'un exercice à étapes, les questions
-suivantes sont posées même en cas de réponses fausses.
-</li>
-<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
-pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
-Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
-est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
-Seul le score subsiste.</li>
-<li>A la suite d'une instruction <tt>condition</tt>, 
-<tt>option=hide</tt> : La condition sera utilisée pour l'analyse
-de la réponse mais ne sera pas  affichée. 
-</li>
-
-</ul>
-
