@@ -155,11 +155,15 @@ sub slib {my ($lang)= @_ ;
  my %HASH = (
   ) ; 
  my $HASH = \%HASH ;
+ my $slibdirhelp="$helpdir/$lang/slib";
 for my $file (glob("$slibdir/*/*")) {
 #for my $file (glob("$slibdir/function/integrate")) {
  $file =~s/$slibdir\///;
  my $text=''; my $tag='';
- open (IN, "$slibdir/$file"); 
+ my $filehelp="$slibdirhelp/$file" ;
+ if (!open(IN, "$filehelp")) { $filehelp="$slibdirhelp/en/$file"; }
+ if (!open(IN, "$filehelp")) { $filehelp="$slibdir/$file"; } 
+ open (IN, ("$filehelp")); 
  while (<IN>) {my $line=$_; 
     if  ($line=~/^ *!exit/) { last ;}
     if ($line=~ s/^ *slib_(\w+) *=//){
