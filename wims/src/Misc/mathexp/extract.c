@@ -29,7 +29,7 @@ void extrout(char *pb, char *pe, int dist, int commas[], int *commacnt)
 	if(!checkregex(buf)) return;
     }
     if(!nocoord)
-      printf("%d %d %ld, ",thisobjline,dist+_estart,pe-pb+dist+_estart);
+      printf("%d %d %d, ",thisobjline,dist+_estart,(int)(pe-pb)+dist+_estart);
     while(*commacnt>0 && commas[*commacnt-1]>pe-pb) (*commacnt)--;
     if(*commacnt>0 && !nocomma) {
 	fwrite(pb,1,commas[0],stdout); putchar(',');

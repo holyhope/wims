@@ -97,9 +97,9 @@ int mt_this(struct block *blk, char *start, int level)
     int r;
     if(level > MAX_LEVELS) error("level_overflow %.20s",start);
     start=find_word_start(start);
-    if(debug>=2) fprintf(stderr,"lvl=%d. Checking against block %ld for %.10s.\n",level,blk-blockbuf,start);
+    if(debug>=2) fprintf(stderr,"lvl=%d. Checking against block %d for %.10s.\n",level,(int)(blk-blockbuf),start);
     r = blk->fn(blk,start,level);
-    if(debug) fprintf(stderr,"lvl=%d. Tested %d block %ld for %.10s.\n",level,r,blk-blockbuf,start);
+    if(debug) fprintf(stderr,"lvl=%d. Tested %d block %d for %.10s.\n",level,r,(int)(blk-blockbuf),start);
     return r;
 }
 
@@ -114,8 +114,8 @@ int mt_next(struct block *blk, char *start, int level)
 	}
 	while (next==-2 && currnpool>0);
 	if(next==-2) error("internal_error npool disorder");
-	if(debug>=3) fprintf(stderr,"Calling macro %ld: next=%d.\n",
-			     blk-blockbuf,next);
+	if(debug>=3) fprintf(stderr,"Calling macro %d: next=%d.\n",
+			     (int)(blk-blockbuf),next);
     }
     if(next<0) {
 	if(*start) return 0; else return 1;
