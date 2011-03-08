@@ -120,8 +120,8 @@ void GifDecode(FILE *fp, UBYTE *pix, GifImageHdr gifimage)
   }
 
 skipRest: 
-  if (debugFlag) fprintf(stderr, "Ending GifDecode, written: %ld=%d\n",
-	  interlaced && (pix-picture == 0) ? imgsize : pix - picture, imgsize);
+  if (debugFlag) fprintf(stderr, "Ending GifDecode, written: %d=%d\n",
+	  interlaced && (pix-picture == 0) ? imgsize : (int)(pix - picture), imgsize);
   return ;
 }
 
