@@ -96,9 +96,7 @@ long sq(UBYTE i,UBYTE j)
   return((i-j)*(i-j));
 }
 
-void main(argc, argv)
- int            argc;
- char           *argv[];
+int main(int argc, char *argv[])
 {
   FILE * infile, *fout;
   char temp[BIGSTRING], *cmt;
@@ -246,6 +244,7 @@ void main(argc, argv)
    fclose(fout);
    fprintf(stderr, "Processed %d files.\n", count);
    exit(0);
+   return 0; /* not reached */
 }
 
 
@@ -307,6 +306,8 @@ void GifReadFile(FILE *fout, char *fname, int firstImage)
     UBYTE translator[256], *p, *po;
     int left, right, top, bot, i, j, k, l, hi, wi;
     long dsquare, dsquare1;
+    right = 0; /* -Wall */
+    bot = 0; /* -Wall */
     hi = gifimage.height;
     wi = gifimage.width;
     if (( pix = (UBYTE *)malloc(wi * hi * sizeof(UBYTE)) ) == NULL )
@@ -506,17 +507,18 @@ void GifScreenHeader(FILE *fp, FILE *fout, int firstTime)
       gifCmap[i].cmap.blue  = temp = Xgetc(fp);
       if (firstTime) fputc(temp, fout);
 
-    if(firstTime && (global.trans.type==TRANS_RGB && global.trans.valid==0) )
-      if (global.trans.red == gifCmap[i].cmap.red &&
-	  global.trans.green == gifCmap[i].cmap.green &&
-	  global.trans.blue == gifCmap[i].cmap.blue) {
-	if(debugFlag > 1) fprintf(stderr, " Transparent match at %d\n", i);
-	global.trans.map = i;
-	global.trans.valid = 1;
+      if(firstTime && (global.trans.type==TRANS_RGB && global.trans.valid==0)) {
+        if (global.trans.red == gifCmap[i].cmap.red &&
+            global.trans.green == gifCmap[i].cmap.green &&
+            global.trans.blue == gifCmap[i].cmap.blue) {
+          if(debugFlag > 1) fprintf(stderr, " Transparent match at %d\n", i);
+          global.trans.map = i;
+          global.trans.valid = 1;
+        }
+        else
+          if(debugFlag > 1) fprintf(stderr, "No transp. RGB=(%x,%x,%x)\n",
+            gifCmap[i].cmap.red, gifCmap[i].cmap.green, gifCmap[i].cmap.blue);
       }
-      else
-	if(debugFlag > 1) fprintf(stderr, "No transp. RGB=(%x,%x,%x)\n",
-	 gifCmap[i].cmap.red, gifCmap[i].cmap.green, gifCmap[i].cmap.blue);
     }
   }
 }
