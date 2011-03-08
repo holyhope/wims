@@ -289,7 +289,7 @@ void cp_cutline(char *p, struct block *blk, int next)
     int l, ll, n, idx, start, end;
     struct block *b;
 
-    if(debug>=3) fprintf(stderr,"Cutline %d/%d for %.15s.\n",
+    if(debug>=3) fprintf(stderr,"Cutline %ld/%d for %.15s.\n",
 			 blk-blockbuf, nextblock, p);
     for(p1=strstr(p,"[|]"); p1; p1=strstr(p1,"[|]")) memmove(p1," | ",3);
     macro_trans(p);
@@ -318,7 +318,7 @@ void cp_cutline(char *p, struct block *blk, int next)
 	    memmove(buf,p1,ll); buf[ll]=0;
 	    if(idx==start) b=blk; else b=blockbuf+idx-1;
 	    if(idx<end) n=idx; else n=next;
-	    if(debug>=3) fprintf(stderr,"String block %d/%d for %.15s.\n",
+	    if(debug>=3) fprintf(stderr,"String block %ld/%d for %.15s.\n",
 			 b-blockbuf, nextblock, buf);
 	    cp_string(buf,b,n);
 	    idx++;
@@ -687,7 +687,7 @@ void cp_oneblock(char *p, struct block *blk, int next)
 {
     char *pp, *pe;
     int i;
-    if(debug>=3) fprintf(stderr,"Oneblock %d/%d for %.15s.\n",
+    if(debug>=3) fprintf(stderr,"Oneblock %ld/%d for %.15s.\n",
 			 blk-blockbuf, nextblock, p);
     if(myisupper(*p)) {
 	for(pe=p; pe-p < MAX_BINAME && myisalpha(*pe); pe++);

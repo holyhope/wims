@@ -42,7 +42,7 @@ enum {
 int compare(struct entry *e, const char *s2)
 {
     int k;
-    k=strncmp(e->original,s2,e->olen);
+    k=strncmp((char*)e->original, (char*)s2, e->olen);
     if(k==0 && isalnum(*(s2+e->olen))) return -1;
     else return k;
 }
@@ -113,23 +113,24 @@ struct dic *prepare_dic(char *fname)
 	if(i>entrycount && compare(entry+i-1,p1)>0)
 	  error("unsorted_dictionary %s: %s > %s.\n",
 		fname,entry[i-1].original,p1);
-	if(i>entrycount && strcmp(entry[i-1].original,p1)==0)
+	if(i>entrycount && strcmp((char*)entry[i-1].original,p1)==0)
 	  error("duplication_in_dictionary %s: %s.\n",
 		fname,p1);
-	entry[i].original=p1; entry[i].replace=pp; 
+	entry[i].original=(unsigned char*)p1;
+        entry[i].replace=(unsigned char*)pp; 
 	entry[i].olen=l=strlen(p1); entry[i].earlier=-1;
 	if(i>0) {
 	    int l1,l2;
 	    l1=entry[i-1].earlier; if(l1>=0) l2=entry[l1].olen;
 	    else {l2=entry[i-1].olen;l1=i-1;}
 	    if(l>l2 && isspace(p1[l2])
-	       && strncmp(entry[l1].original,p1,l2)==0) 
+	       && strncmp((char*)entry[l1].original,p1,l2)==0) 
 	      entry[i].earlier=entry[i-1].earlier=l1;
 	}
 	i++;
     }
     thisdic->len=i-entrycount;
-    pp=strrchr("fname",'/'); if(pp==NULL) pp=fname;
+    pp=strrchr(fname,'/'); if(pp==NULL) pp=fname;
     snprintf(tbuf,sizeof(tbuf),"unknown_%s",pp);
     _getdef(defbuf,tbuf,buf);
     p1=find_word_start(buf); *find_word_end(p1)=0;
@@ -178,9 +179,9 @@ void _translate(char *p, int i)
 	    continue;
 	}
 	t+=dic[i].start;
-	string_modify(troutbuf,p1,p1+strlen(entry[t].original),
-		      entry[t].replace);
-	p2=find_word_start(p1+strlen(entry[t].replace));
+	string_modify(troutbuf,p1,p1+strlen((char*)entry[t].original),
+		      (char*)entry[t].replace);
+	p2=find_word_start(p1+strlen((char*)entry[t].replace));
     }
     snprintf(p,MAX_LINELEN,"%s",troutbuf);
 }
