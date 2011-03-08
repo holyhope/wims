@@ -25,12 +25,9 @@ lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
 
 wimsd=@BUILD_WIMSD@
 
-all:: confcheck lib$(libtype) progs checklist
+all:: lib$(libtype) progs checklist
 
 progs:: flydraw texgif interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims
-
-confcheck:
-	$(cpp) confcheck.c | grep -v '^ *$$'
 
 distconfig: configure.in
 	autoconf configure.in > configure

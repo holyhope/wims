@@ -594,7 +594,6 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_header_list=
 ac_subst_vars='LTLIBOBJS
 CRYPTLIB
 FLEXLIB
@@ -613,6 +612,8 @@ LIBOBJS
 EGREP
 GREP
 ALLOCA
+CONVERT
+GP
 TEX
 STRIP
 RANLIB
@@ -2132,7 +2133,6 @@ $as_echo "$as_me: creating cache $cache_file" >&6;}
   >$cache_file
 fi
 
-as_fn_append ac_header_list " utime.h"
 # Check that the precious variables saved in the cache have kept the same
 # value.
 ac_cache_corrupted=false
@@ -2203,6 +2203,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 ac_config_headers="$ac_config_headers config.h:config.hin"
+
 
 
 
@@ -3676,8 +3677,100 @@ fi
     exit 1
   fi
 
-#WIMS_NEED([GP], [gp], [Pari/GP])
-#WIMS_NEED([CONVERT], [convert], [ImageMagick])
+
+  # Extract the first word of "gp", so it can be a program name with args.
+set dummy gp; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GP+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GP in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GP="$GP" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GP="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+GP=$ac_cv_path_GP
+if test -n "$GP"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GP" >&5
+$as_echo "$GP" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  if test -z "`eval echo '$'GP`"; then
+    echo ERROR: WIMS requires Pari/GP
+    echo Please install this package then restart configure.
+    exit 1
+  fi
+
+
+  # Extract the first word of "convert", so it can be a program name with args.
+set dummy convert; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_CONVERT+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $CONVERT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CONVERT="$CONVERT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_CONVERT="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+CONVERT=$ac_cv_path_CONVERT
+if test -n "$CONVERT"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CONVERT" >&5
+$as_echo "$CONVERT" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  if test -z "`eval echo '$'CONVERT`"; then
+    echo ERROR: WIMS requires ImageMagick
+    echo Please install this package then restart configure.
+    exit 1
+  fi
+
 
 # Checks for libraries.
 SAVE=$LIBS
@@ -3726,18 +3819,92 @@ _ACEOF
 
 fi
 
-for ac_func in floor pow rint sqrt
+
+  if test "$ac_cv_lib_m_cos" = no; then
+    echo
+    echo ERROR! Your system does not have Math library libm
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+for ac_func in rint
 do :
-  as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
-ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
-eval as_val=\$$as_ac_var
-   if test "x$as_val" = x""yes; then :
+  ac_fn_c_check_func "$LINENO" "rint" "ac_cv_func_rint"
+if test "x$ac_cv_func_rint" = x""yes; then :
   cat >>confdefs.h <<_ACEOF
-#define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
+#define HAVE_RINT 1
 _ACEOF
 
 fi
 done
+
+
+  for ac_func in floor
+do :
+  ac_fn_c_check_func "$LINENO" "floor" "ac_cv_func_floor"
+if test "x$ac_cv_func_floor" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_FLOOR 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_floor" = no; then
+    echo
+    echo ERROR! Your system does not have floor
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in pow
+do :
+  ac_fn_c_check_func "$LINENO" "pow" "ac_cv_func_pow"
+if test "x$ac_cv_func_pow" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_POW 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_pow" = no; then
+    echo
+    echo ERROR! Your system does not have pow
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in sqrt
+do :
+  ac_fn_c_check_func "$LINENO" "sqrt" "ac_cv_func_sqrt"
+if test "x$ac_cv_func_sqrt" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SQRT 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_sqrt" = no; then
+    echo
+    echo ERROR! Your system does not have sqrt
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
 
 
 LIBS=$SAVE
@@ -3856,7 +4023,7 @@ _ACEOF
 fi
 done
 
-if test "$ac_cv_func_gethostbyname" = no; then
+if test "$ac_cv_func_$fun" = no; then
   as_ac_Lib=`$as_echo "ac_cv_lib_nsl_$fun" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $fun in -lnsl" >&5
 $as_echo_n "checking for $fun in -lnsl... " >&6; }
@@ -3906,7 +4073,7 @@ _ACEOF
 fi
 
 
-  if test "$ac_cv_lib_gethostbyname" = no; then
+  if test "$ac_cv_lib_$fun" = no; then
     echo
     echo ERROR! Your system does not have $fun
     echo WIMS cannot be installed. Please report.
@@ -3916,15 +4083,13 @@ fi
 
 fi
 
-fun=gethostname
-for ac_func in $fun
+
+  for ac_func in gethostname
 do :
-  as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
-ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
-eval as_val=\$$as_ac_var
-   if test "x$as_val" = x""yes; then :
+  ac_fn_c_check_func "$LINENO" "gethostname" "ac_cv_func_gethostname"
+if test "x$ac_cv_func_gethostname" = x""yes; then :
   cat >>confdefs.h <<_ACEOF
-#define `$as_echo "HAVE_$ac_func" | $as_tr_cpp` 1
+#define HAVE_GETHOSTNAME 1
 _ACEOF
 
 fi
@@ -3933,11 +4098,12 @@ done
 
   if test "$ac_cv_func_gethostname" = no; then
     echo
-    echo ERROR! Your system does not have $fun
+    echo ERROR! Your system does not have gethostname
     echo WIMS cannot be installed. Please report.
     echo
     exit 1
   fi
+
 
 
 fun=socket
@@ -3954,7 +4120,7 @@ _ACEOF
 fi
 done
 
-if test "$ac_cv_func_socket" = no; then
+if test "$ac_cv_func_$fun" = no; then
   as_ac_Lib=`$as_echo "ac_cv_lib_socket_$fun" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $fun in -lsocket" >&5
 $as_echo_n "checking for $fun in -lsocket... " >&6; }
@@ -4003,7 +4169,7 @@ _ACEOF
 
 fi
 
-  if test "$ac_cv_lib_socket" = no; then
+  if test "$ac_cv_lib_$fun" = no; then
     as_ac_Lib=`$as_echo "ac_cv_lib_socket_$fun" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $fun in -lsocket" >&5
 $as_echo_n "checking for $fun in -lsocket... " >&6; }
@@ -4053,7 +4219,7 @@ _ACEOF
 fi
 
 
-  if test "$ac_cv_lib_socket" = no; then
+  if test "$ac_cv_lib_$fun" = no; then
     echo
     echo ERROR! Your system does not have $fun
     echo WIMS cannot be installed. Please report.
@@ -4078,7 +4244,7 @@ _ACEOF
 fi
 done
 
-if test "$ac_cv_func_inet_ntoa" = no; then
+if test "$ac_cv_func_$fun" = no; then
   as_ac_Lib=`$as_echo "ac_cv_lib_socket_$fun" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $fun in -lsocket" >&5
 $as_echo_n "checking for $fun in -lsocket... " >&6; }
@@ -4142,7 +4308,7 @@ _ACEOF
 fi
 done
 
-if test "$ac_cv_func_inet_aton" = no; then
+if test "$ac_cv_func_$fun" = no; then
   as_ac_Lib=`$as_echo "ac_cv_lib_resolv_$fun" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $fun in -lresolv" >&5
 $as_echo_n "checking for $fun in -lresolv... " >&6; }
@@ -4998,6 +5164,24 @@ fi
 done
 
 
+  if test "$ac_cv_header_stdc" = no; then
+    echo
+    echo ERROR! Your system does not have ANSI C header files
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+  if test "$ac_cv_header_unistd_h" = no; then
+    echo
+    echo ERROR! Your system does not have Header file unistd.h
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
 # Checks for typedefs, structures, and compiler characteristics.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for an ANSI C-conforming const" >&5
 $as_echo_n "checking for an ANSI C-conforming const... " >&6; }
@@ -5234,40 +5418,157 @@ case "$CC+$with_dynamic" in
 esac
 
 # Checks for library functions.
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for error_at_line" >&5
-$as_echo_n "checking for error_at_line... " >&6; }
-if test "${ac_cv_lib_error_at_line+set}" = set; then :
+for ac_header in stdlib.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "stdlib.h" "ac_cv_header_stdlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdlib_h" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STDLIB_H 1
+_ACEOF
+
+fi
+
+done
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GNU libc compatible malloc" >&5
+$as_echo_n "checking for GNU libc compatible malloc... " >&6; }
+if test "${ac_cv_func_malloc_0_nonnull+set}" = set; then :
   $as_echo_n "(cached) " >&6
+else
+  if test "$cross_compiling" = yes; then :
+  ac_cv_func_malloc_0_nonnull=no
 else
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <error.h>
+#if defined STDC_HEADERS || defined HAVE_STDLIB_H
+# include <stdlib.h>
+#else
+char *malloc ();
+#endif
+
 int
 main ()
 {
-error_at_line (0, 0, "", 0, "an error occurred");
+return ! malloc (0);
   ;
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_error_at_line=yes
+if ac_fn_c_try_run "$LINENO"; then :
+  ac_cv_func_malloc_0_nonnull=yes
 else
-  ac_cv_lib_error_at_line=no
+  ac_cv_func_malloc_0_nonnull=no
 fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_error_at_line" >&5
-$as_echo "$ac_cv_lib_error_at_line" >&6; }
-if test $ac_cv_lib_error_at_line = no; then
-  case " $LIBOBJS " in
-  *" error.$ac_objext "* ) ;;
-  *) LIBOBJS="$LIBOBJS error.$ac_objext"
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_func_malloc_0_nonnull" >&5
+$as_echo "$ac_cv_func_malloc_0_nonnull" >&6; }
+if test $ac_cv_func_malloc_0_nonnull = yes; then :
+
+$as_echo "#define HAVE_MALLOC 1" >>confdefs.h
+
+else
+  $as_echo "#define HAVE_MALLOC 0" >>confdefs.h
+
+   case " $LIBOBJS " in
+  *" malloc.$ac_objext "* ) ;;
+  *) LIBOBJS="$LIBOBJS malloc.$ac_objext"
  ;;
 esac
 
+
+$as_echo "#define malloc rpl_malloc" >>confdefs.h
+
 fi
+
+
+
+  if test "$ac_cv_func_malloc_0_nonnull" = no; then
+    echo
+    echo ERROR! Your system does not have malloc
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+for ac_header in stdlib.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "stdlib.h" "ac_cv_header_stdlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdlib_h" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STDLIB_H 1
+_ACEOF
+
+fi
+
+done
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GNU libc compatible realloc" >&5
+$as_echo_n "checking for GNU libc compatible realloc... " >&6; }
+if test "${ac_cv_func_realloc_0_nonnull+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test "$cross_compiling" = yes; then :
+  ac_cv_func_realloc_0_nonnull=no
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#if defined STDC_HEADERS || defined HAVE_STDLIB_H
+# include <stdlib.h>
+#else
+char *realloc ();
+#endif
+
+int
+main ()
+{
+return ! realloc (0, 0);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+  ac_cv_func_realloc_0_nonnull=yes
+else
+  ac_cv_func_realloc_0_nonnull=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_func_realloc_0_nonnull" >&5
+$as_echo "$ac_cv_func_realloc_0_nonnull" >&6; }
+if test $ac_cv_func_realloc_0_nonnull = yes; then :
+
+$as_echo "#define HAVE_REALLOC 1" >>confdefs.h
+
+else
+  $as_echo "#define HAVE_REALLOC 0" >>confdefs.h
+
+   case " $LIBOBJS " in
+  *" realloc.$ac_objext "* ) ;;
+  *) LIBOBJS="$LIBOBJS realloc.$ac_objext"
+ ;;
+esac
+
+
+$as_echo "#define realloc rpl_realloc" >>confdefs.h
+
+fi
+
+
+
+  if test "$ac_cv_func_realloc_0_nonnull" = no; then
+    echo
+    echo ERROR! Your system does not have realloc
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
 
 for ac_header in vfork.h
 do :
@@ -5483,6 +5784,51 @@ $as_echo "#define HAVE_WORKING_FORK 1" >>confdefs.h
 
 fi
 
+
+  if test "$ac_cv_func_fork_works" = no; then
+    echo
+    echo ERROR! Your system does not have working fork
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for error_at_line" >&5
+$as_echo_n "checking for error_at_line... " >&6; }
+if test "${ac_cv_lib_error_at_line+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <error.h>
+int
+main ()
+{
+error_at_line (0, 0, "", 0, "an error occurred");
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_error_at_line=yes
+else
+  ac_cv_lib_error_at_line=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_error_at_line" >&5
+$as_echo "$ac_cv_lib_error_at_line" >&6; }
+if test $ac_cv_lib_error_at_line = no; then
+  case " $LIBOBJS " in
+  *" error.$ac_objext "* ) ;;
+  *) LIBOBJS="$LIBOBJS error.$ac_objext"
+ ;;
+esac
+
+fi
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether lstat correctly handles trailing slash" >&5
 $as_echo_n "checking whether lstat correctly handles trailing slash... " >&6; }
 if test "${ac_cv_func_lstat_dereferences_slashed_symlink+set}" = set; then :
@@ -5591,73 +5937,6 @@ _ACEOF
 
 fi
 
-for ac_header in stdlib.h
-do :
-  ac_fn_c_check_header_mongrel "$LINENO" "stdlib.h" "ac_cv_header_stdlib_h" "$ac_includes_default"
-if test "x$ac_cv_header_stdlib_h" = x""yes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_STDLIB_H 1
-_ACEOF
-
-fi
-
-done
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GNU libc compatible malloc" >&5
-$as_echo_n "checking for GNU libc compatible malloc... " >&6; }
-if test "${ac_cv_func_malloc_0_nonnull+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test "$cross_compiling" = yes; then :
-  ac_cv_func_malloc_0_nonnull=no
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#if defined STDC_HEADERS || defined HAVE_STDLIB_H
-# include <stdlib.h>
-#else
-char *malloc ();
-#endif
-
-int
-main ()
-{
-return ! malloc (0);
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-  ac_cv_func_malloc_0_nonnull=yes
-else
-  ac_cv_func_malloc_0_nonnull=no
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_func_malloc_0_nonnull" >&5
-$as_echo "$ac_cv_func_malloc_0_nonnull" >&6; }
-if test $ac_cv_func_malloc_0_nonnull = yes; then :
-
-$as_echo "#define HAVE_MALLOC 1" >>confdefs.h
-
-else
-  $as_echo "#define HAVE_MALLOC 0" >>confdefs.h
-
-   case " $LIBOBJS " in
-  *" malloc.$ac_objext "* ) ;;
-  *) LIBOBJS="$LIBOBJS malloc.$ac_objext"
- ;;
-esac
-
-
-$as_echo "#define malloc rpl_malloc" >>confdefs.h
-
-fi
-
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for working memcmp" >&5
 $as_echo_n "checking for working memcmp... " >&6; }
 if test "${ac_cv_func_memcmp_working+set}" = set; then :
@@ -5718,73 +5997,6 @@ test $ac_cv_func_memcmp_working = no && case " $LIBOBJS " in
   *) LIBOBJS="$LIBOBJS memcmp.$ac_objext"
  ;;
 esac
-
-
-for ac_header in stdlib.h
-do :
-  ac_fn_c_check_header_mongrel "$LINENO" "stdlib.h" "ac_cv_header_stdlib_h" "$ac_includes_default"
-if test "x$ac_cv_header_stdlib_h" = x""yes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_STDLIB_H 1
-_ACEOF
-
-fi
-
-done
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GNU libc compatible realloc" >&5
-$as_echo_n "checking for GNU libc compatible realloc... " >&6; }
-if test "${ac_cv_func_realloc_0_nonnull+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test "$cross_compiling" = yes; then :
-  ac_cv_func_realloc_0_nonnull=no
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#if defined STDC_HEADERS || defined HAVE_STDLIB_H
-# include <stdlib.h>
-#else
-char *realloc ();
-#endif
-
-int
-main ()
-{
-return ! realloc (0, 0);
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-  ac_cv_func_realloc_0_nonnull=yes
-else
-  ac_cv_func_realloc_0_nonnull=no
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_func_realloc_0_nonnull" >&5
-$as_echo "$ac_cv_func_realloc_0_nonnull" >&6; }
-if test $ac_cv_func_realloc_0_nonnull = yes; then :
-
-$as_echo "#define HAVE_REALLOC 1" >>confdefs.h
-
-else
-  $as_echo "#define HAVE_REALLOC 0" >>confdefs.h
-
-   case " $LIBOBJS " in
-  *" realloc.$ac_objext "* ) ;;
-  *) LIBOBJS="$LIBOBJS realloc.$ac_objext"
- ;;
-esac
-
-
-$as_echo "#define realloc rpl_realloc" >>confdefs.h
-
-fi
 
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking return type of signal handlers" >&5
@@ -5979,79 +6191,7 @@ fi
 
 fi
 
-
-
-
-  for ac_header in $ac_header_list
-do :
-  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
-ac_fn_c_check_header_compile "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default
-"
-eval as_val=\$$as_ac_Header
-   if test "x$as_val" = x""yes; then :
-  cat >>confdefs.h <<_ACEOF
-#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-
-done
-
-
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether utime accepts a null argument" >&5
-$as_echo_n "checking whether utime accepts a null argument... " >&6; }
-if test "${ac_cv_func_utime_null+set}" = set; then :
-  $as_echo_n "(cached) " >&6
-else
-  rm -f conftest.data; >conftest.data
-# Sequent interprets utime(file, 0) to mean use start of epoch.  Wrong.
-if test "$cross_compiling" = yes; then :
-  ac_cv_func_utime_null='guessing yes'
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$ac_includes_default
-	       #ifdef HAVE_UTIME_H
-	       # include <utime.h>
-	       #endif
-int
-main ()
-{
-struct stat s, t;
-  return ! (stat ("conftest.data", &s) == 0
-	    && utime ("conftest.data", 0) == 0
-	    && stat ("conftest.data", &t) == 0
-	    && t.st_mtime >= s.st_mtime
-	    && t.st_mtime - s.st_mtime < 120);
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-  ac_cv_func_utime_null=yes
-else
-  ac_cv_func_utime_null=no
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_func_utime_null" >&5
-$as_echo "$ac_cv_func_utime_null" >&6; }
-if test "x$ac_cv_func_utime_null" != xno; then
-  ac_cv_func_utime_null=yes
-
-$as_echo "#define HAVE_UTIME_NULL 1" >>confdefs.h
-
-fi
-rm -f conftest.data
-
-for ac_func in dup2 alarm getcwd gethostbyname gethostname gettimeofday \
-inet_ntoa memmove memset mkdir regcomp rmdir putenv select socket \
-strcasecmp strchr strdup strerror strncasecmp strpbrk strrchr strstr utime
+for ac_func in dup2 regcomp putenv strcasecmp strchr strdup strerror utime
 do :
   as_ac_var=`$as_echo "ac_cv_func_$ac_func" | $as_tr_sh`
 ac_fn_c_check_func "$LINENO" "$ac_func" "$as_ac_var"
@@ -6063,6 +6203,293 @@ _ACEOF
 
 fi
 done
+
+
+
+  for ac_func in alarm
+do :
+  ac_fn_c_check_func "$LINENO" "alarm" "ac_cv_func_alarm"
+if test "x$ac_cv_func_alarm" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_ALARM 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_alarm" = no; then
+    echo
+    echo ERROR! Your system does not have alarm
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in getcwd
+do :
+  ac_fn_c_check_func "$LINENO" "getcwd" "ac_cv_func_getcwd"
+if test "x$ac_cv_func_getcwd" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_GETCWD 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_getcwd" = no; then
+    echo
+    echo ERROR! Your system does not have getcwd
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in gettimeofday
+do :
+  ac_fn_c_check_func "$LINENO" "gettimeofday" "ac_cv_func_gettimeofday"
+if test "x$ac_cv_func_gettimeofday" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_GETTIMEOFDAY 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_gettimeofday" = no; then
+    echo
+    echo ERROR! Your system does not have gettimeofday
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in memmove
+do :
+  ac_fn_c_check_func "$LINENO" "memmove" "ac_cv_func_memmove"
+if test "x$ac_cv_func_memmove" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_MEMMOVE 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_memmove" = no; then
+    echo
+    echo ERROR! Your system does not have memmove
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in memset
+do :
+  ac_fn_c_check_func "$LINENO" "memset" "ac_cv_func_memset"
+if test "x$ac_cv_func_memset" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_MEMSET 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_memset" = no; then
+    echo
+    echo ERROR! Your system does not have memset
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in mkdir
+do :
+  ac_fn_c_check_func "$LINENO" "mkdir" "ac_cv_func_mkdir"
+if test "x$ac_cv_func_mkdir" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_MKDIR 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_mkdir" = no; then
+    echo
+    echo ERROR! Your system does not have mkdir
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in rmdir
+do :
+  ac_fn_c_check_func "$LINENO" "rmdir" "ac_cv_func_rmdir"
+if test "x$ac_cv_func_rmdir" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_RMDIR 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_rmdir" = no; then
+    echo
+    echo ERROR! Your system does not have rmdir
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in select
+do :
+  ac_fn_c_check_func "$LINENO" "select" "ac_cv_func_select"
+if test "x$ac_cv_func_select" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SELECT 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_select" = no; then
+    echo
+    echo ERROR! Your system does not have select
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in strncasecmp
+do :
+  ac_fn_c_check_func "$LINENO" "strncasecmp" "ac_cv_func_strncasecmp"
+if test "x$ac_cv_func_strncasecmp" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STRNCASECMP 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_strncasecmp" = no; then
+    echo
+    echo ERROR! Your system does not have strncasecmp
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in strpbrk
+do :
+  ac_fn_c_check_func "$LINENO" "strpbrk" "ac_cv_func_strpbrk"
+if test "x$ac_cv_func_strpbrk" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STRPBRK 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_strpbrk" = no; then
+    echo
+    echo ERROR! Your system does not have strpbrk
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in strrchr
+do :
+  ac_fn_c_check_func "$LINENO" "strrchr" "ac_cv_func_strrchr"
+if test "x$ac_cv_func_strrchr" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STRRCHR 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_strrchr" = no; then
+    echo
+    echo ERROR! Your system does not have strrchr
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in strstr
+do :
+  ac_fn_c_check_func "$LINENO" "strstr" "ac_cv_func_strstr"
+if test "x$ac_cv_func_strstr" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_STRSTR 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_strstr" = no; then
+    echo
+    echo ERROR! Your system does not have strstr
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
+
+
+  for ac_func in utime
+do :
+  ac_fn_c_check_func "$LINENO" "utime" "ac_cv_func_utime"
+if test "x$ac_cv_func_utime" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_UTIME 1
+_ACEOF
+
+fi
+done
+
+
+  if test "$ac_cv_func_utime" = no; then
+    echo
+    echo ERROR! Your system does not have utime
+    echo WIMS cannot be installed. Please report.
+    echo
+    exit 1
+  fi
+
 
 
 # setenv ?

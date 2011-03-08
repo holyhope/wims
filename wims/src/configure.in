@@ -20,6 +20,10 @@ AC_DEFUN([WIMS_FAIL], [
     exit 1
   fi
 ])
+AC_DEFUN([WIMS_CHECK_FUNC], [
+  AC_CHECK_FUNCS($1)
+  WIMS_FAIL($1, $ac_cv_func_$1)
+])
 
 # Checks for programs.
 AC_PROG_LN_S
@@ -37,13 +41,18 @@ AC_PROG_RANLIB
 AC_CHECK_PROG(STRIP,strip,strip,:)
 
 WIMS_NEED([TEX], [tex], [TeX])
-#WIMS_NEED([GP], [gp], [Pari/GP])
-#WIMS_NEED([CONVERT], [convert], [ImageMagick])
+WIMS_NEED([GP], [gp], [Pari/GP])
+WIMS_NEED([CONVERT], [convert], [ImageMagick])
 
 # Checks for libraries.
 SAVE=$LIBS
 AC_CHECK_LIB([m], [cos])
-AC_CHECK_FUNCS([floor pow rint sqrt])
+WIMS_FAIL([Math library libm], $ac_cv_lib_m_cos)
+
+AC_CHECK_FUNCS([rint])
+WIMS_CHECK_FUNC(floor)
+WIMS_CHECK_FUNC(pow)
+WIMS_CHECK_FUNC(sqrt)
 
 LIBS=$SAVE
 AC_CHECK_LIB([crypt], [crypt])
@@ -57,33 +66,31 @@ FLEXLIB=$LIBS
 LIBS=$SAVE
 fun=gethostbyname
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_gethostbyname" = no; then
+if test "$ac_cv_func_$fun" = no; then
   AC_CHECK_LIB([nsl], $fun)
-  WIMS_FAIL($fun, $ac_cv_lib_gethostbyname)
+  WIMS_FAIL($fun, $ac_cv_lib_$fun)
 fi
 
-fun=gethostname
-AC_CHECK_FUNCS($fun)
-WIMS_FAIL($fun, $ac_cv_func_gethostname)
+WIMS_CHECK_FUNC(gethostname)
 
 fun=socket
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_socket" = no; then 
+if test "$ac_cv_func_$fun" = no; then 
   AC_CHECK_LIB([socket], [$fun])
-  if test "$ac_cv_lib_socket" = no; then 
+  if test "$ac_cv_lib_$fun" = no; then 
     AC_CHECK_LIB([socket], [$fun], [], [], [-lnsl])
-    WIMS_FAIL($fun, $ac_cv_lib_socket)
+    WIMS_FAIL($fun, $ac_cv_lib_$fun)
   fi
 fi
 
 fun=inet_ntoa
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_inet_ntoa" = no; then 
+if test "$ac_cv_func_$fun" = no; then 
   AC_CHECK_LIB([socket], [$fun], [], [], [-lnsl])
 fi
 fun=inet_aton
 AC_CHECK_FUNCS($fun)
-if test "$ac_cv_func_inet_aton" = no; then 
+if test "$ac_cv_func_$fun" = no; then 
   AC_CHECK_LIB([resolv], [$fun])
 fi
 NETLIBS=$LIBS
@@ -98,6 +105,8 @@ AC_HEADER_SYS_WAIT
 AC_MEMORY_H
 AC_CHECK_HEADERS([crypt.h arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h \
 stdlib.h string.h sys/socket.h sys/time.h unistd.h utime.h])
+WIMS_FAIL([ANSI C header files], $ac_cv_header_stdc)
+WIMS_FAIL([Header file unistd.h], $ac_cv_header_unistd_h)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -117,19 +126,34 @@ case "$CC+$with_dynamic" in
 esac
 
 # Checks for library functions.
-AC_FUNC_ERROR_AT_LINE
-AC_FUNC_FORK
-AC_FUNC_LSTAT
 AC_FUNC_MALLOC
-AC_FUNC_MEMCMP
+WIMS_FAIL(malloc, $ac_cv_func_malloc_0_nonnull)
 AC_FUNC_REALLOC
+WIMS_FAIL(realloc, $ac_cv_func_realloc_0_nonnull)
+AC_FUNC_FORK
+WIMS_FAIL([working fork], $ac_cv_func_fork_works)
+
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_LSTAT
+AC_FUNC_MEMCMP
 AC_TYPE_SIGNAL
 AC_FUNC_STAT
 AC_FUNC_STRTOD
-AC_FUNC_UTIME_NULL
-AC_CHECK_FUNCS([dup2 alarm getcwd gethostbyname gethostname gettimeofday \
-inet_ntoa memmove memset mkdir regcomp rmdir putenv select socket \
-strcasecmp strchr strdup strerror strncasecmp strpbrk strrchr strstr utime])
+AC_CHECK_FUNCS([dup2 regcomp putenv strcasecmp strchr strdup strerror utime])
+
+WIMS_CHECK_FUNC(alarm)
+WIMS_CHECK_FUNC(getcwd)
+WIMS_CHECK_FUNC(gettimeofday)
+WIMS_CHECK_FUNC(memmove)
+WIMS_CHECK_FUNC(memset)
+WIMS_CHECK_FUNC(mkdir)
+WIMS_CHECK_FUNC(rmdir)
+WIMS_CHECK_FUNC(select)
+WIMS_CHECK_FUNC(strncasecmp)
+WIMS_CHECK_FUNC(strpbrk)
+WIMS_CHECK_FUNC(strrchr)
+WIMS_CHECK_FUNC(strstr)
+WIMS_CHECK_FUNC(utime)
 
 # setenv ?
 AC_CHECK_FUNCS([setenv])
