@@ -26,6 +26,8 @@ voronoi(Site *(*nextsite)(void))
     out_site(bottomsite) ;
     ELinitialize() ;
     newsite = (*nextsite)() ;
+    newintstar.x = 0; /* gcc -Wall */
+    newintstar.y = 0; /* gcc -Wall */
     while (1)
         {
         if(!PQempty())
@@ -35,34 +37,32 @@ voronoi(Site *(*nextsite)(void))
         if (newsite != (Site *)NULL && (PQempty()
             || newsite -> coord.y < newintstar.y
             || (newsite->coord.y == newintstar.y
-            && newsite->coord.x < newintstar.x))) {/* new site is
-smallest */
-            {
+            && newsite->coord.x < newintstar.x)))
+            {/* new site is smallest */
             out_site(newsite) ;
+            lbnd = ELleftbnd(&(newsite->coord)) ;
+            rbnd = ELright(lbnd) ;
+            bot = rightreg(lbnd) ;
+            e = bisect(bot, newsite) ;
+            bisector = HEcreate(e, le) ;
+            ELinsert(lbnd, bisector) ;
+            p = intersect(lbnd, bisector) ;
+            if (p != (Site *)NULL)
+                {
+                PQdelete(lbnd) ;
+                PQinsert(lbnd, p, dist(p,newsite)) ;
+                }
+            lbnd = bisector ;
+            bisector = HEcreate(e, re) ;
+            ELinsert(lbnd, bisector) ;
+            p = intersect(bisector, rbnd) ;
+            if (p != (Site *)NULL)
+                {
+                PQinsert(bisector, p, dist(p,newsite)) ;
+                }
+            newsite = (*nextsite)() ;
             }
-        lbnd = ELleftbnd(&(newsite->coord)) ;
-        rbnd = ELright(lbnd) ;
-        bot = rightreg(lbnd) ;
-        e = bisect(bot, newsite) ;
-        bisector = HEcreate(e, le) ;
-        ELinsert(lbnd, bisector) ;
-        p = intersect(lbnd, bisector) ;
-        if (p != (Site *)NULL)
-            {
-            PQdelete(lbnd) ;
-            PQinsert(lbnd, p, dist(p,newsite)) ;
-            }
-        lbnd = bisector ;
-        bisector = HEcreate(e, re) ;
-        ELinsert(lbnd, bisector) ;
-        p = intersect(bisector, rbnd) ;
-        if (p != (Site *)NULL)
-            {
-            PQinsert(bisector, p, dist(p,newsite)) ;
-            }
-        newsite = (*nextsite)() ;
-        }
-    else if (!PQempty())   /* intersection is smallest */
+        else if (!PQempty())   /* intersection is smallest */
             {
             lbnd = PQextractmin() ;
             llbnd = ELleft(lbnd) ;

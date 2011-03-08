@@ -16,22 +16,22 @@ openpl(void)
     {
     }
 
-#pragma argsused
 void
 line(float ax, float ay, float bx, float by)
     {
+      (void)ax; (void)ay; (void)bx; (void)by;
     }
 
-#pragma argsused
 void
 circle(float ax, float ay, float radius)
     {
+      (void)ax; (void)ay; (void)radius;
     }
 
-#pragma argsused
 void
 range(float pxmin, float pxmax, float pymin, float pymax)
     {
+      (void)pxmin; (void)pxmax; (void)pymin; (void)pymin; (void)pymax;
     }
 
 void

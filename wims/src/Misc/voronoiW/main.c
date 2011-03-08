@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>  /* realloc(), qsort() */
 
-#include <strings.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "vdefs.h"
 
@@ -18,7 +19,6 @@ Freelist sfl ;
 int
 main(int argc, char *argv[])
     {
-    int c ;
     Site *(*next)() ;
 
     sorted = plot = debug = 0 ;
