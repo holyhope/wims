@@ -4,6 +4,7 @@
   This does not work on glibc 2.0.x --- so sorry.
 */
 #include <sys/time.h>
+#include <time.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
