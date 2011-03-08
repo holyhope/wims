@@ -89,6 +89,13 @@ if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
  read ans
 fi
 
+if test  -f ../.wims_maintainer_mode; then
+  if (autoconf); then :; else
+    echo "[maintainer mode] Please install autoconf first."
+    exit 1
+  fi
+  autoheader
+fi
 ./configure $options || exit
 if [ ! -f Makefile ]; then exit; fi
 make clean || exit
