@@ -409,7 +409,7 @@ void debug_output(void)
 	time1+=us.ru_stime.tv_sec*1000+us.ru_stime.tv_usec/1000;
     }
     snprintf(tmplbuf,sizeof(tmplbuf),"%d,%d,%d,%.4f,%.2f,%d,%d,%d",
-	     _varptr-_varbuf[_varbufcurr]+_varbufcurr*VARBUF_LEN,
+	     (int)(_varptr-_varbuf[_varbufcurr])+_varbufcurr*VARBUF_LEN,
 	     bufvcnt-freevcnt,freevcnt,
 	     (double) endmtime2/10000, (double) time1/1000,
 	     mcachecnt,mfilecnt,execnt);
