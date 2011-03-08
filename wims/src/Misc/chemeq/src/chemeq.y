@@ -114,7 +114,7 @@ nombre : Real {$$.r=$1.r;}
 ;
 
 volt : /* rien */
-| spc01 Atome {if ($2.s.compare("V")!=0) yyerror ("only 'V' allowed as unit"); }
+| spc01 Atome {if ($2.s.compare("V")!=0) yyerror ((char*)"only 'V' allowed as unit"); }
 ;
 
 id : Atome {/* $$.s contient le nom */}
@@ -258,7 +258,7 @@ void optionadd(char* b, char* allowed, int c){
 }
 
 int main(int argc, char * argv[]){
-  char * optstr = "mMlcCwnesvh";
+  char * optstr = (char*)"mMlcCwnesvh";
   char * envoption=getenv("chemeq_option");
   if (envoption==NULL) envoption=getenv("w_chemeq_option");
   char * envinput =getenv("chemeq_input");
