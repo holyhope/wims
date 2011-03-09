@@ -1,0 +1,155 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_title=Format off to xyz
+slib_parms=3\
+,file at format off\
+[_SS,_AA,_FF],button on sommets, edges, faces\
+[blue,red,yellow],color in the order sommets, edges, faces
+slib_author=Bernadette PERRIN-RIOU
+slib_out=translate format "off" in "xyz" extended (as in LatticeViewer)
+slib_comment=small buttons may be added to represent the sommets, edges and faces.
+An example of utilisation in oef :
+<pre><br>\text{jmol_poly=wims(record 0 of data/polyedre_off/cube.off)}\
+<br>\text{jmol_poly=slib(geo3D/off2jmol \jmol_poly,[_AA,,_BB],[brown,,blue])}\
+<br>\text{jmol_file=\jmol_poly[2]}\
+<br>\text{jmol_script=\jmol_poly[1]}\
+<br>\text{jmol_script=wims(declosing \jmol_script)}\
+<br>\text{filescript=slib(oef/newfile spt,jmol_file)}\
+<br>\text{jmol_applet=slib(chemistry/jmolshow \jmol_file,400,400,white,\jmol_script)}</pre>
+
+slib_require=pari
+slib_example=
+!exit
+
+:proc
+slib_data = $wims_read_parm
+
+!reset slib_aa slib_ss, slib_ff slib_fas
+!distribute items $wims_read_parm into slib_data,slib_fas,slib_color
+
+slib_out=
+slib_fas=!declosing $slib_fas 
+!distribute items 1,1,1 into slib_ss,slib_aa,slib_ff
+!distribute items $slib_fas into slib_SS,slib_AA,slib_FF
+
+!if $slib_FF=
+  !default slib_FF=_FF
+  slib_ff=0
+!endif
+!if $slib_AA=
+  !default slib_AA=_AA
+  slib_aa=0
+!endif
+!if $slib_SS=
+  !default slib_SS=_SS
+  slib_ss=0
+!endif
+
+slib_color=!declosing $slib_color
+!default slib_color=red,yellow,green
+!!********** Lecture des données off
+
+slib_off=$slib_data
+
+slib_H=1
+slib_u=!line 1 of $slib_off
+slib_nom=!replace internal # by $empty in $slib_u
+!while # isin $slib_u
+!advance slib_H
+slib_u=!line $slib_H of $slib_off
+!endwhile
+!distribute word $slib_u into slib_S_cnt, slib_F_cnt, slib_A_cnt
+
+slib_sommet=!line $[$slib_H+1] to $[$slib_H+$slib_S_cnt] of $slib_off
+slib_sommet=!nonempty lines $slib_sommet
+
+
+slib_arete=!line $[$slib_H+$slib_S_cnt+$slib_F_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt+$slib_A_cnt] of $slib_off
+slib_arete=!nonempty line $slib_arete
+slib_face=!line $[$slib_H+$slib_S_cnt+1] to $[$slib_H+$slib_S_cnt+$slib_F_cnt] of $slib_off
+slib_face=!nonempty line $slib_face
+
+
+!!********** code de dessin des sommets
+
+!reset slib_out slib_Sommet slib_Face slib_Arete slib_Plan
+
+!for slib_na=1 to $slib_S_cnt
+  slib_coord=!line $slib_na of $slib_sommet
+  slib_coord=!word 1 to 4 of $slib_coord
+  slib_out=!append line SS$slib_na $slib_coord to $slib_out
+  slib_Sommet=!append word $[$slib_na -1] to $slib_Sommet
+!next slib_na
+
+!!********** code de dessin des arêtes
+!for slib_nb=1 to $slib_A_cnt
+   slib_r=!line $slib_nb of $slib_arete
+   slib_cnt_r=!itemcnt $slib_r
+   slib_lien1=!word 1 of $slib_r 
+   slib_lien2=!word 2 to -1 of $slib_r   
+   slib_r1=!line $[1+$slib_lien1] of $slib_out
+   slib_r2=!line $[1+$slib_lien2] of $slib_out
+   slib_coord1=!singlespace $slib_r1
+   slib_coord1=!words2items $slib_coord1
+   slib_coord2=!singlespace $slib_r2
+   slib_coord2=!words2items $slib_coord2
+   slib_center_arete=!exec pari 0.5*([$(slib_coord1[2]),$(slib_coord1[3]),$(slib_coord1[4])] + [$(slib_coord2[2]),$(slib_coord2[3]),$(slib_coord2[4])])
+   slib_center_arete=!items2words $slib_center_arete
+   slib_Arete=!append word $[$slib_nb+$slib_S_cnt -1] to $slib_Arete
+   slib_out=!append line $slib_AA$slib_na $slib_center_arete to $slib_out
+!next slib_nb
+
+cnt=0
+slib_Face=
+!for slib_f = 1 to $slib_F_cnt
+   slib_plan=!line $slib_f of $slib_face
+   slib_triangle=!words2items $slib_plan
+   slib_triangle_cnt=!itemcnt $slib_triangle
+   !for slib_j=3 to $[$slib_triangle_cnt-1]
+     slib_Plan=!append word draw uu$cnt 0 ({$(slib_triangle[2])}) ({$(slib_triangle[$slib_j])}) ({$(slib_triangle[$slib_j+1])});\
+     to $slib_Plan
+     !increase cnt
+   !next
+   slib_centerface=[0,0,0]
+   !for slib_j=2 to $[$slib_triangle_cnt]
+     slib_coord=!line $[$(slib_triangle[$slib_j])+1] of $slib_sommet
+     slib_coord=!singlespace $slib_coord
+     slib_coord=!words2items $slib_coord 
+     slib_centerface=$slib_centerface + [$slib_coord]
+   !next
+   slib_centerface=!exec pari 1.*($slib_centerface)/($slib_triangle_cnt-1*1.0)
+   slib_centerface=!items2words $slib_centerface
+   slib_Face=!append word $[$slib_f+$slib_A_cnt+$slib_S_cnt -1] to $slib_Face
+   slib_out=!append line $slib_FF$slib_f $slib_centerface to $slib_out
+!next
+slib_hide=
+slib_option=$slib_option define $slib_SS ({$slib_Sommet}); select ($slib_SS); 
+!if $slib_ss!=0
+  slib_option=$slib_option color atoms $(slib_color[1]); select none;
+!else
+  slib_hide=!append item $slib_SS to $slib_hide
+!endif
+
+slib_option=$slib_option define $slib_AA ({$slib_Arete});select ($slib_AA); 
+!if $slib_aa!=0
+  slib_option=$slib_option color atoms $(slib_color[2]); select none;
+!else
+  slib_hide=!append item $slib_AA to $slib_hide
+!endif
+
+slib_option=$slib_option define $slib_FF ({$slib_Face});select ($slib_FF);
+!if $slib_ff!=0
+ slib_option=$slib_option color atoms $(slib_color[3]); select none;
+!else
+ slib_hide=!append item $slib_FF to $slib_hide
+!endif
+!if $slib_hide!=
+  slib_hide= hide ($slib_hide);
+!endif
+
+slib_out=[$slib_Plan;select all;spacefill 0.05;select none;set disablepopupmenu False;connect (*)(*) delete; \
+$slib_option ; $slib_hide ],$[$slib_S_cnt+1+$slib_F_cnt+$slib_A_cnt]\
+\
+\
+$slib_out
