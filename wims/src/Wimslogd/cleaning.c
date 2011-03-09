@@ -60,9 +60,9 @@ void _cleaning(char *di,int hardcheck)
 			      S_IRUSR|S_IWUSR|S_IXUSR|
 			      S_IRGRP|S_IWGRP|S_IXGRP|
 			      S_IROTH|S_IWOTH|S_IXOTH);
-			chdir("public_html");
+			(void)chdir("public_html");
 			call_ssh(1,"bin/ch..root cleantmpdir");
-			chdir(cwd);
+			(void)chdir(cwd);
 			chmod(session_name,S_IRUSR|S_IWUSR|S_IXUSR);
 			fprintf(stderr,"%s\n",tbuf);
 		    }

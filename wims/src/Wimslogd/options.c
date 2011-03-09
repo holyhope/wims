@@ -41,7 +41,7 @@ int options(void)
 		    sockerror(2,"illegal_fname %s",p1);
 		    return -1;
 		}
-		chdir(classd); if(chdir(p1)<0) {
+		(void)chdir(classd); if(chdir(p1)<0) {
 		    sockerror(2,"bad_class %s",p1);
 		    return -1;
 		}
@@ -56,7 +56,7 @@ int options(void)
 		    sockerror(2,"illegal_fname %s",p1);
 		    return -1;
 		}
-		chdir(modd); if(chdir(p1)<0) {
+		(void)chdir(modd); if(chdir(p1)<0) {
 		    sockerror(2,"bad_module:%s",p1);
 		    return -1;
 		}
@@ -71,7 +71,7 @@ int options(void)
 		    sockerror(2,"illegal_fname:%s",p1);
 		    return -1;
 		}
-		chdir(sesd); if(chdir(p1)<0) {
+		(void)chdir(sesd); if(chdir(p1)<0) {
 		    sockerror(2,"bad_session:%s",p1);
 		    return -1;
 		}

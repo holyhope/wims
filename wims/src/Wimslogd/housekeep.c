@@ -25,7 +25,7 @@ void housekeep(void)
     snprintf(fname,sizeof(fname),"%s/keepdate",tmpd);
     keeplog=fopen(fname,"r");
     if(keeplog==NULL) goto dokeep;
-    fread(keepdate,8,1,keeplog); keepdate[8]=0; fclose(keeplog);
+    (void)fread(keepdate,8,1,keeplog); keepdate[8]=0; fclose(keeplog);
     if(strncmp(keepdate,nowstr,8)==0) return;
     dokeep:
     keeplog=fopen(fname,"w");
@@ -45,7 +45,7 @@ void modupdate(void)
     snprintf(fname,sizeof(fname),"%s/mupdate",tmpd);
     muplog=fopen(fname,"r");
     if(muplog==NULL) goto domup;
-    fread(mupdate,8,1,muplog); mupdate[8]=0; fclose(muplog);
+    (void)fread(mupdate,8,1,muplog); mupdate[8]=0; fclose(muplog);
     if(strncmp(mupdate,nowstr,8)==0) return;
     domup:
     muplog=fopen(fname,"w");
@@ -63,7 +63,7 @@ void backup(void)
     if(strncmp(backdate,nowstr,8)==0) return;
     backlog=fopen("backup/backdate","r");
     if(backlog==NULL) goto dobackup;
-    fread(backdate,8,1,backlog); backdate[8]=0; fclose(backlog);
+    (void)fread(backdate,8,1,backlog); backdate[8]=0; fclose(backlog);
     if(strncmp(backdate,nowstr,8)==0) return;
     dobackup:
     call_ssh(0,"bin/backup &>%s/backup.log",tmpd);

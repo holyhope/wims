@@ -221,8 +221,8 @@ void savescorebin(struct classdata *cd, char *uname)
     cnt=cd->exocnt;
     fd=creat(fname,S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
     if(fd==-1) return;
-    write(fd,&scoreheader,sizeof(scoreheader));
-    write(fd,uscore,sizeof(uscore[0])*cnt);
+    (void)write(fd,&scoreheader,sizeof(scoreheader));
+    (void)write(fd,uscore,sizeof(uscore[0])*cnt);
     close(fd);
 }
 
@@ -231,8 +231,8 @@ void readscorebin(char *fname,int cnt)
     int fd;
     fd=open(fname,O_RDONLY);
     if(fd==-1) return;
-    read(fd,&scoreheader,sizeof(scoreheader));
-    read(fd,uscore,sizeof(uscore[0])*cnt);
+    (void)read(fd,&scoreheader,sizeof(scoreheader));
+    (void)read(fd,uscore,sizeof(uscore[0])*cnt);
     close(fd);
 }
 

@@ -148,9 +148,9 @@ int main(int argc, char *argv[])
     error1=error; error2=error; error3=error;
     forkcnt=0; exec_wait=1; mincnt=0;
     classcaches=sheetcaches=0;
-    freopen("/dev/null","r",stdin);
-    freopen("../tmp/log/wimslogd.out","w",stdout);
-    freopen("../tmp/log/wimslogd.err","w",stderr);
+    (void)freopen("/dev/null","r",stdin);
+    (void)freopen("../tmp/log/wimslogd.out","w",stdout);
+    (void)freopen("../tmp/log/wimslogd.err","w",stderr);
 /*    mfd=shm_open(SHM_NAME,O_RDWR|O_CREAT|O_TRUNC,S_IRUSR|S_IWUSR);
     write(mfd,buf,SHM_SIZE);
     shmptr=mmap(0,SHM_SIZE,PROT_READ|PROT_WRITE,MAP_SHARED,mfd,0);

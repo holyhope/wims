@@ -31,15 +31,15 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
     pid=fork(); if(pid==-1) return -1;
     if(!pid) {	/* child */
 	char buf[4096]; int k;
-	if(inf!=NULL) freopen(inf,"r",stdin);
-	if(outf!=NULL) freopen(outf,"w",stdout);
-	if(errf!=NULL) freopen(errf,"w",stderr);
+	if(inf!=NULL) (void)freopen(inf,"r",stdin);
+	if(outf!=NULL) (void)freopen(outf,"w",stdout);
+	if(errf!=NULL) (void)freopen(errf,"w",stderr);
 		/* This is to patch LinuxPPC uid wrapping 
 		 * for scripts */
 	t=0; if(strchr(cmdf,'/')) {
 	    FILE *tf;
 	    char buf[16];
-	    tf=fopen(cmdf,"r"); fread(buf,1,10,tf); fclose(tf);
+	    tf=fopen(cmdf,"r"); (void)fread(buf,1,10,tf); fclose(tf);
 	    if(memcmp(buf+1,"ELF",3)!=0) t=1;
 	}
 	errno=0;

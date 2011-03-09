@@ -41,7 +41,7 @@ void output(int fh)
     int l, *ip;
     if(answerlen<0) l=strlen(textbuf); else l=answerlen;
     ip=(int *) commbuf; *ip=l;
-    write(fh,commbuf,l+sizeof(int));
+    (void)write(fh,commbuf,l+sizeof(int));
     close(fh);
     if(debugging) {
 	if(textbuf[0]=='O') debug("%.2s %d bytes.",textbuf,l);
@@ -94,6 +94,5 @@ void answer(int fh)
     answerlen=-1;
     if(debugging) debug("> %s",textbuf);
     if(options()>=0) cmd();
-    end: chdir(cwd); cwdtype=dir_home; output(fh);
+    end: (void)chdir(cwd); cwdtype=dir_home; output(fh);
 }
-
