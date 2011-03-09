@@ -962,7 +962,7 @@ uint8 *p;
   }
   for (numword=0;;) {
     /* Read line */
-    fgets (line, sizeof(line), f);
+    (void)fgets (line, sizeof(line), f);
     if (feof(f))
       break;
     /* Copy the word */

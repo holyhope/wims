@@ -112,7 +112,8 @@ mkdir -p %s\n\
 openssl s_client -connect %s:%d -quiet 2>/dev/null >%s <<@\n\
 %s\n\
 @\n", tmpdir,host,port,tfname,tbuf);
-    system(buf);
+    if (system(buf))
+      errorquit("system() error");
     return open(tfname,O_RDONLY);
 }
 
@@ -141,10 +142,10 @@ int main(int argc, char *argv[])
 	port=atoi(p2);
 	soc=net_connect(p1); if(soc==-1) return 1;
 	c=' '; for(p3=parm; *p3; p3++) {
-	    if(*p3=='\n' && c!='\r') write(soc,"\r",1);
-	    write(soc,p3,1); c=*p3;
+	    if(*p3=='\n' && c!='\r') (void)write(soc,"\r",1);
+	    (void)write(soc,p3,1); c=*p3;
 	}
-	write(soc,"\r\n\r\n",4);
+	(void)write(soc,"\r\n\r\n",4);
 	pt=getenv("w_module");
 	if(pt==NULL || *pt==0 || strncmp(pt,"adm/",4)==0 ) {  /* File to post? */
 	    pt=getenv("w_webget_post"); if(pt!=NULL && *pt!=0) {
@@ -154,7 +155,7 @@ int main(int argc, char *argv[])
 		f=fopen(pt,"r"); if(f!=NULL) {
 		    do {
 			l=fread(buf,1,sizeof(buf),f);
-			if(l>0 && l<=sizeof(buf)) write(soc,buf,l);
+			if(l>0 && l<=sizeof(buf)) (void)write(soc,buf,l);
 		    } while(l==sizeof(buf));
 		    fclose(f);
 		}
@@ -189,7 +190,7 @@ Host: %s\r\n\
 	soc=gethttps(p1); goto read;
     }
     soc=net_connect(p1);
-    write(soc,tbuf,strlen(tbuf));
+    (void)write(soc,tbuf,strlen(tbuf));
     	/* header */
     read: if(soc==-1) return 1;
     c=-1;

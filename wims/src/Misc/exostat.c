@@ -105,7 +105,7 @@ void onefile(char *fname)
     f=fopen(fname,"r"); if(f==NULL) return;
     fseek(f,0,SEEK_END); l=ftell(f); fseek(f,0,SEEK_SET);
     if(l<=0) {fclose(f); return;}
-    buf=xmalloc(l+16); fread(buf,1,l,f); fclose(f); buf[l]=0;
+    buf=xmalloc(l+16); (void)fread(buf,1,l,f); fclose(f); buf[l]=0;
     fcind=0;
     for(pp=buf; pp; pp=pe) {
 	pe=strchr(pp,'\n'); if(pe!=NULL) *pe++=0;

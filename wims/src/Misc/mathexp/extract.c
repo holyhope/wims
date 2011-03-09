@@ -55,7 +55,7 @@ void _extract(char *p, int dist)
     if(expl1<=0) got=1; else got=0;
     for(p1=find_word_start(p), p2=p1; *p2; p2=find_word_start(p3)) {
 	if(*p2=='.' || isdigit(*p2)) {
-	    strtod(p2,&p3); continue;
+	    (void)strtod(p2,&p3); continue;
 	}
 	if(*p2=='(') {
 	    p3=find_matching(p2+1,')'); lt=exp_paren;

@@ -166,7 +166,7 @@ void onefile(char *fname)
     char *fbuf, *p1, *p2, *p3;
     l=filelength(fname); if(l<=0) return;
     f=fopen(fname,"r"); if(f==NULL) return;
-    fbuf=xmalloc(l+16); fread(fbuf,1,l,f); fclose(f); fbuf[l]=0;
+    fbuf=xmalloc(l+16); (void)fread(fbuf,1,l,f); fclose(f); fbuf[l]=0;
     for(p1=fbuf; *p1; p1=p2) {
 	p2=strchr(p1,'\n'); if(p2==NULL) p2=p1+strlen(p1); else *p2++=0;
 	p3=strchr(p1,','); if(p3==NULL) continue;

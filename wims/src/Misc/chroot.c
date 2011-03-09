@@ -227,7 +227,7 @@ int main(int argc,char *argv[])
 	goto ex;
     }
     if(chroot("../chroot")==0) {
-	chdir("/tmp");
+	(void)chdir("/tmp");
 	lim.rlim_cur=lim.rlim_max=PROC_QUOTA;
 	setrlimit(RLIMIT_NPROC,&lim);
 	setenv("PATH",chroot_path,1);
@@ -238,7 +238,7 @@ int main(int argc,char *argv[])
 	    setenv("tmp_dir",tmpbuf,1);
 	    p=getenv("w_wims_priv_chroot");
 	    if(p && strstr(p,"tmpdir")!=NULL)
-	      chdir(tmpbuf);
+	      (void)chdir(tmpbuf);
 	}
     }
     else if(test_must()) goto abandon;

@@ -302,7 +302,7 @@ int main()
 	f=fopen(s,"r"); if(f==NULL) return 0; /* no file */
 	fseek(f,0,SEEK_END); l=ftell(f); fseek(f,0,SEEK_SET);
 	if(l<=0 || l>sourcelim) return 0; /* too long */
-	inpbuf=xmalloc(l+16); fread(inpbuf,1,l,f); fclose(f); inpbuf[l]=0;
+	inpbuf=xmalloc(l+16); (void)fread(inpbuf,1,l,f); fclose(f); inpbuf[l]=0;
     }
     p1=inpbuf; prepare_dic();
     if(leaveline) c='\n'; else c=' ';
