@@ -63,7 +63,8 @@ FILE *open4read(char *n)
 	p1=getenv("TMPDIR"); if(p1==NULL || *p1==0) p1=".";
 	snprintf(tbuf,sizeof(tbuf),"%s/drawfile_.gif",p1);
 	snprintf(sbuf,sizeof(sbuf),"convert %s %s",namebuf,tbuf);
-	system(sbuf); f=fopen(tbuf,"r");	
+	if (system(sbuf)) error("system_failed");
+        f=fopen(tbuf,"r");	
     }
     return f;
 }
