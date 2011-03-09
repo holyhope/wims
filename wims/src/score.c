@@ -159,7 +159,7 @@ void _getscore(char *p,int dtype)
     char *p1;
 
     _scoreparm(p);
-    if(score_class==0 || *score_user==0) return;
+    if(*score_class==0 || *score_user==0) return;
     if(getscoreuser(score_class,score_user)<0) return;
     for(i=osh=0,p1=p;i<scorecnt && p1-p<MAX_LINELEN-32;i++) {
 	sh=(rscore[i].num>>8)+1; if(sh<1 || sh>MAX_SHEETS) break;
@@ -222,7 +222,7 @@ void calc_getscorepercent(char *p)
     char *p1;
 
     _scoreparm(p);
-    if(score_class==0 || *score_user==0) return;
+    if(*score_class==0 || *score_user==0) return;
     if(getscoreuser(score_class,score_user)<0) return;
     for(p1=p,i=0;i<totsheets && p1-p<MAX_LINELEN-32;i++) {
 	if(scoresum[i]==0) {
@@ -356,7 +356,7 @@ int getscorestatus(char *classe, int sheet)
 void calc_getscorestatus(char *p)
 {
     _scoreparm(p);
-    if(score_class==0 || score_sheet==0 || *score_user==0) {
+    if(*score_class==0 || score_sheet==0 || *score_user==0) {
         *p=0; return;
     }
     if(getscorestatus(score_class, score_sheet))
