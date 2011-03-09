@@ -1087,7 +1087,7 @@ left_int (trimstr)
       sprintf (auxstr + strlen (auxstr), "%c", trimstr[0]);
       strdelete (trimstr, 1, 1);
     }
-  code = (sscanf (auxstr, "%ld", &auxint) == 0);
+  code = (sscanf (auxstr, "%d", &auxint) == 0);
   return auxint;
 }
 
@@ -2689,9 +2689,9 @@ read_molfile (mfilename)
   ri = li;
   strcpy (rline, molbuf[ri - 1]);
   sprintf (tmpstr, "%.5s", rline);
-  code = (sscanf (tmpstr, "%ld", &n_atoms) == 0);
+  code = (sscanf (tmpstr, "%d", &n_atoms) == 0);
   strsub (tmpstr, rline, 14, 5);
-  code = (sscanf (tmpstr, "%ld", &n_bonds) == 0);
+  code = (sscanf (tmpstr, "%d", &n_bonds) == 0);
   strsub (molname, rline, 42, (int) (strlen (rline) - 42L));
   /* try */
   atom = safe_calloc (n_atoms, sizeof (atom_rec));
@@ -2730,10 +2730,10 @@ read_molfile (mfilename)
       strsub (ystr, rline, 23, 7);
       strsub (zstr, rline, 32, 7);
       strsub (chgstr, rline, 43, 7);
-      code = (sscanf (xstr, "%lg", &xval) == 0);
-      code = (sscanf (ystr, "%lg", &yval) == 0);
-      code = (sscanf (zstr, "%lg", &zval) == 0);
-      code = (sscanf (chgstr, "%lg", &chgval) == 0);
+      code = (sscanf (xstr, "%g", &xval) == 0);
+      code = (sscanf (ystr, "%g", &yval) == 0);
+      code = (sscanf (zstr, "%g", &zval) == 0);
+      code = (sscanf (chgstr, "%g", &chgval) == 0);
       WITH = &atom[n - 1];
       strcpy (WITH->element, elemstr);
       strcpy (WITH->atype, newatomtype);
@@ -2774,9 +2774,9 @@ read_molfile (mfilename)
       strcpy (rline, molbuf[ri - 1]);
       strsub (a1str, rline, 9, 3);
       strsub (a2str, rline, 15, 3);
-      code = (sscanf (a1str, "%ld", &a1val) == 0);
+      code = (sscanf (a1str, "%d", &a1val) == 0);
       /* if code <> 0 then beep; */
-      code = (sscanf (a2str, "%ld", &a2val) == 0);
+      code = (sscanf (a2str, "%d", &a2val) == 0);
       /* if code <> 0 then beep; */
       WITH1 = &bond[n];
       WITH1->a1 = a1val;
@@ -2836,10 +2836,10 @@ read_mol2file (mfilename)
       strcpy (rline, molbuf[ri - 1]);
     }
   sprintf (tmpstr, "%.5s", rline);
-  sscanf (tmpstr, "%ld", &n_atoms);
+  sscanf (tmpstr, "%d", &n_atoms);
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
   strsub (tmpstr, rline, 7, 5);
-  sscanf (tmpstr, "%ld", &n_bonds);
+  sscanf (tmpstr, "%d", &n_bonds);
   /* try */
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
   atom = safe_calloc (n_atoms, sizeof (atom_rec));
@@ -2903,10 +2903,10 @@ read_mol2file (mfilename)
       strsub (chgstr, rline, 70, 9);
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
-      sscanf (xstr, "%lg", &xval);
-      sscanf (ystr, "%lg", &yval);
-      sscanf (zstr, "%lg", &zval);
-      sscanf (chgstr, "%lg", &chgval);
+      sscanf (xstr, "%g", &xval);
+      sscanf (ystr, "%g", &yval);
+      sscanf (zstr, "%g", &zval);
+      sscanf (chgstr, "%g", &chgval);
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
 /* p2c: checkmol.pas: Note: Eliminated unused assignment statement [338] */
       WITH = &atom[n - 1];
@@ -2940,10 +2940,10 @@ read_mol2file (mfilename)
 	}
       strsub (a1str, rline, 9, 3);
       strsub (a2str, rline, 14, 3);
-      code = (sscanf (a1str, "%ld", &a1val) == 0);
+      code = (sscanf (a1str, "%d", &a1val) == 0);
       if (code != 0)
 	printf ("%s\007\n", rline);
-      code = (sscanf (a2str, "%ld", &a2val) == 0);
+      code = (sscanf (a2str, "%d", &a2val) == 0);
       if (code != 0)
 	printf ("%s\007\n", rline);
       WITH1 = &bond[n];
@@ -6879,7 +6879,7 @@ write_mol ()
     printf ("Molecule name: %s\n", molname);
   else
     printf ("Molecule name (haystack): %s\n", molname);
-  printf ("atoms: %ld  bonds: %ld  rings: %ld\n", n_atoms, n_bonds, n_rings);
+  printf ("atoms: %d  bonds: %d  rings: %d\n", n_atoms, n_bonds, n_rings);
   if (n_atoms < 1)
     return;
   if (n_bonds < 1)
@@ -6893,11 +6893,11 @@ write_mol ()
 	putchar (' ');
       if (i < 1000)
 	putchar (' ');
-      printf ("%ld %s %s %f %f ",
+      printf ("%d %s %s %f %f ",
 	      i, atom[i - 1].element, atom[i - 1].atype, atom[i - 1].x,
 	      atom[i - 1].y);
       printf ("%f", atom[i - 1].z);
-      printf ("  (%ld heavy-atom neighbors, Hexp: %ld Htot: %ld)",
+      printf ("  (%d heavy-atom neighbors, Hexp: %d Htot: %d)",
 	      atom[i - 1].neighbor_count, atom[i - 1].Hexp, atom[i - 1].Htot);
       if (atom[i - 1].formal_charge != 0)
 	printf ("  charge: %ld", atom[i - 1].formal_charge);
@@ -6912,10 +6912,10 @@ write_mol ()
 	putchar (' ');
       if (i < 1000)
 	putchar (' ');
-      printf ("%ld %ld %ld %c",
+      printf ("%d %d %d %c",
 	      i, bond[i - 1].a1, bond[i - 1].a2, bond[i - 1].btype);
       if (bond[i - 1].ring_count > 0)
-	printf (", contained in %ld ring(s)", bond[i - 1].ring_count);
+	printf (", contained in %d ring(s)", bond[i - 1].ring_count);
       if (bond[i - 1].arom)
 	printf (" (aromatic) ");
       putchar ('\n');
@@ -6925,7 +6925,7 @@ write_mol ()
   FORLIM = n_rings;
   for (i = 0; i < FORLIM; i++)
     {
-      printf ("ring %ld: ", i + 1);
+      printf ("ring %d: ", i + 1);
       /*aromatic := true; */
       memset (testring, 0, sizeof (ringpath_type));
       ring_size = ringprop[i].size;	/* v0.3j */
@@ -6936,7 +6936,7 @@ write_mol ()
       /*a_prev := testring[ring_size]; */
       for (j = 0; j < ring_size; j++)
 	{
-	  printf ("%ld ", testring[j]);
+	  printf ("%d ", testring[j]);
 	  /*a_ref := testring[j]; */
 	  /*if (not bond^[get_bond(a_prev,a_ref)].arom) then aromatic := false; */
 	  /*a_prev := a_ref; */
@@ -6961,7 +6961,7 @@ write_needle_mol ()
   int a_prev, a_ref, FORLIM;
 
   printf ("Molecule name (needle): %s\n", ndl_molname);
-  printf ("atoms: %ld  bonds: %ld  rings: %ld\n",
+  printf ("atoms: %d  bonds: %d  rings: %d\n",
 	  ndl_n_atoms, ndl_n_bonds, ndl_n_rings);
   if (ndl_n_atoms < 1)
     return;
@@ -6976,15 +6976,15 @@ write_needle_mol ()
 	putchar (' ');
       if (i < 1000)
 	putchar (' ');
-      printf ("%ld %s %s %f %f ",
+      printf ("%d %s %s %f %f ",
 	      i, ndl_atom[i - 1].element, ndl_atom[i - 1].atype,
 	      ndl_atom[i - 1].x, atom[i - 1].y);
       printf ("%f", ndl_atom[i - 1].z);
-      printf ("  (%ld heavy-atom neighbors, Hexp: %ld Htot: %ld)",
+      printf ("  (%d heavy-atom neighbors, Hexp: %d Htot: %d)",
 	      ndl_atom[i - 1].neighbor_count, ndl_atom[i - 1].Hexp,
 	      ndl_atom[i - 1].Htot);
       if (ndl_atom[i - 1].formal_charge != 0)
-	printf ("  charge: %ld", ndl_atom[i - 1].formal_charge);
+	printf ("  charge: %d", ndl_atom[i - 1].formal_charge);
       putchar ('\n');
     }
   FORLIM = ndl_n_bonds;
@@ -6996,11 +6996,11 @@ write_needle_mol ()
 	putchar (' ');
       if (i < 1000)
 	putchar (' ');
-      printf ("%ld %ld %ld %c",
+      printf ("%d %d %d %c",
 	      i, ndl_bond[i - 1].a1, ndl_bond[i - 1].a2,
 	      ndl_bond[i - 1].btype);
       if (ndl_bond[i - 1].ring_count > 0)
-	printf (", contained in %ld ring(s)", ndl_bond[i - 1].ring_count);
+	printf (", contained in %d ring(s)", ndl_bond[i - 1].ring_count);
       if (ndl_bond[i - 1].arom)
 	printf (" (aromatic) ");
       putchar ('\n');
@@ -7018,11 +7018,11 @@ write_needle_mol ()
 	    testring[j] = ndl_ring[i][j];
 	}
       ring_size = path_length (testring);
-      printf ("ring %ld: ", i + 1);
+      printf ("ring %d: ", i + 1);
       a_prev = testring[ring_size - 1];
       for (j = 0; j < ring_size; j++)
 	{
-	  printf ("%ld ", testring[j]);
+	  printf ("%d ", testring[j]);
 	  a_ref = testring[j];
 	  if (!ndl_bond[get_ndl_bond (a_prev, a_ref) - 1].arom)	/* v0.3k */
 	    aromatic = false;
@@ -14454,7 +14454,7 @@ main (int argc, char *argv[])
 			{
 			  if (fp_exactblock)
 			    fpdecimal++;
-			  printf ("%i\n", fpdecimal);
+			  printf ("%ll\n", fpdecimal);
 			  fpindex = 0;
 			  fpdecimal = 0;
 			  fp_exactblock = false;
@@ -14477,7 +14477,7 @@ main (int argc, char *argv[])
 	{
 	  if (fp_exactblock)
 	    fpdecimal++;
-	  printf ("%i\n", fpdecimal);
+	  printf ("%ll\n", fpdecimal);
 	}
       zap_needle ();
       if (rfile_is_open)
