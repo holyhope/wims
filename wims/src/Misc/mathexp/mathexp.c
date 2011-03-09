@@ -93,7 +93,7 @@ int main()
     snprintf(parmbuf,sizeof(parmbuf),"%s",p);
     parm();
     req[request].routine();
-    for(i=0;i<regexcnt;i++) if(regexchk[i].isvar==0) free(&(regexchk[i].cmpreg));
+    for(i=0;i<regexcnt;i++) if(regexchk[i].isvar==0) regfree(&(regexchk[i].cmpreg));
     return 0;
 }
 
