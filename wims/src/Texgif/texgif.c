@@ -81,7 +81,7 @@ void tex(void)
 	if(f!=NULL) {
 	    fseek(f,0,SEEK_END); l=ftell(f); fseek(f,0,SEEK_SET);
 	    if(l>0 && l<FILE_LENGTH_LIMIT) {
-		hd=xmalloc(l+16); fread(hd,1,l,f);
+		hd=xmalloc(l+16); (void)fread(hd,1,l,f);
 	    }
 	    else {l=0; hd="";}
 	    fclose(f); f=fopen(fbuf,"w");
@@ -99,11 +99,11 @@ void tex(void)
 \\clearpage}\n\
 \\end{document}\n",texstyle, src, texstyle); fclose(f);
     }
-    chdir(tmpdir);
+    if (chdir(tmpdir)) error("chdir failure");
     parmbuf[0]=texname; parmbuf[1]="texgif"; parmbuf[2]=NULL;
     wrapexec=1;
     execredirected(texname,NULL,NULL,NULL,parmbuf);
-    if(cwd[0]) chdir(cwd);
+    if (cwd[0] && chdir(cwd)) error("chdir failure");
 }
 
 void parms(void)
