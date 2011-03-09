@@ -14,35 +14,17 @@ fi
 
 cd `dirname $0`/..
 
-distro=default
-[ -f /etc/debian_version ] && distro=debian
-
-case $distro in
-  debian) usergroup=nobody:nogroup
-  ;;
-  *) usergroup=nobody:nobody
-  ;;
-esac
-
 for f in public_html/bin/wrap..exec bin/wimsd
 do
  if [ -f $f ]; then
-  chown $usergroup $f
-  chmod a+s $f
+  chown nobody $f
+  chmod go-rwx $f
+  chmod u+s $f
  fi
 done
-uname=`uname | tr '[A-Z]' '[a-z]'`
-case "$uname" in
-  darwin) chown root:Admin public_html/bin/ch..root;;
-  *)      chown root:root public_html/bin/ch..root;;
-esac
-chmod g-rwx ch..root
+chown root public_html/bin/ch..root
+chmod go-rwx public_html/bin/ch..root
 
-chmod a+s public_html/bin/ch..root
+chmod u+s public_html/bin/ch..root
 rm -f log/unsecure
-
-#if [ -d chroot/dev ] && [ ! -e chroot/dev/zero ]; then
-# cp -fR /dev/zero chroot/dev 2>/dev/null
-# cp -fR /dev/null chroot/dev 2>/dev/null
-#fi
 
