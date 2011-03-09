@@ -209,7 +209,7 @@ void onereq(int soc)
     }
     alarm(WIMS_TIMEOUT);
     signal(SIGALRM,alarm1);
-    chdir("public_html");
+    (void)chdir("public_html");
     i=0; do {
         l=read(soc, buf+i, 1); i++;
     }
@@ -294,7 +294,7 @@ void parm(void)
 {
     char *p;
     p=getenv("WIMS_HOME");
-    if(p!=NULL && *p!=0) chdir(p);
+    if(p!=NULL && *p!=0) (void)chdir(p);
     p=getenv("WIMSD_PORT");
     if(p!=NULL && *p!=0) {
 	int i;
@@ -314,7 +314,7 @@ int main(int argc, char *argv[])
     parm();
     if(stat("public_html/wims.cgi",&st)!=0) {
 	char buf[1024];
-	getcwd(buf,sizeof(buf));
+	(void)getcwd(buf,sizeof(buf));
 	fprintf(stderr,"Bad home directory %s: \
 wims.cgi not found.\n",buf); exit(1);
     }
