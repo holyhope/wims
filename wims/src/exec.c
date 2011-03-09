@@ -1111,7 +1111,7 @@ void _exec_ins(char *p, char *script_name,char *format)
     if(border<0) border=0; if(border>100) border=100;
     if(middle) {
 	snprintf(outbuf+strlen(outbuf),
-		 sizeof(outbuf)-strlen(outbuf),mathalign_sup1);
+		 sizeof(outbuf)-strlen(outbuf),"%s",mathalign_sup1);
 	vspace=2;
     }
     mystrncpy(url,ref_name,sizeof(url));
@@ -1137,7 +1137,7 @@ void _exec_ins(char *p, char *script_name,char *format)
 		 n,tag2,url,border,vspace, at,buf2, altbuf);
     }
     if(middle) snprintf(outbuf+strlen(outbuf),
-			sizeof(outbuf)-strlen(outbuf),mathalign_sup2);
+			sizeof(outbuf)-strlen(outbuf),"%s",mathalign_sup2);
     setvar("ins_warn",""); ins_alt[0]=0;
     setvar("ins_cnt",int2str(insert_no));
     reset:

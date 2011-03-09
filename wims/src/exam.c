@@ -233,8 +233,6 @@ void calc_examdep(char *p)
     if(*p2==0) goto abt;
     *p2++=0; p2=find_word_start(p2);
     t=atoi(p1);
-    if(exam_depcheck(p2,t)) p1="yes";
-    else p1="no";
-    snprintf(p,MAX_LINELEN,p1);
+    snprintf(p,MAX_LINELEN, exam_depcheck(p2,t)? "yes" : "no");
 }
 
