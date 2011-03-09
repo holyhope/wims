@@ -228,8 +228,8 @@ void calc_exec(char *p)
 	
 	i=strlen(parm);
 	fd=mxtab[multiexec_index].pipe_stdin[1];
-	write(fd,parm,i);
-	write(fd,multiexec_random,strlen(multiexec_random));
+	(void)write(fd,parm,i);
+	(void)write(fd,multiexec_random,strlen(multiexec_random));
 	*p=0; i=0; k=MAX_LINELEN; fd=mxtab[multiexec_index].pipe_stdout[0];
 	while(k>0) {
 	    FD_ZERO(&rset); FD_SET(fd,&rset);

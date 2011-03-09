@@ -410,7 +410,7 @@ void main_configure(void)
     }
     	/* check priority */
     if(priority[0] && checkhost(priority)>0) ispriority=1;
-    getcwd(cwdbuf,sizeof(cwdbuf)); setvar("httpd_PWD",cwdbuf);
+    (void)getcwd(cwdbuf,sizeof(cwdbuf)); setvar("httpd_PWD",cwdbuf);
     setenv("wims_server_base",cwdbuf,1);
     p=strrchr(cwdbuf,'/');
     if(p!=NULL && strcmp(p,"/public_html")==0) {

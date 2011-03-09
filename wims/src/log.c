@@ -34,7 +34,7 @@ void flushlog(void)
     if(n<=0) return;
     fd=open(temp_log,O_WRONLY|O_APPEND|O_CREAT,S_IRUSR|S_IWUSR);
     if(fd==-1) return;
-    write(fd,logbuf,n); close(fd);
+    (void)write(fd,logbuf,n); close(fd);
 }
 
 	/* Write module log file. */

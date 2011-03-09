@@ -253,12 +253,15 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf,
 	if(!inf) {
 	    dup2(pipe_in[0],0); close(pipe_in[1]);
 	}
-	else freopen(inf,"r",stdin);
+	else if (freopen(inf,"r",stdin) == NULL)
+            fprintf(stderr,"freopen failed");
 	if(!outf) {
 	    dup2(pipe_out[1],1); close(pipe_out[0]);
 	}
-	else freopen(outf,"w",stdout);
-	if(errf) freopen(errf,"w",stderr);
+	else if (freopen(outf,"w",stdout) == NULL)
+            fprintf(stderr,"freopen failed");
+	if(errf && freopen(errf,"w",stderr) == NULL)
+            fprintf(stderr,"freopen failed");
 	snprintf(abuf,sizeof(abuf),"%s",find_word_start(args));
 	if(stat("../chroot/tmp/sessions/.chroot",&st)==0 || must_chroot) {
 	    arg[0]=ch_root; i=1;
@@ -447,7 +450,7 @@ void prepare1(void)
 
 void prepabout(char *cmd, char *outf, char *errf)
 {
-    write(pipe_in[1],cmd,strlen(cmd));
+    (void)write(pipe_in[1],cmd,strlen(cmd));
     execredirected(nameofcmd,NULL,outf,errf,cmdparm);
 }
 

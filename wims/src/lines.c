@@ -100,7 +100,7 @@ void flushoutput(void)
     int l2;
     if(outptr<=outbuf) return;
     l2=outptr-outbuf;
-    if(lastout_file!=-1) write(lastout_file,outbuf,l2);
+    if(lastout_file!=-1) (void)write(lastout_file,outbuf,l2);
     else fwrite(outbuf,l2,1,stdout);
     outptr=outbuf;
 }
@@ -429,7 +429,7 @@ void _output_(char *s)
 	memmove(outptr,s,l); outptr+=l; return;
     }
     memmove(outptr,s,l2); s+=l2; l-=l2;
-    if(lastout_file!=-1) write(lastout_file,outbuf,sizeof(outbuf));
+    if(lastout_file!=-1) (void)write(lastout_file,outbuf,sizeof(outbuf));
     else fwrite(outbuf,sizeof(outbuf),1,stdout);
     outptr=outbuf; l2=sizeof(outbuf); goto put;
 }
@@ -892,23 +892,23 @@ int execredirected(char *cmdf, char *inf, char *outf, char *errf, char *arg[])
     pid=fork(); if(pid==-1) return -1;
     if(!pid) {	/* child */
 	char buf[MAX_LINELEN+1]; int k;
-	nice(10);	/* lower priority for children */
+	(void)nice(10);	/* lower priority for children */
 	if(is_multiexec) {
 	    dup2(mxtab[multiexec_index].pipe_stdin[0],0);
 	    dup2(mxtab[multiexec_index].pipe_stdout[1],1);
 	    dup2(mxtab[multiexec_index].pipe_stderr[1],2);
 	}
 	else {
-	    if(inf!=NULL) freopen(inf,"r",stdin);
-	    if(outf!=NULL) freopen(outf,"w",stdout);
-	    if(errf!=NULL) freopen(errf,"w",stderr);
+	    if(inf!=NULL) (void)freopen(inf,"r",stdin);
+	    if(outf!=NULL) (void)freopen(outf,"w",stdout);
+	    if(errf!=NULL) (void)freopen(errf,"w",stderr);
 	}
 		/* This is to patch LinuxPPC uid wrapping 
 		 * for scripts */
 	t=0; if(strchr(cmdf,'/')) {
 	    int tf;
 	    char tbuf[16];
-	    tf=open(cmdf,O_RDONLY); read(tf,tbuf,8); close(tf);
+	    tf=open(cmdf,O_RDONLY); (void)read(tf,tbuf,8); close(tf);
 	    if(memcmp(tbuf+1,"ELF",3)!=0) t=1;
 	}
 	if(wrapexec==-1) {
@@ -1051,7 +1051,7 @@ void accessfile(char *content, char *type, char *s,...)
     }
     lastdatafile[0]=lastftest[0]=0;
     if(fd==-1) return;
-    write(fd,content,strlen(content)); close(fd);
+    (void)write(fd,content,strlen(content)); close(fd);
 }
 
 	/* system(), but with variable parms
