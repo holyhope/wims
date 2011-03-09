@@ -51,44 +51,44 @@ my @Lang=('en','fr','cn', 'nl','it') ;
 system(`mkdir -p $DOSSIER`) ;
 my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
 
-my %Command ;
-$Command{'begin'}{'if'}= "  " ; 
-$Command{'end'}{'if'}= "  " ; 
-$Command{'begin'}{'oefparm0'}= '\\\\' ; 
-$Command{'end'}{'oefparm0'}= "\{  =  \}" ;
-$Command{'begin'}{'oefcommand'}= '\\\\' ; 
-$Command{'end'}{'oefcommand'}= "\{  \}" ;
-##$Command{'begin'}{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
-$Command{'begin'}{'anstype'}='' ;
-##$Command{'end'}{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
-$Command{'end'}{'anstype'}='' ;
+my (%Begin, %End) ;
+$Begin{'if'}= "  " ; 
+$End{'if'}= "  " ; 
+$Begin{'oefparm0'}= '\\\\' ; 
+$End{'oefparm0'}= "\{  =  \}" ;
+$Begin{'oefcommand'}= '\\\\' ; 
+$End{'oefcommand'}= "\{  \}" ;
+##$Begin{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
+$Begin{'anstype'}='' ;
+##$End{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
+$End{'anstype'}='' ;
 for my $tag ("oefparm4") {
-   $Command{'begin'}{$tag}= "" ; 
-   $Command{'end'}{$tag}= "\(  \)" ;
+   $Begin{$tag}= "" ; 
+   $End{$tag}= "\(  \)" ;
 }
 for my $tag ("oefparm2", "oefparm3") {
-   $Command{'begin'}{$tag}= " " ; 
-   $Command{'end'}{$tag}= " " ;
+   $Begin{$tag}= " " ; 
+   $End{$tag}= " " ;
 }
 for my $tag ( "oefparm1") {
-   $Command{'begin'}{$tag}= "" ; 
-   $Command{'end'}{$tag}= "" ;
+   $Begin{$tag}= "" ; 
+   $End{$tag}= "" ;
 }
 
 for my $tag ("oefparm5") {
-   $Command{'begin'}{$tag}= '\\\\' ;
-   $Command{'end'}{$tag}= "" ;
+   $Begin{$tag}= '\\\\' ;
+   $End{$tag}= "" ;
 }
 
 for my $tag ("slib") {
-   $Command{'begin'}{$tag}= "slib(" ; 
-   $Command{'end'}{$tag}= " )" ;
+   $Begin{$tag}= "slib(" ; 
+   $End{$tag}= " )" ;
 }
 
 my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip") ; 
 for my $tag (@phtml) {
-   $Command{'begin'}{$tag}= "\\special\{" ; 
-   $Command{'end'}{$tag}= " \}" ;
+   $Begin{$tag}= "\\special\{" ; 
+   $End{$tag}= " \}" ;
 }
 
 ##### generation
@@ -131,10 +131,10 @@ sub anstype { my ($lang)=@_ ;
  close IN ;
  my $text ='';
  my $Text = "var anstypename='$name{'anstype'}{$lang}';\n" ;
-   my $var=join ("$Command{'end'}{'anstype'}\',\'$Command{'begin'}{'anstype'}", sort keys(%HASH)) ;
-   $Text .="var anstype = [ '$Command{'begin'}{'anstype'}$var$Command{'end'}{'anstype'}' ];\n" ;
+   my $var=join ("$End{'anstype'}\',\'$Begin{'anstype'}", sort keys(%HASH)) ;
+   $Text .="var anstype = [ '$Begin{'anstype'}$var$End{'anstype'}' ];\n" ;
    for my $tag (keys(%HASH)){
-     $text .= begin_js("$Command{'begin'}{'anstype'}$tag$Command{'end'}{'anstype'}") 
+     $text .= begin_js("$Begin{'anstype'}$tag$End{'anstype'}") 
            . title_js($tag,'title')
            . middle_js($HASH{$tag},'out',$lang)
            . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++>></a>") ;
@@ -191,8 +191,8 @@ for my $file (glob("$slibdir/*/*")) {
   push @list_keyword, $file if ($HASH{'title'}{$file});
  $tag='';
  }
- my $var=join ("$Command{'end'}{'slib'}\',\'$Command{'begin'}{'slib'}", @list_keyword) ;
- $Text .="var slib = [ '$Command{'begin'}{'slib'}$var$Command{'end'}{'slib'}' ];\n" ; 
+ my $var=join ("$End{'slib'}\',\'$Begin{'slib'}", @list_keyword) ;
+ $Text .="var slib = [ '$Begin{'slib'}$var$End{'slib'}' ];\n" ; 
  my $text='' ;
  for my $file (@list_keyword) {
   next if !($HASH{'title'}{$file}) ;
@@ -202,7 +202,7 @@ for my $file (glob("$slibdir/*/*")) {
     next if !($ex) ;
     $example .="<div class=\"title\">$name{'example'}{$lang}</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code>" ;
   }
-  $text.=begin_js("$Command{'begin'}{'slib'}$file$Command{'end'}{'slib'}") 
+  $text.=begin_js("$Begin{'slib'}$file$End{'slib'}") 
            . title_js($HASH{'title'}{$file},'title')
            . syntax_js("<font color=\"red\">slib($file</font> " . ($HASH{'parms'}{$file}  ? $HASH{'parms'}{$file} : '') . " <font color=\"red\">)</font>",$lang)
            . middle_js($HASH{'out'}{$file},'out',$lang)
@@ -296,9 +296,9 @@ sub tableau { my ($file, $lang) = @_ ;
      next if $cnt < 3 ;
      $line =~ s/:// ;
      if($text) { $text .= end_js("") ;}
-       if ($text) {$text .= begin_js($Command{'begin'}{$file} . $line . $Command{'end'}{$file}) ;}
+       if ($text) {$text .= begin_js($Begin{$file} . $line . $End{$file}) ;}
         else
-       { $text = begin_js($Command{'begin'}{$file} . $line . $Command{'end'}{$file}) ; };
+       { $text = begin_js($Begin{$file} . $line . $End{$file}) ; };
      push @list_keyword, $line;
      $nl=0;
      }
@@ -316,8 +316,8 @@ sub tableau { my ($file, $lang) = @_ ;
    }
   close IN ;
   	 $text .= end_js("") ;
-  my $var=join ("$Command{'end'}{$file}\', \'$Command{'begin'}{$file}", @list_keyword) ;
-  $Text .="var $cities= [ \'$Command{'begin'}{$file}$var$Command{'end'}{$file}\' ];\n" 
+  my $var=join ("$End{$file}\', \'$Begin{$file}", @list_keyword) ;
+  $Text .="var $cities= [ \'$Begin{$file}$var$End{$file}\' ];\n" 
   . function_js($text,$cities) ;
   out ("$DOSSIER/$lang/$cities" . "_bd\.js",$Text) ;
 }

@@ -11,6 +11,13 @@ wimshome=`pwd`
 swac=$wimshome/public_html/scripts/data/swac
 cd $swac ; 
 packs=`ls -d */`
+packs='fra-nallet-camille
+fra-nallet-caroline
+fra-nallet-christian
+fra-nallet-denise
+fra-nallet-marie
+fra-nallet-nicolas
+fra-nallet-odile'
 echo "$version" > version.tmp;
 for i in $packs; do
   u=`basename $i` ;
@@ -18,6 +25,7 @@ for i in $packs; do
   wget http://$adresse/$j.tar;
   tar xf $j.tar;
   mkdir -p $swac/$u; cp -r $swac/$j/* $swac/$u ; rm $swac/$j.tar ; rm -r $swac/$j;
+  echo "audio_exists=yes" > $swac/$u/version;
   echo "$u" >> version.tmp ;
 done ;
 
