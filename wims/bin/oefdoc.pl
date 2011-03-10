@@ -3,8 +3,7 @@
 use locale;
 use warnings;
 use strict;
-##$/ = undef; # slurp
-##lancer du répertoire scipts/help
+##lancer du répertoire wims : bin/oedfdoc.pl
 
 my %name ;
 $name{'explanation'}{'fr'}="Explication" ; 
@@ -47,7 +46,7 @@ my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
 
 my @Lang=('en','fr','cn', 'nl','it') ;
-#@Lang=('en') ; 
+
 system(`mkdir -p $DOSSIER`) ;
 my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
 
@@ -58,10 +57,10 @@ $Begin{'oefparm0'}= '\\\\' ;
 $End{'oefparm0'}= "\{  =  \}" ;
 $Begin{'oefcommand'}= '\\\\' ; 
 $End{'oefcommand'}= "\{  \}" ;
-##$Begin{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
 $Begin{'anstype'}='' ;
-##$End{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
 $End{'anstype'}='' ;
+##$Begin{'anstype'}='\\\\answer\{  \}\{  \}\{type=' ;
+##$End{'anstype'}='\}\{option=  \}\{ weight= \}\n' ;
 for my $tag ("oefparm4") {
    $Begin{$tag}= "" ; 
    $End{$tag}= "\(  \)" ;
@@ -80,10 +79,8 @@ for my $tag ("oefparm5") {
    $End{$tag}= "" ;
 }
 
-for my $tag ("slib") {
-   $Begin{$tag}= "slib(" ; 
-   $End{$tag}= " )" ;
-}
+$Begin{'slib'}= "slib(" ; 
+$End{'slib'}= " )" ;
 
 my @phtml=("expandlines", "imagefill", "help", "tabs2lines", "rename", "tooltip") ; 
 for my $tag (@phtml) {
@@ -92,22 +89,9 @@ for my $tag (@phtml) {
 }
 
 ##### generation
-#for my $lang (@Lang) {print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
- #for my $file (@table) { tableau ($file,$lang,3) ;} ;
- #phtml("$helpdir/$lang/special",$lang,"special",@phtml) ; 
- #slib($lang) ;
-#}
-### ne pas faire de double boucle ... ????
 for my $lang (@Lang) { 
    print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
-   tableau('if',$lang) ; 
-   tableau('oefparm0',$lang) ;
-   tableau('oefparm1',$lang) ;
-   tableau('oefparm2',$lang) ;
-   tableau('oefparm3',$lang) ;
-   tableau('oefparm4',$lang) ;
-   tableau('oefparm5',$lang) ;
-   tableau('oefcommand',$lang) ;
+   for my $t (@table) { tableau($t,$lang) ; }
    phtml("$helpdir/$lang/special",$lang,"special",@phtml) ;
    anstype($lang) ; 
    slib($lang) ;
@@ -136,11 +120,11 @@ sub anstype { my ($lang)=@_ ;
    for my $tag (keys(%HASH)){
      $text .= begin_js("$Begin{'anstype'}$tag$End{'anstype'}") 
            . title_js($tag,'title')
-           . middle_js($HASH{$tag},'out',$lang)
+           . middle_js($HASH{$tag},'out', $lang)
            . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++>></a>") ;
    }
    $Text .= function_js($text,'anstype') ;
-  out ("$DOSSIER/$lang/anstype" . "_bd\.js",$Text) ;
+  out ("$DOSSIER/$lang/anstype" . "_bd\.js", $Text) ;
 }
 sub slib {my ($lang)= @_ ;
  my $Text = "var slibname='$name{'slib'}{$lang}';\n" ;
@@ -148,7 +132,7 @@ sub slib {my ($lang)= @_ ;
  my %HASH ;
  my $slibdirhelp="$helpdir/$lang/slib";
 for my $file (glob("$slibdir/*/*")) {
-#for my $file (glob("$slibdir/function/integrate")) {
+#for example file=$slibdir/function/integrate
  $file =~s/$slibdir\///;
  my $text=''; my $tag='';
  my $filehelp="$slibdirhelp/$file" ;
