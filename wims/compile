@@ -2,114 +2,37 @@
 
 if [ "$(id -ru)" = 0 ]; then
  cat <<@
-
-You are trying to compile WIMS as 'root'!
-
-You should not do that. Compile as 'wims', please.
-
+You are trying to compile WIMS as 'root'. You should not do that !
+Please compile as 'wims'.
 @
- exit
+ exit 1
 fi
-
-sudo="su root -c"
-msg='root password'
-   
-distro=default
-[ -f /etc/debian_version ] && distro=debian
 
 cd `dirname $0`
 cd src
-
-# how do we suppress \n from 'echo' output ?
-if (echo "hi\c"; echo " ") | grep c >/dev/null 2>&1 ; then
-  n=-n; c=
-else
-  n=; c='\c'
-fi
-
-
-clear
+##########################################################################
 cat <<@
-
-Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)!
-
-This utility guides you interactively through the choice of options,
-then launches the compilation.
-
-To compile WIMS with default options, just press [Enter].
-
-To customize the compilation options, type 'y' or 'n' and press [Enter].
-You can here choose to use root password or sudo password in the
-last step of the installation.
-
-To abort now, press Ctrl-C.
+Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)
 
 @
-options=
-echo $n "Interactive options (y/n)? [n] " $c
-read ans
-if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
- cat <<@
 
---------------------------------------------------------------------------
-
-   WIMS compile options (the letter in the bracket is the default)
-
-1. You want to use root password or sudo
-@
- echo $n "   -- root password (y/n)? [y] " $c
- read ans
- if [ "$ans" = "n" ] || [ "$ans" = "N" ]; then
-  sudo=sudo
-  msg='sudo password'
- else
-  sudo="su root -c"
-   msg='root password'
- fi
- cat <<@
-
-2. This package includes a stand-alone http server, 'wimsd',
-   which is known to have compatibility problems on some architectures
-@
- echo $n "   -- Compile wimsd (y/n)? [y] " $c
- read ans
- if [ "$ans" = "n" ] || [ "$ans" = "N" ]; then
-  options="$options --without-wimsd"
- else
-  options="$options --with-wimsd"
- fi
- cat <<@
-
------------------------------------------------------------------------
-
-   Options: $options $msg
-
-@
- echo $n "   Now press [Enter] to start compilation, or Ctrl-C to abort. " $c
- read ans
-fi
-
-if test  -f ../.wims_maintainer_mode; then
+if [ -f ../.wims_maintainer_mode ]; then
   if (autoconf); then :; else
     echo "[maintainer mode] Please install autoconf first."
     exit 1
   fi
   autoheader
 fi
-./configure $options || exit
+./configure || exit
 if [ ! -f Makefile ]; then exit; fi
 make clean || exit
 make all || exit
 cd ..
 cp src/defaults.conf public_html/bases/sys/defaults.conf
 bin/mkindex
-#bin/changepermissions
-
-echo "Please give the $msg to setup WIMS."
-$sudo bin/wrapuid || exit
 cat <<@
 
-WIMS is successfully compiled and installed.
+Please run 'bin/wrapuid' as root (e.g. using sudo) to finish WIMS setup.
 See README about installation of help and teaching modules.
 
 @
