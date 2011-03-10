@@ -24,8 +24,7 @@ if [ -f $oefname ]; then
  if [ -d $logd/$wims_exec_parm ]; then
   rm -fr $sesd/getfile/oefimg 2>/dev/null
   mkdir -p $sesd/getfile/oefimg 2>/dev/null
-  . $w_wims_home/bin/dircptest
-  $dircp $logd/$wims_exec_parm/* $sesd/getfile/oefimg 2>/dev/null
+  cp -pPR $logd/$wims_exec_parm/* $sesd/getfile/oefimg 2>/dev/null
  fi
  echo yes
 else

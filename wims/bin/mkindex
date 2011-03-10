@@ -13,8 +13,6 @@ export mlist slist dicsort_separator dicsort_grouping
 export w_translator_unknown w_dictionary w_translator_switch translator_input
 LANG=C
 
-. bin/dircptest
-
 BASES=$WIMS_HOME/public_html/bases
 MODULES=$WIMS_HOME/public_html/modules
 translator=$WIMS_HOME/public_html/bin/translator
@@ -41,7 +39,7 @@ slist="`find . -name '*.def' | sed 's!^./!!g;s!.def$!!g' | sort`"
 rm -f index/*
 cd $BASES
 rm -fR site2
-$dircp site site2
+cp -pPR site site2
 cd site2
 rm -f [A-Z].?? lists/[A-Z].??
 mkdir -p lists

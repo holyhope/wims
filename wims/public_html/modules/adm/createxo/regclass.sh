@@ -47,8 +47,7 @@ msg=`src2def oef`
 if [ -d $sessiond/getfile/oefimg ]; then
  mkdir -p $logd/images/$namebase
  rm -f $logd/images/$namebase/* 2>/dev/null
- . $w_wims_home/bin/dircptest
- $dircp $cpderef $sessiond/getfile/oefimg/* $logd/images/$namebase >/dev/null
+ cp -pPR $sessiond/getfile/oefimg/* $logd/images/$namebase >/dev/null
 fi
 
 if [ -f $Logd/def/$namebase.def ]; then 
