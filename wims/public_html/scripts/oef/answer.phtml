@@ -11,6 +11,14 @@
 <div class="content">
 <table border=0>
 !distribute item 1,1 into cntr,cntc
+
+!set indgood=<span style="color:green;font-weight:bold">$indgood</span>
+!set indpartial=<span style="color:orange;font-weight:bold">$indpartial</span>
+!set indprec=<span style="color:orange;font-weight:bold">$indprec</span>
+!set indbad =<span style="color:red;font-weight:bold">$indbad</span>
+!set condgood=<span style="color:green;font-weight:bold">$condgood</span>
+!set condbad =<span style="color:red;font-weight:bold">condbad</span>
+
 !for t in $ansorder
  !set i=$(cnt$t)
  !if $oefsteps=$empty or $t$i isitemof $gotsteps
@@ -21,13 +29,14 @@
 
 !if $conditioncnt>0
  !if $embedded_bracket!=$empty
-  <tr><td align="left" colspan=2 nowrap><small>$embedded_bracket</small></td></tr>
+  <tr><td align="left" colspan="2" nowrap><small>$embedded_bracket</small></td></tr>
  !endif
 !endif
 !for i in $condlist
  !if hide notwordof $(condoption$i)
-  <tr><td colspan=2><b>$(condname$i)</b>:<td>
+  <tr><td colspan="2"><b>$(condname$i)</b>:</td><td>
   !item $(condtest$i)+1 of $condbad,$condgood
+  </td></tr>
  !endif
 !next i
 
@@ -47,7 +56,7 @@
 !endif
 
 !if $m_reply_err != $empty
- <pre><font color=red>
+ <pre><font color="red">
  $m_reply_err
  </font></pre>
 !endif
