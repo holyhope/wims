@@ -8,14 +8,14 @@ Please compile as 'wims'.
  exit 1
 fi
 
-cd `dirname $0`
-cd src
 ##########################################################################
 cat <<@
 Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)
 
 @
 
+cd `dirname $0`
+cd src
 if [ -f ../.wims_maintainer_mode ]; then
   if (autoconf); then :; else
     echo "[maintainer mode] Please install autoconf first."
@@ -24,12 +24,10 @@ if [ -f ../.wims_maintainer_mode ]; then
   autoheader
 fi
 ./configure || exit
-if [ ! -f Makefile ]; then exit; fi
 make clean || exit
 make all || exit
 cd ..
 cp src/defaults.conf public_html/bases/sys/defaults.conf
-bin/mkindex
 cat <<@
 
 Please run 'bin/wrapuid' as root (e.g. using sudo) to finish WIMS setup.

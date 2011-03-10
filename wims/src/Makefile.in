@@ -23,7 +23,7 @@ lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
 
 wimsd=@BUILD_WIMSD@
 
-all:: lib$(libtype) progs checklist
+all:: lib$(libtype) progs checklist mkindex
 
 progs:: flydraw texgif interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims
 
@@ -110,4 +110,8 @@ checklist::
 
 install::
 	$(wims_home)/bin/wrapuid
+
+mkindex::
+	cd .. ; bin/mkindex
+
 
