@@ -2,12 +2,11 @@
 ##script to generate some index files from tags of index.tags.xml for
 ## shtooka packages
 use locale;
-#use Encode;
 use warnings;
-my @dir=() ;
+my @dirs=() ;
 my $lang='' ;
 my @SPECIAL=('');
-my $file='index.xml' ;
+my $INDEX_XML_FILE='index.xml' ;
 my $PREFIX;
 my @EXTRA=(
 'swac_tech_qlt',
@@ -47,16 +46,16 @@ my @CHAMP=(
 );
 
 #my $MODE='utf8' ; 
-my ($MODE,$MODE1) ; 
+my ($MODE,$MODEOUT) = ('', ''); 
 while ($_ = shift(@ARGV)) {
   last if (/^$/);
-  if    (/^--dir=(.*)$/)     {  push @dir, $1 ;    }
-  elsif (/^--special=(.*)$/) {  push @SPECIAL,$1;}
-  elsif (/^--file=(.*)$/)    {  $file=$1;   }
-  elsif (/^--lang=(.*)$/)    {  $lang=$1;   }
-  elsif (/^--mode=(.*)$/)    {  $MODE=$1;   }
-  elsif (/^--modeout=(.*)$/) {  $MODE1=$1;  }
-  elsif (/^--prefix=(.*)$/) {  $PREFIX=$1 . '/';  }
+  if    (/^--dir=(.*)$/)     { push @dirs, $1 ; }
+  elsif (/^--special=(.*)$/) { push @SPECIAL, $1; }
+  elsif (/^--file=(.*)$/)    { $INDEX_XML_FILE = $1; }
+  elsif (/^--lang=(.*)$/)    { $lang = $1; }
+  elsif (/^--mode=(.*)$/)    { $MODE = $1; }
+  elsif (/^--modeout=(.*)$/) { $MODEOUT = $1; }
+  elsif (/^--prefix=(.*)$/)  { $PREFIX = $1; }
   else { 
     print STDERR "unknown option: $_\n" if (!/^--help$/);
     usage(); # includes --help !
@@ -66,17 +65,19 @@ my %hash=('swac_alphaidx' => 'swac_baseform',
 'swac_text' => 'swac_baseform',) ; 
 
 my %ALLTAGS = ('swac_text' => {}) ; 
-push @dir, glob("$lang-*") if ($lang) ;
-$ALLTAGS = \%ALLTAGS ;
-InitFromFiles($ALLTAGS, (@dir) ? @dir : ".") ; 
-my @KEYS=(keys %{$ALLTAGS->{swac_text}}) ; 
+push @dirs, glob("$lang-*") if ($lang) ;
+
+for (@dirs) { ConsListe("$_/$INDEX_XML_FILE", \%ALLTAGS, $_); }
+if ($PREFIX) { ConsListe("$INDEX_XML_FILE", \%ALLTAGS, $PREFIX); }
+
+my @KEYS=(keys %{$ALLTAGS{swac_text}}) ; 
 
 ##On complète
 for $field (keys %hash) { $field2=$hash{$field} ; 
    for my $k (sort @KEYS) {
-    if( !($ALLTAGS->{$field2}{$k}) ) {
-      if( ($ALLTAGS->{$field}{$k})) { 
-        $ALLTAGS->{$field2}{$k}= traite_francais( $ALLTAGS->{$field}{$k}) ;
+    if( !($ALLTAGS{$field2}{$k}) ) {
+      if( ($ALLTAGS{$field}{$k})) { 
+        $ALLTAGS{$field2}{$k}= traite_francais( $ALLTAGS{$field}{$k}) ;
       }
     }
   }
@@ -92,7 +93,7 @@ sub traite_francais { my ($a) = @_ ;
 #### problème avec s'il te pl
 out(":" . join( "\n:",  @KEYS), canon2("")) ; 
 
-@SPECIAL= (keys %{$ALLTAGS})  if ($#SPECIAL==0) ; 
+@SPECIAL= (keys %ALLTAGS)  if ($#SPECIAL==0) ; 
 for my $special (@SPECIAL) {
    out(indexkey($special), canon2($special)) if (indexkey($special)) && !($special =~ /($Extra)/);  
 } 
@@ -110,9 +111,9 @@ for my $b (@list) {
 
 $TEXT .= "\n\n[LIST]\n" ; 
   for my $k (sort @KEYS) {
-    $TEXT .= $ALLTAGS->{swac_text}{$k} ;
+    $TEXT .= $ALLTAGS{swac_text}{$k} ;
     for my $b (@list) {
-           $TEXT .= ';' . $ALLTAGS->{$b}{$k} ;
+           $TEXT .= ';' . $ALLTAGS{$b}{$k} ;
       }   
       $TEXT .=  ";$k\n"
   }
@@ -122,9 +123,9 @@ $TEXT .= "\n\n[LIST]\n" ;
   my $TEXT = "" ;
   for my $k (sort @KEYS) {
     $TEXT .= $k . ":" 
-          . 'swac_text' . '="' . $ALLTAGS->{'swac_text'}{$k}. '"' . "\\\n"; 
+          . 'swac_text' . '="' . $ALLTAGS{'swac_text'}{$k}. '"' . "\\\n"; 
     for my $b (@list) {
-           $TEXT .= $b . '="' .  $ALLTAGS->{$b}{$k} . '"' . "\\\n" if ($ALLTAGS->{$b}{$k}) ;
+           $TEXT .= $b . '="' .  $ALLTAGS{$b}{$k} . '"' . "\\\n" if ($ALLTAGS{$b}{$k}) ;
       }
      $TEXT .= "\n" ;
   }
@@ -134,7 +135,7 @@ $TEXT .= "\n\n[LIST]\n" ;
  
 
 sub indexkey { my ($swac)=@_ ; 
- my %HA = %{$ALLTAGS->{$swac}} ; 
+ my %HA = %{$ALLTAGS{$swac}} ; 
  %h = ();
  while (my ($key, $val) = each %HA)
    { $v = $val ; $v=~ s/\|/,/g ; 
@@ -158,25 +159,25 @@ $SIG{__WARN__} = sub { my ($x) = @_;
 
 #### à modifier ou partir d'un fichier sans global !
 
-sub ConsListe { my ($file, $ref, $dir, $prefix) = @_;
-  my ($Id, $val) = ('', '');
-#  if (!open IN, $file) { warn "$file n'existe pas"; return; }
-  open IN, $file;
+sub ConsListe { my ($file, $ref, $dir) = @_;
+  my ($id) = '';
+  open (IN, $file) || die "$file n'existe pas";
+#  print STDERR "... lecture de $file\n";
   ### le lit en utf8
   if ($MODE eq 'utf8') {binmode IN ,":utf8";}
-#  $actualdir=`pwd`;
-#  print STDERR "... lecture de $actualdir$file\n";
   while(<IN>) {
-    next if (/^#/ || (/^\s*$/ && !$val)); # vire commmentaires + lignes vides
+    next if (/^#/ || /^\s*$/); # vire commmentaires + lignes vides
     next if (/<\/file\>/) ;
-    #warn "caractères de contrôle" if /[œ‘’ –]/; # carac. Windows courants
-     # if (/\[(.*)\]/) { $f=$1 ; $f =~ s/\.ogg/\.mp3/g ;  $id = $prefix . $dir . 'mp3/' . $f ; }
-     s /\<tag\s*//g; s/\s*\/\>//g;
-      if (/\<file path=\"(.*)\"/) {$id = $prefix . $dir . $1 ; }
-      if (/(\w+)\s*=\s*\"?(.*?)\"?\s*$/) { $r=Traite($2) ;
-        $field=canonify($1) ;
-        next if ($field =~ /($Extra|path)/) ; 
-        $ref->{$field}->{$id} = $r if !($id =~ /GLOBAL/);
+    s/<tag\s*//g;
+    s/\s*\/\>//g;
+    if (/<file path=\"(.*)\"/) { $id = $dir . '/' . $1 ; }
+    if (/(\w+)\s*=\s*\"?(.*?)\"?\s*$/) {
+      next if (!$id);
+      my ($r, $field) = ($2,$1);
+      $field = canonify($field) ;
+      next if ($field =~ /(?:$Extra|path)/) ; 
+      $r = Traite($r) ;
+      $ref->{$field}->{$id} = $r;
     }
   }
   close(IN);
@@ -209,12 +210,6 @@ sub canonify { my ($special)=@_ ;
   $special ; 
 }
 
-# $ref a reference to a %Tag2Tableau hash, @files a list of data files
-
-sub InitFromFiles { my ($ref, @files) = @_;
-  for (@files) { ConsListe($_ . (($_) ? "/": "") . $file, $ref, (!($_ eq ".")  ? $_ . "/": ""),$PREFIX); }
-}
-
 sub sortuniq {
   my $prev = "not $_[0]";
   grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
@@ -223,7 +218,7 @@ sub sortuniq {
 sub out { my ($text, $file) = @_ ; 
   open( OUT, ">$file") ; 
   ## fichier ouvert en utf8 mais il y a toujours les problèmes d'encodage
-  if ($MODE1 eq 'utf8') {binmode OUT ,":utf8";} else {binmode OUT ,":iso-8859-1"};
+  if ($MODEOUT eq 'utf8') {binmode OUT ,":utf8";} else {binmode OUT ,":encoding(iso-8859-1)"};
   print OUT $text ;
   close OUT ; 
 }
