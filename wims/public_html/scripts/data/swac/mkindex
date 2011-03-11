@@ -14,7 +14,8 @@ for i in $list ; do
    cd $i ; ../swac.pl --prefix=$i;
    cd .. ; 
 done;
-list_lang=`grep --no-filename swac_lang= $list | sed 's/swac_lang=//' | sed 's/\"//g' | sort -u`;
+list_lang=`grep --no-filename swac_lang= $list | sed 's/^.*=//' | sed 's/\"//g' | sort -u`;
+
 for j in $list_lang ; do 
    echo "index $j" ; 
    ./swac.pl --lang=$j;
