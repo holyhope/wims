@@ -3,11 +3,12 @@
 ## shtooka packages
 use locale;
 use warnings;
+
 my @dirs=() ;
 my $lang='' ;
-my @SPECIAL=('');
+my @SPECIAL=();
 my $INDEX_XML_FILE='index.xml' ;
-my $PREFIX;
+my $PREFIX='';
 my @EXTRA=(
 'swac_tech_qlt',
 'swac_tech_date',
@@ -36,16 +37,16 @@ my @EXTRA=(
 'license',
 'title',
 ) ;
+my $Extra = join('|', @EXTRA) ; 
 
-my $Extra=join('|', @EXTRA) ; 
-my @CHAMP=(
+my @CHAMP = (
+'swac_text',
 'swac_alphaidx',
 'swac_baseform',
 'swac_form_name', 
-'swac_coll',
+'swac_coll'
 );
 
-#my $MODE='utf8' ; 
 my ($MODE,$MODEOUT) = ('', ''); 
 while ($_ = shift(@ARGV)) {
   last if (/^$/);
@@ -61,8 +62,6 @@ while ($_ = shift(@ARGV)) {
     usage(); # includes --help !
   }
 }
-my %hash=('swac_alphaidx' => 'swac_baseform',
-'swac_text' => 'swac_baseform',) ; 
 
 my %ALLTAGS = ('swac_text' => {}) ; 
 push @dirs, glob("$lang-*") if ($lang) ;
@@ -70,95 +69,70 @@ push @dirs, glob("$lang-*") if ($lang) ;
 for (@dirs) { ConsListe("$_/$INDEX_XML_FILE", \%ALLTAGS, $_); }
 if ($PREFIX) { ConsListe("$INDEX_XML_FILE", \%ALLTAGS, $PREFIX); }
 
-my @KEYS=(keys %{$ALLTAGS{swac_text}}) ; 
+my @KEYS = sort(keys %{$ALLTAGS{swac_text}}) ; 
 
+my %hash = (
+  'swac_alphaidx' => 'swac_baseform',
+  'swac_text' => 'swac_baseform'
+) ; 
 ##On complète
-for $field (keys %hash) { $field2=$hash{$field} ; 
-   for my $k (sort @KEYS) {
-    if( !($ALLTAGS{$field2}{$k}) ) {
-      if( ($ALLTAGS{$field}{$k})) { 
-        $ALLTAGS{$field2}{$k}= traite_francais( $ALLTAGS{$field}{$k}) ;
+for my $f (keys %hash) { 
+  my ($f2) = $hash{$f} ; 
+  for my $k (@KEYS) {
+    if( !($ALLTAGS{$f2}{$k}) ) {
+      if( ($ALLTAGS{$f}{$k})) { 
+        $ALLTAGS{$f2}{$k} = traite_francais($ALLTAGS{$f}{$k}) ;
       }
     }
   }
 }
 sub traite_francais { my ($a) = @_ ;
-   if ($a =~ /(\w+)\s+(s')/) { $a = "s'". $1 ; } ;
-   if ($a =~ /(\w+)\s+(se)/) { $a = "se ". $1 } ;
-   $a =~ s/\best-à-dire/c'est-à-dire/ ; 
-   $a =~ s /plaire\|\(conversation\)/s'il vous plaît/;
-   $a =~ s/\((\w+)\)// ;
-   $a =~ s /^|//;
-   $a}
-#### problème avec s'il te pl
+  if ($a =~ /(\w+)\s+(s')/) { $a = "s'". $1 ; } ;
+  if ($a =~ /(\w+)\s+(se)/) { $a = "se ". $1 } ;
+  $a =~ s/\best-à-dire/c'est-à-dire/ ; 
+  $a =~ s /plaire\|\(conversation\)/s'il vous plaît/;
+  $a =~ s/\(\w+\)//;
+  $a =~ s /^|//;
+  $a
+}
 out(":" . join( "\n:",  @KEYS), canon2("")) ; 
 
-@SPECIAL= (keys %ALLTAGS)  if ($#SPECIAL==0) ; 
+@SPECIAL= keys %ALLTAGS  if (!@SPECIAL) ; 
 for my $special (@SPECIAL) {
-   out(indexkey($special), canon2($special)) if (indexkey($special)) && !($special =~ /($Extra)/);  
+  next if ($special =~ /(?:$Extra)/);
+  my ($k) = indexkey($special);
+  out($k, canon2($special)) if ($k);  
 } 
 
-## permet de passer du fichier index.tags.txt à un fichier en tableau 
-
-#out(tableau(@CHAMP), 'ALL') ; 
 out(tags(@CHAMP), canon('swac_tags')) ; 
-sub tableau {  my @list = @_ ;
-my $TEXT = "[TAG]" ; $cc=1;
-for my $b (@list) {
-   $TEXT .= "$b=\\\&$cc\n" ; 
-   $cc ++
-}
-
-$TEXT .= "\n\n[LIST]\n" ; 
-  for my $k (sort @KEYS) {
-    $TEXT .= $ALLTAGS{swac_text}{$k} ;
+sub tags {  my (@list) = @_ ;
+  my ($TEXT) = '' ;
+  for my $k (@KEYS) {
+    $TEXT .= "$k:";
     for my $b (@list) {
-           $TEXT .= ';' . $ALLTAGS{$b}{$k} ;
-      }   
-      $TEXT .=  ";$k\n"
-  }
-  $TEXT
- }
-  sub tags {  my @list = @_ ;
-  my $TEXT = "" ;
-  for my $k (sort @KEYS) {
-    $TEXT .= $k . ":" 
-          . 'swac_text' . '="' . $ALLTAGS{'swac_text'}{$k}. '"' . "\\\n"; 
-    for my $b (@list) {
-           $TEXT .= $b . '="' .  $ALLTAGS{$b}{$k} . '"' . "\\\n" if ($ALLTAGS{$b}{$k}) ;
-      }
-     $TEXT .= "\n" ;
+      my ($v) = $ALLTAGS{$b}{$k};
+      $TEXT .= "$b=\"$v\"\\\n" if ($v);
+    }
+    $TEXT .= "\n" ;
   }
   $TEXT =~ s/\\\n\n/\n/g ;
   $TEXT ; 
- }
+}
  
-
-sub indexkey { my ($swac)=@_ ; 
+sub indexkey { my ($swac) = @_ ; 
  my %HA = %{$ALLTAGS{$swac}} ; 
  %h = ();
  while (my ($key, $val) = each %HA)
-   { $v = $val ; $v=~ s/\|/,/g ; 
-    for my $val2 ( split(',',$v) ) {
-     $h{$val2} .= (($h{$val2}) ? "," : "") . $key if  $HA{$key} =~ /$val/  ;
+ { 
+   for my $val2 ( split('\|', $val) ) {
+     $h{$val2} .= (($h{$val2}) ? "," : "") . $key if ($HA{$key} eq $val);
    } 
-   }
- my $text = "";
- for my $a (keys %h){ 
-     $text .= $a . ":" . $h{$a} . "\n" ;
  }
+ my $text = "";
+ while (my ($a,$b) = each %h) { $text .= "$a:$b\n" ; }
  $text ;
 }
  
-my (%errmsg); # empèche le ré-affichage d'un même warning.
-$SIG{__WARN__} = sub { my ($x) = @_;
-  return if $errmsg{$x};
-  $errmsg{$x} = 1;
-  print STDERR "### $x";
-};
-
-#### à modifier ou partir d'un fichier sans global !
-
 sub ConsListe { my ($file, $ref, $dir) = @_;
   my ($id) = '';
   open (IN, $file) || die "$file n'existe pas";
@@ -171,8 +145,8 @@ sub ConsListe { my ($file, $ref, $dir) = @_;
     s/<tag\s*//g;
     s/\s*\/\>//g;
     if (/<file path=\"(.*)\"/) { $id = $dir . '/' . $1 ; }
+    next if (!$id);
     if (/(\w+)\s*=\s*\"?(.*?)\"?\s*$/) {
-      next if (!$id);
       my ($r, $field) = ($2,$1);
       $field = canonify($field) ;
       next if ($field =~ /(?:$Extra|path)/) ; 
@@ -193,31 +167,21 @@ sub Traite { my ($record) = @_;
 }
 
 sub canon { my ($special)=@_ ; 
-  $special = 'swac' . $special if !($special=~ /swac/) ;
-  $special =~  s/^(swac)/$lang/ if ($lang) ;
-  $special =~  s/swac/sw/ ;
+  $special = 'swac' . $special if ($special!~ /^swac/) ;
+  $special =~ s/^swac/$lang/ if ($lang) ;
+  $special =~ s/swac/sw/ ;
   $special =~ s/ //g; 
   $special ;
 }
-
-sub canon2 { my ($special)=@_ ; 
-  $special=canon($special) ;
-  $special . '_keys' ; 
-}
+sub canon2 { my ($special)=@_ ; canon($special) . '_keys' ; }
 
 sub canonify { my ($special)=@_ ; 
   $special =~ tr /A-Z/a-z/ ; 
   $special ; 
 }
 
-sub sortuniq {
-  my $prev = "not $_[0]";
-  grep { $_ ne $prev && ($prev = $_, 1) } sort @_;
-}
-
 sub out { my ($text, $file) = @_ ; 
   open( OUT, ">$file") ; 
-  ## fichier ouvert en utf8 mais il y a toujours les problèmes d'encodage
   if ($MODEOUT eq 'utf8') {binmode OUT ,":utf8";} else {binmode OUT ,":encoding(iso-8859-1)"};
   print OUT $text ;
   close OUT ; 
@@ -230,7 +194,7 @@ swac.pl crée les fichiers dont j'ai besoin pour mon utilisation dans wims :
   - des fichiers utilisables par "lookup" ; on peut en créer un par tags : 
    ils sont de la forme 
     " texte_du_tag_demande:adresse_audio1,adresse_audio2, ..."
-    le texte_du_tag a été un peu normalisé en enlevant les espaces en trop.
+    le texte_du_tag a été normalisé en enlevant les espaces en trop.
     
 swac.pl [ --dir=]  [ --special=] [ --file= ] [ --mode=]
   --dir= : les dossiers dans lesquels on va chercher le fichier
@@ -244,3 +208,21 @@ EOT
   exit 1;
 }
 
+## permet de passer du fichier index.tags.txt à un fichier en tableau 
+#out(tableau(@CHAMP), 'ALL') ; 
+sub tableau {  my @list = @_ ;
+  my $TEXT = "[TAG]" ; $cc=1;
+  for my $b (@list) {
+    $TEXT .= "$b=\\\&$cc\n" ; 
+    $cc ++
+  }
+  $TEXT .= "\n\n[LIST]\n" ; 
+  for my $k (@KEYS) {
+    $TEXT .= $ALLTAGS{swac_text}{$k} ;
+    for my $b (@list) {
+      $TEXT .= ';' . $ALLTAGS{$b}{$k} ;
+    }   
+    $TEXT .=  ";$k\n"
+  }
+  $TEXT
+}
