@@ -3,50 +3,51 @@
 ## shtooka packages
 use locale;
 #use Encode;
+use warnings;
 my @dir=() ;
 my $lang='' ;
 my @SPECIAL=('');
 my $file='index.xml' ;
 my $PREFIX;
 my @EXTRA=(
-swac_tech_qlt,
-swac_tech_date,
-swac_tech_soft,
-description,
-swac_coll_authors,
-swac_coll_copyright,
-swac_coll_desc,
-swac_coll_license,
-swac_coll_name,
-swac_coll_org,
-swac_coll_section,
-swac_lang,
-swac_pron_speed,
-swac_speak_birth_year,
-swac_speak_gender,
-swac_speak_lang_country,
-swac_speak_lang,
-swac_speak_lang_region,
-swac_speak_liv_country,
-swac_speak_liv_town,
-swac_speak_name,
-copyright,
-swac_coll_url,
-genre,
-license,
-title,
+'swac_tech_qlt',
+'swac_tech_date',
+'swac_tech_soft',
+'description',
+'swac_coll_authors',
+'swac_coll_copyright',
+'swac_coll_desc',
+'swac_coll_license',
+'swac_coll_name',
+'swac_coll_org',
+'swac_coll_section',
+'swac_lang',
+'swac_pron_speed',
+'swac_speak_birth_year',
+'swac_speak_gender',
+'swac_speak_lang_country',
+'swac_speak_lang',
+'swac_speak_lang_region',
+'swac_speak_liv_country',
+'swac_speak_liv_town',
+'swac_speak_name',
+'copyright',
+'swac_coll_url',
+'genre',
+'license',
+'title',
 ) ;
 
-$Extra=join('|', @EXTRA) ; 
+my $Extra=join('|', @EXTRA) ; 
 my @CHAMP=(
-swac_alphaidx,
-swac_baseform,
-swac_form_name, 
-swac_coll,
+'swac_alphaidx',
+'swac_baseform',
+'swac_form_name', 
+'swac_coll',
 );
 
 #my $MODE='utf8' ; 
-
+my ($MODE,$MODE1) ; 
 while ($_ = shift(@ARGV)) {
   last if (/^$/);
   if    (/^--dir=(.*)$/)     {  push @dir, $1 ;    }
@@ -61,22 +62,21 @@ while ($_ = shift(@ARGV)) {
     usage(); # includes --help !
   }
 }
-%hash=(swac_alphaidx => swac_baseform,
-swac_text => swac_baseform,) ; 
+my %hash=('swac_alphaidx' => 'swac_baseform',
+'swac_text' => 'swac_baseform',) ; 
 
 my %ALLTAGS = ('swac_text' => {}) ; 
 push @dir, glob("$lang-*") if ($lang) ;
 $ALLTAGS = \%ALLTAGS ;
 InitFromFiles($ALLTAGS, (@dir) ? @dir : ".") ; 
-@KEYS=(keys %{$ALLTAGS->{swac_text}}) ; 
+my @KEYS=(keys %{$ALLTAGS->{swac_text}}) ; 
 
 ##On complète
 for $field (keys %hash) { $field2=$hash{$field} ; 
    for my $k (sort @KEYS) {
     if( !($ALLTAGS->{$field2}{$k}) ) {
-      if( ($ALLTAGS->{$field}{$k})) { $l = $ALLTAGS->{$field}{$k} ;
-       $l = traite_francais($l) ;
-       $ALLTAGS->{$field2}{$k}= $l
+      if( ($ALLTAGS->{$field}{$k})) { 
+        $ALLTAGS->{$field2}{$k}= traite_francais( $ALLTAGS->{$field}{$k}) ;
       }
     }
   }
@@ -135,12 +135,11 @@ $TEXT .= "\n\n[LIST]\n" ;
 
 sub indexkey { my ($swac)=@_ ; 
  my %HA = %{$ALLTAGS->{$swac}} ; 
- $HA =\%HA ; 
  %h = ();
  while (my ($key, $val) = each %HA)
-   { $v = $val ; $v=~ s/\|/,/g ; @val1= split(',',$v) ; 
-    for my $val2 (@val1) {
-     %h->{$val2} .= ((%h->{$val2}) ? "," : "") . $key if  $HA{$key} =~ /$val/  ;
+   { $v = $val ; $v=~ s/\|/,/g ; 
+    for my $val2 ( split(',',$v) ) {
+     $h{$val2} .= (($h{$val2}) ? "," : "") . $key if  $HA{$key} =~ /$val/  ;
    } 
    }
  my $text = "";
@@ -159,12 +158,12 @@ $SIG{__WARN__} = sub { my ($x) = @_;
 
 #### à modifier ou partir d'un fichier sans global !
 
-sub ConsListe { my ($file, $ref, $dir,$prefix) = @_;
+sub ConsListe { my ($file, $ref, $dir, $prefix) = @_;
   my ($Id, $val) = ('', '');
 #  if (!open IN, $file) { warn "$file n'existe pas"; return; }
   open IN, $file;
   ### le lit en utf8
-  if ($MODE eq "utf8") {binmode IN ,":utf8";}
+  if ($MODE eq 'utf8') {binmode IN ,":utf8";}
 #  $actualdir=`pwd`;
 #  print STDERR "... lecture de $actualdir$file\n";
   while(<IN>) {
@@ -173,7 +172,7 @@ sub ConsListe { my ($file, $ref, $dir,$prefix) = @_;
     #warn "caractères de contrôle" if /[œ‘’ –]/; # carac. Windows courants
      # if (/\[(.*)\]/) { $f=$1 ; $f =~ s/\.ogg/\.mp3/g ;  $id = $prefix . $dir . 'mp3/' . $f ; }
      s /\<tag\s*//g; s/\s*\/\>//g;
-      if (/\<file path=\"(.*)\"/) {$id=$1 ; $id = $prefix . $dir . $id ; }
+      if (/\<file path=\"(.*)\"/) {$id = $prefix . $dir . $1 ; }
       if (/(\w+)\s*=\s*\"?(.*?)\"?\s*$/) { $r=Traite($2) ;
         $field=canonify($1) ;
         next if ($field =~ /($Extra|path)/) ; 
@@ -193,7 +192,7 @@ sub Traite { my ($record) = @_;
 }
 
 sub canon { my ($special)=@_ ; 
-  $special = "swac" . $special if !($special=~ /swac/) ;
+  $special = 'swac' . $special if !($special=~ /swac/) ;
   $special =~  s/^(swac)/$lang/ if ($lang) ;
   $special =~  s/swac/sw/ ;
   $special =~ s/ //g; 
@@ -202,7 +201,7 @@ sub canon { my ($special)=@_ ;
 
 sub canon2 { my ($special)=@_ ; 
   $special=canon($special) ;
-  $special . "_keys" ; 
+  $special . '_keys' ; 
 }
 
 sub canonify { my ($special)=@_ ; 
