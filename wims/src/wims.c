@@ -941,15 +941,16 @@ int verify_tables(void)
 
 void config_defaults(void)
 {
-    int i, *pi;
-    char **ps;
-    
+    int i;
     for(i=0;i<MAIN_CONFIG_NO;i++) {
-	pi=main_config[i].address; ps=main_config[i].address;
-	if((1&main_config[i].is_integer)==1) 
-	  printf("DF_%s=%d\n",main_config[i].name, *pi);
-	else
-	  printf("DF_%s=%s\n",main_config[i].name,*ps);
+	if((1&main_config[i].is_integer)==1) {
+	    int *pi = (int*)main_config[i].address;
+	    printf("DF_%s=%d\n",main_config[i].name, *pi);
+        }
+	else {
+            char **ps = (char**)main_config[i].address;
+	    printf("DF_%s=%s\n",main_config[i].name,*ps);
+        }
     }
 }
 
