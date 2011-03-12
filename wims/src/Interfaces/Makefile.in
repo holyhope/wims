@@ -10,7 +10,7 @@ SETENV_OBJS=@SETENV_OBJS@
 STRIP=@STRIP@
 
 progstatic=pari yacas maxima scilab
-progdynamic=gap mup octave m2
+progdynamic=gap octave m2
 progs=$(progstatic) $(progdynamic)
 
 all: $(progs) install
@@ -29,8 +29,6 @@ install: $(progs)
 	$(STRIP) $(progs)
 	cp $(progs) $(PUBDIR)
 
-mup: mup.o $(SETENV_OBJS)
-	$(cc) $(cflags) mup.o $(SETENV_OBJS) -lm -o $@
 m2: m2.o $(SETENV_OBJS)
 	$(cc) $(cflags) m2.o $(SETENV_OBJS) -lm -o $@
 octave: octave.o $(SETENV_OBJS)

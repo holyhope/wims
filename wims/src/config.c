@@ -79,7 +79,6 @@ char PATH[512];  /* directory settings */
 #endif
 char *gap_command="gap.sh -T";
 char *maxima_command="maxima";
-char *mupad_command="/usr/local/lib/mupad/share/bin/mupad";
 char *pari_command="gp -f -q -p 150000";
 
   /* default languages */
@@ -257,7 +256,6 @@ CONFIG_DATA main_config[]={
       {"mu_publish_site",		0, &mu_publish_site},
       {"mu_site",		0, &mu_site},
       {"mu_zone",		0, &mu_zone},
-      {"mupad_command",		2, &mupad_command},
       {"old_log_files",		1, &OLD_LOG_FILES},
       {"page_bgcolor",		0, &bgcolor},
       {"page_bgimg",		0, &bgimg},
