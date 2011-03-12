@@ -11,21 +11,6 @@ funcionará de forma deficiente.
 
 !goto end
 
-:mupad
-MuPAD es una gran aplicación de álgebra simbólica. Es un tanto lento en su carga
-y no es de fuente abierta, y por tanto se usa de forma limitada por los
-módulos WIMS. Los módulos que hacen uso de MuPAD incluyen especialmente las
-herramientas en línea relacionadas con el cálculo.
-<p>
-Debido a sus problemas de licencia, MuPAD debe descargarse directamente del sitio
-de su distribuidor (http://www.mupad.de/). Por favor siga las instrucciones del
-paquete sobre cómo instalarlo, y ponga la ruta exacta de instalación en la
-configuración de la orden MuPAD.
-<p>
-Versión recomendada: 1.4.* (otras versiones pueden presentar problemas de
-compatibilidad).
-!goto end
-
 :maxima
 Maxima es un paquete de fuente abierta de álgebra simbólica. Se usa
 principalmente cuando deben calcularse derivadas y/o integrales.
@@ -33,7 +18,7 @@ principalmente cuando deben calcularse derivadas y/o integrales.
 Debemos señalar que la versión 5.6 (con GCL 2.4) de Maxima tiene un fallo
 que impide que se compile bajo RedHat 7.*. Si se encuentra con problemas
 de este tipo, descargue una copia de una versión anterior (la 5.4) desde
-<a target=wims_external
+<a target="wims_external"
 href="http://wims.unice.fr/download/other-packages/">http://wims.unice.fr/download/other-packages/</a>.
 <p>
 Versión recomendada: 5.4. (otras versiones pueden presentar problemas de
