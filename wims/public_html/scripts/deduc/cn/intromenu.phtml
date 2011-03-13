@@ -18,40 +18,40 @@
 !endif
 
 !form new
-<input type=hidden name=module value="$module">
-<center><table border=0><tr>
+<input type="hidden" name="module" value="$module">
+<center><table border="0"><tr>
 !set special_parm=!trim $special_parm
 !if $special_parm2=select and $special_parm!=$empty
- <td align=center>练习中包含<br>
- <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+ <td align="center">练习中包含<br>
+ <em><font color="blue">$special_parm</font></em>&nbsp;:<td>
 !else
- <td align=center>选择练习:<td>
+ <td align="center">选择练习:<td>
 !endif
 !read deduc/select.phtml
-<tr><td align=center>难度<td>
+<tr><td align="center">难度<td>
 !set qcmlevel=3
 !formselect qcmlevel from 1 to 9
-<tr><td align=center>询问方法 <br>
+<tr><td align="center">询问方法 <br>
 的条件
 <td>
 !formselect Askcontext list -1,0,1 prompt 从不,根据练习,总是
-<tr><td align=center>询问方法 <br>
+<tr><td align="center">询问方法 <br>
 的结果
 <td>
 !formselect Askresult list -1,0,1 prompt 从不,根据练习,总是
 !read introhook.phtml
 </table> <p>
-<input type=submit value="开始">
+<input type="submit" value="开始">
 </center>
 </form>
 
 !if $exocnt>10
  !form intro
- <input type=hidden name=special_parm2 value=select>
- <input type=hidden name=module value=$module>
+ <input type="hidden" name="special_parm2" value="select">
+ <input type="hidden" name="module" value="$module">
  选取包含你输入的词的标题
- <input size=12 maxlength=12 name=special_parm value="$oldparm">
- <input type=submit value=OK>
+ <input size="12" maxlength="12" name="special_parm" value="$oldparm">
+ <input type="submit" value="OK">
  </form>
 !endif
 

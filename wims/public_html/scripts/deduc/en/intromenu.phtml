@@ -19,40 +19,40 @@
 !endif
 
 !form new
-<input type=hidden name=module value="$module">
-<center><table border=0><tr>
+<input type="hidden" name="module" value="$module">
+<center><table border="0"><tr>
 !set special_parm=!trim $special_parm
 !if $special_parm2=select and $special_parm!=$empty
- <td align=center>Exercises containing<br>
- <em><font color=blue>$special_parm</font></em>&nbsp;:<td>
+ <td align="center">Exercises containing<br>
+ <em><font color="blue">$special_parm</font></em>&nbsp;:<td>
 !else
- <td align=center>Choose the exercises:<td>
+ <td align="center">Choose the exercises:<td>
 !endif
 !read deduc/select.phtml
-<tr><td align=center>Level of severity <td>
+<tr><td align="center">Level of severity <td>
 !set qcmlevel=3
 !formselect qcmlevel from 1 to 9
-<tr><td align=center>Ask for application <br>
+<tr><td align="center">Ask for application <br>
 conditions of methods
 <td>
 !formselect Askcontext list -1,0,1 prompt Never, According to the exercises, Always
-<tr><td align=center>Ask the result <br>
+<tr><td align="center">Ask the result <br>
 of methods
 <td>
 !formselect Askresult list -1,0,1 prompt Never, According to the exercises, Always
 !read introhook.phtml
 </table> <p>
-<input type=submit value="Go to work">
+<input type="submit" value="Go to work">
 </center>
 </form>
 
 !if $exocnt>10
  !form intro
- <input type=hidden name=special_parm2 value=select>
- <input type=hidden name=module value="$module">
+ <input type="hidden" name="special_parm2" value="select">
+ <input type="hidden" name="module" value="$module">
  Select titles containing word
- <input size=12 maxlength=12 name=special_parm value="$oldparm">
- <input type=submit value=OK>
+ <input size="12" maxlength="12" name="special_parm" value="$oldparm">
+ <input type="submit" value="OK">
  </form>
 !endif
 
