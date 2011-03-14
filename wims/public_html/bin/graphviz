@@ -12,7 +12,7 @@ fi
 tstamp=`date '+%s'`
 
 if [ "$wims_exec_parm" = "about" ]; then
- dd=`bin/ch..root dot -V 2>&1| head -1` ;
+ dd=`./bin/wrap..exec dot -V 2>&1| head -1` ;
  echo "<a href=\"http://www.graphviz.org\">Graphviz</a> ($dd)" ;
  exit;
 fi
@@ -38,7 +38,7 @@ cat <<@ >$tmp_dir/graphviz
 $wims_exec_parm
 @
 
-bin/ch..root $w_graphviz_format $parm $tmp_dir/graphviz > $tmp_dir/graphviz.plain
+./bin/wrap..exec $w_graphviz_format $parm $tmp_dir/graphviz > $tmp_dir/graphviz.plain
 mv -f $tmp_dir/graphviz.$w_graphviz_output $s2_dir/graphviz/$i.$w_graphviz_output
 
  if [ -f "$s2_dir/graphviz/$i.$w_graphviz_output" ]; then
