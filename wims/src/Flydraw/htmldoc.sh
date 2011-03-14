@@ -46,7 +46,7 @@ awk 'BEGIN {a=10}
 	{a++}
 	a==1 {print "$table_tr<td colspan=\"5\" nowrap><tt>"substr($0,2)"</tt></td></tr>"}
 	a==2 {print "$table_tr<td colspan=\"2\"><tt>"$0"&nbsp;</tt></td>"}
-	a==3 {print "<td colspan=\"3\">"$0"</td></tr><tr>"}
+	a==3 {print "<td colspan=\"3\">"$0"</td></tr>"}
 	' $file
 
 echo "\$table_end<p>"
