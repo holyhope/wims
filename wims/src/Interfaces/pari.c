@@ -46,10 +46,10 @@ alias(PI,Pi)\n\
 i=I\n\
 e=exp(1)\n\
 E=exp(1)\n\
-{ sec(x)=return(1/cos(x)) }\n\
-{ csc(x)=return(1/sin(x)) }\n\
-{ lg(x) =log(x)/log(10) }\n\
-{ log2(x) =log(x)/log(10) }\n\
+sec(x)=1/cos(x);\n\
+csc(x)=1/sin(x);\n\
+lg(x)=log(x)/log(10);\n\
+log2(x)=log(x)/log(10);\n\
 alias(log10,lg)\n\
 alias(sgn,sign)\n\
 alias(ch,cosh)\n\
@@ -85,8 +85,9 @@ struct {
 	/* names which are not allowed */
 char *illegal[]={
 	"alias","allocatemem","default","extern",
-      "getrand","getstack","input","psdraw",
-      "read","system","install"
+      "getrand", "setrand", "getstack","input","psdraw",
+      "read","readvec","system","install", "externstr",
+      "Strexpand"
 };
 
 	/* name parts which are not allowed */
@@ -179,7 +180,7 @@ char *dynsetup(char *ptr, char *end)
     int i;
     char *p, *pp;
 
-    snprintf(ptr,end-ptr,"\nsetrand(%u)\n",seed&(0x7FFFFFFF));
+    snprintf(ptr,end-ptr,"\nsetrand(%u);\n",seed&(0x7FFFFFFF));
     ptr+=strlen(ptr);
     for(i=0;i<SETUP_NO;i++) {
 	p=getenv(setups[i].wname);
