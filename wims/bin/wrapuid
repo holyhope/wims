@@ -1,26 +1,11 @@
 #! /bin/sh
 #
-#	This small script is used to fix the uid of wrap..exec.
-#	It must be run as root.
+# Fixes uid/gid of wrap..exec and ch..root; see the documentation of the two
+# scripts below.
 #
-
-if [ ! "$(id -ru )" = 0 ]; then
- echo
- echo Please run this script as root!
- echo
- echo
- exit
-fi
-
+# Must be run as root.
+#
 cd `dirname $0`/..
-
-for f in public_html/bin/wrap..exec bin/wimsd
-do
- if [ -f $f ]; then
-  chown nobody:nobody $f
-  chmod 6755 $f
- fi
-done
-chown root:root public_html/bin/ch..root
-chmod 6750 public_html/bin/ch..root
-rm -f log/unsecure
+./bin/setwrapexec # mandatory
+./bin/setwimsd    # optional
+./bin/setchroot   # unmaintained, optional

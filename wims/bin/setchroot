@@ -1,0 +1,23 @@
+#! /bin/sh
+#
+# Fixes the uid of ch..root. 
+# Useless if you are not using the wims-chroot distribution.
+# Must be run as root.
+
+cd `dirname $0`/..
+if [ ! -d chroot ]; then
+ echo $0: you are not using the *no longer maintained* 'wims-chroot'
+ echo distribution. Running 'setchroot' in your case is unnecessary and a
+ echo potential security risk. Aborting the 'setchroot' script.
+ exit
+fi
+
+if [ ! "$(id -ru )" = 0 ]; then
+ echo
+ echo $0: Please run this script as root!
+ echo
+ exit
+fi
+
+chown root:root public_html/bin/ch..root
+chmod 6750 public_html/bin/ch..root
