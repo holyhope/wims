@@ -3,11 +3,11 @@
 \
 $title
 
-!if $bad$writable$execable$baduser$bad_wrapper$noexec=$empty
+!if $bad$writable$execable$baduser$bad_wrapexec$bad_chroot$bad_wimsd$noexec=$empty
  $name_attrib1
  !sh rm -f $wims_home/log/unsecure
 !else
- <b><font color="red">$wims_name_warning</font></b>
+ <b><font color="red">$wims_name_warning</font></b><p>
  !if $bad!=$empty
   $name_attrib2
 <pre>
@@ -72,12 +72,20 @@ $title
   $name_warning1
   <p>
  !endif
- !if $bad_wrapper=true
-  $name_warning2
-  <p>
-  !writefile wimshome/log/unsecure yes
- !else
-  !sh rm -f $wims_home/log/unsecure
+ !if $bad_wrapexec=yes
+    $name_warning_wrapexec
+    <p>
+ !endif
+ !if $baduser!=$empty
+     $name_warning2
+ !endif
+ !if $bad_chroot=true
+    $name_warning_chroot
+    <p>
+ !endif
+ !if $bad_wimsd=true
+    $name_warning_wimsd
+    <p>
  !endif
  !if $noexec!=$empty
   $name_attrib11
@@ -86,7 +94,7 @@ $title
 </pre>
   <p>
  !endif
- !if $writcnt<50 and $execnt<50 and $usercnt<1 and $bad_wrapper=$empty
+ !if $writcnt<50 and $execnt<50 and $usercnt<1 and $bad_wrapexec=$empty and $writcnt>0 and $execnt>0
   $name_warning3
  !endif
 !endif

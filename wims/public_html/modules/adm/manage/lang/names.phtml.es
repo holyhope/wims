@@ -75,10 +75,13 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   Now you MUST manually check the origin of these files, and either erase\
   them, or change their ownership.
   !set name_warning2=Importante recomendación de seguridad: por favor compruebe\
-   el dueño de los ficheros <tt>public_html/bin/ch..root</tt>,\
-   <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.\
-   Esto es crucial para la seguridad de su instalación. Para ello\
-   debe ejecutar el guión bin/wrapuid como root.
+   el dueño de los ficheros.
+   
+ !set name_warning_chroot=If you use wims-chroot distribution, debe ejecutar \
+ el guión <tt>bin/setchroot</tt> como root.
+ !set name_warning_wimsd=If you use wimsd, debe ejecutar el guión <tt>bin/setwimsd</tt> como root. 
+ !set name_warning_wrapexec=debe ejecutar el guión <tt>bin/setwrapexec</tt> como root.\
+   Esto es crucial para la seguridad de su instalación. 
  !set name_warning3=Estos permisos erróneos constituyen un riesgo de seguridad para su instalación.\
   El problema acaba de ser corregido, pero debe estar alerta y comprobar\
   los permisos de acceso con más frecuencia. Si reaparece el mismo problema,\
@@ -193,6 +196,7 @@ las configuraciones guardadas en el directorio log.
    aquí\
   para administrar su módulo manualmente.\
  into name_click,name_backup,name_here,name_manual
+
 !!ressources
   !set name_config_site=para configurar las normas de restricción de acceso del sitio.
 
@@ -343,9 +347,8 @@ de este sitio. No está autorizado a acceder a este módulo.
 !exit
 !endif
 
-
-
 !if $job=modules
+   !set title=Module download
   !set name_scheduled=!nosubst  Se ha recibido la petición de ejecutar su orden $auto. El resultado \
    se le enviará por correo electrónico.<p> Por favor no repita la orden hasta que se haya completado su ejecución.
   !distribute lines  entre los anuncios de módulos\
@@ -420,7 +423,6 @@ el recurso y busque el fichero "wims-resource.tgz" en el siguiente campo de entr
 !exit
 !endif
 
-
 !if $job=rss
    !set title= Reconstruir la conexión RSS
    !set name_start=Comenzar a reconstruir la conexión RSS.
@@ -448,8 +450,9 @@ posible utilizar los paquetes cirílicos.</small>
 !endif
 
 !if $job=sendmail
- !distribute item Subject,Message into name_subject,name_message
+ !distribute item Subject,Message \
+into name_subject,name_message
  !let name_dest=Recipient,Server administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
- !let name_sending=Your message has been send to all recipient
+ !let name_sending=Your message has been send to all Recipient
  !exit
 !endif

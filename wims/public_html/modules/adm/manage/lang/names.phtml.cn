@@ -77,6 +77,14 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   !set name_warning2=重要安全提示: 请给文件 <tt>public_html/bin/ch..root</tt>,\
   <tt>public_html/bin/wrap..exec</tt>, <tt>bin/wimsd</tt> 以正确的拥有者.\
   这对安全性十分重要. 为此你应该作为 root 执行 bin/wrapuid.
+  
+ !set name_warning_chroot=If you use wims-chroot distribution, you must execute \
+  as <tt>root</tt> the script <tt>bin/setchroot</tt>.
+ !set name_warning_wimsd=If you use wimsd, you must execute as <tt>root</tt> \
+   the script <tt>bin/setwimsd</tt>. 
+ !set name_warning_wrapexec=You must execute as <tt>root</tt> the script <tt>bin/setwrapexec</tt>.\
+ This is crucial for the security of your installation. 
+
  !set name_warning3=这些错误的权限使你的机器有安全隐患. 目前这些问题已被纠正,\
   然而你仍需经常检查准入权限. 如果同类问题再次出现, 你应该检查你的系统是否被入侵过,\
   服务器的数据是否被做了手脚.
@@ -129,11 +137,11 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   into name_click,name_config,name_noclass,name_list,name_created,name_expire,name_cumul,name_best,\
   name_part,name_listindependant,name_cumul_student,name_bestcumul,name_yourclass,name_listclass,\
   name_load,name_format
- 
+
   !set name_search1=本服务器有许多虚拟班. 为寻找一个班级, 请输入一个关键词.
   !set name_search2=还是有太多班级与你的关键词对应. 请给出更精确的关键词.
   !set name_total=!nosubst 这个服务器上有 $nbcls 个班级或班级组.
-  
+ 
   !if $job2 iswordof modify erase
   !set title=
   !distribute lines 虚拟班级的重要性质:\
@@ -164,8 +172,6 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 
  !exit
 !endif
-
-
 
 !if $job=conf
   !set title=!nosubst  $cattit 的设置
@@ -425,7 +431,8 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
 !exit
 !endif
 !if $job=sendmail
- !distribute item 主题,信息 into name_subject,name_message
+ !distribute item 主题,信息 \
+into name_subject,name_message
  !let name_dest=收信人,服务器管理员,独立班级主持教师,超级班级管理员,学区管理员,超级班级教师,学区教师
  !let name_sending=你的信息已被发送到所有收件人
  !exit

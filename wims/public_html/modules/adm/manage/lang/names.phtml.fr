@@ -12,7 +12,7 @@ Son accès est contrôlé par les définitions du fichier de configuration.
    Voici les tâches que vous pouvez effectuer en ligne.\
    Configuration\
    Vérification du système\
-   à exécuter après chaque ajout de nouvelles ressources (modules, feuilles) au serveur\
+à exécuter après chaque ajout de nouvelles ressources (modules, feuilles) au serveur\
    Vérifier/maintenir\
    Créer/maintenir\
 into name_warning,name_online,name_configuration,name_checklist,name_mkindex,name_checkmaintain,\
@@ -56,15 +56,15 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
   !set title=Vérification des permissions de fichiers
 
   !distribute lines Les permissions d'accès de cette installation WIMS sont toutes sécurisées.\
-   Les fichiers ou dossiers suivants peuvent être lus par d'autres, ce qu'ils ne devraient pas être.\
-   Il y a beacoup de fichiers ou dossiers pouvant être lus par d'autres, ce qu'ils ne devraient pas être..\
+   Les fichiers ou dossiers suivants sont lisibles par d'autres, ce qu'ils ne devraient pas être.\
+   Il y a beacoup de fichiers ou dossiers lisibles par d'autres, ce qu'ils ne devraient pas être.\
    Le problème a été réparé partiellement.\
    Exécutez le script une fois de plus\
-   jusqu'à ce qu'il n'y ait plus de fichiers ou dossiers ayant de mauvaises permissions\
+   jusqu'à ce qu'il n'y ait plus de fichiers ou dossiers ayant de mauvaises permissions.\
    Listes des permissions réparées\
-   Les fichiers ou dossiers suivants peuvent être modifiés par d'autres, ce qu'ils ne devraient pas être.\
-   Les fichiers ou dossiers suivants peuvent être exécutés par d'autres, ce qu'ils ne devraient pas être.\
-   Il y a un grand nombre de fichiers ou dossiers qui n'appartiennent pas à  WIMS. Voici une liste partielle ci-dessous.\
+   Les fichiers ou dossiers suivants sont modifiables par d'autres, ce qu'ils ne devraient pas être.\
+   Les fichiers ou dossiers suivants sont exécutables par d'autres, ce qu'ils ne devraient pas être.\
+   Il y a un grand nombre de fichiers ou dossiers qui n'appartiennent pas à  WIMS. En voici une liste partielle.\
    Les fichiers ou dossiers suivants n'appartiennent pas à WIMS.\
    Les fichiers ou dossiers suivants doivent être exécutables par n'importe qui, ce qu'ils ne sont pas.\
 into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
@@ -73,12 +73,16 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
 
   !set name_warning1=Les dossiers de WIMS ne doivent pas contenir des fichiers appartenant à d'autres.\
   Vous devez vérifier l'origine de ces fichiers et les effacer ou changer leur appartenance.
-  !set name_warning2=Recommandation importante de sécurité: merci de changer les droits du propriétaire \
-  des fichiers suivants <tt>public_html/bin/ch..root</tt>,\
-  <tt>public_html/bin/wrap..exec</tt> et <tt>bin/wimsd</tt>.\
-  Cela est crucial pour la sécurité de votre installation. Pour cela,\
-  vous devez exécuter le script <tt>bin/wrapuid</tt> comme <tt>root</tt>.
- !set name_warning3=Les mauvaises permissions suivants sont un risque pour votre installation. Cela a\
+  !set name_warning2=Recommandation importante de sécurité : merci de changer le propriétaire \
+  des fichiers suivants.
+  
+ !set name_warning_chroot=Si vous utilisez la distribution wims-chroot, vous devez exécuter \
+  comme <tt>root</tt> le script <tt>bin/setchroot</tt> (distribution plus maintenue).
+ !set name_warning_wimsd=Si vous utilisez wimsd, vous devez exécuter comme <tt>root</tt> \
+   le script <tt>bin/setwimsd</tt>. 
+ !set name_warning_wrapexec=Vous devez exécuter comme <tt>root</tt> le script <tt>bin/setwrapexec</tt>.\
+ Cela est crucial pour la sécurité de votre installation. 
+ !set name_warning3=Les mauvaises permissions suivantes sont un risque pour votre installation. Cela a\
   pu été réparé mais vous devez en être conscient et vérifier les permissions d'accès\
   plus régulièrement. Si ce problème réapparait, vous devriez vérifier\
   la possibilité d'intrusion sur votre système, car les données du serveur\
@@ -103,7 +107,8 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 
   !set name_warning1=!nosubst Le fichier $fname est lisible par le monde entier!\
     Il y un très grand risque que les réglages du site et/ou le mot de passe soient\
-    piratés. Aussi vous devez changer les permissions de fichiers $fname de pour le rendre lisible uniquement par son propriétaire
+    piratés. Aussi vous devez changer les permissions du fichier $fname pour le rendre lisible \
+    uniquement par son propriétaire
   !set name_warning2=et mettre des définitions de sécurité dès que possible.
   !set name_warning3=et définir un nouveau mot de passe d'administrateur.
   !set name_warning4=Une fois que cela a été fait, essayez de nouveau.
@@ -443,7 +448,8 @@ actuellement d'utiliser les paquets cyrilliques.</small>
 !endif
 
 !if $job=sendmail
- !distribute item Sujet,Message into name_subject,name_message
+ !distribute item Sujet,Message \
+into name_subject,name_message
  !let name_dest=Destinataires,Administrateur du serveur,Administrateur d'une classe individuelle,Administrateur d'un groupement de classes,Administrateur d'un établissement,Enseignant d'un groupemement de classes,Enseignant d'un établissement
  !let name_sending=Votre message a été envoyé à tous les destinataires
  !exit

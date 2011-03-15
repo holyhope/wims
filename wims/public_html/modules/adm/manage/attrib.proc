@@ -22,10 +22,12 @@ execable=!mexec scripts/attrib3.sh $noexec
 execnt=!wordcnt $execable
 baduser=!mexec scripts/attrib4.sh $users
 noexec=!mexec scripts/attrib5.sh $wexec
-!if public_html/bin/ch..root notwordof $baduser or \
-	public_html/bin/wrap..exec notwordof $baduser or \
-	bin/wimsd notwordof $baduser
- bad_wrapper=true
+bad_wrapexec=!record 0 of wimshome/log/unsecure
+!if public_html/bin/ch..root notwordof $baduser 
+  bad_chroot=true
+!endif
+!if bin/wimsd notwordof $baduser
+  bad_wimsd=true
 !endif
 baduser=!replace word public_html/bin/ch..root by $ in $baduser
 baduser=!replace word public_html/bin/wrap..exec by $ in $baduser

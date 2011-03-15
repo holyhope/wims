@@ -5,7 +5,7 @@
 
 !set name_warning_wrongpass=<b>Error</b>. You have given a wrong password.
 !set name_try_wrongpass=Try again
-  
+
   
 !!list
  !distribute lines Security setup should be established after compilation. Please execute bin/wrapuid by root!\
@@ -72,13 +72,16 @@ into name_attrib1,name_attrib2,name_attrib3,name_attrib4,name_repeat,\
   name_attrib11
 
   !set name_warning1=WIMS directories should not contain files belonging to others.\
-  Now you MUST manually check the origin of these files, and either erase\
-  them, or change their ownership.
+  Now you MUST manually check the origin of these files, and either erase them, or change their ownership.
   !set name_warning2=Important security recommendation: please make correct changes\
-  of the owner of the files <tt>public_html/bin/ch..root</tt>,\
-  <tt>public_html/bin/wrap..exec</tt> and <tt>bin/wimsd</tt>.\
-  This is crucial for the security of your installation. To do so, you\
-  should execute the script bin/wrapuid as root.
+  of the owner of some files 
+  
+  !set name_warning_chroot=If you use wims-chroot distribution, you must execute \
+  as <tt>root</tt> the script <tt>bin/setchroot</tt>.
+ !set name_warning_wimsd=If you use wimsd, you must execute as <tt>root</tt> \
+   the script <tt>bin/setwimsd</tt>. 
+ !set name_warning_wrapexec=You must execute as <tt>root</tt> the script <tt>bin/setwrapexec</tt>.\
+ This is crucial for the security of your installation. 
  !set name_warning3=These wrong permissions represent a security risk to your installation. This has\
   been fixed for the time being, but you should be alerted and verify access\
   permissions more regularly. If the same problem reappears, you should check\
@@ -323,9 +326,9 @@ right to access this module.
 !endif
 
 !if $job=mod2
-  !set name_error1=!nosubst <b>Error</b>. The login name <tt>$devlogin</tt> is already in use by another\
+  !set name_error1=!nosubst <b>$wims_name_Error</b>. The login name <tt>$devlogin</tt> is already in use by another\
  account. Please choose a different name.
-  !set name_error2=!nosubst <b>Error</b>. The <tt>$badfield</tt> field is not correctly entered. Please\
+  !set name_error2=!nosubst <b>$wims_name_Error</b>. The <tt>$badfield</tt> field is not correctly entered. Please\
  correct it.
 
 !exit
@@ -387,7 +390,6 @@ right to access this module.
     published<br>by\
   into name_check1,name_click_adress,name_foundv,name_foundm,name_all_u,name_all_i,name_updated,name_newv,name_newm,name_server,name_published
 
-
 !exit
 !endif
 
@@ -444,7 +446,7 @@ yet possible to use the cyrillic packs.</small>
 
 !if $job=sendmail
  !distribute item Subject,Message \
- into name_subject,name_message
+into name_subject,name_message
  !let name_dest=Recipient,Server administrator,Individual class supervisor,Superclass administrator,Portal administrator,Teacher of a superclass,Teacher of a portal
  !let name_sending=Your message has been send to all Recipient
  !exit
