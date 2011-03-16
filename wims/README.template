@@ -16,37 +16,39 @@ should work on any modern Unix-like system after minimal porting efforts.
 
 Otherwise, you may compile the system on your machine. Here are the steps:
 
-1. Create a user, say `wims', with home directory, say, /var/wims.
+0. Install third party support softwares:
+ -- LaTeX distribution
+ -- Pari 2.3 or up (http://pari.math.u-bordeaux.fr/).
+ -- Maxima 5.20 or up (http://sourceforge.net/projects/maxima/).
+ -- Make sure that the server is able to send mail.
+ 
+1. Create a user, say `wims', with home directory, say, /var/wims ($HOME).
 
-2. Login as wims, and copy the tar file wims-WIMS_VERSION.tgz into /var/wims.
+2. Login as wims, and copy the tar file wims-WIMS_VERSION.tgz into $HOME.
    This tarball now contains the base system. It does not contains "pedagogical modules"
 
 3. Decompress and untar the .tgz file.
 
-4. Get and install support software (at least Latex and Pari before 5.):
- 4.1. LaTeX distribution
- 4.2. Pari 2.3 or up (http://pari.math.u-bordeaux.fr/).       (100% importance)
- 4.3. Maxima 5.20 or up (http://sourceforge.net/projects/maxima/). ( 80% importance)
- 4.4. Yacas 1.0.52 or up (http://yacas.sourceforge.net/).     ( 20% importance)
- 4.5. GAP 4 or up (http://www-gap.dcs.st-and.ac.uk/~gap).     ( 10% importance)
- 4.6. GNU Octave (http://www.octave.org/).                    (  5% importance)
- 4.7. Povray (http://www.povray.org/).                        (  5% importance)
- 4.8. Graphviz (http://www.graphviz.org/).                    (  5% importance)
-Pari and Maxima are necessary. Omitting one of the others will simply
-prevent your server from running some of the exercises / activities.
+4. Compile the server as user wims : type './compile'.
 
-5. Compile the server as user wims : type './compile'.
-
-Then execute the script ./bin/setwrapexec as root (or sudoers). It is important 
+Then execute the script ./bin/setwrapexec as root. It is important 
 for security reasons.
 
-Some other utilities can be useful : library gmp, ldapsearch. 
-One needs also the "mail".
+5. Get and install optional support software. Omitting some of them will simply
+ prevent your server from running some of the exercises / activities.
 
-6. You may run WIMS single-user by executing the script /var/wims/localwims
+ -- GNU Octave (http://www.octave.org/).                    ( 20% importance)
+ -- Yacas 1.0.52 or up (http://yacas.sourceforge.net/).     ( 10% importance)
+ -- GAP 4 or up (http://www-gap.dcs.st-and.ac.uk/~gap).     ( 10% importance) 
+ -- Povray (http://www.povray.org/).                        (  5% importance)
+ -- Graphviz (http://www.graphviz.org/).                    (  5% importance)
+
+6. You may run WIMS single-user by executing the script $HOME/localwims
+   if you would prefer something else. In this case, you must run first the 
+   script ./bin/setwimsd as root. It is important for security reasons.
+   
    The default browser used is mozilla, call 'localwims another_browser'
-   if you would prefer something else.
-  
+   if you would prefer something else.  
    You should see your favorite browser pop up and display the WIMS home page,
    including a link allowing you to do online site maintenance. Click on it
    and follow instructions there to configure and check your installation.
@@ -54,14 +56,13 @@ One needs also the "mail".
    In particular, modules must be selected and installed from that online
    maintenance page.
 
-7. If you want to use Apache httpd with WIMS,
-   su to root, and run the script bin/apache-config in the directory wims. 
-   In this case, wims can be accessed from the address
+7. If you want to use Apache httpd with WIMS, run $HOME/bin/apache-config 
+   as root. In this case, wims can be accessed from the address
 
 	http://localhost/wims/         or
 	http://localhost/wims/wims.cgi
 
-8. Get and install all or some help and teaching modules (from the wims home
+8. Get and install all or some help and teaching modules (from the WIMS home
 page, follow the link maintenance, then module management). A good idea is to
 install at least modules from categories "teacher" and "student" ("all" is
 recommended) in zone "help" : they contain the FAQ pages and several help
