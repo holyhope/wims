@@ -802,7 +802,7 @@ void define_html_header(void)
 		 if(th==NULL || *th==0) th=getvar("wims_theme"); st=1;
 		 if(ti==NULL || *ti==0) ti=getvar("wims_theme_icon");
 	    }
-	    else {/* Il faut peut-Ãªtre changer lÃ  aussi pour direction */
+	    else {/* Il faut peut-être changer là aussi pour direction */
 		nbuf=mkfname(NULL,"html/css/%s/%s.css",lang,cp);
 		th=getvar("wims_theme");
 		ti=getvar("wims_theme_icon");
