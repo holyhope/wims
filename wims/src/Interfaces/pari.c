@@ -39,6 +39,7 @@ char *nameofcmd="gp";
 char *gprcenv="GPRC";
 char *gprc="../.gprc";
 char header[]="default(output,0)\n\
+default(secure,1)\n\
 alias(ln,log)\n\
 alias(pi,Pi)\n\
 alias(euler,Euler)\n\
@@ -84,10 +85,6 @@ struct {
 
 	/* names which are not allowed */
 char *illegal[]={
-	"alias","allocatemem","default","extern",
-      "getrand", "setrand", "getstack","input","psdraw",
-      "read","readvec","system","install", "externstr",
-      "Strexpand"
 };
 
 	/* name parts which are not allowed */
@@ -171,7 +168,7 @@ void about(void)
     if(readabout()>0) {
 	p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
 	strip_trailing_spaces(aboutbuf);
-	printf("<A HREF=\"%s\">%s</A>",homepage,aboutbuf);
+	printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }
 
