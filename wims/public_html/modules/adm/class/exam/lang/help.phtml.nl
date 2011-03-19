@@ -4,10 +4,10 @@
 :allowtype
 <center><b>Openingstijden van een proefwerk</b></center>
  U kunt openingstijden definieren voor dit proefwerk, door het toevoegen van woorden
- <font color=blue><b>
+ <font color="blue"><b>
  <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
  (openingstijd) en/of
- <font color=blue><b>
+ <font color="blue"><b>
  <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
  (sluitingstijd). 
  Deze tijden moeten worden aangegeven in de lokale tijd van deze SERVER,
@@ -21,7 +21,7 @@
 Score drempels dit wil zeggen dat een deelnemer/leerling een bepaalde hoeveelheid punten <br>
 moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.<br>
 We noemen dit toets-type een "drempel toets".<br>
-Bijvoorbeeld:  <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> wil zeggen dat<br>
+Bijvoorbeeld:  <font color="blue"><tt>1:50,2:30,3+4+5:60</tt></font> wil zeggen dat<br>
 de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en opdracht 3,4,5 samen gemiddeld minimaal 60%.
 !exit
 

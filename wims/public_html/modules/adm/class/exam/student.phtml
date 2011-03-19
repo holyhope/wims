@@ -35,7 +35,7 @@ $desc<p>
  !if $maxcol>1
   <center>
  !endif
- <table border=0 class="wims_exam">
+ <table border="0" class="wims_exam">
   !for lig=1 to $maxlig
    <tr>
     !for col=1 to $maxcol
@@ -66,7 +66,7 @@ $desc<p>
       !set test=!defof w_cmd in wimshome/sessions/$ss/var
       !if $test=$empty
        !set test=$wims_ref_name?wims_window=new&+session=$(wims_session)_exam&+cmd=new&+worksheet=$exam.$i
-       <img src="$test" height=1 width=1 border=0>
+       <img src="$test" height="1" width="1" border="0">
       !endif
      !endif
     !else
@@ -100,7 +100,7 @@ $desc<p>
    !if $trcut=0
     $name_exam3
    !else
-   $name_exam4
+    $name_exam4
    !endif
    $name_exam5
    !set exhausted=yes
@@ -120,12 +120,14 @@ $desc<p>
     $name_lasttry
    !endif
   !endif
-  !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
+  !if $exhausted!=yes
+   !set wims_menu_items=!append line refresh,1,cmd=reply&job=student\
 scoreexam,1,cmd=reply&job=score \
 to $wims_menu_items
-  !if $activeexo<1
+   !if $activeexo<1
 !set wims_menu_items=!append line endexam,1,cmd=reply&job=scorereg\
 to $wims_menu_items
+   !endif
   !endif
  !endif
 !endif
