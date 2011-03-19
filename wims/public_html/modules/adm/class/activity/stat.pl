@@ -1,7 +1,8 @@
 #!/usr/bin/perl
+#use strict ;
 
 use Time::Local;
-
+my ($OUT, $SHEET) ; 
 push (@ARGV,split(' ', $ENV{'wims_exec_parm'})) if ($ENV{'wims_exec_parm'}) ; 
 while ($_ = shift (@ARGV))
 {
@@ -10,14 +11,15 @@ while ($_ = shift (@ARGV))
      if (/^--sheet=(.*)$/) {$SHEET = $1; } # nombre de feuilles
 } ;
 #fichier à lire
-$FILE = "/" . $_;
+my $FILE = "/" . $_;
+my (%lastdate, %score, %duree,$dattime) ;  
 for my $sh (1..$SHEET) {
-  $lastdate{$sh}='' ; 
-  $score{$sh} = 0 ; 
+   $lastdate{$sh}='' ; 
+   $score{$sh} = 0 ; 
 }
 
-$session=' ';
-$nbsessions = 0 ; 
+my $session=' ';
+my $nbsessions = 0 ; 
   #le fichier est récupéré ordonné par dates croissantes
 open(IN, $FILE) ;
 while(<IN>){ 
@@ -30,7 +32,7 @@ while(<IN>){
  if ($_[4] eq 'score' || (!$lastdate{$_[2]}) ) {
   if (!($session eq $_[1])){ $nbsessions ++ ; $session = $_[1] ; } ;
   $dattime=~/([0-9]+)\.([0-9:]+)/ ; 
-  ($date,$time) = ($1,$2);
+  my ($date,$time) = ($1,$2);
   $date =~/([0-9][0-9][0-9][0-9])([0-9][0-9])([0-9][0-9])/;
   my ($annee,$mois,$jour)=($1,$2,$3) ;
   $date=converttime($time,$date);
@@ -47,7 +49,7 @@ while(<IN>){
   }
   if ($_[4] eq 'score') {; 
     $score{$_[2]} ++ ;
-    $feuille{$_[2]} = 1 ; $exo{$_[2] . '.' . $_[3]} ++ ;#ne me sert à rien
+   ## $feuille{$_[2]} = 1 ; $exo{$_[2] . '.' . $_[3]} ++ ;#ne me sert à rien
   } ;  ##nombre de fois pour l'exo feuille.numero 
  } ;
 }
@@ -76,11 +78,11 @@ sub converttime {
 }
 
 sub converttime2 {
-    $duree=shift;
-    $secondes = $duree% 60;
+    my $duree=shift;
+    my $secondes = $duree% 60;
     $duree = ($duree-$secondes)/ 60;
-    $minutes = $duree% 60;
+    my $minutes = $duree% 60;
     $duree = ($duree-$minutes)/ 60;
-    $heures = $duree;
+    my $heures = $duree;
     "$heures:$minutes:$secondes";
 }
