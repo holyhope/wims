@@ -30,7 +30,8 @@
 
 char *nameofcmd="M2";
 int precision=20;	/* default */
-char header[]="\
+char header[]="Thing#{Standard,BeforePrint} = toString; \
+scan(methods {Standard,AfterPrint}, (a,b) -> installMethod(a,b,identity));\
 ";
 
 struct {
@@ -43,8 +44,9 @@ struct {
 char *illegal[]={
       "exec","run","fork",
       "input",  /* "load","needs", */
-      "tmpname",
-      "getWWW",
+      "tmpname", "path", "processID",
+      "getWWW", "getenv",
+      "<<", "close"
 };
 
 	/* name parts which are not allowed */
@@ -116,7 +118,7 @@ void about(void)
     if(readabout()>0) {
 	p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
 	strip_trailing_spaces(aboutbuf);
-	printf("<A HREF=\"%s\">%s</A>",homepage,aboutbuf);
+	printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }
 

@@ -44,13 +44,12 @@ m2_header=implicit3d = (f1,f2,f3) -> (\
      J = ideal(x-f,y-g,z-k);\
      Jh = homogenize(J,h);\
      M = selectInSubring(1,gens gb Jh);\
-     toString substitute(M_(0,0), {h=>1}),\
-     toString substitute(M_(0,1), {h=>1}))
+     substitute(M_(0,0), {h=>1}), substitute(M_(0,1), {h=>1}))
 
 result=!exec m2 implicit3d("$fx","$fy","$fz")
 result=!translate # to $\
 $ in $result
-result=!line 1 of $result
+
 # Here I just discard the first two words of the result
 result=!word 3 to -1 of $result
 result=!declosing $result
@@ -65,7 +64,7 @@ n=!itemcnt $result
 
 !if $result=not_polynomial
  Désolé, mais nous ne pouvons calculer les équations que quand les fonctions
- paramétrées sont des polynômes de coefficients rationnels.
+ paramétrées sont des polynômes à coefficients rationnels.
  !exit
 !endif
 !if $result=no_parameter
@@ -76,20 +75,20 @@ n=!itemcnt $result
 
 La courbe d'espace définie par les fonctions paramétrées
 <p><center>
-!htmlmath x = $Fx , y = $Fy , z = $Fz
-<p></center>
+!htmlmath x = $Fx , y = $Fy, z = $Fz
+</center>
 satisfait le système d'équations implicites
-<p><center>
-<table border=0 cellpadding=0 cellspacing=0>
-<tr><td rowspan=2>$m_leftbrace2
-<td nowrap align=right>
+<center>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td rowspan="2">$m_leftbrace2
+<td nowrap align="right">
 !insmath $e1
-<td>&nbsp;=&nbsp;0
-<tr><td nowrap align=right>
+</td><td>&nbsp;=&nbsp;0
+</td></tr><tr><td nowrap align="right">
 !insmath $e2
-<td>&nbsp;=&nbsp;0
-</table>
-</center> <p>
+</td><td>&nbsp;=&nbsp;0
+</td></tr></table>
+</center>
 <small>Calcul effectué par Macaulay 2</small>
 
 !exit
