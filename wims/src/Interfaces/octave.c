@@ -35,8 +35,8 @@ char ans_str[]="ans =";
 
 char *nameofcmd="octave -Hf --no-line-editing";
 int precision=9;
-char header[]="split_long_rows=0\n\
-page_screen_output=0\n\
+char header[]="split_long_rows(0)\n\
+page_screen_output(0)\n\
 function y=sh(x) y=sinh(x); endfunction\n\
 function y=ch(x) y=cosh(x); endfunction\n\
 function y=th(x) y=tanh(x); endfunction\n\
@@ -136,7 +136,7 @@ void about(void)
 	p=strchr(aboutbuf,'\n'); if(p!=NULL) *p=0;
 	p=strchr(aboutbuf,'('); if(p!=NULL) *p=0;
 	strip_trailing_spaces(aboutbuf);
-	printf("<A HREF=\"%s\">%s</A>",homepage,aboutbuf);
+	printf("<a href=\"%s\">%s</a>",homepage,aboutbuf);
     }
 }
 
@@ -148,7 +148,7 @@ char *dynsetup(char *ptr, char *end)
 	p=getenv(setups[i].wname);
 	if(p!=NULL) for(pp=p;*pp;pp++) if(!isspace(*pp) && !isalnum(*pp)) p="";
 	if(p==NULL || *p==0) p=setups[i].defaultval;
-	snprintf(ptr,end-ptr,"%s=%s\n",setups[i].setname,p);
+	snprintf(ptr,end-ptr,"%s(%s)\n",setups[i].setname,p);
 	ptr+=strlen(ptr);
 	if(strstr(setups[i].wname,"octave_precision")!=NULL)
 	  precision=atoi(p);
