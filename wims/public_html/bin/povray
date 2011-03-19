@@ -14,7 +14,6 @@ CONVERT_DIS=2
 CONVERT_OPT="-quality 90 -dispose $CONVERT_DIS"
 
 # directory containing povray include files
-POVINC=/usr/lib/povray31/include
 tstamp=`date '+%s'`
 
 if [ "$wims_exec_parm" = "about" ]; then
@@ -47,7 +46,7 @@ fi
 if [ -z "$w_povray_quality" ]; then w_povray_quality=3; fi
 
 rm -f $s2_dir/povray* $tmp_dir/povray* 2>/dev/null
-parm="+fc -q$w_povray_quality -w$w_povray_width -h$w_povray_height -kfi1 -kff$w_povray_frames -ki$w_povray_clock0.0 -kf$w_povray_clock1.0 -j0"
+parm="+fc +q$w_povray_quality -w$w_povray_width -h$w_povray_height -kfi1 -kff$w_povray_frames -ki$w_povray_clock0.0 -kf$w_povray_clock1.0 -j0"
 
 cat <<@ >$tmp_dir/tmp.pov
 $wims_exec_parm
@@ -57,7 +56,7 @@ if [ "$w_povray_has_data" = "yes" ]; then
  cat $tmp_dir/data.pov >>$tmp_dir/tmp.pov
 fi
 
-bin/ch..root povray $parm -d -l$POVINC -i$tmp_dir/tmp.pov -o$tmp_dir/povray.tga 2>$tmp_dir/povray.out
+bin/ch..root povray $parm -d -i$tmp_dir/tmp.pov -o$tmp_dir/povray.tga 2>$tmp_dir/povray.out
 bin/ch..root convert $CONVERT_OPT $convert_transp -delay $w_ins_anim_delay -loop $w_ins_anim_loop $tmp_dir/povray*.tga $tmp_dir/povray.$format 2>$tmp_dir/convert.err || bin/convert..switch $tmp_dir/convert.err
 mv -f $tmp_dir/povray.$format $s2_dir
 
