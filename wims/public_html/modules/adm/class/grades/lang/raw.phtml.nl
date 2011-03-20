@@ -4,7 +4,7 @@ Hier is de lijst van handmatig ingevoerde cijfers,
 <p>
 !form reply
 !mexec catraw.sh
-<p><input type=submit name="reg" value="$wims_name_tosave">
+<p><input type="submit" name="reg" value="$wims_name_tosave">
 </form> <p>
 <b>Waarschuwing.</b> 
 De WIMS server controleert niet de juistheid van de opgestuurde gegevens.
