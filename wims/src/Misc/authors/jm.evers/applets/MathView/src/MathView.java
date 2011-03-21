@@ -67,6 +67,8 @@
 * 3/2008
 * --> compatible with java 1.4 ??? new replace function .... String.replace(String1,String2)
 * --> vlist(line1,line2,line3....) 
+* version 0.5
+* 3/2011 correct carretposition if using buttons...updateJomeView() , via filer2() ,does correction anyway
 */
 
 import fr.ove.openmath.jome.Jome;
@@ -142,8 +144,6 @@ public class MathView extends Applet
         frame.validate();
         mathview.start();
         mathview.repaint();
-
-
     }
 
     private String removespecial(String t){
@@ -758,11 +758,13 @@ public class MathView extends Applet
 
     public void actionPerformed(ActionEvent actionevent)
     {
+	boolean pos=false;
         String s = actionevent.getActionCommand();
         if(s.startsWith("append "))
         {
             markUndo();
             linearInput.setText(linearInput.getText() + s.substring("append ".length()));
+	    pos=true;
         } else
 
         if(s.startsWith("insert "))
@@ -771,6 +773,7 @@ public class MathView extends Applet
             String s1 = linearInput.getText();
             int i = linearInput.getCaretPosition();
             linearInput.setText(s1.substring(0, i) + s.substring("insert ".length()) + s1.substring(i));
+	    pos=true;
         } else
         if(s.startsWith("enclose "))
         {
@@ -781,6 +784,7 @@ public class MathView extends Applet
             int k = linearInput.getSelectionStart();
             int l = linearInput.getSelectionEnd();
             linearInput.setText(s2.substring(0, k) + s3 + linearInput.getSelectedText() + s4 + s2.substring(l));
+	    pos=true;
         } else
         if(s.equals("undo"))
             undo();
@@ -795,11 +799,15 @@ public class MathView extends Applet
         {
             updateJomeView();
         }
+	// 3/2011 correct carretposition if using buttons...updateJomeView() , via filer2() ,does correction anyway
+	if(pos){
+	    linearInput.setCaretPosition((linearInput.getText()).length());
+	    linearInput.requestFocus();
+	}
     }
 
     public void itemStateChanged(ItemEvent itemevent)
     {
-
         paletteCardsLayout.show(paletteCards, (String)itemevent.getItem());
         linearInput.requestFocus();
     }
