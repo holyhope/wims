@@ -1,20 +1,20 @@
 
 !form reply
- <input type=hidden name="job" value=grestrict>
+ <input type="hidden" name="job" value="grestrict">
  Hier kunt aangeven welke computer netwerkadressen
  mogen deelnemen aan Uw virtuele klas.<br> 
  Deze instellingen blijven van kracht, en hebben een hogere prioriteit dan
  mogelijk andere de instellingen uit de individuele werkbladen
 
  <p>
- <table border=0>
+ <table border="0">
  <tr><td align="right">Toegestane adressen&nbsp;:
- <td><input size=35 name="allow" value="$allow">
+ <td><input size="35" name="allow" value="$allow">
  <tr><td align="right">Uitgezonderd&nbsp;:
- <td><input size=35 name="except" value="$except">
+ <td><input size="35" name="except" value="$except">
  </table> <p>
- <input type=submit name="save" value="$wims_name_tosave">&nbsp;&nbsp;&nbsp;
- <input type=submit name="abandon" value="$wims_name_giveup">
+ <input type="submit" name="save" value="$wims_name_tosave">&nbsp;&nbsp;&nbsp;
+ <input type="submit" name="abandon" value="$wims_name_giveup">
 </form>
 
 <p>
@@ -25,9 +25,9 @@ Zelfs al is het ingevulde adres een "sub-string" van de hostname of ip-adres
 <small>
     <b>Tip.</b>
      In het "Toegestane Adressen" veld, kunnen ook <em>openings tijden</em> worden aangebracht door de woorden: 
-    <font color=blue><b><tt>&gt;yyyymmdd.hh:mm</tt></b></font>
+    <font color="blue"><b><tt>&gt;yyyymmdd.hh:mm</tt></b></font>
     (begin tijd) en/of
-    <font color=blue><b> <tt>&lt;yyyymmdd.hh:mm</tt></b></font> (eind tijd). <br>
+    <font color="blue"><b> <tt>&lt;yyyymmdd.hh:mm</tt></b></font> (eind tijd). <br>
     De genoemde tijden moeten natuurlijk wel worden genoteerd in de <em>locale tijd van de Server</em><br>
     en moeten worden gescheiden van de andere "woorden" door spaties.
 </small>
