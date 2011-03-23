@@ -14,23 +14,23 @@ de la hoja. Sean `x' este porcentaje e `y' la calidad, ambos tendiendo por
 proporcionalidad a valores entre 0 y 1. Las siguientes son las fórmulas para
 el cálculo de las notas:
 <p>$table_header
-$table_hdtr<th>Nivel<th>Fórmula<th>Explicación
-$table_tr<td align="center">0<td align="center">$scoremax max(x,y)
- <td>Muy laxa: el máximo entre el porcentaje y la calidad.
-$table_tr<td align="center">1<td align="center">$scoremax x
- <td>la calidad no se tiene en cuenta. Se logra la nota máxima
- cuando se obtienen todos los puntos requeridos.
-$table_tr<td align="center">2<td align="center">$scoremax x y<sup>0.3</sup>
- <td>La calidad tiene un efecto reducido sobre la nota.
-$table_tr<td align="center">3<td align="center">$scoremax x y<sup>0.5</sup>
- <td>El efecto de la calidad es mayor.
-$table_tr<td align="center">4<td align="center">$scoremax x y
- <td>Para tener una nota de $scoremax, debe lograr todos los puntos
-  requeridos (el 100%) sin cometer errores (calidad=10).
-$table_tr<td align="center">5<td align="center">$scoremax x<sup>2</sup> y
- <td>El porcentaje de trabajo no terminado está sobrepenado.
-$table_tr<td align="center">6<td align="center">$scoremax x<sup>2</sup> y<sup>2</sup>
- <td>Cualquier error está sobrepenado.
+$table_hdtr<th>Nivel</th><th>Fórmula</th><th>Explicación</th></tr>
+$table_tr<td align="center">0</td><td align="center">$scoremax max(x,y)
+ </td><td>Muy laxa: el máximo entre el porcentaje y la calidad.</td></tr>
+$table_tr<td align="center">1</td><td align="center">$scoremax x
+ </td><td>la calidad no se tiene en cuenta. Se logra la nota máxima
+ cuando se obtienen todos los puntos requeridos.</td></tr>
+$table_tr<td align="center">2</td><td align="center">$scoremax x y<sup>0.3</sup>
+ </td><td>La calidad tiene un efecto reducido sobre la nota.</td></tr>
+$table_tr<td align="center">3</td><td align="center">$scoremax x y<sup>0.5</sup>
+ </td><td>El efecto de la calidad es mayor.</td></tr>
+$table_tr<td align="center">4</td><td align="center">$scoremax x y
+ </td><td>Para tener una nota de $scoremax, debe lograr todos los puntos
+  requeridos (el 100%) sin cometer errores (calidad=10).</td></tr>
+$table_tr<td align="center">5</td><td align="center">$scoremax x<sup>2</sup> y
+ </td><td>El porcentaje de trabajo no terminado está sobrepenado.</td></tr>
+$table_tr<td align="center">6</td><td align="center">$scoremax x<sup>2</sup> y<sup>2</sup>
+ </td><td>Cualquier error está sobrepenado.</td></tr>
 $table_end <p>
 
 Remarque : En niveau 0 et 1, si la note de qualité est 

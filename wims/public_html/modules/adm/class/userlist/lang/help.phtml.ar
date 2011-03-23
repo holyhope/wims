@@ -5,32 +5,32 @@
 
 !read adm/title.phtml 3\
 \
-Severity levels of work sheets
+Severity levels of worksheets
 <p>
 The server computes two averages for the work of each participant on each
 sheet: a percentage of points obtained with respect to the number of points
-required, and the quality of points obtained on the exercises of the sheet.
+required, and the quality of points obtained on the exercises of the worksheet.
 Let x be the percentage and y the quality, both scaled proportionally
 to values between 0 and 1. Here are the formulas for the computation of the
 grades.
 <p>$table_header
-$table_hdtr<th>Level<th>Formula<th>Explanation
-$table_tr<td align="center">0<td align="center">$scoremax max(x,y)
- <td>Very lenient: maximum between percentage and quality.
-$table_tr<td align="center">1<td align="center">$scoremax x
- <td>Quality is not taken into account. You get maximum of grade
- once all the required work is done.
-$table_tr<td align="center">2<td align="center">$scoremax x y<sup>0.3</sup>
- <td>Quality has only slight effect over the grade.
-$table_tr<td align="center">3<td align="center">$scoremax x y<sup>0.5</sup>
- <td>More effect of quality.
-$table_tr<td align="center">4<td align="center">$scoremax x y
- <td>To have a grade of $scoremax, you must gather all required points
-  (100%) without making any error (quality=10).
-$table_tr<td align="center">5<td align="center">$scoremax x<sup>2</sup> y
- <td>Unfinished work is over-punished.
-$table_tr<td align="center">6<td align="center">$scoremax x<sup>2</sup> y<sup>2</sup>
- <td>Any mistake is over-punished.
+$table_hdtr<th>Level</th><th>Formula</th><th>Explanation</th></tr>
+$table_tr<td align="center">0</td><td align="center">$scoremax max(x,y)
+ </td><td>Very lenient: maximum between percentage and quality.</td></tr>
+$table_tr<td align="center">1</td><td align="center">$scoremax x
+ </td><td>Quality is not taken into account. You get maximum of grade
+ once all the required work is done.</td></tr>
+$table_tr<td align="center">2</td><td align="center">$scoremax x y<sup>0.3</sup>
+ </td><td>Quality has only slight effect over the grade.
+$table_tr<td align="center">3</td><td align="center">$scoremax x y<sup>0.5</sup>
+ </td><td>More effect of quality.</td></tr>
+$table_tr<td align="center">4</td><td align="center">$scoremax x y
+ </td><td>To have a grade of $scoremax, you must gather all required points
+  (100%) without making any error (quality=10).</td></tr>
+$table_tr<td align="center">5</td><td align="center">$scoremax x<sup>2</sup> y
+ </td><td>Unfinished work is over-punished.</td></tr>
+$table_tr<td align="center">6</td><td align="center">$scoremax x<sup>2</sup> y<sup>2</sup>
+ </td><td>Any mistake is over-punished.</td></tr>
 $table_end <p>
 
 Remark : For level 0 and 1, if the quality of points is less than 1 for an 
@@ -38,5 +38,3 @@ exercise, the percentage of points obtained
 become 0% for this exercise when x is computed ; if the quality of points is betwwen 1 and 2, 
 the percentage of points obtained for this exercise is divided by 2
 when x is computed.
-
-
