@@ -52,18 +52,18 @@ remaintext=$rm:$rs
 !! -------------------------------
 !! rajouter par FG en attendant la correction sur la commande du noyau examscore
 
-activexams=$empty
-examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
-!for k=1 to $examcnt
- t=!record $k of wimshome/log/classes/$wims_class/exams/.exams
- t=!line 1 of $t
- !if $t>0
-    activexams=!append item $k to $activexams
- !endif
-!next k
-!read adm/class/userscore $wims_user
-!!l=!examscore
-l=$examout
+!!activexams=$empty
+!!examcnt=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
+!!!for k=1 to $examcnt
+!! t=!record $k of wimshome/log/classes/$wims_class/exams/.exams
+!! t=!line 1 of $t
+!! !if $t>0
+!!    activexams=!append item $k to $activexams
+!! !endif
+!!!next k
+!!!read adm/class/userscore $wims_user
+l=!examscore
+!!l=$examout
 !! -------------------------------
 lastscore=!word $exam of $l
 !default lastscore=0
