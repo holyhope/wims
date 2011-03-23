@@ -119,7 +119,7 @@ communicate the password to those who you allow to create classes.
 classes.
 $sitehelp
 </dl>
-Please notice that the site manager (that is, you) always has the right to
+Please notice that the webmaster (that is, you) always has the right to
 create virtual classes of any kind.
 
 :class class_quota wims_class_quota
@@ -292,7 +292,7 @@ Site maintenance must use https connection*
 choice
 0,1;no (0),yes (1)
 Whenever possible, choose https connection to increase security. An
-intrusion to your server as site manager represents a great danger to your
+intrusion to your server as webmaster represents a great danger to your
 installation!
 <p>WIMS is compatible with https. All you have to do is to configure your
 httpd so that it accepts https requests.
@@ -305,7 +305,7 @@ You may put here several IP numbers. Partial numbers such as 134.59.10. are
 accepted, but be aware that the more there are allowed sites, the more will be
 your security risks. The most secure site is 127.0.0.1
 (localhost). In any case, choose only site(s) you can trust. An
-intrusion to your server as site manager represents a great danger to your
+intrusion to your server as webmaster represents a great danger to your
 installation!
 <p>
 If you put a `*' to this field, the next time you will not be
@@ -345,7 +345,7 @@ Method of automatic daily module update. <dl>
 <dt><tt>none</tt>
    <dd>Disable automatic module update.
 <dt><tt>check</tt>
-   <dd>Check what should be updated, and send a mail to site manager (that
+   <dd>Check what should be updated, and send a mail to webmaster (that
    is, you). Do not install or update anything.
 <dt><tt>install</tt>
    <dd>Install new modules, but not update existing modules.
@@ -630,7 +630,7 @@ more priority.
 Your email address*
 free
 
-This will be given as the email address of the site manager. It is to this 
+This will be given as the email address of the webmaster. It is to this 
 address that visitors and users of the server will report server problems.
 <p>
 You must change the default value $DF_site_manager to YOUR email address, if

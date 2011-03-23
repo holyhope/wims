@@ -126,7 +126,7 @@ Authentification error. You have no right to publish with this IP number. Access
 
 :nolocalright
  In order to install your module in the local space of the server,
- you should first ask the site manager to give you the right to do so.
+ you should first ask the webmaster to give you the right to do so.
 !exit
 
 :nongnu
