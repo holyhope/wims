@@ -1,31 +1,32 @@
 !goto $wims_read_parm
  
 :1
-
+<ul><li>
+In individual class, a single teacher manages a group of students.
+</li>
+<li>
 A group of classes with a same entrance point allows teachers to
- exchange or share teaching materials, and students to jump from one class to
- another without retyping the password.
- <p>
- An institution structure is a multi-level system of virtual classes
- capable of taking care
- of the need of a whole school: database of students and teachers,
- different teaching levels,
- programs and subjects, student classes, teacher responsabilities, etc.
+ exchange or share teaching materials, and help students to jump from one class to
+ another without having to retype the password.
+</li><li>
+ An institutional structure is a multi-level system of virtual classes
+ through which the needs of an entire teaching institution or whole school can be managed, 
+ for example: students and teachers database,
+ different teaching levels, programs and subjects, teacher responsabilities, etc.
+ </li></ul>
+ Use the link below to create a group of classes or an institutional portal. You will then have
+ to create the classes they are to include.
  !exit
 :2
- 
-  The creation of
+
  !if $Cltype<2
-   <font color="blue">classes</font>
-   is an operation reserved to <font color="blue">teachers</font>. 
+  Only <font color="blue">teachers</font> are allowed to create <font color="blue">classes</font>. 
  !else
-    <font color="blue">$name_classe</font>
- is an operation reserved to a <font color="blue">supervisor</font>.
+  Only <font color="blue">supervisor</font> are allowed to create <font color="blue">classes</font>.
  !endif
- You will need
- a working email address for the operation. After your $name_classe is created,
- you should assume the responsibility of its maintenance. <p>
- To create your $name_classe, please fill in the following informations.
+ A valid email address will be required for class operation. After creating a $name_classe,
+ you will be responsible for its maintainence. <p>
+ To create your $name_classe, please fill in the following information.
  !exit
  
 :step1
@@ -34,18 +35,18 @@ A group of classes with a same entrance point allows teachers to
  You are creating a  $name_classe $classname on the WIMS site $httpd_HTTP_HOST,
  !if $Cltype iswordof 0 1
  of level 
- ``<b><font color=green>$name_level</font></b>'',
+ ``<b><font color="green">$name_level</font></b>'',
  !endif
  limited to $ilimit participants. Registration to this class is
  !if $pword!=$empty
-  protected by the password of the $name_classesss.
+  protected by the class password.
  !else
   open to everybody on the internet (are you sure? Please notice that
   the site manager may refuse and destroy unauthorized open classes!).
  !endif
  This class will expire on $exp_month-$exp_day-$exp_year. <p>
- If you find an error in the above informations, please
- !href module=$module&cmd=reply&step=0 correct it.
+ !href module=$module&cmd=reply&step=0 Click here
+  to correct any mistakes in the above information.
  <p>Otherwise, in order to verify the exactness of your passwords,
  please type them again.
   !exit
@@ -55,15 +56,15 @@ A group of classes with a same entrance point allows teachers to
  Now you need a code to finish the operation of creation of a new class
  under WIMS at the site $http_HTTP_HOST. <p>
  This code has just been sent to your email address
- ``<tt>$email</tt>''. Please go to verify your email box (wait a little bit
- if necessary), and read this message.
- Pick up the code in the message, and copy it below.
+ ``<tt>$email</tt>''. Please verify your inbox (wait a little bit
+ for the email to be sent if necessary) and read the message.
+ Write the code received in the email here below.
  
 !exit
 
 :step3
-
 Hello, $supervisor!<p>
- Your $name_classe $classname is now created. Congratulations, and enjoy!<p>
+ Your $name_classe $classname has now been created. Congratulations, and enjoy!<p>
  The number of participants is limited to $ilimit participants (including you)
+
 !exit
