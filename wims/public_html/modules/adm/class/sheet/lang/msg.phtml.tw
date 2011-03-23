@@ -24,7 +24,7 @@
 !endif
 
 !if bad_maxsheet=$error
- The number of sheets is limited to $max_sheet. You may not create another sheet.
+ The number of worksheets is limited to $max_sheet. You may not create another worksheet.
  !exit
 !endif
 
@@ -47,15 +47,15 @@
 !endif
 
 !if $error=sharing_sheet
- You are sharing sheets with other classes!
+ You are sharing worksheets with other classes!
  !if $wims_ismanager<2
-  You must ask the site manager to deactivate the sheet for you.
+  You must ask the site manager to deactivate the worksheet for you.
   !exit
  !endif
  You might put your neighboring classes in total disorder by deactivating
- this sheet. This operation is therefore <b>stronly discouraged</b>.
+ this worksheet. This operation is therefore <b>stronly discouraged</b>.
  <p>
- Do you still want to deactivate the sheet?
+ Do you still want to deactivate the worksheet?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
@@ -68,28 +68,28 @@
 !endif
 
 !if $error=sheet_in_exam
- Impossible to deactivate this sheet, because you have exams based on its
+ Impossible to deactivate this worksheet, because you have exams based on its
  content.
  !exit
 !endif
 
 !if $error=non_empty_activities
- You want to deactivate the sheet $sheet, while participants have already
+ You want to deactivate the worksheet $sheet, while participants have already
  started to work on it!
  <p>
  !if share iswordof $confirmed
-  Moreover, the sheet is shared with other classes where there may be works
+  Moreover, the worksheet is shared with other classes where there may be works
   and scores too. It is therefore not allowed to deactivate it.
   !exit
  !endif
- All scores obtained on this sheet will be erased, if you deactivate. Really
+ All scores obtained on this worksheet will be erased, if you deactivate. Really
  want to do it?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
- List of accounts having worked on this sheet:
+ List of accounts having worked on this worksheet:
  <p>
  <tt>$worktest</tt>
  <p>
@@ -135,8 +135,8 @@
 !endif
 
 !if prep_putsource=$error
- If you have a source of a sheet saved earlier, you can insert this source
- into the current sheet, by copying this source into the window below,
+ If you have a source of a worksheet saved earlier, you can insert this source
+ into the current worksheet, by copying this source into the window below,
  then clicking on the button `Send'. This form also allows you to insert the
  source of a public worksheet using cut-and-paste.
   <p>

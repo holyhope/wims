@@ -20,12 +20,12 @@
 !endif
 
 !if bad_sheet=$error
- Your sheet number is not valid. Bug of the software?
+ Your worksheet number is not valid. Bug of the software?
  !exit
 !endif
 
 !if no_title=$error
- You want to register a sheet without title, which is not advisable.
+ You want to register a worksheet without title, which is not advisable.
  Error of manipulation?
  !exit
 !endif
@@ -42,15 +42,15 @@
 !endif
 
 !if $error=sharing_sheet
- You are sharing sheets with other classes!
+ You are sharing worksheets with other classes!
  !if $wims_ismanager<2
-  You must ask the site manager to deactivate the sheet for you.
+  You must ask the site manager to deactivate the worksheet for you.
   !exit
  !endif
  You might put your neighboring classes in total disorder by deactivating
- this sheet. This operation is therefore <b>stronly discouraged</b>.
+ this worksheet. This operation is therefore <b>stronly discouraged</b>.
  <p>
- Do you still want to deactivate the sheet?
+ Do you still want to deactivate the worksheet?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
@@ -63,28 +63,28 @@
 !endif
 
 !if $error=sheet_in_exam
- Impossible to deactivate this sheet, because you have exams based on its
+ Impossible to deactivate this worksheet, because you have exams based on its
  content.
  !exit
 !endif
 
 !if $error=non_empty_activities
- You want to deactivate the sheet $sheet, while participants have already
+ You want to deactivate the worksheet $sheet, while participants have already
  started to work on it!
  <p>
  !if share iswordof $confirmed
-  Moreover, the sheet is shared with other classes where there may be works
+  Moreover, the worksheet is shared with other classes where there may be works
   and scores too. It is therefore not allowed to deactivate it.
   !exit
  !endif
- All scores obtained on this sheet will be erased, if you deactivate. Really
+ All scores obtained on this worksheet will be erased, if you deactivate. Really
  want to do it?
  <p><center>
  !href cmd=reply&job=deactivate&confirm=yes $wims_name_yes; $(wims_name_actionlist[3])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center> <p>
- List of accounts having worked on this sheet:
+ List of accounts having worked on this worksheet:
  <p>
  <tt>$worktest</tt>
  <p>
@@ -111,7 +111,7 @@
 !endif
 
 !if prep_erase=$error
- Do you really want to erase this sheet #$sheet ($title)?
+ Do you really want to erase this worksheet #$sheet ($title)?
  <p><center>
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
 .&nbsp;&nbsp;
@@ -121,7 +121,7 @@
 !endif
 
 !if prep_expire=$error
- This sheet #$sheet ($title) expires normally expires on $expday
+ This worksheet #$sheet ($title) expires normally expires on $expday
  !item $expmon of $months
  $expyear. Do you want to expire it now?
  <p><center>
@@ -130,14 +130,14 @@
  !href cmd=resume $wims_name_no ; $wims_name_giveup
  . </center>
  <p><b>Remark.</b> Your students cannot continue to work on a
- expired sheet. But their earlier scores will be conserved (and will be taken into
+ expired worksheet. But their earlier scores will be conserved (and will be taken into
  account in the statistics), and you can always consult these scores.
  !exit
 !endif
 
 !if prep_putsource=$error
- If you have a source of a sheet saved earlier, you can insert this source
- into the current sheet, by copying this source into the window below,
+ If you have a source of a worksheet saved earlier, you can insert this source
+ into the current worksheet, by copying this source into the window below,
  then clicking on the button `Send'. This form also allows you to insert the
  source of a public worksheet using cut-and-paste.
   <p>
