@@ -45,4 +45,5 @@ wims_name_quick_QUIFAITQUOI,wims_name_quick_TONIC
 wims_name_help_GAP,wims_name_help_ORDONNE,wims_name_help_COMPOSE,wims_name_help_CORRESP,\
 wims_name_help_QUIFAITQUOI,wims_name_help_TONIC
 
-
+!distribute item 1st trial,2nd trial,3rd trial,4th trial,Number of trials\
+into name_trial1,name_trial2,name_trial3,name_trial4,name_trialcnt
