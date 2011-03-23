@@ -159,7 +159,7 @@ struct classdata *getclasscache(char *cl)
     for(n=m=0,k=cd->exocnt; p1 && k<MAX_CLASSEXOS && m<MAX_EXOS; p1=p2,m++) {
 	p1+=2;
 	p2=strstr(p1,"\n:"); if(p2) *p2=0;
-	if(*find_word_start(p1)<'1') continue;	/* status */
+//	if(*find_word_start(p1)<'1') continue;	/* status */
 	fnd_line(p1,3,buf2); if(buf2[0]==0) continue;
 	q1=find_word_start(buf2); q2=find_word_end(q1);
 	if(*q2) *q2++=0;
