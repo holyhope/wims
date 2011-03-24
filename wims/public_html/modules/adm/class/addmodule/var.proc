@@ -2,6 +2,12 @@
 # It is read and interpreted by wims for all valid calls to the module.
 !read adm/class/classlang names.phtml
 
+t=$ 
+tmp=!replace internal & by $t  in $iniparm
+tmp2=!getopt scoredelay in $tmp
+tmp3=!replace internal + by , in $tmp2
+iniparm=!replace internal scoredelay=$tmp2 by scoredelay=$tmp3 in $iniparm
+
 max_exo=64
 title_limit=50
 desc_limit=255

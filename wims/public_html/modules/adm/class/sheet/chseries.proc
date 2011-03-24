@@ -20,5 +20,12 @@ nbexo=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
 !endif
 
 update_field=2
+t=$ 
+tmp=!replace internal & by $t  in $iniparm
+tmp2=!getopt scoredelay in $tmp
+tmp3=!replace internal + by , in $tmp2
+iniparm=!replace internal scoredelay=$tmp2 by scoredelay=$tmp3 in $iniparm
 update_content=$iniparm
 !read update.exo
+
+
