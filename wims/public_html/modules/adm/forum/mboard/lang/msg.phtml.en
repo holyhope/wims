@@ -5,7 +5,7 @@
 
 !if prohibited = $error
   $errorhead Your message contains prohibited words. For example, you
-  can not put some javascript in the message. Attention, this error 
+  can not write javascript in the message. Attention, this error 
   is registered by the server.
   !exit
 !endif
@@ -17,7 +17,7 @@
 !endif
 
 !if no_read_right = $error
- $errorhead You don't have the right to access this message board. Sorry.
+ $errorhead You do not have the right to access this message board. Sorry.
  !set fatal=yes
  !exit
 !endif
@@ -29,7 +29,7 @@
 
 !if translation_fail = $error
  $errorhead The software has run into an internal bug and is unable to
- interprete your message. Sorry.
+ interpret your message. Sorry.
  !if $wims_exec_error!=$empty
   <p>
   Type of the error: <tt>$wims_exec_error</tt>
@@ -39,10 +39,9 @@
 
 !if open_tag = $error
  <b>$wims_name_warning</b>.
- Your message seems to be ending within a non-closed 
- html tag. Please verify it. <p>
+ Your message seems to contain a non-closed html tag. Please verify it. <p>
  Your message will be shown as an html file. So
- if you are writing inequalities, please put a space after the `&lt;' sign, or
+ if you are writing inequality symbol, please add a space after the `&lt;' sign, or
  quote the inequalities as math formulas
  (using the pair \( and \) ).
  !exit
@@ -60,7 +59,7 @@
 !endif
 
 !if $error=no_send_right
- $errorhead You don't have the right to post to this message board. Sorry.
+ $errorhead You are not allowed to post to this message board. Sorry.
  <p>
  !href cmd=reply&job=list&mlist=.newlist List of messages.
  !exit
@@ -70,14 +69,14 @@
  $errorhead You must give your email address in order
  to post to this message board.
  <br>
- <b>$wims_name_warning</b>. The server will verify this address! So please don't
- give a fake or false address.
+ <b>$wims_name_warning</b>. The server will verify this address! Make sure you provide
+ a valid email address.
  !set job=compose
  !exit
 !endif
 
 !if $error=bad_email
- $errorhead You didn't give a valid email address. Please correct it.
+ $errorhead You did not provide a valid email address. Please correct it.
  !set job=compose
  !exit
 !endif
@@ -87,8 +86,8 @@
  you typed did not match.
  <p>
  Please verify the email address you have given below, click on the
- `send' button again, then wait for a NEW secret code to reach you by 
- mail.
+ `send' button again, then wait for a NEW secret code to be sent to you by 
+ email.
  !set job=compose
  !exit
 !endif
