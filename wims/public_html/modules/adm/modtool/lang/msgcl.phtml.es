@@ -130,7 +130,7 @@ Authentification error. You have no right to publish with this IP number. Access
 !exit
 
 :nongnu
- You didn't declare the copyright of the module to be GNU GPL. Submission
+ You did not declare the copyright of the module to be GNU GPL. Submission
  refused.
 !exit
 
