@@ -76,7 +76,7 @@ parameter allows you to choose whether or not to activate the patch by
 default. Note that users can define their own preferences. <p>
 The parameter will also be used to activate MathML translation which is not
 yet available. <p>
-If you change this value, don't think of your own browser, but of those of
+If you change this value, do not think of your own browser, but of those of
 your average users!
 
 :tech cgi_name
@@ -88,7 +88,7 @@ configuration file of your httpd. For example, if you have run the script
 in <tt>bin/apache-config</tt>,
 you may try the names <tt>index.html</tt> or <tt>wims.html</tt>.
 <p>
-Do not change this if you don't know what you are doing! If you make it
+Do not change this if you do not know what you are doing! If you make it
 wrong, you will have to manually recover your config.
 
 :class class_limit wims_class_limit
@@ -213,7 +213,7 @@ free
 
 GAP is a group theoretic calculator used by WIMS. If you install it in a
 directory according to its instructions, with an executable gap.sh within
-usual PATH, you don't need to touch this.
+usual PATH, you do not need to touch this.
 
 :log general_log_limit
 Length limit (in bytes) of main log files
@@ -316,7 +316,7 @@ else will).
 Command name of Maxima
 free
 
-You don't need to change this if Maxima is installed in a usual way with the
+You do not need to change this if Maxima is installed in a usual way with the
 starting exercutable in PATH.
 
 :log module_log
@@ -440,7 +440,7 @@ free
 
 PARI/GP is a number-theoretic calculator used by many WIMS modules. If you
 follow its installation procedure with binary executable within usual PATH,
-you don't need to touch this.
+you do not need to touch this.
 
 :resources priority
 Sites with connection priority
@@ -634,7 +634,7 @@ This will be given as the email address of the webmaster. It is to this
 address that visitors and users of the server will report server problems.
 <p>
 You must change the default value $DF_site_manager to YOUR email address, if
-you don't read messages sent to $DF_site_manager.
+you do not read messages sent to $DF_site_manager.
 <p>
 Modules will also have access to this text via the variable
 $$wims_site_manager.
@@ -649,7 +649,7 @@ font size of the browser of average visitors. The latter can change this
 size to better fit their situation, but this change is not saved from one
 session to another, except for virtual class users.
 <p>
-Don't adjust this font size only according to your own browser! Think of
+Do not adjust this font size only according to your own browser! Think of
 others who may have different font sizes in their browsers.
 <p>
 Each step increases (decreases) 9% of the linear size of the font.
@@ -705,7 +705,7 @@ Length limit of data files
 int
 10000,100000000
 This limit applies to many files, including script files in modules as well
-as data file for participant works. So don't set it too small.
+as data file for participant works. So do not set it too small.
 
 :misc usecookie wims_usecookie
 Cookie for anonymous visitors
