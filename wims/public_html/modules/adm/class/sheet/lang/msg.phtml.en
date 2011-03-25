@@ -10,6 +10,11 @@
  !exit
 !endif
 
+!if bad_series=$error
+Strange, but  I do not find the exercise series to modify !!
+ !exit
+!endif
+
 !if bad_source=$error
  The item number $bad_source in the source code you just submitted is not
  valid.
@@ -18,8 +23,18 @@
  !exit
 !endif
 
+!if active_sheet=$error
+ Cette feuille est active. Son contenu ne peut pas être modifié.
+ !exit
+!endif
+
 !if bad_sheet=$error
  Your worksheet number is not valid. Could be this a bug?
+ !exit
+!endif
+
+!if bad_maxsheet=$error
+ Le nombre de feuilles est limité à $max_sheet. Vous ne pouvez donc plus en créer.
  !exit
 !endif
 
@@ -136,7 +151,7 @@
  into the current worksheet, by copying this code into the window below,
  then clicking on the button <tt>$wims_name_send</tt>. You may also insert the
  source code of a public worksheet by cutting and pasting.
-  <p>
+<p>
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
@@ -162,12 +177,17 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2
-
-<p>
-!href cmd=resume $wims_name_back2
+ $name_expiration1 ($l_date). $name_expiration2 <p>
+ !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
-
  !exit
 !endif
+
+!if $error=srcnoexo
+ Cette feuille ne contient aucun exercice, donc son source est vide.<br>
+ !href cmd=resume Back to edit the worksheet
+ !exit
+!endif
+
 !msg $error
+
