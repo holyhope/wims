@@ -3,11 +3,9 @@
  from <b><font color=green>$wims_institutionname</font></b>
 
 !if $activetest<=0
-!! !let wims_name_sheetadmin=Page of preparation
  !set name_title=!nosubst Preparation of worksheet $sheet
 !else
-!! !let wims_name_sheetadmin=Page of management
- !set name_title=!nosubst Management of worksheet $sheet
+ !set name_title=!nosubst Worksheet worksheet $sheet
 !endif
 
 !read adm/lang/date.phtml.$lang
@@ -91,7 +89,7 @@ Expiration date,,Score registation,for all sharing classes :,Remarks,Duration of
 !set name_desc_comment=Only visible for teachers.
 !set name_desc_duration=in minutes
 !let name_mkexam=Create the exam page
-!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts (and/or hours) :
+!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts and/or times :
 !let name_shinfo_cutt=Cut times
 
 !! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
@@ -111,12 +109,12 @@ into name_info,name_content,name_warning
 !let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 !set name_contenu=Choose content
-!let name_cpsheet1=You will add each exercise of the worksheet at the end of the exam. Each exercise will have weight put to 1 and title put to worksheet exercise title or to generic word below :
-!let name_cpsheet2=Sheet
+!let name_cpsheet1=Each exercise of the worksheet will have to be added one after the other to the end of the exam sheet. Each exercise will have its weight set to 1. If the field below is left empty, the title of the exercise will remain the same as in the worksheet it comes from.
+!let name_cpsheet2=Worksheet
 !let name_cpsheet3=Generic title word
-!let name_cpsheet4=Exercise will be numeroted
+!let name_cpsheet4=Exercises will be numbered in order
 
-!set name_warning_nonfinished=You haven't yet done all the exercises in this exam. Finishing now will\
+!set name_warning_nonfinished=You have not yet done all the exercises in this exam. Finishing now will\
   freeze the score and consume one try of the exam,and you will have to start \
   from the beginning the next time.<p>Are you sure you want to finish?
 
