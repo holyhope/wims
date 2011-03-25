@@ -10,20 +10,22 @@
 
 $name_listserver1
 <p>$table_header
-$table_hdtr<th>$wims_name_name
-<th>$wims_name_Description<th>$wims_name_Address<th>$wims_name_Type<th>$wims_name_action
+$table_hdtr<th>$wims_name_name</th>
+<th>$wims_name_Description</th><th>$wims_name_Address</th><th>$wims_name_Type</th><th>$wims_name_action
+</tr>
 !for s in $Clist
  
  $table_tr
- <td>$s
- <td align="center">$(desc_$s)
- <td align="center"><a href="$(url_$s)">$(site_$s)</a>
- <td align="center">$(type_$s)
+ <td>$s</td>
+ <td align="center">$(desc_$s)</td>
+ <td align="center"><a href="$(url_$s)">$(site_$s)</a></td>
+ <td align="center">$(type_$s)</td>
  <td align="center" nowrap><small>
  !href cmd=reply&job2=testserver&connident=$s $wims_name_test
  &nbsp;
  !href cmd=reply&job2=add1&connident=$s $wims_name_addconnection
  </small>
+ </td></tr>
 !next s
 $table_end <p>
 
@@ -36,14 +38,14 @@ $name_declaration
 <p>
 !distribute items yes,no into io1,io0
 $table_header
-$table_hdtr<th>$wims_name_server<th>$wims_name_class
-<th>$name_connexion_action<th>-
+$table_hdtr<th>$wims_name_server</th><th>$wims_name_class</th>
+<th>$name_connexion_action</th><th>-</th>
 !for clc in $cllist
  !distribute words $clc into n_,c_,o_,i_
  
  $table_tr
  <td>$n_<td align="center">$c_
- <td>
+ </td><td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=testclass&connident=$n_&connclass=$c_ $wims_name_test
  &nbsp;
@@ -52,9 +54,10 @@ $table_hdtr<th>$wims_name_server<th>$wims_name_class
 &nbsp;
 !set wims_ref_class=wims_button
  !href cmd=reply&job2=del1&connident=$n_&connclass=$c_ $wims_name_erase
- <td>
+ </td><td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=del1&connident=$n_&connclass=$c_&connopt=destroy $wims_name_destroy
+</td></tr>
 !next clc
 $table_end <p>
 

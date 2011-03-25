@@ -26,16 +26,18 @@ $name_statement ($oef_format)&nbsp;: [
 !if $oef_answercnt>0
 $table_header
  <caption>$name_free
-$table_tr<th>$wims_name_name<th>$name_goodsol<th>$wims_name_Type</b><small>
+$table_tr<th>$wims_name_name</th><th>$name_goodsol</th><th>$wims_name_Type</b><small>
  !href target=wims_mhelp cmd=help&special_parm=reply#freestyle [$wims_name_help]
+ </small></th></tr>
  !for i=1 to $oef_answercnt
   !default anstype$i=default
   !set p_=!reinput $(ansprompt$i)
  $table_tr<td> <input size="$[$promptlim-3]" maxlength="$promptlim" name="ansprompt$i" value="$p_">
   !set p_=!reinput $(ansgood$i)
-  <td> <input size="30" name="ansgood$i" value="$p_">
+  </td><td> <input size="30" name="ansgood$i" value="$p_"></td>
   <td><small>
   !formselect anstype$i list $typelist prompt $typenames
+  </small></td></tr>
  !next i
  $table_end <p>
  $name_precision:
@@ -48,12 +50,12 @@ $table_tr<th>$wims_name_name<th>$name_goodsol<th>$wims_name_Type</b><small>
 !if $oef_condcnt>0
  $table_header
  <caption>$name_condition_numeric,
- $table_tr<th>$name_name_condition<th>$name_definition
+ $table_tr<th>$name_name_condition</th><th>$name_definition</th></tr>
  !for i=1 to $oef_condcnt
   !set p_=!reinput $(Condname$i)
-   $table_tr<td><input size=$promptlim maxlength=$promptlim name="Condname$i" value="$p_">
+   $table_tr<td><input size=$promptlim maxlength=$promptlim name="Condname$i" value="$p_"></td>
   !set p_=!reinput $(Condtest$i)
-  <td> <input size="40" name="Condtest$i" value="$p_">
+  <td> <input size="40" name="Condtest$i" value="$p_"></td></tr>
  !next i
 $table_end <p>
 !endif
@@ -61,14 +63,14 @@ $table_end <p>
 !if $oef_choicecnt>0
  $table_header
  <caption>$name_multiple
-  $table_tr<th>$wims_name_name<th>$name_goodchoice<th>$name_badchoice
+  $table_tr<th>$wims_name_name</th><th>$name_goodchoice</th><th>$name_badchoice</th></tr>
  !for i=1 to $oef_choicecnt
   !set p_=!reinput $(choiprompt$i)
- $table_tr<td> <input size=$promptlim maxlength=$promptlim name="choiprompt$i" value="$p_">
+ $table_tr<td> <input size=$promptlim maxlength=$promptlim name="choiprompt$i" value="$p_"></td>
   !set p_=!reinput $(choigood$i)
-  <td> <input size="10" name="choigood$i" value="$p_">
+  <td> <input size="10" name="choigood$i" value="$p_"></td>
   !set p_=!reinput $(choibad$i)
-  <td> <input size="30" name="choibad$i" value="$p_">
+  <td> <input size="30" name="choibad$i" value="$p_"></td></tr>
  !next i
  $table_end <p>
 !endif
@@ -78,12 +80,12 @@ $table_end <p>
 </center> <p>
 $name_option
 <table border="0" align="center">
-<tr><td>$name_indication
+<tr><td>$name_indication</td>
 !set pp=!reinput $oef_hint
-<td><textarea wrap="off" rows="3" cols="$[$sizex-10]" name="oef_hint">$pp</textarea>
-<tr><td>$name_solution
+<td><textarea wrap="off" rows="3" cols="$[$sizex-10]" name="oef_hint">$pp</textarea></td></tr>
+<tr><td>$name_solution</td>
 !set pp=!reinput $oef_solution
-<td><textarea wrap="off" rows="3" cols="$[$sizex-10]" name="oef_solution">$pp</textarea>
+<td><textarea wrap="off" rows="3" cols="$[$sizex-10]" name="oef_solution">$pp</textarea></td></tr>
 </table>
 </form>
 
