@@ -42,9 +42,9 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_con
 !!------------------------------- definición de los nombres de vínculos para wims_menu_items
 
 !if $wims_user=supervisor
- !let tmp=!defof SE_list in wimshome/public_html/modules/home/names.$lang
+ !let tmp=!defof wims_name_SE_list in wimshome/public_html/modules/home/names.$lang
 !else
- !let tmp=!defof U_myscore in wimshome/public_html/modules/home/names.$lang
+ !let tmp=!defof wims_name_myscore in wimshome/public_html/modules/home/names.$lang
 !endif
 
 !distribute line Nueva competencia \

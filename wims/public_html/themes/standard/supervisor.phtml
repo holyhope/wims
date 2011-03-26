@@ -5,21 +5,6 @@
  !exit
 !endif
 !set home_theme=yes
-!!!!! provisoire
-
-!set wims_name_cdt=$U_cdt
-!set wims_name_forum=$N_Mboard
-!set wims_name_myscore=$U_myscore
-!set wims_name_account=$U_account
-!set wims_name_U_oclass=$U_oclass
-!set wims_name_V_Chpref=$V_Chpref
-!set wims_name_passwd=$V_Chpass
-!set wims_name_SE_list=$SE_list
-!set wims_name_n_participant=$SE_part
-!set wims_name_SE_mod=$SE_mod
-!set wims_name_SE_config=$SE_config
-!set wims_name_SE_secu=$SE_secu
-!set wims_name_struct=$SU_Gateway
 !set wims_name_addclass=$ADD_3 $ADD_class
 !!!!
 
@@ -28,7 +13,7 @@
 !if $class_logo!=
  <div class="menuitem">
  <div id="wimslogo$class_logoside">
-  <img src="$class_logo" border=0 alt="class logo" align=left>
+  <img src="$class_logo" border="0" alt="class logo" align="left">
  </div><!--wimslogo-->
  </div><!-- menuitem-->
 !endif
@@ -36,7 +21,7 @@
 $wims_classname, $wims_institutionname\
 ($SU_log - $(wims_name_$class_typename))
 
-<br clear=all>
+<br clear="all">
 </div>
 
 <div class="wimsbody">
@@ -51,9 +36,6 @@ $wims_classname, $wims_institutionname\
  $SU_greet.
  !read Subclasses1.phtml
  !if $class_typename=level
- !! <p><center>
- !! !href module=adm/class/gateway $SU_Gateway
- !! </center>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
@@ -82,14 +64,14 @@ $SU_exp2.
 $SU_greet.
 !endif
 <small>
-!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet [$N_help]
+!href target=wims_help module=help/main&chapter=3&open=3_sheet#sheet [$wims_name_help]
 </small>
 !if $quota_free<2
  !if $quota_free<0
   <p>
   $wims_name_exceeded
   <p>
-  !href cmd=close&module=home&lang=$lang $V_Quit
+  !href cmd=close&module=home&lang=$lang $wims_name_visitor
   </div><!--wimsbody-->
 </div><!--wimspagebox-->
   !goto end
@@ -107,7 +89,7 @@ $SU_greet.
 
 !if $class_type=4
  <center>
- !href module=adm/class/gateway $SU_Gateway
+ !href module=adm/class/gateway $wims_name_SU_Gateway
  </center> <p>
  </div><!--wimsbody-->
 </div><!--wimspagebox-->
@@ -123,13 +105,13 @@ $SU_greet.
 !if $class_type=2
  !if $subclasscnt>0
   $table_header
-  $table_hdtr<th>$SU_shno</th><th>$SU_shti</th><th>$U_teacher</th>
+  $table_hdtr<th>$SU_shno</th><th>$wims_name_title</th><th>$wims_name_nameteacher</th>
   !for i=1 to $subclasscnt
    !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
    !let f_aff=!item 4 of $f_class
    !let f_name=!item 1 of $f_class
    $table_tr
-    <td align=center>$ADD_class $i</td>
+    <td align="center">$ADD_class $i</td>
     <td>
     !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
     </td>
@@ -163,10 +145,10 @@ $SU_greet.
   !href module=adm/class/classes&type=authsupervisor&class=$test_up $SU_Bprogram
 !endif
 
-!set ac_0=<small>$SU_Uprep</small>
-!set ac_1=$SU_Ac
-!set ac_2=$SU_Ex
-!set ac_3=$SU_Hi
+!set ac_0=<small>$(wims_name_shstatus[1])</small>
+!set ac_1=$(wims_name_shstatus[2])
+!set ac_2=$(wims_name_shstatus[3])
+!set ac_3=$(wims_name_shstatus[4])
 !set docpubliccnt=!recordcnt  wimshome/log/classes/$wims_class/doc/.docindex
 !if $sheetcnt+$examcnt+$doccnt+$docpubliccnt+$votecnt+$subclasscnt<=0
  <p>$SU_nosheet
@@ -177,38 +159,38 @@ $SU_greet.
  !href module=adm/class/sequence $wims_name_reorder
  ]
  </caption>
- $table_hdtr<th>$SU_shno</th><th>$SU_shti</th><th>$SU_shst</th><th>$wims_name_action</th></tr>
+ $table_hdtr<th>$SU_shno</th><th>$wims_name_title</th><th>$wims_name_Status</th><th>$wims_name_action</th></tr>
  !for i=1 to $subclasscnt
   !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
   !let f_aff=!item 4 of $f_class
   !let f_name=!item 1 of $f_class
   $table_tr
-   <td align=center>$ADD_class $i</td>
+   <td align="center">$ADD_class $i</td>
    <td>
    !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
    </td>
-   <td align=center>-</td>
+   <td align="center">-</td>
   </tr>
  !next i
  !for i=1 to $doccnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
   !distribute lines $sh into s_,t_,bidon,bidon,bidon,o_
-  $table_tr<td align=center>$U_Doc</td>
+  $table_tr<td align="center">$wims_name_doc</td>
   <td>
   !href module=adm/doc&job=read&doc=$s_&block=main $t_
   </td>
-  <td align=center>
-  !!<small>
-  !item $[$o_ +1] of $U_Docstatus 
+  <td align="center">
+  !item $[$o_ +1] of $wims_name_Docstatus 
   </td>
   <td align="center">
+  !set wims_ref_class=wims_button
   !href module=adm/doc&job=prop&doc=$s_ $wims_name_change
   </td>
  !next i
  !for i=1 to $docpubliccnt
     !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.docindex
     !distribute lines $sh into s_,t_,ti,d_,o_
-    $table_tr<td align=center>$U_Doc</td>
+    $table_tr<td align="center">$wims_name_doc</td>
    <td>
    !href module=$s_&$t_ $ti
    </td>
@@ -216,29 +198,30 @@ $SU_greet.
    !item $[$o_ +1] of $wims_name_status
    </td>
    <td align="center">
+   !set wims_ref_class=wims_button
     !href module=adm/class/adddoc&job=prop&doc=$i $wims_name_change
    </td>
  !next i
  !for i=1 to $sheetcnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
   !distribute lines $sh into ac,t_,ti
-  $table_tr<td align=center>$U_Sheet $i</td>
+  $table_tr<td align="center">$wims_name_Sheet $i</td>
   <td>
   !href module=adm/class/sheet&sheet=$i $ti
   </td>
-  <td align=center>$(ac_$[$ac])</td>
-  <td align=center>
+  <td align="center">$(ac_$[$ac])</td>
+  <td align="center">
    !read adm/sheet/sheetaction.phtml sheet,$i,$ac,1
   </td>
  !next i 
  !for i=1 to $examcnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
   !distribute lines $sh into ac,t_,d_,ti
-  $table_tr<td align=center>$U_Exam $i</td>
+  $table_tr<td align="center">$wims_name_Examen $i</td>
   <td>
   !href module=adm/class/exam&exam=$i $ti
   </td>
-  <td align=center>$(ac_$[$ac])</td>
+  <td align="center">$(ac_$[$ac])</td>
   <td align="center">
    !read adm/sheet/sheetaction.phtml exam,$i,$ac,1
   </td>
@@ -246,11 +229,11 @@ $SU_greet.
  !for i=1 to $votecnt
   !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
   !distribute lines $sh into st_,ti_,op_,re_
-  $table_tr<td align=center>$U_Vote</td>
+  $table_tr<td align="center">$wims_name_Vote</td>
   <td>
   !href module=adm/vote&job=read&vote=$i $ti_
   </td>
-  <td align=center>$(ac_$[$st_])</td>
+  <td align="center">$(ac_$[$st_])</td>
   <td align="center"> </td>
  !next i 
  $table_end <p>
@@ -270,7 +253,7 @@ $ADD_1
 !href module=adm/class/regclass $ADD_class
 !endif
 
- $N_or
+ $wims_name_or
 !href module=adm/vote&job=creat $ADD_vote
 .
 
@@ -360,9 +343,6 @@ $ADD_1
 !read ./adm/oneitem.phtml n_participant,1,style=student
 </span><!-- menuitem-->
 !endif
-!!<div class="menuitem">
-!!!href module=adm/class/classes&type=supervisor $im "gifs/themes/$wims_theme_image/U_oclass.gif" alt="U_oclass"> $U_oclass
-!!</div><!--menuitem-->
 </div><!--end menublock-->
 !! to separate sort of submenu 
 <div class="menublock">
@@ -416,7 +396,7 @@ $ADD_1
 !!!read ./adm/oneitem.phtml SE_secu,1,module=adm/class/config&job=security
 !!</div><!--menuitem-->
 <div class="menuitem">
-!read ./adm/oneitem.phtml V_Chpref,1,module=adm/light&phtml=useropts.phtml.$lang
+!read ./adm/oneitem.phtml pref,1,module=adm/light&phtml=useropts.phtml.$lang
 </div><!--menuitem-->
 </div><!--end menublock-->
 </div><!--end wimsmenu-->

@@ -52,7 +52,7 @@ into n_list,n_thread,n_read,n_compose,n_follow,n_preview,n_send,n_config,n_subje
 !set n_nomessage=Helaas, geen passend bericht gevonden.
 !set n_erasedmsg=Bericht gewist
 !set n_with=met
-!set n_or=of
+!!!set n_or=of
 !set n_without=zonder
 !set n_citation=citaat
 !set n_source=Broncode

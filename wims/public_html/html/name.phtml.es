@@ -47,6 +47,7 @@
 		Error,\
 		Série suivante,Série précédente,\
 		Example,\
+		Encuesta,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -64,7 +65,7 @@
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
 	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
-	wims_name_Example
+	wims_name_Example,wims_name_Vote
 
 !! **** Permalink Names ***
 !distribute items este módulo, este ejercicio,\
@@ -190,7 +191,7 @@
   Una vez este límite pasado, se bloqueará la gestión de la clase!
 !endif
 
-!if adm/class isin $module or adm/manage isin $module
+!!!if adm/class isin $module or adm/manage isin $module
  !distribute line Zona de los Profesores \
 	Zona de los estudiantes\
 	Clases de ejemplo\
@@ -208,7 +209,7 @@
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
 	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
-!endif
+!!!endif
 
 !if adm/new isin $module
   !distribute line Nuevos módulos\
@@ -219,10 +220,8 @@
   into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
-!if $wims_user=$empty
   !distribute line Crear una clase \
   into wims_name_classcreate
-!endif
 
 !if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty or $module!=
   !distribute line Probar el módulo \
@@ -321,8 +320,11 @@ Crear un nuevo documento \
 Documento de prueba\
 Estatuto\
 Insertar\
+En preparación,Activo,Expirado,Expirado+Oculto\
+ni leer ni escribir en,leer pero no escribir en,leer y escribir en\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
-wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
+wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
+wims_name_Docstatus
 
  !distribute line Añadir una fecha \
    Añadir un archivo \

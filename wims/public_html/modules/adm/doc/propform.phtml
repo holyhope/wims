@@ -6,15 +6,15 @@
 
 !set wims_form_method=post
 !form reply
-<center><table border=0>
+<center><table border="0">
 <tr><td align="right">$wims_name_title</td>
-<td><input type=text size=40 name="titr" value="$tit"></td></tr>
+<td><input type="text" size="40" name="titr" value="$tit"></td></tr>
 <tr><td align="right">$wims_name_Description</td>
-<td><input type=text size=40 name="descr" value="$desc"></td></tr>
+<td><input type="text" size="40" name="descr" value="$desc"></td></tr>
 <tr><td align="right">$wims_name_author</td>
-<td><input type=text size=40 name="authorr" value="$author"></td></tr>
+<td><input type="text" size="40" name="authorr" value="$author"></td></tr>
 <tr><td align="right">$wims_name_email</td>
-<td><input type=text size=40 name="emailr" value="$email"></td></tr>
+<td><input type="text" size="40" name="emailr" value="$email"></td></tr>
 <tr><td align="right">$n_header<br>
 <small>(css, js, etc.)</small>
 !set header=!translate internal $	$ to $\
@@ -22,7 +22,7 @@ $ in $header
 !set hl=!linecnt $header
 !set hr=$[max(3,min($hl+2,10))]
 !set header=!reinput $header
-<td><textarea cols=40 rows=$hr name="headerr">$header</textarea>
+<td><textarea cols="40" rows="$hr" name="headerr">$header</textarea>
 !reset headerr
 !set docopenr=$docopen
 !default docopenr=0
@@ -38,27 +38,26 @@ $ in $header
  !formselect docopenr list yes,no prompt $wims_name_yes, $wims_name_no
  </td></tr><tr><td align="right">$wims_name_Language:</td><td>
  !default dlang=all
- <input size=14 name="dlangr" value="$dlang"> <br><small>
+ <input size="14" name="dlangr" value="$dlang"> <br><small>
  (all en fr es it de cn ca nl)</small>
  !if $job=creat
   <tr><td align="right">$n_codedoc:</td><td nowrap>
-  <input type=password size=$codemax maxlength=$codemax name="coder"> $name_code5
-  <input type=password size=$codemax maxlength=$codemax name="coder2">
-  </td></tr><tr><td colspan=2><small>
+  <input type="password" size="$codemax" maxlength="$codemax" name="coder"> $name_code5
+  <input type="password" size="$codemax" maxlength="$codemax" name="coder2">
+  </td></tr><tr><td colspan="2"><small>
  $name_code4
  </small>
  !endif
 !else
- !set U_Docstatus=!defof U_Docstatus in wimshome/public_html/modules/home/names.$modu_lang
  <tr><td align="right"> $name_participant<td>
  !formselect docopenr list 0,1,2 prompt \
-	$U_Docstatus
+	$wims_name_Docstatus
 !endif
 
 </table>
 <p>
- <input type=submit name="rEg" value="$wims_name_tosave">&nbsp;
- <input type=submit name="abandon" value="$wims_name_giveup">
+ <input type="submit" name="rEg" value="$wims_name_tosave">&nbsp;
+ <input type="submit" name="abandon" value="$wims_name_giveup">
 </center>
 </form>
 

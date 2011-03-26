@@ -53,7 +53,7 @@
 !set n_erasedmsg=Mensaje borrado
 !set n_nomessage=Ningún mensaje accesible corresponde a su petición. Lo sentimos.
 !set n_with=incluyendo
-!set n_or=or
+!!!set n_or=or
 !set n_without=sin incluir
 !set n_citation= cita
 !set n_source=Sin formatear

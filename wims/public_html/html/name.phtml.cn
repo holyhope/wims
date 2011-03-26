@@ -44,6 +44,7 @@
 		错误,\
 		下一个系列,上一个系列,\
 		例,\
+		投票,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -61,7 +62,7 @@
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
 	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
-	wims_name_Example
+	wims_name_Example,wims_name_Vote
 
 !! **** Permalink Names ***
 !distribute items 本模块, 本练习,\
@@ -188,7 +189,7 @@
   一旦超过此极限, 班级管理将被锁定!
 !endif
 
-!if adm/class isin $module or adm/manage isin $module
+!!!if adm/class isin $module or adm/manage isin $module
  !distribute line 教师区域\
 学生区域\
 实例班级\
@@ -206,7 +207,7 @@
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
 	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
-!endif
+!!!endif
 
 !if adm/new isin $module
   !distribute line 新模块\
@@ -217,10 +218,8 @@
   into wims_name_mod_new,wims_name_mod_modif,wims_name_mod_sys,wims_name_rss_new,wims_name_rss_modif
 !endif
 
-!if $wims_user=$empty
   !distribute line 创建班级\
-  into wims_name_classcreate
-!endif
+into wims_name_classcreate
 
 !if adm/modtool isin $module or adm/createxo isin $module or $wims_user!=$empty or $module!=
   !distribute line 测试模块\
@@ -318,8 +317,11 @@ wims_name_add_exo,wims_name_classexo
 写入草稿文件\
 状态\
 插入\
+ 正在准备中,已激活, 已过期, 过期且隐藏\
+ 既不能读也不能写,能读不能写,能读能写\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
-wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert
+wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
+wims_name_Docstatus
 
  !distribute line 添加数据\
 添加文件\
