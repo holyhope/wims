@@ -1,37 +1,31 @@
 !set lang_exists=yes
-!set classname=<b><font color=green>$wims_classname</font></b>\
- from <b><font color=green>$wims_institutionname</font></b>
+!set classname=<b><font color="green">$wims_classname</font></b>\
+-- <b><font color="green">$wims_institutionname</font></b>
+
+!set wims_name_mainpage=Página principal del examen
+!set name_title=Preparación del examen
 
 !if $activetest<=0
-!! !let wims_name_sheetadmin=Página de preparación
- !set name_title=!nosubst Preparación del exament $sheet
+ !let wims_name_sheetadmin=Página de preparación
+ !set name_title=!nosubst Preparación del exament
 !else
-!! !let wims_name_sheetadmin=Página de gestión
- !set name_title=!nosubst Gestión del examen $sheet
+ !let wims_name_sheetadmin=Página de gestión
+ !set name_title=!nosubst Gestión del examen
 !endif
 
 !read adm/lang/date.phtml.$lang
-!!---------------------
-!!  old part of names.phtml
-!!
-!set classname=<b><font color=green>$wims_classname</font></b>
- de <b><font color=green>$wims_institutionname</font></b>
+!read adm/lang/sheetexam.phtml.$lang
 
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
+!! ---------------------------------------------------------------------------------------------------
+!! ancien fichier name du module exam.fr
 
-!set wims_name_endexam=Terminar esta sesión de examen
-!set wims_name_scoreexam=Mi puntuación
+!set wims_name_scoreexam=!nosubst $wims_name_myscore
 
-!set wims_name_mainpage=Página principal del examen
-!set name_dependency=Dependencias de las puntuaciones&nbsp;
 !set name_Options=Opciones
 !set name_All=Todas
-!set name_title=Preparación del examen
+
 !set name_expire=Darlo por expirado ahora mismo
 !set name_done=hecho
-
-!distribute items poids,Coeficiente,Puntuación\
-into name_weight,name_coeff,name_Score
 
 !distribute lines Terminar esta sesión de examen\
 Volver a trabajar en el examen\
@@ -81,29 +75,10 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
-!! -------------- title description for file examinfo.phtml
-!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Texto de explicación, \
-Fecha de expiración, Registro de las notas, para todas las clases compartiendo el examen: , Comentario, Duración de un examen, Número de pruebas por sesión
-
-!! ------- value for description of option
-!set name_desc_title=!nosubst limitado a  $title_limit caracteres
-!set name_desc_desc=!nosubst limitado a $desc_limit caracteres; se admiten los tags y vínculos HTML
-
-!!set name_desc_dependancy=Un participante debe en primer lugar adquirir puntos en otros ejercicios de la hoja, antes de poder trabajar sobre éste. Por ejemplo,  <font color=blue><tt>1:50,2: 30,3+4+5: 60</tt></font> significa que el participante debe tener un éxito del  50% sobre el ejercicio 1, 30% sobre el ejercicio 2, y una media de éxito del 60% sobre los ejercicios 3, 4, 5.
-
-!set name_desc_comment=Visible solamente por el profesor.
 !set name_desc_duration=en minutos
 !let name_mkexam=Crear el examen
-!let name_allowtype=abierto para todos, abierto para simulación, cerrado para todos, abierto para siguientes puestos (y/o horas):
+
 !let name_shinfo_cutt=Horas de corte
-
-!! definición de los nombres para los vínculos en el menubox (definidos por wims_menu_items)
-!distribute items Vista de los participantes,\
-		Añadir un ejercicio,\
-		Añadir una serie de ejercicios,\
-into wims_name_participantview,wims_name_addexo,wims_name_addsexo
-
 
 !! distintos comentarios de la página de gestión
 !distribute lines Información general&nbsp;\
@@ -112,11 +87,10 @@ Este examen no tiene aún contenido.\
 into name_info,name_content,name_warning
 
 !! título del cuadro de contenido del examen (file examcontent.phtml)
-!let name_extab=!nosubst No,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+!let name_extab=!nosubst $wims_name_number,$wims_name_title,Content,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 !set name_contenu=Elección del contenido
 !let name_cpsheet1=Van a añadir una vez cada serie de ejercicios de la hoja siguiente tras los ejercicios ya presentes. Cada ejercicio tendrá como peso 1. Si no llenan el campo de texto abajo, conservará el título que tenía en la hoja de ejercicios.
-!let name_cpsheet2=Hoja
 !let name_cpsheet3=Título de ejercicio genérico
 !let name_cpsheet4=se numerarán los ejercicios
 
@@ -124,5 +98,3 @@ into name_info,name_content,name_warning
   ahora congelará la puntuación y consumirá una oportunidad de hacer\
   el examen, y tendrá que empezar desde el principio la próxima vez.<p>\
   ¿Seguro que quiere terminarlos?
-
-!let name_selectsheet=Indicar solamente los ejercicios de la hoja

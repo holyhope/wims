@@ -1,4 +1,4 @@
-!!!!WARNING Don't use "into" in the translation ...
+!!!!WARNING If you have to put "into" in the translation, write into$  ...
 
 !if $wims_name_home!=$empty
  !exit
@@ -322,9 +322,10 @@ Estatuto\
 Insertar\
 En preparación,Activo,Expirado,Expirado+Oculto\
 ni leer ni escribir en,leer pero no escribir en,leer y escribir en\
+Número\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
-wims_name_Docstatus
+wims_name_Docstatus,wims_name_number
 
  !distribute line Añadir una fecha \
    Añadir un archivo \

@@ -1,33 +1,28 @@
 !set lang_exists=yes
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
+!set classname=<b><font color="green">$wims_classname</font></b>\
+ de <b><font color="green">$wims_institutionname</font></b>
+
+!set name_title=Preparació de l'examen
+!set wims_name_mainpage=Pàgina principal de l'examen
 
 !if $activetest<=0
-!! !let wims_name_sheetadmin=Page de préparation
- !set name_title=!nosubst Préparation de l'examen $sheet
+ !set name_title=!nosubst Préparation de l'examen
 !else
-!! !let wims_name_sheetadmin=Page de gestion
- !set name_title=!nosubst Gestion de l'examen $sheet
+ !set name_title=!nosubst Gestion de l'examen
 !endif
 
 !read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
 
 !! ---------------------------------------------------------------------------------------------------
 !! ancien fichier name du module exam.fr
 
-!set wims_name_endexam=Acabar la sessió d'examen
 !set wims_name_scoreexam=Puntuació obtinguda
 
-!set wims_name_mainpage=Pàgina principal de l'examen
-!set name_dependency=Dependències de les notes&nbsp;
 !set name_Options=Opcions
 !set name_All=Totes
-!set name_title=Preparació de l'examen
-!!set name_expire=Acabar ara l'examen
-!set name_done=fet
 
-!distribute items pes,coeficient\
-into name_weight,name_coeff
+!set name_done=fet
 
 !distribute lines Acabar aquesta sessió d'examen\
 Tornar a treballar sobre l'examen\
@@ -43,9 +38,10 @@ Aquesta és la teva última oportunitat. Tingues compte&nbsp;!\
 comença el compte enrere i el nombre d'intents realitzats s'incrementarà en 1.\
 comença el compte enrere.\
 Requereix l'èxit en altres exercicis\
-into name_endexam,name_backexam,name_teacherview,name_presentation,\
+Score de cette session d'examen&nbsp;\
+into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
 name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
-name_lasttry,name_exam7,name_exam8,name_depend
+name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
 !set name_exam2=!nosubst Podeu fer aquest examen només $stries vegades en total.
 
@@ -76,29 +72,10 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
-!! -------------- title description for file examinfo.phtml
-!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Texte d'explication,\
-Date d'expiration,,Enregistrement des notes,pour toutes les classes partageant l'examen :,Commentaire,Durée d'une session d'examen,Nombre d'essais par session
-
-!! ------- value for description of option
-!set name_desc_title=!nosubst limité à $title_limit caractères
-!set name_desc_desc=!nosubst limité à $desc_limit caractères; les tags et liens html sont admis
-
-!!set name_desc_dependancy=Un participant doit d'abord acquérir des points dans d'autres exercices de la feuille, avant de pouvoir travailler sur celui-ci. Par exemple, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> signifie que le participant doit avoir un succès de 50% sur l'exercice 1, 30% sur l'exercice 2, et une moyenne de succès de 60% sur les exercices 3, 4, 5.</small>
-
-!set name_desc_comment=Visible seulement par l'enseignant.
 !set name_desc_duration=en minutes
 !let name_mkexam=Créer l'examen
-!let name_allowtype=ouvert pour tous,ouvert pour simulation,fermé pour tous,ouvert pour postes (et/ou heures) suivants :
+
 !let name_shinfo_cutt=Heures de coupure
-
-!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Vue des participants,\
-		Ajouter un exercice,\
-		Ajouter une série d'exercices,\
-into wims_name_participantview,wims_name_addexo,wims_name_addsexo
-
 
 !! différents commentaires de la page de gestion
 !distribute lines Informations générales&nbsp;\
@@ -107,18 +84,14 @@ Cet examen n'a pas encore de contenu.\
 into name_info,name_content,name_warning
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
-!let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
-
+!let name_extab=!nosubst $wims_name_number,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 !set name_contenu=Choix du contenu
- 
 !let name_cpsheet1=Afegireu cada exercici del full al final dels exercicis ja presents. Cada exercici tindrà de pes 1 i conservarà el títol que tenia en el full d'exercicis si no ompliu el camp de sota.
-!let name_cpsheet2=Feuille
+
 !let name_cpsheet3=Títol genèric de l'exercici
 !let name_cpsheet4=els exercicis seran numerats
 
 !set name_warning_nonfinished=No ho heu fet tots els exercicis d'aquest examen. Finalitzar\
   ara mantindrà la nota i consumirà un intent d'examen, i us obligarà a començar pel principi \
   la propera vegada.<p>Realment voleu acabar ?
-
-!let name_selectsheet=Show only exercises of worksheet

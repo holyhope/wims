@@ -2,32 +2,23 @@
 !set classname=<b><font color="green">$wims_classname</font></b>\
  de <b><font color="green">$wims_institutionname</font></b>
 
+!set name_title=Préparation de l'examen
+!set wims_name_mainpage=Page principale de l'examen
+
 !if $activetest<=0
- !set name_title=!nosubst Préparation de l'examen $exam
+ !set name_title=!nosubst Préparation de l'examen
 !else
- !set name_title=!nosubst Gestion de l'examen $exam
+ !set name_title=!nosubst Gestion de l'examen
 !endif
 
 !read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
+!set wims_name_scoreexam=!nosubst $wims_name_myscore
 
-!! ---------------------------------------------------------------------------------------------------
-!! ancien fichier name du module exam.fr
-
-!set wims_name_endexam=Terminer la session d'examen
-!set wims_name_scoreexam=Mon score
-
-!set wims_name_mainpage=Page principale de l'examen
-!set name_dependency=Dépendances des scores&nbsp;
 !set name_Options=Options
 !set name_All=Toutes
-!set name_title=Préparation de l'examen
-
-!!set name_expire=Expirer maintenant l'examen
 
 !set name_done=fait
-
-!distribute items Poids,coefficient,Score\
-into name_weight,name_coeff,name_Score
 
 !distribute lines Terminer cette session d'examen\
 Retourner travailler sur l'examen\
@@ -78,27 +69,10 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
-!! -------------- title description for file examinfo.phtml
-!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Texte d'explication,\
-Date d'expiration,,Enregistrement des notes,pour toutes les classes partageant l'examen :,Commentaire,Durée d'une session d'examen,Nombre d'essais par session
-
-!! ------- value for description of option
-!set name_desc_title=!nosubst limité à $title_limit caractères
-!set name_desc_desc=!nosubst limité à $desc_limit caractères; les tags et liens html sont admis
-
-!set name_desc_comment=Visible seulement par l'enseignant.
 !set name_desc_duration=en minutes
 !let name_mkexam=Créer l'examen
-!let name_allowtype=ouvert pour tous,ouvert pour simulation,fermé pour tous,ouvert pour postes (et/ou heures) suivants :
+
 !let name_shinfo_cutt=Heures de coupure
-
-!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Vue des participants,\
-		Ajouter un exercice,\
-		Ajouter une série d'exercices,\
-into wims_name_participantview,wims_name_addexo,wims_name_addsexo
-
 
 !! différents commentaires de la page de gestion
 !distribute lines Informations générales&nbsp;\
@@ -107,11 +81,14 @@ Cet examen n'a pas encore de contenu.\
 into name_info,name_content,name_warning
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
-!let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+!let name_extab=!nosubst $wims_name_number,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 !set name_contenu=Choix du contenu
-!let name_cpsheet1=Vous allez ajouter une fois chaque série d'exercices de la feuille suivante à la suite des exercices déjà présents. Chaque exercice aura comme poids 1. Si vous ne remplissez pas le champ de saisie ci-dessous, il conservera le titre qu'il avait dans la feuille d'exercices.
-!let name_cpsheet2=Feuille
+!let name_cpsheet1=Vous allez ajouter une fois chaque série d'exercices de la feuille suivante \
+ à la suite des exercices déjà présents. Chaque exercice aura comme poids 1. \
+ Si vous ne remplissez pas le champ de saisie ci-dessous, \
+ il conservera le titre qu'il avait dans la feuille d'exercices.
+
 !let name_cpsheet3=Titre d'exercice générique
 !let name_cpsheet4=les exercices seront numérotés
 
@@ -119,4 +96,4 @@ into name_info,name_content,name_warning
   Terminer maintenant va geler le score et consommer un essai de l'examen,\
    et vous serez obligé de recommencer au début la prochaine fois.<p>\
    Voulez-vous vraiment terminer ?
-!let name_selectsheet=Afficher seulement les exercices de la feuille
+

@@ -1,0 +1,43 @@
+!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Inserir un fitxer de codi,\
+		Vista dels participants,\
+		Codi del full \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!distribute items Ajouter un exercice,\
+		Ajouter une série d'exercices,\
+into wims_name_addexo,wims_name_addsexo
+
+!set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
+
+!set name_desc_title=!nosubst limité à $title_limit caractères
+!set name_desc_desc=!nosubst limité à $desc_limit caractères; les tags et liens html sont admis
+
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+Text d'explicació,\
+Data de caducitat,Pàgina de presentació,Registre de notes,per a totes les classes que comparteixen el full,$wims_name_comment
+
+!let name_allowtype=obert a tothom, ouvert pour simulation, tancat a tothom, obert als llocs (i/o hores) següents
+!if exam notin $module
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
+!endif
+
+!set name_desc_comment=Visible seulement par l'enseignant.
+!let name_selectsheet=Afficher seulement les exercices de la feuille
+
+!if $job=student
+  !set name_title=Full de treball número $sheet<br>$title (Presentació per als participants)
+  !set name_assignedwork=Deures d'aquest full&nbsp;
+  !set name_quality=0 des $[$re] punts obtinguts, qualitat
+!endif
+
+!set name_sheetempty=El full està buit! Probablement és un error.
+
+!set name_deps=Has de millorar les teues notes als exercicis
+!set name_dep=Has de millorar la teua nota a l'exercici
+!set name_dep2=abans de començar a treballar.
+
+!distribute items pes,coeficient\
+into name_weight,name_coeff
+
+!set name_dependency=Dependències de les notes&nbsp;

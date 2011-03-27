@@ -53,7 +53,7 @@ wims_name_U_oclass = Zonas de trabajo
 
 wims_name_U_account = Mi cuenta
 
-U_weight = coeficiente
+wims_name_coeff = coeficiente
 
 U_gotoclass1 = Entrar como participante:
 U_gotoclass3 = Entrar como profesor:
@@ -76,7 +76,6 @@ SU_exp1 = la cual expira el
 SU_exp2 =
 SU_nosheet = Su clase todavía no tiene recursos.
 SU_shlist = Lista de recursos.
-SU_shno = Número
 SU_Gateway = Administración de la estructura
 SU_Bprogram = Vuelta al programa
 

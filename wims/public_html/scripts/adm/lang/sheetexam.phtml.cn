@@ -1,0 +1,54 @@
+!! d閒inition des noms pour les liens dans le menubox (d閒inis par wims_menu_items)
+!distribute items 插入一个源文件,\
+		参加者看到的页面,\
+		页的源码. \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!distribute items 添加练习,\
+		添加练习系列,\
+into wims_name_addexo,wims_name_addsexo
+
+!set wims_name_chseries=!nosubst Enregistrer les modifications sur la s閞ie d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
+
+!set name_desc_title=!nosubst 限 $title_limit 个字符
+!set name_desc_desc=!nosubst 限 $desc_limit 个字符; 允许 tag 与 html 链接
+
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+描述,\
+失效日期,展示页,得分纪录,对所有共享的班级 :,注解
+
+!let name_allowtype=对所有人开放,开放模拟,对所有人关闭,对以下主机 (以及/或时间) 开放 :
+!if exam notin $module
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
+!endif
+
+!set name_desc_comment=只有教师能看到.
+!let name_selectsheet=只显示页的练习
+
+!set name_sheetempty=本页是空的! 没有为你指定任何作业. 可能是你的主持教师的失误.
+ 
+!if $job=student
+  !set name_title=作业页  $sheet<br>$title (学生用)
+   !set name_assignedwork=本页所指定的作业
+  !set name_quality=$[$re] 分中得 0 分, 平均分
+!endif
+!set name_sheetempty=Cette feuille est vide! Peut-阾re une erreur de manipulation de votre enseignant.
+
+!set name_deps = 在纪录这个练习的分数前, 
+!set name_dep = 在纪录这个练习的分数前
+!set name_dep2 = 你必须改进你在练习 $dep 中的得分.
+!set name_dep3 = 返回作业页.
+
+!distribute items 权重,权重\
+into name_weight,name_coeff
+
+!set name_dependency=得分相关性&nbsp;
+
+!! -------------- title description for file examinfo.phtml
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+说明,\
+失效日期,,记录得分,对于所有参加考试的班级 :,评论,一次考试会话的持续时间,一次会话的尝试次数
+
+!! ------- value for description of option
+
+!set name_desc_comment=只有教师能看到.

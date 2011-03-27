@@ -1,33 +1,23 @@
-!set lang_exists=yes
+!let lang_exists=yes
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- of <b><font color=green>$wims_institutionname</font></b>
- 
 !read adm/lang/date.phtml.$moduclass_lang
+!read adm/lang/sheetexam.phtml.$moduclass_lang
 
+!set classname=<b><font color="green">$wims_classname</font></b>\
+ of <b><font color="green">$wims_institutionname</font></b>
+ 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
-!! definition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Insert a source file,\
-		Participants' view of the worksheet,\
-		Source code of the worksheet,\
-into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
-
-!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Points,Weight,Dependencies,$wims_name_comment,$wims_name_action,Parameters of the série
+!let name_shtab=!nosubst $wims_name_number,$wims_name_title,$wims_name_Description,Points,$name_weight,$name_dependency,$wims_name_comment,$wims_name_action,Paramètres de la série
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Edit worksheet
- !set name_title=!nosubst Preparation of worksheet $sheet
+ !set name_title=!nosubst Edit worksheet $sheet
 !else
  !let wims_name_sheetadmin=Edit worksheet
- !set name_title=!nosubst Management of worksheet $sheet
+ !set name_title=!nosubst Edit worksheet $sheet
 !endif
-
-!let name_shinfo=!nosubst $wims_name_title <small>(limited to 80 characters)</small>,$wims_name_Status,\
-$wims_name_Description <br></small>(limited to $desc_limit characters; tags and html link allowed)</small>,\
-Expiration date,Presentation page,Registration of scores,for all sharing classes,$wims_name_comment
-!let name_allowtype=open to all,closed to all, open to the following hosts and/or at time period
 !let name_mksheet=Create the worksheet
 
 !distribute lines Worksheet information\
@@ -36,12 +26,11 @@ This worksheet has no content yet.\
 The original title is\
 Modification of exercise\
 Number of points required\
-Weight \
 Correct the source code\
 The worksheet expiration date must be prior to the class expiration date which is\
 Your request is ignored.\
 into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
-name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+name_pointsasked,name_correctsource,name_expiration1,name_expiration2
 
 !set name_text1=To add an exercise to a worksheet, you first have \
 to select it and choose its level of difficulty (see one of the methods below).\
@@ -51,15 +40,6 @@ Then use the link on the page of this exercise to insert it into$ the worksheet.
 !set name_text3=Find an exercise amongst
 !set name_text4=Find an exercise in your account
 
-!if $job=student
-  !set name_title=Worksheet $sheet<br>$title (Participant view)
-  !set name_sheetempty=The worksheet is empty! Nothing has been assigned for you in it. \
-  This is probably an error by your supervisor.
-  !set name_assignedwork=Assigned tasks in this worksheet
-  !set name_quality=0 out of $[$re] points obtained, quality
-!endif
-
-!set name_desc_comment=Visible only to the supervisor.
 !set name_getsource=This is the source code of the worksheet. The code written between the \
   two rows of `*'; can be copied into$ an empty worksheet (use the clipboard) to create a\
   new worksheet with the same content.

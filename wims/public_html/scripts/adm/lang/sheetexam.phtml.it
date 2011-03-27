@@ -1,0 +1,45 @@
+!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
+  !distribute items Inserire i comandi da un file sorgente,\
+                Pagina pubblica del test,\
+		Codice sorgente del test \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!distribute items Inserisci un esercizio,\
+		Inserisci un gruppo di esercizi,\
+into wims_name_addexo,wims_name_addsexo
+
+!set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
+
+!set name_desc_title=!nosubst massimo $title_limit caratteri
+!set name_desc_desc=!nosubst massimo $desc_limit caratteri; sono ammessi link e tag html
+
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+Introduzione,\
+Data di termine,Presentazione,Registrazione dei voti,per tutti i corsi che condividono :,Commento,Durata di una sessione d'esame,Numero di volte in cui si può ripetere l'esame in una sessione
+
+!let name_allowtype=attiva per tutti, disattivata, limitata ai seguenti IP (e/o periodi):
+!let name_allowtype=attiva per tutti, a disposizione per prova,disattivata per tutti,limitata ai seguenti IP (e/o orari):
+!if exam notin $module
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
+!endif
+!set name_desc_comment=visibile solo ai docenti
+!let name_selectsheet=Mostra solo gli esercizi del test
+
+!if $job=student
+  !set name_title=Test di auovalutazione numero $sheet<br>$title (Pagina pubblia del test)
+  !set name_assignedwork=Questo test di autovalutazione contiene i seguenti esercizi
+  !set name_quality=0 su $[$re] punti ottenuti, punteggio medio
+!endif
+
+
+!set name_sheetempty=Il test di autovalutazione è vuoto! Si tratta probabilmente di un errore.
+!set name_deps=Devi migliorare i tuoi punteggi negli esercizi
+!set name_dep=Devi migliorare il tuo punteggio nell'esercizio
+!set name_dep2=prima di cominciare a lavorare su questo.
+
+
+!distribute items peso,Peso\
+into name_weight,name_coeff
+
+!set name_dependency=Punteggi &ldquo;con dipendenza&rdquo;
+

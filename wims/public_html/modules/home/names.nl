@@ -52,7 +52,7 @@ wims_name_U_oclass = Andere klassen
 
 wims_name_U_account = Mijn account
 
-U_weight = weging
+wims_name_coeff = weging
 
 U_gotoclass1 = Ga naar een klas als leerling:
 U_gotoclass3 = Ga naar een klas als supervisor:
@@ -74,7 +74,6 @@ SU_exp2 =
 
 SU_nosheet = Uw klas heeft nog geen lesmateriaal ter beschikking.
 SU_shlist = Lesmateriaal van de klas
-SU_shno = Nummer
 SU_Gateway = Structuur management
 SU_Bprogram = Terug naar het lesprogramma
 

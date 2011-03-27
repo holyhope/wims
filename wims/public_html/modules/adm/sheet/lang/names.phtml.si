@@ -1,36 +1,26 @@
 !set lang_exists=yes
 
-!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Insert a source file,\
-		Nazaj na obièajen pogled,\
-		Source of the sheet, \
-into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+!read adm/lang/sheetexam.phtml.$lang
 
 !set name_student1=!nosubst  Datum zakljuèka lista: $expday. $expmon $expyear.
 !set name_student2 Ta delovni list je ¾e zakljuèen. Naloge na njem lahko ¹e vedno re¹ujete, toda na novo dose¾eni\
   rezultati ne bodo veè upo¹tevani.
 !set name_student3= Urejanje vsebine delovnega lista je dovoljeno le skrbniku.
-!set name_student4=Ta delovni list je prazen. Morda gre za napako skrbnika.
+
 !set name_score=!nosubst $[$got] toèk (zahtevanih $[$require]), kvaliteta
 !set name_score2=!nosubst $[$require] zahtevanih.
-!set name_deps= Predno se lotite te vaje, morate izbolj¹ati va¹e rezultate pri vajah
-!set name_dep= Predno se lotite te vaje, morate izbolj¹ati va¹ rezultat pri vaji
-!set name_dep2=
+
 !set name_scoresuspend=Bele¾enje rezultatov je izkljuèeno na va¹o zahtevo.
 !set name_scoreopen=Bele¾enje rezultatov je vkljuèeno
-!set name_scoreclose=Bele¾enje rezultatov je zaprto za va¹o povezavo
-
 
 !set name_textsource= Tukaj je izvorna koda va¹ega delovnega lista. Lahko si jo \
   skopirate in uporabite kje drugje.
 !set name_answer=Vaja
 
-!set name_title=!nosubst Delovni list #$sh
-!set name_empty=Ta delovni list je prazen. Verjetno gre za napako.
+!set name_title=!nosubst $wims_name_sheet $wims_name_number$sh
+!set name_exo=!defof name_exo in wimshome/public_html/scripts/oef/$modu_lang/names
+!set name_noprint=!defof name_noprint in oef/$modu_lang/names
+!set name_answers=!defof name_answers in oef/$modu_lang/names
 
-!set name_exo=!defof name_exo in wimshome/public_html/scripts/oef/$lang/names
-!set name_noprint=!defof name_noprint in oef/$lang/names
-!set name_answers=!defof name_answers in oef/$lang/names
-
-!distribute items niveau approximatif,durée \
+!distribute items level,duration \
 into name_level,name_duration

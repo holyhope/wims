@@ -3,6 +3,7 @@
 !if $wims_name_home!=$empty
  !exit
 !endif
+
 !! **** Default Names ***
 !distribute items Rechercher,\
 		Au travail,Retour au travail,\
@@ -164,8 +165,8 @@
 	wims_name_exolog,\
 	wims_name_sheetmanagement,\
 	wims_name_add_sequence
- !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
- !set wims_name_score=!nosubst Points acquis : $[$wims_homeref_got] points sur les $[$wims_homeref_req] points requis\
+ 
+!set wims_name_score=!nosubst Points acquis : $[$wims_homeref_got] points sur les $[$wims_homeref_req] points requis\
 	<br> Qualité : $[$wims_homeref_mean]/10.
 	
  !set wims_name_you=Vous êtes <b>$wims_firstname $wims_lastname</b>, appartenant à
@@ -188,10 +189,9 @@
 
  !set wims_name_reaching_limit=Votre classe atteint la limite d'espace disque autorisé.\
   Une fois cette limite dépassée, la gestion de la classe sera bloquée!
-
 !endif
 
-!!if adm/class isin $module or adm/manage isin $module
+!!!if adm/class isin $module or adm/manage isin $module
  !distribute line Zone Enseignants\
 	Zone Élèves\
 	Classes d'exemple\
@@ -209,7 +209,7 @@
 	wims_name_n_authsupervisor,wims_name_n_authparticipant,wims_name_n_E,wims_name_n_H,wims_name_n_U,\
 	wims_name_classlist,wims_name_portal_list,\
 	wims_name_create_class,wims_name_create_superclass,wims_name_create_portal
-!!endif
+!!!endif
 
 !if adm/new isin $module
   !distribute line Nouveaux modules\
@@ -322,9 +322,10 @@ Statut\
 Insérer\
 En préparation,Active,Périmée,Périmée+Cachée\
 ni lire ni écrire,lire mais pas écrire,lire et écrire\
+No\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
-wims_name_Docstatus
+wims_name_Docstatus,wims_name_number
 
  !distribute line Ajouter une date\
    Ajouter un fichier\

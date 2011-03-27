@@ -1,0 +1,46 @@
+!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Insert a source file,\
+		Participant's view of the worksheet,\
+		Source code of the worksheet, \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!distribute items Add another exercise,\
+		add a series of exercises,\
+into wims_name_addexo,wims_name_addsexo
+
+!set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
+
+!set name_desc_title=!nosubst limited to $title_limit characters
+!set name_desc_desc=!nosubst limited to $desc_limit characters; html tags and links are allowed.
+
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+Text of explanation,\
+Expiration date,Presentation page,Score registation,for all sharing classes :,$wims_name_comment,Duration of an exam session,Number of attempts per exam session
+
+
+!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts and/or times :
+!if exam notin $module
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
+!endif
+
+!set name_desc_comment=Visible only to the supervisor.
+!let name_selectsheet=Show only exercises of worksheet
+
+
+!if $job=student
+  !set name_title=$wims_name_sheet $sheet<br>$title (Participant view)
+  !set name_assignedwork=Assigned tasks in this worksheet
+  !set name_quality=0 out of $[$re] points obtained, quality
+!endif
+
+!set name_sheetempty=The worksheet is empty! Nothing has been assigned for you in it. \
+  This is probably an error by your supervisor.
+
+!set name_deps=You must improve your scores on exercises
+!set name_dep=You must improve your scores on the exercise
+!set name_dep2=before scoring on this one.
+
+!distribute items Weight,Weight\
+into name_weight,name_coeff
+
+!set name_dependency=Score dependencies

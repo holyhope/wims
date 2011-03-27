@@ -1,33 +1,28 @@
 !set lang_exists=yes
-!set classname=<b><font color=green>$wims_classname</font></b>\
- presso <b><font color=green>$wims_institutionname</font></b>
+!set classname=<b><font color="green">$wims_classname</font></b>\
+ presso <b><font color="green">$wims_institutionname</font></b>
+
+!set name_title=Preparazione del tema d'esame
+!set wims_name_mainpage=Copertina del tema d'esame
 
 !if $activetest<=0
- !set name_title=!nosubst Preparazione del tema d'esame $sheet
+ !set name_title=!nosubst Preparazione del tema d'esame
 !else
- !set name_title=!nosubst Modifica dell'esame $sheet
+ !set name_title=!nosubst Modifica dell'esame
 !endif
 
 !read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
 
 !! ---------------------------------------------------------------------------------------------------
 !! ancien fichier name du module exam.fr
 
-!set wims_name_endexam=Termina la sessione d'esame
-!set wims_name_scoreexam=Il mio punteggio
+!set wims_name_scoreexam=!nosubst $wims_name_myscore
 
-!set wims_name_mainpage=Copertina del tema d'esame
-!set name_dependency=Punteggi &ldquo;con dipendenza&rdquo;
 !set name_Options=Opzioni
 !set name_All=Tutti
-!set name_title=Preparazione del tema d'esame
-
-!!set name_expire=Termina ora l'esame
 
 !set name_done=completato
-
-!distribute items peso,Peso,Punteggio\
-into name_weight,name_coeff,name_Score
 
 !distribute lines Termina questa sessione d'esame\
 Torna a lavorare sull'esame\
@@ -49,7 +44,6 @@ name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
 !set name_exam2=!nosubst Hai un massimo di $stries possibilità per questo esame.
-
 !set name_exam3=!nosubst Hai già terminato il tuo esame, con $tried tentativi.
 !set name_exam4=!nosubst Hai gi&agrave; esaurito le tue $tried possibilità.
 !set name_exam6=!nosubst Hai ancora $tryremain possibilità.
@@ -77,29 +71,10 @@ esame il server non terr&agrave; alcun conto del tentativo.
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
-!! -------------- title description for file examinfo.phtml
-!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-Introduzione,\
-Data di termine,,Registrazione dei voti,per tutti i corsi che condividono l'esame:,Commento,Durata di una sessione d'esame,Numero di volte in cui si può ripetere l'esame in una sessione
-
-!! ------- value for description of option
-!set name_desc_title=!nosubst massimo $title_limit caratteri
-!set name_desc_desc=!nosubst massimo $desc_limit caratteri; sono ammessi link e tag html
-
-!!set name_desc_dependancy=Uno studente deve ottenere un determinato punteggio in altri esercizi dell'esame prima di poter affrontare questo. Per esempio, <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> significa che lo studente deve ottenere un 50% nell'esercizio 1, un 30% nell'esercizio 2, e una media del 60% negli esercizi 3,4,5.</small>
-
-!set name_desc_comment=visibile solo ai docenti
 !set name_desc_duration=in minuti
 !let name_mkexam=Crea il tema d'esame
-!let name_allowtype=attiva per tutti, a disposizione per prova,disattivata per tutti,limitata ai seguenti IP (e/o orari):
+
 !let name_shinfo_cutt=Termine sessioni (cut times)
-
-!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
-!distribute items Pagina pubblica del tema d'esame,\
-		Inserisci un esercizio,\
-		Inserisci un gruppo di esercizi,\
-into wims_name_participantview,wims_name_addexo,wims_name_addsexo
-
 
 !! différents commentaires de la page de gestion
 !distribute lines Informazioni generali\
@@ -107,32 +82,12 @@ Contenuti\
 Questo tema d'esame non contine ancora nulla.\
 into name_info,name_content,name_warning
 
-!!Il titolo originale è\
-!!Modification de série d'exercices\
-!!Nombre de points demandés\
-!!Punti\
-!!Corriger le source\
-!!La date d'expiration de la feuille doit être antérieure à la date d'expiration de la classe\
-!!Votre requête est donc ignorée.\
-!!,name_oldtitle,name_titlemodif,\
-!!name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
-
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
-!let name_extab=!nosubst No,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
-
-
-!!!if $job=student
-!! !set name_title=Feuille de travail numéro $sheet<br>$title (Présentation pour participants)
-!!  !set name_sheetempty=Cette feuille est vide! Peut-être une erreur de manipulation de votre enseignant.
-!!  !set name_assignedwork=Devoirs dans cette feuille&nbsp;
-!!  !set name_quality=!nosubst 0 des $[$re] points obtenus, qualité
-!!!endif
-
-!!!let name_intro_exo=Questo esercizio sarà scelto (casualmente) in una lista di esercizi contenuti nei test periodici. Selezionare nella lista che segue i test di autovalutazione da cui estrarre gli esercizi da inserire in questo tema d'esame. 
+!let name_extab=!nosubst $wims_name_number,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 !set name_contenu=Scelta dei contenuti
 !let name_cpsheet1=Stai per aggiungere tutti gli esercizi del test di autovalutazione in fondo all'esame. Ogni esercizio sarà aggiunto con peso 1 e avrà come titolo il titolo che ha nel test a meno che non compiliate il campo sopra.<p>
-!let name_cpsheet2=test
+
 !let name_cpsheet3=Titolo di default per l'esercizio
 !let name_cpsheet4=gli esercizi saranno numerati
 
@@ -140,5 +95,3 @@ into name_info,name_content,name_warning
   significa salvare questo punteggio e perdere una delle possibilità\
   di sostenere l'esame, la prossima volta dovrai infatti ricominciare da capo.\
   <p>Sei sicuro/a di voler smettere ora?
-
-!let name_selectsheet=Mostra solo gli esercizi del test

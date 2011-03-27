@@ -1,30 +1,27 @@
 !set lang_exists=yes
-!set classname=<b><font color=green>$wims_classname</font></b>\
- <b><font color=green>($wims_institutionname)</font></b>
+!set classname=<b><font color="green">$wims_classname</font></b>\
+ <b><font color="green">($wims_institutionname)</font></b>
+
+!set name_title=准备考试
+!set wims_name_mainpage=考试的主页
 
 !if $activetest<=0
  !let wims_name_sheetadmin=准备页
- !set name_title=!nosubst 准备考试 $sheet
+ !set name_title=!nosubst 准备考试
 !else
  !let wims_name_sheetadmin=管理页
- !set name_title=!nosubst 管理考试 $sheet
+ !set name_title=!nosubst 管理考试
 !endif
 
 !read adm/lang/date.phtml.$lang
+!read adm/lang/sheetexam.phtml.$lang
 
-!set wims_name_endexam=结束 本次考试
 !set wims_name_scoreexam=我的得分
 
-!set wims_name_mainpage=考试的主页
-!set name_dependency=得分相关性&nbsp;
 !set name_Options=选项
 !set name_All=所有
-!set name_title=准备考试
-!set name_expire=现在就使其失效
-!set name_done=完成
 
-!distribute items 权重,权重,得分\
-into name_weight,name_coeff,name_Score
+!set name_done=完成
 
 !distribute lines 结束这场考试\
 返回继续考试\
@@ -50,6 +47,7 @@ name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 !set name_exam3=!nosubst 你已经用 $tried 次尝试结束你的考试会话,
 !set name_exam4=!nosubst  你已经作了 $tried 次尝试, 
 !set name_exam6=!nosubst 你还可以作 $tryremain 次新尝试.
+
 !set name_exam9=!nosubst 你有 $sdure 分钟可用于这个考试.\
    当你点击上列练习时, 
  
@@ -74,58 +72,30 @@ into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
-!! -------------- title description for file examinfo.phtml
-!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
-说明,\
-失效日期,,记录得分,对于所有参加考试的班级 :,评论,一次考试会话的持续时间,一次会话的尝试次数
-
-!! ------- value for description of option
-!set name_desc_title=!nosubst 限 $title_limit 个字符
-!set name_desc_desc=!nosubst 限 $desc_limit 个字符, 允许 html tag 及链接
-!set name_desc_dependancy=参加者必须先在其它练习里得分后才能做这个. 例如 <font color=blue><tt>1:50,2:30,3+4+5:60</tt></font> 意为参加者必须在第 1 题得到 50% 的分数, 第 2 题得 30%, 第 3, 4, 5 题平均得分 60%.</small>
-!set name_desc_comment=只有教师能看到.
 !set name_desc_duration=以分钟计
 !let name_mkexam=创建考试
-!let name_allowtype=对所有人开放,开放模拟,对所有人关闭,对以下主机 (以及/或时间) 开放 :
+
 !let name_shinfo_cutt=截断时间
-
-!! d閒inition des noms pour les liens dans le menubox (d閒inis par wims_menu_items)
-!distribute items 参加者所见,\
-		添加练习,\
-		添加练习系列,\
-into wims_name_participantview,wims_name_addexo,wims_name_addsexo
-
 
 !! diff閞ents commentaires de la page de gestion
 !distribute lines 一般信息&nbsp;\
 练习内容&nbsp;\
 这个练习尚无内容.\
-原始标题是\
-修改练习系列\
-需得分数\
-权重\
-修改源码\
-页的失效日期应该早于以下的班级失效日期\
-你的请求被忽略.\
-into name_info,name_content,name_warning,name_oldtitle,name_titlemodif,\
-name_pointsasked,name_ofweight,name_correctsource,name_expiration1,name_expiration2
+into name_info,name_content,name_warning
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
 !let name_extab=!nosubst 编号,$wims_name_title,内容,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
-
-!if $job=student
-  !set name_title=练习页 $sheet<br>$title (显示给参加者)
-  !set name_sheetempty=本页是空的! 也许是主持教师的操作错误.
-  !set name_assignedwork=本页的作业&nbsp;
-  !set name_quality=!nosubst 得到 $[$re] 分中的 0 分, 质量
-!endif
-
-!let name_intro_exo=这个练习可以从作业页的已有练习中随机选取.\
-请从下表列出的练习里标出供考试用的候选练习.
 !set name_contenu=选择内容
+!set name_contenu=Choose content
+!let name_cpsheet1=Each exercise of the worksheet will have to be added one after the other to \
+the end of the exam sheet. Each exercise will have its weight set to 1.\
+If the field below is left empty, the title of the exercise will remain \
+the same as in the worksheet it comes from.
+
+!let name_cpsheet3=Generic title word
+!let name_cpsheet4=Exercises will be numbered in order
 
 !set name_warning_nonfinished=你还没有做完本次考试的全部练习. 如果现在就结束会影响你的得分,\
   并用去你的一次考试机会. 下次你必须从头开始. <p>你是否肯定要结束?
 
-!let name_selectsheet=只显示页的练习

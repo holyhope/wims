@@ -322,9 +322,10 @@ Status\
 Toevoegen\
 Nog niet klaar voor gebruik, Actief, Verlopen, Verlopen+Onzichtbaar\
 niet lezen en niet schrijven,alleen lezen,lezen en schrijven\
+Nummer\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
-wims_name_Docstatus
+wims_name_Docstatus,wims_name_number
 
  !distribute line Een datum toegvoegen\
    Een bestand toevoegen\
