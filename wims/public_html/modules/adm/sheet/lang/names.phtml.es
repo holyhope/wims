@@ -4,7 +4,7 @@
 
 !set name_student1=!nosubst Puede trabajar en esta hoja hasta el $expday $expmon $expyear.
 !set name_student2=Esta hoja ha expirado. Puede seguir \
- trabajando en ella, pero sus puntuaciones ya no serán tenidas en cuenta.\
+ trabajando en ella, pero sus puntuaciones ya no serán tenidas en cuenta.
 !set name_student3= Por el momento no está autorizado a consultar el contenido de esta hoja.\
   Por favor contacte con su profesor.
 
@@ -21,7 +21,6 @@
 !set name_title=!nosubst Hoja de trabajo número $sh
 !set name_empty=¡Esta hoja está en blanco! Se trata probablemente de un error.
 
-!set name_scoresuspend=L'enregistrement des notes est suspendu.
 !set name_scoreopen=L'enregistrement des notes est ouvert.
 
 !set name_textsource=Voici le fichier source de cette feuille. Vous pouvez l'importer \

@@ -1,0 +1,45 @@
+!! définition des noms pour les liens dans le menubox (définis par wims_menu_items)
+!distribute items Insert a source file,\
+		Nazaj na obièajen pogled,\
+		Source of the sheet, \
+into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
+
+!distribute items Add another exercise,\
+		add a series of exercises,\
+into wims_name_addexo,wims_name_addsexo
+
+!set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
+
+!set name_desc_title=!nosubst limited to $title_limit characters
+!set name_desc_desc=!nosubst limited to $desc_limit characters; html tags and links are allowed.
+
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+Text of explanation,\
+Expiration date,Presentation page,Score registation,for all sharing classes :,$wims_name_comment,Duration of an exam session,Number of attempts per exam session
+
+
+!let name_allowtype=open to all, open for simulation,closed to all,open to following hosts and/or times :
+!if exam notin $module
+ !let name_allowtype=$(name_allowtype[1]),$(name_allowtype[3]),$(name_allowtype[4])
+!endif
+
+!set name_desc_comment=Visible only to the supervisor.
+!let name_selectsheet=Show only exercises of worksheet
+
+
+!if $job=student
+  !set name_title=$wims_name_sheet $sheet<br>$title (Participant view)
+  !set name_assignedwork=Assigned tasks in this worksheet
+  !set name_quality=0 out of $[$re] points obtained, quality
+!endif
+
+!set name_sheetempty=!set name_empty=Ta delovni list je prazen. Verjetno gre za napako.
+
+!set name_deps= Predno se lotite te vaje, morate izbolj¹ati va¹e rezultate pri vajah
+!set name_dep= Predno se lotite te vaje, morate izbolj¹ati va¹ rezultat pri vaji
+!set name_dep2=before scoring on this one.
+
+!distribute items Ute¾,Weight\
+into name_weight,name_coeff
+
+!set name_dependency=Score dependencies

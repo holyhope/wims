@@ -3,9 +3,10 @@
 		Añadir un ejercicio,\
 		Añadir una serie de ejercicios,\
 into wims_name_participantview,wims_name_addexo,wims_name_addsexo
-!distribute items Añadir un ejercicio,\
-		Añadir una serie de ejercicios,\
-into wims_name_addexo,wims_name_addsexo
+
+ !distribute items insertar un archivo fuente,\
+	 Obtener el código fuente de la hoja \
+into wims_name_putsource,wims_name_sheetsource
 
 
 !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
@@ -15,7 +16,11 @@ into wims_name_addexo,wims_name_addsexo
 
 !let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
 Texto de explicación, \
-Fecha de expiración, Registro de las notas, para todas las clases compartiendo : , Comentario, Duración de un examen, Número de pruebas por sesión
+Fecha de expiración, Page de présentation, Registro de las notas, para todas las clases compartiendo : , Comentario, Duración de un examen, Número de pruebas por sesión
+
+!let name_shinfo=!nosubst $wims_name_title,$wims_name_Status,\
+Texte d'explication,\
+Date d'expiration,Page de présentation,Enregistrement des notes,pour toutes les classes en partage :,$wims_name_comment,Durée d'une session d'examen,Nombre d'essais par session
 
 !let name_allowtype=abierto para todos, abierto para simulación, cerrado para todos, abierto para siguientes puestos (y/o horas):
 !if exam notin $module

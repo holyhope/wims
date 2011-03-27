@@ -2,14 +2,14 @@
 !! ce fichier utilise des mots définis dans le fichier names.phtml du module adm/sheet.$lang
 
 !form reply
- <input type=hidden name="job" value=text>
+ <input type="hidden" name="job" value="text">
  $table_header
   $table_tr
    <td>$(name_shinfo[1])</td>
    <td><input size="65" name="title" value="$title"></td>
   </tr>
   $table_tr
-   <td>$(name_shinfo[2]) ($name_desc_title)</td>
+   <td>$(name_shinfo[2]) <small>($name_desc_title)</small></td>
    <td>$(statutname[$activetest+2]) &nbsp;
    !ifval $activetest>-1
     !read adm/sheet/sheetaction.phtml sheet,$sheet,$activetest,0
@@ -17,7 +17,7 @@
    </td>
   </tr>
   $table_tr
-   <td>$(name_shinfo[3])&nbsp;($name_desc_desc)</td>
+   <td>$(name_shinfo[3])&nbsp;<small>($name_desc_desc)</small></td>
    <td><textarea id="desc" class="iEdit" rows="6" cols="65" name="desc">$desc</textarea> </td>
   </tr>
   $table_tr
@@ -43,7 +43,7 @@
   </tr>
   !if $activetest>0
    $table_tr
-    <input type=hidden name="allow" value=yes>
+    <input type="hidden" name="allow" value="yes">
     <td>
      $(name_shinfo[6])&nbsp;
      !set wims_ref_class=wims_button_help
@@ -51,14 +51,14 @@
     </td>
     <td>
      !formselect allowtype list all, none, select prompt $name_allowtype 
-     <br><input size=50 name="IPlist" value="$IPlist"> <br>
+     <br><input size="50" name="IPlist" value="$IPlist"> <br>
      !set allowshare=0
      !if $sharers!=$empty
       ( $(name_shinfo[7])
       !formselect allowshare list 0,1 prompt $wims_name_no,$wims_name_yes
       )
      !else
-      <input type=hidden name="allowshare" value=0>
+      <input type="hidden" name="allowshare" value="0">
      !endif
     </td>
    </tr>
@@ -66,9 +66,9 @@
   $table_tr
    <td colspan="2" align="center">
     !ifval $activetest=-1
-     <input type=submit value="$name_mksheet">
+     <input type="submit" value="$name_mksheet">
     !else
-     <input type=submit value="$wims_name_tosave">
+     <input type="submit" value="$wims_name_tosave">
     !endif
    </td>
   </tr>

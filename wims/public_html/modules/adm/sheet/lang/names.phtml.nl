@@ -3,15 +3,14 @@
 !read adm/lang/sheetexam.phtml.$lang
 
 !set name_student1=!nosubst Er mag aan dit werkblad gewerkt worden tot $expday $expmon $expyear.
-!set name_student2 Dit werkblad is verlopen. Er kan nog wel aan\
- worden gewerkt , maar de behaalde cijfers worden niet meer geregistreerd.
+!set name_student2=Dit werkblad is verlopen. Er kan nog wel aan\
+ worden gewerkt, maar de behaalde cijfers worden niet meer geregistreerd.
 !set name_student3= Dit werkblad mag op dit moment nog niet worden ingezien.\
 Neem desgewenst contact op met je docent.
 
 !set name_score=!nosubst $[$got] uit $[$require] punten behaald, kwaliteit
 !set name_score2=!nosubst $[$require] punten vereist.
 
-!set name_scoresuspend=De cijfer registratie is door jezelf opgeschort. 
 !set name_scoreopen=De cijfer registratie is open.
 
 !set name_textsource=Hier staat de broncode van het werkblad. U kunt deze via \
