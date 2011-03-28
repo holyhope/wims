@@ -84,7 +84,10 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 !distribute lines Backup archief herstel klas\
 Herstel van studenten accounts (en alle gerigistreerde studenten activiteit) is geannuleerd : er is niet genoeg ruimte meer over.\
 De klas einddatum is veranderd na de herstelprocedure, omdat de upload datum \
- into name_restore1,name_restore2,name_restore3
+  Participant accounts already in use in your groupement (restauration refused)\
+  restore is not allowed because of ressources sharable\
+  Save/Restoration is not needed at this level of the structure\
+ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items onherkenbaar is, te vroeg is, te laat is into ebad,eearly,elate
  

@@ -87,7 +87,10 @@ into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_
 !distribute lines Recursos de protección restaurados en la clase\
    Se rechaza la restauración de las cuentas de participantes (y registros de actividad) ya que no hay más espacio disponible. \
 La fecha de expiración de la clase se modificó después de la restauración, ya que la fecha restaurada es \
- into name_restore1,name_restore2,name_restore3
+  Participant accounts already in use in your groupement (restauration refused)\
+  restore is not allowed because of ressources sharable\
+  Save/Restoration is not needed at this level of the structure\
+ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
 
  !distribute items irreconocible, demasiado pronto, demasiado tarde \
  into ebad,eearly,elate

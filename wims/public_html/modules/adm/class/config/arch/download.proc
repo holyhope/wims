@@ -17,6 +17,11 @@ tot=!replace , by , $ in $reclist
 tot=!exec translator $tot
 
 fname=!translate internal / to ~ in $wims_class
+!if $class_typename=course
+ tmpnum_class=!char 1 to -5 of $wims_class
+!else
+ tmpnum_class=$wims_class
+!endif
 fsize=!mexec arch/pack.sh
 wims_class_log=Backup created
 !if $fsize!=$empty

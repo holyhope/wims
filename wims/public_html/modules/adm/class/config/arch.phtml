@@ -1,3 +1,7 @@
+!if $noarch=yes
+ $name_restore5
+ !exit
+!endif
 
 !if $job2!=first
  !changeto arch/$job2.phtml
@@ -16,6 +20,11 @@ $name_intro
 !href cmd=help&special_parm=download $wims_name_help
 
 <p><hr> <p>
+
+!if $test_sharing!=$empty
+ $(name_forbiddenrestore).
+ !exit
+!endif
 
 !set wims_form_method=file
 !form reply

@@ -12,6 +12,14 @@ if [ ! -z "$dirs" ]; then
  cp -pRL $dirs $sdir/getfile/class
 fi
 
+# cp of user file when in superclass
+if [ -n "$w_class_superclass" ]; then
+ cd $w_wims_home/log/classes/$w_class_superclass/.users
+ l=`grep user_participate=.*$w_tmpnum_class * | cut -d":" -f1 `;
+ for f in $l; do cp $f $sdir/getfile/class/.users/; done;
+fi
+# end cp user
+
 cd $sdir/getfile
 echo $w_wims_class >class/serial
 

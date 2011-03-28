@@ -1,6 +1,28 @@
+!if $wims_supertype!=0 and $class_typename isitemof portal,group,level
+ noarch=yes
+ !exit
+!endif
 
 reclist=user,exo,sheet,exam,doc,sup,def,neighbor,log,forum,score,manual,cdt,vote,livret,seq
-!bound job2 within first,upload,download,restore default first
+!! test of sharing ressources
+!if $class_typename!=program
+ test_sharing=!defof sharable_all in wimshome/log/classes/$wims_class/neighbors
+!endif
+
+!if $test_sharing!=$empty
+ !bound job2 within first,download default first
+!else
+ !bound job2 within first,upload,download,restore default first
+!endif
+
+!! restriction of restore ressource in portal
+!if $job2=restore and $wims_supertype=4
+ reclist_portal=sup,neighbor,log,def
+ reclist_program=$(reclist_portal),exo,sheet,exam,doc,vote,livret,seq
+ reclist_class=$(reclist_portal),user
+ reclist_course=$(reclist_portal),score,manual,cdt
+ reclist=$(reclist_$(wims_typename))
+!endif
 
 !if $job2=upload and $wims_deposit=$empty
  job2=first

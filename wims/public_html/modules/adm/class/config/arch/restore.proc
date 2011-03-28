@@ -34,17 +34,55 @@ dep=!exec translator $selw
 copy=!words2items $selw $dep
 copy=!listuniq $copy
 
+!! ----------------------------- restore of user when replace or merge
 !if user isitemof $copy
  n=!recordcnt wimshome/$wims_sesdir/upload/class/.userlist
- !if $restore=merge
-  m=!recordcnt wimshome/log/classes/$wims_class/.userlist
- !else
-  m=0
- !endif
  !read adm/class/userremain.proc
- !if $n>$dispo
-  user_bad=refused
-  copy=!listcomplement user,score in $copy
+ m=!recordcnt wimshome/log/classes/$wims_class/.userlist
+ !if $restore=merge
+  !if $n>$dispo
+   user_bad=refused
+   copy=!listcomplement user,score in $copy
+  !endif
+ !else
+  !if ($n>$dispo and $class_superclass!=$empty) or ($class_superclass=$empty and $n>$dispo+$m)
+   user_bad=refused
+   copy=!listcomplement user,score in $copy
+  !else
+   !if $m>0
+    erase=user
+   !endif
+  !endif
+ !endif
+ !if ($wims_supertype=4 or $wims_supertype=2) 
+  !if $class_typename=class
+   !if user isin $erase
+    !for k=1 to $m
+     u=!record $k of wimshome/log/classes/$wims_class/.userlist
+     t=!defof user_participate in wimshome/log/classes/$wims_superclass/.users/$(u[3])
+     t=!listcomplement $wims_class in $t
+     !setdef !set user_participate=$t in wimshome/log/classes/$wims_superclass/.users/$(u[3])
+    !next k
+   !endif
+   !reset user_ok,user_loginused
+   !for k=1 to $n
+    u=!record $k of wimshome/$wims_sesdir/upload/class/.userlist
+    test=!defof user_exists in wimshome/log/classes/$wims_superclass/.users/$(u[3])
+    !if $test!=$empty
+     user_loginused=!append item $(u[3]) to $(user_loginused)
+     !sh rm -f $wims_home/$wims_sesdir/upload/class/.users/$(u[3])  $wims_home/$wims_sesdir/upload/class/score/$(u[3]) $wims_home/$wims_sesdir/upload/class/noscore/$(u[3]);
+    !else
+     user_ok=!append item $(u[3]) to $user_ok
+    !endif
+   !next k
+   !sh cd $wims_home/$wims_sesdir/upload/class/;\
+cp -pR .users $wims_home/log/classes/$wims_superclass/;
+   !for u in $user_ok
+    !setdef !set user_participate=$wims_class in wimshome/log/classes/$wims_superclass/.users/$u
+   !next k
+  !endif
+  copy=!listcomplement user in $copy
+  !readproc adm/class/mkuserlist
  !endif
 !endif
 
