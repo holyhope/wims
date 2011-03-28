@@ -24,7 +24,7 @@ Dit bewegende plaatje is gemaakt met de module
      y=(1-s)*sin(t+pi*s)-s*sin(2*t)
 </pre>
   (waarbij s de ``sequentiele parameter'' is, zoals gedefineerd in 
-  <font color=red>Tracés animés</font>.)
+  <font color="red">Tracés animés</font>.)
 </li>
 <li>Variabelen range:
 <pre>
@@ -35,7 +35,7 @@ Dit bewegende plaatje is gemaakt met de module
 Je kunt ook
 !href module=tool/geometry/animtrace.en&cmd=new&type=parametric2D&x1=(1-s)*cos(t+pi*s)+s*cos(2*t)&y1=(1-s)*sin(t+pi*s)-s*sin(2*t)&tleft=0&tright=2*pi&xleft=-1&xright=1&yleft=-1&yright=1&special_parm=noshow  direct deze instellingen
 
-in het menu van <font color=red>Tracés animés</font>
+in het menu van <font color="red">Tracés animés</font>
 om het zelf te plotten.
 <p>
 Gemaakt op 03-27-1998, &copy; XIAO, Gang.
