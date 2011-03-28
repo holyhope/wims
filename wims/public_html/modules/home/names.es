@@ -76,7 +76,7 @@ SU_exp1 = la cual expira el
 SU_exp2 =
 SU_nosheet = Su clase todavía no tiene recursos.
 SU_shlist = Lista de recursos.
-SU_Gateway = Administración de la estructura
+wims_name_SU_Gateway = Administración de la estructura
 SU_Bprogram = Vuelta al programa
 
 wims_name_SE_list = Participantes y puntuaciones

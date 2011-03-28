@@ -74,7 +74,7 @@ SU_exp2 =
 
 SU_nosheet = Uw klas heeft nog geen lesmateriaal ter beschikking.
 SU_shlist = Lesmateriaal van de klas
-SU_Gateway = Structuur management
+wims_name_SU_Gateway = Structuur management
 SU_Bprogram = Terug naar het lesprogramma
 
 wims_name_SE_list = Leerlingen en cijfers 
