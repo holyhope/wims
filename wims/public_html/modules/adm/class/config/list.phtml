@@ -3,48 +3,48 @@
  !href module=adm/class/gateway $wims_name_struct
 </center>
 !endif
-
 !form reply
-<input type=hidden name="up_job" value=list>
+<input type="hidden" name="up_job" value="list">
 $table_header
-$table_tr<td align="right">$name_name_institution
-<td colspan=3>
+$table_tr<td align="right">$name_name_institution</td>
+<td colspan="3">
 !if $supertype notin 24 or $classdepth=1
- <input size=50 name="up_institution" value="$class_institution">
+ <input size="50" name="up_institution" value="$class_institution">
 !else
  $class_institution
 !endif
-$table_tr<td align="right">$name_name_class
-<td colspan=3>
-<input size=50 name="up_description" value="$class_description">
+</td></tr>
+$table_tr<td align="right">$name_name_class</td>
+<td colspan="3">
+<input size="50" name="up_description" value="$class_description"></td></tr>
 $table_tr<td align="right">$name_secure
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=secure $wims_name_help
-
-<td colspan=3>
-<input size=50 name="up_secure" value="$class_secure">
+</td>
+<td colspan="3">
+<input size="50" name="up_secure" value="$class_secure"></td></tr>
 $table_tr<td align="right">$wims_name_nameteacher
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=supervisor $wims_name_help
-
-<td colspan=3>
-<input size=40 name="up_supervisor" value="$class_supervisor">
+</td>
+<td colspan="3">
+<input size="40" name="up_supervisor" value="$class_supervisor"></td></tr>
 $table_tr<td align="right">$wims_name_email
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=email $wims_name_help
-
-<td colspan=3>
-<input size=40 name="up_email" value="$class_email">
+</td>
+<td colspan="3">
+<input size="40" name="up_email" value="$class_email"></td></tr>
 $table_tr<td align="right">$name_optionword
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=option $wims_name_help
-
-<td colspan=3>
-<input size=40 name="up_option" value="$class_option">
+</td>
+<td colspan="3">
+<input size="40" name="up_option" value="$class_option">
 </td></tr>
 !if $wims_supertype!=4 or $class_typename!=class
 $table_tr<td align="right">
@@ -53,7 +53,7 @@ $name_devaccount
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=modtoolchg $wims_name_help
 
-</td><td colspan=3>
+</td><td colspan="3">
 !set modtoolchg=1
 !formcheckbox modtoolchg list 0 prompt $wims_name_change
 </td></tr>
@@ -68,7 +68,7 @@ $name_lock_level
 !set up_lock=$class_lock
 !default up_lock=0
 !formselect up_lock list 0,2,3,4,5,6,7
-<td align="right">$name_bestscore
+</td><td align="right">$name_bestscore
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=topscores $wims_name_help
@@ -76,7 +76,7 @@ $name_lock_level
 !default class_topscores=0
 !default class_anonymtopscores=yes
 !set up_anonymtopscores=$class_anonymtopscores
-<td><input size="3" name="up_topscores" value="$class_topscores">
+</td><td><input size="3" name="up_topscores" value="$class_topscores">
 /
 !formselect up_anonymtopscores list no,yes prompt $wims_name_no,$wims_name_yes
 </td></tr>
@@ -85,7 +85,7 @@ $table_tr<td align="right">$wims_name_Language
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=lang $wims_name_help
 
-<td>
+</td><td>
 !set up_lang=$class_lang
 !set langs=!words2items $wims_site_languages
 !formselect up_lang list $langs
@@ -96,23 +96,24 @@ $name_level
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=level $wims_name_help
 
-<td>
+</td><td>
 !set up_level=$class_level
 !formselect up_level list $levellist
+</td></tr>
 $table_tr<td align="right">$name_limit
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=limit $wims_name_help
 
-</td><td><input size=5 name="up_limit" value="$class_limit">
-<td align="right">$name_expirationdate
+</td><td><input size="5" name="up_limit" value="$class_limit">
+</td><td align="right">$name_expirationdate
 <small><b>yyyymmdd</b></small>
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=expiration $wims_name_help
 </td><td>
 !if $class_type notin 13
- <input size=8 maxlength=8 name="up_expiration" value="$class_expiration">
+ <input size="8" maxlength="8" name="up_expiration" value="$class_expiration">
 !else
  <tt>$class_expiration</tt>
 !endif
@@ -122,7 +123,7 @@ $table_tr<td align="right">$name_limit
 !href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
 </td>
 !default class_exolog=0
-<td><input size=3 name="up_exolog" value="$class_exolog"></td>
+<td><input size="3" name="up_exolog" value="$class_exolog"></td>
 <td align="right">$name_register_exam
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -159,7 +160,8 @@ $table_tr<td align="right">$wims_name_external_auth
 !set up_mixed_external_auth=$class_mixed_external_auth
 !default up_mixed_external_auth=0
 !formradio up_mixed_external_auth list 0,1,2 prompt $wims_name_no, $name_mix_auth, $wims_name_yes
-</td></tr>!endif
+</td></tr>
+!endif
 $table_hdtr<td align="center" colspan="4">
 <input type="submit" name="save" value="$wims_name_tosave">
 &nbsp;
@@ -176,7 +178,6 @@ $name_apparence:
 .
 <p>
 !if $class_type iswordof 2 3 4
-
  !href cmd=reply&job=propagate $name_dependant_zone
 !endif
 <p>
