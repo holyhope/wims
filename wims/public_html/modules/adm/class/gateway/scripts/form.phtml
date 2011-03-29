@@ -1,5 +1,5 @@
 !form reply
-<input type=hidden name=job value=$job>
+<input type="hidden" name="job" value="$job">
 $table_header
 <caption>
 !if $form_caption!=$empty
@@ -14,13 +14,14 @@ $table_header
 </small></caption>
 $table_tr<td align="right">
 $form_titlename
-<td><input size=30 name="title" value="$title">
+</td><td><input size=30 name="title" value="$title"></td></tr>
 !if $form_level=yes
  $table_tr<td align="right">
  $wims_name_level
  </td><td>
  !set alevel=$class_level
  !formselect alevel list $levellist prompt $levelnames
+ </td></tr>
 !endif
 $table_tr<td align="right">
 $name_supervisor2 ($form_classname)
@@ -30,6 +31,7 @@ $name_supervisor2 ($form_classname)
 </td><td>
 !readproc scripts/teacherlist.proc
 !formselect sup list $tlist1 prompt $tlist2
+</td></tr>
 !if $form_prog=yes
  $table_tr<td align="right">
 $name_Style
@@ -40,7 +42,7 @@ $name_Style
  <td>
  !formselect progstyle1 list mandatory,optional prompt\
 	$name_style
- $table_tr<td align="right">
+ </td></tr>$table_tr<td align="right">
  $name_installation
  &nbsp;
 !set wims_ref_class=wims_button_help
@@ -48,6 +50,7 @@ $name_Style
 </td>
  <td>
  !formselect progstyle2 list all,select prompt $wims_name_yes,$wims_name_no
+</td></tr>
 !endif
 !if $form_pass=yes
  $table_tr<td align="right">
@@ -57,12 +60,12 @@ $name_Style
  !href cmd=help&special_parm=pass $wims_name_help
 </td>
  !if $passhow=yes
-  <td><input type=text size=30 name="pass" value="$pass"></td></tr>
+  <td><input type="text" size="30" name="pass" value="$pass"></td></tr>
  !else
-  <td><input type=password size=30 name="pass" value=""></td></tr>
+  <td><input type="password" size="30" name="pass" value=""></td></tr>
   $table_tr<td align="right">
   $wims_name_repeat_pass ($name_register)
-  <td><input type=password size=30 name="pass2" value=""></td></tr>
+  <td><input type="password" size="30" name="pass2" value=""></td></tr>
  !endif
 !endif
 $table_tr<td align="right">
@@ -72,12 +75,12 @@ $wims_name_Password ($name_supervisor2)
 !href cmd=help&special_parm=passs $wims_name_help
 </td>
 !if $passhow=yes
- <td><input type=text size=30 name="passs" value="$passs">
+ <td><input type="text" size="30" name="passs" value="$passs"></td></tr>
 !else
- <td><input type=password size=30 name="passs" value="">
+ <td><input type=password size=30 name="passs" value=""></td></tr>
  $table_tr<td align="right">
- $wims_name_repeat_pass ($name_supervisor2)
- <td><input type=password size=30 name="passs2" value="">
+ $wims_name_repeat_pass ($name_supervisor2)</td>
+ <td><input type="password" size="30" name="passs2" value=""></td></tr>
 !endif
 $table_tr<td align="right">$name_IP
 &nbsp;
@@ -86,15 +89,16 @@ $table_tr<td align="right">$name_IP
 </td>
 !set sechost=$class_secure
 !default sechost=all
-<td><input type=text size=30 name="sechost" value="$sechost">
+<td><input type="text" size="30" name="sechost" value="$sechost">
 !reset sechost
-</tr>
-$table_tr<td align="center" colspan=2>
-<input type=submit name="confirm" value="$wims_name_tosave">
+</td></tr>
+$table_tr<td align="center" colspan="2">
+<input type="submit" name="confirm" value="$wims_name_tosave">
 !if $form_cancel!=$empty
  &nbsp;
- <input type=submit name="cancel" value=$form_cancel>
+ <input type="submit" name="cancel" value="$form_cancel">
 !endif
+</tr>
 $table_end
 </form>
 
