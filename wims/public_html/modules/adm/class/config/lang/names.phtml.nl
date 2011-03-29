@@ -75,7 +75,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
    Samenvoegen\
    vervang al het aanwezige materiaal, behalve de studenten accounts en de klasse oefeningen; bij deze klasse oefeningen worden alles met een gelijke naam overschreven.\
    Vervang en herstel het aangegeven materiaal\
- into name_noselect,name_all,name_danger,name_config,name_teacher,name_part,name_part1,name_doc,\
+ into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\

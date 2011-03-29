@@ -24,148 +24,93 @@
 <input type=hidden name="job2" value=restore>
 $name_deposit
 <ul>
- <li><input type=checkbox name="selection" value=all>
- $name_all
-!if $new_defcnt>0
- <li><input type=checkbox name="selection" value=def>
- $name_config.
- $name_danger.
-!endif
-!if $new_supcnt>0
  <li>
- !if $sharing_sup=$empty
-  <input type=checkbox name="selection" value=sup>
- !endif
- $name_teacher.
- !if $sharing_sup!=$empty
-  $name_no_restore
- !else
-  $name_danger.
- !endif
-!endif
-!if $new_usercnt>0
- <li>
- !if $sharing_user=$empty
-  <input type=checkbox name="selection" value=user>
- !endif
- $new_usercnt $name_part.
- !if $sharing_user!=$empty
-  $name_no_restore
- !else
-  <small>($name_part1: $old_usercnt)</small>.
- !endif
+  <input type=checkbox name="selection" value=all>
+  $name_all
  </li>
-!endif
-!if $new_doccnt>0
- <li>
- !if $sharing_doc=$empty
-  <input type=checkbox name="selection" value=doc>
+ !if def isitemof $gotlist
+  <li>
+   <input type=checkbox name="selection" value=def>
+   $name_config.
+   $name_danger.
+  </li>
  !endif
- $new_doccnt $name_doc. 
- !if $sharing_doc!=$empty
-  $name_no_restore
- !else
-  <small>($name_doc1: $old_doccnt)</small>.
+ !if sup isitemof $gotlist
+  <li>
+   !if $sharing_sup=$empty
+    <input type=checkbox name="selection" value=sup>
+   !endif
+   $name_teacher.
+   !if $sharing_sup!=$empty
+    $name_no_restore
+   !else
+    $name_danger.
+   !endif
+  </li>
  !endif
- </li>
-!endif
-!if $new_exocnt>0
- <li>
- !if $sharing_exo=$empty
-  <input type=checkbox name="selection" value=exo>
+ !let list=!listintersect user,doc,exo,sheet,exam,forum and $gotlist
+ !for type in $list
+  <li>
+   !if $(sharing_$type)=$empty
+    <input type="checkbox" name="selection" value="$type">
+   !endif
+   $(new_$(type)cnt) $(name_$type).
+   !if $(sharing_$type)!=$empty
+    $name_no_restore
+   !else
+    <small>($(name_$(type)1) : $(old_$(type)cnt))</small>.
+   !endif
+  </li>
+ !next type
+ !if score isitemof $gotlist
+  <li>
+   <input type="checkbox" name="selection" value="score">
+   $name_activity
+  </li>
  !endif
- $new_exocnt $name_exo.
- !if $sharing_exo!=$empty
-  $name_no_restore
- !else
-  <small>($name_exo1: $old_exocnt)</small>.
+ !if manual isitemof $gotlist
+  <li>
+   <input type="checkbox" name="selection" value="manual">
+   $new_manualcnt $name_manual. <small>($name_manual1&nbsp;:
+   $old_manualcnt)</small>.
+  </li>
  !endif
- </li>
-!endif
-!if $new_sheetcnt>0
- <li>
- !if $sharing_sheet=$empty
-  <input type=checkbox name="selection" value=sheet>
+ !if cdt isitemof $gotlist
+  <li>
+   <input type="checkbox" name="selection" value="cdt">
+   $name_cdt.
+   !if $old_cdtcnt>0
+    <small>($name_cdt1)</small>
+   !endif
+  </li>
  !endif
- $new_sheetcnt $name_sheet.
- !if $sharing_sheet!=$empty
-  $name_no_restore
- !else
-$name_sheet0
-  <small>($name_sheet1: $old_sheetcnt)</small>.
+ !if livret isitemof $gotlist
+  <li>
+   <input type="checkbox" name="selection" value="livret">
+   $name_livret.
+   !if $old_livretcnt>0
+    <small>($name_livret1)</small>
+   !endif
+  </li>
  !endif
- </li>
-!endif
-!if $new_examcnt>0
- <li>
- !if $sharing_exam=$empty
-  <input type=checkbox name="selection" value=exam>
+ !if seq isitemof $gotlist
+  <li>
+   <input type="checkbox" name="selection" value="seq">
+   $name_seq.
+   $name_seq0
+   <small>($name_seq1 $old_seqcnt)</small>.
+  </li>
  !endif
- $new_examcnt $name_exam.
- !if $sharing_exam!=$empty
-  $name_no_restore
- !else
-  $name_exam0.
-  <small>($name_exam1: $old_examcnt)</small>.
- !endif
- </li>
-!endif
-!if $new_forumcnt>0
- <li>
- !if $sharing_forum=$empty
-  <input type=checkbox name="selection" value=forum>
- !endif
- $new_forumcnt $name_forum.
- !if $sharing_forum!=$empty
-  $name_no_restore
- !else
-  <small>($name_forum1: $old_forumcnt)</small>.
- !endif
- </li>
-!endif
-!if $new_scorecnt>0
- <li><input type=checkbox name="selection" value=score>
- $name_activity
- </li>
-!endif
-!if $new_manualcnt>0
- <li><input type=checkbox name="selection" value=manual>
- $new_manualcnt $name_manual. <small>($name_manual1&nbsp;:
- $old_manualcnt)</small>.
- </li>
-!endif
-!if $new_cdtcnt>0
- <li><input type=checkbox name="selection" value=cdt>
- $name_cdt. 
- !if $old_cdtcnt>0
-  <small>($name_cdt1)</small>
- !endif
- </li>
-!endif
-!if $new_livretcnt>0
- <li><input type=checkbox name="selection" value=livret>
- $name_livret.
- !if $old_livretcnt>0
-  <small>($name_livret1)</small>
- !endif
- </li>
-!endif
-!if $new_seqcnt>0
- <li><input type=checkbox name="selection" value=seq>
- $name_seq.
- $name_seq0
- <small>($name_seq1 $old_seqcnt)</small>.
- </li>
-!endif
 </ul>
-$name_method&nbsp;:<ul>
-<li><input type=radio name="restore" value=replace checked>
- $name_replace <i>($name_replace1)</i>.</li>
-<li><input type=radio name="restore" value=merge>
- $name_merge <i>($name_merge1)</i>.</li>
+$name_method&nbsp;:
+<ul>
+ <li><input type="radio" name="restore" value="replace" checked>
+  $name_replace <i>($name_replace1)</i>.</li>
+ <li><input type="radio" name="restore" value="merge">
+  $name_merge <i>($name_merge1)</i>.</li>
 </ul>
 
-<input type=submit value="$name_selectrestore">
+<input type="submit" value="$name_selectrestore">
 !set wims_ref_class=wims_button_help
 !href cmd=reply&job=list $wims_name_giveup
 
