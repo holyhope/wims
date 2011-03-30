@@ -23,20 +23,6 @@
  !exit
 !endif
 
-!if bad_login=$error
- Your login name contains illegal characters. <p>
- Please use a word containing only digits or letters without accent, and 
- without space between them.
- !exit
-!endif
-
-!if bad_pass=$error
- Your password contains illegal characters. <p>
- Please use a word containing only digits or letters without accent, and 
- without space between them.
- !exit
-!endif
-
 !if login_size=$error
  Your login name is too
  !if $n<4
@@ -61,19 +47,19 @@
 
 !if bad_classpass=$error
  Your password for the class
- <b><font color=green>$description</font></b>
- of <b><font color=green>$institution</font></b>
+ <b><font color="green">$description</font></b>
+ of <b><font color="green">$institution</font></b>
  is not correct. Therefore you do not have the right to register into this 
  class. Sorry.
  !exit
 !endif
 
 !if login_double=$error
- The login name ``<b><font color=green>$login</font></b>''
+ The login name ``<b><font color="green">$login</font></b>''
  is already in use in the class
  <p><center>
- <b><font color=green>$description</font></b>
- of <b><font color=green>$institution</font></b>.
+ <b><font color="green">$description</font></b>
+ of <b><font color="green">$institution</font></b>.
  </center> <p>
  Please verify if you have already registered; otherwise, please 
  choose another login name.
@@ -83,17 +69,6 @@
 !if pass_error=$error
  The password you retyped does not correspond to the first one. Your 
  registration is hence ignored; please try again.
- !exit
-!endif
-
-!if insert_fail=$error
- The software has failed to insert your registration into the database.
- There is an internal error.
- <p>
- Please report the problem to the
- !mailurl $wims_site_manager webmaster\
-user registration failure
-. Thanks!
  !exit
 !endif
 
@@ -115,4 +90,6 @@ site user limit
  users.
  !exit
 !endif
+
+!msg $error
 

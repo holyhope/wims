@@ -1,13 +1,7 @@
 
-
 !set wims_module_log=error: $error $wims_class
 
-<b>Fout</b>.
-
-!if not_supervisor iswordof $error
-Helaas, maar deze module is alleen voor de supervisor van een klas bedoeld.
- !exit
-!endif
+<b>$wims_name_Error</b>.
 
 !if not_secure iswordof $error
  !if $code!=$empty

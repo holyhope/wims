@@ -1,18 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>Error</b>.
-
-!if bad_auth iswordof $error
- Fracaso de autenticación. Vuelve a intentar.
- !exit
-!endif
-
-!if bad_pass iswordof $error
- Mala contraseña: debe tener entre 4 y 16 caracteres,
- cartas y cifras solamente. ¡Y la contraseña repetida debe ser idéntica
- primero! Intente aún.
- !exit
-!endif
+<b>$wims_name_Error</b>.
 
 !if empty_data iswordof $error
  Quiere cumplir la definición de
@@ -58,4 +46,3 @@
 !endif
 
 !msg $error
-

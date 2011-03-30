@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>Fout</b>.
+<b>$wims_name_Error</b>.
 
 !if $error = not_user
 Deze voorziening is alleen beschikbaar voor virtuele klassen.

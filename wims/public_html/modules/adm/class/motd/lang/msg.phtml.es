@@ -6,12 +6,4 @@
  !exit
 !endif
 
-!if bad_class=$error
- ¡Qué extraño, detecto que su clase no es válida!
- !exit
-!endif
-
-!if bad_user=$error
- ¡Extraño, no encuentro a este participante en esta clase!
- !exit
-!endif
+!msg $error

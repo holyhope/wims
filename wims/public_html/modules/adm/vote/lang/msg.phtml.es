@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>Error</b>.
+<b>$wims_name_Error</b>.
 
 !if $error = not_user
  El sistema de encuestas sólo está disponible para las clases virtuales.

@@ -1,7 +1,7 @@
 
 !set wims_module_error=error: $error
 
-<b>Fout.</b>
+<b>$wims_name_Error</b>.
 
 !if bad_sheet iswordof $error
  Ongeldige naam voor een werkblad.

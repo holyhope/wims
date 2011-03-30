@@ -1,7 +1,7 @@
 
 !set wims_module_error=error: $error
 
-<b>Error.</b>
+<b>$wims_name_Error</b>.
 
 !if bad_sheet iswordof $error
  Nombre de hoja de trabajo inválido.

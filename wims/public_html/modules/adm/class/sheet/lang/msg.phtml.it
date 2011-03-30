@@ -5,11 +5,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- Il corso non esiste!
- !exit
-!endif
-
 !if bad_series=$error
  Spiacente, il gruppo di esercizi da modificare non esiste!!
  !exit
@@ -179,7 +174,7 @@ to $wims_menu_items
 !if prep_modify=$error
  !set cnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
  !if $modif>$cnt or $modif<1
-  La richiesta non &egrave; valida.
+  La richiesta non è valida.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
   !read exomodify.phtml $exo
@@ -189,7 +184,7 @@ to $wims_menu_items
 
 !if $error=toolate
  $name_expiration1 ($l_date). $name_expiration2 <p>
-!href cmd=resume $wims_name_back2
+ !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
  !exit
 !endif

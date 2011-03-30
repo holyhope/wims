@@ -5,15 +5,10 @@
  !exit
 !endif
 
-!if bad_class=$error
- Vreemd, maar ik zie hier nu dat Uw klas niet geldig is!
- !exit
-!endif
-
 !if bad_series=$error
  Vreemd, ik kan geen serie oefeningen vinden om te veranderen !!
  !exit
- !endif
+!endif
 
 !if bad_source=$error
  Het item nummer $bad_source in de code die U zojuist invoerde is ongeldig.

@@ -1,18 +1,15 @@
 !set wims_module_log=error: $error
-<b>Erreur : </b>
-!goto $error
-!exit
+<b>$wims_name_Error: </b>
+!if $error iswordof not_supervisor bad_jday bad_date day_exists same_devoir\
+  same_devoir2 toomany_todo day_dontexist
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :not_supervisor
 sorry, only teacher of the class can modify the agenda.
-!exit
-
-:bad_class
-your class is not valid !!
-!exit
-
-:bad_day
-the date entered is not valid.
 !exit
 
 :bad_jday
@@ -42,6 +39,4 @@ you cannot enter the same date twice for a homework assignment.
 you have reached the maximum number of homework assignments that can be given for this date.
 !exit
 
-:day_dontexist
-the date entered is not valid.
-!exit
+!msg $error

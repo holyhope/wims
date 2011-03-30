@@ -22,18 +22,6 @@
  !exit
 !endif
 
-!if bad_login=$error
-你的登录名含有非法字符. <p>
-登录名只能由数字与英文字符组成, 而且中间不能有空格.
- !exit
-!endif
-
-!if bad_pass=$error
-你的密码中含有非法字符. <p>
-密码只能由数字与英文字符组成, 而且中间不能有空格.
- !exit
-!endif
-
 !if login_size=$error
 你的登录名太
  !if $n<4
@@ -58,18 +46,18 @@
 
 !if bad_classpass=$error
 你进入班级 
- <b><font color=green>$description</font></b> 
- <b><font color=green>($institution)</font></b>
+ <b><font color="green">$description</font></b> 
+ <b><font color="green">($institution)</font></b>
 的密码不正确. 所以你无权注册进入这个班级. 抱歉.
  !exit
 !endif
 
 !if login_double=$error
- 登录名 ``<b><font color=green>$login</font></b>''
+ 登录名 ``<b><font color="green">$login</font></b>''
  已经在班级
  <p><center>
- <b><font color=green>$description</font></b> 
- <b><font color=green>($institution)</font></b>
+ <b><font color="green">$description</font></b> 
+ <b><font color="green">($institution)</font></b>
  </center> <p>
  中出现, 请验证你是否已经注册过; 否则请选择别的登录名.
  !exit
@@ -106,4 +94,6 @@
 软件内部错误: 不能确定已注册用户的数字.
  !exit
 !endif
+
+!msg $error
 

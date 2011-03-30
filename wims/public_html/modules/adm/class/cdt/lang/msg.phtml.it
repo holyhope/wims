@@ -1,18 +1,15 @@
 !set wims_module_log=error: $error
-<b>Errore: </b>
-!goto $error
-!exit
+<b>$wims_name_Error: </b>
+!if $error iswordof not_supervisor bad_jday bad_date day_exists same_devoir\
+  same_devoir2 toomany_todo day_dontexist
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :not_supervisor
 spiacente, solo il docente può modificare l'agenda.
-!exit
-
-:bad_class
-il corso non esiste!!
-!exit
-
-:bad_day
-la data inserita non è valida.
 !exit
 
 :bad_jday

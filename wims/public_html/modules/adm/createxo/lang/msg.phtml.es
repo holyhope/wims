@@ -1,7 +1,8 @@
 !set wims_module_log=error: $error
 !set level=$[$level-1]
 
-<center><h3>Error</h3></center> <p>
+<center><h3>$wims_name_Error</h3></center> <p>
+
 
 !if no_title iswordof $error
  Por favor, dé un título a este ejercicio en preparación.

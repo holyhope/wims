@@ -1,13 +1,7 @@
 
 !set wims_module_log=error: $error $wims_class
 
-<b>Erreur</b>.
-
-!if not_supervisor iswordof $error
- Désolé, ce module est accessible uniquement à l'docente d'une classe
- virtuelle.
- !exit
-!endif
+<b>$wims_name_Error</b>.
 
 !if not_secure iswordof $error
  !if $code!=$empty
@@ -55,13 +49,13 @@
 !if share_dep iswordof $error
  Le partage de ressources doit respecter les dépendances&nbsp;: vous devez d'abord partager 
  !if sheet iswordof $error
-  les esercizi avant de partager les feuilles de travail.
+  les exercices avant de partager les feuilles de travail.
  !else
   !if exam iswordof $error
-   les esercizi et les feuilles de travail avant de partager les examens.
+   les exercices et les feuilles de travail avant de partager les examens.
   !else
    !if livret iswordof $error
-    les esercizi et les feuilles de travail avant de partager le livret de compétences.
+    les exercices et les feuilles de travail avant de partager le livret de compétences.
    !endif
   !endif    
  !endif
@@ -74,7 +68,7 @@
   des examens et du livret de compétences avant celui des feuilles de travail .
  !else
   !if exo iswordof $error
-   des feuilles de travail avant celui des esercizi. 
+   des feuilles de travail avant celui des exercices. 
   !endif    
  !endif
  !exit
@@ -85,12 +79,12 @@
  voisin effectif.
  <p>
  Rappelez qu'une classe est votre voisin effectif seulement si les voisinages
- mutuels sont déclarés A LA FOIS per voi et per l'altro corso classe.
+ mutuels sont déclarés A LA FOIS par vous et par l'autre classe.
  !exit
 !endif
 
 !if localmirror iswordof $error
- Rendre une classe miroir  sur le même serveur n'a pas de sens.
+ Rendre une classe miroir sur le même serveur n'a pas de sens.
  !exit
 !endif
 

@@ -8,13 +8,13 @@
 !if no_class=$error
  Il corso selezionato non esiste! Potrebbe essere un bug nel software o 
  il corso potrebbe essere ormai terminato. Se invece state giocherellando
- con il server, sappiate che tutte le attivit&agrave; sono `loggate'.
+ con il server, sappiate che tutte le attività sono `loggate'.
  !exit
 !endif
 
 !if complete=$error
- Spiacente. Il corso selezionato &egrave; completo. Non ci sono 
- pi&ugrave; posti disponibili.
+ Spiacente. Il corso selezionato è completo. Non ci sono 
+ più posti disponibili.
  !exit
 !endif
 
@@ -23,59 +23,45 @@
  !exit
 !endif
 
-!if bad_login=$error
- Il `login' scelto contiene dei caratteri non accettati dal server. <p>
- Utilizzate solo caratteri alfanumerici, in particolare non utilizzate 
- lettere accentate o spazi.
- !exit
-!endif
-
-!if bad_pass=$error
- La password scelta contiene dei caratteri non accettati dal server. <p>
- Utilizzate solo caratteri alfanumerici, in particolare non utilizzate
- lettere accentate o spazi.
- !exit
-!endif
-
 !if login_size=$error
- Il `login' scelto &egrave; troppo 
+ Il `login' scelto è troppo 
  !if $n<4
   corto.
  !else
    lungo.
  !endif
- Utilizzare almeno 4 e non pi&ugrave; di 16 caratteri.
+ Utilizzare almeno 4 e non più di 16 caratteri.
  !exit
 !endif
 
 !if pass_size=$error
- La password scelta &egrave; troppo
+ La password scelta è troppo
  !if $n<4
   corta.
  !else
    lunga.
  !endif
- Utilizzare almeno 4 e non pi&ugrave; di 16 caratteri.
+ Utilizzare almeno 4 e non più di 16 caratteri.
  !exit
 !endif
 
 !if bad_classpass=$error
  La password per il corso
- <b><font color=green>$description</font></b>
- presso <b><font color=green>$institution</font></b>
- non &egrave; corretta. Assicurarsi di conoscere la password 
+ <b><font color="green">$description</font></b>
+ presso <b><font color="green">$institution</font></b>
+ non è corretta. Assicurarsi di conoscere la password 
  esatta e riprovare.
  !exit
 !endif
 
 !if login_double=$error
- Il login ``<b><font color=green>$login</font></b>''
- &egrave; gi&agrave; stato utilizzato per questo corso
+ Il login ``<b><font color="green">$login</font></b>''
+ è già stato utilizzato per questo corso
  <p><center>
- <b><font color=green>$description</font></b>
- presso <b><font color=green>$institution</font></b>.
+ <b><font color="green">$description</font></b>
+ presso <b><font color="green">$institution</font></b>.
  </center> <p>
- Verifica di non esserti gi&agrave; registrato, altrimenti scegli un altro
+ Verifica di non esserti già registrato, altrimenti scegli un altro
  login.
  !exit
 !endif
@@ -84,17 +70,6 @@
  La password di verifica non corrisponde alla password inserita.
  Ripetere 
  la registrazione.
- !exit
-!endif
-
-!if insert_fail=$error
- Il sistema non ha potuto inserire la tua registrazione a causa di
- un errore interno.
- <p>
- Per favore contattare 
- !mailurl $wims_site_manager il gestore del sito\
-user registration failure
-. Grazie!
  !exit
 !endif
 
@@ -112,8 +87,10 @@ site user limit
 !endif
 
 !if internal_total=$error
- Errore interno del sistema: non &egrave; possibile determinare il numero
+ Errore interno del sistema: non è possibile determinare il numero
  di utenti registrati.
  !exit
 !endif
+
+!msg $error
 

@@ -23,20 +23,6 @@
  !exit
 !endif
 
-!if bad_login=$error
- Uw login-naam bevat niet toegestane karakters.
- <p>
- Gebruik een woord met alleen cijfers en letters , dus zonder accenten en spaties.
- !exit
-!endif
-
-!if bad_pass=$error
- Uw wachtwoord bevat niet toegestane karakters.
- <p>
- Gebruik een woord met alleen cijfers en letters , dus zonder accenten en spaties.
- !exit
-!endif
-
 !if login_size=$error
 Uw login-naam is te
  !if $n<4
@@ -61,19 +47,19 @@ Uw login-naam is te
 
 !if bad_classpass=$error
  Het ingevoerde aanmeldings wachtwoord van klas
- <b><font color=green>$description</font></b>
- van <b><font color=green>$institution</font></b>
+ <b><font color="green">$description</font></b>
+ van <b><font color="green">$institution</font></b>
  is niet juist. 
  Helaas , U kunt zich dus niet aanmelden als leerling bij deze klas.
  !exit
 !endif
 
 !if login_double=$error
- De login-naam ``<b><font color=green>$login</font></b>''
+ De login-naam ``<b><font color="green">$login</font></b>''
 is al in gebruik in de klas
  <p><center>
- <b><font color=green>$description</font></b>
- van <b><font color=green>$institution</font></b>.
+ <b><font color="green">$description</font></b>
+ van <b><font color="green">$institution</font></b>.
  </center> <p>
  Kontroleer of U zich reeds heeft aangemeld; of anders kies een andere loginnaam. 
  !exit
@@ -112,4 +98,6 @@ over het ingestelde maximum aantal leerlingen
 Interne software fout : kan het aantal deelnemers niet vaststellen.
  !exit
 !endif
+
+!msg $error
 

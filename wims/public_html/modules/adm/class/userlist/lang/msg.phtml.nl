@@ -1,21 +1,14 @@
 !set wims_module_log=error: $error
 
-<b>Fout.</b><br>
+<b>$wims_name_Error</b>.
 
 !if not_supervisor=$error
-Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld.
- 
+Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld. 
  !exit
 !endif
 
 !if not_superclass=$error
  Deze handeling kan alleen door de administrator van de digischool worden uitgevoerd.
-
- !exit
-!endif
-
-!if bad_class=$error
-Vreemd, ik zie hier dat uw klas niet geldig is!
  !exit
 !endif
 
@@ -47,8 +40,6 @@ Uw spreadsheet data zijn in binair formaat en wordt uiteraard niet geaccepteerd.
  !goto csvformat
 !endif
 
-
-
 !if no_manual iswordof $error
  U moetr eerst een 
  !href module=adm/class/grades handmatige
@@ -66,17 +57,18 @@ Ga naar de configuratie pagina van Uw klas om deze instellingen te bekijken, en 
 !if bad_user=$error
 De student <tt>$checkuser</tt> komt niet voor in de database.
 !exit
-!endif 
- 
+!endif
+
 !if bad_exo=$error
 Dat werkblad/document bestaat niet.
 !exit
-!endif 
- 
+!endif
+
 !if bad_op=$error
 <font color="red"><b>Ongeldige bewerking.</b></font>
 Sluit dit venster.
 !exit 
-!endif 
+!endif
+
 !msg $error
 

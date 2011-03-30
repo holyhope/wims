@@ -1,23 +1,11 @@
 !set wims_module_log=error: $error
 
-<b>Fout</b>.
-
-!if bad_auth iswordof $error
-    Het inloggen is mislukt. Probeer opnieuw.
- !exit
-!endif
-
-!if bad_pass iswordof $error
- Wachtwoord is niet goed: het mag alleen letters en cijfers bevatten, 
- en de lengte moet tussen de 4 en 16 lettertekens zijn.
- En het herhaald ingetypte wachtwoord moet natuurlijk wel gelijk zijn aan de eerste keer! Probeer het nog eens.
- !exit
-!endif
+<b>$wims_name_Error</b>.
 
 !if empty_data iswordof $error
  Vul het definitieveld 
  <b><em><font color="red">$(name_$empty_data)</font></em></b>
- van uw module in. 
+ van uw module in.
  !exit
 !endif
 

@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>Error</b>.
+<b>$wims_name_Error</b>.
 
 !if not_supervisor=$error
  Lo sentimos pero la operación de preparación /modificación de una hoja
@@ -11,11 +11,6 @@
 !if not_superclass=$error
  Operación prohibida porque usted participa en una agrupación de clases.
  Únicamente el administrador de la agrupación puede realizarla.
- !exit
-!endif
-
-!if bad_class=$error
- ¡Es extraño, pero su clase me aparece como no válida!
  !exit
 !endif
 

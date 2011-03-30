@@ -24,21 +24,6 @@ La clase que ha elegido está al completo. No quedan plazas disponibles.
  !exit
 !endif
 
-!if bad_login=$error
- Su identificador de usuario contiene caracteres ilegales. <p>
- Por favor utilice una palabra que contenga únicamente cifras o letras
- sin acentos y sin espacios entre ellas.
- !exit
-!endif
-
-!if bad_pass=$error
- Su contraseña contiene caracteres ilegales. <p>
- Por favor utilice una palabra que contenga únicamente cifras o letras
- sin acentos y sin espacios entre ellas.
-
- !exit
-!endif
-
 !if login_size=$error
  su identificador de usuario es demasiado
  !if $n<4
@@ -63,19 +48,19 @@ La clase que ha elegido está al completo. No quedan plazas disponibles.
 
 !if bad_classpass=$error
  Su contraseña para la clase
- <b><font color=green>$description</font></b>
- de <b><font color=green>$institution</font></b>
+ <b><font color="green">$description</font></b>
+ de <b><font color="green">$institution</font></b>
  no es correcta. No está autorizado a inscribirse en
  esta clase. Lo sentimos.
  !exit
 !endif
 
 !if login_double=$error
- El identificador de usuario ``<b><font color=green>$login</font></b>''
+ El identificador de usuario ``<b><font color="green">$login</font></b>''
  está ya siendo utilizado en la clase
  <p><center>
- <b><font color=green>$description</font></b>
- de <b><font color=green>$institution</font></b>.
+ <b><font color="green">$description</font></b>
+ de <b><font color="green">$institution</font></b>.
  </center> <p>
  Por favor compruebe si no estaba ya inscrito; en caso contrario
  elija otro identificador de usuario.
@@ -117,4 +102,6 @@ site user limit
 inscritos.
  !exit
 !endif
+
+!msg $error
 

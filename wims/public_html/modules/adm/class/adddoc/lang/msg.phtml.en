@@ -1,24 +1,12 @@
 !set wims_module_log=error: $error
 
-!if not_supervisor=$error
- Sorry, but this operation of preparation 
- is reserved to registered supervisor of a class
+!if $error iswordof already_exist
+  !goto $error
+!else
+ !msg $error
  !exit
 !endif
 
-!if bad_class=$error
- Strange, but I find that your class is not valid!
- !exit
-!endif
-
-!if insert_fail=$error
- The software could not add your work to the class. Please check your data.
- !exit
-!endif
-
-!if already_exist=$error
+:already_exist
  The document you would like to submit already exists in your class. 
- !exit
-!endif
- 
- 
+!exit

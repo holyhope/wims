@@ -1,18 +1,15 @@
 !set wims_module_log=error: $error
-<b>Erreur : </b>
-!goto $error
-!exit
+<b>$wims_name_Error: </b>
+!if $error iswordof not_supervisor bad_jday bad_date day_exists same_devoir\
+  same_devoir2 toomany_todo day_dontexist
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :not_supervisor
  Désolé, mais l'opération de préparation / modification du cahier de texte est réservée à l'enseignant de la classe.
-!exit
-
-:bad_class
- Etrange, mais je trouve que votre classe n'est pas valide!
-!exit
-
-:bad_day
- La date que vous avez saisie n'est pas valide.
 !exit
 
 :bad_jday
@@ -42,6 +39,4 @@
  Vous avez déjà atteint le nombre maximum de devoirs que l'on peut donner à cette date.
 !exit
 
-:day_dontexist
- La date que vous avez saisie n'est pas valide
-!exit
+!msg $error

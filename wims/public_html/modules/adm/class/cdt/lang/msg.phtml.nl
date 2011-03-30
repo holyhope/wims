@@ -1,19 +1,12 @@
 !set wims_module_log=error: $error
-<b>Fout : </b>
-!goto $error
-!exit
-
-:not_supervisor
-Erg jammer, maar alleen een docent kan de agenda wijzigen.
-!exit
-
-:bad_class
-Uw klas is niet geldig !!
-!exit
-
-:bad_day
-de datum is niet geldig.
-!exit
+<b>$wims_name_Error: </b>
+!if $error iswordof not_supervisor bad_jday bad_date day_exists same_devoir\
+  same_devoir2 toomany_todo day_dontexist
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :bad_jday
 de vermelde datum voor het huiswerk is niet geldig.

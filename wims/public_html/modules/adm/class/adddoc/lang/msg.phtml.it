@@ -1,25 +1,12 @@
 !set wims_module_log=error: $error
 
-!if not_supervisor=$error
- Spiacente, ma questa operazione è riservata
- al docente del corso
+!if $error iswordof already_exist
+  !goto $error
+!else
+ !msg $error
  !exit
 !endif
 
-!if bad_class=$error
- Strano, ma il corso indicato non è valido!
- !exit
-!endif
-
-!if insert_fail=$error
- Il sistema non ha potuto inserire il vostro lavoro nel corso. Per favore
- verificate i dati.
- !exit
-!endif
-
-!if already_exist=$error
+:already_exist=$error
  Il documento che voi volete inserire è già contenuto nel corso.
- !exit
-!endif
- 
- 
+!exit

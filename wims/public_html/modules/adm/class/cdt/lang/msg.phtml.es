@@ -1,18 +1,15 @@
 !set wims_module_log=error: $error
-<b>Erreur : </b>
-!goto $error
-!exit
+<b>$wims_name_Error: </b>
+!if $error iswordof not_supervisor bad_jday bad_date day_exists same_devoir\
+  same_devoir2 toomany_todo day_dontexist
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :not_supervisor
  Afligido, pero la operación de preparación/modificación del cuaderno de textos se reserva al profesor de la clase.
-!exit
-
-:bad_class
- ¡Extraño, pero encuentro que su clase no es válida!
-!exit
-
-:bad_day
- La fecha introducida no es válida.
 !exit
 
 :bad_jday
@@ -42,6 +39,4 @@
  Ya alcanzaron el número máximo de deberes que se pueden dar en dicha fecha.
 !exit
 
-:day_dontexist
- La fecha introducida no es válida.
-!exit
+!msg $error

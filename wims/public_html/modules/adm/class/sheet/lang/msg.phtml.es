@@ -6,11 +6,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- ¡Es extraño, pero su clase me aparece como no válida!
- !exit
-!endif
-
 !if bad_source=$error
  El elemento número $bad_source del fichero fuente que acaba de enviar no es válido.
  !href cmd=reply&job=prep_putsource&source=$source Corrija los fuentes

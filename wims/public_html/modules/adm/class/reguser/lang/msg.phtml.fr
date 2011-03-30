@@ -23,20 +23,6 @@
  !exit
 !endif
 
-!if bad_login=$error
- Votre nom de login contient des caractères illégaux. <p>
- Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
- sans accent et sans espace entre eux.
- !exit
-!endif
-
-!if bad_pass=$error
- Votre mot de passe contient des caractères illégaux. <p>
- Veuillez utiliser un mot contenant uniquement des chiffres ou des lettres
- sans accent et sans espace entre eux.
- !exit
-!endif
-
 !if login_size=$error
  Le nom de login est trop
  !if $n<4
@@ -61,19 +47,19 @@
 
 !if bad_classpass=$error
  Le mot de passe pour la classe
- <b><font color=green>$description</font></b>
- de <b><font color=green>$institution</font></b>
+ <b><font color="green">$description</font></b>
+ de <b><font color="green">$institution</font></b>
  n'est pas correct. Vous n'avez donc pas le droit de vous inscrire dans
  cette classe. Désolé.
  !exit
 !endif
 
 !if login_double=$error
- Le nom de login ``<b><font color=green>$login</font></b>''
+ Le nom de login ``<b><font color="green">$login</font></b>''
  est déjà en utilisation dans la classe
  <p><center>
- <b><font color=green>$description</font></b>
- de <b><font color=green>$institution</font></b>.
+ <b><font color="green">$description</font></b>
+ de <b><font color="green">$institution</font></b>.
  </center> <p>
  Veuillez vérifier si vous ne vous êtes pas déjà inscrit&nbsp;; sinon, choisissez un autre nom de login.
  !exit
@@ -82,17 +68,6 @@
 !if pass_error=$error
  Le mot de passe que vous avez retapé ne correspond pas au premier. Votre
  enregistrement n'est donc pas pris en compte; vous pouvez réessayer.
- !exit
-!endif
-
-!if insert_fail=$error
- Le logiciel n'a pas réussi à insérer votre enregistrement dans la base de
- données. Il y a une erreur interne.
- <p>
- Veuillez signaler le problème au
- !mailurl $wims_site_manager gestionnaire de ce site\
-user registration failure
-. Merci!
  !exit
 !endif
 
@@ -114,4 +89,6 @@ site user limit
 inscrits.
  !exit
 !endif
+
+!msg $error
 

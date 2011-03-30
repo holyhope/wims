@@ -1,12 +1,7 @@
 
 !set wims_module_log=error: $error $wims_class
 
-<b>Error</b>.
-
-!if not_supervisor iswordof $error
- Lo sentimos, sólo el profesor de una clase virtual puede acceder a este módulo.
- !exit
-!endif
+<b>$wims_name_Error</b>.
 
 !if not_secure iswordof $error
  !if $code!=$empty

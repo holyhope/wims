@@ -1,18 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>Erreur</b>.
-
-!if bad_auth iswordof $error
- Echec d'authentification. Veuillez réessayer.
- !exit
-!endif
-
-!if bad_pass iswordof $error
- Mauvais mot de passe : il doit avoir entre 4 et 16 caractères, lettres et
- chiffres uniquement. Et le mot de passe répété doit être identique au
- premier ! Essayez encore.
- !exit
-!endif
+<b>$wims_name_Error</b>.
 
 !if empty_data iswordof $error
  Veuillez remplir la définition de
@@ -32,7 +20,7 @@
 !endif
 
 !if illegal_filedesc iswordof $error
- Vous ne pouvez mettre que des définitions directes dans
+ Vous ne pouvez mettre que des définitions directes dans 
  filedesc.
  !exit
 !endif
@@ -59,3 +47,4 @@
  !exit
 !endif
 
+!msg $error
