@@ -78,7 +78,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		
 
 		this.toolbar.addButton(names["Heading"],function(){
-			this.wrapSelection('\n<h1>','</h1>');
+			this.wrapSelection('\n<h2>','</h2>');
 		},{
 			id: 'markdown_heading_button'
 		});
