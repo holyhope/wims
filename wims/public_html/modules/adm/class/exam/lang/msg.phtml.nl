@@ -6,11 +6,6 @@ is voorbehouden aan de docent van een klas.
  !exit
 !endif
 
-!if bad_class=$error
-Vreemd, maar ik zie nu dat deze klas niet "geldig" is!
- !exit
-!endif
-
 !if $error=no_sheet
 De inhoud van een proefwerk kan alleen worden genomen
 uit een <em>actief</em> of <em>verlopen</em> <b>werkblad</b>
@@ -63,31 +58,31 @@ U wilt het proefwerk $exam activeren en dus beschikbaar stellen aan Uw leerlinge
 Besef dat een proefwerk eenmaal geactiveerd niet meer kan worden veranderd.<br>
 Wilt U doorgaan?
  <p><center>
- !href cmd=reply&job=activate Ja : activeren
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
- !href cmd=resume Nee: annuleren
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
 
 !if prep_erase=$error
 Wil U werkelijk het proefwerk nummer $exam ($title) verwijderen?
  <p><center>
- !href cmd=reply&job=erase Ja: verwijderen
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume Nee: annuleren
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
- 
+
 !if prep_expire=$error
 Dit proefwerk nummer $exam ($title) zou verlopen zijn op $expday
  !item $expmon of $months
  $expyear. wilt U het <b>nu</b> laten verlopen?
  <p><center>
- !href cmd=reply&job=expire Ja: nu laten verlopen
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
- !href cmd=resume Nee: annuleren
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p><b>Opmerking.</b> 
  Uw leerlingen kunnen niet doorgaan met het werken aan een verlopen proefwerk.<br>
@@ -108,6 +103,7 @@ Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
    !endif
   !endif
 !endif
+
 !if active_exam=$error
     Helaas, maar dit proefwerk is aktief en daardoor niet meer te veranderen.<br>
     We kunnen dus ook niets aan de opgenomen oefeningen meer wijzigen. 
@@ -118,3 +114,5 @@ Maar hun reeds behaalde cijfers voor dit proefwerk worden wel bewaard.
     De oefening $exo uit dit proefwerk is leeg. Probeer opnieuw.
   !exit
 !endif
+
+!msg $error

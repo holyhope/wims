@@ -6,11 +6,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- Extraño, ¡encuentro que su clase no es válida!
- !exit
-!endif
-
 !if $error=no_sheet
  El contenido de un examen debe estar tomado de hojas de trabajo
  activadas (activas o caducadas).
@@ -63,20 +58,20 @@
  Por favor, tenga en cuenta que, una vez activado, no podrá modificar el
  examen. ¿Desea continuar?
  <p><center>
- !href cmd=reply&job=activate Sí, activar
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
 
 !if prep_erase=$error
  ¿Confirma que quiere borrar este examen #$exam ($title)?
  <p><center>
- !href cmd=reply&job=erase Sí, borrar
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
 
@@ -85,9 +80,9 @@
  !item $expmon of $months
  $expyear. ¿Quiere hacerlo expirar ahora?
  <p><center>
- !href cmd=reply&job=expire Sí, expirar
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
- !href cmd=resume No, cancelar
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p><b>Observación.</b> Sus estudiantes no pueden continuar trabajando en un
  examen que ha expirado. Pero sus puntuaciones anteriores se conservarán (y se
@@ -104,9 +99,9 @@
  De lo contrario,
  !href cmd=resume Volver a la página principal del examen.
  !form reply
- <input type=hidden name="job" value=putsource><center>
- <textarea cols=55 rows=10 name="source">$source</textarea>
- <p><input type=submit value="Enviar">
+ <input type="hidden" name="job" value="putsource"><center>
+ <textarea cols="55" rows="10" name="source">$source</textarea>
+ <p><input type="submit" value="Enviar">
  </center></form>
  <b>Advertencia</b>. ¡No inserte fuentes modificados! Corre el riesgo de
  inutilizar su examen.
@@ -135,3 +130,5 @@
   El contenido del ejercicio $exo del examen es vacío. Empiece de nuevo.
   !exit
 !endif
+
+!msg $error

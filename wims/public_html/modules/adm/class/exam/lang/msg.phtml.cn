@@ -5,11 +5,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- 奇怪, 你的班级是无效的!
- !exit
-!endif
-
 !if $error=no_sheet
  试卷的内容必须来源于激活过的作业页 (仍被激活的或已经过期的).
  <p>
@@ -55,31 +50,31 @@
  你要求激活试卷 $exam, 也就是说, 使它能被班级的参加者打开. <p>
  请注意, 一旦被激活, 你就不再能改动它. 继续吗?
  <p><center>
- !href cmd=reply&job=activate 是; 激活
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
- !href cmd=resume 不; 放弃
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
 
 !if prep_erase=$error
  你是否真的要删除本试卷 #$exam ($title)?
  <p><center>
- !href cmd=reply&job=erase 是; 删除
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume 不; 放弃
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
- 
+
 !if prep_expire=$error
  本试卷 #$exam ($title) 将于 $expday 
  !item $expmon of $months
  $expyear 失效. 你要它现在就失效吗?
  <p><center>
- !href cmd=reply&job=expire 是; 失效
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
- !href cmd=resume 不; 放弃
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p><b>注解.</b> 你的学生不能再做已失效的试卷. 但他们的的早先得分纪录仍被保留
 (而且在统计时被计入), 而且你总是可以查阅这些分数.
@@ -94,9 +89,9 @@
  否则,
  !href cmd=resume 返回考试的主页.
  !form reply
- <input type=hidden name="job" value=putsource><center>
- <textarea cols=55 rows=10 name="source">$source</textarea>
- <p><input type=submit value="发送">
+ <input type="hidden" name="job" value="putsource"><center>
+ <textarea cols="55" rows="10" name="source">$source</textarea>
+ <p><input type="submit" value="发送">
  </center></form>
  <b>警告</b>. 不要插入修改过的源文件! 这可能会导致你的考试页不可用.
  !exit
@@ -123,3 +118,5 @@
   考试的练习 $exo 的内容是空的. 请再试.
   !exit
 !endif
+
+!msg $error

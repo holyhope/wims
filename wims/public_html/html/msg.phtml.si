@@ -10,5 +10,56 @@
  !exit
 !endif
 
-Tip napake: $wims_error $wims_error_parm.
+!if $wims_error=no_ldap_parameter
+ Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
+ le gestionnaire de votre annuaire ldap. 
+ !exit
+!endif
 
+!if $wims_error=bad_class 
+ Nerazumljivo: va¹a uèilnica ni veljavna?
+ !exit
+!endif
+
+!if $wims_error iswordof bad_day day_dontexist
+ The given date is not valid.
+!exit
+!endif
+
+
+!if $wims_error=not_supervisor
+ Désolé, ce module est accessible uniquement à l'enseignant d'une classe
+ virtuelle.
+ !exit
+!endif
+
+!if $wims_error iswordof nouser bad_user bad_usercls
+ This participant does not seem to exist !!!!
+!exit
+!endif
+
+!if $wims_error=insert_fail
+  Stre¾nik va¹ega dela ni uspel shraniti v svojo bazo. Preverite smiselnost svojih podatke.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Bad password: it must contain only letters and digits, between
+ 4 and 16 characters. And the repeat password should be equal to the
+ first one! Try again.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Authentification failed. Please try again.
+ !exit
+!endif
+ 
+!if bad_login=$wims_error
+ Your login name contains illegal characters. <p>
+ Please use a word containing only digits or letters without accent, and 
+ without space between them.
+ !exit
+!endif
+
+Tip napake: $wims_error $wims_error_parm.

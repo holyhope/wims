@@ -6,11 +6,65 @@
 !endif
 
 !if $wims_error=double_reply
- Avete gi&agrave; risposto a questa domanda (e il punteggio &egrave;
- gi&agrave; stato registrato. Le risposte doppie sono ignorate. (Non
+ Avete già risposto a questa domanda (e il punteggio è
+ già stato registrato. Le risposte doppie sono ignorate. (Non
  utilizzare il tasto `ricarica' del browser per reinviare le risposte!)
  !exit
 !endif
 
-Tipo d'errore&nbsp;: $wims_error $wims_error_parm.
+!if $wims_error=no_ldap_parameter
+ Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
+ le gestionnaire de votre annuaire ldap. 
+ !exit
+!endif
 
+!if $wims_error=bad_class
+  Il codice del corso non sembra valido.
+ !exit
+!endif
+
+
+!if $wims_error iswordof bad_day day_dontexist
+ la data inserita non è valida.
+!exit
+!endif
+
+
+!if $wims_error=not_supervisor
+ Spiacente, questa operazione non è valida.
+ !exit
+!endif
+
+!if $wims_error iswordof nouser bad_user bad_usercls
+ Etrange, mais je ne trouve pas ce participant dans cette classe !
+!exit
+!endif
+
+!if $wims_error=insert_fail
+  Il server non ha potuto salvare il test. Verificare i 
+ dati inseriti.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Mauvais mot de passe : il doit avoir entre 4 et 16 caractères, lettres et
+ chiffres uniquement. Et le mot de passe répété doit être identique au
+ premier ! Essayez encore.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Echec d'authentification. Veuillez réessayer.
+ !exit
+!endif
+
+!if bad_login=$error
+ Il `login' scelto contiene dei caratteri non accettati dal server. <p>
+ Utilizzate solo caratteri alfanumerici, in particolare non utilizzate 
+ lettere accentate o spazi.
+ !exit
+!endif
+
+
+
+Tipo d'errore&nbsp;: $wims_error $wims_error_parm.

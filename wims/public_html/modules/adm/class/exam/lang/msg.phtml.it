@@ -6,11 +6,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- Il corso selezionato non esiste!
- !exit
-!endif
-
 !if $error=no_sheet
  Il contenuto di un tema d'esame viene selezionato tra quello dei test
  periodici (ancora attivi o gi&agrave; terminati). 
@@ -64,9 +59,9 @@
  Ricordiamo che un tema d'esame attivo non &egrave; pi&ugrave; modificabile.
  Continuare?
  <p><center>
- !href cmd=reply&job=activate Si, attivare
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
- !href cmd=resume No, annulla
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  !exit
 !endif
@@ -74,9 +69,9 @@
 !if prep_erase=$error
  Sicuri di voler eliminare il tema d'esame numero $exam ($title)?
  <p><center>
- !href cmd=reply&job=erase si; eliminare
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume No, annulla
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  !exit
 !endif
@@ -86,9 +81,9 @@
  !item $expmon of $months
  $expyear. Farlo terminare ora?
  <p><center>
- !href cmd=reply&job=expire Si, disattiva
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
- !href cmd=resume No, annulla
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p><b>Nota.</b> Gli studenti non possono pi&ugrave; lavorare su un tema 
  d'esame disattivato. I voti vengono conservati (e se ne tiene conto
@@ -119,3 +114,5 @@
   Il contenuto dell'esercizio $exo del tema d'esa è vuoto. Riprova.
   !exit
 !endif
+
+!msg $error

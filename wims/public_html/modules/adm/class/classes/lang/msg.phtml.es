@@ -1,6 +1,6 @@
 !set wims_module_log=ERROR $error
 
-<b>Error</b>.
+<b>$wims_name_Error</b>.
 
 !if $error=bad_password
  Contraseña no reconocida. Por favor vuelva a intentarlo pasados unos segundos.

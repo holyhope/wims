@@ -19,5 +19,52 @@ Sie sich diesbezüglich an den Verwalter Ihres LDAP-Verzeichnisses
 !exit
 !endif
 
+!if $wims_error=no_ldap_parameter
+ Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
+ le gestionnaire de votre annuaire ldap. 
+ !exit
+!endif
+
+!if $wims_error=bad_class
+ Etrange, mais je trouve que votre classe n'est pas valide!
+ !exit
+!endif
+
+
+!if $wims_error iswordof bad_day day_dontexist
+ La date que vous avez saisie n'est pas valide.
+!exit
+!endif
+
+
+!if $wims_error=not_supervisor
+ Désolé, ce module est accessible uniquement à l'enseignant d'une classe
+ virtuelle.
+ !exit
+!endif
+
+!if $wims_error iswordof nouser bad_user bad_usercls
+ Etrange, mais je ne trouve pas ce participant dans cette classe !
+!exit
+!endif
+
+!if $wims_error=insert_fail
+ Le logiciel n'a pas pu insérer votre travail dans la classe. Veuillez
+ vérifier vos données.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ Mauvais mot de passe : il doit avoir entre 4 et 16 caractères, lettres et
+ chiffres uniquement. Et le mot de passe répété doit être identique au
+ premier ! Essayez encore.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Echec d'authentification. Veuillez réessayer.
+ !exit
+!endif
+
 Fehlertyp: $wims_error $wims_error_parm.
 

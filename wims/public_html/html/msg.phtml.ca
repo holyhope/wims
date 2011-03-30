@@ -11,5 +11,59 @@
  !exit
 !endif
 
+!if $wims_error=no_ldap_parameter
+ Vous devez remplir les champs marqués d'un astérisque. Consultez pour cela 
+ le gestionnaire de votre annuaire ldap. 
+ !exit
+!endif
+
+!if $wims_error=bad_class
+Estrany, però sembla que la vostra classe no és vàlida!
+ !exit
+!endif
+!set name_not_supervisor=
+!set name_bad_class=
+
+!if $wims_error iswordof bad_day day_dontexist
+ La date que vous avez saisie n'est pas valide.
+!exit
+!endif
+
+
+!if $wims_error=not_supervisor
+  Ho sento, però aquesta operació només es permet als professors registrats
+ !exit
+!endif
+
+!if $wims_error iswordof nouser bad_user bad_usercls
+ Etrange, mais je ne trouve pas ce participant dans cette classe !
+!exit
+!endif
+
+!if $wims_error=insert_fail
+  El software ha fallat en inserir el teu treball a la base de dades. Sisplau
+ comprova les teues dades.
+ !exit
+!endif
+
+!if bad_pass=$wims_error
+ La vostra contrasenya conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+ Echec d'authentification. Veuillez réessayer.
+ !exit
+!endif
+
+!if bad_login=$wims_error
+ El vostre nom d'usuari conté caràcters no permesos. <p>
+ Si us plau, escolliu una paraula que només contingui números o lletres
+ sense accent i sense espais entre ells.
+ !exit
+!endif
+
 Tipus d'error: $wims_error $wims_error_parm.
 

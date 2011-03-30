@@ -9,6 +9,4 @@
 !set name_time=Tijd
 !set name_cnt_exo=Aantal oefeningen
 
-!set name_not_supervisor=Bewerking niet toegestaan
-!set name_bad_class=Je klas bestaat niet...
 !set name_showsheet=Selecteer de werkbladen voor het activiteiten overzicht

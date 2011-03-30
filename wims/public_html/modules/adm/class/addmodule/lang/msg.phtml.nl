@@ -13,12 +13,6 @@ Helaas, maar het veranderen van een werkblad is alleen toegestaan voor docenten 
  !exit
 !endif
 
-!if bad_class=$error
-Vreemd, maar uw klas staat hier niet (meer?) geregistreerd !
-
- !exit
-!endif
-
 !if no_sheet=$error
 Uw klas heeft -nog- geen werkbladen in voorbereiding .<br> 
 Lesmateriaal of oefeningen kun men alleen toevoegen aan een nog <b>niet geactiveerd werkblad</b>.
@@ -27,14 +21,9 @@ Lesmateriaal of oefeningen kun men alleen toevoegen aan een nog <b>niet geactive
 ?
  !exit
 !endif
+
 !if bad_sheet=$error
  Werkbladnummer is incorrect.
- !exit
-!endif
-
-!if insert_fail=$error
-Door een fout in de software -maar meestal niet- kan ik Uw werk niet opnemen
-in de database. Controleer even de data ! 
  !exit
 !endif
 
@@ -54,3 +43,4 @@ punten aantal voor deze sommen.
 !exit
 !endif
 
+!msg $error

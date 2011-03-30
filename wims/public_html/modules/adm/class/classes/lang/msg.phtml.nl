@@ -1,6 +1,6 @@
 !set wims_module_log=ERROR $error
 
-<b>Fout</b>.
+<b>$wims_name_Error</b>.
 
 !if $error=bad_password
 Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br> 

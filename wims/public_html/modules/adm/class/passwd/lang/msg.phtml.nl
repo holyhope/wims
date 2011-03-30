@@ -17,11 +17,6 @@ Gebruik de
  !exit
 !endif
 
-!if bad_class=$error
-Vreemd, maar ik zie nu dat Uw klas niet geldig is ?! 
- !exit
-!endif
-
 !if discord iswordof $error
     Wachtwoord verandering afgekeurd: 
     het nieuwe wachtwoord is twee keer verschillend ingevoerd.
@@ -80,3 +75,5 @@ Gebruik gewoon letters en of cijfers zonder accenten en spaties als wachtwoord.
     Ik heb niets veranderd, om dat het nieuwe wachtwoord gelijk is aan het oude.
  !exit
 !endif
+
+!msg $error

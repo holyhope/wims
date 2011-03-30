@@ -16,5 +16,47 @@
 !exit
 !endif
 
-错误类型: $wims_error $wims_error_parm.
+!if $wims_error=bad_class
+ 你的班级是无效的.
+ !exit
+!endif
 
+!if $wims_error iswordof bad_day day_dontexist
+ 输入的日期无效.
+!exit
+!endif
+
+
+!if $wims_error=not_supervisor
+ 抱歉, 你不允许做这个操作
+ !exit
+!endif
+
+!if $wims_error iswordof nouser bad_user bad_usercls
+  奇怪! 这位使用者好像没有在你的班级注册 !
+!exit
+!endif
+
+!if $wims_error=insert_fail
+ 软件无法将你的作业插入数据库中. 请检验你的数据.
+ !exit
+!endif
+
+!if bad_pass iswordof $wims_error
+ 不好的密码: 它只能由数字或英文字母组成, 含4至16个字符.
+重复的密码必须与第一个相同! 请再试.
+ !exit
+!endif
+
+!if bad_auth iswordof $wims_error
+身份验证错. 请重试.
+ !exit
+!endif
+
+!if bad_login=$wims_error
+你的登录名含有非法字符. <p>
+登录名只能由数字与英文字符组成, 而且中间不能有空格.
+ !exit
+!endif
+
+错误类型: $wims_error $wims_error_parm.

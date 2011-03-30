@@ -14,11 +14,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- Extraño, pero ¡parece que su clase no es válida!
- !exit
-!endif
-
 !if no_sheet=$error
  Su clase no tiene una hoja de trabajo no activa. Se debe insertar un trabajo
  en una hoja de trabajo no activa.
@@ -26,14 +21,9 @@
 ?
  !exit
 !endif
+
 !if bad_sheet=$error
  Número de hoja de trabajo erróneo.
- !exit
-!endif
-
-!if insert_fail=$error
- El software no ha podido insertar su trabajo en la base de datos. Por
- favor, compruebe sus datos.
  !exit
 !endif
 
@@ -54,3 +44,4 @@
  !exit
 !endif
 
+!msg $error

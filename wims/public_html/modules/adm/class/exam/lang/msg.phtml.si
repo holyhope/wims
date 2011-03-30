@@ -6,11 +6,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- Strange, but I find that your class is not valid!
- !exit
-!endif
-
 !if $error=no_sheet
  The content of an exam must be taken from activated worksheets (active or
  expired).
@@ -64,31 +59,31 @@
  Please take note that once activated, you can no longer modify the exam.
  Do you want to continue?
  <p><center>
- !href cmd=reply&job=activate Yes; activate
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
- !href cmd=resume No; abandon
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
 
 !if prep_erase=$error
  Do you really want to erase this exam #$exam ($title)?
  <p><center>
- !href cmd=reply&job=erase Yes; erase
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume No; abandon
- .</center>
+ !href cmd=resume $wims_name_no; $wims_name_giveup
+ . </center>
  !exit
 !endif
- 
+
 !if prep_expire=$error
  This exam #$exam ($title) expires normally expires on $expday
  !item $expmon of $months
  $expyear. Do you want to expire it now?
  <p><center>
- !href cmd=reply&job=expire Yes; expire
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
- !href cmd=resume No; abandon
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p><b>Remark.</b> Your students cannot continue to work on a
  expired exam. But their earlier scores will be conserved (and will be taken into
@@ -104,9 +99,9 @@
  Otherwise,
  !href cmd=resume Return to the main page of the exam.
  !form reply
- <input type=hidden name="job" value=putsource><center>
- <textarea cols=55 rows=10 name="source">$source</textarea>
- <p><input type=submit value="Send">
+ <input type="hidden" name="job" value="putsource"><center>
+ <textarea cols="55" rows="10" name="source">$source</textarea>
+ <p><input type="submit" value="Send">
  </center></form>
  <b>Warning</b>. Do not insert modified source file! You risk to make your
  exam useless.
@@ -135,3 +130,5 @@
   The content of the exercise $exo of the exam is empty. Try again.
   !exit
 !endif
+
+!msg $error

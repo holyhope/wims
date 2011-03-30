@@ -1,4 +1,3 @@
-
 !set wims_module_log=error: $error
 
 !if no_pick=$error
@@ -12,24 +11,15 @@
  !exit
 !endif
 
-!if bad_class=$error
-奇怪, 我发现你的班级是无效的!
- !exit
-!endif
-
 !if no_sheet=$error
 你的班级没有未被激活的作业页. 作业必须被插入到未激活的页面中.
  !href module=adm/class/sheet&sheet=$[$sheettot+1] 创建
 ?
  !exit
 !endif
+
 !if bad_sheet=$error
 页面数错.
- !exit
-!endif
-
-!if insert_fail=$error
-软件无法将你的作业插入数据库中. 请检验你的数据.
  !exit
 !endif
 
@@ -46,3 +36,4 @@
  !exit
 !endif
 
+!msg $error

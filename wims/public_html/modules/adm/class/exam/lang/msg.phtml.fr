@@ -6,11 +6,6 @@
  !exit
 !endif
 
-!if bad_class=$error
- Etrange, mais je trouve que votre classe n'est pas valide!
- !exit
-!endif
-
 !if $error=no_sheet
  Le contenu d'un examen doit être pris à partir des feuilles activées
  (active ou périmée). 
@@ -64,9 +59,9 @@
  Veuillez noter qu'une fois l'examen activé, vous ne pourrez plus le modifier.
  Voulez-vous continuer&nbsp;?
  <p><center>
- !href cmd=reply&job=activate Oui; activer
+ !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
- !href cmd=resume Non; abandonner
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  !exit
 !endif
@@ -74,9 +69,9 @@
 !if prep_erase=$error
  Voulez-vous vraiment effacer l'examen numéro $exam ($title)?
  <p><center>
- !href cmd=reply&job=erase Oui; effacer
+ !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
- !href cmd=resume Non; abandonner
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  !exit
 !endif
@@ -86,9 +81,9 @@
  !item $expmon of $months
  $expyear. Voulez-vous le rendre périmé dès maintenant?
  <p><center>
- !href cmd=reply&job=expire Oui; expirer
+ !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
- !href cmd=resume Non; abandonner
+ !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
  <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
  sur un examen périmé. Mais leurs notes antérieures seront conservées 
@@ -119,3 +114,5 @@
   Le contenu de l'exercice $exo de l'examen est vide. Recommencez.
   !exit
 !endif
+
+!msg $error
