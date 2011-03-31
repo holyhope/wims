@@ -183,7 +183,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
   $nei_description</font></em> geeft  <b>toestemming</b> voor het delen van
 
  !set name_chooseres=!nosubst Kies het materiaal uit klas  <em><font color="blue">\
- $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <tt>$wims_name_tosave</tt></i>)
+ $nei_description</font></em>&nbsp; (<i>Om te selecteren, klik op <span class="wims_button disabled">$wims_name_tosave</span></i>)
 
  !set name_warning_authorized=!nosubst De klas <em><font color="blue">$nei_description</font></em>\
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\

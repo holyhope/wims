@@ -180,7 +180,8 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   $nei_description</font></em> les <b>autoriza</b> a compartir sus
 
  !set name_chooseres=!nosubst Elija los recursos que <b> autorizan</b> la clase <em><font color="blue">\
-  $nei_description</font></em> a compartir&nbsp; (<i>seleccione luego presionan <tt>$wims_name_tosave</tt></i>)
+  $nei_description</font></em> a compartir&nbsp; (<i>seleccione luego presionan \
+  <span class="wims_button disabled">$wims_name_tosave</span></i>)
 
  !set name_warning_authorized=!nosubst La clase <em><font color="blue">$nei_description</font></em>\
   les autoriza a compartir algunos recursos. No deben autorizarla a compartir los mismos recursos \

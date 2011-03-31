@@ -26,7 +26,7 @@
 !header
 
 Deze interne zoekmachine maakt gebruik van zoektermen.<br>
-Er kan ook gebruik worden gemaakt van de link <tt>$wims_name_browse</tt> <br>
+Er kan ook gebruik worden gemaakt van de link <span class="wims_button disabled">$wims_name_browse</span> <br>
 voor een overzicht van het beschikbare materiaal op deze server.
 <p>
 <h3>Zoekopdracht</h3>
