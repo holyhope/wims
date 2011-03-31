@@ -15,7 +15,7 @@ value, unless you have a very special operating system setup.
 :tech aliased_cgi
 cgi to html address aliasing
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Set to yes if you want internet robots to see some WIMS contents as html
 pages. Helps for making the site better referenced and better known, but
 you need Apache 1.3 or up to get this to work correctly.
@@ -27,7 +27,7 @@ run the script <tt>bin/apache-config</tt>.
 :tech aliased_getfile
 getfile address rewriting
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Activating this allows you to get correct file names when downloading
 wims-generated files: backup archives, student data in virtual classes, some
 image files, etc. Otherwise all file downloads will default to the name
@@ -180,7 +180,7 @@ any virtual class.
 :tech tmp_debug wims_tmp_debug
 Debugging mode
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Turning on debugging mode allows some basic information to be shown at the
 bottom of most pages, when the query is from localhost.
 At the same time, the temporary session directory
@@ -563,14 +563,14 @@ attacks.
 :appearances show_author wims_show_author
 Show author names in search results
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Do you want the author names to show up behind each module in the search
 results?
 
 :appearances show_stat wims_show_stat
 Show site usage statistics
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 Log accounting must be activated before statistics can be shown.
 <p>
 To activate log accounting, you should run log/account.sh once every early
@@ -710,7 +710,7 @@ as data file for participant works. So do not set it too small.
 :misc usecookie wims_usecookie
 Cookie for anonymous visitors
 choice
-yes,no
+yes,no;$wims_name_yes,$wims_name_no
 If you choose `yes', the server will send cookies to anonymous visitors,
 which helps tracking the user.
 <p>
@@ -726,6 +726,6 @@ parameter.
 :log show_ip
 Show userIP to supervisor in class logfile
 choice
-yes,no;yes,no
+yes,no;$wims_name_yes,$wims_name_no
 if no, supervisor cannot see IP in logfile.
 

@@ -15,7 +15,7 @@ par défaut, à moins que vous n'ayez des réglages spéciaux d'installation du syst
 :tech aliased_cgi
 cgi to html address aliasing
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 Set to yes if you want internet robots to see some WIMS contents as html
 pages. Helps for making the site better referenced and better known, but
 you need Apache 1.3 or up to get this to work correctly.
@@ -27,7 +27,7 @@ run the script <tt>bin/apache-config</tt>.
 :tech aliased_getfile
 Réécriture de l'adresse des fichiers téléchargés
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 Activating this allows you to get correct file names when downloading
 wims-generated files: backup archives, student data in virtual classes, some
 image files, etc. Otherwise all file downloads will default to the name
@@ -182,7 +182,7 @@ any virtual class.
 :tech tmp_debug wims_tmp_debug
 Mode débogage
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 Turning on debugging mode allows some basic information to be shown at the
 bottom of most pages, when the query is from localhost.
 At the same time, the temporary session directory
@@ -563,14 +563,14 @@ attacks.
 :appearances show_author wims_show_author
 Montrer les noms des auteurs dans les résultats du moteur de recherche
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 Cochez <tt>oui</tt> si vous désirez que les noms d'auteurs soient affichés
  lors des résultats du moteur de recherche 
 
 :appearances show_stat wims_show_stat
 Statistiques d'activité du site
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 Les comptes de log doivent être activés pour que l'on puisse montrer les statistiques.
 <p>
 To activate log accounting, you should run log/account.sh once every early
@@ -579,7 +579,7 @@ morning, by putting it into crontab.
 :housekeep site_accounting
 Comptes d'activité
 choice
-0,1; no, yes
+0,1; no,yes
 Enable or disable daily activity accounting. This is necessary for site
 activity statistics, as well as for virtual class connection time accounting.
 
@@ -710,7 +710,7 @@ as data file for participant works. So do not set it too small.
 :misc usecookie wims_usecookie
 Cookie pour les visiteurs anonymes
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 If you choose `yes', the server will send cookies to anonymous visitors,
 which helps tracking the user.
 <p>
@@ -726,6 +726,6 @@ parameter.
 :log show_ip
 Montrer l'IP de l'utilisateur à l'administrateur dans une classe
 choice
-yes,no;oui,non
+yes,no;$wims_name_yes,$wims_name_no
 Si <tt>no</tt> est sélectionné, l'administrateur de classe ne verra pas
 le numéro IP dans le log des élèves. 
