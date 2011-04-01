@@ -72,9 +72,15 @@ random_url=$wims_ref_name?cmd=new&module=$option\
 
 
 :delsheet
- sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
+ cnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
  !shortout message=sheet #$qsheet of class $qclass correctly deleted\
-sheet_count=$sheetcnt
+sheet_count=$cnt
+!exit
+
+:delexam
+ cnt=!recordcnt wimshome/log/classes/$qclass/sheets/.exams
+ !shortout message=sheet #$qsheet of class $qclass correctly deleted\
+exam_count=$cnt
 !exit
 
 :delclass
@@ -98,7 +104,6 @@ exam_id=$wims_exam
 !exit
 
 :linkexo
- exocnt=!recordcnt wimshome/log/classes/$qclass/exams/.exam$qexam
  !shortout message=exercice correctly added in exam #$qexam\
 queryclass=$wims_class\
 querysheet=$wims_sheet\
@@ -108,7 +113,6 @@ exo_count=$exocnt
 !exit
 
 :putexo
- exocnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheet$wims_sheet
  !shortout message=exercice correctly added in sheet #$wims_sheet\
 queryclass=$wims_class\
 querysheet=$wims_sheet\

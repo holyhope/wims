@@ -1,4 +1,4 @@
-!if $ident_type != xmlformat
+!if $ident_type notwordof $notplaintext
 
 !shortout $header\
 ERROR\
@@ -10,6 +10,7 @@ wims_module_log=Error $wims_read_parm $job/$ident/$qclass
 
 !else
 
+!if  $ident_type=xmlformat
 
 !shortout $header_xml\
 <?xml version="1.0" encoding="iso-8859-15"?>\
@@ -30,5 +31,13 @@ wims_module_log=Error $wims_read_parm $job/$ident/$qclass
       </value>\
    </fault>\
 </methodResponse>\
+
+!endif
+
+!if  $ident_type=json
+!shortout $header_json\
+[{"status" : "ERROR","code":"$code","message":"$wims_read_parm"}]
+
+!endif
 
 !endif

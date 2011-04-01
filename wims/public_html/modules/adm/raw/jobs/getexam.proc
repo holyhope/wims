@@ -7,18 +7,25 @@ type=exams
 exocnt=!recordcnt $qfile
 exam_properties=!lines2items $qproperties\
 
+
+sheet_status=!item 1 of $sheet_properties
+sheet_expiration=!item 2 of $sheet_properties
+sheet_title=!item 3 of $sheet_properties
+sheet_description=!item 4 of $sheet_properties
+
+
 opening_file=$wims_home/log/classes/$qclass/.E$qexam
 exam_opening=!sh cat $opening_file
 exam_properties=$exam_opening,$exam_properties,
 
-#exam_status = !line 1 of $qproperties
-#exam_expiration = !line 2 of $qproperties
-#line3 = !line 3 of $qproperties
-#exam_duration= !word 1 of $line3
-#exam_attempts = !word 2 of $line3
-#exam_title = !line 4 of $qproperties
-#exam_description = !line 5 of $qproperties
-#exam_cut_hours = !line 6 of $qproperties
+exam_status = !line 1 of $qproperties
+exam_expiration = !line 2 of $qproperties
+line3 = !line 3 of $qproperties
+exam_duration= !word 1 of $line3
+exam_attempts = !word 2 of $line3
+exam_title = !line 4 of $qproperties
+exam_description = !line 5 of $qproperties
+exam_cut_hours = !line 6 of $qproperties
 
 ########################
 #FORMAT OF exam_properties :

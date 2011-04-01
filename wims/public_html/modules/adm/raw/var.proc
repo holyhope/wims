@@ -29,13 +29,15 @@ code=!word 1 of $code
  !read jobs/$job.proc
 !endif
 
+notplaintext = xmlformat json
+
 #Lorsque l'on sort de la procedure "job", il ne doit tjs pas y avoir d'erreur.
 !if $error!=$empty
  !changeto error.proc $error
 !endif
 
 
-notplaintext = xmlformat json
+
 
 !if $code=$empty
   !if $ident_type notwordof $notplaintext
@@ -61,11 +63,25 @@ notplaintext = xmlformat json
 
 	!endif
 	!if $ident_type=json
-  	  	ok=[{"status" : "OK","code":"$code",
+  	  	ok=[{"status" : "OK","code":"$code"
   	!endif
   !endif
 !endif
 
+!if $job isitemof $allowed_file_jobs
+ !if job=getclasstgz
+ 	!shortout Content-type: application/gzip\
+Content-disposition: attachment; filename="getclass.tgz"\
+
+ !else
+ 	!shortout $header\
+
+ !endif
+
+ !sh cat $wims_home/$fname
+ 
+ !exit
+!endif
 
 
 !if $ident_type notwordof $notplaintext
@@ -94,9 +110,6 @@ notplaintext = xmlformat json
  !read types/$ident_type
 !endif
 
-!if $job isitemof $allowed_file_jobs
- !sh cat $wims_home/$fname
-!endif
 
 !if $job notwordof authuser
  wims_mode=popup
