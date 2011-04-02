@@ -13,28 +13,29 @@
 !set name_binfile=Binary files
 !set name_del=Delete a module
 !set name_size=Size
-!set name_publish=Publish <em>$i_title</em><br>\
-	<tt><font size="+0">$mod</font></tt>
+!set name_publish=Publish <span class="wims_mod_title">$i_title</span><br>\
+	<tt class="wims_fname">$mod</tt>
 
 !set name_file=Existing binary files
+!set name_file1=File
 !set name_nofile= No existing binary file in the module.
 !set name_depos=Deposit a binary file
 !set name_in_module=in the module
 !set name_replace=a file to replace it
 !set name_addfile=Add a new file
-!set name_gestion=For document files, click on the link <tt>$wims_name_docgestion</tt>
+!set name_gestion=For document files, click on the link <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Your module
 !set name_file2=contains the following files
 !set name_updateadress=Upgrade the address
 !set name_simpl_address=This module only has a simplified address
-!set gnu=!nosubst &copy; $year (<a href=COPYING>GNU GPL</a>)
+!set gnu=!nosubst &copy; $year (<a href="COPYING">GNU GPL</a>)
 
 !set name_type=exercise, tool, document, recreation, OEF, Deductio
 !set name_zone=Zone
 !set name_Category=Category
 !set name_category=!nosubst $wims_name_Type
 !set name_createnew=Create a new module
-!set name_noquicktool=Quicktool n'est pas installé sur ce serveur
+!set name_noquicktool=Quicktool is not installed on the server
 !set name_rename=rename
 !set name_duplicate=duplicate
 !set name_increment=Do not forget to increment it when you publish a new version!
@@ -63,7 +64,8 @@
    duplicate it\
    Renaming the module will break all the worksheets referencing it. Make sure that this is not the case,\
  into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst the public module <em>$otit</em> (<tt>$original2</tt>) to the\
+!set name_public_module=!nosubst the public module <span class="wims_mod_title">$otit</span> \
+ (<tt class="wims_fname">$original2</tt>) to the\
   development space, under the address
 !set name_warning2= Remaning or duplicating a public-address module may lead to\
   duplication of its publication. Please be very careful! <p>\
@@ -74,13 +76,13 @@
 
 !if $job=auth
   !set name_intro=This tool is for online development of regular modules\
-   under WIMS. Only registered developers can access it.\
+   under WIMS. Only registered developers can access this tool.\
    <p>Please give your developer identification.
  
   !distribute lines write to the webmaster\
     if you have forgotten your password\
     If you are interested in developing WIMS modules, please\
-    in order to get a developer identification (login, password).\
+    in order to obtain a developer identification (login, password).\
     Note that you can also use\
     to write simple interactive exercises in an easier way, without authentification\
   into name_manager,name_forget,name_developer,name_identification,name_createxo1,\
@@ -100,7 +102,7 @@
   Is this module a translation <br> from another language?\
   Authorized modifiers\
   Read me first!\
-  The published module will appear in the site's search engin within a few minutes.\
+  The published module will appear in the site's search engine within a few minutes.\
   If this is an error, please ask the webmaster to remove your published module by hand.\
   You will receive a mail confirming the submission\
   OK, go ahead\
@@ -140,7 +142,7 @@
    Too many differences exist between the existing module (in your development space) and the backup archives.\
    Differences between the existing module (in your development space) and the backup archives\
    Please give the backup file to restore\
-   only check differences with the existing module.\
+   check differences with the existing module.\
    Go to work on the module\
    Module restored\
   into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
@@ -152,7 +154,7 @@
   <a href="$downloadsite">$downloadsite</a> will be accepted. No manual modification of \
   the backup file should be made.
 !set name_warning_diff=!nosubst Restoration of a backup module now completely replaces\
- the existing module at the same address, with no possibility of recovery. But you can
+ the existing module with the same address, with no possibility of recovery. But you can also
   
 !endif
 
@@ -165,18 +167,18 @@ Deleted modules are definitely gone.
 <b>Do not forget</b>: if there are any virtual classes or worksheets
 referencing your module, these will be broken if the module is deleted.
 
-Are you sure to delete the module
+Are you sure you want to delete the module
 !exit
 
 :delconfirm
  The file 
- <font color=blue><em>$fname</em></font>
- is deleted from the module <font color=blue><em>$title</em></font>.
+ <tt class="wims_fname">$fname</tt>
+ is deleted from the module <span class="wims_mod_title">$title</span>.
 !exit
 
 :delfile
-Are you sure to delete the file 
-<font color=blue><em>$fname</em></font>
+Are you sure you want to delete the file 
+<tt class="wims_fname">$fname</tt>
 from the module
-<font color=blue><em>$title</em></font>?
+<span class="wims_mod_title">$title</span>?
 !exit

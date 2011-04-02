@@ -13,16 +13,17 @@
 !set name_binfile=Binaire bestanden
 !set name_del=Verwijder een module
 !set name_size=Grootte
-!set name_publish=!nosubst Publiceer <em>$i_title</em><br>\
-	<tt><font size="+0">$mod</font></tt>
+!set name_publish=!nosubst Publiceer <span class="wims_mod_title">$i_title</span><br>\
+	<tt class="wims_fname">$mod</tt>
 
 !set name_file=Aanwezige binaire bestanden
+!set name_file1=Aanwezige
 !set name_nofile=Geen binaire bestanden aanwezig in deze module.
 !set name_depos=Stuur een binair bestand op
 !set name_in_module=in de module
 !set name_replace=een vervangend bestand&nbsp;
 !set name_addfile=Voeg een nieuw bestand toe&nbsp;
-!set name_gestion=Voor documenten klik op de link <tt>$wims_name_docgestion</tt>
+!set name_gestion=Voor documenten klik op de link <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Uw module
 !set name_file2=bevat de volgende bestanden
 !set name_updateadress=Vernieuw het adres
@@ -63,11 +64,12 @@
   maak een kopie\
   Het veranderen van de modulenaam zal leiden tot problemen met werkbladen, repetities en documenten die deze module gebruiken.\
  into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst de reeds gebubliceerde module <em>$otit</em> (<tt>$original2</tt>) naar de\
+!set name_public_module=!nosubst de reeds gebubliceerde module <span class="wims_mod_title">$otit</span> \
+  (<tt class="wims_fname">$original2</tt>) naar de\
   development afdeling, met als adres
 !set name_warning2= Hernoemen of dupliceren van een reeds gepubliceerde c.q. openbare module\
   kan leiden tot een dubbele aanwezigheid bij latere publikatie. Wees dus voorzichtig met het manipuleren van reeds bestaande en gepubliceerde WIMS modules !\
-  <p>Wil U deze module uitproberen, plaats deze dan in de <tt>test zone</tt>.
+  <p>Wil U deze module uitproberen, plaats deze dan in de <tt class="wims_fname">test</tt> zone.
 !set name_warning3=Wanneer U reeds deze module heeft gepubliceerd, zorg dan het adres van deze module\
   exact overeenkomt met het adres van de reeds gepubliceerde versie.<small>Anders worden er dus twee "dezelfde" modules  gepubliceerd.</small> 
 !endif
@@ -110,7 +112,7 @@
  !set name_warning0=!nosubst Dit is een openbare / publiek-adres module en die wordt geinstalleerd op\
   de "hoofd distributie server" $publishname (<tt>$centralhost</tt>). Geef hier uw "publicatie id".
  !set name_warning1= Wanneer dit een verbeterde/vernieuwde versie is van een bestaande module,\
- niet vergeten het <em>versienummer</em> van de module te verhogen.Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
+ niet vergeten het <em>versienummer</em> van de module te verhogen. Als U dit niet doet, zal niemand uw nieuwe versie gaan gebruiken.
  !set name_warning2=Uw module heeft een lokaal adres.\
  Het kan dus alleen worden gepubliceerd op deze lokale WIMS server. Wilt U toch doorgaan?
  !set name_warning3=Het grote voordeel van publicatie op een lokale WIMS server is,\
@@ -132,7 +134,6 @@
 !endif
 
 !if $job=restore
-
  !set name_warning1=Uw bestand ziet er niet uit als een module backup file ! <p>U kunt voor deze \
  herstelprocedure alleen archieven gebruiken die eerder door Modtool zelf zijn aangemaakt ! Probeer het opnieuw.
  
@@ -144,7 +145,7 @@
    controleer verschillend met de bestaande module.\
    Ga aan het werk met deze module.\
    Module hersteld\
-  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
   
 !set name_illegal=De getuurde archieven bevatten niet-toegestane bestands types! Ik kan geen hersteloperatie uitvoeren.\
@@ -174,15 +175,15 @@ Weet U zeker dat deze module verwijderd moet worden?
 !exit
 :delconfirm
   Het bestand 
- <font color=blue><em>$fname</em></font>
+ <span class="wims_fname">$fname</span>
  uit deze module
- <font color=blue><em>$title</em></font> is verwijderd.
+ <span class="wims_mod_title">$title</span> is verwijderd.
 !exit
 
 :delfile
 
 Weet U zeker dat deze file 
-<font color=blue><em>$fname</em></font>
+<span class="wims_fname">$fname</span>
 verwijderd moet worden uit module
-<font color=blue><em>$title</em></font>&nbsp;?
+<span class="wims_mod_title">$title</span>&nbsp;?
 !exit

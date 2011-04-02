@@ -1,5 +1,5 @@
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
@@ -36,19 +36,19 @@
 
 :badcategory
  !if / isin $w2
-  La zone <tt>$w2</tt> du module soumis est inconnue.
+  La zone <tt class="wims_fname">$w2</tt> du module soumis est inconnue.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
-  Les catégories actuellement disponibles dans la zone <b><tt>$(w0[1])</tt></b>
+  Les catégories actuellement disponibles dans la zone <b><tt class="wims_fname">$(w0[1])</tt></b>
   sont&nbsp;:
   <p>
-  <tt>$w3</tt>
+  <tt class="wims_fname">$w3</tt>
   <p>
   Veuillez écrire au
   !mailurl $sysadmin gestionnaire de publication
   si vous voulez ajouter une nouvelle catégorie.
  !else
-  La zone <tt>$w2</tt> du module soumis est inconnue. Veuillez
+  La zone <tt class="wims_fname">$w2</tt> du module soumis est inconnue. Veuillez
   rapporter votre problème au
   !mailurl $sysadmin gestionnaire de publication
 .
@@ -118,7 +118,7 @@
 !exit
 
 :nochange
- Le module <font color=blue><tt>$w2</tt></font>
+ Le module <tt class="wims_fname">$w2</tt>
  n'a pas été modifié depuis la dernière publication. Envoi ignoré.
 !exit
 
@@ -210,11 +210,11 @@ Vous devez changer la version du module dont vous faites une mise à jour
  pour être publiable sur ce serveur. 
  !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
  En effet, votre module étant déclaré comme un module d'exercices OEF,
-  son nom doit commencer par <tt>oef</tt>.
+  son nom doit commencer par <tt class="wims_fname">oef</tt>.
  !endif
  !if doc iswordof  $w1 $w2 $w3 $w4 $w5 $w6
   En effet, votre module étant déclaré comme un document,
-  son nom doit commencer par <tt>doc</tt>.
+  son nom doit commencer par <tt class="wims_fname">doc</tt>.
 !endif
   
 !exit

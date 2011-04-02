@@ -13,21 +13,22 @@
 !set name_binfile=Fichiers binaires
 !set name_del=Effacer un module
 !set name_size=Taille
-!set name_publish=!nosubst Publier <em>$i_title</em><br>\
-	<tt><font size="+0">$mod</font></tt>
+!set name_publish=!nosubst Publier <span class="wims_mod_title">$i_title</span><br>\
+	<tt class="wims_fname">$mod</tt>
 
 !set name_file=Fichiers existants
+!set name_file1=Fichier
 !set name_nofile=Aucun fichier déposé dans le module.
 !set name_depos=Déposer un fichier dans un des répertoires suivants
 !set name_in_module=dans le module
 !set name_replace=un fichier pour le remplacer&nbsp;
 !set name_addfile=Ajouter un autre fichier&nbsp;
-!set name_gestion=pour voir les fichiers du document, cliquez sur le lien <tt>$wims_name_docgestion</tt>
+!set name_gestion=pour voir les fichiers du document, cliquez sur le lien <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Votre module
 !set name_file2=contient les fichiers suivants
 !set name_updateadress=Mettez l'adresse à jour
 !set name_simpl_address= L'adresse de ce module est une adresse simplifiée
-!set gnu=!nosubst &copy; $year (<a href=COPYING>GNU GPL</a>)
+!set gnu=!nosubst &copy; $year (<a href="COPYING">GNU GPL</a>)
 
 !set name_type=exercice, outil, document, récréation, OEF, déduction
 !set name_zone=Zone
@@ -44,7 +45,7 @@
 !set name_levelist=E: école primaire; H: école secondaire; U: université;<br>G: étude doctorale; R: recherche
 
 !set name_accountchange=Changer les propriétés de votre compte de développement
-!set name_empty=laissez le champ "<tt>mot de passe</tt>" vide si vous voulez conserver l'ancien
+!set name_empty=!nosubst laisser le champ <span class="wims_label">$wims_name_Password</span> vide pour conserver l'ancien
 !set name_change=Le mot de passe de votre compte a été changé.
 
 !if $job=modname
@@ -63,11 +64,11 @@
    faites une copie\
    Renommer le module va casser les feuilles de travail qui l'utilisent. Assurez-vous que ce n'est pas le cas\
 into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst le module public <em>$otit</em> (<tt>$original2</tt>) dans votre espace \
-de développement sous l'adresse 
+!set name_public_module=!nosubst le module public <span class="wims_mod_title">$otit</span>\
+(<tt class="wims_fname">$original2</tt>) dans votre espace de développement sous l'adresse 
 !set name_warning2=Renommer ou dupliquer un module d'adresse publique\
   peut conduire à la duplication de sa publication. Soyez très prudent !\
-  <p>Si vous voulez faire des tests sur le module, choisissez la zone <tt>test</tt>.
+  <p>Si vous voulez faire des tests sur le module, choisissez la zone <tt class="wims_fname">test</tt>.
 !set name_warning3=Si vous avez déjà publié ce module, veuillez changer cette adresse exactement selon \
   son adresse publique. Sinon vous risquez une duplication de sa publication.
 !endif
@@ -133,7 +134,6 @@ into name_diff1,name_diff2,name_diff3
 !endif
 
 !if $job=restore
-
  !set name_warning1=Votre fichier n'a pas l'air d'un fichier de sauvegarde d'un module&nbsp;!<p> \
    Vous ne pouvez restaurer un fichier que s'il a été téléchargé auparavant à partir de Modtool. Réessayez.
 
@@ -145,7 +145,7 @@ into name_diff1,name_diff2,name_diff3
    faire montrer les différences entre les modules d'abord.\
    Aller travailler sur le module\
    Module restauré\
-  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
   
 !set name_illegal= Votre sauvegarde contient des fichiers de types illégaux ! Restauration impossible.\
@@ -170,20 +170,20 @@ travail qui référencent votre module ne fonctionneront plus si ce
 module est effacé.
 
 <p>
-Etes-vous sûr de vouloir effacer le module
+Êtes-vous sûr de vouloir effacer le module
 
 !exit
 :delconfirm
 Le fichier 
- <font color="blue"><em>$fname</em></font>
+ <tt class="wims_fname">$fname</tt>
  du module
- <font color="blue"><em>$title</em></font> est effacé.
+ <span class="wims_mod_title">$title</span> est effacé.
 !exit
 
 :delfile
 
 Êtes-vous sûr de vouloir effacer le fichier
-<font color="blue"><em>$fname</em></font>
+<tt class="wims_fname">$fname</tt>
 du module
-<font color="blue"><em>$title</em></font>&nbsp;?
+<span class="wims_mod_title">$title</span>&nbsp;?
 !exit

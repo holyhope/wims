@@ -85,6 +85,12 @@ mod=$modreq
  i_require=!listintersect $i_require and $swlist
  !default i_author=$auth_name
  i_author=!char 1 to 100 of $i_author
+ !default i_author1_lastname=!word 2 of $i_author
+ !default i_author1_firstname=!word 1 of $i_author
+ i_author1_lastname=!char 1 to 50 of $i_author1_lastname
+ i_author1_firstname=!char 1 to 50 of $i_author1_firstname
+ !!should disapear
+ !default i_author=$i_author1_firstname i_author1_lastname
  !default i_address=$auth_email
  i_address=!items2words $i_address
  i_address=!word 1 of $i_address
@@ -96,7 +102,7 @@ mod=$modreq
  i_wims_version=!word 1 of $i_wims_version
  !default i_version=1.00
  !default i_wims_version=$wims_version
- ###add fields not accessible by the interface
+ ###add fields not accessible by the interface for the moment
  ### will be useful in case of translation in the module itself
  deflist1=translation_language
  translation_language=!listintersect $translation_language and $langlist,de
@@ -107,6 +113,15 @@ mod=$modreq
  !for l in $deflist1
   !default i_$l=$($l)
  !next
+ #####
+ i_mod_related=!words2items $i_mod_related
+ i_mod_related=!text select _.-/,$alnum in $i_mod_related
+ !default i_mod_related=$mod_related
+ !if .. isin $i_mod_related
+   i_mod_related=
+ !endif
+!! ### faut il faire une autre vérification ?
+ #####
  !default i_data=$data
  !if .. isin $i_data
   i_data=
@@ -126,6 +141,7 @@ mod=$modreq
   i_category=document
   cat1=doc
  !endif
+
  !for i in $deflist,$deflist1
   ind=$ind$i=$(i_$i)\
 

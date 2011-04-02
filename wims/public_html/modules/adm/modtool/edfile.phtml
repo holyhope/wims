@@ -1,8 +1,8 @@
 
 $wims_name_edfile
-<font color=blue><em>$fname</em></font>
+<span class="wims_fname">$fname</span>
 $name_in_module
-<font color=blue><em>$title</em></font>:
+<span class="wims_mod_title">$title</span>:
 
 !if $makeerror!=$empty
 <hr>
@@ -13,7 +13,7 @@ $makeerror
 !endif
 
 !form reply
-<input type=hidden name="fname" value="$fname">
+<input type="hidden" name="fname" value="$fname">
 
 <center>
 !sh content=`cat $devdir/$mod/$fname | sed 's/\&/\&amp;/g;s/</\&lt;/g'`\
@@ -24,25 +24,17 @@ $makeerror
 
 
 <p>
-<input type=submit name="register" value="$wims_name_tosave">
+<input type="submit" name="register" value="$wims_name_tosave">
 &nbsp;
-<input type=submit name="abandon" value="$wims_name_giveup">
+<input type="submit" name="abandon" value="$wims_name_giveup">
 </center>
 </form>
 
 !set wims_form_method=file
 !form reply
-<input type=hidden name="fname" value="$fname">
-<input type=hidden name="register" value="file_mode">
-<input type=submit value="$wims_name_send">
+<input type="hidden" name="fname" value="$fname">
+<input type="hidden" name="register" value="file_mode">
+<input type="submit" value="$wims_name_send">
 $name_replace:
-<input type=file name="wims_deposit">
+<input type="file" name="wims_deposit">
 </form>
-
-
-!!!href target=wims_help module=adm/createxo&+modtoolhelp=yes $wims_name_docoef
-!!<p>
-!! !href target=wims_help module=help/wimsdoc&+subject=slib#slib $wims_name_docslib
-!! <p>
-!! !href target=wims_help module=adm/createxo&+modtoolhelp=yes&+special_parm=reply $wims_name_docanswer
-

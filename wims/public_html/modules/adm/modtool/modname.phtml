@@ -1,4 +1,3 @@
-!!!readproc lang/names.phtml.$modu_lang
 <p>
 !if $totalcnt>0
  !if $totalcnt>=$sellist
@@ -7,8 +6,8 @@ $name_moddevcnt
   <p></p>
   !form reply
   $name_browselist
-  <input type=text size=30 name="selectshow" value="$selectshow">
-  <input type=submit value="$wims_name_tosave">
+  <input type="text" size="30" name="selectshow" value="$selectshow">
+  <input type="submit" value="$wims_name_tosave">
     &nbsp;
   !set wims_ref_class=wims_button_help
   !href cmd=help&special_parm=regex $wims_name_help
@@ -16,7 +15,7 @@ $name_moddevcnt
  !endif
  $name_clicktitle
  !if $totalcnt>=$maxlist and $existcnt>=$maxlist
- ($name_limited)
+ ($name_limited).
  !endif
  $table_header
  $table_hdtr<th>$wims_name_Address</th><th>$wims_name_title</th><th>$wims_name_action</th><th>$wims_name_Description</th>
@@ -24,7 +23,9 @@ $name_moddevcnt
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
   $table_tr<td><small>
+  <tt class="wims_fname">
   !replace internal ~ by ~ $ in $n $
+  </tt>
   !if ~ notin $n
    !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename]
   !endif
@@ -35,7 +36,7 @@ $name_moddevcnt
   !href cmd=reply&jobreq=index&modreq=$n $wims_name_properties
 !set wims_ref_class=wims_button
   !href cmd=reply&jobreq=del&modreq=$n $wims_name_erase
-  </td><td><small>$description</small></td>
+  </td><td><span class="wims_mod_desc">$description</span></td>
   </tr>
  !next n
  $table_end
@@ -49,7 +50,7 @@ $name_moddevcnt
 $name_nomodule
  !href cmd=reply&jobreq=create $name_create
  $wims_name_or
- !href cmd=reply&jobreq=restore $name_restore
+ !href cmd=reply&jobreq=restore $name_restoref
 .
 !endif
 

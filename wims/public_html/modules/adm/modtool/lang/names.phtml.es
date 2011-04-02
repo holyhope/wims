@@ -13,16 +13,17 @@
 !set name_binfile=Ficheros binarios
 !set name_del=Borrar un módulo
 !set name_size=Tamaño
-!set name_publish=!nosubst Publicar <em>$i_title</em><br>\
-	<tt><font size="+0">$mod</font></tt>
+!set name_publish=!nosubst Publicar <span class="wims_mod_title">$i_title</span><br>\
+	<tt class="wims_fname">$mod</tt>
 
 !set name_file=Ficheros binarios existentes
+!set name_file1=Fichero
 !set name_nofile= Ningún fichero depositado en el módulo.
 !set name_depos=Depositar un fichero
 !set name_in_module=en el módulo
 !set name_replace=un fichero para sustituirlo&nbsp;
 !set name_addfile=Añadir otro fichero&nbsp;
-!set name_gestion=para ver los ficheros del documento, pulsen el vínculo <tt>$wims_name_docgestion</tt>
+!set name_gestion=para ver los ficheros del documento, pulsen el vínculo <span class="wims_button disabled">$wims_name_docgestion</span>
 !set name_your_module=Su módulo
 !set name_file2=contiene los ficheros siguientes
 !set name_updateadress=Ponga la dirección al día
@@ -44,7 +45,7 @@
 !set name_levellist=E: escuela primaria; H: escuela secundaria; U: universidad; <br>G: estudio doctoral; R: investigación
 
 !set name_accountchange=Cambiar las propiedades de su cuenta de desarrollo
-!set name_empty=deje el campo “<tt> contraseña< /tt> “vacío si quieren conservar el antiguo
+!set name_empty=deje el campo <span class="wims_label"> contraseña</span> vacío si quieren conservar el antiguo
 !set name_change=Se cambió la contraseña de su cuenta.
 
 !if $job=modname
@@ -63,12 +64,12 @@
    Hacer una copia\
    Cambiar el nombre del módulo va a romper las hojas de trabajo que lo utilizan. Garantizan que no es el caso\
 into name_choice,name_copy,name_warning1
-!set name_public_module=!nosubst el módulo público<tt>$original2</tt>) en su espacio \
+!set name_public_module=!nosubst el módulo público <tt class="wims_fname">$original2</tt>) en su espacio \
 de desarrollo bajo la dirección
 !set name_warning2=Cambiar el nombre o duplicar un módulo de dirección pública puede conducir a la duplicación \
   de su publicación. ¡Sea muy prudente! Cambiar el nombre o duplicar un módulo de dirección pública\
   puede conducir a la duplicación de su publicación. ¡Sea muy prudente!\
-  <p>Si quieren hacer pruebas sobre el módulo, eligen la zona <tt>pruebas/tt>.
+  <p>Si quieren hacer pruebas sobre el módulo, eligen la zona <tt class="wims_fname">pruebas/tt>.
 !set name_warning3=Si ya publicaron este módulo, quiere cambiar esta dirección exactamente según \
   su dirección pública. Si no arriesgan una duplicación de su publicación.
 !endif
@@ -146,7 +147,7 @@ into name_diff1,name_diff2,name_diff3
    hacer mostrar las diferencias entre los módulos en primer lugar.\
    Ir a trabajar sobre el módulo\
    Módulo restaurado\
-  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restore,name_show_diff,name_gotowork,\
+  into name_norecognize,name_diff1,name_diff2,name_diff3,name_restoref,name_show_diff,name_gotowork,\
     name_restored
 
 !set name_illegal= ¡Su protección contiene ficheros de tipos ilegales! Restauración imposible.\
@@ -176,15 +177,15 @@ Está  seguro de querer borrar el módulo
 !exit
 :delconfirm
 El fichero
- <font color=blue><em>$fname</em></font>
+ <span class="wims_fname">$fname</span>
  del módulo
- <font color=blue><em>$title</em></font> esta borrado.
+ <span class="wims_mod_title">$title</span> esta borrado.
 !exit
 
 :delfile
 
 Está  seguro de querer borrar el módulo
-<font color=blue><em>$fname</em></font>
+<span class="wims_fname">$fname</span>
 del módulo
-<font color=blue><em>$title</em></font>&nbsp;?
+<span class="wims_mod_title">$title</span>&nbsp;?
 !exit
