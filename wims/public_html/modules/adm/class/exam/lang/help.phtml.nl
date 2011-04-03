@@ -4,11 +4,11 @@
 :allowtype
 <center><b>Openingstijden van een proefwerk</b></center>
  U kunt openingstijden definieren voor dit proefwerk, door het toevoegen van woorden
- <font color="blue"><b>
- <tt>&gt;yyyymmdd.hh:mm</tt></b></font>
+ <tt class="wims_code_words">
+&gt;yyyymmdd.hh:mm</tt>
  (openingstijd) en/of
- <font color="blue"><b>
- <tt>&lt;yyyymmdd.hh:mm</tt></b></font>
+ <tt class="wims_code_words">
+&lt;yyyymmdd.hh:mm</tt>
  (sluitingstijd). 
  Deze tijden moeten worden aangegeven in de lokale tijd van deze SERVER,
  en moeten worden gescheiden door spaties.
