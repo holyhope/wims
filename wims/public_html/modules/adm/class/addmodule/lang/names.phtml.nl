@@ -19,4 +19,4 @@
   10 punten vraagt moet de leerling deze opdracht meerdere keren doen
    
 !set name_weight=Het gewicht van de punten (deze weging wordt gebruikt voor de berekening van het gemiddelde):
-!set name_end=!nosubst De oefening ``<tt>$title</tt>'' is succesvol opgenomen in het werkblad
+!set name_end=!nosubst De oefening <span class="wims_mod_title">$title</span> is succesvol opgenomen in het werkblad

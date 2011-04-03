@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !set name_intro=!nosubst Quieren que sea accesible en su clase \
-la ressource publique <tt>$dir</tt> o modificar su título, su texto descriptivo\
+la ressource publique <tt class="wims_fname">$dir</tt> o modificar su título, su texto descriptivo\
 o su estatuto
 
 !if $doc>0

@@ -1,6 +1,6 @@
 !set lang_exists=yes
 
-!set name_intro=!nosubst U wilt <tt>$dir</tt> zichtbaar maken \
+!set name_intro=!nosubst U wilt <tt class="wims_fname">$dir</tt> zichtbaar maken \
 in uw klas of de titel, \
 omschrijving of toegangsrechten en status veranderen
 
