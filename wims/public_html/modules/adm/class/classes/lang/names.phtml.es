@@ -58,25 +58,25 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 !let classification=Escuela,Colegio,Liceo,Universidad,otro
 
 !set name_text1=Elija la línea correspondiente a la clase o al centro educativo que le corresponda. \
- <p>Si aún no se ha inscrito, pulse en <tt>Inscribirse</tt> (si la clase tiene el estatuto de\
-<tt>protegida</tt>, necesita que el profesor o el administrador le proporcione la contraseña).\
- <p>De lo contrario pulse <tt>$wims_name_Enter</tt> para entrar.
+ <p>Si aún no se ha inscrito, pulse en <span class="wims_button disabled">$name_register</span> (si la clase tiene el estatuto de\
+<span class="wims_label">$name_protected</span>, necesita que el profesor o el administrador le proporcione la contraseña).\
+ <p>De lo contrario pulse <span class="wims_button disabled">$wims_name_Enter</span> para entrar.
 
 !set name_text2=Para pasar a $name_level_else $sousclasses_else, elija el nombre de la clase de la tabla de abajo.
 !set name_text3=O elegir $name_level_else $sousclasses_else de la tabla de abajo.
 !set name_language=No hay clases en español en este sitio. ¿Quizás esté buscando una clase en otro idioma ?
 !set name_language2=este sitio no contiene ninguna clase en español.
 
-!set name_warning=<b>Error</b>. Ha pedido conectarse a $name_classess que no existe.\
+!set name_warning=<span class="wims_warning">$wims_name_warning<span>. Ha pedido conectarse a $name_classess que no existe.\
  Por favor verifique su petición.
  
-!set name_enter=!nosubst Para poder entrar en la clase <b><font color="green">$class_description</font></b> de\
-<b><font color="green">$class_institution</font></b> como un\
+!set name_enter=!nosubst Para poder entrar en la clase <span class="wims_classdesc">$class_description</span> de\
+<span class="wims_institutiondesc">$class_institution</span> como un\
 <em>participante dado de alta</em>, introduzca por favor su nombre de usuario\
 y su contraseña personal.
 
-!set name_entersup=!nosubst Para entrar en la clase <b><font color="green">$class_description</font></b> de\
-<b><font color="green">$class_institution</font></b> como su\
+!set name_entersup=!nosubst Para entrar en la clase <span class="wims_classdesc">$class_description</span> de\
+<span class="wims_institutiondesc">$class_institution</span> como su\
 <em>$name_sup</em>, por favor introduzca la contraseña del $name_sup.
 
 !set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Pour retrouver la vôtre,\
@@ -96,12 +96,12 @@ las clases virtuales desde el punto de vista del estudiante. Debería crear\
  su propia clase para verla desde el punto de vista del profesor,\
  que es mucho más completo.   
    !set name_instruction=<ul>\
-<li>Pulse en <tt class="d">anónimo</tt> para conectarse a una clase como invitado anónimo.\
-</li><li>Pulse en <tt class="d">inscrito</tt> para conectarse a la clase como usuario\
+<li>Pulse en <span class="wims_button disabled">anónimo</span> para conectarse a una clase como invitado anónimo.\
+</li><li>Pulse en <span class="wims_button disabled">inscrito</span> para conectarse a la clase como usuario\
  dado de alta con identificador y clave (debe haberse inscrito anteriormente, y\
  es probable que su registro se elimine regularmente del servidor, porque son clases de\
  ejemplo).\
-</li><li>Pulse en <tt class="d">Inscribirse</tt> para darse de alta en la clase.\
+</li><li>Pulse en <span class="wims_button disabled">Inscribirse</span> para darse de alta en la clase.\
 </li></ul>
   !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous pourrez ensuite importer \
     dans votre classe et modifier.

@@ -1,11 +1,11 @@
 !set wims_module_log=ERROR $error
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 
 !if $error=bad_password
 Het wachtwoord is afgekeurd. Probeer na 5 seconden opnieuw.<br> 
  <form action="#" name="chrono">
- <b><font color="red">Attentie</font></b>! 
+ <span class="wims_warning">$wims_name_warning</span>! 
  Elk wachtwoord dat binnen de volgende 5 seconden wordt ingevuld, wordt afgekeurd !
  
  <input size=1 name="clock"> </form>

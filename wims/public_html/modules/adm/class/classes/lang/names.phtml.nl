@@ -56,10 +56,10 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 !let classification=Lagere school,Middelbare school,Lyceum,Universiteit,Anders
 
 !set name_text1=Kies uit de tabel uw klas\
-<p>Nog niet aangemeld? klik dan op <tt>$name_register</tt>\
- (als de status heet <tt>$name_protected</tt> , is er een wachtwoord vereist voor de aanmeldings procedure.\
+<p>Nog niet aangemeld? klik dan op <span class="wims_button disabled">$name_register</span>\
+ (als de status heet <span class="wims_label">$name_protected</span> , is er een wachtwoord vereist voor de aanmeldings procedure.\
  Dit wachtwoord is verkrijgbaar bij de docent of administrator.)\
-<p>Klik op <tt>$wims_name_Enter</tt> om in te loggen. 
+<p>Klik op <span class="wims_button disabled">$wims_name_Enter</span> om in te loggen. 
 
 !set name_text2=Om over te stappen naar  $name_level_else $sousclasses_else, kies \
 uit de onderstaande tabel.
@@ -69,15 +69,15 @@ uit de onderstaande tabel.
 Wilt u een klas in een andere taal ?
 !set name_language2=Op deze server zijn geen enkele nederlandstalige klassen  geinstalleerd.
 
-!set name_warning=<b>Fout</b>. Je probeert in te loggen in een klas die niet bestaat. \
+!set name_warning=<span class="wims_warning">$wims_name_Error<span>. Je probeert in te loggen in een klas die niet bestaat. \
   Probeer het nog eens een keer...
 
-!set name_enter=!nosubst Om in de klas <b><font color="green">$class_description</font></b> van\
-<b><font color="green">$class_institution</font></b> als een\
+!set name_enter=!nosubst Om in de klas <span class="wims_classdesc">$class_description</span> van\
+<span class="wims_institutiondesc">$class_institution</span> als een\
 geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 
-!set name_entersup=!nosubst Om in $name_classes <b><font color="green">$class_description</font></b> van\
-<b><font color="green">$class_institution</font></b> als de\
+!set name_entersup=!nosubst Om in $name_classes <span class="wims_classdesc">$class_description</span> van\
+<span class="wims_institutiondesc">$class_institution</span> als de\
 <em>$name_sup</em> in te loggen, voer hier het $name_sup wachtwoord in.
  
 !set name_research1= Er zijn zeer veel virtuele klassen geinstalleerd op deze server. \
@@ -86,8 +86,8 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
 
 !set name_supervisor_text= Klik op de klas (of school of instituut) naar keuze.<br>\
-     <small>Op <tt>Inloggen</tt> klikken,  als u al als docent of supervisor ben geregistreerd.<br>\
-     Klik op <tt>Aanmelden</tt> voor registratie als docent.(dit is dus alleen voor docenten)
+     Op <span class="wims_button disabled">Inloggen</span> klikken,  als u al als docent of supervisor ben geregistreerd.<br>\
+     Klik op <span class="wims_button disabled">Aanmelden</span> voor registratie als docent (dit is dus alleen voor docenten).
 
 !if $type=example
    !set name_example1=Er zijn geen openbare klassen geinstalleerd op deze server.
@@ -96,12 +96,12 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
    !set name_example3=!nosubst Er zijn $clcnt nederlandstalige openbare demonstratie klassen geinstalleerd.
    !set name_example4=U kunt ook een eigen klas maken om te zien hoe een docenten account er echt uitziet
    !set name_instruction=<ul>\
-<li>Klik op <tt class="d">$name_anonymous</tt> om in te loggen anls anonieme student (deelnemer).\
-</li><li>Klik op <tt class="d">$name_registered</tt> op in te loggen als reeds geregistreerde student.\
+<li>Klik op <span class="wims_button disabled">$name_anonymous</span> om in te loggen anls anonieme student (deelnemer).\
+</li><li>Klik op <span class="wims_button disabled">$name_registered</span> op in te loggen als reeds geregistreerde student.\
 (Je moet jezelf natuurlijk dan wel eerder hebben aangemeld; wat niet wil zeggen\
 dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op gezette tijden\
   verwijdert de server deze "bezoekers accounts")\
-</li><li>Klik op <tt class="d">$name_register</tt> voor het aanmelden in een openbare klas.\
+</li><li>Klik op <span class="wims_button disabled">$name_register</span> voor het aanmelden in een openbare klas.\
 </li></ul>
 
   !set name_sheet_example=U kunt ook de gebruikte werkbladen importeren [en modificeren] in uw eigen klas.

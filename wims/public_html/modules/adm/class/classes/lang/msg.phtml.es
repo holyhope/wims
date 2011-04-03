@@ -1,11 +1,11 @@
 !set wims_module_log=ERROR $error
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 
 !if $error=bad_password
  Contraseña no reconocida. Por favor vuelva a intentarlo pasados unos segundos.
  <form action="#" name="chrono">
- ¡<b><font color="red">Atención</font></b>! ¡Cualquier contraseña enviada en los próximos 5 segundos
+ ¡<span class="wims_warning">$wims_name_warning</span>! ¡Cualquier contraseña enviada en los próximos 5 segundos
  será rechazada!
  <input size=1 name="clock"> </form>
  !exit
