@@ -43,14 +43,14 @@ Zie hieroor de wachtwoord-pagina
 !exit
 
 :option
- <b>Tonen configuratie opties op homepagina van klas </b>. 
+ <b>Tonen configuratie opties op homepagina van klas</b>. 
  De volgende 'woorden' kunnen worden gebruikt:
  <ul>
- <li><tt>showshexpire</tt>. 
+ <li><tt class="wims_code_words">showshexpire</tt> 
  Laat de einddatum van werkbladen zien aan studenten.
- </li><li><tt>showexexpire</tt>.
+ </li><li><tt class="wims_code_words">showexexpire</tt>
  Laat de einddatum van proefwerken [examens] zien aan studenten.
- </li><li><tt>showshweight</tt>. 
+ </li><li><tt class="wims_code_words">showshweight</tt>
  Laat het gewicht van een werkblad zien aan studenten
  </li></ul> 
 !exit
@@ -115,37 +115,58 @@ ook al dit dezelfde kleur als de "standaard/default" kleur.
 :homepage
  <b>Deelnemer homepage</b>.
  U kunt hier het adres van een "wims document-blok" invoeren
- (zoals <tt>c1/main</tt>) als homepagina.
+ (zoals <tt class="wims_fname">c1/main</tt>) als homepagina.
  Het document zelf hoeft niet leesbaar te zijn voor leerlingen.
  <p>
  Laat dit veld leeg als U de standaard layout wilt gebruiken.
  <p>
- Alle links in dit document-blok moeten worden gedefinieerd met het <tt>\adm</tt> commando.
- U kunt de volgende voorgedefinieerde wims-variabelen gebruiken:<ul>
- <li><tt>\firstname</tt>Voornaam van de leerling/deelnemer
- </li><li><tt>\lastname</tt>Achternaam van de leerling/deelnemer 
- </li><li><tt>\scores</tt>Score informatie van deze deelnemer. 
- Dit is dus een lijst getallen, corresponderende met &eacute;&eacute;n werkblad: percentage of punten
+ Alle links in dit document-blok moeten worden gedefinieerd met het <tt class="wims_code_variable">\adm</tt> commando.
+ U kunt de volgende voorgedefinieerde wims-variabelen gebruiken:
+ $table_header
+ $table_tr<td><tt class="wims_code_variable">\firstname</tt></td><td>
+ Voornaam van de leerling/deelnemer
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\lastname</tt> </td><td>
+ Achternaam van de leerling/deelnemer
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\scores</tt></td><td>
+ Score informatie van deze deelnemer. 
+ Dit is dus een lijst getallen, corresponderende met één werkblad: percentage of punten
   en een gemiddelde score
- </li><li><tt>\newmsgcnt</tt> Ongelezen berichten in het klasse forum.
- </li><li><tt>\today</tt> Datum van vandaag, yyyymmdd.
- </li><li><tt>\sheets</tt> Aantal beschikbare werkbladen
- </li><li><tt>\exams</tt> Aantal digi-toetsen/tentamens.
- </li><li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
+  </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\newmsgcnt</tt></td><td>
+ Ongelezen berichten in het klasse forum.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\today</tt></td><td>
+ Datum van vandaag, yyyymmdd.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\sheets</tt></td><td>
+ Aantal beschikbare werkbladen
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\exams</tt></td><td>
+ Aantal digi-toetsen/tentamens.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\expiration1</tt>, <tt class="wims_code_variable">\expiration2</tt>, <tt class="wims_code_variable">\expirationE1</tt>, ...</td><td>
  uiterste datum van werkblad 1, werkblad 2, tentamen 1, ..., yyyymmdd.
- </li><li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
+ </td></tr>
+$table_tr<td><tt class="wims_code_variable">\status1</tt>, <tt class="wims_code_variable">\status2</tt>, <tt class="wims_code_variable">\statusE1</tt>, ...</td><td>
  Status van werkblad 1, werkblad 2, tentamen 1, ... dit is een niet negatief geheel getal; 0
  = nog niet klaar voor gebruik, 1 = actief, 2 = verlopen, 3 = onzichtbaar.
- </li><li><tt>\daymessage</tt> : message du jour de la classe.</li>
- </li><li><tt>\userdaymessage</tt> : message du jour individuel de chaque participant.</li>
- </li></ul>
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\daymessage</tt></td><td>
+ message du jour de la classe.
+ </td></tr>
+$table_tr<td><tt class="wims_code_variable">\userdaymessage</tt></td><td>
+message du jour individuel de chaque participant.
+</td></tr>
+$table_end
 !goto end
 
 :bgimg
  Achtergrond plaatje (tegel) voor de pagina's in de digi-klas.
  U kunt elke valide URL gebruiken.
  Er zijn ook reeds ge&iuml;nstalleerde achtergrond plaatjes, die U kunt gebruiken zonder url-adres:<p>
- <tt>$bgimgs</tt>
+ <pre>$bgimgs</pre>
 !exit
 
 :theme
@@ -159,9 +180,9 @@ The icons in the menu
 :css
 Het style sheet beinvloed bijna alle pagina's van een klas.
 <p>
-Kies `<tt>----</tt>' om de stylesheets uit te schakelen.
+Kies <tt class="wims_code_words">----</tt> om de stylesheets uit te schakelen.
 <p>
-Kies `<tt>class</tt>' om Uw eigen  style sheet (css) te gebruiken.
+Kies <tt class="wims_code_words">class</tt> om Uw eigen  style sheet (css) te gebruiken.
 Gebruik de standaard css-syntax.
  <b>Opmerking</b>. 
  Wanneer U uw eigen css wilt gebruiken, test deze dan uitvoerig op 
@@ -174,9 +195,9 @@ De andere keuzes zijn voor-ingestelde styles van deze WIMS server.
 Het logo van de klas is een plaatje dat wordt links of rechts bovenaan de pagina geplaatst.
 (Zowel op de leerlingpagina als ook op de supervisor pagina.)
 <p>
-Kies `<tt>none</tt>' als U geen logo wenst.
+Kies <tt class="wims_code_words">none</tt> als U geen logo wenst.
 <p>
-Als U niets of `<tt>wims</tt>' invult, wordt het standaard WIMS logo gebruikt.
+Als U niets of <tt class="wims_code_words">wims</tt> invult, wordt het standaard WIMS logo gebruikt.
 <p>
 Elke plaatje met een geldige URL kan worden gebruikt. 
 !exit
@@ -236,16 +257,16 @@ Bij een te hoge instelwaarde loopt U het risico dat Uw diskquotum wordt overschr
 !exit
 
 :examshow
-Als deze optie op <tt>nee</tt> staat, kunnen de studenten de resultaten van een tentamen niet zien.
+Als deze optie op <tt class="wims_code_words">$wims_name_no</tt> staat, kunnen de studenten de resultaten van een tentamen niet zien.
 De docent natuurlijk wel.
 !exit
 
 :authtype
 <b>Soort authentificatie</b> : 
 Er kan worden gekozen tussen authentificatie via <tt>ldap>/tt> of via het wims eigen authentificatie systeem.
-In het geval dat een inloggen cia <tt>ldap</tt> mislukt wordt geprobeerd een wims authentificatie op te starten..
+In het geval dat een inloggen cia <tt class="wims_code_words">ldap</tt> mislukt wordt geprobeerd een wims authentificatie op te starten..
 <p>
-Voorbeeld <tt>ldap</tt> configuratie:
+Voorbeeld <tt class="wims_code_words">ldap</tt> configuratie:
 <pre>
 ldap_host=ldap.schaersvoorde.nl
 ldap_port=389
@@ -275,11 +296,11 @@ Zijn er meerdere links gewenst, scheidt deze dan van elkaar door een ";".
 <b>Adres ingeval van een externe authentificatie</b> : 
 <i>
 Dit is voor experts en het maakt het mogelijk om bijv. een CAS-authenticatie te gebruiken. </ I>
-Het adres moet in de html zijn: <tt>&lt;a href="http:...">link naam &lt;/a&gt;</tt>.
+Het adres moet in de html zijn: <tt class="wims_address">&lt;a href="http:...">link naam &lt;/a&gt;</tt>.
 Het adres kan ook worden geplaatst in een htmle frame :
-<tt>&lt;iframe https:...." width="100%" height="400">&lt;/iframe&gt;</tt>. 
-<p>Vous pouvez désactiver cette option tout en gardant le texte en cliquant sur <tt>Non</tt>.
-Si vous cochez <tt>$name_mix_auth</tt>, l'adresse html que vous avez donné apparaîtra mais
+<tt class="wims_address">&lt;iframe https:...." width="100%" height="400">&lt;/iframe&gt;</tt>. 
+<p>Vous pouvez désactiver cette option tout en gardant le texte en cliquant sur <tt class="wims_code_words">$wims_name_no</tt>.
+Si vous cochez <tt class="wims_code_words">$name_mix_auth</tt>, l'adresse html que vous avez donné apparaîtra mais
 aussi l'authentification propre à wims comme une alternative. 
 
 Vous devez mettre un code html valide, il ne sera pas vérifié et

@@ -37,7 +37,7 @@ name_sheets
  !set name_namefile=introduzca por favor el nombre del fichero de seguridad
  !set name_help=se le pedirá que seleccione los recursos que quiere recuperar en la clase
 
- !set name_deposit=!nosubst Su copia de seguridad <tt>$wims_deposit</tt> contiene los recursos\
+ !set name_deposit=!nosubst Su copia de seguridad <tt class="wims_fname">$wims_deposit</tt> contiene los recursos\
 siguientes. Marque lo que quiera recuperar en su clase.
 
  !set name_no_restore=I!set no_restore=Imposible hacer la recuperación porque usted comparte las de otra\
@@ -45,7 +45,7 @@ siguientes. Marque lo que quiera recuperar en su clase.
 
  !distribute lines No ha seleccionado nada que recuperar.\
     Recuperar todo salvo la configuración de la clase y la cuenta del profesor.\
-    <font color="red">¡Peligro!</font> <small>Ver más abajo.</small>\
+    <span class="wims_warning">¡Peligro!</span> <small>Ver más abajo.</small>\
    Configuración de la clase.\
    Cuenta del profesor (incluida su contraseña)\
    cuentas de los participantes\
@@ -505,7 +505,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color
 
 !set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
-<br>(lorsque <tt>$name_css</tt>  est sur <tt>class</tt>)&nbsp;:
+<br>(lorsque <tt class="wims_code_words">$name_css</tt>  est sur <tt class="wims_code_words">class</tt>)&nbsp;:
 
 !set name_content_style2=o copiar aquí la hoja de estilo de la clase
 
@@ -528,8 +528,8 @@ Los errores introducidos por una modificación manual de los archivos
 puede ocasionar comportamientos imprevisibles en su clase.
 <p>
 2. Salvo en caso de absoluta necesidad, evite recuperar
-<font color="red">la configuración de la clase</font> y
-<font color="red">la cuenta del profesor</font>.
+<span class="wims_warning">la configuración de la clase</span> y
+<span class="wims_warning">la cuenta del profesor</span>.
 Los errores en los datos enviados para estos dos campos pueden hacer
 perder por completo el control de su clase.
 <p>
@@ -597,7 +597,7 @@ Este servidor WIMS no ha declarado ningún servidor remoto que admita
  del sitio</a> debe declarar el servidor remoto, y el servidor remoto debe también
  declarar que este servidor WIMS tiene permiso de conexión.
  (El administrador del sitio puede consultar el fichero
- <tt>$basedir/log/classes/.connections/myself</tt> en busca de detalles de
+ <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> en busca de detalles de
  cómo declarar conexiones a sitios).
  !exit
 

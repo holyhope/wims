@@ -55,11 +55,11 @@ debe plantearse también la utilización de contraseñas desechables
 :option
  <b>Opciones de la clase</b>. Se pueden utilizar aquí las siguientes palabras:
  <ul>
- <li><tt>showshexpire</tt>. Mostrar la fecha de expiración de las hojas de
+ <li><tt class="wims_code_words">showshexpire</tt> Mostrar la fecha de expiración de las hojas de
   trabajo en la página de acceso de los participantes.
- </li><li><tt>showexexpire</tt>. Mostrar la fecha de expiración de las hojas
+ </li><li><tt class="wims_code_words">showexexpire</tt> Mostrar la fecha de expiración de las hojas
   de examen en la página de acceso de los participantes.
- </li><li><tt>showshweight</tt>. Show worksheet weight in the
+ </li><li><tt class="wims_code_words">showshweight</tt> Show worksheet weight in the
   home page of participants.
  </li></ul>
 !exit
@@ -109,7 +109,7 @@ Abréviations utilisées : <ul>
  <a href="mailto:$wims_site_manager?subject=Extensión de una clase virtual
  demand">pedir al administrador del sitio</a> que lo haga por usted.
  <p>
- Esta fecha debe ser introducida en forma de 8 cifras (aaaammdd).
+ Esta fecha debe ser introducida en forma de 8 cifras (<tt class="wims_code_words">aaaammdd</tt>).
  Ejemplo: 20120523 significa 23 de mayo de 2012.
 !exit
 
@@ -131,36 +131,56 @@ Los valores por defecto son los definidos para las páginas generales del  sitio.
 
 :homepage
  <b>Página de los participantes</b>. Puede poner la dirección de un bloque de
- documento (por ejemplo <tt>c1/main</tt>) como página inicial de la clase
+ documento (por ejemplo <tt class="wims_fname">c1/main</tt>) como página inicial de la clase
  para los participantes. No es necesario que los participantes puedan leer
  el documento mismo.
  <p>
  Deje el campo en blanco si desea utilizar la página inicial estándar.
  <p>
- Todos los enlaces del bloque deben ser definidos usando la orden <tt>\adm</tt>.
+ Todos los enlaces del bloque deben ser definidos usando la orden <tt class="wims_code_variable">\adm</tt>.
  Puede utilizar las siguientes variables predefinidas:<ul>
- <li><tt>\firstname</tt> Nombre del participante</li>
- <li><tt>\lastname</tt> Apellidos del participante.</li>
- <li><tt>\scores</tt> Resumen de las calificaciones del participante. Se trata de una lista de
+ $table_header
+ $table_tr<td><tt class="wims_code_variable">\firstname</tt></td><td>
+Nombre del participante
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\lastname</tt></td><td>
+ Apellidos del participante.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\scores</tt></td><td>
+ Resumen de las calificaciones del participante. Se trata de una lista de
  números. Cada par de números corresponde a una hoja: el porcentaje
- de puntos obtenidos más la calidad de los puntos.</li>
- <li><tt>\newmsgcnt</tt> Número de nuevos mensajes en el foro de la clase.</li>
- <li><tt>\today</tt> Fecha de hoy, aaaammdd.</li>
- <li><tt>\sheets</tt> Número de hojas de trabajo.</li>
- <li><tt>\exams</tt> Número de exámenes.</li>
- <li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
+ de puntos obtenidos más la calidad de los puntos.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\newmsgcnt</tt></td><td>
+ Número de nuevos mensajes en el foro de la clase.
+</td></tr>
+ $table_tr<td><tt class="wims_code_variable">\today</tt></td><td>
+ Fecha de hoy, aaaammdd.
+</td></tr>
+ $table_tr<td><tt class="wims_code_variable">\sheets</tt></td><td>
+ Número de hojas de trabajo.
+</td></tr>
+ $table_tr<td><tt class="wims_code_variable">\exams</tt></td><td>
+ Número de exámenes.
+</td></tr>
+ $table_tr<td><tt class="wims_code_variable">\expiration1</tt>
+, <tt class="wims_code_variable">\expiration2</tt>, <tt class="wims_code_variable">\expirationE1</tt>, ...
+ </td><td>
  Fecha de expiración de la hoja 1, hoja 2, examen 1, ..., aaaammdd.
- <li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\status1</tt>, <tt class="wims_code_variable">\status2</tt>, <tt class="wims_code_variable">\statusE1</tt>, ...
+</td><td>
  Estado de la hoja 1, hoja 2, examen 1, ... Es un entero no negativo;
- 0 = en preparación, 1 = activa, 2 = caducada, 3 = oculta.</li>
- </ul>
+ 0 = en preparación, 1 = activa, 2 = caducada, 3 = oculta.
+</td></tr>
+$table_end
 !goto end
 
 :bgimg
  Fichero de la imagen de fondo (o pieza de mosaico) para las páginas de la
  clase. Puede utilizar cualquier dirección URL válida. Hay también ficheros
  de imagen preparados que puede usar sin añadir el prefijo de dirección:<p>
- <tt>$bgimgs</tt>
+ <pre>$bgimgs</pre>
 !exit
 
 :theme
@@ -174,12 +194,12 @@ Los iconos que aparecen en los menús
 :css
 La hoja de estilo se aplica a casi todas las páginas de su clase.
 <p>
-Elija `<tt>----</tt>' para desactivar la hoja de estilo.
+Elija <tt class="wims_code_words">----</tt> para desactivar la hoja de estilo.
 <p>
-Elija `<tt>-tema-</tt>' para utilizar la hoja de estilo correspondiente
+Elija <tt class="wims_code_words">-tema-</tt> para utilizar la hoja de estilo correspondiente
 al tema de la clase.
 <p>
-Elija `<tt>clase</tt>' para utilizar una hoja de estilo (css) definida por
+Elija <tt class="wims_code_words">clase</tt> para utilizar una hoja de estilo (css) definida por
 usted. Por favor consulte la documentación de css para conocer su sintaxis.
 <b>Nota</b>. ¡Si define su propia css, por favor pruébela
 con TODOS los navegadores que puedan utilizar sus alumnos
@@ -193,9 +213,9 @@ El logo de la clase es un fichero gráfico que se mostrará en la parte superior
 de la página inicial de la clase tanto para el profesor como para los participantes.
 Este logo puede ir en la parte superior izquierda o en la superior derecha.
 <p>
-Seleccione `<tt>none</tt>' (ninguno) si no desea un logo.
+Seleccione <tt class="wims_code_words">none</tt> (ninguno) si no desea un logo.
 <p>
-Si elije un texto en blanco o `<tt>wims</tt>', se utilizará el logo de WIMS.
+Si elije un texto en blanco o <tt class="wims_code_words">wims</tt>, se utilizará el logo de WIMS.
 <p>
 Si no, puede introducir la dirección URL del fichero gráfico que desee.
 !exit
@@ -262,7 +282,7 @@ corre el riesgo de superar la cuota de disco.
 !exit
 
 :examshow
-Cuando esta opción se pone sobre <tt>No</tt>, los alumnos no pueden revisar
+Cuando esta opción se pone sobre <tt class="wims_code_words">$wims_name_no</tt>, los alumnos no pueden revisar
 los registros de exámenes. Sólo el profesor lo puede.
 !exit
 
@@ -307,13 +327,13 @@ Si desean poner varios vínculos, separan los por puntos comas.
 y permite utilizar por ejemplo una autenticación CAS. </i>
 Pueden indicar el vínculo sobre una autenticación externa a wims bajo la forma
 (esta dirección deberá entonces directamente hacer entrar en la clase).
-Deben poner la dirección completa en HTML :<tt>&lt;a href="http:...">Vinculo&lt;/a></tt>.
+Deben poner la dirección completa en HTML :<tt class="wims_address">&lt;a href="http:...">Vinculo&lt;/a></tt>.
 
 Es por ejemplo posible poner la dirección en un "frame" :
-<tt>&lt;iframe https:...." width="100%" height="400">&lt;/iframe></tt>.
+<tt class="wims_address">&lt;iframe https:...." width="100%" height="400">&lt;/iframe></tt>.
 
-<p>Pueden desactivar esta opción guardando al mismo tiempo el texto presionando <tt>No<tt>.
-Si hacen muescas en <tt>$name_mix_auth</tt>, la dirección HTML que dieron aparecerán y
+<p>Pueden desactivar esta opción guardando al mismo tiempo el texto presionando <tt class="wims_code_words">$wims_name_no</tt>.
+Si hacen muescas en <tt class="wims_code_words">$name_mix_auth</tt>, la dirección HTML que dieron aparecerán y
 también la autenticación consustancial a wims como una alternativa.
 
 Deben poner un código HTML válido, no se comprobará y

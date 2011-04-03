@@ -30,7 +30,7 @@
 
 !if empty_file iswordof $error
  No encontramos recursos de clase en su copia de seguridad.
- <tt>$wims_deposit</tt>.
+ <tt class="wims_fname">$wims_deposit</tt>.
  !exit
 !endif
 

@@ -52,11 +52,11 @@ you should also consider using single-use passwords (see the password page).
 :option
  <b>Option words of the class</b>. The following words can be used here:
  <ul>
- <li><tt>showshexpire</tt>. Show the expiration date of worksheets on the
+ <li><tt class="wims_code_words">showshexpire</tt> Show the expiration date of worksheets on the
   home page of participants.
- </li><li><tt>showexexpire</tt>. Show the expiration date of exam sheets on the
+ </li><li><tt class="wims_code_words">showexexpire</tt> Show the expiration date of exam sheets on the
   home page of participants.
- </li><li><tt>showshweight</tt>. Show worksheet weight on the
+ </li><li><tt class="wims_code_words">showshweight</tt> Show worksheet weight on the
   home page of participants.
  </li></ul> 
 !exit
@@ -124,37 +124,57 @@ default would change).
 
 :homepage
  <b>Participant homepage</b>. You may put the address of a document block
- (such as <tt>c1/main</tt>) to be the home page of the class for participants.
+ (such as <tt class="wims_fname">c1/main</tt>) to be the home page of the class for participants.
  The document itself need not be visible by participants.
  <p>
  Leave this field blanck if you want to use the standard home page.
  <p>
- All the links in the block should be defined using the command <tt>\adm</tt>.
- You can use the following pre-defined variables:<ul>
- <li><tt>\firstname</tt> Participant's first name
- </li><li><tt>\lastname</tt> Participant's last name
- </li><li><tt>\scores</tt> Participants's score information. This is a list of
+ All the links in the block should be defined using the command <tt class="wims_code_variable">\adm</tt>.
+ You can use the following pre-defined variables:
+ $table_header
+ $table_tr<td><tt class="wims_code_variable">\firstname</tt></td><td>
+Participant's first name
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\lastname</tt></td><td>
+ Participant's last name
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\scores</tt></td><td>
+Participants's score information. This is a list of
 numbers. Each pair of numbers corresponds to one worksheet: percentage of points
 and score quality.
- </li><li><tt>\newmsgcnt</tt> Unread messages in the class forum.
- </li><li><tt>\today</tt> Date of today, yyyymmdd.
- </li><li><tt>\sheets</tt> Number of worksheets.
- </li><li><tt>\exams</tt> Number of exam sheets.
- </li><li><tt>\expiration1</tt>, <tt>\expiration2</tt>, <tt>\expirationE1</tt>, ...
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\newmsgcnt</tt></td><td>
+Unread messages in the class forum.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\today</tt></td><td>
+ Date of today, yyyymmdd.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\sheets</tt></td><td>
+Number of worksheets.
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\exams</tt></td><td>
+ Number of exam sheets
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\expiration1</tt></td><td>expiration1</td></tr>
  Expiration date of worksheet 1, worksheet 2, exam 1, ..., yyyymmdd.
- </li><li><tt>\status1</tt>, <tt>\status2</tt>, <tt>\statusE1</tt>, ...
+ $table_tr<td><tt class="wims_code_variable">\status1</tt></td><td>
  Status of worksheet 1, worksheet 2, exam 1, ... This is a non-negative integer; 0
- = under preparation, 1 = active, 2 = expired, 3 = hidden.
- </li><li><tt>\daymessage</tt> : message of the day for the class.</li>
- </li><li><tt>\userdaymessage</tt> : individual message of the day message for each participant.</li>
- </li></ul>
+ = under preparation, 1 = active, 2 = expired, 3 = hidden. 
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\daymessage</tt></td><td>
+message of the day for the class
+ </td></tr>
+ $table_tr<td><tt class="wims_code_variable">\userdaymessage</tt></td><td>
+individual message of the day message for each participant.
+ </td></tr>
+ $table_end
 !goto end
 
 :bgimg
  Background image file (tile) for pages in the class. You may use any valid URL.
  There are also prepared background image files which you can use without
  adding any address prefix:<p>
- <tt>$bgimgs</tt>
+ <pre>$bgimgs</pre>
 !exit
 
 :theme
@@ -168,16 +188,16 @@ The icons in the menu
 :css
 The style sheet affects almost all pages of your class.
 <p>
-Choose `<tt>----</tt>' to disable style sheets.
+Choose <tt class="wims_code_words">----</tt> to disable style sheets.
 <p>
-Choose `<tt>-theme-</tt>' to use style sheets corresponding to your choice
+Choose <tt class="wims_code_words">-theme-</tt> to use style sheets corresponding to your choice
 of the theme.
 <p>
-Choose `<tt>class</tt>' to use the style sheet (css) defined by yourself 
+Choose <tt class="wims_code_words">class</tt> to use the style sheet (css) defined by yourself 
 (see remark below).
 <p>
 The other choices correspond to pre-defined styles on this WIMS site.
- 
+
 <p><b>Remark</b>. You may use your own style classes. 
 Please refer to css documents for the syntax.
 If you define your own css, please test it with ALL possible browsers used by your
@@ -195,9 +215,9 @@ The logo of the class is a graphics file that will be shown on the top
 of the homepage of the class, both for supervisor and for participants.
 This logo can be put either on the top left or the top right corner.
 <p>
-Choose `<tt>none</tt>' if you do not want a logo to be shown.
+Choose <tt class="wims_code_words">none</tt> if you do not want a logo to be shown.
 <p>
-If you choose empty string or `<tt>wims</tt>', the WIMS logo will be used.
+If you choose empty string or <tt class="wims_code_words">wims</tt>, the WIMS logo will be used.
 <p>
 Otherwise, you may put the URL of any valid graphics file here.
 !exit
@@ -255,12 +275,13 @@ exceeded, the most ancient registrations will be erased.
 :logs
 <p>
 set this number to 0 if you want to disable registration.
-<b>ATTENTION</b>: the registration of exercises and exams may take a lot of
+
+<span class="wims_warning">$wims_name_warning</span>: the registration of exercises and exams may take a lot of
 space! If you set these numbers too high, you class risks disk quota overflow.
 !exit
 
 :examshow
-Dans le cas où cette option est mise sur <tt>Non</tt>, les élèves ne peuvent
+Dans le cas où cette option est mise sur <tt class="wims_code_words">$wims_name_no</tt>, les élèves ne peuvent
 pas revoir les enregistrements d'examens. Seul l'enseignant le peut.
 !exit
 
@@ -305,13 +326,13 @@ If you need more than one link, they must be seperated by ";".
 et permet d'utiliser par exemple une authentification CAS. </i>
 Vous pouvez indiquer le lien sur une authentification externe à wims sous la forme
 (cette adresse devra alors directement faire entrer dans la classe). 
-Vous devez mettre l'adresse complète en html :<tt>&lt;a href="http:...">Lien&lt;/a></tt>.
+Vous devez mettre l'adresse complète en html :<tt class="wims_address">&lt;a href="http:...">Lien&lt;/a></tt>.
 
 Il est par exemple possible de mettre l'adresse dans un "frame" : 
-<tt>&lt;iframe https:...." width="100%" height="400">&lt;/iframe></tt>. 
+<tt class="wims_address">&lt;iframe https:...." width="100%" height="400">&lt;/iframe></tt>. 
 
-<p>Vous pouvez désactiver cette option tout en gardant le texte en cliquant sur <tt>Non</tt>.
-Si vous cochez <tt>$name_mix_auth</tt>, l'adresse html que vous avez donné apparaîtra mais
+<p>Vous pouvez désactiver cette option tout en gardant le texte en cliquant sur <tt class="wims_code_words">$wims_name_no</tt>
+Si vous cochez <tt class="wims_code_words">$name_mix_auth</tt>, l'adresse html que vous avez donné apparaîtra mais
 aussi l'authentification propre à wims comme une alternative. 
 
 Vous devez mettre un code html valide, il ne sera pas vérifié et

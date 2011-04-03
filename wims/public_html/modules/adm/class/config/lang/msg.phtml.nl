@@ -30,7 +30,7 @@ Of U hebt een verkeerd bestand gestuurd of het backup archief zelf is corrupt.
 
 !if empty_file iswordof $error
 Er is geen backup archief aangetroffen in uw bestand 
-<tt>$wims_deposit</tt>.
+<tt class="wims_fname">$wims_deposit</tt>.
  !exit
 !endif
 

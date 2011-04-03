@@ -25,11 +25,11 @@ una subcadena de caracteres del nombre de la estación de trabajo o de su número 
 <small><b>Sugerencia.</b> En el campo `sitios admitidos', puede imponer una
  restricción en el tiempo disponible para el registro de las notas añadiendo 
  las palabras
- <font color="blue"><b>
- <tt>&gt;aaaammdd.hh:mm</tt></b></font>
+ <tt class="wims_code_words">
+&gt;aaaammdd.hh:mm</tt>
  (inicio) y/o
- <font color="blue"><b>
- <tt>&lt;aaaammdd.hh:mm</tt></b></font>
+ <tt class="wims_code_words">
+&lt;aaaammdd.hh:mm</tt>
  (fin). Las fechas y horas deben indicarse en tiempo local del SERVIDOR,
  y estas palabras deben estar separadas unas de otras por espacios.
  </small>

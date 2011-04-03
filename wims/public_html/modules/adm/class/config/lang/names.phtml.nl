@@ -34,7 +34,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
  !set name_namefile=Geef de naam van het backup archief
  !set name_help=Er wordt gevraagd naar de specifiek te herstellen onderdelen van uw klas.
 
- !set name_deposit=!nosubst Het backup archief <tt>$wims_deposit</tt> bevar de volgend onderdelen.\
+ !set name_deposit=!nosubst Het backup archief <tt class="wims_fname">$wims_deposit</tt> bevar de volgend onderdelen.\
  Geef aan welke items moeten worden gebruikt voor het herstel van uw klas.
  
  !set name_no_restore=De herstelprocedure wordt afgebroken: er is gedeeld materiaal van een andere klas aanwezig.\
@@ -42,7 +42,7 @@ into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
  !distribute lines Er is niets geselecteerd voor het herstel.\
  Herstel alles behalve de klas configuratie en het supervisor account.\
- <font color="red">Opgelet !</font> <small>Zie opmerkingen hieronder.</small>\
+ <span class="wims_warning">Opgelet !</span> <small>Zie opmerkingen hieronder.</small>\
    Klas configuratie.\
    Supervisor account (inclusief uw wachtwoord)\
    Studenten accounts\
@@ -359,7 +359,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
 !if $job=authtype
  !set title=Ldap authentificatie
- !set name_intro_authtype=Kies <tt>ldap</tt> en vul dit formulier in \
+ !set name_intro_authtype=Kies <tt class="wims_code_words">ldap</tt> en vul dit formulier in \
   als u een ldap server gebruikt voor authentificatie.
  !goto commun
 !endif
@@ -505,7 +505,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color
 
 !set name_content_style = U kunt een algemeen stylesheet definieren\
-<br>(als <tt>$name_css</tt> op <tt>klas</tt> is gezet)&nbsp;:
+<br>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
 
 !set name_content_style2=of kopieer hier een css-stylesheet
 
@@ -527,8 +527,8 @@ wordt uw klas mogelijk onherstelbaar beschadigd.
  Een handmatige bijwerking van een backup archief wordt door het systeem niet toegestaan.
 
 <li> Indien mogelijk vermijdt herstel van
-<font color="red">klas configuratie</font> en
-<font color="red">supervisor account</font>.
+<span class="wims_warning">klas configuratie</span> en
+<span class="wims_warning">supervisor account</span>.
 Fouten in deze bestanden maken uw klas stuurloos.
 
 <li> U kunt een backup archief gebruiken voor het snel installeren van een nieuwe klas.
@@ -595,7 +595,7 @@ Om deze mogelijkheid te gebruiken, schrijf naar de
 om een dergelijke voorziening te treffen.<br>
 En deze andere server moet uw server wel erkennen.
 De site manager kan hier leren hoe het een en ander  
- <tt>$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
+ <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> administratief geregeld moet worden)
  
 !exit
  

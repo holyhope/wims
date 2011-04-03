@@ -16,18 +16,18 @@ $name_importable.
 !if $newcnt1>0
  <p>$table_header
  <caption>$name_teaching</caption>
- $table_hdtr<th>$wims_name_Type<th>$wims_name_title<th><small>$wims_name_name</small>
- <th><small>$name_ressourceallowed</small>
- <th>$name_same_title<th>$wims_name_action
+ $table_hdtr<th>$wims_name_Type</th><th>$wims_name_title</th><th><small>$wims_name_name</small></th>
+ <th><small>$name_ressourceallowed</small></th>
+ <th>$name_same_title<th>$wims_name_action</th></tr>
  !for i=1 to $newcnt1
   !set l=!line $i of $newrec
   !set ll=!words2items $l
   $table_tr
-  <td align="center">$(name_$(rtype$i))
-  <td align="center">$(rname$i)
-  <td align="center"><small>$(rName$i)</small>
-  <td align="center">$(rcnt$i)
-  <td align="center">$(code$(rcode$i))
+  <td align="center">$(name_$(rtype$i))</td>
+  <td align="center">$(rname$i)</td>
+  <td align="center"><small>$(rName$i)</small></td>
+  <td align="center">$(rcnt$i)</td>
+  <td align="center">$(code$(rcode$i))</td>
   <td align="center">
   !if $(rstat$i)=0 or $(rcnt$i)=0
    !if $(rcnt$i)=0
@@ -44,6 +44,7 @@ $name_importable.
     !href cmd=reply&job2=import2&import=$ll&impmethod=replace&replace=$(rmine$i) $name_replace
    !endif
   !endif
+  </td></tr>
  !next i
  $table_end
 !endif
