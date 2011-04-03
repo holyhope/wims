@@ -11,21 +11,21 @@
  !next f
  <p>
  !form reply
- <input type=hidden name="job2" value=erase>
+ <input type="hidden" name="job2" value="erase">
  Borrar un fichero:
  !formselect job2 list $flist
- <input type=submit value="$wims_name_erase">
+ <input type="submit" value="$wims_name_erase">
  </form>
  <p>
  Se puede acceder a los ficheros del documento usando la 
-variable <tt>\filedir</tt> en el documento. Por ejemplo
+variable <tt class="wims_code_variable">\filedir</tt> en el documento. Por ejemplo
 <p><center>
- <tt>&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <tt class="wims_address">&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
  proporciona un enlace al fichero <a href="$m_filedir/$f1">$f1</a>.
  También puede escribir
 <p><center>
- <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+ <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </center> <p>
 para incluir un fichero de imagen <tt>myfile.jpg</tt> en la página.
  <p>
@@ -60,7 +60,7 @@ Ask to open WIMS document $doc
  que borre este documento por usted.
 !exit
 :erase2
-<font color="red"><b>ATENCIÓN</b>!!</font> 
+<span class="wims_warning">ATENCIÓN!!</span> 
 ¡Una vez borrados los documentos no se pueden recuperar!
 <p>
 ¿Está seguro de que quiere borrar el documento <font color="red"><b>$tit</b></font>?

@@ -14,22 +14,22 @@
  !next f
  <p>
  !form reply
- <input type=hidden name="job2" value=erase>
+ <input type="hidden" name="job2" value="erase">
  Verwijder een bastand&nbsp;:
  !formselect job2 list $flist
- <input type=submit value="$wims_name_erase">
+ <input type="submit" value="$wims_name_erase">
  </form>
  <p>
  Bestanden kunnen worden opgeroepen in een document door de variabele
- <tt>\filedir</tt>. 
+ <tt class="wims_code_variable">\filedir</tt>. 
  Bijvoorbeeld,
 <p><center>
- <tt>&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <tt class="wims_address">&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
  geeft de link naar het bestand <a href="$m_filedir/$f1">$f1</a>.
  Er kan ook worden geschreven:
 <p><center>
- <tt>&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
+ <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </center> <p>
 om het plaatje <tt>myfile.jpg</tt> te verwerken in de pagina.
  <p>
@@ -53,7 +53,7 @@ Als schrijver van dit document moet u  toestemming aan de
 !exit
  
 :erase2
-<font color=red><b>WAARSCHUWING</b>!!</font> Er is hier geen "undelete", 
+<span class="wims_warning">WAARSCHUWING !!</span> Er is hier geen "undelete", 
 dus weg is weg&nbsp;!
 <p>
 Weet u zeker dat het document<font color="red"><b>$tit</b></font>&nbsp; moet worden verwijderd ?
