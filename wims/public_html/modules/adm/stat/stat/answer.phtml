@@ -13,56 +13,59 @@ $name_number_visits $name_from $date1 $name_to $date2
 ($name_sum).
  !set wims_print_precision=4
  $table_header
- $table_hdtr<th>$name_cnt<th>$name_total<th>$name_avgday
+ $table_hdtr<th>$name_cnt</th><th>$name_total</th><th>$name_avgday</th>
  !if $laps>$week_min
-  <th>$name_avgweek
+  <th>$name_avgweek</th>
   !if $laps>$month_min
-   <th>$name_avgmonth
+   <th>$name_avgmonth</th>
    !if $laps>$year_min
-    <th>$name_avgyear
+    <th>$name_avgyear</th>
    !endif
   !endif
  !endif
- <th>$name_avgsite
- $table_tr<th bgcolor="$table_bgcolor">$name_Requests
-   !htmlmath <td align="right">$[$total_click]
-   !htmlmath <td align="right">$[rint($total_click/$laps)] 
+ <th>$name_avgsite</th></tr>
+ $table_tr<th bgcolor="$table_bgcolor">$name_Requests</th>
+   !htmlmath <td align="right">$[$total_click]</td>
+   !htmlmath <td align="right">$[rint($total_click/$laps)] </td>
    !if $laps>$week_min
-    !htmlmath <td align="right">$[rint($total_click*7/$laps)] 
+    !htmlmath <td align="right">$[rint($total_click*7/$laps)] </td>
     !if $laps>$month_min
-     !htmlmath <td align="right">$[rint($total_click*30.4/$laps)] 
+     !htmlmath <td align="right">$[rint($total_click*30.4/$laps)]</td>
      !if $laps>$year_min
       !htmlmath <td align="right">$[rint($total_click*365.25/$laps)] 
      !endif
     !endif
    !endif
-   !htmlmath <td align="right">$[$total_click/$total_site] 
- $table_tr<th bgcolor="$table_bgcolor">$name_Sessions
-   !htmlmath <td align="right">$[$total_session]
-   !htmlmath <td align="right">$[rint($total_session/$laps)] 
+   !htmlmath <td align="right">$[$total_click/$total_site] </td>
+ </tr>
+ $table_tr<th bgcolor="$table_bgcolor">$name_Sessions</th>
+   !htmlmath <td align="right">$[$total_session]</td>
+   !htmlmath <td align="right">$[rint($total_session/$laps)] </td>
    !if $laps>$week_min
-    !htmlmath <td align="right">$[rint($total_session*7/$laps)] 
+    !htmlmath <td align="right">$[rint($total_session*7/$laps)] </td>
     !if $laps>$month_min
-     !htmlmath <td align="right">$[rint($total_session*30.4/$laps)] 
+     !htmlmath <td align="right">$[rint($total_session*30.4/$laps)]</td> 
      !if $laps>$year_min
-      !htmlmath <td align="right">$[rint($total_session*365.25/$laps)] 
+      !htmlmath <td align="right">$[rint($total_session*365.25/$laps)]</td>
      !endif
     !endif
    !endif
-   !htmlmath <td align="right">$[$total_session/$total_site] 
- $table_tr<th bgcolor="$table_bgcolor">sites
-   !htmlmath <td align="right">$[$total_site]
-   !htmlmath <td align="right">$[rint($total_site/$laps)] 
+   !htmlmath <td align="right">$[$total_session/$total_site]</td>
+   </tr>
+ $table_tr<th bgcolor="$table_bgcolor">sites</th>
+   !htmlmath <td align="right">$[$total_site]</td>
+   !htmlmath <td align="right">$[rint($total_site/$laps)] </td>
    !if $laps>$week_min
-    !htmlmath <td align="right">$[rint($total_site*7/$laps)] 
+    !htmlmath <td align="right">$[rint($total_site*7/$laps)]</td>
     !if $laps>$month_min
-     !htmlmath <td align="right">$[rint($total_site*30.4/$laps)] 
+     !htmlmath <td align="right">$[rint($total_site*30.4/$laps)] </td>
      !if $laps>$year_min
-      !htmlmath <td align="right">$[rint($total_site*365.25/$laps)] 
+      !htmlmath <td align="right">$[rint($total_site*365.25/$laps)]</td> 
      !endif
     !endif
    !endif
-   <td align="right">1
+   <td align="right">1</td>
+   </tr>
  $table_end
 <p>
 $wims_name_Explanations. $name_explanations
@@ -80,16 +83,17 @@ $wims_name_Explanations. $name_explanations
  $table_header
  <caption>$wims_name_statdetail
   ($name_from $day1/$month1/$year1 $name_to $day2/$month2/$year2)</caption>
- $table_hdtr<th>$wims_name_name<th>
+ $table_hdtr<th>$wims_name_name</th><th>
  !item $module_type of $name_prompt
  !if $module_type!=2
   !for i=1 to $langcnt
    !set l=!word $i of $wims_site_languages
-   <th><img src="gifs/$l.gif" alt=$l>
+   <th><img src="gifs/$l.gif" alt="$l"></th>
   !next i
-  <th>$name_installed
-  <th>$name_avghebdo
+  <th>$name_installed</th>
+  <th>$name_avghebdo</th>
  !endif
+ </tr>
  !for i=1 to $modulecnt
   !set l=!line $i+1 of $stat_out
   !set c=!word 1 of $l
@@ -113,6 +117,7 @@ $wims_name_Explanations. $name_explanations
    !set tt=!word $j+3 of $l
    !set t$j=$[$(t$j)+$tt]
    !htmlmath $[$tt]
+   </td>
   !next j
   <td>
   !set d=!word 2 of $l

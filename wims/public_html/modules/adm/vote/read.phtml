@@ -88,19 +88,18 @@ to $wims_menu_items
    !if /supervisor/ notin $c/
     <p>$i-
     !item $c of $(chlist$i)
- <br> <tt>
+ <br> <pre>
     !for u in $(votes_$(i)_$c)
      !if $vote_option=nominative
       !set U=!translate internal / to , in $u
       !readproc adm/class/userdef classes,$U
       !defof user_lastname, user_firstname in $userdef
        ($u)
-       <br>
      !else 
        ($u) 
      !endif
     !next u
-   </tt>
+   </pre>
    !endif
   !next c
  !next i
