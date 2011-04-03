@@ -1,21 +1,21 @@
 !goto $wims_read_parm
 
 :dellevel
-<font color="red"><b>WAARSCHUWING</b>.</font> 
+<span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
-En <font color="red">ALLES</font> op dit leerniveau wordt
-<font color="red">DEFINITIEF</font> verwijderd: 
-klassen, lesprogramma's , cursussen , studenten , activiteiten , opgeslagen toetsen en alle scores !
+En <span class="wims_warning">ALLES</span> op dit leerniveau wordt
+<span class="wims_warning">DEFINITIEF</span> verwijderd: 
+klassen, lesprogramma's, cursussen, studenten, activiteiten, opgeslagen toetsen en alle scores !
 <p>
 Dit leerniveau verwijderen ?
 
 !exit
 
 :delclass
-<font color="red"><b>WAARSCHUWING</b>.</font> 
+<span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
-En <font color="red">ALLES</font> uit deze klas wordt 
-<font color="red">DEFINITIEF</font> verwijderd:
+En <span class="wims_warning">ALLES</span> uit deze klas wordt 
+<span class="wims_warning">DEFINITIEF</span> verwijderd:
 cursussen , studenten , activiteiten , opgeslagen toetsen en alle scores !
 <p>
 Deze klas verwijderen ?
@@ -24,10 +24,10 @@ Deze klas verwijderen ?
 
 :delprog
 
-<font color="red"><b>WAARSCHUWING</b>.</font> 
+<span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
-En <font color="red">ALLES</font> uit dit lesprogramma wordt 
-<font color="red">DEFINITIEF</font> verwijderd:
+En <span class="wims_warning">ALLES</span> uit dit lesprogramma wordt 
+<span class="wims_warning">DEFINITIEF</span> verwijderd:
 cursussen , activiteiten , opgeslagen toetsen en alle scores !
 <p>
 Dit lesprogramma verwijderen ?
@@ -36,11 +36,11 @@ Dit lesprogramma verwijderen ?
 
 :delcourse
 
-<font color="red"><b>WAARSCHUWING</b>.</font> 
+<span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
-En <font color="red">ALLES</font> uit deze cursus wordt 
-<font color="red">DEFINITIEF</font> verwijderd:
-deelnemers , activiteiten , opgeslagen toetsen en alle scores !
+En <span class="wims_warning">ALLES</span> uit deze cursus wordt 
+<span class="wims_warning">DEFINITIEF</span> verwijderd:
+deelnemers, activiteiten, opgeslagen toetsen en alle scores !
 <p>
 Deze cursus verwijderen ?
 
@@ -48,7 +48,7 @@ Deze cursus verwijderen ?
 
 :delteacher
 
-<font color="red"><b>WAARSCHUWING</b>.</font> 
+<span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
 <p>
 Moet het docenten account <tt>$del</tt> ($user_firstname
@@ -57,10 +57,10 @@ $user_lastname) worden verwijderd ?
 
 :deltest
 
-<font color="red"><b>WAARSCHUWING</b>.</font> 
+<span class="wims_warning">WAARSCHUWING</span>. 
 De gevolgen van deze handeling zijn onherroeplijk.
-En <font color="red">ALLES</font> uit deze testzone wordt 
-<font color="red">DEFINITIEF</font> verwijderd !
+En <span class="wims_warning">ALLES</span> uit deze testzone wordt 
+<span class="wims_warning">DEFINITIEF</span> verwijderd !
 <p>
 Deze testzone verwijderen ?
 !exit

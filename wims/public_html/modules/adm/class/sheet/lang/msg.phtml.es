@@ -36,7 +36,7 @@
 !endif
 
 !if $error=sharing_sheet
- <font color="red"><b>¡¡¡Peligro!!!</b></font>
+ <span class="wims_warning"><b>¡¡¡Peligro!!!</b></span>.
  ¡Sus hojas están siendo compartidas por otras clases!
  !if $wims_ismanager<2
   Deberá pedir al administrador del sitio que desactive la hoja

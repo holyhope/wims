@@ -2,9 +2,9 @@
 
 :dellevel
 
-<font color="red"><b>AVISO</b>.</font> ¡Esta operación es irreversible!
-¡Y <font color="red">TODO</font>
-lo que hay en este nivel será borrado <font color="red">DEFINITIVAMENTE</font>:
+<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+¡Y <span class="wims_warning">TODO</span>
+lo que hay en este nivel será borrado <span class="wims_warning">DEFINITIVAMENTE</span>:
 clases, programas, cursos, cuentas de alumnos, actividades, notas!
 <p>
 ¿Está seguro de querer borrar este nivel?
@@ -14,9 +14,9 @@ clases, programas, cursos, cuentas de alumnos, actividades, notas!
 
 :delclass
 
-<font color="red"><b>AVISO</b>.</font> ¡Esta operación es irreversible!
-¡Y <font color="red">TODO</font>
-lo que hay en esta clase será borrado <font color="red">DEFINITIVAMENTE</font>: 
+<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+¡Y <span class="wims_warning">TODO</span>
+lo que hay en esta clase será borrado <span class="wims_warning">DEFINITIVAMENTE</span>: 
 cursos, cuentas de alumnos, actividades, notas!
 <p>
 ¿Está seguro de querer borrar esta clase?
@@ -24,9 +24,9 @@ cursos, cuentas de alumnos, actividades, notas!
 !exit
 
 :delprog
-<font color="red"><b>AVISO</b>.</font> ¡Esta operación es irreversible!
-¡Y <font color="red">TODO</font>
-lo que hay en este programa será borrado <font color="red">DEFINITIVAMENTE</font>:
+<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+¡Y <span class="wims_warning">TODO</span>
+lo que hay en este programa será borrado <span class="wims_warning">DEFINITIVAMENTE</span>:
 cursos, actividades, notas!
 <p>
 ¿Está seguro de que quiere borrar este programa? 
@@ -34,9 +34,9 @@ cursos, actividades, notas!
 !exit
 
 :delcourse
-<font color="red"><b>AVISO</b>.</font> ¡Esta operación es irreversible!
-¡Y <font color="red">TODO</font>
-lo que hay en este curso será borrado <font color="red">DEFINITIVAMENTE</font>:
+<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+¡Y <span class="wims_warning">TODO</span>
+lo que hay en este curso será borrado <span class="wims_warning">DEFINITIVAMENTE</span>:
 cuentas de alumnos, actividades, notas!
 <p>
 ¿Está seguro de querer borrar este curso?
@@ -44,7 +44,7 @@ cuentas de alumnos, actividades, notas!
 !exit
 
 :delteacher
-<<font color="red"><b>AVISO</b>.</font> ¡Esta operación es irreversible!
+<<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
 <p>
 ¿Está usted seguro de que queire borrar la cuenta de profesor <tt>$del</tt>
 ($user_firstname $user_lastname)?
@@ -52,9 +52,9 @@ cuentas de alumnos, actividades, notas!
 !exit
 
 :deltest
-<font color="red"><b>AVISO</b>.</font> ¡Esta operación es irreversible!
-¡Y <font color="red">TODO</font>
-lo que hay en esta zona de pruebas será borrado <font color="red">DEFINITIVAMENTE</font>!
+<span class="wims_warning">AVISO</span>. ¡Esta operación es irreversible!
+¡Y <span class="wims_warning">TODO</span>
+lo que hay en esta zona de pruebas será borrado <span class="wims_warning">DEFINITIVAMENTE</span>!
 <p>
 ¿Está seguro de que quiere borrar la zona de pruebas?
 

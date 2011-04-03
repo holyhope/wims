@@ -13,7 +13,7 @@
  Deze tijden moeten worden aangegeven in de lokale tijd van deze SERVER,
  en moeten worden gescheiden door spaties.
  <br>
- Formaat van de tijden <tt>yyyymmdd.hh:mm</tt> (bij meerdere opties deze scheiden door spaties).
+ Formaat van de tijden <tt class="wims_code_words">yyyymmdd.hh:mm</tt> (bij meerdere opties deze scheiden door spaties).
 !exit
 
 :dependency
@@ -21,13 +21,13 @@
 Score drempels dit wil zeggen dat een deelnemer/leerling een bepaalde hoeveelheid punten <br>
 moet behalen voor dat de volgende som/opdracht uit het proefwerk bereikbaar wordt.<br>
 We noemen dit toets-type een "drempel toets".<br>
-Bijvoorbeeld:  <font color="blue"><tt>1:50,2:30,3+4+5:60</tt></font> wil zeggen dat<br>
+Bijvoorbeeld:  <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>wil zeggen dat<br>
 de leerling minimaal 50% goed moet hebben van opdracht 1, 30% van opdracht 2 en opdracht 3,4,5 samen gemiddeld minimaal 60%.
 !exit
 
 :options
 <center><b>Opties.</b></center>
-Er is op dit moment slechts &eacute;&eacute;n optie beschikbaar :
+Er is op dit moment slechts één optie beschikbaar :
 <ul>                                                                                                                                
 <li><em>autogen</em><br>
 Alleen voor experts en voor het handmatig bijwerken van score resultaten.<br>

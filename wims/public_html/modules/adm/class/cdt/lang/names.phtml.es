@@ -38,10 +38,10 @@
   !set name_nodeposit=No pueden depositar más fichero ya que su contenido es muy cercano de, \
   o sobrepasó, el límite de espacio disco autorizado. Afligido.
   !set name_explanation1=!nosubst Estos ficheros son accesibles con ayuda de la variable\
-  <tt>\filedir</tt>. \
+  <tt class="wims_code_variable">\filedir</tt>. \
   Por ejemplo,\
   <p><center>\
- <tt>&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
+ <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>\
  </center> <p>\
  crea un vínculo hacia el fichero <a href="$m_filedir/$f1">$f1</a>.\
  Pueden también escribir
