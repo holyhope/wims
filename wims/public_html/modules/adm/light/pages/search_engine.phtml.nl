@@ -56,9 +56,9 @@ De interne zoekmachine zoekt naar materiaal in alle beschikbare talen.
 Wanneer er in meerdere talen materiaal is gevonden voor de zoekopdracht,
 worden de treffers getoond met in onderstaande prioriteiten volgorde: 
 <ol>
-<li>materiaal in de ingestelde zoektaal
-<li>materiaal in het engels
-<li>materiaal in een andere taal
+<li>materiaal in de ingestelde zoektaal</li>
+<li>materiaal in het engels</li>
+<li>materiaal in een andere taal</li>
 </ol>
 </p>
 !tail
