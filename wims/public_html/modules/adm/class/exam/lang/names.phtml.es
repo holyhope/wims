@@ -1,6 +1,4 @@
 !set lang_exists=yes
-!set classname=<b><font color="green">$wims_classname</font></b>\
--- <b><font color="green">$wims_institutionname</font></b>
 
 !set wims_name_mainpage=Página principal del examen
 !set name_title=Preparación del examen

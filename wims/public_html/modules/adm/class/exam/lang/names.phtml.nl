@@ -1,6 +1,4 @@
 !set lang_exists=yes
-!set classname=<b><font color="green">$wims_classname</font></b>\
- van <b><font color="green">$wims_institutionname</font></b>
 
 !set name_mainpage=Hoofdpagina van het proefwerk
 
