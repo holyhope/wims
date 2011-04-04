@@ -1,10 +1,5 @@
 !set lang_exists=yes
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
- 
-!set months=en,feb,mar,abr,may,jun,jul,ag,sept,oct,nov,dic
-
 !set module_title=Cambio de la contraseña
 
 !distribute line Elija el tipo de contraseña\

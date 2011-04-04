@@ -1,10 +1,5 @@
 !set lang_exists=yes
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- van <b><font color=green>$wims_institutionname</font></b>
- 
-!set months=Jan,Feb,Mar,Apr,Mei,Jun,Jul,Aug,Sept,Okt,Nov,Dec
-
 !set module_title=Verander hier de Wachtwoorden
 
 !distribute line Welk type wachtwoord\
