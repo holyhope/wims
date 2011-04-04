@@ -1,10 +1,5 @@
 !set lang_exists=yes
 
-!set classname=<b><font color="green">$wims_classname</font></b>\
- de <b><font color="green">$wims_institutionname</font></b>
-
-!!!set months=enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre
-
 !if $job=adddate
   !set cdt_subtitle=Añadir/modificar  una fecha
   !goto common
