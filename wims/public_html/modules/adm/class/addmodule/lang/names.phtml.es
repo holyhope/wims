@@ -1,8 +1,7 @@
 !set lang_exists=yes
 
-!set classname=$wims_classname - $wims_institutionname
-
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
+!read adm/lang/class_title.phtml.$modu_lang $wims_classname\
+$wims_institutionname
 
 !set wims_name_sheetcheck=Compruebe la hoja de trabajo
 !set wims_name_moduback=Vuelta al módulo

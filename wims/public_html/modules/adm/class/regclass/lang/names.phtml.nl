@@ -1,17 +1,12 @@
 !set lang_exists=yes
 
-!set name_institution=naam van het instituut
-!set name_description=naam van de klas
-!set name_supervisor=naam van de supervisor
-!set name_email=emailadres
-!set name_password=aanmeldings wachtwoord
-!set name_passsup=supervisor's wachtwoord
 !set levelid=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G,R
 !set leveldesc=Lagere school klas 1,Lagere school klas 2,Lagere school klas 3,Lagere school klas 4,Lagere school klas 5,Lagere school klas 6,Middelbare school klas 1,Middelbare school klas 2,Middelbare school klas 3,Middelbare school klas 4,Middelbare school klas 5,Middelbare school klas 6,Universiteit jaar 1,Universiteit jaar 2,Universiteit jaar 3,Universiteit jaar 4,Universiteit jaar 5,Graduate,Research
 
 !set nblevel=19
 !! !itemcnt $levelid
-!set classname=<b><font color=green>$description</font></b> van <b><font color=green>$institution</font></b>
+
+!read adm/lang/class_title.phtml.$modu_lang
 
 !if $Cltype iswordof 2 4
     !if $Cltype=2

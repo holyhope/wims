@@ -1,11 +1,5 @@
 !set lang_exists=yes
 
-!set name_institution=nombre del centro educativo
-!set name_description=nombre de la clase
-!set name_supervisor=nombre del profesor
-!set name_email=dirección de correo electrónico
-!set name_password=contraseña de la clase
-!set name_passsup=contraseña del profesor
 !set lev_E=educación primaria
 !set lev_H=educación secundaria
 !set lev_U=universidad
@@ -16,8 +10,7 @@
 !set leveldesc=$levelid
 !set nblevel=!itemcnt $levelid
 
-!set classname=<b><font color=green>$description</font></b>\
- de <b><font color=green>$institution</font></b>
+!read adm/lang/class_title.phtml.$modu_lang
 
 !if $Cltype iswordof 2 4
    !if $Cltype=2
