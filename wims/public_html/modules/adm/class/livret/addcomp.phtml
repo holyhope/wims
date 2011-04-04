@@ -1,6 +1,9 @@
 !!##!! language independant
+!read adm/lang/class_title.phtml.$moduclass_lang $wims_classname\
+$wims_institutionname
+
 !read adm/title.phtml 1\
-$wims_classname - $wims_institutionname\
+$classname\
 $livret_title\
 $name_job
 
@@ -12,14 +15,14 @@ $name_job
  !href cmd=reply&comp=$comp&job=delcomp $wims_name_delete
   ] :
   <ul>
-   <li>$name_title_comp: <input size=50 name="cf_title" value="$mem_title">.</li>
+   <li>$name_title_comp: <input size="50" name="cf_title" value="$mem_title">.</li>
    <li>$name_cnt_palier: 
     <select  name="cf_nbpalier" onchange="submit()">
     !for i=1 to $maxpalier
      !if $i=$mem_nbpalier
-      <option value=$i selected>$i</option>
+      <option value="$i" selected>$i</option>
      !else
-      <option value=$i>$i</option>
+      <option value="$i">$i</option>
      !endif
     !next i
     </select>

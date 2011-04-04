@@ -1,6 +1,8 @@
-!!##!! language independant
+!read adm/lang/class_title.phtml.$moduclass_lang $wims_classname\
+$wims_institutionname
+
 !read adm/title.phtml 1\
-$wims_classname - $wims_institutionname\
+$classname\
 $livret_title
 
 !if $usercnt==0
@@ -15,9 +17,9 @@ $livret_title
 <p></p>
 $table_header
  $table_hdtr
-   <th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
+   <th rowspan="2">$wims_name_lastname, $wims_name_firstname</th>
    !for k=1 to $livret_nbcomp
-    <th valign="middle" colspan=$(nbpalier_$k)>
+    <th valign="middle" colspan="$(nbpalier_$k)">
      !set wims_ref_title=$(title_$k)
      !href cmd=renew&job=addcomp&comp=$k $(name_icompetence)$k
      !set wims_ref_class=wims_button

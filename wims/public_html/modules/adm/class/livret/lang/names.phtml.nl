@@ -1,6 +1,4 @@
 !let lang_exists=yes
-!set classname=<b><font color=green>$wims_classname</font></b>\
- van <b><font color=green>$wims_institutionname</font></b>
 
 !read adm/lang/date.phtml.$lang
 

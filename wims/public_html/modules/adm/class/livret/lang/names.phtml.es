@@ -1,8 +1,6 @@
 !let lang_exists=yes
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
 
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
+!read adm/lang/date.phtml.$lang
 
 !distribute items Competencia,\
 competencia,\
