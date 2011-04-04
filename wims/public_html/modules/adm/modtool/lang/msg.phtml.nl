@@ -1,10 +1,10 @@
 !set wims_module_log=error: $error
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
  Vul het definitieveld 
- <b><em><font color="red">$(name_$empty_data)</font></em></b>
+ <span class="wims_warning">$(name_$empty_data)</span>
  van uw module in.
  !exit
 !endif

@@ -23,12 +23,12 @@ into name_test,name_warning, name_mostrecent,name_mostrecent2,name_morerecent,\
 !exit
 :update
 para cargar a distencia WIMS $pubversion de <tt>$download</tt> y poner al dia
-el servidor. <b><font color=red>$wims_name_warning</font></b> Eso creará
+el servidor. <span class="wims_warning">$wims_name_warning</span> Eso creará
 indisponibilidades momentáneas del servidor.
 <em>No ponen al día si el servidor está ocupado.</em>
 <p>
 <b>Note</b>. La actualización del servidor no modificará sus recursos locales
 (clases, ejercicios, documentos, módulos en desarrollo).
 <p>
-<b><font color="red">IMPORTANTE</font></b> ¡Deben comprobar
+<span class="wims_warning">IMPORTANTE</span>. ¡Deben comprobar
 los derechos sobre los ficheros después de las actualizaciones!

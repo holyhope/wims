@@ -56,7 +56,7 @@ Als schrijver van dit document moet u  toestemming aan de
 <span class="wims_warning">WAARSCHUWING !!</span> Er is hier geen "undelete", 
 dus weg is weg&nbsp;!
 <p>
-Weet u zeker dat het document<font color="red"><b>$tit</b></font>&nbsp; moet worden verwijderd ?
+Weet u zeker dat het document<tt class="wims_fname">$tit</tt>&nbsp; moet worden verwijderd ?
 !exit
 
 :public

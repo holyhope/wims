@@ -63,7 +63,7 @@ Ask to open WIMS document $doc
 <span class="wims_warning">ATENCIÓN!!</span> 
 ¡Una vez borrados los documentos no se pueden recuperar!
 <p>
-¿Está seguro de que quiere borrar el documento <font color="red"><b>$tit</b></font>?
+¿Está seguro de que quiere borrar el documento <tt class="wims_fname">$tit</tt>?
 
 !exit
 
