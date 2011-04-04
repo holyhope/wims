@@ -36,19 +36,19 @@
 
 :badcategory
  !if / isin $w2
-  La zone <tt class="wims_fname">$w2</tt> du module soumis est inconnue.
+  La zone <tt class="wims_code_words">$w2</tt> de votre module soumis est inconnue.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
-  Les catégories actuellement disponibles dans la zone <b><tt class="wims_fname">$(w0[1])</tt></b>
+  Les catégories actuellement disponibles dans la zone <b><tt class="wims_code_words">$(w0[1])</tt></b>
   sont&nbsp;:
-  <p>
-  <tt class="wims_fname">$w3</tt>
-  <p>
+  <pre>
+  $w3
+  </pre>
   Veuillez écrire au
   !mailurl $sysadmin gestionnaire de publication
   si vous voulez ajouter une nouvelle catégorie.
  !else
-  La zone <tt class="wims_fname">$w2</tt> du module soumis est inconnue. Veuillez
+  La zone <tt class="wims_code_words">$w2</tt> de votre module soumis est inconnue. Veuillez
   rapporter votre problème au
   !mailurl $sysadmin gestionnaire de publication
 .
@@ -65,13 +65,13 @@
 !exit
 
 :badlang
- Désolé mais la langue <tt>$w2</tt> n'existe pas encore sur WIMS. 
+ Désolé mais la langue <tt class="wims_code_words">$w2</tt> n'existe pas encore sur WIMS. 
  Quelqu'un doit d'abord traduire WIMS dans cette langue avant qu'un 
  module puisse être publié.
 !exit
 
 :badname
- Le nom du module <tt>$w2</tt> n'est pas bon : trop long, trop court, ou
+ Le nom du module <tt class="wims_fname">$w2</tt> n'est pas bon : trop long, trop court, ou
  caractères non-admis.
 !exit
 
@@ -91,7 +91,7 @@
 !exit
 
 :badversion
- La version <tt>$w2</tt> de votre module est mal formatée. Veuillez corriger.
+ La version <tt class="wims_code_words">$w2</tt> de votre module est mal formatée. Veuillez corriger.
 !exit
 
 :badwimsversion
@@ -102,8 +102,8 @@
 
 :doublelang
  Confusion dans la définition de langue du module : le fichier INDEX dit
- <tt>language=$w3</tt>, alors que l'adresse du module a une extension
- <tt>$w2</tt>. Veuillez corriger.
+ <tt class="wims_code_words">language=$w3</tt>, alors que l'adresse du module a une extension
+ <tt class="wims_code_words">$w2</tt>. Veuillez corriger.
 !exit
 
 :empty
@@ -151,7 +151,7 @@
 
 :noright
  Vous n'êtes pas reconnu comme l'auteur ou le traducteur de
- <tt>$w2</tt>. Vous pouvez envoyer un fichier de
+ <tt class="wims_fname">$w2</tt>. Vous pouvez envoyer un fichier de
  !href cmd=reply&jobreq=backup sauvegarde
  de votre modification à l'auteur
  !set au=!line 2 of $wims_read_parm
@@ -210,11 +210,11 @@ Vous devez changer la version du module dont vous faites une mise à jour
  pour être publiable sur ce serveur. 
  !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
  En effet, votre module étant déclaré comme un module d'exercices OEF,
-  son nom doit commencer par <tt class="wims_fname">oef</tt>.
+  son nom doit commencer par <tt class="wims_code_words">oef</tt>.
  !endif
  !if doc iswordof  $w1 $w2 $w3 $w4 $w5 $w6
   En effet, votre module étant déclaré comme un document,
-  son nom doit commencer par <tt class="wims_fname">doc</tt>.
+  son nom doit commencer par <tt class="wims_code_words">doc</tt>.
 !endif
   
 !exit

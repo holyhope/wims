@@ -36,19 +36,19 @@
 
 :badcategory                                                                                                                               
  !if / isin $w2                                                                                                                            
-  De zone <tt>$w2</tt> van uw module is hier onbekend.
+  De zone <tt class="wims_code_words">$w2</tt> van uw module is hier onbekend.
   !set w3=!word 3 to -1 of $wims_read_parm
   !set w0=!translate / to , in $w2
-  De huidige categorieen in de zone <b><tt>$(w0[1])</tt></b>
+  De huidige categorieen in de zone <b><tt class="wims_code_words">$(w0[1])</tt></b>
   zijn&nbsp;:
-  <p>
-  <tt>$w3</tt>
-  <p>
+  <pre>
+  $w3
+  </pre>
   Schrijf naar de
   !mailurl $sysadmin administrator dat U een nieuwe categorie 
   aan het WIMS systeem wilt toevoegen.
  !else
- De zone <tt>$w2</tt> van uw module is hier niet bekend. Rapporteer dit probleem aan de
+ De zone <tt class="wims_code_words">$w2</tt> van uw module is hier niet bekend. Rapporteer dit probleem aan de
  !mailurl $sysadmin administator
  van deze server
 .                                                                                                                                          
@@ -65,13 +65,13 @@
 !exit
 
 :badlang
- Helaas,  maar de taal <tt>$w2</tt> bestaat nog niet in WIMS.
+ Helaas, maar de taal <tt class="wims_code_words">$w2</tt> bestaat nog niet in WIMS.
  Iemand zal eerst WIMS moeten vertalen in $w2 , 
  voor dat deze modules kan worden gepubliceerd.
 !exit
 
 :badname
- De naam van module <tt>$w2</tt> is niet goed. 
+ De naam van module <tt class="wims_fname">$w2</tt> is niet goed. 
  Of te lang of te kort of bevat illegale karakters.
 !exit
 
@@ -91,7 +91,7 @@
 !exit
 
 :badversion
- Het versienummer <tt>$w2</tt> van uw module is niet juist geformateerd. Graag corrigeren.
+ Het versienummer <tt class="wims_code_words">$w2</tt> van uw module is niet juist geformateerd. Graag corrigeren.
 !exit
 
 :badwimsversion
@@ -102,7 +102,7 @@
 
 :doublelang
  Er zijn verschillen in de module taal definitie ontdekt: 
- de INDEX file declareert <tt>language=$w3</tt>, terwijl de directory de uitgang <tt>$w2</tt> heeft !
+ de INDEX file declareert <tt class="wims_code_words">language=$w3</tt>, terwijl de directory de uitgang <tt class="wims_code_words">$w2</tt> heeft !
  Corrigeren graag.
 !exit
 
@@ -118,7 +118,7 @@
 !exit
 
 :nochange
- De  module <font color=blue><tt>$w2</tt></font> is niet veranderd sinds de laatste keer dan U de module hebt opgestuurd.
+ De  module <tt class="wims_fname">$w2</tt> is niet veranderd sinds de laatste keer dan U de module hebt opgestuurd.
  De upload wordt dus genegeerd.
 !exit
 
@@ -150,7 +150,7 @@ Netwerkfout : kon geen verbinding maken met de centrale publicatie server $centr
 !exit
 
 :noright
- U bent niet geregistreerd als auteur of vertaler van <tt>$w2</tt>.
+ U bent niet geregistreerd als auteur of vertaler van <tt class="wims_fname">$w2</tt>.
  U kunt wel een 
  !href cmd=reply&jobreq=backup backup archief
  met uw veranderingen of verbeteringen doorsturen naar de schrijver
@@ -194,11 +194,11 @@ of
 .
 !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
 En omdat deze module gemaakt is als een OEF, 
-moet de naam te beginnen met <tt>oef</tt>.
+moet de naam te beginnen met <tt class="wims_code_words">oef</tt>.
 !endif
 !if doc iswordof  $w1 $w2 $w3 $w4 $w5 $w6
 En omdat deze module gemaakt is als een wims document , 
-moet de naam te beginnen met <tt>doc</tt>.
+moet de naam te beginnen met <tt class="wims_code_words">doc</tt>.
 !endif
 !exit
 
