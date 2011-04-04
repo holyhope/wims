@@ -337,10 +337,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
  name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
  
- !set name_warning=U kunt twee getallen vermelden in de tijdlimiet.\
- Het eerste getal geeft de tijd aan wanneer de score reductie begint.\
- Het tweede (grotere) getal geeft het tijdstip aan wanneer de score 0 moet worden.
-  
+ !set name_warning=!getdef name_remarkintro3 in oef/$lang/names
  !goto commun
 !endif
 

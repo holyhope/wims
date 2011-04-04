@@ -336,10 +336,7 @@ Permitir las indicaciones (si  disponibles). \
   into name_series,name_severity,name_chrono,name_secondes,name_qcm,\
     name_solution,name_prompt,name_prompt1,name_prompt2,name_prompt3,name_prompt4
 
-   !set name_warning=Para el límite de tiempo, pueden poner dos números en el cronómetro,un pequeño \
-límite seguido de uno mayor. En ese caso, el primer límite desencadena \
-la reducción del resultado, que será de 0 cuando se alcanza el segundo límite.
-
+!set name_warning=!getdef name_remarkintro3 in oef/$lang/names
 
  !goto commun
 !endif
