@@ -13,8 +13,6 @@
 !! !itemcnt $levelid
 !set classname=<b><font color=green>$description</font></b> van <b><font color=green>$institution</font></b>
 
-!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
-
 !if $Cltype iswordof 2 4
     !if $Cltype=2
 	!set name_classe=een groep klassen

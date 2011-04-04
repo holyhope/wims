@@ -19,8 +19,6 @@
 !set classname=<b><font color=green>$description</font></b>\
  de <b><font color=green>$institution</font></b>
 
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
-
 !if $Cltype iswordof 2 4
    !if $Cltype=2
     !set name_classe=agrupación de clases
