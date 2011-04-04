@@ -1,7 +1,4 @@
 !set lang_exists=yes
-
-!read adm/lang/class_title.phtml.$modu_lang $wims_classname\
-$wims_institutionname
  
 !set wims_name_sheetcheck=Bekijk dit Werkblad
 !set wims_name_moduback=Terug naar de module

@@ -1,10 +1,5 @@
 !set lang_exists=yes
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
-
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
-
 !set wims_name_otherscore= Las otras notas
 !set wims_name_back4=Descartar los cambios
 !set wims_name_addmanual=Añadir una columna
