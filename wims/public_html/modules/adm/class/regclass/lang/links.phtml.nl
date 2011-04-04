@@ -32,6 +32,6 @@
   Uw lesmateriaal staat daar voor hen ter beschikking
   <p>
  </ul>
- <p><b><font color=="red">Belangrijk.</font></b>
+ <p><span class="wims_warning">Belangrijk.</span>
  Bookmark deze links voordat U dit venster sluit !!<br>
- Het is ook handig het klassenummer  <font color=green>$code</font> even te noteren.
+ Het is ook handig het klassenummer  <tt class="wims_code_words">$code</tt> even te noteren.

@@ -38,8 +38,8 @@
  !endif
  <p>
  !form reply
-  <input type=hidden name="step" value=0>
-  Het wachtwoord: <input size=16 name="regpass" type=password>
+  <input type="hidden" name="step" value="0">
+  Het wachtwoord: <input size="16" name="regpass" type="password">
   <input type="submit" name="Envoyer" value="$wims_name_send">
  </form><p>
  Opmerking. Het wachtwoord voor het oprichten van klassen kan worden verkregen bij de 
@@ -50,11 +50,11 @@
   !form reply
   Geef hier het emailadres waar het wachtwoord naar verstuurd moet worden:
   <input type="text" name="adresse1" value="$adresse1" size="20">
-  <input type=hidden name="step" value=0>
+  <input type="hidden" name="step" value="0">
   !let nbaddr=!itemcnt $regpassmail
    !if $nbaddr=1
     <font size="+1">@$regpassmail</font>
-    <input type=hidden name="adresse2" value="$regpassmail">
+    <input type="hidden" name="adresse2" value="$regpassmail">
    !else
     @
     !formselect adresse2 list $regpassmail
@@ -78,12 +78,12 @@
  !endif
  <p>
  !form reply
-  <p><table border=0 cellspacing=5 summary="">
+  <p><table border="0" cellspacing="5" summary="">
     <tr><td align="right">
-    Geef de naam van uw account:</td><td><input size=20 name="regid"></td>
+    Geef de naam van uw account:</td><td><input size="20" name="regid"></td>
     </tr><tr><td align="right">
-    en het bijhorende wachtwoord:</td><td><input size=16 name="regpass" type=password>
-    <input type=submit value="OK"></td>
+    en het bijhorende wachtwoord:</td><td><input size="16" name="regpass" type="password">
+    <input type="submit" value="OK"></td>
     </tr></table>
  </form> <p>
  Opmerking: Schrijf naar de systeembeheerder of

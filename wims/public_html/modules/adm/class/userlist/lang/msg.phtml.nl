@@ -65,7 +65,7 @@ Dat werkblad/document bestaat niet.
 !endif
 
 !if bad_op=$error
-<font color="red"><b>Ongeldige bewerking.</b></font>
+<span class="wims_warning">Ongeldige bewerking</span>.
 Sluit dit venster.
 !exit 
 !endif

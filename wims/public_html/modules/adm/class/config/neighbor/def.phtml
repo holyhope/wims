@@ -1,5 +1,5 @@
 !read adm/title.phtml 3\
-$name_neighbor_relation $name_with <em><font color=blue>$nei_description</font></em> (<em><font color=blue>$nei_institution</font></em>)\
+$name_neighbor_relation $name_with <em><font color="blue">$nei_description</font></em> (<em><font color="blue">$nei_institution</font></em>)\
 ($wims_name_nameteacher: <a href="mailto:$nei_email?subject=Class neighboring relations">$nei_supervisor</a>)
 <p>
 <b>$name_neighbor_relation. </b> 
@@ -9,9 +9,9 @@ $name_neighbor_relation $name_with <em><font color=blue>$nei_description</font><
  
  <p>
 !if $wims_class notitemof $nei_sup,$nei_part and all notwordof $nei_sup $nei_part
- <em><font color=blue> $nei_description</font></em> $name_text1.
+ <em><font color="blue"> $nei_description</font></em> $name_text1.
 !else
- <em><font color=blue>$nei_description</font></em> $name_text2
+ <em><font color="blue">$nei_description</font></em> $name_text2
  !if ($wims_class isitemof $nei_sup and $wims_class isitemof $nei_part) or (all iswordof $nei_sup and all iswordof $nei_part)
    $n_n3.
  !else
@@ -27,7 +27,7 @@ $name_neighbor_relation $name_with <em><font color=blue>$nei_description</font><
 !form reply
 $name_accept
 !formselect nlevel from 0 to 3 prompt $wims_name_no, $n_n1, $n_n2, $n_n3
-<input type=submit value=$wims_name_tosave> 
+<input type="submit" value="$wims_name_tosave"> 
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=neibordecl $wims_name_help
@@ -45,7 +45,7 @@ $name_accept
 
  <p>$name_youcan
  !href cmd=reply&job2=import $name_import_resource
- $name_fromtheclass <em><font color=blue>
+ $name_fromtheclass <em><font color="blue">
 $nei_description</font></em>.
  <p>
 !endif
@@ -75,7 +75,7 @@ $nei_description</font></em>.
 !endif
 
 !if $nei isitemof $sharing_all
- $name_sharealready <em><font color=blue>
+ $name_sharealready <em><font color="blue">
 $nei_description</font></em>&nbsp;:<ul>
  !for r in $sharelist
   !if $(sharing_$r)=$nei
@@ -93,7 +93,7 @@ $nei_description</font></em>&nbsp;:<ul>
 !if $nei isitemof $n_sup and $sharablelist!=$empty
 <li>
  !form reply
- <input type=hidden name="changeshare" value=yes>
+ <input type="hidden" name="changeshare" value="yes">
 $name_chooseres: 
 &nbsp;
 !set wims_ref_class=wims_button_help
@@ -102,7 +102,7 @@ $name_chooseres:
  !set sh=!nospace $sharablelist
  !set sh=!replace , by , $$name_ in $$name_$sharablelist
  !formcheckbox mksharable list $sharablelist prompt $sh
- <input type=submit value="$wims_name_tosave">
+ <input type="submit" value="$wims_name_tosave">
  </form> <p>
 !if $nsharable!=$empty
 <p><b>$wims_name_warning</b>: $name_warning_authorized
