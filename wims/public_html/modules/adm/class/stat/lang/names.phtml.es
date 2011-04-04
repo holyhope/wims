@@ -1,12 +1,6 @@
 !set lang_exists=yes
-
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
- 
-!set months=en,feb,mar,abr,may,jun,jul,ag,sept,oct,nov,dic
-
-!distribute items Examen, Hoja\
-	into name_E, name_S
+!set name_E=!nosubst $wims_name_Examen
+!set name_S=!nosubst $wims_name_Sheet
 
 !set name_title=Estadísticas de actividad
 !distribute items Totales,puntos<br>requeridos,peso,índice de<br>dificultad,\

@@ -1,11 +1,6 @@
 !set lang_exists=yes
-
-!set classname=<b><font color=green>$wims_classname</font></b>\
- van <b><font color=green>$wims_institutionname</font></b>
- 
-!set months=Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec
-
-!distribute items Proefwerk,Werkblad into name_E, name_S
+!set name_E=!nosubst $wims_name_Examen
+!set name_S=!nosubst $wims_name_Sheet
 
 !set name_title=Statistische gegevens
 !distribute items Totaal,vereiste<br>punten,gewicht,moeilijkheids<br>graad,\
