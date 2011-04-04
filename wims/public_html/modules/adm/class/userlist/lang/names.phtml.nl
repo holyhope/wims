@@ -3,8 +3,6 @@
 !if $wims_read_parm!=
  !goto $wims_read_parm
 !endif
-
-!set classname=$wims_classname - $wims_institutionname
  
 !set months=Jan,Feb,Mar,Apr,Mei,Jun,Jul,Aug,Sept,Okt,Nov,Dec
 
