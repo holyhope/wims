@@ -4,11 +4,6 @@
   !goto $wims_read_parm
 !endif
 
-!set classname=<b><font color="green">$wims_classname</font></b>\
- de <b><font color="green">$wims_institutionname</font></b>
-
-!set months=En,Feb,Mar,Abr,May,Jun,Jul,Ag,Sept,Oct,Nov,Dic
-
 !set title=Configuración y Administración
 
 !distribute items encuestas,agenda,\

@@ -4,11 +4,6 @@
   !goto $wims_read_parm
 !endif
 
-!set classname=<b><font color="green">$wims_classname</font></b>\
- van <b><font color="green">$wims_institutionname</font></b>
-
-!set months=Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December
-
 !set title=Configuratie en Onderhoud
 
 !distribute items zones,studenten,oefeningen,documenten,docenten,werkbladen\
