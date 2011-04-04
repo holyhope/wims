@@ -1,10 +1,5 @@
 !set lang_exists=yes
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- de <b><font color=green>$wims_institutionname</font></b>
-
-!set months=enero,febrero,marzo,abril,mayo,junio,julio,agosto,septiembre,octubre,noviembre,diciembre
-
 !set name_title=Mensaje del día
 !set name_confirm=Confirme la destrucción ?
 !set name_erase1=Borrar el mensaje de la clase
