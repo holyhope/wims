@@ -3,9 +3,6 @@
 !read adm/lang/date.phtml.$moduclass_lang
 !read adm/lang/sheetexam.phtml.$lang
 
-!set classname=<b><font color=green>$wims_classname</font></b>\
- van <b><font color=green>$wims_institutionname</font></b>
-
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
