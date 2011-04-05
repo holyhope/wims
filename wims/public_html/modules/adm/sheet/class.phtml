@@ -8,8 +8,11 @@
 !if $sheet_docpage!=$empty
  !changeto docpage.phtml
 !endif
+!read adm/lang/class_title.phtml.$moduclass_lang $wims_classname\
+$wims_institutionname
+
 !read adm/title.phtml 1\
-$wims_classname - $wims_institutionname\
+$classname\
 $sheet_title\
 $name_title
 
@@ -27,7 +30,7 @@ $name_title
 !endif
 
 !if $sheet_active=2
- <p><b><font color="red">$wims_name_warning</font></b>
+ <span class="wims_warning">$wims_name_warning</span>.
  $name_student2
  </p>
 !endif
