@@ -49,6 +49,7 @@ public class Plinko extends JApplet implements Runnable, ActionListener, ChangeL
     int frame_x=600;
     int frame_y=600;
     int font_size=14;
+    int bin_height=100;
     String title="Binomial Distribution";
     String click_text="CLICK ANYWHERE TO BEGIN";
     String start_text="START";
@@ -66,6 +67,7 @@ public class Plinko extends JApplet implements Runnable, ActionListener, ChangeL
     String label_bin_probability="Bin Probability: ";
     String label_confidence="Confidence Interval: ";
     String some_text=" % of the balls landed in bin ";
+    String some_text2=" % of the balls landed in bins ";
     String through=" through ";
     String label_controls=" Controls ";
     String label_statistics="Statistics";
@@ -92,6 +94,8 @@ public class Plinko extends JApplet implements Runnable, ActionListener, ChangeL
 		if(s!=null && s.length()>0){title=s;}
 		s=getParameter("font_size");
 		if(s!=null && s.length()>0){font_size = Integer.parseInt(s, 10);}
+		s=getParameter("binheight");
+		if(s!=null && s.length()>0){bin_height = Integer.parseInt(s, 10);}
 
 	    }
 	}
@@ -114,6 +118,7 @@ public class Plinko extends JApplet implements Runnable, ActionListener, ChangeL
 		label_bin_probability="Kans per bakje: ";
 		label_confidence="Betrouwbaarheids interval: ";
 		some_text=" % van de ballen in bakje: ";
+		some_text2=" % van de ballen in bakje: ";
 		through=" t/m ";
 		String label_controls=" Menu ";
 		String label_statistics="Statistiek";
@@ -135,7 +140,8 @@ public class Plinko extends JApplet implements Runnable, ActionListener, ChangeL
 		label_probability="Probabilit\u00E9 : ";    
 		label_confidence="Intervalle de confiance : ";
 		some_text=" % de balles dans le panier ";
-		through=" through ";
+		some_text2=" % de balles dans les paniers ";
+		through=" \u00E0 ";
 		label_controls="Menu";
 		label_statistics="Statistiques";
 	    }
@@ -156,6 +162,7 @@ public class Plinko extends JApplet implements Runnable, ActionListener, ChangeL
 		label_probability="Wahrscheinlichkeit: ";    
 		label_confidence="Wahrscheinlichkeits Intervall: ";
 		some_text=" % der Kugeln fällt in Behälter ";
+		some_text2=" % der Kugeln fällt in Behälter ";
 		through=" bis ";
 		String label_controls=" Menu ";
 		String label_statistics="Statistik";

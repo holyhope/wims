@@ -44,6 +44,7 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 	static double[][] DYS;
 	// jm.evers: defining a few things
 	int maximum_balls;String start_number="0";int incr=1;
+	int BIN_HEIGHT;				// height of bins ****
 	
 	static Color[] COLORS = { Color.red, Color.magenta, Color.orange, Color.yellow, Color.green, Color.blue, Color.cyan };
 	/*  new Color(.45f,.40f,.86f), new Color(.36f,.53f,.95f),
@@ -92,6 +93,7 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 	addMouseListener( this );
 	// jm.evers: if the applet is in an wims exercise...read appletparam and start buckets_number with 1 instead of 0
 	maximum_balls=(int)plinko.total_balls - 1;
+	BIN_HEIGHT=(int)plinko.bin_height ; 
 	if(plinko.wims_exercise == false){ showstats = 1;}else{ start_number="1"; incr=2; }
     }
 
@@ -105,8 +107,8 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 		RIGHT = BINS;
 		PERCENT = 0;
 
-		if ( H-100-BOTTOM_MARGIN<W/2 ){
-			DIST = (double)(H-100-BOTTOM_MARGIN)/BINS;
+		if ( H-BIN_HEIGHT-BOTTOM_MARGIN<W/2 ){
+			DIST = (double)(H-BIN_HEIGHT-BOTTOM_MARGIN)/BINS;
 		} else {
 			DIST = (double)(W-10)/(2*BINS);
 		}
@@ -282,7 +284,7 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
     public void dropBall( boolean sound ){
 	BALL_COUNT++;
 	// jm.evers : I don't know of another/better way to get the system to stop at a given [param] number of balls...
-	if(COUNT == maximum_balls ){LimitReached();}
+	if(COUNT >= maximum_balls ){LimitReached();}
 	if ( FIRST_BALL == null ){
 	    FIRST_BALL = new PlinkoBall();
 	    FIRST_BALL.sound = sound;
@@ -443,7 +445,7 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 		    } 
 		    else 
 		    {
-			plinko.confidence.setText(plinko.label_confidence + (float)((double)(int)((100000D * PERCENT) / COUNT) / 1000D) + plinko.some_text + LEFT + plinko.through + RIGHT + ".");
+			plinko.confidence.setText(plinko.label_confidence + (float)((double)(int)((100000D * PERCENT) / COUNT) / 1000D) + plinko.some_text2 + LEFT + plinko.through + RIGHT + ".");
 		    }
 		} 
 		else
@@ -492,7 +494,7 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 			//Draw bar
 			h = HIST[i];
-			if (MAX>100) h=(int)(100.0*h/MAX);
+			if (MAX>BIN_HEIGHT) h=(int)(BIN_HEIGHT*1.0*h/MAX);
 			g.setColor( new Color(255,0,0,175) );
 			if ( i >= LEFT && i <= RIGHT ) g.setColor( new Color(0,255,0,175) );
 			rect = new Rectangle2D.Double(x0,H-h-BOTTOM_MARGIN,x1-x0,h);
@@ -536,23 +538,23 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 
 		String s;
-		backgroundgraphics.setFont( new Font("Helvetica",Font.BOLD,Math.min((int)(4*DIST)/3,50)) );
+		backgroundgraphics.setFont( new Font("Helvetica",Font.BOLD,Math.min((int)(4*DIST)/3,BIN_HEIGHT/2)) );
 		FontMetrics fm = backgroundgraphics.getFontMetrics();
 		// draw lines and numbers
 		p = PINS[BINS-1][0];
-		backgroundgraphics.draw( new Line2D.Double( p[0]-DIST,H-100-BOTTOM_MARGIN,p[0]-DIST,H-BOTTOM_MARGIN) );
+		backgroundgraphics.draw( new Line2D.Double( p[0]-DIST,H-BIN_HEIGHT-BOTTOM_MARGIN,p[0]-DIST,H-BOTTOM_MARGIN) );
 		backgroundgraphics.setColor( Color.darkGray );
-		backgroundgraphics.drawString(start_number,(int)(p[0] - fm.stringWidth("0")/2), H-100-BOTTOM_MARGIN+Math.min((int)(4*DIST)/3, 50) );
+		backgroundgraphics.drawString(start_number,(int)(p[0] - fm.stringWidth("0")/2), H-BIN_HEIGHT-BOTTOM_MARGIN+Math.min((int)(4*DIST)/3, BIN_HEIGHT/2) );
 		for (int i=0; i<BINS-1; i++){
 			p = PINS[BINS-2][i];
 			s = ""+(i+incr);
 			backgroundgraphics.setColor( Color.darkGray );
-			backgroundgraphics.drawString(s,(int)(p[0] + DIST - fm.stringWidth(s)/2),H-100-BOTTOM_MARGIN+Math.min((int)(4*DIST)/3,50));
+			backgroundgraphics.drawString(s,(int)(p[0] + DIST - fm.stringWidth(s)/2),H-BIN_HEIGHT-BOTTOM_MARGIN+Math.min((int)(4*DIST)/3,BIN_HEIGHT/2));
 			backgroundgraphics.setColor( Color.black );
-			backgroundgraphics.draw( new Line2D.Double( p[0],H-100-BOTTOM_MARGIN,p[0],H-BOTTOM_MARGIN) );
+			backgroundgraphics.draw( new Line2D.Double( p[0],H-BIN_HEIGHT-BOTTOM_MARGIN,p[0],H-BOTTOM_MARGIN) );
 		}
 		p = PINS[BINS-1][BINS-1];
-		backgroundgraphics.draw( new Line2D.Double(p[0]+DIST,H-100-BOTTOM_MARGIN,p[0]+DIST,H-BOTTOM_MARGIN) );
+		backgroundgraphics.draw( new Line2D.Double(p[0]+DIST,H-BIN_HEIGHT-BOTTOM_MARGIN,p[0]+DIST,H-BOTTOM_MARGIN) );
 		backgroundgraphics.draw( new Line2D.Double(0,H-BOTTOM_MARGIN,W,H-BOTTOM_MARGIN) );
 		repaint();
     }
@@ -633,7 +635,7 @@ public class PlinkoBoard extends JPanel implements Runnable, KeyListener, MouseL
 	requestFocus();
 	Point p = me.getPoint();
 	int bin;
-	if ( p.x + DIST> PINS[BINS-1][0][0] && p.x-DIST < PINS[BINS-1][BINS-1][0] && p.y> H-100-BOTTOM_MARGIN && p.y<H-BOTTOM_MARGIN){
+	if ( p.x + DIST> PINS[BINS-1][0][0] && p.x-DIST < PINS[BINS-1][BINS-1][0] && p.y> H-BIN_HEIGHT-BOTTOM_MARGIN && p.y<H-BOTTOM_MARGIN){
 	    bin = 0; 
 	    while ( bin<BINS-1 ){
 		if ( p.x + DIST < PINS[BINS-1][bin+1][0] ) break;
