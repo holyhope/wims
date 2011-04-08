@@ -1,30 +1,29 @@
 <html>
-    <body bgcolor=#ffffff onload="javascript:SetSize('TexApp');">
+    <body bgcolor=#0000ff onload="javascript:setTimeout('SetSize(\'TexApp\')',2000);">
         <script type="text/javascript">                                                 
-	
-	
-	
 	function remove(t){
 	    document.getElementById(t).width = 1;
 	    document.getElementById(t).height = 1;	
 	}
 	                                                       
     	function SetSize(t){                         
-	    var size = new Array(2);
-	    size = document.getElementById(t).getPrefferedSize();
-	    document.getElementById(t).width = size[0];
-	    document.getElementById(t).height = size[1];
-	    document.getElementById('showme').innerHTML='<hr><font color=red><b>preffered height = '+size[1]+'<br>preffered width = '+size[0]+'</b></font>';
-	    
-        } 
+	    var xsize,ysize;
+	    try{
+		xsize = document.getElementById(t).getPrefferedWidth();
+		ysize = document.getElementById(t).getPrefferedHeight();
+		document.getElementById(t).width = xsize;
+		document.getElementById(t).height = ysize;
+		document.getElementById('showme').innerHTML='<hr><font color=red><b>preffered height = '+xsize+'<br>preffered width = '+ysize+'</b></font>';
+	    }
+	    catch(e){
+	    	document.getElementById('showme').innerHTML='<hr><font color=red><b>Your browser does not support automatic resizing...</b></font>';
+	    }    
+    	
+	} 
     	function ReadApplet(t){                         
 	    var reply = document.getElementById(t).ReadApplet();
 	    document.getElementById('showme').innerHTML='<hr><font color=red><b>'+reply+'</b></font>';
         } 
-	
-	function ExtraInput(t){
-	    document.getElementById('TexApp').changeInputfields(t);
-	}
 	</script>
 	<div id="showme"></div>
 	<table ><tr valign=middle ><th>
@@ -33,21 +32,24 @@
 	</font>
 	</th>
 	<th>
-	<applet id="TexApp" codebase="dist" archive="TexApp.jar" code="TexApp.class" width="1" height="1">
-	    <param name="latex_bgcolor" value="#ffffff"><!-- r,g,b default white -->
-	    <param name="latex_fgcolor" value="#000000"><!-- r,g,b default black -->
-            <param name="latex" value="\left\{ \begin{array}{l} 4 \times \euro = \\ 4 \times \euro = \\ 4 \times \euro = \end{array} "> <!-- values, plain latex no ":" or ";" allowed -->                                
-	    <param name="latex_fontsize" value="18"><!-- r,g,b default black -->
-	    
-	    <!-- optional inputfield after the latex image -->
-	    <param name="status" value="done"><!-- string : wims variable $status  done/waiting -->
-	    <param name="inputfields" value="3"><!-- int : optional : default 0 : number of inputfields on top of eachother-->
+	<applet id="TexApp" codebase="dist" archive="TexApp.jar" code="TexApp.class" width="1" height="1"><!-- automatic resizing -->
+            <param name="latex0" value="#ffffff,\frac{4}{7} \cdot,#a0c0f0, \frac{3}{4} \: =\:,input,\:\approx\:,input">
+	    <param name="latex1" value="vspace"><!-- a blanc line : 50% of inputheight -->
+	    <param name="latex2" value="#00ccff"><!-- change latex fgcolor -->
+            <param name="latex3" value="\left[ \begin{array}{l} x = \frac{3}{4} \\ y = \frac{5}{6}\end{array}\right. \rightarrow \frac{x}{y} = ,input">
+	    <param name="latex4" value="#00af0f">
+            <param name="latex5" value="#ff00ff,\left\{ \begin{array}{l} x = \frac{3}{4} \\ y = \frac{5}{6} \\ z = \frac{\pi}{\sqrt{2}}\end{array}\right \rightarrow \frac{x}{y} = ,input,\rightarrow,#ffffff, z \cdot \frac{x}{y} = ,input">
+	    <!-- optional -->
+	    <param name="status" value="waiting"><!-- string : wims variable $status  done/waiting -->
+	    <param name="latex_bgcolor" value="0,0,255"><!-- rgb or #ffffff default white -->
+	    <param name="latex_fgcolor" value="255,0,0"><!-- rgb or #ffffff  default black -->
+	    <param name="latex_fontsize" value="18"><!-- rgb  or #ffffff  default black -->
 	    <param name="inputfield_width" value="120"><!-- int : default 10 : width in px of inputfield-->
-	    <param name="inputfield_height" value="120"><!-- optional int : default fontsize in px : height in px of inputfield-->
-	    <param name="inputfield_fontsize" value ="18"><!-- int : default 10 -->
-	    <param name="inputfield_bgcolor" value="0,0,255"><!-- r,g,b default white -->
-	    <param name="inputfield_fgcolor" value="255,0,0"><!-- r,g,b default black -->
-	    <param name="inputfield_editable" value="1,1,1"><!-- field 1 is editable, field 2 is editable... default all editable -->
+	    <param name="inputfield_height" value="40"><!-- optional int : default fontsize in px : height in px of inputfield-->
+	    <param name="inputfield_fontsize" value ="16"><!-- int : default 10 -->
+	    <param name="inputfield_bgcolor" value="0,0,255"><!-- rgb or #ffffff  default white -->
+	    <param name="inputfield_fgcolor" value="255,0,0"><!-- rgb or #ffffff  default black -->
+	    <param name="inputfield_editable" value="1,0,1"><!-- field 1 is editable, field 2 is not_editable... default all editable -->
 	    <param name="inputfield_values" value="12,44,"><!--  optional for correct answers: field 1 = "12", field 2 = "44" field3= "" field4 = "22" -->
 	    NO JAVA
 	</applet>
@@ -64,15 +66,16 @@
 	Or in WIMS:<br>
 	!set wims_html_onload=javascript:SetSize('TexApp');
 	<br>
+	This will probably not work for Opera browsers...
+	<br>
+	Safari on Windows will incorrectly scale the applet...
+	<br>
 	If the applet has a width &gt; 10 , no autoscaling is performed.
 	</font>
 	<br>
 	<input type="button" name="ReadApplet()" value="ReadApplet()" onclick="javascript:ReadApplet('TexApp');">
 	<input type="button" name="SetSize()" value="SetSize()" onclick="javascript:SetSize('TexApp');">
 	<input type="button" name="remove()" value="remove()" onclick="javascript:remove('TexApp');">
-	<br>
-	<input type="button" name="extra inputfield" value="extra inputfield" onclick="javascript:ExtraInput('1');">
-	<input type="button" name="remove inputfield" value="remove inputfield" onclick="javascript:ExtraInput('-1');">
     </body>
 </html>
 

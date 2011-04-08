@@ -33,15 +33,19 @@
     
 function SetTexAppSize(){
     if( document.getElementById('TexApp1') ){ // starts with 1 !!!!
-	var p = 1;var size = new Array(2);
+	var p = 1;var xsize,ysize;
 	while ( document.getElementById('TexApp'+p) ){
     	    try{
-    		size = document.getElementById('TexApp'+p).getPrefferedSize();                                                                   
-		document.getElementById('TexApp'+p).width = size[0];                                                                             
-    		document.getElementById('TexApp'+p).height = size[1];
+    		xsize = document.getElementById('TexApp'+p).getPrefferedWidth();
+    		ysize = document.getElementById('TexApp'+p).getPrefferedHeight();
+		document.getElementById('TexApp'+p).width = xsize;                                                                             
+    		document.getElementById('TexApp'+p).height = ysize;
 		p++;
-	    }catch(e){return;}// problems on opera/safari
-	} 
+	    }catch(e){setAlarm("Your browser does not support resizing of the applet.<br>Opera is known to have some trouble with this.<br>Firefox,Internet Explorer,Google-chrome<br>or even Safari may be a good choice.");return;}// problems on opera (bug)
+	}
+	if(document.getElementById('wait_for_applet')){
+	    document.getElementById('wait_for_applet').style.display = "none"; 
+	}
     }                                                 
 }
 

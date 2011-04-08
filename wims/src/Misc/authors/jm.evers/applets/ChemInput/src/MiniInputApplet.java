@@ -67,7 +67,8 @@ Example:
 
 See "Schaersvoorde chemistry" WIMS modules for detailed usage 
 
-11/2010: added \rightleftharpoons arrow type
+3/2011  : removed depreciated keyUp()
+11/2010 : added \rightleftharpoons arrow type
 */
 
 import java.applet.Applet;
@@ -127,10 +128,10 @@ public class MiniInputApplet extends Applet implements  KeyListener,MouseListene
 	Color a = new Color(R1,G1,B1,alpha);
 	return a;                                                                                                           
     }
-
-     public boolean keyUp(Event event, int key){                                                                         
-        return true;                                                                                                    
-    } 
+    
+    public boolean processKeyEvent(KeyEvent e, int key){
+	return true;
+    }
     
     public String ReadLatex(){
 	String reply = MakeLaTeX();

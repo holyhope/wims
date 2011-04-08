@@ -21,20 +21,21 @@ Example:
 	                                                       
     	function SetSize(t){                         
 	    var size = new Array(2);
-	    size = document.getElementById(t).getPrefferedSize();
-	    document.getElementById(t).width = size[0];
-	    document.getElementById(t).height = size[1];
-	    document.getElementById('showme').innerHTML='<hr><font color=red><b>preffered height = '+size[1]+'<br>preffered width = '+size[0]+'</b></font>';
-	    
-        } 
+	    try{
+		size = document.getElementById(t).getPrefferedSize();
+		document.getElementById(t).width = size[0];
+		document.getElementById(t).height = size[1];
+		document.getElementById('showme').innerHTML='<hr><font color=red><b>preffered height = '+size[1]+'<br>preffered width = '+size[0]+'</b></font>';
+	    }
+	    catch(e){
+	    	document.getElementById('showme').innerHTML='<hr><font color=red><b>Your browser does not support automatic resizing...</b></font>';
+	    }    
+    	
+	} 
     	function ReadApplet(t){                         
 	    var reply = document.getElementById(t).ReadApplet();
 	    document.getElementById('showme').innerHTML='<hr><font color=red><b>'+reply+'</b></font>';
         } 
-	
-	function ExtraInput(t){
-	    document.getElementById('TexApp').changeInputfields(t);
-	}
 	</script>
 	<div id="showme"></div>
 	<table ><tr valign=middle ><th>
@@ -43,24 +44,24 @@ Example:
 	</font>
 	</th>
 	<th>
-	<applet id="TexApp" codebase="build" archive="DragStuff.jar" code="TexApp.class" width="1" height="1">
-            <param name="latex" value="\left\{ \begin{array}{l} 4 \times \euro = \\ 4 \times \euro = \\ 4 \times \euro = \end{array} "> <!-- values, plain latex no ":" or ";" allowed -->                                
-
-	    <!-- optional -->
+	<applet id="TexApp" codebase="dist" archive="TexApp.jar" code="TexApp.class" width="1" height="1"><!-- automatic resizing -->
+	    <param name="latex0" value="#ffffff,\frac{4}{7} \cdot,#a0c0f0, \frac{3}{4} \: =\:,input,\:\approx\:,input">  
+	    <param name="latex1" value="vspace"><!-- a blanc line : 50% of inputheight -->
+	    <param name="latex2" value="#00ccff"><!-- change latex fgcolor --> 
+            <param name="latex2" value="\left[ \begin{array}{l} x = \frac{3}{4} \\ y = \frac{5}{6}\end{array}\right. \rightarrow \frac{x}{y} = ,input">
+            <param name="latex3" value="\left\{ \begin{array}{l} x = \frac{3}{4} \\ y = \frac{5}{6} \\ z = \frac{\pi}{\sqrt{2}}\end{array}\right. \rightarrow \frac{x}{y} = ,input,#ffffff,\rightarrow z \cdot \frac{x}{y} = ,input">
+	    <!-- optional : colors and sizes of latex/inputfields -->
+	    <param name="status" value="waiting"><!-- string : wims variable $status  done/waiting -->
 	    <param name="latex_bgcolor" value="0,0,255"><!-- rgb or #ffffff default white -->
 	    <param name="latex_fgcolor" value="255,0,0"><!-- rgb or #ffffff  default black -->
 	    <param name="latex_fontsize" value="18"><!-- rgb  or #ffffff  default black -->
-	    
-	    <!-- optional inputfield after the latex image -->
-	    <param name="status" value="done"><!-- string : wims variable $status  done/waiting -->
-	    <param name="inputfields" value="3"><!-- int : optional : default 0 : number of inputfields on top of eachother-->
 	    <param name="inputfield_width" value="120"><!-- int : default 10 : width in px of inputfield-->
-	    <param name="inputfield_height" value="120"><!-- optional int : default fontsize in px : height in px of inputfield-->
+	    <param name="inputfield_height" value="40"><!-- optional int : default fontsize in px : height in px of inputfield-->
 	    <param name="inputfield_fontsize" value ="18"><!-- int : default 10 -->
 	    <param name="inputfield_bgcolor" value="0,0,255"><!-- rgb or #ffffff  default white -->
 	    <param name="inputfield_fgcolor" value="255,0,0"><!-- rgb or #ffffff  default black -->
-	    <param name="inputfield_editable" value="1,1,1"><!-- field 1 is editable, field 2 is editable... default all editable -->
-	    <param name="inputfield_values" value="12,44,"><!--  optional for correct answers: field 1 = "12", field 2 = "44" field3= "" field4 = "22" -->
+	    <param name="inputfield_editable" value="1,0,1"><!-- field 1 is editable, field 2 is not_editable... default all editable -->
+	    <param name="inputfield_values" value="12,44,,22"><!--  optional for correct answers: field 1 = "12", field 2 = "44" field3= "" field4 = "22" -->
 	    NO JAVA
 	</applet>
 	</th>
@@ -76,15 +77,16 @@ Example:
 	Or in WIMS:<br>
 	!set wims_html_onload=javascript:SetSize('TexApp');
 	<br>
+	This will probably not work for Opera browsers...                                                                                  
+        <br>                                                                                                                               
+        Safari on Windows will incorrectly scale the applet...
+	<br>
 	If the applet has a width &gt; 10 , no autoscaling is performed.
 	</font>
 	<br>
 	<input type="button" name="ReadApplet()" value="ReadApplet()" onclick="javascript:ReadApplet('TexApp');">
 	<input type="button" name="SetSize()" value="SetSize()" onclick="javascript:SetSize('TexApp');">
 	<input type="button" name="remove()" value="remove()" onclick="javascript:remove('TexApp');">
-	<br>
-	<input type="button" name="extra inputfield" value="extra inputfield" onclick="javascript:ExtraInput('1');">
-	<input type="button" name="remove inputfield" value="remove inputfield" onclick="javascript:ExtraInput('-1');">
     </body>
 </html>
 
@@ -111,71 +113,45 @@ public class TexApp extends Applet {
 	f2 = f1-2;
 	f3 = f1-4;
 	f4 = f1-6;
-	inputs = getInt("inputfields",0);
-	if(inputs > 0 ){ 
-	    inputwidth = getInt("inputfield_width",0);
-	}
-	Get_Latex();
-	if(inputs >0 ){ reinit();}
-	setBackground(latex_bgcolor);
-    }
-    
-    public void reinit(){
+	// set a few params
+	inputwidth = getInt("inputfield_width",0);
 	fontsize = getInt("inputfield_fontsize", 12);
 	inputheight = getInt("inputfield_height",fontsize);
-	int ygap = (int) ( ysize - inputs*inputheight)/(inputs+1);
-	if(ygap < 0){ 
-	    ygap = 0 ; 
-	    inputheight = (int) ysize / inputs;
-	}
 	if(fontsize > inputheight - 4){
 	    fontsize = inputheight - 4; if(fontsize < 6 ){ fontsize = 6;}
 	}
-    	myfont = new Font("Helvetica", 1, fontsize);
-    	textfield_bgcolor = colorParam("inputfield_bgcolor", Color.white);
-        textfield_fgcolor = colorParam("inputfield_fgcolor", Color.black);
-    	getEditable("inputfield_editable");
-    	getValues("inputfield_values");
-    	inputfield = new TextField[inputs];
-	int ystart = ygap;
-    	for(int i = 0; i < inputs; i++){
-    	    inputfield[i] = new TextField(values[i],inputwidth);
-	    this.add(inputfield[i]);
-    	    inputfield[i].setFont(myfont);
-    	    inputfield[i].setBackground(textfield_bgcolor);
-    	    inputfield[i].setForeground(textfield_fgcolor);
-   	    inputfield[i].setBounds(xsize - inputwidth,ystart,inputwidth,inputheight);
-    	    inputfield[i].setEditable(editable[i]);
-    	    inputfield[i].setVisible(true);
-	    ystart = ystart + inputheight + ygap ;
-	}
-	repaint();
+	myfont = new Font("Helvetica", 1, fontsize);
+	textfield_bgcolor = colorParam("inputfield_bgcolor", Color.blue);
+    	textfield_fgcolor = colorParam("inputfield_fgcolor", Color.black);
+	getEditable("inputfield_editable",30);
+	getValues("inputfield_values",30);
+	Get_Latex();
+	setBackground(latex_bgcolor);
     }
+
     
-    public void changeInputfields(int p){ // javascript
-	if(inputs == 0){ return; } // no inputfields defined...no need to generate them
-	for(int k = 0;k < inputs; k++){
-	    this.remove(inputfield[k]);
-	}
-	inputs = inputs + p;
-	if(inputs < 1){inputs = 1;} 
-	reinit();
-    }
-    
-    public int[] getPrefferedSize(){ 
+    public int getPrefferedWidth(){ 
     // auto resize applet !
     // javascript reading preffered size of applet: use in wims_html_onload
     // only called if width_applet_tag < 10
-	prefferedsize = new int[2];
-	prefferedsize[0] = xsize;
-	prefferedsize[1] = ysize;
-	return prefferedsize;
+	return xsize;
+    }
+    public int getPrefferedHeight(){ 
+    // auto resize applet !
+    // javascript reading preffered size of applet: use in wims_html_onload
+    // only called if width_applet_tag < 10
+	return ysize;
     }
     
     public Color MakeTransparent(Color color, int i){
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), i);
     }
 
+    public Color DecodeColor(String s1 , Color color){
+	try{ color = Color.decode( s1 );}catch(Exception e){System.out.println("could not parse "+s1);}
+	return color;
+    }
+    
     public Color colorParam(String s, Color color){
         String s1 = getParameter(s);
         if(s1 != null && s1.length() != 0){
@@ -204,17 +180,17 @@ public class TexApp extends Applet {
         return color;
     }
 
-    public void getValues(String s){
+    public void getValues(String s, int inp){
         String s1 = getParameter(s);
-        values = new String[inputs];
-        for(int i = 0; i < inputs; i++){ values[i] = " ";}
+        values = new String[inp];
+        for(int i = 0; i < inp; i++){ values[i] = " ";}
 	if( s1 != null && s1.length() != 0){
 	    s1 = s1.replaceAll(":", ",");
 	    s1 = s1.replaceAll(";", ",");
 	    s1 = s1.replaceAll(",", " ,");
 	    StringTokenizer stringtokenizer = new StringTokenizer(s1, ",");
 	    int j = stringtokenizer.countTokens();
-    	    for(int k = 0; k < Math.min(j,inputs) ; k++){
+    	    for(int k = 0; k < Math.min(j,inp) ; k++){
         	values[k] = stringtokenizer.nextToken();
 	    }
 	}
@@ -230,21 +206,21 @@ public class TexApp extends Applet {
 	return false;
     }
 
-    public void getEditable(String s){
-        editable = new boolean[inputs];
+    public void getEditable(String s , int inp){
+        editable = new boolean[inp];
 	if( getStatus() ){ // status = done : no editing allowed
-    	    for(int i = 0; i < inputs; i++){ editable[i] = false ;}
+    	    for(int i = 0; i < inp; i++){ editable[i] = false ;}
 	}
 	else
 	{
     	    String s1 = getParameter(s);
-    	    for(int i = 0; i < inputs; i++){ editable[i] = true;}
+    	    for(int i = 0; i < inp; i++){ editable[i] = true;}
 	    if(s1 != null){
     		s1 = s1.replaceAll(":", ",");
     	        s1 = s1.replaceAll(";", ",");
     		StringTokenizer stringtokenizer = new StringTokenizer(s1, ",");
     	        int j = stringtokenizer.countTokens();
-		for(int k = 0; k < Math.min(inputs,j); k++)
+		for(int k = 0; k < Math.min(inp,j); k++)
     		{
 		    try{
         		String s2 = stringtokenizer.nextToken();
@@ -282,49 +258,193 @@ public class TexApp extends Applet {
         }
         return flag;
     }
+    
+    public String[] GrowStringArray(String[] array, int newlength){
+        String[] grow = new String[ newlength ];                                                                                                    
+        for(int i = 0; i < array.length; i++){
+    	    grow[i] = array[i];
+        }                                                                                                                                  
+        return grow;                                                                                                                       
+    }   
 
-    public void Get_Latex(){
-	String r1 = getParameter("latex");
-	if(r1 == null || r1.length() == 0){
-	    System.out.println("can not read parameter \"latex\"");
-	    r1="error_{parameter empty}";
-	}
-	StringTokenizer stringtokenizer_r = new StringTokenizer(r1, ",");
-	int j = stringtokenizer_r.countTokens();
-	Latex = new String[j];
-	icon = new BufferedImage[j];
-	Ylatex = new int[j];
-	for(int k = 0; k < j ;k++){                                                                                                        
-            Latex[k] = stringtokenizer_r.nextToken();
+    public int[] GrowIntArray(int[] array, int newlength){
+        int[] grow = new int[ newlength ];                                                                                                    
+        for(int i = 0; i < array.length; i++){
+    	    grow[i] = array[i];
+        }                                                                                                                                  
+        return grow;                                                                                                                       
+    }   
+
+    public BufferedImage[] GrowImageArray(BufferedImage[] array, int newlength){
+        BufferedImage[] grow = new BufferedImage[ newlength ];  
+        for(int i = 0; i < array.length; i++){
+    	    grow[i] = array[i];
         }
-	if(resize){
-	    int gap=0;
-	    int actualsize[] = new int[2];
-    	    for(int k = 0; k < j; k++){
-		sHotEqn shoteqn = new sHotEqn();
-	        shoteqn.setFontsizes(f1,f2,f3,f4);
-		shoteqn.setEquation(Latex[k]);
-		icon[k] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor,400,400, false, 1, 1, false);
-	        Ylatex[k] = ysize ;
-		actualsize = shoteqn.getActualSize();
-	        if(actualsize[0] > xsize){ xsize = actualsize[0]; }
-		ysize = ysize + actualsize[1] + gap;
-	        icon[k] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor, actualsize[0], actualsize[1], false, 1, 1, false);
+        return grow;                                                                                                                       
+    }   
+    
+    public TextField[] GrowTextFieldArray(TextField[] array, int newlength){
+        TextField[] grow = new TextField[ newlength ];                                                                                                    
+        for(int i = 0; i < array.length; i++){
+    	    grow[i] = array[i];
+        }
+
+	if(newlength > 29){
+	    getEditable("inputfield_editable",newlength);
+	    getValues("inputfield_values",newlength);
+	}
+        return grow;                                                                                                                       
+    }   
+    
+    public void Get_Latex(){
+	int linecnt = 0;
+	String r = getParameter("latex"+linecnt);
+	if(r == null || r.length() == 0){
+	    System.out.println("can not read parameter \"latex\"");
+	    return;
+	}
+	int max_icons=6; // just reasonable numbers: will be increased if nessecary
+	int max_inputs=6;
+	icon = new BufferedImage[max_icons];
+	Xlatex = new int[max_icons];
+	Ylatex = new int[max_icons];
+	inputfield = new TextField[max_inputs];
+	int Xinput[] = new int[max_inputs]; 
+	int icons = 0;
+	Xlatex[0] = 0;
+	Ylatex[0] = 0;
+	int tmp_xsize = 0;
+	int tmp_ysize = 0;
+	inputs = 0;
+	int actualsize[] = new int[2];
+	actualsize[0] = inputwidth;
+	actualsize[1] = inputheight;
+	String tmp;
+	int max_tmp_ysize = 0;
+	int min_tmp_ysize = 0;
+	int current_xsize = 0;
+	int token_cnt=0;
+	int line_icons=0;
+	int line_inputs=0;
+	while( r != null && r.length() != 0 ){
+	    if( icons >= max_icons){
+		icon = GrowImageArray(icon, icons+1);
+		Xlatex = GrowIntArray(Xlatex, icons+1);
+		Ylatex = GrowIntArray(Ylatex, icons+1);
+		max_icons = icons;
 	    }
-	    xsize = xsize + inputwidth;
+	    current_xsize=0;
+	    if(r.indexOf("input") != -1){ 
+		// images and inputfields on the same horizontal line 
+		// syntax \frac{2}{6}=,input
+		StringTokenizer stringtokenizer_r = new StringTokenizer(r, ",");
+		max_tmp_ysize = 0;
+		min_tmp_ysize = inputheight;
+		line_icons=icons;
+		line_inputs=inputs;
+		token_cnt =  stringtokenizer_r.countTokens();
+		for(int k = 0 ; k < token_cnt; k++){
+		    tmp = stringtokenizer_r.nextToken();
+		    if(tmp.equals("input")){
+			if(inputs >= max_inputs){
+			    inputfield = GrowTextFieldArray(inputfield, inputs+1);
+			    Xinput = GrowIntArray(Xinput,inputs+1);
+			    max_inputs = inputs;
+			}
+			Xinput[inputs] = current_xsize;
+			current_xsize = current_xsize + inputwidth;
+			inputs++;
+		    }
+		    else
+		    {
+			if(tmp.indexOf("#") == 0){// #a0a0e5 colorcode <param name="latex3" value="\pi,#a0f0a0,\alpha,#ff00ff,\beta">
+			    latex_fgcolor = DecodeColor(tmp,latex_fgcolor);
+			}
+			else
+			{ // processing latex images
+			    if( icons >= max_icons){
+				icon = GrowImageArray(icon, icons+1);
+			        Xlatex = GrowIntArray(Xlatex, icons+1);
+				Ylatex = GrowIntArray(Ylatex, icons+1);
+			        max_icons = icons;
+			    }
+			    sHotEqn shoteqn = new sHotEqn();
+			    shoteqn.setFontsizes(f1,f2,f3,f4);
+			    shoteqn.setEquation(tmp);
+			    icon[icons] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor,400,400, false, 1, 1, false);
+			    // make an image 400x400 : should be enough...
+			    actualsize = shoteqn.getActualSize();
+			    // find borders and remap
+			    icon[icons] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor, actualsize[0], actualsize[1], false, 1, 1, false);
+			    Xlatex[icons] = current_xsize;
+			    Ylatex[icons] = actualsize[1];
+			    current_xsize = current_xsize + actualsize[0];
+			    icons++;
+			    if(actualsize[1] > max_tmp_ysize){max_tmp_ysize = actualsize[1];}
+			    if(actualsize[1] < min_tmp_ysize){min_tmp_ysize = actualsize[1];}
+			}
+		    }
+		}
+		// trying to center around the line max_tmp_ysize/2
+		for( int i = line_icons  ; i < icons ;i++){
+		    Ylatex[i] = tmp_ysize + Math.abs((max_tmp_ysize - Ylatex[i])/2);
+		}
+		int corr = Math.abs((max_tmp_ysize - min_tmp_ysize)/2);
+		for( int i = line_inputs ; i < inputs ; i++){
+		    inputfield[i] = new TextField(values[i],inputwidth);
+		    inputfield[i].setFont(myfont);
+		    inputfield[i].setBackground(textfield_bgcolor);
+		    inputfield[i].setForeground(textfield_fgcolor);
+		    inputfield[i].setEditable(editable[i]);
+		    inputfield[i].setBounds(Xinput[i],tmp_ysize+corr-5,inputwidth,min_tmp_ysize+5);
+		    inputfield[i].setVisible(true);
+		    this.add(inputfield[i]);
+		}
+		if(current_xsize > tmp_xsize){ tmp_xsize = current_xsize;}
+		tmp_ysize = tmp_ysize + max_tmp_ysize;
+	    }
+	    else // no inputfield defined ; just lateximages
+	    {
+		if(r.equals("vspace")){
+		    tmp_ysize = (int) (tmp_ysize + inputheight/2);		
+		}
+		else
+		{
+		    if(r.indexOf("#") == 0){// #a0a0e5 colorcode for a new latex_fgcolor <param name="latex4" value="#ff00ff">
+			latex_fgcolor = DecodeColor(r,latex_fgcolor);
+		    }
+		    else
+		    { // this will have a single color...latex_fgcolor...it's too much trouble to alter :(
+			sHotEqn shoteqn = new sHotEqn();
+		        shoteqn.setFontsizes(f1,f2,f3,f4);
+			shoteqn.setEquation(r);
+		        icon[icons] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor,400,400, false, 1, 1, false);
+			// make an image 400x400 : should be enough...
+		        actualsize = shoteqn.getActualSize();
+			// find borders and remap
+		        icon[icons] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor, actualsize[0], actualsize[1], false, 1, 1, false);
+			Xlatex[icons] = 0;
+			Ylatex[icons] = tmp_ysize;
+			if(actualsize[0] > tmp_xsize){ tmp_xsize = actualsize[0];}
+			tmp_ysize = tmp_ysize + actualsize[1];
+			icons++;
+		    }
+		}
+	    }
+	    linecnt++;
+	    r = getParameter("latex"+linecnt);
+	}
+	if(resize){ // width / height are less then 10 px
+	    xsize = tmp_xsize; ysize = tmp_ysize;
+	    System.out.println("resizing appletwindow to "+tmp_xsize+"x"+tmp_ysize);
 	}
 	else
-	{
-    	    for(int k = 0; k < j; k++){
-		sHotEqn shoteqn = new sHotEqn();
-	        shoteqn.setFontsizes(f1,f2,f3,f4);
-		shoteqn.setEquation(Latex[k]);
-    	    	icon[k] = shoteqn.mkImage(latex_bgcolor, latex_fgcolor, xsize - inputwidth, ysize/j, false, 1, 1, false);
-	        Ylatex[k] = k*ysize/j ;
-	    }
+	{ // applet param width / height are set to "real values"
+	    if(tmp_xsize > xsize){System.out.println("ERROR: applet window is too small...increase appletparam \"width \" to "+tmp_xsize+" px");}
+	    if(tmp_ysize > ysize){System.out.println("ERROR: applet window is too small...increase appletparam \"height\" to "+tmp_ysize+" px");}
 	}
     }
-
+    
     public void paint(Graphics g)
     {
 	update(g);
@@ -334,7 +454,7 @@ public class TexApp extends Applet {
     {
 	for(int p = 0 ; p < icon.length ; p++)
 	{
-	    g.drawImage(icon[p],0,Ylatex[p],this);
+	    g.drawImage(icon[p],Xlatex[p],Ylatex[p],this);
 	}
     }
 
@@ -366,7 +486,7 @@ public class TexApp extends Applet {
 
     TextField inputfield[];
     public int[] prefferedsize;
-    public int inputs,Ylatex[],inputwidth=0,inputheight=0,xsize,ysize,fontsize,f1,f2,f3,f4;
+    public int inputs,Xlatex[],embed,Ylatex[],inputwidth=0,inputheight=0,xsize,ysize,fontsize,f1,f2,f3,f4;
     public Color textfield_bgcolor,textfield_fgcolor,latex_bgcolor,latex_fgcolor;
     public String Latex[],values[];;    
     boolean editable[],resize;

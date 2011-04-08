@@ -61,8 +61,8 @@ Example:
 </html>
 
 See "Schaersvoorde chemistry" WIMS modules for detailed usage 
-
-11/2010: added \rightleftharpoons arrow type
+3/2011  : removed depreciated keyUp()
+11/2010 : added \rightleftharpoons arrow type
 
 */
 
@@ -196,8 +196,8 @@ public class ChemInputApplet extends Applet implements ActionListener{
 	return a;                                                                                                           
     }
 
-     public boolean keyUp(Event event, int key){                                                                         
-        return true;                                                                                                    
+    public boolean processKeyEvent(KeyEvent e, int key){                                                                                   
+        return true;                                                                                                                       
     } 
     
     public synchronized void actionPerformed(ActionEvent evt){

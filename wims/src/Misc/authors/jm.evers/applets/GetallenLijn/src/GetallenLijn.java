@@ -58,12 +58,13 @@ try { y=symbols.eval(fun);} catch (SyntaxException e) {System.out.println("error
 
 
 import java.awt.*;
+import java.awt.event.*;
 import java.applet.*;
 import java.util.*;
 import org.javia.arity.*;
 
 
-public class GetallenLijn extends Applet {
+public class GetallenLijn extends Applet implements KeyListener{
     
     int xmax=100;int xmin=-100;
     int xmax_org=xmax;int xmin_org=xmin;
@@ -196,14 +197,13 @@ public class GetallenLijn extends Applet {
 	x_nul =(int) ((xmax-xmin)/2)*x_pix/(minmax); // x_nul is positie  op graphics in pixels
 	step=(double)x_pix/(minmax);
 	input.requestFocus();
-   }
-	
-
-    public boolean keyUp(Event event, int key){
+	input.addKeyListener(this);
 	prepare();
-	return true;
     }
-
+    public void keyPressed(KeyEvent e){}
+    public void keyTyped(KeyEvent e ){}
+    public void keyReleased(KeyEvent e){ prepare();}
+   
     public void prepare(){
 	inputtext=input.getText();
 	int len=inputtext.length();
@@ -326,16 +326,12 @@ public class GetallenLijn extends Applet {
 		tmp=Math.ceil(tmpsum/100);
 		xmax=100*(int)(tmp);
 	    }
+	    if(xmax == 0){xmax = 10;}
 	    xmin=-1*xmax;// let op nog steeds x=0 symmetrisch op x_pix/2
 	    repaint();
 	}
     }
         
-    public boolean action(Event event, Object currentTarget){
-	// enter ...not used for now
-	return true;
-    }
-
     public void paint(Graphics g){
 	step=(double)x_pix/(xmax - xmin);  
 	if(step == 0){step=1;}
@@ -387,10 +383,10 @@ public class GetallenLijn extends Applet {
 	Graphics2D g2 = (Graphics2D) g;
 	g2.setStroke( new BasicStroke(1.1f) );
 	g2.setColor(Color.black);
-	int t=0;int sc; 
+	int t=0;int sc;
 	int sc1=(int)(Math.abs(xmin));
 	int sc2=(int)(Math.abs(xmax));
-	if(sc1 > sc1){sc=sc1;}else{sc=sc2;}
+	if(sc1 > sc2){sc=sc1;}else{sc=sc2;}
 	int[] i=new int[3];
 	int[] s=new int[3];
 	s[0]=30;
