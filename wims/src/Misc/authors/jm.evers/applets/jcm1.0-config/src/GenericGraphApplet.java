@@ -822,7 +822,7 @@ public class GenericGraphApplet extends Applet implements ActionListener, ItemLi
          else
             frame.setSize((int)Math.round(frameSize[0]), (int)Math.round(frameSize[1]));
          frame.setLocation(50,50);
-         frame.show();
+         frame.setVisible(true);
          launchButton.setLabel("Close Window");
          launchButton.setEnabled(true);
       }

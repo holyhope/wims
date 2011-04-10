@@ -324,7 +324,7 @@ public class DataPlotApplet extends GenericGraphApplet implements ActionListener
                } );
             frame.pack();
             frame.setLocation(50,50);
-            frame.show();
+            frame.setVisible(true);
             launchButton.setLabel("Sluit Venster");
             launchButton.setEnabled(true);
          }

@@ -316,7 +316,8 @@ public class TableFunctionInput extends Panel
       if (index >= 0)
           pointList.replaceItem(str,index);
       else
-         pointList.addItem(str,newindex);
+// pointList.addItem(str,newindex);
+        pointList.add(str,newindex);
       deleteButton.setEnabled(pointList.getSelectedIndex() != -1);
       checkCanvas();
       if (onChange != null)

@@ -198,7 +198,7 @@ public class Evaluator extends Applet implements ActionListener {
                } );
             frame.pack();
             frame.setLocation(50,50);
-            frame.show();
+            frame.setVisible(true);
             launchButton.setLabel("Close Window");
             launchButton.setEnabled(true);
          }

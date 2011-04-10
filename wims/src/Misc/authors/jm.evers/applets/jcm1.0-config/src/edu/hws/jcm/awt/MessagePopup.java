@@ -92,7 +92,7 @@ public class MessagePopup implements ActionListener, ErrorReporter {
                popup.dispose();
             }
         });
-      popup.show();  // make the dialog visible.
+      popup.setVisible(true);  // make the dialog visible.
    }
 
    /**

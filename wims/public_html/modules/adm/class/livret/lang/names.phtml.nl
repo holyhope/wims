@@ -11,7 +11,7 @@ Prestatieniveaus,\
 prestatieniveau,\
 prestatieniveaus,\
 Alle,\
-vaardigheden boekje,\
+rapport,\
 into name_Competence,name_competence,name_Competences,name_competences,name_n_Palier,name_n_Paliers,name_n_palier,name_n_paliers,name_All,name_livret
 
 !set name_no_competence=Er staat geen enkele $name_competence vermeld in dit rapport !
@@ -34,8 +34,8 @@ van de klas,\
 minimale score voor dit onderdeel,\
 Gebruik kleuren om het prestatieniveau aan te geven,\
 Gebruik cijfers om het prestatieniveau aan te geven,\
-Show skill booklet to participant,\
-Show empty skill to participant,\
+De student mag het rapport inzien,\
+De student kan het rapport niet inzien,\
 into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_configtext3,name_configtext4,name_configtext5,name_configtext6,name_configtext7
 
 !!------------------------------- definition des noms de liens pour wims_menu_items
@@ -77,8 +77,8 @@ Rapport van $name_competences\
 !endif
 
 !if $job=save
- name_get=You can download the source file to get structure of your skill booklet \
-  for example to restore it in an other class.
- name_put=Write the address of a skill booklet archive file on your computer. The skills of the file \
- will be add to those already in your skill booklet.
+ name_get=U kunt de broncode van het rapportboek downloaden \
+ bijvoorbeeld om het in een andere klas te plaatsen.
+ name_put=Geef het adres van het backuparchief op uw computer.\
+ Het bestand zal worden toegevoegd aan het  bestaande rapport.
 !endif

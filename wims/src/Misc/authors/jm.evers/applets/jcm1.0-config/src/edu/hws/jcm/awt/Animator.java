@@ -598,7 +598,7 @@ public class Animator extends Panel
          catch (InterruptedException e) {
          }
          if (runner != null && runner.isAlive()) {
-            runner.stop();  // bad form, but what choice do I have?
+            runner.interrupt();  // bad form, but what choice do I have?
             runner = null;
          }
       }

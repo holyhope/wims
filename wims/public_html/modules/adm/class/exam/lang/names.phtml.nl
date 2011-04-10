@@ -90,7 +90,7 @@ into name_info,name_content,name_warning
 !let name_cpsheet1=U kunt alle oefeningen van werkblad toevoegen aan het proefwerk. Elke oefening krijgt gewicht 1 en de titel van de oorspronkelijke oefening. Of geef hier generieke titel aan
 
 !let name_cpsheet3=Generieke titel voor een oefening
-!let name_cpsheet4=les exercices seront numérotés
+!let name_cpsheet4=De oefeningen zijn genummerd
 
 !set name_warning_nonfinished=Je hebt nog niet alle opgaven uit dit proefwerk gemaakt. Wanneer je \
   er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt.\

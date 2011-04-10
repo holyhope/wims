@@ -118,9 +118,9 @@
 	    Data module,\
 	    Ontwikkeld op WIMS,\
 	    Publicatie centrum,\
-        Download centrum,\
+	    Download centrum,\
 	    Syntax,\
-        Meaning,\
+	    Uitleg,\
 	into wims_name_name,\
 	wims_name_iconabout,\
 	wims_name_module_infos,\
