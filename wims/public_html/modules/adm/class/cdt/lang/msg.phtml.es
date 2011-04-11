@@ -39,4 +39,3 @@
  Ya alcanzaron el número máximo de deberes que se pueden dar en dicha fecha.
 !exit
 
-!msg $error
