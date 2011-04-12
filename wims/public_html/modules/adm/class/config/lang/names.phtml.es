@@ -411,6 +411,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
 !if $job=list
   !distribute line Nombre del Centro\
     Nombre de la clase\
+    Class Number\
     Opciones\
     Cuenta Modtool \
     Bloqueo de conexión\
@@ -438,7 +439,7 @@ su clase. Este registro le permite comprobar si hay actividades sospechosas.
     Utilización actual del espacio de disco\
     el límite es\
     Mix\
-  into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
+  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\

@@ -411,6 +411,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 !if $job=list
   !distribute line Naam van het instituut\
     Naam van de klas\
+    Class number\
     Opties \
     Modtool Account\
     Beveiliging\
@@ -438,7 +439,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
     Huidige geheugen gebruik\
     De limiet\
     Mix\
-  into name_name_institution,name_name_class,name_optionword,name_devaccount,name_lock_level,\
+  into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
