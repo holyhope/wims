@@ -10,8 +10,6 @@
 !set leveldesc=$levelid
 !set nblevel=!itemcnt $levelid
 
-!read adm/lang/class_title.phtml.$modu_lang
-
 !if $Cltype iswordof 2 4
    !if $Cltype=2
     !set name_classe=agrupación de clases

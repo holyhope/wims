@@ -87,18 +87,17 @@ $name_title
  !goto end1
 !endif class=empty
 
-!read adm/lang/class_title.phtml.$modu_lang $description\
+!read adm/class/classname.phtml $description\
 $institution
 
 !if $password!=$empty and $passverify=$empty
  !if $cltype iswordof 2 4
   $name_classessss
-  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+  !href module=adm/class/classes&type=authparticipant&class=$class $classname
  !else
   $name_classessss
-  !href module=adm/class/classes&type=authparticipant&class=$class <b>$description</b>
+  !href module=adm/class/classes&type=authparticipant&class=$class $classname
  !endif
- (<b><font color="green">$institution</font></b>)
  !if $cltype iswordof 4 2
   $name_warning_protected
   !if $classcnt>0 

@@ -6,7 +6,6 @@
 !set nblevel=19
 !! !itemcnt $levelid
 
-!read adm/lang/class_title.phtml.$modu_lang
 
 !if $Cltype iswordof 2 4
     !if $Cltype=2
