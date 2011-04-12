@@ -3,7 +3,7 @@
 !if no_pick=$error
  Por favor
  !href cmd=resume elija una hoja de trabajo
- antes de pulsar el botón ``insertar''.
+ antes de pulsar el botón <span class="wims_button disabled">$wims_name_Insert</span>.
  !exit
 !endif
 

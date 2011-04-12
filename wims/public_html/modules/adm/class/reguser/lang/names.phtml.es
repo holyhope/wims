@@ -93,5 +93,5 @@ ninguna cuenta de participante
   por favor proporcione las informaciones siguientes
 !set name_inscription3=!nosubst Se está inscribiendo como participante $name_classesss $classname, con el identificador de usuario
 
-!set name_warning_direct=<p><b>ATTENTION</b>. La inscripción directa a $name_classe se reserva a\
+!set name_warning_direct=<p><span class="wims_warning">$wims_name_warning</span>. La inscripción directa a $name_classe se reserva a\
   profesores. Si son alumno, inscribirse

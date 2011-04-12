@@ -4,16 +4,12 @@
 !set name_email=$wims_name_email
 
 !form reply name="replyform" id=replyform
-<input type=hidden name="level" value=3>
+<input type="hidden" name="level" value="3">
 $table_header
-<caption><b>$model_title<sup>
-!href cmd=reply&rawinp=yes $wims_name_rawmode
-&nbsp;
-!href cmd=reply&level=1&mode=model $wims_name_modellist
-</sup>
-</b>
-<br>$desc<sup>
-!href target=wims_mhelp cmd=help&special_parm=model,1 &gt;&gt;
+<caption><b>$model_title</b>
+<br>$desc
+!set wims_ref_class=wims_button_help
+!href target=wims_mhelp cmd=help&special_parm=model,1 $wims_name_help
 </sup>
 </caption>
 !!$table_hdtr
@@ -35,9 +31,9 @@ $table_header
   $table_tr
   <td>$(title$i)
   !if $(help$i)!=$empty or $(name$i) iswordof $model_helped
-   <sup>
+   !set wims_ref_class=wims_button_help
    !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
-   </sup>
+   
   !endif
   </td>
   <td>
@@ -50,9 +46,9 @@ $table_header
    !set l_=!charcnt $val
    !if $l_ > 50
     !set val=!reinput $val
-    <textarea name="reply$i" cols=$len rows=3>$val</textarea>
+    <textarea name="reply$i" cols="$len" rows="3">$val</textarea>
    !else
-    <input size=$len name="reply$i" value="$val">
+    <input size="$len" name="reply$i" value="$val">
    !endif
   !endif
   </td>
@@ -62,35 +58,32 @@ $table_header
  !endif
 !next i
 
-$table_end <p>
-
+$table_end
 !if $ta!=$empty
  !for i in $ta
   <a name="textarea$i"></a>
   $(title$i)
   !set val=!reinput $(val$i)
-  <small><a href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
+  <a class="wims_button" href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
   !if $(help$i)!=$empty
-   &nbsp;
+   !set wims_ref_class=wims_button_help
    !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
   !endif
-  </small>
   <br>
-  <textarea name="reply$i" cols=65 rows=10
+  <textarea name="reply$i" cols="65" rows="10"
   !if $(type$i) iswordof matrix
    wrap="off"
   !endif
   >$val
-</textarea> <p>
+</textarea>
  !next i
 !endif
 <center>
-<input type=submit value="$wims_name_tosave">
+<input type="submit" value="$wims_name_tosave">
 &nbsp;
 &nbsp;
 !set wims_ref_class=wims_button
 !href cmd=reply&level=1 $wims_name_giveup
-.
 </center>
 
 </form>

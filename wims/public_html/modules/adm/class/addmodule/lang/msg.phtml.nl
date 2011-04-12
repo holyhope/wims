@@ -3,7 +3,7 @@
 !if no_pick=$error
 Kies eerst een  
  !href cmd=resume werkblad 
- voor U op de <tt class="c">toevoegen</tt> drukt...
+ voor U op de <span class="wims_button disabled">$wims_name_Insert</span> drukt...
  !exit
 !endif
 
