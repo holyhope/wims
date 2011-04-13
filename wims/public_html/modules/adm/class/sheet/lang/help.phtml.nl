@@ -3,21 +3,26 @@
 !endif
 
 :dependancies
-<center><b>$(name_shtab[6])</b></center>
+!read adm/title.phtml 1\
+$(name_shtab[6])
+
   De cijfer afhankelijkheden wil zeggen:<br>
   een student moet eerst de gewenst score hebben behaald voordat de volgende opdracht mag worden gedaan.
   [drempel]
   Bijvoorbeeld:
   <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>
   betekend: de student moet 50% van de opdracht 1 goed hebben,
-  30$ van opdracht 2 en een gemiddelde score van 60% over de opdrachtwn 3,4 en 5
+  30$ van opdracht 2 en een gemiddelde score van 60% over de opdrachtwn 3,4 en 5.
 
+<div class="emptyline"></div>
 !if $wims_read_parm!=$empty
  !exit
 !endif
 
 :allowtype
-<center><b>Informatie over het scoringssysteem</b></center> 
+!read adm/title.phtml 1\
+Informatie over het scoringssysteem
+
 De scoreregistratie tijdstippen kan worden ingesteld 
 door de volgende woorden 
 toe te voegen:
@@ -28,6 +33,6 @@ toe te voegen:
 &lt;yyyymmdd.hh:mm</tt></b></font>
 (eind tijd). 
 Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheiden van de andere instellingen.
-</small>
+
 
 !exit

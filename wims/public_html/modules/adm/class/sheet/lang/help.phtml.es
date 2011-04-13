@@ -3,7 +3,9 @@
 !endif
 
 :dependancies
-<center><b>$(name_shtab[6])</b></center>
+!read adm/title.phtml 1\
+$(name_shtab[6])
+
   quiere decir que
   un participante debe primero lograr puntos en otros ejercicios de la hoja,
   antes de poder trabajar en este. Por ejemplo,
@@ -11,6 +13,7 @@
   significa que el participante debe tener un éxito del 50% en el ejercicio 1,
   30% en el ejercicio 2, y una media de éxito del 60% en los ejercicios
   3, 4 y 5.
+<div class="emptyline"></div>
 
 !if $wims_read_parm!=$empty
  !exit
@@ -18,7 +21,8 @@
 
 :allowtype
 
-<center><b>Indicación sobre el registro de las notas.</b> </center>
+!read adm/title.phtml 1\
+Indicación sobre el registro de las notas.
 
  En el modo selectivo puede imponer una
  restricción en el tiempo en el que se grabarán las puntuaciones añadiendo las
