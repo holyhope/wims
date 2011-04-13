@@ -1,6 +1,3 @@
-!if $special_parm!=$empty
- !goto $special_parm
-!endif
 
 Als er technische variabelen zijn gedefinieerd,  geassocieerd met deelnemers
 (bijvoorbeeld hun groep), dan kan

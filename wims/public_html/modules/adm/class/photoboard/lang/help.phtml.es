@@ -1,6 +1,3 @@
-!if $special_parm!=$empty
- !goto $special_parm
-!endif
 
 Si definieron variables técnicas asociadas a los participantes
 (por ejemplo su grupo), lo que puede hacerse
