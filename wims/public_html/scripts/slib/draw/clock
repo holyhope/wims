@@ -6,7 +6,7 @@ slib_parms=4\
 0:0:0,time in hh:mm:ss\
 200, clock size (120,160,200 or 240)\
 1,style (1 or 2)\
-,option words (exactmin, nosecond)
+,option words (exactmin, nosecond, nohour, nominut)
 slib_author=Gang Xiao
 slib_out=Source for insdraw
 !exit
@@ -50,11 +50,18 @@ slib_out=transparent white\
  copy 0,0,-1,-1,-1,-1,raw/clock/$slib_size$slib_fstyle.gif\
  xrange -$slib_rg,$slib_rg\
  yrange -$slib_rg,$slib_rg\
- linewidth 1\
+ linewidth 1
+!if nohour notwordof $slib_option
+ slib_out=$slib_out\
  fpoly $slib_ch, $slib_h1*$slib_hl,$slib_h2*$slib_hl, $slib_h2*(-$slib_hw),$slib_h1*$slib_hw, $slib_h1*(-$slib_sb),$slib_h2*(-$slib_sb), $slib_h2*$slib_hw,$slib_h1*(-$slib_hw)\
- poly $slib_ch, $slib_h1*$slib_hl,$slib_h2*$slib_hl, $slib_h2*(-$slib_hw),$slib_h1*$slib_hw, $slib_h1*(-$slib_sb),$slib_h2*(-$slib_sb), $slib_h2*$slib_hw,$slib_h1*(-$slib_hw)\
+ poly $slib_ch, $slib_h1*$slib_hl,$slib_h2*$slib_hl, $slib_h2*(-$slib_hw),$slib_h1*$slib_hw, $slib_h1*(-$slib_sb),$slib_h2*(-$slib_sb), $slib_h2*$slib_hw,$slib_h1*(-$slib_hw)
+!endif
+!if nominut notwordof $slib_option
+ slib_out=$slib_out\
  fpoly $slib_cm, $slib_m1*$slib_ml,$slib_m2*$slib_ml, $slib_m2*(-$slib_mw),$slib_m1*$slib_mw, $slib_m1*(-$slib_sb),$slib_m2*(-$slib_sb), $slib_m2*$slib_mw,$slib_m1*(-$slib_mw)\
- poly $slib_cm, $slib_m1*$slib_ml,$slib_m2*$slib_ml, $slib_m2*(-$slib_mw),$slib_m1*$slib_mw, $slib_m1*(-$slib_sb),$slib_m2*(-$slib_sb), $slib_m2*$slib_mw,$slib_m1*(-$slib_mw)\
+ poly $slib_cm, $slib_m1*$slib_ml,$slib_m2*$slib_ml, $slib_m2*(-$slib_mw),$slib_m1*$slib_mw, $slib_m1*(-$slib_sb),$slib_m2*(-$slib_sb), $slib_m2*$slib_mw,$slib_m1*(-$slib_mw)
+!endif
+slib_out=$slib_out\
  linewidth $slib_md\
  point 0,0,$slib_cm
 
