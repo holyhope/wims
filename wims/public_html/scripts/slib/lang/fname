@@ -2,74 +2,116 @@
  !goto proc
 !endif
 slib_title=A random first name
-slib_parms=1\
-,option words ([language], girl, boy)
+slib_parms=3\
+en,language\
+boy,genre\
+1,number of first name
 slib_author=Gang Xiao
-slib_out=the random first name
+slib_out=the random first name list
 slib_example=fr,boy\
-en,girl\
-es,boy
+en,girl,3\
+nl,boy girl,5
 !exit
+
+!! third parm to get many first name distinct in one tim (FG)
+!! Maj french fname by Jérémy Lebas
 
 :proc
 
-slib_opt=!items2words $wims_read_parm
-!reset slib_boy, slib_girl
-slib_langs=!words2items $wims_site_languages
-slib_lang=$module_language
-!for slib_l in $slib_langs
- !if $slib_l iswordof $slib_opt
-  slib_lang=$slib_l
+slib_test=!itemcnt $wims_read_parm
+!if $slib_test=3
+ !distribute item $wims_read_parm into slib_lang,slib_genre,slib_nb
+ !bound slib_genre within boy,girl default boy
+ slib_langs=!words2items $wims_site_languages
+ !bound slib_lang within $slib_langs default en
+!else
+!! old configuration parameters needed to be saved until modules use this slib has been change
+ slib_opt=!items2words $wims_read_parm
+ slib_genre=$empty
+ !if boy iswordof $slib_opt
+  slib_genre=boy
  !endif
-!next slib_l
+ !if girl iswordof $slib_opt
+  slib_genre=$slib_genre girl
+ !endif
+ slib_langs=!words2items $wims_site_languages
+ slib_lang=$module_language
+ !for slib_l in $slib_langs
+  !if $slib_l iswordof $slib_opt
+   slib_lang=$slib_l
+  !endif
+ !next slib_l
+!endif
+!bound slib_nb between 1 and 10 default 1
 
 !if $slib_lang=fr
- slib_boy=!randitem Alain, André, Bernard, Bertrand, \
+ slib_boy=Alain, André, Bernard, Bertrand, \
   Carlos, Charles, Christophe, Claude, \
   Didier, Fabrice, François, Frédéric, Georges, \
   Gérard, Guillaume, Jacques, Jean, Joseph, \
   Laurent, Louis, Luc, Marc, \
   Matthieu, Michel, Olivier, Patrick, Paul, Philippe, Pierre, \
-  Richard, Robert, Thierry, Xavier
- slib_girl=!randitem Alice, Anne, Bernadette, \
+  Richard, Robert, Thierry, Xavier, \
+ Stephan, Jordy, Alexandre, Emrullah, Esteban, Florent, Sacha, Antonin, Nicolas, Dorian, Ryan, Camille, \
+ Logan, Anthony, Mel, Louis, Jordan, Jean-Christophe, Smaïn, Tristan, Louis, Thomas, Kohai, Thibault, Mouhammad, \
+ Rudy, Romuald, Clément, Erwan, Hugo, Olivier, Thibault, Nicolas, Medhi, Valentin, Alan, Baptiste, Ambroise, Alexandre, \
+ Dorian, Axel, Logan, Noam, Adem, Alric, Alexandre, Anthony, Quentin, Alexandre, Laurent, Pierre, Jayson, Remy, Aymen, Cyril, \
+ Maxime, Magomed, Yannis, Louis, Sébastien, Thibault, Steven, Thomas, Mike, Nathan, Alexis, Quentin, Sébastien, Thomas,\
+ Hind, pablo, Alexy, Rim, Enzo, Pierre, Guillaume, Benjamin, Jérémy, Jimmy, Thomas, Prasanth, Daniel, Théo, Ruben, Matthieu, \
+ Paul, Francis, Florian, Clément, Théo, Nour-El-Houda, Sofiane, Rayane, Kevin, Téo, Yoan, Damien, Kevin, Christian, Kain, Hugo, \
+ Anthony, Deniz, Ludovic, Olivier, Romain, cedric, Thomas, William, Levi, Lorenzo, Jonathan, Joachim, Gaël, Bilal, Jérémy, Raphaël, Florent,\
+ Marvin, Wajdi, Florian, Matteo, Nassim, Hamza, Fabian, Idris, Allan, Marwanne, Abdoulla, Thomas, Lilian, Faycel, Sébastien, Johan, Kevin, Benjamin, Thomas, Akromat, Diye, Majdi, Medhi,\
+ Christopher, Thomas, Walid
+
+ slib_girl=Alice, Anne, Bernadette, \
   Caroline, Catherine, Céline, Claire, Cloé, Denise, \
   Emmanuelle, Frédérique, Jeanne, Jeannine, Joséphine, Julie,\
   Laeticia, Laure, Lucie, Marie, Marion, Mireille, \
-  Patricia, Rose, Sophie, Sylvie
+  Patricia, Rose, Sophie, Sylvie, \
+ Lorna, Leslie, Maëlys, Marie, Malia, Pauline, Lamia, Alexia, Kenssy-Maïlys, Emma, Pauline, Eleonore, Elise, Séréna, Maé, \
+ Manon, Aude, Amélie, Myrina, Eva, Chiara, Caroline, Caroline, Ambre, Oriane, Marie-Anaïs, Clémence, Manon, Floriane, Camille, \
+ Willow, Sarah, Alicia, Romane, Lucie, Marine, Dorine, Maeva, Manon, Chloe, Laetitia, Lea, Soumeya, Sarah, Manuela, Olivia, Yael,\
+ Charlotte, Marine, Sandy, Chloé, Doris, Erika, Marion, Lola, Chavely, Myriam, Elisa, Manuela, Isabelle, Fanny, Amandine, Elisa, Maia, \
+ Jade, Christel, Barbara, Jade, Maissa, Eva, Julie, Elsa, Melissa, Andrea, Carla, Mariama, Esther, Elise, Loane, Laurie, Anna, Manoa, \
+ Elena, Léonie, Célia, Chloé, Romane, Salomé, Pauline, Setareh, Aurélia, Marine, Cherrine, Vanessa, Ornella, Charlotte, Christelle, \
+ Victoria, Noémie, Laurie, Juliette, Marion, Lena, laura, Emilie, Anne-Laure, Claire, Imen, Nina, Andrea, Clementine, Laëtitia, Lory, \
+ Ophélie, Cathy, Paula, Margot, Célia, Estelle, Jade, Melody, Amira, Inès, Inès, Sarah, Kaouthar, Nausica, Jacqueline,Lina, Maeva, Lizie, \
+ Marissa, Noemie, Alessia, Marie, Luana, Rhita, Marion, Melissa, Kelly, Erika, Océane, Yasmina, Clélia, \
+ Noellia, Allison, Amel, Alicia, Maeva, Camille, Alexia, Inès, Christina, iris, Cynthia, Inès
 !endif
 
 !if $slib_lang=nl
 
- slib_boy=!randitem Jan,Piet,Klaas,Gerard,Jonny,Sjonnie,Wim,Henk,\
+ slib_boy=Jan,Piet,Klaas,Gerard,Jonny,Sjonnie,Wim,Henk,\
  willem,Willem-Jan,Koos,Paul,Robin,Bart,Dani,Edgar,Jacob,Willem,\
  Mohammed,Ali,Joost,Johan,Karel,Martin,Hans,Frederik,Bennie,Benno,\
  Freddy,Jelmer,Rinus,Marinus,Roderick,Simon,Anton,Ton,Tom,Nico
 
- slib_girl=!randitem Marlies,Marloes,Anna,Hanna,Johanna,Aaltje,Mariska,\
+ slib_girl=Marlies,Marloes,Anna,Hanna,Johanna,Aaltje,Mariska,\
  Roelie,Joke,Ellie,Elli,Evelien,Vera,Kristel,Christel,Chantal,\
  Loeki,Aafke,Marijke,Petra,Olga,Sien,Jo,Karlijn,Katinka,Bonnie,Carolien,\
  Anita,Hedwig,Karen,Karin,Koosje,Rosa,Lidwina,Astrid,Lenie,Lena,Maria,Eva,Marijke,\
  Anneke,Alie
 !endif
 
-!default slib_boy=!randitem Andrew, Bill, Charles, David, \
+!default slib_boy=Andrew, Bill, Charles, David, \
  Edwin, George, Harry, Henry, Jack, James, John, \
  Mark, Michael, Peter, \
  Richard, Robert, Ronald, Thomas, William
 
-!default slib_girl=!randitem Alice, Anna, Catherine, \
+!default slib_girl=Alice, Anna, Catherine, \
  Diana, Elisabeth, Jane, Linda, \
  Marguerite, Marilyn, Mary, Nancy, \
  Rose, \
  Victoria, Virginia
 
-!if girl iswordof $slib_opt
- slib_out=$slib_girl
- !exit
+slib_out=$empty
+!if girl iswordof $slib_genre
+ slib_out=!append item $slib_girl to $slib_out
 !endif
-!if boy iswordof $slib_opt
- slib_out=$slib_boy
- !exit
+!if boy iswordof $slib_genre
+ slib_out=!append item $slib_boy to $slib_out
 !endif
-slib_out=!randitem $slib_girl,$slib_boy
-
+slib_out=!listuniq $slib_out
+slib_out=!shuffle $slib_out
+slib_out=!item 1 to $slib_nb of $slib_out
