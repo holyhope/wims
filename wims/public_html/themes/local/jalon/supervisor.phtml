@@ -1,0 +1,225 @@
+<!dŽbut de jalon/supervisor.phtml-->
+!! supervisor page definition.
+!nocache
+!if $module!=home
+ !exit
+!endif
+
+!set home_theme=yes
+!readproc tabletheme
+!!read classlogo.phtml
+<div class="jalon_contentheader">
+	<div class="jalon_contentheader_titre">
+		<h1>$wims_classname, $wims_institutionname</h1>
+		!!<small>($SU_log)</small>
+	</div>
+</div>
+<br class="clearall" />
+
+<div class="wimsbody" id="wimsbody1"><!wimsbody de jalon/supervisor.phtml-->
+
+!if _tool isin $wims_session
+ !read ./tools.phtml
+ !goto end
+!endif
+
+!if $class_type=3
+ $SU_greet.
+ !read Subclasses1.phtml
+ !if $class_typename=level
+  <p><center>
+  !href module=adm/class/gateway $SU_Gateway
+  </center> <p>
+  !goto end
+ !else
+  !goto nocheck
+ !endif
+!endif
+!if $class_type notin 13
+
+
+!if $quota_free<2
+ !if $quota_free<0
+  <p>
+  Your class has exceeded disk space allowance on the server. Class
+  management is no longer available. Sorry!
+  <p>
+  We suggest that you ask the site manager to increase the disk space
+  allowance for virtual classes.
+  <p>
+  !href cmd=close&module=home&lang=$lang $V_Quit
+  <p>
+  !goto end
+ !else
+  <br/><strong>Warning</strong>! Your class is reaching the limit of disk space allowance.
+  Once this limit is exceeded, class management will be locked!
+ !endif
+!endif
+:nocheck
+
+!if & isin $newmsgcnt or $newmsgcnt>0
+ <br/>
+ !href module=adm/forum/mboard $U_newmsg
+!endif
+<p>
+
+!if $class_type=4
+ <center>
+ !href module=adm/class/gateway $SU_Gateway
+ </center> <p>
+ !goto end
+!endif
+
+!set ac_0=<small>$SU_Uprep</small>
+!set ac_1=$SU_Ac
+!set ac_2=$SU_Ex
+!set ac_3=$SU_Hi
+
+!if $sheetcnt+$examcnt+$doccnt+$votecnt+$subclasscnt<=0
+ $SU_nosheet
+!else
+<div align="center">
+ <table cellpadding="5" cellspacing="0">
+ !!<caption>$SU_shlist &nbsp;</caption>
+ <tr><th>$SU_shno</th><th>$SU_shti</th><th>$SU_shst</th></tr>
+ !for i=1 to $subclasscnt
+  !let f_class=!record $i of wimshome/log/classes/$wims_class/.subclasses
+  !let f_aff=!item 4 of $f_class
+  !let f_name=!item 1 of $f_class
+  $table_tr
+   <td align="center">$ADD_class $i</td>
+   <td>
+   !href module=adm/class/classes&type=authsupervisor&class=$f_name $f_aff
+   </td>
+   <td align="center">-</td>
+  </tr>
+ !next i
+ !for i=1 to $doccnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/doc/.index
+  !distribute lines $sh into s_,t_
+  $table_tr<td align="center">$U_Doc
+  <td>
+  !href module=adm/doc&job=read&doc=$s_&block=main $t_
+  <td align="center">-
+ !next i
+ !for i=1 to $sheetcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
+  !distribute lines $sh into ac,t_,ti
+  $table_tr<td align="center">$U_Sheet $i
+  <td>
+  !href module=adm/class/sheet&sheet=$i $ti
+  <td align="center">$(ac_$[$ac])
+ !next i 
+ !for i=1 to $examcnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/exams/.exams
+  !distribute lines $sh into ac,t_,d_,ti
+  $table_tr<td align="center">$U_Exam $i
+  <td>
+  !href module=adm/class/exam&exam=$i $ti
+  <td align="center">$(ac_$[$ac])
+ !next i 
+ !for i=1 to $votecnt
+  !set sh=!record $i of wimshome/log/classes/$wims_class/vote/.votes
+  !distribute lines $sh into st_,ti_,op_,re_
+  $table_tr<td align="center">$U_Vote
+  <td>
+  !href module=adm/vote&job=read&vote=$i $ti_
+  <td align="center">$(ac_$[$st_])
+ !next i 
+ </table>
+</div>
+ <p>
+!endif
+$ADD_1
+<!--!href module=adm/doc&job=creat $ADD_doc-->
+
+!if $wims_supertype!=4 or $class_typename!=class
+!href module=adm/createxo $ADD_exo
+,
+!href module=adm/class/sheet&sheet=$[$sheetcnt+1] $ADD_sheet
+,
+!href module=adm/class/exam&exam=$[$examcnt+1] $ADD_exam
+,
+!endif
+!if $class_type=2
+,
+!href module=adm/class/regclass $ADD_class
+!endif
+
+ $N_or
+!href module=adm/vote&job=creat $ADD_vote
+.
+
+<p>
+
+
+!read themes/$wims_theme/search_form.phtml
+!!read ./form.phtml
+!!read search_form
+!read ./result.phtml
+!if $wims_supertype!=4 or $class_typename!=class
+<p>
+!href module=classes/$lang&special_parm=.nocache. $SU_classexo
+<!--
+.&nbsp;
+!href module=adm/modtool Modtool
+.
+-->
+!endif
+:end
+<p><center>
+
+!href module=adm/class/userlist $SE_list
+<br/>&nbsp;&nbsp;
+!!href module=adm/class/classes&type=supervisor $U_oclass
+<br/>&nbsp;&nbsp;
+!!href cmd=close&module=home&lang=$lang $V_Quit
+
+!href target=wims_help module=help/main&chapter=3 $N_Help
+<br/><br/>
+!href style=student $SE_part
+<br/><br/><br/>
+<span id="class_config">
+!href module=adm/class/config $SE_config
+&nbsp;&nbsp;&nbsp;&nbsp;
+!href module=adm/class/config&job=security $SE_secu
+</span>
+!!href module=adm/light&phtml=useropts.phtml.$lang $V_Chpref
+<br/>
+!!href module=adm/forum/mboard $N_Mboard
+
+&nbsp;&nbsp;<br/>
+!if $exist_cdt=yes
+ !!href module=adm/class/cdt $ADD_cdt
+ !!&nbsp; / &nbsp;
+!endif
+!!href module=adm/class/motd $SE_mod
+&nbsp;&nbsp;
+</center>
+:end
+<p align="right">
+</DIV>
+
+<script type="text/javascript" language="javascript">
+
+// Ajoute l'attribut unload pour rafraichir la page d'origine
+//addEvent(window,'close', function() { alert('youyhou'); self.location = "http://jalontest.unice.fr/ExercicesWims/reload_wims"; return false; } );
+//document.getElementsByTagName('body')[0].setAttribute("onunLoad",  "alert('youyhou'); self.location = 'http://jalontest.unice.fr/ExercicesWims/reload_wims'; return false;");
+
+
+function addEvent(obj, type, fn) {
+	if (obj.addEventListener) {
+		obj.addEventListener(type, fn, false);
+	}
+	else if (obj.attachEvent) {
+		obj["e"+type+fn] = fn;
+		obj[type+fn] = function() { obj["e"+type+fn]( window.event ); }
+		obj.attachEvent("on"+type, obj[type+fn]);
+	}
+}
+	
+</script>
+
+</BODY>
+</HTML>
+<!fin de jalon/supervisor.phtml-->

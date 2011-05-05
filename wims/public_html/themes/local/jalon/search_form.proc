@@ -1,0 +1,55 @@
+
+<a NAME="searchform" id="searchform">boite de recherche</a>
+!set wims_ref_anchor=#searchform
+!form new
+<input type="hidden" name="module" value="home">
+<center>
+!!goto skip
+
+!if $wims_accessright!=$empty
+Vous avez bien certains accessrights : $wims_accessright
+ <table border="0" cellpadding="0" cellspacing="0" bgcolor="$bgcolor2">
+ !set bgcolort=#808080
+ <tr>
+ !if $search_package=bases/site
+  <td bgcolor="$bgcolort"> <small>$search_package&nbsp;</small> </td>
+ !else
+  <td><small>
+  !href cmd=new&search_package=bases/site bases/site
+  &nbsp;</small></td>
+ !endif
+ !set acr=!words2items $wims_accessright
+ !for d_ in $acr
+  !if $search_package=$d_
+   <td bgcolor="$bgcolort"> <small>$d_&nbsp;</small> </td>
+  !else
+   <td><small>
+   !href cmd=new&search_package=$d_ $d_
+   &nbsp;</small></td>
+  !endif
+ !next d 
+ </tr></table>
+!endif
+
+:skip
+<table border="4" cellpadding="6" cellspacing="0" bgcolor="$bgcolor2">
+<tr><td nowrap>
+<input type="submit" value="$N_Search">
+<input size="20" name="search_keywords" value="$search_keywords">
+$N_within
+!formselect search_category list $slist prompt $plist
+</td><td nowrap align="center">
+!if $s_keywords!=$empty or $gotcnt>0
+ !href session=$wims_session.1&list=clear $N_clear
+ !if $has_browse=yes
+  <br/>
+ !endif
+!endif
+!if $has_browse=yes
+ !href module=adm/browse&$browse_parm $N_browse
+!endif
+</td></tr>
+</table></center></form> <p>
+
+!set srchl=$search_keywords
+!reset search_category, search_keywords

@@ -1,4 +1,5 @@
 <!-- begin of user.phtml -->
+
 !! Class participant page theme.
 !nocache
 !if $module!=home
@@ -30,8 +31,8 @@ $wims_classname <small>($(wims_name_$class_typename))</small>
 <div class="menuitem">
 <div id="wimslogo$class_logoside">
 <img src="$class_logo" border="0" alt="class logo" align="left">
-</div><!--wimslogo-->
-</div><!-- menuitem-->
+</div><!--end of wimslogo-->
+</div><!--end of menuitem-->
 !endif
 
 <div class="wims_classes_direct">
@@ -89,7 +90,7 @@ $U_greet
 <p>
 <div class="wims_class_motd">
 !read ./wimshome/log/classes/$wims_class/.motd
-</div><!--wims_class_motd-->
+</div><!--end of wims_class_motd-->
 !let test2=!record 0 of wimshome/log/classes/$wims_class/motd/$wims_user
 !let test=!record 0 of wimshome/log/classes/$wims_class/motd/.$wims_user
 !if # notin $test and $test2!=$empty
@@ -97,7 +98,7 @@ $U_greet
  !read ./wimshome/log/classes/$wims_class/motd/$wims_user
  &nbsp; [
  !href module=adm/class/motd $(wims_name_actionlist[4])
-] </div><!--wims_class_pmotd-->
+] </div><!-- end of wims_class_pmotd-->
 !endif
 
 <p>
@@ -325,29 +326,29 @@ $U_greet
 !!     <div class="menuitem">
 !!      !read ./adm/oneitem.phtml forum,1,module=adm/forum/mboard&forum=classes/$wims_class/$le_
 !!      <small>($name_c)</small>
-!!     </div><!--menuitem-->
+!!     </div><!--end menuitem-->
 !!    !endif
 !!  !next
 !!!endif
 !ifval $dcnt+$n+$m+$v>0 and $is_interclass!=yes
-<div class="itemsep"></div><!--itemsep-->
+<div class="itemsep"></div>
 <div class="menuitem">
 !read ./adm/oneitem.phtml myscore,1,module=adm/class/userlist
-</div><!--menuitem-->
+</div><!--end menuitem-->
  !if $wims_showlivret!=no
   !set livret_nbcomp=!recordcnt wimshome/log/classes/$wims_class/livret/.comps
   !if $livret_nbcomp >0
    <div class="menuitem">
    !read ./adm/oneitem.phtml livret,1,module=adm/class/livret
-   </div><!--menuitem-->
+   </div><!--end menuitem-->
   !endif
  !endif
-<div class="itemsep"></div><!--itemsep-->
+<div class="itemsep"></div>
 !endif
 !if $class_type isin 013
 <div class="menuitem">
 !read ./adm/oneitem.phtml account,1,module=adm/class/userlist&job=userprop
-</div><!--menuitem-->
+</div><!--end menuitem-->
 !endif
 !if $class_ent_n0>0
 <div class="itemsep"></div><!--tailsep-->
@@ -357,39 +358,39 @@ $U_greet
   !set 1_=!line $i_ of $class_ent1
    <div class="menuitem">
    !read ./adm/oneitem.phtml $(1_[1]),2,$(1_[2]),external
-   </div><!--menuitem-->
+   </div><!--end menuitem-->
 !next i_
 !endif
 !if $wims_user=supervisor
  <div class="itemsep"></div><!--tailsep-->
  <div class="menuitem">
  !read ./adm/oneitem.phtml backteacher,1,$
- </div><!--menuitem-->
+ </div><!--end menuitem-->
 !endif
 
-</div><!--wimsmenu-->
-</div><!--wimsmenumodubox-->
+</div><!--end wimsmenu-->
+</div><!--end wimsmenumodubox-->
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <div class="menublock">
 <span class="menuitem">
 !read ./adm/oneitem.phtml U_oclass,1,module=adm/class/classes&type=participant
-</span><!-- menuitem-->
+</span><!-- end menuitem-->
 <span class="menuitem">
 $supmail
-</span><!-- menuitem-->
+</span><!-- end menuitem-->
 </div><!--end menublock-->
 <div class="menublock">
 <span class="menuitem">
 !read ./adm/oneitem.phtml V_Chpref,1,module=adm/light&phtml=useropts.phtml.$lang 
-</span><!-- menuitem-->
+</span><!-- end menuitem-->
 <span class="menuitem">
 !read ./adm/oneitem.phtml passwd,1,module=adm/class/passwd
 </span><!-- menuitem-->
-</div><!--end menublock-->
-</div><!--wimsmenu-->
-</div><!--wimsmenubox-->
-</div><!--wimsbodybox-->
+      </div><!--end menublock-->
+    </div><!--end of wimsmenu-->
+  </div><!--end of wimsmenubox-->
+</div><!--end of wimsbodybox-->
 </body>
 </html>
 <!-- end of user.phtml -->

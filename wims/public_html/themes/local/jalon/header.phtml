@@ -1,0 +1,67 @@
+<!-- Header menu bar definition.-->
+!nocache
+!set wims_theme_header=yes
+!if embeded_window isin $special_parm3
+<style type="text/css">
+#oef_exo_intro{
+ display:none;
+}
+</style>
+!endif
+
+!! Ligne supprimant le menu lors de l'integration de la page via le lecteur exportable : 
+!if embeded_window notin $special_parm3
+
+!! -----------------------Insert "Permalien" --------------------------------
+!! Permalien / lecteur exportable : ces lignes permettent d'intégrer facilement la page courante à un autre site :
+
+!set current_module=!replace / by , in $module
+!set module_path= !item 1 of $current_module
+
+!! on n'affiche plus le menu pour les module "home"
+!if $module_path notitemof adm,home
+
+<div class="wimsmenu">
+<center>
+<table border="0" cellspacing="0" cellpadding="2" bgcolor="$wims_name_bgcolor" width="98%">
+<tr>
+!for i_=1 to $wims_hm_cnt
+ !set 1_=!line $i_ of $wims_hm
+ !set class_css=!item 1 of $1_
+
+ <td align="center" id="header_$class_css" class="wims_header">
+ !read oneitem.phtml $1_
+ </td>
+!next i_
+
+
+
+
+!if $module_path notitemof adm,classes,home and _exam notin $session and $module_init_parm == $empty
+	!set export_name=$wims_name_this_module
+	!set permalien=$wims_ref_name?module=$module
+
+<td align="center" class="wims_header" id="header_export">
+<div id="lien_export_media" style="display:block">
+	<a href="#" onclick="document.getElementById('export_media').style.display = 'block';document.getElementById('lien_export_media').style.display = 'none';">$wims_name_display $export_name $wims_name_on_your_site</a>
+</div>
+<div id="export_media" style="display:none" align="left">
+<div align="center"> -- <strong>$wims_name_display $export_name $wims_name_on_your_site</strong> -- &nbsp; <a href="#" onclick="document.getElementById('export_media').style.display = 'none';document.getElementById('lien_export_media').style.display = 'block';">($wims_name_mask_this)</a></div><hr/>
+
+	<strong>$wims_name_permalink :</strong> ($wims_name_copy_and_paste $wims_name_the_link $wims_name_on_your_site $wims_name_or $wims_name_in_a_mail)
+	<br/>$wims_name_permalink $wims_name_for $export_name : <a href=$permalien>$permalien</a>
+	<hr/>
+	<b>$wims_name_embeddable :</b> ($wims_name_copy_and_paste $wims_name_the_link $wims_name_on_your_site)<br/>
+	<small>$wims_name_display <strong>$export_name</strong> $wims_name_on_your_site ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site) : </small><textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" wrap="hard" id="wims_embed_textarea" ><iframe src="$permalien&embededwindow=true" width="100%" height="100%"></iframe></textarea>
+</div>
+</td>
+
+!endif
+!!------------------------------------Fin de l'insert "Permalien" --------------------------
+
+</tr></table></center>
+</div>
+
+!! endif du lecteur exportable : 
+!endif
+<!--End of Header menu bar definition.-->

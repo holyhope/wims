@@ -1,7 +1,7 @@
 !if $qclass!=$empty
  qclass=$[$qclass]
  !if NaN isin $qclass or $qclass<11111 or $qclass>10^9
-  error=bad class
+  error=bad class id
   !exit
  !endif
 !endif
@@ -53,10 +53,12 @@ $ in $l
 	mkdir -p $cd\
 	cd $cd\
 	mkdir -p .users sheets exams score noscore\
-	echo 3 >version
+	echo 4 >version
 
+# la date de creation de la classe est automatiquement la date du jour.
 cl_creation=!char 1 to 8 of $wims_now
 cl_creation=!eval $cl_creation
+
 
 !default cl_expiration=$[$cl_creation+10000]
 
@@ -64,12 +66,16 @@ cl_creation=!eval $cl_creation
 langs=!words2items $wims_site_languages
 !bound cl_lang within $langs default en
 !default cl_level=H4
+!default cl_css=-theme-
+!default cl_scorecolor=white,red,red,red,orange,orange,orange,yellow,yellow,green,green
 
 !writefile wimshome/log/classes/$cd/.def !set class_connections=+$ident/$rclass+ $(cl_connections) \
-!set class_defined=yes
+!set class_defined=yes\
+!set class_creation=$cl_creation
 
-!default cl_typename = class
-!default cl_type = 0
+# Ici il me semble redondant d'enregistrer a la fois type et typename. est-ce vraiment utile ?
+!bound cl_typename within $classtypes default class
+!bound cl_type between integer 0 and 4 default 0
 
 !for t in $classdefs
  !appendfile wimshome/log/classes/$cd/.def !set class_$t=$(cl_$t)

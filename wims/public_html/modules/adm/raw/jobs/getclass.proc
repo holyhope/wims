@@ -3,7 +3,8 @@
  !exit
 !endif
 
-supp=connections
+# dans la variable $supp, on ajoute des informations supplŽmentaires aux infos de base prŽsentes dans le .def de la classe
+supp=connections,creation
 !readdef $classdeffile
 !readdef $classexofile
 
@@ -19,20 +20,31 @@ class_exocount=!itemcnt $class_exotitlelist
 
 ##course list,  program list
 !if $class_type>=2
-  !for typ in programs,classes,icourses,levels,courses,icourses
+  super_defs=programs,classes,icourses,levels,courses
+  supp=$supp,$super_defs
+  
+  !for typ in $super_defs
    class_$typ=!record 0 of wimshome/log/classes/$qclass/$typ
    class_$typ=!lines2rows $(class_$typ)
    class_$typ=$(class_$typ[;1])
   !next
 !endif
+
 !if $class_type=2
+#Cas du groupement de classes
   class_subclasses=!record 0 of wimshome/log/classes/$qclass/.subclasses
+  supp=$supp,subclasses
 !endif
 
 class_sheetcount=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
 class_examcount=!recordcnt wimshome/log/classes/$qclass/exams/.exams
 
-# cette option permet d'economiser du temps processeur en evitant un listsheets a chaque getclass()
+
+# homepage = parametre obsolete  ?  
+supp=$supp, userlist, usercount, exotitlelist, exocount, examcount, sheetcount
+
+
+#l'option "all_even_hidden" est un raccourci pour obtenir la liste complete des infos possibles
 !if all_even_hidden isin $option
  option=$classdefs,$supp,hidden_sheets
 !endif
@@ -41,15 +53,8 @@ option=!listintersect $option and $classdefs,$supp,hidden_sheets
 !if $option=$empty
  option=$classdefs,$supp
 !endif
-suff=s
-suff1=es
-option=!listcomplement $class_typename$suff,$class_typename$suff1 in $option
-!if $class_type!=2
-  option=!listcomplement subclasses in $option
-!else
-  option=!listcomplement programs,courses,classes in $option
-!endif
 
+# l'option 'hidden_sheets' permet d'obtenir, en plus des infos de la classe, des infos sur les feuilles de celle-ci.
 !if hidden_sheets isin $option
  list_type=sheets
  !read scripts/listing.proc
