@@ -1,7 +1,7 @@
 !set lang_exists=yes
 
 !if $job=adddate
-  !set cdt_subtitle=Añadir/modificar  una fecha
+  !set cdt_subtitle=Añadir/modificar una fecha
   !goto common
 !endif
 

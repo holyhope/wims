@@ -42,7 +42,7 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_con
 !if $wims_user=supervisor
  !let tmp=!defof wims_name_SE_list in wimshome/public_html/modules/home/names.$lang
 !else
- !let tmp=!defof wims_name_myscore in wimshome/public_html/modules/home/names.$lang
+  !let tmp=$wims_name_myscore
 !endif
 
 !distribute line Nueva competencia \
@@ -62,7 +62,7 @@ Cuaderno de $name_competences \
 !endif
 
 !if $job=user
-  !set name_job=!nosubst <font color=green>$user_firstname $user_lastname</font>
+  !set name_job=!nosubst <font color="green">$user_firstname $user_lastname</font>
 !endif
 
 !if $job=delpalier

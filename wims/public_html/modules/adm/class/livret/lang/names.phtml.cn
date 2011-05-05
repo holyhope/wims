@@ -1,4 +1,3 @@
-
 !let lang_exists=yes
 
 !read adm/lang/date.phtml.$lang
@@ -42,8 +41,8 @@ into name_title_comp,name_title_palier,name_cnt_palier,name_configtext2,name_con
 
 !if $wims_user=supervisor
  !let tmp=!defof wims_name_SE_list in wimshome/public_html/modules/home/names.$lang
-!else 
- !let tmp=!defof wims_name_myscore in wimshome/public_html/modules/home/names.$lang
+!else
+  !let tmp=$wims_name_myscore
 !endif
 
 !distribute line 新$name_competence\
@@ -63,7 +62,7 @@ $name_competences记录本\
 !endif
 
 !if $job=user
-  !set name_job=!nosubst <font color=green> $user_lastname$user_firstname</font>
+  !set name_job=!nosubst <font color="green"> $user_lastname$user_firstname</font>
 !endif
 
 !if $job=delpalier
@@ -74,7 +73,7 @@ $name_competences记录本\
 !if $job=delcomp
  !let name_delcomp=!nosubst 你肯定要从 $name_livret 删除$name_competence $comp ( $mem_title ) 吗 ?
  !exit
-!endif!
+!endif
 
 !if $job=save
  name_get=你可以下载源文件以得到你的技能记录本的结构,\

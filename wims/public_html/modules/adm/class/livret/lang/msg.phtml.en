@@ -1,7 +1,11 @@
 !set wims_module_log=error: $error
 <b>$wims_name_Error</b>.
-!goto $error
-!exit
+!if $error iswordof toomanycomp
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :toomanycomp
 No more skills can be added, the upper limit is $maxcomp !

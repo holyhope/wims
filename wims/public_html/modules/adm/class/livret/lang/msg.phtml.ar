@@ -1,16 +1,12 @@
 !set wims_module_log=error: $error
-<b>$wims_name_error : </b>
-!goto $error
-!exit
-
-:bad_class
- Your class is not valid. Try again !!!
-!exit
+<b>$wims_name_Error</b>.
+!if $error iswordof toomanycomp
+  !goto $error
+!else
+ !msg $error
+ !exit
+!endif
 
 :toomanycomp
 No more skills can be added, the upper limit is $maxcomp !
-!exit
-
-:nouser
- This participant does not seem to exist !!!!
 !exit
