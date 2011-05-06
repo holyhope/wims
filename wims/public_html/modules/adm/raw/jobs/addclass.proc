@@ -14,12 +14,34 @@
   !goto recode
  !endif
 !else
- cd=$qclass
- test=!defof class_defined in wimshome/log/classes/$cd/.def
+ test=!defof class_defined in wimshome/log/classes/$qclass/.def
+	#Si la classe existe : 
  !if $test=yes
-  error=class exists
-  !exit
+  
+  !read scripts/check.class
+  !if $error!=$empty
+   !exit
+  !endif
+  
+  !readdef $classdeffile
+  
+  !if $class_type<2
+  # on n'ajoute pas de sous-classe a une classe independante
+  	error=class $qclass already exists
+  	!exit
+  !endif
+  
+  class_nbsubclasses=!recordcnt wimshome/log/classes/$qclass/.subclasses
+  !advance class_nbsubclasses
+
+  #Si qclass existe et est un groupement de classe, on lui ajoute alors une sous-classe
+  cd=$qclass/$class_nbsubclasses  
+
+ !else
+  #si la classe n'existe pas, on la cree.
+  cd=$qclass
  !endif
+
 !endif
 
 data1=!nonempty lines $data1
@@ -49,6 +71,19 @@ $ in $l
  !endif
 !next t
 
+# Ici il me semble redondant d'enregistrer a la fois type et typename. est-ce vraiment utile ?
+!bound cl_typename within $classtypes default class
+!bound cl_type between integer 0 and 4 default 0
+
+!if $cl_type > 0 and / isin $cd
+ error=superclass $qclass already exists
+ !exit
+!else
+ cl_superclass=$qclass
+ cl_parent=$qclass 
+!endif
+
+
 !sh cd $wims_home/log/classes\
 	mkdir -p $cd\
 	cd $cd\
@@ -72,10 +107,6 @@ langs=!words2items $wims_site_languages
 !writefile wimshome/log/classes/$cd/.def !set class_connections=+$ident/$rclass+ $(cl_connections) \
 !set class_defined=yes\
 !set class_creation=$cl_creation
-
-# Ici il me semble redondant d'enregistrer a la fois type et typename. est-ce vraiment utile ?
-!bound cl_typename within $classtypes default class
-!bound cl_type between integer 0 and 4 default 0
 
 !for t in $classdefs
  !appendfile wimshome/log/classes/$cd/.def !set class_$t=$(cl_$t)
