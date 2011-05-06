@@ -69,7 +69,7 @@ uit de onderstaande tabel.
 Wilt u een klas in een andere taal ?
 !set name_language2=Op deze server zijn geen enkele nederlandstalige klassen  geinstalleerd.
 
-!set name_warning=<span class="wims_warning">$wims_name_Error<span>. Je probeert in te loggen in een klas die niet bestaat. \
+!set name_warning= Je probeert in te loggen in een klas die niet bestaat. \
   Probeer het nog eens een keer...
 
 !set name_enter=!nosubst Om in de klas <span class="wims_classdesc">$class_description</span> van\

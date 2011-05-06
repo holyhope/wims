@@ -67,7 +67,7 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 !set name_language=No hay clases en español en este sitio. ¿Quizás esté buscando una clase en otro idioma ?
 !set name_language2=este sitio no contiene ninguna clase en español.
 
-!set name_warning=<span class="wims_warning">$wims_name_warning<span>. Ha pedido conectarse a $name_classess que no existe.\
+!set name_warning=Ha pedido conectarse a $name_classess que no existe.\
  Por favor verifique su petición.
  
 !set name_enter=!nosubst Para poder entrar en la clase <span class="wims_classdesc">$class_description</span> de\
