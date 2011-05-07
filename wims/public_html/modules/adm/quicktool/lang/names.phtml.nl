@@ -31,7 +31,7 @@
 !set name_direct=rechtstreeks
 !set name_format_data=Formaat van het data bestand
 !set name_write_manager= door een bericht te sturen naar de website beheerder
-
+!set wims_name_remark=Opmerking
 !set name_commun=Toon de overeenkomstige eigenschappen
 !set name_gen_data=De oefening wordt gemaakt met de data die u verwerkt in dit bestand, met de volgende syntax :  
 
