@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
  El registre de participants no està permès en aquest àmbit.
@@ -47,20 +49,17 @@
 
 !if bad_classpass=$error
  La vostra contrasenya per la classe
- <b><font color="green">$description</font></b>
- de <b><font color="green">$institution</font></b>
+ $classname
  no és correcta. Així que no teniu el dret a registrar-vos a
  aquesta classe. Ho sento.
  !exit
 !endif
 
 !if login_double=$error
- El nom d'usuari ''<b><font color="green">$login</font></b>''
+ El nom d'usuari <tt wims="wims_code_words">$login</tt>
  ja està en ús a la classe
- <p><center>
- <b><font color="green">$description</font></b>
- de <b><font color="green">$institution</font></b>.
- </center> <p>
+ $classname.
+ <p>
  Si us plau, comproveu que no estigueu ja registrat&nbsp;; en cas contrari, trieu un altre nom d'usuari.
  !exit
 !endif

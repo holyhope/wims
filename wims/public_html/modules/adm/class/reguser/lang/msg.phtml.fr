@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
  L'inscription de participant n'est pas autorisée dans cette zone.
@@ -46,21 +48,17 @@
 !endif
 
 !if bad_classpass=$error
- Le mot de passe pour la classe
-<span class="wims_classdesc">$description</span>
- de <span class="wims_institutiondesc">$institution</span>
+
+ Le mot de passe pour la classe $classname
  n'est pas correct. Vous n'avez donc pas le droit de vous inscrire dans
  cette classe. Désolé.
  !exit
 !endif
 
 !if login_double=$error
- Le nom de login ``<b><font color="green">$login</font></b>''
+ Le nom de login <tt wims="wims_code_words">$login</font></b>
  est déjà en utilisation dans la classe
- <p><center>
-<span class="wims_classdesc">$description</span>
- de <span class="wims_institutiondesc">$institution</span>.
- </center> <p>
+ $classname.
  Veuillez vérifier si vous ne vous êtes pas déjà inscrit&nbsp;; sinon, choisissez un autre nom de login.
  !exit
 !endif

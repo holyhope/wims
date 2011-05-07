@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
  Non è possibile registrarsi
@@ -47,20 +49,17 @@
 
 !if bad_classpass=$error
  La password per il corso
- <b><font color="green">$description</font></b>
- presso <b><font color="green">$institution</font></b>
+ $classname
  non è corretta. Assicurarsi di conoscere la password 
  esatta e riprovare.
  !exit
 !endif
 
 !if login_double=$error
- Il login ``<b><font color="green">$login</font></b>''
+ Il login <tt wims="wims_code_words">$login</tt>
  è già stato utilizzato per questo corso
- <p><center>
- <b><font color="green">$description</font></b>
- presso <b><font color="green">$institution</font></b>.
- </center> <p>
+ $classname.
+ <p>
  Verifica di non esserti già registrato, altrimenti scegli un altro
  login.
  !exit

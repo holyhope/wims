@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
  La inscripción de participantes no está autorizada en esta zona.
@@ -48,20 +50,16 @@ La clase que ha elegido está al completo. No quedan plazas disponibles.
 
 !if bad_classpass=$error
  Su contraseña para la clase
- <b><font color="green">$description</font></b>
- de <b><font color="green">$institution</font></b>
+ $classname
  no es correcta. No está autorizado a inscribirse en
  esta clase. Lo sentimos.
  !exit
 !endif
 
 !if login_double=$error
- El identificador de usuario ``<b><font color="green">$login</font></b>''
+ El identificador de usuario <tt wims="wims_code_words">$login</tt>
  está ya siendo utilizado en la clase
- <p><center>
- <b><font color="green">$description</font></b>
- de <b><font color="green">$institution</font></b>.
- </center> <p>
+ $classname.
  Por favor compruebe si no estaba ya inscrito; en caso contrario
  elija otro identificador de usuario.
  !exit

@@ -75,14 +75,14 @@ name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,nam
 name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
 name_writepasswd,name_obtainpasswd,name_hello
 
-!set name_remark1=<b>Nota.</b> Puede inscribirse libremente en las clases abiertas. Por contra\
+!set name_remark1=Puede inscribirse libremente en las clases abiertas. Por contra\
   una clase protegida necesita una contraseña que debe ser proporcionada por el profesor de la clase.
 
 !set name_access1=!nosubst  Si el administrador ($supervisor) le autoriza a acceder,
 !set name_access2=!nosubst  Si el profesor ($supervisor) le autoriza a acceder,
 !set name_research=>Para buscar a un participante ya inscrito en $name_classes, escriba una de \
   las partes de su nombre completo o del login
-!set name_nofound=!nosubst con la búsqueda <tt>$search</tt> en los nombres o login no se ha hallado\
+!set name_nofound=!nosubst con la búsqueda <tt wims="wims_code_words">$search</tt> en los nombres o login no se ha hallado\
 ninguna cuenta de participante
 !set name_student=!nosubst $firstn $lastn!
 !set name_studentadded=!nosubst El participante $firstn $lastn ha sido añadido a su $name_classe.
@@ -93,5 +93,5 @@ ninguna cuenta de participante
   por favor proporcione las informaciones siguientes
 !set name_inscription3=!nosubst Se está inscribiendo como participante $name_classesss $classname, con el identificador de usuario
 
-!set name_warning_direct=<p><span class="wims_warning">$wims_name_warning</span>. La inscripción directa a $name_classe se reserva a\
+!set name_warning_direct=La inscripción directa a $name_classe se reserva a\
   profesores. Si son alumno, inscribirse

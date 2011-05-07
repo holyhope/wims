@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
  参加者不能在这里注册.
@@ -46,19 +48,16 @@
 
 !if bad_classpass=$error
 你进入班级 
- <b><font color="green">$description</font></b> 
- <b><font color="green">($institution)</font></b>
+ $classname
 的密码不正确. 所以你无权注册进入这个班级. 抱歉.
  !exit
 !endif
 
 !if login_double=$error
- 登录名 ``<b><font color="green">$login</font></b>''
+ 登录名 <tt wims="wims_code_words">$login</tt>
  已经在班级
- <p><center>
- <b><font color="green">$description</font></b> 
- <b><font color="green">($institution)</font></b>
- </center> <p>
+ $classname 
+ <p>
  中出现, 请验证你是否已经注册过; 否则请选择别的登录名.
  !exit
 !endif

@@ -79,13 +79,13 @@ name_warning_protected,name_clickname,name_warning_login,name_passwd_warning,nam
 name_transfer1,name_otheractivities,name_write_adm,name_optional,name_accounttype,name_bookmark,name_youcan,\
 name_writepasswd,name_obtainpasswd,name_hello
 
-!set name_remark1=<b>Opmerking.</b>Bij alle open klassen kan men zich aanmelden zonder beperkingen.\
+!set name_remark1=Bij alle open klassen kan men zich aanmelden zonder beperkingen.\
 Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings procedure te starten.Dit wachtwoord kan worden verkregen bij de docent van de desbetreffende klas of school. 
 
 !set name_access1=!nosubst Als de administrator ($supervisor) je toegang verleent,
 !set name_access2=!nosubst Als de docent ($supervisor) je toegang verleent,
 !set name_research=Geef een loginnaam of echte naam (of een gedeelte hiervan), om te zoeken naar een deelnemer in $name_classes 
-!set name_nofound=!nosubst Er is geen deelnemer met <tt>$search</tt> in echte naam of loginnaam gevonden.
+!set name_nofound=!nosubst Er is geen deelnemer met <tt wims="wims_code_words">$search</tt> in echte naam of loginnaam gevonden.
 
 !set name_student=!nosubst $firstn $lastn!
 !set name_studentadded=De deelnemer $firstn $lastn is toegevoegd aan $name_classe.
@@ -94,7 +94,7 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_inscription2=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .
 !set name_inscription3=!nosubst Je bent bezig met de aanmelding bij $name_classesss $classname, met loginnaam &nbsp;
 
-!set name_warning_direct=<p><span class="wims_warning">$wims_name_warning</span>. Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.\
+!set name_warning_direct=Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.\
 Ben je een leerling meld je dan aan bij 
   
   

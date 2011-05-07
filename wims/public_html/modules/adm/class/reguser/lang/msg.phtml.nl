@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
     Deelnemers (leerlingen,studenten) zijn niet toegestaan in deze zone.
@@ -47,20 +49,17 @@ Uw login-naam is te
 
 !if bad_classpass=$error
  Het ingevoerde aanmeldings wachtwoord van klas
- <b><font color="green">$description</font></b>
- van <b><font color="green">$institution</font></b>
+ $classname
  is niet juist. 
  Helaas , U kunt zich dus niet aanmelden als leerling bij deze klas.
  !exit
 !endif
 
 !if login_double=$error
- De login-naam ``<b><font color="green">$login</font></b>''
+ De login-naam <tt wims="wims_code_words">$login</tt>''
 is al in gebruik in de klas
- <p><center>
- <b><font color="green">$description</font></b>
- van <b><font color="green">$institution</font></b>.
- </center> <p>
+ $classname.
+ <p>
  Kontroleer of U zich reeds heeft aangemeld; of anders kies een andere loginnaam. 
  !exit
 !endif

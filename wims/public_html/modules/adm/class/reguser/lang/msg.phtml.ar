@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if bad_classtype=$error
  Participant registration is not allowed in this zone.
@@ -54,20 +56,17 @@
 
 !if bad_classpass=$error
  Your password for the class
- <b><font color="green">$description</font></b>
- of <b><font color="green">$institution</font></b>
+$classname
  is not correct. Therefore you do not have the right to register into this 
  class. Sorry.
  !exit
 !endif
 
 !if login_double=$error
- The login name ``<b><font color="green">$login</font></b>''
+ The login name <tt wims="wims_code_words">$login</tt>
  is already in use in the class
- <p><center>
- <b><font color="green">$description</font></b>
- of <b><font color="green">$institution</font></b>.
- </center> <p>
+ $classname.
+ <p>
  Please verify if you have already registered; otherwise, please 
  choose another login name.
  !exit

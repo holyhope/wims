@@ -83,7 +83,7 @@ $name_title
   </tr>
  !next cl
  $table_end <p>
- $name_remark1
+ <span class="wims_warning">$wims_name_warning</span>. $name_remark1
  !goto end1
 !endif class=empty
 
@@ -121,7 +121,7 @@ $institution
  <p>
  <input type="submit" value="$wims_name_send">
  </center></form> <p>
- <b>$wims_name_warning</b>.
+ <span class="wims_warning">$wims_name_warning</span>.
  !if $cltype iswordof 2 4
   $name_access1
  !else
@@ -136,7 +136,8 @@ $institution
  !endif
 ).
  !if $cltype iswordof 2 4
-  $name_warning_direct
+ <p>
+ <span class="wims_warning">$wims_name_warning</span>. $name_warning_direct
   !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
   <p>
@@ -205,11 +206,11 @@ $institution
 
 !if $step=2
  $name_hello, $name_student!<p>
- $name_inscription3 <tt><b><font color="green">$login</font></b></tt>. <p>
+ $name_inscription3 <tt class="wims_login">$login</tt>. <p>
  !if $email=$empty
   $name_passwd_nonvalid <p>
  !else
-  $wims_name_email: <tt>$email</tt> <p>
+  $wims_name_email: <tt class="wims_address">$email</tt> <p>
  !endif
  <label for="pass2">$name_passwd_exact:</label>
  !form reply
@@ -240,7 +241,7 @@ $institution
  !endif
  $name_hello, $name_student!<p>
  $name_welcome
- <tt class="d"><b><font color="green">$login</font></b></tt>. <p>
+ <tt class="wims_login">$login</tt>. <p>
  $name_youcan 
  !if $wims_class!=$empty
   !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork

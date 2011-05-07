@@ -1,4 +1,6 @@
 !set wims_module_log=error: $error
+!read adm/class/classname.phtml $description\
+$institution
 
 !if no_class=$error
  您所選擇的課程似乎不存在！如果不是軟體所產生的 bug ，則可能是課程已經到期或是
@@ -53,17 +55,15 @@
 
 !if bad_classpass=$error
 對於
-<b><font color=green>$institution</font></b> 的
-<b><font color=green>$description</font></b>
+$classname
 課程，您所輸入的密碼不正確。因此您無權登錄到本課程，抱歉！
  !exit
 !endif
 
 !if login_double=$error
- 您所登錄的帳號 "<b><font color=green>$login</font></b>"
- 已被 <b><font color=green>$institution</font></b> 的
- <b><font color=green>$description</font></b> 所使用。
- </center> <p>
+ 您所登錄的帳號 <tt class="wims_login">$login</tt>
+ 已被 $classname.
+ <p>
  請確認您是否已經註冊；否則請選用其他帳號。
  !exit
 !endif
