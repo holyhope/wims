@@ -1,4 +1,5 @@
 !set lang_exists=yes
+
 !if $class_type iswordof 2 4
    !if $class_type=2
     !set name_classe=group of classes
@@ -44,7 +45,6 @@ name_new_participant,name_registered,name_connexion,name_up
 
 !set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
  ne fonctionne pas.
-
 !distribute line Vous n'avez pas de compte dans d'autres classes.\
   Search for your class\
   No class available.\
@@ -54,10 +54,12 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 
 !let classification=Ecole,Collège,Lycée,Université,Autre
 
-!set name_text1= Click on the name of a class to enter. Click on the name of the class to go \
-to work in it (if you are registered participant of that class).\
-<p>Click on the word <span class="wims_button disabled">$name_register</span> to register to the class (you will\
-need a class password for protected classes, which should be obtained from your teacher).
+!set name_text1= !nosubst Select the line corresponding to the class or institution you are interested in.\
+<p>If you have not yet registered, click on  <span class="wims_button disabled">$name_register</span> \
+(if the status is <span class="wims_label">$name_protected</span>, you will need a password \
+that you can obtain from your teacher or administrator of the class).\
+Otherwise, click on <span class="wims_button disabled">$wims_name_Enter</span> to enter.
+ 
 
 !set name_text2=To go to another $name_level_else $sousclasses_else, choose its name in the table below.
 !set name_text3=Or choose $name_level_else $sousclasses_else name in the table below.
@@ -66,24 +68,26 @@ need a class password for protected classes, which should be obtained from your 
   for a class of another language
 !set name_language2=This site does not yet contain any classes in English language.
 
-!set name_warning= You asked to log to $name_classess which does not exist.\
+!set name_warning=You asked to log to $name_classess which does not exist.\
 Please verify your request.
 
 !set name_enter=!nosubst In order to access the class <span class="wims_classdesc">$class_description</span> of\
 <span class="wims_institutiondesc">$class_institution</span> as a <em>registered participant</em>, \
 please give your login name and personal password.
 
-!set name_entersup=!nosubst In order to get into$ $name_classes \
+!set name_entersup=!nosubst In order to access $name_classes \
  <span class="wims_classdesc">$class_description</span> of <span class="wims_institutiondesc">$class_institution</span>\
- as its <em>supervisor</em>, please enter supervisor's password.
+ as its <em>supervisor</em>, please enter the supervisor's password.
  
  !set name_research1=There are many virtual classes on this site. To find your class, please type\
   a search keyword.
-!set name_research2=  There are still too many classes corresponding to your search word. Please\
+!set name_research2=There are still too many classes corresponding to your search word. Please\
   give a more precise word.
 
-!set name_supervisor_text=Otherwise, you may locate your class in the following table, \
-and click on its name to get into$ it as supervisor.
+!set name_supervisor_text=!nosubst If you have already registered or are the supervisor of the class, click on \
+<span class="wims_button disabled">$wims_name_Enter</span> in the line corresponding to the class you have selected or\
+click on <span class="wims_button disabled">$name_register</span> first to register as a teacher.<br>\
+Registration here is only open for teachers.
 
 !if $type=example
    !set name_example1=Sorry, no example class has been found on this site.
@@ -97,7 +101,7 @@ and click on its name to get into$ it as supervisor.
 </li><li>If you wish to use your own user name and password in the example classes,\
 you will first have to register. Click on <span class="wims_button disabled">Registered</span> to do this.\
 </li><li>Once you have registered, you can enter the class by clicking\
-on <span class="wims_button disabled">Registered</span>. Please note : Registration data are regularly erased\
+on <span class="wims_button disabled">$name_register</span>. Please note : Registration data are regularly erased\
 from the server in example classes.\
 </li></ul>
 
