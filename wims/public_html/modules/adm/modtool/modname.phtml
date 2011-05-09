@@ -22,14 +22,15 @@ $name_moddevcnt
  </tr>
  !for n in $existing
   !readdef wimshome/public_html/modules/devel/$auth_login/$n/INDEX
-  $table_tr<td><small>
+  $table_tr<td>
   <tt class="wims_fname">
   !replace internal ~ by ~ $ in $n $
   </tt>
   !if ~ notin $n
-   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n [$name_rename]
+   !set wims_ref_class=wims_button
+   !href cmd=reply&jobreq=move&original=devel/$auth_login/$n $name_rename
   !endif
-  </small></td><td>
+  </td><td>
   !href cmd=reply&jobreq=flist&modreq=$n $title
   <td align="center">
   !set wims_ref_class=wims_button
