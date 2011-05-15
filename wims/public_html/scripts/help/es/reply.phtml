@@ -70,7 +70,7 @@ Una respuesta de estilo libre es la que la tiene que escribir el usuario.
 Se pueden pedir hasta $answerlim respuestas libres simultáneamente en el 
 mismo ejercicio con la implementación actual. <p>
 La sintaxis es la siguiente:
-<tt>\answer{Texto}{\respuesta}{type=...}{option=...}{weight=...}</tt>
+<pre>\answer{Texto}{\respuesta}{type=...}{option=...}{weight=...}</pre>
 <br>
 (Los 3 últimos campos son opcionales).
 <p>
@@ -95,7 +95,7 @@ tipos:
    !if $name iswordof $symtextlist
     <p>
     <b>Remarque</b>.
-    Ce type de réponse accepte l'option symtext. Si le mot <tt>symtext</tt> est
+    Ce type de réponse accepte l'option symtext. Si le mot <tt class="wims_code_words">symtext</tt> est
     déclaré dans l'option de la réponse, l'analyse de la réponse sera exactement
     comme pour
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
@@ -106,7 +106,7 @@ tipos:
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name1</tt>) $desc.
+   (<tt class="wims_code_words">$name1</tt>) $desc.
   !endif
  !next j
  </ul>
@@ -114,7 +114,7 @@ tipos:
 
 !read help/$lang/embedans.phtml
 
-<h4>Le paramètre optionnel <tt>weight</tt></h4>
+<h4>Le paramètre optionnel <tt class="wims_code_words">weight</tt></h4>
 <a name="weight"></a> 
 Il permet d'imposer un poids aux questions posées.
 <p>
@@ -127,7 +127,7 @@ Le niveau de sévérité  sera aussi pris en compte lors du
 calcul fait et le pourcentage sera pris sur un pourcentage fixé
 par le niveau de sévérité. 
 
-Il est possible de mettre des variables dans <tt>weight</tt>. 
+Il est possible de mettre des variables dans <tt class="wims_code_words">weight</tt>. 
 <p>
 Exemple :
 <pre>
@@ -136,34 +136,34 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>Le paramètre optionnel <tt>option</tt></h4>
+<h4>Le paramètre optionnel <tt class="wims_code_words">option</tt></h4>
  <a name="option"></a>
  Dans le cas de plusieurs options, elles sont séparées par des espaces. 
- Par exemple, <tt>option=default noanalyzeprint</tt>
+ Par exemple, <tt class="wims_code_words">option=default noanalyzeprint</tt>
  
-Les options possibles à la suite d'une instruction <tt>\answer</tt>
-ou <tt>\condition</tt> sont
+Les options possibles à la suite d'une instruction <tt class="wims_code_words">\answer</tt>
+ou <tt class="wims_code_words">\condition</tt> sont
 <ul>
-<li><tt>option=default</tt> : L'option <tt>default</tt> est commune à toutes les réponses libres :  cette option
-peut prendre la forme <tt>default="valeur_par_défaut"</tt>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
+<li><tt class="wims_code_words">option=default</tt> : L'option <tt class="wims_code_words">default</tt> est commune à toutes les réponses libres :  cette option
+peut prendre la forme <tt class="wims_code_words">default="valeur_par_défaut"</tt>. Si l'utilisateur donne une réponse vide, c'est la valeur_par_défaut
 qui remplace.
 </li>
 <li>
-<tt>option=split</tt> : Dans le cas d'une réponse dont
-le type est <tt>correspond</tt>, <tt>checkbox</tt> ou <tt>mark</tt>, la notation
+<tt class="wims_code_words">option=split</tt> : Dans le cas d'une réponse dont
+le type est <tt class="wims_code_words">correspond</tt>, <tt class="wims_code_words">checkbox</tt> ou <tt class="wims_code_words">mark</tt>, la notation
 tient compte des réponses justes, même si elles ne le sont pas toutes. 
 </li>
 <li>
-<tt>option=nonstop</tt> : Dans le cas d'un exercice à étapes, les questions
+<tt class="wims_code_words">option=nonstop</tt> : Dans le cas d'un exercice à étapes, les questions
 suivantes sont posées même en cas de réponses fausses.
 </li>
-<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+<li><tt class="wims_code_words">option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
 pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
-Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+Cela est utile dans certains types comme le type <tt class="wims_code_words">mark</tt> où le texte automatique
 est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
 Seul le score subsiste.</li>
-<li>A la suite d'une instruction <tt>condition</tt>, 
-<tt>option=hide</tt> : La condition sera utilisée pour l'analyse
+<li>A la suite d'une instruction <tt class="wims_code_words">condition</tt>, 
+<tt class="wims_code_words">option=hide</tt> : La condition sera utilisée pour l'analyse
 de la réponse mais ne sera pas  affichée. 
 </li>
 </ul>
@@ -187,15 +187,14 @@ coincidan con la respuesta correcta.
 Se pueden definir hasta $condlim condiciones simultáneas para un ejercicio,
 con la implementación actual. Únicamente las respuestas numéricas
 pueden ser corregidas así. La sintaxis es
-<p><tt>
+<pre>
 \condition{texto de la pregunta}{condiciones de comprobación}{weight=...}
-</tt>
-<br>
+</pre>
 (el último campo es optional).
  <p>
 
 A continuación presentamos algunos ejemplos de condiciones de comprobación 
-(<tt>\ans1</tt> y <tt>\ans2</tt> son dos variables indefinidas que aparecen 
+(<tt class="wims_code_words">\ans1</tt> y <tt class="wims_code_words">\ans2</tt> son dos variables indefinidas que aparecen 
 en las  definiciones de las respuestas libres, como se describe antes).
 <small>
 !href target=wims_mhelp cmd=help&special_parm=if Lista completa de las relaciones
@@ -203,15 +202,15 @@ en las  definiciones de las respuestas libres, como se describe antes).
 <p>
 $table_header
 $table_hdtr<th>Condición<th>significado</th></tr>
-$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt></td>
-    <td>Correcta si <tt>ans1</tt> está en el intervalo [0,1].</td></tr>
-$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt></td>
-    <td>Correcta si <tt>ans1</tt> es 1, 3 o 5.</td></tr>
-$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt></td>
-    <td>Correcta si <tt>ans1</tt> y <tt>ans2</tt> son las dos 
+$table_tr<td><tt class="wims_code_words">\ans1>=0 and \ans1<=1</tt></td>
+    <td>Correcta si <tt class="wims_code_words">ans1</tt> está en el intervalo [0,1].</td></tr>
+$table_tr<td><tt class="wims_code_words">\ans1=1 or \ans1=3 or \ans1=5</tt></td>
+    <td>Correcta si <tt class="wims_code_words">ans1</tt> es 1, 3 o 5.</td></tr>
+$table_tr<td><tt class="wims_code_words">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt></td>
+    <td>Correcta si <tt class="wims_code_words">ans1</tt> y <tt class="wims_code_words">ans2</tt> son las dos 
     raíces del polinomio x<sup>2</sup>-5x+6.</td></tr>
-$table_tr<td><tt>sin(\ans1)=0</tt></td>
-    <td>Correcta si <tt>ans1</tt> es un múltiplo de $m_pi.</td></tr>
+$table_tr<td><tt class="wims_code_words">sin(\ans1)=0</tt></td>
+    <td>Correcta si <tt class="wims_code_words">ans1</tt> es un múltiplo de $m_pi.</td></tr>
 $table_end <p>
 Ver la
 !href cmd=help&special_parm=oef ayuda sobre el formato OEF

@@ -18,7 +18,7 @@ Het direct gebruik van het WIMS commando <em>rename</em> voor dit doel wordt
 niet aangeraden: de oefening zal dan onder omstandigheden niet meer functioneren.
 
 <h3>Oefeningen met meerdere stappen</h3>
-Een "multi-step" oefening kan met het commando <tt>\steps</tt>
+Een "multi-step" oefening kan met het commando <tt class="wims_code_variable">\steps</tt>
 worden geactiveerd. 
 <br>Bijvoorbeeld:<br>
 
@@ -32,21 +32,21 @@ een meerkeuze vraag [ choice 1 ] en een open_antwoord [ reply 1 ] verwachten.
 De tweede stap zal ook een meerkeuze [ choice 2 ] en een tweetal open_antwoorden verwachten [reply 2 , reply 3].
 De derde en laatste stap is weer een meerkeuze vraag [ choice 3 ] .
 <p>
-De sleutels van het commando <tt>\steps</tt>
+De sleutels van het commando <tt class="wims_code_variable">\steps</tt>
 accepteerd parameters [gedefinieerde variabelen] als ook condities !
 <br>
-De default instelling van <tt>\steps</tt> is dat een fout in een bepaalde stap de
+De default instelling van <tt class="wims_code_variable">\steps</tt> is dat een fout in een bepaalde stap de
 oefening beeindigd, en dat voor de resterende stappen het cijfer 0 wordt gegeven.
 Er is de mogelijkheid om hiervan af te wijken. 
 <p>
-Het volgnummer van een stap wordt opgeslagen in de variabele <tt>\step</tt>,
+Het volgnummer van een stap wordt opgeslagen in de variabele <tt class="wims_code_variable">\step</tt>,
 en is oproepbaar in het <em>statement</em> van de OEF.
-De eerste stap geeft dus <tt>\step = 1</tt>
-Als de leerling bezig is met de tweede stap in de OEF wordt de variabele <tt>\step = 2</tt> enz.
+De eerste stap geeft dus <tt class="wims_code_words">\step = 1</tt>
+Als de leerling bezig is met de tweede stap in de OEF wordt de variabele <tt class="wims_code_words">\step = 2</tt> enz.
 <p>
 Om met multi-step OEF's nog interactiever te reageren op de antwoorden van leerlingen,
-is het commando <tt>\nextstep{...}</tt>. 
-De sleutel die dit commando accepteerd is vergelijkbaar met <tt>\steps{...}</tt>
+is het commando <tt class="wims_code_words">\nextstep{...}</tt>. 
+De sleutel die dit commando accepteerd is vergelijkbaar met <tt class="wims_code_words">\steps{...}</tt>
 Beide commando's mogen niet door elkaar gebruikt worden.
 
 
@@ -58,22 +58,24 @@ Beschikbare commando's:
 \if{condition}{conditie_is_waar_inhoud}
 \if{condition}{conditie_is_waar_inhoud}{zo_niet_dan_dit}
 \for{var=n1 to n2}{loop_inhoud}
-\while{condition}{loop_inhoud}     (alleen in het <tt>main</tt> gedeelte van OEF)
+\while{condition}{loop_inhoud}     (alleen in het <tt class="wims_code_words">main</tt> gedeelte van OEF)
 </pre>
 
 Als deze commando's [behalve de while loop] kunnen overal in OEF worden aangeroepen:
-in het <tt>main</tt> gedeelte van een OEF script, in het <tt>\statement{}</tt> , in de <tt>\hint{}</tt> , de <tt>\solution{}</tt> en <tt>\feedback{}</tt>
-Uitzondering is de <tt>\while{}{}</tt> loop: deze kan alleen worden gebruikt bij de variabele definities/declaraties in het main gedeelte van een OEF script
+in het <tt class="wims_code_words">main</tt> gedeelte van een OEF script, in het <tt class="wims_code_words">\statement{}</tt>, 
+in de <tt class="wims_code_words">\hint{}</tt>, 
+de <tt class="wims_code_words">\solution{}</tt> en <tt class="wims_code_words">\feedback{}</tt>
+Uitzondering is de <tt class="wims_code_words">\while{}{}</tt> loop: deze kan alleen worden gebruikt bij de variabele definities/declaraties in het main gedeelte van een OEF script
 <a name=special></a>
 <h3>Speciale methoden</h3>
 
-Met het commando <tt>\special{...}</tt> in het <tt>\statement{}</tt> van een OEF script
+Met het commando <tt class="wims_code_words">\special{...}</tt> in het <tt class="wims_code_words">\statement{}</tt> van een OEF script
  geeft de volgende mogelijkheden:
 <p>
 !if $special_parm=all
  !for sp in $special_list
-  <p><center><h4>De speciale methode <tt>$sp</tt></h4></center> <p>
-  Algemene syntax: <tt>\special{$sp <i>parameters</i>}</tt> <p>
+  <p><center><h4>De speciale methode <tt class="wims_code_words">$sp</tt></h4></center> <p>
+  Algemene syntax: <tt class="wims_code_words">\special{$sp <i>parameters</i>}</tt> <p>
 
   !read oef/special/$sp.phtml help
  !next sp
@@ -85,8 +87,8 @@ Met het commando <tt>\special{...}</tt> in het <tt>\statement{}</tt> van een OEF
 !endif
 
 !if $special_parm2 isitemof $special_list
-<p><center><h4>De speciale methode <tt>$special_parm2</tt></h4></center> <p>
-Algemene syntax: <tt>\special{$special_parm2 <i>parameters</i>}</tt> <p>
+<p><center><h4>De speciale methode <tt class="wims_code_words">$special_parm2</tt></h4></center> <p>
+Algemene syntax: <tt class="wims_code_words">\special{$special_parm2 <i>parameters</i>}</tt> <p>
 
 !read oef/special/$special_parm2.phtml help
 !endif
@@ -103,7 +105,7 @@ En op deze manier is "bulk productie" van oefeningen mogelijk.
 <p>
 Om dit systeem te gebruikem moet er eerst een subdirectory src/cpp worden aangemaakt,
 waarin alle *.cpp scripten worden geplaatst.
-U kunt gebruik maken van preproccessor statements als <tt>#include</tt> of <tt>#if</tt>. 
+U kunt gebruik maken van preproccessor statements als <tt class="wims_code_words">#include</tt> of <tt class="wims_code_words">#if</tt>. 
 (Lees de cpp handleiding voor meer details van de te gebruiken syntax.)
 <p>
 De eerste regel van een *.cpp bestand moet een lijst van targets definieren,
@@ -148,10 +150,10 @@ De cpp processor raakt in de war als er een oneven aantal aanhalingstekens worde
 U kunt gewone opmerkingen bij de code beschermen door (<tt>/* ... */</tt>).
 
 <h3>oefenv en debug</h3>
-De speciale omgevings variabele <tt>\oefenv</tt> kan worden gebruikt om het gecompileerde OEF
+De speciale omgevings variabele <tt class="wims_code_variable">\oefenv</tt> kan worden gebruikt om het gecompileerde OEF
 script te testen.
 <p>
-Op dit moment is alleen de variabele <tt>debug</tt> actief binnen <tt>\oefenv</tt> in de
+Op dit moment is alleen de variabele <tt class="wims_code_words">debug</tt> actief binnen <tt class="wims_code_variable">\oefenv</tt> in de
 volgende situaties:
 <ol>
 <li>OEF wordt uitgevoerd binnen het hulpmiddel Createxo.

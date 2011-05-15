@@ -20,7 +20,7 @@ l'environnement sauvegardé.
 
 <h3>Exercices à plusieurs étapes</h3>
 Des exercices à plusieurs étapes peuvent être conçus grâce à la commande
- <tt>\steps</tt>. Par exemple, si vous définissez (parmi d'autres paramètres)
+ <tt class="wims_code_variable">\steps</tt>. Par exemple, si vous définissez (parmi d'autres paramètres)
 
 <pre>\steps{choice 1, reply 1
 choice 2, reply 2, reply 3
@@ -28,11 +28,11 @@ choice 3
 }</pre>
 
 l'exercice sera présenté en trois étapes, la première proposant 
-un choix multiple (choice 1) et une réponse de type <tt>reply</tt>  (reply 1), 
-la seconde proposant un choix multiple et deux réponses de type <tt>reply</tt>, etc.
+un choix multiple (choice 1) et une réponse de type <tt class="wims_code_words">reply</tt>  (reply 1), 
+la seconde proposant un choix multiple et deux réponses de type <tt class="wims_code_words">reply</tt>, etc.
 <p>
 
-L'argument de <tt>\steps</tt> accepte des paramètres définis auparavant aussi bien que des définitions
+L'argument de <tt class="wims_code_variable">\steps</tt> accepte des paramètres définis auparavant aussi bien que des définitions
 conditionnelles de la même manière que pour la définition de paramètres. Cela permet
 de présenter des champs de réponses sélectivement selon des variations aléatoires de
 paramètres, même dans le cas où il n'y a qu'une seule étape.
@@ -40,21 +40,21 @@ paramètres, même dans le cas où il n'y a qu'une seule étape.
 Il faut noter que si une erreur est faite à une étape, les étapes suivantes ne sont pas
 proposées et sont donc considérées comme fausses.
 <p>
-Le numéro de l'étape en cours est accessible dans le champ <tt>statement</tt>
+Le numéro de l'étape en cours est accessible dans le champ <tt class="wims_code_words">statement</tt>
 dans la variable
-<tt>\step</tt> qui prend donc successivement les valeurs 
+<tt class="wims_code_variable">\step</tt> qui prend donc successivement les valeurs 
  1,2,... à mesure que l'utilisateur avances dans ses réponses.
 <p>
 
 Pour faire des exercices dynamiques à plusieurs étapes 
 (étapes variant selon les réponses de l'étudiant), vous pouvez utiliser
-la commande <tt>\nextstep{...}</tt>. L'argument de 
-<tt>\nextstep</tt> est semblable à celui de <tt>\steps</tt> mais seule la première
+la commande <tt class="wims_code_variable">\nextstep{...}</tt>. L'argument de 
+<tt class="wims_code_variable">\nextstep</tt> est semblable à celui de <tt class="wims_code_variable">\steps</tt> mais seule la première
 ligne est effective. Elle n'est utile que si cet argument est une variable qui change
 après avec les définitions de paramètres après soumission. 
-L'exercice s'arrête quand le contenu de <tt>\nextstep</tt>  est vide.
+L'exercice s'arrête quand le contenu de <tt class="wims_code_variable">\nextstep</tt>  est vide.
 <p>
-Dans tous les cas, une seule déclaration parmi <tt>\steps</tt> ou <tt>\nextstep</tt>
+Dans tous les cas, une seule déclaration parmi <tt class="wims_code_variable">\steps</tt> ou <tt class="wims_code_variable">\nextstep</tt>
 doit apparaître dans un source OEF.
 
 <h3>Branchements conditionnels et boucles</h3>
@@ -69,22 +69,22 @@ Commandes disponibles:
 </pre>
 
 Les commandes de branchements conditionnels et de boucles peuvent être utilisées  
-dans l'environnement principal ou (sauf pour <tt>while</tt>)
-à l'intérieur de l'énoncé (<tt>statement</tt>), d'une aide (<tt>hint</tt>), 
-d'une solution (<tt>solution</tt>), d'un feedback (<tt>feedback</tt>).
+dans l'environnement principal ou (sauf pour <tt class="wims_code_words">while</tt>)
+à l'intérieur de l'énoncé (<tt class="wims_code_words">statement</tt>), d'une aide (<tt class="wims_code_words">hint</tt>), 
+d'une solution (<tt class="wims_code_words">solution</tt>), d'un feedback (<tt class="wims_code_words">feedback</tt>).
 Lorsque ces commandes sont dans l'environnement principal, elles n'affectent
 que la définition de paramètres.
 
 <a name="special"></a>
 <h3>Méthodes spéciales</h3>
 
-La commande <tt>\special{...}</tt> dans le corps d'un exercice (<tt>statement</tt>)
+La commande <tt class="wims_code_words">\special{...}</tt> dans le corps d'un exercice (<tt class="wims_code_words">statement</tt>)
 permet de faire les méthodes suivantes :
 <p>
 !if $special_parm=all
  !for sp in $special_list
-  <p><center><h4>La méthode spéciale <tt>$sp</tt></h4></center> <p>
-  Syntaxe générale: <tt>\special{$sp <i>paramètres</i>}</tt> <p>
+  <p><center><h4>La méthode spéciale <tt class="wims_code_words">$sp</tt></h4></center> <p>
+  Syntaxe générale: <tt class="wims_code_words">\special{$sp <i>paramètres</i>}</tt> <p>
 
   !read oef/special/$sp.phtml help
  !next sp
@@ -96,8 +96,8 @@ permet de faire les méthodes suivantes :
 !endif
 
 !if $special_parm2 isitemof $special_list
-<p><center><h4>La méthode spéciale <tt>$special_parm2</tt></h4></center> <p>
-Syntaxe générale : <tt>\special{$special_parm2 <i>parameters</i>}</tt> <p>
+<p><center><h4>La méthode spéciale <tt class="wims_code_words">$special_parm2</tt></h4></center> <p>
+Syntaxe générale : <tt class="wims_code_words">\special{$special_parm2 <i>parameters</i>}</tt> <p>
 
 !read oef/special/$special_parm2.phtml help
 !endif
@@ -113,7 +113,7 @@ pré-source, chacun différant des autres par quelques définitions de macros.
 <p>
 Pour utiliser cette possibilité, un sous-répertoire cpp/ doit être créée sous src. Y mettre
 les fichiers de pré-source d'extension .cpp. Dans ces fichiers, vous pouvez ajouter
-des directives cpp comme <tt>#include</tt> ou <tt>#if</tt>. (Veuillez vous référer aux 
+des directives cpp comme <tt class="wims_code_words">#include</tt> ou <tt class="wims_code_words">#if</tt>. (Veuillez vous référer aux 
 manuels cpp et aux spécifications c pour les détails de la syntaxe.)
 <p>
 La première ligne du fichier cpp doit définir une liste de cibles (targets), dans le format
@@ -122,7 +122,7 @@ target=targ1 targ2 targ3 ...
 </pre>
 Cette ligne indique que ce fichier cpp doit fabriquer targ1.oef, targ2.oef, etc
 (l'extension. OEF sera ajoutée aux noms de sortie). Lors de la génération du fichier 
-cible <em>targ1</em>, le prédicat <tt>#TARGET</tt> sera défini comme <em>targ1</em> 
+cible <em>targ1</em>, le prédicat <tt class="wims_code_words">#TARGET</tt> sera défini comme <em>targ1</em> 
 (Et une macro <em>TARGET_targ1</em> est également définie.)
 Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 <pre>
@@ -139,7 +139,7 @@ Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 </pre>
 afin de rendre le contenu dépendant de la cible.
 <p>
-Les fichiers <tt>include</tt> doivent également être placés dans le répertoire src/cpp, avec extension
+Les fichiers <tt class="wims_code_words">include</tt> doivent également être placés dans le répertoire src/cpp, avec extension
 .inc. Et une ligne
 <pre>
 #include "common.inc"
@@ -150,14 +150,14 @@ spécifier des répertoires de fichiers include.
 <p>
 Une remarque spéciale: cpp s'embrouille lorsque votre fichier contient dans le texte
 des apostrophes ou guillemets qui ne sont pas fermés. Dans ce cas, vous pouvez protéger la
-les commandes contenant ces textes par des commentaires C (<tt>/* ... */</tt>).
+les commandes contenant ces textes par des commentaires C (<tt class="wims_code_words">/* ... */</tt>).
 
 <h3>Environnement dans un exercice</h3>
-La variable spéciale  <tt>\oefenv</tt> est utilisée pour tester un exercice
+La variable spéciale  <tt class="wims_code_variable">\oefenv</tt> est utilisée pour tester un exercice
 (si elle n'est pas redéfinie dans l'exercice).
 <p>
 Pour l'instant, le seul contenu possible de cette variable est le mot
-``debug''. Ce mot apparaît à l'intérieur de <tt>\oefenv</tt> dans les situations 
+``debug''. Ce mot apparaît à l'intérieur de <tt class="wims_code_variable">\oefenv</tt> dans les situations 
 suivantes :
 <ol>
 <li>quand l'exercice est exécuté à l'intérieur de Createxo ;</li>

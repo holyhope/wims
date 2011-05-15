@@ -66,8 +66,8 @@ Een freestyle antwoord [open antwoord] wordt door de leerling zelf ingetypt.
 Er kunnen op deze server gelijktijdig $answerlim freestyle vragen worden gesteld binnen een enkele OEF
 <p>
 De algemene syntax is als volgt:
-<tt>\answer{Tekst}{\antwoord}{type=...}{option=...}{weight=...}</tt>
-<br>
+<pre>\answer{Tekst}{\antwoord}{type=...}{option=...}{weight=...}</pre>
+
 (de laatste drie velden zijn optioneel)
 <p>
 
@@ -91,8 +91,8 @@ Elk open antwoord kan ,onafhankelijk van de andere vragen in een OEF, 1 van het 
    !if $name iswordof $symtextlist
     <p>
     <b>Opmerking</b>.
-    Dis antwoord model accepteerd de <tt>symtext</tt> option.
-    Wanneer <tt>option=symtext</tt> wordt gebruikt wordt de analyse
+    Dis antwoord model accepteerd de <tt class="wims_code_words">symtext</tt> option.
+    Wanneer <tt class="wims_code_words">option=symtext</tt> wordt gebruikt wordt de analyse
     van het antwoord overgedragen aan
     !href cmd=help&special_parm=reply,symtext#_symtext symtext
 , in particular with no preliminary processing of the texts. And all the
@@ -102,7 +102,7 @@ symtext options will be understood in this case.
   !else
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
-   (<tt>$name1</tt>) $desc.
+   (<tt class="wims_code_words">$name1</tt>) $desc.
   !endif
  !next j
  </ul>
@@ -110,11 +110,11 @@ symtext options will be understood in this case.
 
 !read help/$lang/embedans.phtml
 <p>
-De meest gebruikte [gemakkelijkste...]  optie voor open antwoorden is:<tt>default</tt>. 
-Deze antwoord model accepteerd ook nog een extra sleutel <tt><font color=green>default="default_value"</font></tt>. 
+De meest gebruikte [gemakkelijkste...]  optie voor open antwoorden is: <tt class="wims_code_words">default</tt>. 
+Deze antwoord model accepteerd ook nog een extra sleutel <tt class="wims_code_words">default="default_value"</tt>. 
 Wanneer de leerling een leeg antwoord invult, wordt verder gerekend met de "default_value"
 
-<h4>De optionele parameter <tt>weight</tt></h4>
+<h4>De optionele parameter <tt class="wims_code_words">weight</tt></h4>
 <a name="weight"></a>
 Het is mogelijk de antwoorden binnen een enkele OEF een weging
 mee te geven.
@@ -128,7 +128,7 @@ Le niveau de sévérité  sera aussi pris en compte lors du
 calcul fait et le pourcentage sera pris sur un pourcentage fixé
 par le niveau de sévérité. 
 
-Er kunnen ook variabelen worden gebruikt als <tt>weight</tt>. 
+Er kunnen ook variabelen worden gebruikt als <tt class="wims_code_words">weight</tt>. 
 Hierdoor kan het scorings mechanisme verder worden getuned.
 <p>
 Voorbeeld :
@@ -138,33 +138,35 @@ Voorbeeld :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>De optionele parameter <tt>option</tt></h4>
+<h4>De optionele parameter <tt class="wims_code_words">option</tt></h4>
  <a name="option"></a>
 Dans le cas de plusieurs options, elles sont séparées par des espaces. 
- For example, <tt>option=default noanalyzeprint</tt>
+ For example, <tt class="wims_code_words">option=default noanalyzeprint</tt>
 
-De toegestane option parameters voor <tt>\answer</tt>
-of <tt>\condition</tt> zijn
+De toegestane option parameters voor <tt class="wims_code_words">\answer</tt>
+of <tt class="wims_code_words">\condition</tt> zijn
 <ul>
-<li><tt>option=default</tt> : The option <tt>default</tt> is common for all free answers : 
+<li><tt class="wims_code_words">option=default</tt> : The option <tt class="wims_code_words">default</tt> is common for all free answers : 
 This option can take
-the form <tt>default="default_value"</tt>. If the
+the form <tt class="wims_code_words">default="default_value"</tt>. If the
 user gives an empty reply, it is the default_value that will take place.
 </li>
 <li>
-<tt>option=split</tt> : By het antwoordtype type = <tt>correspond</tt>, <tt>checkbox</tt> of <tt>mark</tt>,
+<tt class="wims_code_words">option=split</tt> : By het antwoordtype type = 
+<tt class="wims_code_words">correspond</tt>, <tt class="wims_code_words">checkbox</tt> 
+of <tt class="wims_code_words">mark</tt>,
 wordt er een gedeelde score behaald. 
 </li>
 <li>
-<tt>option=nonstop</tt> : 
+<tt class="wims_code_words">option=nonstop</tt> : 
 In het geval van een OEF met stappen, wordt de volgende vraag gesteld, ook al is het vorige antwoord fout.
 </li>
-<li><tt>option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
+<li><tt class="wims_code_words">option=noanalyzeprint</tt> : Le texte automatique d'analyse de réponses n'est
 pas affiché. C'est donc à l'auteur de l'exercice de fournir un feedback convenable. 
-Cela est utile dans certains types comme le type <tt>mark</tt> où le texte automatique
+Cela est utile dans certains types comme le type <tt class="wims_code_words">mark</tt> où le texte automatique
 est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
 Seul le score subsiste.</li>
-<li>Een optionele parameter bij <tt>condition</tt> : <tt>option=hide</tt> :
+<li>Een optionele parameter bij <tt class="wims_code_words">condition</tt> : <tt class="wims_code_words">option=hide</tt> :
 De conditie wordt gebruikt om te analyseren. 
 En bij option=hide worden de resultaten van de test niet geprint en zijn dus niet zichtbaar voor de leerling,
 </li>
@@ -185,13 +187,13 @@ en niet alleen of het leerling antwoord overeenkomt met het correcte antwoord
 <p>
 Op deze server kunnen tot $condlim condities worden geformuleerd in een enkele OEF.
 De Syntax is als volgt:
-<p><tt>
+<pre>
 \condition{prompt tekst}{test condities}{weight=...}
-</tt>
+</pre>
 (het laatste veld is niet verplicht.)
 <p>
 Hier zijn enkele voorbeelden:
-(<tt>\ans1</tt> en <tt>\ans2</tt> zijn de ongedefinieerde variabelen.)
+(<tt class="wims_code_variable">\ans1</tt> en <tt class="wims_code_variable">\ans2</tt> zijn de ongedefinieerde variabelen.)
 <small>
 Hier staat een
 !href target=wims_mhelp cmd=help&special_parm=if komplete lijst 
@@ -200,14 +202,14 @@ Hier staat een
 <p>
 $table_header
 $table_hdtr<th>Conditie</th><th>betekend</th></tr>
-$table_tr<td><tt>\ans1>=0 and \ans1<=1</tt></td>
-    <td>Goed als <tt>ans1</tt> ligt in het interval [0,1].</td></tr>
-$table_tr<td><tt>\ans1=1 or \ans1=3 or \ans1=5</tt></td>
-    <td>Goed als <tt>ans1</tt> gelijk is aan 1, 3 of 5.</td></tr>
-$table_tr<td><tt>(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt></td>
-    <td>Goed als <tt>ans1</tt> en <tt>ans2</tt> de twee wortels zijn van de functie  x<sup>2</sup>-5x+6.</td></tr>
-$table_tr<td><tt>sin(\ans1)=0</tt></td>
-    <td>Goed als <tt>ans1</tt> een veelvoud is van $m_pi.</td></tr>
+$table_tr<td><tt class="wims_code_variable">\ans1>=0 and \ans1<=1</tt></td>
+    <td>Goed als <tt class="wims_code_variable">ans1</tt> ligt in het interval [0,1].</td></tr>
+$table_tr<td><tt class="wims_code_variable">\ans1=1 or \ans1=3 or \ans1=5</tt></td>
+    <td>Goed als <tt class="wims_code_variable">ans1</tt> gelijk is aan 1, 3 of 5.</td></tr>
+$table_tr<td><tt class="wims_code_variable">(\ans1)*(\ans2)=6 and (\ans1)+(\ans2)=5</tt></td>
+    <td>Goed als <tt class="wims_code_variable">ans1</tt> en <tt class="wims_code_variable">ans2</tt> de twee wortels zijn van de functie  x<sup>2</sup>-5x+6.</td></tr>
+$table_tr<td><tt class="wims_code_variable">sin(\ans1)=0</tt></td>
+    <td>Goed als <tt class="wims_code_variable">ans1</tt> een veelvoud is van $m_pi.</td></tr>
 $table_end <p>
 Zie ook de help pagina's over de syntax van de OEF 
 !href cmd=help&special_parm=oef antwoord modellen

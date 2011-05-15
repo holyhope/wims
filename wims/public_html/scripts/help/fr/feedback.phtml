@@ -9,25 +9,26 @@ la réponse.
 <p>
 Un nombre arbitraire de commentaires ciblés peuvent être ajoutés, sur tout type
 de réponses (libre ou choix multiple). La syntaxe est comme suit.
-<p><tt>
+<pre>
 \feedback{CONDITION}{MESSAGE}
-</tt> <p>
+</pre>
 Une telle ligne peut être placée dans le champ de paramètres (sous le mode
 guidé) ou n'importe où dans la source (sous le mode brut).
 <p>
 Quand <tt>CONDITION</tt> est remplie,
 <tt>MESSAGE</tt> sera montré à l'utilisateur dans la page de résultat. Les
 valeurs des réponses de l'utilisateur peuvent être utilisées dans les deux
-champs (CONDITION et MESSAGE) via les variables <tt>\reply1</tt>,
-<tt>\reply2</tt>,... (pour réponses libres), <tt>\choice1</tt>, 
-<tt>\choice2</tt>,... (pour choix multiples). L'ordre dans ces variables
+champs (CONDITION et MESSAGE) via les variables <tt class="wims_code_variable">\reply1</tt>,
+<tt class="wims_code_variable">\reply2</tt>,... (pour réponses libres), <tt class="wims_code_variable">\choice1</tt>, 
+<tt class="wims_code_variable">\choice2</tt>,... (pour choix multiples). L'ordre dans ces variables
 est le même que l'ordre sous lequel elles apparaissent dans la source (ou
 dans le formulaire en $name_normal).
 <p>
 <tt>MESSAGE</tt> est un texte libre, acceptant les tags html et les symboles
 mathématiques.
 <p>
-On pourra aussi s'aider de la variable <tt>\sc_reply1</tt>, <tt>\sc_reply2</tt>,
+On pourra aussi s'aider de la variable <tt class="wims_code_variable">\sc_reply1</tt>, 
+<tt class="wims_code_variable">\sc_reply2</tt>,
 ... dont la valeur vaut 1 si la réponse est bonne, 0 si la réponse est fausse
 et 0.5 si elle est bonne à précision près. Cette variable ne tient pas compte
 des conditions supplémentaires éventuellement imposées et est vide dans le cas
@@ -39,21 +40,21 @@ où la réponse est uniquement analysée à l'aide de conditions.
 </small>
 </caption>
 $table_hdtr<th>condition<th>quand elle sera remplie
-$table_tr<td><tt>\reply1=5<td>la première réponse libre est exactement égale à 5
-$table_tr<td><tt>\reply1&gt;\reply2+2<td>la première réponse libre est &gt; la seconde plus 2
-$table_tr<td><tt>\choice1=Oui and \choice2=Non
+$table_tr<td><tt class="wims_code_words">\reply1=5<td>la première réponse libre est exactement égale à 5
+$table_tr<td><tt class="wims_code_words">\reply1&gt;\reply2+2<td>la première réponse libre est &gt; la seconde plus 2
+$table_tr<td><tt class="wims_code_words">\choice1=Oui and \choice2=Non
   <td>premier choix multiple est Oui, et le second est Non (<b>attention</b> 
 la comparaison dans les choix multiples est sensible aux
 minuscules-majuscules&nbsp;!)
-$table_tr<td><tt>\reply1&lt;5 or \reply1&gt;8
+$table_tr<td><tt class="wims_code_words">\reply1&lt;5 or \reply1&gt;8
   <td>première réponse est hors de l'intervalle [5,8].
-$table_tr<td><tt>3 isitemof \reply1
+$table_tr<td><tt class="wims_code_words">3 isitemof \reply1
   <td>la première réponse, du type "set" ou "vector", 
   contient une composante "3".
 
 $table_end
 <p>
-<b>Bogue connu</b>. Vous devez éviter le mélange de <tt>\reply</tt> et
-<tt>\choice</tt> dans une même condition. Sinon le résultat sera
+<b>Bogue connu</b>. Vous devez éviter le mélange de <tt class="wims_code_variable">\reply</tt> et
+<tt class="wims_code_variable">\choice</tt> dans une même condition. Sinon le résultat sera
 imprévisible.
 
