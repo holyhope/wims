@@ -1,44 +1,44 @@
-<b>Sélectionner des atomes d'une molécule en 3D</b> (nécessite java) (nom : <tt>jmolclick</tt>)
+<b>Sélectionner des atomes d'une molécule en 3D</b> (nécessite java) (nom : <tt class="wims_code_words">jmolclick</tt>)
 <p>
 Une molécule est présentée dans l'applet <b>Jmol</b> et certains des atomes doivent être sélectionnés.
-Ce type de réponse doit être utilisé avec la commande <tt>\embed{}</tt>.
+Ce type de réponse doit être utilisé avec la commande <tt class="wims_code_words">\embed{}</tt>.
 D'autres objets que des molécules peuvent être représentés selon les capacités de <b>Jmol</b>
 </p><p>
 La bonne réponse est formée de deux lignes (séparateur ; ) : la première est la
 bonne réponse, la seconde indique la molécule à montrer : le fichier de structure de la molécule (dans un
 format reconnu par <b>Jmol</b>) peut
-être dans un répertoire <tt>data</tt> du module,
-dans le répertoire data de la distribution WIMS (adresse <tt>data/xxx</tt>) ou
-dans un module de données dans <tt>modules/data</tt> (dans ce cas, l'adresse est de la forme
-<tt>datamodule/xxx</tt>) ou dans le répertoire <tt>images</tt> (l'adresse est alors <tt>\imagedir/xxx</tt>).
+être dans un répertoire <tt class="wims_code_words">data</tt> du module,
+dans le répertoire data de la distribution WIMS (adresse <tt class="wims_fname">data/xxx</tt>) ou
+dans un module de données dans <tt class="wims_fname">modules/data</tt> (dans ce cas, l'adresse est de la forme
+<tt class="wims_fname">datamodule/xxx</tt>) ou dans le répertoire <tt class="wims_fname">images</tt> (l'adresse est alors <tt class="wims_fname">\imagedir/xxx</tt>).
 On peut aussi mettre simplement le texte décrivant la molécule.
 </p><p>
 La première partie de la bonne réponse est donnée par
 la liste des numéros des atomes à sélectionner (comme dans le fichier de structure) ou par une commande dans la syntaxe
-<b>Jmol</b> (des exemples sont donnés ci-dessous). Ainsi, <tt>1, 2, 3</tt> est équivalent à
-<tt>atomno=1 or atomno=2 or atomno=3</tt> ou encore à <tt>({0,1,2})</tt> (les deux dernières étant
+<b>Jmol</b> (des exemples sont donnés ci-dessous). Ainsi, <tt class="wims_code_words">1, 2, 3</tt> est équivalent à
+<tt class="wims_code_words">atomno=1 or atomno=2 or atomno=3</tt> ou encore à <tt class="wims_code_words">({0,1,2})</tt> (les deux dernières étant
 en syntaxe <b>Jmol</b>).
 </p><p>
 Il est possible de donner plusieurs réponses possibles ; dans ce cas-là, elles doivent être séparées
-par un <tt>|||</tt> (afin de ne pas confondre avec le <tt>|</tt> qui peut être utilisé dans la syntaxe 
+par un <tt class="wims_code_words">|||</tt> (afin de ne pas confondre avec le <tt class="wims_code_words">|</tt> qui peut être utilisé dans la syntaxe 
 <b>Jmol</b>).
 
-Attention : si <tt>no_select=2</tt>, <tt>_O ||| 1|2|4</tt> signifie qu'on doit sélectionner deux atomes
+Attention : si <tt class="wims_code_words">no_select=2</tt>, <tt class="wims_code_words">_O ||| 1|2|4</tt> signifie qu'on doit sélectionner deux atomes
 d'oxygène (exactement) ou deux des atomes parmi les numéros 1, 2 et 4. 
 
 
 </p><p>
-La première ligne de la commande <tt>\embed</tt> est formée de la taille X x Y en pixels de l'applet.
+La première ligne de la commande <tt class="wims_code_words">\embed</tt> est formée de la taille X x Y en pixels de l'applet.
 Sur les trois lignes suivantes, des scripts <b>Jmol</b> peuvent être mis : le premier sera exécuté
 à la première requête de l'exercice, le troisième sera exécuté lors de la réponse, le
 second sera utilisé les deux fois.
 Il est aussi possible de donner l'adresse d'un fichier contenant un script. Les mêmes règles sont applicables
-que pour le fichier de structure de la molécule (<tt>data/scriptsimple.spt</tt>). Pour être reconnu,
+que pour le fichier de structure de la molécule (<tt class="wims_fname">data/scriptsimple.spt</tt>). Pour être reconnu,
 le fichier doit avoir l'extension <tt>.spt</tt>. Il est aussi possible  lorsque
 ce script est créé par l'exercice (par exemple, il contient des variables aléatoires) d'utiliser
-le slib <tt>oef/newfile</tt> (exemple : 
-<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
-où la variable <tt>text_script</tt> contient le texte du script. La variable <tt>filescript</tt> contient l'adresse
+le slib <tt class="wims_code_words">oef/newfile</tt> (exemple : 
+<pre>\text{filescript=slib(oef/newfile spt,\text_script)}</pre>
+où la variable <tt class="wims_code_words">text_script</tt> contient le texte du script. La variable <tt class="wims_code_words">filescript</tt> contient l'adresse
 du fichier créé.
 
 </p><b>Exemples</b>: 
@@ -65,28 +65,28 @@ ou
 <p>
 Ne pas oublier les points virgules de Jmolscript.
 </p><p>
-Les options suivantes du type de réponse <tt>jmolclick</tt> sont possibles :
+Les options suivantes du type de réponse <tt class="wims_code_words">jmolclick</tt> sont possibles :
 </p>
 $table_header
-$table_tr<td><tt>
-split</tt> ou <tt>partialscore
+$table_tr<td><tt class="wims_code_words">
+split</tt> ou <tt class="wims_code_words">partialscore
 </tt></td><td>
 Le score tient compte d'une réponse bonne partielle, mais surpénalise les mauvaises réponses.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 eqweight
 </tt></td><td>
 les mauvaises réponses ont le même poids que les bonnes réponses.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 noselect="liste de numéros d'atomes"
 </tt></td><td>
 les atomes en question ne pourront
 pas être sélectionnés.
-$table_tr<td><tt>
-nb_select=</tt>m</td><td>Contraint à ce que le nombre d'atomes sélectionnés soit exactement <tt>m</tt>.
+$table_tr<td><tt class="wims_code_words">
+nb_select=</tt>m</td><td>Contraint à ce que le nombre d'atomes sélectionnés soit exactement <tt class="wims_code_words">m</tt>.
 Un message d'alerte invite à corriger dans le cas contraire.</td>
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 applet=imagedir</tt></td><td>Pour experts : l'applet utilisée sera celle mise dans le
-répertoire <tt>images</tt> du module. N'utilisez cette solution que si vous avez réellement besoin d'une version
+répertoire <tt class="wims_code_words">images</tt> du module. N'utilisez cette solution que si vous avez réellement besoin d'une version
 plus récente de <b>Jmol</b>.
 $table_end
 
@@ -109,7 +109,7 @@ $table_header
     !set l_=!record $u of help/$p
     $table_tr<td><tt>
 !line 1 of $l_
-    </tt></td><td>
+    </tt></td><td><tt class="wims_code_words">
 !line 2 of $l_
    </td>
   !next
@@ -117,7 +117,7 @@ $table_end
 
 <p>
 Les conditions peuvent être combinées dans <b>Jmol</b> par les opérateurs d'ensembles 
-<tt>OR</tt>, <tt>AND</tt> et <tt>NOT</tt>. Pour plus de détails, voir la 
+<tt class="wims_code_words">OR</tt>, <tt class="wims_code_words">AND</tt> et <tt class="wims_code_words">NOT</tt>. Pour plus de détails, voir la 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">documentation de Jmol</a>.
 </p>
 
@@ -131,7 +131,7 @@ $table_header
   !set cnt_record=!recordcnt help/$p
   !for u= 3 to $cnt_record
     !set l_=!record $u of help/$p
-    $table_tr<td><tt>
+    $table_tr<td><tt class="wims_code_words">
 !line 1 of $l_
     </tt></td><td>
 !line 2 of $l_

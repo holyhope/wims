@@ -1,41 +1,41 @@
-<b>Select atoms in 3D</b> (java required) (name: <tt>jmolclick</tt>)
+<b>Select atoms in 3D</b> (java required) (name: <tt class="wims_code_words">jmolclick</tt>)
 <p>
 A molecule is showed in the <b>Jmol</b> applet and some atoms must be selected.
-This reply type must be used in link with the command <tt>\embed{}</tt>.
+This reply type must be used in link with the command <tt class="wims_code_words">\embed{}</tt>.
 Other objects than molecule can be represented according to the capacity of 
 <b>Jmol</b>.
 </p><p>
 The good answer has two lignes (separated by  ; ) : the first one is the
 good answer, the seconde one is the molecule to show: the structure file (in a valid
-format for <b>Jmol</b>) can be in a directory <tt>data</tt> of the module,
-in the data directory of the distribution WIMS (address <tt>data/xxx</tt>) or
-in a data module in <tt>modules/data</tt> (in this case, the address is of the form
-<tt>datamodule/xxx</tt>) or in the directory <tt>images</tt> (the address is then <tt>\imagedir/xxx</tt>).
+format for <b>Jmol</b>) can be in a directory <tt class="wims_fname">data</tt> of the module,
+in the data directory of the distribution WIMS (address <tt class="wims_fname">data/xxx</tt>) or
+in a data module in <tt class="wims_fname">modules/data</tt> (in this case, the address is of the form
+<tt class="wims_fname">datamodule/xxx</tt>) or in the directory <tt class="wims_fname">images</tt> (the address is then <tt class="wims_fname">\imagedir/xxx</tt>).
 One can also put directly the structure of the molecule.
 </p><p>
 The first part of the good answer is given by
 the list of atom numbers to select (as they are in the structure file) or by a command in the 
-<b>Jmol</b> syntax (some examples are given below). So, <tt>1, 2, 3</tt> is equivalent to
-<tt>atomno=1 or atomno=2 or atomno=3</tt> or to <tt>({0,1,2})</tt> (the two last forms are in
+<b>Jmol</b> syntax (some examples are given below). So, <tt class="wims_code_words">1, 2, 3</tt> is equivalent to
+<tt class="wims_code_words">atomno=1 or atomno=2 or atomno=3</tt> or to <tt class="wims_code_words">({0,1,2})</tt> (the two last forms are in
 <b>Jmol</b> syntax).
 </p><p>
-Several good answers may be given ; they must be separated by a <tt>|||</tt>
+Several good answers may be given ; they must be separated by a <tt class="wims_code_words">|||</tt>
 
 
-Warning : if<tt>no_select=2</tt>, <tt>_O ||| 1|2|4</tt> means that one must select exactly two oxygen atoms or 
+Warning : if <tt class="wims_code_words">no_select=2</tt>, <tt class="wims_code_words">_O ||| 1|2|4</tt> means that one must select exactly two oxygen atoms or 
 two atoms amongst 1, 2 et 4. 
 
-The first line of the command <tt>\embed</tt> is the size X x Y (in pixels) of the applet. 
+The first line of the command <tt class="wims_code_words">\embed</tt> is the size X x Y (in pixels) of the applet. 
 On the next three lines, <b>Jmol</b> scripts can be given : the first one is executed at the first request
 of the exercise, the third one is executed when the answer is send, the second one is used in both cases.
 
 One can also give the address of a file containing a script. The rules are the same as in the case of the
-structure of the molecule (<tt>data/scriptsimple.spt</tt>). To be valid,
+structure of the molecule (<tt class="wims_fname">data/scriptsimple.spt</tt>). To be valid,
 the file must have <tt>.spt</tt> as extension. When this script is created by the 
 exercise (for example, it contains random variables) one can also use
 the slib <tt>oef/newfile</tt> (example : 
-<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
-where the variable <tt>text_script</tt> contains the script.
+<pre>\text{filescript=slib(oef/newfile spt,\text_script)}</pre>
+where the variable <tt class="wims_code_words">text_script</tt> contains the script.
 It gives the url address of the created file.
 
 </p><b>Example</b>: 
@@ -61,38 +61,38 @@ or
 <p>
 Don't forget the semi-colons of Jmolscript.
 </p><p>
-The following options of the reply type <tt>jmolclick</tt> are available:
+The following options of the reply type <tt class="wims_code_words">jmolclick</tt> are available:
 </p>
 $table_header
-$table_tr<td><tt>
-split</tt> or <tt>partialscore
+$table_tr<td><tt class="wims_code_words">
+split</tt> or <tt class="wims_code_words">partialscore
 </tt></td><td>
 The score takes in account a partially good answer and the weight of bad answers are greater than the 
 weight of the good answers.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 eqweight
 </tt></td><td>
 the partial good answer have the same weight for the score and the bad answers have the same weight
 as the bad ones.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 noselect="list of atoms numbers"
 </tt></td><td>
 the atoms in the list can't be selected.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 nb_select=</tt>m</td><td>the number of selected atoms must be exactly <tt>m</tt>.
 An alert message asks to correct if it is not true.</td>
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 applet=imagedir</tt></td><td>For experts: the used applet will be in the
-directory <tt>images</tt> of the module. Don't use this solution except if you really need 
+directory <tt class="wims_fname">images</tt> of the module. Don't use this solution except if you really need 
 a more recent version of <b>Jmol</b>.
 $table_end
 
-The variable <tt>reply</tt>n has three lists separated by semi-colons :
+The variable <tt class="wims_code_words">reply</tt>n has three lists separated by semi-colons :
 the list of the good answers of the students; the list of his/her bad  answers; the list of the forgotten
 atoms.
 
 In the case where the first field of the good answer is an empty variable, the variable
-<tt>reply</tt>n is simply the list of the selected atoms.
+<tt class="wims_code_words">reply</tt>n is simply the list of the selected atoms.
 
 <p></p>
 !set p=anstype/jmolclick1
@@ -105,7 +105,7 @@ $table_header
   !set cnt_record=!recordcnt help/$p
   !for u= 3 to $cnt_record
     !set l_=!record $u of help/$p
-    $table_tr<td><tt>
+    $table_tr<td><tt class="wims_code_words">
 !line 1 of $l_
     </tt></td><td>
 !line 2 of $l_
@@ -115,7 +115,7 @@ $table_end
 
 
 <p>The conditions may be mixed in <b>Jmol</b> by the set operations 
-<tt>OR</tt>, <tt>AND</tt> and <tt>NOT</tt>. For details, see 
+<tt class="wims_code_words">OR</tt>, <tt class="wims_code_words">AND</tt> and <tt class="wims_code_words">NOT</tt>. For details, see 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
 </p>
 
@@ -130,7 +130,7 @@ $table_header
   !set cnt_record=!recordcnt help/$p
   !for u= 3 to $cnt_record
     !set l_=!record $u of help/$p
-    $table_tr<td><tt>
+    $table_tr<td><tt class="wims_code_words">
 !line 1 of $l_
     </tt></td><td>
 !line 2 of $l_

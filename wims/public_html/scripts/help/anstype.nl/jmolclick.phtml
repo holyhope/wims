@@ -1,7 +1,7 @@
-<b>Markeer en selecteer atoms [3D : java vereist]</b> (naam: <tt>jmolclick</tt>)
+<b>Markeer en selecteer atoms [3D : java vereist]</b> (naam: <tt class="wims_code_words">jmolclick</tt>)
 <p>
 Een molecuul wordt getoond in de <b>Jmol</b> java applet waarin atomen kunnen worden gemarkeerd.
-Dit type antwoord model moet in combinatie met het commando <tt>\embed{}</tt> worden gebruikt.
+Dit type antwoord model moet in combinatie met het commando <tt class="wims_code_words">\embed{}</tt> worden gebruikt.
 Andere objecten kunnen ook worden getoond door de <b>Jmol</b> applet.
 </p><p>
 Het correcte antwoord bevat twee regels (gescheiden door ; ).
@@ -10,9 +10,9 @@ De tweede regel bevat het te tonen molecuul.
 Het molecuul moet in een voor <b>Jmol</b> geschikt formaat op de server aanwezig zijn.
 Mogelijke locaties voor dit bestand zijn:
 <ul>
-<li>in een directory genaamd <tt>data</tt> in uw module: het adres is dan <tt>data/xxx</tt></li>
-<li>in een directory genaamd <tt>images/tt> in uw module: het adres is dan <tt>\imagedir/xxx</tt> </li>
-<li>in de <tt>modules/data</tt> directory van de wims server: het adres is dan <tt>datamodule/xxx</tt></li>
+<li>in een directory genaamd <tt class="wims_fname">\data</tt> in uw module: het adres is dan <tt class="wims_fname">\data/xxx</tt></li>
+<li>in een directory genaamd <tt class="wims_fname">\images</tt> in uw module: het adres is dan <tt class="wims_fname">\\imagedir/xxx</tt> </li>
+<li>in de <tt class="wims_fname">\modules/data</tt> directory van de wims server: het adres is dan <tt class="wims_fname">\datamodule/xxx</tt></li>
 </ul>
 Er kan ook rechtstreeks een structuur aan de applet worden door gegeven.
 </p><p>
@@ -23,22 +23,22 @@ zoals deze in de datafile van het molecuul voorkomen, of door een commando in de
 Ingegeven kan worden:
 <ul>
 <li>
-<tt>1, 2, 3</tt>
+<tt class="wims_code_words">1, 2, 3</tt>
 </li>
 <li>
-<tt>atomno=1 or atomno=2 or atomno=3</tt>
+<tt class="wims_code_words">atomno=1 or atomno=2 or atomno=3</tt>
 </li>
 <li>
- <tt>({0,1,2})</tt> 
+ <tt class="wims_code_words">({0,1,2})</tt> 
 </li>
 </ul>
 De laatste twee zijn in de <b>Jmol</b> syntax.
 </p><p>
-Meerdere correcte antwoorden zijn mogelijk: ze moeten worden gescheiden door een <tt>|||</tt>
-Let op: <tt>no_select=2</tt>, <tt>_O ||| 1|2|4</tt> 
-betekend dat de student precies twee zuurstof atomen <b>of<b> twee atomen uit de nummers 1,2 en 4 moet worden geselecteerd
+Meerdere correcte antwoorden zijn mogelijk: ze moeten worden gescheiden door een <tt class="wims_code_words">|||</tt>
+Let op: <tt class="wims_code_words">no_select=2</tt>, <tt class="wims_code_words">_O ||| 1|2|4</tt> 
+betekend dat de student precies twee zuurstof atomen of twee atomen uit de nummers 1,2 en 4 moet worden geselecteerd
 
-De eerste regel van het commando <tt>\embed</tt> is de grootte in pixes van de applet in X&times;Y .
+De eerste regel van het commando <tt class="wims_code_words">\embed</tt> is de grootte in pixes van de applet in X&times;Y .
 OP de volgende drie regels kunnen  <b>Jmol</b> scripts worden gegeven : 
 de eerste wordt uitgevoerd bij het aanroepen van de applet,
 de derde regel wordt uitgevoerd als het antwoord wordt verstuurd naar wims; 
@@ -46,12 +46,12 @@ de tweede wordt in beide gevallen uitgevoerd.
 
 Er kan ook het adres van een jmol scriptbestand worden aangegeven.
 De adressen van dit script zijn gelijk aan de locaties voor de molecuul bestanden.
-Vijvoorbeeld: <tt>data/scriptsimple.spt</tt>). 
+Vijvoorbeeld: <tt class="wims_fname">data/scriptsimple.spt</tt>). 
 Deze scriptfiles moeten de uitgang <tt>.spt</tt> hebben.
 Als dit script automatisch door wims wordt gegenereerd in uw module, kunnen er ook random variabelen in worden aangebracht.
-In dit geval kan gebruik worden gemaakt  van de bibliotheek <tt>oef/newfile</tt> 
+In dit geval kan gebruik worden gemaakt  van de bibliotheek <tt class="wims_fname">oef/newfile</tt> 
 (bijvoorbeeld : 
-<tt>\text{filescript=slib(oef/newfile spt,\text_script)}</tt>
+<pre>\text{filescript=slib(oef/newfile spt,\text_script)}</pre>
 waarin de variabel <tt>text_script</tt>
 De bibliotheek retourneerd het adres van het aangemaakte bestand.
 
@@ -78,38 +78,38 @@ of
 <p>
 Let op: niet vergeten puntkomma's te gebruiten in het Jmolscript.
 </p><p>
-De onderstaande opties zijn aanwezig voor het antwoord model <tt>jmolclick</tt>:
+De onderstaande opties zijn aanwezig voor het antwoord model <tt class="wims_code_words">jmolclick</tt>:
 </p>
 $table_header
-$table_tr<td><tt>
-split</tt> or <tt>partialscore
+$table_tr<td><tt class="wims_code_words">
+split</tt> or <tt class="wims_code_words">partialscore
 </tt></td><td>
 The score takes in account a partially good answer and the weight of bad answers are greater than the 
 weight of the good answers.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 eqweight
 </tt></td><td>
 the partial good answer have the same weight for the score and the bad answers have the same weight
 as the bad ones.
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 noselect="list of atoms numbers"
 </tt></td><td>
 the atoms in the list can't be selected.
-$table_tr<td><tt>
-nb_select=</tt>m</td><td>the number of selected atoms must be exactly <tt>m</tt>.
+$table_tr<td><tt class="wims_code_words">
+nb_select=</tt>m</td><td>the number of selected atoms must be exactly <tt class="wims_code_words">m</tt>.
 An alert message asks to correct if it is not true.</td>
-$table_tr<td><tt>
+$table_tr<td><tt class="wims_code_words">
 applet=imagedir</tt></td><td>For experts: the used applet will be in the
-directory <tt>images</tt> of the module. Don't use this solution except if you really need 
+directory <tt class="wims_fname">images</tt> of the module. Don't use this solution except if you really need 
 a more recent version of <b>Jmol</b>.
 $table_end
 
-The variable <tt>reply</tt>n has three lists separated by semi-colons :
+The variable <tt class="wims_code_variable">\reply</tt>n has three lists separated by semi-colons :
 the list of the good answers of the students; the list of his/her bad  answers; the list of the forgotten
 atoms.
 
 In the case where the first field of the good answer is an empty variable, the variable
-<tt>reply</tt>n is simply the list of the selected atoms.
+<tt class="wims_code_variable">\reply</tt>n is simply the list of the selected atoms.
 
 
 !set p=anstype/jmolclick1
@@ -122,7 +122,7 @@ $table_header
   !set cnt_record=!recordcnt help/$p
   !for u= 3 to $cnt_record
     !set l_=!record $u of help/$p
-    $table_tr<td><tt>
+    $table_tr<td><tt class="wims_code_words">
 !line 1 of $l_
     </tt></td><td>
 !line 2 of $l_
@@ -132,7 +132,7 @@ $table_end
 
 
 <p>The conditions may be mixed in <b>Jmol</b> by the set operations 
-<tt>OR</tt>, <tt>AND</tt> and <tt>NOT</tt>. For details, see 
+<tt class="wims_code_words">OR</tt>, <tt class="wims_code_words">AND</tt> and <tt class="wims_code_words">NOT</tt>. For details, see 
 <a href="http://chemapps.stolaf.edu/jmol/docs/#atomexpressions">Jmol docs</a>.
 </p>
 
@@ -146,7 +146,7 @@ $table_header
   !set cnt_record=!recordcnt help/$p
   !for u= 3 to $cnt_record
     !set l_=!record $u of help/$p
-    $table_tr<td><tt>
+    $table_tr<td><tt class="wims_code_words">
 !line 1 of $l_
     </tt></td><td>
 !line 2 of $l_

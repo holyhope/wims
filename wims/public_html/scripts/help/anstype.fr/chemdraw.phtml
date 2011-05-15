@@ -1,4 +1,4 @@
-<b>Dessiner une molécule</b> (nom : <tt>chemdraw</tt>)
+<b>Dessiner une molécule</b> (nom : <tt class="wims_code_words">chemdraw</tt>)
 Une applet (modification par Joke Evers de l'applet SketchEl <a href="http://sketchel.sourceforge.net"/>http://sketchel.sourceforge.net</a>) permettant de dessiner une molécule est affichée.  
 <p>
 La réponse est définie comme l'adresse d'un fichier du type MDMol (extension .mol)
@@ -10,12 +10,12 @@ Ce fichier peut par exemple obtenu préliminairement grâce à l'applet
 Dans l'avenir, une banque de tels fichiers sera accessible dans wims. 
 
 <p>
-La molécule dessinée est analysée et comparée grâce aux programmes <tt>checkmol</tt>
-et <tt>matchmol</tt>
+La molécule dessinée est analysée et comparée grâce aux programmes <tt class="wims_code_words">checkmol</tt>
+et <tt class="wims_code_words">matchmol</tt>
 (<a href="http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html</a>)
 qui se trouve maintenant sur le serveur WIMS (à partir de la version 3.65a). 
 
-<p>La variable <tt>\reply</tt>i est une matrice (avec ; comme séparateur de ligne)
+<p>La variable <tt class="wims_code_variable">\reply</tt>i est une matrice (avec ; comme séparateur de ligne)
 <ul>
 <li>dans le cas d'une mauvaise réponse,
 <ul><li>
@@ -45,7 +45,7 @@ différent (dans le même ordre que les numéros de la ligne 1).
 </li>
 </ul>
 </li>
-<li>dans le cas d'une bonne réponse (ce qui peut se tester par la valeur 1 de la variable <tt>\sc_reply</tt>i),
+<li>dans le cas d'une bonne réponse (ce qui peut se tester par la valeur 1 de la variable <tt class="wims_code_variable">\sc_reply</tt>i),
 les quatre premières lignes uniquement. 
 </li>
 <li>lorsqu'aucune bonne réponse n'est fournie, les lignes 1 à 3. 
@@ -58,41 +58,41 @@ si elles sont utilisées de prendre systématiquement le premier item de ces ligne
 $table_header 
 <caption>Options disponibles :</caption>
 $table_hdtr<th>$wims_name_name</th><th>Exemple</th><th>$wims_name_Explanations</th></tr>
-$table_tr<td>image=<tt>adresse</tt></td><td><tt>image=ch/ethane.png</tt></td><td>adresse de l'image 
-à partir de la valeur de  <tt>\imagedir</tt> défini dans <tt>var.proc</tt>, dans l'exemple l'image 
+$table_tr<td><tt class="wims_code_words">image=adresse</tt></td><td><tt class="wims_code_words">image=ch/ethane.png</tt></td><td>adresse de l'image 
+à partir de la valeur de  <tt class="wims_fname">\imagedir</tt> défini dans <tt class="wims_fname">var.proc</tt>, dans l'exemple l'image 
 est dans le répertoire
-<tt>\imagedir/ch</tt>
+<tt class="wims_fname">\imagedir/ch</tt>
 </td></tr>
-$table_tr<td>match=<tt>matchmol_option</tt></td><td><tt>match=gG</tt></td><td>
+$table_tr<td>match=<tt class="wims_code_words">matchmol_option</tt></td><td><tt class="wims_code_words">match=gG</tt></td><td>
 <ul><li>
-<tt>g</tt>:
+<tt class="wims_code_words">g</tt>:
 check geometry of double bonds (E/Z)
 </li><li>
-<tt>G</tt>:
+<tt class="wims_code_words">G</tt>:
 check geometry of chiral centers (R/S)
 </li><li>
-<tt>a</tt>:
+<tt class="wims_code_words">a</tt>:
 check charges strict
 </li><li>
-<tt>i</tt>:
+<tt class="wims_code_words">i</tt>:
 check isotopes strict
 </li><li>
-<tt>d</tt>:
+<tt class="wims_code_words">d</tt>:
 check radicals strict
 </li></ul>
 </td></tr>
 $table_tr<td colspan="3" align="center">
-<tt>\answer{}{}{type=chemdraw}{option=image=ch/ethane.png match=gG}</tt>
+<tt class="wims_code_variable">\answer{}{}{type=chemdraw}{option=image=ch/ethane.png match=gG}</tt>
 </td></tr>
 $table_end
 <p>
-Les options du champ <tt>embed</tt> sont la taille <tt>L x H</tt> sur la première ligne 
+Les options du champ <tt class="wims_code_words">embed</tt> sont la taille <tt class="wims_code_words">L x H</tt> sur la première ligne 
 suivie sur une nouvelle ligne des options possibles de l'applet (valeurs  yes (ou 1) et  no  (ou 0))
 </p>
 <p>
-Une option <tt>help</tt> est disponible, elle rajoute automatiquement une aide sur l'applet 
-(il est possible de n'en prendre qu'une partie en choisissant des mots clés parmi <tt>single,atom,double,erasor,template</tt>
-(par exemple <tt>help=[single,erasor]</tt>). 
+Une option <tt class="wims_code_words">help</tt> est disponible, elle rajoute automatiquement une aide sur l'applet 
+(il est possible de n'en prendre qu'une partie en choisissant des mots clés parmi <tt class="wims_code_words">single,atom,double,erasor,template</tt>
+(par exemple <tt class="wims_code_words">help=[single,erasor]</tt>). 
 </p>
 $table_header
 $table_hdtr<th>$wims_name_name</th><th>Défaut</th><th>$wims_name_Explanations</th></tr>
@@ -110,7 +110,7 @@ $table_tr<td>tool_cursor</td><td>1</td><td>indispensable, permet de sélectionner
  $table_tr<td>tool_erasor</td><td>1</td><td>permet d'effacer</td></tr>
  $table_tr<td>tool_dialog</td><td>0</td><td></td></tr>
  $table_tr<td>tool_edit</td><td>0</td><td>permet d'écrire le nom des molécules (texte libre)</td></tr>
-$table_tr<td>tool_setatom</td><td>1</td><td>propose une liste d'atomes (la liste peut être précisée dans le paramètres <tt>atoms</tt></td></tr>
+$table_tr<td>tool_setatom</td><td>1</td><td>propose une liste d'atomes (la liste peut être précisée dans le paramètres <tt class="wims_code_words">atoms</tt></td></tr>
  $table_tr<td>tool_single</td><td>1</td><td>liasion simple</td></tr>
  $table_tr<td>tool_double</td><td>1</td><td>liaison double</td></tr>
  $table_tr<td>tool_triple</td><td>1</td><td>liaison triple</td></tr>
@@ -123,7 +123,7 @@ $table_tr<td>tool_inclined</td><td>0</td><td>liaison inclinée</td></tr>
  $table_tr<td>tool_redo</td><td>1</td><td>permet de refaire</td></tr>
 $table_tr<td>tool_template</td><td>1</td><td>outil donnant des modèles, par défaut, ce sont les modèles de l'applet ; 
 on peut configurer quels 
-modèles apparaîtront en donnant des valeurs à <tt>template</tt> (séparés par un espace ...) </td></tr>
+modèles apparaîtront en donnant des valeurs à <tt class="wims_code_words">template</tt> (séparés par un espace ...) </td></tr>
  $table_tr<td>tool_cut</td><td>0</td><td>Couper</td></tr>
  $table_tr<td>tool_copy</td><td>0</td><td>Copier</td></tr>
  $table_tr<td>tool_paste</td><td>0</td><td>Coller</td></tr>
@@ -132,19 +132,19 @@ modèles apparaîtront en donnant des valeurs à <tt>template</tt> (séparés par un 
  $table_hdtr<th colspan=3>Autres options</th></tr>
  $table_tr<td>atoms</td><td colspan=2>liste (entre guillemets) 
  d'atomes séparés par des espaces, par exemple
- <tt>atoms="C N O S Mn Ni Mg Br Cl I"</tt></td></tr>
+ <tt class="wims_code_words">atoms="C N O S Mn Ni Mg Br Cl I"</tt></td></tr>
  $table_tr<td>template</td><td colspan=2>liste des noms des molécules à mettre dans le template, si le mot cyclo s'y trouve, met les cycles de base)</td></tr>
- $table_tr<td>file</td><td colspan=2>adresse du fichier MDMol, ce fichier doit se trouver dans le répertoire <tt>data</tt> du module
- (adresse de la forme <tt>data/xxx</tt>), dans le répertoire 
- <tt>data</tt> de la distribution (adresse de la forme <tt>data/xxx</tt>) 
- ou dans un module de données (adresse de la forme <tt>datamodule/xxxx)</tt>)</td>
+ $table_tr<td>file</td><td colspan=2>adresse du fichier MDMol, ce fichier doit se trouver dans le répertoire <tt class="wims_fname">data</tt> du module
+ (adresse de la forme <tt class="wims_fname">data/xxx</tt>), dans le répertoire 
+ <tt class="wims_fname">data</tt> de la distribution (adresse de la forme <tt class="wims_fname">data/xxx</tt>) 
+ ou dans un module de données (adresse de la forme <tt class="wims_code_fname">datamodule/xxxx)</tt>)</td>
  $table_tr<td>show_carbon</td><td colspan=2>montrer les atomes de carbone</tr>
  $table_tr<td>show_hydrogen</td><td colspan=2>montrer les atomes d'hydrogènes</tr>
  
  $table_end
 <p>
-Le tableau suivant indique la signification des différents items des lignes 1 et 4 de <tt>\reply</tt>i
-(selon la documentation de <tt>checkmol</tt>) 
+Le tableau suivant indique la signification des différents items des lignes 1 et 4 de <tt class="wims_code_variable">\reply</tt>i
+(selon la documentation de <tt class="wims_code_words">checkmol</tt>) 
 $table_header
 $table_hdtr<th >Numéro</th><th>$wims_name_name</th><th>$wims_name_Explanation</th></tr>
 $table_tr<td>1</td><td>n_atoms</td><td>     number of heavy atoms</td></tr>
@@ -219,7 +219,7 @@ $table_tr<td>69</td><td>n_psla</td><td>      number of atoms belonging to the la
 $table_tr<td>70</td><td>n_iso</td><td>      number of isotopes</td></tr>
 $table_tr<td>71</td><td>n_rad</td><td>      number of radicals</td></tr>
 </table></center>
-Le tableau suivant donne l'explication des codes (lignes 2 et 5 de <tt>reply</tt>i). On peut alors à l'aide de conditions
+Le tableau suivant donne l'explication des codes (lignes 2 et 5 de <tt class="wims_code_variable">reply</tt>i). On peut alors à l'aide de conditions
 tester les fonctions présentes dans la molécule tracée.
 $table_header
 $table_hdtr<th >Code</th><th>Explication</th></tr>
