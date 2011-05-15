@@ -1,0 +1,101 @@
+type=datalist
+textarea="data"
+
+:Cacher certains mots d'une phrase (type flashcard).
+
+Des étiquettes sont présentées. Il s'agit d'en cacher certaines.
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+:\title{Cacher des étiquettes}
+:\author{Bernadette Perrin-Riou}
+:Consigne
+\text{instruction=Cacher les adjectifs en cliquant sur leur étiquette.}
+:Nombre de questions proposées (maximum 5)
+\text{N=2}
+:Nom du fichier
+Ne remplissez que si vous vous désirez transférer le source de cet exercice dans un compte Modtool 
+et utiliser un fichier de données (dans un module OEF)
+du type
+<pre>
+ :Le chat ??noir?? a&nbsp;mangé la souris ??blanche.??
+ :Le chat ??blanc?? a mangé la souris ??noire.??
+</pre>
+Dans ce cas, les données principales ne seront pas prises en compte. 
+Sinon, remplissez les données principales.
+
+\text{file=}
+
+:Données principales.
+Mettre les phrases en entourant par ?? les mots à cacher.
+\text{data=Le&nbsp;chat ??noir?? a&nbsp;mangé la souris ??blanche.??
+La maison ??verte?? est sur la colline.
+Dans le jardin, il y a des fleurs ??blanches?? et ??rouges?? }
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\integer{N=min(\N,5)}
+\if{\file notsametext}{
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+   }
+  }{
+  \integer{M=rows(\data)}
+  \integer{N=min(\N,\M)}
+  \integer{N=min(\N,10)}
+  \text{liste=shuffle(\M)}
+  \text{liste=\liste[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\liste;]}
+}
+\text{Numero=}
+\text{Texte=}
+\text{cnt=}
+\text{data=wims(embraced randitem \data)}
+\for{u=1 to \N}{
+  \matrix{texte=slib(text/markgroup \data[\u;])}
+  \matrix{numero=\texte[1..-4;]}
+  \text{cnt_mot = rows(\numero)}
+  \text{numero = wims(rows2lines \numero)}
+  \text{numero = wims(lines2items \numero)}
+  \text{Numero = wims(append line \numero to \Numero)}
+  \text{texte = \texte[-3;]}
+  \text{cc=items(\texte)}
+  \text{cnt = wims(append item  \cc to \cnt)}
+  \text{Texte=wims(append line \texte to \Texte)}
+}
+\matrix{Texte=\Texte}
+\matrix{Numero=\Numero}
+\text{STEP=wims(makelist r x for x=1 to \N)}
+\steps{\STEP}
+\statement{\instruction
+\if{\N=1}{<div class="emptyline"> </div>
+ <center>\for{j=1 to \cnt}{ 
+   \embed{r 1,\j}
+ }</center>
+}{
+ \for{ss=1 to \N}{<p> \ss : </p>
+ <center>\for{j=1 to \cnt[\ss]}{
+   \embed{r \ss,\j}
+ }</center>
+ }
+}
+}
+\answer{1}{\Numero[1;];\Texte[1;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{2}{\Numero[2;];\Texte[2;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{3}{\Numero[3;];\Texte[3;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{4}{\Numero[4;];\Texte[4;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{5}{\Numero[5;];\Texte[5;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+
