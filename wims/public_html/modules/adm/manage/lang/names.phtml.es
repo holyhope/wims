@@ -25,6 +25,8 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 !set name_visit=Visitar
 !set name_click=Pulse aquí
 
+!set wims_name_download_module=Module download
+
 !if $job=access
  !set title=Configuración de la normativa de acceso
  !set name_subtitle=Definición de la normativa de acceso
@@ -179,8 +181,7 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
   !set title=!nosubst Configuración de $cattit
   !distribute lines La configuración no ha cambiado porque no ha hecho modificaciones.\
      por defecto\
-     Module download\
-   into name_config,name_default,wims_name_download_module
+   into name_config,name_default
 
   !set name_updated=!nosubst   El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar \
   la información de configuración antigua en <tt>$backdir/wims.conf.old</tt>.

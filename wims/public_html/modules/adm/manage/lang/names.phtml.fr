@@ -6,7 +6,6 @@ Son accès est contrôlé par les définitions du fichier de configuration.
 !set name_warning_wrongpass=<b>$wims_name_Error</b>. Vous avez donné un mauvais mot de passe.
 !set name_try_wrongpass=Essayez de nouveau
   
-  
 !!list
  !distribute lines Les installations de sécurité doivent être vérifiées après la compilation. Exécutez <tt>bin/wrapuid</tt> comme <tt>root</tt>!\
    Voici les tâches que vous pouvez effectuer en ligne.\
@@ -25,6 +24,7 @@ into name_warning,name_online,name_configuration,name_checklist,name_mkindex,nam
 !set name_visit=Visiter
 !set name_click=Cliquez ici
 
+!set wims_name_download_module=Téléchargement des modules
 !if $job=access
  !set title=Configuration de la politique d'accès
  !set name_subtitle=Définition de la politique d'accès
@@ -174,12 +174,11 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
 !endif
 
 !if $job=conf
-  !set title=!nosubst Configuration de $cattit
+   !set title=!nosubst Configuration de $cattit
   !distribute lines La configuration n'a pas changé car vous n'avez pas fait de modifications.\
      défaut\
-     Téléchargement des modules\
-   into name_config,name_default,wims_name_download_module
-
+   into name_config,name_default
+   
  !set name_updated=!nosubst Le fichier <tt>wims.conf</tt> est mis à jour. Les informations sur l'ancienne\
    configuration sont dans le fichier <tt>$backdir/wims.conf.old</tt>.
 
@@ -350,7 +349,7 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
   !distribute lines dans le centre(s) de téléchargement des modules\
     Modules dans la zone\
     et catégorie\
-    changé depuis au moins\
+    changés depuis au moins\
     jours\
     Configuration du téléchargement\
   into name_mod,name_zone,name_cat,name_change,name_ago,wims_name_config_module
@@ -358,9 +357,9 @@ into name_current,name_sub,name_symbolic,name_add,name_files,name_file
   !distribute lines Erreur pendant le chargement du module \
       Erreur d'installation/mise à jour\
       Installation/Mise à jour\
-      successful\
+      Réussi\
       Vous avez besoin de\
-      le tester\
+      Tester\
       reconstruire l'index des modules\
       Installer\
       Mise à jour\
