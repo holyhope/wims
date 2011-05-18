@@ -27,14 +27,21 @@ $name_direct:
   !set n_=!defof class_institution, class_description in\
 	wimshome/log/classes/$c_/.def
   !if $u_=supervisor
-   !set t_=supervisor
+   !if $c_ iswordof $wims_supervise or $wims_realuser=$wims_user
+    !set t_=supervisor
+   !else
+    !set t_=participant
+    !goto out
+   !endif
   !else
    !set t_=$type
   !endif
-  <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td><td class="wims_classes_direct_name">
+  <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td>
+  <td class="wims_classes_direct_name">
   !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
   </td><td><tt>$u_</tt></td>
   </tr>
+:out
  !next cl
 !next ty
  </table>

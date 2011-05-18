@@ -151,12 +151,15 @@ lacnt=0
  !endif
 !endif
 
-!if $type iswordof authparticipant authsupervisor
- !reset class_defined
- class=!text remove . in $class
- !defread wimshome/log/classes/$class/.def
- !if $type=authsupervisor
-  !default auth_user=supervisor
+ !if $type iswordof authparticipant authsupervisor
+  !reset class_defined
+  class=!text remove . in $class
+  !defread wimshome/log/classes/$class/.def
+  !if $type=authsupervisor and ($wims_supertype<2 or $class isitemof $wims_supervise)
+   !default auth_user=supervisor
+  !else  
+    !default auth_user=$wims_realname
+  !endif 
  !endif
  !if $class_defined=yes and $auth_user!=$empty
   !changeto var.auth
