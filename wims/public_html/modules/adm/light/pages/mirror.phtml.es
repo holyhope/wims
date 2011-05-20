@@ -81,22 +81,22 @@ $ in $l_
  público general. Si usa normalmente WIMS en su trabajo, le sugerimos
  que añada a sus Favoritos al menos una de estas direcciones.
  <p>$table_header
- $table_hdtr<th>Sitio<th>Localización<th>País<th>Idiomas<br>en que funciona<th>Comentarios
+ $table_hdtr<th>Sitio</th><th>Localización</th><th>País</th><th>Idiomas<br>en que funciona</th><th>Comentarios</th></tr>
  !for i_=1 to $n
   !set j_=!item $i_ of $c
   !set l_=!record $j_ of $mir
   !distribute lines $l_ into u_,t_,C_,l_,m_,e_,r_
   !readproc mirror.proc
   $table_tr<td align="center">
-  <a href="$u_">$U_</a>
-  <td align="center">$t_
-  <td align="center">$C_
+  <a href="$u_">$U_</a></td>
+  <td align="center">$t_</td>
+  <td align="center">$C_</td>
   <td align="center">
   !for L_ in $l_
-   <img src="gifs/$L_.gif" alt="$L_.gif" height=16>
+   <img src="gifs/$L_.gif" alt="$L_.gif" height="16">
   !next L_
 !!  <td align="center">!mailurl n$e_ $m_\nWIMS site
-  <td>$r_&nbsp;
+  </td><td>$r_&nbsp;</td></tr>
  !next i_
  $table_end <p>
 !endif
