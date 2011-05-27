@@ -1,0 +1,14 @@
+# ListExos permet de lister tous les exercices présents dans la classe qclass
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+# !readdef $classexofile
+
+# Pour compter les exos, on utilise le fichier Extitles de la classe
+exotitlelist=!record 0 of wimshome/log/classes/$qclass/Extitles
+exotitlelist=!lines2items $exotitlelist
+exocount=!itemcnt $exotitlelist
+

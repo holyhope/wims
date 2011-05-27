@@ -16,6 +16,13 @@ specification of the receiving software, while the result of the request
 should be formatted according to the need of WIMS, as described below.
 
 -----------------------------------------------------------------------------
+New features and modifications in the 3.3 version (05/2011) :
+	- New jobs : listexos, movexo, movexos, sharecontent
+	- New script : check.exoclass
+	- New output type : JSON
+	GetClass has also been modified for optimzation. It's no longer possible to get exercice list from this Job.
+	Use "listexos" instead
+-----------------------------------------------------------------------------
 New features and modifications in the 3.23 version (06/2010) (in work) :
 	- New jobs : addexam, addexo, checkexam, delexam, delexo, download, getexam,
 				 getexamlog, getexo, getexofile, getmodule, getscores, linkexo,
@@ -344,6 +351,19 @@ job=addsheet 	Add a new sheet to the specified class. 'data1' may be defined as 
 		to one definition in the format 'name=value', with these names : 
 	queryclass : the requested class
 	sheet_id : id of the new created sheet
+
+
+
+job=listexos		permet de lister tous les exercices presents dans la classe qclass
+
+job=movexo			permet de deplacer l'exercice qexo de la classe qclass a la classe data1, a condition que les 2 classes soient liees a rclass
+# option peut contenir le mot "copy" pour copier le fichier au lieu de le deplacer.
+
+job=movexos			permet de deplacer l'ensemble des exercices de la classe qclass vers la classe data1, a condition que les 2 classes soient liees a rclass
+# option peut contenir le mot "copy" pour copier les fichiers au lieu de les deplacer.
+
+job=sharecontent	permet de declarer des classes voisines, et de partager des contenus d'une classe "qclass" avec une classe "data1", a condition que les 2 classes soient liees a "rclass"
+"option" va contenir le type de contenu à partager. (pour le moment, seul "exo" est pris en compte)
 
 
 </pre>

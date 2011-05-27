@@ -1,0 +1,38 @@
+#Check.ExoClass verifie l'existence de l'exercice qexo dans la classe qclass
+
+#On ne commence que si la classe existe
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#Si le parametre qexo contient des caracteres illegaux, on abandonne
+badchars=!text select ?*#~!@ in $qexo
+!if .. isin $qexo or $badchars!=$empty
+ error=illegal file name for qexo
+ !exit
+!endif
+
+#Si le parametre qexo n'existe pas, on abandonne
+!if $qexo=$empty
+ error=undefined qexo
+ !exit
+!endif
+
+#reste a verifier que l'on ecrase pas un exo existant
+# !readdef wimshome/log/classes/$qclass/Exindex
+#ici les securites wims empechent de traiter le fichier Exindex. On contourne donc en listant les fichiers du dossier def/
+# (au passage, on cree le dossier def/ (s'il n'existe pas deja) : on s'assure ainsi de lister le bon dossier:
+!sh mkdir $wims_class_dir/def
+exolist=!sh cd $wims_class_dir/def; ls | sort
+exolist=!translate  .def  to $$ in $exolist
+
+#on supprime un eventuel ".def" du parametre qexo
+qexo=!translate  .def  to $$ in $qexo
+
+# Puis on le compare a la liste d'exos existants
+!if $qexo islineof $exolist 
+  exo_exists=yes
+!else
+  exo_exists=no
+!endif

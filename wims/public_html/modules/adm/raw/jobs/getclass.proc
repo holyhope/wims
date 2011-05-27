@@ -6,17 +6,12 @@
 # dans la variable $supp, on ajoute des informations supplementaires aux infos de base presentes dans le .def de la classe
 supp=connections,creation
 !readdef $classdeffile
-!readdef $classexofile
+
 
 userlist=!sh cd $wims_home/log/classes/$qclass/.users; ls | sort
 class_userlist=!singlespace $userlist
 class_usercount=!wordcnt $class_userlist
 class_userlist= !words2items $class_userlist
-
-# Pour compter les exos, on utilise le fichier Extitles de la classe
-class_exotitlelist=!record 0 of wimshome/log/classes/$qclass/Extitles
-class_exotitlelist=!lines2items $class_exotitlelist
-class_exocount=!itemcnt $class_exotitlelist
 
 ##course list,  program list
 !if $class_type>=2
@@ -33,7 +28,8 @@ class_exocount=!itemcnt $class_exotitlelist
 !if $class_type=2
 #Cas du groupement de classes
   class_subclasses=!record 0 of wimshome/log/classes/$qclass/.subclasses
-  supp=$supp,subclasses
+  class_subclassescount=!recordcnt wimshome/log/classes/$qclass/.subclasses
+  supp=$supp,subclasses,subclassescount
 !endif
 
 class_sheetcount=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
@@ -41,7 +37,7 @@ class_examcount=!recordcnt wimshome/log/classes/$qclass/exams/.exams
 
 
 # homepage = parametre obsolete  ?  
-supp=$supp, userlist, usercount, exotitlelist, exocount, examcount, sheetcount
+supp=$supp, userlist, usercount, examcount, sheetcount
 
 
 #l'option "all_even_hidden" est un raccourci pour obtenir la liste complete des infos possibles

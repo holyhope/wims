@@ -1,3 +1,5 @@
+# AddClass permet d'ajouter une classe, un groupement de classe, ou une sous-classe
+
 !if $qclass!=$empty
  qclass=$[$qclass]
  !if NaN isin $qclass or $qclass<11111 or $qclass>10^9
@@ -35,7 +37,7 @@
   !advance class_nbsubclasses
 
   #Si qclass existe et est un groupement de classe, on lui ajoute alors une sous-classe
-  cd=$qclass/$class_nbsubclasses  
+  cd=$qclass/$class_nbsubclasses
 
  !else
   #si la classe n'existe pas, on la cree.
@@ -83,7 +85,6 @@ $ in $l
  cl_parent=$qclass 
 !endif
 
-
 !sh cd $wims_home/log/classes\
 	mkdir -p $cd\
 	cd $cd\
@@ -101,7 +102,9 @@ cl_creation=!eval $cl_creation
 langs=!words2items $wims_site_languages
 !bound cl_lang within $langs default en
 !default cl_level=H4
+!default cl_theme=standard
 !default cl_css=-theme-
+!default cl_creator=$httpd_REMOTE_ADDR
 !default cl_scorecolor=white,red,red,red,orange,orange,orange,yellow,yellow,green,green
 
 !writefile wimshome/log/classes/$cd/.def !set class_connections=+$ident/$rclass+ $(cl_connections) \
@@ -118,6 +121,7 @@ langs=!words2items $wims_site_languages
 !set user_password=$su_password\
 !set user_email=$cl_email\
 !set user_exists=yes
+
 
 !if $cssfile!=$empty
   !writefile wimshome/log/classes/$cd/css $cssfile

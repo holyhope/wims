@@ -1,0 +1,72 @@
+# MovExo :
+#permet de deplacer l'exercice qexo de la classe qclass a la classe data1, a condition que les 2 classes soient liees a rclass
+# option peut contenir le mot "copy" pour copier le fichier au lieu de le deplacer.
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+src_class=$qclass
+src_class_dir=$wims_class_dir
+
+qclass=$data1
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $classdeffile
+  
+!if $class_type>0
+  # on n'ajoute un exercice que si la destination est une simple classe
+  error=class $qclass is a superclass
+  !exit
+!endif
+
+
+#######
+# On cree le dossiers src/ (s'il n'existe pas) pour pouvoir y placer notre exercice :
+!sh mkdir $wims_class_dir/src
+
+tool=mv
+action=moved
+!if copy iswordof $option
+ tool=cp
+ action=copied
+!endif
+
+# On deplace (ou copie) alors notre fichier d'exercice dans la nouvelle classe :
+log=!sh $tool $src_class_dir/src/$qexo.oef $wims_class_dir/src/
+
+# puis on reconstruit les index (au passage, on compile les exercices)
+!if $tool!=cp
+	!sh rm $src_class_dir/Exindex
+	!sh rm $src_class_dir/Extitles
+	
+	compil_src = !sh cd $src_class_dir;. $wims_home/public_html/scripts/oef/mkindex
+	compil_src = !lines2items $compil_src
+	
+	result_compil=!item 2 of $compil_src
+	!if ERROR isin $result_compil
+	  error = Compilation dans la classe Source : $result_compil
+	  #On supprime alors l'exercice defectueux
+	  !sh rm $src_class_dir/src/$qexo.oef
+	  !exit
+	!endif
+!endif
+
+!sh rm $wims_class_dir/Exindex
+!sh rm $wims_class_dir/Extitles
+
+compil_dest = !sh cd $wims_class_dir;. $wims_home/public_html/scripts/oef/mkindex
+compil_dest = !lines2items $compil_dest
+
+result_compil=!item 2 of $compil_dest
+!if ERROR isin $result_compil
+  error = COMPILATION $result_compil
+  #On supprime alors l'exercice defectueux
+  !sh rm $wims_class_dir/src/$qexo.oef
+!endif
+
+
+

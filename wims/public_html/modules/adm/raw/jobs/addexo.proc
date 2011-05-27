@@ -1,39 +1,19 @@
 # AddExo :
 #permet d'ajouter le fichier source (data1) d'un exercice directement dans ma classe, sous le nom qexo
 
-#On ne commence que si la classe existe
-!read scripts/check.class
-!if $error!=$empty
- !exit
+!read scripts/check.exoclass
+
+!readdef $classdeffile
+  
+!if $class_type>0
+  # on n'ajoute un exercice que dans une classe independante
+  error=class $qclass is a superclass
+  !exit
 !endif
 
-#Si le parametre qexo contient des caracteres illegaux, on abandonne
-badchars=!text select ?*#~!@ in $qexo
-!if .. isin $qexo or $badchars!=$empty
- error=illegal file name for qexo
- !exit
-!endif
-
-#Si le parametre qexo n'existe pas, on abandonne
-!if $qexo=$empty
- error=undefined qexo
- !exit
-!endif
-
-#reste a verifier que l'on ecrase pas un exo existant
-# !readdef wimshome/log/classes/$qclass/Exindex
-#ici les securites wims empechent de traiter le fichier Exindex. On contourne donc en listant les fichiers du dossier def/
-# (au passage, on cree le dossier def/ (s'il n'existe pas deja) : on s'assure ainsi de lister le bon dossier:
-!sh mkdir $wims_class_dir/def
-exolist=!sh cd $wims_class_dir/def; ls | sort
-exolist=!translate  .def  to $$ in $exolist
-
-#on supprime un eventuel ".def" du parametre qexo
-qexo=!translate  .def  to $$ in $qexo
-# Puis on le compare a la liste d'exos existants
 # Si l'option "force_rewrite" n'a pas ete choisie, impossible d'ecraser un exercice existant
 action=added
-!if $qexo islineof $exolist 
+!if $exo_exists=yes
   !if force_rewrite != $option
      error=$qexo already exists !
      !exit
@@ -41,7 +21,6 @@ action=added
      action=modified
   !endif
 !endif
-
 
 #######
 # On cree le dossiers src/ (s'il n'existe pas) pour pouvoir y placer notre exercice :
@@ -61,7 +40,8 @@ compilation = !lines2items $compilation
 
 result_compil=!item 2 of $compilation
 !if ERROR isin $result_compil
-  error = COMPILATION $result_compil
+  error = COMPILATION $result_compil\
+  data1=$data1
   #On supprime alors l'exercice defectueux
   !sh rm $wims_class_dir/src/$qexo.oef
 !endif

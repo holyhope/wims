@@ -38,6 +38,18 @@
 
 !goto footer
 
+:listexos
+exotitlelist = !replace internal  :  by title:" in $exotitlelist
+exotitlelist = !replace internal  ,  by "},{ "id": " in $exotitlelist
+exotitlelist = !replace internal  title:  by ","title": in $exotitlelist
+
+!shortout ,"queryclass":"$qclass",\
+ "rclass":"$rclass",\
+ "exotitlelist":[{"id":"$exotitlelist"}],\
+ "exocount":$exocount
+
+!goto footer
+
 :listsheets
 nohidden= $[$cnt-$nb_hidden]
 titles=!replace internal  ,  by "," in $titles
@@ -65,6 +77,9 @@ list=!replace internal  ,  by "," in $list
 
 
 :getsheet
+ exotitlelist=!replace internal  ,  by "," in $exotitlelist
+
+
  !shortout ,"queryclass":"$qclass",\
 "querysheet":"$qsheet",\
 "exocnt":"$exocnt",\
@@ -73,11 +88,7 @@ list=!replace internal  ,  by "," in $list
 "sheet_expiration":"$sheet_expiration",\
 "sheet_title":"$sheet_title",\
 "sheet_description":"$sheet_description",\
-
-    !!exotitlelist=!replace internal :  by ":" in $exotitlelist
-    exotitlelist=!replace internal  ,  by "," in $exotitlelist
-
-!shortout "exotitlelist":["$exotitlelist"]\
+"exotitlelist":["$exotitlelist"]\
 
 !goto footer
 
@@ -100,17 +111,54 @@ list=!replace internal  ,  by "," in $list
 
 !goto footer
 
+
+:addexo
+ !shortout ,"message":"exercice $qexo successfully $action",\
+"exo_id":"$qexo",\
+"compilation_result":"$compilation"\
+
+!goto footer
+
+:movexo
+ !shortout ,"message":"exercice $qexo successfully $action",\
+"exo_id":"$qexo",\
+"compil_src":"$compil_src",\
+"compil_dest":"$compil_dest",\
+"src_class":"$src_class",\
+"dest_class":"$qclass",\
+"log":"$log"\
+
+!goto footer
+
+:movexos
+ !shortout ,"message":"exercices successfully $action",\
+"compil_src":"$compil_src",\
+"compil_dest":"$compil_dest",\
+"src_class":"$src_class",\
+"dest_class":"$qclass",\
+"log":"$log"\
+
+!goto footer
+
+
+:sharecontent
+ !shortout ,"message":"content successfully shared",\
+"src_class":"$src_class",\
+"dest_class":"$qclass"
+
+!goto footer
+
 :addsheet
  !shortout ,"queryclass":"$qclass",\
 "sheet_id":"$qsheet",\
-"sheet_count":"$sheetcnt"\
+"sheet_count":$sheetcnt\
 
 !goto footer
 
 :addexam
  !shortout ,"queryclass":"$qclass",\
 "exam_id":"$wims_exam",\
-"exam_count":"$examcnt",\
+"exam_count":$examcnt,\
 "message":"exam #$wims_exam correctly added"\
 
 !goto footer
@@ -129,13 +177,6 @@ list_cnt=!itemcnt $option
 i=0
 
 !for d in $option
-
- !if $d=exotitlelist
-    newList=$(class_$d)
-    newList=!replace internal :  by ":" in $newList
-    newList=!replace internal  ,  by "," in $newList
- 	!shortout "$d":[{"$newList"}]
- !endif
  	
  !if $d=userlist
     newList=$(class_$d)
@@ -253,7 +294,9 @@ $ by "," in $($v)
 
 
 :authuser
- !shortout ,"wims_session":"$wims_session"
+ !shortout ,"wims_session":"$wims_session",\
+"home_url":"$wims_ref_name?session=$wims_session.1"\
+
 !goto footer
 
 :getcourse
@@ -400,7 +443,7 @@ list_cnt=!itemcnt $listContent
  !shortout ,"message":"exercice correctly added in sheet #$wims_sheet",\
 "queryclass":"$wims_class",\
 "querysheet":"$wims_sheet",\
-"exo_count":"$exocnt"
+"exo_count":$exocnt
 
 !goto footer
 
@@ -423,21 +466,30 @@ listlinks=!replace internal  ,  by "," in $listlinks
 "querysheet":"$wims_sheet",\
 "queryexo":"$qexo",\
 "queryexam":"$qexam",\
-"exo_count":"$exocnt"\
+"exo_count":$exocnt\
 
 !goto footer
+
+:delexo
+!shortout "message":"exercice $qexo successfully deleted",\
+"exo_id":"$qexo",\
+"compilation_result":"$compilation",\
+"more_infos":"$more_infos",\
+
+!goto footer
+
 
 :delsheet
  cnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
  !shortout ,"message":"sheet #$qsheet of class $qclass correctly deleted",\
-"sheet_count":"$cnt"\
+"sheet_count":$cnt\
 
 !goto footer
 
 :delexam
  cnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
  !shortout ,"message":"Exam #$qexam of class $qclass correctly deleted",\
-"exam_count":"$cnt"\
+"exam_count":$cnt\
 
 !goto footer
 
@@ -447,5 +499,5 @@ listlinks=!replace internal  ,  by "," in $listlinks
 !goto footer
 
 :footer
-!shortout    }]
+!shortout    }
 !exit

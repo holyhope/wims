@@ -1,0 +1,110 @@
+# ShareContent :
+# permet de partager le contenu (exercices pour le moment) d'une classe qclass avec la classe data1, a condition que les 2 classes soient liees a rclass
+# option va contenir le type de contenu à partager
+!default option=exo
+
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+src_class=$qclass
+src_class_dir=$wims_class_dir
+
+qclass=$data1
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+!readdef $classdeffile
+  
+!if $class_type>0
+  # on ne partage du contenu que si la destination est une simple classe
+  error=class $qclass is a superclass
+  !exit
+!endif
+
+# Cas ou le partage se fait sur la liste des execices
+!if exo iswordof $option
+  #######
+  # On verifie que les exercices de la classe destination ne sont pas deja lies a une autre classe
+  log=!sh readlink $wims_class_dir/src
+  !if $log!=$empty
+    shared = !defof sharing_exo in wimshome/log/classes/$qclass/neighbors
+	error=sorry, this class is already using contents of another class. ($shared)
+	!exit
+  !endif
+
+  #######
+  # On verifie qu'il n'y a aucun exercice existant dans la classe destination
+  # Pour compter les exos, on utilise le fichier Extitles de la classe
+  exotitlelist=!record 0 of wimshome/log/classes/$qclass/Extitles
+  exocount=!linecnt $exotitlelist
+  !if $exocount>0
+   error=Destination class ($qclass) not empty (already $exocount exercices)
+   !exit
+  !endif
+
+  #######
+  # On supprime le dossiers src/ (s'il existe) :
+  log=!sh rmdir $wims_class_dir/src
+  !if $log!=$empty
+	error=sorry, an error occured in directory suppression ($log)
+	!exit
+  !endif
+
+
+  # On remplace ensuite ce dossier par un lien vers le contenu a partager de la 1ere classe.
+
+  log=!sh ln -s $src_class_dir/src/ $wims_class_dir/src \
+  ln -s $src_class_dir/def/ $wims_class_dir/def \
+  ln -s $src_class_dir/Exindex $wims_class_dir/Exindex \
+  ln -s $src_class_dir/Extitles $wims_class_dir/Extitles
+!endif
+
+!if $log!=$empty
+	error=sorry, an error occured in link creation ($log)
+	!exit
+!endif
+
+# voici la liste des types d'objets potentiellement partageables
+share_types = exo, sheet, exam, doc, forum, user, sup, motd, vote, cdt, livret, seq
+
+# Les fichiers "neighbors" de chaque classe
+neighbors_dest=wimshome/log/classes/$qclass/neighbors
+neighbors_src=wimshome/log/classes/$src_class/neighbors
+
+# Pour chaque type de partage defini dans $option, on modifie le parametre associe dans les 2 classes
+!for t in $share_types
+	!if $option iswordof $t
+		t_1 = !defof sharable_$t in $neighbors_src	
+		!if $t_1 !=$empty
+			t_1=$t_1,
+		!endif	
+		!setdef sharable_$t=$t_1$qclass in $neighbors_src
+		!setdef sharing_$t=$src_class in $neighbors_dest
+	!endif
+!next t
+
+# puis on définit des parametres generaux
+n_sup = !defof n_sup in $neighbors_src
+!if $n_sup !=$empty
+	n_sup=$n_sup,
+!endif
+n_part = !defof n_part in $neighbors_src
+!if $n_part !=$empty
+	n_part=$n_part,
+!endif
+!setdef n_sup=$n_sup$qclass in $neighbors_src
+!setdef n_part=$n_part,$qclass in $neighbors_src
+!setdef n_sup=$src_class in $neighbors_dest
+!setdef n_part=$src_class in $neighbors_dest
+
+t_1 = !defof sharable_all in $neighbors_src
+!if $t_1 !=$empty
+	t_1=$t_1,
+!endif
+!setdef sharable_all=$t_1$qclass in $neighbors_src
+!setdef sharing_all=$src_class in $neighbors_dest
+
+

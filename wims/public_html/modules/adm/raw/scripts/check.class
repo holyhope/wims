@@ -1,26 +1,58 @@
 qclass=!translate internal ./,;?* to $             $ in $qclass
 !if $ $ isin $qclass
- qclass=
+ error=wrong class id
+ !exit
 !endif
 
 !if $qclass=$empty or $rclass=$empty
- :badclass
- error=bad class
+ error=undefined class
  !exit
 !endif
+
+!if _ isin $qclass
+ qclass=!translate internal _ to , in $qclass
+ nb=!itemcnt $qclass
+
+ # the recursivity down here only works for 2 levels
+ !if $nb>2
+  error=too many subdivisions in class id ($nb)
+  !exit 
+ !endif
+ 
+ subclassid=!item 2 of $qclass
+ qclass = !item 1 of $qclass
+ 
+ 
+ !read scripts/check.class
+ !if $error!=$empty
+  !exit
+ !endif
+ 
+ type=!defof class_type in $classdeffile
+ !if $type != 2
+ 	error=sorry, there shouldn't be a subclass in a simple class
+ 	!exit
+ !endif
+ 
+ qclass = $qclass/$subclassid
+
+!endif
+
 
 classdeffile=wimshome/log/classes/$qclass/.def
 classexofile=wimshome/log/classes/$qclass/.defs
 
 test=!defof class_defined in $classdeffile
 !if $test!=yes
- !goto badclass
+ error=class $qclass not existing
+ !exit
 !endif
+
 test=!defof class_connections in $classdeffile
 test=!items2words $test
 test1=!translate internal +,; to $   $ in $test
 !if $ident/$rclass notwordof $test1
- error=connection refused by requested class
+ error=connection refused by requested class ($qclass)
  !exit
 !endif
 

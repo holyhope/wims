@@ -9,6 +9,13 @@
  !exit
 !endif
 
+# On test avec getmodule pour savoir si c'est bien un repertoire de module qui est appelé, et non un module directement.
+!read jobs/getmodule.proc
+!if $title notsametext
+	error=sorry, you can't call this job on a module. Try GetModule instead.
+	!exit
+!endif
+
 !bound lang within cn,en,fr,nl default fr
 
 !readdef adm/class/levelname.phtml.$lang
