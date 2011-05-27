@@ -85,7 +85,7 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_access1=!nosubst Als de administrator ($supervisor) je toegang verleent,
 !set name_access2=!nosubst Als de docent ($supervisor) je toegang verleent,
 !set name_research=Geef een loginnaam of echte naam (of een gedeelte hiervan), om te zoeken naar een deelnemer in $name_classes 
-!set name_nofound=!nosubst Er is geen deelnemer met <tt wims="wims_code_words">$search</tt> in echte naam of loginnaam gevonden.
+!set name_nofound=!nosubst Er is geen deelnemer met <tt class="wims_code_words">$search</tt> in echte naam of loginnaam gevonden.
 
 !set name_student=!nosubst $firstn $lastn!
 !set name_studentadded=De deelnemer $firstn $lastn is toegevoegd aan $name_classe.

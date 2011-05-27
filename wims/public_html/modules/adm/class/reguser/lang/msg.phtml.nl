@@ -56,7 +56,7 @@ Uw login-naam is te
 !endif
 
 !if login_double=$error
- De login-naam <tt wims="wims_code_words">$login</tt>''
+ De login-naam <tt class="wims_login">$login</tt>
 is al in gebruik in de klas
  $classname.
  <p>
