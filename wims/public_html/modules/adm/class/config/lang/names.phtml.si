@@ -6,13 +6,13 @@
 
 !set title=Nastavitve in vzdr¾evanje
 
-!distribute items questionnaires,cahier de texte,\
-	compte d'enseignant,forum de discussion,livret de compétences,compétence(s)\
-	séquences pédagogiques,messages du forum\
+!distribute items votes,agenda,\
+	teacher account,forum,skills booklet,skills\
+	teaching sequences,forum messages\
 	into name_vote,name_cdt,\
 	name_sup,name_forum,name_livret,name_competence,name_seq,name_forum_mesg
 
-!distribute items zones,participants,exercices,documents,enseignants,feuilles d'exercices\
+!distribute items subclasses,participants,exercises,documents,teachers,worksheets\
 into wims_name_zones,wims_name_participants,wims_name_exercises,wims_name_docs,wims_name_teachers,\
 name_sheets
 
@@ -28,13 +28,13 @@ name_sheets
  !set title=Shranjevanje in obnova
  !set name_intro=You can download a backup copy of your class, in the following format 
  !set name_tosend=To upload backup archives into your class, please give the backup file name
- !set name_namefile=veuillez donner le nom du fichier de sauvegarde
- !set name_help=You will be prompted for the selection of resources to restore to your class.
+ !set name_namefile=please enter the name of backup file
+ !set name_help=You will be prompted for the selection of teaching materials to restore to your class.
  
- !set name_deposit=!nosubst Your backup file <tt class="wims_fname">$wims_deposit</tt> contains the following resources.
+ !set name_deposit=!nosubst Your backup file <tt class="wims_fname">$wims_deposit</tt> contains the following teaching materials.\
 Please check those you want to restore to your class.
  
- !set name_no_restore=Cannot be restored because you are sharing resources of\
+ !set name_no_restore=Cannot be restored because you are sharing teaching materials of\
 	another class. Restoration can only be done on the class originating\
 	the sharing.
 
@@ -51,7 +51,7 @@ Please check those you want to restore to your class.
    Existing exercises\
    worksheets\
    Implies restoration of class exercises\
-   Existing sheets\
+   Existing worksheets\
    exam sheets\
    Implies restoration of worksheets and exercises\
    Existing exams\
@@ -60,29 +60,29 @@ Please check those you want to restore to your class.
    Participant activity register and server-computed scores. Implies restoration participant accounts.\
    Teacher-defined grades\
    Existing grades\
-   un agenda de la classe\
-   un agenda existant\
-   Un livret de compétences\
-   un livret existant\
-   Séquences pédagogiques\
-   Implique la restauration de feuilles de travail, d'exercices, des examens et des documents\
-   Séquences existantes\
+   an agenda for the class\
+   an existing agenda\
+   A skills booklet\
+   an existing booklet\
+   teaching sequences\
+   implies restoring worksheets, exercises, exams and documents\
+   Existing sequences\
    Restoration method\
    Replacement\
-   replace existing corresponding resources by restored ones.\
+   replace existing corresponding teaching materials by restored ones.\
    Merge\
-   replace existing corresponding resources except participant accounts and class exercises; for the latter, those with the same name will be replaced byrestored data, while the others will remain\
-   Restore the selected resources\
+   replace existing corresponding teaching materials except participant accounts and class exercises; for the latter, those with the same name will be replaced byrestored data, while the others will remain\
+   Restore the selected teaching materials\
  into name_noselect,name_all,name_danger,name_config,name_teacher,name_user,name_user1,name_doc,\
    name_doc1,name_exo,name_exo1,name_sheet,name_sheet0,name_sheet1,name_exam,name_exam0,name_exam1,name_forum,\
    name_forum1,name_activity,name_manual,name_manual1,name_cdt,name_cdt1,name_livret,name_livret1,name_seq,\
    name_seq0,name_seq1,name_method,name_replace,name_replace1,name_merge,name_merge1,\
    name_selectrestore
    
-!distribute lines Backup resources restored to the class\
+!distribute lines Backup teaching materials restored to the class\
   Restoration of participant accounts (as well as activity register) is refused because there is not enough space left.\
   Class expiration date has been modified after restoration, because the uploaded date is\
-  Participant accounts already in use in your groupement (restauration refused)\
+  Participant accounts already in use in your group of classes (restauration refused)\
   restore is not allowed because of ressources sharable\
   Save/Restoration is not needed at this level of the structure\
 into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenrestore,name_restore5
@@ -91,7 +91,7 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
  
  !distribute lines Sorry, we have failed to archive your class.\
    Here is the backup file of your class\
-  Cliquez sur le fichier de sauvegarde pour l'enregistrer sur votre ordinateur.\
+  Click on it to save it on your computer.\
   You can also make a selective backup. For that, check the data you wish to save\
   then click on \
   selective backup\
@@ -109,14 +109,13 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
 !if $job=clean
  !set title=Èi¹èenje uèilnice
  !set name_lines=participant activity lines
- !set name_empty=Your class is empty!<p> There is no resource in your class that can be cleaned up.
+ !set name_empty=Your class is empty!<p> There is no teaching materials in your class that can be cleaned up.
  !set name_no_erase=Cannot be cleaned because you are sharing those of another class.
 
  !distribute lines Clean up everything cleanable\
    Will also erase activity register\
    Will also erase exam sheets\
-   Backup the class\
-   Actual resources in your class\
+   Backup th   Actual teaching materials in your class\
  into name_cleanall,name_erase1,name_warning_exam,name_saveclass,name_ressource
   !set name_warning_clean=Resources erased by this page cannot be recovered!
  !goto commun
@@ -125,15 +124,15 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
 !if $job=neighbor
  !set title=Sosednje uèilnice
  !set name_noclass=You cannot define class neighbors because there is no other class on this site.
- !set name_toomany=There are too many virtual classes on this site. Please give a keyword\
-  to search for classes you want to enter.
+ !set name_toomany=There are too many virtual classes on this site. Please type a keyword\
+  to search for the class you want to enter.
  !set name_toomany2= There are too many classes corresponding to your search. Please\
-  give a more precise keyword.
+  type a more precise keyword.
 
  !distribute lines Search for a class\
   No class is found for your search. Try again.\
-  Neighboring relations between virtual classes allow resource exchange and/or inter-class travel.\
- Click on a class name to change your neighboring properties with it.\
+  Neighboring relations between virtual classes allow teaching materials exchange and/or inter-class travel.\
+ Click on the name of a class to change your neighboring properties with it.\
  Classes in the same language as yours\
   Classes in other languages\
   Examples\
@@ -145,23 +144,23 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    by you\
    by the other\
    Active mutually sharing.\
-   You are sharing its resources.\
-   Sharing your resources.\
+   You are sharing its teaching materials.\
+   Sharing your teaching materials.\
    Mutually allowing sharings.\
-   Allowed to share your resources.\
-   Allows you to share its resources.\
+   Allowed to share your teaching materials.\
+   Allows you to share its teaching materials.\
    Stop this sharing\
    Share\
    import everybody\
-   Teaching resources\
-   Import other resources\
-   Classes allowed to share your resources\
+   Teaching materials\
+   Import other teaching materials\
+   Classes allowed to share your teaching materials\
    Resource allowed\
    active\
    List of other classes\
    Resource sharing info\
    Show example classes of this server\
-   import resources\
+   import teaching materials\
    You can\
    of the class\
    Click here to accept\
@@ -188,9 +187,9 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
    has not declared yours as its neighbor\
    accepts yours as its neighbor for\
    with\
-   You are sharing the following resources originating from the class\
-   has no importable resources for you\
-   has the following importable resources\
+   You are sharing the following teaching materials originating from the class\
+   has no importable teaching materials for you\
+   has the following importable teaching materials\
    Same title in your class\
    Empty\
    under preparation\
@@ -215,7 +214,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !if $job2=stopshare
   !set title=Stop sharing
   !set name_warning=Your class has active score register, and the shared\
- resources are not empty. If you stop this sharing now, you \
+ teaching materials are not empty. If you stop this sharing now, you \
  cannot share them back again later.\
  <p>Are you sure you want to definitely stop this sharing?
  
@@ -224,28 +223,28 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
  !if $job2=sharelist
   !set title= Resource sharing information.
   !set name_sharelist=!nosubst You are sharing $(name_$rec) originating from
-  !distribute lines You are not sharing resources originating from other classes.\
-   You are sharing resources of other classes\
+  !distribute lines You are not sharing teaching materials originating from other classes.\
+   You are sharing teaching materials of other classes\
   into name_noresource,name_resource
   !endif
   
   !if $job2=addshare
-    !set title=Share resources on class 
+    !set title=Share teaching materials on class 
     !set name_class_share=This class <em><font color="blue">$nei_description</font></em>\
-      allows you to share its following resources.
+      allows you to share its following teaching materials.
   !distribute lines available\
     You are actually sharing them.\
     You cannot share them because you are already sharing that of another class.\
-    clean your own resources\
+    clean your own teaching materials\
     if it is possible\
     Sharing supervisor account is VERY dangerous! \
   into name_available,name_actually_sharing,name_nosharing,name_cleanup,name_ifpossible,\
     name_dangerous
   
   !set name_warning1=You cannot share them because you are allowing other \
-    classes to share such resources from you. Cascaded sharing is not \
+    classes to share such teaching materials from you. Cascaded sharing is not \
     supported. So you must stop allowing these shares before you can share from others.
-  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.
+  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.\
    Before sharing can be made, you should first
   !set name_warning_erase=!nosubst This will ERASE your own existing $(name_$r)! They will be definitely\
      lost if you have no backup.
@@ -290,12 +289,13 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   This class has no connections to other servers.\
   You have declared the following connections to other servers.\
   Server\
-  Actually, this WIMS server has the following connectable servers.\
+  This WIMS server has the following connectable servers presently.\
+  Actions on the connexion\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver1
+   wims_name_server,name_listserver1,name_connexion_action
 
  !goto commun
 !endif
@@ -387,7 +387,7 @@ allows you to verify whether there are suspicious activities.
 !endif
 
 !if $job=index
-  !set title=!nosubst Actualisation de l'index $tit
+  !set title=!nosubst Index update $tit
   !set name_done=Done
   !set name_result=Script output
 
@@ -422,22 +422,22 @@ allows you to verify whether there are suspicious activities.
     Registration of exams\
     visible by students\
     Other configurations\
-    Préférences personnelles\
-    Répercuter les configurations aux zones dépendantes\
-    Définir des classes voisines\
-    des liens vers d'autres serveurs\
-    Utiliser une authentification\
-    des participants par annuaire ldap\
-    Actualiser les index\
-   dont le changement de\
-    Faire une sauvegarde ou restauration de la classe\
-    restreindre les ressources accessibles\
-    restreindre les sites \
-    pour lequels les scores sont enregistrés\
-    faire un nettoyage sélectif\
-   Configurer les\
-    Utilisation actuelle d'espace disque\
-    La limite est\
+    Personal preferences\
+    Pass configuration to depending subclasses\
+    Define neighboring classes\
+    links to other servers\
+    Use authentication\
+    of participants via ldap directory\
+    Refresh index\
+including change of \
+    Save or restore the class\
+    restrict accessible teaching materials\
+    restrict sites \
+    for which scores are recorded\
+    make a selective cleanup\
+    Configure\
+    Current disk space usage\
+    The limit is\
     Mix\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
@@ -487,7 +487,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Menu link color\
    Background image file\
    download a css-style file\
-   Dégradé de couleurs des scores (de 0 à 10) \
+   Score colors (from 0 to 10) \
    Button background color\
    Button text color\
    Help button background color\
@@ -505,8 +505,8 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 !exit
 :arch
 
- You have uploaded resources backed up from another class. If you
- restore incompatible resources to your class, it will simply be destroyed.
+ You have uploaded teaching materials backed up from another class. If you
+ restore incompatible teaching materials to your class, it will simply be destroyed.
  !href cmd=help&special_parm=dependencies Why?
  <p>
  !href cmd=reply&job=list Stop
@@ -527,14 +527,14 @@ completely lose control of your class.
 
 <li> You can use the backup of a class to install a new one. In this case,
 avoid restoring scores and grades (server-computed and manual). These two
-resources cannot be erased once they are installed (security measure).
+teaching materials cannot be erased once they are installed (security measure).
 And many class maintenance operations will be unavailable if there are
 non-empty score data.
 </ul>
 !exit
 
 :clean
-You cannot erase resources of the class
+You cannot erase teaching materials of the class
  when participant activities have already started.
  <p>
  This is an important security measure. If you feel that it is an
@@ -544,9 +544,9 @@ You cannot erase resources of the class
  comes to this page and erases everything, honest students will
  suffer a lot, and your teaching activities will be greatly disturbed.
  <p>
- On the other hand, different resources of the class are inter-dependent.
+ On the other hand, different teaching materials of the class are inter-dependent.
  If you
- erase some resources without erasing those depending on them, your class
+ erase some teaching materials without erasing those depending on them, your class
  will no longer work.
  !href cmd=help&special_parm=dependencies Examples.
  <p>
@@ -562,19 +562,19 @@ You cannot erase resources of the class
 <b>Remark</b>. 1. This page is only available when the class is being set
 up. Once student activity has started, cleaning will no longer be possible.
 <p>
-2. Shared resources can only be cleaned from the class
+2. Shared teaching materials can only be cleaned from the class
 originating the sharing. The other class should first
 !href cmd=reply&job=neighbor&job2=sharelist stop the sharing
- of the resources before erasing them.
+ of the teaching materials before erasing them.
 
 :connect_first_info
 Server / platform connection allows your class to directly communicate with
-another one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
+another one on another WIMS server or on another web e-learning platform. Participants
+can easily move from one class to another.
 <p>
 In particular, you can mirror this class to a remote WIMS server,
 so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+may continue in the mirror class. Scores on the mirror can be merged later.
 !exit
 :connect_first
 
@@ -584,7 +584,7 @@ This WIMS server has not declared any connectable remote server. In order
  manager</a> must declare such remote server, and the remote server must also
  declare this WIMS server as connectable. 
  (The webmaster can refer to the file
- <tt class="fname">$basedir/log/classes/.connections/myself</tt> for details of how to
+ <tt class="wims_fname">$basedir/log/classes/.connections/myself</tt> for details of how to
  declare site connections.)
  
  !exit
@@ -601,7 +601,7 @@ This WIMS server has not declared any connectable remote server. In order
    Exam sheets are based on worksheets to make up their
    contents. <p>
    Importing an exam sheet makes sense only if you have exactly the same 
-   active worksheets as your neighbor, and only if these sheets are in the
+   active worksheets as your neighbor, and only if these worksheets are in the
    same order within the two classes.
    <p>
    If this is not the case, the imported exam sheet will almost certainly
@@ -611,15 +611,14 @@ This WIMS server has not declared any connectable remote server. In order
 
 You are about to replace an existing $(name_$itype)
   in your class by
-  the imported resource. No recovery will be possible after this
+  the imported teaching resource. No recovery will be possible after this
   operation, and your existing $(name_$itype), which is different from the
   imported one, will be definitely lost.
 !exit
 
 :import5
- Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
- classe est pleine (et s'il y a encore de la place dans le site pour ajouter
- de nouveaux participants).
+ No participant account has been added to your class. Check if your class is full
+ (and if the site still accepts more participants).
 !exit
 
 :auth1
@@ -642,6 +641,6 @@ configuration procedure, while keeping a high security level.
 <b>Remark</b>. Depending on the class activities, usually it is participant
 activities, forum messages and class documents that are of large size. You
 may also consider the possibility of making several selective backups for
-different resources.
+different teaching materials.
 
 !exit

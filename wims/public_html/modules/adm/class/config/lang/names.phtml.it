@@ -22,7 +22,6 @@ name_sheets
 	esercizi,test di autovalutazione,temi d'esame,documenti,studenti\
 	into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
-
 !if $job=arch
  !set title=Backup e ripristino
  !set name_intro=Potete creare un backup del vostro corso, nei formati
@@ -122,10 +121,10 @@ into name_restore1,name_restore2,name_restore3,name_restore4,name_forbiddenresto
 !if $job=neighbor
  !set title=Corsi vicini
  !set name_noclass=Non è possibile definire un rapporto di vicinato perché su questo sito non ci sono altri corsi.
- !set name_toomany=there are too many virtual classes on this site. Please give a keyword\
-  to search for classes you want to enter.
+ !set name_toomany=There are too many virtual classes on this site. Please type a keyword\
+  to search for the class you want to enter.
  !set name_toomany2= There are too many classes corresponding to your search. Please\
-  give a more precise keyword.
+  type a more precise keyword.
 
  !distribute lines Cerca un corso\
   Nessun corso trovato. Riprova.\
@@ -238,9 +237,9 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
     name_dangerous
   
   !set name_warning1=You cannot share them because you are allowing other \
-    classes to share such resources from you. Cascaded sharing is not \
+    classes to share such teaching materials from you. Cascaded sharing is not \
     supported. So you must stop allowing these shares before you can share from others.
-  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.
+  !set name_warning2=!nosubst You cannot share them because your own $(name_$r) are not empty.\
    Before sharing can be made, you should first
   !set name_warning_erase=!nosubst This will ERASE your own existing $(name_$r)! They will be definitely\
      lost if you have no backup.
@@ -285,7 +284,7 @@ into name_research,name_noclass,name_exampleclass,name_help,name_changeneigh,\
   This class has no connections to other servers.\
   You have declared the following connections to other servers.\
   Server\
-  Actually, this WIMS server has the following connectable servers.\
+  This WIMS server has the following connectable servers presently.\
   Azioni sulla connessione\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
@@ -534,7 +533,7 @@ disponibili.
 !exit
 
 :clean
-You cannot erase resources of the class
+You cannot erase teaching materials of the class
  when participant activities have already started.
  <p>
  This is an important security measure. If you feel that it is an
@@ -544,9 +543,9 @@ You cannot erase resources of the class
  comes to this page and erases everything, honest students will
  suffer a lot, and your teaching activities will be greatly disturbed.
  <p>
- On the other hand, different resources of the class are inter-dependent.
+ On the other hand, different teaching materials of the class are inter-dependent.
  If you
- erase some resources without erasing those depending on them, your class
+ erase some teaching materials without erasing those depending on them, your class
  will no longer work.
  !href cmd=help&special_parm=dependencies Examples.
  <p>
@@ -562,21 +561,20 @@ You cannot erase resources of the class
 <b>Remark</b>. 1. This page is only available when the class is being set
 up. Once student activity has started, cleaning will no longer be possible.
 <p>
-2. Shared resources can only be cleaned from the class
+2. Shared teaching materials can only be cleaned from the class
 originating the sharing. The other class should first
 !href cmd=reply&job=neighbor&job2=sharelist stop the sharing
- of the resources before erasing them.
+ of the teaching materials before erasing them.
 
 :connect_first_info
 Server / platform connection allows your class to directly communicate with
-another one on another WIMS server or another web e-learning platform. Participants
-can transparently navigate between the connected classes.
+another one on another WIMS server or on another web e-learning platform. Participants
+can easily move from one class to another.
 <p>
 In particular, you can mirror this class to a remote WIMS server,
 so that if this server becomes momentarily unavailable, work
-may continue on the mirror class. Scores on the mirror can be merged later.
+may continue in the mirror class. Scores on the mirror can be merged later.
 !exit
-
 :connect_first
 
 This WIMS server has not declared any connectable remote server. In order
@@ -602,7 +600,7 @@ This WIMS server has not declared any connectable remote server. In order
    Exam sheets are based on worksheets to make up their
    contents. <p>
    Importing an exam sheet makes sense only if you have exactly the same 
-   active worksheets as your neighbor, and only if these sheets are in the
+   active worksheets as your neighbor, and only if these worksheets are in the
    same order within the two classes.
    <p>
    If this is not the case, the imported exam sheet will almost certainly
@@ -612,21 +610,20 @@ This WIMS server has not declared any connectable remote server. In order
 
 You are about to replace an existing $(name_$itype)
   in your class by
-  the imported resource. No recovery will be possible after this
+  the imported teaching resource. No recovery will be possible after this
   operation, and your existing $(name_$itype), which is different from the
   imported one, will be definitely lost.
 !exit
 
 :import5
- Aucun compte de participant n'est ajouté à votre classe. Vérifiez si votre
- classe est pleine (et s'il y a encore de la place dans le site pour ajouter
- de nouveaux participants).
+ No participant account has been added to your class. Check if your class is full
+ (and if the site still accepts more participants).
 !exit
 
 :auth1
 This configuration tool is only accessible to secure hosts.
 <p>
-As you have not defined any secure hosts, we are checking your autenticazione
+As you have not defined any secure hosts, we are checking your authentification
 by sending a secret code to your email address. Please check your mail, pick
 the code, and type it below.
 
