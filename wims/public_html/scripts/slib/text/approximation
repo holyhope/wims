@@ -1,18 +1,22 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=Calculate an interval for the answer type range
-slib_parms=3\
-,a real\
-3,number of significative digits\
-1,tolerance on the last significative digit
+
+!!slib_title=Calculate an approximation interval for a given real
 slib_author=Bernadette Perrin-Riou
-slib_out=three numbers for the answer type range : minimum, maximum, real with the number of significative digits,\
-an error of +/- "tolerance" on the last number is allowed (calculated with the given real).
 slib_example=234765\
 0.006543\
 45.987543,5,10
 slib_require=pari
+
+!reset slib_lang_exists_tmp
+!readproc help/$lang/slib/text/approximation
+!if $slib_lang_exists_tmp!=yes
+ !readproc help/en/slib/text/approximation
+!endif
+!exit
+
+
 !exit
 
 :proc
