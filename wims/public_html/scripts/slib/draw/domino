@@ -2,22 +2,25 @@
  !goto proc
 !endif
 slib_title=Domino
-slib_parms=5\
+slib_parms=6\
 ,number of points in the first square\
 ,number of points in the second square\
 black,color\
 H,direction (V or H)\
 ,text if one of the numbers of points is 0\
+,option as url
 slib_author=Bernadette Perrin-Riou
-slib_out=code flydraw for a domino
+slib_out=code flydraw for a domino or url
 slib_comment=
 slib_example=5,3,red,H\
-5,0,red,V,Text
+5,0,red,V,Text\
+5,0,red,V,Text,url\
+3,5,red,H,,url
 !exit
 
 :proc
 !reset slib_color slib_D
-!distribute items $wims_read_parm into slib_h,slib_k,slib_color,slib_D,slib_text
+!distribute items $wims_read_parm into slib_h,slib_k,slib_color,slib_D,slib_text,slib_option
 slib_h=$[$slib_h]
 slib_k=$[$slib_k]
 slib_color=!declosing $slib_color
@@ -71,3 +74,13 @@ $(slib_domino$slib_k)\
 translate 0,5\
 $(slib_domino$slib_h)
  !endif
+
+!if url iswordof $slib_option
+  !if $slib_D=H
+    insdraw_size=200,100
+  !else
+    insdraw_size=100,200
+  !endif
+ !insdraw $slib_out
+ slib_out=<img src="$ins_url" alt="">,$insdraw_size
+!endif

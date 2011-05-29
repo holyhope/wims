@@ -1,0 +1,232 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Balance
+slib_parms=5\
+,masses on the left\
+,masses on the right\
+,
+,color
+,option words
+slib_author=Bernadette PERRIN-RIOU
+slib_out=
+slib_comment= La syntaxe n'est pas encore totalement fixée
+
+slib_example= [1000,200,50,A],[B]\
+[1000,200,50,A],[B],,,url\
+[1000,200,50,A],[B],8,,url\
+
+!exit
+
+:proc
+!reset slib_left slib_right slib_left1 slib_right1 slib_objet_left slib_objet_right
+
+!distribute items $wims_read_parm into slib_left1,slib_right1,slib_penche,slib_color,slib_option
+slib_left1=!declosing $slib_left1
+slib_right1=!declosing $slib_right1
+
+!for slib_u in $slib_left1
+  !if $slib_u iswordof 1000 500 200 100 50 20 10 5 2 1
+    slib_left = !append item $slib_u to $slib_left
+  !else
+    slib_objet_left=!append item $slib_u to $slib_objet_left
+  !endif
+!next
+!for slib_u in $slib_right1
+  !if $slib_u iswordof 1000 500 200 100 50 20 10 5 2 1
+    slib_right = !append item $slib_u to $slib_right
+  !else
+    slib_objet_right=!append item $slib_u to $slib_objet_right
+  !endif
+!next
+
+!default slib_color=!randitem orange,purple,red,yellow
+negatif -> right plus bas
+!!slib_penche=-7
+!default slib_penche=0
+slib_agr=1.8
+slib_par=!randint -20,20
+slib_width1000=12
+slib_height1000=35
+slib_poids1000=frectangle 0,0,$(slib_width1000),$(slib_height1000),white\
+rectangle 0,0,$(slib_width1000),$(slib_height1000),black\
+gridfill 5,15,10,10,grey\
+fcircle $[$(slib_width1000)/2],$[$slib_height1000+2],15,black\
+text black,2,28,medium,1kg
+
+slib_width500=11
+slib_height500=25
+slib_poids500=frectangle 0,0,$(slib_width500),$(slib_height500),white\
+rectangle 0,0,$(slib_width500),$(slib_height500),black\
+gridfill 4,15,10,10,grey\
+fcircle $[$(slib_width500)/2],$[$slib_height500+2],15,black\
+text black,1,18,medium,500g
+
+slib_width200=10
+slib_height200=20
+slib_poids200=frectangle 0,0,$(slib_width200),$(slib_height200),white\
+rectangle 0,0,$(slib_width200),$(slib_height200),black\
+gridfill 4,10,10,10,grey\
+fcircle $[$(slib_width200)/2],$[$slib_height200+2],15,black\
+text black,1,14,medium,200g
+
+slib_width100=9
+slib_height100=15
+slib_poids100=frectangle 0,0,$(slib_width100),$(slib_height100),white\
+rectangle 0,0,$(slib_width100),$(slib_height100),black\
+gridfill 3,5,10,10,grey\
+fcircle $[$(slib_width100)/2],$[$slib_height100+1],10,black\
+text black,1,9,medium,100g
+
+slib_width50=8
+slib_height50=12
+slib_poids50=frectangle 0,0,$(slib_width50),$(slib_height50),white\
+rectangle 0,0,$(slib_width50),$(slib_height50),black\
+gridfill 3,5,10,10,grey\
+fcircle $[$(slib_width50)/2],$[$slib_height50+1],10,black\
+text black,1,$[$(slib_height50)/2+1],medium,50g
+
+slib_width20=7
+slib_height20=10
+slib_poids20=frectangle 0,0,$(slib_width20),$(slib_height20),white\
+rectangle 0,0,$(slib_width20),$(slib_height20),black\
+gridfill 2,2,5,5,grey\
+fcircle $[$(slib_width20)/2],$[$slib_height20+1],10,black\
+text black,1,$[$(slib_height20)/2+1],medium,20g
+
+slib_width10=6
+slib_height10=7
+slib_poids10=frectangle 0,0,$(slib_width10),$(slib_height10),white\
+rectangle 0,0,$(slib_width10),$(slib_height10),black\
+gridfill 1,1,5,5,grey\
+fcircle $[$(slib_width10)/2],$[$slib_height10+1],10,black\
+text black,0,$[$slib_height10/2+1],medium,10g
+
+slib_width5=5
+slib_height5=5
+slib_poids5=frectangle 0,0,$(slib_width5),$(slib_height5),white\
+rectangle 0,0,$(slib_width5),$(slib_height5),black\
+gridfill 1,1,10,10,grey\
+fcircle $[$(slib_width5)/2],$[$slib_height5+1],7,7,black\
+text black,1,$[$(slib_height5)],medium,5g
+
+slib_width2=4
+slib_height2=3
+slib_poids2=frectangle 0,0,$(slib_width2),$(slib_height2),white\
+rectangle 0,0,$(slib_width2),$(slib_height2),black\
+gridfill 1,1,10,10,grey\
+fcircle $[$(slib_width2)/2],$[$slib_height2+1],5,black\
+text black,1,$[$(slib_height2)],medium,2g
+
+slib_width1=2
+slib_height1=2
+slib_poids1=rectangle 0,0,$(slib_width1),$(slib_height1),white\
+rectangle 0,0,$(slib_width1),$(slib_height1),black\
+gridfill 1,1,10,10,grey\
+fcircle $[$(slib_width1)/2],$[$slib_height1+1],5,black\
+text black,1,$[$(slib_height1)],medium,1g
+
+slib_tmp=!randint 10, 20
+
+slib_form=!nosubst ftriangle 0,$[$slib_h],5,$[$slib_h+10],10,$[$slib_h],$slib_color\
+ frectangle 2.5,$[$slib_h],5,$[$slib_h+5],$slib_color\
+ fcircle 5,$[$slib_h],50,$slib_color
+
+slib_t=0
+!reset slib_g
+!if $slib_objet_left!=$empty
+ slib_ord=!sort numeric item $slib_left
+ !for slib_u in $slib_objet_left
+  !if simple notwordof $slib_option
+    slib_h=$[max($(slib_height$(slib_ord[-1])) + 3,$slib_tmp)]
+    slib_form1=!randline $slib_form
+  !else
+    slib_h =$(slib_height500)
+    slib_form1=
+  !endif
+  slib_g=!append line translation XXX+$slib_t,20-$slib_penche\
+ frectangle 0,0,10,$[$slib_h],$slib_color\
+ $slib_form1\
+ text black,5,$[$slib_h/2],large,$slib_u\
+ killtranslation to $slib_g
+  slib_t=$[$slib_t+12]
+ !next 
+!endif
+
+!for slib_p in $slib_left
+  slib_g=!append line translation XXX+$slib_t,20-$slib_penche\
+$(slib_poids$slib_p)\
+killtranslation \
+to $slib_g
+ slib_t=$[$slib_t + $(slib_width$slib_p)-1]
+!next
+ slib_g= !replace internal XXX by $[30-$slib_t/2] in $slib_g
+
+slib_t=0
+!reset slib_d
+!if $slib_objet_right!=$empty
+  slib_ord=!sort numeric item $slib_right
+  !for slib_u in $slib_objet_right
+  !if simple notwordof $slib_option
+   slib_h=$[max($(slib_height$(slib_ord[-1])) + 3,$slib_tmp)]
+   slib_form1=!randline $slib_form 
+   !else
+   slib_h =$(slib_height500)
+   slib_form1=
+  !endif 
+  slib_d=!append line translation XXX+$slib_t,20+$slib_penche\
+ frectangle 0,0,10,$[$slib_h],$slib_color\
+ $slib_form1\
+ text black, 5,$[$slib_h/2],large,$slib_u\
+ killtranslation to $slib_d
+  slib_t=$[$slib_t+12]
+ !next 
+!endif
+
+!for slib_p in $slib_right
+  slib_d=!append line translation XXX+$slib_t,20+$slib_penche\
+$(slib_poids$slib_p)\
+killtranslation \
+to $slib_d
+ slib_t=$[$slib_t + $(slib_width$slib_p) - 1]
+!next
+slib_d= !replace internal XXX by $[110-$slib_t/2] in $slib_d
+
+slib_nuage=disk $slib_par+80,65,40*$slib_agr,white\
+disk $slib_par+85,72,30*$slib_agr,white\
+disk $slib_par+110,75,40*$slib_agr,white\
+disk $slib_par+120,65,40*$slib_agr,white\
+disk $slib_par+97,68,60*$slib_agr,white
+
+slib_dessin=xrange 0,140\
+yrange -10,90\
+fill 0,0,skyblue\
+lines brown,5,0,30,0,35,5,105,5,110,0,135,0,120,15,20,15,5,0\
+fill 20,10,brown\
+$slib_nuage\
+linewidth 2\
+$slib_g\
+$slib_d\
+linewidth 2\
+lines black,5,25-$slib_penche,10,20-$slib_penche,50,20-$slib_penche,55,25-$slib_penche\
+lines black,85,25+$slib_penche,90,20+$slib_penche,130,20+$slib_penche,135,25+$slib_penche\
+linewidth 1\
+arc 70,7,24,18,0,180,black\
+line 58,7,82,7,black\
+fill 75,10,white\
+lines black,30,20-$slib_penche,30,10-$slib_penche,110,10+$slib_penche,110,20+$slib_penche\
+arrow 70,10,70-$slib_penche,22,12*$slib_agr,black\
+disk 30,10-$slib_penche,8*$slib_agr,black\
+disk 70,10,8*$slib_agr,black\
+disk 110,10+$slib_penche,8*$slib_agr,black\
+line 0,0,140,0,green\
+fill 5,-5,green\
+
+
+slib_out=$slib_dessin
+
+!if url iswordof $slib_option
+  insdraw_size=700,300
+ !insdraw $slib_out
+ slib_out=<img src="$ins_url" alt="">,$insdraw_size
+!endif

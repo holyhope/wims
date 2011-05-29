@@ -2,25 +2,34 @@
 !goto proc
 !endif
 slib_title=Regular polygon
-slib_parms=3\
+slib_parms=4\
 5,number of vertices\
 ,list of colors\
-vertex,option
+vertex,option\
+,url
 slib_author=Bernadette PERRIN-RIOU
 slib_out= flydraw code for a regular polygon with rays
 slib_comment=colors can be in RGB (inside brackets) ; rays from the vertex\ 
 (option <tt>edge</tt>) or from the middle of the edges (option <tt>vertex</tt>) or both. \
 There is an option "circle", in this cas, a disk is drawn (not a polygon!)
 slib_require=pari
-slib_example=
+slib_example=6,[green,blue,green,blue,green,blue]\
+6,[green,blue,green,blue,green,blue],,url\
+5,[green,blue,green,blue,orange],vertex,url\
+4,[green,blue,green,blue,green,blue],edge,url\
+8,[green,blue,green,blue,green,blue,green,blue],circle,url\
+
 !exit
 
 :proc
 slib_out=
-!distribute items $wims_read_parm into slib_n,slib_color,slib_option
+!distribute items $wims_read_parm into slib_n,slib_color,slib_option,slib_url
 slib : en entrée n, liste de couleurs , sommets, arete ...
 !default slib_n=5
 !default slib_option=edge
+!if $slib_option=circle
+  slib_option=$slib_option edge
+!endif
 slib_color=!declosing $slib_color
 slib_vertex = !exec pari concat(vector($slib_n,i,[ cos(2*i*pi/$slib_n),sin(2*i*pi/$slib_n)]))
 slib_arete= !exec pari cos(pi/$slib_n)*concat(vector($slib_n,i,[ cos(2*i*pi/$slib_n+pi/$slib_n),sin(2*i*pi/$slib_n+pi/$slib_n)]))
@@ -62,6 +71,7 @@ slib_fillcs=
     fill $(slib_points_cs[4*$slib_i-3,4*$slib_i-2]),$slib_color__\
     fill $(slib_points_cs[4*$slib_i-1,4*$slib_i]),$slib_color_
 !next
+
 !if $slib_option issametext
   slib_out=\
    xrange -1.5,1.5\
@@ -101,4 +111,10 @@ $slib_o\
 $slib_lignes\
 $slib_lignec\
 $slib_fillcs
+!endif
+
+!if url iswordof $slib_url
+  insdraw_size=200,200
+ !insdraw $slib_out
+ slib_out=<img src="$ins_url" alt="">,$insdraw_size
 !endif
