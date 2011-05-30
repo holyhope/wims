@@ -1,0 +1,63 @@
+type=game
+textarea="data"
+:Crossword
+A crossword made from words and clues to the words.
+
+<p>
+Author of the model: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo..
+
+:%%%%%%%% Example parameters to redefine %%%%%%%%%%%%%%%%%
+
+:\title{Crossword: describing a company}
+:\author{Csilla Ducrocq}
+:Instruction
+
+\text{instruction= Use the clues provided to write the corresponding words in the crossword puzzle}
+
+:Maximum number of words
+
+\text{N=7}
+
+:Options
+If the parameter chosen is  <tt class="wims_code_words">allhelp</tt>, all the clues are displayed. 
+If the parameter chosen is <tt class="wims_code_words">tooltip</tt>,
+ the clues will be displayed in a pop-up window when clicking on the number in the crossword.
+en "pop-up". Add a space to display the clues one by one on the side.
+\text{none=allhelp}
+
+:Main data.
+Write the words in lower case in the first column (no spaces allowed in a word),
+write the clues in the second column.
+
+\text{data=purchasing,the department that buys supplies.
+maintenance, the department that is in charge of repairing technical installations
+accounting, the department that deals with finances
+marketing, the department that deals with customer relations
+head, Chief executive officer 
+sales, the department that is in charge of selling the product
+production, the department that makes the product
+accountant, the person who is responsible for making out bills
+secretary, the person who helps a manager by organising events and making phone calls or writing letters
+receptionist, the person who receives visitors when they arrive
+premises, the firm's buildings
+headquarters,the administrative center of the firm
+subsidiary, a company which is owned by a larger company}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+
+\text{cnt=rows(\data)}
+\text{cnt=shuffle(\cnt)}
+\text{choix=\cnt[1..\N]}
+\matrix{data=\data}
+\text{data=\data[\choix;]}
+
+\text{data=slib(text/crossword \data) }
+
+\statement{ \embed{r1} }
+\answer{}{\data}{type=crossword}{option=\none}
