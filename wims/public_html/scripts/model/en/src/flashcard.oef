@@ -1,0 +1,105 @@
+type=datalist
+textarea="data"
+
+:Hide certain words in a sentence (flashcard).
+
+Certain labels from among those shown have to be hid ("turned over") by clicking on them.
+<p>
+Author of the model : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Remove the above header if you destroy the model tags i.e. the lines starting
+with a ':'. Otherwise the exercise might not be recognised by Createxo.
+
+:%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
+
+:\title{Hide the labels}
+:\author{Csilla Ducrocq}
+:\email{csilla.ducrocq@u-psud.fr}
+
+:Instruction
+\text{instruction=Hide the adjectives by clicking on the labels containing them.}
+
+:The number of sentences displayed at a time (maximum 5)
+\text{N=2}
+
+:Name of the file
+Only enter a name if you wish to create a separate data file
+(in an OEF module).
+<pre>
+
+:The ??black?? cat ate the ??white?? mouse hungrily.
+:There's a ??green?? house standing on the ??small?? hill.
+</pre>
+In this case the main data will not be taken into consideration.
+otherwise, you need to enter the main data below.
+\text{file=}
+
+:Main data.
+Add ?? before and after the words to be hidden in the sentences. 
+\text{data=The ??black?? cat ate the ??white?? mouse hungrily.
+There's a ??green?? house standing on the ??small?? hill.
+I've got ??red?? and ??blue?? flowers swaying in my garden.
+He looked at the  ??young?? boy sadly.}
+
+:%%%%%%%%%%%%%% Nothing to modify before the statement %%%%%%%%%%%%%%%%
+\integer{N=min(\N,5)}
+\if{\file notsametext}{
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+   }
+  }{
+  \integer{M=rows(\data)}
+  \integer{N=min(\N,\M)}
+  \integer{N=min(\N,10)}
+  \text{liste=shuffle(\M)}
+  \text{liste=\liste[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\liste;]}
+}
+\text{Numero=}
+\text{Texte=}
+\text{cnt=}
+\text{data=wims(embraced randitem \data)}
+\for{u=1 to \N}{
+  \matrix{texte=slib(text/markgroup \data[\u;])}
+  \matrix{numero=\texte[1..-4;]}
+  \text{cnt_mot = rows(\numero)}
+  \text{numero = wims(rows2lines \numero)}
+  \text{numero = wims(lines2items \numero)}
+  \text{Numero = wims(append line \numero to \Numero)}
+  \text{texte = \texte[-3;]}
+  \text{cc=items(\texte)}
+  \text{cnt = wims(append item  \cc to \cnt)}
+  \text{Texte=wims(append line \texte to \Texte)}
+}
+\matrix{Texte=\Texte}
+\matrix{Numero=\Numero}
+\text{STEP=wims(makelist r x for x=1 to \N)}
+\steps{\STEP}
+\statement{\instruction
+\if{\N=1}{<div class="emptyline"> </div>
+ <center>\for{j=1 to \cnt}{ 
+   \embed{r 1,\j}
+ }</center>
+}{
+ \for{ss=1 to \N}{<p> \ss : </p>
+ <center>\for{j=1 to \cnt[\ss]}{
+   \embed{r \ss,\j}
+ }</center>
+ }
+}
+}
+\answer{1}{\Numero[1;];\Texte[1;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{2}{\Numero[2;];\Texte[2;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{3}{\Numero[3;];\Texte[3;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{4}{\Numero[4;];\Texte[4;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{5}{\Numero[5;];\Texte[5;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+
