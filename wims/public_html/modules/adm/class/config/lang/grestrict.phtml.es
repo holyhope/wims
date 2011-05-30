@@ -22,7 +22,8 @@ verificará cada palabra contra el nombre o el número IP de cada sitio que se con
 La regla correspondiente se aplicará cada vez. Una palabra definida aquí es
 una subcadena de caracteres del nombre de la estación de trabajo o de su número IP.
 <p>
-<small><b>Sugerencia.</b> En el campo `sitios admitidos', puede imponer una
+<div class="wims_smallremark"><b>Sugerencia.</b> En el campo 
+<span class="wims_label">Sitios a los que se les permite recibir calificaciones</span>, puede imponer una
  restricción en el tiempo disponible para el registro de las notas añadiendo 
  las palabras
  <tt class="wims_code_words">
@@ -32,5 +33,5 @@ una subcadena de caracteres del nombre de la estación de trabajo o de su número 
 &lt;aaaammdd.hh:mm</tt>
  (fin). Las fechas y horas deben indicarse en tiempo local del SERVIDOR,
  y estas palabras deben estar separadas unas de otras por espacios.
- </small>
+  </div>
 
