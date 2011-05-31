@@ -1,9 +1,5 @@
 !set lang_exists=yes
 
-!if $wims_read_parm!=
-  !goto $wims_read_parm
-!endif
-
 !distribute line Lista de foros\
 	Autentificación del propietario\
 	Autentificación del participante\
@@ -22,13 +18,15 @@ into name_visitor,name_user,name_owner,name_register,name_noforum,\
 !set name_number_message=!nosubst Alojamos $ccnt foros de discusión en este sitio.\
 Busque el foro que le interese en la siguiente tabla:
 	
-	
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
 	
 !exit
 
 :create
 Pulse en el tipo de conexión para entrar en el foro, o
-pulse en la palabra `inscribirse' para darse de alta. También puede
+pulse en la palabra <span class="wims_button disabled">$name_register</span> para darse de alta. También puede
 !href module=adm/forum/regforum crear su propio foro
  en este sitio.
 

@@ -1,18 +1,14 @@
 !set lang_exists=yes
 
-!if $wims_read_parm!=
-  !goto $wims_read_parm
-!endif
-
 !distribute line List of message boards\
 	Owner authentification\
 	User authentification\
 	User registration\
 	into n_list,n_authowner,n_authuser,n_register
 
-!distribute line visiteur\
+!distribute line visitor\
   participant\
-  gérant\
+  owner\
   s'inscrire\
   No message board has been found on this site.\
   Owner's password\
@@ -22,11 +18,14 @@ into name_visitor,name_user,name_owner,name_register,name_noforum,\
 !set name_number_message=!nosubst We host $ccnt message boards on this site.\
 Find the message board which interests you in the following table.
 
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
 !exit
 
 :create
 Click on the type of the connection to enter the message board, or
-click on the word `Register' to register to it. You may also
+click on the word <span class="wims_button disabled">$name_register</span> to register to it. You may also
 !href module=adm/forum/regforum create your message board
  on this site.
 

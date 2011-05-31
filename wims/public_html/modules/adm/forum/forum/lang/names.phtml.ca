@@ -1,9 +1,5 @@
 !set lang_exists=yes
 
-!if $wims_read_parm!=
-  !goto $wims_read_parm
-!endif
-
 !distribute line Llista de fòrums\
 	Autentificació de gestor\
 	Autentificació de participant\
@@ -22,11 +18,15 @@ into name_visitor,name_user,name_owner,name_register,name_noforum,\
 !set name_number_message=!nosubst Acollim $ccnt fòrums de discussió en aquest \
   lloc. Trobeu el que us interessi a la taula següent.
 	
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
 !exit
 
 :create
 Cliqueu al tipus de connexió per entrar al fòrum, o
-a la paraula "registrar" per registrar-se. També podeu
+a la paraula <span class="wims_button disabled">$name_register</span> per registrar-se. També podeu
 !href module=adm/forum/regforum crear el vostre fòrum
  en aquest lloc.
 

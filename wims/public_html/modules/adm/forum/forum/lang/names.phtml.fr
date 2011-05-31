@@ -1,9 +1,5 @@
 !set lang_exists=yes
 
-!if $wims_read_parm!=
-  !goto $wims_read_parm
-!endif
-
 !distribute line Liste de forums\
 	Authentification de gérant\
 	Authentification de participant\
@@ -13,7 +9,7 @@
 !distribute line visiteur\
   participant\
   gérant\
-  s'inscrire\
+  S'inscrire\
   Aucun forum de discussion n'est trouvé sur ce site.\
   Mot de passe du gérant\
 into name_visitor,name_user,name_owner,name_register,name_noforum,\
@@ -22,13 +18,15 @@ into name_visitor,name_user,name_owner,name_register,name_noforum,\
 !set name_number_message=!nosubst Nous hébergeons $ccnt forums de discussion sur ce site.\
 Repérez celui qui vous intéresse dans le tableau ci-dessous.
 	
-	
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif	
 	
 !exit
 
 :create
 Cliquez sur le type de connexion pour entrer dans le forum, ou
-cliquez sur le mot `s'inscrire' pour vous y inscrire. Vous pouvez aussi
+cliquez sur le mot <span class="wims_button disabled">$name_register</span> pour vous y inscrire. Vous pouvez aussi
 !href module=adm/forum/regforum créer votre forum
  sur ce site.
 !exit

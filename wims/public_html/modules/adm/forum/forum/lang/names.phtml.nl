@@ -24,7 +24,7 @@ Zoek in de volgende tabel:
 !exit
 
 :create
-klik op "Registreren" om je aan te melden. 
+klik op <span class="wims_button disabled">$name_register</span> om je aan te melden. 
 Je kunt ook
 !href module=adm/forum/regforum je eigen forum
 &nbsp;maken.

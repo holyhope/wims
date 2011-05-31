@@ -1,9 +1,5 @@
 !set lang_exists=yes
 
-!if $wims_read_parm!=
-  !goto $wims_read_parm
-!endif
-
 !distribute line Indice dei forum\
 	Login come owner\
 	Login come utente\
@@ -22,10 +18,14 @@ into name_visitor,name_user,name_owner,name_register,name_noforum,\
 !set name_number_message=!nosubst Su questo sito sono presenti $ccnt forum di discussione.\
 Selezionare quello di interesse nella tabella seguente.
 
+!if $wims_read_parm!=
+  !goto $wims_read_parm
+!endif
+
 !exit
 
 :create
-Selezionare il modo di accesso al forum o procedere alla `registrazione'
+Selezionare il modo di accesso al forum o procedere alla `<span class="wims_button disabled">$name_register</span>
 seguendo il link apposito. &Egrave; anche possibile
 !href module=adm/forum/regforum creare 
  un nuovo forum di discussione.
