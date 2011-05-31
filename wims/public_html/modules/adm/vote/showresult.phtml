@@ -1,0 +1,108 @@
+!! html file to show result of vote
+
+!if $job2=global
+ !if trace isin $vote_option
+  !href cmd=reply&job2=list $name_showlist
+  <br>
+ !endif
+ $table_header
+   $table_hdtr <th> No </th><th>type</th><th colspan="$max_rep"> Réponses</th></tr>
+ !for k=1 to $parmcnt
+  $table_tr
+   <td rowspan="2" align="center">$(vote_description[$k;1])</td>
+   <td rowspan="2" align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
+   !if textarea=$(vote_description[$k;2])
+    <td rowspan="2" align="left" valign="top" colspan="$max_rep">
+     !set comment_$k = !replace internal --- by $\
+  $<br>- in $(comment_$k)
+     !set rcnt=!recordcnt $votedir/$(vote)_$k.comments
+     <ul>
+     !for j=1 to $rcnt
+      <li>
+       !record $j of $votedir/$(vote)_$k.comments
+      </li>
+     !next j
+     </ul>
+    </td>
+   !else
+    !let tmp=!item 3 to -1 of $(vote_description[$k;])
+    !let nb=!itemcnt $tmp
+    !for j in $tmp
+     <td align="center">$j</td>
+    !next j
+   </tr>
+   <tr>
+    !for j=1 to $nb
+     <td align="center">$(vcnt_$(k)_$(j))</td>
+    !next j
+   !endif
+  </tr>
+ !next k
+ $table_end
+!else
+ !href cmd=reply&job2=global $name_showglobal
+ $table_header
+  $table_hdtr <th> No </th><th>type</th>
+   !for k=1 to $vcnt
+   <th>$name_votant $k</th>
+   !next k
+  </tr>
+  !for k=1 to $parmcnt
+   $table_tr
+    <td align="center">$(vote_description[$k;1])</td>
+    <td align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
+    !if textarea!=$(vote_description[$k;2])
+     !let tmp=!makelist -- for v=1 to $vcnt
+     !let nbch=!itemcnt $(vote_description[$k;])
+     !for l=3 to $nbch
+      !for m in $(votes_$(k)_$[$(l)-2])
+       !let tmp=!replace item number $m by $(vote_description[$k;$l]) in $tmp
+      !next m
+     !next l
+    !endif
+    !for u=1 to $vcnt
+     <td>
+     !if textarea=$(vote_description[$k;2])
+      !record $u of $votedir/$(vote)_$(k).comments
+     !else
+      $(tmp[$u])
+     !endif
+     </td>
+    !next u
+   </tr>
+  !next k
+ $table_end
+!endif
+!exit
+    !if textarea=$(vote_description[$k;2])
+     <td rowspan="2" align="left" valign="top" colspan="$max_rep">
+      !set comment_$k = !replace internal --- by $\
+  $<br>- in $(comment_$k)
+      !set rcnt=!recordcnt $votedir/$(vote)_$k.comments
+      <ul>
+     !for j=1 to $rcnt
+      <li>
+       !record $j of $votedir/$(vote)_$k.comments
+      </li>
+     !next j
+     </ul>
+    </td>
+   !else
+    !let tmp=!item 3 to -1 of $(vote_description[$k;])
+    !let nb=!itemcnt $tmp
+    !for j in $tmp
+     <td align="center">$j</td>
+    !next j
+   </tr>
+   <tr>
+    !for j=1 to $nb
+     <td align="center">$(vcnt_$(k)_$(j))</td>
+    !next j
+   !endif
+  </tr>
+ !next k
+ </table>
+!endif
+!set wims_menu_items=!append line return,1,cmd=reply&job=read&vote=$vote to $wims_menu_items
+
+

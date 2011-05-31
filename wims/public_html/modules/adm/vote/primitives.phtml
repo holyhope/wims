@@ -10,5 +10,9 @@
 !if $prim=$empty or $prim iswordof def define comment
  !exit
 !endif
-!changeto primitives/$prim.phtml
-
+!if $noprint=yes
+ !advance parmcnt
+ vote_description=!append line $wims_read_parm to $vote_description
+!else
+ !changeto primitives/$prim.phtml
+!endif

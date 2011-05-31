@@ -1,0 +1,39 @@
+!! process file to show result of vote
+
+!if $vote_status=$empty or ($wims_user!=supervisor and $vote_status notwordof 1 2)
+ error=bad_vote
+ job=home
+ !changeto home.proc
+!endif
+
+!if trace isin $vote_option
+ !bound job2 within global,list default global
+!else
+ job2=global
+!endif
+
+wims_multiexec=pari maxima yacas
+insmath_rawmath=yes
+wims_backslash_insmath=yes
+parmcnt=0
+!reset uvname, uvval, uvcnt
+!readdef $userfile
+!readdef $votedir/$vote.votes
+!default vcnt=0
+
+!if $wims_user!=supervisor and $vote_show=0
+ job=home
+ !changeto home.proc
+!endif
+
+!if $vote>0
+ noprint=yes
+ vote_description=$empty
+ !read $votedir/$vote.def
+!endif
+
+max_rep=0
+!for k=1 to $parmcnt
+ t=!itemcnt $(vote_description[$k;])
+ max_rep=$[max($max_rep,$t-2)]
+!next k

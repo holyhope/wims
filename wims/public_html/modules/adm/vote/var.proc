@@ -36,7 +36,7 @@ vote_class=!defof sharing_vote in wimshome/log/classes/$wims_class/neighbors
  job=home
  abandon=
 !endif
-readjobs=home,read,help,vote
+readjobs=home,read,help,vote,showresult
 editjobs=creat,edit,reg,erase,preview,csv
 !if $wims_user=supervisor
  !bound job within $readjobs,$editjobs default home
@@ -63,6 +63,7 @@ votecnt=!recordcnt $votedir/.votes
   !exit
  !else
   vote=$[$votecnt+1]
+  !increase votecnt
   job=edit
  !endif
 !endif
@@ -80,5 +81,6 @@ votecnt=!recordcnt $votedir/.votes
  job=home
 !endif
 
+!read $vote_status
 !read $job.proc
 

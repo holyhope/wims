@@ -1,31 +1,57 @@
-
-!if $vote_option=anonymous
- $name_thisvote_anomymous
-!else
- !if $vote_option=trace
-   $name_thisvote_trace
- !else
-   $name_thisvote_nominatif
- !endif
-!endif
-!if $vote_status=2
- $name_thisvote_closed
-!endif
+$table_header
+ $table_hdtr
+  <th>$name_option</th><th>$name_value</th>
+ </tr>
+ $table_tr<td>$wims_name_title</td><td>$vote_title</td></tr>
+ $table_tr<td>$wims_name_Type</td>
+  <td>$(name_$(vote_option))</td>
+ </tr>
+ $table_tr
+  <td>$wims_name_Status</td>
+  <td>$(name_$(vote_status))</td>
+ </tr>
+ $table_tr
+  <td>$name_result</td>
+  <td>
+   !item $vote_show+1 of $name_hide,$name_publish
+   !if $showres>0
+     &nbsp;
+     !href cmd=reply&job=showresult&vote=$vote $name_showresult
+   !endif
+  </td>
+ </tr>
+ $table_tr<td>$name_thisvote_answer</td><td>$vcnt</td></tr>
+ $table_tr
+  <td>$name_whovote</td>
+  <td>
+   !if $vote_whovoteshow=1
+    !let nb=!itemcnt $whovote
+    !if $nb=0
+     $name_novotant
+    !else
+     !if $nb<=5
+      $name_notenough
+     !else
+      $whovote
+     !endif
+    !endif
+   !else
+    $name_hide2
+   !endif
+  </td>
+ </tr>
+$table_end
 
 !if $wims_user=supervisor
- ($vcnt $name_thisvote_answer)
- !href cmd=reply&job=edit $wims_name_change
+ !if $wims_theme!=standard
+  !href cmd=reply&job=edit $wims_name_change
  
- !href cmd=reply&job=csv $wims_name_csv
-<p>
-!set wims_menu_items=!append line change,1,cmd=reply&job=edit\
- csv,1,cmd=reply&job=csv\
-to $wims_menu_items
-!endif
-
-!if $whovote!=$empty and ($vote_whovoteshow=1 or $wims_user=supervisor)
- <br><u><b>$name_whovote</b></u> : $whovote.
+  !href cmd=reply&job=csv $wims_name_csv
  <p>
+ !endif
+ !set wims_menu_items=!append line change,1,cmd=reply&job=edit\
+  csv,1,cmd=reply&job=csv\
+  to $wims_menu_items
 !endif
 
 !if $vote_status=2
@@ -36,6 +62,7 @@ to $wims_menu_items
 !if $(user_vote_$Vote)!=$empty
  !if $vote_option!=nominative
   $name_thisvote_already1<p>
+  !goto end
  !else
   $name_thisvote_already2<p>
   !goto form
@@ -43,23 +70,30 @@ to $wims_menu_items
 !else
  $name_give_your_choice<p>
  :form
- !form reply
- <input type=hidden name="job" value=vote>
- !set m_formed=yes
+ !if $wims_user!=supervisor
+  !form reply
+  <input type=hidden name="job" value=vote>
+  !set m_formed=yes
+ !endif
 !endif
-
 
 !read $votedir/$vote.def
 
-!if $m_formed=yes
+!if $m_formed=yes and $wims_user!=supervisor
  <p><center>
  <input type=submit value="$wims_name_tosave">
  </center></form>
 !endif
 
 :comments
+!exit
+!! wait en see needed between this comment
+
+
+
+
 !readdef $votedir/$vote.comments
-!!if $wims_user=supervisor and $test_comment=1 and $vote_option!=nominative
+
 !if ($wims_user=supervisor or ($vote_show>0 and $m_formed!=yes)) and $vote_option!=nominative
 
 <p><b>$name_comments</b> :
@@ -104,3 +138,6 @@ to $wims_menu_items
   !next c
  !next i
 !endif
+
+:end
+

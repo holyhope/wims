@@ -1,8 +1,13 @@
-
-!bound reg_status between integer 0 and 3 default 0
+vcnt=!defof vcnt in wimshome/log/classes/$wims_class/vote/$vote.votes
+!if $vote_status=0 or $vcnt=0
+ !bound reg_status between integer 0 and 3 default 0
+ !bound reg_option within anonymous,nominative,trace default anonymous
+!else
+ !bound reg_status between integer 1 and 3 default 1
+ reg_option=$vote_option
+!endif
 reg_title=!trim $reg_title
 reg_title=!singlespace $reg_title
-!bound reg_option within anonymous,nominative,trace default anonymous
 !bound reg_show within 0,1 default 1
 !bound reg_whovoteshow within 0,1 default 0
 !if $reg_title=$empty
@@ -34,7 +39,7 @@ $reg_whovoteshow
  !appendfile $votedir/.votes :$(v_$i)
 !next i
 
-!if $reg_src!=$empty
+!if $reg_src!=$empty and $vote_status=0
  !writefile $votedir/$vote.src $reg_src
  msg2wims_primitives=def define comment draw if for uservar\
 	menu list radio mmenu mlist checkbox textarea
