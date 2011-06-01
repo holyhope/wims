@@ -357,7 +357,7 @@ wims_name_Docstatus,wims_name_number
 !set wims_name_icourse=Curso de interclase
 !set wims_name_backstruct=Hacer una copia de seguridad de la estructura
 
-!if config isin $module
+!if config isin $module or $module=home
  !distribute line Página principal de configuración\
  Gestión de la estructura\
 into wims_name_config, wims_name_struct
