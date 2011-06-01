@@ -86,13 +86,15 @@
 !if $class_typename=program
  !set test=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
  !if $test=yes
-  <p>$CL_Test:
-  <span class="wims_classes_direct_program">
+  <p>
+  !set wims_ref_class=wims_button
   !href module=adm/class/classes&type=authsupervisor&class=$wims_class/0 $N_go
-</span>
+  &nbsp;
+!set wims_ref_class=wims_button
   !href module=adm/class/config&job=neighbor&job2=import&nei=$wims_class/0 $wims_name_import
-  !set wims_tail_menu=!append line testgo,1,module=adm/class/classes&type=authsupervisor&class=$wims_class/0 \
+  ($CL_Test)
+  !set wims_menu_items=!append line testgo,1,module=adm/class/classes&type=authsupervisor&class=$wims_class/0 \
   import,1,adm/class/config&job=neighbor&job2=import&nei=$wims_class/0\
-  to $wims_tail_menu
+  to $wims_menu_items
  !endif
 !endif
