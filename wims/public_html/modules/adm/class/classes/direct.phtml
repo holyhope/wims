@@ -27,10 +27,8 @@ $name_direct:
   !set n_=!defof class_institution, class_description in\
 	wimshome/log/classes/$c_/.def
   !if $u_=supervisor
-   !if $c_ iswordof $wims_supervise or $wims_realuser=$wims_user
-    !set t_=supervisor
-   !else
-    !set t_=participant
+   !set t_=supervisor
+   !if $c_ notwordof $wims_supervise and $wims_realuser!=$wims_user
     !goto out
    !endif
   !else

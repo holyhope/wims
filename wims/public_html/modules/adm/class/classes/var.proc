@@ -151,15 +151,14 @@ lacnt=0
  !endif
 !endif
 
- !if $type iswordof authparticipant authsupervisor
-  !reset class_defined
-  class=!text remove . in $class
-  !defread wimshome/log/classes/$class/.def
-  !if $type=authsupervisor and ($wims_supertype<2 or $class isitemof $wims_supervise)
-   !default auth_user=supervisor
-  !else  
-    !default auth_user=$wims_realname
-  !endif 
+!if $type iswordof authparticipant authsupervisor
+ !reset class_defined
+ class=!text remove . in $class
+ !defread wimshome/log/classes/$class/.def
+ !!#### la seconde condition pour entrer dans la classe en tant que supervisor :
+ !!#### le user est supervisor de cette classe, ou wims_realuser est supervisor ou vide (cas de l'administrateur) ou la classe est la classe test
+ !if $type=authsupervisor and ($class isitemof $wims_supervise or $wims_realuser=$empty or $wims_realuser=supervisor or /0/ isin $class/)
+  !default auth_user=supervisor
  !endif
  !if $class_defined=yes and $auth_user!=$empty
   !changeto var.auth
