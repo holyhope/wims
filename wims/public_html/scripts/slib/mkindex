@@ -23,6 +23,11 @@ cat <<@ >index.phtml
 <p>
 !if \$slib_detail!=\$empty
  !readproc slib/\$slib_detail slib_header
+ !reset slib_lang_exists_tmp
+ !readproc help/\$lang/slib/\$slib_detail
+ !if \$slib_lang_exists_tmp!=yes
+  !readproc help/en/slib/\$slib_detail
+ !endif
  !distribute lines \$slib_parms into slpcnt,slp1,slp2,slp3,slp4,slp5,slp6,slp7,slp8,slp9,slp10,slp11,slp12
  !for i=1 to \$slpcnt
   !set slpdflt\$i=!item 1 of \$(slp\$i)
