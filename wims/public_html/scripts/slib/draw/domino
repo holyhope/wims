@@ -8,14 +8,19 @@ slib_parms=6\
 black,color\
 H,direction (V or H)\
 ,text if one of the numbers of points is 0\
-,option as url
+raw,option word : <tt>url</tt>, <tt>html</tt> or <tt>raw</tt>
 slib_author=Bernadette Perrin-Riou
-slib_out=code flydraw for a domino or url
-slib_comment=
+slib_out=flydraw code for a domino, url or code html according to the option, size of the image\
+if the option word is <tt>url</tt> or <tt>html</tt>
+slib_comment=the output is: by default, the flydraw code; \
+the address of the generated image if the option word is <tt>url</tt> ; \
+the html code for inserting image is already inserted for the option <tt>html</tt>.
+
 slib_example=5,3,red,H\
-5,0,red,V,Text\
+5,0,blue,V,Text,html\
 5,0,red,V,Text,url\
-3,5,red,H,,url
+3,5,red,V,,html\
+3,5,red,H,,html
 !exit
 
 :proc
@@ -75,12 +80,17 @@ translate 0,5\
 $(slib_domino$slib_h)
  !endif
 
-!if url iswordof $slib_option
+!if url iswordof $slib_option or html iswordof $slib_option
   !if $slib_D=H
     insdraw_size=200,100
   !else
     insdraw_size=100,200
   !endif
- !insdraw $slib_out
- slib_out=<img src="$ins_url" alt="">,$insdraw_size
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+  !endif
+  slib_out=$slib_out,$insdraw_size
 !endif
+

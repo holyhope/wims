@@ -1,21 +1,35 @@
 !if $wims_read_parm!=slib_header
  !goto proc
 !endif
-slib_title=Young diagram drawing
-slib_parms=1\
-,
+slib_title=Young diagram drawing of a partition
+
 slib_author=Bernadette Perrin-Riou
-slib_out=Young diagram drawing, size of the image
-slib_comment= the html code for inserting image is already inserted
-slib_example=[4,6,7,1]
+
+slib_parms=5\
+,partition\
+30,size in pixels of the cases\
+,width\
+,height\
+raw,option words:url,html,raw
+
+slib_out=Young diagram drawing (size of the image when the option word is \
+<tt>url</tt> or <tt>html</tt>).
+slib_comment= the output is: by default, the flydraw code; \
+the address of the generated image if the option word is <tt>url</tt> ; \
+the html code for inserting image is already inserted for the option <tt>html</tt>.
+
+slib_example=[4,6,7,1],,,,url\
+[4,6,7,1]\
+[4,6,7,1],,,,html
 !exit
 
 :proc
 !reset slib_size slib_width slib_height
-!distribute items $wims_read_parm into slib_partition, slib_size,slib_width,slib_height
+!distribute items $wims_read_parm into slib_partition, slib_size,slib_width,slib_height,slib_option
 !default slib_size=30
 !default slib_width=0
 !default slib_height=0
+!default slib_option=raw
 slib_w=$[ceil($slib_width/$slib_size)]
 slib_h=$[ceil($slib_height/$slib_size)]
 slib_partition=!declosing $slib_partition
@@ -40,7 +54,15 @@ slib_M=$[max($slib_M,$slib_h)]
 slib_dessin=xrange -1,$[$slib_K]\
 yrange -1,$slib_M\
 $slib_dessinpart
-insdraw_size=$[($slib_K)*$slib_size],$[($slib_M)*$slib_size]
 
-!insdraw $slib_dessin
-slib_out=<img src="$ins_url" alt="">,$insdraw_size
+slib_out=$slib_dessin
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=$[($slib_K)*$slib_size],$[($slib_M)*$slib_size]
+  !insdraw $slib_out
+  slib_out=$ins_url
+ !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+ !endif
+ slib_out=$slib_out,$insdraw_size
+!endif

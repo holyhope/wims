@@ -1,25 +1,30 @@
 !if $wims_read_parm!=slib_header
 !goto proc
 !endif
-slib_title=Balance
-slib_parms=5\
+slib_title=Balance (Roberval)
+slib_parms=4\
 ,masses on the left\
 ,masses on the right\
-,
-,color
-,option words
+0,slope\
+,color of the objects\
+raw,option words : one, url, html, raw
 slib_author=Bernadette PERRIN-RIOU
-slib_out=
-slib_comment= La syntaxe n'est pas encore totalement fixée
+slib_out=Drawing of a Roberval balance
+slib_comment=the output is: by default, the flydraw code; \
+the address of the generated image if the option word is <tt>url</tt> ; \
+the html code for inserting image is already inserted for the option <tt>html</tt>.\
+If <tt>one</tt> is in the option words, the form of the object is a rectangle of fixed size.
 
-slib_example= [1000,200,50,A],[B]\
+slib_example= [1000,200,50,A],[B],,,html\
+[1000,200,50,A],[B]\
 [1000,200,50,A],[B],,,url\
-[1000,200,50,A],[B],8,,url\
+[1000,200,50,A],[B],6,yellow,html one\
+[1000,200,50,A],[B],-6,,html\
 
 !exit
 
 :proc
-!reset slib_left slib_right slib_left1 slib_right1 slib_objet_left slib_objet_right
+!reset slib_left slib_right slib_left1 slib_right1 slib_objet_left slib_objet_right slib_option
 
 !distribute items $wims_read_parm into slib_left1,slib_right1,slib_penche,slib_color,slib_option
 slib_left1=!declosing $slib_left1
@@ -39,8 +44,9 @@ slib_right1=!declosing $slib_right1
     slib_objet_right=!append item $slib_u to $slib_objet_right
   !endif
 !next
-
-!default slib_color=!randitem orange,purple,red,yellow
+slib_color=!append item $slib_color to $slib_color
+slib_color=!nonempty items $slib_color
+!default slib_color=!shuffle orange,purple,red,yellow
 negatif -> right plus bas
 !!slib_penche=-7
 !default slib_penche=0
@@ -128,24 +134,28 @@ text black,1,$[$(slib_height1)],medium,1g
 
 slib_tmp=!randint 10, 20
 
-slib_form=!nosubst ftriangle 0,$[$slib_h],5,$[$slib_h+10],10,$[$slib_h],$slib_color\
- frectangle 2.5,$[$slib_h],5,$[$slib_h+5],$slib_color\
- fcircle 5,$[$slib_h],50,$slib_color
+slib_form_g=!nosubst ftriangle 0,$[$slib_h],5,$[$slib_h+10],10,$[$slib_h],$(slib_color[1])\
+ frectangle 2.5,$[$slib_h],5,$[$slib_h+5],$(slib_color[1])\
+ fcircle 5,$[$slib_h],50,$(slib_color[1])
+ 
+slib_form_d=!nosubst ftriangle 0,$[$slib_h],5,$[$slib_h+10],10,$[$slib_h],$(slib_color[2])\
+ frectangle 2.5,$[$slib_h],5,$[$slib_h+5],$(slib_color[2])\
+ fcircle 5,$[$slib_h],50,$(slib_color[2])
 
 slib_t=0
 !reset slib_g
 !if $slib_objet_left!=$empty
  slib_ord=!sort numeric item $slib_left
  !for slib_u in $slib_objet_left
-  !if simple notwordof $slib_option
+  !if one notwordof $slib_option
     slib_h=$[max($(slib_height$(slib_ord[-1])) + 3,$slib_tmp)]
-    slib_form1=!randline $slib_form
+    slib_form1=!randline $slib_form_g
   !else
     slib_h =$(slib_height500)
     slib_form1=
   !endif
   slib_g=!append line translation XXX+$slib_t,20-$slib_penche\
- frectangle 0,0,10,$[$slib_h],$slib_color\
+ frectangle 0,0,10,$[$slib_h],$(slib_color[1])\
  $slib_form1\
  text black,5,$[$slib_h/2],large,$slib_u\
  killtranslation to $slib_g
@@ -167,15 +177,15 @@ slib_t=0
 !if $slib_objet_right!=$empty
   slib_ord=!sort numeric item $slib_right
   !for slib_u in $slib_objet_right
-  !if simple notwordof $slib_option
+  !if one notwordof $slib_option
    slib_h=$[max($(slib_height$(slib_ord[-1])) + 3,$slib_tmp)]
-   slib_form1=!randline $slib_form 
+   slib_form1=!randline $slib_form_d
    !else
    slib_h =$(slib_height500)
    slib_form1=
   !endif 
   slib_d=!append line translation XXX+$slib_t,20+$slib_penche\
- frectangle 0,0,10,$[$slib_h],$slib_color\
+ frectangle 0,0,10,$[$slib_h],$$(slib_color[2])\
  $slib_form1\
  text black, 5,$[$slib_h/2],large,$slib_u\
  killtranslation to $slib_d
@@ -222,11 +232,14 @@ disk 110,10+$slib_penche,8*$slib_agr,black\
 line 0,0,140,0,green\
 fill 5,-5,green\
 
-
 slib_out=$slib_dessin
 
-!if url iswordof $slib_option
+!if url iswordof $slib_option or html iswordof $slib_option
   insdraw_size=700,300
  !insdraw $slib_out
- slib_out=<img src="$ins_url" alt="">,$insdraw_size
+ slib_out=$ins_url
+ !if html iswordof $slib_option
+  slib_out=<img src="$ins_url" alt="">
+ !endif
+ slib_out=$slib_out,$insdraw_size
 !endif
