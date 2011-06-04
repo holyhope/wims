@@ -848,7 +848,7 @@ void exec_form(char *p)
     if(s!=NULL && *s!=0 && !isspace(*s)) {
 	snprintf(st,sizeof(st)," target=\"%s\"",s);
 	if(strcmp(s,"_parent")!=0) {
-	    new=1; wn="<input type=hidden name=wims_window value=yes>\n";
+	    new=1; wn="<input type=\"hidden\" name=\"wims_window\" value=\"yes\">\n";
 	}
     }
     else st[0]=0;
@@ -890,7 +890,7 @@ void exec_form(char *p)
 		snprintf(st,sizeof(st),"%.10s%s",s1,href_target+4);
 		s=st;
 	    }
-	    output("<input type=hidden name=%s value=\"%s\">\n",
+	    output("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n",
 		   ro_name[follow_list[i]],s);
 	}
     }
@@ -902,9 +902,9 @@ void exec_form(char *p)
 	memmove(buf,p1,i);buf[i]=0;
 	for(i=0;i<CMD_NO && strcmp(buf,commands[i]);i++);
 	if(i<CMD_NO) {
-	    output("<input type=hidden name=cmd value=\"%s\">\n",buf);
+	    output("<input type=\"hidden\" name=\"cmd\" value=\"%s\">\n",buf);
 	    if(i!=cmd_intro && i!=cmd_new)
-	      output("<input type=hidden name=module value=\"%s\">\n",
+	      output("<input type=\"hidden\" name=\"module\" value=\"%s\">\n",
 		     getvar(ro_name[ro_module]));
 	}
     }
