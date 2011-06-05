@@ -4,13 +4,15 @@
 
 slib_author=Bernadette PERRIN-RIOU
 
-slib_example=5,2,[a,b,c,d],blue,red
+slib_example=5,2,[a,b,c,d],blue,red\
+5,2,[a,b,c,d],blue,red,html
+
 slib_require=pari
 !exit
 
 :proc
 
-!distribute item $wims_read_parm into slib_n,slib_s,slib_text,slib_color1,slib_color2
+!distribute item $wims_read_parm into slib_n,slib_s,slib_text,slib_color1,slib_color2,slib_option
 
 !default slib_s=2
 slib_color1=!declosing $slib_color1
@@ -109,4 +111,17 @@ parallel -0.5,$slib_yrange1,-0.5,$slib_yrange2,1,0, $[$slib_height+2],yellow
 	!endif
 !next slib_i
 
-slib_out=$slib_dessin,[$slib_G],[$slib_niveau], [$slib_position]
+
+
+slib_out = $slib_dessin
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=450,250
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+  !endif
+  slib_out=$slib_out,[$slib_G],[$slib_niveau], [$slib_position],$insdraw_size
+ !else
+   slib_out=$slib_dessin,[$slib_G],[$slib_niveau], [$slib_position]
+!endif

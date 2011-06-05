@@ -4,10 +4,10 @@
 
 slib_author=Bernadette PERRIN-RIOU
 
- slib_example= [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],2\
- [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],1,2
+slib_example= [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],2\
+ [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],2,html\
+ [0,0,0;0,0,1;0,1,0],[blue,yellow], [A,B,C],1,2,html
 slib_require=pari
- 
 !exit
 
 :proc
@@ -17,6 +17,10 @@ slib_require=pari
 slib_parm=!item 1 to 3 of $wims_read_parm
 !distribute item $slib_parm into slib_H, slib_color,slib_names
 slib_point=!item 4 to -1 of $wims_read_parm
+!if $(slib_point[-1]) iswordof url html raw
+  slib_option=$(slib_point[-1])
+  slib_point=$(slib_point[1..-2])
+!endif  
 slib_H=!declosing $slib_H
 slib_H=!translate internal  ;  to  $\
 $  in $slib_H
@@ -105,3 +109,13 @@ ellipse cos(2*pi*$slib_k/$slib_n )*1.25,sin(2*pi*$slib_k/$slib_n )*1.25, 0.5,0.5
 
 			
 slib_out= $slib_dessin
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=250,250
+  !insdraw $slib_out
+  slib_out=$ins_url
+ !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+ !endif
+ slib_out=$slib_out,$insdraw_size
+!endif

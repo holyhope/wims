@@ -3,7 +3,8 @@
 !endif
 slib_author=Bernadette PERRIN-RIOU
 
-slib_example=[1,2,3;2,4,5;3,6,7],[[A,B,C],[a,b,c]],middle point
+slib_example=[1,2,3;2,4,5;3,6,7],[[A,B,C],[a,b,c]],middle point html\
+[1,2,3;2,4,5;3,6,7],[[A,B,C],[a,b,c]],middle point
  
 !exit
 
@@ -11,7 +12,8 @@ slib_example=[1,2,3;2,4,5;3,6,7],[[A,B,C],[a,b,c]],middle point
 
 
 !distribute item $wims_read_parm into slib_G,slib_text
-slib_doption = !item 3 to -1 of $wims_read_parm
+slib_doption=!item 3 to -1 of $wims_read_parm
+slib_option=$slib_doption
 !default slib_color1=blue
 !default slib_color2=green
 !default slib_color3 = yellow
@@ -119,7 +121,7 @@ circle $slib_milieu_prov, 30,$slib_color3 to $slib_dessin
 	!next slib_j		
 	!if point iswordof $slib_doption
 		slib_dessin =!append line disk $slib_position_prov,30,white\
-	 circle $slib_position_prov,30,$slib_color2 to $slib_dessin
+circle $slib_position_prov,30,$slib_color2 to $slib_dessin
 	!endif
 	!if $slib_textp <> $empty
 		slib_textk=!item $slib_k of $slib_textp
@@ -131,4 +133,15 @@ circle $slib_milieu_prov, 30,$slib_color3 to $slib_dessin
 	
 !next slib_k	
 
-slib_out = [$slib_dessin], [$slib_G],[$slib_position],[$slib_milieu]
+slib_out = $slib_dessin
+!if url iswordof $slib_doption or html iswordof $slib_doption
+  insdraw_size=300,300
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_doption
+   slib_out=<img src="$ins_url" alt="">
+  !endif
+  slib_out=$slib_out,[$slib_G],[$slib_position],[$slib_milieu],$insdraw_size
+ !else
+   slib_out=[$slib_dessin], 
+!endif
