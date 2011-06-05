@@ -138,8 +138,9 @@ for my $file (glob("$slibdir/*/*")) {
  my $filehelp="$slibdirhelp/$file" ;
  if (!open(IN, "$filehelp")) { $filehelp="$slibdirhelp/en/$file"; }
  if (!open(IN, "$filehelp")) { $filehelp="$slibdir/$file"; } 
- open (IN, ("$filehelp")); 
- while (<IN>) {my $line=$_; 
+ for my $fff ("$slibdir/$file",$filehelp) {
+   open (IN, ("$fff")); 
+   while (<IN>) {my $line=$_; 
     if  ($line=~/^ *!exit/) { last ;}
     if ($line=~ s/^ *slib_(\w+) *=//){
      $tag=$1;
@@ -172,6 +173,7 @@ for my $file (glob("$slibdir/*/*")) {
      }
    }
  close IN;
+ }
   push @list_keyword, $file if ($HASH{'title'}{$file});
  $tag='';
  }
@@ -185,7 +187,8 @@ for my $file (glob("$slibdir/*/*")) {
   for my $ex (@examples) {
     next if !($ex) ;
     $example .="<div class=\"title\">$name{'example'}{$lang}</div><code><font color=\"red\">slib($file</font> $ex <font color=\"red\">)</font></code>" ;
-  }
+  } 
+  
   $text.=begin_js("$Begin{'slib'}$file$End{'slib'}") 
            . title_js($HASH{'title'}{$file},'title')
            . syntax_js("<font color=\"red\">slib($file</font> " . ($HASH{'parms'}{$file}  ? $HASH{'parms'}{$file} : '') . " <font color=\"red\">)</font>",$lang)
@@ -294,7 +297,7 @@ sub tableau { my ($file, $lang) = @_ ;
          if ($line) { $text .= syntax_js($line,$lang) ; }
         }
         else {
-         if ($line) { $text .= middle_js($line,1,$lang) ; }
+         if ($line) { $text .= middle_js($line,1,$lang) ;  }
 	   }
 	 }
    }
@@ -312,7 +315,7 @@ sub begin_js {my ($t)= @_ ;
 sub syntax_js {my ($line,$lang)=@_ ;
  "\'<div class=\"syntax\"><div class=\"title\">$name{'syntax'}{$lang}</div><code>$line</code></div>\'+\n"
 }
-sub middle_js {my ($line,$tag,$lang)=@_ ;
+sub middle_js {my ($line,$tag,$lang)=@_ ; if(!$line) {$line='' ;}
  if ($tag) { $line="<div class=\"title\">$name{'explanation'}{$lang}</div>$line" }
  "\'<div class=\"explication\">$line</div>\'+\n";
 }
