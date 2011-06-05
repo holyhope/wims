@@ -3,12 +3,21 @@
 !endif
 
 slib_author=Bernadette Perrin-Riou
+
 !exit
 
 :proc
-!distribute items $wims_read_parm into slib_matrix
+!reset slib_align slib_class slib_option
+!distribute items $wims_read_parm into slib_matrix,slib_option
 slib_matrix=!declosing $slib_matrix
-slib_out=<table class="wims_matrix">
+!if center iswordof $slib_option
+  slib_align=align="center"
+  !reset slib_option
+!else 
+  slib_class=class="wims_matrix$slib_option"
+!endif
+
+slib_out=<table $slib_class>
 
 slib_matrix1=!replace internal ; by $\
 $ in $slib_matrix
@@ -24,7 +33,8 @@ slib_rowcnt=!linecnt $slib_matrix1
 !for slib_a =1 to $slib_rowcnt
   slib_out_p=
   !for slib_b=1 to $slib_colcnt
-    slib_out_p=!append word <td class="wims_matrix">$(slib_matrix[$slib_a;$slib_b])</td> to $slib_out_p
+    slib_tmp=$m_$(slib_matrix[$slib_a;$slib_b])
+    slib_out_p=!append word <td $slib_align>$slib_tmp</td> to $slib_out_p
   !next
   slib_out=$slib_out\
   <tr>$slib_out_p</tr>
@@ -32,5 +42,3 @@ slib_rowcnt=!linecnt $slib_matrix1
 
 slib_out=$slib_out\
 </table>
-
-  
