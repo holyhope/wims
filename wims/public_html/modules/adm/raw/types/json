@@ -3,38 +3,37 @@
 :modclass
 :delclass
 :deluser
-:adduser
 :recuser
 :search
 
 !goto footer
 
 :checkident
- !shortout "message":"Connection accepted",\
+ !shortout ,"message":"Connection accepted",\
 "wims_sesdir":"$wims_sesdir",\
 "separator":"$separator"\
 
 !goto footer
 
 :checkclass
- !shortout "message":"Class $qclass exists"\
+ !shortout ,"message":"Class $qclass exists"\
  
 !goto footer
 
 :checksheet
- !shortout "queryclass":"$qclass",\
+ !shortout ,"query_class":"$qclass",\
 "message":"sheet $qsheet exists"\
 
 !goto footer
 
 :checkexam
- !shortout "queryclass":"$qclass"\
+ !shortout ,"query_class":"$qclass"\
 "message":"exam $qexam exists"\
 
 !goto footer
 
 :checkuser
-!shortout "message":"user $quser exists"\
+!shortout ,"message":"user $quser exists"\
 
 !goto footer
 
@@ -43,7 +42,7 @@ exotitlelist = !replace internal  :  by title:" in $exotitlelist
 exotitlelist = !replace internal  ,  by "},{ "id": " in $exotitlelist
 exotitlelist = !replace internal  title:  by ","title": in $exotitlelist
 
-!shortout ,"queryclass":"$qclass",\
+!shortout ,"query_class":"$qclass",\
  "rclass":"$rclass",\
  "exotitlelist":[{"id":"$exotitlelist"}],\
  "exocount":$exocount
@@ -55,7 +54,7 @@ nohidden= $[$cnt-$nb_hidden]
 titles=!replace internal  ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
 
-!shortout ,"queryclass":"$qclass",\
+!shortout ,"query_class":"$qclass",\
 "nbsheet":"$cnt",\
 "sheetlist":["$list"],\
 "sheettitlelist":["$titles"],\
@@ -68,7 +67,7 @@ list=!replace internal  ,  by "," in $list
 :listexams
 titles=!replace internal  ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
- !shortout ,"queryclass":"$qclass",\
+ !shortout ,"query_class":"$qclass",\
 "nbexam":"$cnt",\
 "examlist":["$list"],\
 "examtitlelist":["$titles"]\
@@ -77,23 +76,53 @@ list=!replace internal  ,  by "," in $list
 
 
 :getsheet
- exotitlelist=!replace internal  ,  by "," in $exotitlelist
+!for i=1 to $exocnt
+ exo=!record $i of $qfile
+ exo_module=!line 1 of $exo
+ exo_params=!line 2 of $exo
+ exo_points=!line 3 of $exo
+ exo_weight=!line 4 of $exo
+ exo_title=!line 5 of $exo
+ exo_description=!line 6 of $exo
+ 
+ exo_defs={"module":"$exo_module","title":"$exo_title","params":"$exo_params","points":"$exo_points","weight":"$exo_weight","description":"$exo_description"}
+ 
+ !if $exolist!=$empty
+   exolist=$exolist,$exo_defs
+ !else 
+   exolist=$exo_defs
+ !endif
+!next i
 
 
- !shortout ,"queryclass":"$qclass",\
-"querysheet":"$qsheet",\
-"exocnt":"$exocnt",\
+ !shortout ,"query_class":"$qclass",\
+"query_sheet":"$qsheet",\
+"exo_cnt":"$exocnt",\
 "sheet_properties":"$sheet_properties",\
 "sheet_status":"$sheet_status",\
 "sheet_expiration":"$sheet_expiration",\
 "sheet_title":"$sheet_title",\
 "sheet_description":"$sheet_description",\
-"exotitlelist":["$exotitlelist"]\
+"exolist":[$exolist]\
+
+!goto footer
+
+:getexosheet
+!shortout ,"query_class":"$qclass",\
+"query_sheet":"$qsheet",\
+"query_exo":"$qsheet",\
+"exo_module":"$exo_module",\
+"exo_params":"$exo_params",\
+"exo_points":$exo_points,\
+"exo_weight":$exo_weight,\
+"exo_title":"$exo_title",\
+"exo_description":"$exo_description"\
+
 
 !goto footer
 
 :getexam
- !shortout ,"queryclass":"$qclass",\
+ !shortout ,"query_class":"$qclass",\
 "queryexam":"$qexam",\
 "exam_properties":"$exam_properties",\
 "exocnt":"$exocnt",\
@@ -116,6 +145,12 @@ list=!replace internal  ,  by "," in $list
  !shortout ,"message":"exercice $qexo successfully $action",\
 "exo_id":"$qexo",\
 "compilation_result":"$compilation"\
+
+!goto footer
+
+:adduser
+ !shortout ,"message":"user $quser correctly added",\
+ "user_id":"$quser"\
 
 !goto footer
 
@@ -149,28 +184,30 @@ list=!replace internal  ,  by "," in $list
 !goto footer
 
 :addsheet
- !shortout ,"queryclass":"$qclass",\
-"sheet_id":"$qsheet",\
+ !shortout ,"query_class":"$qclass",\
+"sheet_id":$wims_sheet,\
 "sheet_count":$sheetcnt\
 
 !goto footer
 
 :addexam
- !shortout ,"queryclass":"$qclass",\
-"exam_id":"$wims_exam",\
+ !shortout ,"query_class":"$qclass",\
+"exam_id":$wims_exam,\
 "exam_count":$examcnt,\
 "message":"exam #$wims_exam correctly added"\
 
 !goto footer
 
 :addclass
+cd=!replace internal / by _ in $cd
  !shortout ,"class_id":"$cd",\
- "message":"class $cd correctly added"\
+ "message":"class $cd correctly added",\
+ "log":"$log"\
  
 !goto footer
 
 :getclass
-!shortout ,"queryclass":"$qclass",\
+!shortout ,"query_class":"$qclass",\
   "rclass":"$rclass",\
 
 list_cnt=!itemcnt $option
@@ -208,7 +245,7 @@ i=0
 !goto footer
 
 :getuser
-!shortout ,"queryclass":"$qclass",\
+!shortout ,"query_class":"$qclass",\
 "queryuser":"$quser",\
 
 list_cnt=!itemcnt $option
@@ -246,21 +283,33 @@ data_scores =!replace internal ; by , in $data_scores
 
 
 :getscore
-!for v in examscore, weights, requires, persheet, gotdetail, meandetail
+!for v in examscore, weights, requires, persheet, gotdetail, meandetail, remain
  $v=!trim $($v)
- $v=!replace internal $\
-$ by "," in $($v)
+ !if $v != $empty
+   $v=!replace internal $\
+$ by ],[ in $($v)
+   $v=!replace internal $ $ by , in $($v)
+   $v=!replace internal ,] by ] in $($v)
+   $v=[[$($v)]]
+ !else
+   $v=""
+ !endif
 !next v
+
+
 
 !shortout ,"query_class":"$qclass",\
 "query_user":"$quser",\
 "score_max":"$scoremax",\
-"exam_scores":["$examscore"],\
-"weights":["$weights"],\
-"require_points":["$requires"],\
-"sheet_summaries":["$persheet"],\
-"got_points":["$gotdetail"],\
-"score_averages":["$meandetail"]\
+"exam_scores":$examscore,\
+"weights":$weights,\
+"require_points":$requires,\
+"sheet_summaries":$persheet,\
+"got_points":$gotdetail,\
+"remain":$remain,\
+"score_status":"$score_status",\
+"score_qualities":$meandetail\
+
 
 !goto footer
 
@@ -280,7 +329,7 @@ $ by "," in $($v)
 !goto footer
 
 :getexo
-!shortout ,"queryclass":"$qclass",\
+!shortout ,"query_class":"$qclass",\
 "querysheet":"$qsheet",\
 "queryexo":"$qexo",\
 "exo_module":"$exo_module",\
@@ -300,7 +349,7 @@ $ by "," in $($v)
 !goto footer
 
 :getcourse
- !shortout ,"queryclass":"$qprogram",\
+ !shortout ,"query_class":"$qprogram",\
  "courses":"$wims_class"\
 
 
@@ -435,7 +484,7 @@ list_cnt=!itemcnt $listContent
 
 :modsheet
 !shortout  ,"queryclass":"$qclass",\
-"querysheet":"$qsheet"\
+"querysheet":"$qsheet",\
 "message":"Modifications Done on sheet $qsheet."
 !goto footer
 
@@ -446,6 +495,14 @@ list_cnt=!itemcnt $listContent
 "exo_count":$exocnt
 
 !goto footer
+
+:modexosheet
+!shortout  ,"queryclass":"$qclass",\
+"queryexo":"$qexo",\
+"querysheet":"$qsheet",\
+"message":"Modifications Done on exo $qexo from sheet $qsheet. (type = $option , $nbchanged items received)"
+!goto footer
+
 
 :modexam
 !shortout  ,"queryclass":"$qclass",\
@@ -471,7 +528,7 @@ listlinks=!replace internal  ,  by "," in $listlinks
 !goto footer
 
 :delexo
-!shortout "message":"exercice $qexo successfully deleted",\
+!shortout ,"message":"exercice $qexo successfully deleted",\
 "exo_id":"$qexo",\
 "compilation_result":"$compilation",\
 "more_infos":"$more_infos",\

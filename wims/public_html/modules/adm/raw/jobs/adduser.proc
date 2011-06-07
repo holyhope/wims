@@ -8,15 +8,43 @@ quser=!translate internal . to @ in $quser
 quser=!text select $char_login in $quser
 l=!charcnt $quser
 !if $quser=supervisor or $l<$login_min or $l>$login_max
- error= login name must not be $quser
+ error= login name must not be $quser (illegal, or wrong length)
  !exit
 !endif 
 
+
+class_superclass=!defof class_superclass in $classdeffile
+
+#on ajoute pas un utilisateur dans une sous-classe. toujours dans sa superclasse.
+!if $class_superclass != $empty
+  subclass=$qclass
+  qclass=$class_superclass
+  user_participate=$subclass
+!endif
+
 userdeffile=wimshome/log/classes/$qclass/.users/$quser
+!readdef $userdeffile
 test=!defof user_exists in $userdeffile
 !if $test!=$empty
- error=user exists
- !exit
+  # L'utilisateur existe. On verifie alors si on est dans une sous-classe
+  !if $class_superclass != $empty
+    !if $user_participate != $empty
+      !if $subclass isitemof $user_participate
+        error=user $quser exists and already participates to this class ($subclass)
+        !exit
+      !endif
+      user_participate=$user_participate,
+    !endif
+    #l'utilisateur existait deja dans la superclasse. on lui donne simplement acces a la sous-classe.
+    !setdef user_participate=$user_participate$subclass in $userdeffile
+    
+    ### Faut-il aussi l'ajouter dans la sous-classe ici ?
+    
+    !exit
+  !else
+    error=user already exists in this class ($qclass)
+    !exit
+  !endif
 !endif
 
 data1=!nonempty lines $data1
@@ -46,3 +74,7 @@ $ in $l
  rm -f score/$quser score/$quser.exam noscore/$quser >/dev/null
 
 !read adm/class/mkuserlist $qclass
+
+!if $class_superclass != $empty
+  !read adm/class/mkuserlist $subclass
+!endif

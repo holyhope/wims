@@ -1,0 +1,23 @@
+#GetExoSheet renvoie toutes les informations d'un exercice qexo present dans la feuille qsheet
+
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+exo=!record $qexo of $qfile
+
+!if $exo=$empty
+ error=There is no exercice #$qexo in this sheet ($qsheet)
+ !exit
+!endif
+
+exo_module=!line 1 of $exo
+exo_params=!line 2 of $exo
+exo_points=!line 3 of $exo
+exo_weight=!line 4 of $exo
+exo_title=!line 5 of $exo
+exo_description=!line 6 of $exo
+
+

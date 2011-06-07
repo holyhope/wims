@@ -38,6 +38,14 @@
 
   #Si qclass existe et est un groupement de classe, on lui ajoute alors une sous-classe
   cd=$qclass/$class_nbsubclasses
+  
+  classdeffile=wimshome/log/classes/$cd/.def
+  test=!defof class_defined in $classdeffile
+  !if $test=yes
+    error=class $qclass already existing. check your .subclasses file.
+    !exit
+  !endif
+
 
  !else
   #si la classe n'existe pas, on la cree.
@@ -85,7 +93,7 @@ $ in $l
  cl_parent=$qclass 
 !endif
 
-!sh cd $wims_home/log/classes\
+log = !sh cd $wims_home/log/classes\
 	mkdir -p $cd\
 	cd $cd\
 	mkdir -p .users sheets exams score noscore\
@@ -131,5 +139,5 @@ langs=!words2items $wims_site_languages
   !writefile wimshome/log/classes/$cd/logo $logofile
 !endif
 
-!sh cd $wims_home/log/classes; ./.build-index
+log = !sh cd $wims_home/log/classes; ./.build-index
 

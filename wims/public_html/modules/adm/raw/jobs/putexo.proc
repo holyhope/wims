@@ -35,10 +35,9 @@ n1=!linecnt $data1
  sh_$n_=$v_
 !next i
 
-####Attention : ici il faudra peut etre modifier le parametre "exo" dans le cas ou on voudrait ajouter toute une ligne de parametres, ne commencant pas par "exo="
-########
 
-!for t in sh_module, sh_exo
+
+!for t in sh_module, sh_params
  !if $($t) = $empty
   error=incomplete data $t
   !exit
@@ -47,16 +46,22 @@ n1=!linecnt $data1
 
 !default sh_weight=1
 !default sh_points=10
-!default sh_title=nouvel exercice
-!default sh_description=nouvel exercice
+!default sh_title=Nouvel exercice
+!default sh_description=$empty
+!default sh_dep=$empty
+!default sh_comment=$empty
+
 
 !appendfile wimshome/log/classes/$qclass/sheets/.sheet$qsheet \
 :$sh_module\
-exo=$sh_exo\
+$sh_params\
 $sh_points\
 $sh_weight\
 $sh_title\
-$sh_description
+$sh_description\
+$sh_dep\
+$sh_comment\
+
 
 
 exocnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheet$wims_sheet

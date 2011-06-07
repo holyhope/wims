@@ -1,0 +1,109 @@
+#permet de modifier l'exercice #qexo de la feuille #qsheet
+# 2 options possibles : "moveup" pour remonter l'exercice dans la liste et "modify" pour modifier un des parametres secondaires (tout sauf module et params)
+
+type=sheets
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+#On verifie que la feuille n'est pas "Active"
+sheet_status=!line 1 of $qproperties
+!ifval $sheet_status >0
+ error=sheet mustn't be active
+ !exit
+!endif
+
+# On verifie que qexo existe.
+
+# si aucune option specifiee, on modifie l'exo qexo
+!default option=modify
+
+!if $option notitemof modify,moveup
+	error=unknown action ($option)
+	!exit
+!endif
+
+
+# OPTION 1 : move up an exo
+!if $option=moveup and $qexo > 1
+ old_exo=$[$qexo-1]
+ x_=!record $old_exo of wimshome/log/classes/$qclass/sheets/.sheet$qsheet
+ y_=!record $qexo   of wimshome/log/classes/$qclass/sheets/.sheet$qsheet
+ 
+ !distribute items 0,$old_exo into update_field,exo
+ update_content=$y_
+ !read scripts/update.exo
+ 
+ !distribute items 0,$qexo into update_field,exo
+ update_content=$x_
+ !read scripts/update.exo
+!endif
+
+# OPTION 2 : modify an exo
+!if $option=modify
+
+  !if $data1=$empty
+   error=no data found
+   !exit
+  !endif
+
+  exo=!record $qexo of wimshome/log/classes/$qclass/sheets/.sheet$qsheet
+  !distribute lines $exo into fixed_module,fixed_params,exo_points,exo_weight,exo_title,exo_desc,exo_dep,exo_comment
+
+  data1=!nonempty lines $data1
+  n1=!linecnt $data1
+  nbchanged=0
+  !for i=1 to $n1
+   v_=$empty
+   l=!line $i of $data1
+   l=!translate = to $,$ in $l
+   n_=!item 1 of $l
+   nb_elem=!itemcnt $l
+   v_=!item 2 of $l
+   !if $nb_elem>2
+    !for j=3 to $nb_elem
+      courant=!item $j of $l
+      v_=$v_=$courant
+    !next j
+   !endif
+   
+   !if $v_ != $empty
+     exo_$n_=$v_
+     !advance nbchanged
+   !endif
+  !next i
+
+  !bound exo_weight between 0 and 10 default 0
+  !bound exo_require between 0 and 1000 default 0
+
+  exo_title=!singlespace $exo_title
+  exo_title=!char 1 to $etitle_limit of $exo_title
+
+
+  exo_desc=!singlespace $exo_desc
+  exo_desc=!char 1 to $edesc_limit of $exo_desc
+
+  exo_comment=!singlespace $exo_comment
+  exo_comment=!char 1 to $edesc_limit of $exo_comment
+  
+  # Sur une modification, le module et les parametres de l'exercice ne sont pas modifiables.
+  
+  update_content=$fixed_module\
+$fixed_params\
+$exo_points\
+$exo_weight\
+$exo_title\
+$exo_desc\
+$exo_dep\
+$exo_comment\
+\
+
+  
+  update_field=0
+  exo=$qexo
+  !read scripts/update.exo
+!endif
+
+
+!read scripts/writeweights
