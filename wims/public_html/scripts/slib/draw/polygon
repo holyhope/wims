@@ -6,10 +6,10 @@ slib_author=Bernadette PERRIN-RIOU
 
 slib_require=pari
 slib_example=6,[green,blue,green,blue,green,blue]\
-6,[green,blue,green,blue,green,blue],,url\
-5,[green,blue,green,blue,orange],vertex,url\
+6,[green,blue,green,blue,green,blue],,html\
+5,[green,blue,green,blue,orange],vertex,html\
 4,[green,blue,green,blue,green,blue],edge,url\
-8,[green,blue,green,blue,green,blue,green,blue],circle,url\
+8,[green,blue,green,blue,green,blue,green,blue],circle,html
 
 !exit
 
@@ -43,8 +43,8 @@ slib_lignes=
   slib_lignec=!append line line 0,0,$(slib_vertex[2*$slib_i-1,2*$slib_i]),black to $slib_lignec
   slib_lignes=!append line line 0,0,$(slib_arete[2*$slib_i-1,2*$slib_i]),black to $slib_lignes
   slib_lignesc=$slib_lignesc\
-    line 0,0,$(slib_vertex[2*$slib_i-1,2*$slib_i]),black\
-    line 0,0,$(slib_arete[2*$slib_i-1,2*$slib_i]),black  
+line 0,0,$(slib_vertex[2*$slib_i-1,2*$slib_i]),black\
+line 0,0,$(slib_arete[2*$slib_i-1,2*$slib_i]),black  
 !next
 
 slib_fills=
@@ -55,44 +55,44 @@ slib_fillcs=
 !for slib_i=1 to $slib_n
   slib_color_=!declosing $(slib_color[$slib_i])
   slib_fills=$slib_fills\
-    fill $(slib_points_s[2*$slib_i-1,2*$slib_i]),$slib_color_
+fill $(slib_points_s[2*$slib_i-1,2*$slib_i]),$slib_color_
   slib_fillc=$slib_fillc\
-    fill $(slib_points_c[2*$slib_i-1,2*$slib_i]),$slib_color_
+fill $(slib_points_c[2*$slib_i-1,2*$slib_i]),$slib_color_
  slib_color__=$(slib_color[2*$slib_i-1])
   slib_fillcs=$slib_fillcs\
-    fill $(slib_points_cs[4*$slib_i-3,4*$slib_i-2]),$slib_color__\
-    fill $(slib_points_cs[4*$slib_i-1,4*$slib_i]),$slib_color_
+fill $(slib_points_cs[4*$slib_i-3,4*$slib_i-2]),$slib_color__\
+fill $(slib_points_cs[4*$slib_i-1,4*$slib_i]),$slib_color_
 !next
 
 !if $slib_option issametext
   slib_out=\
-   xrange -1.5,1.5\
-   yrange -1.5,1.5\
-  polygon black,$slib_vertex
+xrange -1.5,1.5\
+yrange -1.5,1.5\
+polygon black,$slib_vertex
 !endif
 !if circle iswordof $slib_option
   slib_o= trange 0,2*pi\
-  plot black,sin(t),cos(t)
+plot black,sin(t),cos(t)
 !else
   slib_o=polygon black,$slib_vertex
 !endif
 
 !if vertex iswordof $slib_option and edge notwordof $slib_option
   slib_out=\
-  xrange -1.5,1.5\
-  yrange -1.5,1.5\
-  $slib_o\
-  $slib_lignes\
-  $slib_fills
+xrange -1.5,1.5\
+yrange -1.5,1.5\
+$slib_o\
+$slib_lignes\
+$slib_fills
 !endif
 
 !if vertex notwordof $slib_option and edge iswordof $slib_option
  slib_out=\
-  xrange -1.5,1.5\
-  yrange -1.5,1.5\
-  $slib_o\
-  $slib_lignec\
-  $slib_fillc
+xrange -1.5,1.5\
+yrange -1.5,1.5\
+$slib_o\
+$slib_lignec\
+$slib_fillc
 !endif
 
 !if vertex iswordof $slib_option and edge iswordof $slib_option
@@ -105,8 +105,13 @@ $slib_lignec\
 $slib_fillcs
 !endif
 
-!if url iswordof $slib_url
+!if url iswordof $slib_url or html iswordof $slib_url
   insdraw_size=200,200
  !insdraw $slib_out
- slib_out=<img src="$ins_url" alt="">,$insdraw_size
+ slib_out=$ins_url
+ !if html iswordof $slib_url
+  slib_out=<img src="$ins_url" alt="">
+ !endif
+ slib_out=$slib_out,$insdraw_size
 !endif
+

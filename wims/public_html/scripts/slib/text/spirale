@@ -7,8 +7,12 @@ slib_require=pari
 !exit
 
 :proc
-slib_color=
+!reset slib_color slib_option
 slib_texte=$wims_read_parm
+!if $(wims_read_parm[-1])=html or $(wims_read_parm[-1])=url or $(wims_read_parm[-1])=raw
+  slib_texte=$(wims_read_parm[1..-2])
+  slib_option=$(wims_read_parm[-1])
+!endif
 slib_cnt=!charcnt $slib_texte
 slib_N=$[(round(sqrt($slib_cnt))+1)^2]
 slib_init=0
@@ -48,5 +52,16 @@ text black, $slib_point, giant,$slib_l
     !endif
 !next
 slib_out=$slib_dessin
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=300,300
+ !insdraw $slib_out
+ slib_out=$ins_url
+ !if html iswordof $slib_option
+  slib_out=<img src="$ins_url" alt="">
+ !endif
+ slib_out=$slib_out,$insdraw_size
+!endif
+
 
 
