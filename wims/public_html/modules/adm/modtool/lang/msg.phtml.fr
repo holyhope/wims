@@ -36,8 +36,25 @@
 !endif
 
 !if badtarget iswordof $error
- L'adresse de destination n'est pas bonne : trop longue, trop courte,
- incomplète ou caractères non admis.
+ L'adresse de destination (<tt class="wims_code">$target</tt>) n'est pas bonne : trop longue, trop courte, incomplète ou caractères non admis.<br/>
+ Detail des erreurs : 
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>Zone incorrecte</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>Categorie incorrecte</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>Nom incorrect</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>Langue incorrecte</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>longueur incorrecte</li>
+  !endif
+ </ul>
  !exit
 !endif
 

@@ -36,8 +36,24 @@
 !endif
 
 !if badtarget iswordof $error
- Target module address is bad: too long, too short, incomplete, or illegal
- characters.
+  Target module address ($target) is bad: , incomplete, or illegal characters.
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>incorrect zone</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>incorrect category</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>incorrect name</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>incorrect lang</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>too long or too short address</li>
+  !endif
+ </ul>
  !exit
 !endif
 

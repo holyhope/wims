@@ -4,14 +4,29 @@ namechar=-$alnum
 t2=!text select $namechar in $target2
 t3=!text select $namechar in $target3
 tlen=!charcnt $target1/$target2/$target3.$target4
-!if $t2!=$target2 or $t3!=$target3 or $tlen>40 or \
-   $target1=$empty or $target2=$empty or $target3=$empty or $target4=$empty
- error=badtarget
-!else
- target=$target1~$target2~$target3.$target4
- test=!filelist $devdir/$target
- !if $test!=$empty
-  error=clash
- !endif
+
+!if $t2!=$target2 or $target2=$empty
+  error=badtarget incorrect_t2
 !endif
 
+!if $t3!=$target3 or $target3=$empty
+  error=$error badtarget incorrect_t3
+!endif
+
+!if $tlen>40
+  error=$error badtarget incorrect_tlen
+!endif
+
+!if $target1=$empty
+  error=$error badtarget incorrect_t1
+!endif
+
+!if $target4=$empty
+  error=$error badtarget incorrect_t4
+!endif
+
+target=$target1~$target2~$target3.$target4
+test=!filelist $devdir/$target
+!if $test!=$empty
+  error=$error clash
+!endif
