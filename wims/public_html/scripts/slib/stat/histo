@@ -4,7 +4,8 @@
 
 slib_author=Adeline Grelot and Bernadette Perrin-Riou, Sophie Lemaire
 
-slib_example= [10,5,2,3,10,13],[3,4,6,7,12,14,16],xtics [A1,A3,A6,8,10,12,14],ytics 10, color salmon\
+slib_example= [10,5,2,3,10,13],[3,4,6,7,12,14,16],xtics [A1,A3,A6,8,10,12,14],ytics 10, color salmon,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon
 !exit
 
@@ -12,7 +13,7 @@ slib_example= [10,5,2,3,10,13],[3,4,6,7,12,14,16],xtics [A1,A3,A6,8,10,12,14],yt
 
 slib_parm=
 slib_out=
-!reset slib_optx, slib_opty, slib_couleur,slib_baton,slib_pdata, slib_grad,slib_listx,slib_listxx, slib_param, slib_parm
+!reset slib_optx, slib_opty, slib_couleur,slib_baton,slib_pdata, slib_grad,slib_listx,slib_listxx, slib_param, slib_parm slib_option
 
 slib_data=!item 1 to 2  of $wims_read_parm
 slib_parm= !item 3 to -1 of $wims_read_parm
@@ -101,21 +102,19 @@ slib_ocnt=!itemcnt $slib_parm
       slib_ra=$slib_param
     !endif
   !endif ytics
-
   !if color isitemof $slib_param
     slib_param=!replace color by $  in $slib_param
     slib_param=!nonempty item $slib_param
     couleur=$slib_param
-  !else
-    couleur=$empty
   !endif
 
   !if  $slib_param iswordof baton stem step stair
     slib_baton=$slib_param
   !endif
+  !if  $slib_param iswordof html url
+    slib_option=$slib_param
+  !endif
 !next slib_i
-
-
 
 !default slib_optx=0
 !default slib_opty=0
@@ -218,7 +217,7 @@ yrange $[min(1,$slib_y1-($slib_y2-$slib_y1)/5)],$[$slib_y2]\
 $slib_grad
 !if stair notwordof $slib_baton
   slib_pdata=$slib_pdata\
-  lines $couleur
+lines $couleur
 !else
   slib_points= linewidth 4\
   points $couleur
@@ -257,3 +256,14 @@ slib_out=$slib_pdata\
 $slib_points\
 linewidth 1\
 hline 0,0,grey
+
+!if url iswordof $slib_option or html iswordof $slib_option
+  insdraw_size=500,200
+ !insdraw $slib_out
+ slib_out=$ins_url
+ !if html iswordof $slib_option
+  slib_out=<img src="$ins_url" alt="">
+ !endif
+ slib_out=$slib_out,$insdraw_size
+!endif
+
