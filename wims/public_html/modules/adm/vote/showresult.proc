@@ -6,7 +6,7 @@
  !changeto home.proc
 !endif
 
-!if trace isin $vote_option
+!if anonymous!=$vote_option
  !bound job2 within global,list default global
 !else
  job2=global
@@ -37,3 +37,41 @@ max_rep=0
  t=!itemcnt $(vote_description[$k;])
  max_rep=$[max($max_rep,$t-2)]
 !next k
+
+!if $vote_option=anonymous
+ !exit
+!endif
+!if $vote_option=trace
+ keylist=!values v for v=1 to $vcnt
+ namelist=!makelist <th>$name_votants v</th> for v=1 to $vcnt
+!else
+ keylist=$empty
+ namelist=$empty
+!endif
+
+!for k=1 to $parmcnt
+ !if textarea!=$(vote_description[$k;2])
+  donvote_$k=!makelist -- for v=1 to $vcnt
+  nbch=!itemcnt $(vote_description[$k;])
+  !for l=3 to $nbch
+   !for m in $(votes_$(k)_$[$(l)-2])
+    !if $m notitemof $listkey
+     listkey=!append item $m to $listkey
+     !if $vote_option=nominative
+      tmp=!replace internal / by , in $m
+      tmp=!defof user_firstname\
+user_lastname in wimshome/log/classes/$wims_superclass/.users/$(tmp[-1])
+      tmp=!lines2words $tmp
+      namelist=!append item <th>$tmp</th> to $namelist
+     !endif
+    !endif
+    mkey=!positionof item $m in $listkey
+    donvote_$k=!replace item number $mkey by $(vote_description[$k;$l]) in $(donvote_$k)
+   !next m
+  !next l
+ !endif
+!next k
+
+namelist=!items2words $namelist
+
+

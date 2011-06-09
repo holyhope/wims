@@ -16,7 +16,11 @@
  $name_class_vote
  $table_header
  $table_tr<th>$wims_name_title</th><th>$name_cnt_votes</th>
- <th>$wims_name_Status</th><th>$wims_name_action</th>
+ <th>$wims_name_Status</th>
+ !if $wims_user=supercvisor
+  <th>$wims_name_action</th>
+ !endif
+ </tr>
  !for t=1 to $votecnt
    !set l_=!record $t of $votedir/.votes
    !distribute lines $l_ into vote_status,vote_title,vote_option,vote_show,vote_whovoteshow
@@ -25,9 +29,10 @@
    !default vcnt=0
    !if $wims_user!=supervisor
     !if $vote_status iswordof 1 2
-     $table_tr<td>
-     !href cmd=reply&job=read&vote=$t $vote_title
-     </td><td>
+     $table_tr
+     <td>
+      !href cmd=reply&job=read&vote=$t $vote_title
+     </td>
      !if $vote_show>0
       <td align="center">$vcnt</td>
       <td>$(name_$vote_status), $(name_$vote_option)
@@ -35,7 +40,7 @@
        <td>&nbsp;</td>
        <td>$(name_$vote_status), $(name_$vote_option)</td>
      !endif
-     </td></tr>
+     </tr>
     !endif
    !else
     $table_tr<td>
@@ -44,10 +49,13 @@
     <td align="center">$vcnt</td>
      <td><small>$(name_$vote_status), $(name_$vote_option)</small>
     </td><td>
+    !set wims_ref_class=wims_button
     !href cmd=reply&job=read&vote=$t $wims_name_Show
 &nbsp;
+    !set wims_ref_class=wims_button
     !href cmd=reply&job=edit&vote=$t $wims_name_change
 &nbsp;
+    !set wims_ref_class=wims_button
     !href cmd=reply&job=csv&vote=$t $wims_name_csv
     !if vote_show=1 or $wims_user=supervisor
      &nbsp;
