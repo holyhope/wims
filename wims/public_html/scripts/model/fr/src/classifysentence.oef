@@ -1,0 +1,128 @@
+type=datalist
+textarea="data"
+
+:Classer tous les mots d'une phrase écrite selon un attribut (par exemple leur nature).
+Cet exercice diffère d'autres exercices de classification par la manière dont les données sont
+rentrées, la donnée étant une phrase et non une liste de mots.
+<p>
+Auteur du modèle : Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENTION      %%%%%%%%%%%%%%%%%%%%
+
+Enlevez l'en-tête ci-dessus si vous détruisez les balises pour le modèle !
+(Ce sont les lignes qui commencent par un ':'.)
+Sinon l'exercice risque de ne pas pouvoir repasser sous Createxo.
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+:\title{Claser les mots d'une phrase}
+:\author{Bernadette Perrin-Riou}
+:Consigne
+\text{instruction= Classer les mots selon leur nature ou des propriétés}
+
+:Nom du fichier
+Ne remplissez que si vous vous désirez transférer le source de cet exercice dans un compte Modtool 
+et utiliser un fichier de données (dans un module OEF)
+du type
+<pre>
+ V,N,Art,Adj,Prep
+ Verbe,Nom,Article,Adjectif,Préposition
+ :Le|Art,petit|Adj,chat|N,boit|V,du|Art,lait.|N
+ :Le|Art,chat|N,boit|V,du|Art,lait|N,dans|Prep,un|Art,bol.|N
+</pre>
+Dans ce cas, les données principales ne seront pas prises en compte. 
+Sinon, remplissez les données principales.
+
+\text{file=}
+
+:Nature des objets
+\text{nom_nature=Verbe,Nom,Article,Adjectif,Préposition}
+
+:Nature des mots (code)
+C'est ce code qui sera utilisé dans les données principales.
+\text{Nature=V,N,Art,Adj,Prep}
+
+:Données principales.
+Une phrase par ligne : les mots (ou groupes de mots) de la phrase sont séparés par des virgules. Après chaque mot, 
+séparé du mot par la barre verticale <tt>|</tt>, est écrit la nature ou l'attribut du mot telle
+qu'il a été écrit dans le champ <tt>Nature des mots (code)</tt>. Si le mot (ou groupe de mots) 
+n'est pas suivi d'une barre verticale
+et d'un attribut, il n'est pas proposé dans la liste des mots à placer, 
+mais est écrit dans la phrase d'introduction.
+
+\text{data=Le|Art,petit|Adj,chat|N,boit|V,du|Art,lait|N
+Le|Art,chat|N,boit|V,du|Art,lait|N,dans|Prep,un|Art,bol|N
+Le,chat|N,boit|V,du,lait|N,dans|Prep,un,bol|N}
+
+
+:%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   .reponse {background-color: #FFCC99;color: black;margin: 2% 2%;padding: 0%;}
+   .oefstatement{}
+   ol li {list-style: upper-alpha; }
+ </style>}
+ ##s'il y a un nom de fichier dans file, utilise le fichier, sinon utilise data
+\if{\file notsametext}{
+  \text{data=wims(randrecord \file)}
+  \text{Nature=wims(record 0 of \file)}
+  \text{nom_nature=row(2,\Nature)}
+  \text{Nature=row(1,\Nature)}
+  }{
+  \text{data=randomrow(\data)}
+  } 
+\text{data=wims(embraced randitem \data)}
+\integer{cnt=items(\data)}
+\integer{Nat_cnt=items(\Nature)}
+\text{phrase=}
+\text{nature=}
+\text{tableau=wims(makelist videxxx for x = 1 to \Nat_cnt)}
+\text{tableau=wims(items2lines \tableau)}
+\for{u=1 to \cnt}{
+  \text{w=\data[\u]}
+  \text{w=wims(replace internal | by , in \w)}
+  \text{phrase=\phrase \w[1]}
+  \for{h = 1 to \Nat_cnt}{
+    \if{\w[2] issametext \Nature[\h]}{
+       \text{ligne=row(\h,\tableau)}
+       \text{ligne=videxxx isitemof \ligne ? \w[1]:\ligne,\w[1]}
+       \text{tableau=wims(replace line number \h by \ligne in \tableau)}
+       \text{nature=wims(append item \w[2] to \nature)}
+    }
+   }
+}
+\matrix{tableau=\tableau}
+\text{nature1=wims(listuniq \nature)}
+\text{nature=}
+\for{ a in \Nature}{
+   \text{nature=\a isin \nature1 ? wims(append item \a to \nature)}
+}
+\text{question=}
+\text{nom_question=}
+\text{Step=}
+\for{a in \nature}{
+   \text{qu=position(\a,\Nature)}
+   \text{Step=wims(append item r \qu to \Step)}
+   \text{question=wims(append item \qu to \question)}
+   \text{nom_question=wims(append item \nom_nature[\qu] to \nom_question)}
+}
+\integer{question_cnt=items(\question)}
+\steps{\Step}
+
+\statement{\instruction
+<div class="question">\phrase.</div>
+<table>
+\for{ s = 1 to \question_cnt}{
+  <tr><th>\nom_question[\s]</th><td>\embed{\Step[\s],80 x 30 x \cnt}</td></tr>
+}
+</table>
+}
+\answer{\nom_question[1]}{\tableau[1;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[2]}{\tableau[2;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[3]}{\tableau[3;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[4]}{\tableau[4;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[5]}{\tableau[5;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[6]}{\tableau[6;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[7]}{\tableau[7;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[8]}{\tableau[8;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[9]}{\tableau[9;]}{type=dragfill}{option=noorder}
+\answer{\nom_question[10]}{\tableau[10;]}{type=dragfill}{option=noorder}
