@@ -1,56 +1,57 @@
 slib_lang_exists_tmp=yes
 
-slib_title=Geogebra Applet
+slib_title=Applet GeoGebra
 slib_parms=1\
-,option or applet command for javascript, one by line or joined by a semicolon 
+,option ou applet-commande pour javascript, une par ligne, ou associées par demi-colonne
 
-slib_comment=the available applet commands are either the definition of an object\
-<br>or javascript methods. For syntax details on how to create objects, you can report to the GeoGebra help page : \
-<a target="wims_external" href="http://www.geogebra.org/help/docufr/"> www.geogebra.org/help/docufr </a>\
-There are a lot of available javascript methods : for example, \
+slib_comment=Les commandes applets utilisées permettent soit la définition d'un objet,\
+soit des méhodes javascript. Pour des détails de syntaxe concernant la création d'objets, vous pouvez vous référer à\
+la page d'aide de GeoGebra :\
+<a target="wims_external" href="http://www.geogebra.org/help/docufr/">www.geogebra.org/help/docufr</a>\
+Il existe de nombreuses méthodes javascript utilisables : par exemple, \
 <tt>evalCommand setValue setColor setVisible \
   setLabelVisible setFixed setTrace\
   setAxesVisible setGridVisible setCoordSystem\
   deleteObject renameObject setLayerVisible\
   setLineStyle setAnimationSpeed startAnimation</tt>\
-The complete list <a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_JavaScript_Methods"> is here.</a>\
-<br><br>Allowed options are the followings. See <a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_Applet_Parameters"> here for details.</a>\
-<br><tt>height</tt> default 300\
-<br><tt>width</tt> default 300\
-<br><tt>file</tt> default none&#46; Be careful &#58; the &#46;ggb file must be in the "image" \
-directory if you use the slib in an OEF exercise, \
-<br>in the "files" directory if you use the slib in a document ;\
-<br>otherwise you have to use relative adress from module directory.\
-<br><tt>showToolBar</tt> default false\
-<br><tt>customToolBar</tt> default none. Be careful : no comma is allowed and if you want \
-<br>to separate two integers by a space-character, type a "@" instead of this space-character ! \
-The list of the icones <a target="wims_external" href="http://www.geogebra.org/source/program/doc/geogebra_modes.html">is here</a>\
-<br><tt>showMenuBar</tt> default false\
-<br><tt>showAlgebraInput</tt> default false\
-<br><tt>showResetIcon</tt> default false (Be careful : this option enable to \
-reset the applet, but without the construction done from wims)\
-<br><tt>showToolBarHelp</tt> default true\
-<br><tt>enableRightClick</tt> default true (Be careful : by right-clicking \
-on an object, the student can modify all the objects in the construction !)\
-<br><tt>language</tt> default fr\
-<br><tt>enableLabelDrags</tt> default true\
-<br><tt>enableShiftDragZoom</tt> default true\
-<br><tt>errorDialogsActive</tt> default true\
-<br><tt>debug</tt> default false\
-<br><tt>number</tt> number of the applet in the html page (default 1)
-<br><tt>EXAMPLE\
+<br>La liste complète <a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_JavaScript_Methods"> se trouve ici.</a>\
+<br>Les options autorisées sont les suivantes. Voir <a target="wims_external" href="http://www.geogebra.org/en/wiki/index.php/GeoGebra_Applet_Parameters"> ici pour les détails.</a>\
+<br><tt>height</tt> par défaut 300\
+<br><tt>width</tt> par défaut 300\
+<br><tt>file</tt> par défaut <tt>none</tt>. Attention : le fichier .ggb doit se trouver dans le répertoire <tt>images</tt> \
+ si vous utilisez la slib dans un exercice OEF, \
+<br>ou dans le répertoire <tt>files</tt> si vous utilisez la slib dans un document ;\
+<br>dans tous les autres cas, utilisez une adresse relative depuis le répertoire <tt>modules</tt>.\
+<br><tt>showToolBar</tt> par défaut <tt>false</tt>\
+<br><tt>customToolBar</tt> par défault <tt>none</tt>. Attention : virgule interdite comme séparateur.\
+<br>si vous souhaitez séparer deux entiers par un espace, utilisez une arobase "@" à la place de l'espace ! \
+La liste des icônes <a target="wims_external" href="http://www.geogebra.org/source/program/doc/geogebra_modes.html">se trouve là</a>\
+<br><tt>showMenuBar</tt> par défaut <tt>false</tt>\
+<br><tt>showAlgebraInput</tt> par défaut <tt>false</tt>\
+<br><tt>showResetIcon</tt> par défaut <tt>false</tt> (Attention : cette option rend possible la réactualisation \
+de l'applet, mais sans que la construction soit refaite dans wims)\
+<br><tt>showToolBarHelp</tt> par défaut <tt>true</tt>\
+<br><tt>enableRightClick</tt> par défaut <tt>true</tt> (Attention : par un double-clic droit \
+sur un objet, l'élève peut modifier tout les objets de la construction !)\
+<br><tt>language</tt> par défaut <tt>fr</tt>\
+<br><tt>enableLabelDrags</tt> par défaut <tt>true</tt>\
+<br><tt>enableShiftDragZoom</tt> par défaut <tt>true</tt>\
+<br><tt>errorDialogsActive</tt> par défaut <tt>false</tt>\
+<br><tt>debug</tt> par défaut <tt>false</tt>\
+<br><tt>number</tt> numéro de l'applet dans la page html (par défaut 1)
+<br><tt>EXEMPLE\
 <br><tt>&#92;integer{x=random(3)}\
 <br><tt>&#92;text{appletcommand= Z=(&#92;x,3.78)&#92;\
 <br><tt>W=(6.2,2.8)&#92;\
 <br><tt>Ellipse[Z,W,5]&#92;\
 <br><tt>u=Line[W,Z]}\
-<br><tt>#the language can be setted in the options\
+<br><tt>#le langage peut être choisi dans les options\
 <br><tt>&#92;text{option= showToolBar=true\
 <br><tt>language=en\
 <br><tt>customToolBar="0|5@40 10||1|2"\
 <br><tt>width=600\
 <br><tt>height=500\
 <br><tt>number=1</tt>
-<br><tt>#to hide the algebra window (on the left), use a ".ggb" file in the options\
+<br><tt>#pour masquer la fenêtre algèbre (sur la gauche), utilisez un fichier ".ggb" dans les options\
 <br><tt>&#92;text{applet=slib(geo2D/geogebra3  &#92;appletcommand ; &#92;option)}\
 <br><tt>&#92;statement{&#92;applet}
