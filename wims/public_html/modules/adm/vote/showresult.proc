@@ -42,10 +42,10 @@ max_rep=0
  !exit
 !endif
 !if $vote_option=trace
- keylist=!values v for v=1 to $vcnt
+ listkey=!values v for v=1 to $vcnt
  namelist=!makelist <th>$name_votants v</th> for v=1 to $vcnt
 !else
- keylist=$empty
+ listkey=$empty
  namelist=$empty
 !endif
 
@@ -66,7 +66,13 @@ user_lastname in wimshome/log/classes/$wims_superclass/.users/$(tmp[-1])
      !endif
     !endif
     mkey=!positionof item $m in $listkey
-    donvote_$k=!replace item number $mkey by $(vote_description[$k;$l]) in $(donvote_$k)
+    newval=!item $mkey of $(donvote_$k)
+    !if $newval!=--
+     newval=$newval ; $(vote_description[$k;$l])
+    !else
+     newval=$(vote_description[$k;$l])
+    !endif
+    donvote_$k=!replace item number $mkey by $newval in $(donvote_$k)
    !next m
   !next l
  !endif

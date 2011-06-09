@@ -20,18 +20,10 @@
 !readdef $votedir/$vote.votes
 
 !readdef $votedir/$vote.comments
-quote="
-!for t=1 to $parmcnt
-  !if $vote_option!=nominative and $(type_comment$t)=yes
-    tt = !singlespace $(parm$t)
-    tt = !char 1 to 600 of $tt
-    !appendfile $votedir/$(vote)_$t.comments :$tt
-!!    tt = !append item ---$quote($tt)$quote to $(comment_$t)
-!!    tt = !char 1 to 24000 of $tt
-!!    !setdef comment_$t=$tt in $votedir/$vote.comments
-!!    !setdef comment_$t=yes in $votedir/$vote.comments
-  !endif
-!next t
+vote_description=$empty
+noprint=yes
+!reset parmcnt
+!readproc $votedir/$vote.def
 voteset=
 !if $(user_vote_$Vote)=$empty
  !advance vcnt
@@ -42,22 +34,35 @@ voteset=
 nbvotes=$vcnt
 
 !for t=1 to $parmcnt
- !for k=0 to $(choices$t)
-  vc_$k=$(vcnt_$(t)_$k)
- !next k
- !bound parm$t between integer 1 and $(choices$t) default 0
- !default vc_$(parm$t)=0
- !advance vc_$(parm$t)
- old=!item $t of $(user_vote_$Vote)
- !for v in $old
-  vc_$v=$[max(0,$(vc_$v)-1)]
- !next v
- !for k=0 to $(choices$t)
-  !default vc_$k=0
-  !if $(vc_$k) != $(vcnt_$(t)_$k)
-   voteset=!append line vcnt_$(t)_$k=$(vc_$k) to $voteset
+ !if $(vote_description[$t;2])=textarea
+  !if $vote_option!=nominative
+    tt = !singlespace $(parm$t)
+    tt = !char 1 to 600 of $tt
+    !appendfile $votedir/$(vote)_$t.comments :$tt
   !endif
- !next k
+ !else
+  !for k=0 to $(choices$t)
+   vc_$k=$(vcnt_$(t)_$k)
+  !next k
+  tmp=!values v for v=1 to $(choices$t)
+  parm$t=!nospace $(parm$t)
+  parm$t=!listintersect $(parm$t) and $tmp
+  !for k in $(parm$t)
+   !default vc_$k=0
+   !advance vc_$k
+  !next k
+  old=!item $t of $(user_vote_$Vote)
+  old=!words2items $old
+  !for v in $old
+   vc_$v=$[max(0,$(vc_$v)-1)]
+  !next v
+  !for k=0 to $(choices$t)
+   !default vc_$k=0
+   !if $(vc_$k) != $(vcnt_$(t)_$k)
+    voteset=!append line vcnt_$(t)_$k=$(vc_$k) to $voteset
+   !endif
+  !next k
+ !endif
 !next t
 
 
@@ -85,22 +90,28 @@ nbvotes=$vcnt
     option=$nbvotes
   !endif
 
- tt=
+ tt=$empty
  !for t=1 to $parmcnt
-  !if $(type_comment$t)!=yes
-   old=!item $t of $(user_vote_$Vote)
+  !if $(vote_description[$t;2])!=textarea
+   !if $vote_option=nominative
+    !! erase old vote. allowed only with vote_option=nominative
+    old=!item $t of $(user_vote_$Vote)
+    old=!words2items $old
     !for v in $old
-     vv=!replace item $wims_class/$wims_user by $ in $(votes_$(t)_$v)
+     vv=!replace item $option by $ in $(votes_$(t)_$v)
      vv=!nonempty items $vv
      voteset=!append line votes_$(t)_$v=$vv to $voteset
      votes_$(t)_$v=$vv
+    !next v
+   !endif
+   tmp=!items2words $(parm$t)
+   tt=!append item $tmp to $tt
+   !for v in $(parm$t)
+    vv=!append item $option to $(votes_$(t)_$(v))
+    voteset=!append line votes_$(t)_$v=$vv to $voteset
    !next v
-   tt=!append item $(parm$t) to $tt
-
-#  vv=!append item $wims_class/$wims_user to $(votes_$(t)_$(parm$t))
-   vv=!append item $option to $(votes_$(t)_$(parm$t))
-
-   voteset=!append line votes_$(t)_$(parm$t)=$vv to $voteset
+  !else
+   tt=!append item 0 to $tt
   !endif
  !next t
  !if $vote_option=trace
@@ -115,6 +126,8 @@ nbvotes=$vcnt
  !setdef $voteset in $votedir/$vote.votes
 !endif
 
+!! --------------------------
+!! those lines seems to do nothing because uvcnt is empty. Maybe old command not erased ?
 ccc=!itemcnt $uvcnt
 !for i=1 to $ccc
  uvc=!item $i of $uvcnt
@@ -123,7 +136,7 @@ ccc=!itemcnt $uvcnt
  uvv=!item $(parm$uvc)+1 of $uvv
  !setdef !set user__$uvn=$uvv in $userfile
 !next uv
+!! -------------------------------------------
 
-job=read
-!changeto read.proc
+!restart module=adm/vote&job=read&vote=$vote
 
