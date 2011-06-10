@@ -3,13 +3,17 @@
 !endif
 
 slib_author=Fabrice Guerimand
+slib_example=1000,-10,10,0.1,blue,red,6\
+1000,-5,5,0.1,blue,red,6,html\
+1000,-10,10,0.1,blue,red,6,html\
+1000,-1,1,0.01,blue,red,6,html
 !exit
 
 
 :proc
 slib_input=$wims_read_parm
 
-!distribute items $slib_input into xsize,xmin,xmax,xgd,colora,colorg,marge
+!distribute items $slib_input into xsize,xmin,xmax,xgd,colora,colorg,marge,slib_option
 slib_out=$slib_input
 
 !bound xsize between 200 and 1500 default 600
@@ -48,4 +52,14 @@ parallel $xmin,-0.6,$xmin,0.6,0.1,0,$[($xmax-$xmin)*10],$colorg
  tmp=linewidth 1\
 parallel $xmin,-0.2,$xmin,0.2,0.01,0,$[($xmax-$xmin)*100],$colorg
  slib_out=!append line $tmp to $slib_out
+!endif
+
+!if url iswordof $slib_option or html iswordof $slib_option
+    insdraw_size=$xsize,100
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+  !endif
+  slib_out=$slib_out,$insdraw_size
 !endif
