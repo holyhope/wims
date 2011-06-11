@@ -2,8 +2,8 @@
 !if nom_fichier iswordof $error
   <font color="red">
 !!@#
-de bnaam van het bestand is ongeschikt.
-Een vestandsnaam mag geen
+de naam van het bestand is ongeschikt.
+Een bestandsnaam mag geen
   <tt>..</tt> en ook geen <tt> / </tt> bevatten .
 !!#@
 </font>
@@ -11,7 +11,7 @@ Een vestandsnaam mag geen
 !endif
 !if bad_data iswordof $error
 !!@#
-<b>Fout.</b> Ik begrijp niet wat de bedoeling is. Typ foutje ?
+<b>Fout.</b> Ik begrijp niet wat de bedoeling is. Tik foutje ?
 !!#@
  !exit
 !endif

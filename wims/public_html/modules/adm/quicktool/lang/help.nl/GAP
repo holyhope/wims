@@ -1,45 +1,36 @@
-The $wims_name_quick_GAP exercise type requires the learner to fill in blanks (i.e. gaps) 
-in a piece of text. 
-There are several different types of GAP exercises: 
+De $wims_name_quick_GAP oefening eist dat de student lege velden (i.e. gaps) in een stuk tekst invult.
+Er zijn diverse soorten GAP oefeningen:
      <ul>
-       <li> <tt>case</tt>: the blank has to be filled in by typing letters </li>
-       <li> <tt>clickfill</tt>: words to be dragged and dropped in the blank</li>
-       <li> <tt>dragfill</tt>: words to be dragged and dropped in the blank(each word can 
-       be used just once. Once used , the word disappears from the list of choices. )
+       <li> <tt>case</tt>: het lege veld moet worden gevuld met letters via het toetsenbord  </li>
+       <li> <tt>clickfill</tt>: woorden moeten worden gesleept naar de lege velden</li>
+       <li> <tt>dragfill</tt>: woorden moeten worden gesleept naar de lege velden; elk woord kan maar 1 keer worden gebruikt.
        <li> <tt>menu</tt>: drop down menu</li>
-       <li> <tt>mark</tt>: words to be clicked on</li>
+       <li> <tt>mark</tt>: klik op woorden in de tekst</li>
      </ul>
-  You can decide how many trials the learner may have before providing him/her with 
-  the correct answers.
+     
+    Er kan worden bepaald hoe vaak een student de opdracht moet doen voordat deze de correcte antwoorden mag inzien.
 <p class="emptyline"></p>
-You can also decide to display or not the answers the learner has been unable to find 
-at the end of the exercise.
+    Ook kan er worden vastgelegd of de student de gemiste antwoorden mag inzien aan het eind van de oefening. 
 <p class="emptyline"></p>
-After each trial, only the wrongly answered blanks have to be completed by the learner. 
-The correct answers will not have to be entered again.
- 
- You can decide to provide helps (the number of letters in the missing word(s), or some 
- letters from the missing word(s), or the audio recording of the word(s) as long as it 
- is part of the swac audio collection or if you have previously recorded the word and 
- saved it in your Modtool account).
-Please enter the word you wish the learner to see when he/she uses the help function 
-in the prompt section. The learner will be able to see the help provided if he/she hovers 
-over this prompt with the mouse (for example: aide, help, ayuda).
+    Na elke poging hoeft de student alleen de verkeerd beantwoorde onderdelen over te doen.
+    Dus de correct beantwoorde vragen hoeven niet nog een keer te worden beantwoord.
+    Er kunnen ook hints en tips worden toegevoegd aan de oefening; te denken aan het aantal letters in het ontbrekende woord,
+    of een paar letters in het ontbrekende woord of een audio opname (deze moet wel voorradig zijn in de swac audio collectie,
+    of aanwezig als zelfgemaakte opname in de module.)
+    
+    Vermeld  een kernwoord als 'help' of 'tip' oid  in de prompt sectie; de student activeerd de tip met de muis. 
 <p class="emptyline"></p>
-Currently 39 blanks are allowed.
-Several correct answers may be provided for one blank.   
-  In the <tt>menu</tt> and <tt>mark</tt> type GAP exercise, the  <tt>shared list</tt> 
-  option allows you to suggest all the gapped out words in the text for the learner 
-  to choose from in each blank.
-   
-Otherwise at least two words (or group of words) have to be suggested for the learner 
-to choose from in each blank (check the syntax). Additional words (distractors) can 
-be provided as possible choices.
+Het maximum voor het aantal lege velden is op dit moment 39.
+Meerdere correcte antwoorden mogen worden gedefinieerd voor een leeg veld.
+In de <tt>menu</tt> en <tt>mark</tt> type GAP oefeningen, de <tt>shared list</tt> 
+ optie kunnen alle correcte alternatieven voor het goede antwoord worden vermeld.
+Bij alle andere types moeten tenminste twee woorden (of groepen woorden) worden aangeboden per blanco veld
+(controleer de syntax). Extra woorden kunnen worden opgenomen als andere mogelijke (foutieve) keuzes.
 <p class="emptyline"></p>
-The list of words the learner will have to choose from can also be specified in 
-the variable <tt>choice</tt> in the data file (see second example here below). 
-In this case the list will appear in the drop down menu for each blank whether 
-you have activated the  <tt>shared list</tt> option or not.
+De lijst woorden waaruit de student kan kiezen kan ook worden gespecificeerd in de variabele
+<tt>choice</tt> in de data file (ziew ook het tweede voorbeeld hieronder). 
+In dat geval wordt de lijst een drop_down_menu voor elk leeg veld; onafhankelijk van of de 
+<tt>shared list</tt> optie is geactiveerd.
 
 :format
 <pre>
@@ -51,9 +42,10 @@ bags are not??theirs,there,their?? but mine.
 :I'm going ??there,their,theirs?? to see ??their,there,theirs?? friends.
 </pre>
 <h3>$wims_name_Syntax</h3>
-Gaps are marked with ??word(s)??. The correct word(s) must be written in the first position,
-wrong alternatives in the second, third and subsequent positions. 
-Here below is an example of the syntax
+De lege plekken worden aangeven door ??word(s)??. 
+De correcte oplossing(en) moeten worden vermeld in de eerste positie,
+de foutieve alternatieven in de tweede,derde en volgende posities.
+Hier staat een voorbeeld van de vereiste syntax:
 
 <pre>
 :text ??correct word(s) for the 1st gap,1st wrong word(s) for the 1st gap, 2nd wrong word(s) for the 1st gap?? text 
@@ -62,19 +54,22 @@ correct word(s) for the 3rd gap,1st wrong word(s) for the 3rd gap?? text
 correct word(s) for the 4th gap,1st wrong word(s) for the 4th gap,2nd wrong word(s) for the 4th gap?? text 
 </pre>
 
-<span class="wims_warning">$wims_name_remark</span>: If there are only a few words to choose from, these can be listed in the variable called<tt>choice</tt>. Distractors can be added to this list as well. The syntax will slightly change and will be
+<span class="wims_warning">$wims_name_remark</span>: 
+Als er slechts een paar keuze mogelijkheden zijn, kunnen deze worden vermeld in de variabele <tt>choice</tt>. 
+De verkeerde oplossingen kunnen ook worden opgenomen in deze lijst.
+De syntax is dan wel iets anders:
 <pre>
 choice= correct word(s) for the 1st gap,correct word(s) for the 2nd gap,correct word(s) for the 3rd gap,1st distractor,2nd distractor
 :text ??correct word(s) for the 1st gap?? text ??correct word(s) for the 2nd gap?? text
 ??correct word(s) for the 3rd gap?? text ??correct word(s) for the 2nd gap??
 </pre>
-<span class="wims_warning">$wims_name_remark</span>: In order to increase the number of sentences 
-that appear in an exercise, certain words can be written between braces &amp;#123; &amp;#125;. 
-A comma must be used to separate the words in the braces. A different word (or piece of text) 
-will be selected randomly by the software program every 
-time the learner renews the exercise. If the text contains commas, the commas 
-must be replaced by their html code which is
-(&amp;#44;)
+
+<span class="wims_warning">$wims_name_remark</span>: 
+Om de variatie in een oefening te vergroten, kunnen
+woorden (of stukjes tekst) worden geschreven tussen haakjes &amp;#123; &amp;#125;. 
+Een komma moet worden gebruikt om de woorden te scheiden bij deze haakjes.
+De software zal random woorden (of stukjes tekst) kiezen uit de lijst tussen de haakjes.
+Als er in de random stukjes tekst kommas staan ,moeten deze worden geschreven in de html code (&amp;#44;)
 <pre>
 :{I am,He is,She is,They are,Mary is} ??there?? !
 :Those {students,children,boys,girls} over ??there?? are naughty, so
@@ -85,19 +80,19 @@ bags are not??theirs?? but {mine,Peter's,hers,Mary's}.
 :{I'm going,He's running,They are walking}??there?? to see ??their?? {friends,parents,brother,grandparents}.
 </pre>
 
-<span class="wims_warning">$wims_name_remark</span>: When there are several possible correct answers, 
-they have to be separated by  | . For example,
+<span class="wims_warning">$wims_name_remark</span>: 
+Wanneer er meerder goede oplossingen zijn, moeten deze worden gescheiden door "|".
+Zoals bijvoorbeeld:
 <pre>
 :first possible correct word(s)|second possible correct word(s)|third possible correct word(s),distractor??
 :The ??organisation|organization,organize?? of this meeting is difficult.
 </pre>
-If the learner provides a wrong answer, the first correct answer in the list will be suggested as the right answer. 
-(<tt>organisation</tt> in the example above)
+Als de student een verkeerd antwoord geeft, wordt het eerste correcte antwoord in de lijst gebruikt voor de representatie van het correcte stuk tekst.
+(<tt>organisation</tt> in het voorbeeld hierboven)
 <p class="emptyline"></p>
-<span class="wims_warning">$wims_name_remark</span>: Preferences for a data set.
-
-If you wish to add a different audio recording, a different title (i.e. text) or 
-a different introduction to each data set (i.e. exercise), the first line must have the following format
+<span class="wims_warning">$wims_name_remark</span>: Syntax voor de data set.
+Als er een extra audio opname, een ander stukje tekst of een andere instructie moet worden opgenomen,
+moet de eerste regel in het onderstaande formaat zijn:
 <pre>
 :audio=recording_file.mp3 image=picture_file.jpg title="your text" intro="instructions" 
 </pre>

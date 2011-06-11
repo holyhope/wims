@@ -18,11 +18,11 @@
     overeenkomsten\
     selecteer de woorden of groepen woorden and indien gewenst vraag naar de correcte woorden of groepen woorden tussen de regels of buiten de tekst\
     schrijf de betekenis van woorden of groepen woorden gemarkeerd in een tekst\
-    groepeer mensen of groepen menses aan de hand van overeenkomsten in een audio fragment of een te lezen tekst\
+    groepeer mensen of groepen mensens aan de hand van overeenkomsten in een audiofragment of een te lezen tekst\
     verbeter oefeningen
 
 !set list_swac_prompt=Duits,Engels,Frans,Nederlands,Zweeds,Spaans
 
 !set name_warning=!nosubst %%De brondcode van deze oefening is gemaakt met $module_title \
-%%Het typ oefening is $$(type_exo).\
+%%Het soort oefening is $$(type_exo).\
 %% Kan naar wens worden aangepast.
