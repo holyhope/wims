@@ -28,11 +28,11 @@
 !set name_remaining=plazas restantes
 !set name_untitled=Sin título
 !set name_showresult=show result
-!set name_nowritable=you cannot modify the vote when it's active.
+!set name_nowritable=you cannot modify the vote when it is active.
 !set name_novotant=Aucun vote
 !set name_notenough=Pas assez de votant pour publier la liste
-!set name_showlist=Voir les résultats par votants
-!set name_showglobal=Voir les résultats globaux
+!set name_showlist=Résultats par votants
+!set name_showglobal=Résultats globaux
 
 !distribute lines  Su clase no tiene aún ninguna encuesta. \
  Pregunte a su profesor.\

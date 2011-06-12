@@ -4,8 +4,12 @@
  !if $vote_option!=anonymous
   !set wims_ref_class=wims_button
   !href cmd=reply&job2=list $name_showlist
-  <br>
+  &nbsp;
  !endif
+  !set wims_ref_class=wims_button
+  !href cmd=reply&job=csv $wims_name_csv
+<div class="emptyline"></div>
+<center>
  $table_header
    $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th><th colspan="$max_rep">$name_thisvote_answer</th></tr>
  !for k=1 to $parmcnt
@@ -70,6 +74,6 @@
   !next k
  $table_end
 !endif
-
+</center>
 !set wims_menu_items=!append line back2,1,cmd=reply&job=read&vote=$vote to $wims_menu_items
 

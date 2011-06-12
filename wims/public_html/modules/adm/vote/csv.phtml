@@ -21,14 +21,14 @@ $name_csv2: <span class="wims_mod_title">$vote_title</span>
 $name_format
 !formselect csvformat list csv,tsv
 &nbsp;
-!set wims_ref_class=wims_button
+!set wims_ref_class=wims_button_help
 !href module=$module&cmd=help&special_parm=csvformats $wims_name_help
 </li>
 !if $vote_option!=anonymous
 <li> $name_data
 !formradio csvoption list global,detail prompt $name_global,$name_detail
 &nbsp;
-!set wims_ref_class=wims_button
+!set wims_ref_class=wims_button_help
 !href module=$module&cmd=help&special_parm=csvvotes $wims_name_help
 </li>
 !endif
@@ -37,3 +37,5 @@ $name_format
 
 !readproc csv.proc
 </form>
+
+!set wims_menu_items=!append line back2,1,cmd=reply&job=read&vote=$vote to $wims_menu_items

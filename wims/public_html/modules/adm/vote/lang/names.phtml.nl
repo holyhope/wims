@@ -31,9 +31,9 @@
 !set name_showresult=show result
 !set name_nowritable=you cannot modify the vote when it's active.
 !set name_novotant=Aucun vote
-!set name_notenough=Pas assez de votant pour publier la liste
-!set name_showlist=Voir les résultats par votants
-!set name_showglobal=Voir les résultats globaux
+!set name_notenough=Pas assez de votants pour publier la liste
+!set name_showlist=Résultats par votants
+!set name_showglobal=Résultats globaux
 
 !distribute lines  Jouw klas heeft geen voorziening voor een verkiezing of enquete.\
 Neem hierover contact op met je docent.\
