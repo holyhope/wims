@@ -1,5 +1,8 @@
 !nocache
-!set exo=$special_parm
+!if $special_parm!=$empty
+  !set exo=$special_parm
+!endif
+
 !if $exo=__user__ and select iswordof $special_parm2
  !if $wims_user!=$empty and $wims_user!=supervisor
   !set test=$wims_user.
@@ -8,10 +11,10 @@
   !reset exo
  !endif
 !endif
-!if $exo!=$empty
+!if $exo$exo_search!=$empty
  !if select iswordof $special_parm2
   !set oldparm=$exo
-  !set test=!lower $exo
+  !set test=!lower $exo $exo_search
   !set test=!deaccent $test
   !set test=!text select abcdefghijklmnopqrstuvwxyz1234567890 $ in $test
   !set test=!singlespace $test
