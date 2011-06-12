@@ -9,7 +9,7 @@
  $table_header
    $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th><th colspan="$max_rep">$name_thisvote_answer</th></tr>
  !for k=1 to $parmcnt
-  $table_tr
+  <tr class="$(table_colors[$k%2+1])">
    <td rowspan="2" align="center">$(vote_description[$k;1])</td>
    <td rowspan="2" align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
    !if textarea=$(vote_description[$k;2])
@@ -31,8 +31,11 @@
     !for j in $tmp
      <td align="center">$j</td>
     !next j
+    !if $nb<$max_rep
+     <td colspan="$max_rep-$nb" rowspan="2">&nbsp; </td>
+    !endif
    </tr>
-   <tr>
+   <tr class="$(table_colors[$k%2+1])">
     !for j=1 to $nb
      <td align="center">$(vcnt_$(k)_$(j))</td>
     !next j
