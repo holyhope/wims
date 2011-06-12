@@ -22,9 +22,9 @@ choices$parmcnt=$n_
  t_=!item $i_ of $l_
  !if : notin $t_
   limits=!append item 0 to $limits
-!!  !if $vshow=1 and $ismenu=yes and $(vcnt_$(parmcnt)_$i_)!=$empty
-!!   t_=$t_ ($(vcnt_$(parmcnt)_$i_))
-!!  !endif
+  !if $vshow=1 and $ismenu=yes and $(vcnt_$(parmcnt)_$i_)!=$empty
+   t_=$t_ ($(vcnt_$(parmcnt)_$i_))
+  !endif
   new=!append item $t_ to $new
  !else
   v_=!translate internal : to , in $t_
@@ -32,9 +32,9 @@ choices$parmcnt=$n_
   k_=$[round($k_)]
   j_=!item 2 to -1 of $v_
   j_=!translate internal , to : in $j_
-!!  !if $vshow=1 and $ismenu=yes and $(vcnt_$(parmcnt)_$i_)!=$empty
-!!   j_=$j_ ($(vcnt_$(parmcnt)_$i_))
-!!  !endif
+  !if $vshow=1 and $ismenu=yes and $(vcnt_$(parmcnt)_$i_)!=$empty
+   j_=$j_ ($(vcnt_$(parmcnt)_$i_))
+  !endif
   !if NaN notin $k_ and Inf notin $k_ and $k_>0
    limits=!append item $k_ to $limits
    new=!append item $j_ to $new
