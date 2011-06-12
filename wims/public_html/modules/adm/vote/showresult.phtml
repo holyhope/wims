@@ -9,11 +9,16 @@
  $table_header
    $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th><th colspan="$max_rep">$name_thisvote_answer</th></tr>
  !for k=1 to $parmcnt
+  !if textarea=$(vote_description[$k;2])
+   !set rowspan=1
+  !else
+   !set rowspan=2
+  !endif
   <tr class="$(table_colors[$k%2+1])">
-   <td rowspan="2" align="center">$(vote_description[$k;1])</td>
-   <td rowspan="2" align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
+   <td rowspan="$rowspan" align="center">$(vote_description[$k;1])</td>
+   <td rowspan="$rowspan" align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
    !if textarea=$(vote_description[$k;2])
-    <td rowspan="2" align="left" valign="top" colspan="$max_rep">
+    <td rowspan="$rowspan" align="left" valign="top" colspan="$max_rep">
      !set comment_$k = !replace internal --- by $\
   $<br>- in $(comment_$k)
      !set rcnt=!recordcnt $votedir/$(vote)_$k.comments
@@ -32,7 +37,7 @@
      <td align="center">$j</td>
     !next j
     !if $nb<$max_rep
-     <td colspan="$max_rep-$nb" rowspan="2">&nbsp; </td>
+     <td colspan="$[$max_rep-$nb]" rowspan="2">&nbsp;</td>
     !endif
    </tr>
    <tr class="$(table_colors[$k%2+1])">
@@ -47,7 +52,7 @@
  !set wims_ref_class=wims_button
  !href cmd=reply&job2=global $name_showglobal
  $table_header
-  $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th>$namelist</tr>
+  $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th><th>$namelist</th></tr>
   !for k=1 to $parmcnt
    $table_tr
     <td align="center">$(vote_description[$k;1])</td>
