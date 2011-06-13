@@ -77,7 +77,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 
 !form new
 <input type="hidden" name="module" value="$module">
-<center><table border="0">
+<center><table id="oef_intro_params"><caption>$name_menu</caption>
 !if $exocnt>1
 <tr>
  !set special_parm=!trim $special_parm
@@ -101,6 +101,9 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 </td></tr>
 !read introhook.phtml
 !if expert iswordof $special_parm2
+   <tr><td colspan="2"><fieldset>
+   <legend>Paramètrage expert</legend>
+   <table>
    <tr><td align="center">
    $name_qcmanswer: </td><td>
    !default intro_qcmpresent=4
@@ -124,7 +127,8 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
    !let tmp=!replace word expert by $ in $special_parm2
     <input type="hidden" name="intro_expert" value="yes">
     </td></tr>
-   <tr><td colspan="2" align="center">
+  </table></legend></td></tr><tr>
+   <td colspan="2" align="center">
    !set wims_ref_class=wims_button
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_simplifiedmenu
 !else
@@ -133,7 +137,7 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
    !set wims_ref_class=wims_button
    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_expertmenu
 !endif
-</table></center> <p><center>
+</td></tr></table></center> <p><center>
 <input type="submit" value="$wims_name_work">&nbsp;
 <input type="submit" name="print" value="$name_print">
 <input type="hidden" name="special_parm2" value="$special_parm2">

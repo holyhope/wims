@@ -62,7 +62,7 @@ $table_end
 !if $ta!=$empty
  !for i in $ta
   <a name="textarea$i"></a>
-  $(title$i)
+  <div style="text-align:center; padding:10px;">$(title$i)
   !set val=!reinput $(val$i)
   <a class="wims_button" href="#textarea$i" onclick="document.forms['replyform'].reply$i.value=''">$name_clean</a>
   !if $(help$i)!=$empty
@@ -70,12 +70,12 @@ $table_end
    !href target=wims_mhelp cmd=help&module=$module&special_parm=model,$i $wims_name_help
   !endif
   <br>
-  <textarea name="reply$i" cols="65" rows="10"
+  <textarea name="reply$i" cols="120" rows="10" class="wims_model_textarea"
   !if $(type$i) iswordof matrix
    wrap="off"
   !endif
   >$val
-</textarea>
+</textarea></div>
  !next i
 !endif
 <center>
