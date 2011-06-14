@@ -571,24 +571,22 @@ Cochez <tt>oui</tt> si vous désirez que les noms d'auteurs soient affichés
 Statistiques d'activité du site
 choice
 yes,no;$wims_name_yes,$wims_name_no
-Les comptes de log doivent être activés pour que l'on puisse montrer les statistiques.
-<p>
-To activate log accounting, you should run log/account.sh once every early
-morning, by putting it into crontab.
+Les comptes de log doivent être activés pour que les statistiques puissent être montrés.
 
 :housekeep site_accounting
 Comptes d'activité
 choice
 0,1; $wims_name_no,$wims_name_yes
-Enable or disable daily activity accounting. This is necessary for site
-activity statistics, as well as for virtual class connection time accounting.
+Active ou désactive les logs d'activité journalière. Il est nécessaire de l'activer pour 
+les statistiques d'activité du site ainsi que pour les activités générales de 
+temps de connexion des classes.
 
 :misc site_description wims_site_description
-Site description
+Description du site
 free
 
-This description text is put in the header of every page rendered by the
-server. Its main purpose is to inform internet robots.
+Ce texte de description est mis dans l'en-tête de chaque page créée par le serveur
+afin d'informer les robots internet.
 <p>
 Les modules ont accès à ce texte par la variable
 $$wims_site_description.
@@ -597,10 +595,9 @@ $$wims_site_description.
 Mots-clés du site
 free
 
-This is a general keyword list which will be put to the header of every page
-rendered by the server, appended by the keyword list of the module. Its main
-purpose is to make the server better referenced by internet robots (hence
-search engines).
+Cette liste générale de mots-clés sera mis dans l'en-tête de chaque page créée par le serveur, 
+suivie de la liste de mots clés du module. Son but principal est d'améliorer le
+référencement par les robots internet et donc par les moteurs de recherche.
 <p>
 Les modules ont accès à ce texte par la variable
 $$wims_site_keywords.
@@ -655,25 +652,28 @@ others who may have different font sizes in their browsers.
 Each step increases (decreases) 9% of the linear size of the font.
 
 :resources threshold1
-First load threshold
+Premier seuil de charge (load threshold)
 int
 10,500
-If the server load average (as reported by `w', `uptime' or `top') exceeds
-this value times 0.01, visitors outside a virtual class will be refused
+Si la charge du serveur (calculée par `w', `uptime' or `top') dépasse cette valeur fois
+0.01, l'accès des visiteurs hors d'une classe virtuelle sera refusé.
 access.
 <p>
-The time allowance for each request will also be reduced if the server load
-approaches this value.
+Le temps d'exécution de chaque requête augmentera si 
+la charge du serveur approche cette valeur.
+
+<p>Actuellement, cette valeur est calculée dans le cas d'un processeur. 
 
 :resources threshold2
-Second load threshold
+Second seuil de charge (load threshold)
 int
 10,500
-If the server load average (as reported by `w', `uptime' or `top') exceeds
-this value times 0.01, visitors not from priority sites will be refused
-access.
+Si la charge du serveur (calculée par `w', `uptime' or `top') dépasse cette valeur fois
+0.01, l'accès des visiteurs ne provenant pas des sites prioritaires sera refusé.
 <p>
-This value should normally be larger than the first load threshold.
+Cette valeur doit être plus large que le premier seuil de charge
+
+<p>Actuellement, cette valeur est calculée dans le cas d'un processeur.
 
 :security trusted_modules
 Listes de modules de confiance
