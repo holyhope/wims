@@ -19,7 +19,7 @@ progs=$(Publicbin) $(Homebin)
 progs2=$(Publicbin2) $(Homebin)
 units=@BUILD_UNITS@
 chemeq=@BUILD_CHEMEQ@
-bioinfo=C_etat_civil.o tab1d.o tab2d.o test_cond.o
+bioinfo=C_etat_civil tab1d tab2d test_cond
 Otherbin=$(units) $(chemeq) whirlgif
 checkmol=checkmol matchmol
 crossword=crossword
@@ -52,8 +52,8 @@ symtext::
 	cd symtext; make
 	
 bioinfo::
-	cd bioinfo; make && $(STRIP) $(bioinfo)
-	cp $@/*.o $(OTHERDIR)
+	cd bioinfo; make && $(STRIP) $(bioinfo)	
+	cd $@ ; cp $(bioinfo) ../$(OTHERDIR)
 	
 checkmol::
 	cd checkmol; make && $(STRIP) checkmol

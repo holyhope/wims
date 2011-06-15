@@ -5,17 +5,16 @@ cc=@CC@
 cflags=@CFLAGS@ -Wall
 defines=@DEFINES@
 
-O=tab1d.o tab2d.o test_cond.o C_etat_civil.o
+O=tab1d tab2d test_cond C_etat_civil
 
 all: $(O)
 
-%.o: %.c
+%: %.c
 	$(cc) $(cflags) -o $@ $<
 
 clean:
-	rm -f *.o
+	rm -f $(O)
 
 distclean: clean
 	rm -f Makefile
-	-rm -f *.o
 	
