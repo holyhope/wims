@@ -59,3 +59,22 @@ lo que hay en esta zona de pruebas será borrado <span class="wims_warning">DEFIN
 ¿Está seguro de que quiere borrar la zona de pruebas?
 
 !exit
+
+:progshare
+Partage de ressources d'un autre programme
+
+Votre programme va partager l'ensemble de ressources pédagogiques
+(exercices, feuilles, examens, documents, questionnaires) avec le programme
+<em>$other_description</em> du niveau <em>$other_level</em>. Cela signifie
+que tout changement sur les ressources d'un des deux programmes se répercute
+automatiquement dans l'autre programme.
+
+<p><span class="wims_warning">$wims_name_warning</span>. Cette opération expérimentale va effacer les ressources
+existantes dans votre programme et est <span class="wims_warning">IRREVERSIBLE</span>&nbsp;!
+Vous ne pourrez pas arrêter le partage et les programmes partageant les
+ressources ne doivent pas être effacés&nbsp;!
+
+<p>
+Êtes-vous sûr de vouloir continuer&nbsp;?
+
+!exit

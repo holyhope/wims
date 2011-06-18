@@ -5,14 +5,14 @@
  <p> $table_header
  <caption wrap="off">$name_othergestion</caption>
  $table_hdtr
- <th>$wims_name_Account<th>$wims_name_name<th>$wims_name_action
+ <th>$wims_name_Account</th><th>$wims_name_firstname</th><th>$wims_name_lastname</th><th>$wims_name_action</th>
  </tr>
  !for i=1 to $cnt1
   !set l=!line $(list1[$i]) of $teacherlist
   !distribute items $l into last,first,log
   $table_tr
   <td><tt>$log</tt></td>
-  <td>$first $last</td>
+  <td>$first</td><td>$last</td>
   <td>
   !set wims_ref_class=wims_button
   !href cmd=reply&actype=del&more=$log $wims_name_erase
@@ -24,8 +24,8 @@
 !if $cnt2>0
  <p> <center>
  !form reply
- <input type=hidden name="actype" value="add">
- <input type=submit value="$name_addgestion">:
+ <input type="hidden" name="actype" value="add">
+ <input type="submit" value="$name_addgestion">:
  !formselect more list $list2 prompt $prompt
  </center> </form>
 !endif
