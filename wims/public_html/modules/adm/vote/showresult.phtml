@@ -6,8 +6,10 @@
   !href cmd=reply&job2=list $name_showlist
   &nbsp;
  !endif
-  !set wims_ref_class=wims_button
-  !href cmd=reply&job=csv $wims_name_csv
+  !if $wims_user=supervisor
+     !set wims_ref_class=wims_button
+     !href cmd=reply&job=csv $wims_name_csv
+  !endif
 <div class="emptyline"></div>
 <center>
  $table_header
@@ -20,7 +22,7 @@
   !endif
   <tr class="$(table_colors[$k%2+1])">
    <td rowspan="$rowspan" align="center">$(vote_description[$k;1])</td>
-   <td rowspan="$rowspan" align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
+   <td rowspan="$rowspan" align="center">$(vote_description[$k;2])</td>
    !if textarea=$(vote_description[$k;2])
     <td rowspan="$rowspan" align="left" valign="top" colspan="$max_rep">
      !set comment_$k = !replace internal --- by $\
@@ -57,11 +59,16 @@
  !href cmd=reply&job2=global $name_showglobal
  <div class="emptyline"></div>
  $table_header
-  $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th>$namelist</tr>
+  $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th>
+  !items2words $namelist
+</tr>
   !for k=1 to $parmcnt
    $table_tr
-    <td align="center">$(vote_description[$k;1])</td>
-    <td align="center">$(name2_$(vote_description[$k;2])) $(vote_description[$k;2])</td>
+    <td align="center">
+     $name_question
+    $(vote_description[$k;1])
+    </td>
+    <td align="center">$(vote_description[$k;2])</td>
     !for u=1 to $vcnt
      <td>
      !if textarea=$(vote_description[$k;2])
@@ -74,6 +81,31 @@
    </tr>
   !next k
  $table_end
+ <div class="emptyline"></div>
+ $table_header
+  $table_hdtr
+  <td></td>
+  !for k=1 to $parmcnt
+  <td align="center">$name_question $(vote_description[$k;1])</td>
+  !next k
+  </tr>
+  !for u=1 to $vcnt
+   $table_tr
+     $(namelist[$u])
+  !for k=1 to $parmcnt
+     !if textarea=$(vote_description[$k;2])
+     <td>
+      !record $u of $votedir/$(vote)_$(k).comments
+     !else
+     <td align="center">
+      !item $u of $(donvote_$k)
+     !endif
+     </td>
+    !next k
+   </tr>
+  !next u
+ $table_end
+ 
 !endif
 </center>
 !set wims_menu_items=!append line back2,1,cmd=reply&job=read&vote=$vote to $wims_menu_items

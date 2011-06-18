@@ -12,6 +12,7 @@
 !set name_anonymous=anoniem
 !set name_trace=anoniem en traceerbaar
 !set name_choice=Keuze
+!set name_question=Question
 !set name_data=gegevens
 !set name_global=globaal
 !set name_detail=gedetailleerd

@@ -10,6 +10,7 @@
 !set name_anonymous=anónimo
 !set name_trace=anónimo y trazado
 !set name_choice=elección
+!set name_question=Question
 !set name_data=datos
 !set name_global=globales
 !set name_detail=détailladas
