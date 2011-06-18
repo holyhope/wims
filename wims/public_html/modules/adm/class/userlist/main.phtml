@@ -83,14 +83,14 @@ $wims_name_part_list
   !endif
  !endif
  !if $manual>0 and $job_affi=notes
-  $table_hdtr<th rowspan=2>$wims_name_lastname, $wims_name_firstname</th>
-   <th colspan=3>$name_Average</th>
+  $table_hdtr<th rowspan="2">$wims_name_lastname, $wims_name_firstname</th>
+   <th colspan="3">$name_Average</th>
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th rowspan=2><small>$name_Exam $k</small></th>
+    <th rowspan="2"><small>$name_Exam $k</small></th>
    !else
-    <th rowspan=2>
+    <th rowspan="2">
     <small>
      !set s=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
      !set s=!line 3 of $s
@@ -339,9 +339,9 @@ $wims_name_part_list
 !if $activecnt>1
   <p>
   !form reply
-  <input type=hidden name="job" value=sheets>
+  <input type="hidden" name="job" value="sheets">
   !set wims_formselect_switch=multiple size=$[min($activecnt,6)]
-  <table border=0>
+  <table border="0">
   <tr><td>$name_pickup:
   </td><td>&nbsp;&nbsp;
   !reset tmp
@@ -371,7 +371,7 @@ $wims_name_part_list
   !next i
   !formselect showsheet list $ash prompt $tmp
   </td>
-  <td><input type=submit value="$wims_name_Show"></td>
+  <td><input type="submit" value="$wims_name_Show"></td>
   </tr></table>
   </form>
  !endif
