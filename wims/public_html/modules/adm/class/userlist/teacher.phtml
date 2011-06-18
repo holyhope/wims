@@ -1,0 +1,40 @@
+!read adm/title.phtml 1\
+$classname\
+$wims_name_teacherlist 
+
+!!don't work as it is
+!!!if $teachercnt>0
+!!<p><center>
+!!!href module=adm/class/userlist&job=csv $wims_name_csv
+!!</center> <p>
+!!!endif
+
+$table_header
+<caption>
+!href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
+</caption>
+$table_hdtr
+<th>$wims_name_Account</th>
+<th>$wims_name_lastname</th>
+<th>$wims_name_firstname</th>
+<th>$wims_name_action</th>
+!for i=1 to $teachercnt
+ !set l=!line $i of $teacherlist
+ !distribute items $l into l_,f_,c_
+ $table_tr
+ <td><tt class="wims_login">$c_</tt></td>
+ <td>$l_
+ </td>
+ <td>$f_
+ </td>
+ <td>
+!! !set wims_ref_class=wims_button
+!!!href cmd=reply&job=deluser&deluser=$c_ $wims_name_erase
+!! &nbsp;
+ !set wims_ref_class=wims_button
+!href cmd=reply&job=userprop&getuser=$c_ $wims_name_change
+ </td>
+ </tr>
+!next i
+$table_end
+

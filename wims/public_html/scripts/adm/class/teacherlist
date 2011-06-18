@@ -1,0 +1,23 @@
+classdir_1=$wims_read_parm
+teacherlist=!record 0 of $classdir_1/.teacherlist
+teachercnt=!linecnt $teacherlist
+
+!if $teachercnt<=0
+ !exit
+!endif
+
+tcsv=login,lastname,firstname,password,email,supervisable\
+
+!for i=1 to $teachercnt
+ l=!line $i of $teacherlist
+ !distribute items $l into ln,fn,li
+ pw=!defof user_password in $classdir_1/.users/$li
+ pw=!word 1 of $pw
+ em=!defof user_email in $classdir_1/.users/$li
+ tcsv=$tcsv\
+"$li","$ln","$fn","$pw","$em","yes"
+!next i
+
+!writefile getfile/teachers.csv $tcsv
+ttsv=!translate , to $	$ in $tcsv
+!writefile getfile/teachers.tsv $ttsv

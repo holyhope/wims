@@ -28,31 +28,36 @@ $wims_name_part_list
 . <p>
  !goto end
 !endif
-
 !if $usercnt==0
  $name_noyetparticipant
- [
  !if $wims_typename!=class
-  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
- !else
-  !href module=adm/class/reguser&step=1 $wims_name_addstudent
+ [
+  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
+  ]
  !endif
+[
+  !href module=adm/class/reguser&step=1 $wims_name_addstudent
  ]
- 
  [
  !href cmd=reply&job=csv $wims_name_csv
  ]
  
 !else
+
  <center>
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
- [
  !if $wims_typename!=class
-  !href module=adm/class/reguser&step=1 $wims_name_addparticipant
- !else
+ [
+ !href module=adm/class/userlist&job=teacher $wims_name_teacherlist
+ ]
+ [
+  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
+  ] 
+  !endif
+ [
   !href module=adm/class/reguser&step=1 $wims_name_addstudent
- !endif
+
  ] [
  !href cmd=reply&job=csv $wims_name_csv
  ]
