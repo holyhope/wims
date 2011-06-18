@@ -16,20 +16,26 @@ $table_header
 </caption>
 $table_hdtr
 <th>$wims_name_Account</th>
-<th>$wims_name_name</th>
+<th>$wims_name_lastname</th>
+<th>$wims_name_firstname</th>
 <th>$wims_name_action</th>
 !for i=1 to $teachercnt
  !set l=!line $i of $teacherlist
  !distribute items $l into l_,f_,c_
  $table_tr
- <td><tt>$c_</tt></td>
- <td>
- !href cmd=reply&job=modteacher&teacher=$c_ $l_, $f_
+ <td><tt class="wims_login">$c_</tt></td>
+ <td>$l_
+ </td>
+ <td>$f_
  </td>
  <td>
  !set wims_ref_class=wims_button
  !href cmd=reply&job=delteacher&del=$c_ $wims_name_erase
+ &nbsp;
+ !set wims_ref_class=wims_button
+!href cmd=reply&job=modteacher&teacher=$c_ $wims_name_change
  </td>
+ </tr>
 !next i
 $table_end
 
