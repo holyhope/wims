@@ -1,11 +1,11 @@
 #! /bin/sh
 #
-# script to look at each exemple class and copy sheet in public_html/bases/sheet/$class_lang/$class_level/$class_number/
+# script to look at each example class and copy sheet in public_html/bases/sheet/$class_lang/$class_level/$class_number/
 # to be execute at before each realize of a wims package.
 #
 # authors : F. Guerimand
 # mail : fwguerima@free.fr
-# this script is launch by mkindex. Don(t use it directly
+# this script is launch by mkindex. Don't use it directly
 # 
 
 whome="$1"
@@ -18,7 +18,7 @@ target="$whome/public_html/bases/sheet";
 cd $whome/log/classes/;
 clist=`ls -d [0-9]*`;
 for cls in $clist; do
- if [ $cls -lt 10000 ]; then
+ if [ $cls -lt 9000 ]; then
   level=`awk -F'=' '$1=="!set class_level" {print $2; exit}' ./$cls/.def`;
   lang=`awk -F'=' '$1=="!set class_lang" {print $2; exit}' ./$cls/.def`;
   sup=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' ./$cls/.def`;
