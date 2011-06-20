@@ -1,10 +1,11 @@
 !! process file to show result of vote
 
-!if $vote_status=$empty or ($wims_user!=supervisor and $vote_status notwordof 1 2)
+!if $vote_status=$empty or ($wims_user!=supervisor and $vote_status notwordof 1 2 )
  error=bad_vote
  job=home
  !changeto home.proc
 !endif
+
 
 !if anonymous!=$vote_option
  !bound job2 within global,list default global
@@ -20,6 +21,13 @@ parmcnt=0
 !readdef $userfile
 !readdef $votedir/$vote.votes
 !default vcnt=0
+
+!if $wims_user!=supervisor and $(user_vote_$Vote)=$empty
+ error=no_vote
+ job=read
+ !changeto read.proc
+!endif
+
 
 !if $wims_user!=supervisor and $vote_show=0
  job=home

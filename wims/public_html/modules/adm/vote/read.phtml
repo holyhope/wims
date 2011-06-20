@@ -16,12 +16,14 @@ $table_header
    !item $vote_show+1 of $name_hide,$name_publish
    !if $showres>0
      &nbsp;
-     !set wims_ref_class=wims_button
-     !href cmd=reply&job=showresult&vote=$vote $name_showresult
+     !if $wims_user=supervisor or $(user_vote_$Vote)!=$empty
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=showresult&vote=$vote $name_showresult
+     !endif
      &nbsp;
      !if $wims_user=supervisor
-     !set wims_ref_class=wims_button
-  !href cmd=reply&job=csv $wims_name_csv
+      !set wims_ref_class=wims_button
+      !href cmd=reply&job=csv $wims_name_csv
      !endif
    !endif
   </td>

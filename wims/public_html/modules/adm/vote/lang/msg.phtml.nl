@@ -44,5 +44,11 @@ Deze voorziening is alleen beschikbaar voor virtuele klassen.
 !exit
 !endif
 
+
+!if $error = no_vote
+ Vous n'avez pas encore voté donc vous ne pouvez pas voir les résultats.
+ !exit
+!endif
+
 !msg $error
 
