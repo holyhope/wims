@@ -94,6 +94,7 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
    !set name_example2=Er zijn geen nederlandstalige klassen geinstalleerd op deze server, \
    maar er zijn wel $clcnt engelstalige klassen.
    !set name_example3=!nosubst Er zijn $clcnt nederlandstalige openbare demonstratie klassen geinstalleerd.
+   !set name_example3b=!nosubst There is $othercnt example classes in other languages
    !set name_example4=U kunt ook een eigen klas maken om te zien hoe een docenten account er echt uitziet
    !set name_instruction=<ul>\
 <li>Klik op <span class="wims_button disabled">$name_anonymous</span> om in te loggen anls anonieme student (deelnemer).\

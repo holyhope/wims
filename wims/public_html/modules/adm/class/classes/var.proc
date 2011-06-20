@@ -46,6 +46,7 @@ ccnt=!recordcnt $indf
 clcnt=0
 encnt=0
 lacnt=0
+listla=
 !if $type=example
  !for i=1 to $ccnt
   l=!record $i of $indf
@@ -56,6 +57,7 @@ lacnt=0
     laclasses=!append line $l to $laclasses
     !advance lacnt
    !else
+    listla=!append item $ltest to $listla
     !if $ltest=en
      enclasses=!append line $l to $enclasses
      !advance encnt
@@ -70,6 +72,9 @@ lacnt=0
   clcnt=$encnt
   classes=$enclasses
  !endif
+ listla=!listuniq $listla
+ listla=!replace internal , by </tt>, <tt> in <tt>$listla</tt>
+ othercnt=$[$ccnt-$lacnt]
 !endif
 
 !if $type iswordof supervisor participant

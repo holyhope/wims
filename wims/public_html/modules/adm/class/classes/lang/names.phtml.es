@@ -89,8 +89,9 @@ y su contraseña personal.
 
  !if $type=example
    !set name_example1=Lo sentimos, no se han encontrado clases de ejemplo en este sitio.
-   !set name_example2= No hay clases en español en este sitio, solamente $clcnt clase(s) de ejemplo en otros idiomas.
+   !set name_example2= No hay clases en español en este sitio, solamente 
    !set name_example3=!nosubst Hay $clcnt clase(s) de ejemplo en español en este sitio.
+    !set name_example3b=!nosubst  Hay $othercnt clase(s) de ejemplo en otros idiomas
    !set name_example4=Estas clases de ejemplo sirven para mostrarle cómo funcionan\
 las clases virtuales desde el punto de vista del estudiante. Debería crear\
  su propia clase para verla desde el punto de vista del profesor,\
