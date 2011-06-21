@@ -1,4 +1,4 @@
-!set lang_exists=yes
+!let lang_exists=yes
 
 !read adm/lang/date.phtml.$moduclass_lang
 !read adm/lang/sheetexam.phtml.$moduclass_lang
@@ -6,7 +6,7 @@
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
-!let name_shtab=!nosubst N.,$wims_name_title,$wims_name_Description,Punti,Peso,Punteggi con dipendenza,$wims_name_action,Paramètres de la série
+!let name_shtab=!nosubst $wims_name_number,$wims_name_title,$wims_name_Description,Punti,$name_weight,$name_dependency,$wims_name_comment,$wims_name_action,Parametri per la serie
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Pagina di preparazione dei test
@@ -20,7 +20,7 @@
 !distribute lines Informazioni generali\
 Contenuto del test di autovalutazione\
 Il test non contiene ancora alcun esercizio.\
-Il titolo originale &egrave;\
+Il titolo originale è\
 Modifica l'elemento\
 Numero di punti richiesti\
 Correggere il codice\
@@ -43,6 +43,7 @@ name_pointsasked,name_correctsource,name_expiration1,name_expiration2
 !set name_getsource=Questo è il codice sorgente di questo test. Potete fare un copia&amp;incolla di questo codice (la parte compresa tra le righe di `*') in un file, che potrete riutilizzare per inserire questi contenuti in nuovi test di autovalutazione.
 
 !set name_regmodif=Modifiche salvate
+
 !! be careful define variable below only if module help/teacher/program work in your lang. Keep , at the same place.
 !set name_helpprog=Per aiutarvi è disponibile (in francese) una corrispondenza indicativa tra i programmi d'istruzione francese e gli esercizi WIMS
 !!set name_helpprog=$empty
