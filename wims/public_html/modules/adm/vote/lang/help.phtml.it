@@ -38,5 +38,29 @@ forum. Sono inoltre disponibili i seguenti comandi specifici:<dl>
 
 Un questionario può contenere fino a 64 domande.
 
+!if generalinfo iswordof $wims_read_parm
+<ul>
+ <li><b>$wims_name_title</b>: il titolo del questionario.</li>
+ <li><b>$wims_name_Type</b>: 
+  <ul>
+   <li><b>$name_anonymous</b>: questionario anonimo, nessuno conosce le risposte (neppure la propria risposta una volta votato)</li>
+   <li><b>$name_trace</b>: anonimo come nel caso precedente. È però possibile sapere cosa ha risposto ciascun partecipante, senza però poterlo identificare univocamente.</li>
+   <li><b>$name_nominative</b>: sono registrate le risposte di ciascun partecipante (non è possibile utilizzare domande a risposta aperta).</li>
+  </ul>
+ </li>
+ <li><b>$wims_name_Status</b>: uno degli stati seguenti:
+     <ul>
+      <li><b>$name_0</b>: il questionario è modificabile e non è visibile agli studenti.</li>
+      <li><b>$name_1</b>: il questionario non è più modificabile, gli studenti possono compilare il questionario.</li>
+      <li><b>$name_2</b>: il questionario non è più modificabile, gli studenti non possono più compilare il questionario.</li>
+      <li><b>$name_3</b>: il questionario non è più modificabile, gli studenti non possono più vedere il questionario.</li>
+     </ul>
+ </li>
+ <li><b>$name_result</b>: se i risultati sono $(name_publish)s, gli studenti possono prenderne visione (pur di aver risposto a loro volta al questionario). In caso contrario solo il docente può accedere ai risultati del questionario.</li>
+ <li><b>$name_whovote</b>: se l'elenco è $name_publish2 allora docente e studenti possono consultarlo (purché abbia risposto un numero di studenti sufficiente a garantire la riservatezza) In caso contrario alors l'enseignant et les participants peuvent la consulter (à condition qu'il y ait un nombre suffisant de votants). In caso contrario nessuno può sapere chi ha risposto al questionario!</li>
+</ul> 
+!tail
+!exit
+!endif
 !tail
 
