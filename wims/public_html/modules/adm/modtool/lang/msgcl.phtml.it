@@ -1,5 +1,5 @@
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 !distribute words $wims_read_parm into w1,w2,w3,w4,w5,w6
 !if $w1 iswordof antiwversion badauth badauthhost badcategory badhour badlang \
 	badname badtar badtype badversion badwimsversion \
@@ -9,7 +9,7 @@
 	mirror_exists
  !goto $w1
 !else
- !default $wims_read_parm=Errore tecnicno.
+ !default wims_read_parm=Errore tecnicno.
  $wims_read_parm
  !exit
 !endif
@@ -194,11 +194,16 @@ have been done in the file NEWS.
 !exit
 
 :unpublishable
- This module does not have a publishable address. It must first be
- !href cmd=reply&jobreq=move&modreq=$mod renamed
- or
- !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod duplicated
- if you want to publish it.
+ Questo modulo non ha un nome adatto per essere pubblicato
+ !if $unpublishable_site!=
+ sul server
+ <tt>$unpublishable_site</tt>.
+ !endif 
+ Occorre prima 
+ !href cmd=reply&jobreq=move&modreq=$mod cambiare nome
+ o
+ !href cmd=reply&jobreq=copy&original=devel/$auth_login/$mod duplicare il modulo
+ per poterlo pubblicare.
  !if oef iswordof  $w1 $w2 $w3 $w4 $w5 $w6
  En effet, votre module étant déclaré comme un module d'exercices OEF,
   son nom doit commencer par <tt class="wims_code_words">oef</tt>.

@@ -14,13 +14,13 @@
  !exit
 !endif
 
-!if illegal_filedesc iswordof $error
- You cannot put anything else than straightforward definitions in filedesc.
+!if binary_file iswordof $error
+ Binary file is not allowed here.
  !exit
 !endif
 
-!if binary_file iswordof $error
- Binary file is not allowed here.
+!if illegal_filedesc iswordof $error
+ You cannot put anything else than straightforward definitions in filedesc.
  !exit
 !endif
 
@@ -35,8 +35,25 @@
 !endif
 
 !if badtarget iswordof $error
- Target module address is bad: too long, too short, incomplete, or illegal
- characters.
+ L'indirizzo di destinazione (<tt class="wims_code">$target</tt>) non è valido: troppo lungo, troppo corto, incompeto o contenente caratteri non validi.<br/>
+ Dettagli dell'errore:
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>Zona non corretta</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>Categoria non corretta</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>Nome non corretto</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>Lingua non corretta</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>dimensioni non corrette</li>
+  !endif
+ </ul>
  !exit
 !endif
 
