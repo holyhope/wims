@@ -25,7 +25,7 @@ for forum messages, plus the following commands. <dl>
 	variable will take the value <tt>val0</tt> by default, <tt>val1</tt>
 	if the participant chooses the first option, etc. <p>
 	This variable may then be used to define individualized access to
-	sheets or exams, by putting the word <tt>\vname</tt> among the
+	sheets or exams, by putting the word <tt class="wims_code_variable">\vname</tt> among the
 	restrictions of the sheet or exam.
 <p><dt><tt class="wims_code_variable">\textarea</tt>
  <dd>Textarea only when the vote is anonymous. 
@@ -38,27 +38,35 @@ A vote may contain up to 64 choice fields.
 
 !if generalinfo iswordof $wims_read_parm
 <ul>
- <li><b>$wims_name_title</b> : le titre du questionnaire.</li>
+ <li><b>$wims_name_title</b> : the title of the questionnaire.</li>
  <li><b>$wims_name_Type</b>: 
   <ul>
-   <li><b>$name_anonymous</b>: questionnaire anonyme, personne ne connaît les réponses apportées (il est impossible de connaître sa propre réponse une fois qu'on a voté)</li>
-   <li><b>$name_trace</b>: questionnaire anonyme répondant aux mêmes critères que précédemment. Cependant il est possible de connaître les réponses effectuées par un participant sans pour autant pouvoir identifier ce participant.</li>
-   <li><b>$name_nominative</b>: les réponses de chaque participants peuvent être consultées (il n'est pas possible d'utiliser des zones de réponses libres dans ce type de questionnaire).</li>
-  </ul>
+   <li><b>$name_anonymous </b>: in an anonymous questionnaire nobody knows 
+   who answered what (it is for instance impossible to go back 
+   and double check what your own answer was.)
+</li>
+   <li><b>$name_trace with log files</b>: this type is similar to the anonymous type questionnaire 
+   except that the answers provided by a participant can be identified, 
+   however  the identity of the participant is not revealed.</li>
+   <li><b>$name_nominative</b>:  each participant's answers can be consulted ( the "free response" 
+   area cannot be used with this type of questionnaire.)</li>
+</ul>
  </li>
- <li><b>$wims_name_Status</b>: l'un des statuts ci-dessous:
+ <li><b>$wims_name_Status</b>: refers to one of the statuses described below:
      <ul>
-      <li><b>$name_0</b>: le questionnaire est modifiable, les participants ne peuvent pas le voir.</li>
-      <li><b>$name_1</b>: le questionnaire n'est plus modifiable, les participants peuvent répondre au questionnaire.</li>
-      <li><b>$name_2</b>: le questionnaire n'est plus modifiable, les participants ne peuvent plus répondre au questionnaire.</li>
-      <li><b>$name_3</b>: le questionnaire n'est plus modifiable, les participants ne voient plus le questionnaire.</li>
+      <li><b>$name_0</b>: the questionnaire can be modified, the participants cannot see it.</li>
+      <li><b>$name_1</b>: the questionnaire cannot be modified, the participants can respond to the questions</li>
+      <li><b>$name_2</b>: the questionnaire cannot be modified, the participants cannot respond to the questions </li>
+      <li><b>$name_3</b>: the questionnaire cannot be modified, the participants cannot see the questions.</li>
      </ul>
  </li>
- <li><b>$name_result</b>: si les résultats sont $(name_publish)s, les participants peuvent les consulter (une fois qu'ils ont voté). Dans le cas contraire, seul l'enseignant de la classe accède aux résultats.</li>
- <li><b>$name_whovote</b>: si la liste des votants est $name_publish2 alors l'enseignant et les participants peuvent la consulter (à condition qu'il y ait un nombre suffisant de votants). Dans le cas contraire, personne ne peut savoir qui a voté !</li>
+ <li><b>$name_result</b>: if the results are published, the participants can consult 
+ them after having voted, if not, only the administrator of the class can access the results.
+ <li><b>$name_whovote</b>: if this list is published, both the administrator of the class
+ and the participants can consult the list ( providing that there are enough participants who have voted),
+ if not, nobody can see who has voted.
 </ul> 
 !tail
 !exit
 !endif
 !tail
-
