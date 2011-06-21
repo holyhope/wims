@@ -1,2 +1,46 @@
-!! to translate this help you just have to copy  file with extension fr or en and translate it !
-!changeto lang/msg.phtml.en
+!! to translate this help you just have to copy this file with correct extension (fr en de) and translate it !
+!!
+
+!let help_isread=yes
+Il registro delle competenze permette di ottenere una griglia di lettura sintetica dei progressi del lavoro degli studenti del corso.
+Il registro elenca le competenze (massimo $maxcomp), ogni competenza 
+può essere costituita da più traguardi (fino a $maxpalier).
+<p></p><p></p>
+
+Per ciascun traguardo il docente può definire la lista degli esercizi del corso
+il cui punteggio concorre al calcolo del livello acquisito nel traguardo.
+<p></p>
+
+Il docente del corso può decidere che i punteggi di alcuni test di 
+autovalutazione siano esclusi dal calcolo dell'acquisizione dei traguardi
+di competenza (questo permette di mantenere le risorse pedagogiche da un
+anno all'altro, cominciando a convalidare certe competenze).<p>
+
+Il livello accquisito è calcolato con la funzione seguente:
+<center>
+!insmath 10 \times \frac{\sum_{i=1}^{N} NM(x_{L[i;1],L[i;2]})}{\sum_{i=1}^{N} \delta_{L[i;1]}}
+</center>
+dove
+<ul>
+ <li> <i>N</i> è il numero di esercizi considerati nel traguardo.</li>
+ <li> <i>L</i> è l'elenco degli esercizi considerati nel traguardo.
+ Ogni elemento della lista contiene il numero del test che contiene l'esercizio
+ (L[i;1]) e la posizione dell'esercizio nel test (L[i;2]).</li>
+ <li> 
+  !insmath X_{i,j}
+  è il voto (qualità) ottenuto dallo studente nell'esercizio <i>j</i> del test <i>i</i>.</li>
+ <li> 
+  !insmath \delta_i
+  vale 1 se il test <i>i</i> non è nell'elenco dei test esclusi dal traguardo
+  e <i>0</i> altrimenti.</li>
+ <li> NM(a) vale <i>1</i> se <i>a</i> è maggiore del voto minimo indicato
+ per poter considerare un esercizio acquisito e <i>0</i> altrimenti (se il
+ docente indica <i>0</i> come punteggio minimo questa opzione è neutralizzata).</li>
+</ul>
+<p>
+<b><u>NOTA</u></b>: Se viene modificato lo stato di un test di autovalutazione
+(in particolare passando da "In preparazione" a "Attivo") mentre gli
+studenti visualizzano il registro le modifiche 
+hanno effetto quando gli studenti escono e rientrano nel registro. I dati
+visualizzati prima che lo studente esca dal registro non hanno alcun 
+valore!!
