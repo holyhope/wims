@@ -8,6 +8,7 @@
  !exit
 !endif
 
+!if $wims_read_parm=$empty
 De inhoud van de stemming / verkiezing kan een HTML tekst zijn, met dezelfde WIMS uitbreidingen als voor de "forum-berichten", 
 plus de volgende extra commando's <dl>
 <p><dt><tt class="wims_code_variable">\menu{JA,NEE}</tt>

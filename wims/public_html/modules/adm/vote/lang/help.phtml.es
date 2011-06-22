@@ -8,6 +8,7 @@
  !exit
 !endif
 
+!if $wims_read_parm=$empty
 El contenido de una encuesta puede ser un texto html, reforzado con los mismos
 elementos que los mensajes de los foros. Además se pueden utilizar las siguientes
 órdenes: <dl>
