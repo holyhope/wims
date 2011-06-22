@@ -70,10 +70,11 @@
     </td>
     <td align="center">$(vote_description[$k;2])</td>
     !for u=1 to $vcnt
-     <td>
      !if textarea=$(vote_description[$k;2])
+      <td style="max-width:100px;font-size:0.8em;">
       !record $u of $votedir/$(vote)_$(k).comments
      !else
+      <td>
       !item $u of $(donvote_$k)
      !endif
      </td>
@@ -81,6 +82,7 @@
    </tr>
   !next k
  $table_end
+ 
  <div class="emptyline"></div>
  $table_header
   $table_hdtr
@@ -94,7 +96,7 @@
      $(namelist[$u])
   !for k=1 to $parmcnt
      !if textarea=$(vote_description[$k;2])
-     <td>
+     <td style="max-width:100px;font-size:0.8em;">
       !record $u of $votedir/$(vote)_$(k).comments
      !else
      <td align="center">
