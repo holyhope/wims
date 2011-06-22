@@ -90,6 +90,25 @@ $name_title
 !read adm/class/classname.phtml $description\
 $institution
 
+!! if class_external_auth not 0 disable the registration form
+!! please check! thanks!
+!default authreg=0
+!if $cltype=1
+  !set authreg=!defof class_mixed_external_auth in wimshome/log/classes/$class_parent/.def
+  !set extauth=!defof class_external_auth in wimshome/log/classes/$class_parent/.def
+!endif
+!if $cltype=0
+  !set authreg=$class_mixed_external_auth
+  !set extauth=!defof class_external_auth in wimshome/log/classes/$class/.def
+!endif
+!! need to check if supervisor in order to allow user management by supervisor
+!if $wims_user!=supervisor and $authreg iswordof 1 2 and $cltype iswordof 0 1
+  $extauth
+  !if $authreg=2
+    !goto end1
+  !endif
+!endif
+
 !if $password!=$empty and $passverify=$empty
  !if $cltype iswordof 2 4
   $name_classessss
