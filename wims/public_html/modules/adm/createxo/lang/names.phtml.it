@@ -37,10 +37,10 @@ into wims_name_normalmode, wims_name_rawmode,wims_name_filemode,wims_name_otherm
 !set name_modefile1 Sei nel modo <em>file</em> per la creazione dell'esercizio. Questo modo ti \
    permette di copiare sul server un file OEF creato in locale contenente il testo dell'esercizio.\
    Per creare un nuovo esercizio da zero si consiglia il
- !set name_modefile2=&Egrave; anche possibile utilizzare il
+!set name_modefile2=&Egrave; anche possibile utilizzare il
 
 !distribute line Esercizi di base\
-sercizi con liste di dati\
+Esercizi con file di dati\
 Esercizi di chimica\
 Giochi\
 into name_first,name_datalist,name_chemistry,name_game
@@ -51,35 +51,35 @@ into name_first,name_datalist,name_chemistry,name_game
 
 !distribute lines Numero di parametri definiti\
   Numero di risposte\
-  inserire un file (immagine, documento pdf, ...) nell'esercizio\
+  Inserire un file binario (immagine, pdf, ...) nell'esercizio.\
   O modificare direttamente il file sorgente\
-  inserire l'esercizio nella pagine del corso, sia\
+  Inserire questo esercizio nella pagine del corso\
   sostituendo il vecchio esercizio\
-  creandone uno nuovo\
+  creando un nuovo esercizio\
   invia di nuovo\
-  inserirlo tra i moduli in modtool\
-  salvare il codice sorgente\
+  Inserire l'esercizio in un modulo in Modtool\
+  Salvare il codice sorgente\
   dell'esercizio!\
 into name_parameter_cnt,name_answer_cnt,name_deposit,name_modify,name_putinclass,\
 name_replace,name_new,name_sendagain,name_developer,name_savesource,name_download
 
-!set name_success=Il server ha salvato l'esercizio con i seguenti parametri
+!set name_success=Il server ha salvato con successo l'esercizio
 
 !if $level=1
 !distribute lines Dare un titolo all'esercizio\
-  Enunciato del problema\
+  Formato dell'enunciato del problema\
   L'esercizio chiederà\
   risposte libere e \
   risposte a scelta multipla\
   Risposte numeriche non calcolate (tipo <tt>3*5-sin(pi/3)</tt>)\
   saranno, non saranno accettate\
- condizioni speciali saranno utilizzate per verificare risposte libere (numeriche).\
+  condizioni speciali saranno utilizzate per verificare risposte libere.\
 into name_givetitle,name_giveformat,name_exo,name_answer1,name_answer2,\
 name_nonnumeric,name_prompt,name_condition
 !endif
 
 !if $level=2
- !set types=!sort nocase lines \
+!set types=!sort nocase lines \
 auto,			default\
 espressione algebrica,	algexp\
 espressione letterale,	litexp\
@@ -99,7 +99,7 @@ vettore,		vector\
 parola in una lista,	wlist
 
 !distribute lines Inserire ora il contenuto dell'esercizio\
-  Parametri dell'esercizio. Si possono utilizzare parametri `random'\
+  Potete definire parametri `random'\
   Enunciato dell'esercizio\
   Risposte libere\
   Soluzione esatta\
@@ -111,7 +111,7 @@ parola in una lista,	wlist
   Scelte multiple\
   Risposta esatta\
   Risposte errate\
-  &Egrave; possibile dare un suggerimento o inserire la soluzione\
+  È possibile dare un suggerimento e/o inserire la soluzione\
   Suggerimento<br>(formato html)\
   Soluzione<br>(formato html)\
 into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision,name_function,\
@@ -121,22 +121,22 @@ into name_content,name_alea,name_statement,name_free,name_goodsol,name_precision
 !endif
 
 !if $level=4
-  !set name_update1=!nosubst  L'esercizio <tt>$existing.oef</tt> è stato salvato con successo in
-  !set name_update2=Non è stato possibile modificare <tt>$existing</tt> del module
-  !set name_update3= L'esercizioè stato salvato con successo.
-  !set name_update4= C'eè già un esercizio uguale nel corso. La seconda registrazioneè ignorata. <p>
+  !set name_update1=!nosubst  L'esercizio <tt>$existing.oef</tt> è stato salvato con successo nel modulo
+  !set name_update2=Non è stato possibile aggiornare <tt>$existing</tt> nel module
+  !set name_update3=L'esercizio è stato salvato con successo.
+  !set name_update4=Il corso contiene già un esercizio uguale a questo. Il secondo salvataggio è stato ignorato.
   !set name_update5= L'esercizio sarà visibile solo dagli studenti del corso, e solo\
  nel momento in cui verrà inserito in un test di autovalutazione.
-
   !distribute lines A questo punto potete\
-    Consultare l'elenco degli esercizi del corso.\
-    Ed eventualmente inserirli in un test di autovalutazione\
+    Consultare l'elenco degli esercizi del corso\
+    e eventualmente inserirli in un test di autovalutazione\
  into name_youcan, name_consult,name_sheet
 !endif
+
 !if $level=7
- name_warning_empty=Please choose the source file name.
- name_choice_module=Select a module
- name_choice_filename=Nameof the exercise source file (only alphanumeric symbols are allowed).
+ name_warning_empty=Scegliere il nome del file sorgente.
+ name_choice_module=Selezionare un modulo
+ name_choice_filename=Nome del file oef dell'esercizio (solo caratteri alfanumerici).
 !endif
 
 !distribute lines Questo è il modo `esperti' per la creazione di un esercizio.\
@@ -167,11 +167,9 @@ creazione di nuovi esercizi. Si tratta però di esercizi estremamente
 semplificati e standardizzati e non sono pienamente mostrate le potenzialità 
 del linguaggio OEF. Naturalmente è sempre possibile passare al modo esperti 
 e aggiungere le funzionalità via via necessarie.
-
 !exit
 
 :register
-
 L'esercizio è stato salvato con successo dal server. Ringraziamo vivamente \
 per il contributo, in nome di tutti quelli che 
 lo potranno così utilizzare.
@@ -179,5 +177,4 @@ lo potranno così utilizzare.
 L'amministratore del server verificherà l'esercizio e deciderà
 se inserirlo e in quale categoria.
 Questo potrà richiedere qualche giorno.
-
 !exit
