@@ -96,13 +96,17 @@ $institution
 !if $cltype=1
   !set authreg=!defof class_mixed_external_auth in wimshome/log/classes/$class_parent/.def
   !set extauth=!defof class_external_auth in wimshome/log/classes/$class_parent/.def
+  !set usuperv=!defof user_supervisable in wimshome/log/classes/$class_parent/.users/$wims_user
 !endif
 !if $cltype=0
   !set authreg=$class_mixed_external_auth
   !set extauth=!defof class_external_auth in wimshome/log/classes/$class/.def
+!! do we really need this for $cltype=0?
+  !set usuperv=!defof user_supervisable in wimshome/log/classes/$class/.users/$wims_user
 !endif
 !! need to check if supervisor in order to allow user management by supervisor
-!if $wims_user!=supervisor and $authreg iswordof 1 2 and $cltype iswordof 0 1
+!! need to check if user_supervisable for direct access from module=home
+!if $wims_user!=supervisor and $usuperv!=yes and $authreg iswordof 1 2 and $cltype iswordof 0 1
   $extauth
   !if $authreg=2
     !goto end1
