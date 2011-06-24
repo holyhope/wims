@@ -47,7 +47,6 @@ good3=!word 9 of $gg
  !exit
 !endif
 
-!default precision=1000
 diff=$[abs($test-($good1))]
 !if NaN isin $diff or Inf isin $diff
  test=NaN
@@ -60,16 +59,12 @@ emptyunit=0 0 0 0 0 0 0
  !exit
 !endif
 
-!!writefile getfile/log $good1=$d1 and $good2=$d2 and $d3=$good3
+!!writefile getfile/log $[$good1]=$d1 and $good2=$d2 and $d3=$good3
 
-!ifval $good1=$d1 and $good2=$d2 and $d3=$good3
+!if $[$good1]=$d1 and $good2=$d2 and $d3=$good3
  diareply$i=good
  !advance freegot
 !else
- !if sqrt($precision)*$diff < abs($good1) or ($good1=$d1 and $good2=$d2 and $d3!=$good3)
-  !advance precgood
-  precreply$i=yes
- !endif
  diareply$i=bad
 !endif
 
