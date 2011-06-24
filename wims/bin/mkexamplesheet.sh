@@ -14,7 +14,6 @@ if [ -z "$whome" ]; then
  exit
 fi;
 target="$whome/public_html/bases/sheet";
-#target="$whome/fabtest"
 cd $whome/log/classes/;
 clist=`ls -d [0-9]*`;
 for cls in $clist; do
@@ -25,7 +24,7 @@ for cls in $clist; do
   email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' ./$cls/.def`;
   if [ -n "$level" -a -n "$lang" ]; then
    cd $cls/sheets/;
-   echo "--------------- $cls ; $level ; $lang"
+  # echo "--------------- $cls ; $level ; $lang"
    slist=`ls .sheet[0-9]*`;
    tmptarget="$target/$lang/$level/$cls";
    mkdir -p $tmptarget;
@@ -38,7 +37,7 @@ for cls in $clist; do
      namesh=${sh##.};
      if [ -n "$entete" ]; then
       #First case : information is in file .sheet$i : keep it (but not title and desc)
-      echo "$sh : direct copy";
+     # echo "$sh : direct copy";
       title=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==3){print($0);exit;}} }' .sheets`;
       desc=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==4){print($0);exit;}} }' .sheets`;
       echo "$title
@@ -51,7 +50,7 @@ $desc" >$tmptarget/$namesh.def;
       title=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==3){print($0);exit;}} }' .sheets`;
       desc=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==4){print($0);exit;}} }' .sheets`;
       keyword=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==6){print($0);exit;}} }' .sheets`;
-      echo "$sh : make presentation";
+     # echo "$sh : make presentation";
       echo "$title
 $desc
 ??,$dt
@@ -63,13 +62,13 @@ $sup
 $email" > $tmptarget/$namesh.def;
       cat $sh >> $tmptarget/$namesh.def;
      fi;
-    else
-     echo "$sh : EMPTY sheet";
+   # else
+   #  echo "$sh : EMPTY sheet";
     fi;
    done;
    cd ../..;
-  else
-   echo "-----------------------NOTHING ---------- $cls ; $level ; $lang";
+ # else
+ # echo "-----------------------NOTHING ---------- $cls ; $level ; $lang";
   fi;
  fi;
 done;

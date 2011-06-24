@@ -1,6 +1,21 @@
 #! /bin/sh
 #
-#	This script indexes wims server resources (modules, sheets).
+#	This script do many things (should be cleaned)
+#  - update sheets from example class (will be indexed after)
+#  - indexes wims server resources (modules, sheets).
+#  - with option "withoef", do something counting oef exercises, 
+#        make a list of oef (module,name_exofile) in bases/site/oef/
+#        does not seem to be yet in use - take Changelog
+#  - make slib index
+#  - make shtooka packs index
+#  - make icons and create icon css file (need convert)
+#  - build index of docs in bases/doc
+#  - make puzzle cut
+#  - make model list
+#  - make oefdocumentation for javascript in createxo
+
+
+cd $WIMS_HOME
 #	It should be run each time a module is added or modified.
 #
 
@@ -10,7 +25,7 @@ if [ -z "$test" ]; then WIMS_HOME=..; else WIMS_HOME=$test/..; fi
 cd $WIMS_HOME
 WIMS_HOME=`pwd`
 
-## this line copy all sheet in example class to base/sheet/ for search engine
+## copy all sheet in example class to base/sheet/ for search engine
 $WIMS_HOME/bin/mkexamplesheet.sh $WIMS_HOME
 
 export mlist slist dicsort_separator dicsort_grouping
@@ -119,7 +134,7 @@ if [ -d site2 ]; then
  [ -d site ] && rm -fR site.old
 fi
 
-# OEF exercises
+# OEF exercises - what does it do ??? do not be used
 if [ "$1" = "withoef" ]; then
   echo Listing OEF exercices by order of time...
   TMP=$WIMS_HOME/tmp/oefs
@@ -129,6 +144,7 @@ if [ "$1" = "withoef" ]; then
   cd $BASES/site/lists
   langs=`ls O.* | sed 's/^O\.//g'`
   cd $MODULES
+  ## FIXME Changelog does not exist just Changelog.new Changelog.modif
   newmod=`awk '$2=="added" {print $4}' Changelog | head -20 | tr -d '()'`
   for l in $langs
   do
@@ -188,10 +204,12 @@ cd $SWAC
 rm -f index.log 
 ./mkindex >>index.log 
 
+# make pieces
 $BASES/doc/.build-index
 $DATA/qpuzzle/makepieces
 $DATA/spuzzle/makepieces
 
+#index icones
 cd $ICONES 
 ./mkindex > index.log
 
