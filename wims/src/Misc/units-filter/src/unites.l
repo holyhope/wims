@@ -11,7 +11,8 @@ spc            [ \t]+
 digits         [0-9]
 int            [+-]?{digits}+
 mantisse       {digits}+
-real           {int}([.]{mantisse})?{spc}*([Ee]{spc}*{int})?
+ee             [Ee]|\*10^
+decimal        {int}([.]{mantisse})
 signif         {spc}*\#{digits}+{spc}*
 plusminpc      {spc}*~{digits}{digits}?{spc}*
 plusminpcbis   {spc}*\+\-{spc}*{digits}{digits}?%{spc}*
@@ -82,8 +83,9 @@ cube           ³
 
 %%
 
-
-{real}              { atof1(yytext, val_real); yylval.v=strdup(yytext); pos+=yyleng; return REAL;}
+{ee}                { pos+=yyleng; yylval.s=strdup(yytext); return EE;}
+{decimal}           { atodecimal(yytext, val_decimal); yylval.v=strdup(yytext); pos+=yyleng; return DECIMAL;}
+{int}               { atodecimal(yytext, val_decimal); yylval.v=strdup(yytext); pos+=yyleng; return INT;}
 {heure_ou_hecto}    { pos+=yyleng; yylval.s=strdup(yytext); return Uh;}
 {minute}            { pos+=yyleng; yylval.s=strdup(yytext); return Umin;}
 {milli_ou_metre}    { pos+=yyleng; yylval.s=strdup(yytext); return Um;}

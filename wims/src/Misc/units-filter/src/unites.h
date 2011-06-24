@@ -27,6 +27,6 @@ typedef struct{
 
 extern mpq_class val_real;
 
-void atof1(char* s, mpq_class & r);
+void atodecimal(char* s, mpq_class & r);
 
 #endif

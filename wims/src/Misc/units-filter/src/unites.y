@@ -73,7 +73,7 @@
 #define MAXBUF 255
  char buffer[MAXBUF+1], buffer2[MAXBUF+1];
  yystype result;
- mpq_class val_real; /* a multiprecision rational */
+ mpq_class val_decimal; /* a multiprecision rational */
  int val_int, count_signif=0;
  long pos;
 
@@ -150,7 +150,7 @@ unite_data pref_units[] ={
 
 int significative(char* text);
 int significative(char* text){
-  // returns the number of significative digits of a real
+  // returns the number of significative digits of a decimal
   // considers separately the case when a number is zero
   int i,j,result=0;
   char *end = text+strlen(text);
@@ -182,7 +182,9 @@ int significative(char* text){
 %}
 
 
-%token REAL
+%token EE
+%token DECIMAL
+%token INT
 %token SPC
 %token COLON
 %token Uh
@@ -265,38 +267,38 @@ valeur_mixte : valeur spc valeur_mixte {
 style : unite {$$=$1;}
 ;
 
-valeur : REAL spc unite {$$=$3; $$.val=val_real; $$.signif=0; $$.pcent=0;}
-| REAL spc unite Signif {
-  $$=$3; $$.val=val_real; 
+valeur : decimal spc unite {$$=$3; $$.val=val_decimal; $$.signif=0; $$.pcent=0;}
+| decimal spc unite Signif {
+  $$=$3; $$.val=val_decimal; 
   $$.signif=val_int; $$.pcent=0;
 }
-| REAL spc unite PlusminPC {
-  $$=$3; $$.val=val_real; 
+| decimal spc unite PlusminPC {
+  $$=$3; $$.val=val_decimal; 
   $$.pcent=val_int; $$.signif=0;
 }
 ;
 
-sans_unite :REAL {
+sans_unite :decimal {
   int i;
   $$=$1;
-  $$.val=val_real; 
+  $$.val=val_decimal; 
   for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
   $$.multip=1.0; 
   $$.signif=0; $$.pcent=0;
   $$.wanted_unit="";
 }
-| REAL Signif {
+| decimal Signif {
   int i;
   $$=$1;
-  $$.val=val_real; 
+  $$.val=val_decimal; 
   for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
   $$.multip=1.0; 
   $$.signif=val_int; $$.pcent=0;
 }
-| REAL PlusminPC {
+| decimal PlusminPC {
   int i;
   $$=$1;
-  $$.val=val_real; 
+  $$.val=val_decimal; 
   for (i=0; i < BU_LAST; i++){$$.base[i]=unites[TUnull].base[i];} 
   $$.multip=1.0; 
   $$.signif=0; $$.pcent=val_int;
@@ -409,6 +411,12 @@ prim_unit : prim_unit1 puissance01 {
 
 puissance01 : /*rien*/ {$$.i=1;}
 | PUIS {$$.i = val_int;}
+;
+
+decimal : INT {$$.val=val_decimal;}
+| DECIMAL {$$.val=val_decimal;}
+| DECIMAL EE INT {atodecimal($1.v,val_decimal); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal}
+| INT EE INT {val_decimal=atoi($1.v); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal}
 ;
 
 prefixe : 
@@ -637,10 +645,10 @@ void printValue(optiontype option, yystype result, int s){
     return;
   }
   mpq_class absval=abs(value);
-  mpq_class puisdix=trunc(log(absval.get_d())/log(10))+1-s;
   mpq_class powten=1;
-  if (puisdix>0) for(int i=0; i < puisdix; i++) powten=powten*10;
-  if (puisdix<0) for(int i=-1; i < -puisdix; i++) powten=powten/10;
+  while(absval >=10){powten*=10; absval/=10;}
+  while(absval < 1) {powten/=10; absval*=10;}
+  for (int i=1;i<s;i++) powten/=10;
   mpz_class r=round_mpc(value/powten);
   value=r*powten;
   if (s<=1){ 
@@ -698,15 +706,7 @@ mpq_class round_mpc(const mpq_class & x){
    * @result the rouded value : 1499999/1000000 is rounded towards 1
    * and 3/2 is rounded towards 2
    */
-  // half unity is defined as slightly greater than 1/2 because
-  // values submitted to this function are frequently made from
-  // flots whose mantissas are approximately 0.5 (many examples 
-  // made by teachers are based on integer data, and use a division 
-  // by 2). Unfortunately flots whose mantissas had to be 0.5 are
-  // actually slightly less : 0.4999999999999998 or so. The following 
-  // definition  of the constant "halfUnit" is a workaround for this
-  // current issue.
-  mpq_class halfUnit=mpq_class(1000000001,2000000000);
+  mpq_class halfUnit=mpq_class(1,2);
   mpq_class y;
   if (x>0){ y = x+halfUnit;} else { y = x-halfUnit;}
   mpz_class q=y.get_num()/y.get_den();
@@ -792,8 +792,8 @@ void sortie_texte(optiontype option){
 	}
       }
     }
+    printUnit(option, "", pc);
   }
-  printUnit(option, "", pc);
 }
 
 int main(int argc, char * argv[]){
@@ -849,13 +849,33 @@ int main(int argc, char * argv[]){
   return 0;
 }
 
-void atof1(char* s, mpq_class & r){
+void atodecimal(char* s, mpq_class & r){
   /**
    * ascii to fraction
-   * @param s : a string, where the spaces and tabs will be removed
+   * @param s : a string which denotes a decimal value
    * @param r : the result which is the fraction.
    */
-  double result=atof(s);
-  r=result;
+  char * numer= strdup(s);
+  char * theDot=index(numer,'.');
+  if (theDot==NULL){
+    r=mpq_class(atoi(s),1);
+  } else {
+    int denom=1;
+    int expon=0, numerExp=1;
+    while(theDot<numer+strlen(numer)){
+      *theDot = *(theDot+1);
+      theDot+=1;
+      switch (*theDot){
+      case 0: break;
+      case 'e':
+      case 'E': expon=atoi(theDot+1); *theDot=0; break;
+      default: denom*=10;
+      }
+    }
+    if (expon>0) for(int i=0; i<expon;  i++) numerExp*=10;
+    if (expon<0) for(int i=0; i<-expon; i++) denom*=10;
+    r=mpq_class(atoi(numer)*numerExp,denom);
+  }
+  free(numer);
   return;
 }
