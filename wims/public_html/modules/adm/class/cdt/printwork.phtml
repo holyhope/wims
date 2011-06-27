@@ -41,14 +41,13 @@ $cdt_title
   <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
  </tr>
  !for i=1 to $nbligne
-  !let mem_tr=$table_tr
   !let don=!line $i of $list
   !distribute item $don into jour,file,matiere
   !let m_filedir=$wims_ref_name?session=$wims_session&cmd=getfile&special_parm=cdt/$file
   !let file=wimshome/log/classes/$file/cdt/def/$jour
   !read $file
   !let nbtodo=!itemcnt $date_todo
-  $mem_tr
+  <tr class="$(table_colors[$i%2+1])">
    <td rowspan=$nbtodo>
     !read lang/date.phtml.$moduclass_lang 5,$jour
    </td>
@@ -70,10 +69,8 @@ $cdt_title
    !endif
   </tr>
    !if $nbtodo>1
-    !let bgcolor=!positionof char # in $mem_tr
-    !let bgcolor=!char $bgcolor to $[$bgcolor+6] of $mem_tr
     !for j=2 to $nbtodo
-     <tr bgcolor="$bgcolor">
+     <tr class="$(table_colors[$i%2+1])">
       <td valign="top">
        !read $file todo$j
       </td>
