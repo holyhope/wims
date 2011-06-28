@@ -1,6 +1,7 @@
 #! /bin/sh
-
+# logs and referer of documents, user and class connections in wims/log/...
 # Now must be called from wimslogd and housekeep.daily.
+
 if [ "$site_accounting" != "yes" ]; then exit; fi
 
 # working directory. Changeable.
