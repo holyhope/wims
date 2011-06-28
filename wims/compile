@@ -26,6 +26,10 @@ fi
 ./configure || exit
 make clean || exit
 make all || exit
+
+if [ -f ../.wims_maintainer_mode ]; then
+  make maintainer || exit
+fi
 cd ..
 cat <<@
 

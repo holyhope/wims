@@ -4,7 +4,6 @@
 
 version=`cat version`
 target=$HOME/transfer_wims
-
 echo  "About to create release tarball wims-$version in $target."
 echo  "Did you check your wims package (by hand, checkwims or test suite...)"
 echo  "and agree to continue this script ? (y/n)? [n] "
@@ -13,6 +12,8 @@ if [ "$ans" != "y" ] && [ "$ans" != "Y" ]; then
   exit 
 fi
 
+cd `dirname $0`
+wims_dir=`pwd`
 echo "** Create or Clean $target..."
 mkdir -p $target
 rm -Rf $target/*
@@ -29,7 +30,7 @@ rm -f .wims_maintainer_mode
 bin/changepermissions
 
 echo "** Insert current version number in README.template"
-#on met le numéro de version où il faut
+
 sed -e "s/WIMS_VERSION/$version/" $target/wims/README.template > $target/wims/README
 rm -f $target/wims/README.template
 cp $target/wims/README $target/wims/public_html/README
@@ -42,6 +43,20 @@ rm -Rf *.cache *.log 2>/dev/null
 rm $target/wims/mkdistsvn
 find $target/wims -name .DS_Store -exec rm '{}' \;
 find $target/wims -name \._* -exec rm '{}' \;
+
+echo "** Copy mathfonts..."
+cd $wims_dir
+for a in `ls -d public_html/mathfonts/*/` ;  do 
+  cp $a/* $target/wims/$a
+done
+
+echo "** Copy pieces (in scripts/data/photo) ..."
+cd $wims_dir
+data=public_html/scripts/data
+ for a in qpuzzle spuzzle ; do
+  cp -r $data/$a/pieces $target/wims/$data/$a
+  cp -r $data/$a/photindex $target/wims/$data/$a/photoindex
+done
 
 echo "** Archiving WIMS package..."
 cd $target/wims ; tar -czf ../wims-$version.tgz .
