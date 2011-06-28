@@ -28,7 +28,7 @@ clean:
 install:
 	for d in $(PACKAGES) ; do \
 	  j=`find $$d/dist -iname "*.jar" 2>/dev/null`; \
-	  mkdir $(INSTALL_DIR)/$$d;\
+	  mkdir -p $(INSTALL_DIR)/$$d;\
 	  if [ $$j ] ; then  \
 	    install -m 644 $$j  $(INSTALL_DIR)/$$d; \
 	  fi; \

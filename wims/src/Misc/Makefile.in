@@ -33,6 +33,8 @@ BINDIR=$(wims_home)/bin
 
 all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint toascii
 
+maintainer:: java
+
 chemeq units-filter::
 	-(cd $@/src; make && $(STRIP) $@)
 	-cp $@/src/$@ $(OTHERDIR)
@@ -50,11 +52,11 @@ mathexp::
 
 symtext::
 	cd symtext; make
-	
+
 bioinfo::
-	cd bioinfo; make && $(STRIP) $(bioinfo)	
+	cd bioinfo; make && $(STRIP) $(bioinfo)
 	cd $@ ; cp $(bioinfo) ../$(OTHERDIR)
-	
+
 checkmol::
 	cd checkmol; make && $(STRIP) checkmol
 	cp $@/checkmol $(OTHERDIR)
@@ -64,11 +66,11 @@ checkmol::
 lceb::
 	cd lceb ; make && $(STRIP) lceb_dynopt
 	cp $@/lceb_dynopt $(OTHERDIR)
-	
+
 crossword::
 	cd crossword ; make && $(STRIP) crossword
 	cp $@/crossword $(OTHERDIR)
-	
+
 moneyprint::
 	cd moneyprint ; make && $(STRIP) moneyprint
 	cp $@/moneyprint $(OTHERDIR)
@@ -79,8 +81,8 @@ toascii::
 
 java::
 	cd authors/jm.evers/applets ; make && make install
-	cd applets ; 
-	
+	cd applets ; make && make install
+
 clean:
 	rm -f $(progs2)
 	cd mathexp; make clean
