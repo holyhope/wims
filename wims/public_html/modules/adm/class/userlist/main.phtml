@@ -47,14 +47,14 @@ $wims_name_part_list
  <center>
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
- !if $wims_typename!=class
+ !if $wims_typename=group and $wims_supertype=2
  [
  !href module=adm/class/userlist&job=teacher $wims_name_teacherlist
  ]
  [
   !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
   ] 
-  !endif
+ !endif
  [
   !href module=adm/class/reguser&step=1 $wims_name_addstudent
 
