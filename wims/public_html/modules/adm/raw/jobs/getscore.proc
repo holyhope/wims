@@ -7,7 +7,6 @@ persheet=!getscorepercent user=$quser class=$qclass
 gotdetail=!getscore user=$quser class=$qclass
 meandetail=!getscoremean user=$quser class=$qclass
 examscore=!examscore user=$quser class=$qclass
-weights=!getscoreweight class=$qclass
 requires=!getscorerequire class=$qclass
 
 remain=!getscoreremain user=$quser class=$qclass
@@ -15,6 +14,10 @@ score_status=!getscorestatus class=$qclass
 
 m=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
 scoremax=!word 1 of $m
+
+!! old method (not used, because of a "cache" delaying the response) : weights=!getscoreweight class=$qclass
+weights = !record 0 of wimshome/log/classes/$qclass/sheets/.weight
+
 
 option=!listintersect $option and $userdefs
 !if $option=$empty

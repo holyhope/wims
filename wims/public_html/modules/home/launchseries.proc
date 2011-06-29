@@ -14,7 +14,10 @@ directworksheet=!replace internal . by , in $directworksheet
  !bound sh between 1 and $maxsh default $empty
  file=wimshome/log/classes/$wims_class/sheets/.sheet$sh
 !endif
+
 maxexo=!recordcnt $file
+!setdef wims_sheetmax=$maxexo in wimshome/sessions/$wims_session/var.stat
+
 !bound exo between 1 and $maxexo default $empty
 !if $sh!=$empty and $exo!=$empty
  requires=!getscorerequire sheet=$sh

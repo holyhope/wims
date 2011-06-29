@@ -93,9 +93,9 @@ $wims_name_part_list
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th rowspan="2"><small>$name_Exam $k</small></th>
+    <th rowspan="2" class="name_exam"><small>$name_Exam $k</small></th>
    !else
-    <th rowspan="2">
+    <th rowspan="2" class="show_sheet">
     <small>
      !set s=!record $j of wimshome/log/classes/$wims_class/sheets/.sheets
      !set s=!line 3 of $s
@@ -105,17 +105,17 @@ $wims_name_part_list
     </small></th>
    !endif
   !next j
-  $table_hdtr<th><small>$(name_manual_notes[1])</small></th>
-  <th><small>$(name_manual_notes[2])</small></th><th><small>$(name_manual_notes[3])</small>
+  $table_hdtr<th class="manual_notes"><small>$(name_manual_notes[1])</small></th>
+  <th class="manual_notes"><small>$(name_manual_notes[2])</small></th><th class="manual_notes"><small>$(name_manual_notes[3])</small>
  !else
   $table_hdtr<th>$wims_name_lastname, $wims_name_firstname</th>
   !if $job_affi=notes
-   <th>$name_Average</th> 
+   <th class="average">$name_Average</th> 
   !endif
   !for j in $showsheet
    !if E isin $j
     !set k=!char 2 to -1 of $j
-    <th><small>$name_Exam $k</small></th>
+    <th class="name_exam"><small>$name_Exam $k</small></th>
    !else
     <th><small>
      !href cmd=reply&job=showsheet&numshowsheet=$j $name_Sheet $j

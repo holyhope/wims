@@ -19,13 +19,14 @@
 !endif
 
 !if $wims_user=supervisor and $job=raw
-<p>
-$name_textsource
-</p><hr><pre>
+<p id="textsource">$name_textsource</p>
+<hr/>
+<pre>
  !sh awk 'BEGIN {a=0};\
 	/^:/ {a=1};\
 	a==1 {print}' bases/sheet/$sh.def
- </pre><hr>
+ </pre>
+ <hr/>
 
 !set wims_menu_items=!append line participantview,1,cmd=resume&job=read \
 to $wims_menu_items
@@ -41,10 +42,8 @@ to $wims_menu_items
 $sheet_title\
 $name_level $(intro[5;]), $name_duration $duration mn ($year)<br>$(intro[8;])\
 
-<div class="wims_sheet_desc">$sheet_desc</div> <p>
-
-$sheet_remark
-</p>
+<div class="wims_sheet_desc">$sheet_desc</div>
+<p id="sheet_remark">$sheet_remark</p>
 
 !if $n=0
  $name_sheetempty
