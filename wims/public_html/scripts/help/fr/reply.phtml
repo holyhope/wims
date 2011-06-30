@@ -43,40 +43,25 @@ wlist,Liste de mots,\
 
 <center><h3>Réponses à un exercice</h3></center> <p>
 
-Il y a principalement deux façons dont un exercice OEF accepte les réponses
-d'utilisateur&nbsp;: choix multiples ou réponses libres.
-La réponse donnée par l'utilisateur sera analysée selon la nature du type.
-Il est aussi possible d'afficher des
+Un exercice OEF peut accepter les réponses
+des utilisateurs de manière très variée. Outre le choix multiple ou la réponse libre,
+on trouve de nombreuses autres possibilités. 
+La réponse donnée par l'utilisateur est analysée selon la nature du type.
+D'autre part, il est possible d'afficher des
 !href cmd=help&special_parm=feedback commentaires ciblés
  quand la réponse tombe sous une certaine condition (pour
 avertir d'une erreur typique par exemple).
 
-<p><h4>Choix multiples</h4> <p>
-Un choix multiple est défini en donnant une liste de bons choix (un ou
-plusieurs), et une autre liste pour tous les choix (les bons choix y sont automatiquement ajoutés). <p>
-Jusqu'à $choicelim choix multiples simultanés peuvent être demandés pour un
-exercice, sous l'implémentation actuelle. Le nombre de bons ou mauvais choix
-dans une question à choix multiple n'est pas limité (sauf une limite sur la
-longueur de texte imposée par WIMS).
-<p>
-Voir 
-!href cmd=help&special_parm=oef aide sur le format OEF
- pour la syntaxe de définition d'un choix multiple.
-
 <a name="freestyle"></a>
-<p><h4>Réponses libres</h4> <p>
-Une réponse libre est une réponse où le texte est tapé par l'utilisateur.
-Jusqu'à $answerlim réponses libres simultanées peuvent être demandées dans
+Actuellement, jusqu'à $answerlim réponses simultanées peuvent être demandées dans
 un exercice sous l'implémentation actuelle. <p>
-La syntaxe est la suivante : 
+La syntaxe est la suivante (les 3 derniers champs sont optionnels) : 
 <pre>
 \answer{Texte}{\reponse}{type=...}{option=...}{weight=...}
 </pre>
-<br>
-(Les 3 derniers champs sont optionnels.)
-<p>
-<h4>Le paramètre <tt class="wims_code_words">type</tt></h4>
-Chaque réponse libre peut prendre indépendamment l'un des types suivants.
+
+<h3>Le paramètre <tt class="wims_code_words">type</tt></h3>
+Chaque réponse peut prendre indépendamment l'un des types suivants.
 
 !for i=1 to 2
  <p><b>$(namelist[$i])</b>
@@ -91,7 +76,7 @@ Chaque réponse libre peut prendre indépendamment l'un des types suivants.
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><p><a name="_$name"></a>
+   <li><a name="_$name"></a>
    !read help/anstype.fr/$name.phtml
    !if $name iswordof $symtextlist
     <p>
@@ -108,6 +93,7 @@ Chaque réponse libre peut prendre indépendamment l'un des types suivants.
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
    (<tt class="wims_code_words">$name1</tt>) $desc.
+   </li>
   !endif
  !next j
  </ul>
@@ -115,7 +101,7 @@ Chaque réponse libre peut prendre indépendamment l'un des types suivants.
 
 !read help/$lang/embedans.phtml
 
-<h4>Le paramètre optionnel <tt class="wims_code_words">weight</tt></h4>
+<h3>Le paramètre optionnel <tt class="wims_code_words">weight</tt></h3>
 <a name="weight"></a> 
 Il permet d'imposer un poids aux questions posées.
 <p>
@@ -137,7 +123,7 @@ Exemple :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>Le paramètre optionnel <tt class="wims_code_words">option</tt></h4>
+<h3>Le paramètre optionnel <tt class="wims_code_words">option</tt></h3>
  <a name="option"></a>
  Dans le cas de plusieurs options, elles sont séparées par des espaces. 
  Par exemple, <tt class="wims_code_words">option=default noanalyzeprint</tt>
@@ -168,10 +154,10 @@ Seul le score subsiste.</li>
 de la réponse mais ne sera pas  affichée. 
 </li>
 </ul>
-D'autres options peuvent être utilisables dans des types particuliers de réponses.
+D'autres options sont utilisables dans des types particuliers de réponses.
 <p>
 
-<h4>Conditions de test</h4>
+<h3>Les tests de conditions</h3>
 Dans certaines circonstances, il est souhaitable que les réponses libres
 soient testées par des conditions spéciales (questions avec plusieurs bonnes
 réponses, exercices demandant des exemples, réponses déterminées par des
@@ -185,11 +171,10 @@ avec les bonnes réponses. <p>
 
 Jusqu'à $condlim conditions simultanées peuvent être définies dans
 un exercice, sous l'implémentation actuelle. Seules les réponses numériques
-peuvent être ainsi testées. La syntaxe est&nbsp;
+peuvent être ainsi testées. La syntaxe est (le dernier champ est optionnel)
 <pre>
 \condition{texte d'affichage}{conditions de test}{weight=...}
 </pre>
-(Le dernier champ est optionnel.)
 <p>
 Voici quelques exemples de conditions de test (<tt class="wims_code_variable">\rep1</tt> et
 <tt class="wims_code_variable">\rep2</tt> sont des variables non définies qui apparaissent dans des
