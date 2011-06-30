@@ -7,7 +7,7 @@ slib_example=digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},png do
 digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},url neato\
 digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},png\
 digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},plain\
-digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;},png
+digraph bar {1 -> 1 ; 2 -> 1 ; 1 -> 2 ; 3 -> 2  ; 2 -> 3  ;}
 slib_require=graphviz
 !exit
 
@@ -42,17 +42,17 @@ graphviz_charset=!getopt charset in $slib_option
     graphviz_output=plain
 !endif
 
-!default graphviz_output=jpg
+!default graphviz_output=png
 !default graphviz_format=dot
 !if $graphviz_output=plain
-   graphviz_output=jpg
-   graphviz_out=!exec graphviz $slib_data
-   slib_out=!line 1 to -1 of $graphviz_out
+   graphviz_output=png
+   slib_graphviz_out=!exec graphviz $slib_data
+   slib_out=!line 1 to -1 of $slib_graphviz_out
    !exit
 !endif
 !if $graphviz_output iswordof jpg png gif
-  graphviz_out=!exec graphviz $slib_data
-  slib_d=!line 1 of $graphviz_out
+  slib_graphviz_out=!exec graphviz $slib_data
+  slib_d=!line 1 of $slib_graphviz_out
   !if url iswordof $slib_option
     slib_out=<img src="$slib_d" alt="">
   !else

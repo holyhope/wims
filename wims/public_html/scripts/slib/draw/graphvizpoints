@@ -17,9 +17,10 @@ slib_cnt=!linecnt $slib_points
  slib_l=!line $slib_j of $slib_points
  !if graph isin $slib_l
    !distribute words $slib_l into slib_b,slib_coeff,slib_xrange,slib_yrange
+   !default slib_correct=$[$slib_xrange*1.01],$[$slib_yrange*1.01]
+   slib_correct_x=$[$(slib_correct[1])/$slib_xrange]
+   slib_correct_y=$[$(slib_correct[2])/$slib_yrange]
  !endif
- slib_correct_x=$[$(slib_correct[1])/$slib_xrange]
- slib_correct_y=$[$(slib_correct[2])/$slib_yrange]
  !!!default slib_yrange=$slib_xrange
  !if node isin $slib_l
   !distribute words $slib_l into slib_b,slib_no,slib_x,slib_y,slib_width,slib_height
