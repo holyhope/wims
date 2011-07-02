@@ -38,7 +38,7 @@ $cdt_title
   !if no isin $cdt_supervise
    <th>$name_discipline</th>
   !endif
-  <th>$name_inclass</th><th>$name_worktodo</th><th width=30>$name_for</th>
+  <th>$name_inclass</th><th>$name_worktodo</th><th width="30">$name_for</th>
  </tr>
  !for i=1 to $nbligne
   !let don=!line $i of $list
@@ -48,13 +48,13 @@ $cdt_title
   !read $file
   !let nbtodo=!itemcnt $date_todo
   <tr class="$(table_colors[$i%2+1])">
-   <td rowspan=$nbtodo>
+   <td rowspan="$nbtodo">
     !read lang/date.phtml.$moduclass_lang 5,$jour
    </td>
    !if no isin $cdt_supervise
-    <td rowspan=$nbtodo>$matiere</td>
+    <td rowspan="$nbtodo">$matiere</td>
    !endif
-   <td rowspan=$nbtodo valign="top">
+   <td rowspan="$nbtodo" valign="top">
     !read $file content
    </td>
    !if $nbtodo>0
