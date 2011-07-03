@@ -14,8 +14,13 @@ to $wims_menu_items
 to $wims_menu_items
 !endif
 !if ($to_ia_qcm!=-2 and $to_ia_qcm!=-1)
-   !set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
-   to $wims_menu_items  
+   !if $mode!=model
+     !set wims_menu_items=!append line exomodify,1,cmd=reply&level=2\
+   to $wims_menu_items
+   !else
+     !set wims_menu_items=!append line adapt,1,cmd=reply&level=2\
+   to $wims_menu_items
+   !endif  
 !endif
 
 !if $wims_user!=$empty
