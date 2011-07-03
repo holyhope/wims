@@ -228,7 +228,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    U deelt materiaal uit andere klassen\
   into name_noresource,name_resource
   !endif
-  
+
   !if $job2=addshare
     !set title=Delen van lesmateriaal met andere klassen
     !set name_class_share=De klas <em><font color="blue">$nei_description</font></em>\
@@ -252,7 +252,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
   En zonder backup is dit definitef weg.
    
   !endif
-  
+
   !distribute items ---,<small>supervisor</small>,\
 	<small>student</small>,\
 	<small>iedereen</small>\
@@ -500,7 +500,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 !set name_content_style = U kunt een algemeen stylesheet definieren\
 <br>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
 
-!set name_content_style2=of kopieer hier een css-stylesheet
+!set name_content_style2=Kopieer hier een css-stylesheet
 
 !exit
 :arch
