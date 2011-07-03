@@ -15,17 +15,21 @@ $name_about1
     $wims_name_exo_infos
     </caption>
     <tbody>
-    
     !if $author!=$empty
+!! define $script_cnt, script_out in a standarized form depending on language (scripts/name.phtml)
+     !read name.phtml $author
     $table_tr
-      <th>$wims_name_Author</th>
+      <th>
+       $wims_name_Author
+      </th>
       <td>
-        !if $email!=$empty
-          !mailurl $email $author
-        .
-        !else
-          $author.
-        !endif
+     !if $email!=$empty
+          !mailurl $email $(script_out[1])
+          &nbsp;
+        !if $script_cnt > 1
+         !replace internal , by ,$ $ in , $(script_out[2..-1])
+        !endif 
+     !endif 
       </td>
     </tr>
     !endif
@@ -109,7 +113,6 @@ $name_about1
 </center>
 <p> $name_collection
 <hr>
-
 <p> $module_about <p>
 $name_copyr
 

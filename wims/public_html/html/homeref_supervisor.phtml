@@ -8,8 +8,8 @@
  <p><b>WIMS WARNING</b>. The following variables of your module could be hacked
  by students using manually modified http addresses! You might want to put more
  strict permissions to them in var.def, in order to build a secure exercise module.
- <p><tt><b>$wims_hacked_variables</b></tt>
- <p>
+ <pre>$wims_hacked_variables</pre>
+
 !endif
 
 !read name.phtml.$lang
@@ -134,17 +134,18 @@
 !endif
 !reset 2_
 !if $module_author!=$empty and @ isin $module_address
- !set wims_homeref_author_num=!itemcnt $module_author
+ !read namewriting.phtml $module_author
+ !set wims_homeref_author_num=$script_cnt
+ !set 4_=!mailurl $module_address $(script_out[1])\
+WIMS $module_title [$module_language]
  !if $wims_homeref_author_num>1
   !set 3_=$wims_name_authors:
  !else
   !set 3_=$wims_name_author:
+  !set 4_=!append item $(script_out[2..-1]) to $4_
  !endif
- !set 4_=!mailurl $module_address $module_author\
-WIMS $module_title [$module_language]
  !set 2_=!append line author,0,$3_ $4_ to $2_
 !endif
-
 !set mod_transl=$(module_translator_$lang)
 !if $module_transl!=$empty
    !set module_translator=$mod_transl
@@ -152,6 +153,8 @@ WIMS $module_title [$module_language]
 !endif
 
 !if $module_translator!=$empty and $module_translator_address!=$empty
+ !read namewriting.phtml $module_translator
+ !set module_translator=$(script_out[1])
  !set 3_=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]
  !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_

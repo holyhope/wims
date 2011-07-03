@@ -1,0 +1,17 @@
+!set script_authors=$(wims_read_parm)
+!set s_authors=!rows2lines $script_authors
+!set script_cnt=!linecnt $script_authors
+!set script_out=
+
+!if $module_language=cn
+ !for s_auth = 1 to $cnscript_cnt
+  !set script_out=!append line $(script_authors[$s_auth;2]), $(script_authors[$s_auth;1]) to $script_out
+ !next
+!else
+ !for s_auth = 1 to $script_cnt
+   !set script_out=!append line $(script_authors[$s_auth;1]) $(script_authors[$s_auth;2]) to $script_out
+  !next
+!endif
+!set script_out=!lines2items $script_out
+!set script_out=!nonempty items $script_out
+!set script_out=!replace internal , by ,$ $ in $(script_out)

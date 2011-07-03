@@ -20,9 +20,14 @@
    !set module_$(v_a)=$mod_u
   !endif
 !next
+!read namewriting.phtml $module_author
 
-!set module_au=!mailurl $module_address $module_author\
+!set module_au=!mailurl $module_address $(script_out[1])\
 WIMS $module_title [$module_language]
+!set script_out=!replace internal ; by , in $(script_out[2..-1])
+!if $script_out!=$empty
+ !set module_au=$module_au, $script_out
+!endif
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$lang]
 
