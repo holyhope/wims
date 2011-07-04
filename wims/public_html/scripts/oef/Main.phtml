@@ -19,9 +19,6 @@
 $ by ; in $init_parm
  !set renewlink=cmd=renew&worksheet=$worksheet&$init_parm
 !endif
-!if $printing=yes
- !changeto oef/print.phtml
-!endif
 
 !if $(title_$lang)!=$empty
   !set title=$(title_$lang)
@@ -31,6 +28,9 @@ $ by ; in $init_parm
  !set module_title=$title
  !set module_author=$author
  !set module_address=$email
+!endif
+!if $printing=yes
+ !changeto oef/print.phtml
 !endif
 
 !if 0$delay2>0 and $status!=$empty

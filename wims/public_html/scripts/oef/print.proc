@@ -42,7 +42,10 @@ test_print=0
  question_$i=
  e_=!item $i of $exo
  name_$i=$e_
- title_$i=!defof title in $(class_header)def/$e_.def
+ title_$i=!defof title_$lang in $(class_header)def/$e_.def
+ !if $(title_$i)=$empty
+   title_$i=!defof title in $(class_header)def/$e_.def
+ !endif 
  !reset question testcondition format
  thisexo=$e_
  !readproc oef/imagedir.proc

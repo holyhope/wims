@@ -69,6 +69,11 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
  !endif
  !exit
 !endif
+
+!if $lang notsametext $module_language and $(titlelist_$lang) notsametext 
+ !set titlelist=$(titlelist_$lang)
+!endif
+
 !if $exocnt=1
  $name_oneexercise, <b>
  !item 1 of $titlelist
