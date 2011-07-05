@@ -3,9 +3,13 @@
 !endif
 
 slib_author=Bernadette PERRIN-RIOU
+slib_parms=3\
+,[data]\
+1,m\
+1,sigma
 
- slib_example=[2,4,7] ,3,4
- !exit
+slib_example=[2,4,7] ,3,4
+!exit
 
 :proc
 slib_out=
@@ -17,7 +21,7 @@ slib_data=!declosing $slib_data
 
 slib_out=
 !for slib_x in $slib_data
- !if $slib_x <= 0 
+ !if $slib_x <= 0
     slib_out =!append item 0 to $slib_out
   !else
     slib_out = !append item  $[(1+erf((log($slib_x)-$slib_mean)/(sqrt(2)*$slib_var)))*0.5] to $slib_out

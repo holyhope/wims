@@ -2,25 +2,32 @@
 !goto proc
 !endif
 
+slib_author=Bernadette PERRIN-RIOU
+
 slib_parms=4\
 ,m\
 ,N\
 ,K\
 ,n
 
-slib_author=Bernadette PERRIN-RIOU
-
-slib_example= 20,16,4,6
+slib_example= 20,16,4,6\
+[2,3],16,4,6
 slib_require=octave
 !exit
 
 :proc
 slib_out=
 
-!distribute  item $wims_read_parm into slib_data,slib_a,slib_b,slib_c
+!distribute item $wims_read_parm into slib_data,slib_N,slib_K,slib_n
 slib_data=!declosing $slib_data
-
-slib_out=!exec octave hypergeometric_rnd($slib_data,$slib_b,$slib_a,$slib_c)
-slib_out=!words2items $slib_out
+slib_cnt=!itemcnt $slib_data
+!if $slib_cnt=1
+	slib_data=1,$slib_data
+!endif
+slib_out=!exec octave hypergeometric_rnd($slib_K,$slib_N,$slib_n,[$slib_data])
+!!slib_out=!exec octave hygernd($slib_N,$slib_K,$slib_n,$slib_data)
 
 slib_out=!trim $slib_out
+slib_out=!replace internal $\
+$ by ; in $slib_out
+slib_out=!words2items $slib_out

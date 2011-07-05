@@ -10,11 +10,13 @@ slib_require=octave
 
 :proc
 slib_out=
-!distribute  item $wims_read_parm into slib_data,slib_degree
+!distribute item $wims_read_parm into slib_data,slib_degree
 
 !default slib_degree=1
 slib_data=!declosing $slib_data
 
 slib_out=!exec octave chisquare_inv([$slib_data], $slib_degree)
+!!slib_out=!exec octave chi2inv([$slib_data], $slib_degree)
+
 slib_out=!words2items $slib_out
 slib_out=!trim $slib_out

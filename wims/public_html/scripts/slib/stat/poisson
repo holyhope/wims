@@ -5,7 +5,7 @@
 slib_parms=2\
   1,m\
   1,lambda
-slib_author=S. Lemaire and Bernadette Perrin-Riou
+slib_author=Sophie Lemaire; Bernadette Perrin-Riou
 
 slib_comment= for any nonnegative integer,  P(X=i)=exp(-lambda)*(lambda^i)/i!
 
@@ -44,14 +44,15 @@ slib_out=$empty
 
 
 slib_data=!declosing $slib_data
-slib_cnt=!itemcnt slib_data
+slib_cnt=!itemcnt $slib_data
 !if $slib_cnt=1
 	slib_data=1,$slib_data
 !endif	
-slib_out=!exec octave poisson_rnd($slib_lambda,$slib_data)
+!!slib_out=!exec octave poisson_rnd($slib_lambda,$slib_data)
+slib_out=!exec octave poisscdf($slib_lambda,$slib_data)
 
+slib_out=!trim $slib_out
+slib_out=!replace internal $\
+$ by ; in $slib_out
 slib_out=!words2items $slib_out
-
-
-slib_out =!trim $slib_out
 
