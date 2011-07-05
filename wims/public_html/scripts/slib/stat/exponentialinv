@@ -6,14 +6,14 @@ slib_parms=2\
 ,[data]\
 1,p
 
-slib_author=Bernadette PERRIN-RIOU
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
 
 slib_example=[0.1,0.2,0.3],7
 !exit
 
 :proc
 
-!distribute  item $wims_read_parm into slib_data,slib_p
+!distribute item $wims_read_parm into slib_data,slib_p
 
 !if  $slib_p<=0
 slib_out=0
@@ -21,6 +21,6 @@ slib_out=0
 !endif
 
 slib_data=!declosing $slib_data
-slib_out=!values  -log(1-x)/$slib_p for x in $slib_data
+slib_out=!values -log(1-x)/$slib_p for x in $slib_data
 
 slib_out=!trim $slib_out

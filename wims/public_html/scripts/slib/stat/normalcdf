@@ -2,7 +2,7 @@
 !goto proc
 !endif
 
-slib_author=Bernadette PERRIN-RIOU
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
 slib_parms=3\
 ,[data]\
 0,mu\
@@ -13,11 +13,10 @@ slib_example=[-2,-4,1],0,1
 
 :proc
 slib_out=
-!distribute  item $wims_read_parm into slib_data,slib_mean,slib_var
+!distribute item $wims_read_parm into slib_data,slib_mean,slib_var
 !default slib_mean=0
 !default slib_var=1
 slib_data=!declosing $slib_data
 
-slib_out = !values  (1+erf((x-$slib_mean)/(sqrt(2)*$slib_var)))*0.5 for x in $slib_data
+slib_out = !values (1+erf((x-$slib_mean)/(sqrt(2)*$slib_var)))*0.5 for x in $slib_data
 slib_out=!trim $slib_out
-

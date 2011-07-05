@@ -5,7 +5,7 @@
 slib_parms=2\
 ,[data]\
 ,n
-slib_author=Bernadette PERRIN-RIOU
+slib_author=Sophie, Lemaire; Bernadette, Perrin-Riou
 
 slib_example=[2,4,7],5 
 slib_require=octave
@@ -14,12 +14,13 @@ slib_require=octave
 :proc
 slib_out=
 
-!distribute  item $wims_read_parm into slib_data,slib_n
+!distribute item $wims_read_parm into slib_data,slib_n
 
 slib_data=!declosing $slib_data
 
-slib_out=!exec octave t_pdf([$slib_data],$slib_n)
-!!slib_out=!exec octave tpdf([$slib_data],$slib_n)
+!!deprecated syntax
+!!slib_out=!exec octave t_pdf([$slib_data],$slib_n)
+slib_out=!exec octave tpdf([$slib_data],$slib_n)
 slib_out=!words2items $slib_out
 slib_out=!trim $slib_out
 
