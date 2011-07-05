@@ -29,7 +29,7 @@
 	/* The way to print a string in the program. */
 #define stringprinter "\"%s\"\n"
 	/* This is octave home page. To be kept up to date. */
-#define homepage "http://www.che.wisc.edu/octave/octave.html"
+#define homepage "http://www.gnu.org/software/octave/"
 	/* String to search for answers */
 char ans_str[]="ans =";
 
