@@ -1,0 +1,26 @@
+!let wims_module_log=error: $error
+<span clas="wims_warning">$wims_name_Error.</span>
+
+!if $error=no_download_sites
+Une des adresses données n'est pas l'adresse d'un centre de publication des modules de WIMS. 
+Cela concerne les serveurs  : $error_list.<br>
+Cela peut provenir
+<ul>
+<li>d'une interruption du centre de téléchargement : attendez que le serveur soit relancé !</li>
+<li>d'une erreur dans le fichier de définition du centre de téléchargement sur votre serveur : 
+contactez son administrateur pour obtenir un fichier de définition correct.</li>
+</ul>
+La configuration n'a donc pas été changée.
+ !exit
+!endif
+
+!if $error=bad_mail
+Le message ou le sujet est vide.
+ !exit
+!endif
+!if $error=bad_list
+Vous avez oublié de sélectionner les destinataires ?
+ !exit
+!endif
+
+$error
