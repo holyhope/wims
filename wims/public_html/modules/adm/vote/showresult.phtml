@@ -1,16 +1,22 @@
 !! html file to show result of vote
 
-!if $job2=global
- !if $vote_option!=anonymous
+!for k in $listjob2
+ !if $job2!=$k
   !set wims_ref_class=wims_button
-  !href cmd=reply&job2=list $name_showlist
-  &nbsp;
+  !href cmd=reply&job2=$k $(name_show$k)
  !endif
-  !if $wims_user=supervisor
-     !set wims_ref_class=wims_button
-     !href cmd=reply&job=csv $wims_name_csv
-  !endif
+!next k
+
+!if $wims_user=supervisor
+ !set wims_ref_class=wims_button
+ !href cmd=reply&job=csv $wims_name_csv
+!endif
+
 <div class="emptyline"></div>
+
+!goto $job2
+
+:global
 <center>
  $table_header
    $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th><th colspan="$max_rep">$name_thisvote_answer</th></tr>
@@ -21,94 +27,131 @@
    !set rowspan=2
   !endif
   <tr class="$(table_colors[$k%2+1])">
-   <td rowspan="$rowspan" align="center">$(vote_description[$k;1])</td>
-   <td rowspan="$rowspan" align="center">$(vote_description[$k;2])</td>
-   !if textarea=$(vote_description[$k;2])
-    <td rowspan="$rowspan" align="left" valign="top" colspan="$max_rep">
-     !set comment_$k = !replace internal --- by $\
+   !if uservar!=$(vote_description[$k;2])
+    <td rowspan="$rowspan" align="center">$(vote_description[$k;1])</td>
+    <td rowspan="$rowspan" align="center">$(vote_description[$k;2])</td>
+    !if textarea=$(vote_description[$k;2])
+     <td rowspan="$rowspan" align="left" valign="top" colspan="$max_rep">
+      !set comment_$k = !replace internal --- by $\
   $<br>- in $(comment_$k)
-     !set rcnt=!recordcnt $votedir/$(vote)_$k.comments
-     <ul>
-     !for j=1 to $rcnt
-      <li>
-       !record $j of $votedir/$(vote)_$k.comments
-      </li>
+      !set rcnt=!recordcnt $votedir/$(vote)_$k.comments
+      <ul>
+      !for j=1 to $rcnt
+       <li>
+        !record $j of $votedir/$(vote)_$k.comments
+       </li>
+      !next j
+      </ul>
+     </td>
+    !else
+     !let tmp=!item 3 to -1 of $(vote_description[$k;])
+     !let nb=!itemcnt $tmp
+     !for j in $tmp
+      <td align="center">$j</td>
      !next j
-     </ul>
-    </td>
-   !else
-    !let tmp=!item 3 to -1 of $(vote_description[$k;])
-    !let nb=!itemcnt $tmp
-    !for j in $tmp
-     <td align="center">$j</td>
-    !next j
-    !if $nb<$max_rep
-     <td colspan="$[$max_rep-$nb]" rowspan="2">&nbsp;</td>
+     !if $nb<$max_rep
+      <td colspan="$[$max_rep-$nb]" rowspan="2">&nbsp;</td>
+     !endif
+    </tr>
+    <tr class="$(table_colors[$k%2+1])">
+     !for j=1 to $nb
+      <td align="center">$(vcnt_$(k)_$(j))</td>
+     !next j
     !endif
    </tr>
-   <tr class="$(table_colors[$k%2+1])">
-    !for j=1 to $nb
-     <td align="center">$(vcnt_$(k)_$(j))</td>
-    !next j
-   !endif
-  </tr>
+  !endif
  !next k
  $table_end
-!else
- !set wims_ref_class=wims_button
- !href cmd=reply&job2=global $name_showglobal
- <div class="emptyline"></div>
+!goto end
+
+:list
  $table_header
   $table_hdtr <th>$wims_name_number</th><th>$wims_name_Type</th>
-  !items2words $namelist
-</tr>
+   !items2words $namelist
+  </tr>
   !for k=1 to $parmcnt
-   $table_tr
-    <td align="center">
-     $name_question
-    $(vote_description[$k;1])
-    </td>
-    <td align="center">$(vote_description[$k;2])</td>
-    !for u=1 to $vcnt
-     !if textarea=$(vote_description[$k;2])
-      <td style="max-width:100px;font-size:0.8em;">
-      !record $u of $votedir/$(vote)_$(k).comments
-     !else
-      <td>
-      !item $u of $(donvote_$k)
-     !endif
+   !if uservar!=$(vote_description[$k;2])
+    $table_tr
+     <td align="center">
+      $name_question
+     $(vote_description[$k;1])
      </td>
-    !next u
-   </tr>
+     <td align="center">$(vote_description[$k;2])</td>
+     !for u=1 to $vcnt
+      !if textarea=$(vote_description[$k;2])
+       <td style="max-width:100px;font-size:0.8em;">
+       !record $u of $votedir/$(vote)_$(k).comments
+      !else
+       <td>
+       !item $u of $(donvote_$k)
+      !endif
+      </td>
+     !next u
+    </tr>
+   !endif
   !next k
  $table_end
- 
+!goto end
+
+:listbystudent
  <div class="emptyline"></div>
  $table_header
   $table_hdtr
   <td></td>
   !for k=1 to $parmcnt
-  <td align="center">$name_question $(vote_description[$k;1])</td>
+   !if uservar!=$(vote_description[$k;2])
+    <td align="center">$name_question $(vote_description[$k;1])</td>
+   !endif
   !next k
   </tr>
   !for u=1 to $vcnt
    $table_tr
      $(namelist[$u])
   !for k=1 to $parmcnt
-     !if textarea=$(vote_description[$k;2])
-     <td style="max-width:100px;font-size:0.8em;">
-      !record $u of $votedir/$(vote)_$(k).comments
-     !else
-     <td align="center">
-      !item $u of $(donvote_$k)
+     !if uservar!=$(vote_description[$k;2])
+      !if textarea=$(vote_description[$k;2])
+       <td style="max-width:100px;font-size:0.8em;">
+        !record $u of $votedir/$(vote)_$(k).comments
+      !else
+       <td align="center">
+        !item $u of $(donvote_$k)
+      !endif
+      </td>
      !endif
-     </td>
     !next k
    </tr>
   !next u
  $table_end
- 
 !endif
 </center>
+!goto end
+
+:studentbyitem
+!if $wims_user=supervisor and $vote_option!=anonymous
+ <p> $name_details
+ !for i=1 to $parmcnt
+  !for c=1 to $(choices$i)
+   !if /supervisor/ notin $c/
+    <p>$i-
+    !item $c of $(chlist$i)
+ <br> <pre>
+    !for u in $(votes_$(i)_$c)
+     !if $vote_option=nominative
+      !set U=!translate internal / to , in $u
+      !readproc adm/class/userdef classes,$U
+      !defof user_lastname, user_firstname in $userdef
+       ($u)
+     !else 
+       ($u) 
+     !endif
+    !next u
+   </pre>
+   !endif
+  !next c
+ !next i
+!endif
+
+
+:end
 !set wims_menu_items=!append line back2,1,cmd=reply&job=read&vote=$vote to $wims_menu_items
 

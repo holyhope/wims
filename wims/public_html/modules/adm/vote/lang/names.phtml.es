@@ -32,8 +32,10 @@
 !set name_nowritable=you cannot modify the vote when it is active.
 !set name_novotant=Aucun vote
 !set name_notenough=Pas assez de votants pour publier la liste
-!set name_showlist=Résultats par votant
+!set name_showlist=Résultats par question
 !set name_showglobal=Résultats globaux
+!set name_showlistbystudent=Résultats par votants
+!set name_showstudentbyitem=Liste par choix
 
 !distribute lines  Su clase no tiene aún ninguna encuesta. \
  Pregunte a su profesor.\

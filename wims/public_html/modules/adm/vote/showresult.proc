@@ -8,10 +8,15 @@
 
 
 !if anonymous!=$vote_option
- !bound job2 within global,list default global
+ listjob2=global,list,listbystudent
+ !if supervisor=$wims_user
+  listjob2=$listjob2,studentbyitem
+ !endif
 !else
  job2=global
 !endif
+
+!bound job2 within $listjob2 default global
 
 wims_multiexec=pari maxima yacas
 insmath_rawmath=yes
