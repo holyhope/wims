@@ -25,61 +25,61 @@ $name_number_visits $name_from $date1 $name_to $date2
  !endif
  <th>$name_avgsite</th></tr>
  $table_tr<th bgcolor="$table_bgcolor">$name_Requests</th>
-   !htmlmath <td align="right">$[$total_click]
+   !htmlmath <td>$[$total_click]
    </td>
-   !htmlmath <td align="right">$[rint($total_click/$laps)] 
+   !htmlmath <td>$[rint($total_click/$laps)] 
    </td>
    !if $laps>$week_min
-    !htmlmath <td align="right">$[rint($total_click*7/$laps)] 
+    !htmlmath <td>$[rint($total_click*7/$laps)] 
     </td>
     !if $laps>$month_min
-     !htmlmath <td align="right">$[rint($total_click*30.4/$laps)]
+     !htmlmath <td>$[rint($total_click*30.4/$laps)]
      </td>
      !if $laps>$year_min
-      !htmlmath <td align="right">$[rint($total_click*365.25/$laps)] 
+      !htmlmath <td>$[rint($total_click*365.25/$laps)] 
      !endif
     !endif
    !endif
-   !htmlmath <td align="right">$[$total_click/$total_site] 
+   !htmlmath <td>$[$total_click/$total_site] 
    </td>
  </tr>
  $table_tr<th bgcolor="$table_bgcolor">$name_Sessions</th>
-   !htmlmath <td align="right">$[$total_session]
+   !htmlmath <td>$[$total_session]
    </td>
-   !htmlmath <td align="right">$[rint($total_session/$laps)] 
+   !htmlmath <td>$[rint($total_session/$laps)] 
    </td>
    !if $laps>$week_min
-    !htmlmath <td align="right">$[rint($total_session*7/$laps)]
+    !htmlmath <td>$[rint($total_session*7/$laps)]
     </td>
     !if $laps>$month_min
-     !htmlmath <td align="right">$[rint($total_session*30.4/$laps)]
+     !htmlmath <td>$[rint($total_session*30.4/$laps)]
      </td> 
      !if $laps>$year_min
-      !htmlmath <td align="right">$[rint($total_session*365.25/$laps)]
+      !htmlmath <td>$[rint($total_session*365.25/$laps)]
       </td>
      !endif
     !endif
    !endif
-   !htmlmath <td align="right">$[$total_session/$total_site]
+   !htmlmath <td>$[$total_session/$total_site]
    </td>
    </tr>
  $table_tr<th bgcolor="$table_bgcolor">sites</th>
-   !htmlmath <td align="right">$[$total_site]</td>
-   !htmlmath <td align="right">$[rint($total_site/$laps)]
+   !htmlmath <td>$[$total_site]</td>
+   !htmlmath <td>$[rint($total_site/$laps)]
    
    </td>
    !if $laps>$week_min
-    !htmlmath <td align="right">$[rint($total_site*7/$laps)]</td>
+    !htmlmath <td>$[rint($total_site*7/$laps)]</td>
     !if $laps>$month_min
-     !htmlmath <td align="right">$[rint($total_site*30.4/$laps)]
+     !htmlmath <td>$[rint($total_site*30.4/$laps)]
      </td>
      !if $laps>$year_min
-      !htmlmath <td align="right">$[rint($total_site*365.25/$laps)]
+      !htmlmath <td>$[rint($total_site*365.25/$laps)]
       </td> 
      !endif
     !endif
    !endif
-   <td align="right">1</td>
+   <td>1</td>
    </tr>
  $table_end
 <p>
@@ -121,14 +121,16 @@ $wims_name_Explanations. $name_explanations
   !set n=!char -40 to -1 of $n
   !set n=!translate @ to / in $n
   !href module=$n $n
-  <td align="right" nowrap>
+  </td>
+  <td nowrap>
   !if $module_type=2
    $[$c/100]
    !goto cont
   !endif
   !htmlmath $[$c]
+  </td>
   !for j=1 to $langcnt
-   <td align="right" nowrap>
+   <td nowrap>
    !set tt=!word $j+3 of $l
    !set t$j=$[$(t$j)+$tt]
    !htmlmath $[$tt]
@@ -150,19 +152,19 @@ $wims_name_Explanations. $name_explanations
     !set lps=!eval $lps+1
    !endif
   !endif
-  <td align="right">$[rint($c*7/$lps)]</td>
+  </td><td>$[rint($c*7/$lps)]</td>
   :cont
  !next i
  !if $module_type!=2
-  $table_hdtr<td>$name_subtotal<td align="right" nowrap>
+  $table_hdtr<td>$name_subtotal<td nowrap>
   !htmlmath $t
   </td>
   !for i=1 to $langcnt
-   <td align="right" nowrap>
+   <td nowrap>
    !htmlmath $(t$i)
    </td>
   !next i
-  <td align="center">-</td><td align="right">-</td>
+  <td align="center">-</td><td align="center">-</td>
  !endif
 $table_end <p>
 !else
