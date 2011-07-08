@@ -29,11 +29,16 @@ $livret_scoreview into wims_scorecolor,wims_scoreview
 !endif
 
 shcnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
+asheets=$empty
+nssheets=$empty
 !for i=1 to $shcnt
  l=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  l=!word 1 of $l
  !if $l>0
   asheets=!append item $i to $asheets
+  !if $l>=2
+   nssheets=!append item $i to $nssheets
+  !endif
  !endif
  nbs=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
  sheet$i=$empty

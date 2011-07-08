@@ -25,6 +25,7 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !let name_nowork=No hay trabajo
 !let name_listscoreoption=de la clase, del cuaderno
 !let name_listscoreview=no visualización, entero, con un decimal, con dos decimales, con tres decimales, con cuatro decimales
+!set name_see=Détails
 
  !distribute items Título de la $name_competence&nbsp;,\
 Título del $name_n_palier&nbsp;,\

@@ -1,0 +1,70 @@
+!!##!! language independant
+!read adm/class/classname.phtml $wims_classname\
+$wims_institutionname
+
+!read adm/title.phtml 1\
+$classname\
+$livret_title\
+$name_job
+
+<p><hr width="40%"> <p>
+
+
+<ul>
+ <li>$name_title_comp : <font color="green"><b>$(title_$comp)</b></font>.</li>
+ !let eold=!record $palier of wimshome/log/classes/$wims_class/livret/.comp$comp
+ !distribute line $eold into name,eold
+ <li>$name_n_Palier $palier : <font color="green"><b>$name</b></font>.</li>
+ !if $eold!=
+  $table_header
+   $table_hdtr<th>$wims_name_Sheet</th><th>$wims_name_Exercise</th><th>$wims_name_title</th><th>&nbsp;</th></tr>
+   !for l in $eold
+    !let t=!replace internal . by , in $l
+    !if $(t[1]) notitemof $livret_nonactivesheet
+     $table_tr
+       <td align="center">
+        !if $(t[1]) isitemof $nssheets
+          $(t[1])
+        !else
+         !href module=adm/sheet&sh=$(t[1]) $(t[1])
+        !endif
+       </td>
+       <td align="center">
+        !if $(t[1]) notitemof $nssheets
+         !set ex=!record $(t[2]) of wimshome/log/classes/$wims_class/sheets/.sheet$(t[1])
+         !distribute lines $ex into di,pa,require,we,ti,de
+         !if $(deps_$(l[1]))=$empty
+          !let requires=!getscorerequire sheet=$(t[1])
+          !let scores=!getscore sheet=$(t[1])
+          !let means=!getscoremean sheet=$(t[1])
+          !readproc adm/mkdepsheet.proc $(t[1])
+          !let deps_$(t[1])=$deps
+         !endif
+         !set dep=!row $(t[2]) of $(deps_$(t[1]))
+         !set dep=!trim $dep
+         !if $dep=$empty
+          !href module=$di&cmd=new&worksheet=$(t[1])&$pa $(t[2])
+         !else
+          $(t[2])
+         !endif
+        !else
+         $(t[2])
+        !endif
+       <td>
+        !line $(t[2]) of $(sheet$(t[1]))
+       </td>
+       !let t=!word $(t[2]) of $(score[$(t[1]);])
+       !readproc adm/class/colors $t
+       <td style=$style_note>
+        $output_note
+       </td>
+      </tr>
+     !endif
+    !next l
+   $table_end
+  !endif
+ </li>
+</ul>
+!set wims_menu_items=!append line back2,1,cmd=renew\
+to $wims_menu_items
+
