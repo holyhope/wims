@@ -12,13 +12,13 @@
  !else
   !let t_=0
  !endif
- <td style="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);font-weight:bold;text-align:center;border;solid 1px;">
-  $t2_
+ !set style_note="background-color: $(wims_scorecolor[$[ceil(min($t_,10))+1]]);font-weight:bold;text-align:center;border;solid 1px;"
+!!  $t2_
   !if $wims_scoreview>=0 and $t_>0
-   $[rint(($t0_)*10^($wims_scoreview))/10^($wims_scoreview)]
+   !set output_note=$[rint(($t0_)*10^($wims_scoreview))/10^($wims_scoreview)]
   !else
-   &nbsp;
+   !set output_note=&nbsp;
   !endif
-  $t1_
- </td>
+!!  $t1_
+!! </td>
 !endif
