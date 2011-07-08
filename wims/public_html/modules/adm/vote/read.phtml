@@ -63,13 +63,13 @@ $table_end
 
 !if $vote_status=2
  !read $votedir/$vote.def
- !goto comments
+ !exit
 !endif
 
 !if $(user_vote_$Vote)!=$empty
  !if $vote_option!=nominative
   $name_thisvote_already1<p>
-  !goto end
+  !exit
  !else
   $name_thisvote_already2<p>
   !goto form
@@ -92,56 +92,4 @@ $table_end
  </center></form>
 !endif
 
-:comments
-!exit
-!! wait en see needed between this comment : show comments and trace result when $vote_option!=anonymous
-
-
-!readdef $votedir/$vote.comments
-
-!if ($wims_user=supervisor or ($vote_show>0 and $m_formed!=yes)) and $vote_option!=nominative
- <p><b>$name_comments</b> :</p>
- <p>
-  !for i=1 to $parmcnt
-   !if $(type_comment$i)=yes
-    !set comment_$i = !replace internal --- by $\
-$<br>- in $(comment_$i)
-    $i : $(comment_$i)
-    !set rcnt=!recordcnt $votedir/$(vote)_$i.comments
-    !for r_j=1 to $rcnt
-     <br>-
-     !record $r_j of $votedir/$(vote)_$i.comments
-    !next
-    </p><p>
-   !endif
-  </p>
- !next
-!endif
-
-
-!if $wims_user=supervisor and $vote_option!=anonymous
- <p> $name_details
- !for i=1 to $parmcnt
-  !for c=1 to $(choices$i)
-   !if /supervisor/ notin $c/
-    <p>$i-
-    !item $c of $(chlist$i)
- <br> <pre>
-    !for u in $(votes_$(i)_$c)
-     !if $vote_option=nominative
-      !set U=!translate internal / to , in $u
-      !readproc adm/class/userdef classes,$U
-      !defof user_lastname, user_firstname in $userdef
-       ($u)
-     !else 
-       ($u) 
-     !endif
-    !next u
-   </pre>
-   !endif
-  !next c
- !next i
-!endif
-
-:end
 
