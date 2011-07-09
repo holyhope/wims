@@ -308,11 +308,23 @@ void mail_log(char *c)
 void post_log(void)
 {
     char *h, *l, logstr[2*MAX_LINELEN+2];
+    char *authpwd, *p, *ll, *l1 ;
 
     h=remote_addr;
     if(mpboundary[0]!=0) l="multipart/form-data"; else l=stdinbuf;
+
+    ll=strdup(l);
+    authpwd="auth_password=";
+    if((p=strstr(l,authpwd))!=NULL ) {
+      l1=strdup(l);
+      mystrncpy(ll,l,p-l+strlen(authpwd)+1);
+      strcat(ll,"xxxx");
+      mystrncpy(l1,p+strlen(authpwd),strlen(l)); 
+      if((p=strstr(l1,"&"))!=NULL) strcat(ll,p);
+    }
+
     snprintf(logstr,sizeof(logstr),"%s %s	%s",
-	    nowstr, h, l);
+	    nowstr, h, ll);
     write_logfile("post.log",logstr);
 }
 
