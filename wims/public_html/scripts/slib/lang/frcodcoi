@@ -2,5 +2,73 @@
  !goto proc
 !endif
 
-
 slib_author=Gang Xiao
+
+slib_example=manger
+!exit
+
+:proc
+!distribute items $wims_read_parm into $slib_inf,slib_co
+slib_inf=!word 1 of $slib_inf
+!if $slib_inf=$empty
+ !exit
+!endif
+slib_1=!char 1 of $slib_inf
+slib_1=!lower $slib_1
+slib_1=!deaccent $slib_1
+!if $slib_co iswordof cod coi
+  slib_out=!lookup $slib_inf in bases/dic/fr/$slib_co/$slib_1
+!goto continue
+!endif
+slib_out=!lookup $slib_inf in bases/dic/fr/cod/$slib_1
+!if $slib_out=$empty
+ slib_out=!lookup $slib_inf in bases/dic/fr/coi/$slib_1
+!endif
+:continue
+slib_out=!lines2items $slib_out
+slib_out=!nonempty items $slib_out
+slib_out=!randitem $slib_out
+slib_loop=1
+:reloop
+!if _ isin $slib_out
+ slib_n=!wordcnt $slib_out
+ slib_o=
+ !for slib_i=1 to $slib_n
+  slib_w=!word $slib_i of $slib_out
+  !if _ isin $slib_w
+   slib_w2=!lookup $slib_w in bases/dic/fr/Noms
+   !if $slib_w2!=$empty
+    slib_w=!lines2items $slib_w2
+    slib_w=!nonempty items $slib_w
+    slib_w=!randitem $slib_w
+   !else
+    slib_w=!replace _ by $ in $slib_w
+   !endif
+  !endif
+  slib_o=$slib_o $slib_w
+ !next slib_i
+ slib_out=!trim $slib_o
+!endif
+!if _ isin $slib_out and $slib_loop<3
+ !increase slib_loop
+ !goto reloop
+!endif
+slib_1=!word 1 of $slib_out
+!if $slib_1 iswordof un le du ce mon son ton
+ slib_out=1 $slib_out
+!endif
+!if $slib_1 iswordof une la cette ma sa ta
+ slib_out=2 $slib_out
+!endif
+!if $slib_1 iswordof des les ces mes ses tes
+ slib_out=3 $slib_out
+!endif
+!if $slib_1 iswordof de
+  slib_2=!word 2 of $slib_out
+  !if $slib_2 iswordof la cette ma une 
+    slib_out=2 $slib_out
+  !endif
+!endif
+
+!read slib/lang/frapostrophe $slib_out
+
