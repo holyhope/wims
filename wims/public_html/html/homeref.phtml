@@ -142,18 +142,24 @@
 !!********* Link #8 : "Author(s)"
 
 !if $module_author!=$empty and @ isin $module_address
-
  !read namewriting.phtml $module_author
  !set wims_homeref_author_num=$script_cnt
- !set 4_=!mailurl $module_address $(script_out[1])\
-WIMS $module_title [$module_language]
  !if $wims_homeref_author_num>1
   !set 3_=$wims_name_authors:
-  !set 4_=!append item $(script_out[2..-1]) to $4_
  !else
   !set 3_=$wims_name_author: 
  !endif
- !set 2_=!append line author,0,$3_ $4_ to $2_
+ !set 4_=
+ !for ad=1 to $wims_homeref_author_num
+   !if $(module_address[$ad;])!= and @ isin $(module_address[$ad;])
+    !set 4__=!mailurl $(module_address[$ad;]) $(script_out[$ad])\
+WIMS $module_title [$module_language]
+   !else
+     !set 4__=$(script_out[$ad])
+   !endif  
+    !set 4_=!append item $4__ to $4_
+  !next 
+  !set 2_=!append line author,0,$3_ $4_ to $2_
 !endif
 
 !!********* Link #9 : "Translator(s)"
@@ -164,6 +170,8 @@ WIMS $module_title [$module_language]
 !endif
 
 !if $module_translator!=$empty and $module_translator_address!=$empty
+ !read namewriting.phtml $module_translator
+ !set module_translator=$(script_out[1])
  !set 3_=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$module_language]
  !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_
@@ -200,5 +208,3 @@ WIMS $module_title [$module_language]
 
 !read themes.phtml tail
 !robottrap
-
-

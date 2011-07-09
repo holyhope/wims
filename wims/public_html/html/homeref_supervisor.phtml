@@ -30,19 +30,15 @@
  !goto rm2
 !endif
 !reset 1_
+
+!!********* Link #1 : "Close Window" or "Home" (Not Shown if Embedded)
 !if _ isin $wims_subsession
  !set 1_=!append line back2,3,window.close() to $1_
 !else
  !set 1_=!append line class_home,1,session=$wims_session.1 to $1_
 !endif
 
-!!if $wims_sheet>0
-!! !set 1_=!append line sheetmanagement,1,module=adm/class/sheet&sheet=$wims_sheet to $1_
-!!endif
-!!if P isin $wims_sheet
-!! !set 1_=!append line sheet,1,module=adm/sheet&sh=$wims_sheet to $1_
-!!endif
-
+!!********* Link #2 : "Sheet"
 !if $wims_sheet>0 or P isin $wims_sheet
  !if $wims_sheet>0
   !set tmp_=sheetmanagement,1,module=adm/class/sheet&sheet=$wims_sheet
@@ -59,13 +55,18 @@
  !endif
 !endif
 
+!!********* Link #3 : "Resume"
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
+
+!!********* Link #4 : "Introduction" (Not Shown if Embedded)
 !if $module_has_intro=yes and $cmd notwordof intro help and\
         $wims_sheet=$empty and exam notin $wims_session
  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
 !endif
+
+!!********* Link #5 : "Help"
 !if $module_has_help=yes and $cmd notwordof intro help
  !if $module_help=$empty or $module_help=popup
   !set 1_=!append line help,4,module=$module&cmd=help&special_parm=$wims_help_parm,mhelp to $1_
@@ -73,6 +74,8 @@
   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
+
+!!********* Link #6 : "About"
 !if $module_has_about=yes and $cmd notwordof help intro
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
@@ -133,19 +136,31 @@
  !goto rmend
 !endif
 !reset 2_
+
+!!********* Link #8 : "Author(s)"
+
 !if $module_author!=$empty and @ isin $module_address
  !read namewriting.phtml $module_author
  !set wims_homeref_author_num=$script_cnt
- !set 4_=!mailurl $module_address $(script_out[1])\
-WIMS $module_title [$module_language]
  !if $wims_homeref_author_num>1
   !set 3_=$wims_name_authors:
  !else
-  !set 3_=$wims_name_author:
-  !set 4_=!append item $(script_out[2..-1]) to $4_
+  !set 3_=$wims_name_author: 
  !endif
- !set 2_=!append line author,0,$3_ $4_ to $2_
+ !set 4_=
+ !for ad=1 to $wims_homeref_author_num
+   !if $(module_address[$ad;])!= and @ isin $(module_address[$ad;])
+    !set 4__=!mailurl $(module_address[$ad;]) $(script_out[$ad])\
+WIMS $module_title [$module_language]
+   !else
+     !set 4__=$(script_out[$ad])
+   !endif  
+    !set 4_=!append item $4__ to $4_
+  !next 
+  !set 2_=!append line author,0,$3_ $4_ to $2_
 !endif
+
+!!********* Link #9 : "Translator(s)"
 !set mod_transl=$(module_translator_$lang)
 !if $module_transl!=$empty
    !set module_translator=$mod_transl
@@ -176,6 +191,3 @@ WIMS $module_title [$module_language]
 
 !read themes.phtml tail
 !robottrap
-
-
-
