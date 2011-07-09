@@ -33,11 +33,13 @@ cat <<@ >index.phtml
   !set slpdflt\$i=!item 1 of \$(slp\$i)
   !set slp\$i=!item 2 to -1 of \$(slp\$i)
  !next i
-
+ !readproc namewriting.phtml \$slib_author
+ !set slib_author=\$script_out
  \$table_header
  <caption>\$wims_name_slib</caption>
  \$table_tr<th>\$wims_name_name</th><td><tt>\$slib_detail</tt></td></tr>
  \$table_tr<th>\$wims_name_title</th><td>\$slib_title</td></tr>
+ \$table_tr<th>\$wims_name_Author</th><td>\$slib_author</td></tr>
  \$table_tr<th>\$wims_name_call1</th><td><tt>!readproc slib/\$slib_detail [parameters]</tt></td></tr>
  \$table_tr<th>\$wims_name_call2</th><td><tt>slib(\$slib_detail [parameters])</tt></td></tr>
  \$table_tr<th>\$wims_name_Parameters</th><td>

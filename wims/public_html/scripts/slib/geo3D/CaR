@@ -207,16 +207,11 @@ slib_test=$[min($slib_vertex_cnt,130)]
    !! slib_miny=$[min($(slib_coord[2]),$slib_miny)]
     slib_liste=u,v,w
     slib_xyz=!exec pari print(round(1000*(([$slib_coord]-[$slib_centre_rot])*$slib_M +[$slib_centre_rot]))/1000.)
-    !!slib_xy=!exec pari slib_f([$slib_coord]
     !for slib_c in $slib_liste
-   !! slib_xy=!mathsubst c$slib_c=cos($slib_c) in $slib_xy
-   !! slib_xy=!mathsubst s$slib_c=sin($slib_c) in $slib_xy
     slib_xyz=!mathsubst c$slib_c=cos($slib_c) in $slib_xyz
     slib_xyz=!mathsubst s$slib_c=sin($slib_c) in $slib_xyz
     !next
     slib_xyz=!replace internal E- by *0* in $slib_xyz
-  !!  slib_xy=!mathsubst f=$slib_f in $slib_xy
-  !!  slib_xy=!mathsubst k=$slib_k in $slib_x
   
 slib_xy=$(slib_xyz[1])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1))),$(slib_xyz[2])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1)))
     slib_polyedre_vertex=$slib_polyedre_vertex\
@@ -242,16 +237,11 @@ $slib_polyedre_vertex
    !! slib_miny=$[min($(slib_coord[2]),$slib_miny)]
     slib_liste=u,v,w
     slib_xyz=!exec pari print(round(1000*(([$slib_coord]-[$slib_centre_rot])*$slib_M +[$slib_centre_rot]))/1000.)
-    !!slib_xy=!exec pari slib_f([$slib_coord]
     !for slib_c in $slib_liste
-   !! slib_xy=!mathsubst c$slib_c=cos($slib_c) in $slib_xy
-   !! slib_xy=!mathsubst s$slib_c=sin($slib_c) in $slib_xy
     slib_xyz=!mathsubst c$slib_c=cos($slib_c) in $slib_xyz
     slib_xyz=!mathsubst s$slib_c=sin($slib_c) in $slib_xyz
     !next
     slib_xyz=!replace internal E- by *0* in $slib_xyz
-  !!  slib_xy=!mathsubst f=$slib_f in $slib_xy
-  !!  slib_xy=!mathsubst k=$slib_k in $slib_x
   
 slib_xy=$(slib_xyz[1])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1))),$(slib_xyz[2])*(1-($(slib_xyz[3])-($slib_Z0))/($(slib_xyz[3])-($slib_Z1)))
     slib_polyedre_vertex=$slib_polyedre_vertex\
