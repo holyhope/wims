@@ -46,6 +46,7 @@ ccnt=!recordcnt $indf
 clcnt=0
 encnt=0
 lacnt=0
+excnt=0
 listla=
 !if $type=example
  !for i=1 to $ccnt
@@ -53,6 +54,7 @@ listla=
   c=!item 1 of $l
   !if NaN notin $[$c] and $c<10000
    ltest=!defof class_lang in wimshome/log/classes/$c/.def
+   !advance excnt
    !if $ltest=$module_language
     laclasses=!append line $l to $laclasses
     !advance lacnt
@@ -74,7 +76,7 @@ listla=
  !endif
  listla=!listuniq $listla
  listla=!replace internal , by </tt>, <tt> in <tt>$listla</tt>
- othercnt=$[$ccnt-$lacnt]
+ othercnt=$[$excnt-$lacnt]
 !endif
 
 !if $type iswordof supervisor participant
