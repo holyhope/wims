@@ -25,7 +25,6 @@ into name_Competence,name_competence,name_Competences,name_competences,name_n_Pa
 !let name_nowork=Geen activiteit                                                                                                            
 !let name_listscoreoption=van de klas,van het raport                                                                                           
 !let name_listscoreview=niet laten zien,integer,met &eacute;&eacute;n decimaal,met twee decimalen,met drie decimalen,met vier decimalen 
-!set name_see=Détails
 
 !distribute items Titel van de $name_comptence&nbsp;,\
 Titel van $name_n_palier&nbsp;,\
