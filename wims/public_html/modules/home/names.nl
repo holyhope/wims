@@ -15,7 +15,7 @@ V_cls = Virtuele klaslokalen
 wims_name_n_participant = Studenten bereik
 wims_name_n_supervisor = Docenten bereik
 wims_name_mail = Schrijf naar de docent
-wims_name_pref = Verander de voorkeurs instellingen 
+wims_name_pref = Instellingen 
 wims_name_ref = Backward links
 wims_name_stat = Gebruiks statistieken
 
