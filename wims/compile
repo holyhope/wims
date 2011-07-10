@@ -28,9 +28,18 @@ make clean || exit
 make all || exit
 
 if [ -f ../.wims_maintainer_mode ]; then
+### use convert, identify
   make maintainer || exit
-### to decomment : all the maintainers should have ant ??
- #cd Misc ; make maintainer || exit
+### all the maintainers should have Apache ant - java compilation
+ if (ant); then :; else
+    echo "[maintainer mode] Please install Apache ant first."
+    exit 1
+  fi
+  if (convert) || (identify); then :; else
+    echo "[maintainer mode] Please install convert and identify first."
+    exit 1
+  fi
+ cd Misc ; make maintainer || exit
   cd ..
 fi
 cd ..
