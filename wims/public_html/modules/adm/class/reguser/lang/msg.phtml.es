@@ -101,5 +101,11 @@ inscritos.
  !exit
 !endif
 
+!if no_cgu=$error
+ Si vous n'acceptez pas les conditions générales d'utilisation, vous ne pouvez pas vous inscrire.
+ !exit
+!endif
+
+
 !msg $error
 

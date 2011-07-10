@@ -95,3 +95,5 @@ ninguna cuenta de participante
 
 !set name_warning_direct=La inscripción directa a $name_classe se reserva a\
   profesores. Si son alumno, inscribirse
+!set name_cgu=J'accepte les conditions générales d'utilisation
+!set name_seecgu=See CGU
