@@ -6,6 +6,14 @@
  !endif
 !endif
 
+!if $save_logincgu!=$empty
+ !if $agreecgu=yes
+  !read adm/class/userdef wimshome/log/classes,$class,$user
+  !setdef !set user_agreecgu=yes in $userdef/$save_logincgu
+ !endif
+ !reset $save_logincgu
+!endif
+
 !read adm/class/authchars
 auth_user=!word 1 of $auth_user
 auth_password=!word 1 of $auth_password
@@ -165,6 +173,8 @@ ctype=!defof class_type in wimshome/log/classes/$class/.def
 !endif
 clang=!defof class_lang in wimshome/log/classes/$class/.def
 
+
+
 !if $auth_user=supervisor
  sech=!defof class_secure in wimshome/log/classes/$class/.def
  sech=!trim $sech
@@ -184,6 +194,10 @@ clang=!defof class_lang in wimshome/log/classes/$class/.def
   !exit
  !endif
  sup_secure=-1
+ !if $user_agreecgu!=yes
+  error=no_cgu
+  !exit
+ !endif
 !endif
 
 !read adm/class/authprep $class,$auth_user

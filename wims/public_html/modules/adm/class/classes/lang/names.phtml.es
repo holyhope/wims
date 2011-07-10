@@ -108,3 +108,5 @@ las clases virtuales desde el punto de vista del estudiante. Debería crear\
     dans votre classe et modifier.
  !endif
  
+!set name_acceptcgu=J'accepte les conditions générales d'utilisation
+!set name_seecgu=Voir les CGU

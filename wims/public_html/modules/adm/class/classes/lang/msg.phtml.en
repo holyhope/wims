@@ -21,5 +21,20 @@
  !exit
 !endif
 
+!if $error=no_cgu
+ Vous n'avez pas accepté les confitions générales d'utilisation de ce serveur.
+ Vous devez d'abord accepter les CGU avant de pouvoir vous identifier.
+ !form reply
+  !formcheckbox agreecgu list yes prompt $name_acceptcgu
+  .[
+  !href cmd=help $name_seecgu
+  ]
+  !let save_logincgu=$auth_user
+  <br>
+  <input type="submit" value="$wims_name_tosave">
+ </form>
+ !exit
+!endif
+
 !msg $error
 
