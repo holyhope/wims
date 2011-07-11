@@ -30,13 +30,13 @@ test=!defof user_exists in $userdeffile
   !if $class_superclass != $empty
     !if $user_participate != $empty
       !if $subclass isitemof $user_participate
-        error=user $quser exists and already participates to this class ($subclass)
+        error=user $quser exists and already participates to this subclass ($subclass)
         !exit
       !endif
       user_participate=$user_participate,
     !endif
     #l'utilisateur existait deja dans la superclasse. on lui donne simplement acces a la sous-classe.
-    !setdef user_participate=$user_participate$subclass in $userdeffile
+    !setdef !set user_participate=$user_participate$subclass in $userdeffile
     
     ### Faut-il aussi l'ajouter dans la sous-classe ici ?
     

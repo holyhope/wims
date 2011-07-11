@@ -1,23 +1,41 @@
+options=$option
 
 cnt_class=!recordcnt wimshome/log/classes/.index
+# On parcourt l'index des classes du serveur
 !for i = 1 to $cnt_class
   cl=!record $i of wimshome/log/classes/.index
+  # lorsqu'une des classe autorise une connexion, on verifie
   !if $(cl[10]) != $empty
-	rc=!words2items in $(cl[10])	
-    	index=1
-	# pour avoir toutes les connections possibles on parcourt rc
+	rc=!words2items $(cl[10])	
+    index=1
+    rchain = $ident,$rclass
+	# On parcourt toutes les connections declaree par la classe
 	!while $(rc[$index]) != $empty
-		# on a une donnee de connection, on verifie que c'est pour le bon serveur
-		infos_ident=!replace internal / by , in $(rc[$index])						
-		!if $(infos_ident[1]) issametext $ident
+		# on compare la connexion avec celle demandee
+		current= $(rc[$index])
+		current=!translate internal +,; to $ $ in $current
+		current = !singlespace $current
+		current=!translate internal / to , in $current
+
+		!if $(current[1]) = $(rchain[1]) and $(current[2]) = $(rchain[2])
+			listclasses=!append item $(cl[1]) to $listclasses
 			# on stocke le numero de la classe (qclass)
 			# l'identifiant de la classe pour le serveur (rclass)
-			listclasses=!append line $(cl[1]),$(infos_ident[2]) to $listclasses
+			#infos_ident=!replace internal / by , in $(rc[$index])
+			#listclasses=!append i $(cl[1]),$(infos_ident[2]) to $listclasses
 		!endif
 		!increase index
 	!endwhile	
   !endif
 !next
+
+!if $listclasses = $empty
+ error= $error \
+ 		there is no class allowed for this server  ($rclass_chain - $listclasses)
+!endif
+
+
+
 !if $error!=$empty
  !exit
 !endif

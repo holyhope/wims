@@ -120,24 +120,25 @@ scoreaverages=$meandetail\
  !shortout $wims_session
 # !shortout $wims_ref_name?session=$wims_session.1&module=home
 
+
 :listclasses
-list_cnt=!linecnt $listclasses
+list_cnt=!itemcnt $listclasses
+
 !for i = 1 to $list_cnt
-   qrclass=!line $i of $listclasses
-   qclass=$(qrclass[1])
-   !reset error
+   qclass=!item $i of $listclasses
    !read jobs/getclass.proc
-  !! inutile ? obtenu par option
-   !shortout $qclass:connection=$ident/$(qrclass[2])\\
-
-   !for d in $option
-     !shortout $d=$(class_$d)\\
-
+   !shortout  qclass=$qclass
+         
+   !for d in $options
+	!shortout   :$d=$(class_$d)
    !next d
+   
+   !shortout  \\
 
 !next i
-
 !exit
+
+
 
 :getclassesuser
 list_cnt=!itemcnt $listclassesuser

@@ -48,7 +48,14 @@ class_superclass=!defof class_superclass in $classdeffile
  !if $qclass iswordof $test
     !exit
  !endif
+ 
  class_typename=!defof class_typename in $classdeffile
+ 
+ !if $class_typename iswordof class and $qclass notwordof $test
+ 	error=Sorry, this user does not participates to this subclass.
+ 	!exit
+ !endif
+ 
  !if $class_typename iswordof program and (mandatory notwordof $class_progstyles or $class_progstyles=$empty)
  ###si le programme n'est pas obligatoire, user_participate contient ce qu'il faut
      qlist=!record 0 of wimshome/log/classes/$qclass/courses
@@ -67,3 +74,5 @@ class_superclass=!defof class_superclass in $classdeffile
       !endif
      !next
  !endif
+ 
+ 

@@ -355,28 +355,29 @@ $ by ],[ in $($v)
 
 :listclasses
 list_cnt=!itemcnt $listclasses
-!shortout ,"listContent":[\
+!shortout "message":"Lists classes associated to specified rclass in your server",\
+"rclass":"$rclass",\
+"classes_list":[\
 
 !for i = 1 to $list_cnt
    qclass=!item $i of $listclasses
    !read jobs/getclass.proc
-   !shortout  {"qclass":"$qclass",\
-         "rclass":"$rclass",\
-         "ident":"$ident",\
+   !shortout  {"qclass":"$qclass"\
+
          
-   !for d in $option
-	!shortout   "$d":"$(class_$d)",\
+   !for d in $options
+	!shortout   ,"$d":"$(class_$d)"\
 
    !next d
    
 	shortout  }
 	!if  $i < $list_cnt
-		!shortout ,\
+		!shortout },\
 			
 	!endif
    
 !next i
-!shortout ]\
+!shortout }]\
 
 !goto footer
 
