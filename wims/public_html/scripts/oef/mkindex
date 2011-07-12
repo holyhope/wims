@@ -31,6 +31,7 @@ if [ ! -z "$test" ] && [ -d $wims_home/log/classes/$w_wims_class ]; then
  exindex=$class_header/Exindex
  extitles=$class_header/Extitles
  dfindex=$class_header/Dataindex
+ exauth=$class_header/Exauthors
  tmp1=$class_header/tmp1
  tmp2=$class_header/tmp2
  mkdir -p $def
@@ -40,6 +41,7 @@ else
  src=src
  exindex=Exindex
  extitles=Extitles
+ exauth=Exauthors
  dfindex=Dataindex
  imindex=Imindex
  tmp1=tmp1
@@ -133,6 +135,7 @@ titlist=
 titlist1=
 list1=
 rm -f $extitles.tmp
+rm -f $exauth
 for i in $list
 do
  tit=`awk -F= 'NF>=2 {print $2; exit}' $def/$i.def | $LL tr ',\11' '; '`
@@ -141,6 +144,8 @@ do
 "
  titlist1="$titlist1$tit,"
  list1="$list1$i,"
+ auth=`grep author def/$i.def | awk -F= '{print $2}'`;
+ echo "$i:$auth" >> $exauth
 done
 $wims_home/bin/dicsort $extitles.tmp
 if [ -s $extitles.tmp.sorted ]; then
