@@ -10,17 +10,20 @@
 !endif
 
 :begin
-
+!set latex_title=$module_title
 !readproc oef/togetfile.proc $filename.tex new\
 \documentclass{article}\
-\usepackage{amsmath,amssymb,amsfonts,thm}\
+\usepackage{amsmath,amssymb,amsfonts,amsthm}\
+%%put 0 to hide solutions\
+\def\hassolution{1}\
 \usepackage[latin1]{inputenc}\
 \usepackage[T1]{fontenc}\
-\usepackage{xlop}\
+%\usepackage{xlop}\
 \usepackage{xkeyval,array,multirow}\
-\usepackage{tikz,arrows}\
+\usepackage{tikz}\
 \usepackage[np,autolanguage]{numprint}\
 \theoremstyle{plain}\
+\usepackage{comment}\
 \newtheorem{statement}{$name_exo}\
 \theoremstyle{definition}\
 \newtheorem{solution}{$name_Solution}\
@@ -30,11 +33,16 @@
 \def\CC{\mathbb{C}}\
 \def\ZZ{\mathbb{Z}}\
 \def\NN{\mathbb{N}}\
-\
+\def\yes{1}\
+\if\hassolution\yes\
+ \
+\else\
+ \excludecomment{solution}\
+\fi\
 \begin{document}\
 \setcounter{page}{1}\
 \onecolumn\
-\mytitle{$name_title}\
+\mytitle{$latex_title}\
 
 !exit
 :exo
@@ -68,10 +76,6 @@ $latex_src
 
 !exit
 :print
-<a href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$filename.tex">
+<a href="wims.tex?session=$session&+cmd=getfile&+special_parm=$filename.tex">
 $name_latexprint
 </a>
-
-
-!!debug href="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$filename.tex">$filename.tex
-!!<img border=no width=25px src="gifs/doc/quadrillage.gif" alt="sheet.tex">
