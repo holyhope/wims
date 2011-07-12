@@ -7,7 +7,7 @@
 !set name_warning_wrongpass=Ha introducido una contraseña errónea.
 !set name_try_wrongpass=Vuelva a intentarlo
   
-!!!list
+!!list
  !distribute lines Tras la compilación es necesario configurar la seguridad de la instalación. ¡Por favor ejecute bin/wrapuid como root!\
    Lista de tareas que puede realizar en línea\
    Configuración\
@@ -183,10 +183,10 @@ into name_backup,name_click,name_daily,name_last,name_download,name_restore,name
      por defecto\
    into name_config,name_default
 
-  !set name_updated=!nosubst   El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar \
+  !set name_updated=!nosubst El fichero <tt>wims.conf</tt> hasido actualizado. Puede recuperar \
   la información de configuración antigua en <tt>$backdir/wims.conf.old</tt>.
 
-  !set name_warning=<<b>Nota</b>. Los parámetros con un asterisco `*' en su título son importantes.\
+  !set name_warning=Los parámetros con un asterisco `*' en su título son importantes.\
 Los que tienen un signo de peligro `!' pueden dañar la instalación si comete algún error.\
 De todas formas recuerde que si borra el fichero <tt>log/wims.conf</tt>\
 volverá a empezar con una configuración por defecto. También puede recuperar\
@@ -237,7 +237,7 @@ las configuraciones guardadas en el directorio log.
   ¿Las ve correctamente? De lo contrario pruebe otros formatos gráficos y de animación.
 
 
-!set name_gnuplot1=La siguiente representación gráfica usa gluplot.
+!set name_gnuplot1=La siguiente representación gráfica usa <b>gnuplot</b>.
 !set name_gnuplot2= Las curvas deben tener colores
 diferentes. Si el resultado no es correcto pruebe con distintos formatos gráficos.
 
@@ -332,9 +332,9 @@ de este sitio. No está autorizado a acceder a este módulo.
 !endif
 
 !if $job=mod2
-  !set name_error1=!nosubst <b>Error</b>. El identificador de usuario (login) <tt>$devlogin</tt> \
+  !set name_error1=!nosubst El identificador de usuario (login) <tt>$devlogin</tt> \
  está ya siendo usado por otra cuenta. Por favor escoja otro identificador.
-  !set name_error2=!nosubst <b>Error</b>. No ha introducido el campo <tt>$badfield</tt> correctamente.\
+  !set name_error2=!nosubst No ha introducido el campo <tt>$badfield</tt> correctamente.\
  Por favor corríjalo.
 
 !exit
