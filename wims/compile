@@ -15,6 +15,7 @@ Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)
 @
 
 cd `dirname $0`
+
 cd src
 if [ -f ../.wims_maintainer_mode ]; then
   if (autoconf); then :; else
@@ -31,7 +32,7 @@ if [ -f ../.wims_maintainer_mode ]; then
 ### use convert, identify
   make maintainer || exit
 ### all the maintainers should have Apache ant - java compilation
- if (ant -h); then :; else
+  if (ant -h); then :; else
     echo "[maintainer mode] Please install Apache ant first."
     exit 1
   fi
@@ -39,13 +40,49 @@ if [ -f ../.wims_maintainer_mode ]; then
     echo "[maintainer mode] Please install convert and identify first."
     exit 1
   fi
- cd Misc ; make maintainer || exit
+  cd Misc ; make maintainer || exit
   cd ..
 fi
 cd ..
+
+if [ -f log/wims.conf ]; then :; else
+  echo "You can configure some parameters"
+  echo "who allow the manager site to make more configuration from the web interface."
+  echo "Please write the IP address of the wims webmaster"
+  echo "You can change it in the file log/wims.conf"
+  read ans
+  if [ -n $ans ]; then 
+    echo "manager_site=$ans\n" >> log/wims.conf
+    chmod 600 log/wims.conf
+  else
+    echo "no IP address"
+  fi
+  echo "Please write the email address of the wims webmaster"
+  echo "You can change it in the file log/wims.conf"
+  read ans
+  if [ -n $ans ]; then  
+    echo "site_manager=$ans" >> log/wims.conf
+    chmod 600 log/wims.conf
+  else
+    echo "no email address"
+  fi
+fi
+if [ -f log/.wimspass ]; then :; else
+  echo "Please give the password for the wims webmaster"
+  echo "You can change it in the file log/.wimspass"
+  read ans
+  if [ -n $ans ]; then 
+    echo "$ans" > log/.wimspass
+    chmod 600 log/.wimspass
+  else
+    echo "the file log/.wimspass has not been created"
+  fi
+fi
 cat <<@
 
 Please run './bin/setwrapexec' as root (e.g. using sudo) to finish WIMS setup.
 See README about installation of help and teaching modules.
 
 @
+
+exit
