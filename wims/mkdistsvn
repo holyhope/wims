@@ -58,5 +58,16 @@ data=public_html/scripts/data
   cp -r $data/$a/photindex $target/wims/$data/$a/photoindex
 done
 
+echo "** Copy *.jar (in java/) ..."
+cd $wims_dir
+javadir=public_html/java
+ for a in `ls $javadir/*/*.jar` ; do
+  cp -r $a $target/wims/$javadir/
+done
+javadir=public_html/scripts/authors/jm.evers/applets
+ for a in `ls $javadir/*.jar` ; do
+  cp -r $a $target/wims/$javadir/
+done
+
 echo "** Archiving WIMS package..."
 cd $target/wims ; tar -czf ../wims-$version.tgz .
