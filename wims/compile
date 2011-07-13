@@ -17,6 +17,14 @@ Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)
 cd `dirname $0`
 
 cd src
+
+# how do we suppress \n from 'echo' output ?
+if (echo "hi\c"; echo " ") | grep c >/dev/null 2>&1 ; then
+  n=-n; c=
+else
+  n=; c='\c'
+fi
+
 if [ -f ../.wims_maintainer_mode ]; then
   if (autoconf); then :; else
     echo "[maintainer mode] Please install autoconf first."
@@ -46,36 +54,30 @@ fi
 cd ..
 
 if [ -f log/wims.conf ]; then :; else
-  echo "You can configure some parameters"
-  echo "who allow the manager site to make more configuration from the web interface."
-  echo "Please write the IP address of the wims webmaster"
-  echo "You can change it in the file log/wims.conf"
-  read ans
-  if [ -n $ans ]; then 
-    echo "manager_site=$ans\n" >> log/wims.conf
+  echo "You can configure some parameters which allow the manager site"
+  echo "to make more configuration from the web interface."
+  echo ""
+  echo "Please write the IP address of the wims webmaster (default 127.0.0.1):" $c
+  read ans1
+  if [ -z $ans1 ]; then :; else
+    echo "manager_site=$ans1\n" >> log/wims.conf
     chmod 600 log/wims.conf
-  else
-    echo "no IP address"
   fi
-  echo "Please write the email address of the wims webmaster"
-  echo "You can change it in the file log/wims.conf"
-  read ans
-  if [ -n $ans ]; then  
-    echo "site_manager=$ans" >> log/wims.conf
+  echo $n "Please write the email address of the wims webmaster:" $c
+  read ans2
+  if [ -z $ans2 ]; then :; else  
+    echo "site_manager=$ans2" >> log/wims.conf
     chmod 600 log/wims.conf
-  else
-    echo "no email address"
   fi
 fi
 if [ -f log/.wimspass ]; then :; else
   echo "Please give the password for the wims webmaster"
   echo "You can change it in the file log/.wimspass"
-  read ans
-  if [ -n $ans ]; then 
-    echo "$ans" > log/.wimspass
+  echo $n "Webmaster password: " $c
+  read ans3
+  if [ -z $ans3 ]; then :; else
+    echo "$ans3" > log/.wimspass
     chmod 600 log/.wimspass
-  else
-    echo "the file log/.wimspass has not been created"
   fi
 fi
 cat <<@
