@@ -1,5 +1,20 @@
 !distribute item $wims_read_parm into n_,t_,l_,a_
-!if exercise notin $t_ and doc notin $t_
+!if $t_ notwordof exercise doc href
  !exit
 !endif
+
+!if href iswordof $t_
+ !default a_=$l_
+ !set n_=!replace internal . by , in $l_
+ !set n_=!item -1 of $n_
+ !set n_=!lowercase $n_
+ !if $n_ notwordof jpeg jpg png gif pdf tex txt mp3 flv avi
+  !set n_=cgi
+ !endif
+
+  !set n_=!replace internal cgi? by $n_? in $m_filedir
+  <a href="$n_/$l_">$a_</a>
+ !exit
+!endif
+
 !href session=$wims_session&$l_ $a_
