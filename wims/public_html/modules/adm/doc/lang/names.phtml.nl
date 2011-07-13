@@ -24,17 +24,23 @@
  <tt class="wims_code_variable">\filedir</tt>. 
  Bijvoorbeeld,
 <p><center>
- <tt class="wims_address">&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
  geeft de link naar het bestand <a href="$m_filedir/$f1">$f1</a>.
  Er kan ook worden geschreven:
 <p><center>
  <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </center> <p>
-om het plaatje <tt>myfile.jpg</tt> te verwerken in de pagina.
+om het plaatje <tt class="wims_fname">myfile.jpg</tt> te verwerken in de pagina.
  <p>
 Bestanden opgenomen in dit document zijn alleen beschikbaar voor mensen met "leesrechten" voor dit document
 
+<p>
+Une nouvelle commande <tt class="wims_code_words">\href{}{}</tt> est en test. 
+Pour obtenir un lien sur le fichier, il suffit alors d'écrire
+<center>
+<tt class="wims_code_words">\href{$f1}</tt> ou <tt class="wims_code_words">\href{$f1}{lien}</tt>.
+</center>
 !exit
 
 :readauth
@@ -51,7 +57,7 @@ Als schrijver van dit document moet u  toestemming aan de
  !mailurl $wims_site_manager de sitemanager
  dit document te verwijderen.
 !exit
- 
+
 :erase2
 <span class="wims_warning">WAARSCHUWING !!</span> Er is hier geen "undelete", 
 dus weg is weg&nbsp;!
@@ -65,5 +71,3 @@ Weet u zeker dat het document<tt class="wims_fname">$tit</tt>&nbsp; moet worden 
  om dit WIMS 
  document $doc publiek te maken.
 !exit
-
- 

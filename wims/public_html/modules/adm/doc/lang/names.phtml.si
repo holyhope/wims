@@ -2,7 +2,9 @@
 !if $wims_read_parm=$empty
  !exit
 !endif
+
 !goto $wims_read_parm
+
 :file
 <p>V tem dokumentu so na voljo naslednje datoteke:
  !for f in $flist
@@ -27,10 +29,16 @@ v dokumentu. Primer:
 <center><p>
  <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </p></center> <p>
-in tako na stran dodate slikovno datoteko <tt>myfile.jpg</tt>.
+in tako na stran dodate slikovno datoteko <tt class="wims_fname">myfile.jpg</tt>.
  <p>
  Datoteke, ki jih dodate dokumentu, so dosegljive le uporabnikom s pravico do branja tega dokumenta.
 
+<p>
+Une nouvelle commande <tt class="wims_code_words">\href{}{}</tt> est en test. 
+Pour obtenir un lien sur le fichier, il suffit alors d'écrire
+<center>
+<tt class="wims_code_words">\href{$f1}</tt> ou <tt class="wims_code_words">\href{$f1}{lien}</tt>.
+</center>
 !exit
 
 :readauth
@@ -38,8 +46,8 @@ in tako na stran dodate slikovno datoteko <tt>myfile.jpg</tt>.
  !mailurl $wims_site_manager skrbnika stre¾nika\
 Ask to open WIMS document $doc
  da bi omogoèili javen dostop do dokumenta.
- !exit
- 
+!exit
+
 :erase1
  Iz varnostnih razlogov lahko javne dokumente bri¹e le skrbnik stre¾nika.
  <p>

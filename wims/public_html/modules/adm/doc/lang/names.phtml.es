@@ -2,7 +2,9 @@
 !if $wims_read_parm=$empty
  !exit
 !endif
- 
+
+!goto $wims_read_parm
+
 :file
 <p>Ficheros disponibles en este documento:
  !for f in $flist
@@ -20,18 +22,25 @@
  Se puede acceder a los ficheros del documento usando la 
 variable <tt class="wims_code_variable">\filedir</tt> en el documento. Por ejemplo
 <p><center>
- <tt class="wims_address">&lt;a&nbsp;href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
+ <tt class="wims_address">&lt;a href="\filedir/$f1"&gt;$f1&lt;/a&gt;</tt>
 </center> <p>
  proporciona un enlace al fichero <a href="$m_filedir/$f1">$f1</a>.
  También puede escribir
 <p><center>
  <tt class="wims_address">&lt;img src="\filedir/myfile.jpg" alt="myfile"&gt;</tt>
 </center> <p>
-para incluir un fichero de imagen <tt>myfile.jpg</tt> en la página.
+para incluir un fichero de imagen <tt class="wims_fname">myfile.jpg</tt> en la página.
  <p>
  Los ficheros incorporados en el documento sólo serán accesibles
  a quienes estén autorizados a leer el documento.
+<p>
+Une nouvelle commande <tt class="wims_code_words">\href{}{}</tt> est en test. 
+Pour obtenir un lien sur le fichier, il suffit alors d'écrire
+<center>
+<tt class="wims_code_words">\href{$f1}</tt> ou <tt class="wims_code_words">\href{$f1}{lien}</tt>.
+</center>
 !exit
+
 :readauth
 Si es usted el autor del documento, recuerde por favor que necesita
  la autorización del
@@ -59,6 +68,7 @@ Ask to open WIMS document $doc
  !mailurl $wims_site_manager [wims] Pedir al administrador del sitio
  que borre este documento por usted.
 !exit
+
 :erase2
 <span class="wims_warning">ATENCIÓN!!</span> 
 ¡Una vez borrados los documentos no se pueden recuperar!
