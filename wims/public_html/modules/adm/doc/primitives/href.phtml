@@ -1,0 +1,22 @@
+!!##parameter 1: name of the file with extension
+!!##parameter 2: words on the link, by default, name of the file
+
+ !if $parm1=$empty
+  !exit
+ !endif
+!if $parm2=$empty
+  !set parm2=$parm1
+!endif
+
+!set ext_=!replace internal . by , in $parm1
+!set ext_=!item -1 of $ext_
+!set ext_=!lowercase $ext_
+!if $ext_ notwordof jpeg jpg png gif pdf tex txt mp3
+  !set ext_=cgi
+!endif
+
+!if $module_category=adm
+ <a target="wims_external" href="wims.$ext_?session=$wims_session&cmd=getfile&special_parm=doc/$parm1">$parm2</a>
+!else
+ <a target="wims_external" href="$m_filedir/$parm1">$parm2</a>
+!endif
