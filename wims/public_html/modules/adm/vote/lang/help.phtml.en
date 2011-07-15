@@ -10,17 +10,21 @@
 
 !if $wims_read_parm=$empty
 The content of a vote can be a html text, reinforced by the same facilities as
-for forum messages, plus the following commands. <dl>
-<p><dt><tt class="wims_code_variable">\menu{Yes,No}</tt>
+for forum messages, plus the following commands. 
+<dl>
+ <dt><tt class="wims_code_variable">\menu{Yes,No}</tt>
 	<dd>A choice by menu.
-
-<p><dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
+	</dd>
+ <dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
 	<dd>A choice by buttons in a vertical list.
-
-<p><dt><tt class="wims_code_variable">\radio{very bad, rather bad, rather good, very good}</tt>
+	</dd>
+ <dt><tt class="wims_code_variable">\radio{very bad, rather bad, rather good, very good}</tt>
 	<dd>A choice by horizontal buttons.
-
-<p><dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
+	</dd>
+ <dt><tt class="wims_code_variable">\checkbox{A,B,C,D}</tt>
+	<dd>Several choices by horizontal buttons.
+	</dd>
+ <dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
 	<dd>Register the immediately preceding choice in an individual
 	variable for the participant, under the name <tt>vname</tt>. This
 	variable will take the value <tt>val0</tt> by default, <tt>val1</tt>
@@ -28,8 +32,18 @@ for forum messages, plus the following commands. <dl>
 	This variable may then be used to define individualized access to
 	sheets or exams, by putting the word <tt class="wims_code_variable">\vname</tt> among the
 	restrictions of the sheet or exam.
-<p><dt><tt class="wims_code_variable">\textarea</tt>
+	In this case, it is possible to give the maximum number of participants allowed to choose
+	an option: each choice must begin by this number followed by <tt class="wims_code_words">:</tt>
+	For instance,
+<pre>
+\list{46:Seance 1 at 8.00,
+46:Seance 2 at 10.00, 
+40:Seance 3 at 13.00}
+</pre>
+	</dd>
+ <dt><tt class="wims_code_variable">\textarea</tt>
  <dd>Textarea only when the vote is anonymous. 
+	</dd>
 </dl>
 
 A vote may contain up to 64 choice fields.

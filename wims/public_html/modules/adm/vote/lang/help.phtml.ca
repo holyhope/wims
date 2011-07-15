@@ -9,33 +9,22 @@
 !endif
 
 !if $wims_read_parm=$empty
-Le contenu d'un questionnaire peut être un texte html, renforcé par les mêmes facilités
-que pour des messages de forums. Les commandes suivantes sont de plus utilisables. <dl>
-<p><dt><tt class="wims_code_variable">\menu{Oui,Non}</tt>
-	<dd>Un choix par menu déroulant.!if $special_parm!=$empty
- !changeto help/$module_language/$special_parm.phtml
-!endif
-
-!if $wims_user!=supervisor
- Désolé il n'y a pas d'aide pour participant.
- !tail
- !exit
-!endif
-
-!if $wims_read_parm=$empty
  Le contenu d'un questionnaire peut être un texte html, renforcé par les mêmes facilités 
  que pour des messages de forums. Les commandes suivantes sont de plus utilisables. 
  <dl>
-<p><dt><tt class="wims_code_variable">\menu{Oui,Non}</tt>
+ <dt><tt class="wims_code_variable">\menu{Oui,Non}</tt>
 	<dd>Un choix par menu déroulant.
-
-<p><dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
+    </dd>
+ <dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
 	<dd>Un choix par boutons dans une liste verticale.
-
-<p><dt><tt class="wims_code_variable">\radio{très mauvais,plutôt mauvais, plutôt bien, très bien}</tt>
+    </dd>
+ <dt><tt class="wims_code_variable">\radio{très mauvais,plutôt mauvais, plutôt bien, très bien}</tt>
 	<dd>Un choix par boutons horizontaux.
-
-<p><dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
+	</dd>
+ <dt><tt class="wims_code_variable">\checkbox{A,B,C,D}</tt>
+	<dd>Plusieurs choix possibles par boutons horizontaux.
+	</dd>
+ <dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
 	<dd>Enregistrer le choix immédiatement précédent dans une variable
 	individuelle pour le participant, sous le nom <tt>vname</tt>. Cette
 	variable aura la valeur <tt>val0</tt> par défaut, <tt>val1</tt> si
@@ -43,9 +32,19 @@ que pour des messages de forums. Les commandes suivantes sont de plus utilisable
 	Cette variable peut ensuite être utilisée pour définir des accès
 	individualisés aux feuilles ou examens, en mettant le mot
 	<tt class="wims_code_variable">\vname</tt> parmi les restrictions de la feuille ou de l'examen.
-<p><dt><tt class="wims_code_variable">\textarea</tt>
+	Dans ce cas, il est possible de fixer le nombre maximum de participants choisissant une option.
+	Pour cela, chacun des choix doit commencer par le nombre maximum de participants
+	suivi de <tt class="wims_code_words">:</tt>
+	Par exemple,
+<pre>
+\list{46:Séance 1 à partir de 8h,
+46:Séance 2 à partir de 10h, 
+40:Séance 3 à partir de 13h}
+</pre>
+ 
+<dt><tt class="wims_code_variable">\textarea</tt>
  <dd>Une zone de texte libre, utilisable uniquement lorsque le vote est
- anonyme. 
+ anonyme. </dd>
 </dl>
 
 Un questionnaire peut contenir jusqu'à 64 champs de choix.
@@ -88,30 +87,5 @@ Un questionnaire peut contenir jusqu'à 64 champs de choix.
 !tail
 !exit
 !endif
-!tail
-
-
-
-<p><dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
-	<dd>Un choix par boutons dans une liste verticale.
-
-<p><dt><tt class="wims_code_variable">\radio{très mauvais,plutôt mauvais, plutôt bien, très bien}</tt>
-	<dd>Un choix par boutons horizontaux.
-
-<p><dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
-	<dd>Enregistrer le choix immédiatement précédent dans une variable
-	individuelle pour le participant, sous le nom <tt>vname</tt>. Cette
-	variable aura la valeur <tt>val0</tt> par défaut, <tt>val1</tt> si
-	le participant choisit la première option, etc. <p>
-	Cette variable peut ensuite être utilisée pour définir des accès
-	individualisés aux feuilles ou examens, en mettant le mot
-	<tt class="wims_code_variable">\vname</tt> parmi les restrictions de la feuille ou de l'examen.
-<p><dt><tt class="wims_code_variable">\textarea</tt>
- <dd>Une zone de texte libre, utilisable uniquement lorsque le vote est
- anonyme. 
-</dl>
-
-Un questionnaire peut contenir jusqu'à 64 champs de choix.
-
 !tail
 

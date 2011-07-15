@@ -11,26 +11,39 @@
 !if $wims_read_parm=$empty
 De inhoud van de stemming / verkiezing kan een HTML tekst zijn, met dezelfde WIMS uitbreidingen als voor de "forum-berichten", 
 plus de volgende extra commando's <dl>
-<p><dt><tt class="wims_code_variable">\menu{JA,NEE}</tt>
+ <dt><tt class="wims_code_variable">\menu{JA,NEE}</tt>
 	<dd>Menu Keuze.
 
-<p><dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
+ <dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
 	<dd>Een keuze d.m.v. een rij verticale "radiobuttons"
-
-<p><dt><tt class="wims_code_variable">\radio{zeer slecht, slecht,redelijk, prima}</tt>
+	</dd>
+ <dt><tt class="wims_code_variable">\radio{zeer slecht, slecht,redelijk, prima}</tt>
 	<dd>Een keuze d.m.v. een rij horizontale "radiobuttons"
-
-<p><dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
+	</dd> 
+ <dt><tt class="wims_code_variable">\checkbox{A,B,C,D}</tt>
+	<dd>Several choices by horizontal buttons.
+	</dd>
+ <dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
 	<dd>Registreer de keuze in een variabele <tt>vname</tt> voor elke student afzonderlijk.
 	De waarde van deze variabele is default <tt>val0</tt> , en <tt>val1</tt> 
 	als de student kiest voor de eerste optie, etc.<p>
 	Deze variabele kan worden gebruikt om de toegang tot werkbladen en toetsen
 	tot op de individuele student te regelen.
 	Vermeld de variabele 
-	<tt class="wims_code_variable">\vname</tt> in de lijst met restricties van de bestreffene werkbladen of toetsen
-<p><dt><tt class="wims_code_variable">\textarea</tt>
-<dd>Een tekst invoerveld, 
-alleen te gebruiken bij een anoniem enquete.
+	<tt class="wims_code_variable">\vname</tt> in de lijst met restricties van de bestreffene 
+	werkbladen of toetsen.
+	In this case, it is possible to give the maximum number of participants allowed to choose
+	an option: each choice must begin by this number followed by <tt class="wims_code_words">:</tt>
+	For instance,
+<pre>
+\list{46:Seance 1 at 8.00,
+46:Seance 2 at 10.00, 
+40:Seance 3 at 13.00}
+</pre>
+	</dd>
+<dt><tt class="wims_code_variable">\textarea</tt>
+   <dd>Een tekst invoerveld, alleen te gebruiken bij een anoniem enquete.
+	</dd>
 </dl>
 
 Een enquete mag tot 64 keuzevelden bevatten.

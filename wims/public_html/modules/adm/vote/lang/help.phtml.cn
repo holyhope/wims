@@ -11,23 +11,36 @@
 !if $wims_read_parm=$empty
 投票的内容可以是 html 格式的文本, 通过论坛信息的手段加以强化,
 再加上以下的命令. <dl>
-<p><dt><tt class="wims_code_variable">\menu{是,否}</tt>
+<dt><tt class="wims_code_variable">\menu{是,否}</tt>
 	<dd>用菜单选择.
-
-<p><dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
+    </dd>
+<dt><tt class="wims_code_variable">\list{A,B,C,D}</tt>
 	<dd>用竖直的按钮来选择.
-
-<p><dt><tt class="wims_code_variable">\radio{差, 中, 良, 优}</tt>
+    </dd>
+<dt><tt class="wims_code_variable">\radio{差, 中, 良, 优}</tt>
 	<dd>用水平按钮来选择.
-
-<p><dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
+    </dd>
+<dt><tt class="wims_code_variable">\checkbox{A,B,C,D}</tt>
+	<dd>Several choices by horizontal buttons.
+	</dd>
+<dt><tt class="wims_code_variable">\uservar{vname,val0,val1,...}</tt>
 	<dd>把刚才的选择记录在参加者的各个变量中, 变量名是 <tt>vname</tt>. 
 这个变量的默认值是 <tt>val0</tt>, 如果选中第一个选项, 则取值 <tt>val1</tt>,
 以此类推. <p>
-通过把 <tt class="wims_code_variable">\vname</tt> 放到练习页或试卷的限制条件中, 这个变量可以用来定义练习页或考试的进入许可. 
-<p><dt><tt class="wims_code_variable">\textarea</tt>
- <dd>自由输入文字的区域, 仅出现在匿名投票. 
-</dl>
+通过把 <tt class="wims_code_variable">\vname</tt> 放到练习页或试卷的限制条件中, 
+这个变量可以用来定义练习页或考试的进入许可. 
+In this case, it is possible to give the maximum number of participants allowed to choose
+	an option: each choice must begin by this number followed by <tt class="wims_code_words">:</tt>
+	For instance,
+<pre>
+\list{46:Seance 1 at 8.00,
+46:Seance 2 at 10.00, 
+40:Seance 3 at 13.00}
+</pre>
+	</dd>
+<dt><tt class="wims_code_variable">\textarea</tt>
+ <dd>自由输入文字的区域, 仅出现在匿名投票.
+ </dd>
 </dl>
 
 一个投票可以包含多达 64 个选项.
@@ -38,7 +51,7 @@
 
 !if generalinfo iswordof $wims_read_parm
 <ul>
- <li><b>$wims_name_title</b> : 问题表的标题.</li>
+ <li><b>$wims_name_title</b>: 问题表的标题.</li>
  <li><b>$wims_name_Type</b>: 
   <ul>
    <li><b>$name_anonymous </b>: 在匿名问题表里没有人知道谁回答了什么
