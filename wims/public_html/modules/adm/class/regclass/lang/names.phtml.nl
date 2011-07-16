@@ -9,10 +9,10 @@
 
 !if $Cltype iswordof 2 4
     !if $Cltype=2
-	!set name_classe=een groep klassen
+	!set name_classe=klassen
 	!set name_sup=van de docent/administateur
 	!else
-	!set name_classe=een portaal
+	!set name_classe=portaal
 	!set name_sup=van de administateur
     !endif
     !set name_classes=de $name_classe
@@ -65,7 +65,7 @@ zichzelf te registreren; dit wachtwoord moet dus niet voor studenten worden gebr
 Limiet voor het aantal deelnemers aan uw $name_classe\
 Beveiligde toegang\
 Optioneel\
-Lijst met adressen van waaruit de administratie voor uw $name_classe kan worden afgehandeld.\
+Optionele beveiling.<br>Een lijst met ip-adressen van waaruit de administratie voor uw $name_classe kan worden afgehandeld.<br>(alleen computers met deze ip-adressen krijgen administratieve toegang)\
 Dit is een &eacute;&eacute;nmalige code, en is nergens anders voor te gebruiken !\
 Code van $name_classe\
  into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
