@@ -87,5 +87,5 @@ $sup1<img width=1 height=$[$fill_sy+4] src="gifs/transparent.gif" alt="transpare
 border=0 vspace=0 hspace=0 align="top"><a name="fill$fillcnt" id="fill$fillcnt"><img
 width=$[ceil($sizei/$sizej)*$fill_sx] height=$[($fill_sy*$sizej)+4] src="gifs/transparent.gif" alt="transparent"
 border=0 vspace=0 hspace=0 align="top"></a>$sup2
-<input type=hidden name="reply$i" value="">
+<input type="hidden" name="reply$i" value="">
 !reset inputsize
