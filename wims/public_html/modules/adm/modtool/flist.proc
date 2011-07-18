@@ -85,12 +85,11 @@ mod=$modreq
  i_require=!listintersect $i_require and $swlist
  !default i_author=$auth_name
  i_author=!char 1 to 100 of $i_author
- !default i_author1_lastname=!word 2 of $i_author
- !default i_author1_firstname=!word 1 of $i_author
- i_author1_lastname=!char 1 to 50 of $i_author1_lastname
- i_author1_firstname=!char 1 to 50 of $i_author1_firstname
- !!should disapear
- !default i_author=$i_author1_firstname i_author1_lastname
+ !if , notin in $i_author
+   author1=!word 1 of $i_author
+   author2=!word 2 to -1 of $i_author
+   i_author=$author1, $author2
+!endif
  !default i_address=$auth_email
  i_address=!items2words $i_address
  i_address=!word 1 of $i_address
