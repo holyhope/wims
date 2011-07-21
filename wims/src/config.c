@@ -80,6 +80,7 @@ char PATH[512];  /* directory settings */
 char *gap_command="gap.sh -T -m 64M";
 char *maxima_command="maxima";
 char *pari_command="gp -f -q -p 150000";
+char *scilab_command="scilab -nwni";
 
   /* default languages */
 char site_langbuf[]="en fr cn es it nl";
@@ -269,6 +270,7 @@ CONFIG_DATA main_config[]={
       {"ref_button_help_color",		0, &ref_button_help_color},
       {"ref_menucolor",		0, &ref_menucolor},
       {"rlimit_cpu",		1, &rlimit_cpu},
+      {"scilab_command",	2, &scilab_command},
       {"show_author",		0, &show_author},
       {"show_ip",		0, &show_ip},      
       {"show_stat",		0, &show_stat},

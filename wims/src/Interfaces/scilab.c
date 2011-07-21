@@ -26,7 +26,7 @@
 	/* The way to print a string in the program. */
 #define stringprinter "\"%s\"\n"
 	/* This is scilab home page. To be kept up to date. */
-#define homepage "http://scilabsoft.inria.fr/"
+#define homepage "http://www.scilab.org/"
 	/* String to search for answers */
 char ans_str[]="\n-->";
 
