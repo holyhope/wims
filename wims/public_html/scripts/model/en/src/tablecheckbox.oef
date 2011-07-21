@@ -1,7 +1,7 @@
 type=datalist
 textarea="data"
 
-:Classify the items according to their properties by filling in a table.
+:Classify the items according to their properties by filling a checkbox in a table.
 
 A list of items with various properties is presented. 
 The table has to be filled in by clicking on the relevant boxes for each item.
@@ -44,7 +44,6 @@ fur,feathers,four legs,wings
 <pre>
 
 :List of properties
-
 \text{attribut=fur,feathers,four feet,wings}
 
 :Main data
@@ -56,8 +55,7 @@ mosquito,0,0,0,1
 butterfly,0,0,0,1
 rabbit,1,0,0,0}
 
-:Text for the feedback. (This can be changed as you wish)
-
+:Text for the feedback.
 \text{nonoui=--,X}
 
 :%%%%%%%%%%%%%% Nothing to modify before the statement%%%%%%%%%%%%%%%%
@@ -69,11 +67,12 @@ rabbit,1,0,0,0}
    .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
    table.tableau {border:solid 1px;
     border-collapse:collapse;}
-    table.tableau td, th {background-color:#FFFFCC;text-align:center;border:solid 1px;width:55px;}
+    table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;margin-left:20px;}
    ol li {list-style: upper-alpha; }
     table.tableau th { background-color:#CCCFFF;}
  </style>}
 \if{\file notsametext}{
+  \text{file=randitem(\file)}
   \text{attribut=wims(record 0 of \file)}
   \integer{datacnt=wims(recordcnt \file)}
   \integer{N=min(\N,\datacnt)}
@@ -83,16 +82,18 @@ rabbit,1,0,0,0}
   \for{s in \choix}{
     \text{data=\data
 wims(record \s of \file)}
-   }
-  }{
+  }
+  \matrix{data=\data}
+  \text{data=wims(replace internal ;; by ; in \data)}
+}{
   \text{objet_cnt=rows(\data)}
   \integer{N=min(\N,\objet_cnt)}
+  \text{bat=shuffle(\objet_cnt)}
+  \text{bat=\bat[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\bat;]}
 }
 \integer{attribut_cnt=items(\attribut)}
-\text{bat=shuffle(\objet_cnt)}
-\text{bat=\bat[1..\N]}
-\matrix{data=\data}
-\text{data=\data[\bat;]}
 \text{Data=}
 \text{R=}
 \for{u=1 to \N}{
@@ -105,7 +106,7 @@ wims(record \s of \file)}
 \text{C1=wims(makelist x for x=1 to \N*\attribut_cnt)}
 \text{nstep=r1}
 \nextstep{\nstep}
-\statement{\file
+\statement{
 <div class="question"> \instruction
 <center>
 <table class="tableau"><tr> <th></th>
@@ -114,7 +115,7 @@ wims(record \s of \file)}
 \for{j=1 to \N}{ 
   <tr><th>\data[\j;1]</th>
    \for{k=1 to \attribut_cnt}{
-    \if{\step=1}{ <td><font color="\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</font></td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
+    \if{\step=1}{<td><font color="\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</font></td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
     }
   </tr>
 }
