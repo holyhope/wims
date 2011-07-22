@@ -9,8 +9,7 @@ slib_wims_version=4.01
 :proc
 
 slib_def=$wims_read_parm
-slib_def=!replace internal ; by $\
-$ in $slib_def
+slib_def=!rows2lines $slib_def
 slib_def=!replace internal $	$ by $\
 $ in $slib_def
 
@@ -52,6 +51,22 @@ slib_word_cnt=!linecnt $slib_word
   slib_word_cnt=20
 !endif
 
+slib_test_char=!lines2words $slib_word
+!! let the empty character at the end of the line
+slib_test_char=!text expand $slib_test_char using 0 
+slib_test_char=!words2items $slib_test_char
+slib_pb=!listintersect -,_ and $slib_test_char
+!if $slib_pb!=$empty
+  slib_test_char=!listcomplement $slib_test_char in $slib_alphabet
+  slib_test_char_cnt=!itemcnt $slib_test_char
+  !if $slib_test_char_cnt >=1
+    slib_word=!replace internal $(slib_pb[1]) by $(slib_test_char[1]) in $slib_word
+    !if $slib_test_char_cnt >=2 and $(slib_pb[2]) notsametext
+      slib_word=!replace internal $(slib_pb[2]) by $(slib_test_char[2]) in $slib_word
+    !endif
+  !endif 
+!endif
+  
 !set slib_file=!randint 1000
 !set slib_file=cw_$wims_nowseconds$slib_file
 
@@ -119,6 +134,15 @@ slib_cw=!column 1 to -$slib_v of $slib_cw
     !next
 !endif
 slib_out=!replace internal ,$ $ by , in $slib_cw
+
+!if $slib_pb!=$empty
+  !if $slib_test_char_cnt >=1
+    slib_out=!replace internal $(slib_test_char[1]) by $(slib_pb[1]) in $slib_out
+    !if $slib_test_char_cnt >=2 and $(slib_pb[2]) notsametext
+      slib_out=!replace internal $(slib_test_char[2]) by $(slib_pb[2]) in $slib_out
+    !endif
+  !endif 
+!endif
 
 slib_out=[$slib_out],[$slib_def]
 

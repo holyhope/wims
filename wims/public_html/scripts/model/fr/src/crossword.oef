@@ -25,6 +25,23 @@ Si le paramètre est <tt class="wims_code_words">tooltip</tt>, les définitions ap
 en "pop-up" en cliquant sur le numéro. Mettre un blanc pour qu'elles apparaissent 
 une par une sur le côté.
 \text{none=allhelp}
+
+:Nom du fichier
+Ne remplissez que si vous désirez transférer le source de cet exercice dans un compte Modtool 
+et utiliser un fichier de données (dans un module OEF)
+du type
+<pre>
+  :RAM, Random Access Memory
+  :ROM, Read Only Memory
+  :FAI, Acronyme. Fournisseurs d'accès Internet
+  :WIFI,Wireless Internet access
+  :PC,Ordinateur individuel
+</pre>
+Dans ce cas, les données suivantes ne seront pas prises en compte. 
+Sinon, remplissez les données.
+
+\text{file=}
+
 :Données principales.
 Mettre dans la première colonne les mots en minuscules et dans la deuxième une indication éventuelle
 \text{data=bit,Plus petite unité d'information manipulable par un ordinateur ayant la valeur 1 ou 0, appartenant au système de numérotation binaire.
@@ -48,12 +65,27 @@ Internet, Réseau informatique mondial constitué d'un ensemble de réseaux nationa
 WWW,world wide web}
 
 :%%%%%%%%%%%%%% Rien à modifier avant l'énoncé %%%%%%%%%%%%%%%%
-
-\text{cnt=rows(\data)}
-\text{cnt=shuffle(\cnt)}
-\text{choix=\cnt[1..\N]}
-\matrix{data=\data}
-\text{data=\data[\choix;]}
+\if{\file notsametext}{
+  \text{file=randitem(\file)}
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+  }
+  \matrix{data=\data}
+  \text{data=wims(replace internal ;; by ; in \data)}
+}{
+  \text{objet_cnt=rows(\data)}
+  \integer{N=min(\N,\objet_cnt)}
+  \text{bat=shuffle(\objet_cnt)}
+  \text{bat=\bat[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\bat;]}
+}
 
 \text{data=slib(text/crossword \data) }
 
