@@ -99,7 +99,7 @@ Interne software fout : kan het aantal deelnemers niet vaststellen.
 !endif
 
 !if no_cgu=$error
- Si vous n'acceptez pas les conditions gÃ©nÃ©rales d'utilisation, vous ne pouvez pas vous inscrire.
+ Si vous n'acceptez pas les conditions générales d'utilisation, vous ne pouvez pas vous inscrire.
  !exit
 !endif
 

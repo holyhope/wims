@@ -167,6 +167,9 @@ listla=
  !if $type=authsupervisor and ($class isitemof $wims_supervise or $wims_realuser=$empty or $wims_realuser=supervisor or /0/ isin $class/)
   !default auth_user=supervisor
  !endif
+ !if $save_logincgu!=$empty
+  !default auth_user=$save_logincgu
+ !endif
  !if $class_defined=yes and $auth_user!=$empty
   !changeto var.auth
  !endif

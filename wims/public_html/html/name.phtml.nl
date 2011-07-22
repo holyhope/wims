@@ -48,6 +48,7 @@
 		Volgende serie,Vorige serie,\
 		Voorbeeld,\
 		Enquete,\
+		Algemene voorwaarden,\
  into wims_name_search,\
 	wims_name_work,wims_name_resume,\
 	wims_name_home,wims_name_intro,wims_name_help,wims_name_about,\
@@ -65,7 +66,7 @@
 	wims_name_Explanations,wims_name_Exercise,wims_name_Sheet,wims_name_Account,wims_name_Enter,\
 	wims_name_Score1,wims_name_myscore,wims_name_Examen,wims_name_browse,wims_name_menuback,\
 	wims_name_expiration,wims_name_Error,wims_name_nextseries,wims_name_previousseries,\
-	wims_name_Example,wims_name_Vote
+	wims_name_Example,wims_name_Vote,wims_name_cgu
 
 !! **** Permalink Names ***
 !distribute items deze module, deze oefening,\
