@@ -14,7 +14,6 @@
 !set noclue=!getopt idontknow in $(replyoption$i)
 !set oef_js_submit=geogebra2wims();
 
-!!! faut-il faire un petit fichier - une très faible partie est utile ici
 !read lang/geogebra.phtml.$ggblang
 !!! let the following tabulation
 !set oef_applet_option=!replace internal $	$ by $\
@@ -119,8 +118,9 @@ function geogebra2wims() {
     if (def=='') {def=whatisit;}
 
   !!replace the greek names of the angles
-  test=thing;
-  name=thing.charCodeAt(0);
+  test=encodeURIComponent(thing);
+  test=decodeURIComponent(test);
+  name=test.charCodeAt(0);
   if (name>944)
     {
     name=name-945;
@@ -171,15 +171,15 @@ function geogebra2wims() {
         data=encodeURIComponent(data);
         data=data.replace(/%5E0/g,'');
         data=decodeURIComponent(data);
-        !!on ecrit le nom en toutes lettres
+        !!on ecrit les noms grecs en toutes lettres
         name=data.charCodeAt(0);
-        name=name-945;
-        name=grec[name];
-
         data=data.split('=');
+		name0=data[0];
         data=data[1];
-        data=name+'='+it+','+data;
-      }
+        if(name>944){ name=name-945;
+          name=grec[name];
+          data=name+'='+it+','+data; }
+        }
         else if (it=='text'||it=='numeric'||it=='segment'||it=='function'||it=='conicpart')
         {
         data=data.split('=');
