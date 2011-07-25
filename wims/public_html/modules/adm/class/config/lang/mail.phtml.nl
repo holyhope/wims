@@ -14,7 +14,7 @@ $code\
 U kunt deze code kopieren naar de configuratie pagina om toegang te krijgen tot de klas configuratie.\
 \
 \
-Hebt U geen idee waar dit over gaat, heeft vermoedelijk iemand Uw wachtwoord gestolen...\
+Hebt U geen idee waar dit over gaat, heeft vermoedelijk iemand uw wachtwoord gestolen...\
 Verander dit dan zo spoedig mogelijk.\
 \
 $wims_site_manager\

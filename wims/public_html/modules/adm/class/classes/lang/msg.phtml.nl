@@ -23,8 +23,8 @@ Dit account is i.v.m. verdachte activiteiten, voor 10 minuten geblokkeerd !
 !endif
 
 !if $error=no_cgu
- Vous n'avez pas accepté les conditions générales d'utilisation de ce serveur (CGU).
- Vous devez d'abord accepter les CGU avant de pouvoir vous identifier.
+    De algemene voorwaarden voor het gebruik van deze server zijn nog niet geaccepteerd.
+    Geef eerst goedkeuring aan deze algemene voorwaarden: 
  !form reply
   !formcheckbox agreecgu list yes prompt $name_acceptcgu
   [

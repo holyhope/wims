@@ -8,7 +8,7 @@
  !if backup iswordof $warn
   <p><span class="wims_warning">$wims_name_warning</span>.
   Het is de verantwoordelijkheid van de individuele docent een backup te maken van de virtuele ruimte.<br>
-  Deze server computer zal -zonder contact met systeembeheer- <b>geen backups</b> van virtuele klassen aanmaken.
+  Deze server computer zal zonder expliciet contact met de systeembeheer <b>geen backups</b> van virtuele klassen aanmaken.
  !else
   <p>
   Bescherm Uw virtuele klassen tegen onvoorzien data verlies !

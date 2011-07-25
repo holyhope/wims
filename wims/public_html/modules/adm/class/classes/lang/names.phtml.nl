@@ -108,6 +108,6 @@ dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op g
   !set name_sheet_example=U kunt ook de gebruikte werkbladen importeren [en modificeren] in uw eigen klas.
 !endif
  
-!set name_acceptcgu=J'accepte les conditions générales d'utilisation
-!set name_seecgu=Voir les CGU
+!set name_acceptcgu=Ik ga akkoord met de algemene voorwaarden.
+!set name_seecgu=Lees de algemene voorwaarden.
 
