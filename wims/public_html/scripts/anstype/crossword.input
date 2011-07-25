@@ -119,8 +119,7 @@ $ in $def
 !reset defH defV
 !set listemotV=!select $listemot where V isin column 1
 !set listemotH=!select $listemot where H isin column 1 
-!set def=!replace internal ; by $\
-$ in $def
+!set def=!rows2lines $def
 !set listemotV_cnt=!linecnt $listemotV
 !set listemotH_cnt=!linecnt $listemotH
 !for s_ = 1 to $(listemotV_cnt)
@@ -303,7 +302,7 @@ return true;
            !set u_=$u_<p>\
            $name_vertical $(u[2..-1])</p>
           !endif
-          !readproc slib/utilities/tooltip $(Mpos[$k;$j]),[ABOVE,'true',STICKY,'true',FONTSIZE, '12pt'],$u_
+          !readproc slib/utilities/tooltip $(Mpos[$k;$j]),[ABOVE,'true',STICKY,'true',FONTSIZE, '12pt',WIDTH,'3'],$u_
           <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]));">$slib_out</span>
          !else
           <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]))">$(Mpos[$k;$j])</span>
