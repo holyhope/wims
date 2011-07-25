@@ -28,7 +28,9 @@
 	/* This is scilab home page. To be kept up to date. */
 #define homepage "http://www.scilab.org/"
 	/* String to search for answers */
-char ans_str[]="\n-->";
+
+// old chroot:  char ans_str[]="\n-->";
+char ans_str[]="\n";
 
 char *nameofcmd="scilab -nw -ns";
 int precision=9;
