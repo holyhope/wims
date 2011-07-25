@@ -35,11 +35,17 @@ $ by ',' in '$objs'
 !set Objs=!replace internal ' by \' in $Objs
 !set Objs=!replace internal $\
 $ by ',' in '$Objs'
-!set leftcolor='#ffd080'
+!if transparent iswordof $wims_fill_option
+  !set leftcolor=''
+  !set clcolor=''
+!else
+  !set leftcolor='#ffd080'
+  !set clcolor='#C0A060'
+!endif
 !set leftcolor2='#c0c0c0'
 !set rightcolor='#87ceeb'
 !set crcolor='#6060ff'
-!set clcolor='#C0A060'
+
 !set align_option=!getopt align in $wims_fill_option
 !set align_option=!tolower $align_option
 !bound align_option within left,right,center default center
