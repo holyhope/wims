@@ -23,7 +23,7 @@ lopt=-L$(wims_home)/lib $(NETLIBS) $(CRYPTLIB) -lwims -lm $(rpath)
 
 wimsd=@BUILD_WIMSD@
 
-all:: lib$(libtype) progs setupwims checklist mkindex
+all:: lib$(libtype) progs setupwims mkindex
 
 progs:: flydraw texgif interfaces oef2wims msg2wims misc module $(wimsd) wimslogd wims 
 
@@ -118,9 +118,6 @@ texgif::
 libstatic::
 	rm -f $(wims_home)/lib/libwims.so 2>/dev/null
 	cd Lib; make static
-
-checklist::
-	$(wims_home)/bin/nongnu
 
 maintainer::
 #  make fonts (need convert, Tex)

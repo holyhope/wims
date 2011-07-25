@@ -8,13 +8,33 @@ Please compile as 'wims'.
  exit 1
 fi
 
+option=$1
+
 ##########################################################################
 cat <<@
 Welcome to the compilation of WIMS (WWW Interactive Multipurpose Server)
 
 @
+if [ ! "$option" ] ; then option=no ; fi ;
+if [ "$option" == "--build-chroot" ] ; then
+  echo "compile with option $option"
+fi
 
 cd `dirname $0`
+
+if [ "$option" == "--build-chroot" ] ; then
+  if [ -d chroot ] ; then  
+    mkdir -p chroot/tmp
+    mkdir -p chroot/tmp/sessions
+    touch chroot/tmp/sessions/.chroot
+  else
+   cat <<@
+   You must first get and install the chroot directory. See the README
+
+@
+   exit 1
+  fi 
+fi
 
 cd src
 
@@ -80,9 +100,15 @@ if [ -f log/.wimspass ]; then :; else
     chmod 600 log/.wimspass
   fi
 fi
+if [ $option == "--build-chroot" ] ; then
+  script=wrapuid ;
+else
+ script=setwrapexec ;
+fi
 cat <<@
 
-Please run './bin/setwrapexec' as root (e.g. using sudo) to finish WIMS setup.
+Please run './bin/$script' as root (e.g. using sudo) to finish WIMS setup
+and './bin/apache-config'.
 See README about installation of help and teaching modules.
 
 @

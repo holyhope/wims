@@ -14,7 +14,13 @@ This software is reported to work on several Linux distributions, including
 Red Hat, Debian, and LinuxPPC. It is also reported to work on Mac OS-X and
 should work on any modern Unix-like system after minimal porting efforts.
 
-Otherwise, you may compile the system on your machine. Here are the steps:
+You may compile the system on your machine. You can use a chroot for the third party
+support softwares or use the locally installed ones. 
+
+#######################
+
+Here are the steps for a first installation with locally installed third party
+support softwares: 
 
 0. Install third party support softwares:
  -- LaTeX distribution
@@ -29,22 +35,27 @@ Otherwise, you may compile the system on your machine. Here are the steps:
 
 3. Decompress and untar the .tgz file.
 
-4. Compile the server as user wims : type './compile'.
+4. (For a first installation only). Get and execute the script wims_modules.pl
+(need Perl and webget). It takes a long time as there are many pedagogical modules.
+
+5. Compile the server as user wims : type './compile'.
+At the end, you will be asking about the IP address from which the webmaster will 
+be able to configure the preferences, his password and the wims email address.
 
 Then execute the script ./bin/setwrapexec as root. It is important 
 for security reasons.
 
-5. Get and install optional support software. Omitting some of them will simply
+6. Get and install optional support software. Omitting some of them will simply
  prevent your server from running some of the exercises / activities.
 
- -- GNU Octave 3.2.4 or up (http://www.octave.org/).          ( 20% importance)
+ -- GNU Octave 3.0.4 or up (http://www.octave.org/).        ( 20% importance)
  -- Yacas 1.0.52 or up (http://yacas.sourceforge.net/).     ( 10% importance)
  -- GAP 4 or up (http://www-gap.dcs.st-and.ac.uk/~gap).     ( 10% importance) 
  -- Povray (http://www.povray.org/).                        (  5% importance)
  -- Graphviz (http://www.graphviz.org/).                    (  5% importance)
  -- Macaulay (1.1 or up)                                    (~ 0% importance)
 
-6. You may run WIMS single-user by executing the script $HOME/localwims
+7. You may run WIMS single-user by executing the script $HOME/localwims
    if you would prefer something else. In this case, you must run first the 
    script ./bin/setwimsd as root. It is important for security reasons.
    
@@ -57,22 +68,50 @@ for security reasons.
    In particular, modules must be selected and installed from that online
    maintenance page.
 
-7. If you want to use Apache httpd with WIMS, run $HOME/bin/apache-config 
+8. If you want to use Apache httpd with WIMS, run $HOME/bin/apache-config 
    as root. In this case, wims can be accessed from the address
 
-	http://localhost/wims/         or
-	http://localhost/wims/wims.cgi
+	  http://localhost/wims/        
+	or
+	  http://localhost/wims/wims.cgi
 
-8. Get and install all or some help and teaching modules (from the WIMS home
-page, follow the link maintenance, then module management). A good idea is to
-install at least modules from categories "teacher" and "student" ("all" is
-recommended) in zone "help" : they contain the FAQ pages and several help
-documents.
+9. You can make more configuration (from the WIMS home page, follow the link maintenance).
+
+For a further installation, you have only to do the steps 2, 3 and 5. 
+
+#######################
+
+If your system allows to use the build-chroot, the steps are the following :
+
+1. Create a user, say `wims', with home directory, say, /var/wims ($HOME).
+
+2. Login as wims, and copy the tar file wims-WIMS_VERSION.tgz into $HOME.
+   This tarball now contains the base system. It does not contains "pedagogical modules".
+
+3. Decompress and untar the .tgz file.
+
+4. (For a first installation only). Get and execute the script wims_modules.pl
+(need Perl and webget). It takes a long time as there are many pedagogical modules.
+
+5. Decompress and untar the .tgz file wims4.chroot64.tar.bz2 or wims4.chroot32.tar.bz2
+
+6. Compile the server as user wims : type './compile --build-chroot'.
+At the end, you will be asking about the IP address from which the webmaster will 
+configure the preferences, the password he will have and the wims email address.
+Then execute the script ./bin/wrapuid as root.
+
+7. Run $HOME/bin/apache-config as root. In this case, wims can be accessed from the address
+      http://localhost/wims/         
+    or
+	  http://localhost/wims/wims.cgi
+
+8. You can make more configuration (from the WIMS home page, follow the link maintenance).
+
+For a further installation, you have only to do the step 2, 3 and 6. 
 
 Good luck, and enjoy!
 
 If you run into difficulties: have a look at WIMSEDU forum (http://wimsedu.info/).
 
 Home site of wims: http://wims.unice.fr/
-Source : http://sourcesup.cru.fr/frs/?group_id=379
-
+Source: http://sourcesup.cru.fr/frs/?group_id=379
