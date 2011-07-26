@@ -18,8 +18,10 @@ Het gebruik van specifieke hulpmiddelen in een digitale klas (zoals forum,berich
 onder de verantwoording van een docent.
 </p><p>
 Alle data worden automatisch opgeslagen.
+!if $save_logincgu!=$empty
 !read date.phtml $class_expiration,notime
 (deze datum kan worden gewijzigd door een docent)
+!endif
 </p><p>
 Alle data worden door de sitemanager op regelmatige basis van de server verwijderd.
 (veelal aan het eind van een schooljaar)
