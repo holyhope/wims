@@ -116,7 +116,7 @@ kan dus niet worden overgezet van
     dat kan worden geopend met een spreadsheet programma.\
     Student informatie is aangepast\
     Nieuwe studenten toegevoegd\
-    Het toevoegen van nieuwe studenten is mislukt :er is geenv geheugenruimte meer beschikbaar.\
+    Het toevoegen van nieuwe studenten is mislukt : er is geenv geheugenruimte meer beschikbaar.\
     Student informatie is niet aangepast omdat de cijfers zijn geupload.\
     Server berekende cijfers (de gemiddelden en werkblad/proefwerk scores) zijn niet aangepast : deze kunnen niet worden veranderd.\
     Niet aangepaste gegevens over verwijderde studenten \

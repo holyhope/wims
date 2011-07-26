@@ -44,20 +44,20 @@ logtest=
   ltest=!item $gotlogin of $l
   ll=!wordcnt $ltest
   !if $ll=1 and # notin $ltest
-   logtest=!append item $ltest to $logtest
-   !if @ isin $ltest
-    ltest=!replace internal @ by _____ in _$ltest
-    !!!!modification necessaire car les noms de variables ne peuvent pas 
-    !!!!contenir @ ; aucun login commencant par _ ne peut avoir été accepté, 
-    !!!!donc il n'y a pas de confusion possible    
-   !endif
-   dep_$ltest=$l
    ltest_cnt=!charcnt $ltest
    !if $ltest_cnt<4
      bad_login=!append item $ltest to $bad_login
    !else
+     !if @ isin $ltest
+      ltest=!replace internal @ by _____ in _$ltest
+      !!!!modification necessaire car les noms de variables ne peuvent pas 
+      !!!!contenir @ ; aucun login commencant par _ ne peut avoir été accepté, 
+      !!!!donc il n'y a pas de confusion possible    
+     !endif
      loglist=!append item $ltest to $loglist
+     logtest=!append item $ltest to $logtest
    !endif
+   dep_$ltest=$l
   !endif
  !else
   !if $i>3
@@ -165,6 +165,7 @@ loglist_cnt=!itemcnt $loglist
 
 missing=!listcomplement $added in $missing
 change=!listcomplement $added in $change
+added=!listcomplement $missing in $added
 
 !if $manual=yes
  fn=wimshome/log/classes/$wims_class/.grades
