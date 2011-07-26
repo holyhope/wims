@@ -120,7 +120,7 @@ kan dus niet worden overgezet van
     Student informatie is niet aangepast omdat de cijfers zijn geupload.\
     Server berekende cijfers (de gemiddelden en werkblad/proefwerk scores) zijn niet aangepast : deze kunnen niet worden veranderd.\
     Niet aangepaste gegevens over verwijderde studenten \
-    The following login names are not added because the login is too short\
+    De volgende loginnamen zijn niet toegevoeg omdat de login te kort is\
     De volgende loginnamen zijn niet aangepast in verband met onvolledige of incorrecte data\
     De volgende loginnamen zijn niet aanwezig in deze klas en kunnen niet wordn toegevoegd (incorrecte data of te weinig ruimte)\
     Handmatig ingevoerde cijfers zijn alleen opgenomen voor bestaande kolommen.\
