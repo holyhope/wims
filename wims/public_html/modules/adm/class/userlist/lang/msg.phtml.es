@@ -57,7 +57,7 @@
 !endif
 
 !if bad_user=$error
- Error de llamada: el participante <tt>$checkuser</tt> no existe.
+ Error de llamada: el participante <tt class="wims_login">$checkuser</tt> no existe.
  !exit
 !endif
 

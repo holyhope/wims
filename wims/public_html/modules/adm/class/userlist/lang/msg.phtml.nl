@@ -55,7 +55,7 @@ Ga naar de configuratie pagina van Uw klas om deze instellingen te bekijken, en 
 !endif
 
 !if bad_user=$error
-De student <tt>$checkuser</tt> komt niet voor in de database.
+De student <tt class="wims_login">$checkuser</tt> komt niet voor in de database.
 !exit
 !endif
 
