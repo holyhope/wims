@@ -7,8 +7,8 @@
 !endif
 
 <form action="http://www.google.com/search">
-<input type=submit value="Zoek op Google"> voor documentatie over:
-<select name=q>
+<input type="submit" value="Zoek op Google"> voor documentatie over:
+<select name="q">
 !for sw in $swname
  <option value="$sw documentatie">$sw
 !next sw
@@ -27,5 +27,8 @@ en processortijd wordt beperkt to enkele milliseconden.
 Het schrijven op de harde schijf -mits toegestaan- is gelimiteerd tot huidige directory.
 
 <p>
+!if $securetest=$empty
+ Other software can be executed on some other wims servers as <tt>$swname_comp</tt>.<p>
+!else
 Opmerking over de C compiler interface: het startpunt is <tt>int test(void)</tt> en niet <tt>main()</tt> !
-
+!endif

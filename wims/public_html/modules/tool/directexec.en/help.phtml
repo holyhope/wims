@@ -7,8 +7,8 @@
 !endif
 
 <form action="http://www.google.com/search">
-<input type=submit value="Search Google"> for documentation of
-<select name=q>
+<input type="submit" value="Search Google"> for documentation of
+<select name="q">
 !for sw in $swname
  <option value="$sw documentation">$sw
 !next sw
@@ -18,11 +18,19 @@
 !href cmd=help&special_parm=flydraw Flydraw documentation
 .
 <p>
+ <a href="http://pari.math.u-bordeaux.fr/dochtml/html.stable/" target="wims_external">
+ Pari/GP commands
+ </a>
+ <p>
 Input and output of any execution is limited to 16K. For obvious security
 reasons, there is no network access, file writing is limited to the current
 directory if not downright denied, and execution time is limited to a few seconds.
 
 <p>
-Special note for C interface: the entry point is <tt>int test(void)</tt>,
-but not <tt>main()</tt>!
+!if $securetest=$empty
+ Other software can be executed on some other wims servers as <tt>$swname_comp</tt>.<p>
+!else
+ Special note for C interface: the entry point is <tt>int test(void)</tt>,
+ but not <tt>main()</tt>!
+!endif
 
