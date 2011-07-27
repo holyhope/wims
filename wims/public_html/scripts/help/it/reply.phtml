@@ -44,35 +44,23 @@ wlist,List of words,\
 
 <center><h3>User replies to an exercise</h3></center> <p>
 
-There are two basic ways in which an OEF exercise accepts user replies:
-multiple choices and freestyle replies. User answers will be analyzed
-according to the nature of the types. It is also possible to show
+Un esercizio OEF può prevedere tipi di risposta molto diversi. Oltre alle 
+domande standard a scelta multipla o risposte libere sono possibili
+moltre altre possibilità.
+Le rispote date dall'utente sono analizzate in base al tipo. &Egrave; anche
+possibile creare dei 
 !href cmd=help&special_parm=feedback feedbacks
- to the user when the answer meeds a specified condition (usually to warn a
-typical error).
-
-<p><h4>Multiple choices</h4> <p>
-A multiple choice is defined by giving a list of good choices (one or
-several) and another list of bad choices. <p>
-Up to $choicelim simultaneous multiple choice questions can be asked for
-one exercise, under the current implementation. The number of good and bad
-choices within one multiple choice question is unlimited (except a limit on
-the length of the string imposed by WIMS).
-<p>
-See 
-!href cmd=help&special_parm=oef help on OEF format
- for the syntax to define a multiple choice.
+ che vengono mostrati all'utente se la risposta soddisfa determinate condizioni 
+(ad esempio per commentare un errore tipico).
 
 <a name="freestyle"></a>
-<p><h4>Freestyle answers</h4> <p>
-A freestyle answer is one which is typed by the user.
 Up to $answerlim simultaneous freestyle answers can be asked for one
 exercise, under the current implementation. <p>
 The syntax is as follows:
 <pre>\answer{Texte}{\reponse}{type=...}{option=...}{weight=...}</pre>
 (The last 3 fields are optional.)
 <p>
-<h5>The parameter <tt class="wims_code_words">type</tt></h5>
+<h3>The parameter <tt class="wims_code_words">type</tt></h3>
 Each freestyle answer can independently take one of the following types.
 
 !for i=1 to 2
@@ -88,7 +76,7 @@ Each freestyle answer can independently take one of the following types.
   !set name=!item 1 of $name
   !default name1=$name
   !if $name isitemof $special_parm or all isitemof $special_parm
-   <li><p><a name="_$name"></a>
+   <li><a name="_$name"></a>
    !read help/anstype/$name.phtml
    !if $name iswordof $symtextlist
     <p>
@@ -105,6 +93,7 @@ symtext options will be understood in this case.
    <li>
    !href cmd=help&special_parm=reply,$name#_$name $title
    (<tt class="wims_code_words">$name1</tt>) $desc.
+   </li>
   !endif
  !next j
  </ul>
@@ -112,7 +101,7 @@ symtext options will be understood in this case.
 
 !read help/$lang/embedans.phtml
 
-<h4>The optional parameter <tt class="wims_code_words">weight</tt></h4>
+<h3>The optional parameter <tt class="wims_code_words">weight</tt></h3>
 <a name="weight"></a>
 It is possible to give a weight to answers.
 <p>
@@ -134,7 +123,7 @@ Example :
 \answer{}{1}{type=numeric}{weight=3}
 </pre>
 
-<h4>Le paramètre optionnel <tt class="wims_code_words">option</tt></h4>
+<h3>Le paramètre optionnel <tt class="wims_code_words">option</tt></h3>
  <a name="option"></a>
  Dans le cas de plusieurs options, elles sont séparées par des espaces. 
  For example, <tt class="wims_code_words">option=default noanalyzeprint</tt>
@@ -161,14 +150,14 @@ Cela est utile dans certains types comme le type <tt class="wims_code_words">mar
 est souvent inadéquat. Attention, l'analyse des conditions n'est pas non plus affichée. 
 Seul le score subsiste.</li>
 <li>Following the instruction <tt class="wims_code_words">condition</tt>, 
-<tt class="wims_code_words">option=hide</tt> :The condition is used to analyze the
+<tt class="wims_code_words">option=hide</tt>: The condition is used to analyze the
 answer but will not be printed.
 </li>
 </ul>
 D'autres options peuvent être utilisables dans des types particuliers de réponses.
 <p>
 
-<p><h4>Testing conditions</h4> <p>
+<h3>Testing conditions</h3>
 Under certain circumstances, it is desired that freestyle answers be tested
 by special conditions (questions with multiple good answers, exercises 
 asking for examples, answers determined by inequalities, etc). This can be
