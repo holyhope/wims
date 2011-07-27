@@ -22,7 +22,14 @@ names["Enter_img_URL"]="输入图像文件名 :";
 names["Heading"]="表头 #1";
 names["Unordered_List"]="无序表";
 names["Ordered_List"]="有序表";
-
+names["List_item"]="List Item;
+names["wims_link"]="Internal link in the document";
+names["Enter_link_name"]="Enter the name of the new block:";
+names["wims_fold"]="Fold in the document";
+names["Enter_fold_name"]="Enter the name of the new block:";
+names["wims_href"]="Link on a file";
+names["Enter_href_name"]="Enter the filename:";
+names["Enter_href_name2"]="Enter the link name:";
 /** WIMS 'before' instructions **/
 names["title"]="名称";
 names["User_guide"]="用户指引";

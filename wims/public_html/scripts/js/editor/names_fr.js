@@ -10,7 +10,7 @@ names["contextual_help_desc"]="Tapez antislash (<code>\\</code>) suivi d'une let
 names["Italics"]="Italique";
 names["Bold"]="Gras";
 
-names["Link"]="Lien";
+names["Link"]="Lien externe";
 names["Link_Text"]="Intitulé du lien";
 names["Enter_Link_URL"]="Entrez l'URL du lien à insérer";
 
@@ -22,6 +22,13 @@ names["Heading"]="Entête n°1";
 names["Unordered_List"]="Liste à puces";
 names["Ordered_List"]="Liste numérotée";
 names["List_item"]="Item d'une liste";
+names["wims_link"]="Lien interne au document";
+names["Enter_link_name"]="Entrez le nom du nouveau bloc :";
+names["wims_fold"]="Pli dans le document";
+names["Enter_fold_name"]="Entrez le nom du nouveau bloc :";
+names["wims_href"]="Lien sur un fichier";
+names["Enter_href_name"]="Entrez le nom du fichier :";
+names["Enter_href_name2"]="Entrez le nom du lien :";
 
 /** WIMS 'before' instructions **/
 names["title"]="Titre";

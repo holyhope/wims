@@ -76,13 +76,11 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			id: 'markdown_image_button'
 		});
 		
-
 		this.toolbar.addButton(names["Heading"],function(){
 			this.wrapSelection('\n<h2>','</h2>');
 		},{
 			id: 'markdown_heading_button'
 		});
-		
 		
 		this.toolbar.addButton(names["Unordered_List"],function(){
 			this.wrapSelection('\n<ul>\n <li>','\n </li>\n</ul>');
@@ -97,9 +95,36 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		});
 		
 		this.toolbar.addButton(names["List_item"],function(){
-			this.wrapSelection('<li> \n','\n </li>');
+			this.wrapSelection('<li>\n','\n </li>');
 		},{
 			id: 'markdown_ordered_list_button'
+		});
+		
+		this.toolbar.addButton(names["wims_link"],function(){
+		 var selection = this.getSelection();
+			var response = prompt(names["Enter_link_name"],'');
+			if(response == '' ) return; if(response == null ) return;
+			this.replaceSelection(' \\link{'+response+'} ');
+		},{
+			id: 'markdown_link_button'
+		});
+		this.toolbar.addButton(names["wims_fold"],function(){
+		 var selection = this.getSelection();
+			var response = prompt(names["Enter_fold_name"],'');
+			if(response == '') return; if(response == null) return;
+			this.replaceSelection(' \\fold{'+response+'} ');
+		},{
+			id: 'markdown_link_button'
+		});
+		
+		this.toolbar.addButton(names["wims_href"],function(){
+		 var selection = this.getSelection();
+			var response = prompt(names["Enter_href_name"],'');
+			var response2 = prompt(names["Enter_href_name2"],'');
+			if(response == '' ) return; if(response == null) return;
+			this.replaceSelection(' \\href{'+response+'}{'+response2+'} ');
+		},{
+			id: 'markdown_link_button'
 		});
 		
 		this.toolbar.addButton('',function(event){

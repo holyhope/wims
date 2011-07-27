@@ -22,6 +22,14 @@ names["Enter_img_URL"]="Bestandsnaam van het plaatje:";
 names["Heading"]="Heading #1";
 names["Unordered_List"]="Ongesorteerde  Lijst";
 names["Ordered_List"]="Gesorteerde Lijst";
+names["List_item"]="List Item;
+names["wims_link"]="Internal link in the document";
+names["Enter_link_name"]="Enter the name of the new block:";
+names["wims_fold"]="Fold in the document";
+names["Enter_fold_name"]="Enter the name of the new block:";
+names["wims_href"]="Link on a file";
+names["Enter_href_name"]="Enter the filename:";
+names["Enter_href_name2"]="Enter the link name:";
 
 /** WIMS 'before' instructions **/
 names["title"]="Titel";
