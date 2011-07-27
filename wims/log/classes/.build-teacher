@@ -10,13 +10,13 @@ for cls in $clist; do
   type=`awk -F'=' '$1=="!set class_type" {print $2; exit}' $cls/.def`
   email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' $cls/.def`
   [ -z "$type" ] && type=0
-  if [ $type == 0 ]; then
+  if [ $type = 0 ]; then
      echo ":$cls,$supv,$email" >>.IND1
   else
-    if [ $type == 2 ]; then
+    if [ $type = 2 ]; then
      echo ":$cls,$supv,$email" >>.IND2
      cd $cls/.users/;
-     lt=`grep user_supervisable=yes * | cut -d":" -f1`;
+     lt=`grep "user_supervisable=yes" * | cut -d":" -f1`;
      for t in $lt; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`
@@ -29,7 +29,7 @@ for cls in $clist; do
     else
      echo ":$cls,$supv,$email" >>.IND4
      cd $cls/.users/;
-     lt=`grep user_supervisable=yes * | cut -d":" -f1`;
+     lt=`grep "user_supervisable=yes" * | cut -d":" -f1`;
      for t in $lt; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`

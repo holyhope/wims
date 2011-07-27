@@ -22,7 +22,7 @@ fi
 
 cd `dirname $0`
 
-if [ "$option" == "--build-chroot" ] ; then
+if [ "$option" = "--build-chroot" ] ; then
   if [ -d chroot ] ; then  
     mkdir -p chroot/tmp
     mkdir -p chroot/tmp/sessions
@@ -80,7 +80,7 @@ if [ -f log/wims.conf ]; then :; else
   echo "Please write the IP address of the wims webmaster (default 127.0.0.1):" $c
   read ans1
   if [ -z $ans1 ]; then :; else
-    echo "manager_site=$ans1\n" >> log/wims.conf
+    echo "manager_site=$ans1" >> log/wims.conf
     chmod 600 log/wims.conf
   fi
   echo $n "Please write the email address of the wims webmaster:" $c
@@ -100,15 +100,16 @@ if [ -f log/.wimspass ]; then :; else
     chmod 600 log/.wimspass
   fi
 fi
-if [ $option == "--build-chroot" ] ; then
+if [ $option = "--build-chroot" ] ; then
   script=wrapuid ;
 else
  script=setwrapexec ;
 fi
 cat <<@
 
-Please run './bin/$script' as root (e.g. using sudo) to finish WIMS setup
-and './bin/apache-config'.
+Please run './bin/$script' and and './bin/apache-config' as root (e.g. using sudo) 
+to finish WIMS setup.
+
 See README about installation of help and teaching modules.
 
 @
