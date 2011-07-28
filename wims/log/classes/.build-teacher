@@ -16,9 +16,7 @@ for cls in $clist; do
     if [ $type = 2 ]; then
      echo ":$cls,$supv,$email" >>.IND2
      cd $cls/.users/;
-     ##FIXME if there is only one user, does not work
-     ##nusers=`ls -1 | wc -l`
-     lt=`grep "user_supervisable=yes" * | cut -d":" -f1`;
+     lt=`grep -l "user_supervisable=yes" * | cut -d":" -f1`;
      for t in $lt; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`
@@ -32,7 +30,7 @@ for cls in $clist; do
      echo ":$cls,$supv,$email" >>.IND4
      cd $cls/.users/;
      ##FIXME if there is only one user, does not work
-     lt=`grep "user_supervisable=yes" * | cut -d":" -f1`;
+     lt=`grep -l "user_supervisable=yes" * | cut -d":" -f1`;
      for t in $lt; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`
