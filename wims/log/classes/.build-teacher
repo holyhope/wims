@@ -29,7 +29,6 @@ for cls in $clist; do
     else
      echo ":$cls,$supv,$email" >>.IND4
      cd $cls/.users/;
-     ##FIXME if there is only one user, does not work
      lt=`grep -l "user_supervisable=yes" * | cut -d":" -f1`;
      for t in $lt; do
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
