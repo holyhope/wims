@@ -8,9 +8,13 @@ cmoduledir=$WIMS_HOME/public_html/modules/classes
 cd log/classes
 class=[0-9]*
 
+### all classes has now version 4 so nothing is done ... put in another file
+## nothing is useful in this case
 for cl in $class
 do
- version=`cat $cl/version 2>/dev/null | awk '{print $1; exit}'`
+version=`cat $cl/version 2>/dev/null | awk '{print $1; exit}'`
+if [ ! $version -lt 3 ]; then :;
+else
  if [ -z "$version" ]; then version=1; fi
  if [ $version -lt 3 ]; then
   cd $cl
@@ -61,6 +65,7 @@ do
   fi
   echo 4 >version
   cd ..
+ fi
  fi
 done
 

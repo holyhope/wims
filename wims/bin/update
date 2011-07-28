@@ -1,18 +1,13 @@
 #! /bin/sh
 
-VERSION=357
-
 cd `dirname $0`
+## do not seem no more useful, except for updating very old versions of wims
+### should be commented
 ./classupdate
 cd ..
 wimshome=`pwd`
 
 if [ -z "$1" ]; then wimshome2=$wimshome; else wimshome2=$1; fi
-
-#ed localwims <<@
-#,s!WIMS_HOME=.*\$!WIMS_HOME=$wimshome!
-#,w
-#@
 
 if [ ! -e s2 ]; then
  if [ -f /cdrom/knowims-hd-install ]; then
@@ -32,9 +27,18 @@ do
 done
 rm -fr public_html/modules/adm/coqw* 2>/dev/null
 
+#########################
+
+VERSION=357
+
 v=`cat log/update-version 2>/dev/null`
 if [ "$v" != "" ] && [ "$v" -ge "$VERSION" ]; then exit; fi
 
+## this is for update very old version of wims.
+## depend of the log/update-version
+## should be in an other file
+
+echo "cleanup"
 # cleanup list
 rmlist="scripts/chrono.js
 html/classes
