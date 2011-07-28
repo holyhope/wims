@@ -146,7 +146,8 @@ struct {
       {"pt","iso-8859-1"},
       {"ca","iso-8859-1"},
       {"pt","iso-8859-1"},
-      {"ru","iso-8859-5"}
+      {"ru","iso-8859-5"},
+      {"ty","iso-8859-13"}
 };
 
 #define charname_no (sizeof(charname)/sizeof(charname[0]))
@@ -169,7 +170,9 @@ struct {
       {"pt","ltr"},
       {"ca","ltr"},
       {"pt","ltr"},
-      {"ru","ltr"}
+      {"ru","ltr"},
+      {"ty","ltr"}
+      
 };
 
 #define dirnname_no (sizeof(dirnname)/sizeof(dirnname[0]))
