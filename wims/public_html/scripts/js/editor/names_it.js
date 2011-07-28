@@ -23,12 +23,12 @@ names["Unordered_List"]="Elenco non numerato";
 names["Ordered_List"]="Elenco numerato";
 names["List_item"]="List Item";
 names["wims_link"]="Internal link in the document";
-names["Enter_link_name"]="Enter the name of the new block:";
+names["Enter_link_name"]="Inserire il nome del nuovo blocco:";
 names["wims_fold"]="Fold in the document";
-names["Enter_fold_name"]="Enter the name of the new block:";
-names["wims_href"]="Link on a file";
-names["Enter_href_name"]="Enter the filename:";
-names["Enter_href_name2"]="Enter the link name:";
+names["Enter_fold_name"]="Inserire il nome del nuovo blocco:";
+names["wims_href"]="Link a un file";
+names["Enter_href_name"]="Inserire il nome del file:";
+names["Enter_href_name2"]="Inserire il testo del link:";
 /** WIMS 'before' instructions **/
 names["title"]="Titolo";
 names["User_guide"]="Modo d'uso";
