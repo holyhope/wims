@@ -8,24 +8,26 @@ slib_example= [10,5,2,3,10,13],[3,4,6,7,12,14,16],xtics [A1,A3,A6,8,10,12,14],yt
 [1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 15, color blue,html\
 [1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 15, color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics 5,ytics 15,color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics,ytics 15, baton,color green,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f,g],ytics 15, baton,color green,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics 5,ytics 15,baton,color green,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 15, step,color red,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 15,step, color red,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics 5,ytics 15,step,color red,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics,ytics 15, stem,color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 15, stem,color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14],xtics 5,ytics 15,stem,color blue,html\
-[1,5,2,3,10,13],[3,4,6,7,12,14,14.1],xtics,ytics,stair,color blue,html
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics 5,ytics 10,color blue,html\
+[100,500,2,300,1000,1300],[3,4,6,7,12,14],xtics,ytics 10, baton,color green,html\
+[0.007,0.005,0.002,0.003,0.0020,0.01],[3,4,6,7,12,14],xtics,ytics 10, stem,color blue,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics,ytics 10, step,color red,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics [a,b,c,d,e,f],ytics 10,step, color red,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,22],xtics 5,ytics 10,step,color red,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, stem,color blue,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics 5,ytics 1,stem,color blue,html\
+[1,5,2,3,10,13],[3,4,6,7,12,14,14],xtics,ytics,stair,color blue,html\
+[1,5,2],[3,4,6],xtics,ytics, stem,color blue,
+
+[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f,g],ytics 10, baton,color green,html
+
 !exit
 
 :proc
 
 slib_parm=
 slib_out=
-!reset slib_optx, slib_opty, slib_couleur,slib_baton,slib_pdata, slib_grad,slib_listx,slib_listxx, slib_param, slib_parm slib_option
+!reset slib_optx, slib_opty, slib_couleur,slib_baton,slib_pdata, slib_grad,slib_listx,slib_listxx, slib_param, slib_parm slib_option, slib_points
 
 slib_data=!item 1 to 2  of $wims_read_parm
 slib_parm= !item 3 to -1 of $wims_read_parm
@@ -190,18 +192,26 @@ slib_uu=
   slib_ww=$slib_w
 
 !endif
+slib_pas=!exec pari (f(r,n)= l=if(r != 0, floor(log(abs(r))/log(10)),1) ; s =ceil(10^(-l+n-1)*r) ; s*10^(l-n+1) ); \
+   f($slib_y2/$slib_ra,1)
 slib_y2=$[$slib_y2*1.1]
-slib_pas=$[ceil($slib_y2/$slib_ra)]
 slib_ord=0
 slib_d=$[($slib_x2-$slib_x1)/5]
 slib_minx=$[$slib_x1*1.01]
+insdraw_size=500,200
+
+slib_rangex=$[$slib_minx-$slib_d],$[$slib_x2+$slib_d]
+slib_rangey=$[min(1,$slib_y1-($slib_y2-$slib_y1)/5)],$[$slib_y2]
+
+!readproc slib/draw/convpixel 0,5,$insdraw_size,$[$slib_minx-$slib_d],$[$slib_x2+$slib_d],$[min(1,$slib_y1-($slib_y2-$slib_y1)/5)],$[$slib_y2]
+slib_pix=$[$slib_y2 -$(slib_out[2])]
 
 !if $slib_opty !=0
   !for slib_i=1 to $slib_ra
     slib_ord=$[$slib_pas+$slib_ord]
     !if $slib_ord <$[$slib_y2+$slib_pas]
-      slib_grad=!append line text black,$[$slib_minx-$slib_d],$slib_ord,small,$slib_ord to $slib_grad
-      slib_grad=!append line segment $[$slib_minx-$slib_d/5],$slib_ord,$[$slib_minx+$slib_d/5],$slib_ord,grey\
+      slib_grad=!append line text black,$[$slib_minx-$slib_d],$[$slib_ord+$slib_pix],small,$slib_ord to $slib_grad
+      slib_grad=!append line segment $[$slib_minx-$slib_d/10],$slib_ord,$[$slib_minx+$slib_d/10],$slib_ord,grey\
 vline $slib_minx,0,grey to $slib_grad
     !endif
   !next slib_i
@@ -218,21 +228,21 @@ vline $slib_minx,0,grey to $slib_grad
     !if $slib_baton iswordof baton stem
       slib_wj=$[$slib_wj+1]
     !endif
-    slib_grad=!append line text black,$slib_wj,$[$slib_y1-($slib_y2-$slib_y1)/10],small,$slib_wi to $slib_grad
-    slib_grad=!append line line $slib_wj,$[$slib_y1-($slib_y2-$slib_y1)/30],$slib_wj,$[$slib_y1+($slib_y2-$slib_y1)/30], grey to $slib_grad
+    slib_grad=!append line text black,$slib_wj,$[$slib_y1-2*$slib_pix],small,$slib_wi to $slib_grad
+    slib_grad=!append line line $slib_wj,$[$slib_y1-$slib_pix],$slib_wj,$[$slib_y1+$slib_pix], grey to $slib_grad
   !next slib_i
 !endif
 
 
-slib_pdata=xrange $[$slib_minx-$slib_d],$[$slib_x2+$slib_d]\
-yrange $[min(1,$slib_y1-($slib_y2-$slib_y1)/5)],$[$slib_y2]\
+slib_pdata=xrange $slib_rangex\
+yrange $slib_rangey\
 $slib_grad
 !if stair notwordof $slib_baton
   slib_pdata=$slib_pdata\
 lines $couleur
 !else
   slib_points= linewidth 4\
-  points $couleur
+points $couleur
  !endif
 
 !if stair notwordof $slib_baton and step notwordof $slib_baton
@@ -240,15 +250,20 @@ lines $couleur
    slib_inf=!item $slib_i of $slib_w
    slib_sup=!item $[$slib_i+1] of $slib_w
    slib_f=!item $slib_i of $slib_uu
-   slib_pdata=!append  item $slib_inf,0,$slib_inf,$slib_f,$slib_sup,$slib_f,$slib_sup,0 to $slib_pdata
+   !if $slib_f!=$empty and $slib_sup!=$empty and $slib_inf!=$empty
+    slib_pdata=!append item $slib_inf,0,$slib_inf,$slib_f,$slib_sup,$slib_f,$slib_sup,0 to $slib_pdata
+   !endif
   !next slib_i
+  
 !endif
 !if step iswordof $slib_baton
  !for slib_i=1 to $[$slib_cnt]
    slib_inf=!item $[$slib_i] of $slib_w
    slib_sup=!item $[$slib_i+1] of $slib_w
    slib_f=!item $slib_i of $slib_uu
-   slib_pdata=!append item $slib_inf,$slib_f,$slib_sup,$slib_f to $slib_pdata
+   !if $slib_f!=$empty and $slib_sup!=$empty and $slib_inf!=$empty
+    slib_pdata=!append item $slib_inf,$slib_f,$slib_sup,$slib_f to $slib_pdata
+   !endif
   !next slib_i
 !endif
 !if stair iswordof $slib_baton
@@ -256,7 +271,9 @@ lines $couleur
    slib_inf=!item $[$slib_i] of $slib_w
    slib_sup=!item $[$slib_i+1] of $slib_w
    slib_f=!item $slib_i of $slib_uu
-   slib_pdata=!append  line line $slib_inf,$slib_f,$slib_sup,$slib_f,$couleur to $slib_pdata
+   !if $slib_f!=$empty and $slib_sup!=$empty and $slib_inf!=$empty
+    slib_pdata=!append line line $slib_inf,$slib_f,$slib_sup,$slib_f,$couleur to $slib_pdata
+   !endif
    !if $slib_i < $[$slib_cnt]
      slib_points=!append item $slib_inf,$slib_f to $slib_points
    !endif
@@ -270,7 +287,6 @@ linewidth 1\
 hline 0,0,grey
 
 !if url iswordof $slib_option or html iswordof $slib_option
-  insdraw_size=500,200
  !insdraw $slib_out
  slib_out=$ins_url
  !if html iswordof $slib_option
@@ -279,3 +295,4 @@ hline 0,0,grey
  slib_out=$slib_out,$insdraw_size
 !endif
 
+!reset  insdraw_size
