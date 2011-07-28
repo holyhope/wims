@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #use Date::Format;
-
+use warnings;
+use strict;
 require Time::Local;
 
 use vars qw(@DoW @MoY %MoY);
@@ -11,8 +12,9 @@ use vars qw(@DoW @MoY %MoY);
 my %GMT_ZONE = (GMT => 1, UTC => 1, UT => 1, Z => 1);
 
 
-$wims_ref='http://127.0.0.1/wims';
-$file='' ; 
+my $wims_ref='http://127.0.0.1/wims';
+my $file='' ; 
+my ($out, $modif, $text);
 push (@ARGV,split(' ', $ENV{'wims_exec_parm'})) if ($ENV{'wims_exec_parm'}) ; 
 
 while ($_ = shift (@ARGV))
@@ -24,7 +26,7 @@ while ($_ = shift (@ARGV))
      elsif (/^--type=(.*)$/) { $modif     = $1 ; }
 } ;
 $wims_ref =~ s,/wims.cgi,, ; 
-$head= "<\?xml version=\"1.0\" encoding=\"ISO-8859-1\"\?>
+my $head= "<\?xml version=\"1.0\" encoding=\"ISO-8859-1\"\?>
 <rss version=\"2.0\">
     <channel>
         <title>WIMS</title>
@@ -33,14 +35,16 @@ $head= "<\?xml version=\"1.0\" encoding=\"ISO-8859-1\"\?>
         \n"
 ;
 
-$tail="</channel></rss>"; 
+my $tail="</channel></rss>"; 
 
 open(IN, "$file.$modif") or die $file ;
 my @lignes = <IN>;
-my ($cnt, $used)= (1) ; 
+my ($cnt, $used)= (1,'') ; 
+my @ta;
 foreach( reverse( @lignes ) ) {
   my @l=split(":", $_)  ;
   my $date= convdate($l[0]) ;
+  next if !($l[1]) ; 
   my @ta=split(" ", $l[1]) ;
   next if !($l[1]) || ($used =~ /$l[1]/) || ($cnt > 100) ; 
   $cnt ++ ;
@@ -52,8 +56,9 @@ foreach( reverse( @lignes ) ) {
    <guid isPermaLink=\"true\">$wims_ref/wims.cgi?module=$ta[0]</guid>
    <description>$ta[0] version $ta[1]</description>
   <pubDate>$date</pubDate>
-</item>\n"
+</item>\n" ;
 }
+
 out("$out$modif.xml" , $head . $text . $tail) ;
 
 sub convdate { my ($d)= @_ ;
