@@ -17,9 +17,7 @@ for cls in $clist; do
      echo ":$cls,$supv,$email" >>.IND2
      cd $cls/.users/;
      lt=`grep -l "user_supervisable=yes" *`;
-     echo $lt ; 
      for t in $lt; do
-     echo $t ; 
        lname=`awk -F'=' '$1=="!set user_lastname" {print $2; exit}' ./$t`
        fname=`awk -F'=' '$1=="!set user_firstname" {print $2; exit}' ./$t`
        email=`awk -F'=' '$1=="!set user_email" {print $2; exit}' ./$t`
