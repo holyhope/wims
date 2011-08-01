@@ -1,0 +1,129 @@
+type=datalist
+textarea="data words"
+
+:Domande che richiedono come risposta un testo limitato ad un dato insieme di parole in un testo scelto a caso.
+
+Questo esercizio persenta dei testi con spazi da riempire ciascuno con una parola (o una frase molto breve).
+<p>
+Per costruire un esercizio utilizzando questo modello è sufficiente inserire
+i testi. Una sintassi semplificata permette di specificare gli spazi e il dizionario
+di parole accettabili.
+<p>
+Il sistema sa ignorare "piccole" differenze nelle risposte: assenza o aggiunta di un 
+articolo, maiuscolo/minuscolo, accenti, plurale/singolare. Può anche essere impostato
+per non penalizzare errori di battitura. Possono anche essere utilizzati
+dei sinonimi.
+<p>
+Autore del modello: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Domande testuali}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Lunghezza dello spazio per inserire la risposta. Limitarlo previene risposte troppo lunghe.
+\integer{len=20}
+
+:Contenuto effettivo dell'esercizio.
+Inserire una domanda in ogni riga e separare le righe con punti-e-virgola (quindi
+i testi non possono contenere il simbolo ";").<p>
+La parola richiesta nella risposta deve essere inserita tra due coppie
+di punti interrogativi "??".
+Si possono inserire più domande in una stessa frase (fino a 6).
+Se una domanda può accettare più risposte corrette, mettere tutte le risposte
+accettabili (sinonimi) separate da una barra verticale '|'.
+<p>
+L'analisi della correttezza delle risposte non tiene conto di piccole differenze:
+assenza o aggiunta di un articolo, maiuscolo/minuscolo, accenti,
+plurale/singolare.
+$embraced_randitem
+\text{data=
+l'unità di misura base per l'intensita è ??ampère??.;
+l'unità di misura base per la tensione è ??volt??.;
+l'unità di misura base per la resistenza è ??ohm??.;
+l'unità di misura base per la capacità di un condensatore è ??farad??.;
+l'unità di misura base per l'induttanza di un solenoide è ??henri??.;
+l'unità di misura base per la potenza dissipata in un qualsiasi componente è ??watt??.;
+l'unità di misura base per la frequenza è ??hertz??.;
+
+l'ampère è una unità di misura per ??l'intensità??.;
+il volt è una unità di misura per ??la tensione|la carica??.;
+l'ohm è una unità di misura per ??la resistenza??.;
+il watt è una unità di misura per ??la potenza??.;
+
+}
+
+:Tipi di analisi della risposta.
+I tipi <tt>case</tt> e <tt>nocase</tt> sono soprattutto pensati per le
+applicazioni linguistiche. Per tutti gli altri utilizzi è preferibile l'opzione
+<tt>atext</tt>.
+\text{atype=item(3,case (nessun errore tollerato),
+	nocase (tollerate differenze maiuscole/minuscole),
+	atext (ignorate differenze plurale/singolare e articoli))}
+
+:Elenco delle parole riconosciute.
+Inserire le parole in una lista. Tutte le risposte che contengono parole
+non contenute in questa lista saranno considerate come errori di
+battitura e produrranno una richiesta di reinserire la risposta (non
+conteggiata come errore).<p>
+Se questo campo è vuoto, tutte le risposte non riconosciute sono considerate
+errori. Impostazione pensata per le applicazioni inguistiche.
+\text{words=
+elettricità elettrico circuito componente intensità corrente tensione carica
+resistore resistenza diodo transistor condensatore capacità solenoide
+induttanza potenza frequenza hertz
+}
+
+:Testo mostrato prima della domanda. Sono permessi comandi html. Può essere vuoto.
+$embraced_randitem
+\text{pre=In fisica,}
+
+:Testo mostrato dopo la domanda. Sono permessi comandi html. Può essere vuoto.
+$embraced_randitem
+\text{post=}
+
+:%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=floor(rows(\data)/2)}
+\text{words=wims(trim \words)}
+\text{atype=wims(word 1 of \atype)}
+
+\text{pre=wims(embraced randitem \pre)}
+\text{post=wims(embraced randitem \post)}
+\text{qlist=wims(makelist reply x for x=1 to \qs)}
+\steps{\qlist}
+
+:%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
+
+::In questa parte non dovrebbe esserci nulla da modificare.
+
+\statement{\pre
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r \k,\len} \data[2*\k+1;]
+}
+\post
+}
+
+:%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%5
+
+\answer{Campo 1}{\data[2;];\words}{type=\atype}
+\answer{Campo 2}{\data[4;];\words}{type=\atype}
+\answer{Campo 3}{\data[6;];\words}{type=\atype}
+\answer{Campo 4}{\data[8;];\words}{type=\atype}
+\answer{Campo 5}{\data[10;];\words}{type=\atype}
+\answer{Campo 6}{\data[12;];\words}{type=\atype}
+

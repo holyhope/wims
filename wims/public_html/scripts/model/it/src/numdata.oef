@@ -1,0 +1,116 @@
+type=datalist
+textarea="data"
+
+:Domande che richiedono come risposta un numero in un testo scelto a caso.
+
+Questo esercizio presenta dei testi con spazi da riempire ciascuno con un numero.
+<p>
+Per costruire un esercizio utilizzando questo modello è sufficente inserire i testi.
+Una sintassi semplificata permette di specificare gli spazi e i numeri accettati.
+<p>
+Autore del modello: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Domande numeriche}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Contenuto effettivo dell'esercizio.
+Inserire una domanda in ogni riga e separare le righe con punti-e-virgola (quindi
+i testi non possono contenere il simbolo ";"). <p>
+Il numero richiesto nella risposta deve essere inserito tra due coppie
+di punti interrogativi "??".
+Si possono inserire più domande in una stessa frase (fino a 6).
+$embraced_randitem
+\text{data=
+Le permis à points contient ??6?? points pour un nouveau conducteur.;
+Le permis à points aura ??12?? points au bout de ??3?? ans si le
+	nouveau conducteur ne s'est pas fait retirer de point pendant
+	cette période et n'a pas suivi d'apprentissage anticipé.;
+Le permis à points aura ??12?? points au bout de ??2?? ans si le
+	nouveau conducteur ne s'est pas fait retirer de point pendant
+	cette période et a suivi un apprentissage anticipé.;
+Le permis à points "plein" contient ??12?? points.;
+L'oubli de la ceinture de sécurité coûte ??1?? point(s) sur le permis à
+	points.;
+Le chevauchement de la ligne continue au milieu de la route coûte
+	??1?? point(s) sur le permis à points.;
+Si je ne boucle pas ma ceinture, ça me coûtera ??1?? point(s) sur mon permis.;
+Si j'oublie de porter un casque quand je conduis une moto, ça me coûtera ??1?? point(s)
+	sur mon permis.;
+Si j'accélère alors que quelqu'un est en train de me dépasser, ça me coûtera
+	??2?? point(s) sur mon permis.;
+{La circulation,Le stationnement} sur le terre-plein central d'une autoroute
+	coûte ??2?? point(s) sur le permis.;
+Le franchissement de la ligne continue au milieu de la route coûte
+	??3?? point(s) sur le permis à points.;
+La conduite avec un taux d'alcoolémie dans le sang compris entre 0.5 g/l et
+	moins de 0.8 g/l coûte ??3?? point(s) sur le permis à points.;
+La conduite avec un taux d'alcoolémie dans le sang compris entre ??0.5?? g/l et
+	moins de ??0.8?? g/l coûte 3 points sur le permis à points.;
+Le dépassement dangereux coûte ??3?? points sur le permis.;
+{L'arrêt,Le stationnement} dangereux coûte ??3?? point(s) sur le permis.;
+Si je {roule,circule} sur la bande d'arrêt d'urgence d'une autoroute, ça me coûtera
+	??3?? points sur mon permis.;
+Le non-respect de la distance de sécurité coûte ??3?? point(s) sur le permis.;
+Un excès de vitesse de {5,8,10,15,20,25} km/h me coûtera ??3?? point(s)
+	pendant la période de probation de 2 ans.;
+Le non-respect d'un stop coûte ??4?? point(s) sur le permis.;
+Si je grille un feu rouge, ça me coûtera ??4?? point(s) sur mon permis.;
+La conduite avec un taux dans le sang d'alcoolémie de {0.8,0.9,1,1.2,1.3,1.5} g
+	pour mille coûte ??6?? point(s) sur le permis à points.;
+La conduite avec un taux dans le sang d'alcoolémie supérieur ou égale à
+	??0.8?? g pour mille coûte 6 point(s) sur le permis à points.;
+La circulation en sens interdit coûte ??4?? point(s) sur le permis.;
+Le non-respect de la priorité de passage coûte ??4?? point(s) sur le permis.;
+{La marche arrière,Le demi-tour} sur l'autoroute coûte ??4?? point(s) sur le
+	permis.;
+Le délit de fuite coûte ??6?? point(s) sur le permis.;
+}
+
+:%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
+
+\text{data=wims(singlespace \data)}
+\text{data=wims(nonempty rows \data)}
+\text{data=randomrow(\data)}
+\text{data=wims(embraced randitem \data)}
+\text{data=slib(text/cutchoice2 \data)}
+\integer{qs=floor(rows(\data)/2)}
+\text{len=}
+\for{i=1 to \qs}{
+ \text{d=wims(trim \data[2*\i;])}
+ \integer{l=wims(charcnt \d) + 2}
+ \text{len=\len \l,}
+}
+
+\text{qlist=wims(makelist reply x for x=1 to \qs)}
+\steps{\qlist}
+
+:%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
+
+::In questa parte non dovrebbe esserci nulla da modificare.
+
+\statement{
+\data[1;]
+\for{k=1 to \qs}{
+\embed{r \k,\len[\k]} \data[2*\k+1;]
+}
+}
+
+:%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%5
+
+\answer{Campo 1}{\data[2;]}{type=number}
+\answer{Campo 2}{\data[4;]}{type=number}
+\answer{Campo 3}{\data[6;]}{type=number}
+\answer{Campo 4}{\data[8;]}{type=number}
+\answer{Campo 5}{\data[10;]}{type=number}
+\answer{Campo 6}{\data[12;]}{type=number}
+

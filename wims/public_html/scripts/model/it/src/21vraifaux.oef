@@ -1,0 +1,135 @@
+type=datalist
+textarea="datatrue datafalse explain"
+
+:Scegliere le affermazioni corrette in una lista di opzioni.
+Viene proposta una lista di un certo numero di affermazioni. Viene richiesto di
+riconoscere quelle corrette e selezionarle. Le affermazioni corrette e sbagliate 
+sono scelte a caso in due elenchi. Il numero di risposte corrette presenti in
+ogni domanda non è determinato a priori.
+<p>
+Maggiore è il numero di affermazioni inserite, maggiore è l'aleatorità
+e la ripetibilità dell'esercizio. Mais vous pouvez aussi faire des exercices avec
+juste ce qu'il faut comme phrases mais pas plus. Ce sera dans ce cas un QCM
+avec plusieurs bons choix.
+<p>
+Autore del modello: Gang Xiao <xiao@unice.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Vero/falso multiplo}
+:\author{XIAO Gang}
+:\email{xiao@unice.fr}
+
+:Numero di frasi da presentare.
+\integer{tot=4}
+
+:Numero minimo di affermazioni vere in ogni esercizio. Minimo 1.
+\integer{mintrue=1}
+
+:Minimum de phrases fausses dans chaque exercice présenté. Minimo 1.
+\integer{minfalse=1}
+
+:Le affermazioni vere. Una frase per riga, punti-e-virgola non ammessi.
+Evitare frasi troppo lunghe!
+$embraced_randitem
+\matrix{datatrue=
+A parità di tensione, la corrente passante per un resistore è inversamente proporzionale alla sua resistenza.
+A parità di corrente, la tensione in un resistore è proporzionale alla sua resistenza.
+La corrente passante per un resistore è proporzionale alla tensione applicata.
+La potenza dissipata per un resistore è proporzionale al quadrato della tensione applicata.
+La potenza dissipata per un resistore è proporzionale al quadrato della corrente.
+A parità di tensione alternata, la corrente passante per un condensatore è proporzionale alla capacità.
+A parità di corrente, la tensione alternata in un condensatore è inversamente proporzionalele alla capacità.
+A parità di tensione alternata, la corrente passante per un solenoide è inversamente proporzionale alla sua induttanza.
+A parità di corrente, la tensione alternata in un solenoide è proporzionale alla sua induttanza.
+Un condensatore ideale non consuma energia.
+Un solenoide ideale non consuma energia.
+}
+
+:Le affermazioni false. Una frase per riga, punti-e-virgola non ammessi.
+Evitare frasi troppo lunghe!
+$embraced_randitem
+\matrix{datafalse=
+A parità di tensione, la corrente passante per un resistore è proporzionale alla sua resistenza.
+A parità di corrente, la tensione in un resistore è inversamente proporzionalele alla sua resistenza.
+A parità di corrente, la tensione in un resistore è indipendente dalla sua resistenza.
+A parità di tensione, la corrente passante per un resistore è indipendente dalla sua resistenza.
+La corrente passante per un diodo è proporzionale alla tensione applicata.
+La potenza dissipata in un resistore è proporzionale alla tensione applicata.
+La potenza dissipata in un resistore è proporzionale alla corrente.
+A parità di tensione alternata, la corrente passante per un condensatore è inversamente proporzionale alla capacità.
+A parità di corrente, la tensione alternata in un condensatore è proporzionale alla capacità.
+A parità di tensione alternata, la corrente passante per un condensatore è indipendente dalla capacità.
+A parità di tensione continua, la corrente passante per un condensatore è proporzionale alla capacità.
+A parità di corrente, la tensione continue in un condensatore è inversamente proporzionalele alla capacità.
+A parità di corrente, la tensione alternata in un condensatore è indipendente dalla capacità.
+A parità di tensione alternata, la corrente passante per un solenoide è proporzionale alla sua induttanza.
+A parità di corrente, la tensione alternata in un solenoide è inversamente proporzionalele alla sua induttanza.
+La potenza dissipata in un condensatore è proporzionale {alla,al quadrato della} tensione applicata.
+La potenza dissipata in un condensatore è proporzionale {alla,al quadrato della} corrente.
+La potenza dissipata in un solenoide ideale è proporzionale {alla,al quadrato della} tensione applicata.
+La potenza dissipata in un solenoide ideale è proporzionale {alla,al quadrato della} corrente.
+}
+
+:Opzioni
+Utilizzare l'opzione "split" se si vuole dare un voto parziale a risposte parzialmente
+corrette (altrimenti anche un solo errore porta a una valutazione 0).
+\text{option=split}
+
+:Il testo con la spiegazione di quello che va fatto
+$embraced_randitem
+\text{explain=Quali delle seguenti affermazioni sono vere? Contrassegnarle tutte.}
+
+:%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
+
+\text{datatrue=wims(nonempty rows \datatrue)}
+\text{datafalse=wims(nonempty rows \datafalse)}
+\integer{truecnt=rows(\datatrue)}
+\integer{falsecnt=rows(\datafalse)}
+\integer{tot=\tot > min(\truecnt,\falsecnt)?min(\truecnt,\falsecnt)}
+\integer{mintrue=\mintrue<1?1}
+\integer{minfalse=\minfalse<1?1}
+\integer{mintrue=\mintrue>\tot-1?\tot-1}
+\integer{minfalse=\minfalse>\tot-1?\tot-1}
+\integer{tot<\mintrue+\minfalse?\mintrue+\minfalse}
+\text{tsh=shuffle(\truecnt)}
+\text{fsh=shuffle(\falsecnt)}
+\text{true=row(\tsh,\datatrue)}
+\text{false=row(\fsh,\datafalse)}
+\integer{truepick=randint(\mintrue..\tot-\minfalse)}
+\text{pick=row(1..\truepick,\true);row(1..\tot-\truepick,\false)}
+\text{ind=wims(makelist 1 for x=1 to \truepick),wims(makelist 0 for x=1 to \tot-\truepick)}
+
+\text{sh=shuffle(\tot)}
+\text{ind=item(\sh,\ind)}
+\text{pick=row(\sh,\pick)}
+\text{pick=wims(embraced randitem \pick)}
+\text{ans=positionof(1,\ind)}
+\text{list=wims(values x for x=1 to \tot)}
+\text{explain=wims(embraced randitem \explain)}
+
+:%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
+
+::In questa parte non dovrebbe esserci nulla da modificare.
+
+\statement{\explain
+
+<p><center><table border="0" cellspacing="4">
+\for{i=1 to \tot}{
+ <tr><td nowrap>\embed{reply 1,\i}.</td>
+ <td>\pick[\i;]</td></tr>
+}
+</table></center>
+}
+
+:%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%5
+
+\answer{La risposta}{\ans;\list}{type=checkbox}{option=\option}
+

@@ -1,0 +1,102 @@
+type=datalist
+textarea="data"
+
+:Cancellare alcune parole in una frase (tipo flashcard).
+
+Sono presenti alcune etichette. Occorre cancellarne alcune.
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+:\title{Nascondi etichette}
+:\author{Bernadette Perrin-Riou}
+:Consigne
+\text{instruction=Cancellare gli aggettivi cliccando sulle etichette.}
+:Numero di domande presentate (massimo 5)
+\text{N=2}
+:Nome del file
+Compilare questo campo solo se si vuole inserire questo esercizio in un modulo Modtool e per
+raccogliere le domande si vuole utilizzare un file di dati (in un modulo OEF) del tipo
+<pre>
+:Il gatto ??nero?? ha mangiato il topo ??bianco.??
+:Il gatto ??bianco?? ha mangiato il topo ??nero.??
+</pre>
+In questo caso i dati inseriti più sotto non saranno presi in considerazione. Se non
+si vuole utilizzare un file separato, inserire le frasi nel campo successivo.
+
+\text{file=}
+
+:Contenuto effettivo dell'esercizio.
+Inserire le frasi contrassegnando con ?? le parole da cancellare.
+\text{data=Il&nbsp;gatto ??nero?? ha&nbsp;mangiato il topo ??bianco.??
+La casetta ??verde?? è sulla collina.
+Nel giardino ci sono fiori ??bianchi?? e ??rossi?? }
+
+:%%%%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%%%%
+\integer{N=min(\N,5)}
+\if{\file notsametext}{
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+   }
+  }{
+  \integer{M=rows(\data)}
+  \integer{N=min(\N,\M)}
+  \integer{N=min(\N,10)}
+  \text{liste=shuffle(\M)}
+  \text{liste=\liste[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\liste;]}
+}
+\text{Numero=}
+\text{Texte=}
+\text{cnt=}
+\text{data=wims(embraced randitem \data)}
+\text{data=wims(replace internal ' by &#146; in \data)}
+\for{u=1 to \N}{
+  \matrix{texte=slib(text/markgroup \data[\u;])}
+  \matrix{numero=\texte[1..-4;]}
+  \text{cnt_mot = rows(\numero)}
+  \text{numero = wims(rows2lines \numero)}
+  \text{numero = wims(lines2items \numero)}
+  \text{Numero = wims(append line \numero to \Numero)}
+  \text{texte = \texte[-3;]}
+  \text{cc=items(\texte)}
+  \text{cnt = wims(append item  \cc to \cnt)}
+  \text{Texte=wims(append line \texte to \Texte)}
+}
+\matrix{Texte=\Texte}
+\matrix{Numero=\Numero}
+\text{STEP=wims(makelist r x for x=1 to \N)}
+\steps{\STEP}
+\statement{\instruction
+\if{\N=1}{<div class="emptyline"> </div>
+ <center>\for{j=1 to \cnt}{ 
+   \embed{r 1,\j}
+ }</center>
+}{
+ \for{ss=1 to \N}{<p> \ss: </p>
+ <center>\for{j=1 to \cnt[\ss]}{
+   \embed{r \ss,\j}
+ }</center>
+ }
+}
+}
+\answer{1}{\Numero[1;];\Texte[1;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{2}{\Numero[2;];\Texte[2;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{3}{\Numero[3;];\Texte[3;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{4}{\Numero[4;];\Texte[4;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+\answer{5}{\Numero[5;];\Texte[5;];&nbsp;}{type=flashcard}{option=show noanalyzeprint}
+
