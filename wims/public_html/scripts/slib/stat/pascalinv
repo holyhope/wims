@@ -24,6 +24,7 @@ slib_require=pari
 !endif
 slib_out=
 slib_data=!declosing $slib_data
+slib_p=$[$slib_p]
 slib_p1=$[1-$slib_p]
 slib_r=$[$slib_p/$slib_p1]
 slib_a=$[$slib_p1^($slib_n)]
@@ -32,7 +33,7 @@ slib_cnt= !itemcnt $slib_data
 	slib_di=!item $slib_i of $slib_data
 	slib_k=!exec pari {slib_P=0;slib_x=$slib_n;\
 	 while(slib_P< $slib_di, slib_x=slib_x+1;\
- 	 slib_P = slib_P + binomial(slib_x-1,$slib_n-1) * 	$slib_p^$slib_n * $slib_p1^(slib_x-$slib_n));\
+ 	 slib_P = slib_P + binomial(slib_x-1,$slib_n-1) * $slib_p^$slib_n * $slib_p1^(slib_x-$slib_n));\
 		print(slib_x)}
 	slib_out=!append item  $slib_k to $slib_out
 !next slib_i

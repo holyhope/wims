@@ -21,8 +21,9 @@ slib_out=0
 !endif
 
 slib_data=!declosing $slib_data
+slib_p=$[$slib_p]
 slib_a=$[exp(-$slib_p)]
-slib_out=!values $slib_a * $slib_p^x/factorial(round(x)) for x in $slib_data
+slib_out=!values $slib_a * $slib_p^(x)/factorial(round(x)) for x in $slib_data
 
 slib_out=!trim $slib_out
 slib_cnt=!itemcnt $slib_data

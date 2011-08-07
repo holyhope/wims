@@ -30,7 +30,8 @@ slib_cnt= !itemcnt $slib_data
 slib_data1=!values rint(x)  for x in $slib_data
 
 slib_n=$[rint($slib_n)]
-slib_p1=$[1-$slib_p ]
+slib_p=$[$slib_p]
+slib_p1=$[1-$slib_p]
 slib_out=!exec pari {slib_data=[$slib_data1];\
 print(vector($slib_cnt,i,binomial(slib_data[i]-1,$slib_n-1)\
 *$slib_p^($slib_n)*$slib_p1^(slib_data[i]-$slib_n)));}
