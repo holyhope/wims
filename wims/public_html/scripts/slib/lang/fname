@@ -4,7 +4,8 @@
 
 slib_author=Gang, XIAO
 
-slib_example=fr,boy\
+slib_example=fr\
+\
 en,girl,3\
 nl,boy girl,5
 !exit
@@ -39,7 +40,10 @@ slib_test=!itemcnt $wims_read_parm
  !next slib_l
 !endif
 !bound slib_nb between 1 and 10 default 1
-
+!default slib_genre=boy
+!if $lang iswordof fr nl
+ !default slib_lang=$lang
+!endif
 !if $slib_lang=fr
  slib_boy=Alain, André, Bernard, Bertrand, \
   Carlos, Charles, Christophe, Claude, \
