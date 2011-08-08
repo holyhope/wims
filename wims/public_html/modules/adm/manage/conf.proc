@@ -1,11 +1,11 @@
 
 n=!recordcnt lang/cat.$modu_lang
 !bound confcat between 1 and $n default 1
-!if $confcat=6
- !readproc mu/publishdownload.def
-!endif
 l=!record $confcat of lang/cat.$modu_lang
 !distribute lines $l into catname, cattit
+!if $catname=housekeep
+ !readproc mu/publishdownload.def
+!endif
 
 !if $catname=appearances
  csslist=!sh cd html/css/$lang; ls *.css | sed 's/\.css$$//' | sort
@@ -76,7 +76,7 @@ wims_prefix=$wims_prefix2
   v_=$($n_)
   !if $catname isitemof $c_
    !!! check the download center
-   !if housekeep iswordof $catname and $i=35
+   !if housekeep iswordof $catname and mu_download_site iswordof $n_
     !reset error_list
     !for depot in $(conf_$i)
      addr=!defof mu_site in wimshome/public_html/bases/sys/publishcenter/$depot

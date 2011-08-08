@@ -319,11 +319,6 @@ free
 You do not need to change this if Maxima is installed in a usual way with the
 starting exercutable in PATH.
 
-:software scilab_command
-Command name for Scilab
-free
-
-Scilab
 
 :log module_log
 Log individual module informations
@@ -735,3 +730,8 @@ choice
 yes,no;$wims_name_yes,$wims_name_no
 if no, supervisor cannot see IP in logfile.
 
+:software scilab_command
+Command name for Scilab
+free
+
+Scilab
