@@ -88,7 +88,12 @@ test2=!line 2 to -1 of $test
 !else
  reply_$i=&nbsp;
 !endif
-reply__$i=<img src="gifs/$ball.gif" alt="$ball">
+
+!if fill iswordof $(replyoption$i) and bound isitemof $tester
+  reply__$i=<img src="$ins_url" alt="$ins_url" vspace="5" hspace="5" border="0">
+!else
+  reply__$i=<img src="gifs/$ball.gif" alt="$ball">
+!endif
 m_result$i=$i_
 
 !if $test=$empty
