@@ -1,0 +1,124 @@
+!set anstype=yes
+!set anstyle=dprompt
+!set ans_require=
+!set oef_js_submit=$oef_js_submit; sendanswer$i() ;
+
+!set author=Bernadette Perrin-Riou
+
+!if $wims_read_parm=def
+ !exit
+!endif
+!default nx=8
+!default ny=8
+!set nb_im=$[$nx*$ny]
+!set ans_placement=$(replygood$i)
+!set ans_placement=!rows2lines $ans_placement
+!set ans_placement=!line 1 of $ans_placement
+!set ans_placement=!declosing $ans_placement
+!set ans_placement=!lines2rows $ans_placement
+
+!default ans_placement=Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7
+!set ans_placement=!lowercase $ans_placement
+
+!set transp=<img src="gifs/images/chess/transparent.png" alt="">
+!set ans_color=!getopt color in $(replyoption$i)
+!default ans_color=gray
+!set ans_lettre=a,b,c,d,e,f,g,h
+!set ans_ccc=!makelist $ans_color, for x=1 to 4
+!set ans_cc=
+!for ans_i=1 to 8
+ !if $[$ans_i %2]=0
+   !set ans_cc=!append line ,$ans_ccc to $ans_cc
+ !else
+   !set ans_cc=!append line $ans_ccc to $ans_cc
+ !endif
+!next 
+ !set ans_cc=!lines2rows $ans_cc
+
+!set ans_fig=
+!for ans_j=1 to 8
+   !set ans_fi=!makelist $transp for x=1 to 8
+   !set ans_fig=!append line $ans_fi to $ans_fig
+!next
+!set ans_fig=!replace internal uu$ $ by in $ans_fig 
+
+!set ans_c=w,b
+!for ans_t=1 to 2
+ !for ans_j in $(ans_placement[$ans_t;])
+    !set ans_f=!char 1 of $ans_j
+    !set ans_f_cnt=!charcnt $ans_j
+   !if $ans_f_cnt=2
+     !set ans_f=p
+     !set ans_j=p$ans_j
+  !endif
+   !set ans_position1=!char 2 of $ans_j
+   !set ans_position1=!positionof item $ans_position1 in $ans_lettre
+   !set ans_position2=!char 3 of $ans_j
+   !set ans_fff=!line $ans_position1 of $ans_fig
+   !set ans_fff=!replace item number $ans_position2 by <img src="gifs/images/chess/$(ans_c[$ans_t])$ans_f.png" alt="$(ans_c[$ans_t])$ans_f.png"> in $ans_fff
+   !set ans_fig=!replace line number $ans_position1 by $ans_fff in $ans_fig
+ !next
+!next
+
+!set ans_fig=!lines2rows $ans_fig
+
+!reset ans_th
+!set ans_out=<table>
+!for ans_j=8 to 1 step -1
+   !set ans_out=$ans_out\
+  <tr><th> $ans_j</th>
+  !for ans_i=1 to 8
+   !set ans_t=$[$ans_j + 8*($ans_i-1)]
+      !set ans_out=$ans_out\
+     <td onclick="javascript:click$i($ans_t);" id="$(i)_$ans_t" \
+     style="background-color:$(ans_cc[$ans_i;$ans_j]); min-height:80px; min-width:30px;">\
+     <div id="img$(i)_$ans_t">$(ans_fig[$ans_i;$ans_j])</div></td>   
+  !next
+   !set ans_out=$ans_out\
+  </tr>
+!next
+!for ans_j in $ans_lettre
+  !set ans_th=!append word <th>$ans_j</th> to $ans_th
+!next
+
+!set ans_out=$ans_out\
+<tr><th></th>$ans_th</tr>\
+</table>
+
+$ans_out
+
+!set ans_fig=!replace internal ; by , in $ans_fig
+
+<script type="text/javascript">
+var fl_clic$i=false;
+var table$i=Array() ; 
+!for ans_t=1 to 64
+   table$i[$ans_t]='$(ans_fig[$ans_t])'
+!next 
+var nb_clic$i='0'
+var n$i='' ;
+function click$i(n)
+{
+  if (fl_clic$i==false) //pour mémoriser le 1er click.. 
+     {
+      if (table$i[n]=='$transp') { return } ;
+      fl_clic$i=true;
+      n_memo=n;
+      document.getElementById('$(i)_' + n).style.opacity = '0.45';
+     }
+  else { var n_x=' ';
+        if (table$i[n]=='$transp') { n_x=' '} else {n_x = 'x' } ;
+        table$i[n]=table$i[n_memo];
+        table$i[n_memo]='$transp';
+        document.getElementById('$(i)_' + n_memo).style.opacity = '1';
+        fl_clic$i=false;
+        if(n != n_memo){ nb_clic$i ++}
+        document.getElementById('img$(i)_' + n).innerHTML=table$i[n];
+        document.getElementById('img$(i)_' + n_memo).innerHTML=table$i[n_memo];
+        n$i += n_memo + ',' + n_x + ',' + n + ';'; fl_clic$i=false ;
+  }
+}
+
+function sendanswer$i() { document.getElementById('oefvar$i').value=n$i; }
+</script>
+<input type="hidden" name="reply$i" id="oefvar$i" value="">

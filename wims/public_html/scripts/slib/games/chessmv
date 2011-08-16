@@ -1,0 +1,81 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8]\
+[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8;e2,c7]\
+[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8;e2,c7],several
+
+!exit
+
+:proc
+!reset slib_option slib_final slib_out
+!distribute item $wims_read_parm into slib_initial,slib_mvt,slib_option
+!default slib_option=global
+
+slib_c=w,b
+slib_initial=!declosing $slib_initial
+slib_initial=!lines2rows $slib_initial
+slib_initial1=$slib_initial
+slib_mvt=!declosing $slib_mvt
+slib_mvt=!lines2rows $slib_mvt
+slib_mvt_cnt=!itemcnt $(slib_mvt[;1])
+!for slib_m=1 to $slib_mvt_cnt
+ !reset slib_a slib_f slib_f1 slib_c0 slib_j0
+ slib_test=0
+ !for slib_j=1 to 2
+  !for slib_s in $(slib_initial[$slib_j;])
+    !if $slib_test=0 and $(slib_mvt[$slib_m;1]) isin $slib_s
+     slib_f=$slib_s
+     slib_f1=!charcnt $slib_f
+     !if $slib_f1=2
+        slib_f1=P
+     !else
+        slib_f1=!char 1 of $slib_f
+     !endif
+     slib_j0=$slib_j
+     slib_c0=!item $slib_j0 of $slib_c
+     slib_test=1
+    !endif
+  !next
+ !next
+ slib_test=0
+ !for slib_j=1 to 2
+  !for slib_s in $(slib_initial[$slib_j;])
+    !if $slib_test=0 and $(slib_mvt[$slib_m;2]) isin $slib_s
+     slib_a=$slib_s
+     slib_test=1
+    !endif
+  !next
+ !next
+ slib_final=$slib_initial
+ slib_final=!replace internal $slib_f by in $slib_final
+ slib_final1=$(slib_final[1;])
+ slib_final2=$(slib_final[2;])
+ !if $slib_j0=1
+  slib_final2=!replace internal $slib_a by in $slib_final2
+  slib_final1=$slib_final1,$slib_f1$(slib_mvt[$slib_m;2])
+ !else
+  slib_final1=!replace internal $slib_a by in $slib_final1
+  slib_final2=$slib_final2,$slib_f1$(slib_mvt[$slib_m;2])
+ !endif
+ slib_final2=!nonempty items $slib_final2
+ slib_final1=!nonempty items $slib_final1
+ slib_final=$slib_final1;$slib_final2
+ !if $slib_a!=
+   slib_a_cnt=!charcnt $slib_a
+   !if $slib_a_cnt=2
+     slib_a=P
+   !else
+    slib_a=!char 1 of $slib_a
+   !endif
+  slib_out=!append line [$slib_final],[$slib_f1,$slib_a] to $slib_out
+ !else
+  slib_out=!append line [$slib_final],[$slib_f1] to $slib_out
+ !endif
+ !if $slib_option iswordof global
+   slib_initial=$slib_final
+ !endif
+!next

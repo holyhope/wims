@@ -1,0 +1,127 @@
+ans_lettre=a,b,c,d,e,f,g,h
+!set ans_color=!getopt color in $(replyoption$i)
+ans_rep=!rows2lines $(reply$i)
+ans_rep_cnt=!linecnt $ans_rep
+
+ans_Rep$i=
+ans_rep$i=
+Feed_r=
+!for j=1 to $ans_rep_cnt
+  z=!line $j of $ans_rep
+  d_y=$[($(z[1])-1)%8 +1]
+  d_xx=$[($(z[1]) - $d_y)/8+1]
+  d_x=!item $d_xx of $ans_lettre
+  a_y=$[($(z[3])-1)%8 +1]
+  a_xx=$[($(z[3]) - $a_y)/8 +1]
+  a_x=!item $a_xx of $ans_lettre
+  ans_rep$i=!append line $d_x$d_y $(z[2]) $a_x$a_y # to $(ans_rep$i)
+  ans_Rep$i=!append line $d_x$d_y,$a_x$a_y to $(ans_Rep$i)
+  Feed_r=!append item $(d_xx)_$d_y,$(a_xx)_$a_y to $(Feed_r)
+!next
+!set ans_rep$i=!lines2rows $(ans_rep$i)
+!set ans_Rep$i=!lines2rows $(ans_Rep$i)
+!set g_answer=!lines2rows $(replygood$i)
+!set g_answer=!rows2lines $g_answer
+!set ans_initial=!line 1 of $g_answer
+!set ans_initial=!declosing $ans_initial
+!set g_answer=!line 2 of $g_answer
+!set g_answer=!declosing $g_answer
+!!pas d'analyse de la réponse
+!if $g_answer=$empty
+  replygood$i=?analyze
+!endif
+score=0
+ans_cnt=!itemcnt $(g_answer[;1])
+tmp=!lines2rows $(ans_Rep$i)
+!for p=1 to $ans_cnt
+ !for s = 1 to 2
+  u=$(g_answer[$p;$s])
+  !if $u issametext $(tmp[$p;$s])
+     !advance score
+  !endif
+  u=!text expand $u using 01
+  u=!words2items $u
+  u1=!positionof item $(u[1]) in $ans_lettre
+  Feed_g=!append item $(u1)_$(u[2]) to $Feed_g
+ !next
+!next ans_cnt
+score=$[$score/(2*$ans_cnt)]
+
+!readproc slib/games/chessboard [$ans_initial],$ans_color
+ans_init=$slib_out
+
+!readproc slib/games/chessmv [$ans_initial],[$(ans_Rep$i)]
+!set r_final=$slib_out
+!readproc slib/games/chessboard $(r_final[-1;1]),$ans_color
+reply_$i=$slib_out
+
+!if $g_answer !=$empty
+ !readproc slib/games/chessmv [$ans_initial],[$g_answer]
+ !set g_final=$slib_out
+ !readproc slib/games/chessboard $(g_final[-1;1]),$ans_color
+ replyGood$i=$slib_out
+!endif
+
+m_reply$i=$(ans_rep$i)
+reply__$i=$(m_reply$i)
+m_reply$i=!words2items $(m_reply$i)
+ans_init=!replace internal <table> by <table style="color:black;"> in $(ans_init)
+reply_$i=!replace internal td_ by r_ in $(reply_$i)
+!if $g_answer=$empty
+ reply_$i=!replace internal <table> by <table style="color:black;"> in $(reply_$i)
+ !for  j=1 to 2*$ans_rep_cnt
+  reply_$i=!replace internal <td id="r_$(Feed_r[$j])" style=" by <td id="r_$(Feed_r[$j])" style="border:2px solid blue; in $(reply_$i)
+ !next
+  reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
+  $(reply_$i)\
+  </td></tr></table>
+ !exit
+!endif
+
+!if $score=1
+ diareply$i=good
+ !advance freegot
+!else
+ diareply$i=bad
+!endif
+
+!if $score=1
+  reply_$i=!replace internal <table> by <table style="border:4px solid green;color:black;"> in $(reply_$i)
+  reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
+  $(reply_$i)\
+  </td></tr></table>
+!else
+  replyGood$i=!replace internal <table> by <table style="border:4px solid green;color:black;"> in $(replyGood$i)
+  replyGood$i=!replace internal td_ by g_ in $(replyGood$i)
+  reply_$i=!replace internal <table> by <table style="border:4px solid red;color:black;"> in $(reply_$i)
+  reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
+$(reply_$i) \
+</td><td>\
+$(replyGood$i)\
+</td></tr></table>
+!endif
+
+!for  j=1 to 2*$ans_rep_cnt
+  reply_$i=!replace internal <td id="r_$(Feed_r[$j])" style=" by <td id="r_$(Feed_r[$j])" style="border:2px solid blue; in $(reply_$i)
+!next
+!for  j=1 to 2*$ans_cnt
+  reply_$i=!replace internal <td id="g_$(Feed_g[$j])" style=" by <td id="g_$(Feed_g[$j])" style="border:2px solid blue; in $(reply_$i)
+!next
+
+g_reply_=$(g_final[;2])
+g_reply__=
+
+!for u =1 to $ans_cnt
+  c=!declosing $(g_reply_[$u])
+  c_nt=!itemcnt $c
+  !if $c_nt=2
+    g_reply__=!append line $(g_answer[$u;1]) x $(g_answer[$u;2]) # to $g_reply__
+  !else
+    g_reply__=!append line $(g_answer[$u;1])$ $(g_answer[$u;2]) # to $g_reply__
+  !endif
+!next
+g_reply__=!lines2rows $(g_reply__)
+
+!if $score<1
+   reply__$i=$(reply__$i) ; $ch_good1 : <tt>$g_reply__</tt>.
+!endif

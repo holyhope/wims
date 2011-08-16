@@ -1,0 +1,77 @@
+!if $wims_read_parm!=slib_header
+!goto proc
+!endif
+slib_title=Chessboard
+slib_author=Bernadette, Perrin-Riou
+
+slib_example= [Kg2,Qe3,Ra1,Rd1,Ba3,Ne5,c4,f3,g4,h3;Ke8,Qg8,Rb8,h8,d7,f7,a6,c6,g6],brown,html\
+,,html\
+[Rc1,Kg1,f2,g2,h3,Rg3,Bb3,Qb4,d4,Ne5,Ne6,f6;Qc8,Kg8,Rh8,Ra7,b7,Ne7,Bh7,a6,c6,g6,h6],,html\
+[Rc1,Kg1,f2,g2,h3,Rg3,Bb3,Qb4,d4,Ne5,Ne6,f6;Qc8,Kg8,Rh8,Ra7,b7,Ne7,Bh7,a6,c6,g6,h6],,url\
+[Rc1,Kg1,f2,g2,h3,Rg3,Bb3,Qb4,d4,Ne5,Ne6,f6;Qc8,Kg8,Rh8,Ra7,b7,Ne7,Bh7,a6,c6,g6,h6],,raw
+!exit
+
+:proc
+slib_placement=$(wims_read_parm[1])
+slib_placement=!declosing $slib_placement
+slib_placement=!lines2rows $slib_placement
+slib_color=$(wims_read_parm[2])
+slib_option=$(wims_read_parm[3])
+!default slib_placement=Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7
+slib_placement=!lowercase $slib_placement
+
+!default slib_option=raw
+!default slib_color=gray
+slib_lettre=a,b,c,d,e,f,g,h
+slib_out=xrange -1,9\
+yrange -1,9\
+parallel 0,0,0,8,1,0,9,$slib_color\
+parallel 0,0,8,0,0,1,9,$slib_color
+
+!for slib_j=0 to 7
+  !if $[$slib_j%2]=0
+   !for slib_k=0 to 3
+      slib_out=$slib_out\
+fill 0.5+2*$slib_k, 0.5+$slib_j,$slib_color
+   !next
+  !else
+    !for slib_k=0 to 3
+   slib_out=$slib_out\
+fill 1.5+2*$slib_k, 0.5+$slib_j,$slib_color
+!next
+  !endif
+!next
+!for slib_j=0 to 7
+  slib_out=$slib_out\
+text black,$slib_j+0.5,-0.5,,$(slib_lettre[$slib_j+1])\
+text black,-0.5,$slib_j+0.5,,$[$slib_j+1]
+!next
+
+slib_c=w,b
+!for slib_t=1 to 2
+ !for slib_j in $(slib_placement[$slib_t;])
+   slib_f=!char 1 of $slib_j
+   slib_f_cnt=!charcnt $slib_j
+   !if $slib_f_cnt=2
+    slib_f=p
+    slib_j=p$slib_j
+  !endif
+  slib_position1=!char 2 of $slib_j
+  slib_position1=!positionof item $slib_position1 in $slib_lettre
+  slib_position2=!char 3 of $slib_j
+  slib_out=$slib_out\
+copy $[$slib_position1-1],$[$slib_position2],-1,-1,-1,-1,images/chess/$(slib_c[$slib_t])$slib_f.png
+ !next
+!next
+!if url iswordof $slib_option or html iswordof $slib_option
+    insdraw_size=300,300
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+  !endif
+  slib_out=$slib_out,$insdraw_size
+!endif
+
+
+    
