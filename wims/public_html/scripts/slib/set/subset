@@ -1,0 +1,28 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example= [4,5,6,7]\
+[5,6,t,2],[2,3]\
+[5,6,t,-3],[2]\
+[5,6,t,-3],[2,2]
+slib_require=pari
+!exit
+
+:proc
+
+!distribute items $wims_read_parm into slib_set,slib_card
+slib_set=!declosing $slib_set
+slib_set=$(slib_set[1..10])
+slib_cnt=!itemcnt $slib_set
+slib_card=!declosing $slib_card
+slib_card1=$(slib_card[1])
+slib_card2=$(slib_card[2])
+!default slib_card1=1
+!default slib_card2=$slib_cnt
+
+slib_out=!exec pari slib_set=[$slib_set] ; slib_subset=listcreate() ;\
+   for (slib_i = 1, 2^#slib_set - 1, w=vecextract(slib_set, slib_i) ; if(#w >= $slib_card1 && #w <= $slib_card2 , listput(slib_subset,w)) ) ;\
+   Vec(slib_subset)
