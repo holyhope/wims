@@ -8,9 +8,6 @@ into wims_name_participantview,wims_name_addexo,wims_name_addsexo
 	 Obtener el código fuente de la hoja \
 into wims_name_putsource,wims_name_sheetsource
 
-
-!set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
-
 !set name_desc_title=!nosubst limitado a  $title_limit caracteres
 !set name_desc_desc=!nosubst limitado a $desc_limit caracteres; se admiten los tags y vínculos HTML
 

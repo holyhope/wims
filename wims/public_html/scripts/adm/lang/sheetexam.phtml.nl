@@ -8,8 +8,6 @@ into wims_name_putsource,wims_name_participantview,wims_name_sheetsource
 Voeg een serie oefeningen toe,\
 into wims_name_addexo,wims_name_addsexo
 
-!set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
-
 !set name_desc_title=!nosubst Maximaal $title_limit lettertekens
 !set name_desc_desc=!nosubst Maximaal $desc_limit lettertekens; html tags en links zijn toegestaan
 

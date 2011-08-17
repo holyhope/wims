@@ -189,7 +189,9 @@
  We adviseren dat u de website manager vraagt de limiet voor deze klas te verhogen.
  
  !set wims_name_reaching_limit=De grootte van deze klas nadert de ingestelde server limiet.\
- Als deze limiet is bereikt , wordt het klasse management geblokkeerd ! 
+ Als deze limiet is bereikt , wordt het klasse management geblokkeerd !
+ 
+ !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
 !endif
 
 !!!if adm/class isin $module or adm/manage isin $module

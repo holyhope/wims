@@ -190,6 +190,8 @@
 
  !set wims_name_reaching_limit=Su clase alcanza el límite de espacio disco autorizado.\
   Una vez este límite pasado, se bloqueará la gestión de la clase!
+  
+ !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1])
 !endif
 
 !!!if adm/class isin $module or adm/manage isin $module

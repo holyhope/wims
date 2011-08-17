@@ -7,6 +7,7 @@
   !set  wims_theme_icon=$wims_theme
 !endif
 !distribute items $wims_read_parm into 1_,2_,3_,4_
+
 !reset w_image
 !if " isin $1_
   !set w_name=!replace internal " by in $1_
@@ -58,13 +59,10 @@
  !href $3_ &nbsp;
  !reset wims_ref_class
  !exit
- :7
- !set 3_=!item 3 to -1 of $wims_read_parm
- !set 3_=!nospace $3_
- !set wims_ref_class=$w_name1
+:7
+ !set wims_ref_class=wims_button_feedback
  !set wims_ref_title=$w_name
- !set wims_ref_target=internal
- !href $3_ $w_name
+ !href target=wims_$4_ $3_ $w_name
  !reset wims_ref_class
  !exit
  
