@@ -415,8 +415,8 @@ puissance01 : /*rien*/ {$$.i=1;}
 
 decimal : INT {$$.val=val_decimal;}
 | DECIMAL {$$.val=val_decimal;}
-| DECIMAL EE INT {atodecimal($1.v,val_decimal); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal}
-| INT EE INT {val_decimal=atoi($1.v); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal}
+| DECIMAL EE INT {atodecimal($1.v,val_decimal); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal;}
+| INT EE INT {val_decimal=atoi($1.v); int e = atoi($3.v); if (e>0) for (int i=0; i<e;i++) val_decimal *=10; if (e<0) for (int i=0; i<-e;i++) val_decimal /=10; $$.val=val_decimal;}
 ;
 
 prefixe : 
