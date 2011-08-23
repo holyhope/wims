@@ -110,7 +110,7 @@
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
- . </center>
+ .</center>
  !exit
 !endif
 
@@ -165,51 +165,21 @@ to $wims_menu_items
   Heu enviat una sol·licitud invàlida. S'ignora.
  !else
   !set exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $exo into directory,parm,require,weight,title,desc,dep
-  !set orgtit=!module title $directory
-  <p><center><h3>$name_titlemodif $modif</h3></center>
-  !form reply
-  <input type="hidden" name="modif" value="$modif">
-  <input type="hidden" name="job" value="modify">
-  <ul>
-  <li>$wims_name_title: <small>($name_oldtitle <em>$orgtit</em>)
-  </small> <br>
-  <input size="50" name="mod_title" value="$title">
-  <li>$wims_name_Description<br>
-  <textarea name="mod_desc" rows="5" cols="50">$desc</textarea>
-  <li>$name_pointsasked: 
-  <input size="4" name="mod_require" value="$require">,
-  $name_weight
-  <input size="4" name="mod_weight" value="$weight">.
-  <li>$(name_shtab[6]):
-  <input size="40" name="mod_dep" value="$dep">.
-  !reset mod_dep
-  </ul>
-  <p><center><input type="submit" value="$wims_name_change"></form>
-  </center> <p>
-  !href cmd=resume $wims_name_giveup
- .
-  <p><small>
-  <b>$wims_name_help</b>. <tt>$(name_shtab[6])</tt> 
-  vol dir que un participant ha
-  d'haver obtingut punts en altres exercicis del full abans de
-  poder treballar-hi en aquest. Per exemple,
-  <tt class="wims_code_words">1:50,2:30,3+4+5:60</tt>
-  vol dir que el participant ha de tenir un èxit del 50% sobre l'exercici 1, del
-  30% sobre l'exercici 2, i una mitjana d'èxit del 60% sobre els exercicis
-  3, 4, 5.
-  </small>
+  !read exomodify.phtml $exo
  !endif
  !exit
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2
-
-<p>
-!href cmd=resume $wims_name_back2
+ $name_expiration1 ($l_date). $name_expiration2 <p>
+ !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
+ !exit
+!endif
 
+!if $error=srcnoexo
+ Cette feuille ne contient aucun exercice, donc son source est vide.<br>
+ !href cmd=resume retour à la page de préparation
  !exit
 !endif
 !msg $error

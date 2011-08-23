@@ -44,11 +44,20 @@
  !endif
 !endif
 
+!if $wims_sheet>0 or P isin $wims_sheet
+ !if $(wims_exofeedback[$wims_exo;])!=$empty
+  !set feedexo=$(wims_exofeedback[$wims_exo;])
+  !if $module_score!=$empty and $module_score < $(feedexo[2])
+   !set 5_=!append line feedbackexo,7,$(feedexo[1]),mfeed to $5_
+  !endif
+ !endif 
+!endif
 !if $cmd=help or $cmd=hint
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
+
 !if $module_has_intro=yes and $cmd notwordof intro help and\
-        $wims_sheet=$empty and exam notin $wims_session
+        $wims_sheet=$empty and exam notin $wims_session and mfeed notin $wims_session
  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3 to $1_
 !endif
 !if $module_has_help=yes and $cmd notwordof intro help
@@ -102,12 +111,14 @@ $module_title
 !endif
 !set wims_rm_2=$2_
 !set wims_rm_4=$4_
+!set wims_rm_5=$5_
 :rmend
 !set wims_homeref_n1=!linecnt $wims_rm_1
 !set wims_homeref_n2=!linecnt $wims_rm_2
 !set wims_homeref_n0=!linecnt $wims_rm_0
 !set wims_homeref_n3=!linecnt $wims_rm_3
 !set wims_homeref_n4=!linecnt $wims_rm_4
+!set wims_homeref_n5=!linecnt $wims_rm_5
 !!</div><!--div dans homeref_user-->
 !read themes.phtml tail
 !robottrap

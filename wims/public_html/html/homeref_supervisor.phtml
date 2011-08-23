@@ -54,6 +54,15 @@
   !let wims_menu_items=!append line nextseries,1,module=home&directworksheet=$wims_sheet.$[$wims_exo+1] to $wims_menu_items
  !endif
 !endif
+!!debug $module_score $wims_sheet>0 or P isin $wims_sheet
+!if $wims_sheet>0 or P isin $wims_sheet
+ !if $(wims_exofeedback[$wims_exo;])!=$empty
+  !set feedexo=$(wims_exofeedback[$wims_exo;])
+  !if $module_score!=$empty and $module_score < $(feedexo[2])
+   !set 5_=!append line feedbackexo,7,$(feedexo[1]),mfeed to $5_
+  !endif
+ !endif 
+!endif
 
 !!********* Link #3 : "Resume"
 !if $cmd=help or $cmd=hint
@@ -181,6 +190,7 @@ WIMS $module_title [$module_language]
 !set 2_=!append line class,0,$wims_classname ($wims_institutionname) to $2_
 !set 2_=!append line time,0,Server time: $wims_now to $2_
 !set wims_rm_2=$2_
+!set wims_rm_5=$5_
 
 :rmend
 !set wims_homeref_n1=!linecnt $wims_rm_1
@@ -188,6 +198,6 @@ WIMS $module_title [$module_language]
 !set wims_homeref_n0=!linecnt $wims_rm_0
 !set wims_homeref_n3=!linecnt $wims_rm_3
 !!</div><!--div dans homeref_supervisor-->
-
+!set wims_homeref_n5=!linecnt $wims_rm_5
 !read themes.phtml tail
 !robottrap

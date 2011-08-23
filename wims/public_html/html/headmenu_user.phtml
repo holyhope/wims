@@ -90,7 +90,7 @@
  !set 1_=!append line resume,1,cmd=resume to $1_
 !endif
 !if $module_has_intro=yes and $cmd notwordof intro help and \
-	$wims_sheet=$empty and exam notin $wims_session 
+	$wims_sheet=$empty and exam notin $wims_session and mfeed notin $wims_session
  !set 1_=!append line intro,1,module=$module&cmd=intro&special_parm=$special_parm&special_parm2=$special_parm2&special_parm3=$special_parm3&special_parm4=$special_parm4 to $1_
 !endif
 !if $module_has_help=yes and $cmd notwordof intro help and _exam notin $wims_session
@@ -100,7 +100,8 @@
   !set 1_=!append line help,1,module=$module&cmd=help&special_parm=$wims_help_parm to $1_
  !endif
 !endif
-!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home and _exam notin $wims_session and ($wims_user=$empty or $wims_user=supervisor)
+!if $module_has_about=yes and $cmd notwordof help intro and ++adm notin ++$module and $module!=home \
+  and _exam notin $wims_session and _mfeed notin $wims_session and ($wims_user=$empty or $wims_user=supervisor)
  !set 1_=!append line about,4,module=$module&cmd=help&special_parm=about,mhelp to $1_
 !endif
 !if $wims_theme_version=0

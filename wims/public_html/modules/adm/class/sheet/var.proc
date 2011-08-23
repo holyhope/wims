@@ -344,7 +344,21 @@ $comment
  mod_comment=!singlespace $mod_comment
  mod_title=!char 1 to $etitle_limit of $mod_title
  mod_desc=!char 1 to $edesc_limit of $mod_desc
- mod_comment=!char 1 to $edesc_limit of $mod_comment
+ mod_comment=!char 1 to $edesc_limit of $mod_comments
+ !if $mod_feedback notsametext $empty
+  mod_feedback_lim=$(mod_feedback[2])
+  !bound mod_feedback_lim between 0 and 11 default 10
+  mod_feedback=!nospace $(mod_feedback[1])
+  mod_feedback_test=!replace = by _ in $mod_feedback
+  !if cmd_new notin $mod_feedback_test
+   mod_feedback=!nospace $mod_feedback&cmd=new
+  !endif
+  !if adm/doc isin $mod_feedback and job_read notin $mod_feedback_test
+   mod_feedback=$mod_feedback&job=read
+  !endif
+  mod_feedback=$mod_feedback,$mod_feedback_lim
+ !endif
+ 
  update_content=$D_\
 $p_\
 $mod_require\
@@ -352,11 +366,12 @@ $mod_weight\
 $mod_title\
 $mod_desc\
 $mod_dep\
-$mod_comment
+$mod_comment\
+$mod_feedback
  update_field=0
  exo=$modif
  !read update.exo
- !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment
+ !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment,mod_feedback
 !endif
 
 !if $[$activetest]=0

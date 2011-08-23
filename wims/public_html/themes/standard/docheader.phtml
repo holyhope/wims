@@ -19,7 +19,13 @@
 !endif
 <div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
-!if help notin $wims_session
+!if _mfeed  isin $wims_session
+<span class="menuitem">
+  !set wims_ref_class=doch_class
+   <a href="#" onclick="window.close()">$wims_name_back2</a>
+  </span><!-- menuitem-->
+!endif
+!if help notin $wims_session and _mfeed notin $wims_session
  !if $wims_class=$empty
   <span class="menuitem">
   !read $oneitem doch_wims,1,module=home
@@ -126,12 +132,14 @@
   !reset wims_ref_class
   </span><!-- menuitem-->
  !endif
+ !if _mfeed notin $wims_session
   <span class="menuitem">
   !!!ne pas utiliser oneitem
   !set wims_ref_class=doch_about
   !href target=wims_mhelp module=$module&cmd=help&special_parm=about $wims_name_doch_about
   !reset wims_ref_class
   </span><!-- menuitem-->
+ !endif
 !endif
 </div><!--end of wimsmenu  -->
 </div><!--end of wimstopbox  -->

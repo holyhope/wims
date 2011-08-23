@@ -1,7 +1,6 @@
 !! fichier de modification des informations sur les exercices d'une feuille
-!!!### langage independant
 !!
- !distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_
+!distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_,feedback_
 !! !set orgtit_=!module title $directory_
   <p><center><h3>$name_titlemodif $modif</h3></center>
   !form reply
@@ -38,6 +37,15 @@
     <td><input size="40" name="mod_dep" value="$dep_"></td>
     !reset mod_dep
    </tr>
+   $table_tr
+    <td><b>$(name_shtab[10])</b>
+    &nbsp;
+    !set wims_ref_class=wims_button_help
+     !href target=wims_mhelp cmd=help&special_parm=feedback $wims_name_help
+    </td>
+    <td><textarea name="mod_feedback" rows="1" cols="60" wrap="off">$feedback_</textarea></td>
+   </tr>
+   
    !let oef=!defof category in wimshome/public_html/modules/$directory_/INDEX
    !if oef isitemof $oef
     $table_tr

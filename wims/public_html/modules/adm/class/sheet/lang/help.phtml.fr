@@ -33,3 +33,31 @@ Indication sur l'enregistrement des notes.
  et ces mots doivent être séparés les uns des autres par des espaces.
 
 !exit
+
+:feedback
+!read adm/title.phtml 1\
+$(name_shtab[10])
+On peut indiquer dans ce champ un lien sur un document de WIMS
+ou un exercice de WIMS. Le lien sur cette ressource apparaîtra lorsque le score est
+strictement inférieur à une note fixée (sur 10). 
+Le second item est la note limite (sur 10), le premier item est l'adresse sous la forme suivante 
+(forme abrégée): 
+<ul><li>
+Exercice d'un module public ou document public : <tt class="wims_address">module=xxx</tt>
+(comme dans <span class="wims_button disabled">$wims_name_about</span>).
+</li><li>
+Exercice de la classe : <tt class="wims_address">module=classes/fr&exo=exo1</tt>
+</li><li>
+Document de la classe  :
+<tt class="wims_address">module=adm/doc&doc=c1&+block=_nom_bloc</tt>
+</li></ul>
+
+Les paramètres supplémentaires peuvent être ajoutés (voir <span class="wims_button disabled">$wims_name_about</span>)
+
+Par exemple, dans l'exemple ce-dessous, si la note est inférieure à 5, l'élève sera dirigé
+sur le document de la classe <tt>c2</tt>, et plus précisément sur la page correspondant 
+au bloc <tt>aaa</tt> de ce document. 
+
+<pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
+
+!exit

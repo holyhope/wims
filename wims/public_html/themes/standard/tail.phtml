@@ -13,7 +13,7 @@
 </div><!--id wimsexam-->
  !exit
 !endif
-!if $wims_homeref_n0+$wims_homeref_n4>0
+!if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5>0
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
  !if $wims_homeref_n0>0
  <div class="wimsmenu">
@@ -29,6 +29,16 @@
  !next i_
 </div><!--wimsmenu-->
 !endif wims_homeref_n0
+!if $wims_homeref_n5>0
+<div class="wimsmenu">
+!for i_=1 to $wims_homeref_n5
+ <span class="menuitem">
+ !set 1_=!line $i_ of $wims_rm_5
+ !read oneitem.phtml $1_
+ </span><!-- menuitem-->
+!next i_
+</div><!--wimsmenu-->
+!endif wims_homeref_n5
 !if $wims_homeref_n4>0
 <div class="wimstail">
 !for i_=1 to $wims_homeref_n4
@@ -39,8 +49,9 @@
 !next i_
 </div><!--wimstail-->
 !endif wims_homeref_n4
-</div><!--wimsmenumodubox-->
-!endif wims_homeref_n0+wims_homeref_n4
+</div>
+<!--wimsmenumodubox-->
+!endif wims_homeref_n0+wims_homeref_n4+$wims_homeref_n5
 !if $wims_homeref_n3>0
   <div id="wimsmenutab">
   <div class="wimsmenu"> 

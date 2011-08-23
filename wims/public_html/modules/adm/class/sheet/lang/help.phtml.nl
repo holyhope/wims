@@ -36,3 +36,12 @@ Deze tijden moeten in de lokale SERVER tijd zijn en door spaties worden gescheid
 
 
 !exit
+
+:feedback
+!read adm/title.phtml 1\
+$(name_shtab[10])
+
+!read lang/help.phtml.fr feedback
+
+!exit
+

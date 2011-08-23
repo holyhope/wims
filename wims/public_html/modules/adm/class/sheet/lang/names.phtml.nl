@@ -6,7 +6,7 @@
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 !set seriesaction=!nosubst $wims_name_change,$wims_name_erase,$wims_name_up
 
-!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Punten,Weging,Afhankelijkheden,$wims_name_comment,$wims_name_action,Parameters
+!let name_shtab=!nosubst No,$wims_name_title,$wims_name_Description,Punten,Weging,Afhankelijkheden,$wims_name_comment,$wims_name_action,Parameters,$wims_name_feedbackexo
 
 !if $activetest<=0
  !let wims_name_sheetadmin=Werkblad aanmaakpagina

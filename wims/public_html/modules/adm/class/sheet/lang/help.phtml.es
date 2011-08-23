@@ -36,3 +36,11 @@ Indicación sobre el registro de las notas.
  y estas palabras deber ir separadas unas de otras por espacios.
 
 !exit
+
+:feedback
+!read adm/title.phtml 1\
+$(name_shtab[10])
+
+!read lang/help.phtml.fr feedback
+
+!exit

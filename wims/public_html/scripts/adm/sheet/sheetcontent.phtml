@@ -6,13 +6,14 @@ $table_header
   !for k=1 to 7
    <th>$(name_shtab[$k])</th>
   !next k
+  <th>$(name_shtab[10])</th>
   !if $activetest=0
    <th>$(name_shtab[8])</th>
   !endif
  </tr>
  !for i=1 to $exocnt
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
-  !distribute lines $ex into di,pa,re,we,ti,de,dep,com
+  !distribute lines $ex into di,pa,re,we,ti,de,dep,com,feed
   $table_tr
    <td>$i</td>
    <td>
@@ -29,6 +30,7 @@ $table_header
     !endif
    </td>
    <td>$com</td>
+   <td>$feed</td>
    !if $activetest=0
     <td>
     !set wims_ref_class=wims_button
