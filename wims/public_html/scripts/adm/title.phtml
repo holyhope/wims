@@ -7,13 +7,17 @@ sous-titre
 !!# 2: titre\
 sous-titre en petit\
 
-
 !distribute line $wims_read_parm into number_,tit1_,tit2_,tit3_,tit4_
 
+!if $wims_typename!=$empty
+  !distribute items <div id="wims_$wims_typename">,</div><!--wims_$wims_typename--> into begindiv,enddiv
+!endif
+  
 !goto $number_
 
 :1 
 !! in the original wims_classname is smaller than title 
+$begindiv
 <div id="wims_modu_title1">
 <div class="wims_classname">$tit1_</div>
 <h1 class="wims_title">$tit2_</h1>
@@ -22,10 +26,13 @@ sous-titre en petit\
 !endif
 <div class="wims_title_close"> </div>
 </div><!--wims_modu_title1-->
+</div><!--wims_$wims_typename-->
 !exit
 
 :2
 !! in the original, subtitle is tiny
+$begindiv
+<div class="wims_tag">&nbsp;</div>
 <div id="wims_modu_title2">
 <h1 class="wims_title">$tit1_</h1>
 !if $tit2_!= 
@@ -33,10 +40,12 @@ sous-titre en petit\
 !endif
 <div class="wims_title_close"> </div>
 </div><!--wims_modu_title2-->
+$enddiv
 !exit
 
 :3
 !! in the original subtitle is of same size as title
+$begindiv
 <div id="wims_modu_title3">
 !if $tit1_!=
 <div class="wims_title">$tit1_</div>
@@ -46,5 +55,6 @@ sous-titre en petit\
 !endif
 <div class="wims_title_close"> </div>
 </div><!--wims_modu_title2-->
+$enddiv
 !exit
 
