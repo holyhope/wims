@@ -107,6 +107,17 @@ c=!char 1 of $sh
 
 maxexo=!recordcnt $data
 !setdef wims_sheetmax=$maxexo in wimshome/sessions/$wims_session/var.stat
+!reset exofeedback
+!for e=1 to $maxexo
+  redir=!record $e of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+  redir=!line 9 of $redir
+  !if $e=1
+    exofeedback=$redir
+  !else
+    exofeedback=$exofeedback;$redir 
+   !endif
+!next
+!setdef wims_exofeedback=$exofeedback in wimshome/sessions/$wims_session/var.stat
 
 !if $job iswordof print import
  !read $job.proc
