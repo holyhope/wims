@@ -1,6 +1,6 @@
 !!!Don't translate for the moment
 
-<b>Mouvement dans un jeu d'échecs</b> (nom : <tt class="wims_code_words">chessboard</tt>)
+<b>Mouvement dans un jeu d'échecs</b> (nom : <tt class="wims_code_words">chessgame</tt>)
 
 La première ligne de la bonne réponse est la position des pièces présentée (entre crochets) :
 <tt>position des blancs ; position des noirs</tt>.
@@ -14,5 +14,36 @@ Aucune vérification de règles n'est faite. Il s'agit simplement de mouvements de
 Pour préciser la couleur (par défaut grise), mettre <tt class="wims_code_words">color=nom_couleur</tt>.
 dans le champ <tt class="wims_code_words">option</tt>.
 <pre>
-\answer{}{[Kg1,g2,c3,f4,Rg8,Qh8;Qc7,f7,Rd6,c5,Kf5],[h8,e5;c3,c6]}{type=chessboard}{option=color=brown}
+\answer{}{[Kg1,g2,c3,f4,Rg8,Qh8;Qc7,f7,Rd6,c5,Kf5];[h8,e5;c3,c6]}{type=chessgame}{option=color=brown}
 </pre>
+
+Il peut y avoir plusieurs réponses possibles, elles sont séparées par le symbole 
+<tt class="wims_code_words">|</tt>. Par exemple,
+<pre>
+\answer{}{[Kg1,g2,c3,f4,Rg8,Qh8;Qc7,f7,Rd6,c5,Kf5];[h8,e5;c3,c6|c7,e5]}{type=chessgame}
+</pre>
+signifie que la bonne réponse est soit deux déplacements successifs <tt>h8,e5</tt> puis <tt>c3,c6</tt> soit
+un déplacement <tt>c7,e5</tt>.
+
+!!Avec l'option <tt class="wims_code_words">noorder</tt> et dans le cas de plusieurs déplacements, l'ordre
+!!des déplacements n'est pas imposé. (à supprimer ?)
+<p>
+L'option <tt class="wims_code_words">noanswer</tt> permet de ne pas afficher l'échiquier correspondant 
+à la bonne réponse dans la partie principale de l'exercice. Celle-ci s'affiche alors simplement sous forme 
+codée dans l'analyse de la réponse (pour supprimer l'analyse de la réponse, on peut utiliser l'option générale
+<tt class="wims_code_words">noanalyzeprint</tt>).
+</p>
+
+<p>La variable <tt class="wims_code_words">reply</tt>n contient sur chaque ligne (indiquée par un 
+point-virgule) les items suivants
+</p>
+<ul>
+ <li>
+le mouvement effectué,
+ </li><li>
+le nom des figures déplacées et (éventuellement remplacées)  entre crochets,
+ </li><li>
+le codage de l'échiquier après le mouvement.
+ </li>
+</ul>
+

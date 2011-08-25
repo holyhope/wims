@@ -13,23 +13,28 @@ all,blue\
 
 :proc
 !reset slib_out
+
 slib_placement=$(wims_read_parm[1])
 slib_placement=!declosing $slib_placement
 slib_placement=!lines2rows $slib_placement
 slib_color=$(wims_read_parm[2])
+slib_color2=!word 2 of $(slib_color)
+slib_color=!word 1 of $(slib_color)
+slib_option=$(wims_read_parm[3])
+
 !if $slib_placement issametext all
   slib_placement=Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7
 !endif
 slib_placement=!lowercase $slib_placement
 
 !default slib_color=gray
-
+!default slib_color2=
 slib_lettre=a,b,c,d,e,f,g,h
-slib_ccc=!makelist $slib_color, for x=1 to 4
+slib_ccc=!makelist $slib_color,$slib_color2 for x=1 to 4
 slib_cc=
 !for slib_i=1 to 8
  !if $[$slib_i %2]=0
-  slib_cc=!append line ,$slib_ccc to $slib_cc
+  slib_cc=!append line $slib_color2,$slib_ccc to $slib_cc
  !else
   slib_cc=!append line $slib_ccc to $slib_cc
  !endif
@@ -54,20 +59,21 @@ slib_c=w,b
   slib_position1=!positionof item $slib_position1 in $slib_lettre
   slib_position2=!char 3 of $slib_j
   slib_fff=!line $slib_position1 of $slib_fig
-  slib_fff=!replace item number $slib_position2 by <img id="$(slib_position1)_$(slib_position2)" src="gifs/images/chess/$(slib_c[$slib_t])$slib_f.png" alt="$(slib_c[$slib_t])$slib_f.png"> in $slib_fff
+  slib_fff=!replace item number $slib_position2 by <img src="gifs/images/chess/$(slib_c[$slib_t])$slib_f.png" alt="$(slib_c[$slib_t])$slib_f.png"> in $slib_fff
   slib_fig=!replace line number $slib_position1 by $slib_fff in $slib_fig
  !next
 !next
 slib_fig=!lines2rows $slib_fig
 slib_fig=!replace internal vvv by <img src="gifs/images/chess/transparent.png"> in $slib_fig
 !reset slib_th
+
 slib_out=<table>
 !for slib_j=8 to 1 step -1
   slib_out=$slib_out\
   <tr><th> $slib_j</th>
   !for slib_i=1 to 8
      slib_out=$slib_out\
-     <td id="td_$(slib_i)_$slib_j" style="background-color:$(slib_cc[$slib_i;$slib_j]); min-height:80px; min-width:30px;">$(slib_fig[$slib_i;$slib_j])</td>   
+     <td id="td_$(slib_i)_$slib_j" style="background-color:$(slib_cc[$slib_i;$slib_j]); min-height:30px; min-width:30px;">$(slib_fig[$slib_i;$slib_j])</td>
   !next
   slib_out=$slib_out\
   </tr>
@@ -80,5 +86,13 @@ slib_out=$slib_out\
 <tr><th></th>$slib_th</tr>\
 </table>
 
-
-    
+!if raw notwordof $slib_option
+ !exit
+!endif
+slib_out=
+!for slib_j=8 to 1 step -1
+  !for slib_i=1 to 8
+     slib_out=!append item <div id="td_$(slib_i)_$slib_j" style="background-color:$(slib_cc[$slib_i;$slib_j]); min-height:30px; min-width:30px;">$(slib_fig[$slib_i;$slib_j])</div>\
+     to $slib_out
+  !next
+!next

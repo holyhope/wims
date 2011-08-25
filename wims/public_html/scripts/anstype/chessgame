@@ -1,3 +1,7 @@
+!!option=noorder (plusieurs réponses dans n'importe quel ordre) non documenté car n'est peut-être
+!! pas très utile : ne peut pas servir pour énumérer les déplacements possibles d'une seule pièce.
+!!option=noanswer : does not give the good answer in the answer
+
 ans_lettre=a,b,c,d,e,f,g,h
 !set ans_color=!getopt color in $(replyoption$i)
 ans_rep=!rows2lines $(reply$i)
@@ -14,7 +18,7 @@ Feed_r=
   a_y=$[($(z[3])-1)%8 +1]
   a_xx=$[($(z[3]) - $a_y)/8 +1]
   a_x=!item $a_xx of $ans_lettre
-  ans_rep$i=!append line $d_x$d_y $(z[2]) $a_x$a_y # to $(ans_rep$i)
+  ans_rep$i=!append line $d_x$d_y $(z[2]) $a_x$a_y to $(ans_rep$i)
   ans_Rep$i=!append line $d_x$d_y,$a_x$a_y to $(ans_Rep$i)
   Feed_r=!append item $(d_xx)_$d_y,$(a_xx)_$a_y to $(Feed_r)
 !next
@@ -31,58 +35,112 @@ Feed_r=
   replygood$i=?analyze
 !endif
 score=0
-ans_cnt=!itemcnt $(g_answer[;1])
 tmp=!lines2rows $(ans_Rep$i)
-!for p=1 to $ans_cnt
- !for s = 1 to 2
-  u=$(g_answer[$p;$s])
-  !if $u issametext $(tmp[$p;$s])
-     !advance score
-  !endif
-  u=!text expand $u using 01
-  u=!words2items $u
-  u1=!positionof item $(u[1]) in $ans_lettre
-  Feed_g=!append item $(u1)_$(u[2]) to $Feed_g
- !next
-!next ans_cnt
-score=$[$score/(2*$ans_cnt)]
+tmp_order=!rows2lines $(ans_Rep$i)
+tmp_order=!replace internal , by | in $tmp_order
+tmp_order=!lines2items $tmp_order
+tmp_order=!nospace $tmp_order
+g_ans=!replace internal | by $\
+$ in $g_answer
+g_ans_cnt=!linecnt $g_ans
+!reset G_answer
+on cherche la meilleure réponse
+test=0
+sol=1
+!for l_ = 1 to $g_ans_cnt
+  u=!line $l_ of $g_ans
+  test$l_=0
+  ans_cnt$l_=!itemcnt $(u[;1])
+  !if noorder notwordof $(replyoption$i)
+   !for p=1 to $(ans_cnt$l_)
+    u_= $(u[$p;])
+    !for s = 1 to 2
+      v_ = $(u_[$s])
+      !if $v_ issametext $(tmp[$p;$s])
+       !advance test$l_
+      !endif
+    !next s 
+   !next p
+   !else noorder
+     uorder=!rows2lines $u
+     uorder=!replace internal , by | in $uorder
+     uorder=!lines2items $uorder
+     uorder=!nospace $uorder
+     inter=!listintersect $uorder and $tmp_order
+     diff1=!listcomplement $uorder in $tmp_order
+     diff2=!listcomplement $tmp_order in $uorder
+     diff1_cnt=!itemcnt $diff1
+     diff2_cnt=!itemcnt $diff2
+     test$l_=!itemcnt $inter_cnt
+     test$l_=$[2*$(test$l_)]
+   !endif
+   !if $(test$l_) > $test
+    test=$(test$l_)
+    sol=$l_
+   !endif
+!next l_
 
+!!sol est la solution la plus proche d'une bonne solution
+G_answer=!line $sol of $g_ans
+
+!for p=1 to $(ans_cnt$sol)
+  !for s=1 to 2
+    uu=!text expand $(G_answer[$p;$s]) using 01
+    uu=!words2items $uu
+    u1=!positionof item $(uu[1]) in $ans_lettre
+    Feed_g=!append item $(u1)_$(uu[2]) to $Feed_g
+  !next
+!next
+!if noorder notwordof $(replyoption$i)
+  score=$[$(test$sol)/(2*$(ans_cnt$sol))]
+!else
+  score=$[1-$test/$(ans_cnt$sol)]
+!endif
+
+G_answer=!lines2rows $G_answer
 !readproc slib/games/chessboard [$ans_initial],$ans_color
 ans_init=$slib_out
-
 !readproc slib/games/chessmv [$ans_initial],[$(ans_Rep$i)]
 !set r_final=$slib_out
 !readproc slib/games/chessboard $(r_final[-1;1]),$ans_color
 reply_$i=$slib_out
-
 !if $g_answer !=$empty
- !readproc slib/games/chessmv [$ans_initial],[$g_answer]
- !set g_final=$slib_out
- !readproc slib/games/chessboard $(g_final[-1;1]),$ans_color
- replyGood$i=$slib_out
+ !readproc slib/games/chessmv [$ans_initial],[$G_answer]
+ !set g_final=$slib_out 
+ !if noanswer notwordof $(replyoption$i)
+  !readproc slib/games/chessboard $(g_final[-1;1]),$ans_color
+  replyGood$i=$slib_out
+ !endif
 !endif
 
-m_reply$i=$(ans_rep$i)
-reply__$i=$(m_reply$i)
+m_r=$(ans_rep$i)
+reply__$i=$
+!reset m_reply$i
+r_final_=$(r_final)
+!for j = 1 to $ans_rep_cnt
+  m_reply$i=!append line $(m_r[$j;]),$(r_final_[$j;2]),$(r_final_[$j;1]) to $(m_reply$i)
+!next
+m_reply$i=!lines2rows $(m_reply$i)
+m_reply$i=!singlespace $(m_reply$i)
 m_reply$i=!words2items $(m_reply$i)
 ans_init=!replace internal <table> by <table style="color:black;"> in $(ans_init)
 reply_$i=!replace internal td_ by r_ in $(reply_$i)
 !if $g_answer=$empty
- reply_$i=!replace internal <table> by <table style="color:black;"> in $(reply_$i)
- !for  j=1 to 2*$ans_rep_cnt
-  reply_$i=!replace internal <td id="r_$(Feed_r[$j])" style=" by <td id="r_$(Feed_r[$j])" style="border:2px solid blue; in $(reply_$i)
- !next
-  reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
-  $(reply_$i)\
+  reply_$i=!replace internal <table> by <table style="color:black;"> in $(reply_$i)
+  !for j=1 to 2*$ans_rep_cnt
+    reply_$i=!replace internal <td id="r_$(Feed_r[$j])" style=" by <td id="r_$(Feed_r[$j])" style="border:2px solid blue; in $(reply_$i)
+  !next
+    reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
+$(reply_$i)\
   </td></tr></table>
  !exit
 !endif
 
 !if $score=1
- diareply$i=good
- !advance freegot
+  diareply$i=good
+  !advance freegot
 !else
- diareply$i=bad
+  diareply$i=bad
 !endif
 
 !if $score=1
@@ -91,6 +149,7 @@ reply_$i=!replace internal td_ by r_ in $(reply_$i)
   $(reply_$i)\
   </td></tr></table>
 !else
+ !if noanswer notwordof $(replyoption$i)
   replyGood$i=!replace internal <table> by <table style="border:4px solid green;color:black;"> in $(replyGood$i)
   replyGood$i=!replace internal td_ by g_ in $(replyGood$i)
   reply_$i=!replace internal <table> by <table style="border:4px solid red;color:black;"> in $(reply_$i)
@@ -99,25 +158,31 @@ $(reply_$i) \
 </td><td>\
 $(replyGood$i)\
 </td></tr></table>
+  !else
+    reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
+$(reply_$i) \
+</td></tr></table>
+ !endif
 !endif
 
 !for  j=1 to 2*$ans_rep_cnt
   reply_$i=!replace internal <td id="r_$(Feed_r[$j])" style=" by <td id="r_$(Feed_r[$j])" style="border:2px solid blue; in $(reply_$i)
 !next
-!for  j=1 to 2*$ans_cnt
+
+!for  j=1 to 2*$(ans_cnt$sol)
   reply_$i=!replace internal <td id="g_$(Feed_g[$j])" style=" by <td id="g_$(Feed_g[$j])" style="border:2px solid blue; in $(reply_$i)
 !next
 
 g_reply_=$(g_final[;2])
 g_reply__=
 
-!for u =1 to $ans_cnt
+!for u =1 to $(ans_cnt$sol)
   c=!declosing $(g_reply_[$u])
   c_nt=!itemcnt $c
   !if $c_nt=2
-    g_reply__=!append line $(g_answer[$u;1]) x $(g_answer[$u;2]) # to $g_reply__
+    g_reply__=!append line $(G_answer[$u;1]) x $(G_answer[$u;2]) to $g_reply__
   !else
-    g_reply__=!append line $(g_answer[$u;1])$ $(g_answer[$u;2]) # to $g_reply__
+    g_reply__=!append line $(G_answer[$u;1])$ $(G_answer[$u;2]) to $g_reply__
   !endif
 !next
 g_reply__=!lines2rows $(g_reply__)
