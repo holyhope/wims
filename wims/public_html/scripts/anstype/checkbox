@@ -30,7 +30,7 @@ $(replygood1$i)
 !endif
 
 !reset menupos
-!if $(replytype$i) iswordof mark flashcard
+!if $(replytype$i) iswordof mark flashcard multipleclick
   menupos=$(reply$i)
   !if  $(replytype$i) iswordof flashcard
     click=$(menupos[2;])
@@ -69,6 +69,61 @@ menupos=!nonempty items $menupos
  test=NaN
  !exit
 !endif
+!!!should be in the file oef/embed.phtml ??
+!if  $(replytype$i) iswordof multipleclick
+    image=$(oef_answer_option$i)
+    image=!line 1 of $image
+    2_=!line 2 of $(oef_answer_option$i)
+    !distribute items $2_ into ny, nx, width, height
+   reply_$i= <table style="width:$width; height:$(height);" class="multipleclick$i">
+   replyGood$i= <table style="width:$width; height:$(height);" class="multipleclick$i">
+  !for y=1 to $ny
+   reply_$i=$(reply_$i)<tr>
+   replyGood$i=$(replyGood$i)<tr>
+    !for x=1 to $nx
+     !set t=$[$x+($y-1)*($nx)]
+     !set cc=transparent
+     !set cc1=transparent
+     !if $t isitemof $menupos and $t isitemof $good
+       !set cc=green
+    !endif
+    !if $t isitemof $menupos and $t notitemof $good
+     !set cc=red
+    !endif
+    !if $t isitemof $good and $t notitemof $menupos
+      !set cc=blue
+    !endif
+    !if $t isitemof $good
+     !set cc1=green
+    !endif
+    !if $cc!=$empty
+      cc=style="border:2px solid $cc;color:black;width:100%"
+    !endif
+    !if $cc1!=$empty
+     cc1=style="border:2px solid $cc1;color:black;width:100%"
+    !endif
+    reply_$i=$(reply_$i)\
+     <td id="$(i)_$t">\
+     <div id="img$(i)_$(x)_$(y)" $cc>$(image[$t])</div>\
+    </td>
+    replyGood$i=$(replyGood$i)\
+    <td id="$(i)_$t">\
+    <div id="img$(i)_$(x)_$(y)" $cc1>$(image[$t])</div>\
+    </td>
+  !next x
+  reply_$i=$(reply_$i)\
+  </tr>
+  replyGood$i=$(replyGood$i)\
+  </tr>
+ !next y
+ reply_$i=$(reply_$i)\
+ </table>
+ replyGood$i=$(replyGood$i)\
+ </table>
+
+ reply$i=
+ m_reply$i=$menupos
+!endif multipleclick
 
 poscnt1=!itemcnt $menupos
 menupos=!listintersect $menupos and $good
