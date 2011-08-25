@@ -267,7 +267,7 @@ valeur_mixte : valeur spc valeur_mixte {
 style : unite {$$=$1;}
 ;
 
-valeur : decimal spc unite {$$=$3; $$.val=val_decimal; $$.signif=0; $$.pcent=0;}
+valeur : decimal spc unite {$$=$3; $$.val=val_decimal; $$.signif=0; $$.pcent=0; $$.v=$1.v;}
 | decimal spc unite Signif {
   $$=$3; $$.val=val_decimal; 
   $$.signif=val_int; $$.pcent=0;
