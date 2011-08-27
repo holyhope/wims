@@ -10,9 +10,13 @@
 !reset nx ny taille width
 !set answer=!lines2rows $(replygood$i)
 !set answer=!lines2rows $answer
+
 !set inputsize=!replace internal $	$ by $\
 $ in $inputsize
 !set N=!line 2 of $inputsize
+!set legende=!line 3 of $inputsize
+!set legende=!declosing $legende
+!set N=!item 1 of $N
 !set N=!replace internal x by , in $N
 !distribute items $N into nx,ny
 !set image=$(answer[2..-1;])
@@ -26,10 +30,14 @@ $ in $inputsize
 !set nb_im=$[$nx*$ny]
 !default taille=500,500
 !set oef_answer_option$i=$image\
-$ny,$nx,$taille
-<table style="width:$(taille[1]); height:$(taille[2]);" class="multipleclick$i">
+$ny,$nx,$taille\
+$legende
+<table style="width:$(taille[1]); height:$(taille[2]);" class="ans_multipleclick$i">
 !for y=1 to $ny
  <tr>
+  !if $(legende[2;])!=
+   <th>$(legende[2;$y])</th>
+  !endif 
  !for x=1 to $nx
   !set t=$[$x+($y-1)*($nx)]
   !set t_=$[$x+($y-1)*($nx)]
@@ -37,8 +45,16 @@ $ny,$nx,$taille
    <div id="img$(i)_$(x)_$(y)">$(image[$t_])</div>
   </td>
  !next x
-</tr>
+ </tr>
 !next y
+!if $(legende[1;])!=
+ <tr><th></th>
+  !for x=1 to $nx
+   <th>$(legende[1;$x])</th>
+  !next
+</tr>
+!endif
+
 </table>
 <script type="text/javascript">
 var fl_clic$i=false;

@@ -73,13 +73,20 @@ menupos=!nonempty items $menupos
 !if  $(replytype$i) iswordof multipleclick
     image=$(oef_answer_option$i)
     image=!line 1 of $image
+    legende=!line 3 of $(oef_answer_option$i)
     2_=!line 2 of $(oef_answer_option$i)
     !distribute items $2_ into ny, nx, width, height
-   reply_$i= <table style="width:$width; height:$(height);" class="multipleclick$i">
-   replyGood$i= <table style="width:$width; height:$(height);" class="multipleclick$i">
+   reply_$i= <table style="width:$width; height:$(height);" class="ans_multipleclick$i">
+   replyGood$i= <table style="width:$width; height:$(height);" class="ans_multipleclick$i">
   !for y=1 to $ny
-   reply_$i=$(reply_$i)<tr>
-   replyGood$i=$(replyGood$i)<tr>
+    reply_$i=$(reply_$i)<tr>
+    replyGood$i=$(replyGood$i)<tr>
+    !if $(legende[2;])!=
+      reply_$i=$(reply_$i)\
+      <th>$(legende[2;$y])</th>
+      replyGood$i=$(replyGood$i)\
+      <th>$(legende[2;$y])</th>
+    !endif
     !for x=1 to $nx
      !set t=$[$x+($y-1)*($nx)]
      !set cc=transparent
@@ -116,6 +123,22 @@ menupos=!nonempty items $menupos
   replyGood$i=$(replyGood$i)\
   </tr>
  !next y
+ !if $(legende[1;])!=
+  reply_$i=$(reply_$i)\
+  <tr><th></th>
+  replyGood$i=$(replyGood$i)\
+  <tr><th></th>
+  !for x=1 to $nx
+   reply_$i=$(reply_$i)\
+   <th>$(legende[1;$x])</th>
+   replyGood$i=$(replyGood$i)\
+   <th>$(legende[1;$x])</th>
+  !next
+  reply_$i=$(reply_$i)\
+</tr>
+  replyGood$i=$(replyGood$i)\
+</tr>
+!endif
  reply_$i=$(reply_$i)\
  </table>
  replyGood$i=$(replyGood$i)\
