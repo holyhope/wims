@@ -4,8 +4,16 @@
   !read adm/class/classlang names.phtml 
   !set modu_lang=$moduclass_lang
 !endif
-!if $(module_title_$modu_lang)!=
+!if $cf_title$mb_title=
+ !if $(module_title_$modu_lang)!=
   !set module_title=$(module_title_$modu_lang)
+ !endif
+ !else
+ !if $cf_title!=
+  !set module_title=$cf_title
+ !else 
+  !set module_title=$mb_title
+ !endif
 !endif
 !read lang/names.phtml.$modu_lang
 
