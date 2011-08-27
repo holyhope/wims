@@ -9,6 +9,9 @@
 #include <gmpxx.h>
 #include "unites.h"
 #include <iostream>
+#include <sstream>
+
+using namespace std;
 
   int yylex();
   int yyerror(const char * msg);
@@ -22,7 +25,7 @@
 /*     uniteSI unite; */
 /*     int base[BU_LAST]; */
 /*     char * s, * v; */
-/*     std::string wanted_unit; */
+/*     string wanted_unit; */
 /*     mpq_class val; */
 /*     /\* values are mutiprecisions rationals *\/ */
 /*     int signif; */
@@ -37,7 +40,7 @@
     uniteSI unite;
     int base[BU_LAST];
     char * s, * v;
-    std::string wanted_unit;
+    string wanted_unit;
     mpq_class val;
     /* values are mutiprecisions rationals */
     int signif;
@@ -48,8 +51,8 @@
     }
   };
 
-  std::ostream & operator << (std::ostream & o, yystype data);
-  std::ostream & operator << (std::ostream & o, yystype data){
+  ostream & operator << (ostream & o, yystype data);
+  ostream & operator << (ostream & o, yystype data){
     o << "YYSTYPE[" <<"i="<<data.i<<", multip="<<data.multip;
     o<<", maxmultip="<<data.maxmultip<<", wanted_multip="<<data.wanted_multip;
     o<<", unite="<<data.unite<<", base={";
@@ -527,7 +530,7 @@ void test_verbeux(){
   yyparse();
   if (result.s) {
     if (result.unite == TU_LAST){
-      std::cout << result.s << " " << result.multip*result.val << " SI (équation aux dimensions : ";
+      cout << result.s << " " << result.multip*result.val << " SI (équation aux dimensions : ";
       for (i=0; i<BU_LAST; i++){
 	printf("%3d", result.base[i]);
       }
@@ -535,11 +538,11 @@ void test_verbeux(){
     }
     else {
       if (result.i!=1) 
-	std::cout <<  result.s << " (" << result.multip*result.val 
+	cout <<  result.s << " (" << result.multip*result.val 
 		  << " " << unites[result.unite].nom << ")^{" << result.i 
 		  << "}\n";
       else 
-	std::cout << result.s << " " << result.multip*result.val 
+	cout << result.s << " " << result.multip*result.val 
 		  << " " << unites[result.unite].nom << "\n";
     }
   }
@@ -568,8 +571,8 @@ void sortie_normalisee(){
   yyparse();
   // il faut afficher le résultat sous forme d'un nombre décimal et pas d'une
   // fraction
-  //std::cout << result.multip*result.val;
-  std::cout << mpf_class(result.multip*result.val);
+  //cout << result.multip*result.val;
+  cout << mpf_class(result.multip*result.val);
   if (count_signif){ //il faut prendre en compte les nombres significatifs
     if (!result.signif) {
       s=significative(result.v);
@@ -584,7 +587,7 @@ void sortie_normalisee(){
   printf("    %d    %d\n",s,pc);
 }
 
-void printUnit(optiontype option, std::string unit, int tolerance){
+void printUnit(optiontype option, string unit, int tolerance){
   char * indexohm;
   char buffer[128];
   char *codedunit;
@@ -855,27 +858,23 @@ void atodecimal(char* s, mpq_class & r){
    * @param s : a string which denotes a decimal value
    * @param r : the result which is the fraction.
    */
-  char * numer= strdup(s);
-  char * theDot=index(numer,'.');
-  if (theDot==NULL){
-    r=mpq_class(atoi(s),1);
+  stringstream ss(stringstream::in | stringstream::out);
+  ss << s;
+  size_t found;
+  found=ss.str().find('.');
+  if (found==string::npos){
+    // not dot, it is an integer.
+    ss >> r;
   } else {
-    int denom=1;
-    int expon=0, numerExp=1;
-    while(theDot<numer+strlen(numer)){
-      *theDot = *(theDot+1);
-      theDot+=1;
-      switch (*theDot){
-      case 0: break;
-      case 'e':
-      case 'E': expon=atoi(theDot+1); *theDot=0; break;
-      default: denom*=10;
-      }
-    }
-    if (expon>0) for(int i=0; i<expon;  i++) numerExp*=10;
-    if (expon<0) for(int i=0; i<-expon; i++) denom*=10;
-    r=mpq_class(atoi(numer)*numerExp,denom);
+    // found a dot; erase it, convert the result, then divide it by a power of ten.
+    string s1;
+    ss>>s1;
+    s1.erase(found,1);
+    stringstream ss1(stringstream::in | stringstream::out);
+    ss1 << s1;
+    ss1 >> r;
+    size_t pow=s1.size()-found;
+    while (pow>0){ r/=10; pow--;}
   }
-  free(numer);
   return;
 }
