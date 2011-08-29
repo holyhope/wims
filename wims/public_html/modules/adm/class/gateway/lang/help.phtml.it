@@ -1,5 +1,103 @@
-!! TODO
-!changeto help.phtml.en
+!goto $wims_read_parm
+
+:pass
+<center><h2>Password d'iscrizione</h2></center>
+
+Ci sono due diversi tipi di password di iscrizione:
+<p>
+La password di iscrizione al portale permette di creare gli account
+docenti. Questa password non deve MAI essere comunicata agli studenti,
+perché chi si registra al portale in questo modo viene automaticamente
+riconosciuto come docente e accede a tutte le funzioni di gestione del
+corso.
+<p>
+La password di iscrizione a un corso permette di creare gli account
+studenti. Uno studente si iscrive al corso, ma l'account, come
+studente, è valido per tutto il portale.
+<p>
+Solo alcuni corsi hanno bisogno di una password di iscrizione: nelle
+altre zone (livelli, insegnamenti/materie) non è possibile
+l'iscrizione degli studenti.
+<p>
+&Egrave; però possibile definire o modificare le password di
+iscrizione a un livello, in questo caso la password inserita sarà
+valida per tutti i corsi di quel livello.
+<p>
+Se volete semplicemente modificare altre proprietà, ma non la
+password, lasciate semplicemente il campo vuoto.
+!exit
+:passs
+
+<center><h2>Password di gestione</h2></center>
+
+Questa password permette ai docenti di accedere alle pagine di
+gestione di corsi, livelli, insegnamenti/materie o turni/sezioni. Di
+default, vale la password della zona superiore.
+<p>
+Se volete semplicemente modificare altre proprietà, ma non la
+password, lasciate semplicemente il campo vuoto.
+!exit
+
+:progopt
+
+<center><h2>Opzioni di un insegnamento/materia</h2></center>
+
+Se un insegnamento/materia è <em>obbligatorio</em>, tutti gli studenti
+di un determinato turno/sezionee avente un corso
+nell'insegnamento/materia sono automaticamente iscritti a questo
+corso.  In altre parole, tutti i corsi dell'insegnamento/materia sono
+obbligatori per i turni/sezioni corrispondenti.
+<p>
+Invece, se un insegnamento/materia è <em>opzionale</em>, gli studenti
+si devono iscrivere specificamente. Questo è utile quando
+l'insegnamento/materia è opzionale.
+<p>
+Se l'aggiunta automatica dei corsi nelle opzioni di un
+insegnamento/materia è impostata su "sì", per ogni turno/sezionee del
+livello viene automaticamente creato un corso, al momento della
+creazione dell'insegnamento/materia. Inoltre, un corso corrispondente
+all'insegnamento/materia sarà automaticamente creato ogni volta che un
+nuovo turno/sezione viene creato nel livello.
+<p>
+Se l'aggiunta automatica dei corsi nelle opzioni è "no", i docenti del
+turno/sezione devono manualmente creati i corsi corrispondenti
+all'insegnamento/materia.
+!exit
+
+:sechost
+!reset wims_prefix
+!set special_parm2=secure
+!read wimshome/public_html/modules/adm/class/config/lang/help.$moduclass_lang/config.phtml
+
+!exit
+
+:structure
+
+!read help/$moduclass_lang/structure.phtml
+
+!exit
+
+:supervisor
+
+<center><h2>Il docente responsabile della zona</h2></center>
+
+Ogni zona (livello, turno/sezionee, insegnamento/materia, corso) di un
+portale di sede deve avere un docente responsabile. Di norma tale
+docente accede alle pagine di gestione della zona attraverso un
+account docente.
+<p>
+Di default, il docente responsabile della zona è il docente della zona superiore.
+<p>
+Tutti gli altri docenti del portale possono accedere alle pagine di
+gestione della zona pur di conoscere la password docente della zona,
+con le stesse prerogative del docente responsabile. L'unica differenza
+tra i docenti è che agli studenti viene indicato soltanto il nome e
+l'indirizzo email "ufficiale" del responsabile della zona.
+
+!exit
 
 se sono in un insegnamento/materia, quando attivo un test (lo preparo
 e) lo attivo per tutti gli sdoppiamenti turni sezioni
+
+course --> turno/sezione (sdoppiamento)
+program --> insegnamento/materia
