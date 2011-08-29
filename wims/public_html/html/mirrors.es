@@ -53,19 +53,6 @@ Italy
 it en fr es
 Marina Cazzola
 marina.cazzola@unimib.it
-:wims.ac-nice.fr/wims/
-Rectorat de Nice
-France
-fr en it
-Josephe Césaro
-jcesaro@ac-nice.fr
-:www.eval-wims.com/wims/
-Eval-WIMS
-France
-fr
-wims@eval-wims.com
-wims@eval-wims.com
-Servidor comercial
 :wims.math.leidenuniv.nl/wims/
 Leiden University
 Netherland
