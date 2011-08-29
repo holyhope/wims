@@ -4,14 +4,16 @@
 
 slib_author=Bernadette, Perrin-Riou
 
-slib_example=[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8]\
-[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8;e2,c7]\
+slib_example=[Rd1,Re1,Kg1,Pa2,Pb2,Pc2,Pf2,Pg2,Ph2,Pc3,Bd4,Qe4,Bf4;Kc8,Rd8,Rh8,Pa7,Pb7,Be7,Pf7,Pg7,Ph8,Be3],[e4xc6+;b7xc6;d4-a6#;c3-a1=Q]\
+[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8]\
+[Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1xc8]\
+[Kf8,Pg6,Rh1;Bg8,Kh8,Pg7,Ph7],[Rh1-h6;Pg7-h6;Pg6-g7#]\
 [Ra1,Nb1,Bc1,Qd1,Ke1,Bf1,Ng1,Rh1,a2,b2,c2,d2,e2,f2,g2,h2;Ra8,Nb8,Bc8,Qd8,Ke8,Bf8,Ng8,Rh8,a7,b7,c7,d7,e7,f7,g7,h7],[e1,c8;e2,c7],several
 
 !exit
 
 :proc
-!reset slib_option slib_final slib_out
+!reset slib_option slib_final slib_out 
 !distribute item $wims_read_parm into slib_initial,slib_mvt,slib_option
 !default slib_option=global
 
@@ -23,11 +25,22 @@ slib_mvt=!declosing $slib_mvt
 slib_mvt=!lines2rows $slib_mvt
 slib_mvt_cnt=!itemcnt $(slib_mvt[;1])
 !for slib_m=1 to $slib_mvt_cnt
- !reset slib_a slib_f slib_f1 slib_c0 slib_j0
+ !reset slib_a slib_f slib_f1 slib_c0 slib_j0 slib_prom slib_f2 slib_prom
  slib_test=0
+ slib_mv=$(slib_mvt[$slib_m;])
+ slib_mv=!translate internal -+x# to ,,,,  in $slib_mv
+ slib_prom=!replace internal = by XX in $slib_mv
+ !if XX isin $slib_prom
+   slib_mv=!translate =[A-Z] to $ $ in $slib_mv
+   slib_prom=!replace internal XX by ; in $slib_prom
+   slib_prom=$(slib_prom[-1;])
+ !else
+   !reset slib_prom
+ !endif
+
  !for slib_j=1 to 2
   !for slib_s in $(slib_initial[$slib_j;])
-    !if $slib_test=0 and $(slib_mvt[$slib_m;1]) isin $slib_s
+    !if $slib_test=0 and $(slib_mv[1]) isin $slib_s
      slib_f=$slib_s
      slib_f1=!charcnt $slib_f
      !if $slib_f1=2
@@ -35,6 +48,10 @@ slib_mvt_cnt=!itemcnt $(slib_mvt[;1])
      !else
         slib_f1=!char 1 of $slib_f
      !endif
+     slib_f2=$slib_f1
+     !if $slib_prom!=
+      slib_f1=$slib_prom
+   !endif
      slib_j0=$slib_j
      slib_c0=!item $slib_j0 of $slib_c
      slib_test=1
@@ -44,7 +61,7 @@ slib_mvt_cnt=!itemcnt $(slib_mvt[;1])
  slib_test=0
  !for slib_j=1 to 2
   !for slib_s in $(slib_initial[$slib_j;])
-    !if $slib_test=0 and $(slib_mvt[$slib_m;2]) isin $slib_s
+    !if $slib_test=0 and $(slib_mv[2]) isin $slib_s
      slib_a=$slib_s
      slib_test=1
     !endif
@@ -56,11 +73,12 @@ slib_mvt_cnt=!itemcnt $(slib_mvt[;1])
  slib_final2=$(slib_final[2;])
  !if $slib_j0=1
   slib_final2=!replace internal $slib_a by in $slib_final2
-  slib_final1=$slib_final1,$slib_f1$(slib_mvt[$slib_m;2])
+  slib_final1=$slib_final1,$slib_f1$(slib_mv[2])
  !else
   slib_final1=!replace internal $slib_a by in $slib_final1
-  slib_final2=$slib_final2,$slib_f1$(slib_mvt[$slib_m;2])
+  slib_final2=$slib_final2,$slib_f1$(slib_mv[2])
  !endif
+ 
  slib_final2=!nonempty items $slib_final2
  slib_final1=!nonempty items $slib_final1
  slib_final=$slib_final1;$slib_final2
@@ -71,11 +89,20 @@ slib_mvt_cnt=!itemcnt $(slib_mvt[;1])
    !else
     slib_a=!char 1 of $slib_a
    !endif
-  slib_out=!append line [$slib_final],[$slib_f1,$slib_a] to $slib_out
+   !if $slib_prom=
+    slib_out=!append line [$slib_final],[$slib_f1,$slib_a] to $slib_out
+   !else
+   slib_out=!append line [$slib_final],[[$slib_f2,$slib_prom],$slib_a,$slib_prom] to $slib_out
+   !endif
  !else
-  slib_out=!append line [$slib_final],[$slib_f1] to $slib_out
+  !if $slib_prom=
+    slib_out=!append line [$slib_final],[$slib_f1] to $slib_out
+   !else
+    slib_out=!append line [$slib_final],[[$slib_f2,$slib_prom]] to $slib_out
+   !endif
+  
  !endif
  !if $slib_option iswordof global
    slib_initial=$slib_final
  !endif
-!next
+!next slib_m

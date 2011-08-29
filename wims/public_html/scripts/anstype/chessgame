@@ -42,6 +42,14 @@ tmp_order=!lines2items $tmp_order
 tmp_order=!nospace $tmp_order
 g_ans=!replace internal | by $\
 $ in $g_answer
+g_ans=!translate internal -+x# to ,,,,  in $g_ans
+g_prom=!replace internal = by XX in $g_mv
+!if XX isin $g_prom
+   g_ans=!translate =[A-Z] to $ $ in $g_ans
+!else
+   !reset slib_prom
+!endif
+g_ans=!translate [A-Z] to $ $ in $g_ans
 g_ans_cnt=!linecnt $g_ans
 !reset G_answer
 on cherche la meilleure réponse
@@ -81,7 +89,7 @@ sol=1
 !next l_
 
 !!sol est la solution la plus proche d'une bonne solution
-G_answer=!line $sol of $g_ans
+G_answer=!line $sol of $g_answer
 
 !for p=1 to $(ans_cnt$sol)
   !for s=1 to 2
@@ -114,7 +122,7 @@ reply_$i=$slib_out
 !endif
 
 m_r=$(ans_rep$i)
-reply__$i=$
+reply__$i=$m_r
 !reset m_reply$i
 r_final_=$(r_final)
 !for j = 1 to $ans_rep_cnt
@@ -142,7 +150,6 @@ $(reply_$i)\
 !else
   diareply$i=bad
 !endif
-
 !if $score=1
   reply_$i=!replace internal <table> by <table style="border:4px solid green;color:black;"> in $(reply_$i)
   reply_$i=<table color="black"><tr><td>$ans_init</td><td>\
