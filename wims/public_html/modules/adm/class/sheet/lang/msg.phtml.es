@@ -36,7 +36,7 @@
 !endif
 
 !if $error=sharing_sheet
- <span class="wims_warning"><b>¡¡¡Peligro!!!</b></span>.
+ <span class="wims_warning">¡¡¡Peligro!!!</span>.
  ¡Sus hojas están siendo compartidas por otras clases!
  !if $wims_ismanager<2
   Deberá pedir al administrador del sitio que desactive la hoja
@@ -138,7 +138,8 @@
 !if prep_putsource=$error
  Si tiene el fichero fuente de una hoja de trabajo guardada anteriormente, puede
  insertarlo directamente en la hoja actual, copiando estos 
- fuentes en la ventana siguiente, y pulsando después el botón <tt>Enviar</tt>.
+ fuentes en la ventana siguiente, y pulsando después el botón 
+ <span class="wims_button disabled">$wims_name_send</span>Enviar</span>.
  También puede utilizar este formulario para insertar los fuentes de una
  hoja pública por el proceso de copiar y pegar.
  <p>
@@ -146,11 +147,11 @@
 to $wims_menu_items
 
  !form reply
- <input type=hidden name="job" value=putsource><center>
- <textarea cols=55 rows=10 name="source">$source</textarea>
- <p><input type=submit value="$wims_name_send">
+ <input type="hidden" name="job" value=putsource><center>
+ <textarea cols="55" rows="10" name="source">$source</textarea>
+ <p><input type="submit" value="$wims_name_send">
  </center></form>
- <b>Atención</b>. ¡No inserte un fichero fuente modificado! Se arriesga a
+ <span class="wims_warning">Atención</span>. ¡No inserte un fichero fuente modificado! Se arriesga a
  inutilizar su hoja de trabajo.
  !exit
 !endif
