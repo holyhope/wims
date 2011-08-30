@@ -52,7 +52,7 @@ U bent begonnen met het oprichten van
 $name_classe $classname op de WIMS server van $httpd_HTTP_HOST,
 !if $Cltype iswordof 0 1
  !let tmp=!positionof item $ilevel in $levelid
- op leerniveau ``<b><font color=green>$(leveldesc[$tmp])</font></b>'',
+ op leerniveau <b><font color="green">$(leveldesc[$tmp])</font></b>,
 !endif
 en met de verloopdatum $exp_day/$exp_month/$exp_year .
 Het maximum toegestane aantal  studenten in $classname is $ilimit . 
@@ -75,7 +75,8 @@ Als laatste controle: voer nog &eacute;&eacute;n keer het wachtwoord in:
 Welkom , $supervisor ! 
 <p>
 Om de aanmeldings procedure van $name_classe op de WIMS site $httpd_HTTP_HOSTte voltooien, 
-vul daarvoor hier de code in die zojuist naar het opgegeven emailadres ``<tt>$email</tt>'' is gestuurd.
+vul daarvoor hier de code in die zojuist naar het opgegeven emailadres <tt class="wims_address">$email</tt>
+is gestuurd.
 
 !exit
 

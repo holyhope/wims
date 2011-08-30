@@ -45,7 +45,7 @@ Una <font color=blue>agrupación de clases</font> permite a los
  !endif
  $name_classe $classname en el sitio WIMS $httpd_HTTP_HOST,
  !if $Cltype=1
-  de nivel ``<b><font color=green>$name_level</font></b>'',
+  de nivel <b><font color=green>$name_level</font></b>,
  !endif
  que expirará el $exp_day/$exp_month/$exp_year. El número
  máximo de participantes es de $ilimit;
@@ -68,7 +68,7 @@ Una <font color=blue>agrupación de clases</font> permite a los
  Ahora necesita una clave para terminar la operación de creación de
  su $name_classe bajo WIMS en el sitio $httpd_HTTP_HOST. <p>
  Esta clave acaba de ser enviada a su dirección de correo
- ``<tt>$email</tt>''. Por favor, compruebe su buzón de correo electrónico (espere
+ <tt class="wims_address">$email</tt>. Por favor, compruebe su buzón de correo electrónico (espere
  un poco si no llega), y lea el mensaje que se le ha enviado. Copie la clave del
  mensaje a continuación.
 
