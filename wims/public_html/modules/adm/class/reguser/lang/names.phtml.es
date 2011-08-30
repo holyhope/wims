@@ -85,7 +85,7 @@ name_writepasswd,name_obtainpasswd,name_hello
 !set name_nofound=!nosubst con la búsqueda <tt class="wims_code_words">$search</tt> en los nombres o login no se ha hallado\
 ninguna cuenta de participante
 !set name_student=!nosubst $firstn $lastn!
-!set name_studentadded=!nosubst El participante $firstn $lastn ha sido añadido a su $name_classe.
+!set name_studentadded=!nosubst El participante <tt class="wims_login">$firstn $lastn</tt> ha sido añadido a su $name_classe con el identificador de usuario
 !set name_welcome=!nosubst Ya está inscrito(a), con el identificador de usuario
 !set name_newparticipant=!nosubst Por favor proporcione las siguientes informaciones \
   relativas al nuevo participante en $classname
