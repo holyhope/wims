@@ -29,6 +29,7 @@ names["Enter_fold_name"]="Inserire il nome del nuovo blocco:";
 names["wims_href"]="Link a un file";
 names["Enter_href_name"]="Inserire il nome del file:";
 names["Enter_href_name2"]="Inserire il testo del link:";
+
 /** WIMS 'before' instructions **/
 names["title"]="Titolo";
 names["User_guide"]="Modo d'uso";

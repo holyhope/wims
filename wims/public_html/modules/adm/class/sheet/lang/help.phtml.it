@@ -37,7 +37,36 @@ eventuali altre istruzioni simili).
 :feedback
 !read adm/title.phtml 1\
 $(name_shtab[10])
+&Egrave; possibile impostare in questo campo un link verso un documento
+WIMS o un esercizio WIMS. Tale link apparirà allo studente nel caso in cui
+il punteggio ottenuto è strettamente inferiore a un voto dato (in decimi).
+Il secondo parametro è il voto limite (in decimi), il primo parametro è 
+l'indirizzo della risorsa WIMS nella forma seguente (forme abrégée): 
+<ul><li>
+Esercizio di un modulo o un documento pubblico: <tt class="wims_address">module=xxx</tt>
+(come in <span class="wims_button disabled">$wims_name_about</span>).
+</li><li>
+Esercizio del corso: <tt class="wims_address">module=classes/it&exo=_nome_file_</tt>
+dove <tt>_nome_file_</tt> è il nome del file contenente l'esercizio (omettendo l'estensione
+ <tt>.oef</tt>).
+</li><li>
+Documento del corso:
+<tt class="wims_address">module=adm/doc&doc=c1&+block=_nome_blocco_</tt>
+</li></ul>
 
-!read lang/help.phtml.fr feedback
+I parametri di esecuizione dell'esercizio possono essere impostati come necessario (si
+veda <span class="wims_button disabled">$wims_name_about</span>)
+
+Nell'esempio seguente, se il voto è inferiore a 5 allo studente sarà mostrato il link
+verso il documento <tt>c2</tt> del corso, e più precisamente alla pagina di tale
+documento corrispondente al blocco <tt>aaa</tt>. 
+
+<pre>module=adm/doc&doc=c2&+block=aaa,5</pre>
+
+Nell'esempio seguente, sarà mostrato un link verso l'esercizio del file traduction1 
+del modulo WIMS H6/set/oefset.fr (il voto ottenuto dallo studente svolcendo tale 
+esercizio non sarà conteggiato nella media dei voti dello studente).
+
+<pre>module=H6/set/oefset.fr&cmd=new&exo=traduction1,10</pre>
 
 !exit
