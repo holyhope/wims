@@ -33,7 +33,7 @@
 !endif
 
 !if no_title=$error
-你想注册一个没有标题的页面, 我们不希望你这样做. 也许是操作错误?
+你想注册一个没有标题的页面, 我们不希望你这样做. 是忘记了吗?
  !exit
 !endif
 
@@ -63,9 +63,6 @@
  . </center>
  <p>
  <b>在继续此操作前, 至少应该通知相邻班的主持教师保存他们的班级!</b>
- 否则如果出现混乱, 也许在几个月以后, 你不得不回复到取消激活前的状态,
- 从而失去此后的所有数据, 包括分享此页的班级的数据!
- 你要充分认识面临的风险.
  !exit
 !endif
 
@@ -92,14 +89,14 @@
  <p>
  <tt>$worktest</tt>
  <p>
- <b>注意</b>. 仅当这时测试班时才能采取这个动作.
-如果参加者是真正的学生, 则不能继续往下做!
+ <b>注意</b>. 如果是测试用的班级, 则仅仅取消激活.
  !exit
 !endif
 
 !if prep_activate=$error
-你想要激活页面 $sheet 使它能被参加者得到. <p>
-请注意: 一旦被激活, 你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
+你想要激活页面 $sheet. <p>
+激活页面后, 它就能被班级的所有参加者看到. 一旦被激活, 
+你就不再能修改了, 除非你先取消激活, 而这样做有可能删除所有的分数. 
  <p>
 要继续吗?
  <p><center>
@@ -136,17 +133,19 @@
 
 !if prep_putsource=$error
 如果你有已保存的源码, 你可将这段源码插入当前页, 只需将这段源码复制入以下窗口,
-再点击按钮 `发送'. 这个表也允许你用切割-复制的形式插入公开作业页的源码.
+再点击按钮 <span class="wims_button disabled">$wims_name_send</span>. 
+这个表也允许你用切割-复制的形式插入公开作业页的源码.
   <p>
  !set wims_menu_items=!append line sheetadmin,1,cmd=resume \
 to $wims_menu_items
 
  !form reply
- <input type=hidden name="job" value=putsource><center>
- <textarea cols=55 rows=10 name="source">$source</textarea>
- <p><input type=submit value="$wims_name_send">
+ <input type="hidden" name="job" value="putsource"><center>
+ <textarea cols="55" rows="10" name="source">$source</textarea>
+ <p><input type="submit" value="$wims_name_send">
  </center></form>
- <b>警告</b>. 不要插入修改过的文件! 这样可能使你的整个作业页无法使用.
+ <span class="wims_warning">$wims_name_warning</span>. 
+ 不要修改页面的源码, 这样可能使你的整个作业页无法使用.
  !exit
 !endif
 
@@ -162,8 +161,7 @@ to $wims_menu_items
 !endif
 
 !if $error=toolate
- $name_expiration1 ($l_date). $name_expiration2
-<p>
+ $name_expiration1 ($l_date). $name_expiration2 <p>
 !href cmd=resume $wims_name_back2
  ($wims_name_sheetmanagement)
  !exit
