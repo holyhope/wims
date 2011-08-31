@@ -103,7 +103,6 @@ dl3=!replace user_ by $$name_ in $dl2
 dl2=!replace user_ by $$user_ in $dl2
 dl5=!replace user_ by $$name__ in $dl4
 dl4=!replace user_ by $$user__ in $dl4
-
 scores=no
 !if average isin $dl or manual isin $dl or sheet isin $dl or exam isin $dl
  scores=yes
@@ -125,6 +124,7 @@ $dl3$dl5\
  !reset $basic
  !read adm/class/userdef classes,$wims_class,$user_login
  !defread $userdef
+  user_participate=!items2words $user_participate
  !if $scores=yes
   !read adm/class/userscore
   user_average1=$per
