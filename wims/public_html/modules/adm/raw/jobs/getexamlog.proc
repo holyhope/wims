@@ -1,24 +1,20 @@
-#getexamLog Permet d'obtenir les logs des examens du user quser
+# GetExamLog
+# Fournit les logs des examens du user quser
  
 !read scripts/check.user
 !if $error!=$empty
  !exit
 !endif
 
-
 eleveslist = !sh cd $wims_class_dir/examlog; ls | sort
 nbeleves= !linecnt $eleveslist
-
-
 
 !if $quser notlineof $eleveslist
 	error=the user $quser hasn't any exam log in this class.
 !exit
 
-
 sessionslist = !sh cd $wims_class_dir/examlog/$quser; ls | sort
 nbsessions= !linecnt $sessionslist
-
 
 session1= !line 1 of $sessionslist
 

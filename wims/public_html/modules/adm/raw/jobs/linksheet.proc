@@ -1,5 +1,5 @@
-# LinkExo
-# Ajoute l'exercice qexo de la feuille qsheet a l'examen qexam de la classe qclass
+# LinkSheet
+# Ajoute tous les exercices de la feuille qsheet a l'examen qexam de la classe qclass
 
 #Pour commencer, on verifie la classe
 !read scripts/check.class
@@ -21,6 +21,9 @@ sheet_status=!line 1 of $qproperties
  !exit
 !endif
 
+#on enregistre le nombre d'exercices qu'elle contient.
+exocnt=!recordcnt $qfile
+
 #Ensuite, on verifie que l'examen $qexam existe.
 type=exams
 !read scripts/check.proc
@@ -35,39 +38,21 @@ exam_status=!line 1 of $qproperties
  !exit
 !endif
 
-!read scripts/check.exo
-
-data1=!nonempty lines $data1
-n1=!linecnt $data1
-!for i=1 to $n1
- l=!line $i of $data1
- l=!translate = to $\
-$ in $l
- !distribute lines $l into n_,v_
- exo_$n_=$v_
-!next i
-
-##############################
-#FORMAT of an EXO in an EXAM :
-#:WEIGHT
-#IDSCHEET.IDEXO,IDSCHEET.IDEXO
-#TITLE_EXO
-#DEPENDENCES
-#autogen
-
-# par defaut,  exo_weight est pioche dans la feuille
-exo_id=$qsheet.$qexo
-# par defaut,  exo_title est pioche dans la feuille
 !default exo_dependences=$empty
 !default exo_autogen=$empty
 
-
-!appendfile wimshome/log/classes/$qclass/exams/.exam$qexam \
+!for qexo=1 to $exocnt
+	#On boucle sur chaque exercice de la feuille
+	!read scripts/check.exo
+	exo_id=$qsheet.$qexo
+	!appendfile wimshome/log/classes/$qclass/exams/.exam$qexam \
 :$exo_weight\
 $exo_id\
 $exo_title\
 $exo_dependences\
 $exo_autogen\
 
+!next qexo
 
+qexo=ALL
 exocnt=!recordcnt wimshome/log/classes/$qclass/exams/.exam$qexam

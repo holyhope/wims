@@ -1,4 +1,5 @@
-# AddClass permet d'ajouter une classe, un groupement de classe, ou une sous-classe
+# AddClass 
+# permet d'ajouter une classe, un groupement de classe, ou une sous-classe
 
 !if $qclass!=$empty
  qclass=$[$qclass]
@@ -17,7 +18,7 @@
  !endif
 !else
  test=!defof class_defined in wimshome/log/classes/$qclass/.def
-	#Si la classe existe : 
+ #Si la classe existe : 
  !if $test=yes
   
   !read scripts/check.class
@@ -34,19 +35,20 @@
   !endif
   
   class_nbsubclasses=!recordcnt wimshome/log/classes/$qclass/.subclasses
+  
+  :new_sub_id
   !advance class_nbsubclasses
-
+    
   #Si qclass existe et est un groupement de classe, on lui ajoute alors une sous-classe
   cd=$qclass/$class_nbsubclasses
   
   classdeffile=wimshome/log/classes/$cd/.def
   test=!defof class_defined in $classdeffile
   !if $test=yes
-    error=class $qclass already existing. check your .subclasses file.
-    !exit
+  	# si une sous-classe a ete supprimee, il se peut que nb_subclass ne corresponde plus a la prochaine classe disponible. on avance donc jusqu'ˆ trouver un id libre.
+    !goto new_sub_id
   !endif
-
-
+  
  !else
   #si la classe n'existe pas, on la cree.
   cd=$qclass

@@ -1,7 +1,17 @@
+# Delclass
+# Supprime la classe qclass
+
 !read scripts/check.class
 !if $error!=$empty
  !exit
 !endif
+
+!if $class_superclass != $empty
+	# CAS d'une sous-classe : 
+	# La classe sera automatiquement supprimee du fichier ".subclasses" du portail lors du build-index 
+	# A faire : Rechercher toutes les occurences de cette classe dans les fichiers "neighbors" des classes voisines. (les supprimer ou empecher la suppression de cette classe ?)
+!endif
+
 
 !sh cd $wims_home/log/classes\
   tar -czf ../$qclass.tgz $qclass\

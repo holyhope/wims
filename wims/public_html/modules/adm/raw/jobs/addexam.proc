@@ -1,3 +1,6 @@
+# AddExam 
+# permet d'ajouter un examen dans la classe qclass
+
 !read scripts/check.class
 !if $error!=$empty
  !exit
@@ -58,7 +61,17 @@ $exam_description\
 $exam_cut_hours
 
 examcnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+list1=.,..,.exams,.require,.weight,.severity
+list2=!listfile -a $wims_home/log/classes/$qclass/exams
+list2=!lines2items  $list2
+list2=!listcomplement $list1 in $list2
+nb=!itemcnt $list2
+!increase nb
 
+!if $examcnt!=$nb
+ error= error in exam count ($examcnt records / $nb files)
+ !exit
+!endif
 
 !writefile wimshome/log/classes/$qclass/exams/.exam$examcnt
 !writefile wimshome/log/classes/$qclass/.E$examcnt $exam_opening
