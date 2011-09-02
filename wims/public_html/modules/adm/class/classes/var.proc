@@ -137,7 +137,8 @@ listla=
     !break
    !endif
   !next w
-  !if (/ isin $code or $c1>9999) and $la=$module_language and \
+  !!delete condition on language in a superclass
+  !if (/ isin $code or $c1>9999) and ($la=$module_language or $class_type!=) and\
    ($code!=$wims_class or ($wims_user!=supervisor and $type=supervisor)) and \
    $k = yes
     !if $ty isin 24
