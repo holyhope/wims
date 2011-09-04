@@ -1,20 +1,8 @@
 usercnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
 tooltip_parm=FONTSIZE,'11pt',ABOVE,'true'
 
-userscore=$empty
 userlist=$empty
-!for u=1 to $usercnt
- user=!record $u of wimshome/log/classes/$wims_class/.userlist
- !distribute item $user into lastname,firstname,user
- userlist=!append line $user,$lastname $firstname to $userlist
- userscore_$u=!getscoremean user=$user
- userlist=!append item $user to $userlist
- !for k=1 to $livret_nbcomp
-  !for l=1 to $(nbpalier_$k)
-    l_$(u)_$(k)_$(l)=0
-  !next l
- !next k
-!next u
+!! ------------ make of skill exercice contribution
 !for k=1 to $livret_nbcomp
  !for l=1 to $(nbpalier_$k)
   list=!record $l of $livret_dir/.comp$k
@@ -26,19 +14,36 @@ userlist=$empty
     list2=!append line $(t[1]),$(t[2]) to $list2
    !endif
   !next it
-  nbit=!linecnt $list2
-  !for m=1 to $nbit
-   t=!line $m of $list2
-   !for u=1 to $usercnt
-    s=!word $(t[2]) of $(userscore_$(u)[$(convert_table[$(t[1])]);])
-    !if $s>=$livret_minac
-     l_$(u)_$(k)_$(l)=$(l_$(u)_$(k)_$(l))+$s/$nbit
-    !else
-     !if $s!=0
-      l_$(u)_$(k)_$(l)=$(l_$(u)_$(k)_$(l))+0
-     !endif
-    !endif
-   !next u
-  !next m
+  skill_$(k)_$(l)=$list2
  !next l
 !next k
+
+!! ------------ make user skill database
+!for u=1 to $usercnt
+ user=!record $u of wimshome/log/classes/$wims_class/.userlist
+ !distribute item $user into lastname,firstname,user
+ userlist=!append line $user,$lastname $firstname to $userlist
+ userlist=!append item $user to $userlist
+ userscore=!getscoremean user=$user
+ skillu_$u=$empty
+ !for k=1 to $livret_nbcomp
+  comp=$empty
+  !for l=1 to $(nbpalier_$k)
+   nbit=!linecnt $(skill_$(k)_$(l))
+   pal=0
+   !for m=1 to $nbit
+    t=!line $m of $(skill_$(k)_$(l))
+    s=!word $(t[2]) of $(userscore[$(convert_table[$(t[1])]);])
+    !if $s>=$livret_minac
+     pal=$pal+$s/$nbit
+    !else
+     !if $s!=0
+      pal=$pal+0
+     !endif
+    !endif
+   !next m
+   comp=!append item $pal to $comp
+  !next l
+  skillu_$u=!append line $comp to $(skillu_$u)
+ !next k
+!next u
