@@ -96,6 +96,6 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 
 !set name_warning_direct=Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.\
 Ben je een leerling meld je dan aan bij 
-  !set name_cgu=J'accepte les conditions générales d'utilisation
-!set name_seecgu=See CGU
+  !set name_cgu=Ik ga akkoord met de gebruiksvoorwaarden
+!set name_seecgu=gebruiksvoorwaarden)
   
