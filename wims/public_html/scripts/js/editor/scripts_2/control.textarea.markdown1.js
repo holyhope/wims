@@ -50,7 +50,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 				return;
 			this.replaceSelection('\n<a target=\"wims_external\" href="'+response+'">' + (selection == '' ? names["Link_Text"] : selection) + '</a>' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
 		},{
-			id: 'markdown_link_button'
+			id: 'markdown_link_external_button'
 		});
 		
 		/*this.toolbar.addButton(names["Image"],function(){
@@ -106,7 +106,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			if(response == '' ) return; if(response == null ) return;
 			this.replaceSelection(' \\link{'+response+'} ');
 		},{
-			id: 'markdown_link_button'
+			id: 'markdown_link_internal_button'
 		});
 		this.toolbar.addButton(names["wims_fold"],function(){
 		 var selection = this.getSelection();
@@ -114,7 +114,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			if(response == '') return; if(response == null) return;
 			this.replaceSelection(' \\fold{'+response+'} ');
 		},{
-			id: 'markdown_link_button'
+			id: 'markdown_link_internal_button'
 		});
 		
 		this.toolbar.addButton(names["wims_href"],function(){
@@ -124,16 +124,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			if(response == '' ) return; if(response == null) return;
 			this.replaceSelection(' \\href{'+response+'}{'+response2+'} ');
 		},{
-			id: 'markdown_link_button'
-		});
-		
-		this.toolbar.addButton('',function(event){
-			this.injectEachSelectedLine(function(lines,line){
-				lines.push((event.shiftKey ? line.replace(/^\> /,'') : '' + line));
-				return lines;
-			});
-		},{
-			id: 'markdown_espace_button'
+			id: 'markdown_link_internal_button'
 		});
 	}
 });

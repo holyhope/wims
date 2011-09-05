@@ -48,9 +48,9 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 			var response = prompt(names["Enter_Link_URL"],'http://');
 			if(response == null)
 				return;
-			this.replaceSelection('\n<a href="'+response+'">' + (selection == '' ? names["Link_Text"] : selection) + '</a>' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
+			this.replaceSelection('\n<a class=\"wims_external\" href="'+response+'">' + (selection == '' ? names["Link_Text"] : selection) + '</a>' + (response == '' ? '' : '').replace(/^(?!(f|ht)tps?:\/\/)/,'') + '');
 		},{
-			id: 'markdown_link_button'
+			id: 'markdown_link_external_button'
 		});
 		
 		/*this.toolbar.addButton(names["Image"],function(){
