@@ -102,7 +102,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 				return lines;
 			});
 		},{
-			id: 'markdown_espace_button'
+			class: 'markdown_espace_button'
 		});
 		this.toolbar.addButton(names["title"],function(){
 			this.wrapSelection('\n\\title{ ','}');
@@ -139,7 +139,7 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		this.toolbar.addButton('',function(){
 			this.wrapSelection('','');
 		},{
-			id: 'markdown_espace2_button'
+			class: 'markdown_espace_button'
 		});
 		this.toolbar.addButton(names["statement"],function(){
 			this.wrapSelection('\n\\statement{\n','\n}');
@@ -156,10 +156,10 @@ Object.extend(Control.TextArea.ToolBar.Markdown.prototype,{
 		},{
 			id: 'help'
 		});
-		this.toolbar.addButton("espace3",function(){
+		this.toolbar.addButton('',function(){
 			this.wrapSelection('','');
 		},{
-			id: 'markdown_espace3_button'
+			class: 'markdown_espace_button'
 		});
 		this.toolbar.addButton(names["answer"],function(){
 			this.wrapSelection('\n\\answer{ }{ }{type= ','}{option= }{weight= }\n');

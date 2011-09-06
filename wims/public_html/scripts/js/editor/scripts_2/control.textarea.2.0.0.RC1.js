@@ -100,14 +100,13 @@ Object.extend(Control.TextArea.ToolBar.prototype,{
 	addButton: function(link_text,callback,attrs){
 		var li = document.createElement('li');
 		var a = document.createElement('a');
-		//a.className = 'obado';
 		a.href = '#';
 		this.attachButton(a,callback);
 		li.appendChild(a);
 		Object.extend(a,attrs || {});
 		if(link_text){
 			var span = document.createElement('span');
-			span.className = 'obado';
+			span.className = 'infobulle';
 			span.innerHTML = link_text;
 			a.appendChild(span);
 		}
