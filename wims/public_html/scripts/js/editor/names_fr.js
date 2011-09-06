@@ -26,7 +26,7 @@ names["wims_link"]="Lien interne au document";
 names["Enter_link_name"]="Entrez le nom du nouveau bloc :";
 names["wims_fold"]="Pli dans le document";
 names["Enter_fold_name"]="Entrez le nom du nouveau bloc :";
-names["wims_href"]="Lien sur un fichier";
+names["wims_href"]="Lien sur un fichier déposé dans le document";
 names["Enter_href_name"]="Entrez le nom du fichier :";
 names["Enter_href_name2"]="Entrez le nom du lien :";
 
