@@ -61,7 +61,11 @@
  ot=!line 1 of $means
  !if $ot=$empty or $ot<$t-3
   !read var.avg
-  !read var.topscores
+  !if $class_type notwordof 2 3 4
+   !if $up_topscores>0
+    !read var.topscores
+   !endif
+  !endif
  !endif
  l=!line 2 of $means
  !distribute words $l into\
