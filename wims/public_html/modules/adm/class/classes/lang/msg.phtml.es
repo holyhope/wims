@@ -22,8 +22,8 @@
 !endif
 
 !if $error=no_cgu
- Vous n'avez pas accepté les conditions générales d'utilisation de ce serveur (CGU).
- Vous devez d'abord accepter les CGU avant de pouvoir vous identifier.
+No han aceptado las condiciones generales de uso de este servidor (UGC).
+Primero debe aceptar los términos de uso antes identificarle.
  !form reply
   !formcheckbox agreecgu list yes prompt $name_acceptcgu
   [

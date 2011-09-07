@@ -2,7 +2,7 @@
 !if $class_type iswordof 2 4
    !if $class_type=2
     !set name_classe=agrupación de clases
-    !set name_sup=administrateur
+    !set name_sup=aministrador
     !set name_classes= el name_classe
     !set name_classesss= del $name_classe
     !set name_classessss= el $name_classe
@@ -45,9 +45,9 @@ Nuevo participante,inscrito,Tipo de conexión,Up\
 into name_register,name_anonymous,name_open,name_protected,name_year,\
 name_new_participant,name_registered,name_connexion,name_up
 
-!set name_warning_external=N'utilisez le formulaire ci-dessous que si le lien en dessus\
- ne fonctionne pas.
- 
+!set name_warning_external=Utilice el formulario de abajo sólo si el enlace arriba\
+no funciona.
+
 !distribute line  No tiene cuenta en otras clases.\
 Buscar su clase\
 no hay ninguna clase disponible\
@@ -69,7 +69,7 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 
 !set name_warning=Ha pedido conectarse a $name_classess que no existe.\
  Por favor verifique su petición.
- 
+
 !set name_enter=!nosubst Para poder entrar en la clase <span class="wims_classdesc">$class_description</span> de\
 <span class="wims_institutiondesc">$class_institution</span> como un\
 <em>participante dado de alta</em>, introduzca por favor su nombre de usuario\
@@ -79,23 +79,23 @@ y su contraseña personal.
 <span class="wims_institutiondesc">$class_institution</span> como su\
 <em>$name_sup</em>, por favor introduzca la contraseña del $name_sup.
 
-!set name_research1=Il y a beaucoup de classes virtuelles sur ce site. Pour retrouver la vôtre,\
-  tapez une partie d'un mot se trouvant dans son titre ou dans le nom de l'enseignant.
-!set name_research2=Il y a encore trop de classes correspondant à votre mot de recherche. Veuillez\
-  donner un mot plus précis.
-  
+!set name_research1=Hay muchas clases virtuales en este sitio. Para encontrar la suya, \
+escriba parte de una palabra en el título o en el nombre de la profesora.
+!set name_research2=Hay todavía demasiadas clases correspondientes a su palabra de búsqueda. Por favor,\
+dar una palabra más específica.
+
 !set name_supervisor_text=!nosubst Pulse sobre el nombre de su centro educativo o clase\
   para entrar como profesor. La inscripción a esta parte está reservada a los profesores.
 
  !if $type=example
    !set name_example1=Lo sentimos, no se han encontrado clases de ejemplo en este sitio.
-   !set name_example2= No hay clases en español en este sitio, solamente 
+   !set name_example2= No hay clases en español en este sitio, solamente
    !set name_example3=!nosubst Hay $clcnt clase(s) de ejemplo en español en este sitio.
     !set name_example3b=!nosubst  Hay $othercnt clase(s) de ejemplo en otros idiomas
    !set name_example4=Estas clases de ejemplo sirven para mostrarle cómo funcionan\
 las clases virtuales desde el punto de vista del estudiante. Debería crear\
  su propia clase para verla desde el punto de vista del profesor,\
- que es mucho más completo.   
+ que es mucho más completo.
    !set name_instruction=<ul>\
 <li>Pulse en <span class="wims_button disabled">anónimo</span> para conectarse a una clase como invitado anónimo.\
 </li><li>Pulse en <span class="wims_button disabled">inscrito</span> para conectarse a la clase como usuario\
@@ -104,9 +104,9 @@ las clases virtuales desde el punto de vista del estudiante. Debería crear\
  ejemplo).\
 </li><li>Pulse en <span class="wims_button disabled">Inscribirse</span> para darse de alta en la clase.\
 </li></ul>
-  !set name_sheet_example=Vous trouverez aussi des feuilles d'exercices que vous pourrez ensuite importer \
-    dans votre classe et modifier.
+  !set name_sheet_example=Encontrará también hojas de ejercicios que, a continuación, podrá importar \
+en su clase y cambiar.
  !endif
- 
-!set name_acceptcgu=J'accepte les conditions générales d'utilisation
-!set name_seecgu=Voir les CGU
+
+!set name_acceptcgu=Acepto las condiciones generales de uso
+!set name_seecgu=Consulte las condiciones generales de uso
