@@ -1,9 +1,11 @@
 !read adm/class/classlang names.phtml
-
+lim=250
 !!!bound job within all,filter,login default all
 job=!items2words $job
-!default job=all
-aim=photourl
+!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
+!if $cmd=reply
+ !default job=all
+ aim=photourl
 
 rac=wimshome/log/classes/$wims_class
 wims_superclass=!defof class_superclass in $rac/.def
@@ -12,7 +14,7 @@ file=$rac/.userlist
 
 !if select iswordof $job and login iswordof $job
    loginlist_=!listuniq $loginlist,$select_user
-!else 
+!else
   !if login iswordof $job
     loginlist_=$loginlist
   !else
@@ -26,9 +28,8 @@ file=$rac/.userlist
 $(aim)_exists=0
 
 variable=!trim $variable
-!set cnt=!recordcnt wimshome/log/classes/$wims_class/.userlist
-!set list_user=
 
+!reset list_user1 list_user2 list_user3 list_user4 list_user5 list_user6 list_user7 list_user8 list_user9 list_user10
  !if filter iswordof $job
   !if $variable!=$empty
     filter_cnt=!linecnt $variable
@@ -44,6 +45,7 @@ variable=!trim $variable
    filter=all
  !endif
  !for lu =1 to $cnt
+  ll=$[ceil($lu/$lim)]
   test=1
   TEST=
   us_=!record $lu of $file
@@ -70,7 +72,7 @@ variable=!trim $variable
      !if 0 notin $test
       TEST=1
      !endif
-   !next lu
+   !next u
   !else
    test=0
   !endif
@@ -79,10 +81,10 @@ variable=!trim $variable
   !if 0 notin $test or $TEST=1
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_!=
-     list_user=!append line $login,$l_name_,$f_name_,$aim_ to $list_user
+     list_user$ll=!append line $login,$l_name_,$f_name_,$aim_ to $(list_user$ll)
      !set $(aim)_exists=1
     !else
-     list_user=!append line $login,$l_name_,$f_name_, to $list_user
+     list_user$ll=!append line $login,$l_name_,$f_name_, to $(list_user$ll)
     !endif
   !endif
 !next lu
@@ -91,16 +93,17 @@ variable=!trim $variable
 !endif
 !if $job=login
   !for lu =1 to $cnt
+   ll=$[ceil($lu/$lim)]
    us_=!record $lu of $file
    !distribute item $us_ into l_name_,f_name_,login
    !if $login isitemof $loginlist
     !defread wimshome/log/classes/$wims_superclass/.users/$login
     aim_=!defof user_$aim in wimshome/log/classes/$wims_superclass/.users/$login
     !if $aim_ !=
-     list_user=!append line $login,$l_name_,$f_name_,$ph_ to $list_user
+     list_user$ll=!append line $login,$l_name_,$f_name_,$ph_ to $(list_user$ll)
      !set $(aim)_exists=1
     !else
-     list_user=!append line $login,$l_name_,$f_name_, to $list_user
+     list_user$ll=!append line $login,$l_name_,$f_name_, to $(list_user$ll)
     !endif
    !endif
   !next lu
@@ -108,3 +111,4 @@ variable=!trim $variable
 !endif
 
 :end
+!endif

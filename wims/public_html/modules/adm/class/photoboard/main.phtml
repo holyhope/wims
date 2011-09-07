@@ -12,8 +12,8 @@ $module_title
  to $wims_menu_items
 !if $cmd!=reply
 $name_intro
- !form reply
- 
+
+!form reply
 <input type="hidden" name="job" value="all">  
 <center><input type="submit" name="reg" value="$wims_name_tosave"></center>
 <p>
@@ -53,8 +53,10 @@ $name_expert
 !set cmp=0
 !set cmp_tr=0
 <table><tr>
-!for l_ =1 to $cnt 
-  !set u=!line $l_ of $list_user
+!for l_ = 1 to $cnt
+  !set ll=$[ceil($l_/$lim)]
+  !set u=!line $[$l_ - ($ll-1)*$lim] of $(list_user$ll)
+  !if $(u[1])!=
   <td width="120"><span>
   !if $(u[4])!=
     !href module=adm/class/userlist&job=getuser&getuser=$(u[1]) <img border="0" width="120" src="$(u[4])" alt="$(u[2]) $(u[3])">
@@ -69,6 +71,7 @@ $name_expert
   </tr>
   !reset cmp_tr
   <tr>
+  !endif
   !endif
   !reset u
 !next 
