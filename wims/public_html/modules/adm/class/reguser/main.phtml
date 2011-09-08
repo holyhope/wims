@@ -90,7 +90,8 @@ $name_title
 !read adm/class/classname.phtml $description\
 $institution
 
-!! if class_external_auth not 0 disable the registration form
+!! if class_mixed_external_auth not 0 show message in and class_external_auth
+!! and when class_mixed_external_auth=2 also disable the registration form
 !! please check! thanks!
 !default authreg=0
 !if $cltype=1
@@ -99,13 +100,20 @@ $institution
   !set usuperv=!defof user_supervisable in wimshome/log/classes/$class_parent/.users/$wims_user
 !endif
 !if $cltype=0
-  !set authreg=$class_mixed_external_auth
-  !set extauth=!defof class_external_auth in wimshome/log/classes/$class/.def
-!! do we really need this for $cltype=0?
+  !set super_mixed_auth=!defof class_mixed_external_auth in wimshome/log/classes/$class_superclass/.def
+  !if $super_mixed_auth=2
+    !set authreg=$super_mixed_auth
+    !set extauth=!defof class_external_auth in wimshome/log/classes/$class_superclass/.def
+  !else
+    !set authreg=$class_mixed_external_auth
+    !set extauth=!defof class_external_auth in wimshome/log/classes/$class/.def
+  !endif
+  !! do we really need this for $cltype=0?
   !set usuperv=!defof user_supervisable in wimshome/log/classes/$class/.users/$wims_user
 !endif
 !! need to check if supervisor in order to allow user management by supervisor
 !! need to check if user_supervisable for direct access from module=home
+!!  anything else?
 !if $wims_user!=supervisor and $usuperv!=yes and $authreg iswordof 1 2 and $cltype iswordof 0 1
   <div class="wims_external_auth">
   $extauth
