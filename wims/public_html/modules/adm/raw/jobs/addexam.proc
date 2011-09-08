@@ -44,8 +44,19 @@ $ in $l
 exam_creation=!char 1 to 8 of $wims_now
 exam_creation=!eval $exam_creation
 !default exam_expiration=$[$exam_creation+10000]
+
+!if NaN isin $exam_duration or $exam_duration<1
+	#le nombre d'essais autorises doit etre un nombre >0 sinon on laisse la valeur actuelle
+	exam_duration=$empty
+!endif
 !default exam_duration=90
+
+!if NaN isin $exam_attempts or $exam_attempts<1
+	#le nombre d'essais autorises doit etre un nombre >0 sinon on laisse la valeur actuelle
+	exam_attempts=$empty
+!endif
 !default exam_attempts=1
+
 !default exam_title=Examen #$n
 !default exam_description= Vous &ecirc;tes dans l'examen #$n 
 !default exam_cut_hours=$empty

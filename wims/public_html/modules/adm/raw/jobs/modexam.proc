@@ -13,13 +13,19 @@ type=exams
  !exit
 !endif
 
+#on recupere la duree et le nombre d'essais autorisés actuels de l'examen
+line3 = !line 3 of $qproperties
+exam_duration= !word 1 of $line3
+exam_attempts = !word 2 of $line3
+
+
 exocnt=!recordcnt $qfile
 
 data1=!nonempty lines $data1
-n=!linecnt $data1
+nbline=!linecnt $data1
 nbdefs=0
 
-!for i=1 to $n
+!for i=1 to $nbline
   l=!line $i of $data1
   l=!translate = to $\
 $ in $l
@@ -30,20 +36,38 @@ $ in $l
   !for j=1 to $nbtot
     defcur=!item $j of $examdefs
     !if $n_ = $defcur
-      !if $defcur = status
+      
+      !if $n_ = duration_and_attempts
+        duration= !word 1 of $v_
+        attempts= !word 1 of $v_
+        
+        !if NaN isin $attempts or $attempts<1
+        	#le nombre d'essais autorises doit etre un nombre >0 sinon on laisse la valeur actuelle
+			attempts=$exam_attempts
+        !endif
+        !if NaN isin $duration or $duration<1
+        	#la duree doit etre un nombre >0 sinon on laisse la valeur actuelle
+			duration=$exam_duration
+        !endif
+        
+      !endif
+      
+      !if $n_ = status
         #attention : on ne modifie plus un examen qui a ete active
-        #Ici il faudrait verifier qu'il ny a aucun eleve dans la classe avant de repasser un examen en statut 0
+        #Ici il faudrait verifier qu'il n'y a aucun eleve dans la classe avant de repasser un examen en statut 0
         #le statut est forcement >0 et <4
    	    !ifval $v_<1 or $v_>4
    	      error=bad status. You can't deactive an exam.
    	      !exit
         !endif
-        #Autre verification importante : on n'active pas un examen vide !
-        !ifval $exocnt<=0
-   	      error=Empty Exam. You can't active an exam with no exercice !
-   	      !exit
-        !endif
+        #On n'active pas un examen vide !
+		!ifval $v_=1 and $exocnt<=0
+		   error=Empty Exam. You can't active an exam with no exercice !
+		   !exit
+		!endif
       !endif
+      
+
       !advance nbdefs
       update_field=$j
       update_content=$v_
