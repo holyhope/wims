@@ -22,7 +22,7 @@ And the Javia-libs however are excellent java and are GNU.
     Use the normal applet params for Input.java [e.g without the script]
     
     Or abandon the input_applet_params and let the script to produce the background image: 
-    userdraw points | line | lines | (f)polygon | vector | (f)circle | (f)rect | semiline | points | curve
+    userdraw points | line | lines | mlines | multilines | (f)polygon | vector | (f)circle | (f)rect | semiline | points | curve
     controls yes/no [use the direct reply buttons]
     pointstyle cross | dot : only for userdrawing
 
@@ -34,7 +34,7 @@ And the Javia-libs however are excellent java and are GNU.
     
 3) Using the applet as an drawable image [mouse drawinteraction] + coordinates display
     mouse yes
-    userdraw points | line | lines | (f)polygon | (f)rect | vector | (f)circle | semiline | points | curve
+    userdraw points | line | lines | mlines | multilines | (f)polygon | (f)rect | vector | (f)circle | semiline | points | curve
     coordinates yes/no  or left out
     pointstyle cross | dot
     
@@ -224,6 +224,8 @@ public class FlyApplet extends JApplet{
 	        if(parmstr.compareTo("rect")==0) FlyApplet_panel.ctype=FlyApplet_panel.RECT;
     		if(parmstr.compareTo("circle")==0) FlyApplet_panel.ctype=FlyApplet_panel.CIRCLE;
 	        if(parmstr.compareTo("lines")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINES;
+	        if(parmstr.compareTo("mlines")==0) FlyApplet_panel.ctype=FlyApplet_panel.MLINES;
+	        if(parmstr.compareTo("multilines")==0) FlyApplet_panel.ctype=FlyApplet_panel.MLINES;
 	        if(parmstr.compareTo("segments")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINES;
 	        if(parmstr.compareTo("line")==0) FlyApplet_panel.ctype=FlyApplet_panel.LINE;
 	        if(parmstr.compareTo("sline")==0) FlyApplet_panel.ctype=FlyApplet_panel.SLINE;
@@ -986,6 +988,10 @@ public class FlyApplet extends JApplet{
 		if(words[1].equalsIgnoreCase("points")||words[1].equalsIgnoreCase("point")){FlyApplet_panel.ctype=8;}
 		else
 		if(words[1].equalsIgnoreCase("line")){FlyApplet_panel.ctype=4;}
+		else
+		if(words[1].equalsIgnoreCase("mlines")){FlyApplet_panel.ctype=10;}
+		else
+		if(words[1].equalsIgnoreCase("multilines")){FlyApplet_panel.ctype=10;}
 		else
 		if(words[1].equalsIgnoreCase("circle")){FlyApplet_panel.ctype=2;}
 		else
@@ -2453,7 +2459,7 @@ class FlyReply{
 
 class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListener {
     public static final int CURVE=0, RECT=1, CIRCLE=2, LINES=3, LINE=4,
-     SLINE=5,SEG=6,POLY=7,POINTS=8,VEC=9,NULL=-1;
+     SLINE=5,SEG=6,POLY=7,POINTS=8,VEC=9,MLINES=10,NULL=-1;
     public static int ctype;
     static int ll=4;
     Image bg;
@@ -2508,6 +2514,7 @@ class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListen
 	    case POLY:
 	    case POINTS:
 	    case LINES:
+	    case MLINES:
 	    case CURVE: {
 		int i, np;
 		Point p=null;
@@ -2607,6 +2614,7 @@ class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListen
 	    case NULL:break;
 	    case POLY:{if(stopdrawing){mouseExited(e);return;}}
 	    case POINTS:
+	    case MLINES:
 	    case LINES:if(st==1){mouseClicked(e);}return;
 	    case CURVE: {
 		if(st==0) return; else st=1;
@@ -2645,6 +2653,12 @@ class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListen
 	    }
 	    case POLY:{if(stopdrawing){mouseExited(e);return;}}
 	    case POINTS:
+	    case MLINES: {
+		x2=e.getX(); y2=e.getY();
+		if(st==0) lines.removeAllElements();
+		lines.addElement(new Point(x2,y2));
+		st=1;  repaint(); return;
+	    }
 	    case LINES: {
 		x2=e.getX(); y2=e.getY();
 		if(st==0) lines.removeAllElements();
@@ -2713,6 +2727,7 @@ class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListen
 		case CURVE:
 	        case POLY:if(lines.size()>0){RemoveRange(lines.size()-1,lines.size());x1=e.getX();y1=e.getY();repaint();}return;
 	        case POINTS:RemoveElement(e.getX(),e.getY());repaint();return;
+	        case MLINES:if(lines.size()>0){RemoveRange(lines.size()-1,lines.size());x1=e.getX();y1=e.getY();repaint();}return;
 	        case LINES:if(lines.size()>0){RemoveRange(lines.size()-1,lines.size());x1=e.getX();y1=e.getY();repaint();}return;
 	        case CIRCLE:RemoveElement(e.getX(),e.getY());repaint();return;
 	        case SLINE:RemoveElement(e.getX(),e.getY());repaint();return;
@@ -2778,6 +2793,29 @@ class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListen
 	    }
 	    case POLY:
 	    case CURVE:
+	    case MLINES:{                                                                                                                  
+                if(np>0) {                                                                                                                 
+                    Point p1,p2;                                                                                                           
+                    if(np%2 == 1){                                                                                                         
+                        p1=(Point)lines.elementAt(np - 1);                                                                                 
+                        paintPoint(g,p1.x,p1.y,true);                                                                                      
+                    }                                                                                                                      
+                    else                                                                                                                   
+                    {                                                                                                                      
+                        p1=(Point)lines.elementAt(np - 1);                                                                                 
+                        p2=(Point)lines.elementAt(np - 2);                                                                                 
+                        paintPoint(g,p1.x,p1.y,true);                                                                                      
+                        paintPoint(g,p2.x,p2.y,true);                                                                                      
+                    }                                                                                                                      
+                    for (int i=0; i < np - 1; i=i+2) {                                                                                     
+                        p1=(Point)lines.elementAt(i);                                                                                      
+                        p2=(Point)lines.elementAt(i+1);                                                                                    
+                        g.drawLine(p1.x, p1.y, p2.x, p2.y);                                                                                
+                    }                                                                                                                      
+                                                                                                                                           
+                }                                                                                                                          
+                break;                                                                                                                     
+            }
 	    case LINES: {
 		if(np>0) {
 		    pp=(Point)lines.elementAt(0);
@@ -2883,6 +2921,14 @@ class FlyApplet_panel extends JPanel implements MouseListener, MouseMotionListen
 	    g.fillOval(p.x - linewidth,p.y - linewidth , 2*linewidth, 2*linewidth);
 	}
     }
+   void paintPoint(Graphics g,int x, int y, boolean cross) {                                                                               
+        if(cross){                                                                                                                         
+            g.drawLine(x-ll,y+ll,x+ll,y-ll);                                                                                               
+            g.drawLine(x+ll,y+ll,x-ll,y-ll);                                                                                               
+        }else{                                                                                                                             
+            g.fillOval(x - linewidth,y - linewidth , 2*linewidth, 2*linewidth);                                                            
+        }                                                                                                                                  
+    } 
 
     public double px2x(int px){ //pixel to x-coords 
 	double X =  px*(xmax - xmin)/xsize + xmin;
