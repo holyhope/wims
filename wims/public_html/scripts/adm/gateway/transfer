@@ -1,13 +1,14 @@
 
 transfer_test=0
 !distribute words $wims_read_parm into transfer_user, transfer_cmd, transfer_other
-!if $wims_supertype!=4 or $wims_user!=supervisor
+!if ($wims_supertype!=4 and $wims_supertype!=2) or $wims_user!=supervisor
  !exit
 !endif
 tr_list=
 tr_typename=!defof class_typename in wimshome/log/classes/$wims_class/.def
 tr_l1=!defof user_participate in \
 	wimshome/log/classes/$wims_superclass/.users/$transfer_user
+!if $wims_supertype=4 
 !if $tr_typename=course
  tr_program=!defof sharing_exam in wimshome/log/classes/$wims_class/neighbors
  tr_class=!defof user_class in wimshome/log/classes/$wims_class/.users/$transfer_user
@@ -54,6 +55,53 @@ tr_l1=!defof user_participate in \
   !endif
  !next c_
 !endif
+!else
+!! same for wims_supertype=2 build a tr_list analogue to the one above: 
+!! suitable classes to look into for activity by $transfer_user
+!if  $wims_supertype=2 and $tr_typename=class
+ tr_sharing=!defof sharing_exam in wimshome/log/classes/$wims_class/neighbors
+ tr_sharable=!defof sharable_exam in wimshome/log/classes/$wims_class/neighbors
+ !! is user_class really used?
+ tr_class=!defof user_class in wimshome/log/classes/$wims_class/.users/$transfer_user
+ !if $tr_class=$empty
+  !! case 1 --> $wims_class is not "giving" (tr_sharable=$empty, i.e.
+  !!   $tr_sharing!=$empty), need to check whether it is sharing from
+  !!   (tr_sharing!=$empty) and need to find classes sharing from the
+  !!   same class 
+  !if $tr_sharing!=$empty
+   tr_list=$tr_sharing
+   !! altri candidati
+   tr_l2=!defof sharable_exam in wimshome/log/classes/$tr_sharing/neighbors
+   tr_l2=!listcomplement $wims_class in $tr_l2	 
+   !! controllo che queste effettivamente siano in sharing 
+   !for c_ in $tr_l2
+    tr_test=!defof sharing_exam in wimshome/log/classes/$c_/neighbors
+    !if $tr_test=$tr_sharing
+     tr_list=!append item $c_ to $tr_list
+    !endif
+   !next c_
+  !else
+   !! case 2 --> $wims_class is giving resources to other classes
+   !! (tr_sharable!=$empty) suitable class are in the ones in
+   !! $wims_superclass/.subclasses that have $wims_class in sharing_exams
+   !if $tr_sharable!=$empty
+    tr_list=
+    cnt_class=!recordcnt wimshome/log/classes/$wims_superclass/.subclasses
+    !for i = 1 to $cnt_class
+     cl=!record $i of wimshome/log/classes/.index
+     cl_test=$(cl[1])
+     cl_sharing=!defof sharing_exam in wimshome/log/classes/$cl_test/neighbors
+     !if $cl_sharing=$wims_class
+      tr_list=!append item $cl_test to $tr_list 
+     !endif
+    !next
+   !endif
+  !endif
+ !else
+  tr_class=$wims_superclass/$tr_class
+ !endif
+!endif
+!endif
 
 !if $tr_list!=$empty
  tr_l1=!makelist x/score for x in $tr_list
@@ -76,6 +124,7 @@ transfer_test=!itemcnt $tr_list
  !exit
 !endif
 
+!if $wims_supertype=4
 !default tr_program=!defof sharing_exam in wimshome/log/classes/$transfer_other/neighbors
 !if $tr_typename!=course
  tr_l1=!defof class_ocourses in wimshome/log/classes/$wims_class/.def
@@ -96,6 +145,13 @@ transfer_test=!itemcnt $tr_list
  !endif
 !else
  tr_this=$wims_class
+!endif
+!endif
+
+!if $wims_supertype=2 and $tr_typename=class
+ !if $transfer_other isitemof $tr_list
+  tr_this=$wims_class
+ !endif
 !endif
 
 tr_c1=log/classes/$transfer_other
