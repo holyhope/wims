@@ -46,7 +46,7 @@ U_assign = El profesor ha preparado las siguientes hojas de trabajo.
 U_expired = expirado
 U_done = hecho
 U_average = calidad
-U_examworking = <b><font color = red>Atención.</font></b> Usted estaba trabajando en un examen.
+U_examworking = Usted estaba trabajando en un examen.
 U_examdouble = En este caso no puede conectarse desde otro puesto.
 U_examcont = Continuar el examen.
 wims_name_U_oclass = Zonas de trabajo

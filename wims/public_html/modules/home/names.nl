@@ -45,7 +45,7 @@ U_expired = verlopen
 U_done = klaar
 U_average = kwaliteit
 
-U_examworking = <b><font color = red>Attentie.</font></b>Je bent nu met een overhoring voor een cijfer bezig.
+U_examworking = Je bent nu met een overhoring voor een cijfer bezig.
 U_examdouble = In dit geval mag je niet inloggen via deze netwerk-verbinding (ip-adres)
 U_examcont = Doorgaan met dit proefwerk.
 wims_name_U_oclass = Andere klassen
