@@ -4,7 +4,9 @@
 
 slib_author=Bernadette, Perrin-Riou
 
-slib_example=
+slib_example=datamodule/chemistry/mol2D.fr/data/60_18_4.mol\
+data/chem/templ/benzene.el\
+data/chem/templ/50_85_1.mol
 !exit
 
 :proc
@@ -66,14 +68,12 @@ $slib_file
   !set slib_file0=!replace internal / by ~ in $slib_file
 !else
   slib_temp=$slib_file
-  !set slib_file0=!randint 1000..5000
+  !set slib_file0=!randint 1000,5000
 !endif
 
 !readproc oef/togetfile.proc $slib_file0 new\
 $slib_temp
 !set slib_File=<param name="file" value="$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_file0">
-
-
 
 !set slib_list=TOOL_CURSOR,TOOL_ROTATOR,TOOL_ERASOR,TOOL_DIALOG,TOOL_EDIT,\
 TOOL_SETATOM,TOOL_SINGLE,TOOL_DOUBLE,TOOL_TRIPLE,TOOL_ZERO,\
@@ -106,8 +106,8 @@ MENU_BLOCK,MENU_SELECT,MENU_TRANSFORM,MENU_ZOOM,MENU_SHOW,MENU_HYDROGEN,MENU_STE
 slib_out=\
 <applet name="WIMSchem" codebase="$slib_appletdir" code="WIMSchem.MainApplet" archive="WIMSchem.jar" width="$slib_xsize" height="$slib_ysize">\
 	    <param name="showfile" value="$slib_showfile">\
-	    <param name="slib_show_hydrogen" value="$slib_show_hydrogen">\
-        <param name="slib_show_carbon" value="$slib_show_carbon">\
+	    <param name="show_hydrogen" value="$slib_show_hydrogen">\
+        <param name="show_carbon" value="$slib_show_carbon">\
         $slib_templ\
 	    $slib_atoms\
 	    $slib_params\
