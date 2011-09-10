@@ -29,13 +29,13 @@ l_=0
  !endif
  !setdef n_sup=$n_sup\
 n_part=$n_part in wimshome/log/classes/$wims_class/neighbors
- wims_class_log=Neighbor level $nlevel with $nei
+ wims_class_log=Neighbor level $nlevel with $nei by $wims_realuser
 !endif
 
-sharablelist=!listcomplement $sharing in $sharelist
+sharablelist=!listcomplement $sharing in $sharelist by $wims_realuser
 !if $changeshare!=$empty
  changed=0
- wims_class_log=Allow $nei share $mksharable
+ wims_class_log=Allow $nei share $mksharable by $wims_realuser
  !for r in $sharablelist
   !if $r isitemof $mksharable and $nei notitemof $(sharable_$r)
    sharable_$r=!append item $nei to $(sharable_$r)

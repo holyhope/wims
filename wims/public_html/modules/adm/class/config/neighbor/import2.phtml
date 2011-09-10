@@ -1,5 +1,5 @@
 !if $result=success
- !set wims_class_log=Import $import from $nei
+ !set wims_class_log=Import $import from $nei $wims_realuser
 !endif
 
 $name_import
@@ -10,17 +10,17 @@ $name_import
 !if $result=confirm
  !if dep iswordof $cfm
   !if $itype=sheet
-   <b>$wims_name_warning</b>.
+   <span class="wims_warning">$wims_name_warning</span>.
    !read lang/names.phtml.$moduclass_lang import2
   !endif
   !if $itype=exam
-   <b>$wims_name_warning</b>! 
+   <span class="wims_warning">$wims_name_warning</span>! 
    !read lang/names.phtml.$moduclass_lang import3
   !endif 
   <p>
  !endif
  !if replace iswordof $cfm
-  <b>$wims_name_warning</b>. 
+  <span class="wims_warning">$wims_name_warning</span>. 
    !read lang/names.phtml.$moduclass_lang import4
   <p>
  !endif

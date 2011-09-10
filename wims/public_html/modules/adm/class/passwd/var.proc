@@ -92,7 +92,7 @@ n=!charcnt $pw1
  !if $pass=$pw1
   error=success
   wims_module_log=Change participant password: $part
-  wims_class_log=change password: $part
+  wims_class_log=change password: $part by $wims_realuser
  !else
   error=fail
  !endif
@@ -125,7 +125,7 @@ n=!charcnt $pw1
   error=success
   wims_module_log=Change user password: $wims_user
   !if $wims_user=supervisor
-   wims_class_log=change password
+   wims_class_log=change password by $wims_realuser
    !read lang/mail.proc.$moduclass_lang
   !endif
  !else
@@ -148,7 +148,7 @@ n=!charcnt $pw1
  !if $class_pass=$pw1
   error=success
   wims_module_log=Change class password.
-  wims_class_log=change class password
+  wims_class_log=change class password by $wims_realuser
  !else
   error=fail
  !endif
