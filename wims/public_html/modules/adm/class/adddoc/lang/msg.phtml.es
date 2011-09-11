@@ -8,5 +8,5 @@
 !endif
 
 :already_exist
- Le document que vous voulez insérer existe déjà dans votre classe.
+ El documento que desea insertar ya existe en la clase.
 !exit

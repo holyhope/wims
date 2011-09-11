@@ -9,4 +9,4 @@
 !set name_time=Tiempo
 !set name_cnt_exo=Numero de ejercicios
 
-!set name_showsheet=Sélectionnez les feuilles dont vous désirez voir l'activité.
+!set name_showsheet=Seleccione las hojas de cuales desea ver la actividad.
