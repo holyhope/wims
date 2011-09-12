@@ -9,7 +9,6 @@
  !exit
 !endif
 
-!readdef $classdeffile
 usercnt=!recordcnt wimshome/log/classes/$qclass/.userlist
 
 !default option=login,name,allscores
@@ -157,10 +156,19 @@ scoremax=!line 1 of $s
 
 !read scripts/sheetweights
 
+class_superclass=!defof class_superclass in $classdeffile
+#Le dossier des etudiants se situe toujours dans la superclasse
+!if $class_superclass != $empty
+	users_dir = wimshome/log/classes/$class_superclass/.users
+!else
+	users_dir = wimshome/log/classes/$qclass/.users
+!endif
+
+
 !for u=1 to $usercnt
  l=!record $u of wimshome/log/classes/$qclass/.userlist
  user_login=!item 3 of $l
- !defread wimshome/log/classes/$qclass/.users/$user_login
+ !defread $users_dir/$user_login
  !if $scores=yes
   uu=$user_login
   !read scripts/userscore $user_login

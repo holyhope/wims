@@ -281,6 +281,40 @@ data_scores =!replace internal ; by , in $data_scores
 !goto footer
 
 
+:getsheetscores
+!for v in requires, weights
+ $v=!trim $($v)
+ !if $v != $empty
+   $v=!replace internal $\
+$ by ],[ in $($v)
+   $v=!replace internal $ $ by , in $($v)
+   $v=!replace internal ,] by ] in $($v)
+   $v=[[$($v)]]
+ !else
+   $v=""
+ !endif
+!next v
+
+!if $data_scores != $empty
+   data_scores=!replace internal $\
+$ by },{ in $data_scores
+   data_scores=[{$data_scores}]
+!endif
+
+!shortout ,"query_sheet":$qsheet,\
+"active_index":$active_index,\
+"requires":$requires,\
+"score_status":"$score_status",\
+"class_scoremax":$scoremax,\
+"weights":$weights,\
+"sheet_mean_quality":$sheet_mean_quality,\
+"sheet_mean_percent":$sheet_mean_percent,\
+"user_cnt":$usercnt,\
+"datas":$data_scores\
+
+!goto footer
+
+
 :getscore
 !for v in examscore, weights, requires, persheet, gotdetail, meandetail, remain
  $v=!trim $($v)
