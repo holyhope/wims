@@ -1,0 +1,43 @@
+type=image
+textarea="data"
+
+:$name_description
+
+:%%%%%%%% Paramètres d'exemples à redéfinir %%%%%%%%%%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:$name_instruction
+\text{instruction=Cliquez sur}
+:$name_image
+\text{image=$wims_deposit}
+:$name_width
+\text{width=400}
+
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%% Rien à modifier ci-après. %%%%%%%%%%%%%%%%%5
+\text{size= \data[1;]}
+\text{coord = $(data[2..-1;])}
+\integer{N=rows(\coord)}
+\matrix{coord=\coord}
+
+\text{V = shuffle(\N)}
+\text{K=\V[1]}
+\text{point=\coord[\K;]}
+\text{dessin=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\image
+)}
+
+\integer{width=min(\width,\size[1])}
+
+\statement{
+\instruction &lt;b>\point[1]&lt;/b>.
+&lt;center>
+\embed{r1}
+&lt;/center>
+}
+
+\answer{}{\imagedir/\image;circle,\point[2,3],10}{type=coord}

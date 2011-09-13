@@ -1,0 +1,70 @@
+type=image
+textarea="data"
+
+:$name_description
+
+:%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:$name_instruction
+\text{instruction=Mettre les étiquettes }
+:$name_qu_cnt (<=10):
+\integer{N=4}
+:$name_labelsize
+\text{eti=110,24}
+:$name_image
+\text{image=$wims_deposit}
+:$name_distractor
+\integer{n=3}
+:$name_format
+\text{format=dragfill}
+
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%%%%%%%%%%%%%
+\text{size= \data[1;]}
+\text{coord = $(data[2..-1;])}
+\integer{N1=rows(\coord)}
+\matrix{coord=\coord}
+\integer{N=min(\N,\N1)}
+\text{etix=\eti[1]}
+\text{etiy=\eti[2]}
+\text{position=}
+\text{V = shuffle(\N1)}
+\integer{M=min(\N+\n,\N1)}
+
+\text{K=\V[1..\N]}
+\text{dessinprelim=copy 0,0,-1,-1,-1,-1,\image}
+\for{k =1 to \N}{
+  \text{co=\coord[\K[\k];2,3]}
+  \text{co=pari([\co] + [-\etix/2,\etiy/2])}
+  \text{position=\position
+r \k,\co[1] x \co[2]}
+}
+\text{figure = draw(\size
+\dessinprelim)}
+
+\text{liste=\coord[\V[\N+1..\M];1]} 
+\text{Step=wims(makelist r x for x=1 to \N)}
+\steps{\Step}
+\statement{
+\instruction
+&lt;center>
+\special{imagefill \figure,\size[1] x \size[2],\etix x \etiy
+\position}
+&lt;/center>
+}
+
+\answer{}{\coord[\K[1];1];\liste}{type=\format}
+\answer{}{\coord[\K[2];1]}{type=\format}
+\answer{}{\coord[\K[3];1]}{type=\format}
+\answer{}{\coord[\K[4];1]}{type=\format}
+\answer{}{\coord[\K[5];1]}{type=\format}
+\answer{}{\coord[\K[6];1]}{type=\format}
+\answer{}{\coord[\K[7];1]}{type=\format}
+\answer{}{\coord[\K[8];1]}{type=\format}
+\answer{}{\coord[\K[9];1]}{type=\format}
+\answer{}{\coord[\K[10];1]}{type=\format}

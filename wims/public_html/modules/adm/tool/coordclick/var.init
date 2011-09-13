@@ -1,0 +1,15 @@
+# Variable initialisation file.
+# This file is read by wims for new sessions.
+
+# content of the file: initialisation of the problem.
+
+sesdir1=click
+sesdir=getfile/$sesdir1
+listexo=!sh ls $wims_home/public_html/modules/$module/data/
+listexo=!replace internal example by in $listexo
+listexo=!replace internal .oef by in $listexo
+listexo=!lines2items $listexo
+
+status=waiting
+wims_module_log=$cmd
+

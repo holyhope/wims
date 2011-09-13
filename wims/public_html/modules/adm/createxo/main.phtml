@@ -90,6 +90,14 @@ latex2wims,1,module=adm/latex2wims\
  rawmode,1,cmd=reply&rawinp=yes\
 to $wims_menu_items
 !endif
+
+!!!developpers tools
+!if $wims_user=supervisor or $wims_developper!=$empty
+  !set wims_menu_items=!append line ,0,\
+  tools,0,$wims_name_tools\
+  coordclick,1,module=adm/tool/coordclick\
+ to $wims_menu_items
+!endif
 :end
 !tail
 

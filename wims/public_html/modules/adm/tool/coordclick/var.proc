@@ -1,0 +1,181 @@
+!read lang/names.phtml.fr
+!default step=1
+!set limit=50
+
+!if $ext=0
+  arrow=0
+!else
+  arrow=3
+!endif
+
+!if $end=1
+!goto end
+!endif
+!if $step <=1
+ !set wims_form_method=file
+ !set already=!sh mkdir -p $wims_home/$wims_sesdir/$sesdir ; ls $wims_home/$wims_sesdir/$sesdir
+ !set already=!words2items $already
+ !set already=!nospace $already
+!endif
+!if $step>$limit
+  test=limit
+  !exit
+!endif
+# how to detect the need to compute?
+!if $cmd=reply
+ error=
+ compute=
+ !if $wims_deposit_old=0
+   !reset wims_deposit_old
+ !endif
+ !default wims_deposit=$wims_deposit_old
+ !if $data=
+   !if noname.file isin $wims_deposit or $wims_deposit=$empty
+     wims_deposit=$wims_deposit_old
+   !else
+     !reset wims_deposit_old
+   !endif
+   
+   !if $wims_deposit_old!=
+    f_wims_deposit=!replace internal . by , in $wims_deposit_old
+    f_wims_deposit=!item 1 of $f_wims_deposit_old
+    data=!sh cat $wims_home/$wims_sesdir/data_$f_wims_deposit
+    insdraw_size=!line 1 of $data
+    step=!linecnt $data
+    test_ext=!line 2 of $data
+    test_ext=!itemcnt $test_ext
+    !if $test_ext=3 and $ext=1
+      data=!line 1 of $data
+      step=3
+      !goto 2
+    !endif
+    !if $step=0 
+      step=1
+      !goto 1
+    !endif
+    !for l_ =2 to $step
+      c_=!line $l_ of $data
+      !if $ext=1
+        dessin=!append line arrow $(c_[2..5]),5,black to $dessin
+      !endif
+      !if $ext=0
+       dessin=!append line fcircle $(c_[2..3]),10,black to $dessin
+      !endif
+    !next
+    step=$[$step+1]
+    !exit
+  !endif
+:1
+ !if $step=1
+   !if  / isin $wims_deposit or .. isin $wims_deposit or noname.file isin $wims_deposit or $wims_deposit=$empty
+     !if $wims_deposit_old!=
+       wims_deposit=$wims_deposit_old
+     !else
+       test=noimage
+       !exit
+     !endif
+   !endif
+   test_wims_deposit=!replace internal . by , in $wims_deposit
+   test_wims_deposit=!item -1 of $test_wims_deposit
+   test_wims_deposit=!lowercase $test_wims_deposit
+   !if $test_wims_deposit notwordof jpg png jpeg gif
+       test=bad_image
+       !exit
+   !endif
+   !if $wims_deposit_old=
+    !sh cd $wims_home/$wims_sesdir\
+     mkdir -p getfile\
+     mkdir -p $sesdir\
+     mv user-deposit $sesdir/$wims_deposit
+   !endif 
+   !increase step
+ !endif
+:2
+!if $step>=2
+ !if $erase=yes
+  !if $ext=0
+    dessin=!line 1 to -2 of $dessin
+  !else
+    dessin=!line 1 to -3 of $dessin
+  !endif 
+    data=!line 1 to -2 of $data
+    !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
+    step=$[max($[$step-1],2)]
+    !if $step=2
+     !reset data
+     !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
+    !endif 
+    !reset legend test erase
+    !exit
+ !endif
+ !reset wims_form_method
+ imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$wims_deposit
+ click_x=$[$click_x]
+ click_y=$[$click_y]
+ !if $step=2
+   !if $click_x != 0 and $click_y != 0
+     data=!append line $click_x,$click_y to $data
+     !increase step
+     insdraw_size=$click_x,$click_y
+   !else
+     test=nosize
+   !endif
+ !else
+  !if $legend!=$empty and ($click_x!=0 or $click_y!=0)
+   !if $ext<=1
+data=!append line $legend,$click_x,$click_y to $data
+     !if $ext=1
+      dessin=!append line fcircle $click_x,$click_y,5,black to $dessin
+     !endif
+     !increase step
+     !if $ext=0 
+       !reset legend
+dessin=!append line fcircle $click_x,$click_y,10,black to $dessin
+     !else 
+dessin=!append line arrow $click_x,$click_y to $dessin
+     !endif
+   !else
+     data=!append item $click_x,$click_y to $data
+dessin=!append item $click_x,$click_y,10,black to $dessin
+     !reset legend
+   !endif
+   ext=$[$arrow-$ext]
+  !else
+   !if $legend=$empty
+     test=nolegend
+   !endif
+   !if ($click_x=0 and $click_y=0)
+     test=noclick
+   !endif
+  !endif
+ !endif
+!endif
+!if $step >= $limit
+  end=1
+!endif 
+
+:end
+
+!if $end!=0 and $end!=$empty
+
+name_title=!line 1 of $(name_description$end)
+exo=!record 0 to -1 of data/example$end.oef
+exo_begin=!record 0 of data/example$end.oef
+exo=!record 1 to -1 of data/example$end.oef
+exo=!replace internal &lt; by < in $exo_begin\
+:$(name_description$end)\
+$exo
+
+!writefile wimshome/sessions/$wims_session/submit.oef $exo
+!writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
+
+!sh cd $wims_home/sessions/$wims_session\
+     mkdir -p getfile/oefimg\
+     cp $sesdir/$wims_deposit getfile/oefimg/$wims_deposit\
+     mkdir -p $wims_home/log/classes/$wims_class/src/images
+!! il faudrait connaitre le nom de l'exo
+cp $sesdir/$wims_deposit $wims_home/log/classes/$wims_class/src/images/$wims_deposit
+     
+!endif
+!reset click_x click_y erase
+

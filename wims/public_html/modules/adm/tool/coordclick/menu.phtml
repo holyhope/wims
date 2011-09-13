@@ -1,0 +1,139 @@
+!! menu definition file
+
+!default step=1
+!read lang/names.phtml.fr
+$name_intro
+$name_exo0
+!set wims_ref_class=wims_button_help
+!href target=wims_mhelp cmd=help $wims_name_help
+!!!set trust=!getdef trusted_modules in wimshome/log/wims.conf
+!!<div class="emptyline"></div>
+!!!if $module notwordof $trust
+!!   <span class="wims_warning">$wims_name_warning</span>. $name_notrust
+!!   !exit
+!!!endif
+!form reply
+<ol>
+!for a=1 to $[min(2,$step-1)]
+  <li>$(name_help$a)</li>
+!next
+  <li style="color:brown;">$(name_help$[min(3,$step)])</li>
+  !if $step>=3
+  <li>
+  $name_else 
+   !formcheckbox erase list yes prompt <b>$name_erase</b>
+  </li>
+   !if $step>=$[($ext+1)*3+2]
+   <li>
+     $name_end
+     !reset tindex
+     !for t in $listexo
+     !set p=!char 1 of $t
+     !if $ext >= $p
+      !set titre=$(name_description$t)
+      !set titre=!line 1 of $titre
+      !set titre=!replace internal , by &##44; in $titre
+      !set tindex=!append item $titre to $tindex
+      !set lex=!append item $t to $lex
+     !endif
+    !next 
+ !formselect end list 0,$lex prompt choisir,$tindex
+  </li>
+ !endif
+</ol>
+  <center>
+  <input type="submit" value="$wims_name_send">
+  </center>
+!endif
+
+!!!if $step>=6 
+!!      $name_exo1
+ !!     !set wims_ref_class=wims_button_help
+!!      !href target=wims_mhelp cmd=help $wims_name_Exercise
+!!!endif
+!if $step>=$limit
+  !changeto answer.phtml
+  !exit
+!endif
+
+!if $step=1
+<ul><li>  
+   !formradio wims_deposit_old list 0 prompt $wims_name_download
+   <input type="file" name="wims_deposit"> 
+   !if $already!=
+     $name_already
+     !formradio wims_deposit_old list $already
+   !endif
+  </li><li>
+  !default ext=0
+  !formradio ext list 0,1 prompt $name_0, $name_1
+  </li>
+</ul>
+  <center>
+   <input type="submit" value="$wims_name_send">
+   !set wims_ref_class=wims_button
+  </center>
+  !if $test=noimage
+    <span class="wims_warning">$wims_name_warning</span>. $name_noimage
+  !endif
+  !if $test=bad_image
+    <span class="wims_warning">$wims_name_warning</span>. $name_bad_image
+  !endif
+!endif
+!if $step>=2
+ !distribute item alt=Click,1,form click into ins_attr,ins_border,ins_tag
+  <center>
+  <table><tr><td>
+  !if $test=nosize and $begin=1
+   <span class="wims_warning">$wims_name_warning</span>. $name_nosize
+  !endif
+  !set begin=1
+  !if $step>=3
+   !if $test iswordof nolegend noclick 
+      <span class="wims_warning">$wims_name_warning</span>. 
+      !if $test iswordof nolegend
+        $name_nolegend
+      !endif  
+      !if $test=noclick
+       $name_noclick
+      !endif
+   !endif
+    <div style="padding:50px;"> 
+   !if $ext=2
+      !set readonly=readonly
+   !else
+      !reset readonly
+   !endif
+     <br>
+      $name_legend
+      <input size="20" $readonly name="legend" value="$legend">
+    </div>
+   !if $data!=
+     <pre>$data</pre>
+   !endif
+  !endif
+  </td><td style="width:50px; height-min:50px;text-align:top;">
+  <td>
+  <center>
+  !if $step>=3
+       $(name_point$ext)
+       <br>
+       !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
+     !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
+     $dessin
+  !else
+    <input type="image" name="click" src="$imgsrc" border="1"> 
+  !endif
+  </center>
+</td></tr>
+<tr><td colspan="3">
+</td></tr>
+<tr><td colspan="3"><center>
+  <input type="submit" value="$wims_name_send">
+  </center>
+</td></tr>
+</table>
+</center>
+!endif
+
+!reset test error

@@ -11,11 +11,12 @@
 !if $existing=$empty
 $name_brut<br/>
  !if $modeltest=yes
- $name_try
-  !href cmd=reply&mode=model&level=2 $name_normal
-.<br/>
+!set wims_ref_class=wims_button
+  !href cmd=reply&mode=model&level=2 $wims_name_adapt
+ $name_try.
+ !set wims_ref_class=wims_button
   !href cmd=reply&mode=none&level=0 $wims_name_giveup
-.<br/>
+  <p>
  !else
  $name_allsource (
   !href target=wims_mhelp cmd=help&special_parm=oef format OEF
@@ -30,13 +31,16 @@ $name_brut<br/>
  !endif
  !if $modeltest=yes
   $name_public
-  !href cmd=reply&mode=model&level=2 $name_normal
-.<br/>
+$wims_name_or
+!set wims_ref_class=wims_button
+!href cmd=reply&mode=model&level=2 $wims_name_adapt
+$name_try
+&nbsp;$wims_name_or
+!set wims_ref_class=wims_button
   !href cmd=reply&mode=none&level=0 $wims_name_giveup
-.<br/>
  !endif
 !endif
-
+<p>
  $name_test_extern
   !href target=wims_test module=tool/directexec&cmd=new $name_testerscript
 .

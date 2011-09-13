@@ -1,0 +1,25 @@
+$name_help
+!!!if $special_parm1 isitemof $listexo
+!!  !set wims_ref_class=wims_button_help
+!! !href cmd=help $wims_name_menuback
+!!<pre>
+!!$(name_description$special_parm1)
+!! !read data/example$special_parm1.oef
+!!</pre>
+
+!! !exit
+!!!endif
+
+<ul>
+ !for t in $listexo 
+  !set p=!char 1 of $t
+   !!!if $ext >= $p
+   !set title_expl=$(name_description$t)
+   !set expl=!line 2 to -1 of $title_expl
+   !set title_expl=!line 1 of $title_expl
+<li>
+ !!!href target=wims_mhelp cmd=help&special_parm1=$t 
+ <b>$title_expl</b> (<span class="wims_warning">$(name_$p)</span>). $expl
+</li>
+ !!!endif
+!next
