@@ -13,28 +13,28 @@ ldap_find=!sh which ldapsearch
 !endif
 
 ldap_host=!defof class_ldap_host in $authdef
-!!default ldap_host=ldap.u-psud.fr
+!default ldap_host=!defof ldap_host in wimshome/log/wims.conf
 
 ldap_port=!defof class_ldap_port in $authdef
-!default ldap_port=389
+!default ldap_port=!defof ldap_port in wimshome/log/wims.conf
 
 ldap_version=!defof class_ldap_version in $authdef
-!default ldap_version=3
+!default ldap_version=!defof ldap_version in wimshome/log/wims.conf
 
 ldap_base=!defof class_ldap_base in $authdef
-!!default ldap_base=ou=people,dc=u-psud,dc=fr
+!default ldap_base=!defof ldap_base in wimshome/log/wims.conf
 
 ldap_branch=!defof class_ldap_branch in $authdef
-!!default ldap_branch=ou=people,dc=u-psud,dc=fr
+!default ldap_branch=!defof ldap_branch in wimshome/log/wims.conf
 
 ldap_uid=!defof class_ldap_uid in $authdef
-!!default ldap_uid=uid
-
+!default ldap_uid=!defof ldap_uid in wimshome/log/wims.conf
+ 
 #ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1]),$ldap_branch,$ldap_base
 ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1])
 
 ldap_login=!defof class_ldap_login in $authdef
-!default ldap_login=supannAliasLogin
+!default ldap_login=!defof ldap_login in wimshome/log/wims.conf
 
 !if $ldap_login=$empty or $ldap_uid=$empty or $ldap_base=$empty \
        or $ldap_branch=$empty  or $ldap_host=$empty 
@@ -44,25 +44,52 @@ ldap_login=!defof class_ldap_login in $authdef
 
 ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
 
+atest=result: 0 Success
+btest=# numEntries: 1
+firstcond=0
+
 ldap_cnt=!linecnt $ldap_search
 !for i=1 to $ldap_cnt
  l=!line $i of $ldap_search
- field=!word 1 of $l	
+ field=!word 1 of $l
 
  !if $field iswordof $ldap_login:
   auth_real_login=!word 2 of $l
  !endif
 
- !if $l issametext result: 0 Success
-  auth_test=$auth_real_login
+ !if $l issametext $atest
+  !increase firstcond
  !endif
-
+ !if $l issametext $btest
+  !increase firstcond
+ !endif
 !next i
-
+!if $firstcond=2
+  !!! now the user exists and password is good
+  !!! find eventually  wims login
+  !if $ldap_login issametext $ldap_uid
+     auth_test=!replace internal " by  in $(wims_read_parm[1])
+  !else
+   !if $auth_real_login!=
+     auth_test=$auth_real_login
+   !else
+    !! one looks for the ldap_login in an anonymous way (no password)
+    ldap_search2=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' $ldap_login | grep -v "^[d]n:"
+    ldap_search2=!replace internal : by = in $ldap_search2
+    auth_real_login=!getopt $ldap_login in $ldap_search2
+    !if $auth_real_login!=
+      auth_test=$auth_real_login
+    !endif
+   !endif
+  !endif
+!endif
 
 cnt_=!charcnt $auth_test
 !if $cnt_=3
  auth_test=!nospace $auth_test 0
 !endif
+!if $cnt_<=2
+  auth_test=ERROR
+!endif
 auth_error=$wims_exec_error
-wims_exec_error=
+!reset wims_exec_error
