@@ -23,6 +23,7 @@ auth_user_connection=$auth_user
 auth_password_connection=$auth_password
 
 ##### LDAP connection - part 1 #####
+sclass=!defof class_superclass in wimshome/log/classes/$class/.def
 !default sclass=$class
 
 auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
@@ -33,7 +34,7 @@ auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
  # don't use auth_user and auth_password, some characters are unvailable
  !readproc adm/class/auth-$auth_method $auth_user_connection,$auth_password_connection
 
- # if ldap connection is OK, replace auth_user by supannAliasLogin (ie auth_test)
+ # if ldap connection is OK, replace auth_user by $ldap_login (ie auth_test)
  !if ERROR notwordof $auth_test
   auth_user=$auth_test
   auth_test=OK
