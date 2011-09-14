@@ -9,7 +9,7 @@
 !endif
 
 !if $end=1
-!goto end
+ !goto end
 !endif
 !if $step <=1
  !set wims_form_method=file
@@ -35,8 +35,8 @@
    !else
      !reset wims_deposit_old
    !endif
-   
-   !if $wims_deposit_old!=
+ !endif
+ !if $wims_deposit_old!=
     f_wims_deposit=!replace internal . by , in $wims_deposit_old
     f_wims_deposit=!item 1 of $f_wims_deposit_old
     data=!sh cat $wims_home/$wims_sesdir/data_$f_wims_deposit
@@ -64,8 +64,10 @@
     !next
     step=$[$step+1]
     !exit
-  !endif
+  !endif wims_deposit_old
+ 
 :1
+ 
  !if $step=1
    !if  / isin $wims_deposit or .. isin $wims_deposit or noname.file isin $wims_deposit or $wims_deposit=$empty
      !if $wims_deposit_old!=
@@ -91,13 +93,13 @@
    !increase step
  !endif
 :2
-!if $step>=2
- !if $erase=yes
-  !if $ext=0
+ !if $step>=2
+  !if $erase=yes
+   !if $ext=0
     dessin=!line 1 to -2 of $dessin
-  !else
+   !else
     dessin=!line 1 to -3 of $dessin
-  !endif 
+   !endif 
     data=!line 1 to -2 of $data
     !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
     step=$[max($[$step-1],2)]
@@ -107,12 +109,13 @@
     !endif 
     !reset legend test erase
     !exit
- !endif
- !reset wims_form_method
- imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$wims_deposit
- click_x=$[$click_x]
- click_y=$[$click_y]
- !if $step=2
+   !endif
+  !endif
+  !reset wims_form_method
+  imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$wims_deposit
+  click_x=$[$click_x]
+  click_y=$[$click_y]
+  !if $step=2
    !if $click_x != 0 and $click_y != 0
      data=!append line $click_x,$click_y to $data
      !increase step
@@ -120,7 +123,7 @@
    !else
      test=nosize
    !endif
- !else
+  !else
   !if $legend!=$empty and ($click_x!=0 or $click_y!=0)
    !if $ext<=1
 data=!append line $legend,$click_x,$click_y to $data
@@ -157,24 +160,23 @@ dessin=!append item $click_x,$click_y,10,black to $dessin
 :end
 
 !if $end!=0 and $end!=$empty
-
-name_title=!line 1 of $(name_description$end)
-exo=!record 0 to -1 of data/example$end.oef
-exo_begin=!record 0 of data/example$end.oef
-exo=!record 1 to -1 of data/example$end.oef
-exo=!replace internal &lt; by < in $exo_begin\
+ name_title=!line 1 of $(name_description$end)
+ exo=!record 0 to -1 of data/example$end.oef
+ exo_begin=!record 0 of data/example$end.oef
+ exo=!record 1 to -1 of data/example$end.oef
+ exo=!replace internal &lt; by < in $exo_begin\
 :$(name_description$end)\
 $exo
 
-!writefile wimshome/sessions/$wims_session/submit.oef $exo
-!writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
+ !writefile wimshome/sessions/$wims_session/submit.oef $exo
+ !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
 
-!sh cd $wims_home/sessions/$wims_session\
+ !sh cd $wims_home/sessions/$wims_session\
      mkdir -p getfile/oefimg\
      cp $sesdir/$wims_deposit getfile/oefimg/$wims_deposit\
      mkdir -p $wims_home/log/classes/$wims_class/src/images
 !! il faudrait connaitre le nom de l'exo
-cp $sesdir/$wims_deposit $wims_home/log/classes/$wims_class/src/images/$wims_deposit
+ cp $sesdir/$wims_deposit $wims_home/log/classes/$wims_class/src/images/$wims_deposit
      
 !endif
 !reset click_x click_y erase
