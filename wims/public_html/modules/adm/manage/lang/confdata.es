@@ -735,3 +735,41 @@ Command name for Scilab
 free
 
 Scilab
+
+:auth ldap_host
+LDAP host
+
+free
+These values will be used by default in the classes permitting the authentification by an LDAP.
+:auth ldap_port
+LDAP Port
+free
+
+These values will be used by default in the classes permitting the authentification by an LDAP.
+:auth ldap_version
+LDAP Version
+free
+
+These values will be used by default in the classes permitting the authentification by an LDAP.
+:auth ldap_base
+LDAP Base
+free
+
+These values will be used by default in the classes permitting the authentification by an LDAP.
+:auth ldap_branch
+LDAP Branch
+free
+
+These values will be used by default in the classes permitting the authentification by an LDAP.
+:auth ldap_uid
+LDAP identifier
+free
+
+It is the login used by the ldap. The participant must enter it as login.
+These values will be used by default in the classes permitting the authentification by an LDAP.
+:auth ldap_login
+WIMS login
+free
+
+The login will be used by wims in its internal structure (must be alphanumeric and with less 8 characters)
+These values will be used by default in the classes permitting the authentification by an LDAP.

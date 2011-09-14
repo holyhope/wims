@@ -23,3 +23,5 @@ los&nbsp;registros&nbsp;del&nbsp;servidor
 los&nbsp;programas&nbsp;utilizados&nbsp;internamente
 :tech
 temas&nbsp;técnicos
+:auth
+authentification LDAP
