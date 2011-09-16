@@ -2,7 +2,7 @@
 
 !read adm/lang/sheetexam.phtml.$lang
 
-!set name_student1=!nosubst Er mag aan dit werkblad gewerkt worden tot $expday $expmon $expyear.
+!set name_student1=!nosubst Er mag aan dit werkblad gewerkt worden tot $expday $expmon $expyear
 !set name_student2=Dit werkblad is verlopen. Er kan nog wel aan\
  worden gewerkt, maar de behaalde cijfers worden niet meer geregistreerd.
 !set name_student3= Dit werkblad mag op dit moment nog niet worden ingezien.\

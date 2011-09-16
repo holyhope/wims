@@ -17,14 +17,31 @@ $sheet_title\
 $name_title
 
 <div class="wims_sheet_desc">$sheet_desc</div>
-
-!if $sheet_expiration!=$empty and $sheet_active=1
- !set expday=!char 7,8 of $sheet_expiration
- !set expmon=!char 5,6 of $sheet_expiration
- !set expyear=!char 1 to 4 of $sheet_expiration
+!!expiration date in a variable
+!set expir_user=!record 0 of wimshome/log/classes/$wims_class/.$sh
+!if $expir_user!=
+ !set expir_user=!replace internal \ by in $expir_user
+ !set expir_user=!getdef user__$expir_user in wimshome/log/classes/$wims_class/.users/$wims_user
+ !set expir_user=!words2items $expir_user
+ !for l_ in $expir_user
+   !set l_=!replace internal < by ?, in $l_
+   !if ? isitemof $l_
+     !set sheet_expiration_user=$(l_[2])
+   !endif
+ !next
+!endif
+!default sheet_expiration_user=$sheet_expiration
+!if $sheet_expiration_user!=$empty and $sheet_active=1
+ !set expday=!char 7,8 of $sheet_expiration_user
+ !set expmon=!char 5,6 of $sheet_expiration_user
+ !set expyear=!char 1 to 4 of $sheet_expiration_user
+ !set exphour=!char 10 to -1 of $sheet_expiration_user
+ !if $exphour!=
+   !set exphour=$ ($exphour)
+ !endif
  !read adm/date.phtml
  !set expmon=!item $expmon of $months
- <p id="name_student1">$name_student1</p>
+ <p id="name_student1">$name_student1$exphour.</p>
 !endif
 
 !if $sheet_active=2
