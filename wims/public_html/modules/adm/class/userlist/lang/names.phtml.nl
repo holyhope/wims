@@ -91,7 +91,7 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
    !set name_title_transfer=Verplaatsen van activiteiten
    !distribute items Samenvoegen, Vervangen,Bekijken\
    into name_merge, name_replace,name_show
-!set name_error1=<b>Fout</b>. Deze student is niet geregistreerd bij de andere cursus en\
+!set name_error1=Deze student is niet geregistreerd bij de andere cursus en\
 kan dus niet worden overgezet van
  !set name_error2=<b>Fout</b> in de klas identificatie. Verkeerde handeling of een software fout?
  !set name_activities=!nosubst Details van de aktiviteiten in $i (beperkt tot 1000 regels).

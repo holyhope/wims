@@ -94,9 +94,9 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
    !set name_title_transfer=Transferencia de las actividades
    !distribute items Unir, Sustituir,Examinar\
    into name_merge, name_replace,name_show
- !set name_error1=<b>Error</b>. El participante no está inscrito en ningún curso que corresponda\
+ !set name_error1=El participante no está inscrito en ningún curso que corresponda\
      a la clase actual y que pueda recibir la transferencia desde
- !set name_error2=<b>Error</b>.<b>Error</b> de identificador de las clases. \
+ !set name_error2=<b>Error</b> de identificador de las clases. \
     Falsa maniobra o error del programa informático ?
 !set name_activities=!nosubst Detalle de las actividades en $i (limitado a 1000 líneas).
 !set name_totransfer=Estos son los otros cursos en los que ha realizado actividades el participante.\
