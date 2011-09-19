@@ -1,0 +1,106 @@
+# GetExamScores
+# Donne les notes de l'ensemble des utilisateurs pour l'examen $qexam
+
+#Pour commencer, on verifie la classe
+!read scripts/check.class
+!if $error!=$empty
+ !exit
+!endif
+
+#puis l'examen
+type=exams
+!read scripts/check.proc
+!if $error!=$empty
+ !exit
+!endif
+
+exam_properties=!lines2items $qproperties\
+
+exam_status=!item 1 of $exam_properties
+!if $exam_status<1 or $exam_status>2
+ error=Exam #$qexam must be active
+ !exit
+!endif
+
+nbexams=!recordcnt wimshome/log/classes/$qclass/exams/.exams
+
+active_index=0
+nb_active=0
+
+!for i=1 to $nbexams
+    !reset exam_properties,status
+    
+	exam_properties=!record $i of wimshome/log/classes/$qclass/exams/.exams
+	status=!line 1 of $exam_properties
+
+	!if $status>=1 and $status <=2
+		!advance nb_active
+	!endif
+	
+	!if $qexam=$i
+		active_index=$nb_active
+	!endif
+!next i
+
+class_superclass=!defof class_superclass in $classdeffile
+#un utilisateur se trouve toujours dans la superclasse si elle existe
+!if $class_superclass != $empty
+	users_dir = wimshome/log/classes/$class_superclass/.users
+!else
+	users_dir = wimshome/log/classes/$qclass/.users
+!endif
+
+!read adm/class/mkuserlist $qclass
+
+usercnt=!recordcnt  wimshome/log/classes/$qclass/.userlist
+!if $usercnt=0
+  error=There's no user in this class
+  !exit
+!endif
+
+real_usercnt=0
+max_score=0
+mean_score=0
+
+!for u=1 to $usercnt
+	l=!record $u of wimshome/log/classes/$qclass/.userlist
+	quser=!item 3 of $l
+	!defread $users_dir/$quser
+
+	examscore=!examscore user=$quser class=$qclass
+	##format du "examscore" :
+	#line 1 : exam1_scoremax exam2_scoremax ...
+	#line 2 : attempts_max, attempts, 1 ???  (exam 1)
+	#line n : attempts_max, attempts, 1 ???  (exam n-1)
+	
+	exam_score=!line 1 of $examscore
+	exam_score=!word $qexam of $exam_score
+	!if $exam_score>$max_score
+		max_score=$exam_score
+	!endif
+	
+	
+	exam_attempts=!line $[$qexam+1] of $examscore
+	exam_attempts=!word 2 of $exam_attempts
+	
+	!if $exam_attempts > 0
+		!advance real_usercnt
+		mean_score = $[$mean_score + $exam_score]
+		new_line = "id":"$quser", "score":$exam_score , "attempts" : $exam_attempts
+		data_scores = !append line $new_line to $data_scores
+	!endif
+	
+	
+
+!next u
+
+!if $mean_score>0
+	mean_score = $[$mean_score / $real_usercnt]
+!endif
+
+scoremax=!record 0 of wimshome/log/classes/$qclass/sheets/.severity
+scoremax=!word 1 of $scoremax
+!default scoremax = 10
+
+weights = !record 0 of wimshome/log/classes/$qclass/sheets/.weight
+

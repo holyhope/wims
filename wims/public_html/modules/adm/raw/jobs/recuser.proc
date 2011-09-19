@@ -1,10 +1,22 @@
 # RecUser
-# Recover : Retrouve l'utilisateur $quser precedemment supprimé.
+# Recover : Retrouve l'utilisateur $quser precedemment supprime.
 
 !read scripts/check.class
 !if $error!=$empty
  !exit
 !endif
+
+class_superclass=!defof class_superclass in $classdeffile
+
+#on ajoute pas un utilisateur dans une sous-classe. toujours dans sa superclasse.
+!if $class_superclass != $empty
+  userdir=wimshome/log/classes/$class_superclass/.users
+  userdir2=$wims_home/log/classes/$class_superclass/.users
+!else
+  userdir=wimshome/log/classes/$qclass/.users
+  userdir2=$wims_home/log/classes/$qclass/.users
+!endif
+
 
 quser=!word 1 of $quser
 quser=!translate internal . to @ in $quser
@@ -13,9 +25,8 @@ l=!charcnt $quser
 !if $quser=supervisor or $l<$login_min or $l>$login_max
  error=bad login name
  !exit
-!endif 
+!endif
 
-userdir=wimshome/log/classes/$qclass/.users
 test=!defof user_exists in $userdir/$quser
 !if $test!=$empty
  error=undeleted user exists
@@ -28,7 +39,7 @@ test=!defof user_exists in $userdir/.$quser
  !exit
 !endif
 
-!sh cd $wims_home/log/classes/$wims_class/.users; mv .$quser $quser >/dev/null
+!sh cd $userdir2; mv .$quser $quser >/dev/null
 !read adm/class/mkuserlist $qclass
 
 

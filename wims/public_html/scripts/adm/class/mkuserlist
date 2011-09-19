@@ -1,17 +1,24 @@
+#MKUSERLIST
+# Constructs .userlist file in specified class (wims_class by default)
+
 uclass=$wims_read_parm
 !default uclass=$wims_class
+
 !if user notwordof $wims_prefix
  wims_prefix=$wims_prefix user
 !endif
+
 :mkstart
 supclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
 reset class_lvl
+
 !if $supclass!=$empty and $supclass!=$uclass
  supertype=!defof class_type in wimshome/log/classes/$supclass/.def
  typename=!defof class_typename in wimshome/log/classes/$uclass/.def
  !if $typename iswordof level program
   !exit
  !endif
+ 
  !if $typename issametext course
   class_parent=!defof class_parent in wimshome/log/classes/$uclass/.def
   !if $class_parent!=$empty
@@ -23,6 +30,7 @@ reset class_lvl
    !endif
   !endif
   clist=$uclass
+  
  !else
   !if / isin $uclass
    class_lvl=!translate internal / to , in $uclass
@@ -45,10 +53,15 @@ reset class_lvl
 
 mul_userdir=wimshome/log/classes/$supclass/.users
 mul_userdir2=$wims_home/log/classes/$supclass/.users
+
+
+## On range la liste des utilisateurs par paquets de 1000 (userlist_0, userlist_1, etc...)
 start=0
 userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | head -1000
 userlist_$start=!words2items $(userlist_$start)
+
 userlist_lastcnt=!itemcnt $(userlist_$start)
+
 !while $userlist_lastcnt>999
  !advance start
  userlist_$start=!sh cd $mul_userdir2; ls 2>/dev/null | tail -n +$(start)001 | head -1000
@@ -56,33 +69,43 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
  userlist_lastcnt=!itemcnt $(userlist_$start)
 !endwhile
 
+# On supprime une eventuelle liste temporaire "userlist.raw" dans chaque classe
 !for c in $clist
  !sh rm -f $wims_home/log/classes/$c/.userlist.raw 2>/dev/null
 !next
+
+# On parcourt nos paquets de 1000 users
 !for N=0 to $start
  !for u in $(userlist_$N)
   !reset user_firstname, user_lastname, user_supervisable,\
 	user_class, user_participate, user_exists
   !readdef $mul_userdir/$u
+  
   !if $user_exists=yes and $user_supervisable!=yes
    userline=:$user_lastname,$user_firstname,$u
+   
    !if $typename=course
     !readdef wimshome/log/classes/$uclass/.users/$u
     !if $user_class!=$empty
      !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline,$user_class
     !endif
    !else
+   
     !if $supclass=$uclass or $uclass isitemof $user_participate
      !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline
     !endif
+    
     !if $supclass!=$uclass
      !appendfile wimshome/log/classes/$supclass/.userlist.raw $userline
      !if $class_lvl!=$empty and $class_lvl/ isin $user_participate
       !appendfile wimshome/log/classes/$class_lvl/.userlist.raw $userline
      !endif
     !endif
+   
    !endif
+  
   !endif
+  
  !next u
 !next N
 

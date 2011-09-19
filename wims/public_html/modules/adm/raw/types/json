@@ -1,4 +1,8 @@
+!shortout ,"job":"$job",\
+
 !goto $job
+
+
 
 :modclass
 :delclass
@@ -9,30 +13,30 @@
 !goto footer
 
 :checkident
- !shortout ,"message":"Connection accepted",\
+ !shortout "message":"Connection accepted",\
 "separator":"$separator"\
 
 !goto footer
 
 :checkclass
- !shortout ,"message":"Class $qclass exists"\
+ !shortout "message":"Class $qclass exists"\
  
 !goto footer
 
 :checksheet
- !shortout ,"query_class":"$qclass",\
+ !shortout "query_class":"$qclass",\
 "message":"sheet $qsheet exists"\
 
 !goto footer
 
 :checkexam
- !shortout ,"query_class":"$qclass"\
+ !shortout "query_class":"$qclass"\
 "message":"exam $qexam exists"\
 
 !goto footer
 
 :checkuser
-!shortout ,"message":"user $quser exists"\
+!shortout "message":"user $quser exists"\
 
 !goto footer
 
@@ -41,7 +45,7 @@ exotitlelist = !replace internal  :  by title:" in $exotitlelist
 exotitlelist = !replace internal  ,  by "},{ "id": " in $exotitlelist
 exotitlelist = !replace internal  title:  by ","title": in $exotitlelist
 
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
  "rclass":"$rclass",\
  "exotitlelist":[{"id":"$exotitlelist"}],\
  "exocount":$exocount
@@ -53,7 +57,7 @@ nohidden= $[$cnt-$nb_hidden]
 titles=!replace internal  ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
 
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
 "nbsheet":"$cnt",\
 "sheetlist":["$list"],\
 "sheettitlelist":["$titles"],\
@@ -66,7 +70,7 @@ list=!replace internal  ,  by "," in $list
 :listexams
 titles=!replace internal  ,  by "," in $titles
 list=!replace internal  ,  by "," in $list
- !shortout ,"query_class":"$qclass",\
+ !shortout "query_class":"$qclass",\
 "nbexam":"$cnt",\
 "examlist":["$list"],\
 "examtitlelist":["$titles"]\
@@ -94,7 +98,7 @@ list=!replace internal  ,  by "," in $list
 !next i
 
 
- !shortout ,"query_class":"$qclass",\
+ !shortout "query_class":"$qclass",\
 "query_sheet":"$qsheet",\
 "exo_cnt":"$exocnt",\
 "sheet_properties":"$sheet_properties",\
@@ -107,7 +111,7 @@ list=!replace internal  ,  by "," in $list
 !goto footer
 
 :getexosheet
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
 "query_sheet":"$qsheet",\
 "query_exo":"$qsheet",\
 "exo_module":"$exo_module",\
@@ -121,7 +125,7 @@ list=!replace internal  ,  by "," in $list
 !goto footer
 
 :getexam
- !shortout ,"query_class":"$qclass",\
+ !shortout "query_class":"$qclass",\
 "queryexam":"$qexam",\
 "exam_properties":"$exam_properties",\
 "exocnt":"$exocnt",\
@@ -141,20 +145,20 @@ list=!replace internal  ,  by "," in $list
 
 
 :addexo
- !shortout ,"message":"exercice $qexo successfully $action",\
+ !shortout "message":"exercice $qexo successfully $action",\
 "exo_id":"$qexo",\
 "compilation_result":"$compilation"\
 
 !goto footer
 
 :adduser
- !shortout ,"message":"user $quser correctly added",\
+ !shortout "message":"user $quser correctly added",\
  "user_id":"$quser"\
 
 !goto footer
 
 :movexo
- !shortout ,"message":"exercice $qexo successfully $action",\
+ !shortout "message":"exercice $qexo successfully $action",\
 "exo_id":"$qexo",\
 "compil_src":"$compil_src",\
 "compil_dest":"$compil_dest",\
@@ -165,7 +169,7 @@ list=!replace internal  ,  by "," in $list
 !goto footer
 
 :movexos
- !shortout ,"message":"exercices successfully $action",\
+ !shortout "message":"exercices successfully $action",\
 "compil_src":"$compil_src",\
 "compil_dest":"$compil_dest",\
 "src_class":"$src_class",\
@@ -176,21 +180,21 @@ list=!replace internal  ,  by "," in $list
 
 
 :sharecontent
- !shortout ,"message":"content successfully shared",\
+ !shortout "message":"content successfully shared",\
 "src_class":"$src_class",\
 "dest_class":"$qclass"
 
 !goto footer
 
 :addsheet
- !shortout ,"query_class":"$qclass",\
+ !shortout "query_class":"$qclass",\
 "sheet_id":$wims_sheet,\
 "sheet_count":$sheetcnt\
 
 !goto footer
 
 :addexam
- !shortout ,"query_class":"$qclass",\
+ !shortout "query_class":"$qclass",\
 "exam_id":$wims_exam,\
 "exam_count":$examcnt,\
 "message":"exam #$wims_exam correctly added"\
@@ -199,14 +203,14 @@ list=!replace internal  ,  by "," in $list
 
 :addclass
 cd=!replace internal / by _ in $cd
- !shortout ,"class_id":"$cd",\
+ !shortout "class_id":"$cd",\
  "message":"class $cd correctly added",\
  "log":"$log"\
  
 !goto footer
 
 :getclass
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
   "rclass":"$rclass",\
 
 list_cnt=!itemcnt $option
@@ -228,7 +232,7 @@ i=0
  !advance i 
  
  !if $i<$list_cnt
-  !shortout ,\
+  !shortout \
   
  !endif
 
@@ -240,11 +244,11 @@ i=0
 
 
 :getclassmodif
-!shortout ,"modifs":"$modif"
+!shortout "modifs":"$modif"
 !goto footer
 
 :getuser
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
 "queryuser":"$quser",\
 
 list_cnt=!itemcnt $option
@@ -256,7 +260,7 @@ i=0
  !advance i 
  
  !if $i<$list_cnt
-  !shortout ,\
+  !shortout \
   
  !endif
 
@@ -271,8 +275,9 @@ tit =!replace internal ; by "," in $tit
 data_scores =!replace internal , by ],[ in $data_scores
 data_scores =!replace internal ;; by ;""; in $data_scores
 data_scores =!replace internal ; by , in $data_scores
+data_scores =!replace internal NaN by "NaN" in $data_scores
 
-!shortout ,"titles":["$tit"],\
+!shortout "titles":["$tit"],\
 "longtitles":[$dl3],\
 "totweight":"$totweight",\
 "percents (last user)":"$percents",\
@@ -281,15 +286,12 @@ data_scores =!replace internal ; by , in $data_scores
 !goto footer
 
 
-:getsheetscores
-!for v in requires, weights
+:getexamscores
+!for v in weights
  $v=!trim $($v)
  !if $v != $empty
-   $v=!replace internal $\
-$ by ],[ in $($v)
-   $v=!replace internal $ $ by , in $($v)
-   $v=!replace internal ,] by ] in $($v)
-   $v=[[$($v)]]
+   $v=!wordstoitems $($v)
+   $v=[$($v)]
  !else
    $v=""
  !endif
@@ -298,10 +300,53 @@ $ by ],[ in $($v)
 !if $data_scores != $empty
    data_scores=!replace internal $\
 $ by },{ in $data_scores
-   data_scores=[{$data_scores}]
+	data_scores =!replace internal NaN by "NaN" in $data_scores
+	data_scores=[{$data_scores}]
+!else
+	data_scores=""
 !endif
 
-!shortout ,"query_sheet":$qsheet,\
+!shortout "query_exam":$qexam,\
+"query_class":"$qclass",\
+"active_index":$active_index,\
+"score_status":"$score_status",\
+"class_scoremax":$scoremax,\
+"weights":$weights,\
+"class_user_cnt":$usercnt,\
+"user_cnt":$real_usercnt,\
+"score_max":$max_score,\
+"score_mean":$mean_score,\
+"data_scores":$data_scores\
+
+!goto footer
+
+
+:getsheetscores
+!for v in requires, weights
+ $v=!trim $($v)
+ !if $v != $empty
+   $v=!wordstoitems $($v)
+   $v=[$($v)]
+ !else
+   $v=""
+ !endif
+!next v
+
+!if $data_scores != $empty
+   data_scores=!replace internal $\
+$ by },{ in $data_scores
+   data_scores =!replace internal NaN by "NaN" in $data_scores
+
+   data_scores=[{$data_scores}]
+!else
+	data_scores=""
+!endif
+
+sheet_mean_percent =!replace internal NaN by "NaN" in $sheet_mean_percent
+sheet_mean_quality =!replace internal NaN by "NaN" in $sheet_mean_quality
+
+!shortout "query_sheet":$qsheet,\
+"query_class":"$qclass",\
 "active_index":$active_index,\
 "requires":$requires,\
 "score_status":"$score_status",\
@@ -309,6 +354,10 @@ $ by },{ in $data_scores
 "weights":$weights,\
 "sheet_mean_quality":$sheet_mean_quality,\
 "sheet_mean_percent":$sheet_mean_percent,\
+"sheet_max_quality":$sheet_max_quality,\
+"sheet_max_percent":$sheet_max_percent,\
+"sheet_got_detail":$sheetgotdetail,\
+"sheet_quality_detail":$sheetmeandetail,\
 "user_cnt":$usercnt,\
 "datas":$data_scores\
 
@@ -331,7 +380,7 @@ $ by ],[ in $($v)
 
 
 
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
 "query_user":"$quser",\
 "score_max":"$scoremax",\
 "exam_scores":$examscore,\
@@ -358,11 +407,11 @@ $ by ],[ in $($v)
 !goto footer
 
 :gettime
- !shortout ,"server_time":"$now_year$now_month$now_day.$now_hour:$now_min:$now_sec"
+ !shortout "server_time":"$now_year$now_month$now_day.$now_hour:$now_min:$now_sec"
 !goto footer
 
 :getexo
-!shortout ,"query_class":"$qclass",\
+!shortout "query_class":"$qclass",\
 "querysheet":"$qsheet",\
 "queryexo":"$qexo",\
 "exo_module":"$exo_module",\
@@ -376,19 +425,19 @@ $ by ],[ in $($v)
 
 
 :authuser
- !shortout ,"wims_session":"$num_session",\
+ !shortout "wims_session":"$num_session",\
 "home_url":"$wims_ref_name?session=$num_session.1"\
 
 !goto footer
 
 :getcourse
- !shortout ,"query_class":"$qprogram",\
+ !shortout "query_class":"$qprogram",\
  "courses":"$wims_class"\
 
 
 :listclasses
 list_cnt=!itemcnt $listclasses
-!shortout ,"message":"Lists classes associated to specified rclass in your server",\
+!shortout "message":"Lists classes associated to specified rclass in your server",\
 "rclass":"$rclass",\
 "classes_list":[\
 
@@ -417,7 +466,7 @@ list_cnt=!itemcnt $listclasses
 :listmodules
 base_directory=$option
 
-!shortout ,"base_directory":"$base_directory",\
+!shortout "base_directory":"$base_directory",\
 
 !if $base_directory issametext /
 list_cnt=!itemcnt $llist
@@ -429,7 +478,7 @@ list_cnt=!itemcnt $llist
 	!shortout  {"id":"$level","title":"$name","module_path":"/$level"}
 	
 	!if  $i < $list_cnt
-		!shortout ,		
+		!shortout 		
 	!endif
 !next i
 !shortout ]
@@ -449,7 +498,7 @@ list_cnt=!itemcnt $listContent
 	"title":"$title"
 	
 	!if $title notsametext
-		!shortout ,"description":"$description",\
+		!shortout "description":"$description",\
 		"index_url" : "$wims_ref_name?module=$option&lang=$language",\
 		"language":"$language",\
 		"category" : "$category",\
@@ -476,7 +525,7 @@ list_cnt=!itemcnt $listContent
 !shortout }
 
 	!if  $i < $list_cnt
-		!shortout ,		
+		!shortout 		
 	!endif
 	
 !next i
@@ -488,7 +537,7 @@ list_cnt=!itemcnt $listContent
 
 :getmodule
 
-!shortout ,"index_url" : "$wims_ref_name?module=$option",\
+!shortout "index_url" : "$wims_ref_name?module=$option",\
 "module_metadatas" : "$module_metadatas",\
 "module_id" : "$option",\
 "title" : "$title",\
@@ -517,28 +566,28 @@ list_cnt=!itemcnt $listContent
 
 
 :modsheet
-!shortout  ,"queryclass":"$qclass",\
+!shortout "query_class":"$qclass",\
 "querysheet":"$qsheet",\
 "message":"Modifications Done on sheet $qsheet."
 !goto footer
 
 :putexo
- !shortout ,"message":"exercice correctly added in sheet #$wims_sheet",\
-"queryclass":"$wims_class",\
+ !shortout "message":"exercice correctly added in sheet #$wims_sheet",\
+"query_class":"$wims_class",\
 "querysheet":"$wims_sheet",\
 "exo_count":$exocnt
 
 !goto footer
 
 :modexosheet
-!shortout  ,"queryclass":"$qclass",\
+!shortout "query_class":"$qclass",\
 "queryexo":"$qexo",\
 "querysheet":"$qsheet",\
 "message":"Modifications done on exo $qexo from sheet $qsheet. (type = $option , $nbchanged items received)"
 !goto footer
 
 :modexam
-!shortout  ,"queryclass":"$qclass",\
+!shortout "query_class":"$qclass",\
 "queryexam":"$qexam",\
 "nb_modifs":"$nbdefs",\
 "message":"$nbdefs modifications done on exam $qexam."
@@ -546,15 +595,15 @@ list_cnt=!itemcnt $listContent
 
 :listlinks
 listlinks=!replace internal  ,  by "," in $listlinks
-!shortout ,"nblinks":"$nblink",\
+!shortout "nblinks":"$nblink",\
 "listlinks":["$listlinks"]\
 
 !goto footer
 
 :linksheet
 :linkexo
- !shortout ,"message":"$exocnt exercice(s) correctly added in exam #$qexam from sheet #$qsheet",\
-"queryclass":"$wims_class",\
+ !shortout "message":"$exocnt exercice(s) correctly added in exam #$qexam from sheet #$qsheet",\
+"query_class":"$wims_class",\
 "querysheet":"$wims_sheet",\
 "queryexo":"$qexo",\
 "queryexam":"$qexam",\
@@ -565,7 +614,7 @@ listlinks=!replace internal  ,  by "," in $listlinks
 
 
 :delexo
-!shortout ,"message":"exercice $qexo successfully deleted",\
+!shortout "message":"exercice $qexo successfully deleted",\
 "exo_id":"$qexo",\
 "compilation_result":"$compilation",\
 "more_infos":"$more_infos",\
@@ -575,20 +624,20 @@ listlinks=!replace internal  ,  by "," in $listlinks
 
 :delsheet
  cnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
- !shortout ,"message":"sheet #$qsheet of class $qclass correctly deleted",\
+ !shortout "message":"sheet #$qsheet of class $qclass correctly deleted",\
 "sheet_count":$cnt\
 
 !goto footer
 
 :delexam
  cnt=!recordcnt wimshome/log/classes/$qclass/exams/.exams
- !shortout ,"message":"Exam #$qexam of class $qclass correctly deleted",\
+ !shortout "message":"Exam #$qexam of class $qclass correctly deleted",\
 "exam_count":$cnt\
 
 !goto footer
 
 :cleanclass
- !shortout ,"message":"class $qclass correctly cleaned"\
+ !shortout "message":"class $qclass correctly cleaned"\
  
 !goto footer
 

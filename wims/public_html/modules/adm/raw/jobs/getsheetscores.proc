@@ -48,7 +48,13 @@ class_superclass=!defof class_superclass in $classdeffile
 	users_dir = wimshome/log/classes/$qclass/.users
 !endif
 
-usercnt=!recordcnt wimshome/log/classes/$qclass/.userlist
+!read adm/class/mkuserlist $qclass
+
+usercnt=!recordcnt  wimshome/log/classes/$qclass/.userlist
+!if $usercnt=0
+  error=There's no user in this class
+  !exit
+!endif
 
 !default option=login,name,allscores
 
@@ -57,6 +63,8 @@ option=!lower $dl
 
 sheet_mean_quality=0
 sheet_mean_percent=0
+sheet_max_percent =0
+sheet_max_quality =0
 
 !for u=1 to $usercnt
 	l=!record $u of wimshome/log/classes/$qclass/.userlist
@@ -71,6 +79,13 @@ sheet_mean_percent=0
 	sheet_mean_quality = $[$sheet_mean_quality + $user_quality]
 	sheet_mean_percent = $[$sheet_mean_percent + $user_percent]
 	
+	!if $user_percent>$sheet_max_percent
+		sheet_max_percent=$user_percent
+	!endif
+	!if $user_quality>$sheet_max_quality
+		sheet_max_quality=$user_quality
+	!endif
+	
 	gotdetail=!getscore user=$quser class=$qclass
 	gotdetail=!line $active_index of $gotdetail
 	
@@ -80,11 +95,38 @@ sheet_mean_percent=0
 	remain=!getscoreremain user=$quser class=$qclass
 	remain=!line $active_index of $remain
 	
-	new_line = "id":"$quser", "user_percent":$user_percent, "user_quality":$user_quality,"gotdetail":"$got_detail","mean_detail":"$meandetail","remain":"$remain"
+	!for v in gotdetail, meandetail, remain
+		$v=!trim $($v)
+		!if $v != $empty
+			$v=!wordstoitems $($v)
+			$v=[$($v)]
+		!else
+			$v=""
+		!endif
+	!next v
+	
+	
+	!default sheetmeandetail=$meandetail
+	!default sheetgotdetail=$gotdetail
+	nb_exos=0
+	!for note in $gotdetail
+		sheetgotdetail[$i]=[$sheetgotdetail[$i] + $note]
+		sheetmeandetail[$i]=[$sheetmeandetail[$i] + meandetail[$i]]
+		!advance nb_exos
+	!next note
+	
+	
+	new_line = "id":"$quser", "user_percent":$user_percent, "user_quality":$user_quality,"got_detail":$gotdetail,"mean_detail":$meandetail,"remain":$remain
 	
 	data_scores = !append line $new_line to $data_scores
 
 !next u
+
+!for i=0 to $nb_exos
+	sheetgotdetail[$i]=[$sheetgotdetail[$i]/$usercnt]
+	sheetmeandetail[$i]=[$sheetmeandetail[$i]/$usercnt]
+	!advance i
+!next i
 
 sheet_mean_quality=$[$sheet_mean_quality/$usercnt]
 sheet_mean_percent=$[$sheet_mean_percent/$usercnt]

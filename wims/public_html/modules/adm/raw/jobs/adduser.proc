@@ -25,6 +25,12 @@ class_superclass=!defof class_superclass in $classdeffile
   user_participate=$subclass
 !endif
 
+test=!defof user_exists in wimshome/log/classes/$qclass/.users/.$quser
+!if $test!=$empty
+ error=Deleted user found. Use Recuser instead.
+ !exit
+!endif
+
 userdeffile=wimshome/log/classes/$qclass/.users/$quser
 !readdef $userdeffile
 test=!defof user_exists in $userdeffile
@@ -42,6 +48,7 @@ test=!defof user_exists in $userdeffile
     !setdef !set user_participate=$user_participate$subclass in $userdeffile
     
     ### Faut-il aussi l'ajouter dans la sous-classe ici ?
+    ### normalement, mkuserlist va s'en charger ?
     
     !exit
   !else
@@ -73,6 +80,7 @@ $ in $l
 !next d
 !appendfile $userdeffile !set user_exists=yes
 
+#on supprime d'eventuelles traces de cet utilisateur ??
 !sh cd $wims_home/log/classes/$qclass\
  rm -f score/$quser score/$quser.exam noscore/$quser >/dev/null
 
