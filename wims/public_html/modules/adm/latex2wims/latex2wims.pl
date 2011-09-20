@@ -41,7 +41,9 @@ $worksheet= '';
 $SHEET = '' ;
 $DIR = '';
 $doc_DIR = '';
-
+# MODIF YVES NOEL 19/09/2011 (3lignes)
+my @SECTIONS = qw(document part chapter section subvention subsubsection);
+#my  @SECTIONS = ( document part entete frame subsection subsubsection );
 #TODO biblio dans un fichier séparé si on a rencontré \begin{thebibliography} Non,
 # on n'a qu'a mettre cet environnement de type link
 #$doc_DIR=$ENV{'w_docdir'}; 
@@ -62,7 +64,8 @@ while ($_ = shift (@ARGV))
   elsif (/^--email=(.*)$/) { $email   = $1; }
   elsif (/^--worksheet=(.*)$/) { $worksheet   = $1; } 
   elsif (/^--tooltip_prompt=(.*)$/) { $tooltip_prompt = $1; }
-  elsif (/^--linkout=(.*)$/) { $linkout   = $1; } 
+  elsif (/^--linkout=(.*)$/) { $linkout = $1; }
+  elsif (/^--cut=(.*)$/) { @SECTIONS = split(',',$1) ;} 
   elsif (/^--help$/) {
    usage(); # includes --help !
     exit 1;
@@ -176,9 +179,7 @@ my %hash = (
 my %hash_toc = ();
 
 my %prefixe = ( fold => 'F_' , link => 'L_' );
-my @SECTIONS = (
-  'document', 'part', 'chapter', 'section', 'subsection', 'subsubsection'
-);
+
 my %hash_secinv;
 for (my $i = 0; $i <= $#SECTIONS; $i++) { $hash_secinv{$SECTIONS[$i]} = $i; }
 
@@ -280,6 +281,8 @@ my $SEC_MIN_GLOBAL = 10; # = \infty
 my @cnt = (0) x ($#SECTIONS + 1);
 my ($secpattern) = join('|', @SECTIONS);
 $TEXT =~ s/\\begin\s*{($secpattern)\s*}/cnt_section($1,\@cnt)/eg;
+$TEXT =~ s/\[fragile\]//g;
+$TEXT =~ s/\s*\\frametitle//g;
 $TEXT =~ s/\\end\s*{\s*($secpattern)\s*}/<\/$1>/g;
 $TEXT =~ s/\\wimsentre{($secpattern)}/\\wimsentre$1/g;
 $TEXT =~ s/\\(wimsentre)?($secpattern)\b\*?/open_close($2,\@cnt,$1)/eg;
@@ -1130,6 +1133,16 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT =~ s/\\textquotesingle/'/g;
   $TEXT =~ s/\\guillemotleft/<</g;
   $TEXT =~ s/\\guillemotright/>>/g;
+# MODIF YVES NOEL 19/09/2011 (debut)
+  $TEXT =~ s/>>/&gt;&gt;/g;
+  $TEXT =~ s/~~/&nbsp;&nbsp;/g;
+  $TEXT =~ s/\\onslide\+<[0-9]*>//g;
+  $TEXT =~ s/\\onslide<[0-9]*->//g;
+  $TEXT =~ s/\\onslide<[0-9]*>//g;
+  $TEXT =~ s/\\onslide\+<[0-9]*\-[0-9]*>//g;
+  $TEXT =~ s/\\onslide<[0-9]*\-[0-9]*->//g;
+  $TEXT =~ s/\\onslide<[0-9]*\-[0-9]*>//g;
+# MODIF YVES NOEL 19/09/2011 (fin)
   $TEXT =~ s/{}//g;
   $TEXT =~ s/\\selectlanguage{french}\\sffamily//g;
   
