@@ -33,10 +33,11 @@ nb_parms=!wordcnt $parmreg
 
 num_session=$wims_session
 
-!if $nb_parms>=4
+#data1 doit contenir l'ip du user et non du serveur appelant
+remote_addr= !word 1 of $data1
 
- #remote_addr doit contenir l'ip du user et non du serveur appelant
- remote_addr= !word 1 of $data1
+
+!if $nb_parms>=4
  
  !distribute words $parmreg into sess_IP,sess_ID,sess_time,exam_id
  
@@ -57,7 +58,7 @@ num_session=$wims_session
    num_session=$sess_ID
  !endif
  
- #si la session d'examen est terminée, on reinitialise les parametres de session 
+ #si la session d'examen est terminee, on reinitialise les parametres de session 
  !if $sess_time<$now or $r_=$empty
    !writefile wimshome/log/classes/$wims_class/.parmreg/$quser.exam
  !endif
@@ -65,6 +66,11 @@ num_session=$wims_session
 !endif
 
 dir_session=sessions/$num_session
+
+!if $remote_addr!=$empty
+	!setdef REMOTE_ADDR=$remote_addr in wimshome/$dir_session/var
+!endif
+
 
 !writefile wimshome/$dir_session/var.stat wims_class=$qclass\
 wims_user=$quser\

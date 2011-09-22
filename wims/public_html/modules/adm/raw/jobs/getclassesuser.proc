@@ -4,10 +4,8 @@
 !read jobs/listclasses.proc
 listclasses_cnt=!itemcnt $listclasses
 !for cl =1 to $listclasses_cnt
-  error=buggy $listclasses_cnt
- !exit
-
   qclass=$(listclasses[$cl;1])
+  #pour plus de securité, rclass doit etre fournit. s'il est donné par wims plutot que par l'appelant, c'est un verrou en moins.
   !!rclass=$(listclasses[$cl;2])
  !read scripts/check.user
 !next
