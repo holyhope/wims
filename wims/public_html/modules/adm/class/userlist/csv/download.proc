@@ -16,6 +16,7 @@ dl=!replace word name by lastname firstname in $dl
 dl=!replace word allscore by averages sheets exams manuals in $dl
 
 basic=login lastname firstname password email regnum comments participate vars
+sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 sheetcnt=!itemcnt $activesh
 sh=
 !for i in $activesh
@@ -26,6 +27,7 @@ sh=
 !next i
 good=$basic $sh
 
+examcnttot=!recordcnt wimshome/log/classes/$wims_class/exams/.exams
 examcnt=!itemcnt $activexams
 ex=
 !for i in $activexams
@@ -132,8 +134,8 @@ $dl3$dl5\
   !if average0 isitemof $dl
    user_average0=$[rint($manual*$user_average2+(100-$manual)*($per))/100]
   !endif
-  !for i=1 to $sheetcnt
-   !if sheet$i isitemof $dl
+  !for i=1 to $sheetcnttot
+   !if sheet$i isitemof $dl and $i isin $activesh
     p_=!line $i of $percents
     !distribute words $p_ into p1,p2
     !if $p2!=$empty
@@ -144,8 +146,8 @@ $dl3$dl5\
     !endif
    !endif
   !next i
-  !for i=1 to $examcnt
-   !if exam$i isitemof $dl
+  !for i=1 to $examcnttot
+   !if exam$i isitemof $dl and $i isin $activexams
     user_exam$i=$[rint(10*$scoremax*$(es_$i))/100]
    !endif
   !next i
