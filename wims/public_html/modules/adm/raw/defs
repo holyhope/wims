@@ -13,7 +13,6 @@ header_json=Content-Type: application/json ; charset=$encoding\
 # header returned by the module within gz /tgz
 header_zip=Content-Type: multipart/x-gzip ; charset=$encoding\
 
-
 # List of allowed file-mode jobs
 allowed_file_jobs= getcsv, getclassfile, getclasstgz, download, getexofile
 
@@ -25,20 +24,25 @@ allowed_actions_jobs=checkclass, addclass, modclass, delclass, getclass, cleancl
 	addsheet, listsheets, delsheet, getsheet, checksheet, modsheet,\
 	putexo, listexams, addexam, getexam, checkexam, linkexo, linksheet,\
 	modexam, delexam, listlinks, getexo, addexo, delexo,\
-	getexamlog, addcontent, listclasses, getclassesuser,\
+	getexamlog, addcontent, listclasses, getclassesuser, testexo,\
 	movexo, movexos, listexos, sharecontent, getexosheet, modexosheet
-	
+
 # List of jobs allowed without authentication
 allowed_jobs_without_auth=listmodules, getmodule
 
-
 #List class descriptions (in .def class file) - "creation" and "connections" are voluntary not here
-classdefs=password, supervisor, description, institution, \
+#low_classdefs list minor informations
+low_classdefs=supervisor, description, institution, \
 	lang, email, expiration, limit, topscores, superclass, \
 	type, level, parent, secure, typename, \
 	bgcolor, bgimg, scorecolor, css, logo, logoside, \
 	refcolor, ref_menucolor, ref_button_color, ref_button_bgcolor, \
 	ref_button_help_color, ref_button_help_bgcolor, theme , theme_icon, creator
+#high_classdefs list security informations (not to be displayed in non secure requests)
+high_classdefs=password
+
+classdefs=$high_classdefs,$low_classdefs,
+
 	
 #List class types
 classtypes=class,group,portal

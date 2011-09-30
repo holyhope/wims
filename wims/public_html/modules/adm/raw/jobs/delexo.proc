@@ -23,7 +23,7 @@ badchars=!text select ?*#~!@ in $qexo
 #reste a verifier que l'exo existe
 #ici wims m'empeche de traiter le fichier Exindex. On contourne donc en listant les fichiers du dossier def/
 # !readdef wimshome/log/classes/$qclass/Exindex
-# (au passage, on crée le dossier def/ (s'il n'existe pas deja) : on s'assure ainsi de lister le bon dossier:
+# (au passage, on cree le dossier def/ (s'il n'existe pas deja) : on s'assure ainsi de lister le bon dossier:
 !sh mkdir $wims_class_dir/def
 exolist=!sh cd $wims_class_dir/def; ls | sort
 exolist=!translate .def to $$ in $exolist
@@ -35,7 +35,6 @@ exolist=!translate .def to $$ in $exolist
 
 
 #######
-
 # On supprime notre fichier d'exercice dans la classe :
 # rm -f : Pas de confirmation d'effacement, pas de diagnostic, pas de code d'erreur lorsqu'un fichier n'existe pas. 
 # rm -R Efface recursivement les sous-repertoires.
@@ -51,8 +50,3 @@ exolist=!translate .def to $$ in $exolist
 # et on les reconstruit : 
 compilation = !sh cd $wims_class_dir;. $wims_home/public_html/scripts/oef/mkindex
 compilation=!lines2items $compilation
-
-##########
-# on aurait aussi pu utiliser : (dans ce cas, la suppression des index et du fichier .def devrait etre auto) A tester et comparer
-# !sh cd modules/classes/$w_lang ; src2def oef
-##########

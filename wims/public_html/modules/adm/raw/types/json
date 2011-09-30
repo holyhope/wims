@@ -3,7 +3,6 @@
 !goto $job
 
 
-
 :modclass
 :delclass
 :deluser
@@ -147,6 +146,14 @@ list=!replace internal  ,  by "," in $list
 :addexo
  !shortout "message":"exercice $qexo successfully $action",\
 "exo_id":"$qexo",\
+"compilation_result":"$compilation"\
+
+!goto footer
+
+
+:testexo
+ !shortout "message":"exercice $qexo successfully compiled",\
+"session_id":"$sess_ID",\
 "compilation_result":"$compilation"\
 
 !goto footer
@@ -437,12 +444,13 @@ $ by ],[ in $($v)
 
 :listclasses
 list_cnt=!itemcnt $listclasses
-!shortout "message":"Lists classes associated to specified rclass in your server",\
+!shortout "message":"Lists classes associated to specified rclass ($rclass) in your server",\
 "rclass":"$rclass",\
 "classes_list":[\
 
 !for i = 1 to $list_cnt
    qclass=!item $i of $listclasses
+   rclass=!item $i of $list_rclasses
    !read jobs/getclass.proc
    !shortout  {"qclass":"$qclass"\
 

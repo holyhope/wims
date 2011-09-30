@@ -2,7 +2,14 @@
 # liste toutes les classes de ce serveur qui autorisent une connexion avec le serveur distant
 
 #Option contient la liste des attributs a afficher
-options=$option
+#l'option "all" est un raccourci pour obtenir la liste complete des infos possibles
+!if all iswordof $option
+ option=$low_classdefs
+!endif
+
+#On restreint la liste des options aux informations affichables dans un niveau "bas" de sécurité
+options=!listintersect $option and $low_classdefs
+
 
 cnt_class=!recordcnt wimshome/log/classes/.index
 # On parcourt l'index des classes du serveur
@@ -13,21 +20,22 @@ cnt_class=!recordcnt wimshome/log/classes/.index
 	rc=!words2items $(cl[10])	
     index=1
     rchain = $ident,$rclass
-	# On parcourt toutes les connections declaree par la classe
+    
+	# On parcourt toutes les connexions declaree par la classe
 	!while $(rc[$index]) != $empty
 		# on compare la connexion avec celle demandee
 		current= $(rc[$index])
 		current=!translate internal +,; to $ $ in $current
 		current = !singlespace $current
 		current=!translate internal / to , in $current
-
-		!if $(current[1]) = $(rchain[1]) and $(current[2]) = $(rchain[2])
-			listclasses=!append item $(cl[1]) to $listclasses
-			# on stocke le numero de la classe (qclass)
-			# l'identifiant de la classe pour le serveur (rclass)
-			#infos_ident=!replace internal / by , in $(rc[$index])
-			#listclasses=!append i $(cl[1]),$(infos_ident[2]) to $listclasses
+		
+		!if $(current[1]) = $(rchain[1])
+			!if $rclass=ALL or $(current[2]) = $(rchain[2])
+				listclasses=!append item $(cl[1]) to $listclasses
+				list_rclasses=!append item $(current[2]) to $list_rclasses
+			!endif
 		!endif
+		
 		!increase index
 	!endwhile	
   !endif

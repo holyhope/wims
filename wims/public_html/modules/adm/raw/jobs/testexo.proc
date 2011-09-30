@@ -1,0 +1,17 @@
+# testexo :
+# Permet d'ajouter le fichier source (data1) d'un exercice en mode "sandbox" (bac ˆ sable), pour tester sa compilation
+# Cela permet de ne pas toucher aux exercices d'une classe.
+
+# On place notre fichier d'exercice dans le dossier de la session courante :
+!writefile wimshome/$wims_sesdir/submit.oef $data1
+
+# On compile l'exercice
+compilation = !sh cd $wims_home/$wims_sesdir; $wims_home/bin/oef2wims submit.oef submit.def
+
+result_compil=!line 2 of $compilation
+!if ERROR isin $result_compil
+  error = COMPILATION $result_compil
+  
+  #On supprime alors l'exercice defectueux
+  !sh rm $wims_ses_dir/submit.oef
+!endif
