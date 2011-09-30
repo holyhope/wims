@@ -1271,7 +1271,30 @@ void save_parmreg(void)
 
 void exolog(char *fname)
 {
-    FILE *varf;
+    FILE *varf, *varg;
+    int c;
+    char logftmp[MAX_FNAME+1], *sess;
+
+/* add by FG to put w_module_score at the top of the file */
+    if ((getenv("w_module_score"))!=NULL )
+    {    
+	sess=getvar("wims_session");
+	mkfname(logftmp,"%s/%s/.tmp%lu",s2_dir,sess,nowtime);
+	rename(fname,logftmp);
+	varf=fopen(fname,"a");
+	if(varf!=NULL) { 
+	    _write_var("module_score",varf,1,1);
+	    varg=fopen(logftmp, "r");
+	    if(varg!=NULL) {
+		while ( (c=getc (varg)) != EOF)
+		putc (c,varf);
+		fclose(varg);
+	    }
+	    fclose(varf);
+	    remove(logftmp);
+	}
+    }
+/* end of add */
     varf=fopen(fname,"a");
     if(varf!=NULL) {
 		/* The first 4 lines should not be modified */
@@ -1288,6 +1311,7 @@ w_wims_checktime2=%s\n",nowtime,nowstr);
 	fclose(varf);
     }
 }
+
 	/* save variables to session var file */
 void save_session_vars(void)
 {
