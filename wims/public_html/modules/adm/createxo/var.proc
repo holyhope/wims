@@ -358,6 +358,25 @@ slib/circuits/comppos
  wims_exec_error=
  !sh cp $wims_home/sessions/$wims_session/submit.oef modules/$catmodule/src/$existing.oef\
     cd modules/$catmodule; src2def
+ test_image=!sh ls $wims_home/sessions/$wims_session/getfile/oefimg
+ !if $test_image!=$empty
+   !reset test_common
+   test_common=!defof common_images in wimshome/public_html/modules/$catmodule/var.proc
+   !if $test_common!=$empty
+    !if $test_common notwordof no yes 
+      wims_exec_error=!append word imagedir=$test_common to $wims_exec_error
+    !else
+     !if $test_common iswordof no or $test_common=$empty
+       im_dir=images/$existing
+     !else
+       im_dir=images
+     !endif
+     !sh mkdir -p modules/$catmodule/$im_dir ;\
+       cp $wims_home/sessions/$wims_session/getfile/oefimg/* modules/$catmodule/$im_dir
+    !endif
+  !endif
+ !endif
+ !reset test_image
  !reset already regout prefix
  !if $wims_exec_error=$empty
   reg1=success
