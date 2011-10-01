@@ -1,19 +1,16 @@
+!!$wims_sesdir a mettre partout y a t-il quelque chose pour s2
 !read lang/names.phtml.fr
-!default step=1
 !set limit=50
-
-!if $ext=0
-  arrow=0
-!else
-  arrow=3
-!endif
-
+!reset begin
+!default ext=1
+javaoption=$javatype
+!default javaoption=circle
 !if $end=1
  !goto end
 !endif
 !if $step <=1
  !set wims_form_method=file
- !set already=!sh mkdir -p $wims_home/$wims_sesdir/$sesdir ; ls $wims_home/$wims_sesdir/$sesdir
+ !set already=!sh mkdir -p $wims_home/$wims_sesdir/$sesdir; ls $wims_home/$wims_sesdir/$sesdir
  !set already=!words2items $already
  !set already=!nospace $already
 !endif
@@ -29,6 +26,8 @@
    !reset wims_deposit_old
  !endif
  !default wims_deposit=$wims_deposit_old
+ f_wims_deposit=!replace internal . by , in $wims_deposit
+ f_wims_deposit=!item 1 of $f_wims_deposit
  !if $data=
    !if noname.file isin $wims_deposit or $wims_deposit=$empty
      wims_deposit=$wims_deposit_old
@@ -37,14 +36,18 @@
    !endif
  !endif
  !if $wims_deposit_old!=
+    begin=1
     f_wims_deposit=!replace internal . by , in $wims_deposit_old
-    f_wims_deposit=!item 1 of $f_wims_deposit_old
+    f_wims_deposit=!item 1 of $f_wims_deposit
     data=!sh cat $wims_home/$wims_sesdir/data_$f_wims_deposit
+    !reset  wims_deposit_old
     insdraw_size=!line 1 of $data
     step=!linecnt $data
     test_ext=!line 2 of $data
-    test_ext=!itemcnt $test_ext
-    !if $test_ext=3 and $ext=1
+    test_extcnt=!itemcnt $test_ext
+    test_extcnt2=!listintersect test_ext and $list_curve
+    !if ($test_extcnt=3 and $type=1) or ($type<2 and $(test_ext[2]) isitemof $list_curve) \
+       or ($type=2 and $test_extcnt2=$empty)
       data=!line 1 of $data
       step=3
       !goto 2
@@ -55,19 +58,19 @@
     !endif
     !for l_ =2 to $step
       c_=!line $l_ of $data
-      !if $ext=1
+      !if $type=1
         dessin=!append line arrow $(c_[2..5]),5,black to $dessin
       !endif
-      !if $ext=0
+      !if $type iswordof 0 2
        dessin=!append line fcircle $(c_[2..3]),10,black to $dessin
       !endif
+      XXXXX
     !next
-    step=$[$step+1]
-    !exit
+    !increase step
+    !!exit
   !endif wims_deposit_old
- 
+
 :1
- 
  !if $step=1
    !if  / isin $wims_deposit or .. isin $wims_deposit or noname.file isin $wims_deposit or $wims_deposit=$empty
      !if $wims_deposit_old!=
@@ -76,7 +79,7 @@
        test=noimage
        !exit
      !endif
-   !endif
+   !endif / isin
    test_wims_deposit=!replace internal . by , in $wims_deposit
    test_wims_deposit=!item -1 of $test_wims_deposit
    test_wims_deposit=!lowercase $test_wims_deposit
@@ -91,67 +94,102 @@
      mv user-deposit $sesdir/$wims_deposit
    !endif 
    !increase step
- !endif
+ !endif step=1
 :2
  !if $step>=2
   !if $erase=yes
-   !if $ext=0
+   !if $type=0
     dessin=!line 1 to -2 of $dessin
    !else
     dessin=!line 1 to -3 of $dessin
-   !endif 
-    data=!line 1 to -2 of $data
-    !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
-    step=$[max($[$step-1],2)]
-    !if $step=2
-     !reset data
-     !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
-    !endif 
-    !reset legend test erase
+   !endif type=0
+   data=!line 1 to -2 of $data
+   !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
+   step=$[max($[$step-1],2)]
+   !if $step=2
+    !reset data
+     !!!writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
+   !endif step=2
+   !reset legend test erase
+   !!!!
     !exit
-   !endif
-  !endif
-  !reset wims_form_method
-  imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$wims_deposit
-  click_x=$[$click_x]
-  click_y=$[$click_y]
-  !if $step=2
+  !endif erase=yes
+ !endif step>=2
+ !reset wims_form_method
+ !default imgsrc=$wims_ref_name?session=$session&cmd=getfile&special_parm=$sesdir1/$wims_deposit
+ click_x=$[$click_x]
+ click_y=$[$click_y]
+
+ !if $step=2
+   !reset data
    !if $click_x != 0 and $click_y != 0
      data=!append line $click_x,$click_y to $data
      !increase step
      insdraw_size=$click_x,$click_y
    !else
      test=nosize
+   !endif click!=0 ..
+ !else
+  !if $type=2
+   !if $ext=2
+     data=!append item $javaoption,$(javaoutput) to $data
+     data=!replace internal ; by , in $data
+     !if $javaoption=circle
+       javaout2=$(javaoutput[1]),$(javaoutput[2]),$(javaoutput[3])*2,black
+     !endif
+     !if $javaoption=rectangle
+       javaout2=$(javaoutput),black
+     !endif
+     !if $javaoption=polygon
+       javaout2=!replace internal ; by , in black,$(javaoutput)
+     !endif
+     dessin=!append line $javaoption $javaout2 to $dessin
+     !increase step
+     ext=1
+     begin=1
+     !reset legend begin test
    !endif
-  !else
-  !if $legend!=$empty and ($click_x!=0 or $click_y!=0)
-   !if $ext<=1
-data=!append line $legend,$click_x,$click_y to $data
-     !if $ext=1
+  !endif type=2
+
+  !if ($legend!=$empty and ($click_x!=0 or $click_y!=0))
+    !if $ext<=1
+      data=!append line $legend,$click_x,$click_y to $data
+     !if $type=1
       dessin=!append line fcircle $click_x,$click_y,5,black to $dessin
      !endif
      !increase step
-     !if $ext=0 
+     !if $type iswordof 0 2
        !reset legend
 dessin=!append line fcircle $click_x,$click_y,10,black to $dessin
-     !else 
+     !endif
+     !if $type=1
 dessin=!append line arrow $click_x,$click_y to $dessin
      !endif
+    !if $type iswordof 1 2
+      !increase ext
+    !endif
    !else
      data=!append item $click_x,$click_y to $data
+     !if $type iswordof 1
 dessin=!append item $click_x,$click_y,10,black to $dessin
+     !endif
+     !if $type iswordof 2
+ !insdraw $dessin
+ !set imgsrc=$ins_filename
+     !endif
+
+     
      !reset legend
-   !endif
-   ext=$[$arrow-$ext]
-  !else
-   !if $legend=$empty
+     ext=1
+    !endif ext <=1
+  !else legend
+   !if $legend=$empty and $begin!=1
      test=nolegend
    !endif
-   !if ($click_x=0 and $click_y=0)
+   !if ($click_x=0 and $click_y=0) and $begin!=1
      test=noclick
    !endif
-  !endif
- !endif
+  !endif legend
 !endif
 !if $step >= $limit
   end=1
@@ -170,15 +208,19 @@ $exo
 
  !writefile wimshome/sessions/$wims_session/submit.oef $exo
  !writefile wimshome/sessions/$wims_session/data_$f_wims_deposit $data
-
+ insdraw_size=!line 1 of $data
+ !insdraw $dessin
+ !set imgfilename=$ins_filename
+     
  !sh cd $wims_home/sessions/$wims_session\
      mkdir -p getfile/oefimg\
      cp $sesdir/$wims_deposit getfile/oefimg/$wims_deposit
-     
-     mkdir -p $wims_home/log/classes/$wims_class/src/images
-!! il faudrait connaitre le nom de l'exo
- cp $sesdir/$wims_deposit $wims_home/log/classes/$wims_class/src/images/$wims_deposit
-     
-!endif
-!reset click_x click_y erase
+ !if $type=2
+  !sh cd $wims_home/\
+     cp s2/$wims_session/$imgfilename sessions/$wims_session/getfile/oefimg/z_$wims_deposit
+ !endif
+ !sh cd $wims_home/sessions/$wims_session\
+     cp getfile/oefimg/* getfile/oefimages
 
+!endif
+!reset click_x click_y erase javaoutput

@@ -7,20 +7,18 @@ textarea="data"
 :\author{$wims_firstname,$wims_lastname}
 :\email{$wims_email}
 :$name_instruction
-\text{instruction=$name_instruction03}
+\text{instruction=$name_instruction21}
 :$name_image
 \text{image=$wims_deposit}
-:$name_color2
-\text{color=yellow}
 :$name_width
 \text{width=400}
-:$name_help_format2
-\text{format=case}
+
 :$name_data
 $name_help_data
 \matrix{data=$data}
 
 :%%%%%%%%%%%%%%%%%%%%%%%%
+\text{cache=z_$wims_deposit}
 \text{size= \data[1;]}
 \text{coord = \data[2..-1;]}
 \integer{N=rows(\coord)}
@@ -29,22 +27,25 @@ $name_help_data
 \text{V = shuffle(\N)}
 \text{K=\V[1]}
 \text{point=\coord[\K;]}
-\text{dessin=draw(\size[1], \size[2]
-copy 0,0,-1,-1,-1,-1,\image
-fill \point[2,3],\color
-)}
+\text{zone=\point[2,3]}
+\text{zone=\point[4] issametext circle ? \point[5,6]}
+\if{\point[4] issametext rectangle}{
+  \text{zone=([\point[5],\point[6]]+[\point[7],\point[8]])/2}
+  \text{zone=pari(\zone)}
+  \text{zone=wims(nospace \zone)}
+}
+
+\text{dessin=\imagedir/\image}
+\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\cache)}
+\text{cache = slib(oef/insfilename)}
 
 \integer{width=min(\width,\size[1])}
 
 \statement{
-\instruction
+\instruction \point[1].
 &lt;center>
-\embed{r1,12
-default
- autocomplete=off}
-&lt;/center>
-&lt;center>
-&lt;img src="\dessin" alt="" width="\width">
+\embed{r1}
 &lt;/center>
 }
-\answer{}{\point[1]}{type=\format}
+\answer{}{\imagedir/\image;bound,\cache,\zone}{type=coord}

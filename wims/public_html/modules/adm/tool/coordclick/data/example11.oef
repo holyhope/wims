@@ -2,7 +2,6 @@ type=image
 textarea="data"
 
 :$name_description
-
 :%%%%%%%%
 :\title{$name_title}
 :\author{$wims_firstname,$wims_lastname}
@@ -19,7 +18,7 @@ textarea="data"
 \text{eti=150,20}
 :$name_color1
 \text{color=black}
-:$name_format
+:$name_help_format1
 \text{format=clickfill}
 
 :$name_data
@@ -28,7 +27,7 @@ $name_help_data
 
 :%%%%%%%%%%%%%%%%%%%%%%%%
 \text{size= \data[1;]}
-\text{coord = $(data[2..-1;])}
+\text{coord = \data[2..-1;]}
 \integer{N1=rows(\coord)}
 \matrix{coord=\coord}
 \integer{N=min(\N,\N1)}
@@ -36,7 +35,7 @@ $name_help_data
 \text{etiy=\eti[2]}
 \text{position=}
 \text{V = shuffle(\N1)}
-\integer{M=min(\N+\n,\N1)}
+\integer{M=max(0,min(\n,\N1-\N))}
 \text{K=\V[1..\N]}
 \text{dessinprelim=copy 0,0,-1,-1,-1,-1,\image}
 \for{k =1 to \N}{
@@ -51,6 +50,7 @@ r \k,\co[1] x \co[2]}
 \text{figure = draw(\size
 \dessinprelim)}
 
+\text{liste=\M >0? \coord[\V[\N+1..\N+\M];1]:}
 \text{Step=wims(makelist r x for x=1 to \N)}
 \steps{\Step}
 \statement{
@@ -61,7 +61,7 @@ r \k,\co[1] x \co[2]}
 &lt;/center>
 }
 
-\answer{}{\coord[\K[1];1];\coord[\V[1..\M];1]}{type=\format}
+\answer{}{\coord[\K[1];1];\liste}{type=\format}
 \answer{}{\coord[\K[2];1]}{type=\format}
 \answer{}{\coord[\K[3];1]}{type=\format}
 \answer{}{\coord[\K[4];1]}{type=\format}

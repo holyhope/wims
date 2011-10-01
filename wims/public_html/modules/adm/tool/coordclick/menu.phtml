@@ -1,5 +1,6 @@
-!! menu definition file
 
+!! menu definition file
+!set list_curve=circle,rectangle,polygon
 !default step=1
 !read lang/names.phtml.fr
 $name_intro
@@ -14,22 +15,35 @@ $name_exo0
 !!!endif
 !form reply
 <ol>
-!for a=1 to $[min(2,$step-1)]
+!for a=1 to $[max(min(2,$step-1),1)]
   <li>$(name_help$a)</li>
 !next
-  <li style="color:brown;">$(name_help$[min(3,$step)])</li>
-  !if $step>=3
+!if $step=2
+      <li style="color:brown;">$(name_help$[min(3,$step)])</li>
+!endif
+
+!if $step>=3
+    !if $type<=1 
+      <li style="color:brown;">$(name_help$type$ext)--$(name_help$[min(3,$step)])</li>
+    !else
+     !if $ext=2
+      <li>$(name_help$type$[$ext-1])</li>
+     !endif
+      <li style="color:brown;">$(name_help$type$ext)</li>
+    !endif
+   !endif
+  !if $step>=3 and $ext=1
   <li>
   $name_else 
    !formcheckbox erase list yes prompt <b>$name_erase</b>
   </li>
-   !if $step>=$[($ext+1)*3+2]
+   !if $step>=4
    <li>
      $name_end
      !reset tindex
      !for t in $listexo
      !set p=!char 1 of $t
-     !if $ext >= $p
+     !if ($type >= $p and $type<=1) or $type=$p
       !set titre=$(name_description$t)
       !set titre=!line 1 of $titre
       !set titre=!replace internal , by &##44; in $titre
@@ -42,15 +56,12 @@ $name_exo0
  !endif
 </ol>
   <center>
+  !if $type!=2 or $ext=1
   <input type="submit" value="$wims_name_send">
+  !endif
   </center>
 !endif
 
-!!!if $step>=6 
-!!      $name_exo1
- !!     !set wims_ref_class=wims_button_help
-!!      !href target=wims_mhelp cmd=help $wims_name_Exercise
-!!!endif
 !if $step>=$limit
   !changeto answer.phtml
   !exit
@@ -65,8 +76,8 @@ $name_exo0
      !formradio wims_deposit_old list $already
    !endif
   </li><li>
-  !default ext=0
-  !formradio ext list 0,1 prompt $name_0, $name_1
+  !default type=0
+  !formradio type list 0,1,2 prompt $name_0, $name_1,$name_2
   </li>
 </ul>
   <center>
@@ -83,14 +94,36 @@ $name_exo0
 !if $step>=2
  !distribute item alt=Click,1,form click into ins_attr,ins_border,ins_tag
   <center>
-  <table><tr><td>
-  !if $test=nosize and $begin=1
+  <table><tr><td style="width:50px; height-min:50px;text-align:top;">
+  <center>
+  !if $step>=3
+    !if $type=2 and $ext=2
+     $(name_point$type$ext)
+      !read zone.phtml
+  </center></td></tr>
+  </table>
+      !exit
+    !endif
+       $(name_point$type$ext)
+       <br>
+       !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
+       !set ins_border=6
+      !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
+     $dessin
+     !set imgsrc=$ins_url
+  !else
+    <input type="image" name="click" src="$imgsrc" border="1"> 
+  !endif
+  </center>
+</td><td>
+  !if $test=nosize and $begin>=1
    <span class="wims_warning">$wims_name_warning</span>. $name_nosize
   !endif
-  !set begin=1
+  !reset begin
   !if $step>=3
-   !if $test iswordof nolegend noclick 
-      <span class="wims_warning">$wims_name_warning</span>. 
+  !!a modifier
+   !if $test iswordof nolegend noclick
+      <span class="wims_warning">$wims_name_warning</span>.
       !if $test iswordof nolegend
         $name_nolegend
       !endif  
@@ -99,7 +132,7 @@ $name_exo0
       !endif
    !endif
     <div style="padding:50px;"> 
-   !if $ext=2
+   !if $ext iswordof 2
       !set readonly=readonly
    !else
       !reset readonly
@@ -107,33 +140,24 @@ $name_exo0
      <br>
       $name_legend
       <input size="20" $readonly name="legend" value="$legend">
+      !if $type=2 and $ext=1
+        !formradio javatype list $list_curve prompt $name_list_curve
+      !endif
     </div>
    !if $data!=
      <pre>$data</pre>
    !endif
   !endif
-  </td><td style="width:50px; height-min:50px;text-align:top;">
-  <td>
-  <center>
-  !if $step>=3
-       $(name_point$ext)
-       <br>
-       !set insdraw_filebase=!append word $wims_home/sessions/$wims_session/$sesdir to $insdraw_filebase
-     !insdraw copy 0,0,-1,-1,-1,-1,$wims_deposit\
-     $dessin
-  !else
-    <input type="image" name="click" src="$imgsrc" border="1"> 
-  !endif
-  </center>
-</td></tr>
-<tr><td colspan="3">
-</td></tr>
+  </td></tr>
 <tr><td colspan="3"><center>
+!if $type!=2 or $ext=1
   <input type="submit" value="$wims_name_send">
+!endif
   </center>
 </td></tr>
 </table>
 </center>
 !endif
+</form>
 
 !reset test error
