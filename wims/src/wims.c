@@ -184,8 +184,8 @@ char *var_def_buf;
 	/* job_identifier is even a reserved variable name */
 char job_identifier[32];
 
-  /* site manager definition */
-char *manager_site="127.0.0.1";
+  /* site manager definition IPv4 IPv6*/
+char *manager_site="127.0.0.1 ::1";
 int   manager_https=0;
 
 	/* sheet and exercise information */
@@ -382,7 +382,8 @@ void take_httpd_vars(void)
     var_noexport=0;
     
     for(i=0;i<unsetvarcnt;i++) unsetenv(unsetvars[i]);
-    p=getenv("REMOTE_ADDR");if(p!=NULL && strcmp(p,"127.0.0.1")==0) human_access=1;
+     /* IPv4 IPv6*/
+    p=getenv("REMOTE_ADDR");if(p!=NULL && (strcmp(p,"127.0.0.1")==0 || strcmp(p,"::1")==0)) human_access=1;
     p=getenv("HTTP_REFERER"); if(p!=NULL && *p!=0) setvar("wims_referer",p);
 }
 
@@ -504,7 +505,8 @@ void manager_check(void)
 	p=getenv("HTTPS");
 	if(p==NULL || strcmp(p,"on")!=0) goto mend;
     }
-    if(strcmp(remote_addr,"127.0.0.1")==0) {
+ /* IPv4 IPv6*/
+    if(strcmp(remote_addr,"127.0.0.1")==0 || strcmp(remote_addr,"::1")==0) {
 	int port, port2;
 	char tester[128];
 	p=getenv("REMOTE_PORT"); if(p==NULL) goto mend;
