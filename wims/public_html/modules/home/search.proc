@@ -122,6 +122,19 @@ search_category=!char 1 of $search_category
 !endif
 
 !if $search_keywords!=$empty
+  search_keywords_cnt=!wordcnt $search_keywords
+!!! the keyword should be the address of a module - if it is found, no other search is done
+  !if / isin $search_keywords and $search_keywords_cnt=1
+     k_=!replace internal module= by in $search_keywords
+     dictionary=$search_package2/serials
+     try=!exec translator $k_
+     !if $try!=
+       gotcnt=1
+       gotm=$try
+       search_keywords=$k_
+       !goto bailout
+     !endif
+  !endif
  k_=!lower $search_keywords
  k_=!deaccent $k_
  l_=[
