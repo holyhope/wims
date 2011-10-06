@@ -128,7 +128,10 @@ list_cnt=!itemcnt $listclasses
 !for i = 1 to $list_cnt
    qclass=!item $i of $listclasses
    rclass=!item $i of $list_rclasses
-   !read jobs/getclass.proc
+   !read jobs/checkclass.proc
+   !if $error!=$empty
+    !exit
+   !endif
    !shortout  qclass=$qclass
 
    !for d in $options
