@@ -738,8 +738,8 @@ Scilab
 
 :auth ldap_host
 LDAP host
-
 free
+
 These values will be used by default in the classes permitting the authentification by an LDAP.
 :auth ldap_port
 LDAP Port
