@@ -104,14 +104,16 @@ mod=$modreq
  ###add fields not accessible by the interface for the moment
  ### will be useful in case of translation in the module itself
  deflist1=translation_language
- translation_language=!listintersect $translation_language and $langlist,de
- !for l in $(translation_language)
+ trans_lang=!words2items $translation_language
+ trans_lang=!listintersect $trans_lang and $langlist
+ !for l in $(trans_lang)
    deflist1=!append item title_$l to $deflist1
    deflist1=!append item description_$l to $deflist1
  !next
  !for l in $deflist1
   i_$l=$($l)
  !next
+ i_translation_language=!items2words $i_translaton_language
  #####
  i_mod_related=!words2items $i_mod_related
  i_mod_related=!text select _.-/,$alnum in $i_mod_related
