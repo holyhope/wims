@@ -17,7 +17,7 @@ cnt_r=!linecnt $(reply$i)
 color_r=!listuniq $color_r
 
 !for c_ in $color_r
-   col=$(c_)_r
+   col=$(c_)_r$i
    rep_r=!append line $c_,$($col) to $rep_r
 !next
 m_reply$i=$(rep_r)
@@ -38,7 +38,7 @@ diag=1
 
 color_rg=!listintersect $color_r and  $color_g
 !if $color_rg!=$empty
-!for a_ in $color_rg
+ !for a_ in $color_rg
    g$a_=!listcomplement $($(a_)_r$i) in $($(a_)_g$i)
    h$a_=!listcomplement $($(a_)_g$i) in $($(a_)_r$i)
    !if $(g$a_) notsametext 
@@ -51,7 +51,7 @@ color_rg=!listintersect $color_r and  $color_g
    !else
      score=!append item 1 to $score
    !endif
-!next
+ !next
 !else
  score=0
 !endif
@@ -92,7 +92,6 @@ sg_tot=!listcomplement $g_tot in $r_tot
   !endif
 !endif
 
- 
 :applet
 !set size=!line 1 of $(oef_answer_option$i)
 !distribute items $size into xsize,ysize
@@ -126,9 +125,9 @@ sg_tot=!listcomplement $g_tot in $r_tot
 !next
 color_p=!listcomplement $color_i in $color_g,$color_r
 !for co in $color_p
-   !if $($(co)_r)!=
+   !if $($(co)_r$i)!=
       !advance cmt
-    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_r$i)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
    !endif
 !next
 reply_$i=<applet id="Clicktile$i" code="Clicktile.class" codebase="$appletdir" archive="Clicktile.jar" width="$xsize" height="$ysize">\
@@ -169,9 +168,9 @@ reply_$i=<applet id="Clicktile$i" code="Clicktile.class" codebase="$appletdir" a
 !next
 color_p=!listcomplement $color_i in $color_g
 !for co in $color_p
-   !if $($(co)_g)!=
+   !if $($(co)_g$i)!=
     !advance cmt
-    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
+    !set applet_parm=!append line <param name="square$cmt" value="$($(co)_g$i)"><param name="square$(cmt)_color" value="$co"> to $applet_parm
    !endif
  !next
 !set reply_$i=<center>\
