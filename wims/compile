@@ -53,11 +53,11 @@ if [ -f ../.wims_maintainer_mode ]; then
 ### use convert, identify
   make maintainer || exit
 ### all the maintainers should have Apache ant - java compilation
-  if (ant -h); then :; else
+  if (ant -version); then :; else
     echo "[maintainer mode] Please install Apache ant first."
     exit 1
   fi
-  if (convert) || (identify); then :; else
+  if (convert -version) || (identify -version); then :; else
     echo "[maintainer mode] Please install convert and identify first."
     exit 1
   fi
