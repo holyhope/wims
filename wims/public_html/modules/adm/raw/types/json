@@ -475,6 +475,43 @@ list_cnt=!itemcnt $listclasses
 
 !goto footer
 
+
+:getclassesuser
+list_cnt=!itemcnt $listclassesuser
+!shortout "message":"Lists classes associated to specified user ($quser) and rclass ($rclass) in your server",\
+"rclass":"$rclass",\
+"quser":"$quser",\
+"classes_list":[\
+
+
+!for i = 1 to $list_cnt
+   qclass=!item $i of $listclassesuser
+   rclass=!item $i of $list_rclasses
+   !read jobs/checkclass.proc
+   !if $error!=$empty
+     !exit
+   !endif
+   !readdef $classdeffile
+   !shortout  {"qclass":"$qclass"\
+
+         
+   !for d in $options
+	!shortout   ,"$d":"$(class_$d)"\
+
+   !next d
+   
+	shortout  }
+	!if  $i < $list_cnt
+		!shortout },\
+			
+	!endif
+   
+!next i
+!shortout }]\
+
+!goto footer
+
+
 :listmodules
 base_directory=$option
 

@@ -1,16 +1,29 @@
 # GetClassesUser
-# Liste les classes liees a un utilisateur quser ?
+# Liste les classes liees a un utilisateur quser
 
 !read jobs/listclasses.proc
 listclasses_cnt=!itemcnt $listclasses
+
+listclassesuser=$empty
+
 !for cl =1 to $listclasses_cnt
-  qclass=$(listclasses[$cl;1])
-  #pour plus de securite, rclass doit etre fourni. S'il est donne par wims plutot que par l'appelant, c'est un verrou en moins.
-  !!rclass=$(listclasses[$cl;2])
+
+ qclass=$(listclasses[$cl])
+
  !read scripts/check.user
+ 
+ !if $error!=$empty
+  	user_error=!append item $error to $user_error
+ 	error=$empty
+ !else
+	listclassesuser=!append item $qclass to $listclassesuser
+ !endif
+
 !next
 
+nb_user_error=!itemcnt $user_error
+
 !if $listclassesuser=$empty 
- error=no class $listclasses_cnt
+ error=user $quser didn't participate in $listclasses_cnt listed classes ($listclasses). This job also generated $nb_user_error errors ($user_error)  
  !exit
 !endif

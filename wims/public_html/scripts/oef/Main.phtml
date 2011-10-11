@@ -96,7 +96,7 @@ $ by ; in $init_parm
  !endif
  !read oef/form.phtml
  
- <p id="oef_actions">
+ <div id="oef_actions">
  !if $hint!=$empty and $givehint>0
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_hint
@@ -113,16 +113,16 @@ $ by ; in $init_parm
  !if $qnum<=1
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_renew
-  !href $renewlink $name_exo_renew
+  !href $renewlink <span class="oef_exo_renew">$name_exo_renew</span>
   &nbsp;
  !else
-  $name_serie_exo
+  <p class="name_serie_exo">$name_serie_exo</p>
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_renew
-  !href $renewlink $name_serie_renew
+  !href $renewlink <span class="oef_serie_renew">$name_serie_renew</span>
   &nbsp;
  !endif
- </p>
+ </div>
 !else
  !if $error!=$empty
   !read oef/msg.phtml
@@ -133,19 +133,21 @@ $ by ; in $init_parm
 
  !read oef/answer.phtml
 
- <p id="oef_actions">
+ <div id="oef_actions">
+ 
  !if $status!=$empty
-  $name_serie_exo2
-  </p><p>
+  <p class="oef_serie_exo2">$name_serie_exo2</p>
+  <p class="oef_buttons">
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_nextexo
-  !href cmd=next $name_serie_nextexo
+  !href cmd=next <span class="oef_serie_nextexo">$name_serie_nextexo</span>
  $wims_name_or
   !set wims_ref_class=wims_button
   !set wims_ref_id=oef_serie_renew
-  !href $renewlink $name_serie_renew
-&nbsp; $name_serie_new2
+  !href $renewlink <span class="oef_serie_renew">$name_serie_renew</span>
   </p>
+  <p class="oef_serie_new2">$name_serie_new2</p>
+  
  !else
   !if $qnum>1
    <span class="oef_modulescore">
@@ -160,19 +162,17 @@ $ by ; in $init_parm
    <p>
    !set wims_ref_class=wims_button
    !set wims_ref_id=oef_serie_renew
-   !href $renewlink $name_serie_renew
+   !href $renewlink <span class="oef_serie_renew">$name_serie_renew</span>
    &nbsp;
    !if $wims_sheet=$empty
     !set wims_ref_class=wims_button
     !set wims_ref_id=oef_exo_intro
-    !href exo_Intro
+    !href <span class="oef_exo_intro">exo_Intro</span>
     &nbsp;
    !endif
    </p>
   !else
-   <span class="oef_modulescore">
-   $name_exo_score
-   </span>
+   <span class="oef_modulescore">$name_exo_score</span>
    !ifval $module_score>9.8
     <span class="oef_congratulations">$wims_name_Congratulations!</span>
    !endif
@@ -182,7 +182,7 @@ $ by ; in $init_parm
    <p>
    !set wims_ref_class=wims_button
    !set wims_ref_id=oef_renew
-   !href $renewlink $name_exo_renew
+   !href $renewlink <span class="oef_exo_renew">$name_exo_renew</span>
    &nbsp;
    !if $wims_sheet=$empty and $oef_test!=yes
     !set wims_ref_class=wims_button
@@ -197,7 +197,7 @@ $ by ; in $init_parm
 !endif
 
 !if $replydefaulted=yes
- <p style="font-size:small;" id="oef_devel_mode">
+ <p id="oef_devel_mode">
  $name_devel_mode:
  !if $oef_default=yes
   $name_devel_warning
