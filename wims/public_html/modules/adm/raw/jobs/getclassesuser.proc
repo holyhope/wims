@@ -4,12 +4,11 @@
 !read jobs/listclasses.proc
 listclasses_cnt=!itemcnt $listclasses
 
-listclassesuser=$empty
-
 !for cl =1 to $listclasses_cnt
 
- qclass=$(listclasses[$cl])
-
+ qclass=!item $cl of $listclasses
+ rclass=!item $cl of $list_rclasses
+ 
  !read scripts/check.user
  
  !if $error!=$empty
@@ -17,6 +16,7 @@ listclassesuser=$empty
  	error=$empty
  !else
 	listclassesuser=!append item $qclass to $listclassesuser
+	list_rclassesuser=!append item $rclass to $list_rclassesuser
  !endif
 
 !next
