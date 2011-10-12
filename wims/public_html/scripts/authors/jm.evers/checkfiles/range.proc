@@ -3,11 +3,12 @@
 # var1=2,-1,0,5 : significant digits in reply. empty or -1 to indicate no significant digits 
 # var2=min1:max1,min2:max2,min3:max3,min4:max4.var2 is the range for the correct answer.
 # var2 may be assymetrical , or empty 
+# answer - min <= reply <= answer + max 
 # optional a unit. if pupil ignores this ,the unit of correct answer is assumed
 # var3 -1,kg,-1,m,-1,mol : optional unit of the correct answer : -1 for nonexisting or leave empty
 # 
-# 1/2/2010
 # 11/2010 corrected flaw in range when using derived si-units
+# 10/2011 corrected typo's and flaws
 
 n=$counter
 !if $(reply$n)=?
@@ -28,7 +29,9 @@ goback=0
 !endif
  # var1 is number of significant digits 1,3,4,5
 tg=!itemcnt $(answer$n)
-!if $var1 != $empty
+!if $var1 = -1 or $var1=$empty
+    checkdigits=-1
+!else
     p=!itemcnt $var1
     !if $p!=$tg
 	# als var2 perongeluk voor iets anders is bestemd
@@ -37,8 +40,6 @@ tg=!itemcnt $(answer$n)
 	!exit
     !endif
     checkdigits=1
-!else
-    checkdigits=-1
 !endif
 
 !if $var2 != $empty
@@ -52,13 +53,15 @@ tg=!itemcnt $(answer$n)
     range=1
     new_range=$empty
 !else
-    range=0
+    errortext=var2 is not declared : range min1:max1,min2:max2... per answer<br>dus net zoveel "items" als in't goede antwoord $(answer$$n) : let op gebruik dezelfde eenheid !!
+    goback=1
+    !exit
 !endif
 
-!if $var3 != $empty
-    checkunits=1
-!else
+!if $var3=-1 or $var3=$empty
     checkunits=0
+!else
+    checkunits=1
 !endif
 
 
@@ -244,9 +247,6 @@ GGG=$(answer$n)
     AAA=!tolower $AAA
 !endif
 
-#errortext=AAA=$AAA GGG=$GGG var2=$var2 range=$range
-#goback=1
-#!exit
 ta=!itemcnt $AAA
 tg=!itemcnt $GGG
 !if $tg>1
@@ -340,16 +340,17 @@ score=0
 	    !endif
 	!endif
 	!if $range=1
-	    !ifval $G=$A
+	    !if $G=$A
 		k=green
 		k2=green
+		hier=HIER
 	    !else
-		!ifval $A >= $[$G - $range1] and $A <= $[$G + $range2]
+		!if $A >= $[$G - $range1] and $A <= $[$G + $range2]
 	    	    ex2=!record 96 of $remarkdir/commonremarks.$taal
 		    k2=green
 		    k=green
 		!else
-		    !ifval $A >= $[$G - 1.5*$range1] and $A <= $[$G + 1.5*$range2]
+		    !if $A >= $[$G - 1.5*$range1] and $A <= $[$G + 1.5*$range2]
 			ex2=!record 97 of $remarkdir/commonremarks.$taal
 			k2=orange
 			k=orange
@@ -361,12 +362,16 @@ score=0
 		    !endif
 		!endif
 	    !endif
+	    #errortext=G=A : $G=$A checking $A &ge; $[$G - $range1] en $A &le; $[$G + $range2] var2=$var2  score1=$score1 k=$k k2=$k2 ex=$ex2 hier=$hier
+	    #goback=1
+	    #!exit
 	!else
-	    !ifval $G=$A
+	    # range=0 : unitsfilter ERROR...
+	    !if $G=$A
 		k=green
 		k2=green
 	    !else
-		!ifval $[round(10*($A))] = $[round(10*($G))]
+		!if $[round(10*($A))] = $[round(10*($G))]
 		    ex2=!record 29 of $remarkdir/commonremarks.$taal
 		    k2=red
 		    k=orange
@@ -378,12 +383,12 @@ score=0
 		!endif
 	    !endif
 	!endif
-	!ifval $[-1*($G)] = $A
+	!if $[-1*($G)] = $A
 	    ex3=!record 27 of $remarkdir/commonremarks.$taal
 	    score1=$P6
 	    k=red
 	!endif
-	!ifval ($[1/($G)] = $A) and $score1=0
+	!if $[1/($G)]=$A and $score1=0
 	    ex3=<br><font color=red>$A</font>&nbsp;&nbsp;<font size="+2" color=black>&#191;</font>&nbsp;&nbsp;<font color=green>$G</font>
 	    score1=$P9
 	    k=red
