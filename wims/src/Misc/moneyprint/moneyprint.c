@@ -33,7 +33,7 @@ int main( int argc , char *argv[]){
     int cnt;
     char *ptr;
     char *sign;
-    float n,t2;
+    double n,t2;
     int t1;
     int t3;
     cnt = 0;
