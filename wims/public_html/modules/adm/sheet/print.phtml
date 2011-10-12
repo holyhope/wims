@@ -11,7 +11,7 @@ $sheet_remark
  !changeto lang/msg.phtml.$modu_lang
 !endif
 
-!if ($wims_developer!= or $wims_supervisor!= ) and $latex_exists=1
+!if ($wims_developer!= or $wims_supervisor!= or $wims_user=supervisor) and $latex_exists=1
   <center>
   !read oef/latex.proc print
   </center>
@@ -54,7 +54,7 @@ $sheet_remark
   !for k=1 to $t
    !set l__=!line $k of $(ans_$i)
    !if $l__ !=
-    <li value=$k>
+    <li value="$k">
     !line $k of $(ans_$i)
     </li>
    !reset l__

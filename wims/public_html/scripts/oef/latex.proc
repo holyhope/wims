@@ -1,5 +1,5 @@
 !set name_Solution=Solution
-!if $wims_developer= and $wims_supervisor=
+!if $wims_developer= and $wims_supervisor= and $wims_user!=supervisor
  !exit
 !endif
 !set filename=sheet
@@ -76,6 +76,9 @@ $latex_src
 
 !exit
 :print
+!if $name_latexprint=
+  !read oef/$lang/names
+!endif
 <a href="wims.tex?session=$session&+cmd=getfile&+special_parm=$filename.tex">
 $name_latexprint
 </a>
