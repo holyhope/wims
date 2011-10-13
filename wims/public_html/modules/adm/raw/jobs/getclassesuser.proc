@@ -2,7 +2,15 @@
 # Liste les classes liees a un utilisateur quser
 
 !read jobs/listclasses.proc
+!if $error!=$empty
+	!exit
+!endif
+
+
 listclasses_cnt=!itemcnt $listclasses
+
+#on stock le parametre rclass demandé
+r_class=$rclass
 
 !for cl =1 to $listclasses_cnt
 
@@ -20,6 +28,9 @@ listclasses_cnt=!itemcnt $listclasses
  !endif
 
 !next
+
+#puis on reinitialise rclass (il pourra ainsi être retourné au demandeur)
+rclass=$r_class
 
 nb_user_error=!itemcnt $user_error
 
