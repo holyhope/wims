@@ -1,5 +1,10 @@
-superclass=$wims_read_parm
+##create teacherlist at all levels
+## le paramètre est la classe
+
+uclass=$wims_read_parm
+superclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
 !default superclass=$wims_superclass
+!default uclass=$wims_superclass
 !if $superclass=$empty
  !exit
 !endif
@@ -9,16 +14,21 @@ superclass=$wims_read_parm
 
 basedir=wimshome/log/classes/$superclass
 basedir2=$wims_home/log/classes/$superclass
+basedirr=wimshome/log/classes/$uclass
+basedirr2=$wims_home/log/classes/$uclass
 tlist=!sh cd $basedir2/.users\
 	grep -l user_supervisable=yes *
 tlist=!words2items $tlist
 
-!writefile $basedir/.teacherlist.1
+!writefile $basedirr/.teacherlist.1
 !for t in $tlist
- U_=!defof user_lastname,user_firstname in $basedir/.users/$t
- !appendfile $basedir/.teacherlist.1 $U_,$t
+  US_=!defof user_supervise in $basedir/.users/$t
+  !if $superclass=$uclass or $uclass isitemof $US_
+   U_=!defof user_lastname,user_firstname in $basedir/.users/$t
+   !appendfile $basedirr/.teacherlist.1 $U_,$t
+ !endif
 !next t
 
-!sh sort -f $basedir2/.teacherlist.1 | grep . >$basedir2/.teacherlist\
-  rm -f $basedir2/.teacherlist.1 >/dev/null
+!sh sort -f $basedirr2/.teacherlist.1 | grep . >$basedirr2/.teacherlist\
+  rm -f $basedirr2/.teacherlist.1 >/dev/null
 
