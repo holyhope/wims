@@ -9,6 +9,9 @@ classd=$classb/$w_lang
 oefname=$sessiond/submit.oef
 
 if [ ! -d $classd ]; then exit; fi
+### in a particular situation a file images has been created by error
+### do not understand why
+if [ -f $logd/images ]; then rm $logd/images ; mkdir $logd/images; fi
 
 namesuffix=
 if [ ! -z "$w_existing" ]; then 

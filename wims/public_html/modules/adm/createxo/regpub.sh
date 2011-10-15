@@ -1,5 +1,8 @@
 #! /bin/sh
 
+### ne sert plus actuellement
+### servait a soumettre des exercices dans un dossier incoming
+
 sessiond=$w_wims_home/$w_wims_sesdir
 pubd=modules/incoming
 oefname=$sessiond/submit.oef
