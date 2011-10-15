@@ -10,12 +10,13 @@
 # complex numbers declare: complex=1
 # if no real answers/solutions: answer$n=nil
 # >>> set var1=yes if the sequence of answers matters
-# changed rounding 15/3/2010
-# "improved rounding" 16/6/2010
-# "improved presentation" multiple answers (html)(12/2010)
-# declare var10=10,1000,10000,1,0 : 
-# as list of roundings when using multiple answers (12/2010)
+# 3/2010 changed rounding
+# 6/2010 "improved rounding"
+# 12/2010 "improved presentation" multiple answers (in html)
+# 12/2010 declare var10=10,1000,10000,1,0 ... as list of roundings when using multiple answers
 # 2/2011 presentation without <ul> list when single answer
+# 10/2011 if no "arglist" is set, now no "error" when pupils write: V=123 and A=456  B=12
+# 10/2011 : this file becomes too big: should be rewritten...  :(
 
 goback=0
 errortext=$empty
@@ -111,6 +112,9 @@ tot=!singlespace $AAA
     !endif
 !endif
 
+!for p in -->,==>,->,=>
+    AAA=!replace internal $p by = in $AAA
+!next p
 AAA=!replace internal word is by = in $AAA
 AAA=!words2items $AAA
 test=!itemcnt $AAA
@@ -137,7 +141,6 @@ c2=!char -1 of $AAA
 !endif
 
 AAA=!nospace $AAA
-
 AAA=!replace internal ** by ^ in $AAA
 !if $questiontype != 0
     # questiontyp=0 uses precheck.js as default answer-filter !
@@ -317,7 +320,6 @@ AAA=!replace internal ** by ^ in $AAA
 !next i
 
 AAA=!nospace $AAA
-org=$AAA
 #check on "=" sign or "is"
 #after that remove  x1= x_1= x_23= or a1= a2= a3=  b9= ... z2= etc etc from tha studentanswer
 test=!replace internal = by @ in $AAA
@@ -326,7 +328,8 @@ test=!replace internal = by @ in $AAA
     !if $arglist != $empty
 	use_arg=1
 	!for p in $arglist
-	    AAA=!replace $p[_0-9]* by @ in $AAA
+	    P=!lower $p
+	    AAA=!replace $P[_0-9]* by @ in $AAA
 	!next p
 	!if @ notin $AAA
 	    maxscore=$[$P1*$maxscore]
@@ -341,8 +344,15 @@ test=!replace internal = by @ in $AAA
 	!endif
     !else
 	use_arg=0
-	AAA=!replace [a-z][_0-9]* by $empty in $AAA
-	AAA=!replace = by $empty in $AAA
+	new_AAA=$empty
+	# strip all a=123,b=4334,c=2344 --> 123,4334,2344
+	AAA=!replace internal = by , in $AAA
+	!for p in $AAA
+	    !if NaN notin $[1*$p]
+		new_AAA=!append item $p to $new_AAA
+	    !endif
+	!next p
+	AAA=$new_AAA
     !endif
 !else
     !if $arglist != $empty
@@ -353,14 +363,14 @@ test=!replace internal = by @ in $AAA
 	!exit
     !endif
 !endif	
-AAA=!nospace $AAA
 
+AAA=!nospace $AAA
 # the position of "!rawmath" is critical...	
 # ATTENTION: rawmath ln(|x|) => ln(abs(x))
 # ATTENTION: rawmath ln|x| => ln(abs)*(x)
 AAA=!replace internal pi by PI in $AAA
 # correcting for x=1 en x=2
-!for p in en,et,er
+!for p in en,et,er,euro,euros
     AAA=!replace internal $p by $empty in $AAA
 !next p
 AAA=!replace internal e by E in $AAA
@@ -410,6 +420,7 @@ c1=!char -1 of $AAA
 
 ta=!itemcnt $AAA
 tg=!itemcnt $GGG
+
 !if $ta=0
     maxscore=$[$P5*$maxscore]
     goback=1
