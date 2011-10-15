@@ -42,7 +42,7 @@ $SHEET = '' ;
 $DIR = '';
 $doc_DIR = '';
 # MODIF YVES NOEL 19/09/2011 (3lignes)
-my @SECTIONS = qw(document part chapter section subvention subsubsection);
+my @SECTIONS = qw(document part chapter section subsection subsubsection);
 #my  @SECTIONS = ( document part entete frame subsection subsubsection );
 #TODO biblio dans un fichier séparé si on a rencontré \begin{thebibliography} Non,
 # on n'a qu'a mettre cet environnement de type link
