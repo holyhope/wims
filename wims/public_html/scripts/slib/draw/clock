@@ -3,7 +3,8 @@
 !endif
 
 slib_author=Gang, XIAO
-
+slib_example=02:45:33,120,1,html\
+02:45:33,120,1,html nominute
 !exit
 
 :proc
@@ -68,3 +69,11 @@ slib_out=$slib_out\
  point 0,0,$slib_cs
 !endif
 
+!if url iswordof $slib_option or html iswordof $slib_option
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+   slib_out=<img src="$ins_url" alt="">
+  !endif
+  slib_out=$slib_out
+!endif
