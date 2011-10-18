@@ -2,15 +2,26 @@
  !goto proc
 !endif
 
-slib_author=Fabrice Guerimand 
-
+slib_author=Fabrice, Guerimand
+slib_example=4345678\
+5678\
+5 234\
+456.789567\
+456.789567,comma\
+[897456,789],comma
 !exit
 
 :proc
-slib_input=$wims_read_parm
+slib_input=$(wims_read_parm[1])
+slib_input=!declosing $slib_input
+slib_input=!replace internal , by . in $slib_input
+!if comma isin $wims_read_parm
+ slib_point=,
+!endif
+!default slib_point=.
 
-test=$[$slib_input]
-!if NaN isin $test
+slib_test=$[$slib_input]
+!if NaN isin $slib_test
  slib_out=NaN
  !exit
 !endif
@@ -19,30 +30,33 @@ test=$[$slib_input]
  slib_out=$slib_input
  !exit
 !endif
-
-decomp=!replace internal . by , in $slib_input
-part=!item 1 of $decomp
-nbchi=!charcnt $part
-nbgrp=$[floor($nbchi/3)]
+slib_input=!nospace $slib_input
+slib_decomp=!replace internal . by , in $slib_input
+slib_part=!item 1 of $slib_decomp
+slib_nbchi=!charcnt $slib_part
+slib_nbgrp=$[floor($slib_nbchi/3)]
 slib_out=$empty
-!ifval $nbgrp*3!=$nbchi
- slib_out=!char 1 to $[$nbchi-3*$nbgrp] of $part
+!ifval $slib_nbgrp*3!=$slib_nbchi
+ slib_out=!char 1 to $[$slib_nbchi-3*$slib_nbgrp] of $slib_part
 !endif
-!for i=0 to $nbgrp-1 
- tmp=!char $[$nbchi-3*($nbgrp-$i)+1] to $[$nbchi-3*($nbgrp-$i-1)] of $part
- slib_out=$slib_out $tmp
-!next i
+!for slib_i=0 to $slib_nbgrp-1 
+ slib_tmp=!char $[$slib_nbchi-3*($slib_nbgrp-$slib_i)+1] to $[$slib_nbchi-3*($slib_nbgrp-$slib_i-1)] of $slib_part
+ slib_out=$slib_out $slib_tmp
+!next slib_i
 
-tst=!itemcnt $decomp
-!if $tst=1
+slib_tst=!itemcnt $slib_decomp
+!if $slib_tst=1
+ slib_out=!singlespace $slib_out
  !exit
 !endif
-part=!item 2 of $decomp
-nbchi=!charcnt $part
-nbgrp=$[ceil($nbchi/3)]
-tmp=!char 1 to 3 of $part
-slib_out=$(slib_out).$tmp
-!for i=1 to $nbgrp 
- tmp=!char $[1+3*($i)] to $[3+3*$i] of $part
- slib_out=$slib_out $tmp 
-!next i
+slib_part=!item 2 of $slib_decomp
+slib_nbchi=!charcnt $slib_part
+slib_nbgrp=$[ceil($slib_nbchi/3)]
+slib_tmp=!char 1 to 3 of $slib_part
+slib_out=$(slib_out)$slib_point$slib_tmp
+!for slib_i=1 to $slib_nbgrp 
+ slib_tmp=!char $[1+3*($slib_i)] to $[3+3*$slib_i] of $slib_part
+ slib_out=$slib_out $slib_tmp 
+!next slib_i
+
+slib_out=!singlespace $slib_out
