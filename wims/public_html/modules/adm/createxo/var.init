@@ -1,6 +1,16 @@
-!!!!!!!!a remettre avec des conditions ???? !!!!!
-!!! to comment the lines solve the problem of loosing the images
-!!! when going in another adm module and coming back 
-!!! the text of the exercise is already kept and come back in the brut window
 
-!!   !sh rm -Rf $wims_home/$wims_sesdir/getfile/oefimg >/dev/null
+!! outimages come from another module (for example coordclick)
+!! transmitted by !href
+!! for example !href module=adm/createxo&mode=model&level=2&outimages=$wims_deposit1 $wims_name_createxo
+!! should be a list of images in getfile
+!!
+!sh rm -Rf $wims_home/$wims_sesdir/getfile/oefimg >/dev/null
+!if .. isin $outimages
+  !reset outimages
+!endif
+!if $outimages!=$empty
+  out2=!makelist $wims_home/$wims_sesdir/getfile/x for x in $outimages
+  out2=!items2words $out2
+  !sh mkdir -p $wims_home/$wims_sesdir/getfile/oefimg\
+   cp $out2 $wims_home/$wims_sesdir/getfile/oefimg/ >/dev/null
+!endif
