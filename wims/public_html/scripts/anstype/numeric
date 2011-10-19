@@ -47,22 +47,33 @@ good=$[$(replygood$i)]
  !exit
 !endif
 
-!default precision=0.1
+!default precision=1000
 tot=$[max(abs($test)+abs($good),1/$precision)]
 diff=$[abs($test-($good))]
 !if NaN isin $tot $diff or Inf isin $tot $diff
  test=NaN
  !exit
 !endif
-
-!if $precision*$diff<=$tot
- diareply$i=good
- !advance freegot
-!else
- !if sqrt($precision)*$diff<=$tot
-  !advance precgood
-  precreply$i=yes
+!if absolute iswordof $(replyoption$i)
+ !if $diff < 1/$precision
+   diareply$i=good
+   !advance freegot
+ !else
+   !if $diff < 10/$precision
+     !advance precgood
+      precreply$i=yes
+   !endif
+   diareply$i=bad
  !endif
- diareply$i=bad
+!else
+ !if $precision*$diff<=$tot
+   diareply$i=good
+   !advance freegot
+ !else
+  !if sqrt($precision)*$diff<=$tot
+   !advance precgood
+   precreply$i=yes
+  !endif
+  diareply$i=bad
+ !endif
 !endif
-
