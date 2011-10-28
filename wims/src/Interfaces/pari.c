@@ -152,6 +152,9 @@ void output(char *p)
 	if(memcmp(pp,"Mat(",4)==0 && *pt==')' && find_matching(pp+4,')')==pt) {
 	    *(pt--)=0; pp+=4;
 	}
+	if(memcmp(pp,"Vecsmall(",9)==0 && *pt==')' && find_matching(pp+9,')')==pt) {
+	    *(pt--)=0; pp+=9;
+	}
 	if(*pp=='[' && *pt==']' && find_matching(pp+1,']')==pt) {
 	    *(pt--)=0; pp++;
 	}
