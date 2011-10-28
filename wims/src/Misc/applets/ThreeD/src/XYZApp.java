@@ -242,7 +242,7 @@ scan:
     }
 }
 
-/** An applet to put a Cehmical model into a page */
+/** An applet to put a Chemical model into a page */
 public class XYZApp extends Applet implements Runnable {
     XYZChemModel md;
     boolean painted = true;
