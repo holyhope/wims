@@ -124,11 +124,13 @@ search_category=!char 1 of $search_category
 !if $search_keywords!=$empty
   search_keywords_cnt=!wordcnt $search_keywords
 !!! the keyword should be the address of a module - if it is found, no other search is done
-  !if / isin $search_keywords and $search_keywords_cnt=1
+  !if (/ isin $search_keywords or %2F isin $search_keywords) and $search_keywords_cnt=1
      k_=!replace internal module= by in $search_keywords
-     dictionary=$search_package2/serials
+     k_=!replace internal %2F by / in $k_
+     dictionary=$search_package2/serial
+     translator_unknown=leave
      try=!exec translator $k_
-     !if $try!=
+     !if $try!= and $try != $k_
        gotcnt=1
        gotm=$try
        search_keywords=$k_
