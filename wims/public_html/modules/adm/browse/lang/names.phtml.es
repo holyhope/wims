@@ -9,24 +9,24 @@
 !set name_P=herramientas emergentes
 
 !if $job=subject
-  !set title=Parcourir par sujet
-  !set name_domain=Veuillez choisir l'un des domaines suivants.
-  
-  !set name_available=!nosubst Dans le domaine <i><font color=blue>$name</font></i>, les sujets suivants\
- sont disponibles.
- !set wims_name_other=Autres domaines
+  !set title=Búsqueda por tema
+  !set name_domain=Por favor, seleccione una de las siguientes áreas.
+
+  !set name_available=!nosubst En la área <i><font color=blue>$name</font></i>, los siguientes temas\
+ están disponibles.
+ !set wims_name_other=Otras áreas
 !endif
 
 !if $job=level
- !set title=Parcourir par niveau
- !distribute lines Année\
-   Catégorie\
-   Ecole primaire\
-   Ecole secondaire\
-   Université\
-   3ème cycle\
-   Recherche\
+ !set title=Búsqueda por nivel
+ !distribute lines Año\
+   Categoría \
+   Escuela primaria \
+   Secondaria\
+   Universidad\
+   3er ciclo\
+   Investigación \
  into name_year,name_category,name_primary,name_secondary,name_university,name_graduate,,\
  name_research
-  
+
 !endif
