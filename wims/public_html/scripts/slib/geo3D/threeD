@@ -14,7 +14,7 @@ slib_cnt= $[$slib_cnt +1]
 slib_data = !item 1 of $wims_read_parm
 slib_option= !item -1 of $wims_read_parm
 
-!for slib_a in scale,width,height
+!for slib_a in scale,width,height,rotinx,rotiny
   slib_$slib_a=!getopt $slib_a in $slib_option
 !next slib_a
 
@@ -31,9 +31,10 @@ slib_fichier=$wims_nowseconds.$slib_cnt
 $slib_data
 slib_out=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$slib_fichier
 
-slib_out=<applet codebase=java code=ThreeD.class archive=ThreeD.jar width=$slib_width height=$slib_height>\
-<param name=model value="$slib_out">\
-<param name=scale value="$slib_scale">\
+slib_out=<applet codebase="java/ThreeD" code="ThreeD.class" archive="ThreeD.jar" width="$slib_width" height="$slib_height">\
+<param name="model" value="$slib_out">\
+<param name="scale" value="$slib_scale">\
+<param name="rotinx" value="$slib_rotinx">\
+<param name="rotiny" value="$slib_rotiny">\
 </applet>
-
 
