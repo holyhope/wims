@@ -1,0 +1,56 @@
+type=image
+textarea="data"
+
+:$name_description
+:%%%%%%%%
+:\title{$name_title}
+:\author{$wims_firstname,$wims_lastname}
+:\email{$wims_email}
+:$name_instruction
+\text{instruction=$name_instruction21}
+:$name_image
+\text{image=$wims_deposit}
+:$name_width
+\text{width=400}
+
+:$name_data
+$name_help_data
+\matrix{data=$data}
+
+:%%%%%%%%%%%%%%%%%%%%%%%%
+\text{cache=z_$wims_deposit}
+\text{size= \data[1;]}
+\text{rubrique=wims(column 1 of \data[2..-1;])}
+\text{rubrique=wims(listuniq \rubrique)}
+\text{rubrique=randitem(\rubrique)}
+
+\text{coord = \data[2..-1;]}
+\integer{N=rows(\coord)}
+\matrix{coord=\coord}
+\for{ a = 1 to \N}{ 
+  \if{\coord[\a;1]=\rubrique}{
+    \text{point=\coord[\a;2..-1]}
+    \text{zone1=\point[2,3]}
+    \text{zone1=\point[4] issametext circle ? \point[5,6]}
+    \if{\point[4] issametext rectangle}{
+      \text{zone1=([\point[5],\point[6]]+[\point[7],\point[8]])/2}
+      \text{zone1=pari(\zone1)}
+      \text{zone1=wims(nospace \zone1)}
+    }
+    \text{zone=wims(append item \zone1 to \zone)}
+  }
+}
+\text{dessin=\imagedir/\image}
+\text{cache=draw(\size[1],\size[2]
+copy 0,0,-1,-1,-1,-1,\cache)}
+\text{cache = slib(oef/insfilename)}
+
+\integer{width=min(\width,\size[1])}
+
+\statement{
+\instruction \rubrique.
+&lt;center>
+\embed{r1,\size[1] x \size[2]}
+&lt;/center>
+}
+\answer{}{\imagedir/\image;bound,\cache,\zone}{type=javacurve}

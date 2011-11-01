@@ -20,15 +20,14 @@ $name_help_data
 :%%%%%%%%%%%%%%%%%%%%%%%%
 \text{cache=\image}
 \text{size= \data[1;]}
-\text{coord = \data[2..-1;]}
-\integer{N=rows(\coord)}
-\matrix{coord=\coord}
+\text{rubrique=wims(column 1 of \data[2..-1;])}
+\text{rubrique=wims(listuniq \rubrique)}
+\text{rubrique=randitem(\rubrique)}
+\matrix{coord = wims(select \data where column 1 = \rubrique)}
+\matrix{coord = \coord[;2,3]}
+\text{zone=wims(replace internal ; by , in  \coord)}
 
-\text{V = shuffle(\N)}
-\text{K=\V[1]}
-\text{point=\coord[\K;]}
-\text{zone=\point[2,3]}
-
+\text{dessin=\imagedir/\image}
 \text{cache=draw(\size[1],\size[2]
 copy 0,0,-1,-1,-1,-1,\cache)}
 \text{cache = slib(oef/insfilename)}
@@ -36,9 +35,9 @@ copy 0,0,-1,-1,-1,-1,\cache)}
 \integer{width=min(\width,\size[1])}
 
 \statement{
-\instruction \point[1].
+\instruction \rubrique.
 &lt;center>
-\embed{r1}
+\embed{r1,\size[1] x \size[2]}
 &lt;/center>
 }
-\answer{}{\imagedir/\image;bound,\cache,\zone}{type=coord}{option=fill}
+\answer{}{\imagedir/\image;bound,\cache,\zone}{type=javacurve}
