@@ -119,7 +119,7 @@ class XYZLatModel {
     int tvert[];
     int ZsortMap[];
     int nvert, maxvert;
-    int bond[][] = new int[300][2];
+    int bond[][] = new int[800][2];
     int nbond = -1;
     boolean box;
     boolean label;
