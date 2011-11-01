@@ -18,14 +18,14 @@
 !set color=!words2items $color
 
 !default color=orange,black,white
-!set style=.cw_case {background-color:$(color[1]);text-align:left;width:15px;height:15px;font-size:90%;}\
-.cw_input {background-color:$(color[1]);border:0;text-align:center;font-size:20px;}\
+!set style=.cw_case {background-color:$(color[1]);text-align:left;width:12px;height:10px;font-size:90%;}\
+.cw_input {background-color:$(color[1]);border:0;text-align:center;font-size:17px;}\
 .cw_no {color:blue;float:left;padding:2px;background-color:$(color[3])}\
-.cw_no2 {color:white;float:left;margin-right:4px;background-color:blue;}\
+.cw_no2 {color:white;float:left;margin-right:1px;background-color:blue;}\
 .cw_black {background-color:black;}\
 .cw_HV {font-weight:bold;color:$(color[2]);display:inline;}\
 table.cw_grille { text-align:center;border:1px solid black;}\
-table.cw_grille td {border:1px solid white;text-align:center;min-width:40px;min-height:40px;} \
+table.cw_grille td {border:1px solid white;text-align:center;min-width:15px;min-height:15px;}
 
 <style type="text/css">$style</style>
 !if tooltip iswordof $(replyoption$i)
@@ -302,7 +302,9 @@ return true;
            !set u_=$u_<p>\
            $name_vertical $(u[2..-1])</p>
           !endif
-          !readproc slib/utilities/tooltip $(Mpos[$k;$j]),[ABOVE,'true',STICKY,'true',FONTSIZE, '12pt',WIDTH,'3'],$u_
+          !set option=FONTSIZE, '12pt',STICKY, 'false', LEFT, 'true', ABOVE, 'true', WIDTH, '0', PADDING, 1,BGCOLOR,'#D3E3F6',TITLEBGCOLOR,'#D3E3F6'
+!!ABOVE,'true',STICKY,'true',FONTSIZE, '12pt',WIDTH,'3'
+          !readproc slib/utilities/tooltip $(Mpos[$k;$j]),[$option],$u_
           <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]));">$slib_out</span>
          !else
           <span id="number_$(k)_$(j)" class="cw_no" onclick="javascript:showdef($(Mpos[$k;$j]))">$(Mpos[$k;$j])</span>
