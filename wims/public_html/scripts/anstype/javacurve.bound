@@ -1,0 +1,114 @@
+
+rlist=!translate internal ; to , in $rlist
+rlist=!nonempty items $rlist
+glist=!nonempty items $glist
+imgtest=$(glist[1])
+glist=$(glist[2..-1])
+m=!itemcnt $glist
+n=!itemcnt $rlist
+
+!if $n<1
+ :badrep
+ reply$i=
+ test=NaN
+ !exit
+!endif
+!if $m<1
+ Test=bad $i
+ !exit
+!endif
+
+ifile=$image
+!if $imagedir isin $image
+ ifile=!translate internal / to $ $ in $ifile
+ ifile=!word -1 of $ifile
+!else
+ !if getfile isin $image
+  ifile=!translate internal =/ to $  $ in $ifile
+  ifile=!word -1 of $ifile
+ !else
+  !if getins isin $image
+   ifile=!replace internal &modif= by $ $ in $ifile
+   ifile=!replace internal &+modif= by $ $ in $ifile
+   ifile=!replace internal special_parm= by $ $ in $ifile
+   ifile=!word 2 of $ifile
+  !endif
+ !endif
+!endif
+util=
+Bon1=0
+!for si = 1 to $[$m/2]
+   !!on parcourt les points à cliquer
+   !if NaN isin $x$y
+     test=NaN
+     !exit
+   !endif
+   !for sj=1 to $[$n/2]
+      x=$[round($(rlist[2*$sj-1]))]
+      y=$[round($(rlist[2*$sj]))]
+      tester=bound,$imgtest,$[round($(glist[2*$si-1]))],$[round($(glist[2*$si]))]
+      error_back=$wims_exec_error
+      wims_exec_error=
+     test=!exec clickzone $x,$y\
+$tester
+!endif
+
+    test1=!line 1 of $test
+    test2=!line 2 to -1 of $test
+    !distribute words $test1 into i_,prec
+    !if $i_=1
+      correct=!append item $si to $correct
+      util=!append item $sj to $util
+     !reset i_
+    !endif
+  !next
+!next
+
+m_clickzone_error=!trim $wims_exec_error
+m_clickzone_error=!line 2 to -1 of $m_clickzone_error
+wims_exec_error=$error_back
+correct=!listuniq $correct
+Bon1=!itemcnt $correct
+util1=!itemcnt $util
+trop1 = $[$n/2 -$util1]
+trop = $[($n -2*$util1)/$m]
+manque1 = $[$m/2 - $Bon1]
+manque= $[1 - 2*$Bon1/$m]
+Bon = $[2*$Bon1/$m]
+
+
+primitive1=linewidth 1
+
+!for si = 1 to $[$n/2]
+  primitive1=$primitive1\
+line $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])+6], black\
+line $[$(rlist[2*$si-1])+6],$[$(rlist[2*$si])-6], $[$(rlist[2*$si-1])-6],$[$(rlist[2*$si])+6], black
+!next 
+
+primitive2=linewidth 8\
+points $color2,$glist
+
+
+!if NaN isin $Bon or Inf isin $Bon
+ !goto badrep
+!endif
+
+:diag
+
+!if $trop=0 and $manque=0
+  diareply$i=good
+  !advance freegot
+!else
+  freegot=$[max(0,$freegot + $Bon - $trop)]
+  !ifval $Bon > $trop + $manque
+   partialgood$i=yes
+   diareply$i=good
+  !else
+   diareply$i=bad
+  !endif
+!endif
+##nombre de bons points, nombre de points oubliés, nombre de points en trop, 
+##numéro des points corrects
+m_reply$i =$Bon1,$manque1,$trop1;$correct
+
+:end
