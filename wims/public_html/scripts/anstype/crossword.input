@@ -146,7 +146,9 @@ $ in $def
   !set u = !line $k of $defH
   !if $u <> $empty
     !increase cnt
+    !set u=!replace internal http: by httphttp in $u
     !set u=!replace internal : by , in $u
+    !set u=!replace internal httphttp by http: in $u
     !set un=!replace internal H by in $(u[1])
     !set help=$help\
     <div id="$(u[1])" style="display:$none;"><div class="cw_HV">$name_horizontal</div>$un : $(u[2..-1])</div>
