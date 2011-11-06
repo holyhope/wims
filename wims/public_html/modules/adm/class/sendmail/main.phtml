@@ -116,6 +116,9 @@ $msg
 <pre>
 $list_user
 </pre>
+<pre>
+$list_teacher
+</pre>
 <p>
 !if $list_noemail notsametext
 $name_noemail2
@@ -152,6 +155,18 @@ $list_noemail
  
    !endif
   !reset u
+ !next
+ !set cnt=!linecnt $list_teacher
+ !for l_ =1 to $cnt 
+  !set u=!line $l_ of $list_user
+  !if $(u[4])!=
+   !mailto $(u[4]) -- -f $supervisormail\
+   [WIMS $wims_classname] $subject\
+ $msg\
+ \
+ 
+   !endif
+  !reset u
  !next 
 !endif
 !if $cmd=reply and $confirm=yes
@@ -167,7 +182,7 @@ $(list_noemail[;1..2])
 
 !set wims_module_log=class $class: sendmail
 !set date=!translate : to . in $wims_now
-!appendfile wimshome/log/classes/$wims_class/.log $date $httpd_REMOTE_ADDR	$supervisormail send mail to $(list_user[;1])
+!appendfile wimshome/log/classes/$wims_class/.log $date $httpd_REMOTE_ADDR	$supervisormail send mail to $(list_user[;1]) $(list_teacher[;1])
  
  !reset list_user list_noemail
  

@@ -107,6 +107,7 @@ variable=!trim $variable
 !goto end
 !endif
 !endif
+
 !if $job=login
   !for lu =1 to $cnt
    us_=!record $lu of $file
@@ -125,4 +126,21 @@ variable=!trim $variable
  !goto end
 !endif
 
+ 
 :end
+
+
+!! teacher list
+
+aim_=!defof user_email in wimshome/log/classes/$wims_class/supervisor
+list_teacher=supervisor,,,$aim_
+ !if $wims_superclass!=$wims_class
+  !set other_teachers=!record 0 of wimshome/log/classes/$wims_class/.teacherlist
+  !set other_teachers=!column 3 of $other_teachers
+  !for ot in $other_teachers
+   m_ot=!getdef user_email in wimshome/log/classes/$wims_superclass/.users/$ot
+   !if $m_ot !=$empty
+    list_teacher=!append line $login,,,$m_ot to $list_teacher
+   !endif
+  !next
+ !endif
