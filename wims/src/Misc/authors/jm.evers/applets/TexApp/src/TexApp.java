@@ -55,7 +55,7 @@ Example:
 	    <param name="latex_bgcolor" value="0,0,255"><!-- rgb or #ffffff default white -->
 	    <param name="latex_fgcolor" value="255,0,0"><!-- rgb or #ffffff  default black -->
 	    <param name="latex_fontsize" value="18"><!-- rgb  or #ffffff  default black -->
-	    <param name="inputfield_width" value="120"><!-- int : default 10 : width in px of inputfield-->
+	    <param name="inputfield_width" value="120,34,56,67"><!-- int : default 60 : width in px of inputfields-->
 	    <param name="inputfield_height" value="40"><!-- optional int : default fontsize in px : height in px of inputfield-->
 	    <param name="inputfield_fontsize" value ="18"><!-- int : default 10 -->
 	    <param name="inputfield_bgcolor" value="0,0,255"><!-- rgb or #ffffff  default white -->
@@ -114,13 +114,13 @@ public class TexApp extends Applet {
 	f3 = f1-4;
 	f4 = f1-6;
 	// set a few params
-	inputwidth = getInt("inputfield_width",0);
+	inputwidth = getInputWidth("inputfield_width" , 30);
 	fontsize = getInt("inputfield_fontsize", 12);
 	inputheight = getInt("inputfield_height",fontsize);
 	if(fontsize > inputheight - 4){
 	    fontsize = inputheight - 4; if(fontsize < 6 ){ fontsize = 6;}
 	}
-	myfont = new Font("Helvetica", 1, fontsize);
+	myfont = new Font("Utopia", 1, fontsize);
 	textfield_bgcolor = colorParam("inputfield_bgcolor", Color.blue);
     	textfield_fgcolor = colorParam("inputfield_fgcolor", Color.black);
 	getEditable("inputfield_editable",30);
@@ -235,6 +235,23 @@ public class TexApp extends Applet {
 	}
     }
 
+    public int[] getInputWidth(String s , int inp){
+        inputwidth = new int[inp];
+	String s1 = getParameter(s);
+	for(int i = 0; i < inp; i++){ inputwidth[i] = DEFAULT_WIDTH;}
+	if(s1 != null){
+    	    s1 = s1.replaceAll(":", ",");
+    	    s1 = s1.replaceAll(";", ",");
+    	    StringTokenizer stringtokenizer = new StringTokenizer(s1, ",");
+    	    int j = stringtokenizer.countTokens();
+	    for(int k = 0; k < Math.min(inp,j); k++){
+		try{ inputwidth[k] = (int) Integer.parseInt(stringtokenizer.nextToken());}
+		    catch(Exception e){ System.out.println(" can not parse inteter parameter "+s);}
+	    }
+	}
+	return inputwidth;
+    }
+
     public int getInt(String s, int i){
         String s1 = getParameter(s);
 	if( s1 != null && s1.length()!=0){
@@ -317,7 +334,7 @@ public class TexApp extends Applet {
 	int tmp_ysize = 0;
 	inputs = 0;
 	int actualsize[] = new int[2];
-	actualsize[0] = inputwidth;
+	actualsize[0] = inputwidth[0];
 	actualsize[1] = inputheight;
 	String tmp;
 	int max_tmp_ysize = 0;
@@ -350,9 +367,10 @@ public class TexApp extends Applet {
 			    inputfield = GrowTextFieldArray(inputfield, inputs+1);
 			    Xinput = GrowIntArray(Xinput,inputs+1);
 			    max_inputs = inputs;
+			    if(max_inputs>29){System.out.println("hardcoded maximum of 30 inputfields !");}
 			}
 			Xinput[inputs] = current_xsize;
-			current_xsize = current_xsize + inputwidth;
+			current_xsize = current_xsize + inputwidth[inputs];
 			inputs++;
 		    }
 		    else
@@ -391,12 +409,12 @@ public class TexApp extends Applet {
 		}
 		int corr = Math.abs((max_tmp_ysize - min_tmp_ysize)/2);
 		for( int i = line_inputs ; i < inputs ; i++){
-		    inputfield[i] = new TextField(values[i],inputwidth);
+		    inputfield[i] = new TextField(values[i],inputwidth[i]);
 		    inputfield[i].setFont(myfont);
 		    inputfield[i].setBackground(textfield_bgcolor);
 		    inputfield[i].setForeground(textfield_fgcolor);
 		    inputfield[i].setEditable(editable[i]);
-		    inputfield[i].setBounds(Xinput[i],tmp_ysize+corr-5,inputwidth,min_tmp_ysize+5);
+		    inputfield[i].setBounds(Xinput[i],tmp_ysize+corr-5,inputwidth[i],min_tmp_ysize+5);
 		    inputfield[i].setVisible(true);
 		    this.add(inputfield[i]);
 		}
@@ -486,11 +504,13 @@ public class TexApp extends Applet {
 
     TextField inputfield[];
     public int[] prefferedsize;
-    public int inputs,Xlatex[],embed,Ylatex[],inputwidth=0,inputheight=0,xsize,ysize,fontsize,f1,f2,f3,f4;
+    public int inputs,Xlatex[],embed,Ylatex[],inputheight=0,xsize,ysize,fontsize,f1,f2,f3,f4;
     public Color textfield_bgcolor,textfield_fgcolor,latex_bgcolor,latex_fgcolor;
     public String Latex[],values[];;    
     boolean editable[],resize;
     public sHotEqn HSD;
     BufferedImage icon[];
     Font myfont;
+    int[] inputwidth;
+    int DEFAULT_WIDTH = 60;
 }
