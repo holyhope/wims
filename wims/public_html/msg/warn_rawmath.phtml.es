@@ -1,5 +1,5 @@
 
-!set wims_warn_header=<p><font color="red"><blink><b>Atención.</b></blink></font>
+!set wims_warn_header=<p><span class="wims_warning">$wims_name_warning.</span>
 
 !if ambiguous iswordof $wims_warn_rawmath
  $wims_warn_header
@@ -20,7 +20,7 @@
 !endif
 
 !if flatpower iswordof $wims_warn_rawmath
- <p><font color="red"><b>Anotación.</font></b>
+ <p><span class="wims_warning">Anotación.</span>
  Si quiere introducir <font color="green">x<sup>2</sup></font>? Escriba
  <tt>x^2</tt> o <tt>x**2</tt>.
  <p>

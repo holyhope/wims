@@ -46,7 +46,7 @@ padding-left: 3%; padding-right: 3%;}
  <hr width="50%"><p>
  WIMS heeft het software pakket
  !set miss=!upper $missing_software
- <b><font color="red">$miss</font></b>
+ <span class="wims_warning">$miss</span>
  nodig om aan Uw verzoek te voldoen, helaas is dit pakket niet 
  beschikbaar (of niet zichtbaar voor WIMS)  op deze server.
  <p>
@@ -176,7 +176,7 @@ Vereenvoudig Uw verzoek, s.v.p.
 De server is nog steeds bezig met Uw <b>vorige opdracht</b>.  
 <p>
 Hebt U per ongeluk <b>dubbel geklikt ?</b>, wacht dan  
- <font color="red"><b>$wims_cpu_limit seconden</b></font>
+ <span class="wims_warning">$wims_cpu_limit seconden</span>
  tot de vorige opdracht is afgehandeld, en dan
  !href cmd=resume klik hier
  om terug te gaan naar uw werk.
@@ -304,7 +304,7 @@ Niet spelen met de oefeningen !
  !href cmd=resume Vergeet het laatste verzoek
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
-  <p><b><font color="red">ATTENTIE</font></b>! 
+  <p><span class="wims_warning">ATTENTIE</span>! 
   Deze gebruikersfout niet herhalen ! 
   Dit kan aanleiding geven tot zeer slechte scoreresultaten...zelfs als de cijferregistratie gesloten is.
  !endif

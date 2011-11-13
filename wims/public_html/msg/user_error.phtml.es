@@ -46,7 +46,7 @@ padding-left: 3%; padding-right: 3%;}
  <hr width="50%"><p>
  WIMS necesita de la presencia de software
  !set miss=!upper $missing_software
- <b><font color="red">$miss</font></b>
+ <span class="wims_warning">$miss</span>
  para procesar su petición, pero este software no está disponible
  (o no es visible para WIMS) en este servidor.
  <p>
@@ -169,7 +169,7 @@ Hay un error en su solicitud a este sitio WIMS.<p>
 !if double_click iswordof $wims_user_error
  Esta solicitud llega mientras tiene activos otros procesos.<p>
  Si ha pulsado dos veces espere, por favor,
- <font color="red"><b>$wims_cpu_limit segundos</b></font>
+ <span class="wims_warning">$wims_cpu_limit segundos</span>
  para que el proceso antiguo termine, y entonces
  !href cmd=resume pulse aquí
  para volver al trabajo. (Y por favor, sea más paciente la próxima vez
@@ -279,7 +279,7 @@ Hay un error en su solicitud a este sitio WIMS.<p>
  !href cmd=resume Cancelar la última petición
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
-  <p><b><font color="red">ATTENTION</font></b>! Don't repeat this error!
+  <p><span class="wims_warning">$wims_name_warning.</span>! Don't repeat this error!
   Irregular activities may give you bad scores even when score registration is
   closed.
  !endif
