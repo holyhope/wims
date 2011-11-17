@@ -29,7 +29,7 @@ Choix du dessin :  1 : pendu, 2 : rectangles changeant de couleur, 3 : têtes de 
 Mettre dans la première colonne les mots en minuscules et dans la deuxième une indication éventuelle
 \text{data=éléphant,un animal
 chandelier, la première lettre est c
-mouette, sur la plage
+mouette rieuse, sur la plage
 vague, sur la plage
 
 }
@@ -94,13 +94,18 @@ frectangle 12,6,17,11,green
 \text{mot=wims(replace internal , by _ in \mot1)}
 \text{mot=wims(text expand \mot using 10)}
 \text{mot=wims(words2items \mot)}
+\text{blanc=position(_,\mot)}
 \text{MOT=wims(makelist \jok for x=1 to \nb)}
+\for{a in \blanc}{
+  \text{MOT=wims(replace item number \a by _ in \MOT)}
+}
 \text{MOT1=wims(makelist <span class="w">&nbsp; x &nbsp;</span> for x in \MOT) }
 \text{MOT2=wims(items2words \MOT1)}
+\text{MOT2=wims(replace internal _ by &nbsp; in \MOT2)}
 
 \text{nstep=r1}
 
-\text{lettre1=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,à,ä,â,é,è,ê,ë,î,ï,ô,ö,û,ù,-,_,!,?}
+\text{lettre1=a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,à,ä,â,é,è,ê,ë,î,ï,ô,ö,û,ù,-,!,?}
 \text{lettre=wims(makelist <span class="notseen">&nbsp; x &nbsp;</span> for x in \lettre1)}
 \text{lettre2=\lettre}
 \text{lettre2=\lettre2[1..10]
@@ -188,6 +193,7 @@ autocomplete=off}</div>
 }
 \text{MOT1=wims(makelist <span class="w">&nbsp; x &nbsp;</span> for x in \MOT)}
 \text{MOT2=wims(items2words \MOT1)}
+\text{MOT2=wims(replace internal _ by &nbsp; in \MOT2)}
 \text{nstep=}
 \text{nstep=\jok isitemof \MOT and \step<30 and \cnt<6 ? r \step}
 \if{\step>30 or \cnt>=6}{
@@ -196,6 +202,7 @@ autocomplete=off}</div>
     \text{MOT1=wims(replace internal item number \a by <span class="forget">&nbsp; \mot[\a] &nbsp;</span> in \MOT1)}
   }
   \text{MOT2=wims(items2words \MOT1)}
+  \text{MOT2=wims(replace internal _ by &nbsp; in \MOT2)}
 }
 
 \condition{Vous avez trouvé le mot ?}{\jok notitemof \MOT}
