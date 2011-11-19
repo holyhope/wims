@@ -14,76 +14,76 @@ body {text-align: justify;
 padding-left: 3%; padding-right: 3%;}
 --></style>
 </head><body onload="window.resizeTo(500,200);window.moveTo(250,300);">
-<h1 align="center">ERROR</h1>
+<h1 align="center">错误</h1>
 !goto examerr
 !endif
 </head><body>
 !if threshold iswordof $wims_user_error
  <hr width="1">
- <h1 align="center">We are too busy</h1>
+ <h1 align="center">目前正忙</h1>
  <hr width="50%"><p>
- This WIMS server <font color="blue">$httpd_HTTP_HOST</font> 
- is currently overloaded by a large number of requests, and
- can no longer satisfy further users. Please come back later, 
- or look for another wims mirror site.
- <p>We are very sorry for this inconvenience to you, and hope to be able
- to serve you soon.
- !read mirror.phtml.en
+ 本 WIMS 服务器 <font color="blue">$httpd_HTTP_HOST</font> 
+ 目前由于大量的请求而超载, 
+ 不能再接受新的用户. 请稍后再来, 
+ 或访问其他 WIMS 镜像站.
+ <p>我们对由此带来的不便表示歉意,
+ 希望很快就能继续为您服务.
+ !read mirror.phtml.cn
  </body></html>
  !exit
 !endif
 
 !if overload iswordof $wims_user_error
  <hr width="1">
- <h1 align="center">SORRY</h1>
- Your request is blocked by this WIMS server: connection quota exceeded.
+ <h1 align="center">抱歉</h1>
+ 你的请求因超过连接配额而被服务器阻止.
  </body></html>
  !exit
 !endif
 
 !if ++++missing_ isin ++++$wims_user_error
  <hr width="1">
- <h1 align="center">Sorry</h1>
+ <h1 align="center">抱歉</h1>
  <hr width="50%"><p>
- WIMS needs a software
+ WIMS 需要软件
  !set miss=!upper $missing_software
  <span class="wims_warning">$miss</span>
- to process your request, but that software is not available (or not visible
- to WIMS) on this server.
+ 来处理你的请求, 可是在本服务器上此软件不可用
+ (或 WIMS 看不到).
  <p>
- You can either
+ 你可以发电邮
  <a href="mailto:$wims_site_manager?subject=$missing_software unavailable on WIMS">write 
- to the site manager</a> to inform him/her of the problem, or choose a
- mirror site from the table below.
- <a href="wims.cgi">WIMS homepage</a>.
- !read mirror.phtml.en
+ 给网站管理员</a>报告此问题,
+ 或另选一个镜像站
+ <a href="wims.cgi">WIMS 主页</a>.
+ !read mirror.phtml.cn
  </body></html>
  !exit
 !endif
 
 !if trapped iswordof $wims_user_error
- <h1 align=center>Stop!</h1><hr>
- The content of 
- <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a> is not compatible
- with automatic page gathering programs and `web accelerators'.
+ <h1 align=center>停止!</h1><hr>
+ <a HREF="http://$httpd_HTTP_HOST">$httpd_HTTP_HOST</a>
+ 的内容与自动页面收集程序及
+ `web 加速器' 不相容.
  <p>
- To access WIMS activities on this site, please use an ordinary web
- browser with no access acceleration programs installed behind.
+ 为利用本站的 WIMS 服务,
+ 请使用不安装加速程序的常规浏览器.
  <p>
- Please remember that WIMS pages are dynamically generated. They cannot
- be used off line anyway.
+ 请记住, WIMS 页面是动态生成的.
+ 不能离线使用.
  </body></html>
  !exit
 !endif
 
-<h1 align="center">WIMS error</h1><hr><p>
+<h1 align="center">WIMS 错误</h1><hr><p>
 
-There is an error in your request to this WIMS site.<p>
+ 你对本 WIMS 服务器发出的请求里有错.<p>
 
 !if module_change iswordof $wims_user_error
  !if $wims_human_access=yes
-  Please avoid using the `Back' button of your browser,
-  because you are on an interactive server.
+  请避免使用浏览器的 `返回' 键,
+  因为你面对的是互动的服务器.
   <p><center>
   !set tit=!module title $module
   !default tit=$module
@@ -91,157 +91,154 @@ There is an error in your request to this WIMS site.<p>
   &nbsp;&nbsp;&nbsp;
   !href $ WIMS home
   !if $httpd_HTTP_REFERER!=$empty
-   &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">Exit WIMS</a>
+   &nbsp;&nbsp;&nbsp;<a href="$httpd_HTTP_REFERER">退出 WIMS</a>
   !else
    </center><p>
-   <small>If you want to get out of the site, ignore this message and continue
-   to click on `Back'.</small>
+   <small>如果你想退出本站,
+   请忽略此信息并继续按 `返回'.</small>
   !endif
   !exit
  !endif
- You have asked an illegal module change.
- Are you using an automatic program to access this site?
+ 你请求的是非法的模块改变.
+ 你是否在使用自动程序进入本站?
  :unblock
  !form new
  <input type="hidden" name="module" value="home">
  <input type="hidden" name="deblockparm" value="$[randint(10000000)+1000000]">
- If you have simply clicked on the `back' button of your browser,
- please type the word `wims' here:
- <input size="8" name="special_parm"> then
- <input type="submit" value="send to the server">.</form>
+ 如果你只是点击了浏览器的 `返回' 键,
+ 请在这里输入 `wims':
+ <input size="8" name="special_parm"> 然后
+ <input type="submit" value="发送到服务器">.</form>
  <p>
- Please bear in mind that pages on this site are dynamically generated.
- They can therefore only be used online, 
- via a normal browser. It is useless for you to gather these pages
- using a robot program.
+ 请记住, 本站的页面都是动态生成的.
+ 因此只能通过常规浏览器在线使用. 
+ 想利用自动化程序来收集网页是没有意义的.
  !if robot_doubt iswordof $wims_user_error
-  <small>And beware that people trying to hacker on
-  this site will see their accesses definitely denied.</small>
+  <small>如果黑客想闯入此网站,
+ 将会被拒绝.</small>
  !endif
  !exit
 !endif
 
 !if robot_doubt iswordof $wims_user_error
- We block further access to this site for you, because you are suspected
- of using an automatic program to gather pages.
+ 我们将不让你继续进入此网站,
+  因为怀疑你使用了自动收集网页的程序.
  !goto unblock
 !endif
 
 !if allow_violation iswordof $wims_user_error
-  You don't have the right to define the variable ``$wims_error_data''
-  with the command ``$cmd''.
+  你没有权利用命令 ``$cmd'' 来定义变量
+  ``$wims_error_data''.
   !goto end
 !endif
 
 !if bad_command iswordof $wims_user_error
-  The command ``$cmd'' is not valid.
-  <p> Valid commands are: <pre>
+  命令 ``$cmd'' 无效.
+  <p> 有效的命令是: <pre>
   new, renew, reply, hint, config </pre>
 !endif
 
 !if bad_host iswordof $wims_user_error
-  You have tried to access a session from another post. This is not allowed
-  for your virtual class.
+  你想从其它站点建立会话.
+  这在你的虚拟班是禁止的.
   <p>
-  Unfortunately, some internet providers give you dynamic host addresses
-  which MAY change within one connection. If this is the case, please write
-  to the supervisor of your class asking him/her to change the access lock
-  policy.
+  可能某些因特网接入的提供者给你的是动态地址,
+  即使在同一个连接中也会变化. 如果遇到这种情形,
+  请与班级的指导教师联系, 
+  请他改变接入的锁定策略.
   !goto end
 !endif
 
 !if need_https iswordof $wims_user_error
- You should connect to your class via a https request.
+ 你应该通过 https 请求连接到你的班级.
  !set refname=!replace http:// by https:// in $wims_ref_name
- <a href="$refname?session=$wims_session&module=home&cmd=new">Try it</a>.
+ <a href="$refname?session=$wims_session&module=home&cmd=new">试试看</a>.
  !exit
 !endif
 
 !if bad_insnum iswordof $wims_user_error
  !if $cmd=getfile
-  The file you asked for does not exist.
+  你请求的文件不存在.
  !else
-  The file name for dynamic insertion is not valid.
+  动态插入的文件名无效.
  !endif
  !goto end
 !endif
 
 !if cmd_output_too_long iswordof $wims_user_error
-  The intermediate result of the computation has exceeded the length limit.
-  You have probably submitted a request which is unrealistically complicated.
-  Simplify your request, please.
+  计算的中间结果超出了长度限制.
+  你的请求大概过分复杂了.
+  请加以简化.
   !goto end
 !endif
 
 !if double_click iswordof $wims_user_error
- This request arrived while the process of another request from you is 
- still under way.<p>
- If you have been double clicking, now please wait 
- <span class="wims_warning">$wims_cpu_limit seconds</span>
- for the process of your old request to terminate, then
- !href cmd=resume click here
- to get back to your work. (And please be more patient the next time
- you ask wims to do lengthy computations.)
+ 此请求来到时你的另一个请求正在处理中.<p>
+ 如果你点击了两次, 请等待 
+ <span class="wims_warning">$wims_cpu_limit 秒</span>
+ 使得你原来的请求被处理完, 然后
+ !href cmd=resume 点击这里
+ 以回到你的工作. 
+ (以后当你要求 WIMS 做冗长的计算时, 请更多一点耐心.)
  <p>
- If you are using ``back'' button of your browser to get out of wims, you
- may ignore this message and go ahead.
+ 如果你按了浏览器的 ``返回'' 按钮以退出 wims,
+ 那么可以忽略这个信息.
  !exit
 !endif
 
 !if invalid_char_in_query_string iswordof $wims_user_error
-  The substitution ``$wims_error_data'' in the parameter string is illegal.
+  在参数序列里替换 ``$wims_error_data'' 是非法的.
   !goto end
 !endif
 
 !if name_conflict iswordof $wims_user_error
-  ``$wims_error_data'' is a reserved name for wims.
+  ``$wims_error_data'' 是被 wims 保留的名称.
   !goto end
 !endif
 
 !if no_command iswordof $wims_user_error
-  There is no command.
+  没有命令.
   !goto end
 !endif
 
 !if no_insnum iswordof $wims_user_error
  !if $cmd=getfile
-  You have asked for a file without giving its name.
+  你没有给出请求的文件名.
  !else
-  You have asked for a dynamic insertion without giving its number.
+  你请求的动态插入没有给出号码.
  !endif
  !goto end
 !endif
 
 !if no_module_name iswordof $wims_user_error
-  You have asked a new session without module name.
+  你请求的会话没有给出模块名.
   !goto end
 !endif
 
 !if no_session iswordof $wims_user_error
-  The session number is missing.
+  缺少会话编号.
   !goto end
 !endif
 
 !if parm_too_long iswordof $wims_user_error
-  Your parameter string has exceeded length limit. This is not allowed by
-  security reasons, sorry.
+  你的参数串超过长度极限.
+  出于安全的原因被拒绝.
   !goto end
 !endif
 
 !if string_too_long iswordof $wims_user_error
-  The definition of variable has a length which exceeds the limit.
+  变量定义的长度超出极限.
   !goto end
 !endif
 
 !if too_many_variables iswordof $wims_user_error
-  The number of parameters which you transmitted has exceeded the limit
-  authorized in this wims site.
+  你传送的参数个数超限.
   !goto end
 !endif
 
 !if unmatched_parentheses iswordof $wims_user_error
-  We have detected unmatched parentheses in your request. You may correct the
-  error here:
+  你的请求里有不匹配的括号.
+  你可以在这里改正:
   !form $cmd
   $(name$bad_parentheses) =
   !for i in module,special_parm,worksheet
@@ -273,38 +270,38 @@ There is an error in your request to this WIMS site.<p>
    <textarea rows="$n" cols="50" name="$(name$bad_parentheses)">$value</textarea>
    <p>
   !endif
-  Then
-  <input type="submit" value="send the corrected request.">
+  然后
+  <input type="submit" value="发送改正后的请求.">
   </form><p><hr><p><center>
-  !href cmd=resume Cancel the last request
-, or
+  !href cmd=resume 取消上一个请求
+, 或
   !href $ wims home
 .</center>
   !exit
 !endif
   
 !if wrong_module iswordof $wims_user_error
-  The module ``$module'' which you asked for does not exist in this site.
+  本站不存在你请求的模块 ``$module''.
   !goto end
 !endif
 
 !if wrong_session iswordof $wims_user_error
-  The session number ``$session'' is not (or no longer) valid.
-  <a href="wims.cgi">Create a new session</a>.
+  会话号 ``$session'' 无效 (或已失效).
+  <a href="wims.cgi">创建新会话</a>.
   !goto end
 !endif  
 
 !if rafale iswordof $wims_user_error
- Please don't play with the exercises!
+ 请不要与练习开玩笑!
  <p>
- You should take time to think carefully and try to solve the exercises
- correctly, instead of ask new ones over and over again.
- !href cmd=resume Cancel the last request
+ 你应该花时间仔细思考并尝试正确解答练习,
+ 而不是不断的要求新的练习.
+ !href cmd=resume 取消上一次请求
 .
  !if $wims_user!=$empty and $wims_user!=supervisor
-  <p><span class="wims_warning">ATTENTION</span>! Don't repeat this error!
-  Irregular activities may give you bad scores even when score registration is
-  closed.
+  <p><span class="wims_warning">注意</span>! 不要重复这个错误!
+  即使记分器关闭时,
+  不合规则的活动也会造成失分.
  !endif
  !goto end2
 !endif
@@ -312,66 +309,66 @@ There is an error in your request to this WIMS site.<p>
 :examerr
 
 !if exam_dep iswordof $wims_user_error
-  This exercise is available only when you have successfully made
+  本练习必须在你成功完成了
   !if , isin $dep_list
-   exercises $dep_list.
+   练习 $dep_list 后才能做.
   !else
-   exercise $dep_list.
+   练习 $dep_list 后才能做.
   !endif
-  Please first try to do the latter.
+  请先把它们做好.
   !goto examend
 !endif
 
 !if bad_exam iswordof $wims_user_error
-  You have issued an illegal request within an examination session.
+  你在考试时发出了非法的请求.
   !goto examend
 !endif
 
 !if exam_exo_finished iswordof $wims_user_error
-  You have already done this exercise with a score of $wims_exo_lastscore.
-  You cannot do it again because this is an examination.
+  你已经做了此练习, 得分是 $wims_exo_lastscore.
+  作为考试, 你不能重做了.
   !goto examend
 !endif
 
 !if expired_exam iswordof $wims_user_error
-  You have no more time left to work on this exam.
+  这次考试的时间已用完.
   :examend
   !set pses=!translate _ to , in $wims_session
   !set pses=!item 1 of $pses
   !set pser=!randint 1,999
   !set wims_opener=window.opener.location='$wims_ref_name?session=$pses.$pser&cmd=reply&job=student';
   <p><center>
-  <a href=# onclick="window.close();$wims_opener">Close this window</a>.
+  <a href=# onclick="window.close();$wims_opener">请关闭此窗口</a>.
   </center><p>
   !exit
 !endif
 
 !if exam_closed iswordof $wims_user_error
- This exam is not accessible for your connection at the time being. Please verify
- with the supervisor of your class.
+ 从你的连接目前不能进入考试.
+ 请与班级的指导老师联系.
  !goto examend
 !endif
 
 !if bad_ident iswordof $wims_user_error
- Your request contains a user identification error. Are you trying to connect
- to somebody else's session?
+ 你的请求的用户认证有错.
+ 你是不是想进入他人的会话?
  <p>
- Please
- <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">make a new connection</a>.
+ 请
+ <a href="wims.cgi?special_parm=ignorecookie&special_parm2=$[randint(10^8)]">建立新会话</a>.
  </body></html>
  !exit
 !endif
 
 !if no_access iswordof $wims_user_error
-  Your request is refused by the access policy of this site. Sorry.
+  根据本站的接入策略, 你的请求被拒绝. 抱歉.
   !goto end
 !endif  
 
 !if class_closed iswordof $wims_user_error
   Sorry.
   <p>
-  Access to this virtual class is temporarily closed by its supervisor.
-  Come back later!
+  指导教师暂时关闭了这个虚拟班.
+  请以后再来!
   <p><center>
   !href cmd=close&module=home WIMS
   </center>
@@ -380,18 +377,17 @@ There is an error in your request to this WIMS site.<p>
 !endif  
 
 :end
-<p>If you see this message after following a link given by another page, it 
-probably is because the link is not well-prepared. In this case, please
-contact the author of that page, to inform him of the error. You may also
-write to the
-<a href="mailto:$wims_site_manager?subject=wims.cgi">manager of this
-site</a>, with as many details as possible about the circomstances
-under which the error has occurred.
+<p>如果你点击了某页面的链接而出现了目前的信息,
+那么很可能是因为此链接没有准备好.
+请你联系那个页面的作者告诉他这个错误.
+也可以发电邮给
+<a href="mailto:$wims_site_manager?subject=wims.cgi">网站管理员</a>,
+告诉他错误发生的细节.
 
 :end2
 <hr><p>
 <center>
-!href module=home&cmd=new Home page
+!href module=home&cmd=new 主页
 </center>
 
 </body></html>
