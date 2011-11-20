@@ -1,4 +1,3 @@
-!!language independant
 !distribute items $wims_read_parm into m_,d_,t_,I_,p_,s_,M_
 !if : isin $m_
  !set m_=!word 2 of $m_
@@ -8,7 +7,11 @@
 !set subject=!item 8 to -1 of $wims_read_parm
 !set test=!defof m_exists in $forumdir/$y_$m_/$I_
 !if $test=yes or $forumuser=supervisor
- $lh
+ !if $y_$m_/$I_ notlineof $already_seen
+   <li class="wims_forum_item_toread">
+ !else
+   <li class="wims_forum_list">
+ !endif
  !href cmd=reply&job=read&readtype=html&r_msg=$y_$m_/$I_ $subject
 , <small><i>$s_</i> ($m_-$d_-$y_, $t_)  </small>
  !if $test=erased

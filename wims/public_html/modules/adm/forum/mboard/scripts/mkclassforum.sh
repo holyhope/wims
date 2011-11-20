@@ -2,6 +2,7 @@
 
 forumdir=$w_Forumdir
 mkdir -p $forumdir/.threads
+mkdir -p $forumdir/.users
 
 today=`date '+%Y%m%d'`
 cat <<@ >$forumdir/.def

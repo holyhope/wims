@@ -1,3 +1,4 @@
+!!set already_seen=!record 0 of $forumdir/.users/$forumuser
 
 !read desc.phtml
 <p>
@@ -31,7 +32,6 @@
  !endif
 
  <ul class="wims_forum_list">
- !set lh=<li class="wims_forum_list">
  !if $l_order=1
   !distribute item $tot,1,-1 into start,end,step
  !else
@@ -46,6 +46,7 @@
    !set l_=!record $i of $forumdir/$mlist/.msglist
   !endif
   !read listone.phtml $l_
+  </li>
  !next i
  </ul>
 !endif

@@ -1,6 +1,10 @@
 
 !bound readtype within source,html default html
 
+already_seen=!record 0 of $forumdir/.users/$forumuser
+!if $r_msg notlineof $already_seen
+  !appendfile $forumdir/.users/$forumuser $r_msg
+!endif
 !reset c_subject
 m_=!translate / to , in $r_msg
 !distribute item $m_ into a_,b_
