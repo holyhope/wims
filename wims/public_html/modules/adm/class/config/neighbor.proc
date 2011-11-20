@@ -12,32 +12,36 @@
  cllimit=300
  supertype=!defof class_type in wimshome/log/classes/$wims_superclass/.def
  !if $supertype=4 and / isin $wims_class
-  !!reset excls
   cterms=!translate / to , in $wims_class
+  ctypename=!defof class_typename in wimshome/log/classes/$wims_class/.def
   clevel=!itemcnt $cterms
-  !if $clevel>=3
-   cls=!record 0 of wimshome/log/classes/$class_parent/classes
-   prog=!record 0 of wimshome/log/classes/$class_parent/programs
-   !if $clevel=3
-    crs=!record 0 of wimshome/log/classes/$wims_class/courses
-    hastest=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
-    !if $hastest issametext yes
-     testzone=$(cterms[2])/$(cterms[3])/0
+  !if yes isin $excls
+    clfile=wimshome/log/classes/.index
+  !else
+   !if $clevel>=3
+    cls=!record 0 of wimshome/log/classes/$class_parent/classes
+    prog=!record 0 of wimshome/log/classes/$class_parent/programs
+    !if $clevel=3
+     crs=!record 0 of wimshome/log/classes/$wims_class/courses
+     hastest=!defof class_defined in wimshome/log/classes/$wims_class/0/.def
+     !if $hastest issametext yes
+      testzone=$(cterms[2])/$(cterms[3])/0
+     !endif
+    !else
+     crs=!record 0 of wimshome/log/classes/$class_parent/courses
     !endif
-   !else
-    crs=!record 0 of wimshome/log/classes/$class_parent/courses
-   !endif
-   clist1=!column 1 of $testzone\
+    clist1=!column 1 of $testzone\
 $cls\
 $prog\
 $crs
-   clist1=!nonempty items $clist1
-   clist1=!makelist $wims_superclass/xx for xx in $clist1
-   clist1=!listcomplement $wims_class in $clist1
-   !if $clevel>3
-    clist1=!append item $clist1 to $class_parent
+    clist1=!nonempty items $clist1
+    clist1=!makelist $wims_superclass/xx for xx in $clist1
+    clist1=!listcomplement $wims_class in $clist1
+    !if $clevel>3
+     clist1=!append item $clist1 to $class_parent
+    !endif
+    clfile=nonexistent
    !endif
-   clfile=nonexistent
   !endif
  !else
   scl=!item 1 of $wims_superclass
