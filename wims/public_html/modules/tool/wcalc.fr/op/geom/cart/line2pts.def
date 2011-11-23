@@ -15,7 +15,13 @@ input=data2d
 !distribute items $p1 into x1,y1
 !distribute items $p2 into x2,y2
 xmax=$[1.2*max(abs($x1),abs($x2))]
-ymax=$[1.2*max(abs($y1),abs($y2))]
+!if $xmax=0
+  xmax=1
+!endif
+ymax=$[max(1,1.2*max(abs($y1),abs($y2)))]
+!if $ymax=0
+  ymax=1
+!endif
 xmin=-$xmax
 ymin=-$ymax
 dist=$[($x1-$x2)^2+($y1-$y2)^2]
