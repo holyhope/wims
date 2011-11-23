@@ -25,10 +25,11 @@ slib_player=!getopt player in $slib_option1
 !if rename iswordof $slib_option
    slib_son=!rename $slib_son
 !endif
-
+slib_sontest=!replace internal . by , in $slib_son
+slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
 !if $slib_player=
-  !default slib_option=height="16" width="150" autostart="false" loop="false"
- slib_out =<embed src="$slib_son" $slib_option > <noembed> <bgsound src="$slib_son"></noembed></embed>
+  !default slib_option=height="20" width="150" autostart="false" loop="false"
+  slib_out =<object><embed src="$slib_son" $slib_option > <noembed> <bgsound src="$slib_son"></noembed></embed></object>
 !else
  !if $slib_player iswordof hbs_mp3_player
   !default slib_option=height="16" width="60" autostart="false" loop="false"

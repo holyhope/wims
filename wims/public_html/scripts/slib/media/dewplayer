@@ -44,7 +44,11 @@ slib_Son=
 !endif
 slib_son=!replace internal , by | in $slib_son
 slib_son=!nospace $slib_son
+slib_sontest=!replace internal . by , in $slib_son
+slib_son=!replace internal cgi? by $(slib_sontest[-1])? in $slib_son
 
 ####attention = pas d'espace et mettre sur une seule ligne, sinon il y a 
 #### un problème dans les exos de correspondance
-slib_out =<object type="application/x-shockwave-flash" data="$slib_adresse/dewplayer-multi.swf?mp3=$slib_son" $slib_option alt="audio"><param name="movie" value="$slib_adresse/dewplayer-multi.swf?mp3=$slib_son"/></object>
+slib_out =<object type="application/x-shockwave-flash" data="$slib_adresse/dewplayer-multi.swf" $slib_option alt="audio"><param name="movie" value="$slib_adresse/dewplayer-multi.swf"><param name="flashvars" value="mp3=$slib_son"></object>
+
+<object type="application/x-shockwave-flash" data="dewplayer-multi.swf" width="240" height="20" id="dewplayer" name="dewplayer"> <param name="wmode" value="transparent" /><param name="movie" value="dewplayer-multi.swf" /> <param name="flashvars" value="mp3=test.mp3" /> </object>
