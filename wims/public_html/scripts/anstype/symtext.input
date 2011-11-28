@@ -18,6 +18,15 @@ $ in $r_
 !if $wims_read_parm!=noprompt
  <tr><td align="right">$(replyname$i)</td><td>
 !endif
+!set inputoption=!replace internal $	$ by $\
+$ in $inputsize
+!set inputsize=!line 1 of $inputoption
+!set inputoption=!line 2 to -1 of $inputoption
+!set option=!line 1 of $inputoption
+!if $option issametext default
+  !set inputoption=!line 2 to -1 of $inputoption
+  !set inputoption=class="wims_oef_input" $inputoption
+!endif
 
 !set inputsize=!translate x to , in $inputsize
 !set inputsize=!items2words $inputsize
@@ -25,5 +34,5 @@ $ in $r_
 !bound sizer between integer 1 and 15 default 4
 !bound sizec between integer 1 and 200 default 40
 
-<textarea name="reply$i" rows="$sizer" cols="$sizec">$(reply$i)</textarea>
+<textarea name="reply$i" rows="$sizer" cols="$sizec" $inputoption>$(reply$i)</textarea>
 
