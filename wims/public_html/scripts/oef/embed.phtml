@@ -105,8 +105,8 @@
   !read anstype/$(replytype$i).input noprompt
  !endif
 !else
- !distribute item green,red,blue into colorr_good,colorr_bad,colorr_forget
- !set cl=blue
+ !distribute item oef_indgood,oef_indbad,oef_indforget into colorr_good,colorr_bad,colorr_forget
+ !set cl=oef_indforget
  !if $t_=c
   !set cl=$(colorr_$(diachoice$i))
   !set p_=!item $(choice$i) of $(choicelist$i),$ch_noidea,$ch_none
@@ -135,7 +135,7 @@
    !if $inputsize1 notitemof $tv
     !if $inputsize1 isitemof $ts and $(replytype$i) iswordof mark flashcard
      !set cl = $colorr_forget
-     !imgrename <b><tt><u><font color="$cl">$p_</font></u></tt></b>
+     !imgrename <span class="$cl"><tt><u>$p_</u></tt></span>
     !else
      !imgrename <b><tt><u>$p_</u></tt></b>
     !endif
@@ -168,8 +168,16 @@
  !endif
  !set embcnt1=&nbsp;<sup><small>[$embcnt]</small></sup>
  !if $(replytype$i) notwordof correspond
-  !set instex_color=$cl
-  !imgrename <b><font color="$cl">$p_</font></b>$embcnt1
+   !if bad isin $cl
+    !set instex_color=red
+   !endif
+   !if good isin $cl
+    !set instex_color=green
+   !endif
+   !if forget isin $cl
+    !set instex_color=blue
+   !endif
+  !imgrename <span class="$cl">$p_</span>$embcnt1
   !else
   !imgrename $p_ $embcnt1
  !endif 
