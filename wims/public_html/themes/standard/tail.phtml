@@ -14,6 +14,8 @@
  !exit
 !endif
 
+
+
 !if $wims_homeref_n0+$wims_homeref_n4 + $wims_homeref_n5 + $wims_homeref_local_n0>0
 <div id="wimsmenumodubox" style="background-color:$wims_ref_bgcolor;">
  !if $wims_homeref_n0>0
@@ -67,6 +69,7 @@
 !endif wims_homeref_local_n0
 </div>
 <!--wimsmenumodubox-->
+
 !endif wims_homeref_n0+wims_homeref_n4+$wims_homeref_n5
 !if $wims_homeref_n3>0
   <div id="wimsmenutab">
@@ -84,17 +87,18 @@
   </div><!--wimsmenu-->
   </div><!--wimsmenutab-->
 !endif
+
 !if $wims_homeref_n1>0
 <div id="wimsmenubox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 !for i_=1 to $wims_homeref_n1
- <span class="menuitem">
  !set 1_=!line $i_ of $wims_rm_1
+ !set css_class=!item 1 of $1_
+ <span class="menuitem $css_class">
  !read oneitem.phtml $1_
  </span><!-- menuitem-->
 !next i_
-</div><!--wimsmenu-->
-</div><!--wimsmenubox-->
+</div><!--wimsmenu--></div><!--wimsmenubox-->
 !endif
 </div><!--wimsbodybox-->
 !if $wims_homeref_n2>0
@@ -107,9 +111,11 @@
  </div><!--tailitem-->
 !next i_
 </div><!--wimstail-->
+
 </div><!--wimstailbox-->
 !endif
 !endif
+
 
 !if help isin $wims_session
 </div><!--wims_mhelp-->

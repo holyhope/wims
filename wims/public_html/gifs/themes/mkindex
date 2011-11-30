@@ -22,16 +22,16 @@ for j in `ls` ; do
      h=`expr $h + 0`
      echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a{
 	background-repeat:no-repeat;
+	background-position:0% 50%;
 	min-height:"$h"px;
 	padding-left:"$w"px;
-}" > icon.css
+}
+#wimsmenubox .menuitem {
+	background-image:none;
+}
+" > icon.css
      for a in $list ; do 
-       for i in `ls $j/*.$a 2>/dev/null` ; do file=`basename $i .$a` ; echo ".$file{
- background-image:url($file.$a);background-repeat:no-repeat;
- min-height:"$h"px;
- padding-left:"$w"px;
- background-position:0% 50%;
-}" >> icon.css;
+       for i in `ls $j/*.$a 2>/dev/null` ; do file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
        done
      done
      mv icon.css $j ; if [ -s "$j/icon_orig.css" ]; then `cp $j/icon_orig.css $j/icon.css`; fi 
