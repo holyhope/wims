@@ -34,7 +34,11 @@ rclass=$r_class
 
 nb_user_error=!itemcnt $user_error
 
-!if $listclassesuser=$empty 
- error=user $quser didn't participate in $listclasses_cnt listed classes ($listclasses). This job also generated $nb_user_error errors ($user_error)  
+!if $listclassesuser=$empty
+ #debug_msg n'est utilis que pour le developpement, et sera ˆ retirer en production
+ !if $nb_user_error > 0
+ 	debug_msg = This job also generated $nb_user_error errors ($user_error) 
+ !endif
+ error=user $quser didn't participate in $listclasses_cnt listed classes ($listclasses). $debug_msg
  !exit
 !endif

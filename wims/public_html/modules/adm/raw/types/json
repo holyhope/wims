@@ -96,6 +96,9 @@ list=!replace internal  ,  by "," in $list
  !endif
 !next i
 
+sheet_properties = !replace internal " by $\"$ in $sheet_properties
+sheet_title = !replace internal " by $\"$ in $sheet_title
+sheet_description = !replace internal " by $\"$ in $sheet_description
 
  !shortout "query_class":"$qclass",\
 "query_sheet":"$qsheet",\
@@ -124,6 +127,10 @@ list=!replace internal  ,  by "," in $list
 !goto footer
 
 :getexam
+exam_properties = !replace internal " by $\"$ in $exam_properties
+exam_title = !replace internal " by $\"$ in $exam_title
+exam_description = !replace internal " by $\"$ in $exam_description
+
  !shortout "query_class":"$qclass",\
 "queryexam":"$qexam",\
 "exam_properties":"$exam_properties",\
@@ -433,7 +440,9 @@ $ by ],[ in $($v)
 
 :authuser
  !shortout "wims_session":"$num_session",\
-"home_url":"$wims_ref_name?session=$num_session.1"\
+"home_url":"$wims_ref_name?session=$num_session.1",\
+"user":"$quser",\
+"class_id":"$qclass"\
 
 !goto footer
 

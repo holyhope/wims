@@ -77,5 +77,15 @@ sheetcnt=!recordcnt wimshome/log/classes/$qclass/sheets/.sheets
 
 !writefile wimshome/log/classes/$qclass/sheets/.sheet$sheetcnt $sh_contents
 
+#Pour la creation de la premiere feuille, on cree le fichier .severity
+# On y definit la note maximale de la classe (par defaut, 10)
+# A la place de ce test, il faudrait peut etre plutot verifier l'existence du fichier .severity
+!if $sheetcnt=1
+	!writefile wimshome/log/classes/$qclass/sheets/.severity 10
+!endif
+
+# On definit le poids et la severité de cette feuille dans .severity (par defaut, 1 et 1)
+!appendfile wimshome/log/classes/$qclass/sheets/.severity 1 1
+
 
 wims_sheet=$n
