@@ -3,8 +3,10 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
+!distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
 请填写你的模块的
- <span class="wims_warning">$(name_$empty_data)</span>
+ <tt class="wims_warning">$(tmp_$(empty_data)</tt>
 的定义.
  !exit
 !endif
@@ -20,7 +22,7 @@
 !endif
 
 !if illegal_filedesc iswordof $error
-这里只能给出filedesc的定义, 不能放别的东西.
+这里只能给出<tt class="wims_fname">filedesc</tt>的定义, 不能放别的东西.
  !exit
 !endif
 
@@ -36,6 +38,23 @@
 
 !if badtarget iswordof $error
 目标模块地址不合要求: 太长, 太短, 不完整或非法字符.
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>incorrect zone</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>incorrect category</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>incorrect name</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>incorrect language</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>too long or too short address</li>
+  !endif
+ </ul>
  !exit
 !endif
 

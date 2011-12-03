@@ -3,9 +3,10 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
- Veuillez remplir la définition de
- <span class="wims_warning">$(name_$empty_data)</span>
- de votre module.
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
+ Veuillez remplir le champ <tt class="wims_warning">$(tmp_$(empty_data))</tt>
+ et vérifiez les autres champs.
  !exit
 !endif
 
@@ -15,13 +16,13 @@
 !endif
 
 !if binary_file iswordof $error
- Binary file is not allowed here.
+ Fichier binaire interdit.
  !exit
 !endif
 
 !if illegal_filedesc iswordof $error
- Vous ne pouvez pas placer autre chose que des définitions directes dans
- filedesc.
+ Vous ne pouvez mettre que des définitions directes dans 
+ <tt class="wims_fname">filedesc</tt>.
  !exit
 !endif
 
@@ -36,14 +37,31 @@
 !endif
 
 !if badtarget iswordof $error
- L'adresse de destination n'est pas bonne : trop longue, trop courte,
- incomplète ou caractères non admis.
+ L'adresse de destination <tt class="wims_address">$target</tt> n'est pas bonne : 
+ trop longue, trop courte, incomplète ou caractères non admis.<br/>
+ Détail des erreurs : 
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>Zone incorrecte</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>Catégorie incorrecte</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>Nom incorrect</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>Langue incorrecte</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>longueur incorrecte</li>
+  !endif
+ </ul>
  !exit
 !endif
 
 !if symlink iswordof $error
- Impossible de copier le module source, car il contient des liens
- symboliques.
+ Impossible de copier le module source, car il contient des liens symboliques.
  !exit
 !endif
 

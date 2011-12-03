@@ -3,9 +3,10 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
- Please fill in the definition of
- <span class="wims_warning">$(name_$empty_data)</span>
- of your module.
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
+ Please fill in the field <tt class="wims_warning">$(tmp_$(empty_data)</tt>
+and check the other fields.
  !exit
 !endif
 
@@ -20,7 +21,8 @@
 !endif
 
 !if illegal_filedesc iswordof $error
- You cannot put anything else than straightforward definitions in filedesc.
+ You cannot put anything else than straightforward definitions in 
+ <tt class="wims_fname">filedesc</tt>.
  !exit
 !endif
 

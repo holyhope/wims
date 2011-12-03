@@ -3,8 +3,10 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
  Quiere cumplir la definición de
- <span class="wims_warning">$(name_$empty_data)</span>
+ <tt class="wims_warning">$(tmp_$(empty_data)</tt>
  de su módulo.
  !exit
 !endif
@@ -37,6 +39,23 @@
 !if badtarget iswordof $error
  La dirección de destino no es buena: demasiado larga, demasiado corta,
  incompleta o caracteres no admitidos.
+ <ul>
+  !if incorrect_t1 iswordof $error
+   <li>incorrect zone</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>incorrect category</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>incorrect name</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>incorrect language</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>too long or too short address</li>
+  !endif
+ </ul>
  !exit
 !endif
 

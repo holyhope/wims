@@ -3,8 +3,10 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
  Vul het definitieveld 
- <span class="wims_warning">$(name_$empty_data)</span>
+ <tt class="wims_warning">$(tmp_$(empty_data)</tt>
  van uw module in.
  !exit
 !endif
@@ -20,7 +22,7 @@
 !endif
 
 !if illegal_filedesc iswordof $error
-    U kunt niets anders dan een omschrijving in de "filedesc"  
+    U kunt niets anders dan een omschrijving in de "<tt class="wims_fname">filedesc</tt>
     vermelden.
  !exit
 !endif
@@ -38,6 +40,23 @@
 !if badtarget iswordof $error
  Het adres van de module is niet goed: te lang,te kort, inkompleet
   of niet toegestane lettertekens
+  <ul>
+  !if incorrect_t1 iswordof $error
+   <li>incorrect zone</li>
+  !endif
+  !if incorrect_t2 iswordof $error
+   <li>incorrect category</li>
+  !endif
+  !if incorrect_t3 iswordof $error
+   <li>incorrect name</li>
+  !endif
+  !if incorrect_t4 iswordof $error
+   <li>incorrect language</li>
+  !endif
+  !if incorrect_tlen iswordof $error
+   <li>too long or too short address</li>
+  !endif
+ </ul>
  !exit
 !endif
 
@@ -48,4 +67,3 @@
 !endif
 
 !msg $error
-

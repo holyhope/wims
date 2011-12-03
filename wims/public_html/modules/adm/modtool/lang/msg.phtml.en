@@ -3,9 +3,10 @@
 <span class="wims_warning">$wims_name_Error</span>.
 
 !if empty_data iswordof $error
- Please fill in the definition of
- <span class="wims_warning">$(name_$empty_data)</span>
- of your module.
+ !distribute items $wims_name_title,$wims_name_Description,$wims_name_Type into tmp_title, tmp_description, tmp_category
+
+ Please fill in the field <tt class="wims_warning">$(tmp_$(empty_data)</tt>
+and check the other fields.
  !exit
 !endif
 
@@ -21,7 +22,7 @@
 
 !if illegal_filedesc iswordof $error
  You cannot put anything else than straightforward definitions in 
- filedesc.
+ <tt class="wims_fname">filedesc</tt>.
  !exit
 !endif
 
@@ -36,7 +37,7 @@
 !endif
 
 !if badtarget iswordof $error
-  Target module address ($target) is bad: , incomplete, or illegal characters.
+  Target module address <tt class="wims_address">$target</tt> is bad: too long, too short, incomplete, or illegal characters.
  <ul>
   !if incorrect_t1 iswordof $error
    <li>incorrect zone</li>
@@ -48,7 +49,7 @@
    <li>incorrect name</li>
   !endif
   !if incorrect_t4 iswordof $error
-   <li>incorrect lang</li>
+   <li>incorrect language</li>
   !endif
   !if incorrect_tlen iswordof $error
    <li>too long or too short address</li>
@@ -63,4 +64,3 @@
 !endif
 
 !msg $error
-
