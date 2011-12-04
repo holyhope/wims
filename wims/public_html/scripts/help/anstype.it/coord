@@ -17,15 +17,21 @@ La regione interna a un'ellisse di centro (x,y), larghezza w, e altezza h.
 La regione interna a un poligono di vertici 
   (x1,y1), (x2,y2), (x3,y3), ...
 
-:bound,FNAME,x,y
-bound defined in the image file FNAME, which must be of the same size as the clicked image (but can be a different image).
- The condition is met if (x,y) is in the same fill zone as the user click.
- If <tt class="wims_code_words">fill</tt> is in the <tt class="wims_code_words">option</tt> field of the reply, the zone is filled in red or green (instead of a ball).
-<span class="wims_warning">$wims_name_warning</span>. If the exercise is in a class, the image NOMFIC should be copied  :
+:bound,NOMEF,x,y
+zona deliminata dall'imagine contenuta nel file NOMEF, che deve avere le stesse
+dimensioni dell'immagine su cui si deve cliccare (ma che può essere un'immagine differente).
+La risposta è corretta se (x,y) nella stessa zona del punto in cui l'utente ha
+cliccato.
+ Se <tt class="wims_code_words">fill</tt> è presente nel campo <tt class="wims_code_words">option</tt> della risposta, l'intera zona di click è colorata di rosso o di verde (di default viene 
+disegnato un punto).
+<span class="wims_warning">$wims_name_warning</span>. Se Createxo è utilizzato all'interno di
+un corso, allora il file NOMEF deve essere copiato:
 <pre>\text{cache=draw(\size[1],\size[2]
-copy 0,0,-1,-1,-1,-1,NOMFIC)}
+copy 0,0,-1,-1,-1,-1,NOMEF)}
 \text{cache = slib(oef/insfilename)}
 </pre>
-In a module, it is sufficient to write its name.
+Se l'esercizio oef è parte di un modulo, è sufficiente scrivere il nome del file.
 :bound,FNAME
-as above, but the condition is met if the user click has DIFFERENT color than the pixel on the upper-left corner of FNAME.!changeto  help/anstype.fr/coord
+come sopra, la risposta è corretta se il punto in cui l'utente ha cliccato ha un colore
+DIVERSO rispetto al primo pixel nell'angolo in alto a sinistra del file NOMEF.
+
