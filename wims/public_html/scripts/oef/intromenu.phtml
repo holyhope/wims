@@ -15,11 +15,11 @@
 !set test_data=!replace internal data/ by in $module_data
 !set test_data=!defof title in datamodule/$test_data/INDEX
 !if $test_data= and $module_data!=
-   <p><i>
+   <p class="name_datamodule"><i>
    $name_datamodule
-   </i>
+   </i></p>
 !endif
-<p><center><hr width="35%"></center> <p>
+<p style="text-align:center"><hr width="35%"></p>
 
 !if robot isin $session
  !changeto content.html
@@ -82,72 +82,95 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 
 !form new
 <input type="hidden" name="module" value="$module">
-<center><table id="oef_intro_params"><caption>$name_menu</caption>
+<div id="oef_intro_params">
+<h2 class="legend oef_name_menu">$name_menu</h2>
 !if $exocnt>1
-<tr>
- !set special_parm=!trim $special_parm
- !if select iswordof $special_parm2 and $special_parm!=$empty
-  <td align="center">$name_exercisescontaining<br>
-  <em><font color="blue">$special_parm</font></em>&nbsp;:<td>
- !else
-  <td align="center">$name_chooseexo:<td>
- !endif
- !read oef/select.phtml
+ <div class="field">
+  !set special_parm=!trim $special_parm
+  !if select iswordof $special_parm2 and $special_parm!=$empty
+   <span>$name_chooseexo$name_exercisescontaining</span> &laquo;<em style="color:blue">$special_parm</em>&nbsp;&raquo;&nbsp;:
+  !else
+   <label for="exo">$name_chooseexo:</label>
+  !endif
+  !read oef/select.phtml
+ </div>
 !endif
-<tr><td align="center">$name_oneserie<td>
-!default qnum=1
-!formselect qnum from 1 to 9
- $name_exercises.
-<tr><td align="center">$name_levelseverity<td>
-!default qcmlevel=3
-!formselect qcmlevel from 1 to 9
-<tr><td align="center">$name_chrono<td>
-<input size="7" name="scoredelay" value="$scoredelay"> $name_secondes.
-</td></tr>
+<div class="field">
+ <label for="qnum">$name_oneserie
+ !default qnum=1
+ !formselect qnum from 1 to 9
+ $name_exercises.</label>
+</div>
+<div class="field">
+ <label for="qcmlevel">$name_levelseverity:</label>
+ !default qcmlevel=3
+ !formselect qcmlevel from 1 to 9
+</div>
+<div class="field">
+ <label for="scoredelay">$name_chrono:</label>
+ <input size="7" id="scoredelay" name="scoredelay" value="$scoredelay"/> $name_secondes.
+</div>
+<table class="field introhook">
 !read introhook.phtml
+</table>
 !if expert iswordof $special_parm2
-   <tr><td colspan="2"><fieldset>
-   <legend>Paramètrage expert</legend>
-   <table>
-   <tr><td align="center">
-   $name_qcmanswer: </td><td>
-   !default intro_qcmpresent=4
-   !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
-   </td></tr>
-   <tr><td align="center">$name_solutiongiven? </td><td>
-   !default intro_presentsol=1
-   !formselect intro_presentsol list 0,1,2 prompt $name_choice
-   <tr><td rowspan="4">&nbsp;</td><td>
-   !default intro_check=1,2,3,4
-   !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
-   </td></tr>
-   <tr><td align="left">
-   !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
-   </td></tr>
-   <tr><td align="left">
-   !formcheckbox  intro_check list 3 prompt $(name_choice_check[3])
-   </td></tr>
-   <tr><td align="left">
-   !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
-   !let tmp=!replace word expert by $ in $special_parm2
+   <fieldset class="oef_expert">
+    <legend>$name_expertmenu</legend>
+    <div class="field">
+     <label for="intro_qcmpresent">$name_qcmanswer: </label>
+     !default intro_qcmpresent=4
+     !formselect intro_qcmpresent list 2,3,4,5,6,7,8 
+    </div>
+    <div class="field">
+     <label for="intro_presentsol">$name_solutiongiven? </label>
+     !default intro_presentsol=1
+     !formselect intro_presentsol list 0,1,2 prompt $name_choice
+    </div>
+
+    !default intro_check=1,2,3,4
+    <div class="field">
+     <label>
+      !formcheckbox intro_check list 1 prompt $(name_choice_check[1])
+     </label>
+    </div>
+    <div class="field">
+     <label>
+      !formcheckbox intro_check list 2 prompt $(name_choice_check[2])
+     </label>
+    </div>
+    <div class="field">
+     <label>
+      !formcheckbox  intro_check list 3 prompt $(name_choice_check[3])
+     </label>
+    </div>
+    <div class="field">
+     <label>
+      !formcheckbox intro_check list 4 prompt $(name_choice_check[4])
+     </label>
+    </div>
+    !let tmp=!replace word expert by $ in $special_parm2
     <input type="hidden" name="intro_expert" value="yes">
-    </td></tr>
-  </table></legend></td></tr><tr>
+
    <td colspan="2" align="center">
    !set wims_ref_class=wims_button
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_simplifiedmenu
+   <p class="oef_intro_buttons">
+    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_simplifiedmenu
+   </p>
 !else
-   <tr><td colspan="2" align="center">
    !let tmp=$special_parm2 expert
    !set wims_ref_class=wims_button
-   !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_expertmenu
+   <p class="oef_intro_buttons">
+    !href module=$module&special_parm=$special_parm&special_parm2=$tmp&special_parm3=$special_parm3&special_parm4=$special_parm4 $name_expertmenu
+   </p>
 !endif
-</td></tr></table></center> <p><center>
-<input type="submit" value="$wims_name_work">&nbsp;
-<input type="submit" name="print" value="$name_print">
-<input type="hidden" name="special_parm2" value="$special_parm2">
-<input type="hidden" name="special_parm4" value="$special_parm4">
-</center>
+</div>
+
+<div class="oef_intro_buttons">
+	<input type="submit" value="$wims_name_work">&nbsp;
+	<input type="submit" name="print" value="$name_print">
+	<input type="hidden" name="special_parm2" value="$special_parm2">
+	<input type="hidden" name="special_parm4" value="$special_parm4">
+</div>
 </form>
 
 !if $exocnt>10
