@@ -4,7 +4,6 @@
 
 
 :modclass
-:delclass
 :deluser
 :recuser
 :search
@@ -213,6 +212,14 @@ exam_description = !replace internal " by $\"$ in $exam_description
 "exam_count":$examcnt,\
 "message":"exam #$wims_exam correctly added"\
 
+!goto footer
+
+:delclass
+cd=!replace internal / by _ in $qclass
+ !shortout "class_id":"$cd",\
+ "message":"class $cd correctly deleted",\
+ "log":"$log"\
+ 
 !goto footer
 
 :addclass
