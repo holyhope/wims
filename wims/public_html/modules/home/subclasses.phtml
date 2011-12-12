@@ -1,6 +1,9 @@
 !default CL_Name=$CL_Names
 !set arr=--->
-!for cnt in 3,1
+!if $supervisable=yes
+ !read subclasses-user.phtml
+!endif
+!for cnt in 1
  !if $(subclasscnt$cnt)>0 and $insc!=yes
   !if $supervisable!=yes
    $U_gotoclass
@@ -41,7 +44,7 @@
    !if $liste_cnt > 0
     !reset aux
     !if $tt=3 and $class_type< 4
-     !set aux=$arr<span class="wims_classes_direct_class"> $wims_classname ($(CL_Name[2]))</span>
+     !set aux=$arr<span class="wims_classes_direct_class">$wims_classname ($(CL_Name[2]))</span>
     !else
      !if $class_type < 4 and $tt=3 
       !set aux=$(CL_otherNames[1])
@@ -123,8 +126,3 @@
  !endif
  <p>
 !endif
-
-
-
-!! ligne to view new supervisor main page
-!! !read ./subclasses-user.phtml

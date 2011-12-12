@@ -1,13 +1,7 @@
----------------------------------------------------<br>
-Begin of new presentation portail main page for supervisor
-                                         <p>
-
-!set arr=--->
-
+$U_gotoclass3
 !let user_supervise=!defof user_supervise in wimshome/log/classes/$wims_superclass/.users/$wims_user
 !! ----------- definition des droits de connexion supervisor
-
-  <br>
+<br>
 !let compsup=$empty
 !for cls in $user_supervise
  !let tmp=!replace internal / by , in $cls
@@ -21,31 +15,44 @@ Begin of new presentation portail main page for supervisor
 !let compsup=!lines2items $compsup
 !let compsup=!nospace $compsup
 
-!let tab=&nbsp;&nbsp;&nbsp;&nbsp;
-!let tab_level=$tab
-!let tab_class=$tab$tab
-!let tab_course=$tab$tab$tab
-!let tab_program=$tab_class
-
-
+!let tab=0
 !for cls in $compsup
  !let don=!defof class_typename,class_description,class_supervisor,class_parent in wimshome/log/classes/$cls/.def
  !let t=!positionof item $(don[1]) in level,class,program,course
+ !if $t=3
+  !let ta=2
+ !else
+  !let ta=$t
+ !endif
+ !if $tab!=$ta
+  !if $tab>$ta
+   !for k=$ta+1 to $tab
+    </ul>
+   !next k
+  !else
+   !for k=$tab+1 to $ta
+    <ul class="wims_subclasses">
+   !next k
+  !endif
+ !endif
+ !let tab=$ta
  !if $t=4
   !let tmp=!defof class_typename in wimshome/log/classes/$(don[4])/.def
   !if $tmp=program
    !let t=5
   !endif
  !endif
- $(tab_$(don[1]))$arr <span class="wims_classes_direct_$(don[1])"> $(CL_Name[$t]) : 
+ <li>$arr <span class="wims_classes_direct_$(don[1])"> $(CL_Name[$t]) : 
  !if $cls notitemof $user_supervise
   $(don[2])
  !else
-  !href module=adm/class/classes&type=authsupervisor&class=$num&auth_user=supervisor $(don[2])
+  !href module=adm/class/classes&type=authsupervisor&class=$cls&auth_user=supervisor $(don[2])
  !endif
- ($(don[3])) </span> <p>
+ ($(don[3])) </span> </li>
 !next cls
-
+!for k=1 to $tab
+ </ul>
+!next k
 
 
 
