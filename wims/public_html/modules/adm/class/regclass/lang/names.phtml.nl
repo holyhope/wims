@@ -43,7 +43,7 @@ Kies hier het soort virtuele_ruimte dat U wilt aanmaken\
  name_characters,name_comeback,name_choose,name_warningpass
    
 !if $regpolicy=file
-    !set noright=U bent hiertoe niet bevoegd.
+    !set noright=U hebt geen toestemming hiervoor.
  !else
     !set noright=alleen de sitemanager is hiertoe bevoegd.
  !endif

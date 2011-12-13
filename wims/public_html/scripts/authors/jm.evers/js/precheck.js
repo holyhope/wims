@@ -541,6 +541,7 @@ function arrows(t,arg1,arg2,arg3){
 }
 
 function is_number(t){
+    if(t.length == 0 || t == " "){setAlarm(r44);return 0;}
     t=science(t);
     var s=t.toLowerCase();
     var functies=['log','ln','abs','sqrt','sin','cos','tan','atan','acos','sinh','cosh','tanh','pi'];
@@ -555,8 +556,10 @@ function is_number(t){
 }
 
 function is_real_number(t){
+    if(t.length == 0 || t == " "){setAlarm(r44);return 0;}
     t=science(t);
     var s=t.toLowerCase();
     s=s.replace(/[a-z\~\!\@\#\$\&\_\=\:\;]/g,'');
     if(s.length != t.length){setAlarm(r37+" "+t) ; return 0;}else{return 1;}
 }
+

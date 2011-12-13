@@ -631,6 +631,8 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 		}
 	    }
 	    System.out.println("xsize ("+xsize+") of applet too small...I've adjusted fontsize to "+fontsize);
+	    font  = new Font(fontname,Font.BOLD,fontsize);
+	    fm = g.getFontMetrics(font);
 	}
 	fontheight =(int) (0.6*fm.getHeight());
 	if( fontheight > ystep ){ // fonts will overlap !! decrease ygrid...
@@ -725,7 +727,8 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 		    backg.drawString(
 			((GridLine)objects.elementAt(i)).getText(),
 			((GridLine)objects.elementAt(i)).getX2()+linewidth,
-			((GridLine)objects.elementAt(i)).getY2()+(fontheight-linewidth)/2
+			((GridLine)objects.elementAt(i)).getY2()
+			//((GridLine)objects.elementAt(i)).getY2()+(fontheight-linewidth)/2
 		    );
 		}
 		else
@@ -733,7 +736,8 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 		    backg.drawString(
 			((GridLine)objects.elementAt(i)).getText(),
 			((GridLine)objects.elementAt(i)).getX1()-linewidth-fontwidth,
-			((GridLine)objects.elementAt(i)).getY2()+(fontheight-linewidth)/2
+			((GridLine)objects.elementAt(i)).getY2()
+			//((GridLine)objects.elementAt(i)).getY2()+(fontheight-linewidth)/2
 		    );
 		}
 		if(i == objcnt - 1){
@@ -798,7 +802,8 @@ public class InvulGrid extends JApplet implements  ActionListener,KeyListener,Mo
 			backg.drawString(
 			    ((GridLine)objects.elementAt(i)).getText(),
 		    	    ((GridLine)objects.elementAt(i)).getX2()+linewidth, // ---- +
-			    ((GridLine)objects.elementAt(i)).getY2()+(fontheight-linewidth)/2
+			    ((GridLine)objects.elementAt(i)).getY2()
+			    //((GridLine)objects.elementAt(i)).getY2()+(fontheight-linewidth)/2
 			);
 		    }
 		    else //french

@@ -1,28 +1,24 @@
 !set lang_exists=yes
 
+!set name_title=Aanmaken van een proefwerk
 !set name_mainpage=Hoofdpagina van het proefwerk
 
 !if $activetest<=0
-!! !let wims_name_sheetadmin=Werkblad aanmaak pagina
- !set name_title=!nosubst Aanmaken van werkblad $sheet
+ !set name_title=!nosubst Aanmaken van het proefwerk
 !else
-!! !let wims_name_sheetadmin=Werkblad beheer
- !set name_title=!nosubst Beheer van werkblad $sheet
+ !set name_title=!nosubst Beheer van het proefwerk
 !endif
 
 !read adm/lang/date.phtml.$lang
 !read adm/lang/sheetexam.phtml.$lang
-
-!! ---------------------------------------------------------------------------------------------------
-!! ancien fichier name du module exam.fr
-
-!set wims_name_scoreexam=Mijn cijfers
+!set wims_name_scoreexam=!nosubst $wims_name_myscore
 
 !set name_Options=Opties
 !set name_All=Alles
-!set name_title=Aanmaken van een proefwerk
 
 !set name_done=klaar
+
+!set name_instructions=Instructies
 
 !distribute lines Be&euml;indig deze proefwerksessie\
 Terug naar het proefwerk\
@@ -44,6 +40,7 @@ name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
 !set name_exam2=!nosubst Er zijn in't totaal $stries proefwerk pogingen beschikbaar.
+
 !set name_exam3=!nosubst Deze proefwerk sessie is be&euml;indigd met $tried pogingen,
 !set name_exam4=!nosubst Dit was proefwerk poging nummer $tried ,
 !set name_exam6=!nosubst En er zijn nu nog $tryremain poging(en) beschikbaar.
@@ -59,7 +56,7 @@ alleen worden nu de cijfers -en andere data- natuurlijk niet opgeslagen.
 !distribute lines bezig...\
 U bent nog niet begonnen met dit proefwerk.\
 Start dit proefwerk.\
-Uw score wordt niet geregistreerd, omdat dit proefwerk in simulatie mode loopt.\
+De score wordt niet geregistreerd, omdat dit proefwerk in simulatie mode loopt.\
 into name_pending,name_begin1,name_begin2,name_simulation2
 
 !set name_timeleft=!nosubst De beschikbare tijd is verlopen! Je hebt de toegestane $sdure minuten verbruikt.
@@ -87,14 +84,17 @@ into name_info,name_content,name_warning
 !let name_extab=!nosubst No,$wims_name_title,Inhoud,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
 !set name_contenu=Kies de inhoud
-!let name_cpsheet1=U kunt alle oefeningen van werkblad toevoegen aan het proefwerk. Elke oefening krijgt gewicht 1 en de titel van de oorspronkelijke oefening. Of geef hier generieke titel aan
+!let name_cpsheet1=U kunt alle oefeningen van werkblad toevoegen aan het proefwerk. \
+Elke oefening krijgt gewicht 1 en \
+de titel van de oorspronkelijke oefening. \
+Of geef hier generieke titel aan
 
 !let name_cpsheet3=Generieke titel voor een oefening
 !let name_cpsheet4=De oefeningen zijn genummerd
 
 !set name_warning_nonfinished=Je hebt nog niet alle opgaven uit dit proefwerk gemaakt. Wanneer je \
-  er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt.\
-  Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle\
-  random (!) sommen opnieuw doen... <p>Weet je zeker dat je er mee wilt stoppen?
+er nu mee stopt, wordt je cijfer bevroren en ben je dus een volle proefwerk poging kwijt. \
+Bij een eventuele volgende poging om dit proefwerk te maken, moet je wel weer alle  \
+random (!) sommen opnieuw doen... <p>Weet je zeker dat je er mee wilt stoppen?
 
 

@@ -1,0 +1,210 @@
+!! item_list : lines
+!! item_type : items
+!set DHTML=$empty
+!set n=$counter
+!if $dragcolors=$empty
+    !set unused_color=#ff0000
+    !set pick_color=#639bff
+    !set drop_color=#00fc96
+    !set blue_layer=#b2d1ff
+!else
+    !set unused_color=!item 1 of $dragcolors
+    !set pick_color=!item 2 of $dragcolors
+    !set drop_color=!item 3 of $dragcolors
+    !set blue_layer=!item 4 of $dragcolors
+!endif
+!if $break=$empty
+    !set break=1
+!endif
+!set c=0
+!set f=0
+!set total_objects=!itemcnt $item_type
+!set break_cnt=1
+<center>
+ <table summary="" border="0" bgcolor="$bgcolor1" cellpadding="$cellpadding" cellspacing="$cellspacing">
+    <tr>
+    <td>
+	$(question$n)
+	!if $exotext!=$empty
+	    <br>	
+	    <small>
+		<em>
+		    $exotext
+		</em>
+	    </small>
+	!endif	
+    </td>
+    </tr><tr>
+    <td align="center">
+	<table summary="draggable items">
+	    <tr>
+	    !for p=1 to $total_objects
+		!set thing=!line $p of $item_list
+		!set type=$(item_type[$p])
+		<td style="text-align:center;background-color:$blue_layer;vertical-align:middle;">
+		    <div id="mydiv$c" style="width:$xsize;height:$ysize;text-align:center;background-color:$unused_color;position:relative;border:2px solid red;">
+			!if $type=0
+			    $thing
+			!else
+			    !if $type=1
+				!if $tex_adjust=1
+				    !set ins_attr=width="$xsize"
+				!endif
+				!insmath $thing
+			    !else
+				!if $type=2
+				    !set ins_attr=width="$xsize" height="$ysize"
+				    !insdraw $thing
+				!else
+				    !if $type=3
+					!set ins_attr=width="$xsize" height="$ysize"
+					!insplot $thing
+				    !else
+					error: no type definitionlist $$item_type[$p]
+				    !endif
+				!endif
+			    !endif
+			!endif
+			!set DHTML=!append item "mydiv$c" to $DHTML
+			!increase c
+		    </div>
+		</td>
+		!if $break>1 and $[$p%2]!=0
+		    <td style="background-color:$blue_layer;text-align:center;vertical-align:middle;height:$ysize;width:$xsize">
+			<center>
+			    <img src="$gifdir/blank.gif" style="display:block" id="blank$f" alt="">
+			    <img src="$gifdir/leftright.gif" style="display:none" id="leftright$f" alt="">
+			</center>
+		    </td>
+		    !increase f
+		!endif
+		!if $break_cnt = $break
+		    !set break_cnt=0
+		    </tr>
+		    <tr>
+		!endif
+		!increase break_cnt
+	    !next p
+	    </tr>
+	</table>
+    </td>
+    </tr>
+    <tr>
+    <td align="center">
+	<table summary="send buttons">
+	    <tr>
+	    <th>
+    		<input type=button style="$mybuttonstyle" onclick="sendanswer();" value="$send">
+    	    </th>
+	    <th>
+		!if $wims_user != supervisor
+    		    <input type="button" style="$mybuttonstyle" onclick="showanswer();" value="show correct answer">		
+		!else
+		    !set clear=!record 67 of $remarkdir/commonremarks.$taal
+    		    <input type=button style="$mybuttonstyle" onclick="resetall();" value="$clear">
+    		!endif
+	    </th>
+	    <th>
+		<input type=button style="$mybuttonstyle" onclick="dontknow();" name="but2" value="$dontknow">
+	    </th>
+	    </tr>
+	</table>
+    </td>
+    </tr>
+ </table>
+</center>
+ 
+<script type="text/javascript" src="$jsdir/wz_dragdrop.js"></script>
+
+<script type="text/javascript">
+    SET_DHTML( CURSOR_MOVE , $DHTML);	
+    var orgx = 0;
+    var orgy = 0;
+    var pick_id = 0;
+    var size=dd.elements.length;
+    var reply = new Array();
+    for(var p = 0;p < size; p++){
+	reply[p] = p;
+    }
+    
+    function resetall(){
+	document.location.reload();
+    }
+    
+    function my_PickFunc(){
+	orgx = dd.obj.x;
+	orgy = dd.obj.y;
+	pick_id=dd.obj.id;
+	document.getElementById(dd.obj.id).style.backgroundColor = "$pick_color";
+    }
+    
+    function setVisible(n){
+	document.getElementById("leftright"+n).style.display = "block";
+	document.getElementById("blank"+n).style.display = "none";
+	return;
+    }
+    !if $wims_user!=supervisor
+	function showanswer(){
+	    !set r=0
+	    !for w=1 to $total_objects
+		!set a=!item $w of $(answer$n)
+		reply[$r] = "$a";
+		!increase r
+	    !next w
+	    for(var p = 0; p < size  ; p++){
+		var x1 = dd.elements["mydiv"+p].x;
+		var y1 = dd.elements["mydiv"+p].y;
+		var x2 = dd.elements["mydiv"+reply[p]].x;
+		var y2 = dd.elements["mydiv"+reply[p]].y;
+		dd.elements["mydiv"+p].moveTo(x2,y2);
+		dd.elements["mydiv"+reply[p]].moveTo(x1,y1);
+		try{setVisible(Math.floor(p/2));}catch(e){}
+		try{setVisible(Math.floor(reply[p]/2));}catch(e){}
+		document.getElementById("mydiv"+p).style.backgroundColor = "$drop_color";
+		document.getElementById("mydiv"+reply[p]).style.backgroundColor = "$drop_color";
+	    }
+	    return;
+	}
+    !endif
+    
+    function my_DropFunc(){
+	var marge=10;var x=dd.obj.x;var y=dd.obj.y;var found=0;var tmp;var idx;var id;
+	if( dd.obj.id == pick_id ){
+	    id = pick_id.replace("mydiv","");
+	    for(var p = 0; p < size  ; p++){
+		if(reply[p] == id){
+		    idx = p; // dus sleepplaatje heeft rangvolgorde idx
+		}
+	    }
+	    for(var p = 0; p < size  ; p++){
+		if(found == 0 && reply[p] != id){
+		    if( y > dd.elements["mydiv"+reply[p]].y - marge && y < dd.elements["mydiv"+reply[p]].y + marge){
+			if( x > dd.elements["mydiv"+reply[p]].x - marge && x < dd.elements["mydiv"+reply[p]].x + marge){
+			    dd.obj.moveTo(dd.elements["mydiv"+reply[p]].x,dd.elements["mydiv"+reply[p]].y);
+		    	    dd.elements["mydiv"+reply[p]].moveTo(orgx,orgy);
+			    found = 1;
+			    tmp = reply[p];
+			    try{setVisible(Math.floor(p/2));}catch(e){}
+			    try{setVisible(Math.floor(idx/2));}catch(e){}
+			    reply[p] = reply[idx];
+			    reply[idx] = tmp;
+			    document.getElementById("mydiv"+reply[p]).style.backgroundColor = "$drop_color";
+			    document.getElementById("mydiv"+reply[idx]).style.backgroundColor = "$drop_color";
+			}
+		    }
+		}
+	    }
+	}
+	if(found == 0){ dd.obj.moveTo(orgx,orgy);}
+	!!document.getElementById(dd.obj.id).style.backgroundColor = "$unused_color";}
+	dd.obj='null';
+    }
+    
+    function sendanswer(){
+	if(confirm(r0+"\n"+reply)){
+	    reply=encodeURIComponent(reply + "\n" + connect);
+	    URL = '$wims_ref_name?session=$session&+module=$module&+cmd=reply&+reply$n='+reply ;
+	    document.location.href = URL;
+	}
+    }
+</script>
