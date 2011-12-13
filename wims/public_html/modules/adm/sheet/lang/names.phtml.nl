@@ -12,6 +12,7 @@ Neem desgewenst contact op met je docent.
 !set name_score2=!nosubst $[$require] punten vereist.
 
 !set name_scoreopen=De cijfer registratie is open.
+!set name_scoreclosesup=L'arrêt de la notation n'est pas autorisé par votre enseignant.
 
 !set name_textsource=Hier staat de broncode van het werkblad. U kunt deze via \
 knippen en plakken in uw eigen klas importeren.

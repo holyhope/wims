@@ -12,22 +12,30 @@ wims_nw=deps prcnt empty job class_header data\
 	imagedir Imagedir Class_header wims_prefix wims_prefix2
 !default prcnt=0
 
+authscoresuspend=!defof class_authscoresuspend in wimshome/log/classes/$wims_class/.def
+!default authscoresuspend=yes
+!setdef wims_authscoresuspend=$authscoresuspend in wimshome/sessions/$wims_session/var.stat 
 
-!if $job=suspend
- wims_scorereg=suspend
-!endif
-!if $job=reopen
- wims_scorereg=$empty
-!endif
-!if ($job=suspend or $job=reopen) and $exo!=$empty
- !let limit=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sh
- !bound exo between 1 and $limit default 0
- !if $exo!=0
-  !set ex=!record $exo of wimshome/log/classes/$wims_class/sheets/.sheet$sh
-  !distribute lines $ex into di,pa,require,we,ti,de
-  !setdef w_wims_scorereg=$wims_scorereg in wimshome/sessions/$wims_session/var
-  !restart module=$di&cmd=new&worksheet=$public$sh&$pa
+!if $authscoresuspend=yes
+ !if $job=suspend
+  wims_scorereg=suspend
  !endif
+ !if $job=reopen
+  wims_scorereg=$empty
+ !endif
+ !if ($job=suspend or $job=reopen) and $exo!=$empty
+  !let limit=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sh
+  !bound exo between 1 and $limit default 0
+  !if $exo!=0
+   !set ex=!record $exo of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+   !distribute lines $ex into di,pa,require,we,ti,de
+   !setdef w_wims_scorereg=$wims_scorereg in wimshome/sessions/$wims_session/var
+   !restart module=$di&cmd=new&worksheet=$public$sh&$pa
+  !endif
+ !endif
+!else
+ wims_scorereg=$empty
+ !setdef w_wims_scorereg=$empty in wimshome/sessions/$wims_session/var
 !endif
 
 !if $seq!=

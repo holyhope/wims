@@ -13,6 +13,7 @@
 
 !set name_scoresuspend=El registro de las puntuaciones suspendido por usted mismo.
 !set name_scoreopen=El registro de las puntuaciones está abierto
+!set name_scoreclosesup=L'arrêt de la notation n'est pas autorisé par votre enseignant.
 
 !set name_textsource= Este es el fichero fuente de la hoja. Puede importarlo a su clase \
   simplemente mediante el sistema de cortar y pegar.

@@ -41,7 +41,8 @@ n=!wordcnt $et
 
 !bound up_limit between integer 1 and $wims_class_user_limit default $class_limit
 !bound up_topscores between integer 0 and $wims_class_user_limit default $class_topscores
-!default up_anonymtopscores=yes
+!bound up_anonymtopscores within yes,no default yes
+!bound up_authscoresuspend within yes,no default yes
 !bound up_exolog between integer 0 and $wims_exolog_limit
 !bound up_examlog between integer 0 and $wims_examlog_limit
 !default up_examshow=yes
@@ -111,6 +112,7 @@ up_secure=!char 1 to 1024 of $up_secure
 !set class_ldap_branch=$class_ldap_branch\
 !set class_ldap_uid=$class_ldap_uid\
 !set class_ldap_login=$class_ldap_login\
+!set class_authscoresuspend=$up_authscoresuspend\
 !set class_defined=yes in wimshome/log/classes/$wims_class/.def 
 
 lastname=!word -1 of $up_supervisor
