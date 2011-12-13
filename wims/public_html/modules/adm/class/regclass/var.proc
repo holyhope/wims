@@ -388,6 +388,8 @@ $email
   creator=$email
  !endif
  wims_module_log=created $code by $creator
- !exit
+ !if $wims_user!=$empty
+  !restart module=home
+ !endif
 !endif
 

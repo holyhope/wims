@@ -1,3 +1,6 @@
+!if $job2=connectlink
+ !changeto adm/class/link/links.phtml.$lang
+!endif
 !if $supertype=4 and $classdepth<=3
 <p><center>
  !href module=adm/class/gateway $wims_name_struct
@@ -170,11 +173,11 @@ $table_hdtr<td align="center" colspan="4">
 </td></tr>$table_end <p>
 </form>
 
-$name_apparence: 
+$name_apparence :
 !href module=adm/light&phtml=useropts.phtml.$lang $name_pref 
-.
+,
 !href cmd=reply&job=present $wims_name_config_present
-.
+,
 !href cmd=reply&job=oefdefault $wims_name_config_oef
 .
 <p>
@@ -185,6 +188,8 @@ $name_apparence:
 !href cmd=reply&job=neighbor&job2=first $name_neigh
 ,
 !href cmd=reply&job=connect&job2=first $name_link
+,
+!href cmd=reply&job=list&job2=connectlink $name_connectlink
 .
 <p>
 !if $classdepth<=1 
