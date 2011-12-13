@@ -1,6 +1,13 @@
 #! /bin/sh
+###############################################################################
+# gifs/theme/mkindex
+#
+# Create an automatic file "icon.css" for each theme icon directory.
+# 
+###############################################################################
+
 cd `dirname $0`
-list="png gif"
+type_list="png gif"
 
 if [ ! -s wimsedu1/home.png ] ;
  then
@@ -11,29 +18,32 @@ if [ ! -s wimsedu1/home.png ] ;
 fi;
 
 for j in `ls` ; do
- if [ -d "$j" ]; then rm $j/icon.css ; touch $j/icon.css ; w=0; h=0
-     for a in $list ; do 
-       if [ -s $j/home.$a ]; then 
+ if [ -d "$j" ] && [ ! -s "$j/icon_orig.css" ] ; then
+	rm $j/icon.css ;
+	touch $j/icon.css ;
+	w=0; h=0
+	for a in $type_list ; do 
+	 if [ -s $j/home.$a ]; then 
          w=`identify -format \%w $j/home.$a`;
          h=`identify -format \%h $j/home.$a`;
-       fi;
-     done;
-     w=`expr $w + 4`
-     h=`expr $h + 0`
-     echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a{
+	 fi;
+	done;
+	w=`expr $w + 4`
+	h=`expr $h + 0`
+	echo "#wimsmenumodubox .wimsmenu .menuitem a, .menuitem a, .topmenuitem a{
 	background-repeat:no-repeat;
 	background-position:0% 50%;
 	min-height:"$h"px;
+	line-height:"$h"px;
 	padding-left:"$w"px;
 }
-#wimsmenubox .menuitem {
-	background-image:none;
-}
+#wimsmenubox .menuitem {background-image:none;}
 " > icon.css
-     for a in $list ; do 
-       for i in `ls $j/*.$a 2>/dev/null` ; do file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
-       done
-     done
-     mv icon.css $j ; if [ -s "$j/icon_orig.css" ]; then `cp $j/icon_orig.css $j/icon.css`; fi 
+	for a in $type_list ; do 
+	  for i in `ls $j/*.$a 2>/dev/null` ; do 
+		file=`basename $i .$a` ; echo ".$file{background-image:url($file.$a);}" >> icon.css;
+	  done
+	done
+	mv icon.css $j ;
  fi;
 done
