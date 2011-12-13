@@ -492,10 +492,11 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    Color del texto en los botones \
    Color de fondo de los botones de ayuda \
    Color del texto en los botones de ayuda \
+   Connexion link\
   into name_secure,name_css,name_logo,name_position_logo,name_logo_side,name_theme,\
    name_theme_icon,name_level,name_security,name_password,name_supass,name_exolog,name_ent,\
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
-   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color
+   name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
 !set name_content_style = Puede definir aquí la hoja de estilo de la clase:\
 <br>(lorsque <tt class="wims_code_words">$name_css</tt>  est sur <tt class="wims_code_words">class</tt>)&nbsp;:
