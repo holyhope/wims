@@ -8,7 +8,7 @@
 $name_about1
 <a href="$wims_ref_name?module=help/teacher/faq&amp;job=oef" target="_blank">
 <abbr lang="EN" title="Online Exercise Format">OEF</abbr></a>.<br>
-<br>
+<br/>
 
   $table_header
     <caption>
@@ -62,8 +62,10 @@ $name_about1
 	!set configlink1=$wims_ref_name?module=adm/raw&amp;job=lightpopup&amp;emod=$module&amp;&parm=$module_init_parm1&option=noabout
 !endif
     $table_tr
-      <th>$wims_name_permalink<br><small>($wims_name_Link_for_bookmark)</small></th>
-      <td><ul>
+      <th>$wims_name_permalink</th>
+      <td>
+      $wims_name_permalink_desc
+      <ul>
           <li>$name_linkfor $wims_name_this_exercice : 
             !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
             <a href="$exolink">$exolink</a>
@@ -79,7 +81,7 @@ $name_about1
 	    !set module_init_parm1=!replace internal & by ; in $module_init_parm1
 	    !set module_init_parm1=cmd=new;$module_init_parm1
 	    !set configlink1=$wims_ref_name?module=adm/raw&amp;job=lightpopup&amp;emod=$module&amp;parm=$module_init_parm1&option=noabout
-	     <li>
+	     <li>"light" link (without interface) :
               <a href="$configlink1">$configlink1</a>
             </li>
 	     </li>
@@ -87,8 +89,10 @@ $name_about1
         </ul></td>
     </tr>
     $table_tr
-      <th>$wims_name_embeddable <small> ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site)</small></th>
-      <td><ul>
+      <th>$wims_name_embeddable</th>
+      <td>
+      <p> $wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site</p>
+      <ul>
           <li> 
             !set exolink=$wims_ref_name?module=$module&amp;cmd=new&amp;exo=$thisexo
             $wims_name_display <strong>$wims_name_this_exercice</strong> $wims_name_on_your_site ($wims_name_copy_and_paste $wims_name_the_code $wims_name_on_your_site) : <textarea  style="vertical-align:middle" rows="3" cols="50" readonly="readonly" >&lt;iframe src="$exolink&amp;embededwindow=true" width="$embedabble_width" height="$embedabble_height"&gt;&lt;/iframe&gt;</textarea>

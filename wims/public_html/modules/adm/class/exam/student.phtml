@@ -6,17 +6,20 @@ $classname\
 $title
 
 !if $wims_user=supervisor
- <center>($name_presentation)</center>
+ <div style="text-align:center">($name_presentation)</div>
 !endif
- <p>
-$desc<p>
+
+!if $desc!=$empty
+	<h2>$name_instructions :</h2>
+	<p class="exam_instructions">$desc</p>
+!endif
 
 !if $error!=$empty
  <p>
  !read lang/msg.phtml.$moduclass_lang
- <p>
+ </p>
  !href module=home $wims_name_back2
-. <p>
+. <br/>
  !exit
 !endif
 
@@ -27,29 +30,27 @@ $desc<p>
 !if $exocnt=0
  $name_empty
 !else
- $name_content:
+ <h2>$name_content:</h2>
  !set activeexo=0
  <p>
  !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
  !let maxlig=$[ceil($exocnt/$maxcol)]
- !if $maxcol>1
-  <center>
- !endif
- <table border="0" class="wims_exam">
+
+ <ol class="wims_exam">
   !for lig=1 to $maxlig
-   <tr>
+   <li>
     !for col=1 to $maxcol
      !let i=$[$col*$maxlig+$lig-$maxlig]
       !if $i<=$exocnt
-!! -------------------------- debut de la ligne correspondant р un exercice de l'examen
+!! -------------------------- debut de la ligne correspondant a un exercice de l'examen
  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
  !distribute lines $ex into we,li,ti,de,op
  !set de=!trim $de
- <td>$i.</td> 
+
  !if $t_=yes and ($allowtype=simulation or $tryremain>0 or \
    ($tryremain=0 and $registered!=$empty))
    !if $(replied$i)>0
-    <td>$ti </td><td>$name_done</td>
+    <span class="exo_name">$ti </span> - <span class="exo_done">$name_done</span>
    !else
     !if $de!=$empty
      !set dt=!examdep $exam $de
@@ -58,9 +59,9 @@ $desc<p>
     !endif
     !if $dt=yes
      !advance activeexo
-     <td>
+     <span class="exo_link">
      !href target=wims_exam cmd=new&worksheet=$exam.$i $ti
-</td><td class="empty">&nbsp;</td>
+</span>&nbsp;
      !if autogen iswordof $op and $wims_exam_remain!=$empty
       !set ss=$(wims_session)t$(exam)t$i
       !set test=!defof w_cmd in wimshome/sessions/$ss/var
@@ -70,23 +71,23 @@ $desc<p>
       !endif
      !endif
     !else
-     <td><b><font color="red">$ti</font></b> </td><td>
+     <span class="red">$ti</span>
+     <span>
      !href cmd=reply&job=student $name_depend
-.</td>
+.</span>
     !endif
    !endif
   !else
-   <td>$ti.</td><td class="empty"></td>
+   <span>$ti.</span>
   !endif
-!! -------fin d'affichage de la ligne correspondant ра un exercice
+!! -------fin d'affichage de la ligne correspondant а un exercice
       !endif
     !next col
-   </tr>
+   </li>
   !next lig
- </table>
- !if $maxcol>1
-  </center>
- !endif
+ </ol>
+
+
  !if $t_=no
   $name_examclosed
   !href cmd=reply&job=student $wims_name_refresh
@@ -134,7 +135,7 @@ to $wims_menu_items
 
 !if $t_=yes
  !if $allowtype=simulation
-  <p>$name_simulation
+  <p class="simulation">$name_simulation</p>
  !endif
 !endif
 
