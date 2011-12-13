@@ -53,14 +53,17 @@ $title
 
 !if $step=0
  !read lang/help.phtml.$modu_lang 2
+$Cltype
  !form reply
  <input type="hidden" name="step" value="1">
  $table_header
  $table_tr<td><label for="institution">$name_Name_portal</label></td><td>
  !if $Cltype isin 13
-  !default institution=$wims_institutionname
- !endif
+  !let institution=$wims_institutionname
+  $institution
+ !else
   <input size="$instlim" name="institution" value="$institution" id="institution">
+ !endif
   </td><td>($name_atmost $instlim $name_characters)
  </td></tr>
  $table_tr<td><label for="description">$wims_name_name $name_classesss</label></td><td>
@@ -68,7 +71,7 @@ $title
   </td><td>
   ($name_atmost $desclim $name_characters)
  </td></tr>
- 
+  
  !if $Cltype notin 24
  $table_tr<td><label for="level">$wims_name_level $name_classesss</label></td><td>
   <select name="level" id="level">
@@ -85,27 +88,40 @@ $title
 !set suplim2 =$[rint($suplim/3)]
 !set emaillim2= $[rint(2*$emaillim/3)]
  $table_tr<td>$wims_name_Supervisor</td><td>
- <table border="0" cellspacing="0"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
- <input size="$suplim2" name="firstname" value="$firstname" id="firstname">
-  </td></tr><tr><td><label for="lastname">$wims_name_lastname</label></td><td>
-  <input size="$suplim2" name="lastname" value="$lastname" id="lastname">
- </td></tr></table></td><td></td></tr>
-
+ !if $Cltype=1
+  !let firstname=$wims_firstname
+  !let lastname=$wims_lastname
+  $wims_supervisor
+ !else
+  <table border="0" cellspacing="0"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
+  <input size="$suplim2" name="firstname" value="$firstname" id="firstname">
+   </td></tr><tr><td><label for="lastname">$wims_name_lastname</label></td><td>
+   <input size="$suplim2" name="lastname" value="$lastname" id="lastname">
+  </td></tr></table>
+ !endif
+ </td><td></td></tr>
  $table_tr<td><label for="email">$wims_name_email</label></td><td>
-  <input size="$emaillim2" name="email" value="$email" id="email">
+  !if $Cltype=1
+   !default email=$wims_supervisormail
+   $wims_supervisormail
+  !else
+   <input size="$emaillim2" name="email" value="$email" id="email">
+  !endif
  </td><td>
  !if $regpolicy=email
    <br>($name_regpolicy)
   !endif
  </td></tr>
- $table_tr<td><label for="passsup">$wims_name_Password ($name_sup)</label></td><td>
-  <input size="16" type="password" name="passsup" id="passsup"> 
-  </td><td>
-  <small>
-  ($name_warningpass).
-  $name_help1</small>
- </td></tr>
-
+ !if $Cltype!=1
+  $table_tr<td><label for="passsup">$wims_name_Password ($name_sup)</label></td><td>
+   <input size="16" type="password" name="passsup" id="passsup"> 
+   </td><td>
+   <small>
+   ($name_warningpass).
+   $name_help1</small>
+  </td></tr>
+ !endif
+ 
  $table_tr<td><label for="password">$wims_name_Password ($name_classesss)</label></td><td>
   <input size="16" type="password" name="password" id="password">
   </td><td>

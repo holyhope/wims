@@ -171,12 +171,17 @@ thisday=!char 7,8 of $today
  Cltype=$cltype
 !endif
 !read adm/language names.phtml
+
 !if $step=1
  code=
  !if $Cltype isin 24
   !reset level,checklist
+  addcheck=,passsup
+ !else
+  addcheck=$empty
  !endif
- !for i in $(checklist)institution,description,firstname,lastname,email,password,passsup
+ 
+ !for i in $(checklist)institution,description,firstname,lastname,email,password$addcheck
   $i=!translate ,!$$"< to $     $ in $($i)
   $i=!singlespace $($i)
   $i=!trim $($i)
@@ -212,7 +217,12 @@ thisday=!char 7,8 of $today
   error=bad_level
   !exit
  !endif
- !for i in password,passsup
+ !if $Cltype=1
+  listpwd=password
+ !else
+  listpwd=password,passsup
+ !endif
+ !for i in $listpwd
   ptest=!text select $char_passwd in $($i)
   !if $ptest != $($i)
    error=bad_pass
@@ -267,7 +277,11 @@ $ in $email
   !exit
  !endif
  pword=$password
- psup=$passsup
+ !if $Cltype=1
+  psup=!defof user_password in $userdef
+ !else
+  psup=!passcrypt $passsup
+ !endif
  password=
  passsup=
  datasave=$institution\
@@ -279,7 +293,8 @@ $email
 !endif
 
 !if $step=2
- !if $password!=$pword or $passsup!=$psup
+ passsup2=!passcrypt $psup
+ !if $password!=$pword or $passsup2!=$psup
   error=pass_discord
   !exit
  !endif
