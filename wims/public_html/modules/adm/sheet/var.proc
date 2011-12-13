@@ -11,12 +11,25 @@ wims_prefix2=$wims_prefix
 wims_nw=deps prcnt empty job class_header data\
 	imagedir Imagedir Class_header wims_prefix wims_prefix2
 !default prcnt=0
+
+
 !if $job=suspend
  wims_scorereg=suspend
 !endif
 !if $job=reopen
- wims_scorereg=
+ wims_scorereg=$empty
 !endif
+!if ($job=suspend or $job=reopen) and $exo!=$empty
+ !let limit=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sh
+ !bound exo between 1 and $limit default 0
+ !if $exo!=0
+  !set ex=!record $exo of wimshome/log/classes/$wims_class/sheets/.sheet$sh
+  !distribute lines $ex into di,pa,require,we,ti,de
+  !setdef w_wims_scorereg=$wims_scorereg in wimshome/sessions/$wims_session/var
+  !restart module=$di&cmd=new&worksheet=$public$sh&$pa
+ !endif
+!endif
+
 !if $seq!=
  !set wims_sequence=$seq
 !endif
@@ -122,4 +135,5 @@ maxexo=!recordcnt $data
 !if $job iswordof print import
  !read $job.proc
 !endif
+
 

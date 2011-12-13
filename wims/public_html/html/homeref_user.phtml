@@ -75,6 +75,7 @@
   !set 1_=!append line print,3,window.print() to $1_
 !endif
 !set wims_rm_1=$1_
+
 :local
 !reset 1_
 !set 1_=!append line $wims_menu_items to $1_
@@ -100,8 +101,10 @@ $module_title
    !set wims_homeref_mean=!getscoremean sheet=$wims_sheet work=$wims_exo
    !set wims_name_score=!singlespace $wims_name_score
    !set 4_=!append line score,0,$wims_name_score to $4_
+   !set wims_rm_0=!append line scoreclose2,1,module=adm/sheet&sh=$wims_sheet&exo=$wims_exo&job=suspend to $wims_rm_0
   !else
    !set 4_=!append line score,0,$wims_name_scoresuspend to $4_
+   !set wims_rm_0=!append line scorereopen,1,module=adm/sheet&sh=$wims_sheet&exo=$wims_exo&job=reopen to $wims_rm_0
   !endif
  !else
   !set 4_=!append line score,0,$wims_name_scoreclose to $4_
@@ -110,6 +113,8 @@ $module_title
   !set wims_rm_0=!append line exolog,1,module=adm/class/exolog&cmd=new&job=log&logsheet=$wims_sheet&logexo=$wims_exo to $wims_rm_0
  !endif
 !endif
+
+
 !set wims_rm_2=$2_
 !set wims_rm_4=$4_
 !set wims_rm_5=$5_
