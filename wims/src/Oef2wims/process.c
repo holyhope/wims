@@ -23,7 +23,6 @@ char vbuf_hint[MAX_LINELEN+1];
 char vbuf_help[MAX_LINELEN+1];
 char vbuf_solution[MAX_LINELEN+1];
 char vbuf_latex[MAX_LINELEN+1];
-char vbuf_css[MAX_LINELEN+1];
 const size_t MAX_KEY_LEN=128;
 
 #include "sp.c"
@@ -85,6 +84,17 @@ void p_css(char *p[MAX_PARM])
     snprintf(vbuf_css,sizeof(vbuf_css),"%s",p[0]); subst(vbuf_css);
 	fprintf(outf,"oefcss=%s\n",vbuf_css); 
 }
+
+void p_credits(char *p[MAX_PARM])
+{
+    char vbuf_credits[MAX_LINELEN+1];
+    if(p==NULL) return;
+    snprintf(vbuf_credits,sizeof(vbuf_credits),"%s",p[0]); 
+    subst(vbuf_credits);
+	singlespace(vbuf_credits);
+	fprintf(outf,"credits=%s\n\n", vbuf_credits);
+}
+
 /* */
 
 void p_wims(char *p[MAX_PARM])

@@ -76,6 +76,7 @@ struct {
       {"computeanswer",	t_head,1,	p_computeanswer},
       {"condition",	t_cond,4,	p_condition},
       {"conditions",	t_cond2,1,	p_conditions},
+      {"credits",		t_def ,2,	p_credits},
       {"css",		t_head,1,	p_css},
       {"else",		t_def,0,	p_else},
       {"email",		t_head,1,	p_email},

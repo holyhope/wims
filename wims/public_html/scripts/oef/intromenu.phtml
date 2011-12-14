@@ -188,12 +188,39 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 $name_remarkintro1
 
 !if * isin $titlelist
- <p>$name_remarkintro2
+ <p>
+  $name_remarkintro2
+ </p>
 !endif
 
-<p><div class="wims_smallremark">
+<div class="wims_smallremark">
 $name_remarkintro3
 </div>
 
 
+!! very tricky ...
+!reset authorlist
+!set dictionary=$module_dir/$(class_header)Exauthors
+!set translator_unknown=unknown
+!set exolist_cnt=!itemcnt $exolist
+!for ex =1 to  $exolist_cnt
+  !set tmp=!exec translator $(exolist[$ex])
+  !set tmp=!replace internal , by $ $ in $tmp
+  !set authorlist=!append item $tmp to $authorlist
+!next
+!set authorlist=!replace internal $translator_unknown by in $authorlist
+
+!if $authorlist!= and $authorlist notsametext $exolist
+  !set authorlist=!listuniq $authorlist
+  !set tmp=!items2words $module_author
+  !set tmp=!replace internal ; by , in $tmp
+  !set tmp=!singlespace $tmp
+  !set authorlist=!singlespace $authorlist
+  !set authorlist=!listcomplement $tmp in $authorlist
+  !set authorlist_cnt=!itemcnt $authorlist
+  !set authorlist=!replace internal , by ,$ $ in $authorlist 
+  !if $authorlist_cnt > 1
+   <div class="wims_contribute">$name_Contribute $authorlist.</div>
+  !endif
+!endif
 
