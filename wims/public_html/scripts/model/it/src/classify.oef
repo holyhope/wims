@@ -35,6 +35,11 @@ codice dell'esercizio.
 Questo numero deve essere maggiore di 1.
 \integer{max1=4}
 
+:Il numero di proprietà da presentare (di default il numero di proprietà definite)
+Se il numero di proprietà definite è strettamente inferiore a questo parametro, 
+distrattori saranno scelti tra le proprietà non utilizzate. 
+\text{prop_cnt=}
+
 :Dimensioni dei riquadri da trascinare con il mouse, in pixel, x per y.
 Occorre tener presente che gli utenti possono cambiare le dimensioni delle
 fonti nel browser e quindi bisogna evitare di disegnare riquadri troppo
@@ -83,7 +88,7 @@ mucca,mammiferi
 }
 
 :Opzioni dell'esercizio.
-L'opzione "shuffle" permette di cambiare l'ordine in cui le categorie sono elencate.
+L'opzione <span class="wims_code_words">shuffle</span> permette di cambiare l'ordine in cui le categorie sono elencate.
 \text{option=}
 
 :Testo che precede la tabella. Sono permessi comandi html.
@@ -101,6 +106,8 @@ L'opzione "shuffle" permette di cambiare l'ordine in cui le categorie sono elenc
 :%%%%%%%%%%% Parte che precede l'enunciato: da non modificare %%%%%%%%%%%%%
 
 \integer{pcnt=items(\prop)}
+\integer{prop_cnt=\prop_cnt=? \pcnt}
+\integer{prop_cnt=min(\prop_cnt,\pcnt)}
 \integer{datacnt=rows(\data)}
 \integer{max2=\max1+1}
 \integer{tot=\tot<\pcnt?\pcnt}
@@ -110,7 +117,9 @@ L'opzione "shuffle" permette di cambiare l'ordine in cui le categorie sono elenc
 \text{firsti=}
 \text{second=}
 \text{secondi=}
-\for{i=1 to \pcnt}{
+\text{dist=}
+\text{disti=}
+\for{i=1 to \prop_cnt}{
  \text{t=shuffle(column(1,wims(select \data where column 2 issametext \prop[\i])))}
  \integer{s=min(\max1,items(\t))}
  \text{first=wims(append item \t[1] to \first)}
@@ -120,11 +129,18 @@ L'opzione "shuffle" permette di cambiare l'ordine in cui le categorie sono elenc
   \text{secondi=wims(append item wims(makelist \i for x=2 to \s) to \secondi)}
  }
 }
+distracteur
+\if{\prop_cnt<\pcnt}{
+ \text{t=shuffle(column(1,wims(select \data where column 2 issametext \prop[\prop_cnt+1])))}
+ \integer{s=min(\max1,items(\t))}
+ \text{dist=wims(append item \t[1] to \dist)}
+ \text{disti=wims(append item \i to \disti)}
+}
 
-\if{\tot>\pcnt}{
+\if{\tot>\prop_cnt}{
  \integer{scnt=items(\second)}
- \integer{secnt=min(\tot-\pcnt,\scnt)}
- \integer{tot=\pcnt+\secnt}
+ \integer{secnt=min(\tot-\prop_cnt,\scnt)}
+ \integer{tot=\prop_cnt+\secnt}
  \text{sh2=shuffle(\scnt)}
  \text{sh2=\sh2[1..\secnt]}
  \text{second=item(\sh2,\second)}
@@ -139,14 +155,14 @@ L'opzione "shuffle" permette di cambiare l'ordine in cui le categorie sono elenc
 \text{sh=shuffle(\acnt)}
 \text{all=item(\sh,\all)}
 \text{alli=item(\sh,\alli)}
-
+\text{prop=\prop[1..\prop_cnt]}
 \text{props=wims(tolower \prop)}
 \text{alls=wims(tolower \all)}
-
 \text{size=\size1 x \max2}
-\text{rep=item(1..\pcnt,wims(makelist r x for x=1 to 10))}
+\text{rep=item(1..\prop_cnt,wims(makelist r x for x=1 to 10))}
 \steps{\rep}
-\conditions{wims(makelist x for x=1 to \tot)}
+\text{distc=1}
+\conditions{wims(makelist x for x=1 to \tot + \distc)}
 
 :%%%%%%%%%%%%% Enunciato (in html). %%%%%%%%%%%%%%%%%%%%
 
@@ -157,15 +173,14 @@ in upper case, or \props[4] in lower case.
 
 \statement{\pre
 
-<table border=0>
+<table border="0">
 \for{k=1 to \pcnt}{
- <tr><td align=right>\prop[\k]</td>
+ <tr><td align="right">\prop[\k]</td>
  <td>\embed{reply \k, \size}
  </td></tr>
 }
 </table>
-\post
-}
+\post}
 
 :%%%%%%%%%%%%% Non modificare nulla da qui in poi. %%%%%%%%%%%%%%%%%
 
@@ -180,7 +195,7 @@ in upper case, or \props[4] in lower case.
 \answer{\prop[9]}{\r9}{type=dragfill}
 \answer{\prop[10]}{\r10}{type=dragfill}
 
-\text{totans=item(1..\pcnt,
+\text{totans=item(1..\prop_cnt,
 	wims(items2words \r1),
 	wims(items2words \r2),
 	wims(items2words \r3),
@@ -194,9 +209,9 @@ in upper case, or \props[4] in lower case.
 text{totans=wims(replace internal &#39; to ' in \totans)}
 \text{clean=}
 \text{check=}
-\for{t=1 to \tot}{
+\for{t=1 to \acnt}{
  \integer{cat=0}
- \for{r=1 to \pcnt}{
+ \for{r=1 to \prop_cnt}{
   \integer{cat=\all[\t] iswordof \totans[\r]?\r}
  }
  \if{\cat > 0}{
@@ -204,6 +219,18 @@ text{totans=wims(replace internal &#39; to ' in \totans)}
   \text{check=\alli[\t]=\cat?\check 1,:\check 0,}
  }{
   \text{clean=\clean \noclass,}
+  \text{check=\check 0,}
+ }
+}
+\integer{cat=0}
+\for{t=1 to 1}{
+ \text{all=\all,\dist}
+ \integer{cat=\dist[\t] iswordof \totans[\r]?\r}
+ \if{\cat = 0}{
+  \text{clean=\clean \noclass,}
+  \text{check=\check 1,}
+ }{
+  \text{clean=\clean \estun \props[\cat],}
   \text{check=\check 0,}
  }
 }
@@ -228,4 +255,3 @@ text{totans=wims(replace internal &#39; to ' in \totans)}
 \condition{\all[18] \clean[18]}{\check[18]=1}
 \condition{\all[19] \clean[19]}{\check[19]=1}
 \condition{\all[20] \clean[20]}{\check[20]=1}
-

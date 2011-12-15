@@ -1,6 +1,6 @@
 type=first
 textarea="data1 data2 data3 data4 data5 data6 data7 data8 data9 data10"
-:Più domande a scelta multipla visualizzate su una stessa pagina.
+:Domande a scelta multipla
 
 <p>Questo esercizio presenta una serie di domande a scelta multipla.</p>
 <p>Il numero massimo di domande è 10. L'autore può stabilire il numero
@@ -17,10 +17,10 @@ codice dell'esercizio.
 
 :%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
 
-:\title{Scelta multipla assortita (Beta)}
+:\title{Scelta multipla assortita}
 :\author{Bernadette Perrin-Riou}
 :\email{bpr@math.u-psud.fr}
-:Istruzioni generali
+:Istruzioni Generali
 Inserire qui le istruzioni comune a tutte le domande dell'esercizio
 \text{instruction=Istruzioni generali: rispondete a tutte le domande della prima serie, inviate, quindi rispondente alle domande della seconda serie.}
 
@@ -61,8 +61,7 @@ WIMs dividerà automaticamente l'esercizio in passi in funzione del numero totale
 \text{style_question=background-color: #FFFFCC;
 color:black;
 margin: 0 1em 0.5em 1em;
-padding: 0.2em;
-}
+padding: 0.2em;}
 
 :Stile css per la risposta
 
@@ -417,7 +416,13 @@ text{testexp=wims(nospace \testexp)}
          \if{\TEST[\h;3]>0}{<font color="red">\bad_answer_text</font>}
          \if{\TEST[\h;3]=0 and \TEST[\h;2]=0}{<span class="true">\good_answer_text</span>}
          \if{\answer_given=yes}{
-         <br> \qcm_prompt2 <span class="highlight true">\CHOIX[\h;\rep[\h;]]</span>}
+          <br> \qcm_prompt2 
+          <ul class="highlight true">
+             \for{s=1 to \CNT_choix[\h]}{
+               \if{\s isitemof \rep[\h;]}{ <li>\CHOIX[\h;\s]</li>} 
+            }
+          </ul>
+         }
       \if{\explication[\h;] notsametext }{<p class="feedback">\explication[\h;]</p>}     
      </div>
    }
