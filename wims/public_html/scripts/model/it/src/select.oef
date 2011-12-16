@@ -1,0 +1,264 @@
+type=datalist
+textarea="data"
+
+:Selezionare una parola, quindi rispondere a una domanda su questa parola
+Al primo passo, contrassegnare le parole; al secondo passo rispondere
+a una domanda su queste parole (texte à répondre). 
+
+<p>
+
+<small>
+Se questo esercizio viene inserito in un modulo OEF i dati possono essere
+raccolti in un file ausiliario. In questo caso è sufficiente definire
+la variabile \text{file=} con il nome del file 
+(questo va fatto nel momento in cui si inserisce l'esercizio in un modulo
+OEF in Modtool).
+In Quicktool è disponibile un esercizio di questo tipo più completo.
+</small>
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:
+\title{Domande su una selezione di parole}
+:
+\author{Bernadette,Perrin-Riou}
+:
+\email{bpr@math.u-psud.fr}
+
+:Consegna per la prima domanda
+\text{instruction=Selezionare i verbi.}
+:Consegna per la seconda domanda
+\text{instruction2=Quali sono i rispettivi infiniti?}
+
+:Analisi della ripsosta alla seconda domanda
+Le possibili opzioni sono <tt>case</tt>, <tt>nocase</tt> (non tenere conto delle maiuscole/minuscole casse).
+\text{format=case}
+:Numero di righe di dati
+\text{M=3}
+:Dimensione della risposta alla seconda domanda
+\text{size=15}
+
+:Dati
+Una frase per riga. Le parole da selezionare devono essere inserite tra
+due coppie di punti di domanda "??", seguite dal testo della risposta alla
+seconda domanda, usando come separatore il simbolo
+<tt class="wims_code_words">|</tt>.
+
+\text{data= Le chat ??mange|manger?? la souris.
+Vous ??{avez bu,buvez}|boire?? du {thé,café}.
+Nous ??tournons|tourner?? les pages du livre une à une.
+Les randonneurs ??{feront,font}|faire?? un feu. 	
+Il ??{a déménagé,déménage}|déménager?? pendant les vacances. 	
+Les navires ??{ont quitté,quittent}|quitter?? le port aujourd'hui. 	
+Mon chien ??remue|remuer?? {la queue,les oreilles}. 	
+Tu ??{prépareras,as préparé,prépares}|préparer?? un cadeau pour tes {parents,grands-parents}.
+Je ??suis arrivé|arriver?? {en retard,en avance} à mon rendez-vous.
+{Christian,Paul} et moi ??regardons|regarder?? un film d'aventure.
+}
+
+:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+################
+\text{file=}
+\text{partialscore=split}
+
+\text{first_step=1}
+\text{alea=yes}
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   .reponse {background-color: #FFCC99;color: black;margin: 2% 2%;padding: 1%;}
+   .oefstatement{}
+   ol li {list-style: upper-alpha; }
+ </style>}
+\text{paste=yes}
+\text{pos_rep=outside}
+\text{second_step=yes}
+#####################
+
+
+\text{format0=mark}
+
+\if{\file notsametext}{
+  \text{file0=randitem(\file)}
+  \integer{cnt_question= wims(recordcnt \file0)}
+  \text{battage=\alea issametext yes ? shuffle(\cnt_question):
+wims(makelist x for x = 1 to \cnt_question)}
+\text{texte=wims(record \battage[1] of \file0)}
+   }{
+  \integer{cnt_question=rows(\data)}
+  \integer{N=min(\cnt_question,\M)}
+  \integer{N=min(\N,10)}
+  \text{liste=shuffle(\cnt_question)}
+  \text{liste=\liste[1..\N]}
+  \matrix{data=\data}
+  \text{texte=\data[\liste;]}
+  \text{texte=wims(replace internal ; by  </p><p> in <p>\texte</p>)}
+}
+
+\text{autocompletion=\format iswordof case ? autocomplete=off}
+\integer{first_step=\first_step notwordof 0 ? 1}
+\text{option_reaccent=\reaccent!=yes ? noreaccent:}
+\text{nopaste=\paste issametext no ? slib(utilities/nopaste )}
+
+\text{size=\format iswordof dragfill clickfill ? \size x 1}
+
+\text{texte=wims(\texte)}
+\text{texte=wims(embraced randitem \texte)}
+\text{texte=wims(replace internal ??| by ??&nbsp;| in \texte)}
+\text{texte=wims(replace internal ?? | by ??&nbsp;| in \texte)}
+\matrix{texte=slib(text/markgroup \texte)}
+\matrix{numero=\texte[1..-4;]}
+\text{traduction=\texte[-2;]}
+\text{traduction=wims(replace internal || by | in \traduction)}
+\text{cnt_mot = rows(\numero)}
+\text{Numero = wims(rows2lines \numero)}
+\text{Numero = wims(lines2items \Numero)}
+\text{prem_numero=wims(column 1 of \numero)}
+\text{texte = \texte[-3;]}
+\text{cnt = items(\texte)}
+\text{Texte=wims(items2words \texte)}
+  
+\text{rep_compose = }
+\for{ i = 1 to \cnt_mot}{
+ \text{nom_compose= \texte[\numero[\i;]]}
+ \text{nom_compose =wims(items2words \nom_compose)}
+\text{rep_compose = \rep_compose,\nom_compose}
+}
+\text{rep_compose= wims(nonempty items \rep_compose)}
+
+\text{STEP = wims(makelist r x for x = 2 to \cnt_mot+1)}
+\text{position=}
+\integer{a=0}
+\for{t = 1 to \cnt}{
+  \if{\t isitemof \prem_numero}{
+    \integer{a =\a+1}
+    \text{position=\position,\a}
+  }{
+    \text{position=\position,0}
+  }
+ }
+\text{position=wims(nonempty items \position)}
+
+\text{STEP1=\first_step=1?r1}
+\text{STEP1=\second_step issametext yes ? \STEP1
+\STEP
+}
+
+\steps{\STEP1}
+
+
+\integer{reste=\cnt%\coupure}
+\integer{quo=(\cnt-\reste)/\coupure}
+\integer{quo=\reste=0? \quo-1}
+\text{nombre=wims(makelist x for x = 1 to \cnt)}
+%%%%%%%%%%%
+
+\statement{\nopaste <p>\instruction</p>
+\preliminaire
+  \if{\reading notsametext }{\special{help reading,[à lire]}}
+  \if{\image notsametext }{\special{help image,[à regarder]}}
+  \audio\video
+  \if{\step=\first_step}{
+    <div class="question">
+   \if{\format iswordof flashcard}{
+     <p> \for{h=1 to \cnt}{\texte[\h] }</p>}  
+    \for{h=1 to \cnt}{
+      \embed{reply 1,\h} 
+    }
+    </div>
+   }
+ \if{\step >=1+\first_step}{
+   \if{\pos_rep=outside}{
+     <div class="reponse">
+     \for{s = 1 to \cnt}{
+      \if{\s notitemof \Numero}{\texte[\s]}{
+      \if{\s isitemof \Numero}{
+      <font size="+1" color="blue">\texte[\s]</font>}
+      }
+    }
+    </div>
+     <p>\instruction2</p>
+    <div class="question">
+    <table>
+   \for{s= 1 to \cnt_mot}{
+         <tr><td> \rep_compose[\s]</td> <td>:</td><td> \embed{reply \STEP[\s],\size
+         \autocompletion}</td></tr>
+   }
+   </table>
+   </div>
+ }
+ \if{\pos_rep=inside}{
+    <p>\instruction2</p>
+    <div class="question">
+    \for{s = 1 to \cnt}{
+      \if{\s notitemof \Numero}{\texte[\s]}{
+      \if{\s isitemof \prem_numero}{
+      \embed{\STEP[\position[\s]], \size
+      \autocompletion}
+      }
+      <font size="-1" color="red">\texte[\s]</font>}
+    }
+   </div>
+  }
+  \if{\pos_rep=under}{
+    <div class="question">
+    \for{u = 0 to \quo}{<table border="0">
+    <tr>
+    \for{ v = 1 to \coupure}{<td align="center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+         or \nombre[\coupure*\u+\v] notitemof \Numero}{}
+       \if{\coupure*\u+\v <= \cnt}{ 
+         \if{\nombre[\coupure*\u+\v] isitemof \Numero}{<font color="blue">}
+           \texte[\coupure*\u+\v]}{&nbsp;}
+          \if{\nombre[\coupure*\u+\v] isitemof \Numero}{</font>}
+       </td>
+      }
+     </tr><tr>
+     \for{ v = 1 to \coupure}{
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero 
+         or \nombre[\coupure*\u+\v] notitemof \Numero}{}
+        <td align="center">
+      \if{\nombre[\coupure*\u+\v] isitemof \prem_numero}{ 
+         \embed{\STEP[\position[\nombre[\coupure*\u+\v]]], \size
+         \autocompletion}
+      }{&nbsp;}
+      </td>
+     }
+    </tr><tr><td colspan="\coupure"><hr></td></tr>
+       </table> }
+
+   </div>
+  }
+ }
+}
+
+\answer{}{\Numero;\texte}{type=\format0}{option=\partialscore \option}
+\answer{\rep_compose[1]}{\traduction[1];\choix}{type=\format}
+\answer{\rep_compose[2]}{\traduction[2]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[3]}{\traduction[3]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[4]}{\traduction[4]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[5]}{\traduction[5]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[6]}{\traduction[6]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[7]}{\traduction[7]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[8]}{\traduction[8]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[9]}{\traduction[9]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[10]}{\traduction[10]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[11]}{\traduction[11]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[12]}{\traduction[12]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[13]}{\traduction[13]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[14]}{\traduction[14]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[15]}{\traduction[15]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[16]}{\traduction[16]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[17]}{\traduction[17]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[18]}{\traduction[18]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[19]}{\traduction[19]}{type=\format}{option=\option_reaccent}
+\answer{\rep_compose[20]}{\traduction[20]}{type=\format}{option=\option_reaccent}
+     

@@ -1,0 +1,70 @@
+type=datalist
+textarea="data"
+
+:Mettere in ordine (tipo puzzle).
+
+Sono presesntate alcune etichette in ordine casuale. È richiesto di metterle in ordine.
+Il puzzle va risolto scambiando di posto le caselle a due a due: 
+per fare ciò cliccare sulla prima e quindi sulla seconda.
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+:\title{Puzzle di parole}
+:\author{Bernadette Perrin-Riou}
+:Consegna
+\text{instruction=Ricostruire la frase. Per scambiare due caselle, cliccare
+prima su una e poi sull'altra.}
+:Numero di domande proposte (massimo 5)
+\text{N=2}
+:Contenuto effettivo dell'esercizio.
+Inserire i componenti del puzzle, separandoli da virgole. Non ci devono 
+essere parole ripetute.
+\text{data=Il, gatto, ha, catturato, il topo.
+Il, cane, non, mangia, topi.
+\(\forall \epsilon), \(\exists \delta), t.c. , \(f(x)=x)
+}
+
+:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+
+\integer{M=rows(\data)}
+\integer{N=min(\N,\M)}
+\integer{N=min(\N,10)}
+\text{liste=shuffle(\M)}
+\text{liste=\liste[1..\N]}
+\matrix{data=\data}
+\matrix{data=\data[\liste;]}
+\text{option=}
+\for{j=1 to \N}{
+ \integer{nb_item=items(\data[\j;])}
+ \text{option=wims(append line 1 x \nb_item to \option)}
+}
+\matrix{option=\option}
+\text{STEP=wims(makelist r x for x=1 to \N)}
+\steps{\STEP}
+\statement{\instruction
+\if{\N=1}{<p> </p>
+ <center>\embed{r 1, 400 x 60}</center>
+}{
+ \for{s=1 to \N}{<p> \s: </p>
+ <center>\embed{r \s, 400 x 60}</center>
+}
+}
+}
+\answer{1}{\data[1;];\option[1;] x 80}{type=puzzle}{option=text}
+\answer{2}{\data[2;];\option[2;] x 80}{type=puzzle}{option=text}
+\answer{3}{\data[3;];\option[3;] x 80}{type=puzzle}{option=text}
+\answer{4}{\data[4;];\option[4;] x 80}{type=puzzle}{option=text}
+\answer{5}{\data[5;];\option[5;] x 80}{type=puzzle}{option=text}
+\answer{6}{\data[6;];\option[6;] x 80}{type=puzzle}{option=text}
+\answer{7}{\data[7;];\option[7;] x 80}{type=puzzle}{option=text}
+\answer{8}{\data[8;];\option[8;] x 80}{type=puzzle}{option=text}
+\answer{9}{\data[9;];\option[9;] x 80}{type=puzzle}{option=text}
+\answer{10}{\data[10;];\option[10;] x 80}{type=puzzle}{option=text}

@@ -1,0 +1,169 @@
+type=datalist
+textarea="data1 data2 data3 data4 data5"
+
+:Combinazione di lettere
+Comporre una parola con le lettere date. Possono essere inserite fino a 5
+liste di parole.
+Ogni volta viene estratta casualmente una parola da queste liste. Per ogni
+parola può essere indicato un suggerimento/indicazione.
+<p>
+<span class="wims_warning">$wims_name_warning</span>. È necessario 
+verificare che con le stesse lettere non siano realizzabili altre parole,
+oppure inserire una indicazione per permettere la differenziazione.
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+</p>
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:\title{Comporre una parola con le lettere date}
+:\author{Bernadette Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
+
+:Consegna
+\text{instruction=Comporre una parola utilizzando tutte le lettere proposte.}
+
+:Numero di parole (al massimo 5)
+Il numero di parole deve essere inferiore a 5 e inferiore al numero delle liste
+compilate nel seguito.
+\integer{N=3}
+
+:Prima lista di parole
+Inserire una parola per rita, seguita eventualmente da un suggerimento.
+\text{data1=bille, un jeu
+domino,un jeu}
+:Seconda lista di parole
+\text{data2=enfant
+mère
+père}
+:Terza lista di parole 
+\text{data3=maison
+immeuble
+villa
+habitation
+}
+:Quarta lista di parole
+\text{data4=}
+:Quinta lista di parole
+\text{data5=}
+
+:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+\matrix{data1=\data1}
+\text{mot1=wims(nonempty items \data1[;1])}
+\text{mot1=items(\mot1)>=2 ? shuffle(\mot1)}
+\text{mot1=\mot1[1]}
+\text{indication1=wims(select \data1 where column 1 issametext \mot1)}
+\text{indication1=\indication1[2]}
+\text{indication1=\indication1 issametext ? xxx}
+\text{mot=\mot1}
+\matrix{indication=\indication1}
+\matrix{data2=\data2}
+\text{mot2=wims(nonempty items \data2[;1])}
+\text{mot2=items(\mot2)>=2 ? shuffle(\mot2)}
+\text{mot2=\mot2[1]}
+\if{\mot2!=}{
+ \text{indication2=wims(select \data2 where column 1 issametext \mot2)}
+ \text{indication2=\indication2[2]}
+ \text{indication2=\indication2 issametext ? xxx}
+ \text{mot=wims(append item \mot2 to \mot)}
+ \matrix{indication=wims(append line \indication2 to \indication)}
+}
+\matrix{data3=\data3}
+\text{mot3=wims(nonempty items \data3[;1])}
+\text{mot3=items(\mot3)>=2 ? shuffle(\mot3)}
+\text{mot3=\mot3[1]}
+\if{\mot3!=}{
+  \text{indication3=wims(select \data3 where column 1 issametext \mot3)}
+  \text{indication3=\indication3[2]}
+  \text{indication3=\indication3 issametext ? xxx}
+  \text{mot=wims(append item \mot3 to \mot)}
+  \matrix{indication=wims(append line \indication3 to \indication)}
+}
+
+\matrix{data4=\data4}
+\text{mot4=wims(nonempty items \data4[;1])}
+\text{mot4=items(\mot4)>=2 ? shuffle(\mot4)}
+\text{mot4=\mot4[1]}
+\if{\mot4!=}{
+  \text{indication4=wims(select \data4 where column 1 issametext \mot4)}
+  \text{indication4=\indication4[2]}
+  \text{indication4=\indication4 issametext ? xxx}
+  \text{mot=wims(append item \mot4 to \mot)}
+  \matrix{indication=wims(append line \indication4 to \indication)}
+}
+
+\matrix{data5=\data5}
+\text{mot5=wims(nonempty items \data5[;1])}
+\text{mot5=items(\mot5)>=2 ? shuffle(\mot5)}
+\text{mot5=\mot5[1]}
+\if{\mot5!=}{
+  \text{indication5=wims(select \data5 where column 1 issametext \mot5)}
+  \text{indication5=\indication5[2]}
+  \text{indication5=\indication5 issametext ? xxx}
+  \text{mot=wims(append item \mot5 to \mot)}
+  \matrix{indication=wims(append line \indication5 to \indication)}
+}
+
+\integer{N1=items(\mot)}
+\text{bat=shuffle(\N1)}
+\integer{N=min(\N1,\N)}
+
+\text{mot=\mot[\bat]}
+\matrix{indication=\indication[\bat;]}
+\text{mot1=wims(text expand \mot[1] using 01)}
+\text{mot1=wims(words2items \mot1)}
+
+\text{mot2=wims(text expand \mot[2] using 01)}
+\text{mot2=wims(words2items \mot2)}
+
+\text{mot3=wims(text expand \mot[3] using 01)}
+\text{mot3=wims(words2items \mot3)}
+
+\text{mot4=wims(text expand \mot[4] using 01)}
+\text{mot4=wims(words2items \mot4)}
+
+\text{mot5=wims(text expand \mot[5] using 01)}
+\text{mot5=wims(words2items \mot5)}
+
+\text{Mot=}
+\text{STEP=wims(makelist r x for x=1 to \N)}
+\text{STEP=r1}
+\nextstep{\STEP}
+
+\statement{
+\for{a=1 to \step-1}{ 
+  \if{\a <= \N}{
+  <div style="font-size:large;padding:6px; margin-left:10px;wdith:50%;
+  border: 1px solid #555555;">\Mot[\a;]  
+  \if{ \indication[\a;] notsametext xxx }{ (\indication[\a;]) }</div>
+  }
+}
+\if{\step <= \N}{
+\instruction
+<p>
+<center>\embed{r \step,50 x 50} 
+\if{ \indication[\step;] notsametext xxx }{
+(<span style="font-size:large;">\indication[\step;]</span>) }
+</center>
+}
+}
+\answer{}{\mot1}{type=dragfill}{option=nonstop}
+\answer{}{\mot2}{type=dragfill}{option=nonstop}
+\answer{}{\mot3}{type=dragfill}{option=nonstop}
+\answer{}{\mot4}{type=dragfill}{option=nonstop}
+\answer{}{\mot5}{type=dragfill}{option=nonstop}
+
+\text{Mot=\reply1
+\reply2
+\reply3
+\reply4
+\reply5}
+\text{Mot=wims(replace , by in \Mot)}
+\matrix{Mot=\Mot}
+\text{STEP=\step <= \N ? r \step:}

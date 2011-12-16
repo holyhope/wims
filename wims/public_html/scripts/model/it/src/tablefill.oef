@@ -1,0 +1,175 @@
+type=datalist
+textarea="data"
+
+:Classificare oggetti selezionando le proprietà in una tabella.
+
+Viene presentata una lista di oggetti e una lista di attributi (proprietà). Si
+deve compilare la tabella selezionando le proprietà che sono soddisfatte dagli
+oggetti.
+<p>
+Per costruire un esercizio utilizzando questo modello è sufficiente
+inserire la lista degli attributi e una lista di oggetti, nella quale
+è indicato se gli oggetti verificano o meno le proprietà (prese nell'ordine
+in cui sono state indicate, contrassegnando i caso con uno 0 o un 1)
+<p>
+Se questo esercizio viene inserito in un modulo OEF i dati possono essere
+raccolti in un file ausiliario. In questo caso è sufficiente definire
+la variabile \text{file=} con il nome del file 
+(questo va fatto nel momento in cui si inserisce l'esercizio in un modulo
+OEF in Modtool).
+<p>
+Autore del modello: Bernadette Perrin-Riou <bpr@math.u-psud.fr>
+
+:%%%%%%%%%%%%%%%%%      ATTENZIONE      %%%%%%%%%%%%%%%%%%%%
+
+Se si rimuovono le indicazioni del modulo modelli (le righe che
+cominciano con ':') è necessario rimuovere tutta questa parte
+introduttiva del file. Altrimenti Createxo potrebbe non accettare il
+codice dell'esercizio.
+
+:%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
+
+:
+\title{Completa la tabella}
+:
+\author{Bernadette Perrin-Riou}
+:
+\email{bpr@math.u-psud.fr}
+:Istruzioni
+\text{instruction=Completa la tabella.}
+
+:Numero di oggetti da mostrare
+\integer{N=3}
+
+:Nome del file
+Compilare solo se si desidera inserire questo esercizio in un modulo OEF
+in Modtool e utilizzare un file di dati di tipo
+<pre>
+ peli, piume, quattro arti, ali
+:gazza,0,1,1,1
+:manzo,1,0,1,0
+</pre>
+In questo caso le righe seguenti non saranno prese in considerazione.
+Altrimenti compilare anche tutto il resto.
+
+\text{file=}
+:Elenco delle proprietà
+\text{attribut=peli, piume, quattro arti,ali}
+:Dati
+una riga per ogni elemento.
+\text{data=gazza,0,1,1,1
+bovino,1,0,1,0
+gatto,1,0,1,0
+zanzara,0,0,0,1}
+:Testi per le risposte
+Mettre le nom des objets suivi par les nombres 0 ou 1 solon que l'attribut est vrai ou faux,
+un objet par ligne.
+\text{nonoui=--,X}
+
+:%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
+maximum 40 cases à remplir
+
+\integer{w=\size[1]+10}
+
+\css{<style type="text/css">
+   .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
+   table.tableau {border:solid 1px;
+    border-collapse:collapse;}
+    table.tableau td, th {text-align:center;border:solid 1px;width:55px;}
+   ol li {list-style: upper-alpha; }
+    table.tableau th { background-color:#CCCFFF;}
+ </style>}
+\if{\file notsametext}{
+  \text{file=randitem(\file)}
+  \text{attribut=wims(record 0 of \file)}
+  \integer{datacnt=wims(recordcnt \file)}
+  \integer{N=min(\N,\datacnt)}
+  \text{choix=shuffle(\datacnt)}
+  \text{choix=\choix[1..\N]}
+  \text{data=}
+  \for{s in \choix}{
+    \text{data=\data
+wims(record \s of \file)}
+  }
+  \matrix{data=\data}
+  \text{data=wims(replace internal ;; by ; in \data)}
+}{
+  \text{objet_cnt=rows(\data)}
+  \integer{N=min(\N,\objet_cnt)}
+  \text{bat=shuffle(\objet_cnt)}
+  \text{bat=\bat[1..\N]}
+  \matrix{data=\data}
+  \matrix{data=\data[\bat;]}
+}
+\integer{attribut_cnt=items(\attribut)}
+\integer{ch_cnt=items(\nonoui)}
+\for{c=0 to \ch_cnt-1}{
+ \matrix{data=wims(replace internal \c by \nonoui[\c+1] in \data)}
+}
+\text{Data=}
+\text{STEP=}
+\for{u=1 to \N}{
+  \text{STEP=\STEP
+   wims(makelist r x for x = (\u-1)*\attribut_cnt + 1  to  (\u)*\attribut_cnt)}
+  \text{Data=wims(append item \data[\u;2..-1] to \Data)}
+  }
+\matrix{STEP=\STEP}
+\text{STEP1=wims(replace internal ; by , in \STEP)}
+\text{STEP1=wims(nonempty items \STEP1)}
+\steps{\STEP1}
+\statement{<div class="question">\instruction
+<center>
+<table class="tableau"><tr><th></th>
+\for{k=1 to \attribut_cnt}{<th>\attribut[\k]</th>}
+<tr>
+\for{j=1 to \N}{ 
+  <tr><th>\data[\j;1]</th>
+   \for{k=1 to \attribut_cnt}{
+     <td>\embed{\STEP[\j;\k], \size[1] x \size[2]}</td>
+    }
+  </tr>
+}
+</table>
+</center>
+</div>
+}
+\answer{}{\Data[1]}{type=clickfill}
+\answer{}{\Data[2]}{type=clickfill}
+\answer{}{\Data[3]}{type=clickfill}
+\answer{}{\Data[4]}{type=clickfill}
+\answer{}{\Data[5]}{type=clickfill}
+\answer{}{\Data[6]}{type=clickfill}
+\answer{}{\Data[7]}{type=clickfill}
+\answer{}{\Data[8]}{type=clickfill}
+\answer{}{\Data[9]}{type=clickfill}
+\answer{}{\Data[10]}{type=clickfill}
+\answer{}{\Data[11]}{type=clickfill}
+\answer{}{\Data[12]}{type=clickfill}
+\answer{}{\Data[13]}{type=clickfill}
+\answer{}{\Data[14]}{type=clickfill}
+\answer{}{\Data[15]}{type=clickfill}
+\answer{}{\Data[16]}{type=clickfill}
+\answer{}{\Data[17]}{type=clickfill}
+\answer{}{\Data[18]}{type=clickfill}
+\answer{}{\Data[19]}{type=clickfill}
+\answer{}{\Data[20]}{type=clickfill}
+\answer{}{\Data[21]}{type=clickfill}
+\answer{}{\Data[22]}{type=clickfill}
+\answer{}{\Data[23]}{type=clickfill}
+\answer{}{\Data[24]}{type=clickfill}
+\answer{}{\Data[25]}{type=clickfill}
+\answer{}{\Data[26]}{type=clickfill}
+\answer{}{\Data[27]}{type=clickfill}
+\answer{}{\Data[28]}{type=clickfill}
+\answer{}{\Data[30]}{type=clickfill}
+\answer{}{\Data[31]}{type=clickfill}
+\answer{}{\Data[32]}{type=clickfill}
+\answer{}{\Data[33]}{type=clickfill}
+\answer{}{\Data[34]}{type=clickfill}
+\answer{}{\Data[35]}{type=clickfill}
+\answer{}{\Data[36]}{type=clickfill}
+\answer{}{\Data[37]}{type=clickfill}
+\answer{}{\Data[38]}{type=clickfill}
+\answer{}{\Data[39]}{type=clickfill}
+\answer{}{\Data[40]}{type=clickfill}
+
