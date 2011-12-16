@@ -13,5 +13,5 @@
   Voor persoonlijke wachtwoorden: voor wachtwoorden met een eenmalig gebruik  geef een "<b>+</b>"-teken voorafgaand aan het nieuwe wachtwoord\
   De wachtwoorden moeten worden opgebouwd uit uitsluitend alfanumerieke karakters, met een lengte tussen de 4 en 16 tekens\
   Een leeg wachtwoord wordt wel geaccepteerd door de software, maar de systeembeheerder van de server zou dit wel eens kunnen afkeuren\
-into name_passwdtype,name_persopasswd,name_partpasswd,name_warning1,name_classpasswd,\
+into name_passwdtype,name_userpasswd,name_partpasswd,name_warning1,name_classpasswd,\
   name_actualpasswd,name_newpasswd,name_newpasswd2,name_jetable,name_alphanumer,name_emptypasswd

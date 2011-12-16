@@ -22,31 +22,54 @@ $module_title
 !form reply
 
 !if $wims_user=supervisor
- $name_passwdtype: <ul>
  !default job=user
- !set ch_$job=checked
- <li><input type="radio" name="job" $ch_user value="user"> $name_persopasswd
- </li>
- !if $part!=$empty and $job=part
-  <li><input type="radio" name="job" $ch_part value="part"> $name_partpasswd
-  <tt>$part</tt> ($name_warning1).</li>
+ !if $job=none
+  $name_passwdtype : 
+  <ul>
+   !set ch_$job=checked
+   <li><input type="radio" name="job" $ch_user value="user"> $name_userpasswd</li>
+   !if $part!=$empty and $job=part
+    <li><input type="radio" name="job" $ch_part value="part"> $name_partpasswd <tt>$part</tt> ($name_warning1).</li>
+   !endif
+   <li><input type="radio" name="job" $ch_class value="class"> $name_classpasswd ($name_warning1).</li>
+  </ul>
+  $table_header
+
+ !else
+   $table_header
+    $table_tr
+     <th colspan="2" align="center">
+      $(name_$(job)passwd)
+      !if $job=part
+       <tt>$part</tt>
+      !endif
+      <input type="hidden" name="job" value="$job">
+     </th>
+    </tr>
  !endif
- <li><input type="radio" name="job" $ch_class value="class"> $name_classpasswd 
- ($name_warning1).
- </li>
- </ul>
 !else
  <input type="hidden" name="job" value="user">
+ $table_header
 !endif
-<table>
-<tr><td align="right">$name_actualpasswd</td>
-	<td><input type="password" size="16" name="old"></td></tr>
-<tr><td align="right">$name_newpasswd</td>
-	<td><input type="password" size="42" name="pw1"></td></tr>
-<tr><td align="right">$name_newpasswd2</td>
-	<td><input type="password" size="42" name="pw2"></td></tr>
-</table>
-<input type="submit" value="$wims_name_tosave"> <p></p>
+ !if $job=user or $job=none
+  $table_tr
+   <td align="right">$name_actualpasswd</td>
+   <td><input type="password" size="16" name="old"></td>
+  </tr>
+ !endif
+ $table_tr
+  <td align="right">$name_newpasswd</td>
+  <td><input type="password" size="42" name="pw1"></td>
+ </tr>
+ $table_tr
+  <td align="right">$name_newpasswd2</td>
+  <td><input type="password" size="42" name="pw2"></td>
+ </tr>
+ $table_tr
+  <td colspan="2" align="center"><input type="submit" value="$wims_name_tosave"></td>
+ </tr>
+$table_end
+ <p></p>
 <small>$name_jetable
 !set wims_ref_class=wims_button_help
 !href target=wims_mhelp cmd=help $wims_name_help
