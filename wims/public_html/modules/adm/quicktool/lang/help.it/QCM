@@ -1,20 +1,21 @@
-$wims_name_quick_QCM is a traditional Multiple Choice Questionnaire type exercise.
-You can decide how many steps the exercise shall have and the number of questions 
-you wish to ask in each step (by default the number of steps is 1).
-There may be one or several correct answers to each question, in this latter 
-case the <tt>checkbox</tt> format should be selected. The answer to a question 
-which has several correct answers is counted as wrong unless all the answers have been provided.
+$wims_name_quick_QCM è un tipo tradizionale di esercizi con domande a scelta multipla.
+Potete stabilire da quanti passi sarà composto l'esercizio e quante domande
+devono essere poste a ogni passo (di default il numero di passi è 1).
+Ogni domanda può essere associata a una sola o a più risposte corrette. In
+quest'ultimo caso è necessario scegliere il formato <tt>checkbox</tt>. 
+In caso di domanda che prevede più risposte corrette il punteggio pieno
+viene assegnato solo se sono selezionate tutte le risposte corrette.
 <p class="emptyline"></p>
-You can decide to provide the correct answers to the questions or simply indicate 
-which answers are correct and which ones are wrong.
+In fase di creazione si  può decidere se allo studente saranno mostrate
+le risposte corrette o se sarà data solo l'indicazione corretto/non corretto.
 
 <p class="emptyline"></p>
-In an exercise which is composed of several steps you can decide what percentage 
-of correct answers are required before the learner can continue the exercise 
-(i.e. go on to the next step). The learner will therefore not be encouraged
-to click thoughtlessly simply in order to have access to the correct answer.
+Se l'esercizio è suddiviso in passi è possibile stabilire una soglia
+per il passaggio al passo successivo. In questo modo lo studente non potrà
+adottare la tattica di ripetere in continuazione l'esercizio in modo da 
+imparare le risposte corrette per tentativi e errori.
 <p class="emptyline"></p>
-Feedback, which will be available with the score, can be provided for each question. 
+Per ogni domanda possono essere previsti dei feedback, che saranno mostrati con il punteggio al termine dell'esercizio.
 
 :format
 <pre>
@@ -39,26 +40,69 @@ When it's raining
 When it's sunny.
 When it's sunny and raining at the same time.
 </pre>
+La frase <tt>When the Sun shines onto droplets of moisture.</tt> è la 
+spiegazione data in caso di una risposta non corretta.
+
 <h3>$wims_name_Syntax</h3>
+
 <pre>
-:question
-feedback (if there is one), written on a single line
-number(s) corresponding to the line number of the correct answer(s)
-first possible answer 
-second possible answer
-third possible answer 
-fourth possible answer 
-
-If no feedback is provided, the line after the question must be left blank 
-(see the first data set above).
-
+:domanda
+feedback (se voluto), su una sola riga
+numero/numeri corrispondenti alle linee che contengono la/le risposte esatte
+prima risposta possibile
+seconda risposta possibile
+terza risposta possibile
+quarta risposta possibile
 </pre>
-<span class="wims_warning">$wims_name_remark</span>: Preferences for a data set.
 
-If you wish to add a different audio recording, a different title (i.e. text) 
-or a different introduction to each data set (i.e. exercise), the first line
-must have the following format
+Se non si vuole dare un feedback, la riga dopo la domanda deve essere lasciata 
+vuota (come nell'esempio dato sopra).
+
+<span class="wims_warning">$wims_name_remark</span>: la riga della domanda non
+può essere vuota (se non si vuole mettere niente, utilizzare il codice
+html per lo spazio bianco: \&\# nbsp;)
+
+<span class="wims_warning">$wims_name_remark</span>: Opzioni relative a file di dati.
+Dans le cas où on souhaite ajouter des documents audio, un titre, une introduction différents 
+pour chaque jeu de données, la première ligne doit être de la forme (champs facultatifs)
 <pre>
-:audio=name_of_audio_file.mp3 image=name_of_picture_file.jpg title="your text" intro="instructions" 
+:audio=nom.mp3 image=nomim.jpg title="titre" intro="ma consigne" 
 </pre>
-(these are to be specified in the optional part of the Quicktool menu )
+
+Dans le cas où il y a un enregistrement audio, il faut rajouter une ligne supplémentaire qui contiendra  
+audio=, puis mettre la question formatée comme précédement. 
+
+<pre>
+:audio=mother
+domanda
+spiegazione
+numero della risposta corretta
+risposta1
+risposta2
+risposta3
+</pre>
+
+oppure
+
+<pre>
+:audio=father
+domanda
+spiegazione
+numero della risposta corretta
+risposta1
+risposta2
+risposta3
+</pre>
+
+oppure
+
+<pre>
+:audio=brother.mp3
+domanda
+
+numero della risposta corretta
+risposta1
+risposta2
+risposta3
+</pre>
+
