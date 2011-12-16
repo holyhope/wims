@@ -4,7 +4,12 @@
 $wims_name_passwd :
 !href module=adm/class/passwd&job=class $wims_name_class
 ,
-!href module=adm/class/passwd&job=user $wims_name_nameteacher
+!if $class_type=4 or $class_type=2
+ !let tmp=$wims_name_supervisor
+!else
+ !let tmp=$wims_name_nameteacher
+!endif
+!href module=adm/class/passwd&job=user $tmp
 </li>
 <li>
 !href cmd=renew&job=log $name_see_activity1.
