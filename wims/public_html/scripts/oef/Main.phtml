@@ -41,7 +41,13 @@ $ by ; in $init_parm
 !set wims_html_header=!append line $oefcss to $wims_html_header
 
 !header1
-<h1 class="oeftitle">$title</h1>
+<h1 class="oeftitle">
+!if $wims_exo!=$empty
+ $wims_name_sheet $wims_sheet - $wims_name_Exercise $wims_exo
+!else
+ $title
+!endif
+</h1>
 
 !if $module_checkdata!=yes
  !read oef/$modu_lang/nodata.phtml
