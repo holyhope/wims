@@ -7,13 +7,15 @@
 !if $s_category=V
  <p><small>$S_tip</small> <p>
  !if $wims_user=$empty
+<div class="wims_motd">
   !read ./wimshome/log/motd.phtml.$lang
-  <p>
+</div>
+<div class="wims_frontpage">
   !read wimshome/log/front.phtml.$lang
   !if yes notin $front_exist
    !read ./front.phtml.$lang
   !endif
-  <p>
+</div>
  !endif
  !exit
 !endif
@@ -23,7 +25,7 @@
  $(ER_$error)
 !endif
 
-!set tt=<font color=brown><i>$(C_$s_category)</i></font>
+!set tt=<span class="wims_emph">$(C_$s_category)</span>
 <p>
 !if $gottype=search
  $RE_found.
@@ -116,7 +118,7 @@ $L, $d_
  !exchange gotcnt,gotcnt1
  !exchange gottype,gottype1
  !exchange gotm,gotm1
- !set tt=<font color="brown"><i>$C_P</i></font>
+ !set tt=<span class="wims_emph">$C_P</span>
  $RE_found. <p>
  !read result.P
 !endif
