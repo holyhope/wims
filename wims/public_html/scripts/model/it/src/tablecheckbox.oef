@@ -29,12 +29,9 @@ codice dell'esercizio.
 
 :%%%%%%%% Parametri che possono essere ridefiniti %%%%%%%%%%%%%%%%%
 
-:
-\title{Completa la tabella (fill)}
-:
-\author{Bernadette Perrin-Riou}
-:
-\email{bpr@math.u-psud.fr}
+:\title{Completa la tabella (checkbox)}
+:\author{Bernadette Perrin-Riou}
+:\email{bpr@math.u-psud.fr}
 :Istruzioni
 \text{instruction=Completa la tabella.}
 
@@ -53,6 +50,7 @@ In questo caso le righe seguenti non saranno prese in considerazione.
 Altrimenti compilare anche tutto il resto.
 
 \text{file=}
+
 :Elenco delle proprietà
 \text{attribut=peli, piume, quattro arti,ali}
 :Dati
@@ -61,23 +59,27 @@ una riga per ogni elemento.
 bovino,1,0,1,0
 gatto,1,0,1,0
 zanzara,0,0,0,1}
-:Testi per le risposte
-Testo visualizzato nelle etichette delle risposte corrispondente ai valori 0 e 1
-\text{nonoui=NO,SI}
+:Testi o immagini per indicare la risposta corretta o sbagliata
+questo testo viene mostrato nell'analisi della risposta. Di default appaiono
+immagini.
+\text{nonoui=}
 
 :%%%%%%%%%%%%%% Nulla da modificare fino all'enunciato %%%%%%%%%%%%%%%%
-maximum 40 cases à remplir
 
+\text{size=50,50}
 \integer{w=\size[1]+10}
-
+\text{couleur=#FFFFCC}
 \css{<style type="text/css">
    .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
    table.tableau {border:solid 1px;
     border-collapse:collapse;}
-    table.tableau td, th {text-align:center;border:solid 1px;width:55px;}
+    table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;
+    padding-left:10px;margin-left:20px;}
    ol li {list-style: upper-alpha; }
     table.tableau th { background-color:#CCCFFF;}
+     table.tableau tr > th:first-child {width:400px;}
  </style>}
+ \text{nonoui=\nonoui issametext ? <img src="scripts/authors/jm.evers/gifs/ok.gif" width="15">,<img src="scripts/authors/jm.evers/gifs/nok.gif" width="15">}
 \if{\file notsametext}{
   \text{file=randitem(\file)}
   \text{attribut=wims(record 0 of \file)}
@@ -101,30 +103,29 @@ wims(record \s of \file)}
   \matrix{data=\data[\bat;]}
 }
 \integer{attribut_cnt=items(\attribut)}
-\integer{ch_cnt=items(\nonoui)}
-\for{c=0 to \ch_cnt-1}{
- \matrix{data=wims(replace internal \c by \nonoui[\c+1] in \data)}
-}
 \text{Data=}
-\text{STEP=}
+\text{R=}
 \for{u=1 to \N}{
-  \text{STEP=\STEP
-   wims(makelist r x for x = (\u-1)*\attribut_cnt + 1  to  (\u)*\attribut_cnt)}
-  \text{Data=wims(append item \data[\u;2..-1] to \Data)}
+  \for{v=2 to \attribut_cnt+1}{
+    \integer{uu=(\u-1)*\attribut_cnt + \v -1}
+    \text{Data=\data[\u;\v]=1? wims(append item \uu to \Data)}
   }
-\matrix{STEP=\STEP}
-\text{STEP1=wims(replace internal ; by , in \STEP)}
-\text{STEP1=wims(nonempty items \STEP1)}
-\steps{\STEP1}
-\statement{<div class="question">\instruction
+}
+\text{C=wims(makelist x for x=1 to \N*\attribut_cnt)}
+\text{C1=wims(makelist x for x=1 to \N*\attribut_cnt)}
+\text{nstep=r1}
+\nextstep{\nstep}
+\text{col=1}
+\statement{
+<div class="question"> \instruction
 <center>
-<table class="tableau"><tr><th></th>
-\for{k=1 to \attribut_cnt}{<th>\attribut[\k]</th>}
+<table class="tableau"><tr> <th></th>
+\for{k=1 to \attribut_cnt}{<th colspan="\col">\attribut[\k]</th>}
 <tr>
 \for{j=1 to \N}{ 
   <tr><th>\data[\j;1]</th>
    \for{k=1 to \attribut_cnt}{
-     <td>\embed{\STEP[\j;\k], \size[1] x \size[2]}</td>
+    \if{\step=1}{<td><font color="\couleur">\embed{r1,\C[(\attribut_cnt)*(\j-1)+\k]}</font></td>}{<td>\C[(\attribut_cnt)*(\j-1)+\k]</td>}
     }
   </tr>
 }
@@ -132,43 +133,24 @@ wims(record \s of \file)}
 </center>
 </div>
 }
-\answer{}{\Data[1]}{type=clickfill}
-\answer{}{\Data[2]}{type=clickfill}
-\answer{}{\Data[3]}{type=clickfill}
-\answer{}{\Data[4]}{type=clickfill}
-\answer{}{\Data[5]}{type=clickfill}
-\answer{}{\Data[6]}{type=clickfill}
-\answer{}{\Data[7]}{type=clickfill}
-\answer{}{\Data[8]}{type=clickfill}
-\answer{}{\Data[9]}{type=clickfill}
-\answer{}{\Data[10]}{type=clickfill}
-\answer{}{\Data[11]}{type=clickfill}
-\answer{}{\Data[12]}{type=clickfill}
-\answer{}{\Data[13]}{type=clickfill}
-\answer{}{\Data[14]}{type=clickfill}
-\answer{}{\Data[15]}{type=clickfill}
-\answer{}{\Data[16]}{type=clickfill}
-\answer{}{\Data[17]}{type=clickfill}
-\answer{}{\Data[18]}{type=clickfill}
-\answer{}{\Data[19]}{type=clickfill}
-\answer{}{\Data[20]}{type=clickfill}
-\answer{}{\Data[21]}{type=clickfill}
-\answer{}{\Data[22]}{type=clickfill}
-\answer{}{\Data[23]}{type=clickfill}
-\answer{}{\Data[24]}{type=clickfill}
-\answer{}{\Data[25]}{type=clickfill}
-\answer{}{\Data[26]}{type=clickfill}
-\answer{}{\Data[27]}{type=clickfill}
-\answer{}{\Data[28]}{type=clickfill}
-\answer{}{\Data[30]}{type=clickfill}
-\answer{}{\Data[31]}{type=clickfill}
-\answer{}{\Data[32]}{type=clickfill}
-\answer{}{\Data[33]}{type=clickfill}
-\answer{}{\Data[34]}{type=clickfill}
-\answer{}{\Data[35]}{type=clickfill}
-\answer{}{\Data[36]}{type=clickfill}
-\answer{}{\Data[37]}{type=clickfill}
-\answer{}{\Data[38]}{type=clickfill}
-\answer{}{\Data[39]}{type=clickfill}
-\answer{}{\Data[40]}{type=clickfill}
+\answer{}{\Data;\C1}{type=checkbox}{option=split noanalyzeprint nonstop}
+\text{nstep=}
+\text{C=}
+\text{col=2}
+\text{croix=<span style="color:black; font-size:20pt;font-style:bold;">X</span></td>}
+\text{nocroix=<span style="color:black; font-size:20pt;font-style:bold;">&nbsp;&nbsp;</span></td>}
+\text{croix=X}
+\text{nocroix=}
+\for{u=1 to \N}{
+  \for{v=2 to \attribut_cnt+1}{
+    \integer{uu=(\u-1)*\attribut_cnt + \v -1}
+    \text{C=\uu isitemof \reply1 and \uu isitemof \Data ? wims(append item  \croix <td>\nonoui[1]  to \C)}
+    \text{C=\uu isitemof \reply1 and \uu notitemof \Data ? wims(append item \croix <td>\nonoui[2]  to \C)}
+    \text{C=\uu notitemof \reply1 and \uu isitemof \Data ? wims(append item \nocroix <td>\nonoui[2] to \C)}
+    \text{C=\uu notitemof \reply1 and \uu notitemof \Data ? wims(append item \nocroix <td>\nonoui[1] to \C)}
+  }
+}
 
+\feedback{1=1}{\nonoui[1]: bonne réponse, \nonoui[2]: mauvaise réponse 
+
+}
