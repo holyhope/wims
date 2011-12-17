@@ -11,17 +11,18 @@
 !set table_colors=$wims_ref_bgcolor,$wims_ref_bgcolor
 </div>
 !!!set wims_headmenu_colcnt=5
+<div id="wimsfrontpage">
+!if $site_logo!=$empty
+  <span id="wimslogoleft">
+   <a href="$site_logolink" target="wims_external"><img src="$site_logo" border=0 alt="logo"></a>
+  </span><!--serverlogo-->
+!endif
 <div id="wimstopbox" style="background-color:$wims_ref_bgcolor;">
 <div class="wimsmenu">
 <span class="menuitem">
 <span id="wimslogo">
 !href module=home&special_parm=logo <img src="gifs/logo.gif" border=0 alt="WIMS logo">
 </span><!--serverlogo-->
-!if $site_logo!=$empty
- <span id="wimslogoleft">
- <a href="$site_logolink" <img src="$site_logo" border=0 alt="WIMS logo">
- </span><!--serverlogo-->
-!endif
 </span><!--menuitem-->
 !for i=1 to $wims_language_cnt
  !set l=!word $i of $wims_site_languages
@@ -178,5 +179,6 @@ WIMS: $httpd_HTTP_HOST
 !robottrap
 </div><!--wimstail-->
 </div><!--wimstailbox-->
+</div><!--wimsfrontpage-->
 </body></html>
 <!-- end of $wims_theme/visitor.phtml -->
