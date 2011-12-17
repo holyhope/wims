@@ -773,3 +773,11 @@ free
 
 The login will be used by wims in its internal structure (must be alphanumeric and with less 8 characters)
 These values will be used by default in the classes permitting the authentification by an LDAP.
+
+:appearances site_logo
+Address of an institutional logo
+free
+
+:appearances site_logolink
+External link on the institutional logo
+free
