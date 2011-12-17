@@ -46,6 +46,7 @@ mlist2=`find local com help -follow -name INDEX 2>/dev/null\
   | sed 's!/INDEX$!!g' | sort`
 mlist="$mlist
 $mlist2"
+grep -l "ask_trusted=yes" */*/*/var.init | awk -F "/" '{ print $1"/"$2"/"$3 }' > $BASES/sites/trusted_modules
 
 cd $BASES/sheet
 slist="`find . -name '*.def' | sed 's!^./!!g;s!.def$!!g' | sort`"
