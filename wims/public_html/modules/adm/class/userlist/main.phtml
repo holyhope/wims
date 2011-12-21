@@ -33,39 +33,34 @@ $wims_name_part_list
 <p>
  !goto end
 !endif
+ <center>
 
+!if $wims_typename=group and $wims_supertype=2
+ !set teacherlist=!record 0 of wimshome/log/classes/$wims_class/.teacherlist
+ !set teachercnt=!linecnt $teacherlist
+ !if $teachercnt>0
+  !set wims_ref_class=wims_button
+  !href module=adm/class/userlist&job=teacher $wims_name_teacherlist
+  &nbsp;
+ !endif
+ !set wims_ref_class=wims_button
+  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
+  &nbsp;
+!endif
 !if $usercnt==0
  $name_noyetparticipant
-  <center>
- !if $wims_typename=group and $wims_supertype=2
-  !set wims_ref_class=wims_button
-  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
- !endif
  &nbsp;
  !set wims_ref_class=wims_button
  !href module=adm/class/reguser&step=1 $wims_name_addstudent
 &nbsp;
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
-</center> 
 !else
-
- <center>
  !set deleted=!sh cd $wims_home/log/classes/$wims_class/.users; ls .[0-9a-zA-Z]* 2>/dev/null
  !set deleted=!trim $deleted
- !if $wims_typename=group and $wims_supertype=2
- &nbsp;
- !set wims_ref_class=wims_button
- !href module=adm/class/userlist&job=teacher $wims_name_teacherlist
- &nbsp;
- !set wims_ref_class=wims_button
-  !href module=adm/class/reguser&step=1&utype=1 $wims_name_addteacher
-  
- !endif
  &nbsp;
  !set wims_ref_class=wims_button
   !href module=adm/class/reguser&step=1 $wims_name_addstudent
-
  &nbsp;
  !set wims_ref_class=wims_button
  !href cmd=reply&job=csv $wims_name_csv
