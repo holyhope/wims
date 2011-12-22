@@ -52,6 +52,7 @@ reply_$i=!items2words $dd
 !endif
 
 diag=
+diaratio=-1
 t_=!linecnt $good
 good=!replace internal , $ by , in $good
 dd=!replace internal , $ by , in $dd
@@ -67,13 +68,35 @@ ddo=!sort items $dd
    !if $ddo issametext $go
      diag=yes
    !endif
- !endif
+   !if $diag notwordof yes and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
+!! nombre de reponses
+       poscnt1=!itemcnt $ddo
+       lint=!listintersect $ddo and $go
+!! nombre de bonnes reponses
+       poscnt2=!itemcnt $lint
+!! nombre demandé de bonnes réponses
+       poscnt3=!itemcnt $go
+       !if eqweight iswordof $(replyoption$i)
+         diaratio_=$[2*$poscnt2 - $poscnt1]
+       !else
+         diaratio_=$[3*$poscnt2 - 2*$poscnt1]
+       !endif
+       !if $diaratio_ > 0
+        diaratio=$[max($diaratio,$[$diaratio_/max($poscnt3,1)])]
+       !endif 
+   !endif split
+ !endif noorder
 !next n
-
+       
 !if $diag=yes
  diareply$i=good
  !advance freegot
 !else
- diareply$i=bad
+  !if $diaratio > 0 and (split iswordof $(replyoption$i) or partialscore iswordof $(replyoption$i))
+    diareply$i=good
+    partialgood$i=yes
+    freegot=$[$freegot+ max(0,$diaratio)]
+  !else
+    diareply$i=bad
+  !endif
 !endif
-
