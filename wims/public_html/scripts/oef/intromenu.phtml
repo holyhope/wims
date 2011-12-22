@@ -203,12 +203,13 @@ $name_remarkintro3
 !set dictionary=$module_dir/$(class_header)Exauthors
 !set translator_unknown=unknown
 !set exolist_cnt=!itemcnt $exolist
-!for ex =1 to  $exolist_cnt
+!for ex = 1 to  $exolist_cnt
   !set tmp=!exec translator $(exolist[$ex])
   !set tmp=!replace internal , by $ $ in $tmp
   !set authorlist=!append item $tmp to $authorlist
 !next
 !set authorlist=!replace internal $translator_unknown by in $authorlist
+!set authorlist=!replace internal ; by , in $authorlist
 
 !if $authorlist!= and $authorlist notsametext $exolist
   !set authorlist=!listuniq $authorlist
