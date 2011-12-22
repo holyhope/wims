@@ -41,9 +41,8 @@ $worksheet= '';
 $SHEET = '' ;
 $DIR = '';
 $doc_DIR = '';
-# MODIF YVES NOEL 19/09/2011 (3lignes)
 my @SECTIONS = qw(document part chapter section subsection subsubsection);
-#my  @SECTIONS = ( document part entete frame subsection subsubsection );
+#my @SECTIONS = ( document part entete frame subsection subsubsection );
 #TODO biblio dans un fichier séparé si on a rencontré \begin{thebibliography} Non,
 # on n'a qu'a mettre cet environnement de type link
 #$doc_DIR=$ENV{'w_docdir'}; 
@@ -115,7 +114,7 @@ my @liste_env_tabular = ('tabular') ;
 my @liste_env_spec = ('equation', 'multline', 'latexonly',
   'pmatrix','smallmatrix', 'eqnarray', 'array', 'algorithmic', 'algorithm', 'align',
   'thebibliography', 'pspicture', 'picture', 'cases', 'gather',
-  'displaymath', 'math', 'center');
+  'displaymath', 'math', 'center','minipage');
   
 my @liste_com_spec = ('paragraph', 'href', 'url', 'exercise', 'doc') ; #je ne m'en sers pas encore 
 
@@ -719,6 +718,15 @@ sub tabular { my ( $b, $style ) = @_;
  $b ; 
 }
 
+sub minipage { my ( $b ) = @_; 
+ my @v = extract_bracketed ($b, '{}') ;
+ my $width = $v[0] ;
+ $width =~ s/\{(.*)\}/$1/;
+ $width = linewidth($width) ;
+  "<div style=\"width:$width; display:inline-block;\">
+   $v[1] 
+   </div>";
+}
 
 sub multline { my ( $b) = @_;
   $b =~ s/\\\\\s*=/\\)<br>\\(== /g;
@@ -1167,6 +1175,13 @@ sub traitement_initial { my ($TEXT) = @_;
   $TEXT;
 }
 
+sub linewidth { my ($line)= @_ ;
+  $line =~ s/1\.[0]\*\s*\\linewidth/100\%/g;
+  $line =~ s/0?\.([0-9])\*\\linewidth/$1 0\%/g;
+  $line =~ s/0?\.([0-9]{2})[0-9]?\*\\linewidth/$1\%/g;
+  $line =~ s/ //g;
+  $line ;
+}
 sub store_sheet { my ($ad1,$ad2,$titre,$worksheet) = @_ ;
    $ad2 =~ s/worksheet=(\d)+//g ; 
    $SHEET .= ":$ad1\n$ad2\n$titre\n\n" ;
