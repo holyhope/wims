@@ -22,7 +22,7 @@ model_type=!getopt type in $r
 model_textarea=!getopt textarea in $r
 model_textarea=!items2words $model_textarea
 model_author=!getopt author in $r
-
+model_email=!getopt email in $r
 model_random=!getopt random in $r
 model_random=!items2words $model_random
 model_computed=!getopt computed in $r
@@ -51,8 +51,8 @@ help1=!line 2 to -1 of $r
    name$i=$v
    model_$v=!embraced extract $r
    !if $oef_author!=$empty
-    model_author=$oef_author
-    model_email=$oef_email
+    !default model_author=$oef_author
+    !default model_email=$oef_email
    !endif
    val$i=$(model_$v)
    sps=!append item $i to $sps
