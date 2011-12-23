@@ -114,7 +114,7 @@ my @liste_env_tabular = ('tabular') ;
 my @liste_env_spec = ('equation', 'multline', 'latexonly',
   'pmatrix','smallmatrix', 'eqnarray', 'array', 'algorithmic', 'algorithm', 'align',
   'thebibliography', 'pspicture', 'picture', 'cases', 'gather',
-  'displaymath', 'math', 'center','minipage');
+  'displaymath', 'math', 'center', 'minipage', 'lstlisting');
   
 my @liste_com_spec = ('paragraph', 'href', 'url', 'exercise', 'doc') ; #je ne m'en sers pas encore 
 
@@ -727,6 +727,10 @@ sub minipage { my ( $b ) = @_;
    $v[1] 
    </div>";
 }
+sub lstlisting { my ($b,$id ) = @_ ;
+  $b =~ s ,\\,\\\\,g ;
+  "<pre class=\"lstlisting\" id=\"lstlisting$id\">$b</pre>";
+}
 
 sub multline { my ( $b) = @_;
   $b =~ s/\\\\\s*=/\\)<br>\\(== /g;
@@ -794,7 +798,7 @@ sub pspicture { '<p>dessin à faire dans wims</p>' ; }
 sub picture { '<p>dessin à faire dans wims</p>' ; }
 
 #decoupe ce qui se trouve à l'intérieur de \begin{wims} \end{wims} pour ne pas y toucher.
-#faire de même pour verbatim
+# même pour verbatim, lstlisting
 sub traite_special { my ( $TEXT, $ref_spec, $ref, $environ ) = @_;
   $TEXT = recup_embed($TEXT, $ref) ;
   $TEXT =~ s/\\begin{$environ}/<$environ>/g;
@@ -976,6 +980,8 @@ sub find_expand { my ($file) = @_;
   $text =~ s/([^%])\s*\\endinput[[:print:][:space:]]+/$1/;
   $text =~ s/\%\\(input|include|wimsinclude)([^\n]+)?//g;
   $text =~ s/\\(input|include|wimsinclude)\s*{?([a-zA-Z0-9\-_\/]+)\.(sty|tex)\s*}?/find_expand("$2.$3")/eg;
+  $text =~ s/\\lstinputlisting\s*\{([a-zA-Z0-9\-_\/\.]+)\s*\}/"\\begin\{lstlisting\}\n" . find_expand($1) . "\n\\end\{lstlisting\}"/eg;
+ 
   $text;
 }
 
@@ -1032,10 +1038,11 @@ sub add { my ($a,$b)=@_ ;
 
 sub Init { my ($file, $ref_env, $ref_command, $ref, $ref_algo) = @_;
   my ($total, $TEXT) = (0, find_expand($file));
-  my %hash_spec = (wims =>{}, verbatim =>{});
+  my %hash_spec = (wims =>{}, verbatim =>{}, lstlisting => {});
   my $ref_spec = \%hash_spec;
   $TEXT = traite_special ($TEXT, $ref_spec->{wims}, $ref,'wims');
   $TEXT = traite_special ($TEXT, $ref_spec->{verbatim}, $ref,'verbatim');
+  $TEXT = traite_special ($TEXT, $ref_spec->{lstlisting}, $ref,'lstlisting');
   $TEXT = traitement_initial ($TEXT);
   $TEXT =~ s/\\wimsoption\s*\{([^\}]+)\}/store_option($1)/eg ;
   $TEXT =~ s/\\makeindex/store_option('index')/eg ;
@@ -1049,8 +1056,9 @@ sub Init { my ($file, $ref_env, $ref_command, $ref, $ref_algo) = @_;
   for my $A (@liste_voca) {
    $ref_algo->{titre}{$A} =  $ref_command->{definition}{"algorithmic\L$A\E"}  if ($ref_command->{definition}{"algorithmic\L$A\E"}) ;
 } ;
-  $TEXT =~ s/wimsinsertion(\d*)/$ref_spec->{wims}{$1}/g;
-  $TEXT =~ s/verbatiminsertion(\d*)/<pre class="verbatim">$ref_spec->{verbatim}{$1}<\/pre>/g;
+  $TEXT =~ s/wimsinsertion(\d*)/$ref_spec->{'wims'}{$1}/g;
+  $TEXT =~ s/verbatiminsertion(\d*)/<pre class="verbatim" id="verbatim$1">$ref_spec->{'verbatim'}{$1}<\/pre>/g;
+  $TEXT =~ s/lstlistinginsertion(\d*)/lstlisting($ref_spec->{'lstlisting'}{$1},$1)/eg;
   $TEXT;
 }
 
@@ -1176,9 +1184,9 @@ sub traitement_initial { my ($TEXT) = @_;
 }
 
 sub linewidth { my ($line)= @_ ;
-  $line =~ s/1\.[0]\*\s*\\linewidth/100\%/g;
-  $line =~ s/0?\.([0-9])\*\\linewidth/$1 0\%/g;
-  $line =~ s/0?\.([0-9]{2})[0-9]?\*\\linewidth/$1\%/g;
+  $line =~ s/1\.[0]\s*\\linewidth/100\%/g;
+  $line =~ s/0?\.([0-9])\s*\\linewidth/$1 0\%/g;
+  $line =~ s/0?\.([0-9]{2})[0-9]?\s*\\linewidth/$1\%/g;
   $line =~ s/ //g;
   $line ;
 }
