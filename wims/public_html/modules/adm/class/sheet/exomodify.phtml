@@ -9,6 +9,18 @@ $name_titlemodif $modif
    $table_header
    <input type="hidden" name="modif" value="$ex_">
    <input type="hidden" name="job" value="modify">
+!!what can be changed even if the sheet is active
+!if $activetest > 0
+    $table_tr
+    <td>$(name_shtab[10])
+   &nbsp;
+    !set wims_ref_class=wims_button_help
+    !href target=wims_mhelp cmd=help&special_parm=feedback $wims_name_help
+    </td>
+    <td>
+    <textarea name="mod_feedback" rows="1" cols="60" wrap="off">$feedback_</textarea></td>
+    </tr>
+!else
    $table_tr
     <td>$wims_name_title</td>
 !!<small>($name_oldtitle <em>$orgtit</em>)</small></td>
@@ -68,12 +80,13 @@ $name_titlemodif $modif
      <td>$directory_ <br> $parm_ </td>
     </tr>
    !endif
+ !endif activetest > 0
    $table_tr
-    <td colspan="2"><center>
+    <td colspan="2" style="text-align:center;">
      <input type="submit" value="$wims_name_tosave"> &nbsp;
      !set wims_ref_class=wims_button
      !href cmd=resume $wims_name_giveup
-    </center></td>
+    </td>
    </tr>
   $table_end
 </form>

@@ -335,16 +335,18 @@ $comment
 
 # modify an item
 !if $job=modify and $modif>0 and $modif<=$exocnt
- exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
- !distribute lines $exo into D_,p_
- !bound mod_weight between 0 and 10 default 0
- !bound mod_require between 0 and 1000 default 0
- mod_title=!singlespace $mod_title
- mod_desc=!singlespace $mod_desc
- mod_comment=!singlespace $mod_comment
- mod_title=!char 1 to $etitle_limit of $mod_title
- mod_desc=!char 1 to $edesc_limit of $mod_desc
- mod_comment=!char 1 to $edesc_limit of $mod_comment
+ !if $activetest=0
+   exo=!record $modif of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
+   !distribute lines $exo into D_,p_
+   !bound mod_weight between 0 and 10 default 0
+   !bound mod_require between 0 and 1000 default 0
+   mod_title=!singlespace $mod_title
+   mod_desc=!singlespace $mod_desc
+   mod_comment=!singlespace $mod_comment
+   mod_title=!char 1 to $etitle_limit of $mod_title
+   mod_desc=!char 1 to $edesc_limit of $mod_desc
+   mod_comment=!char 1 to $edesc_limit of $mod_comment
+ !endif
  !if $mod_feedback notsametext $empty
   mod_feedback_lim=$(mod_feedback[2])
   !bound mod_feedback_lim between 0 and 11 default 10
@@ -359,7 +361,8 @@ $comment
   mod_feedback=$mod_feedback,$mod_feedback_lim
  !endif
  
- update_content=$D_\
+ !if $activetest=0
+   update_content=$D_\
 $p_\
 $mod_require\
 $mod_weight\
@@ -368,7 +371,11 @@ $mod_desc\
 $mod_dep\
 $mod_comment\
 $mod_feedback
- update_field=0
+   update_field=0
+ !else
+   update_content=$mod_feedback
+   update_field=9
+ !endif
  exo=$modif
  !read update.exo
  !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment,mod_feedback

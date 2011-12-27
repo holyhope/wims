@@ -7,7 +7,7 @@ $table_header
    <th>$(name_shtab[$k])</th>
   !next k
   <th>$(name_shtab[10])</th>
-  !if $activetest=0
+  !if $activetest>=0
    <th>$(name_shtab[8])</th>
   !endif
  </tr>
@@ -31,10 +31,11 @@ $table_header
    </td>
    <td>$com</td>
    <td>$feed</td>
-   !if $activetest=0
+   !if $activetest>=0
     <td>
     !set wims_ref_class=wims_button
      !href cmd=reply&job=prep_modify&modif=$i $(seriesaction[1])
+    !if $activetest=0
      &nbsp;
      !set wims_ref_class=wims_button
      !href cmd=reply&job=delete&delete=$i#list $(seriesaction[2])
@@ -43,6 +44,7 @@ $table_header
       !set wims_ref_class=wims_button
       !href cmd=reply&job=moveup&moveup=$i#list $(seriesaction[3])
      !endif
+    !endif
     </td>
    !endif
   </tr>
