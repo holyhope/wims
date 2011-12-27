@@ -727,11 +727,17 @@ sub includegraphics{ my ( $b, $opt ) = @_;
 }
  
 sub minipage { my ( $b ) = @_; 
- my @v = extract_bracketed ($b, '{}') ;
+ my @v = extract_bracketed ($b, '[]') ;
+ my $option = $v[0] ;  
+ $option=~ s/\[\s*b\s*\]/bottom/ ;  
+ $option=~ s/\[\s*t\s*\]/top/ ; 
+ $option=~s/\[\s*\]/middle/;
+ if (!$option) { $option='middle'} ;
+ @v = extract_bracketed ($v[1], '{}') ;
  my $width = $v[0] ;
  $width =~ s/\{(.*)\}/$1/;
  $width = linewidth($width) ;
-  "<div style=\"width:$width; display:inline-block;\">
+  "<div style=\"width:$width; display:inline-block;vertical-align:$option;\" class=\"minipage\">
    $v[1] 
    </div>";
 }
