@@ -721,7 +721,7 @@ sub tabular { my ( $b, $style ) = @_;
 ###demande de convertir d'abord de manière indépendante les pdf tiff eps svg en un format d'image png
 sub includegraphics{ my ( $b, $opt ) = @_;
    $b=~ s/.(pdf|tiff|eps|svg)/.png/ ; 
-   $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(\\linewidth)/linewidth("$2$3",$1)/eg;
+   $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(\\(line|text)width)/linewidth("$2$3",$1)/eg;
    $opt =~ s/.*(width|height)\s*=\s*([0-9]*\.?[0-9]*\s*)(cm|px)/$1=\"$2$3\"/;
   "<img src=\"\\filedir\/$b\" $opt alt=\"\">";
 }
@@ -738,6 +738,11 @@ sub minipage { my ( $b ) = @_;
 sub lstlisting { my ($b,$id ) = @_ ;
   $b =~ s ,\\,\\\\,g ;
   "<pre class=\"lstlisting\" id=\"lstlisting$id\">$b</pre>";
+}
+
+sub verbatim { my ($b,$id ) = @_ ;
+  $b =~ s ,\\,\\\\,g ;
+  "<pre class=\"verbatim\" id=\"verbatim$id\">$b</pre>";
 }
 
 sub multline { my ( $b) = @_;
@@ -1065,7 +1070,7 @@ sub Init { my ($file, $ref_env, $ref_command, $ref, $ref_algo) = @_;
    $ref_algo->{titre}{$A} =  $ref_command->{definition}{"algorithmic\L$A\E"}  if ($ref_command->{definition}{"algorithmic\L$A\E"}) ;
 } ;
   $TEXT =~ s/wimsinsertion(\d*)/$ref_spec->{'wims'}{$1}/g;
-  $TEXT =~ s/verbatiminsertion(\d*)/<pre class="verbatim" id="verbatim$1">$ref_spec->{'verbatim'}{$1}<\/pre>/g;
+  $TEXT =~ s/verbatiminsertion(\d*)/verbatim($ref_spec->{'verbatim'}{$1},$1)/eg;
   $TEXT =~ s/lstlistinginsertion(\d*)/lstlisting($ref_spec->{'lstlisting'}{$1},$1)/eg;
   $TEXT;
 }
@@ -1192,9 +1197,9 @@ sub traitement_initial { my ($TEXT) = @_;
 }
 
 sub linewidth { my ($line,$w)= @_ ;
-  $line =~ s/1\.[0]\s*\\linewidth/100\%/g;
-  $line =~ s/0?\.([0-9])\s*\\linewidth/$1 0\%/g;
-  $line =~ s/0?\.([0-9]{2})[0-9]?\s*\\linewidth/$1\%/g;
+  $line =~ s/1\.[0]\s*\\(line|text)width/100\%/g;
+  $line =~ s/0?\.([0-9])\s*\\(line|text)width/$1 0\%/g;
+  $line =~ s/0?\.([0-9]{2})[0-9]?\s*\\(line|text)width/$1\%/g;
   $line =~ s/ //g;
   $line = "$w=\"$line\"" if ($w) ;
   $line ; 
