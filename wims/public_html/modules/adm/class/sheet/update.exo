@@ -1,5 +1,3 @@
-!!!### langage independant
-!!
 # update_field is number of field to update
 # update_content is the new content.
 number_field=9
@@ -20,6 +18,12 @@ ecnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
 !next e
 !if $update_field>=0
  !if $update_field>0
+  tmp=!linecnt $(exo_$exo)
+  !if $update_field > $tmp
+   !for tmp2 = 1 to $[$update_field-$tmp]
+    exo_$exo=!append line $ $ to $(exo_$exo)
+   !next
+  !endif
   exo_$exo=!replace line number $update_field by $update_content in $(exo_$exo)
  !else
   exo_$exo=$update_content
