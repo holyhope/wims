@@ -2,34 +2,36 @@
 !!
 !distribute lines $wims_read_parm into directory_,parm_,require_,weight_,title_,desc_,dep_,comment_,feedback_
 !! !set orgtit_=!module title $directory_
-  <p><center><h3>$name_titlemodif $modif</h3></center>
-  !form reply
+!read adm/title.phtml 1\
+\
+$name_titlemodif $modif
+!form reply
    $table_header
    <input type="hidden" name="modif" value="$ex_">
    <input type="hidden" name="job" value="modify">
    $table_tr
-    <td><b>$wims_name_title </b></td>
+    <td>$wims_name_title</td>
 !!<small>($name_oldtitle <em>$orgtit</em>)</small></td>
     <td><input size="50" name="mod_title" value="$title_"></td>
    </tr>
    $table_tr
-    <td><b>$wims_name_Description</b></td>
+    <td>$wims_name_Description</td>
     <td><textarea name="mod_desc" rows="3" cols="60">$desc_</textarea></td>
    </tr>
    $table_tr
-    <td><b>$(name_shtab[7])</b> <small>($name_desc_comment)</small></td>
+    <td>$(name_shtab[7]) <small>($name_desc_comment)</small></td>
     <td><textarea name="mod_comment" rows="3" cols="60">$comment_</textarea></td>
    </tr>
    $table_tr
-    <td><b>$name_pointsasked</b></td>
+    <td>$name_pointsasked</td>
     <td><input size="4" name="mod_require" value="$require_"></td>
    </tr>
    $table_tr
-    <td><b>$name_weight</b></td>
+    <td>$name_weight</td>
     <td><input size="4" name="mod_weight" value="$weight_"></td>
    </tr>
    $table_tr
-    <td><b>$(name_shtab[6])</b>
+    <td>$(name_shtab[6])
     &nbsp;
     !set wims_ref_class=wims_button_help
      !href target=wims_mhelp cmd=help&special_parm=dependancies $wims_name_help
@@ -38,7 +40,7 @@
     !reset mod_dep
    </tr>
    $table_tr
-    <td><b>$(name_shtab[10])</b>
+    <td>$(name_shtab[10])
     &nbsp;
     !set wims_ref_class=wims_button_help
      !href target=wims_mhelp cmd=help&special_parm=feedback $wims_name_help
@@ -50,7 +52,7 @@
    !if oef isitemof $oef
     $table_tr
      <td>
-      <b>$(name_shtab[9])</b>
+      $(name_shtab[9])
       !let parm_=!replace internal & by ; in $parm_
       !let parm_=!replace internal scoredelay=; by scoredelay=0; in $parm_
       !let parm_=!replace internal exo=; by exo=0; in $parm_
@@ -74,4 +76,4 @@
     </center></td>
    </tr>
   $table_end
- </form>
+</form>
