@@ -115,19 +115,19 @@ editAreaLoader.load_syntax['gp'] = {
 	]
 	,
 	'STYLES' : {
-		'COMMENTS': 'color: #AAAAAA;'
+		'COMMENTS': 'color: #0000CD;'
 		,'QUOTESMARKS': 'color: #6381F8;'
 		,'KEYWORDS' : {
-			'gpstatement' : 'color: #3399FF;'
+			'gpstatement' : 'color: #e52d2d;'
 			,'gpconditional' : 'color: #FF00FF;'
-			,'gprepeat' : 'color: yellow;'
-			,'gpscope' : 'color: yellow;'
-			,'gpdefaults' : 'color: yellow;'
-			,'gpinterface' : 'color: yellow;'
-			,'gpinput' : 'color: yellow;'
+			,'gprepeat' : 'color: #CD00CD;'
+			,'gpscope' : 'color: #00CD00;'
+			,'gpdefaults' : 'color: #00CD00;'
+			,'gpinterface' : 'color: #00CD00;'
+			,'gpinput' : 'color: #00CD00;'
 			,'gpfunction' : 'color: #FF3A6E;'
 			}
-		,'OPERATORS' : 'color: green;'
+		,'OPERATORS' : 'color: #CD00CD;'
 		,'DELIMITERS' : 'color: #60CA00;'
 		}
 };
