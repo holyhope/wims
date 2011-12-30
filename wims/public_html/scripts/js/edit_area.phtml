@@ -1,0 +1,32 @@
+!distribute word $wims_read_parm into edit_area_id, edit_area_syntax
+!if wims_show isin $edit_area_id
+  !set is_editable=false
+  !set toolbar=""
+!endif
+
+!default edit_area_syntax=wimsoef
+!default is_editable=true
+!default allow_toggle=true
+!default toolbar="search, go_to_line, fullscreen, |, undo, redo, |, select_font, |, syntax_selection, |, highlight, reset_highlight, |, help"
+
+ !set wims_html_header= !append line <script language="Javascript" type="text/javascript" src="scripts/js/edit_area/edit_area_full.js"></script>\
+	<script language="Javascript" type="text/javascript">\
+		// initialisation\
+		editAreaLoader.init({\
+			id: "$edit_area_id"	\
+			,start_highlight: true\
+			,allow_toggle: $allow_toggle\
+			,language: "$lang"\
+			,syntax: "$edit_area_syntax"\
+			,min_height: 300\
+			,min_width: 300\
+			,is_editable:$is_editable\
+			,toolbar: $toolbar\
+			,syntax_selection_allow: "wimsoef,wimsdata,wims,css,html,js,gp"\
+			,show_line_colors: true\
+			,replace_tab_by_spaces:2\
+		});	\
+	</script>\
+to $wims_html_header
+
+!!!TODO add autocompletion: true

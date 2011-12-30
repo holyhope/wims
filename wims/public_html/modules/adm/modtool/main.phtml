@@ -1,9 +1,28 @@
-!!###language independant
+
 !read adm/css.phtml
 !if $(module_title_$modu_lang)!=
    !set module_title=$(module_title_$modu_lang)
 !endif
 !read lang/names.phtml.$modu_lang
+!if $job iswordof edfile showfile 
+  !set typetest=!module category devel/$auth_login/$mod
+  !if doc notitemof $typetest
+    !if .oef_ isin $(fname)_ or .cpp_ isin $(fname)_
+      !set edit_area_syntax=wimsoef
+    !else
+      !if .phtml_ isin $(fname)_ or .proc_ isin $(fname)_
+        !set edit_area_syntax=wims
+      !else
+        !set edit_area_syntax=wimsdata
+      !endif
+    !endif
+  !endif
+  !if $job=edfile
+    !read js/edit_area.phtml wims_deposit $edit_area_syntax
+  !else
+    !read js/edit_area.phtml wims_show $edit_area_syntax
+  !endif
+!endif
 !header
 
 !if $error!=$empty

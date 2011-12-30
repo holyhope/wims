@@ -5,6 +5,7 @@ use warnings;
 use strict;
 ##lancer du répertoire wims : bin/oedfdoc.pl
 
+### for "editor"
 my %name ;
 $name{'explanation'}{'fr'}="Explication" ; 
 $name{'example'}{'fr'}="Exemple" ;
@@ -42,6 +43,8 @@ $name{'slib'}{'it'}='SLIB';
 $name{'anstype'}{'it'}='Tipi di risposte' ; 
 
 my $DOSSIER="public_html/scripts/js/editor/scripts_1/bd_js";
+my $DOSSIER_edit_area="public_html/scripts/js/edit_area/reg_syntax";
+my $DOSSIER_wims="public_html/modules/help/wimsdoc.en/cmd/";
 my $slibdir="public_html/scripts/slib/";
 my $helpdir="public_html/scripts/help";
 
@@ -50,6 +53,7 @@ my @Lang=('en','fr','cn', 'nl','it') ;
 system(`mkdir -p $DOSSIER`) ;
 my @table=('if', 'oefparm0', 'oefparm1', 'oefparm2', 'oefparm3', 'oefparm4', 'oefparm5','oefcommand') ; 
 
+### for "editor"
 my (%Begin, %End) ;
 $Begin{'if'}= "  " ; 
 $End{'if'}= "  " ; 
@@ -87,15 +91,114 @@ for my $tag (@phtml) {
    $Begin{$tag}= "\\special\{" ; 
    $End{$tag}= " \}" ;
 }
-
+### end for "editor"
+### begin for "edit area"
+my $EDIT_AERA_OEF_begin = "editAreaLoader.load_syntax['wimsoef'] = {
+    'QUOTEMARKS' : {1: ' \" '}
+	,'KEYWORD_CASE_SENSITIVE' : true
+	,\'KEYWORDS\' : {" ;
+my $EDIT_AERA_begin = "editAreaLoader.load_syntax['wims'] = {
+    'QUOTEMARKS' : {1: ' \" '}
+	,'KEYWORD_CASE_SENSITIVE' : true
+	,\'KEYWORDS\' : {" ;
+my $EDIT_AERA_OEF_end = "}
+	,'OPERATORS' :[
+		 '*', '+', '-', '/', '^', ':=', '<', '=', '>','..'
+	]
+	,'DELIMITERS' :[
+		'(', ')', '[', ']','{','}','??','??'
+	],
+	'REGEXPS' :
+	{
+		'oefvariables' : { 'search': '()(\\\\\\\\\\\\w+)()',
+			'class' : 'oefvariables',
+			'modifiers' : 'g', 'execute' : 'after' },
+		'record' : { 'search': '(\\n)(:)()',
+			'class' : 'record',
+			'modifiers' : 'g', 'execute' : 'after' },
+		'question' : { 'search': '(\\\\?\\\\?)([^\\\\?]+)(\\\\?\\\\?)',
+			'class' : 'question',
+			'modifiers' : 'g', 'execute' : 'before' },
+	}
+	,'STYLES' : {
+		'COMMENTS': 'color: #AAAAAA;'
+		,'QUOTESMARKS': 'color: #6381F8;'
+		,'KEYWORDS' : {
+			'oefcommand' : 'color: #FF9933;'
+			,'oefparm0' : 'color: #FF9933;'
+			,'oefparm1' : 'color: #985717;'
+			,'oefparm2' : 'color: #336600;'
+			,'oefparm3' : 'color: #336600;'
+			,'oefparm4' : 'color: #3399FF;'
+			,'oefparm5' : 'color: #330099;'
+			,'iff' : 'color: #FF00FF;'
+			,'slib' : 'color: #730800;'
+			,'anstype' : 'color: #3399FF;'
+			,'special' : 'color: #3399FF;' 
+			}
+		,'OPERATORS' : 'color: #FF00FF;'
+		,'DELIMITERS' : 'color: #60CA00;',
+		'REGEXPS': {
+			'oefvariables' : 'color: #FF3A6E;'
+			,'question' : 'color:#985717;'
+		}
+	}
+};" ;
+my $EDIT_AERA_end = "}
+	,'OPERATORS' :[
+		'*', '+', '-', '/', '^', ':=', '<', '=', '>','//','\$'
+	]
+	,'DELIMITERS' :[
+		'(', ')', '[', ']','{','}','\\(', '\\)','??','??'
+	],
+	'REGEXPS' :
+	{
+		'wimsvariables' : { 'search': '(\\\\\$)([a-zA-Z0-9_]*)()',
+			'class' : 'wimsvariables',
+			'modifiers' : 'g', 'execute' : 'before' },
+		'record' : { 'search': '(\\n)(:)()',
+			'class' : 'record',
+			'modifiers' : 'g', 'execute' : 'after' },
+	}
+	,'STYLES' : {
+		'COMMENTS': 'color: #AAAAAA;'
+		,'QUOTESMARKS': 'color: #6381F8;'
+		,'KEYWORDS' : {
+			'wimscommand' : 'color: #3399FF;'
+			,'compare' : 'color: #FF00FF;'
+			,'wimslogiciel' : 'color: yellow;'
+			}
+		,'OPERATORS' : 'color: green;'
+		,'DELIMITERS' : 'color: #60CA00;',
+		'REGEXPS': {
+			'wimsvariables' : 'color: #FF3A6E;'
+			,'tex' : 'color:red;'
+		}
+	}
+};" ;
+### end for "editarea"
 ##### generation
+
+my $debut_oef=1;
+my $debut_wims=1;
+my $EDIT_AERA_OEF=$EDIT_AERA_OEF_begin ;
+my $EDIT_AERA=$EDIT_AERA_begin ;
+
 for my $lang (@Lang) { 
    print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
    for my $t (@table) { tableau($t,$lang) ; }
    phtml("$helpdir/$lang/special",$lang,"special",@phtml) ;
+   $EDIT_AERA_OEF .= "\n, \'special\' : \n[ \'\\embed\', \'\\special{" . join ("\', '\\special{", @phtml) . "\']" if ($lang =~ /en/) ;
    anstype($lang) ; 
    slib($lang) ;
 };
+$EDIT_AERA_OEF .=$EDIT_AERA_OEF_end ;
+if ($debut_wims==1) {$EDIT_AERA .= "\n" ; $debut_wims=0 } else {$EDIT_AERA .= "\n," };
+$EDIT_AERA .= " \'wimscommand' : \n[ \' " . join ("\', \'", wimscommand($DOSSIER_wims)) . "']"; 
+
+$EDIT_AERA .=$EDIT_AERA_end ;
+out( "$DOSSIER_edit_area/wimsoef.js",  $EDIT_AERA_OEF) ;
+out( "$DOSSIER_edit_area/wims.js",  $EDIT_AERA) ;
 
 sub anstype { my ($lang)=@_ ;
  my %HASH ;
@@ -124,8 +227,11 @@ sub anstype { my ($lang)=@_ ;
            . end_js("<a target=\"wims_help\" href=\"wims.cgi?lang=$lang&module=adm%2Fcreatexo&modtoolhelp=yes&+special_parm=reply,$HELP{$tag}\">++>></a>") ;
    }
    $Text .= function_js($text,'anstype') ;
-  out ("$DOSSIER/$lang/anstype" . "_bd\.js", $Text) ;
+   $EDIT_AERA_OEF .= "\n, \'anstype\' : \n[ \' type=" . join ("\', 'type=", sort keys(%HASH)) . "\']"  if $lang=~/en/ ;
+   out ("$DOSSIER/$lang/anstype" . "_bd\.js", $Text) ;
+  
 }
+
 sub slib {my ($lang)= @_ ;
  my $Text = "var slibname='$name{'slib'}{$lang}';\n" ;
  my @list_keyword=();
@@ -199,6 +305,7 @@ for my $file (glob("$slibdir/*/*")) {
  }
  $Text .= function_js($text,'slib') ;
   out ("$DOSSIER/$lang/slib" . "_bd\.js",$Text) ;
+  $EDIT_AERA_OEF .= "\n, \'slib\' : \n[ \'" . join ("\', '", @list_keyword) . "\']"  if $lang=~/en/ ;
 }
 ##special methode
 sub phtml {my ($dir,$lang,$f,@file)=@_ ;
@@ -258,7 +365,6 @@ sub phtml {my ($dir,$lang,$f,@file)=@_ ;
     
   }
   $Text .= function_js($text,'special') ;
-
   out ("$DOSSIER/$lang/$f" . "_bd\.js",$Text) ;
 
 }
@@ -269,6 +375,7 @@ sub tableau { my ($file, $lang) = @_ ;
   my $cities=$file ;
   if ($file =~ /if/){ $cities .= 'f' } ; 
   my @list_keyword;
+  my @List_keyword;
   my $text='';
 ##bug s'il n'y a pas de documentation
   open (IN, $file1);
@@ -287,6 +394,8 @@ sub tableau { my ($file, $lang) = @_ ;
         else
        { $text = begin_js($Begin{$file} . $line . $End{$file}) ; };
      push @list_keyword, $line;
+     $line =~ s/(\(|\)|\.|,|\[|\]| )//g ;
+     push @List_keyword, $line;
      $nl=0;
      }
      else  {
@@ -307,8 +416,28 @@ sub tableau { my ($file, $lang) = @_ ;
   $Text .="var $cities= [ \'$Begin{$file}$var$End{$file}\' ];\n" 
   . function_js($text,$cities) ;
   out ("$DOSSIER/$lang/$cities" . "_bd\.js",$Text) ;
+   if ($lang=~/en/){
+     if ($debut_oef==1) { $EDIT_AERA_OEF .= "\n" ; $debut_oef=0 } else {$EDIT_AERA_OEF .= "\n," };
+     $EDIT_AERA_OEF .= " \'$cities\' : \n[ \'" . join ("\', '", @List_keyword) . "\']" ;
+     if ($cities=~ /(iff|oefparm4)/) {
+       if ($debut_wims==1) {$EDIT_AERA .= "\n" ; $debut_wims=0 } else {$EDIT_AERA .= "\n," };
+       push @List_keyword, ('or', 'and') ;
+       $EDIT_AERA .= " \'compare\' : \n[ \'" . join ("\', '", @List_keyword) . "\']"  ;
+     }
+  }
 }
 
+sub wimscommand { my ($d) = @_;
+  my @wimslist = () ;
+  for my $file (glob("$d/*")) { 
+    $file =~ s,$d/,, ;
+    $file =~ s,.phtml,, ;
+    push @wimslist, $file ;
+  }
+  push @wimslist, ("endif","next","else") ;
+  @wimslist ; 
+}
+### subroutine for "editor"
 sub begin_js {my ($t)= @_ ;
 "case \'$t\' \:\nchaine_aide="
 }
