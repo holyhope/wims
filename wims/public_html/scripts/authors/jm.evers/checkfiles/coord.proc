@@ -361,7 +361,9 @@ paritest1=$empty
     !for s=1 to $[$t2/2]
 	xa=!item $s of $Xa
 	ya=!item $s of $Ya
-	paritest1=!append line if( ((1.0*($x)) == (1.0*($xa))) && ((1.0*($y) == (1.0*($ya)))),1,0) to $paritest1
+#	paritest1=!append line if( ((1.0*($x)) == (1.0*($xa))) && ((1.0*($y) == (1.0*($ya)))),1,0) to $paritest1
+# 12/2011 ivm 3/8*pi != 0.375*pi
+	paritest1=!append line if( abs((1.0*($x)) - (1.0*($xa))) < 10^(-15) && abs((1.0*($y) - (1.0*($ya)))) < 10^(-15),1,0) to $paritest1
     !next s
 !next p
     

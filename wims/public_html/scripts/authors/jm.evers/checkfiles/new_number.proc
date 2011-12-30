@@ -309,8 +309,12 @@ score=0
 			    !endif
 			!else
 			    #rnd=-1 of rnd=0
-			    # exact...range is dus een beetje onzin...
-			    f=!exec pari if( 1.0*($A)+$range >= 1.0*($G) && 1.0*($A)-$range <= 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
+			    !if $range=0
+				f=!exec pari if( abs(1.0*($A) - 1.0*($G)) < 10^(-15) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
+			    !else
+				# exact...range is dus een beetje onzin...
+				f=!exec pari if( 1.0*($A)+$range >= 1.0*($G) && 1.0*($A)-$range <= 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
+			    !endif
 			    !if $wims_exec_error = $empty
 				!if $f=1
 				    found=1

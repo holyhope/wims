@@ -415,7 +415,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
     Opties \
     Modtool Account\
     Beveiliging\
-    Best scores (number / anonymity)\
+    Hoogste score\
     Aantal studenten limiet\
     Einddatum\
     Registratie van oefeningen\
@@ -439,7 +439,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
     Huidige geheugen gebruik\
     De limiet\
     Mix\
-    Allow score interruption by participant\
+    Opschorten scoreregistratie door studenten\
   into name_name_institution,name_name_class,name_name_number,name_optionword,name_devaccount,name_lock_level,\
     name_bestscore,name_limit,name_expirationdate,name_register_exo,name_register_exam,\
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\

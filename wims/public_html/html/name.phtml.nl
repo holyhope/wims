@@ -154,23 +154,24 @@
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
  !distribute items Homepagina van je klas,Toevoegen aan werkblad,\
-		Schrijf naar je docent,Uitloggen,\
-		De antwoorden zijn reeds verwerkt en de cijfers berekend,\
-		Je hebt het behalen van cijfers opgeschort,\
-		Open cijfer registratie,Sluit cijfer registratie,\
-		U bent docent van deze klas,\
-		Bewaar de details van deze oefening,\
-		Werkblad startpagina\
-		Lesmateriaal in werkvolgorde,\
-	into wims_name_class_home,wims_name_add,\
-	wims_name_wsup,wims_name_visitor,\
-	wims_name_scoreclose,\
-	wims_name_scoresuspend,\
-	wims_name_scorereopen,wims_name_scoreclose2,\
-	wims_name_syou,\
-	wims_name_exolog,\
-	wims_name_sheetmanagement,\
-	wims_name_add_sequence
+ Schrijf naar je docent,Uitloggen,\
+ De antwoorden zijn reeds verwerkt en de cijfers berekend,\
+ Je hebt het behalen van cijfers opgeschort,\
+ Open cijfer registratie,Sluit cijfer registratie,\
+ U bent docent van deze klas,\
+ Bewaar de details van deze oefening,\
+ Werkblad startpagina,\
+ Lesmateriaal in werkvolgorde,\
+ into wims_name_class_home,wims_name_add,\
+ wims_name_wsup,wims_name_visitor,\
+ wims_name_scoreclose,\
+ wims_name_scoresuspend,\
+ wims_name_scorereopen,wims_name_scoreclose2,\
+ wims_name_syou,\
+ wims_name_exolog,\
+ wims_name_sheetmanagement,\
+ wims_name_add_sequence
+ 
  !set wims_name_chseries=!nosubst Sla de veranderingen aan de series oefeningen $(special_parm4[2]) uit werkblad $(special_parm4[1]) op. 
  !set wims_name_score=!nosubst Je hebt voor deze opdracht $[$wims_homeref_got] punten gehaald uit maximaal\
 	$[$wims_homeref_req] punten. <br>Gemiddelde score \
@@ -297,7 +298,7 @@ Nieuw werkblad\
 Nieuwe proefwerk\
 Nieuwe klas\
 Nieuwe enquete\
-Nieuw oefening\
+Nieuwe oefening\
 Oefeningen van deze klas\
 into wims_name_add_doc,wims_name_add_sheet,wims_name_add_exam,wims_name_add_class,wims_name_add_vote,\
 wims_name_add_exo,wims_name_classexo
