@@ -69,12 +69,28 @@ find . ! \( -type f -o -type d \) -print
 
 !if $confirm=diffcheck
  mode=diffcheck
- diff=!sh cd $wims_home\
-  diff -r --new-file $wims_sesdir/deptest/$nameverif public_html/modules/devel/$auth_login/$restored | sed 's/\&/\&amp;/g;s/</\&lt;/g;s/\$$/\&#36;/g' | tail -c 15000
- diffcnt=!charcnt $diff
- !if $diffcnt>14500
-  diff=MANY
+ category=!module category $restored
+
+ !if oef isitemof $category
+  exclude=--exclude def
  !endif
+ !if document isitemof $category
+  exclude=--exclude '*.def'
+ !endif
+
+ diff=!sh cd $wims_home\
+  diff -r $exclude --new-file $wims_sesdir/deptest/$nameverif public_html/modules/devel/$auth_login/$restored | sed 's/\&/\&amp;/g;s/</\&lt;/g;s/\$$/\&#36;/g' | tail -c 15000
+ diffcnt=!charcnt $diff
+ !if $diffcnt>19500
+  diff1=MANY
+  diff =!char 1 to 19000 of $diff
+ !else
+   diff = !replace internal diff -r $exclude --new-file by in $diff
+   !if $diff !=$empty
+     diff=diff -r $exclude --new-file\
+$diff
+   !endif
+  !endif
  !exit
 !endif
 

@@ -4,12 +4,6 @@ pubmod=!translate internal ~ to / in $mod
 m1=!translate internal ~ to , in $mod
 m1=!item 1 of $m1
 pubtest=!module title $pubmod
-diff=!sh cd modules\
- diff -r --new-file $pubmod devel/$auth_login/$mod | sed 's/\&/\&amp;/g;s/</\&lt;/g;s/\$$/\&#36;/g' | tail -c 15000
-diffcnt=!charcnt $diff
-!if $diffcnt>14500
- diff=MANY
-!endif
 
 !if $pubtest=$empty or $m1 notitemof $zonelist or \
   $m1=test
@@ -17,3 +11,26 @@ diffcnt=!charcnt $diff
  !changeto $job.proc
 !endif
 
+category=!module category $pubmod
+
+!if oef isitemof $category
+  exclude=--exclude def
+!endif
+!if document isitemof $category
+  exclude=--exclude '*.def'
+!endif
+diff=!sh cd modules\
+ diff -r $exclude --new-file  $pubmod devel/$auth_login/$mod | sed 's/\&/\&amp;/g;s/</\&lt;/g;s/\$$/\&#36;/g' | tail -c 20000
+
+diffcnt=!charcnt $diff
+
+!if $diffcnt>19500
+ diff1=MANY
+ diff =!char 1 to 19000 of $diff
+!else
+  diff = !replace internal diff -r $exclude --new-file by in $diff
+  !if $diff !=$empty
+    diff=diff -r $exclude --new-file\
+$diff
+  !endif
+!endif
