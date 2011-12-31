@@ -1,7 +1,7 @@
 
 editAreaLoader.load_syntax['gp'] = {
     'QUOTEMARKS' : {1: ' " '}
-    ,'COMMENT_SINGLE' : {1 : '\/\/'}
+    ,'COMMENT_SINGLE' : {1 : '\\'}
 	,'COMMENT_MULTI' : {'/\*' : '\*/'}
 	,'KEYWORD_CASE_SENSITIVE' : true
 	,'KEYWORDS' : {
@@ -44,9 +44,9 @@ editAreaLoader.load_syntax['gp'] = {
     'qfjacobi', 'qflll', 'qflllgram', 'qfminim', 'qfperfection', 'qfrep', 'qfsign', 'setintersect',
     'setisset', 'setminus', 'setsearch', 'setunion', 'trace', 'vecextract', 'vecsort', 'vector',
     'vectorsmall', 'vectorv', 'a1', 'a2', 'a3', 'a4', 'a6', 'area', 'b2', 'b4', 'b6', 'b8', 'bid',
-    'bnf', 'c4', 'c6', 'clgp', 'codiff', 'cyc', 'diff', 'disc', 'e', 'eta', 'f', 'fu', 'futu',
-    'gen', 'group', 'index', 'j', 'mod', 'nf', 'no', 'omega', 'orders', 'p', 'pol', 'r1', 'r2',
-    'reg', 'roots', 'sign', 't2', 'tate', 'tu', 'tufu', 'w', 'zk', 'zkst', 'bnfcertify', 
+    'bnf', 'c4', 'c6', 'clgp', 'codiff', 'cyc', 'diff', 'disc', 'eta', 'gen', 'group', 
+    'index', 'mod', 'nf', 'no', 'omega', 'orders', 'pol', 'r1', 'r2',
+    'reg', 'roots', 'sign', 't2', 'tate', 'bnfcertify', 
     'bnfcompress', 'bnfdecodemodule', 'bnfinit', 'bnfisintnorm', 'bnfisnorm', 'bnfisprincipal', 
     'bnfissunit', 'bnfisunit', 'bnfnarrow', 'bnfsignunit', 'bnfsunit', 'bnrL1', 'bnrclassno', 
     'bnrclassnolist', 'bnrconductor', 'bnrconductorofchar', 'bnrdisc', 'bnrdisclist', 'bnrinit', 
