@@ -4,7 +4,7 @@
    !set module_title=$(module_title_$modu_lang)
 !endif
 !read lang/names.phtml.$modu_lang
-!if $job iswordof edfile showfile 
+!if $job iswordof edfile showfile diff restore
   !set typetest=!module category devel/$auth_login/$mod
   !if doc notitemof $typetest
     !if .oef_ isin $(fname)_ or .cpp_ isin $(fname)_
@@ -17,6 +17,9 @@
       !endif
     !endif
   !endif
+  !if $job iswordof diff or ($job=restore and $confirm=diffcheck)
+     !set edit_area_syntax=diff
+  !endif 
   !if $job=edfile
     !read js/edit_area.phtml wims_deposit $edit_area_syntax
   !else
