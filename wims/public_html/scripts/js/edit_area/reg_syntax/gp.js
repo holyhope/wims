@@ -113,8 +113,7 @@ editAreaLoader.load_syntax['gp'] = {
 	,'DELIMITERS' :[
 		'(', ')', '[', ']','{','}','\(', '\)'
 	]
-	,
-	'STYLES' : {
+	,'STYLES' : {
 		'COMMENTS': 'color: #0000CD;'
 		,'QUOTESMARKS': 'color: #6381F8;'
 		,'KEYWORDS' : {
