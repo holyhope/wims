@@ -102,13 +102,13 @@ my $EDIT_AERA_begin = "editAreaLoader.load_syntax['wims'] = {
 	,'KEYWORD_CASE_SENSITIVE' : true
 	,\'KEYWORDS\' : {" ;
 my $EDIT_AERA_OEF_end = "}
-	,'OPERATORS' :[
-		 '*', '+', '-', '/', '^', ':=', '<', '=', '>','..'
+	,'OPERATORS' : [
+		'*', '+', '-', '/', '^', ':=', '<', '=', '>','..'
 	]
-	,'DELIMITERS' :[
+	,'DELIMITERS' : [
 		'(', ')', '[', ']','{','}','??','??'
-	],
-	'REGEXPS' :
+	]
+	,'REGEXPS' :
 	{
 		'oefvariables' : { 'search': '()(\\\\\\\\\\\\w+)()',
 			'class' : 'oefvariables',
@@ -121,7 +121,7 @@ my $EDIT_AERA_OEF_end = "}
 			'modifiers' : 'g', 'execute' : 'before' },
 	}
 	,'STYLES' : {
-		'COMMENTS': 'color: #AAAAAA;'
+		'COMMENTS': 'color: #0000CD;'
 		,'QUOTESMARKS': 'color: #6381F8;'
 		,'KEYWORDS' : {
 			'oefcommand' : 'color: #FF9933;'
@@ -137,8 +137,8 @@ my $EDIT_AERA_OEF_end = "}
 			,'special' : 'color: #3399FF;' 
 			}
 		,'OPERATORS' : 'color: #FF00FF;'
-		,'DELIMITERS' : 'color: #60CA00;',
-		'REGEXPS': {
+		,'DELIMITERS' : 'color: #60CA00;'
+		,'REGEXPS': {
 			'oefvariables' : 'color: #FF3A6E;'
 			,'question' : 'color:#985717;'
 		}

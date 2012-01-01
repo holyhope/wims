@@ -19,7 +19,7 @@ my $Text = << "EOT"
 	,'KEYWORDS' : {
 	'flydraw' : [
 EOT
-. $L 
+. $L
 . << "EOT"
  ]
 }
@@ -34,6 +34,11 @@ EOT
 		'oefvariables' : { 'search': '()(\\\\\\\\\\\\w+)()',
 			'class' : 'oefvariables',
 			'modifiers' : 'g', 'execute' : 'before' }
+		,'wimsvariables' : {
+			'search' : '()(\\\\\$\\\\w+)()'
+			,'class' : 'wimsvariables'
+			,'modifiers' : 'g', 'execute' : 'before'
+		}
 	}
 	,'STYLES' : {
 		'COMMENTS': 'color: #0000CD;'
@@ -45,10 +50,10 @@ EOT
 		,'DELIMITERS' : 'color: #60CA00;'
 		,'REGEXPS': {
 			'oefvariables' : 'color: #FF3A6E;'
+			,'wimsvariables' : 'color: #FF3A6E;'
 		}
 	}
 };
-
 EOT
 ;
 
