@@ -118,7 +118,7 @@ my $EDIT_AERA_OEF_end = "}
 			'modifiers' : 'g', 'execute' : 'after' },
 		'question' : { 'search': '(\\\\?\\\\?)([^\\\\?]+)(\\\\?\\\\?)',
 			'class' : 'question',
-			'modifiers' : 'g', 'execute' : 'before' },
+			'modifiers' : 'g', 'execute' : 'before' }
 	}
 	,'STYLES' : {
 		'COMMENTS': 'color: #0000CD;'
@@ -132,7 +132,7 @@ my $EDIT_AERA_OEF_end = "}
 			,'oefparm4' : 'color: #3399FF;'
 			,'oefparm5' : 'color: #330099;'
 			,'iff' : 'color: #FF00FF;'
-			,'slib' : 'color: #730800;'
+			,'slib' : 'color: #60CA33;'
 			,'anstype' : 'color: #3399FF;'
 			,'special' : 'color: #3399FF;' 
 			}
@@ -186,11 +186,12 @@ my $EDIT_AERA=$EDIT_AERA_begin ;
 
 for my $lang (@Lang) { 
    print "oefdoc.pl $lang\n" ;  system(`mkdir -p $DOSSIER/$lang`) ;
+   slib($lang) ;
    for my $t (@table) { tableau($t,$lang) ; }
    phtml("$helpdir/$lang/special",$lang,"special",@phtml) ;
    $EDIT_AERA_OEF .= "\n, \'special\' : \n[ \'\\embed\', \'\\special{" . join ("\', '\\special{", @phtml) . "\']" if ($lang =~ /en/) ;
    anstype($lang) ; 
-   slib($lang) ;
+
 };
 $EDIT_AERA_OEF .=$EDIT_AERA_OEF_end ;
 if ($debut_wims==1) {$EDIT_AERA .= "\n" ; $debut_wims=0 } else {$EDIT_AERA .= "\n," };
@@ -305,7 +306,10 @@ for my $file (glob("$slibdir/*/*")) {
  }
  $Text .= function_js($text,'slib') ;
   out ("$DOSSIER/$lang/slib" . "_bd\.js",$Text) ;
-  $EDIT_AERA_OEF .= "\n, \'slib\' : \n[ \'" . join ("\', '", @list_keyword) . "\']"  if $lang=~/en/ ;
+  if ($lang=~/en/) { 
+    if ($debut_oef==1) { $EDIT_AERA_OEF .= "\n" ; $debut_oef=0 } else {$EDIT_AERA_OEF .= "\n," };
+  $EDIT_AERA_OEF .= "\'slib\' : \n[ \'" . join ("\', '", @list_keyword) . "\']"   ;
+  }
 }
 ##special methode
 sub phtml {my ($dir,$lang,$f,@file)=@_ ;
