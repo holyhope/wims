@@ -79,6 +79,7 @@ $name_title
  
  <div class="wims_sheet">
  <ul class="wims_sheet_list">
+ !let wims_exotitle=$empty
  !for i=1 to $n
   !set ex=!record $i of wimshome/log/classes/$wims_class/sheets/.sheet$sh
   !distribute lines $ex into di,pa,require,we,ti,de
@@ -86,6 +87,7 @@ $name_title
   !set mean=!word $i of $means
   !set dep=!row $i of $deps
   !set dep=!trim $dep
+  !set wims_exotitle=!append line $ti to $wims_exotitle
   <li class="wims_sheet_list">$i.
   !if $dep=$empty or $scorestat!=yes
    !href module=$di&cmd=new&worksheet=$sh&$pa $ti
@@ -112,6 +114,10 @@ $name_title
   !endif
  </li>
  !next i
+ !let wims_exotitle=!replace , by &#44; in $wims_exotitle
+ !let wims_exotitle=!lines2items $wims_exotitle
+ !setdef wims_exotitle=$wims_exotitle\
+wims_sheettitle=$sheet_title in wimshome/sessions/$wims_session/var.stat
  </ul>
  </div>
 !endif

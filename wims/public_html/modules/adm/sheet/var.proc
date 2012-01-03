@@ -14,7 +14,7 @@ wims_nw=deps prcnt empty job class_header data\
 
 authscoresuspend=!defof class_authscoresuspend in wimshome/log/classes/$wims_class/.def
 !default authscoresuspend=yes
-!setdef wims_authscoresuspend=$authscoresuspend in wimshome/sessions/$wims_session/var.stat 
+!setdef wims_authscoresuspend=$authscoresuspend in wimshome/sessions/$wims_session/var.stat
 
 !if $authscoresuspend=yes
  !if $job=suspend
@@ -125,6 +125,7 @@ c=!char 1 of $sh
  sheet_active=1
  n=!recordcnt $data
 !endif
+!!setdef wims_sheettitle=$sheet_title in wimshome/sessions/$wims_session/var.stat
 
 maxexo=!recordcnt $data
 !setdef wims_sheetmax=$maxexo in wimshome/sessions/$wims_session/var.stat
