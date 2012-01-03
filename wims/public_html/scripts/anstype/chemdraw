@@ -28,15 +28,27 @@ ans_list_feedback=!getopt feedback in $(replyoption$i)
 ans_list_feedback=!words2items $ans_list_feedback
 
 !if V2000 isin $(replygood$i)
- !set ans_mol=!replace internal $	$ by $\
+ !set ans_mol1=!replace internal $	$ by $\
 $ in $(replygood$i)
+ !set replygood_cnt=1
 !else
- !set ans_mol=!record 0 of $(replygood$i)
+ !set replygood_=!replace internal | by , in $(replygood$i)
+ !set replygood_cnt=!itemcnt $replygood_
+ !for ss_ = 1 to $replygood_cnt
+    !set file=!item $ss_ of $(replygood_)
+   !set ans_mol_$ss_=!record 0 of $file
+ !next
 !endif
-!set ans_mol=!replace internal &#33; by ! in $ans_mol
-!set ans_brut_g=!line 1 of $ans_mol
 
-!set goodfichier=g_$wims_nowseconds.mol
+!for ss_ = 1 to $replygood_cnt
+  !set ans_mol_$ss_=!replace internal &#33; by ! in $(ans_mol_$ss_)
+  !set ans_brut_g_$ss_=!line 1 of $(ans_mol_$ss_)
+  !set goodfichier_$ss_=g_$(ss_)_$wims_nowseconds.mol
+  !set goodfile_$ss_=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$(goodfichier_$ss_)
+  !readproc oef/togetfile.proc $(goodfichier_$ss_) new\
+  $(ans_mol_$ss_)
+!next ss_
+
 !set ans_newtime=$(wims_nowseconds)_$i
 !set replyfichier=r_$ans_newtime.mol
 
@@ -58,33 +70,28 @@ $ans_molecule
  m_reply$i=$ans_checkmol_r;$ans_checkmol_func_r;$ans_brut_r;
   !goto end
 !endif
-
-!set goodfile=$wims_ref_name?session=$session&+cmd=getfile&+special_parm=$goodfichier
-!readproc oef/togetfile.proc $goodfichier new\
-  $ans_mol
+!for ss_ = 1 to $replygood_cnt
+  ans_is_matching=!exec matchmol -x$match $wims_home/$wims_sesdir/getfile/$replyfichier $wims_home/$wims_sesdir/getfile/$(goodfichier_$ss_) 
   
-!!ans_is_matching1=!exec matchmol -agGs $wims_home/$wims_sesdir/getfile/$replyfichier $wims_home/$wims_sesdir/getfile/$goodfichier 
-!!ans_is_matching2=!exec matchmol -agGs $wims_home/$wims_sesdir/getfile/$goodfichier $wims_home/$wims_sesdir/getfile/$replyfichier 
-ans_is_matching=!exec matchmol -x$match $wims_home/$wims_sesdir/getfile/$replyfichier $wims_home/$wims_sesdir/getfile/$goodfichier 
+ !if invalid isin $ans_is_matching or unknown file format isin $ans_is_matching
+   error=bad_exo
+  !exit
+ !endif
 
-!!avec l'option -x vérifie strictement
-!if invalid isin $ans_is_matching or unknown file format isin $ans_is_matching
-  error=bad_exo
- !exit
-!endif
-ans_diag1=$ans_is_matching
+ ans_diag=!replace internal : by , in $ans_is_matching
+ ans_diag=!replace internal T by 1 in $ans_diag
+ ans_diag=!replace internal F by 0 in $ans_diag
 
-ans_diag=!replace internal : by , in $ans_diag1
-ans_diag=!replace internal T by 1 in $ans_diag
-ans_diag=!replace internal F by 0 in $ans_diag
-
-
-ans_diag=$(ans_diag[2])
-ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
+ ans_diag=$(ans_diag[2])
+ !if $ans_diag=1
+   !goto continue
+ !endif
+ !next ss_
+ ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
 
 !if $ans_diag < 1
-  !!comparaison
-   ans_checkmol_g=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$goodfichier
+  !!comparaison avec le premier fichier bonne réponse
+   ans_checkmol_g=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$(goodfichier_1)
    ans_cnt_=!itemcnt $ans_checkmol_g
    ans_diff=
    !for s_ = 1 to $ans_cnt_
@@ -105,7 +112,7 @@ ans_checkmol_r=!exec checkmol -X $wims_home/$wims_sesdir/getfile/$replyfichier
 !endif
 ans_feedback=!lines2rows $ans_feedback
 !endif
-
+:continue
 !if $ans_diag=1
  diareply$i=good
  !advance freegot
