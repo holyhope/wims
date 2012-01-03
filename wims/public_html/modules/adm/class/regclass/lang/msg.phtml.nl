@@ -123,7 +123,7 @@
 !endif
 
 !if too_short=$error
- Het veld ``$(name_$error_subject)'' lijkt wat te kort.
+ Het veld ``$(name_$(error_subject))'' lijkt wat te kort.
  !exit
 !endif
 
@@ -163,7 +163,7 @@
 !endif
 
 !if bad_pass=$error
- Uw $(name_$error_subject) bevat niet toegestane karakters. <p>
+ Uw $(name_$(error_subject)) bevat niet toegestane karakters. <p>
   Gebruik een woord met alleen cijfers en/of letters zonder accenten en zonder spaties.
  !exit
 !endif

@@ -105,7 +105,7 @@ para desactivar esta medida de seguridad.
 !endif
 
 !if too_short=$error
- El campo de datos ``$(name_$error_subject)'' parece demasiado corto.
+ El campo de datos ``$(name_$(error_subject))'' parece demasiado corto.
  !exit
 !endif
 
@@ -147,7 +147,7 @@ La creación de clases sólo puede tener éxito si
 !endif
 
 !if bad_pass=$error
- Su $(name_$error_subject) contiene caracteres ilegales. <p>
+ Su $(name_$(error_subject)) contiene caracteres ilegales. <p>
  Por favor utilice una contraseña que contenga únicamente cifras o letras
  sin acentos y sin espacios entre ellas.
  !exit
