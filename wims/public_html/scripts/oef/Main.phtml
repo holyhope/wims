@@ -42,16 +42,22 @@ $ by ; in $init_parm
 
 !header1
 <h1 class="oeftitle">
-!if $wims_exo!=$empty and $wims_exotitleform>0
- !if $wims_exotitleform=1
-  $wims_name_sheet $wims_sheet - $wims_name_Exercise $wims_exo
- !else
-  $wims_sheettitle
-  <br>
-  !if $wims_exotitleform=2
-   $wims_name_Exercise $wims_exo
+!if $wims_exo!=$empty 
+ !if $wims_exotitleform>0
+  !if $wims_exotitleform=1
+   $wims_name_sheet $wims_sheet - $wims_name_Exercise $wims_exo
   !else
-   $(wims_exotitle[$wims_exo])
+   $wims_sheettitle
+   <br>
+   !if $wims_exotitleform=2
+    $wims_name_Exercise $wims_exo
+   !else
+    $(wims_exotitle[$wims_exo])
+   !endif
+  !endif
+ !else
+  !if $wims_exotitleform=0
+   $title
   !endif
  !endif
 !else
