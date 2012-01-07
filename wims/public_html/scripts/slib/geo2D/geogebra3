@@ -7,8 +7,10 @@ slib_title=Geogebra Applet
 slib_author=Paul, Byache; Bernadette, Perrin-Riou
 
 slib_example=Z=(-3,6.78);W=(0.2,5.8);a=Circle[Z,W];Ellipse[Z,W,5];u=Line[W,Z];showMenuBar=true;showToolBar=true;language=en;customToolBar="0|40@10||1|2";width=600;height=300;setCoordSystem(-9,7,1,11.5)\
-A=(0,3.5);B=(0,5);a=Cercle[A,B];d:y=2x+1;number=2;width=600;language=fr;showToolBar=true;customToolBar="0|40"\
-A=(0,3);B=(0,4);C=(2,3);s=Segment[A,C];Angle[C,A,B];a=Droite[C,B];D=Point[a];b=3;f(x)=b+sin(x);number=3;width=600;language=fr
+A=(0,3.5);B=(0,5);a=Cercle[A,B];d:y=2x+1;number=6;width=600;language=fr;showToolBar=true;customToolBar="0|40";showAlgebraView=false\
+A=(0,3);B=(0,4);C=(2,3);s=Segment[A,C];Angle[C,A,B];a=Droite[C,B];D=Point[a];b=3;f(x)=b+sin(x);width=600;language=fr;showAlgebraView=false\
+ggbBase64=UEsDBBQACAAIAE9zJ0AAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1s3VZNc9s2ED03vwLDeygQ/J6RnFGcHjKTpge3OfQGkbCEGgQYAJQp/fosAJKSXM/0K6fY46Hxdrl4+3YXxPrd2Al0ZNpwJTdREuMIMdmolsv9Jhrs49sqenf3Zr1nas92mqJHpTtqN1Eak8jhA79789PaHNQzosK7fOHseRM9UmFYhEyvGW3NgTF7g9Nh5IJTffp19ydrrLkYQpCPsh/sAjZd+4kbWFs9sGjld+wFtx/4kbdMI6GaTVTkwB3++8K05Q0VmyjDASGbiLwwApQ660FpflbSOvdL8EdAEDL8zEAS4rD1yme6ZkMjeMupdNl4HuCE0DNv7WET1T4k4/sDcM3LPERrlNLtw8lY1qHxD6YV0Elyp/QprNKwMsALNsyxN12vfBh2fGDWQl0MoiO7KLbXvL1ZfDTvlbhAveLS3tPeDtoXNZ2gB3tyG8Be2hHeyr1gE5aA5AfWPO3U+BBESEPo3069f8UT2u3vlVAaaSdvDg7Tcxee3scxXbyw98HeY4rhgi72pCbewz934em9BJeB2pR5Mmed4HkbbpADnIzQi0vygu4YlDZCg+T207yAFni6pOpe+Dx0OxiC6yZYYibfK+Z69aJ91k9MSyZCk0io7aAGg46uGcNenkjLGt7BMhgmSagr1+9AIKAt22s2Ew8jFATzVnzdiC/g9Wom4TgY4NpYOAsgH+tyYcZQ7ubVwqi4PFtqAXazzwTrGAyK9U3he2oRZxstx4LyEz6pMNsvMoP51QbxrURFf6CAzDMg6AnG/TonH+8X1d5mSiUo5tOAqetdAFeTnrFQTju1MeohoB+KK7m9SgaNQCEuK3z9A215gmPFzec5HJb+jTBO7iDwHNKp1kGevxHq/Y8gVBKnhZeGxEX2/bS5/xG0wXFFbpoomZuouIHzf6dbo7qOyhZJ2gGLn4XgPezt3uTu04kodkOIaOJaDFHi1AxSDXa2NyHoFOovxYDjgDeL2E10exLbAxx4Eo4HdyQtYqz+b8Xwf6/XP+IGH2cmj8BMaYPQiN0+JSFJXVc1KfIkrV0lTh4v6qSosgxnhNQ5hosAOuPpjjSCrm9f8zglr0c8J1fFhbbSfERb7O4ocVrWeVnAb5ljksAgbcE3A+cMoBknMFdb4vA6hr+MFDit0zyFD/M2BS4l7JlVsMhgkZdxDdaqrHFNMlI7PAc8ITgmVVYXpCqqOsVlMYnyVQbhTPiA8Q5uVw23L5tudf2F8Jei6Vp49w1QSwcI9HqTJaEDAABICgAAUEsBAhQAFAAIAAgAT3MnQPR6kyWhAwAASAoAAAwAAAAAAAAAAAAAAAAAAAAAAGdlb2dlYnJhLnhtbFBLBQYAAAAAAQABADoAAADbAwAAAAA=; width=600; height=400\
+
 !exit
 
 :proc
@@ -16,9 +18,8 @@ A=(0,3);B=(0,4);C=(2,3);s=Segment[A,C];Angle[C,A,B];a=Droite[C,B];D=Point[a];b=3
 
 !default name_clickgeogebra_$lang=Init
 
-!reset slib_out
-!default slib_cnt=0
-slib_cnt= $[$slib_cnt +1]
+!reset slib_out 
+
 slib_data=!trim $wims_read_parm
 
 slib_data= !items2lines $wims_read_parm
@@ -45,13 +46,27 @@ slib_extra = !rows2lines $slib_extra
 slib_data=$slib_data\
 $slib_extra
 
-slib_list_ap = enableLabelDrags,enableShiftDragZoom,errorDialogsActive,file,showToolBar,showAlgebraView,showMenuBar,showResetIcon,showToolBarHelp,enableRightClick,showAlgebraInput,customToolBar,language,debug,number,ggbBase64
+slib_list_ap = enableLabelDrags,enableShiftDragZoom,errorDialogsActive,file,showToolBar,showAlgebraView,showMenuBar,showResetIcon,showToolBarHelp,enableRightClick,showAlgebraInput,customToolBar,language,debug
 slib_list_ap1=!items2words $slib_list_ap
 
 !for slib_a in width,height,language,$slib_list_ap
   slib_$slib_a=!getopt $slib_a in $slib_data
 !next slib_a
-slib_ggbBase64=$(slib_ggbBase64)
+slib_number1=!getopt number in $slib_data
+!if $slib_number1!=
+  slib_number=$slib_number1
+!endif
+slib_data_l1=!line 1 of $slib_data
+!! ne pas utiliser getopt car en cas d'un = dans le filestring, il ne sera pas pris en entier
+!if ggbBase64 isin $slib_data_l1
+    slib_ggbBase64=!replace internal ggbBase64= by in $slib_data_l1
+    slib_ggbBase64=!replace internal ggbBase64 = by in $slib_ggbBase64
+    slib_ggbBase64=!replace internal ggbBase64$ $ by in $slib_ggbBase64
+    slib_data=!line 2 to -1 of $slib_data
+!else
+  !reset slib_ggbBase64
+!endif
+
 slib_customToolBar1= !nospace $slib_customToolBar
 slib_customToolBar=$slib_customToolBar1
 slib_customToolBar= !replace internal @ by , in $slib_customToolBar
@@ -75,7 +90,9 @@ slib_customToolBar= !items2words  $slib_customToolBar
 !default slib_customToolBar=
 !default slib_number=1
 slib_number=$[$slib_number-1]
-
+!if $slib_showAlgebraView=false and $slib_ggbBase64=$empty
+  slib_ggbBase64=UEsDBBQACAAIAPiBJ0AAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1srVTJctswDD03X8HhvbFkV20zIzmTpJfMZNqDmxx6oyRYQk2RGi5e8vUFSXmJzz1ReHgCHkCA5f1+kGwLxqJWFc9vM85ANbpF1VXcu/Xn7/x+eVN2oDuojWBrbQbhKr64nfOAe1zefCptr3dMyEh5Q9hVfC2kBc7saEC0tgdwH3Dh9yhRmMOv+i80zp4dKcizGr07gc3QvqAl2xkPfBYzjhLdD9xiC4ZJ3VT8a0Ha6esNjMNGyIp/yRIyr/j8yknQInh7bfBdKxfo5+BrQhiz+A7UknnAylmstATfSGxRqFBN1EEkxnbYur7idzEkYNeT1uJbkaI1Wpt2dbAOBrb/A0aTnLwInT4ka5EsS7ooYZFF16UVw8B2Bc7RvVgm9nDuWGew/WA820ctz9CoUbknMTpv4qUuJmjlDiEB5TJB8IPqJExYTi3vodnUer9KTVik0L8PY/wlCqq7Jy21YSa0tyDCdNbpjJyg9MTKIieLjClGCHry53fzyIhnnc7IkqiStKny/Fh1nh3ToGUBCG2kWTwVL0UNdLWceYXu5WjQCGzOpYYffvqhpiW4HIJTzPx/xSxnV+NTbsAokGlIFN2t196ybRjGlCsKaaHBgczkmFoiwnW9koCEttAZOApPK5QaFr3Z5SBeweXsKCJosKS1cfQWUD0u1ALWhm11tCihylY4AsPmzy7ZcUGmJ2L5D1BLBwiMBAo2DgIAAFQEAABQSwECFAAUAAgACAD4gSdAjAQKNg4CAABUBAAADAAAAAAAAAAAAAAAAAAAAAAAZ2VvZ2VicmEueG1sUEsFBgAAAAABAAEAOgAAAEgCAAAAAA=="/>
+!endif
 !! ne trouve pas le fichier (? getXML ?)
 !!slib_algebraview=<script type="text/javascript">\
 !!function algebraview() {\
@@ -121,6 +138,10 @@ slib_out=$slib_out\
 <param name="showMenuBar" value="$slib_showMenuBar">\
 <param name="showAlgebraInput" value="$slib_showAlgebraInput">\
 <param name="showAlgebraView" value="false">
+!if $slib_ggbBase64 != $empty
+   slib_out=$slib_out\
+<param name="ggbBase64" value="$slib_ggbBase64">
+!endif
 !for slib_u=1 to $slib_cnt
   slib_line=!line $slib_u of $slib_data
   slib_line=!nospace $slib_line
@@ -185,6 +206,7 @@ Sorry - the GeoGebra Applet could not be started. Please make sure that Java 1.4
 </script>
 
 !endif
+slib_number=$[$slib_number+2]
 slib_z1=$wims_read_parm
 !if $slib_debug=true
   slib_out=$slib_out \
