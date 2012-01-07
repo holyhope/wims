@@ -37,7 +37,13 @@
 !if $auth_login!=$empty and $job!=modname
  <p>
  !if $job iswordof flist edfile showfile binfile
- !set wims_menu_items=!append line test,4,module=devel/$auth_login/$mod,test\
+  !if .oef isin $fname
+    !set tmp_f=!replace internal src/ by in $fname
+    !set tmp_f=!replace internal .oef by in &exo=$tmp_f&cmd=new
+  !else
+    !reset tmp_f
+  !endif
+  !set wims_menu_items=!append line test,4,module=devel/$auth_login/$mod$tmp_f,test\
  to $wims_menu_items
   !set doctest=!module category devel/$auth_login/$mod
   !if document isin $doctest
