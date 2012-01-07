@@ -23,12 +23,11 @@ $name_about1
        $wims_name_Author
       </th>
       <td>
-     !if $email!=$empty
-          !mailurl $email $(script_out[1])
-          &nbsp;
-        !if $script_cnt > 1
-         !replace internal , by ,$ $ in , $(script_out[2..-1])
-        !endif 
+    !set email=!replace internal ; by , in $email
+     !for au=1 to $script_cnt 
+          !mailurl $(email[$au]) $(script_out[au])
+&nbsp;
+      !next
      !endif 
       </td>
     </tr>

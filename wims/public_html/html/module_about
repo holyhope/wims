@@ -21,12 +21,21 @@
   !endif
 !next
 !read namewriting.phtml $module_author
-
-!set module_au=!mailurl $module_address $(script_out[1])\
+!set module_address=!replace internal ; by , in $module_address
+!set module_au=!mailurl $(module_address[1]) $(script_out[1])\
 WIMS $module_title [$module_language]
 !set script_out=!replace internal ; by , in $(script_out[2..-1])
 !if $script_out!=$empty
- !set module_au=$module_au, $script_out
+  !set tmp_cnt=!itemcnt $script_out
+  !for tmp =1 to $tmp_cnt
+    !if $(module_address[$tmp+1])!=
+    !set tmp=!mailurl $(module_address[$tmp+1]) $(script_out[$tmp])\
+WIMS $module_title [$module_language]
+    !else 
+      !set tmp=$(script_out[$tmp])
+    !endif
+    !set module_au=$module_au, $tmp
+  !next
 !endif
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$lang]
