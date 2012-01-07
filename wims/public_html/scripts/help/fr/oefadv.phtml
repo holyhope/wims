@@ -123,7 +123,7 @@ target=targ1 targ2 targ3 ...
 Cette ligne indique que ce fichier cpp doit fabriquer targ1.oef, targ2.oef, etc
 (l'extension. OEF sera ajoutée aux noms de sortie). Lors de la génération du fichier 
 cible <em>targ1</em>, le prédicat <tt class="wims_code_words">#TARGET</tt> sera défini comme <em>targ1</em> 
-(Et une macro <em>TARGET_targ1</em> est également définie.)
+(Une macro <em>TARGET_targ1</em> est également définie.)
 Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 <pre>
 #if #TARGET (targ1)
@@ -140,7 +140,7 @@ Par conséquent, dans le source cpp, vous pouvez ajouter des lignes comme
 afin de rendre le contenu dépendant de la cible.
 <p>
 Les fichiers <tt class="wims_code_words">include</tt> doivent également être placés dans le répertoire src/cpp, avec extension
-.inc. Et une ligne
+.inc. Une ligne
 <pre>
 #include "common.inc"
 </pre>
@@ -151,6 +151,12 @@ spécifier des répertoires de fichiers include.
 Une remarque spéciale: cpp s'embrouille lorsque votre fichier contient dans le texte
 des apostrophes ou guillemets qui ne sont pas fermés. Dans ce cas, vous pouvez protéger la
 les commandes contenant ces textes par des commentaires C (<tt class="wims_code_words">/* ... */</tt>).
+
+<div class="wims_warning">
+<span class="wims_warning">$wims_name_warning</span> : Dans les commandes commençant par # comme dans 
+<tt>#include</tt>, le caractère <tt>#</tt> doit être le premier caractère de la ligne. Il ne faut pas non plus utiliser
+<tt>#</tt> comme caractères de commentaires. 
+</div>
 
 <h3>Environnement dans un exercice</h3>
 La variable spéciale  <tt class="wims_code_variable">\oefenv</tt> est utilisée pour tester un exercice
