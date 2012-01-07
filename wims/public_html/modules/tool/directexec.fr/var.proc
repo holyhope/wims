@@ -1,4 +1,4 @@
-
+!read lang/names.phtml.$lang
 !bound sw within $swlist default $
 src=!trim $src
 
@@ -24,14 +24,16 @@ src1=!replace internal &#36; by $$$$ in $src
  swout=$ins_url
  !goto execout
 !endif
-
 !if $sw=perl
  swout=!perl $src1
  !goto execout
 !endif
-
 !if $sw=sh
  swout=!sh $src1
+ !goto execout
+!endif
+!if $sw=jsxgraph
+ swout=$src1
  !goto execout
 !endif
 

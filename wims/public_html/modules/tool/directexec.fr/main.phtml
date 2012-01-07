@@ -1,20 +1,31 @@
-!set sw1= $sw
+
+!distribute items $sw,$sw into  sw_1,sw_2
+
 !if $sw=pari
-  !set sw1=gp
+  !set sw_1=gp
 !endif
 !if $sw=draw
-  !set sw1=flydraw
+  !set sw_1=flydraw
+  !set sw_2=flydraw
 !endif
-!default sw1=flydraw
-!read js/edit_area.phtml wims_deposit $sw1 $swlistjs
+!if $sw=jsxgraph
+  !set sw_1=js
+!endif
+
+!! a modifier quand il y aura d'autres styles
+!default sw_1=flydraw
+!read js/edit_area.phtml wims_deposit $sw_1 $swlistjs,js
+!if $sw=jsxgraph
+ !read js/jsxgraph.phtml
+!endif
 
 !header
 
 !if $compute=yes
  !if $swout=$empty
-  Votre code n'a pas donné de résultat par <em>$SW</em>.
+  <em>$SW</em> $name_non_execute.
  !else
-  Réponse par <em>$SW</em> :
+  <center>$SW</center> :
   !if $sw=draw
    <img align="middle" src="$swout">
    !goto after
@@ -23,30 +34,24 @@
    <img align="middle" src="$swout">
    !goto after
   !endif
+  !if $sw=jsxgraph
+  <div id="jsxbox" class="box" style="width:400px; height:400px;text-align:center;"></div>
+  <script type="text/javascript">
+  $swout</script>
+    !goto after
+   !endif
 <pre style="font-weight:bold;font-family:Courier New,Courier,mono;overflow:auto;color:blue;">
 $swout
 </pre>
  !endif
 !else
- Cet outil vous permet d'exécuter la majorité de logiciels ou langages
- informatiques interfacés par WIMS, directement en ligne. Tapez votre code et
- voyez le résultat&nbsp;!
- !href cmd=help Cliquez ici
- pour les documentations des logiciels.
- <p>
- Les développeurs sous WIMS peuvent aussi l'utiliser comme outil d'essai,
- pour vérifier le comportement de différents lociels sous WIMS.
- <p>
- Pour des raisons de sécurité, la longueur du code est limitée à 16K, et l'accès
- aux ressources du système est strictement contrôlé. Notez aussi que certains
- logiciels peuvent manquer sur un serveur donné. Veuillez contacter le
- webmestre en cas de doute.
+!read lang/intro.phtml.fr
 !endif
 
 :after
 !if $msg!=$empty
  <p><hr> <p>
- Message d'erreur de <em>$SW</em> :
+ $name_msg <em>$SW</em> :
 <pre style="color:red;font-size:80%">
 $msg
 </pre>
@@ -54,25 +59,25 @@ $msg
 
 <p><hr> <p>
 !form reply
-<input type="submit" value="Exécuter">
-les lignes suivantes par
+<input type="submit" value="$name_execute">
+
 !default sw=sh
 !formselect sw list $swlist prompt $swname
 $ : 
  &nbsp;
  !set wims_ref_class=wims_button
-!href cmd=renew Vider
+!href cmd=renew $name_empty
  &nbsp;
  !set wims_ref_class=wims_button_help
-!href cmd=help $wims_name_help
+!href cmd=help&special_parm=$sw_2 $wims_name_help
 &nbsp;
-<br>
 !set src=!reinput $src
 !set src=!replace internal &amp;#36; by &#36; in $src
 !set src=!replace internal &amp; by & in $src
 <textarea id="wims_deposit" wrap="off" name="src">
 $src
 </textarea>
+$(name_remark_$sw)
 </form>
 
 !tail
