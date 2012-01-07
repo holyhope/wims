@@ -1,0 +1,53 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Bernadette, Perrin-Riou
+
+slib_example=UEsDBBQACAAIAHhlJ0AAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1s3VZNc9s2ED03vwLDuyWA35yRnFHcHjKTtgenOfQGkTCFGiRYAJQl//ruAiSlKJnpV06xDyR2Vw+7b9+C2Lw9dYochbFS99uIrWhERF/rRvbtNhrd010Zvb1/s2mFbsXecPKkTcfdNkpWcYT2Ud6/+WFjD/qFcOVDPknxso2cGUVE7GAEb+xBCBfMT1xZsPPxJJXk5vzr/g9RO3txBIz3/TC6GaTumg/Szsu1329Q0v0oj7IRhihdb6M8g8zh7ZMwTtZcbaOUBku8jeIbJ5gS9B60ka+6dxh+AX8CCyFWvgogJEbbZu3r3IixVrKRvMdifB4QRMiLbNwBUkgRUsj2ALlmKQtotdameTxbJzpy+l0YDemwDHk+h1USVhbygg0z6l3XKw8jjo/COeiKJfwk7MxNa2SzkIeL9/adVhfToGXvHvjgRuM7mkymR3dGfNjKYL67vlVisjFg/CDq570+PQYOkgD98Tz4n/h89u2DVtoQg+xmEDA99+HpYzDRJYr6GOojJgwEXfysin2Ef+7D00cp2YfUpsLZXDWj8zbSEjQgiyDEmRvF9wIaG5Gxl+7DvAABPF8qxfhfxm4PA3AtgQWSfSPIzfpGO5tnYXqhgkJ6aOyoR0uOqMTQOp9HI2rZwTI4JkI4Nus3SCBYG9EaMecdxifQ5b30WoU35s16TgJzsJBr7eAYgHoc1tK2LU6qgynBKhvuwIhDL5ToBMyI84Lwelqo2UXLeaD9bN9Qd+EY3F8Vh5cRV8OBg2WWv+JnmPTrijzez7r5vE7eA1++CBi4AQGwI4MQoZdukjAZANAPxBXZniNLTngMogjPkMuqgJfXcDD6oDA9OPZ+22RqbmDkb7h59z1wE6/S3HNDV9W3o+bhe6Dmjnq5eG7K/N+RU+uu431Det7BVj8pJQfYAH8p8VtIOMXZIpyhjAiPkbLAx+hmfx1AJ6gvGIcZl/XCaB19fri6A5xivbAWz5ml4vX/bQv97035R7nB51b0R8hMG0vIieI+cZmmaUFpweC/yEtoCfXdqbIyr1iRpxWLU3iFFtHp0nNiXtFfBJzZ1xFf2VVzQTtGnsgOwfJkxfIqiwsaV7SqyiIiO4zNILrMk8UO+thBF+/ihK0YrcokLbM0KxOWgiPBC1aVsJgufyDDXQrxSZ6u0iwvkpxVSRGXOQJlCFTGK1pkWVFVcZwXtJgI+rMPJNrwhZId3J1q6W4FuL7+BPgrz3Tlu/8LUEsHCEwqeeacAwAAJAoAAFBLAQIUABQACAAIAHhlJ0BMKnnmnAMAACQKAAAMAAAAAAAAAAAAAAAAAAAAAABnZW9nZWJyYS54bWxQSwUGAAAAAAEAAQA6AAAA1gMAAAAA,500x500,1
+
+!exit
+
+:proc
+!increase slib_number
+!reset slib_file,slib_size
+!distribute items $wims_read_parm into slib_file,slib_size,slib_number
+
+!! dans option: filename filestring
+!default slib_number=1
+slib_width=!replace internal x by , in $slib_size
+slib_height=!item 2 of $slib_width
+slib_width=!item 1 of $slib_width
+
+!default slib_width=500
+!default slib_height=$slib_width
+slib_height=!nospace $slib_height px
+slib_width=!nospace $slib_width px
+!if .ggb__ isin $slib_file__
+  slib_command=loadBoardFromFile
+  slib_mod = $module_category
+  slib_mod = !items2words $slib_mod
+  !if document iswordof $slib_mod
+    slib_image_dir=$Docdir/$doc/files
+  !endif
+  !if oef iswordof $slib_mod
+    slib_image_dir=$imagedir
+  !endif
+  !if adm iswordof $slib_mod
+    slib_image_dir=$wims_ref_name?session=$wims_session&+cmd=getfile&+special_parm=doc
+  !endif
+  !default slib_image_dir=$module_dir
+  slib_image_dir=$slib_image_dir/
+!else
+  slib_command=loadBoardFromString
+  slib_image_dir=
+!endif
+!set slib_dir=scripts/js/jsxgraph
+
+slib_out=<div id="box$slib_number" class="jxgbox" style="width:$slib_width; height:$slib_height;"></div>\
+<link rel="stylesheet" type="text/css" href="$slib_dir/jsxgraph.css" />\
+<script type="text/javascript" src="$slib_dir/jsxgraphcore.js"></script>\
+<script type="text/javascript" src="$slib_dir/GeogebraReader.js"></script>\
+<script type="text/javascript">\
+ var board$slib_number = JXG.JSXGraph.$slib_command('box$slib_number', '$slib_image_dir$slib_file', 'Geogebra');\
+</script>
