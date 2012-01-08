@@ -1,0 +1,30 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+slib_require=jsxgraph
+slib_author=Bernadette, Perrin-Riou
+slib_title=Plugin for JSXGraph
+slib_parms=3\
+jsxbox,id of the jsxgraph board\
+300 x 300, size : <tt>width x height</tt>\
+,script
+
+slib_comment=Very preliminary version. For tests.
+slib_example=jsxbox,300 x 300,var brd = JXG.JSXGraph.initBoard('jsxbox', {axis:true,originX: 150, originY: 150, unitX: 10, unitY: 10});p1 = brd.create('point', [-2,1]);p2 = brd.create('point', [0,function () { return p1.X();}]);
+
+!exit
+
+:proc
+
+slib_size=!replace internal x by , in $(wims_read_parm[2])
+slib_jsxbox= $(wims_read_parm[1])
+slib_script= $(wims_read_parm[3..-1])
+slib_width=!nospace $(slib_size[1]) px
+slib_height=!nospace $(slib_size[2]) px
+
+slib_out=<link rel="stylesheet" type="text/css" href="scripts/js/jsxgraph/jsxgraph.css" />\
+<script type="text/javascript" src="scripts/js/jsxgraph/jsxgraphcore.js"></script>\
+<div id="$slib_jsxbox" class="jxgbox" style="width:$slib_width; height:$slib_height"></div>\
+<script type="text/javascript">\
+$slib_script\
+</script>
