@@ -4,7 +4,8 @@
 
 slib_author=Gang, XIAO
 
-slib_example=5/br2out,,,acsrc,diode,cap,res,chas
+slib_example=5/br2out,,,acsrc,diode,cap,res,chas\
+5/br2out,,,acsrc,diode,cap,res,chas,html
 !exit
 
 :proc
@@ -18,6 +19,11 @@ slib_c=!char 1 of $slib_type
 slib_out=
 !default slib_Color=black
 slib_comp=!item 4 to -1 of $wims_read_parm
+!if  html isitemof $slib_comp
+  slib_option=html
+  slib_comp=!replace internal ,html by in $slib_comp
+  slib_comp=!replace internal , html by in $slib_comp
+!endif
 
 !bound slib_sf between integer 5 and 100 default 20
 slib_rec=$slib_prefix/$slib_type.data
@@ -71,3 +77,12 @@ linewidth $slib_lwid\
 $slib_wiring\
 $slib_out
 
+!if url isitemof $slib_option or html isitemof $slib_option
+  !insdraw $slib_out
+  slib_out=$ins_url
+  !if html iswordof $slib_option
+    slib_out=<img src="$ins_url" alt="">
+ !else
+    slib_out=$slib_out,$insdraw_size
+ !endif
+!endif
