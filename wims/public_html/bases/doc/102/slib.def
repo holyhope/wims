@@ -1,0 +1,47 @@
+!set titb=Bibliothèque de macros
+!set keyw=
+!set datm=20120109
+!set prev=
+!set next=
+!set upbl=syntax
+!set dat1=19000101
+!set dat2=24000101
+
+!if $wims_read_parm!=$empty
+ !goto $wims_read_parm
+!endif
+
+!exit
+
+:content
+Insérer un slib (macro) &#58; 2 arguments.
+<p>
+Le premier argument est le nom de la macro. Le deuxième argument est 
+formé des paramètres nécessaires. Par exemple, 
+<p>
+<pre>
+\slib{stat/histo}{[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html}
+</pre>
+
+!read primitives.phtml 1, slib, stat/histo, [1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html 
+
+<p>
+<pre>
+\slib{text/spirale}{J'aime le son du cor le soir au fond des bois,html}
+</pre>
+
+!read primitives.phtml 2, slib, text/spirale, J'aime le son du cor le soir au fond des bois,html 
+
+<p>
+<pre>
+\slib{games/chessboard}{all,blue}
+</pre>
+
+!read primitives.phtml 3, slib, games/chessboard, all,blue 
+
+<pre>
+\slib{draw/polygon}{6,[green,blue,green,blue,green,blue],,html}
+</pre>
+
+!read primitives.phtml 4, slib, draw/polygon, 6,[green,blue,green,blue,green,blue],,html 
+
