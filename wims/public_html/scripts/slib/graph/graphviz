@@ -7,7 +7,7 @@ slib_author=Bernadette, Perrin-Riou
 slib_example=[0,1,0;0,1,1;0,0,0]\
 [u,v,0;0,w,x;0,y,0],[a,b,c],edge\
 [0,T,0;0,1,0;0,1,0],[a,b,c],,rankdir="RL"\
-[0,1,0;0,1,1;0,0,0],no_label_node
+[0,1,0;0,1,1;0,0,0],no_label_node,html
 slib_require=graphviz
 !exit
 
@@ -71,6 +71,6 @@ slib_out=$slib_graph bar {$slib_options $slib_graphv}
 
 slib_graphviz_out=!exec graphviz $slib_out
 slib_out=!line 1 of $slib_graphviz_out
-!if url notin $slib_output 
+!if url notin $slib_output or html isin $slib_output
   slib_out=<img src="$slib_out" alt="">
 !endif

@@ -15,6 +15,7 @@ slib_example=6,[green,blue,green,blue,green,blue]\
 
 :proc
 slib_out=
+
 !distribute items $wims_read_parm into slib_n,slib_color,slib_option,slib_url
 slib : en entrée n, liste de couleurs , sommets, arete ...
 !default slib_n=5
@@ -111,8 +112,9 @@ $slib_fillcs
  !insdraw $slib_out
  slib_out=$ins_url
  !if html iswordof $slib_url
-  slib_out=<img src="$ins_url" alt="">
+    slib_out=<img src="$ins_url" alt="">
+ !else
+    slib_out=$slib_out,$insdraw_size
  !endif
- slib_out=$slib_out,$insdraw_size
 !endif
 
