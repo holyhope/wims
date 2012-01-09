@@ -2,9 +2,14 @@
 
 cd `dirname $0`
 if [ -e .lockindex ]; then
- echo "busy";
- exit
+# echo "busy:wait";
+ sleep 120;
+ if [ -e .lockindex ]; then
+#  echo "always busy : quit"
+  exit;
+ fi;
 fi
+#echo "workstart";
 touch .lockindex;
 rm -f .IND 2>/dev/null
 rm -f [0-9]*/.subclasses 2>/dev/null
