@@ -1,3 +1,7 @@
-!readproc slib/$parm1 $parms
+!if \ isin $(parms[2..-1])
+  !set parms=!slashsubst $(parms[2..-1])
+!endif
+
+!readproc slib/$parm1 $(parms)
 
 $slib_out
