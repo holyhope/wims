@@ -20,7 +20,9 @@ int main( int argc , char *argv[]){
     }
     /* test for illegal characters */
     const char *invalid_characters = "\n\"\'!+=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%^*&()[]{}:;~><?/\\|";
-    char *inp;
+    char *inp,*ptr,*sign;
+    double n,t2;
+    int cnt,t1,t3;
     inp = argv[1];
     while (*inp){
 	if ( strchr(invalid_characters, *inp) ){
@@ -30,12 +32,6 @@ int main( int argc , char *argv[]){
 	inp++;
     }
     
-    int cnt;
-    char *ptr;
-    char *sign;
-    double n,t2;
-    int t1;
-    int t3;
     cnt = 0;
     inp = argv[1];
     ptr = (char *) strtok(inp,",");
@@ -48,7 +44,7 @@ int main( int argc , char *argv[]){
 	t1 = floor(n);
 	t2 = 1000*(n - t1);
 	t2=(round(t2)/1000);
-	t3 = 100*t2;
+	t3 = (1000*t2/10);
 	if(cnt == 0){
 	    if(t3<10){fprintf(stdout,"%s%d.0%d",sign,t1,t3);}
 	    else{fprintf(stdout,"%s%d.%d",sign,t1,t3);}
