@@ -1,6 +1,6 @@
 !set titb=Bibliothèque de macros
 !set keyw=
-!set datm=20120109
+!set datm=20120111
 !set prev=
 !set next=
 !set upbl=syntax
@@ -20,28 +20,58 @@ Le premier argument est le nom de la macro. Le deuxième argument est
 formé des paramètres nécessaires. Par exemple, 
 <p>
 <pre>
+\slib{geo2D/geogebra3}{
+A=(0,3.5)
+B=(0,5)
+a=Cercle[A,B]
+d&#58;y=2x+1
+customToolBar="0|40@10||1|2"
+width=600
+language=fr
+showToolBar=true
+showAlgebraView=false
+number=6
+}
+</pre>
+
+!read primitives.phtml 1, slib, geo2D/geogebra3, A=(0,3.5)	B=(0,5)	a=Cercle[A,B]	d:y=2x+1	number=6	width=600	language=fr	showToolBar=true	customToolBar="0|40@10||1|2"	showAlgebraView=false	number=6	 
+
+<p>
+<pre>
 \slib{stat/histo}{[1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html}
 </pre>
 
-!read primitives.phtml 1, slib, stat/histo, [1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html 
+!read primitives.phtml 2, slib, stat/histo, [1,5,2,3,10,13],[3,4,6,7,12,14],xtics [a,b,c,d,e,f],ytics 10, color salmon,html 
 
 <p>
 <pre>
 \slib{text/spirale}{J'aime le son du cor le soir au fond des bois,html}
 </pre>
 
-!read primitives.phtml 2, slib, text/spirale, J'aime le son du cor le soir au fond des bois,html 
+!read primitives.phtml 3, slib, text/spirale, J'aime le son du cor le soir au fond des bois,html 
 
 <p>
 <pre>
 \slib{games/chessboard}{all,blue}
 </pre>
 
-!read primitives.phtml 3, slib, games/chessboard, all,blue 
+!read primitives.phtml 4, slib, games/chessboard, all,blue 
 
 <pre>
 \slib{draw/polygon}{6,[green,blue,green,blue,green,blue],,html}
 </pre>
 
-!read primitives.phtml 4, slib, draw/polygon, 6,[green,blue,green,blue,green,blue],,html 
+!read primitives.phtml 5, slib, draw/polygon, 6,[green,blue,green,blue,green,blue],,html 
+
+<pre>
+\slib{geo2D/jsxgraph}{
+ jsxbox,300 x 300,var brd = JXG.JSXGraph.initBoard('jsxbox', 
+{axis&#58;true,originX&#58; 150, originY&#58; 150, unitX&#58; 10, unitY&#58; 10});
+var p1 = brd.create('point', [-2,1], {name&#58;'U'});
+var p2 = brd.create('point', [0,function () { return p1.X();}], {name&#58;'V'});
+var c1 = brd.createElement('circle',[p1,p2], {strokeColor&#58;'#00ff00',strokeWidth&#58;1});
+}
+</pre>
+
+!read primitives.phtml 6, slib, geo2D/jsxgraph, jsxbox,300 x 300,var brd = JXG.JSXGraph.initBoard('jsxbox', 	{axis:true,originX: 150, originY: 150, unitX: 10, unitY: 10});	var p1 = brd.create('point', [-2,1], {name:'U'});	var p2 = brd.create('point', [0,function () { return p1.X();}], {name:'V'});	var c1 = brd.createElement('circle',[p1,p2], {strokeColor:'#00ff00',strokeWidth:1});	 
 
