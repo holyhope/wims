@@ -53,7 +53,9 @@ $title
 
 !if $step=0
  !read lang/help.phtml.$modu_lang 2
-$Cltype
+<br>
+type $Cltype
+<br>
  !form reply
  <input type="hidden" name="step" value="1">
  $table_header
@@ -71,7 +73,6 @@ $Cltype
   </td><td>
   ($name_atmost $desclim $name_characters)
  </td></tr>
-  
  !if $Cltype notin 24
  $table_tr<td><label for="level">$wims_name_level $name_classesss</label></td><td>
   <select name="level" id="level">
@@ -79,7 +80,7 @@ $Cltype
     !if $(levelid[$k])=$level
      <option selected value="$(levelid[$k])">$(leveldesc[$k])</option>
     !else
-     <option value="$(levelid[$k])">$(leveldesc[$k])</option>    
+     <option value="$(levelid[$k])">$(leveldesc[$k])</option>
     !endif
    !next k
   </select>
@@ -91,7 +92,7 @@ $Cltype
  !if $Cltype=1
   !let firstname=$wims_firstname
   !let lastname=$wims_lastname
-  $wims_supervisor
+  $wims_firstname $wims_lastname
  !else
   <table border="0" cellspacing="0"><tr><td><label for="firstname">$wims_name_firstname</label></td><td>
   <input size="$suplim2" name="firstname" value="$firstname" id="firstname">
@@ -101,9 +102,9 @@ $Cltype
  !endif
  </td><td></td></tr>
  $table_tr<td><label for="email">$wims_name_email</label></td><td>
-  !if $Cltype=1
-   !default email=$wims_supervisormail
-   $wims_supervisormail
+  !if $Cltype=1 and $email!=$empty
+   !default email=$email
+   $email
   !else
    <input size="$emaillim2" name="email" value="$email" id="email">
   !endif
@@ -195,8 +196,10 @@ $table_tr<td colspan="3" align="center">
 <p>
  !form reply
  <input type="hidden" name="step" value="2">
-<label for="passsup"> $wims_name_Password ($name_sup)</label> 
- <input type="password" name="passsup" id="passsup"> <p>
+ !if $Cltype!=1
+  <label for="passsup"> $wims_name_Password ($name_sup)</label> 
+  <input type="password" name="passsup" id="passsup"> <p>
+ !endif
  !if $pword!=$empty
  <label for="password">$wims_name_Password ($name_classesss)</label>
   <input type="password" name="password" id="password"> <p>

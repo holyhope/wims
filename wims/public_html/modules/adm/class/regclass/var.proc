@@ -399,6 +399,9 @@ $email
  !sh $wims_home/log/classes/.build-index
  !if $wims_user!=$empty
   creator=$wims_class/$wims_user
+  !if $wims_email=$empty
+   !setdef !set user_email=$email in $userdef
+  !endif
  !else
   creator=$email
  !endif
