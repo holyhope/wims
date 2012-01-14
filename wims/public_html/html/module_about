@@ -37,6 +37,15 @@ WIMS $module_title [$module_language]
     !set module_au=$module_au, $tmp
   !next
 !endif
+!read namewriting.phtml $module_translator
+!set module_translator=$(script_out[1])
+!set wims_homeref_translator_num=$script_cnt
+!set module_translator_address=!replace internal ; by , in $module_translator_address
+!for ad=1 to $wims_homeref_translator_num
+   !set module_tr_=!mailurl $(module_translator_address[$ad]) $(module_translator[$ad])\
+WIMS $module_title [$module_language]
+   !set module_tr=!append line trans,0,$wims_name_translatedby $(module_tr_) to $module_tr
+ !next
 !set module_tr=!mailurl $module_translator_address $module_translator\
 WIMS $module_title [$lang]
 

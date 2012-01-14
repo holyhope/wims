@@ -143,6 +143,7 @@
 
 !if $module_author!=$empty and @ isin $module_address
  !read namewriting.phtml $module_author
+ !set module_address=!replace internal ; by , in $module_address
  !set wims_homeref_author_num=$script_cnt
  !if $wims_homeref_author_num>1
   !set 3_=$wims_name_authors:
@@ -151,8 +152,8 @@
  !endif
  !set 4_=
  !for ad=1 to $wims_homeref_author_num
-   !if $(module_address[$ad;])!= and @ isin $(module_address[$ad;])
-    !set 4__=!mailurl $(module_address[$ad;]) $(script_out[$ad])\
+   !if $(module_address[$ad])!= and @ isin $(module_address[$ad])
+    !set 4__=!mailurl $(module_address[$ad]) $(script_out[$ad])\
 WIMS $module_title [$module_language]
    !else
      !set 4__=$(script_out[$ad])
@@ -171,10 +172,14 @@ WIMS $module_title [$module_language]
 
 !if $module_translator!=$empty and $module_translator_address!=$empty
  !read namewriting.phtml $module_translator
+ !set module_translator_address=!replace internal ; by , in $module_translator_address
  !set module_translator=$(script_out[1])
- !set 3_=!mailurl $module_translator_address $module_translator\
+ !set wims_homeref_translator_num=$script_cnt
+ !for ad=1 to $wims_homeref_translator_num
+   !set 3_=!mailurl $(module_translator_address[$ad]) $(module_translator[$ad])\
 WIMS $module_title [$module_language]
- !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_
+   !set 2_=!append line trans,0,$wims_name_translatedby $3_ to $2_
+ !next
 !endif
 
 !!********* Link #10 : "Version & Copyright"
