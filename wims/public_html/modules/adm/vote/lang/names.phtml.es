@@ -29,7 +29,7 @@
 !set name_remaining=plazas restantes
 !set name_untitled=Sin título
 !set name_showresult=show result
-!set name_nowritable=you cannot modify the vote when it is active.
+!set name_nowritable=Questionnaire actif, il est impossible de modifier son contenu. En voici le source :
 !set name_novotant=Aucun vote
 !set name_notenough=Pas assez de votants pour publier la liste
 !set name_showlist=Résultats par question

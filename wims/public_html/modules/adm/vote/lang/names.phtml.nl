@@ -30,7 +30,7 @@
 !set name_remaining=rest
 !set name_untitled=Untitled
 !set name_showresult=show result
-!set name_nowritable=you cannot modify the vote when it's active.
+!set name_nowritable=You cannot modify the vote when it is active. Here is the source:
 !set name_novotant=Aucun vote
 !set name_notenough=Pas assez de votants pour publier la liste
 !set name_showlist=Résultats par question
