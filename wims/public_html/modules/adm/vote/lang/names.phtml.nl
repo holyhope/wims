@@ -28,15 +28,15 @@
 !set name_creation=Maken van een enquete of verkiezing.
 !set name_edition=Bewerken van een enquete of verkiezing.
 !set name_remaining=rest
-!set name_untitled=Untitled
-!set name_showresult=show result
-!set name_nowritable=You cannot modify the vote when it is active. Here is the source:
-!set name_novotant=Aucun vote
-!set name_notenough=Pas assez de votants pour publier la liste
-!set name_showlist=Résultats par question
-!set name_showglobal=Résultats globaux
-!set name_showlistbystudent=Résultats par votants
-!set name_showstudentbyitem=Liste par choix
+!set name_untitled=geen titel
+!set name_showresult=laat resultaat zien
+!set name_nowritable=Een actieve enquete kan niet worden veranderd. Hier is de broncode:
+!set name_novotant=Geen stem uitgebracht
+!set name_notenough=Nog niet genoeg stemmen uitgebracht
+!set name_showlist=Resultaten per vraag
+!set name_showglobal=Globale resutaten
+!set name_showlistbystudent=Resultaten per deelnemer
+!set name_showstudentbyitem=Lijst met keuzes
 
 !distribute lines  Jouw klas heeft geen voorziening voor een verkiezing of enquete.\
 Neem hierover contact op met je docent.\
@@ -65,10 +65,10 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
 !set name_whovote=Lijst met stemmers
 
 !set name_csv1=Hier is het bestand. Het kan geopend worden met een spreadsheet\
- programma naar keuze
+ programma naar keuze.
 
 !set name_csv2=!nosubst U wilt de gegevens downloaden uit de vragenlijst nummer $vote&nbsp;
 !set name_format=formaat
 
 !set name_option=Options
-!set name_value=Values
+!set name_value=Waarden
