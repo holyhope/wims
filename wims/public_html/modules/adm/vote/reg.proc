@@ -1,6 +1,6 @@
 vcnt=!defof vcnt in wimshome/log/classes/$wims_class/vote/$vote.votes
 !default vote_status=0
-!if $vote_status=0 or $vcnt=0
+!if $vote_status=0 or $vcnt=0 or $vcnt=$empty or $reg_src$vote_src=$empty
  !bound reg_status between integer 0 and 3 default 0
  !bound reg_option within anonymous,nominative,trace default anonymous
 !else
@@ -12,14 +12,16 @@ reg_title=!singlespace $reg_title
 !bound reg_show within 0,1 default 1
 !bound reg_whovoteshow within 0,1 default 0
 !if $reg_title=$empty
+  reg_status=0
  error=no_title
  :edit
  job=edit
  !changeto edit.proc
 !endif
 reg_src=!trim $reg_src
-!if $reg_src=$empty and $vote>$votecnt
- error=no_content
+!if $reg_src=$empty and $vote<=$votecnt
+   error=no_content
+   reg_status=0
  !goto edit
 !endif
 
@@ -47,6 +49,9 @@ $reg_whovoteshow
  !sh cd $wims_home; bin/msg2wims log/$Votedir/$vote.src log/$Votedir/$vote.def
 !endif
 
+!if $reg_src=$empty and $vote_status=0
+  !goto edit
+!endif
 job=read
 !read var.proc
 

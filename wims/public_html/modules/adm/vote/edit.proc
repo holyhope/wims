@@ -2,3 +2,7 @@ vcnt=!defof vcnt in wimshome/log/classes/$wims_class/vote/$vote.votes
 src=!replace internal & by &amp; in $vote_src
 src=!replace internal < by &lt; in $src
 
+!if $vote_title=$empty
+ vdata=!record $vote of $votedir/.votes
+ !distribute lines $vdata into bidon,vote_title,vote_option,vote_show,vote_whovoteshow
+!endif
