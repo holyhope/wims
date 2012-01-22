@@ -62,6 +62,7 @@ into name_thisvote_anomymous,name_thisvote_trace,name_thisvote_nominatif,\
    name_thisvote_already2,name_give_your_choice,name_details,\
    name_comments,name_textarea
 
+!set name_textarea_limit=!nosubst limited to $limit_textarea characters
 !set name_whovote=Lijst met stemmers
 
 !set name_csv1=Hier is het bestand. Het kan geopend worden met een spreadsheet\
