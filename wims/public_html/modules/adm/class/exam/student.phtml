@@ -31,18 +31,15 @@ $title
  $name_empty
 !else
  <h2>$name_content:</h2>
+ $exocnt exercices
  !set activeexo=0
- <p>
- !let maxcol=$[min(ceil(($exocnt+3)/10),5)]
- !let maxlig=$[ceil($exocnt/$maxcol)]
+
 
  <ol class="wims_exam">
-  !for lig=1 to $maxlig
+  !for i=1 to $exocnt
    <li>
-    !for col=1 to $maxcol
-     !let i=$[$col*$maxlig+$lig-$maxlig]
-      !if $i<=$exocnt
 !! -------------------------- debut de la ligne correspondant a un exercice de l'examen
+
  !set ex=!record $i of wimshome/log/classes/$wims_class/exams/.exam$exam
  !distribute lines $ex into we,li,ti,de,op
  !set de=!trim $de
@@ -80,12 +77,12 @@ $title
   !else
    <span>$ti.</span>
   !endif
-!! -------fin d'affichage de la ligne correspondant   un exercice
-      !endif
-    !next col
+!! -------fin d'affichage de la ligne correspondant a un exercice
+
    </li>
-  !next lig
+  !next i
  </ol>
+ <br class="spacer"/>
 
 
  !if $t_=no
