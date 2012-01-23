@@ -551,12 +551,12 @@ void _header(char *p, int option)
 </head><body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);*/
 	 if(ol[0]) {
-	    output("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\
+	    output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
 	    \n<html><head>%s\n\
      </head>\n<body %s %s\"%s\" %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);}
 	   else {
-	   output("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\
+	   output("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
 	    \n<html><head>%s\n\
      </head>\n<body %s %s%s %s>\n",
 	   hbuf,s2,ol,wsbuf2,bo);
@@ -669,7 +669,7 @@ void exec_restart(char *p)
 	else goto usual;
     }
     printf("Location: %s\r\n\r\n\
-<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\
 <html><body><a href=\"%s\">%s</a></body></html>",buf2,buf2,buf2);
     close_working_file(&m_file,0); write_logs();
     snprintf(buf,sizeof(buf),"%ld",nowtime);
