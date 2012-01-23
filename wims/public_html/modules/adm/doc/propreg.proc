@@ -18,22 +18,28 @@ authorr=!singlespace $authorr
 authorr=!char 1 to $titlim of $authorr
 authorr=!trim $authorr
 emailr=!translate internal !$$ to $      $ in $emailr
-emailr=!word 1 of $emailr
+!!emailr=!word 1 of $emailr
+emailr=!replace internal ; by , in $emailr
 emailr=!char 1 to $titlim of $emailr
+!if $emailr!=$empty 
+  etest0=!replace internal ; by , in $emailr
+  etest0_cnt=!itemcnt $etest_0
+  !for et_ =1 to $etest0
+     emailr0=!item $et_ of $etest0
+     etest=!translate @ to , in $emailr0
+     etes2=!translate @ to $ $ in $emailr0
+     ecnt=!itemcnt $etest
+     ecnt2=!wordcnt $etes2
+    !distribute items $etest into e1,e2
+    !if $ecnt!=2 or $ecnt2!=2 or . notin $e2
+      error=bad_email
+      !exit
+    !endif
+   !next 
+!endif
 descr=!translate internal $	\
 $ to $ 		   $ in $descr
 descr=!trim $descr
-!if $emailr!=$empty
- etest=!translate @ to , in $emailr
- etes2=!translate @ to $ $ in $emailr
- ecnt=!itemcnt $etest
- ecnt2=!wordcnt $etes2
- !distribute items $etest into e1,e2
- !if $ecnt!=2 or $ecnt2!=2 or . notin $e2
-  error=bad_email
-  !exit
- !endif
-!endif
 dl=!words2items $dlangr
 dlangr=
 !for l in $dl
