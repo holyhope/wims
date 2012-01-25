@@ -54,50 +54,47 @@ And the Javia-libs however are excellent java and are GNU.
 
 
 6) Script syntax [a sort of fly-script]
+mouse yes
+userdraw [(f)circle,(f)rect,line,multilines,point, etc]
 xrange int,int
 yrange int,int
 linewidth int
 transparent color [,alpha]
-
 dline || line x1,y1,x2,y2,color [,alpha,linewidth]
 dhline || hline x1,x1,color [,alpha,linewidth]
 dvline || vline x1,x1,color [,alpha,linewidth]
 darrow || arrow x1,y1,x2,y2,head_factor(0.0001 - 0.99999),color [,alpha,linewidth
-
 dpoly || poly || fpoly x1,y1...x_n,y_n,color [,alpha,linewidth]
 drect || rect || frect x1,y1,x2,y2,color [,alpha,linewidth]
 dtriangle || triangle || ftrianlge x1,y1,x2,y2,x3,y3,color [,alpha,linewidth]
-
 points x1,y1,x2,y2...x_n,y_n,color [,alpha,linewidth]
 point x,y,color [,alpha,linewidth]
 pointstyle cross | dot : only for userdrawing
-
 dcircle || circle || fcircle xc,yc,r,color [,alpha,linewidth]
 dellipse || ellipse || fellipse xc,yc,r1,r2,color [,alpha,linewidth]
 farc || arc xc,yc,radius,start_angle,end_angle,color [,alpha]
-
 dgrid || grid xmajor,ymajor,xminor,yminor,color_mayor,color_minor,linewidth,linewidth [,alpha_major,alpha_minor]
     example: grid 1,1,0.5,0.5,red,blue,2,1,190,120
 parallel x1,y1,x2,y2,dx,dy,n,color [,alpha,linewidth]
-
 plotsteps [int] default ysize
 dcurve || curve || function in x,color [,alpha,linewidth]
 image x1,y1,url // x & y are in coordinate system xrange/yrange
-
 text x,y,fontname,fontsize,the_text_without_comma,color [,alpha] few latexstrings allowed rightarrow alpha beta Beta
 textup x,y,angle,fontname,fontsize,some_the_text_without_comma,color [,alpha]  : angle = clockwise rotation in degrees
-
+tex | latex  x1,x2,latexstring.bgcolor,fgcolor[,bg_alpha,fg_alpha]
+scalelatex 1,1,width,height,latexstring,bgcolor,fgcolor[,bg_alpha,fg_alpha]
+xscale x1,x1_name,x2,x2_name,x3,x3_name,....,fontsize,fontname,color,linewidth
+yscale y1,y1_name,y2,y2_name,y3,y3_name,....,fontsize,fontname,color,linewidth
+xlabel x_axis-name,fontsize,fontname,[fontcolor,alpha]
+ylabel y_axis-name,fontsize,fontname,[fontcolor,alpha]
 precision 100 // 2 decimals for reading coords with "mouse yes"
-
+xlogscale xstart,xend,color[alpha,linewidth]
+ylogscale ystart,yend,color[alpha,linewidth]
 debug yes //some info on loading script and other trouble
 
 todo:
 - Animating curves [very hard?]
 - Animated gif as background
-- xlogscale / ylogscale
-wishlist:
-- standalone application with menubars ; export drawing as flyscript ?
-- using frame ? 
 <html>
  <body>
     <script type="text/javascript">
@@ -834,7 +831,8 @@ public class FlyApplet extends JApplet{
 	    }
 	}
 	else
-	if(cmd.equals("scalelatex") || cmd.equals("scaletex")){// scalelatex 1,1,width,height,latexstring,bgcolor,fgcolor,bg_alpha,fg_alpha
+	if(cmd.equals("scalelatex") || cmd.equals("scaletex")){
+	// scalelatex 1,1,width,height,latexstring,bgcolor,fgcolor,bg_alpha,fg_alpha
 	    TeX = new sHotEqn();int x;int y;int w;int h;
 	    Color bgc = bgcolor;
 	    Color fgc = clickcolor;
@@ -1154,8 +1152,18 @@ public class FlyApplet extends JApplet{
 	}
 	else
 	if(cmd.indexOf("ylogscale") != -1){//Math.pow(10, p)
+	// ylogscale ystart,yend,color[alpha,linewidth]
 	    double exp = 10.0D;
-	    int y1=(int) ymin;int y2=(int) ymax;
+	    int y1,y2;
+	    boolean newsyntax=true;
+	    try{
+		y1=Integer.parseInt(words[1]);
+		y2=Integer.parseInt(words[2]);
+	    }catch(Exception e){
+		y1=(int) ymin;
+		y2=(int) ymax;
+		newsyntax=false;
+	    }
 	    int num = (int) (exp*(y2-y1));
  	    int X1[] = new int[num];int X2[] = new int[num];
 	    int Y1[] = new int[num];int Y2[] = new int[num];
@@ -1171,17 +1179,36 @@ public class FlyApplet extends JApplet{
 		    c++;
 		}
 	    }
-	    color = GetInternalColorCode(words[1]);
-	    try{alpha = Integer.parseInt(words[2]);color = MakeTransparent(color,alpha);
-	    try{linewidth = Integer.parseInt(words[3]);}catch(Exception e){DeBug("no linewidth given...using previous value "+linewidth );}
-	    }catch(Exception e){}
+	    if(newsyntax){
+		color = GetInternalColorCode(words[3]);
+		try{alpha = Integer.parseInt(words[4]);color = MakeTransparent(color,alpha);
+		try{linewidth = Integer.parseInt(words[5]);}catch(Exception e){DeBug("no linewidth given...using previous value "+linewidth );}
+		}catch(Exception e){}	    
+	    }
+	    else
+	    {
+		color = GetInternalColorCode(words[1]);
+		try{alpha = Integer.parseInt(words[2]);color = MakeTransparent(color,alpha);
+		try{linewidth = Integer.parseInt(words[3]);}catch(Exception e){DeBug("no linewidth given...using previous value "+linewidth );}
+		}catch(Exception e){}
+	    }
 	    try{objects.add(new FlyParallel(X1,Y1,X2,Y2,color,linewidth,dashed));object_count++;return true;}
-	    catch(Exception e){DeBug("could not set ylogscale ");}
+	    catch(Exception e){DeBug("could not set ylogscale : ylogscale ymin,ymax,color [,alpha,linewidth] ");}
 	}
 	else	
 	if(cmd.indexOf("xlogscale") != -1){//Math.pow(10, p)
+	    // xlogscale xstart,xend,color[alpha,linewidth]
 	    double exp = 10.0D;
-	    int x1=(int) xmin;int x2=(int) xmax;
+	    int x1,x2;
+	    boolean newsyntax=true;
+	    try{
+		x1=Integer.parseInt(words[1]);
+		x2=Integer.parseInt(words[2]);
+	    }catch(Exception e){
+		x1=(int) xmin;
+		x2=(int) xmax;
+		newsyntax=false;
+	    }
 	    int num = (int) (exp*(x2-x1));
  	    int X1[] = new int[num];int X2[] = new int[num];
 	    int Y1[] = new int[num];int Y2[] = new int[num];
@@ -1197,10 +1224,19 @@ public class FlyApplet extends JApplet{
 		    c++;
 		}
 	    }
-	    color = GetInternalColorCode(words[1]);
-	    try{alpha = Integer.parseInt(words[2]);color = MakeTransparent(color,alpha);
-	    try{linewidth = Integer.parseInt(words[3]);}catch(Exception e){DeBug("no linewidth given...using previous value "+linewidth );}
-	    }catch(Exception e){}
+	    if(newsyntax){
+		color = GetInternalColorCode(words[2]);
+		try{alpha = Integer.parseInt(words[3]);color = MakeTransparent(color,alpha);
+		try{linewidth = Integer.parseInt(words[4]);}catch(Exception e){DeBug("no linewidth given...using previous value "+linewidth );}
+		}catch(Exception e){}
+	    }
+	    else
+	    {
+		color = GetInternalColorCode(words[1]);
+		try{alpha = Integer.parseInt(words[2]);color = MakeTransparent(color,alpha);
+		try{linewidth = Integer.parseInt(words[3]);}catch(Exception e){DeBug("no linewidth given...using previous value "+linewidth );}
+		}catch(Exception e){}
+	    }	
 	    try{objects.add(new FlyParallel(X1,Y1,X2,Y2,color,linewidth,dashed));object_count++;return true;}
 	    catch(Exception e){DeBug("could not set ylogscale ");}
 	}
@@ -1254,7 +1290,7 @@ public class FlyApplet extends JApplet{
 	if(cmd.indexOf("xscale") != -1){
 	    use_xscale = true;
 	    //xscale x1,x1_name,x2,x2_name,x3,x3_name,....,fontsize,fontname,color,linewidth
-	    //xscale -1,pi,0,0,1,pi,2,pi,22,Times,green
+	    //xscale -1,pi,0,0,1,pi,2,pi,22,Times,green,2
 	    int dl = words.length - 4;
 	    int xscale[] = new int[(dl)/2];
 	    String xname[] = new String[(dl)/2];
@@ -1284,7 +1320,7 @@ public class FlyApplet extends JApplet{
 	else
 	if(cmd.indexOf("yscale") != -1){
 	    use_yscale = true;
-	    //yscale y1,y1_name,y2,y2_name,y3,y3_name,....,fontsize,fontname,color
+	    //yscale y1,y1_name,y2,y2_name,y3,y3_name,....,fontsize,fontname,color,linewidth
 	    int dl = words.length - 4;
 	    int yscale[] = new int[(dl)/2];
 	    String yname[] = new String[(dl)/2];
@@ -1384,7 +1420,7 @@ public class FlyApplet extends JApplet{
 		y1 = (int) y2px(symbols.eval(words[2]));
 		x2 = (int) x2px(symbols.eval(words[3]));
 		y2 = (int) y2px(symbols.eval(words[4]));
-		dx = (int) (xsize*(symbols.eval(words[6]))/(xmax - xmin));
+		dx = (int) (xsize*(symbols.eval(words[5]))/(xmax - xmin));
 		dy = (int) (ysize*(symbols.eval(words[6]))/(ymax - ymin));
 	    }catch( SyntaxException e ){ DeBug("Could not set x/y , error : "+e); return false; }
 	    int num = Integer.parseInt(words[7]);
