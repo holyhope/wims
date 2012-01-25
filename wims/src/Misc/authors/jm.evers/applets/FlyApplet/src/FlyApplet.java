@@ -178,6 +178,7 @@ public class FlyApplet extends JApplet{
     boolean use_xlog=false;
     boolean use_inputarea=false;
     public sHotEqn TeX;
+    boolean editable_input[];
     public void init() {
 /*
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -308,13 +309,15 @@ public class FlyApplet extends JApplet{
 	if(use_inputarea){
 	    boolean first = true;
 	    for(int i = 0; i < inputfieldindex ;i++){
-		if(first){
-		    reply = inputfield[i].getText();
-		    first= false;
-		}
-		else
-		{
-		    reply = reply + "," + inputfield[i].getText();
+		if(editable_input[i]){ 
+		    if(first){
+			reply = inputfield[i].getText();
+			first= false;
+		    }
+		    else
+		    {
+			reply = reply + "," + inputfield[i].getText();
+		    }
 		}
 	    }
 	}
@@ -400,6 +403,7 @@ public class FlyApplet extends JApplet{
 		    );
 		    inputfield[index].setEditable(((FlyInput)objects.elementAt(i)).getEditable());
 		    inputfield[index].setVisible(true);
+		    editable_input[index] = ((FlyInput)objects.elementAt(i)).getEditable();
 		}
 		else
 		if(objects.elementAt(i) instanceof FlyLatex){
@@ -1022,6 +1026,7 @@ public class FlyApplet extends JApplet{
 	if(cmd.equals("inputfields") || cmd.equals("inputs")){ // number of inputfields
 	    try{ 
 		inputs = (int) symbols.eval(words[1]);
+		editable_input = new boolean[inputs];
 	    }catch( SyntaxException e ){DeBug("could not parse number of inputs  :"+e+"\n will use default = 20");}
 	    return true;
 	}
