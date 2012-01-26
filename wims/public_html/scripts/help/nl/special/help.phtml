@@ -1,1 +1,40 @@
-!changeto help/en/special/help.phtml
+ :signification
+ 
+ De \special methode "help" accepteerd twee parameters. 
+ De eerste parameter is de waarde voor de variabele  \help_subject binnen de help tekst.
+ De tweede parameter is de tekst voor de link
+ 
+ Als \special{help} wordt ingezet in het "statement" of in de  "feedback" van een OEF oefening,
+ wordt de help getoond in een speciaal popup venster.
+ 
+ Alle help tekst moet worden verwerkt binnen de OEF code zelf.
+ Er is geen mogelijkheid voor algemene help binnen een complete OEF module.
+ Wanneer eenzelfde help tekst wordt gebruikt voor meerdere oefeningen binnen een OEF module,
+ kan deze worden geprogrammerd m.b.v. "ccp".
+<p>
+:example
+<span class="wims_help_example">Voorbeeld</span>
+ <pre>
+ \title{WoordenRaden}
+ \statement{ Raad het woord :  
+   \special{help test1,eerste aanwijzing...}
+ }
+ \answer{1}{Monnik}
+ \help{
+   Dit is de help: help subject=\help_subject
+   <p>
+   \if{\help_subject issametext or \help_subject issametext none}{
+     \special{help test0,hier}
+   }
+   \if{\help_subject issametext test1}{
+     De eerste lette van het woord is <b>M</b>. Meer aanwijzingen staan
+     \special{help test2,hier}
+   }
+  \if{\help_subject issametext test2}{Hier is de tweede aanwijzing. 
+    De tweede letter is een <b>o</b>
+   }
+  \if{\help_subject issametext test0}{Hier is de 
+    \special{help test1,aanwijzing 1}, \special{help test2,aanwijzing 2}
+   }
+ }
+ </pre>
