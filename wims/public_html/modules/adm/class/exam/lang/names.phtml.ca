@@ -1,33 +1,31 @@
 !set lang_exists=yes
 
-!set name_title=Preparació de l'examen
+!set name_title=Edició de l'examen
 !set wims_name_mainpage=Pàgina principal de l'examen
 
 !if $activetest<=0
- !set name_title=!nosubst Préparation de l'examen
+ !set name_title=!nosubst Edició de l'examen
 !else
- !set name_title=!nosubst Gestion de l'examen
+ !set name_title=!nosubst Gestió de l'examen
 !endif
 
 !read adm/lang/date.phtml.$lang
 !read adm/lang/sheetexam.phtml.$lang
-
-!! ---------------------------------------------------------------------------------------------------
-!! ancien fichier name du module exam.fr
-
-!set wims_name_scoreexam=Puntuació obtinguda
+!set wims_name_scoreexam=!nosubst $wims_name_myscore
 
 !set name_Options=Opcions
 !set name_All=Totes
 
 !set name_done=fet
 
+!set name_instructions=Instruccions
+
 !distribute lines Acabar aquesta sessió d'examen\
 Tornar a treballar sobre l'examen\
 Vista de professor de l'examen\
 Presentació als participants\
 Detalls de la puntuació actual\
-Aquest examen és buit&nbsp;!  Pel que sembla és un error de maneig del vostre professor.\
+Aquest examen és buit&nbsp;!  Sembla que és un error de maneig del vostre professor.\
 Contingut de l'examen&nbsp;\
 Aquest examen està actualment tancat per la vostra connexió.\
 Podeu fer aquest examen una sola vegada.\
@@ -36,18 +34,18 @@ Aquesta és la teva última oportunitat. Tingues compte&nbsp;!\
 comença el compte enrere i el nombre d'intents realitzats s'incrementarà en 1.\
 comença el compte enrere.\
 Requereix l'èxit en altres exercicis\
-Score de cette session d'examen&nbsp;\
+Nota d'aquesta sessió d'examen&nbsp;\
 into wims_name_endexam,wims_name_backexam,wims_name_teacherview,name_presentation,\
 name_scoreexam,name_empty,name_content,name_examclosed,name_exam1,name_exam5,\
 name_lasttry,name_exam7,name_exam8,name_depend,name_scoreexam2
 
-!set name_exam2=!nosubst Podeu fer aquest examen només $stries vegades en total.
+!set name_exam2=!nosubst Pots fer aquest examen només $stries vegades.
 
-!set name_exam3=!nosubst Ha acabat la teva sessió d'examen amb $tried intents, 
-!set name_exam4=!nosubst Ja has fet l'examen $tried vegades,
-!set name_exam6=!nosubst I encara us resten $tryremain intent(s) permesos.
+!set name_exam3=!nosubst Ja ha acabat la teva sessió d'examen amb $tried intents, 
+!set name_exam4=!nosubst Ja has intentat l'examen $tried vegades,
+!set name_exam6=!nosubst I encara us resten $tryremain intent(s) més.
 
-!set name_exam9=!nosubst Teniu $sdure minuts per treballar en aquest examen. \
+!set name_exam9=!nosubst Teniu $sdure minuts per acabar aquest examen. \
 En fer clic en un dels exercicis anteriors,
  
 !set name_simulation=Aquest examen està en mode de simulació. Funciona exactament igual que l'examen real \
@@ -56,40 +54,45 @@ En fer clic en un dels exercicis anteriors,
 !set wims_name_examremain=Temps restant per aquest examen : $
 
 !distribute lines en attente\
-Encara no heu començat el treball a l'examen\
+Encara no heu començat a treballar a l'examen\
 Començar a treballar.\
 La puntuació actual no es té en compte, perquè l'examen és en mode simulació.\
 into name_pending,name_begin1,name_begin2,name_simulation2
 
-!set name_timeleft=!nosubst El temps s'ha esgotat&nbsp;! Heu utilitzat els $sdure minuts permesos en aquest examen.
+!set name_timeleft=!nosubst S'ha esgotat el temps&nbsp;! Heu utilitzat els $sdure minuts permesos en aquest examen.
 !set name_realscore=!nosubst La vostra nota real en aquest full d'examen és $lastscore.
-!set name_bestscore =!nosubst La vostra millor nota en aquest examen és $lastscore. (Aquesta és la nota més alta que serà presa en compte.)
+!set name_bestscore =!nosubst La vostra millor nota en aquest examen és $lastscore. (Aquesta és la nota més alta que serà tinguda en compte.)
+
 
 !! ---------------------------
 !! nouvelle partie 
 
 !set statutname=$(wims_name_shstatus[1]),$wims_name_shstatus
 
-!set name_desc_duration=en minutes
-!let name_mkexam=Créer l'examen
+!set name_desc_duration=en minuts
+!let name_mkexam=Crear l'examen
 
-!let name_shinfo_cutt=Heures de coupure
+!let name_shinfo_cutt=Hores de tall
 
 !! différents commentaires de la page de gestion
-!distribute lines Informations générales&nbsp;\
-Contenu de l'examen&nbsp;\
-Cet examen n'a pas encore de contenu.\
+!distribute lines Informacions generals&nbsp;\
+Contingut de l'examen&nbsp;\
+Aquest examen encara no té contingut.\
 into name_info,name_content,name_warning
 
 !! titre du tableau de contenu de l'examen (file examcontent.phtml)
-!let name_extab=!nosubst $wims_name_number,$wims_name_title,Contenu,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
+!let name_extab=!nosubst $wims_name_number,$wims_name_title,Contingut,$name_weight,$name_dependency,$wims_name_comment,$name_Options,$wims_name_action
 
-!set name_contenu=Choix du contenu
-!let name_cpsheet1=Afegireu cada exercici del full al final dels exercicis ja presents. Cada exercici tindrà de pes 1 i conservarà el títol que tenia en el full d'exercicis si no ompliu el camp de sota.
+!set name_contenu=Selecció de continguts
+!let name_cpsheet1=Heu d'afegir cada exercici del full \
+al final dels exercicis ja presents. Cada exercici tindrà un pes de 1. \
+I, si no ompliu el camp de sota, \
+ conservarà el títol que tenia en el full d'exercicis de procedència.
 
 !let name_cpsheet3=Títol genèric de l'exercici
-!let name_cpsheet4=els exercicis seran numerats
+!let name_cpsheet4=Els exercicis seran numerades en ordre
 
-!set name_warning_nonfinished=No ho heu fet tots els exercicis d'aquest examen. Finalitzar\
-  ara mantindrà la nota i consumirà un intent d'examen, i us obligarà a començar pel principi \
-  la propera vegada.<p>Realment voleu acabar ?
+!set name_warning_nonfinished=Encara no heu fet tots els exercicis d'aquest examen. \
+  Acabar ara mantindrà la nota i consumirà un intent d'examen, \
+  i us obligarà a tornar a començar pel principi la propera vegada.<p>\
+  Realment voleu acabar ?

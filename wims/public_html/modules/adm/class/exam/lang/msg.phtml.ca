@@ -1,63 +1,63 @@
 !set wims_module_log=error: $error
 
 !if not_supervisor=$error
- Désolé, mais l'opération de préparation / modification d'une feuille de
- travail est réservée aux enseignants enregistrés d'une classe.
+ Ho sentim, però l'operació de preparació / modificació d'un examen
+  està reservat al professor registrat d'una classe.
  !exit
 !endif
 
 !if $error=no_sheet
- Le contenu d'un examen doit être pris à partir des feuilles activées
- (active ou périmée). 
+ El contingut d'un examen s'ha d'agafar dels fulls de treball activats (actius o
+  caducats).
  <p>
- Votre classe n'a pas encore de feuille de travail activée. Veuillez définir
- vos feuilles, mettre  le travail dedans puis les activer, avant de définir un
- examen pour la classe.
+ La vostra classe encara no té fulls de treball activats. Si us plau, definiu els vostres
+  fulls de treball, poseu-hi exercicis i activeu els fulls
+  abans de definir un examen per a la classe.
  !exit
 !endif
 
 !if bad_exam=$error
- Votre numéro d'examen n'est pas valide. Bug du logiciel?
+ El vostre número d'examen no és vàlid. Fallada del programari?
  !exit
 !endif
 
 !if $error=simuchange
- Cette feuille d'examen vient de changer de statut. Veuillez
- !href cmd=reply&job=scorereg cliquer ici
- pour terminer votre session.
+ Aquest full d'examen ha canviat el seu estat. Si us plau
+ !href cmd=reply&job=scorereg cliqueu aquí
+ per acabar la vostra sessió.
  !exit
 !endif
 
 !if already_registered=$error
- Votre note est déjà enregistrée.
+ La vostra puntuació ja està registrada.
  !exit
 !endif
 
 !if no_more_registration=$error
- Cet examen ne vous permet d'enregistrer vos notes que $stries fois.
- Vous n'avez plus le droit de faire d'autres enregistrements.
+ Aquest examen només us permet registrar la puntuació $stries vegades.
+ Ja no teniu dret a fer altres enregistraments.
  !exit
 !endif
 
 !if bad_source=$error
- L'article numéro $bad_source dans le source que vous venez de soumettre
- n'est pas valable.
- !href cmd=reply&job=prep_putsource&source=$source Corriger le source
+ L'item número $bad_source del codi font que acabeu d'enviar
+ no és vàlid..
+ !href cmd=reply&job=prep_putsource&source=$source Corregir el codi
  .
  !exit
 !endif
 
 !if no_title=$error
- Vous avez voulu enregistrer un examen sans titre, ce qui est
- déconseillé. Erreur de manipulation?
+ Voleu enregistrar un examen sense títol, la qual cosa no és aconsellable.
+  Error de manipulació?
  !exit
 !endif
 
 !if prep_activate=$error
- Vous demandez d'activer l'examen $exam, c'est-à-dire de le rendre 
- accessible aux participants de la classe. <p>
- Veuillez noter qu'une fois l'examen activé, vous ne pourrez plus le modifier.
- Voulez-vous continuer&nbsp;?
+ Has demanat activar l'examen $exam, és a dir, fer-lo 
+ accessible als participants de la classe. <p>
+ Pensa que una vegada acticat l'examen, ja no el podràs modificar.
+ Vols continuar&nbsp;?
  <p><center>
  !href cmd=reply&job=activate $wims_name_yes; $(wims_name_actionlist[1])
  .&nbsp;&nbsp;
@@ -67,7 +67,7 @@
 !endif
 
 !if prep_erase=$error
- Voulez-vous vraiment effacer l'examen numéro $exam ($title)?
+ Vols realment esborrar aquest examen número $exam ($title)?
  <p><center>
  !href cmd=reply&job=erase $wims_name_yes; $wims_name_erase
  .&nbsp;&nbsp;
@@ -77,41 +77,40 @@
 !endif
 
 !if prep_expire=$error
- Cet examen numéro $exam ($title) expire normalement le $expday
+ Aquest examen número $exam ($title) caduca normalment el $expday
  !item $expmon of $months
- $expyear. Voulez-vous le rendre périmé dès maintenant?
+ $expyear. Vols que caduqui ara?
  <p><center>
  !href cmd=reply&job=expire $wims_name_yes; $(wims_name_actionlist[2])
  .&nbsp;&nbsp;
  !href cmd=resume $wims_name_no; $wims_name_giveup
  . </center>
- <p><b>Remarque.</b> Vos étudiants ne peuvent pas continuer à travailler
- sur un examen périmé. Mais leurs notes antérieures seront conservées 
- (et seront prises
- en compte dans les statistiques) et vous pouvez toujours les consulter.
+ <p><b>Observació.</b> Els vostres alumnes no poden seguir treballant en un
+  examen caducat. No obstant això, els seus resultats anteriors es conserven (i es tindran en
+  compte en les estadístiques), i sempre podeu consultar aquests resultats.
  !exit
 !endif
 
 !if nodeactivate=$error
-  L'examen ne peut pas être désactivé car
+  L'examen no pot ser desactivat per
   !if badstructure isin $deactivate
-   la structure de votre classe ne le permet pas !
+   l'estructura de la vostra classe no ho permet !
   !else
    !if score isin $deactivate
-    des participants ont déjà commencé à travailler sur cet examen !
+    els participants ja han començat a treballar en aquest examen !
    !else
-    vous partagez vos examens avec une autre classe !
+    comparteixes els teus exàmens amb una altra classe !
    !endif
   !endif
 !endif
 
 !if active_exam=$error
-   Désolé, cet examen est activé, donc non modifiable. On ne peut plus changer les exercices dedans.
+   Ho sento, aquest examen està actiu, de manera que no es pot modificar. No es poden canviar els seus exercicis.
  !exit
 !endif 
 
 !if $error=prep_noexercise
-  Le contenu de l'exercice $exo de l'examen est vide. Recommencez.
+  El contingut de l'exercici $exo de l'examen està vuit. Torna a començar.
   !exit
 !endif
 
