@@ -10,7 +10,7 @@
 		Inici WIMS,Intro/Config,Ajuda,Quant a aquest mòdul/exercici,\
 		Introducció,\
 		Tanca aquesta finestra,Tornar,\
-		Administrador,Autor de la pàgina,Autors de la pàgina,\
+		Gestor del lloc,Autor de la pàgina,Autors de la pàgina,\
 		Traduït per,Eixida,\
 		Ajuda WIMS,Referències,\
 		Fòrum,Fòrums,\
@@ -23,8 +23,8 @@
 		Anar,\
 		Actualitzar,\
 		Desar,\
-		sí,\
-		no,\
+		Sí,\
+		No,\
 		Descarregar,\
 		Enviar,\
 		Detalls,\
@@ -45,7 +45,7 @@
 		Tornar al menú,\
 		Data de caducitat,\
 		Error,\
-		Sèrie següent,Sèrie anterior,\
+		Exercici següent,Exercici anterior,\
 		Exemple,\
 		Qüestionari,\
 		Condicions generals d'ús,\
@@ -87,7 +87,7 @@
 
 !set wims_name_Share = Compartir 
 !set wims_name_to_embed_it = per incrustar-lo	
-!set wims_name_permalink_desc = Còpia un d'aquests enllaços per compartir-ho fàcilment (a través de correu electrònic, favorits, ...).
+!set wims_name_permalink_desc = Còpia un d'aquests enllaços per compartir-ho fàcilment (a través de correu electrònic, adreces d'interés, etc...).
 
 !! the following sentences can be changed according to language if needed
 !set wims_name_display1=!nosubst $wims_name_display $wims_name_this_module $wims_name_on_your_site
@@ -98,7 +98,7 @@
 !! **** Module About Names ***
 !distribute items Nom,\
 	        Quant a les icones,\
-		Informacions sobre el mòdul,\
+		Informació del mòdul,\
 		Informació de l'Exercici,\
 		Adreça,\
 		Enllaç per Adreces d'interès,\
@@ -172,10 +172,10 @@
 	wims_name_sheetmanagement,\
 	wims_name_add_sequence
 
- !set wims_name_score=!nosubst Has obtingut $[$wims_homeref_got] de \
-	$[$wims_homeref_req] punts en aquest treball, qualitat \
-	$[$wims_homeref_mean]/10.
- !set wims_name_you=ets <b>$wims_firstname $wims_lastname</b>, pertanyent a
+ !set wims_name_score=!nosubst Punts obtinguts : $[$wims_homeref_got] punts dels $[$wims_homeref_req] punts demanats\
+	<br> Qualitat : $[$wims_homeref_mean]/10.
+
+ !set wims_name_you=Ets <b>$wims_firstname $wims_lastname</b>, pertanyent a
  !if _exam isin $session
   !distribute items Altres exercicis de l'examen,\
 	Temps restant per aquest examen:,\
@@ -189,14 +189,14 @@
  !default wims_name_sequence=Seqüència
   !set wims_name_sequences=seqüències
   
-  !set wims_name_exceeded=La classe ha superat l'assignació d'espai de disc al servidor. Ja no\
-  pots gestionar la classe. Ho sento!<p>Podeu demanar a l'administrador del lloc que augmenti \
+  !set wims_name_exceeded=La classe ha superat l'assignació d'espai de disc al servidor.\
+  Ja no pots gestionar la classe. Ho sento!<p>Podeu demanar a l'administrador del lloc que augmenti \
  l'assignació d'espai de disc per a les classes virtuals.
  
- !set wims_name_reaching_limit=La classe està arribant al límit d'assignació d'espai de disc.\
+ !set wims_name_reaching_limit=La classe està arribant al límit d'espai de disc autoritzat.\
   Si s'arriba a aquest límit, es bloquejarà la gestió de la classe!
   
- !set wims_name_chseries=!nosubst Enregistrer les modifications sur la série d'exercices $(special_parm4[2]) feuille $(special_parm4[1]) 
+ !set wims_name_chseries=!nosubst Desar els canvis en la sèrie d'exercicis $(special_parm4[2]) full $(special_parm4[1]) 
 !endif
 
 !!!if adm/class isin $module or adm/manage isin $module
@@ -242,7 +242,7 @@
    Publicar\
    Nou Mòdul\
    Llista de mòduls\
-   Fitxers binaris\
+   Fitxers\
    Còpia de seguretat\
    Propietats del compte\
    Provador de script\
@@ -330,10 +330,10 @@ Estat\
 Inserir\
 S'està preparant,Actiu,Caducat,Caducat+Amagat\
 ni llegir ni escriure,llegir però no escriure,llegir i escriure\
- Número\
+Número\
 into wims_name_doc,wims_name_status,wims_name_title,wims_name_reorder,wims_name_adddoc,\
 wims_name_createdoc,wims_name_doctry,wims_name_Status,wims_name_Insert,wims_name_shstatus,\
-wims_name_Docstatus
+wims_name_Docstatus,wims_name_number
 
  !distribute line Afegir una data\
    Afegir un fitxer\
@@ -344,12 +344,13 @@ wims_name_Docstatus
   into wims_name_adddate,wims_name_addfile,wims_name_addtodo,wims_name_config,wims_name_giveup,\
   wims_name_cdt
 
-!set wims_name_supervisor=supervisor
-!set wims_name_Supervisor=Supervisor
+!set wims_name_supervisor=administrador
+!set wims_name_Supervisor=Administrador
 !set wims_name_namestudent=Estudiant
 !set wims_name_nameteacher=Professor
 !set wims_name_teacher=Comptes de professor
-!set wims_name_addteacher=Nou professor
+!set wims_name_addteacher=Afegir professor
+!set wims_name_addparticipant=Afegir participant
 !set wims_name_modteacher=Propietats del professor
 !set wims_name_delteacher=Esborrar un professor
 !set wims_name_student=Comptes d'estudiant
@@ -384,7 +385,7 @@ Canviar de zona\
 into wims_name_addcourse,wims_name_addicourse,wims_name_addclass,wims_name_addprog,wims_name_addlevel,\
 wims_name_login,wims_name_chzone
 
-!distribute line Estadístiques del treball dels estudiants\
+!distribute line Estadístiques dels estudiants\
 Avaluació global dels estudiants\
 Canviar el barem\
 Posar notes manualment\
@@ -441,5 +442,6 @@ into wims_name_photoboard,wims_name_sendmail
 into wims_name_nameteacher,wims_name_Supervisor,wims_name_namestudent
 
 !if $module isitemof home,adm/class/sheet,adm/class/exam
- !set wims_name_actionlist=Activar, Caducar, Desactivar, Ocultar, Mostrar,$wims_name_erase
+ !set wims_name_actionlist=Activar, Caducar, Desactivar, Ocultar, $wims_name_Show,$wims_name_erase
 !endif
+
