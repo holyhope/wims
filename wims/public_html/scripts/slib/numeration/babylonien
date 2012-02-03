@@ -1,0 +1,45 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Fabrice, Guerimand
+
+slib_example=434,,\
+60^2+1,1,.
+
+!exit
+
+:proc
+!distribute item $wims_read_parm into slib_input,slib_option1,slib_option2
+!bound slib_option1 within 0,1 default 1
+!default slib_option2=$empty
+slib_option2=!char 1 of $slib_option2
+slib_input=$[$slib_input]
+!if NaN isin $slib_input
+ !exit
+!endif
+slib_st=$[floor(ln($slib_input)/ln(60))]
+slib_out=<table border="0"><tr>
+slib_clou=<img src="gifs/numeration/clou.gif">
+slib_chevron=<img src="gifs/numeration/chevron.gif">
+!for slib_k=$(slib_st) to 0 step -1
+    slib_reste=$[$slib_input%(60^$slib_k)]
+    slib_quo=$[($slib_input-$slib_reste)/(60^$slib_k)]
+    slib_re2=$[$slib_quo%10]
+    slib_quo2=$[($slib_quo-$slib_re2)/10]
+    !if $slib_re2=0 and $slib_quo2=0
+     !if $slib_option1>0
+      slib_out=!append word <td>&nbsp;</td> to $slib_out
+     !endif
+    !else
+     slib_quo2=!makelist $slib_chevron for v=1 to $slib_quo2
+     slib_re2=!makelist $slib_clou for v=1 to $slib_re2
+     slib_tmp=!replace , by $empty in $slib_quo2$slib_re2
+     slib_out=!append word <td align="center">$slib_tmp</td> to $slib_out
+     slib_input=$slib_reste
+    !endif
+    !if $slib_k>0 and $slib_option2!=$empty
+     slib_out=!append word <td>$slib_option2</td> to $slib_out
+    !endif
+!next slib_st
+slib_out=$slib_out</tr></table>
