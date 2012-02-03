@@ -1,0 +1,34 @@
+!if $wims_read_parm!=slib_header
+ !goto proc
+!endif
+
+slib_author=Fabrice Guerimand 
+slib_example=2012,0,1
+
+!exit
+
+:proc
+slib_input=$wims_read_parm
+slib_n=!item 1 of $wims_read_parm
+slib_s=!item 2 to -1 of $wims_read_parm
+slib_s=!nospace $slib_s
+slib_p=!itemcnt $slib_s
+
+slib_n=$[$slib_n]
+!if NaN isin $slib_n
+ slib_out=NaN
+ !exit
+!endif
+
+!if e isin $slib_n or E isin $slib_n
+ slib_out=NaN
+ !exit
+!endif
+
+slib_out=$empty
+slib_m=$[floor(log($slib_n)/log($slib_p))]
+!for slib_e=$slib_m to 0 step -1
+ slib_t=$[floor($slib_n/($slib_p^$slib_e))]
+ slib_out=$slib_out$(slib_s[$slib_t+1])
+ slib_n=$[$slib_n-$slib_t*$slib_p^$slib_e]
+!next slib_e
