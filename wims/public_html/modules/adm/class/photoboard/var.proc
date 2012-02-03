@@ -63,7 +63,7 @@ variable=!trim $variable
      sel_cnt=!itemcnt $(filter[$u;])
      !for j=1 to $sel_cnt
       sel1=!replace internal = by , in $(sel[$j])
-       !if $(user__$(sel1[1]))=$(sel1[2])
+       !if $(sel1[2]) iswordof $(user__$(sel1[1])) or $(sel1[2]) isitemof $(user__$(sel1[1]))
          test=!append item 1 to $test
        !else
           test=!append item 0 to $test
