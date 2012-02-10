@@ -6,6 +6,22 @@
  !exit
 !endif
 
+<p>
+!if $special_parm=jsxgraph
+   Utiliser la box
+
+ !goto common
+!endif
+
+!if $special_parm=pari
+ <a href="http://pari.math.u-bordeaux.fr/dochtml/html.stable/" target="wims_external">
+ Commandes Pari/GP
+ </a>
+!goto common
+!endif
+</p>
+:common
+
 <form action="http://www.google.com/search">
 <input type="submit" value="Recherche Google">pour la documentation de
 <select name="q">
@@ -14,19 +30,25 @@
 !next sw
 </select></form>
 
+
+!if $special_parm!=flydraw
 <p>
 !href cmd=help&special_parm=flydraw Documentation Flydraw
 .
+</p>
+!endif
+!if $special_parm!=pari
 <p>
  <a href="http://pari.math.u-bordeaux.fr/dochtml/html.stable/" target="wims_external">
  Commandes Pari/GP
  </a>
 <p>
-L'entrée ou la sortie de toute exécution est limitée à 16K. Pour des raisons
+!endif
+<p>L'entrée ou la sortie de toute exécution est limitée à 16K. Pour des raisons
 évidentes de sécurité, il n'y a pas d'accès au réseau, l'écriture sur des
-fichiers est limitée au répertoire actuel si elle n'est pas totalement
-bloquée, et le temps d'exécution est limité à quelques secondes.
-
+fichiers est limitée au répertoire actuel et peut même être totalement
+bloquée et le temps d'exécution est limité à quelques secondes.
+</p>
 <p>
 !if $securetest=$empty
   D'autres logiciels sont peut-être accessibles sur d'autres serveurs wims
@@ -35,4 +57,4 @@ bloquée, et le temps d'exécution est limité à quelques secondes.
 Note spéciale pour l'interface C : le point d'entrée est <tt>int test(void)</tt>,
 mais pas <tt>main()</tt>&nbsp;!
 !endif
-
+</p>
