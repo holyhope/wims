@@ -43,7 +43,7 @@ ldap_login=!defof class_ldap_login in $authdef
    !exit
 !endif
 
-ldap_search=!sh ldapsearch -x -h $ldap_host -p $ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
+ldap_search=!sh ldapsearch -x -H $ldap_host:$ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
 
 atest=result: 0 Success
 btest=# numEntries: 1
