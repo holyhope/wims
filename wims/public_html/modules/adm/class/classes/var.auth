@@ -80,13 +80,17 @@ pass=!defof user_password in $userdef
    pass=$current_pass
   !endif
  !endif
- !if $class notitemof $upartic and $auth_user!=supervisor and $wims_user!=$supervisor
+ !if $class notitemof $upartic and $auth_user!=supervisor and $wims_user!=supervisor
   pass=
  !endif
 # These lines should be opened later to close this possibility.
 # !if $auth_user=supervisor and $wims_user=$empty
 #  pass=
 # !endif
+!endif
+
+!if $auth_user=supervisor
+ !goto wimsauth
 !endif
 
 ##### final test of external connection #####
@@ -98,10 +102,11 @@ exist_check=!defof user_exists in $userdef
    !goto auth_ok
  !else
    !setdef user_auth=$auth_user_orig in wimshome/$wims_sesdir/var.stat
+   !goto end
  !endif
 !endif
 ##### end of final test of external connection #####
-
+:wimsauth
 pass=!passcrypt $pass
 !if $pass=$empty
  passwd=????
@@ -240,3 +245,4 @@ clang=!defof class_lang in wimshome/log/classes/$class/.def
  !restart lang=$clang&module=home
 !endif
 
+:end
