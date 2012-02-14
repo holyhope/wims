@@ -73,7 +73,7 @@ if [ -f log/wims.conf ]; then :; else
 You can configure some parameters which allow the manager site
 to make more configuration from the web interface.
 
-Please write the IP address of the wims webmaster ? []
+Please write the IP address of the wims webmaster ? [127.0.0.1]
 @
   read ans1
   if [ -z $ans1 ]; then :; else
@@ -87,10 +87,10 @@ Please write the email address of the wims webmaster: ? []
   read ans2
   if [ -z $ans2 ]; then
      if [ -z $ans1 ]; then :; else echo "site_manager=" >> log/wims.conf; fi
-     else
-      if [ -z $ans1 ]; then echo "manager_site=" >> log/wims.conf ; fi
-       echo "site_manager=$ans2" >> log/wims.conf
-       chmod 600 log/wims.conf
+  else
+     if [ -z $ans1 ]; then echo "manager_site=127.0.0.1" >> log/wims.conf ; fi
+     echo "site_manager=$ans2" >> log/wims.conf
+     chmod 600 log/wims.conf
   fi
 fi
 if [ -f log/.wimspass ]; then :; else
