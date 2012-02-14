@@ -1,6 +1,7 @@
 
 # Input variables: authdef=def file.
 # Parameters: auth_user, auth_password.
+# output : auth_test, auth_user
 
 auth_test=ERROR
 auth_real_login=ERROR
@@ -86,18 +87,22 @@ ldap_cnt=!linecnt $ldap_search
      !endif 
     !next
     !if $auth_real_login!=
-      auth_test=$auth_real_login
+      auth_user=$auth_real_login
     !endif
    !endif
   !endif
 !endif
 
-cnt_=!charcnt $auth_test
+cnt_=!charcnt $auth_user
 !if $cnt_=3
- auth_test=!nospace $auth_test 0
+ auth_user=!nospace $auth_user 0
 !endif
 !if $cnt_<=2
   auth_test=ERROR
+  !reset auth_user
+!endif
+!if $auth_test!=ERROR
+  auth_test=OK
 !endif
 auth_error=$wims_exec_error
 !reset wims_exec_error

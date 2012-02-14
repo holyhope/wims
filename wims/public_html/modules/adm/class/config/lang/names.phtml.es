@@ -350,7 +350,7 @@ Permitir las indicaciones (si  disponibles). \
 !endif
 
 !if $job=authtype
- !set title=Autenticación por un anuario ldap
+ !set title=Autenticación por un anuario
  !set name_intro_authtype=Seleccione < tt>ldap</tt> y llenan esta página si \
 desean utilizar una autenticación por un anuario ldap.
  !goto commun

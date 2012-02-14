@@ -22,28 +22,30 @@ auth_password=!word 1 of $auth_password
 auth_user_connection=$auth_user
 auth_password_connection=$auth_password
 
-##### LDAP connection - part 1 #####
-sclass=!defof class_superclass in wimshome/log/classes/$class/.def
-!default sclass=$class
+##### EXTERNAL connection - part 1 #####
 
-auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
-
-!if $auth_user notsametext supervisor and $auth_method iswordof ldap
+!if $auth_user notsametext supervisor and $auth_method isitemof $authentification_method
  authdef=wimshome/log/classes/$sclass/.def
  
  # don't use auth_user and auth_password, some characters are unvailable
+ # parameters are empty for auth-cas
  !readproc adm/class/auth-$auth_method $auth_user_connection,$auth_password_connection
 
- # if ldap connection is OK, replace auth_user by $ldap_login (ie auth_test)
- !if ERROR notwordof $auth_test
-  auth_user=$auth_test
-  auth_test=OK
- !endif
-!endif
-##### end of LDAP connection - part 1 #####
-# now we can run the script
+  auth_user_orig=$auth_user
 
-auth_user_orig=$auth_user
+ # if ldap connection is OK, replace auth_user by $ldap_login (ie auth_test)
+!! !if ERROR notwordof $auth_test 
+!!  !if $auth_test!=$empty
+!!  	auth_test=OK
+!!  !endif
+!! !endif
+!endif
+##### end of EXTERNAL connection - part 1 #####
+# now we can run the script
+## for the moment, only for cas. TO FIX
+!if $auth_method iswordof cas and $auth_user!=supervisor
+ auth_user=!lookup $auth_user in wimshome/log/classes/$sclass/.userlist_external
+!endif
 auth_user=!translate internal . to @ in $auth_user
 auth_user=!text select $char_login in $auth_user
 auth_password=!text select $char_passwd in $auth_password
@@ -55,7 +57,7 @@ logline=$now $auth_user  	$$passwd	$httpd_REMOTE_ADDR
 !read adm/class/userdef classes,$class,$auth_user
 
 pass=!defof user_password in $userdef
-sclass=!defof class_superclass in wimshome/log/classes/$class/.def
+# sclass=!defof class_superclass in wimshome/log/classes/$class/.def
 !if $sclass!=$empty and $sclass!=$class
  upartic=!defof user_participate in $userdef
  usuperv=!defof user_supervise in $userdef
@@ -87,14 +89,18 @@ sclass=!defof class_superclass in wimshome/log/classes/$class/.def
 # !endif
 !endif
 
-
-##### final test of LDAP connection #####
+##### final test of external connection #####
 # finaly, we must check if user is allowed in class
+
 exist_check=!defof user_exists in $userdef
-!if $exist_check issametext yes and OK iswordof $auth_test and $auth_method iswordof ldap
- !goto auth_ok
+!if OK iswordof $auth_test and $auth_method isitemof $authentification_method
+ !if $exist_check issametext yes
+   !goto auth_ok
+ !else
+   !setdef user_auth=$auth_user_orig in wimshome/$wims_sesdir/var.stat
+ !endif
 !endif
-##### end of final test of LDAP connection #####
+##### end of final test of external connection #####
 
 pass=!passcrypt $pass
 !if $pass=$empty

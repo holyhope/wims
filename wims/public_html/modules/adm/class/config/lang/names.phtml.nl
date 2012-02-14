@@ -350,7 +350,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 !endif
 
 !if $job=authtype
- !set title=Ldap authentificatie
+ !set title=External authentificatie
  !set name_intro_authtype=Kies <tt class="wims_code_words">ldap</tt> en vul dit formulier in \
   als u een ldap server gebruikt voor authentificatie.
  !goto commun

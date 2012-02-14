@@ -1,6 +1,7 @@
 !if robot isin $session or _ isin $session
  !exit
 !endif
+
 !read adm/class/classlang names.phtml
 listlim=60
 wims_prefix=class user tmp
@@ -11,6 +12,7 @@ wims_ref_otherlangs=yes
 !default class_bgcolor=$wims_bgcolor
 !default class_bgimg=$wims_bgimg
 !default class_css=$wims_css
+authentification_method=ldap,cas
 
 superclass=!text remove . in $superclass
 !if $wims_superclass!=$empty
@@ -23,6 +25,7 @@ superclass=!text remove . in $superclass
 !if $type=example
  superclass=
 !endif
+
 !if $superclass=$empty
  indf=wimshome/log/classes/.index
  limited=yes
@@ -165,14 +168,22 @@ listla=
  !defread wimshome/log/classes/$class/.def
  !!#### la seconde condition pour entrer dans la classe en tant que supervisor :
  !!#### le user est supervisor de cette classe, ou wims_realuser est supervisor ou vide (cas de l'administrateur) ou la classe est la classe test
+ 
+
  !if $type=authsupervisor and ($class isitemof $wims_supervise or $wims_realuser=$empty or $wims_realuser=supervisor or /0/ isin $class/)
   !default auth_user=supervisor
  !endif
  !if $save_logincgu!=$empty
   !default auth_user=$save_logincgu
  !endif
- !if $class_defined=yes and $auth_user!=$empty
-  !changeto var.auth
+
+ sclass=!defof class_superclass in wimshome/log/classes/$class/.def
+ !default sclass=$class
+
+ auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
+!bound auth_method within $authentification_method default $
+
+ !if $class_defined=yes and ($auth_user!=$empty or $auth_method=cas)
+   !changeto var.auth
  !endif
 !endif
-

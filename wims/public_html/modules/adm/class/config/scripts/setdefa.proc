@@ -1,4 +1,4 @@
-!for ld_ in ldap_host,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login
+!for ld_ in cas_host,ldap_host,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login
   !default up_$ld_=!defof $ld_ in wimshome/log/wims.conf
 !next
 
@@ -33,4 +33,16 @@ in wimshome/log/classes/$wims_class/.def
 !set class_ldap_login=$up_ldap_login\
 in wimshome/log/classes/$wims_class/.def
 !endif
+
+!if  $up_auth=cas
+  !setdef !set class_auth=cas\
+!set class_cas_host=$up_cas_host\
+in wimshome/log/classes/$wims_class/.def
+!else
+  !setdef !set class_cas_host=$up_cas_host\
+in wimshome/log/classes/$wims_class/.def
+
+!endif
+  
+
 

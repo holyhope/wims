@@ -4,6 +4,7 @@
 !if robot isin $session or _ isin $session
  !exit
 !endif
+
 !if $error issametext bad_password
   !read js/chrono.phtml 5
 !endif
@@ -25,6 +26,11 @@ $class_institution
 !if $error!=$empty
  !read lang/msg.phtml.$moduclass_lang
  <p><hr> <p>
+!endif
+
+!if OK iswordof $auth_test and $auth_method isitemof $authentification_methods and $exist_check notsametext yes
+   !href module=adm/class/reguser&class=$class  Mot de passe de la classe
+   !goto end
 !endif
 
 !read $type.phtml
@@ -49,7 +55,7 @@ to $wims_menu_items
  </center>
  !endif
 !endif
-
+:end
 !tail
 
 !reset auth_user,auth_password,superclass,keyword

@@ -1,0 +1,28 @@
+
+# Input variables: authdef=def file  / sclass
+# Parameters: NOTHING
+# Output : auth_test,auth_error
+
+auth_test=ERROR
+
+cas_host = !defof class_cas_host in $authdef
+!default cas_host=!defof cas_host in wimshome/log/wims.conf
+
+ticket = !replace internal & by $\
+$ in $module_init_parm
+
+ticket = !getopt ticket in $ticket  
+
+!if $ticket != $empty
+   url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$sclass
+   !read adm/codeurl $url
+   response = !exec webget $cas_host/validate?ticket=$ticket&service=$script_out
+   test2 = !line 1 of $response
+   !if $test2 = yes
+      auth_user=!line 2 of $response
+      auth_test=OK
+   !endif
+!endif
+
+auth_error=$wims_exec_error
+wims_exec_error=

@@ -24,4 +24,4 @@ los&nbsp;programas&nbsp;utilizados&nbsp;internamente
 :tech
 temas&nbsp;técnicos
 :auth
-authentification LDAP
+authentification externe
