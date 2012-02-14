@@ -3,10 +3,19 @@
 wims_form_method=post
 wims_prefix=class user tmp n sharing sharable
 wims_helper=chapter=3
-
+!set auth_user=$user_auth
 !default class=$wims_class
-!read tabletheme
 
+auth_method=!defof class_auth in wimshome/log/classes/$class/.def
+idp_method=!defof class_idp in wimshome/log/classes/$class/.def
+!default idp_method=
+
+!read adm/class/hashlogin $auth_user,$class
+
+
+## wims login is defined in the last script
+
+!read tabletheme
 !if $site_total=$empty
  !read adm/class/stat
  site_total=$usercnt
@@ -263,6 +272,7 @@ $class_type
  up_password=$pass
  up_class=$class
  up_agreecgu=$agreecgu
+ up_external_auth=$auth_user
  !if ($cltype iswordof 2 4 and $wims_user=$empty) or\
   ($wims_user=supervisor and $utype iswordof 1 3)
   up_supervisable=yes

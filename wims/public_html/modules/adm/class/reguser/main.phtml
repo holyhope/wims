@@ -208,14 +208,15 @@ $institution
   $name_newparticipant
  !else
   $name_inscription2
- !endif
+ !endif  
   !form reply
  <input type="hidden" name="step" value="2">
  <ul>
  <li><label for="lastn">$wims_name_lastname</label> <input size="20" name="lastn" id="lastn" value="$lastn">
 <label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn">
  </li>
- <li><label for="login">$wims_name_Login</label>
+ !if $auth_user=$empty or $auth_method notitemof cas,ldap 
+   <li><label for="login">$wims_name_Login</label>
   <input size="16" name="login" id="login" value="$login"> <br>
   $name_warning_login
   </li>
@@ -223,6 +224,8 @@ $institution
   <input type="password" size="16" name="pass" id="pass"> <br>
   $name_passwd_warning
  </li>
+ !endif
+ !default email=$auth_user
  <li><label for="email">$wims_name_email ($name_optional) :</label><br>
   <input size="60" name="email" id="email" value="$email">
  </li>

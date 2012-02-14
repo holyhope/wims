@@ -3,7 +3,8 @@
  <span class="wims_warning">$wims_name_Error</span>. $name_warning
  !exit
 !endif
-!if $class_mixed_external_auth>0
+
+!if $class_mixed_external_auth>0 and $auth_user !=supervisor
 <div class="wims_external_auth">
 $(class_external_auth)
 </div>
@@ -15,23 +16,29 @@ $name_warning_external
 !endif
 
 !if no_cgu notwordof $error
- $name_enter
-
- <p>
+ user_auth=
  !set wims_form_method=post
- !form reply
- !if $auth_method iswordof ldap
-  !reset auth_user
- !endif
- <center><table border="0">
+ !if $auth_method notitemof cas
+ $name_enter
+   !form reply
+   !if $auth_method iswordof cas ldap
+    !reset auth_user
+   !endif
+    <center><table border="0">
   <tr><td>$wims_name_Login</td><td><input size="20" name="auth_user" value="$auth_user"></td></tr>
   <tr><td>$wims_name_Password</td><td><input type="password" size="20" name="auth_password"></td></tr>
   $table_end
   <p><center>
   <input type="submit" value="$wims_name_Enter">
  </center>
- </form> <p>
- $name_new_participant:
+ </form>
+ <p>
+  $name_new_participant:
+  !else
+ <p>
+  $name_new_participant_external:
+ !endif
  !set wims_ref_class=wims_button
  !href module=adm/class/reguser&class=$class&subclass=yes $name_register
+ </p>
 !endif

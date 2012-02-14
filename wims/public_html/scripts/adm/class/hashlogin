@@ -1,0 +1,26 @@
+## input classe
+!distribute items $wims_read_parm into login,cl
+!set limit=2
+!set limit_while=$[10^$limit]
+!read adm/class/authchars
+!set login=!lower $login
+
+!set login=!text select $char_alnum in $login
+!set login=!char 1 to $[$login_max -$limit] of $login
+!if $cl!=$empty
+  cnt=0
+  user_exists=yes
+  login_init=$login
+  !while $user_exists=yes and $cnt<$limit_while
+      !if $cnt>0
+        login=$login_init$cnt
+      !endif
+      !read adm/class/userdef bidon,$cl,$login
+      !SET user_exists= !getdef user_exists in $userdef
+      !increase cnt
+  !endwhile
+  !if $cnt>=$limit_while
+    !reset login
+  !endif
+    
+!endif
