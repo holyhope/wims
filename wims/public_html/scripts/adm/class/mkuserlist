@@ -1,5 +1,6 @@
 #MKUSERLIST
 # Constructs .userlist file in specified class (wims_class by default)
+#    also constructs .userlist_external if needed
 
 uclass=$wims_read_parm
 !default uclass=$wims_class
@@ -69,36 +70,54 @@ userlist_lastcnt=!itemcnt $(userlist_$start)
  userlist_lastcnt=!itemcnt $(userlist_$start)
 !endwhile
 
-# On supprime une eventuelle liste temporaire "userlist.raw" dans chaque classe
+# On supprime une eventuelle liste temporaire "userlist*.raw" dans chaque classe
 !for c in $clist
  !sh rm -f $wims_home/log/classes/$c/.userlist.raw 2>/dev/null
+ !sh rm -f $wims_home/log/classes/$c/.userlist_external.raw 2>/dev/null
 !next
 
 # On parcourt nos paquets de 1000 users
 !for N=0 to $start
  !for u in $(userlist_$N)
   !reset user_firstname, user_lastname, user_supervisable,\
-	user_class, user_participate, user_exists
+	user_class, user_participate, user_exists, user_external_auth
   !readdef $mul_userdir/$u
   
   !if $user_exists=yes and $user_supervisable!=yes
    userline=:$user_lastname,$user_firstname,$u
+
+   !reset userline_external
+   !if $user_external_auth!=$empty
+     userline_external=$user_external_auth:$u
+   !endif
    
    !if $typename=course
     !readdef wimshome/log/classes/$uclass/.users/$u
     !if $user_class!=$empty
      !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline,$user_class
+     !if $userline_external!=$empty
+       !appendfile wimshome/log/classes/$uclass/.userlist_external.raw $userline_external
+     !endif
     !endif
    !else
    
     !if $supclass=$uclass or $uclass isitemof $user_participate
      !appendfile wimshome/log/classes/$uclass/.userlist.raw $userline
-    !endif
+     !if $userline_external!=$empty
+       !appendfile wimshome/log/classes/$uclass/.userlist_external.raw $userline_external
+     !endif
+   !endif
     
     !if $supclass!=$uclass
      !appendfile wimshome/log/classes/$supclass/.userlist.raw $userline
+     !if $userline_external!=$empty
+       !appendfile wimshome/log/classes/$supclass/.userlist_external.raw $userline_external
+     !endif
      !if $class_lvl!=$empty and $class_lvl/ isin $user_participate
       !appendfile wimshome/log/classes/$class_lvl/.userlist.raw $userline
+       !if $userline_external!=$empty
+        !appendfile wimshome/log/classes/$class_lvl/.userlist_external.raw $userline_external
+       !endif
      !endif
     !endif
    
@@ -113,6 +132,10 @@ basedir=$wims_home/log/classes
 !for c in $clist
  !sh sort -f $basedir/$c/.userlist.raw >$basedir/$c/.userlist\
   rm -f $basedir/$c/.userlist.raw 2>/dev/null
+
+ !sh sort -f $basedir/$c/.userlist_external.raw >$basedir/$c/.userlist_external\
+  rm -f $basedir/$c/.userlist_external.raw 2>/dev/null
+
 !next c
 
 !read adm/class/stat
