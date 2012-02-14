@@ -214,28 +214,31 @@ $institution
  <ul>
  <li><label for="lastn">$wims_name_lastname</label> <input size="20" name="lastn" id="lastn" value="$lastn">
 <label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn">
-  <p>
+ </li>
  <li><label for="login">$wims_name_Login</label>
   <input size="16" name="login" id="login" value="$login"> <br>
   $name_warning_login
-  <p>
+  </li>
  <li><label for="pass">$wims_name_Password</label>
   <input type="password" size="16" name="pass" id="pass"> <br>
   $name_passwd_warning
-  <p>
+ </li>
  <li><label for="email">$wims_name_email ($name_optional) :</label><br>
   <input size="60" name="email" id="email" value="$email">
-  <p>
+ </li>
  !if $wims_user=supervisor and $class=$wims_class and $cltype iswordof 2 4
   <li>$name_accounttype:
   !default utype=0
   !formradio utype list 0,1 prompt $wims_name_namestudent,$wims_name_nameteacher
+  </li>
  !endif
  !if $wims_user!=supervisor
+  <li>
   !formcheckbox agreecgu list yes prompt $name_cgu
    [
   !href cmd=help $name_seecgu
   ]
+  </li>
  !endif
  </ul>
  <center><input type="submit" value="$wims_name_tosave"></center>
