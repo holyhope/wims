@@ -3,17 +3,26 @@
 wims_form_method=post
 wims_prefix=class user tmp n sharing sharable
 wims_helper=chapter=3
-!set auth_user=$user_auth
 !default class=$wims_class
 
 auth_method=!defof class_auth in wimshome/log/classes/$class/.def
 idp_method=!defof class_idp in wimshome/log/classes/$class/.def
 !default idp_method=
 
-!read adm/class/hashlogin $auth_user,$class
+#####################################
 
+## need to set user_external_auth
 
-## wims login is defined in the last script
+#####################################
+
+!if $auth_method isitemof cas
+  !set auth_user=$user_auth
+## define wims login 
+  !read adm/class/hashlogin $auth_user,$class
+  !default pass=!randint 10000,100000
+  !default pass2=$pass
+  !default login_bak=$login,$pass
+!endif
 
 !read tabletheme
 !if $site_total=$empty
@@ -101,6 +110,7 @@ idp_method=!defof class_idp in wimshome/log/classes/$class/.def
    !exit
   !endif
  !endif
+ 
  participants=!recordcnt wimshome/log/classes/$class/.userlist
  classe=$class_limit\
 $participants\
@@ -166,11 +176,6 @@ $class_type
 !endif
 
 !if $step=2
- !bound agreecgu within yes,no,external default no
- !if $agreecgu=no and $wims_user!=supervisor
-  error=no_cgu
-  !exit
- !endif
  !read adm/class/authchars
  n=!charcnt $login
  !if $n<$login_min or $n>$login_max
@@ -251,6 +256,11 @@ $class_type
 !endif
 
 !if $step=3
+ !bound agreecgu within yes,no,external default no
+ !if $agreecgu=no and $wims_user!=supervisor
+  error=no_cgu
+  !exit
+ !endif
  !if $pass!=$pass2 or $login_bak!=$login,$pass
   error=pass_error
   !exit
@@ -260,15 +270,20 @@ $class_type
  userdef2=!replace internal users/ by users/. in $userdef
  !defread $userdef
  user_exists=
+    
  !defread $userdef2
  work=!filelist $wims_home/log/classes/$class/{score,noscore}/$Login
  !if $user_exists=yes or $work!=$empty
   error=login_double
   !exit
  !endif
- up_firstname=$firstn
- up_lastname=$lastn
- up_email=$email
+ !if $method_idp=$empty
+  up_firstname=$firstn
+  up_lastname=$lastn
+  up_email=$email
+ !else
+  !read idp_$method_idp
+ !endif
  up_password=$pass
  up_class=$class
  up_agreecgu=$agreecgu
