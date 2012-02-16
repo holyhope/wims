@@ -7,49 +7,59 @@ $name_intro_authtype
 !href cmd=help&special_parm=config&special_parm2=authtype $wims_name_help
 
 !set up_auth=$class_auth
-<center>
-!formselect up_auth list ---,ldap,cas
-</center>
-<input type="hidden" name="up_job" value="authtype">
-<p>$table_header
-$table_tr<td align="right">cas host
-</td>
-<td><input size="30" name="up_cas_host" value="$class_cas_host">
-</td></tr>
-$table_tr<td align="right">ldap host*
-</td>
-<td><input size="30" name="up_ldap_host" value="$class_ldap_host">
-</td></tr>
-$table_tr<td align="right">ldap port
-</td>
-<td><input size="30" name="up_ldap_port" value="$class_ldap_port">
-</td></tr>
-$table_tr<td align="right">ldap version
-</td>
-<td><input size="30" name="up_ldap_version" value="$class_ldap_version">
-</td></tr>
-$table_tr<td align="right">ldap base*
-</td>
-<td><input size="30" name="up_ldap_base" value="$class_ldap_base">
-</td></tr>
-$table_tr<td align="right">ldap branch*
-</td>
-<td><input size="30" name="up_ldap_branch" value="$class_ldap_branch">
-</td></tr>
-$table_tr<td align="right">ldap uid
-</td>
-<td><input size="30" name="up_ldap_uid" value="$class_ldap_uid">
-</td></tr>
-$table_tr<td align="right">ldap login
-</td>
-<td><input size="30" name="up_ldap_login" value="$class_ldap_login">
-</td></tr>
-$table_hdtr<td align="center" colspan="2">
-<input type="submit" name="save" value="$wims_name_tosave">
-&nbsp;
-<input type="submit" name="abandon" value="$wims_name_giveup">
-</td></tr>
-$table_end <p>
+<p style="text-align:center;">
+	!formselect up_auth list ---,ldap,cas
+</p>
+
+<input type="hidden" name="up_job" id="" value="authtype">
+
+<fieldset>
+	<legend>CAS Settings</legend>
+	<label for="up_cas_host">CAS URL</label>
+	<input size="30" name="up_cas_host" id="up_cas_host" value="$class_cas_host">
+</fieldset>
+
+<br class="separation"/>
+
+<fieldset>
+	<legend>LDAP Settings</legend>
+	<ul class="class_settings">
+		<li class="setting_item">
+			<label for="up_ldap_host">ldap host <span class="field_required">*</span></label>
+			<input size="30" name="up_ldap_host" id="up_ldap_host" value="$class_ldap_host">
+		</li>
+		<li class="setting_item">
+			<label for="up_ldap_port">ldap port</label>
+			<input size="30" name="up_ldap_port" id="up_ldap_port" value="$class_ldap_port">
+		</li>
+		<li class="setting_item">
+			<label for="up_ldap_version">ldap version</label>
+			<input size="30" name="up_ldap_version" id="up_ldap_version" value="$class_ldap_version">
+		</li>
+		<li class="setting_item">
+			<label for="up_ldap_base">ldap base<span class="field_required">*</span></label>
+			<input size="30" name="up_ldap_base" id="up_ldap_base" value="$class_ldap_base">
+		</li>
+		<li class="setting_item">
+			<label for="up_ldap_branch">ldap branch<span class="field_required">*</span></label>
+			<input size="30" name="up_ldap_branch" id="up_ldap_branch" value="$class_ldap_branch">
+		</li>
+		<li class="setting_item">
+			<label for="up_ldap_uid">ldap uid</label>
+			<input size="30" name="up_ldap_uid" id="up_ldap_uid" value="$class_ldap_uid">
+		</li>
+		<li class="setting_item">
+			<label for="up_ldap_login">ldap login</label>
+			<input size="30" name="up_ldap_login" id="up_ldap_login" value="$class_ldap_login">
+		</li>
+	</ul>
+</fieldset>
+
+<p style="text-align:center;">
+	<input type="submit" name="save" id="" value="$wims_name_tosave">
+	&nbsp;
+	<input type="submit" name="abandon" id="" value="$wims_name_giveup">
+</p>
 </form>
 
 !reset up_auth up_cas_host up_ldap_host up_ldap_port up_ldap_version up_ldap_base up_ldap_branch up_ldap_uid up_ldap_login
