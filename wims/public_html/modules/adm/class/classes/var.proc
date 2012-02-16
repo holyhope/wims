@@ -3,6 +3,7 @@
 !endif
 
 !read adm/class/classlang names.phtml
+
 listlim=60
 wims_prefix=class user tmp
 wims_module_log=$type $keyword
@@ -12,12 +13,18 @@ wims_ref_otherlangs=yes
 !default class_bgcolor=$wims_bgcolor
 !default class_bgimg=$wims_bgimg
 !default class_css=$wims_css
-authentification_method=ldap,cas
 
-superclass=!text remove . in $superclass
-!if $wims_superclass!=$empty
- superclass=$wims_superclass
+!if $class!=$empty
+## output superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method
+  !read adm/class/initclass $class
 !endif
+
+## unuseful now because of adm/class/initclass ##
+!!superclass=!text remove . in $superclass
+!!!if $wims_superclass!=$empty
+!! superclass=$wims_superclass
+!!!endif
+## 
 !default superclass2=$superclass
 !read tabletheme
 !bound type within supervisor,participant,example,\
@@ -177,11 +184,11 @@ listla=
   !default auth_user=$save_logincgu
  !endif
 
- sclass=!defof class_superclass in wimshome/log/classes/$class/.def
- !default sclass=$class
+ superclass=!defof class_superclass in wimshome/log/classes/$class/.def
+ !default superclass=$class
 
- auth_method=!defof class_auth in wimshome/log/classes/$sclass/.def
-!bound auth_method within $authentification_method default $
+ auth_method=!defof class_auth in wimshome/log/classes/$superclass/.def
+!bound auth_method within $auth_method_list default $
 
  !if $class_defined=yes and ($auth_user!=$empty or $auth_method=cas)
    !changeto var.auth

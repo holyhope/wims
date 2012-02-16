@@ -52,13 +52,21 @@ $name_text1
   !!!href module=$module&type=authparticipant&class=$code 
   $show
   </td> 
+  !! to decomment
+   !read adm/class/initclass $code
+   !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_host)!=$empty
+     !read participant2.phtml
+   !else 
+   <td align="center">
+   !set wims_ref_class=wims_button
+   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+   </td> <td align="center">
+   !set wims_ref_class=wims_button
+   !href module=adm/class/reguser&class=$code&subclass=yes $name_register
+   </td> 
+   !endif
+   
   <td align="center">
-  !set wims_ref_class=wims_button
-  !href module=$module&type=authparticipant&class=$code $wims_name_Enter
-  </td> <td align="center">
-  !set wims_ref_class=wims_button
-  !href module=adm/class/reguser&class=$code&subclass=yes $name_register
-  </td> <td align="center">
   $supv
   </td> <td align="center">
   !if $pswd=$empty
@@ -118,19 +126,12 @@ $name_text1
   </td>
 !!! put it var.proc ??
   !reset class_auth
+  !read adm/class/initclass $code
   !defread wimshome/log/classes/$code/.def
-
-  !if $class_auth iswordof cas phpidp
-   <td align="center" colspan="2">
-   !if $class_auth iswordof cas
-    !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code
-    !read adm/codeurl $url
-    <a class="wims_button" href="$class_cas_host/login?service=$script_out">$wims_name_Enter</a>
-   !else
-    <a class="wims_button" href="$class_phpidp_url?enter=$code">$wims_name_Enter</a>
-   !endif
-   </td>
-  !else
+  !read adm/class/initclass $code
+  !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_host)!=$empty
+     !read participant2.phtml
+   !else 
   <td align="center"> 
   !set wims_ref_class=wims_button
   !href module=$module&type=authparticipant&class=$code $wims_name_Enter

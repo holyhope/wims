@@ -1,0 +1,21 @@
+!!! init some parameters of a class
+!!!INPUT = number of a class
+!!!OUTPUT= superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method
+!if $wims_read_parm=$empty
+  !exit
+!endif
+!set class=$wims_read_parm
+!set superclass=!text remove . in $class
+!set superclass=!replace internal / by , in $superclass
+!set superclass=$(superclass[1])
+
+!set auth_method_list=ldap,cas,phpidp
+!set auth_idp_list=ldap,phpidp
+
+!set auth_method=!defof class_auth in wimshome/log/classes/$superclass/.def
+!set idp_method=!defof class_idp in wimshome/log/classes/$superclass/.def
+!set class_auth=$auth_method
+!bound auth_method within $auth_method_list default $
+!bound idp_method within $idp_method_list default $
+
+ 

@@ -1,13 +1,12 @@
 !read adm/class/classlang names.phtml
-
 wims_form_method=post
 wims_prefix=class user tmp n sharing sharable
 wims_helper=chapter=3
-!default class=$wims_class
 
-auth_method=!defof class_auth in wimshome/log/classes/$class/.def
-idp_method=!defof class_idp in wimshome/log/classes/$class/.def
-!default idp_method=
+!default class=$wims_class
+## output superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method
+!read adm/class/initclass $class
+
 
 #####################################
 
@@ -15,7 +14,7 @@ idp_method=!defof class_idp in wimshome/log/classes/$class/.def
 
 #####################################
 
-!if $auth_method isitemof cas
+!if $auth_method isitemof $auth_method_list
   !set auth_user=$user_auth
 ## define wims login 
   !read adm/class/hashlogin $auth_user,$class

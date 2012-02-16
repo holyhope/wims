@@ -1,5 +1,5 @@
 
-# Input variables: authdef=def file  / sclass
+# Input variables: authdef=def file  / superclass
 # Parameters: NOTHING
 # Output : auth_test,auth_error
 
@@ -14,7 +14,7 @@ $ in $module_init_parm
 ticket = !getopt ticket in $ticket  
 
 !if $ticket != $empty
-   url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$sclass
+   url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$superclass
    !read adm/codeurl $url
    response = !exec webget $cas_host/validate?ticket=$ticket&service=$script_out
    test2 = !line 1 of $response
