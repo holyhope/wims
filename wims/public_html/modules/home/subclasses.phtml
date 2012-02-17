@@ -17,12 +17,18 @@
    !set name=!defof class_description in wimshome/log/classes/$c/.def
    !set type=!defof class_type in wimshome/log/classes/$c/.def
    !set type_name=!defof class_typename in wimshome/log/classes/$c/.def
+   !read adm/class/initclass $c
    !if $cnt=3
     !set t_=supervisor
     !set u_=supervisor
    !else
     !set t_=participant
-    !set u_=$wims_user
+    !set type_class=!defof class_type in wimshome/log/classes/$class/.def
+    !if $auth_method isitemof $auth_method_list
+      !set u_=!defof user_external_auth in $userdef
+    !else
+      !set u_=$wims_user
+    !endif
    !endif
    !set list_class=class,program,course
    !if $name!=$empty
@@ -61,7 +67,7 @@
      !if ($class_type < 4 and $tt=3) or $tt iswordof 1 2 or ($tt=3 and $parent_c notitemof $(liste_class[$j;3]),$(liste_program[$j;3]))
       !if $class_type < 4 and $class_typename!=group
       !endif
-      <li> $arr <span class="wims_classes_direct_$(list_class[$tt])"> 
+      <li> $arr <span class="wims_classes_direct_$(list_class[$tt])">
       !href module=adm/class/classes&type=auth$(liste[$j;2])&class=$(liste[$j;3])&auth_user=$(liste[$j;4]) $(liste[$j;1])
       ($(CL_Name[$tt+1]))</span>
      !endif

@@ -35,18 +35,23 @@
 </div><!--end of menuitem-->
 !endif
 
-<div class="wims_classes_direct">
+!set auth_method=!defof class_auth in wimshome/log/classes/$wims_superclass/.def
+ !if $auth_method iswordof cas
+   !set wims_user_ext=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user
+ !endif
+ !default wims_user_ext=$wims_user
+ <div class="wims_classes_direct">
 !if $wims_superclass=$empty or $wims_superclass=$wims_class
   $wims_institutionname
 !else
 <span class="wims_classes_direct_portal">
- !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user $wims_institutionname
+ !href module=adm/class/classes&type=authparticipant&class=$wims_superclass&auth_user=$wims_user_ext $wims_institutionname
 </span>
  !if / isin $class_parent and $class_type=1
   !set pname=!defof class_description in wimshome/log/classes/$class_parent/.def
   / 
  <span class="wims_classes_direct_class">
-  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user $pname
+  !href module=adm/class/classes&type=authparticipant&class=$class_parent&auth_user=$wims_user_ext $pname
  </span>
  !endif
 !endif

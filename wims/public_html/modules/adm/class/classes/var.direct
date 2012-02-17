@@ -29,7 +29,11 @@ directlist=
   np=!passcrypt $np
   passc=!passcrypt $pass
   !if $wims_class isitemof $t and $np=$passc
-   directlist=!append item $c $wims_user to $directlist
+   !if $auth_method isitemof $auth_method_list
+     directlist=!append item $c $user_auth_external to $directlist
+   !else
+     directlist=!append item $c $wims_user to $directlist
+   !endif
   !endif
  !next c
 !endif

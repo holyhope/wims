@@ -213,9 +213,10 @@ $institution
 !! check user supervisor??
 !! should put the form only if there is no idp
  !if $idp_method iswordof ldap
+!!FIXME
    !goto end1
  !endif
- !if $auth_user=$empty or $auth_method notitemof cas,ldap 
+ !if $auth_user=$empty or $auth_method notitemof $auth_method_list
   <input type="hidden" name="step" value="2">
  !else
   <input type="hidden" name="step" value="3">
@@ -297,27 +298,27 @@ $institution
  $name_hello, $name_student!<p>
  $name_welcome
  <tt class="wims_login">$login</tt>. <p>
- $name_youcan 
+ $name_youcan
  !if $wims_class!=$empty
 !!! session number is kept
-  !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
+ !! !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
 .
- !if $auth_method iswordof cas
+   !if $auth_method iswordof cas
      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
      !read adm/codeurl $url
-     !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$class/.def
+     !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$superclass/.def
      <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
- !endif
-FIXME what about idpphp here
+   !endif
+!!FIXME what about idpphp here
  !else
   !if $auth_method isitemof cas
     !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
     !read adm/codeurl $url
-    !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$class/.def
+    !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$superclass/.def
     <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
   !else
      <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
- $name_gotowork</a>. ($name_bookmark)
+ $name_gotowork</a> ($name_bookmark).
   !endif
  !goto end
 !endif

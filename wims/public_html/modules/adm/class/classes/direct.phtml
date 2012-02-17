@@ -1,3 +1,4 @@
+!read adm/class/initclass $wims_class
 
 !if $directcnt>0
 !for i_=1 to $directcnt
@@ -36,6 +37,9 @@ $name_direct:
   !endif
   <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td>
   <td class="wims_classes_direct_name">
+  !if $auth_method isitemof $auth_method_list
+      !set u_=!defof user_external_auth in $userdef
+  !endif
   !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u_ $n_
   </td><td><tt>$u_</tt></td>
   </tr>

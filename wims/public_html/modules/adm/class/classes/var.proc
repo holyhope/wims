@@ -18,13 +18,13 @@ wims_ref_otherlangs=yes
 ## output superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method
   !read adm/class/initclass $class
 !endif
+!!useful ! if $class=$empty
+superclass=!text remove . in $superclass
+!if $wims_superclass!=$empty
+ superclass=$wims_superclass
+!endif
+ 
 
-## unuseful now because of adm/class/initclass ##
-!!superclass=!text remove . in $superclass
-!!!if $wims_superclass!=$empty
-!! superclass=$wims_superclass
-!!!endif
-## 
 !default superclass2=$superclass
 !read tabletheme
 !bound type within supervisor,participant,example,\
@@ -188,7 +188,7 @@ listla=
  !default superclass=$class
 
  auth_method=!defof class_auth in wimshome/log/classes/$superclass/.def
-!bound auth_method within $auth_method_list default $
+ !bound auth_method within $auth_method_list default $     
  !if $class_defined=yes and ($auth_user!=$empty or $auth_method=cas)
    !changeto var.auth
  !endif
