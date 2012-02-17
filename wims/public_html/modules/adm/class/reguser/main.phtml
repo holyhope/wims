@@ -301,13 +301,14 @@ $institution
  $name_youcan
  !if $wims_class!=$empty
 !!! session number is kept
- !! !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
-.
    !if $auth_method iswordof cas
      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
      !read adm/codeurl $url
      !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$superclass/.def
      <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
+   !else
+     !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
+.
    !endif
 !!FIXME what about idpphp here
  !else
