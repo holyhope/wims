@@ -1,9 +1,9 @@
-!for ld_ in cas_host,ldap_host,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login
+!for ld_ in cas_auth,ldap_auth,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login
   !default up_$ld_=!defof $ld_ in wimshome/log/wims.conf
 !next
 
 !if  $up_auth=ldap
- !if $up_ldap_host issametext  or $up_ldap_branch issametext or $up_ldap_base issametext
+ !if $up_ldap_auth issametext  or $up_ldap_branch issametext or $up_ldap_base issametext
   error=no_ldap_parameter
   !exit
  !endif
@@ -13,7 +13,7 @@
  !default up_ldap_port=389
 
  !setdef !set class_auth=$up_auth\
-!set class_ldap_host=$up_ldap_host\
+!set class_ldap_auth=$up_ldap_auth\
 !set class_ldap_port=$up_ldap_port\
 !set class_ldap_version=$up_ldap_version\
 !set class_ldap_base=$up_ldap_base\
@@ -24,7 +24,7 @@ in wimshome/log/classes/$wims_class/.def
 
 !else
   !setdef !set class_auth=\
-!set class_ldap_host=$up_ldap_host\
+!set class_ldap_auth=$up_ldap_auth\
 !set class_ldap_port=$up_ldap_port\
 !set class_ldap_version=$up_ldap_version\
 !set class_ldap_base=$up_ldap_base\
@@ -36,10 +36,10 @@ in wimshome/log/classes/$wims_class/.def
 
 !if  $up_auth=cas
   !setdef !set class_auth=cas\
-!set class_cas_host=$up_cas_host\
+!set class_cas_auth=$up_cas_auth\
 in wimshome/log/classes/$wims_class/.def
 !else
-  !setdef !set class_cas_host=$up_cas_host\
+  !setdef !set class_cas_auth=$up_cas_auth\
 in wimshome/log/classes/$wims_class/.def
 
 !endif

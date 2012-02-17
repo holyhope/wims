@@ -18,14 +18,14 @@
 auth_user=!word 1 of $auth_user
 auth_password=!word 1 of $auth_password
 
-# new variables to keep original data (used only in ldap authentication)
+# new variables to keep original data (used only in external authentication)
 auth_user_connection=$auth_user
 auth_password_connection=$auth_password
 
 ##### EXTERNAL connection - part 1 #####
 
-!if $auth_user notsametext supervisor and $auth_method isitemof $authentification_method
- authdef=wimshome/log/classes/$sclass/.def
+!if $auth_user notsametext supervisor and $auth_method isitemof $auth_method_list
+ authdef=wimshome/log/classes/$superclass/.def
  
  # don't use auth_user and auth_password, some characters are unvailable
  # parameters are empty for auth-cas
@@ -42,9 +42,9 @@ auth_password_connection=$auth_password
 !endif
 ##### end of EXTERNAL connection - part 1 #####
 # now we can run the script
-## for the moment, only for cas. TO FIX
-!if $auth_method iswordof cas and $auth_user!=supervisor
- auth_user=!lookup $auth_user in wimshome/log/classes/$sclass/.userlist_external
+!if $auth_method isitemof $auth_method_list and $auth_user!=supervisor
+  FIXME regarder aussi dans .teacherlist_external
+  auth_user=!lookup $auth_user in wimshome/log/classes/$superclass/.userlist_external
 !endif
 auth_user=!translate internal . to @ in $auth_user
 auth_user=!text select $char_login in $auth_user
@@ -57,8 +57,9 @@ logline=$now $auth_user  	$$passwd	$httpd_REMOTE_ADDR
 !read adm/class/userdef classes,$class,$auth_user
 
 pass=!defof user_password in $userdef
-# sclass=!defof class_superclass in wimshome/log/classes/$class/.def
-!if $sclass!=$empty and $sclass!=$class
+FIXME ### Have to check that sclass is no yet useful
+sclass=!defof class_superclass in wimshome/log/classes/$class/.def
+!if $superclass!=$empty and $superclass!=$class
  upartic=!defof user_participate in $userdef
  usuperv=!defof user_supervise in $userdef
  pclass=!defof class_parent in wimshome/log/classes/$class/.def
@@ -97,7 +98,8 @@ pass=!defof user_password in $userdef
 # finaly, we must check if user is allowed in class
 
 exist_check=!defof user_exists in $userdef
-!if OK iswordof $auth_test and $auth_method isitemof $authentification_method
+!debug $auth_test
+!if OK iswordof $auth_test and $auth_method isitemof $auth_method_list
  !if $exist_check issametext yes
    !goto auth_ok
  !else
@@ -107,6 +109,7 @@ exist_check=!defof user_exists in $userdef
 !endif
 ##### end of final test of external connection #####
 :wimsauth
+
 pass=!passcrypt $pass
 !if $pass=$empty
  passwd=????
@@ -128,7 +131,7 @@ cps=!passcrypt $current_pass
 	($current_pass!=$empty and $cps iswordof $pass) or \
 	($auth_user=$wims_user and $class isitemof $wims_participate) or \
 	($auth_user=supervisor and $wims_user=supervisor and \
-		(../$wims_class/ isin ../$class/ or $sclass=$wims_class)) or \
+		(../$wims_class/ isin ../$class/ or $superclass=$wims_class)) or \
 	($auth_user=supervisor and $class isitemof $wims_supervise)
  !goto auth_ok
 !endif

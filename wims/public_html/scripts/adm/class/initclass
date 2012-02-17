@@ -4,6 +4,7 @@
 !if $wims_read_parm=$empty
   !exit
 !endif
+
 !set class=$wims_read_parm
 !set superclass=!text remove . in $class
 !set superclass=!replace internal / by , in $superclass
@@ -14,8 +15,6 @@
 
 !set auth_method=!defof class_auth in wimshome/log/classes/$superclass/.def
 !set idp_method=!defof class_idp in wimshome/log/classes/$superclass/.def
-!set class_auth=$auth_method
+!set class_auth=$auth_method 
 !bound auth_method within $auth_method_list default $
 !bound idp_method within $idp_method_list default $
-
- 

@@ -16,8 +16,14 @@ wims_helper=chapter=3
 
 !if $auth_method isitemof $auth_method_list
   !set auth_user=$user_auth
-## define wims login 
-  !read adm/class/hashlogin $auth_user,$class
+## define wims login
+  !!!if $auth_method !=ldap or $ldap_login=$empty
+   !read adm/class/hashlogin $auth_user,$class
+  !!!else
+FIXME cas du ldap avec ldap_login-uid ou abandon
+  !!  login=$auth_user
+  !!!endif
+  !endif 
   !default pass=!randint 10000,100000
   !default pass2=$pass
   !default login_bak=$login,$pass

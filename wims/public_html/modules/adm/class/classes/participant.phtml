@@ -35,11 +35,11 @@ $name_text1
  !for i=1 to $sccnt
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
-  !if $superclass=$empty
+  !!!if $sclass=$empty
    !set show=$inst<br>$cl
-  !else 
-   show=$inst
-  !endif
+  !!!else 
+  !! !set show=$inst
+  !!!endif
   !set supv=!item 9 of $l
   !if $supv=$empty
    !reset class_password
@@ -54,8 +54,11 @@ $name_text1
   </td> 
   !! to decomment
    !read adm/class/initclass $code
-   !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_host)!=$empty
+   !defread wimshome/log/classes/$code/.def
+   !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_auth)!=$empty
+     !set tmp_parm=&subclass=yes
      !read participant2.phtml
+     !reset tmp_parm
    !else 
    <td align="center">
    !set wims_ref_class=wims_button
@@ -128,8 +131,7 @@ $name_text1
   !reset class_auth
   !read adm/class/initclass $code
   !defread wimshome/log/classes/$code/.def
-  !read adm/class/initclass $code
-  !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_host)!=$empty
+  !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_auth)!=$empty
      !read participant2.phtml
    !else 
   <td align="center"> 
