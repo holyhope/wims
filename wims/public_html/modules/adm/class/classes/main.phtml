@@ -32,8 +32,12 @@ $class_institution
 !!! En fait cela devrait être $idp_method=$empty Comment arrive-t-on ici ?
 !if OK iswordof $auth_test and $auth_method isitemof $auth_method_list and $exist_check notsametext yes
 $name_new_participant_external
+
+!if $type_class > 0
+  !set tmp_=&subclass=yes
+!endif
 <center>
-   !href module=adm/class/reguser&class=$class $name_register
+   !href module=adm/class/reguser&class=$class$tmp_ $name_register
 </center>
    !goto end
 !endif
