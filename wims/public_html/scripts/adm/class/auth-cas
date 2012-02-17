@@ -16,13 +16,11 @@ ticket = !getopt ticket in $ticket
    url = $wims_ref_name?module=adm/class/classes&$module_init_parm
    !read adm/codeurl $url
    response = !exec webget $cas_auth/validate?ticket=$ticket&service=$script_out
-   !debug $response
    test2 = !line 1 of $response
    !if $test2 = yes
       auth_user=!line 2 of $response
       auth_test=OK
    !endif
 !endif
-!debug $auth_test
 auth_error=$wims_exec_error
 wims_exec_error=
