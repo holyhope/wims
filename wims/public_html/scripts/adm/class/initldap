@@ -1,10 +1,34 @@
-FIXME
-### définir sur le serveur wims comme variable
-!set l_regnum=upsCodeEtu
-!set l_photourl=upsURLPhoto
-!set l_login=uid
-!set l_email=eduPersonPrincipalName
+ldap_find=!sh which ldapsearch
+!if $ldap_find issametext $empty
+ auth_test=ERROR no_ldap
+ !exit
+!endif
 
+ldap_auth=!defof class_ldap_auth in $authdef
+!default ldap_auth=!defof ldap_auth in wimshome/log/wims.conf
+
+ldap_port=!defof class_ldap_port in $authdef
+!default ldap_port=!defof ldap_port in wimshome/log/wims.conf
+
+ldap_version=!defof class_ldap_version in $authdef
+!default ldap_version=!defof ldap_version in wimshome/log/wims.conf
+
+ldap_base=!defof class_ldap_base in $authdef
+!default ldap_base=!defof ldap_base in wimshome/log/wims.conf
+
+ldap_branch=!defof class_ldap_branch in $authdef
+!default ldap_branch=!defof ldap_branch in wimshome/log/wims.conf
+
+ldap_uid=!defof class_ldap_uid in $authdef
+!default ldap_uid=!defof ldap_uid in wimshome/log/wims.conf
+ 
+#ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1]),$ldap_branch,$ldap_base
+ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1])
+
+ldap_login=!defof class_ldap_login in $authdef
+!default ldap_login=!defof ldap_login in wimshome/log/wims.conf
+ldap_branch=!defof class_ldap_branch in $authdef
+!default ldap_branch=!defof ldap_branch in wimshome/log/wims.conf
 
 ## standard, ne pas mettre en argument
 
@@ -13,6 +37,16 @@ authdef=wimshome/log/classes/$superclass/.def
 ldap_host=!defof class_ldap_idp in $authdef
 ldap_port=!defof class_ldap_port in $authdef
 ldap_base=!defof class_ldap_base in $authdef
+
+!set l_regnum=!defof class_ldap_regnum in $authdef
+!default l_regnum=!defof ldap_regnum in wimshome/log/wims.conf
+!!upsCodeEtu
+!set l_photourl=!defof class_ldap_photourl in $authdef
+!default l_photourl=!defof ldap_photourl in wimshome/log/wims.conf
+!!upsURLPhoto
+!set l_email=!defof class_ldap_email in $authdef
+!default l_email=!defof ldap_email in wimshome/log/wims.conf
+!!eduPersonPrincipalName
 
 !set l_uid=uid
 !set l_lastname=sn

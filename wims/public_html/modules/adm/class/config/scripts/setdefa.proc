@@ -1,4 +1,5 @@
-!for ld_ in cas_auth,ldap_auth,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login
+!for ld_ in cas_auth,ldap_auth,ldap_port,ldap_version,ldap_base,ldap_branch,ldap_uid,ldap_login,\
+   ldap_regnum,ldap_photourl,ldap_email
   !default up_$ld_=!defof $ld_ in wimshome/log/wims.conf
 !next
 
@@ -8,11 +9,12 @@
   !exit
  !endif
  
- !default up_ldap_login=supannAliasLogin
+ !default up_ldap_login=uid
  !default up_ldap_uid=uid
  !default up_ldap_port=389
 
  !setdef !set class_auth=$up_auth\
+!set class_idp=$up_idp\
 !set class_ldap_auth=$up_ldap_auth\
 !set class_ldap_port=$up_ldap_port\
 !set class_ldap_version=$up_ldap_version\
@@ -20,10 +22,14 @@
 !set class_ldap_branch=$up_ldap_branch\
 !set class_ldap_uid=$up_ldap_uid\
 !set class_ldap_login=$up_ldap_login\
+!set class_ldap_photourl=$up_ldap_photourl\
+!set class_ldap_regnum=$up_ldap_regnum\
+!set class_ldap_email=$up_ldap_email\
 in wimshome/log/classes/$wims_class/.def
 
 !else
   !setdef !set class_auth=\
+!set class_idp=$up_idp\
 !set class_ldap_auth=$up_ldap_auth\
 !set class_ldap_port=$up_ldap_port\
 !set class_ldap_version=$up_ldap_version\
@@ -31,6 +37,9 @@ in wimshome/log/classes/$wims_class/.def
 !set class_ldap_branch=$up_ldap_branch\
 !set class_ldap_uid=$up_ldap_uid\
 !set class_ldap_login=$up_ldap_login\
+!set class_ldap_photourl=$up_ldap_photourl\
+!set class_ldap_regnum=$up_ldap_regnum\
+!set class_ldap_email=$up_ldap_email\
 in wimshome/log/classes/$wims_class/.def
 !endif
 
@@ -43,6 +52,7 @@ in wimshome/log/classes/$wims_class/.def
 in wimshome/log/classes/$wims_class/.def
 
 !endif
-  
+!setdef !set class_idp=$up_idp\
+in wimshome/log/classes/$wims_class/.def
 
 
