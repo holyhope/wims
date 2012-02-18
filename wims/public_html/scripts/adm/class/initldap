@@ -1,0 +1,29 @@
+FIXME
+### définir sur le serveur wims comme variable
+!set l_regnum=upsCodeEtu
+!set l_photourl=upsURLPhoto
+!set l_login=uid
+!set l_email=eduPersonPrincipalName
+
+
+## standard, ne pas mettre en argument
+
+authdef=wimshome/log/classes/$superclass/.def
+
+ldap_host=!defof class_ldap_idp in $authdef
+ldap_port=!defof class_ldap_port in $authdef
+ldap_base=!defof class_ldap_base in $authdef
+
+!set l_uid=uid
+!set l_lastname=sn
+!set l_firstname=givenName
+!set l_password=password
+
+###
+wims_code=lastname,firstname,regnum,photourl,email
+ldap_code=!makelist $$$$$$$ l_ x for x in $wims_code
+ldap_code=!nospace $ldap_code
+ldap_code_=!items2words $ldap_code
+!default ldap_identifiant=$l_uid
+
+

@@ -275,19 +275,19 @@ $class_type
  userdef2=!replace internal users/ by users/. in $userdef
  !defread $userdef
  user_exists=
-    
+
  !defread $userdef2
  work=!filelist $wims_home/log/classes/$class/{score,noscore}/$Login
  !if $user_exists=yes or $work!=$empty
   error=login_double
   !exit
  !endif
- !if $method_idp=$empty
+ !if $idp_method=$empty
   up_firstname=$firstn
   up_lastname=$lastn
   up_email=$email
  !else
-  !read idp_$method_idp
+  !read idp_$idp_method 
  !endif
  up_password=$pass
  up_class=$class

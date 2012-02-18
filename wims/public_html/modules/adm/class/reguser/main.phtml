@@ -207,13 +207,20 @@ $institution
   !endif
   $name_newparticipant
  !else
+  !if $idp_method notitemof $idp_method_list
   $name_inscription2
+  !endif
  !endif  
   !form reply
 !! check user supervisor??
-!! should put the form only if there is no idp
- !if $idp_method iswordof ldap
-!!FIXME
+
+ !if $idp_method isitemof $idp_method_list
+   <input type="hidden" name="step" value="3">
+   !formcheckbox agreecgu list yes prompt $name_cgu
+   [
+  !href cmd=help $name_seecgu
+  ]
+  <input type="submit" value="$wims_name_tosave">
    !goto end1
  !endif
  !if $auth_user=$empty or $auth_method notitemof $auth_method_list
