@@ -188,8 +188,9 @@ listla=
  !default superclass=$class
 
  auth_method=!defof class_auth in wimshome/log/classes/$superclass/.def
- !bound auth_method within $auth_method_list default $     
- !if $class_defined=yes and ($auth_user!=$empty or $auth_method=cas)
+ !bound auth_method within $auth_method_list default $ 
+
+ !if $class_defined=yes and ($auth_user!=$empty or $auth_method isitemof $auth_method)
    !changeto var.auth
  !endif
 !endif
