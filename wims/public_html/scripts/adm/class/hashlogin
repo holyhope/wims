@@ -6,7 +6,7 @@
 !set limit_while=$[10^$limit]
 !read adm/class/authchars
 !set login=!lower $login
-
+!set login_ext=$login
 !set login=!text select $char_alnum in $login
 !set login=!char 1 to $[$login_max -$limit] of $login
 !set login=!char 1 to $[16-$limit] of $login
@@ -16,19 +16,23 @@
   !reset login
   !exit
 !endif
-###FIXME Utiliser adm/class/userisinclass script_reply
   cnt=0
-  user_exists=yes
+  u_exists=yes
   login_init=$login
-  !while $user_exists=yes and $cnt<$limit_while
+  !while $u_exists=yes and $cnt<$limit_while
       !if $cnt>0
         login=$login_init$cnt
       !endif
-      !read adm/class/userdef classes,$cl,$login
-      !set user_exists=!getdef user_exists in $userdef
+      !set tt1=!lookup $login_ext in wimshome/log/classes/$cl/.teacherlist_external
+      !set tt2=!lookup $login_ext in wimshome/log/classes/$cl/.userlist_external
+      !if $tt1!=$empty or $tt2!=$empty
+         login=$tt1$tt2
+        !exit
+      !endif
+      !read adm/class/userinclass $cl,$login
+      !set u_exists=$script_reply
       !increase cnt
   !endwhile
   !if $cnt>=$limit_while
     !reset login
   !endif
-
