@@ -11,6 +11,7 @@ cas_auth = !defof class_cas_auth in $authdef
 ticket = !replace internal & by $\
 $ in $module_init_parm
 module_init_parm=!replace &ticket=.* by in $module_init_parm
+type= !getopt type in $ticket
 ticket = !getopt ticket in $ticket  
 !if $ticket != $empty
    url = $wims_ref_name?module=adm/class/classes&$module_init_parm
@@ -20,6 +21,9 @@ ticket = !getopt ticket in $ticket
    !if $test2 = yes
       auth_user=!line 2 of $response
       auth_test=OK
+      !if $type=authsupervisor
+        auth_realuser=$auth_user
+      !endif
    !endif
 !endif
 auth_error=$wims_exec_error

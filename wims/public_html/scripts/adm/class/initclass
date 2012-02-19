@@ -1,11 +1,13 @@
 !!! init some parameters of a class
 !!!INPUT = number of a class
 !!!OUTPUT= superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method, type_class
-!if $wims_read_parm=$empty
+
+!distribute items $wims_read_parm into class,option
+!set class=!text select 1234567890/ in $class
+!if $class=$empty
   !exit
 !endif
 
-!distribute items $wims_read_parm into class,option
 !if $option=auth
   !goto auth
 !endif
@@ -26,3 +28,5 @@
 !set class_auth=$auth_method
 !bound auth_method within $auth_method_list default $
 !bound idp_method within $idp_method_list default $
+
+!!FIXME tester si l'hôte répond ???

@@ -23,10 +23,11 @@ auth_user_connection=$auth_user
 auth_password_connection=$auth_password
 
 ##### EXTERNAL connection - part 1 #####
+!!default sclass=$class
 
-!if $auth_user notsametext supervisor and $auth_method isitemof $auth_method_list
+!if ($auth_user notsametext supervisor or $class_type>0) and $auth_method isitemof $auth_method_list
  authdef=wimshome/log/classes/$superclass/.def
- 
+
  # don't use auth_user and auth_password, some characters are unvailable
  # parameters are empty for auth-cas
  !readproc adm/class/auth-$auth_method $auth_user_connection,$auth_password_connection

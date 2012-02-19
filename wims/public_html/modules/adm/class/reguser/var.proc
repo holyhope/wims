@@ -6,7 +6,6 @@ wims_helper=chapter=3
 !default class=$wims_class
 ## output superclass, auth_method_list, auth_idp_method_list, auth_method, aut_idp_method
 !read adm/class/initclass $class
-
 #####################################
 
 ## need to set user_external_auth
@@ -15,6 +14,10 @@ wims_helper=chapter=3
 
 !if $auth_method isitemof $auth_method_list
   !set auth_user=$user_auth
+  !if $type=authsupervisor
+    !set auth_user=$user_auth
+    !set wims_user=supervisor
+  !endif
 ## define wims login
   !!!if $auth_method !=ldap or $ldap_login=$empty
    !read adm/class/hashlogin $auth_user,$class

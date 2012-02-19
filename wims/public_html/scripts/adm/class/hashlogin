@@ -9,7 +9,14 @@
 
 !set login=!text select $char_alnum in $login
 !set login=!char 1 to $[$login_max -$limit] of $login
-!if $cl!=$empty
+!set login=!char 1 to $[16-$limit] of $login
+!!set cl=!replace internal / by , in $cl
+!set cl=$(cl[1])
+!if $cl=$empty
+  !reset login
+  !exit
+!endif
+###FIXME Utiliser adm/class/userisinclass script_reply
   cnt=0
   user_exists=yes
   login_init=$login
@@ -17,12 +24,11 @@
       !if $cnt>0
         login=$login_init$cnt
       !endif
-      !read adm/class/userdef bidon,$cl,$login
-      !set user_exists= !getdef user_exists in $userdef
+      !read adm/class/userdef classes,$cl,$login
+      !set user_exists=!getdef user_exists in $userdef
       !increase cnt
   !endwhile
   !if $cnt>=$limit_while
     !reset login
   !endif
-    
-!endif
+

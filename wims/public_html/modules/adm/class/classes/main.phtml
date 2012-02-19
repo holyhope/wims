@@ -33,14 +33,14 @@ $class_institution
 !if OK iswordof $auth_test and $auth_method isitemof $auth_method_list and $exist_check notsametext yes
 $name_new_participant_external
 
-!if $type_class > 0
+ !if $type_class > 0 and $type!=authsupervisor
   !set tmp_=&subclass=yes
-!endif
-<center>
-!set wims_ref_class=wims_button
-   !href module=adm/class/reguser&class=$class$tmp_ $name_register
-</center>
-   !goto end
+ !endif
+ <center>
+ !set wims_ref_class=wims_button
+ !href module=adm/class/reguser&class=$class$tmp_ $name_register
+ </center>
+ !goto end
 !endif
 
 !read $type.phtml

@@ -5,6 +5,10 @@ uclass=$wims_read_parm
 superclass=!defof class_superclass in wimshome/log/classes/$uclass/.def
 !default superclass=$wims_superclass
 !default uclass=$wims_superclass
+!!! je ne comprends pas : l'indexation ne se fait pas sinon lorsqu'un enseignant s'inscrit
+!default superclass=$uclass
+!default wims_superclass=$class
+!!!
 !if $superclass=$empty
  !exit
 !endif
@@ -32,7 +36,6 @@ tlist=!words2items $tlist
   !if $EXT_!=$empty
    !appendfile $basedirr/.teacherlist_external.1 $EXT_,$t
   !endif
-  !reset user_external_auth
 !next t
 
 !sh sort -f $basedirr2/.teacherlist.1 | grep . >$basedirr2/.teacherlist\
