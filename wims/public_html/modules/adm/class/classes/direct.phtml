@@ -38,13 +38,14 @@ $name_direct:
   <tr class="$nstyle"><td class="wims_classes_direct_type">$ntype_</td>
   <td class="wims_classes_direct_name">
   !if $auth_method isitemof $auth_method_list
+     !set u__=$u_
      !if $u_ != supervisor
       !readproc adm/class/userdef classes,$c_,$u_
       !set u__=!defof user_external_auth in $userdef
      !endif
   !endif
   !href cmd=reply&type=auth$t_&class=$c_&auth_user=$u__ $n_
-  </td><td><tt>$u_</tt></td>
+  </td><td><tt>$u__</tt></td>
   </tr>
 :out
 !reset c_ u_ t_
