@@ -45,7 +45,10 @@ auth_password_connection=$auth_password
 # now we can run the script
 !if $auth_method isitemof $auth_method_list and $auth_user!=supervisor
   FIXME regarder aussi dans .teacherlist_external
-  auth_user=!lookup $auth_user in wimshome/log/classes/$superclass/.userlist_external
+  auth_user=!lookup $auth_user_orig in wimshome/log/classes/$superclass/.userlist_external
+  !if $auth_user=$empty
+    auth_user=!lookup $auth_user_orig in wimshome/log/classes/$superclass/.teacherlist_external
+  !endif
 !endif
 auth_user=!translate internal . to @ in $auth_user
 auth_user=!text select $char_login in $auth_user
