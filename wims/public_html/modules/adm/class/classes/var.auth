@@ -44,7 +44,6 @@ auth_password_connection=$auth_password
 ##### end of EXTERNAL connection - part 1 #####
 # now we can run the script
 !if $auth_method isitemof $auth_method_list and $auth_user!=supervisor
-  FIXME regarder aussi dans .teacherlist_external
   auth_user=!lookup $auth_user_orig in wimshome/log/classes/$superclass/.userlist_external
   !if $auth_user=$empty
     auth_user=!lookup $auth_user_orig in wimshome/log/classes/$superclass/.teacherlist_external
@@ -116,6 +115,9 @@ exist_check=!defof user_exists in $userdef
 
 pass=!passcrypt $pass
 !if $pass=$empty
+  !if $auth_user_orig=$empty
+    !exit
+  !endif
  passwd=????
  !appendfile $logfile $logline
  auth_user=$auth_user_orig
@@ -146,6 +148,9 @@ cps=!passcrypt $current_pass
 
 !read adm/class/authdelay
 !if $auth_password notwordof $pass
+  !if $auth_user_orig=$empty and $auth_password=$empty
+    !exit
+  !endif
  passwd=??????
  !appendfile $logfile $logline
  auth_user=$auth_user_orig
