@@ -61,7 +61,7 @@ U_gotoclass = Je klassen :
 U_inscription1 = Meld je aan bij een klas:
 U_inscription2 = Aanmelden in een andere klas.
 U_clickhere = Klik hier
-U_supervise = om naar een andere klas te gaan als supervisor.
+U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
 
 

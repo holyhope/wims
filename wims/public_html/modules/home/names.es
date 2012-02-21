@@ -64,7 +64,7 @@ U_gotoclass = Sus zonas de trabajo:
 U_inscription1 = Para inscribirse en una zona de trabajo, pulse una de las clases:
 U_inscription2 = Inscribirse en una zona de trabajo como participante.
 U_clickhere = Pulse aquí
-U_supervise = para entrar a una zona como profesor.
+U_supervise = Inscribirse en una zona de trabajo como profesor.
 U_creatclass = Crear una clase nueva.
 
 
