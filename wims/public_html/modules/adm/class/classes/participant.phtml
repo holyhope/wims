@@ -125,16 +125,17 @@
     $show
   </td>
 !!! put it var.proc ??
-  !reset class_auth
-  !read adm/class/initclass $code
-  !defread wimshome/log/classes/$code/.def
-  !if $class_auth isitemof $auth_method_list and $(class_$(class_auth)_auth)!=$empty
+  !reset class_auth host_auth
+  
+  !read adm/class/initclass $code,auth
+  !!defread wimshome/log/classes/$code/.def
+  !if $auth_method isitemof $auth_method_list and $host_auth!=$empty
      !read participant2.phtml
    !else 
   <td align="center"> 
   !set wims_ref_class=wims_button
   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
-  </td> <td align="center"> 
+  </td> <td align="center">
   !if $splevel=$empty or $splevel=2
   !set wims_ref_class=wims_button
    !href module=adm/class/reguser&class=$code $name_register

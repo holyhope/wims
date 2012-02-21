@@ -25,8 +25,9 @@
 !set idp_method_list=ldap,php
 !set auth_method=!defof class_auth in wimshome/log/classes/$ssclass/.def
 !set idp_method=!defof class_idp in wimshome/log/classes/$ssclass/.def
-!set class_auth=$auth_method
 !bound auth_method within $auth_method_list default $
 !bound idp_method within $idp_method_list default $
+!set class_auth=$auth_method
+!set host_auth=!defof class_$(auth_method)_auth in wimshome/log/classes/$ssclass/.def
 
 !!FIXME tester si l'hôte répond ???
