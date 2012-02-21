@@ -93,6 +93,7 @@ Bij besloten klassen is echter een wachtwoord vereist om deze aanmeldings proced
 !set name_newparticipant=!nosubst Vul het onderstaande formulier in over de nieuwe deelnemer aan $classname.
 !set name_inscription2=!nosubst Vul het onderstaande formulier in om jezelf als deelnemer te registreren bij $classname .
 !set name_inscription3=!nosubst Je bent bezig met de aanmelding bij $name_classesss $classname, met loginnaam &nbsp;
+!set name_inscription4= Afin de valider votre inscription, vous devez accepter les conditions d'utilisation après les avoir lus.
 
 !set name_warning_direct=Directe aanmelding bij $name_classe is alleen bedoeld voor docenten.\
 Ben je een leerling meld je dan aan bij 
