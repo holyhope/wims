@@ -70,9 +70,10 @@ La nota <tt>global</tt> se calcula a partir de las otras dos, mediante la fórmul
 
 !if $job=userprop
   !distribute items Cambiar,Número de inscripción,Comentarios,URL de una fotografía,Variables (técnicas),\
-  Contraseña de la clase,Introduzca la contraseña para la inscripción de participantes\
+  Contraseña de la clase,Introduzca la contraseña para la inscripción de participantes,\
+  Login for external authentification,\
   into name_change,name_regnum,name_comments,name_photourl,name_vars,\
-  name_classpassword,name_enterpassword
+  name_classpassword,name_enterpassword,name_external_auth
   !goto end
 !endif
 

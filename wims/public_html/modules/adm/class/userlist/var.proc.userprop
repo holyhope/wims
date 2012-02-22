@@ -8,7 +8,7 @@
 !defread $userdef
 
 !if $user_exists!=yes or $abandon!=$empty
- !reset up_lastname,up_firstname,up_email,up_regnum,up_photourl,up_comments,up_vars
+ !reset up_lastname,up_firstname,up_email,up_regnum,up_photourl,up_comments,up_vars,up_external_auth
  !if $wims_user=supervisor
   job=
   !exit
@@ -31,19 +31,19 @@
   !exit
  !endif
  up_password=
- replacelist=regnum,comments,photourl,email
+ replacelist=regnum,comments,photourl,email,external_auth
  !read adm/class/adduser $getuser
  !read adm/class/mkuserlist
  !if $class_type isin 1234
   !read adm/gateway/mkteacherlist
  !endif
  !reset user_lastname, user_firstname, user_email, user_regnum, user_photourl, user_comments,\
-	user_supervisable, user_supervise, user_participate
+	user_supervisable, user_supervise, user_participate, user_external_auth
  !defread $userdef
  !if $wims_user=supervisor and $getuser!=supervisor
   user_vars=!sh grep -E '^!set user__' $Userdef | sed 's/^!set user__//g'
  !endif
 !endif
 
-!reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_photourl,up_vars
+!reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_photourl,up_vars,up_external_auth
 

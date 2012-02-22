@@ -67,9 +67,10 @@ en <tt>globaal</tt> wordt berekend aan de hand van de formule
 
 !if $job=userprop
   !distribute items Verander,Registratie nummer,Opmerkingen,Foto url, (technische) Variabelen,\
-   Klasse wachtwoord,Geef het klasse wachtwoord\
+   Klasse wachtwoord,Geef het klasse wachtwoord,\
+   Login for external authentification,\
    into name_change,name_regnum,name_comments,name_photourl,name_vars,\
-  name_classpassword,name_enterpassword
+  name_classpassword,name_enterpassword,name_external_auth
   !goto end
 !endif
 
