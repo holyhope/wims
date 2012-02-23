@@ -65,7 +65,6 @@
    !href module=adm/class/reguser&class=$code&subclass=yes $name_register
    </td>
    !endif
-   
   <td align="center">
   $supv
   </td> <td align="center">
@@ -121,21 +120,25 @@
   !else
    !set show=$cl
   !endif
+!!! put it var.proc ??
+  !reset class_auth host_auth
+  !set directlist_=!items2words $directlist 
+  !read adm/class/initclass $code,auth
+  !!defread wimshome/log/classes/$code/.def
   $table_tr<td align="center">
     $show
   </td>
-!!! put it var.proc ??
-  !reset class_auth host_auth
-  
-  !read adm/class/initclass $code,auth
-  !!defread wimshome/log/classes/$code/.def
   !if $auth_method isitemof $auth_method_list and $host_auth!=$empty
      !read participant2.phtml
    !else 
   <td align="center"> 
   !set wims_ref_class=wims_button
-  !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
-  </td> <td align="center">
+  !if $code notwordof $directlist_
+    !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
+  !else
+    !href module=class/reguser&class=$code $wims_name_Enter
+  !endif
+  </td> <td align="center"> 
   !if $splevel=$empty or $splevel=2
   !set wims_ref_class=wims_button
    !href module=adm/class/reguser&class=$code $name_register
@@ -162,6 +165,7 @@
     -
     !endif
    !endif
+   </tr>
  !next i
  $table_end <p>
 !endif

@@ -1,9 +1,14 @@
 
    <td align="center" colspan="2">
     !if $class_auth iswordof cas
-     !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code$tmp_parm
-     !read adm/codeurl $url
-     <a class="wims_button" href="$host_auth/login?service=$script_out">$wims_name_Enter</a>
+     !if $wims_user=$empty or $code iswordof $directlist_
+      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$code$tmp_parm
+      !read adm/codeurl $url
+      <a class="wims_button" href="$host_auth/login?service=$script_out">$wims_name_Enter</a>
+     !else
+      !set wims_ref_class=wims_button
+      !href module=adm/class/reguser&class=$code$tmp_parm $name_register
+     !endif
     !endif
     !if $class_auth iswordof php
       <a class="wims_button" href="$host_auth?enter=$code">$wims_name_Enter</a>
