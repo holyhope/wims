@@ -198,8 +198,7 @@ $class_type
  user_exists=
  !read adm/class/userdef classes,$class,$Login
  test_exists=!defof user_exists in $userdef
- !if $wims_user=supervisor and $Login!=$empty and $Login!=supervisor \
-	and $test_exists=yes
+ !if $wims_user=supervisor and $Login!=$empty and $Login!=supervisor and $test_exists=yes
   !readdef $userdef
   pass=$user_password
   ptest=$pass
@@ -234,13 +233,13 @@ $class_type
  !endif
  !read adm/class/userdef classes,$class,$Login
  userdef2=!replace users/ by users/. in $userdef
+:existing
  work=!filelist $wims_home/log/classes/$class/{score,noscore}/$Login
  work=!trim $work
  exist1=!defof user_exists in $userdef
  exist2=!defof user_exists in $userdef2
  stest=!defof class_superclass in wimshome/log/classes/$class/.def
  !if $exist1!=$empty and $stest!=$empty
-  :existing
   ptest=!defof user_password in $userdef
   ctest=!defof user_participate in $userdef
   ptest1=!passcrypt $ptest
@@ -253,9 +252,13 @@ $class_type
    !goto endreg
   !endif
  !endif
- !if $exist1$exist2!=$empty or $work!=$empty or \
-	$login iswordof supervisor visitor
+ !if $exist1$exist2!=$empty or $work!=$empty or $login iswordof supervisor visitor
   error=login_double
+  !exit
+ !endif
+ !bound agreecgu within yes,no,external default no
+ !if $agreecgu=no and $wims_user!=supervisor
+  error=no_cgu
   !exit
  !endif
  login_bak=$login,$pass
