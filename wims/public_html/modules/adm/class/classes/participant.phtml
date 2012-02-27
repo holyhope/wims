@@ -130,22 +130,22 @@
   </td>
   !if $auth_method isitemof $auth_method_list and $host_auth!=$empty
      !read participant2.phtml
-   !else 
+  !else 
   <td align="center"> 
   !set wims_ref_class=wims_button
-  !if $code notwordof $directlist_
-    !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
-  !else
-    !href module=class/reguser&class=$code $wims_name_Enter
-  !endif
-  </td> <td align="center"> 
-  !if $splevel=$empty or $splevel=2
-  !set wims_ref_class=wims_button
-   !href module=adm/class/reguser&class=$code $name_register
-  !else
-   <font color="grey">$name_register</font>
-  !endif
-  </td>
+    !if $code notwordof $directlist_
+      !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
+    !else
+      !href module=class/reguser&class=$code $wims_name_Enter
+    !endif
+    </td> <td align="center">
+    !if $splevel=$empty or $splevel=2
+     !set wims_ref_class=wims_button
+     !href module=adm/class/reguser&class=$code $name_register
+    !else
+     <font color="grey">$name_register</font> 
+    !endif
+    </td>
   !endif
   <td align="center">
   $supv
@@ -159,11 +159,13 @@
   </td>
    !if $superclass!=$empty and $stype=4
     <td>
-    !if $ty!=1
+    !if $ty!=1 and $splevel!=3
+    !set wims_ref_class=wims_button
      !href cmd=reply&type=$type&superclass2=$code $sousclasses
     !else
     -
     !endif
+    </td>
    !endif
    </tr>
  !next i

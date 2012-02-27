@@ -7,7 +7,12 @@
       <a class="wims_button" href="$host_auth/login?service=$script_out">$wims_name_Enter</a>
      !else
       !set wims_ref_class=wims_button
-      !href module=adm/class/reguser&class=$code$tmp_parm $name_register
+      !if $splevel=$empty or $splevel=2
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code$tmp_parm $name_register
+      !else
+       <font color="grey">$name_register</font> 
+      !endif
      !endif
     !endif
     !if $class_auth iswordof php
