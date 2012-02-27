@@ -16,7 +16,10 @@ ticket = !getopt ticket in $ticket
 !if $ticket != $empty
    url = $wims_ref_name?module=adm/class/classes&$module_init_parm
    !read adm/codeurl $url
-   response = !exec webget $cas_auth/validate?ticket=$ticket&service=$script_out
+   !!response = !exec webget $cas_auth/validate?ticket=$ticket&service=$script_out
+   tmpdir=$wims_home/tmp/sessions/$wims_session
+   response=!sh export wims_exec_parm="$cas_auth/validate?ticket=$ticket&service=$script_out" ;\
+      bin/webget > $tmpdir/getcas ; gunzip -c -f $tmpdir/getcas
    test2 = !line 1 of $response
    !if $test2 = yes
       auth_user=!line 2 of $response
@@ -25,3 +28,5 @@ ticket = !getopt ticket in $ticket
 !endif
 auth_error=$wims_exec_error
 wims_exec_error=
+
+!!serviceValidate
