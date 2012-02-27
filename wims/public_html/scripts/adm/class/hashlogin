@@ -1,29 +1,41 @@
-## INPUT; identifier, class
+## INPUT; identifier, class, method (for the moment only ldap)
 ## OUTPUT : wims compatible unique identifier, compatible with class
-## FIXME : if some ldap_field has been defined as 
-!distribute items $wims_read_parm into login,cl
+##FIXME php ?
+
+!read adm/class/authchars
 !set limit=2
 !set limit_while=$[10^$limit]
-!read adm/class/authchars
+
+!distribute items $wims_read_parm into login,cl,meth
 !set login=!lower $login
 !if $login=$empty
    error=login_empty
    !exit
 !endif
 !set login_ext=$login
+!if $meth!=$empty
+  !set meth_=!word 1 of $meth
+  !bound meth_ within ldap default $empty
+  !set ldap_id=!word 2 of $meth
+  !if $ldap_id!=$empty and $meth_ !=$empty
+    !goto ldap
+    !exit
+  !endif
+!endif
+
+
 !set login=!text select $char_alnum in $login
 !set login=!char 1 to $[$login_max -$limit] of $login
-!set login=!char 1 to $[16-$limit] of $login
 !!set cl=!replace internal / by , in $cl
 !set cl=$(cl[1])
 !if $cl=$empty
   !reset login
   !exit
 !endif
-  cnt=0
-  u_exists=yes
-  login_init=$login
-  !while $u_exists=yes and $cnt<$limit_while
+cnt=0
+u_exists=yes
+login_init=$login
+!while $u_exists=yes and $cnt<$limit_while
       !if $cnt>0
         login=$login_init$cnt
       !endif
@@ -36,7 +48,17 @@
       !read adm/class/userinclass $cl,$login
       !set u_exists=$script_reply
       !increase cnt
-  !endwhile
-  !if $cnt>=$limit_while
+!endwhile
+!if $cnt>=$limit_while
     !reset login
-  !endif
+!endif
+!exit
+:ldap
+
+!if $ldap_identifiant!=$ldap_login
+ !set login=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_identifiant="$login" $ldap_login | grep -v "^[d]n:" 
+ !set login=!replace internal : by = in $login
+ !set login=!getopt $ldap_login in $login
+ !set login=!text select $char_alnum in $login
+ !set login=!char 1 to $[$login_max -$limit] of $login
+!endif

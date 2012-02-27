@@ -4,6 +4,8 @@ ldap_find=!sh which ldapsearch
  !exit
 !endif
 
+!default authdef=wimshome/log/classes/$class/.def
+
 ldap_auth=!defof class_ldap_auth in $authdef
 !default ldap_auth=!defof ldap_auth in wimshome/log/wims.conf
 
@@ -27,19 +29,8 @@ ldap_id=!replace internal " by in $ldap_uid=$(wims_read_parm[1])
 
 ldap_login=!defof class_ldap_login in $authdef
 !default ldap_login=!defof ldap_login in wimshome/log/wims.conf
-ldap_branch=!defof class_ldap_branch in $authdef
-!default ldap_branch=!defof ldap_branch in wimshome/log/wims.conf
 
-## standard, ne pas mettre en argument
-
-authdef=wimshome/log/classes/$superclass/.def
-
-ldap_host=!defof class_ldap_auth in $authdef
-!default ldap_host=!defof class_ldap_auth in wimshome/log/wims.conf
-
-ldap_port=!defof class_ldap_port in $authdef
-ldap_base=!defof class_ldap_base in $authdef
-
+###### specific fields
 !set l_regnum=!defof class_ldap_regnum in $authdef
 !default l_regnum=!defof ldap_regnum in wimshome/log/wims.conf
 !!upsCodeEtu
@@ -50,6 +41,7 @@ ldap_base=!defof class_ldap_base in $authdef
 !default l_email=!defof ldap_email in wimshome/log/wims.conf
 !!eduPersonPrincipalName
 
+##### standard field
 !set l_uid=uid
 !set l_lastname=sn
 !set l_firstname=givenName
@@ -60,6 +52,6 @@ wims_code=lastname,firstname,regnum,photourl,email
 ldap_code=!makelist $$$$$$$ l_ x for x in $wims_code
 ldap_code=!nospace $ldap_code
 ldap_code_=!items2words $ldap_code
-!default ldap_identifiant=$l_uid
-
+!default ldap_login=$l_uid
+!default ldap_identifiant=$ldap_uid
 
