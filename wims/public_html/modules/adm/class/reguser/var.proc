@@ -19,13 +19,15 @@ wims_helper=chapter=3
     !set wims_user=supervisor
   !endif
 ## define wims login
-  !!!if $auth_method !=ldap or $ldap_login=$empty
-   !read adm/class/hashlogin $auth_user,$class
-  !!!else
-FIXME cas du ldap avec ldap_login-uid ou abandon
-  !!  login=$auth_user
-  !!!endif
-  !endif 
+##FIXME php
+  !reset login_method
+  !if $idp_method=ldap 
+    !read adm/class/initldap 
+    !if $ldap_login!=$empty
+      !set login_method=$idp_method $ldap_login
+    !endif
+  !endif
+  !read adm/class/hashlogin $auth_user,$class,$login_method
   !default pass=!randint 10000,100000
   !default pass2=$pass
   !default login_bak=$login,$pass
