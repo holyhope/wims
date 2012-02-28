@@ -29,7 +29,7 @@
  $table_header
  <caption>$name_portalandgroup</caption>
  $table_hdtr$
- <th>$wims_name_name</th><th colspan="2">$wims_name_action</th><th>$wims_name_Supervisor</th><th>$wims_name_Status</th>
+ <th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_Supervisor</th><th>$wims_name_Status</th>
  !for i=1 to $sccnt
   !set l=!line $i of $sclasses
   !distribute items $l into code,expire,inst,cl,la,ty,lv,pswd
@@ -60,9 +60,6 @@
    <td align="center">
    !set wims_ref_class=wims_button
    !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
-   </td> <td align="center">
-   !set wims_ref_class=wims_button
-   !href module=adm/class/reguser&class=$code&subclass=yes $name_register
    </td>
    !endif
   <td align="center">
@@ -82,7 +79,7 @@
  !if $superclass=$empty
   <caption>$name_independantclass</caption>
   $table_hdtr
-  <th>$wims_name_name</th><th colspan="2">$wims_name_action</th>
+  <th>$wims_name_name</th><th>$wims_name_action</th>
   <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
  !else
    !if $splevel>1
@@ -96,7 +93,7 @@
    !endif
    </caption>
    $table_hdtr
-   <th>$wims_name_name</th><th colspan="2">$wims_name_action</th>
+   <th>$wims_name_name</th><th>$wims_name_action</th>
    <th>$wims_name_nameteacher</th><th>$wims_name_level</th><th>$wims_name_Status</th>
    !if $superclass!=$empty and $stype=4
     <th>+</th>
@@ -135,14 +132,12 @@
     !if $code notwordof $directlist_
       !href module=$module&type=authparticipant&class=$code&subclass=yes $wims_name_Enter
     !else
-      !href module=class/reguser&class=$code $wims_name_Enter
-    !endif
-    </td> <td align="center">
-    !if $splevel=$empty or $splevel=2
-     !set wims_ref_class=wims_button
-     !href module=adm/class/reguser&class=$code $name_register
-    !else
-     <font color="grey">$name_register</font> 
+      !if $splevel=$empty or $splevel=2
+       !set wims_ref_class=wims_button
+       !href module=adm/class/reguser&class=$code $name_register
+      !else
+        <font color="grey">$name_register</font> 
+      !endif
     !endif
     </td>
   !endif
