@@ -5,17 +5,11 @@ $name_intro_authtype
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=authtype $wims_name_help
-
-!set up_auth=$class_auth
-!set up_idp=$class_idp
 <p style="text-align:center;">
-name_authentification
-	!formselect up_auth list ---,cas,ldap,php
-name_inscription
-	!formselect up_idp list ---,ldap,php
+	!formselect up_authidp list $authidp_method_list prompt $name_method_list
 </p>
 
-<input type="hidden" name="up_job" id="" value="authtype">
+<input type="hidden" name="up_$job" id="" value="authtype">
 
 <fieldset>
 	<legend>CAS Settings</legend>
@@ -26,7 +20,7 @@ name_inscription
 <br class="separation"/>
 
 <fieldset>
-	<legend>PHPSettings</legend>
+	<legend>PHP Settings</legend>
 	<label for="up_php_auth">PHP</label>
 	<input size="30" name="up_php_auth" id="up_php_auth" value="$class_php_auth">
 </fieldset>
@@ -87,4 +81,4 @@ name_inscription
 </p>
 </form>
 
-!reset up_auth up_idp up_cas_auth up_php_auth up_ldap_auth up_ldap_port up_ldap_version up_ldap_base up_ldap_branch up_ldap_uid up_ldap_login
+!reset up_authidp up_cas_auth up_php_auth up_ldap_auth up_ldap_port up_ldap_version up_ldap_base up_ldap_branch up_ldap_uid up_ldap_login

@@ -38,10 +38,6 @@ n=!wordcnt $et
  up_email=
 !endif
 !default up_email=$class_email
-
-up_auth=!replace internal --- by in $up_auth
-up_idp=!replace internal --- by in $up_idp
-
 !bound up_limit between integer 1 and $wims_class_user_limit default $class_limit
 !bound up_topscores between integer 0 and $wims_class_user_limit default $class_topscores
 !bound up_anonymtopscores within yes,no default yes
@@ -108,8 +104,7 @@ up_secure=!char 1 to 1024 of $up_secure
 !set class_ent=$up_ent\
 !set class_external_auth=$up_external_auth\
 !set class_mixed_external_auth=$up_mixed_external_auth\
-!set class_auth=$class_auth\
-!set class_idp=$class_idp\
+!set class_authidp=$class_authidp\
 !set class_cas_auth=$class_cas_auth\
 !set class_ldap_auth=$class_ldap_auth\
 !set class_php_auth=$class_php_auth\

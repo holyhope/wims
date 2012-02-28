@@ -351,8 +351,9 @@ Permitir las indicaciones (si  disponibles). \
 
 !if $job=authtype
  !set title=Autenticación por un anuario
- !set name_intro_authtype=Seleccione < tt>ldap</tt> y llenan esta página si \
-desean utilizar una autenticación por un anuario ldap.
+ !set name_intro_authtype=Seleccione y llenan esta página
+ !set name_method_list= authentification par wims, authentification par CAS, authentification par CAS et identification par un ldap,\
+ authentification et identification par un ldap
  !goto commun
 !endif
 

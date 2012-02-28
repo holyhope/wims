@@ -351,8 +351,12 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
 !if $job=authtype
  !set title=External authentificatie
- !set name_intro_authtype=Kies <tt class="wims_code_words">ldap</tt> en vul dit formulier in \
+ !!!set name_intro_authtype=Kies <tt class="wims_code_words">ldap</tt> en vul dit formulier in \
   als u een ldap server gebruikt voor authentificatie.
+ !set name_intro_authtype=Choisissez selon l'authentification et l'identification désirées\
+ et remplissez les champs utiles correspondants.
+ !set name_method_list= authentification par wims, authentification par CAS, authentification par CAS et identification par un ldap,\
+ authentification et identification par un ldap
  !goto commun
 !endif
 
