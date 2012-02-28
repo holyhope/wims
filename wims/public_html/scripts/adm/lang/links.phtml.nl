@@ -1,4 +1,10 @@
- Hyperlinks naar uw $name_classe:<ul>
+!if $wims_read_parm=$empty
+   !let code=$wims_class
+ !else
+   !let code=$wims_read_parm
+ !endif
+
+Hyperlinks naar uw $name_classe:<ul>
  <li>De link
   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=nl&module=adm/class/classes&type=authsupervisor&class=$code"
   >http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=nl&module=adm/class/classes&type=authsupervisor&class=$code</a>

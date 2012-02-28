@@ -1,4 +1,10 @@
- Diversos enlaces a su $name_classe:<ul>
+!if $wims_read_parm=$empty
+   !let code=$wims_class
+ !else
+   !let code=$wims_read_parm
+ !endif
+
+Diversos enlaces a su $name_classe:<ul>
  <li>El enlace
   <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=es&module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=es&module=adm/class/classes&type=authsupervisor&class=$code</a>
   le lleva a la página de mantenimiento $name_classesss (preparación de hojas
