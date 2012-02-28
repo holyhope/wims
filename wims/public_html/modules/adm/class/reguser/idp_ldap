@@ -4,7 +4,7 @@ OUTPUT : the up_xxx needed for the register of the user
 !set l_=$auth_user
 !set sup_=!item 2 to -1 of $l_
       !set l_=!item 1 of $l_
-      ldap_user=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_identifiant="$l_" $ldap_code_ | grep -v "^[d]n:" 
+      ldap_user=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_uid="$l_" $ldap_code_ | grep -v "^[d]n:" 
       ldap_user=!replace internal http: by httpxx in $ldap_user
       ldap_user=!replace internal : by = in $ldap_user
       ldap_user=!replace internal httpxx by http: in $ldap_user

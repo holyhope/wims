@@ -43,7 +43,7 @@ ldap_login=!defof class_ldap_login in $authdef
    !exit
 !endif
 
-ldap_search=!sh ldapsearch -x -H $ldap_auth:$ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
+ldap_search=!sh ldapsearch -x -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
 
 atest=result: 0 Success
 btest=# numEntries: 1
@@ -75,7 +75,7 @@ ldap_cnt=!linecnt $ldap_search
      auth_test=$auth_real_login
    !else
     !! one looks for the ldap_login in an anonymous way (no password)
-    ldap_search2=!sh ldapsearch -x -h $ldap_auth -p $ldap_port -b "$ldap_base" '$ldap_id' $ldap_login | grep -v "^[d]n:"
+    ldap_search2=!sh ldapsearch -x -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" '$ldap_id' $ldap_login | grep -v "^[d]n:" 
     ldap_search2=!replace internal :$ $ by , in $ldap_search2
     ldap_cnt2=!linecnt $ldap_search2
 
@@ -89,6 +89,7 @@ ldap_cnt=!linecnt $ldap_search
     !if $auth_real_login!=
       auth_user=$auth_real_login
     !endif
+    auth_test=$auth_real_login
    !endif
   !endif
 !endif
@@ -106,3 +107,4 @@ cnt_=!charcnt $auth_user
 !endif
 auth_error=$wims_exec_error
 !reset wims_exec_error
+auth_user_orig=$(wims_read_parm[1])

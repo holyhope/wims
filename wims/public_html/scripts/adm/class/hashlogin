@@ -55,8 +55,8 @@ login_init=$login
 !exit
 :ldap
 
-!if $ldap_identifiant!=$ldap_login
- !set login=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_identifiant="$login" $ldap_login | grep -v "^[d]n:" 
+!if $ldap_uid!=$ldap_login and $ldap_login notsametext $empty
+ !set login=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_uid="$login" $ldap_login | grep -v "^[d]n:" 
  !set login=!replace internal : by = in $login
  !set login=!getopt $ldap_login in $login
  !set login=!text select $char_alnum in $login

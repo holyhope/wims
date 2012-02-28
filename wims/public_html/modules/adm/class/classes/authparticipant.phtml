@@ -1,9 +1,11 @@
-
+!!FIXME
+(identification : $idp_method, authentification : $auth_method) 
+<p>
 !if $class_defined!=yes
  <span class="wims_warning">$wims_name_Error</span>. $name_warning
  !exit
 !endif
-
+!read adm/class/initclass $class,auth
 !if $class_mixed_external_auth>0 and $auth_user !=supervisor
 <div class="wims_external_auth">
 $(class_external_auth)
@@ -34,15 +36,21 @@ $name_warning_external
   </center>
   </form>
   <p>
-  $name_new_participant:
+  !!FIXME too much !if
+   !if $idp_method notwordof ldap
+   $name_new_participant:
+   !endif
  !else
- <p>
-  $name_new_participant_external:
+   !if $idp_method notwordof ldap
+    $name_new_participant_external:
+   !endif
  !endif
+!if $idp_method notwordof ldap
  !if $subclass=yes
    !set tmp_=&subclass=$subclass
  !endif
  !set wims_ref_class=wims_button
  !href module=adm/class/reguser&class=$class$tmp_ $name_register
  </p>
+ !endif
 !endif

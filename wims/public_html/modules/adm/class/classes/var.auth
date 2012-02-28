@@ -32,14 +32,6 @@ auth_password_connection=$auth_password
  # parameters are empty for auth-cas
  !readproc adm/class/auth-$auth_method $auth_user_connection,$auth_password_connection
 
-  auth_user_orig=$auth_user
-
- # if ldap connection is OK, replace auth_user by $ldap_login (ie auth_test)
-!! !if ERROR notwordof $auth_test 
-!!  !if $auth_test!=$empty
-!!  	auth_test=OK
-!!  !endif
-!! !endif
 !endif
 ##### end of EXTERNAL connection - part 1 #####
 # now we can run the script
