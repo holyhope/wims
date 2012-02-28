@@ -46,15 +46,14 @@ $title
   <font color="blue"><strike>$wims_name_create_portal</strike></font> ($noright).
  !endif
  <p>
- <b>$wims_name_help</b>:
+ <span class="wims_warning">$wims_name_help</span>:
  !read lang/help.phtml.$modu_lang 1
  !goto end
 !endif
 
 !if $step=0
  !read lang/help.phtml.$modu_lang 2
-<br>
-type $Cltype
+
 <br>
  !form reply
  <input type="hidden" name="step" value="1">
@@ -182,6 +181,12 @@ type $Cltype
   !!!endif 
   </small>
  </td></tr>
+$table_tr<td><label for="cas_auth">name_authidp</label></td><td>
+  <input size="30" name="cas_auth" value="$cas_auth" id="cas_auth">
+  </td><td>
+ <small>name_help_authidp
+  </small>
+ </td></tr>
 $table_tr<td colspan="3" align="center">
  <input type="submit" value="$name_continue">
  </td></tr>
@@ -216,7 +221,7 @@ $table_tr<td colspan="3" align="center">
  <center><label for="typecode">$name_code</label> <input size="12" name="typecode" id="typecode">
  <p><input type="submit" value="$name_continue"></center>
  </form>
- <b>$wims_name_warning</b>: $name_warning_code
+ <span class="wims_warning">$wims_name_warning</span>: $name_warning_code
  <p>
  !goto end1
 !endif
@@ -226,6 +231,12 @@ $table_tr<td colspan="3" align="center">
  !if $Cltype iswordof 0 1
   !let tmp=!positionof item $ilevel in $levelid
   ($wims_name_level <font color="green">$(leveldesc[$tmp])</font>).
+ !endif
+ !read adm/class/initclass $code,auth
+ !if $(class_authidp[1;])=cas 
+   !set link_=$host_auth/login?service=$wims_ref_name?
+ !else
+   !set link_=http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?
  !endif
  <p>
  !read adm/lang/links.phtml.$modu_lang $code

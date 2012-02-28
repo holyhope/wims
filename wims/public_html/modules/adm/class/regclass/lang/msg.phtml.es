@@ -84,12 +84,12 @@ Contraseña para la creación de clases virtuales
 
 !if bad_secure=$error
  ¡Su puesto actual no forma parte de su definición de acceso
-asegurado (<tt>$secure</tt>)&nbsp;! Es un error probablemente
+asegurado (<tt class="wims_code_words">$secure</tt>)&nbsp;! Es un error probablemente
 que tendría la consecuencia de prohibirles el acceso de control de su clase.
  <p>
 Lea atentamente la documentación siguiente. Si no comprenden todavía,
 dejan este campo vacío (se les enviarán códigos secretos temporales
-para las operaciones sensibles), o ponen la palabra <tt>all< /tt>
+para las operaciones sensibles), o ponen la palabra <tt class="wims_code_words">all< /tt>
 para desactivar esta medida de seguridad.
 
  <p><hr><p>

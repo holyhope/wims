@@ -369,7 +369,7 @@ $email
   !reset superclass
  !endif
  !for t in description,institution,email,lang,expiration,\
-	superclass,defid,secure
+	superclass,defid,secure,cas_auth
   cadd_$t=$($t)
  !next t
  cadd_password=$pword
@@ -382,6 +382,9 @@ $email
  cadd_css=$(wims_css)
  cadd_theme=$(wims_theme)
  cadd_theme_icon=$(wims_theme_icon)
+ !if $cadd_cas_auth!=$empty
+   cadd_authidp=cas;
+ !endif
  !if $superclass!=$empty
   cadd_parent=$superclass
  !endif
