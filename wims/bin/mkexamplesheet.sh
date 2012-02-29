@@ -51,7 +51,7 @@ $desc" >$tmptarget/$namesh.def;
       desc=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==4){print($0);exit;}} }' .sheets`;
       keyword=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==6){print($0);exit;}} }' .sheets`;
       ## if keyword is empty, take the level (only for H)
-      if [ ! -n "$keyword" ]; then keyword=`echo "$level" | sed 's/H/level/'` ; fi ;
+      if [ ! -n "$keyword" ]; then keyword=`echo "level$level"` ; fi ;
      # echo "$sh : make presentation";
       echo "$title
 $desc
