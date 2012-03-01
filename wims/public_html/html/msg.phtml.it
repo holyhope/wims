@@ -30,17 +30,17 @@
 
 
 !if $wims_error=not_supervisor
- Spiacente, questa operazione non è valida.
+ Spiacente, questa operazione non è valida, non siete il docente.
  !exit
 !endif
 
 !if $wims_error iswordof nouser bad_user bad_usercls
- Strano, non è possibile trovare questo studente in questo corso!
+ Strano, non è possibile trovare questo studente in questo corso ($wims_class)!
 !exit
 !endif
 
 !if $wims_error=insert_fail
-  Il server non ha potuto salvare il test. Verificare i 
+  Il server non ha potuto inserire il vostro lavoro nel corso. Verificare i 
  dati inseriti.
  !exit
 !endif
@@ -57,7 +57,7 @@
  !exit
 !endif
 
-!if bad_login=$error
+!if bad_login=$wims_error
  Il `login' scelto contiene dei caratteri non accettati dal server. <p>
  Utilizzate solo caratteri alfanumerici, in particolare non utilizzate 
  lettere accentate o spazi.
