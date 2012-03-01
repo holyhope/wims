@@ -19,6 +19,7 @@ clist=`ls -d [0-9]*`;
 for cls in $clist; do
  if [ $cls -lt 9000 ]; then
   level=`awk -F'=' '$1=="!set class_level" {print $2; exit}' ./$cls/.def`;
+  slevel=`awk -F'=' '$1=="!set class_slevel" {print $2; exit}' ./$cls/.def`;
   lang=`awk -F'=' '$1=="!set class_lang" {print $2; exit}' ./$cls/.def`;
   sup=`awk -F'=' '$1=="!set class_supervisor" {print $2; exit}' ./$cls/.def`;
   email=`awk -F'=' '$1=="!set class_email" {print $2; exit}' ./$cls/.def`;
@@ -51,7 +52,13 @@ $desc" >$tmptarget/$namesh.def;
       desc=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==4){print($0);exit;}} }' .sheets`;
       keyword=`awk -v no="$num" 'BEGIN{cpt=0;l=0;} {a=substr($0,1,1); if(a==":")cpt++; if(cpt==no){l++;if(l==6){print($0);exit;}} }' .sheets`;
       ## if keyword is empty, take the level (only for H)
-      if [ ! -n "$keyword" ]; then keyword=`echo "level$level"` ; fi ;
+      if [ ! -n "$keyword" ]; then 
+       if [ -n "$slevel" ]; then 
+        keyword=`echo "$slevel"`;
+       else
+        keyword=`echo "$level"`;
+       fi ;
+      fi;
      # echo "$sh : make presentation";
       echo "$title
 $desc
