@@ -60,14 +60,17 @@ $wims_oefdefault_check into qnum,qcmlevel,scoredelay,intro_qcmpresent,intro_pres
 !read $(class_header)Exindex
 !set exocnt=!itemcnt $exolist
 !set qcnt=$[min($exocnt,8)]
-!if $exocnt<1
- !if $wims_user=supervisor and #classes/ isin #$module
+!if $wims_user=supervisor and #classes/ isin #$module
   !set wims_menu_items=!append line add_exo,1,module=adm/createxo\
   to $wims_menu_items
- !else
-  $name_noexercise
- !endif
- !exit
+    !if $exocnt<1
+     !exit
+    !endif
+!else
+   !if $exocnt<1
+    $name_noexercise
+    !exit
+   !endif
 !endif
 
 !if $lang notsametext $module_language and $(titlelist_$lang) notsametext 
