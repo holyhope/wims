@@ -216,7 +216,7 @@ $institution
   !form reply
 !! check user supervisor??
 
- !if $idp_method isitemof $idp_method_list and $auth_user$user_auth!=$empty
+ !if $idp_method isitemof $idp_method_list and $auth_user$user_auth!=$empty and $wims_user!=supervisor
    <input type="hidden" name="step" value="3">
 $name_inscription4:
 <p>
@@ -229,6 +229,39 @@ $name_inscription4:
   <input type="submit" value="$wims_name_tosave">
 </center>
    !goto end1
+ !endif
+!!FIXME
+ !if $wims_user=supervisor and $auth_user=$empty
+!! teacher registering a student with idp ldap
+    !if $idp_method isitemof ldap
+        <input type="hidden" name="step" value="3">
+        <label for="user_auth">$wims_name_Login (name_externe)</label>
+        <input size="16" name="user_auth" id="user_auth" value="$user_auth"> <br>
+  name_warning_login_external
+     <center><input type="submit" value="$wims_name_tosave"></center>
+ </form>
+     !goto end1
+    !endif
+!! teacher registering a student with external auth without idp ldap
+    !if $auth_method isitemof $auth_method_list
+    <input type="hidden" name="step" value="3">
+    <ul>
+    <li><label for="lastn">$wims_name_lastname</label> <input size="20" name="lastn" id="lastn" value="$lastn">
+        <label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn">
+    </li>
+    <li>
+      <label for="user_auth">$wims_name_Login (name_externe)</label>
+      <input size="16" name="user_auth" id="user_auth" value="$user_auth"> <br>
+  name_warning_login_external
+    </li>
+    <li><label for="email">$wims_name_email ($name_optional) :</label><br>
+      <input size="60" name="email" id="email" value="$email">
+    </li>
+ </ul>
+  <center><input type="submit" value="$wims_name_tosave"></center>
+ </form>
+     !goto end1
+    !endif
  !endif
  !if $auth_user=$empty or $auth_method notitemof $auth_method_list
   <input type="hidden" name="step" value="2">
@@ -295,8 +328,12 @@ $name_inscription4:
 
 !if $step=3
  !if $wims_user=supervisor
-  $name_studentadded 
-  !href module=adm/class/userlist&job=userprop&getuser=$login <tt class="wims_login">$login</tt>
+  $name_studentadded  
+  $auth_user $user_auth
+  <tt class="wims_login">
+  
+  !href module=adm/class/userlist&job=userprop&getuser=$login_wims $login
+  </tt>
   <p>
   !if $wims_supertype iswordof 2 4
    !readproc adm/gateway/transfer $login test

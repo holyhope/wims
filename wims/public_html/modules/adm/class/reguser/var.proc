@@ -15,6 +15,7 @@ wims_helper=chapter=3
 !if $auth_method isitemof $auth_method_list
   !set auth_user=$user_auth
   !if $type=authsupervisor
+!!! FIXME ???? is it useful
     !set auth_user=$user_auth
     !set wims_user=supervisor
   !endif
@@ -27,10 +28,17 @@ wims_helper=chapter=3
       !set login_method=$idp_method $ldap_login
     !endif
   !endif
+  !if $auth_user=$empty and $wims_user=supervisor and $auth_method isitemof $auth_method_list
+    !exit
+  !endif
   !read adm/class/hashlogin $auth_user,$class,$login_method
   !default pass=!randint 10000,100000
   !default pass2=$pass
   !default login_bak=$login,$pass
+  !if $wims_user=supervisor
+    passverify=ok
+    !goto step3
+  !endif
 !endif
 
 !read tabletheme
@@ -266,7 +274,7 @@ $class_type
  login_bak=$login,$pass
  !exit
 !endif
-
+:step3
 !if $step=3
  !bound agreecgu within yes,no,external default no
  !if $agreecgu=no and $wims_user!=supervisor
