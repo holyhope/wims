@@ -35,9 +35,10 @@
 </div><!--end of menuitem-->
 !endif
 
-!set auth_method=!defof class_auth in wimshome/log/classes/$wims_superclass/.def
+!! !set auth_method=!defof class_auth in wimshome/log/classes/$wims_superclass/.def
+!read adm/class/initclass $wims_superclass
 !!FIXME
-!if $auth_method isitemof $auth_method_list,cas,ldap
+!if $auth_method isitemof $auth_method_list
    !set wims_user_ext=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user
  !endif
  !default wims_user_ext=$wims_user
