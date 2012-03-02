@@ -42,9 +42,10 @@ ldap_login=!defof class_ldap_login in $authdef
    auth_test=ERROR no_ldap_config
    !exit
 !endif
-
+!!!FIXME  Be careful : ldap must be configured such that the option -w is accepted. If not, the answer
+!!! is the same for a good or wrong password.
+!!! should fix the test
 ldap_search=!sh ldapsearch -x -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" '$ldap_id' -D "$ldap_id , $ldap_base" -w '$(wims_read_parm[2])'
-
 atest=result: 0 Success
 btest=# numEntries: 1
 firstcond=0
