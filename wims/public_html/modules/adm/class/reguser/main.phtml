@@ -142,7 +142,7 @@ $institution
   !endif
  !else
   $name_isprotected
-  !endif
+ !endif
  <p> $name_writepasswd
  !if $cltype iswordof 2 4
   $name_asateacher.
@@ -176,7 +176,7 @@ $institution
   !href cmd=new&module=$module&class=$class&subclass=yes $name_inyourclass
 .
   <p>
-  !endif
+ !endif
  !goto end1
 !endif
 
@@ -307,7 +307,7 @@ $name_inscription4:
     <p>
    !endif
   !endif
- !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
+  !set wims_menu_items=!append line part_list,1,module=adm/class/userlist\
  addstudent,1,module=$module&step=1\
  to wims_menu_items
   !goto end
@@ -344,12 +344,13 @@ $name_inscription4:
      !if $auth_method iswordof ldap
         !set tmp=!getdef user_external_auth in wimshome/log/classes/$superclass/.users/$login
         !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$tmp $name_gotowork
-      !else
+     !else
         <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
  $name_gotowork</a> ($name_bookmark).
-      endif
+     !endif
    !endif
  !goto end
+ !endif
 !endif
 
 :end1
