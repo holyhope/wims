@@ -328,10 +328,10 @@ $name_inscription4:
 
 !if $step=3
  !if $wims_user=supervisor
-  $name_studentadded  
-  $auth_user $user_auth
+  $name_studentadded
+  !readproc adm/class/userdef class,$class,$login
+  !default login_wims=!defof user_external_auth in $userdef
   <tt class="wims_login">
-  
   !href module=adm/class/userlist&job=userprop&getuser=$login_wims $login
   </tt>
   <p>

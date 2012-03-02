@@ -29,6 +29,9 @@ wims_helper=chapter=3
     !endif
   !endif
   !if $auth_user=$empty and $wims_user=supervisor and $auth_method isitemof $auth_method_list
+    !if $search!=$empty
+      !goto begin
+    !endif
     !exit
   !endif
   !read adm/class/hashlogin $auth_user,$class,$login_method
@@ -40,7 +43,7 @@ wims_helper=chapter=3
     !goto step3
   !endif
 !endif
-
+:begin
 !read tabletheme
 !if $site_total=$empty
  !read adm/class/stat

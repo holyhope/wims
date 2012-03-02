@@ -8,10 +8,15 @@
 
 !if $save_logincgu!=$empty
  !if $agreecgu=yes
-  !read adm/class/userdef wimshome/log/classes,$class,$user
-  !setdef !set user_agreecgu=yes in $userdef/$save_logincgu
+  !read adm/class/userdef wimshome/log/classes,$class,$save_logincgu
+  !setdef !set user_agreecgu=yes in $userdef
+  !readdef $userdef
+  !reset error
+  !if $auth_test=OK
+     !goto auth_ok2
+  !endif
  !endif
- !reset $save_logincgu
+ !!!reset $save_logincgu
 !endif
 
 !read adm/class/authchars
@@ -176,6 +181,7 @@ n=!item 1 of $n
  pass=!trim $pass
  !setdef !set user_password=$pass in $userdef
 !endif
+:auth_ok2
 
 !defread $userdef
 ctype=!defof class_type in wimshome/log/classes/$class/.def
@@ -210,7 +216,7 @@ clang=!defof class_lang in wimshome/log/classes/$class/.def
   !exit
  !endif
  sup_secure=-1
- !if $user_agreecgu notwordof yes external
+ !if $user_agreecgu notwordof yes external and $agreecgu!=yes
   error=no_cgu
   !exit
  !endif
