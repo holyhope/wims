@@ -1,3 +1,9 @@
+!set module_language=$modu_lang
+!set title_=!module title_$modu_lang
+!if $title_!=$empty
+   !set module_title=$title_
+!endif
+
 !header
 
 !! La présentation de l'exercice.
@@ -13,8 +19,9 @@
  !! La forme de réponse
  !read form.phtml
  <p>
+ !set wims_ref_class=wims_button
  !href exo_Renew
-.
+
 !else
  !if $error!=$empty
   !read msg.phtml
@@ -23,11 +30,14 @@
  !! L'analyse de réponse
  !read answer.phtml
  <p>
+ !set wims_ref_class=wims_button
  !href exo_Again
-.
+
  !if $worksheet=$empty
+&nbsp;
+ !set wims_ref_class=wims_button
   !href exo_Intro
-.
+
  !endif
 !endif
 
