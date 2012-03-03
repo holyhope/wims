@@ -15,15 +15,14 @@ wims_ref_otherlangs=yes
 !default class_css=$wims_css
 
 !if $class!=$empty
-## output superclass, auth_method_list, aut_idp_method_list, auth_method, aut_idp_method
-  !read adm/class/initclass $class
+## output auth_method_list, aut_idp_method_list, auth_method, aut_idp_method
+  !read adm/class/initclass $class,auth
 !endif
 !!useful ! if $class=$empty
 superclass=!text remove . in $superclass
 !if $wims_superclass!=$empty
  superclass=$wims_superclass
 !endif
- 
 
 !default superclass2=$superclass
 !read tabletheme
