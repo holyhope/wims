@@ -2,7 +2,11 @@
 !set arr=--->
 !if $supervisable=yes
  !read subclasses_user.phtml
+ !if $wims_user=supervisor or $wims_class=$wims_superclass	
+   !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
+ !endif
 !endif
+<p></p>
 !for cnt in 1
  !if $(subclasscnt$cnt)>0 and $insc!=yes
   !if $supervisable!=yes
@@ -121,13 +125,7 @@
  <p>
 !endif
 
-!if $supervisable=yes and \
-	($wims_user=supervisor or $wims_class=$wims_superclass)
- !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
-&nbsp;
-<p>
- !ifval $class_type!=4
-  !href module=adm/class/regclass $wims_name_classcreate
- !endif
- <p>
+!if $supervisable=yes and ($wims_user=supervisor or $wims_class=$wims_superclass) and $class_type notwordof 3 4
+   !set wims_ref_class=wims_button
+   !href module=adm/class/regclass $wims_name_classcreate
 !endif
