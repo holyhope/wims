@@ -76,7 +76,7 @@
     !next
 !endif
 :end
-
+</ul>
 !if $alreadyseen!=$empty
   !set subclass2=!listcomplement $alreadyseen in $subclass2
   !set subclasscnt2=!itemcnt $subclass2
@@ -85,18 +85,24 @@
  !if $insc!=yes
   !href module=home&cmd=new&insc=yes $U_inscription2
  !else
+ <div>
   $U_inscription1
+<ul>
   !for c in $subclass2
    !set name=!defof class_description in wimshome/log/classes/$c/.def
+   !set type=!defof class_typename in wimshome/log/classes/$c/.def
+  <li> <span class="wims_classes_direct_$type">
    !href module=adm/class/reguser&class=$c&auth_user=$u_ $name
+   </span></li>
    &nbsp;
   !next c
-  <p>
+</ul>
+  </div>
+  !set wims_ref_class=wims_button
   !href module=home&cmd=new $wims_name_back2
  !endif
- <p>
 !endif
-
+<p>
 !if $supervisable=yes and ($wims_user=supervisor or $wims_class=$wims_superclass) and $class_type notwordof 3 4
    !set wims_ref_class=wims_button
    !href module=adm/class/regclass $wims_name_classcreate

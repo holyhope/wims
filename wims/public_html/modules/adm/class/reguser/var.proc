@@ -7,6 +7,22 @@ wims_helper=chapter=3
 ## output auth_method_list, auth_idp_method_list, auth_method, aut_idp_method
 !read adm/class/initclass $class,auth
 
+!!! test pour une nouvelle inscription dans une classe d'un groupement
+!if $auth_method isitemof $auth_method_list
+  !if $wims_external_auth!=$empty
+     m_test=!lookup $wims_external_auth in wimshome/log/classes/$wims_superclass/.userlist_external
+     !if $m_test=$wims_user
+       user_auth=$wims_external_auth
+     !else 
+       m_test=!defof user_supervisable in  wimshome/log/classes/$wims_superclass/.users/$wims_realuser
+       !if $m_test=yes
+        m_test=!lookup $wims_external_auth in wimshome/log/classes/$wims_superclass/.teacherlist_external
+        !if $m_test=$wims_realuser
+          user_auth=$wims_external_auth
+     !endif
+  !endif
+!endif
+
 #####################################
 ## need to set user_external_auth
 #####################################
