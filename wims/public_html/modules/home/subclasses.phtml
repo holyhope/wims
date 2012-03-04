@@ -1,85 +1,56 @@
 !default CL_Name=$CL_Names
 !set arr=--->
+
 !if $supervisable=yes
  !read subclasses_user.phtml
  !if $wims_user=supervisor or $wims_class=$wims_superclass	
    !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
  !endif
 !endif
-<p></p>
-!for cnt in 1
- !if $(subclasscnt$cnt)>0 and $insc!=yes
+<p>
+!if $(subclasscnt1)>0 and $insc!=yes and 
   !if $supervisable!=yes
    $U_gotoclass
   !else
-   $(U_gotoclass$cnt)
+   $(U_gotoclass1)
   !endif
-  !set liste_class=
-  !set liste_program=
-  !set liste_course=
-  !for c in $(subclass$cnt)
-   !set name=!defof class_description in wimshome/log/classes/$c/.def
-   !set type=!defof class_type in wimshome/log/classes/$c/.def
-   !set type_name=!defof class_typename in wimshome/log/classes/$c/.def
-   !read adm/class/initclass $c
-   !if $cnt=3
-    !set t_=supervisor
-    !set u_=supervisor
-   !else
+!endif
+!if $auth_method isitemof $auth_method_list and $wims_user!=supervisor
+      !set u_=$wims_external_auth
+!else
+      !set u_=$wims_user
+!endif
+     
+!if $subclass1=$empty
+  !goto end
+!endif
+  <ul class="wims_subclasses"><!--wims_subclasses-->
+!reset alreadyseen
+!if $wims_class!=$wims_superclass
+   !set subclass1=$wims_class,$subclass1
+!endif
+
+!for c in $subclass1
+     !set name=!defof class_description in wimshome/log/classes/$c/.def
+     !set type=!defof class_type in wimshome/log/classes/$c/.def
+     !set type_name=!defof class_typename in wimshome/log/classes/$c/.def
+     !read adm/class/initclass $c,auth
+
     !set t_=participant
     !set type_class=!defof class_type in wimshome/log/classes/$class/.def
-    !if $auth_method isitemof $auth_method_list
-      !set u_=!defof user_external_auth in $userdef
-    !else
-      !set u_=$wims_user
-    !endif
-   !endif
-   !set list_class=class,program,course
-   !if $name!=$empty
-    !for  tt in $list_class 
-     !if $type_name=$tt
-      !set liste_$tt=!append line $name,$t_,$c,$u_ to $(liste_$tt)
-     !endif
-    !next
-   !endif
-  !next c
-  !if $cnt=1
-   !set word_class=$CL_otherNames
-  !endif
-  !default word_class=$(CL_Names[2..-1])
-  <ul class="wims_subclasses"><!--wims_subclasses-->
-  !for tt = 3 to 1 step -1
-   !set liste=!sort line $(liste_$(list_class[$tt]))
-   !set liste_cnt=!linecnt $liste
-   !if $liste_cnt > 0
-    !reset aux
-    !if $tt=3 and $class_type< 4
-     !set aux=$arr<span class="wims_classes_direct_class">$wims_classname ($(CL_Name[2]))</span>
-    !else
-     !if $class_type < 4 and $tt=3 
-      !set aux=$(CL_otherNames[1])
-     !endif
-    !endif
-    !if $tt=3 and $class_type< 4
-     $aux
-    !endif
-    !if $tt=3 and $class_type< 4
-   <ul><!--1-->
-    !endif
-    !for j = 1 to $liste_cnt
-     !set parent_c=!defof class_parent in wimshome/log/classes/$(liste[$j;3])/.def
-     !if ($class_type < 4 and $tt=3) or $tt iswordof 1 2 or ($tt=3 and $parent_c notitemof $(liste_class[$j;3]),$(liste_program[$j;3]))
-      !if $class_type < 4 and $class_typename!=group
+     !if $c notitemof $alreadyseen
+      <li> $arr <span class="wims_classes_direct_$type_name">
+      !if $c!=$wims_class
+      !href module=adm/class/classes&type=authparticipant&class=$c&auth_user=$u_ $name
+      !else
+        $name
       !endif
-      <li> $arr <span class="wims_classes_direct_$(list_class[$tt])">
-      !href module=adm/class/classes&type=auth$(liste[$j;2])&class=$(liste[$j;3])&auth_user=$(liste[$j;4]) $(liste[$j;1])
-      ($(CL_Name[$tt+1]))</span>
-     !endif
-     !set c=$(liste[$j;3])
+      ($(CL_Name[2]))</span>
+     !set alreadyseen=!append item $c to $alreadyseen
      !set sub_=!record 0 of wimshome/log/classes/$c/courses
      !set sub_cnt=!linecnt $sub_
      !if $sub_cnt>0 
-      <ul><!--2-->
+       <ul><!--2-->
       !for k_ =1 to $sub_cnt
        !set parent_c=!defof class_parent in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.def
        !set split=!replace internal / by , in $(sub_[$k_;1])
@@ -88,7 +59,8 @@
        !if  optional iswordof $progstyle
          !set inscrit=!defof user_class in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.users/$wims_user
        !endif
-       !if mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit or $wims_user=supervisor
+       !if $wims_superclass/$(sub_[$k_;1]) notitemof $alreadyseen and mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit or $wims_user=supervisor
+       !set alreadyseen=!append item $wims_superclass/$(sub_[$k_;1]) to $alreadyseen
         <li> &nbsp; $arr&nbsp;
         <span class="wims_classes_direct_course">
         !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
@@ -97,26 +69,26 @@
         </li>
        !endif
       !next k_
-       </ul><!--2-->
+       </ul><!end--2-->
+       !if $c=$wims_class
+        !goto end
      !endif
-    !next j
-    !if  $tt=3 and $class_type< 4
-   </ul><!--1-->
-  !endif
-   !endif
-  !next tt
-</ul><!--wims_subclasses-->
- !endif
-!next cnt
+    !next
+!endif
+:end
 
+!if $alreadyseen!=$empty
+  !set subclass2=!listcomplement $alreadyseen in $subclass2
+  !set subclasscnt2=!itemcnt $subclass2
+!endif
 !if $class_mixed_external_auth!=2 and $subclasscnt2>0
  !if $insc!=yes
   !href module=home&cmd=new&insc=yes $U_inscription2
  !else
-  $U_inscription1 
+  $U_inscription1
   !for c in $subclass2
    !set name=!defof class_description in wimshome/log/classes/$c/.def
-   !href module=adm/class/reguser&class=$c $name
+   !href module=adm/class/reguser&class=$c&auth_user=$u_ $name
    &nbsp;
   !next c
   <p>
