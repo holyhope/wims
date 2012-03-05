@@ -56,7 +56,7 @@ into name_portal,name_Portal,name_asateacher,name_asaparticipant,\
   Por favor escoja la clase a la que desea inscribirse (pulse sobre su nombre).\
   está protegida por una contraseña y la inscripción directa está reservada a los <b>profesores</b>.\
   Pulse sobre un nombre para inscribirle en la clase.\
-  Será el nombre que $utilisera para entrar en $classname posteriormente\
+  Será el nombre que $utilisera para entrar en $$classname posteriormente\
   Por favor escoja una palabra de entre 4 y 16 caracteres alfanuméricos sin acentos únicamente.\
   Para verificar la exactitud de su contraseña, por favor vuelva a teclearla\
   No ha proporcionado una dirección de correo válida.\
