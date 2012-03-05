@@ -18,7 +18,6 @@ $name_title
  ($name_reserved)
  </center>
 !endif
-
 !if $error!=$empty
  <p>
  !read lang/msg.phtml.$modu_lang
@@ -234,10 +233,12 @@ $name_inscription4:
  !if $wims_user=supervisor and $auth_user=$empty
 !! teacher registering a student with idp ldap
     !if $idp_method isitemof ldap
+    $name_login_external :
+<p>
         <input type="hidden" name="step" value="3">
-        <label for="user_auth">$wims_name_Login (name_externe)</label>
+        <label for="user_auth">$wims_name_Login ($name_external)</label>
         <input size="16" name="user_auth" id="user_auth" value="$user_auth"> <br>
-  name_warning_login_external
+ </p> 
      <center><input type="submit" value="$wims_name_tosave"></center>
  </form>
      !goto end1
@@ -250,9 +251,9 @@ $name_inscription4:
         <label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn">
     </li>
     <li>
-      <label for="user_auth">$wims_name_Login (name_externe)</label>
+      <label for="user_auth">$wims_name_Login ($name_external)</label>
       <input size="16" name="user_auth" id="user_auth" value="$user_auth"> <br>
-  name_warning_login_external
+  $name_login_external_warning
     </li>
     <li><label for="email">$wims_name_email ($name_optional) :</label><br>
       <input size="60" name="email" id="email" value="$email">
@@ -272,18 +273,35 @@ $name_inscription4:
  <li><label for="lastn">$wims_name_lastname</label> <input size="20" name="lastn" id="lastn" value="$lastn">
 <label for="firstn">$wims_name_firstname</label> <input size="20" name="firstn" id="firstn" value="$firstn">
  </li>
- !if $auth_user=$empty or $auth_method notitemof $auth_method_list
+ !if $wims_user=supervisor
+   !reset login
+ !endif
+ !if ($auth_user=$empty or $auth_method notitemof $auth_method_list) or $wims_user=supervisor
    <li><label for="login">$wims_name_Login</label>
-  <input size="16" name="login" id="login" value="$login"> <br>
-  $name_warning_login
-  </li>
- <li><label for="pass">$wims_name_Password</label>
-  <input type="password" size="16" name="pass" id="pass"> <br>
-  $name_passwd_warning
- </li>
+   <input size="16" name="login" id="login" value="$login"> <br>
+   !if $auth_method isitemof $auth_method_list and $wims_user=supervisor
+    !reset login_ext
+     $name_login_external_warning
+     <li><label for="login_ext">$wims_name_Login ($name_external)</label>
+     <input size="16" name="login_ext" id="login_ext" value="$login_ext"> 
+    </li>
+   !else
+      $name_warning_login
+   !endif
+   !if $auth_method notitemof $auth_method_list
+    <li><label for="pass">$wims_name_Password</label>
+   <input type="password" size="16" name="pass" id="pass"> <br>
+    $name_passwd_warning
+   </li>
+   !endif
  !else
-   <li>$wims_name_Login (interne)
+   <li>$wims_name_Login ($name_internal)
   <input size="16" name="login" id="login" value="$login" readonly>
+   $name_login_external_warning
+  </li>
+   <li>$wims_name_Login ($name_external)
+  <input size="16" name="login_ext" id="login_ext" value="$login_ext" readonly>
+   name_login_external_warning
   </li>
  !endif
  <li><label for="email">$wims_name_email ($name_optional) :</label><br>

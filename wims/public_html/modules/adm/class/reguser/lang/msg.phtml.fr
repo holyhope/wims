@@ -26,7 +26,7 @@ $institution
 !endif
 
 !if login_size=$error
- Le nom de login est trop
+ L'identifiant est trop
  !if $n<4
   court.
  !else
@@ -56,15 +56,21 @@ $institution
 !endif
 
 !if login_double=$error
- Le nom de login <tt class="wims_login">$login</tt>
+ L'identifiant <tt class="wims_login">$login $login_ext</tt>
  est déjà en utilisation dans la classe
  $classname.
- Veuillez vérifier si vous ne vous êtes pas déjà inscrit&nbsp;; sinon, choisissez un autre nom de login.
+ Veuillez vérifier si vous ne vous êtes pas déjà inscrit&nbsp;; sinon, choisissez un autre identifiant.
+ !exit
+!endif
+
+!if login_empty=$error
+ L'identifiant n'a pu être créé car les données sont vides. Vérifiez les paramètres 
+ d'authentification ou l'identifiant externe. 
  !exit
 !endif
 
 !if pass_error=$error
- Le mot de passe que vous avez retapé ne correspond pas au premier. Votre
+ Le mot de passe retapé ne correspond pas au premier. Votre
  enregistrement n'est donc pas pris en compte; vous pouvez réessayer.
  !exit
 !endif
@@ -83,7 +89,7 @@ site user limit
 !endif
 
 !if internal_total=$error
- Erreur interne du logiciel&nbsp;: échec déterminant le nombre d'utilisateurs
+ Erreur interne du logiciel&nbsp;: échec lors du calcul du nombre d'utilisateurs
 inscrits.
  !exit
 !endif

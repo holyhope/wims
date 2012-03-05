@@ -65,6 +65,12 @@ La clase que ha elegido está al completo. No quedan plazas disponibles.
  !exit
 !endif
 
+!if login_empty=$error
+ L'identifiant n'a pu être créé car les données sont vides. Vérifiez les paramètres 
+ d'authentification ou l'identifiant externe. 
+ !exit
+!endif
+
 !if pass_error=$error
  La contraseña que ha vuelto a teclear no se corresponde con la primera.
  Por tanto su inscripción no se ha tenido en cuenta; puede intentarlo de nuevo.

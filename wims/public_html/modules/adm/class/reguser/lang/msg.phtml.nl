@@ -64,6 +64,12 @@ is al in gebruik in de klas
  !exit
 !endif
 
+!if login_empty=$error
+ L'identifiant n'a pu être créé car les données sont vides. Vérifiez les paramètres 
+ d'authentification ou l'identifiant externe. 
+ !exit
+!endif
+
 !if pass_error=$error
  Het wachtwoord is twee keer verschillend ingevoerd.
  Probeer het nog een keer. 

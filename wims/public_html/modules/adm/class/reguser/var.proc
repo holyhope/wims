@@ -2,7 +2,6 @@
 wims_form_method=post
 wims_prefix=class user tmp n sharing sharable
 wims_helper=chapter=3
-
 !default class=$wims_class
 ## output auth_method_list, auth_idp_method_list, auth_method, aut_idp_method
 !read adm/class/initclass $class,auth
@@ -52,6 +51,9 @@ wims_helper=chapter=3
     !exit
   !endif
   !read adm/class/hashlogin $auth_user,$class,$login_method
+  !if $error!=$empty
+    !exit
+  !endif
   !default pass=!randint 10000,100000
   !default pass2=$pass
   !default login_bak=$login,$pass

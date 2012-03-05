@@ -98,3 +98,13 @@ ninguna cuenta de participante
   profesores. Si son alumno, inscribirse
 !set name_cgu=J'accepte les conditions générales d'utilisation
 !set name_seecgu=See CGU
+
+!set name_login_external_warning= Vous avez choisi une authentification externe, l'identifiant\
+que vous entrez ici doit être compatible avec cette authentification. Il vaut peut-être mieux \
+que vous ne fassiez pas d'inscription manuelle.
+
+!set name_login_external= Vous avez choisi une authentification externe en liaison avec \
+un annuaire. Entrez ici l'identifiant du participant pour cette authentification externe\
+(cela doit bien sûr être le même que celui demandé par l'annuaire).
+
+!distribute items external,internal into name_external,name_internal

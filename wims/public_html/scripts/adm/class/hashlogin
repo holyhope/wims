@@ -52,6 +52,9 @@ login_init=$login
 !if $cnt>=$limit_while
     !reset login
 !endif
+!if $login=$empty
+  error=login_empty
+!endif
 !exit
 :ldap
 
@@ -61,4 +64,9 @@ login_init=$login
  !set login=!getopt $ldap_login in $login
  !set login=!text select $char_alnum in $login
  !set login=!char 1 to $[$login_max -$limit] of $login
+!endif
+
+!if $login=$empty
+  error=login_empty
+  !exit
 !endif
