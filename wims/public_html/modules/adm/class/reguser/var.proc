@@ -7,7 +7,7 @@ wims_helper=chapter=3
 !read adm/class/initclass $class,auth
 
 !!! test pour une nouvelle inscription dans une classe d'un groupement
-!if $auth_method isitemof $auth_method_list
+!if $auth_method isitemof $auth_method_list and $user_auth=$empty
   !if $wims_external_auth!=$empty
      m_test=!lookup $wims_external_auth in wimshome/log/classes/$wims_superclass/.userlist_external
      !if $m_test=$wims_user
@@ -22,6 +22,10 @@ wims_helper=chapter=3
        !endif
      !endif
   !endif
+!endif
+!! inscription by the supervisor
+!if $auth_method isitemof $auth_method_list and $wims_user=supervisor
+ !reset login_bak
 !endif
 
 #####################################
