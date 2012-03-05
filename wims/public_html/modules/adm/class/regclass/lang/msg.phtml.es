@@ -105,7 +105,7 @@ para desactivar esta medida de seguridad.
 !endif
 
 !if too_short=$error
- El campo de datos ``$(name_$(error_subject))'' parece demasiado corto.
+ El campo de datos <tt class="wims_code_words">$(wims_name_$(error_subject))</tt> parece demasiado corto.
  !exit
 !endif
 

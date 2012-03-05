@@ -123,7 +123,7 @@
 !endif
 
 !if too_short=$error
- Het veld ``$(name_$(error_subject))'' lijkt wat te kort.
+ Het veld <tt class="wims_code_words">$(wims_name_$(error_subject))</tt> lijkt wat te kort.
  !exit
 !endif
 
