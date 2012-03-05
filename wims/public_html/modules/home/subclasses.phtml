@@ -36,8 +36,8 @@
      !set type_name=!defof class_typename in wimshome/log/classes/$c/.def
      !read adm/class/initclass $c,auth
 
-    !set t_=participant
-    !set type_class=!defof class_type in wimshome/log/classes/$class/.def
+     !set t_=participant
+     !set type_class=!defof class_type in wimshome/log/classes/$class/.def
      !if $c notitemof $alreadyseen
       <li> $arr <span class="wims_classes_direct_$type_name">
       !if $c!=$wims_class
@@ -60,7 +60,7 @@
          !set inscrit=!defof user_class in wimshome/log/classes/$wims_superclass/$(sub_[$k_;1])/.users/$wims_user
        !endif
        !if $wims_superclass/$(sub_[$k_;1]) notitemof $alreadyseen and mandatory iswordof $progstyle or $(split[1])/$(split[2]) iswordof $inscrit or $wims_user=supervisor
-       !set alreadyseen=!append item $wims_superclass/$(sub_[$k_;1]) to $alreadyseen
+        !set alreadyseen=!append item $wims_superclass/$(sub_[$k_;1]) to $alreadyseen
         <li> &nbsp; $arr&nbsp;
         <span class="wims_classes_direct_course">
         !href module=adm/class/classes&type=auth$t_&class=$wims_superclass/$(sub_[$k_;1])&auth_user=$u_ $(sub_[$k_;3]) 
@@ -70,11 +70,13 @@
        !endif
       !next k_
        </ul><!end--2-->
-       !if $c=$wims_class
-        !goto end
-     !endif
-    !next
-!endif
+      !endif sub_cnt>0 
+        !if $c=$wims_class
+         !goto end
+        !endif
+      !endif $c notitemof $alreadyseen
+!next
+
 :end
 </ul>
 !if $alreadyseen!=$empty
