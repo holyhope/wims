@@ -12,12 +12,20 @@ $wims_name_account_property
 <input type="hidden" name="job" value="userprop">
 <input type="hidden" name="getuser" value="$getuser">
 <p>$table_header
-$table_tr<th>$wims_name_Login</th><td><tt>$getuser</tt></td>
+$table_tr<th>$wims_name_Login</th><td><tt>$getuser</tt></td></tr>
+!if $class_type iswordof 2 4
+  !if $user_participate!=$empty
+    $table_tr<th>$name_inscript</th><td><tt>$user_participate</tt></td></tr>
+  !endif
+  !if $user_supervise!=$empty
+    $table_tr<th>$name_gestion</th><td><tt>$user_supervise</tt></td></tr>
+  !endif
+!endif
 !if $class_auth=$empty or $wims_user=supervisor
 $table_tr<th>$wims_name_Password</th><td>
 	!href module=adm/class/passwd&job=part&part=$getuser $name_change
-</td>
-!endif	
+</td></tr>
+!endif
 $table_tr<th><label for="up_lastname">$wims_name_lastname</label></th><td>
 	<input size="$inplen" name="up_lastname" id="up_lastname" value="$user_lastname"></tr></tr>
 $table_tr<th><label for="up_firstname">$wims_name_firstname</label></th><td>
