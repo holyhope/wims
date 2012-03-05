@@ -354,16 +354,16 @@ $name_inscription4:
  <tt class="wims_login">$login</tt>. <p>
  $name_youcan
  !read adm/class/initclass $class,auth
- 
+
  !if $wims_class!=$empty
    !if $auth_method iswordof cas
      !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class
      !read adm/codeurl $url
-     !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$superclass/.def
+     !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$ssclass/.def
      <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a>
    !else
       !if $auth_method iswordof ldap
-        !set tmp=!getdef user_external_auth in wimshome/log/classes/$superclass/.users/$login
+        !set tmp=!getdef user_external_auth in wimshome/log/classes/$ssclass/.users/$login
         !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$tmp $name_gotowork
       !else
         !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$login $name_gotowork
@@ -375,11 +375,11 @@ $name_inscription4:
    !if $auth_method isitemof cas 		
       !set url = $wims_ref_name?module=adm/class/classes&type=authparticipant&class=$class 		
       !read adm/codeurl $url 		
-      !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$superclass/.def 		
+      !set class_cas_auth=!getdef class_cas_auth in wimshome/log/classes/$ssclass/.def 		
       <a class="wims_button" href="$class_cas_auth/login?service=$script_out">$wims_name_Enter</a> 		
    !else
      !if $auth_method iswordof ldap
-        !set tmp=!getdef user_external_auth in wimshome/log/classes/$superclass/.users/$login
+        !set tmp=!getdef user_external_auth in wimshome/log/classes/$ssclass/.users/$login
         !href module=adm/class/classes&type=authparticipant&class=$class&auth_user=$tmp $name_gotowork
      !else
         <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&+module=adm/class/classes&+type=authparticipant&+class=$class&+auth_user=$login">
