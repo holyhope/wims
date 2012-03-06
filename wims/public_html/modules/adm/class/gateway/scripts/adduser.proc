@@ -1,8 +1,27 @@
 bad=
+
 !if $pass!=$empty and $pass notsametext $pass2
  login=
  error=pass_discord
  !exit
+!endif
+
+!if $auth_method isitemof $auth_method_list
+  !if $idp_method=ldap 
+    !read adm/class/initldap 
+    !if $ldap_login!=$empty
+      !set login_method=$idp_method $ldap_login
+    !endif
+  !endif
+  up_external_auth=$user_auth
+  !read adm/class/hashlogin $user_auth,$class,$login_method
+!endif
+
+!if $idp_method isitemof $idp_method_list
+  !read idp_$idp_method $user_auth
+  firstname=$up_firstname
+  lastname=$up_lastname
+  email=$up_email
 !endif
 
 !if $login=$empty or $lastname=$empty or $firstname=$empty or \

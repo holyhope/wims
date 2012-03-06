@@ -11,6 +11,10 @@
 
 up_supervisable=yes
 new_user=yes
+!if $auth_method isitemof $auth_method_list
+  pass=!randint 100000,999999
+  pass2=$pass
+!endif
 
 !read scripts/adduser.proc
 !read adm/gateway/mkteacherlist
