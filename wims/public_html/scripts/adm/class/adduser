@@ -60,13 +60,13 @@ replace_=
 !if $adduser_replace=none
  !goto next
 !endif
-
-!for n in lastname,firstname,email,regnum,comments,exists,supervisable,participate,photourl,agreecgu,\
+!!!
+!for n in lastname,firstname,email,regnum,comments,exists,supervise,supervisable,participate,photourl,\
   external_auth
  !if $n isitemof $replacelist,lastname,firstname,exists,supervisable,agreecgu,external_auth
   !if $(up_$n)!=$(user_$n)
    l_=!singlespace $(up_$n)
-   !if $n issametext participate
+   !if $n iswordof participate supervise
     l_=!words2items $l_
     l__=
      !for a_ in $l_
@@ -76,7 +76,11 @@ replace_=
         l__=!append item $part_ to $l__
        !endif
      !next
-     l_=!listuniq $l__,$(user_$n)
+     !if $n iswordof participate
+       l_=!listuniq $l__,$(user_$n)
+     !else
+        l_=!listuniq $l__
+     !endif
    !else
     l_=!replace , by &#44; in $l_
     l_=!replace < by &lt; in $l_

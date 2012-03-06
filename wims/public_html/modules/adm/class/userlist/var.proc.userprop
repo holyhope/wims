@@ -8,7 +8,7 @@
 !defread $userdef
 
 !if $user_exists!=yes or $abandon!=$empty
- !reset up_lastname,up_firstname,up_email,up_regnum,up_photourl,up_comments,up_vars,up_external_auth
+ !reset up_lastname,up_firstname,up_email,up_regnum,up_photourl,up_comments,up_vars,up_external_auth,up_supervise
  !if $wims_user=supervisor
   job=
   !exit
@@ -31,7 +31,7 @@
   !exit
  !endif
  up_password=
- replacelist=regnum,comments,photourl,email,external_auth
+ replacelist=regnum,comments,photourl,email,external_auth,supervise
  !read adm/class/adduser $getuser
  !read adm/class/mkuserlist
  !if $class_type isin 1234
@@ -45,5 +45,6 @@
  !endif
 !endif
 
-!reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_photourl,up_vars,up_external_auth
+!reset up_lastname,up_firstname,up_email,up_regnum,up_comments,up_photourl,up_vars,up_external_auth,\
+  up_supervise
 

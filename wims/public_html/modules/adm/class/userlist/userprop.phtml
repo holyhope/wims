@@ -17,8 +17,10 @@ $table_tr<th>$wims_name_Login</th><td><tt>$getuser</tt></td></tr>
   !if $user_participate!=$empty
     $table_tr<th>$name_inscript</th><td><tt>$user_participate</tt></td></tr>
   !endif
-  !if $user_supervise!=$empty
-    $table_tr<th>$name_gestion</th><td><tt>$user_supervise</tt></td></tr>
+  !if $user_supervisable=yes
+    $table_tr<th>$name_gestion</th><td>
+    <input size="$inplen" name="up_supervise" id="up_supervise" value="$user_supervise">
+    </tt></td></tr>
   !endif
 !endif
 !if $class_auth=$empty or $wims_user=supervisor
