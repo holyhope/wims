@@ -3,8 +3,12 @@
 
 !if $supervisable=yes
  !read subclasses_user.phtml
- !if $wims_user=supervisor or $wims_class=$wims_superclass	
-   !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
+ !if ($wims_user=supervisor or $wims_class=$wims_superclass)
+   !if $class_type notwordof 2
+    !href module=adm/class/classes&type=supervisor&superclass=$wims_class $U_supervise
+   !else
+     $name_gotosupervise
+   !endif
  !endif
 !endif
 <p>

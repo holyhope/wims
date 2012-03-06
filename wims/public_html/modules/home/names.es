@@ -66,7 +66,9 @@ U_inscription2 = Inscribirse en una zona de trabajo como participante.
 U_clickhere = Pulse aquí
 U_supervise = Inscribirse en una zona de trabajo como profesor.
 U_creatclass = Crear una clase nueva.
-
+name_gotosupervise=Pour aller dans une autre classe comme enseignant, contactez l'administrateur\
+ du groupement de classes.
+ 
 
 SU_greet = !nosubst ¡Hola, $wims_firstname $wims_lastname! Bienvenido/a a la página\
 de mantenimiento de su clase

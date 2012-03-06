@@ -63,8 +63,9 @@ U_inscription2 = Aanmelden in een andere klas.
 U_clickhere = Klik hier
 U_supervise = Klik hier om naar een andere klas te gaan als supervisor.
 U_creatclass = Maak een nieuwe klas.
-
-
+name_gotosupervise=Pour aller dans une autre classe comme enseignant, contactez l'administrateur\
+ du groupement de classes.
+ 
 SU_greet = !nosubst Hallo, $wims_firstname $wims_lastname!<br>\
 Welkom op de Onderhouds pagina van uw klas.<br>
 SU_Bhome = Terug naar de supervisor pagina
