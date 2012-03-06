@@ -4,7 +4,7 @@
 Ficheros de imagen para el ejercicio
 
 !if $quota=yes
- <b>Error</b>. No puede añadir más ficheros a su clase porque su contendido
+ <span class="wims_warning">$wims_name_Error</span>. No puede añadir más ficheros a su clase porque su contendido
  ha igualado o superado el espacio de disco autorizado.
  Lo sentimos.
  <p>
@@ -12,7 +12,7 @@ Ficheros de imagen para el ejercicio
 !endif
 
 !set wims_form_method=file
- Vous pouvez charger différents types de fichiers chargés (image, mp3, pdf, ...).
+ Vous pouvez charger différents types de fichiers (image, mp3, pdf, ...).
  
 !form reply
 Fichero de imagen que se va a enviar en el ejercicio:

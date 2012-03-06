@@ -4,7 +4,7 @@
 Binaire Bestanden voor oefeningen 
 
 !if $quota=yes
- <b>Fout</b>.<br>
+ <span class="wims_warning">$wims_name_Error</span>.<br>
  Er is helaat voor Uw klas niet genoeg ruimte meer 
  beschikbaar op de harde schijf.
  <p>
