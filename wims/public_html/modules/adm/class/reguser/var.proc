@@ -3,7 +3,7 @@ wims_form_method=post
 wims_prefix=class user tmp n sharing sharable
 wims_helper=chapter=3
 !default class=$wims_class
-## output auth_method_list, auth_idp_method_list, auth_method, aut_idp_method
+## output auth_method_list, idp_method_list, auth_method, idp_method
 !read adm/class/initclass $class,auth
 
 !!! test pour une nouvelle inscription dans une classe d'un groupement
@@ -48,7 +48,7 @@ wims_helper=chapter=3
       !set login_method=$idp_method $ldap_login
     !endif
   !endif
-  !if $auth_user=$empty and $wims_user=supervisor and $auth_method isitemof $auth_method_list
+  !if $wims_user=supervisor and $auth_method isitemof $auth_method_list
     !if $search!=$empty
       !goto begin
     !endif

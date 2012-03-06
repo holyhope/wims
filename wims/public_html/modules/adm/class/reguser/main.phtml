@@ -180,7 +180,7 @@ $institution
 !endif
 
 !if $step=$empty or $step<2
- !if $superclass!=$empty and $wims_class!=$superclass and $wims_user=supervisor
+ !if $ssclass!=$empty and $wims_class!=$ssclass and $wims_user=supervisor
   !form reply
   <input type="hidden" name="step" value="1">
   <label for="search">$name_research:</label>
@@ -229,7 +229,7 @@ $name_inscription4:
 </center>
    !goto end1
  !endif
-!!FIXME
+!!FIXME  $auth_user=$empty
  !if $wims_user=supervisor and $auth_user=$empty
 !! teacher registering a student with idp ldap
     !if $idp_method isitemof ldap
@@ -350,7 +350,7 @@ $name_inscription4:
   !readproc adm/class/userdef class,$class,$login
   !default login_wims=!defof user_external_auth in $userdef
   <tt class="wims_login">
-  !href module=adm/class/userlist&job=userprop&getuser=$login_wims $login
+  !href module=adm/class/userlist&job=userprop&getuser=$login $login_wims
   </tt>
   <p>
   !if $wims_supertype iswordof 2 4
