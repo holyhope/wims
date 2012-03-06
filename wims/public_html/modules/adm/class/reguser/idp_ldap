@@ -1,7 +1,8 @@
 !!!this file must be in the module directory because of the !mexec !!!!
 OUTPUT : the up_xxx needed for the register of the user
 !readproc adm/class/initldap
-!set l_=$auth_user
+!set l_=$wims_read_parm
+!default l_=$auth_user
 !set sup_=!item 2 to -1 of $l_
       !set l_=!item 1 of $l_
       ldap_user=!sh ldapsearch -x -LLL -t -H ldap://$ldap_auth:$ldap_port -b "$ldap_base" $ldap_uid="$l_" $ldap_code_ | grep -v "^[d]n:" 
