@@ -346,12 +346,15 @@ $name_inscription4:
 
 !if $step=3
  !if $wims_user=supervisor
-  $name_studentadded
   !readproc adm/class/userdef class,$class,$login
-  !default login_wims=!defof user_external_auth in $userdef
+  !set firstn=!defof user_firstname in $userdef
+  !set lastn=!defof user_lastname in $userdef
+  !set login_wims=!defof user_external_auth in $userdef
+  !default login_wims=$login
+  $name_studentadded  
   <tt class="wims_login">
   !href module=adm/class/userlist&job=userprop&getuser=$login $login_wims
-  </tt>
+  </tt>.
   <p>
   !if $wims_supertype iswordof 2 4
    !readproc adm/gateway/transfer $login test

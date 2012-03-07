@@ -7,7 +7,7 @@ wims_helper=chapter=3
 !read adm/class/initclass $class,auth
 
 !!! test pour une nouvelle inscription dans une classe d'un groupement
-!if $auth_method isitemof $auth_method_list and $user_auth=$empty
+!if $auth_method isitemof $auth_method_list and $user_auth=$empty and $wims_user!=supervisor
   !if $wims_external_auth!=$empty
      m_test=!lookup $wims_external_auth in wimshome/log/classes/$wims_superclass/.userlist_external
      !if $m_test=$wims_user
@@ -48,7 +48,7 @@ wims_helper=chapter=3
       !set login_method=$idp_method $ldap_login
     !endif
   !endif
-  !if $wims_user=supervisor and $auth_method isitemof $auth_method_list
+  !if $wims_user=supervisor and $auth_method isitemof $auth_method_list and $auth_user=$empty
     !if $search!=$empty
       !goto begin
     !endif
