@@ -3,12 +3,12 @@
 <input type="hidden" name="job" value="$job">
 $table_header
 !if $auth_method notitemof $auth_method_list
-  !if $login=$empty
+ !if $login=$empty
   <caption>$name_addteacher</caption>
  !else
-  <caption>$wims_name_modteacher <tt>$login</tt></caption>
+   <caption>$wims_name_modteacher <tt>$login</tt></caption>
  !endif
- $table_tr<td align="right">$wims_name_Login</td><td>
+  $table_tr<td align="right">$wims_name_Login</td><td>
  !if $login=$empty
   <input size="30" name="login" value="">
  !else
@@ -37,13 +37,11 @@ $table_header
     !set user_external_auth=!getdef user_external_auth in wimshome/log/classes/$wims_class/.users/$login
     <caption>$wims_name_modteacher</caption>
   !endif
+  !if $login!=$empty
   $table_tr<td align="right">$wims_name_Login ($name_internal)</td><td>
-  !if $login=$empty
-    <input size="30" name="login" value="$login">
-  !else
     <tt>$login</tt>
-  !endif
    </td></tr>
+  !endif
  $table_tr<td align="right">$wims_name_Login ($name_external)</td><td>
    <input size="30" name="user_auth" value="$user_external_auth">
    <span class="wims_warning"><span class="wims_small_remark">
