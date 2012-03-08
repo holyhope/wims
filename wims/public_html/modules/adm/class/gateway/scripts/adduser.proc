@@ -14,7 +14,9 @@ bad=
     !endif
   !endif
   up_external_auth=$user_auth
-  !read adm/class/hashlogin $user_auth,$class,$login_method
+  !if $new_user!=no
+    !read adm/class/hashlogin $user_auth,$class,$login_method
+  !endif
 !endif
 
 !if $idp_method isitemof $idp_method_list
@@ -58,7 +60,9 @@ up_lastname=$lastname
 up_firstname=$firstname
 up_email=$email
 up_class=$wims_superclass
+up_external_auth=$user_auth
 
+replacelist=external_auth,supervise,participate,email
 !read adm/class/adduser $login
 
 !if $bad!=$empty

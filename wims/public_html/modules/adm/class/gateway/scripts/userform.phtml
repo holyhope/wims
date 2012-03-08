@@ -32,16 +32,26 @@ $table_header
  <td><input size="30" name="email" value="$email"></td></tr>
 !else  external
   !if $login=$empty
-   <caption>$name_addteacher</caption>
+     <caption>$name_addteacher</caption>
   !else
-   <caption>$wims_name_modteacher <tt>$login - $user_auth</tt></caption>
+    !set user_external_auth=!getdef user_external_auth in wimshome/log/classes/$wims_class/.users/$login
+    <caption>$wims_name_modteacher</caption>
   !endif
-  $table_tr<td align="right">$wims_name_Login (name_external)</td><td>
+  $table_tr<td align="right">$wims_name_Login ($name_internal)</td><td>
   !if $login=$empty
-   <input size="30" name="user_auth" value="">
+    <input size="30" name="login" value="$login">
   !else
-   <tt>$login</tt>
+    <tt>$login</tt>
   !endif
+   </td></tr>
+ $table_tr<td align="right">$wims_name_Login ($name_external)</td><td>
+   <input size="30" name="user_auth" value="$user_external_auth">
+   <span class="wims_warning"><span class="wims_small_remark">
+   $name_login_external 
+   !if $idp_method isitemof $idp_method_list
+    ($name_idp_external)</span>
+   !endif
+.</span>
  </td></tr>
 !endif
 
@@ -56,6 +66,16 @@ $table_header
  $wims_name_email</td>
  <td><input size="30" name="email" value="$email"></td></tr>
 !endif
+  !if $user_participate!=$empty
+    $table_tr<td align="right">$name_inscript</th><td><tt>$user_participate</tt></td></tr>
+  !endif
+  !set user_supervisable=!getdef user_supervisable in wimshome/log/classes/$wims_class/.users/$login
+  !if $user_supervisable=yes
+  !default user_supervise=!getdef user_supervise in wimshome/log/classes/$wims_class/.users/$login
+    $table_tr<td align="right">$name_gestion</th><td>
+    <input size="60" name="up_supervise" id="up_supervise" value="$user_supervise">
+    </tt></td></tr>
+  !endif
 $table_tr<td align="center" colspan="2">
 <input type="submit" name="confirm" value="$wims_name_tosave">
 &nbsp;

@@ -5,7 +5,7 @@ test=!defof user_exists in $classdir1/.users/$login
  !exit
 !endif
 
-data=!defof user_firstname,user_lastname,user_email,user_password in \
+data=!defof user_firstname,user_lastname,user_email,user_password,user_external_auth in \
  $classdir1/.users/$login
 supervise=!defof user_supervise in $classdir1/.users/$login
 
@@ -18,14 +18,14 @@ supervise=!defof user_supervise in $classdir1/.users/$login
 !endif
 
 !if $cancel!=$empty
- !distribute items $data into firstname, lastname, email
+ !distribute items $data into firstname, lastname, email,,up_external_auth
  !reset cancel
  job=teacher
  !changeto jobs/$job.proc
 !endif
 
 !if $confirm=$empty
- !distribute items $data into firstname, lastname, email
+ !distribute items $data into firstname, lastname, email,,up_external_auth
  !exit
 !endif
 

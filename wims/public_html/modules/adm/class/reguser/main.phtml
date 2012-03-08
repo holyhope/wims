@@ -1,6 +1,6 @@
 !read adm/language names.phtml
 !read lang/names.phtml.$modu_lang
-
+!read adm/lang/external_auth.phtml.$moduclass_lang
 !read adm/css.phtml
 !header1
 
@@ -233,7 +233,7 @@ $name_inscription4:
  !if $wims_user=supervisor and $auth_user=$empty
 !! teacher registering a student with idp ldap
     !if $idp_method isitemof ldap
-    $name_login_external :
+    <span class="wims_warning">$name_login_external ($name_idp_external)</span>:
 <p>
         <input type="hidden" name="step" value="3">
         <label for="user_auth">$wims_name_Login ($name_external)</label>
@@ -253,7 +253,7 @@ $name_inscription4:
     <li>
       <label for="user_auth">$wims_name_Login ($name_external)</label>
       <input size="16" name="user_auth" id="user_auth" value="$user_auth"> <br>
-  $name_login_external_warning
+  <span class="wims_warning">$name_login_external_warning</span>
     </li>
     <li><label for="email">$wims_name_email ($name_optional) :</label><br>
       <input size="60" name="email" id="email" value="$email">
@@ -281,7 +281,7 @@ $name_inscription4:
    <input size="16" name="login" id="login" value="$login"> <br>
    !if $auth_method isitemof $auth_method_list and $wims_user=supervisor
     !reset login_ext
-     $name_login_external_warning
+     <span class="wims_warning">$name_login_external_warning</span>
      <li><label for="login_ext">$wims_name_Login ($name_external)</label>
      <input size="16" name="login_ext" id="login_ext" value="$login_ext"> 
     </li>
@@ -297,11 +297,10 @@ $name_inscription4:
  !else
    <li>$wims_name_Login ($name_internal)
   <input size="16" name="login" id="login" value="$login" readonly>
-   $name_login_external_warning
   </li>
    <li>$wims_name_Login ($name_external)
   <input size="16" name="login_ext" id="login_ext" value="$login_ext" readonly>
-   name_login_external_warning
+   <span class="wims_warning">name_login_external_warning</span>
   </li>
  !endif
  <li><label for="email">$wims_name_email ($name_optional) :</label><br>
