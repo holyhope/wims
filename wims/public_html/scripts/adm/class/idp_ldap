@@ -23,7 +23,7 @@ $ $ by in $ldap_user
   !reset f
   f=!getopt $field in $ldap_user
   !if $(f[1])=file_save
-        f=!mexec scripts/decode.pl $wims_home/tmp/sessions/$wims_session/$(f[2])
+    f=!sh cat $wims_home/tmp/sessions/$wims_session/$(f[2]) | perl -e 'use Encode;while (<>) {print encode("iso-8859-1",decode("utf-8",$$_))}'
   !endif
   !if $field=$l_login
     login=!nospace $f

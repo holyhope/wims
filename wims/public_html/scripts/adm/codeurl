@@ -1,7 +1,9 @@
 !set url=$wims_read_parm
-
-!set url = !replace internal & by %26 in $url
-!set url = !replace internal / by %2F in $url
-!set url = !replace internal : by %3A in $url
+!set url=!nospace $url
+!set url=!sh echo "$url" | perl -e 'use URI::Escape; print uri_escape(<>)';
+!set url=!replace internal %0A by in $url
+!!set url = !replace internal & by %26 in $url
+!!set url = !replace internal / by %2F in $url
+!!set url = !replace internal : by %3A in $url
 
 !set script_out=$url
