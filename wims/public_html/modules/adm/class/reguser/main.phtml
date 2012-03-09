@@ -344,10 +344,11 @@ $name_inscription4:
 !endif
 
 !if $step=3
- !if $wims_user=supervisor
+!! needed for $name_student after !endif ?
   !readproc adm/class/userdef class,$class,$login
   !set firstn=!defof user_firstname in $userdef
   !set lastn=!defof user_lastname in $userdef
+ !if $wims_user=supervisor
   !set login_wims=!defof user_external_auth in $userdef
   !default login_wims=$login
   $name_studentadded  
