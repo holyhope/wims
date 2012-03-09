@@ -1,0 +1,19 @@
+# Input variables: authdef=def file  / superclass
+# Parameters: NOTHING
+# Output : auth_test,auth_error
+
+# with auth_method=php we need to check we are in an authenticated session created
+# via the adm/raw module (we need this auth-php in groupement and portals in order
+# to register to subclasses/and so. 
+
+# FIXME: which checks need to be carried out? we check $wims_user is defined, but
+#        need to verify this is enough
+
+auth_test=ERROR
+
+!if $wims_user!=$empty
+auth_test=OK
+!endif
+auth_user_orig=$auth_user
+auth_error=$wims_exec_error
+wims_exec_error=

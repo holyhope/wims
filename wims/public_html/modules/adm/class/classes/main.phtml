@@ -37,8 +37,12 @@ $name_new_participant_external
   !set tmp_=&subclass=yes
  !endif
  <center>
- !set wims_ref_class=wims_button
- !href module=adm/class/reguser&class=$class$tmp_ $name_register
+ !if $(class_authidp[2;]) iswordof php and $class_php_auth!=$empty
+   <a href="$class_php_auth?enter=$class" class="wims_button">$name_register</a>        
+ !else
+   !set wims_ref_class=wims_button
+   !href module=adm/class/reguser&class=$class$tmp_ $name_register
+ !endif
  </center>
  !goto end
 !endif
