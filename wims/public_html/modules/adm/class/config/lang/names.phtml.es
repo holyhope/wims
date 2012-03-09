@@ -352,8 +352,11 @@ Permitir las indicaciones (si  disponibles). \
 !if $job=authtype
  !set title=Autenticación por un anuario
  !set name_intro_authtype=Seleccione y llenan esta página
- !set name_method_list= authentification par wims, authentification par CAS, authentification par CAS et identification par un ldap,\
- authentification et identification par un ldap
+ !set name_method_list= authentification par wims, authentification via CAS, \
+ authentification via CAS et identification par un ldap,\
+ authentification et identification par un ldap,\
+ authentification via CAS et identification via php,\
+ authentification et identification via php
  !goto commun
 !endif
 
