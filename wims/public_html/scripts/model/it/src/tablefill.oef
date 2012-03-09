@@ -32,7 +32,7 @@ codice dell'esercizio.
 :
 \title{Completa la tabella (fill)}
 :
-\author{Bernadette Perrin-Riou}
+\author{Bernadette, Perrin-Riou}
 :
 \email{bpr@math.u-psud.fr}
 :Istruzioni
@@ -102,16 +102,14 @@ wims(record \s of \file)}
 }
 \integer{attribut_cnt=items(\attribut)}
 \integer{ch_cnt=items(\nonoui)}
-\for{c=0 to \ch_cnt-1}{
- \matrix{data=wims(replace internal \c by \nonoui[\c+1] in \data)}
-}
 \text{Data=}
 \text{STEP=}
 \for{u=1 to \N}{
   \text{STEP=\STEP
    wims(makelist r x for x = (\u-1)*\attribut_cnt + 1  to  (\u)*\attribut_cnt)}
   \text{Data=wims(append item \data[\u;2..-1] to \Data)}
-  }
+  \text{Data=wims(replace internal \c by \nonoui[\c+1] in \Data)}
+}
 \matrix{STEP=\STEP}
 \text{STEP1=wims(replace internal ; by , in \STEP)}
 \text{STEP1=wims(nonempty items \STEP1)}

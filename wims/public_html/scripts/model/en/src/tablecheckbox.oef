@@ -24,7 +24,7 @@ with a ':'. Otherwise the exercise might not be recognised by Createxo.
 :%%%%%%%% Example parameters to be redefined %%%%%%%%%%%%%%%%%
 
 :\title{Classification (table)}
-:\author{Csilla Ducrocq}
+:\author{Csilla, Ducrocq}
 :\email{csilla.ducrocq@u-psud.fr}
 :Instruction
 \text{instruction=Fill in the table.}
@@ -66,11 +66,13 @@ rabbit,1,0,0,0}
    .question {background-color: #FFFFCC;margin: 2% 2%;padding: 1%;}
    table.tableau {border:solid 1px;
     border-collapse:collapse;}
-    table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;margin-left:20px;}
-    ol li {list-style: upper-alpha; }
+    table.tableau td, th {background-color:#FFFFCC;text-align:left;border:solid 1px;width:55px;
+    padding-left:10px;margin-left:20px;}
+   ol li {list-style: upper-alpha; }
     table.tableau th { background-color:#CCCFFF;}
     table.tableau tr > th:first-child {width:400px;}
  </style>}
+ \text{nonoui=\nonoui issametext ? <img src="scripts/authors/jm.evers/gifs/ok.gif" width="15">,<img src="scripts/authors/jm.evers/gifs/nok.gif" width="15">}
 \if{\file notsametext}{
   \text{file=randitem(\file)}
   \text{attribut=wims(record 0 of \file)}
@@ -106,11 +108,12 @@ wims(record \s of \file)}
 \text{C1=wims(makelist x for x=1 to \N*\attribut_cnt)}
 \text{nstep=r1}
 \nextstep{\nstep}
+\text{col=1}
 \statement{
 <div class="question"> \instruction
 <center>
 <table class="tableau"><tr> <th></th>
-\for{k=1 to \attribut_cnt}{<th>\attribut[\k]</th>}
+\for{k=1 to \attribut_cnt}{<th colspan="\col">\attribut[\k]</th>}
 <tr>
 \for{j=1 to \N}{ 
   <tr><th>\data[\j;1]</th>
@@ -126,6 +129,11 @@ wims(record \s of \file)}
 \answer{}{\Data;\C1}{type=checkbox}{option=split noanalyzeprint nonstop}
 \text{nstep=}
 \text{C=}
+\text{col=2}
+\text{croix=<span style="color:black; font-size:20pt;font-style:bold;">X</span></td>}
+\text{nocroix=<span style="color:black; font-size:20pt;font-style:bold;">&nbsp;&nbsp;</span></td>}
+\text{croix=X}
+\text{nocroix=}
 \for{u=1 to \N}{
   \for{v=2 to \attribut_cnt+1}{
     \integer{uu=(\u-1)*\attribut_cnt + \v -1}
@@ -134,4 +142,8 @@ wims(record \s of \file)}
     \text{C=\uu notitemof \reply1 and \uu isitemof \Data ? wims(append item <span style="color:red;font-size:20pt;font-style:bold;">\nonoui[1]</span> to \C)}
     \text{C=\uu notitemof \reply1 and \uu notitemof \Data ? wims(append item <span style="color:green;font-size:20pt;font-style:bold;">\nonoui[1]</span> to \C)}
   }
+}
+
+\feedback{1=1}{\nonoui[1] : good answer, \nonoui[2] : bad answer
+
 }
