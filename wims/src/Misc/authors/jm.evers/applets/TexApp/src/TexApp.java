@@ -239,14 +239,22 @@ public class TexApp extends Applet {
         inputwidth = new int[inp];
 	String s1 = getParameter(s);
 	for(int i = 0; i < inp; i++){ inputwidth[i] = DEFAULT_WIDTH;}
+	//  the param is set...is it a single value for all or individual widths?
 	if(s1 != null){
     	    s1 = s1.replaceAll(":", ",");
     	    s1 = s1.replaceAll(";", ",");
     	    StringTokenizer stringtokenizer = new StringTokenizer(s1, ",");
     	    int j = stringtokenizer.countTokens();
-	    for(int k = 0; k < Math.min(inp,j); k++){
-		try{ inputwidth[k] = (int) Integer.parseInt(stringtokenizer.nextToken());}
-		    catch(Exception e){ System.out.println(" can not parse inteter parameter "+s);}
+	    if( j == 1 ){ // all fields will have this 'new' default width ...
+		DEFAULT_WIDTH = (int) Integer.parseInt(stringtokenizer.nextToken());
+		for(int i = 0; i < inp; i++){ inputwidth[i] = DEFAULT_WIDTH;}
+	    }
+	    else
+	    { // individual fields width
+		for(int k = 0; k < Math.min(inp,j); k++){
+		    try{ inputwidth[k] = (int) Integer.parseInt(stringtokenizer.nextToken());}
+			catch(Exception e){ System.out.println(" can not parse inteter parameter "+s);}
+		}
 	    }
 	}
 	return inputwidth;

@@ -69,6 +69,7 @@
 * --> vlist(line1,line2,line3....) 
 * version 0.5
 * 3/2011 correct carretposition if using buttons...updateJomeView() , via filer2() ,does correction anyway
+* 2/2012 added ~ as approx symbol \u2248
 */
 
 import fr.ove.openmath.jome.Jome;
@@ -255,15 +256,15 @@ public class MathView extends Applet
     private String filter1(String s1 , int k ){
         int p;String r1;String r2;
 	String d1[] = new String[]{"of","et","en","*","cdot","times","div","N","Z","Q","R","\\",
-	"f^-1(x)","isin","and","or","notin","-->","=>","inf","->",
+	"f^-1(x)","isin","and","or","notin","-->","=>","inf","->","~",
 	"log[2]","log[3]","log[4]","log[5]","log[6]","log[7]","log[8]","log[9]"};
 	
 	String d2[] = new String[]{"\u22C1","\u22C0","\u22C0","\u2027","\u2027","X","\u00F7","\u2115","\u2124","\u211A","\u211D","\u2216",
-	"f\u00AF\u00B9(x)","\u2208","\u22C0","\u22C1","\u2209","rightarrow","\u21D4","\u221E","\u2192",
+	"f\u00AF\u00B9(x)","\u2208","\u22C0","\u22C1","\u2209","rightarrow","\u21D4","\u221E","\u2192","\u2248",
 	"\u00B2log","\u00B3log","\u2074log","\u2075log","\u2076log","\u2077log","\u2078log","\u2079log"};
 	
 	String d3[] = new String[]{" or "," and "," and ","*","*","*","/","N","Z","Q","R","\\",
-	"f^-1(x)"," isin "," and "," or "," notin "," -> "," -> "," inf "," -> ",
+	"f^-1(x)"," isin "," and "," or "," notin "," -> "," -> "," inf "," -> "," ~ ",
 	"log[2]","log[3]","log[4]","log[5]","log[6]","log[7]","log[8]","log[9]"};
 	
 	int d=d1.length;
@@ -453,6 +454,8 @@ public class MathView extends Applet
 	    for (p=1;p<pos;p++){
 	    P=results[p];
 	    // converting wims-module syntax to panel buttons
+	    if(P.equals("~")){PP="\u2248";}
+	    else
 	    if(P.equals("sqrt()")){PP="\u221A";}
 	    else
 	    if(P.equals("sqrt[2]()")){P="sqrt()";PP="<html><sup>2</sup>\u221A</html>";}
