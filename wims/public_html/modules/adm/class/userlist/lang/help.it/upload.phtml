@@ -9,6 +9,10 @@ in un formato testo (txt, csv, o tsv), quindi inviare il file al server.
 È possibile inserire dati sugli iscritti o voti. Per inserire dati sugli
 utenti è necessario che il file non contenga voti.
 <p>
+Si possono inserire voti solo per colonne già esistenti, in altre parole
+prima di caricare i dati da un file occorre creare le colonne (non
+si possono modificare i dati assegnati dal server).
+</p><h3>Authentification via WIMS</h3>
 La prima riga della tabella deve contenere i nomi di ciascuna colonna
 (per esempio, <tt class="wims_code_words">login</tt>, <tt class="wims_code_words">firstname</tt>, ...).
 Nomi validi e relativo significato sono illustrati nella tabella che segue. 
@@ -22,10 +26,20 @@ vengono ignorate dal server.
 È possibile utilizzare questo metodo per aggiungere iscritti (molti alla
 volta), ma in questo caso la tabella dei dati deve contenere informazioni
 suffcienti (in particolare nome, cognome, password).
-<p>
-Si possono inserire voti solo per colonne già esistenti, in altre parole
-prima di caricare i dati da un file occorre creare le colonne (non
-si possono modificare i dati assegnati dal server).
+
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous pouvez remplacer le champ
+<tt class="wims_code_words">login</tt> par le champ
+<tt class="wims_code_words">external_auth</tt>.
+Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
+<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
+(<tt class="wims_code_words">external_auth</tt>) peut être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits. 
+
+
 <p>
 Segue un esempio di file valdo per l'inserimento di nuovi studenti:
 <pre>

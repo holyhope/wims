@@ -15,7 +15,7 @@ dl=!replace word allscores by allscore in $dl
 dl=!replace word name by lastname firstname in $dl
 dl=!replace word allscore by averages sheets exams manuals in $dl
 
-basic=login lastname firstname password email regnum comments participate vars
+basic=login lastname firstname password email regnum comments participate supervise external_auth vars
 sheetcnttot=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheets
 sheetcnt=!itemcnt $activesh
 sh=
@@ -95,7 +95,7 @@ dl2=!translate , to $sep in $dl2
 !endif
 tit=!replace , by $quote,$quote in $quote$tit$quote
 tit=!translate , to $sep in $dl
-!for n in login,password,lastname,firstname,email,regnum,comments,participate
+!for n in login,password,lastname,firstname,email,regnum,comments,participate,supervise,external_auth
  dl2=!replace user_$n by $(quote)user_$n$quote in $dl2
 !next n
 !for n in $dl_var
@@ -115,7 +115,8 @@ scores=no
 $dl3$dl5\
 
 !for u=1 to $usercnt
- !reset user_lastname,user_firstname,user_email,user_regnum,user_comments
+ !reset user_lastname,user_firstname,user_email,user_regnum,user_comments,\
+     user_external_auth,user_supervise,user_participate
  !for n in $dl_v
    !reset user__$n
  !next
@@ -127,6 +128,7 @@ $dl3$dl5\
  !read adm/class/userdef classes,$wims_class,$user_login
  !defread $userdef
   user_participate=!items2words $user_participate
+  user_supervise=!items2words $user_supervise
  !if $scores=yes
   !read adm/class/userscore
   user_average1=$per

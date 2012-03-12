@@ -43,10 +43,8 @@ wims_helper=chapter=3
 ##FIXME php --> just before calling hashlogin
   !reset login_method
   !if $idp_method=ldap 
+!!define login_method
     !read adm/class/initldap 
-    !if $ldap_login!=$empty
-      !set login_method=$idp_method $ldap_login
-    !endif
   !endif
   !if $wims_user=supervisor and $auth_method isitemof $auth_method_list and $auth_user=$empty
     !if $search!=$empty

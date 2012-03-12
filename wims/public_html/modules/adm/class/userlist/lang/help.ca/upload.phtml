@@ -10,6 +10,10 @@ Podeu enviar informació sobre els participants o les notes.
 Per enviar informació en el moment de registre per exemple,
 cap nota ha d'aparèixer en les dades.
 <p>
+Si afegiu notes a la classe, la columna corresponent a aquestes notes
+ja ha d'existir a la classe. En cas contrari, heu de crear-la abans d'enviar
+les notes.
+<h3>Authentification via WIMS</h3>
 La primera fila de la taula ha d'estar formada pels noms de cada columna
  (per exemple, <tt class="wims_code_words">login</tt>, 
  <tt class="wims_code_words">firstname</tt>, ...). Els noms
@@ -24,10 +28,20 @@ Podeu utilitzar aquest mètode per afegir els participants (molts d'ells
 a la vegada): en aquest cas la taula ha de tenir suficient
 informació valuosa per a cada participant a afegir (cognom,
 nom, contrasenya).
-<p>
-Si afegiu notes a la classe, la columna corresponent a aquestes notes
-ja ha d'existir a la classe. En cas contrari, heu de crear-la abans d'enviar
-les notes.
+
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous pouvez remplacer le champ
+<tt class="wims_code_words">login</tt> par le champ
+<tt class="wims_code_words">external_auth</tt>.
+Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
+<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
+(<tt class="wims_code_words">external_auth</tt>) peut être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits. 
+
+
 <p>
 Un exemple de fitxer vàlid per al registre :
 <pre>

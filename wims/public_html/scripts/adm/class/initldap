@@ -49,10 +49,14 @@ ldap_login=!defof class_ldap_login in $authdef
 !set l_login=$ldap_login
 
 ###
-wims_code=lastname,firstname,regnum,photourl,email
-ldap_code=!makelist $$$$$$$ l_ x for x in $wims_code
+!set wims_code=lastname,firstname,regnum,photourl,email
+!set ldap_code=!makelist $$$$$$$ l_ x for x in $wims_code
 !default l_login=$l_uid
 !default ldap_identifiant=$l_login
-ldap_code=!nospace $ldap_code,$l_login
-ldap_code_=!items2words $ldap_code
+!set ldap_code=!nospace $ldap_code,$l_login
+!set ldap_code_=!items2words $ldap_code
+
+!if $ldap_login!=$empty
+  !set login_method=$idp_method $ldap_login
+!endif
 

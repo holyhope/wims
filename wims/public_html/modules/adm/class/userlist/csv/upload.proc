@@ -31,51 +31,23 @@ t=!exec ftype $sdir/user-deposit
 
 !sh grep . $sdir/user-deposit | awk '{print ":"$$0}' | tr '	"' ', ' >$sdir/user_deposit
 file=wimshome/$wims_sesdir/user_deposit
-n=!recordcnt $file
-!if $n<=0
- !exit
-!endif
 
-loglist=
-logtest=
-!for i=1 to $n
- l=!record $i of $file
- !if $gotlogin!=$empty
-  ltest=!item $gotlogin of $l
-  ll=!wordcnt $ltest
-  !if $ll=1 and # notin $ltest
-   ltest_cnt=!charcnt $ltest
-   !if $ltest_cnt<4
-     bad_login=!append item $ltest to $bad_login
-   !else
-     !if @ isin $ltest
-      ltest=!replace internal @ by _____ in _$ltest
-      !!!!modification necessaire car les noms de variables ne peuvent pas 
-      !!!!contenir @ ; aucun login commencant par _ ne peut avoir été accepté, 
-      !!!!donc il n'y a pas de confusion possible    
-     !endif
-     loglist=!append item $ltest to $loglist
-     logtest=!append item $ltest to $logtest
-   !endif
-   dep_$ltest=$l
-  !endif
- !else
-  !if $i>3
-   error=no_login
-   !exit
-  !endif
-  !if login isitemof $l
-   l=!lower $l
-   types=!nospace $l
-   gotlogin=!positionof item login in $l
-   gotlogin=!item 1 of $gotlogin
-  !endif
- !endif
-!next i
+!read csv/gotlogin $file,login
 
 !if $gotlogin=$empty
- error=no_login
- !exit
+ !read adm/class/initclass $wims_class,auth
+ !if $auth_method notitemof $auth_method_list
+  error=no_login
+  !exit
+ !else
+   !read csv/gotlogin $file,external_auth
+   !if $(gotexternal_auth)=$empty
+     error=no_login_external_auth
+     !exit
+   !else
+    extern=yes
+   !endif
+ !endif
 !endif
 
 remark=
@@ -87,10 +59,11 @@ prop=no
 !if noauto iswordof $remark or manual isin $types
  remark=$remark noprop
 !else
+!! pourquoi cette condition ???
  !if firstname isitemof $types and lastname isitemof $types
   prop=yes
-  !read adm/class/userremain.proc
- !endif
+ !endif 
+ !read adm/class/userremain.proc
 !endif
 
 !if manual isin $types
@@ -105,11 +78,12 @@ propcnt=0
 gradecnt=0
 !reset missing erased bad added change badlogin
 processed=yes
-loglist_cnt=!itemcnt $loglist
-!for i = 1 to $loglist_cnt
-  l__=$(loglist[$i])
-  l=$(logtest[$i])
+!! on parcourt la liste des lignes des bons logins
+!for i = 1 to $gotcnt
+  l=$(loglist[$i])
+  l__=$(logtest[$i])
   !reset up_firstname,up_lastname,up_email,up_password,up_comments,up_regnum,up_photourl,up_vars,up_participate,up_external_auth
+  !! fill in the fields ...
   !distribute items $(dep_$l__) into $types
   !for m = 1 to $types_cnt
     typ=$(types[$m])
@@ -119,8 +93,50 @@ loglist_cnt=!itemcnt $loglist
     !endif
   !next
   up_vars=!lines2rows $up_vars
+  !if $extern=yes
+    up_external_auth=$l
+    l=!lookup $l in $sclassdir/.userlist_external
+    !if $l=$empty
+      l=!lookup $l in $sclassdir/.teacherlist_external 
+    !endif
+    !if $l=$empty
+       !if $idp_method=ldap
+!!define login_method
+        !read adm/class/initldap 
+       !endif
+      !read adm/class/hashlogin $up_external_auth,$wims_class,$login_method
+      l=$login
+      !default up_password=!randint 1999999,3000000
+    !endif
+  !endif extern=yes
+
+!! $l is now the login in all cases
   exist=!defof user_exists in wimshome/$userdir/$l
   existsup=$exist
+  !if $existsup=yes
+     lfname=!defof user_lastname,user_firstname in wimshome/$userdir/$l
+     !default up_firstname=$(lfname[2])
+     !default up_lastname=$(lfname[1])
+     !if $up_firstname!=$empty and $up_lastname!=$empty
+       prop=yes
+     !endif
+  !else
+!!FIXME
+    !if $idp_method isitemof $idp_method_list and ($up_firstname=$empty or $up_lastname=$empty)
+!! I am not sure of what we must do : priority to the idp or to the modification of the teacher ??
+      !distribute item $up_firstname, $up_lastname into up_firstname_ or $up_lastname_
+      !read adm/class/idp_$idp_method $up_external_auth
+      !if $up_firstname_!=$empty
+        up_lastname=$up_lastname_
+      !endif
+      !if $up_firstname_!=$empty
+        up_firstname=$up_firstname_
+      !endif
+      !if $up_firstname!=$empty and $up_lastname!=$empty
+       prop=yes
+      !endif
+    !endif
+  !endif 
   !if $wims_superclass!=$empty and $wims_superclass!=$wims_class
    participate=!defof user_participate in wimshome/$userdir/$l
    !if $wims_class notitemof $participate
@@ -128,31 +144,31 @@ loglist_cnt=!itemcnt $loglist
    !endif
   !endif
   !if $exist=yes
-   !if $prop=yes
-    !read adm/class/adduser $l
-   !endif
+    !if $prop=yes
+     !read adm/class/adduser $l
+    !endif
   !else
    exist2=!defof user_exists in wimshome/$userdir/.$l
    !if $exist2=yes
     erased=!append item $l to $erased
    !else
     missing=!append item $l to $missing
-    !if $up_firstname!=$empty and $up_lastname!=$empty and \
-	($existsup=yes or $up_password!=$empty)
+    !! ici aussi on a besoin d'avoir le nom et prenom
+    !if $existsup=yes or ($up_firstname!=$empty and $up_lastname!=$empty and $up_password!=$empty)
      !if $prop=yes
       !if $userremain>0
        !read adm/class/adduser $l
        !if $l notitemof $bad
         added=!append item $l to $added
-	userremain=$[$userremain-1]
-       !endif
+	    userremain=$[$userremain-1]
+       !endif  l notitemof bad
       !else
        remark=$remark full
-      !endif
-     !endif
-    !endif
-   !endif
-  !endif
+      !endif userremain
+     !endif prop=yes
+    !endif firstname ... non empty
+   !endif exist2=yes
+  !endif exist=yes
 !next l
 
 !if $change!=$empty

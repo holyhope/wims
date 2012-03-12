@@ -3,14 +3,23 @@
 \
 Envoyer les données d'un tableur à la classe
 
+<p>
 Pour envoyer des données de votre tableur à la classe, sauvez les données
 dans un fichier au format texte (txt, csv, ou tsv), puis envoyez le fichier 
 au serveur.
-<p>
+</p><p>
 Vous pouvez ainsi envoyer des informations sur les participants ou des notes.
-Pour envoyer les informations au moment de l'inscription par exemple,
+Lorsque les informations sont envoyées dans le but d'une inscription,
 aucune note ne doit apparaître dans les données.
 <p>
+Si vous ajoutez des notes à la classe, la colonne correspondant à ces notes
+doit déjà exister dans la classe. Sinon, vous devez la créer avant d'envoyer
+les notes.
+</p><p>
+Plusieurs cas sont possibles selon que vous utilisez l'authentification de WIMS
+ou une authentification avec éventuellement une identification par un ldap. 
+
+<h3>Cas d'une authentification via WIMS</h3>
 La première ligne du tableau doit être formée des noms de chaque colonne
  (par exemple, <tt class="wims_code_words">login</tt>, <tt class="wims_code_words">firstname</tt>, ...). Les noms
 de colonnes valables et leur signification sont donnés dans le tableau
@@ -21,14 +30,21 @@ reconnaître les participants). Si vous voulez qu'une ligne soit ignorée,
 placez un caractère <tt class="wims_code_words">#</tt> dans le champ 
 <tt class="wims_code_words">login</tt>.
 <p>
-Vous pouvez utiliser cette méthode pour ajouter beaucoup de participants d'un seul coup :
-dans ce cas le tableau doit contenir suffisamment
+Le tableau doit contenir suffisamment
 d'information valable pour chaque participant à ajouter (nom de famille,
 prénom, mot de passe).
-<p>
-Si vous ajoutez des notes à la classe, la colonne correspondant à ces notes
-doit déjà exister dans la classe. Sinon, vous devez la créer avant d'envoyer
-les notes.
+<h3>Cas d'une authentification externe</h3>
+Le format du fichier est le même, mais vous pouvez remplacer le champ
+<tt class="wims_code_words">login</tt> par le champ
+<tt class="wims_code_words">external_auth</tt>.
+Vous devez compléter obligatoirement avec le nom et le prénom (<tt class="wims_code_words">lastname</tt>,
+<tt class="wims_code_words">firstname</tt>) à moins que vous ne bénéficiez 
+d'une liaison avec un annuaire, ldap par exemple (déclarée dans la configuration de la classe).
+Dans ce cas, et dans ce cas seulement, seul l'identifiant externe 
+(<tt class="wims_code_words">external_auth</tt>) peut être mis.
+Rappelons qu'il est totalement déconseillé de changer de procédure d'authentification
+une fois que des participants sont inscrits. 
+
 <p>
 Un exemple de fichier valable pour l'inscription :
 <pre>
