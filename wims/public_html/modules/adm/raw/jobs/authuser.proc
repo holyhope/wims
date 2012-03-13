@@ -7,9 +7,18 @@
  !exit
 !endif
 
+!if hashlogin iswordof $option
+ quser_orig=$quser
+ !read adm/class/hashlogin $quser_orig,$qclass,
+ quser=$login
+!endif
+
 #Puis on verifie l'existence de $quser
 !read scripts/check.user
 !if $error!=$empty
+ !if hashlogin iswordof $option
+   error=$error: $login
+ !endif
  !exit
 !endif
 
