@@ -67,9 +67,13 @@ a lo menos\
   Límite de participantes de la $name_classe\
   Acceso seguro\
   Opcional\
-  Nombres de las estaciones de trabajo desde las que efectuará las operaciones sensibles sobre su $name_classe.\
   Esta clave es de un solo uso. ¡No puede usarse para conectar a la $name_classe!\
- Clave de la $name_classe\
-  into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
+  Clave de la $name_classe\
+  into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
 
- !exit
+!set name_host=!nosubst Nombres de las estaciones de trabajo desde las que efectuará las operaciones\
+ sensibles sobre su $name_classe. Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
+ sensible (conseillé). Mettre le mot <tt class="wims_code_words">all</tt> désactivera cette mesure de sécurité.
+
+!set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
+(fourni par votre ENT par exemple).

@@ -65,9 +65,14 @@ zichzelf te registreren; dit wachtwoord moet dus niet voor studenten worden gebr
 Limiet voor het aantal deelnemers aan uw $name_classe\
 Beveiligde toegang\
 Optioneel\
-Optionele beveiling.<br>Een lijst met ip-adressen van waaruit de administratie voor uw $name_classe kan worden afgehandeld.<br>(alleen computers met deze ip-adressen krijgen administratieve toegang)\
 Dit is een &eacute;&eacute;nmalige code, en is nergens anders voor te gebruiken !\
 Code van $name_classe\
- into name_help_date,name_help_limit,name_secure,name_optional,name_host,name_warning_code,name_code
+External authentification CAS (optional)\
+ into name_help_date,name_help_limit,name_secure,name_optional,name_warning_code,name_code,name_cas
 
-!exit
+!set name_host=!nosubst Noms des postes à partir desquels vous effectuerez les opérations sensibles \
+ dans votre $name_classe. Si vous ne mettez rien, un email vous sera envoyé à chaque opération \
+ sensible (conseillé). Mettre le mot <tt class="wims_code_words">all</tt> désactivera cette mesure de sécurité.
+
+!set name_cas_help=Ne remplissez ce champ que si vous désirez utiliser l'authentification externe du type CAS\
+(fourni par votre ENT par exemple).
