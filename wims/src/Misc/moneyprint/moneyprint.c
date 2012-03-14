@@ -23,14 +23,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_DECIMALS 15
+
 int main( int argc , char *argv[]){
     /* test for correct argument */
     int DECIMALS;
 
-    if(argv[2] != NULL){DECIMALS = atoi(argv[2]);}else{DECIMALS = 2;}
+    if(argv[2] != NULL){
+	DECIMALS = atoi(argv[2]);
+	if(DECIMALS > 15){fprintf(stdout,"error ! maximum amount of decimals is %d \n",MAX_DECIMALS);exit(0);}
+    }
+    else
+    {
+	DECIMALS = 2;
+    }
 
     if( argc != 2 && argc != 3){
-	fprintf(stdout,"error !\nusage:\n!exec moneyprint $your_wims_item_list $precision_word\nexample:\nmoney=!exec moneyprint 1.2,30.1,.4,-.23123456 2\nThe result is a comma separated list: 1.20,30.10,0.40,-0.23\n using 2 decimals\nNote: no calculations are done.\nNote: all numbers will be rounded to 2 decimals.\n");
+	fprintf(stdout,"error !\nusage:\n!exec moneyprint $your_wims_item_list $precision_word\nexample:\nmoney=!exec moneyprint 1.2,30.1,.4,-.23123456 2\nThe result is a comma separated list: 1.20,30.10,0.40,-0.23\n using 2 decimals\nNote: no calculations are done.\nNo spaces allowed \nNote: all numbers will be rounded to 2 decimals.\n");
 	exit(0);
     }
 
@@ -52,22 +61,7 @@ int main( int argc , char *argv[]){
     ptr = (char *) strtok(inp,",");
     while( ptr != NULL){
 	if(cnt != 0 ){fprintf( stdout ,",");}
-	switch (DECIMALS){
-	    
-	    case 0  : fprintf( stdout , "%.0f" , atof(ptr) );break;
-	    case 1  : fprintf( stdout , "%.1f" , atof(ptr) );break;
-	    case 2  : fprintf( stdout , "%.2f" , atof(ptr) );break;
-	    case 3  : fprintf( stdout , "%.3f" , atof(ptr) );break;
-	    case 4  : fprintf( stdout , "%.4f" , atof(ptr) );break;
-	    case 5  : fprintf( stdout , "%.5f" , atof(ptr) );break;
-	    case 6  : fprintf( stdout , "%.6f" , atof(ptr) );break;
-	    case 7  : fprintf( stdout , "%.7f" , atof(ptr) );break;
-	    case 8  : fprintf( stdout , "%.8f" , atof(ptr) );break;
-	    case 9  : fprintf( stdout , "%.9f" , atof(ptr) );break;
-	    case 10 : fprintf( stdout , "%.10f", atof(ptr) );break;
-
-	    default : fprintf( stdout , "%.2f" , atof(ptr) );
-	}
+	fprintf( stdout , "%.*f" , DECIMALS , atof(ptr) );
 	cnt=1;
 	ptr = (char *) strtok(NULL,",");
     }
