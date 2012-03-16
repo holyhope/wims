@@ -2,24 +2,37 @@ class_lang=!defof class_lang in wimshome/log/classes/$wims_class/.def
 class_lang=!word 1 of $class_lang
 !default class_lang=en
 
-!sh cd $wims_home/$wims_sesdir\
- tar -xzf webget.data\
- if [ ! -d $cn_class ]; then exit; fi\
- cd $cn_class\
- for i in score/*.exam\
+tmpdir=$wims_home/tmp/$wims_sesdir
+!sh cd $wims_home/$wims_sesdir;\
+ tar -xzf webget.data;\
+ if [ ! -d $cn_class ]; then exit; fi;\
+ cd $cn_class;\
+ for i in score/*.exam ;\
  do\
-  cat $i $wims_home/log/classes/$wims_class/$i 2>/dev/null | sort -n -k 4 | uniq >$wims_home/tmp\
-  mv -f $wims_home/tmp $wims_home/log/classes/$wims_class/$i >/dev/null\
-  rm -f $i >/dev/null\
- done\
- for i in score/* noscore/*\
+  echo "cat $$i $wims_home/log/classes/$wims_class/$$i" >>/tmp/file.txt;\
+  cat $$i $wims_home/log/classes/$wims_class/$$i 2>/dev/null | sort -n -k 4 | uniq >$tmpdir/tmpdata ;\
+  mv -f $tmpdir/tmpdata $wims_home/log/classes/$wims_class/$$i >/dev/null;\
+  rm -f $$i >/dev/null ;\
+ done 
+
+!sh cd $wims_home/$wims_sesdir/$cn_class;\
+ rm -f score/*.bin >/dev/null
+
+!sh cd $wims_home/$wims_sesdir/$cn_class;\
+ for i in score/* noscore/* ;\
  do\
-  cat $i $wims_home/log/classes/$wims_class/$i 2>/dev/null | sort | uniq >$wims_home/tmp\
-  mv -f $wims_home/tmp $wims_home/log/classes/$wims_class/$i >/dev/null\
- done\
- rm -Rf score noscore .[0-9]* .E[0-9]* .parmreg .security .log .log.auth .def neighbors scoreavg exostat >/dev/null\
- . $wims_home/bin/dircptest\
- $$dircp -u . $wims_home/log/classes/$wims_class\
- cd $wims_home/$wims_sesdir\
+  echo "cat $$i $wims_home/log/classes/$wims_class/$$i" >>/tmp/file.txt ;\
+  cat $$i $wims_home/log/classes/$wims_class/$$i 2>/dev/null | sort | uniq >$tmpdir/tmpdata;\
+  mv -f $tmpdir/tmpdata $wims_home/log/classes/$wims_class/$$i >/dev/null;\
+ done
+
+!! FIXME: check bashism, can we avoid dircptest ??
+!sh cd $wims_home/$wims_sesdir/$cn_class;\
+ rm -Rf score noscore .[0-9]* .E[0-9]* .parmreg .security .log .log.auth .def neighbors scoreavg exostat >/dev/null;\
+ . $wims_home/bin/dircptest ;\
+ echo $$dircp >/tmp/file.txt;\
+ $$dircp -u . $wims_home/log/classes/$wims_class
+
+!sh cd $wims_home/$wims_sesdir; \
  rm -Rf webget.* $cn_class
 

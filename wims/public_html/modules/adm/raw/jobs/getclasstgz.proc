@@ -18,6 +18,8 @@ header=Content-Type: application/x-gzip\
 # l'ancien code ne semblait pas fonctionner. je le remplace ici :
 # j'en profite pour exclure tous les fichiers ".DS_Store" eventuellement ajoutes par le systeme MacOs
 
+!! Need to be careful/fix: this will not work for subclasses (in that case $qclass=nnnnnn_1 
+!! but directory is nnnnnn/1)
 !sh cd $wims_home/log/classes\
     tar -hczf $qclass.tgz --exclude '.DS_Store' $qclass\
     mv $qclass.tgz $wims_home/$wims_sesdir
