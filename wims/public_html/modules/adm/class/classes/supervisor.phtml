@@ -25,9 +25,11 @@
  !if $sccnt>0
   <p>
   $table_header
+!!<table border="1">
   <caption>$name_portalandgroup</caption>
-  $table_hdtr<th>$wims_name_name</th><th>$wims_name_action</th><th>$wims_name_nameteacher</th>
-  <th colspan="2">$wims_name_Supervisor</th></tr>
+  $table_hdtr<th rowspan="2">$wims_name_name</th><th>$wims_name_teacher</th><th colspan=2>$wims_name_nameteacher/$wims_name_Supervisor</th></tr>
+  $table_hdtr<th>$wims_name_action</th><th>$wims_name_name</th><th>$wims_name_action</th>
+!!  <th colspan="2">$wims_name_Supervisor</th></tr>
   !for i=1 to $sccnt
    !set l=!line $i of $sclasses
    !distribute items $l into code,expire,in,cl,la,ty,lv,pswd
@@ -36,8 +38,8 @@
    
    $table_tr
    <td align="center">
-   $in<br>$cl
-  </td>
+    $in<br>$cl
+   </td>
    !reset class_auth
    !defread wimshome/log/classes/$code/.def
    !read adm/class/initclass $code,auth
@@ -45,15 +47,15 @@
      !read supervisor2.phtml
    !else
    <td align="center">
-   !set wims_ref_class=wims_button
-   !href module=$module&type=authparticipant&class=$code $wims_name_Enter
+    !set wims_ref_class=wims_button
+    !href module=$module&type=authparticipant&class=$code $wims_name_Enter
    </td>
    !endif 
    <td align="center">$supv</td>
    <td align="center">
-   !set wims_ref_class=wims_button
-   !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
-  </td>
+    !set wims_ref_class=wims_button
+    !href module=$module&type=authsupervisor&class=$code $wims_name_Enter
+   </td>
   !next i  
   $table_end
  !endif
