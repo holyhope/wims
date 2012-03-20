@@ -58,9 +58,8 @@ into name_noaccount,name_searchclass,name_noavailable,name_nofound,name_direct
 !let classification=Escuela,Colegio,Liceo,Universidad,otro
 
 !set name_text1=Elija la línea correspondiente a la clase o al centro educativo que le corresponda. \
- <p>Si aún no se ha inscrito, pulse en <span class="wims_button disabled">$name_register</span> (si la clase tiene el estatuto de\
-<span class="wims_label">$name_protected</span>, necesita que el profesor o el administrador le proporcione la contraseña).\
- <p>De lo contrario pulse <span class="wims_button disabled">$wims_name_Enter</span> para entrar.
+<p>Pulse <span class="wims_button disabled">$wims_name_Enter</span> para entrar, inscrito (si la clase tiene el estatuto de\
+<span class="wims_label">$name_protected</span>, necesita que el profesor o el administrador le proporcione la contraseña).
 
 !set name_text2=Para pasar a $name_level_else $sousclasses_else, elija el nombre de la clase de la tabla de abajo.
 !set name_text3=O elegir $name_level_else $sousclasses_else de la tabla de abajo.
@@ -85,7 +84,8 @@ escriba parte de una palabra en el título o en el nombre de la profesora.
 dar una palabra más específica.
 
 !set name_supervisor_text=!nosubst Pulse sobre el nombre de su centro educativo o clase\
-  para entrar como profesor. La inscripción a esta parte está reservada a los profesores.
+  para entrar como profesor.\
+<p>La inscripción a esta parte está reservada a los profesores.
 
  !if $type=example
    !set name_example1=Lo sentimos, no se han encontrado clases de ejemplo en este sitio.
