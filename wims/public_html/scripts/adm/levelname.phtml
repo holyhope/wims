@@ -1,0 +1,15 @@
+!reset lang_exists
+!read adm/lang/levelname.phtml.$lang
+!if $lang_exists!=yes
+ !read adm/lang/levelname.phtml.en
+!endif
+
+!! keep this line for compatibility since old variable cleanup
+!set llist=$wims_listlevel
+!set lnamelist=$name_wims_listlevel
+
+!let nbit=!itemcnt $wims_listlevel
+!for i=1 to $nbit
+ !let name_wims_level_$(wims_listlevel[$i])=$(name_wims_listlevel[$i])
+!next it
+

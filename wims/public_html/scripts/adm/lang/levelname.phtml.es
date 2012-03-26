@@ -20,6 +20,4 @@
 	Universidad año 5,\
 	Tercer ciclo
 
-!! keep this line for compatibility since old variable cleanup
-!set llist=$wims_levellist
-!set lnamelist=$wims_name_levellist
+
