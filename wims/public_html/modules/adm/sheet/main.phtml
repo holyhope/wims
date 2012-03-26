@@ -38,9 +38,14 @@ to $wims_menu_items
 !set intro=!record 0 of $data
 !set dur=!words2items $(intro[3;])
 !distribute items $dur into duration,year
+!if ? notin $duration
+ !let duration=- $name_duration $duration mn
+!else
+ !let duration=$empty
+!endif
 !read adm/title.phtml 3\
 $sheet_title\
-$name_level $(intro[5;]), $name_duration $duration mn ($year)<br>$(intro[8;])\
+$name_level : $(name_wims_level_$(intro[5;])) $duration - $year<br>$(intro[8;])\
 
 <div class="wims_sheet_desc">$sheet_desc</div>
 <p id="sheet_remark">$sheet_remark</p>
