@@ -1,7 +1,7 @@
+!set lang_exists=yes
+!set wims_listlevel=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G
 
-!set llist=E1,E2,E3,E4,E5,E6,H1,H2,H3,H4,H5,H6,U1,U2,U3,U4,U5,G
-
-!set lnamelist=Lagere school leerjaar 1,\
+!set name_wims_listlevel=Lagere school leerjaar 1,\
 	Lagere school leerjaar 2,\
 	Lagere school leerjaar 3,\
 	Lagere school leerjaar 4,\
@@ -20,3 +20,6 @@
 	Universiteit jaar 5,\
 	Doctoraal studie
 
+!! keep this line for compatibility since old variable cleanup
+!set llist=$wims_levellist
+!set lnamelist=$wims_name_levellist
