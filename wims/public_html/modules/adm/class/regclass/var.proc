@@ -1,5 +1,5 @@
 
-!read adm/language names.phtml
+!read adm/language lang/names.phtml
 !read adm/lang/date.phtml.$modu_lang
 !read adm/class/classname.phtml $description\
 $institution
@@ -131,7 +131,7 @@ test=0
  error=getpass
  !exit
 !endif
- 
+
 !if $test<1
  error=no_right
  !exit
@@ -170,7 +170,10 @@ thisday=!char 7,8 of $today
  !reset code,password,passsup
  Cltype=$cltype
 !endif
-!read adm/language names.phtml
+
+!! ----------------------------------- FIXME why read two times in the same file ?
+!read adm/language lang/names.phtml
+!! ---------------------------------------------------
 
 !if $step=1
  code=
