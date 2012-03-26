@@ -1,49 +1,44 @@
- !if $wims_read_parm=$empty
+!if $wims_read_parm=$empty
    !let code=$wims_class
- !else
-   !let code=$wims_read_parm
- !endif
- Divers liens :
-
-  <ul>
+!else
+  !let code=$wims_read_parm
+!endif
+Divers liens :
+<ul>
  <li>Le lien
- 
-  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=fr&module=adm/class/classes&type=authsupervisor&class=$code"
-  >http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code</a>
-  vous conduit à la page de maintenance $name_classesss (préparation de feuilles
-  de travail, liste des participants et de leurs progressions, etc.). </li>
+  <a href="http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=fr&module=adm/class/classes&type=authsupervisor&class=$code">http://$httpd_HTTP_HOST$httpd_SCRIPT_NAME?lang=$lang&module=adm/class/classes&type=authsupervisor&class=$code</a>
+  vous conduit à la page de maintenance $name_classesss (préparation de feuilles de travail, liste des participants et de leurs progressions, etc.).
+ <p></li>
  <li>Le lien
- !set script_out=$wims_ref_name?lang=$lang&module=adm/class/classes&type=authparticipant&class=$code&subclass=yes
- !if $class_auth=cas
+  !set script_out=$wims_ref_name?lang=$lang&module=adm/class/classes&type=authparticipant&class=$code&subclass=yes
+  !if $class_auth=cas
    !read adm/codeurl $script_out
   !endif
   <a href="$(link_)$script_out">$(link_)$script_out</a>
   permet à vos élèves de s'inscrire dans une classe et/ou d'y entrer lorsqu'ils sont inscrits
-   !if $Cltype>=2
-    lorsque vous aurez créé les classes du $name_classe. 
-   !endif
-   !if $password!=$empty
-    (Ils auront besoin du mot de passe de la classe pour s'inscrire.)
-   !endif
-   Les feuilles
-  de travail que vous préparerez leur seront accessibles à partir de cette 
-  page d'accueil.
-</li>
   !if $Cltype>=2
-  <li>Le lien
-  !set script_out=$wims_ref_name?lang=$lang&module=adm/class/reguser&class=$code
-  !if $class_auth=cas
-    !read adm/codeurl $wims_ref_name?lang=$lang&module=adm/class/reguser&class=$code
+    lorsque vous aurez créé les classes du $name_classe.
   !endif
-   <a href="$(link_)$script_out">$(link_)$script_out</a>
-  permet aux enseignants de s'inscrire dans votre $name_classe (ou vous permet de les inscrire).
   !if $password!=$empty
     (Ils auront besoin du mot de passe de la classe pour s'inscrire.)
-   !endif
   !endif
-  </li>
- </ul>
- <span class="wims_warning">Important</span>. Vous pouvez sauver ces liens dans votre navigateur 
- pour pouvoir avoir un accès direct à votre classe.<br>
- Il est conseillé de garder aussi le numéro de la classe qui apparaît ici : <tt class="wims_code_words">$code</tt>. 
+  Les feuilles de travail que vous préparerez leur seront accessibles à partir de cette page d'accueil.
+ <p></li>
+ !if $Cltype>=2
+  <li>Le lien
+   !set script_out=$wims_ref_name?lang=$lang&module=adm/class/reguser&class=$code
+   !if $class_auth=cas
+     !read adm/codeurl $wims_ref_name?lang=$lang&module=adm/class/reguser&class=$code
+   !endif
+   <a href="$(link_)$script_out">$(link_)$script_out</a>
+   permet aux enseignants de s'inscrire dans votre $name_classe (ou vous permet de les inscrire).
+   !if $password!=$empty
+     (Ils auront besoin du mot de passe de la classe pour s'inscrire.)
+   !endif
+  <p></li>
+ !endif
+</ul>
+<span class="wims_warning">Important</span>. Vous pouvez sauver ces liens dans votre navigateur pour pouvoir avoir un accès direct à votre classe.
+<p>
+Il est conseillé de garder aussi le numéro de la classe qui apparaît ici : <tt class="wims_code_words">$code</tt>.
 
