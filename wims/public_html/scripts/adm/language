@@ -1,10 +1,16 @@
 !!##should allow to have only one module by language
 
 !let modu_lang=$lang
-!read lang/names.phtml.$modu_lang
+!if $wims_read_parm=names.phtml
+ !let script_file=lang/names.phtml
+!else
+ !let script_file=$wims_read_parm
+!endif
+!reset lang_exists
+!read $(script_file).$modu_lang
 !if $lang_exists!=yes
    !let modu_lang=en
-   !read lang/names.phtml.$modu_lang
+   !read $(script_file).$modu_lang
 !endif
 
 !set module_language=$lang
