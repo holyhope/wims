@@ -134,14 +134,19 @@ $table_tr<td align="right">$name_limit
 !href cmd=help&special_parm=config&special_parm2=exolog $wims_name_help
 </td>
 !default class_exolog=0
-<td><input size="3" name="up_exolog" value="$class_exolog"></td>
+<td>
+ !let up_exolog=$class_exolog
+ !formselect up_exolog from 0 to $wims_exolog_limit
+</td>
 <td align="right">$name_register_exam
-&nbsp;
-!set wims_ref_class=wims_button_help
-!href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
-!default class_examlog=$wims_examlog_limit
-<input size="3" name="up_examlog" value="$class_examlog">
-</td><td>$name_visible
+ &nbsp;
+ !set wims_ref_class=wims_button_help
+ !href cmd=help&special_parm=config&special_parm2=examlog $wims_name_help
+ !default class_examlog=$wims_examlog_limit
+ !let up_examlog=$class_examlog
+ !formselect up_examlog from 0 to $wims_examlog_limit
+</td>
+<td>$name_visible
 &nbsp;
 !set wims_ref_class=wims_button_help
 !href cmd=help&special_parm=config&special_parm2=examshow $wims_name_help
