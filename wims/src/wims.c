@@ -167,8 +167,8 @@ char nowstr[32];
 	/* Resource limits. Capital names are reserved by system. */
 int rlimit_cpu=20; 	/* cpu time in seconds */
 int rlimit_fsize=8388608;/* file size */
-int rlimit_as=614457600;/* virtual memory size */
-int rlimit_data=204857600;/* data segment size; maxima requires a lot */
+int rlimit_as=25769607170;/* virtual memory size */
+int rlimit_data=8589869056;/* data segment size; maxima requires a lot (must be lower than rlimit_as)*/
 int rlimit_stack=2097152;/* stack size */
 int rlimit_core=0;	/* core dump size */
 int rlimit_rss=16777216;	/* resident size */
