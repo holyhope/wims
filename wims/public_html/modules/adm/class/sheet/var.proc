@@ -316,7 +316,7 @@ $comment
 # delete an item
 !if $job=delete and $delete>0 and $delete<=$exocnt
  !distribute items -1,$delete into update_field,exo
- !read update.exo
+ !read adm/class/update.exo
  delete=
  exocnt=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$sheet
 !endif
@@ -327,10 +327,10 @@ $comment
  y_=!record $moveup   of wimshome/log/classes/$wims_class/sheets/.sheet$sheet
  !distribute items 0,$[$moveup-1] into update_field,exo
  update_content=$y_
- !read update.exo
+ !read adm/class/update.exo
  !distribute items 0,$moveup into update_field,exo
  update_content=$x_
- !read update.exo
+ !read adm/class/update.exo
 !endif
 
 # modify an item
@@ -377,7 +377,7 @@ $mod_feedback
    update_field=9
  !endif
  exo=$modif
- !read update.exo
+ !read adm/class/update.exo
  !distribute items $ into mod_title,mod_desc,mod_weight,mod_require,mod_dep,mod_comment,mod_feedback
 !endif
 
