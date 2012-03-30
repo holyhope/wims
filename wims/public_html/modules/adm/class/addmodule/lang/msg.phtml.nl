@@ -43,4 +43,9 @@ punten aantal voor deze sommen.
 !exit
 !endif
 
+!if $error=bad_exo
+ Aucune série d'exercices ne correspond aux informations que vous avez indiquées.
+ !exit
+!endif
+
 !msg $error

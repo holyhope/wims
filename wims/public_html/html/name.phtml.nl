@@ -153,7 +153,7 @@
 
 !! **** Class Relative Names ***
 !if $wims_class!=$empty
- !distribute items Homepagina van je klas,Toevoegen aan werkblad,\
+ !distribute items Homepagina van je klas,Toevoegen aan werkblad,Insérer comme aide à un exercice d'une feuille,\
  Schrijf naar je docent,Uitloggen,\
  De antwoorden zijn reeds verwerkt en de cijfers berekend,\
  Je hebt het behalen van cijfers opgeschort,\
@@ -162,7 +162,7 @@
  Bewaar de details van deze oefening,\
  Werkblad startpagina,\
  Lesmateriaal in werkvolgorde,\
- into wims_name_class_home,wims_name_add,\
+ into wims_name_class_home,wims_name_add,wims_name_addh,\
  wims_name_wsup,wims_name_visitor,\
  wims_name_scoreclose,\
  wims_name_scoresuspend,\

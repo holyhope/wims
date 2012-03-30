@@ -4,7 +4,7 @@
 !set wims_name_moduback=Vuelta al módulo
 
 !set name_choose=Elija la hoja en la cual quiere insertar el elemento de trabajo&nbsp;
-!set name_title=Insertar un módulo en una hoja de trabajo
+!set name_title=Insertar en una hoja de trabajo
 
 !set name_insert=Quiere insertar el elemento de trabajo
 !set name_parm= con los parámetros de inicialización
@@ -16,3 +16,9 @@
 
 !set name_weight=Peso de los puntos obtenidos en este trabajo (para el cálculo de la media)
 !set name_end=!nosubst  El recurso <span class="wims_mod_title">$title</span> se ha añadido con éxito a la hoja de trabajo
+
+!set name_choose_exo=Cette ressource sera insérée comme une nouvelle série d'exercices de la feuille.
+!set name_choose_helpexo=Cette ressource sera insérée comme une aide pour l'une des séries d'exercices de la feuille lorsque la note est inférieure à
+!set name_choose_series=Cliquez sur le nom de la séries d'exercices à laquelle vous souhaitez ajouter l'aide
+!set name_actualhelp=Aide actuelle
+!set name_series=Séries d'exercices
