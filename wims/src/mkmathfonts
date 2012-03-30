@@ -48,12 +48,12 @@ Lleftpar='\left(';  Rleftpar='\right.'
 Lrightpar='\left.'; Rrightpar='\right)'
 Lleftbrace='\left\{'; Rleftbrace='\right.'
 Lrightbrace='\left.'; Rrightbrace='\right\}'
-add='\mathstrut\cr'
+add='\\ '
 in=$add$add
 for size in 2 3; do
   for type in leftpar leftbrace rightpar rightbrace; do
     eval L='$'L$type; eval R='$'R$type;
-    eval $type$size=\'$L\\matrix\{$in\}$R\'
+    eval $type$size=\'$L\\begin\{array\}\{c\}$in\\end\{array\}$R\'
   done
   in=$in$add
 done
@@ -62,7 +62,7 @@ in=$in$add
 for size in 4 5 6 7 8 9 10; do
   for type in leftpar leftbrace rightpar rightbrace; do
     eval L='$'L$type; eval R='$'R$type;
-    eval $type$size=\'$L\\matrix\{$in\}$R\'
+    eval $type$size=\'$L\\begin\{array\}\{c\}$in\\end\{array\}$R\'
   done
   in=$in$add
 done
@@ -107,13 +107,13 @@ do
     texgif_outfile=$FONT_DIR/$density/euf$F.gif
     if [ ! -s $texgif_outfile ]; then
       echo $density/euf$f
-      texgif_src="\$ \\goth $f \$"
+      texgif_src="\$ \\goth{$f} \$"
       $tex2gif >>$texgifout
     fi
     texgif_outfile=$FONT_DIR/$density/cal$F.gif
     if [ ! -s $texgif_outfile ]; then
       echo $density/cal$f
-      texgif_src="\$ \\cal $f \$"
+      texgif_src="\$ \\mathcal{$f} \$"
       $tex2gif >>$texgifout
     fi
 #lower case 
@@ -147,4 +147,4 @@ do
   done
 done
 
-rm -f $HOME_DIR/tmp/texgif.*
+#rm -f $HOME_DIR/tmp/texgif.*
