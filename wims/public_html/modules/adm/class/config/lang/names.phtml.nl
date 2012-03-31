@@ -21,7 +21,6 @@ name_cdt,name_sup,name_forum,name_forum_mes
 oefeningen,werkbladen,proefwerken,documenten,studenten\
 into name_motds,name_exos,name_sheets,name_exams,name_docs,name_users
 
-
 !if $job=arch
  !set title=Backup en Herstel
  !set name_intro=Er kan een backup archief van uw klas worden aangemaakt, in het volgende formaat
@@ -184,6 +183,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  geeft toestemming bepaald materiaal te delen. U hebt geen toestemming dit zelfde materiaal verder uit te lenen.\
  Ga alleen door als zeker weey dat die niet van toepassing is.
   
+ 
  !distribute lines Buurklassen\
     heeft uw klas nog nioet geaccepteerd als buur\
     accepteerd u als buur voor\
@@ -209,8 +209,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
  !set name_inactif=!nosubst Het ge&iuml;mporteerde materiaal $(name_$itype) is op inactief gezet, \
  zodat u het naar uw eigen wensen kunt aanpassen.
  
- !set name_accept=!nosubst Accepteert u de klas \
- <em><font color="blue">$nei_description</font></em> als buurklas ?
+ !set name_accept=!nosubst Accepteert u de klas <em><font color="blue">$nei_description</font></em> als buurklas ?
    
  !if $job2=stopshare
   !set title=Stop de deling
@@ -284,7 +283,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    Gecontroleer de andere klas \
    De verbinding werkt. Date ontvangen van de verbonden server\
    Voor het maken van een verbinding met bovenstaande server, specificeer \
-   Identifier of the remote class\
+   Identificeer de netwerk verbonden klas\
    Als de klas op de verbonden server leeg is, zal deze server een nieuwe klas aanmaken. De eigenschappen van die klas worden gebaseerd op deze klas\
    Voer veranderingen aan deze klas automatisch door aan de klas op de verbonden server\
    Sta de klas op de verbonden server toe deze klas te wijzigen\
@@ -292,11 +291,12 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
    U hebt de volgende verbindingen gedeclareerd met andere servers.\
    Server\
    Op dit moment herkend deze WIMS server de volgende servers.\
+   Acties bij deze verbinding.\
  into wims_name_connecttest,wims_name_classtest,wims_name_addconnection,wims_name_connectmanage,name_prompt1,\
    name_prompt2,name_synchronize,name_withotherone,name_remoteclass,name_remoteserver,wims_name_Manage,\
    wims_name_destroy,name_working,name_error1,name_errornoreply,name_errorreject,name_check,name_data,\
    name_toconnect,name_identifier,name_help,name_automatically,name_allow,name_noconnection,name_declaration,\
-   wims_name_server,name_listserver1
+   wims_name_server,name_listserver1,name_connexion_action
 
  !goto commun
 !endif
@@ -351,15 +351,13 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
 
 !if $job=authtype
  !set title=External authentificatie
- !!!set name_intro_authtype=Kies <tt class="wims_code_words">ldap</tt> en vul dit formulier in \
-  als u een ldap server gebruikt voor authentificatie.
- !set name_intro_authtype=Choisissez selon l'authentification et l'identification désirées\
- et remplissez les champs utiles correspondants.
- !set name_method_list= authentification par wims, authentification via CAS, \
- authentification via CAS et identification par un ldap,\
- authentification et identification par un ldap,\
- authentification via CAS et identification via php,\
- authentification et identification via php
+ !set name_intro_authtype=Kies de gewenste authentificatie en identificatie methode \
+ en vul de bijhorende invulvelden in.
+ !set name_method_list= authentificatie door wims, authentificatie via CAS, \
+ authentificatie via CAS en identificatie door ldap,\
+ authentificatie en identificatie door ldap,\
+ authentificatie via CAS en identificatie via php,\
+ authentificatie en identificatie via php
  !goto commun
 !endif
 
@@ -453,8 +451,7 @@ name_import_resource,name_youcan,name_fromtheclass,name_click_ok
     name_visible,name_apparence,name_pref,name_dependant_zone,name_neigh,name_link,name_useauth,name_ldap,name_index,\
     name_change,name_load,name_restriction1,name_restriction2,name_score,name_clean,\
     name_config,name_disk,name_limit2,name_mix_auth,name_config_authscoresuspend,name_config_exotitleform
-    !set name_config_exotitleformoption=Aucun,Titre de l'exercice,Numéro de la feuille et de l'exercice,Titre de la feuille et numéro de l'exercice,Titre de la feuille et titre de l'exercice dans la feuille
-
+    !set name_config_exotitleformoption=Geen,Naam van de oefening,Werkblad nummer,Naam van het werkblad en oefening,Naam van het werkblad en naam van de oefening in dit werkblad
 
 !endif
 
@@ -474,7 +471,7 @@ Uiterlijk\
 Score instellingen\
 Netwerkverbonden Server adressen\
 of\
-External authentification\
+Externe authentificatie en identificatie\
 into wims_name_config_auth,wims_name_config_pref,wims_name_config_restr,wims_name_config_oef,\
 wims_name_config_neigh,wims_name_config_secure,wims_name_config_clean,wims_config_refresh,\
 wims_name_config_otherserver,wims_name_config_passwd,wims_name_config_propagate,wims_name_config_present,\
@@ -509,8 +506,7 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
    name_background_color,name_menu_color,name_refmenu_color,name_image,name_css_transfer,\
    name_colorscore,name_button_bgcolor,name_button_color,name_button_help_bgcolor,name_button_help_color,name_connectlink
 
-!set name_content_style = U kunt een algemeen stylesheet definieren\
-<br>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
+!set name_content_style = U kunt een algemeen stylesheet definieren<br>(als <tt class="wims_code_words">$name_css</tt> op <tt class="wims_code_words">klas</tt> is gezet)&nbsp;:
 
 !set name_content_style2=Kopieer hier een css-stylesheet
 
@@ -520,31 +516,36 @@ wims_name_config_score,wims_name_config_ent,name_of,wims_name_external_auth
 U hebt een backup archief van een andere klas opgestuurd.
 Als er conflicten zijn, 
 wordt uw klas mogelijk onherstelbaar beschadigd.
- !href cmd=help&special_parm=dependencies Waarom?
+ !href cmd=help&special_parm=dependencies Waarom&nbsp;?
  <p>
  !href cmd=reply&job=list Stop
  als u er niet zeker van bent van de gevolgen. 
  (In elk geval bewaar een backup van de huidige situatie voor dat u verder gaat)
  
  :arch_end
+ 
  <p><b>BELANGRIJK</b>. <ul><li> 
  De integriteit van de opgestuurde data wordt niet gecontroleerd.
- Een handmatige bijwerking van een backup archief wordt door het systeem niet toegestaan.
+ Een handmatige bijwerking van een backup archief 
+ wordt door het systeem niet toegestaan.
 
 <li> Indien mogelijk vermijdt herstel van
 <span class="wims_warning">klas configuratie</span> en
 <span class="wims_warning">supervisor account</span>.
-Fouten in deze bestanden maken uw klas stuurloos.
-
-<li> U kunt een backup archief gebruiken voor het snel installeren van een nieuwe klas.
-In dit geval vermijdt gebruik van scores en cijferregistratie (server of handmatig)
-Deze twee kunnen -ivm bewaking van de cijfers- niet meer worden gewist uit een werkende klas.
+Fouten in deze bestanden
+ maken uw klas stuurloos.
+<li> U kunt een backup archief gebruiken voor
+ het snel installeren van een nieuwe klas.
+In dit geval vermijdt gebruik van scores en 
+cijferregistratie (server of handmatig)
+Deze twee kunnen -ivm bewaking van de cijfers- 
+niet meer worden gewist uit een werkende klas.
 </ul>
 !exit
 
 :clean
- <b>ATTENTIE</b>.
- U kunt geen lesmateriaal verwijderen waar leerlingen op dit moment nog aan kunnen werken.  
+ U kunt geen lesmateriaal verwijderen waar 
+ leerlingen op dit moment nog aan kunnen werken.  
  <p>
  Bedenk de volgende zaken:
  <p>
@@ -553,29 +554,26 @@ Deze twee kunnen -ivm bewaking van de cijfers- niet meer worden gewist uit een w
  de goede leerlingen daar toch behoorlijk veel last van (...)
  <p>
  Ten tweede, alle bronnen die tezamen de virtuele klas vormen, zijn uiteraard van
- elkaar afhankelijk, gedeeltelijk verwijderen verbreekt waarschijnlijk een hoop dwarsverbanden
- in de digitale werk/leer omgeving.
-  
+ elkaar afhankelijk, gedeeltelijk verwijderen 
+ verbreekt waarschijnlijk een hoop dwarsverbanden
+ in de digitale werk/leer omgeving. 
  !href cmd=help&special_parm=dependencies Voorbeelden.
  <p>
  In elk geval, wanneer U werkelijk deze klas wilt opschonen, kan beter
  de verloopdatum van de klas op "vandaag" zetten.
  Deze klas is dan morgen gewoon verdwenen.
- Of
- <a href="mailto:$wims_site_manager?subject=Verwijder mijn klas"</a>
+ Of <a href="mailto:$wims_site_manager?subject=Verwijder mijn klas"</a>
  vraag de site-manager om je klas te verwijderen.
-
  !exit
  
 :clean2
 <p><b>Opmerking</b>. 
 1. Deze pagina is alleen beschikbaar tijdens het opzetten
-van een digitale klas. Wanneer er leerlingen aan het werk zijn, 
-is dit wissen niet meer mogelijk.
-
+van een digitale klas. Wanneer er leerlingen aan het werk zijn, is dit wissen niet meer mogelijk.
 <p>
-2. Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist
-Deze klas moet dan wel eerst 
+2. Gedeelde bronnen kunnen alleen van uit de oorspronkelijke klas worden gewist,
+Deze klas moet dan wel eerst
+ 
 !href cmd=reply&job=neighbor&job2=sharelist stop de deling
  van lesmateriaal voor dat er gewist kan worden.
 

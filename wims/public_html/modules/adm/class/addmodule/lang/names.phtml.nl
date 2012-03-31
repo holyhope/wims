@@ -17,8 +17,8 @@
 !set name_weight=Het gewicht van de punten (deze weging wordt gebruikt voor de berekening van het gemiddelde):
 !set name_end=!nosubst De oefening <span class="wims_mod_title">$title</span> is succesvol opgenomen in het werkblad
 
-!set name_choose_exo=Cette ressource sera insérée comme une nouvelle série d'exercices de la feuille.
-!set name_choose_helpexo=Cette ressource sera insérée comme une aide pour l'une des séries d'exercices de la feuille lorsque la note est inférieure à
-!set name_choose_series=Cliquez sur le nom de la séries d'exercices à laquelle vous souhaitez ajouter l'aide
-!set name_actualhelp=Aide actuelle
-!set name_series=Séries d'exercices
+!set name_choose_exo=Wordt toegevoegd aan het werkblad als een nieuwe serie oefeningen
+!set name_choose_helpexo=Deze ondersteunende oefeningen worden aangeboden als de score voor het werkblad lager is dan 
+!set name_choose_series=Klik op de serie oefeningen waarvoor ondersteuning moet worden aangeboden.
+!set name_actualhelp=Ondersteuning bij dit onderwerp
+!set name_series=Serie oefeningen

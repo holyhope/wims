@@ -44,7 +44,7 @@ punten aantal voor deze sommen.
 !endif
 
 !if $error=bad_exo
- Aucune série d'exercices ne correspond aux informations que vous avez indiquées.
+    Er kan geen serie oefeningen worden gevonden die voldoet aan deze informatie.
  !exit
 !endif
 

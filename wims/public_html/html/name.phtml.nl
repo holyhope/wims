@@ -85,9 +85,9 @@
     wims_name_for,wims_name_only,\
     wims_name_this_config
 
-!set wims_name_Share = Share 
-!set wims_name_to_embed_it = to embed it	
-!set wims_name_permalink_desc = Copy one of these links to share this easily (through mail, bookmark, ...).
+!set wims_name_Share = Delen
+!set wims_name_to_embed_it = opnemen	
+!set wims_name_permalink_desc = Gebruik &eacute;&eacute;n van deze links voor email of bookmark naar de oefenening.
 
 !! the following sentences can be changed according to language if needed
 !set wims_name_display1=!nosubst $wims_name_Share $wims_name_this_module

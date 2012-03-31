@@ -102,17 +102,25 @@ char *printscience(double value, int sig, int format , int cnt ){
     }
     if(sig < 1){sig = 1;}
     if(cnt > 1){fprintf(stdout,",");}
-    // check on format style
-    if(exponent10 == 0){
+    // check on format style versus exponent
+    if(exponent10 == 0 ){
 	format = 3; // do not use 1.23*10^0
     }
     else
     {
-	if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){ 
-	    format = 1; // if no prefix available, revert to html presentation
+	if(exponent10 == 1){
+	    format = 3;// do not use 1.23*10^1
+	    value = value * 10;
+	    sig = sig - 1;
 	}
-    }
+	else
+	{
+	    if(format == 3 && ((exponent10 < PREFIX_START) || (exponent10 > PREFIX_END))){ 
+		format = 1; // if no prefix available, revert to html presentation
+	    }
+	}
     
+    }
     if(format != 3 ){
 	if( format == 0){ // 'calculable' presentation
 	    fprintf(stdout, "%s%.*f*10^%d", sign, sig-1, value, exponent10);
@@ -128,7 +136,7 @@ char *printscience(double value, int sig, int format , int cnt ){
 	    }
 	}
     }	    
-    else // format = 3 : prefix presentation
+    else // format = 3 : prefix presentation or other more suitable presentation
     {
 	fprintf(stdout, "%s%.*f %s", sign, sig-1, value,prefix[(exponent10-PREFIX_START)/3]);
     }
