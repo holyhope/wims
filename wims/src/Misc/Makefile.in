@@ -27,12 +27,13 @@ lceb=lceb_dynopt
 moneyprint=moneyprint
 toascii=toascii
 scienceprint=scienceprint
+sigdigits=sigdigits
 
 OTHERDIR=$(wims_home)/other/bin
 PUBDIR=$(wims_home)/public_html/bin
 BINDIR=$(wims_home)/bin
 
-all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint toascii scienceprint
+all:: $(progs) mathexp symtext $(Otherbin) bioinfo checkmol lceb crossword moneyprint toascii scienceprint sigdigits
 
 maintainer:: java
 
@@ -84,6 +85,9 @@ scienceprint::
 	cd scienceprint ; make && $(STRIP) scienceprint
 	cp $@/scienceprint $(OTHERDIR)
 
+sigdigits::
+	cd sigdigits ; make && $(STRIP) sigdigits
+	cp $@/sigdigits $(OTHERDIR)
 java::
 	cd authors/jm.evers/applets ; make && make install
 	cd applets ; make && make install
@@ -103,6 +107,7 @@ clean:
 	cd moneyprint ; make clean
 	cd toascii ; make clean
 	cd scienceprint ; make clean
+	cd sigdigits ; make clean
 
 distclean: clean
 	rm -f $(progs2)
@@ -118,7 +123,8 @@ distclean: clean
 	cd moneyprint ; make clean
 	cd toascii ; make clean
 	cd scienceprint ; make clean
-	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) $(lceb) $(crossword) $(moneyprint) $(toascii) $(scienceprint)
+	cd sigdigits ; make clean
+	cd $(OTHERDIR); rm -f $(Otherbin) $(bioinfo) $(checkmol) $(lceb) $(crossword) $(moneyprint) $(toascii) $(scienceprint) $(sigdigits)
 	cd $(BINDIR); rm -f $(Homebin)
 	cd $(PUBDIR); rm -f $(Publicbin2) $(namechange)
 	rm -f Makefile
