@@ -49,4 +49,9 @@
  !exit
 !endif
 
+!if $error=not_exo
+ Le module que vous essayez d'insérer dans la feuille n'est pas un module d'exercices. Il doit y avoir une erreur !
+ !exit
+!endif
+
 !msg $error
