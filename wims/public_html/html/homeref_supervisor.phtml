@@ -110,9 +110,10 @@
   !set 1_=!append line adddoc,1,module=adm/class/adddoc&dir=$module&iniparm=$wims_homeref_parm to $1_
 !endif
 !if $special_parm4=$empty
-!if $cmd!=intro and $cmd!=help and $module!=home and \
+ !if $cmd!=intro and $cmd!=help and $module!=home and \
 	../adm/ notin ../$module and \
-	(../devel/ notin ../$module or $wims_devel_modules iswordof open)
+	(../devel/ notin ../$module or $wims_devel_modules iswordof open) \
+	and exercise isin $module_category
  !set wims_homeref_parm=!replace % by %25 in $module_init_parm
  !set wims_homeref_parm=!replace + by %2B in $wims_homeref_parm
  !set wims_homeref_parm=!replace & by %26 in $wims_homeref_parm
