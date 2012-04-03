@@ -6,61 +6,43 @@
 * can be used and distributed without restriction, including for commercial use	*
 * No warrenty whatsoever							*
 *********************************************************************************
+syntax number_1 number2 number_3 ... number_n
 
+example
+!exec sigdigits 0001.0200 01.0200*10^-4 1.023*10^5
+3,2,4,4,0,0
+3,2,2,4,-4,0
+4,3,1,3,5,1
 
-usage:
-1) discard trailing zeros : use no flags (default)
-!exec sigdigits 1.10000 2.0001000 123.0100010000
-2,1  
-5,4  
-9,6
+result is 
+1 line per input number
+6 items per line:
 
-or use flag "0"
-!exec sigdigits 1.10000,0 2.0001000,0 123.0100010000,0
-2,1  
-5,4  
-9,6
+item 1) real number of significant digits in number_x (eg without leading zeros)
+item 2) real number of "significant decimals" (eg without trailing zero's)
 
-2) include trailing zeros : use flag "1" (due to accuracy measurement...)
-!exec sigdigits 1.10000,1 2.0001000,1 123.0100010000,1
-7,5
-9,7
-14,10
+item 3) number of digits left from decimal point (including non-significant) 
+	or if no decimals: total number of digits (length)
+item 4) number of digits right from decimal point (including non-significant)
 
-3) scientific notation allowed:
-!exec sigdigits 1.2300000*10^15
-3,2
-!exec sigdigits 1.2300001*10^15
-8,7
-!exec sigdigits 1.2300000e+15
-3,2
-!exec sigdigits 1.2300001e+15
-8,7
+item 5) exponent (if not present : 0)
 
-4) all other 'numbers' using pi,log,ln,sin,etc...will produce an error 
+item 6) indication : is the number correctly written ?  1 or 0  ( 000.1 is not correct...)
 
-5)output "2 items per line"
-    first item is total amount of significant digits
-    second item is amount of decimals
-
-6) no evaluation on the 'size' of the number is performed.
-
-It can be used in an answer checkfile,
-to check if the pupil uses the correct amount of significant digits in the reply .
-Example:
-A circle with "R=2.01 cm" has a surface area of ? 
-The 'math' answer is approx 12.69234847976812366271292553 cm2
-The 'physics' answer is 12.7 ... using 3 significant digits 
-(due to the precision of the given R. note: there is no checking of the unit 'cm')
-
-
+exponent '10^' or 'e': 1.23*10^-4 1.23e-4
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define MAX_DIGITS 64
 #define MAX_CONV 64
 
+void append(char* s, char c){
+    int len = strlen(s);
+    s[len] = c;
+    s[len+1] = '\0';
+}
 
 int main( int argc , char *argv[]){
     if( argc < 2){
@@ -69,7 +51,8 @@ int main( int argc , char *argv[]){
     }
     char word[MAX_DIGITS];
     char *input;
-    int use_all_zeros,cnt,i,length,zeros,significance,found_digit,found_point,decimals;
+    char exp[MAX_DIGITS];
+    int cnt,i,ok,length,zeros,sig1,sig2,found_digit,found_point,dec1,dec2,pow,found_power,found_multiply;
     const char *invalid_characters = "\n\"\'!=ABCDFGHIJKLMNOPQRSTUVWXYZabcdfghijklmnopqrstuvwxyz@#$%&()[]{};:~><?/\\|";
     /* Ee +- are allowed : 12.34e+05  12.34e-08  1.234*10^123*/ 
     cnt = 1;
@@ -94,58 +77,76 @@ int main( int argc , char *argv[]){
 	// reset
 	found_digit = 0;
 	found_point = 0;
-	decimals = 0;
-	significance = 0;
-	zeros = 0;
-	use_all_zeros = 0; // trailing zeros are not significant...unless
+	found_power = 0;
+	found_multiply = 0;
+	sig1 = 0; // real significant digits
+	dec1 = 0; // real "significant decimals" 
+	sig2 = 0; // integer part [including leading zeros]
+	dec2 = 0; // decimal part [including trailing zeros]
+	pow = 0; // exponent
+	zeros = 0; // leading or trailing zeros
+	exp[0]='\0';
 	for( i = length - 1 ; i >= 0 ; i--){ // walk from rightside to left through the 'number'
 	    switch( word[i] ){
-		case '*' : significance = 0;decimals = 0;found_digit = 0;zeros = 0;break;
-		case 'e' : significance = 0;decimals = 0;found_digit = 0;zeros = 0;break;
-		case 'E' : significance = 0;decimals = 0;found_digit = 0;zeros = 0;break;
-		case ',' : // signaling a flag '1'
-		    if( i+1 < length ){ 
-			if(word[i + 1] == '1'){ use_all_zeros = 1;}
-		    } 
-		    significance = 0;
-		    decimals = 0;
-		    found_digit = 0;
-		    zeros = 0;
-		    break;
+		case '^' : found_power = 1;break;
+		case '*' : found_power = 1;pow = length - i;sig1 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply = 1;break;
+		case 'e' : found_power = 1;pow = length - i;sig1 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply = 1;break;
+		case 'E' : found_power = 1;pow = length - i;sig1 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply = 1;break;
 		case '0' : 
-		    if(i == 0){//last char
-			significance = significance - zeros;
+		    if(i == 0){//last char 
+			sig1 = sig1 - zeros;
+			sig2++;
 		    }
 		    else
 		    {
-			if( found_digit == 1 ){
-		    	    significance++;
-			}
-			else
-			{
-			    if( found_point == 0 && use_all_zeros == 1){
-				significance++;
-			    }
-			}
+			if( found_point == 1 ){ sig2++; }
+			if( found_digit == 1 ){ sig1++; }
 			zeros++;
 		    } 
 		    break;
-		case '.' : decimals = significance; found_point = 1; break;
-		case '1' : significance++;found_digit = 1;zeros = 0; break;
-		case '2' : significance++;found_digit = 1;zeros = 0; break;
-		case '3' : significance++;found_digit = 1;zeros = 0; break;
-		case '4' : significance++;found_digit = 1;zeros = 0; break;
-		case '5' : significance++;found_digit = 1;zeros = 0; break;
-		case '6' : significance++;found_digit = 1;zeros = 0; break;
-		case '7' : significance++;found_digit = 1;zeros = 0; break;
-		case '8' : significance++;found_digit = 1;zeros = 0; break;
-		case '9' : significance++;found_digit = 1;zeros = 0; break;
+		case '.' : dec1 = sig1; dec2 = length - i - pow - 1;found_point = 1; break;
+		case '1' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '2' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '3' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '4' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '5' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '6' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '7' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '8' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
+		case '9' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
 		default :  break;
 	    }
+	    
+	    if(found_power == 0){ append(exp,word[i]); } // maybe a power was used ?
         }
+	
+	if(found_point == 0){ sig2 = length; }	// just a number 12345
+	//several possible correct way of writing...
+	if( ( sig1 == sig2 + dec2 ) || ( sig1 + dec1 == sig2 + dec2 ) || ( dec1 == dec2 && sig2 == 1 ) ){ ok  = 1; } else { ok = 0; }
+	
+	if( found_power == 1){ // reverse appended char array ... 123+ --> +321
+	    int len = strlen(exp);
+	    char exponent[len];
+	    int w = len - 1;
+	    for(i = 0 ; i < len ; i++){
+		exponent[i] = exp[w];
+		w--;
+	    }
+	    exponent[len] = '\0';
+	    if( found_multiply == 0 ){ // e+4 10^6 
+		fprintf(stdout,"0,%d,%d,%d,%s,1\n",dec1,sig2,dec2,exponent);
+	    }
+	    else
+	    {	// 1.23e6 1.23*10^5	
+		fprintf(stdout,"%d,%d,%d,%d,%s,%d\n",sig1,dec1,sig2,dec2,exponent,ok);
+	    }
+	}
+	else
+	{
+	    fprintf(stdout,"%d,%d,%d,%d,0,%d\n",sig1,dec1,sig2,dec2,ok);
+	}
 	cnt++;
 	input = argv[cnt];
-	fprintf(stdout,"%d,%d\n",significance,decimals);
     }
     return (0);
 }

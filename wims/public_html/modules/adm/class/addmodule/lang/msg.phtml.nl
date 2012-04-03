@@ -49,7 +49,7 @@ punten aantal voor deze sommen.
 !endif
 
 !if $error=not_exo
- Le module que vous essayez d'insérer dans la feuille n'est pas un module d'exercices. Il doit y avoir une erreur !
+    De module kan niet worden toegevoegd aan het werkblad: het is geen module met oefeningen! 
  !exit
 !endif
 
