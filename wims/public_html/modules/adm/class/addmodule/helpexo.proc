@@ -10,23 +10,24 @@ sheets=
  sh=!record $i of wimshome/log/classes/$wims_class/sheets/.sheets
  !distribute lines $sh into a_,t_,title
  nb=!recordcnt wimshome/log/classes/$wims_class/sheets/.sheet$i
- if $nb>0
+ !if $nb>0
   sheets=!append line $i,$nb,$title to $sheets
  !endif
 !next i
 sheetcnt=!linecnt $sheets
+lnumsheet=!column 1 of $sheets
 
 !if $step=0
  !ifval $sheetcnt=0
   error=no_sheet
   !exit
  !endif
- !bound picksheet between 1 and $sheetcnt default 1
+ !bound picksheet within $lnumsheet default $(lnumsheet[1])
  !exit
 !endif
 
 !if $step=1
- !bound picksheet between 1 and $sheetcnt default 0
+ !bound picksheet within $lnumsheet default 0
  !bound exo between 1 and $nb default 0
  !ifval $exo*$picksheet=0
   error=bad_exo
