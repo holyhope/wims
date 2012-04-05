@@ -32,9 +32,14 @@
  </select>
  <p>$name_modifytitle
  <p>
+
  !set iniparm1=!replace internal & by $ $ in $iniparm
  !set exo=!getopt exo in $iniparm1
- !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
+ !if __classes/ isin __$dir
+   !set title1=!lookup $exo in wimshome/log/classes/$wims_class/Extitles
+ !else
+   !set title1=!lookup $exo in wimshome/public_html/modules/$dir/Extitles
+ !endif
  !if $title1!=$empty
    !set title=$title1
  !endif
