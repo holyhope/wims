@@ -8,28 +8,49 @@
 *********************************************************************************
 syntax number_1 number2 number_3 ... number_n
 
+Treats a number as string array : no numrical evaluation !
+
 example
-!exec sigdigits 0001.0200 01.0200*10^-4 1.023*10^5
-3,2,4,4,0,0
-3,2,2,4,-4,0
-4,3,1,3,5,1
+!exec sigdigits 1.23 1.230 1.2300 1.23e5 1.23*10^5 1.2300e5 01.23*10^5 1.2.3.4
+3,2,1,2,1,0,1
+3,2,1,3,1,0,0
+3,2,1,4,1,0,1
+3,2,1,2,10,5,1
+3,2,1,2,10,5,1
+5,4,1,4,10,5,1
+3,2,2,2,10,5,0
+-1,-1,-1,-1,-1,-1,-1
 
 result is 
 1 line per input number
-6 items per line:
+7 items per line:
 
 item 1) real number of significant digits in number_x (eg without leading zeros)
+
 item 2) real number of "significant decimals" (eg without trailing zero's)
 
 item 3) number of digits left from decimal point (including non-significant) 
 	or if no decimals: total number of digits (length)
 item 4) number of digits right from decimal point (including non-significant)
 
-item 5) exponent (if not present : 0)
+item 5) exponent base (if not present : 1)
 
-item 6) indication : is the number correctly written ?  1 or 0  ( 000.1 is not correct...)
+item 6) exponent (if not present : 0)
 
-exponent '10^' or 'e': 1.23*10^-4 1.23e-4
+item 7) indication : is the number correctly written ?  1 or 0  ( 000.1 is not correct...)
+
+remarks:
+- exponent: any other base will be tolerated : 4*7^5  base=7 exponent=5 -> 1,0,1,0,7,5,1
+- if number is 'nonsense' : -1,-1,-1,-1,-1,-1 (1.23.4567  10^1.23.4 ; number will produce NaN in other math software)
+
+ruleset:
+120.2		: 4 significant digits
+120.2000	: 4 significant digits
+0120.2		: 4 significant digits
+scientiffic notation:
+120.2*10^5	: 4 significant digits
+120.200*10^5	: 6 significant digits
+
 */
 
 #include <stdio.h>
@@ -52,17 +73,18 @@ int main( int argc , char *argv[]){
     char word[MAX_DIGITS];
     char *input;
     char exp[MAX_DIGITS];
-    int cnt,i,ok,length,zeros,sig1,sig2,found_digit,found_point,dec1,dec2,pow,found_power,found_multiply;
-    const char *invalid_characters = "\n\"\'!=ABCDFGHIJKLMNOPQRSTUVWXYZabcdfghijklmnopqrstuvwxyz@#$%&()[]{};:~><?/\\|";
+    int cnt,i,ok,length,zeros,sig1,sig2,found_digit,found_point,dec1,dec2,pow,found_power,found_multiply,points,base_start,base_end;
+    const char *invalid_characters = "\n\"\',!=ABCDFGHIJKLMNOPQRSTUVWXYZabcdfghijklmnopqrstuvwxyz@#$%&()[]{};:~><?/\\|";
     /* Ee +- are allowed : 12.34e+05  12.34e-08  1.234*10^123*/ 
     cnt = 1;
     input = argv[cnt];
     while( input != NULL){
 	if(cnt > MAX_CONV){fprintf(stdout,"error : number of conversions exceeds limit of %d\n",MAX_CONV);return 0;}
 	length = strlen(input);
-        if( length > MAX_DIGITS){                                                                                                           
-            fprintf(stdout,"error : number is larger than %d digits\n",MAX_DIGITS);                                                            
-            exit(0);                                                                                                                       
+        if( length > MAX_DIGITS){
+            fprintf(stdout,"error : number is larger than %d digits\n",MAX_DIGITS);
+	    return 0;
+                                                                                                                           
         }
 	/* test for illegal characters */
 	while (*input){ 
@@ -85,26 +107,50 @@ int main( int argc , char *argv[]){
 	dec2 = 0; // decimal part [including trailing zeros]
 	pow = 0; // exponent
 	zeros = 0; // leading or trailing zeros
+	points = 0; // number of points in number...
 	exp[0]='\0';
+	base_start = 0;
+	base_end = 0;
 	for( i = length - 1 ; i >= 0 ; i--){ // walk from rightside to left through the 'number'
 	    switch( word[i] ){
-		case '^' : found_power = 1;break;
-		case '*' : found_power = 1;pow = length - i;sig1 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply = 1;break;
-		case 'e' : found_power = 1;pow = length - i;sig1 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply = 1;break;
-		case 'E' : found_power = 1;pow = length - i;sig1 = 0;dec1 = 0;found_digit = 0;zeros = 0;found_multiply = 1;break;
+		case '^' : base_start = i;found_power++;break;
+		case '*' : 
+		    found_multiply++;
+		    if(found_power == 1){
+			base_end = i;
+			if(found_point == 1){points--;found_point = 0;}  // point in exponent... 10^4.5 (hmmm)
+			pow = length - i;
+		        sig1 = 0; // reset counting significant digits and all other stuff
+			dec1 = 0;
+			sig2 = 0;
+		        dec2 = 0;
+			found_digit = 0;
+		        zeros = 0;
+		    }
+		    break;
+		case 'e' : if(found_point == 1){points--;found_point = 0;} found_power++;pow = length - i;sig1 = 0;dec1 = 0;sig2 = 0;dec2 = 0;found_digit = 0;zeros = 0;found_multiply++;break;
+		case 'E' : if(found_point == 1){points--;found_point = 0;} found_power++;pow = length - i;sig1 = 0;dec1 = 0;sig2 = 0;dec2 = 0;found_digit = 0;zeros = 0;found_multiply++;break;
 		case '0' : 
 		    if(i == 0){//last char 
 			sig1 = sig1 - zeros;
 			sig2++;
+			if(found_power == 1){zeros++;}
 		    }
 		    else
-		    {
+		    {		    
+			// 1.000*10^5 -> 4 sig
+			if( found_point == 0 && found_power == 1){ 
+			    sig1++;
+			}
+			else
+			{
+			    if( found_digit == 1 ){ sig1++; }
+			} 
 			if( found_point == 1 ){ sig2++; }
-			if( found_digit == 1 ){ sig1++; }
 			zeros++;
 		    } 
 		    break;
-		case '.' : dec1 = sig1; dec2 = length - i - pow - 1;found_point = 1; break;
+		case '.' : dec1 = sig1; dec2 = length - i - pow - 1;found_point = 1;points++; break;
 		case '1' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
 		case '2' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
 		case '3' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
@@ -116,37 +162,67 @@ int main( int argc , char *argv[]){
 		case '9' : sig1++;if(found_point == 1){sig2++;} found_digit = 1;zeros = 0; break;
 		default :  break;
 	    }
-	    
 	    if(found_power == 0){ append(exp,word[i]); } // maybe a power was used ?
         }
 	
-	if(found_point == 0){ sig2 = length; }	// just a number 12345
-	//several possible correct way of writing...
-	if( ( sig1 == sig2 + dec2 ) || ( sig1 + dec1 == sig2 + dec2 ) || ( dec1 == dec2 && sig2 == 1 ) ){ ok  = 1; } else { ok = 0; }
-	
-	if( found_power == 1){ // reverse appended char array ... 123+ --> +321
-	    int len = strlen(exp);
-	    char exponent[len];
-	    int w = len - 1;
-	    for(i = 0 ; i < len ; i++){
-		exponent[i] = exp[w];
-		w--;
-	    }
-	    exponent[len] = '\0';
-	    if( found_multiply == 0 ){ // e+4 10^6 
-		fprintf(stdout,"0,%d,%d,%d,%s,1\n",dec1,sig2,dec2,exponent);
-	    }
-	    else
-	    {	// 1.23e6 1.23*10^5	
-		fprintf(stdout,"%d,%d,%d,%d,%s,%d\n",sig1,dec1,sig2,dec2,exponent,ok);
-	    }
+	if( found_power > 1 || found_multiply > 1){ // 2*2 10^5^7
+	    fprintf(stdout,"error \n");
+	    return 0;
+	}
+
+	if( points > 1){ // "nonsense" number 1.23.45  or 1.23*10^1.5
+	    fprintf(stdout,"-1,-1,-1,-1,-1,-1,-1\n");
 	}
 	else
 	{
-	    fprintf(stdout,"%d,%d,%d,%d,0,%d\n",sig1,dec1,sig2,dec2,ok);
+	    // extra check for handling "special cases" 
+	    if(found_point == 0 && found_power == 0){ sig2 = length; }	// just a number 12345
+	    if(found_point == 0 && found_multiply == 0 && found_power == 1){ sig1 = 0; dec1 = 0; sig2 = 0 ; dec2 = 0; }	// 10^5
+	    if(found_point == 1 && found_multiply == 0 && found_power == 1){ sig1 = 0; dec1 = 0; sig2 = 0 ; dec2 = 0; }	// 10^5.1
+	    if(found_point == 0 && found_multiply == 1 && found_power == 1){ dec1 = 0; dec2 = 0; sig2 = length - zeros - pow; }	// 3*10^5
+	    
+	    if( found_power == 1){ 
+		// correct writing ? 1.20000*10^5 is OK, 01.20000*10^5 is NOK
+		if( zeros != 0 ){ ok = 0; }else{ ok = 1; } // 01*10^5
+		int len = strlen(exp);// reverse appended char array ... 123+ --> +321
+	        char exponent[len];
+		int w = len - 1;
+	        for(i = 0 ; i < len ; i++){
+		    exponent[i] = exp[w];
+		    w--;
+		}
+		exponent[len] = '\0';
+		if(base_start != 0){ // find the base ( default base = 10 )
+		    int c = 0;int s;
+		    if(base_end == 0){ // 10^5
+			s = 0; 
+		    }
+		    else
+		    {
+			s = base_end + 1; // 1.25*10^5
+		    } 
+		    char c_base[base_start - s]; // assign char array of correct size
+		    for(i = s ; i < base_start ; i++){
+			c_base[c] = word[i]; 
+			c++;
+		    }
+		    c_base[c] = '\0';
+		    fprintf(stdout,"%d,%d,%d,%d,%s,%s,%d\n",sig1,dec1,sig2,dec2,c_base,exponent,ok);
+		}
+		else
+		{ // base = 10 : used 4e+5
+		    fprintf(stdout,"%d,%d,%d,%d,10,%s,%d\n",sig1,dec1,sig2,dec2,exponent,ok);
+		}
+	    }
+	    else
+	    { 	// no exponent : base = '1' exponent = '0'
+		//several possible correct way of writing...
+		if( ( sig1 == sig2 + dec2 ) || ( sig1 + dec1 == sig2 + dec2 ) || ( dec1 == dec2 && sig2 == 1 ) ){ ok  = 1; } else { ok = 0; }
+		fprintf(stdout,"%d,%d,%d,%d,1,0,%d\n",sig1,dec1,sig2,dec2,ok);
+	    }
 	}
 	cnt++;
 	input = argv[cnt];
     }
-    return (0);
+    return 0;
 }
