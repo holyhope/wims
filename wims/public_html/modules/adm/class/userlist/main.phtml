@@ -133,8 +133,13 @@ $wims_name_part_list
   !set uu=!record $i of wimshome/log/classes/$wims_class/.userlist
   !distribute items $uu into lastname,firstname,uu
   !set UU=!hex $uu
-  $table_tr<td>
-  !href cmd=reply&job=getuser&getuser=$uu#sheet$(showsheet[1]) $name_student1
+  $table_tr
+  <td>
+   !href cmd=reply&job=getuser&getuser=$uu#sheet$(showsheet[1]) $name_student1
+   !if $uu isitemof $connectedlogin
+    <img src="gifs/themes/$wims_theme_icon/activity.png" width="15">
+   !endif
+  </td>
   !readproc adm/class/userscore
   !if $manual>0 and $job_affi=notes
    !set glob=$[rint($manual*$(manual_$UU)+(100-$manual)*($per))/100]
