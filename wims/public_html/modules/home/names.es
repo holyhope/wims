@@ -80,6 +80,8 @@ SU_nosheet = Su clase todavía no tiene recursos.
 SU_shlist = Lista de recursos.
 wims_name_SU_Gateway = Administración de la estructura
 SU_Bprogram = Vuelta al programa
+SU_nopartconnected=Aucun participant n'est actuellement connecté
+SU_numpartconnected=!nosubst Il y a actuellement $numpartconnected participant(s) connecté
 
 wims_name_SE_list = Participantes y puntuaciones
 wims_name_n_participant = Página inicial para el participante

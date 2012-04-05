@@ -1,0 +1,26 @@
+!! output : whoconnect=list of connected participant
+!!          numpartconnected=number of participant connected
+!! in wims_class
+!!
+!!
+
+last_=!sh stat -c%Y $wims_home/s2/$wims_session/whoconnect.$wims_class
+!if $wims_nowseconds-$last_>300
+ ses_=!sh cd $wims_home/sessions;\
+ grep -r wims_class=$wims_class ./*/var.stat | cut -d/ -f2;
+ ses_=!words2items $ses_
+ whoconnect=$empty
+ !for s_ in $ses_
+  t_=!defof wims_user\
+wims_firstname\
+wims_lastname in wimshome/sessions/$s_/var.stat
+  !distribute line $t_ into t1_,t2_,t3_
+  !if $t1_!=supervisor
+   whoconnect=!append line $t1_,$s_,$t2_,$t3_ to $whoconnect
+  !endif
+ !next s_
+ !writefile wimshome/s2/$wims_session/whoconnect.$wims_class $whoconnect
+!else
+ whoconnect=!record 0 of wimshome/s2/$wims_session/whoconnect.$wims_class
+!endif
+numpartconnected=!linecnt $whoconnect
