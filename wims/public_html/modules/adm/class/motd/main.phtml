@@ -56,7 +56,12 @@ $table_header
   $table_tr 
    !let don=!record $k of wimshome/log/classes/$wims_class/.userlist
    !distribute item $don into f,l,u
-   <td>$l $f</td>
+   <td>
+    $l $f
+    !if $u isitemof $connectedlogin
+     <img src="gifs/themes/$wims_theme_icon/connected.png" width="15">
+    !endif
+   </td>
    <td>
     !record 0 of wimshome/log/classes/$wims_class/motd/$u
    </td>
