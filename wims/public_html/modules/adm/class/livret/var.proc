@@ -1,5 +1,9 @@
 !read adm/class/classlang names.phtml
 wims_prefix=class user livret
+!if $wims_user=supervisor
+ !readproc  adm/whoconnect
+ connectedlogin=!column 1 of $whoconnect
+!endif
 
 !if $wims_class=$empty or ($wims_supertype!=0 and\
  ($wims_supertype!=2 or $wims_typename!=class) and\
