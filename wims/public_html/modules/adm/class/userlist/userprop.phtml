@@ -12,7 +12,14 @@ $wims_name_account_property
 <input type="hidden" name="job" value="userprop">
 <input type="hidden" name="getuser" value="$getuser">
 <p>$table_header
-$table_tr<th>$wims_name_Login</th><td><tt>$getuser</tt></td></tr>
+$table_tr
+ <th>$wims_name_Login</th>
+ <td><tt>$getuser</tt>
+  !if $getuser isitemof $connectedlogin and $wims_user=supervisor
+    <img src="gifs/themes/$wims_theme_icon/connected.png" width="15">
+   !endif
+ </td>
+</tr>
 !if $type_class iswordof 2 4
   !if $user_participate!=$empty
     $table_tr<th>$name_inscript</th><td><tt>$user_participate</tt></td></tr>
