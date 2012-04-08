@@ -45,7 +45,7 @@ activado en este sitio. No está disponible la lista de enlaces inversos. Lo sent
  
 !set name_choose=Periodo del listado: a partir de
 
-:exit
+!exit
 :intro
 En general una página web que nos envíe muchos invitados será un lugar
 interesante para el resto de nuestros visitantes. Es lógico, si busca recursos

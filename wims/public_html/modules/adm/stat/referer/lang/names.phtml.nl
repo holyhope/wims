@@ -44,7 +44,7 @@ Referentie pagina's vanuit $httpd_HTTP_HOST worden niet meegeteld.
  
 !set name_choose=Periode overzicht van : 
 
-:exit
+!exit
 :intro
 Een webpagina met links naar ons systeem is mogelijk ook een interessante plek
 voor WIMS gebruikers.
