@@ -37,14 +37,19 @@
 	    <div id="mydiv">
 		!insdraw $(image$n)
 	    </div>
-	!endif
-	!if $plot=1
-	    !! for GNUplot
-	    !set ins_attr= id="myimage"
-	    !set insplot_set=$(image_settings$n)
-	    <div id="mydiv">
-		!insplot $(image$n)
-	    </div>
+	!else
+	    !if $plot=1
+		!! for GNUplot
+	        !set ins_attr= id="myimage"
+		!set insplot_set=$(image_settings$n)
+	        <div id="mydiv">
+	    	    !insplot $(image$n)
+		</div>
+	    !else
+	        <div id="mydiv">
+	    	    $(image$n)
+		</div>
+	    !endif
 	!endif
 	</td>
 	</tr>

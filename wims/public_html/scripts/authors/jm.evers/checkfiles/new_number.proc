@@ -39,6 +39,9 @@
 # bij complexe getallen i=10 ... 
 # vervang i door 10 in answer$n !!! anders problemen met nakijken...
 
+# 2/2012 arglist=x : x=123 and x_2=344 and x3=134
+# echo "x=pi en x1=234432 en x_2=2345424 en x12345=453535" | sed 's/x[_0-9]*=//g' --> pi en 234432 en 2345424 en 453535
+ 
 goback=0
 errortext=$empty
 n=$counter
@@ -111,16 +114,18 @@ extra=$empty
 	# x1 = 4 en x2 = 3+sqrt(e^3)
 	rep=!words2items $rep
 	# x1,=,4,en,x2,=,3+sqrt(e^3)
-	!for a in =>,->,==>,-->,=,is,est,en
-	    rep=!replace internal $a by , in $rep
-	!next a
+	# 2/2012 problemen met x_1= moet met maar met sed :(
 	# x1,,,4,,,x2,,,3+sqrt(e^3)
 	!if $arglist != $empty
 	    !for a in $arglist
 		a=!lower $a
-		rep=!replace internal $a by , in $rep
+		rep=!replace $a[_0-9]*= by , in $rep
+		#rep=!replace internal $a by , in $rep
 	    !next a
 	!endif
+	!for a in =>,->,==>,-->,=,is,est,en
+	    rep=!replace internal $a by , in $rep
+	!next a
 	# ,,,,4,,,,,,,3+sqrt(e^3)
 	!for a=1 to 5
 	    rep=!replace internal ,, by , in $rep
@@ -177,9 +182,10 @@ extra=$empty
 	filtered_rep=!append line $tmp to $filtered_rep
     !endif
 !next p
-
 # nakijken
-
+#errortext=filtered_rep=$filtered_rep
+#goback=1
+#!exit
 lg=!linecnt $(answer$n)
 
 !if $var1 != $empty
@@ -220,7 +226,7 @@ la=!linecnt $filtered_rep
 checks=0
 !if $lg != $la
     errortext=!record 38 of $remarkdir/commonremarks.$taal
-    #la=$la lg=$lg answer$n=$(answer$n) filtered_rep=$filtered_rep
+    #errortext=la=$la lg=$lg answer$n=$(answer$n) filtered_rep=$filtered_rep
     goback=1
     !exit
 !endif
@@ -310,10 +316,10 @@ score=0
 			!else
 			    #rnd=-1 of rnd=0
 			    !if $range=0
-				f=!exec pari if( abs(1.0*($A) - 1.0*($G)) < 10^(-15) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
+				f=!exec pari if( abs(($A) - ($G)) < 10^(-15)  || 1.0*($A) == 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
 			    !else
 				# exact...range is dus een beetje onzin...
-				f=!exec pari if( 1.0*($A)+$range >= 1.0*($G) && 1.0*($A)-$range <= 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))
+				f=!exec pari if( 1.0*($A)+$range >= 1.0*($G) && 1.0*($A)-$range <= 1.0*($G) , 1 , v=[-1,10,100,1000,10000,100000,1/10,1/100,1/1000,1/10000,1/100000] ; for( a = 1, 10 , if( v[a]*($A) == 1.0*($G), print(v[a]) , 0 ) ))			
 			    !endif
 			    !if $wims_exec_error = $empty
 				!if $f=1
@@ -390,7 +396,5 @@ reply$n=$(reply$n) $begin_ul $show_reply $end_ul
 !endif
 
 math=0
-
-goback=0
 
 !exit

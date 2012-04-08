@@ -1,3 +1,7 @@
+!if $my_arrows=$empty
+    !set my_arrows=2
+!endif
+
 <script type="text/javascript">
     var URL;
 
@@ -19,7 +23,7 @@
 	    input=document.getElementById("MathView").getLinear();input=input+'';
 	    v=input.length;if(v==0){setAlarm(r1+"\ 1");return;}if(v>100){setAlarm(r2); return;}
 	    if(input.indexOf('error')!=-1){setAlarm(input);return;}
-	    input=arrows(input,2,"","");if(input=="error"){return;}
+	    input=arrows(input,$my_arrows,"","");if(input=="error"){return;}
 	    input=nthroot(input);if(input=="error"){return;}
 	    if(input.indexOf(',')!=-1){setAlarm(r4);return;}
 	    if(check_f(input)==0){return;}if(check_o(input)==0){return;}
@@ -36,7 +40,6 @@
 	    input=input.replace(/#/g,' ');
 	    total[0]=input;
 	}
-	
 	if(document.mydefaultform){
 	    ml=document.mydefaultform.elements.length;
 	    var inputfieldnumber=0;
@@ -45,7 +48,7 @@
 		v=input.length;if (v==0){var qu=z+1; setAlarm(r1+"\ "+qu);return;}
 		input=nthroot(input);if(input=="error"){return;}
 		if(input.indexOf(',')!=-1){setAlarm(r4);return;}
-		input=arrows(input,2,"","");if(input=="error"){return;}
+		input=arrows(input,$my_arrows,"","");if(input=="error"){return;}
 		if(check_f(input)==0){return;}if(check_o(input)==0){return;}
 		if(check_log_NaN(input)==0){return;}if(check_sqrt_NaN(input)==0){return;}
 		input=science(input);if(input=="error"){return;}
@@ -99,9 +102,19 @@
 					!endif
 				    !else
 					<table summary="" cellspacing="1">
+					!set a_items=!itemcnt $(answer$n)
+					!if $a_items != $[floor($inputs)]
+					    !set use_lines=1
+					!else
+					    !set use_lines=0
+					!endif
 					!for p=1 to $inputs
 					    !if $wims_user=supervisor
-						!set deelantwoord=!item $p of $(answer$n)
+						!if $use_lines=1
+						    !set deelantwoord=!line $p of $(answer$n)
+						!else
+						    !set deelantwoord=!item $p of $(answer$n)
+						!endif
 						<tr><th>&nbsp;&nbsp;$m_rightarrow&nbsp;&nbsp;</th><th><input type="text" id="myinput$[$p-1]" style=$textareastyle size="$cols" name="reply" value = "$deelantwoord"></th><th>$(ex$p)&nbsp;</th></tr>
         				    !else
 						!set deelantwoord=!item $p of $(reply$n)
@@ -218,6 +231,12 @@
 		    !if $inputs>1
 		    <form name="mydefaultform" id="mydefaultform" action="">
 			<table summary="" cellpadding="1">
+			!set a_items=!itemcnt $(answer$n)
+			!if $a_items != $[floor($inputs)]
+			    !set use_lines=1
+			!else
+			    !set use_lines=0
+			!endif
 			!for p=1 to $inputs
 			    <tr>
 			    <td>
@@ -228,7 +247,11 @@
 			    </td>
 			    <td>
 			    !if $wims_user=supervisor
-				!set deelantwoord=!item $p of $(answer$n)
+				!if $use_lines=1
+			    	    !set deelantwoord=!line $p of $(answer$n)
+				!else
+			    	    !set deelantwoord=!item $p of $(answer$n)
+				!endif
 			    !else
 				!set deelantwoord=!item $p of $(reply$n)
 			    !endif

@@ -8,7 +8,8 @@
 *********************************************************************************
 syntax number_1 number2 number_3 ... number_n
 
-Treats a number as string array : no numrical evaluation !
+Treats a number as string array : no numerical evaluation !
+(pfffff...)
 
 example
 !exec sigdigits 1.23 1.230 1.2300 1.23e5 1.23*10^5 1.2300e5 01.23*10^5 1.2.3.4
@@ -38,6 +39,8 @@ item 5) exponent base (if not present : 1)
 item 6) exponent (if not present : 0)
 
 item 7) indication : is the number correctly written ?  1 or 0  ( 000.1 is not correct...)
+	scientiffic: [1-9.*] *10^exp : 1.2345*10^5 is OK ... 12.345*10^4 or 0.12345*10^6 is "NOK"
+	a*10^b  : 1 <= a <= 9
 
 remarks:
 - exponent: any other base will be tolerated : 4*7^5  base=7 exponent=5 -> 1,0,1,0,7,5,1
@@ -48,8 +51,9 @@ ruleset:
 120.2000	: 4 significant digits
 0120.2		: 4 significant digits
 scientiffic notation:
-120.2*10^5	: 4 significant digits
-120.200*10^5	: 6 significant digits
+1.202*10^5	: 4 significant digits
+1.20200*10^5	: 6 significant digits
+
 
 */
 
@@ -111,6 +115,7 @@ int main( int argc , char *argv[]){
 	exp[0]='\0';
 	base_start = 0;
 	base_end = 0;
+	ok = 0;
 	for( i = length - 1 ; i >= 0 ; i--){ // walk from rightside to left through the 'number'
 	    switch( word[i] ){
 		case '^' : base_start = i;found_power++;break;
@@ -176,14 +181,40 @@ int main( int argc , char *argv[]){
 	else
 	{
 	    // extra check for handling "special cases" 
-	    if(found_point == 0 && found_power == 0){ sig2 = length; }	// just a number 12345
+	    if(found_point == 0 && found_power == 0){ sig2 = length;ok = 1; }	// just a number 12345
+	    else
 	    if(found_point == 0 && found_multiply == 0 && found_power == 1){ sig1 = 0; dec1 = 0; sig2 = 0 ; dec2 = 0; }	// 10^5
+	    else
 	    if(found_point == 1 && found_multiply == 0 && found_power == 1){ sig1 = 0; dec1 = 0; sig2 = 0 ; dec2 = 0; }	// 10^5.1
-	    if(found_point == 0 && found_multiply == 1 && found_power == 1){ dec1 = 0; dec2 = 0; sig2 = length - zeros - pow; }	// 3*10^5
+	    else
+	    if(found_point == 0 && found_multiply == 1 && found_power == 1){ dec1 = 0; dec2 = 0; sig2 = length - zeros - pow;}	// 3*10^5
 	    
-	    if( found_power == 1){ 
-		// correct writing ? 1.20000*10^5 is OK, 01.20000*10^5 is NOK
-		if( zeros != 0 ){ ok = 0; }else{ ok = 1; } // 01*10^5
+	    if( found_power == 1){
+		// find out if scientiffic number is correctly written ; ok=0 -> ok=1 
+		// rule [1-9].[0-9]* x10^exp
+		if( word[0] != '0' && word[1] == '.' ){ //  0.120*10^5 => 1.20*10^4
+		    ok = 1;
+		}
+		else
+		{
+		    if( (word[0] == '-' || word[0] == '+' ) && word[1] != '0' && word[2] == '.' ){ 
+		    	ok = 1; // -1.2*10^5
+		    }
+		    else
+		    {
+			if( found_point == 0 && found_multiply == 1 ){
+			    if( word[1] == '*' ){ //4*10^5
+				ok = 1;
+			    }
+			    else
+			    {
+				if( (word[0] == '-' || word[0] == '+' ) && word[2] == '*'){ //-4*10^5
+				    ok = 1;
+				}
+			    }
+			}
+		    }
+		}
 		int len = strlen(exp);// reverse appended char array ... 123+ --> +321
 	        char exponent[len];
 		int w = len - 1;
@@ -217,7 +248,7 @@ int main( int argc , char *argv[]){
 	    else
 	    { 	// no exponent : base = '1' exponent = '0'
 		//several possible correct way of writing...
-		if( ( sig1 == sig2 + dec2 ) || ( sig1 + dec1 == sig2 + dec2 ) || ( dec1 == dec2 && sig2 == 1 ) ){ ok  = 1; } else { ok = 0; }
+		if( ok == 0 && ( ( sig1 == sig2 + dec2 ) || ( sig1 + dec1 == sig2 + dec2 ) || ( dec1 == dec2 && sig2 == 1 ) )){ ok  = 1; } 
 		fprintf(stdout,"%d,%d,%d,%d,1,0,%d\n",sig1,dec1,sig2,dec2,ok);
 	    }
 	}

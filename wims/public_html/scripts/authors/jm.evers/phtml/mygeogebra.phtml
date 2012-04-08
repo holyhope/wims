@@ -39,6 +39,12 @@
 	    $exotext
 	!endif
 	!if $inputs>0
+	    !set a_items=!itemcnt $(answer$n)
+	    !if $inputs != $a_items
+		!set use_lines=1
+	    !else
+		!set use_lines=0
+	    !endif
 	    <table summary="">
 		<form name="sendtext" id="sendtext" action="">
 		    !for i=1 to $inputs
@@ -51,7 +57,11 @@
 			</td>
 			<td>
 			!if $wims_user=supervisor
-			    !set voorzeggen=!item $i of $(answer$n)
+			    !if $use_lines=1
+				!set voorzeggen=!line $i of $(answer$n)
+			    !else
+				!set voorzeggen=!item $i of $(answer$n)
+			    !endif
 			    <input  style=$textareastyle name="myvar1" size=$cols value=$voorzeggen>
 			!else
 			    <input  style=$textareastyle name="myvar1" size=$cols value="$myvar1">

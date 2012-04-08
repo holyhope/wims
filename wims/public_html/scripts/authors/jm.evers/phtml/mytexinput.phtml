@@ -87,6 +87,7 @@
 	    !if $(question$n) != $empty
 		$(question$n)
 	    !endif
+	    <div id="wait_for_applet" style="text-align:center;display:block;"><img src="$gifdir/wait.gif" alt="wait...wait"></div>
 	    !if $exotext != $empty
 		$exotext
 	    !endif
@@ -100,6 +101,12 @@
 			<td>
 			    <form id="mydefaultform" name="mydefaultform" action="">
 				<table summary="" cellpadding="1">
+				!set a_items=!itemcnt $(answer$n)
+				!if $a_items != $[floor($inputs)]
+				    !set use_lines=1
+				!else
+				    !set use_lines=0
+				!endif
 				!for p=1 to $inputs
 				    <tr valign="middle">
 				    <td>
@@ -107,7 +114,11 @@
 				    </td>
 				    <td>
 					!if $wims_user=supervisor
-					    !set deelantwoord=!item $p of $(answer$n)
+					    !if $use_lines=1
+						!set deelantwoord=!line $p of $(answer$n)
+					    !else
+						!set deelantwoord=!item $p of $(answer$n)
+					    !endif
 					!else
 					    !set deelantwoord=!item $p of $(reply$n)
 					!endif
@@ -167,6 +178,12 @@
 			    !endif
 			!else
 			    <table summary="" cellpadding="1">
+			    !set a_items=!itemcnt $(answer$n)
+			    !if $a_items != $[floor($inputs)]
+				!set use_lines=1
+			    !else
+				!set use_lines=0
+			    !endif
 			    !for p=1 to $inputs
 				<tr>
 				<td>
@@ -177,7 +194,11 @@
 				</td>
 				<td>
 				    !if $wims_user=supervisor
-					!set deelantwoord=!item $p of $(answer$n)
+					!if $use_lines=1
+					    !set deelantwoord=!line $p of $(answer$n)
+					!else
+					    !set deelantwoord=!item $p of $(answer$n)
+					!endif
 				    !else
 					!set deelantwoord=!item $p of $(reply$n)
 				    !endif
