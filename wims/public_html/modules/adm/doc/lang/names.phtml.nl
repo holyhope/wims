@@ -15,7 +15,7 @@
  <p>
  !form reply
  <input type="hidden" name="job2" value="erase">
- Verwijder een bastand&nbsp;:
+ Verwijder een bestand&nbsp;:
  !formselect job2 list $flist
  <input type="submit" value="$wims_name_erase">
  </form>
@@ -36,10 +36,11 @@ om het plaatje <tt class="wims_fname">myfile.jpg</tt> te verwerken in de pagina.
 Bestanden opgenomen in dit document zijn alleen beschikbaar voor mensen met "leesrechten" voor dit document
 
 <p>
-Une nouvelle commande <tt class="wims_code_words">\href{}{}</tt> est en test. 
-Pour obtenir un lien sur le fichier, il suffit alors d'écrire
+
+Een nieuw commando <tt class="wims_code_words">\href{}{}</tt> is ge&iuml;ntroduceerd. 
+Om een link naar een bestand aan te maken, is de onderstaande syntax afdoende:
 <center>
-<tt class="wims_code_words">\href{$f1}</tt> ou <tt class="wims_code_words">\href{$f1}{lien}</tt>.
+<tt class="wims_code_words">\href{$f1}</tt> of <tt class="wims_code_words">\href{$f1}{lien}</tt>.
 </center>
 !exit
 

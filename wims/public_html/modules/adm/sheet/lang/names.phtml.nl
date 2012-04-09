@@ -1,6 +1,6 @@
 !set lang_exists=yes
 
-!read adm/lang/sheetexam.phtml.$lang
+!read adm/lang/sheetexam.phtml.$modu_lang
 
 !set name_student1=!nosubst Er mag aan dit werkblad gewerkt worden tot $expday $expmon $expyear
 !set name_student2=Dit werkblad is verlopen. Er kan nog wel aan\
@@ -9,7 +9,7 @@
 Neem desgewenst contact op met je docent.
 
 !set name_score=!nosubst $[$got] uit $[$require] punten behaald, kwaliteit
-!set name_score2=!nosubst $[$require] punten vereist.
+!set name_score2=!nosubst ($[$require] punten vereist).
 
 !set name_scoreopen=De cijferregistratie is open.
 !set name_scoreclosesup=De cijferregistratie kan niet worden opgechort.
@@ -18,7 +18,7 @@ Neem desgewenst contact op met je docent.
 knippen en plakken in uw eigen klas importeren.
 !set name_answer=Antwoord op oefening
 
-!set name_title=!nosubst  Werkblad #$sh
+!set name_title=!nosubst $wims_name_sheet $wims_name_number$sh
 !set name_exo=!defof name_exo in wimshome/public_html/scripts/oef/$modu_lang/names
 !set name_noprint=!defof name_noprint in oef/$modu_lang/names
 !set name_answers=!defof name_answers in oef/$modu_lang/names

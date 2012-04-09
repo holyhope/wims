@@ -57,30 +57,34 @@ Een enquete mag tot 64 keuzevelden bevatten.
  <li><b>$wims_name_title</b> : the title of the questionnaire.</li>
  <li><b>$wims_name_Type</b>: 
   <ul>
-   <li><b>$name_anonymous </b>: in an anonymous questionnaire nobody knows 
-   who answered what (it is for instance impossible to go back 
-   and double check what your own answer was.)
+   <li><b>$name_anonymous </b>: 
+   In een anonieme stemming weet niemand wat de ander heeft geantwoord.
+   Het is ook onmogelijk om terug te gaan en het antwoord te veranderen.
 </li>
-   <li><b>$name_trace with log files</b>: this type is similar to the anonymous type questionnaire 
-   except that the answers provided by a participant can be identified, 
-   however  the identity of the participant is not revealed.</li>
-   <li><b>$name_nominative</b>:  each participant's answers can be consulted ( the "free response" 
-   area cannot be used with this type of questionnaire.)</li>
+   <li><b>$name_trace met log files</b>: 
+   Dit type is te vergelijken met een anonoieme stemming.
+   Het verschil is dat antwoorden aan de deelnemer zijn gekoppeld, zonder dat de naam van deze deelnemer bekend is.
+   </li>
+   <li><b>$name_nominative</b>:  
+   Alle antwoorden van de deelnemers zijn te raadplegen.
+   (open antwoorden kunnen niet worden ingezet bij dit type.)
+   </li> 
 </ul>
  </li>
- <li><b>$wims_name_Status</b>: refers to one of the statuses described below:
+ <li><b>$wims_name_Status</b>: 
      <ul>
-      <li><b>$name_0</b>: the questionnaire can be modified, the participants cannot see it.</li>
-      <li><b>$name_1</b>: the questionnaire cannot be modified, the participants can respond to the questions</li>
-      <li><b>$name_2</b>: the questionnaire cannot be modified, the participants cannot respond to the questions </li>
-      <li><b>$name_3</b>: the questionnaire cannot be modified, the participants cannot see the questions.</li>
+      <li><b>$name_0</b>: de stemming kan worden veranderd, deelnemers kunnen nu de stemming niet zien.</li>
+      <li><b>$name_1</b>: de stemming kan niet worden veranderd, deelnemers nu kunnen de vragen beantwoorden</li>
+      <li><b>$name_2</b>: de stemming kan niet worden veranderd, deelnemers nu kunnen de vragen niet beantwoorden </li>
+      <li><b>$name_3</b>: de stemming kan niet worden veranderd, deelnemers kunnen nu de stemming niet zien.</li>
      </ul>
  </li>
- <li><b>$name_result</b>: if the results are published, the participants can consult 
- them after having voted, if not, only the administrator of the class can access the results.
- <li><b>$name_whovote</b>: if this list is published, both the administrator of the class
- and the participants can consult the list ( providing that there are enough participants who have voted),
- if not, nobody can see who has voted.
+ <li><b>$name_result</b>: 
+ als de resultaten bekend zijn, kunnen alle deelnemers deze inzien nadat ze hebben gestemd.
+ sld de resultaten nog niet bekend zijn gemaakt, kan alleen de supervisor van een klas deze inzien.
+ <li><b>$name_whovote</b>: 
+ als deze lijst bekend gemaakt is, kunnen zowel de supervisor en de deelnemers deze lijst inzien.
+ Tenzij er niet genoeg stemmen zijn uitgebracht, dan kan niemand deze lijst inzien.
 </ul> 
 !tail
 !exit

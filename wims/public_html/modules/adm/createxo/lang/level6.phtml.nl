@@ -73,8 +73,7 @@ Het bestand voor deze oefening:
 <tt>&lt;a href="\imagedir/file.pdf"&gt;file.pdf&lt;/a&gt;</tt> ...
 !endif
 
-Sauvez l'exercice pour que les fichiers ajoutés le soient de manière
-permanente.
+Bewaar de bestanden voor de oefening, zodat ze niet verloren gaan.
 
 !set wims_menu_items=!append line \
 testexo,1,cmd=resume&level=3&realtest=yes&retest=again\

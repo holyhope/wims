@@ -77,8 +77,8 @@ SU_nosheet = Uw klas heeft nog geen lesmateriaal ter beschikking.
 SU_shlist = Lesmateriaal van de klas
 wims_name_SU_Gateway = Structuur management
 SU_Bprogram = Terug naar het lesprogramma
-SU_nopartconnected=Aucun participant n'est actuellement connecté
-SU_numpartconnected=!nosubst Il y a actuellement $numpartconnected participant(s) connecté
+SU_nopartconnected=Er is op dit moment geen student ingelogd
+SU_numpartconnected=!nosubst Er zijn op dit moment $numpartconnected student ingelogd
 
 wims_name_SE_list = Leerlingen en cijfers 
 wims_name_SE_part = Zo zien leerlingen deze pagina
