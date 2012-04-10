@@ -11,6 +11,7 @@ Plot (Plot) project buildfile.
 <property name="build.dir" value="./build"/>
 <property name="dist.dir" value="./dist"/>
 <property name="dest.dir" value="${build.dir}"/>
+<property name="img.dir" value="${build.dir}/ptolemy/plot/img"/>
 <property name="Plot.jar" value="${build.dir}/../dist/Plot.jar"/>
 <property name="Plot.tar" value="${build.dir}/../Plot.tgz"/>
 
@@ -31,6 +32,7 @@ Plot (Plot) project buildfile.
   <mkdir dir="${build.dir}"/>
   <mkdir dir="${dest.dir}"/>
   <mkdir dir="${dist.dir}"/>
+  <mkdir dir="${img.dir}"/>
 </target>
 
 
@@ -54,6 +56,9 @@ Plot (Plot) project buildfile.
     classpathref="Plot.classpath"
     excludes=""
     destdir="${dest.dir}"/>
+    <exec executable="/bin/sh">
+	<arg line="-c 'cp ${src.dir}/plot/img/*.gif ${img.dir}'"/>
+    </exec> 
 </target>
 
 
