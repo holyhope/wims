@@ -42,7 +42,8 @@ $reg_whovoteshow
  !appendfile $votedir/.votes :$(v_$i)
 !next i
 
-!if $reg_src!=$empty and $vote_status=0
+
+!if $reg_src!=$empty and ($vote_status=0 or $numsess>0)
  !writefile $votedir/$vote.src $reg_src
  msg2wims_primitives=def define comment draw if for uservar\
 	menu list radio mmenu mlist checkbox textarea

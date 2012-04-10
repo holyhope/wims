@@ -1,0 +1,284 @@
+!read adm/lang/date.phtml.it
+
+<b>
+$name_guidedtitle
+</b>
+!set wims_ref_class=wims_button_help
+!href cmd=help&helpname=guidedmode $wims_name_help
+<br>
+
+!default gstep=0
+!goto $gstep
+
+:0
+!if $vote_status=0
+<p>$name_introguided</p>
+!form reply
+$table_header
+ $table_tr
+<td>$name_howmany ($name_atmost 10)</td>
+<td>
+<input size=12 name="numsess" id="numsess">
+</td>
+</tr>
+$table_tr
+<td>$name_nameexvar</td>
+<td>
+<input size=12 name="nameexvar" id="nameexvar">
+</td>
+</tr>
+$table_tr
+  <td>$name_textconnip</td>
+<td>
+<input size=12 name="defconnip" id="defconnip">
+</td>
+</tr>
+$table_tr
+<td colspan="2" align="center">
+<input type=hidden name="gstep" value="1">
+<input type="hidden" name="job" value="guided">
+<input type=submit value="$wims_name_send">
+</td>
+</tr>
+</form>
+$table_end
+!else
+<p>$name_noguided</p>
+!endif
+!goto end
+
+
+:1
+
+!form reply
+!if $vote_status=0
+<p>$name_numsess_pre
+<select  name="numsess" onchange="submit()">
+!for i=0 to 10
+ !if $i=$numsess
+  <option value="$i" selected>$i</option>
+ !else
+  <option value="$i">$i</option>
+ !endif
+!next i
+</select>
+$name_numsess_post</p>
+!else
+<p>$name_numsess</p>
+!endif
+</form>
+
+!form reply
+<p>$name_introtext</p>
+!! TODO: only text in this textarea: need to chech user input. also can use editor??
+<center>
+<textarea $wims_id rows=10 cols=65 name="testointro" wrap>
+!replace internal \( by &#92;( in $testointro
+</textarea>
+</center>
+
+!let moduclass_lang=it
+!default creyear=!char 1 to 4 of $class_creation
+!default expyear=!char 1 to 4 of $class_expiration
+
+!if $jyear=$empty
+ !let jyear=!char 1 to 4 of $wims_now
+ !let jmonth=!char 5 to 6 of $wims_now
+ !let jday=!char 7 to 8 of $wims_now
+!endif
+
+<p>$name_numsess_pre $numsess $name_numsess_post</p>
+
+$table_header
+$table_hdtr
+  <th>$name_numstud</th><th>$name_examdate</th><th>$name_begintime</th><th>$name_endtime</th><th>$name_connip</th><th>$name_extra</th>
+ </tr>
+ !for i=1 to $numsess
+$table_tr
+  <td>
+  <input size=4 name="nstud$i" id="nstud$i" value="$(nstud$i)">
+  </td>
+  <td>
+   !default bday$i=$jday
+   !default byear$i=$jyear
+   !default bmonth$i=$jmonth
+   !distribute item $[$(bday$i)],$[$(bmonth$i)],$[$(byear$i)] into bday$i,bmonth$i,byear$i
+!if $vote_status=0
+   !read lang/date.phtml.$moduclass_lang 2
+!else
+  $(bday$i) $(months[$(bmonth$i)]) $(byear$i)
+!endif
+  </td>
+  <td>
+!if $vote_status=0
+   !read lang/date.phtml.$moduclass_lang 3
+!else
+   $(bhour$i):$(bmin$i)
+!endif
+  </td>
+  <td>
+!if $vote_status=0
+   !read lang/date.phtml.$moduclass_lang 4
+!else
+   $(ehour$i):$(emin$i)
+!endif
+  <td>
+!if $vote_status=0
+   !default exconnip$i=$defconnip
+   <input size=10 name="exconnip$i" id="exconnip$i" value="$(exconnip$i)">
+!else
+   $(exconnip$i)
+!endif
+  </td>
+  <td>
+   <input size=10 name="testoextra$i" id="testoextra$i" value="$(testoextra$i)">
+  </td>
+ </tr>
+ !next i
+$table_end
+<div align="center">
+<input type="submit" value="$wims_name_doch_reload" $wims_on_click>
+</div>
+
+ <input type="hidden" name="reg_title" value="$vote_title">
+ <input type="hidden" name="nameexvar" value="$nameexvar">
+ <input type=hidden name="gstep" value="2">
+</form>
+
+!goto end
+
+:2
+
+!if $gstep>1 and $cmd=reply
+ !set wims_menu_items=!append line back2,1,module=$module&job=guided&vote=$vote\
+ to $wims_menu_items
+!endif
+
+!set gstep=1
+
+!sh mkdir -p $wims_home/log/$Votedir
+!writefile $votedir/$vote.data
+
+!for dato in numsess,nameexvar,defconnip,gstep
+ !appendfile $votedir/$vote.data $dato=$($dato)
+!next
+
+!for i=1 to $numsess
+!for dato in nstud$i,bday$i,mese$i,byear$i,bhour$i,bmin$i,testoextra$i,\
+ bmonth$i,ehour$i,emin$i,exconnip$i
+ !appendfile $votedir/$vote.data $dato=$($dato)
+!next dato
+!next i
+
+!appendfile $votedir/$vote.data \
+:$testointro
+
+!set reg_src=<div>\
+$testointro\
+</div>\
+\list{
+
+!for i=1 to $numsess
+!set mese$i=!item $(bmonth$i) of $months
+!set bmonth$i=!char 2,3 of $[abs(floor($(bmonth$i)))+100]
+!set byear$i=!char -4 to -1 of $[abs(floor($(byear$i)))+100000]
+!set bmin$i=!char 2,3 of $[abs(floor($(bmin$i)))+100]
+!set emin$i=!char 2,3 of $[abs(floor($(emin$i)))+100]
+!set reg_src=$reg_src\
+$(nstud$i): $(bday$i) $(mese$i) $(byear$i) ore $(bhour$i).$(bmin$i) $(testoextra$i),
+ !next i
+!set reg_src=$reg_src\
+cancella iscrizione\
+}\
+\uservar{$nameexvar,>20081105.17:30 <20081105.15:30,
+!for i=1 to $numsess
+!set bday$i=!char 2,3 of $[abs(floor($(bday$i)))+100]
+!set bhour$i=!char 2,3 of $[abs(floor($(bhour$i)))+100]
+!set ehour$i=!char 2,3 of $[abs(floor($(ehour$i)))+100]
+!set reg_src=$reg_src\
+ >$(byear$i)$(bmonth$i)$(bday$i).$(bhour$i):$(bmin$i) <$(byear$i)$(bmonth$i)$(bday$i).$(ehour$i):$(emin$i) $(exconnip$i),
+!next i
+!set reg_src=$reg_src\
+  >20081105.17:30 <20081105.15:30}
+
+
+!set wims_form_method=post
+!form reply
+$table_header
+ $table_hdtr
+  <th>$name_option</th><th>$name_value</th>
+ </tr>
+ $table_tr<td>$wims_name_title</td><td><input size="50" name="reg_title" value="$vote_title"> </td></tr>
+ $table_tr<td>$wims_name_Type</td>
+  !default vote_status=0
+  !set reg_status=$vote_status
+  !set reg_option=$vote_option
+  !set reg_show=$vote_show
+  !set reg_whovoteshow=$vote_whovoteshow
+  <td>
+  !if $vote_status=0
+    !formselect reg_option list anonymous,trace,nominative prompt $name_anonymous,$name_trace,$name_nominative
+  !else
+    $(name_$(vote_option))
+  !endif
+  </td>
+ </tr>
+ $table_tr
+  <td>$wims_name_Status</td>
+  <td>
+  !if $vote_status=0 or $vcnt=0 or $vcnt=$empty or $vote_src$reg_src=$empty
+   !formselect reg_status from 0 to 3 prompt $name_0,$name_1,$name_2,$name_3
+  !else
+   !formselect reg_status from 1 to 3 prompt $name_1,$name_2,$name_3
+  !endif
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_result</td>
+  <td>
+   !formselect reg_show list 1,0 prompt $name_publish,$name_hide
+  </td>
+ </tr>
+ $table_tr
+  <td>$name_whovote</td>
+  <td>
+   !formselect reg_whovoteshow list 1,0 prompt $name_publish2,$name_hide2
+  </td>
+ </tr>
+$table_end
+
+<p>$name_describesource</p>
+
+<p>$name_examinstr</p>
+
+<pre>
+$reg_src
+</pre>
+
+<center><hr width="30%">
+<br><br><hr>
+ <input type="submit" name="rEg" value="$wims_name_tosave" $wims_on_click>
+ <input type="submit" name="abandon" value="$wims_name_giveup">
+ <input type="hidden" name="reg_src" value="$reg_src">
+ <input type="hidden" name="job" value="guided">
+<hr>
+</center>
+</form>
+
+!goto end
+
+:vars
+!! just for testing, to be deleted
+
+!for i in testointro,defconnip,exconnip1,exconnip2,vote_title,Votedir,votedir,class_expiration,class_creation,jday,jmonth,jyear,gstep, \
+numsess,inizio,wims_now,wims_class,today,expyear,creyear,\
+moduclass_lang,ddesc,dday,dmonth,dyear,\
+  bmonth1,bmonth2,bmonth3,nstud1,nstud2,nstud3,reg_src
+$i: $($i) <br>
+!next
+  
+:end
+
+!set wims_menu_items=!append line Show,1,cmd=reply&job=read\
+ to $wims_menu_items
+

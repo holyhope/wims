@@ -59,6 +59,17 @@ $table_header
   </td>
  </tr>
 $table_end
+
+!set vrfgstep=!defof gstep in $votedir/$vote.data
+!if $vrfgstep isitemof 0,1
+<p>$name_gotoguided
+!href cmd=reply&job=guided&vote=$vote $wims_name_guided
+!if $vote_status=0
+  (<span class="wims_warning">$name_gotoguided_warning</span>)
+!endif
+.</p>
+!endif
+
 <p><b> $name_content </b>:
 
 !if $vote_status>0

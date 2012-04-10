@@ -1,0 +1,17 @@
+!read edit.proc
+
+today=!char 1 to 8 of $wims_now
+thisyear=!char 1 to 4 of $today
+!if $class_expiration=$empty 
+ !defread wimshome/log/classes/$wims_class/.def
+!endif
+!if $class_expiration=$empty
+ error=bad_class
+ !exit
+!endif
+
+!if $gstep=$empty
+!readdef $votedir/$vote.data
+testointro=!record 1 of $votedir/$vote.data
+!endif
+
