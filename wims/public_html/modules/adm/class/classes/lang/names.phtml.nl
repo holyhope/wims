@@ -81,7 +81,7 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
 <em>$name_sup</em> in te loggen, voer hier het $name_sup wachtwoord in.
  
 !set name_research1= Er zijn zeer veel virtuele klassen geinstalleerd op deze server. \
-   Om Uw klas te vinden, voer een zoekterm in.
+   Om uw klas te vinden, voer een zoekterm in.
  
 !set name_research2= Er zijn te veel klassen gevonden met uw zoekterm. Geef een duidelijkere zoekterm.
 
@@ -94,10 +94,10 @@ geregistreerde deelnemer te komen, vul dan hier je login naam en wachtwoord in.
    !set name_example2=Er zijn geen nederlandstalige klassen geinstalleerd op deze server, \
    maar er zijn wel $clcnt engelstalige klassen.
    !set name_example3=!nosubst Er zijn $clcnt nederlandstalige openbare demonstratie klassen geinstalleerd.
-   !set name_example3b=!nosubst There is $othercnt example classes in other languages
+   !set name_example3b=!nosubst Er zijn $othercnt demonstratie klassen in andere talen.
    !set name_example4=U kunt ook een eigen klas maken om te zien hoe een docenten account er echt uitziet
    !set name_instruction=<ul>\
-<li>Klik op <span class="wims_button disabled">$name_anonymous</span> om in te loggen anls anonieme student (deelnemer).\
+<li>Klik op <span class="wims_button disabled">$name_anonymous</span> om in te loggen als anonieme student (deelnemer).\
 </li><li>Klik op <span class="wims_button disabled">$name_registered</span> op in te loggen als reeds geregistreerde student.\
 (Je moet jezelf natuurlijk dan wel eerder hebben aangemeld; wat niet wil zeggen\
 dat registreren in "demonstratie klaslokalen" een blijvende registratie is. Op gezette tijden\

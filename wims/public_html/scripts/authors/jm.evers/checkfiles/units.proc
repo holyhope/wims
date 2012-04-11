@@ -324,7 +324,7 @@ score=0
 	    # maybe answer$n=1.234 km,2.4,3.12 cm ... avoid NaN
 	    # 		var1=0,0,0
 	    G1=!word 1 of $ans
-	    sigcheck__g=$G1
+	    sigcheck_g=$G1
 	    unit_a=$empty
 	    unit_g=$empty
 	    sigcheck_a=$A1
@@ -348,30 +348,57 @@ score=0
 	    notation_err=0
 	    # check only if both reply and  answer$n are scientiffic
 	    !if $(dtot_a[6])>0 and $(dtot_g[6])>0
-		!for di=1 to 6
+		!if $unit_a != $unit_g
+		    dm=4
+		!else
+		    dm=6
+		!endif
+		!for di=1 to $dm
 		    a=$(dtot_a[$di])
 		    g=$(dtot_g[$di])
 		    !if $a!=$g
 			notation_err=1
-		        score1=$[0.99*$score1]
 			rem8=!append line $ <br><font color=red>$($digit_remarks[$di]) : $a</font> (<font color=green>$g</font>) $ to $rem8
 		    !endif
 		!next di
 		a=$[ $(dtot_a[3]) + $(dtot_a[4]) ]
 		g=$(dtot_g[1])
 		!if $a > $g 
-		    rem=!record 102 of $remarkdir/commonremarks.$taal
+		    !if $a>$[$g+5]			
+			score1=$[0.85*$score1]
+			rem=!record 100 of $remarkdir/commonremarks.$taal
+		    !else
+			!if $a>$[$g+3]
+			    score1=$[0.90*$score1]
+			    rem=!record 101 of $remarkdir/commonremarks.$taal
+			!else
+			    score1=$[0.95*$score1]
+			    rem=!record 102 of $remarkdir/commonremarks.$taal
+			!endif
+		    !endif
 		    rem8=!append line $ <font color=red>$rem</font> $ to $rem8
 		!endif
 	    !else
+		# geen scientiffic notatie
 		a=$[ $(dtot_a[3]) + $(dtot_a[4]) ]
-		g=$(dtot_g[1])
+		# als 12.3400 6 sig digitst heeft...
+		g=$[ $(dtot_g[3]) + $(dtot_g[4]) ]
 		!if $a != $g 
-		    score1=$[0.99*$score1]
-		    rem8=<font color=red>$($digit_remarks[1])</font>   
+		    rem8=<font color=red>$($digit_remarks[1]) ($a &ne; </font><font color=green>$g</font><font color=red>)</font>   
 		    notation_err=1
 		    !if $a>$g
-			rem=!record 102 of $remarkdir/commonremarks.$taal
+			!if $a>$[$g+5]
+			    rem=!record 100 of $remarkdir/commonremarks.$taal
+			    score1=$[0.85*$score1]
+			!else
+			    !if $a>$[$g+3]
+				score1=$[0.90*$score1]
+				rem=!record 101 of $remarkdir/commonremarks.$taal
+			    !else
+				score1=$[0.95*$score1]
+				rem=!record 102 of $remarkdir/commonremarks.$taal
+			    !endif
+			!endif
 			rem8=!append line $ <font color=red>$rem</font> $ to $rem8
 		    !endif
 		!endif
@@ -386,52 +413,44 @@ score=0
 	    !exit
 	!endif
 	
-	# find a number precision  ; what range for incorrect rounding?
-	dec=!item 4 of $dtot_p
-	c_base=!item 5 of $dtot_p
-	exponent=!item 6 of $dtot_p
-	!if $dec >0
-	    prec = $[0.5*10^(-1*$dec)*($c_base^($exponent))]
-	!else
-	    prec = $[0.5*$c_base^($exponent)]
-	!endif
-	!if NaN isin $prec
-	    # flaw in program?
-	    prec = $diff
-	!endif
 	# now test the answer...
 	!if $range=1
-	    !if $[1*($A1)]=$[1*($G1)]
+	    !ifval $[1*($A1)]=$[1*($G1)]
 		# plain correct...
 		k=green
 	    !else
+		Diff=$[abs(($A1) - ($G1))]
 		# compare precison used to correct last decimal flaw in $diff...
 		diff=$[(ceil($wims_compare_precision*$diff))/$wims_compare_precision]
-		!if $A1 >= $[$G1 - $diff] and $A1 <= $[$G1 + $diff]
+		!if $Diff < $diff
 		    k=green
-		    rem1=!record 96 of $remarkdir/commonremarks.$taal
 		!else
-		    # use $prec to find rounding errors
-		    !if $A1 >= $[$G1 - $diff - $prec] and $A1 <= $[$G1 + $diff + $prec]
-			rem1=!record 29 of $remarkdir/commonremarks.$taal
-			#@je hebt een afrondingsfoutje gemaakt...
-		        k=#ffc900
-		        score1=$[$score1*$P7]
+		    stp=10
+		    !for dx=1 to 10
+			# dx=10 : Diff < 3*diff
+			!if $stp=10
+			    !if $Diff < $[$diff + 0.2*$dx*$diff]
+				stp=$dx
+			    !endif		    
+			!endif
+		    !next dx
+		    !if $stp=10
+			k=red
+			score1=0
 		    !else
-			!if $A1 >= $[$G1 - $diff - 2*$prec] and $A1 <= $[$G1 + $diff + 2*$prec]
-			    rem1=!record 29 of $remarkdir/commonremarks.$taal
-			    #@je hebt een afrondingsfoutje gemaakt...
+			score1=$[$score1*$(P$stp)]
+			!if $stp > 5
+			    rem1=!record 30 of $remarkdir/commonremarks.$taal
+			    #@je hebt een grote afrondingsfout gemaakt...
 			    k=#ff7c00
-			    score1=$[$score1*$P8]
 			!else
-			    !if $A1 >= $[$G1 - $diff - 4*$prec] and $A1 <= $[$G1 + $diff + 4*$prec]
-				rem1=!record 30 of $remarkdir/commonremarks.$taal
-			        #@je hebt een afrondingsfoutje gemaakt...
-				k=#ff3e00
-			        score1=$[$score1*$P9]
+			    !if $stp>1
+				rem1=!record 29 of $remarkdir/commonremarks.$taal
+				#@je hebt een afrondingsfoutje gemaakt...
+		    		k=#ffc900
 			    !else
-				k=red
-			        score1=0
+				k=green
+				rem1=!record 96 of $remarkdir/commonremarks.$taal
 			    !endif
 			!endif
 		    !endif
@@ -439,9 +458,24 @@ score=0
 	    !endif
 	!else
 	    # no range given.
+	    # find a number precision  ; what range for incorrect rounding?
+	    dec=!item 4 of $dtot_p
+	    c_base=!item 5 of $dtot_p
+	    exponent=!item 6 of $dtot_p
+	    !if $dec >0
+		prec = $[0.5*10^(-1*$dec)*($c_base^($exponent))]
+	    !else
+		prec = $[0.5*$c_base^($exponent)]
+	    !endif
+	    !if NaN isin $prec
+		# flaw in program?
+		prec = 10^(-15)
+	    !endif
 	    tot=!exec pari if(abs($A1 - $G1) < $prec,1,0)\
 	    if(abs($A1 - $G1) < 2*$prec,1,0)\
-	    if(abs($A1 - $G1) < 3*$prec,1,0)
+	    if(abs($A1 - $G1) < 3*$prec,1,0)\
+	    if(abs($A1 - $G1) < 4*$prec,1,0)\
+	    if(abs($A1 - $G1) < 5*$prec,1,0)
 	    
 	    !if $wims_exec_error!=$empty
 		errortext=Something went wrong...contact the systems administrator
@@ -451,23 +485,39 @@ score=0
 	    r1=!line 1 of $tot
 	    r2=!line 2 of $tot
 	    r3=!line 3 of $tot
+	    r4=!line 4 of $tot
+	    r5=!line 5 of $tot
 	    !if $r1=1 
 		k=green
 	    !else
 		!if $r2=1
 		    rem1=!record 29 of $remarkdir/commonremarks.$taal
 		    #@je hebt een afrondingsfoutje gemaakt...
-		    score1=$[$score1*$P6]
-		    k=orange
+		    score1=$[$score1*$P3]
+		    k=green
 		!else
 		    !if $r3=1
-			score1=$[$score1*$P9]		    
+			score1=$[$score1*$P5]		    
 		        rem1=!record 30 of $remarkdir/commonremarks.$taal
 			#@je hebt een grote afrondingsfout gemaakt !
 		        k=orange
 		    !else
-			k=red
-			score1=0
+			!if $r4=1
+			    score1=$[$score1*$P7]		    
+		    	    rem1=!record 30 of $remarkdir/commonremarks.$taal
+			    #@je hebt een grote afrondingsfout gemaakt !
+		    	    k=orange
+			!else
+			    !if $r5=1
+				score1=$[$score1*$P9]		    
+		    		rem1=!record 30 of $remarkdir/commonremarks.$taal
+			        #@je hebt een grote afrondingsfout gemaakt !
+		    		k=orange
+			    !else    
+				k=red
+				score1=0
+			    !endif
+			!endif
 		    !endif
 		!endif
 	    !endif
@@ -526,7 +576,7 @@ score=0
 maxscore=$[$maxscore*$score/$tg]
 modulescore=$[$modulescore+$maxscore]
 
-!if $maxscore>0.8
+!if $maxscore>0.9
     remark$n=$OK
 !else
     !if $maxscore>0.5
