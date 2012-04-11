@@ -1,1 +1,2 @@
-!changeto adm/lang/external_auth_phtml.fr
+!set lang_exists=yes
+!changeto adm/lang/external_auth.phtml.fr
