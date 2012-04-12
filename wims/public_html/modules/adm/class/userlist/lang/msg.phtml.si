@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 
 !if not_supervisor=$error
  Sorry, but the operation of preparation / modification of a worksheet
@@ -56,6 +56,12 @@
 
 !if bad_user=$error
  Calling error: participant <tt class="wims_login">$checkuser</tt> does not exist.
+ !exit
+!endif
+
+!if $error iswordof login_missing login_empty
+!! login_missing: not find in the ldap for example : should be more precise ??
+   Some login have not been found.
  !exit
 !endif
 

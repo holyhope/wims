@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 
 !if not_supervisor=$error
 Helaas, deze handeling is alleen voor de supervisor van een klas bedoeld. 
@@ -57,6 +57,12 @@ Ga naar de configuratie pagina van Uw klas om deze instellingen te bekijken, en 
 !if bad_user=$error
 De student <tt class="wims_login">$checkuser</tt> komt niet voor in de database.
 !exit
+!endif
+
+!if $error iswordof login_missing login_empty
+!! login_missing: not find in the ldap for example : should be more precise ??
+   Some logins have not been found.
+ !exit
 !endif
 
 !if bad_exo=$error

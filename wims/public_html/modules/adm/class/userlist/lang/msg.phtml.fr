@@ -1,6 +1,6 @@
 !set wims_module_log=error: $error
 
-<b>$wims_name_Error</b>.
+<span class="wims_warning">$wims_name_Error</span>.
 
 !if not_supervisor=$error
  Désolé, mais l'opération de préparation / modification d'une feuille de
@@ -60,8 +60,14 @@ gestionnaire du groupement peut faire cela.
  !exit
 !endif
 
+!if $error iswordof login_missing login_empty
+!! login_missing: not find in the ldap for example
+   Certains identifiants n'ont pu être trouvés.
+ !exit
+!endif
+
 !if bad_exo=$error
- Article à vérifier non-existant.
+ Article à vérifier non existant.
  !exit
 !endif
 
