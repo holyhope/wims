@@ -110,7 +110,7 @@ $ in $l_
 
 Heeft u een WIMS server geinstalleerd op internet en wilt dit adres opgenomen zien in
 deze lijst, schrijf een email naar de
-!mailurl wimsdev@cru.fr ontwikkelings afdeling\
+!mailurl wimsdev@groupes.renater.fr ontwikkelings afdeling\
 wims mirror
 .
 <p>

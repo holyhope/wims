@@ -31,13 +31,13 @@ vanaf de server <a target="wims_external" href="http://wims.unice.fr/download/wi
 </li>
 <li>
 via de SVN ontwikkelings 
-<a target="wims_external" href="http://sourcesup.cru.fr/frs/?group_id=379">
+<a target="wims_external" href="http://sourcesup.renater.fr/frs/?group_id=379">
 server sourcesup
 </a>
 WIMS ophalen. Het WIMS project is daar gehuisvest.
 </li>
 </ul></li><li>
-de laatste beta versie van <a target="wims_external" href="http://sourcesup.cru.fr/frs/?group_id=379">
+de laatste beta versie van <a target="wims_external" href="http://sourcesup.renater.fr/frs/?group_id=379">
 sourcesup
 </a>.
 </li>

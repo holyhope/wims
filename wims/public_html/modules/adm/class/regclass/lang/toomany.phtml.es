@@ -10,6 +10,6 @@ WIMS@$httpd_HTTP_HOST creation of class
 
 Tenga en cuenta que puede crear una clase en cualquier sitio WIMS 
 que lo acepte. También tiene la posibilidad de
-<a target="wims_external" href="http://sourcesup.cru.fr/frs/?group_id=379">descargar el software WIMS</a>
+<a target="wims_external" href="http://ssourcesup.renater.fr/frs/?group_id=379">descargar el software WIMS</a>
 e instalarlo en su sitio local.
 

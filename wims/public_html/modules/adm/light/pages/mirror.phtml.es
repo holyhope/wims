@@ -104,7 +104,7 @@ $ in $l_
 :end
 Si tiene una instalación WIMS y quiere que aparezca en este listado,
 por favor
-!mailurl wimsdev@cru.fr escríbame\
+!mailurl wimsdev@groupes.renater.fr escríbame\
 wims mirror
 .
 <p>
