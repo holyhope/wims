@@ -54,7 +54,7 @@ wims_helper=chapter=3
   !endif
 !! for $auth_method=php we must check we are in an authenticated session 
 !! created by adm/raw --> we ckeck $wims_user is defined (?? FIXME ?? better way to check?)
-  !if $wims_user!=$empty and $auth_method isitemof php
+  !if $wims_user!=$empty and $auth_method isitemof cas,ldap,php
     auth_user=!defof user_external_auth in wimshome/log/classes/$wims_superclass/.users/$wims_user 
   !endif
   !read adm/class/hashlogin $auth_user,$class,$login_method
