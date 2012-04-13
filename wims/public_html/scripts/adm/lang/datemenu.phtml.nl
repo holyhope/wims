@@ -1,33 +1,33 @@
-!distribute items $wims_read_parm into r_,date_ 
+!! some variable are global as expyear, creyear,months, v, v1
+!distribute items $wims_read_parm into r_
+!if $r_ isitemof 5
+  !distribute items $wims_read_parm into r_,date_
+  !goto $r_
+!endif
+!if $r_ isitemof 6
+  !distribute items $wims_read_parm into r_,parm_hour,parm_min
+  !goto $r_
+!endif
+
+!distribute items $wims_read_parm into r_,parm_day,parm_month,parm_year
+
 !goto $r_
 :1
-!formselect dyear$i from $creyear to $expyear
-!formselect dmonth$i from 1 to 12 prompt $months
-!formselect dday$i from 1 to 31
-!exit
-
-:2
-!formselect dyear$i from $creyear to $expyear
-!formselect dmonth$i from 1 to 12 prompt $months
-!formselect dday$i from 1 to 31
-!exit
-
-:21
-!formselect byear$i from $creyear to $expyear
-!formselect bmonth$i from 1 to 12 prompt $months
-!formselect bday$i from 1 to 31
+!formselect $parm_year from $creyear to $expyear
+!formselect $parm_month from 1 to 12 prompt $months
+!formselect $parm_day from 1 to 31
 !exit
 
 :3
-!formselect jyear from $creyear to $expyear
-!formselect jmonth from 1 to 12 prompt $months
-!formselect jday list 0,$v prompt ---,$v
+!formselect $parm_year from $creyear to $expyear
+!formselect $parm_month from 1 to 12 prompt $months
+!formselect $parm_day list 0,$v prompt ---,$v
 !exit
 
 :4
-!formselect jyear2 list 0,$v1 prompt ---,$v1
-!formselect jmonth2 from 0 to 12 prompt ---,$months
-!formselect jday2 list 0,$v prompt ---,$v
+!formselect $parm_year list 0,$v1 prompt ---,$v1
+!formselect $parm_month from 0 to 12 prompt ---,$months
+!formselect $parm_day list 0,$v prompt ---,$v
 !exit
 
 :5
@@ -42,11 +42,6 @@
 !exit
 
 :6
-!formselect bhour$i list 08,09,10,11,12,13,14,15,16,17,18,19,20
-!formselect bmin$i list 00,05,10,15,20,25,30,35,40,45,50,55
-!exit
-
-:7
-!formselect ehour$i list 08,09,10,11,12,13,14,15,16,17,18,19,20
-!formselect emin$i list 00,05,10,15,20,25,30,35,40,45,50,55
+!formselect $parm_hour list 08,09,10,11,12,13,14,15,16,17,18,19,20
+!formselect $parm_min list 00,05,10,15,20,25,30,35,40,45,50,55
 !exit
