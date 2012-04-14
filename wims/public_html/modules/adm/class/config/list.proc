@@ -1,6 +1,15 @@
 
 !if $save!=$empty
  !read scripts/setdef.proc
+ !if $up_exotitleform!=$class_exotitleform
+!! change value of wims_exotitleform for connected student
+  !readproc adm/whoconnect 1
+  listsess=!column 2 of $whoconnect
+  listsess=!append item $wims_session to $listsess
+  !for se in $listsess
+   !setdef wims_exotitleform=$up_exotitleform in wimshome/sessions/$se/var.stat
+  !next se
+ !endif
  !defread wimshome/log/classes/$wims_class/.def
  wims_class_log=Modify class configuration by $wims_realuser
 !endif
